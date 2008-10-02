@@ -1,0 +1,55 @@
+﻿## Interface: 20400
+## Title: Skinner |cff7fff7f -Ace2-|r
+## Title-zhCN: |cff7fff7f-Ace2-|r Skinner
+## Title-koKR: |cff99ff99S|cffffffffkinner |cff7fff7f -Ace2-|r
+## Notes: Changes the look of the default UI
+## Notes-esES: Cambia el aspecto del UI predeterminado
+## Notes-zhCN: 更改默认 UI 的视觉样式.
+## Notes-zhTW: 更改預設 UI 的視覺樣式.
+## Author: Jncl
+## X-Credits: Haste and all the other contributors
+## Version: 2.4.2
+## OptionalDeps: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, FuBarPlugin-2.0
+## X-Category: Interface Enhancements
+## X-Website: http://www.wowace.com/wiki/Skinner
+## X-AceForum: 2941
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: SkinnerDB
+## X-Embeds: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, FuBarPlugin-2.0
+embeds.xml
+
+Localisations.lua
+Skinner.lua
+options.lua
+
+##
+## The individual lua files skin the default frames as follows;
+##
+## AddonFrames
+## includes ViewPort, TopFrame, MiddleFrame(s), BottomFrame
+AddonFrames.lua
+##
+## CharacterFrames1
+## includes Character (inc Pet, Reputation, Skill, PVP), PetStable, SpellBook, TalentUI, DressUp
+CharacterFrames1.lua
+##
+## CharacterFrames2
+## includes Friends (aka Social), TradeSkillUI, CraftUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs
+CharacterFrames2.lua
+##
+## NPCFrames
+## includes Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard
+NPCFrames.lua
+##
+## UIElements1
+## includes Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help, KnowledgeBase, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress
+UIElements1.lua
+##
+## UIElements2
+## includes Menu (inc Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, ModelFrames, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, GMSurveyUI, LFG, ItemSocketingUI, GuildBankUI, Nameplates
+##
+UIElements2.lua
+
+## Addon skins
+skins.xml
