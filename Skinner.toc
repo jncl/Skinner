@@ -8,7 +8,7 @@
 ## Notes-zhTW: 更改預設 UI 的視覺樣式.
 ## Author: Jncl
 ## X-Credits: Haste and all the other contributors
-## Version: 2.4.2
+## Version: 2.4.3
 ## OptionalDeps: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, FuBarPlugin-2.0
 ## X-Category: Interface Enhancements
 ## X-Website: http://www.wowace.com/wiki/Skinner
