@@ -57,6 +57,23 @@ function Skinner:Tooltips()
 			self.hooks[this].OnShow(this)
 			end)
 	end
+	
+	if self.isWotLK then
+		if GameTooltip.numStatusBars and GameTooltip.numStatusBars < 2 then 
+			self:SecureHook("GameTooltip_ShowStatusBar", function(...)
+	--			self:Debug("GT_SSB:[%s]", ...)
+				if GameTooltipStatusBar1 then
+					self:removeRegions(GameTooltipStatusBar1, {2})
+					self:glazeStatusBar(GameTooltipStatusBar1, 0)
+				end
+				if GameTooltipStatusBar2 then
+					self:removeRegions(GameTooltipStatusBar2, {2})
+					self:glazeStatusBar(GameTooltipStatusBar2, 0)
+					self:Unhook("GameTooltip_ShowStatusBar")
+				end
+			end)
+		end
+	end
 
 end
 
@@ -329,8 +346,8 @@ function Skinner:LootFrame()
 	if not self.db.profile.LootFrame or self.initialized.LootFrame then return end
 	self.initialized.LootFrame = true
 
-	self:Hook("LootFrame_OnShow", function()
-		self.hooks.LootFrame_OnShow()
+	self:Hook("LootFrame_OnShow", function(this)
+		self.hooks.LootFrame_OnShow(this)
 --		self:Debug("LF_OS: [%s, %s]", this, this:GetName())
 		if ( LOOT_UNDER_MOUSE == "1" ) then
 			-- position loot window under mouse cursor
@@ -474,24 +491,30 @@ function Skinner:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
+	if self.isWotLK then BACKPACK_HEIGHT = BACKPACK_HEIGHT - 26 end
+	
 	self:SecureHook("ContainerFrame_GenerateFrame", function(frameObj, size, id)
-		frame = frameObj:GetName()
+--		self:Debug("CF_GF:[%s, %s, %s]", frameObj:GetName(), size, id)
+		local frameName = _G[frameObj:GetName().."Name"]
 		if ( id > NUM_BAG_FRAMES ) then
-			_G[frame.."Name"]:SetTextColor(.3, .3, 1)
+			frameName:SetTextColor(.3, .3, 1)
 		elseif ( id == KEYRING_CONTAINER ) then
-			_G[frame.."Name"]:SetTextColor(1, .7, 0)
+			frameName:SetTextColor(1, .7, 0)
 		else
-			_G[frame.."Name"]:SetTextColor(1, 1, 1)
+			frameName:SetTextColor(1, 1, 1)
 		end
 		self:shrinkBag(frameObj, true)
 	end)
 
 	for i = 1, NUM_CONTAINER_FRAMES do
-		self:keepFontStrings(_G["ContainerFrame"..i])
-		_G["ContainerFrame"..i.."Name"]:SetWidth(145)
-		self:moveObject(_G["ContainerFrame"..i.."Name"], "-", 40, nil, nil)
-		local CFfh = self.db.profile.ContainerFrames.fheight <= math.ceil(_G["ContainerFrame"..i]:GetHeight()) and self.db.profile.ContainerFrames.fheight or math.ceil(_G["ContainerFrame"..i]:GetHeight())
-		self:storeAndSkin(ftype, _G["ContainerFrame"..i], nil, nil, nil, CFfh)
+		local frameObj = _G["ContainerFrame"..i]
+		local frameName = _G["ContainerFrame"..i.."Name"]
+		self:keepFontStrings(frameObj)
+		frameName:SetWidth(145)
+		self:moveObject(frameName, "-", 40, nil, nil)
+		local CFfh = self.db.profile.ContainerFrames.fheight <= math.ceil(frameObj:GetHeight()) and self.db.profile.ContainerFrames.fheight or math.ceil(frameObj:GetHeight())
+		self:storeAndSkin(ftype, frameObj, nil, nil, nil, CFfh)
+		self:shrinkBag(frameObj, true)
 	end
 
 end
@@ -954,5 +977,9 @@ function Skinner:TimeManager()
 	self:moveObject(StopwatchTabFrame, "-", 1, "+", 20)
 	self:moveObject(StopwatchCloseButton, "-", 5, "-", 10)
 	self:moveObject(StopwatchTitle, "-", 3, "-", 10)
+
+end
+
+function Skinner:Calendar()
 
 end

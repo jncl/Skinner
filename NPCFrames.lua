@@ -77,9 +77,12 @@ function Skinner:GossipFrame()
 	self:moveObject(GossipFrameGreetingGoodbyeButton, "+", 28, "-", 64)
 	GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
 
-	if not self.isPTR then
-		for i = 1, NUMGOSSIPBUTTONS do
+	for i = 1, NUMGOSSIPBUTTONS do
+		if not self.isWotLK then
 			_G["GossipTitleButton"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		else
+			local text = select(3, _G["GossipTitleButton"..i]:GetRegions())
+			text:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
 	end
 
@@ -237,17 +240,18 @@ function Skinner:ArenaRegistrar()
 	self:moveObject(ArenaRegistrarFrameNpcNameText, nil, nil, "+", 15)
 	self:moveObject(ArenaRegistrarFrameCloseButton, "+", 24, "+", 12)
 	self:keepFontStrings(ArenaRegistrarGreetingFrame)
-	if not self.isPTR then
-		AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		ArenaRegistrarButton1:SetTextColor(self.BTr, self.BTg, self.BTb)
-		ArenaRegistrarButton2:SetTextColor(self.BTr, self.BTg, self.BTb)
-		ArenaRegistrarButton3:SetTextColor(self.BTr, self.BTg, self.BTb)
-		RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		ArenaRegistrarButton4:SetTextColor(self.BTr, self.BTg, self.BTb)
-		ArenaRegistrarButton5:SetTextColor(self.BTr, self.BTg, self.BTb)
-		ArenaRegistrarButton6:SetTextColor(self.BTr, self.BTg, self.BTb)
-		ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	for i = 1, 5 do
+		if not self.isWotLK then
+			_G["ArenaRegistrarButton"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		else
+			local text = select(3, _G["ArenaRegistrarButton"..i]:GetRegions())
+			text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
 	end
+	
 	self:moveObject(ArenaRegistrarFrameGoodbyeButton, "+", 28, "-", 64)
 	self:moveObject(ArenaRegistrarFrameCancelButton, "+", 30, "-", 64)
 	self:moveObject(ArenaRegistrarFramePurchaseButton, "-", 10, "-", 64)
@@ -288,11 +292,15 @@ function Skinner:GuildRegistrar()
 	self:moveObject(GuildRegistrarFrameNpcNameText, nil, nil, "+", 15)
 	self:moveObject(GuildRegistrarFrameCloseButton, "+", 24, "+", 12)
 	self:keepFontStrings(GuildRegistrarGreetingFrame)
-	if not self.isPTR then
-		AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		GuildRegistrarButton1:SetTextColor(self.BTr, self.BTg, self.BTb)
-		GuildRegistrarButton2:SetTextColor(self.BTr, self.BTg, self.BTb)
-		GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	for i = 1, 2 do
+		if not self.isWotLK then
+			_G["GuildRegistrarButton"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		else
+			local text = select(3, _G["GuildRegistrarButton"..i]:GetRegions())
+			text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
 	end
 	self:moveObject(GuildRegistrarFrameGoodbyeButton, "+", 28, "-", 64)
 	self:moveObject(GuildRegistrarFrameCancelButton, "+", 30, "-", 64)
@@ -314,17 +322,16 @@ function Skinner:Petition()
 	self:moveObject(PetitionFrameCancelButton, "+", 28, "-", 64)
 	self:moveObject(PetitionFrameSignButton, "-", 15, "-", 64)
 	self:moveObject(PetitionFrameRequestButton, "-", 15, "-", 64)
-	if not self.isPTR then
-		PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
-		PetitionFrameMasterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		PetitionFrameMasterName:SetTextColor(self.BTr, self.BTg, self.BTb)
-		PetitionFrameMemberTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		for i = 1, 9 do
-			_G["PetitionFrameMemberName"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
-		PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
+	PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	PetitionFrameMasterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	PetitionFrameMasterName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	PetitionFrameMemberTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	for i = 1, 9 do
+		_G["PetitionFrameMemberName"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
+	PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
+
 	self:storeAndSkin(ftype, PetitionFrame)
 
 end
@@ -360,5 +367,9 @@ function Skinner:Tabard()
 	self:moveObject(TabardFrameCancelButton, "-", 10, "-", 6)
 
 	self:storeAndSkin(ftype, TabardFrame)
+
+end
+
+function Skinner:BarberShopUI()
 
 end

@@ -31,7 +31,7 @@ options.lua
 AddonFrames.lua
 ##
 ## CharacterFrames1
-## includes Character (inc Pet, Reputation, Skill, PVP), PetStable, SpellBook, TalentUI, DressUp
+## includes Character (inc Pet, Reputation, Skill, PVP), PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI
 CharacterFrames1.lua
 ##
 ## CharacterFrames2
@@ -39,11 +39,11 @@ CharacterFrames1.lua
 CharacterFrames2.lua
 ##
 ## NPCFrames
-## includes Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard
+## includes Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI
 NPCFrames.lua
 ##
 ## UIElements1
-## includes Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help, KnowledgeBase, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress
+## includes Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help, KnowledgeBase, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress, TimeManager, Calendar
 UIElements1.lua
 ##
 ## UIElements2

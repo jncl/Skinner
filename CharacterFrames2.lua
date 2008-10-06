@@ -244,7 +244,8 @@ function Skinner:TradeSkillUI()
 	self:moveObject(TradeSkillFrameTitleText, nil, nil, "+", 12)
 	self:moveObject(TradeSkillFrameCloseButton, "+", 28, "+", 8)
 	self:moveObject(TradeSkillRankFrame, "-", 40, "+", 14)
-	self:removeRegions(TradeSkillRankFrameBorder, {1}) -- N.B. region 2 is bar texture
+	if not self.isWotLK then self:removeRegions(TradeSkillRankFrameBorder, {1})
+	else TradeSkillRankFrameBorder:SetAlpha(0) end
 	self:glazeStatusBar(TradeSkillRankFrame, 0)
 	self:moveObject(TradeSkillFrameAvailableFilterCheckButton, "-", 38, "+", 12)
 	self:skinEditBox(TradeSkillFrameEditBox, {9})

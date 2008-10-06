@@ -29,9 +29,9 @@ Skinner.hideWithoutStandby = true
 Skinner.independentProfile = true
 
 --check to see if running on PTR
-Skinner.isPTR = CharacterFrame_TabBoundsCheck and true or false
---check to see if running on WotLK Beta
-Skinner.isWotLK = BlizzardOptionsPanel_Slider_Disable and true or false
+Skinner.isPTR = FeedbackUI and true or false
+--check to see if running on WotLK
+Skinner.isWotLK = GetCVarBool and true or false
 
 function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
 
@@ -442,8 +442,8 @@ function Skinner:makeMFRotatable(frame)
 	frame.cursorPosition = {}
 
 	if not self:IsHooked(frame, "OnUpdate") then
-		self:HookScript(frame, "OnUpdate", function()
-			self.hooks[frame].OnUpdate()
+		self:HookScript(frame, "OnUpdate", function(...)
+			self.hooks[frame].OnUpdate(...)
 			if this.dragging then
 				local x,y = GetCursorPosition()
 				if this.cursorPosition.x > x then
@@ -541,8 +541,13 @@ function Skinner:resizeTabs(frame)
 
 	local fN = frame:GetName()
 	local tabName = fN.."Tab"
+	local nT
 	-- get the number of tabs
-	local nT = ((fN == "CharacterFrame" and not HasPetUI()) and 4 or frame.numTabs)
+	if not self.isWotLK then
+		nT = ((fN == "CharacterFrame" and not HasPetUI()) and 4 or frame.numTabs)
+	else
+		nT = ((fN == "CharacterFrame" and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
+	end
 --	self:Debug("rT: [%s, %s]", tabName, nT)
 	-- accumulate the tab text widths
 	local tTW = 0
@@ -561,7 +566,8 @@ function Skinner:resizeTabs(frame)
 	-- update each tab
 	for i = 1, nT do
 		_G[tabName..i.."Left"]:SetWidth(tlw)
-		PanelTemplates_TabResize(0, _G[tabName..i])
+		if self.isWotLK then PanelTemplates_TabResize(_G[tabName..i], 0)
+		else PanelTemplates_TabResize(0, _G[tabName..i]) end
 	end
 
 end
@@ -622,21 +628,27 @@ function Skinner:shrinkBag(frame, bpMF)
 	if not frame then return end
 
 	local frameName = frame:GetName()
-
+	local mfAdjust = self.isWotLK and 22 or 18
 	local bgTop = _G[frameName.."BackgroundTop"]
 	if math.floor(bgTop:GetHeight()) == 256 then -- this is the backpack
 --		self:Debug("Backpack found")
 		if bpMF then -- is this a backpack Money Frame
-			local _, _, _, _, yOfs = _G[frameName.."MoneyFrame"]:GetPoint()
+			local yOfs = select(5, _G[frameName.."MoneyFrame"]:GetPoint())
 --			self:Debug("Backpack Money Frame found: [%s, %s]", yOfs, math.floor(yOfs))
 			if math.floor(yOfs) == -216 or math.floor(yOfs) == -217 then -- is it still in its original position
 --				self:Debug("Backpack Money Frame moved")
-				self:moveObject(_G[frameName.."MoneyFrame"], nil, nil, "+", 18)
+				self:moveObject(_G[frameName.."MoneyFrame"], nil, nil, "+", mfAdjust)
 			end
-			frame:SetHeight(frame:GetHeight() - 20)
+		end
+		if not self.isWotLK then
+			if bpMF then
+				frame:SetHeight(frame:GetHeight() - 20)
+			else
+				self:moveObject(_G[frameName.."Item1"], nil, nil, "-", 20)
+				frame:SetHeight(frame:GetHeight() - 40)
+			end
 		else
-			self:moveObject(_G[frameName.."Item1"], nil, nil, "-", 20)
-			frame:SetHeight(frame:GetHeight() - 40)
+			self:moveObject(_G[frameName.."Item1"], nil, nil, "+", 19)
 		end
 	end
 	if math.ceil(bgTop:GetHeight()) == 94 then frame:SetHeight(frame:GetHeight() - 20) end
@@ -904,12 +916,16 @@ function Skinner:OnEnable()
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 
 	self:ScheduleEvent(self.BlizzardFrames, self.db.profile.Delay.Init, self)
+	self:ScheduleEvent(self.SkinnerFrames, self.db.profile.Delay.Init + 0.1, self)
 	self:ScheduleEvent(self.AddonFrames, self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1, self)
 
 end
 
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
+
+--	if self.isPTR then self:Debug("PTR detected") end
+--	if self.isWotLK then self:Debug("WotLK detected") end
 
 	-- register the SV database
 	self:RegisterDB("SkinnerDB")
@@ -1027,6 +1043,7 @@ function Skinner:OnInitialize()
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
 	-- use strings as the objects may not exist when we start
 	self.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ItemRefTooltip"}
+	if self.isWotLK then table.insert(self.ttCheck, "ShoppingTooltip3") end
 	-- list of Tooltips used when the Tooltip style is 3
 	self.ttList = CopyTable(self.ttCheck)
 	table.insert(self.ttList, "SmallTextTooltip")
@@ -1078,10 +1095,10 @@ end
 function Skinner:ShowInfo(obj)
 
 	local getKids = true
-	local tmp = {}
 
 	local function p(fmsg, ...)
 
+		local tmp = {}
 		local output = "dbg:"
 
 		fmsg = tostring(fmsg)
@@ -1097,10 +1114,6 @@ function Skinner:ShowInfo(obj)
 				tmp[i + 2] = tostring((select(i, ...)))
 			end
 			output = table.concat(tmp, " ")
-		end
-		-- clear the tmp table
-		for i = 1, select('#', tmp) do
-			tmp[i] = nil
 		end
 
 		Skinner.debugFrame:AddMessage(output)

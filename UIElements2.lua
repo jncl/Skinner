@@ -7,59 +7,88 @@ function Skinner:MenuFrames()
 	self:storeAndSkin(ftype, GameMenuFrame, true)
 
 --	Video Options
-	self:storeAndSkin(ftype, OptionsFrame, true)
-	self:skinDropDown(OptionsFrameResolutionDropDown)
-	self:skinDropDown(OptionsFrameRefreshDropDown)
-	self:skinDropDown(OptionsFrameMultiSampleDropDown)
-
-	self:storeAndSkin(ftype, OptionsFrameDisplay)
-	self:storeAndSkin(ftype, OptionsFrameWorldAppearance)
-	self:storeAndSkin(ftype, OptionsFrameBrightness)
-	self:storeAndSkin(ftype, OptionsFramePixelShaders)
-	self:storeAndSkin(ftype, OptionsFrameMiscellaneous)
-
---	Sound & Voice Options (Voice New 2.2)
-	self:storeAndSkin(ftype, AudioOptionsFrame, true)
--->>--	Sound Options
-	self:storeAndSkin(ftype, SoundOptionsFramePlayback)
-	self:storeAndSkin(ftype, SoundOptionsFrameHardware)
-	self:skinDropDown(SoundOptionsOutputDropDown)
-	self:storeAndSkin(ftype, SoundOptionsFrameVolume)
--->>--	Voice Options
-	self:skinDropDown(VoiceOptionsFrameInputDeviceDropDown)
-	self:storeAndSkin(ftype, VoiceOptionsFrameTalking)
-	self:skinDropDown(VoiceOptionsFrameTypeDropDown)
-	self:storeAndSkin(ftype, VoiceOptionsFrameMode)
-	self:skinDropDown(VoiceOptionsFrameOutputDeviceDropDown)
-	self:storeAndSkin(ftype, VoiceOptionsFrameSpeaking)
--->>--	Voice Chat Button
-	self:skinDropDown(MiniMapVoiceChatDropDown)
-	self:storeAndSkin(ftype, VoiceChatTalkers)
--->>--	Tabs
-	self:keepRegions(AudioOptionsFrameTab1, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-	self:keepRegions(AudioOptionsFrameTab2, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-	self:moveObject(AudioOptionsFrameTab1, nil, nil, "-", 1)
-	self:moveObject(AudioOptionsFrameTab2, "+", 12, nil, nil)
-	if self.db.profile.TexturedTab then
-		self:applySkin(AudioOptionsFrameTab1, nil, 0, 1)
-		self:applySkin(AudioOptionsFrameTab2, nil, 0, 1)
-		self:setActiveTab(AudioOptionsFrameTab1)
-		self:setInactiveTab(AudioOptionsFrameTab2)
-		self:SecureHook("ToggleAudioOption", function(tab)
-			-- frame names are back to front in the table
-			if tab == AUDIOOPTIONSFRAME_SUBFRAMES[2] then
-				self:setActiveTab(AudioOptionsFrameTab1)
-				self:setInactiveTab(AudioOptionsFrameTab2)
-			else
-				self:setActiveTab(AudioOptionsFrameTab2)
-				self:setInactiveTab(AudioOptionsFrameTab1)
-			end
-		end)
+	if not self.isWotLK then
+		self:storeAndSkin(ftype, OptionsFrame, true)
+		self:skinDropDown(OptionsFrameResolutionDropDown)
+		self:skinDropDown(OptionsFrameRefreshDropDown)
+		self:skinDropDown(OptionsFrameMultiSampleDropDown)
+		self:storeAndSkin(ftype, OptionsFrameDisplay)
+		self:storeAndSkin(ftype, OptionsFrameWorldAppearance)
+		self:storeAndSkin(ftype, OptionsFrameBrightness)
+		self:storeAndSkin(ftype, OptionsFramePixelShaders)
+		self:storeAndSkin(ftype, OptionsFrameMiscellaneous)
 	else
-		self:storeAndSkin(ftype, AudioOptionsFrameTab1)
-		self:storeAndSkin(ftype, AudioOptionsFrameTab2)
+		self:storeAndSkin(ftype, VideoOptionsFrame, true)
+		self:storeAndSkin(ftype, VideoOptionsFrameCategoryFrame)
+		self:storeAndSkin(ftype, VideoOptionsResolutionPanelBrightness)
+		self:storeAndSkin(ftype, VideoOptionsResolutionPanel)
+		self:skinDropDown(VideoOptionsResolutionPanelResolutionDropDown)
+		self:skinDropDown(VideoOptionsResolutionPanelMultiSampleDropDown)
+		self:skinDropDown(VideoOptionsResolutionPanelRefreshDropDown)
+		self:storeAndSkin(ftype, VideoOptionsEffectsPanelQuality)
+		self:storeAndSkin(ftype, VideoOptionsEffectsPanelShaders)
+		self:storeAndSkin(ftype, VideoOptionsEffectsPanel)
 	end
 
+--	Sound & Voice Options (Voice New 2.2)
+	if not self.isWotLK then
+		self:storeAndSkin(ftype, AudioOptionsFrame, true)
+	-->>--	Sound Options
+		self:storeAndSkin(ftype, SoundOptionsFramePlayback)
+		self:storeAndSkin(ftype, SoundOptionsFrameHardware)
+		self:skinDropDown(SoundOptionsOutputDropDown)
+		self:storeAndSkin(ftype, SoundOptionsFrameVolume)
+	-->>--	Voice Options
+		self:skinDropDown(VoiceOptionsFrameInputDeviceDropDown)
+		self:storeAndSkin(ftype, VoiceOptionsFrameTalking)
+		self:skinDropDown(VoiceOptionsFrameTypeDropDown)
+		self:storeAndSkin(ftype, VoiceOptionsFrameMode)
+		self:skinDropDown(VoiceOptionsFrameOutputDeviceDropDown)
+		self:storeAndSkin(ftype, VoiceOptionsFrameSpeaking)
+	-->>--	Voice Chat Button
+		self:skinDropDown(MiniMapVoiceChatDropDown)
+		self:storeAndSkin(ftype, VoiceChatTalkers)
+	-->>--	Tabs
+		self:keepRegions(AudioOptionsFrameTab1, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
+		self:keepRegions(AudioOptionsFrameTab2, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
+		self:moveObject(AudioOptionsFrameTab1, nil, nil, "-", 1)
+		self:moveObject(AudioOptionsFrameTab2, "+", 12, nil, nil)
+		if self.db.profile.TexturedTab then
+			self:applySkin(AudioOptionsFrameTab1, nil, 0, 1)
+			self:applySkin(AudioOptionsFrameTab2, nil, 0, 1)
+			self:setActiveTab(AudioOptionsFrameTab1)
+			self:setInactiveTab(AudioOptionsFrameTab2)
+			self:SecureHook("ToggleAudioOption", function(tab)
+				-- frame names are back to front in the table
+				if tab == AUDIOOPTIONSFRAME_SUBFRAMES[2] then
+					self:setActiveTab(AudioOptionsFrameTab1)
+					self:setInactiveTab(AudioOptionsFrameTab2)
+				else
+					self:setActiveTab(AudioOptionsFrameTab2)
+					self:setInactiveTab(AudioOptionsFrameTab1)
+				end
+			end)
+		else
+			self:storeAndSkin(ftype, AudioOptionsFrameTab1)
+			self:storeAndSkin(ftype, AudioOptionsFrameTab2)
+		end
+	else
+		self:storeAndSkin(ftype, AudioOptionsFrame, true)
+		self:storeAndSkin(ftype, AudioOptionsFrameCategoryFrame)
+		self:storeAndSkin(ftype, AudioOptionsSoundPanelPlayback)
+		self:storeAndSkin(ftype, AudioOptionsSoundPanelHardware)
+		self:storeAndSkin(ftype, AudioOptionsSoundPanelVolume)
+		self:storeAndSkin(ftype, AudioOptionsSoundPanel)
+		self:skinDropDown(AudioOptionsSoundPanelHardwareDropDown)
+		self:storeAndSkin(ftype, AudioOptionsVoicePanelTalking)
+		self:storeAndSkin(ftype, AudioOptionsVoicePanelBinding)
+		self:storeAndSkin(ftype, AudioOptionsVoicePanelListening)
+		self:storeAndSkin(ftype, AudioOptionsVoicePanel)
+		self:skinDropDown(AudioOptionsVoicePanelInputDeviceDropDown)
+		self:skinDropDown(AudioOptionsVoicePanelOutputDeviceDropDown)
+		self:skinDropDown(AudioOptionsVoicePanelChatModeDropDown)
+	end
+	
 -->>--	Mac Options (New 2.2)
 	if IsMacClient() then
 		self:storeAndSkin(ftype, MacOptionsFrame, true)
@@ -77,12 +106,12 @@ function Skinner:MenuFrames()
 -->>--	InterfaceOptionsFrame (changed in 2.4)
 	self:removeRegions(InterfaceOptionsFrameCategoriesList)
 	self:skinScrollBar(InterfaceOptionsFrameCategoriesList)
-	self:storeAndSkin(ftype, InterfaceOptionsFrameCategories, nil)
 	self:removeRegions(InterfaceOptionsFrameAddOnsList)
 	self:skinScrollBar(InterfaceOptionsFrameAddOnsList)
-	self:storeAndSkin(ftype, InterfaceOptionsFrameAddOns, nil)
-	self:keepFontStrings(InterfaceOptionsFrame)
+	self:storeAndSkin(ftype, InterfaceOptionsFrameCategories)
+	self:storeAndSkin(ftype, InterfaceOptionsFrameAddOns)
 	self:storeAndSkin(ftype, InterfaceOptionsFrame, true)
+--		self:keepFontStrings(InterfaceOptionsFrame)
 	-- Tabs
 	for i = 1, 2 do
 		local tabName = _G["InterfaceOptionsFrameTab"..i]
@@ -95,19 +124,24 @@ function Skinner:MenuFrames()
 		self:moveObject(tabNameHT, "-", 5, "+", 3)
 		if i == 2 then self:moveObject(tabName, "+", 14, nil, nil) end
 	end
-	if not self.isPTR then
-		-- Hook this to skin any Interface Option panels
-		self:SecureHook("InterfaceOptionsList_DisplayFrame", function(frame)
-	--		self:Debug("IOL_DF: [%s, %s]", frame, frame:GetName())
-			if not frame.skinned then
-				for _, child in next, { frame:GetChildren() } do
-					if child and self:isDropDown(child) then self:skinDropDown(child) end
-				end
-				self:storeAndSkin(ftype, frame)
-				frame.skinned = true
-			end
-		end)
+
+	-- Hook this to skin any Interface Option panels
+	local hookFunc
+	if not self.isWotLK then
+		hookFunc = "InterfaceOptionsList_DisplayFrame"
+	else
+		hookFunc = "InterfaceOptionsList_DisplayPanel"
 	end
+	self:SecureHook(hookFunc, function(frame)
+--		self:Debug("%s: [%s, %s]", hookFunc, frame, frame:GetName())
+		if not frame.skinned then
+			for _, child in next, { frame:GetChildren() } do
+				if child and self:isDropDown(child) then self:skinDropDown(child) end
+			end
+			self:storeAndSkin(ftype, frame)
+			frame.skinned = true
+		end
+	end)
 
 end
 
@@ -121,14 +155,19 @@ function Skinner:MacroUI()
 
 	for i = 1, 2 do
 		local tabName = _G["MacroFrameTab"..i]
+		if self.isWotLK and i == 1 then self:moveObject(tabName, "-", 30, "+", 0) end
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 		self:moveObject(_G[tabName:GetName().."Text"], nil, nil, "+", 5)
 		self:moveObject(_G[tabName:GetName().."HighlightTexture"], nil, nil, "+", 8)
 		self:storeAndSkin(ftype, tabName)
 	end
 
+	if self.isWotLK then
+		self:removeRegions(MacroButtonScrollFrame)
+		self:skinScrollBar(MacroButtonScrollFrame)
+	end
 	self:moveObject(MacroFrameCloseButton, "+", 28, "+", 8)
-	self:moveObject(MacroButton1, "-", 10, nil, nil)
+	if not self.isWotLK then self:moveObject(MacroButton1, "-", 10, nil, nil) end
 	self:moveObject(MacroFrameSelectedMacroBackground, nil, nil, "+", 10)
 	self:moveObject(MacroFrameTextBackground, "-", 10, "+", 10)
 	self:moveObject(MacroFrameScrollFrame, "-", 10, nil, nil)
@@ -532,7 +571,7 @@ function Skinner:MainMenuBar()
 -->>--	MainMenuBarOverlayFrame
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
 	self:keepFontStrings(MainMenuBarArtFrame)
-	if not self.isPTR then
+	if not self.isWotLK then
 		self:moveObject(MainMenuBarPerformanceBarFrame, nil, nil, "+", 4)
 		MainMenuBarPerformanceBarFrame:SetFrameStrata("MEDIUM")
 	end
@@ -548,6 +587,11 @@ function Skinner:MainMenuBar()
 		self:moveObject(MainMenuBarBackpackButton, nil, nil, "+", 4)
 	end
 
+	-- move the Bag count
+	for i = 0, 3 do
+		self:moveObject(_G["CharacterBag"..i.."SlotCount"], "+", 5, "-", 1)
+	end
+	
 	local function toggleActionButtons()
 
 		local babf = BonusActionBarFrame
@@ -820,14 +864,18 @@ end
 function Skinner:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
---	self:Debug("Nameplates: [%s, %s]", NAMEPLATES_ON, FRIENDNAMEPLATES_ON)
 
 	local npTex = "Interface\\Tooltips\\Nameplate-Border"
 	local function isNameplate(obj)
 
 		if obj:GetName() then return false end
 
-		local region = select(1, obj:GetRegions()) -- get the first region used by the nameplate
+		local region
+		if not Skinner.isPTR then 
+			region = select(1, obj:GetRegions()) -- get the first region used by the nameplate
+		else
+			region = select(2, obj:GetRegions()) -- get the second region used by the nameplate
+		end
 		if region and region:IsObjectType("Texture") and region:GetTexture() == npTex then return true
 		else return false end
 
@@ -838,9 +886,15 @@ function Skinner:Nameplates()
 		for i = 1, select("#", WorldFrame:GetChildren()) do
 			local child = select(i, WorldFrame:GetChildren())
 			if isNameplate(child) then
-				select(1, child:GetRegions()):SetAlpha(0) -- hide border texture
-				select(2, child:GetRegions()):SetAlpha(0) -- hide border texture
-				select(4, child:GetRegions()):SetAlpha(0) -- hide glow effect
+				if not Skinner.isPTR then 
+					select(1, child:GetRegions()):SetAlpha(0) -- hide border texture
+					select(2, child:GetRegions()):SetAlpha(0) -- hide border texture
+					select(4, child:GetRegions()):SetAlpha(0) -- hide glow effect
+				else
+					select(2, child:GetRegions()):SetAlpha(0) -- hide border texture
+					select(3, child:GetRegions()):SetAlpha(0) -- hide border texture
+					select(5, child:GetRegions()):SetAlpha(0) -- hide glow effect
+				end
 				if not child.skinned then
 					for i = 1, 2 do -- skin both status bars
 						local sb = select(i, child:GetChildren())
@@ -860,10 +914,18 @@ function Skinner:Nameplates()
 		end
 
 		-- if the nameplates are off then disable the skinning code
-		if NAMEPLATES_ON == nil and FRIENDNAMEPLATES_ON == nil then
-			Skinner:CancelScheduledEvent("NameplateUpdateCheck")
+		if not self.isWotLK then
+			if NAMEPLATES_ON == nil and FRIENDNAMEPLATES_ON == nil then
+				Skinner:CancelScheduledEvent("NameplateUpdateCheck")
+			end
+		else
+			local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")
+			local SHOW_FRIENDS = GetCVarBool("nameplateShowFriends")
+			if not SHOW_ENEMIES and not SHOW_FRIENDS then
+				Skinner:CancelScheduledEvent("NameplateUpdateCheck")
+			end
 		end
-
+		
 	end
 
 	local function showFunc()
@@ -874,11 +936,26 @@ function Skinner:Nameplates()
 
 	end
 
-	if not self.isPTR then
+	if not self.isWotLK then
 		self:SecureHook("ShowNameplates", showFunc)
 		self:SecureHook("ShowFriendNameplates", showFunc)
+	else
+		self:SecureHook("SetCVar", function(varName, varValue, ...)
+--			self:Debug("SetCVar:[%s, %s]", varName, varValue)
+			if string.find(varName, "nameplateShow") and varValue == 1 then showFunc() end
+			end)
 	end
 
-	if NAMEPLATES_ON or FRIENDNAMEPLATES_ON then showFunc() end
+	if not self.isWotLK then
+		if NAMEPLATES_ON or FRIENDNAMEPLATES_ON then showFunc() end
+	else
+		local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")
+		local SHOW_FRIENDS = GetCVarBool("nameplateShowFriends")
+		if SHOW_ENEMIES or SHOW_FRIENDS then showFunc() end
+	end
+
+end
+
+function Skinner:FeedbackUI()
 
 end

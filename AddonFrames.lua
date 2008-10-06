@@ -11,9 +11,10 @@ function Skinner:BlizzardFrames()
 		"FriendsFrame", "TradeFrame", "ResizeQW", "Buffs",
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard",
 		"MirrorTimers", "QuestTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "BattleScore", "ScriptErrors", "Tutorial", "DropDowns",
-		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame",
-		"ViewPort", "TopFrame", "MiddleFrames", "BottomFrame"
+		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame"
 	}
+	
+	if self.isWotLK then table.insert(blizzFrames, "PVPFrame") end
 
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
@@ -37,9 +38,35 @@ function Skinner:BlizzardFrames()
 
 end
 
+function Skinner:SkinnerFrames()
+--	self:Debug("SkinnerFrames")
+
+	-- only need to do this once
+	if self.initialized.SkinnerFrames then return end
+	self.initialized.SkinnerFrames = true
+
+	local skinnerFrames = {
+			"ViewPort", "TopFrame", "MiddleFrames", "BottomFrame"
+	}
+
+	for _, v in pairs(skinnerFrames) do
+		self:checkAndRun(v)
+	end
+
+end
+
 local blizzLoDFrames = {
-	 "AuctionUI", "BattlefieldMinimap", "BindingUI", "CraftUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI"
+	 "AuctionUI", "BattlefieldMinimap", "BindingUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI"
 }
+if Skinner.isPTR then table.insert(blizzLoDFrames, "FeedbackUI") end
+if Skinner.isWotLK then
+	table.insert(blizzLoDFrames, "AchievementUI")
+	table.insert(blizzLoDFrames, "BarberShopUI")
+	table.insert(blizzLoDFrames, "Calendar")
+	table.insert(blizzLoDFrames, "GlyphUI")
+else	
+	table.insert(blizzLoDFrames, "CraftUI")
+end
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v

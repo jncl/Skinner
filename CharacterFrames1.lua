@@ -1,6 +1,10 @@
 local ftype = "c"
-
-local cfSubframes = {"PaperDollFrame", "PetPaperDollFrame", "ReputationFrame", "SkillFrame", "PVPFrame"}
+local cfSubframes = {"PaperDollFrame", "PetPaperDollFrame", "ReputationFrame", "SkillFrame"}
+if not Skinner.isWotLK then
+	table.insert(cfSubframes, "PVPFrame")
+else
+	table.insert(cfSubframes, "TokenFrame")
+end
 function Skinner:CharacterFrames()
 	if not self.db.profile.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
@@ -21,20 +25,24 @@ function Skinner:CharacterFrames()
 			end
 		end)
 	end
-	if not self.isPTR then
-		-- hook this to move tabs when Pet is called
-		self:SecureHook("PetTab_Update", function()
-			-- check to see if the Pet Tab has been shown
-			local _,_,_,xOfs,_ = CharacterFrameTab3:GetPoint()
-	--		self:Debug("CF_PetTab_Update: [%s]", math.floor(xOfs))
-			if math.floor(xOfs) == -17 then
-				self:moveObject(CharacterFrameTab3, "+", 11, nil, nil)
-			elseif math.floor(xOfs) == -16 then
-				self:moveObject(CharacterFrameTab3, "+", 12, nil, nil)
-			end
-			self:resizeTabs(CharacterFrame)
-			end)
+	local hookFunc
+	if not self.isWotLK then
+		hookFunc = "PetTab_Update"
+	else
+		hookFunc = "PetPaperDollFrame_UpdateTabs"
 	end
+	-- hook this to move tabs when Pet is called
+	self:SecureHook(hookFunc, function()
+		-- check to see if the Pet Tab has been shown
+		local xOfs = select(4, CharacterFrameTab3:GetPoint())
+--		self:Debug("CF_PetTab_Update: [%s]", math.floor(xOfs))
+		if math.floor(xOfs) == -17 then
+			self:moveObject(CharacterFrameTab3, "+", 11, nil, nil)
+		elseif math.floor(xOfs) == -16 then
+			self:moveObject(CharacterFrameTab3, "+", 12, nil, nil)
+		end
+		self:resizeTabs(CharacterFrame)
+		end)
 
 	-- handle each frame
 	self:checkAndRun("CharacterFrame")
@@ -62,24 +70,28 @@ function Skinner:CharacterFrame()
 
 --	CharacterFrameTab1-5
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
-
-	local tabName = _G["CharacterFrameTab"..i]
-	self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-	if i == 1 then
-		self:moveObject(tabName, "-", 6, "-", 71)
-	else
-		-- handle no pet out or not a pet class
-		self:moveObject(tabName, "+", ((i == 3 and not HasPetUI()) and 0 or 11), nil, nil)
-	end
-	if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0, 1)
-		else self:storeAndSkin(ftype, tabName) end
-
+		local tabName = _G["CharacterFrameTab"..i]
+		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
+		if i == 1 then
+			self:moveObject(tabName, "-", 6, "-", 71)
+		else
+			-- handle no pet out or not a pet class
+			if not self.isWotLK then 
+				self:moveObject(tabName, "+", ((i == 3 and not HasPetUI()) and 0 or 11), nil, nil)
+			else
+				self:moveObject(tabName, "+", ((i == 3 and not CharacterFrameTab2:IsShown()) and 0 or 11), nil, nil)
+			end
+		end
+		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0, 1)
+			else self:storeAndSkin(ftype, tabName) end
 	end
 
 	-- Hook this to resize the Tabs
 	self:SecureHook(CharacterFrame, "Show", function()
 		self:resizeTabs(CharacterFrame)
 		end)
+		
+	self:resizeTabs(CharacterFrame)
 
 end
 
@@ -102,35 +114,61 @@ function Skinner:PaperDollFrame()
 	self:moveObject(CharacterMainHandSlot, "-", xOfs, "-", 70)
 
 	self:removeRegions(CharacterAmmoSlot, {1})
-	self:moveObject(CharacterAmmoSlotCount, "+", 5, nil, nil)
+	if not self.isWotLK then self:moveObject(CharacterAmmoSlotCount, "+", 5, nil, nil)
+	else self:moveObject(CharacterAmmoSlotCount, "+", 3, "-", 2) end
 
 end
 
 function Skinner:PetPaperDollFrame()
 
 	self:keepFontStrings(PetPaperDollFrame)
-	self:keepFontStrings(PetAttributesFrame)
+	self:moveObject(PetNameText, nil, nil, "-", 26)
 
+-->>-- Pet Frame
+	self:keepFontStrings(PetAttributesFrame)
 	PetModelFrameRotateLeftButton:Hide()
 	PetModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(PetModelFrame)
 
-	self:moveObject(PetNameText, nil, nil, "-", 26)
-
 	local xOfs, yOfs = 10, 10
-	self:moveObject(PetModelFrame, "-", xOfs, nil, nil)
-	self:moveObject(PetAttributesFrame, "-", xOfs, "-", yOfs)
+	if not self.isWotLK then
+		self:moveObject(PetModelFrame, "-", xOfs, nil, nil)
+		self:moveObject(PetAttributesFrame, "-", xOfs, "-", yOfs)
+		self:moveObject(PetPaperDollFrameExpBar, "-", 10, "-", 72)
+		self:moveObject(PetTrainingPointText, nil, nil, "-", 72)
+		self:moveObject(PetPaperDollCloseButton, "-", 8, "-", 6)
+	else
+		self:moveObject(PetModelFrame, "-", xOfs, "+", 30)
+		self:moveObject(PetTrainingPointText, nil, nil, "-", 92)
+		self:moveObject(PetAttributesFrame, "-", xOfs, "+", 30)
+		self:moveObject(PetPaperDollFrameExpBar, "-", 10, "-", 52)
+		self:moveObject(PetPaperDollCloseButton, "-", 8, nil, nil)
+	end
 	self:moveObject(PetResistanceFrame, "-", xOfs, "-", yOfs)
 
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetPaperDollPetInfo)
 
 	self:keepRegions(PetPaperDollFrameExpBar, {3, 4}) -- N.B. region 3 is text
-	self:moveObject(PetPaperDollFrameExpBar, "-", 10, "-", 72)
 	self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
+	
+-->>-- Companion Frame
+	if self.isWotLK then 
+		self:keepFontStrings(PetPaperDollFrameCompanionFrame)
+		CompanionModelFrameRotateLeftButton:Hide()
+		CompanionModelFrameRotateRightButton:Hide()
+		self:makeMFRotatable(CompanionModelFrame)
+		local xOfs = 10
+		self:moveObject(CompanionModelFrame, "+", xOfs, nil, nil)
+		self:moveObject(CompanionSelectedName, "+", xOfs, "-", 20)
+		self:moveObject(CompanionSummonButton, "+", xOfs, "-", 20)
+		self:moveObject(CompanionButton1, "-", xOfs, "+", 20)
+		self:moveObject(CompanionPrevPageButton, "-", xOfs, "-", 70)
+		self:moveObject(CompanionPageNumber, "+", xOfs, "-", 40)
+	end
 
-	self:moveObject(PetTrainingPointText, nil, nil, "-", 72)
-	self:moveObject(PetPaperDollCloseButton, "-", 8, "-", 6)
+-->>-- Tabs
+	if self.isWotLK then self:skinFFToggleTabs("PetPaperDollFrameTab", 3) end
 
 end
 
@@ -143,9 +181,16 @@ function Skinner:ReputationFrame()
 	self:moveObject(ReputationFrameStandingLabel, "-", xOfs, "+", yOfs)
 	self:moveObject(ReputationBar1, "-", xOfs, "+", yOfs)
 
-	for i = 1 , NUM_FACTIONS_DISPLAYED do
-		self:keepFontStrings(_G["ReputationBar"..i])
-		self:glazeStatusBar(_G["ReputationBar"..i], 0)
+	for i = 1, NUM_FACTIONS_DISPLAYED do
+		if not self.isWotLK then
+			self:keepFontStrings(_G["ReputationBar"..i])
+			self:glazeStatusBar(_G["ReputationBar"..i], 0)
+		else
+			_G["ReputationBar"..i.."Background"]:SetAlpha(0)
+			_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetAlpha(0)
+			_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetAlpha(0)
+			self:glazeStatusBar(_G["ReputationBar"..i.."ReputationBar"], 0)
+		end
 	end
 
 	self:moveObject(ReputationListScrollFrame, "+", 35, "+", 20)
@@ -184,9 +229,45 @@ function Skinner:SkillFrame()
 
 end
 
+function Skinner:TokenFrame()
+
+	if self.isWotLK and self.db.profile.ContainerFrames.skin then
+		BACKPACK_TOKENFRAME_HEIGHT = BACKPACK_TOKENFRAME_HEIGHT - 6
+		self:SecureHook("ManageBackpackTokenFrame", function(backpack)
+--			self:Debug("MBTF:[%s]", backpack or "nil")
+			if not backpack then backpack = GetBackpackFrame() end
+			if not backpack then return end
+--			self:Debug("MBTF#2:[%s, %s]", backpack, backpack:GetName())
+			if BackpackTokenFrame_IsShown() then
+				self:keepFontStrings(BackpackTokenFrame)
+				BackpackTokenFrame:SetPoint("BOTTOMLEFT", backpack, "BOTTOMLEFT", 0, -4)
+			end
+		end)
+	end
+
+	self:keepFontStrings(TokenFrame)
+	self:moveObject(TokenFrameContainer, "-", 10, "+", 20)
+	self:removeRegions(TokenFrameContainer)
+	self:skinScrollBar(TokenFrameContainer)
+	self:moveObject(TokenFrameMoneyFrame, nil, nil, "-", 72)
+	self:moveObject(TokenFrameCancelButton, "-", 8, "-", 6)
+	self:getChild(TokenFrame, 4):Hide()
+	
+-->>-- Popup Frame
+	self:keepFontStrings(TokenFramePopup)
+	self:applySkin(TokenFramePopup)
+	self:moveObject(TokenFramePopup, "+", 30, nil, nil)
+	
+end
+
 function Skinner:PVPFrame()
 
 	self:keepFontStrings(PVPFrame)
+	if self.isWotLK then
+		PVPFrame:SetWidth(PVPFrame:GetWidth() * self.FxMult)
+		PVPFrame:SetHeight(PVPFrame:GetHeight() * self.FyMult)
+		self:moveObject(PVPFrameCloseButton, "+", 28, "+", 8)
+	end
 	self:moveObject(PVPFrameHonorLabel, "-", 25, nil, nil)
 	self:moveObject(PVPFrameHonorPoints, "+", 30, nil, nil)
 	self:moveObject(PVPFrameArenaLabel, "-", 25, nil, nil)
@@ -197,7 +278,8 @@ function Skinner:PVPFrame()
 	self:moveObject(PVPTeam2Standard, "-", 10, "+", 10)
 	self:moveObject(PVPTeam3Standard, "-", 10, "+", 10)
 	self:moveObject(PVPFrameToggleButton, "+", 30, "-", 74)
-
+	if self.isWotLK then self:storeAndSkin(ftype, PVPFrame) end
+	
 -->>-- PVP Team Details Frame
 	self:keepFontStrings(PVPTeamDetails)
 	self:skinDropDown(PVPDropDown)
@@ -238,15 +320,27 @@ function Skinner:PetStableFrame()
 
 end
 
-local spellbooktypes = {BOOKTYPE_SPELL, BOOKTYPE_PET, nil}
+local spellbooktypes = {BOOKTYPE_SPELL}
+local hasPetSpells = select(1, HasPetSpells())
+if hasPetSpells then table.insert(spellbooktypes, BOOKTYPE_PET) end
+if Skinner.isWotLK then table.insert(spellbooktypes, INSCRIPTION) end
 function Skinner:SpellBookFrame()
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
 
+	if self.isWotLK then
+		self:SecureHook("SpellBookFrame_Update", function(...)
+			if SpellBookFrame.bookType ~= INSCRIPTION then
+				SpellBookTitleText:Show()
+			else
+				SpellBookTitleText:Hide() -- hide Inscriptions title
+			end
+		end)
+	end
 	if self.db.profile.TexturedTab then
 		-- hook to handle tabs
 		self:SecureHook("ToggleSpellBook", function(bookType)
---		self:Debug("ToggleSpellBook: [%s, %s]", bookType, SpellBookFrame.bookType)
+		self:Debug("ToggleSpellBook: [%s, %s]", bookType, SpellBookFrame.bookType)
 			local sbfbt = SpellBookFrame.bookType
 			if sbfbt == bookType then return end
 			for i, v in pairs(spellbooktypes) do
@@ -267,7 +361,8 @@ function Skinner:SpellBookFrame()
 
 	self:moveObject(SpellBookCloseButton, "+", 28, "+", 8)
 	self:moveObject(SpellBookTitleText, nil, nil, "-", 25)
-
+	if self.isWotLK then self:moveObject(ShowAllSpellRanksCheckBox, nil, nil, "+", 15) end
+	
 	self:moveObject(SpellBookPageText, nil, nil, "-", 70)
 	self:moveObject(SpellBookPrevPageButton, "-", 20, "-", 70)
 	self:moveObject(SpellBookNextPageButton, nil, nil, "-", 70)
@@ -291,14 +386,18 @@ function Skinner:SpellBookFrame()
 	for i = 1, 3 do
 		local tabName = _G["SpellBookFrameTabButton"..i]
 		self:keepRegions(tabName, {1, 3}) -- N.B. region 1 is the Text, 3 is the highlight
+		tabName:SetWidth(tabName:GetWidth() * self.FTyMult)
 		tabName:SetHeight(tabName:GetHeight() * self.FTxMult)
+--		local tabHL = self:getRegion(tabName, 3)
+--		tabHL:SetWidth(tabHL:GetWidth() * 1.50)
+--		tabHL:SetHeight(tabHL:GetHeight() * 2)
 		local left, right, top, bottom = tabName:GetHitRectInsets()
 --		self:Debug("SBFTB: [%s, %s, %s, %s, %s]", i, left, right, top, bottom)
 		tabName:SetHitRectInsets(left * self.FTyMult, right * self.FTyMult, top * self.FTxMult, bottom * self.FTxMult)
 		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0)
 		else self:storeAndSkin(ftype, tabName) end
 		if i == 1 then
-			self:moveObject(tabName, nil, nil, "-", 70)
+			self:moveObject(tabName, "-", 20, "-", 70)
 			if self.db.profile.TexturedTab then self:setActiveTab(tabName) end
 		else
 			self:moveObject(tabName, "+", 15, nil, nil)
@@ -308,6 +407,18 @@ function Skinner:SpellBookFrame()
 	end
 
 	self:storeAndSkin(ftype, SpellBookFrame)
+
+end
+
+function Skinner:GlyphUI()
+	if not self.db.profile.SpellBookFrame then return end
+
+	self:removeRegions(GlyphFrame, {1, 2})
+	self:moveObject(GlyphFrameTitleText, "-", 20, "+", 8)
+	for i = 1, 5 do
+		local glyphButton = _G["GlyphFrameGlyph"..i]
+		self:moveObject(glyphButton, "-", 10, nil, nil)
+	end
 
 end
 
@@ -337,12 +448,13 @@ function Skinner:TalentUI()
 	PlayerTalentFrame:SetHeight(PlayerTalentFrame:GetHeight() * self.FyMult)
 	self:moveObject(PlayerTalentFrameTitleText, nil, nil, "+", 6)
 	self:moveObject(PlayerTalentFrameCloseButton, "+", 28, "+", 8)
-	self:moveObject(PlayerTalentFrameSpentPoints, "-", 35, "+", 15)
-	self:moveObject(PlayerTalentFrameTalentPointsText, "-", 10, "-", 70)
-	self:moveObject(PlayerTalentFrameBackgroundTopLeft, "-", 10, nil, nil)
+	self:moveObject(PlayerTalentFrameSpentPoints, "-", 35, "+", 12)
+	self:moveObject(PlayerTalentFrameTalentPointsText, "-", 10, "-", 75)
+	self:moveObject(PlayerTalentFrameBackgroundTopLeft, "-", 10, "+", 12)
+	PlayerTalentFrameBackgroundBottomLeft:SetHeight(130)
+	PlayerTalentFrameBackgroundBottomRight:SetHeight(130)
 	self:moveObject(PlayerTalentFrameCancelButton, "-", 10, "-", 8)
-	self:moveObject(PlayerTalentFrameScrollFrame, "+", 35, nil, nil)
-	PlayerTalentFrameScrollFrame:SetHeight(PlayerTalentFrameScrollFrame:GetHeight() - 2)
+	self:moveObject(PlayerTalentFrameScrollFrame, "+", 35, "+", 12)
 	self:removeRegions(PlayerTalentFrameScrollFrame)
 	self:skinScrollBar(PlayerTalentFrameScrollFrame)
 	self:storeAndSkin(ftype, PlayerTalentFrame)
@@ -362,6 +474,16 @@ function Skinner:TalentUI()
 		end
 	end
 
+	if self.isWotLK then
+		for i = 1, 2 do
+			local tabName = _G["PlayerTalentFrameType"..i]
+			self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
+--			self:Debug("PTFT: [%s, %s]", tabName:GetWidth(), tabName:GetHeight())
+			tabName:SetWidth(tabName:GetWidth() * 1.25)
+			tabName:SetHeight(tabName:GetHeight() * 1.25)
+			if i == 1 then self:moveObject(tabName, "+", 30, nil, nil) end
+		end
+	end
 end
 
 function Skinner:DressUpFrame()
@@ -384,5 +506,9 @@ function Skinner:DressUpFrame()
 	self:moveObject(DressUpFrameCancelButton, "-", 10, nil, nil)
 
 	self:storeAndSkin(ftype, DressUpFrame)
+
+end
+
+function Skinner:AchievementUI()
 
 end
