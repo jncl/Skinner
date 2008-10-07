@@ -8,7 +8,7 @@
 ## Notes-zhTW: 更改預設 UI 的視覺樣式.
 ## Author: Jncl
 ## X-Credits: Haste and all the other contributors
-## Version: 2.4.3
+## Version: @project-version@ 
 ## OptionalDeps: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, FuBarPlugin-2.0
 ## X-Category: Interface Enhancements
 ## X-Website: http://www.wowace.com/wiki/Skinner
@@ -17,39 +17,42 @@
 ## LoadOnDemand: 0
 ## SavedVariables: SkinnerDB
 ## X-Embeds: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, FuBarPlugin-2.0
+
+#@no-lib-strip@
 embeds.xml
+#@end-no-lib-strip@
 
 Localisations.lua
 Skinner.lua
 options.lua
 
-##
-## The individual lua files skin the default frames as follows;
-##
-## AddonFrames
-## includes ViewPort, TopFrame, MiddleFrame(s), BottomFrame
+#
+# The individual lua files skin the default frames as follows;
+#
+# AddonFrames
+# includes ViewPort, TopFrame, MiddleFrame(s), BottomFrame
 AddonFrames.lua
-##
-## CharacterFrames1
-## includes Character (inc Pet, Reputation, Skill, PVP), PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI
+#
+# CharacterFrames1
+# includes Character (inc Pet, Reputation, Skill, PVP), PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI
 CharacterFrames1.lua
-##
-## CharacterFrames2
-## includes Friends (aka Social), TradeSkillUI, CraftUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs
+#
+# CharacterFrames2
+# includes Friends (aka Social), TradeSkillUI, CraftUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs
 CharacterFrames2.lua
-##
-## NPCFrames
-## includes Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI
+#
+# NPCFrames
+# includes Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI
 NPCFrames.lua
-##
-## UIElements1
-## includes Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help, KnowledgeBase, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress, TimeManager, Calendar
+#
+# UIElements1
+# includes Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help, KnowledgeBase, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress, TimeManager, Calendar
 UIElements1.lua
-##
-## UIElements2
-## includes Menu (inc Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, ModelFrames, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, GMSurveyUI, LFG, ItemSocketingUI, GuildBankUI, Nameplates
-##
+#
+# UIElements2
+# includes Menu (inc Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, ModelFrames, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, GMSurveyUI, LFG, ItemSocketingUI, GuildBankUI, Nameplates
+#
 UIElements2.lua
 
-## Addon skins
+# Addon skins
 skins.xml

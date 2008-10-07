@@ -2,7 +2,9 @@
 -- if the Debug library is available then use it
 if AceLibrary:HasInstance("AceDebug-2.0") then
 	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "AceDebug-2.0", "FuBarPlugin-2.0")
---	Skinner:SetDebugging(true)
+--@alpha@
+	Skinner:SetDebugging(true)
+--@end-alpha@
 	Skinner:SetDebugLevel(1)
 else
 	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "FuBarPlugin-2.0")
