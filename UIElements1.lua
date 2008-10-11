@@ -57,23 +57,6 @@ function Skinner:Tooltips()
 			self.hooks[this].OnShow(this)
 			end)
 	end
-	
-	if self.isWotLK then
-		if GameTooltip.numStatusBars and GameTooltip.numStatusBars < 2 then 
-			self:SecureHook("GameTooltip_ShowStatusBar", function(...)
-	--			self:Debug("GT_SSB:[%s]", ...)
-				if GameTooltipStatusBar1 then
-					self:removeRegions(GameTooltipStatusBar1, {2})
-					self:glazeStatusBar(GameTooltipStatusBar1, 0)
-				end
-				if GameTooltipStatusBar2 then
-					self:removeRegions(GameTooltipStatusBar2, {2})
-					self:glazeStatusBar(GameTooltipStatusBar2, 0)
-					self:Unhook("GameTooltip_ShowStatusBar")
-				end
-			end)
-		end
-	end
 
 end
 

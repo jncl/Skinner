@@ -515,6 +515,20 @@ function Skinner:AchievementUI()
 	
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
+	-- Hook this to skin the GameTooltip StatusBars
+	self:SecureHook("GameTooltip_ShowStatusBar", function(...)
+--		self:Debug("GT_SSB:[%s]", ...)
+		if GameTooltipStatusBar1 then
+			self:removeRegions(GameTooltipStatusBar1, {2})
+			self:glazeStatusBar(GameTooltipStatusBar1, 0)
+		end
+		if GameTooltipStatusBar2 then
+			self:removeRegions(GameTooltipStatusBar2, {2})
+			self:glazeStatusBar(GameTooltipStatusBar2, 0)
+			self:Unhook("GameTooltip_ShowStatusBar")
+		end
+	end)
+	
 	-- hook this to skin StatusBars used by the Objectives mini panels
 	self:Hook("AchievementButton_GetProgressBar", function(index)
 --		self:Debug("AB_GPB:[%s]", index)
