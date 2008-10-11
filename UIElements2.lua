@@ -957,5 +957,71 @@ function Skinner:Nameplates()
 end
 
 function Skinner:FeedbackUI()
+	if not self.db.profile.Feedback or self.initialized.Feedback then return end
+	self.initialized.Feedback = true
 
+	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
+	
+	local function skinFUIScrollBar(obj)
+		
+		obj:SetBackdrop(self.backdrop3)
+		obj:SetBackdropBorderColor(.2, .2, .2, 1)
+		obj:SetBackdropColor(.1, .1, .1, 1)
+	
+	end
+
+	self:keepFontStrings(FeedbackUI)
+	self:keepFontStrings(FeedbackUITitleFrm)
+	self:moveObject(FeedbackUIBtnClose, "+", 4, "+", 4)
+	FeedbackUIWelcomeFrame:SetBackdrop(nil)
+	self:keepFontStrings(FeedbackUI_ModifierKeyDropDown)
+	self:keepFontStrings(FeedbackUI_MouseButtonDropDown)
+	self:storeAndSkin(ftype, FeedbackUI_ModifierKeyDropDownList)
+	self:storeAndSkin(ftype, FeedbackUI_MouseButtonDropDownList)
+	self:storeAndSkin(ftype, FeedbackUI)
+	
+-->-- Survey Frame
+	FeedbackUISurveyFrame:SetBackdrop(nil)
+	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlCategory)
+	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlStatus)
+	self:storeAndSkin(ftype, FeedbackUISurveyFrameSurveysPanelDdlCategoryList)
+	self:storeAndSkin(ftype, FeedbackUISurveyFrameSurveysPanelDdlStatusList)
+	skinFUIScrollBar(FeedbackUISurveyFrameSurveysPanelScrollScrollControls)
+	FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
+	FeedbackUISurveyFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:storeAndSkin(ftype, FeedbackUISurveyFrameStepThroughPanelHeader)
+	self:storeAndSkin(ftype, FeedbackUISurveyFrameStepThroughPanelEdit)
+	self:removeRegions(FeedbackUISurveyFrameStepThroughPanelEditInput)
+	self:skinScrollBar(FeedbackUISurveyFrameStepThroughPanelEditInput)
+	skinFUIScrollBar(FeedbackUISurveyFrameStepThroughPanelScrollScrollControls)
+	
+-->>-- Suggestion Frame	
+	FeedbackUISuggestFrame:SetBackdrop(nil)
+	FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUISuggestFrameStatusPanelLine:SetAlpha(0)
+	FeedbackUISuggestFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:storeAndSkin(ftype, FeedbackUISuggestFrameStepThroughPanelHeader)
+	self:storeAndSkin(ftype, FeedbackUISuggestFrameStepThroughPanelEdit)
+	self:removeRegions(FeedbackUISuggestFrameStepThroughPanelEditInput)
+	self:skinScrollBar(FeedbackUISuggestFrameStepThroughPanelEditInput)
+	skinFUIScrollBar(FeedbackUISuggestFrameStepThroughPanelScrollScrollControls)
+	
+-->>-- Bug Frame
+	FeedbackUIBugFrame:SetBackdrop(nil)
+	FeedbackUIBugFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUIBugFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUIBugFrameStatusPanelLine:SetAlpha(0)
+	FeedbackUIBugFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:storeAndSkin(ftype, FeedbackUIBugFrameStepThroughPanelHeader)
+	self:storeAndSkin(ftype, FeedbackUIBugFrameStepThroughPanelEdit)
+	self:removeRegions(FeedbackUIBugFrameStepThroughPanelEditInput)
+	self:skinScrollBar(FeedbackUIBugFrameStepThroughPanelEditInput)
+	skinFUIScrollBar(FeedbackUIBugFrameStepThroughPanelScrollScrollControls)
+	
+	-- make the QuestLog Tip Label text visible
+	FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+	
 end

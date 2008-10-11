@@ -15,6 +15,7 @@ function Skinner:BlizzardFrames()
 	}
 	
 	if self.isWotLK then table.insert(blizzFrames, "PVPFrame") end
+	if Skinner.isPTR then table.insert(blizzFrames, "FeedbackUI") end
 
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
@@ -58,10 +59,9 @@ end
 local blizzLoDFrames = {
 	 "AuctionUI", "BattlefieldMinimap", "BindingUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI"
 }
-if Skinner.isPTR then table.insert(blizzLoDFrames, "FeedbackUI") end
 if Skinner.isWotLK then
 	table.insert(blizzLoDFrames, "AchievementUI")
-	table.insert(blizzLoDFrames, "BarberShopUI")
+	table.insert(blizzLoDFrames, "BarbershopUI")
 	table.insert(blizzLoDFrames, "Calendar")
 	table.insert(blizzLoDFrames, "GlyphUI")
 else	

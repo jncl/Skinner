@@ -849,7 +849,7 @@ function Skinner:MinimapButtons()
 	local function mmKids(mmObj)
 
 		local mmObjName = mmObj:GetName()
-	--	self:Debug("Checking %s kids", mmObjName)
+--		self:Debug("Checking %s kids", mmObjName)
 
 		for i = 1, select("#", mmObj:GetChildren()) do
 			local obj = select(i, mmObj:GetChildren())
@@ -858,23 +858,24 @@ function Skinner:MinimapButtons()
 --			self:Debug("%s kids: [%s, %s, %s]", mmObjName, obj, objName, objType)
 			if not obj.skinned and objName
 			and (objType == "Button" or objType == "Frame" and objName == "MiniMapMailFrame") then
-				for _, reg in pairs({ obj:GetRegions() }) do
+				for i = 1, select("#", obj:GetRegions()) do
+					local reg = select(i, obj:GetRegions())
 					if reg:GetObjectType() == "Texture" then
 						local regName = reg:GetName()
 						local regTex = reg:GetTexture()
 						local regDL = reg:GetDrawLayer()
-	--					self:Debug("%s obj: [%s, %s, %s]", mmObjName, objName, regName, regTex)
+--						self:Debug("%s obj: [%s, %s, %s]", mmObjName, objName, regName, regTex)
 						-- change the DrawLayer to make the Icon show if required
 						if (regName and string.find(regName, "Icon"))
 						or (regTex and string.find(regTex, "Icon")) then
-	--						self:Debug("%s obj Icon: [%s, %s, %s]", mmObjName, objName, regName, regDL)
+--							self:Debug("%s obj Icon: [%s, %s, %s]", mmObjName, objName, regName, regDL)
 							if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
 						elseif (regName and string.find(regName, "Border"))
 						or (regTex and string.find(regTex, "TrackingBorder")) then
-	--						self:Debug("%s obj skinned: [%s, %s, %s]", mmObjName, obj:GetName(), math.ceil(obj:GetWidth()), math.ceil(obj:GetHeight()))
+--							self:Debug("%s obj skinned: [%s, %s, %s]", mmObjName, obj:GetName(), math.ceil(obj:GetWidth()), math.ceil(obj:GetHeight()))
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)
@@ -898,13 +899,17 @@ function Skinner:MinimapButtons()
 	self:applySkin(MinimapZoomIn)
 	self:applySkin(MinimapZoomOut)
 	-- resize other buttons
-	GameTimeFrame:SetWidth(32)
-	GameTimeFrame:SetHeight(32)
+	GameTimeFrame:SetWidth(36)
+	GameTimeFrame:SetHeight(36)
 	MiniMapVoiceChatFrame:SetWidth(32)
 	MiniMapVoiceChatFrame:SetHeight(32)
 	MiniMapVoiceChatFrameIcon:ClearAllPoints()
 	MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
-
+	if self.isWotLK then
+		self:moveObject(MiniMapTrackingIcon, "-", 2, "+", 2)
+		LowerFrameLevel(MiniMapTrackingButton)
+	end
+	
 	-- skin any moved Minimap buttons if required
 	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(MinimapButtonFrame) end
 
@@ -981,5 +986,104 @@ function Skinner:TimeManager()
 end
 
 function Skinner:Calendar()
+	if not self.db.profile.Calendar or self.initialized.Calendar then return end
+	self.initialized.Calendar = true
+
+-->>--	Calendar Frame
+	
+	self:keepFontStrings(CalendarFrame)
+	self:keepFontStrings(CalendarFilterFrame)
+	CalendarFilterFrameMiddle:SetTexture(self.LSM:Fetch("background", "Inactive Tab"))
+	CalendarFilterFrameMiddle:SetHeight(16)
+	CalendarFilterFrameMiddle:SetAlpha(1)
+	self:moveObject(CalendarCloseButton, "-", 1, "+", 17)
+	self:storeAndSkin(ftype, CalendarFrame)
+
+-->>-- View Holiday Frame
+	self:keepFontStrings(CalendarViewHolidayTitleFrame)
+	self:keepFontStrings(CalendarViewHolidayFrame)
+	self:removeRegions(CalendarViewHolidayCloseButton, {4})
+	self:removeRegions(CalendarViewHolidayScrollFrame)
+	self:skinScrollBar(CalendarViewHolidayScrollFrame)
+	self:storeAndSkin(ftype, CalendarViewHolidayFrame)
+	
+-->>-- View Raid Frame
+	self:keepFontStrings(CalendarViewRaidTitleFrame)
+	self:keepFontStrings(CalendarViewRaidFrame)
+	self:removeRegions(CalendarViewRaidCloseButton, {4})
+	self:removeRegions(CalendarViewRaidScrollFrame)
+	self:skinScrollBar(CalendarViewRaidScrollFrame)
+	self:storeAndSkin(ftype, CalendarViewRaidFrame)
+	
+-->>-- View Event Frame
+	self:keepFontStrings(CalendarViewEventTitleFrame)
+	self:keepFontStrings(CalendarViewEventFrame)
+	self:removeRegions(CalendarViewEventCloseButton, {4})
+	self:applySkin(CalendarViewEventDescriptionContainer)
+	self:removeRegions(CalendarViewEventDescriptionScrollFrame)
+	self:skinScrollBar(CalendarViewEventDescriptionScrollFrame)
+	self:keepFontStrings(CalendarViewEventInviteListSection)
+	self:storeAndSkin(ftype, CalendarViewEventFrame)
+	
+-->>-- Create Event Frame
+	self:keepFontStrings(CalendarCreateEventTitleFrame)
+	self:keepFontStrings(CalendarCreateEventFrame)
+	self:removeRegions(CalendarCreateEventCloseButton, {4})
+	self:skinEditBox(CalendarCreateEventTitleEdit, {9})
+	self:skinDropDown(CalendarCreateEventTypeDropDown)
+	self:skinDropDown(CalendarCreateEventHourDropDown)
+	CalendarCreateEventHourDropDownMiddle:SetWidth(CalendarCreateEventHourDropDownMiddle:GetWidth() + 5)
+	self:skinDropDown(CalendarCreateEventMinuteDropDown)
+	CalendarCreateEventMinuteDropDownMiddle:SetWidth(CalendarCreateEventMinuteDropDownMiddle:GetWidth() + 5)
+	self:skinDropDown(CalendarCreateEventAMPMDropDown)
+	self:skinDropDown(CalendarCreateEventRepeatOptionDropDown)
+	self:storeAndSkin(ftype, CalendarCreateEventDescriptionContainer)
+	self:removeRegions(CalendarCreateEventDescriptionScrollFrame)
+	self:skinScrollBar(CalendarCreateEventDescriptionScrollFrame)
+	self:keepFontStrings(CalendarCreateEventInviteListSection)
+	self:storeAndSkin(ftype, CalendarCreateEventInviteList)
+	self:skinEditBox(CalendarCreateEventInviteEdit, {9})
+	CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
+	-- TODO Fix this to be skinned properly when in a raid
+	if CalendarCreateEventRaidInviteButtonBorder then CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0) end
+	CalendarCreateEventCreateButtonBorder:SetAlpha(0)
+	self:storeAndSkin(ftype, CalendarCreateEventFrame)
+	
+	
+-->>-- Mass Invite Frame
+	self:keepFontStrings(CalendarMassInviteTitleFrame)
+	self:keepFontStrings(CalendarMassInviteFrame)
+	self:removeRegions(CalendarMassInviteCloseButton, {4})
+	self:skinEditBox(CalendarMassInviteGuildMinLevelEdit, {9})
+	self:skinEditBox(CalendarMassInviteGuildMaxLevelEdit, {9})
+	self:skinDropDown(CalendarMassInviteGuildRankMenu)
+	self:storeAndSkin(ftype, CalendarMassInviteFrame)
+	
+-->>-- Event Picker Frame
+	self:keepFontStrings(CalendarEventPickerTitleFrame)
+	self:keepFontStrings(CalendarEventPickerFrame)
+	self:skinHybridScrollBar(CalendarEventPickerScrollBar)
+	self:removeRegions(CalendarEventPickerCloseButton, {7})
+	self:moveObject(CalendarEventPickerCloseButton, nil, nil, "-", 4)
+	self:storeAndSkin(ftype, CalendarEventPickerFrame)
+
+-->>-- Texture Picker Frame
+	self:keepFontStrings(CalendarTexturePickerTitleFrame)
+	self:keepFontStrings(CalendarTexturePickerFrame)
+	self:skinHybridScrollBar(CalendarTexturePickerScrollBar)
+	CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
+	CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
+	self:storeAndSkin(ftype, CalendarTexturePickerFrame)
+	
+-->>-- Class Button Container
+	for i = 1, MAX_CLASSES do -- allow for the total button
+		self:removeRegions(_G["CalendarClassButton"..i], {1})
+	end
+	self:keepFontStrings(CalendarClassTotalsButton)
+	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.LSM:Fetch("background", "Inactive Tab"))
+	self:moveObject(CalendarClassTotalsButtonBackgroundMiddle, "+", 2, nil, nil)
+	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(18)
+	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(18)
+	CalendarClassTotalsButtonBackgroundMiddle:SetAlpha(1)
 
 end

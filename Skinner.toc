@@ -50,7 +50,7 @@ NPCFrames.lua
 UIElements1.lua
 #
 # UIElements2
-# includes Menu (inc Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, ModelFrames, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, GMSurveyUI, LFG, ItemSocketingUI, GuildBankUI, Nameplates
+# includes Menu (inc Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, ModelFrames, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, GMSurveyUI, LFG, ItemSocketingUI, GuildBankUI, Nameplates, FeedbackUI
 #
 UIElements2.lua
 

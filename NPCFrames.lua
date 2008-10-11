@@ -71,7 +71,8 @@ function Skinner:GossipFrame()
 	self:keepFontStrings(GossipFrame)
 	GossipFrame:SetWidth(GossipFrame:GetWidth() * self.FxMult)
 	GossipFrame:SetHeight(GossipFrame:GetHeight() * self.FyMult)
-	self:moveObject(GossipFrameNpcNameText, nil, nil, "+", 15)
+	if not self.isWotLK then self:moveObject(GossipFrameNpcNameText, nil, nil, "+", 15)
+	else self:moveObject(GossipFrameNpcNameText, "-", 10, "+", 15) end
 	self:moveObject(GossipFrameCloseButton, "+", 24, "+", 12)
 	self:keepFontStrings(GossipFrameGreetingPanel)
 	self:moveObject(GossipFrameGreetingGoodbyeButton, "+", 28, "-", 64)
@@ -370,6 +371,28 @@ function Skinner:Tabard()
 
 end
 
-function Skinner:BarberShopUI()
+function Skinner:BarbershopUI()
+	if not self.db.profile.Barbershop or self.initialized.Barbershop then return end
+	self.initialized.Barbershop = true
 
+--	self:Debug("BarbershopUI loaded")
+
+-->>-- Barbershop Banner Frame	
+	self:keepFontStrings(BarberShopBannerFrame)
+	BarberShopBannerFrameCaption:ClearAllPoints()
+	BarberShopBannerFrameCaption:SetPoint("CENTER", BarberShopFrame, "TOP", 0, -14)
+-->>-- Barbershop Frame	
+	BarberShopFrame:SetWidth(BarberShopFrame:GetWidth() * self.FxMult - 20)
+	BarberShopFrame:SetHeight(BarberShopFrame:GetHeight() * self.FyMult - 57)
+	self:keepFontStrings(BarberShopFrame)
+	local yOfs = 50
+	self:moveObject(BarberShopFrameSelector1Category, nil, nil, "+", yOfs)
+	self:moveObject(BarberShopFrameSelector2Category, nil, nil, "+", yOfs)
+	self:moveObject(BarberShopFrameSelector3Category, nil, nil, "+", yOfs)
+	self:keepFontStrings(BarberShopFrameMoneyFrame)
+	self:moveObject(BarberShopFrameMoneyFrame, nil, nil, "+", yOfs)
+	self:moveObject(BarberShopFrameOkayButton, nil, nil, "+", yOfs)
+	self:moveObject(BarberShopFrameResetButton, nil, nil, "-", 40)
+	self:storeAndSkin(ftype, BarberShopFrame)
+	
 end

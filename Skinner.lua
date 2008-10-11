@@ -4,8 +4,8 @@ if AceLibrary:HasInstance("AceDebug-2.0") then
 	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "AceDebug-2.0", "FuBarPlugin-2.0")
 --@alpha@
 	Skinner:SetDebugging(true)
---@end-alpha@
 	Skinner:SetDebugLevel(1)
+--@end-alpha@
 else
 	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "FuBarPlugin-2.0")
 	function Skinner:Debug() end
@@ -336,21 +336,24 @@ function Skinner:getRegion(frame, regNo)
 
 end
 
-function Skinner:glazeStatusBar(frame, fi)
+function Skinner:glazeStatusBar(statusBar, fi)
+--@alpha@
+	assert(statusBar and statusBar:GetObjectType() == "StatusBar")
+--@end-alpha@
 
-	if not frame then return end
+	if not statusBar then return end
 
-	if frame:GetFrameType() ~= "StatusBar" then return end
-	frame:SetStatusBarTexture(self.sbTexture)
+	if statusBar:GetObjectType() ~= "StatusBar" then return end
+	statusBar:SetStatusBarTexture(self.sbTexture)
 
 	if fi then
-		if not frame.bg then frame.bg = CreateFrame("StatusBar", nil, frame) end
-		frame.bg:SetPoint("TOPLEFT", frame, "TOPLEFT", fi, -fi)
-		frame.bg:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -fi, fi)
-		frame.bg:SetFrameStrata(frame:GetFrameStrata() ~= "UNKNOWN" and frame:GetFrameStrata() or "BACKGROUND") -- handle Nameplate status bars
-		frame.bg:SetFrameLevel((frame:GetFrameLevel() > 0 and frame:GetFrameLevel() - 1 or 0))
-		frame.bg:SetStatusBarTexture(self.sbTexture)
-		frame.bg:SetStatusBarColor(unpack(self.sbColour))
+		if not statusBar.bg then statusBar.bg = CreateFrame("StatusBar", nil, statusBar) end
+		statusBar.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
+		statusBar.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
+		statusBar.bg:SetFrameStrata(statusBar:GetFrameStrata() ~= "UNKNOWN" and statusBar:GetFrameStrata() or "BACKGROUND") -- handle Nameplate status bars
+		statusBar.bg:SetFrameLevel((statusBar:GetFrameLevel() > 0 and statusBar:GetFrameLevel() - 1 or 0))
+		statusBar.bg:SetStatusBarTexture(self.sbTexture)
+		statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
 	end
 
 end
@@ -600,10 +603,10 @@ end
 
 function Skinner:setTTBackdrop(bdReqd)
 
-	self:Debug("setTTBackdrop: [%s]", bdReqd)
+--	self:Debug("setTTBackdrop: [%s]", bdReqd)
 
 	for _, tooltip in pairs(self.ttList) do
-		self:Debug("sTTB: [%s]", tooltip)
+--		self:Debug("sTTB: [%s]", tooltip)
 		local ttip = _G[tooltip]
 		if ttip then
 			if bdReqd then ttip:SetBackdrop(self.backdrop)
@@ -692,9 +695,12 @@ function Skinner:skinDropDown(frame, moveTexture, noSkin)
 
 end
 
-function Skinner:skinEditBox(frame, regions, noSkin, noHeight)
+function Skinner:skinEditBox(editBox, regions, noSkin, noHeight)
+--@alpha@
+	assert(editBox and editBox:GetObjectType() == "EditBox")
+--@end-alpha@
 
-	if not frame then return end
+	if not editBox then return end
 
 --	self:SetDebugging(true) -- Enable to identify additional text strings
 
@@ -705,13 +711,13 @@ function Skinner:skinEditBox(frame, regions, noSkin, noHeight)
 		end
 	end
 
-	self:keepRegions(frame, kRegions)
-	local l, r, t, b = frame:GetTextInsets()
-	frame:SetTextInsets(l + 5, r + 5, t, b)
-	if not (noHeight or frame:IsMultiLine()) then frame:SetHeight(26) end
-	frame:SetWidth(frame:GetWidth() + 5)
+	self:keepRegions(editBox, kRegions)
+	local l, r, t, b = editBox:GetTextInsets()
+	editBox:SetTextInsets(l + 5, r + 5, t, b)
+	if not (noHeight or editBox:IsMultiLine()) then editBox:SetHeight(26) end
+	editBox:SetWidth(editBox:GetWidth() + 5)
 
-	if not noSkin then self:skinUsingBD2(frame) end
+	if not noSkin then self:skinUsingBD2(editBox) end
 
 end
 
@@ -742,6 +748,18 @@ function Skinner:skinFFColHeads(buttonName)
 
 end
 
+function Skinner:skinHybridScrollBar(slider)
+--@alpha@
+	assert(slider and slider:GetObjectType() == "Slider")
+--@end-alpha@
+	
+	self:keepFontStrings(slider)
+	slider:SetAlpha(1)
+	_G[slider:GetName().."ThumbTexture"]:SetAlpha(1)
+	self:skinUsingBD2(slider)
+
+end
+
 function Skinner:skinMoneyFrame(frame, moveGold, noWidth)
 
 	if not frame then return end
@@ -762,6 +780,9 @@ function Skinner:skinMoneyFrame(frame, moveGold, noWidth)
 end
 
 function Skinner:skinScrollBar(scrollFrame, sbPrefix, sbObj, narrow)
+--@alpha@
+	assert(scrollFrame and scrollFrame:GetObjectType() == "ScrollFrame")
+--@end-alpha@
 
 	if not scrollFrame then return end
 --	self:Debug("skinScrollBar: [%s, %s, %s, %s]", scrollFrame:GetName(), sbPrefix or 'nil', sbObj or 'nil', narrow or 'nil')
@@ -926,8 +947,10 @@ end
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
 
---	if self.isPTR then self:Debug("PTR detected") end
---	if self.isWotLK then self:Debug("WotLK detected") end
+--@alpha@
+	if self.isPTR then self:Debug("PTR detected") end
+	if self.isWotLK then self:Debug("WotLK detected") end
+--@end-alpha@
 
 	-- register the SV database
 	self:RegisterDB("SkinnerDB")
@@ -1070,7 +1093,7 @@ function Skinner:OnInitialize()
 
 	-- store Addons managed by LoadManagers
 	self.lmAddons = {}
-
+	
 end
 
 function Skinner:OnTooltipUpdate()
@@ -1094,9 +1117,9 @@ function Skinner:RGBPercToHex(r, g, b)
 
 end
 
-function Skinner:ShowInfo(obj)
+function Skinner:ShowInfo(obj, showKids, noDepth)
 
-	local getKids = true
+	local showKids = showKids or true
 
 	local function p(fmsg, ...)
 
@@ -1132,8 +1155,9 @@ function Skinner:ShowInfo(obj)
 	end
 
 	local function getChildren(frame, lvl)
-		if not getKids then return end
-
+		if not showKids then return end
+		if string.find(lvl, "-") == 2 and noDepth then return end
+		
 		for i = 1, select("#", frame:GetChildren()) do
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
@@ -1146,7 +1170,7 @@ function Skinner:ShowInfo(obj)
 
 	end
 
-	p("%s : %s : %s : %s : %s : %s", obj:GetName() or "nil", obj:GetWidth()or "nil", obj:GetHeight()or "nil", obj:GetObjectType()or "nil", obj:GetFrameLevel()or "nil", obj:GetFrameStrata()or "nil")
+	p("%s : %s : %s : %s : %s : %s", obj:GetName() or "nil", obj:GetWidth() or "nil", obj:GetHeight() or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
 	p("Started Regions")
 	getRegions(obj, 1)

@@ -1,3 +1,7 @@
+--check to see if running on PTR
+local IsPTR = FeedbackUI and true or false
+--check to see if running on WotLK
+local IsWotLK = GetCVarBool and true or false
 
 local FrameStrata = {"PARENT", "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP"}
 
@@ -44,73 +48,77 @@ function Skinner:Defaults()
 		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
 		-- Character Frames
 		CharacterFrames = true,
-		PetStableFrame	= true,
-		SpellBookFrame	= true,
-		TalentFrame		= true,
-		DressUpFrame	= true,
-		FriendsFrame	= true,
-		TradeSkill		= true,
-		CraftFrame		= true,
-		TradeFrame		= true,
-		QuestLog		= {skin = true, size = 1},
-		RaidUI			= true,
-		ReadyCheck		= true,
-		Buffs			= true,
+		PetStableFrame  = true,
+		SpellBookFrame  = true,
+		TalentFrame     = true,
+		DressUpFrame    = true,
+		FriendsFrame    = true,
+		TradeSkill      = true,
+		CraftFrame      = true,
+		TradeFrame      = true,
+		QuestLog        = {skin = true, size = 1},
+		RaidUI          = true,
+		ReadyCheck      = true,
+		Buffs           = true,
+		Achievements    = IsWotLK and true or nil,
 		-- UI Frames
-		Tooltips		= {skin = true, style = 1, glazesb = true, border = 1},
-		MirrorTimers	= {skin = true, glaze = true},
-		CastingBar		= {skin = true, glaze = true},
-		StaticPopups	= true,
-		ChatMenus		= true,
-		ChatConfig		= true,
-		ChatTabs		= false,
-		ChatFrames		= false,
-		CombatLogQBF	= false,
-		ChatEditBox		= {skin = true, style = 1},
-		LootFrame		= true,
-		GroupLoot		= {skin = true, size = 1},
+		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
+		MirrorTimers    = {skin = true, glaze = true},
+		CastingBar      = {skin = true, glaze = true},
+		StaticPopups    = true,
+		ChatMenus       = true,
+		ChatConfig      = true,
+		ChatTabs        = false,
+		ChatFrames      = false,
+		CombatLogQBF    = false,
+		ChatEditBox     = {skin = true, style = 1},
+		LootFrame       = true,
+		GroupLoot       = {skin = true, size = 1},
 		ContainerFrames = {skin = true, fheight = 100},
-		StackSplit		= true,
-		ItemText		= true,
-		Colours			= true,
-		WorldMap		= true,
-		HelpFrame		= true,
-		KnowledgeBase	= true,
-		Inspect			= true,
-		BattleScore		= true,
-		BattlefieldMm	= true,
-		ScriptErrors	= true,
-		Tutorial		= true,
-		DropDowns		= true,
-		MinimapButtons	= false,
-		MinimapGloss	= false,
-		MovieProgress	= IsMacClient() and true or nil,
-		MenuFrames		= true,
-		BankFrame		= true,
-		MailFrame		= true,
-		AuctionFrame	= true,
-		MainMenuBar		= {skin = true, glazesb = true},
-		CoinPickup		= true,
-		GMSurveyUI		= true,
-		LFGFrame		= true,
+		StackSplit      = true,
+		ItemText        = true,
+		Colours         = true,
+		WorldMap        = true,
+		HelpFrame       = true,
+		KnowledgeBase   = true,
+		Inspect         = true,
+		BattleScore     = true,
+		BattlefieldMm   = true,
+		ScriptErrors    = true,
+		Tutorial        = true,
+		DropDowns       = true,
+		MinimapButtons  = false,
+		MinimapGloss    = false,
+		MovieProgress   = IsMacClient() and true or nil,
+		MenuFrames      = true,
+		BankFrame       = true,
+		MailFrame       = true,
+		AuctionFrame    = true,
+		MainMenuBar     = {skin = true, glazesb = true},
+		CoinPickup      = true,
+		GMSurveyUI      = true,
+		LFGFrame        = true,
 		ItemSocketingUI = true,
-		GuildBankUI		= true,
-		Nameplates		= true,
-		TimeManager		= true,
+		GuildBankUI     = true,
+		Nameplates      = true,
+		TimeManager     = true,
+		Calendar        = IsWotLK and true or nil,
+		Feedback        = IsPTR and true or nil,
 		-- NPC Frames
-		MerchantFrames	= true,
-		GossipFrame		= true,
-		ClassTrainer	= true,
-		TaxiFrame		= true,
-		QuestFrame		= true,
-		Battlefields	= true,
-		ArenaFrame		= true,
-		ArenaRegistrar	= true,
-		GuildRegistrar	= true,
-		Petition		= true,
-		Tabard			= true,
+		MerchantFrames  = true,
+		GossipFrame     = true,
+		ClassTrainer    = true,
+		TaxiFrame       = true,
+		QuestFrame      = true,
+		Battlefields    = true,
+		ArenaFrame      = true,
+		ArenaRegistrar  = true,
+		GuildRegistrar  = true,
+		Petition        = true,
+		Tabard          = true,
+		Barbershop      = IsWotLK and true or nil,
 		-- Others
-		TrackerFrame	= false,
+		TrackerFrame    = false,
 	})
 
 end
@@ -1314,6 +1322,20 @@ function Skinner:Options()
 							self:checkAndRun("Buffs")
 						end,
 					},
+					achievements = IsWotLK and {
+						name = self.L["Achievements Frame"],
+						desc = self.L["Toggle the skin of the Achievements Frame"],
+						type = "toggle",
+						get = function()
+							return self.db.profile.Achievements
+						end,
+						set = function(v)
+							self.db.profile.Achievements = v
+							if IsAddOnLoaded("Blizzard_AchievementUI") then
+								self:checkAndRun("AchievementUI")
+							end
+						end,
+					} or nil,
 				},
 			},
 			ui = {
@@ -1813,6 +1835,18 @@ function Skinner:Options()
 							end
 						end,
 					},
+					movieprogress = IsMacClient and {
+						name = self.L["Movie Progress"],
+						desc = self.L["Toggle the skinning of Movie Progress"],
+						type = "toggle",
+						get = function()
+							return self.db.profile.MovieProgress
+						end,
+						set = function(v)
+							self.db.profile.MovieProgress = v
+							self:checkAndRun("MovieProgress")
+						end,
+					} or nil,
 					menu = {
 						name = self.L["Menu Frames"],
 						desc = self.L["Toggle the skin of the Menu Frames"],
@@ -1985,6 +2019,30 @@ function Skinner:Options()
 							self:checkAndRun("TimeManager")
 						end,
 					},
+					calendar = IsWotLK and {
+						name = self.L["Calendar"],
+						desc = self.L["Toggle the skin of the Calendar Frame"],
+						type = "toggle",
+						get = function()
+							return self.db.profile.Calendar
+						end,
+						set = function(v)
+							self.db.profile.Calendar = v
+							self:checkAndRun("Calendar")
+						end,
+					} or nil,
+					feedback = IsPTR and {
+						name = self.L["Feedback"],
+						desc = self.L["Toggle the skin of the Feedback Frame"],
+						type = "toggle",
+						get = function()
+							return self.db.profile.Feedback
+						end,
+						set = function(v)
+							self.db.profile.Feedback = v
+							self:checkAndRun("FeedbackUI")
+						end,
+					} or nil,
 				},
 			},
 			npc = {
@@ -2137,6 +2195,20 @@ function Skinner:Options()
 							self:checkAndRun("Tabard")
 						end,
 					},
+					barbershop = IsWotLK and {
+						name = self.L["Barbershop Frame"],
+						desc = self.L["Toggle the skin of the Barbershop Frame"],
+						type = "toggle",
+						get = function()
+							return self.db.profile.Barbershop
+						end,
+						set = function(v)
+							self.db.profile.Barbershop = v
+							if IsAddOnLoaded("Blizzard_BarbershopUI") then
+								self:checkAndRun("BarbershopUI")
+							end
+						end,
+					} or nil,
 				},
 			},
 			tracker = {
@@ -2153,19 +2225,6 @@ function Skinner:Options()
 			},
 		},
 	}
-
-	if IsMacClient() then
-		mpkey = {}
-		mpkey.name = self.L["Movie Progress"]
-		mpkey.desc = self.L["Toggle the skinning of Movie Progress"]
-		mpkey.type = "toggle"
-		mpkey.get = function() return self.db.profile.MovieProgress end
-		mpkey.set = function(v)
-			self.db.profile.MovieProgress = v
-			self:checkAndRun("MovieProgress")
-		end
-		self.options.args.ui.args["movieprogress"] = mpkey
-	end
 
 	-- setup middleframe(s) options
 	for i = 1, 9 do
