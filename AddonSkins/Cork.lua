@@ -7,4 +7,7 @@ function Skinner:Cork()
 	end)
 	self:applySkin(Corkboard)
 	
+	-- Options Panel
+	self:tekKonfig()
+	
 end

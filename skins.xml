@@ -260,6 +260,7 @@
 <script file="SkinMe\TankPoints.lua"/>
 <script file="SkinMe\TargetAnnounce.lua"/>
 <script file="SkinMe\tekKompare.lua"/>
+<script file="SkinMe\tekKonfig.lua"/>
 <script file="SkinMe\TinyTip.lua"/>
 <script file="SkinMe\TipBuddy.lua"/>
 <script file="SkinMe\TipTac.lua"/>

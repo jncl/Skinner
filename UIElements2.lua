@@ -111,7 +111,6 @@ function Skinner:MenuFrames()
 	self:storeAndSkin(ftype, InterfaceOptionsFrameCategories)
 	self:storeAndSkin(ftype, InterfaceOptionsFrameAddOns)
 	self:storeAndSkin(ftype, InterfaceOptionsFrame, true)
---		self:keepFontStrings(InterfaceOptionsFrame)
 	-- Tabs
 	for i = 1, 2 do
 		local tabName = _G["InterfaceOptionsFrameTab"..i]
@@ -135,7 +134,8 @@ function Skinner:MenuFrames()
 	self:SecureHook(hookFunc, function(frame)
 --		self:Debug("%s: [%s, %s]", hookFunc, frame, frame:GetName())
 		if not frame.skinned then
-			for _, child in next, { frame:GetChildren() } do
+			for i = 1, select("#", frame:GetChildren()) do
+				local child = select(i, frame:GetChildren())
 				if child and self:isDropDown(child) then self:skinDropDown(child) end
 			end
 			self:storeAndSkin(ftype, frame)
