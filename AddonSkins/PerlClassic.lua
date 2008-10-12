@@ -11,9 +11,9 @@ local function changeBBC(frame)
 
 	local r, g, b, a = frame:GetBackdropBorderColor()
 	r, g, b, a = string.sub(r, 2, 3), string.sub(g, 2, 3), string.sub(b, 2, 3), math.ceil(a)
-	Skinner:Debug("changeBBC: [%s, %s, %s, %s, %s]", frame:GetName(), r, g, b, a)
+--	Skinner:Debug("changeBBC: [%s, %s, %s, %s, %s]", frame:GetName(), r, g, b, a)
 	if r == ".5" and g == ".5" and b == ".5" and a == 1 then
-		Skinner:Debug("changeBBC match")
+--		Skinner:Debug("changeBBC match")
 		frame:SetBackdropBorderColor(unpack(Skinner.bbColour))
 	end
 

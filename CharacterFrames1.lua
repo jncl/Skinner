@@ -340,7 +340,7 @@ function Skinner:SpellBookFrame()
 	if self.db.profile.TexturedTab then
 		-- hook to handle tabs
 		self:SecureHook("ToggleSpellBook", function(bookType)
-		self:Debug("ToggleSpellBook: [%s, %s]", bookType, SpellBookFrame.bookType)
+--			self:Debug("ToggleSpellBook: [%s, %s]", bookType, SpellBookFrame.bookType)
 			local sbfbt = SpellBookFrame.bookType
 			if sbfbt == bookType then return end
 			for i, v in pairs(spellbooktypes) do

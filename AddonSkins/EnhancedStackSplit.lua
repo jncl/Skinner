@@ -13,7 +13,7 @@ function Skinner:EnhancedStackSplit()
 	self:moveObject(EnhancedStackSplitAuto1Button, nil, nil, "+", 24)
 
 	self:SecureHook("OpenStackSplitFrame", function(...)
-		self:Debug("OSSF")
+--		self:Debug("OSSF")
 		self:moveObject(StackSplitOkayButton, nil, nil, "+", 24)
 		self:moveObject(StackSplitCancelButton, nil, nil, "+", 24)
 	end)
