@@ -5,7 +5,7 @@ function Skinner:AtlasQuest()
 	self:applySkin(AtlasQuestFrame)
 	
 	--	button on Atlas frame
-	self:moveObject(CLOSEbutton3, "+", 0, "+", 10)
+	self:moveObject(CLOSEbutton3, nil, nil, "+", 10)
 	
 -->>--	Options Frame
 	self:keepFontStrings(AtlasQuestOptionFrame)
@@ -14,9 +14,10 @@ function Skinner:AtlasQuest()
 
 -->>-- Tooltip
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then AtlasQuestTooltip:SetBackdrop(backdrop) end
-		self:skinTooltip(AtlasQuestTooltip)
-		self:Hook(AtlasQuestTooltip, "SetBackdropBorderColor", function() end, true)
+		if self.db.profile.Tooltips.style == 3 then AtlasQuestTooltip:SetBackdrop(self.backdrop) end
+		self:SecureHook(AtlasQuestTooltip, "Show", function(this, ...)
+			self:skinTooltip(AtlasQuestTooltip)
+		end)
 	end
 	
 end

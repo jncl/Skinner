@@ -677,7 +677,7 @@ function Skinner:shrinkBag(frame, bpMF)
 
 end
 
-function Skinner:skinDropDown(frame, moveTexture, noSkin)
+function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
 
 	if not frame then return end
 
@@ -688,8 +688,10 @@ function Skinner:skinDropDown(frame, moveTexture, noSkin)
 	_G[frame:GetName().."Middle"]:SetTexture(self.LSM:Fetch("background", "Inactive Tab"))
 	_G[frame:GetName().."Middle"]:SetHeight(19)
 
-	self:moveObject(_G[frame:GetName().."Button"], "-", 6, "-", 2)
-	self:moveObject(_G[frame:GetName().."Text"], nil, nil, "-", 2)
+	if not noMove then
+		self:moveObject(_G[frame:GetName().."Button"], "-", 6, "-", 2)
+		self:moveObject(_G[frame:GetName().."Text"], nil, nil, "-", 2)
+	end
 
 	if moveTexture then self:moveObject(_G[frame:GetName().."Middle"], nil, nil, "+", 2) end
 

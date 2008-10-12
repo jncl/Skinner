@@ -72,6 +72,7 @@
 <script file="SkinMe\Combuctor.lua"/>
 <script file="SkinMe\ConcessionStand.lua"/>
 <script file="SkinMe\Converse.lua"/>
+<script file="SkinMe\Cork.lua"/>
 <script file="SkinMe\CowTip.lua"/>
 <script file="SkinMe\CT_MailMod.lua"/>
 <script file="SkinMe\CT_RaidAssist.lua"/>
@@ -137,6 +138,7 @@
 <script file="SkinMe\GuildBankAccount.lua"/>
 <script file="SkinMe\GuildEventManager2.lua"/>
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
+<script file="SkinMe\HandyNotes.lua"/>
 <script file="SkinMe\HatTrick.lua"/>
 <script file="SkinMe\HealBot.lua"/>
 <script file="SkinMe\HealersAssist.lua"/>
