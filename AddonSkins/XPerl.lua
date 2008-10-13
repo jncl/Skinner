@@ -324,24 +324,10 @@ function Skinner:XPerl_GrimReaper()
 
 end
 
-function Skinner:XPerl_Options()
---	self:Debug("XPerl_Options")
+function Skinner:XPerl_Options() -- tested against v2.4.3g
 
--->>--	Texture Select Frame
-	self:removeRegions(XPerl_Options_TextureSelectscrollBar)
-	self:skinScrollBar(XPerl_Options_TextureSelectscrollBar)
-	self:applySkin(XPerl_Options_TextureSelect)
-	self:Hook(XPerl_Options_TextureSelect, "SetBackdropBorderColor", function() end, true)
--->>--	Options Question Dialog
-	self:applySkin(XPerl_OptionsQuestionDialog)
-	self:Hook(XPerl_OptionsQuestionDialog, "SetBackdropBorderColor", function() end, true)
--->>-- Tooltip Config	
-	self:applySkin(XPerl_Options_TooltipConfig)
-	self:Hook(XPerl_Options_TooltipConfig, "SetBackdropBorderColor", function() end, true)
+	self:Debug("XPerl_Options")
 
-	self:applySkin(XPerl_Party_AnchorVirtual)
-	self:Hook(XPerl_Party_AnchorVirtual, "SetBackdropBorderColor", function() end, true)
-	
 -->>-- Options Frame
 	self:applySkin(XPerl_Options)
 	self:Hook(XPerl_Options, "SetBackdropBorderColor", function() end, true)
@@ -373,29 +359,40 @@ function Skinner:XPerl_Options()
 	self:applySkin(XPerl_Options_Raid)
 -->>-- Colour Picker Frame	
 	self:applySkin(XPerl_ColourPicker)
-
-	XPerl_Options_Global_Options_RangeFinderSeparator:Hide()
--->-- Player Options
+-->>--	Texture Select Frame
+	self:removeRegions(XPerl_Options_TextureSelectscrollBar)
+	self:skinScrollBar(XPerl_Options_TextureSelectscrollBar)
+	self:applySkin(XPerl_Options_TextureSelect)
+	self:Hook(XPerl_Options_TextureSelect, "SetBackdropBorderColor", function() end, true)
+-->>--	Options Question Dialog
+	self:applySkin(XPerl_OptionsQuestionDialog)
+	self:Hook(XPerl_OptionsQuestionDialog, "SetBackdropBorderColor", function() end, true)
+-->>-- Tooltip Config	
+	self:applySkin(XPerl_Options_TooltipConfig)
+	self:Hook(XPerl_Options_TooltipConfig, "SetBackdropBorderColor", function() end, true)
+-->>-- Player Options
 	self:applySkin(XPerl_Options_Player_Options_Buffs)
 	self:applySkin(XPerl_Options_Player_Options_Totems)
--->-- Pet Options
+-->>-- Pet Options
 	self:applySkin(XPerl_Options_Pet_Options_PetTarget)
--->-- Target Options
+-->>-- Target Options
 	self:applySkin(XPerl_Options_Target_Options_TargetTarget)
--->-- Focus Options
+-->>-- Focus Options
 	self:applySkin(XPerl_Options_Focus_Options_FocusTarget)
--->	-- Party Options
+-->-- Party Options
 	self:applySkin(XPerl_Options_Party_Options_PartyPets)
--->-- Raid Options
+-->>-- Raid Options
 	self:applySkin(XPerl_Options_Raid_Options_Groups)
 	self:moveObject(XPerl_Options_Raid_Options_Custom_Alpha, "-", 20, nil, nil)
 	self:applySkin(XPerl_Options_Raid_Options_Custom)
--->-- All Options	
+-->>-- All Options	
 	self:applySkin(XPerl_Options_All_Options_AddOns)
--->-- Colour Options
+-->>-- Colour Options
 	self:applySkin(XPerl_Options_Colour_Options_BarColours)
 	self:applySkin(XPerl_Options_Colour_Options_UnitReactions)
 	self:applySkin(XPerl_Options_Colour_Options_Appearance)
 	self:applySkin(XPerl_Options_Colour_Options_FrameColours)
+-->>-- separator line
+	XPerl_Options_Global_Options_RangeFinderSeparator:Hide()
 
 end
