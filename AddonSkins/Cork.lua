@@ -8,6 +8,6 @@ function Skinner:Cork()
 	self:applySkin(Corkboard)
 	
 	-- Options Panel
-	self:tekKonfig()
+	self:checkAndRun("tekKonfig")
 	
 end
