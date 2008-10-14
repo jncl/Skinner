@@ -74,10 +74,11 @@ function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
 end
 
 function Skinner:adjustTFOffset(reset)
+--	self:Debug("adjustTFOffset:[%s, %s, %s]", reset, self.db.profile.TopFrame.height, UIParent:GetAttribute("TOP_OFFSET"))
 
 	--	Adjust the UIParent TOP-OFFSET attribute if required
 	if self.initialized.TopFrame then
-		local topOfs	= -self.db.profile.TopFrame.height
+		local topOfs = -self.db.profile.TopFrame.height
 		local UIPtopOfs = -104
 		if topOfs < UIPtopOfs and not reset then
 			UIParent:SetAttribute("TOP_OFFSET", topOfs)
@@ -120,7 +121,7 @@ function Skinner:applyGradient(frame, fh)
 		-- making sure that it isn't greater than the frame height
 		fh = self.db.profile.FadeHeight.value <= math.ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or math.ceil(frame:GetHeight())
 	end
---	self:Debug("aS - Frame, Fade Height: [%s, %s]", frame:GetName(), fh)
+--	self:Debug("aG Fade Height: [%s, %s, %s]", frame:GetName(), frame:GetHeight(), fh)
 
 	if self.db.profile.Gradient.invert then
 		frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 4, 4)

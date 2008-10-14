@@ -1,4 +1,4 @@
-﻿## Interface: 20400
+﻿## Interface: 30000
 ## Title: Skinner |cff7fff7f -Ace2-|r
 ## Title-zhCN: |cff7fff7f-Ace2-|r Skinner
 ## Title-koKR: |cff99ff99S|cffffffffkinner |cff7fff7f -Ace2-|r
@@ -7,15 +7,17 @@
 ## Notes-zhCN: 更改默认 UI 的视觉样式.
 ## Notes-zhTW: 更改預設 UI 的視覺樣式.
 ## Author: Jncl
-## X-Credits: Haste and all the other contributors
 ## Version: @project-version@ 
 ## OptionalDeps: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, FuBarPlugin-2.0
-## X-Category: Interface Enhancements
-## X-Website: http://www.wowace.com/wiki/Skinner
-## X-AceForum: 2941
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: SkinnerDB
+
+# Not sure these are required anymore since the move to Curse
+## X-Credits: Haste and all the other contributors
+## X-Category: Interface Enhancements
+## X-Website: http://www.wowace.com/projects/skinner/
+## X-AceForum: 2941 (WoWAce Forum 2923)
 ## X-Embeds: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, FuBarPlugin-2.0
 
 #@no-lib-strip@
