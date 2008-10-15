@@ -19,6 +19,6 @@
 
 <script file="libs\LibSharedMedia-3.0\LibStub\LibStub.lua"/>
 <script file="libs\LibSharedMedia-3.0\CallbackHandler-1.0\CallbackHandler-1.0.lua"/>
-<include file="libs\LibSharedMedia-3.0\lib.xml"/>
+<include file="libs\LibSharedMedia-3.0\LibSharedMedia-3.0\LibSharedMedia-3.0.lua"/>
 
 </Ui>
