@@ -63,7 +63,6 @@ function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
 	xOfs2 = xOfs2 or 3
 	yOfs2 = yOfs2 or 3
 	local skinFrame = CreateFrame("Frame", nil, parent)
-	skinFrame:SetFrameStrata("BACKGROUND")
 	skinFrame:ClearAllPoints()
 	skinFrame:SetPoint("TOPLEFT", parent, "TOPLEFT", xOfs1, yOfs1)
 	skinFrame:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", xOfs2, yOfs2)
@@ -549,11 +548,7 @@ function Skinner:resizeTabs(frame)
 	local tabName = fN.."Tab"
 	local nT
 	-- get the number of tabs
-	if not self.isWotLK then
-		nT = ((fN == "CharacterFrame" and not HasPetUI()) and 4 or frame.numTabs)
-	else
-		nT = ((fN == "CharacterFrame" and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
-	end
+	nT = ((fN == "CharacterFrame" and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
 --	self:Debug("rT: [%s, %s]", tabName, nT)
 	-- accumulate the tab text widths
 	local tTW = 0
@@ -572,8 +567,7 @@ function Skinner:resizeTabs(frame)
 	-- update each tab
 	for i = 1, nT do
 		_G[tabName..i.."Left"]:SetWidth(tlw)
-		if self.isWotLK then PanelTemplates_TabResize(_G[tabName..i], 0)
-		else PanelTemplates_TabResize(0, _G[tabName..i]) end
+		PanelTemplates_TabResize(_G[tabName..i], 0)
 	end
 
 end
@@ -634,7 +628,6 @@ function Skinner:shrinkBag(frame, bpMF)
 	if not frame then return end
 
 	local frameName = frame:GetName()
-	local mfAdjust = self.isWotLK and 22 or 18
 	local bgTop = _G[frameName.."BackgroundTop"]
 	if math.floor(bgTop:GetHeight()) == 256 then -- this is the backpack
 --		self:Debug("Backpack found")
@@ -643,19 +636,10 @@ function Skinner:shrinkBag(frame, bpMF)
 --			self:Debug("Backpack Money Frame found: [%s, %s]", yOfs, math.floor(yOfs))
 			if math.floor(yOfs) == -216 or math.floor(yOfs) == -217 then -- is it still in its original position
 --				self:Debug("Backpack Money Frame moved")
-				self:moveObject(_G[frameName.."MoneyFrame"], nil, nil, "+", mfAdjust)
+				self:moveObject(_G[frameName.."MoneyFrame"], nil, nil, "+", 22)
 			end
 		end
-		if not self.isWotLK then
-			if bpMF then
-				frame:SetHeight(frame:GetHeight() - 20)
-			else
-				self:moveObject(_G[frameName.."Item1"], nil, nil, "-", 20)
-				frame:SetHeight(frame:GetHeight() - 40)
-			end
-		else
-			self:moveObject(_G[frameName.."Item1"], nil, nil, "+", 19)
-		end
+		self:moveObject(_G[frameName.."Item1"], nil, nil, "+", 19)
 	end
 	if math.ceil(bgTop:GetHeight()) == 94 then frame:SetHeight(frame:GetHeight() - 20) end
 	if math.ceil(bgTop:GetHeight()) == 86 then frame:SetHeight(frame:GetHeight() - 20) end
@@ -681,6 +665,7 @@ end
 function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
 
 	if not frame then return end
+	if not _G[frame:GetName().."Right"] then return end -- ignore tekKonfig dropdowns
 
 	if not self.db.profile.TexturedDD or noSkin then self:keepFontStrings(frame) return end
 
@@ -952,7 +937,6 @@ function Skinner:OnInitialize()
 
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
-	if self.isWotLK then self:Debug("WotLK detected") end
 --@end-alpha@
 
 	-- register the SV database
@@ -1070,8 +1054,7 @@ function Skinner:OnInitialize()
 
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
 	-- use strings as the objects may not exist when we start
-	self.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ItemRefTooltip"}
-	if self.isWotLK then table.insert(self.ttCheck, "ShoppingTooltip3") end
+	self.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip"}
 	-- list of Tooltips used when the Tooltip style is 3
 	self.ttList = CopyTable(self.ttCheck)
 	table.insert(self.ttList, "SmallTextTooltip")

@@ -7,7 +7,7 @@ function Skinner:tekKonfig()
 	if LibStub and LibStub:GetLibrary("tekKonfig-Dropdown", true) then
 		local tKDd = LibStub("tekKonfig-Dropdown")
 		self:Hook(tKDd, "new", function(parent, label, ...)
-			self:Debug("tKDd:[%s, %s]", parent, label)
+--			self:Debug("tKDd:[%s, %s]", parent, label)
 			local frame, text, container = self.hooks[tKDd].new(parent, label, ...)
 			if not self.db.profile.TexturedDD then self:keepFontStrings(frame)
 			else
@@ -27,17 +27,31 @@ function Skinner:tekKonfig()
 	if LibStub and LibStub:GetLibrary("tekKonfig-Group", true) then
 		local tKG = LibStub("tekKonfig-Group")
 		self:Hook(tKG, "new", function(parent, label, ...)
-			self:Debug("tKG:[%s, %s]", parent, label)
+--			self:Debug("tKG:[%s, %s]", parent, label)
 			local box = self.hooks[tKG].new(parent, label, ...)
 			self:applySkin(box)
 			return box
 		end, true)
 	end
 
+	local sBd = CopyTable(self.backdrop2)
+	sBd.bgFile = nil
+	if LibStub and LibStub:GetLibrary("tekKonfig-Scroll", true) then
+		local tKS = LibStub("tekKonfig-Scroll")
+		self:Hook(tKS, "new", function(parent, offset, step)
+--			self:Debug("tKS:[%s, %s, %s]", parent, offset, step)
+			local frame, up, down, border = self.hooks[tKS].new(parent, offset, step)
+			border:SetBackdrop(sBd)
+			border:SetBackdropBorderColor(.2, .2, .2, 1)
+			border:SetBackdropColor(.1, .1, .1, 1)
+			return frame, up, down, border
+		end, true)
+	end
+
 	if LibStub and LibStub:GetLibrary("tekKonfig-AboutPanel", true) then
 		local tKAP = LibStub("tekKonfig-AboutPanel")
 		self:SecureHook(tKAP, "OpenEditbox", function(this)
-			self:Debug("tKAP:[%s, %s]", this, tKAP.editbox)
+--			self:Debug("tKAP:[%s, %s]", this, tKAP.editbox)
 			if not tKAP.editbox.skinned then
 				tKAP.editbox:SetHeight(24)
 				local l, r, t, b = tKAP.editbox:GetTextInsets()

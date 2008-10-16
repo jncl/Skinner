@@ -11,10 +11,9 @@ function Skinner:BlizzardFrames()
 		"FriendsFrame", "TradeFrame", "ResizeQW", "Buffs",
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard",
 		"MirrorTimers", "QuestTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "BattleScore", "ScriptErrors", "Tutorial", "DropDowns",
-		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame"
+		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame"
 	}
 	
-	if self.isWotLK then table.insert(blizzFrames, "PVPFrame") end
 	if Skinner.isPTR then table.insert(blizzFrames, "FeedbackUI") end
 
 	for _, v in pairs(blizzFrames) do
@@ -57,16 +56,8 @@ function Skinner:SkinnerFrames()
 end
 
 local blizzLoDFrames = {
-	 "AuctionUI", "BattlefieldMinimap", "BindingUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI"
+	 "AuctionUI", "BattlefieldMinimap", "BindingUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI", "AchievementUI", "BarbershopUI", "Calendar", "GlyphUI"
 }
-if Skinner.isWotLK then
-	table.insert(blizzLoDFrames, "AchievementUI")
-	table.insert(blizzLoDFrames, "BarbershopUI")
-	table.insert(blizzLoDFrames, "Calendar")
-	table.insert(blizzLoDFrames, "GlyphUI")
-else	
-	table.insert(blizzLoDFrames, "CraftUI")
-end
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v

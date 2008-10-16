@@ -474,7 +474,7 @@ function Skinner:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	if self.isWotLK then BACKPACK_HEIGHT = BACKPACK_HEIGHT - 26 end
+	BACKPACK_HEIGHT = BACKPACK_HEIGHT - 26
 	
 	self:SecureHook("ContainerFrame_GenerateFrame", function(frameObj, size, id)
 --		self:Debug("CF_GF:[%s, %s, %s]", frameObj:GetName(), size, id)
@@ -888,10 +888,12 @@ function Skinner:MinimapButtons()
 	MiniMapVoiceChatFrame:SetHeight(32)
 	MiniMapVoiceChatFrameIcon:ClearAllPoints()
 	MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
-	if self.isWotLK then
-		self:moveObject(MiniMapTrackingIcon, "-", 2, "+", 2)
-		LowerFrameLevel(MiniMapTrackingButton)
-	end
+	self:moveObject(MiniMapTrackingIcon, "-", 2, "+", 2)
+	LowerFrameLevel(MiniMapTrackingButton)
+	-- move GameTime a.k.a. Calendar texture up a layer
+	GameTimeFrame:GetNormalTexture():SetDrawLayer("BORDER")
+	GameTimeFrame:GetPushedTexture():SetDrawLayer("BORDER")
+	GameTimeFrame:GetFontString():SetDrawLayer("BORDER")
 	
 	-- skin any moved Minimap buttons if required
 	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(MinimapButtonFrame) end

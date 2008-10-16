@@ -71,20 +71,15 @@ function Skinner:GossipFrame()
 	self:keepFontStrings(GossipFrame)
 	GossipFrame:SetWidth(GossipFrame:GetWidth() * self.FxMult)
 	GossipFrame:SetHeight(GossipFrame:GetHeight() * self.FyMult)
-	if not self.isWotLK then self:moveObject(GossipFrameNpcNameText, nil, nil, "+", 15)
-	else self:moveObject(GossipFrameNpcNameText, "-", 10, "+", 15) end
+	self:moveObject(GossipFrameNpcNameText, "-", 10, "+", 15)
 	self:moveObject(GossipFrameCloseButton, "+", 24, "+", 12)
 	self:keepFontStrings(GossipFrameGreetingPanel)
 	self:moveObject(GossipFrameGreetingGoodbyeButton, "+", 28, "-", 64)
 	GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
 
 	for i = 1, NUMGOSSIPBUTTONS do
-		if not self.isWotLK then
-			_G["GossipTitleButton"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		else
-			local text = select(3, _G["GossipTitleButton"..i]:GetRegions())
-			text:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
+		local text = self:getRegion(_G["GossipTitleButton"..i], 3)
+		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 
 	self:moveObject(GossipGreetingScrollFrame, "-", 12, "+", 30)
@@ -144,16 +139,17 @@ function Skinner:QuestFrame()
 	self:SecureHook("QuestFrameGreetingPanel_OnShow", function()
 --		self:Debug("QFGP_OS")
 		for i = 1, MAX_NUM_QUESTS do
-			_G["QuestTitleButton"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
+			local text = self:getRegion(_G["QuestTitleButton"..i], 3)
+			text:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
-		end)
+	end)
 
 	self:Hook("QuestFrame_SetTitleTextColor", function(fontString)
 		fontString:SetTextColor(self.HTr, self.HTg, self.HTb)
 		end, true)
 	self:Hook("QuestFrame_SetTextColor", function(fontString)
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end, true)
+	end, true)
 
 	self:keepFontStrings(QuestFrame)
 	QuestFrame:SetWidth(QuestFrame:GetWidth() * self.FxMult)
@@ -245,12 +241,8 @@ function Skinner:ArenaRegistrar()
 	RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	for i = 1, 5 do
-		if not self.isWotLK then
-			_G["ArenaRegistrarButton"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		else
-			local text = select(3, _G["ArenaRegistrarButton"..i]:GetRegions())
-			text:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
+		local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
+		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 	
 	self:moveObject(ArenaRegistrarFrameGoodbyeButton, "+", 28, "-", 64)
@@ -296,12 +288,8 @@ function Skinner:GuildRegistrar()
 	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	for i = 1, 2 do
-		if not self.isWotLK then
-			_G["GuildRegistrarButton"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		else
-			local text = select(3, _G["GuildRegistrarButton"..i]:GetRegions())
-			text:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
+		local text = self:getRegion(_G["GuildRegistrarButton"..i], 3)
+		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 	self:moveObject(GuildRegistrarFrameGoodbyeButton, "+", 28, "-", 64)
 	self:moveObject(GuildRegistrarFrameCancelButton, "+", 30, "-", 64)
