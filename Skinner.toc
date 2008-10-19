@@ -36,7 +36,7 @@ options.lua
 AddonFrames.lua
 #
 # CharacterFrames1
-# includes Character (inc Pet, Reputation, Skill, PVP), PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI
+# includes Character (inc Pet, Reputation, Skill, Token), PVP, PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI
 CharacterFrames1.lua
 #
 # CharacterFrames2

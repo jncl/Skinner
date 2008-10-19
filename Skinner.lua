@@ -68,6 +68,8 @@ function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
 	skinFrame:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", xOfs2, yOfs2)
 	if not ftype then self:applySkin(skinFrame)
 	else self:storeAndSkin(ftype, skinFrame) end
+	if parent:GetFrameLevel() == 0 then parent:SetFrameLevel(1) end
+	skinFrame:SetFrameLevel(parent:GetFrameLevel() - 1)
 	parent.skinFrame = skinFrame
 
 end

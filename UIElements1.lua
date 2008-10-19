@@ -189,7 +189,7 @@ function Skinner:ChatFrames()
 
 	local clqbf = CombatLogQuickButtonFrame_Custom
 	local xOfs1, yOfs1, xOfs2, yOfs2 = -4, nil, 4, -8
-	for i=1, NUM_CHAT_WINDOWS do
+	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = (_G["ChatFrame"..i])
 		local cfName = (_G["ChatFrame"..i]:GetName())
 		if SIMPLE_CHAT ~= "1" and CHAT_LOCKED ~= "1" and cfName == "ChatFrame2" and clqbf:IsShown() then
@@ -198,8 +198,6 @@ function Skinner:ChatFrames()
 			yOfs1 = 4
 		end
 		self:addSkinFrame(cf, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
-		-- make sure chat frame is above the bottomframe
-		cf.skinFrame:SetFrameLevel(1)
 	end
 
 	-- CombatLog Quick Button Frame & Progress Bar
@@ -208,7 +206,6 @@ function Skinner:ChatFrames()
 			self:keepFontStrings(clqbf)
 			self:storeAndSkin(ftype, clqbf)
 			clqbf:SetHeight(clqbf:GetHeight() + 4)
---			clqbf:SetWidth(clqbf:GetWidth() + 4)
 		end
 		self:glazeStatusBar(CombatLogQuickButtonFrameProgressBar, 0)
 	end
@@ -523,8 +520,8 @@ function Skinner:ItemText()
 	if not self.db.profile.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
 
-	self:SecureHook("ItemTextFrame_OnEvent", function(event)
---		self:Debug("ItemTextFrame_OnEvent: [%s]", event)
+	self:SecureHook("ItemTextFrame_OnEvent", function(this, event)
+-- 		self:Debug("ItemTextFrame_OnEvent: [%s]", event)
 		if event == "ITEM_TEXT_BEGIN" then
 			ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
@@ -605,6 +602,8 @@ function Skinner:HelpFrame()
 	self:moveObject(HelpFrameOpenTicketCancel, "+", 42, "-", 12)
 
 -->>--	Ticket Status Frame
+	local tsfC = self:getChild(TicketStatusFrame, 2)
+	self:storeAndSkin(ftype, tsfC)
 	self:storeAndSkin(ftype, TicketStatusFrame)
 
 -->>--	KnowledgeBase Frame

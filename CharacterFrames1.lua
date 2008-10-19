@@ -230,6 +230,8 @@ function Skinner:TokenFrame()
 end
 
 function Skinner:PVPFrame()
+	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
+	self.initialized.PVPFrame = true
 
 	self:keepFontStrings(PVPFrame)
 	PVPFrame:SetWidth(PVPFrame:GetWidth() * self.FxMult)

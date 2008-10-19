@@ -48,6 +48,7 @@ function Skinner:Defaults()
 		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
 		-- Character Frames
 		CharacterFrames = true,
+		PVPFrame  		= true,
 		PetStableFrame  = true,
 		SpellBookFrame  = true,
 		TalentFrame     = true,
@@ -1145,6 +1146,18 @@ function Skinner:Options()
 						set = function(v)
 							self.db.profile.CharacterFrames = v
 							self:checkAndRun("CharacterFrames")
+						end,
+					},
+					honor = {
+						name = self.L["PVP Frame"],
+						desc = self.L["Toggle the skin of the PVP Frame"],
+						type = "toggle",
+						get = function()
+							return self.db.profile.PVPFrame
+						end,
+						set = function(v)
+							self.db.profile.PVPFrame = v
+							self:checkAndRun("PVPFrame")
 						end,
 					},
 					stable = {
