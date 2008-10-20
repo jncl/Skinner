@@ -604,7 +604,6 @@ function Skinner:HelpFrame()
 -->>--	Ticket Status Frame
 	local tsfC = self:getChild(TicketStatusFrame, 2)
 	self:storeAndSkin(ftype, tsfC)
-	self:storeAndSkin(ftype, TicketStatusFrame)
 
 -->>--	KnowledgeBase Frame
 	self:keepFontStrings(KnowledgeBaseFrame)
