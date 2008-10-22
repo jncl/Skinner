@@ -340,7 +340,7 @@ end
 
 function Skinner:glazeStatusBar(statusBar, fi)
 --@alpha@
-	assert(statusBar and statusBar:GetObjectType() == "StatusBar")
+	assert(statusBar and statusBar:GetObjectType() == "StatusBar", "Not a StatusBar\n"..debugstack())
 --@end-alpha@
 
 	if not statusBar then return end
@@ -687,7 +687,7 @@ end
 
 function Skinner:skinEditBox(editBox, regions, noSkin, noHeight)
 --@alpha@
-	assert(editBox and editBox:GetObjectType() == "EditBox")
+	assert(editBox and editBox:GetObjectType() == "EditBox", "Not an EditBox\n"..debugstack())
 --@end-alpha@
 
 	if not editBox then return end
@@ -738,9 +738,9 @@ function Skinner:skinFFColHeads(buttonName)
 
 end
 
-function Skinner:skinHybridScrollBar(slider)
+function Skinner:skinSlider(slider)
 --@alpha@
-	assert(slider and slider:GetObjectType() == "Slider")
+	assert(slider and slider:GetObjectType() == "Slider", "Not a Slider\n"..debugstack())
 --@end-alpha@
 	
 	self:keepFontStrings(slider)
@@ -771,7 +771,7 @@ end
 
 function Skinner:skinScrollBar(scrollFrame, sbPrefix, sbObj, narrow)
 --@alpha@
-	assert(scrollFrame and scrollFrame:GetObjectType() == "ScrollFrame")
+	assert(scrollFrame and scrollFrame:GetObjectType() == "ScrollFrame", "Not a ScrollFrame\n"..debugstack())
 --@end-alpha@
 
 	if not scrollFrame then return end

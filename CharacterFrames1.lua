@@ -515,7 +515,7 @@ function Skinner:AchievementUI()
 	AchievementFrameHeaderShield:SetAlpha(1)
 	
 -->>-- Categories Panel (on the Left)
-	self:skinHybridScrollBar(AchievementFrameCategoriesContainerScrollBar)
+	self:skinSlider(AchievementFrameCategoriesContainerScrollBar)
 	self:storeAndSkin(ftype, AchievementFrameCategories)
 	local function skinCategories()
 		for i = 1, #AchievementFrameCategoriesContainer.buttons do
@@ -530,13 +530,13 @@ function Skinner:AchievementUI()
 	
 -->>-- Achievements Panel (on the right)
 	self:getChild(AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	self:skinHybridScrollBar(AchievementFrameAchievementsContainerScrollBar)
+	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
 	AchievementFrameAchievementsBackground:SetAlpha(0)
 	
 -->>-- Stats
 	self:keepFontStrings(AchievementFrameStats)
 	self:getChild(AchievementFrameStats, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	self:skinHybridScrollBar(AchievementFrameStatsContainerScrollBar)
+	self:skinSlider(AchievementFrameStatsContainerScrollBar)
 	local function skinStats()
 		for i = 1, #AchievementFrameStatsContainer.buttons do
 			local buttonName = "AchievementFrameStatsContainerButton"..i
@@ -560,7 +560,7 @@ function Skinner:AchievementUI()
 	self:glazeStatusBar(AchievementFrameSummaryStatusBar, 0)
 	self:moveObject(self:getRegion(AchievementFrameSummaryStatusBar, 1), nil, nil, "-", 3)
 	self:moveObject(self:getRegion(AchievementFrameSummaryStatusBar, 2), nil, nil, "-", 3)
-	self:skinHybridScrollBar(AchievementFrameAchievementsContainerScrollBar)
+	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
 	AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
 	self:keepFontStrings(AchievementFrameSummaryStatsHeader)
 	self:getChild(AchievementFrameSummary, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA)
@@ -579,7 +579,7 @@ function Skinner:AchievementUI()
 	AchievementFrameComparisonHeaderName:ClearAllPoints()
 	AchievementFrameComparisonHeaderName:SetPoint("RIGHT", AchievementFrameComparisonHeaderPoints, "LEFT", -10, 0)
 	-- Container
-	self:skinHybridScrollBar(AchievementFrameComparisonContainerScrollBar)
+	self:skinSlider(AchievementFrameComparisonContainerScrollBar)
 	
 	-- Summary Panel
 	self:getChild(AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA)
@@ -595,7 +595,7 @@ function Skinner:AchievementUI()
 	end
 	
 	-- Stats Panel
-	self:skinHybridScrollBar(AchievementFrameComparisonStatsContainerScrollBar)
+	self:skinSlider(AchievementFrameComparisonStatsContainerScrollBar)
 	local function skinComparisonStats()
 		for i = 1, #AchievementFrameComparisonStatsContainer.buttons do
 			local buttonName = "AchievementFrameComparisonStatsContainerButton"..i
@@ -657,5 +657,17 @@ function Skinner:AchievementUI()
 			end
 		end)
 	end
+	
+-->>-- Alert Panels
+	self:SecureHook("AchievementAlertFrame_GetAlertFrame", function()
+		for i = 1, 2 do
+			local frame = _G["AchievementAlertFrame"..i]
+			if frame and not frame.skinned then
+				self:applySkin(frame)
+				frame.skinned = true
+				if i == 2 then self:Unhook("AchievementAlertFrame_GetAlertFrame") end
+			end
+		end
+	end)
 	
 end
