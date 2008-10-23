@@ -738,18 +738,6 @@ function Skinner:skinFFColHeads(buttonName)
 
 end
 
-function Skinner:skinSlider(slider)
---@alpha@
-	assert(slider and slider:GetObjectType() == "Slider", "Not a Slider\n"..debugstack())
---@end-alpha@
-	
-	self:keepFontStrings(slider)
-	slider:SetAlpha(1)
-	_G[slider:GetName().."ThumbTexture"]:SetAlpha(1)
-	self:skinUsingBD2(slider)
-
-end
-
 function Skinner:skinMoneyFrame(frame, moveGold, noWidth)
 
 	if not frame then return end
@@ -783,6 +771,18 @@ function Skinner:skinScrollBar(scrollFrame, sbPrefix, sbObj, narrow)
 	else
 		self:skinUsingBD2(sBar)
 	end
+
+end
+
+function Skinner:skinSlider(slider)
+--@alpha@
+	assert(slider and slider:GetObjectType() == "Slider", "Not a Slider\n"..debugstack())
+--@end-alpha@
+	
+	self:keepFontStrings(slider)
+	slider:SetAlpha(1)
+	slider:GetThumbTexture():SetAlpha(1)
+	self:skinUsingBD2(slider)
 
 end
 
@@ -1150,7 +1150,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
 			p("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "nil", v:GetWidth() or "nil", v:GetHeight() or "nil", objType or "nil", v:GetFrameStrata() or "nil")
-			if objType == "Frame" or objType == "Button" or objType == "StatusBar" then
+			if objType == "Frame" or objType == "Button" or objType == "StatusBar" or objType == "Slider" then
 				getRegions(v, lvl.."-"..i)
 				getChildren(v, lvl.."-"..i)
 			end

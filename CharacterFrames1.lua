@@ -134,10 +134,11 @@ function Skinner:PetPaperDollFrame()
 	CompanionModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(CompanionModelFrame)
 	local xOfs = 10
-	self:moveObject(CompanionModelFrame, "+", xOfs, nil, nil)
-	self:moveObject(CompanionSelectedName, "+", xOfs, "-", 20)
-	self:moveObject(CompanionSummonButton, "+", xOfs, "-", 20)
-	self:moveObject(CompanionButton1, "-", xOfs, "+", 20)
+	self:moveObject(CompanionModelFrame, "+", xOfs, "+", 20)
+	CompanionModelFrame:SetHeight(200)
+	self:moveObject(CompanionSelectedName, "+", xOfs, "-", 50)
+	self:moveObject(CompanionSummonButton, "+", xOfs, "-", 50)
+	self:moveObject(CompanionButton1, "-", xOfs, "+", 0)
 	self:moveObject(CompanionPrevPageButton, "-", xOfs, "-", 70)
 	self:moveObject(CompanionPageNumber, "+", xOfs, "-", 40)
 
@@ -308,8 +309,6 @@ function Skinner:SpellBookFrame()
 		-- hook to handle tabs
 		self:SecureHook("ToggleSpellBook", function(bookType)
 --			self:Debug("ToggleSpellBook: [%s, %s]", bookType, SpellBookFrame.bookType)
-			local sbfbt = SpellBookFrame.bookType
-			if sbfbt == bookType then return end
 			for i, v in pairs(spellbooktypes) do
 --				self:Debug("sbt : [%s]", v)
 				if v == bookType then
@@ -479,8 +478,8 @@ function Skinner:AchievementUI()
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
 	-- Hook this to skin the GameTooltip StatusBars
-	self:SecureHook("GameTooltip_ShowStatusBar", function(...)
---		self:Debug("GT_SSB:[%s]", ...)
+	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
+--		self:Debug("GT_SSB:[%s, %s]", this:GetName(), ...)
 		if GameTooltipStatusBar1 then
 			self:removeRegions(GameTooltipStatusBar1, {2})
 			self:glazeStatusBar(GameTooltipStatusBar1, 0)
@@ -496,7 +495,10 @@ function Skinner:AchievementUI()
 	self:Hook("AchievementButton_GetProgressBar", function(index)
 --		self:Debug("AB_GPB:[%s]", index)
 		local statusBar = self.hooks["AchievementButton_GetProgressBar"](index)
+		local statusBarBG = self:getRegion(statusBar, 1)
 		if not statusBar.skinned then
+			statusBarBG:SetTexture(self.sbTexture)
+			statusBarBG:SetVertexColor(unpack(self.sbColour))
 			self:removeRegions(statusBar, {2})
 			self:glazeStatusBar(statusBar)
 			statusBar.skinned = true
@@ -510,8 +512,8 @@ function Skinner:AchievementUI()
 	
 -->>-- Header
 	self:keepFontStrings(AchievementFrameHeader)
-	self:moveObject(AchievementFrameHeaderTitle, "-", 60, "-", 28)
-	self:moveObject(AchievementFrameHeaderPoints, "+", 40, "-", 8)
+	self:moveObject(AchievementFrameHeaderTitle, "-", 60, "-", 29)
+	self:moveObject(AchievementFrameHeaderPoints, "+", 40, "-", 9)
 	AchievementFrameHeaderShield:SetAlpha(1)
 	
 -->>-- Categories Panel (on the Left)
@@ -573,9 +575,9 @@ function Skinner:AchievementUI()
 	self:keepFontStrings(AchievementFrameComparisonHeader)
 	AchievementFrameComparisonHeaderShield:SetAlpha(1)
 	AchievementFrameComparisonHeaderShield:ClearAllPoints()
-	AchievementFrameComparisonHeaderShield:SetPoint("RIGHT", AchievementFrameCloseButton, "LEFT", -10, 0)
+	AchievementFrameComparisonHeaderShield:SetPoint("RIGHT", AchievementFrameCloseButton, "LEFT", -10, -1)
 	AchievementFrameComparisonHeaderPoints:ClearAllPoints()
-	AchievementFrameComparisonHeaderPoints:SetPoint("RIGHT", AchievementFrameComparisonHeaderShield, "LEFT", -10, 0)
+	AchievementFrameComparisonHeaderPoints:SetPoint("RIGHT", AchievementFrameComparisonHeaderShield, "LEFT", -10, 1)
 	AchievementFrameComparisonHeaderName:ClearAllPoints()
 	AchievementFrameComparisonHeaderName:SetPoint("RIGHT", AchievementFrameComparisonHeaderPoints, "LEFT", -10, 0)
 	-- Container
@@ -628,8 +630,8 @@ function Skinner:AchievementUI()
 			self:moveObject(tabObj, "+", 2, nil, nil)
 		end 
 		self:keepFontStrings(tabObj)
-		self:moveObject(tabObj.text, nil, nil, "+", 3)
-		self:HookScript(tabObj, "OnClick", function(this)
+		self:moveObject(tabObj.text, nil, nil, "+", 5)
+		self:HookScript(tabObj, "OnClick", function(this) -- hook this to stop tab text moving
 			AchievementFrameTab_OnClick(this:GetID())
 			PlaySound("igCharacterInfoTab")
 		end)
@@ -640,34 +642,38 @@ function Skinner:AchievementUI()
 		else self:applySkin(tabObj) end
 	end
 	if self.db.profile.TexturedTab then 
-		self:SecureHook("AchievementFrameTab_OnClick", function()
---			self:Debug("AFT_OC")
+		local function ttOnClick()
 			for i = 1, 2 do
 				local tabObj = _G["AchievementFrameTab"..i]
 				if i == AchievementFrame.selectedTab then self:setActiveTab(tabObj)
 				else self:setInactiveTab(tabObj) end
 			end
+		end
+		self:SecureHook("AchievementFrameTab_OnClick", function(id)
+			self:Debug("AFT_OC:[%s]", id)
+			ttOnClick()
 		end)
 		self:SecureHook("AchievementFrameComparisonTab_OnClick", function(id)
---			self:Debug("AFCT_OC:[%s]", id)
-			for i = 1, 2 do
-				local tabObj = _G["AchievementFrameTab"..i]
-				if i == AchievementFrame.selectedTab then self:setActiveTab(tabObj)
-				else self:setInactiveTab(tabObj) end
-			end
+			self:Debug("AFCT_OC:[%s]", id)
+			ttOnClick()
 		end)
 	end
 	
 -->>-- Alert Panels
-	self:SecureHook("AchievementAlertFrame_GetAlertFrame", function()
-		for i = 1, 2 do
-			local frame = _G["AchievementAlertFrame"..i]
-			if frame and not frame.skinned then
-				self:applySkin(frame)
-				frame.skinned = true
-				if i == 2 then self:Unhook("AchievementAlertFrame_GetAlertFrame") end
-			end
-		end
-	end)
+	-- Not being skinned, textures can't be separated and some are required
+	
+end
+
+function Skinner:AchievementWatch()
+
+-->>-- Watch Frames
+	for i = 2, 10 do
+		local statusBarBG = _G["AchievementWatchLine"..i.."StatusBarBG"]
+		statusBarBG:SetTexture(self.sbTexture)
+		statusBarBG:SetVertexColor(unpack(self.sbColour))
+		local watchLine = _G["AchievementWatchLine"..i]
+		self:removeRegions(watchLine.statusBar, {2})
+		self:glazeStatusBar(watchLine.statusBar)
+	end
 	
 end
