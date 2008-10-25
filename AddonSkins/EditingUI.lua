@@ -12,18 +12,16 @@ function Skinner:EditingUI()
 		frame:SetTextInsets(l + 5, r + 0, t, b)
 
 		-- move the title to the right
-		if Skinner:getRegion(frame, 9) then Skinner:moveObject(self:getRegion(frame, 9), "+", 5, nil, nil) end
-		if Skinner:getChild(frame, 1) then Skinner:moveObject(self:getChild(frame, 1), "+", 5, nil, nil) end
+		if Skinner:getRegion(frame, 9) then Skinner:moveObject(Skinner:getRegion(frame, 9), "+", 5, nil, nil) end
+		if Skinner:getChild(frame, 1) then Skinner:moveObject(Skinner:getChild(frame, 1), "+", 5, nil, nil) end
 
 		Skinner:skinUsingBD2(frame)
 
 	end
 
 -->>--	Toggle Button
-	if FuBarFrame1 then
-		self:moveObject(EditingFrameToggleButton, nil, nil, "-", 30)
-		self:moveObject(EditingFrameTitleBar, nil, nil, "-", 30)
-	end
+	self:moveObject(EditingFrameToggleButton, nil, nil, "-", 30)
+	self:moveObject(EditingFrameTitleBar, nil, nil, "-", 30)
 
 -->>--	Title Panel
 	self:applySkin(EditingFrameTitleBar)

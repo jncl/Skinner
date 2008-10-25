@@ -3,15 +3,16 @@ function Skinner:tekDebug()
 
 	self:keepFontStrings(tekDebugPanel)
 	local titleText = self:getRegion(tekDebugPanel, 2)
-	self:moveObject(titleText, nil, nil, "+", 8)
-	local cBut = self:getChild(tekDebugPanel, 1)
-	self:moveObject(cBut, "+", 0, "+", 8)
+	self:moveObject(titleText, nil, nil, "+", 10)
+	local cBut = self:getChild(tekDebugPanel, 1) -- close button
+	self:moveObject(cBut, nil, nil, "+", 11)
 	self:applySkin(tekDebugPanel)
 	
 	self:HookScript(tekDebugPanel, "OnShow", function(this)
 		self.hooks[this].OnShow(this)
-		-- local eBox = self:getChild(this, 3)
-		-- self:skinEditBox(eBox, {9})
+		for i = 2, 16 do
+			self:getChild(tekDebugPanel, i):SetNormalTexture(nil) -- remove background texture
+		end
 		self:Unhook(tekDebugPanel, "OnShow")
 		end)
 

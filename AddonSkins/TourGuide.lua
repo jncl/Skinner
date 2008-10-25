@@ -6,10 +6,8 @@ function Skinner:TourGuide()
 
 	--	hook this to skin the Objectives Panel Scroll Bar
 	self:SecureHook(TourGuide, "CreateObjectivePanel", function()
-		local TGOFSB = self:getChild(TourGuideObjectives, 3)
-		self:keepFontStrings(TGOFSB)
-		TGOFSB:GetThumbTexture():SetAlpha(1)
-		self:skinUsingBD2(TGOFSB)
+		local TGOPS = self:getChild(TourGuideObjectives, 4)
+		self:skinSlider(TGOPS)
 		self:applySkin(TourGuideObjectives)
 		self:Unhook(TourGuide, "CreateObjectivePanel")
 	end, true)

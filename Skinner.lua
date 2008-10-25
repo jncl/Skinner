@@ -326,6 +326,21 @@ function Skinner:findFrame2(parent, objType, ...)
 
 end
 
+function Skinner:findFrame3(name, element)
+
+--	self:Debug("findFrame3: [%s, %s]", name, element)
+
+	for i = 1, select("#", UIParent:GetChildren()) do
+		local obj = select(i, UIParent:GetChildren())
+		if obj:GetName() == name then
+			if obj[element] then return obj end
+		end
+	end
+	
+	return nil
+
+end
+
 function Skinner:getChild(frame, childNo)
 
 	if frame then return select(childNo, frame:GetChildren()) end
@@ -691,8 +706,6 @@ function Skinner:skinEditBox(editBox, regions, noSkin, noHeight)
 --@end-alpha@
 
 	if not editBox then return end
-
---	self:SetDebugging(true) -- Enable to identify additional text strings
 
 	local kRegions = CopyTable(self.ebRegions)
 	if regions then
@@ -1107,9 +1120,9 @@ end
 
 function Skinner:ShowInfo(obj, showKids, noDepth)
 
-	local showKids = showKids or true
+	local showKids = showKids and true or false
 
-	local function p(fmsg, ...)
+	local function print(fmsg, ...)
 
 		local tmp = {}
 		local output = "dbg:"
@@ -1137,19 +1150,20 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 		for i = 1, select("#", object:GetRegions()) do
 			local v = select(i, object:GetRegions())
-			p("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "nil", v:GetObjectType() or "nil", v:GetWidth() or "nil", v:GetHeight() or "nil", v:GetObjectType() == "Texture" and string.format("%s : %s", v:GetTexture() or "nil", v:GetDrawLayer() or "nil") or "nil")
+			print("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetObjectType() or "nil", v:GetWidth() or "nil", v:GetHeight() or "nil", v:GetObjectType() == "Texture" and string.format("%s : %s", v:GetTexture() or "nil", v:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
 
 	local function getChildren(frame, lvl)
+	
 		if not showKids then return end
 		if string.find(lvl, "-") == 2 and noDepth then return end
 		
 		for i = 1, select("#", frame:GetChildren()) do
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
-			p("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "nil", v:GetWidth() or "nil", v:GetHeight() or "nil", objType or "nil", v:GetFrameStrata() or "nil")
+			print("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetWidth() or "nil", v:GetHeight() or "nil", objType or "nil", v:GetFrameStrata() or "nil")
 			if objType == "Frame" or objType == "Button" or objType == "StatusBar" or objType == "Slider" then
 				getRegions(v, lvl.."-"..i)
 				getChildren(v, lvl.."-"..i)
@@ -1158,13 +1172,13 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	end
 
-	p("%s : %s : %s : %s : %s : %s", obj:GetName() or "nil", obj:GetWidth() or "nil", obj:GetHeight() or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
+	print("%s : %s : %s : %s : %s : %s", obj:GetName() or "<Anon>", obj:GetWidth() or "nil", obj:GetHeight() or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
-	p("Started Regions")
+	print("Started Regions")
 	getRegions(obj, 1)
-	p("Finished Regions")
-	p("Started Children")
+	print("Finished Regions")
+	print("Started Children")
 	getChildren(obj, 1)
-	p("Finished Children")
+	print("Finished Children")
 
 end

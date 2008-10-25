@@ -72,11 +72,14 @@ function Skinner:Outfitter()
 	self:moveObject(OutfitterButton, "+", 33, "+", 7)
 
 -->>--	Outfitter Frame
-	self:keepFontStrings(OutfitterFrame)
-	self:moveObject(OutfitterFrame, "+", 28, nil, nil)
-	self:moveObject(OutfitterCloseButton, "-", 4, "-", 4)
-	self:getChild(OutfitterFrame, 8):SetAlpha(0) -- hide band on the left
-	self:applySkin(OutfitterFrame)
+	self:SecureHook(OutfitterFrame, "Show", function(this, ...)
+		self:keepFontStrings(OutfitterFrame)
+		self:moveObject(OutfitterFrame, "+", 28, nil, nil)
+		self:moveObject(OutfitterCloseButton, "-", 4, "-", 4)
+		self:getChild(OutfitterFrame, 8):SetAlpha(0) -- hide band on the left
+		self:applySkin(OutfitterFrame)
+		self:Unhook(OutfitterFrame, "Show")
+	end)
 
 -->>--	Main Frame
 	self:keepRegions(OutfitterMainFrame, {2, 3}) -- N.B. region 2 is text, 3 is background texture
@@ -150,14 +153,15 @@ function Skinner:Outfitter()
 	end
 
 -->>-- QuickSlots frame
-	self:SecureHook(OutfitterQuickSlots, "SetDimensions", function(this)
+	self:SecureHook(Outfitter, "InitializeQuickSlots", function()
 		self:keepFontStrings(OutfitterQuickSlots)
 		self:applySkin(OutfitterQuickSlots)
+		self:SecureHook(OutfitterQuickSlots, "Show", function(this)
+			self:moveObject(OutfitterQuickSlotsButton0, "+", 1, "-", 1)
+		end)
+		self:Unhook(Outfitter, "InitializeQuickSlots")
 	end)
-	self:SecureHook(OutfitterQuickSlots, "Show", function(this)
-		self:moveObject(OutfitterQuickSlotsButton0, "+", 1, "-", 1)
-	end)
-
+	
 -->>-- Outfit Bars
 	self:ScheduleEvent(skinOutfitBars, 1, Outfitter.OutfitBar) -- wait for a second before skinning the Outfit Bars
 

@@ -34,9 +34,10 @@ function Skinner:Waterfall()
 			-- Mainpane Frame
 			-- hook this to skin the TextBox & Dropdown controls
 			Skinner:SecureHook(frame.mainpane, "DoLayout", function(this)
---				Skinner:Debug("wfmp_dl")
+--				Skinner:Debug("wfmp_dl:[%s]", this)
 				skinControls(frame.mainpane)
 			end)
+			skinControls(frame.mainpane)
 			scrollframe = Skinner:getChild(frame.mainpane.frame, 1)
 			scrollbar = Skinner:getChild(scrollframe, 2)
 			Skinner:skinScrollBar(scrollframe, nil, scrollbar)
