@@ -986,7 +986,7 @@ function Skinner:OnInitialize()
 	end
 
 	-- Register the chat command and the minimap icon
-	self:RegisterChatCommand({"/skinner", "/skin"}, self.OnMenuRequest, "SKINNER")
+	self:RegisterChatCommand({"/skinner", "/skin"}, self.options, "SKINNER")
 	if self.ldbIcon then
 		self.ldbIcon:Register("Skinner", ldbObj, self.db.profile.minimap)
 	end
