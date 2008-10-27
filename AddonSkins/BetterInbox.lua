@@ -5,6 +5,8 @@ function Skinner:BetterInbox(LoD)
 	local bib = LibStub:GetLibrary('AceAddon-3.0', true):GetAddon('BetterInbox', true)
 
 	if not bib then return end
+	
+--	self:Debug("BetterInbox:[%s, %s]", bib, LoD)
 
 	local function skinBIb()
 
@@ -32,7 +34,12 @@ function Skinner:BetterInbox(LoD)
 		Skinner:moveObject(bib.scrollframe, "-", 5, "+", 20)
 		bib.scrollframe:SetHeight(bib.scrollframe:GetHeight() + 10)
 		Skinner:moveObject(bib.scrollframe.entries[1], "-", 5, "+", 20)
-		Skinner:moveObject(bib.scrollframe.dropdown.frame, "-", 10, "-", 5)
+		if not bib.scrollframe.dropdown.skinned then
+			Skinner:skinDropDown(bib.scrollframe.dropdown.dropdown)
+			Skinner:applySkin(bib.scrollframe.dropdown.pullout.frame)
+			bib.scrollframe.dropdown.skinned = true
+		end
+		Skinner:moveObject(bib.scrollframe.dropdown.frame, "-", 10, "-", 2)
 		Skinner:moveObject(BetterInboxCancelButton, "-", 7, "-", 5)
 
 	end
