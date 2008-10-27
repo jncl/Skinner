@@ -1,7 +1,5 @@
 --check to see if running on PTR
 local IsPTR = FeedbackUI and true or false
---check to see if running on WotLK
-local IsWotLK = GetCVarBool and true or false
 
 local FrameStrata = {"PARENT", "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG", "TOOLTIP"}
 
@@ -61,7 +59,7 @@ function Skinner:Defaults()
 		RaidUI          = true,
 		ReadyCheck      = true,
 		Buffs           = true,
-		Achievements    = IsWotLK and true or nil,
+		Achievements    = true,
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
@@ -103,7 +101,7 @@ function Skinner:Defaults()
 		GuildBankUI     = true,
 		Nameplates      = true,
 		TimeManager     = true,
-		Calendar        = IsWotLK and true or nil,
+		Calendar        = true,
 		Feedback        = IsPTR and true or nil,
 		-- NPC Frames
 		MerchantFrames  = true,
@@ -117,9 +115,13 @@ function Skinner:Defaults()
 		GuildRegistrar  = true,
 		Petition        = true,
 		Tabard          = true,
-		Barbershop      = IsWotLK and true or nil,
+		Barbershop      = true,
 		-- Others
 		TrackerFrame    = false,
+		-- LDB icon
+		minimap = {
+			hide = false,
+		},
 	})
 
 end
@@ -128,6 +130,11 @@ function Skinner:Options()
 	self.options = {
 		type = "group",
 		args = {
+			settingsspacer = {
+				type = "header",
+				name = self.L["Skin Settings"],
+				order = 001,
+			},
 			cp = {
 				name = self.L["Default Colours"],
 				desc = self.L["Change the default colour settings"],
@@ -216,6 +223,7 @@ function Skinner:Options()
 						hasAlpha = true,
 					},
 				},
+				order = 020,
 			},
 			bd = {
 				name = self.L["Default Backdrop"],
@@ -332,6 +340,7 @@ function Skinner:Options()
 						end,
 					},
 				},
+				order = 010,
 			},
 			texturedtab = {
 				name = self.L["Textured Tab"],
@@ -343,6 +352,7 @@ function Skinner:Options()
 				set = function(v)
 					self.db.profile.TexturedTab = v
 				end,
+				order = 070,
 			},
 			textureddd = {
 				name = self.L["Textured DropDown"],
@@ -354,30 +364,7 @@ function Skinner:Options()
 				set = function(v)
 					self.db.profile.TexturedDD = v
 				end,
-			},
-			warnings = {
-				name = self.L["Show Warnings"],
-				desc = self.L["Toggle the Showing of Warnings"],
-				type = "toggle",
-				get = function()
-					return self.db.profile.Warnings
-				end,
-				set = function(v)
-					self.db.profile.Warnings = v
-				end,
-				order = 200,
-			},
-			errors = {
-				name = self.L["Show Errors"],
-				desc = self.L["Toggle the Showing of Errors"],
-				type = "toggle",
-				get = function()
-					return self.db.profile.Errors
-				end,
-				set = function(v)
-					self.db.profile.Errors = v
-				end,
-				order = 200,
+				order = 060,
 			},
 			gradient = {
 				name = self.L["Gradient"],
@@ -475,6 +462,7 @@ function Skinner:Options()
 						validate = self.LSM:List("background", v),
 					},
 				},
+				order = 040,
 			},
 			fadeheight = {
 				name = self.L["Fade Height"],
@@ -518,6 +506,7 @@ function Skinner:Options()
 						end,
 					},
 				},
+				order = 030,
 			},
 			delay = {
 				name = self.L["Skinning Delays"],
@@ -567,6 +556,7 @@ function Skinner:Options()
 						end,
 					},
 				},
+				order = 210,
 			},
 			viewport = {
 				name = self.L["View Port"],
@@ -710,6 +700,7 @@ function Skinner:Options()
 						hasAlpha = true,
 					},
 				},
+				order = 150,
 			},
 			topframe = {
 				name = self.L["Top Frame"],
@@ -865,6 +856,7 @@ function Skinner:Options()
 						end,
 					},
 				},
+				order = 160,
 			},
 			middleframe = {
 				name = self.L["Middle Frame(s)"],
@@ -931,6 +923,7 @@ function Skinner:Options()
 						end,
 					},
 				},
+				order = 170,
 			},
 			bottomframe = {
 				name = self.L["Bottom Frame"],
@@ -1083,6 +1076,7 @@ function Skinner:Options()
 						end,
 					},
 				},
+				order = 180,
 			},
 			statusbar = {
 				name = self.L["StatusBar"],
@@ -1116,6 +1110,12 @@ function Skinner:Options()
 						hasAlpha = true,
 					},
 				},
+				order = 050,
+			},
+			framesspacer = {
+				type = "header",
+				name = self.L["Frames"],
+				order = 090,
 			},
 			char = {
 				name = self.L["Character Frames"],
@@ -1335,7 +1335,7 @@ function Skinner:Options()
 							self:checkAndRun("Buffs")
 						end,
 					},
-					achievements = IsWotLK and {
+					achievements = {
 						name = self.L["Achievements Frame"],
 						desc = self.L["Toggle the skin of the Achievements Frame"],
 						type = "toggle",
@@ -1348,8 +1348,9 @@ function Skinner:Options()
 								self:checkAndRun("AchievementUI")
 							end
 						end,
-					} or nil,
+					},
 				},
+				order = 100,
 			},
 			ui = {
 				name = self.L["UI Frames"],
@@ -2032,7 +2033,7 @@ function Skinner:Options()
 							self:checkAndRun("TimeManager")
 						end,
 					},
-					calendar = IsWotLK and {
+					calendar = {
 						name = self.L["Calendar"],
 						desc = self.L["Toggle the skin of the Calendar Frame"],
 						type = "toggle",
@@ -2043,7 +2044,7 @@ function Skinner:Options()
 							self.db.profile.Calendar = v
 							self:checkAndRun("Calendar")
 						end,
-					} or nil,
+					},
 					feedback = IsPTR and {
 						name = self.L["Feedback"],
 						desc = self.L["Toggle the skin of the Feedback Frame"],
@@ -2057,6 +2058,7 @@ function Skinner:Options()
 						end,
 					} or nil,
 				},
+				order = 120,
 			},
 			npc = {
 				name = self.L["NPC Frames"],
@@ -2208,7 +2210,7 @@ function Skinner:Options()
 							self:checkAndRun("Tabard")
 						end,
 					},
-					barbershop = IsWotLK and {
+					barbershop = {
 						name = self.L["Barbershop Frame"],
 						desc = self.L["Toggle the skin of the Barbershop Frame"],
 						type = "toggle",
@@ -2221,8 +2223,9 @@ function Skinner:Options()
 								self:checkAndRun("BarbershopUI")
 							end
 						end,
-					} or nil,
+					},
 				},
+				order = 110,
 			},
 			tracker = {
 				name = self.L["Skin Tracker Frame"],
@@ -2234,7 +2237,53 @@ function Skinner:Options()
 				set = function(v)
 					self.db.profile.TrackerFrame = v
 				end,
+				order = 190,
+			},
+			otherspacer = {
+				type = "header",
+				name = self.L["Other Settings"],
 				order = 200,
+			},
+			minimap = {
+				type = "toggle",
+				name = self.L["Minimap icon"],
+				desc = self.L["Toggle the minimap icon"],
+				get = function() return not self.db.profile.minimap.hide end,
+				set = function(v)
+					local hide = not v
+					self.db.profile.minimap.hide = hide
+					if hide then
+						self.ldbIcon:Hide("Skinner")
+					else
+						self.ldbIcon:Show("Skinner")
+					end
+				end,
+				hidden = function() return not self.ldbIcon end,
+				order = 230,
+			},
+			warnings = {
+				name = self.L["Show Warnings"],
+				desc = self.L["Toggle the Showing of Warnings"],
+				type = "toggle",
+				get = function()
+					return self.db.profile.Warnings
+				end,
+				set = function(v)
+					self.db.profile.Warnings = v
+				end,
+				order = 240,
+			},
+			errors = {
+				name = self.L["Show Errors"],
+				desc = self.L["Toggle the Showing of Errors"],
+				type = "toggle",
+				get = function()
+					return self.db.profile.Errors
+				end,
+				set = function(v)
+					self.db.profile.Errors = v
+				end,
+				order = 250,
 			},
 		},
 	}

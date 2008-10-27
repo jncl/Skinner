@@ -1,34 +1,35 @@
 
 -- if the Debug library is available then use it
 if AceLibrary:HasInstance("AceDebug-2.0") then
-	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "AceDebug-2.0", "FuBarPlugin-2.0")
+	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "AceDebug-2.0")
 --@alpha@
 	Skinner:SetDebugging(true)
 	Skinner:SetDebugLevel(1)
 --@end-alpha@
 else
-	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "FuBarPlugin-2.0")
+	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1")
 	function Skinner:Debug() end
 	function Skinner:LevelDebug() end
 	function Skinner:IsDebugging() end
 end
 
 Skinner.L = AceLibrary("AceLocale-2.2"):new("Skinner")
-Skinner.LT = AceLibrary("Tablet-2.0")
 Skinner.LSM = AceLibrary("LibSharedMedia-3.0")
 
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
 
--- FuBar setup
-Skinner.hasIcon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01"
-Skinner.defaultMinimapPosition = 285
-Skinner.clickableTooltip = false
-Skinner.cannotDetachTooltip = true
-Skinner.hasNoColor = true
-Skinner.hideMenuTitle = true
-Skinner.hideWithoutStandby = true
-Skinner.independentProfile = true
+-- LDB setup
+local ldbObj
+local ldb = LibStub and LibStub:GetLibrary("LibDataBroker-1.1", true)
+if ldb then
+	ldbObj = ldb:NewDataObject("Skinner", {
+		type = "data source",
+		text = "Skinner",
+		icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+	})
+end
+Skinner.ldbIcon = LibStub and LibStub:GetLibrary("LibDBIcon-1.0", true)
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
@@ -196,7 +197,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 	if not addonFunc then addonFunc = addonName end
 
---	self:Debug("checkAndRunAddOn:[%s, %s, %s, %s]", addonName, LoD, IsAddOnLoaded(addonName), type(self[addonFunc]))
+--	self:Debug("checkAndRunAddOn:[%s, %s, %s, %s, %s]", addonName, LoD, IsAddOnLoaded(addonName), IsAddOnLoadOnDemand(addonName), type(self[addonFunc]))
 
 	if not IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
@@ -218,7 +219,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 		-- handle errors from internal functions
 		elseif type(self[addonFunc]) == "function" then
 --			self:Debug("checkAndRunAddOn#2:[%s, %s]", addonFunc, self[addonFunc])
-			status, result = pcall(self[addonFunc], self)
+			status, result = pcall(self[addonFunc], self, LoD)
 		elseif type(self[addonFunc]) == "string" then
 --			self:Debug("checkAndRunAddOn#3:[%s, %s]", addonFunc, self[addonFunc])
 			-- add Skinner reference to string before running it
@@ -682,7 +683,7 @@ end
 function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
 
 	if not frame then return end
-	if not _G[frame:GetName().."Right"] then return end -- ignore tekKonfig dropdowns
+	if not frame.GetName and _G[frame:GetName().."Right"] then return end -- ignore tekKonfig dropdowns
 
 	if not self.db.profile.TexturedDD or noSkin then self:keepFontStrings(frame) return end
 
@@ -984,8 +985,11 @@ function Skinner:OnInitialize()
 		self.db.profile.Gradient.texture = "Blizzard ChatFrame Background"
 	end
 
-	self:RegisterChatCommand({"/Skinner", "/skin"}, self.options)
-	self.OnMenuRequest = self.options
+	-- Register the chat command and the minimap icon
+	self:RegisterChatCommand({"/skinner", "/skin"}, self.OnMenuRequest, "SKINNER")
+	if self.ldbIcon then
+		self.ldbIcon:Register("Skinner", ldbObj, self.db.profile.minimap)
+	end
 
 	-- Heading and Body Text colours
 	local c = self.db.profile.HeadText
@@ -1056,10 +1060,12 @@ function Skinner:OnInitialize()
 	}
 
 	-- these are used to disable frames from being skinned
-	self.charKeys1 = {"CharacterFrames", "PetStableFrame", "SpellBookFrame", "TalentFrame", "DressUpFrame", "FriendsFrame", "TradeSkill", "CraftFrame", "TradeFrame", "RaidUI", "Buffs"}
+	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentFrame", "DressUpFrame", "FriendsFrame", "TradeSkill", "CraftFrame", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "Achievements"}
 	self.charKeys2 = {"QuestLog"}
-	self.npcKeys = {"MerchantFrames", "GossipFrame", "ClassTrainer", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard"}
-	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatConfig", "ChatTabs", "ChatFrames", "LootFrame", "StackSplit", "ItemText", "Colours", "WorldMap", "HelpFrame", "KnowledgeBase", "Inspect", "BattleScore", "BattlefieldMm", "ScriptErrors", "Tutorial", "DropDowns", "MinimapButtons", "MinimapGloss", "MovieProgress", "MenuFrames", "BankFrame", "MailFrame", "AuctionFrame", "CoinPickup", "GMSurveyUI", "LFGFrame", "ItemSocketingUI", "GuildBankUI"}
+	self.npcKeys = {"MerchantFrames", "GossipFrame", "ClassTrainer", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "Barbershop"}
+	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatConfig", "ChatTabs", "ChatFrames", "CombatLogQBF", "LootFrame", "StackSplit", "ItemText", "Colours", "WorldMap", "HelpFrame", "KnowledgeBase", "Inspect", "BattleScore", "BattlefieldMm", "ScriptErrors", "Tutorial", "DropDowns", "MinimapButtons", "MinimapGloss", "MenuFrames", "BankFrame", "MailFrame", "AuctionFrame", "CoinPickup", "GMSurveyUI", "LFGFrame", "ItemSocketingUI", "GuildBankUI", "Nameplates", "TimeManager", "Calendar"}
+	if IsMacClient() then table.insert(self.uiKeys1, "MovieProgress") end
+	if self.isPTR then table.insert(self.uiKeys1, "Feedback") end
 	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "MainMenuBar"}
 	-- these are used to disable the gradient
 	self.charFrames = {}
@@ -1095,12 +1101,6 @@ function Skinner:OnInitialize()
 	-- store Addons managed by LoadManagers
 	self.lmAddons = {}
 	
-end
-
-function Skinner:OnTooltipUpdate()
-
-	self.LT:SetHint(self.L["Right Click to display menu"])
-
 end
 
 -- This function was copied from WoWWiki
@@ -1181,4 +1181,36 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 	getChildren(obj, 1)
 	print("Finished Children")
 
+end
+
+-- LDB functions
+-- copied from picoGuild Addon
+local function GetTipAnchor(frame)
+
+	local x,y = frame:GetCenter()
+	if not x or not y then return "TOPLEFT", "BOTTOMLEFT" end
+	local hhalf = (x > UIParent:GetWidth()*2/3) and "RIGHT" or (x < UIParent:GetWidth()/3) and "LEFT" or ""
+	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
+	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
+	
+end
+
+function ldbObj.OnLeave() GameTooltip:Hide() end
+function ldbObj.OnEnter(self)
+ 	GameTooltip:SetOwner(self, "ANCHOR_NONE")
+	GameTooltip:SetPoint(GetTipAnchor(self))
+	GameTooltip:ClearLines()
+
+	GameTooltip:AddLine("Skinner")
+	GameTooltip:AddLine(Skinner.L["Right Click to display menu"])
+
+	GameTooltip:Show()
+end
+
+-- copied from Violation addon
+local dew = LibStub and LibStub:GetLibrary("Dewdrop-2.0", true)
+function ldbObj.OnClick(self, button)
+	if button == "RightButton" and dew then
+		dew:Open(self, "children", function() dew:FeedAceOptionsTable(Skinner.options) end)
+	end
 end

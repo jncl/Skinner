@@ -409,6 +409,11 @@ L:RegisterTranslations("enUS", function() return {
 	["Right Click to display menu"] = true,
 	["Skin Tracker Frame"] = true,
 	["Toggle the skin of the Tracker Frame"] = true,
+	["Minimap icon"] = true,
+	["Toggle the minimap icon"] = true,
+	["Skin Settings"] = true,
+	["Frames"] = true,
+	["Other Settings"] = true,
 }
 end)
 
@@ -821,6 +826,11 @@ L:RegisterTranslations("zhCN", function() return {
 	["Right Click to display menu"] = "右键点击显示菜单",
 	["Skin Tracker Frame"] = "皮肤追踪框架",
 	["Toggle the skin of the Tracker Frame"] = "切换追踪框架皮肤",
+--	["Minimap icon"] = true,
+--	["Toggle the minimap icon"] = true,
+--	["Skin Settings"] = true,
+--	["Frames"] = true,
+--	["Other Settings"] = true,
 }
 end)
 
@@ -1233,6 +1243,11 @@ L:RegisterTranslations("zhTW", function() return {
 	["Right Click to display menu"] = "右鍵點擊顯示功能表",
 	["Skin Tracker Frame"] = "介面追蹤框架",
 	["Toggle the skin of the Tracker Frame"] = "切換追蹤框架介面",
+--	["Minimap icon"] = true,
+--	["Toggle the minimap icon"] = true,
+--	["Skin Settings"] = true,
+--	["Frames"] = true,
+--	["Other Settings"] = true,
 }
 end)
 
@@ -1645,5 +1660,10 @@ L:RegisterTranslations("koKR", function() return {
 	["Right Click to display menu"] = "메뉴를 표시하려면 |cffeda55f오른쪽 클릭|r하세요.",
 	["Skin Tracker Frame"] = "트래커 프레임",
 	["Toggle the skin of the Tracker Frame"] = "트래커 프레임의 스킨을 전환합니다.",
+--	["Minimap icon"] = true,
+--	["Toggle the minimap icon"] = true,
+--	["Skin Settings"] = true,
+--	["Frames"] = true,
+--	["Other Settings"] = true,
 }
 end)

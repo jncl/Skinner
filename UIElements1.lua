@@ -828,15 +828,15 @@ function Skinner:MinimapButtons()
 	self.initialized.MinimapButtons = true
 
 	local function mmKids(mmObj)
-
-		local mmObjName = mmObj:GetName()
---		self:Debug("Checking %s kids", mmObjName)
+	
+		local mmObjName = mmObj.GetName and mmObj:GetName() or "<Anon>"
+		Skinner:Debug("Checking %s kids", mmObjName)
 
 		for i = 1, select("#", mmObj:GetChildren()) do
 			local obj = select(i, mmObj:GetChildren())
 			local objName = obj:GetName()
 			local objType = obj:GetObjectType()
---			self:Debug("%s kids: [%s, %s, %s]", mmObjName, obj, objName, objType)
+--			Skinner:Debug("%s kids: [%s, %s, %s]", mmObjName, obj, objName, objType)
 			if not obj.skinned and objName
 			and (objType == "Button" or objType == "Frame" and objName == "MiniMapMailFrame") then
 				for i = 1, select("#", obj:GetRegions()) do
@@ -845,24 +845,23 @@ function Skinner:MinimapButtons()
 						local regName = reg:GetName()
 						local regTex = reg:GetTexture()
 						local regDL = reg:GetDrawLayer()
---						self:Debug("%s obj: [%s, %s, %s]", mmObjName, objName, regName, regTex)
+--						Skinner:Debug("%s obj: [%s, %s, %s]", mmObjName, objName, regName, regTex)
 						-- change the DrawLayer to make the Icon show if required
-						if (regName and string.find(regName, "Icon"))
-						or (regTex and string.find(regTex, "Icon")) then
---							self:Debug("%s obj Icon: [%s, %s, %s]", mmObjName, objName, regName, regDL)
+						if (regName and string.find(regName, "[Ii]con"))
+						or (regTex and string.find(regTex, "[Ii]con")) then
+--							Skinner:Debug("%s obj Icon: [%s, %s, %s]", mmObjName, objName, regName, regDL)
 							if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
 						elseif (regName and string.find(regName, "Border"))
 						or (regTex and string.find(regTex, "TrackingBorder")) then
---							self:Debug("%s obj skinned: [%s, %s, %s]", mmObjName, obj:GetName(), math.ceil(obj:GetWidth()), math.ceil(obj:GetHeight()))
+--							Skinner:Debug("%s obj skinned: [%s, %s, %s]", mmObjName, obj:GetName(), math.ceil(obj:GetWidth()), math.ceil(obj:GetHeight()))
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)
 							Skinner:storeAndSkin(ftype, obj)
 							obj.skinned = true
-							break
 						end
 					end
 				end
@@ -873,6 +872,7 @@ function Skinner:MinimapButtons()
 
 	end
 
+	-- skin Minimap children
 	mmKids(Minimap)
 
 	-- skin other Blizzard buttons
