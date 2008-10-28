@@ -20,6 +20,9 @@ assert(Skinner, "Skinner creation failed, missing Libraries")
 Skinner.debugFrame = ChatFrame7
 
 Skinner.L = LibStub("AceLocale-2.2", true):new("Skinner")
+
+-- check to see if LibSharedMedia-3.0 is loaded
+assert(LibStub("LibSharedMedia-3.0", true), "LibSharedMedia-3.0 unavailable, Skinner not loaded")
 Skinner.LSM = LibStub("LibSharedMedia-3.0", true)
 
 -- LDB setup

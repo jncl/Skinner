@@ -42,21 +42,20 @@ S - Skin request
 	I	Status Window 2, requested by Spar, 13.9.08
 ?		- it is an Addon?? How can it NOT be skinned?
 
-	S	oRA2
-		- skin it, requested by madindehead, 18.10.08
-
 	N	Omen3
 √		- new version, update skin, reported by toin7, 16.10.08, requested by Vey, 18.10.08
 
-	N	Combuctor
-		- new version, update skin, reported by Neffi, 18.10.08
+	N	Combuctor, reported by Neffi, 18.10.08
 
-	N	AckisRecipeList
-		- new version, update skin, reported by r00ster, 21.10.08
+	N	AckisRecipeList, reported by r00ster, 21.10.08
+		
+	N	Cartographer3, requested by solor, 28.10.08
 		
 	N	Auc_Advanced
 		- has superceeded Auctioneer, parts are new and need skinning
-		
+	
+	S	oRA2, requested by madindehead, 18.10.08
+
 	S	tekBlocks
 
 	S	MakeRocketGoNow

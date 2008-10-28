@@ -8,17 +8,17 @@
 ## Notes-zhTW: 更改預設 UI 的視覺樣式.
 ## Author: Jncl
 ## Version: @project-version@ 
-## OptionalDeps: Ace2, DewdropLib, LibSharedMedia-3.0, LibDataBroker-1.1, LibDBIcon-1.0
+## OptionalDeps: Ace2, DewdropLib, LibSharedMedia-3.0
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: SkinnerDB
 
 # LibStub & Callback Handler
-LibStub\LibStub.lua
-CallbackHandler-1.0\CallbackHandler-1.0.xml
+LibStub.lua
+CallbackHandler-1.0.lua
 # LDB Libraries
-LibDataBroker-1.1\LibDataBroker-1.1.lua
-LibDBIcon-1.0\LibDBIcon-1.0.lua
+LibDataBroker-1.1.lua
+LibDBIcon-1.0.lua
 
 #@no-lib-strip@
 embeds.xml
