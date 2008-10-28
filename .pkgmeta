@@ -4,8 +4,6 @@ externals:
 
 	LibStub: svn://svn.wowace.com/wow/libstub/mainline/tags/1.0
 	CallbackHandler-1.0: svn://svn.wowace.com/wow/callbackhandler/mainline/tags/1.0.3/CallbackHandler-1.0
-#	LibDataBroker-1.1: git://github.com/tekkub/libdatabroker-1-1.git
-	LibDataBroker-1.1: http://github.com/tekkub/libdatabroker-1-1/tree/v1.1.3/LibDataBroker-1.1.lua?raw=true
 	LibDBIcon-1.0: svn://svn.wowace.com/wow/libdbicon-1-0/mainline/trunk/LibDBIcon-1.0
 
 	libs/AceAddon-2.0: svn://svn.wowace.com/wow/ace2/mainline/trunk/AceAddon-2.0
