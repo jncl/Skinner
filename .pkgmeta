@@ -22,4 +22,4 @@ externals:
 
 ignore:
 
-	ToDo.txt
+	- ToDo.txt
