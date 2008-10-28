@@ -21,7 +21,7 @@ function Skinner:ZOMGBuffs()
 	end, true)
 
 	-- if there's a border around the icon then skin it
-	if ZOMGBuffs.menu.border then self:applySkin(ZOMGBuffs.menu.border) end
+	if ZOMGBuffs.icon.border then self:applySkin(ZOMGBuffs.icon.border) end
 
 	-- set the bar texture
 	ZOMGBuffs.db.profile.bartexture = self.db.profile.StatusBar.texture

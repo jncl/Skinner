@@ -475,6 +475,8 @@ function Skinner:AchievementUI()
 	if not self.db.profile.Achievements or self.initialized.Achievements then return end
 	self.initialized.Achievements = true
 	
+--	self:Debug("AchievementUI Loaded")
+	
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
 	-- Hook this to skin the GameTooltip StatusBars

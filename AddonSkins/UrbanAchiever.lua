@@ -18,19 +18,11 @@ function Skinner:UrbanAchiever()
 	self:skinSlider(this.frame.catScroll)
 	self:skinSlider(this.frame.achScroll)
 	-- Category frame
+	this.frame.category.backdrop:SetAlpha(0)
 	self:moveObject(this.frame.category, "-", 10, nil, nil)
 	self:applySkin(this.frame.category)
 	self:applySkin(this.frame, true)
 	
--->>-- Tabs
-	for i = 1, #this.frame.tabButtons do
-		local tabName = this.frame.tabButtons[i]
-		self:keepRegions(tabName, {1, 3}) -- N.B. region 3 is the Text, 1 is the highlight
-		if i == 1 then self:moveObject(tabName, nil, nil, "+", 1)
-		else self:moveObject(tabName, "-", 2, nil, nil) end
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0, 1)
-		else self:applySkin(tabName) end
-	end
 -->>-- Category Buttons
 	local bDrop = CopyTable(self.backdrop)
 	bDrop.edgeSize = 8
@@ -40,23 +32,40 @@ function Skinner:UrbanAchiever()
 		self:getRegion(catBtn, 3):SetAlpha(1) -- highlight texture
 		self:applySkin(catBtn, nil, nil, nil, nil, bDrop)
 	end
--->>-- Achievement Buttons
-	-- for i = 1, #this.frame.achButtons do
-	-- 	local achBtn = this.frame.achButtons[i]
-	-- 	self:keepRegions(achBtn, {3, 4}) -- N.B. region 3 is the 
-	-- 	self:applySkin(achBtn)
-	-- end
--->>-- Achievement Sort Buttons
-	-- this.frame.achSort.name
-	-- this.frame.achSort.points
-	-- this.frame.achSort.completed
-	-- this.frame.achSort.comparison
 -->>-- Achievement Display Frame
 	self:keepRegions(this.frame.display.bar, {3, 4, 5})
 	self:glazeStatusBar(this.frame.display.bar, 0)
 	self:keepRegions(this.frame.display.compareBar, {3, 4, 5})
 	self:glazeStatusBar(this.frame.display.compareBar, 0)
 	self:skinSlider(this.frame.criteriaScroll)
+	
+-->>-- Tracker Frame
+	self:applySkin(UrbanAchieverTrackerFrame.header)
+
+-->>-- Tabs
+	for i = 1, #this.frame.tabButtons do
+		local tabObj = this.frame.tabButtons[i]
+		tabObj.backdrop:SetAlpha(0)
+		if self.db.profile.TexturedTab then
+			self:applySkin(tabObj, nil, 0, 1)
+			if i == 1 then self:setActiveTab(tabObj)
+			else self:setInactiveTab(tabObj) end
+		else self:applySkin(tabObj) end
+	end
+	if self.db.profile.TexturedTab then 
+		self:SecureHook(this, "RefreshCategoryButtons", function(this)
+			for i = 1, #this.frame.tabButtons do
+				if this.currentTab == "achievements" then
+					self:setActiveTab(this.frame.tabButtons[1])
+					self:setInactiveTab(this.frame.tabButtons[2])
+				else 
+					self:setActiveTab(this.frame.tabButtons[2])
+					self:setInactiveTab(this.frame.tabButtons[1])
+				end
+			end
+		end)
+	end
+	
 	
 end
 

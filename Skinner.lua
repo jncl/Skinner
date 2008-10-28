@@ -1206,21 +1206,25 @@ local function GetTipAnchor(frame)
 end
 
 function ldbObj.OnLeave() GameTooltip:Hide() end
-function ldbObj.OnEnter(self)
- 	GameTooltip:SetOwner(self, "ANCHOR_NONE")
-	GameTooltip:SetPoint(GetTipAnchor(self))
+function ldbObj.OnEnter(this)
+
+ 	GameTooltip:SetOwner(this, "ANCHOR_NONE")
+	GameTooltip:SetPoint(GetTipAnchor(this))
 	GameTooltip:ClearLines()
 
 	GameTooltip:AddLine("Skinner")
 	GameTooltip:AddLine(Skinner.L["Right Click to display menu"])
 
 	GameTooltip:Show()
+	
 end
 
 -- copied from Violation addon
 local dew = LibStub and LibStub:GetLibrary("Dewdrop-2.0", true)
-function ldbObj.OnClick(self, button)
+function ldbObj.OnClick(this, button)
+
 	if button == "RightButton" and dew then
-		dew:Open(self, "children", function() dew:FeedAceOptionsTable(Skinner.options) end)
+		dew:Open(this, "children", function() dew:FeedAceOptionsTable(Skinner.options) end)
 	end
+	
 end
