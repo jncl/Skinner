@@ -1,5 +1,7 @@
 -- check to see if LibStub is loaded
 assert(LibStub, "LibStub unavailable, Skinner not loaded")
+-- check to see if AceLibrary is loaded
+assert(AceLibrary, "AceLibrary unavailable, Skinner not loaded")
 
 -- if the Debug library is available then use it
 if AceLibrary:HasInstance("AceDebug-2.0") then
@@ -24,18 +26,6 @@ Skinner.L = LibStub("AceLocale-2.2", true):new("Skinner")
 -- check to see if LibSharedMedia-3.0 is loaded
 assert(LibStub("LibSharedMedia-3.0", true), "LibSharedMedia-3.0 unavailable, Skinner not loaded")
 Skinner.LSM = LibStub("LibSharedMedia-3.0", true)
-
--- LDB setup
-local ldbObj
-local ldb = LibStub("LibDataBroker-1.1", true)
-if ldb then
-	ldbObj = ldb:NewDataObject("Skinner", {
-		type = "data source",
-		text = "Skinner",
-		icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
-	})
-end
-Skinner.ldbIcon = LibStub("LibDBIcon-1.0", true)
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
@@ -996,10 +986,9 @@ function Skinner:OnInitialize()
 	end
 
 	-- Register the chat command and the minimap icon
-	self:RegisterChatCommand({"/skinner", "/skin"}, self.options, "SKINNER")
-	if self.ldbIcon then
-		self.ldbIcon:Register("Skinner", ldbObj, self.db.profile.minimap)
-	end
+	self:RegisterChatCommand({"/skinner", "/skin"}, self.options)
+	-- setup the LDB object
+	self:setupLDB()
 
 	-- Heading and Body Text colours
 	local c = self.db.profile.HeadText
@@ -1191,40 +1180,4 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 	getChildren(obj, 1)
 	print("Finished Children")
 
-end
-
--- LDB functions
--- copied from picoGuild Addon
-local function GetTipAnchor(frame)
-
-	local x,y = frame:GetCenter()
-	if not x or not y then return "TOPLEFT", "BOTTOMLEFT" end
-	local hhalf = (x > UIParent:GetWidth()*2/3) and "RIGHT" or (x < UIParent:GetWidth()/3) and "LEFT" or ""
-	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
-	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
-	
-end
-
-function ldbObj.OnLeave() GameTooltip:Hide() end
-function ldbObj.OnEnter(this)
-
- 	GameTooltip:SetOwner(this, "ANCHOR_NONE")
-	GameTooltip:SetPoint(GetTipAnchor(this))
-	GameTooltip:ClearLines()
-
-	GameTooltip:AddLine("Skinner")
-	GameTooltip:AddLine(Skinner.L["Right Click to display menu"])
-
-	GameTooltip:Show()
-	
-end
-
--- copied from Violation addon
-local dew = LibStub and LibStub:GetLibrary("Dewdrop-2.0", true)
-function ldbObj.OnClick(this, button)
-
-	if button == "RightButton" and dew then
-		dew:Open(this, "children", function() dew:FeedAceOptionsTable(Skinner.options) end)
-	end
-	
 end

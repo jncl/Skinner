@@ -27,6 +27,7 @@ embeds.xml
 Localisations.lua
 Skinner.lua
 options.lua
+SkinnerLDB.lua
 
 #
 # The individual lua files skin the default frames as follows;

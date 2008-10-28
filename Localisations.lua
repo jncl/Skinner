@@ -1,4 +1,4 @@
-local L = LibStub("AceLocale-2.2", true):new("Skinner")
+local L = LibStub("AceLocale-2.2"):new("Skinner")
 
 L:RegisterTranslations("enUS", function() return {
 	["Default Colours"] = true,
