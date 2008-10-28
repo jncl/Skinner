@@ -1,0 +1,65 @@
+ToDos
+
+N.B. √ is Alt+v (Comment char if using TextMate)
+
+I - Issue/Bug
+N - New Version
+O - Other change
+S - Skin request
+
+
+	I	Ace2, reported by snoowly, 27.10.08
+√		- Error with french client and donation frame
+
+	I	AchievementUI
+√		- skin the popup Alert frames, remove all textures
+		
+	I	RaidUI, reported by Xedriell, 27.10.08
+√		- Extra button since the patch
+
+	I	Minimap Button bag, reported by Tamz, 27.10.08 (Curse)
+		- latest version 'breaks' Skinner
+
+	I	UrbanAchiever, reported by Kerecha, 26.10.08
+		- the text on the tabs is hidden underneath the skin.
+		- Also would be nice if the "foldout" looked the same as the main window
+
+	I	ZOMGBuffs, reported by Oakayam, 26.10.08
+√		- Skinner-b1.9056.7\SkinMe\ZOMGBuffs.lua:24: attempt to index field 'menu' (a nil value)
+
+	I	TipTac, reported by dvanaroyi, 26.10.08
+?		- skin broken
+
+	I	Violation, reported by eymbrokn, 20.10.08
+?		- Bars overlap headings
+
+	I	TopFrame, reported by skumclown, 12.10.08
+?		- error comparing a string to a number
+
+	I	Talent Frame, reported by trinine, 20.10.08
+?		- not being skinned properly with Hunter/Pet
+
+	I	Status Window 2, requested by Spar, 13.9.08
+?		- it is an Addon?? How can it NOT be skinned?
+
+	S	oRA2
+		- skin it, requested by madindehead, 18.10.08
+
+	N	Omen3
+√		- new version, update skin, reported by toin7, 16.10.08, requested by Vey, 18.10.08
+
+	N	Combuctor
+		- new version, update skin, reported by Neffi, 18.10.08
+
+	N	AckisRecipeList
+		- new version, update skin, reported by r00ster, 21.10.08
+		
+	N	Auc_Advanced
+		- has superceeded Auctioneer, parts are new and need skinning
+		
+	S	tekBlocks
+
+	S	MakeRocketGoNow
+		
+	S	DoubleWideTradeSkills, requested by alanm26, 27.10.08
+	

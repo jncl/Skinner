@@ -1,27 +1,30 @@
+-- check to see if LibStub is loaded
+assert(LibStub, "LibStub unavailable, Skinner not loaded")
 
 -- if the Debug library is available then use it
 if AceLibrary:HasInstance("AceDebug-2.0") then
-	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "AceDebug-2.0")
+	Skinner = LibStub("AceAddon-2.0", true):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "AceDebug-2.0")
 --@alpha@
 	Skinner:SetDebugging(true)
 	Skinner:SetDebugLevel(1)
 --@end-alpha@
 else
-	Skinner = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1")
+	Skinner = LibStub("AceAddon-2.0", true):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1")
 	function Skinner:Debug() end
 	function Skinner:LevelDebug() end
 	function Skinner:IsDebugging() end
 end
-
-Skinner.L = AceLibrary("AceLocale-2.2"):new("Skinner")
-Skinner.LSM = AceLibrary("LibSharedMedia-3.0")
+assert(Skinner, "Skinner creation failed, missing Libraries")
 
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
 
+Skinner.L = LibStub("AceLocale-2.2", true):new("Skinner")
+Skinner.LSM = LibStub("LibSharedMedia-3.0", true)
+
 -- LDB setup
 local ldbObj
-local ldb = LibStub and LibStub:GetLibrary("LibDataBroker-1.1", true)
+local ldb = LibStub("LibDataBroker-1.1", true)
 if ldb then
 	ldbObj = ldb:NewDataObject("Skinner", {
 		type = "data source",
@@ -29,7 +32,7 @@ if ldb then
 		icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
 	})
 end
-Skinner.ldbIcon = LibStub and LibStub:GetLibrary("LibDBIcon-1.0", true)
+Skinner.ldbIcon = LibStub("LibDBIcon-1.0", true)
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
@@ -950,6 +953,10 @@ end
 
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
+
+--@debug@
+	if self:IsDebugging() then self:Print("Debugging is enabled") self:Debug("Debugging is enabled") end
+--@end-debug@
 
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end

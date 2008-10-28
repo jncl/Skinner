@@ -8,17 +8,10 @@
 ## Notes-zhTW: 更改預設 UI 的視覺樣式.
 ## Author: Jncl
 ## Version: @project-version@ 
-## OptionalDeps: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, LibDataBroker-1.1, LibDBIcon-1.0
+## OptionalDeps: Ace2, DewdropLib, LibSharedMedia-3.0, LibDataBroker-1.1, LibDBIcon-1.0
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: SkinnerDB
-
-# Not sure these are required anymore since the move to Curse
-# X-Credits: Haste and all the other contributors
-# X-Category: Interface Enhancements
-# X-Website: http://www.wowace.com/projects/skinner/
-# X-AceForum: 2941 (WoWAce Forum 2923)
-# X-Embeds: Ace2, DewdropLib, LibSharedMedia-3.0, TabletLib, FuBarPlugin-2.0
 
 #@no-lib-strip@
 embeds.xml

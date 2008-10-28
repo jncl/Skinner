@@ -21,7 +21,7 @@
 <script file="SkinMe\Atlas.lua"/>
 <script file="SkinMe\AtlasLoot.lua"/>
 <script file="SkinMe\AtlasQuest.lua"/>
-<script file="SkinMe\Auctioneer.lua"/>
+<!-- <script file="SkinMe\Auctioneer.lua"/> -->
 <script file="SkinMe\AuctionFilterPlus.lua"/>
 <script file="SkinMe\AucAdvanced.lua"/>
 <script file="SkinMe\AucExtras.lua"/>

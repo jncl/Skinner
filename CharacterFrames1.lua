@@ -660,7 +660,47 @@ function Skinner:AchievementUI()
 	end
 	
 -->>-- Alert Panels
-	-- Not being skinned, textures can't be separated and some are required
+	local function skinAlertFrame()
+	
+		for i = 1, 2 do
+			local aaFrame = _G["AchievementAlertFrame"..i]
+			if aaFrame and not aaFrame.skinned then
+				aaFrame:SetHeight(60)
+				aaFrame:SetWidth(280)
+				_G["AchievementAlertFrame"..i.."Background"]:SetAlpha(0)
+				Skinner:removeRegions(_G["AchievementAlertFrame"..i.."Button"], {})
+				local aaFU = _G["AchievementAlertFrame"..i.."Unlocked"]
+				aaFU:SetTextColor(self.BTr, self.BTg, self.BTb)
+				aaFU:ClearAllPoints()
+				aaFU:SetPoint("TOP", aaFrame, 0, -12)
+				local aaFN = _G["AchievementAlertFrame"..i.."Name"]
+				aaFN:ClearAllPoints()
+				aaFN:SetPoint("BOTTOM", aaFrame, 0, 12)
+				local aaFI = _G["AchievementAlertFrame"..i.."Icon"]
+				Skinner:keepRegions(aaFI, {3}) -- icon texture
+				aaFI:ClearAllPoints()
+				aaFI:SetPoint("LEFT", aaFrame, -32, -3)
+				local aaFS = _G["AchievementAlertFrame"..i.."Shield"]
+				aaFS:ClearAllPoints()
+				aaFS:SetPoint("RIGHT", aaFrame, -10, -3)
+				Skinner:applySkin(aaFrame)
+				aaFrame.skinned = true
+			end
+		end
+		
+	end
+	
+	if not AchievementAlertFrame2 then
+		self:SecureHook("AchievementAlertFrame_ShowAlert", function(id)
+			self:Debug("AAF_SA:[%s]", id)
+			skinAlertFrame()
+			if AchievementAlertFrame2 then
+				self:Unhook("AchievementAlertFrame_ShowAlert")
+			end
+		end)
+	end
+	
+	skinAlertFrame()
 	
 end
 

@@ -830,7 +830,7 @@ function Skinner:MinimapButtons()
 	local function mmKids(mmObj)
 	
 		local mmObjName = mmObj.GetName and mmObj:GetName() or "<Anon>"
-		Skinner:Debug("Checking %s kids", mmObjName)
+--		Skinner:Debug("Checking %s kids", mmObjName)
 
 		for i = 1, select("#", mmObj:GetChildren()) do
 			local obj = select(i, mmObj:GetChildren())

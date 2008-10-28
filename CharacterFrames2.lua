@@ -405,11 +405,11 @@ function Skinner:RaidUI()
 
 	self:moveObject(RaidFrameAddMemberButton, "-", 40, "+", 10)
 	self:moveObject(RaidGroup1, "-", 7, "+", 8)
-	for i = 1, 12 do
+	for i = 1, MAX_RAID_CLASS_BUTTONS do
 		local tabName = _G["RaidClassButton"..i]
 		self:removeRegions(tabName, {1}) -- N.B. region 2 is the icon, 3 is the text
 		-- Move the last entry as all the others are positioned from it
-		if i == 12 then self:moveObject(tabName, "+", 31, "-", 70) end
+		if i == MAX_RAID_CLASS_BUTTONS then self:moveObject(tabName, "+", 31, "-", 70) end
 	end
 
 	self:SecureHook("RaidPullout_GetFrame", function(filterID)

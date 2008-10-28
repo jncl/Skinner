@@ -154,7 +154,7 @@ function Skinner:AddonFrames()
 	if IsAddOnLoaded("Bongos") then self:checkAndRunAddOn("Bongos") end
 
 	-- skin Dewdrop, Tablet & Waterfall frames
-	if AceLibrary:HasInstance("Dewdrop-2.0") then
+	if LibStub("Dewdrop-2.0", true) then
 		if self.Dewdrop then self:checkAndRun("Dewdrop")
 		else
 			if self.db.profile.Warnings then
@@ -162,7 +162,7 @@ function Skinner:AddonFrames()
 			end
 		end
 	end
-	if AceLibrary:HasInstance("AceAddon-2.0") then
+	if LibStub("AceAddon-2.0", true) then
 		if self.Ace2 then self:checkAndRun("Ace2")
 		else
 			if self.db.profile.Warnings then
@@ -170,7 +170,7 @@ function Skinner:AddonFrames()
 			end
 		end
 	end
-	if AceLibrary:HasInstance("Tablet-2.0") then
+	if LibStub("Tablet-2.0", true) then
 		if self.Tablet then self:checkAndRun("Tablet")
 		else
 			if self.db.profile.Warnings then
@@ -178,7 +178,7 @@ function Skinner:AddonFrames()
 			end
 		end
 	end
-	if AceLibrary:HasInstance("Waterfall-1.0") then
+	if LibStub("Waterfall-1.0", true) then
 		if self.Waterfall then self:checkAndRun("Waterfall")
 		else
 			if self.db.profile.Warnings then
@@ -197,7 +197,7 @@ function Skinner:AddonFrames()
 		end
 	end
 	-- skin Option House
-	if LibStub and LibStub:GetLibrary("OptionHouse-1.1", true) then
+	if LibStub("OptionHouse-1.1", true) then
 		if self.ohHooks then self:checkAndRun("ohHooks")
 		else
 			if self.db.profile.Warnings then
@@ -206,7 +206,7 @@ function Skinner:AddonFrames()
 		end
 	end
 	-- skin Ace3 GUI components
-	if LibStub and LibStub:GetLibrary("AceGUI-3.0", true) then
+	if LibStub("AceGUI-3.0", true) then
 		if self.Ace3 then self:checkAndRun("Ace3")
 		else
 			if self.db.profile.Warnings then
@@ -215,7 +215,7 @@ function Skinner:AddonFrames()
 		end
 	end
 	-- skin KeyBound Dialog
-	if LibStub and LibStub:GetLibrary('LibKeyBound-1.0', true) then self:applySkin(KeyboundDialog) end
+	if LibStub('LibKeyBound-1.0', true) then self:applySkin(KeyboundDialog) end
 	
 end
 
