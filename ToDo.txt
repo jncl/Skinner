@@ -14,7 +14,7 @@ S - Skin request
 		- Blizzard_AuctionUI\\Blizzard_AuctionUI.lua:1171: attempt to concatenate local 'highBidder' (a nil value)\nBlizzard_AuctionUI\\Blizzard_AuctionUI.lua:1089: in function `AuctionFrameAuctions_OnEvent'\n<string>:\"*:OnEvent\":1: in function <[string \"*:OnEvent\"]:1>\n\n  ---
 
 	I	Grid
-		- backdrop is white, reported by Exenzo, 29.10.08
+√		- backdrop is white, reported by Exenzo, 29.10.08
 		
 ≈	I	ReadyCheck Frame
 		- Raid warnings skinning in background but WoW one superimposed on top, reported by Connemara, 30.10.08

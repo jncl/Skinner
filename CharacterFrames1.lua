@@ -472,8 +472,8 @@ function Skinner:DressUpFrame()
 end
 
 function Skinner:AchievementUI()
-	if not self.db.profile.Achievements or self.initialized.Achievements then return end
-	self.initialized.Achievements = true
+	if not self.db.profile.Achievements.skin or self.initialized.Achievements.skin then return end
+	self.initialized.Achievements.skin = true
 	
 --	self:Debug("AchievementUI Loaded")
 	
@@ -661,7 +661,30 @@ function Skinner:AchievementUI()
 		end)
 	end
 	
--->>-- Alert Panels
+	-- skin the Alert frames
+	self:checkAndRun("AchievementAlerts")
+	
+end
+
+function Skinner:AchievementWatch()
+
+-->>-- Watch Frames
+	for i = 2, 10 do
+		local statusBarBG = _G["AchievementWatchLine"..i.."StatusBarBG"]
+		statusBarBG:SetTexture(self.sbTexture)
+		statusBarBG:SetVertexColor(unpack(self.sbColour))
+		local watchLine = _G["AchievementWatchLine"..i]
+		self:removeRegions(watchLine.statusBar, {2})
+		self:glazeStatusBar(watchLine.statusBar)
+	end
+	
+end
+
+function Skinner:AchievementAlerts()
+	if not self.db.profile.Achievements.alerts or self.initialized.Achievements.alerts then return end
+	self.initialized.Achievements.alerts = true
+
+	-->>-- Alert Panels
 	local function skinAlertFrame()
 	
 		for i = 1, 2 do
@@ -694,7 +717,7 @@ function Skinner:AchievementUI()
 	
 	if not AchievementAlertFrame2 then
 		self:SecureHook("AchievementAlertFrame_ShowAlert", function(id)
-			self:Debug("AAF_SA:[%s]", id)
+--			self:Debug("AAF_SA:[%s]", id)
 			skinAlertFrame()
 			if AchievementAlertFrame2 then
 				self:Unhook("AchievementAlertFrame_ShowAlert")
@@ -703,19 +726,5 @@ function Skinner:AchievementUI()
 	end
 	
 	skinAlertFrame()
-	
-end
 
-function Skinner:AchievementWatch()
-
--->>-- Watch Frames
-	for i = 2, 10 do
-		local statusBarBG = _G["AchievementWatchLine"..i.."StatusBarBG"]
-		statusBarBG:SetTexture(self.sbTexture)
-		statusBarBG:SetVertexColor(unpack(self.sbColour))
-		local watchLine = _G["AchievementWatchLine"..i]
-		self:removeRegions(watchLine.statusBar, {2})
-		self:glazeStatusBar(watchLine.statusBar)
-	end
-	
 end

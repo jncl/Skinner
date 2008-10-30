@@ -59,7 +59,7 @@ function Skinner:Defaults()
 		RaidUI          = true,
 		ReadyCheck      = true,
 		Buffs           = true,
-		Achievements    = true,
+		Achievements    = {skin = true, alerts = true},
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
@@ -1336,18 +1336,39 @@ function Skinner:Options()
 						end,
 					},
 					achievements = {
-						name = self.L["Achievements Frame"],
-						desc = self.L["Toggle the skin of the Achievements Frame"],
-						type = "toggle",
-						get = function()
-							return self.db.profile.Achievements
-						end,
-						set = function(v)
-							self.db.profile.Achievements = v
-							if IsAddOnLoaded("Blizzard_AchievementUI") then
-								self:checkAndRun("AchievementUI")
-							end
-						end,
+						name = self.L["AchievementUI"],
+						desc = self.L["Change the AchievementUI settings"],
+						type = "group",
+						args = {
+							skin = {
+							name = self.L["Achievements Frame"],
+							desc = self.L["Toggle the skin of the Achievements Frame"],
+							type = "toggle",
+							get = function()
+								return self.db.profile.Achievements.skin
+							end,
+							set = function(v)
+								self.db.profile.Achievements.skin = v
+								if IsAddOnLoaded("Blizzard_AchievementUI") then
+									self:checkAndRun("AchievementUI")
+								end
+							end,
+							},
+							alert = {
+							name = self.L["Achievement Alerts"],
+							desc = self.L["Toggle the skin of the Achievement Alerts"],
+							type = "toggle",
+							get = function()
+								return self.db.profile.Achievements.alerts
+							end,
+							set = function(v)
+								self.db.profile.Achievements.alerts = v
+								if IsAddOnLoaded("Blizzard_AchievementUI") then
+									self:checkAndRun("AchievementAlerts")
+								end
+							end,
+							},
+						},
 					},
 				},
 				order = 100,
