@@ -429,12 +429,12 @@ function Skinner:ReadyCheck()
 	self.initialized.ReadyCheck = true
 
 -->>--	Ready Check Frame
-	self:keepFontStrings(ReadyCheckFrame)
-	ReadyCheckFrame:SetWidth(ReadyCheckFrame:GetWidth() * self.FxMult)
-	ReadyCheckFrame:SetHeight(ReadyCheckFrame:GetHeight() * self.FyMult)
+	self:keepFontStrings(ReadyCheckListenerFrame)
+	ReadyCheckListenerFrame:SetWidth(ReadyCheckListenerFrame:GetWidth() * self.FxMult)
+	ReadyCheckListenerFrame:SetHeight(ReadyCheckListenerFrame:GetHeight() * self.FyMult)
 	self:moveObject(ReadyCheckFrameText, "-", 12, "+", 10)
 	self:moveObject(ReadyCheckFrameYesButton, "-", 15, "-", 5)
-	self:storeAndSkin(ftype, ReadyCheckFrame)
+	self:storeAndSkin(ftype, ReadyCheckListenerFrame)
 
 end
 

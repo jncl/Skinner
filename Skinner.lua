@@ -679,7 +679,7 @@ end
 function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
 
 	if not frame then return end
-	if not frame.GetName and _G[frame:GetName().."Right"] then return end -- ignore tekKonfig dropdowns
+	if not (frame.GetName and _G[frame:GetName().."Right"]) then return end -- ignore tekKonfig dropdowns
 
 	if not self.db.profile.TexturedDD or noSkin then self:keepFontStrings(frame) return end
 

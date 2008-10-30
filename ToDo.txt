@@ -1,19 +1,28 @@
 ToDos
 
-N.B. √ is Alt+v (Comment char if using TextMate)
+N.B. √ is Alt+v - indicates completed
+ 	 ≈ is Alt+x - indicates partially completed
 
 I - Issue/Bug
 N - New Version
 O - Other change
 S - Skin request
 
+	O	Convert to Ace3, requested by StormFX, 28.10.08
+	
+	I	AuctionHouse skin ??, reported by Tinface, 28.10.08
+		- Blizzard_AuctionUI\\Blizzard_AuctionUI.lua:1171: attempt to concatenate local 'highBidder' (a nil value)\nBlizzard_AuctionUI\\Blizzard_AuctionUI.lua:1089: in function `AuctionFrameAuctions_OnEvent'\n<string>:\"*:OnEvent\":1: in function <[string \"*:OnEvent\"]:1>\n\n  ---
 
-	I	TipTac, reported by dvanaroyi, 26.10.08
-?		- skin broken
+	I	Grid
+		- backdrop is white, reported by Exenzo, 29.10.08
+		
+≈	I	ReadyCheck Frame
+		- Raid warnings skinning in background but WoW one superimposed on top, reported by Connemara, 30.10.08
+√		- blank frame below the correct frame, reported by alanm26, 30.10.08
 
-	I	Violation, reported by eymbrokn, 20.10.08
-?		- Bars overlap headings
-
+	I	Achievment Alert, requested by alanm26, 30.10.08
+		- add option to toggle the skin
+		
 	I	TopFrame, reported by skumclown, 12.10.08
 ?		- error comparing a string to a number
 
@@ -23,20 +32,20 @@ S - Skin request
 	I	Status Window 2, requested by Spar, 13.9.08
 ?		- it is an Addon?? How can it NOT be skinned?
 
-	N	Combuctor, reported by Neffi, 18.10.08
+√	N	Combuctor, reported by Neffi, 18.10.08
 
-	N	AckisRecipeList, reported by r00ster, 21.10.08
-		
 	N	Cartographer3, requested by solor, 28.10.08
 		
 	N	Auc_Advanced
 		- has superceeded Auctioneer, parts are new and need skinning
 	
-	S	oRA2, requested by madindehead, 18.10.08
+≈	S	oRA2, requested by madindehead, 18.10.08
+	
+	S	Analyst, requested by toin7, 28.10.08
 
+	S	DoubleWideTradeSkills, requested by alanm26, 27.10.08
+	
 	S	tekBlocks
 
 	S	MakeRocketGoNow
-		
-	S	DoubleWideTradeSkills, requested by alanm26, 27.10.08
 	

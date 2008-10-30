@@ -2,45 +2,101 @@
 function Skinner:Combuctor()
 	if not self.db.profile.ContainerFrames.skin then return end
 
-	-- Bags
-	CombuctorFrame1:SetWidth(CombuctorFrame1:GetWidth() * self.FxMult)
-	CombuctorFrame1:SetHeight(CombuctorFrame1:GetHeight() * self.FyMult)
-	self:moveObject(CombuctorFrame1Title, nil, nil, "+", 10)
-	self:moveObject(CombuctorFrame1CloseButton, "+", 29, "+", 8)
-	self:keepFontStrings(CombuctorFrame1)
-	self:skinEditBox(CombuctorFrame1Search, {9})
-	self:moveObject(CombuctorFrame1Search, "-", 12, "+", 10)
-	self:moveObject(CombuctorFrame1.itemFrame, "-", 10, "+", 10)
-	self:moveObject(CombuctorFrame1.bagButtons[1], "+", 34, "+", 12)
-	self:moveObject(CombuctorFrame1.qualityFilter, nil, nil, "-", 60)
-	self:moveObject(CombuctorFrame1MoneyFrame, "+", 40, "-", 59)
-	self:applySkin(CombuctorFrame1)
-	-- Filters
-	for i = 0, #CombuctorFrame1.cats - 1 do
-		local CIF = _G["CombuctorItemFilter"..i]
-		self:removeRegions(CIF, {1})
+	-- skin Inventory & Bank frames
+	for i = 1, 2 do
+		local frame = _G["CombuctorFrame"..i]
+		local frameResize = _G["CombuctorFrame"..i.."Resize"]
+		self:moveObject(frame.title, nil, nil, "+", 10)
+		self:moveObject(_G["CombuctorFrame"..i.."CloseButton"], "+", 29, "+", 8)
+		self:keepFontStrings(frame)
+		self:skinEditBox(frame.nameFilter, {9})
+		frame.nameFilter:ClearAllPoints()
+		frame.nameFilter:SetPoint("TOPLEFT", frame, "TOPLEFT", 84, -30)
+		frame.nameFilter:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -84, -30)
+		frame.itemFrame:SetWidth(frame.itemFrame:GetWidth() + 20)
+		frame.itemFrame:SetHeight(frame.itemFrame:GetHeight() + 60)
+		self:moveObject(frame.bagButtons[1], "+", 30, "+", 4)
+		self:moveObject(frame.qualityFilter, nil, nil, "-", 60)
+		self:moveObject(frame.moneyFrame, "+", 40, "-", 59)
+		frameResize:ClearAllPoints()
+		frameResize:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4)
+		self:applySkin(frame)
 	end
-	self:moveObject(CombuctorItemFilter0, "+", 30, nil, nil)
+	
+	-- Tabs aka BottomFilter
+	local function skinTabs(frame)
+	
+--		self:Debug("skinTabs:[%s, %s]", frame:GetName(), frame.selectedTab)
 
-	-- Bank
-	CombuctorFrame2:SetWidth(CombuctorFrame2:GetWidth() * self.FxMult + 30)
-	CombuctorFrame2:SetHeight(CombuctorFrame2:GetHeight() * self.FyMult)
-	self:moveObject(CombuctorFrame2Title, nil, nil, "+", 10)
-	self:moveObject(CombuctorFrame2CloseButton, "+", 29, "+", 8)
-	self:keepFontStrings(CombuctorFrame2)
-	self:skinEditBox(CombuctorFrame2Search, {9})
-	self:moveObject(CombuctorFrame2Search, "-", 12, "+", 10)
-	self:moveObject(CombuctorFrame2.itemFrame, "-", 10, "+", 10)
-	self:moveObject(CombuctorFrame2.bagButtons[1], "+", 30, "+", 12)
-	self:moveObject(CombuctorFrame2.qualityFilter, nil, nil, "-", 60)
-	self:moveObject(CombuctorFrame2MoneyFrame, "+", 40, "-", 59)
-	self:applySkin(CombuctorFrame2)
-	-- Filters
-	for i = #CombuctorFrame1.cats, #CombuctorFrame1.cats + #CombuctorFrame2.cats - 1 do
-		local CIF = _G["CombuctorItemFilter"..i]
-		self:removeRegions(CIF, {1})
+		for i = 1, #frame.buttons do
+			local tabObj = frame.buttons[i]
+			if i == frame.selectedTab then Skinner:setActiveTab(tabObj)
+			else Skinner:setInactiveTab(tabObj) end
+		end
+
 	end
-	self:moveObject(_G["CombuctorItemFilter"..#CombuctorFrame1.cats], "+", 30, nil, nil)
+
+	self:SecureHook(Combuctor.BottomFilter, "UpdateFilters", function(this)
+--		self:Debug("C.BF_UF: [%s]", this:GetName())
+		for i = 1, #this.buttons do
+			local tabObj = this.buttons[i]
+			if not tabObj.skinned then
+				if i == 1 then
+					self:moveObject(tabObj, nil, nil, "-", 55)
+				else
+					self:moveObject(tabObj, "+", 11, nil, nil)
+				end 
+				self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
+				if self.db.profile.TexturedTab then
+					self:applySkin(tabObj, nil, 0, 1)
+					if i == 1 then self:setActiveTab(tabObj)
+					else self:setInactiveTab(tabObj) end
+				else self:applySkin(tabObj) end
+				if not self:IsHooked(tabObj, "OnClick") then
+					self:HookScript(tabObj, "OnClick", function(this)
+						self.hooks[this].OnClick(this)
+						skinTabs(this:GetParent())
+					end)
+				end
+				tabObj.skinned = true
+			end
+			if self.db.profile.TexturedTab then
+				if i == 1 then self:setActiveTab(tabObj)
+				else self:setInactiveTab(tabObj) end
+			end
+		end
+	end)
+
+	-- Side Tabs aka SideFilter
+	self:SecureHook(Combuctor.SideFilter, "UpdateFilters", function(this)
+--		self:Debug("C.SF_UF: [%s]", this:GetName())
+		for i = 1, #this.buttons do
+			local tabObj = this.buttons[i]
+			if not tabObj.skinned then
+				if i == 1 then
+					self:moveObject(tabObj, "+", 30, "+", 20)
+				else
+					self:moveObject(tabObj, nil, nil, "+", 10)
+				end 
+				self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
+				tabObj.skinned = true
+			end
+		end
+	end)
+
+	-- Item Frame Size Change
+	self:SecureHook(Combuctor.Frame, "UpdateItemFrameSize", function(this)
+--		self:Debug("CF_UIFS: [%s, %s, %s]", this:GetName(), this.itemFrame:GetWidth(), this.itemFrame:GetHeight())
+		this.itemFrame:SetWidth(this.itemFrame:GetWidth() + 20)
+		this.itemFrame:SetHeight(this.itemFrame:GetHeight() + 60)
+		this.itemFrame:RequestLayout()
+	end)
+
+	-- Bag buttons
+	self:SecureHook(Combuctor.Frame, "UpdateBagFrame", function(this)
+--		self:Debug("CF_UBF: [%s, %s]", this, this:GetName())
+		self:moveObject(this.bagButtons[1], "+", 30, "+", 4)
+	end)
 
 	-- if Bagnon_Forever loaded
 	if BagnonDB then -- show the player portrait, used to select player info
@@ -52,44 +108,5 @@ function Skinner:Combuctor()
 		self:keepFontStrings(CombuctorFrame1IconButton)
 		self:keepFontStrings(CombuctorFrame2IconButton)
 	end
-	-- Tabs
-	local function skinTabs(frame)
-
-		for i = 1, #frame.tabs do
-			local tabName = _G[frame:GetName().."Tab"..i]
-			if i == frame.selectedTab then Skinner:setActiveTab(tabName)
-			else Skinner:setInactiveTab(tabName) end
-		end
-
-	end
-
-	self:SecureHook(CombuctorFrame.obj, "CreateTab", function(this, id)
---		self:Debug("CFo_CT: [%s, %s]", this:GetName(), id)
-		local tabName = _G[this:GetName().."Tab"..id]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		if self.db.profile.TexturedTab then
-			self:applySkin(tabName, nil, 0, 1)
-			if not self:IsHooked(tabName, "OnClick") then
-				self:HookScript(tabName, "OnClick", function(this)
-					self.hooks[this].OnClick(this)
-					skinTabs(this:GetParent())
-				end)
-			end
-		else self:applySkin(tabName) end
-		if id == 1 then self:moveObject(tabName, "-", 25, "-", 56)
-		else self:moveObject(tabName, "+", 10, nil, nil) end
-	end)
-	if self.db.profile.TexturedTab then
-		self:SecureHook(CombuctorFrame.obj, "SetCategory", function(this, category)
---			self:Debug("CFo_SC: [%s, %s, %s, %s]", this:GetName(), category.name, this.selectedTab, #this.tabs)
-			skinTabs(this)
-		end)
-	end
-
-	-- Bag buttons
-	self:SecureHook(CombuctorFrame.obj, "UpdateBagFrame", function(this)
---		self:Debug("CFo_UBF: [%s, %s]", this, this:GetName())
-		self:moveObject(this.bagButtons[1], "+", 30, "+", 10)
-	end)
-
+	
 end

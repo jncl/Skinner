@@ -4,7 +4,7 @@ function Skinner:tekKonfig()
 	if self.initialized.tekKonfig then return end
 	self.initialized.tekKonfig = true
 	
-	if LibStub and LibStub:GetLibrary("tekKonfig-Dropdown", true) then
+	if LibStub("tekKonfig-Dropdown", true) then
 		local tKDd = LibStub("tekKonfig-Dropdown")
 		self:Hook(tKDd, "new", function(parent, label, ...)
 --			self:Debug("tKDd:[%s, %s]", parent, label)
@@ -24,7 +24,7 @@ function Skinner:tekKonfig()
 		end, true)
 	end
 
-	if LibStub and LibStub:GetLibrary("tekKonfig-Group", true) then
+	if LibStub("tekKonfig-Group", true) then
 		local tKG = LibStub("tekKonfig-Group")
 		self:Hook(tKG, "new", function(parent, label, ...)
 --			self:Debug("tKG:[%s, %s]", parent, label)
@@ -36,7 +36,7 @@ function Skinner:tekKonfig()
 
 	local sBd = CopyTable(self.backdrop2)
 	sBd.bgFile = nil
-	if LibStub and LibStub:GetLibrary("tekKonfig-Scroll", true) then
+	if LibStub("tekKonfig-Scroll", true) then
 		local tKS = LibStub("tekKonfig-Scroll")
 		self:Hook(tKS, "new", function(parent, offset, step)
 --			self:Debug("tKS:[%s, %s, %s]", parent, offset, step)
@@ -48,7 +48,7 @@ function Skinner:tekKonfig()
 		end, true)
 	end
 
-	if LibStub and LibStub:GetLibrary("tekKonfig-AboutPanel", true) then
+	if LibStub("tekKonfig-AboutPanel", true) then
 		local tKAP = LibStub("tekKonfig-AboutPanel")
 		self:SecureHook(tKAP, "OpenEditbox", function(this)
 --			self:Debug("tKAP:[%s, %s]", this, tKAP.editbox)

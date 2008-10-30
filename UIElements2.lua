@@ -66,16 +66,22 @@ function Skinner:MenuFrames()
 		else self:storeAndSkin(ftype, tabName) end
 		self:moveObject(tabNameT, nil, nil, "+", 3)
 		self:moveObject(tabNameHT, "-", 5, "+", 3)
-		if i == 2 then self:moveObject(tabName, "+", 14, nil, nil) end
+		if i == 1 then self:moveObject(tabName, "+", 6, "-", 2)
+		else self:moveObject(tabName, "+", 13, nil, nil) end
 	end
 
 	-- Hook this to skin any Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(frame)
 --		self:Debug("%s: [%s, %s]", hookFunc, frame, frame:GetName())
+		if not self.initialized.tekKonfig then self:checkAndRun("tekKonfig") end -- hook tekKonfig objects
 		if not frame.skinned then
 			for i = 1, select("#", frame:GetChildren()) do
 				local child = select(i, frame:GetChildren())
-				if child and self:isDropDown(child) then self:skinDropDown(child) end
+				if child then
+				 	if self:isDropDown(child) then self:skinDropDown(child)
+					elseif child:IsObjectType("EditBox") then self:skinEditBox(child, {9})
+					end
+				end
 			end
 			self:storeAndSkin(ftype, frame)
 			frame.skinned = true
