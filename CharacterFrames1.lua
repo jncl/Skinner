@@ -472,8 +472,8 @@ function Skinner:DressUpFrame()
 end
 
 function Skinner:AchievementUI()
-	if not self.db.profile.Achievements.skin or self.initialized.Achievements.skin then return end
-	self.initialized.Achievements.skin = true
+	if not self.db.profile.Achievements.skin or self.initialized.Achievements then return end
+	self.initialized.Achievements = true
 	
 --	self:Debug("AchievementUI Loaded")
 	

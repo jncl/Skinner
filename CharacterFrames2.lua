@@ -238,6 +238,9 @@ function Skinner:TradeSkillUI()
 	if not self.db.profile.TradeSkill or self.initialized.TradeSkillUI then return end
 	self.initialized.TradeSkillUI = true
 
+	-- if DoubleWideTradeSkills is loaded then use it's skin for the TradeSkillFrame
+	if IsAddOnLoaded("DoubleWideTradeSkills") then return end
+	
 	self:keepFontStrings(TradeSkillFrame)
 	TradeSkillFrame:SetWidth(TradeSkillFrame:GetWidth() * self.FxMult)
 	TradeSkillFrame:SetHeight(TradeSkillFrame:GetHeight() * self.FyMult)

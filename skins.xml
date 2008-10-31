@@ -13,6 +13,7 @@
 <script file="SkinMe\aftt_extreme.lua"/>
 <script file="SkinMe\AlphaMap.lua"/>
 <script file="SkinMe\Altoholic.lua"/>
+<script file="SkinMe\Analyst.lua"/>
 <script file="SkinMe\AoTRDungeonQuester.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
 <script file="SkinMe\Armory.lua"/>
@@ -62,6 +63,7 @@
 <script file="SkinMe\BuyPoisons.lua"/>
 <script file="SkinMe\Capping.lua"/>
 <script file="SkinMe\Cartographer.lua"/>
+<script file="SkinMe\Cartographer3.lua"/>
 <script file="SkinMe\CBRipoff.lua"/>
 <script file="SkinMe\cgCrafty.lua"/>
 <script file="SkinMe\CharacterInfo.lua"/>
@@ -89,6 +91,7 @@
 <script file="SkinMe\Dominos.lua"/>
 <script file="SkinMe\DopieArenaInfo.lua"/>
 <script file="SkinMe\DoubleWide.lua"/>
+<script file="SkinMe\DoubleWideTradeSkills.lua"/>
 <script file="SkinMe\DuckieBank.lua"/>
 <script file="SkinMe\Earth.lua"/>
 <script file="SkinMe\EasyTrack.lua"/>
@@ -164,6 +167,7 @@
 <!-- <script file="SkinMe\KingOfTheJungle.lua"/> -->
 <script file="SkinMe\KLHThreatMeter.lua"/>
 <script file="SkinMe\KombatStats.lua"/>
+<script file="SkinMe\LibSimpleOptions.lua"/>
 <script file="SkinMe\LightHeaded.lua"/>
 <script file="SkinMe\LinkHeaven.lua"/>
 <script file="SkinMe\Links.lua"/>
