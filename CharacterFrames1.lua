@@ -471,9 +471,10 @@ function Skinner:DressUpFrame()
 
 end
 
+Skinner.initialized.Achievements = {}
 function Skinner:AchievementUI()
-	if not self.db.profile.Achievements.skin or self.initialized.Achievements then return end
-	self.initialized.Achievements = true
+	if not self.db.profile.Achievements.skin or self.initialized.Achievements.skin then return end
+	self.initialized.Achievements.skin = true
 	
 --	self:Debug("AchievementUI Loaded")
 	
@@ -667,6 +668,8 @@ function Skinner:AchievementUI()
 end
 
 function Skinner:AchievementWatch()
+	if not self.db.profile.Achievements.watch or self.initialized.Achievements.watch then return end
+	self.initialized.Achievements.watch = true
 
 -->>-- Watch Frames
 	for i = 2, 10 do

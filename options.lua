@@ -59,7 +59,7 @@ function Skinner:Defaults()
 		RaidUI          = true,
 		ReadyCheck      = true,
 		Buffs           = true,
-		Achievements    = {skin = true, alerts = true},
+		Achievements    = {skin = true, alerts = true, watch = true},
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
@@ -1353,6 +1353,7 @@ function Skinner:Options()
 									self:checkAndRun("AchievementUI")
 								end
 							end,
+							order = 10,
 							},
 							alert = {
 							name = self.L["Achievement Alerts"],
@@ -1367,6 +1368,22 @@ function Skinner:Options()
 									self:checkAndRun("AchievementAlerts")
 								end
 							end,
+							order = 20,
+							},
+							watch = {
+							name = self.L["Achievement Watch"],
+							desc = self.L["Toggle the skin of the Achievement Watch"],
+							type = "toggle",
+							get = function()
+								return self.db.profile.Achievements.watch
+							end,
+							set = function(v)
+								self.db.profile.Achievements.watch = v
+								if IsAddOnLoaded("Blizzard_AchievementUI") then
+									self:checkAndRun("AchievementWatch")
+								end
+							end,
+							order = 30,
 							},
 						},
 					},

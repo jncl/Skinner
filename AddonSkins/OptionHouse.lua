@@ -1,7 +1,7 @@
 
-function Skinner:ohHooks()
+function Skinner:OptionHouse()
 
-	local optHouse = LibStub:GetLibrary("OptionHouse-1.1", true)
+	local optHouse = LibStub("OptionHouse-1.1", true)
 
 	local function skinOptionHouse(obj, ...)
 

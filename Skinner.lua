@@ -32,6 +32,9 @@ Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on WotLK
 Skinner.isWotLK = GetCVarBool and true or false
 
+-- table to hold which skins have been actioned
+Skinner.initialized = {}
+
 function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
 
 	if not obj then return end
@@ -932,8 +935,6 @@ end
 
 function Skinner:OnEnable()
 --	self:Debug("OnEnable")
-
-	self.initialized = {}
 
 	self:RegisterEvent("ADDON_LOADED")
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")

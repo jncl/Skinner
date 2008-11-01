@@ -1,11 +1,15 @@
 
-function Skinner:tekKonfig()
-	-- only need to do this once
-	if self.initialized.tekKonfig then return end
-	self.initialized.tekKonfig = true
+local allHooked, tKDd, tKG, tKS, tKAP
 	
-	if LibStub("tekKonfig-Dropdown", true) then
-		local tKDd = LibStub("tekKonfig-Dropdown")
+function Skinner:tekKonfig()
+	if not self.db.profile.MenuFrames then return end
+	
+	if allHooked then return end
+	
+--	self:Debug("tekKonfig skin")
+	
+	if LibStub("tekKonfig-Dropdown", true) and not tKDd then
+		tKDd = LibStub("tekKonfig-Dropdown")
 		self:Hook(tKDd, "new", function(parent, label, ...)
 --			self:Debug("tKDd:[%s, %s]", parent, label)
 			local frame, text, container = self.hooks[tKDd].new(parent, label, ...)
@@ -24,8 +28,8 @@ function Skinner:tekKonfig()
 		end, true)
 	end
 
-	if LibStub("tekKonfig-Group", true) then
-		local tKG = LibStub("tekKonfig-Group")
+	if LibStub("tekKonfig-Group", true) and not tKG then
+		tKG = LibStub("tekKonfig-Group")
 		self:Hook(tKG, "new", function(parent, label, ...)
 --			self:Debug("tKG:[%s, %s]", parent, label)
 			local box = self.hooks[tKG].new(parent, label, ...)
@@ -34,22 +38,20 @@ function Skinner:tekKonfig()
 		end, true)
 	end
 
-	local sBd = CopyTable(self.backdrop2)
-	sBd.bgFile = nil
-	if LibStub("tekKonfig-Scroll", true) then
-		local tKS = LibStub("tekKonfig-Scroll")
+	if LibStub("tekKonfig-Scroll", true) and not tKS then
+		tKS = LibStub("tekKonfig-Scroll")
 		self:Hook(tKS, "new", function(parent, offset, step)
 --			self:Debug("tKS:[%s, %s, %s]", parent, offset, step)
 			local frame, up, down, border = self.hooks[tKS].new(parent, offset, step)
-			border:SetBackdrop(sBd)
-			border:SetBackdropBorderColor(.2, .2, .2, 1)
-			border:SetBackdropColor(.1, .1, .1, 1)
+			border:SetFrameLevel(frame:GetFrameLevel())
+			frame:GetThumbTexture():SetAlpha(1)
+			self:skinUsingBD2(border)
 			return frame, up, down, border
 		end, true)
 	end
 
-	if LibStub("tekKonfig-AboutPanel", true) then
-		local tKAP = LibStub("tekKonfig-AboutPanel")
+	if LibStub("tekKonfig-AboutPanel", true) and not tKAP then
+		tKAP = LibStub("tekKonfig-AboutPanel")
 		self:SecureHook(tKAP, "OpenEditbox", function(this)
 --			self:Debug("tKAP:[%s, %s]", this, tKAP.editbox)
 			if not tKAP.editbox.skinned then
@@ -64,4 +66,6 @@ function Skinner:tekKonfig()
 		end)
 	end
 
+	if tKDd and tKG and tKS and tKAP then allHooked = true end
+	
 end

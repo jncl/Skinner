@@ -49,10 +49,10 @@ function Skinner:MenuFrames()
 	end
 
 -->>--	InterfaceOptionsFrame (changed in 2.4)
-	self:removeRegions(InterfaceOptionsFrameCategoriesList)
+	InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
 	self:skinScrollBar(InterfaceOptionsFrameCategoriesList)
-	self:removeRegions(InterfaceOptionsFrameAddOnsList)
-	self:skinScrollBar(InterfaceOptionsFrameAddOnsList)
+	InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)
+	self:skinSlider(InterfaceOptionsFrameAddOnsListScrollBar)
 	self:storeAndSkin(ftype, InterfaceOptionsFrameCategories)
 	self:storeAndSkin(ftype, InterfaceOptionsFrameAddOns)
 	self:storeAndSkin(ftype, InterfaceOptionsFrame, true)
@@ -72,8 +72,8 @@ function Skinner:MenuFrames()
 
 	-- Hook this to skin any Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(frame)
---		self:Debug("%s: [%s, %s]", hookFunc, frame, frame:GetName())
-		if not self.initialized.tekKonfig then self:checkAndRun("tekKonfig") end -- hook tekKonfig objects
+--		self:Debug("IOL_DP: [%s, %s]", frame, frame:GetName())
+		self:tekKonfig() -- hook tekKonfig objects
 		if not frame.skinned then
 			for i = 1, select("#", frame:GetChildren()) do
 				local child = select(i, frame:GetChildren())

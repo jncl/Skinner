@@ -23,10 +23,10 @@ S - Skin request
 	I	Achievment Alert, requested by alanm26, 30.10.08
 √		- add option to toggle the skin
 		
-	I	SpellBinder, reported by Turinqui, 30.10.08
+√	I	SpellBinder, reported by Turinqui, 30.10.08
 		- Error running SpellBinder Interface\AddOns\Skinner\SkinMe\SpellBinder.lua:5: AceHook-2.1: Bad argument #2 to `SecureHook' (table expected, got nil)
 		
-	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
+x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
 		- Combat log filter frame has changed again
 		
 	I	TopFrame, reported by skumclown, 12.10.08
@@ -53,7 +53,7 @@ S - Skin request
 	N	Auc_Advanced
 		- has superceeded Auctioneer, parts are new and need skinning
 		
-	S	tekBlocks
+√	S	tekBlocks
 
 	S	MakeRocketGoNow
 	

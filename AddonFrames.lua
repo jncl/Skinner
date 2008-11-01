@@ -109,7 +109,7 @@ function Skinner:AddonFrames()
 		"Quartz", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount",
 		"Sanity2", "SanityBags", "SellJunk", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "SpellBinder", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
-		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekDebug", "tekErr", "tekKompare", "tekPad", "TinyTip", "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TourGuide", "TradeJunkie", "Trinity2", "TrinityBars2", "TuringTest",
+		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TinyTip", "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TourGuide", "TradeJunkie", "Trinity2", "TrinityBars2", "TuringTest",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", "Vendor", "Violation", "Visor2GUI",
 		"WebDKP", "WIM", "WoWEquip",
@@ -153,36 +153,23 @@ function Skinner:AddonFrames()
 	--	load Bongos support here if it is loaded
 	if IsAddOnLoaded("Bongos") then self:checkAndRunAddOn("Bongos") end
 
-	-- skin Dewdrop, Tablet & Waterfall frames
-	if LibStub("Dewdrop-2.0", true) then
-		if self.Dewdrop then self:checkAndRun("Dewdrop")
-		else
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Dewdrop", "loaded but skin not found in SkinMe directory")
-			end
-		end
-	end
-	if LibStub("AceAddon-2.0", true) then
-		if self.Ace2 then self:checkAndRun("Ace2")
-		else
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Ace2", "loaded but skin not found in SkinMe directory")
-			end
-		end
-	end
-	if LibStub("Tablet-2.0", true) then
-		if self.Tablet then self:checkAndRun("Tablet")
-		else
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Tablet", "loaded but skin not found in SkinMe directory")
-			end
-		end
-	end
-	if LibStub("Waterfall-1.0", true) then
-		if self.Waterfall then self:checkAndRun("Waterfall")
-		else
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Waterfall", "loaded but skin not found in SkinMe directory")
+	-- skin Dewdrop, Ace2, Tablet, Waterfall, OptionHouse, Ace3GUI & LibSimpleOptions frames
+	local libsToSkin = {
+		["Dewdrop-2.0"] = "Dewdrop",
+		["AceAddon-2.0"] = "Ace2",
+		["Tablet-2.0"] = "Tablet",
+		["Waterfall-1.0"] = "Waterfall",
+		["OptionHouse-1.1"] = "OptionHouse",
+		["AceGUI-3.0"] = "Ace3",
+		["LibSimpleOptions-1.0"] = "LibSimpleOptions",
+	}
+	for k, v in pairs(libsToSkin) do
+		if LibStub(k, true) then
+			if self[v] then self:checkAndRun(v)
+			else
+				if self.db.profile.Warnings then
+					self:CustomPrint(1, 0, 0, nil, nil, nil, v, "loaded but skin not found in SkinMe directory")
+				end
 			end
 		end
 	end
@@ -196,34 +183,7 @@ function Skinner:AddonFrames()
 			end
 		end
 	end
-	-- skin Option House
-	if LibStub("OptionHouse-1.1", true) then
-		if self.ohHooks then self:checkAndRun("ohHooks")
-		else
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "OptionHouse", "loaded but skin not found in SkinMe directory")
-			end
-		end
-	end
-	-- skin Ace3 GUI components
-	if LibStub("AceGUI-3.0", true) then
-		if self.Ace3 then self:checkAndRun("Ace3")
-		else
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Ace3", "loaded but skin not found in SkinMe directory")
-			end
-		end
-	end
-	-- skin LibSimpleOptions components
-	if LibStub("LibSimpleOptions-1.0", true) then
-		if self.LibSimpleOptions then self:checkAndRun("LibSimpleOptions")
-		else
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "LibSimpleOptions", "loaded but skin not found in SkinMe directory")
-			end
-		end
-	end
-	-- skin KeyBound Dialog
+	-- skin KeyBound Dialog frame
 	if LibStub('LibKeyBound-1.0', true) then self:applySkin(KeyboundDialog) end
 	
 end
