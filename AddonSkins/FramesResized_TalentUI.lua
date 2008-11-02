@@ -2,10 +2,13 @@
 
 	PlayerTalentFrame:SetHeight(PlayerTalentFrame:GetHeight() + 26)
 
-	self:removeRegions(TalentFrame_MidTextures)
-	self:removeRegions(TalentFrameScrollFrame_MidTextures)
+	PlayerTalentFrameBackgroundBottomLeft:SetHeight(384)
+	PlayerTalentFrameBackgroundBottomRight:SetHeight(384)
+	
+	self:removeRegions(PlayerTalentFrame_MidTextures)
+	self:removeRegions(PlayerTalentFrameScrollFrame_MidTextures)
 
-	self:moveObject(PlayerTalentFrameTalentPointsText, "-", 10, "-", 7)
-	self:moveObject(PlayerTalentFrameCancelButton, "-", 18, "+", 18)
+	self:moveObject(PlayerTalentFrameTalentPointsText, "-", 10, "+", 107)
+	self:moveObject(PlayerTalentFrameCancelButton, "-", 18, "+", 65)
 
 end

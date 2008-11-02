@@ -22,28 +22,15 @@ function Skinner:FramesResized()
 	end
 
 --	self:Debug("resize_QuestLog")
-	if self.db.profile.QuestLog and QuestLogFrame_MidTextures then
-		self:SecureHook("QuestLog_OnShow", function()
-			QuestLogFrame:SetHeight(QuestLogFrame:GetHeight() - 64)
-		end)
-		self:removeRegions(QuestLogFrame_MidTextures)
-	end
+--	if self.db.profile.QuestLog and QuestLogFrame_MidTextures then
+--		self:SecureHook("QuestLog_OnShow", function()
+--			QuestLogFrame:SetHeight(QuestLogFrame:GetHeight() - 64)
+--		end)
+--		self:removeRegions(QuestLogFrame_MidTextures)
+--	end
 
-	if IsAddOnLoaded("Blizzard_CraftUI") then self:FR_CraftUI() end
 	if IsAddOnLoaded("Blizzard_TradeSkillUI") then self:FR_TradeSkillUI() end
 	if IsAddOnLoaded("Blizzard_TrainerUI") then self:FR_TrainerUI() end
-
-end
-
-function Skinner:FR_CraftUI()
-
---	self:Debug("FR_CraftUI")
-	if self.db.profile.CraftFrame and CraftFrame_MidTextures then
-		self:removeRegions(CraftFrame_MidTextures)
-		self:removeRegions(CraftListScrollFrame_MidTextures)
-		self:moveObject(CraftCreateButton, nil, nil, "+", 20)
-		self:moveObject(CraftCancelButton, nil, nil, "+", 20)
-	end
 
 end
 

@@ -981,6 +981,16 @@ function Skinner:OnInitialize()
 		self.db.profile.BdEdgeFile = nil
 	end
 
+	-- update the Achievement setting from boolean to table
+	if type(self.db.profile.Achievement) == "boolean" then
+		local tmp = self.db.profile.Achievement
+		self.db.profile.Achievement = {}
+		self.db.profile.Achievement.skin = tmp
+		self.db.profile.Achievement.alerts = true
+		self.db.profile.Achievement.watch = true
+		tmp = nil
+	end
+
 	-- update the Gradient Texture value
 	if self.db.profile.Gradient.texture and self.db.profile.Gradient.texture == "Default" then
 		self.db.profile.Gradient.texture = "Blizzard ChatFrame Background"
