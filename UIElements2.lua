@@ -73,7 +73,7 @@ function Skinner:MenuFrames()
 	-- Hook this to skin any Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(frame)
 --		self:Debug("IOL_DP: [%s, %s]", frame, frame:GetName())
-		self:tekKonfig() -- hook tekKonfig objects
+		if self.tekKonfig then self:tekKonfig() end -- hook tekKonfig objects if skin loaded
 		if not frame.skinned then
 			for i = 1, select("#", frame:GetChildren()) do
 				local child = select(i, frame:GetChildren())
@@ -521,7 +521,6 @@ function Skinner:MainMenuBar()
 	if not IsAddOnLoaded("Dominos") then
 		-- move Action Buttons, Micro buttons etc
 		self:moveObject(ActionButton1, nil, nil, "+", 3)
-		self:moveObject(CharacterMicroButton, nil, nil, "+", 4)
 		self:moveObject(MainMenuBarBackpackButton, nil, nil, "+", 4)
 	end
 

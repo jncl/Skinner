@@ -1,20 +1,38 @@
 
-function Skinner:tekBlocks(...)
+function Skinner:tekBlocks()
 
---	self:Debug("tekBlocks:[%s, %s, %s]", select(1, ...) or "nil", select(2, ...) or "nil", select(3, ...) or "nil")
+	--	register for LDB callback when a new dataobject is created and tekBlocks is loaded
+	LibStub("LibDataBroker-1.1").RegisterCallback(Skinner, "LibDataBroker_DataObjectCreated", "skinBlocks")
+--	Skinner:Debug("Registered LDB callback for tekBlocks")
+
+	self:skinBlocks("ftt")
+	
+end
+
+local skinCnt
+function Skinner:skinBlocks(event, name, dataobj)
+
+--	self:Debug("tekBlocks:[%s, %s, %s]", event, name, dataobj)
+	
+	if event ~= "ftt" and not dataobj.text then return end -- no text, therefore no button
+	
+	skinCnt = 0
 	
 	-- skin any existing data objects
 	for i = 1, select("#", UIParent:GetChildren()) do
 		local child = select(i, UIParent:GetChildren())
-		if child:IsObjectType("Button") and not child.skinned and child.GetBackdrop and child.IconUpdate then
-			child:SetWidth(child:GetWidth() + 6)
+		if child:IsObjectType("Button") and not child.skinned and child.IconUpdate then
+--			Skinner:Debug("skinBlocks, button found:[%s]", child)
 			Skinner:applySkin(child)
 			child.skinned = true
+			skinCnt = skinCnt + 1
 		end
 	end
 	
+	-- if no new dataobjects found and not first time through then try again later
+	if skinCnt == 0 and event ~= "ftt" then
+--		self:Debug("skinBlocks, schedule event")
+		self:ScheduleEvent(self.skinBlocks, 0.1, self, event, name, dataobj)
+	end
+	
 end
-
---	register for LDB callback when a new dataobject is created and tekBlocks is loaded
-LibStub("LibDataBroker-1.1").RegisterCallback(Skinner, "LibDataBroker_DataObjectCreated", "tekBlocks")
---Skinner:Debug("Registered LDB callback for tekBlocks")

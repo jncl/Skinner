@@ -100,15 +100,15 @@ function Skinner:AddonFrames()
 		"Hadar_FocusFrame", "HandyNotes", "HatTrick", "HealBot", "HealersAssist", "HealingEstimator", "HealOrganizer", "Historian", "HitsMode", "HoloFriends",
 		"IgorsMassAuction", "ItemDB", "ItemEnchantApplication", "ItemRack", "ItemSync", "InstanceMaps", "InsultDevice", "InventoryOnPar",
 		"JasonQuest", "Junk",
-		"Karma", "KC_Items", "KingOfTheJungle", "KLHThreatMeter", "KombatStats",
+		"Karma", "KC_Items", "KLHThreatMeter", "KombatStats",
 		"LightHeaded", "LinkHeaven", "Links", "LinksList", "LinkWrangler", "LoadIT", "LootHog", "LootLink", "LootScroll", "Ludwig", "Luggage",
-		"MacroBank", "MageEatDrinkAid", "MailTo", "MCP", "MetaMap", "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "MTLove", "MultiTips", "MusicPlayer", "MyBags", "myBindings", "myClock", "myMusic",
+		"MacroBank", "MageEatDrinkAid", "MailTo", "MCP", "MetaMap", "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "MTLove", "MultiTips", "MusicPlayer", "MyBags", "myClock", "myMusic",
 		"NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
 		"Omen", "Omnibus", "OneBag3", "oRA2", "Outfitter",
 		"Palatank", "PallyPower", "PartyQuests", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "Planner", "PlayerExpBar", "PoliteWhisper", "Possessions", "Postal", "Prat", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
 		"Quartz", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount",
-		"Sanity2", "SanityBags", "SellJunk", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "SpellBinder", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
+		"Sanity2", "SanityBags", "SellJunk", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
 		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TinyTip", "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TourGuide", "TradeJunkie", "Trinity2", "TrinityBars2", "TuringTest",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", "Vendor", "Violation", "Visor2GUI",
@@ -189,7 +189,7 @@ function Skinner:AddonFrames()
 end
 
 local lodFrames = {
-	"AutoBarConfig", "Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", "Bongos", "Bongos_Options", "Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "DBM_GUI", "Dominos_Config", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GFW_HuntersHelperUI", "ItemRackOptions", "MSBTOptions", "OneBank", "Perl_Config_Options", "SpamSentry_report", "SpecialTalentUI", "SuperInspect_UI", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager"
+	"AutoBarConfig", "Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", "Bongos", "Bongos_Options", "Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "DBM_GUI", "Dominos_Config", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GFW_HuntersHelperUI", "ItemRackOptions", "MSBTOptions", "Perl_Config_Options", "SpamSentry_report", "SpecialTalentUI", "SuperInspect_UI", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager"
 }
 local lodAddons = {}
 for _, v in pairs(lodFrames) do
@@ -253,7 +253,6 @@ function Skinner:AUCTION_HOUSE_SHOW()
 
 	self:checkAndRun("AuctionUI")
 	-- trigger these when AH loads otherwise errors occur
-	self:checkAndRunAddOn("Auctioneer")
 	self:checkAndRunAddOn("BtmScan")
 	self:checkAndRunAddOn("Fence")
 	self:checkAndRunAddOn("AuctionFilterPlus")

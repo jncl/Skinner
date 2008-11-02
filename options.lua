@@ -1341,49 +1341,49 @@ function Skinner:Options()
 						type = "group",
 						args = {
 							skin = {
-							name = self.L["Achievements Frame"],
-							desc = self.L["Toggle the skin of the Achievements Frame"],
-							type = "toggle",
-							get = function()
-								return self.db.profile.Achievements.skin
-							end,
-							set = function(v)
-								self.db.profile.Achievements.skin = v
-								if IsAddOnLoaded("Blizzard_AchievementUI") then
-									self:checkAndRun("AchievementUI")
-								end
-							end,
-							order = 10,
+								name = self.L["Achievements Frame"],
+								desc = self.L["Toggle the skin of the Achievements Frame"],
+								type = "toggle",
+								get = function()
+									return self.db.profile.Achievements.skin
+								end,
+								set = function(v)
+									self.db.profile.Achievements.skin = v
+									if IsAddOnLoaded("Blizzard_AchievementUI") then
+										self:checkAndRun("AchievementUI")
+									end
+								end,
+								order = 10,
 							},
 							alert = {
-							name = self.L["Achievement Alerts"],
-							desc = self.L["Toggle the skin of the Achievement Alerts"],
-							type = "toggle",
-							get = function()
-								return self.db.profile.Achievements.alerts
-							end,
-							set = function(v)
-								self.db.profile.Achievements.alerts = v
-								if IsAddOnLoaded("Blizzard_AchievementUI") then
-									self:checkAndRun("AchievementAlerts")
-								end
-							end,
-							order = 20,
+								name = self.L["Achievement Alerts"],
+								desc = self.L["Toggle the skin of the Achievement Alerts"],
+								type = "toggle",
+								get = function()
+									return self.db.profile.Achievements.alerts
+								end,
+								set = function(v)
+									self.db.profile.Achievements.alerts = v
+									if IsAddOnLoaded("Blizzard_AchievementUI") then
+										self:checkAndRun("AchievementAlerts")
+									end
+								end,
+								order = 20,
 							},
 							watch = {
-							name = self.L["Achievement Watch"],
-							desc = self.L["Toggle the skin of the Achievement Watch"],
-							type = "toggle",
-							get = function()
-								return self.db.profile.Achievements.watch
-							end,
-							set = function(v)
-								self.db.profile.Achievements.watch = v
-								if IsAddOnLoaded("Blizzard_AchievementUI") then
-									self:checkAndRun("AchievementWatch")
-								end
-							end,
-							order = 30,
+								name = self.L["Achievement Watch"],
+								desc = self.L["Toggle the skin of the Achievement Watch"],
+								type = "toggle",
+								get = function()
+									return self.db.profile.Achievements.watch
+								end,
+								set = function(v)
+									self.db.profile.Achievements.watch = v
+									if IsAddOnLoaded("Blizzard_AchievementUI") then
+										self:checkAndRun("AchievementWatch")
+									end
+								end,
+								order = 30,
 							},
 						},
 					},

@@ -13,19 +13,10 @@ S - Skin request
 	I	AuctionHouse skin ??, reported by Tinface, 28.10.08
 		- Blizzard_AuctionUI\\Blizzard_AuctionUI.lua:1171: attempt to concatenate local 'highBidder' (a nil value)\nBlizzard_AuctionUI\\Blizzard_AuctionUI.lua:1089: in function `AuctionFrameAuctions_OnEvent'\n<string>:\"*:OnEvent\":1: in function <[string \"*:OnEvent\"]:1>\n\n  ---
 
-	I	Grid
-√		- backdrop is white, reported by Exenzo, 29.10.08
 		
 ≈	I	ReadyCheck Frame
 		- Raid warnings skinning in background but WoW one superimposed on top, reported by Connemara, 30.10.08
-√		- blank frame below the correct frame, reported by alanm26, 30.10.08
 
-	I	Achievment Alert, requested by alanm26, 30.10.08
-√		- add option to toggle the skin
-		
-√	I	SpellBinder, reported by Turinqui, 30.10.08
-		- Error running SpellBinder Interface\AddOns\Skinner\SkinMe\SpellBinder.lua:5: AceHook-2.1: Bad argument #2 to `SecureHook' (table expected, got nil)
-		
 x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
 		- Combat log filter frame has changed again
 		
@@ -38,22 +29,10 @@ x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
 	I	Status Window 2, requested by Spar, 13.9.08
 ?		- it is an Addon?? How can it NOT be skinned?
 
-√	N	Combuctor, reported by Neffi, 18.10.08
-
-√	N	Cartographer3, requested by solor, 28.10.08
-		
-√	N	HealBot, skin updated by acirac
-	
 ≈	S	oRA2, requested by madindehead, 18.10.08
-	
-√	S	Analyst, requested by toin7, 28.10.08
-
-√	S	DoubleWideTradeSkills, requested by alanm26, 27.10.08
 	
 	N	Auc_Advanced
 		- has superceeded Auctioneer, parts are new and need skinning
 		
-√	S	tekBlocks
-
 	S	MakeRocketGoNow
 	
