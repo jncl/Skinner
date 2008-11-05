@@ -10,10 +10,30 @@ S - Skin request
 
 	O	Convert to Ace3, requested by StormFX, 28.10.08
 	
-	I	AuctionHouse skin ??, reported by Tinface, 28.10.08
-		- Blizzard_AuctionUI\\Blizzard_AuctionUI.lua:1171: attempt to concatenate local 'highBidder' (a nil value)\nBlizzard_AuctionUI\\Blizzard_AuctionUI.lua:1089: in function `AuctionFrameAuctions_OnEvent'\n<string>:\"*:OnEvent\":1: in function <[string \"*:OnEvent\"]:1>\n\n  ---
+√	O  Remove all references to the Craft Frame
+	
+	I	AchievementUI, reported by alanm26, 04.10.08
+√		- Progress text isn't showing up on the green progress bars in the Achievement UI or tracker (3.03 issue)
 
+	I	SpellBook, reported by Xtina, 04.10.08
+√		- MacroFrame overlaps side tabs
+	
+	I	UrbanAchiever, reported by Kerecha, 05.10.08
+√		- skin the tracker (specificly the bars, to obey bartexture and borders settings)
+√		- Same thing for progressbars on the main UA window
 		
+	I	FramesResized, reported by Xtina, 04.10.08
+√		- Check to see if the functions exist before calling them in AddonFrames
+		
+	I	StatusBar, reported by dlr554, 4.10.08
+√		- StatusBar change not being remembered after reload or logoff
+		
+	I	FrameResized, reported by dlr554, 04.10.08
+√		- no longer skinning QuestLog properly
+		
+	I	TipTac, reported by dvanaroyi, 03.11.08
+?		- fix the skin
+
 ≈	I	ReadyCheck Frame
 		- Raid warnings skinning in background but WoW one superimposed on top, reported by Connemara, 30.10.08
 
@@ -31,8 +51,9 @@ x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
 
 ≈	S	oRA2, requested by madindehead, 18.10.08
 	
-	N	Auc_Advanced
-		- has superceeded Auctioneer, parts are new and need skinning
+	N	AucAdvanced
+√		- has superceeded Auctioneer, parts are new and need skinning
+√		- AucAdvanced Buy Prompt
 		
 	S	MakeRocketGoNow
 	

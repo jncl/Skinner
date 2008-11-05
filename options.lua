@@ -53,13 +53,14 @@ function Skinner:Defaults()
 		DressUpFrame    = true,
 		FriendsFrame    = true,
 		TradeSkill      = true,
-		CraftFrame      = true,
 		TradeFrame      = true,
 		QuestLog        = {skin = true, size = 1},
 		RaidUI          = true,
 		ReadyCheck      = true,
 		Buffs           = true,
-		Achievements    = {skin = true, alerts = true, watch = true},
+		AchieveFrame    = true,
+		AchieveAlert    = true,
+		AchieveWatch    = true,
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
@@ -1236,20 +1237,6 @@ function Skinner:Options()
 							end
 						end,
 					},
-					craft = {
-						name = self.L["Craft Frame"],
-						desc = self.L["Toggle the skin of the Craft Frame"],
-						type = "toggle",
-						get = function()
-							return self.db.profile.CraftFrame
-						end,
-						set = function(v)
-							self.db.profile.CraftFrame = v
-							if IsAddOnLoaded("Blizzard_CraftUI") then
-								self:checkAndRun("CraftUI")
-							end
-						end,
-					},
 					trade = {
 						name = self.L["Trade Frame"],
 						desc = self.L["Toggle the skin of the Trade Frame"],
@@ -1345,10 +1332,10 @@ function Skinner:Options()
 								desc = self.L["Toggle the skin of the Achievements Frame"],
 								type = "toggle",
 								get = function()
-									return self.db.profile.Achievements.skin
+									return self.db.profile.AchieveFrame
 								end,
 								set = function(v)
-									self.db.profile.Achievements.skin = v
+									self.db.profile.AchieveFrame = v
 									if IsAddOnLoaded("Blizzard_AchievementUI") then
 										self:checkAndRun("AchievementUI")
 									end
@@ -1360,10 +1347,10 @@ function Skinner:Options()
 								desc = self.L["Toggle the skin of the Achievement Alerts"],
 								type = "toggle",
 								get = function()
-									return self.db.profile.Achievements.alerts
+									return self.db.profile.AchieveAlert
 								end,
 								set = function(v)
-									self.db.profile.Achievements.alerts = v
+									self.db.profile.AchieveAlert = v
 									if IsAddOnLoaded("Blizzard_AchievementUI") then
 										self:checkAndRun("AchievementAlerts")
 									end
@@ -1375,10 +1362,10 @@ function Skinner:Options()
 								desc = self.L["Toggle the skin of the Achievement Watch"],
 								type = "toggle",
 								get = function()
-									return self.db.profile.Achievements.watch
+									return self.db.profile.AchieveWatch
 								end,
 								set = function(v)
-									self.db.profile.Achievements.watch = v
+									self.db.profile.AchieveWatch = v
 									if IsAddOnLoaded("Blizzard_AchievementUI") then
 										self:checkAndRun("AchievementWatch")
 									end

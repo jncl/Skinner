@@ -227,14 +227,13 @@ function Skinner:LoDFrames(arg1)
 
 	-- handle FramesResized changes
 	if IsAddOnLoaded("FramesResized") then
-		if arg1 == "Blizzard_CraftUI" then self:FR_CraftUI()
-		elseif arg1 == "Blizzard_TradeSkillUI" then self:FR_TradeSkillUI()
-		elseif arg1 == "Blizzard_TrainerUI" then self:FR_TrainerUI()
+		if arg1 == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:FR_TradeSkillUI()
+		elseif arg1 == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:FR_TrainerUI()
 		end
 	end
 	-- handle TradeTabs changes for both Craft and TradeSkills
 	if IsAddOnLoaded("TradeTabs") then
-		if arg1 == "Blizzard_CraftUI" or arg1 == "Blizzard_TradeSkillUI" then
+		if arg1 == "Blizzard_TradeSkillUI" then
 			self:checkAndRunAddOn("TradeTabs")
 		end
 	end

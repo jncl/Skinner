@@ -14,6 +14,4 @@ function Skinner:BeanCounter()
 	self:skinUsingBD2(uiFrame.resultlist.sheet.panel.vScroll)
 	self:applySkin(uiFrame.resultlist)
 
-	if type(self["AucExtras"]) == "function" then self:AucExtras() end
-
 end

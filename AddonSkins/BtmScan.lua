@@ -36,6 +36,4 @@ function Skinner:BtmScan()
 		self:applySkin(AuctionFrameTabBtmScan)
 	end
 
-	if type(self["AucExtras"]) == "function" then self:AucExtras() end
-
 end

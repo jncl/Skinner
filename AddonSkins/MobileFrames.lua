@@ -2,7 +2,6 @@
 function Skinner:MobileFrames()
 
 	self:checkAndRun("AuctionUI")
-	self:checkAndRun("CraftUI")
 	self:checkAndRun("InspectUI")
 	self:checkAndRun("MacroUI")
 	self:checkAndRun("TalentUI")

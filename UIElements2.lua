@@ -33,7 +33,7 @@ function Skinner:MenuFrames()
 	self:skinDropDown(AudioOptionsVoicePanelInputDeviceDropDown)
 	self:skinDropDown(AudioOptionsVoicePanelOutputDeviceDropDown)
 	self:skinDropDown(AudioOptionsVoicePanelChatModeDropDown)
-	
+
 -->>--	Mac Options (New 2.2)
 	if IsMacClient() then
 		self:storeAndSkin(ftype, MacOptionsFrame, true)
@@ -90,6 +90,15 @@ function Skinner:MenuFrames()
 
 end
 
+-- hook this to move MacroFrame further right when SpellBookFrame is open
+Skinner:SecureHook("ShowUIPanel", function(frame, force)
+	if MacroFrame and (frame == MacroFrame or frame == SpellBookFrame) then
+		local mfShown = MacroFrame:IsShown()
+		local sbfShown = SpellBookFrame:IsShown()
+--		Skinner:Debug("ShowUIPanel: [%s, %s, %s, %s]", frame:GetName() or "<Anon>", force, mfShown, sbfShown)
+		if mfShown and sbfShown then Skinner:moveObject(MacroFrame, "+", 40, nil, nil) end
+	end
+end)
 function Skinner:MacroUI()
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
@@ -109,14 +118,15 @@ function Skinner:MacroUI()
 
 	self:removeRegions(MacroButtonScrollFrame)
 	self:skinScrollBar(MacroButtonScrollFrame)
+	self:moveObject(self:getRegion(MacroFrame, 6), nil, nil, "+", 10) -- title
 	self:moveObject(MacroFrameCloseButton, "+", 28, "+", 8)
 	self:moveObject(MacroFrameSelectedMacroBackground, nil, nil, "+", 10)
 	self:moveObject(MacroFrameTextBackground, "-", 10, "+", 10)
 	self:moveObject(MacroFrameScrollFrame, "-", 10, nil, nil)
+	self:moveObject(MacroFrameCharLimitText, nil, nil, "-", 72)
 	self:moveObject(MacroDeleteButton, "-", 10, "-", 72)
-	self:moveObject(MacroNewButton, "-", 4, "-", 6)
-	self:moveObject(MacroExitButton, "-", 4, "-", 6)
-	self:moveObject(MacroFrameCharLimitText, nil, nil, "-", 75)
+	self:moveObject(MacroNewButton, "-", 4, "-", 5)
+	self:moveObject(MacroExitButton, "-", 4, "-", 5)
 
 	self:removeRegions(MacroFrameScrollFrame)
 	self:skinScrollBar(MacroFrameScrollFrame)
@@ -129,7 +139,6 @@ function Skinner:MacroUI()
 	MacroPopupFrame:SetWidth(MacroPopupFrame:GetWidth() * self.FxMult)
 	MacroPopupFrame:SetHeight(MacroPopupFrame:GetHeight() - 20) -- N.B. must be absolute not multiple
 	self:moveObject(MacroPopupFrame, "+", 40, nil, nil)
-
 	local xOfs, yOfs = 5, 15
 	self:moveObject(MacroPopupEditBox, "-", xOfs, "+", yOfs)
 	self:moveObject(MacroPopupScrollFrame, "+", 10, "+", yOfs)
@@ -528,7 +537,7 @@ function Skinner:MainMenuBar()
 	for i = 0, 3 do
 		self:moveObject(_G["CharacterBag"..i.."SlotCount"], "+", 5, "-", 1)
 	end
-	
+
 	local function toggleActionButtons()
 
 		local babf = BonusActionBarFrame
@@ -846,7 +855,7 @@ function Skinner:Nameplates()
 		if not SHOW_ENEMIES and not SHOW_FRIENDS then
 			Skinner:CancelScheduledEvent("NameplateUpdateCheck")
 		end
-		
+
 	end
 
 	local function showFunc()
@@ -873,13 +882,13 @@ function Skinner:FeedbackUI()
 	self.initialized.Feedback = true
 
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
-	
+
 	local function skinFUIScrollBar(obj)
-		
+
 		obj:SetBackdrop(self.backdrop3)
 		obj:SetBackdropBorderColor(.2, .2, .2, 1)
 		obj:SetBackdropColor(.1, .1, .1, 1)
-	
+
 	end
 
 	self:keepFontStrings(FeedbackUI)
@@ -891,7 +900,7 @@ function Skinner:FeedbackUI()
 	self:storeAndSkin(ftype, FeedbackUI_ModifierKeyDropDownList)
 	self:storeAndSkin(ftype, FeedbackUI_MouseButtonDropDownList)
 	self:storeAndSkin(ftype, FeedbackUI)
-	
+
 -->-- Survey Frame
 	FeedbackUISurveyFrame:SetBackdrop(nil)
 	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlCategory)
@@ -908,8 +917,8 @@ function Skinner:FeedbackUI()
 	self:removeRegions(FeedbackUISurveyFrameStepThroughPanelEditInput)
 	self:skinScrollBar(FeedbackUISurveyFrameStepThroughPanelEditInput)
 	skinFUIScrollBar(FeedbackUISurveyFrameStepThroughPanelScrollScrollControls)
-	
--->>-- Suggestion Frame	
+
+-->>-- Suggestion Frame
 	FeedbackUISuggestFrame:SetBackdrop(nil)
 	FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
 	FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
@@ -920,7 +929,7 @@ function Skinner:FeedbackUI()
 	self:removeRegions(FeedbackUISuggestFrameStepThroughPanelEditInput)
 	self:skinScrollBar(FeedbackUISuggestFrameStepThroughPanelEditInput)
 	skinFUIScrollBar(FeedbackUISuggestFrameStepThroughPanelScrollScrollControls)
-	
+
 -->>-- Bug Frame
 	FeedbackUIBugFrame:SetBackdrop(nil)
 	FeedbackUIBugFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
@@ -932,8 +941,8 @@ function Skinner:FeedbackUI()
 	self:removeRegions(FeedbackUIBugFrameStepThroughPanelEditInput)
 	self:skinScrollBar(FeedbackUIBugFrameStepThroughPanelEditInput)
 	skinFUIScrollBar(FeedbackUIBugFrameStepThroughPanelScrollScrollControls)
-	
+
 	-- make the QuestLog Tip Label text visible
 	FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
-	
+
 end

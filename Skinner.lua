@@ -32,9 +32,6 @@ Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on WotLK
 Skinner.isWotLK = GetCVarBool and true or false
 
--- table to hold which skins have been actioned
-Skinner.initialized = {}
-
 function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
 
 	if not obj then return end
@@ -515,8 +512,9 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 	-- Workaround for yOfs crash when using bar addons
 	if not yOfs then return end
 
+	relTo = relTo or relativeTo
 	-- Workaround for relativeTo crash
-	if not relativeTo then
+	if not relTo then
 		if self.db.profile.Warnings then
 			self:CustomPrint(1, 0, 0, nil, nil, nil, "moveObject (relativeTo) error:", objName, objName:GetName() or "???")
 		end
@@ -526,8 +524,6 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 	-- apply the adjustment
 	if xAdj == nil then xOffset = xOfs else xOffset = (xAdj == "+" and xOfs + xDiff or xOfs - xDiff) end
 	if yAdj == nil then yOffset = yOfs else yOffset = (yAdj == "+" and yOfs + yDiff or yOfs - yDiff) end
-
-	if relTo == nil and relativeTo:GetName() then relTo = relativeTo:GetName() end
 
 	objName:ClearAllPoints()
 	objName:SetPoint(point, relTo, relativePoint, xOffset, yOffset)
@@ -751,7 +747,7 @@ function Skinner:skinFFColHeads(buttonName)
 
 end
 
-function Skinner:skinMoneyFrame(frame, moveGold, noWidth)
+function Skinner:skinMoneyFrame(frame, moveGold, noWidth, moveSilverBox)
 
 	if not frame then return end
 
@@ -765,6 +761,9 @@ function Skinner:skinMoneyFrame(frame, moveGold, noWidth)
 		end
 		if not noWidth and k ~= 1 then
 			fName:SetWidth(fName:GetWidth() + 5)
+		end
+		if v == "Silver" and moveSilverBox then
+			self:moveObject(fName, "-", 10, nil, nil)
 		end
 	end
 
@@ -884,7 +883,7 @@ function Skinner:updateSBTexture()
 	if self.db.profile.CharacterFrames then
 		self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
 		for i = 1 , NUM_FACTIONS_DISPLAYED do
-			self:glazeStatusBar(_G["ReputationBar"..i], 0)
+			self:glazeStatusBar(_G["ReputationBar"..i.."ReputationBar"], 0)
 		end
 		for i = 1, SKILLS_TO_DISPLAY do
 			self:glazeStatusBar(_G["SkillRankFrame"..i], 0)
@@ -892,11 +891,19 @@ function Skinner:updateSBTexture()
 		self:glazeStatusBar(SkillDetailStatusBar, 0)
 	end
 
-	if self.db.profile.TradeSkill then self:glazeStatusBar(TradeSkillRankFrame, 0) end
+	if self.initialized.TradeSkillUI and self.db.profile.TradeSkill then
+		self:glazeStatusBar(TradeSkillRankFrame, 0)
+	end
 
-	if self.db.profile.CraftFrame then self:glazeStatusBar(CraftRankFrame, 0) end
-
-	if self.db.profile.Tooltips.glazesb then self:glazeStatusBar(GameTooltipStatusBar, 0) end
+	if self.db.profile.Tooltips.glazesb then
+		self:glazeStatusBar(GameTooltipStatusBar, 0)
+		if GameTooltipStatusBar1 then
+			self:glazeStatusBar(GameTooltipStatusBar1, 0)
+		end
+		if GameTooltipStatusBar2 then
+			self:glazeStatusBar(GameTooltipStatusBar2, 0)
+		end
+	end
 
 	if self.db.profile.MirrorTimers.glaze then
 		for i = 1, MIRRORTIMER_NUMTIMERS do
@@ -971,29 +978,21 @@ function Skinner:OnInitialize()
 	-- register the EditBox/ScrollBar texture
 	self.LSM:Register("border", "Skinner EditBox/ScrollBar Border", "Interface\\AddOns\\Skinner\\textures\\krsnik")
 
-	-- update the Backdrop settings if required
-	if self.db.profile.BdFile and self.db.profile.BdFile == "Interface\\ChatFrame\\ChatFrameBackground" then
-		self.db.profile.BdTexture = "Blizzard ChatFrame Background"
-		self.db.profile.BdFile = nil
-	end
-	if self.db.profile.BdEdgeFile and self.db.profile.BdEdgeFile == "Interface\\Tooltips\\UI-Tooltip-Border" then
-		self.db.profile.BdBorderTexture = "Blizzard Tooltip"
-		self.db.profile.BdEdgeFile = nil
-	end
-
-	-- update the Achievement setting from boolean to table
-	if type(self.db.profile.Achievement) == "boolean" then
-		local tmp = self.db.profile.Achievement
-		self.db.profile.Achievement = {}
-		self.db.profile.Achievement.skin = tmp
-		self.db.profile.Achievement.alerts = true
-		self.db.profile.Achievement.watch = true
+	-- update the Achievement settings to relect new keys
+	if type(self.db.profile.Achievement) == "table" then
+		local tmp = CopyTable(self.db.profile.Achievement)
+		self.db.profile.AchieveWatch = tmp.skin
+		self.db.profile.AchieveAlert = tmp.alert or true
+		self.db.profile.AchieveWatch = tmp.watch or true
+		self.db.profile.Achievement = nil
 		tmp = nil
-	end
-
-	-- update the Gradient Texture value
-	if self.db.profile.Gradient.texture and self.db.profile.Gradient.texture == "Default" then
-		self.db.profile.Gradient.texture = "Blizzard ChatFrame Background"
+	elseif type(self.db.profile.Achievement) == "boolean" then
+		local tmp = self.db.profile.Achievement
+		self.db.profile.AchieveWatch = tmp
+		self.db.profile.AchieveAlert = true
+		self.db.profile.AchieveWatch = true
+		self.db.profile.Achievement = nil
+		tmp = nil
 	end
 
 	-- Register the chat command and the minimap icon
@@ -1070,7 +1069,7 @@ function Skinner:OnInitialize()
 	}
 
 	-- these are used to disable frames from being skinned
-	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentFrame", "DressUpFrame", "FriendsFrame", "TradeSkill", "CraftFrame", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "Achievements"}
+	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentFrame", "DressUpFrame", "FriendsFrame", "TradeSkill", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "AchieveFrame", "AchieveAlert", "AchieveWatch"}
 	self.charKeys2 = {"QuestLog"}
 	self.npcKeys = {"MerchantFrames", "GossipFrame", "ClassTrainer", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "Barbershop"}
 	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatConfig", "ChatTabs", "ChatFrames", "CombatLogQBF", "LootFrame", "StackSplit", "ItemText", "Colours", "WorldMap", "HelpFrame", "KnowledgeBase", "Inspect", "BattleScore", "BattlefieldMm", "ScriptErrors", "Tutorial", "DropDowns", "MinimapButtons", "MinimapGloss", "MenuFrames", "BankFrame", "MailFrame", "AuctionFrame", "CoinPickup", "GMSurveyUI", "LFGFrame", "ItemSocketingUI", "GuildBankUI", "Nameplates", "TimeManager", "Calendar"}
@@ -1111,6 +1110,9 @@ function Skinner:OnInitialize()
 	-- store Addons managed by LoadManagers
 	self.lmAddons = {}
 	
+	-- table to hold which functions have been actioned
+	self.initialized = {}
+
 end
 
 -- This function was copied from WoWWiki

@@ -440,7 +440,7 @@ function Skinner:TalentUI()
 	for i = 1, 2 do
 		local tabName = _G["PlayerTalentFrameType"..i]
 		self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
---			self:Debug("PTFT: [%s, %s]", tabName:GetWidth(), tabName:GetHeight())
+--		self:Debug("PTFT: [%s, %s]", tabName:GetWidth(), tabName:GetHeight())
 		tabName:SetWidth(tabName:GetWidth() * 1.25)
 		tabName:SetHeight(tabName:GetHeight() * 1.25)
 		if i == 1 then self:moveObject(tabName, "+", 30, nil, nil) end
@@ -471,10 +471,9 @@ function Skinner:DressUpFrame()
 
 end
 
-Skinner.initialized.Achievements = {}
 function Skinner:AchievementUI()
-	if not self.db.profile.Achievements.skin or self.initialized.Achievements.skin then return end
-	self.initialized.Achievements.skin = true
+	if not self.db.profile.AchieveFrame or self.initialized.AchieveFrame then return end
+	self.initialized.AchieveFrame = true
 	
 --	self:Debug("AchievementUI Loaded")
 	
@@ -496,13 +495,13 @@ function Skinner:AchievementUI()
 	
 	-- hook this to skin StatusBars used by the Objectives mini panels
 	self:Hook("AchievementButton_GetProgressBar", function(index)
---		self:Debug("AB_GPB:[%s]", index)
 		local statusBar = self.hooks["AchievementButton_GetProgressBar"](index)
+--		self:Debug("AB_GPB:[%s, %s]", index, statusBar:GetName() or "<Anon>")
 		local statusBarBG = self:getRegion(statusBar, 1)
 		if not statusBar.skinned then
 			statusBarBG:SetTexture(self.sbTexture)
 			statusBarBG:SetVertexColor(unpack(self.sbColour))
-			self:removeRegions(statusBar, {2})
+			self:removeRegions(statusBar, {3}) -- remove Border
 			self:glazeStatusBar(statusBar)
 			statusBar.skinned = true
 		end
@@ -653,11 +652,11 @@ function Skinner:AchievementUI()
 			end
 		end
 		self:SecureHook("AchievementFrameTab_OnClick", function(id)
-			self:Debug("AFT_OC:[%s]", id)
+--			self:Debug("AFT_OC:[%s]", id)
 			ttOnClick()
 		end)
 		self:SecureHook("AchievementFrameComparisonTab_OnClick", function(id)
-			self:Debug("AFCT_OC:[%s]", id)
+--			self:Debug("AFCT_OC:[%s]", id)
 			ttOnClick()
 		end)
 	end
@@ -668,8 +667,8 @@ function Skinner:AchievementUI()
 end
 
 function Skinner:AchievementWatch()
-	if not self.db.profile.Achievements.watch or self.initialized.Achievements.watch then return end
-	self.initialized.Achievements.watch = true
+	if not self.db.profile.AchieveWatch or self.initialized.AchieveWatch then return end
+	self.initialized.AchieveWatch = true
 
 -->>-- Watch Frames
 	for i = 2, 10 do
@@ -677,15 +676,15 @@ function Skinner:AchievementWatch()
 		statusBarBG:SetTexture(self.sbTexture)
 		statusBarBG:SetVertexColor(unpack(self.sbColour))
 		local watchLine = _G["AchievementWatchLine"..i]
-		self:removeRegions(watchLine.statusBar, {2})
+		self:removeRegions(watchLine.statusBar, {3}) -- remove Border
 		self:glazeStatusBar(watchLine.statusBar)
 	end
 	
 end
 
 function Skinner:AchievementAlerts()
-	if not self.db.profile.Achievements.alerts or self.initialized.Achievements.alerts then return end
-	self.initialized.Achievements.alerts = true
+	if not self.db.profile.AchieveAlert or self.initialized.AchieveAlert then return end
+	self.initialized.AchieveAlert = true
 
 	-->>-- Alert Panels
 	local function skinAlertFrame()

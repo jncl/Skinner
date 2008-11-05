@@ -274,40 +274,6 @@ function Skinner:TradeSkillUI()
 
 end
 
-function Skinner:CraftUI()
-	if not self.db.profile.CraftFrame or self.initialized.CraftUI then return end
-	self.initialized.CraftUI = true
-
-	self:keepFontStrings(CraftFrame)
-	CraftFrame:SetWidth(CraftFrame:GetWidth() * self.FxMult)
-	CraftFrame:SetHeight(CraftFrame:GetHeight() * self.FyMult)
-	self:moveObject(CraftFrameTitleText, nil, nil, "+", 12)
-	self:moveObject(CraftFrameCloseButton, "+", 28, "+", 8)
-	self:moveObject(CraftFrameIsMakeableText, nil, nil, "+", 15)
-	self:skinDropDown(CraftFrameFilterDropDown)
-	self:moveObject(CraftFrameFilterDropDown, nil, nil, "+", 15)
-	self:moveObject(CraftRankFrame, "-", 40, "+", 14)
-	self:removeRegions(CraftRankFrameBorder, {1})
-	self:glazeStatusBar(CraftRankFrame, 0)
-	self:moveObject(CraftFrameAvailableFilterCheckButton, "-", 38, "+", 12)
-	self:skinEditBox(CraftFrameEditBox, {9})
-	self:removeRegions(CraftExpandButtonFrame)
-	self:moveObject(Craft1, nil, nil, "+", 20)
-	self:removeRegions(CraftListScrollFrame)
-	self:moveObject(CraftListScrollFrame, "+", 35, "+", 20)
-	self:skinScrollBar(CraftListScrollFrame)
-	self:removeRegions(CraftDetailScrollFrame)
-	self:moveObject(CraftDetailScrollFrame, "-", 4, "+", 10)
-	self:skinScrollBar(CraftDetailScrollFrame)
-	self:moveObject(CraftCreateButton, "-", 10, "-", 5)
-	self:moveObject(CraftCancelButton, "-", 10, "-", 5)
-	for i = 1, 8 do
-		self:moveObject(_G["CraftReagent"..i.."Count"], "+", 4, nil, nil)
-	end
-	self:storeAndSkin(ftype, CraftFrame)
-
-end
-
 function Skinner:TradeFrame()
 	if not self.db.profile.TradeFrame or self.initialized.TradeFrame then return end
 	self.initialized.TradeFrame = true
