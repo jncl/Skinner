@@ -350,6 +350,7 @@ function Skinner:getRegion(frame, regNo)
 
 end
 
+local sbGlazed = {}
 function Skinner:glazeStatusBar(statusBar, fi)
 --@alpha@
 	assert(statusBar and statusBar:GetObjectType() == "StatusBar", "Not a StatusBar\n"..debugstack())
@@ -359,6 +360,7 @@ function Skinner:glazeStatusBar(statusBar, fi)
 
 	if statusBar:GetObjectType() ~= "StatusBar" then return end
 	statusBar:SetStatusBarTexture(self.sbTexture)
+	table.insert(sbGlazed, statusBar)
 
 	if fi then
 		if not statusBar.bg then statusBar.bg = CreateFrame("StatusBar", nil, statusBar) end
@@ -880,62 +882,16 @@ function Skinner:updateSBTexture()
 
 	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
 
-	if self.db.profile.CharacterFrames then
-		self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
-		for i = 1 , NUM_FACTIONS_DISPLAYED do
-			self:glazeStatusBar(_G["ReputationBar"..i.."ReputationBar"], 0)
+	for _, statusBar in pairs(sbGlazed) do
+		statusBar:SetStatusBarTexture(self.sbTexture)
+		if statusBar.bg then
+			if statusBar.bg:IsObjectType("StatusBar") then
+				statusBar.bg:SetStatusBarTexture(self.sbTexture)
+			else
+				statusBar.bg:SetTexture(self.sbTexture) -- handle backgrounds that aren't StatusBars
+			end
 		end
-		for i = 1, SKILLS_TO_DISPLAY do
-			self:glazeStatusBar(_G["SkillRankFrame"..i], 0)
-		end
-		self:glazeStatusBar(SkillDetailStatusBar, 0)
-	end
-
-	if self.initialized.TradeSkillUI and self.db.profile.TradeSkill then
-		self:glazeStatusBar(TradeSkillRankFrame, 0)
-	end
-
-	if self.db.profile.Tooltips.glazesb then
-		self:glazeStatusBar(GameTooltipStatusBar, 0)
-		if GameTooltipStatusBar1 then
-			self:glazeStatusBar(GameTooltipStatusBar1, 0)
-		end
-		if GameTooltipStatusBar2 then
-			self:glazeStatusBar(GameTooltipStatusBar2, 0)
-		end
-	end
-
-	if self.db.profile.MirrorTimers.glaze then
-		for i = 1, MIRRORTIMER_NUMTIMERS do
-			self:glazeStatusBar(_G["MirrorTimer"..i.."StatusBar"], 0)
-		end
-	end
-
-	if self.db.profile.CastingBar.glaze then
-		self:glazeStatusBar(CastingBarFrame, 0)
-		CastingBarFrameFlash:SetTexture(self.sbTexture)
-	end
-
-	if self.db.profile.GroupLoot.skin then
-		for i = 1, NUM_GROUP_LOOT_FRAMES do
-			self:glazeStatusBar(_G["GroupLootFrame"..i.."Timer"], 0)
-		end
-	end
-
-	if self.db.profile.ItemText then self:glazeStatusBar(ItemTextStatusBar, 0) end
-
-	if IsMacClient() then self:glazeStatusBar(MovieProgressBar, 0) end
-
-	if self.db.profile.MainMenuBar.glazesb then
-		self:glazeStatusBar(MainMenuExpBar, 0)
-		self:glazeStatusBar(ReputationWatchStatusBar, 0)
-	end
-
-	if self.db.profile.Nameplates then
-		for i = 1, select("#", WorldFrame:GetChildren()) do
-			local child = select(i, WorldFrame:GetChildren())
-			if child.skinned then child.skinned = nil end
-		end
+		if statusBar.flash then statusBar.flash:SetTexture(self.sbTexture) end -- handle CastingBar Flash
 	end
 
 end

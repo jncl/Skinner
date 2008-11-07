@@ -182,6 +182,7 @@
 <script file="SkinMe\MacroBank.lua"/>
 <script file="SkinMe\MageEatDrinkAid.lua"/>
 <script file="SkinMe\MailTo.lua"/>
+<script file="SkinMe\MakeRocketGoNow.lua"/>
 <script file="SkinMe\MCP.lua"/>
 <script file="SkinMe\MetaMap.lua"/>
 <script file="SkinMe\MinimapButtonFrame.lua"/>

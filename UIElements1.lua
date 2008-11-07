@@ -98,6 +98,7 @@ function Skinner:CastingBar()
 		local cbfs = _G[cbfName.."Spark"]
 		local cbff = _G[cbfName.."Flash"]
 		local cbfObj = _G[cbfName]
+		cbfObj.flash = cbff -- store this so it will get retextured as required
 		self:keepFontStrings(cbfObj)
 		cbfObj:SetWidth(cbfObj:GetWidth() * 0.75)
 		cbfObj:SetHeight(cbfObj:GetHeight() * 1.1)

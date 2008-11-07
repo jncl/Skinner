@@ -6,7 +6,7 @@ function Skinner:TourGuide()
 
 	--	hook this to skin the Objectives Panel Scroll Bar
 	self:SecureHook(TourGuide, "CreateObjectivePanel", function()
-		local TGOPS = self:getChild(TourGuideObjectives, 4)
+		local TGOPS = self:getChild(TourGuideObjectives, 3)
 		self:skinSlider(TGOPS)
 		self:applySkin(TourGuideObjectives)
 		self:Unhook(TourGuide, "CreateObjectivePanel")

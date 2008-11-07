@@ -10,27 +10,10 @@ S - Skin request
 
 	O	Convert to Ace3, requested by StormFX, 28.10.08
 	
-√	O  Remove all references to the Craft Frame
-	
-	I	AchievementUI, reported by alanm26, 04.10.08
-√		- Progress text isn't showing up on the green progress bars in the Achievement UI or tracker (3.03 issue)
+	I	StatusBar textures, reported by Kerecha, 06.10.08
+√		- not applying properly even after a reload
+√			- change code to store all StatusBars that are skinned and use this table when changing the texture
 
-	I	SpellBook, reported by Xtina, 04.10.08
-√		- MacroFrame overlaps side tabs
-	
-	I	UrbanAchiever, reported by Kerecha, 05.10.08
-√		- skin the tracker (specificly the bars, to obey bartexture and borders settings)
-√		- Same thing for progressbars on the main UA window
-		
-	I	FramesResized, reported by Xtina, 04.10.08
-√		- Check to see if the functions exist before calling them in AddonFrames
-		
-	I	StatusBar, reported by dlr554, 4.10.08
-√		- StatusBar change not being remembered after reload or logoff
-		
-	I	FrameResized, reported by dlr554, 04.10.08
-√		- no longer skinning QuestLog properly
-		
 	I	TipTac, reported by dvanaroyi, 03.11.08
 ?		- fix the skin
 
@@ -51,9 +34,5 @@ x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
 
 ≈	S	oRA2, requested by madindehead, 18.10.08
 	
-	N	AucAdvanced
-√		- has superceeded Auctioneer, parts are new and need skinning
-√		- AucAdvanced Buy Prompt
-		
-	S	MakeRocketGoNow
+√	S	MakeRocketGoNow
 	

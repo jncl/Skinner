@@ -834,15 +834,7 @@ function Skinner:Nameplates()
 				if not child.skinned then
 					for i = 1, 2 do -- skin both status bars
 						local sb = select(i, child:GetChildren())
-						sb:SetStatusBarTexture(Skinner.sbTexture)
-						if not sb.bg then
-							local bg = sb:CreateTexture(nil, "BORDER")
-							bg:SetPoint("TOPLEFT", sb, "TOPLEFT")
-							bg:SetPoint("BOTTOMRIGHT", sb, "BOTTOMRIGHT")
-							bg:SetTexture(Skinner.sbTexture)
-							bg:SetVertexColor(unpack(Skinner.sbColour))
-							sb.bg = bg
-						end
+						Skinner:glazeStatusBar(sb, 0)
 					end
 					child.skinned = true
 				end

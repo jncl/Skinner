@@ -503,6 +503,7 @@ function Skinner:AchievementUI()
 			statusBarBG:SetVertexColor(unpack(self.sbColour))
 			self:removeRegions(statusBar, {3}) -- remove Border
 			self:glazeStatusBar(statusBar)
+			statusBar.bg = statusBarBG -- store this so it will get retextured as required
 			statusBar.skinned = true
 		end
 		return statusBar
@@ -678,6 +679,7 @@ function Skinner:AchievementWatch()
 		local watchLine = _G["AchievementWatchLine"..i]
 		self:removeRegions(watchLine.statusBar, {3}) -- remove Border
 		self:glazeStatusBar(watchLine.statusBar)
+		watchLine.statusBar.bg = statusBarBG -- store this so it will get textured as required
 	end
 	
 end
