@@ -185,23 +185,26 @@ function Skinner:AddonFrames()
 	end
 	-- skin KeyBound Dialog frame
 	if LibStub('LibKeyBound-1.0', true) then self:applySkin(KeyboundDialog) end
-	-- skin LibTooltip tooltips
-	if LibStub( "LibTooltip-1.0", true) then
-		local function skinLTTooltips()
-			for key, tooltip in LibStub("LibTooltip-1.0"):IterateTooltips() do
---				self:Debug("LibTooltip:[%s, %s]", key, tooltip)
-				if not tooltip.skinned then
-					self:applySkin(tooltip)
-					tooltip.skinned = true
+	-- skin LibTooltip a.k.a. LibQTip tooltips
+	local lt = {"LibTooltip-1.0", "LibQTip-1.0"}
+	for _, lib in pairs(lt) do
+		if LibStub(lib, true) then
+			local function skinLTTooltips()
+				for key, tooltip in LibStub(lib):IterateTooltips() do
+--					self:Debug("%s:[%s, %s]", lib, key, tooltip)
+					if not tooltip.skinned then
+						self:applySkin(tooltip)
+						tooltip.skinned = true
+					end
 				end
 			end
-		end
-		-- hook this to handle new tooltips
-		self:SecureHook(LibStub("LibTooltip-1.0"), "Acquire", function(this, key, ...)
+			-- hook this to handle new tooltips
+			self:SecureHook(LibStub(lib), "Acquire", function(this, key, ...)
+				skinLTTooltips()
+			end)
+			-- skin any existing ones
 			skinLTTooltips()
-		end)
-		-- skin any existing ones
-		skinLTTooltips()
+		end
 	end
 	
 end

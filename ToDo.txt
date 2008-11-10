@@ -8,15 +8,6 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	N	BankItems, requested by CrazyBenny, 09.10.08
-
-	I	AucAdvanced, reported by AesirRising, 10.10.08
-√		- Check to see if modules exist before skinning them
-
-√	S	Panda, requested by CrazyBenny, 09.10.08
-
-√	S	LibTooltip, requested by gamemaster128, 08.10.08
-
 	O	Convert to Ace3, requested by StormFX, 28.10.08
 
 	I	TipTac, reported by dvanaroyi, 03.11.08
