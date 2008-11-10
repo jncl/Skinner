@@ -105,7 +105,7 @@ function Skinner:AddonFrames()
 		"MacroBank", "MageEatDrinkAid", "MailTo", "MakeRocketGoNow", "MCP", "MetaMap", "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "MTLove", "MultiTips", "MusicPlayer", "MyBags", "myClock", "myMusic",
 		"NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
 		"Omen", "Omnibus", "OneBag3", "oRA2", "Outfitter",
-		"Palatank", "PallyPower", "PartyQuests", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "Planner", "PlayerExpBar", "PoliteWhisper", "Possessions", "Postal", "Prat", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
+		"Palatank", "PallyPower", "Panda", "PartyQuests", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "Planner", "PlayerExpBar", "PoliteWhisper", "Possessions", "Postal", "Prat", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
 		"Quartz", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount",
 		"Sanity2", "SanityBags", "SellJunk", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
@@ -185,6 +185,24 @@ function Skinner:AddonFrames()
 	end
 	-- skin KeyBound Dialog frame
 	if LibStub('LibKeyBound-1.0', true) then self:applySkin(KeyboundDialog) end
+	-- skin LibTooltip tooltips
+	if LibStub( "LibTooltip-1.0", true) then
+		local function skinLTTooltips()
+			for key, tooltip in LibStub("LibTooltip-1.0"):IterateTooltips() do
+--				self:Debug("LibTooltip:[%s, %s]", key, tooltip)
+				if not tooltip.skinned then
+					self:applySkin(tooltip)
+					tooltip.skinned = true
+				end
+			end
+		end
+		-- hook this to handle new tooltips
+		self:SecureHook(LibStub("LibTooltip-1.0"), "Acquire", function(this, key, ...)
+			skinLTTooltips()
+		end)
+		-- skin any existing ones
+		skinLTTooltips()
+	end
 	
 end
 

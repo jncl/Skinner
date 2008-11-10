@@ -363,13 +363,11 @@ function Skinner:glazeStatusBar(statusBar, fi)
 	table.insert(sbGlazed, statusBar)
 
 	if fi then
-		if not statusBar.bg then statusBar.bg = CreateFrame("StatusBar", nil, statusBar) end
+		if not statusBar.bg then statusBar.bg = statusBar:CreateTexture(nil, "BORDER") end
 		statusBar.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
 		statusBar.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
-		statusBar.bg:SetFrameStrata(statusBar:GetFrameStrata() ~= "UNKNOWN" and statusBar:GetFrameStrata() or "BACKGROUND") -- handle Nameplate status bars
-		statusBar.bg:SetFrameLevel((statusBar:GetFrameLevel() > 0 and statusBar:GetFrameLevel() - 1 or 0))
-		statusBar.bg:SetStatusBarTexture(self.sbTexture)
-		statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
+		statusBar.bg:SetTexture(self.sbTexture)
+		statusBar.bg:SetVertexColor(unpack(self.sbColour))
 	end
 
 end

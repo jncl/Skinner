@@ -8,11 +8,16 @@ N - New Version
 O - Other change
 S - Skin request
 
+√	N	BankItems, requested by CrazyBenny, 09.10.08
+
+	I	AucAdvanced, reported by AesirRising, 10.10.08
+√		- Check to see if modules exist before skinning them
+
+√	S	Panda, requested by CrazyBenny, 09.10.08
+
+√	S	LibTooltip, requested by gamemaster128, 08.10.08
+
 	O	Convert to Ace3, requested by StormFX, 28.10.08
-	
-	I	StatusBar textures, reported by Kerecha, 06.10.08
-√		- not applying properly even after a reload
-√			- change code to store all StatusBars that are skinned and use this table when changing the texture
 
 	I	TipTac, reported by dvanaroyi, 03.11.08
 ?		- fix the skin
@@ -20,9 +25,11 @@ S - Skin request
 ≈	I	ReadyCheck Frame
 		- Raid warnings skinning in background but WoW one superimposed on top, reported by Connemara, 30.10.08
 
+≈	S	oRA2, requested by madindehead, 18.10.08
+
 x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
 		- Combat log filter frame has changed again
-		
+
 	I	TopFrame, reported by skumclown, 12.10.08
 ?		- error comparing a string to a number
 
@@ -31,8 +38,3 @@ x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
 
 	I	Status Window 2, requested by Spar, 13.9.08
 ?		- it is an Addon?? How can it NOT be skinned?
-
-≈	S	oRA2, requested by madindehead, 18.10.08
-	
-√	S	MakeRocketGoNow
-	

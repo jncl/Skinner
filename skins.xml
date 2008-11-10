@@ -217,6 +217,7 @@
 <script file="SkinMe\Outfitter.lua"/>
 <script file="SkinMe\Palatank.lua"/>
 <script file="SkinMe\PallyPower.lua"/>
+<script file="SkinMe\Panda.lua"/>
 <script file="SkinMe\PartyQuests.lua"/>
 <script file="SkinMe\PassLoot.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
