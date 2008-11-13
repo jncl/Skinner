@@ -10,6 +10,14 @@ S - Skin request
 
 	O	Convert to Ace3, requested by StormFX, 28.10.08
 
+	S	QuestAgent, requested by Gabriel, 11.10.08
+√		-	QuestLog frame
+	
+√	N	AckisRecipeList, reported by gamemaster128, 12.10.08
+	
+	I	SpellBookFrame, reported by Xtina, 11.10.08
+√		- Move TradeSkill frame to the right as per MacroFrame
+
 	I	TipTac, reported by dvanaroyi, 03.11.08
 ?		- fix the skin
 

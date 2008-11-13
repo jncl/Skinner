@@ -504,7 +504,7 @@ end
 function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 
 	if not objName then return end
---	self:Debug("moveObject: [%s, %s%s, %s%s, %s]", objName:GetName(), xAdj, xDiff, yAdj, yDiff, relTo)
+--	self:Debug("moveObject: [%s, %s%s, %s%s, %s]", objName:GetName() or "<Anon>", xAdj, xDiff, yAdj, yDiff, relTo)
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = objName:GetPoint()
 --	self:Debug("GetPoint: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
@@ -1148,3 +1148,67 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 	print("Finished Children")
 
 end
+
+--[[ 
+	The following code is to handle moving the TradeSkillFrame and/or MacroFrame when the SpellBookFrame is displayed to ensure that the SpellBookFrame Tabs are visible
+]]--
+local center = 345
+local centerplus = 384
+local right = 691
+local sbfShown, mfShown, tsShown,  mfxOfs, tsxOfs = 0, 0, 0, 0, 0
+local function getFrameInfo()
+	sbfShown = SpellBookFrame:IsShown()
+	mfShown = MacroFrame and MacroFrame:IsShown() or 0
+	mfxOfs = MacroFrame and select(4, MacroFrame:GetPoint()) or 0
+	mfxOfs = math.floor(mfxOfs)
+	tsShown = TradeSkillFrame and TradeSkillFrame:IsShown() or 0
+	tsxOfs = TradeSkillFrame and select(4, TradeSkillFrame:GetPoint()) or 0
+	tsxOfs = math.floor(tsxOfs)
+--	Skinner:Debug("getFrameInfo: [%s, %s, %s, %s, %s]", sbfShown, mfShown, mfxOfs, tsShown, tsxOfs)
+end
+Skinner:SecureHook("ShowUIPanel", function(frame, force)
+	getFrameInfo()
+--	Skinner:Debug("ShowUIPanel: [%s, %s]", frame:GetName() or "<Anon>", force)
+	if MacroFrame and (frame == MacroFrame or frame == SpellBookFrame) then
+		if mfShown and sbfShown and (mfxOfs == center or mfxOfs == right) then 
+			Skinner:moveObject(MacroFrame, "+", 40, nil, nil)
+			getFrameInfo()
+		end
+		if tsShown and sbfShown and tsxOfs == 345 then
+			Skinner:moveObject(TradeSkillFrame, "+", 40, nil, nil)
+			getFrameInfo()
+		end
+	end
+	if TradeSkillFrame and (frame == TradeSkillFrame or frame == SpellBookFrame) then
+		if tsShown and sbfShown and tsxOfs == center then
+			Skinner:moveObject(TradeSkillFrame, "+", 40, nil, nil)
+			getFrameInfo()
+		end
+		if mfShown then
+		 	if sbfShown and mfxOfs == right then
+				Skinner:moveObject(MacroFrame, "+", 40, nil, nil)
+				getFrameInfo()
+			elseif mfxOfs == centerplus then
+				Skinner:moveObject(MacroFrame, "-", 40, nil, nil)
+				getFrameInfo()
+			end
+		end
+	end
+end)
+Skinner:SecureHook("HideUIPanel", function(frame, skipSetPoint)
+	if not frame then return end
+	getFrameInfo()
+--	Skinner:Debug("HideUIPanel: [%s, %s]", frame:GetName() or "<Anon>", skipSetPoint)
+	if frame == MacroFrame then
+		if tsShown and sbfShown and tsxOfs == center then
+			Skinner:moveObject(TradeSkillFrame, "+", 40, nil, nil)
+			getFrameInfo()
+		end
+	end
+	if frame == TradeSkillFrame then
+		if mfShown and sbfShown and mfxOfs == center then
+			Skinner:moveObject(MacroFrame, "+", 40, nil, nil)
+			getFrameInfo()
+		end
+	end
+end)

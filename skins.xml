@@ -233,6 +233,7 @@
 <script file="SkinMe\PVPCooldown.lua"/>
 <script file="SkinMe\PvpMessages.lua"/>
 <script file="SkinMe\Quartz.lua"/>
+<script file="SkinMe\QuestAgent.lua"/>
 <script file="SkinMe\QuestGuru.lua"/>
 <script file="SkinMe\QuestHistory.lua"/>
 <script file="SkinMe\QuestIon.lua"/>

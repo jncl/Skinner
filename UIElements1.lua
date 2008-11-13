@@ -914,12 +914,18 @@ function Skinner:MovieProgress()
 	if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
 	self.initialized.MovieProgress = true
 
-	self:SecureHook(MovieProgressFrame, "Show", function(this)
+	if not MovieProgressFrame:IsShown() then
+		self:SecureHook(MovieProgressFrame, "Show", function(this)
+			self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
+			self:keepFontStrings(MovieProgressFrame)
+			self:glazeStatusBar(MovieProgressBar, 0)
+			self:Unhook(MovieProgressFrame, "Show")
+		end)
+	else
 		self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
 		self:keepFontStrings(MovieProgressFrame)
 		self:glazeStatusBar(MovieProgressBar, 0)
-		self:Unhook(MovieProgressFrame, "Show")
-	end)
+	end
 
 end
 

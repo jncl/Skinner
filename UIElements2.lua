@@ -90,15 +90,6 @@ function Skinner:MenuFrames()
 
 end
 
--- hook this to move MacroFrame further right when SpellBookFrame is open
-Skinner:SecureHook("ShowUIPanel", function(frame, force)
-	if MacroFrame and (frame == MacroFrame or frame == SpellBookFrame) then
-		local mfShown = MacroFrame:IsShown()
-		local sbfShown = SpellBookFrame:IsShown()
---		Skinner:Debug("ShowUIPanel: [%s, %s, %s, %s]", frame:GetName() or "<Anon>", force, mfShown, sbfShown)
-		if mfShown and sbfShown then Skinner:moveObject(MacroFrame, "+", 40, nil, nil) end
-	end
-end)
 function Skinner:MacroUI()
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true

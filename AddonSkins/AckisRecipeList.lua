@@ -1,36 +1,34 @@
 
 function Skinner:AckisRecipeList()
-	if not self.db.profile.TradeSkill and self.db.profile.CraftFrame then return end
+	if not self.db.profile.TradeSkill then return end
 
 	local ARL
 	if LibStub("AceAddon-3.0") then ARL = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true) end
 	if not ARL then return end
 
 	self:SecureHook(ARL, "CreateFrame", function()
+		self:Debug("ARL CreateFrame: [%s]", ARL.Frame.skinned)
 		if not ARL.Frame.skinned then
-			self:keepFontStrings(ARL.Frame.Header)
-			self:moveObject(ARL.Frame.Header.Text, nil, nil, "-", 7)
-			ARL.Frame.ScrollFrame:SetHeight(ARL.Frame.ScrollFrame:GetHeight() + 10)
-			self:keepFontStrings(ARL.Frame.ScrollFrame)
-			self:skinScrollBar(ARL.Frame.ScrollFrame)
-			self:glazeStatusBar(ARL.Frame.ProgressBar, 0)
-			ARL.Frame.ProgressBarBorder:Hide()
+			ARL.bgTexture:SetAlpha(0)
+			self:moveObject(ARL.Frame.HeadingText, nil, nil, "-", 7)
+			self:moveObject(ARL_CloseXButton, "-", 5, "+", 6)
+			self:moveObject(ARL_CloseButton, nil, nil, "+", 2)
+			self:removeRegions(ARL_RecipeScrollFrame)
+			self:skinScrollBar(ARL_RecipeScrollFrame)
+			self:glazeStatusBar(ARL_ProgressBar, 0)
 			self:applySkin(ARL.Frame)
+			-- flyaway frame
+			self:keepFontStrings(ARL.Flyaway)
+			ARL.flyTexture:SetAlpha(0)
 			ARL.Frame.skinned = true
-		end
-		-- Resize & move the frame if required
-		local sbParent = ARL.ScanButton:GetParent()
-		if sbParent:GetName() == "TradeSkillFrame" or sbParent:GetName() == "CraftFrame" then
-			ARL.Frame:SetHeight(sbParent:GetHeight())
-			self:moveObject(ARL.Frame, "+", 36, "-", 30)
 		end
 	end)
 
 	self:SecureHook(ARL, "ShowScanButton", function()
-		-- If the scan button parent is the TradeSkill or Craft Frame then move the button
+		-- If the scan button parent is the TradeSkill Frame then move the button
 		local sbParent = ARL.ScanButton:GetParent():GetName()
---		self:Debug("ARL_ASB [%s]", sbParent)
-		if sbParent == "TradeSkillFrame" or sbParent == "CraftFrame" then
+		self:Debug("ARL_ASB [%s]", sbParent)
+		if sbParent == "TradeSkillFrame" then
 			self:moveObject(ARL.ScanButton, "-", 6, "+", 4)
 		end
 	end)

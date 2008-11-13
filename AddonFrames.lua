@@ -106,7 +106,7 @@ function Skinner:AddonFrames()
 		"NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
 		"Omen", "Omnibus", "OneBag3", "oRA2", "Outfitter",
 		"Palatank", "PallyPower", "Panda", "PartyQuests", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "Planner", "PlayerExpBar", "PoliteWhisper", "Possessions", "Postal", "Prat", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
-		"Quartz", "QuestGuru", "QuestHistory", "QuestIon",
+		"Quartz", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount",
 		"Sanity2", "SanityBags", "SellJunk", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
 		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TinyTip", "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TourGuide", "TradeJunkie", "Trinity2", "TrinityBars2", "TuringTest",

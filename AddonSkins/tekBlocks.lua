@@ -10,8 +10,12 @@ function Skinner:tekBlocks()
 end
 
 local skinCnt
-function Skinner:skinBlocks(event, name, dataobj)
+function Skinner:skinBlocks(...) -- event, name, dataobj
 
+	local event = select(1, ...)
+	local name = select(2, ...)
+	local dataobj = select(3, ...)
+	
 --	self:Debug("tekBlocks:[%s, %s, %s]", event, name, dataobj)
 	
 	if event ~= "ftt" and not dataobj.text then return end -- no text, therefore no button
@@ -23,7 +27,7 @@ function Skinner:skinBlocks(event, name, dataobj)
 		local child = select(i, UIParent:GetChildren())
 		if child:IsObjectType("Button") and not child.skinned and child.IconUpdate then
 --			Skinner:Debug("skinBlocks, button found:[%s]", child)
-			Skinner:applySkin(child)
+			self:applySkin(child)
 			child.skinned = true
 			skinCnt = skinCnt + 1
 		end
@@ -31,8 +35,9 @@ function Skinner:skinBlocks(event, name, dataobj)
 	
 	-- if no new dataobjects found and not first time through then try again later
 	if skinCnt == 0 and event ~= "ftt" then
---		self:Debug("skinBlocks, schedule event")
-		self:ScheduleEvent(self.skinBlocks, 0.1, self, event, name, dataobj)
+--		self:Debug("skinBlocks, schedule event: [%s, %s, %s]", event, name, dataobj)
+		if self.ScheduleEvent then self:ScheduleEvent(self.skinBlocks, 0.1, self, ...)
+		else self:ScheduleTimer("skinBlocks", 0.1, ...) end
 	end
 	
 end
