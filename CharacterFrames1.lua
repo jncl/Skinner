@@ -194,9 +194,9 @@ function Skinner:SkillFrame()
 	self:removeRegions(SkillDetailScrollFrame)
 	self:skinScrollBar(SkillDetailScrollFrame)
 	self:keepFontStrings(SkillDetailStatusBar)
-	self:glazeStatusBar(SkillDetailStatusBar, 0)
+	self:glazeStatusBar(SkillDetailStatusBar)
 	self:moveObject(SkillFrameCancelButton, "-", 8, "-", 6)
-
+	
 end
 
 function Skinner:TokenFrame()

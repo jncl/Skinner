@@ -153,6 +153,7 @@
 <script file="SkinMe\HoloFriends.lua"/>
 <script file="SkinMe\IgorsMassAuction.lua"/>
 <script file="SkinMe\ImprovedErrorFrame.lua"/>
+<script file="SkinMe\InspectEquip.lua"/>
 <script file="SkinMe\InstanceMaps.lua"/>
 <script file="SkinMe\InsultDevice.lua"/>
 <script file="SkinMe\InventoryOnPar.lua"/>
@@ -238,6 +239,7 @@
 <script file="SkinMe\QuestHistory.lua"/>
 <script file="SkinMe\QuestIon.lua"/>
 <script file="SkinMe\RABuffs.lua"/>
+<script file="SkinMe\RandomPet30.lua"/>
 <script file="SkinMe\ReadySpells.lua"/>
 <script file="SkinMe\ReagentHeaven.lua"/>
 <script file="SkinMe\Recap.lua"/>

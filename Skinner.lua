@@ -363,11 +363,16 @@ function Skinner:glazeStatusBar(statusBar, fi)
 	table.insert(sbGlazed, statusBar)
 
 	if fi then
-		if not statusBar.bg then statusBar.bg = statusBar:CreateTexture(nil, "BORDER") end
+		if not statusBar.bg then statusBar.bg = CreateFrame("StatusBar", nil, statusBar) end
 		statusBar.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
 		statusBar.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
-		statusBar.bg:SetTexture(self.sbTexture)
-		statusBar.bg:SetVertexColor(unpack(self.sbColour))
+		local sbfs = statusBar:GetFrameStrata()
+		statusBar.bg:SetFrameStrata(sbfs ~= "UNKNOWN" and sbfs or "BACKGROUND")
+		local sbfl = statusBar:GetFrameLevel()
+		statusBar.bg:SetFrameLevel(sbfl > 0 and sbfl - 1 or 0)
+		statusBar.bg:SetStatusBarTexture(self.sbTexture)
+		statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
+		table.insert(sbGlazed, statusBar.bg)
 	end
 
 end
@@ -507,7 +512,7 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 --	self:Debug("moveObject: [%s, %s%s, %s%s, %s]", objName:GetName() or "<Anon>", xAdj, xDiff, yAdj, yDiff, relTo)
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = objName:GetPoint()
---	self:Debug("GetPoint: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
+--	self:Debug("GetPoint: [%s, %s, %s, %s, %s]", point, relativeTo and relativeTo:GetName() or "???", relativePoint, xOfs, yOfs)
 
 	-- Workaround for yOfs crash when using bar addons
 	if not yOfs then return end
@@ -516,7 +521,7 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 	-- Workaround for relativeTo crash
 	if not relTo then
 		if self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, nil, nil, nil, "moveObject (relativeTo) error:", objName, objName:GetName() or "???")
+			self:CustomPrint(1, 0, 0, nil, nil, nil, "moveObject (relativeTo) error:", objName, objName:GetName() or "<Anon>")
 		end
 		return
 	end
@@ -1050,7 +1055,7 @@ function Skinner:OnInitialize()
 	-- StatusBar colours
 	local c = self.db.profile.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
-	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
+	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
 	-- Backdrop colours
 	local c = self.db.profile.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a}
