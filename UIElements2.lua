@@ -825,7 +825,7 @@ function Skinner:Nameplates()
 				if not child.skinned then
 					for i = 1, 2 do -- skin both status bars
 						local sb = select(i, child:GetChildren())
-						Skinner:glazeStatusBar(sb, 0)
+						Skinner:glazeStatusBar(sb, 0, true)
 					end
 					child.skinned = true
 				end

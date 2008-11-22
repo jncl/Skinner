@@ -10,20 +10,16 @@ S - Skin request
 
 	O	Convert to Ace3, requested by StormFX, 28.10.08
 
-√	S	RandomPet30, requested by mrssteele, 21.11.08
+	I	MiniMapTrackingButton, reported by Mera_LaCroisadeEcarlate, 21.11.08
+		- non-centered icon
+		- strata issue
 	
-√	S	InspectEquip, requested by D2pink, 20.11.08
+	N	LibRockConfig
 	
-	I	Panda, reported by Gabriel, 17.11.08
-√		- buttons not skinned, opacity issue
-
-	I	LightHeaded, reported by Gabriel, 13.11.08
-√		- sliding tray tab no longer positioned correctly when using QuestAgent
+√	I	LightHeaded size
 		
-	N	WIM, reported by Gabriel, 13.11.08
-		- WIM3_FilterFrame needs to be changed to WIM3_HistoryFrame in Wim.lua
-√		--> revert to WIM_preWotLKskin in ObsoleteSkins folder
-
+√	I 	StatusBar textures etc
+	
 	I	TipTac, reported by dvanaroyi, 03.11.08
 ?		- fix the skin
 

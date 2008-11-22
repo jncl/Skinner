@@ -887,8 +887,15 @@ function Skinner:MinimapButtons()
 	MiniMapVoiceChatFrame:SetHeight(32)
 	MiniMapVoiceChatFrameIcon:ClearAllPoints()
 	MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
-	self:moveObject(MiniMapTrackingIcon, "-", 2, "+", 2)
+	
+	-- MiniMap Tracking button
+	MiniMapTrackingIcon:ClearAllPoints()
+	MiniMapTrackingIcon:SetPoint("CENTER", MiniMapTrackingButton)
 	LowerFrameLevel(MiniMapTrackingButton)
+	-- hook this to stop the icon being moved
+	self:Hook(MiniMapTrackingIcon, "SetPoint", function(this, ...)
+	end, true)
+	
 	-- move GameTime a.k.a. Calendar texture up a layer
 	GameTimeFrame:GetNormalTexture():SetDrawLayer("BORDER")
 	GameTimeFrame:GetPushedTexture():SetDrawLayer("BORDER")

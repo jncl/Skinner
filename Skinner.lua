@@ -351,7 +351,7 @@ function Skinner:getRegion(frame, regNo)
 end
 
 local sbGlazed = {}
-function Skinner:glazeStatusBar(statusBar, fi)
+function Skinner:glazeStatusBar(statusBar, fi, texture)
 --@alpha@
 	assert(statusBar and statusBar:GetObjectType() == "StatusBar", "Not a StatusBar\n"..debugstack())
 --@end-alpha@
@@ -363,16 +363,22 @@ function Skinner:glazeStatusBar(statusBar, fi)
 	table.insert(sbGlazed, statusBar)
 
 	if fi then
-		if not statusBar.bg then statusBar.bg = CreateFrame("StatusBar", nil, statusBar) end
+		if texture then
+			if not statusBar.bg then statusBar.bg = statusBar:CreateTexture(nil, "BORDER") end
+			statusBar.bg:SetTexture(self.sbTexture)
+			statusBar.bg:SetVertexColor(unpack(self.sbColour))
+		else
+			if not statusBar.bg then statusBar.bg = CreateFrame("StatusBar", nil, statusBar) end
+			local sbfs = statusBar:GetFrameStrata()
+			statusBar.bg:SetFrameStrata(sbfs ~= "UNKNOWN" and sbfs or "BACKGROUND")
+			local sbfl = statusBar:GetFrameLevel()
+			statusBar.bg:SetFrameLevel(sbfl > 0 and sbfl - 1 or 0)
+			statusBar.bg:SetStatusBarTexture(self.sbTexture)
+			statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
+			table.insert(sbGlazed, statusBar.bg)
+		end
 		statusBar.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
 		statusBar.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
-		local sbfs = statusBar:GetFrameStrata()
-		statusBar.bg:SetFrameStrata(sbfs ~= "UNKNOWN" and sbfs or "BACKGROUND")
-		local sbfl = statusBar:GetFrameLevel()
-		statusBar.bg:SetFrameLevel(sbfl > 0 and sbfl - 1 or 0)
-		statusBar.bg:SetStatusBarTexture(self.sbTexture)
-		statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
-		table.insert(sbGlazed, statusBar.bg)
 	end
 
 end

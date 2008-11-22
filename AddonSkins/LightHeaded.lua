@@ -22,7 +22,7 @@ function Skinner:LightHeaded()
 	self:SecureHook(LightHeaded, "LockUnlockFrame", function()
 --		self:Debug("LH_LUF: [%s, %s]", IsAddOnLoaded("QuestAgent"), LightHeadedFrame:GetWidth())
 		-- fix for QuestAgent causing LightHeaded frame to shrink if QuestGuru etc used
-		if IsAddOnLoaded("QuestAgent") and LightHeadedFrame:GetWidth() < 400 then
+		if IsAddOnLoaded("QuestAgent") and QuestLogFrame:GetWidth() < 400 then
 			LightHeadedFrame:SetWidth(QuestLogFrame:GetWidth())
 		else
 			LightHeadedFrame:SetWidth(QuestLogFrame:GetWidth() / LHdiv)
