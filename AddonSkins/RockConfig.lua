@@ -36,11 +36,10 @@ function Skinner:RockConfig()
 			Skinner:applySkin(frame.addonChooser.text)
 			Skinner:applySkin(frame)
 		-->>--	Treeview Frame
-			Skinner:keepFontStrings(frame.treeView.scrollFrame)
-			Skinner:skinScrollBar(frame.treeView.scrollFrame, "_")
+			Skinner:skinSlider(frame.treeView.scrollBar)
 			Skinner:applySkin(frame.treeView)
 		-->>--	Mainpane Frame
-			Skinner:skinScrollBar(frame.mainPane, "_")
+			Skinner:skinSlider(frame.mainPane.scrollBar)
 			Skinner:applySkin(frame.mainPane)
 			frame.skinned = true
 		end

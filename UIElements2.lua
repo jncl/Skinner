@@ -513,6 +513,7 @@ function Skinner:MainMenuBar()
 -->>--	MainMenuBarOverlayFrame
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
 	self:keepFontStrings(MainMenuBarArtFrame)
+	self:moveObject(CharacterMicroButton, nil, nil, "+", 4)
 	-- Exhaustion Bar (i.e. Rested)
 	ExhaustionLevelFillBar:SetHeight(ExhaustionLevelFillBar:GetHeight() * self.FyMult)
 	ExhaustionTick:SetAlpha(0)
