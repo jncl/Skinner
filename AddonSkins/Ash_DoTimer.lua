@@ -57,7 +57,7 @@ function Skinner:Ash_Core()
 --		self:Debug("DDL_CF: [%s, %s, %s]", this, level, index)
 		local ddFrameObj = _G["DropDownLibList"..level]
 		if ddFrameObj and not self:IsHooked(ddFrameObj, "OnShow") then
-			self:HookScript(ddFrameObj, "OnShow", function(this)
+			self:RawHookScript(ddFrameObj, "OnShow", function(this)
 				self:keepFontStrings(this)
 				_G[this:GetName().."Backdrop"]:Hide()
 				_G[this:GetName().."MenuBackdrop"]:Hide()

@@ -1,6 +1,6 @@
 
 function Skinner:Skillet()
-	if not self.db.profile.TradeSkill and self.db.profile.CraftFrame then return end
+	if not self.db.profile.TradeSkillUI and self.db.profile.CraftFrame then return end
 
 	self:SecureHook(Skillet, "ShowTradeSkillWindow", function()
 		self:keepFontStrings(SkilletFrame)
@@ -42,7 +42,7 @@ function Skinner:Skillet()
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then SkilletTradeskillTooltip:SetBackdrop(self.backdrop) end
-		self:HookScript(SkilletTradeskillTooltip, "OnShow", function(this)
+		self:RawHookScript(SkilletTradeskillTooltip, "OnShow", function(this)
 			self.hooks[SkilletTradeskillTooltip].OnShow(this)
 			self:skinTooltip(SkilletTradeskillTooltip)
 		end)

@@ -15,7 +15,7 @@ function Skinner:LibSimpleOptions()
 	end
 	
 	for panel in pairs(LibStub("LibSimpleOptions-1.0").panels) do
-		self:HookScript(panel, "OnShow", function(this)
+		self:RawHookScript(panel, "OnShow", function(this)
 			self:Debug("LSO.panel_OS:[%s, %s]", this, this:GetName())
 			self.hooks[this].OnShow(this)
 			skinLSOPanel(this)

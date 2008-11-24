@@ -5,7 +5,7 @@ function Skinner:EnhTooltip()
 
 	if self.db.profile.Tooltips.style == 3 then EnhancedTooltip:SetBackdrop(self.backdrop) end
 
-	self:HookScript(EnhancedTooltip, "OnShow", function(this)
+	self:RawHookScript(EnhancedTooltip, "OnShow", function(this)
 --		self:Debug("EnhancedTooltip_OnShow: [%s]", this:GetName())
 		self.hooks[EnhancedTooltip].OnShow(this)
 		self:skinTooltip(this)

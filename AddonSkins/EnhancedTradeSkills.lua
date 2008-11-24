@@ -1,6 +1,6 @@
 ﻿
 function Skinner:EnhancedTradeSkills()
-	if not self.db.profile.TradeSkill then return end
+	if not self.db.profile.TradeSkillUI then return end
 
 	self:applySkin(PinkyConfigFrame, true)
 

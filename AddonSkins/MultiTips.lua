@@ -5,7 +5,7 @@ function Skinner:MultiTips()
 		for i = 2, 5 do
 			local irtt = _G["ItemRefTooltip"..i]
 			if self.db.profile.Tooltips.style == 3 then irtt:SetBackdrop(self.backdrop) end
-			self:HookScript(irtt, "OnShow", function(this)
+			self:RawHookScript(irtt, "OnShow", function(this)
 				self.hooks[this].OnShow(this)
 				self:skinTooltip(irtt)
 			end)

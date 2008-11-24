@@ -1,6 +1,6 @@
 
 function Skinner:cgCrafty()
-	if not self.db.profile.TradeSkill or self.initialized.cgCrafty then return end
+	if not self.db.profile.TradeSkillUI or self.initialized.cgCrafty then return end
 	self.initialized.cgCrafty = true
 
 	self:skinEditBox(self:getChild(cgcFrame, 1), {})

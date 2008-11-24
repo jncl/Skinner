@@ -16,6 +16,6 @@ function Skinner:GemHelper()
 	self:keepFontStrings(GemHelper_Frame)
 	self:applySkin(GemHelper_Frame, true)
 
-	self:Hook(GemHelper_Frame, "SetBackdropColor", function() end, true)
+	self:RawHook(GemHelper_Frame, "SetBackdropColor", function() end, true)
 
 end

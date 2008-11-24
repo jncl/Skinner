@@ -1,6 +1,6 @@
 
 function Skinner:IgorsMassAuction()
-	if not self.db.profile.AuctionFrame then return end
+	if not self.db.profile.AuctionUI then return end
 
 -->>--	Mass Auction Frame
 	IMA_AuctionFrameMassAuction:SetWidth(IMA_AuctionFrameMassAuction:GetWidth() + 74)

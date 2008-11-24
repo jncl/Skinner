@@ -11,7 +11,7 @@ function Skinner:PartyQuests()
 			end
 		end
 	end)
-	self:HookScript(PartyQuestsFrame, "OnHide", function(this)
+	self:RawHookScript(PartyQuestsFrame, "OnHide", function(this)
 		self.hooks[PartyQuestsFrame].OnHide(this)
 		if IsAddOnLoaded("DoubleWide") then PartyQuestsFrame.moved = false end
 	end)

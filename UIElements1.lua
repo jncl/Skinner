@@ -14,32 +14,33 @@ function Skinner:Tooltips()
 	end
 
 	local counts = 0
+	local GTSBevt
 	local function checkGTHeight(cHeight)
 
 		counts = counts + 1
 
---		Skinner:Debug("checkGTHeight: [%s, %s, %s]", cHeight, evt, math.ceil(GameTooltip:GetHeight()))
+		Skinner:Debug("checkGTHeight: [%s, %s, %s]", cHeight, evt, math.ceil(GameTooltip:GetHeight()))
 		if cHeight ~= math.ceil(GameTooltip:GetHeight()) then
 			Skinner:skinTooltip(GameTooltip)
-			Skinner:CancelScheduledEvent("GTSBevt")
+			Skinner:CancelTimer(GTSBevt, true)
 			counts = 0
 		end
 
 		if counts == 10 or GameTooltipStatusBar:IsShown() then
-			Skinner:CancelScheduledEvent("GTSBevt")
+			Skinner:CancelTimer(GTSBevt, true)
 			counts = 0
 		end
 
 	end
 
 	-- Hook this to deal with GameTooltip FadeHeight issues
-	self:HookScript(GameTooltipStatusBar, "OnHide", function(this)
+	self:RawHookScript(GameTooltipStatusBar, "OnHide", function(this)
 --		self:Debug("GameTooltipStatusBar_OnHide: [%s]", this:GetName())
 		self.hooks[this].OnHide()
 		if GameTooltip:IsShown() then
 			cHeight = math.ceil(GameTooltip:GetHeight())
---			self:Debug("GTSB_OnHide: [%s]", cHeight)
-			self:ScheduleRepeatingEvent("GTSBevt", checkGTHeight, 0.2, self, cHeight)
+			self:Debug("GTSB_OnHide: [%s]", cHeight)
+			GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.2, cHeight)
 		end
 		end)
 
@@ -48,7 +49,7 @@ function Skinner:Tooltips()
 	for _, tooltip in pairs(self.ttList) do
 		local ttip = _G[tooltip]
 --		self:Debug("Tooltip:[%s, %s]", tooltip, ttip)
-		self:HookScript(ttip, "OnShow", function(this)
+		self:RawHookScript(ttip, "OnShow", function(this)
 --			self:Debug("Tooltip OnShow: [%s]", this:GetName())
 			self:skinTooltip(this)
 			if this == GameTooltip and self.db.profile.Tooltips.glazesb then
@@ -139,7 +140,7 @@ function Skinner:ChatMenus()
 	self:storeAndSkin(ftype, EmoteMenu)
 	self:storeAndSkin(ftype, LanguageMenu)
 	self:storeAndSkin(ftype, VoiceMacroMenu)
-	self:Hook(ChatMenu, "SetBackdropColor", function() end, true)
+	self:RawHook(ChatMenu, "SetBackdropColor", function() end, true)
 
 end
 
@@ -327,7 +328,7 @@ function Skinner:LootFrame()
 	if not self.db.profile.LootFrame or self.initialized.LootFrame then return end
 	self.initialized.LootFrame = true
 
-	self:Hook("LootFrame_OnShow", function(this)
+	self:RawHook("LootFrame_OnShow", function(this)
 		self.hooks.LootFrame_OnShow(this)
 --		self:Debug("LF_OS: [%s, %s]", this, this:GetName())
 		if ( LOOT_UNDER_MOUSE == "1" ) then
@@ -372,7 +373,7 @@ function Skinner:GroupLoot()
 	if not self.db.profile.GroupLoot.skin or self.initialized.GroupLoot then return end
 	self.initialized.GroupLoot = true
 
-	self:Hook("GroupLootFrame_OnShow", function()
+	self:RawHook("GroupLootFrame_OnShow", function()
 		local texture, name, count, quality, bindOnPickUp = GetLootRollItemInfo(this.rollID)
 		_G["GroupLootFrame"..this:GetID().."IconFrameIcon"]:SetTexture(texture)
 		_G["GroupLootFrame"..this:GetID().."Name"]:SetText(name)
@@ -629,7 +630,7 @@ function Skinner:HelpFrame()
 end
 
 function Skinner:InspectUI()
-	if not self.db.profile.Inspect or self.initialized.InspectUI then return end
+	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
 	self:keepFontStrings(InspectFrame)
@@ -891,9 +892,9 @@ function Skinner:MinimapButtons()
 	-- MiniMap Tracking button
 	MiniMapTrackingIcon:ClearAllPoints()
 	MiniMapTrackingIcon:SetPoint("CENTER", MiniMapTrackingButton)
-	LowerFrameLevel(MiniMapTrackingButton)
+	MiniMapTrackingIcon:SetParent(MiniMapTrackingButton)
 	-- hook this to stop the icon being moved
-	self:Hook(MiniMapTrackingIcon, "SetPoint", function(this, ...)
+	self:RawHook(MiniMapTrackingIcon, "SetPoint", function(this, ...)
 	end, true)
 	
 	-- move GameTime a.k.a. Calendar texture up a layer
@@ -959,8 +960,8 @@ function Skinner:TimeManager()
 	self:skinEditBox(TimeManagerAlarmMessageEditBox, {9})
 	self:moveObject(TimeManagerAlarmEnabledButton, "+", 20, nil, nil)
 	self:applySkin(TimeManagerFrame)
-	self:HookScript(TimeManagerAlarmAMPMDropDown, "OnShow", function() end, true)
-	self:HookScript(TimeManagerAlarmAMPMDropDown, "OnHide", function() end, true)
+	self:RawHookScript(TimeManagerAlarmAMPMDropDown, "OnShow", function() end, true)
+	self:RawHookScript(TimeManagerAlarmAMPMDropDown, "OnHide", function() end, true)
 
 -->>--	Time Manager Clock Button
 	TimeManagerClockButton:SetWidth(36)
@@ -990,7 +991,7 @@ function Skinner:Calendar()
 	
 	self:keepFontStrings(CalendarFrame)
 	self:keepFontStrings(CalendarFilterFrame)
-	CalendarFilterFrameMiddle:SetTexture(self.LSM:Fetch("background", "Inactive Tab"))
+	CalendarFilterFrameMiddle:SetTexture(self.itTex)
 	CalendarFilterFrameMiddle:SetHeight(16)
 	CalendarFilterFrameMiddle:SetAlpha(1)
 	self:moveObject(CalendarCloseButton, "-", 1, "+", 17)
@@ -1077,7 +1078,7 @@ function Skinner:Calendar()
 		self:removeRegions(_G["CalendarClassButton"..i], {1})
 	end
 	self:keepFontStrings(CalendarClassTotalsButton)
-	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.LSM:Fetch("background", "Inactive Tab"))
+	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.itTex)
 	self:moveObject(CalendarClassTotalsButtonBackgroundMiddle, "+", 2, nil, nil)
 	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(18)
 	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(18)

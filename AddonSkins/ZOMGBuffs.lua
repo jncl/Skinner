@@ -4,7 +4,7 @@ function Skinner:ZOMGBuffs()
 	--	Hook this to skin some of the frames
 	local LZF = LibStub:GetLibrary('ZFrame-1.0', true)
 	if LZF then
-		self:Hook(LZF, "Create", function(this, ...)
+		self:RawHook(LZF, "Create", function(this, ...)
 			local frame = self.hooks[this].Create(this, ...)
 --			self:Debug("ZFrame Create:[%s]", frame)
 			self:moveObject(frame.ZMain.title, nil, nil, "-", 0, frame.ZMain)
@@ -13,7 +13,7 @@ function Skinner:ZOMGBuffs()
 			return frame
 		end, true)
 	end
-	self:Hook(ZOMGBuffs, "CreateHelpFrame", function(this)
+	self:RawHook(ZOMGBuffs, "CreateHelpFrame", function(this)
 		local hf = self.hooks[this].CreateHelpFrame(this)
 		self:applySkin(hf)
 		self:Unhook(ZOMGBuffs, "CreateHelpFrame")

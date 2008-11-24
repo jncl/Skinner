@@ -35,9 +35,8 @@ function Skinner:skinBlocks(...) -- event, name, dataobj
 	
 	-- if no new dataobjects found and not first time through then try again later
 	if skinCnt == 0 and event ~= "ftt" then
---		self:Debug("skinBlocks, schedule event: [%s, %s, %s]", event, name, dataobj)
-		if self.ScheduleEvent then self:ScheduleEvent(self.skinBlocks, 0.1, self, ...)
-		else self:ScheduleTimer("skinBlocks", 0.1, ...) end
+--		self:Debug("skinBlocks, schedule timer: [%s, %s, %s]", event, name, dataobj)
+		self:ScheduleTimer("skinBlocks", 0.1, ...)
 	end
 	
 end

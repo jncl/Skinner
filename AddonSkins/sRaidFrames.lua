@@ -7,8 +7,8 @@ function Skinner:sRaidFrames()
 			self:glazeStatusBar(f.hpbar)
 			self:glazeStatusBar(f.mpbar)
 			self:applySkin(f)
-			self:Hook(f, "SetBackdropColor", function() end, true)
-			self:Hook(f, "SetBackdropBorderColor", function() end, true)
+			self:RawHook(f, "SetBackdropColor", function() end, true)
+			self:RawHook(f, "SetBackdropBorderColor", function() end, true)
 			f.skinned = true
 		end
 	end)
@@ -18,8 +18,8 @@ function Skinner:sRaidFrames()
 		self:glazeStatusBar(f.hpbar)
 		self:glazeStatusBar(f.mpbar)
 		self:applySkin(f)
-		self:Hook(f, "SetBackdropColor", function() end, true)
-		self:Hook(f, "SetBackdropBorderColor", function() end, true)
+		self:RawHook(f, "SetBackdropColor", function() end, true)
+		self:RawHook(f, "SetBackdropBorderColor", function() end, true)
 		f.skinned = true
 	end
 

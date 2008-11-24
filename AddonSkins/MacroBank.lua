@@ -20,7 +20,7 @@ function Skinner:MacroBank()
 		self:applySkin(frame.MacroBody)
 		self:applySkin(frame)
 		-- wait for a half a second to resize the frame 
-		self:ScheduleEvent(function() frame:SetWidth(MacroFrame:GetWidth()) 	frame:SetHeight(MacroFrame:GetHeight())end, 0.5)
+		self:ScheduleTimer(function() frame:SetWidth(MacroFrame:GetWidth()) 	frame:SetHeight(MacroFrame:GetHeight())end, 0.5)
 		self:Unhook(MacroBank.MainFrame, "Show")
 	end)
 

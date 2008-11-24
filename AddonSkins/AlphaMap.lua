@@ -59,7 +59,7 @@ function Skinner:AlphaMap() -- tested against v3.25.20400
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then AlphaMapTooltip:SetBackdrop(backdrop) end
 		self:skinTooltip(AlphaMapTooltip)
-		self:Hook(AlphaMapTooltip, "SetBackdropBorderColor", function() end, true)
+		self:RawHook(AlphaMapTooltip, "SetBackdropBorderColor", function() end, true)
 	end
 	
 end

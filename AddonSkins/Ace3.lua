@@ -1,7 +1,7 @@
 
 function Skinner:Ace3()
 
-	self:Hook(LibStub("AceGUI-3.0"), "Create", function(this, objType)
+	self:RawHook(LibStub("AceGUI-3.0"), "Create", function(this, objType)
 		local obj = self.hooks[this].Create(this, objType)
 --		self:Debug("Ace3GUI_Create: [%s, %s, %s]", this, objType, obj)
 		if obj and not obj.skinned then
@@ -11,6 +11,8 @@ function Skinner:Ace3()
 			elseif objType == "Dropdown" then
 				self:skinDropDown(obj.dropdown)
 				self:applySkin(obj.pullout.frame)
+			elseif objType == "Dropdown-Pullout" then
+				self:applySkin(obj.frame)
 			elseif objType == "DropdownGroup"
 				or objType == "InlineGroup"
 				or objType == "TabGroup" then
@@ -18,7 +20,7 @@ function Skinner:Ace3()
 				self:applySkin(obj.border)
 			elseif objType == "EditBox" then
 				self:skinEditBox(obj.editbox, {9}, nil, true)
-				self:Hook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
+				self:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
 					return left + 6, right, top, bottom
 				end, true)
 			elseif objType == "MultiLineEditBox" then

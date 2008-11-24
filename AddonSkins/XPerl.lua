@@ -293,8 +293,8 @@ function Skinner:XPerl_RaidHelper()
 
 	if not XPerl_Player_TargettingFrame.skinned then
 		self:applySkin(XPerl_Player_TargettingFrame)
-		self:Hook(XPerl_Player_TargettingFrame, "SetBackdropColor", function() end, true)
-		self:Hook(XPerl_Player_TargettingFrame, "SetBackdropBorderColor", function() end, true)
+		self:RawHook(XPerl_Player_TargettingFrame, "SetBackdropColor", function() end, true)
+		self:RawHook(XPerl_Player_TargettingFrame, "SetBackdropBorderColor", function() end, true)
 		XPerl_Player_TargettingFrame.skinned = true
 		-- these should only be done once as well
 		skinTanks()
@@ -330,7 +330,7 @@ function Skinner:XPerl_Options() -- tested against v2.4.3g
 
 -->>-- Options Frame
 	self:applySkin(XPerl_Options)
-	self:Hook(XPerl_Options, "SetBackdropBorderColor", function() end, true)
+	self:RawHook(XPerl_Options, "SetBackdropBorderColor", function() end, true)
 	
 	self:skinDropDown(XPerl_Options_DropDown_LoadSettings)
 	self:applySkin(XPerl_Options_Area_Align)
@@ -363,13 +363,13 @@ function Skinner:XPerl_Options() -- tested against v2.4.3g
 	self:removeRegions(XPerl_Options_TextureSelectscrollBar)
 	self:skinScrollBar(XPerl_Options_TextureSelectscrollBar)
 	self:applySkin(XPerl_Options_TextureSelect)
-	self:Hook(XPerl_Options_TextureSelect, "SetBackdropBorderColor", function() end, true)
+	self:RawHook(XPerl_Options_TextureSelect, "SetBackdropBorderColor", function() end, true)
 -->>--	Options Question Dialog
 	self:applySkin(XPerl_OptionsQuestionDialog)
-	self:Hook(XPerl_OptionsQuestionDialog, "SetBackdropBorderColor", function() end, true)
+	self:RawHook(XPerl_OptionsQuestionDialog, "SetBackdropBorderColor", function() end, true)
 -->>-- Tooltip Config	
 	self:applySkin(XPerl_Options_TooltipConfig)
-	self:Hook(XPerl_Options_TooltipConfig, "SetBackdropBorderColor", function() end, true)
+	self:RawHook(XPerl_Options_TooltipConfig, "SetBackdropBorderColor", function() end, true)
 -->>-- Player Options
 	self:applySkin(XPerl_Options_Player_Options_Buffs)
 	self:applySkin(XPerl_Options_Player_Options_Totems)

@@ -11,16 +11,16 @@ function Skinner:EngBags()
 			self:applySkin(frame)
 			-- hook these to stop the Backdrop/BackdropBorder colours from being changed
 			if not self:IsHooked(frame, "SetBackdropColor") then
-				self:Hook(frame, "SetBackdropColor", function() end, true)
-				self:Hook(frame, "SetBackdropBorderColor", function() end, true)
+				self:RawHook(frame, "SetBackdropColor", function() end, true)
+				self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 			end
 		end
 		self:keepRegions(EngInventory_frame)
 		self:applySkin(EngInventory_frame)
 		-- hook these to stop the Backdrop/BackdropBorder colours from being changed
 		if not self:IsHooked(EngInventory_frame, "SetBackdropColor") then
-			self:Hook(EngInventory_frame, "SetBackdropColor", function() end, true)
-			self:Hook(EngInventory_frame, "SetBackdropBorderColor", function() end, true)
+			self:RawHook(EngInventory_frame, "SetBackdropColor", function() end, true)
+			self:RawHook(EngInventory_frame, "SetBackdropBorderColor", function() end, true)
 		end
 		self:Unhook("EngInventory_UpdateWindow")
 	end)
@@ -37,8 +37,8 @@ function Skinner:EngBags()
 			end
 		end
 		if not self:IsHooked(EngInventory_OptsFrame, "SetBackdropColor") then
-			self:Hook(EngInventory_OptsFrame, "SetBackdropColor", function() end, true)
-			self:Hook(EngInventory_OptsFrame, "SetBackdropBorderColor", function() end, true)
+			self:RawHook(EngInventory_OptsFrame, "SetBackdropColor", function() end, true)
+			self:RawHook(EngInventory_OptsFrame, "SetBackdropBorderColor", function() end, true)
 		end
 		self:Unhook("EngInventory_Options_InitWindow")
 	end)
@@ -63,15 +63,15 @@ function Skinner:EngBags()
 			self:applySkin(frame)
 			-- hook these to stop the Backdrop/BackdropBorder colours from being changed
 			if not self:IsHooked(frame, "SetBackdropColor") then
-				self:Hook(frame, "SetBackdropColor", function() end, true)
-				self:Hook(frame, "SetBackdropBorderColor", function() end, true)
+				self:RawHook(frame, "SetBackdropColor", function() end, true)
+				self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 			end
 		end
 		self:applySkin(EngBank_frame)
 		-- hook these to stop the Backdrop/BackdropBorder colours from being changed
 		if not self:IsHooked(EngBank_frame, "SetBackdropColor") then
-			self:Hook(EngBank_frame, "SetBackdropColor", function() end, true)
-			self:Hook(EngBank_frame, "SetBackdropBorderColor", function() end, true)
+			self:RawHook(EngBank_frame, "SetBackdropColor", function() end, true)
+			self:RawHook(EngBank_frame, "SetBackdropBorderColor", function() end, true)
 		end
 		self:Unhook("EngBank_UpdateWindow")
 	end)
@@ -87,8 +87,8 @@ function Skinner:EngBags()
 			end
 		end
 		if not self:IsHooked(EngBank_OptsFrame, "SetBackdropColor") then
-			self:Hook(EngBank_OptsFrame, "SetBackdropColor", function() end, true)
-			self:Hook(EngBank_OptsFrame, "SetBackdropBorderColor", function() end, true)
+			self:RawHook(EngBank_OptsFrame, "SetBackdropColor", function() end, true)
+			self:RawHook(EngBank_OptsFrame, "SetBackdropBorderColor", function() end, true)
 		end
 		self:Unhook("EngBank_Options_InitWindow")
 	end)

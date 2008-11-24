@@ -90,7 +90,7 @@ function Skinner:GossipFrame()
 end
 
 function Skinner:TrainerUI()
-	if not self.db.profile.ClassTrainer or self.initialized.TrainerUI then return end
+	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
 	self:keepFontStrings(ClassTrainerFrame)
@@ -144,10 +144,10 @@ function Skinner:QuestFrame()
 		end
 	end)
 
-	self:Hook("QuestFrame_SetTitleTextColor", function(fontString)
+	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString)
 		fontString:SetTextColor(self.HTr, self.HTg, self.HTb)
 		end, true)
-	self:Hook("QuestFrame_SetTextColor", function(fontString)
+	self:RawHook("QuestFrame_SetTextColor", function(fontString)
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
 
@@ -360,7 +360,7 @@ function Skinner:Tabard()
 end
 
 function Skinner:BarbershopUI()
-	if not self.db.profile.Barbershop or self.initialized.Barbershop then return end
+	if not self.db.profile.BarbershopUI or self.initialized.Barbershop then return end
 	self.initialized.Barbershop = true
 
 --	self:Debug("BarbershopUI loaded")

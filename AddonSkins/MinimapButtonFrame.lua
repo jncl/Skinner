@@ -35,8 +35,8 @@ function Skinner:MinimapButtonFrame()
 	end
 
 	-- hook these to stop the colour changing
-	self:Hook("MBFC_ColorLocked", function() end, true)
-	self:Hook("MBFC_ColorOpacityUpdate", function() end, true)
-	self:Hook("MBFC_ColorUpdate", function() end, true)
+	self:RawHook("MBFC_ColorLocked", function() end, true)
+	self:RawHook("MBFC_ColorOpacityUpdate", function() end, true)
+	self:RawHook("MBFC_ColorUpdate", function() end, true)
 
 end

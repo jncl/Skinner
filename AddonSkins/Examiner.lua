@@ -1,6 +1,6 @@
 
 function Skinner:Examiner()
-	if not self.db.profile.Inspect then return end
+	if not self.db.profile.InspectUI then return end
 
 	Examiner:SetWidth(Examiner:GetWidth() * self.FxMult)
 	Examiner:SetHeight(Examiner:GetHeight() + 6)

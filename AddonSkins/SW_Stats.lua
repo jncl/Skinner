@@ -2,7 +2,7 @@
 function Skinner:SW_Stats()
 
 	-- hook this function to handle Tabs
-	self:Hook("SW_TabClick", function(oTab)
+	self:RawHook("SW_TabClick", function(oTab)
 --		self:Debug("SW_TabClick: [%s]", oTab:GetName())
 		self.hooks.SW_TabClick(oTab)
 		if string.find( oTab:GetName(), "SW_FrameConsole_Tab" ) then

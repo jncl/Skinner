@@ -38,7 +38,7 @@ function Skinner:CT_RaidAssist()
 	self:applySkin(CT_RAMenuFrameAdditionalAlpha)
 
 -->>--	Option Sets Frame
-	self:HookScript(CT_RAMenu_NewSetFrame, "OnShow", function()
+	self:RawHookScript(CT_RAMenu_NewSetFrame, "OnShow", function()
 		self.hooks[CT_RAMenu_NewSetFrame].OnShow()
 		self:keepFontStrings(CT_RAMenu_NewSetFrame)
 		self:applySkin(CT_RAMenu_NewSetFrame)
@@ -48,7 +48,7 @@ function Skinner:CT_RaidAssist()
 		self:Unhook(CT_RAMenu_NewSetFrame, "OnShow")
 	end)
 
-	self:HookScript(CT_RAMenu_DeleteSetFrame, "OnShow", function()
+	self:RawHookScript(CT_RAMenu_DeleteSetFrame, "OnShow", function()
 		self.hooks[CT_RAMenu_DeleteSetFrame].OnShow()
 		self:keepFontStrings(CT_RAMenu_DeleteSetFrame)
 		self:applySkin(CT_RAMenu_DeleteSetFrame)

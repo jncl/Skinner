@@ -37,7 +37,7 @@ end
 function Skinner:FR_TradeSkillUI()
 
 --	self:Debug("FR_TradeSkillUI")
-	if self.db.profile.TradeSkill and TradeSkillFrame_MidTextures then
+	if self.db.profile.TradeSkillUI and TradeSkillFrame_MidTextures then
 		self:removeRegions(TradeSkillFrame_MidTextures)
 		self:removeRegions(TradeSkillListScrollFrame_MidTextures)
 		self:removeRegions(TradeSkillDetailScrollFrame)
@@ -52,7 +52,7 @@ end
 function Skinner:FR_TrainerUI()
 
 --	self:Debug("FR_TrainerUI")
-	if self.db.profile.ClassTrainer and ClassTrainerFrame_MidTextures then
+	if self.db.profile.TrainerUI and ClassTrainerFrame_MidTextures then
 		self:removeRegions(ClassTrainerFrame_MidTextures)
 		self:removeRegions(ClassTrainerListScrollFrame_MidTextures)
 		ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() + 20)

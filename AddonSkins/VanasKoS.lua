@@ -45,6 +45,6 @@ function Skinner:VanasKoS()
 	self:moveObject(VanasKoSFrameTab2, "+", 8, nil, nil)
 -->>--	Warning Frame
 	self:applySkin(VanasKoS_WarnFrame)
-	self:Hook(VanasKoS_WarnFrame, "SetBackdropColor", function() end, true)
+	self:RawHook(VanasKoS_WarnFrame, "SetBackdropColor", function() end, true)
 
 end

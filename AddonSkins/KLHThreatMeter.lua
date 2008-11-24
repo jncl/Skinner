@@ -11,7 +11,7 @@ function Skinner:KLHThreatMeter()
 	}
 
 	-- i forbid you to change border color...
-	self:Hook(klhtm.raidtable, "setcolour", function() end, true)
+	self:RawHook(klhtm.raidtable, "setcolour", function() end, true)
 
 	-- sex up the header
 	for k, v in pairs(klhtm.raidtable.instances) do

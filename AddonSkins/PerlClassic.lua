@@ -410,7 +410,7 @@ end
 
 function Skinner:Perl_Config_Options()
 
-	self:Hook("Perl_Config_Set_Background", function() end, true)
+	self:RawHook("Perl_Config_Set_Background", function() end, true)
 
 --Config
 	Perl_Config_Header:Hide()

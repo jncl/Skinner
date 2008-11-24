@@ -14,7 +14,7 @@ function Skinner:TourGuide()
 
 	-- Status Frame
 	self:applySkin(TourGuide.statusframe)
-	self:Hook(TourGuide.statusframe, "SetBackdropColor", function() end, true)
+	self:RawHook(TourGuide.statusframe, "SetBackdropColor", function() end, true)
 	-- Item Frame
 	self:addSkinButton(TourGuideItemFrame, TourGuideItemFrame)
 

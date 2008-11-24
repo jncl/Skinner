@@ -2,7 +2,7 @@
 function Skinner:TinyTip()
 
 	if IsAddOnLoaded("TinyTipExtras") and ((TinyTipDB and TinyTipDB["ManaBar"]) or (TinyTipCharDB and TinyTipCharDB["ManaBar"])) then
-		self:HookScript(TinyTipExtras_ManaBar, "OnShow", function()
+		self:RawHookScript(TinyTipExtras_ManaBar, "OnShow", function()
 	--		self:Debug("TinyTipExtras_ManaBar_OnShow")
 			self.hooks[TinyTipExtras_ManaBar].OnShow()
 			if not TinyTipExtras_ManaBar.skinned then

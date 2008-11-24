@@ -387,7 +387,7 @@ function Skinner:GlyphUI()
 end
 
 function Skinner:TalentUI()
-	if not self.db.profile.TalentFrame or self.initialized.TalentUI then return end
+	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
 
 	self:SecureHook("TalentFrame_Update", function(this)
@@ -495,7 +495,7 @@ function Skinner:AchievementUI()
 	end)
 	
 	-- hook this to skin StatusBars used by the Objectives mini panels
-	self:Hook("AchievementButton_GetProgressBar", function(index)
+	self:RawHook("AchievementButton_GetProgressBar", function(index)
 		local statusBar = self.hooks["AchievementButton_GetProgressBar"](index)
 --		self:Debug("AB_GPB:[%s, %s]", index, statusBar:GetName() or "<Anon>")
 		local statusBarBG = self:getRegion(statusBar, 1)
@@ -635,7 +635,7 @@ function Skinner:AchievementUI()
 		end 
 		self:keepFontStrings(tabObj)
 		self:moveObject(tabObj.text, nil, nil, "+", 5)
-		self:HookScript(tabObj, "OnClick", function(this) -- hook this to stop tab text moving
+		self:RawHookScript(tabObj, "OnClick", function(this) -- hook this to stop tab text moving
 			AchievementFrameTab_OnClick(this:GetID())
 			PlaySound("igCharacterInfoTab")
 		end)

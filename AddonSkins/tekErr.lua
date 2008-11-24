@@ -8,7 +8,7 @@ function Skinner:tekErr()
 	self:moveObject(cBut, nil, ni, "+", 11)
 	self:applySkin(tekErrPanel)
 	
-	self:HookScript(tekErrPanel, "OnShow", function(this)
+	self:RawHookScript(tekErrPanel, "OnShow", function(this)
 		self.hooks[this].OnShow(this)
 		local eBox = self:getChild(this, 3)
 		self:skinEditBox(eBox, {9})

@@ -3,7 +3,7 @@ function Skinner:EQL3()
 	if not self.db.profile.QuestLog or self.initialized.EQL3 then return end
 	self.initialized.EQL3 = true
 
-	self:Hook("QuestLog_UpdateQuestDetails", function(doNotScroll)
+	self:RawHook("QuestLog_UpdateQuestDetails", function(doNotScroll)
 --		self:Debug("QuestLog_UpdateQuestDetails")
 		self.hooks.QuestLog_UpdateQuestDetails(doNotScroll)
 		for i = 1, 10 do

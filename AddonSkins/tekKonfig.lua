@@ -10,14 +10,14 @@ function Skinner:tekKonfig()
 	
 	if LibStub("tekKonfig-Dropdown", true) and not tKDd then
 		tKDd = LibStub("tekKonfig-Dropdown")
-		self:Hook(tKDd, "new", function(parent, label, ...)
+		self:RawHook(tKDd, "new", function(parent, label, ...)
 --			self:Debug("tKDd:[%s, %s]", parent, label)
 			local frame, text, container = self.hooks[tKDd].new(parent, label, ...)
 			if not self.db.profile.TexturedDD then self:keepFontStrings(frame)
 			else
 				local leftTex, midTex, rightTex = select(1, frame:GetRegions())
 				leftTex:SetAlpha(0)
-				midTex:SetTexture(self.LSM:Fetch("background", "Inactive Tab"))
+				midTex:SetTexture(self.itTex)
 				midTex:SetHeight(18)
 				midTex:SetTexCoord(0, 1, 0, 1)
 				rightTex:SetAlpha(0)
@@ -30,7 +30,7 @@ function Skinner:tekKonfig()
 
 	if LibStub("tekKonfig-Group", true) and not tKG then
 		tKG = LibStub("tekKonfig-Group")
-		self:Hook(tKG, "new", function(parent, label, ...)
+		self:RawHook(tKG, "new", function(parent, label, ...)
 --			self:Debug("tKG:[%s, %s]", parent, label)
 			local box = self.hooks[tKG].new(parent, label, ...)
 			self:applySkin(box)
@@ -40,7 +40,7 @@ function Skinner:tekKonfig()
 
 	if LibStub("tekKonfig-Scroll", true) and not tKS then
 		tKS = LibStub("tekKonfig-Scroll")
-		self:Hook(tKS, "new", function(parent, offset, step)
+		self:RawHook(tKS, "new", function(parent, offset, step)
 --			self:Debug("tKS:[%s, %s, %s]", parent, offset, step)
 			local frame, up, down, border = self.hooks[tKS].new(parent, offset, step)
 			border:SetFrameLevel(frame:GetFrameLevel())

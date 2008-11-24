@@ -3,7 +3,7 @@ function Skinner:Luggage()
 	if not self.db.profile.ContainerFrames.skin then return end
 	
 	-- hook this to skin new Tabbed Frames aka BagBar
-	self:Hook(Luggage.TabbedFrame, "New", function(this, ...)
+	self:RawHook(Luggage.TabbedFrame, "New", function(this, ...)
 		local newTF = self.hooks[this].New(this, ...)
 		self:applySkin(newTF.frame)
 		return newTF
@@ -17,7 +17,7 @@ function Skinner:Luggage()
 		end
 	end)
 	-- hook this to skin new Bags
-	self:Hook(Luggage.Bag, "New", function(this, ...)
+	self:RawHook(Luggage.Bag, "New", function(this, ...)
 		local newBag = self.hooks[this].New(this, ...)
 		self:applySkin(newBag.frame)
 		return newBag

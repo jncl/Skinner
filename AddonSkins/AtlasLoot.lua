@@ -38,7 +38,7 @@ function Skinner:AtlasLoot()
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then AtlasLootTooltip:SetBackdrop(self.backdrop) end
-		self:HookScript(AtlasLootTooltip, "OnShow", function(this)
+		self:RawHookScript(AtlasLootTooltip, "OnShow", function(this)
 			self.hooks[AtlasLootTooltip].OnShow(this)
 			self:skinTooltip(AtlasLootTooltip)
 		end)

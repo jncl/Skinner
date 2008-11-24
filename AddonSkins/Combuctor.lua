@@ -53,7 +53,7 @@ function Skinner:Combuctor()
 					else self:setInactiveTab(tabObj) end
 				else self:applySkin(tabObj) end
 				if not self:IsHooked(tabObj, "OnClick") then
-					self:HookScript(tabObj, "OnClick", function(this)
+					self:RawHookScript(tabObj, "OnClick", function(this)
 						self.hooks[this].OnClick(this)
 						skinTabs(this:GetParent())
 					end)

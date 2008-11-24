@@ -8,7 +8,7 @@ function Skinner:LinksList()
 
 	local llsfr = "LinksList_SearchFrame_Reusable"
 
-	self:HookScript(LinksList_ToggleButton, "OnClick", function()
+	self:RawHookScript(LinksList_ToggleButton, "OnClick", function()
 		self.hooks[this].OnClick()
 		LinksList_ResultsFrame:SetWidth(LinksList_ResultsFrame:GetWidth() * self.FxMult)
 		LinksList_ResultsFrame:SetHeight(LinksList_ResultsFrame:GetHeight() * self.FyMult)
@@ -25,7 +25,7 @@ function Skinner:LinksList()
 		self:moveObject(LinksList_ResultsFrame_QuickSearchFrame, "-", 5, "-", 70)
 		self:applySkin(LinksList_ResultsFrame_QuickSearchFrame)
 --		hook this to skin the Advanced Search Frame
-		self:HookScript(LinksList_ResultsFrame_AdvancedSearchButton, "OnClick", function()
+		self:RawHookScript(LinksList_ResultsFrame_AdvancedSearchButton, "OnClick", function()
 			self.hooks[this].OnClick()
 			if not LinksList_SearchFrame.skinned then
 				self:keepFontStrings(LinksList_SearchFrame)
@@ -44,7 +44,7 @@ function Skinner:LinksList()
 					elseif string.match(objName, llsfr.."EditBox") then
 						self:skinEditBox(v, {9})
 						v:SetWidth(v:GetWidth() - 5)
-						self:Hook(v, "SetHeight", function() end, true)
+						self:RawHook(v, "SetHeight", function() end, true)
 					end
 					v.skinned = true
 				end

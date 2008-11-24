@@ -2,7 +2,7 @@
 function Skinner:tekKompare()
 	if not self.db.profile.Tooltips.skin then return end
 
-	self:HookScript(ItemRefTooltip, "OnTooltipSetItem", function(this, ...)
+	self:RawHookScript(ItemRefTooltip, "OnTooltipSetItem", function(this, ...)
 		self.hooks[this].OnTooltipSetItem(this, ...)
 		self:SecureHook(tekKompareTooltip1, "Show", function(this)
 			if self.db.profile.Tooltips.style == 3 then tekKompareTooltip1:SetBackdrop(self.backdrop) end

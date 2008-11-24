@@ -29,7 +29,7 @@ function Skinner:FactionGrinder()
 		local tt = _G[abbrev.."ToolTip"]
 		if not self:IsHooked(tt, "OnShow") then
 			if self.db.profile.Tooltips.style == 3 then tt:SetBackdrop(self.backdrop) end
-			self:HookScript(tt, "OnShow", function(this)
+			self:RawHookScript(tt, "OnShow", function(this)
 				self.hooks[this].OnShow(this)
 				self:skinTooltip(this)
 			end)

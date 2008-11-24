@@ -1,6 +1,6 @@
 
 function Skinner:BeanCounter()
-	if not self.db.profile.AuctionFrame then return end
+	if not self.db.profile.AuctionUI then return end
 --	self:Debug("BeanCounter Loaded: [%s]", AuctionFrame.numTabs)
 
 	self:applySkin(BeanCounterBaseFrame)

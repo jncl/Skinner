@@ -8,7 +8,7 @@ function Skinner:tekDebug()
 	self:moveObject(cBut, nil, nil, "+", 11)
 	self:applySkin(tekDebugPanel)
 	
-	self:HookScript(tekDebugPanel, "OnShow", function(this)
+	self:RawHookScript(tekDebugPanel, "OnShow", function(this)
 		self.hooks[this].OnShow(this)
 		for i = 2, 16 do
 			self:getChild(tekDebugPanel, i):SetNormalTexture(nil) -- remove background texture

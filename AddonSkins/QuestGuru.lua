@@ -65,8 +65,8 @@ function Skinner:QuestGuru()
 	if self.db.profile.TrackerFrame then
 		self:keepFontStrings(QuestGuru_QuestWatchFrame)
 		self:applySkin(QuestGuru_QuestWatchFrame)
-		self:Hook("QuestGuru_SetWatchBorder", function() end, true)
-		self:Hook(QuestGuru_QuestWatchFrame, "SetBackdropColor", function() end, true)
+		self:RawHook("QuestGuru_SetWatchBorder", function() end, true)
+		self:RawHook(QuestGuru_QuestWatchFrame, "SetBackdropColor", function() end, true)
 	end
 
 -->>--	QuestStartInfo Frame

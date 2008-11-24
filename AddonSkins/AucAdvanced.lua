@@ -1,6 +1,6 @@
 
 function Skinner:AucAdvanced()
-	if not self.db.profile.AuctionFrame then return end
+	if not self.db.profile.AuctionUI then return end
 
 	if IsAddOnLoaded("EnhTooltip") then self:checkAndRunAddOn("EnhTooltip") end
 
@@ -82,7 +82,7 @@ function Skinner:AucExtras()
 
 	-- hook this to skin Configator frames
 	local clib = LibStub("Configator", true)
-	self:Hook(clib, "Create", function(this, ...)
+	self:RawHook(clib, "Create", function(this, ...)
 		local frame = self.hooks[clib].Create(this, ...)
 --		self:Debug("Configator_Create: [%s]", frame:GetName())
 		if not frame.skinned then
@@ -91,7 +91,7 @@ function Skinner:AucExtras()
 			-- look for the SearchUI frame
 			local w, h, gw, gh, to, lo = select(3, ...)
 			if w == 900 and h == 500 and gw == 5 and gh == 350 and to == 20 and lo == 5 then
-				self:ScheduleEvent(skinSearchUI, 0.1, frame) -- wait for frame to be populated
+				self:ScheduleTimer(skinSearchUI, 0.1, frame) -- wait for frame to be populated
 			end
 		end
 
@@ -116,7 +116,7 @@ function Skinner:AucExtras()
 		end
 
 		-- hook this to skin various controls
-		self:Hook(frame, "AddControl", function(this, id, cType, column, ...)
+		self:RawHook(frame, "AddControl", function(this, id, cType, column, ...)
 --		self:Debug("Configator_Create_AddControl: [%s, %s, %s, %s]", id, cType, column, ...)
 			local control = self.hooks[frame].AddControl(this, id, cType, column, ...)
 			-- skin the sub-frame if required
@@ -221,7 +221,7 @@ function Skinner:AucExtras()
 
 	-- skin ScrollSheets
 	local sslib = LibStub("ScrollSheet", true)
-	self:Hook(sslib, "Create", function(this, parent, ...)
+	self:RawHook(sslib, "Create", function(this, parent, ...)
 		local sheet = self.hooks[sslib].Create(this, parent, ...)
 --		self:Debug("ScrollSheet_Create: [%s]", sheet.name)
 		self:applySkin(parent)

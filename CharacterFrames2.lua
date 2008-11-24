@@ -235,7 +235,7 @@ function Skinner:FriendsFrame()
 end
 
 function Skinner:TradeSkillUI()
-	if not self.db.profile.TradeSkill or self.initialized.TradeSkillUI then return end
+	if not self.db.profile.TradeSkillUI or self.initialized.TradeSkillUI then return end
 	self.initialized.TradeSkillUI = true
 
 	-- if DoubleWideTradeSkills is loaded then use it's skin for the TradeSkillFrame

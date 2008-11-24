@@ -31,14 +31,14 @@ function Skinner:MSBTOptions()
 	end)
 
 	-- hook these to skin the dropdowns & editboxes
-	self:Hook(MSBTOptions.Controls, "CreateDropdown", function(parent)
+	self:RawHook(MSBTOptions.Controls, "CreateDropdown", function(parent)
 --		self:Debug("Controls_CreateDropdown:[%s]", parent)
 		local obj = self.hooks[MSBTOptions.Controls].CreateDropdown(parent)
 		self:keepFontStrings(obj)
 		obj.skinned = true
 		return obj
 	end)
-	self:Hook(MSBTOptions.Controls, "CreateEditbox", function(parent)
+	self:RawHook(MSBTOptions.Controls, "CreateEditbox", function(parent)
 --		self:Debug("Controls_CreateEditbox:[%s]", parent)
 		local obj = self.hooks[MSBTOptions.Controls].CreateEditbox(parent)
 		self:skinEditBox(obj.editboxFrame, {9})

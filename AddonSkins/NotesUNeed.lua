@@ -130,14 +130,14 @@ function Skinner:NotesUNeed()
 			NuNPopup:SetBackdrop(self.backdrop)
 		end
 		self:skinTooltip(NuN_Tooltip)
-		self:HookScript(NuN_Tooltip, "OnLoad", function()
+		self:RawHookScript(NuN_Tooltip, "OnLoad", function()
 			this.fadeStartTime = 0.0
 			this.fadeHoldTime = 1.0
 			this.fadeOutTime = 1.0
 			end)
 		self:skinTooltip(NuN_PinnedTooltip)
 		self:skinTooltip(NuN_MapTooltip)
-		self:HookScript(NuN_MapTooltip, "OnLoad", function() end)
+		self:RawHookScript(NuN_MapTooltip, "OnLoad", function() end)
 		self:skinTooltip(NuNPopup)
 	end
 

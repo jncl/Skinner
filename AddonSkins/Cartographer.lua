@@ -53,7 +53,7 @@ end
 function Skinner:Cartographer_QuestInfo()
 
 	if Cartographer_QuestInfo.db.profile.wideQuestLog then
-		self:ScheduleEvent(function()
+		self:ScheduleTimer(function()
 			self:keepFontStrings(QuestLogFrame)
 			self:applySkin(QuestLogFrame)
 			QuestLogFrame:SetWidth(694)

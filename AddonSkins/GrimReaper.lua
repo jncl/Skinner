@@ -25,7 +25,7 @@ function Skinner:GrimReaper()
 		if self.db.profile.Tooltips.skin then
 			if self.db.profile.Tooltips.style == 3 then this.spellTip[number]:SetBackdrop(self.backdrop) end
 			self:skinTooltip(this.spellTip[number])
-			self:Hook(this.spellTip[number], "SetBackdropBorderColor", function() end, true)
+			self:RawHook(this.spellTip[number], "SetBackdropBorderColor", function() end, true)
 		end
 		if this.spellTip and this.spellTip[1] and this.spellTip[2] then
 			self:Unhook(gr, "CreateTooltipFrame")

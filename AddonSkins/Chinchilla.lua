@@ -34,15 +34,15 @@ function Skinner:Chinchilla()
 	-- skin the location frame if it exists
 	if Chinchilla:IsModuleActive("Location") and Chinchilla_Location_Frame then
 		self:applySkin(Chinchilla_Location_Frame)
-		self:Hook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
-		self:Hook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
+		self:RawHook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
+		self:RawHook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
 	end
 	-- hook the OnEnable method
 	if Chinchilla:HasModule("Location") then
 		self:SecureHook(Chinchilla:GetModule("Location"), "OnEnable", function()
 			self:applySkin(Chinchilla_Location_Frame)
-			self:Hook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
-			self:Hook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
+			self:RawHook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
+			self:RawHook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
 		end)
 	end
 

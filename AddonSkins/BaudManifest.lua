@@ -40,6 +40,6 @@ function Skinner:BaudManifest()
 	self:applySkin(BaudManifestOptions, true)
 
 	-- hook this to stop the Backdrop being changed
-	self:Hook("BaudManifestUpdateBGTexture", function() end, true)
+	self:RawHook("BaudManifestUpdateBGTexture", function() end, true)
 
 end

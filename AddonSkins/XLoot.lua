@@ -2,7 +2,7 @@
 function Skinner:XLoot()
 
 	-- Hook the XLoot copy of the original skinning function ;-)
-	self:Hook(XLoot, "Skin", function(this, frame)
+	self:RawHook(XLoot, "Skin", function(this, frame)
 --		self:Debug("XL_Skin [%s, %s]", this, frame:GetName())
 		self:skinXLoot(frame)
 	end, true)
@@ -46,18 +46,18 @@ function Skinner:skinXLoot(frame)
 
 	if not frame.skinned then
 		self:applySkin(frame)
-		self:Hook(frame, "SetBackdropBorderColor", function() end, true)
+		self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 		frame.skinned = true
 		if string.find(frame:GetName(), "Wrapper") then
 			LowerFrameLevel(frame)
-			self:Hook(frame, "SetBackdrop", function() end, true)
+			self:RawHook(frame, "SetBackdrop", function() end, true)
 			local button = frame:GetParent()
 			frame:SetWidth(button:GetWidth() + 9)
 			frame:SetHeight(button:GetHeight() + 9)
 			local xlr = string.find(frame:GetName(), "XLRow")
 			if xlr and button.border then
 				button.border:SetTexture(nil)
-				self:Hook(button.border, "Show", function() end, true)
+				self:RawHook(button.border, "Show", function() end, true)
 			end
 		end
 	end

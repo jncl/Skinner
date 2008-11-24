@@ -344,7 +344,7 @@ function Skinner:MailFrame()
 end
 
 function Skinner:AuctionUI()
-	if not self.db.profile.AuctionFrame or self.initialized.AuctionUI then return end
+	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
 -->>-- Tabs

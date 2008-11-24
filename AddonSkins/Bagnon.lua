@@ -10,23 +10,23 @@ function Skinner:Bagnon(LoD)
 	if LoD then
 		self:applySkin(Bagnon)
 		-- hook these to stop the Backdrop colours from being changed
-		self:Hook(Bagnon, "SetBackdropColor", function() end, true)
-		self:Hook(Bagnon, "SetBackdropBorderColor", function() end, true)
+		self:RawHook(Bagnon, "SetBackdropColor", function() end, true)
+		self:RawHook(Bagnon, "SetBackdropBorderColor", function() end, true)
 
 --	otherwise it's the renamed vBagnon one
 	else
 		self:SecureHook(Bagnon, "CreateInventory", function()
 			self:applySkin(Bagnon.bags)
 			-- hook these to stop the Backdrop colours from being changed
-			self:Hook(Bagnon.bags, "SetBackdropColor", function() end, true)
-			self:Hook(Bagnon.bags, "SetBackdropBorderColor", function() end, true)
+			self:RawHook(Bagnon.bags, "SetBackdropColor", function() end, true)
+			self:RawHook(Bagnon.bags, "SetBackdropBorderColor", function() end, true)
 		end)
 
 		self:SecureHook(Bagnon, "CreateBank", function()
 			self:applySkin(Bagnon.bank)
 			-- hook these to stop the Backdrop colours from being changed
-			self:Hook(Bagnon.bank, "SetBackdropColor", function() end, true)
-			self:Hook(Bagnon.bank, "SetBackdropBorderColor", function() end, true)
+			self:RawHook(Bagnon.bank, "SetBackdropColor", function() end, true)
+			self:RawHook(Bagnon.bank, "SetBackdropBorderColor", function() end, true)
 		end)
 		-- skin the search edit box
 		self:SecureHook(BagnonSpot, "Show", function(this, anchor)
@@ -42,8 +42,8 @@ function Skinner:Banknon()
 
 	self:applySkin(Banknon)
 	-- hook these to stop the Backdrop colours from being changed
-	self:Hook(Banknon, "SetBackdropColor", function() end, true)
-	self:Hook(Banknon, "SetBackdropBorderColor", function() end, true)
+	self:RawHook(Banknon, "SetBackdropColor", function() end, true)
+	self:RawHook(Banknon, "SetBackdropBorderColor", function() end, true)
 
 end
 

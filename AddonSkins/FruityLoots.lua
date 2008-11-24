@@ -2,7 +2,7 @@
 function Skinner:FruityLoots()
 	if not self.db.profile.LootFrame then return end
 
-	self:Hook(FruityLoots ,"LootFrame_SetPoint", function(obj, flx, fly)
+	self:RawHook(FruityLoots ,"LootFrame_SetPoint", function(obj, flx, fly)
 		local screenWidth = GetScreenWidth()
 		if (UIParent:GetWidth() > screenWidth) then screenWidth = UIParent:GetWidth() end
 		local screenHeight = GetScreenHeight()

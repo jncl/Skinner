@@ -1,6 +1,6 @@
 
 function Skinner:AckisRecipeList()
-	if not self.db.profile.TradeSkill then return end
+	if not self.db.profile.TradeSkillUI then return end
 
 	local ARL
 	if LibStub("AceAddon-3.0") then ARL = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true) end

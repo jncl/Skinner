@@ -1,8 +1,8 @@
 
 function Skinner:FilterTradeSkill()
-	if not self.db.profile.TradeSkill then return end
+	if not self.db.profile.TradeSkillUI then return end
 
-	self:Hook(FilterTradeSkill, "Resize", function(newsize)
+	self:RawHook(FilterTradeSkill, "Resize", function(newsize)
 		self.hooks[FilterTradeSkill].Resize(newsize)
 		TradeSkillFrame:SetHeight(TradeSkillFrame:GetHeight() - 70)
 	end)

@@ -15,8 +15,8 @@ function Skinner:Recap()
 	self:keepRegions(RecapFrame, {})
 	self:applySkin(RecapFrame, nil)
 
-	self:Hook(RecapFrame, "SetBackdropColor", function() end, true)
-	self:Hook(RecapFrame, "SetBackdropBorderColor", function() end, true)
+	self:RawHook(RecapFrame, "SetBackdropColor", function() end, true)
+	self:RawHook(RecapFrame, "SetBackdropBorderColor", function() end, true)
 
 -->>-- Recap Panel
 	self:keepRegions(RecapPanel_xml_359, {})

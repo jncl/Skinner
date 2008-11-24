@@ -9,7 +9,7 @@ function Skinner:MetaMap()
 	for i = 1, 6 do
 		local tabName = _G["MetaMap_DialogFrameTab"..i]
 		-- hook the OnShow script to allow tab widths to be changed
-		self:HookScript(tabName, "OnShow", function()
+		self:RawHookScript(tabName, "OnShow", function()
 --			self:Debug(tabName:GetName().."OnShow")
 			self.hooks[tabName].OnShow()
 			tabName:SetWidth(tabName:GetWidth() * 0.85)

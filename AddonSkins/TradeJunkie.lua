@@ -1,6 +1,6 @@
 
 function Skinner:TradeJunkie()
-	if not self.db.profile.TradeSkill and self.db.profile.CraftFrame then return end
+	if not self.db.profile.TradeSkillUI and self.db.profile.CraftFrame then return end
 
 	self:moveObject(TJ_OpenButtonTradeSkill, nil, nil, "+", 11)
 	self:moveObject(TJ_OpenButtonCraft, nil, nil, "+", 11)

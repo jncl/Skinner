@@ -3,25 +3,16 @@ assert(LibStub, "LibStub unavailable, Skinner not loaded")
 -- check to see if AceLibrary is loaded
 assert(AceLibrary, "AceLibrary unavailable, Skinner not loaded")
 
--- if the Debug library is available then use it
-if AceLibrary:HasInstance("AceDebug-2.0") then
-	Skinner = LibStub("AceAddon-2.0", true):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1", "AceDebug-2.0")
---@alpha@
-	Skinner:SetDebugging(true)
-	Skinner:SetDebugLevel(1)
---@end-alpha@
-else
-	Skinner = LibStub("AceAddon-2.0", true):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceHook-2.1")
-	function Skinner:Debug() end
-	function Skinner:LevelDebug() end
-	function Skinner:IsDebugging() end
-end
+Skinner = LibStub("AceAddon-3.0"):NewAddon("Skinner", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+
 assert(Skinner, "Skinner creation failed, missing Libraries")
 
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
+Skinner.debugLevel = 1
 
-Skinner.L = LibStub("AceLocale-2.2", true):new("Skinner")
+-- Get Locale
+Skinner.L = LibStub("AceLocale-3.0"):GetLocale("Skinner")
 
 -- check to see if LibSharedMedia-3.0 is loaded
 assert(LibStub("LibSharedMedia-3.0", true), "LibSharedMedia-3.0 unavailable, Skinner not loaded")
@@ -32,6 +23,279 @@ Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on WotLK
 Skinner.isWotLK = GetCVarBool and true or false
 
+function Skinner:OnInitialize()
+--	self:Debug("OnInitialize")
+
+--@debug@
+	if self:IsDebugging() then self:Print("Debugging is enabled") self:Debug("Debugging is enabled") end
+--@end-debug@
+
+--@alpha@
+	if self.isPTR then self:Debug("PTR detected") end
+--@end-alpha@
+
+	-- setup the default DB values and register them
+	self:checkAndRun("Defaults")
+
+	-- update the Achievement settings to relect new keys
+	if type(self.db.profile.Achievement) == "table" then
+		local tmp = CopyTable(self.db.profile.Achievement)
+		self.db.profile.AchieveWatch = tmp.skin
+		self.db.profile.AchieveAlert = tmp.alert or true
+		self.db.profile.AchieveWatch = tmp.watch or true
+		self.db.profile.Achievement = nil
+		tmp = nil
+	elseif type(self.db.profile.Achievement) == "boolean" then
+		local tmp = self.db.profile.Achievement
+		self.db.profile.AchieveWatch = tmp
+		self.db.profile.AchieveAlert = true
+		self.db.profile.AchieveWatch = true
+		self.db.profile.Achievement = nil
+		tmp = nil
+	end
+	-- update changed key names
+	if self.db.profile.TradeSkill then
+		self.db.profile.TradeSkillUI = self.db.profile.TradeSkill
+		self.db.profile.TradeSkill = nil
+	end
+	if self.db.profile.AuctionFrame then
+		self.db.profile.AuctionUI = self.db.profile.AuctionFrame
+		self.db.profile.AuctionFrame = nil
+	end
+	if self.db.profile.Inspect then
+		self.db.profile.InspectUI = self.db.profile.Inspect
+		self.db.profile.Inspect = nil
+	end
+	if self.db.profile.ClassTrainer then
+		self.db.profile.TrainerUI = self.db.profile.ClassTrainer
+		self.db.profile.ClassTrainer = nil
+	end
+	if self.db.profile.TalentFrame then
+		self.db.profile.TalentUI = self.db.profile.TalentFrame
+		self.db.profile.TalentFrame = nil
+	end
+	if self.db.profile.Barbershop then
+		self.db.profile.BarbershopUI = self.db.profile.Barbershop
+		self.db.profile.Barbershop = nil
+	end
+
+	-- register the default background texture
+	self.LSM:Register("background", "Blizzard ChatFrame Background", "Interface\\ChatFrame\\ChatFrameBackground")
+	-- register the inactive tab texture
+	self.LSM:Register("background", "Inactive Tab", "Interface\\AddOns\\Skinner\\textures\\inactive")
+	-- register the EditBox/ScrollBar texture
+	self.LSM:Register("border", "Skinner EditBox/ScrollBar Border", "Interface\\AddOns\\Skinner\\textures\\krsnik")
+
+	-- Heading and Body Text colours
+	local c = self.db.profile.HeadText
+	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
+	local c = self.db.profile.BodyText
+	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
+
+	-- Frame multipliers
+	self.FxMult, self.FyMult = 0.9, 0.87
+	-- Frame Tab multipliers
+	self.FTxMult, self.FTyMult = 0.5, 0.75
+	-- EditBox regions to keep
+	self.ebRegions = {1, 2, 3, 4, 5} -- 1 is text, 2-5 are textures
+
+	-- Gradient settings
+	local c = self.db.profile.GradientMin
+	self.MinR, self.MinG, self.MinB, self.MinA = c.r, c.g, c.b, c.a
+	local c = self.db.profile.GradientMax
+	self.MaxR, self.MaxG, self.MaxB, self.MaxA = c.r, c.g, c.b, c.a
+	local orientation = self.db.profile.Gradient.rotate and "HORIZONTAL" or "VERTICAL"
+	self.gradientOn = self.db.profile.Gradient.invert and {orientation, self.MaxR, self.MaxG, self.MaxB, self.MaxA, self.MinR, self.MinG, self.MinB, self.MinA} or {orientation, self.MinR, self.MinG, self.MinB, self.MinA, self.MaxR, self.MaxG, self.MaxB, self.MaxA}
+	self.gradientOff = {orientation, 0, 0, 0, 1, 0, 0, 0, 1}
+	self.gradientTab = {orientation, .5, .5, .5, 1, .25, .25, .25, 0}
+	self.gradientCBar = {orientation, .25, .25, .55, 1, 0, 0, 0, 1}
+	self.gradientTexture = self.LSM:Fetch("background", self.db.profile.Gradient.texture)
+
+	-- backdrop for Frames etc
+	local bdtex = self.LSM:Fetch("background", "Blizzard ChatFrame Background")
+	local bdbtex = self.LSM:Fetch("border", "Blizzard Tooltip")
+	if self.db.profile.BdDefault then
+		self.backdrop = {
+			bgFile = bdtex, tile = true, tileSize = 16,
+			edgeFile = bdbtex, edgeSize = 16,
+			insets = {left = 4, right = 4, top = 4, bottom = 4},
+		}
+	else
+		if self.db.profile.BdFile and self.db.profile.BdFile ~= "None" then
+			bdtex = self.db.profile.BdFile
+		else
+			bdtex = self.LSM:Fetch("background", self.db.profile.BdTexture)
+		end
+		if self.db.profile.BdEdgeFile and self.db.profile.BdEdgeFile ~= "None" then
+			bdbtex = self.db.profile.BdEdgeFile
+		else
+			bdbtex = self.LSM:Fetch("border", self.db.profile.BdBorderTexture)
+		end
+		local bdi = self.db.profile.BdInset
+		local bdt = self.db.profile.BdTileSize > 0 and true or false
+		self.backdrop = {
+			bgFile = bdtex, tile = bdt, tileSize = self.db.profile.BdTileSize,
+			edgeFile = bdbtex, edgeSize = self.db.profile.BdEdgeSize,
+			insets = {left = bdi, right = bdi, top = bdi, bottom = bdi},
+		}
+	end
+
+	-- backdrop for ScrollBars & EditBoxes
+	local edgetex = self.LSM:Fetch("border", "Skinner EditBox/ScrollBar Border")
+	self.backdrop2 = {
+		bgFile = bdtex, tile = true, tileSize = 16,
+		edgeFile = edgetex, edgeSize = 16,
+		insets = {left = 4, right = 4, top = 4, bottom = 4},
+	}
+	-- narrow backdrop for ScrollBars
+	self.backdrop3 = {
+		bgFile = bdtex, tile = true, tileSize = 8,
+		edgeFile = edgetex, edgeSize = 8,
+		insets = {left = 2, right = 2, top = 2, bottom = 2},
+	}
+
+	-- these are used to disable frames from being skinned
+	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentFrame", "DressUpFrame", "FriendsFrame", "TradeSkill", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "AchieveFrame", "AchieveAlert", "AchieveWatch"}
+	self.charKeys2 = {"QuestLog"}
+	self.npcKeys = {"MerchantFrames", "GossipFrame", "ClassTrainer", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "Barbershop"}
+	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatConfig", "ChatTabs", "ChatFrames", "CombatLogQBF", "LootFrame", "StackSplit", "ItemText", "Colours", "WorldMap", "HelpFrame", "KnowledgeBase", "Inspect", "BattleScore", "BattlefieldMm", "ScriptErrors", "Tutorial", "DropDowns", "MinimapButtons", "MinimapGloss", "MenuFrames", "BankFrame", "MailFrame", "AuctionFrame", "CoinPickup", "GMSurveyUI", "LFGFrame", "ItemSocketingUI", "GuildBankUI", "Nameplates", "TimeManager", "Calendar"}
+	if IsMacClient() then table.insert(self.uiKeys1, "MovieProgress") end
+	if self.isPTR then table.insert(self.uiKeys1, "Feedback") end
+	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "MainMenuBar"}
+	-- these are used to disable the gradient
+	self.charFrames = {}
+	self.uiFrames = {}
+	self.npcFrames = {}
+	self.skinnerFrames = {}
+
+	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
+	-- use strings as the objects may not exist when we start
+	self.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip"}
+	-- list of Tooltips used when the Tooltip style is 3
+	self.ttList = CopyTable(self.ttCheck)
+	table.insert(self.ttList, "SmallTextTooltip")
+	-- Set the Tooltip Border
+	self.ttBorder = true
+	-- TooltipBorder colours
+	local c = self.db.profile.TooltipBorder
+	self.tbColour = {c.r, c.g, c.b, c.a}
+	-- StatusBar colours
+	local c = self.db.profile.StatusBar
+	self.sbColour = {c.r, c.g, c.b, c.a}
+	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
+	-- Backdrop colours
+	local c = self.db.profile.Backdrop
+	self.bColour = {c.r, c.g, c.b, c.a}
+	-- BackdropBorder colours
+	local c = self.db.profile.BackdropBorder
+	self.bbColour = {c.r, c.g, c.b, c.a}
+	-- Inactive Tab texture
+	self.itTex = self.LSM:Fetch("background", "Inactive Tab")
+	
+	-- class table
+	self.classTable = {"Druid", "Priest", "Paladin", "Hunter", "Rogue", "Shaman", "Mage", "Warlock", "Warrior", "DeathKnight"}
+
+	-- store Addons managed by LoadManagers
+	self.lmAddons = {}
+	
+	-- table to hold which functions have been actioned
+	self.initialized = {}
+
+end
+
+function Skinner:OnEnable()
+--	self:Debug("OnEnable")
+
+	self:RegisterEvent("ADDON_LOADED")
+	self:RegisterEvent("AUCTION_HOUSE_SHOW")
+
+	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
+	self:ScheduleTimer("SkinnerFrames", self.db.profile.Delay.Init + 0.1)
+	self:ScheduleTimer("AddonFrames", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1)
+	-- setup the Addon's options
+--	self:checkAndRun("Options")
+	self:ScheduleTimer("Options", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.2)
+
+end
+
+-- Printing Functions
+local real_tostring = tostring
+local function tostring(t)
+
+	if type(t) == "table" then
+		if type(rawget(t, 0)) == "userdata" and type(t.GetObjectType) == "function" then
+			return ("<%s:%s>"):format(t:GetObjectType(), t:GetName() or "(anon)")
+		end
+	end
+	return real_tostring(t)
+	
+end
+
+local function clearTable(table)
+
+	local i = 1
+	while table[i] do
+		table[i] = nil
+		i =i + 1
+	end
+	
+end
+
+local function makeText(a1, ...)
+
+	local tmp = {}
+	local output = ""
+	if a1:find("%%") and select('#', ...) >= 1 then
+		for i = 1, select('#', ...) do
+			tmp[i] = tostring(select(i, ...))
+		end
+		output = output .. " " .. a1:format(unpack(tmp))
+	else
+		tmp[1] = output
+		tmp[2] = a1
+		for i = 1, select('#', ...) do
+			tmp[i+2] = tostring((select(i, ...)))
+		end
+		output = table.concat(tmp, " ")
+	end
+	clearTable(tmp)
+	return output
+	
+end
+
+local function print(text, r, g, b, frame, delay)
+
+	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, delay or 5)
+	
+end
+--@debug@
+function Skinner:Debug(a1, ...)
+
+	local output = ("|cff7fff7f(DBG) %s:[%s.%3d]|r"):format("Skinner", date("%H:%M:%S"), (GetTime() % 1) * 1000)
+	
+	print(output.." "..makeText(a1, ...), nil, nil, nil, self.debugFrame)
+	
+end
+
+function Skinner:LevelDebug(lvl, a1, ...) if self.debugLevel >= lvl then self:Debug(a1, ...) end end
+
+function Skinner:IsDebugging() return true end
+--@end-debug@
+--[===[@non-debug@
+function Skinner:Debug() end
+function Skinner:LevelDebug() end
+function Skinner:IsDebugging() end
+--@end-non-debug@]===]
+
+function Skinner:CustomPrint(r, g, b, frame, delay, connector, a1, ...)
+
+	local output = ("|cffffff78Skinner:|r")
+	
+	print(output.." "..makeText(a1, ...), r, g, b, self.debugFrame)
+	
+end	
+
+-- Skinning functions
 function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
 
 	if not obj then return end
@@ -68,22 +332,6 @@ function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
 	if parent:GetFrameLevel() == 0 then parent:SetFrameLevel(1) end
 	skinFrame:SetFrameLevel(parent:GetFrameLevel() - 1)
 	parent.skinFrame = skinFrame
-
-end
-
-function Skinner:adjustTFOffset(reset)
---	self:Debug("adjustTFOffset:[%s, %s, %s]", reset, self.db.profile.TopFrame.height, UIParent:GetAttribute("TOP_OFFSET"))
-
-	--	Adjust the UIParent TOP-OFFSET attribute if required
-	if self.initialized.TopFrame then
-		local topOfs = -self.db.profile.TopFrame.height
-		local UIPtopOfs = -104
-		if topOfs < UIPtopOfs and not reset then
-			UIParent:SetAttribute("TOP_OFFSET", topOfs)
-		elseif UIParent:GetAttribute("TOP_OFFSET") < UIPtopOfs then
-			UIParent:SetAttribute("TOP_OFFSET", UIPtopOfs)
-		end
-	end
 
 end
 
@@ -172,7 +420,7 @@ end
 local eh = geterrorhandler()
 function Skinner:checkAndRun(funcName)
 
---	self:Debug("checkAndRun:[%s]", funcName)
+--	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 
 	-- handle errors from internal functions
 	if type(self[funcName]) == "function" then
@@ -185,6 +433,7 @@ function Skinner:checkAndRun(funcName)
 		end
 	else
 		self:CustomPrint(1, 0, 0, nil, nil, nil, "function [", funcName, "] not found in Skinner")
+		print(debugstack())
 	end
 
 end
@@ -472,7 +721,7 @@ function Skinner:makeMFRotatable(frame)
 	frame.cursorPosition = {}
 
 	if not self:IsHooked(frame, "OnUpdate") then
-		self:HookScript(frame, "OnUpdate", function(...)
+		self:RawHookScript(frame, "OnUpdate", function(...)
 			self.hooks[frame].OnUpdate(...)
 			if this.dragging then
 				local x,y = GetCursorPosition()
@@ -484,14 +733,14 @@ function Skinner:makeMFRotatable(frame)
 				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
 			end
 		end)
-		self:HookScript(frame, "OnMouseDown", function()
+		self:RawHookScript(frame, "OnMouseDown", function()
 			self.hooks[frame].OnMouseDown()
 			if arg1 == "LeftButton" then
 				this.dragging = true
 				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
 			end
 		end)
-		self:HookScript(frame, "OnMouseUp", function()
+		self:RawHookScript(frame, "OnMouseUp", function()
 			self.hooks[frame].OnMouseUp()
 			if this.dragging then
 				this.dragging = false
@@ -615,7 +864,7 @@ function Skinner:setInactiveTab(tabName)
 
 --	self:Debug("setInactiveTab : [%s]", tabName:GetName())
 
-	tabName.tfade:SetTexture(self.LSM:Fetch("background", "Inactive Tab"))
+	tabName.tfade:SetTexture(self.itTex)
 	tabName.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientTab))
 
 end
@@ -695,7 +944,7 @@ function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
 
 	_G[frame:GetName().."Left"]:SetAlpha(0)
 	_G[frame:GetName().."Right"]:SetAlpha(0)
-	_G[frame:GetName().."Middle"]:SetTexture(self.LSM:Fetch("background", "Inactive Tab"))
+	_G[frame:GetName().."Middle"]:SetTexture(self.itTex)
 	_G[frame:GetName().."Middle"]:SetHeight(19)
 
 	if not noMove then
@@ -902,181 +1151,6 @@ function Skinner:updateSBTexture()
 		end
 		if statusBar.flash then statusBar.flash:SetTexture(self.sbTexture) end -- handle CastingBar Flash
 	end
-
-end
-
-function Skinner:OnEnable()
---	self:Debug("OnEnable")
-
-	self:RegisterEvent("ADDON_LOADED")
-	self:RegisterEvent("AUCTION_HOUSE_SHOW")
-
-	self:ScheduleEvent(self.BlizzardFrames, self.db.profile.Delay.Init, self)
-	self:ScheduleEvent(self.SkinnerFrames, self.db.profile.Delay.Init + 0.1, self)
-	self:ScheduleEvent(self.AddonFrames, self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1, self)
-
-end
-
-function Skinner:OnInitialize()
---	self:Debug("OnInitialize")
-
---@debug@
-	if self:IsDebugging() then self:Print("Debugging is enabled") self:Debug("Debugging is enabled") end
---@end-debug@
-
---@alpha@
-	if self.isPTR then self:Debug("PTR detected") end
---@end-alpha@
-
-	-- register the SV database
-	self:RegisterDB("SkinnerDB")
-
-	-- setup the default DB values
-	self:checkAndRun("Defaults")
-	-- setup the Addon's options
-	self:checkAndRun("Options")
-
-	-- register the default background texture
-	self.LSM:Register("background", "Blizzard ChatFrame Background", "Interface\\ChatFrame\\ChatFrameBackground")
-	-- register the inactive tab texture
-	self.LSM:Register("background", "Inactive Tab", "Interface\\AddOns\\Skinner\\textures\\inactive")
-	-- register the EditBox/ScrollBar texture
-	self.LSM:Register("border", "Skinner EditBox/ScrollBar Border", "Interface\\AddOns\\Skinner\\textures\\krsnik")
-
-	-- update the Achievement settings to relect new keys
-	if type(self.db.profile.Achievement) == "table" then
-		local tmp = CopyTable(self.db.profile.Achievement)
-		self.db.profile.AchieveWatch = tmp.skin
-		self.db.profile.AchieveAlert = tmp.alert or true
-		self.db.profile.AchieveWatch = tmp.watch or true
-		self.db.profile.Achievement = nil
-		tmp = nil
-	elseif type(self.db.profile.Achievement) == "boolean" then
-		local tmp = self.db.profile.Achievement
-		self.db.profile.AchieveWatch = tmp
-		self.db.profile.AchieveAlert = true
-		self.db.profile.AchieveWatch = true
-		self.db.profile.Achievement = nil
-		tmp = nil
-	end
-
-	-- Register the chat command and the minimap icon
-	self:RegisterChatCommand({"/skinner", "/skin"}, self.options)
-	-- setup the LDB object
-	self:setupLDB()
-
-	-- Heading and Body Text colours
-	local c = self.db.profile.HeadText
-	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
-	local c = self.db.profile.BodyText
-	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
-
-	-- Frame multipliers
-	self.FxMult, self.FyMult = 0.9, 0.87
-	-- Frame Tab multipliers
-	self.FTxMult, self.FTyMult = 0.5, 0.75
-	-- EditBox regions to keep
-	self.ebRegions = {1, 2, 3, 4, 5} -- 1 is text, 2-5 are textures
-
-	-- Gradient settings
-	local c = self.db.profile.GradientMin
-	self.MinR, self.MinG, self.MinB, self.MinA = c.r, c.g, c.b, c.a
-	local c = self.db.profile.GradientMax
-	self.MaxR, self.MaxG, self.MaxB, self.MaxA = c.r, c.g, c.b, c.a
-	local orientation = self.db.profile.Gradient.rotate and "HORIZONTAL" or "VERTICAL"
-	self.gradientOn = self.db.profile.Gradient.invert and {orientation, self.MaxR, self.MaxG, self.MaxB, self.MaxA, self.MinR, self.MinG, self.MinB, self.MinA} or {orientation, self.MinR, self.MinG, self.MinB, self.MinA, self.MaxR, self.MaxG, self.MaxB, self.MaxA}
-	self.gradientOff = {orientation, 0, 0, 0, 1, 0, 0, 0, 1}
-	self.gradientTab = {orientation, .5, .5, .5, 1, .25, .25, .25, 0}
-	self.gradientCBar = {orientation, .25, .25, .55, 1, 0, 0, 0, 1}
-	self.gradientTexture = self.LSM:Fetch("background", self.db.profile.Gradient.texture)
-
-	-- backdrop for Frames etc
-	local bdtex = self.LSM:Fetch("background", "Blizzard ChatFrame Background")
-	local bdbtex = self.LSM:Fetch("border", "Blizzard Tooltip")
-	if self.db.profile.BdDefault then
-		self.backdrop = {
-			bgFile = bdtex, tile = true, tileSize = 16,
-			edgeFile = bdbtex, edgeSize = 16,
-			insets = {left = 4, right = 4, top = 4, bottom = 4},
-		}
-	else
-		if self.db.profile.BdFile and self.db.profile.BdFile ~= "None" then
-			bdtex = self.db.profile.BdFile
-		else
-			bdtex = self.LSM:Fetch("background", self.db.profile.BdTexture)
-		end
-		if self.db.profile.BdEdgeFile and self.db.profile.BdEdgeFile ~= "None" then
-			bdbtex = self.db.profile.BdEdgeFile
-		else
-			bdbtex = self.LSM:Fetch("border", self.db.profile.BdBorderTexture)
-		end
-		local bdi = self.db.profile.BdInset
-		local bdt = self.db.profile.BdTileSize > 0 and true or false
-		self.backdrop = {
-			bgFile = bdtex, tile = bdt, tileSize = self.db.profile.BdTileSize,
-			edgeFile = bdbtex, edgeSize = self.db.profile.BdEdgeSize,
-			insets = {left = bdi, right = bdi, top = bdi, bottom = bdi},
-		}
-	end
-
-	-- backdrop for ScrollBars & EditBoxes
-	local edgetex = self.LSM:Fetch("border", "Skinner EditBox/ScrollBar Border")
-	self.backdrop2 = {
-		bgFile = bdtex, tile = true, tileSize = 16,
-		edgeFile = edgetex, edgeSize = 16,
-		insets = {left = 4, right = 4, top = 4, bottom = 4},
-	}
-	-- narrow backdrop for ScrollBars
-	self.backdrop3 = {
-		bgFile = bdtex, tile = true, tileSize = 8,
-		edgeFile = edgetex, edgeSize = 8,
-		insets = {left = 2, right = 2, top = 2, bottom = 2},
-	}
-
-	-- these are used to disable frames from being skinned
-	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentFrame", "DressUpFrame", "FriendsFrame", "TradeSkill", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "AchieveFrame", "AchieveAlert", "AchieveWatch"}
-	self.charKeys2 = {"QuestLog"}
-	self.npcKeys = {"MerchantFrames", "GossipFrame", "ClassTrainer", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "Barbershop"}
-	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatConfig", "ChatTabs", "ChatFrames", "CombatLogQBF", "LootFrame", "StackSplit", "ItemText", "Colours", "WorldMap", "HelpFrame", "KnowledgeBase", "Inspect", "BattleScore", "BattlefieldMm", "ScriptErrors", "Tutorial", "DropDowns", "MinimapButtons", "MinimapGloss", "MenuFrames", "BankFrame", "MailFrame", "AuctionFrame", "CoinPickup", "GMSurveyUI", "LFGFrame", "ItemSocketingUI", "GuildBankUI", "Nameplates", "TimeManager", "Calendar"}
-	if IsMacClient() then table.insert(self.uiKeys1, "MovieProgress") end
-	if self.isPTR then table.insert(self.uiKeys1, "Feedback") end
-	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "MainMenuBar"}
-	-- these are used to disable the gradient
-	self.charFrames = {}
-	self.uiFrames = {}
-	self.npcFrames = {}
-	self.skinnerFrames = {}
-
-	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
-	-- use strings as the objects may not exist when we start
-	self.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip"}
-	-- list of Tooltips used when the Tooltip style is 3
-	self.ttList = CopyTable(self.ttCheck)
-	table.insert(self.ttList, "SmallTextTooltip")
-	-- Set the Tooltip Border
-	self.ttBorder = true
-	-- TooltipBorder colours
-	local c = self.db.profile.TooltipBorder
-	self.tbColour = {c.r, c.g, c.b, c.a}
-	-- StatusBar colours
-	local c = self.db.profile.StatusBar
-	self.sbColour = {c.r, c.g, c.b, c.a}
-	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
-	-- Backdrop colours
-	local c = self.db.profile.Backdrop
-	self.bColour = {c.r, c.g, c.b, c.a}
-	-- BackdropBorder colours
-	local c = self.db.profile.BackdropBorder
-	self.bbColour = {c.r, c.g, c.b, c.a}
-
-	-- class table
-	self.classTable = {"Druid", "Priest", "Paladin", "Hunter", "Rogue", "Shaman", "Mage", "Warlock", "Warrior"}
-
-	-- store Addons managed by LoadManagers
-	self.lmAddons = {}
-	
-	-- table to hold which functions have been actioned
-	self.initialized = {}
 
 end
 

@@ -3,7 +3,7 @@ function Skinner:DBM_GUI()
 
 -->>--	Boss Mods Frame
 	-- Hook this to manage the tabs
-	self:Hook("DBMGUI_SetTabPosition_Update", function(div, lax, lay, lbx, lby, tabcount, frame, forceUpdate)
+	self:RawHook("DBMGUI_SetTabPosition_Update", function(div, lax, lay, lbx, lby, tabcount, frame, forceUpdate)
 --		self:Debug("DBMGUI_STP_U: [%s, %s, %s, %s, %s, %s, %s, %s]", div, lax, lay, lbx, lby, tabcount, frame, forceUpdate)
 		-- is this the Boss Mod Load Addon Frame
 		if lax == 11 then
@@ -16,7 +16,7 @@ function Skinner:DBM_GUI()
 					if self.db.profile.TexturedTab then
 						self:applySkin(tabName, nil, 0, 1)
 						if i == 1 then self:setActiveTab(tabName) else self:setInactiveTab(tabName) end
-						self:HookScript(tabName, "OnClick", function(this)
+						self:RawHookScript(tabName, "OnClick", function(this)
 							self.hooks[this].OnClick(this)
 							for i = 1, DBMGUI_MAINFRAME_TABCOUNT do
 								local tabName = _G["DBMBossModFrameTab"..i]
@@ -52,7 +52,7 @@ function Skinner:DBM_GUI()
 
 -->>--	Options Frame
 	-- Hook this to manage tab widths
-	self:HookScript(DBMOptionsFrame, "OnShow", function()
+	self:RawHookScript(DBMOptionsFrame, "OnShow", function()
 		self.hooks[DBMOptionsFrame].OnShow()
 		for i = 1, DBMGUI_SIDEFRAME_TABCOUNT do
 			local tabName = _G["DBMOptionsFrameTab"..i]
@@ -84,7 +84,7 @@ function Skinner:DBM_GUI()
 		if self.db.profile.TexturedTab then
 			self:applySkin(tabName, nil, 0, 1)
 			if i == 1 then self:setActiveTab(tabName) else self:setInactiveTab(tabName) end
-			self:HookScript(tabName, "OnClick", function(this)
+			self:RawHookScript(tabName, "OnClick", function(this)
 --				self:Debug("DBMOptionsFrameTab_OnClick: [%s, %s]", this:GetName(), this:GetID())
 				self.hooks[this].OnClick(this)
 				for i = 1, DBMGUI_SIDEFRAME_TABCOUNT do

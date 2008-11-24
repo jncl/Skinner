@@ -1,6 +1,6 @@
 
 function Skinner:sienasGemViewer()
-	if not self.db.profile.AuctionFrame then return end
+	if not self.db.profile.AuctionUI then return end
 
 	self:keepFontStrings(SGV_BrowseDropDown)
 	self:keepFontStrings(SGV_Filter)

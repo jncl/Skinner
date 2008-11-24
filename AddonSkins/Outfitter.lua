@@ -163,6 +163,6 @@ function Skinner:Outfitter()
 	end)
 	
 -->>-- Outfit Bars
-	self:ScheduleEvent(skinOutfitBars, 1, Outfitter.OutfitBar) -- wait for a second before skinning the Outfit Bars
+	self:ScheduleTimer(skinOutfitBars, 1, Outfitter.OutfitBar) -- wait for a second before skinning the Outfit Bars
 
 end

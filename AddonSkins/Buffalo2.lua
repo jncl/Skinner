@@ -11,7 +11,7 @@ function Skinner:Buffalo2()
 
 	end
 
-	self:Hook(Buffalo2, "GetButton", function(this, container)
+	self:RawHook(Buffalo2, "GetButton", function(this, container)
 --		self:Debug("Buffalo2_GetButton: [%s, %s]", this, container:GetName())
 		local button = self.hooks[this].GetButton(this, container)
 --		self:Debug("Buffalo2_GetButton#2: [%s]", button)

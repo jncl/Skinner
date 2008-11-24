@@ -1,15 +1,15 @@
 
 function Skinner:BtmScan()
-	if not self.db.profile.AuctionFrame then return end
+	if not self.db.profile.AuctionUI then return end
 --	self:Debug("BtmScan Loaded: [%s]", AuctionFrame.numTabs)
 
 	-- loop until tab button created
 	if not AuctionFrameTabBtmScan then
-		self:ScheduleEvent(self.BtmScan, 0.1, self)
+		self:ScheduleTimer("BtmScan", 0.1)
 		return
 	end
 
-	self:HookScript(AuctionFrameTabBtmScan, "OnClick", function()
+	self:RawHookScript(AuctionFrameTabBtmScan, "OnClick", function()
 --		self:Debug("AuctionFrameTabBtmScan-OnClick")
 		self.hooks[AuctionFrameTabBtmScan].OnClick()
 		self:moveObject(BtmScanLogFrame:GetParent(), "-", 10, nil, nil)

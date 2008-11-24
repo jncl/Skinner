@@ -1,6 +1,6 @@
 
 function Skinner:Vendor()
-	if not self.db.profile.AuctionFrame then return end
+	if not self.db.profile.AuctionUI then return end
 
 -->>--	Buttons
 	self:moveObject(self:getChild(AuctionFrame, 9), "-", 20, "+", 8)
@@ -49,7 +49,7 @@ function Skinner:Vendor()
 	if self.db.profile.TexturedTab then self:setInactiveTab(tabName) end
 
 	if self.db.profile.TexturedTab then
-		self:HookScript(tabName, "OnClick", function(this)
+		self:RawHookScript(tabName, "OnClick", function(this)
 			self.hooks[this].OnClick(this)
 			for i = 1, AuctionFrame.numTabs do
 				local tabName = _G["AuctionFrameTab"..i]

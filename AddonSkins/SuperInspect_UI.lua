@@ -1,6 +1,6 @@
 
 function Skinner:SuperInspect_UI()
-	if not self.db.profile.Inspect or self.initialized.SuperInspect then return end
+	if not self.db.profile.InspectUI or self.initialized.SuperInspect then return end
 	self.initialized.SuperInspect = true
 
 	self:removeRegions(SuperInspectFrameHeader, {1, 2, 3, 4})
