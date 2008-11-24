@@ -7,24 +7,20 @@ if not L then return end
 L["Colours"] = true
 L["Backdrop"] = true
 L["Gradient"] = true
-L["FadeHeight"] = true
-L["Delay"] = true
-L["ViewPort"] = true
-L["TopFrame"] = true
-L["MiddleFrame"] = true
-L["BottomFrame"] = true
-L["StatusBar"] = true
+L["VP/TMBFrames"] = true
 L["PlayerFrames"] = true
 L["UIFrames"] = true
 L["NPCFrames"] = true
 
 -- untranslated strings
+L["UI Enhancement"] = true
+L["Provides a Minimalist UI by removing the Blizzard textures"] = true
+L["ViewPort & TMB Frames"] = true
+L["Change the ViewPort & TMB Frames settings"] = true
 L["Chat Sub Frames"] = true
 L["Change the Chat Sub Frames"] = true
 L["Help Request Frames"] = true
 L["Change the Help Request Frames"] = true
-L["Utility Frames"] = true
-L["Change the Utility Frames"] = true
 L["Minimap Options"] = true
 L["Change the Minimap Options"] = true
 
