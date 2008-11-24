@@ -18,7 +18,7 @@ function Skinner:skinBlocks(...) -- event, name, dataobj
 	
 --	self:Debug("tekBlocks:[%s, %s, %s]", event, name, dataobj)
 	
-	if event ~= "ftt" and not dataobj.text then return end -- no text, therefore no button
+	if event ~= "ftt" and dataobj and not dataobj.text then return end -- no text, therefore no button
 	
 	skinCnt = 0
 	
