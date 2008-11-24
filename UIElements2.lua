@@ -804,6 +804,7 @@ function Skinner:Nameplates()
 	self.initialized.Nameplates = true
 
 	local npTex = "Interface\\Tooltips\\Nameplate-Border"
+	local npEvt
 	local function isNameplate(obj)
 
 		if obj:GetName() then return false end
@@ -837,15 +838,16 @@ function Skinner:Nameplates()
 		local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")
 		local SHOW_FRIENDS = GetCVarBool("nameplateShowFriends")
 		if not SHOW_ENEMIES and not SHOW_FRIENDS then
-			Skinner:CancelScheduledEvent("NameplateUpdateCheck")
+			Skinner:CancelTimer(npEvt)
+			npEvt = nil
 		end
 
 	end
 
 	local function showFunc()
 
-		if not Skinner:IsEventScheduled("NameplateUpdateCheck") then
-			Skinner:ScheduleRepeatingEvent("NameplateUpdateCheck", skinNameplates, 0.2)
+		if not npEvt then
+			npEvt = Skinner:ScheduleRepeatingTimer(skinNameplates, 0.2)
 		end
 
 	end
