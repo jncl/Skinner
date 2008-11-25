@@ -32,8 +32,14 @@ function Skinner:WIM() -- WIM3
 		
 		for i = 1, select("#", obj:GetChildren()) do
 			local child = select(i, obj:GetChildren())
+--			Skinner:Debug("checkKids#2:[%s, %s]", obj, child)
 			if Skinner:isDropDown(child) then Skinner:skinDropDown(child)
-			elseif child.backdrop then Skinner:keepFontStrings(child) Skinner:applySkin(child)
+			elseif child.backdrop then
+				Skinner:keepFontStrings(child) Skinner:applySkin(child)
+				checkKids(child)
+			elseif child:IsObjectType("ScrollFrame") then
+				self:removeRegions(child)
+				self:skinScrollBar(child)
 			else checkKids(child)
 			end
 		end
@@ -56,7 +62,7 @@ function Skinner:WIM() -- WIM3
 			for j = 1, #cat.info.subCategories do
 				local subCat = cat.info.subCategories[j]
 				if type(subCat["frame"]) == "function" then -- if the frame hasn't been created yet
-					self:Hook(subCat, "frame", function()
+					self:RawHook(subCat, "frame", function()
 						local catFrame = self.hooks[subCat].frame()
 						checkKids(catFrame)
 						self:Unhook(subCat, "frame")
@@ -86,19 +92,19 @@ function Skinner:WIM() -- WIM3
 		self:Unhook(WIM, "ShowFilterFrame")
 	end)
 	-- hook these to skin the Message Frames
-	self:Hook(WIM, "CreateWhisperWindow", function(playerName)
+	self:RawHook(WIM, "CreateWhisperWindow", function(playerName)
 --		self:Debug("WIM_CWW:[%s]", playerName)
 		local msgFrame = self.hooks[WIM].CreateWhisperWindow(playerName)
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
-	self:Hook(WIM, "CreateChatWindow", function(chatName)
+	self:RawHook(WIM, "CreateChatWindow", function(chatName)
 --		self:Debug("WIM_CCW:[%s]", chatName)
 		local msgFrame = self.hooks[WIM].CreateChatWindow(chatName)
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
-	self:Hook(WIM, "CreateW2WWindow", function(w2wname)
+	self:RawHook(WIM, "CreateW2WWindow", function(w2wname)
 --		self:Debug("WIM_CW2WW:[%s]", w2wname)
 		local msgFrame = self.hooks[WIM].CreateW2WWindow(w2wname)
 		skinWindow(msgFrame)

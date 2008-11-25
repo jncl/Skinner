@@ -383,8 +383,14 @@ function Skinner:Options()
 			type = "group",
 			name = self.L["Default Colours"],
 			desc = self.L["Change the default colour settings"],
-			get = function(info) return db[info[#info]] end,
-			set = function(info, value) db[info[#info]] = value end,
+			get = function(info)
+				local c = db[info[#info]]
+				return c.r, c.g, c.b, c.a
+			end,
+			set = function(info, r, g, b, a)
+				local c = db[info[#info]]
+				c.r, c.g, c.b, c.a = r, g, b, a
+			end,
 			args = {
 				TooltipBorder = {
 					type = "color",
@@ -393,14 +399,6 @@ function Skinner:Options()
 					name = self.L["Tooltip Border Colors"],
 					desc = self.L["Set Tooltip Border Colors"],
 					hasAlpha = true,
-					get = function()
-						local c = db.TooltipBorder
-						return c.r, c.g, c.b, c.a
-					end,
-					set = function(info, r, g, b, a)
-						local c = db.TooltipBorder
-						c.r, c.g, c.b, c.a = r, g, b, a
-					end,
 				},
 				Backdrop = {
 					type = "color",
@@ -409,14 +407,6 @@ function Skinner:Options()
 					name = self.L["Backdrop Colors"],
 					desc = self.L["Set Backdrop Colors"],
 					hasAlpha = true,
-					get = function()
-						local c = db.Backdrop
-						return c.r, c.g, c.b, c.a
-					end,
-					set = function(info, r, g, b, a)
-						local c = db.Backdrop
-						c.r, c.g, c.b, c.a = r, g, b, a
-					end,
 				},
 				BackdropBorder = {
 					type = "color",
@@ -425,14 +415,6 @@ function Skinner:Options()
 					name = self.L["Border Colors"],
 					desc = self.L["Set Backdrop Border Colors"],
 					hasAlpha = true,
-					get = function()
-						local c = db.BackdropBorder
-						return c.r, c.g, c.b, c.a
-					end,
-					set = function(info, r, g, b, a)
-						local c = db.BackdropBorder
-						c.r, c.g, c.b, c.a = r, g, b, a
-					end,
 				},
 				HeadText = {
 					type = "color",
@@ -440,14 +422,6 @@ function Skinner:Options()
 					width = "double",
 					name = self.L["Text Heading Colors"],
 					desc = self.L["Set Text Heading Colors"],
-					get = function()
-						local c = db.HeadText
-						return c.r, c.g, c.b
-					end,
-					set = function(info, r, g, b)
-						local c = db.HeadText
-						c.r, c.g, c.b = r, g, b
-					end,
 				},
 				BodyText = {
 					type = "color",
@@ -455,14 +429,6 @@ function Skinner:Options()
 					width = "double",
 					name = self.L["Text Body Colors"],
 					desc = self.L["Set Text Body Colors"],
-					get = function()
-						local c = db.BodyText
-						return c.r, c.g, c.b
-					end,
-					set = function(info, r, g, b)
-						local c = db.BodyText
-						c.r, c.g, c.b = r, g, b
-					end,
 				},
 				GradientMin = {
 					type = "color",
@@ -471,14 +437,6 @@ function Skinner:Options()
 					name = self.L["Gradient Minimum Colors"],
 					desc = self.L["Set Gradient Minimum Colors"],
 					hasAlpha = true,
-					get = function()
-						local c = db.GradientMin
-						return c.r, c.g, c.b, c.a
-					end,
-					set = function(info, r, g, b, a)
-						local c = db.GradientMin
-						c.r, c.g, c.b, c.a = r, g, b, a
-					end,
 				},
 				GradientMax = {
 					type = "color",
@@ -487,14 +445,6 @@ function Skinner:Options()
 					name = self.L["Gradient Maximum Colors"],
 					desc = self.L["Set Gradient Maximum Colors"],
 					hasAlpha = true,
-					get = function()
-						local c = db.GradientMax
-						return c.r, c.g, c.b, c.a
-					end,
-					set = function(info, r, g, b, a)
-						local c = db.GradientMax
-						c.r, c.g, c.b, c.a = r, g, b, a
-					end,
 				},
 			},
 		},
@@ -1723,13 +1673,14 @@ function Skinner:Options()
 	}
 
 	-- setup middleframe(s) options
+	local mfkey
 	for i = 1, 9 do
 
 		mfkey = {}
-		mfkey.name = self.L["Middle Frame"..i]
-		mfkey.desc = self.L["Change MiddleFrame"..i.." settings"]
 		mfkey.type = "group"
 		mfkey.inline = true
+		mfkey.name = self.L["Middle Frame"..i]
+		mfkey.desc = self.L["Change MiddleFrame"..i.." settings"]
 		mfkey.get = function(info) return db["MiddleFrame"..i][info[#info]] end
 		mfkey.args = {}
 		mfkey.args.shown = {}
@@ -1774,7 +1725,23 @@ function Skinner:Options()
 		optTables["VP/TMBFrames"].args.MiddleFrame.args["mf"..i] = mfkey
 
 	end
+	mfkey = nil
 
+	-- add these if Baggins & its skin are loaded
+	if IsAddOnLoaded("Baggins") and self.Baggins then
+		-- setup option to change the Bank Bags colour
+		local bbckey = {}
+		bbckey.type = "color"
+		bbckey.order = -1
+		bbckey.width = "double"
+		bbckey.name = self.L["Baggins Bank Bags Colour"]
+		bbckey.desc = self.L["Set Baggins Bank Bags Colour"]
+		bbckey.hasAlpha = true
+		-- add to the colour submenu
+		optTables.Colours.args["BagginsBBC"] = bbckey
+		bbckey = nil
+	end
+		
 	-- option tables list
 	local optNames = {
 		"Backdrop", "Colours", "Gradient", "VP/TMBFrames", "NPCFrames", "PlayerFrames", "UIFrames"

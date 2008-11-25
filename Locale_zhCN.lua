@@ -24,6 +24,9 @@ L["Change the Help Request Frames"] = true
 L["Minimap Options"] = true
 L["Change the Minimap Options"] = true
 
+L["Baggins Bank Bags Colour"] = true
+L["Set Baggins Bank Bags Colour"] = true
+
 L["PVP Frame"] = true
 L["Toggle the skin of the PVP Frame"] = true
 L["ReadyCheck Frame"] = true

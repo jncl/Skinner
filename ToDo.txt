@@ -8,8 +8,14 @@ N - New Version
 O - Other change
 S - Skin request
 
-	I	OneBag3, reported by Shakuraz, 23.11.08 (Curse)
-		- "newest version is messing with OneBag3, Inventory is not accessible until I disable skinner"
+	I	WIM, reported by flyinion (Curse), 25.11.08
+√		- skin no longer loads
+		
+	I	Baggins, reported by Nirek & toin7, 25.11.08
+√		- Skinner-b1.9183.10 \SkinMe\Baggins.lua:23: attempt to index field 'options' (a nil value)
+		
+?	I	OneBag3, reported by Shakuraz, 23.11.08 (Curse)
+		- "newest version (b1.9183.7?) is messing with OneBag3, Inventory is not accessible until I disable skinner"
 		
 	I	TipTac, reported by dvanaroyi, 03.11.08
 ?		- fix the skin
