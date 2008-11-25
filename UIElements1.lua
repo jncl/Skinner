@@ -19,15 +19,17 @@ function Skinner:Tooltips()
 
 		counts = counts + 1
 
-		Skinner:Debug("checkGTHeight: [%s, %s, %s]", cHeight, evt, math.ceil(GameTooltip:GetHeight()))
+--		Skinner:Debug("checkGTHeight: [%s, %s, %s]", cHeight, evt, math.ceil(GameTooltip:GetHeight()))
 		if cHeight ~= math.ceil(GameTooltip:GetHeight()) then
 			Skinner:skinTooltip(GameTooltip)
 			Skinner:CancelTimer(GTSBevt, true)
+			GTSBevt = nil
 			counts = 0
 		end
 
 		if counts == 10 or GameTooltipStatusBar:IsShown() then
 			Skinner:CancelTimer(GTSBevt, true)
+			GTSBevt = nil
 			counts = 0
 		end
 
@@ -39,8 +41,10 @@ function Skinner:Tooltips()
 		self.hooks[this].OnHide()
 		if GameTooltip:IsShown() then
 			cHeight = math.ceil(GameTooltip:GetHeight())
-			self:Debug("GTSB_OnHide: [%s]", cHeight)
-			GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.2, cHeight)
+--			self:Debug("GTSB_OnHide: [%s]", cHeight)
+			if not GTSBevt then
+				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.2, cHeight)
+			end
 		end
 		end)
 

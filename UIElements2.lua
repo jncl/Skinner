@@ -838,7 +838,7 @@ function Skinner:Nameplates()
 		local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")
 		local SHOW_FRIENDS = GetCVarBool("nameplateShowFriends")
 		if not SHOW_ENEMIES and not SHOW_FRIENDS then
-			Skinner:CancelTimer(npEvt)
+			Skinner:CancelTimer(npEvt, true)
 			npEvt = nil
 		end
 
