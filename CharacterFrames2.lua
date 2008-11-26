@@ -432,6 +432,7 @@ function Skinner:Buffs()
 				db.skinned = true
 			end
 		end
+		
 	end
 
 	skinBuffs()

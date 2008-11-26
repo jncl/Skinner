@@ -8,12 +8,6 @@ N - New Version
 O - Other change
 S - Skin request
 
-	I	WIM, reported by flyinion (Curse), 25.11.08
-√		- skin no longer loads
-		
-	I	Baggins, reported by Nirek & toin7, 25.11.08
-√		- Skinner-b1.9183.10 \SkinMe\Baggins.lua:23: attempt to index field 'options' (a nil value)
-		
 ?	I	OneBag3, reported by Shakuraz, 23.11.08 (Curse)
 		- "newest version (b1.9183.7?) is messing with OneBag3, Inventory is not accessible until I disable skinner"
 		
@@ -25,7 +19,7 @@ S - Skin request
 
 ≈	S	oRA2, requested by madindehead, 18.10.08
 
-x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch)
+x	I	CombatLog, reported by Nirek, 30.10.08 (wait until next patch 3.0.4?)
 		- Combat log filter frame has changed again
 
 	I	TopFrame, reported by skumclown, 12.10.08

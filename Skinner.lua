@@ -1,7 +1,7 @@
 -- check to see if LibStub is loaded
 assert(LibStub, "LibStub unavailable, Skinner not loaded")
--- check to see if AceLibrary is loaded
-assert(AceLibrary, "AceLibrary unavailable, Skinner not loaded")
+-- check to see if AceAddon-3.0 is loaded
+assert(LibStub("AceAddon-3.0"), "AceAddon-3.0 unavailable, Skinner not loaded")
 
 Skinner = LibStub("AceAddon-3.0"):NewAddon("Skinner", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
@@ -36,48 +36,6 @@ function Skinner:OnInitialize()
 
 	-- setup the default DB values and register them
 	self:checkAndRun("Defaults")
-
-	-- update the Achievement settings to relect new keys
-	if type(self.db.profile.Achievement) == "table" then
-		local tmp = CopyTable(self.db.profile.Achievement)
-		self.db.profile.AchieveWatch = tmp.skin
-		self.db.profile.AchieveAlert = tmp.alert or true
-		self.db.profile.AchieveWatch = tmp.watch or true
-		self.db.profile.Achievement = nil
-		tmp = nil
-	elseif type(self.db.profile.Achievement) == "boolean" then
-		local tmp = self.db.profile.Achievement
-		self.db.profile.AchieveWatch = tmp
-		self.db.profile.AchieveAlert = true
-		self.db.profile.AchieveWatch = true
-		self.db.profile.Achievement = nil
-		tmp = nil
-	end
-	-- update changed key names
-	if self.db.profile.TradeSkill then
-		self.db.profile.TradeSkillUI = self.db.profile.TradeSkill
-		self.db.profile.TradeSkill = nil
-	end
-	if self.db.profile.AuctionFrame then
-		self.db.profile.AuctionUI = self.db.profile.AuctionFrame
-		self.db.profile.AuctionFrame = nil
-	end
-	if self.db.profile.Inspect then
-		self.db.profile.InspectUI = self.db.profile.Inspect
-		self.db.profile.Inspect = nil
-	end
-	if self.db.profile.ClassTrainer then
-		self.db.profile.TrainerUI = self.db.profile.ClassTrainer
-		self.db.profile.ClassTrainer = nil
-	end
-	if self.db.profile.TalentFrame then
-		self.db.profile.TalentUI = self.db.profile.TalentFrame
-		self.db.profile.TalentFrame = nil
-	end
-	if self.db.profile.Barbershop then
-		self.db.profile.BarbershopUI = self.db.profile.Barbershop
-		self.db.profile.Barbershop = nil
-	end
 
 	-- register the default background texture
 	self.LSM:Register("background", "Blizzard ChatFrame Background", "Interface\\ChatFrame\\ChatFrameBackground")
