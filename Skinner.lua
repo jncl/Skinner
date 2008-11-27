@@ -36,6 +36,8 @@ function Skinner:OnInitialize()
 
 	-- setup the default DB values and register them
 	self:checkAndRun("Defaults")
+	-- setup the Addon's options
+	self:checkAndRun("Options")
 
 	-- register the default background texture
 	self.LSM:Register("background", "Blizzard ChatFrame Background", "Interface\\ChatFrame\\ChatFrameBackground")
@@ -170,11 +172,39 @@ function Skinner:OnEnable()
 	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
 	self:ScheduleTimer("SkinnerFrames", self.db.profile.Delay.Init + 0.1)
 	self:ScheduleTimer("AddonFrames", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1)
-	-- setup the Addon's options
---	self:checkAndRun("Options")
-	self:ScheduleTimer("Options", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.2)
+	
+	-- handle profile changes
+	self.db.RegisterCallback(self, "OnProfileChanged", "ReloadAddon")
+	self.db.RegisterCallback(self, "OnProfileCopied", "ReloadAddon")
+	self.db.RegisterCallback(self, "OnProfileReset", "ReloadAddon")
 
 end
+
+function Skinner:ReloadAddon(callback)
+
+	self:Debug("ReloadAddon:[%s]", callback)
+
+	StaticPopupDialogs["Skinner_Reload_UI"] = {
+		text = self.L["Confirm reload of UI to activate profile changes"],
+		button1 = OKAY,
+		button2 = CANCEL,
+		OnAccept = function()
+			ReloadUI()
+		end,
+		OnCancel = function(this, data, reason)
+			if reason == "timeout" or reason == "clicked" then
+				self:CustomPrint(1, 1, 0, nil, nil, nil, "The profile '"..Skinner.db:GetCurrentProfile().."' will be activated next time you Login or Reload the UI")
+			end
+		end,
+		timeout = 0,
+		whileDead = 1,
+		exclusive = 1,
+		hideOnEscape = 1
+	}
+	StaticPopup_Show("Skinner_Reload_UI")
+	
+end
+
 
 -- Printing Functions
 local real_tostring = tostring
@@ -249,7 +279,7 @@ function Skinner:CustomPrint(r, g, b, frame, delay, connector, a1, ...)
 
 	local output = ("|cffffff78Skinner:|r")
 	
-	print(output.." "..makeText(a1, ...), r, g, b, self.debugFrame)
+	print(output.." "..makeText(a1, ...), r, g, b, frame, delay)
 	
 end	
 
@@ -390,7 +420,7 @@ function Skinner:checkAndRun(funcName)
 			end
 		end
 	else
-		self:CustomPrint(1, 0, 0, nil, nil, nil, "function [", funcName, "] not found in Skinner")
+		self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..funcName.."] not found in Skinner")
 		print(debugstack())
 	end
 
@@ -435,7 +465,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 			end
 		else
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "function [", addonFunc, "] not found in Skinner")
+				self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..addonFunc.."] not found in Skinner")
 			end
 		end
 		if status == false then

@@ -7,7 +7,7 @@ function Skinner:ViewPort()
 	local yOfs = self.db.profile.ViewPort.top * self.db.profile.ViewPort.YScaling
 	local xOfs2 = self.db.profile.ViewPort.right * self.db.profile.ViewPort.XScaling
 	local yOfs2 = self.db.profile.ViewPort.bottom * self.db.profile.ViewPort.YScaling
---	self:Debug("VP [%s, %s, %s, %s]", xOfs, yOfs, xOfs2, yOfs2)
+--	self:Debug("VP [%s, %s, %s, %s]", xOfs, -yOfs, -xOfs2, yOfs2)
 	WorldFrame:SetPoint("TOPLEFT", xOfs, -yOfs)
 	WorldFrame:SetPoint("BOTTOMRIGHT", -xOfs2, yOfs2)
 

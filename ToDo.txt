@@ -8,6 +8,8 @@ N - New Version
 O - Other change
 S - Skin request
 
+√	O	Add DB Profiles, requested by Shimiya, 26.11.08
+	
 ?	I	OneBag3, reported by Shakuraz, 23.11.08 (Curse)
 		- "newest version (b1.9183.7?) is messing with OneBag3, Inventory is not accessible until I disable skinner"
 		

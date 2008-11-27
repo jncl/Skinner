@@ -11,6 +11,7 @@ L["VP/TMBFrames"] = true
 L["PlayerFrames"] = true
 L["UIFrames"] = true
 L["NPCFrames"] = true
+L["Profiles"] = true
 
 -- option names and descriptions
 L["UI Enhancement"] = true
@@ -444,3 +445,4 @@ L["Toggle the minimap icon"] = true
 L["Skin Settings"] = true
 L["Frames"] = true
 L["Other Settings"] = true
+L["Confirm reload of UI to activate profile changes"] = true

@@ -11,6 +11,7 @@ L["VP/TMBFrames"] = true
 L["PlayerFrames"] = true
 L["UIFrames"] = true
 L["NPCFrames"] = true
+L["Profiles"] = true
 
 -- untranslated strings
 L["UI Enhancement"] = true
@@ -23,6 +24,7 @@ L["Help Request Frames"] = true
 L["Change the Help Request Frames"] = true
 L["Minimap Options"] = true
 L["Change the Minimap Options"] = true
+L["Confirm reload of UI to activate profile changes"] = true
 
 L["Baggins Bank Bags Colour"] = true
 L["Set Baggins Bank Bags Colour"] = true

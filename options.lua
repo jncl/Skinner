@@ -32,7 +32,7 @@ function Skinner:Defaults()
 		ViewPort		= {top = 64, bottom = 64, YResolution = 1050, YScaling = 768/1050, left = 128, right = 128, XResolution = 768, XScaling = 768/1050, shown = false, overlay = false, r = 0, g = 0, b = 0, a = 1},
 		TopFrame		= {height = 64, width = 1920, shown = false, fheight = 50, xyOff = true, borderOff = false, alpha = 0.9, invert = false, rotate = false},
 		MiddleFrame		= {fheight = 50, borderOff = false, lock = false, r = 0, g = 0, b = 0, a = 0.9},
-		MiddleFrame1	= {height = 64, width = 64, shown = false, xOfs = 0, yOfs = 0, flevel = 0, fstrata = "BACKGROUND"},
+		MiddleFrame1	= {height = 64, width = 64, shown = false, xOfs = 0, yOfs = 300, flevel = 0, fstrata = "BACKGROUND"},
 		MiddleFrame2	= {height = 64, width = 64, shown = false, xOfs = 0, yOfs = 0, flevel = 0, fstrata = "BACKGROUND"},
 		MiddleFrame3	= {height = 64, width = 64, shown = false, xOfs = 0, yOfs = 0, flevel = 0, fstrata = "BACKGROUND"},
 		MiddleFrame4	= {height = 64, width = 64, shown = false, xOfs = 0, yOfs = 0, flevel = 0, fstrata = "BACKGROUND"},
@@ -121,7 +121,7 @@ function Skinner:Defaults()
 		-- LDB icon
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 90},
 	}}
-	
+
 	self.db = LibStub("AceDB-3.0"):New("SkinnerDB", defaults, "Default")
 
 end
@@ -134,7 +134,17 @@ local icon = LibStub("LibDBIcon-1.0")
 function Skinner:Options()
 
 	db = self.db.profile
-	
+
+--	-- remove old Default keys
+--	defs = self.db.profiles.Default
+--	if defs.AuctionFrame then defs.AuctionFrame = nil end
+--	if defs.Inspect then defs.Inspect = nil end
+--	if defs.TalentFrame then defs.TalentFrame = nil end
+--	if defs.Barbershop then defs.Barbershop = nil end
+--	if defs.TradeSkill then defs.TradeSkill = nil end
+--	if defs.KnowledgeBase then defs.KnowledgeBase = nil end
+--	if defs.ClassTrainer then defs.ClassTrainer = nil end
+
 	local optTables = {
 
 		General = {
@@ -170,9 +180,9 @@ function Skinner:Options()
 					order = 5,
 					name = self.L["Minimap icon"],
 					desc = self.L["Toggle the minimap icon"],
-					get = function(info) return not db.MinimapIcon.hide end,
+					get = function(info) return db[info[#info]].hide end,
 					set = function(info, value)
-						db.MinimapIcon.hide = not value
+						db[info[#info]].hide = not value
 						if value then icon:Show("Skinner") else icon:Hide("Skinner") end
 					end,
 					hidden = function() return not icon end,
@@ -269,21 +279,31 @@ function Skinner:Options()
 					inline = true,
 					name = self.L["StatusBar"],
 					desc = self.L["Change the StatusBar settings"],
-					get = function(info) return db[info[#info-1]][info[#info]] end,
-					set = function(info, value) db[info[#info-1]][info[#info]] = value end,
+					get = function(info)
+						if info.type == "color" then
+							local c = db[info[#info-1]]
+							return c.r, c.g, c.b, c.a
+						else
+							return db[info[#info-1]][info[#info]]
+						end
+					end,
+					set = function(info, value)
+						if info.type == "color" then
+							local c = db[info[#info-1]]
+							c.r, c.g, c.b, c.a = r, g, b, a
+						else
+							db[info[#info-1]][info[#info]] = value
+						end
+						self:checkAndRun("updateSBTexture")
+					end,
 					args = {
 						texture = {
 							type = "select",
 							order = 1,
-							width = "double",
 							name = self.L["Texture"],
 							desc = self.L["Choose the Texture for the Status Bars"],
 							dialogControl = "LSM30_Statusbar",
 							values = AceGUIWidgetLSMlists.statusbar,
-							set = function(info, value)
-								db.StatusBar.texture = value
-								self:checkAndRun("updateSBTexture")
-							end,
 						},
 						bgcolour = {
 							type = "color",
@@ -291,21 +311,12 @@ function Skinner:Options()
 							name = self.L["Background Colour"],
 							desc = self.L["Change the Colour of the Status Bar Background"],
 							hasAlpha = true,
-							get = function()
-								local c = db.StatusBar
-								return c.r, c.g, c.b, c.a
-							end,
-							set = function(info, r, g, b, a)
-								local c = db.StatusBar
-								c.r, c.g, c.b, c.a = r, g, b, a
-								self:checkAndRun("updateSBTexture")
-							end,
 						},
 					},
 				},
 			},
 		},
-			
+
 		Backdrop = {
 			type = "group",
 			name = self.L["Default Backdrop"],
@@ -378,7 +389,7 @@ function Skinner:Options()
 				},
 			},
 		},
-		
+
 		Colours = {
 			type = "group",
 			name = self.L["Default Colours"],
@@ -453,8 +464,8 @@ function Skinner:Options()
 			type = "group",
 			name = self.L["Gradient"],
 			desc = self.L["Change the Gradient Effect settings"],
-			get = function(info) return db.Gradient[info[#info]] end,
-			set = function(info, value) db.Gradient[info[#info]] = value end,
+			get = function(info) return db[info[#info-1]][info[#info]] end,
+			set = function(info, value) db[info[#info-1]][info[#info]] = value end,
 			args = {
 				enable = {
 					type = "toggle",
@@ -520,8 +531,31 @@ function Skinner:Options()
 		["VP/TMBFrames"] = {
 			type = "group",
 			childGroups = "tab",
-			get = function(info) return db[info[#info-1]][info[#info]] end,
-			set = function(info, value) db[info[#info-1]][info[#info]] = value end,
+			get = function(info)
+				if info.type == "color" then
+					local c = db[info[#info-1]]
+					return c.r, c.g, c.b, c.a
+				else
+					return db[info[#info-1]][info[#info]]
+				end
+			end,
+			set = function(info, value)
+				if info.type == "color" then
+					local c = db[info[#info-1]]
+					c.r, c.g, c.b, c.a = r, g, b, a
+				else
+					db[info[#info-1]][info[#info]] = value
+				end
+				if info[#info] == "shown" then
+					if self.initialized.ViewPort then
+						self:checkAndRun("ViewPort_reset")
+					else
+						self:checkAndRun("ViewPort")
+					end
+				else
+					self:checkAndRun("ViewPort_"..info[#info])
+				end
+			end,
 			args = {
 				desc = {
 					order = 1,
@@ -545,14 +579,6 @@ function Skinner:Options()
 							width = "full",
 							name = self.L["ViewPort Show"],
 							desc = self.L["Toggle the ViewPort"],
-							set = function(info, value)
-								db.ViewPort.shown = value
-								if self.initialized.ViewPort then
-									self:checkAndRun("ViewPort_reset")
-								else
-									self:checkAndRun("ViewPort")
-								end
-							end,
 						},
 						top = {
 							type = "range",
@@ -560,10 +586,6 @@ function Skinner:Options()
 							name = self.L["VP Top"],
 							desc = self.L["Change Height of the Top Band"],
 							min = 0, max = 256, step = 1,
-							set = function(info, value)
-								db.ViewPort.top = value
-								self:checkAndRun("ViewPort_top")
-							end,
 						},
 						bottom = {
 							type = "range",
@@ -571,10 +593,6 @@ function Skinner:Options()
 							name = self.L["VP Bottom"],
 							desc = self.L["Change Height of the Bottom Band"],
 							min = 0, max = 256, step = 1,
-							set = function(info, value)
-								db.ViewPort.bottom = value
-								self:checkAndRun("ViewPort_bottom")
-							end,
 						},
 						left = {
 							type = "range",
@@ -582,10 +600,6 @@ function Skinner:Options()
 							name = self.L["VP Left"],
 							desc = self.L["Change Width of the Left Band"],
 							min = 0, max = 1800, step = 1,
-							set = function(info, value)
-								db.ViewPort.left = value
-								self:checkAndRun("ViewPort_left")
-							end,
 						},
 						right = {
 							type = "range",
@@ -593,10 +607,6 @@ function Skinner:Options()
 							name = self.L["VP Right"],
 							desc = self.L["Change Width of the Right Band"],
 							min = 0, max = 1800, step = 1,
-							set = function(info, value)
-								db.ViewPort.right = value
-								self:checkAndRun("ViewPort_right")
-							end,
 						},
 						XResolution = {
 							type = "range",
@@ -605,8 +615,8 @@ function Skinner:Options()
 							desc = self.L["Change X Resolution"],
 							min = 0, max = 1600, step = 2,
 							set = function(info, value)
-								db.ViewPort.XResolution = value
-								db.ViewPort.XScaling = db.ViewPort.XResolution / 1050
+								db[info[#info-1]][info[#info]] = value
+								db[info[#info-1]].XScaling = value / 1050
 								self.initialized.ViewPort = nil
 								self:checkAndRun("ViewPort")
 							end,
@@ -618,8 +628,8 @@ function Skinner:Options()
 							desc = self.L["Change Y Resolution"],
 							min = 0, max = 2600, step = 2,
 							set = function(info, value)
-								db.ViewPort.YResolution = value
-								db.ViewPort.YScaling = 768 / db.ViewPort.YResolution
+								db[info[#info-1]][info[#info]] = value
+								db[info[#info-1]].YScaling = 768 / value
 								self.initialized.ViewPort = nil
 								self:checkAndRun("ViewPort")
 							end,
@@ -630,7 +640,7 @@ function Skinner:Options()
 							name = self.L["ViewPort Overlay"],
 							desc = self.L["Toggle the ViewPort Overlay"],
 							set = function(info, value)
-								db.ViewPort.overlay = value
+								db[info[#info-1]][info[#info]] = value
 								self.initialized.ViewPort = nil
 								self:checkAndRun("ViewPort")
 							end,
@@ -642,14 +652,6 @@ function Skinner:Options()
 							name = self.L["ViewPort Colors"],
 							desc = self.L["Set ViewPort Colors"],
 							hasAlpha = true,
-							get = function()
-								local c = db.ViewPort
-								return c.r, c.g, c.b, c.a
-							end,
-							set = function(info, r, g, b, a)
-								local c = db.ViewPort
-								c.r, c.g, c.b, c.a = r, g, b, a
-							end,
 						},
 					},
 				},
@@ -658,6 +660,8 @@ function Skinner:Options()
 					order = 2,
 					name = self.L["Top Frame"],
 					desc = self.L["Change the TopFrame settings"],
+					get = function(info) return db[info[#info-1]][info[#info]] end,
+					set = function(info, value) db[info[#info-1]][info[#info]] = value end,
 					args = {
 						shown = {
 							type = "toggle",
@@ -666,7 +670,7 @@ function Skinner:Options()
 							name = self.L["TopFrame Show"],
 							desc = self.L["Toggle the TopFrame"],
 							set = function(info, value)
-								db.TopFrame.shown = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerTF then
 									if self.topframe:IsVisible() then
 										self.topframe:Hide()
@@ -687,7 +691,7 @@ function Skinner:Options()
 							desc = self.L["Change Height of the TopFrame"],
 							min = 0, max = 500, step = 1,
 							set = function(info, value)
-								db.TopFrame.height = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerTF then
 									self.topframe:SetHeight(value)
 									self:adjustTFOffset(nil)
@@ -701,7 +705,7 @@ function Skinner:Options()
 							desc = self.L["Change Width of the TopFrame"],
 							min = 0, max = 2000, step = 1,
 							set = function(info, value)
-								db.TopFrame.width = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerTF then
 									self.topframe:SetWidth(value)
 								end
@@ -714,16 +718,16 @@ function Skinner:Options()
 							desc = self.L["Change the Height of the Fade Effect"],
 							min = 0, max = 500, step = 1,
 							set = function(info, value)
-								db.TopFrame.fheight = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerTF then
 									if db.FadeHeight.enable and db.FadeHeight.force then
 									-- set the Fade Height to the global value if 'forced'
 									-- making sure that it isn't greater than the frame height
 										fh = db.FadeHeight.value <= math.ceil(self.topframe:GetHeight()) and db.FadeHeight.value or math.ceil(self.topframe:GetHeight())
-									elseif db.TopFrame.fheight then
-										fh = db.TopFrame.fheight <= math.ceil(self.topframe:GetHeight()) and db.TopFrame.fheight or math.ceil(self.topframe:GetHeight())
+									elseif db[info[#info-1]][info[#info]] then
+										fh = db[info[#info-1]][info[#info]] <= math.ceil(self.topframe:GetHeight()) and db[info[#info-1]][info[#info]] or math.ceil(self.topframe:GetHeight())
 									end
-									if db.TopFrame.invert then self.topframe.tfade:SetPoint("TOPRIGHT", self.topframe, "BOTTOMRIGHT", 4, (fh - 4))
+									if db[info[#info-1]].invert then self.topframe.tfade:SetPoint("TOPRIGHT", self.topframe, "BOTTOMRIGHT", 4, (fh - 4))
 									else self.topframe.tfade:SetPoint("BOTTOMRIGHT", self.topframe, "TOPRIGHT", -4, -(fh - 4)) end
 								end
 							end,
@@ -734,9 +738,9 @@ function Skinner:Options()
 							name = self.L["TF Move Origin offscreen"],
 							desc = self.L["Hide Border on Left and Top"],
 							set = function(info, value)
-								db.TopFrame.xyOff = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerTF then
-									if db.TopFrame.xyOff then
+									if db[info[#info-1]][info[#info]] then
 										self.topframe:SetPoint("TOPLEFT", UIParent, "TOPLEFT", -6, 6)
 									else
 										self.topframe:SetPoint("TOPLEFT", UIParent, "TOPLEFT", -3, 3)
@@ -776,6 +780,22 @@ function Skinner:Options()
 					order = 3,
 					name = self.L["Middle Frame(s)"],
 					desc = self.L["Change the MiddleFrame(s) settings"],
+					get = function(info)
+						if info.type == "color" then
+							local c = db[info[#info-1]]
+							return c.r, c.g, c.b, c.a
+						else
+							return db[info[#info-1]][info[#info]]
+						end
+					end,
+					set = function(info, value)
+						if info.type == "color" then
+							local c = db[info[#info-1]]
+							c.r, c.g, c.b, c.a = r, g, b, a
+						else
+							db[info[#info-1]][info[#info]] = value
+						end
+					end,
 					args = {
 						fheight = {
 							type = "range",
@@ -796,14 +816,6 @@ function Skinner:Options()
 							name = self.L["MF Colour"],
 							desc = self.L["Change the Colour of the MiddleFrame(s)"],
 							hasAlpha = true,
-							get = function()
-								local c = db.MiddleFrame
-								return c.r, c.g, c.b, c.a
-							end,
-							set = function(info, r, g, b, a)
-								local c = db.MiddleFrame
-								c.r, c.g, c.b, c.a = r, g, b, a
-							end,
 						},
 						lock = {
 							type = "toggle",
@@ -811,10 +823,10 @@ function Skinner:Options()
 							name = self.L["MF Lock Frames"],
 							desc = self.L["Toggle the Frame Lock"],
 							set = function(info, value)
-								db.MiddleFrame.lock = value
+								db[info[#info-1]][info[#info]] = value
 								for i = 1, 9 do
 									if db["MiddleFrame"..i].shown then
-										if db.MiddleFrame.lock then
+										if db[info[#info-1]][info[#info]] then
 											_G["SkinnerMF"..i]:SetScript("OnMouseDown", function() end)
 											_G["SkinnerMF"..i]:EnableMouse(false)
 										else
@@ -832,6 +844,8 @@ function Skinner:Options()
 					order = 4,
 					name = self.L["Bottom Frame"],
 					desc = self.L["Change the BottomFrame settings"],
+					get = function(info) return db[info[#info-1]][info[#info]] end,
+					set = function(info, value) db[info[#info-1]][info[#info]] = value end,
 					args = {
 						shown = {
 							type = "toggle",
@@ -840,7 +854,7 @@ function Skinner:Options()
 							name = self.L["BottomFrame Show"],
 							desc = self.L["Toggle the BottomFrame"],
 							set = function(info, value)
-								db.BottomFrame.shown = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerBF then
 									if self.bottomframe:IsVisible() then
 										self.bottomframe:Hide()
@@ -859,9 +873,9 @@ function Skinner:Options()
 							desc = self.L["Change Height of the BottomFrame"],
 							min = 0, max = 500, step = 1,
 							set = function(info, value)
-								db.BottomFrame.height = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerBF then
-									self.bottomframe:SetHeight(v)
+									self.bottomframe:SetHeight(value)
 								end
 							end,
 						},
@@ -872,9 +886,9 @@ function Skinner:Options()
 							desc = self.L["Change Width of the BottomFrame"],
 							min = 0, max = 2000, step = 1,
 							set = function(info, value)
-								db.BottomFrame.width = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerBF then
-									self.bottomframe:SetWidth(v)
+									self.bottomframe:SetWidth(value)
 								end
 							end,
 						},
@@ -885,16 +899,16 @@ function Skinner:Options()
 							desc = self.L["Change the Height of the Fade Effect"],
 							min = 0, max = 500, step = 1,
 							set = function(info, value)
-								db.BottomFrame.fheight = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerBF then
 									if db.FadeHeight.enable and db.FadeHeight.force then
 									-- set the Fade Height to the global value if 'forced'
 									-- making sure that it isn't greater than the frame height
 										fh = db.FadeHeight.value <= math.ceil(self.bottomframe:GetHeight()) and db.FadeHeight.value or math.ceil(self.bottomframe:GetHeight())
-									elseif db.BottomFrame.fheight then
-										fh = db.BottomFrame.fheight <= math.ceil(self.bottomframe:GetHeight()) and db.BottomFrame.fheight or math.ceil(self.bottomframe:GetHeight())
+									elseif db[info[#info-1]][info[#info]] then
+										fh = db[info[#info-1]][info[#info]] <= math.ceil(self.bottomframe:GetHeight()) and db[info[#info-1]][info[#info]] or math.ceil(self.bottomframe:GetHeight())
 									end
-									if db.BottomFrame.invert then self.bottomframe.tfade:SetPoint("TOPRIGHT", self.bottomframe, "BOTTOMRIGHT", 4, (fh - 4))
+									if db[info[#info-1]].invert then self.bottomframe.tfade:SetPoint("TOPRIGHT", self.bottomframe, "BOTTOMRIGHT", 4, (fh - 4))
 									else self.bottomframe.tfade:SetPoint("BOTTOMRIGHT", self.bottomframe, "TOPRIGHT", -4, -(fh - 4)) end
 								end
 							end,
@@ -905,9 +919,9 @@ function Skinner:Options()
 							name = self.L["BF Move Origin offscreen"],
 							desc = self.L["Hide Border on Left and Bottom"],
 							set = function(info, value)
-								db.BottomFrame.xyOff = value
+								db[info[#info-1]][info[#info]] = value
 								if SkinnerBF then
-									if db.BottomFrame.xyOff then
+									if db[info[#info-1]][info[#info]] then
 										self.bottomframe:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -6, -6)
 									else
 										self.bottomframe:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -3, -3)
@@ -944,7 +958,7 @@ function Skinner:Options()
 				},
 			},
 		},
-		
+
 		NPCFrames = {
 			type = "group",
 			name = self.L["NPC Frames"],
@@ -1035,7 +1049,7 @@ function Skinner:Options()
 				},
 			},
 		},
-		
+
 		PlayerFrames = {
 			type = "group",
 			name = self.L["Character Frames"],
@@ -1118,9 +1132,9 @@ function Skinner:Options()
 					order = -1,
 					name = self.L["Quest Log"],
 					desc = self.L["Change the Quest Log settings"],
-					get = function(info) return db.QuestLog[info[#info]] end,
+					get = function(info) return db[info[#info-1]][info[#info]] end,
 					set = function(info, value)
-						db.QuestLog[info[#info]] = value
+						db[info[#info-1]][info[#info]] = value
 						if info[#info] == "skin" then self:checkAndRun("QuestLog")
 						else self:checkAndRun("ResizeQW") end
 					end,
@@ -1162,42 +1176,36 @@ function Skinner:Options()
 					name = self.L["AchievementUI"],
 					desc = self.L["Change the AchievementUI settings"],
 					get = function(info) return db[info[#info]] end,
+					set = function(info, value)
+						db[info[#info]] = value
+						local aOpt = string.sub(info[#info], -5)
+						local aFunc
+						if IsAddOnLoaded("Blizzard_AchievementUI") then
+							if aOpt == "Frame" then aFunc = "UI"
+							elseif aOpt == "Alert" then aFunc = "Alerts"
+							elseif aOpt == "Watch" then aFunc = "Watch"
+							end
+							self:checkAndRun("Achievement"..aFunc)
+						end
+					end,
 					args = {
 						AchieveFrame = {
 							type = "toggle",
 							order = 1,
 							name = self.L["Achievements Frame"],
 							desc = self.L["Toggle the skin of the Achievements Frame"],
-							set = function(info, value)
-								db.AchieveFrame = value
-								if IsAddOnLoaded("Blizzard_AchievementUI") then
-									self:checkAndRun("AchievementUI")
-								end
-							end,
 						},
 						AchieveAlert = {
 							type = "toggle",
 							order = 2,
 							name = self.L["Achievement Alerts"],
 							desc = self.L["Toggle the skin of the Achievement Alerts"],
-							set = function(info, value)
-								db.AchieveAlert = value
-								if IsAddOnLoaded("Blizzard_AchievementUI") then
-									self:checkAndRun("AchievementAlerts")
-								end
-							end,
 						},
 						AchieveWatch = {
 							type = "toggle",
 							order = 3,
 							name = self.L["Achievement Watch"],
 							desc = self.L["Toggle the skin of the Achievement Watch"],
-							set = function(info, value)
-								db.AchieveWatch = value
-								if IsAddOnLoaded("Blizzard_AchievementUI") then
-									self:checkAndRun("AchievementWatch")
-								end
-							end,
 						},
 					},
 				},
@@ -1278,7 +1286,7 @@ function Skinner:Options()
 							desc = self.L["Set the Tooltips style (Rounded, Flat, Custom)"],
 							min = 1, max = 3, step = 1,
 							set = function(info, value)
-								db.Tooltips.style = value
+								db[info[#info-1]][info[#info]] = value
 								if value == 3 then self:setTTBackdrop(true)
 								else self:setTTBackdrop() end
 							end,
@@ -1575,7 +1583,7 @@ function Skinner:Options()
 							name = self.L["Minimap Gloss Effect"],
 							desc = self.L["Toggle the Gloss Effect for the Minimap"],
 							set = function(info, value)
-								db.MinimapGloss = value
+								db[info[#info]] = value
 								if self.minimapskin then
 									if not value then LowerFrameLevel(self.minimapskin)
 									else RaiseFrameLevel(self.minimapskin) end
@@ -1658,7 +1666,7 @@ function Skinner:Options()
 				},
 			},
 		},
-			
+
 	}
 
 	local FrameStrata = {
@@ -1741,10 +1749,13 @@ function Skinner:Options()
 		optTables.Colours.args["BagginsBBC"] = bbckey
 		bbckey = nil
 	end
-		
+
+	-- add DB profile options
+	optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+
 	-- option tables list
 	local optNames = {
-		"Backdrop", "Colours", "Gradient", "VP/TMBFrames", "NPCFrames", "PlayerFrames", "UIFrames"
+		"Backdrop", "Colours", "Gradient", "VP/TMBFrames", "NPCFrames", "PlayerFrames", "UIFrames", "Profiles"
 	}
 	-- register the options tables and add them to the blizzard frame
 	local ACR = LibStub("AceConfigRegistry-3.0")
@@ -1780,7 +1791,7 @@ function Skinner:Options()
 	-- Register slash command handlers
 	self:RegisterChatCommand(aName, chatCommand)
 	self:RegisterChatCommand("skin", chatCommand)
-	
+
 	-- setup the LDB object
 	SkinnerLDB = ldb:NewDataObject("Skinner", {
 			type = "launcher",
