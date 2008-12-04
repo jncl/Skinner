@@ -49,9 +49,9 @@ function Skinner:Waterfall()
 
 	end
 
-	self:SecureHook(AceLibrary("Waterfall-1.0"), "Open", function(id, pane)
+	self:SecureHook(LibStub("Waterfall-1.0", true), "Open", function(id, pane)
 -- 		self:Debug("WaterfallOpen: [%s, %s]", id, pane)
-		local wfinfo = AceLibrary("Waterfall-1.0").registry[pane]
+		local wfinfo = LibStub("Waterfall-1.0", true).registry[pane]
 		skinWaterfall(wfinfo.frame)
 	end)
 

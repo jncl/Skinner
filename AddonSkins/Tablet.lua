@@ -6,7 +6,7 @@ function Skinner:Tablet()
 
 		if not Skinner.db.profile.TrackerFrame then
 			-- Check for the QuestsFu_Tracker
-			local qftinfo = AceLibrary("Tablet-2.0").registry['QuestsFu_Tracker']
+			local qftinfo = LibStub("Tablet-2.0", true).registry['QuestsFu_Tracker']
 			if qftinfo and qftinfo.tooltip then
 				local tt = qftinfo.tooltip
 --				Skinner:Debug("ST: [%s, %s]", tt, tt:GetName())
@@ -23,8 +23,8 @@ function Skinner:Tablet()
 				Skinner:applySkin(frame)
 				frame.skinned = true
 				-- hook these to stop the Backdrop colours from being changed
-				Skinner:Hook(frame, "SetBackdropColor", function() end, true)
-				Skinner:Hook(frame, "SetBackdropBorderColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 			end
 		end
 
@@ -36,8 +36,8 @@ function Skinner:Tablet()
 				Skinner:applySkin(frame)
 				frame.skinned = true
 				-- hook these to stop the Backdrop colours from being changed
-				Skinner:Hook(frame, "SetBackdropColor", function() end, true)
-				Skinner:Hook(frame, "SetBackdropBorderColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 			end
 			if not frame.noFH then
 			end
@@ -46,11 +46,11 @@ function Skinner:Tablet()
 
 	end
 
-	self:SecureHook(AceLibrary("Tablet-2.0"), "Open", function(tablet, parent)
+	self:SecureHook(LibStub("Tablet-2.0", true), "Open", function(tablet, parent)
 --		self:Debug("TabletOpen: [%s, %s]", tablet, parent)
 		skinTablet()
 	end)
-	self:SecureHook(AceLibrary("Tablet-2.0"), "Detach", function(tablet, parent)
+	self:SecureHook(LibStub("Tablet-2.0", true), "Detach", function(tablet, parent)
 --		self:Debug("TabletDetach: [%s, %s]", tablet, parent)
 		skinTablet()
 	end)

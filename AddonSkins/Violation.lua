@@ -23,7 +23,7 @@ function Skinner:Violation()
 				Skinner:applySkin(frame)
 				violationsSkinned[frame] = true
 				-- hook this to stop the BackdropBorder colour from being changed
-				Skinner:Hook(frame, "SetBackdropBorderColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 			end
 
 		end

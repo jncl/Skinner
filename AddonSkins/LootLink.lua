@@ -10,7 +10,7 @@ function Skinner:LootLink()
 		end
 
 		Skinner:applySkin(frame)
-		Skinner:Hook(frame, "SetBackdropBorderColor", function() end, true)
+		Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 
 		frame:ClearAllPoints()
 		frame:SetPoint("BOTTOMLEFT", LootLink_ResultsFrame, "BOTTOMLEFT", 10, 5)

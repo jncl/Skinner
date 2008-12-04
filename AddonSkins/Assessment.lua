@@ -11,9 +11,9 @@ function Skinner:Assessment()
 			if frame and not frame.skinned then
 				Skinner:keepFontStrings(frame)
 				Skinner:applySkin(frame)
-				Skinner:Hook(frame, "SetBackdrop", function() end, true)
-				Skinner:Hook(frame, "SetBackdropColor", function() end, true)
-				Skinner:Hook(frame, "SetBackdropBorderColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdrop", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 				frame.skinned = true
 			end
 		end

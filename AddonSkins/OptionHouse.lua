@@ -67,7 +67,7 @@ function Skinner:OptionHouse()
 				Skinner:setInactiveTab(tabName)
 				tabName:SetPoint("TOPLEFT", ohFrame.tabs[i - 1], "TOPRIGHT", -4, 0)
 			end
-			Skinner:Hook(tabName, "SetPoint", function() end, true)
+			Skinner:RawHook(tabName, "SetPoint", function() end, true)
 		end
 
 		-- Hook this to manage the Sub Frames
@@ -112,7 +112,7 @@ function Skinner:OptionHouse()
 	 		if i == 1 then Skinner:moveObject(ohSFbutton, nil, nil, "+", 50, ohAFrame) end
 	 		Skinner:keepRegions(ohSFbutton, {2, 4}) -- N.B. region 2 is the Text, 4 is the highlight
 	 		local ohSFBGNT = ohSFbutton:GetNormalTexture()
-	 		Skinner:Hook(ohSFBGNT, "SetAlpha", function() end, true) -- stop the textures being shown
+	 		Skinner:RawHook(ohSFBGNT, "SetAlpha", function() end, true) -- stop the textures being shown
 			-- hook this to manage the sub fields
 			-- N.B. Don't unhook them as they are reallocated as required
 			Skinner:HookScript(ohSFbutton, "OnClick", function(this)

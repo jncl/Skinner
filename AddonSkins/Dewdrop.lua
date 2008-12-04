@@ -13,8 +13,8 @@ function Skinner:Dewdrop()
 			if not frame.skinned then
 				Skinner:applySkin(frame)
 				-- hook these to stop the Backdrop colours from being changed
-				Skinner:Hook(frame, "SetBackdropColor", function() end, true)
-				Skinner:Hook(frame, "SetBackdropBorderColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropColor", function() end, true)
+				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 				-- hide the backdrop frame
 				Skinner:getChild(frame, 1):Hide()
 				frame.skinned = true
@@ -63,7 +63,7 @@ function Skinner:Dewdrop()
 	end
 
 	-- Hook this to skin new Dewdrop components
-	self:SecureHook(AceLibrary("Dewdrop-2.0"), "Open", function(parent)
+	self:SecureHook(LibStub("Dewdrop-2.0", true), "Open", function(parent)
 --		self:Debug("DewdropOpen: [%s]", parent)
 		skinDewdrop()
 	end)
