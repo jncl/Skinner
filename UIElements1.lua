@@ -154,21 +154,22 @@ function Skinner:ChatTabs()
 
 	if self.db.profile.TexturedTab then
 		self:SecureHook("FCF_SetTabPosition", function(chatFrame, x)
---		self:Debug("FCF_SetTabPosition: [%s, %s]", chatFrame:GetName(), x)
-		self:moveObject(_G[chatFrame:GetName().."Tab"], nil, nil, "-", 4)
-	end)
+--			self:Debug("FCF_SetTabPosition: [%s, %s]", chatFrame:GetName(), x)
+			self:moveObject(_G[chatFrame:GetName().."Tab"], nil, nil, "-", 4)
+		end)
 
 		for i = 1, NUM_CHAT_WINDOWS do
 			local tabName = _G["ChatFrame"..i.."Tab"]
 			self:keepRegions(tabName, {4, 5}) --N.B. region 4 is text, 5 is highlight
 			self:moveObject(tabName, nil, nil, "-", 4)
 			self:moveObject(_G[tabName:GetName().."Flash"], nil, nil, "+", 4)
-			local textObj
 			-- move text and highlight area and resize highlight
 			self:moveObject(self:getRegion(tabName, 4), "+", 5, "+", 4)
-			textObj = self:getRegion(tabName, 4)
-			self:moveObject(self:getRegion(tabName, 5), "+", 5, "+", 5)
-			self:getRegion(tabName, 5):SetWidth(textObj:GetWidth()  + 30)
+			local textObj = self:getRegion(tabName, 4)
+			self:moveObject(textObj, "-", 5, nil, nil)
+			local hilightObj = self:getRegion(tabName, 5)
+			self:moveObject(hilightObj, "+", 3, "+", 7)
+			hilightObj:SetWidth(textObj:GetWidth()  + 20)
 			self:storeAndSkin(ftype, tabName, nil, 0)
 			self:setActiveTab(tabName)
 		end
@@ -567,6 +568,9 @@ function Skinner:WorldMap()
 	self:skinDropDown(WorldMapContinentDropDown)
 	self:skinDropDown(WorldMapZoneDropDown)
 	self:skinDropDown(WorldMapZoneMinimapDropDown)
+	self:skinDropDown(WorldMapLevelDropDown)
+	-- Unit drop down for the Notify AFK
+	self:skinDropDown(MapGroupDropDown)
 
 	if not IsAddOnLoaded("MetaMap") then
 		WorldMapFrameCloseButton:ClearAllPoints()
@@ -706,7 +710,8 @@ function Skinner:InspectUI()
 end
 
 function Skinner:BattleScore()
-	if not self.db.profile.BattleScore then return end
+	if not self.db.profile.BattleScore or self.initialized.BattleScore then return end
+	self.initialized.BattleScore = true
 
 	self:SecureHook("WorldStateScoreFrame_Resize", function(width)
 		WorldStateScoreFrame:SetWidth(WorldStateScoreFrame:GetWidth() * self.FxMult)
@@ -753,40 +758,34 @@ function Skinner:BattlefieldMinimap()
 
 --	self:Debug("BMM")
 
+	self:SecureHook("BattlefieldMinimap_SetOpacity", function(opacity)
+		local alpha = 1.0 - BattlefieldMinimapOptions.opacity
+		if ( alpha >= 0.15 ) then alpha = alpha - 0.15 end
+		BattlefieldMinimap.skinFrame:SetAlpha(alpha)
+		BattlefieldMinimap.skinFrame.tfade:SetAlpha(alpha)
+	end)
+
 -->>--	Minimap Tab
 	self:keepRegions(BattlefieldMinimapTab, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
 	if self.db.profile.TexturedTab then self:applySkin(BattlefieldMinimapTab, nil, 0, 1)
 	else self:storeAndSkin(ftype, BattlefieldMinimapTab) end
 	self:moveObject(BattlefieldMinimapTabText, nil, nil, "+", 4)
 
-	-->>--	Minimap
+-->>--	Minimap
+	self:moveObject(BattlefieldMinimap, nil, nil, "+", 5)
 	-- change the draw layer so that the map is visible
-	for i = 1, 12 do
-		_G["BattlefieldMinimap"..i]:SetDrawLayer("OVERLAY")
-	end
+--	for i = 1, 12 do
+--		_G["BattlefieldMinimap"..i]:SetDrawLayer("ARTWORK")
+--	end
 
 	-- Create a frame to skin as using the BattlefieldMinimap one causes issues with Capping
-	local skinFrame = CreateFrame("Frame", nil, BattlefieldMinimap)
-
-	skinFrame:SetFrameStrata(BattlefieldMinimap:GetFrameStrata())
-	skinFrame:SetFrameLevel(BattlefieldMinimap:GetFrameLevel())
-	skinFrame:SetHeight(BattlefieldMinimap:GetHeight() + 6)
-	skinFrame:SetWidth(BattlefieldMinimap:GetWidth() + 2)
-	skinFrame:ClearAllPoints()
-	skinFrame:SetPoint("TOPLEFT", BattlefieldMinimap, "TOPLEFT", 0, 0)
-	self:storeAndSkin(ftype, skinFrame)
-
-	BattlefieldMinimap.skinFrame = skinFrame
+	self:addSkinFrame(BattlefieldMinimap, -4, 4, -2, 1, ftype)
+	-- hide the testures as the alpha values can be changed
 	BattlefieldMinimapCorner:Hide()
 	BattlefieldMinimapBackground:Hide()
 
 	if IsAddOnLoaded("Capping") then
 		if type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
-	else
-		skinFrame:ClearAllPoints()
-		skinFrame:SetPoint("TOPLEFT", BattlefieldMinimapTab, "BOTTOMLEFT", 0, 6)
-		self:moveObject(BattlefieldMinimap1, "+", 4, "+", 6)
-		self:moveObject(BattlefieldMinimapCloseButton, "+", 5, "+", 8)
 	end
 
 end
@@ -855,7 +854,7 @@ function Skinner:MinimapButtons()
 						-- change the DrawLayer to make the Icon show if required
 						if (regName and string.find(regName, "[Ii]con"))
 						or (regTex and string.find(regTex, "[Ii]con")) then
---							Skinner:Debug("%s obj Icon: [%s, %s, %s]", mmObjName, objName, regName, regDL)
+--							Skinner:Debug("%s obj Icon: [%s, %s, %s, %s, %s]", mmObjName, objName, regName, regDL, math.ceil(reg:GetWidth()), math.ceil(reg:GetHeight()))
 							if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
@@ -886,6 +885,8 @@ function Skinner:MinimapButtons()
 	self:applySkin(MinimapZoomIn)
 	self:applySkin(MinimapZoomOut)
 	-- resize other buttons
+	MiniMapMailFrame:SetWidth(28)
+	MiniMapMailFrame:SetHeight(28)
 	GameTimeFrame:SetWidth(36)
 	GameTimeFrame:SetHeight(36)
 	MiniMapVoiceChatFrame:SetWidth(32)

@@ -5,13 +5,12 @@ function Skinner:Altoholic()
 	self:moveObject(AltoholicFrameName, nil, nil, "+", 10)
 	self:moveObject(AltoholicFrameCloseButton, nil, nil, "+", 10)
 	self:skinEditBox(AltoholicFrame_SearchEditBox, {9})
-	self:skinEditBox(AltoholicFrame_MinLevel, {9})
-	self:skinEditBox(AltoholicFrame_MaxLevel, {9})
 	self:skinDropDown(RarityDropDownMenu)
 	self:skinDropDown(SlotsDropDownMenu)
 	self:applySkin(AltoholicFrame)
 	-- Tabs
-	for i = 1, 5 do
+	local numTabs = 6
+	for i = 1, numTabs do
 		local tabObj = _G["AltoholicFrameTab"..i]
 		if i == 1 then
 			self:moveObject(tabObj, nil, nil, "-", 4)
@@ -27,7 +26,7 @@ function Skinner:Altoholic()
 	end
 	if self.db.profile.TexturedTab then
 		self:SecureHook(Altoholic, "Tab_OnClick", function()
-			for i = 1, 5 do
+			for i = 1, numTabs do
 				local tabObj = _G["AltoholicFrameTab"..i]
 				if i == AltoholicFrame.selectedTab then self:setActiveTab(tabObj)
 				else self:setInactiveTab(tabObj) end
@@ -45,13 +44,28 @@ function Skinner:Altoholic()
 	end
 
 -->>--	Tabbed Frames
-	for i = 1, 3 do
-		self:keepRegions(_G["AltoholicTabSummaryMenuItem"..i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(_G["AltoholicTabSummaryMenuItem"..i])
+	local obj
+	-- Summary tab
+	for i = 1, 4 do
+		obj = _G["AltoholicTabSummaryMenuItem"..i]
+		self:keepRegions(obj, {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		self:applySkin(obj)
 	end
+	for i = 1, 8 do
+		obj = _G["AltoholicTabSummary_Sort"..i]
+		if i == 1 then self:moveObject(obj, nil, nil, "+", 4) end
+		obj:SetHeight(obj:GetHeight() + 2)
+		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
+		self:applySkin(obj)
+	end
+	-- Characters tab
 	self:skinDropDown(AltoholicTabCharacters_SelectRealm)
 	self:skinDropDown(AltoholicTabCharacters_SelectChar)
 	self:skinDropDown(AltoholicTabCharacters_View)
+	AltoholicFramePets_ModelFrameRotateLeftButton:Hide()
+	AltoholicFramePets_ModelFrameRotateRightButton:Hide()
+	self:makeMFRotatable(AltoholicFramePets_ModelFrame)
+	-- Search Tab
 	self:removeRegions(AltoholicSearchMenuScrollFrame)
 	self:skinScrollBar(AltoholicSearchMenuScrollFrame)
 	self:skinEditBox(AltoholicTabSearch_MinLevel, {9})
@@ -60,13 +74,39 @@ function Skinner:Altoholic()
 	self:skinDropDown(AltoholicTabSearch_SelectSlot)
 	self:skinDropDown(AltoholicTabSearch_SelectLocation)
 	for i = 1, 15 do
-		self:keepRegions(_G["AltoholicTabSearchMenuItem"..i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(_G["AltoholicTabSearchMenuItem"..i])
+		obj = _G["AltoholicTabSearchMenuItem"..i]
+		self:keepRegions(obj, {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		self:applySkin(obj)
 	end
+	for i = 1, 8 do
+		obj = _G["AltoholicTabSearch_Sort"..i]
+		if i == 1 then self:moveObject(obj, nil, nil, "+", 4) end
+		obj:SetHeight(obj:GetHeight() + 2)
+		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
+		self:applySkin(obj)
+	end
+	-- GuildBank tab
 	self:skinDropDown(AltoholicTabGuildBank_SelectGuild)
 	for i = 1, 15 do
-		self:keepRegions(_G["AltoholicTabOptionsMenuItem"..i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(_G["AltoholicTabOptionsMenuItem"..i])
+		obj = _G["AltoholicTabGuildBankMenuItem"..i]
+		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		self:applySkin(obj)
+	end
+	-- Achievements tab
+	self:removeRegions(AltoholicFrameAchievementsScrollFrame)
+	self:skinScrollBar(AltoholicFrameAchievementsScrollFrame)
+	self:removeRegions(AltoholicAchievementsMenuScrollFrame)
+	self:skinScrollBar(AltoholicAchievementsMenuScrollFrame)
+	for i = 1, 15 do
+		obj = _G["AltoholicTabAchievementsMenuItem"..i]
+		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		self:applySkin(obj)
+	end
+	-- Options tab
+	for i = 1, 15 do
+		obj = _G["AltoholicTabOptionsMenuItem"..i]
+		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		self:applySkin(obj)
 	end
 
 -->>--	Tooltip

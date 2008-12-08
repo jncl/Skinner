@@ -28,7 +28,7 @@
 <!-- <script file="SkinMe\AucExtras.lua"/> -->
 <script file="SkinMe\AuldLangSyne.lua"/>
 <script file="SkinMe\AutoBag.lua"/>
-<script file="SkinMe\AutoBarConfig.lua"/>
+<!-- <script file="SkinMe\AutoBarConfig.lua"/> -->
 <script file="SkinMe\AutoDecline.lua"/>
 <script file="SkinMe\AutoProfit.lua"/>
 <script file="SkinMe\AutoProfitX.lua"/>
@@ -288,7 +288,7 @@
 <script file="SkinMe\TourGuide.lua"/>
 <script file="SkinMe\TradeJunkie.lua"/>
 <script file="SkinMe\TradeTabs.lua"/>
-<script file="SkinMe\Trinity2.lua"/>
+<!-- <script file="SkinMe\Trinity2.lua"/> -->
 <script file="SkinMe\TuringTest.lua"/>
 <script file="SkinMe\UberQuest.lua"/>
 <script file="SkinMe\UrbanAchiever.lua"/>

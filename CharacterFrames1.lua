@@ -292,30 +292,37 @@ function Skinner:PetStableFrame()
 end
 
 local spellbooktypes = {BOOKTYPE_SPELL, INSCRIPTION}
-local hasPetSpells = select(1, HasPetSpells())
-if hasPetSpells then table.insert(spellbooktypes, BOOKTYPE_PET) end
+--local hasPetSpells = select(1, HasPetSpells())
+--if hasPetSpells then table.insert(spellbooktypes, 2, BOOKTYPE_PET) end
 function Skinner:SpellBookFrame()
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
 
-	self:SecureHook("SpellBookFrame_Update", function(...)
-			if SpellBookFrame.bookType ~= INSCRIPTION then
-				SpellBookTitleText:Show()
-			else
-				SpellBookTitleText:Hide() -- hide Inscriptions title
-			end
+	self:SecureHook("SpellBookFrame_Update", function(showing)
+		self:Debug("SpellBookFrame_Update: [%s, %s]", showing, #spellbooktypes)
+		if SpellBookFrame.bookType ~= INSCRIPTION then
+			SpellBookTitleText:Show()
+		else
+			SpellBookTitleText:Hide() -- hide Inscriptions title
+		end
 	end)
 	
 	if self.db.profile.TexturedTab then
 		-- hook to handle tabs
 		self:SecureHook("ToggleSpellBook", function(bookType)
---			self:Debug("ToggleSpellBook: [%s, %s]", bookType, SpellBookFrame.bookType)
-			for i, v in pairs(spellbooktypes) do
---				self:Debug("sbt : [%s]", v)
-				if v == bookType then
-					self:setActiveTab(_G["SpellBookFrameTabButton"..i])
+			self:Debug("ToggleSpellBook: [%s, %s]", bookType, SpellBookFrame.bookType)
+			self:setInactiveTab("SpellBookFrameTabButton1")
+			self:setInactiveTab("SpellBookFrameTabButton2")
+			self:setInactiveTab("SpellBookFrameTabButton3")
+			if bookType == BOOKTYPE_SPELL then
+				self:setActiveTab("SpellBookFrameTabButton1")
+			elseif bookType == BOOKTYPE_PET then
+				self:setActiveTab("SpellBookFrameTabButton2")
+			elseif bookType == INSCRIPTION then
+				if hasPetSpells() then
+					self:setActiveTab("SpellBookFrameTabButton3")
 				else
-					self:setInactiveTab(_G["SpellBookFrameTabButton"..i])
+					self:setActiveTab("SpellBookFrameTabButton2")
 				end
 			end
 		end)

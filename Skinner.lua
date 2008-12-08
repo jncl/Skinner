@@ -1126,6 +1126,8 @@ end
 
 function Skinner:updateSBTexture()
 
+	local c = self.db.profile.StatusBar
+	self.sbColour = {c.r, c.g, c.b, c.a}
 	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
 
 	for _, statusBar in pairs(sbGlazed) do
@@ -1133,8 +1135,10 @@ function Skinner:updateSBTexture()
 		if statusBar.bg then
 			if statusBar.bg:IsObjectType("StatusBar") then
 				statusBar.bg:SetStatusBarTexture(self.sbTexture)
+				statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
 			else
 				statusBar.bg:SetTexture(self.sbTexture) -- handle backgrounds that aren't StatusBars
+				statusBar.bg:SetVertexColor(unpack(self.sbColour))
 			end
 		end
 		if statusBar.flash then statusBar.flash:SetTexture(self.sbTexture) end -- handle CastingBar Flash

@@ -26,10 +26,9 @@ function Skinner:BlizzardFrames()
 	QuestLog -- checked with EQL3 below
 	CastingBar -- checked with Quartz below
 	Tooltips -- checked with TipTac below
-	InspectUI -- checked with Voyeur below
-	ModelFrames -- checked with CloseUp below
 	MainMenuBar -- checked with Bongos below
 	Nameplates -- checked with Aloft below
+	ModelFrames -- checked with CloseUp below
 ]]
 
 end
@@ -44,11 +43,13 @@ function Skinner:SkinnerFrames()
 	for _, v in pairs(skinnerFrames) do
 		self:checkAndRun(v)
 	end
+	
+	skinnerFrames = nil
 
 end
 
 local blizzLoDFrames = {
-	 "AuctionUI", "BattlefieldMinimap", "BindingUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI", "AchievementUI", "BarbershopUI", "Calendar", "GlyphUI",
+	 "AchievementUI", "AuctionUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "GlyphUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI",
 }
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
@@ -77,6 +78,8 @@ function Skinner:AddonFrames()
 
 	-- Skin the Nameplates if Aloft or nerNameplates aren't loaded
 	if not IsAddOnLoaded("Aloft") and not IsAddOnLoaded("nerNameplates") then self:checkAndRun("Nameplates") end
+	--	don't make Model Frames Rotatable if CloseUp is loaded
+	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
 	local addonFrames = {
 		"Accountant", "AceProfit", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", "aftt_extreme", "AlphaMap", "Altoholic", "Analyst", "AoTRDungeonQuester", "ArkInventory", "Armory", "Ash_Cooldowns", "Ash_Core", "Ash_DoTimer", "Assessment", "Atlas", "AtlasLoot", "AtlasQuest", "AuldLangSyne", "AuldLangSyne_Note", "AutoDecline", "AutoProfit", "AutoProfitX", "AxuItemMenus",
@@ -98,7 +101,7 @@ function Skinner:AddonFrames()
 		"Quartz", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount",
 		"Sanity2", "SanityBags", "SellJunk", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
-		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TinyTip", "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TourGuide", "TradeJunkie", "Trinity2", "TrinityBars2", "TuringTest",
+		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TinyTip", "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TourGuide", "TradeJunkie", "TuringTest",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", "Vendor", "Violation", "Visor2GUI",
 		"WebDKP", "WIM", "WoWEquip",
@@ -127,9 +130,6 @@ function Skinner:AddonFrames()
 	
 	-- this addon has a relation
 	self:checkAndRunAddOn("EnhancedTradeSkills", nil, "EnhancedTradeCrafts")
-
-	--	don't make Model Frames Rotatable if CloseUp is loaded
-	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
 	-- skin the Blizzard LoD frames if they have already been loaded by other addons
 	for k, v in pairs(blizzLoD) do
@@ -204,7 +204,7 @@ function Skinner:AddonFrames()
 end
 
 local lodFrames = {
-	"AutoBarConfig", "Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", "Bongos", "Bongos_Options", "Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "DBM_GUI", "Dominos_Config", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GFW_HuntersHelperUI", "ItemRackOptions", "MSBTOptions", "Perl_Config_Options", "SpamSentry_report", "SpecialTalentUI", "SuperInspect_UI", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
+	"Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", "Bongos", "Bongos_Options", "Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "DBM_GUI", "Dominos_Config", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GFW_HuntersHelperUI", "ItemRackOptions", "MSBTOptions", "Perl_Config_Options", "SpamSentry_report", "SpecialTalentUI", "SuperInspect_UI", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
 }
 local lodAddons = {}
 for _, v in pairs(lodFrames) do
@@ -247,7 +247,7 @@ function Skinner:LoDFrames(arg1)
 		elseif arg1 == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:FR_TrainerUI()
 		end
 	end
-	-- handle TradeTabs changes for both Craft and TradeSkills
+	-- handle TradeTabs changes for TradeSkills
 	if IsAddOnLoaded("TradeTabs") then
 		if arg1 == "Blizzard_TradeSkillUI" then
 			self:checkAndRunAddOn("TradeTabs")
