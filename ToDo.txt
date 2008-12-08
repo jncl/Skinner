@@ -9,7 +9,7 @@ O - Other change
 S - Skin request
 
 	N	ArkInventory, requested by rezss, 3.12.08
-		- new search frame
+√		- new search frame
 		
 	S	ShadowDancer3, requested by Gabriel, 27.11.08
 		http://wow.curse.com/downloads/wow-a...owdancer3.aspx
@@ -17,13 +17,14 @@ S - Skin request
 	S	Pawn, requested by Goral, 27.11.08
 		http://wow.curse.com/downloads/wow-addons/details/pawn.aspx
 		
-	S	HeadHunter, requested by rezss, 3.12.08
+√	S	HeadHunter, requested by rezss, 3.12.08
 	
 	S	Afflicted, requested by rezss, 3.12.080
 	
-	S	Bigwigs/Littlewigs, requested by rezss, 3.12.08
+x	S	Bigwigs/Littlewigs, requested by rezss, 3.12.08
 	 
 	I	Baddiel, does it still work ? rezss, 3.12.08
+√		- bugfix
 
 	I	WorldMap, reported by toin7, 7.12.08
 √		- level dropdown needs skinning
