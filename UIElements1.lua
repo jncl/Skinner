@@ -865,7 +865,13 @@ function Skinner:MinimapButtons()
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)
-							Skinner:storeAndSkin(ftype, obj)
+							if objType == "Button" then
+								Skinner:addSkinButton(obj, obj)
+								obj.sBut:SetPoint("TOPLEFT", obj, "TOPLEFT", 0, 0)
+								obj.sBut:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 0, 0)
+							else
+								Skinner:addSkinFrame(obj, 0, 0 ,0, 0, ftype)
+							end
 							obj.skinned = true
 						end
 					end
@@ -881,9 +887,11 @@ function Skinner:MinimapButtons()
 	mmKids(Minimap)
 
 	-- skin other Blizzard buttons
-	self:applySkin(GameTimeFrame)
-	self:applySkin(MinimapZoomIn)
-	self:applySkin(MinimapZoomOut)
+	for _, obj in pairs({GameTimeFrame, MinimapZoomIn, MinimapZoomOut}) do
+		self:addSkinButton(obj, obj)
+		obj.sBut:SetPoint("TOPLEFT", obj, "TOPLEFT", 0, 0)
+		obj.sBut:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 0, 0)
+	end
 	-- resize other buttons
 	MiniMapMailFrame:SetWidth(28)
 	MiniMapMailFrame:SetHeight(28)
@@ -899,8 +907,7 @@ function Skinner:MinimapButtons()
 	MiniMapTrackingIcon:SetPoint("CENTER", MiniMapTrackingButton)
 	MiniMapTrackingIcon:SetParent(MiniMapTrackingButton)
 	-- hook this to stop the icon being moved
-	self:RawHook(MiniMapTrackingIcon, "SetPoint", function(this, ...)
-	end, true)
+	self:RawHook(MiniMapTrackingIcon, "SetPoint", function(this, ...) end, true)
 	
 	-- move GameTime a.k.a. Calendar texture up a layer
 	GameTimeFrame:GetNormalTexture():SetDrawLayer("BORDER")
@@ -914,12 +921,22 @@ function Skinner:MinimapButtons()
 	if IsAddOnLoaded("Bongos") then Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
 
 	-- skin other minimap buttons as required
-	if IsAddOnLoaded("SmartBuff") then self:applySkin(SmartBuff_MiniMapButton) end
-	if IsAddOnLoaded("WebDKP") then self:applySkin(WebDKP_MinimapButton) end
-	if IsAddOnLoaded("Perl_Config") then self:applySkin(Perl_Config_ButtonFrame) end
-	if IsAddOnLoaded("GuildAds") then self:applySkin(GuildAdsMinimapButton) end
-	if IsAddOnLoaded("Outfitter") then self:applySkin(OutfitterMinimapButton) end
-	if IsAddOnLoaded("WIM") then self:applySkin(WIM_IconFrame) end
+	local mmButs = {
+		["SmartBuff"] = SmartBuff_MiniMapButton,
+		["WebDKP"] = WebDKP_MinimapButton,
+		["GuildAds"] = GuildAdsMinimapButton, 
+		["Outfitter"] = OutfitterMinimapButton,
+		["Perl_Config"] = PerlButton,
+		["WIM"] = WIM3MinimapButton
+	}
+	for addon, obj in pairs(mmButs) do
+		if IsAddOnLoaded(addon) then
+			self:addSkinButton(obj, obj)
+			obj.sBut:SetPoint("TOPLEFT", obj, "TOPLEFT", 0, 0)
+			obj.sBut:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 0, 0)
+		end
+	end
+	mmButs = nil
 
 end
 

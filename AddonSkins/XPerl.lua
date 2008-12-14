@@ -96,6 +96,7 @@ function Skinner:XPerl_Target()
 
 	-- use text label
 	XPerlDB.target.elite = true
+	XPerlDB.target.eliteGfx = nil
 
 -->>--	Focus
 	self:applySkin(XPerl_FocusportraitFrame)
@@ -326,7 +327,7 @@ end
 
 function Skinner:XPerl_Options() -- tested against v2.4.3g
 
-	self:Debug("XPerl_Options")
+--	self:Debug("XPerl_Options")
 
 -->>-- Options Frame
 	self:applySkin(XPerl_Options)

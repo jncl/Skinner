@@ -391,7 +391,7 @@ function Skinner:applySkin(frame, header, bba, ba, fh, bd)
 	frame:SetBackdropBorderColor(r, g, b, bba or a)
 
 	if header then
-		for _, v in pairs({"Header", "_Header", "FrameHeader", "HeaderTexture"}) do
+		for _, v in pairs({"Header", "_Header", "_HeaderBox", "FrameHeader", "HeaderTexture"}) do
 			local hdr = _G[frame:GetName()..v]
 			if hdr then
 				hdr:Hide()

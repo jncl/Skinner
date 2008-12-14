@@ -222,6 +222,7 @@
 <script file="SkinMe\Panda.lua"/>
 <script file="SkinMe\PartyQuests.lua"/>
 <script file="SkinMe\PassLoot.lua"/>
+<script file="SkinMe\Pawn.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
 <script file="SkinMe\Planner.lua"/>
 <script file="SkinMe\PlayerExpBar.lua"/>
@@ -251,6 +252,7 @@
 <script file="SkinMe\Sanity2.lua"/>
 <script file="SkinMe\SanityBags.lua"/>
 <script file="SkinMe\SellJunk.lua"/>
+<script file="SkinMe\ShadowDancer3.lua"/>
 <script file="SkinMe\ShieldLeft.lua"/>
 <script file="SkinMe\sienasGemViewer.lua"/>
 <script file="SkinMe\SimpleMouseoverTarget.lua"/>

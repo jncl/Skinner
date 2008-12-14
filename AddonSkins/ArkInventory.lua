@@ -90,18 +90,15 @@ function Skinner:ArkInventory2plus()
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
 --		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
 		local af = frame:GetName()
-		self:keepFontStrings(_G[af.."Title"])
-		self:applySkin(_G[af.."Title"])
-		self:keepFontStrings(_G[af.."Search"])
-		self:skinEditBox(_G[af.."SearchFilter"], {9})
-		self:applySkin(_G[af.."Search"])
-		self:keepFontStrings(_G[af.."Container"])
-		self:applySkin(_G[af.."Container"])
-		self:keepFontStrings(_G[af.."Changer"])
-		self:applySkin(_G[af.."Changer"])
-		self:keepFontStrings(_G[af.."Status"])
-		self:applySkin(_G[af.."Status"])
-		if _G[af.."StatusText"] then _G[af.."StatusText"]:SetAlpha(1) end
+		if not frame.skinned then
+			for _, v in pairs({"Title", "Search", "Container", "Changer", "Status"}) do
+				self:keepFontStrings(_G[af..v])
+				self:applySkin(_G[af..v])
+			end
+			self:skinEditBox(_G[af.."SearchFilter"], {9})
+			if _G[af.."StatusText"] then _G[af.."StatusText"]:SetAlpha(1) end
+			frame.skinned = true
+		end
 	end)
 
 -->>--	Rules Frame

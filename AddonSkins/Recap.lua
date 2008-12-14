@@ -2,81 +2,80 @@
 function Skinner:Recap()
 
 -->>-- Recap Frame
-	self:keepRegions(RecapCombatEvents, {})
-	self:applySkin(RecapCombatEvents, nil)
-	self:keepRegions(RecapScrollBar, {})
+	self:keepFontStrings(RecapCombatEvents)
+	self:applySkin(RecapCombatEvents)
+	self:keepFontStrings(RecapDropSubFrame)
+	self:applySkin(RecapDropSubFrame)
+	self:keepFontStrings(RecapMenu)
+	self:applySkin(RecapMenu)
+	self:keepFontStrings(Recap_xml_359)
+	self:applySkin(Recap_xml_359)
+	self:keepFontStrings(RecapFrame)
+	self:removeRegions(RecapScrollBar)
 	self:skinScrollBar(RecapScrollBar)
-	self:keepRegions(RecapDropSubFrame, {})
-	self:applySkin(RecapDropSubFrame, nil)
-	self:keepRegions(RecapMenu, {})
-	self:applySkin(RecapMenu, nil)
-	self:keepRegions(Recap_xml_359, {})
-	self:applySkin(Recap_xml_359, nil)
-	self:keepRegions(RecapFrame, {})
-	self:applySkin(RecapFrame, nil)
+	self:applySkin(RecapFrame)
 
+	self:RawHook(RecapFrame, "SetBackdrop", function() end, true)
 	self:RawHook(RecapFrame, "SetBackdropColor", function() end, true)
 	self:RawHook(RecapFrame, "SetBackdropBorderColor", function() end, true)
 
 -->>-- Recap Panel
-	self:keepRegions(RecapPanel_xml_359, {})
-	self:applySkin(RecapPanel_xml_359, nil)
-	self:keepRegions(RecapPanelIncomingDetailsScrollBar, {})
+	self:keepFontStrings(RecapPanel_xml_359)
+	self:applySkin(RecapPanel_xml_359)
+	self:removeRegions(RecapPanelIncomingDetailsScrollBar)
 	self:skinScrollBar(RecapPanelIncomingDetailsScrollBar)
-	self:keepRegions(RecapPanelOutgoingDetailsScrollBar, {})
+	self:removeRegions(RecapPanelOutgoingDetailsScrollBar)
 	self:skinScrollBar(RecapPanelOutgoingDetailsScrollBar)
-	self:keepRegions(RecapPanel, {11,13})
+	self:keepFontStrings(RecapPanel)
 	self:applySkin(RecapPanel, nil)
 
+	self:RawHook(RecapPanel, "SetBackdrop", function() end, true)
+
 -->>-- Recap Options Frame
-	self:keepRegions(Recap_DropMenu, {})
-	self:applySkin(Recap_DropMenu, nil)
-	self:keepRegions(RecapOptAnchorFrame, {10})
-	self:applySkin(RecapOptAnchorFrame, nil)
-	self:keepRegions(RecapOptions_xml_359, {})
-	self:applySkin(RecapOptions_xml_359, nil)
-	self:keepRegions(RecapFightSetsScrollBar, {})
+	self:keepFontStrings(Recap_DropMenu)
+	self:applySkin(Recap_DropMenu)
+	self:keepFontStrings(RecapOptAnchorFrame)
+	self:applySkin(RecapOptAnchorFrame)
+	self:keepFontStrings(RecapOptions_xml_359)
+	self:applySkin(RecapOptions_xml_359)
+	self:removeRegions(RecapFightSetsScrollBar)
 	self:skinScrollBar(RecapFightSetsScrollBar)
-	self:keepRegions(RecapOpt_StatDropDown, {4,5}) -- N.B. regions 4 & 5 are text
-	self:keepRegions(RecapOpt_ChannelDropDown, {4,5}) -- N.B. regions 4 & 5 are text
-	self:keepRegions(RecapClipScrollFrame, {})
+	self:keepFontStrings(RecapOpt_StatDropDown)
+	self:keepFontStrings(RecapOpt_ChannelDropDown)
+	self:removeRegions(RecapClipScrollFrame)
 	self:skinScrollBar(RecapClipScrollFrame)
-	self:keepRegions(RecapOptClipFrame, {1})
-	self:applySkin(RecapOptClipFrame, nil)
+	-- Opt Clip Frame
+	self:keepFontStrings(RecapOptClipFrame)
+	self:applySkin(RecapOptClipFrame)
 	self:skinEditBox(RecapSetEditBox, {9})
 	self:skinEditBox(RecapClipEditBox, {9})
-	self:keepRegions(RecapOptFrame, {10})
-	self:applySkin(RecapOptFrame, nil)
+	self:skinEditBox(RecapIgnoresEditBox, {9})
+	self:keepFontStrings(RecapOptFrame)
+	self:applySkin(RecapOptFrame)
 
-	self:keepRegions(RecapOptTab1, {1})
-	self:moveObject(RecapOptTab1, nil, nil, "+", 19)
-	self:keepRegions(RecapOptTab2, {1})
-	self:keepRegions(RecapOptTab3, {1})
-	self:keepRegions(RecapOptTab4, {1})
-	self:keepRegions(RecapOptTab5, {1})
-	if self.db.profile.TexturedTab then self:applySkin(RecapOptTab1, nil, 0)
-	else self:applySkin(RecapOptTab1) end
-	if self.db.profile.TexturedTab then self:applySkin(RecapOptTab2, nil, 0)
-	else self:applySkin(RecapOptTab2) end
-	if self.db.profile.TexturedTab then self:applySkin(RecapOptTab3, nil, 0)
-	else self:applySkin(RecapOptTab3) end
-	if self.db.profile.TexturedTab then self:applySkin(RecapOptTab4, nil, 0)
-	else self:applySkin(RecapOptTab4) end
-	if self.db.profile.TexturedTab then self:applySkin(RecapOptTab5, nil, 0)
-	else self:applySkin(RecapOptTab5) end
-	self:setActiveTab(RecapOptTab1)
-	self:setInactiveTab(RecapOptTab2)
-	self:setInactiveTab(RecapOptTab3)
-	self:setInactiveTab(RecapOptTab4)
-	self:setInactiveTab(RecapOptTab5)
-
-	self:SecureHook("RecapOptTab_OnClick", function()
-		self:setInactiveTab(RecapOptTab1)
-		self:setInactiveTab(RecapOptTab2)
-		self:setInactiveTab(RecapOptTab3)
-		self:setInactiveTab(RecapOptTab4)
-		self:setInactiveTab(RecapOptTab5)
-		self:setActiveTab(_G["RecapOptTab"..this:GetID()])
-	end)
-
+	self:RawHook(RecapOptFrame, "SetBackdrop", function() end, true)
+	
+	-- Tabs
+	for i = 1, 6 do
+		local tabObj = _G["RecapOptTab"..i]
+		if i == 1 then
+			self:moveObject(tabObj, nil, nil, "+", 19)
+		end 
+		self:keepRegions(tabObj, {1, 5})
+		if self.db.profile.TexturedTab then
+			self:applySkin(tabObj, nil, 0, 1)
+			if i == 1 then self:setActiveTab(tabObj)
+			else self:setInactiveTab(tabObj) end
+		else self:applySkin(tabObj) end
+	end
+	if self.db.profile.TexturedTab then 
+		self:SecureHook("RecapOptTab_OnClick", function()
+			for i = 1, 6 do
+				local tabObj = _G["RecapOptTab"..i]
+				if i == this:GetID() then self:setActiveTab(tabObj)
+				else self:setInactiveTab(tabObj) end
+			end
+		end)
+	end
+	
 end

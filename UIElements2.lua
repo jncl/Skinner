@@ -127,12 +127,14 @@ function Skinner:MacroUI()
 
 	-- Macro Popup Frame
 	self:keepFontStrings(MacroPopupFrame)
-	MacroPopupFrame:SetWidth(MacroPopupFrame:GetWidth() * self.FxMult)
-	MacroPopupFrame:SetHeight(MacroPopupFrame:GetHeight() - 20) -- N.B. must be absolute not multiple
+	if not IsAddOnLoaded("LargerMacroIconSelection") then -- only change size etc if LMIS isn't loaded
+		MacroPopupFrame:SetWidth(MacroPopupFrame:GetWidth() * self.FxMult)
+		MacroPopupFrame:SetHeight(MacroPopupFrame:GetHeight() - 20) -- N.B. must be absolute not multiple
+		self:moveObject(MacroPopupScrollFrame, "+", 10, "+", 15)
+	end
 	self:moveObject(MacroPopupFrame, "+", 40, nil, nil)
 	local xOfs, yOfs = 5, 15
 	self:moveObject(MacroPopupEditBox, "-", xOfs, "+", yOfs)
-	self:moveObject(MacroPopupScrollFrame, "+", 10, "+", yOfs)
 	self:moveObject(MacroPopupButton1, "-", xOfs, "+", yOfs)
 	self:moveObject(MacroPopupCancelButton, nil, nil, "-", 4)
 	self:skinEditBox(MacroPopupEditBox)
