@@ -58,7 +58,7 @@ function Skinner:GuildAds()
 			Skinner:skinDropDown(GuildAdsTradeContextMenu)
 		end
 
-	-->>-- Faction Frame
+	-->>-- Reputation Frame
 		for	i = 1, 19 do
 			local gaRB = _G["GuildAdsReputationBar"..i]
 			Skinner:keepFontStrings(gaRB)
@@ -109,6 +109,25 @@ function Skinner:GuildAds()
 		else Skinner:applySkin(GuildAdsGuildTab) end
 		Skinner:moveObject(GuildAdsGuildTab, "+", 4, nil, nil)
 
+	-->>-- Forum Frame
+		-- sort headers
+		for i = 1, 3 do
+			Skinner:keepRegions(_G["GuildAdsForumColumnHeader"..i], {4, 5}) -- N.B. region 4 is the text, 5 is the arrow
+			Skinner:applySkin(_G["GuildAdsForumColumnHeader"..i])
+		end
+		self:removeRegions(GuildAdsForumPostLineScrollFrame)
+		self:skinScrollBar(GuildAdsForumPostLineScrollFrame)
+		self:skinEditBox(GuildAdsForumSubjectEditBox, {6})
+		self:moveObject(GuildAdsForumSubjectEditBox, "-", 10, "+", 2)
+		self:removeRegions(GuildAdsForumBodyScrollFrame)
+		self:skinScrollBar(GuildAdsForumBodyScrollFrame)
+		Skinner:keepRegions(GuildAdsForumTab, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
+		if Skinner.db.profile.TexturedTab then
+			Skinner:applySkin(GuildAdsForumTab, nil, 0, 1)
+			Skinner:setInactiveTab(GuildAdsForumTab)
+		else Skinner:applySkin(GuildAdsForumTab) end
+		Skinner:moveObject(GuildAdsForumTab, "+", 6, nil, nil)
+	
 	-->>-- Inspect Window Frame
 		Skinner:keepFontStrings(GuildAdsInspectWindowFrame)
 		Skinner:moveObject(GuildAdsInspectWindowFrame, "-", 8, "+", 35)

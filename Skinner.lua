@@ -874,7 +874,7 @@ end
 
 function Skinner:setTTBBC()
 
--- 	self:Debug("setTTBBC: [%s]", self.db.profile.Tooltips.border)
+-- 	self:Debug("setTTBBC: [%s, %s, %s, %s]", unpack(self.tbColour))
 
 	if self.db.profile.Tooltips.border == 1 then
 		return unpack(self.bbColour)

@@ -34,7 +34,7 @@ function Skinner:Perl_CombatDisplay()
 	for _, b in pairs(combatdisplayframes) do
 		for _, t in pairs(barSuffixes) do
 			local bName = _G["Perl_CombatDisplay_"..b.."Bar"..t]
-			self:glazeStatusBar(bName)
+			if bName then self:glazeStatusBar(bName) end
 		end
 	end
 
@@ -69,7 +69,8 @@ function Skinner:Perl_Focus()
 	self:applySkin(Perl_Focus_DebuffFrame)
 	for _, b in pairs(hmSuffixes) do
 		for _, t in pairs(barSuffixes) do
-			self:glazeStatusBar(_G["Perl_Focus_"..b.."Bar"..t])
+			local bName = _G["Perl_Focus_"..b.."Bar"..t]
+			if bName then self:glazeStatusBar(bName) end
 		end
 	end
 	self:glazeStatusBar(Perl_Focus_NameFrame_CPMeter)
@@ -102,8 +103,8 @@ function Skinner:Perl_Focus()
 		self:applySkin(_G["Perl_Party_Target5_"..f.."Frame"])
 	end
 
-	self:glazeStatusBar(Perl_Party_Target5_HealthBar)
-	self:glazeStatusBar(Perl_Party_Target5_ManaBar)
+	if Perl_Party_Target5_HealthBar then self:glazeStatusBar(Perl_Party_Target5_HealthBar) end
+	if Perl_Party_Target5_ManaBar then self:glazeStatusBar(Perl_Party_Target5_ManaBar) end
 
 end
 
@@ -117,11 +118,12 @@ function Skinner:Perl_Party()
 		end
 		for _, b in pairs(hmphSuffixes) do
 			for _, t in pairs(barSuffixes) do
-				self:glazeStatusBar(_G["Perl_Party_MemberFrame"..i.."_"..b.."Bar"..t])
-			end
+				local bName = _G["Perl_Party_MemberFrame"..i.."_"..b.."Bar"..t]
+				if bName then self:glazeStatusBar(bName) end
+ 			end
 		end
 		local AbName = _G["Perl_ArcaneBar_party"..i]
-		self:glazeStatusBar(AbName)
+		if AbName then self:glazeStatusBar(AbName) end
 	end
 
 	if not self:IsHooked("Perl_Party_Buff_UpdateAll") then
@@ -156,7 +158,8 @@ function Skinner:Perl_Party_Pet()
 		end
 		for _, b in pairs(hmSuffixes) do
 			for _, t in pairs(barSuffixes) do
-				self:glazeStatusBar(_G["Perl_Party_Pet"..i.."_"..b.."Bar"..t])
+				local bName = _G["Perl_Party_Pet"..i.."_"..b.."Bar"..t]
+				if bName then self:glazeStatusBar(bName) end
 			end
 		end
 	end
@@ -194,7 +197,8 @@ function Skinner:Perl_Party_Target()
 		end
 		for _, b in pairs(hmSuffixes) do
 			for _, t in pairs(barSuffixes) do
-				self:glazeStatusBar(_G["Perl_Party_Target"..i.."_"..b.."Bar"..t])
+				local bName = _G["Perl_Party_Target"..i.."_"..b.."Bar"..t]
+				if bName then self:glazeStatusBar(bName) end
 			end
 		end
 	end
@@ -231,7 +235,8 @@ function Skinner:Perl_Player()
 
 	for _, b in pairs(hmdSuffixes) do
 		for _, t in pairs(barSuffixes) do
-			self:glazeStatusBar(_G["Perl_Player_"..b.."Bar"..t])
+			local bName = _G["Perl_Player_"..b.."Bar"..t]
+			if bName then self:glazeStatusBar(bName) end
 		end
 	end
 	self:glazeStatusBar(Perl_Player_XPBar)
@@ -269,7 +274,8 @@ function Skinner:Perl_Player_Pet()
 	end
 	for _, b in pairs(hmSuffixes) do
 		for _, t in pairs(barSuffixes) do
-			self:glazeStatusBar(_G["Perl_Player_Pet_"..b.."Bar"..t])
+			local bName = _G["Perl_Player_Pet_"..b.."Bar"..t]
+			if bName then self:glazeStatusBar(bName) end
 		end
 	end
 
@@ -331,7 +337,8 @@ function Skinner:Perl_Target()
 	self:applySkin(Perl_Target_DebuffFrame)
 	for _, b in pairs(hmSuffixes) do
 		for _, t in pairs(barSuffixes) do
-			self:glazeStatusBar(_G["Perl_Target_"..b.."Bar"..t])
+			local bName = _G["Perl_Target_"..b.."Bar"..t]
+			if bName then self:glazeStatusBar(bName) end
 		end
 	end
 	self:glazeStatusBar(Perl_Target_NameFrame_CPMeter)
@@ -369,7 +376,8 @@ function Skinner:Perl_Target_Target()
 	table.insert(targettargetframes, "Target_Mana")
 	for _, b in pairs(targettargetframes) do
 		for _, t in pairs(barSuffixes) do
-			self:glazeStatusBar(_G["Perl_Target_Target_"..b.."Bar"..t])
+			local bName = _G["Perl_Target_Target_"..b.."Bar"..t]
+			if bName then self:glazeStatusBar(bName) end
 		end
 	end
 

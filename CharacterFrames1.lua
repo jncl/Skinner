@@ -291,15 +291,12 @@ function Skinner:PetStableFrame()
 
 end
 
-local spellbooktypes = {BOOKTYPE_SPELL, INSCRIPTION}
---local hasPetSpells = select(1, HasPetSpells())
---if hasPetSpells then table.insert(spellbooktypes, 2, BOOKTYPE_PET) end
 function Skinner:SpellBookFrame()
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
 
 	self:SecureHook("SpellBookFrame_Update", function(showing)
-		self:Debug("SpellBookFrame_Update: [%s, %s]", showing, #spellbooktypes)
+--		self:Debug("SpellBookFrame_Update: [%s]", showing)
 		if SpellBookFrame.bookType ~= INSCRIPTION then
 			SpellBookTitleText:Show()
 		else
@@ -310,19 +307,13 @@ function Skinner:SpellBookFrame()
 	if self.db.profile.TexturedTab then
 		-- hook to handle tabs
 		self:SecureHook("ToggleSpellBook", function(bookType)
-			self:Debug("ToggleSpellBook: [%s, %s]", bookType, SpellBookFrame.bookType)
-			self:setInactiveTab("SpellBookFrameTabButton1")
-			self:setInactiveTab("SpellBookFrameTabButton2")
-			self:setInactiveTab("SpellBookFrameTabButton3")
-			if bookType == BOOKTYPE_SPELL then
-				self:setActiveTab("SpellBookFrameTabButton1")
-			elseif bookType == BOOKTYPE_PET then
-				self:setActiveTab("SpellBookFrameTabButton2")
-			elseif bookType == INSCRIPTION then
-				if hasPetSpells() then
-					self:setActiveTab("SpellBookFrameTabButton3")
+--			self:Debug("ToggleSpellBook: [%s, %s, %s]", bookType, SpellBookFrame.bookType, INSCRIPTION)
+			for i = 1, 3 do
+				local tabName = _G["SpellBookFrameTabButton"..i]
+				if tabName.bookType == bookType then
+					self:setActiveTab(tabName)
 				else
-					self:setActiveTab("SpellBookFrameTabButton2")
+					self:setInactiveTab(tabName)
 				end
 			end
 		end)
@@ -386,7 +377,7 @@ function Skinner:GlyphUI()
 
 	self:removeRegions(GlyphFrame, {1, 2})
 	self:moveObject(GlyphFrameTitleText, "-", 20, "+", 8)
-	for i = 1, 5 do
+	for i = 1, NUM_GLYPH_SLOTS do
 		local glyphButton = _G["GlyphFrameGlyph"..i]
 		self:moveObject(glyphButton, "-", 10, nil, nil)
 	end

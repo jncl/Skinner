@@ -168,8 +168,8 @@ function Skinner:ChatTabs()
 			local textObj = self:getRegion(tabName, 4)
 			self:moveObject(textObj, "-", 5, nil, nil)
 			local hilightObj = self:getRegion(tabName, 5)
-			self:moveObject(hilightObj, "+", 3, "+", 7)
-			hilightObj:SetWidth(textObj:GetWidth()  + 20)
+			self:moveObject(hilightObj, "+", 4, "+", 7)
+			hilightObj:SetWidth(textObj:GetWidth() + 30)
 			self:storeAndSkin(ftype, tabName, nil, 0)
 			self:setActiveTab(tabName)
 		end
@@ -867,8 +867,8 @@ function Skinner:MinimapButtons()
 							obj:SetHeight(32)
 							if objType == "Button" then
 								Skinner:addSkinButton(obj, obj)
-								obj.sBut:SetPoint("TOPLEFT", obj, "TOPLEFT", 0, 0)
-								obj.sBut:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 0, 0)
+								obj.sBut:ClearAllPoints()
+								obj.sBut:SetAllPoints(obj)
 							else
 								Skinner:addSkinFrame(obj, 0, 0 ,0, 0, ftype)
 							end
@@ -889,8 +889,8 @@ function Skinner:MinimapButtons()
 	-- skin other Blizzard buttons
 	for _, obj in pairs({GameTimeFrame, MinimapZoomIn, MinimapZoomOut}) do
 		self:addSkinButton(obj, obj)
-		obj.sBut:SetPoint("TOPLEFT", obj, "TOPLEFT", 0, 0)
-		obj.sBut:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 0, 0)
+		obj.sBut:ClearAllPoints()
+		obj.sBut:SetAllPoints(obj)
 	end
 	-- resize other buttons
 	MiniMapMailFrame:SetWidth(28)
@@ -932,8 +932,8 @@ function Skinner:MinimapButtons()
 	for addon, obj in pairs(mmButs) do
 		if IsAddOnLoaded(addon) then
 			self:addSkinButton(obj, obj)
-			obj.sBut:SetPoint("TOPLEFT", obj, "TOPLEFT", 0, 0)
-			obj.sBut:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 0, 0)
+			obj.sBut:ClearAllPoints()
+			obj.sBut:SetAllPoints(obj)
 		end
 	end
 	mmButs = nil

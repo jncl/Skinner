@@ -8,25 +8,16 @@ N - New Version
 O - Other change
 S - Skin request
 
-	N	PerlClassic
+√	N	PerlClassic
 		- v3.03
 		
-√	N	Recap, reported by syngian, 11.12.08
-		- v4.22
-		
-	I	ArkInventory, reported by rezss, 10.12.08
-√		- frame rate decrease dramatically when skin is loaded
-		
 	I	Panda, reported by Gabriel, 10.12.08
-		- buttons not skinned properly
+√		- buttons not skinned properly
 
 	S	ShadowDancer3, requested by Gabriel, 27.11.08
 		http://wow.curse.com/downloads/wow-a...owdancer3.aspx
 
 		--> ?? not sure how to access frames atm
-
-	S	Pawn, requested by Goral, 27.11.08
-√		http://wow.curse.com/downloads/wow-addons/details/pawn.aspx
 
 x	S	Afflicted, requested by rezss, 3.12.080
 		--> already allows bars to be changed
@@ -37,17 +28,11 @@ x	S	Bigwigs/Littlewigs, requested by rezss, 3.12.08
 ?	I	StatusBar colour, reported by Oakayam, 9.12.08
 		- [2008/12/08 15:45:34-472-x5]: ...libs\AceGUI-3.0\widgets\AceGUIWidget-ColorPicker.lua:77: attempt to perform arithmetic on a boolean value:
 
-	I	LargerMacroItemSelection, reported by Oakayam, 9.12.08
-√		- ScrollBar on MaroIcon frame overlaps last column of icons
-		
 	I	Tooltips, reported by HunterZ, 9.12.08
-		- Tooltip border color setting does not apply the selected alpha value to tooltip borders for HandyNotes and FlightMaster tooltips on the world map
-
-	I	MinimapButtonFrame, reported by MegaManJuno, 9.12.08
-√		- MinimapButtonFrame now uses the Blizzard options frame for its config, so the current skin reports errors trying to skin the old config pane it used to use on startup
+√		- Tooltip border color setting does not apply the selected alpha value to tooltip borders for HandyNotes and FlightMaster tooltips on the world map
 
 	N	GuildAds, reported by MegaManJuno, 9.12.08
-		- GuildAds now has the makings of an in-game forum, meaning it's got a new tab that's unskinned now
+√		- GuildAds now has the makings of an in-game forum, meaning it's got a new tab that's unskinned now
 
 ?	I	various, reported by Abu_Dun, 27.11.08
 		- --------------------------------------------------
