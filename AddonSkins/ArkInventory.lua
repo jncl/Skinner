@@ -87,11 +87,12 @@ end
 
 function Skinner:ArkInventory2plus()
 
+	local aiFrames = {"Title", "Search", "Container", "Changer", "Status"}
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
 --		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
 		local af = frame:GetName()
 		if not frame.skinned then
-			for _, v in pairs({"Title", "Search", "Container", "Changer", "Status"}) do
+			for _, v in pairs(aiFrames) do
 				self:keepFontStrings(_G[af..v])
 				self:applySkin(_G[af..v])
 			end

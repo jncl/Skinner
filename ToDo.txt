@@ -8,69 +8,20 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	N	PerlClassic
-		- v3.03
-		
-	I	Panda, reported by Gabriel, 10.12.08
-√		- buttons not skinned properly
-
 	S	ShadowDancer3, requested by Gabriel, 27.11.08
-		http://wow.curse.com/downloads/wow-a...owdancer3.aspx
+√		http://wow.curse.com/downloads/wow-a...owdancer3.aspx
 
-		--> ?? not sure how to access frames atm
-
-x	S	Afflicted, requested by rezss, 3.12.080
-		--> already allows bars to be changed
-
-x	S	Bigwigs/Littlewigs, requested by rezss, 3.12.08
-		--> already allows bars to be changed
-
-?	I	StatusBar colour, reported by Oakayam, 9.12.08
-		- [2008/12/08 15:45:34-472-x5]: ...libs\AceGUI-3.0\widgets\AceGUIWidget-ColorPicker.lua:77: attempt to perform arithmetic on a boolean value:
-
-	I	Tooltips, reported by HunterZ, 9.12.08
-√		- Tooltip border color setting does not apply the selected alpha value to tooltip borders for HandyNotes and FlightMaster tooltips on the world map
-
-	N	GuildAds, reported by MegaManJuno, 9.12.08
-√		- GuildAds now has the makings of an in-game forum, meaning it's got a new tab that's unskinned now
-
-?	I	various, reported by Abu_Dun, 27.11.08
-		- --------------------------------------------------
-		Fehler: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		Datei:Interface\AddOns\Skinner\UIElements2.lua
-		Zeile:365
-		Fehler Nummer:1
-		--------------------------------------------------
-		Fehler: attempt to index global 'InspectModelRotateLeftButton' (a nil value)
-		Datei:Interface\AddOns\Skinner\UIElements1.lua
-		Zeile:642
-		Fehler Nummer:1
-		--------------------------------------------------
-		Fehler: attempt to index global 'MacroFrame' (a nil value)
-		Datei:Interface\AddOns\Skinner\UIElements2.lua
-		Zeile:98
-		Fehler Nummer:1
-		--------------------------------------------------
-		Fehler: attempt to index global 'PlayerTalentFrame' (a nil value)
-		AddOn: Skinner
-		Datei:CharacterFrames1.lua
-		Zeile:411
-		Fehler Nummer:1
-		--------------------------------------------------
-		Fehler: attempt to index global 'TradeSkillFrame' (a nil value)
-		AddOn: Skinner
-		Datei:CharacterFrames2.lua
-		Zeile:245
-		Fehler Nummer:1
-		--------------------------------------------------
-		Fehler: attempt to index global 'ClassTrainerFrame' (a nil value)
-		Datei:Interface\AddOns\Skinner\NPCFrames.lua
-		Zeile:97
-		Fehler Nummer:1
-
-		-->	?? maybe a language/localisations issue as all these are from Blizzard LoD addons
-
+	N ItemDB, requested by solor, 16.12.08
+	
+	S	OneBank3, requested by Energizerbunny, 16.12.08
+	
+?	I	ArkInventory, reported by Ringthane, 14.12.08
+√	- excessive memory usage (reported by rezss, amongst others)
+		- skin covers bag items
+		--> can't replicate this behaviour
+		- custom background image not being applied (reported by MegaManJuno)
+		
 ?	I	reported by r00ster, 27.11.08
 		- Glyphs - When it's skinned I can't hover over the glyphs or socket a new one (confirmed by MegaManJuno as inconsistent behaviour)
-
 		--> can't replicate this behaviour
+		

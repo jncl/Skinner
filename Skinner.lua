@@ -151,13 +151,13 @@ function Skinner:OnInitialize()
 	self.bbColour = {c.r, c.g, c.b, c.a}
 	-- Inactive Tab texture
 	self.itTex = self.LSM:Fetch("background", "Inactive Tab")
-	
+
 	-- class table
 	self.classTable = {"Druid", "Priest", "Paladin", "Hunter", "Rogue", "Shaman", "Mage", "Warlock", "Warrior", "DeathKnight"}
 
 	-- store Addons managed by LoadManagers
 	self.lmAddons = {}
-	
+
 	-- table to hold which functions have been actioned
 	self.initialized = {}
 
@@ -172,7 +172,7 @@ function Skinner:OnEnable()
 	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
 	self:ScheduleTimer("SkinnerFrames", self.db.profile.Delay.Init + 0.1)
 	self:ScheduleTimer("AddonFrames", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1)
-	
+
 	-- handle profile changes
 	self.db.RegisterCallback(self, "OnProfileChanged", "ReloadAddon")
 	self.db.RegisterCallback(self, "OnProfileCopied", "ReloadAddon")
@@ -202,7 +202,7 @@ function Skinner:ReloadAddon(callback)
 		hideOnEscape = 1
 	}
 	StaticPopup_Show("Skinner_Reload_UI")
-	
+
 end
 
 
@@ -216,7 +216,7 @@ local function tostring(t)
 		end
 	end
 	return real_tostring(t)
-	
+
 end
 
 local function clearTable(table)
@@ -226,7 +226,7 @@ local function clearTable(table)
 		table[i] = nil
 		i =i + 1
 	end
-	
+
 end
 
 local function makeText(a1, ...)
@@ -248,21 +248,21 @@ local function makeText(a1, ...)
 	end
 	clearTable(tmp)
 	return output
-	
+
 end
 
 local function print(text, r, g, b, frame, delay)
 
 	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, delay or 5)
-	
+
 end
 --@debug@
 function Skinner:Debug(a1, ...)
 
 	local output = ("|cff7fff7f(DBG) %s:[%s.%3d]|r"):format("Skinner", date("%H:%M:%S"), (GetTime() % 1) * 1000)
-	
+
 	print(output.." "..makeText(a1, ...), nil, nil, nil, self.debugFrame)
-	
+
 end
 
 function Skinner:LevelDebug(lvl, a1, ...) if self.debugLevel >= lvl then self:Debug(a1, ...) end end
@@ -278,10 +278,10 @@ function Skinner:IsDebugging() end
 function Skinner:CustomPrint(r, g, b, frame, delay, connector, a1, ...)
 
 	local output = ("|cffffff78Skinner:|r")
-	
+
 	print(output.." "..makeText(a1, ...), r, g, b, frame, delay)
-	
-end	
+
+end
 
 -- Skinning functions
 function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
@@ -570,7 +570,7 @@ function Skinner:findFrame3(name, element)
 			if obj[element] then return obj end
 		end
 	end
-	
+
 	return nil
 
 end
@@ -1038,7 +1038,7 @@ function Skinner:skinSlider(slider)
 --@alpha@
 	assert(slider and slider:GetObjectType() == "Slider", "Not a Slider\n"..debugstack())
 --@end-alpha@
-	
+
 	self:keepFontStrings(slider)
 	slider:SetAlpha(1)
 	slider:GetThumbTexture():SetAlpha(1)
@@ -1199,10 +1199,10 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 	end
 
 	local function getChildren(frame, lvl)
-	
+
 		if not showKids then return end
 		if string.find(lvl, "-") == 2 and noDepth then return end
-		
+
 		for i = 1, select("#", frame:GetChildren()) do
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
@@ -1226,7 +1226,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 end
 
---[[ 
+--[[
 	The following code is to handle moving the TradeSkillFrame and/or MacroFrame when the SpellBookFrame is displayed to ensure that the SpellBookFrame Tabs are visible
 ]]--
 local center = 345
@@ -1247,7 +1247,7 @@ Skinner:SecureHook("ShowUIPanel", function(frame, force)
 	getFrameInfo()
 --	Skinner:Debug("ShowUIPanel: [%s, %s]", frame:GetName() or "<Anon>", force)
 	if MacroFrame and (frame == MacroFrame or frame == SpellBookFrame) then
-		if mfShown and sbfShown and (mfxOfs == center or mfxOfs == right) then 
+		if mfShown and sbfShown and (mfxOfs == center or mfxOfs == right) then
 			Skinner:moveObject(MacroFrame, "+", 40, nil, nil)
 			getFrameInfo()
 		end
