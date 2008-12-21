@@ -1,7 +1,7 @@
 
 function Skinner:Panda(LoD)
 
-	self:Debug("Panda skin loaded:[%s]", LoD)
+--	self:Debug("Panda skin loaded:[%s]", LoD)
 	
 	self:keepFontStrings(PandaPanel)
 	local titleText = self:getRegion(PandaPanel, 2)
@@ -15,7 +15,7 @@ function Skinner:Panda(LoD)
 		for i = 1, select("#", PandaPanel:GetChildren()) do
 			local child = select(i, PandaPanel:GetChildren())
 			if child:IsObjectType("Frame") and child:GetWidth() == 630 then
-				self:Debug("PandaPanel, found subpanel")
+--				self:Debug("PandaPanel, found subpanel")
 				child:ClearAllPoints()
 				child:SetPoint("TOPLEFT", 190, -66) -- move the subpanel up
 				child:SetPoint("BOTTOMRIGHT", -12, 39)

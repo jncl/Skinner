@@ -1,7 +1,7 @@
 
 function Skinner:ShadowDancer3()
 
-	local obj = CWDG.GUI.CreateFrame("Frame", "ShadowDancer3")
+	local obj = IGAS.GUI.CreateFrame("Frame", "ShadowDancer3")
 --	local sd3GUI = obj:OpenGUI()
 	self:SecureHook(obj, "OpenGUI", function(...)
 		local gui = obj.Parent:GetChild("ShadowDancer3_GUI")

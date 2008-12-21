@@ -8,20 +8,22 @@ N - New Version
 O - Other change
 S - Skin request
 
-	S	ShadowDancer3, requested by Gabriel, 27.11.08
-√		http://wow.curse.com/downloads/wow-a...owdancer3.aspx
+?	I 	Panda, reported by Gabriel, 20.12.08
+		- Buttons still not skinning, using version from Curse
 
-	N ItemDB, requested by solor, 16.12.08
-	
-	S	OneBank3, requested by Energizerbunny, 16.12.08
-	
+	I	ShadowDancer3, reported by Gabriel, 20.12.08
+√		- Skinner-b1.9183.15 \SkinMe\ShadowDancer3.lua:4: attempt to index global 'CWDG' (a nil value)
+
+√	N 	ItemDB, requested by solor, 16.12.08
+
+√	S	OneBank3, requested by Energizerbunny, 16.12.08
+
 ?	I	ArkInventory, reported by Ringthane, 14.12.08
-√	- excessive memory usage (reported by rezss, amongst others)
 		- skin covers bag items
 		--> can't replicate this behaviour
-		- custom background image not being applied (reported by MegaManJuno)
-		
+x		- custom background image not being applied (reported by MegaManJuno)
+√		- new container frames for tokens & Pets/Mounts need skinning (reported by MegaManJuno)
+
 ?	I	reported by r00ster, 27.11.08
 		- Glyphs - When it's skinned I can't hover over the glyphs or socket a new one (confirmed by MegaManJuno as inconsistent behaviour)
 		--> can't replicate this behaviour
-		
