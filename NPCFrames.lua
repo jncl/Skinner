@@ -159,6 +159,7 @@ function Skinner:QuestFrame()
 
 -->>--	Reward Panel
 	self:keepFontStrings(QuestFrameRewardPanel)
+	QuestRewardTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:moveObject(QuestFrameCancelButton, "+", 28, "-", 64)
 	self:moveObject(QuestFrameCompleteQuestButton, "-", 10, "-", 64)
 	self:moveObject(QuestRewardScrollFrame, "-", 12, "+", 30)
@@ -174,6 +175,7 @@ function Skinner:QuestFrame()
 
 -->>--	Detail Panel
 	self:keepFontStrings(QuestFrameDetailPanel)
+	QuestDetailTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:moveObject(QuestFrameDeclineButton, "+", 28, "-", 64)
 	self:moveObject(QuestFrameAcceptButton, "-", 10, "-", 64)
 	self:moveObject(QuestDetailScrollFrame, "-", 12, "+", 30)

@@ -3,7 +3,7 @@ function Skinner:QuestGuru()
 	if not self.db.profile.QuestLog.skin then return end
 
 	local headingText = {"QuestTitle", "DescriptionTitle", "RewardTitleText"}
-	local bodyText = {"ObjectivesText", "TimerText", "RequiredMoneyText", "SuggestedGroupNum", "QuestDescription", "ItemChooseText", "ItemReceiveText", "SpellLearnText", "PlayerTitleText", "StartLabel", "FinishLabel"}
+	local bodyText = {"ObjectivesText", "TimerText", "RequiredMoneyText", "SuggestedGroupNum", "QuestDescription", "ItemChooseText", "ItemReceiveText", "SpellLearnText", "PlayerTitleText", "StartLabel", "FinishLabel", }--"TalentReceiveText"
 
 	local function colourText(textType)
 
@@ -28,12 +28,14 @@ function Skinner:QuestGuru()
 	self:moveObject(QuestGuru_QuestFrameExitButton, "+", 34, "-", 12)
 	self:moveObject(QuestGuru_QuestLogFrameAbandonButton, nil, nil, "-", 12)
 	-- Quest Log Frame
+	QuestGuru_QuestLogTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:removeRegions(QuestGuru_QuestLogListScrollFrame)
 	self:skinScrollBar(QuestGuru_QuestLogListScrollFrame)
 	self:removeRegions(QuestGuru_QuestLogDetailScrollFrame)
 	self:skinScrollBar(QuestGuru_QuestLogDetailScrollFrame)
 	colourText("Log")
 	-- History Frame
+	QuestGuru_QuestHistoryTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinEditBox(QuestGuru_QuestHistorySearch, {9})
 	self:removeRegions(QuestGuru_QuestHistoryListScrollFrame)
 	self:skinScrollBar(QuestGuru_QuestHistoryListScrollFrame)
@@ -44,6 +46,7 @@ function Skinner:QuestGuru()
 	QuestGuru_QuestHistoryRepText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:moveObject(QuestGuru_QuestHistorySearchText, nil, nil, "-", 10)
 	-- Abandoned Frame
+	QuestGuru_QuestAbandonTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinEditBox(QuestGuru_QuestAbandonSearch, {9})
 	self:removeRegions(QuestGuru_QuestAbandonListScrollFrame)
 	self:skinScrollBar(QuestGuru_QuestAbandonListScrollFrame)

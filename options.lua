@@ -60,6 +60,7 @@ function Skinner:Defaults()
 		AchieveFrame    = true,
 		AchieveAlert    = true,
 		AchieveWatch    = true,
+		VehicleMenuBar	= true,
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
@@ -1186,6 +1187,11 @@ function Skinner:Options()
 							desc = self.L["Toggle the skin of the Achievement Watch"],
 						},
 					},
+				},
+				VehicleMenuBar = {
+					type = "toggle",
+					name = self.L["Vehicle Menu Bar"],
+					desc = self.L["Toggle the skin of the Vehicle Menu Bar"],
 				},
 			},
 		},

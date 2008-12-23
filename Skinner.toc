@@ -63,7 +63,7 @@ AddonFrames.lua
 CharacterFrames1.lua
 #
 # CharacterFrames2
-# includes Friends (aka Social), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs
+# includes Friends (aka Social), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs, VehicleMenuBar
 CharacterFrames2.lua
 #
 # NPCFrames

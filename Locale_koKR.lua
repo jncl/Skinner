@@ -14,6 +14,8 @@ L["NPCFrames"] = true
 L["Profiles"] = true
 
 -- untranslated strings
+L["Vehicle Menu Bar"] = true
+L["Toggle the skin of the Vehicle Menu Bar"] = true
 L["UI Enhancement"] = true
 L["Provides a Minimalist UI by removing the Blizzard textures"] = true
 L["ViewPort & TMB Frames"] = true

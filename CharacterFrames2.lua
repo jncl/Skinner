@@ -446,3 +446,22 @@ function Skinner:Buffs()
 	self:addSkinButton(TempEnchant2)
 
 end
+
+function Skinner:VehicleMenuBar()
+	if not self.db.profile.VehicleMenuBar or self.initialized.VehicleMenuBar then return end
+	self.initialized.VehicleMenuBar = true
+
+	self:SecureHook(VehicleMenuBar, "Show", function(this, ...)
+		self:Debug("VehicleMenuBar_Show")
+		VehicleMenuBar:SetWidth(500)
+		VehicleMenuBar:SetHeight(90)
+		self:moveObject(VehicleMenuBarPitchUpButton, "+", 0, "+", 10)
+		self:moveObject(VehicleMenuBarPitchDownButton, "+", 0, "+", 0)
+		self:moveObject(VehicleMenuBarLeaveButton, "+", 100, "+", 10)
+		self:moveObject(VehicleMenuBarActionButtonFrame, "+", 250, nil, nil)
+		self:moveObject(VehicleMenuBarPitchSlider, "+", 0, "+", 0)
+		VehicleMenuBarArtFrame:Hide()
+		self:applySkin(VehicleMenuBar)
+	end)
+
+end
