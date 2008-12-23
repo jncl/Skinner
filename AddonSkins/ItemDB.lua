@@ -1,6 +1,10 @@
 
 function Skinner:ItemDB()
 
+	local IDB
+	if LibStub("AceAddon-3.0") then IDB = LibStub("AceAddon-3.0"):GetAddon("ItemDB", true) end
+	if not IDB then return end
+	
 	-- Browser
 	self:keepFontStrings(ItemDB_Browser)
 	self:moveObject(ItemDB_Browser_CloseButtonTR, "+", 1, "+", 11)
@@ -28,7 +32,7 @@ function Skinner:ItemDB()
 	end
 	-- filter buttons
 	-- Hook this to manage the filters
-	self:SecureHook(ItemDB2, "FilterList_Update", function()
+	self:SecureHook(IDB, "FilterList_Update", function()
 		for i = 1, 15 do
 			local filterObj = _G["ItemDB_Browser_FilterButton"..i]
 			self:keepRegions(filterObj, {3, 4})
@@ -52,7 +56,7 @@ function Skinner:ItemDB()
 		else self:applySkin(tabObj) end
 	end
 	if self.db.profile.TexturedTab then 
-		self:SecureHook(ItemDB2, "SelectItemProvider", function(id)
+		self:SecureHook(IDB, "SelectItemProvider", function(id)
 			for i = 1, ItemDB_Browser.numTabs do
 				local tabObj = _G["ItemDB_BrowserTab"..i]
 				if i == ItemDB_Browser.selectedTab then self:setActiveTab(tabObj)
