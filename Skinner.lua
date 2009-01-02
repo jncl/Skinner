@@ -1227,12 +1227,12 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 end
 
 --[[
-	The following code is to handle moving the TradeSkillFrame and/or MacroFrame when the SpellBookFrame is displayed to ensure that the SpellBookFrame Tabs are visible
+	The following code is to handle moving the TradeSkillFrame/PlayerTalentFrame/MacroFrame when the SpellBookFrame is displayed to ensure that the SpellBookFrame Tabs are visible
 ]]--
 local center = 345
 local centerplus = 384
 local right = 691
-local sbfShown, mfShown, tsShown,  mfxOfs, tsxOfs = 0, 0, 0, 0, 0
+local sbfShown, mfShown, tsShown, tfShown, mfxOfs, tsxOfs, tfxOfs = 0, 0, 0, 0, 0, 0, 0
 local function getFrameInfo()
 	sbfShown = SpellBookFrame:IsShown()
 	mfShown = MacroFrame and MacroFrame:IsShown() or 0
@@ -1241,6 +1241,9 @@ local function getFrameInfo()
 	tsShown = TradeSkillFrame and TradeSkillFrame:IsShown() or 0
 	tsxOfs = TradeSkillFrame and select(4, TradeSkillFrame:GetPoint()) or 0
 	tsxOfs = math.floor(tsxOfs)
+	tfShown = PlayerTalentFrame and PlayerTalentFrame:IsShown() or 0
+	tfxOfs = PlayerTalentFrame and select(4, PlayerTalentFrame:GetPoint()) or 0
+	tfxOfs = math.floor(tfxOfs)
 --	Skinner:Debug("getFrameInfo: [%s, %s, %s, %s, %s]", sbfShown, mfShown, mfxOfs, tsShown, tsxOfs)
 end
 Skinner:SecureHook("ShowUIPanel", function(frame, force)
@@ -1269,6 +1272,12 @@ Skinner:SecureHook("ShowUIPanel", function(frame, force)
 				Skinner:moveObject(MacroFrame, "-", 40, nil, nil)
 				getFrameInfo()
 			end
+		end
+	end
+	if PlayerTalentFrame and (frame == PlayerTalentFrame or frame == SpellBookFrame) then
+		if tfShown and sbfShown and tfxOfs == center then
+			Skinner:moveObject(PlayerTalentFrame, "+", 40, nil, nil)
+			getFrameInfo()
 		end
 	end
 end)

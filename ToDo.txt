@@ -8,4 +8,4 @@ N - New Version
 O - Other change
 S - Skin request
 
-?	S	EasyDaily, requested by hpm, 21.12.08
+	S	Call To Arms, requested by scae, 31.12.08
