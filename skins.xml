@@ -62,6 +62,7 @@
 <script file="SkinMe\BugSack.lua"/>
 <script file="SkinMe\BuyEmAll.lua"/>
 <script file="SkinMe\BuyPoisons.lua"/>
+<script file="SkinMe\CallToArms.lua"/>
 <script file="SkinMe\Capping.lua"/>
 <script file="SkinMe\Cartographer.lua"/>
 <script file="SkinMe\Cartographer3.lua"/>

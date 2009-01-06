@@ -8,4 +8,5 @@ N - New Version
 O - Other change
 S - Skin request
 
-	S	Call To Arms, requested by scae, 31.12.08
+√	N	EPGP, reported by antispimmer, 30.12.08
+√	S	Call To Arms, requested by scae, 31.12.08
