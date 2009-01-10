@@ -146,13 +146,13 @@ function Skinner:Options()
 			set = function(info, value) db[info[#info]] = value end,
 			args = {
 				desc = {
-					order = 1,
 					type = "description",
+					order = 1,
 					name = self.L["UI Enhancement"] .." - "..GetAddOnMetadata("Skinner", "Version").. "\n",
 				},
 				longdesc = {
-					order = 2,
 					type = "description",
+					order = 2,
 					name = self.L["Provides a Minimalist UI by removing the Blizzard textures"] .. "\n",
 				},
 				Errors = {

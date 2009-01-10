@@ -192,14 +192,13 @@ function Skinner:ChatFrames()
 --		self:Debug("FCF_StopResize: [%s, %s]", this:GetName(), this:GetParent():GetName())
 		local frame = _G["Skinner"..this:GetParent():GetName()]
 		if frame and frame.tfade then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -math.ceil(frame:GetHeight())) end
-		end)
+	end)
 
-	local clqbf = CombatLogQuickButtonFrame_Custom
+	local clqbf_c = CombatLogQuickButtonFrame_Custom
 	local xOfs1, yOfs1, xOfs2, yOfs2 = -4, nil, 4, -8
 	for i = 1, NUM_CHAT_WINDOWS do
-		local cf = (_G["ChatFrame"..i])
-		local cfName = (_G["ChatFrame"..i]:GetName())
-		if SIMPLE_CHAT ~= "1" and CHAT_LOCKED ~= "1" and cfName == "ChatFrame2" and clqbf:IsShown() then
+		local cf = _G["ChatFrame"..i]
+		if SIMPLE_CHAT ~= "1" and CHAT_LOCKED ~= "1" and cf:GetName() == "ChatFrame2" and clqbf_c:IsShown() then
 			yOfs1 = 31
 		else
 			yOfs1 = 4
@@ -209,12 +208,14 @@ function Skinner:ChatFrames()
 
 	-- CombatLog Quick Button Frame & Progress Bar
 	if SIMPLE_CHAT ~= "1" and CHAT_LOCKED ~= "1" and self.db.profile.CombatLogQBF then
-		if clqbf then
-			self:keepFontStrings(clqbf)
-			self:storeAndSkin(ftype, clqbf)
-			clqbf:SetHeight(clqbf:GetHeight() + 4)
+		if clqbf_c then
+			self:keepFontStrings(clqbf_c)
+			self:storeAndSkin(ftype, clqbf_c)
+			clqbf_c:SetHeight(clqbf_c:GetHeight() + 4)
+			self:glazeStatusBar(CombatLogQuickButtonFrame_CustomProgressBar, 0)
+		else
+			self:glazeStatusBar(CombatLogQuickButtonFrameProgressBar, 0)
 		end
-		self:glazeStatusBar(CombatLogQuickButtonFrameProgressBar, 0)
 	end
 
 end

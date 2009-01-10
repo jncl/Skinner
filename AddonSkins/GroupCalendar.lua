@@ -267,7 +267,6 @@ function Skinner:GroupCalendar_v4()
 	self:moveObject(GroupCalendarMonthYearText, "-", 13, nil, nil)
 	self:moveObject(GroupCalendarCalendarFrameWeekdayLabel0, "-", 13, nil, nil)
 	self:moveObject(GroupCalendarDay0, "-", 13, nil, nil)
-	self:moveObject(GroupCalendarUseServerTime, nil, nil, "+", 13)
 -->>--	Side Panel
 	self:keepFontStrings(GroupCalendarSideListScrollbarTrench)
 	self:removeRegions(GroupCalendarSideListScrollFrame)
@@ -358,7 +357,7 @@ function Skinner:GroupCalendar_v4()
 	self:skinEditBox(CalendarAddPlayerFrameWhisperReply, {9})
 
 -->>--	Calendar Role Limits Frame
-	for _, v in pairs({ "MH", "OH", "MT", "OT", "MD", "RD" }) do
+	for _, v in pairs({ "MH", "MT", "MD", "RD" }) do
 		local cMin = _G["CalendarRoleLimitsFrame"..v.."Min"]
 		local cMax = _G["CalendarRoleLimitsFrame"..v.."Max"]
 		self:skinEditBox(cMin)
@@ -370,21 +369,16 @@ function Skinner:GroupCalendar_v4()
 	self:skinEditBox(CalendarRoleLimitsFrameMHDRUIDMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMHPALADINMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMHSHAMANMin)
-	self:skinEditBox(CalendarRoleLimitsFrameOHPRIESTMin)
-	self:skinEditBox(CalendarRoleLimitsFrameOHDRUIDMin)
-	self:skinEditBox(CalendarRoleLimitsFrameOHPALADINMin)
-	self:skinEditBox(CalendarRoleLimitsFrameOHSHAMANMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMTDRUIDMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMTPALADINMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMTWARRIORMin)
-	self:skinEditBox(CalendarRoleLimitsFrameOTDRUIDMin)
-	self:skinEditBox(CalendarRoleLimitsFrameOTPALADINMin)
-	self:skinEditBox(CalendarRoleLimitsFrameOTWARRIORMin)
+	self:skinEditBox(CalendarRoleLimitsFrameMTDEATHKNIGHTMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMDDRUIDMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMDPALADINMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMDSHAMANMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMDWARRIORMin)
 	self:skinEditBox(CalendarRoleLimitsFrameMDROGUEMin)
+	self:skinEditBox(CalendarRoleLimitsFrameMDDEATHKNIGHTMin)
 	self:skinEditBox(CalendarRoleLimitsFrameRDPRIESTMin)
 	self:skinEditBox(CalendarRoleLimitsFrameRDDRUIDMin)
 	self:skinEditBox(CalendarRoleLimitsFrameRDSHAMANMin)
@@ -396,6 +390,7 @@ function Skinner:GroupCalendar_v4()
 
 -->>--	Calendar Class Limits Frame
 	for _, v in pairs(self.classTable) do
+		if v == "DeathKnight" then v= "Deathknight" end
 		local cMin = _G["CalendarClassLimitsFrame"..v.."Min"]
 		local cMax = _G["CalendarClassLimitsFrame"..v.."Max"]
 		self:skinEditBox(cMin)

@@ -181,8 +181,7 @@ function Skinner:OnEnable()
 end
 
 function Skinner:ReloadAddon(callback)
-
-	self:Debug("ReloadAddon:[%s]", callback)
+-- 	self:Debug("ReloadAddon:[%s]", callback)
 
 	StaticPopupDialogs["Skinner_Reload_UI"] = {
 		text = self.L["Confirm reload of UI to activate profile changes"],
@@ -407,7 +406,6 @@ end
 
 local eh = geterrorhandler()
 function Skinner:checkAndRun(funcName)
-
 --	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 
 	-- handle errors from internal functions
@@ -519,7 +517,6 @@ function Skinner:findFrame(height, width, children)
 end
 
 function Skinner:findFrame2(parent, objType, ...)
-
 --	self:Debug("findFrame2: [%s, %s, %s, %s, %s, %s, %s]", parent, objType, select(1, ...) or nil, select(2, ...) or nil, select(3, ...) or nil, select(4, ...) or nil, select(5, ...) or nil)
 
 	local frame
@@ -561,7 +558,6 @@ function Skinner:findFrame2(parent, objType, ...)
 end
 
 function Skinner:findFrame3(name, element)
-
 --	self:Debug("findFrame3: [%s, %s]", name, element)
 
 	for i = 1, select("#", UIParent:GetChildren()) do
@@ -577,13 +573,19 @@ end
 
 function Skinner:getChild(frame, childNo)
 
-	if frame then return select(childNo, frame:GetChildren()) end
+	if frame then
+		local child = select(childNo, frame:GetChildren())
+		return child
+	end
 
 end
 
 function Skinner:getRegion(frame, regNo)
 
-	if frame then return select(regNo, frame:GetRegions()) end
+	if frame then
+		local region = select(regNo, frame:GetRegions())
+		return region
+	end
 
 end
 
@@ -752,6 +754,7 @@ end
 function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 
 	if not objName then return end
+	
 --	self:Debug("moveObject: [%s, %s%s, %s%s, %s]", objName:GetName() or "<Anon>", xAdj, xDiff, yAdj, yDiff, relTo)
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = objName:GetPoint()
@@ -858,7 +861,6 @@ function Skinner:setInactiveTab(tabName)
 end
 
 function Skinner:setTTBackdrop(bdReqd)
-
 --	self:Debug("setTTBackdrop: [%s]", bdReqd)
 
 	for _, tooltip in pairs(self.ttList) do
@@ -873,7 +875,6 @@ function Skinner:setTTBackdrop(bdReqd)
 end
 
 function Skinner:setTTBBC()
-
 -- 	self:Debug("setTTBBC: [%s, %s, %s, %s]", unpack(self.tbColour))
 
 	if self.db.profile.Tooltips.border == 1 then
@@ -985,10 +986,11 @@ function Skinner:skinFFToggleTabs(tabName, tabCnt)
 
 end
 
-function Skinner:skinFFColHeads(buttonName)
---	self:Debug("skinFFColHeads: [%s]", buttonName)
+function Skinner:skinFFColHeads(buttonName, noCols)
+-- 	self:Debug("skinFFColHeads: [%s]", buttonName)
 
-	for i = 1, 4 do
+	local numCols = noCols and noCols or 4
+	for i = 1, numCols do
 		self:keepFontStrings(_G[buttonName..i])
 		self:storeAndSkin(ftype, _G[buttonName..i])
 	end
@@ -1023,6 +1025,7 @@ function Skinner:skinScrollBar(scrollFrame, sbPrefix, sbObj, narrow)
 --@end-alpha@
 
 	if not scrollFrame then return end
+	
 --	self:Debug("skinScrollBar: [%s, %s, %s, %s]", scrollFrame:GetName(), sbPrefix or 'nil', sbObj or 'nil', narrow or 'nil')
 
 	local sBar = sbObj and sbObj or _G[scrollFrame:GetName()..(sbPrefix or "").."ScrollBar"]

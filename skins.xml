@@ -243,6 +243,7 @@
 <script file="SkinMe\QuestHistory.lua"/>
 <script file="SkinMe\QuestIon.lua"/>
 <script file="SkinMe\RABuffs.lua"/>
+<script file="SkinMe\RaidTracker.lua"/>
 <script file="SkinMe\RandomPet30.lua"/>
 <script file="SkinMe\ReadySpells.lua"/>
 <script file="SkinMe\ReagentHeaven.lua"/>
