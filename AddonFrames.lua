@@ -166,6 +166,7 @@ function Skinner:AddonFrames()
 		end
 	end
 	libsToSkin = nil
+	
 	-- skin Rock Config
 	if Rock and Rock:HasLibrary("LibRockConfig-1.0") then
 --		self:Debug("LibRockConfig found")
@@ -176,30 +177,40 @@ function Skinner:AddonFrames()
 			end
 		end
 	end
+	
 	-- skin KeyBound Dialog frame
-	if LibStub('LibKeyBound-1.0', true) then self:applySkin(KeyboundDialog) end
+	if self.db.profile.MenuFrames then
+		if LibStub('LibKeyBound-1.0', true) then self:applySkin(KeyboundDialog) end
+	end
+	
 	-- skin LibTooltip a.k.a. LibQTip tooltips
-	local lt = {"LibTooltip-1.0", "LibQTip-1.0"}
-	for _, lib in pairs(lt) do
-		if LibStub(lib, true) then
-			local function skinLTTooltips()
-				for key, tooltip in LibStub(lib):IterateTooltips() do
---					self:Debug("%s:[%s, %s]", lib, key, tooltip)
-					if not tooltip.skinned then
-						self:applySkin(tooltip)
-						tooltip.skinned = true
-					end
+	if self.db.profile.Tooltips.skin then
+		local function skinLTTooltips(ttLib)
+			for key, tooltip in LibStub(ttLib):IterateTooltips() do
+-- 				self:Debug("%s:[%s, %s]", ttLib, key, tooltip)
+				if not tooltip.skinned then
+					self:applySkin(tooltip)
+					tooltip.skinned = true
 				end
 			end
-			-- hook this to handle new tooltips
-			self:SecureHook(LibStub(lib), "Acquire", function(this, key, ...)
-				skinLTTooltips()
-			end)
-			-- skin any existing ones
-			skinLTTooltips()
 		end
+		local lt = {"LibTooltip-1.0", "LibQTip-1.0"}
+		for _, lib in pairs(lt) do
+			if LibStub(lib, true) then
+				-- hook this to handle new tooltips
+				self:SecureHook(LibStub(lib), "Acquire", function(this, key, ...)
+					skinLTTooltips(lib)
+				end)
+				-- hook this to handle tooltips being released
+				self:SecureHook(LibStub(lib), "Release", function(this, tt, ...)
+					tt.skinned = nil
+				end)
+				-- skin any existing ones
+				skinLTTooltips(lib)
+			end
+		end
+		lt = nil
 	end
-	lt = nil
 	
 end
 

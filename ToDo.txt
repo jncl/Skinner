@@ -8,5 +8,8 @@ N - New Version
 O - Other change
 S - Skin request
 
-√		N	Examiner, reported by nitrobg, 11.01.09
+√	S	Broker RaidSave LDB tooltip, requested by Kerecha, 11.01.09
+	
+x	S	oRA2 Targets LDB tooltip, requested by Kerecha, 11.01.09
+		-	requires fix to Broker_oRA2Targets addon
 		
