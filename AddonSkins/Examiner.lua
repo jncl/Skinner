@@ -5,9 +5,10 @@ function Skinner:Examiner()
 	Examiner:SetWidth(Examiner:GetWidth() * self.FxMult)
 	Examiner:SetHeight(Examiner:GetHeight() + 6)
 	self:keepRegions(Examiner, {2, 3, 4, 9, 10, 11, 12}) -- N.B. 2-4 are text and 9-12 are background regions
-	self:moveObject(self:getChild(Examiner, 1), "+", 30, "+", 8)
+	self:moveObject(self:getChild(Examiner, 1), "+", 30, "+", 8) -- Close Button
 	self:moveObject(Examiner.buttons[1], "-", 10, "-", 6)
-	self:moveObject(self:getRegion(Examiner, 9), "-", 10, "+", 10)
+	self:moveObject(self:getRegion(Examiner, 3), nil, nil, "+", 10) -- Lvl & Class
+	self:moveObject(self:getRegion(Examiner, 9), "-", 8, "+", 10) -- Background Top Left
 	self:keepFontStrings(ExaminerDropDown)
 	self:moveObject(Examiner.model, "+", 10, nil, nil) -- will move all its children as well
 	self:applySkin(Examiner)
@@ -27,8 +28,22 @@ function Skinner:Examiner()
 		self:applySkin(Examiner.arena[i])
 	end
 	self:applySkin(Examiner.frames[4])
+-->>-- Feats Frame
+	Examiner.featsDropDown:SetBackdrop(nil)
+	-- hook this to skin the dropdown menu
+	self:RawHookScript(Examiner.featsDropDown.button, "OnClick", function(this)
+		self.hooks[this].OnClick(this)
+		self:applySkin(AzDropDownScroll:GetParent())
+		self:keepFontStrings(AzDropDownScroll)
+		self:skinScrollBar(AzDropDownScroll)
+		self:Unhook(Examiner.featsDropDown.button, "OnClick")
+	end)
+	self:keepFontStrings(ExaminerFeatsScroll)
+	self:skinScrollBar(ExaminerFeatsScroll)
+	self:applySkin(Examiner.frames[5])
 -->>--	Talent Frame
 	self:skinFFToggleTabs("ExaminerTab", 3)
+	self:moveObject(ExaminerTab1, "-", 36, nil, nil)
 	self:keepFontStrings(ExaminerTalentsScrollChild)
 	self:skinScrollBar(ExaminerTalentsScrollChild)
 

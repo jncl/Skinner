@@ -8,27 +8,5 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	S	RaidTracker, requested by Pseudopath, 9.01.09
-	
-√	I	CombatLogQuickButtonFrameProgressBar, reported by toin7, 7.01.09
-		- glazing the CombatLogQuickButtonFrameProgressBar throws an error
-
-√	I	GroupCalendar, reported by onaforeignshore, 8.01.09
-		- Skinner-b1.9183.22 \Skinner.lua:949: Not an EditBox
-		Skinner-b1.9183.22 \Skinner.lua:949: in function `skinEditBox'
-		Skinner-b1.9183.22 \SkinMe\GroupCalendar.lua:364: in function `GroupCalendar_v4'
-		Skinner-b1.9183.22 \SkinMe\GroupCalendar.lua:6: in function <Interface\AddOns\Skinner\SkinMe\GroupCalendar.lua :2>
-		<in C code>: in function `pcall'
-		Skinner-b1.9183.22 \Skinner.lua:455: in function `?'
-		Skinner-b1.9183.22 \AddonFrames.lua:114: in function <Interface\AddOns\Skinner\AddonFrames.lua:60>
-		(tail call): ?:
-		
-√	I	PassLoot, reported by Oakayam, 8.01.09
-		- Skinner-b1.9183.22 \Skinner.lua:1022: Not a ScrollFrame
-		Skinner-b1.9183.22 \Skinner.lua:1022: in function `skinScrollBar'
-		Skinner-b1.9183.22 \SkinMe\PassLoot.lua:11: in function <Interface\AddOns\Skinner\SkinMe\PassLoot.lua:2>
-		<in C code>: in function `pcall'
-		Skinner-b1.9183.22 \Skinner.lua:455: in function `?'
-		Skinner-b1.9183.22 \AddonFrames.lua:114: in function <Interface\AddOns\Skinner\AddonFrames.lua:60>
-		(tail call): ?:
+√		N	Examiner, reported by nitrobg, 11.01.09
 		

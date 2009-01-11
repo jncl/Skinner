@@ -404,17 +404,16 @@ function Skinner:applySkin(frame, header, bba, ba, fh, bd)
 
 end
 
-local eh = geterrorhandler()
 function Skinner:checkAndRun(funcName)
 --	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 
 	-- handle errors from internal functions
 	if type(self[funcName]) == "function" then
-		local status, result = pcall(self[funcName], self)
-		if status == false then
-			eh(result)
+		local success, err = pcall(self[funcName], self)
+		if not success then
+			geterrorhandler()(err)
 			if self.db.profile.Errors then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", funcName, result)
+				self:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", funcName, err)
 			end
 		end
 	else
@@ -441,7 +440,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 --			self:Debug(addonName, "skin unloaded as Addon not loaded")
 		end
 	else
-		local status, result
+		local success, err
 		-- check to see if AddonSkin is loaded when Addon is loaded
 		if not LoD and not self[addonFunc] then
 			if self.db.profile.Warnings then
@@ -450,26 +449,26 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 		-- handle errors from internal functions
 		elseif type(self[addonFunc]) == "function" then
 --			self:Debug("checkAndRunAddOn#2:[%s, %s]", addonFunc, self[addonFunc])
-			status, result = pcall(self[addonFunc], self, LoD)
+			success, err = pcall(self[addonFunc], self, LoD)
 		elseif type(self[addonFunc]) == "string" then
 --			self:Debug("checkAndRunAddOn#3:[%s, %s]", addonFunc, self[addonFunc])
 			-- add Skinner reference to string before running it
-			status, result = pcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc], addonFunc))() end)
+			success, err = pcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc], addonFunc))() end)
 			-- throw away the string if it doesn't have a hook in it
 			if not string.match(self[addonFunc], "Hook[\(S]") then self[addonFunc] = nil end
 			-- run the associated Hook function if there is one
 			if self[addonFunc.."Hooks"] then
-				status, result = pcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc.."Hooks"], addonFunc))() end)
+				success, err = pcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc.."Hooks"], addonFunc))() end)
 			end
 		else
 			if self.db.profile.Warnings then
 				self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..addonFunc.."] not found in Skinner")
 			end
 		end
-		if status == false then
-			eh(result)
+		if not success then
+			geterrorhandler()(err)
 			if self.db.profile.Errors then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", addonFunc, result)
+				self:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", addonFunc, err)
 			end
 		end
 	end
@@ -927,7 +926,7 @@ end
 function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
 
 	if not frame then return end
-	if not (frame.GetName and _G[frame:GetName().."Right"]) then return end -- ignore tekKonfig dropdowns
+	if not (frame.GetName and frame:GetName() and _G[frame:GetName().."Right"]) then return end -- ignore tekKonfig dropdowns
 
 	if not self.db.profile.TexturedDD or noSkin then self:keepFontStrings(frame) return end
 

@@ -92,7 +92,7 @@ function Skinner:FriendsFrame()
 
 	self:skinDropDown(WhoFrameDropDown, nil, true)
 	self:moveObject(WhoFrameDropDown, "+", 5, "+", 1)
-	self:moveObject(WhoFrameButton1, nil, nil, "+", 15)
+	self:moveObject(WhoFrameButton1, "-", 5, "+", 15)
 
 	self:removeRegions(WhoListScrollFrame)
 	self:moveObject(WhoListScrollFrame, "+", 35, "+", 20)
@@ -114,9 +114,11 @@ function Skinner:FriendsFrame()
 	self:moveObject(GuildFrameLFGButton, "+", 42, "+", 12)
 
 	self:skinFFColHeads("GuildFrameColumnHeader") --N.B. Prefix string
-	self:moveObject(GuildFrameColumnHeader1, "-", 6, "+", 25)
+	self:moveObject(GuildFrameColumnHeader1, "-", 6, "+", 15)
+	self:moveObject(GuildFrameButton1, "-", 5, "+", 15)
 	self:skinFFColHeads("GuildFrameGuildStatusColumnHeader") --N.B. Prefix string
-	self:moveObject(GuildFrameGuildStatusColumnHeader1, "-", 6, "+", 25)
+	self:moveObject(GuildFrameGuildStatusColumnHeader1, "-", 6, "+", 15)
+	self:moveObject(GuildFrameGuildStatusButton1, "-", 5, "+", 15)
 
 	self:removeRegions(GuildListScrollFrame)
 	self:moveObject(GuildListScrollFrame, "+", 35, "+", 20)
@@ -127,15 +129,16 @@ function Skinner:FriendsFrame()
 	self:moveObject(GuildFrameControlButton, "+", 30, "-", 71)
 
 	-- Guild Control Popup Frame
+	GuildControlPopupFrame:SetHeight(FriendsFrame:GetHeight())
 	self:keepFontStrings(GuildControlPopupFrame)
-	self:moveObject(GuildControlPopupFrame, "+", 36, nil, nil)
+	self:moveObject(GuildControlPopupFrame, "+", 36, "+", 6)
 	self:moveObject(GuildControlPopupFrameCancelButton, "+", 20, "-", 26)
 	self:skinDropDown(GuildControlPopupFrameDropDown)
 	GuildControlPopupFrameEditBox:SetWidth(GuildControlPopupFrameEditBox:GetWidth() + 30)
 	self:skinEditBox(GuildControlPopupFrameEditBox)
 	self:skinEditBox(GuildControlWithdrawGoldEditBox, {9})
 	self:skinEditBox(GuildControlWithdrawItemsEditBox, {9})
-	self:moveObject(GuildControlPopupFrameTabPermissions, "+", 10, nil, nil)
+	self:moveObject(GuildControlPopupFrameTabPermissions, "+", 10, "-", 20)
 	self:storeAndSkin(ftype, GuildControlPopupFrameTabPermissions)
 	for i = 1, MAX_GUILDBANK_TABS do
 		local gbtpt = _G["GuildBankTabPermissionsTab"..i]
@@ -160,7 +163,7 @@ function Skinner:FriendsFrame()
 
 -->>--	GuildMemberDetailFrame
 	self:keepFontStrings(GuildMemberDetailFrame)
-	self:moveObject(GuildMemberDetailFrame, "+", 28, nil, nil)
+	self:moveObject(GuildMemberDetailFrame, "+", 30, "-", 40)
 	self:moveObject(GuildFramePromoteButton, nil, nil, "-", 30)
 	self:storeAndSkin(ftype, GuildMemberNoteBackground)
 	self:storeAndSkin(ftype, GuildMemberOfficerNoteBackground)
