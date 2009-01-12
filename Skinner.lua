@@ -440,7 +440,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 --			self:Debug(addonName, "skin unloaded as Addon not loaded")
 		end
 	else
-		local success, err
+		local success, err = true
 		-- check to see if AddonSkin is loaded when Addon is loaded
 		if not LoD and not self[addonFunc] then
 			if self.db.profile.Warnings then
