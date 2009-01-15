@@ -651,7 +651,6 @@ function Skinner:Options()
 						shown = {
 							type = "toggle",
 							order = 1,
-							width = "full",
 							name = self.L["TopFrame Show"],
 							desc = self.L["Toggle the TopFrame"],
 							set = function(info, value)
@@ -720,6 +719,7 @@ function Skinner:Options()
 						xyOff = {
 							type = "toggle",
 							order = 2,
+							width = "double",
 							name = self.L["TF Move Origin offscreen"],
 							desc = self.L["Hide Border on Left and Top"],
 							set = function(info, value)
@@ -829,7 +829,6 @@ function Skinner:Options()
 						shown = {
 							type = "toggle",
 							order = 1,
-							width = "full",
 							name = self.L["BottomFrame Show"],
 							desc = self.L["Toggle the BottomFrame"],
 							set = function(info, value)
@@ -895,6 +894,7 @@ function Skinner:Options()
 						xyOff = {
 							type = "toggle",
 							order = 2,
+							width = "double",
 							name = self.L["BF Move Origin offscreen"],
 							desc = self.L["Hide Border on Left and Bottom"],
 							set = function(info, value)
