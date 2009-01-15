@@ -190,6 +190,18 @@ function Skinner:FriendsFrame()
 	self:removeRegions(ChannelRosterScrollFrame)
 	self:skinScrollBar(ChannelRosterScrollFrame)
 	self:moveObject(ChannelFrameNewButton, "-", 8, "-", 5)
+	-- Channel Pullout Tab & Frame
+	ChannelPulloutTab:SetWidth(ChannelPulloutTab:GetWidth() + 14)
+	ChannelPulloutTab:SetHeight(ChannelPulloutTab:GetHeight() * self.FTyMult)
+	self:keepRegions(ChannelPulloutTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
+	self:moveObject(ChannelPulloutTabText, nil, nil, "+", 10)
+	self:moveObject(self:getRegion(ChannelPulloutTab, 5), "-", 5, "+", 10) -- highlight texture
+	self:applySkin(ChannelPulloutTab)
+-- 	self:moveObject(ChannelPullout, "+", 10, nil, nil)
+	self:moveObject(ChannelPulloutCloseButton, "+", 2, "+", 2)
+	self:applySkin(ChannelPullout)
+	self:RawHook(ChannelPullout, "SetBackdropColor", function() end, true)
+	self:RawHook(ChannelPullout, "SetBackdropBorderColor", function() end, true)
 
 -->>--	Daughter Frame
 	self:keepFontStrings(ChannelFrameDaughterFrame)

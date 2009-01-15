@@ -757,7 +757,7 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 --	self:Debug("moveObject: [%s, %s%s, %s%s, %s]", objName:GetName() or "<Anon>", xAdj, xDiff, yAdj, yDiff, relTo)
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = objName:GetPoint()
---	self:Debug("GetPoint: [%s, %s, %s, %s, %s]", point, relativeTo and relativeTo:GetName() or "???", relativePoint, xOfs, yOfs)
+--	self:Debug("GetPoint: [%s, %s, %s, %s, %s]", point, relativeTo and relativeTo:GetName() or "<Anon>", relativePoint, xOfs, yOfs)
 
 	-- Workaround for yOfs crash when using bar addons
 	if not yOfs then return end
@@ -766,7 +766,7 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 	-- Workaround for relativeTo crash
 	if not relTo then
 		if self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, nil, nil, nil, "moveObject (relativeTo) error:", objName, objName:GetName() or "<Anon>")
+			self:CustomPrint(1, 0, 0, nil, nil, nil, "moveObject (relativeTo) error:", tostring(objName))
 		end
 		return
 	end
@@ -1220,10 +1220,10 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 	print("%s : %s : %s : %s : %s : %s", obj:GetName() or "<Anon>", obj:GetWidth() or "nil", obj:GetHeight() or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
 	print("Started Regions")
-	getRegions(obj, 1)
+	getRegions(obj, 0)
 	print("Finished Regions")
 	print("Started Children")
-	getChildren(obj, 1)
+	getChildren(obj, 0)
 	print("Finished Children")
 
 end

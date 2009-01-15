@@ -8,4 +8,26 @@ N - New Version
 O - Other change
 S - Skin request
 
+	O	Replace RawHookScript with SecureHookScript as required	
+
+√	I	DBM, reported by Kerecha, 11.01.09
+		-	DeadlyBossMods 4.05 statistics/options panel isn't being skinned.
+		(Not fully at least, no custom background, and default blizz borders)
+			
+√	I	ShadowDancer3, reported by Gabriel, 12.01.09
+		- getting a lot of errors when I open the config frame.
+		errors are as follows: "Not a frame or subclass of frame: table:"
+		this repeats for all hooks to any of the frame objects
+			
+	S	GuildBankSearch, requested by Gabriel, 12.01.09
+		
+√	I	ItemDB, reported by Kerecha, 12.01.09
+		- Interface\AddOns\Skinner\SkinMe\ItemDB.lua:31: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		Interface\AddOns\Skinner\Skinner.lua:469: in function `?'
+		Interface\AddOns\Skinner\AddonFrames.lua:114: in function <Interface\AddOns\Skinner\AddonFrames.lua:60>
+		(tail call): ?
+			
+√	I	LibQTip skin function, reported by Gabriel, 12.01.09
+		-	Allow for no tooltip object in Release function
+		'if not lt then return end  --added to fix issue with nil values from various Broker plugins'
 		
