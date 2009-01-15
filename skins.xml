@@ -142,6 +142,7 @@
 <script file="SkinMe\Guild_Log.lua"/>
 <script file="SkinMe\GuildAds.lua"/>
 <script file="SkinMe\GuildBankAccount.lua"/>
+<script file="SkinMe\GuildBankSearch.lua"/>
 <script file="SkinMe\GuildEventManager2.lua"/>
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>

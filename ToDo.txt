@@ -19,7 +19,7 @@ S - Skin request
 		errors are as follows: "Not a frame or subclass of frame: table:"
 		this repeats for all hooks to any of the frame objects
 			
-	S	GuildBankSearch, requested by Gabriel, 12.01.09
+√	S	GuildBankSearch, requested by Gabriel, 12.01.09
 		
 √	I	ItemDB, reported by Kerecha, 12.01.09
 		- Interface\AddOns\Skinner\SkinMe\ItemDB.lua:31: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target

@@ -742,7 +742,7 @@ function Skinner:GuildBankUI()
 -->>--	Main Frame
 	GuildBankEmblemFrame:Hide()
 	self:keepFontStrings(GuildBankFrame)
-	self:moveObject(GuildBankTabTitle, nil, nil, "+", 20)
+	self:moveObject(GuildBankTabTitle, nil, nil, "+", 40)
 	self:moveObject(self:getChild(GuildBankFrame, 13), "-", 2, "+", 9) -- Close Button
 	self:moveObject(GuildBankColumn1, "-", 5, "+", 10)
 	for i = 1, 7 do
@@ -787,7 +787,6 @@ function Skinner:GuildBankUI()
 			end
 		end)
 	end
-
 
 -->>--	GuildBank Popup Frame
 	self:keepFontStrings(GuildBankPopupFrame)
