@@ -75,7 +75,6 @@ function Skinner:MirrorTimers()
 		self:keepFontStrings(mTimer)
 		mTimer:SetHeight(mTimer:GetHeight() * 1.1)
 		mTimerSB:SetWidth(mTimerSB:GetWidth() * 0.75)
-		self:moveObject(_G[mTimer:GetName().."Text"], nil, nil, "-", 2)
 		if self.db.profile.MirrorTimers.glaze then self:glazeStatusBar(mTimerSB, 0) end
 	end
 
@@ -111,7 +110,7 @@ function Skinner:CastingBar()
 		cbff:SetWidth(cbfObj:GetWidth())
 		cbff:SetHeight(cbfObj:GetHeight())
 		cbff:SetTexture(self.sbTexture)
-		self:moveObject(cbft, nil, nil, "-", 4)
+		self:moveObject(cbft, nil, nil, "-", 3)
 		self:moveObject(cbff, nil, nil, "-", 28)
 		if self.db.profile.CastingBar.glaze then self:glazeStatusBar(cbfObj, 0) end
 		if cbfName == "CastingBarFrame" then
@@ -592,17 +591,18 @@ function Skinner:HelpFrame()
 	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
 	self.initialized.HelpFrame = true
 
+	local xOfs, yOfs = 42, 12
 -->>--	Help Frame
 	self:keepFontStrings(HelpFrame)
 	HelpFrame:SetWidth(HelpFrame:GetWidth() - 20)
 	HelpFrame:SetHeight(HelpFrame:GetHeight() * 0.90)
-	self:moveObject(HelpFrameCloseButton, "+", 42, "+", 2)
+	self:moveObject(HelpFrameCloseButton, "+", xOfs, "+", 2)
 	self:storeAndSkin(ftype, HelpFrame, true)
 
 -->>--	Cancel Buttons
-	self:moveObject(HelpFrameGMTalkCancel, "+", 42, "-", 12)
-	self:moveObject(HelpFrameReportIssueCancel, "+", 42, "-", 12)
-	self:moveObject(HelpFrameStuckCancel, "+", 42, "-", 12)
+	self:moveObject(HelpFrameGMTalkCancel, "+", xOfs, "-", yOfs)
+	self:moveObject(HelpFrameReportIssueCancel, "+", xOfs, "-", yOfs)
+	self:moveObject(HelpFrameStuckCancel, "+", xOfs, "-", yOfs)
 
 -->>--	Open Ticket Frame
 	self:moveObject(HelpFrameOpenTicketLabel, nil, nil, "+", 40)
@@ -610,7 +610,7 @@ function Skinner:HelpFrame()
 	self:moveObject(HelpFrameOpenTicketDivider, "+", 6, "+", 40)
 	self:removeRegions(HelpFrameOpenTicketScrollFrame)
 	self:skinScrollBar(HelpFrameOpenTicketScrollFrame)
-	self:moveObject(HelpFrameOpenTicketCancel, "+", 42, "-", 12)
+	self:moveObject(HelpFrameOpenTicketCancel, "+", xOfs, "-", yOfs)
 
 -->>--	Ticket Status Frame
 	local tsfC = self:getChild(TicketStatusFrame, 2)
@@ -633,8 +633,8 @@ function Skinner:HelpFrame()
 	self:removeRegions(KnowledgeBaseArticleScrollFrame)
 	self:skinScrollBar(KnowledgeBaseArticleScrollFrame)
 	self:moveObject(KnowledgeBaseArticleListFrameNextButton, "+", 20, nil, nil)
-	self:moveObject(KnowledgeBaseFrameGMTalk, nil, nil, "-", 12)
-	self:moveObject(KnowledgeBaseFrameCancel, "+", 42, "-", 12)
+	self:moveObject(KnowledgeBaseFrameGMTalk, nil, nil, "-", yOfs)
+	self:moveObject(KnowledgeBaseFrameCancel, "+", xOfs, "-", yOfs)
 
 end
 
@@ -838,14 +838,14 @@ function Skinner:MinimapButtons()
 		local mmObjName = mmObj.GetName and mmObj:GetName() or "<Anon>"
 --		Skinner:Debug("Checking %s kids", mmObjName)
 
-		for i = 1, select("#", mmObj:GetChildren()) do
+		for i = 1, mmObj:GetNumChildren() do
 			local obj = select(i, mmObj:GetChildren())
 			local objName = obj:GetName()
 			local objType = obj:GetObjectType()
 --			Skinner:Debug("%s kids: [%s, %s, %s]", mmObjName, obj, objName, objType)
 			if not obj.skinned and objName
 			and (objType == "Button" or objType == "Frame" and objName == "MiniMapMailFrame") then
-				for i = 1, select("#", obj:GetRegions()) do
+				for i = 1, obj:GetNumRegions() do
 					local reg = select(i, obj:GetRegions())
 					if reg:GetObjectType() == "Texture" then
 						local regName = reg:GetName()

@@ -509,7 +509,8 @@ function Skinner:AchievementUI()
 	end, true)
 
 	self:keepFontStrings(AchievementFrame)
-	self:moveObject(AchievementFrameCloseButton, "+", 1, nil, nil)
+	self:moveObject(AchievementFrameFilterDropDown, nil, nil, "-", 10)
+	self:moveObject(AchievementFrameCloseButton, "-", 1, "-", 2)
 	self:storeAndSkin(ftype, AchievementFrame)
 	
 -->>-- Header
@@ -527,32 +528,35 @@ function Skinner:AchievementUI()
 		end
 	end
 	self:SecureHook("AchievementFrameCategories_Update", function()
---		self:Debug("AFC_U")
+-- 		self:Debug("AFC_U")
 		skinCategories()
 	end)
 	skinCategories()
 	
 -->>-- Achievements Panel (on the right)
-	self:getChild(AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:keepFontStrings(AchievementFrameAchievements)
+	self:getChild(AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
-	AchievementFrameAchievementsBackground:SetAlpha(0)
 	
 -->>-- Stats
 	self:keepFontStrings(AchievementFrameStats)
-	self:getChild(AchievementFrameStats, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA)
 	self:skinSlider(AchievementFrameStatsContainerScrollBar)
+	AchievementFrameStatsBG:SetAlpha(0)
+	self:getChild(AchievementFrameStats, 3):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	local function skinStats()
 		for i = 1, #AchievementFrameStatsContainer.buttons do
-			local buttonName = "AchievementFrameStatsContainerButton"..i
-			local button = _G[buttonName]
-			if button.isHeader then _G[buttonName.."BG"]:SetAlpha(0) end
-			_G[buttonName.."HeaderLeft"]:SetAlpha(0)
-			_G[buttonName.."HeaderMiddle"]:SetAlpha(0)
-			_G[buttonName.."HeaderRight"]:SetAlpha(0)
+			local button = _G["AchievementFrameStatsContainerButton"..i]
+-- 			local buttonBG = _G["AchievementFrameStatsContainerButton"..i.."BG"]
+			if button.isHeader then button.background:SetAlpha(0) end
+-- 			self:Debug("skinStats: [%s]", button.background:GetAlpha())
+			if button.background:GetAlpha() == 1 then button.background:SetAlpha(0) end
+			button.left:SetAlpha(0)
+			button.middle:SetAlpha(0)
+			button.right:SetAlpha(0)
 		end
 	end
 	self:SecureHook("AchievementFrameStats_Update", function()
---		self:Debug("AFS_U")
+-- 		self:Debug("AFS_U")
 		skinStats()
 	end)
 	skinStats()
@@ -560,14 +564,23 @@ function Skinner:AchievementUI()
 -->>-- Summary Panel
 	self:keepFontStrings(AchievementFrameSummary)
 	AchievementFrameSummaryBackground:SetAlpha(0)
-	self:removeRegions(AchievementFrameSummaryStatusBar, {3, 4, 5})
-	self:glazeStatusBar(AchievementFrameSummaryStatusBar, 0)
-	self:moveObject(self:getRegion(AchievementFrameSummaryStatusBar, 1), nil, nil, "-", 3)
-	self:moveObject(self:getRegion(AchievementFrameSummaryStatusBar, 2), nil, nil, "-", 3)
-	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
 	AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
-	self:keepFontStrings(AchievementFrameSummaryStatsHeader)
-	self:getChild(AchievementFrameSummary, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
+	-- Categories SubPanel
+	self:keepFontStrings(AchievementFrameSummaryCategoriesHeader)
+	for i = 1, 8 do
+		local sb = _G["AchievementFrameSummaryCategoriesCategory"..i]
+		self:removeRegions(sb, {3, 4, 5})
+		self:glazeStatusBar(sb, 0)
+		self:moveObject(self:getRegion(sb, 1), nil, nil, "-", 3) -- label
+		self:moveObject(self:getRegion(sb, 2), nil, nil, "-", 3) -- text
+	end
+	self:getChild(AchievementFrameSummary, 1):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	local afsSB = AchievementFrameSummaryCategoriesStatusBar
+	self:removeRegions(afsSB, {3, 4, 5}) -- textures
+	self:glazeStatusBar(afsSB, 0)
+	self:moveObject(self:getRegion(afsSB, 1), nil, nil, "-", 3) -- label
+	self:moveObject(self:getRegion(afsSB, 2), nil, nil, "-", 3) -- text
 	
 -->>-- Comparison Panel
 	AchievementFrameComparisonBackground:SetAlpha(0)
@@ -586,7 +599,7 @@ function Skinner:AchievementUI()
 	self:skinSlider(AchievementFrameComparisonContainerScrollBar)
 	
 	-- Summary Panel
-	self:getChild(AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:getChild(AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	local types = {"Player", "Friend"}
 	for _, type in next, types do
 		_G["AchievementFrameComparisonSummary"..type]:SetBackdrop(nil)
@@ -614,7 +627,7 @@ function Skinner:AchievementUI()
 		end
 	end
 	self:SecureHook("AchievementFrameComparison_UpdateStats", function()
---		self:Debug("AFC_US")
+-- 		self:Debug("AFC_US")
 		skinComparisonStats()
 	end)
 	self:SecureHook(AchievementFrameComparisonStatsContainer, "Show", function()
@@ -624,7 +637,15 @@ function Skinner:AchievementUI()
 	if achievementFunctions == COMPARISON_STAT_FUNCTIONS then skinComparisonStats() end
 	
 -->>-- Tabs
-	for i = 1, 2 do
+	local function ttOnClick()
+		for i = 1, AchievementFrame.numTabs do -- for ALL tabs
+			local tabObj = _G["AchievementFrameTab"..i]
+			if i == AchievementFrame.selectedTab then self:setActiveTab(tabObj)
+			else self:setInactiveTab(tabObj) end
+		end
+	end
+	if not self.db.profile.TexturedTab then ttOnClick = nil end
+	for i = 1, AchievementFrame.numTabs do -- for ALL tabs
 		local tabObj = _G["AchievementFrameTab"..i]
 		if i == 1 then
 			self:moveObject(tabObj, nil, nil, "+", 4)
@@ -633,32 +654,14 @@ function Skinner:AchievementUI()
 		end 
 		self:keepFontStrings(tabObj)
 		self:moveObject(tabObj.text, nil, nil, "+", 5)
-		self:RawHookScript(tabObj, "OnClick", function(this) -- hook this to stop tab text moving
-			AchievementFrameTab_OnClick(this:GetID())
-			PlaySound("igCharacterInfoTab")
-		end)
+		-- hook this to stop tab text moving
+		self:RawHook(tabObj.text , "SetPoint", function()	end, true)
 		if self.db.profile.TexturedTab then
 			self:applySkin(tabObj, nil, 0, 1)
 			if i == 1 then self:setActiveTab(tabObj)
 			else self:setInactiveTab(tabObj) end
+			self:SecureHookScript(tabObj, "OnClick", function(this) ttOnClick() end)
 		else self:applySkin(tabObj) end
-	end
-	if self.db.profile.TexturedTab then 
-		local function ttOnClick()
-			for i = 1, 2 do
-				local tabObj = _G["AchievementFrameTab"..i]
-				if i == AchievementFrame.selectedTab then self:setActiveTab(tabObj)
-				else self:setInactiveTab(tabObj) end
-			end
-		end
-		self:SecureHook("AchievementFrameTab_OnClick", function(id)
---			self:Debug("AFT_OC:[%s]", id)
-			ttOnClick()
-		end)
-		self:SecureHook("AchievementFrameComparisonTab_OnClick", function(id)
---			self:Debug("AFCT_OC:[%s]", id)
-			ttOnClick()
-		end)
 	end
 	
 	-- skin the Alert frames

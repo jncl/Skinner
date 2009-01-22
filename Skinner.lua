@@ -20,8 +20,8 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0", true)
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
---check to see if running on WotLK
-Skinner.isWotLK = GetCVarBool and true or false
+--check to see if running on patch 3.0.8
+Skinner.isPatch = GM_CHAT and true or false
 
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
@@ -32,6 +32,7 @@ function Skinner:OnInitialize()
 
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
+	if self.isPatch then self:Debug("Patch detected") end
 --@end-alpha@
 
 	-- setup the default DB values and register them
@@ -488,7 +489,7 @@ function Skinner:findFrame(height, width, children)
 --					self:Debug("UnNamed Frame's H, W: [%s, %s]", obj:GetHeight(), obj:GetWidth())
 					if math.ceil(obj:GetHeight()) == height and math.ceil(obj:GetWidth()) == width then
 						local kids = {}
-						for i = 1, select("#", obj:GetChildren()) do
+						for i = 1, obj:GetNumChildren() do
 							local v = select(i, obj:GetChildren())
 --							self:Debug("UnNamed Frame's Children's Type: [%s]", v:GetObjectType())
 							kids[i] = v:GetObjectType()
@@ -520,7 +521,7 @@ function Skinner:findFrame2(parent, objType, ...)
 
 	local frame
 
-	for i = 1, select("#", parent:GetChildren()) do
+	for i = 1, parent:GetNumChildren() do
 		local obj = select(i, parent:GetChildren())
 		if obj:GetName() == nil then
 			if obj:IsObjectType(objType) then
@@ -559,7 +560,7 @@ end
 function Skinner:findFrame3(name, element)
 --	self:Debug("findFrame3: [%s, %s]", name, element)
 
-	for i = 1, select("#", UIParent:GetChildren()) do
+	for i = 1, UIParent:GetNumChildren() do
 		local obj = select(i, UIParent:GetChildren())
 		if obj:GetName() == name then
 			if obj[element] then return obj end
@@ -570,19 +571,19 @@ function Skinner:findFrame3(name, element)
 
 end
 
-function Skinner:getChild(frame, childNo)
+function Skinner:getChild(obj, childNo)
 
-	if frame then
-		local child = select(childNo, frame:GetChildren())
+	if obj then
+		local child = select(childNo, obj:GetChildren())
 		return child
 	end
 
 end
 
-function Skinner:getRegion(frame, regNo)
+function Skinner:getRegion(obj, regNo)
 
-	if frame then
-		local region = select(regNo, frame:GetRegions())
+	if obj then
+		local region = select(regNo, obj:GetRegions())
 		return region
 	end
 
@@ -664,7 +665,7 @@ function Skinner:keepFontStrings(frame)
 
 --	self:Debug("keepFontStrings: [%s]", frame:GetName() or "???")
 
-	for i = 1, select("#", frame:GetRegions()) do
+	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
 		if reg:GetObjectType() ~= "FontString" then
 			reg:SetAlpha(0)
@@ -679,7 +680,7 @@ function Skinner:keepRegions(frame, regions)
 
 --	self:Debug("keepRegions: [%s]", frame:GetName() or "???")
 
-	for i = 1, select("#", frame:GetRegions()) do
+	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
 		local keep
 		if self:IsDebugging() and regions then
@@ -786,7 +787,7 @@ function Skinner:removeRegions(frame, regions)
 
 --	self:Debug("removeRegions: [%s]", frame:GetName() or "???")
 
-	for i = 1, select("#", frame:GetRegions()) do
+	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
 		if self:IsDebugging() and regions then
 			if reg:GetObjectType() == "FontString" then self:LevelDebug(3, "rr FS: [%s, %s]", frame:GetName() or "nil", i) end
@@ -1193,7 +1194,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	local function getRegions(object, lvl)
 
-		for i = 1, select("#", object:GetRegions()) do
+		for i = 1, object:GetNumRegions() do
 			local v = select(i, object:GetRegions())
 			print("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetObjectType() or "nil", v:GetWidth() or "nil", v:GetHeight() or "nil", v:GetObjectType() == "Texture" and string.format("%s : %s", v:GetTexture() or "nil", v:GetDrawLayer() or "nil") or "nil")
 		end
@@ -1205,7 +1206,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 		if not showKids then return end
 		if string.find(lvl, "-") == 2 and noDepth then return end
 
-		for i = 1, select("#", frame:GetChildren()) do
+		for i = 1, frame:GetNumChildren() do
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
 			print("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetWidth() or "nil", v:GetHeight() or "nil", objType or "nil", v:GetFrameStrata() or "nil")

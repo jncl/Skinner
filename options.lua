@@ -120,7 +120,7 @@ function Skinner:Defaults()
 		-- Others
 		TrackerFrame    = false,
 		-- LDB icon
-		MinimapIcon		= {hide = false, minimapPos = 210, radius = 90},
+		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
 		
 	}}
 

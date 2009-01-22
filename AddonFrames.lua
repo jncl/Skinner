@@ -49,7 +49,7 @@ function Skinner:SkinnerFrames()
 end
 
 local blizzLoDFrames = {
-	 "AchievementUI", "AuctionUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "GlyphUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI",
+	 "AchievementUI", "AuctionUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "GlyphUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI",
 }
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
@@ -96,7 +96,7 @@ function Skinner:AddonFrames()
 		"LightHeaded", "LinkHeaven", "Links", "LinksList", "LinkWrangler", "LoadIT", "LootHog", "LootLink", "LootScroll", "Ludwig", "Luggage",
 		"MacroBank", "MageEatDrinkAid", "MailTo", "MakeRocketGoNow", "MCP", "MetaMap", "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "MTLove", "MultiTips", "MusicPlayer", "MyBags", "myClock", "myMusic",
 		"NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
-		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA2", "Outfitter",
+		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA2", "Outfitter", "Overachiever",
 		"Palatank", "PallyPower", "Panda", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "Planner", "PlayerExpBar", "PoliteWhisper", "Possessions", "Postal", "Prat", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
 		"Quartz", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount",
@@ -215,7 +215,7 @@ function Skinner:AddonFrames()
 end
 
 local lodFrames = {
-	"Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", "Bongos", "Bongos_Options", "Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "Dominos_Config", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GFW_HuntersHelperUI", "GuildBankSearch", "ItemRackOptions", "MSBTOptions", "Perl_Config_Options", "SpamSentry_report", "SpecialTalentUI", "SuperInspect_UI", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
+	"Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", "Bongos", "Bongos_Options", "Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "Dominos_Config", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GFW_HuntersHelperUI", "GuildBankSearch", "ItemRackOptions", "MSBTOptions", "Overachiever_Tabs", "Perl_Config_Options", "SpamSentry_report", "SpecialTalentUI", "SuperInspect_UI", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
 }
 local lodAddons = {}
 for _, v in pairs(lodFrames) do

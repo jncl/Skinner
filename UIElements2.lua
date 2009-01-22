@@ -75,7 +75,7 @@ function Skinner:MenuFrames()
 --		self:Debug("IOL_DP: [%s, %s]", frame, frame:GetName())
 		if self.tekKonfig then self:tekKonfig() end -- hook tekKonfig objects if skin loaded
 		if not frame.skinned then
-			for i = 1, select("#", frame:GetChildren()) do
+			for i = 1, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())
 				if child then
 				 	if self:isDropDown(child) then self:skinDropDown(child)
@@ -819,12 +819,16 @@ function Skinner:Nameplates()
 
 	local function skinNameplates()
 
-		for i = 1, select("#", WorldFrame:GetChildren()) do
+		for i = 1, WorldFrame:GetNumChildren() do
 			local child = select(i, WorldFrame:GetChildren())
 			if isNameplate(child) then
+-- 				Skinner:ShowInfo(child, true)
+				-- child 1 is the flash texture
 				select(2, child:GetRegions()):SetAlpha(0) -- hide border texture
 				select(3, child:GetRegions()):SetAlpha(0) -- hide border texture
+				-- child 4 is the spell icon
 				select(5, child:GetRegions()):SetAlpha(0) -- hide glow effect
+				-- children 6 & 7 are text, 8 & 9 are raid icons
 				if not child.skinned then
 					for i = 1, 2 do -- skin both status bars
 						local sb = select(i, child:GetChildren())
@@ -864,6 +868,23 @@ function Skinner:Nameplates()
 
 end
 
+function Skinner:GMChatUI()
+	if not self.db.profile.HelpFrame then return end
+	
+	self:applySkin(self:getChild(GMChatStatusFrame, 1)) -- GM Chat Request frame
+	
+-->>-- GMChat Frame
+	self:keepFontStrings(GMChatTab)
+	GMChatTab:ClearAllPoints()
+	GMChatTab:SetPoint("BOTTOMLEFT", GMChatFrame, "TOPLEFT")
+	GMChatTab:SetPoint("TOPRIGHT", GMChatFrame, "TOPRIGHT", 0, 30)
+	GMChatFrameCloseButton:ClearAllPoints()
+	GMChatFrameCloseButton:SetPoint("RIGHT", GMChatTab, "RIGHT")
+	self:applySkin(GMChatTab)
+
+end
+
+-- PTR only
 function Skinner:FeedbackUI()
 	if not self.db.profile.Feedback or self.initialized.Feedback then return end
 	self.initialized.Feedback = true

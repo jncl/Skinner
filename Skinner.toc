@@ -72,7 +72,7 @@ CharacterFrames2.lua
 NPCFrames.lua
 #
 # UIElements1
-# includes Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help, KnowledgeBase, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress, TimeManager, Calendar
+# includes Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc KnowledgeBase), InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress, TimeManager, Calendar
 UIElements1.lua
 #
 # UIElements2
