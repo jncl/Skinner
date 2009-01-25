@@ -16,17 +16,7 @@ S - Skin request
 	
 	O	change select("#", obj:GetChildren()) to obj:GetNumChildren() in any skins
 	
-	O	nil out skins if no hooks in them as required
+	O	nil out skins, if no hooks in them, as required
 
-	N	Patch v3.0.8.9464
-√		- GMChatUI - New
-√		- Achievement UI (inc. Feats of Strength frame background & filter dropdown)
-x		- CombatLog - updates
-x		- Calendar - updates
-x		- Video Options Stereo sub panel - New
-x		- QuestLogFrame - some layers have changed from OVERLAY to ARTWORK or vice versa
-		
-√	S	Overachiever, requested by Sheepydaz, 19.01.09
-	
-	S	Gatherer
+√	S	Gatherer
 	

@@ -75,6 +75,7 @@
 <script file="SkinMe\Chinchilla.lua"/>
 <script file="SkinMe\Clique.lua"/>
 <script file="SkinMe\Combuctor.lua"/>
+<script file="SkinMe\Configator.lua"/>
 <script file="SkinMe\ConcessionStand.lua"/>
 <script file="SkinMe\Converse.lua"/>
 <script file="SkinMe\Cork.lua"/>
@@ -127,6 +128,7 @@
 <script file="SkinMe\FreierGeist_InstanceTime.lua"/>
 <script file="SkinMe\FruityLoots.lua"/>
 <script file="SkinMe\FuBar_PoisonReminderFu.lua"/>
+<script file="SkinMe\Gatherer.lua"/>
 <script file="SkinMe\GCInfo.lua"/>
 <script file="SkinMe\GemHelper.lua"/>
 <script file="SkinMe\GemMe.lua"/>
