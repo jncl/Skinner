@@ -17,6 +17,3 @@ S - Skin request
 	O	change select("#", obj:GetChildren()) to obj:GetNumChildren() in any skins
 	
 	O	nil out skins, if no hooks in them, as required
-
-√	S	Gatherer
-	
