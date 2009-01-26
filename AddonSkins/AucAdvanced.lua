@@ -44,7 +44,4 @@ function Skinner:AucAdvanced()
 		self:applySkin(AucAdvanced.Buy.Private.Prompt)
 	end
 	
-	-- skin the Library objects
-	self:Configator()
-	
 end

@@ -14,7 +14,6 @@ function Skinner:Gatherer()
 	self:keepFontStrings(Gatherer_SharingBlacklist_ScrollFrame)
 	self:skinScrollBar(Gatherer_SharingBlacklist_ScrollFrame)
 	
-	-- skin the Library objects
-	self:Configator()
+	self.Gatherer = nil
 	
 end

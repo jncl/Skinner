@@ -405,14 +405,17 @@ function Skinner:applySkin(frame, header, bba, ba, fh, bd)
 
 end
 
+local function errorhandler(err)
+	return geterrorhandler()(err)
+end
+
 function Skinner:checkAndRun(funcName)
 --	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 
 	-- handle errors from internal functions
 	if type(self[funcName]) == "function" then
-		local success, err = pcall(self[funcName], self)
+		local success, err = xpcall(function() return self[funcName](self) end, errorhandler)
 		if not success then
-			geterrorhandler()(err)
 			if self.db.profile.Errors then
 				self:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", funcName, err)
 			end
@@ -450,24 +453,25 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 		-- handle errors from internal functions
 		elseif type(self[addonFunc]) == "function" then
 --			self:Debug("checkAndRunAddOn#2:[%s, %s]", addonFunc, self[addonFunc])
-			success, err = pcall(self[addonFunc], self, LoD)
+			success, err = xpcall(function() return self[addonFunc](self, LoD) end, errorhandler)
+--[[
 		elseif type(self[addonFunc]) == "string" then
 --			self:Debug("checkAndRunAddOn#3:[%s, %s]", addonFunc, self[addonFunc])
 			-- add Skinner reference to string before running it
-			success, err = pcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc], addonFunc))() end)
+			success, err = xpcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc], addonFunc))() end, errorhandler)
 			-- throw away the string if it doesn't have a hook in it
 			if not string.match(self[addonFunc], "Hook[\(S]") then self[addonFunc] = nil end
 			-- run the associated Hook function if there is one
 			if self[addonFunc.."Hooks"] then
-				success, err = pcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc.."Hooks"], addonFunc))() end)
+				success, err = xpcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc.."Hooks"], addonFunc))() end, errorhandler)
 			end
+--]]
 		else
 			if self.db.profile.Warnings then
 				self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..addonFunc.."] not found in Skinner")
 			end
 		end
 		if not success then
-			geterrorhandler()(err)
 			if self.db.profile.Errors then
 				self:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", addonFunc, err)
 			end
@@ -573,19 +577,13 @@ end
 
 function Skinner:getChild(obj, childNo)
 
-	if obj then
-		local child = select(childNo, obj:GetChildren())
-		return child
-	end
+	if obj then return select(childNo, obj:GetChildren()) end -- this will return only 1 value
 
 end
 
 function Skinner:getRegion(obj, regNo)
 
-	if obj then
-		local region = select(regNo, obj:GetRegions())
-		return region
-	end
+	if obj then return select(regNo, obj:GetRegions()) end -- this will return only 1 value
 
 end
 

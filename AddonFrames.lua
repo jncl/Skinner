@@ -144,7 +144,7 @@ function Skinner:AddonFrames()
 	--	load Bongos support here if it is loaded
 	if IsAddOnLoaded("Bongos") then self:checkAndRunAddOn("Bongos") end
 
-	-- skin Dewdrop, Ace2, Tablet, Waterfall, OptionHouse, Ace3GUI & LibSimpleOptions frames
+	-- skin Dewdrop, Ace2, Tablet, Waterfall, OptionHouse, Ace3GUI, LibSimpleOptions & Configator library objects
 	local libsToSkin = {
 		["Dewdrop-2.0"] = "Dewdrop",
 		["AceAddon-2.0"] = "Ace2",
@@ -153,6 +153,7 @@ function Skinner:AddonFrames()
 		["OptionHouse-1.1"] = "OptionHouse",
 		["AceGUI-3.0"] = "Ace3",
 		["LibSimpleOptions-1.0"] = "LibSimpleOptions",
+		["Configator"] = "Configator",
 	}
 	for k, v in pairs(libsToSkin) do
 --		self:Debug("skin Libs:[%s, %s]", k, v)
