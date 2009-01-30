@@ -35,7 +35,7 @@ function Skinner:Altoholic()
 	end
 
 -->>--	Other Frames
-	for _, v in pairs({"Summary", "Auctions", "BagUsage", "Containers", "Equipment", "Mail", "Quests", "Recipes", "Reputations", "Search", "Skills"}) do
+	for _, v in pairs({"Activity", "Auctions", "BagUsage", "Containers", "Equipment", "GuildMembers", "GuildProfessions", "GuildBankTabs", "Mail", "Quests", "Recipes", "Reputations", "Search", "Skills", "Summary"}) do
 		local rcmObj = _G["AltoholicFrame"..v.."RightClickMenu"]
 		local sfObj = _G["AltoholicFrame"..v.."ScrollFrame"]
 		if rcmObj then self:skinDropDown(rcmObj) end
@@ -46,7 +46,8 @@ function Skinner:Altoholic()
 -->>--	Tabbed Frames
 	local obj
 	-- Summary tab
-	for i = 1, 4 do
+	self:skinDropDown(AltoholicTabSummary_SelectLocation)
+	for i = 1, 7 do
 		obj = _G["AltoholicTabSummaryMenuItem"..i]
 		self:keepRegions(obj, {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)

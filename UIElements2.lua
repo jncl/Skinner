@@ -73,7 +73,6 @@ function Skinner:MenuFrames()
 	-- Hook this to skin any Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(frame)
 --		self:Debug("IOL_DP: [%s, %s]", frame, frame:GetName())
-		if self.tekKonfig then self:tekKonfig() end -- hook tekKonfig objects if skin loaded
 		if not frame.skinned then
 			for i = 1, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())

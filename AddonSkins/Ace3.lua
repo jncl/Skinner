@@ -25,7 +25,7 @@ function Skinner:Ace3()
 				end, true)
 			elseif objType == "MultiLineEditBox" then
 				self:applySkin(obj.backdrop)
-				for i = 1, select("#", obj.backdrop:GetChildren()) do
+				for i = 1, obj.backdrop:GetNumChildren() do
 					local child = select(i, obj.backdrop:GetChildren())
 					if child:IsObjectType("ScrollFrame") then
 						self:removeRegions(child)

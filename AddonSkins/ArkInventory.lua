@@ -45,8 +45,7 @@ function Skinner:ArkInventory1()
 
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then ARKINV_Tooltip:SetBackdrop(self.backdrop) end
-		self:RawHookScript(ARKINV_Tooltip, "OnShow", function(this)
-			self.hooks[this].OnShow(this)
+		self:SecureHookScript(ARKINV_Tooltip, "OnShow", function(this)
 			self:skinTooltip(ARKINV_Tooltip)
 		end)
 	end

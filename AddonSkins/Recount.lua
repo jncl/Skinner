@@ -41,7 +41,7 @@ function Skinner:Recount()
 	end)
 
 -->>-- skin Realtime frames already created
-	for i = 1, select("#", UIParent:GetChildren()) do
+	for i = 1, UIParent:GetNumChildren() do
 		local obj = select(i, UIParent:GetChildren())
 		if obj:GetName() == nil and obj:IsObjectType("Frame") and obj.Graph then
 --			self:Debug("Recount_RTW: [%s, %s, %s]", obj, obj.Title:GetText(), obj.id)

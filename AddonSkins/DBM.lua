@@ -26,9 +26,9 @@ function Skinner:DBM_GUI()
 -- 		Skinner:Debug("fixForBarSetup: [%s, %s]", barSetupSubPanel, barSetupSmallSubPanel)
 		if barSetupSubPanel and barSetupSmallSubPanel then
 			-- reparent the sliders
--- 			Skinner:Debug("fixForBarSetup#2: [%s]", select("#", barSetupSubPanel:GetChildren()))
+-- 			Skinner:Debug("fixForBarSetup#2: [%s]", barSetupSubPanel:GetNumChildren())
 			-- work backwards as the reparenting shortens the table
-			for i = select("#", barSetupSubPanel:GetChildren()), 1, -1 do
+			for i = barSetupSubPanel:GetNumChildren(), 1, -1 do
 				local child = select(i, barSetupSubPanel:GetChildren())
 				if child:IsObjectType("Slider") then
 					child:SetParent(barSetupSmallSubPanel)
@@ -60,7 +60,7 @@ function Skinner:DBM_GUI()
 -- 				Skinner:Debug("skinSubPanel:[%s, %s, %s]", panel, subPanel.frame, subPanel.framename)
 				Skinner:applySkin(subPanel.frame)
 				-- check to see if any children are dropdowns
-				for i = 1, select("#", subPanel.frame:GetChildren()) do
+				for i = 1, subPanel.frame:GetNumChildren() do
 					local child = select(i, subPanel.frame:GetChildren())
 					if Skinner:isDropDown(child) then
 						Skinner:skinDropDown(child)
@@ -139,9 +139,8 @@ function Skinner:DBM_GUI()
 		if self.db.profile.TexturedTab then
 			self:applySkin(tabName, nil, 0, 1)
 			if i == 1 then self:setActiveTab(tabName) else self:setInactiveTab(tabName) end
-			self:RawHookScript(tabName, "OnClick", function(this)
+			self:SecureHookScript(tabName, "OnClick", function(this)
 --				self:Debug("DBM_GUI_OptionsFrameTab_OnClick: [%s, %s]", this:GetName(), this:GetID())
-				self.hooks[this].OnClick(this)
 				for i = 1, 2 do
 					local tabName = _G["DBM_GUI_OptionsFrameTab"..i]
 					if i == this:GetID() then self:setActiveTab(tabName) else self:setInactiveTab(tabName) end

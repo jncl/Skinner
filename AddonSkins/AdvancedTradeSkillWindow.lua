@@ -41,8 +41,7 @@ function Skinner:AdvancedTradeSkillWindow()
 	-- Tooltips
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then ATSWTradeskillTooltip:SetBackdrop(self.backdrop) end
-		self:RawHookScript(ATSWTradeskillTooltip, "OnShow", function(this)
-			self.hooks[ATSWTradeskillTooltip].OnShow(this)
+		self:SecureHookScript(ATSWTradeskillTooltip, "OnShow", function(this)
 			self:skinTooltip(ATSWTradeskillTooltip)
 		end)
 	end

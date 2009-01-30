@@ -23,7 +23,7 @@ function Skinner:BankItems()
 		self:skinDropDown(BankItems_GuildDropdown)
 		self:moveObject(self:getRegion(BankItems_GBFrame, 4), nil, nil, "-", 4) -- Title text
 		self:applySkin(BankItems_GBFrame)
-		for i = 1, select("#", BankItems_GBFrame:GetChildren()) do
+		for i = 1, BankItems_GBFrame:GetNumChildren() do
 			local child = select(i, BankItems_GBFrame:GetChildren())
 			if not child:IsObjectType("Button") then
 				if math.floor(child:GetWidth()) == 42 and math.ceil(child:GetHeight()) == 50 then

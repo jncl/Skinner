@@ -4,11 +4,11 @@ function Skinner:TradeTabs()
 
 	local function skinTradeTabs(frame, xAdj, xOfs)
 
--- 		Skinner:Debug("skinTradeTabs: [%s, %s, %s]", frame:GetName(), xAdj, xOfs)
+ 		Skinner:Debug("skinTradeTabs: [%s, %s, %s]", frame:GetName(), xAdj, xOfs)
 
 		local prev
 
-		for i = 1, select("#", frame:GetChildren()) do
+		for i = 1, frame:GetNumChildren() do
 			local obj = select(i, frame:GetChildren())
 			if obj:GetName() == nil and obj:IsObjectType("CheckButton") then
 				Skinner:removeRegions(obj, {1}) -- N.B. other regions are icon and highlight
@@ -21,12 +21,16 @@ function Skinner:TradeTabs()
 
 	end
 
-	if IsAddOnLoaded("Skillet") and not SkilletFrame.ttskinned then
-		skinTradeTabs(SkilletFrame, "-", 2)
-	else
-		if TradeSkillFrame and not TradeSkillFrame.ttskinned then
-			skinTradeTabs(TradeSkillFrame, "+", 30)
+	self:SecureHook(TradeTabs , "Initialize", function()
+		if IsAddOnLoaded("Skillet") and not SkilletFrame.ttskinned then
+			skinTradeTabs(SkilletFrame, "-", 2)
+		else
+			if TradeSkillFrame and not TradeSkillFrame.ttskinned then
+				skinTradeTabs(TradeSkillFrame, "+", 30)
+			end
 		end
-	end
+		self:Unhook(TradeTabs, "Initialize")
+		self.TradeTabs = nil
+	end)
 
 end

@@ -48,9 +48,8 @@ function Skinner:MailTo()
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then MailTo_MailableTooltip:SetBackdrop(self.backdrop) end
-		self:RawHookScript(MailTo_MailableTooltip, "OnShow", function(object)
+		self:SecureHookScript(MailTo_MailableTooltip, "OnShow", function(object)
 --			self:Debug("MailTo_MailableTooltip_OnShow: [%s, %s]", this:GetName(), object:GetName())
-			self.hooks[MailTo_MailableTooltip].OnShow(object)
 			self:skinTooltip(MailTo_MailableTooltip)
 			end)
 	end

@@ -8,10 +8,10 @@ function Skinner:ACP()
 	ACP_AddonList:SetHeight(ACP_AddonList:GetHeight() * self.FyMult)
 
 	-- resize the frame's children to match the frame size
-	for i = 1, select("#", ACP_AddonList:GetChildren()) do
-		local v = select(i, ACP_AddonList:GetChildren())
-		v:SetWidth(v:GetWidth() * self.FxMult)
-		v:SetHeight(v:GetHeight() * self.FyMult)
+	for i = 1, ACP_AddonList:GetNumChildren() do
+		local child = select(i, ACP_AddonList:GetChildren())
+		child:SetWidth(child:GetWidth() * self.FxMult)
+		child:SetHeight(child:GetHeight() * self.FyMult)
 	end
 
 	local xOfs, yOfs, yOfs2 = 40, 10, 12

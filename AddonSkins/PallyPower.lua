@@ -2,9 +2,8 @@
 function Skinner:PallyPower()
 
 	-- Hook this as the config frame changes height
-	self:RawHookScript(PallyPowerConfigFrame, "OnShow", function(this)
+	self:SecureHookScript(PallyPowerConfigFrame, "OnShow", function(this)
 --		self:Debug("PPCF_OnShow: [%s]", #AllPallys)
-		self.hooks[PallyPowerConfigFrame].OnShow()
 		local fh = 14 + 24 + 56 + (#AllPallys * 56) + 22
 		self:applySkin(PallyPowerConfigFrame, nil, nil, nil, fh)
 	end)

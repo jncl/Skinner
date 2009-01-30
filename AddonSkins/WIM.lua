@@ -30,7 +30,7 @@ function Skinner:WIM() -- WIM3
 		
 --		Skinner:Debug("checkKids:[%s, %s]", obj, obj:GetName() or "<Anon>")
 		
-		for i = 1, select("#", obj:GetChildren()) do
+		for i = 1, obj:GetNumChildren() do
 			local child = select(i, obj:GetChildren())
 --			Skinner:Debug("checkKids#2:[%s, %s]", obj, child)
 			if Skinner:isDropDown(child) then Skinner:skinDropDown(child)

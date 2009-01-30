@@ -30,9 +30,8 @@ function Skinner:Earth()
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then EarthTooltip:SetBackdrop(self.backdrop) end
-		self:RawHookScript(EarthTooltip, "OnShow", function(this)
+		self:SecureHookScript(EarthTooltip, "OnShow", function(this)
 --			self:Debug("ET_OS: [%s]", this:GetName())
-			self.hooks[EarthTooltip].OnShow(this)
 			self:skinTooltip(EarthTooltip)
 		end)
 	end

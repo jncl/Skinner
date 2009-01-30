@@ -1,7 +1,7 @@
 
 function Skinner:MakeRocketGoNow()
 
-	for i = 1, select("#", UIParent:GetChildren()) do
+	for i = 1, UIParent:GetNumChildren() do
 		local child = select(i, UIParent:GetChildren())
 		if child:IsObjectType("Button") and child:GetName() == nil then
 			if child.GetBackdropColor then

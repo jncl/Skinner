@@ -8,7 +8,7 @@ function Skinner:Pawn()
 	self:skinDropDown(PawnUIFrame_CurrentScaleDropDown)
 	
 	---- Stats List
-	for i = 1, select("#", PawnUIScalesTabPage:GetChildren()) do
+	for i = 1, PawnUIScalesTabPage:GetNumChildren() do
 		local child = select(i, PawnUIScalesTabPage:GetChildren())
 		if child:GetName() == nil then self:applySkin(child) end
 	end

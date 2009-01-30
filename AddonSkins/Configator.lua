@@ -34,7 +34,7 @@ function Skinner:Configator()
 	if clib then
 		self:RawHook(clib, "Create", function(this, ...)
 			local frame = self.hooks[clib].Create(this, ...)
-			self:Debug("Configator_Create: [%s]", frame:GetName())
+--			self:Debug("Configator_Create: [%s]", frame:GetName())
 			if not frame.skinned then
 				self:applySkin(frame.Backdrop)
 				frame.skinned = true

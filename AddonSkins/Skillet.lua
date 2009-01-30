@@ -42,8 +42,7 @@ function Skinner:Skillet()
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then SkilletTradeskillTooltip:SetBackdrop(self.backdrop) end
-		self:RawHookScript(SkilletTradeskillTooltip, "OnShow", function(this)
-			self.hooks[SkilletTradeskillTooltip].OnShow(this)
+		self:SecureHookScript(SkilletTradeskillTooltip, "OnShow", function(this)
 			self:skinTooltip(SkilletTradeskillTooltip)
 		end)
 	end

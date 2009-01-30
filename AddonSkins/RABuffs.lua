@@ -65,8 +65,7 @@ function Skinner:RABuffs()
 -->>--	Tabs
 	-- hook these to manage textured tabs
 	if self.db.profile.TexturedTab then
-		self:RawHookScript(RAB_SettingsFrame, "OnShow", function()
-			self.hooks[RAB_SettingsFrame].OnShow()
+		self:SecureHookScript(RAB_SettingsFrame, "OnShow", function()
 			self:moveObject(RAB_SettingsFrameTab2, "+", 10, nil, nil)
 			self:moveObject(RAB_SettingsFrameTab3, "+", 10, nil, nil)
 		end)

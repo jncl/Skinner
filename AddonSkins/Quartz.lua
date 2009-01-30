@@ -17,7 +17,7 @@ function Skinner:Quartz()
 	if Quartz:HasModule('Mirror') and Quartz:IsModuleActive('Mirror') then
 		local function skinMSBs()
 
-			for i = 1, select("#", UIParent:GetChildren()) do
+			for i = 1, UIParent:GetNumChildren() do
 				local obj = select(i, UIParent:GetChildren())
 				-- if this is a Quartz Mirror Bar then skin it
 				if obj:IsObjectType('StatusBar') and obj.timetext then

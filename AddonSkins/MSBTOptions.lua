@@ -61,7 +61,7 @@ function Skinner:MSBTOptions()
 			if i > 3 then
 				-- hook the show method so we can skin the Option tab frame elements
 				Skinner:SecureHook(cframe, "Show", function(this)
-					for i = 1, select("#", this:GetChildren()) do
+					for i = 1, this:GetNumChildren() do
 						local obj = select(i, this:GetChildren())
 						if obj:IsObjectType("Frame") and not obj.skinned then
 							if obj.selectedItem then -- it's a dropdown
@@ -94,7 +94,7 @@ function Skinner:MSBTOptions()
 		Skinner:keepFontStrings(Skinner:getChild(Skinner:getChild(MSBTMainOptionsFrame, 3), 2))
 
 	-->>--	dropdown listbox frame
-		for i = 1, select("#", UIParent:GetChildren()) do
+		for i = 1, UIParent:GetNumChildren() do
 			local obj = select(i, UIParent:GetChildren())
 			if obj:GetName() == nil and obj:IsObjectType("Frame") then
 				local backdrop = obj:GetBackdrop()

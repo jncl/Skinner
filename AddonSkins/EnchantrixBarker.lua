@@ -4,8 +4,7 @@ function Skinner:EnchantrixBarker()
 	self.initialized.EnchantrixBarker = true
 
 	if not IsAddOnLoaded("AdvancedTradeSkillWindow") then
-		self:RawHookScript(Enchantrix_BarkerDisplayButton, "OnShow", function()
-			self.hooks[Enchantrix_BarkerDisplayButton].OnShow()
+		self:SecureHookScript(Enchantrix_BarkerDisplayButton, "OnShow", function()
 			self:moveObject(Enchantrix_BarkerDisplayButton, nil, nil, "+", 15)
 			self:Unhook(Enchantrix_BarkerDisplayButton, "OnShow")
 		end)

@@ -21,7 +21,7 @@ function Skinner:Cartographer_Notes()
 			Skinner:keepFontStrings(CNNNF)
 			Skinner:moveObject(CNNNF.header, nil, nil, "+", 6, CNNNF)
 			local last = nil
-			for i = 1, select("#", CNNNF:GetChildren()) do
+			for i = 1, CNNNF:GetNumChildren() do
 				local v = select(i, CNNNF:GetChildren())
 				if v:GetObjectType() == "EditBox"  then
 					Skinner:skinEditBox(v, {9})

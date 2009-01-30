@@ -2,7 +2,7 @@
 function Skinner:Squeenix()
 
 	-- Find & Skin the Squeenix border
-	for i = 1, select("#", Minimap:GetChildren()) do
+	for i = 1, Minimap:GetNumChildren() do
 		local obj = select(i, Minimap:GetChildren())
 		if obj:IsObjectType("Button") and obj:GetName() == nil then
 			obj:Hide()

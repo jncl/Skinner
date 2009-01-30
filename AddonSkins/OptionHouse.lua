@@ -40,7 +40,7 @@ function Skinner:OptionHouse()
 		-- move the title
 		Skinner:getRegion(ohFrame, 2):SetPoint("TOP", 0, -6)
 		-- move the close button
-		for i = 1, select("#", ohFrame:GetChildren()) do
+		for i = 1, ohFrame:GetNumChildren() do
 			local v = select(i, ohFrame:GetChildren())
 --		for k, v in pairs({ ohFrame:GetChildren() }) do
 			if v:GetObjectType() == "Button"

@@ -577,25 +577,24 @@ end
 
 function Skinner:getChild(obj, childNo)
 
-	if obj then return select(childNo, obj:GetChildren()) end -- this will return only 1 value
+	if obj and childNo then return (select(childNo, obj:GetChildren())) end -- this will return only 1 value
 
 end
 
 function Skinner:getRegion(obj, regNo)
 
-	if obj then return select(regNo, obj:GetRegions()) end -- this will return only 1 value
+	if obj and regNo then return (select(regNo, obj:GetRegions())) end -- this will return only 1 value
 
 end
 
 local sbGlazed = {}
 function Skinner:glazeStatusBar(statusBar, fi, texture)
 --@alpha@
-	assert(statusBar and statusBar:GetObjectType() == "StatusBar", "Not a StatusBar\n"..debugstack())
+	assert(statusBar and statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n"..debugstack())
 --@end-alpha@
 
-	if not statusBar then return end
-
-	if statusBar:GetObjectType() ~= "StatusBar" then return end
+	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
+	
 	statusBar:SetStatusBarTexture(self.sbTexture)
 	table.insert(sbGlazed, statusBar)
 
@@ -665,7 +664,7 @@ function Skinner:keepFontStrings(frame)
 
 	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
-		if reg:GetObjectType() ~= "FontString" then
+		if not reg:IsObjectType("FontString") then
 			reg:SetAlpha(0)
 		end
 	end
@@ -682,7 +681,7 @@ function Skinner:keepRegions(frame, regions)
 		local reg = select(i, frame:GetRegions())
 		local keep
 		if self:IsDebugging() and regions then
-			if reg:GetObjectType() == "FontString" then self:LevelDebug(3, "kr FS: [%s, %s]", frame:GetName() or "nil", i) end
+			if reg:IsObjectType("FontString") then self:LevelDebug(3, "kr FS: [%s, %s]", frame:GetName() or "nil", i) end
 		end
 		-- if we have a list, hide the regions not in that list
 		if regions then
@@ -709,8 +708,7 @@ function Skinner:makeMFRotatable(frame)
 	frame.cursorPosition = {}
 
 	if not self:IsHooked(frame, "OnUpdate") then
-		self:RawHookScript(frame, "OnUpdate", function(...)
-			self.hooks[frame].OnUpdate(...)
+		self:SecureHookScript(frame, "OnUpdate", function(...)
 			if this.dragging then
 				local x,y = GetCursorPosition()
 				if this.cursorPosition.x > x then
@@ -721,15 +719,13 @@ function Skinner:makeMFRotatable(frame)
 				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
 			end
 		end)
-		self:RawHookScript(frame, "OnMouseDown", function()
-			self.hooks[frame].OnMouseDown()
+		self:SecureHookScript(frame, "OnMouseDown", function()
 			if arg1 == "LeftButton" then
 				this.dragging = true
 				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
 			end
 		end)
-		self:RawHookScript(frame, "OnMouseUp", function()
-			self.hooks[frame].OnMouseUp()
+		self:SecureHookScript(frame, "OnMouseUp", function()
 			if this.dragging then
 				this.dragging = false
 				this.cursorPosition.x, this.cursorPosition.y = nil
@@ -788,7 +784,7 @@ function Skinner:removeRegions(frame, regions)
 	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
 		if self:IsDebugging() and regions then
-			if reg:GetObjectType() == "FontString" then self:LevelDebug(3, "rr FS: [%s, %s]", frame:GetName() or "nil", i) end
+			if reg:IsObjectType("FontString") then self:LevelDebug(3, "rr FS: [%s, %s]", frame:GetName() or "nil", i) end
 		end
 		-- if we have a list, hide the regions in that list
 		-- otherwise, hide all regions of the frame
@@ -943,9 +939,9 @@ function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
 
 end
 
-function Skinner:skinEditBox(editBox, regions, noSkin, noHeight)
+function Skinner:skinEditBox(editBox, regions, noSkin, noHeight, noWidth)
 --@alpha@
-	assert(editBox and editBox:GetObjectType() == "EditBox", "Not an EditBox\n"..debugstack())
+	assert(editBox and editBox:IsObjectType("EditBox"), "Not an EditBox\n"..debugstack())
 --@end-alpha@
 
 	if not editBox then return end
@@ -961,7 +957,7 @@ function Skinner:skinEditBox(editBox, regions, noSkin, noHeight)
 	local l, r, t, b = editBox:GetTextInsets()
 	editBox:SetTextInsets(l + 5, r + 5, t, b)
 	if not (noHeight or editBox:IsMultiLine()) then editBox:SetHeight(26) end
-	editBox:SetWidth(editBox:GetWidth() + 5)
+	if not noWidth then editBox:SetWidth(editBox:GetWidth() + 5) end
 
 	if not noSkin then self:skinUsingBD2(editBox) end
 
@@ -1019,7 +1015,7 @@ end
 
 function Skinner:skinScrollBar(scrollFrame, sbPrefix, sbObj, narrow)
 --@alpha@
-	assert(scrollFrame and scrollFrame:GetObjectType() == "ScrollFrame", "Not a ScrollFrame\n"..debugstack())
+	assert(scrollFrame and scrollFrame:IsObjectType("ScrollFrame"), "Not a ScrollFrame\n"..debugstack())
 --@end-alpha@
 
 	if not scrollFrame then return end
@@ -1037,7 +1033,7 @@ end
 
 function Skinner:skinSlider(slider)
 --@alpha@
-	assert(slider and slider:GetObjectType() == "Slider", "Not a Slider\n"..debugstack())
+	assert(slider and slider:IsObjectType("Slider"), "Not a Slider\n"..debugstack())
 --@end-alpha@
 
 	self:keepFontStrings(slider)
@@ -1208,7 +1204,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
 			print("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetWidth() or "nil", v:GetHeight() or "nil", objType or "nil", v:GetFrameStrata() or "nil")
-			if objType == "Frame" or objType == "Button" or objType == "StatusBar" or objType == "Slider" then
+			if objType == "Frame" or objType == "Button" or objType == "StatusBar" or objType == "Slider" or objType == "ScrollFrame" then
 				getRegions(v, lvl.."-"..i)
 				getChildren(v, lvl.."-"..i)
 			end

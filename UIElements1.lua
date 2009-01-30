@@ -36,9 +36,8 @@ function Skinner:Tooltips()
 	end
 
 	-- Hook this to deal with GameTooltip FadeHeight issues
-	self:RawHookScript(GameTooltipStatusBar, "OnHide", function(this)
+	self:SecureHookScript(GameTooltipStatusBar, "OnHide", function(this)
 --		self:Debug("GameTooltipStatusBar_OnHide: [%s]", this:GetName())
-		self.hooks[this].OnHide()
 		if GameTooltip:IsShown() then
 			cHeight = math.ceil(GameTooltip:GetHeight())
 --			self:Debug("GTSB_OnHide: [%s]", cHeight)
@@ -48,18 +47,16 @@ function Skinner:Tooltips()
 		end
 		end)
 
-	-- MUST hook to OnShow script rather than the Show method otherwise not every tooltip is skinned
-	-- properly everytime
+	-- MUST hook to OnShow script rather than the Show method otherwise not every tooltip is skinned properly everytime
 	for _, tooltip in pairs(self.ttList) do
 		local ttip = _G[tooltip]
 --		self:Debug("Tooltip:[%s, %s]", tooltip, ttip)
-		self:RawHookScript(ttip, "OnShow", function(this)
+		self:SecureHookScript(ttip, "OnShow", function(this)
 --			self:Debug("Tooltip OnShow: [%s]", this:GetName())
 			self:skinTooltip(this)
 			if this == GameTooltip and self.db.profile.Tooltips.glazesb then
 				self:glazeStatusBar(GameTooltipStatusBar, 0)
 			end
-			self.hooks[this].OnShow(this)
 			end)
 	end
 

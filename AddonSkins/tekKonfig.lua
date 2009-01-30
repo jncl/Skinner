@@ -43,9 +43,8 @@ function Skinner:tekKonfig()
 		self:RawHook(tKS, "new", function(parent, offset, step)
 --			self:Debug("tKS:[%s, %s, %s]", parent, offset, step)
 			local frame, up, down, border = self.hooks[tKS].new(parent, offset, step)
-			border:SetFrameLevel(frame:GetFrameLevel())
-			frame:GetThumbTexture():SetAlpha(1)
-			self:skinUsingBD2(border)
+			self:skinSlider(frame)
+			border:SetBackdrop(nil)
 			return frame, up, down, border
 		end, true)
 	end

@@ -31,8 +31,7 @@ function Skinner:Examiner()
 -->>-- Feats Frame
 	Examiner.featsDropDown:SetBackdrop(nil)
 	-- hook this to skin the dropdown menu
-	self:RawHookScript(Examiner.featsDropDown.button, "OnClick", function(this)
-		self.hooks[this].OnClick(this)
+	self:SecureHookScript(Examiner.featsDropDown.button, "OnClick", function(this)
 		self:applySkin(AzDropDownScroll:GetParent())
 		self:keepFontStrings(AzDropDownScroll)
 		self:skinScrollBar(AzDropDownScroll)

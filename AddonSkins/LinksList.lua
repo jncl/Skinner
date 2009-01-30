@@ -8,8 +8,7 @@ function Skinner:LinksList()
 
 	local llsfr = "LinksList_SearchFrame_Reusable"
 
-	self:RawHookScript(LinksList_ToggleButton, "OnClick", function()
-		self.hooks[this].OnClick()
+	self:SecureHookScript(LinksList_ToggleButton, "OnClick", function()
 		LinksList_ResultsFrame:SetWidth(LinksList_ResultsFrame:GetWidth() * self.FxMult)
 		LinksList_ResultsFrame:SetHeight(LinksList_ResultsFrame:GetHeight() * self.FyMult)
 		self:keepFontStrings(LinksList_ResultsFrame)
@@ -25,8 +24,7 @@ function Skinner:LinksList()
 		self:moveObject(LinksList_ResultsFrame_QuickSearchFrame, "-", 5, "-", 70)
 		self:applySkin(LinksList_ResultsFrame_QuickSearchFrame)
 --		hook this to skin the Advanced Search Frame
-		self:RawHookScript(LinksList_ResultsFrame_AdvancedSearchButton, "OnClick", function()
-			self.hooks[this].OnClick()
+		self:SecureHookScript(LinksList_ResultsFrame_AdvancedSearchButton, "OnClick", function()
 			if not LinksList_SearchFrame.skinned then
 				self:keepFontStrings(LinksList_SearchFrame)
 				self:moveObject(LinksList_SearchFrameTitleBoxText, nil, nil, "-", 7)
@@ -36,7 +34,7 @@ function Skinner:LinksList()
 				self:applySkin(LinksList_SearchFrame)
 				LinksList_SearchFrame.skinned = true
 			end
-			for i = 1, select("#", LinksList_SearchFrame:GetChildren()) do
+			for i = 1, LinksList_SearchFrame:GetNumChildren() do
 				local v = select(i, LinksList_SearchFrame:GetChildren())
 				if not v.skinned then
 					local objName = v:GetName()

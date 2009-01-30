@@ -8,12 +8,32 @@ N - New Version
 O - Other change
 S - Skin request
 
-	O	Replace RawHookScript with SecureHookScript as required
+	O	Tidy up Debug/Print functions
+	
+	O	pcall/xpcall/safecall ?
+	
+	
+	local function safecall(func,...)
+		local success,err = pcall(func,...)
+		if not success then
+			geterrorhandler()(err)
+		end
+	end
+
+	
+	
 	
 	O	Table reuse ?
 	
-	O	change select("#", obj:GetRegions()) to obj:GetNumRegions() in any skins
+≈	O	nil out skins, if no hooks in them, as required
+
+√	O	Moved GFW_HuntersHelperUI to ObsoleteSkins, as reported by Curace, 26.01.09
 	
-	O	change select("#", obj:GetChildren()) to obj:GetNumChildren() in any skins
+x	I	Overachiever, reported by Gabriel, 29.01.09
+√		- this is caused by getChild/getRegion error, now fixed
+		
+√	I	Panda, reported by Gabriel, 29.01.09
 	
-	O	nil out skins, if no hooks in them, as required
+√	N	Altoholic, reported by hpm, 29.01.09
+	
+	I	CharacterViewer skin needs updating
