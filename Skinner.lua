@@ -409,20 +409,25 @@ local function errorhandler(err)
 	return geterrorhandler()(err)
 end
 
+local function safecall(funcName, LoD)
+	-- handle errors from internal functions
+	local success, err = xpcall(function() return Skinner[funcName](Skinner, LoD) end, errorhandler)
+	if not success then
+		if Skinner.db.profile.Errors then
+			Skinner:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", funcName)
+		end
+	end
+end
+
 function Skinner:checkAndRun(funcName)
 --	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 
-	-- handle errors from internal functions
 	if type(self[funcName]) == "function" then
-		local success, err = xpcall(function() return self[funcName](self) end, errorhandler)
-		if not success then
-			if self.db.profile.Errors then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", funcName, err)
-			end
-		end
+		safecall(funcName)
 	else
-		self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..funcName.."] not found in Skinner")
-		print(debugstack())
+		if self.db.profile.Warnings then
+			self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..funcName.."] not found in Skinner")
+		end
 	end
 
 end
@@ -444,36 +449,17 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 --			self:Debug(addonName, "skin unloaded as Addon not loaded")
 		end
 	else
-		local success, err = true
 		-- check to see if AddonSkin is loaded when Addon is loaded
 		if not LoD and not self[addonFunc] then
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, addonName, "loaded but skin not found in SkinMe directory")
+				self:CustomPrint(1, 0, 0, nil, nil, nil, addonName, "loaded but skin not found in the SkinMe directory")
 			end
-		-- handle errors from internal functions
 		elseif type(self[addonFunc]) == "function" then
 --			self:Debug("checkAndRunAddOn#2:[%s, %s]", addonFunc, self[addonFunc])
-			success, err = xpcall(function() return self[addonFunc](self, LoD) end, errorhandler)
---[[
-		elseif type(self[addonFunc]) == "string" then
---			self:Debug("checkAndRunAddOn#3:[%s, %s]", addonFunc, self[addonFunc])
-			-- add Skinner reference to string before running it
-			success, err = xpcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc], addonFunc))() end, errorhandler)
-			-- throw away the string if it doesn't have a hook in it
-			if not string.match(self[addonFunc], "Hook[\(S]") then self[addonFunc] = nil end
-			-- run the associated Hook function if there is one
-			if self[addonFunc.."Hooks"] then
-				success, err = xpcall(function() return assert(loadstring("local self = Skinner "..self[addonFunc.."Hooks"], addonFunc))() end, errorhandler)
-			end
---]]
+			safecall(addonFunc, LoD)
 		else
 			if self.db.profile.Warnings then
 				self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..addonFunc.."] not found in Skinner")
-			end
-		end
-		if not success then
-			if self.db.profile.Errors then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", addonFunc, err)
 			end
 		end
 	end
