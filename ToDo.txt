@@ -14,6 +14,5 @@ S - Skin request
 
 ≈	O	nil out skins, if no hooks in them, as required
 
-	S	VendorSearch, requested by Scae, 31.01.09
+√	S	VendorSearch, requested by Scae, 31.01.09
 		- http://www.wowinterface.com/downloads/info12162-VendorSearch.html
-	

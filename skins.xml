@@ -306,6 +306,7 @@
 <script file="SkinMe\VanasKoS.lua"/>
 <script file="SkinMe\vBagnon.lua"/>
 <!-- <script file="SkinMe\Vendor.lua"/> -->
+<script file="SkinMe\VendorSearch.lua"/>
 <script file="SkinMe\Violation.lua"/>
 <script file="SkinMe\Visor2GUI.lua"/>
 <script file="SkinMe\Waterfall.lua"/>
