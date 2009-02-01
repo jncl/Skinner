@@ -767,14 +767,16 @@ function Skinner:GuildBankUI()
 -->>--	GuildBank Frame Tabs (at the bottom)
 	for i = 1, MAX_GUILDBANK_TABS do
 		local tabName = _G["GuildBankFrameTab"..i]
-		self:keepFontStrings(tabName)
-		if self.db.profile.TexturedTab then
-			self:applySkin(tabName, nil, 0, 1)
-			if i == 1 then self:setActiveTab(tabName)
-			else self:setInactiveTab(tabName) end
-		else self:storeAndSkin(ftype, tabName) end
-		if i == 1 then self:moveObject(tabName, nil, nil, "-", 2)
-		else self:moveObject(tabName, "+", 13, nil, nil) end
+		if tabName then
+			self:keepFontStrings(tabName)
+			if self.db.profile.TexturedTab then
+				self:applySkin(tabName, nil, 0, 1)
+				if i == 1 then self:setActiveTab(tabName)
+				else self:setInactiveTab(tabName) end
+			else self:storeAndSkin(ftype, tabName) end
+			if i == 1 then self:moveObject(tabName, nil, nil, "-", 2)
+			else self:moveObject(tabName, "+", 13, nil, nil) end
+		end
 	end
 
 	if self.db.profile.TexturedTab then

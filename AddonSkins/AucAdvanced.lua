@@ -20,9 +20,6 @@ function Skinner:AucAdvanced()
 		end
 	end)
 	
-	-- move the scan button
-	self:moveObject(AucAdvScanButton, nil, nil, "+", 5)
-	
 	if AucAdvanced.Modules.Util.SimpleAuction then
 		-- skin the Simple Auction Frame
 		self:SecureHook(AucAdvanced.Modules.Util.SimpleAuction.Private, "CreateFrames", function()
@@ -62,6 +59,9 @@ function Skinner:AucAdvanced()
 			self:moveObject(frame.gobatch, nil, nil, "-", 5)
 			self:moveObject(frame.refresh, nil, nil, "-", 5)
 			self:Unhook(AucAdvanced.Modules.Util.Appraiser.Private,"CreateFrames")
+			-- move the scan button and stop it being moved again
+			self:moveObject(AucAdvScanButton, nil, nil, "+", 5)
+			self:RawHook(AucAdvScanButton, "SetPoint", function() end, true)
 		end)
 	end
 

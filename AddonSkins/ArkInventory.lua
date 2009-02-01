@@ -94,6 +94,7 @@ function Skinner:ArkInventory2plus()
 			for _, v in pairs(aiFrames) do
 				self:keepFontStrings(_G[af..v])
 				self:applySkin(_G[af..v])
+				self:RawHook(_G[af..v], "SetBackdrop", function() end, true)
 			end
 			self:skinEditBox(_G[af.."SearchFilter"], {9})
 			if _G[af.."StatusText"] then _G[af.."StatusText"]:SetAlpha(1) end
@@ -128,7 +129,6 @@ function Skinner:ArkInventory2plus()
 -->>--	Search Frame
 	self:applySkin(ARKINV_SearchTitle)
 	self:applySkin(ARKINV_SearchFrame)
-	self:applySkin(ARKINV_SearchFrameViewTitle)
 	self:applySkin(ARKINV_SearchFrameViewSearch)
 	self:skinEditBox(ARKINV_SearchFrameViewSearchFilter, {9})
 	self:applySkin(ARKINV_SearchFrameViewTable)

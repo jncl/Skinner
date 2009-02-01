@@ -285,6 +285,9 @@ end
 
 -- Skinning functions
 function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
+--@alpha@
+	assert(obj, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not obj then return end
 	if not parent then parent = obj:GetParent() end
@@ -306,6 +309,11 @@ function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
 end
 
 function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
+--@alpha@
+	assert(parent, "Unknown object\n"..debugstack())
+--@end-alpha@
+
+	if not parent then return end
 
 	xOfs1 = xOfs1 or -3
 	yOfs1 = yOfs1 or -3
@@ -373,6 +381,10 @@ function Skinner:applyGradient(frame, fh)
 end
 
 function Skinner:applySkin(frame, header, bba, ba, fh, bd)
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
+
 --	self:Debug("applySkin: [%s, %s, %s, %s, %s, %s]", frame:GetName() or frame, header, bba, ba, fh, bd)
 
 	if not frame then return end
@@ -507,6 +519,12 @@ function Skinner:findFrame(height, width, children)
 end
 
 function Skinner:findFrame2(parent, objType, ...)
+--@alpha@
+	assert(parent, "Unknown object\n"..debugstack())
+--@end-alpha@
+
+	if not parent then return end
+
 --	self:Debug("findFrame2: [%s, %s, %s, %s, %s, %s, %s]", parent, objType, select(1, ...) or nil, select(2, ...) or nil, select(3, ...) or nil, select(4, ...) or nil, select(5, ...) or nil)
 
 	local frame
@@ -562,12 +580,18 @@ function Skinner:findFrame3(name, element)
 end
 
 function Skinner:getChild(obj, childNo)
+--@alpha@
+	assert(obj, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if obj and childNo then return (select(childNo, obj:GetChildren())) end -- this will return only 1 value
 
 end
 
 function Skinner:getRegion(obj, regNo)
+--@alpha@
+	assert(obj, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if obj and regNo then return (select(regNo, obj:GetRegions())) end -- this will return only 1 value
 
@@ -607,6 +631,9 @@ end
 
 local ddTex = "Interface\\Glues\\CharacterCreate\\CharacterCreate-LabelFrame"
 function Skinner:isDropDown(obj)
+--@alpha@
+	assert(obj, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	local objTexName
 	if obj:GetName() then objTexName = _G[obj:GetName().."Left"] end
@@ -643,6 +670,9 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 end
 
 function Skinner:keepFontStrings(frame)
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not frame then return end
 
@@ -658,6 +688,9 @@ function Skinner:keepFontStrings(frame)
 end
 
 function Skinner:keepRegions(frame, regions)
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not frame then return end
 
@@ -684,6 +717,9 @@ function Skinner:keepRegions(frame, regions)
 end
 
 function Skinner:makeMFRotatable(frame)
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
 	if IsAddOnLoaded("CloseUp") then return end
@@ -732,6 +768,9 @@ function Skinner:makeMFRotatable(frame)
 end
 
 function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
+--@alpha@
+	assert(objName, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not objName then return end
 	
@@ -762,6 +801,9 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 end
 
 function Skinner:removeRegions(frame, regions)
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not frame then return end
 
@@ -817,6 +859,9 @@ function Skinner:resizeTabs(frame)
 end
 
 function Skinner:setActiveTab(tabName)
+--@alpha@
+	assert(tabName, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not tabName then return end
 	if not tabName.tfade then return end
@@ -829,6 +874,9 @@ function Skinner:setActiveTab(tabName)
 end
 
 function Skinner:setInactiveTab(tabName)
+--@alpha@
+	assert(tabName, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not tabName then return end
 	if not tabName.tfade then return end
@@ -866,6 +914,9 @@ function Skinner:setTTBBC()
 end
 
 function Skinner:shrinkBag(frame, bpMF)
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not frame then return end
 
@@ -905,6 +956,9 @@ function Skinner:shrinkBag(frame, bpMF)
 end
 
 function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not frame then return end
 	if not (frame.GetName and frame:GetName() and _G[frame:GetName().."Right"]) then return end -- ignore tekKonfig dropdowns
@@ -978,6 +1032,9 @@ function Skinner:skinFFColHeads(buttonName, noCols)
 end
 
 function Skinner:skinMoneyFrame(frame, moveGold, noWidth, moveSilverBox)
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not frame then return end
 
@@ -1031,6 +1088,9 @@ end
 
 function Skinner:skinTooltip(frame)
 	if not self.db.profile.Tooltips.skin then return end
+--@alpha@
+	assert(frame, "Unknown object\n"..debugstack())
+--@end-alpha@
 
 	if not frame then return end
 

@@ -14,13 +14,6 @@ S - Skin request
 
 ≈	O	nil out skins, if no hooks in them, as required
 
-√	O	pcall/xpcall/safecall ?
-
-√	O	Moved GFW_HuntersHelperUI to ObsoleteSkins, as reported by Curace, 26.01.09
-
-x	I	Overachiever, reported by Gabriel, 29.01.09
-√		- this is caused by getChild/getRegion error, now fixed
-
-√	I	Panda, reported by Gabriel, 29.01.09
-
-√	N	Altoholic, reported by hpm, 29.01.09
+	S	VendorSearch, requested by Scae, 31.01.09
+		- http://www.wowinterface.com/downloads/info12162-VendorSearch.html
+	

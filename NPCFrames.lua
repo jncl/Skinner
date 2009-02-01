@@ -259,19 +259,17 @@ function Skinner:ArenaRegistrar()
 	PVPBannerFrame:SetWidth(PVPBannerFrame:GetWidth() * self.FxMult)
 	PVPBannerFrame:SetHeight(PVPBannerFrame:GetHeight() * self.FyMult)
 
-	self:moveObject(PVPBannerFrameCloseButton, "+", 28, "+", 8)
+	self:moveObject(PVPBannerFrameBackground, "-", 8, "+", 10)
 	self:moveObject(PVPBannerFrameEmblemTopRight, "-", 20, nil, nil)
 	self:moveObject(PVPBannerFrameNameText, nil, nil, "-", 28)
-	self:moveObject(PVPBannerFrameBackground, "-", 8, "+", 10)
-	self:moveObject(PVPBannerFrameCostFrame, "-", 5, "+", 10)
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
 	self:moveObject(PVPBannerFrameCustomization1, "+", 35, "-", 73)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
 	self:keepFontStrings(PVPBannerFrameCustomization2)
-	self:moveObject(PVPBannerFrameMoneyFrame, "-", 30, "-", 75)
 	self:moveObject(PVPBannerFrameAcceptButton, "-", 10, "+", 10)
 	-- N.B. there are two PVPBannerFrameCancelButton entries
 	self:moveObject(self:getChild(PVPBannerFrame, 4), "-", 10, "+", 10)
+	self:moveObject(PVPBannerFrameCloseButton, "+", 28, "+", 8)
 
 	self:storeAndSkin(ftype, PVPBannerFrame)
 

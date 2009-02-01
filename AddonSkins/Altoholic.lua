@@ -5,8 +5,6 @@ function Skinner:Altoholic()
 	self:moveObject(AltoholicFrameName, nil, nil, "+", 10)
 	self:moveObject(AltoholicFrameCloseButton, nil, nil, "+", 10)
 	self:skinEditBox(AltoholicFrame_SearchEditBox, {9})
-	self:skinDropDown(RarityDropDownMenu)
-	self:skinDropDown(SlotsDropDownMenu)
 	self:applySkin(AltoholicFrame)
 	-- Tabs
 	local numTabs = 6
@@ -88,7 +86,7 @@ function Skinner:Altoholic()
 	end
 	-- GuildBank tab
 	self:skinDropDown(AltoholicTabGuildBank_SelectGuild)
-	for i = 1, 15 do
+	for i = 1, 6 do
 		obj = _G["AltoholicTabGuildBankMenuItem"..i]
 		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)
@@ -104,7 +102,7 @@ function Skinner:Altoholic()
 		self:applySkin(obj)
 	end
 	-- Options tab
-	for i = 1, 15 do
+	for i = 1, 5 do
 		obj = _G["AltoholicTabOptionsMenuItem"..i]
 		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)

@@ -208,7 +208,6 @@ function Skinner:FriendsFrame()
 	self:storeAndSkin(ftype, ChannelFrameDaughterFrame)
 	self:skinEditBox(ChannelFrameDaughterFrameChannelName, {9})
 	self:skinEditBox(ChannelFrameDaughterFrameChannelPassword, {9, 10}) -- N.B. regions 9 & 10 are text
-	self:moveObject(ChannelFrameDaughterFrameVoiceChat, nil, nil, "+", 10)
 	self:skinDropDown(ChannelListDropDown)
 	self:skinDropDown(ChannelRosterDropDown)
 

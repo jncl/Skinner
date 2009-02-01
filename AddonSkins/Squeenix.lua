@@ -1,21 +1,28 @@
 
 function Skinner:Squeenix()
 
-	-- Find & Skin the Squeenix border
+	-- Find & Skin the Squeenix border & direction indicators
 	for i = 1, Minimap:GetNumChildren() do
-		local obj = select(i, Minimap:GetChildren())
-		if obj:IsObjectType("Button") and obj:GetName() == nil then
-			obj:Hide()
+		local child = select(i, Minimap:GetChildren())
+		if child:IsObjectType("Button") and child:GetName() == nil then
+			child:Hide()
 			self:addSkinButton(Minimap, Minimap)
 			self.minimapskin = Minimap.sBut
 			if not self.db.profile.MinimapGloss then LowerFrameLevel(self.minimapskin) end
 		end
+		-- Move the compass points text
+		if child:IsObjectType("Frame") and child:GetName() == nil and child:GetFrameStrata() == "BACKGROUND" then
+			for i = 1, child:GetNumChildren() do
+				local grandchild = select(i, child:GetChildren())
+				if grandchild:IsObjectType("FontString") then
+					if grandchild:GetText() == "E" then self:moveObject(grandchild, "+", 4, nil, nil)
+					elseif grandchild:GetText() == "W" then self:moveObject(grandchild, "-", 4, nil, nil)
+					end
+				end
+			end
+		end
 	end
 
-	-- Move the Direction indicators
-	self:moveObject(self:getRegion(Minimap, 1), "+", 2, nil, nil) -- East
-	self:moveObject(self:getRegion(Minimap, 2), nil, nil, "-", 2) -- South
---	self:moveObject(self:getRegion(Minimap, 3), nil, nil, nil, nil) -- West
-	self:moveObject(self:getRegion(Minimap, 4), nil, nil, "+", 1) -- North
+	self:moveObject(MinimapNorthTag, nil, nil, "+", 4) -- North
 
 end

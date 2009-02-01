@@ -110,37 +110,33 @@ function Skinner:PetPaperDollFrame()
 
 -->>-- Pet Frame
 	self:keepFontStrings(PetAttributesFrame)
+	local xOfs, yOfs = 10, 10
+	self:moveObject(PetPaperDollFrameExpBar, "-", 10, "-", 52)
+	self:keepRegions(PetPaperDollFrameExpBar, {3, 4}) -- N.B. region 3 is text
+	self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
+	self:moveObject(PetModelFrame, "-", xOfs, "+", 30)
 	PetModelFrameRotateLeftButton:Hide()
 	PetModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(PetModelFrame)
-
-	local xOfs, yOfs = 10, 10
-	self:moveObject(PetModelFrame, "-", xOfs, "+", 30)
-	self:moveObject(PetTrainingPointText, nil, nil, "-", 92)
-	self:moveObject(PetAttributesFrame, "-", xOfs, "+", 30)
-	self:moveObject(PetPaperDollFrameExpBar, "-", 10, "-", 52)
-	self:moveObject(PetPaperDollCloseButton, "-", 8, nil, nil)
-	self:moveObject(PetResistanceFrame, "-", xOfs, "-", yOfs)
-
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetPaperDollPetInfo)
-
-	self:keepRegions(PetPaperDollFrameExpBar, {3, 4}) -- N.B. region 3 is text
-	self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
+	self:moveObject(PetPaperDollCloseButton, "-", 8, nil, nil)
+	self:moveObject(PetAttributesFrame, "-", xOfs, "+", 30)
+	self:moveObject(PetResistanceFrame, "-", xOfs, "-", yOfs)
 	
 -->>-- Companion Frame
 	self:keepFontStrings(PetPaperDollFrameCompanionFrame)
+	local xOfs = 10
+	self:moveObject(CompanionPageNumber, "+", xOfs, "-", 40)
+	self:moveObject(CompanionSelectedName, "+", xOfs, "-", 50)
+	self:moveObject(CompanionModelFrame, "+", xOfs, "+", 20)
+	CompanionModelFrame:SetHeight(200)
 	CompanionModelFrameRotateLeftButton:Hide()
 	CompanionModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(CompanionModelFrame)
-	local xOfs = 10
-	self:moveObject(CompanionModelFrame, "+", xOfs, "+", 20)
-	CompanionModelFrame:SetHeight(200)
-	self:moveObject(CompanionSelectedName, "+", xOfs, "-", 50)
 	self:moveObject(CompanionSummonButton, "+", xOfs, "-", 50)
 	self:moveObject(CompanionButton1, "-", xOfs, "+", 0)
 	self:moveObject(CompanionPrevPageButton, "-", xOfs, "-", 70)
-	self:moveObject(CompanionPageNumber, "+", xOfs, "-", 40)
 
 -->>-- Tabs
 	self:skinFFToggleTabs("PetPaperDollFrameTab", 3)
