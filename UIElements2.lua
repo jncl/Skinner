@@ -73,6 +73,8 @@ function Skinner:MenuFrames()
 	-- Hook this to skin any Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(frame)
 --		self:Debug("IOL_DP: [%s, %s]", frame, frame:GetName())
+		-- skin tekKonfig library objects
+		if self.tekKonfig then self:tekKonfig() end
 		if not frame.skinned then
 			for i = 1, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())
@@ -713,6 +715,7 @@ function Skinner:ItemSocketingUI()
 
 	ItemSocketingFrame:SetWidth(CharacterFrame:GetWidth())
 	ItemSocketingFrame:SetHeight(CharacterFrame:GetHeight())
+	self:moveObject(self:getRegion(ItemSocketingFrame, 3), nil, nil, "+", 8) -- title text
 	self:moveObject(ItemSocketingCloseButton, nil, nil, "+", 8)
 	self:removeRegions(ItemSocketingScrollFrame)
 	self:skinScrollBar(ItemSocketingScrollFrame)
@@ -722,6 +725,7 @@ function Skinner:ItemSocketingUI()
 		_G["ItemSocketingSocket"..i.."Right"]:SetAlpha(0)
 		self:getRegion(isB, 3):SetAlpha(0) -- button texture
 		self:addSkinButton(isB, nil, nil, true)
+		if i == 1 then self:moveObject(isB, "-", 10, "+", 10) end
 	end
 	self:moveObject(ItemSocketingSocketButton, nil, nil, "-", 20)
 	self:keepFontStrings(ItemSocketingFrame)

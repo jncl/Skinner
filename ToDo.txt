@@ -14,5 +14,11 @@ S - Skin request
 
 ≈	O	nil out skins, if no hooks in them, as required
 
-√	S	VendorSearch, requested by Scae, 31.01.09
-		- http://www.wowinterface.com/downloads/info12162-VendorSearch.html
+√	I	Panda, reported by CrazyBenny, 1.02.09
+		- theres a small bug in the panda skin. When the addon is loaded with it's LDB launcher via AddonLoader the buttons in Panda arent skinned. But when you close Pandas window and open it again, those buttons are skinned well.
+
+√	I	AtlasLoot, reported by Eatsbrains, 1.02.09
+		- Unknown object(s)
+
+√	I	InspectUI, reported by Eatsbrains, 4.02.09
+		- Unknown object errors

@@ -663,7 +663,6 @@ function Skinner:InspectUI()
 -->>--	Talent Frame
 	self:keepRegions(InspectTalentFrame, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 8 & 9 are the background picture, 10 is text
 	InspectTalentFrameCloseButton:Hide()
-	self:moveObject(InspectTalentFrameTitleText, nil, nil, "+", 6)
 	self:moveObject(InspectTalentFrameBackgroundTopLeft, "-", 5, nil, nil)
 	InspectTalentFrameScrollFrame:SetHeight(InspectTalentFrameScrollFrame:GetHeight() - 2)
 	self:removeRegions(InspectTalentFrameScrollFrame)
@@ -672,10 +671,10 @@ function Skinner:InspectUI()
 	self:moveObject(InspectTalentFrameSpentPoints, nil, nil, "-", 70)
 	self:moveObject(InspectTalentFrameCancelButton, "-", 5, "-", 5)
 
-	self:skinFFToggleTabs("InspectTalentFrameTab")
+	self:skinFFToggleTabs("InspectTalentFrameTab", 3)
 
 -->>--	Frame Tabs
-	for i = 1, #INSPECTFRAME_SUBFRAMES do
+	for i = 1, InspectFrame.numTabs do
 		local tabName = _G["InspectFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0)
@@ -693,7 +692,7 @@ function Skinner:InspectUI()
 		-- hook to handle tabs
 		self:SecureHook("InspectSwitchTabs", function(newID)
 --			self:Debug("InspectSwitchTabs")
-			for i = 1, #INSPECTFRAME_SUBFRAMES do
+			for i = 1, InspectFrame.numTabs do
 				if i == newID then
 					self:setActiveTab(_G["InspectFrameTab"..i])
 				else
@@ -772,9 +771,6 @@ function Skinner:BattlefieldMinimap()
 -->>--	Minimap
 	self:moveObject(BattlefieldMinimap, nil, nil, "+", 5)
 	-- change the draw layer so that the map is visible
---	for i = 1, 12 do
---		_G["BattlefieldMinimap"..i]:SetDrawLayer("ARTWORK")
---	end
 
 	-- Create a frame to skin as using the BattlefieldMinimap one causes issues with Capping
 	self:addSkinFrame(BattlefieldMinimap, -4, 4, -2, 1, ftype)
@@ -1045,6 +1041,7 @@ function Skinner:Calendar()
 	
 -->>-- Create Event Frame
 	self:keepFontStrings(CalendarCreateEventTitleFrame)
+	self:moveObject(CalendarCreateEventTitleFrame, nil, nil, "-", 1)
 	self:keepFontStrings(CalendarCreateEventFrame)
 	self:removeRegions(CalendarCreateEventCloseButton, {4})
 	self:skinEditBox(CalendarCreateEventTitleEdit, {9})
@@ -1066,7 +1063,6 @@ function Skinner:Calendar()
 	if CalendarCreateEventRaidInviteButtonBorder then CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0) end
 	CalendarCreateEventCreateButtonBorder:SetAlpha(0)
 	self:storeAndSkin(ftype, CalendarCreateEventFrame)
-	
 	
 -->>-- Mass Invite Frame
 	self:keepFontStrings(CalendarMassInviteTitleFrame)
