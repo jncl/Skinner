@@ -82,9 +82,9 @@ function Skinner:AddonFrames()
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
 	local addonFrames = {
-		"Accountant", "AceProfit", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", "aftt_extreme", "AlphaMap", "Altoholic", "Analyst", "AoTRDungeonQuester", "ArkInventory", "Armory", --[["Ash_Cooldowns", "Ash_Core", "Ash_DoTimer", --]] "Assessment", "Atlas", "AtlasLoot", "AtlasQuest", "AuldLangSyne", "AuldLangSyne_Note", "AutoDecline", "AutoProfit", "AutoProfitX", "AxuItemMenus",
+		"Accountant", "AceProfit", "Acheron", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", "aftt_extreme", "AlphaMap", "Altoholic", "Analyst", "AoTRDungeonQuester", "ArkInventory", "Armory", --[["Ash_Cooldowns", "Ash_Core", "Ash_DoTimer", --]] "Assessment", "Atlas", "AtlasLoot", "AtlasQuest", "AuldLangSyne", "AuldLangSyne_Note", "AutoDecline", "AutoProfit", "AutoProfitX", "AxuItemMenus",
 		"Badapples", "Baggins", "Baggins_Search", "Bagnon", "Bagnon_Forever", "BankAccountant", "BankItems", "BattleChat", "BattleCry", "BaudBag", "BaudManifest", "BaudMenu", "BeanCounter", "BeastTraining", "beql", "BetterInbox", "BigBankStatement", "BigGuild", "BigTrouble", --[["Bongos_AB", --]] "Bonuses", "Broker_Transport", "Buffalo", "Buffalo2", "BuffQ", "BugSack", "Butsu", "BuyEmAll", "BuyPoisons",
-		"CallToArms", "Capping", "Cartographer", "Cartographer_QuestInfo", "Cartographer3", "CBRipoff", "CEnemyCastBar", "CharactersViewer", "Chatr", "Chatter", "Chinchilla", "Clique", "Cork", "Combuctor", "ConcessionStand", "Converse", "CowTip", "CT_MailMod", --[["CT_RaidAssist", --]] "CT_RaidTracker",
+		"CallToArms", "Capping", "Cartographer", "Cartographer_QuestInfo", "Cartographer3", "CBRipoff", "CEnemyCastBar", --[["CharactersViewer",--]] "Chatr", "Chatter", "Chinchilla", "Clique", "Cork", "Combuctor", "ConcessionStand", "Converse", "CowTip", "CT_MailMod", --[["CT_RaidAssist", --]] "CT_RaidTracker",
 		"DamageMeters", "DebuffFilter", "Demon", "DemonTrainerFrame", "DepositBox", "DiamondThreatMeter", "DopieArenaInfo", "DoubleWide", "DoubleWideTradeSkills", "DuckieBank",
 		"Earth", "EasyTrack", "EasyUnlock", "EavesDrop", "EditingUI", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "Epeen", "epgp", "EQL3", "EquipCompare", "EveryQuest", "Examiner",
 		--[["FactionGrinder", --]] "Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "ForteWarlock", "FramesResized", "FreierGeist_InstanceTime", "FruityLoots", "FuBar_PoisonReminderFu",
@@ -101,7 +101,7 @@ function Skinner:AddonFrames()
 		"Quartz", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount",
 		"Sanity2", "SanityBags", "SellJunk", "ShadowDancer3", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
-		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", --[["TinyTip", --]] "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TourGuide", "TradeJunkie", "TuringTest",
+		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TheCollector", --[["TinyTip", --]] "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", --[["Vendor", --]] "VendorSearch", "Violation", "Visor2GUI",
 		"WebDKP", "WIM", "WoWEquip",
@@ -146,7 +146,7 @@ function Skinner:AddonFrames()
 	if IsAddOnLoaded("Bongos") then self:checkAndRunAddOn("Bongos") end
 --]]
 
-	-- skin Dewdrop, Ace2, Tablet, Waterfall, OptionHouse, Ace3GUI, LibSimpleOptions & Configator library objects
+	-- skin Dewdrop, Ace2, Tablet, Waterfall, OptionHouse, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip & tektip library objects
 	local libsToSkin = {
 		["Dewdrop-2.0"] = "Dewdrop",
 		["AceAddon-2.0"] = "Ace2",
@@ -156,6 +156,8 @@ function Skinner:AddonFrames()
 		["AceGUI-3.0"] = "Ace3",
 		["LibSimpleOptions-1.0"] = "LibSimpleOptions",
 		["Configator"] = "Configator",
+		["LibExtraTip-1"] = "LibExtraTip",
+		["tektip-1.0"] = "tektip",
 	}
 	for k, v in pairs(libsToSkin) do
 --		self:Debug("skin Libs:[%s, %s]", k, v)

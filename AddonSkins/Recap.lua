@@ -8,8 +8,8 @@ function Skinner:Recap()
 	self:applySkin(RecapDropSubFrame)
 	self:keepFontStrings(RecapMenu)
 	self:applySkin(RecapMenu)
-	self:keepFontStrings(Recap_xml_359)
-	self:applySkin(Recap_xml_359)
+	self:keepFontStrings(Recap_xml_424)
+	self:applySkin(Recap_xml_424)
 	self:keepFontStrings(RecapFrame)
 	self:removeRegions(RecapScrollBar)
 	self:skinScrollBar(RecapScrollBar)
@@ -20,8 +20,8 @@ function Skinner:Recap()
 	self:RawHook(RecapFrame, "SetBackdropBorderColor", function() end, true)
 
 -->>-- Recap Panel
-	self:keepFontStrings(RecapPanel_xml_359)
-	self:applySkin(RecapPanel_xml_359)
+	self:keepFontStrings(RecapPanel_xml_424)
+	self:applySkin(RecapPanel_xml_424)
 	self:removeRegions(RecapPanelIncomingDetailsScrollBar)
 	self:skinScrollBar(RecapPanelIncomingDetailsScrollBar)
 	self:removeRegions(RecapPanelOutgoingDetailsScrollBar)
@@ -36,8 +36,8 @@ function Skinner:Recap()
 	self:applySkin(Recap_DropMenu)
 	self:keepFontStrings(RecapOptAnchorFrame)
 	self:applySkin(RecapOptAnchorFrame)
-	self:keepFontStrings(RecapOptions_xml_359)
-	self:applySkin(RecapOptions_xml_359)
+	self:keepFontStrings(RecapOptions_xml_424)
+	self:applySkin(RecapOptions_xml_424)
 	self:removeRegions(RecapFightSetsScrollBar)
 	self:skinScrollBar(RecapFightSetsScrollBar)
 	self:keepFontStrings(RecapOpt_StatDropDown)
@@ -54,6 +54,13 @@ function Skinner:Recap()
 	self:applySkin(RecapOptFrame)
 
 	self:RawHook(RecapOptFrame, "SetBackdrop", function() end, true)
+
+	if self.db.profile.Tooltips.skin then
+		self:SecureHookScript(RecapTooltip, "OnShow", function(this)
+			self:skinTooltip(RecapTooltip)
+		end)
+		if self.db.profile.Tooltips.style == 3 then RecapTooltip:SetBackdrop(self.backdrop) end
+	end
 	
 	-- Tabs
 	for i = 1, 6 do

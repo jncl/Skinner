@@ -350,20 +350,6 @@ function Skinner:AuctionUI()
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
--->>-- Tabs
-	if self.db.profile.TexturedTab then
-		self:SecureHook("AuctionFrameTab_OnClick", function(index)
---			self:Debug("AuctionFrameTab_OnClick: [%s]", index)
-			for i = 1, AuctionFrame.numTabs do
-				local tabName = _G["AuctionFrameTab"..i]
-				if i == AuctionFrame.selectedTab then
-					self:setActiveTab(tabName)
-				else
-					self:setInactiveTab(tabName)
-				end
-			end
-		end)
-	end
 	-- hide filter texture when filter is clicked
 	self:SecureHook("FilterButton_SetType", function(button, type, text, isLast)
 		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
@@ -371,10 +357,71 @@ function Skinner:AuctionUI()
 
 	self:keepFontStrings(AuctionFrame)
 	AuctionFrame:SetHeight(AuctionFrame:GetHeight() - 6)
-
 	self:moveObject(AuctionFrameCloseButton, "-", 4, "+", 8)
+	self:moveObject(AuctionFrameMoneyFrame, nil, nil, "-", 6)
+	self:storeAndSkin(ftype, AuctionFrame)
 
--->>--	All Tabs
+-->>--	Browse Frame
+	self:moveObject(BrowseTitle, nil, nil, "+", 10)
+	for k, v in pairs({"Name", "MinLevel", "MaxLevel"}) do
+		local obj = _G["Browse"..v]
+		self:skinEditBox(obj, {9})
+		self:moveObject(obj, "-", (k ~= 3 and 10 or 5), "+", (k ~= 3 and 3 or 0)) -- don't move MaxLevel as far
+		obj:SetWidth(obj:GetWidth() + 4)
+	end
+	self:skinDropDown(BrowseDropDown)
+	self:moveObject(BrowseDropDownName, "+", 40, nil, nil)
+	for _, v in pairs({"Quality", "Level", "Duration", "HighBidder", "CurrentBid"}) do
+		local obj = _G["Browse"..v.."Sort"]
+		self:keepFontStrings(obj)
+		self:storeAndSkin(ftype, obj)
+	end
+	self:removeRegions(BrowseFilterScrollFrame)
+	self:skinScrollBar(BrowseFilterScrollFrame)
+	for i = 1, NUM_FILTERS_TO_DISPLAY do
+		self:keepRegions(_G["AuctionFilterButton"..i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		self:storeAndSkin(ftype, _G["AuctionFilterButton"..i])
+	end
+	self:removeRegions(BrowseScrollFrame)
+	self:skinScrollBar(BrowseScrollFrame)
+	self:skinMoneyFrame(BrowseBidPrice, nil, nil, true)
+
+-->>--	Bid Frame
+	self:moveObject(BidTitle, nil, nil, "+", 10)
+	self:removeRegions(BidScrollFrame)
+	self:skinScrollBar(BidScrollFrame)
+	for _, v in pairs({"Quality", "Level", "Duration", "Buyout", "Status", "Bid"}) do
+		local obj = _G["Bid"..v.."Sort"]
+		self:keepFontStrings(obj)
+		self:storeAndSkin(ftype, obj)
+	end
+	self:skinMoneyFrame(BidBidPrice, nil, nil, true)
+
+-->>--	Auctions Frame
+	self:moveObject(AuctionsTitle, nil, nil, "+", 10)
+	self:storeAndSkin(ftype, AuctionsItemButton)
+	self:removeRegions(AuctionsScrollFrame)
+	self:skinScrollBar(AuctionsScrollFrame)
+	for _, v in pairs({"Quality", "Duration", "HighBidder", "Bid"}) do
+		local obj = _G["Auctions"..v.."Sort"]
+		self:keepFontStrings(obj)
+		self:storeAndSkin(ftype, obj)
+	end
+	self:skinMoneyFrame(StartPrice, nil, nil, true)
+	self:skinMoneyFrame(BuyoutPrice, nil, nil, true)
+
+-->>--	AuctionDressUp Frame
+	self:keepRegions(AuctionDressUpFrame, {3, 4}) --N.B. regions 3 & 4 are the background
+	AuctionDressUpFrame:SetWidth(AuctionDressUpFrame:GetWidth() - 6)
+	AuctionDressUpFrame:SetHeight(AuctionDressUpFrame:GetHeight() - 13)
+	self:keepRegions(AuctionDressUpFrameCloseButton, {1}) -- N.B. region 1 is the button artwork
+	self:moveObject(AuctionDressUpBackgroundTop, nil, nil, "+", 8)
+	AuctionDressUpModelRotateLeftButton:Hide()
+	AuctionDressUpModelRotateRightButton:Hide()
+	self:makeMFRotatable(AuctionDressUpModel)
+	self:storeAndSkin(ftype, AuctionDressUpFrame)
+
+-->>--	Tabs
 	for i = 1, AuctionFrame.numTabs do
 		local tabName = _G["AuctionFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
@@ -389,82 +436,19 @@ function Skinner:AuctionUI()
 		end
 	end
 
-	self:moveObject(AuctionFrameMoneyFrame, nil, nil, "-", 6)
-
--->>--	Browse Frame
-	self:moveObject(BrowseTitle, nil, nil, "+", 6)
-
-	self:removeRegions(BrowseFilterScrollFrame)
-	self:skinScrollBar(BrowseFilterScrollFrame)
-	self:removeRegions(BrowseScrollFrame)
-	self:skinScrollBar(BrowseScrollFrame)
-
-	for i = 1, NUM_FILTERS_TO_DISPLAY do
-		self:keepRegions(_G["AuctionFilterButton"..i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:storeAndSkin(ftype, _G["AuctionFilterButton"..i])
+	if self.db.profile.TexturedTab then
+		self:SecureHook("AuctionFrameTab_OnClick", function(index)
+--			self:Debug("AuctionFrameTab_OnClick: [%s]", index)
+			for i = 1, AuctionFrame.numTabs do
+				local tabName = _G["AuctionFrameTab"..i]
+				if i == AuctionFrame.selectedTab then
+					self:setActiveTab(tabName)
+				else
+					self:setInactiveTab(tabName)
+				end
+			end
+		end)
 	end
-
-	self:skinDropDown(BrowseDropDown)
-	self:moveObject(BrowseDropDownName, "+", 40, nil, nil)
-
-	for _, v in pairs({"Quality", "Level", "Duration", "HighBidder", "CurrentBid"}) do
-		local obj = _G["Browse"..v.."Sort"]
-		self:keepFontStrings(obj)
-		self:storeAndSkin(ftype, obj)
-	end
-
-	for k, v in pairs({"Name", "MinLevel", "MaxLevel"}) do
-		local obj = _G["Browse"..v]
-		self:skinEditBox(obj, {9})
-		self:moveObject(obj, "-", 10, "+", (k ~= 3 and 3 or 0))
-		obj:SetWidth(obj:GetWidth() + 4)
-	end
-
-	self:skinMoneyFrame(BrowseBidPrice)
-
--->>--	Bid Frame
-	self:moveObject(BidTitle, nil, nil, "+", 6)
-
-	self:removeRegions(BidScrollFrame)
-	self:skinScrollBar(BidScrollFrame)
-
-	for _, v in pairs({"Quality", "Level", "Duration", "Buyout", "Status", "Bid"}) do
-		local obj = _G["Bid"..v.."Sort"]
-		self:keepFontStrings(obj)
-		self:storeAndSkin(ftype, obj)
-	end
-
-	self:skinMoneyFrame(BidBidPrice)
-
--->>--	Auctions Frame
-	self:moveObject(AuctionsTitle, nil, nil, "+", 6)
-	self:storeAndSkin(ftype, AuctionsItemButton)
-	self:removeRegions(AuctionsScrollFrame)
-	self:skinScrollBar(AuctionsScrollFrame)
-
-	for _, v in pairs({"Quality", "Duration", "HighBidder", "Bid"}) do
-		local obj = _G["Auctions"..v.."Sort"]
-		self:keepFontStrings(obj)
-		self:storeAndSkin(ftype, obj)
-	end
-
-	self:skinMoneyFrame(StartPrice)
-	self:skinMoneyFrame(BuyoutPrice)
-
-	self:storeAndSkin(ftype, AuctionFrame)
-
--->>--	AuctionDressUp Frame
-	self:keepRegions(AuctionDressUpFrame, {3, 4}) --N.B. regions 3 & 4 are the background
-	AuctionDressUpFrame:SetWidth(AuctionDressUpFrame:GetWidth() - 6)
-	AuctionDressUpFrame:SetHeight(AuctionDressUpFrame:GetHeight() - 13)
-	self:moveObject(AuctionDressUpBackgroundTop, nil, nil, "+", 8)
-
-	AuctionDressUpModelRotateLeftButton:Hide()
-	AuctionDressUpModelRotateRightButton:Hide()
-	self:makeMFRotatable(AuctionDressUpModel)
-
-	self:keepRegions(AuctionDressUpFrameCloseButton, {1}) -- N.B. region 1 is the button artwork
-	self:storeAndSkin(ftype, AuctionDressUpFrame)
 
 end
 
@@ -875,9 +859,9 @@ end
 
 function Skinner:GMChatUI()
 	if not self.db.profile.HelpFrame then return end
-	
+
 	self:applySkin(self:getChild(GMChatStatusFrame, 1)) -- GM Chat Request frame
-	
+
 -->>-- GMChat Frame
 	self:keepFontStrings(GMChatTab)
 	GMChatTab:ClearAllPoints()

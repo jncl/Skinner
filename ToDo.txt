@@ -14,11 +14,20 @@ S - Skin request
 
 ≈	O	nil out skins, if no hooks in them, as required
 
-√	I	Panda, reported by CrazyBenny, 1.02.09
-		- theres a small bug in the panda skin. When the addon is loaded with it's LDB launcher via AddonLoader the buttons in Panda arent skinned. But when you close Pandas window and open it again, those buttons are skinned well.
+?	O	Resize GM Ticket Frame, requested by babyzeretul, 14.02.09
+	
+√	I	LDB tooltips, reported by Kerecha, 13.02.09
+		Still having minor issues with some of the LDB tooltips.
+		Pico friends/guild
+		
+√	N	Recap, reported by shadowrm, 13.02.09
+		- Recap 4.24 is out and has a couple modifications to the options panel + data set windows that are missing skins
+		
+√	S	TheCollector, requested by Kerecha, 13.02.09
+	
+√	S	Acheron, requested by Gabriel, 14.02.09
+	
+√	S	Auc-Advanced Extra Tooltip, requested by MegaManJuno, 17.02.09
 
-√	I	AtlasLoot, reported by Eatsbrains, 1.02.09
-		- Unknown object(s)
-
-√	I	InspectUI, reported by Eatsbrains, 4.02.09
-		- Unknown object errors
+≈	S	TotemCaddy, requested by Gabriel, 15.02.09
+	

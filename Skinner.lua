@@ -21,7 +21,7 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0", true)
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 3.0.8
-Skinner.isPatch = GM_CHAT and true or false
+--Skinner.isPatch = GM_CHAT and true or false
 
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
@@ -221,17 +221,15 @@ end
 
 local function clearTable(table)
 
-	local i = 1
-	while table[i] do
+	for i = 1, #table do
 		table[i] = nil
-		i =i + 1
 	end
 
 end
 
+local tmp = {}
 local function makeText(a1, ...)
 
-	local tmp = {}
 	local output = ""
 	if a1:find("%%") and select('#', ...) >= 1 then
 		for i = 1, select('#', ...) do
@@ -403,7 +401,7 @@ function Skinner:applySkin(frame, header, bba, ba, fh, bd)
 	frame:SetBackdropBorderColor(r, g, b, bba or a)
 
 	if header then
-		for _, v in pairs({"Header", "_Header", "_HeaderBox", "FrameHeader", "HeaderTexture"}) do
+		for _, v in pairs({"Header", "_Header", "_HeaderBox", "FrameHeader", "HeaderTexture", "HeaderFrame"}) do
 			local hdr = _G[frame:GetName()..v]
 			if hdr then
 				hdr:Hide()
@@ -566,16 +564,25 @@ function Skinner:findFrame2(parent, objType, ...)
 end
 
 function Skinner:findFrame3(name, element)
+--@alpha@
+	assert(name, "Unknown object\n"..debugstack())
+--@end-alpha@
+
 --	self:Debug("findFrame3: [%s, %s]", name, element)
 
+	local frame
+	
 	for i = 1, UIParent:GetNumChildren() do
 		local obj = select(i, UIParent:GetChildren())
 		if obj:GetName() == name then
-			if obj[element] then return obj end
+			if obj[element] then
+				frame = obj
+				break
+			end
 		end
 	end
 
-	return nil
+	return frame
 
 end
 
@@ -584,7 +591,9 @@ function Skinner:getChild(obj, childNo)
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
-	if obj and childNo then return (select(childNo, obj:GetChildren())) end -- this will return only 1 value
+	local child
+	if obj and childNo then child = select(childNo, obj:GetChildren()) end
+	return child
 
 end
 
@@ -593,7 +602,9 @@ function Skinner:getRegion(obj, regNo)
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
-	if obj and regNo then return (select(regNo, obj:GetRegions())) end -- this will return only 1 value
+	local region
+	if obj and regNo then region = select(regNo, obj:GetRegions()) end
+	return region
 
 end
 
@@ -1271,12 +1282,13 @@ end
 
 --[[
 	The following code is to handle moving the TradeSkillFrame/PlayerTalentFrame/MacroFrame when the SpellBookFrame is displayed to ensure that the SpellBookFrame Tabs are visible
-]]--
+]]
 local center = 345
 local centerplus = 384
 local right = 691
 local sbfShown, mfShown, tsShown, tfShown, mfxOfs, tsxOfs, tfxOfs = 0, 0, 0, 0, 0, 0, 0
 local function getFrameInfo()
+
 	sbfShown = SpellBookFrame:IsShown()
 	mfShown = MacroFrame and MacroFrame:IsShown() or 0
 	mfxOfs = MacroFrame and select(4, MacroFrame:GetPoint()) or 0
@@ -1288,6 +1300,7 @@ local function getFrameInfo()
 	tfxOfs = PlayerTalentFrame and select(4, PlayerTalentFrame:GetPoint()) or 0
 	tfxOfs = math.floor(tfxOfs)
 --	Skinner:Debug("getFrameInfo: [%s, %s, %s, %s, %s]", sbfShown, mfShown, mfxOfs, tsShown, tsxOfs)
+
 end
 Skinner:SecureHook("ShowUIPanel", function(frame, force)
 	getFrameInfo()

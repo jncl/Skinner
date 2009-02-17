@@ -7,6 +7,7 @@
 <script file="SkinMe\Ace2.lua"/>
 <script file="SkinMe\Ace3.lua"/>
 <script file="SkinMe\AceProfit.lua"/>
+<script file="SkinMe\Acheron.lua"/>
 <script file="SkinMe\AckisRecipeList.lua"/>
 <script file="SkinMe\ACP.lua"/>
 <script file="SkinMe\AdvancedTradeSkillWindow.lua"/>
@@ -69,7 +70,7 @@
 <script file="SkinMe\CBRipoff.lua"/>
 <script file="SkinMe\cgCrafty.lua"/>
 <script file="SkinMe\CharacterInfo.lua"/>
-<script file="SkinMe\CharactersViewer.lua"/>
+<!-- <script file="SkinMe\CharactersViewer.lua"/> -->
 <script file="SkinMe\Chatr.lua"/>
 <script file="SkinMe\Chatter.lua"/>
 <script file="SkinMe\Chinchilla.lua"/>
@@ -175,6 +176,7 @@
 <!-- <script file="SkinMe\KingOfTheJungle.lua"/> -->
 <script file="SkinMe\KLHThreatMeter.lua"/>
 <script file="SkinMe\KombatStats.lua"/>
+<script file="SkinMe\LibExtraTip.lua"/>
 <script file="SkinMe\LibSimpleOptions.lua"/>
 <script file="SkinMe\LightHeaded.lua"/>
 <script file="SkinMe\LinkHeaven.lua"/>
@@ -290,12 +292,15 @@
 <script file="SkinMe\tekKompare.lua"/>
 <script file="SkinMe\tekKonfig.lua"/>
 <script file="SkinMe\tekPad.lua"/>
+<script file="SkinMe\tektip.lua"/>
 <!-- <script file="SkinMe\TinyTip.lua"/> -->
+<script file="SkinMe\TheCollector.lua"/>
 <script file="SkinMe\TipBuddy.lua"/>
 <script file="SkinMe\TipTac.lua"/>
 <script file="SkinMe\TitanExitGame.lua"/>
 <script file="SkinMe\TomTom.lua"/>
 <script file="SkinMe\Toons.lua"/>
+<script file="SkinMe\TotemCaddy.lua"/>
 <script file="SkinMe\TourGuide.lua"/>
 <script file="SkinMe\TradeJunkie.lua"/>
 <script file="SkinMe\TradeTabs.lua"/>
