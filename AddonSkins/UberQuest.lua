@@ -45,7 +45,7 @@ function Skinner:UberQuest()
 	self:moveObject(UberQuest_List_Title1, "-", xOfs, "+", yOfs)
 	self:moveObject(UberQuest_List_Scroll, "-", xOfs, "+", yOfs)
 	self:moveObject(UberQuest_List_ExpandButtonFrame, "-", xOfs, "+", yOfs)
-	self:keepRegions(UberQuest_List_ExpandButtonFrame_CollapseAllButton, {4, 6}) -- N.B. region 4 is button, 6 is text
+	self:removeRegions(UberQuest_List_ExpandButtonFrame_CollapseAllButton, {7, 8, 9})
 	self:applySkin(UberQuest_List)
 
 	-- Details Frame

@@ -56,28 +56,27 @@ TMBFrames.lua
 # The individual lua files skin the default frames as follows;
 #
 # AddonFrames
-# includes ViewPort, TopFrame, MiddleFrame(s), BottomFrame
+# inc. ViewPort, TopFrame, MiddleFrame(s), BottomFrame
 AddonFrames.lua
 #
 # CharacterFrames1
-# includes Character (inc Pet, Reputation, Skill, Token), PVP, PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI
+# inc. Character (inc. Pet, Reputation, Skill, Token), PVP, PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI
 CharacterFrames1.lua
 #
 # CharacterFrames2
-# includes Friends (aka Social), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs, VehicleMenuBar
+# inc. Social (inc. Friends, Who, Guild, Chat, Raid), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs, VehicleMenuBar
 CharacterFrames2.lua
 #
 # NPCFrames
-# includes Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI
+# inc. Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI
 NPCFrames.lua
 #
 # UIElements1
-# includes Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc KnowledgeBase), InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress, TimeManager, Calendar
+# inc. Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress, TimeManager, Calendar
 UIElements1.lua
 #
 # UIElements2
-# includes Menu (inc Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, ModelFrames, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, GMSurveyUI, LFG, ItemSocketingUI, GuildBankUI, Nameplates, FeedbackUI
-#
+# inc. Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, ModelFrames, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, GMSurveyUI, LFG, ItemSocketingUI, GuildBankUI, Nameplates, FeedbackUI
 UIElements2.lua
 
 # Addon skins

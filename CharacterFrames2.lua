@@ -37,7 +37,7 @@ function Skinner:FriendsFrame()
 		else
 			self:moveObject(GuildFrameGuildListToggleButton, nil, nil, "-", 46)
 		end
-		end)
+	end)
 
 -->>--	Friends Frame
 	self:keepFontStrings(FriendsFrame)
@@ -53,8 +53,8 @@ function Skinner:FriendsFrame()
 	self:moveObject(FriendsFrameAddFriendButton, "-", 9, "-", 70)
 	self:moveObject(FriendsFrameFriendButton1, nil, nil, "+", 15)
 
-	self:removeRegions(FriendsFrameFriendsScrollFrame)
 	self:moveObject(FriendsFrameFriendsScrollFrame, "+", 35, "+", 14)
+	self:removeRegions(FriendsFrameFriendsScrollFrame)
 	self:skinScrollBar(FriendsFrameFriendsScrollFrame)
 
 -->>--	Ignore Frame
@@ -69,8 +69,8 @@ function Skinner:FriendsFrame()
 	self:moveObject(FriendsFrameStopIgnoreButton, "+", 4, nil, nil)
 	self:moveObject(FriendsFrameIgnoreButton1, nil, nil, "+", 15)
 
-	self:removeRegions(FriendsFrameIgnoreScrollFrame)
 	self:moveObject(FriendsFrameIgnoreScrollFrame, "+", 35, "+", 14)
+	self:removeRegions(FriendsFrameIgnoreScrollFrame)
 	self:skinScrollBar(FriendsFrameIgnoreScrollFrame)
 
 -->>--	MutedList Frame (New 2.2)
@@ -83,7 +83,7 @@ function Skinner:FriendsFrame()
 	self:removeRegions(FriendsFrameMutedScrollFrame)
 	self:skinScrollBar(FriendsFrameMutedScrollFrame)
 
--->>--	WhoFrame
+-->>--	Who Frame
 	WhoFrame:SetWidth(WhoFrame:GetWidth() * self.FxMult)
 	WhoFrame:SetHeight(WhoFrame:GetHeight() * self.FyMult)
 
@@ -94,8 +94,8 @@ function Skinner:FriendsFrame()
 	self:moveObject(WhoFrameDropDown, "+", 5, "+", 1)
 	self:moveObject(WhoFrameButton1, "-", 5, "+", 15)
 
-	self:removeRegions(WhoListScrollFrame)
 	self:moveObject(WhoListScrollFrame, "+", 35, "+", 20)
+	self:removeRegions(WhoListScrollFrame)
 	self:skinScrollBar(WhoListScrollFrame)
 
 	self:moveObject(WhoFrameEditBox, "+", 20, "-", 65)
@@ -105,7 +105,7 @@ function Skinner:FriendsFrame()
 	self:moveObject(WhoFrameTotals, nil, nil, "-", 66)
 	self:moveObject(WhoFrameGroupInviteButton, "+", 30, "-", 71)
 
--->>--	GuildFrame
+-->>--	Guild Frame
 	GuildFrame:SetWidth(GuildFrame:GetWidth() * self.FxMult)
 	GuildFrame:SetHeight(GuildFrame:GetHeight() * self.FyMult)
 
@@ -120,8 +120,8 @@ function Skinner:FriendsFrame()
 	self:moveObject(GuildFrameGuildStatusColumnHeader1, "-", 6, "+", 15)
 	self:moveObject(GuildFrameGuildStatusButton1, "-", 5, "+", 15)
 
-	self:removeRegions(GuildListScrollFrame)
 	self:moveObject(GuildListScrollFrame, "+", 35, "+", 20)
+	self:removeRegions(GuildListScrollFrame)
 	self:skinScrollBar(GuildListScrollFrame)
 
 	self:moveObject(GuildFrameTotals, nil, nil, "-", 46)
@@ -135,7 +135,7 @@ function Skinner:FriendsFrame()
 	self:moveObject(GuildControlPopupFrameCancelButton, "+", 20, "-", 26)
 	self:skinDropDown(GuildControlPopupFrameDropDown)
 	GuildControlPopupFrameEditBox:SetWidth(GuildControlPopupFrameEditBox:GetWidth() + 30)
-	self:skinEditBox(GuildControlPopupFrameEditBox)
+	self:skinEditBox(GuildControlPopupFrameEditBox, {9})
 	self:skinEditBox(GuildControlWithdrawGoldEditBox, {9})
 	self:skinEditBox(GuildControlWithdrawItemsEditBox, {9})
 	self:moveObject(GuildControlPopupFrameTabPermissions, "+", 10, "-", 20)
@@ -151,7 +151,7 @@ function Skinner:FriendsFrame()
 	end
 	self:storeAndSkin(ftype, GuildControlPopupFrame)
 
--->>--	GuildInfoFrame
+-->>--	GuildInfo Frame
 	self:keepFontStrings(GuildInfoFrame)
 	self:moveObject(GuildInfoTitle, nil, nil, "+", 3)
 
@@ -161,7 +161,7 @@ function Skinner:FriendsFrame()
 	self:storeAndSkin(ftype, GuildInfoTextBackground)
 	self:storeAndSkin(ftype, GuildInfoFrame)
 
--->>--	GuildMemberDetailFrame
+-->>--	GuildMemberDetail Frame
 	self:keepFontStrings(GuildMemberDetailFrame)
 	self:moveObject(GuildMemberDetailFrame, "+", 30, "-", 40)
 	self:moveObject(GuildFramePromoteButton, nil, nil, "-", 30)
@@ -169,7 +169,7 @@ function Skinner:FriendsFrame()
 	self:storeAndSkin(ftype, GuildMemberOfficerNoteBackground)
 	self:storeAndSkin(ftype, GuildMemberDetailFrame)
 
--->>--	GuildEventLogFrame
+-->>--	GuildEventLog Frame
 	self:keepRegions(GuildEventLogFrame, {2}) -- N.B. region 2 is text
 	self:storeAndSkin(ftype, GuildEventFrame)
 	self:removeRegions(GuildEventLogScrollFrame)
@@ -216,10 +216,10 @@ function Skinner:FriendsFrame()
 
 	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
--->>--	RaidInfoFrame
+-->>--	RaidInfo Frame
 	self:keepFontStrings(RaidInfoFrame)
-	self:removeRegions(RaidInfoScrollFrame)
 	self:moveObject(RaidInfoScrollFrame, "+", 5, nil, nil)
+	self:removeRegions(RaidInfoScrollFrame)
 	self:skinScrollBar(RaidInfoScrollFrame)
 	self:storeAndSkin(ftype, RaidInfoFrame)
 	self:SecureHook(RaidInfoFrame, "Show", function()
@@ -271,11 +271,11 @@ function Skinner:TradeSkillUI()
 	self:skinDropDown(TradeSkillInvSlotDropDown)
 	self:moveObject(TradeSkillInvSlotDropDown, "+", 20, "+", 12)
 	self:moveObject(TradeSkillSkill1, "-", 6, "+", 12)
-	self:removeRegions(TradeSkillListScrollFrame)
 	self:moveObject(TradeSkillListScrollFrame, "+", 35, "+", 12)
+	self:removeRegions(TradeSkillListScrollFrame)
 	self:skinScrollBar(TradeSkillListScrollFrame)
-	self:removeRegions(TradeSkillDetailScrollFrame)
 	self:moveObject(TradeSkillDetailScrollFrame, "+", 2, "+", 12)
+	self:removeRegions(TradeSkillDetailScrollFrame)
 	self:skinScrollBar(TradeSkillDetailScrollFrame)
 	self:moveObject(TradeSkillInputBox, "-", 5, nil, nil)
 	self:skinEditBox(TradeSkillInputBox)
@@ -345,7 +345,7 @@ function Skinner:QuestLog()
 	-- movement values
 	local xOfs, yOfs = 8, 24
 	self:moveObject(QuestLogExpandButtonFrame, "-", xOfs, "+", yOfs)
-	self:keepRegions(QuestLogCollapseAllButton, {4, 6}) -- N.B. region 4 is button, 6 is text
+	self:removeRegions(QuestLogCollapseAllButton, {7, 8, 9})
 	self:moveObject(QuestLogQuestCount, nil, nil, "+", 20)
 	self:moveObject(QuestLogTitle1, "-", xOfs, "+", yOfs)
 	self:moveObject(QuestLogListScrollFrame, "-", xOfs, "+", yOfs)

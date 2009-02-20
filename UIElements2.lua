@@ -662,6 +662,7 @@ function Skinner:LFGFrame()
 	self:moveObject(LFMFrameTypeDropDown, "-", 10, nil, nil)
 	self:skinFFColHeads("LFMFrameColumnHeader") --N.B. Prefix string
 	self:moveObject(LFMFrameColumnHeader1, "-", 10, nil, nil)
+	self:moveObject(LFMFrameButton1, "-", 10, nil, nil)
 	self:removeRegions(LFMListScrollFrame)
 	self:skinScrollBar(LFMListScrollFrame)
 	self:keepFontStrings(LFMEye)

@@ -1,5 +1,5 @@
 
-local allHooked, tKDd, tKG, tKS, tKAP
+local allHooked, tKDd, tKG, tKS, tKAP, ver
 	
 function Skinner:tekKonfig()
 	if not self.db.profile.MenuFrames then return end
@@ -9,20 +9,23 @@ function Skinner:tekKonfig()
 --	self:Debug("tekKonfig skin")
 	
 	if LibStub("tekKonfig-Dropdown", true) and not tKDd then
-		tKDd = LibStub("tekKonfig-Dropdown")
+		tKDd, ver = LibStub("tekKonfig-Dropdown")
 		self:RawHook(tKDd, "new", function(parent, label, ...)
---			self:Debug("tKDd:[%s, %s]", parent, label)
+			self:Debug("tKDd:[%s, %s]", parent, label)
 			local frame, text, container = self.hooks[tKDd].new(parent, label, ...)
 			if not self.db.profile.TexturedDD then self:keepFontStrings(frame)
 			else
-				local leftTex, midTex, rightTex = select(1, frame:GetRegions())
+				local leftTex, midTex, rightTex
+				if ver == 2 then
+					leftTex, midTex, rightTex = frame:GetRegions()
+				else
+					leftTex, rightTex, midTex = frame:GetRegions()
+				end
 				leftTex:SetAlpha(0)
 				midTex:SetTexture(self.itTex)
 				midTex:SetHeight(18)
 				midTex:SetTexCoord(0, 1, 0, 1)
 				rightTex:SetAlpha(0)
-				rightTex:ClearAllPoints()
-				rightTex:SetPoint("LEFT", midTex, "RIGHT", -6, -2)
 			end
 			return frame, text, container
 		end, true)

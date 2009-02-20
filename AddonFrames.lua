@@ -165,7 +165,7 @@ function Skinner:AddonFrames()
 			if self[v] then self:checkAndRun(v)
 			else
 				if self.db.profile.Warnings then
-					self:CustomPrint(1, 0, 0, nil, nil, nil, v, "loaded but skin not found in SkinMe directory")
+					self:CustomPrint(1, 0, 0, v, "loaded but skin not found in SkinMe directory")
 				end
 			end
 		end
@@ -178,7 +178,7 @@ function Skinner:AddonFrames()
 		if self.RockConfig then self:checkAndRun("RockConfig")
 		else
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "RockConfig", "loaded but skin not found in SkinMe directory")
+				self:CustomPrint(1, 0, 0, "RockConfig", "loaded but skin not found in SkinMe directory")
 			end
 		end
 	end

@@ -159,7 +159,7 @@ function Skinner:ReputationFrame()
 		self:glazeStatusBar(_G["ReputationBar"..i.."ReputationBar"], 0)
 	end
 
-	self:moveObject(ReputationListScrollFrame, "+", 35, "+", 20)
+	self:moveObject(ReputationListScrollFrame, "+", 35, "+", yOfs)
 	self:removeRegions(ReputationListScrollFrame)
 	self:skinScrollBar(ReputationListScrollFrame)
 

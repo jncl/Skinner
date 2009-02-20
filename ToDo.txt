@@ -8,26 +8,13 @@ N - New Version
 O - Other change
 S - Skin request
 
-	O	Tidy up Debug/Print functions
+√	O	Tidy up Debug/Print functions
 
-	O	Table reuse ?
+≈	O	Table reuse ?
 
 ≈	O	nil out skins, if no hooks in them, as required
 
 ?	O	Resize GM Ticket Frame, requested by babyzeretul, 14.02.09
 	
-√	I	LDB tooltips, reported by Kerecha, 13.02.09
-		Still having minor issues with some of the LDB tooltips.
-		Pico friends/guild
-		
-√	N	Recap, reported by shadowrm, 13.02.09
-		- Recap 4.24 is out and has a couple modifications to the options panel + data set windows that are missing skins
-		
-√	S	TheCollector, requested by Kerecha, 13.02.09
-	
-√	S	Acheron, requested by Gabriel, 14.02.09
-	
-√	S	Auc-Advanced Extra Tooltip, requested by MegaManJuno, 17.02.09
-
 ≈	S	TotemCaddy, requested by Gabriel, 15.02.09
 	

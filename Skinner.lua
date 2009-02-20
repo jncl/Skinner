@@ -9,7 +9,6 @@ assert(Skinner, "Skinner creation failed, missing Libraries")
 
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
-Skinner.debugLevel = 1
 
 -- Get Locale
 Skinner.L = LibStub("AceLocale-3.0"):GetLocale("Skinner")
@@ -23,11 +22,98 @@ Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 3.0.8
 --Skinner.isPatch = GM_CHAT and true or false
 
+-- Table reuse functions
+local tabPool = {}
+local function delTab(tbl)
+
+	if not tbl then return end
+	
+	for i = 1, #tbl do
+		tbl[i] = nil
+	end
+	
+	tabPool[tbl] = true
+	
+end
+local function newTab()
+
+	local tbl = next(tabPool)
+	
+	if tbl then
+		tabPool[tbl] = nil
+		return tbl
+	end
+	
+	return {}
+	
+end
+
+-- Local functions
+local function round2(num, ndp)
+
+  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
+
+end
+local function revTable(curTab, revTab)
+
+	if not curTab then return end
+	
+	for _, v in pairs(curTab) do
+		revTab[v] = true
+	end
+	
+	return revTab
+	
+end
+local function makeString(t)
+
+	if type(t) == "table" then
+		if type(rawget(t, 0)) == "userdata" and type(t.GetObjectType) == "function" then
+			return ("<%s:%s>"):format(t:GetObjectType(), t:GetName() or "(Anon)")
+		end
+	end
+	
+	return tostring(t)
+
+end
+local tcon = table.concat
+local function makeText(a1, ...)
+
+	local tmpTab = newTab()
+
+	local output = ""
+	
+	if a1:find("%%") and select('#', ...) >= 1 then
+		for i = 1, select('#', ...) do
+			tmpTab[i] = makeString(select(i, ...))
+		end
+		output = output .. " " .. a1:format(unpack(tmpTab))
+	else
+		tmpTab[1] = output
+		tmpTab[2] = a1
+		for i = 1, select('#', ...) do
+			tmpTab[i+2] = makeString(select(i, ...))
+		end
+		output = tcon(tmpTab, " ")
+	end
+	
+	delTab(tmpTab)
+	
+	return output
+
+end
+local function print(text, frame, r, g, b)
+
+	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
+
+end
+
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
 
 --@debug@
-	if self:IsDebugging() then self:Print("Debugging is enabled") self:Debug("Debugging is enabled") end
+	self:Print("Debugging is enabled")
+	self:Debug("Debugging is enabled")
 --@end-debug@
 
 --@alpha@
@@ -193,7 +279,7 @@ function Skinner:ReloadAddon(callback)
 		end,
 		OnCancel = function(this, data, reason)
 			if reason == "timeout" or reason == "clicked" then
-				self:CustomPrint(1, 1, 0, nil, nil, nil, "The profile '"..Skinner.db:GetCurrentProfile().."' will be activated next time you Login or Reload the UI")
+				self:CustomPrint(1, 1, 0, "The profile '"..Skinner.db:GetCurrentProfile().."' will be activated next time you Login or Reload the UI")
 			end
 		end,
 		timeout = 0,
@@ -205,79 +291,24 @@ function Skinner:ReloadAddon(callback)
 
 end
 
-
--- Printing Functions
-local real_tostring = tostring
-local function tostring(t)
-
-	if type(t) == "table" then
-		if type(rawget(t, 0)) == "userdata" and type(t.GetObjectType) == "function" then
-			return ("<%s:%s>"):format(t:GetObjectType(), t:GetName() or "(anon)")
-		end
-	end
-	return real_tostring(t)
-
-end
-
-local function clearTable(table)
-
-	for i = 1, #table do
-		table[i] = nil
-	end
-
-end
-
-local tmp = {}
-local function makeText(a1, ...)
-
-	local output = ""
-	if a1:find("%%") and select('#', ...) >= 1 then
-		for i = 1, select('#', ...) do
-			tmp[i] = tostring(select(i, ...))
-		end
-		output = output .. " " .. a1:format(unpack(tmp))
-	else
-		tmp[1] = output
-		tmp[2] = a1
-		for i = 1, select('#', ...) do
-			tmp[i+2] = tostring((select(i, ...)))
-		end
-		output = table.concat(tmp, " ")
-	end
-	clearTable(tmp)
-	return output
-
-end
-
-local function print(text, r, g, b, frame, delay)
-
-	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, delay or 5)
-
-end
 --@debug@
 function Skinner:Debug(a1, ...)
 
 	local output = ("|cff7fff7f(DBG) %s:[%s.%3d]|r"):format("Skinner", date("%H:%M:%S"), (GetTime() % 1) * 1000)
 
-	print(output.." "..makeText(a1, ...), nil, nil, nil, self.debugFrame)
+	print(output.." "..makeText(a1, ...), self.debugFrame)
 
 end
-
-function Skinner:LevelDebug(lvl, a1, ...) if self.debugLevel >= lvl then self:Debug(a1, ...) end end
-
-function Skinner:IsDebugging() return true end
 --@end-debug@
 --[===[@non-debug@
 function Skinner:Debug() end
-function Skinner:LevelDebug() end
-function Skinner:IsDebugging() end
 --@end-non-debug@]===]
 
-function Skinner:CustomPrint(r, g, b, frame, delay, connector, a1, ...)
+function Skinner:CustomPrint(r, g, b, a1, ...)
 
 	local output = ("|cffffff78Skinner:|r")
 
-	print(output.." "..makeText(a1, ...), r, g, b, frame, delay)
+	print(output.." "..makeText(a1, ...), nil, r, g, b)
 
 end
 
@@ -389,7 +420,7 @@ function Skinner:applySkin(frame, header, bba, ba, fh, bd)
 	local hasIOT = assert(frame.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location in the BugSack
 	if hasIOT and not frame:IsObjectType("Frame") then
 		if self.db.profile.Errors then
-			self:CustomPrint(1, 0, 0, nil, nil, nil, "Error skinning", frame.GetName and frame:GetName() or frame, "not a Frame or subclass of Frame: ", frame:GetObjectType())
+			self:CustomPrint(1, 0, 0, "Error skinning", frame.GetName and frame:GetName() or frame, "not a Frame or subclass of Frame: ", frame:GetObjectType())
 			return
 		end
 	end
@@ -424,7 +455,7 @@ local function safecall(funcName, LoD)
 	local success, err = xpcall(function() return Skinner[funcName](Skinner, LoD) end, errorhandler)
 	if not success then
 		if Skinner.db.profile.Errors then
-			Skinner:CustomPrint(1, 0, 0, nil, nil, nil, "Error running", funcName)
+			Skinner:CustomPrint(1, 0, 0, "Error running", funcName)
 		end
 	end
 end
@@ -436,7 +467,7 @@ function Skinner:checkAndRun(funcName)
 		safecall(funcName)
 	else
 		if self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..funcName.."] not found in Skinner")
+			self:CustomPrint(1, 0, 0, "function ["..funcName.."] not found in Skinner")
 		end
 	end
 
@@ -462,14 +493,14 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 		-- check to see if AddonSkin is loaded when Addon is loaded
 		if not LoD and not self[addonFunc] then
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, addonName, "loaded but skin not found in the SkinMe directory")
+				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the SkinMe directory")
 			end
 		elseif type(self[addonFunc]) == "function" then
 --			self:Debug("checkAndRunAddOn#2:[%s, %s]", addonFunc, self[addonFunc])
 			safecall(addonFunc, LoD)
 		else
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, nil, nil, nil, "function ["..addonFunc.."] not found in Skinner")
+				self:CustomPrint(1, 0, 0, "function ["..addonFunc.."] not found in Skinner")
 			end
 		end
 	end
@@ -673,7 +704,7 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 	if not hasMatched and self.db.profile.Warnings then
 		local addText = ""
 		if type(verNoReqd) ~= "table" then addText = "Version "..verNoReqd.." is required" end
-		self:CustomPrint(1, 0.25, 0.25, nil, nil, nil, "Version", actualVerNo, "of", addonName, "is unsupported.", addText)
+		self:CustomPrint(1, 0.25, 0.25, "Version", actualVerNo, "of", addonName, "is unsupported.", addText)
 	end
 
 	return hasMatched
@@ -704,26 +735,22 @@ function Skinner:keepRegions(frame, regions)
 --@end-alpha@
 
 	if not frame then return end
+	regions	= revTable(regions, newTab())
 
---	self:Debug("keepRegions: [%s]", frame:GetName() or "???")
-
+--	self:Debug("keepRegions: [%s]", frame:GetName() or "<Anon>")
 	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
-		local keep
-		if self:IsDebugging() and regions then
-			if reg:IsObjectType("FontString") then self:LevelDebug(3, "kr FS: [%s, %s]", frame:GetName() or "nil", i) end
-		end
 		-- if we have a list, hide the regions not in that list
-		if regions then
-			for _, r in pairs(regions) do
-				if i == r then keep = true break end
-			end
-		end
-		if not keep then
---			 self:Debug("remove region: [%s, %s]", i, reg:GetName())
+		if regions and not regions[i] then
+--			self:Debug("hide region: [%s, %s]", i, reg:GetName() or "<Anon>")
 			reg:SetAlpha(0)
+--@debug@
+			if reg:IsObjectType("FontString") then self:Debug("kr FS: [%s, %s]", frame:GetName() or "<Anon>", i) end
+--@end-debug@
 		end
 	end
+
+	delTab(regions)
 
 end
 
@@ -797,7 +824,7 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 	-- Workaround for relativeTo crash
 	if not relTo then
 		if self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, nil, nil, nil, "moveObject (relativeTo) error:", tostring(objName))
+			self:CustomPrint(1, 0, 0, "moveObject (relativeTo) error:", tostring(objName))
 		end
 		return
 	end
@@ -817,25 +844,22 @@ function Skinner:removeRegions(frame, regions)
 --@end-alpha@
 
 	if not frame then return end
-
---	self:Debug("removeRegions: [%s]", frame:GetName() or "???")
-
+	
+	regions	= revTable(regions, newTab())
+	
+--	self:Debug("removeRegions: [%s]", frame:GetName() or "<Anon>")
 	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
-		if self:IsDebugging() and regions then
-			if reg:IsObjectType("FontString") then self:LevelDebug(3, "rr FS: [%s, %s]", frame:GetName() or "nil", i) end
-		end
-		-- if we have a list, hide the regions in that list
-		-- otherwise, hide all regions of the frame
-		if regions then
-			for _, r in pairs(regions) do
-				if i == r then reg:SetAlpha(0) break end
-			end
-		else
---			self:Debug("remove region: [%s, %s]", i, reg:GetName())
+		if not regions or regions and regions[i] then
+--			self:Debug("hide region: [%s, %s]", i, reg:GetName() or "<Anon>")
 			reg:SetAlpha(0)
+--@debug@
+			if reg:IsObjectType("FontString") then self:Debug("rr FS: [%s, %s]", frame:GetName() or "<Anon>", i) end
+--@end-debug@
 		end
 	end
+
+	delTab(regions)
 
 end
 
@@ -859,7 +883,7 @@ function Skinner:resizeTabs(frame)
 	-- calculate the Tab left width
 	local tlw = (tTW > fW and (40 - (tTW - fW) / nT) / 2 or 20)
 	-- set minimum left width
-	tlw = format("%.2f", (tlw >= 6 and tlw or 5.5))
+	tlw = ("%.2f"):format(tlw >= 6 and tlw or 5.5)
 -- 	self:Debug("resizeTabs: [%s, %s, %s, %s, %s]", fN, nT, tTW, fW, tlw)
 	-- update each tab
 	for i = 1, nT do
@@ -1015,7 +1039,7 @@ function Skinner:skinEditBox(editBox, regions, noSkin, noHeight, noWidth)
 end
 
 function Skinner:skinFFToggleTabs(tabName, tabCnt)
---	self:Debug("skinFFToggleTabs: [%s]", tabName)
+	self:Debug("skinFFToggleTabs: [%s]", tabName)
 
 	if not tabCnt then tabCnt = 3 end
 	for i = 1, tabCnt do
@@ -1133,10 +1157,10 @@ function Skinner:skinTooltip(frame)
 		for _, tooltip in pairs(self.ttCheck) do
 			if tooltip == frame:GetName() then
 				local r, g, b, a = frame:GetBackdropBorderColor()
-				r = string.format("%.2f", r)
-				g = string.format("%.2f", g)
-				b = string.format("%.2f", b)
-				a = string.format("%.2f", a)
+				r = ("%.2f"):format(r)
+				g = ("%.2f"):format(g)
+				b = ("%.2f"):format(b)
+				a = ("%.2f"):format(a)
 --				self:Debug("checkTTBBC: [%s, %s, %s, %s, %s]", frame:GetName(), r, g, b, a)
 				if r ~= "1.00" or g ~= "1.00" or b ~= "1.00" or a ~= "1.00" then return end
 			end
@@ -1211,7 +1235,7 @@ function Skinner:RGBPercToHex(r, g, b)
 	g = g <= 1 and g >= 0 and g or 0
 	b = b <= 1 and b >= 0 and b or 0
 
-	return string.format("%02x%02x%02x", r*255, g*255, b*255)
+	return ("%02x%02x%02x"):format(r*255, g*255, b*255)
 
 end
 
@@ -1219,27 +1243,9 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	local showKids = showKids and true or false
 
-	local function print(fmsg, ...)
+	local function showIt(fmsg, ...)
 
-		local tmp = {}
-		local output = "dbg:"
-
-		fmsg = tostring(fmsg)
-		if fmsg:find("%%") and select('#', ...) >= 1 then
-			for i = 1, select('#', ...) do
-				tmp[i] = tostring((select(i, ...)))
-			end
-			output = strjoin(" ", output, fmsg:format(unpack(tmp)))
-		else
-			tmp[1] = output
-			tmp[2] = fmsg
-			for i = 1, select('#', ...) do
-				tmp[i + 2] = tostring((select(i, ...)))
-			end
-			output = table.concat(tmp, " ")
-		end
-
-		Skinner.debugFrame:AddMessage(output)
+		print("dbg:"..makeText(fmsg, ...), Skinner.debugFrame)
 
 	end
 
@@ -1247,7 +1253,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 		for i = 1, object:GetNumRegions() do
 			local v = select(i, object:GetRegions())
-			print("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetObjectType() or "nil", v:GetWidth() or "nil", v:GetHeight() or "nil", v:GetObjectType() == "Texture" and string.format("%s : %s", v:GetTexture() or "nil", v:GetDrawLayer() or "nil") or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetObjectType() or "nil", v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", v:GetObjectType() == "Texture" and ("%s : %s"):format(v:GetTexture() or "nil", v:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
@@ -1260,7 +1266,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 		for i = 1, frame:GetNumChildren() do
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
-			print("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetWidth() or "nil", v:GetHeight() or "nil", objType or "nil", v:GetFrameStrata() or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", objType or "nil", v:GetFrameStrata() or "nil")
 			if objType == "Frame" or objType == "Button" or objType == "StatusBar" or objType == "Slider" or objType == "ScrollFrame" then
 				getRegions(v, lvl.."-"..i)
 				getChildren(v, lvl.."-"..i)
@@ -1269,14 +1275,14 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	end
 
-	print("%s : %s : %s : %s : %s : %s", obj:GetName() or "<Anon>", obj:GetWidth() or "nil", obj:GetHeight() or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
+	showIt("%s : %s : %s : %s : %s : %s", obj:GetName() or "<Anon>", obj:GetWidth() or "nil", obj:GetHeight() or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
-	print("Started Regions")
+	showIt("Started Regions")
 	getRegions(obj, 0)
-	print("Finished Regions")
-	print("Started Children")
+	showIt("Finished Regions")
+	showIt("Started Children")
 	getChildren(obj, 0)
-	print("Finished Children")
+	showIt("Finished Children")
 
 end
 
