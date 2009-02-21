@@ -29,14 +29,13 @@ function Skinner:XPerl_Player()
 	self:applySkin(XPerl_PlayergroupFrame)
 
 	-- Put a border around the class icon
-	if not XPerl_PlayerclassFrame.skinned then
+	if not self.skinned[XPerl_PlayerclassFrame] then
 		XPerl_PlayerclassFrame:SetWidth(XPerl_PlayerclassFrame:GetWidth() + 7)
 		XPerl_PlayerclassFrame:SetHeight(XPerl_PlayerclassFrame:GetHeight() + 6)
 		self:moveObject(XPerl_PlayerclassFrame, "+", 3, "-", 2)
 		XPerl_PlayerclassFrametex:SetWidth(XPerl_PlayerclassFrametex:GetWidth() - 1)
 		XPerl_PlayerclassFrametex:SetHeight(XPerl_PlayerclassFrametex:GetHeight() - 2)
 		self:moveObject(XPerl_PlayerclassFrametex, "-", 4, "+", 4)
-		XPerl_PlayerclassFrame.skinned = true
 	end
 
 	if not self:IsHooked("XPerl_Player_UpdateDisplay") then
@@ -81,13 +80,12 @@ function Skinner:XPerl_Target()
 
 	-- Put a border around the class icon
 	local cf = XPerl_TargettypeFramePlayer
-	if not cf.skinned then
+	if not self.skinned[cf] then
 		cf:SetWidth(cf:GetWidth() - 3)
 		cf:SetHeight(cf:GetHeight() - 4)
 		self:moveObject(cf, "+", 1, "+", 3)
 		local tex = XPerl_TargettypeFramePlayerclassTexture
 		self:addSkinButton(tex, XPerl_Target, cf)
-		cf.skinned = true
 		-- only do this once
 		RaiseFrameLevel(XPerl_TargetnameFrame)
 	end
@@ -109,13 +107,12 @@ function Skinner:XPerl_Target()
 
 	-- Put a border around the class icon
 	local cf = XPerl_FocustypeFramePlayer
-	if not cf.skinned then
+	if not self.skinned[cf] then
 		cf:SetWidth(cf:GetWidth() - 3)
 		cf:SetHeight(cf:GetHeight() - 4)
 		self:moveObject(cf, "+", 1, "+", 3)
 		local tex = XPerl_FocustypeFramePlayerclassTexture
 		self:addSkinButton(tex, XPerl_Focus, cf)
-		cf.skinned = true
 	end
 
 	XPerl_FocuseliteFrame:SetAlpha(0)
@@ -178,12 +175,11 @@ function Skinner:XPerl_Party()
 		local lf = _G["XPerl_party"..i.."levelFrame"]
 		self:applySkin(lf)
 		-- Put a border around the class icon
-		if not lf.skinned then
+		if not self.skinned[lf] then
 			local tex = _G[lf:GetName().."classTexture"]
 			tex:SetWidth(tex:GetWidth() - 3)
 			tex:SetHeight(tex:GetHeight() - 3)
 			self:addSkinButton(tex, _G["XPerl_party"..i], lf)
-			lf.skinned = true
 		end
 -->>--	Party Target
 		self:applySkin(_G["XPerl_party"..i.."targetFrame"])
@@ -226,10 +222,9 @@ function Skinner:XPerl_RaidFrames()
 		for i = 1, 9 do
 			for j = 1, 5 do
 				local XPRGUB = _G["XPerl_Raid_Grp"..i.."UnitButton"..j]
-				if XPRGUB and not XPRGUB.skinned then
+				if XPRGUB and not self.skinned[XPRGUB] then
 					Skinner:applySkin(_G[XPRGUB:GetName().."nameFrame"])
 					Skinner:applySkin(_G[XPRGUB:GetName().."statsFrame"])
-					XPRGUB.skinned = true
 				end
 			end
 		end
@@ -250,9 +245,8 @@ function Skinner:XPerl_RaidPets()
 
 		for i = 1, GetNumRaidMembers() do
 			local XPRGPUB = _G["XPerl_Raid_GrpPetsUnitButton"..i]
-			if XPRGPUB and not XPRGPUB.skinned then
+			if XPRGPUB and not self.skinned[XPRGPUB] then
 				Skinner:applySkin(XPRGPUB)
-				XPRGPUB.skinned = true
 			end
 		end
 
@@ -277,11 +271,10 @@ function Skinner:XPerl_RaidHelper()
 
 		for i = 1, XPerlConfigHelper.MaxMainTanks do
 			local MTTUB = _G["XPerl_MTTargetsUnitButton"..i]
-			if MTTUB and not MTTUB.skinned then
+			if MTTUB and not self.skinned[MTTUB] then
 				Skinner:applySkin(MTTUB)
 				Skinner:applySkin(_G[MTTUB:GetName().."Target"])
 				Skinner:applySkin(_G[MTTUB:GetName().."TargetTarget"])
-				MTTUB.skinned = true
 			end
 		end
 
@@ -292,11 +285,10 @@ function Skinner:XPerl_RaidHelper()
 	self:applySkin(XPerl_Target_AssistFrame)
 	self:moveObject(XPerl_Target_AssistFrame, nil, nil, "+", 1)
 
-	if not XPerl_Player_TargettingFrame.skinned then
+	if not self.skinned[XPerl_Player_TargettingFrame] then
 		self:applySkin(XPerl_Player_TargettingFrame)
 		self:RawHook(XPerl_Player_TargettingFrame, "SetBackdropColor", function() end, true)
 		self:RawHook(XPerl_Player_TargettingFrame, "SetBackdropBorderColor", function() end, true)
-		XPerl_Player_TargettingFrame.skinned = true
 		-- these should only be done once as well
 		skinTanks()
 		self:SecureHook("XPerl_MTRosterChanged", skinTanks)

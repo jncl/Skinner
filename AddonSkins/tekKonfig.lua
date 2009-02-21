@@ -56,13 +56,12 @@ function Skinner:tekKonfig()
 		tKAP = LibStub("tekKonfig-AboutPanel")
 		self:SecureHook(tKAP, "OpenEditbox", function(this)
 --			self:Debug("tKAP:[%s, %s]", this, tKAP.editbox)
-			if not tKAP.editbox.skinned then
+			if not self.skinned[tKAP.editbox] then
 				tKAP.editbox:SetHeight(24)
 				local l, r, t, b = tKAP.editbox:GetTextInsets()
 				tKAP.editbox:SetTextInsets(l + 5, r + 5, t, b)
 				self:keepFontStrings(tKAP.editbox)
 				self:skinUsingBD2(tKAP.editbox)
-				tKAP.editbox.skinned = true
 			end
 			tKAP.editbox:SetPoint("LEFT", -5, 0)
 		end)

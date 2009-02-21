@@ -41,7 +41,6 @@ function Skinner:ShadowDancer3()
 		end
 		self:applySkin(skillF)
 		self:Unhook(obj, "OpenGUI")
-		self.ShadowDancer3 = nil
 	end)
 
 end

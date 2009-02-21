@@ -66,8 +66,6 @@ function Skinner:TopFrame()
 	--	apply the Gradient
 	frame.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOnTF or gradientOffTF))
 
-	self.TopFrame = nil
-	
 end
 
 function Skinner:MiddleFrames()
@@ -215,6 +213,4 @@ function Skinner:BottomFrame()
 	--	apply the Gradient
 	frame.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOnBF or gradientOffBF))
 
-	self.BottomFrame = nil
-	
 end

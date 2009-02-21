@@ -398,9 +398,8 @@ function Skinner:RaidUI()
 	self:SecureHook("RaidPullout_GetFrame", function(filterID)
 		for i = 1, NUM_RAID_PULLOUT_FRAMES 	do
 			local pulloutButton = _G["RaidPullout"..i]
-			if not pulloutButton.skinned then
+			if not self.skinned[pulloutButton] then
 				self:storeAndSkin(ftype, pulloutButton)
-				pulloutButton.skinned = true
 			end
 		end
 	end)
@@ -429,21 +428,19 @@ function Skinner:Buffs()
 
 		for i= 1, BUFF_MAX_DISPLAY do
 			local bb = _G["BuffButton"..i]
-			if bb and not bb.skinned then
+			if bb and not Skinner.skinned[bb] then
 				Skinner:addSkinButton(bb)
 				Skinner:moveObject(_G["BuffButton"..i.."Duration"], nil, nil, "-", 2)
-				bb.skinned = true
 			end
 		end
 		for i= 1, DEBUFF_MAX_DISPLAY do
 			local db = _G["DebuffButton"..i]
-			if db and not db.skinned then
+			if db and not Skinner.skinned[db] then
 				Skinner:addSkinButton(db)
 				Skinner:moveObject(_G["DebuffButton"..i.."Duration"], nil, nil, "-", 2)
-				db.sBut:ClearAllPoints()
-				db.sBut:SetPoint("TOPLEFT", db, "TOPLEFT", -6, 6)
-				db.sBut:SetPoint("BOTTOMRIGHT", db, "BOTTOMRIGHT", 6, -5)
-				db.skinned = true
+				Skinner.sBut[db]:ClearAllPoints()
+				Skinner.sBut[db]:SetPoint("TOPLEFT", db, "TOPLEFT", -6, 6)
+				Skinner.sBut[db]:SetPoint("BOTTOMRIGHT", db, "BOTTOMRIGHT", 6, -5)
 			end
 		end
 		

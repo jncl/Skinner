@@ -7,9 +7,8 @@ function Skinner:EasyUnlock()
 	if EasyUnlock_DoFrameCheck then funcName = "EasyUnlock_DoFrameCheck" end
 
 	self:SecureHook(funcName, function()
-		if not EasyUnlock.skinned then
+		if not self.skinned[EasyUnlock] then
 			self:moveObject(TradeFrameTradeButton, "+", 20, "-", 45)
-			EasyUnlock.skinned = true
 		end
 	end)
 

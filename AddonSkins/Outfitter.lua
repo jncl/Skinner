@@ -33,15 +33,14 @@ function Skinner:Outfitter()
 
 		for i = 1, #this["Bars"] do
 			local oBar = _G["OutfitterOutfitBar"..i]
-			if not oBar.skinned then
+			if not Skinner.skinned[oBar] then
 				Skinner:keepFontStrings(oBar)
 				Skinner:applySkin(oBar)
-				oBar.skinned = true
 			end
 		end
 		for i = 1, 2 do
 			local dBar = this["DragBar"..i]
-			if dBar and not dBar.skinned then
+			if dBar and not Skinner.skinned[dBar] then
 				Skinner:keepFontStrings(dBar)
 				Skinner:applySkin(dBar)
 				if not dBar.Vertical then dBar:SetWidth(20)
@@ -52,7 +51,6 @@ function Skinner:Outfitter()
 					if not this.Vertical then this:SetWidth(20)
 					else this:SetHeight(20) end
 				end)
-				dBar.skinned = true
 			end
 		end
 

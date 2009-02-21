@@ -1,27 +1,23 @@
 
 function Skinner:Waterfall()
 
-	local waterfallsSkinned = {}
-
 	local function skinWaterfall(frame)
 
 		local function skinControls(frame)
 
 			for _, v in pairs(frame.controls) do
-				if v.class == WaterfallTextBox and not v.skinned then
+				if v.class == WaterfallTextBox and not Skinner.skinned[v] then
 					Skinner:skinEditBox(v.frame, {9})
-					v.skinned = true
 				end
-				if v.class == WaterfallDropdown and not v.skinned then
+				if v.class == WaterfallDropdown and not Skinner.skinned[v] then
 					if v.editbox then Skinner:skinEditBox(v.editbox, {9}) end
 					if v.pullout then Skinner:applySkin(v.pullout)	end
-					v.skinned = true
 				end
 			end
 
 		end
 
-		if not waterfallsSkinned[frame] then
+		if not Skinner.skinned[frame] then
 			-- Main Frame
 			frame.titlebar:Hide()
 			frame.titlebar2:Hide()
@@ -44,7 +40,6 @@ function Skinner:Waterfall()
 			Skinner:getRegion(frame.mainpane.frame, 11):Hide()
 			Skinner:getRegion(frame.mainpane.frame, 12):Hide()
 			Skinner:applySkin(frame.mainpane.frame)
-			waterfallsSkinned[frame] = true
 		end
 
 	end

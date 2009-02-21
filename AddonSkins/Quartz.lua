@@ -21,11 +21,10 @@ function Skinner:Quartz()
 				local obj = select(i, UIParent:GetChildren())
 				-- if this is a Quartz Mirror Bar then skin it
 				if obj:IsObjectType('StatusBar') and obj.timetext then
-					if not obj.skinned then
+					if not Skinner.skinned[obj]then
 --						Skinner:Debug("skinMSBs: [%s]", obj)
 						obj:SetBackdrop(nil)
 						Skinner:glazeStatusBar(obj, 0)
-						obj.skinned = true
 					end
 				end
 			end

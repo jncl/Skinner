@@ -42,12 +42,11 @@ end
 
 function Skinner:skinXLoot(frame)
 
---	self:Debug("skinXLoot [%s, %s]", frame:GetName(), frame.skinned)
+--	self:Debug("skinXLoot [%s, %s]", frame:GetName(), self.skinned[frame])
 
-	if not frame.skinned then
+	if not self.skinned[frame] then
 		self:applySkin(frame)
 		self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
-		frame.skinned = true
 		if string.find(frame:GetName(), "Wrapper") then
 			LowerFrameLevel(frame)
 			self:RawHook(frame, "SetBackdrop", function() end, true)

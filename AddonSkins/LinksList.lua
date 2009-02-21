@@ -25,18 +25,17 @@ function Skinner:LinksList()
 		self:applySkin(LinksList_ResultsFrame_QuickSearchFrame)
 --		hook this to skin the Advanced Search Frame
 		self:SecureHookScript(LinksList_ResultsFrame_AdvancedSearchButton, "OnClick", function()
-			if not LinksList_SearchFrame.skinned then
+			if not self.skinned[LinksList_SearchFrame] then
 				self:keepFontStrings(LinksList_SearchFrame)
 				self:moveObject(LinksList_SearchFrameTitleBoxText, nil, nil, "-", 7)
 				self:applySkin(LinksList_SearchFrame_SectionParametersFrame)
 				self:applySkin(LinksList_SearchFrame_SubsectionParametersFrame)
 				self:skinDropDown(LinksList_SearchFrame_SubsectionParametersFrame_SubsectionDD)
 				self:applySkin(LinksList_SearchFrame)
-				LinksList_SearchFrame.skinned = true
 			end
 			for i = 1, LinksList_SearchFrame:GetNumChildren() do
 				local v = select(i, LinksList_SearchFrame:GetChildren())
-				if not v.skinned then
+				if not self.skinned[v] then
 					local objName = v:GetName()
 					if string.match(objName, llsfr.."Frame") then self:skinDropDown(v)
 					elseif string.match(objName, llsfr.."EditBox") then
@@ -44,7 +43,6 @@ function Skinner:LinksList()
 						v:SetWidth(v:GetWidth() - 5)
 						self:RawHook(v, "SetHeight", function() end, true)
 					end
-					v.skinned = true
 				end
 			end
 		end)

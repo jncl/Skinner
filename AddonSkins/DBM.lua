@@ -56,7 +56,7 @@ function Skinner:DBM_GUI()
 	local function skinSubPanels(panel)
 	
 		for _, subPanel in pairs(panel.areas) do
-			if not subPanel.skinned then
+			if not Skinner.skinned[subPanel] then
 -- 				Skinner:Debug("skinSubPanel:[%s, %s, %s]", panel, subPanel.frame, subPanel.framename)
 				Skinner:applySkin(subPanel.frame)
 				-- check to see if any children are dropdowns
@@ -70,7 +70,6 @@ function Skinner:DBM_GUI()
 				if skinPizzaEBs then skinPizzaEBs(subPanel) end
 				-- (BUGFIX for DBM): look for the Bar Setup panels
 				if fixForBarSetup then fixForBarSetup(subPanel) end
-				subPanel.skinned = true
 			end
 		end
 		

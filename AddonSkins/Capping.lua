@@ -19,9 +19,9 @@ function Skinner:Capping_ModMap(...)
 --	self:Debug("Capping_ModMap")
 
 	if not BattlefieldMinimap then return end
-	if not BattlefieldMinimap.skinFrame then return end
+	if not self.skinFrame[BattlefieldMinimap] then return end
 
-	local skinFrame = BattlefieldMinimap.skinFrame
+	local skinFrame = self.skinFrame[BattlefieldMinimap]
 	local bmmbw = math.floor(BattlefieldMinimapBackground:GetWidth())
 --	self:Debug("Capping_ModMap#2: [%s, %s]", bmmw, bmmbw)
 

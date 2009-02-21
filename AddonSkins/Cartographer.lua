@@ -17,7 +17,7 @@ function Skinner:Cartographer_Notes()
 	local function skinNNF()
 
 		local CNNNF = CartographerNotesNewNoteFrame
-		if not CNNNF.skinned then
+		if not Skinner.skinned[CNNNF] then
 			Skinner:keepFontStrings(CNNNF)
 			Skinner:moveObject(CNNNF.header, nil, nil, "+", 6, CNNNF)
 			local last = nil
@@ -33,7 +33,6 @@ function Skinner:Cartographer_Notes()
 			end
 			Skinner:keepRegions(CartographerNotesNewNoteFrameIcon, {4, 5}) -- N.B region 4 is text, 5 is the icon
 			Skinner:applySkin(CNNNF)
-			CNNNF.skinned = true
 		end
 
 	end

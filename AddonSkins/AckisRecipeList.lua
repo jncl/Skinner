@@ -7,8 +7,8 @@ function Skinner:AckisRecipeList()
 	if not ARL then return end
 
 	self:SecureHook(ARL, "CreateFrame", function()
-		self:Debug("ARL CreateFrame: [%s]", ARL.Frame.skinned)
-		if not ARL.Frame.skinned then
+--		self:Debug("ARL CreateFrame: [%s]", self.skinned[ARL.Frame])
+		if not self.skinned[ARL.Frame] then
 			ARL.bgTexture:SetAlpha(0)
 			self:moveObject(ARL.Frame.HeadingText, nil, nil, "-", 7)
 			self:moveObject(ARL_CloseXButton, "-", 5, "+", 6)
@@ -20,7 +20,6 @@ function Skinner:AckisRecipeList()
 			-- flyaway frame
 			self:keepFontStrings(ARL.Flyaway)
 			ARL.flyTexture:SetAlpha(0)
-			ARL.Frame.skinned = true
 		end
 	end)
 

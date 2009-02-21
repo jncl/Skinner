@@ -35,9 +35,8 @@ function Skinner:Configator()
 		self:RawHook(clib, "Create", function(this, ...)
 			local frame = self.hooks[clib].Create(this, ...)
 --			self:Debug("Configator_Create: [%s]", frame:GetName())
-			if not frame.skinned then
+			if not self.skinned[frame] then
 				self:applySkin(frame.Backdrop)
-				frame.skinned = true
 				-- look for the SearchUI frame
 				local w, h, gw, gh, to, lo = select(3, ...)
 				if w == 900 and h == 500 and gw == 5 and gh == 350 and to == 20 and lo == 5 then
@@ -57,12 +56,11 @@ function Skinner:Configator()
 			end
 
 			-- skin the Help frame
-			if not clib.help.skinned then
+			if not self.skinned[clib.help] then
 				self:moveObject(clib.help.close, nil, nil, "-", 2)
 				self:applySkin(clib.help)
 				self:skinUsingBD2(clib.help.scroll.hScroll)
 				self:skinUsingBD2(clib.help.scroll.vScroll)
-				clib.help.skinned = true
 			end
 
 			-- hook this to skin various controls
@@ -70,23 +68,20 @@ function Skinner:Configator()
 	-- 		self:Debug("Configator_Create_AddControl: [%s, %s, %s, %s]", id, cType, column, ...)
 				local control = self.hooks[frame].AddControl(this, id, cType, column, ...)
 				-- skin the sub-frame if required
-				if not this.tabs[id].frame.skinned then
+				if not self.skinned[this.tabs[id].frame] then
 					self:applySkin(this.tabs[id].frame)
-					this.tabs[id].frame.skinned = true
 				end
 				-- skin the scroll bars
-				if this.tabs[id].scroll and not this.tabs[id].scroll.skinned then
+				if this.tabs[id].scroll and not self.skinned[this.tabs[id].scroll] then
 					self:skinUsingBD2(this.tabs[id].scroll.hScroll)
 					self:skinUsingBD2(this.tabs[id].scroll.vScroll)
-					this.tabs[id].scroll.skinned = true
 				end
 				-- skin the DropDown
 				if cType == "Selectbox" then
 					self:skinDropDown(control)
 	--				self:keepFontStrings(control)
-					if not SelectBoxMenu.skinned then
+					if not self.skinned[SelectBoxMenu] then
 						self:applySkin(SelectBoxMenu.back)
-						SelectBoxMenu.skinned= true
 					end
 				end
 				if cType == "Text" or cType == "TinyNumber" or cType == "NumberBox" then
@@ -107,13 +102,13 @@ function Skinner:Configator()
 			local frame = clib.frames[i]
 			if frame then
 				self:applySkin(frame)
-				frame.skinned = true
+				self.skinned[frame] = true
 			end
 			if frame.tabs then
 				for j = 1, #frame.tabs do
 					local tab = frame.tabs[j]
 					self:applySkin(tab.frame)
-					tab.frame.skinned = true
+					self.skinned[tab.frame] = true
 					if tab.frame.ctrls then
 						for k = 1, #tab.frame.ctrls do
 							local tfc = tab.frame.ctrls[k]
@@ -138,7 +133,7 @@ function Skinner:Configator()
 					if tab.scroll then
 						self:skinUsingBD2(tab.scroll.hScroll)
 						self:skinUsingBD2(tab.scroll.vScroll)
-						tab.scroll.skinned = true
+						self.skinned[tab.scroll] = true
 					end
 				end
 			end
@@ -162,12 +157,12 @@ function Skinner:Configator()
 		self:applySkin(clib.help)
 		self:skinUsingBD2(clib.help.scroll.hScroll)
 		self:skinUsingBD2(clib.help.scroll.vScroll)
-		clib.help.skinned = true
+		self.skinned[clib.help] = true
 	end
 	-- skin DropDown menu
 	if SelectBoxMenu then
 		self:applySkin(SelectBoxMenu.back)
-		SelectBoxMenu.skinned= true
+		self.skinned[SelectBoxMenu] = true
 	end
 
 	-- skin ScrollSheets

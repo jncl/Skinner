@@ -9,7 +9,7 @@ function Skinner:Squeenix()
 		if child:IsObjectType("Button") and child:GetName() == nil then
 			child:Hide()
 			self:addSkinButton(Minimap, Minimap)
-			self.minimapskin = Minimap.sBut
+			self.minimapskin = self.sBut[Minimap]
 			if not self.db.profile.MinimapGloss then LowerFrameLevel(self.minimapskin) end
 		end
 		-- Move the compass points text
@@ -29,6 +29,4 @@ function Skinner:Squeenix()
 
 	self:moveObject(MinimapNorthTag, nil, nil, "+", 4) -- North
 
-	self.Squeenix = nil
-	
 end

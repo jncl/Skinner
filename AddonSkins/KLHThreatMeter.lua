@@ -29,53 +29,49 @@ function Skinner:KLHThreatMeter()
 	-- options menu section buttons not created on load so let's hijack their creation, ugly yes?
 	self:SecureHook(klhtm.helpmenu, "showsection", function(sectionname)
 --		self:Debug("HelpMenu_showsection: [%s]", sectionname)
-		if sectionname == "raidtable"  and not klhtm.menuraidtable.skinned then
-			self:applySkin(klhtm.menuraidtable.mainframe)
-			self:applySkin(klhtm.menuraidtable.mainframe.button)
+		local mrt = klhtm.menuraidtable
+		if sectionname == "raidtable"  and not self.skinned[mrt] then
+			self:applySkin(mrt.mainframe)
+			self:applySkin(mrt.mainframe.button)
 			for index,value in pairs(klhtm.helpmenu.button) do
 				if (type(value) == "table") then
 				self:applySkin(klhtm.helpmenu.button[index], nil, nil, nil, nil, bd)
 				end
 			end
-			klhtm.menuraidtable.skinned = true
 		end
-		if sectionname == "raidtable-colour" and not klhtm.menuraidtable.colourframe.skinned then
-			self:applySkin(klhtm.menuraidtable.colourframe)
-			self:applySkin(klhtm.menuraidtable.colourframe.button1)
-			self:applySkin(klhtm.menuraidtable.colourframe.button2)
-			self:applySkin(klhtm.menuraidtable.colourframe.button3)
-			klhtm.menuraidtable.colourframe.skinned = true
+		if sectionname == "raidtable-colour" and not self.skinned[mrt.colourframe] then
+			self:applySkin(mrt.colourframe)
+			self:applySkin(mrt.colourframe.button1)
+			self:applySkin(mrt.colourframe.button2)
+			self:applySkin(mrt.colourframe.button3)
 		end
-		if sectionname == "raidtable-layout" and not klhtm.menuraidtable.layoutframe.skinned then
-			self:applySkin(klhtm.menuraidtable.layoutframe)
-			self:applySkin(klhtm.menuraidtable.layoutframe.button1)
-			self:applySkin(klhtm.menuraidtable.layoutframe.button2)
-			self:applySkin(klhtm.menuraidtable.layoutframe.button3)
-			self:applySkin(klhtm.menuraidtable.layoutframe.button4)
-			klhtm.menuraidtable.layoutframe.skinned = true
+		if sectionname == "raidtable-layout" and not self.skinned[mrt.layoutframe] then
+			self:applySkin(mrt.layoutframe)
+			self:applySkin(mrt.layoutframe.button1)
+			self:applySkin(mrt.layoutframe.button2)
+			self:applySkin(mrt.layoutframe.button3)
+			self:applySkin(mrt.layoutframe.button4)
 		end
-		if sectionname == "raidtable-filter" and not klhtm.menuraidtable.filterframe.skinned then
-			self:applySkin(klhtm.menuraidtable.filterframe)
-			klhtm.menuraidtable.filterframe.skinned = true
+		if sectionname == "raidtable-filter" and not self.skinned[mrt.filterframe] then
+			self:applySkin(mrt.filterframe)
 		end
-		if sectionname == "raidtable-misc" and not klhtm.menuraidtable.miscframe.skinned then
-			self:applySkin(klhtm.menuraidtable.miscframe)
-			klhtm.menuraidtable.miscframe.skinned = true
+		if sectionname == "raidtable-misc" and not self.skinned[mrt.miscframe] then
+			self:applySkin(mrt.miscframe)
 		end
-		if sectionname == "mythreat" and not klhtm.menumythreat.mainframe.skinned then
-			self:applySkin(klhtm.menumythreat.mainframe)
-			self:applySkin(klhtm.menumythreat.mainframe.reset)
-			self:applySkin(klhtm.menumythreat.mainframe.update)
-			self:applySkin(klhtm.menumythreat.mainframe.mytable)
-			klhtm.menumythreat.mainframe.skinned = true
+		local mmt = klhtm.menumythreat
+		if sectionname == "mythreat" and not self.skinned[mmt.mainframe] then
+			self:applySkin(mmt.mainframe)
+			self:applySkin(mmt.mainframe.reset)
+			self:applySkin(mmt.mainframe.update)
+			self:applySkin(mmt.mainframe.mytable)
 		end
-		if sectionname == "errorlog" and not klhtm.menuerror.frame.skinned then
-			self:applySkin(klhtm.menuerror.frame)
-			self:applySkin(klhtm.menuerror.frame.button1)
-			self:applySkin(klhtm.menuerror.frame.button2)
-			self:applySkin(klhtm.menuerror.frame.button3)
-			self:applySkin(klhtm.menuerror.frame.button4)
-			klhtm.menuerror.frame.skinned = true
+		local me = klhtm.menuerror
+		if sectionname == "errorlog" and not self.skinned[me.frame] then
+			self:applySkin(me.frame)
+			self:applySkin(me.frame.button1)
+			self:applySkin(me.frame.button2)
+			self:applySkin(me.frame.button3)
+			self:applySkin(me.frame.button4)
 		end
 	end)
 

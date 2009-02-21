@@ -26,7 +26,7 @@ function Skinner:WIM() -- WIM3
 
 	local function checkKids(obj)
 	
-		if obj.skinned then return end
+		if Skinner.skinned[obj] then return end
 		
 --		Skinner:Debug("checkKids:[%s, %s]", obj, obj:GetName() or "<Anon>")
 		
@@ -44,8 +44,6 @@ function Skinner:WIM() -- WIM3
 			end
 		end
 		
-		obj.skinned = true
-
 	end
 	
 	-- hook this to skin the options frame

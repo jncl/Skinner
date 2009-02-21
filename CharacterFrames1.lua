@@ -493,13 +493,12 @@ function Skinner:AchievementUI()
 		local statusBar = self.hooks["AchievementButton_GetProgressBar"](index)
 --		self:Debug("AB_GPB:[%s, %s]", index, statusBar:GetName() or "<Anon>")
 		local statusBarBG = self:getRegion(statusBar, 1)
-		if not statusBar.skinned then
+		if not self.skinned[statusBar] then
 			statusBarBG:SetTexture(self.sbTexture)
 			statusBarBG:SetVertexColor(unpack(self.sbColour))
 			self:removeRegions(statusBar, {3}) -- remove Border
 			self:glazeStatusBar(statusBar)
 			statusBar.bg = statusBarBG -- store this so it will get retextured as required
-			statusBar.skinned = true
 		end
 		return statusBar
 	end, true)
@@ -691,9 +690,9 @@ function Skinner:AchievementAlerts()
 	
 		for i = 1, 2 do
 			local aaFrame = _G["AchievementAlertFrame"..i]
-			if aaFrame and not aaFrame.skinned then
+			if aaFrame and not Skinner.skinned[aaFrame] then
 				aaFrame:SetHeight(60)
-				aaFrame:SetWidth(280)
+				aaFrame:SetWidth(300)
 				_G["AchievementAlertFrame"..i.."Background"]:SetAlpha(0)
 				Skinner:removeRegions(_G["AchievementAlertFrame"..i.."Button"], {})
 				local aaFU = _G["AchievementAlertFrame"..i.."Unlocked"]
@@ -711,7 +710,6 @@ function Skinner:AchievementAlerts()
 				aaFS:ClearAllPoints()
 				aaFS:SetPoint("RIGHT", aaFrame, -10, -3)
 				Skinner:applySkin(aaFrame)
-				aaFrame.skinned = true
 			end
 		end
 		

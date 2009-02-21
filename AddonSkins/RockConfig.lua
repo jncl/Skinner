@@ -14,9 +14,8 @@ function Skinner:RockConfig()
 --		 			Skinner:Debug("hookChoicePO: [%s]", this:GetName())
 					Skinner.hooks[btn].OnClick(this)
 					local framePO = _G["LibRockConfig-1.0_Frame_MainPane_ChoicePullout"]
-					if not framePO.skinned then
+					if not Skinner.skinned[framePO] then
 						Skinner:applySkin(framePO)
-						framePO.skinned = true
 					end
 					Skinner:Unhook(btn, "OnClick")
 				end)
@@ -26,7 +25,7 @@ function Skinner:RockConfig()
 
 		local frame = _G["LibRockConfig-1.0_Frame"]
 
-		if not frame.skinned then
+		if not Skinner.skinned[frame] then
 		-->>--	Main Frame
 			Skinner:keepFontStrings(frame)
 			Skinner:keepFontStrings(frame.header)
@@ -41,7 +40,6 @@ function Skinner:RockConfig()
 		-->>--	Mainpane Frame
 			Skinner:skinSlider(frame.mainPane.scrollBar)
 			Skinner:applySkin(frame.mainPane)
-			frame.skinned = true
 		end
 
 		if not Skinner:IsHooked(frame.mainPane, "Reposition") then
@@ -53,16 +51,14 @@ function Skinner:RockConfig()
 					if v.type == 'group' and v.groupType == 'inline' then
 						for _, v2 in pairs(v.controls) do
 --	 						Skinner:Debug("LRC.MP_R#3: [%s, %s, %s]", v2, v2:GetName(), v2.type)
-							if v2.type == "choice" and not v2.skinned then
+							if v2.type == "choice" and not Skinner.skinned[v2] then
 								Skinner:applySkin(_G[v2:GetName().."_Text"])
-								v2.skinned = true
 								hookChoicePO(v2)
 							end
 						end
 					end
-					if v.type == "choice"  and not v.skinned then
+					if v.type == "choice"  and not Skinner.skinned[v] then
 						Skinner:applySkin(_G[v:GetName().."_Text"])
-						v.skinned = true
 						hookChoicePO(v)
 					end
 				end

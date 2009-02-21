@@ -29,16 +29,14 @@ function Skinner:TipTacOptions()
 
 		for i = 1, 5 do
 			local eb = _G["TipTacOptionsText"..i]
-			if eb and not eb.skinned then
+			if eb and not Skinner.skinned[eb] then
 				Skinner:skinEditBox(eb, {9})
-				eb.skinned = true
 			end
 		end
 		for i = 1, 4 do
 			local eb = _G["TipTacOptionsEdit"..i]
-			if eb and not eb.skinned then
+			if eb and not Skinner.skinned[eb] then
 				Skinner:skinEditBox(eb, {9})
-				eb.skinned = true
 			end
 		end
 
@@ -52,9 +50,8 @@ function Skinner:TipTacOptions()
 	-- hook this to skin the drop downs (N.B. dropdown var is aka this)
 	self:SecureHook(TTOFactory, "DropDown_InitSelected", function(dropDown, selectedValue)
 --		self:Debug("TTOF.DD_IS: [%s, %s]", dropDown, selectedValue)
-		if dropDown and not dropDown.skinned then
+		if dropDown and not self.skinned[dropDown] then
 			dropDown:SetBackdrop(nil)
-			dropDown.skinned = true
 		end
 	end, true)
 

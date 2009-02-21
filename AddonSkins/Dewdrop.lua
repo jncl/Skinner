@@ -10,14 +10,13 @@ function Skinner:Dewdrop()
 		while _G["Dewdrop20Level"..i] do
 --			Skinner:Debug("Dewdrop20Level"..i)
 			local frame = _G["Dewdrop20Level"..i]
-			if not frame.skinned then
+			if not Skinner.skinned[frame] then
 				Skinner:applySkin(frame)
 				-- hook these to stop the Backdrop colours from being changed
 				Skinner:RawHook(frame, "SetBackdropColor", function() end, true)
 				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 				-- hide the backdrop frame
 				Skinner:getChild(frame, 1):Hide()
-				frame.skinned = true
 			end
 			i = i + 1
 		end
@@ -41,23 +40,21 @@ function Skinner:Dewdrop()
 		-- if they have then skin them
 		if not sf then
 			local sf = Skinner:findFrame(170, 100, {"Slider", "EditBox"})
-			if sf and not sf.skinned then
+			if sf and not Skinner.skinned[sf] then
 				Skinner:skinEditBox(sf.currentText, {9})
 				-- Make it wider to display 4 digits
 				sf.currentText:ClearAllPoints()
 				sf.currentText:SetPoint("RIGHT", sf, "RIGHT", -12, 0)
 				sf.currentText:SetPoint("LEFT", sf.slider, "RIGHT", 8, 0)
 				Skinner:applySkin(sf)
-				sf.skinned = true
 			end
 		end
 		if not eb then
 			local eb = Skinner:findFrame(40, 200, {"EditBox"})
-			if eb and not eb.skinned then
+			if eb and not Skinner.skinned[eb] then
 				Skinner:skinEditBox(eb.editBox, {9})
 				eb.editBox:SetWidth(180)
 				Skinner:applySkin(eb)
-				eb.skinned = true
 			end
 		end
 	end

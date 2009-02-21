@@ -8,9 +8,8 @@ function Skinner:ReadySpells()
 		if unit == "target" then
 			for i = 1, #currentSlots do
 				local tex = currentSlots[i].texture
-				if not tex.skinned then
+				if not self.skinned[tex] then
 					self:addSkinButton(tex, ReadySpellsFrame, tex, true)
-					tex.skinned = true
 				end
 			end
 		end

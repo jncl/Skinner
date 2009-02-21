@@ -12,7 +12,7 @@ function Skinner:FBagOfHolding()
 		local bfIF = _G[bfName.."_ItemsFrame"]
 		local bfIFILSFS = _G[bfName.."_ItemsFrame_ItemListScrollFrame_Scroll"]
 		local bfIFIGSFS = _G[bfName.."_ItemsFrame_ItemGridScrollFrame_Scroll"]
-		if bfObj and not bfObj.skinned then
+		if bfObj and not Skinner.skinned[bfObj] then
 			Skinner:skinEditBox(bfSearch, {9})
 			Skinner:applySkin(bfIF)
 			Skinner:removeRegions(bfIFILSFS)
@@ -20,12 +20,11 @@ function Skinner:FBagOfHolding()
 			Skinner:removeRegions(bfIFIGSFS)
 			Skinner:skinScrollBar(bfIFIGSFS)
 			Skinner:applySkin(bfObj)
-			bfObj.skinned = true
 		end
 	-->>--	Tabs
 		for i, _ in ipairs(obj.viewDef.tabs) do
 			local tabObj = obj.tabData[i].button
-			if tabObj and not tabObj.skinned then
+			if tabObj and not Skinner.skinned[tabObj] then
 				Skinner:keepRegions(tabObj, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
 				if Skinner.db.profile.TexturedTab then
 					Skinner:applySkin(tabObj, nil, 0, 1)
@@ -36,7 +35,6 @@ function Skinner:FBagOfHolding()
 				else Skinner:moveObject(tabObj, "-", 6, nil, nil) end
 				Skinner:moveObject(Skinner:getRegion(tabObj, 4), nil, nil, "+", 5)
 				Skinner:moveObject(Skinner:getRegion(tabObj, 5), "+", 5, "+", 7)
-				tabObj.skinned = true
 				-- hook this to handle the resizing of the tab highlight width
 				Skinner:SecureHook(tabObj, "UpdateTabModel", function(this, model)
 --					Skinner:Debug("FBoH_VTT_UTM:[%s, %s]", this, model)

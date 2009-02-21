@@ -8,7 +8,7 @@ function Skinner:MSBTOptions()
 		if not self:IsHooked(pframe, "Show") then
 			self:SecureHook(pframe, "Show", function(this)
 --				self:Debug("PopupFrame_Show: [%s, %s]", pframe, pframe:GetName() or "???")
-				if not this.skinned then
+				if not self.skinned[this] then
 					self:applySkin(this)
 					-- skin the sliders
 					if this.mainConditionsListbox and this.mainConditionsListbox.sliderFrame then
@@ -23,7 +23,6 @@ function Skinner:MSBTOptions()
 					if this.skillsListbox and this.skillsListbox.sliderFrame then
 						self:skinUsingBD2(this.skillsListbox.sliderFrame)
 					end
-					this.skinned = true
 				end
 				self:Unhook(pframe, "Show")
 			end)
@@ -35,7 +34,7 @@ function Skinner:MSBTOptions()
 --		self:Debug("Controls_CreateDropdown:[%s]", parent)
 		local obj = self.hooks[MSBTOptions.Controls].CreateDropdown(parent)
 		self:keepFontStrings(obj)
-		obj.skinned = true
+		self.skinned[obj] = true
 		return obj
 	end)
 	self:RawHook(MSBTOptions.Controls, "CreateEditbox", function(parent)
@@ -43,7 +42,7 @@ function Skinner:MSBTOptions()
 		local obj = self.hooks[MSBTOptions.Controls].CreateEditbox(parent)
 		self:skinEditBox(obj.editboxFrame, {9})
 		self:moveObject(obj.labelFontString, "+", 8, "+", 3, obj)
-		obj.skinned = true
+		self.skinned[obj] = true
 		return obj
 	end)
 
@@ -63,11 +62,10 @@ function Skinner:MSBTOptions()
 				Skinner:SecureHook(cframe, "Show", function(this)
 					for i = 1, this:GetNumChildren() do
 						local obj = select(i, this:GetChildren())
-						if obj:IsObjectType("Frame") and not obj.skinned then
+						if obj:IsObjectType("Frame") and not Skinner.skinned[obj] then
 							if obj.selectedItem then -- it's a dropdown
 	--							Skinner:Debug("obj has .selectedItem [%s, %s]", obj, obj.selectedItem)
 								Skinner:keepFontStrings(obj)
-								obj.skinned = true
 							end
 						end
 					end
@@ -88,7 +86,7 @@ function Skinner:MSBTOptions()
 		local tabList = Skinner:getChild(MSBTMainOptionsFrame, 2)
 		Skinner:skinUsingBD2(tabList.sliderFrame)
 		Skinner:applySkin(tabList) -- skin the tablist frame
-		tabList.skinned = true
+		Skinner.skinned[tabList] = true
 
 	-->>--	General tab of the Options Frame dropdown
 		Skinner:keepFontStrings(Skinner:getChild(Skinner:getChild(MSBTMainOptionsFrame, 3), 2))
@@ -99,10 +97,9 @@ function Skinner:MSBTOptions()
 			if obj:GetName() == nil and obj:IsObjectType("Frame") then
 				local backdrop = obj:GetBackdrop()
 				if backdrop and backdrop.bgFile == "Interface\\Addons\\MSBTOptions\\Artwork\\PlainBackdrop" then
-					if not obj.skinned then
+					if not Skinner.skinned[obj] then
 						Skinner:skinUsingBD2(obj.listbox.sliderFrame)
 						Skinner:applySkin(obj)
-						obj.skinned = true
 					end
 				end
 			end

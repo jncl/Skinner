@@ -1,26 +1,25 @@
 
 function Skinner:sRaidFrames()
 
-	self:SecureHook(sRaidFrames, "CreateUnitFrame", function(this, f)
--- 		self:Debug("sRaidFrames_CUF: [%s, %s]", f, f:GetName() or "???")
-		if not f.skinned then
-			self:glazeStatusBar(f.hpbar)
-			self:glazeStatusBar(f.mpbar)
-			self:applySkin(f)
-			self:RawHook(f, "SetBackdropColor", function() end, true)
-			self:RawHook(f, "SetBackdropBorderColor", function() end, true)
-			f.skinned = true
+	self:SecureHook(sRaidFrames, "CreateUnitFrame", function(this, frame)
+-- 		self:Debug("sRaidFrames_CUF: [%s, %s]", frame, frame:GetName() or "???")
+		if not self.skinned[frame] then
+			self:glazeStatusBar(frame.hpbar)
+			self:glazeStatusBar(frame.mpbar)
+			self:applySkin(frame)
+			self:RawHook(frame, "SetBackdropColor", function() end, true)
+			self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
 		end
 	end)
 
-	for _, f in ipairs(sRaidFrames.frames) do
--- 		self:Debug("sRaidFrames: [%s, %s]", f:GetName(), #sRaidFrames.frames)
-		self:glazeStatusBar(f.hpbar)
-		self:glazeStatusBar(f.mpbar)
-		self:applySkin(f)
-		self:RawHook(f, "SetBackdropColor", function() end, true)
-		self:RawHook(f, "SetBackdropBorderColor", function() end, true)
-		f.skinned = true
+	for _, frame in ipairs(sRaidFrames.frames) do
+-- 		self:Debug("sRaidFrames: [%s, %s]", frame:GetName(), #sRaidFrames.frames)
+		self:glazeStatusBar(frame.hpbar)
+		self:glazeStatusBar(frame.mpbar)
+		self:applySkin(frame)
+		self:RawHook(frame, "SetBackdropColor", function() end, true)
+		self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
+		self.skinned[frame] = true
 	end
 
 end

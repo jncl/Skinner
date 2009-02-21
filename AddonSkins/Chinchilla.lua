@@ -12,9 +12,9 @@ function Skinner:Chinchilla()
 				Chinchilla_Appearance_MinimapCorner3:Hide()
 				Chinchilla_Appearance_MinimapCorner4:Hide()
 			end
-			Skinner:addSkinButton(Minimap, Minimap)
 			Skinner:moveObject(MinimapNorthTag, nil, nil, "+", 4)
-			Skinner.minimapskin = Minimap.sBut
+			Skinner:addSkinButton(Minimap, Minimap)
+			Skinner.minimapskin = Skinner.sBut[Minimap]
 			if not Skinner.db.profile.MinimapGloss then LowerFrameLevel(Skinner.minimapskin) end
 		end
 

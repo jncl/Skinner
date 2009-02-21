@@ -30,7 +30,6 @@ function Skinner:TradeTabs()
 			end
 		end
 		self:Unhook(TradeTabs, "Initialize")
-		self.TradeTabs = nil
 	end)
 
 end

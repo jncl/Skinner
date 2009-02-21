@@ -4,7 +4,7 @@ function Skinner:Ace3()
 	self:RawHook(LibStub("AceGUI-3.0"), "Create", function(this, objType)
 		local obj = self.hooks[this].Create(this, objType)
 --		self:Debug("Ace3GUI_Create: [%s, %s, %s]", this, objType, obj)
-		if obj and not obj.skinned then
+		if obj and not self.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
 				self:keepFontStrings(obj.frame)
 				self:applySkin(obj.frame)
@@ -60,7 +60,6 @@ function Skinner:Ace3()
 					end
 				end)
 			end
-			obj.skinned = true
 		end
 		return obj
 	end, true)

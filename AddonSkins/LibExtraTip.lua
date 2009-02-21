@@ -9,9 +9,8 @@ function Skinner:LibExtraTip()
 	self:RawHook(lib, "GetFreeExtraTipObject", function(this)
 		local ttip = self.hooks[lib].GetFreeExtraTipObject(this)
 		self:skinTooltip(ttip)
-		if not ttip.skinned then
+		if not self.skinned[ttip] then
 				if self.db.profile.Tooltips.style == 3 then ttip:SetBackdrop(self.backdrop) end
-			ttip.skinned = true
 		end
 		return ttip
 	end, true)

@@ -39,9 +39,8 @@ function Skinner:DebuffFilter()
 
 		for i = 1, 8 do
 			local obj = _G["DebuffFilter_"..bName.."Button"..i]
-			if obj and not obj.skinned then
+			if obj and not Skinner.skinned[obj] then
 				Skinner:addSkinButton(obj)
-				obj.skinned = true
 			end
 		end
 	end

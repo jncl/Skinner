@@ -35,8 +35,6 @@ function Skinner:Overachiever()
 		self:Unhook(panel, "OnShow")
 	end)
 
-	self.Overachiever = nil
-
 end
 
 
@@ -61,7 +59,5 @@ function Skinner:Overachiever_Tabs()
 	self:skinSlider(Overachiever_SuggestionsFrameContainerScrollBar)
 	self:applySkin(self:getChild(Overachiever_SuggestionsFrame, 1))
 	LowerFrameLevel(self:getChild(Overachiever_SuggestionsFrame, 1))
-
-	self.Overachiever_Tabs = nil
 
 end

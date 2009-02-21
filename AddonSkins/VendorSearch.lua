@@ -7,6 +7,4 @@ function Skinner:VendorSearch()
 	self:moveObject(MerchantFrameSearchTypeFrame, nil, nil, "+",10)
 	self:moveObject(MerchantFrameRefreshButton, "+", 5, "+", 10)
 	
-	self.VendorSearch = nil
-
 end

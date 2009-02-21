@@ -34,10 +34,9 @@ function Skinner:BetterInbox(LoD)
 		Skinner:moveObject(bib.scrollframe, "-", 5, "+", 20)
 		bib.scrollframe:SetHeight(bib.scrollframe:GetHeight() + 10)
 		Skinner:moveObject(bib.scrollframe.entries[1], "-", 5, "+", 20)
-		if not bib.scrollframe.dropdown.skinned then
+		if not Skinner.skinned[bib.scrollframe.dropdown] then
 			Skinner:skinDropDown(bib.scrollframe.dropdown.dropdown)
 			Skinner:applySkin(bib.scrollframe.dropdown.pullout.frame)
-			bib.scrollframe.dropdown.skinned = true
 		end
 		Skinner:moveObject(bib.scrollframe.dropdown.frame, "-", 10, "-", 2)
 		Skinner:moveObject(BetterInboxCancelButton, "-", 7, "-", 5)

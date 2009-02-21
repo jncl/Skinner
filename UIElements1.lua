@@ -174,7 +174,7 @@ function Skinner:ChatTabs()
 			local tabName = _G["ChatFrame"..i.."Tab"]
 			self:keepRegions(tabName, {4, 5}) --N.B. region 4 is text, 5 is highlight
 			self:addSkinFrame(tabName, 0, -8, 0, -5, ftype)
-			tabName.skinFrame:SetFrameLevel(0)
+			self.skinFrame[tabName]:SetFrameLevel(0)
 		end
 	end
 
@@ -242,9 +242,8 @@ function Skinner:ChatConfig()
 	self:SecureHook(ChatConfigChannelSettings, "Show", function(this)
 		for i = 1, #ChatConfigChannelSettingsLeft.checkBoxTable do
 			local cccslcb = _G["ChatConfigChannelSettingsLeftCheckBox"..i]
-			if not cccslcb.skinned then
+			if not self.skinned[cccslcb] then
 				self:storeAndSkin(ftype, cccslcb)
-				cccslcb.skinned = true
 			end
 		end
 	end)
@@ -758,8 +757,8 @@ function Skinner:BattlefieldMinimap()
 	self:SecureHook("BattlefieldMinimap_SetOpacity", function(opacity)
 		local alpha = 1.0 - BattlefieldMinimapOptions.opacity
 		if ( alpha >= 0.15 ) then alpha = alpha - 0.15 end
-		BattlefieldMinimap.skinFrame:SetAlpha(alpha)
-		BattlefieldMinimap.skinFrame.tfade:SetAlpha(alpha)
+		self.skinFrame[BattlefieldMinimap]:SetAlpha(alpha)
+		self.skinFrame[BattlefieldMinimap].tfade:SetAlpha(alpha)
 	end)
 
 -->>--	Minimap Tab
@@ -836,7 +835,7 @@ function Skinner:MinimapButtons()
 			local objName = obj:GetName()
 			local objType = obj:GetObjectType()
 --			Skinner:Debug("%s kids: [%s, %s, %s]", mmObjName, obj, objName, objType)
-			if not obj.skinned and objName
+			if not Skinner.skinned[obj] and objName
 			and (objType == "Button" or objType == "Frame" and objName == "MiniMapMailFrame") then
 				for i = 1, obj:GetNumRegions() do
 					local reg = select(i, obj:GetRegions())
@@ -861,12 +860,11 @@ function Skinner:MinimapButtons()
 							obj:SetHeight(32)
 							if objType == "Button" then
 								Skinner:addSkinButton(obj, obj)
-								obj.sBut:ClearAllPoints()
-								obj.sBut:SetAllPoints(obj)
+								Skinner.sBut[obj]:ClearAllPoints()
+								Skinner.sBut[obj]:SetAllPoints(obj)
 							else
 								Skinner:addSkinFrame(obj, 0, 0 ,0, 0, ftype)
 							end
-							obj.skinned = true
 						end
 					end
 				end
@@ -883,8 +881,8 @@ function Skinner:MinimapButtons()
 	-- skin other Blizzard buttons
 	for _, obj in pairs({GameTimeFrame, MinimapZoomIn, MinimapZoomOut}) do
 		self:addSkinButton(obj, obj)
-		obj.sBut:ClearAllPoints()
-		obj.sBut:SetAllPoints(obj)
+		self.sBut[obj]:ClearAllPoints()
+		self.sBut[obj]:SetAllPoints(obj)
 	end
 	-- resize other buttons
 	MiniMapMailFrame:SetWidth(28)
@@ -926,8 +924,8 @@ function Skinner:MinimapButtons()
 	for addon, obj in pairs(mmButs) do
 		if IsAddOnLoaded(addon) then
 			self:addSkinButton(obj, obj)
-			obj.sBut:ClearAllPoints()
-			obj.sBut:SetAllPoints(obj)
+			self.sBut[obj]:ClearAllPoints()
+			self.sBut[obj]:SetAllPoints(obj)
 		end
 	end
 	mmButs = nil

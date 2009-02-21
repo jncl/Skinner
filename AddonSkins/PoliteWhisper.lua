@@ -54,9 +54,8 @@ function Skinner:PoliteWhisper()
 	self:SecureHook("PoliteWhisper_GoTab", function(num)
 		for	i =1, 4 do
 			local tabName = _G["PoliteWhisper_FrameTab"..i]
-			if not tabName.skinned then
+			if not self.skinned[tabName] then
 				tabName:SetWidth(tabName:GetWidth() - 20)
-				tabName.skinned = true
 			end
 			if i == num then
 				self:setActiveTab(tabName)

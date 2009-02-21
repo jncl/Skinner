@@ -11,17 +11,16 @@ function Skinner:Tablet()
 				local tt = qftinfo.tooltip
 --				Skinner:Debug("ST: [%s, %s]", tt, tt:GetName())
 				tt:SetBackdrop(nil)
-				tt.skinned = true
+				Skinner.skinned[tt] = true
 				tt.noFH = true
 			end
 		end
 
 		if Tablet20Frame then
 			local frame = Tablet20Frame
-			if not frame.skinned then
+			if not Skinner.skinned[frame] then
 --				Skinner:Debug("Tablet20Frame")
 				Skinner:applySkin(frame)
-				frame.skinned = true
 				-- hook these to stop the Backdrop colours from being changed
 				Skinner:RawHook(frame, "SetBackdropColor", function() end, true)
 				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
@@ -31,10 +30,9 @@ function Skinner:Tablet()
 		local i = 1
 		while _G["Tablet20DetachedFrame"..i] do
 			local frame = _G["Tablet20DetachedFrame"..i]
-			if not frame.skinned then
+			if not Skinner.skinned[frame] then
 --				Skinner:Debug("DetachedFrame: [%s, %s]", frame:GetName(), frame:GetParent():GetName() )
 				Skinner:applySkin(frame)
-				frame.skinned = true
 				-- hook these to stop the Backdrop colours from being changed
 				Skinner:RawHook(frame, "SetBackdropColor", function() end, true)
 				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)

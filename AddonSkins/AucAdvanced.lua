@@ -7,10 +7,9 @@ function Skinner:AucAdvanced()
 	-- move and skin the progress bars
 	self:SecureHook(AucAdvanced.Scan , "ProgressBars", function(sbObj, value, show, text)
 --		self:Debug("AAS_PB: [%s, %s, %s, %s]", sbObj, value, show, text)
-		if not sbObj.skinned then
+		if not self.skinned[sbObj] then
 			sbObj:SetBackdrop(nil)
 			self:glazeStatusBar(sbObj, 0)
-			sbObj.skinned = true
 		end
 		local point, relTo, relPoint, xOfs, yOfs = sbObj:GetPoint()
 --		self:Debug("AAS_PB(GP): [%s, %s, %s, %s, %s]", point, relTo:GetName(), relPoint, xOfs, yOfs)

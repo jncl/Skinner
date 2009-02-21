@@ -3,7 +3,7 @@ function Skinner:XRS()
 
 	local function skinXRS()
 
-		if not XRSFrame.skinned then
+		if not Skinner.skinned[XRSFrame] then
 			Skinner:RawHook(XRS, "SetColorGradient", function() end, true)
 			XRS.framegradient:Hide()
 			XRS.db.profile.Texture = Skinner.db.profile.StatusBar.texture
@@ -14,7 +14,6 @@ function Skinner:XRS()
 				Skinner:skinTooltip(XRSTooltip)
 				if Skinner.db.profile.Tooltips.style == 3 then XRSTooltip:SetBackdrop(Skinner.backdrop) end
 			end
-			XRSFrame.skinned = true
 		end
 
 	end

@@ -4,10 +4,9 @@ function Skinner:Links()
 
 	self:SecureHook(Links, "TriggerEvent", function(this, link, frame)
 --		self:Debug("Links_TE: [%s, %s]", link, frame:GetName())
-		if not frame.skinned then
+		if not self.skinned[frame] then
 			if Skinner.db.profile.Tooltips.style == 3 then frame:SetBackdrop(Skinner.backdrop) end
 			Skinner:skinTooltip(frame)
-			frame.skinned = true
 		end
 		frame:SetBackdropBorderColor(Skinner:setTTBBC())
 	end)

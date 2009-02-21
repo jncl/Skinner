@@ -35,10 +35,8 @@ function Skinner:Panda(LoD)
 			skinPandaPanel()
 			self:Unhook(PandaPanel, "Show")
 		end)
-		self.Panda = nil
 	else
 		skinPandaPanel()
-		self.Panda = nil
 	end
 	
 end

@@ -17,9 +17,9 @@
 <script file="SkinMe\Analyst.lua"/>
 <script file="SkinMe\AoTRDungeonQuester.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
-<script file="SkinMe\Armory.lua"/>
+<!-- <script file="SkinMe\Armory.lua"/> -->
 <!-- <script file="SkinMe\Ash_DoTimer.lua"/> -->
-<script file="SkinMe\Assessment.lua"/>
+<!-- <script file="SkinMe\Assessment.lua"/> -->
 <script file="SkinMe\Atlas.lua"/>
 <script file="SkinMe\AtlasLoot.lua"/>
 <script file="SkinMe\AtlasQuest.lua"/>
@@ -57,7 +57,7 @@
 <script file="SkinMe\Broker_Transport.lua"/>
 <!-- <script file="SkinMe\BtmScan.lua"/> -->
 <script file="SkinMe\Buffalo.lua"/>
-<script file="SkinMe\Buffalo2.lua"/>
+<!-- <script file="SkinMe\Buffalo2.lua"/> -->
 <script file="SkinMe\BuffQ.lua"/>
 <script file="SkinMe\Butsu.lua"/>
 <script file="SkinMe\BugSack.lua"/>
@@ -114,7 +114,7 @@
 <script file="SkinMe\epgp.lua"/>
 <script file="SkinMe\EQL3.lua"/>
 <script file="SkinMe\EquipCompare.lua"/>
-<script file="SkinMe\EveryQuest.lua"/>
+<!-- <script file="SkinMe\EveryQuest.lua"/> -->
 <script file="SkinMe\Examiner.lua"/>
 <!-- <script file="SkinMe\FactionGrinder.lua"/> -->
 <script file="SkinMe\Factionizer.lua"/>
@@ -129,7 +129,7 @@
 <script file="SkinMe\FramesResized_TalentUI.lua"/>
 <script file="SkinMe\FreierGeist_InstanceTime.lua"/>
 <script file="SkinMe\FruityLoots.lua"/>
-<script file="SkinMe\FuBar_PoisonReminderFu.lua"/>
+<!-- <script file="SkinMe\FuBar_PoisonReminderFu.lua"/> -->
 <script file="SkinMe\Gatherer.lua"/>
 <script file="SkinMe\GCInfo.lua"/>
 <script file="SkinMe\GemHelper.lua"/>
@@ -147,7 +147,7 @@
 <script file="SkinMe\GuildAds.lua"/>
 <script file="SkinMe\GuildBankAccount.lua"/>
 <script file="SkinMe\GuildBankSearch.lua"/>
-<script file="SkinMe\GuildEventManager2.lua"/>
+<!-- <script file="SkinMe\GuildEventManager2.lua"/> -->
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>
 <script file="SkinMe\HatTrick.lua"/>
@@ -222,7 +222,7 @@
 <script file="SkinMe\Omnibus.lua"/>
 <script file="SkinMe\OneBag3.lua"/>
 <!-- <script file="SkinMe\OneBank.lua"/> -->
-<script file="SkinMe\OptionHouse.lua"/>
+<!-- <script file="SkinMe\OptionHouse.lua"/> -->
 <script file="SkinMe\oRA2.lua"/>
 <script file="SkinMe\Outfitter.lua"/>
 <script file="SkinMe\Overachiever.lua"/>
@@ -260,7 +260,7 @@
 <script file="SkinMe\Recount.lua"/>
 <script file="SkinMe\RockConfig.lua"/>
 <script file="SkinMe\Sanity2.lua"/>
-<script file="SkinMe\SanityBags.lua"/>
+<!-- <script file="SkinMe\SanityBags.lua"/> -->
 <script file="SkinMe\SellJunk.lua"/>
 <script file="SkinMe\ShadowDancer3.lua"/>
 <script file="SkinMe\ShieldLeft.lua"/>
@@ -270,7 +270,7 @@
 <script file="SkinMe\SmartBuff.lua"/>
 <script file="SkinMe\SmartDebuff.lua"/>
 <script file="SkinMe\SpamSentry.lua"/>
-<script file="SkinMe\SpecialTalentUI.lua"/>
+<!-- <script file="SkinMe\SpecialTalentUI.lua"/> -->
 <!-- <script file="SkinMe\SpellBinder.lua"/> -->
 <script file="SkinMe\Spew.lua"/>
 <script file="SkinMe\Spyglass.lua"/>

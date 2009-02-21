@@ -8,13 +8,12 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	O	Tidy up Debug/Print functions
-
-≈	O	Table reuse ?
-
-≈	O	nil out skins, if no hooks in them, as required
-
-?	O	Resize GM Ticket Frame, requested by babyzeretul, 14.02.09
+√	O	Move all .skinned variables into a Skinner table
+	
+√	O	Move all .skinFrame variables into a Skinner table
+	
+√	O	Move all .sBut variables into a Skinner table
 	
 ≈	S	TotemCaddy, requested by Gabriel, 15.02.09
-	
+
+?	O	Resize GM Ticket Frame, requested by babyzeretul, 14.02.09

@@ -25,10 +25,9 @@ function Skinner:skinBlocks(...) -- event, name, dataobj
 	-- skin any existing data objects
 	for i = 1, UIParent:GetNumChildren() do
 		local child = select(i, UIParent:GetChildren())
-		if child:IsObjectType("Button") and not child.skinned and child.IconUpdate then
+		if child:IsObjectType("Button") and not self.skinned[child] and child.IconUpdate then
 --			Skinner:Debug("skinBlocks, button found:[%s]", child)
 			self:applySkin(child)
-			child.skinned = true
 			skinCnt = skinCnt + 1
 		end
 	end

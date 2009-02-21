@@ -40,7 +40,7 @@ function Skinner:Combuctor()
 --		self:Debug("C.BF_UF: [%s]", this:GetName())
 		for i = 1, #this.buttons do
 			local tabObj = this.buttons[i]
-			if not tabObj.skinned then
+			if not self.skinned[tabObj] then
 				if i == 1 then
 					self:moveObject(tabObj, nil, nil, "-", 55)
 				else
@@ -57,7 +57,6 @@ function Skinner:Combuctor()
 						skinTabs(this:GetParent())
 					end)
 				end
-				tabObj.skinned = true
 			end
 			if self.db.profile.TexturedTab then
 				if i == 1 then self:setActiveTab(tabObj)
@@ -71,14 +70,13 @@ function Skinner:Combuctor()
 --		self:Debug("C.SF_UF: [%s]", this:GetName())
 		for i = 1, #this.buttons do
 			local tabObj = this.buttons[i]
-			if not tabObj.skinned then
+			if not self.skinned[tabObj] then
 				if i == 1 then
 					self:moveObject(tabObj, "+", 30, "+", 20)
 				else
 					self:moveObject(tabObj, nil, nil, "+", 10)
 				end 
 				self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
-				tabObj.skinned = true
 			end
 		end
 	end)

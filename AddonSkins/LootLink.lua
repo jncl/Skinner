@@ -20,7 +20,7 @@ function Skinner:LootLink()
 	self:SecureHook(LootLink, "Main_LoadPlugin", function(LootLink, pluginName, existenceObjName, isAddon)
 --		self:Debug("LootLink_Main_LoadPlugin: [%s, %s, %s]", pluginName, existenceObjName, isAddon)
 -->>--	LL Options Frame
-		if pluginName == "Options" and not LootLink_Options_DisplayFrame.skinned then
+		if pluginName == "Options" and not self.skinned[LootLink_Options_DisplayFrame] then
 			self:moveObject(LootLink_Options_HeaderText, nil, nil, "-", 8)
 			self:skinDropDown(LootLink_Options_TooltipSettingsDD)
 			self:skinEditBox(LootLink_Options_AutoLinkBotMinLengthEB, {9})
@@ -30,7 +30,6 @@ function Skinner:LootLink()
 			self:skinDropDown(LootLink_Options_DataSharingBroadcastChannelsDD)
 			self:keepFontStrings(LootLink_Options_DisplayFrame)
 			self:applySkin(LootLink_Options_DisplayFrame)
-			LootLink_Options_DisplayFrame.skinned = true
 		elseif pluginName == "QuickSearch" then
 			skinLLQSSF()
 		end

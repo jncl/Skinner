@@ -27,25 +27,25 @@ local tabPool = {}
 local function delTab(tbl)
 
 	if not tbl then return end
-	
+
 	for i = 1, #tbl do
 		tbl[i] = nil
 	end
-	
+
 	tabPool[tbl] = true
-	
+
 end
 local function newTab()
 
 	local tbl = next(tabPool)
-	
+
 	if tbl then
 		tabPool[tbl] = nil
 		return tbl
 	end
-	
+
 	return {}
-	
+
 end
 
 -- Local functions
@@ -57,13 +57,13 @@ end
 local function revTable(curTab, revTab)
 
 	if not curTab then return end
-	
+
 	for _, v in pairs(curTab) do
 		revTab[v] = true
 	end
-	
+
 	return revTab
-	
+
 end
 local function makeString(t)
 
@@ -72,7 +72,7 @@ local function makeString(t)
 			return ("<%s:%s>"):format(t:GetObjectType(), t:GetName() or "(Anon)")
 		end
 	end
-	
+
 	return tostring(t)
 
 end
@@ -82,7 +82,7 @@ local function makeText(a1, ...)
 	local tmpTab = newTab()
 
 	local output = ""
-	
+
 	if a1:find("%%") and select('#', ...) >= 1 then
 		for i = 1, select('#', ...) do
 			tmpTab[i] = makeString(select(i, ...))
@@ -96,9 +96,9 @@ local function makeText(a1, ...)
 		end
 		output = tcon(tmpTab, " ")
 	end
-	
+
 	delTab(tmpTab)
-	
+
 	return output
 
 end
@@ -248,6 +248,15 @@ function Skinner:OnInitialize()
 	-- table to hold which functions have been actioned
 	self.initialized = {}
 
+	-- define a metatable to have weak keys and to automatically add an entry if it doesn't exist
+	local mt = {__mode = "k", __index = function (t, k) t[k] = true end}
+	-- table to hold frames which have been skinned
+	self.skinned = setmetatable({}, mt)
+	-- table to hold frames that have been added
+	self.skinFrame = {}
+	-- table to hold buttons that have been added
+	self.sBut = {}
+
 end
 
 function Skinner:OnEnable()
@@ -329,10 +338,10 @@ function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
 	but:EnableMouse(false) -- allow clickthrough
 	self:applySkin(but)
 	if hideBut then but:Hide() end
-	hookObj.sBut = but
+	self.sBut[hookObj] = but
 	if not self:IsHooked(hookObj, "Show") then
-		self:SecureHook(hookObj, "Show", function(this) this.sBut:Show() end)
-		self:SecureHook(hookObj, "Hide", function(this) this.sBut:Hide() end)
+		self:SecureHook(hookObj, "Show", function(this) Skinner.sBut[this]:Show() end)
+		self:SecureHook(hookObj, "Hide", function(this) Skinner.sBut[this]:Hide() end)
 	end
 
 end
@@ -356,7 +365,7 @@ function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
 	else self:storeAndSkin(ftype, skinFrame) end
 	if parent:GetFrameLevel() == 0 then parent:SetFrameLevel(1) end
 	skinFrame:SetFrameLevel(parent:GetFrameLevel() - 1)
-	parent.skinFrame = skinFrame
+	self.skinFrame[parent] = skinFrame
 
 end
 
@@ -602,7 +611,7 @@ function Skinner:findFrame3(name, element)
 --	self:Debug("findFrame3: [%s, %s]", name, element)
 
 	local frame
-	
+
 	for i = 1, UIParent:GetNumChildren() do
 		local obj = select(i, UIParent:GetChildren())
 		if obj:GetName() == name then
@@ -646,7 +655,7 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 --@end-alpha@
 
 	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
-	
+
 	statusBar:SetStatusBarTexture(self.sbTexture)
 	table.insert(sbGlazed, statusBar)
 
@@ -811,7 +820,7 @@ function Skinner:moveObject(objName, xAdj, xDiff, yAdj, yDiff, relTo)
 --@end-alpha@
 
 	if not objName then return end
-	
+
 --	self:Debug("moveObject: [%s, %s%s, %s%s, %s]", objName:GetName() or "<Anon>", xAdj, xDiff, yAdj, yDiff, relTo)
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = objName:GetPoint()
@@ -844,9 +853,9 @@ function Skinner:removeRegions(frame, regions)
 --@end-alpha@
 
 	if not frame then return end
-	
+
 	regions	= revTable(regions, newTab())
-	
+
 --	self:Debug("removeRegions: [%s]", frame:GetName() or "<Anon>")
 	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
@@ -1039,7 +1048,7 @@ function Skinner:skinEditBox(editBox, regions, noSkin, noHeight, noWidth)
 end
 
 function Skinner:skinFFToggleTabs(tabName, tabCnt)
-	self:Debug("skinFFToggleTabs: [%s]", tabName)
+--	self:Debug("skinFFToggleTabs: [%s]", tabName)
 
 	if not tabCnt then tabCnt = 3 end
 	for i = 1, tabCnt do
@@ -1097,7 +1106,7 @@ function Skinner:skinScrollBar(scrollFrame, sbPrefix, sbObj, narrow)
 --@end-alpha@
 
 	if not scrollFrame then return end
-	
+
 --	self:Debug("skinScrollBar: [%s, %s, %s, %s]", scrollFrame:GetName(), sbPrefix or 'nil', sbObj or 'nil', narrow or 'nil')
 
 	local sBar = sbObj and sbObj or _G[scrollFrame:GetName()..(sbPrefix or "").."ScrollBar"]

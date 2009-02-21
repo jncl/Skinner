@@ -75,7 +75,7 @@ function Skinner:MenuFrames()
 --		self:Debug("IOL_DP: [%s, %s]", frame, frame:GetName())
 		-- skin tekKonfig library objects
 		if self.tekKonfig then self:tekKonfig() end
-		if not frame.skinned then
+		if not self.skinned[frame] then
 			for i = 1, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())
 				if child then
@@ -85,7 +85,6 @@ function Skinner:MenuFrames()
 				end
 			end
 			self:storeAndSkin(ftype, frame)
-			frame.skinned = true
 		end
 	end)
 
@@ -280,10 +279,9 @@ function Skinner:MailFrame()
 		for i = 1, ATTACHMENTS_MAX_SEND do
 			local sma = _G["SendMailAttachment"..i]
 			self:moveObject(sma, "-", 10, "-", 10)
-			if not sma.skinned then
+			if not self.skinned[sma] then
 				self:removeRegions(sma, {1})
 				self:addSkinButton(sma, nil, nil, true)
-				sma.skinned = true
 			end
 		end
 	end)
@@ -694,7 +692,7 @@ function Skinner:ItemSocketingUI()
 		for i = 1, GetNumSockets() do
 			-- colour the button border
 			local colour = GEM_TYPE_INFO[GetSocketTypes(i)]
-			_G["ItemSocketingSocket"..i].sBut:SetBackdropBorderColor(colour.r, colour.g, colour.b)
+			self.sBut[_G["ItemSocketingSocket"..i]]:SetBackdropBorderColor(colour.r, colour.g, colour.b)
 		end
 	end)
 
@@ -819,12 +817,11 @@ function Skinner:Nameplates()
 				-- child 4 is the spell icon
 				select(5, child:GetRegions()):SetAlpha(0) -- hide glow effect
 				-- children 6 & 7 are text, 8 & 9 are raid icons
-				if not child.skinned then
+				if not Skinner.skinned[child] then
 					for i = 1, 2 do -- skin both status bars
 						local sb = select(i, child:GetChildren())
 						Skinner:glazeStatusBar(sb, 0, true)
 					end
-					child.skinned = true
 				end
 			end
 		end
