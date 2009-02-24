@@ -693,6 +693,7 @@ function Skinner:AchievementAlerts()
 			if aaFrame and not Skinner.skinned[aaFrame] then
 				aaFrame:SetHeight(60)
 				aaFrame:SetWidth(300)
+				self:moveObject(aaFrame, nil, nil, "+", 10)
 				_G["AchievementAlertFrame"..i.."Background"]:SetAlpha(0)
 				Skinner:removeRegions(_G["AchievementAlertFrame"..i.."Button"], {})
 				local aaFU = _G["AchievementAlertFrame"..i.."Unlocked"]

@@ -17,3 +17,9 @@ S - Skin request
 ≈	S	TotemCaddy, requested by Gabriel, 15.02.09
 
 ?	O	Resize GM Ticket Frame, requested by babyzeretul, 14.02.09
+
+√	N	Altoholic, reported by Kerecha, 21.02.09
+	
+√	N	Panda, reported by CrazyBenny, 22.01.09
+
+≈	S	PowerAuras Classic, requested by KLSmili, 22.02.09

@@ -3,40 +3,60 @@ function Skinner:Panda(LoD)
 
 --	self:Debug("Panda skin loaded:[%s]", LoD)
 	
-	local function skinPandaPanel()
+	local frame = Panda.panel
 	
-		Skinner:keepFontStrings(PandaPanel)
-		Skinner:moveObject(Skinner:getRegion(PandaPanel, 2), nil, nil, "+", 10) -- titletext
-		Skinner:moveObject(Skinner:getChild(PandaPanel, 1), nil, ni, "+", 11) -- close button
-		Skinner:applySkin(PandaPanel)
+	local function skinPanda()
 	
-		local firstBtn
-		for i = 1, PandaPanel:GetNumChildren() do
-			local child = select(i, PandaPanel:GetChildren())
-			if child:IsObjectType("Frame") and math.floor(child:GetWidth()) == 630 then
---				Skinner:Debug("PandaPanel, found subpanel")
-				child:ClearAllPoints()
-				child:SetPoint("TOPLEFT", 190, -66) -- move the subpanel up
-				child:SetPoint("BOTTOMRIGHT", -12, 39)
-			end
-			if child:IsObjectType("Button") and math.floor(child:GetWidth()) == 158 then
-				Skinner:removeRegions(child, {1}) -- remove the filter texture from the button
-				if not firstBtn then
-					child:SetPoint("TOPLEFT", PandaPanel, 23, -68) -- move the buttons up
-					firstBtn = child
+		Skinner:keepFontStrings(frame)
+		Skinner:moveObject(Skinner:getRegion(frame, 2), nil, nil, "+", 10) -- titletext
+		Skinner:moveObject(Skinner:getChild(frame, 1), nil, ni, "+", 11) -- close button
+		for i = 4, 7 do -- Skill tabs
+			local btn = Skinner:getChild(frame, i)
+			Skinner:removeRegions(btn, {3}) -- N.B. other regions are icon and highlight
+			btn:SetWidth(btn:GetWidth() * 1.25)
+			btn:SetHeight(btn:GetHeight() * 1.25)
+			if i == 4 then Skinner:moveObject(btn, "-", 3, nil, nil) end
+		end
+		Skinner:applySkin(frame)
+		
+		local function skinPanel(frame)
+		
+			local subPanel = self:getChild(frame, 1)
+			 -- move the subpanel up
+			subPanel:ClearAllPoints()
+			subPanel:SetPoint("TOPLEFT", 190, -80)
+			subPanel:SetPoint("BOTTOMRIGHT", -12, 39)
+			local firstBtn
+			for i = 2, frame:GetNumChildren() do
+				local child = select(i, frame:GetChildren())
+				if child:IsObjectType("Button") and math.floor(child:GetWidth()) == 158 then
+					Skinner:removeRegions(child, {1}) -- remove the filter texture from the button
+					if not firstBtn then
+						child:SetPoint("TOPLEFT", frame, 23, -76) -- move the buttons up
+						firstBtn = child
+					end
 				end
 			end
+			
+		end
+		
+		skinPanel(Panda.panel.panels[1]) -- first panel already shown
+		for i = 2, #Panda.panel.panels do
+			Skinner:SecureHookScript(Panda.panel.panels[i], "OnShow", function(this)
+				skinPanel(this)
+				Skinner:Unhook(Panda.panel.panels[i], "OnShow")
+			end)
 		end
 		
 	end
 
 	if not LoD then
-		self:SecureHook(PandaPanel, "Show", function(this, ...)
-			skinPandaPanel()
-			self:Unhook(PandaPanel, "Show")
+		self:SecureHook(frame, "Show", function(this, ...)
+			skinPanda()
+			self:Unhook(frame, "Show")
 		end)
 	else
-		skinPandaPanel()
+		skinPanda()
 	end
 	
 end

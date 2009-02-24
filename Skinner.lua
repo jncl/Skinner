@@ -22,49 +22,6 @@ Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 3.0.8
 --Skinner.isPatch = GM_CHAT and true or false
 
--- Table reuse functions
-local tabPool = {}
-local function delTab(tbl)
-
-	if not tbl then return end
-
-	for i = 1, #tbl do
-		tbl[i] = nil
-	end
-
-	tabPool[tbl] = true
-
-end
-local function newTab()
-
-	local tbl = next(tabPool)
-
-	if tbl then
-		tabPool[tbl] = nil
-		return tbl
-	end
-
-	return {}
-
-end
-
--- Local functions
-local function round2(num, ndp)
-
-  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
-
-end
-local function revTable(curTab, revTab)
-
-	if not curTab then return end
-
-	for _, v in pairs(curTab) do
-		revTab[v] = true
-	end
-
-	return revTab
-
-end
 local function makeString(t)
 
 	if type(t) == "table" then
@@ -79,8 +36,7 @@ end
 local tcon = table.concat
 local function makeText(a1, ...)
 
-	local tmpTab = newTab()
-
+	local tmpTab = {}
 	local output = ""
 
 	if a1:find("%%") and select('#', ...) >= 1 then
@@ -96,8 +52,6 @@ local function makeText(a1, ...)
 		end
 		output = tcon(tmpTab, " ")
 	end
-
-	delTab(tmpTab)
 
 	return output
 
@@ -738,13 +692,25 @@ function Skinner:keepFontStrings(frame)
 
 end
 
+local function revTable(curTab)
+
+	if not curTab then return end
+	local revTab = {}
+
+	for _, v in pairs(curTab) do
+		revTab[v] = true
+	end
+
+	return revTab
+
+end
 function Skinner:keepRegions(frame, regions)
 --@alpha@
 	assert(frame, "Unknown object\n"..debugstack())
 --@end-alpha@
 
 	if not frame then return end
-	regions	= revTable(regions, newTab())
+	regions	= revTable(regions)
 
 --	self:Debug("keepRegions: [%s]", frame:GetName() or "<Anon>")
 	for i = 1, frame:GetNumRegions() do
@@ -758,8 +724,6 @@ function Skinner:keepRegions(frame, regions)
 --@end-debug@
 		end
 	end
-
-	delTab(regions)
 
 end
 
@@ -854,7 +818,7 @@ function Skinner:removeRegions(frame, regions)
 
 	if not frame then return end
 
-	regions	= revTable(regions, newTab())
+	regions	= revTable(regions)
 
 --	self:Debug("removeRegions: [%s]", frame:GetName() or "<Anon>")
 	for i = 1, frame:GetNumRegions() do
@@ -867,8 +831,6 @@ function Skinner:removeRegions(frame, regions)
 --@end-debug@
 		end
 	end
-
-	delTab(regions)
 
 end
 
@@ -1248,6 +1210,11 @@ function Skinner:RGBPercToHex(r, g, b)
 
 end
 
+local function round2(num, ndp)
+
+  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
+
+end
 function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	local showKids = showKids and true or false

@@ -313,14 +313,14 @@ function Skinner:ChatEditBox()
 	-- don't use an initialized value to allow for dynamic changes
 	if not self.db.profile.ChatEditBox.skin then return end
 
-	-- this addon replaces the Chat Edit Box
+	-- these addons replace the Chat Edit Box
 	if IsAddOnLoaded("NeonChat") or IsAddOnLoaded("Chatter") then return end
 
 	if self.db.profile.ChatEditBox.style == 1 then
-		self:keepRegions(ChatFrameEditBox, self.ebRegions)
+		self:keepRegions(ChatFrameEditBox, {unpack(self.ebRegions), 9})
 		self:storeAndSkin(ftype, ChatFrameEditBox)
 	else
-		self:skinEditBox(ChatFrameEditBox, nil, nil, true)
+		self:skinEditBox(ChatFrameEditBox, {9}, nil, true)
 	end
 
 end

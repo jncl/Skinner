@@ -238,6 +238,7 @@
 <script file="SkinMe\PoliteWhisper.lua"/>
 <script file="SkinMe\Possessions.lua"/>
 <script file="SkinMe\Postal.lua"/>
+<script file="SkinMe\PowerAuras.lua"/>
 <script file="SkinMe\Prat.lua"/>
 <script file="SkinMe\ProcMeter.lua"/>
 <script file="SkinMe\ProfessionsBook.lua"/>
