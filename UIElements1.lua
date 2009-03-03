@@ -317,7 +317,9 @@ function Skinner:ChatEditBox()
 	if IsAddOnLoaded("NeonChat") or IsAddOnLoaded("Chatter") then return end
 
 	if self.db.profile.ChatEditBox.style == 1 then
-		self:keepRegions(ChatFrameEditBox, {unpack(self.ebRegions), 9})
+		local kRegions = CopyTable(self.ebRegions)
+		table.insert(kRegions, 9)
+		self:keepRegions(ChatFrameEditBox, kRegions)
 		self:storeAndSkin(ftype, ChatFrameEditBox)
 	else
 		self:skinEditBox(ChatFrameEditBox, {9}, nil, true)
