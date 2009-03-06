@@ -1,4 +1,4 @@
-﻿## Interface: 30000
+﻿## Interface: 30100
 ## Title: Skinner
 ## Notes: Changes the look of the default UI
 ## Notes-esES: Cambia el aspecto del UI predeterminado
@@ -64,7 +64,7 @@ AddonFrames.lua
 CharacterFrames1.lua
 #
 # CharacterFrames2
-# inc. Social (inc. Friends, Who, Guild, Chat, Raid), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs, VehicleMenuBar
+# inc. Social (inc. Friends, Who, Guild, Chat, Raid), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs, VehicleMenuBar, GearManager
 CharacterFrames2.lua
 #
 # NPCFrames

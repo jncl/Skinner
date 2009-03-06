@@ -612,32 +612,51 @@ function Skinner:LFGFrame()
 	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
 	self.initialized.LFGFrame = true
 
-	if self.db.profile.TexturedTab then
-		self:SecureHook("LFGParentFrameTab1_OnClick", function()
---			self:Debug("LFGParentFrameTab1_OnClick")
+	if self.isPatch then
+		self:moveObject(LFGParentFrameTitle, nil, nil, "+", 10)
+		self:moveObject(self:getChild(LFGParentFrame, 3), "+", 26, "+", 8) -- close button
+		self:moveObject(LFGFrameRolesBorder, "-", 20, nil, nil)
+		LFGFrameRolesBorder:SetBackdrop(nil)
+		self:moveObject(LFGFrameQueue1Border, "-", 20, nil, nil)
+		LFGFrameQueue1Border:SetBackdrop(nil)
+		LFGFrameQueue2Border:SetBackdrop(nil)
+		LFGFrameQueue3Border:SetBackdrop(nil)
+		self:SecureHookScript(LFGFrame, "OnShow", function(this)
 			self:setActiveTab(LFGParentFrameTab1)
 			self:setInactiveTab(LFGParentFrameTab2)
 		end)
-		self:SecureHook("LFGParentFrameTab2_OnClick", function()
---			self:Debug("LFGParentFrameTab2_OnClick")
+		self:SecureHookScript(LFMFrame, "OnShow", function(this)
 			self:setActiveTab(LFGParentFrameTab2)
 			self:setInactiveTab(LFGParentFrameTab1)
 		end)
+	else
+		self:moveObject(self:getChild(LFGParentFrame, 4), "+", 28, "+", 8) -- close button
+		self:skinEditBox(LFGComment, {6})
+		-- hook these to move the comment
+		self:SecureHook("LFMFrame_OnShow", function()
+			self:moveObject(LFGComment, nil, nil, "-", 80)
+		end)
+		self:SecureHook("LFGFrame_OnShow", function()
+			self:moveObject(LFGComment, nil, nil, "-", 80)
+		end)
+		if self.db.profile.TexturedTab then
+			self:SecureHook("LFGParentFrameTab1_OnClick", function()
+--				self:Debug("LFGParentFrameTab1_OnClick")
+				self:setActiveTab(LFGParentFrameTab1)
+				self:setInactiveTab(LFGParentFrameTab2)
+			end)
+			self:SecureHook("LFGParentFrameTab2_OnClick", function()
+--				self:Debug("LFGParentFrameTab2_OnClick")
+				self:setActiveTab(LFGParentFrameTab2)
+				self:setInactiveTab(LFGParentFrameTab1)
+			end)
+		end
 	end
-
-	-- hook these to move the comment
-	self:SecureHook("LFMFrame_OnShow", function()
-		self:moveObject(LFGComment, nil, nil, "-", 80)
-	end)
-	self:SecureHook("LFGFrame_OnShow", function()
-		self:moveObject(LFGComment, nil, nil, "-", 80)
-	end)
 
 	LFGParentFrame:SetWidth(LFGParentFrame:GetWidth() * self.FxMult)
 	LFGParentFrame:SetHeight(LFGParentFrame:GetHeight() * self.FyMult)
-	-- move the close button
-	self:moveObject(self:getChild(LFGParentFrame, 4), "+", 28, "+", 8)
-	self:skinEditBox(LFGComment, {6})
+	self:keepFontStrings(LFGParentFrame)
+	self:storeAndSkin(ftype, LFGParentFrame)
 
 -->>--	LFG Frame
 	self:keepFontStrings(AutoJoinBackground)
@@ -657,15 +676,31 @@ function Skinner:LFGFrame()
 	self:moveObject(LFMFrameTotals, nil, nil, "-", 76)
 	self:skinDropDown(LFMFrameTypeDropDown)
 	self:skinDropDown(LFMFrameNameDropDown)
+	if self.isPatch then
+		self:keepFontStrings(LFMFrameDropDown1)
+		self:skinFFColHeads("LFMFrameColumnHeader", 3) -- first three
+		self:keepRegions(LFMFrameColumnHeader4Group, {4, 5}) -- N.B 4 is text, 5 is highlight
+		self:storeAndSkin(ftype, LFMFrameColumnHeader4Group)
+		for i = 4, 7 do
+			self:keepRegions(_G["LFMFrameColumnHeader"..i], {4, 5, 6}) -- N.B 4 is text, 5 is highlight, 6 is icon
+			self:storeAndSkin(ftype, _G["LFMFrameColumnHeader"..i])
+		end
+		LFMFrameRoleBackground:Hide()
+	else
+		self:skinFFColHeads("LFMFrameColumnHeader")
+	end
 	self:moveObject(LFMFrameTypeDropDown, "-", 10, nil, nil)
-	self:skinFFColHeads("LFMFrameColumnHeader") --N.B. Prefix string
 	self:moveObject(LFMFrameColumnHeader1, "-", 10, nil, nil)
 	self:moveObject(LFMFrameButton1, "-", 10, nil, nil)
 	self:removeRegions(LFMListScrollFrame)
 	self:skinScrollBar(LFMListScrollFrame)
 	self:keepFontStrings(LFMEye)
 	self:storeAndSkin(ftype, LFMEye)
-	self:keepRegions(LFMFrame, {1})
+	if self.isPatch then
+		self:keepRegions(LFMFrame, {2}) -- totals text
+	else
+		self:keepRegions(LFMFrame, {1})
+	end
 	self:moveObject(LFMFrameGroupInviteButton, "+", 25, "-", 76)
 
 -->>--	Tabs
@@ -679,8 +714,6 @@ function Skinner:LFGFrame()
 	if self.db.profile.TexturedTab then self:applySkin(LFGParentFrameTab2, nil, 0)
 	else self:storeAndSkin(ftype, LFGParentFrameTab2) end
 
-	self:keepFontStrings(LFGParentFrame)
-	self:storeAndSkin(ftype, LFGParentFrame)
 
 end
 

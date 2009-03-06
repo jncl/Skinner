@@ -3,8 +3,8 @@ function Skinner:BlizzardFrames()
 --	self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
-		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame",
-		"FriendsFrame", "TradeFrame", "ResizeQW", "ReadyCheck", "Buffs", "VehicleMenuBar", "AchievementWatch",
+		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AchievementWatch", 
+		"FriendsFrame", "TradeFrame", "ResizeQW", "ReadyCheck", "Buffs", "VehicleMenuBar", "GearManager",
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard",
 		"MirrorTimers", "QuestTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "BattleScore", "ScriptErrors", "Tutorial", "DropDowns",
 		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame",
@@ -89,7 +89,7 @@ function Skinner:AddonFrames()
 		"Earth", "EasyTrack", "EasyUnlock", "EavesDrop", "EditingUI", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "Epeen", "epgp", "EQL3", "EquipCompare", --[["EveryQuest",--]] "Examiner",
 		--[["FactionGrinder",--]] "Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "ForteWarlock", "FramesResized", "FreierGeist_InstanceTime", "FruityLoots", --[["FuBar_PoisonReminderFu",--]] "Gatherer", "GCInfo", "GemHelper", "GemMe", "GFW_FeedOMatic", "GlowFoSho", "Gossipmonger", "GotWood", "Grid", "GrimReaper", "GroupCalendar", "Guild_Alliance", "Guild_Log", "GuildAds", "GuildBankAccount", --[["GuildEventManager2",--]]
 		"Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadHunter", "HealBot", "HealersAssist", "HealingEstimator", "HealOrganizer", "Historian", "HitsMode", "HoloFriends",
-		"IgorsMassAuction", "ItemDB", "ItemEnchantApplication", "ItemRack", "ItemSync", "InspectEquip", "InstanceMaps", "InsultDevice", "InventoryOnPar",
+		"IgorsMassAuction", "InspectEquip", "InstanceMaps", "InsultDevice", "InventoryOnPar", "IPopBar", "ItemDB", "ItemEnchantApplication", "ItemRack", "ItemSync",
 		"JasonQuest", "Junk",
 		"Karma", --[["KC_Items",--]] "KLHThreatMeter", "KombatStats",
 		"LightHeaded", "LinkHeaven", "Links", "LinksList", "LinkWrangler", "LoadIT", "LootHog", "LootLink", "LootScroll", "Ludwig", "Luggage",

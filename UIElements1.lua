@@ -81,6 +81,8 @@ function Skinner:QuestTimers()
 	if not self.db.profile.MirrorTimers or self.initialized.QuestTimers then return end
 	self.initialized.QuestTimers = true
 
+ 	if self.isPatch then return end
+
 	self:keepFontStrings(QuestTimerFrame)
 	QuestTimerFrame:SetWidth(QuestTimerFrame:GetWidth() - 40)
 	QuestTimerFrame:SetHeight(QuestTimerFrame:GetHeight() - 20)
@@ -477,7 +479,7 @@ function Skinner:ContainerFrames()
 	self.initialized.ContainerFrames = true
 
 	BACKPACK_HEIGHT = BACKPACK_HEIGHT - 26
-	
+
 	self:SecureHook("ContainerFrame_GenerateFrame", function(frameObj, size, id)
 --		self:Debug("CF_GF:[%s, %s, %s]", frameObj:GetName(), size, id)
 		local frameName = _G[frameObj:GetName().."Name"]
@@ -524,14 +526,22 @@ end
 function Skinner:ItemText()
 	if not self.db.profile.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
+	
+	self:Debug("ItemText loaded")
 
-	self:SecureHook("ItemTextFrame_OnEvent", function(this, event)
--- 		self:Debug("ItemTextFrame_OnEvent: [%s]", event)
-		if event == "ITEM_TEXT_BEGIN" then
+	if self.isPatch then
+		self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
+			self:Debug("ItemTextFrame_OnShow")
 			ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
-	end)
-
+		end)
+	else
+		self:SecureHook("ItemTextFrame_OnEvent", function(this, event, ...)
+			self:Debug("ItemTextFrame_OnEvent: [%s, %s]", event, ...)
+			if event == "ITEM_TEXT_BEGIN" then
+				ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			end
+		end)
+	end
 	self:keepFontStrings(ItemTextFrame)
 	ItemTextFrame:SetWidth(ItemTextFrame:GetWidth() - 30)
 	ItemTextFrame:SetHeight(ItemTextFrame:GetHeight() - 60)
@@ -828,7 +838,7 @@ function Skinner:MinimapButtons()
 	self.initialized.MinimapButtons = true
 
 	local function mmKids(mmObj)
-	
+
 		local mmObjName = mmObj.GetName and mmObj:GetName() or "<Anon>"
 --		Skinner:Debug("Checking %s kids", mmObjName)
 
@@ -895,19 +905,19 @@ function Skinner:MinimapButtons()
 	MiniMapVoiceChatFrame:SetHeight(32)
 	MiniMapVoiceChatFrameIcon:ClearAllPoints()
 	MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
-	
+
 	-- MiniMap Tracking button
 	MiniMapTrackingIcon:ClearAllPoints()
 	MiniMapTrackingIcon:SetPoint("CENTER", MiniMapTrackingButton)
 	MiniMapTrackingIcon:SetParent(MiniMapTrackingButton)
 	-- hook this to stop the icon being moved
 	self:RawHook(MiniMapTrackingIcon, "SetPoint", function(this, ...) end, true)
-	
+
 	-- move GameTime a.k.a. Calendar texture up a layer
 	GameTimeFrame:GetNormalTexture():SetDrawLayer("BORDER")
 	GameTimeFrame:GetPushedTexture():SetDrawLayer("BORDER")
 	GameTimeFrame:GetFontString():SetDrawLayer("BORDER")
-	
+
 	-- skin any moved Minimap buttons if required
 	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(MinimapButtonFrame) end
 
@@ -918,7 +928,7 @@ function Skinner:MinimapButtons()
 	local mmButs = {
 		["SmartBuff"] = SmartBuff_MiniMapButton,
 		["WebDKP"] = WebDKP_MinimapButton,
-		["GuildAds"] = GuildAdsMinimapButton, 
+		["GuildAds"] = GuildAdsMinimapButton,
 		["Outfitter"] = OutfitterMinimapButton,
 		["Perl_Config"] = PerlButton,
 		["WIM"] = WIM3MinimapButton
@@ -1004,7 +1014,7 @@ function Skinner:Calendar()
 	self.initialized.Calendar = true
 
 -->>--	Calendar Frame
-	
+
 	self:keepFontStrings(CalendarFrame)
 	self:keepFontStrings(CalendarFilterFrame)
 	CalendarFilterFrameMiddle:SetTexture(self.itTex)
@@ -1020,7 +1030,7 @@ function Skinner:Calendar()
 	self:removeRegions(CalendarViewHolidayScrollFrame)
 	self:skinScrollBar(CalendarViewHolidayScrollFrame)
 	self:storeAndSkin(ftype, CalendarViewHolidayFrame)
-	
+
 -->>-- View Raid Frame
 	self:keepFontStrings(CalendarViewRaidTitleFrame)
 	self:keepFontStrings(CalendarViewRaidFrame)
@@ -1028,7 +1038,7 @@ function Skinner:Calendar()
 	self:removeRegions(CalendarViewRaidScrollFrame)
 	self:skinScrollBar(CalendarViewRaidScrollFrame)
 	self:storeAndSkin(ftype, CalendarViewRaidFrame)
-	
+
 -->>-- View Event Frame
 	self:keepFontStrings(CalendarViewEventTitleFrame)
 	self:keepFontStrings(CalendarViewEventFrame)
@@ -1038,7 +1048,7 @@ function Skinner:Calendar()
 	self:skinScrollBar(CalendarViewEventDescriptionScrollFrame)
 	self:keepFontStrings(CalendarViewEventInviteListSection)
 	self:storeAndSkin(ftype, CalendarViewEventFrame)
-	
+
 -->>-- Create Event Frame
 	self:keepFontStrings(CalendarCreateEventTitleFrame)
 	self:moveObject(CalendarCreateEventTitleFrame, nil, nil, "-", 1)
@@ -1063,7 +1073,7 @@ function Skinner:Calendar()
 	if CalendarCreateEventRaidInviteButtonBorder then CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0) end
 	CalendarCreateEventCreateButtonBorder:SetAlpha(0)
 	self:storeAndSkin(ftype, CalendarCreateEventFrame)
-	
+
 -->>-- Mass Invite Frame
 	self:keepFontStrings(CalendarMassInviteTitleFrame)
 	self:keepFontStrings(CalendarMassInviteFrame)
@@ -1072,7 +1082,7 @@ function Skinner:Calendar()
 	self:skinEditBox(CalendarMassInviteGuildMaxLevelEdit, {9})
 	self:skinDropDown(CalendarMassInviteGuildRankMenu)
 	self:storeAndSkin(ftype, CalendarMassInviteFrame)
-	
+
 -->>-- Event Picker Frame
 	self:keepFontStrings(CalendarEventPickerTitleFrame)
 	self:keepFontStrings(CalendarEventPickerFrame)
@@ -1088,7 +1098,7 @@ function Skinner:Calendar()
 	CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
 	CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
 	self:storeAndSkin(ftype, CalendarTexturePickerFrame)
-	
+
 -->>-- Class Button Container
 	for i = 1, MAX_CLASSES do -- allow for the total button
 		self:removeRegions(_G["CalendarClassButton"..i], {1})

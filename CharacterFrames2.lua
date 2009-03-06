@@ -254,7 +254,7 @@ function Skinner:TradeSkillUI()
 
 	-- if DoubleWideTradeSkills is loaded then use it's skin for the TradeSkillFrame
 	if IsAddOnLoaded("DoubleWideTradeSkills") then return end
-	
+
 	self:keepFontStrings(TradeSkillFrame)
 	TradeSkillFrame:SetWidth(TradeSkillFrame:GetWidth() * self.FxMult)
 	TradeSkillFrame:SetHeight(TradeSkillFrame:GetHeight() * self.FyMult)
@@ -371,6 +371,8 @@ end
 
 function Skinner:ResizeQW()
 
+	if self.isPatch then return end
+
 	if self.db.profile.QuestLog.size == 1 then
 		self.QWfont = GameFontHighlight
 	else
@@ -443,7 +445,7 @@ function Skinner:Buffs()
 				Skinner.sBut[db]:SetPoint("BOTTOMRIGHT", db, "BOTTOMRIGHT", 6, -5)
 			end
 		end
-		
+
 	end
 
 	skinBuffs()
@@ -451,7 +453,7 @@ function Skinner:Buffs()
 	self:SecureHook("BuffFrame_Update", function()
 		skinBuffs()
 	end)
-	
+
 	-- skin Main and Off Hand Enchant buttons
 	self:addSkinButton(TempEnchant1)
 	self:addSkinButton(TempEnchant2)
@@ -474,5 +476,21 @@ function Skinner:VehicleMenuBar()
 		VehicleMenuBarArtFrame:Hide()
 		self:applySkin(VehicleMenuBar)
 	end)
+
+end
+
+function Skinner:GearManager()
+
+	self:moveObject(GearManagerToggleButton, nil, nil, "+", 20)
+	
+	self:keepFontStrings(GearManagerDialog)
+	self:moveObject(GearManagerDialog, "+", 37, "-", 1)
+	self:applySkin(GearManagerDialog)
+-->>-- Popup frame
+	self:keepFontStrings(GearManagerDialogPopup)
+	self:keepFontStrings(GearManagerDialogPopupScrollFrame)
+	self:skinScrollBar(GearManagerDialogPopupScrollFrame)
+	self:skinEditBox(GearManagerDialogPopupEditBox, {9})
+	self:applySkin(GearManagerDialogPopup)
 
 end

@@ -165,6 +165,7 @@
 <script file="SkinMe\InstanceMaps.lua"/>
 <script file="SkinMe\InsultDevice.lua"/>
 <script file="SkinMe\InventoryOnPar.lua"/>
+<script file="SkinMe\IPopBar.lua"/>
 <script file="SkinMe\ItemDB.lua"/>
 <script file="SkinMe\ItemEnchantApplication.lua"/>
 <script file="SkinMe\ItemRack.lua"/>

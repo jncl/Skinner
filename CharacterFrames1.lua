@@ -5,7 +5,7 @@ function Skinner:CharacterFrames()
 	self.initialized.CharacterFrames = true
 
 	if self.db.profile.TexturedTab then
---		-- hook this to adjust the widths of the Tabs
+		-- hook this to adjust the widths of the Tabs
 		self:SecureHook("CharacterFrame_ShowSubFrame",function(frameName)
 --			self:Debug("CF_SSF: [%s]", frameName)
 			if self.db.profile.TexturedTab then
@@ -75,7 +75,7 @@ function Skinner:CharacterFrame()
 	self:SecureHook(CharacterFrame, "Show", function()
 		self:resizeTabs(CharacterFrame)
 		end)
-		
+
 	self:resizeTabs(CharacterFrame)
 
 end
@@ -123,7 +123,7 @@ function Skinner:PetPaperDollFrame()
 	self:moveObject(PetPaperDollCloseButton, "-", 8, nil, nil)
 	self:moveObject(PetAttributesFrame, "-", xOfs, "+", 30)
 	self:moveObject(PetResistanceFrame, "-", xOfs, "-", yOfs)
-	
+
 -->>-- Companion Frame
 	self:keepFontStrings(PetPaperDollFrameCompanionFrame)
 	local xOfs = 10
@@ -193,7 +193,7 @@ function Skinner:SkillFrame()
 	SkillDetailStatusBarBackground:SetTexture(self.sbTexture)
 	self:glazeStatusBar(SkillDetailStatusBar)
 	self:moveObject(SkillFrameCancelButton, "-", 8, "-", 6)
-	
+
 end
 
 function Skinner:TokenFrame()
@@ -219,22 +219,45 @@ function Skinner:TokenFrame()
 	self:moveObject(TokenFrameMoneyFrame, nil, nil, "-", 72)
 	self:moveObject(TokenFrameCancelButton, "-", 8, "-", 6)
 	self:getChild(TokenFrame, 4):Hide()
-	
+
 -->>-- Popup Frame
 	self:keepFontStrings(TokenFramePopup)
 	self:applySkin(TokenFramePopup)
 	self:moveObject(TokenFramePopup, "+", 30, nil, nil)
-	
+
 end
 
 function Skinner:PVPFrame()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
+	if self.isPatch then
+		self:keepFontStrings(PVPParentFrame)
+		self:moveObject(self:getRegion(PVPFrame, 2), nil, nil, "+", 10) -- title
+		PVPParentFrame:SetWidth(PVPParentFrame:GetWidth() * self.FxMult)
+		PVPParentFrame:SetHeight(PVPParentFrame:GetHeight() * self.FyMult)
+		self:moveObject(PVPParentFrameCloseButton, "+", 28, "+", 8)
+		self:storeAndSkin(ftype, PVPParentFrame)
+-->>-- PVP Battleground Frame
+		self:keepFontStrings(PVPBattlegroundFrame)
+		self:moveObject(PVPBattlegroundFrameFrameLabel, nil, nil, "+", 10)
+		self:moveObject(PVPBattlegroundFrameNameHeader, "-", 12, "+", 20)
+		self:moveObject(PVPBattlegroundFrameNameHeader2, "-", 12, "+", 20)
+		self:moveObject(BattlegroundType1, "-", 12, "+", 20)
+		self:keepFontStrings(PVPBattlegroundFrameInstanceScrollFrame)
+		self:skinScrollBar(PVPBattlegroundFrameInstanceScrollFrame)
+		PVPBattlegroundFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:moveObject(PVPBattlegroundFrameZoneDescription, "-", 12, "+", 20)
+		self:moveObject(PVPBattlegroundFrameCancelButton, "-", 10, nil, nil)
+		self:storeAndSkin(ftype, PVPParentFrame)
+	else
+		PVPFrame:SetWidth(PVPFrame:GetWidth() * self.FxMult)
+		PVPFrame:SetHeight(PVPFrame:GetHeight() * self.FyMult)
+		self:moveObject(PVPFrameCloseButton, "+", 28, "+", 8)
+		self:storeAndSkin(ftype, PVPFrame)
+	end
+-->>-- PVP Frame
 	self:keepFontStrings(PVPFrame)
-	PVPFrame:SetWidth(PVPFrame:GetWidth() * self.FxMult)
-	PVPFrame:SetHeight(PVPFrame:GetHeight() * self.FyMult)
-	self:moveObject(PVPFrameCloseButton, "+", 28, "+", 8)
 	self:moveObject(PVPFrameHonorLabel, "-", 25, nil, nil)
 	self:moveObject(PVPFrameHonorPoints, "+", 30, nil, nil)
 	self:moveObject(PVPFrameArenaLabel, "-", 25, nil, nil)
@@ -245,16 +268,40 @@ function Skinner:PVPFrame()
 	self:moveObject(PVPTeam2Standard, "-", 10, "+", 10)
 	self:moveObject(PVPTeam3Standard, "-", 10, "+", 10)
 	self:moveObject(PVPFrameToggleButton, "+", 30, "-", 74)
-	self:storeAndSkin(ftype, PVPFrame)
-	
 -->>-- PVP Team Details Frame
 	self:keepFontStrings(PVPTeamDetails)
 	self:skinDropDown(PVPDropDown)
-	self:moveObject(PVPTeamDetails, "+", 25, nil, nil)
+	self:moveObject(PVPTeamDetails, "+", 28, nil, nil)
+	self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
 	self:moveObject(PVPTeamDetailsAddTeamMember, "-", 10, "-", 10)
 	self:moveObject(PVPTeamDetailsToggleButton, "+", 10, "-", 10)
 	self:storeAndSkin(ftype, PVPTeamDetails)
-
+-->>-- Tabs
+	if self.isPatch then
+		for i = 1, PVPParentFrame.numTabs do
+			local tabName = _G["PVPParentFrameTab"..i]
+			self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			tabName:SetWidth(tabName:GetWidth() * self.FTyMult)
+			if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0)
+			else self:storeAndSkin(ftype, tabName) end
+			if i == 1 then
+				self:moveObject(tabName, "-", 8, "-", 71)
+				if self.db.profile.TexturedTab then self:setActiveTab(tabName) end
+			else
+				self:moveObject(tabName, "+", 10, nil, nil)
+				if self.db.profile.TexturedTab then self:setInactiveTab(tabName) end
+			end
+		end
+		self:SecureHookScript(PVPFrame, "OnShow", function(this)
+			self:setActiveTab(PVPParentFrameTab1)
+			self:setInactiveTab(PVPParentFrameTab2)
+		end)
+		self:SecureHookScript(PVPBattlegroundFrame, "OnShow", function(this)
+			self:setActiveTab(PVPParentFrameTab2)
+			self:setInactiveTab(PVPParentFrameTab1)
+		end)
+	end
+	
 end
 
 function Skinner:PetStableFrame()
@@ -299,7 +346,7 @@ function Skinner:SpellBookFrame()
 			SpellBookTitleText:Hide() -- hide Inscriptions title
 		end
 	end)
-	
+
 	if self.db.profile.TexturedTab then
 		-- hook to handle tabs
 		self:SecureHook("ToggleSpellBook", function(bookType)
@@ -323,7 +370,7 @@ function Skinner:SpellBookFrame()
 	self:moveObject(SpellBookCloseButton, "+", 28, "+", 8)
 	self:moveObject(SpellBookTitleText, nil, nil, "-", 25)
 	self:moveObject(ShowAllSpellRanksCheckBox, nil, nil, "+", 15)
-	
+
 	self:moveObject(SpellBookPageText, nil, nil, "-", 70)
 	self:moveObject(SpellBookPrevPageButton, "-", 20, "-", 70)
 	self:moveObject(SpellBookNextPageButton, nil, nil, "-", 70)
@@ -369,10 +416,28 @@ function Skinner:SpellBookFrame()
 end
 
 function Skinner:GlyphUI()
-	if not self.db.profile.SpellBookFrame then return end
+	if self.isPatch then
+		if not self.db.profile.TalentUI or self.initialized.GlyphUI then return end
+	else
+		if not self.db.profile.SpellBookFrame or self.initialized.GlyphUI then return end
+	end
+	self.initialized.GlyphUI = true
+	
+	self:Debug("GlyphUI loaded")
 
-	self:removeRegions(GlyphFrame, {1, 2})
-	self:moveObject(GlyphFrameTitleText, "-", 20, "+", 8)
+--[[
+	TODO 
+	What happens when a frame is clicked in EditingUI?
+	This seems to fix the GlyphUI display issues
+--]]	
+
+	if self.isPatch then
+		self:removeRegions(GlyphFrame, {1}) -- background texture
+		self:moveObject(GlyphFrameTitleText, nil, nil, "+", 8)
+	else
+		self:removeRegions(GlyphFrame, {1, 2})
+		self:moveObject(GlyphFrameTitleText, "-", 20, "+", 8)
+	end
 	for i = 1, NUM_GLYPH_SLOTS do
 		local glyphButton = _G["GlyphFrameGlyph"..i]
 		self:moveObject(glyphButton, "-", 10, nil, nil)
@@ -384,40 +449,99 @@ function Skinner:TalentUI()
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
 
+	local numTabs
+	if self.isPatch then
+		numTabs = MAX_TALENT_TABS + 1 -- add 1 for the Glyph talent tab
+	else
+		numTabs = MAX_TALENT_TABS
+	end
+
 	self:SecureHook("TalentFrame_Update", function(this)
---		self:Debug("TalentFrame_Update: [%s]", this:GetName())
+		local curTab
+		if self.isPatch then
+			curTab = this.selectedTab
+		else
+			curTab = this.currentSelectedTab
+		end
+--		self:Debug("TalentFrame_Update: [%s, %s]", this:GetName(), curTab)
 		if this == PlayerTalentFrame then
-			for i = 1, MAX_TALENT_TABS do
+			for i = 1, numTabs do
 				local tabName = _G["PlayerTalentFrameTab"..i]
 				tabName:SetWidth(tabName:GetWidth() * self.FTyMult)
 				if self.db.profile.TexturedTab then
-					if i == PlayerTalentFrame.currentSelectedTab then
+					if i == curTab then
 						self:setActiveTab(tabName)
 					else
 						self:setInactiveTab(tabName)
 					end
 				end
+				if self.isPatch then
+					if i == numTabs and i == curTab then -- glyph tab selected
+						PlayerTalentFrameTitleText:Hide()
+						PlayerTalentFrameScrollFrame:Hide()
+						PlayerTalentFrameUnspentPointsBar:Hide()
+					else
+						PlayerTalentFrameTitleText:Show()
+						PlayerTalentFrameScrollFrame:Show()
+						PlayerTalentFrameUnspentPointsBar:Show()
+					end
+				end
 			end
 		end
-		end)
+	end)
 
-	self:keepRegions(PlayerTalentFrame, {6, 7, 8, 9, 10, 14, 15, 16}) -- N.B. 6-9 are the background picture, 10, 14-16 are text regions
+	if self.isPatch then
+		self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
+	else
+		self:keepRegions(PlayerTalentFrame, {6, 7, 8, 9, 10, 14, 15, 16}) -- N.B. 6-9 are the background picture, 10, 14-16 are text regions
+	end
 	PlayerTalentFrame:SetWidth(PlayerTalentFrame:GetWidth() * self.FxMult)
 	PlayerTalentFrame:SetHeight(PlayerTalentFrame:GetHeight() * self.FyMult)
-	self:moveObject(PlayerTalentFrameTitleText, nil, nil, "+", 6)
+	self:moveObject(PlayerTalentFrameTitleText, nil, nil, "+", 8)
 	self:moveObject(PlayerTalentFrameCloseButton, "+", 28, "+", 8)
-	self:moveObject(PlayerTalentFrameSpentPoints, "-", 35, "+", 12)
-	self:moveObject(PlayerTalentFrameTalentPointsText, "-", 10, "-", 75)
-	self:moveObject(PlayerTalentFrameBackgroundTopLeft, "-", 10, "+", 12)
+	if self.isPatch then
+		self:keepFontStrings(PlayerTalentFrameStatusFrame)
+	else
+
+	end
+	if self.isPatch then
+		self:moveObject(PlayerTalentFrameActivateButton, nil, nil, "+", 10)
+	end
+	if self.isPatch then
+		self:keepFontStrings(PlayerTalentFramePreviewBar)
+		PlayerTalentFramePreviewBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 0)
+	end
+	if self.isPatch then
+		self:keepFontStrings(PlayerTalentFrameUnspentPointsBar)
+		PlayerTalentFrameUnspentPointsBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 0)
+		self:moveObject(PlayerTalentFrameSpentPointsText, "-", 18, nil, nil)
+		self:moveObject(PlayerTalentFrameTalentPointsText, "+", 34, nil, nil)
+	else
+		self:moveObject(PlayerTalentFrameSpentPoints, "-", 35, "+", 12)
+		self:moveObject(PlayerTalentFrameTalentPointsText, "-", 10, "-", 75)
+	end
+	if not self.isPatch then self:moveObject(PlayerTalentFrameBackgroundTopLeft, "-", 10, "+", 12) end
 	PlayerTalentFrameBackgroundBottomLeft:SetHeight(130)
 	PlayerTalentFrameBackgroundBottomRight:SetHeight(130)
-	self:moveObject(PlayerTalentFrameCancelButton, "-", 10, "-", 8)
+	if not self.isPatch then self:moveObject(PlayerTalentFrameCancelButton, "-", 10, "-", 8) end
 	self:moveObject(PlayerTalentFrameScrollFrame, "+", 35, "+", 12)
-	self:removeRegions(PlayerTalentFrameScrollFrame)
+	if self.isPatch then
+		self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6})
+	else
+		self:removeRegions(PlayerTalentFrameScrollFrame)
+	end
 	self:skinScrollBar(PlayerTalentFrameScrollFrame)
 	self:storeAndSkin(ftype, PlayerTalentFrame)
 
-	for i = 1, MAX_TALENT_TABS do
+	if self.isPatch then
+		-- hook this to manage the Preview & Unspent Points bar(s)
+		self:SecureHook("PlayerTalentFrame_UpdateControls", function(...)
+			PlayerTalentFramePreviewBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 0)
+			PlayerTalentFrameUnspentPointsBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 0)
+		end)
+	end
+-->>-- Tabs (bottom)
+	for i = 1, numTabs do
 		local tabName = _G["PlayerTalentFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 		tabName:SetWidth(tabName:GetWidth() * self.FTyMult)
@@ -431,14 +555,23 @@ function Skinner:TalentUI()
 			if self.db.profile.TexturedTab then self:setInactiveTab(tabName) end
 		end
 	end
-
-	for i = 1, 2 do
-		local tabName = _G["PlayerTalentFrameType"..i]
-		self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
---		self:Debug("PTFT: [%s, %s]", tabName:GetWidth(), tabName:GetHeight())
-		tabName:SetWidth(tabName:GetWidth() * 1.25)
-		tabName:SetHeight(tabName:GetHeight() * 1.25)
-		if i == 1 then self:moveObject(tabName, "+", 30, nil, nil) end
+-->>-- Tabs (side)
+	if not self.isPatch then
+		for i = 1, 2 do
+			local tabName = _G["PlayerTalentFrameType"..i]
+			self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
+			tabName:SetWidth(tabName:GetWidth() * 1.25)
+			tabName:SetHeight(tabName:GetHeight() * 1.25)
+			if i == 1 then self:moveObject(tabName, "+", 30, nil, nil) end
+		end
+	else
+		for i = 1, 3 do
+			local tabName = _G["PlayerSpecTab"..i]
+			self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
+			tabName:SetWidth(tabName:GetWidth() * 1.25)
+			tabName:SetHeight(tabName:GetHeight() * 1.25)
+			if i == 1 then self:moveObject(tabName, "+", 30, nil, nil) end
+		end
 	end
 
 end
@@ -469,9 +602,9 @@ end
 function Skinner:AchievementUI()
 	if not self.db.profile.AchieveFrame or self.initialized.AchieveFrame then return end
 	self.initialized.AchieveFrame = true
-	
+
 --	self:Debug("AchievementUI Loaded")
-	
+
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
 	-- Hook this to skin the GameTooltip StatusBars
@@ -487,7 +620,7 @@ function Skinner:AchievementUI()
 			self:Unhook("GameTooltip_ShowStatusBar")
 		end
 	end)
-	
+
 	-- hook this to skin StatusBars used by the Objectives mini panels
 	self:RawHook("AchievementButton_GetProgressBar", function(index)
 		local statusBar = self.hooks["AchievementButton_GetProgressBar"](index)
@@ -507,13 +640,13 @@ function Skinner:AchievementUI()
 	self:moveObject(AchievementFrameFilterDropDown, nil, nil, "-", 10)
 	self:moveObject(AchievementFrameCloseButton, "-", 1, "-", 2)
 	self:storeAndSkin(ftype, AchievementFrame)
-	
+
 -->>-- Header
 	self:keepFontStrings(AchievementFrameHeader)
 	self:moveObject(AchievementFrameHeaderTitle, "-", 60, "-", 29)
 	self:moveObject(AchievementFrameHeaderPoints, "+", 40, "-", 9)
 	AchievementFrameHeaderShield:SetAlpha(1)
-	
+
 -->>-- Categories Panel (on the Left)
 	self:skinSlider(AchievementFrameCategoriesContainerScrollBar)
 	self:storeAndSkin(ftype, AchievementFrameCategories)
@@ -523,16 +656,16 @@ function Skinner:AchievementUI()
 		end
 	end
 	self:SecureHook("AchievementFrameCategories_Update", function()
--- 		self:Debug("AFC_U")
+--		self:Debug("AFC_U")
 		skinCategories()
 	end)
 	skinCategories()
-	
+
 -->>-- Achievements Panel (on the right)
 	self:keepFontStrings(AchievementFrameAchievements)
 	self:getChild(AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
-	
+
 -->>-- Stats
 	self:keepFontStrings(AchievementFrameStats)
 	self:skinSlider(AchievementFrameStatsContainerScrollBar)
@@ -555,7 +688,7 @@ function Skinner:AchievementUI()
 		skinStats()
 	end)
 	skinStats()
-	
+
 -->>-- Summary Panel
 	self:keepFontStrings(AchievementFrameSummary)
 	AchievementFrameSummaryBackground:SetAlpha(0)
@@ -576,7 +709,7 @@ function Skinner:AchievementUI()
 	self:glazeStatusBar(afsSB, 0)
 	self:moveObject(self:getRegion(afsSB, 1), nil, nil, "-", 3) -- label
 	self:moveObject(self:getRegion(afsSB, 2), nil, nil, "-", 3) -- text
-	
+
 -->>-- Comparison Panel
 	AchievementFrameComparisonBackground:SetAlpha(0)
 	AchievementFrameComparisonDark:SetAlpha(0)
@@ -592,7 +725,7 @@ function Skinner:AchievementUI()
 	AchievementFrameComparisonHeaderName:SetPoint("RIGHT", AchievementFrameComparisonHeaderPoints, "LEFT", -10, 0)
 	-- Container
 	self:skinSlider(AchievementFrameComparisonContainerScrollBar)
-	
+
 	-- Summary Panel
 	self:getChild(AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	local types = {"Player", "Friend"}
@@ -605,7 +738,7 @@ function Skinner:AchievementUI()
 		self:moveObject(self:getRegion(statusBar, 1), nil, nil, "-", 3)
 		self:moveObject(self:getRegion(statusBar, 2), nil, nil, "-", 3)
 	end
-	
+
 	-- Stats Panel
 	self:skinSlider(AchievementFrameComparisonStatsContainerScrollBar)
 	local function skinComparisonStats()
@@ -630,7 +763,7 @@ function Skinner:AchievementUI()
 		skinComparisonStats()
 	end)
 	if achievementFunctions == COMPARISON_STAT_FUNCTIONS then skinComparisonStats() end
-	
+
 -->>-- Tabs
 	local function ttOnClick()
 		for i = 1, AchievementFrame.numTabs do -- for ALL tabs
@@ -646,7 +779,7 @@ function Skinner:AchievementUI()
 			self:moveObject(tabObj, nil, nil, "+", 4)
 		else
 			self:moveObject(tabObj, "+", 2, nil, nil)
-		end 
+		end
 		self:keepFontStrings(tabObj)
 		self:moveObject(tabObj.text, nil, nil, "+", 5)
 		-- hook this to stop tab text moving
@@ -658,15 +791,17 @@ function Skinner:AchievementUI()
 			self:SecureHookScript(tabObj, "OnClick", function(this) ttOnClick() end)
 		else self:applySkin(tabObj) end
 	end
-	
+
 	-- skin the Alert frames
 	self:checkAndRun("AchievementAlerts")
-	
+
 end
 
 function Skinner:AchievementWatch()
 	if not self.db.profile.AchieveWatch or self.initialized.AchieveWatch then return end
 	self.initialized.AchieveWatch = true
+
+	if self.isPatch then return end
 
 -->>-- Watch Frames
 	for i = 2, 10 do
@@ -678,16 +813,15 @@ function Skinner:AchievementWatch()
 		self:glazeStatusBar(watchLine.statusBar)
 		watchLine.statusBar.bg = statusBarBG -- store this so it will get textured as required
 	end
-	
+
 end
 
 function Skinner:AchievementAlerts()
 	if not self.db.profile.AchieveAlert or self.initialized.AchieveAlert then return end
 	self.initialized.AchieveAlert = true
 
-	-->>-- Alert Panels
 	local function skinAlertFrame()
-	
+
 		for i = 1, 2 do
 			local aaFrame = _G["AchievementAlertFrame"..i]
 			if aaFrame and not Skinner.skinned[aaFrame] then
@@ -713,9 +847,9 @@ function Skinner:AchievementAlerts()
 				Skinner:applySkin(aaFrame)
 			end
 		end
-		
+
 	end
-	
+
 	if not AchievementAlertFrame2 then
 		self:SecureHook("AchievementAlertFrame_ShowAlert", function(id)
 --			self:Debug("AAF_SA:[%s]", id)
@@ -725,7 +859,7 @@ function Skinner:AchievementAlerts()
 			end
 		end)
 	end
-	
+
 	skinAlertFrame()
 
 end

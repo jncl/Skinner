@@ -19,8 +19,8 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0", true)
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
---check to see if running on patch 3.0.8
---Skinner.isPatch = GM_CHAT and true or false
+--check to see if running on patch 3.1.0
+Skinner.isPatch = RaiseFrameLevelByTwo and true or false
 
 local function makeString(t)
 
@@ -1031,7 +1031,8 @@ function Skinner:skinFFColHeads(buttonName, noCols)
 
 	local numCols = noCols and noCols or 4
 	for i = 1, numCols do
-		self:keepFontStrings(_G[buttonName..i])
+		self:keepRegions(_G[buttonName..i], {4, 5}) -- N.B 4 is text, 5 is highlight
+--		self:keepFontStrings(_G[buttonName..i])
 		self:storeAndSkin(ftype, _G[buttonName..i])
 	end
 
@@ -1048,7 +1049,11 @@ function Skinner:skinMoneyFrame(frame, moveGold, noWidth, moveSilverBox)
 		local fName = _G[frame:GetName()..v]
 		fName:SetWidth(fName:GetWidth() - 4)
 		fName:SetHeight(fName:GetHeight() + 4)
-		self:skinEditBox(fName, {9}, nil, true) -- N.B. region 9 is the icon
+		if self.isPatch then
+			self:skinEditBox(fName, {9, 10}, nil, true) -- N.B. region 9 is the icon, 10 is text
+		else
+			self:skinEditBox(fName, {9}, nil, true) -- N.B. region 9 is the icon
+		end
 		if k ~= 1 or moveGold then
 			self:moveObject(self:getRegion(fName, 9), "+", 10, nil, nil)
 		end
