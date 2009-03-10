@@ -231,6 +231,7 @@ function Skinner:PVPFrame()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
+	self:keepFontStrings(PVPFrame)
 	if self.isPatch then
 		self:keepFontStrings(PVPParentFrame)
 		self:moveObject(self:getRegion(PVPFrame, 2), nil, nil, "+", 10) -- title
@@ -257,7 +258,6 @@ function Skinner:PVPFrame()
 		self:storeAndSkin(ftype, PVPFrame)
 	end
 -->>-- PVP Frame
-	self:keepFontStrings(PVPFrame)
 	self:moveObject(PVPFrameHonorLabel, "-", 25, nil, nil)
 	self:moveObject(PVPFrameHonorPoints, "+", 30, nil, nil)
 	self:moveObject(PVPFrameArenaLabel, "-", 25, nil, nil)

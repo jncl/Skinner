@@ -272,7 +272,7 @@ function Skinner:Options()
 					name = self.L["StatusBar"],
 					desc = self.L["Change the StatusBar settings"],
 					args = {
-						texture = {
+						texture = AceGUIWidgetLSMlists and {
 							type = "select",
 							order = 1,
 							name = self.L["Texture"],
@@ -284,7 +284,7 @@ function Skinner:Options()
 								db.StatusBar.texture = value
 								self:checkAndRun("updateSBTexture")
 							end,
-						},
+						} or nil,
 						bgcolour = {
 							type = "color",
 							order = 2,
@@ -330,7 +330,7 @@ function Skinner:Options()
 					name = self.L["Backdrop Texture File"],
 					desc = self.L["Set Backdrop Texture Filename"],
 				},
-				BdTexture = {
+				BdTexture = AceGUIWidgetLSMlists and {
 					type = "select",
 					order = 3,
 					width = "double",
@@ -338,7 +338,7 @@ function Skinner:Options()
 					desc = self.L["Choose the Texture for the Backdrop"],
 					dialogControl = "LSM30_Background",
 					values = AceGUIWidgetLSMlists.background,
-				},
+				} or nil,
 				BdTileSize = {
 					type = "range",
 					order = 4,
@@ -353,7 +353,7 @@ function Skinner:Options()
 					name = self.L["Border Texture File"],
 					desc = self.L["Set Border Texture Filename"],
 				},
-				BdBorderTexture = {
+				BdBorderTexture = AceGUIWidgetLSMlists and {
 					type = "select",
 					order = 6,
 					width = "double",
@@ -361,7 +361,7 @@ function Skinner:Options()
 					desc = self.L["Choose the Texture for the Border"],
 					dialogControl = 'LSM30_Border',
 					values = AceGUIWidgetLSMlists.border,
-				},
+				} or nil,
 				BdEdgeSize = {
 					type = "range",
 					order = 7,
@@ -463,7 +463,7 @@ function Skinner:Options()
 					name = self.L["Gradient Effect"],
 					desc = self.L["Toggle the Gradient Effect"],
 				},
-				texture = {
+				texture = AceGUIWidgetLSMlists and {
 					type = "select",
 					order = 2,
 					width = "double",
@@ -471,7 +471,7 @@ function Skinner:Options()
 					desc = self.L["Choose the Texture for the Gradient"],
 					dialogControl = "LSM30_Background",
 					values = AceGUIWidgetLSMlists.background,
-				},
+				} or nil,
 				invert = {
 					type = "toggle",
 					order = 3,

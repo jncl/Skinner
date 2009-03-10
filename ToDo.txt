@@ -8,8 +8,8 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	S	IPopBar, requested by Sheepydaz, 4.03.09
-
+√	O	Check for missing library in options setup, reported by lordrhys, 4.03.09
+	
 	O	Fixes for Patch 3.1.0
 		- Upd Frames
 √			- PVP Frame (CF1)

@@ -4,12 +4,13 @@ function Skinner:BlizzardFrames()
 
 	local blizzFrames = {
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AchievementWatch", 
-		"FriendsFrame", "TradeFrame", "ResizeQW", "ReadyCheck", "Buffs", "VehicleMenuBar", "GearManager",
+		"FriendsFrame", "TradeFrame", "ResizeQW", "ReadyCheck", "Buffs", "VehicleMenuBar",
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard",
 		"MirrorTimers", "QuestTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "BattleScore", "ScriptErrors", "Tutorial", "DropDowns",
 		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame",
 	}
 
+	if Skinner.isPatch then table.insert(blizzFrames, "GearManager") end
 	if Skinner.isPTR then table.insert(blizzFrames, "FeedbackUI") end
 
 	for _, v in pairs(blizzFrames) do
