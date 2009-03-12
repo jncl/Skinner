@@ -8,7 +8,15 @@ N - New Version
 O - Other change
 S - Skin request
 
+√	S	IPopBar, requested by SheepyDaz, 4.03.09
+
 √	O	Check for missing library in options setup, reported by lordrhys, 4.03.09
+	
+√	S	AutoProfit, requested by pompachomp, 7.03.09
+	
+	S	Better Bindings Frame, requested by KLSmili, 9.03.09
+	
+	I	PTR errors, reported by ProperMothodZ, 10.03.09
 	
 	O	Fixes for Patch 3.1.0
 		- Upd Frames
