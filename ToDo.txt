@@ -8,15 +8,22 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	S	IPopBar, requested by SheepyDaz, 4.03.09
+√	S	RicoMiniMap, requested by Kuzah, 13.03.09
+	
+	N	Factionizer, reported by pompachomp, 14.03.09
+		- The factionizer skin looks a bit weird, looks like there's overlapping text
+		
+	I	Border texture not being remembered, reported by Kuzah, 15.03.09
+		
+√	I	Some libs should not be stripped, reported by gregory2, 15.03.09
+		- LibStub, CallbackHandler, LibDataBroker, LibDBIcon & LibBetterBlizzOptions
+		
+√	I	Off-centered value on PVP panel, reported by Kuzah, 15.03.09
+		
+√	I	Dominos, reported by HunterZ, 15.03.09
+		- So Skinner is making action bar #1 be missing on login/reloadui if you are using Dominos and are on a Druid who was logged out in bear/cat/tree form. Disabling the Dominos skin in Skinner has no effect. Disabling Skinner causes the problem to stop.
 
-√	O	Check for missing library in options setup, reported by lordrhys, 4.03.09
-	
-√	S	AutoProfit, requested by pompachomp, 7.03.09
-	
-	S	Better Bindings Frame, requested by KLSmili, 9.03.09
-	
-	I	PTR errors, reported by ProperMothodZ, 10.03.09
+	N	Armory, reported by uhh186, 15.03.09 (Curse)
 	
 	O	Fixes for Patch 3.1.0
 		- Upd Frames

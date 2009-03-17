@@ -261,6 +261,7 @@
 <script file="SkinMe\RecipeBook.lua"/>
 <script file="SkinMe\RecipeRadar.lua"/>
 <script file="SkinMe\Recount.lua"/>
+<script file="SkinMe\RicoMiniMap.lua"/>
 <script file="SkinMe\RockConfig.lua"/>
 <script file="SkinMe\Sanity2.lua"/>
 <!-- <script file="SkinMe\SanityBags.lua"/> -->

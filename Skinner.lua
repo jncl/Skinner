@@ -1,7 +1,7 @@
 -- check to see if LibStub is loaded
 assert(LibStub, "LibStub unavailable, Skinner not loaded")
 -- check to see if AceAddon-3.0 is loaded
-assert(LibStub("AceAddon-3.0"), "AceAddon-3.0 unavailable, Skinner not loaded")
+assert(LibStub("AceAddon-3.0", true), "AceAddon-3.0 unavailable, Skinner not loaded")
 
 Skinner = LibStub("AceAddon-3.0"):NewAddon("Skinner", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
@@ -15,7 +15,7 @@ Skinner.L = LibStub("AceLocale-3.0"):GetLocale("Skinner")
 
 -- check to see if LibSharedMedia-3.0 is loaded
 assert(LibStub("LibSharedMedia-3.0", true), "LibSharedMedia-3.0 unavailable, Skinner not loaded")
-Skinner.LSM = LibStub("LibSharedMedia-3.0", true)
+Skinner.LSM = LibStub("LibSharedMedia-3.0")
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false

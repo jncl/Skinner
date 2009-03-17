@@ -1,4 +1,2 @@
-# ignore libs directory
-/libs/*
 # ignore SkinMe skin files
 /SkinMe/*.lua

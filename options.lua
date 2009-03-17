@@ -1,5 +1,3 @@
---check to see if running on PTR
-local IsPTR = FeedbackUI and true or false
 
 function Skinner:Defaults()
 
@@ -103,7 +101,7 @@ function Skinner:Defaults()
 		Nameplates      = true,
 		TimeManager     = true,
 		Calendar        = true,
-		Feedback        = IsPTR and true or nil,
+		Feedback        = self.isPTR and true or nil,
 		-- NPC Frames
 		MerchantFrames  = true,
 		GossipFrame     = true,
@@ -128,14 +126,11 @@ function Skinner:Defaults()
 
 end
 
-local db
-local aName = "Skinner"
-local ldb = LibStub("LibDataBroker-1.1")
-local icon = LibStub("LibDBIcon-1.0")
-
+local DBIcon = LibStub("LibDBIcon-1.0")
 function Skinner:Options()
 
-	db = self.db.profile
+	local aName = "Skinner"
+	local db = self.db.profile
 
 	local optTables = {
 
@@ -175,9 +170,9 @@ function Skinner:Options()
 					get = function(info) return not db.MinimapIcon.hide end,
 					set = function(info, value)
 						db.MinimapIcon.hide = not value
-						if value then icon:Show("Skinner") else icon:Hide("Skinner") end
+						if value then DBIcon:Show("Skinner") else DBIcon:Hide("Skinner") end
 					end,
-					hidden = function() return not icon end,
+					hidden = function() return not DBIcon end,
 				},
 				DropDowns = {
 					type = "toggle",
@@ -1523,7 +1518,7 @@ function Skinner:Options()
 							name = self.L["GM Survey UI Frame"],
 							desc = self.L["Toggle the skin of the GM Survey UI Frame"],
 						},
-						Feedback = IsPTR and {
+						Feedback = self.isPTR and {
 							type = "toggle",
 							name = self.L["Feedback"],
 							desc = self.L["Toggle the skin of the Feedback Frame"],
@@ -1776,8 +1771,8 @@ function Skinner:Options()
 	self:RegisterChatCommand(aName, chatCommand)
 	self:RegisterChatCommand("skin", chatCommand)
 
-	-- setup the LDB object
-	SkinnerLDB = ldb:NewDataObject("Skinner", {
+	-- setup the DB object
+	SkinnerDB = LibStub("LibDataBroker-1.1"):NewDataObject("Skinner", {
 			type = "launcher",
 			icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
 			OnClick = function(clickedframe, button)
@@ -1793,7 +1788,7 @@ function Skinner:Options()
 	})
 
 	-- register the data object to the Icon library
-	icon:Register(aName, SkinnerLDB, db.MinimapIcon)
+	DBIcon:Register(aName, SkinnerDB, db.MinimapIcon)
 
 end
 

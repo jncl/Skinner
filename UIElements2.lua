@@ -454,6 +454,13 @@ function Skinner:MainMenuBar()
 	if not self.db.profile.MainMenuBar.skin or self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
 
+	if self.db.profile.MainMenuBar.glazesb then
+		self:glazeStatusBar(MainMenuExpBar, 0)
+ 		self:glazeStatusBar(ReputationWatchStatusBar, 0)
+	end
+	
+	if IsAddOnLoaded("Dominos") then return end
+
 	-- Don't move the Performance Bar if IPopBar is loaded as it keeps moving up the screen
 	if not IsAddOnLoaded("IPopBar") then
 		-- hook this to move the PerformanceBar
@@ -487,13 +494,10 @@ function Skinner:MainMenuBar()
 	MainMenuExpBar:SetHeight(MainMenuExpBar:GetHeight() * self.FyMult)
 	self:moveObject(MainMenuExpBar, nil, nil, "-", 4)
 	self:moveObject(MainMenuBarExpText, nil, nil, "-", 1)
-	if self.db.profile.MainMenuBar.glazesb then self:glazeStatusBar(MainMenuExpBar, 0) end
 	-- Reputation Bar
 	self:keepRegions(ReputationWatchStatusBar, {10}) -- 10 is the normal texture
 	ReputationWatchStatusBar:SetWidth(MainMenuExpBar:GetWidth())
 	self:moveObject(ReputationWatchBar, nil, nil, "-", 4)
---	self:moveObject(ReputationWatchStatusBarText, nil, nil, "-", 3)
-	if self.db.profile.MainMenuBar.glazesb then self:glazeStatusBar(ReputationWatchStatusBar, 0) end
 
 -->>--	MainMenuBarOverlayFrame
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
@@ -503,12 +507,9 @@ function Skinner:MainMenuBar()
 	ExhaustionLevelFillBar:SetHeight(ExhaustionLevelFillBar:GetHeight() * self.FyMult)
 	ExhaustionTick:SetAlpha(0)
 
-	-- don't move these buttons if Dominos is loaded otherwise they appear in the TLHC
-	if not IsAddOnLoaded("Dominos") then
-		-- move Action Buttons, Micro buttons etc
-		self:moveObject(ActionButton1, nil, nil, "+", 3)
-		self:moveObject(MainMenuBarBackpackButton, nil, nil, "+", 4)
-	end
+	-- move Action Buttons, Micro buttons etc
+	self:moveObject(ActionButton1, nil, nil, "+", 3)
+	self:moveObject(MainMenuBarBackpackButton, nil, nil, "+", 4)
 
 	-- move the Bag count
 	for i = 0, 3 do
@@ -535,10 +536,7 @@ function Skinner:MainMenuBar()
 
 -->>--	BonusActionBar Frame
 	self:keepFontStrings(BonusActionBarFrame)
-	-- don't move this button if Dominos is loaded otherwise it appears in the TLHC
-	if not IsAddOnLoaded("Dominos") then
-		self:moveObject(BonusActionButton1, nil, nil, "+", 3)
-	end
+	self:moveObject(BonusActionButton1, nil, nil, "+", 3)
 	if BonusActionBarFrame.mode == "show" then
 		toggleActionButtons()
 	end
@@ -557,10 +555,7 @@ function Skinner:MainMenuBar()
 
 -->>--	PetActionBar Frame
 	self:keepFontStrings(PetActionBarFrame)
-	-- don't move this button if Dominos is loaded otherwise it appears in the TLHC
-	if not IsAddOnLoaded("Dominos") then
-		self:moveObject(PetActionButton1, nil, nil, "+", 4)
-	end
+	self:moveObject(PetActionButton1, nil, nil, "+", 4)
 
 end
 

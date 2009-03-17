@@ -527,7 +527,7 @@ function Skinner:ItemText()
 	if not self.db.profile.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
 	
-	self:Debug("ItemText loaded")
+--	self:Debug("ItemText loaded")
 
 	if self.isPatch then
 		self:SecureHookScript(ItemTextFrame, "OnShow", function(this)

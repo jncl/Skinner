@@ -86,7 +86,7 @@ function Skinner:AddonFrames()
 		"Accountant", "AceProfit", "Acheron", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", "aftt_extreme", "AlphaMap", "Altoholic", "Analyst", "AoTRDungeonQuester", "ArkInventory", --[["Armory", "Ash_Cooldowns", "Ash_Core", "Ash_DoTimer", "Assessment",--]] "Atlas", "AtlasLoot", "AtlasQuest", "AuldLangSyne", "AuldLangSyne_Note", "AutoDecline", "AutoProfit", "AutoProfitX", "AxuItemMenus",
 		"Badapples", "Baggins", "Baggins_Search", "Bagnon", "Bagnon_Forever", "BankAccountant", "BankItems", "BattleChat", "BattleCry", "BaudBag", "BaudManifest", "BaudMenu", "BeanCounter", "BeastTraining", "beql", "BetterInbox", "BigBankStatement", "BigGuild", "BigTrouble", --[["Bongos_AB",--]] "Bonuses", "Broker_Transport", "Buffalo", --[["Buffalo2",--]]	"BuffQ", "BugSack", "Butsu", "BuyEmAll", "BuyPoisons",
 		"CallToArms", "Capping", "Cartographer", "Cartographer_QuestInfo", "Cartographer3", "CBRipoff", "CEnemyCastBar", --[["CharactersViewer",--]] "Chatr", "Chatter", "Chinchilla", "Clique", "Cork", "Combuctor", "ConcessionStand", "Converse", "CowTip", "CT_MailMod", --[["CT_RaidAssist",--]] "CT_RaidTracker",
-		"DamageMeters", "DebuffFilter", "Demon", "DemonTrainerFrame", "DepositBox", "DiamondThreatMeter", "DopieArenaInfo", "DoubleWide", "DoubleWideTradeSkills", "DuckieBank",
+		"DamageMeters", "DebuffFilter", "Demon", "DemonTrainerFrame", "DepositBox", "DiamondThreatMeter", "Dominos", "DopieArenaInfo", "DoubleWide", "DoubleWideTradeSkills", "DuckieBank",
 		"Earth", "EasyTrack", "EasyUnlock", "EavesDrop", "EditingUI", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "Epeen", "epgp", "EQL3", "EquipCompare", --[["EveryQuest",--]] "Examiner",
 		--[["FactionGrinder",--]] "Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "ForteWarlock", "FramesResized", "FreierGeist_InstanceTime", "FruityLoots", --[["FuBar_PoisonReminderFu",--]] "Gatherer", "GCInfo", "GemHelper", "GemMe", "GFW_FeedOMatic", "GlowFoSho", "Gossipmonger", "GotWood", "Grid", "GrimReaper", "GroupCalendar", "Guild_Alliance", "Guild_Log", "GuildAds", "GuildBankAccount", --[["GuildEventManager2",--]]
 		"Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadHunter", "HealBot", "HealersAssist", "HealingEstimator", "HealOrganizer", "Historian", "HitsMode", "HoloFriends",
@@ -99,7 +99,7 @@ function Skinner:AddonFrames()
 		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA2", "Outfitter", "Overachiever",
 		"Palatank", "PallyPower", "Panda", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "Planner", "PlayerExpBar", "PoliteWhisper", "Possessions", "Postal", "PowerAuras", "Prat", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
 		"Quartz", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
-		"RABuffs", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount",
+		"RABuffs", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
 		"Sanity2", --[["SanityBags", --]] "SellJunk", "ShadowDancer3", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
 		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TheCollector", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest",
 		"UberQuest", "UrbanAchiever",
@@ -185,7 +185,10 @@ function Skinner:AddonFrames()
 
 	-- skin KeyBound Dialog frame
 	if self.db.profile.MenuFrames then
-		if LibStub('LibKeyBound-1.0', true) then self:applySkin(KeyboundDialog) end
+		if LibStub('LibKeyBound-1.0', true) then
+			self:keepFontStrings(KeyboundDialog)
+			self:applySkin(KeyboundDialog)
+		end
 	end
 
 	-- skin LibTooltip a.k.a. LibQTip tooltips
