@@ -10,10 +10,10 @@ S - Skin request
 
 √	S	RicoMiniMap, requested by Kuzah, 13.03.09
 	
-	N	Factionizer, reported by pompachomp, 14.03.09
+√	N	Factionizer, reported by pompachomp, 14.03.09
 		- The factionizer skin looks a bit weird, looks like there's overlapping text
 		
-	I	Border texture not being remembered, reported by Kuzah, 15.03.09
+√	I	Border texture not being remembered, reported by Kuzah, 15.03.09
 		
 √	I	Some libs should not be stripped, reported by gregory2, 15.03.09
 		- LibStub, CallbackHandler, LibDataBroker, LibDBIcon & LibBetterBlizzOptions

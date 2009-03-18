@@ -117,7 +117,7 @@ function Skinner:Defaults()
 		BarbershopUI	= true,
 		-- Others
 		TrackerFrame    = false,
-		-- LDB icon
+		-- DBIcon settings
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
 		
 	}}
@@ -308,7 +308,7 @@ function Skinner:Options()
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value == "" and "None" or value
-				if not info[#info] == "BdDefault" then db.BdDefault = false end
+				if info[#info] ~= "BdDefault" then db.BdDefault = false end
 			end,
 			args = {
 				BdDefault = {
@@ -1772,7 +1772,7 @@ function Skinner:Options()
 	self:RegisterChatCommand("skin", chatCommand)
 
 	-- setup the DB object
-	SkinnerDB = LibStub("LibDataBroker-1.1"):NewDataObject("Skinner", {
+	DBObj = LibStub("LibDataBroker-1.1"):NewDataObject("Skinner", {
 			type = "launcher",
 			icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
 			OnClick = function(clickedframe, button)
@@ -1788,7 +1788,7 @@ function Skinner:Options()
 	})
 
 	-- register the data object to the Icon library
-	DBIcon:Register(aName, SkinnerDB, db.MinimapIcon)
+	DBIcon:Register(aName, DBObj, db.MinimapIcon)
 
 end
 

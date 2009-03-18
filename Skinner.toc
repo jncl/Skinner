@@ -6,7 +6,7 @@
 ## Notes-zhTW: 更改預設 UI 的視覺樣式.
 ## Author: Jncl
 ## Version: @project-version@ 
-## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibBetterBlizzOptions-1.0
+## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: SkinnerDB

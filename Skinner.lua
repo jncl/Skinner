@@ -76,9 +76,9 @@ function Skinner:OnInitialize()
 --@end-alpha@
 
 	-- setup the default DB values and register them
-	self:checkAndRun("Defaults")
+	self:Defaults()
 	-- setup the Addon's options
-	self:checkAndRun("Options")
+	self:Options()
 
 	-- register the default background texture
 	self.LSM:Register("background", "Blizzard ChatFrame Background", "Interface\\ChatFrame\\ChatFrameBackground")

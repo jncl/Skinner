@@ -1,3 +1,4 @@
+
 local ftype = "c"
 local cfSubframes = {"PaperDollFrame", "PetPaperDollFrame", "ReputationFrame", "SkillFrame", "TokenFrame"}
 function Skinner:CharacterFrames()
@@ -150,7 +151,10 @@ function Skinner:ReputationFrame()
 	local xOfs, yOfs = 5, 20
 	self:moveObject(ReputationFrameFactionLabel, "-", xOfs, "+", yOfs)
 	self:moveObject(ReputationFrameStandingLabel, "-", xOfs, "+", yOfs)
-	self:moveObject(ReputationBar1, "-", xOfs, "+", yOfs)
+	-- hook this to move rep bar 1 up
+	self:RawHook(ReputationBar1, "SetPoint", function(this, point, relTo, relPoint, xPosn, yPosn)
+		self.hooks[this].SetPoint(this, point, relTo, relPoint, xPosn, yPosn + yOfs)
+	end, true)
 
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		_G["ReputationBar"..i.."Background"]:SetAlpha(0)
