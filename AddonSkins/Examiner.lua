@@ -9,7 +9,6 @@ function Skinner:Examiner()
 	self:moveObject(Examiner.buttons[1], "-", 10, "-", 6)
 	self:moveObject(self:getRegion(Examiner, 3), nil, nil, "+", 10) -- Lvl & Class
 	self:moveObject(self:getRegion(Examiner, 9), "-", 8, "+", 10) -- Background Top Left
-	self:keepFontStrings(ExaminerDropDown)
 	self:moveObject(Examiner.model, "+", 10, nil, nil) -- will move all its children as well
 	self:applySkin(Examiner)
 
@@ -41,7 +40,7 @@ function Skinner:Examiner()
 	self:skinScrollBar(ExaminerFeatsScroll)
 	self:applySkin(Examiner.frames[5])
 -->>--	Talent Frame
-	self:skinFFToggleTabs("ExaminerTab", 3)
+	self:skinFFToggleTabs("ExaminerTab", MAX_TALENT_TABS)
 	self:moveObject(ExaminerTab1, "-", 36, nil, nil)
 	self:keepFontStrings(ExaminerTalentsScrollChild)
 	self:skinScrollBar(ExaminerTalentsScrollChild)

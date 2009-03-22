@@ -10,7 +10,7 @@ function Skinner:PallyPower()
 
 -->>-- Skin buttons
 	for i = 1, PALLYPOWER_MAXCLASSES do
-		local cBtn = PallyPower.classButtons[cbNum]
+		local cBtn = PallyPower.classButtons[i]
 		self:applySkin(cBtn)
 		for j = 1, PALLYPOWER_MAXPERCLASS do
 			local pBtn = PallyPower.playerButtons[i][j]
@@ -19,6 +19,7 @@ function Skinner:PallyPower()
 	end
 
 -->-- Other buttons
+	self:applySkin(PallyPowerAura)
 	self:applySkin(PallyPowerAuto)
 	self:applySkin(PallyPowerRF)
 	

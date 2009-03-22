@@ -14,12 +14,14 @@ function Skinner:FishingBuddy()
 	self:keepFontStrings(FishingLocsScrollFrame)
 	self:skinScrollBar(FishingLocsScrollFrame)
 -->>--	Options Frame
+	FishingOptionsFrame:SetWidth(FishingBuddyFrame:GetWidth())
+	FishingOptionsFrame:SetHeight(FishingBuddyFrame:GetHeight())
 	self:keepFontStrings(FishingOptionsFrame)
+	self:moveObject(FishingBuddyOption_ShowNewFishies, "-", 10, "+", 40)
 	self:keepFontStrings(FishingBuddyOption_EasyCastKeys)
-	self:keepFontStrings(FishingBuddyOption_ClockOffset)
 	self:skinDropDown(FishingBuddyOption_OutfitMenu)
-	FishingBuddyOption_MinimapPosSlider:ClearAllPoints()
-	FishingBuddyOption_MinimapPosSlider:SetPoint("BOTTOM", FishingOptionsFrame, "BOTTOM", 8, 30)
+	self:moveObject(FishingBuddyOption_MinimapPosSlider, nil, nil, "-", 70)
+	self:moveObject(FishingBuddyOption_MinimapRadSlider, nil, nil, "-", 70)
 -->>--	Fishing Extravaganza Frame
 	self:applySkin(FishingExtravaganzaFrame)
 -->>--	FishingWatch Tab
@@ -37,7 +39,7 @@ function Skinner:FishingBuddy()
 
 --		Skinner:Debug("fbTabs")
 
-		for i = 1, 4 do
+		for i = 1, FishingBuddyFrame.numTabs do
 			local tabName = _G["FishingBuddyFrameTab"..i]
 			if Skinner.db.profile.TexturedTab then
 				if i == FishingBuddyFrame.selectedTab then
@@ -52,7 +54,7 @@ function Skinner:FishingBuddy()
 
 	end
 
-	for i = 1, 4 do
+	for i = 1, FishingBuddyFrame.numTabs do
 		local tabName = _G["FishingBuddyFrameTab"..i]
 		local tabNameText = _G["FishingBuddyFrameTab"..i.."Text"]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
