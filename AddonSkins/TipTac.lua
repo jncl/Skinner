@@ -3,38 +3,34 @@ function Skinner:TipTac()
 	if not self.db.profile.Tooltips.skin then return end
 
 	-- set the TipTac backdrop settings to ours
-	local bd = self.backdrop
-	TipTac_Config.tipBackdropBG = bd.bgFile
-	TipTac_Config.tipBackdropEdge = bd.edgeFile
-	TipTac_Config.backdropEdgeSize = bd.edgeSize
-	TipTac_Config.backdropInsets = bd.insets.left
-	TipTac_Config.tipTacColor = CopyTable(self.bColour)
-	TipTac_Config.tipTacBorderColor = CopyTable(self.bbColour)
+	TipTac_Config.tipBackdropBG = self.backdrop.bgFile
+	TipTac_Config.tipBackdropEdge = self.backdrop.edgeFile
+	TipTac_Config.backdropEdgeSize = self.backdrop.edgeSize
+	TipTac_Config.backdropInsets = self.backdrop.insets.left
 	TipTac_Config.tipColor = CopyTable(self.bColour)
 	TipTac_Config.tipBorderColor = CopyTable(self.bbColour)
 
 	TipTac:ApplySettings()
 
-	self:keepFontStrings(TipTacAnchorDropDown)
-	self:applySkin(TipTacAnchor)
+	self:applySkin(TipTac.anchor)
 
 end
 
 function Skinner:TipTacOptions()
 
-	local function skinEBDD()
+	local function skinCatPg()
 
-		local ddmenu = TipTacOptionsDropDownScroll:GetParent()
-		Skinner:applySkin(ddmenu)
-
-		for i = 1, 5 do
-			local eb = _G["TipTacOptionsText"..i]
-			if eb and not Skinner.skinned[eb] then
-				Skinner:skinEditBox(eb, {9})
+		-- skin DropDowns
+		for i = 1, TipTacOptions:GetNumChildren() do
+			local child = select(i, TipTacOptions:GetChildren())
+			if child.InitSelectedItem and not Skinner.skinned[child] then
+				child:SetBackdrop(nil)
 			end
 		end
-		for i = 1, 4 do
-			local eb = _G["TipTacOptionsEdit"..i]
+		
+		-- skin EditBoxes
+		for i = 1, 7 do
+			local eb = _G["AzOptionsFactoryEditBox"..i]
 			if eb and not Skinner.skinned[eb] then
 				Skinner:skinEditBox(eb, {9})
 			end
@@ -42,24 +38,32 @@ function Skinner:TipTacOptions()
 
 	end
 
+	-- hook this to skin new objects
 	self:SecureHook(TipTacOptions, "BuildCategoryPage", function()
---		self:Debug("TTO_BCP")
-		skinEBDD()
+		self:Debug("TTO_BCP")
+		skinCatPg()
 	end)
 
-	-- hook this to skin the drop downs (N.B. dropdown var is aka this)
-	self:SecureHook(TTOFactory, "DropDown_InitSelected", function(dropDown, selectedValue)
---		self:Debug("TTOF.DD_IS: [%s, %s]", dropDown, selectedValue)
-		if dropDown and not self.skinned[dropDown] then
-			dropDown:SetBackdrop(nil)
+	local ddMenu
+	-- hook this to skin the DropDown menu
+	self:SecureHook(AzDropDown, "ToggleMenu", function(...)
+		self:Debug("ADD_TM")
+		if not ddMenu then
+			local obj = EnumerateFrames()
+			while obj do
+				if obj.text and obj.items and obj.list then
+					ddMenu = obj
+					break
+				end
+				obj = EnumerateFrames(obj)
+			end
 		end
-	end, true)
+		self:applySkin(ddMenu)	
+	end)
 
-	skinEBDD()
+	-- skin already created objects
+	skinCatPg()
 	self:applySkin(TipTacOptions.outline)
 	self:applySkin(TipTacOptions)
-
-	-- catch the elements on the first displayed page
-	TipTacOptions:BuildCategoryPage()
 
 end
