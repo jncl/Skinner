@@ -8,43 +8,13 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	S	RicoMiniMap, requested by Kuzah, 13.03.09
-
-√	N	Factionizer, reported by pompachomp, 14.03.09
-		- The factionizer skin looks a bit weird, looks like there's overlapping text
-
-√	I	Border texture not being remembered, reported by Kuzah, 15.03.09
-
-√	I	Some libs should not be stripped, reported by gregory2, 15.03.09
-		- LibStub, CallbackHandler, LibDataBroker, LibDBIcon & LibBetterBlizzOptions
-
-√	I	Off-centered value on PVP panel, reported by Kuzah, 15.03.09
-
-√	I	Dominos, reported by HunterZ, 15.03.09
-		- So Skinner is making action bar #1 be missing on login/reloadui if you are using Dominos and are on a Druid who was logged out in bear/cat/tree form. Disabling the Dominos skin in Skinner has no effect. Disabling Skinner causes the problem to stop.
-
-√	N	Armory, reported by uhh186, 15.03.09 (Curse)
-
-√	N	TipTac, reported by Gabriel, 21.03.09
-
-√	I	Examiner, reported by HunterZ & strongbow2, 19.03.09
-		- Skinner-b1.9551.3-2-gac501d0 \Skinner.lua:679: Unknown object
-		Skinner-b1.9551.3-2-gac501d0 \Skinner.lua:679: in function `keepFontStrings'
-		Skinner-b1.9551.3-2-gac501d0 \SkinMe\Examiner.lua:12: in function <Interface\AddOns\Skinner\SkinMe\Examiner.lua:2>
+√	I	Ace2, reported by HunterZ, 23.03.09 - (removal of donation frame)
+		-Skinner-b1.9551.4 \SkinMe\Ace2.lua:5: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (Ace3):200: in function <Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:107>
+		AceHook-3.0-5 (Ace3):276: in function `SecureHook'
+		Skinner-b1.9551.4 \SkinMe\Ace2.lua:5: in function <Interface\AddOns\Skinner\SkinMe\Ace2.lua:2>
 		(tail call): ?:
-
-√	I	FishingBuddy, reported by HunterZ, 19.03.09
-		- Skinner-b1.9551.3-2-gac501d0 \Skinner.lua:679: Unknown object
-		Skinner-b1.9551.3-2-gac501d0 \Skinner.lua:679: in function `keepFontStrings'
-		Skinner-b1.9551.3-2-gac501d0 \SkinMe\FishingBuddy.lua:19: in function <Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua:2>
-		(tail call): ?:
-
-√	I	PallyPower, reported by HunterZ, 19.03.09
-		- Skinner-b1.9551.3-2-gac501d0 \Skinner.lua:377: Unknown object
-		Skinner-b1.9551.3-2-gac501d0 \Skinner.lua:377: in function `applySkin'
-		Skinner-b1.9551.3-2-gac501d0 \SkinMe\PallyPower.lua:14: in function <Interface\AddOns\Skinner\SkinMe\PallyPower.lua:2>
-		(tail call): ?:
-
+		
 	I	PTR, Talent frame not being skinned first time displayed, reported by eilenda, 18.03.09
 
 	I	PRT, red error on login saying Skinner can't open WorldMap, reported by eilenda, 19.03.09
