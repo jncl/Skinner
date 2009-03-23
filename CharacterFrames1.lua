@@ -355,11 +355,8 @@ function Skinner:SpellBookFrame()
 --			self:Debug("ToggleSpellBook: [%s, %s, %s]", bookType, SpellBookFrame.bookType, INSCRIPTION)
 			for i = 1, 3 do
 				local tabName = _G["SpellBookFrameTabButton"..i]
-				if tabName.bookType == bookType then
-					self:setActiveTab(tabName)
-				else
-					self:setInactiveTab(tabName)
-				end
+				if tabName.bookType == bookType then self:setActiveTab(tabName)
+				else self:setInactiveTab(tabName) end
 			end
 		end)
 	end
@@ -425,10 +422,8 @@ function Skinner:GlyphUI()
 	end
 	self.initialized.GlyphUI = true
 	
-	self:Debug("GlyphUI loaded")
-
 --[[
-	TODO 
+	TODO for PTR
 	What happens when a frame is clicked in EditingUI?
 	This seems to fix the GlyphUI display issues
 --]]	
@@ -441,8 +436,8 @@ function Skinner:GlyphUI()
 		self:moveObject(GlyphFrameTitleText, "-", 20, "+", 8)
 	end
 	for i = 1, NUM_GLYPH_SLOTS do
-		local glyphButton = _G["GlyphFrameGlyph"..i]
-		self:moveObject(glyphButton, "-", 10, nil, nil)
+		local glyphBtn = _G["GlyphFrameGlyph"..i]
+		self:moveObject(glyphBtn, "-", 10, nil, nil)
 	end
 
 end

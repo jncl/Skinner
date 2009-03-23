@@ -210,6 +210,8 @@ function Skinner:OnInitialize()
 	self.skinFrame = {}
 	-- table to hold buttons that have been added
 	self.sBut = {}
+	-- table to hold StatusBars that have been glazed
+	self.sbGlazed = {}
 
 end
 
@@ -602,7 +604,6 @@ function Skinner:getRegion(obj, regNo)
 
 end
 
-local sbGlazed = {}
 function Skinner:glazeStatusBar(statusBar, fi, texture)
 --@alpha@
 	assert(statusBar and statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n"..debugstack())
@@ -611,7 +612,7 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
 
 	statusBar:SetStatusBarTexture(self.sbTexture)
-	table.insert(sbGlazed, statusBar)
+	table.insert(self.sbGlazed, statusBar)
 
 	if fi then
 		if texture then
@@ -626,7 +627,7 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 			statusBar.bg:SetFrameLevel(sbfl > 0 and sbfl - 1 or 0)
 			statusBar.bg:SetStatusBarTexture(self.sbTexture)
 			statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
-			table.insert(sbGlazed, statusBar.bg)
+			table.insert(self.sbGlazed, statusBar.bg)
 		end
 		statusBar.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
 		statusBar.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
@@ -1184,7 +1185,7 @@ function Skinner:updateSBTexture()
 	self.sbColour = {c.r, c.g, c.b, c.a}
 	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
 
-	for _, statusBar in pairs(sbGlazed) do
+	for _, statusBar in pairs(self.sbGlazed) do
 		statusBar:SetStatusBarTexture(self.sbTexture)
 		if statusBar.bg then
 			if statusBar.bg:IsObjectType("StatusBar") then

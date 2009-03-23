@@ -17,7 +17,7 @@
 <script file="SkinMe\Analyst.lua"/>
 <script file="SkinMe\AoTRDungeonQuester.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
-<!-- <script file="SkinMe\Armory.lua"/> -->
+<script file="SkinMe\Armory.lua"/>
 <!-- <script file="SkinMe\Ash_DoTimer.lua"/> -->
 <!-- <script file="SkinMe\Assessment.lua"/> -->
 <script file="SkinMe\Atlas.lua"/>

@@ -23,11 +23,11 @@ S - Skin request
 √	I	Dominos, reported by HunterZ, 15.03.09
 		- So Skinner is making action bar #1 be missing on login/reloadui if you are using Dominos and are on a Druid who was logged out in bear/cat/tree form. Disabling the Dominos skin in Skinner has no effect. Disabling Skinner causes the problem to stop.
 
-	N	Armory, reported by uhh186, 15.03.09 (Curse)
+√	N	Armory, reported by uhh186, 15.03.09 (Curse)
 
 √	N	TipTac, reported by Gabriel, 21.03.09
 
-√	I	Examiner, reported by HunterZ, 19.03.09
+√	I	Examiner, reported by HunterZ & strongbow2, 19.03.09
 		- Skinner-b1.9551.3-2-gac501d0 \Skinner.lua:679: Unknown object
 		Skinner-b1.9551.3-2-gac501d0 \Skinner.lua:679: in function `keepFontStrings'
 		Skinner-b1.9551.3-2-gac501d0 \SkinMe\Examiner.lua:12: in function <Interface\AddOns\Skinner\SkinMe\Examiner.lua:2>
