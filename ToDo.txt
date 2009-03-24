@@ -8,23 +8,24 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	I	Ace2, reported by HunterZ, 23.03.09 - (removal of donation frame)
-		-Skinner-b1.9551.4 \SkinMe\Ace2.lua:5: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):200: in function <Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:107>
-		AceHook-3.0-5 (Ace3):276: in function `SecureHook'
-		Skinner-b1.9551.4 \SkinMe\Ace2.lua:5: in function <Interface\AddOns\Skinner\SkinMe\Ace2.lua:2>
-		(tail call): ?:
-		
-	I	PTR, Talent frame not being skinned first time displayed, reported by eilenda, 18.03.09
+√	I	PTR, Talent frame not being skinned first time displayed, reported by eilenda, 18.03.09
 
-	I	PRT, red error on login saying Skinner can't open WorldMap, reported by eilenda, 19.03.09
+√	I	PTR, red error on login saying Skinner can't open WorldMap, reported by eilenda, 19.03.09
 
 	O	Fixes for Patch 3.1.0
 		- Upd Frames
 √			- PVP Frame (CF1)
 √			- LFG Frame (UIE2)
-≈			- TalentUI Frame (Glyphs moved to TalentUI) (CF1)
+√			- TalentUI Frame (Glyphs moved to TalentUI) (CF1)
 √			- ItemText Frame, text colours (UIE1)
-		- New Frames
-			- Watch Frame (Quest & Achievement Objectives) (CF1)
+√			- Achievement frames, status bar textures
+x			- New elite mob frames have been added for V-Key frames (issue for nerNameplates)
+?			- Health and Fuel/Ammo bars have been added to the vehicle interface
+		- New Frames/Features
 √			- GearManagerDialog (CF2)
+√			- Watch Frame (Quest & Achievement Objectives) (CF1)
+			- Dual Talent feature ?
+			- Talent points allocation before spend
+			- Color Blind option ?
+			- Calendar, guild wide signup sheet
+			- confirmation boxes for purchases over 150 gold

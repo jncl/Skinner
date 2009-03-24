@@ -371,8 +371,6 @@ end
 
 function Skinner:ResizeQW()
 
-	if self.isPatch then return end
-
 	if self.db.profile.QuestLog.size == 1 then
 		self.QWfont = GameFontHighlight
 	else
@@ -464,6 +462,10 @@ function Skinner:VehicleMenuBar()
 	if not self.db.profile.VehicleMenuBar or self.initialized.VehicleMenuBar then return end
 	self.initialized.VehicleMenuBar = true
 
+--VehicleSeatIndicatorDropDown
+--VehicleMenuBarHealthBar
+--VehicleMenuBarPowerBar
+
 	self:SecureHook(VehicleMenuBar, "Show", function(this, ...)
 		self:Debug("VehicleMenuBar_Show")
 		VehicleMenuBar:SetWidth(500)
@@ -482,7 +484,7 @@ end
 function Skinner:GearManager()
 
 	self:moveObject(GearManagerToggleButton, nil, nil, "+", 20)
-	
+
 	self:keepFontStrings(GearManagerDialog)
 	self:moveObject(GearManagerDialog, "+", 37, "-", 1)
 	self:applySkin(GearManagerDialog)
@@ -492,5 +494,30 @@ function Skinner:GearManager()
 	self:skinScrollBar(GearManagerDialogPopupScrollFrame)
 	self:skinEditBox(GearManagerDialogPopupEditBox, {9})
 	self:applySkin(GearManagerDialogPopup)
+
+end
+
+function Skinner:WatchFrame()
+
+	self:keepFontStrings(WatchFrame)
+
+	local function glazeWatchLines()
+--		Skinner:Debug("gWL: [%s]", #WATCHFRAME_ACHIEVEMENTLINES)
+		-- glaze Achievement StatusBars
+		for i = 1, #WATCHFRAME_ACHIEVEMENTLINES do
+			local sBar = WATCHFRAME_ACHIEVEMENTLINES[i].statusBar
+			if not self.skinned[WATCHFRAME_ACHIEVEMENTLINES[i].statusBar] then
+				Skinner:removeRegions(sBar, {3, 4, 5}) -- remove textures
+				Skinner:glazeStatusBar(sBar, 0)
+			end
+		end
+	end
+	-- hook this to manage Tracked Achievements
+	self:SecureHook("WatchFrame_Update", function(this)
+--		self:Debug("WF_U: [%s]", this or "None")
+		glazeWatchLines()
+	end)
+	-- glaze any existing lines
+	glazeWatchLines()
 
 end

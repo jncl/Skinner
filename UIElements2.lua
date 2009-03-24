@@ -34,7 +34,7 @@ function Skinner:MenuFrames()
 	self:skinDropDown(AudioOptionsVoicePanelOutputDeviceDropDown)
 	self:skinDropDown(AudioOptionsVoicePanelChatModeDropDown)
 
--->>--	Mac Options (New 2.2)
+-->>--	Mac Options
 	if IsMacClient() then
 		self:storeAndSkin(ftype, MacOptionsFrame, true)
 		self:storeAndSkin(ftype, MacOptionsFrameMovieRecording)
@@ -42,13 +42,15 @@ function Skinner:MenuFrames()
 		self:skinDropDown(MacOptionsFrameFramerateDropDown)
 		self:skinDropDown(MacOptionsFrameCodecDropDown)
 		self:storeAndSkin(ftype, MacOptionsITunesRemote)
--->>--		Movie Progress Frame
+		self:storeAndSkin(ftype, MacOptionsCompressFrame, true)
+		self:storeAndSkin(ftype, MacOptionsCancelFrame, true)
+		self:storeAndSkin(ftype, FolderPicker, true)
+		-- Movie Progress Frame
 		self:glazeStatusBar(MovieProgressBar, 0)
 		self:storeAndSkin(ftype, MovieProgressFrame)
-		self:storeAndSkin(ftype, MacOptionsCancelFrame, true)
 	end
 
--->>--	InterfaceOptionsFrame (changed in 2.4)
+-->>--	InterfaceOptionsFrame
 	InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
 	self:skinScrollBar(InterfaceOptionsFrameCategoriesList)
 	InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)

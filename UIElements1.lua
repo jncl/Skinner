@@ -526,7 +526,7 @@ end
 function Skinner:ItemText()
 	if not self.db.profile.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
-	
+
 --	self:Debug("ItemText loaded")
 
 	if self.isPatch then
@@ -577,8 +577,10 @@ function Skinner:WorldMap()
 	self:skinDropDown(WorldMapZoneDropDown)
 	self:skinDropDown(WorldMapZoneMinimapDropDown)
 	self:skinDropDown(WorldMapLevelDropDown)
-	-- Unit drop down for the Notify AFK
-	self:skinDropDown(MapGroupDropDown)
+	if not self.isPatch then
+		-- Unit drop down for the Notify AFK
+		self:skinDropDown(MapGroupDropDown)
+	end
 
 	if not IsAddOnLoaded("MetaMap") then
 		WorldMapFrameCloseButton:ClearAllPoints()

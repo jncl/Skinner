@@ -3,15 +3,21 @@ function Skinner:BlizzardFrames()
 --	self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
-		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AchievementWatch", 
-		"FriendsFrame", "TradeFrame", "ResizeQW", "ReadyCheck", "Buffs", "VehicleMenuBar",
+		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame"--[[, "AchievementWatch"--]],
+		"FriendsFrame", "TradeFrame"--[[, "ResizeQW"--]], "ReadyCheck", "Buffs", "VehicleMenuBar",
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard",
 		"MirrorTimers", "QuestTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "BattleScore", "ScriptErrors", "Tutorial", "DropDowns",
 		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame",
 	}
 
-	if Skinner.isPatch then table.insert(blizzFrames, "GearManager") end
-	if Skinner.isPTR then table.insert(blizzFrames, "FeedbackUI") end
+	if self.isPatch then
+		table.insert(blizzFrames, "GearManager")
+		table.insert(blizzFrames, "WatchFrame")
+	else
+		table.insert(blizzFrames, "AchievementWatch")
+		table.insert(blizzFrames, "ResizeQW")
+	end
+	if self.isPTR then table.insert(blizzFrames, "FeedbackUI") end
 
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
@@ -37,9 +43,7 @@ end
 function Skinner:SkinnerFrames()
 --	self:Debug("SkinnerFrames")
 
-	local skinnerFrames = {
-			"ViewPort", "TopFrame", "MiddleFrames", "BottomFrame"
-	}
+	local skinnerFrames = {"ViewPort", "TopFrame", "MiddleFrames", "BottomFrame"}
 
 	for _, v in pairs(skinnerFrames) do
 		self:checkAndRun(v)
@@ -64,21 +68,22 @@ function Skinner:AddonFrames()
 	-- this addon colour the Tooltip Border
 	if IsAddOnLoaded("Chippu") then self.ttBorder = false end
 
-	-- Skin the QuestLog if EQL3 or QuestGuru aren't loaded
+	-- skin the QuestLog if EQL3 or QuestGuru aren't loaded
 	-- N.B. Do it here as other Addons use the QuestLog size
 	 if not IsAddOnLoaded("EQL3") and not IsAddOnLoaded("QuestGuru") then self:checkAndRun("QuestLog") end
 
-	-- Skin the CastingBar if Quartz isn't loaded
+	-- skin the CastingBar if Quartz isn't loaded
 	if not IsAddOnLoaded("Quartz") then self:checkAndRun("CastingBar") end
 
-	-- Skin the Tooltips if TipTac isn't loaded
+	-- skin the Tooltips if TipTac isn't loaded
 	if not IsAddOnLoaded("TipTac") then self:checkAndRun("Tooltips") end
 
-	-- Skin the MenuBar if Bongos isn't loaded
+	-- skin the MenuBar if Bongos isn't loaded
 	if not IsAddOnLoaded("Bongos") and not IsAddOnLoaded("Bongos2") then self:checkAndRun("MainMenuBar") end
 
-	-- Skin the Nameplates if Aloft or nerNameplates aren't loaded
+	-- skin the Nameplates if Aloft or nerNameplates aren't loaded
 	if not IsAddOnLoaded("Aloft") and not IsAddOnLoaded("nerNameplates") then self:checkAndRun("Nameplates") end
+
 	--	don't make Model Frames Rotatable if CloseUp is loaded
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
@@ -94,13 +99,13 @@ function Skinner:AddonFrames()
 		"JasonQuest", "Junk",
 		"Karma", --[["KC_Items",--]] "KLHThreatMeter", "KombatStats",
 		"LightHeaded", "LinkHeaven", "Links", "LinksList", "LinkWrangler", "LoadIT", "LootHog", "LootLink", "LootScroll", "Ludwig", "Luggage",
-		"MacroBank", "MageEatDrinkAid", "MailTo", "MakeRocketGoNow", --[["MCP", "MetaMap",--]]	 "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "MTLove", --[["MultiTips", --]] "MusicPlayer", "MyBags", "myClock", "myMusic",
+		"MacroBank", "MageEatDrinkAid", "MailTo", "MakeRocketGoNow", --[["MCP", "MetaMap",--]]	 "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "MTLove", --[["MultiTips",--]] "MusicPlayer", "MyBags", "myClock", "myMusic",
 		"NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
 		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA2", "Outfitter", "Overachiever",
 		"Palatank", "PallyPower", "Panda", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "Planner", "PlayerExpBar", "PoliteWhisper", "Possessions", "Postal", "PowerAuras", "Prat", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
 		"Quartz", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
-		"Sanity2", --[["SanityBags", --]] "SellJunk", "ShadowDancer3", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
+		"Sanity2", --[["SanityBags",--]] "SellJunk", "ShadowDancer3", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
 		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TheCollector", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", --[["Vendor",--]] "VendorSearch", "Violation", "Visor2GUI",
@@ -152,7 +157,7 @@ function Skinner:AddonFrames()
 		["AceAddon-2.0"] = "Ace2",
 		["Tablet-2.0"] = "Tablet",
 		["Waterfall-1.0"] = "Waterfall",
---		["OptionHouse-1.1"] = "OptionHouse",
+		--[[["OptionHouse-1.1"] = "OptionHouse",--]]
 		["AceGUI-3.0"] = "Ace3",
 		["LibSimpleOptions-1.0"] = "LibSimpleOptions",
 		["Configator"] = "Configator",
@@ -225,7 +230,7 @@ function Skinner:AddonFrames()
 end
 
 local lodFrames = {
-	"Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", --[["Bongos", "Bongos_Options", --]]
+	"Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", --[["Bongos", "Bongos_Options",--]]
 	"Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "Dominos_Config", "DoTimer_Options", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GuildBankSearch", "ItemRackOptions",  "LilSparkysWorkshop", "MSBTOptions", "Overachiever_Tabs", "Perl_Config_Options", "SpamSentry_report", --[[SpecialTalentUI",--]] "SuperInspect_UI", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
 }
 local lodAddons = {}
