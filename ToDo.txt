@@ -17,15 +17,16 @@ S - Skin request
 √			- PVP Frame (CF1)
 √			- LFG Frame (UIE2)
 √			- TalentUI Frame (Glyphs moved to TalentUI) (CF1)
+√				- Dual Talent feature
+√				- Preview Talent points
 √			- ItemText Frame, text colours (UIE1)
 √			- Achievement frames, status bar textures
+			- Achievement Alerts
 x			- New elite mob frames have been added for V-Key frames (issue for nerNameplates)
-?			- Health and Fuel/Ammo bars have been added to the vehicle interface
+			- Health and Fuel/Ammo bars have been added to the vehicle interface
 		- New Frames/Features
 √			- GearManagerDialog (CF2)
 √			- Watch Frame (Quest & Achievement Objectives) (CF1)
-			- Dual Talent feature ?
-			- Talent points allocation before spend
-			- Color Blind option ?
-			- Calendar, guild wide signup sheet
+			- Color Blind option
+			- Calendar, guild wide signup sheet 
 			- confirmation boxes for purchases over 150 gold

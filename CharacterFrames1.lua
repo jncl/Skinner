@@ -458,11 +458,13 @@ function Skinner:TalentUI()
 		else
 			curTab = this.currentSelectedTab
 		end
-		self:Debug("TalentFrame_Update: [%s, %s]", this:GetName(), curTab)
+--		self:Debug("TalentFrame_Update: [%s, %s]", this:GetName(), curTab)
 		if this == PlayerTalentFrame then
 			for i = 1, numTabs do
 				local tabName = _G["PlayerTalentFrameTab"..i]
-				tabName:SetWidth(tabName:GetWidth() * self.FTyMult)
+				if not self.isPatch then
+					tabName:SetWidth(tabName:GetWidth() * self.FTyMult)
+				end
 				if self.db.profile.TexturedTab then
 					if i == curTab then
 						self:setActiveTab(tabName)
@@ -492,18 +494,38 @@ function Skinner:TalentUI()
 	if self.isPatch then
 		self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
 		self:keepFontStrings(PlayerTalentFrameStatusFrame)
-		self:moveObject(PlayerTalentFrameActivateButton, nil, nil, "+", 10)
-		self:keepFontStrings(PlayerTalentFramePointsBar)
-		PlayerTalentFramePointsBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 0)
-		self:moveObject(PlayerTalentFrameSpentPointsText, "-", 18, nil, nil)
-		self:moveObject(PlayerTalentFrameTalentPointsText, "+", 34, nil, nil)
-		self:keepFontStrings(PlayerTalentFramePreviewBar)
-		PlayerTalentFramePreviewBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 0)
+		self:moveObject(PlayerTalentFrameStatusFrame, "-", 30, "+", 11)
+		self:moveObject(PlayerTalentFrameActivateButton, "-", 10, "+", 10)
 		self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6})
+		self:keepFontStrings(PlayerTalentFramePointsBar)
+		local relTo, relPoint, yOfs
+		if PlayerTalentFramePreviewBar:IsShown() then
+			relTo = PlayerTalentFramePreviewBar
+			relPoint = "TOP"
+			yOfs = -8
+		else
+			relTo = PlayerTalentFrame
+			relPoint = "BOTTOM"
+			yOfs = 0
+		end
+		PlayerTalentFramePointsBar:SetPoint("BOTTOM", relTo, relPoint, 0, yOfs)
+		PlayerTalentFramePointsBar:SetWidth(PlayerTalentFramePointsBar:GetWidth() * self.FxMult)
+		self:keepFontStrings(PlayerTalentFramePreviewBar)
+		self:keepFontStrings(PlayerTalentFramePreviewBarFiller)
+		PlayerTalentFramePreviewBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 6)
 		-- hook this to manage the Preview & Unspent Points bar(s)
-		self:SecureHook("PlayerTalentFrame_UpdateControls", function(...)
-			PlayerTalentFramePointsBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 0)
-			PlayerTalentFramePreviewBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 0)
+		self:SecureHook("PlayerTalentFrame_UpdateControls", function(activeTalentGroup, numTalentGroups)
+			self:Debug("PTF_UC: [%s, %s]", activeTalentGroup, numTalentGroups)
+			for i = 1, PlayerTalentFramePointsBar:GetNumPoints() do
+				local point, relTo, relPoint, _, yOfs = PlayerTalentFramePointsBar:GetPoint(i)
+				if relTo == PlayerTalentFrame and  relPoint == "BOTTOM" then
+					yOfs = 0
+				elseif relTo == PlayerTalentFramePreviewBar and relPoint == "TOP" then
+					yOfs = -8
+				end
+				PlayerTalentFramePointsBar:SetPoint(point, relTo, relPoint, 0, yOfs)
+			end
+			self:moveObject(PlayerSpecTab1, "+", 30, nil, nil)
 		end)
 	else
 		self:keepRegions(PlayerTalentFrame, {6, 7, 8, 9, 10, 14, 15, 16}) -- N.B. 6-9 are the background picture, 10, 14-16 are text regions
@@ -523,7 +545,9 @@ function Skinner:TalentUI()
 	for i = 1, numTabs do
 		local tabName = _G["PlayerTalentFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabName:SetWidth(tabName:GetWidth() * self.FTyMult)
+		if not self.isPatch then
+			tabName:SetWidth(tabName:GetWidth() * self.FTyMult)
+		end
 		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0)
 		else self:storeAndSkin(ftype, tabName) end
 		if i == 1 then
@@ -553,6 +577,11 @@ function Skinner:TalentUI()
 		end
 	end
 
+	-- force a update of the frame to set tab widths etc
+	if self.isPatch then
+		PlayerTalentFrame_Update()
+	end
+	
 end
 
 function Skinner:DressUpFrame()
@@ -818,10 +847,13 @@ function Skinner:AchievementAlerts()
 				self:moveObject(aaFrame, nil, nil, "+", 10)
 				_G["AchievementAlertFrame"..i.."Background"]:SetAlpha(0)
 				Skinner:removeRegions(_G["AchievementAlertFrame"..i.."Button"], {})
-				local aaFU = _G["AchievementAlertFrame"..i.."Unlocked"]
-				aaFU:SetTextColor(self.BTr, self.BTg, self.BTb)
-				aaFU:ClearAllPoints()
-				aaFU:SetPoint("TOP", aaFrame, 0, -12)
+				if self.isPatch then
+				else
+					local aaFU = _G["AchievementAlertFrame"..i.."Unlocked"]
+					aaFU:SetTextColor(self.BTr, self.BTg, self.BTb)
+					aaFU:ClearAllPoints()
+					aaFU:SetPoint("TOP", aaFrame, 0, -12)
+				end
 				local aaFN = _G["AchievementAlertFrame"..i.."Name"]
 				aaFN:ClearAllPoints()
 				aaFN:SetPoint("BOTTOM", aaFrame, 0, 12)
