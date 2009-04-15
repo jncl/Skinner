@@ -77,11 +77,10 @@ function Skinner:MirrorTimers()
 
 end
 
+--[[
 function Skinner:QuestTimers()
 	if not self.db.profile.MirrorTimers or self.initialized.QuestTimers then return end
 	self.initialized.QuestTimers = true
-
- 	if self.isPatch then return end
 
 	self:keepFontStrings(QuestTimerFrame)
 	QuestTimerFrame:SetWidth(QuestTimerFrame:GetWidth() - 40)
@@ -90,6 +89,7 @@ function Skinner:QuestTimers()
 	self:storeAndSkin(ftype, QuestTimerFrame)
 
 end
+--]]
 
 function Skinner:CastingBar()
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
@@ -101,7 +101,6 @@ function Skinner:CastingBar()
 		local cbfs = _G[cbfName.."Spark"]
 		local cbff = _G[cbfName.."Flash"]
 		local cbfObj = _G[cbfName]
-		cbfObj.flash = cbff -- store this so it will get retextured as required
 		self:keepFontStrings(cbfObj)
 		cbfObj:SetWidth(cbfObj:GetWidth() * 0.75)
 		cbfObj:SetHeight(cbfObj:GetHeight() * 1.1)
@@ -529,19 +528,10 @@ function Skinner:ItemText()
 
 --	self:Debug("ItemText loaded")
 
-	if self.isPatch then
-		self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
-			self:Debug("ItemTextFrame_OnShow")
-			ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end)
-	else
-		self:SecureHook("ItemTextFrame_OnEvent", function(this, event, ...)
-			self:Debug("ItemTextFrame_OnEvent: [%s, %s]", event, ...)
-			if event == "ITEM_TEXT_BEGIN" then
-				ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			end
-		end)
-	end
+	self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
+		self:Debug("ItemTextFrame_OnShow")
+		ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end)
 	self:keepFontStrings(ItemTextFrame)
 	ItemTextFrame:SetWidth(ItemTextFrame:GetWidth() - 30)
 	ItemTextFrame:SetHeight(ItemTextFrame:GetHeight() - 60)
@@ -577,10 +567,6 @@ function Skinner:WorldMap()
 	self:skinDropDown(WorldMapZoneDropDown)
 	self:skinDropDown(WorldMapZoneMinimapDropDown)
 	self:skinDropDown(WorldMapLevelDropDown)
-	if not self.isPatch then
-		-- Unit drop down for the Notify AFK
-		self:skinDropDown(MapGroupDropDown)
-	end
 
 	if not IsAddOnLoaded("MetaMap") then
 		WorldMapFrameCloseButton:ClearAllPoints()

@@ -20,7 +20,7 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0")
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 3.1.0
-Skinner.isPatch = RaiseFrameLevelByTwo and true or false
+--Skinner.isPatch = RaiseFrameLevelByTwo and true or false
 
 local function makeString(t)
 
@@ -72,7 +72,7 @@ function Skinner:OnInitialize()
 
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
-	if self.isPatch then self:Debug("Patch detected") end
+--	if self.isPatch then self:Debug("Patch detected") end
 --@end-alpha@
 
 	-- setup the default DB values and register them
@@ -1050,11 +1050,7 @@ function Skinner:skinMoneyFrame(frame, moveGold, noWidth, moveSilverBox)
 		local fName = _G[frame:GetName()..v]
 		fName:SetWidth(fName:GetWidth() - 4)
 		fName:SetHeight(fName:GetHeight() + 4)
-		if self.isPatch then
-			self:skinEditBox(fName, {9, 10}, nil, true) -- N.B. region 9 is the icon, 10 is text
-		else
-			self:skinEditBox(fName, {9}, nil, true) -- N.B. region 9 is the icon
-		end
+		self:skinEditBox(fName, {9, 10}, nil, true) -- N.B. region 9 is the icon, 10 is text
 		if k ~= 1 or moveGold then
 			self:moveObject(self:getRegion(fName, 9), "+", 10, nil, nil)
 		end
@@ -1196,7 +1192,8 @@ function Skinner:updateSBTexture()
 				statusBar.bg:SetVertexColor(unpack(self.sbColour))
 			end
 		end
-		if statusBar.flash then statusBar.flash:SetTexture(self.sbTexture) end -- handle CastingBar Flash
+		local flashTex = _G[statusBar:GetName().."Flash"]
+		if flashTex and flashTex:IsObjectType("Texture") then flashTex:SetTexture(self.sbTexture) end -- handle CastingBar Flash
 	end
 
 end

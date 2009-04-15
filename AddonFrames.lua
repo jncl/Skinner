@@ -3,20 +3,13 @@ function Skinner:BlizzardFrames()
 --	self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
-		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame"--[[, "AchievementWatch"--]],
-		"FriendsFrame", "TradeFrame"--[[, "ResizeQW"--]], "ReadyCheck", "Buffs", "VehicleMenuBar",
+		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame",
+		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame",
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard",
-		"MirrorTimers", "QuestTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "BattleScore", "ScriptErrors", "Tutorial", "DropDowns",
+		"MirrorTimers"--[[, "QuestTimers"--]], "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "BattleScore", "ScriptErrors", "Tutorial", "DropDowns",
 		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame",
 	}
 
-	if self.isPatch then
-		table.insert(blizzFrames, "GearManager")
-		table.insert(blizzFrames, "WatchFrame")
-	else
-		table.insert(blizzFrames, "AchievementWatch")
-		table.insert(blizzFrames, "ResizeQW")
-	end
 	if self.isPTR then table.insert(blizzFrames, "FeedbackUI") end
 
 	for _, v in pairs(blizzFrames) do

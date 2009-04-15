@@ -369,6 +369,7 @@ function Skinner:QuestLog()
 
 end
 
+--[[
 function Skinner:ResizeQW()
 
 	if self.db.profile.QuestLog.size == 1 then
@@ -381,6 +382,7 @@ function Skinner:ResizeQW()
 	end
 
 end
+--]]
 
 function Skinner:RaidUI()
 	if not self.db.profile.RaidUI or self.initialized.RaidUI then return end
@@ -481,6 +483,7 @@ function Skinner:VehicleMenuBar()
 
 end
 
+--[[
 function Skinner:GearManager()
 
 	self:moveObject(GearManagerToggleButton, nil, nil, "+", 20)
@@ -496,6 +499,7 @@ function Skinner:GearManager()
 	self:applySkin(GearManagerDialogPopup)
 
 end
+--]]
 
 function Skinner:WatchFrame()
 

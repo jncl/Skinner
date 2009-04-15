@@ -8,6 +8,33 @@ N - New Version
 O - Other change
 S - Skin request
 
+	N	Ackis Recipe List, reported by pompachomp, 31.03.09
+	
+	N	WIM,
+	
+	N	QuestGuru,
+	
+	N	epgp,
+	
+	N	Urban Achiever,
+	
+	N	ORA3, requested by Gabriel, 15.04.09
+	
+	I	Factionizer, reported by pompachomp, 31.03.09
+		- checkbox and options button too high
+		
+	I	PTR, reported by eilenda, 31.03.09
+		- Skinner-b1.9551.5 \UIElements1.lua:381: Usage: RawHook([object], method, [handler], [hookSecure]): Attempting to hook a non existing target
+		AceHook-3.0-5 (Bartender4):200: in function <...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:107>
+		AceHook-3.0-5 (Bartender4):267: in function `RawHook'
+		Skinner-b1.9551.5 \UIElements1.lua:381: in function <Interface\AddOns\Skinner\UIElements1.lua:377>
+		(tail call): ?:
+		
+
+	I	StatusBars, remove .bg entry
+		- change added texture to use a name
+		- don't store the new frame within the existing statusbar
+
 √	I	PTR, Talent frame not being skinned first time displayed, reported by eilenda, 18.03.09
 
 √	I	PTR, red error on login saying Skinner can't open WorldMap, reported by eilenda, 19.03.09
@@ -25,7 +52,7 @@ S - Skin request
 x			- New elite mob frames have been added for V-Key frames (issue for nerNameplates)
 			- Health and Fuel/Ammo bars have been added to the vehicle interface
 		- New Frames/Features
-√			- GearManagerDialog (CF2)
+√			- GearManagerDialog (CF2) [postponed]
 √			- Watch Frame (Quest & Achievement Objectives) (CF1)
 			- Color Blind option
 			- Calendar, guild wide signup sheet 
