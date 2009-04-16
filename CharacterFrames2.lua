@@ -464,42 +464,25 @@ function Skinner:VehicleMenuBar()
 	if not self.db.profile.VehicleMenuBar or self.initialized.VehicleMenuBar then return end
 	self.initialized.VehicleMenuBar = true
 
---VehicleSeatIndicatorDropDown
---VehicleMenuBarHealthBar
---VehicleMenuBarPowerBar
+	local function skinVehicleMenuBar()
+	
+		VehicleMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
+		VehicleMenuBarArtFrame:DisableDrawLayer("BORDER")
+		VehicleMenuBarArtFrame:DisableDrawLayer("ARTWORK")
+		VehicleMenuBarArtFrame:DisableDrawLayer("OVERLAY")
+		Skinner:addSkinFrame(VehicleMenuBar, 160, 48, -160, -2)
+		
+	end
+
 
 	self:SecureHook(VehicleMenuBar, "Show", function(this, ...)
 		self:Debug("VehicleMenuBar_Show")
-		VehicleMenuBar:SetWidth(500)
-		VehicleMenuBar:SetHeight(90)
-		self:moveObject(VehicleMenuBarPitchUpButton, "+", 0, "+", 10)
-		self:moveObject(VehicleMenuBarPitchDownButton, "+", 0, "+", 0)
-		self:moveObject(VehicleMenuBarLeaveButton, "+", 100, "+", 10)
-		self:moveObject(VehicleMenuBarActionButtonFrame, "+", 250, nil, nil)
-		self:moveObject(VehicleMenuBarPitchSlider, "+", 0, "+", 0)
-		VehicleMenuBarArtFrame:Hide()
-		self:applySkin(VehicleMenuBar)
+		skinVehicleMenuBar()
 	end)
 
+	if VehicleMenuBar:IsShown() then skinVehicleMenuBar() end
+	
 end
-
---[[
-function Skinner:GearManager()
-
-	self:moveObject(GearManagerToggleButton, nil, nil, "+", 20)
-
-	self:keepFontStrings(GearManagerDialog)
-	self:moveObject(GearManagerDialog, "+", 37, "-", 1)
-	self:applySkin(GearManagerDialog)
--->>-- Popup frame
-	self:keepFontStrings(GearManagerDialogPopup)
-	self:keepFontStrings(GearManagerDialogPopupScrollFrame)
-	self:skinScrollBar(GearManagerDialogPopupScrollFrame)
-	self:skinEditBox(GearManagerDialogPopupEditBox, {9})
-	self:applySkin(GearManagerDialogPopup)
-
-end
---]]
 
 function Skinner:WatchFrame()
 
@@ -525,3 +508,21 @@ function Skinner:WatchFrame()
 	glazeWatchLines()
 
 end
+
+--[[
+function Skinner:GearManager()
+
+	self:moveObject(GearManagerToggleButton, nil, nil, "+", 20)
+
+	self:keepFontStrings(GearManagerDialog)
+	self:moveObject(GearManagerDialog, "+", 37, "-", 1)
+	self:applySkin(GearManagerDialog)
+-->>-- Popup frame
+	self:keepFontStrings(GearManagerDialogPopup)
+	self:keepFontStrings(GearManagerDialogPopupScrollFrame)
+	self:skinScrollBar(GearManagerDialogPopupScrollFrame)
+	self:skinEditBox(GearManagerDialogPopupEditBox, {9})
+	self:applySkin(GearManagerDialogPopup)
+
+end
+--]]
