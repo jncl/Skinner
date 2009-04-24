@@ -3,8 +3,8 @@ function Skinner:Factionizer()
 	if not self.db.profile.CharacterFrames then return end
 
 -->>--	Options Button
-	self:moveObject(FIZ_OrderByStandingCheckBox, "-", 60, "+", 24)
-	self:moveObject(FIZ_OptionsButton, nil, nil, "+", 24)
+	self:moveObject(FIZ_OrderByStandingCheckBox, "-", 60, "+", 16)
+	self:moveObject(FIZ_OptionsButton, nil, nil, "+", 16)
 -->>--	Reputation Detail Frame
 	FIZ_ReputationDetailFrame:SetHeight(FIZ_ReputationDetailFrame:GetHeight() - 8)
 	self:keepFontStrings(FIZ_ReputationDetailFrame)

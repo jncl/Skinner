@@ -50,7 +50,7 @@ function Skinner:CharacterFrame()
 	CharacterFrame:SetWidth(CharacterFrame:GetWidth() * self.FxMult)
 	CharacterFrame:SetHeight(CharacterFrame:GetHeight() * self.FyMult)
 
-	self:moveObject(CharacterNameText, nil, nil, "-", 30)
+	self:moveObject(CharacterNameText, nil, nil, "-", 24)
 	self:moveObject(CharacterFrameCloseButton, "+", 28, "+", 8)
 
 	self:skinDropDown(PlayerTitleDropDown)
