@@ -18,44 +18,48 @@ function Skinner:QuestGuru()
 
 	end
 
+-->>-- Quest Log Frame (TabPage1)
 	QuestGuru_QuestLogFrame:SetWidth(QuestGuru_QuestLogFrame:GetWidth() - 46)
 	self:keepFontStrings(QuestGuru_QuestLogFrame)
 	self:applySkin(QuestGuru_QuestLogFrame)
 	self:keepFontStrings(QuestGuru_QuestLogCount)
 	self:skinFFToggleTabs("QuestGuru_QuestLogFrameTab", 5)
-	self:moveObject(QuestGuru_QuestLogFrameTab1, nil, nil, "-", 10)
-	self:moveObject(QuestGuru_QuestLogFrameCloseButton, "+", 42, "+", 3)
-	self:moveObject(QuestGuru_QuestFrameExitButton, "+", 34, "-", 12)
-	self:moveObject(QuestGuru_QuestLogFrameAbandonButton, nil, nil, "-", 12)
-	-- Quest Log Frame
+	self:moveObject(QuestGuru_QuestLogTrack, "-", 4, "+", 5)
+	self:moveObject(QuestGuru_QuestFrameExpandCollapseButton, "-", 6, nil, nil)
+	self:moveObject(QuestGuru_QuestLogFrameTab1, nil, nil, "-", 12)
+	-- hook this to stop tabs from moving
+	self:RawHook(QuestGuru_QuestLogFrameTab1, "SetPoint", function() end, true)
+	self:moveObject(QuestGuru_QuestLogFrameCloseButton, "+", 44, "+", 5)
+	self:moveObject(QuestGuru_QuestFrameExitButton, "+", 44, "-", 12)
+	self:moveObject(QuestGuru_QuestLogFrameAbandonButton, "-", 4, "-", 12)
 	QuestGuru_QuestLogTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:removeRegions(QuestGuru_QuestLogListScrollFrame)
 	self:skinScrollBar(QuestGuru_QuestLogListScrollFrame)
 	self:removeRegions(QuestGuru_QuestLogDetailScrollFrame)
 	self:skinScrollBar(QuestGuru_QuestLogDetailScrollFrame)
 	colourText("Log")
-	-- History Frame
-	QuestGuru_QuestHistoryTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinEditBox(QuestGuru_QuestHistorySearch, {9})
-	self:removeRegions(QuestGuru_QuestHistoryListScrollFrame)
-	self:skinScrollBar(QuestGuru_QuestHistoryListScrollFrame)
-	self:removeRegions(QuestGuru_QuestHistoryDetailScrollFrame)
-	self:skinScrollBar(QuestGuru_QuestHistoryDetailScrollFrame)
-	colourText("History")
-	QuestGuru_QuestHistoryXPText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestGuru_QuestHistoryRepText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:moveObject(QuestGuru_QuestHistorySearchText, nil, nil, "-", 10)
-	-- Abandoned Frame
+-->>-- History Frame
+	if QuestGuru_TabPage2 then
+		QuestGuru_QuestHistoryTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:skinEditBox(QuestGuru_QuestHistorySearch, {9})
+		self:removeRegions(QuestGuru_QuestHistoryListScrollFrame)
+		self:skinScrollBar(QuestGuru_QuestHistoryListScrollFrame)
+		self:removeRegions(QuestGuru_QuestHistoryDetailScrollFrame)
+		self:skinScrollBar(QuestGuru_QuestHistoryDetailScrollFrame)
+		QuestGuru_QuestHistoryXPText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		QuestGuru_QuestHistoryRepText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:moveObject(QuestGuru_QuestHistorySearchText, nil, nil, "-", 10)
+		colourText("History")
+	end
+-->>-- Abandoned Frame (TabPage3)
 	QuestGuru_QuestAbandonTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinEditBox(QuestGuru_QuestAbandonSearch, {9})
 	self:removeRegions(QuestGuru_QuestAbandonListScrollFrame)
 	self:skinScrollBar(QuestGuru_QuestAbandonListScrollFrame)
 	self:removeRegions(QuestGuru_QuestAbandonDetailScrollFrame)
 	self:skinScrollBar(QuestGuru_QuestAbandonDetailScrollFrame)
-	colourText("Abandon")
 	self:moveObject(QuestGuru_QuestAbandonSearchText, nil, nil, "-", 10)
-	-- Guild Frame (not used)
-	-- Party Frame (not used)
+	colourText("Abandon")
 
 -->>--	Options Frame
 	self:skinEditBox(QuestGuru_AnnounceFrameChannelWhisperTo, {9}, nil, true)
@@ -66,10 +70,10 @@ function Skinner:QuestGuru()
 
 -->>--	Tracker Frame
 	if self.db.profile.TrackerFrame then
-		self:keepFontStrings(QuestGuru_QuestWatchFrame)
-		self:applySkin(QuestGuru_QuestWatchFrame)
-		self:RawHook("QuestGuru_SetWatchBorder", function() end, true)
-		self:RawHook(QuestGuru_QuestWatchFrame, "SetBackdropColor", function() end, true)
+		self:keepFontStrings(QGT_QuestWatchFrame)
+		self:applySkin(QGT_QuestWatchFrame)
+		self:RawHook("QGT_SetWatchBorder", function() end, true)
+		self:RawHook(QGT_QuestWatchFrame, "SetBackdropColor", function() end, true)
 	end
 
 -->>--	QuestStartInfo Frame
@@ -94,15 +98,20 @@ function Skinner:QuestGuru()
 	self:SecureHook("QuestGuru_ColorizeText", function(inText)
 		for _, v1 in pairs({ "Log", "History", "Abandon" }) do
 			for i = 1, 10 do
-				local r, g, b, a = _G["QuestGuru_Quest"..v1.."Objective"..i]:GetTextColor()
-				_G["QuestGuru_Quest"..v1.."Objective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb)
+				local text = _G["QuestGuru_Quest"..v1.."Objective"..i]
+				if text then
+					local r, g, b, a = text:GetTextColor()
+					text:SetTextColor(self.BTr - r, self.BTg - g, self.BTb)
+				end
 		   	end
 			for _, v2 in pairs({ "Start", "Finish" }) do
 				local text = _G["QuestGuru_Quest"..v1..v2.."Pos"]
-				text:SetTextColor(self.BTr, self.BTg, self.BTb)
-				if not QuestGuru_Settings.Colorize.NPCNames.Enabled or (v1 == "Abandon" and v2 == "Finish") then
-					local text = _G["QuestGuru_Quest"..v1..v2.."NPCName"]
+				if text then
 					text:SetTextColor(self.BTr, self.BTg, self.BTb)
+					if not QuestGuru_Settings.Colorize.NPCNames.Enabled or (v1 == "Abandon" and v2 == "Finish") then
+						local text = _G["QuestGuru_Quest"..v1..v2.."NPCName"]
+						text:SetTextColor(self.BTr, self.BTg, self.BTb)
+					end
 				end
 			end
 		end
@@ -110,16 +119,16 @@ function Skinner:QuestGuru()
 
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then QuestGuru_QuestWatchTooltip:SetBackdrop(self.backdrop) end
-		self:SecureHook(QuestGuru_QuestWatchTooltip, "Show", function(this)
-			self:skinTooltip(QuestGuru_QuestWatchTooltip)
-			end)
+		if self.db.profile.Tooltips.style == 3 then QGT_QuestWatchTooltip:SetBackdrop(self.backdrop) end
+		self:SecureHook(QGT_QuestWatchTooltip, "Show", function(this)
+			self:skinTooltip(QGT_QuestWatchTooltip)
+		end)
 	end
 
 	-- hook this for LightHeaded support
 	if IsAddOnLoaded("LightHeaded") then
-		self:SecureHook("QuestLog_OnUpdate", function(elapsed)
-		if not LightHeaded.db.profile.open and LightHeaded.db.profile.lhopen and (not LightHeadedFrameSub.justclosed or LightHeadedFrameSub.justclosed == nil) then
+		self:SecureHookScript(QuestGuru_QuestLogFrame, "OnUpdate", function(this, elapsed)
+			if not LightHeaded.db.profile.open and LightHeaded.db.profile.lhopen and (not LightHeadedFrameSub.justclosed or LightHeadedFrameSub.justclosed == nil) then
 				self:moveObject(LightHeadedFrame, "+", 6, "-", 19)
 			end
 		end)
