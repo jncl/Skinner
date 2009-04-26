@@ -1,7 +1,7 @@
 
 function Skinner:epgp()
 
-	local epgpUI = EPGP and EPGP:GetModule("EPGP_UI", true)
+	local epgpUI = EPGP and EPGP:GetModule("ui", true)
 	if not epgpUI then return end
 
 	local function skinEPGPUI()
@@ -14,8 +14,8 @@ function Skinner:epgp()
 		Skinner:skinSlider(EPGPScrollFrameScrollBar)
 		EPGPScrollFrameScrollBarBorder:SetAlpha(0)
 		local sf = Skinner:getChild(EPGPFrame, 6) -- standings frame
-		Skinner:moveObject(Skinner:getChild(sf, 1), "-", 10, nil, nil) -- mass EP award button
-		Skinner:moveObject(Skinner:getChild(sf, 2), "-", 10, nil, nil) -- log button
+		Skinner:moveObject(Skinner:getChild(sf, 1), "-", 10, "-", 8) -- mass EP award button
+		Skinner:moveObject(Skinner:getChild(sf, 2), "-", 10, "-", 8) -- log button
 		local tf = Skinner:getChild(sf, 4) -- table frame
 		-- tabs
 		for _, v in pairs(tf.headers) do
@@ -27,7 +27,7 @@ function Skinner:epgp()
 		Skinner:applySkin(EPGPFrame)
 		
 		-- Side Frame
-		Skinner:moveObject(EPGPSideFrame, "+", 30, nil, nil)
+		Skinner:moveObject(EPGPSideFrame, "+", 32, nil, nil)
 		EPGPSideFrame:SetFrameLevel(EPGPSideFrame:GetFrameLevel() + 5)
 		Skinner:keepFontStrings(EPGPSideFrame)
 		Skinner:keepFontStrings(EPGPSideFrameGPControlDropDown)
@@ -37,7 +37,7 @@ function Skinner:epgp()
 		Skinner:skinEditBox(EPGPSideFrameEPControlEditBox, {9})
 		Skinner:applySkin(EPGPSideFrame, true)
 		-- Side Frame2
-		Skinner:moveObject(EPGPSideFrame2, "+", 30, nil, nil)
+		Skinner:moveObject(EPGPSideFrame2, "+", 32, nil, nil)
 		EPGPSideFrame2:SetFrameLevel(EPGPSideFrame2:GetFrameLevel() + 5)
 		Skinner:keepFontStrings(EPGPSideFrame2)
 		Skinner:keepFontStrings(EPGPSideFrame2EPControlDropDown)
@@ -45,10 +45,10 @@ function Skinner:epgp()
 		Skinner:skinEditBox(EPGPSideFrame2EPControlEditBox, {9})
 		Skinner:applySkin(EPGPSideFrame2)
 		-- Log Frame
-		Skinner:moveObject(EPGPLogFrame, "+", 34, nil, nil)
+		Skinner:moveObject(EPGPLogFrame, "+", 36, nil, nil)
 		EPGPLogFrame:SetFrameLevel(EPGPLogFrame:GetFrameLevel() + 5)
 		Skinner:keepFontStrings(EPGPLogFrame)
-		Skinner:applySkin(Skinner:getChild(EPGPLogFrame, 4)) -- log info frame
+		Skinner:applySkin(EPGPLogRecordScrollFrame:GetParent()) -- log info frame
 		Skinner:applySkin(EPGPLogFrame)
 		
 	end
