@@ -377,35 +377,34 @@ function Skinner:GroupLoot()
 	if not self.db.profile.GroupLoot.skin or self.initialized.GroupLoot then return end
 	self.initialized.GroupLoot = true
 
-	self:RawHook("GroupLootFrame_OnShow", function()
-		local texture, name, count, quality, bindOnPickUp = GetLootRollItemInfo(this.rollID)
-		_G["GroupLootFrame"..this:GetID().."IconFrameIcon"]:SetTexture(texture)
-		_G["GroupLootFrame"..this:GetID().."Name"]:SetText(name)
-		local color = ITEM_QUALITY_COLORS[quality]
-		_G["GroupLootFrame"..this:GetID().."Name"]:SetVertexColor(color.r, color.g, color.b)
-		_G["GroupLootFrame"..this:GetID().."Timer"]:SetStatusBarColor(color.r, color.g, color.b)
-		end, true)
-
 	self:skinDropDown(GroupLootDropDown)
 	local f = GameFontNormalSmall:GetFont()
 
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
 
 		local glf = "GroupLootFrame"..i
-		self:keepFontStrings(_G[glf])
+		self:Debug("skinned GLF: [%s]", glf)
+		local glfo = _G[glf]
+		self:keepFontStrings(glfo)
+		self:removeRegions(_G[glf.."Timer"], {1})
+		self:glazeStatusBar(_G[glf.."Timer"], 0)
+		-- hook this to skin the group loot frame
+		self:SecureHookScript(glfo, "OnShow", function(this)
+			self:applySkin(this)
+		end)
 
 		if self.db.profile.GroupLoot.size == 1 then
 
-			_G[glf]:SetWidth(_G[glf]:GetWidth() * 0.95)
-			_G[glf]:SetHeight(_G[glf]:GetHeight() * self.FyMult)
+			glfo:SetWidth(glfo:GetWidth() * 0.95)
+			glfo:SetHeight(glfo:GetHeight() * self.FyMult)
 
 			self:moveObject(_G[glf.."SlotTexture"], "-", 3, "+", 5)
 			self:moveObject(_G[glf.."RollButton"], "+", 6, "+", 6)
 
 		elseif self.db.profile.GroupLoot.size == 2 then
 
-			_G[glf]:SetWidth(_G[glf]:GetWidth() * 0.78)
-			_G[glf]:SetHeight(_G[glf]:GetHeight() * 0.65)
+			glfo:SetWidth(glfo:GetWidth() * 0.78)
+			glfo:SetHeight(glfo:GetHeight() * 0.65)
 
 			local xMult, yMult = 0.75, 0.75
 			_G[glf.."SlotTexture"]:SetWidth(_G[glf.."SlotTexture"]:GetWidth() * xMult)
@@ -436,8 +435,8 @@ function Skinner:GroupLoot()
 
 		elseif self.db.profile.GroupLoot.size == 3 then
 
-			_G[glf]:SetWidth(_G[glf]:GetWidth() * 0.35)
-			_G[glf]:SetHeight(_G[glf]:GetHeight() * 0.65)
+			glfo:SetWidth(glfo:GetWidth() * 0.35)
+			glfo:SetHeight(glfo:GetHeight() * 0.65)
 
 			local xMult, yMult = 0.75, 0.75
 			_G[glf.."SlotTexture"]:SetWidth(_G[glf.."SlotTexture"]:GetWidth() * xMult)
@@ -465,10 +464,6 @@ function Skinner:GroupLoot()
 
 		end
 
-		self:removeRegions(_G[glf.."Timer"], {1})
-		self:glazeStatusBar(_G[glf.."Timer"], 0)
-
-		self:storeAndSkin(ftype, _G[glf])
 	end
 
 end
@@ -662,14 +657,19 @@ function Skinner:InspectUI()
 -->>--	Talent Frame
 	self:keepRegions(InspectTalentFrame, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 8 & 9 are the background picture, 10 is text
 	InspectTalentFrameCloseButton:Hide()
+	self:moveObject(InspectTalentFrameTab1, "-", 20, nil, nil)
 	self:moveObject(InspectTalentFrameBackgroundTopLeft, "-", 5, nil, nil)
-	InspectTalentFrameScrollFrame:SetHeight(InspectTalentFrameScrollFrame:GetHeight() - 2)
+	InspectTalentFrameScrollFrame:SetHeight(InspectTalentFrameScrollFrame:GetHeight() + 6)
+	InspectTalentFrameBackgroundBottomLeft:SetHeight(InspectTalentFrameBackgroundBottomLeft:GetHeight() + 14)
+	InspectTalentFrameBackgroundBottomRight:SetHeight(InspectTalentFrameBackgroundBottomRight:GetHeight() + 14)
+	self:moveObject(InspectTalentFrameScrollFrame, "+", 35, nil, nil)
 	self:removeRegions(InspectTalentFrameScrollFrame)
 	self:skinScrollBar(InspectTalentFrameScrollFrame)
-	self:moveObject(InspectTalentFrameScrollFrame, "+", 35, nil, nil)
-	self:moveObject(InspectTalentFrameSpentPoints, nil, nil, "-", 70)
-	self:moveObject(InspectTalentFrameCancelButton, "-", 5, "-", 5)
-
+	self:keepFontStrings(InspectTalentFramePointsBar)
+	InspectTalentFramePointsBar:ClearAllPoints()
+	InspectTalentFramePointsBar:SetPoint("BOTTOM", InspectTalentFrame, "BOTTOM")
+	InspectTalentFramePointsBar:SetWidth(InspectTalentFrame:GetWidth())
+	
 	self:skinFFToggleTabs("InspectTalentFrameTab", 3)
 
 -->>--	Frame Tabs
