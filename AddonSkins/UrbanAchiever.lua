@@ -2,6 +2,15 @@
 function Skinner:UrbanAchiever()
 	if not self.db.profile.AchieveFrame then return end
 
+	local function skinStatusBar(sBaro)
+		
+		local sBar = sBaro:GetName()
+		_G[sBar.."BorderLeft"]:SetAlpha(0)
+		_G[sBar.."BorderRight"]:SetAlpha(0)
+		_G[sBar.."BorderCenter"]:SetAlpha(0)
+		
+	end
+	
 	local this = UrbanAchiever
 	self:keepFontStrings(this.frame)
 	this.frame.close:SetPoint("TOPRIGHT", this.frame, "TOPRIGHT")
@@ -11,9 +20,9 @@ function Skinner:UrbanAchiever()
 	this.pointsText:SetPoint("LEFT", uaPS, "RIGHT", 5, 2)
 	this.compPointsText:SetPoint("TOPRIGHT", this.frame, "TOP", -67, -5)
 	self:skinEditBox(self:getChild(this.frame.editbox, 1), {9})
-	self:keepRegions(this.frame.summaryBar, {2, 4, 5})
+	skinStatusBar(this.frame.summaryBar)
 	self:glazeStatusBar(this.frame.summaryBar, 0)
-	self:keepRegions(this.frame.comparisonSummaryBar, {2, 4, 5})
+	skinStatusBar(this.frame.comparisonSummaryBar)
 	self:glazeStatusBar(this.frame.comparisonSummaryBar, 0)
 	self:skinSlider(this.frame.catScroll)
 	self:skinSlider(this.frame.achScroll)
@@ -33,18 +42,11 @@ function Skinner:UrbanAchiever()
 		self:applySkin(catBtn, nil, nil, nil, nil, bDrop)
 	end
 -->>-- Achievement Display Frame
-	self:keepRegions(this.frame.display.bar, {2, 4, 5})
+	skinStatusBar(this.frame.display.bar)
 	self:glazeStatusBar(this.frame.display.bar, 0)
-	self:keepRegions(this.frame.display.compareBar, {2, 4, 5})
+	skinStatusBar(this.frame.display.compareBar)
 	self:glazeStatusBar(this.frame.display.compareBar, 0)
 	self:skinSlider(this.frame.criteriaScroll)
-
--->>-- Tracker Frame
-	self:applySkin(this.tracker.header)
-	for i = 1, #this.tracker.achievements do
-		self:keepRegions(this.tracker.achievements[i].bar, {2, 4, 5})
-		self:glazeStatusBar(this.tracker.achievements[i].bar, 0)
-	end
 
 -->>-- Tabs
 	for i = 1, #this.frame.tabButtons do
