@@ -486,8 +486,6 @@ end
 
 function Skinner:WatchFrame()
 
-	self:keepFontStrings(WatchFrame)
-
 	local function glazeWatchLines()
 --		Skinner:Debug("gWL: [%s]", #WATCHFRAME_ACHIEVEMENTLINES)
 		-- glaze Achievement StatusBars
@@ -506,6 +504,26 @@ function Skinner:WatchFrame()
 	end)
 	-- glaze any existing lines
 	glazeWatchLines()
+
+	self:keepFontStrings(WatchFrame)
+	if self.db.profile.TrackerFrame then
+	    self:addSkinFrame(WatchFrame, 0, 0, 0, 0)
+        -- set the alpha value to ensure it's always seen
+    	WatchFrame:SetAlpha(1)
+	    WatchFrame.baseAlpha = 1
+    	SetCVar("watchFrameBaseAlpha", 1)
+        -- make sure it's hidden/shown as required
+		self:SecureHook("WatchFrame_Expand", function(this) Skinner.skinFrame[this]:Show() end)
+		self:SecureHook("WatchFrame_Collapse", function(this) Skinner.skinFrame[this]:Hide() end)
+        -- force the watch frame to resize
+	    if WatchFrame.collapsed then
+    		WatchFrame_Expand(WatchFrame)
+    		WatchFrame_Collapse(WatchFrame)
+    	else
+    		WatchFrame_Collapse(WatchFrame)
+    		WatchFrame_Expand(WatchFrame)
+    	end
+	end
 
 end
 
