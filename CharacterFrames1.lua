@@ -464,7 +464,6 @@ function Skinner:TalentUI()
 	self:keepFontStrings(PlayerTalentFrameStatusFrame)
 	self:moveObject(PlayerTalentFrameStatusFrame, "-", 30, "+", 11)
 	self:moveObject(PlayerTalentFrameActivateButton, "-", 10, "+", 10)
-	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6})
 	self:keepFontStrings(PlayerTalentFramePointsBar)
 	local relTo, relPoint, yOfs
 	if PlayerTalentFramePreviewBar:IsShown() then
@@ -496,6 +495,7 @@ function Skinner:TalentUI()
 		self:moveObject(PlayerSpecTab1, "+", 30, nil, nil)
 	end)
 	self:moveObject(PlayerTalentFrameScrollFrame, "+", 35, "+", 12)
+	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6})
 	self:skinScrollBar(PlayerTalentFrameScrollFrame)
 	self:storeAndSkin(ftype, PlayerTalentFrame)
 
@@ -556,6 +556,22 @@ function Skinner:AchievementUI()
 
 --	self:Debug("AchievementUI Loaded")
 
+	local function skinSB(statusBar)
+	
+		_G[statusBar.."Left"]:SetAlpha(0)
+		_G[statusBar.."Right"]:SetAlpha(0)
+		_G[statusBar.."Middle"]:SetAlpha(0)
+		if _G[statusBar.."Title"] then
+			Skinner:moveObject(_G[statusBar.."Title"], nil, nil, "-", 3)
+		else
+			Skinner:moveObject(_G[statusBar.."Label"], nil, nil, "-", 3)
+		end
+		Skinner:moveObject(_G[statusBar.."Text"], nil, nil, "-", 3)
+		Skinner:glazeStatusBar(_G[statusBar], 0)
+
+	end
+
+
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
 	-- Hook this to skin the GameTooltip StatusBars
@@ -598,18 +614,19 @@ function Skinner:AchievementUI()
 	skinCategories()
 
 -->>-- Achievements Panel (on the right)
-	local function glazeProgressBar(pBar)
-		if not Skinner.skinned[pBar] then
-			local pBarBG = Skinner:getRegion(pBar, 1)
+	local function glazeProgressBar(pBaro)
+	
+		if not Skinner.skinned[pBaro] then
+			local pBar = pBaro:GetName()
+			local pBarBG = Skinner:getRegion(pBaro, 1)
 			pBarBG:SetTexture(Skinner.sbTexture)
 			pBarBG:SetVertexColor(unpack(Skinner.sbColour))
-			if Skinner.isPatch then
-				Skinner:removeRegions(pBar, {3, 4, 5}) -- remove Border
-			else
-				Skinner:removeRegions(pBar, {3}) -- remove Border
-			end
-			Skinner:glazeStatusBar(pBar)
-			pBar.bg = pBarBG -- store this so it will get retextured as required
+			_G[pBar.."BorderLeft"]:SetAlpha(0)
+			_G[pBar.."BorderRight"]:SetAlpha(0)
+			_G[pBar.."BorderCenter"]:SetAlpha(0)
+			Skinner:glazeStatusBar(pBaro)
+			pBaro.bg = pBarBG -- store this so it will get retextured as required
+			
 		end
 	end
 	self:keepFontStrings(AchievementFrameAchievements)
@@ -617,8 +634,9 @@ function Skinner:AchievementUI()
 	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
 	-- glaze any existing progress bars
 	for i = 1, 10 do
-		local pBar = _G["AchievementFrameProgressBar"..i]
-		if pBar then glazeProgressBar(pBar) end
+		local pBar = "AchievementFrameProgressBar"..i
+		local pBaro = _G[pBar]
+		if pBaro then glazeProgressBar(pBar, pBaro) end
 	end
 	-- hook this to skin StatusBars used by the Objectives mini panels
 	self:RawHook("AchievementButton_GetProgressBar", function(index)
@@ -659,18 +677,10 @@ function Skinner:AchievementUI()
 	-- Categories SubPanel
 	self:keepFontStrings(AchievementFrameSummaryCategoriesHeader)
 	for i = 1, 8 do
-		local sb = _G["AchievementFrameSummaryCategoriesCategory"..i]
-		self:removeRegions(sb, {3, 4, 5})
-		self:glazeStatusBar(sb, 0)
-		self:moveObject(self:getRegion(sb, 1), nil, nil, "-", 3) -- label
-		self:moveObject(self:getRegion(sb, 2), nil, nil, "-", 3) -- text
+		skinSB("AchievementFrameSummaryCategoriesCategory"..i)
 	end
 	self:getChild(AchievementFrameSummary, 1):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
-	local afsSB = AchievementFrameSummaryCategoriesStatusBar
-	self:removeRegions(afsSB, {3, 4, 5}) -- textures
-	self:glazeStatusBar(afsSB, 0)
-	self:moveObject(self:getRegion(afsSB, 1), nil, nil, "-", 3) -- label
-	self:moveObject(self:getRegion(afsSB, 2), nil, nil, "-", 3) -- text
+	skinSB("AchievementFrameSummaryCategoriesStatusBar")
 
 -->>-- Comparison Panel
 	AchievementFrameComparisonBackground:SetAlpha(0)
@@ -694,11 +704,7 @@ function Skinner:AchievementUI()
 	for _, type in next, types do
 		_G["AchievementFrameComparisonSummary"..type]:SetBackdrop(nil)
 		_G["AchievementFrameComparisonSummary"..type.."Background"]:SetAlpha(0)
-		local statusBar = _G["AchievementFrameComparisonSummary"..type.."StatusBar"]
-		self:removeRegions(statusBar, {3, 4, 5})
-		self:glazeStatusBar(statusBar, 0)
-		self:moveObject(self:getRegion(statusBar, 1), nil, nil, "-", 3)
-		self:moveObject(self:getRegion(statusBar, 2), nil, nil, "-", 3)
+		skinSB("AchievementFrameComparisonSummary"..type.."StatusBar")
 	end
 
 	-- Stats Panel
