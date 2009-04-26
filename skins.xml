@@ -116,6 +116,7 @@
 <script file="SkinMe\EquipCompare.lua"/>
 <!-- <script file="SkinMe\EveryQuest.lua"/> -->
 <script file="SkinMe\Examiner.lua"/>
+<script file="SkinMe\ExtendedQuestFrame.lua"/>
 <!-- <script file="SkinMe\FactionGrinder.lua"/> -->
 <script file="SkinMe\Factionizer.lua"/>
 <script file="SkinMe\FBagOfHolding.lua"/>
