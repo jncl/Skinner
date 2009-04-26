@@ -488,7 +488,9 @@ function Skinner:MainMenuBar()
 	end
 	self:moveObject(MainMenuBar, nil, nil, "-", 4)
 	self:storeAndSkin(ftype, MainMenuBar, nil, 0)
-	LowerFrameLevel(MainMenuBar)
+	if MainMenuBar:GetFrameLevel() > 0 then
+	    LowerFrameLevel(MainMenuBar)
+	end
 
 	-- Experience Bar
 	self:keepRegions(MainMenuExpBar, {1, 7}) -- N.B. region 1 is rested XP, 7 is the normal XP
@@ -632,6 +634,7 @@ function Skinner:LFGFrame()
 	self:storeAndSkin(ftype, LFGParentFrame)
 
 -->>--	LFG Frame
+	self:moveObject(LFGFrameNoRoleBackground, "+", 6, nil, nil)
 	self:keepFontStrings(AutoJoinBackground)
 	self:skinDropDown(LFGFrameNameDropDown1)
 	self:skinDropDown(LFGFrameNameDropDown2)
@@ -814,7 +817,7 @@ function Skinner:Nameplates()
 				select(3, child:GetRegions()):SetAlpha(0) -- hide border texture
 				-- child 4 is the spell icon
 				select(5, child:GetRegions()):SetAlpha(0) -- hide glow effect
-				-- children 6 & 7 are text, 8 & 9 are raid icons
+				-- children 6 & 7 are text, 8 & 9 are raid icons, 10 is the elite icon
 				if not Skinner.skinned[child] then
 					for i = 1, 2 do -- skin both status bars
 						local sb = select(i, child:GetChildren())
