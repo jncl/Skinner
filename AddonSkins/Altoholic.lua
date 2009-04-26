@@ -6,6 +6,9 @@ function Skinner:Altoholic()
 	self:moveObject(AltoholicFrameCloseButton, nil, nil, "+", 10)
 	self:skinEditBox(AltoholicFrame_SearchEditBox, {9})
 	self:applySkin(AltoholicFrame)
+	
+-->>-- Message Box
+	self:applySkin(AltoMsgBox)
 
 -->>--	Other Frames
 	for _, v in pairs({"Activity", "Auctions", "BagUsage", "Containers", "Equipment", "GuildMembers", "GuildProfessions", "GuildBankTabs", "Mail", "Quests", "Recipes", "Reputations", "Search", "Skills", "Summary"}) do
