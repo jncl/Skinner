@@ -66,7 +66,7 @@ function Skinner:WIM() -- WIM3
 						self:Unhook(subCat, "frame")
 						return catFrame
 					end, true)
-				else checkKids(subCat.frame) -- it is a frame
+				elseif subCat.frame then checkKids(subCat.frame) -- it is a frame
 				end
 			end
 		end
