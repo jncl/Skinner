@@ -411,14 +411,14 @@ function Skinner:GlyphUI()
 	self.initialized.GlyphUI = true
 
 	self:removeRegions(GlyphFrame, {1}) -- background texture
-	self:moveObject(GlyphFrameTitleText, nil, nil, "+", 8)
+	self:moveObject(GlyphFrameTitleText, "-", 20, "+", 8)
 
 	for i = 1, NUM_GLYPH_SLOTS do
 		local glyphBtn = _G["GlyphFrameGlyph"..i]
 		self:moveObject(glyphBtn, "-", 10, nil, nil)
 	end
 
-	self:moveObject(GlyphFrame, "+", 0, "+", 0) -- hack to force glyphs to appear correctly in PTR
+	self:moveObject(GlyphFrame, "+", 0, "+", 0) -- hack to force glyphs to appear correctly
 
 end
 
