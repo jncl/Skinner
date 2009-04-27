@@ -33,6 +33,7 @@ local function makeString(t)
 	return tostring(t)
 
 end
+
 local tcon = table.concat
 local function makeText(a1, ...)
 
@@ -56,6 +57,7 @@ local function makeText(a1, ...)
 	return output
 
 end
+
 local function print(text, frame, r, g, b)
 
 	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
@@ -213,6 +215,8 @@ function Skinner:OnInitialize()
 	-- table to hold StatusBars that have been glazed
 	self.sbGlazed = {}
 
+	self.isTT = self.db.profile.TexturedTab and true or false
+
 end
 
 function Skinner:OnEnable()
@@ -319,7 +323,9 @@ function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype, isTT)
 	skinFrame:SetPoint("TOPLEFT", parent, "TOPLEFT", xOfs1, yOfs1)
 	skinFrame:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", xOfs2, yOfs2)
 	
-	if not ftype then self:applySkin(skinFrame)
+	if not ftype then
+		if isTT then self:applySkin(skinFrame, nil, 0)
+		else self:applySkin(skinFrame) end
 	elseif isTT then self:storeAndSkin(ftype, skinFrame, nil, 0)
 	else self:storeAndSkin(ftype, skinFrame) end
 	
@@ -709,6 +715,7 @@ local function revTable(curTab)
 	return revTab
 
 end
+
 function Skinner:keepRegions(frame, regions)
 --@alpha@
 	assert(frame, "Unknown object\n"..debugstack())
@@ -990,7 +997,7 @@ function Skinner:skinDropDown(frame, moveTexture, noSkin, noMove)
 
 end
 
-function Skinner:skinEditBox(editBox, regions, noSkin, noHeight, noWidth)
+function Skinner:skinEditBox(editBox, regions, noSkin, noHeight, noWidth, moveUp)
 --@alpha@
 	assert(editBox and editBox:IsObjectType("EditBox"), "Not an EditBox\n"..debugstack())
 --@end-alpha@
@@ -1011,6 +1018,8 @@ function Skinner:skinEditBox(editBox, regions, noSkin, noHeight, noWidth)
 	if not noWidth then editBox:SetWidth(editBox:GetWidth() + 5) end
 
 	if not noSkin then self:skinUsingBD2(editBox) end
+
+	if moveUp then self:moveObject(editBox, "-", 2, "+", 2) end
 
 end
 
@@ -1222,6 +1231,7 @@ local function round2(num, ndp)
   return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
 
 end
+
 function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	local showKids = showKids and true or false
@@ -1291,6 +1301,7 @@ local function getFrameInfo()
 --	Skinner:Debug("getFrameInfo: [%s, %s, %s, %s, %s]", sbfShown, mfShown, mfxOfs, tsShown, tsxOfs)
 
 end
+
 Skinner:SecureHook("ShowUIPanel", function(frame, force)
 	getFrameInfo()
 --	Skinner:Debug("ShowUIPanel: [%s, %s]", frame:GetName() or "<Anon>", force)
@@ -1326,6 +1337,7 @@ Skinner:SecureHook("ShowUIPanel", function(frame, force)
 		end
 	end
 end)
+
 Skinner:SecureHook("HideUIPanel", function(frame, skipSetPoint)
 	if not frame then return end
 	getFrameInfo()

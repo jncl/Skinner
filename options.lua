@@ -191,6 +191,10 @@ function Skinner:Options()
 					order = 8,
 					name = self.L["Textured Tab"],
 					desc = self.L["Toggle the Texture of the Tabs"],
+					set = function(info, value)
+						db[info[#info]] = value
+						self.isTT = db[info[#info]] and true or false
+					end,
 				},
 				TrackerFrame = {
 					type = "toggle",
