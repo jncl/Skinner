@@ -464,23 +464,70 @@ function Skinner:VehicleMenuBar()
 	if not self.db.profile.VehicleMenuBar or self.initialized.VehicleMenuBar then return end
 	self.initialized.VehicleMenuBar = true
 
-	local function skinVehicleMenuBar()
+	local xOfs1, xOfs2, xOfs3
+	local yOfs1 = 42
+	local yOfs2 = -1
+	local yOfs3, yOfs4
+	
+	local function skinVehicleMenuBar(pitchVisible, src)
+	
+--		Skinner:Debug("sVMB: [%s, %s]", pitchVisible, src)
+		
+		-- expand frame width if mechanical vehicle
+		if pitchVisible then
+			xOfs1 = 132
+			xOfs2 = xOfs1 * -1
+			xOfs3 = -338
+			yOfs3 = 41
+			yOfs4 = 23
+		else
+			xOfs1 = 160
+			xOfs2 = xOfs1 * -1
+			xOfs3 = -355
+			yOfs3 = 44
+			yOfs4 = 24
+		end
 	
 		VehicleMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
 		VehicleMenuBarArtFrame:DisableDrawLayer("BORDER")
 		VehicleMenuBarArtFrame:DisableDrawLayer("ARTWORK")
 		VehicleMenuBarArtFrame:DisableDrawLayer("OVERLAY")
-		Skinner:addSkinFrame(VehicleMenuBar, 160, 48, -160, -2)
+		VehicleMenuBarPitchSlider:SetFrameStrata("MEDIUM") -- make it appear above the skin frame
+		CharacterMicroButton:ClearAllPoints()
+		CharacterMicroButton:SetPoint("BOTTOMLEFT", VehicleMenuBar, "BOTTOMRIGHT", xOfs3, yOfs3)
+		SocialsMicroButton:ClearAllPoints()
+		SocialsMicroButton:SetPoint("TOPLEFT", CharacterMicroButton, "BOTTOMLEFT", 0, yOfs4)
+		
+		local yAdj = 7
+		Skinner:moveObject(VehicleMenuBarPitchUpButton, nil, nil, "+", yAdj)
+		Skinner:moveObject(VehicleMenuBarPitchDownButton, nil, nil, "+", yAdj)
+		Skinner:moveObject(VehicleMenuBarLeaveButton, nil, nil, "+", yAdj)
+		Skinner:moveObject(VehicleMenuBarPitchSlider, nil, nil, "+", yAdj - 2)
+		
+		local sf = Skinner.skinFrame[VehicleMenuBar]
+		if not sf then
+--			Skinner:Debug("Unskinned")
+			Skinner:addSkinFrame(VehicleMenuBar, xOfs1, yOfs1, xOfs2, yOfs2)
+		else
+--			Skinner:Debug("Already Skinned")
+			sf:ClearAllPoints()
+			sf:SetPoint("TOPLEFT", VehicleMenuBar, "TOPLEFT", xOfs1, yOfs1)
+			sf:SetPoint("BOTTOMRIGHT", VehicleMenuBar, "BOTTOMRIGHT", xOfs2, yOfs2)
+		end
 		
 	end
 
+    self:SecureHook(VehicleMenuBar, "Show", function(this, ...)
+--        self:Debug("VehicleMenuBar_Show")
+        skinVehicleMenuBar(nil, 1)
+    end)
 
-	self:SecureHook(VehicleMenuBar, "Show", function(this, ...)
-		self:Debug("VehicleMenuBar_Show")
-		skinVehicleMenuBar()
-	end)
+    self:SecureHook("VehicleMenuBar_SetSkin", function(skinName, pitchVisible)
+--        self:Debug("VehicleMenuBar_SetSkin: [%s, %s]", skinName, pitchVisible)
+        skinVehicleMenuBar(pitchVisible, 2)
+    end)
 
-	if VehicleMenuBar:IsShown() then skinVehicleMenuBar() end
+	if VehicleMenuBar:IsShown() then skinVehicleMenuBar(nil, 3) end
 	
 end
 
@@ -523,6 +570,26 @@ function Skinner:WatchFrame()
     		WatchFrame_Collapse(WatchFrame)
     		WatchFrame_Expand(WatchFrame)
     	end
+		-- 	add a texture to the resize buttons
+
+--[[
+		local line1 = sizer:CreateTexture(nil, "BACKGROUND")
+		line1:SetWidth(14)
+		line1:SetHeight(14)
+		line1:SetPoint("BOTTOMRIGHT", -8, 8)
+		line1:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
+		local x = 0.1 * 14/17
+		line1:SetTexCoord(0.05 - x, 0.5, 0.05, 0.5 + x, 0.05, 0.5 - x, 0.5 + x, 0.5)
+
+		local line2 = sizer:CreateTexture(nil, "BACKGROUND")
+		line2:SetWidth(8)
+		line2:SetHeight(8)
+		line2:SetPoint("BOTTOMRIGHT", -8, 8)
+		line2:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
+		local x = 0.1 * 8/17
+		line2:SetTexCoord(0.05 - x, 0.5, 0.05, 0.5 + x, 0.05, 0.5 - x, 0.5 + x, 0.5)
+--]]
+
 	end
 
 end
