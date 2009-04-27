@@ -411,14 +411,6 @@ function Skinner:GlyphUI()
 	self.initialized.GlyphUI = true
 
 	self:removeRegions(GlyphFrame, {1}) -- background texture
-	self:moveObject(GlyphFrameTitleText, "-", 20, "+", 8)
-
-	for i = 1, NUM_GLYPH_SLOTS do
-		local glyphBtn = _G["GlyphFrameGlyph"..i]
-		self:moveObject(glyphBtn, "-", 10, nil, nil)
-	end
-
-	self:moveObject(GlyphFrame, "+", 0, "+", 0) -- hack to force glyphs to appear correctly
 
 end
 
@@ -435,12 +427,12 @@ function Skinner:TalentUI()
 --		self:Debug("TalentFrame_Update: [%s, %s]", this:GetName(), curTab)
 		if this == PlayerTalentFrame then
 			for i = 1, numTabs do
-				local tabName = _G["PlayerTalentFrameTab"..i]
+				local tabSF = self.skinFrame[_G["PlayerTalentFrameTab"..i]]
 				if self.db.profile.TexturedTab then
 					if i == curTab then
-						self:setActiveTab(tabName)
+						self:setActiveTab(tabSF)
 					else
-						self:setInactiveTab(tabName)
+						self:setInactiveTab(tabSF)
 					end
 				end
 				if i == numTabs and i == curTab then -- glyph tab selected
@@ -456,75 +448,35 @@ function Skinner:TalentUI()
 		end
 	end)
 
-	PlayerTalentFrame:SetWidth(PlayerTalentFrame:GetWidth() * self.FxMult)
-	PlayerTalentFrame:SetHeight(PlayerTalentFrame:GetHeight() * self.FyMult)
-	self:moveObject(PlayerTalentFrameTitleText, nil, nil, "+", 8)
-	self:moveObject(PlayerTalentFrameCloseButton, "+", 28, "+", 8)
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
+	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6})
+	self:moveObject(PlayerTalentFrameScrollFrame, nil, nil, "+", 12)
 	self:keepFontStrings(PlayerTalentFrameStatusFrame)
-	self:moveObject(PlayerTalentFrameStatusFrame, "-", 30, "+", 11)
-	self:moveObject(PlayerTalentFrameActivateButton, "-", 10, "+", 10)
 	self:keepFontStrings(PlayerTalentFramePointsBar)
-	local relTo, relPoint, yOfs
-	if PlayerTalentFramePreviewBar:IsShown() then
-		relTo = PlayerTalentFramePreviewBar
-		relPoint = "TOP"
-		yOfs = -8
-	else
-		relTo = PlayerTalentFrame
-		relPoint = "BOTTOM"
-		yOfs = 0
-	end
-	PlayerTalentFramePointsBar:SetPoint("BOTTOM", relTo, relPoint, 0, yOfs)
-	PlayerTalentFramePointsBar:SetWidth(PlayerTalentFramePointsBar:GetWidth() * self.FxMult)
 	self:keepFontStrings(PlayerTalentFramePreviewBar)
 	self:keepFontStrings(PlayerTalentFramePreviewBarFiller)
-	PlayerTalentFramePreviewBar:SetPoint("BOTTOM", PlayerTalentFrame, "BOTTOM", 0, 6)
-	-- hook this to manage the Preview & Unspent Points bar(s)
-	self:SecureHook("PlayerTalentFrame_UpdateControls", function(activeTalentGroup, numTalentGroups)
---			self:Debug("PTF_UC: [%s, %s]", activeTalentGroup, numTalentGroups)
-		for i = 1, PlayerTalentFramePointsBar:GetNumPoints() do
-			local point, relTo, relPoint, _, yOfs = PlayerTalentFramePointsBar:GetPoint(i)
-			if relTo == PlayerTalentFrame and  relPoint == "BOTTOM" then
-				yOfs = 0
-			elseif relTo == PlayerTalentFramePreviewBar and relPoint == "TOP" then
-				yOfs = -8
-			end
-			PlayerTalentFramePointsBar:SetPoint(point, relTo, relPoint, 0, yOfs)
-		end
-		self:moveObject(PlayerSpecTab1, "+", 30, nil, nil)
-	end)
-	self:moveObject(PlayerTalentFrameScrollFrame, "+", 35, "+", 12)
-	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6})
-	self:skinScrollBar(PlayerTalentFrameScrollFrame)
-	self:storeAndSkin(ftype, PlayerTalentFrame)
+	self:addSkinFrame(PlayerTalentFrame, 12, -12, -32, 78, ftype)
 
 -->>-- Tabs (bottom)
 	for i = 1, numTabs do
 		local tabName = _G["PlayerTalentFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0)
-		else self:storeAndSkin(ftype, tabName) end
+		isTT = self.db.profile.TexturedTab and true or false
+		self:addSkinFrame(tabName, 10, 0, -10, 4, ftype, isTT)
+		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, "-", 8, "-", 71)
-			if self.db.profile.TexturedTab then self:setActiveTab(tabName) end
+			self:moveObject(tabName, nil,nil, "+", 7)
+			if self.db.profile.TexturedTab then self:setActiveTab(tabSF) end
 		else
-			self:moveObject(tabName, "+", 10, nil, nil)
-			if self.db.profile.TexturedTab then self:setInactiveTab(tabName) end
+			if self.db.profile.TexturedTab then self:setInactiveTab(tabSF) end
 		end
 	end
 -->>-- Tabs (side)
 	for i = 1, 3 do
 		local tabName = _G["PlayerSpecTab"..i]
 		self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
-		tabName:SetWidth(tabName:GetWidth() * 1.25)
-		tabName:SetHeight(tabName:GetHeight() * 1.25)
-		if i == 1 then self:moveObject(tabName, "+", 30, nil, nil) end
 	end
 
-	-- force a update of the frame to set tab widths etc
-	PlayerTalentFrame_Update()
-	
 end
 
 function Skinner:DressUpFrame()

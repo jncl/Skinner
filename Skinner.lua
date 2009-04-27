@@ -302,7 +302,7 @@ function Skinner:addSkinButton(obj, parent, hookObj, hideBut)
 
 end
 
-function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
+function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype, isTT)
 --@alpha@
 	assert(parent, "Unknown object\n"..debugstack())
 --@end-alpha@
@@ -313,12 +313,16 @@ function Skinner:addSkinFrame(parent, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
 	yOfs1 = yOfs1 or -3
 	xOfs2 = xOfs2 or 3
 	yOfs2 = yOfs2 or 3
+	
 	local skinFrame = CreateFrame("Frame", nil, parent)
 	skinFrame:ClearAllPoints()
 	skinFrame:SetPoint("TOPLEFT", parent, "TOPLEFT", xOfs1, yOfs1)
 	skinFrame:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", xOfs2, yOfs2)
+	
 	if not ftype then self:applySkin(skinFrame)
+	elseif isTT then self:storeAndSkin(ftype, skinFrame, nil, 0)
 	else self:storeAndSkin(ftype, skinFrame) end
+	
 	if parent:GetFrameLevel() == 0 then parent:SetFrameLevel(1) end
 	skinFrame:SetFrameLevel(parent:GetFrameLevel() - 1)
 	self.skinFrame[parent] = skinFrame
