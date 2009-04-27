@@ -4,247 +4,147 @@ function Skinner:FriendsFrame()
 	if not self.db.profile.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
-	self:SecureHook("FriendsFrame_ShowSubFrame", function(frameName)
---		self:Debug("FriendsFrame_ShowSubFrame: [%s, %s]", frameName, FriendsFrame.selectedTab)
-		for i, v in pairs(FRIENDSFRAME_SUBFRAMES) do
---			self:Debug("FRIENDSFRAME_SUBFRAMES: [%s, %s]", i, v)
-			-- change the texture for the Active and Inactive tabs
-			if self.db.profile.TexturedTab then
+	-- hook this to manage textured tabs
+	if self.isTT then
+		self:SecureHook("FriendsFrame_ShowSubFrame", function(frameName)
+--			self:Debug("FriendsFrame_ShowSubFrame: [%s, %s]", frameName, FriendsFrame.selectedTab)
+			for i, v in pairs(FRIENDSFRAME_SUBFRAMES) do
+--				self:Debug("FRIENDSFRAME_SUBFRAMES: [%s, %s]", i, v)
 				-- handle Friends and Ignore on the same Tab
 				local j = ( i > 1 and i - 1 or i)
 				-- handle Friends, Ignore and Muted on the same Tab
 				j = ( j > 1 and j - 1 or j)
---				self:Debug("FF_SF: [%s]", j)
+--					self:Debug("FF_SF: [%s]", j)
 				-- handle additional Tabs with altered names or numbers
 				local prefix = (v == "BadapplesFrame" and "Badapples" or "")
 				local tabId  = (v == "BadapplesFrame" and 5 or j)
 				-- ignore the IgnoreListFrame (also the MutedListFrame)
  				if v ~= "IgnoreListFrame" and v ~= "MutedListFrame" then
-					self:setInactiveTab(_G[prefix.."FriendsFrameTab"..tabId])
+					self:setInactiveTab(self.skinFrame[_G[prefix.."FriendsFrameTab"..tabId]])
 				end
 				if v == frameName then
-					self:setActiveTab(_G[prefix.."FriendsFrameTab"..tabId])
+					self:setActiveTab(self.skinFrame[_G[prefix.."FriendsFrameTab"..tabId]])
 				end
 			end
-		end
-	end)
-
-	self:SecureHook("GuildStatus_Update", function()
---		self:Debug("GuildStatus_Update")
-		local _, _, _, xOfs, _ = GuildFrameGuildListToggleButton:GetPoint()
-		if xOfs == 284 then
-			self:moveObject(GuildFrameGuildListToggleButton, "+", 23, "-", 46)
-		else
-			self:moveObject(GuildFrameGuildListToggleButton, nil, nil, "-", 46)
-		end
-	end)
-
+		end)
+	end
 -->>--	Friends Frame
 	self:keepFontStrings(FriendsFrame)
-
-	FriendsFrame:SetWidth(FriendsFrame:GetWidth() * self.FxMult)
-	FriendsFrame:SetHeight(FriendsFrame:GetHeight() * self.FyMult)
-
-	self:moveObject(FriendsFrameTitleText, nil, nil, "+", 6)
-	self:moveObject(FriendsFrameCloseButton, "+", 30, "+", 8)
-
-	self:skinFFToggleTabs("FriendsFrameToggleTab") --N.B. Prefix string
-
-	self:moveObject(FriendsFrameAddFriendButton, "-", 9, "-", 70)
-	self:moveObject(FriendsFrameFriendButton1, nil, nil, "+", 15)
-
-	self:moveObject(FriendsFrameFriendsScrollFrame, "+", 35, "+", 14)
+	self:skinFFToggleTabs("FriendsFrameToggleTab")
 	self:removeRegions(FriendsFrameFriendsScrollFrame)
 	self:skinScrollBar(FriendsFrameFriendsScrollFrame)
+	self:moveObject(FriendsFrameAddFriendButton, nil, nil, "+", 1)
+	self:moveObject(FriendsFrame, "-", 10, nil, nil)
 
 -->>--	Ignore Frame
 	self:keepFontStrings(IgnoreListFrame)
-
-	IgnoreListFrame:SetWidth(IgnoreListFrame:GetWidth() * self.FxMult)
-	IgnoreListFrame:SetHeight(IgnoreListFrame:GetHeight() * self.FyMult)
-
-	self:skinFFToggleTabs("IgnoreFrameToggleTab") --N.B. Prefix string
-
-	self:moveObject(FriendsFrameIgnorePlayerButton, "-", 9, "-", 70)
-	self:moveObject(FriendsFrameStopIgnoreButton, "+", 4, nil, nil)
-	self:moveObject(FriendsFrameIgnoreButton1, nil, nil, "+", 15)
-
-	self:moveObject(FriendsFrameIgnoreScrollFrame, "+", 35, "+", 14)
+	self:skinFFToggleTabs("IgnoreFrameToggleTab")
 	self:removeRegions(FriendsFrameIgnoreScrollFrame)
 	self:skinScrollBar(FriendsFrameIgnoreScrollFrame)
+	self:moveObject(FriendsFrameIgnorePlayerButton, nil, nil, "+", 1)
 
--->>--	MutedList Frame (New 2.2)
+-->>--	MutedList Frame
 	self:keepFontStrings(MutedListFrame)
-	self:skinFFToggleTabs("MutedFrameToggleTab", 3) --N.B. Prefix string
-	self:moveObject(FriendsFrameMutedPlayerButton, "-", 9, "-", 70)
-	self:moveObject(FriendsFrameUnmuteButton, "+", 4, nil, nil)
-	self:moveObject(FriendsFrameMutedButton1, nil, nil, "+", 15)
-	self:moveObject(FriendsFrameMutedScrollFrame, "+", 35, "+", 14)
+	self:skinFFToggleTabs("MutedFrameToggleTab", 3)
 	self:removeRegions(FriendsFrameMutedScrollFrame)
 	self:skinScrollBar(FriendsFrameMutedScrollFrame)
+	self:moveObject(FriendsFrameMutedPlayerButton, nil, nil, "+", 1)
+	self:moveObject(FriendsFrameUnmuteButton, "+", 4, nil, nil)
 
 -->>--	Who Frame
-	WhoFrame:SetWidth(WhoFrame:GetWidth() * self.FxMult)
-	WhoFrame:SetHeight(WhoFrame:GetHeight() * self.FyMult)
-
-	self:skinFFColHeads("WhoFrameColumnHeader") --N.B. Prefix string
-	self:moveObject(WhoFrameColumnHeader1, "-", 6, "+", 25)
-
+	self:skinFFColHeads("WhoFrameColumnHeader")
 	self:skinDropDown(WhoFrameDropDown, nil, true)
-	self:moveObject(WhoFrameDropDown, "+", 5, "+", 1)
-	self:moveObject(WhoFrameButton1, "-", 5, "+", 15)
-
-	self:moveObject(WhoListScrollFrame, "+", 35, "+", 20)
 	self:removeRegions(WhoListScrollFrame)
 	self:skinScrollBar(WhoListScrollFrame)
-
-	self:moveObject(WhoFrameEditBox, "+", 20, "-", 65)
-	WhoFrameEditBox:SetWidth(WhoFrameEditBox:GetWidth() + 30)
-	self:skinEditBox(WhoFrameEditBox)
-
-	self:moveObject(WhoFrameTotals, nil, nil, "-", 66)
-	self:moveObject(WhoFrameGroupInviteButton, "+", 30, "-", 71)
+	self:skinEditBox(WhoFrameEditBox, nil, nil, nil, nil, true)
+	WhoFrameEditBox:SetWidth(WhoFrameEditBox:GetWidth() +  24)
+	self:moveObject(WhoFrameEditBox, "+", 12, nil,nil)
 
 -->>--	Guild Frame
-	GuildFrame:SetWidth(GuildFrame:GetWidth() * self.FxMult)
-	GuildFrame:SetHeight(GuildFrame:GetHeight() * self.FyMult)
-
-	-- show offline members text and checkbox
 	self:keepFontStrings(GuildFrameLFGFrame)
-	self:moveObject(GuildFrameLFGButton, "+", 42, "+", 12)
-
-	self:skinFFColHeads("GuildFrameColumnHeader") --N.B. Prefix string
-	self:moveObject(GuildFrameColumnHeader1, "-", 6, "+", 15)
-	self:moveObject(GuildFrameButton1, "-", 5, "+", 15)
-	self:skinFFColHeads("GuildFrameGuildStatusColumnHeader") --N.B. Prefix string
-	self:moveObject(GuildFrameGuildStatusColumnHeader1, "-", 6, "+", 15)
-	self:moveObject(GuildFrameGuildStatusButton1, "-", 5, "+", 15)
-
-	self:moveObject(GuildListScrollFrame, "+", 35, "+", 20)
+	self:skinFFColHeads("GuildFrameColumnHeader")
+	self:skinFFColHeads("GuildFrameGuildStatusColumnHeader")
 	self:removeRegions(GuildListScrollFrame)
 	self:skinScrollBar(GuildListScrollFrame)
-
-	self:moveObject(GuildFrameTotals, nil, nil, "-", 46)
-	self:moveObject(GuildFrameNotesLabel, "-", 8, "-", 8) -- MOTD
-	self:moveObject(GuildFrameControlButton, "+", 30, "-", 71)
-
 	-- Guild Control Popup Frame
-	GuildControlPopupFrame:SetHeight(FriendsFrame:GetHeight())
 	self:keepFontStrings(GuildControlPopupFrame)
-	self:moveObject(GuildControlPopupFrame, "+", 36, "+", 6)
-	self:moveObject(GuildControlPopupFrameCancelButton, "+", 20, "-", 26)
 	self:skinDropDown(GuildControlPopupFrameDropDown)
-	GuildControlPopupFrameEditBox:SetWidth(GuildControlPopupFrameEditBox:GetWidth() + 30)
 	self:skinEditBox(GuildControlPopupFrameEditBox, {9})
 	self:skinEditBox(GuildControlWithdrawGoldEditBox, {9})
 	self:skinEditBox(GuildControlWithdrawItemsEditBox, {9})
-	self:moveObject(GuildControlPopupFrameTabPermissions, "+", 10, "-", 20)
 	self:storeAndSkin(ftype, GuildControlPopupFrameTabPermissions)
+	self:addSkinFrame(GuildControlPopupFrame, 3, -6, -28, 25, ftype)
 	for i = 1, MAX_GUILDBANK_TABS do
 		local gbtpt = _G["GuildBankTabPermissionsTab"..i]
-		local gbtptText = _G["GuildBankTabPermissionsTab"..i.."Text"]
 		self:keepFontStrings(gbtpt)
-		self:storeAndSkin(ftype, gbtpt)
-		gbtpt:SetHeight(gbtpt:GetHeight() - 5)
-		if i == 6 then self:moveObject(gbtpt, nil, nil, "-", 5) end
-		self:moveObject(gbtptText, nil, nil, "+", 5)
+		self:addSkinFrame(gbtpt, 0, -6, 0, 0, ftype)
 	end
-	self:storeAndSkin(ftype, GuildControlPopupFrame)
-
 -->>--	GuildInfo Frame
 	self:keepFontStrings(GuildInfoFrame)
-	self:moveObject(GuildInfoTitle, nil, nil, "+", 3)
-
 	self:removeRegions(GuildInfoFrameScrollFrame)
 	self:skinScrollBar(GuildInfoFrameScrollFrame)
-
 	self:storeAndSkin(ftype, GuildInfoTextBackground)
 	self:storeAndSkin(ftype, GuildInfoFrame)
-
 -->>--	GuildMemberDetail Frame
 	self:keepFontStrings(GuildMemberDetailFrame)
-	self:moveObject(GuildMemberDetailFrame, "+", 30, "-", 40)
-	self:moveObject(GuildFramePromoteButton, nil, nil, "-", 30)
 	self:storeAndSkin(ftype, GuildMemberNoteBackground)
 	self:storeAndSkin(ftype, GuildMemberOfficerNoteBackground)
 	self:storeAndSkin(ftype, GuildMemberDetailFrame)
-
 -->>--	GuildEventLog Frame
-	self:keepRegions(GuildEventLogFrame, {2}) -- N.B. region 2 is text
+	self:keepFontStrings(GuildEventLogFrame)
 	self:storeAndSkin(ftype, GuildEventFrame)
 	self:removeRegions(GuildEventLogScrollFrame)
 	self:skinScrollBar(GuildEventLogScrollFrame)
 	self:storeAndSkin(ftype, GuildEventLogFrame)
-
--->>--	Channel Frame (New 2.2)
+-->>--	Channel Frame
+	self:keepFontStrings(ChannelFrame)
+	-- hook this to skin channel buttons
 	self:SecureHook("ChannelList_Update", function()
 		for i = 1, MAX_CHANNEL_BUTTONS do
 			local cbnt = _G["ChannelButton"..i.."NormalTexture"]
 			cbnt:SetAlpha(0)
 		end
 	end)
-	self:keepFontStrings(ChannelFrame)
 	ChannelFrameVerticalBar:Hide()
 	self:removeRegions(ChannelListScrollFrame)
 	self:skinScrollBar(ChannelListScrollFrame)
 	self:removeRegions(ChannelRosterScrollFrame)
 	self:skinScrollBar(ChannelRosterScrollFrame)
-	self:moveObject(ChannelFrameNewButton, "-", 8, "-", 5)
 	-- Channel Pullout Tab & Frame
-	ChannelPulloutTab:SetWidth(ChannelPulloutTab:GetWidth() + 14)
-	ChannelPulloutTab:SetHeight(ChannelPulloutTab:GetHeight() * self.FTyMult)
 	self:keepRegions(ChannelPulloutTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
-	self:moveObject(ChannelPulloutTabText, nil, nil, "+", 10)
-	self:moveObject(self:getRegion(ChannelPulloutTab, 5), "-", 5, "+", 10) -- highlight texture
 	self:applySkin(ChannelPulloutTab)
--- 	self:moveObject(ChannelPullout, "+", 10, nil, nil)
-	self:moveObject(ChannelPulloutCloseButton, "+", 2, "+", 2)
 	self:applySkin(ChannelPullout)
-	self:RawHook(ChannelPullout, "SetBackdropColor", function() end, true)
-	self:RawHook(ChannelPullout, "SetBackdropBorderColor", function() end, true)
-
 -->>--	Daughter Frame
 	self:keepFontStrings(ChannelFrameDaughterFrame)
 	self:storeAndSkin(ftype, ChannelFrameDaughterFrame)
-	self:skinEditBox(ChannelFrameDaughterFrameChannelName, {9})
-	self:skinEditBox(ChannelFrameDaughterFrameChannelPassword, {9, 10}) -- N.B. regions 9 & 10 are text
+	self:skinEditBox(ChannelFrameDaughterFrameChannelName, {9}, nil, nil, nil, true)
+	self:skinEditBox(ChannelFrameDaughterFrameChannelPassword, {9, 10}, nil, nil, nil, true) -- N.B. regions 9 & 10 are text
 	self:skinDropDown(ChannelListDropDown)
 	self:skinDropDown(ChannelRosterDropDown)
 
 -->>--	Raid Frame
-	self:moveObject(RaidFrameConvertToRaidButton, "-", 30, "+", 10)
-
 	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
 -->>--	RaidInfo Frame
 	self:keepFontStrings(RaidInfoFrame)
-	self:moveObject(RaidInfoScrollFrame, "+", 5, nil, nil)
 	self:removeRegions(RaidInfoScrollFrame)
 	self:skinScrollBar(RaidInfoScrollFrame)
-	self:storeAndSkin(ftype, RaidInfoFrame)
-	self:SecureHook(RaidInfoFrame, "Show", function()
-		self:moveObject(RaidInfoFrame, "+", 35, nil, nil)
-	end)
 
-	self:storeAndSkin(ftype, FriendsFrame)
-
+	self:addSkinFrame(FriendsFrame, 12, -12, -33, 74, ftype)
+	
 -->>--	Frame Tabs
 	for i = 1, FriendsFrame.numTabs do
 		local tabName = _G["FriendsFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
+		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
+		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil, nil, "-", 72)
+			self:moveObject(tabName, nil,nil, "+", 3)
+			if self.isTT then self:setActiveTab(tabSF) end
 		else
-			self:moveObject(tabName, "+", 9, nil, nil)
+			if self.isTT then self:setInactiveTab(tabSF) end
 		end
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil ,0)
-		else self:storeAndSkin(ftype, tabName) end
 	end
-
-	-- Hook this to resize the Tabs
-	self:SecureHook(FriendsFrame, "Show", function()
-		self:resizeTabs(FriendsFrame)
-	end)
 
 end
 
