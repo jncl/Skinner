@@ -420,33 +420,33 @@ function Skinner:TalentUI()
 
 	local numTabs
 	numTabs = MAX_TALENT_TABS + 1 -- add 1 for the Glyph talent tab
-
-	self:SecureHook("TalentFrame_Update", function(this)
-		local curTab
-		curTab = this.selectedTab
---		self:Debug("TalentFrame_Update: [%s, %s]", this:GetName(), curTab)
-		if this == PlayerTalentFrame then
-			for i = 1, numTabs do
-				local tabSF = self.skinFrame[_G["PlayerTalentFrameTab"..i]]
-				if self.db.profile.TexturedTab then
+	-- hook this to manage textured tabs
+	if self.isTT then
+		self:SecureHook("TalentFrame_Update", function(this)
+			local curTab
+			curTab = this.selectedTab
+	--		self:Debug("TalentFrame_Update: [%s, %s]", this:GetName(), curTab)
+			if this == PlayerTalentFrame then
+				for i = 1, numTabs do
+					local tabSF = self.skinFrame[_G["PlayerTalentFrameTab"..i]]
 					if i == curTab then
-						self:setActiveTab(tabSF)
-					else
-						self:setInactiveTab(tabSF)
+							self:setActiveTab(tabSF)
+						else
+							self:setInactiveTab(tabSF)
 					end
 				end
 				if i == numTabs and i == curTab then -- glyph tab selected
-					PlayerTalentFrameTitleText:Hide()
-					PlayerTalentFrameScrollFrame:Hide()
-					PlayerTalentFramePointsBar:Hide()
-				else
-					PlayerTalentFrameTitleText:Show()
-					PlayerTalentFrameScrollFrame:Show()
-					PlayerTalentFramePointsBar:Show()
+						PlayerTalentFrameTitleText:Hide()
+						PlayerTalentFrameScrollFrame:Hide()
+						PlayerTalentFramePointsBar:Hide()
+					else
+						PlayerTalentFrameTitleText:Show()
+						PlayerTalentFrameScrollFrame:Show()
+						PlayerTalentFramePointsBar:Show()
 				end
 			end
-		end
-	end)
+		end)
+	end
 
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
 	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6})
@@ -455,20 +455,19 @@ function Skinner:TalentUI()
 	self:keepFontStrings(PlayerTalentFramePointsBar)
 	self:keepFontStrings(PlayerTalentFramePreviewBar)
 	self:keepFontStrings(PlayerTalentFramePreviewBarFiller)
-	self:addSkinFrame(PlayerTalentFrame, 12, -12, -32, 78, ftype)
+	self:addSkinFrame(PlayerTalentFrame, 12, -12, -32, 74, ftype)
 
 -->>-- Tabs (bottom)
 	for i = 1, numTabs do
 		local tabName = _G["PlayerTalentFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		isTT = self.db.profile.TexturedTab and true or false
-		self:addSkinFrame(tabName, 10, 0, -10, 4, ftype, isTT)
+		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil,nil, "+", 7)
-			if self.db.profile.TexturedTab then self:setActiveTab(tabSF) end
+			self:moveObject(tabName, nil,nil, "+", 3)
+			if self.isTT then self:setActiveTab(tabSF) end
 		else
-			if self.db.profile.TexturedTab then self:setInactiveTab(tabSF) end
+			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
 -->>-- Tabs (side)
@@ -476,6 +475,7 @@ function Skinner:TalentUI()
 		local tabName = _G["PlayerSpecTab"..i]
 		self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
 	end
+
 
 end
 
