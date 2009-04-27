@@ -717,25 +717,6 @@ function Skinner:AchievementUI()
 
 end
 
---[[
-function Skinner:AchievementWatch()
-	if not self.db.profile.AchieveWatch or self.initialized.AchieveWatch then return end
-	self.initialized.AchieveWatch = true
-
--->>-- Watch Frames
-	for i = 2, 10 do
-		local statusBarBG = _G["AchievementWatchLine"..i.."StatusBarBG"]
-		statusBarBG:SetTexture(self.sbTexture)
-		statusBarBG:SetVertexColor(unpack(self.sbColour))
-		local watchLine = _G["AchievementWatchLine"..i]
-		self:removeRegions(watchLine.statusBar, {3}) -- remove Border
-		self:glazeStatusBar(watchLine.statusBar)
-		watchLine.statusBar.bg = statusBarBG -- store this so it will get textured as required
-	end
-
-end
---]]
-
 function Skinner:AchievementAlerts()
 	if not self.db.profile.AchieveAlert or self.initialized.AchieveAlert then return end
 	self.initialized.AchieveAlert = true

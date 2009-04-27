@@ -369,21 +369,6 @@ function Skinner:QuestLog()
 
 end
 
---[[
-function Skinner:ResizeQW()
-
-	if self.db.profile.QuestLog.size == 1 then
-		self.QWfont = GameFontHighlight
-	else
-		self.QWfont = GameFontHighlightSmall
-	end
-	for i = 1, 30 do
-		_G["QuestWatchLine"..i]:SetFontObject(self.QWfont)
-	end
-
-end
---]]
-
 function Skinner:RaidUI()
 	if not self.db.profile.RaidUI or self.initialized.RaidUI then return end
 	self.initialized.RaidUI = true

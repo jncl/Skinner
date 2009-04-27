@@ -383,7 +383,7 @@ function Skinner:GroupLoot()
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
 
 		local glf = "GroupLootFrame"..i
-		self:Debug("skinned GLF: [%s]", glf)
+--		self:Debug("skinned GLF: [%s]", glf)
 		local glfo = _G[glf]
 		self:keepFontStrings(glfo)
 		self:removeRegions(_G[glf.."Timer"], {1})
@@ -524,7 +524,7 @@ function Skinner:ItemText()
 --	self:Debug("ItemText loaded")
 
 	self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
-		self:Debug("ItemTextFrame_OnShow")
+--		self:Debug("ItemTextFrame_OnShow")
 		ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end)
 	self:keepFontStrings(ItemTextFrame)
