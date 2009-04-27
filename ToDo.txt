@@ -8,46 +8,67 @@ N - New Version
 O - Other change
 S - Skin request
 
-	N	Ackis Recipe List, reported by pompachomp, 31.03.09
+√	S 	Advanced Quest Tracking Frame, requested by Khanan/toin7, 16.04.09/18.04.09
 	
-	N	WIM, reported by Gabriel, 11.04.09
+√	N	Ackis Recipe List, reported by pompachomp, 31.03.09
+		
+√	N	Altoholic, request by X-buZZ, 21.04.09
+		
+√	N	epgp, requested by Curace, 7.04.09
 	
-	N	epgp, requested by Curace, 7.04.09
+√	N	ExtendedQuestFrame, requested by toin7, 18.04.09
 	
-	N	Urban Achiever, requested by CrookfingerJake, 15.04.09
+√	N	Factionizer, reported by pompachomp, 31.03.09
+		
+√	N	GuildAds, requested by MegaManJuno, 16.04.09
 	
-	N	ORA3, requested by Gabriel, 15.04.09
+√	N	oRA3, requested by Gabriel/gamemaster128, 15.04.09/18.04.09
 	
-	N	GuildAds, requested by MegaManJuno, 16.04.09
+√	N	QuestGuru, reported by Gabriel/Kerecha, 15.04.09/20/04/09
+		
+√	N	Talented's new glyph frame, requested by acirac, 20.04.09
+√		- move points for animation
 	
-	I	QuestGuru, reported by Gabriel, 15.04.09
+√	N	Urban Achiever, requested by CrookfingerJake, 15.04.09
 	
-	I	Factionizer, reported by pompachomp, 31.03.09
-		- checkbox and options button too high
+√	N	Volumizer, requested by Kerecha, 20.04.09
+	
+√	N	WIM, reported by Gabriel, 11.04.09
+	
+	I	TourGuide
+≈		- button with quest object cannot be clicked (TG issue ?) intermittent!
+		
+	I	VehicleMenuBar
+√		- change pitchslider's frame strata
+√		- make it wider as required by certain vehicles
+	
+√	I	GroupLoot, reported by eilenda/azmodanrom, 16.04.09/18.04.09
+	
+√	I	InspectUI, reported by Eatsbrains, 17.04.09
+	
+	I	MainMenuBar
+√		- only lower frame level if > 0
+	
+√	I	Achievement Frame
+		- some statusbar textures showing (again!)
+		
+√	I	LFG frame
+		- move background panel
+
+x	I	Nameplates
+		- remove statusbar border which appears when mobs attack (test in RFC) [caused by having Display->Display Aggro Warning enabled]
+		 
+	I	GlyphUI
+√		- move points for animation
 		
 	I	StatusBars, remove .bg entry
 		- change added texture to use a name
 		- don't store the new frame within the existing statusbar
-
-√	I	PTR, Talent frame not being skinned first time displayed, reported by eilenda, 18.03.09
-
-√	I	PTR, red error on login saying Skinner can't open WorldMap, reported by eilenda, 19.03.09
-
+		
 	O	Fixes for Patch 3.1.0
 		- Upd Frames
-√			- PVP Frame (CF1)
-√			- LFG Frame (UIE2)
-√			- TalentUI Frame (Glyphs moved to TalentUI) (CF1)
-√				- Dual Talent feature
-√				- Preview Talent points
-√			- ItemText Frame, text colours (UIE1)
-√			- Achievement frames, status bar textures
-			- Achievement Alerts
-x			- New elite mob frames have been added for V-Key frames (issue for nerNameplates)
-√			- Health and Fuel/Ammo bars have been added to the vehicle interface
+√			- Achievement Alerts
 		- New Frames/Features
-√			- GearManagerDialog (CF2) [postponed]
-√			- Watch Frame (Quest & Achievement Objectives) (CF1)
 			- Color Blind option
 			- Calendar, guild wide signup sheet 
 			- confirmation boxes for purchases over 150 gold
