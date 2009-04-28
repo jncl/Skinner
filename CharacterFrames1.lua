@@ -411,6 +411,7 @@ function Skinner:GlyphUI()
 	self.initialized.GlyphUI = true
 
 	self:removeRegions(GlyphFrame, {1}) -- background texture
+	self:addSkinFrame(GlyphFrame, 12, -12, -32, 74, ftype)
 
 end
 
@@ -418,24 +419,20 @@ function Skinner:TalentUI()
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
 
-	local numTabs
-	numTabs = MAX_TALENT_TABS + 1 -- add 1 for the Glyph talent tab
+	local numTabs = MAX_TALENT_TABS + 1 -- add 1 for the Glyph talent tab
 	-- hook this to manage textured tabs
 	if self.isTT then
 		self:SecureHook("TalentFrame_Update", function(this)
 			local curTab
 			curTab = this.selectedTab
-	--		self:Debug("TalentFrame_Update: [%s, %s]", this:GetName(), curTab)
+--			self:Debug("TalentFrame_Update: [%s, %s, %s]", this:GetName(), numTabs, curTab)
 			if this == PlayerTalentFrame then
 				for i = 1, numTabs do
 					local tabSF = self.skinFrame[_G["PlayerTalentFrameTab"..i]]
-					if i == curTab then
-							self:setActiveTab(tabSF)
-						else
-							self:setInactiveTab(tabSF)
-					end
-				end
-				if i == numTabs and i == curTab then -- glyph tab selected
+					if i == curTab then self:setActiveTab(tabSF)
+					else self:setInactiveTab(tabSF) end
+					-- check to see if this is the glyph frame, if so, hide some objects
+					if i == numTabs and i == curTab then
 						PlayerTalentFrameTitleText:Hide()
 						PlayerTalentFrameScrollFrame:Hide()
 						PlayerTalentFramePointsBar:Hide()
@@ -443,14 +440,18 @@ function Skinner:TalentUI()
 						PlayerTalentFrameTitleText:Show()
 						PlayerTalentFrameScrollFrame:Show()
 						PlayerTalentFramePointsBar:Show()
+					end
 				end
 			end
 		end)
 	end
 
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
-	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6})
-	self:moveObject(PlayerTalentFrameScrollFrame, nil, nil, "+", 12)
+	self:moveObject(PlayerTalentFrameActivateButton, "-", 20, "+", 4)
+	self:moveObject(PlayerTalentFrameStatusFrame, "-", 20, "+", 4)
+	self:moveObject(PlayerTalentFrameScrollFrame, nil, nil, "+", 12) -- to line up talent points in their boxes
+	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6}) -- other regions are background textures
+	self:skinScrollBar(PlayerTalentFrameScrollFrame)
 	self:keepFontStrings(PlayerTalentFrameStatusFrame)
 	self:keepFontStrings(PlayerTalentFramePointsBar)
 	self:keepFontStrings(PlayerTalentFramePreviewBar)

@@ -112,8 +112,8 @@ function Skinner:FriendsFrame()
 	self:skinScrollBar(ChannelRosterScrollFrame)
 	-- Channel Pullout Tab & Frame
 	self:keepRegions(ChannelPulloutTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
-	self:applySkin(ChannelPulloutTab)
-	self:applySkin(ChannelPullout)
+	self:storeAndSkin(ftype, ChannelPulloutTab)
+	self:storeAndSkin(ftype, ChannelPullout)
 -->>--	Daughter Frame
 	self:keepFontStrings(ChannelFrameDaughterFrame)
 	self:storeAndSkin(ftype, ChannelFrameDaughterFrame)
@@ -127,6 +127,8 @@ function Skinner:FriendsFrame()
 
 -->>--	RaidInfo Frame
 	self:keepFontStrings(RaidInfoFrame)
+	self:moveObject(RaidFrameConvertToRaidButton, "-", 50, nil, nil)
+	self:moveObject(RaidFrameRaidInfoButton, "+", 50, nil, nil)
 	self:removeRegions(RaidInfoScrollFrame)
 	self:skinScrollBar(RaidInfoScrollFrame)
 
