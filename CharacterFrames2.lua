@@ -14,16 +14,17 @@ function Skinner:FriendsFrame()
 				local j = ( i > 1 and i - 1 or i)
 				-- handle Friends, Ignore and Muted on the same Tab
 				j = ( j > 1 and j - 1 or j)
---					self:Debug("FF_SF: [%s]", j)
+--				self:Debug("FF_SF: [%s]", j)
 				-- handle additional Tabs with altered names or numbers
 				local prefix = (v == "BadapplesFrame" and "Badapples" or "")
-				local tabId  = (v == "BadapplesFrame" and 5 or j)
+				local tabId = (v == "BadapplesFrame" and 5 or j)
+				local tabSF = self.skinFrame[_G[prefix.."FriendsFrameTab"..tabId]]
 				-- ignore the IgnoreListFrame (also the MutedListFrame)
  				if v ~= "IgnoreListFrame" and v ~= "MutedListFrame" then
-					self:setInactiveTab(self.skinFrame[_G[prefix.."FriendsFrameTab"..tabId]])
+					self:setInactiveTab(tabSF)
 				end
 				if v == frameName then
-					self:setActiveTab(self.skinFrame[_G[prefix.."FriendsFrameTab"..tabId]])
+					self:setActiveTab(tabSF)
 				end
 			end
 		end)
@@ -34,8 +35,8 @@ function Skinner:FriendsFrame()
 	self:removeRegions(FriendsFrameFriendsScrollFrame)
 	self:skinScrollBar(FriendsFrameFriendsScrollFrame)
 	self:moveObject(FriendsFrameAddFriendButton, nil, nil, "+", 1)
-	self:moveObject(FriendsFrame, "-", 10, nil, nil)
-
+	self:addSkinFrame(FriendsFrame, 12, -12, -33, 74, ftype)
+	
 -->>--	Ignore Frame
 	self:keepFontStrings(IgnoreListFrame)
 	self:skinFFToggleTabs("IgnoreFrameToggleTab")
@@ -45,11 +46,11 @@ function Skinner:FriendsFrame()
 
 -->>--	MutedList Frame
 	self:keepFontStrings(MutedListFrame)
-	self:skinFFToggleTabs("MutedFrameToggleTab", 3)
+	self:skinFFToggleTabs("MutedFrameToggleTab")
 	self:removeRegions(FriendsFrameMutedScrollFrame)
 	self:skinScrollBar(FriendsFrameMutedScrollFrame)
 	self:moveObject(FriendsFrameMutedPlayerButton, nil, nil, "+", 1)
-	self:moveObject(FriendsFrameUnmuteButton, "+", 4, nil, nil)
+	self:moveObject(FriendsFrameUnmuteButton, "+", 4)
 
 -->>--	Who Frame
 	self:skinFFColHeads("WhoFrameColumnHeader")
@@ -123,17 +124,18 @@ function Skinner:FriendsFrame()
 	self:skinDropDown(ChannelRosterDropDown)
 
 -->>--	Raid Frame
+	self:moveObject(RaidFrameConvertToRaidButton, "-", 50)
+	self:moveObject(RaidFrameRaidInfoButton, "+", 50)
+
 	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
 -->>--	RaidInfo Frame
 	self:keepFontStrings(RaidInfoFrame)
-	self:moveObject(RaidFrameConvertToRaidButton, "-", 50, nil, nil)
-	self:moveObject(RaidFrameRaidInfoButton, "+", 50, nil, nil)
 	self:removeRegions(RaidInfoScrollFrame)
 	self:skinScrollBar(RaidInfoScrollFrame)
+	RaidInfoFrame:SetBackdrop(nil)
+	self:addSkinFrame(RaidInfoFrame, 10, -6, -5, 0, ftype)
 
-	self:addSkinFrame(FriendsFrame, 12, -12, -33, 74, ftype)
-	
 -->>--	Frame Tabs
 	for i = 1, FriendsFrame.numTabs do
 		local tabName = _G["FriendsFrameTab"..i]
@@ -158,35 +160,21 @@ function Skinner:TradeSkillUI()
 	if IsAddOnLoaded("DoubleWideTradeSkills") then return end
 
 	self:keepFontStrings(TradeSkillFrame)
-	TradeSkillFrame:SetWidth(TradeSkillFrame:GetWidth() * self.FxMult)
-	TradeSkillFrame:SetHeight(TradeSkillFrame:GetHeight() * self.FyMult)
-	self:moveObject(TradeSkillFrameTitleText, nil, nil, "+", 12)
-	self:moveObject(TradeSkillFrameCloseButton, "+", 28, "+", 8)
-	self:moveObject(TradeSkillRankFrame, "-", 40, "+", 14)
 	TradeSkillRankFrameBorder:SetAlpha(0)
 	self:glazeStatusBar(TradeSkillRankFrame, 0)
-	self:moveObject(TradeSkillFrameAvailableFilterCheckButton, "-", 38, "+", 12)
+	self:moveObject(TradeSkillRankFrame, "-", 30)
+	self:moveObject(TradeSkillFrameAvailableFilterCheckButton, "-", 28)
 	self:skinEditBox(TradeSkillFrameEditBox, {9})
 	self:removeRegions(TradeSkillExpandButtonFrame)
-	self:moveObject(TradeSkillExpandButtonFrame, "-", 6, "+", 12)
 	self:skinDropDown(TradeSkillSubClassDropDown)
 	self:skinDropDown(TradeSkillInvSlotDropDown)
-	self:moveObject(TradeSkillInvSlotDropDown, "+", 20, "+", 12)
-	self:moveObject(TradeSkillSkill1, "-", 6, "+", 12)
-	self:moveObject(TradeSkillListScrollFrame, "+", 35, "+", 12)
 	self:removeRegions(TradeSkillListScrollFrame)
 	self:skinScrollBar(TradeSkillListScrollFrame)
-	self:moveObject(TradeSkillDetailScrollFrame, "+", 2, "+", 12)
 	self:removeRegions(TradeSkillDetailScrollFrame)
 	self:skinScrollBar(TradeSkillDetailScrollFrame)
-	self:moveObject(TradeSkillInputBox, "-", 5, nil, nil)
 	self:skinEditBox(TradeSkillInputBox)
-	self:moveObject(TradeSkillCreateButton, "-", 10, "-", 5)
-	self:moveObject(TradeSkillCancelButton, "-", 7, "-", 5)
-	for i = 1, 8 do
-		self:moveObject(_G["TradeSkillReagent"..i.."Count"], "+", 4, nil, nil)
-	end
-	self:storeAndSkin(ftype, TradeSkillFrame)
+	self:moveObject(TradeSkillInputBox, "-", 5)
+	self:addSkinFrame(TradeSkillFrame, 10, -12, -32, 74, ftype)
 
 end
 
@@ -195,28 +183,8 @@ function Skinner:TradeFrame()
 	self.initialized.TradeFrame = true
 
 	self:keepFontStrings(TradeFrame)
-
-	TradeFrame:SetWidth(TradeFrame:GetWidth() * self.FxMult)
-	TradeFrame:SetHeight(TradeFrame:GetHeight() * self.FyMult)
-
-	-- move everything up and across
-	local xOfs = 12
-	local yOfs = 40
-	self:moveObject(TradeFrameRecipientNameText, "-", xOfs, "+", 6)
-	self:moveObject(TradeFramePlayerNameText, "-", xOfs, "+", 6)
-	self:moveObject(TradeFramePlayerEnchantText, "-", xOfs, "+", yOfs)
-	self:moveObject(TradeHighlightPlayer, "-", xOfs, "+", yOfs)
-	self:moveObject(TradeHighlightRecipient, "-", xOfs, "+", yOfs)
-	self:moveObject(TradeRecipientItem1, "-", xOfs, "+", yOfs)
-	self:moveObject(TradePlayerItem1, "-", xOfs, "+", yOfs)
-	self:moveObject(TradeRecipientMoneyFrame, "+", xOfs, "+", yOfs)
-	self:moveObject(TradePlayerInputMoneyFrame, "-", xOfs, "+", yOfs)
 	self:skinMoneyFrame(TradePlayerInputMoneyFrame)
-
-	self:moveObject(TradeFrameTradeButton, "+", 20, "-", 44)
-	self:moveObject(TradeFrameCloseButton, "+", 26, "+", 8)
-
-	self:storeAndSkin(ftype, TradeFrame)
+	self:addSkinFrame(TradeFrame, 10, -11, -28, 48, ftype)
 
 end
 
@@ -238,19 +206,23 @@ function Skinner:QuestLog()
 	end)
 
 	self:keepFontStrings(QuestLogFrame)
+--[[
 	QuestLogFrame:SetWidth(QuestLogFrame:GetWidth() * self.FxMult)
 	QuestLogFrame:SetHeight(QuestLogFrame:GetHeight() * self.FyMult)
 	self:moveObject(QuestLogTitleText, nil, nil, "+", 10)
-	self:keepFontStrings(QuestLogCount)
 	self:moveObject(QuestLogFrameCloseButton, "+", 29, "+", 8)
+--]]
+	self:keepFontStrings(QuestLogCount)
 
+	self:removeRegions(QuestLogCollapseAllButton, {7, 8, 9})
+--[[
 	-- movement values
 	local xOfs, yOfs = 8, 24
 	self:moveObject(QuestLogExpandButtonFrame, "-", xOfs, "+", yOfs)
-	self:removeRegions(QuestLogCollapseAllButton, {7, 8, 9})
 	self:moveObject(QuestLogQuestCount, nil, nil, "+", 20)
 	self:moveObject(QuestLogTitle1, "-", xOfs, "+", yOfs)
 	self:moveObject(QuestLogListScrollFrame, "-", xOfs, "+", yOfs)
+--]]
 	self:keepFontStrings(EmptyQuestLogFrame)
 
 	QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -265,9 +237,12 @@ function Skinner:QuestLog()
 
 	self:skinScrollBar(QuestLogListScrollFrame)
 	self:skinScrollBar(QuestLogDetailScrollFrame)
+--[[
 	self:moveObject(QuestLogFrameAbandonButton, "-", 12, "-", 47)
 	self:moveObject(QuestFrameExitButton, "+", 32, "-", 47)
 	self:storeAndSkin(ftype, QuestLogFrame)
+--]]
+	self:addSkinFrame(QuestLogFrame, 10, -12, -33, 48, ftype)
 
 end
 
@@ -275,23 +250,41 @@ function Skinner:RaidUI()
 	if not self.db.profile.RaidUI or self.initialized.RaidUI then return end
 	self.initialized.RaidUI = true
 
-	self:moveObject(RaidFrameAddMemberButton, "-", 40, "+", 10)
-	self:moveObject(RaidGroup1, "-", 7, "+", 8)
+	self:moveObject(RaidFrameAddMemberButton, "-", 30)
+	self:moveObject(RaidGroup1, "+", 3)
+
 	for i = 1, MAX_RAID_CLASS_BUTTONS do
 		local tabName = _G["RaidClassButton"..i]
 		self:removeRegions(tabName, {1}) -- N.B. region 2 is the icon, 3 is the text
-		-- Move the last entry as all the others are positioned from it
-		if i == MAX_RAID_CLASS_BUTTONS then self:moveObject(tabName, "+", 31, "-", 70) end
 	end
-
+	-- hook this to skin the pullout class frames
 	self:SecureHook("RaidPullout_GetFrame", function(filterID)
 		for i = 1, NUM_RAID_PULLOUT_FRAMES 	do
-			local pulloutButton = _G["RaidPullout"..i]
-			if not self.skinned[pulloutButton] then
-				self:storeAndSkin(ftype, pulloutButton)
+			local rp = _G["RaidPullout"..i]
+			if not self.skinFrame[rp] then
+				self:skinDropDown(_G["RaidPullout"..i.."DropDown"])
+				_G["RaidPullout"..i.."MenuBackdrop"]:SetBackdrop(nil)
+				self:addSkinFrame(rp, nil, nil, nil, nil, ftype)
 			end
 		end
 	end)
+	-- hook this to skin the pullout group frames
+	self:SecureHook("RaidPullout_Update", function(pullOutFrame)
+		local pfName = pullOutFrame:GetName()
+		self:Debug("RP_U: [%s, %s]", pullOutFrame, pfName)
+		for i = 1, pullOutFrame.numPulloutButtons do
+			local pfB = _G[pfName.."Button"..i]
+			if not self.skinFrame[pfB] then
+				self:glazeStatusBar(_G[pfName.."Button"..i.."HealthBar"], 0)
+				self:glazeStatusBar(_G[pfName.."Button"..i.."ManaBar"], 0)
+				self:glazeStatusBar(_G[pfName.."Button"..i.."Target"], 0)
+				self:glazeStatusBar(_G[pfName.."Button"..i.."TargetTarget"], 0)
+				_G[pfName.."Button"..i.."TargetTargetFrame"]:SetBackdrop(nil)
+				self:addSkinFrame(pfB, nil, nil, nil, nil, ftype)
+			end
+		end
+	end)
+	
 
 end
 
@@ -301,12 +294,8 @@ function Skinner:ReadyCheck()
 
 -->>--	Ready Check Frame
 	self:keepFontStrings(ReadyCheckListenerFrame)
-	ReadyCheckListenerFrame:SetWidth(ReadyCheckListenerFrame:GetWidth() * self.FxMult)
-	ReadyCheckListenerFrame:SetHeight(ReadyCheckListenerFrame:GetHeight() * self.FyMult)
-	self:moveObject(ReadyCheckFrameText, "-", 12, "+", 10)
-	self:moveObject(ReadyCheckFrameYesButton, "-", 15, "-", 5)
-	self:storeAndSkin(ftype, ReadyCheckListenerFrame)
-
+	self:addSkinFrame(ReadyCheckListenerFrame, nil, nil, nil, nil, ftype)
+	
 end
 
 function Skinner:Buffs()
@@ -441,42 +430,16 @@ function Skinner:WatchFrame()
 
 	self:keepFontStrings(WatchFrame)
 	if self.db.profile.TrackerFrame then
-	    self:addSkinFrame(WatchFrame, 0, 0, 0, 0)
-        -- set the alpha value to ensure it's always seen
-    	WatchFrame:SetAlpha(1)
-	    WatchFrame.baseAlpha = 1
-    	SetCVar("watchFrameBaseAlpha", 1)
-        -- make sure it's hidden/shown as required
-		self:SecureHook("WatchFrame_Expand", function(this) Skinner.skinFrame[this]:Show() end)
-		self:SecureHook("WatchFrame_Collapse", function(this) Skinner.skinFrame[this]:Hide() end)
-        -- force the watch frame to resize
-	    if WatchFrame.collapsed then
-    		WatchFrame_Expand(WatchFrame)
-    		WatchFrame_Collapse(WatchFrame)
-    	else
-    		WatchFrame_Collapse(WatchFrame)
-    		WatchFrame_Expand(WatchFrame)
-    	end
-		-- 	add a texture to the resize buttons
-
---[[
-		local line1 = sizer:CreateTexture(nil, "BACKGROUND")
-		line1:SetWidth(14)
-		line1:SetHeight(14)
-		line1:SetPoint("BOTTOMRIGHT", -8, 8)
-		line1:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
-		local x = 0.1 * 14/17
-		line1:SetTexCoord(0.05 - x, 0.5, 0.05, 0.5 + x, 0.05, 0.5 - x, 0.5 + x, 0.5)
-
-		local line2 = sizer:CreateTexture(nil, "BACKGROUND")
-		line2:SetWidth(8)
-		line2:SetHeight(8)
-		line2:SetPoint("BOTTOMRIGHT", -8, 8)
-		line2:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
-		local x = 0.1 * 8/17
-		line2:SetTexCoord(0.05 - x, 0.5, 0.05, 0.5 + x, 0.05, 0.5 - x, 0.5 + x, 0.5)
---]]
-
+--	    self:addSkinFrame(WatchFrame, 10, -2, -1, WatchFrame:GetHeight() + 30, ftype) -- link to WatchFrame to skin the Header only
+	    self:addSkinFrame(WatchFrameLines, -10, 4, 10, nil, ftype)
+		self:SecureHook(WatchFrameLines, "Show", function(this) Skinner.skinFrame[this]:Show() end)
+		self:SecureHook(WatchFrameLines, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
+		
+		-- track watchframe alpha change (CVAR) as per nameplates code
+		
+		-- fade skinframe in/out with watchframe - use generic function in UIParent.lua
+		-- or hook the fadein/fadeout functions and replicate them for the skinFrame
+		
 	end
 
 end
