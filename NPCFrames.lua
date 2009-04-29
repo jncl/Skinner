@@ -4,57 +4,36 @@ function Skinner:MerchantFrames()
 	if not self.db.profile.MerchantFrames or self.initialized.MerchantFrames then return end
 	self.initialized.MerchantFrames = true
 
-	self:SecureHook("MerchantFrame_UpdateRepairButtons", function()
-		self:moveObject(MerchantRepairText, nil, nil, "-", 63)
-		self:moveObject(MerchantRepairAllButton, nil, nil, "-", 63)
-		end)
-
-	if self.db.profile.TexturedTab then
-		-- hook this to update tabs
-		self:SecureHook("MerchantFrame_Update", function()
---		self:Debug("MerchantFrame_Update: [%s]", PanelTemplates_GetSelectedTab(MerchantFrame))
+	if self.isTT then
+		-- hook this to change the texture for the Active and Inactive tabs
+		self:SecureHook("MerchantFrame_Update",function()
 			for i = 1, MerchantFrame.numTabs do
-				local tabName = _G["MerchantFrameTab"..i]
+				local tabSF = self.skinFrame[_G["MerchantFrameTab"..i]]
 				if i == MerchantFrame.selectedTab then
-					self:setActiveTab(tabName)
+					self:setActiveTab(tabSF)
 				else
-					self:setInactiveTab(tabName)
+					self:setInactiveTab(tabSF)
 				end
 			end
-			end)
+		end)
 	end
-
-	local yOfs = 60
+	
 	self:keepFontStrings(MerchantFrame)
-	MerchantFrame:SetWidth(MerchantFrame:GetWidth() * self.FxMult)
-	MerchantFrame:SetHeight(MerchantFrame:GetHeight() * self.FyMult)
-	self:moveObject(MerchantNameText, nil, nil, "+", 6)
-	self:moveObject(MerchantFrameCloseButton, "+", 28, "+", 8)
-	self:moveObject(MerchantItem1, "-", 6, "+", 15)
-	self:moveObject(MerchantPageText, "+", 12, "-", yOfs)
-	self:moveObject(MerchantPrevPageButton, "-", 5, "-", yOfs)
-	self:moveObject(MerchantNextPageButton, "-", 5, "-", yOfs)
---	self:moveObject(MerchantRepairText, nil, nil, "-", 63)
---	self:moveObject(MerchantRepairAllButton, nil, nil, "-", 63)
-	self:moveObject(MerchantBuyBackItem, nil, nil, "-", 10)
-	self:moveObject(MerchantMoneyFrame, "+", 30, "-", yOfs)
-
+	self:addSkinFrame(MerchantFrame, 10, -12, -32, 55, ftype)
+	
+-->>-- Tabs
 	for i = 1, MerchantFrame.numTabs do
 		local tabName = _G["MerchantFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0)
-		else self:storeAndSkin(ftype, _G["MerchantFrameTab"..i]) end
+		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
+		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil, nil, "-", 55)
-			if self.db.profile.TexturedTab then self:setActiveTab(tabName) end
+			if self.isTT then self:setActiveTab(tabSF) end
 		else
-			self:moveObject(tabName, "+", 12, nil, nil)
-			if self.db.profile.TexturedTab then self:setInactiveTab(tabName) end
+			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-
-	self:storeAndSkin(ftype, MerchantFrame)
-
+	
 end
 
 function Skinner:GossipFrame()
@@ -69,23 +48,15 @@ function Skinner:GossipFrame()
 --	self:Debug("Changed Quest Display Colours, "..NORMAL_QUEST_DISPLAY..", "..TRIVIAL_QUEST_DISPLAY, "Normal", "Trivial")
 
 	self:keepFontStrings(GossipFrame)
-	GossipFrame:SetWidth(GossipFrame:GetWidth() * self.FxMult)
-	GossipFrame:SetHeight(GossipFrame:GetHeight() * self.FyMult)
-	self:moveObject(GossipFrameNpcNameText, "-", 10, "+", 15)
-	self:moveObject(GossipFrameCloseButton, "+", 24, "+", 12)
 	self:keepFontStrings(GossipFrameGreetingPanel)
-	self:moveObject(GossipFrameGreetingGoodbyeButton, "+", 28, "-", 64)
 	GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
-
+	self:removeRegions(GossipGreetingScrollFrame)
+	self:skinScrollBar(GossipGreetingScrollFrame)
 	for i = 1, NUMGOSSIPBUTTONS do
 		local text = self:getRegion(_G["GossipTitleButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-
-	self:moveObject(GossipGreetingScrollFrame, "-", 12, "+", 30)
-	self:removeRegions(GossipGreetingScrollFrame)
-	self:skinScrollBar(GossipGreetingScrollFrame)
-	self:storeAndSkin(ftype, GossipFrame)
+	self:addSkinFrame(GossipFrame, 12, -18, -29, 66, ftype)
 
 end
 
@@ -94,41 +65,23 @@ function Skinner:TrainerUI()
 	self.initialized.TrainerUI = true
 
 	self:keepFontStrings(ClassTrainerFrame)
-	ClassTrainerFrame:SetWidth(ClassTrainerFrame:GetWidth()* self.FxMult)
-	ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() * self.FyMult)
-	self:moveObject(ClassTrainerNameText, nil, nil, "+", 6)
-	self:moveObject(ClassTrainerGreetingText, "-", 35, "+", 10)
-	self:moveObject(ClassTrainerFrameCloseButton, "+", 29, "+", 8)
 	self:keepFontStrings(ClassTrainerExpandButtonFrame)
-	self:moveObject(ClassTrainerExpandButtonFrame, nil, nil, "+", 10)
 	self:skinDropDown(ClassTrainerFrameFilterDropDown)
-	self:moveObject(ClassTrainerFrameFilterDropDown, nil, nil, "+", 10)
-	self:moveObject(ClassTrainerSkill1, nil, nil, "+", 10)
-	self:moveObject(ClassTrainerListScrollFrame, "+", 35, "+", 10)
 	self:removeRegions(ClassTrainerListScrollFrame)
 	self:skinScrollBar(ClassTrainerListScrollFrame)
 	self:removeRegions(ClassTrainerDetailScrollFrame)
 	self:skinScrollBar(ClassTrainerDetailScrollFrame)
-	self:moveObject(ClassTrainerMoneyFrame, nil, nil, "-", 74)
-	self:moveObject(ClassTrainerTrainButton, "-", 10, "-", 6)
-	self:moveObject(ClassTrainerCancelButton, "-", 10, "-", 6)
-	self:storeAndSkin(ftype, ClassTrainerFrame)
-
+	self:addSkinFrame(ClassTrainerFrame, 10, -12, -32, 74, ftype)
+	
 end
 
 function Skinner:TaxiFrame()
 	if not self.db.profile.TaxiFrame or self.initialized.TaxiFrame then return end
 	self.initialized.TaxiFrame = true
 
-	self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiMerchant, 7 is the TaxiMap overlay
-	TaxiFrame:SetWidth(TaxiFrame:GetWidth() * self.FxMult)
-	TaxiFrame:SetHeight(TaxiFrame:GetHeight() * self.FyMult)
-	self:moveObject(TaxiMerchant, nil, nil, "+", 6)
-	self:moveObject(TaxiCloseButton, "+", 28, "+", 8)
-	self:moveObject(TaxiMap, "+", 12, "+", 25)
-	self:moveObject(TaxiRouteMap, "+", 12, "+", 25)
-	self:storeAndSkin(ftype, TaxiFrame)
-
+	self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
+	self:addSkinFrame(TaxiFrame, 10, -12, -32, 74, ftype)
+	
 end
 
 function Skinner:QuestFrame()
@@ -152,42 +105,26 @@ function Skinner:QuestFrame()
 	end, true)
 
 	self:keepFontStrings(QuestFrame)
-	QuestFrame:SetWidth(QuestFrame:GetWidth() * self.FxMult)
-	QuestFrame:SetHeight(QuestFrame:GetHeight() * self.FyMult)
-	self:moveObject(QuestFrameNpcNameText, nil, nil, "+", 15)
-	self:moveObject(QuestFrameCloseButton, "+", 24, "+", 12)
-
+	self:addSkinFrame(QuestFrame, 12, -18, -29, 66, ftype)
+	
 -->>--	Reward Panel
 	self:keepFontStrings(QuestFrameRewardPanel)
 	QuestRewardTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:moveObject(QuestFrameCancelButton, "+", 28, "-", 64)
-	self:moveObject(QuestFrameCompleteQuestButton, "-", 10, "-", 64)
-	self:moveObject(QuestRewardScrollFrame, "-", 12, "+", 30)
 	self:skinScrollBar(QuestRewardScrollFrame)
 
 -->>--	Progress Panel
 	self:keepFontStrings(QuestFrameProgressPanel)
 	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:moveObject(QuestFrameGoodbyeButton, "+", 28, "-", 64)
-	self:moveObject(QuestFrameCompleteButton, "-", 10, "-", 64)
-	self:moveObject(QuestProgressScrollFrame, "-", 12, "+", 30)
 	self:skinScrollBar(QuestProgressScrollFrame)
 
 -->>--	Detail Panel
 	self:keepFontStrings(QuestFrameDetailPanel)
 	QuestDetailTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:moveObject(QuestFrameDeclineButton, "+", 28, "-", 64)
-	self:moveObject(QuestFrameAcceptButton, "-", 10, "-", 64)
-	self:moveObject(QuestDetailScrollFrame, "-", 12, "+", 30)
 	self:skinScrollBar(QuestDetailScrollFrame)
 
 -->>--	Greeting Panel
 	self:keepFontStrings(QuestFrameGreetingPanel)
-	self:moveObject(QuestFrameGreetingGoodbyeButton, "+", 28, "-", 64)
-	self:moveObject(QuestGreetingScrollFrame, "-", 12, "+", 30)
 	self:skinScrollBar(QuestGreetingScrollFrame)
-
-	self:storeAndSkin(ftype, QuestFrame)
 
 end
 
@@ -196,20 +133,10 @@ function Skinner:Battlefields()
 	self.initialized.Battlefields = true
 
 	self:keepFontStrings(BattlefieldFrame)
-	BattlefieldFrame:SetWidth(BattlefieldFrame:GetWidth() * self.FxMult)
-	BattlefieldFrame:SetHeight(BattlefieldFrame:GetHeight() * self.FyMult)
-	self:moveObject(BattlefieldFrameFrameLabel, nil, nil, "+", 6)
-	self:moveObject(BattlefieldFrameCloseButton, "+", 26, "+", 6)
-	self:moveObject(BattlefieldFrameCancelButton, "-", 10, nil, nil)
-	local xOfs, yOfs = 12, 20
-	self:moveObject(BattlefieldFrameNameHeader, "-", xOfs, "+", yOfs)
-	self:moveObject(BattlefieldZone1, "-", xOfs, "+", yOfs)
-	self:moveObject(BattlefieldFrameZoneDescription, "-", xOfs, "+", yOfs)
-	self:moveObject(BattlefieldListScrollFrame, "+", 32, "+", yOfs)
 	self:removeRegions(BattlefieldListScrollFrame)
 	self:skinScrollBar(BattlefieldListScrollFrame)
 	BattlefieldFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:storeAndSkin(ftype, BattlefieldFrame)
+	self:addSkinFrame(BattlefieldFrame, 10, -12, -32, 71, ftype)
 
 end
 
@@ -218,13 +145,8 @@ function Skinner:ArenaFrame()
 	self.initialized.ArenaFrame = true
 
 	self:keepFontStrings(ArenaFrame)
-	ArenaFrame:SetWidth(ArenaFrame:GetWidth() * self.FxMult)
-	ArenaFrame:SetHeight(ArenaFrame:GetHeight() * self.FyMult)
-	self:moveObject(ArenaFrameCloseButton, "+", 26, "+", 6)
-	self:moveObject(ArenaFrameCancelButton, "-", 10, "-", 6)
-	self:moveObject(ArenaFrameNameHeader2, "+", 40, "-", 40)
 	ArenaFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:storeAndSkin(ftype, ArenaFrame)
+	self:addSkinFrame(ArenaFrame, 10, -12, -32, 71, ftype)
 
 end
 
@@ -234,10 +156,6 @@ function Skinner:ArenaRegistrar()
 
 -->>--	Arena Registrar Frame
 	self:keepFontStrings(ArenaRegistrarFrame)
-	ArenaRegistrarFrame:SetWidth(ArenaRegistrarFrame:GetWidth() * self.FxMult)
-	ArenaRegistrarFrame:SetHeight(ArenaRegistrarFrame:GetHeight() * self.FyMult)
-	self:moveObject(ArenaRegistrarFrameNpcNameText, nil, nil, "+", 15)
-	self:moveObject(ArenaRegistrarFrameCloseButton, "+", 24, "+", 12)
 	self:keepFontStrings(ArenaRegistrarGreetingFrame)
 	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -246,32 +164,16 @@ function Skinner:ArenaRegistrar()
 		local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	
-	self:moveObject(ArenaRegistrarFrameGoodbyeButton, "+", 28, "-", 64)
-	self:moveObject(ArenaRegistrarFrameCancelButton, "+", 30, "-", 64)
-	self:moveObject(ArenaRegistrarFramePurchaseButton, "-", 10, "-", 64)
 	self:skinEditBox(ArenaRegistrarFrameEditBox)
-	self:storeAndSkin(ftype, ArenaRegistrarFrame)
-
+	self:addSkinFrame(ArenaRegistrarFrame, 10, -12, -32, 71, ftype)
+	
 -->>--	PVP Banner Frame
 	self:keepRegions(PVPBannerFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
 
-	PVPBannerFrame:SetWidth(PVPBannerFrame:GetWidth() * self.FxMult)
-	PVPBannerFrame:SetHeight(PVPBannerFrame:GetHeight() * self.FyMult)
-
-	self:moveObject(PVPBannerFrameBackground, "-", 8, "+", 10)
-	self:moveObject(PVPBannerFrameEmblemTopRight, "-", 20, nil, nil)
-	self:moveObject(PVPBannerFrameNameText, nil, nil, "-", 28)
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
-	self:moveObject(PVPBannerFrameCustomization1, "+", 35, "-", 73)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
 	self:keepFontStrings(PVPBannerFrameCustomization2)
-	self:moveObject(PVPBannerFrameAcceptButton, "-", 10, "+", 10)
-	-- N.B. there are two PVPBannerFrameCancelButton entries
-	self:moveObject(self:getChild(PVPBannerFrame, 4), "-", 10, "+", 10)
-	self:moveObject(PVPBannerFrameCloseButton, "+", 28, "+", 8)
-
-	self:storeAndSkin(ftype, PVPBannerFrame)
+	self:addSkinFrame(PVPBannerFrame, 10, -12, -32, 74, ftype)
 
 end
 
@@ -280,10 +182,6 @@ function Skinner:GuildRegistrar()
 	self.initialized.GuildRegistrar = true
 
 	self:keepFontStrings(GuildRegistrarFrame)
-	GuildRegistrarFrame:SetWidth(GuildRegistrarFrame:GetWidth() * self.FxMult)
-	GuildRegistrarFrame:SetHeight(GuildRegistrarFrame:GetHeight() * self.FyMult)
-	self:moveObject(GuildRegistrarFrameNpcNameText, nil, nil, "+", 15)
-	self:moveObject(GuildRegistrarFrameCloseButton, "+", 24, "+", 12)
 	self:keepFontStrings(GuildRegistrarGreetingFrame)
 	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -291,12 +189,9 @@ function Skinner:GuildRegistrar()
 		local text = self:getRegion(_G["GuildRegistrarButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	self:moveObject(GuildRegistrarFrameGoodbyeButton, "+", 28, "-", 64)
-	self:moveObject(GuildRegistrarFrameCancelButton, "+", 30, "-", 64)
-	self:moveObject(GuildRegistrarFramePurchaseButton, "-", 10, "-", 64)
 	self:skinEditBox(GuildRegistrarFrameEditBox)
-	self:storeAndSkin(ftype, GuildRegistrarFrame)
-
+	self:addSkinFrame(GuildRegistrarFrame, 12, -17, -29, 65, ftype)
+	
 end
 
 function Skinner:Petition()
@@ -304,13 +199,6 @@ function Skinner:Petition()
 	self.initialized.Petition = true
 
 	self:keepFontStrings(PetitionFrame)
-	PetitionFrame:SetWidth(PetitionFrame:GetWidth() * self.FxMult)
-	PetitionFrame:SetHeight(PetitionFrame:GetHeight() * self.FyMult)
-	self:moveObject(PetitionFrameNpcNameText, nil, nil, "+", 15)
-	self:moveObject(PetitionFrameCloseButton, "+", 24, "+", 12)
-	self:moveObject(PetitionFrameCancelButton, "+", 28, "-", 64)
-	self:moveObject(PetitionFrameSignButton, "-", 15, "-", 64)
-	self:moveObject(PetitionFrameRequestButton, "-", 15, "-", 64)
 	PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	PetitionFrameMasterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -320,9 +208,8 @@ function Skinner:Petition()
 		_G["PetitionFrameMemberName"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 	PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
-
-	self:storeAndSkin(ftype, PetitionFrame)
-
+	self:addSkinFrame(PetitionFrame, 12, -17, -29, 65, ftype)
+	
 end
 
 function Skinner:Tabard()
@@ -331,56 +218,30 @@ function Skinner:Tabard()
 
 	self:keepRegions(TabardFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
 
-	TabardFrame:SetWidth(TabardFrame:GetWidth() * self.FxMult)
-	TabardFrame:SetHeight(TabardFrame:GetHeight() * self.FyMult)
-
-	self:moveObject(TabardFrameCloseButton, "+", 28, "+", 8)
-	self:moveObject(TabardFrameEmblemTopRight, "-", 20, "-", 6)
-	self:moveObject(TabardFrameNameText, nil, nil, "-", 28)
-	self:moveObject(TabardFrameBackground, "-", 8, "+", 4)
-	self:moveObject(TabardModel, nil, nil, "-", 60)
-
 	TabardCharacterModelRotateLeftButton:Hide()
 	TabardCharacterModelRotateRightButton:Hide()
 	self:makeMFRotatable(TabardModel)
-
-	self:moveObject(TabardFrameCostFrame, "-", 5, "+", 4)
-	self:storeAndSkin(ftype, TabardFrameCostFrame)
+	TabardFrameCostFrame:SetBackdrop(nil)
+	self:addSkinFrame(TabardFrameCostFrame, nil, nil, nil, nil, ftype)
 	self:keepFontStrings(TabardFrameCustomizationFrame)
-	self:moveObject(TabardFrameCustomization1, "+", 35, "-", 66)
 	for i = 1, 5 do
 		self:keepFontStrings(_G["TabardFrameCustomization"..i])
 	end
-	self:moveObject(TabardFrameMoneyFrame, "-", 30, "-", 75)
-	self:moveObject(TabardFrameAcceptButton, "-", 10, "-", 6)
-	self:moveObject(TabardFrameCancelButton, "-", 10, "-", 6)
-
-	self:storeAndSkin(ftype, TabardFrame)
-
+	self:addSkinFrame(TabardFrame, 10, -12, -32, 74, ftype)
+	
 end
 
 function Skinner:BarbershopUI()
 	if not self.db.profile.BarbershopUI or self.initialized.Barbershop then return end
 	self.initialized.Barbershop = true
 
---	self:Debug("BarbershopUI loaded")
-
 -->>-- Barbershop Banner Frame	
 	self:keepFontStrings(BarberShopBannerFrame)
 	BarberShopBannerFrameCaption:ClearAllPoints()
-	BarberShopBannerFrameCaption:SetPoint("CENTER", BarberShopFrame, "TOP", 0, -14)
+	BarberShopBannerFrameCaption:SetPoint("CENTER", BarberShopFrame, "TOP", 0, -46)
 -->>-- Barbershop Frame	
-	BarberShopFrame:SetWidth(BarberShopFrame:GetWidth() * self.FxMult - 20)
-	BarberShopFrame:SetHeight(BarberShopFrame:GetHeight() * self.FyMult - 57)
 	self:keepFontStrings(BarberShopFrame)
-	local yOfs = 50
-	self:moveObject(BarberShopFrameSelector1Category, nil, nil, "+", yOfs)
-	self:moveObject(BarberShopFrameSelector2Category, nil, nil, "+", yOfs)
-	self:moveObject(BarberShopFrameSelector3Category, nil, nil, "+", yOfs)
 	self:keepFontStrings(BarberShopFrameMoneyFrame)
-	self:moveObject(BarberShopFrameMoneyFrame, nil, nil, "+", yOfs)
-	self:moveObject(BarberShopFrameOkayButton, nil, nil, "+", yOfs)
-	self:moveObject(BarberShopFrameResetButton, nil, nil, "-", 40)
-	self:storeAndSkin(ftype, BarberShopFrame)
+	self:addSkinFrame(BarberShopFrame, 35, -32, -32, 42, ftype)
 	
 end
