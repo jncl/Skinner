@@ -35,7 +35,7 @@ function Skinner:FriendsFrame()
 	self:removeRegions(FriendsFrameFriendsScrollFrame)
 	self:skinScrollBar(FriendsFrameFriendsScrollFrame)
 	self:moveObject(FriendsFrameAddFriendButton, nil, nil, "+", 1)
-	self:addSkinFrame(FriendsFrame, 12, -12, -33, 74, ftype)
+	self:addSkinFrame(FriendsFrame, 12, -12, -33, 71, ftype)
 	
 -->>--	Ignore Frame
 	self:keepFontStrings(IgnoreListFrame)
@@ -59,7 +59,7 @@ function Skinner:FriendsFrame()
 	self:skinScrollBar(WhoListScrollFrame)
 	self:skinEditBox(WhoFrameEditBox, nil, nil, nil, nil, true)
 	WhoFrameEditBox:SetWidth(WhoFrameEditBox:GetWidth() +  24)
-	self:moveObject(WhoFrameEditBox, "+", 12, nil,nil)
+	self:moveObject(WhoFrameEditBox, "+", 12)
 
 -->>--	Guild Frame
 	self:keepFontStrings(GuildFrameLFGFrame)
@@ -143,7 +143,6 @@ function Skinner:FriendsFrame()
 		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil,nil, "+", 3)
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -174,7 +173,7 @@ function Skinner:TradeSkillUI()
 	self:skinScrollBar(TradeSkillDetailScrollFrame)
 	self:skinEditBox(TradeSkillInputBox)
 	self:moveObject(TradeSkillInputBox, "-", 5)
-	self:addSkinFrame(TradeSkillFrame, 10, -12, -32, 74, ftype)
+	self:addSkinFrame(TradeSkillFrame, 10, -12, -32, 71, ftype)
 
 end
 
@@ -206,23 +205,9 @@ function Skinner:QuestLog()
 	end)
 
 	self:keepFontStrings(QuestLogFrame)
---[[
-	QuestLogFrame:SetWidth(QuestLogFrame:GetWidth() * self.FxMult)
-	QuestLogFrame:SetHeight(QuestLogFrame:GetHeight() * self.FyMult)
-	self:moveObject(QuestLogTitleText, nil, nil, "+", 10)
-	self:moveObject(QuestLogFrameCloseButton, "+", 29, "+", 8)
---]]
 	self:keepFontStrings(QuestLogCount)
 
 	self:removeRegions(QuestLogCollapseAllButton, {7, 8, 9})
---[[
-	-- movement values
-	local xOfs, yOfs = 8, 24
-	self:moveObject(QuestLogExpandButtonFrame, "-", xOfs, "+", yOfs)
-	self:moveObject(QuestLogQuestCount, nil, nil, "+", 20)
-	self:moveObject(QuestLogTitle1, "-", xOfs, "+", yOfs)
-	self:moveObject(QuestLogListScrollFrame, "-", xOfs, "+", yOfs)
---]]
 	self:keepFontStrings(EmptyQuestLogFrame)
 
 	QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -237,11 +222,6 @@ function Skinner:QuestLog()
 
 	self:skinScrollBar(QuestLogListScrollFrame)
 	self:skinScrollBar(QuestLogDetailScrollFrame)
---[[
-	self:moveObject(QuestLogFrameAbandonButton, "-", 12, "-", 47)
-	self:moveObject(QuestFrameExitButton, "+", 32, "-", 47)
-	self:storeAndSkin(ftype, QuestLogFrame)
---]]
 	self:addSkinFrame(QuestLogFrame, 10, -12, -33, 48, ftype)
 
 end
@@ -431,7 +411,7 @@ function Skinner:WatchFrame()
 	self:keepFontStrings(WatchFrame)
 	if self.db.profile.TrackerFrame then
 --	    self:addSkinFrame(WatchFrame, 10, -2, -1, WatchFrame:GetHeight() + 30, ftype) -- link to WatchFrame to skin the Header only
-	    self:addSkinFrame(WatchFrameLines, -10, 4, 10, nil, ftype)
+	    self:addSkinFrame(WatchFrameLines, -10, 4, 10, 0, ftype)
 		self:SecureHook(WatchFrameLines, "Show", function(this) Skinner.skinFrame[this]:Show() end)
 		self:SecureHook(WatchFrameLines, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
 		

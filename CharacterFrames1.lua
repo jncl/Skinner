@@ -35,7 +35,7 @@ function Skinner:CharacterFrame()
 	self:skinDropDown(PlayerTitleDropDown)
 	self:skinDropDown(PlayerStatFrameLeftDropDown, true)
 	self:skinDropDown(PlayerStatFrameRightDropDown, true)
-	self:addSkinFrame(CharacterFrame, 10, -12, -32, 74, ftype)
+	self:addSkinFrame(CharacterFrame, 10, -12, -32, 71, ftype)
 
 --	CharacterFrameTab1-5
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
@@ -44,7 +44,6 @@ function Skinner:CharacterFrame()
 		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil,nil, "+", 3)
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -71,7 +70,6 @@ function Skinner:PetPaperDollFrame()
 
 -->>-- Pet Frame
 	self:keepFontStrings(PetAttributesFrame)
-	local xOfs, yOfs = 10, 10
 	self:keepRegions(PetPaperDollFrameExpBar, {3, 4}) -- N.B. region 3 is text
 	self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
 	PetModelFrameRotateLeftButton:Hide()
@@ -193,7 +191,7 @@ function Skinner:PVPFrame()
 	
 	self:keepFontStrings(PVPFrame)
 	self:keepFontStrings(PVPParentFrame)
-	self:addSkinFrame(PVPParentFrame, 10, -12, -32, 74, ftype)
+	self:addSkinFrame(PVPParentFrame, 10, -12, -32, 71, ftype)
 	
 -->>-- PVP Battleground Frame
 	self:keepFontStrings(PVPBattlegroundFrame)
@@ -213,7 +211,6 @@ function Skinner:PVPFrame()
 		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil,nil, "+", 3)
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -232,7 +229,7 @@ function Skinner:PetStableFrame()
 	self:makeMFRotatable(PetStableModel)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetStablePetInfo)
-	self:addSkinFrame(PetStableFrame, 10, -12, -32, 74, ftype)
+	self:addSkinFrame(PetStableFrame, 10, -12, -32, 71, ftype)
 
 end
 
@@ -266,7 +263,7 @@ function Skinner:SpellBookFrame()
 	end
 
 	self:keepFontStrings(SpellBookFrame)
-	self:addSkinFrame(SpellBookFrame, 10, -12, -32, 74, ftype)
+	self:addSkinFrame(SpellBookFrame, 10, -12, -32, 70, ftype)
 	-- colour the spell name text
 	for i = 1, SPELLS_PER_PAGE do
 		self:removeRegions(_G["SpellButton"..i], {1})
@@ -281,7 +278,6 @@ function Skinner:SpellBookFrame()
 		self:addSkinFrame(tabName, 14, -16, -10, 18, ftype, self.isTT)
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil,nil, "+", 4)
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -300,7 +296,6 @@ function Skinner:GlyphUI()
 	self.initialized.GlyphUI = true
 
 	self:removeRegions(GlyphFrame, {1}) -- background texture
-	self:addSkinFrame(GlyphFrame, 12, -12, -32, 74, ftype)
 
 end
 
@@ -339,16 +334,13 @@ function Skinner:TalentUI()
 	end
 
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
-	self:moveObject(PlayerTalentFrameActivateButton, "-", 20, "+", 4)
-	self:moveObject(PlayerTalentFrameStatusFrame, "-", 20, "+", 4)
-	self:moveObject(PlayerTalentFrameScrollFrame, nil, nil, "+", 12) -- to line up talent points in their boxes
 	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6}) -- other regions are background textures
 	self:skinScrollBar(PlayerTalentFrameScrollFrame)
 	self:keepFontStrings(PlayerTalentFrameStatusFrame)
 	self:keepFontStrings(PlayerTalentFramePointsBar)
 	self:keepFontStrings(PlayerTalentFramePreviewBar)
 	self:keepFontStrings(PlayerTalentFramePreviewBarFiller)
-	self:addSkinFrame(PlayerTalentFrame, 10, -12, -32, 74, ftype)
+	self:addSkinFrame(PlayerTalentFrame, 10, -12, -32, 71, ftype)
 
 -->>-- Tabs (bottom)
 	for i = 1, numTabs do
@@ -357,7 +349,6 @@ function Skinner:TalentUI()
 		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil,nil, "+", 3)
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -380,7 +371,7 @@ function Skinner:DressUpFrame()
 	DressUpModelRotateLeftButton:Hide()
 	DressUpModelRotateRightButton:Hide()
 	self:makeMFRotatable(DressUpModel)
-	self:addSkinFrame(DressUpFrame, 10, -12, -32, 74, ftype)
+	self:addSkinFrame(DressUpFrame, 10, -12, -32, 71, ftype)
 
 end
 
@@ -465,8 +456,7 @@ function Skinner:AchievementUI()
 	
 		for i = 1, #AchievementFrameComparisonStatsContainer.buttons do
 			local buttonName = "AchievementFrameComparisonStatsContainerButton"..i
-			local button = _G[buttonName]
-			if button.isHeader then _G[buttonName.."BG"]:SetAlpha(0) end
+			if _G[buttonName].isHeader then _G[buttonName.."BG"]:SetAlpha(0) end
 			_G[buttonName.."HeaderLeft"]:SetAlpha(0)
 			_G[buttonName.."HeaderLeft2"]:SetAlpha(0)
 			_G[buttonName.."HeaderMiddle"]:SetAlpha(0)
@@ -496,7 +486,7 @@ function Skinner:AchievementUI()
 	self:keepFontStrings(AchievementFrame)
 	AchievementFrame:SetBackdrop(nil)
 	self:moveObject(AchievementFrameFilterDropDown, nil, nil, "-", 10)
-	self:addSkinFrame(AchievementFrame, 0, 0, 0, 0, ftype)
+	self:addSkinFrame(AchievementFrame, 0, 0, 0, -6, ftype)
 
 -->>-- move Header info
 	self:keepFontStrings(AchievementFrameHeader)
@@ -574,8 +564,7 @@ function Skinner:AchievementUI()
 
 	-- Summary Panel
 	self:getChild(AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
-	local types = {"Player", "Friend"}
-	for _, type in next, types do
+	for _, type in pairs({"Player", "Friend"}) do
 		_G["AchievementFrameComparisonSummary"..type]:SetBackdrop(nil)
 		_G["AchievementFrameComparisonSummary"..type.."Background"]:SetAlpha(0)
 		skinSB("AchievementFrameComparisonSummary"..type.."StatusBar")
@@ -597,10 +586,9 @@ function Skinner:AchievementUI()
 	for i = 1, AchievementFrame.numTabs do
 		local tabName = _G["AchievementFrameTab"..i]
 		self:keepRegions(tabName, {7, 8, 9, 10}) -- N.B. region 7, 8 & 9 are highlights, 10 is text
-		self:addSkinFrame(tabName, 6, 0, -6, -10, ftype, self.isTT)
+		self:addSkinFrame(tabName, 9, 0, -9, -10, ftype, self.isTT)
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil,nil, "+", 6)
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -635,7 +623,7 @@ function Skinner:AchievementAlerts()
 				local aaFS = _G["AchievementAlertFrame"..i.."Shield"]
 				aaFS:ClearAllPoints()
 				aaFS:SetPoint("RIGHT", aaFrame, -10, -3)
-				Skinner:addSkinFrame(aaFrame, nil, nil, nil, nil, ftype)
+				Skinner:addSkinFrame(aaFrame, 0, 0, 0, 0, ftype)
 			end
 		end
 

@@ -20,6 +20,8 @@ function Skinner:MerchantFrames()
 	
 	self:keepFontStrings(MerchantFrame)
 	self:addSkinFrame(MerchantFrame, 10, -12, -32, 55, ftype)
+	self:removeRegions(MerchantPrevPageButton, {2})
+	self:removeRegions(MerchantNextPageButton, {2})
 	
 -->>-- Tabs
 	for i = 1, MerchantFrame.numTabs do
@@ -96,10 +98,9 @@ function Skinner:QuestFrame()
 			text:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
 	end)
-
 	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString)
 		fontString:SetTextColor(self.HTr, self.HTg, self.HTb)
-		end, true)
+	end, true)
 	self:RawHook("QuestFrame_SetTextColor", function(fontString)
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
