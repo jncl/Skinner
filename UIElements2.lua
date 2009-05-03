@@ -4,89 +4,116 @@ function Skinner:MenuFrames()
 	if not self.db.profile.MenuFrames or self.initialized.MenuFrames then return end
 	self.initialized.MenuFrames = true
 
-	self:storeAndSkin(ftype, GameMenuFrame, true)
+-->>-- Game Menu Frame
+	self:addSkinFrame{obj=GameMenuFrame, ftype=ftype, kfs=true, hdr=true}
 
---	Video Options
-	self:storeAndSkin(ftype, VideoOptionsFrame, true)
-	self:storeAndSkin(ftype, VideoOptionsFrameCategoryFrame)
-	self:storeAndSkin(ftype, VideoOptionsResolutionPanelBrightness)
-	self:storeAndSkin(ftype, VideoOptionsResolutionPanel)
+-->>-- Video Options
+	self:addSkinFrame{obj=VideoOptionsFrame, ftype=ftype, kfs=true, hdr=true}
+	self:addSkinFrame{obj=VideoOptionsFrameCategoryFrame, ftype=ftype, kfs=true}
+	self:skinSlider(VideoOptionsFrameCategoryFrameListScrollBar)
+	self:addSkinFrame{obj=VideoOptionsFramePanelContainer, ftype=ftype}
+	-- Resolution Panel
 	self:skinDropDown(VideoOptionsResolutionPanelResolutionDropDown)
-	self:skinDropDown(VideoOptionsResolutionPanelMultiSampleDropDown)
 	self:skinDropDown(VideoOptionsResolutionPanelRefreshDropDown)
-	self:storeAndSkin(ftype, VideoOptionsEffectsPanelQuality)
-	self:storeAndSkin(ftype, VideoOptionsEffectsPanelShaders)
-	self:storeAndSkin(ftype, VideoOptionsEffectsPanel)
-
---	Sound & Voice Options
-	self:storeAndSkin(ftype, AudioOptionsFrame, true)
-	self:storeAndSkin(ftype, AudioOptionsFrameCategoryFrame)
-	self:storeAndSkin(ftype, AudioOptionsSoundPanelPlayback)
-	self:storeAndSkin(ftype, AudioOptionsSoundPanelHardware)
-	self:storeAndSkin(ftype, AudioOptionsSoundPanelVolume)
-	self:storeAndSkin(ftype, AudioOptionsSoundPanel)
+	self:skinDropDown(VideoOptionsResolutionPanelMultiSampleDropDown)
+	self:addSkinFrame{obj=VideoOptionsResolutionPanel, ftype=ftype}
+	-- Brightness subPanel
+	self:addSkinFrame{obj=VideoOptionsResolutionPanelBrightness, ftype=ftype}
+	-- Effects Panel
+	self:addSkinFrame{obj=VideoOptionsEffectsPanel, ftype=ftype}
+	self:addSkinFrame{obj=VideoOptionsEffectsPanelQuality, ftype=ftype}
+	self:addSkinFrame{obj=VideoOptionsEffectsPanelShaders, ftype=ftype}
+	
+-->>-- Sound & Voice Options
+	self:addSkinFrame{obj=AudioOptionsFrame, ftype=ftype, kfs=true, hdr=true}
+	self:skinSlider(AudioOptionsFrameCategoryFrameListScrollBar)
+	self:addSkinFrame{obj=AudioOptionsFrameCategoryFrame, ftype=ftype, kfs=true}
+	self:addSkinFrame{obj=AudioOptionsFramePanelContainer, ftype=ftype}
+	-- Sound Panel
+	self:addSkinFrame{obj=AudioOptionsSoundPanel, ftype=ftype}
+	self:addSkinFrame{obj=AudioOptionsSoundPanelPlayback, ftype=ftype}
 	self:skinDropDown(AudioOptionsSoundPanelHardwareDropDown)
-	self:storeAndSkin(ftype, AudioOptionsVoicePanelTalking)
-	self:storeAndSkin(ftype, AudioOptionsVoicePanelBinding)
-	self:storeAndSkin(ftype, AudioOptionsVoicePanelListening)
-	self:storeAndSkin(ftype, AudioOptionsVoicePanel)
+	self:addSkinFrame{obj=AudioOptionsSoundPanelHardware, ftype=ftype}
+	self:addSkinFrame{obj=AudioOptionsSoundPanelVolume, ftype=ftype}
+	-- Voice Panel
+	self:addSkinFrame{obj=AudioOptionsVoicePanel, ftype=ftype}
+	self:addSkinFrame{obj=AudioOptionsVoicePanelTalking, ftype=ftype}
 	self:skinDropDown(AudioOptionsVoicePanelInputDeviceDropDown)
-	self:skinDropDown(AudioOptionsVoicePanelOutputDeviceDropDown)
+	self:addSkinFrame{obj=AudioOptionsVoicePanelBinding, ftype=ftype}
 	self:skinDropDown(AudioOptionsVoicePanelChatModeDropDown)
+	self:addSkinFrame{obj=AudioOptionsVoicePanelListening, ftype=ftype}
+	self:skinDropDown(AudioOptionsVoicePanelOutputDeviceDropDown)
+	self:addSkinFrame{obj=VoiceChatTalkers, ftype=ftype}
+	
 
--->>--	Mac Options
+-->>-- Mac Options
 	if IsMacClient() then
-		self:storeAndSkin(ftype, MacOptionsFrame, true)
-		self:storeAndSkin(ftype, MacOptionsFrameMovieRecording)
+		self:addSkinFrame{obj=MacOptionsFrame, ftype=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=MacOptionsFrameMovieRecording, ftype=ftype}
 		self:skinDropDown(MacOptionsFrameResolutionDropDown)
 		self:skinDropDown(MacOptionsFrameFramerateDropDown)
 		self:skinDropDown(MacOptionsFrameCodecDropDown)
-		self:storeAndSkin(ftype, MacOptionsITunesRemote)
-		self:storeAndSkin(ftype, MacOptionsCompressFrame, true)
-		self:storeAndSkin(ftype, MacOptionsCancelFrame, true)
-		self:storeAndSkin(ftype, FolderPicker, true)
-		-- Movie Progress Frame
+		self:addSkinFrame{obj=MacOptionsITunesRemote, ftype=ftype}
+		self:addSkinFrame{obj=MacOptionsCompressFrame, ftype=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=MacOptionsCancelFrame, ftype=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=FolderPicker, ftype=ftype, kfs=true, hdr=true}
+		-- Movie Progres Frame
 		self:glazeStatusBar(MovieProgressBar, 0)
-		self:storeAndSkin(ftype, MovieProgressFrame)
+		self:addSkinFrame{obj=MovieProgressFrame, ftype=ftype}
 	end
-
--->>--	InterfaceOptionsFrame
+	
+-->>-- Interface
+	if self.isTT then
+		-- hook this to change the texture for the Active and Inactive tabs
+		self:SecureHook("InterfaceOptionsFrame_TabOnClick",function()
+			for i = 1, InterfaceOptionsFrame.numTabs do
+				local tabSF = self.skinFrame[_G["InterfaceOptionsFrameTab"..i]]
+				if i == InterfaceOptionsFrame.selectedTab then
+					self:setActiveTab(tabSF)
+				else
+					self:setInactiveTab(tabSF)
+				end
+			end
+		end)
+	end
+	
+	self:addSkinFrame{obj=InterfaceOptionsFrame, ftype=ftype, kfs=true, hdr=true}
 	InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
 	self:skinScrollBar(InterfaceOptionsFrameCategoriesList)
+	self:addSkinFrame{obj=InterfaceOptionsFrameCategories, ftype=ftype, kfs=true}
 	InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)
 	self:skinSlider(InterfaceOptionsFrameAddOnsListScrollBar)
-	self:storeAndSkin(ftype, InterfaceOptionsFrameCategories)
-	self:storeAndSkin(ftype, InterfaceOptionsFrameAddOns)
-	self:storeAndSkin(ftype, InterfaceOptionsFrame, true)
+	self:addSkinFrame{obj=InterfaceOptionsFrameAddOns, ftype=ftype, kfs=true}
+	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ftype=ftype}
+
 	-- Tabs
 	for i = 1, 2 do
 		local tabName = _G["InterfaceOptionsFrameTab"..i]
-		local tabNameT = _G["InterfaceOptionsFrameTab"..i.."Text"]
-		local tabNameHT = _G["InterfaceOptionsFrameTab"..i.."HighlightTexture"]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0, 1)
-		else self:storeAndSkin(ftype, tabName) end
-		self:moveObject(tabNameT, nil, nil, "+", 3)
-		self:moveObject(tabNameHT, "-", 5, "+", 3)
-		if i == 1 then self:moveObject(tabName, "+", 6, "-", 2)
-		else self:moveObject(tabName, "+", 13, nil, nil) end
+		self:addSkinFrame{obj=tabName, ftype=ftype, ttab=self.isTT, x1=6, y1=0, x2=-6, y2=-5}
+		local tabSF = self.skinFrame[tabName]
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
 	end
 
 	-- Hook this to skin any Interface Option panels
-	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(frame)
---		self:Debug("IOL_DP: [%s, %s]", frame, frame:GetName())
+	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
+		self:Debug("IOL_DP: [%s, %s]", panel, panel:GetName())
 		-- skin tekKonfig library objects
 		if self.tekKonfig then self:tekKonfig() end
-		if not self.skinned[frame] then
-			for i = 1, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
+		if not self.skinFrame[panel] then
+			for i = 1, panel:GetNumChildren() do
+				local child = select(i, panel:GetChildren())
 				if child then
 				 	if self:isDropDown(child) then self:skinDropDown(child)
 					elseif child:IsObjectType("EditBox") then self:skinEditBox(child, {9})
 					end
 				end
 			end
-			self:storeAndSkin(ftype, frame)
+			self:addSkinFrame{obj=panel, ftype=ftype, kfs=true}
 		end
 	end)
 
@@ -96,56 +123,22 @@ function Skinner:MacroUI()
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
 
-	self:keepFontStrings(MacroFrame)
-	MacroFrame:SetWidth(MacroFrame:GetWidth() * self.FxMult)
-	MacroFrame:SetHeight(MacroFrame:GetHeight() * self.FyMult)
-
-	for i = 1, 2 do
-		local tabName = _G["MacroFrameTab"..i]
-		if i == 1 then self:moveObject(tabName, "-", 30, "+", 0) end
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:moveObject(_G[tabName:GetName().."Text"], nil, nil, "+", 5)
-		self:moveObject(_G[tabName:GetName().."HighlightTexture"], nil, nil, "+", 8)
-		self:storeAndSkin(ftype, tabName)
-	end
-
+-->>-- Macro Frame
+	self:skinFFToggleTabs("MacroFrameTab", 2)
 	self:removeRegions(MacroButtonScrollFrame)
 	self:skinScrollBar(MacroButtonScrollFrame)
-	self:moveObject(self:getRegion(MacroFrame, 6), nil, nil, "+", 10) -- title
-	self:moveObject(MacroFrameCloseButton, "+", 28, "+", 8)
-	self:moveObject(MacroFrameSelectedMacroBackground, nil, nil, "+", 10)
-	self:moveObject(MacroFrameTextBackground, "-", 10, "+", 10)
-	self:moveObject(MacroFrameScrollFrame, "-", 10, nil, nil)
-	self:moveObject(MacroFrameCharLimitText, nil, nil, "-", 72)
-	self:moveObject(MacroDeleteButton, "-", 10, "-", 72)
-	self:moveObject(MacroNewButton, "-", 4, "-", 5)
-	self:moveObject(MacroExitButton, "-", 4, "-", 5)
-
+	self:moveObject(MacroFrameCharLimitText, nil, nil, "-", 2)
 	self:removeRegions(MacroFrameScrollFrame)
 	self:skinScrollBar(MacroFrameScrollFrame)
 	self:skinEditBox(MacroFrameText, nil, true)
-	self:storeAndSkin(ftype, MacroFrameTextBackground)
-	self:storeAndSkin(ftype, MacroFrame)
+	self:addSkinFrame{obj=MacroFrameTextBackground, ftype=ftype}
+	self:addSkinFrame{obj=MacroFrame, ftype=ftype, kfs=true, hdr=true, x1=10, y1=-11, x2=-32, y2=71}
 
-	-- Macro Popup Frame
-	self:keepFontStrings(MacroPopupFrame)
-	if not IsAddOnLoaded("LargerMacroIconSelection") then -- only change size etc if LMIS isn't loaded
-		MacroPopupFrame:SetWidth(MacroPopupFrame:GetWidth() * self.FxMult)
-		MacroPopupFrame:SetHeight(MacroPopupFrame:GetHeight() - 20) -- N.B. must be absolute not multiple
-		self:moveObject(MacroPopupScrollFrame, "+", 10, "+", 15)
-	end
-	self:moveObject(MacroPopupFrame, "+", 40, nil, nil)
-	local xOfs, yOfs = 5, 15
-	self:moveObject(MacroPopupEditBox, "-", xOfs, "+", yOfs)
-	self:moveObject(MacroPopupButton1, "-", xOfs, "+", yOfs)
-	self:moveObject(MacroPopupCancelButton, nil, nil, "-", 4)
+-->>-- Macro Popup Frame
 	self:skinEditBox(MacroPopupEditBox)
-	-- regions 5 & 6 are text
-	self:moveObject(self:getRegion(MacroPopupFrame, 5), "-", xOfs, "+", yOfs)
-	self:moveObject(self:getRegion(MacroPopupFrame, 6), "-", xOfs, "+", yOfs)
 	self:removeRegions(MacroPopupScrollFrame)
 	self:skinScrollBar(MacroPopupScrollFrame)
-	self:storeAndSkin(ftype, MacroPopupFrame)
+	self:addSkinFrame{obj=MacroPopupFrame, ftype=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
 
 end
 
@@ -153,20 +146,9 @@ function Skinner:BindingUI()
 	if not self.db.profile.MenuFrames or self.initialized.BindingUI then return end
 	self.initialized.BindingUI = true
 
-	self:keepFontStrings(KeyBindingFrame)
-	KeyBindingFrame:SetWidth(KeyBindingFrame:GetWidth() * 0.95)
-	-- N.B. Don't change Height
-
-	self:moveObject(KeyBindingFrameHeaderText, nil, nil, "-", 8)
-	self:moveObject(KeyBindingFrameCharacterButton, "+", 30, "+", 5)
-	self:moveObject(KeyBindingFrameOutputText, nil, nil, "-", 10)
-	self:moveObject(KeyBindingFrameDefaultButton, nil, nil, "-", 14)
-	self:moveObject(KeyBindingFrameCancelButton, "+", 40, "-", 14)
-
 	self:removeRegions(KeyBindingFrameScrollFrame)
 	self:skinScrollBar(KeyBindingFrameScrollFrame)
-
-	self:storeAndSkin(ftype, KeyBindingFrame)
+	self:addSkinFrame{obj=KeyBindingFrame, ftype=ftype, kfs=true, hdr=true, x1=0, y1=0, x2=-42, y2=10}
 
 end
 
@@ -201,21 +183,7 @@ function Skinner:BankFrame()
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
-	self:keepFontStrings(BankFrame)
-
-	BankFrame:SetWidth(BankFrame:GetWidth() * self.FxMult)
-	BankFrame:SetHeight(BankFrame:GetHeight() * self.FyMult)
-
-	self:moveObject(BankFrameTitleText, nil, nil, "-", 35)
-	self:moveObject(BankCloseButton, "+", 20, "+", 6)
-	self:moveObject(BankFrameItem1, "-", 10, nil, nil)
-	-- regions 4 and 5 hold the slot text
-	self:moveObject(self:getRegion(BankFrame, 4), "+", 10, "-", 40)
-	self:moveObject(self:getRegion(BankFrame, 5), "+", 10, "-", 40)
-	self:moveObject(BankFramePurchaseInfo, nil, nil, "-", 40)
-	self:moveObject(BankFrameMoneyFrame, nil, nil, "_", 90)
-
-	self:storeAndSkin(ftype, BankFrame)
+	self:addSkinFrame{obj=BankFrame, ftype=ftype, kfs=true, x1=10, y1=-11, x2=-25, y2=91}
 
 end
 
@@ -223,99 +191,54 @@ function Skinner:MailFrame()
 	if not self.db.profile.MailFrame or self.initialized.MailFrame then return end
 	self.initialized.MailFrame = true
 
-	if self.db.profile.TexturedTab then
-		self:SecureHook("MailFrameTab_OnClick", function(tab)
---			self:Debug("MailFrameTab_OnClick: [%s]", tab)
---			self:Debug("MailFrameTab_OnClick#2: [%s]", PanelTemplates_GetSelectedTab(MailFrame))
+	if self.isTT then
+		-- hook this to change the texture for the Active and Inactive tabs
+		self:SecureHook("MailFrameTab_OnClick",function(...)
 			for i = 1, MailFrame.numTabs do
-				local tabName = _G["MailFrameTab"..i]
+				local tabSF = self.skinFrame[_G["MailFrameTab"..i]]
 				if i == MailFrame.selectedTab then
-					self:setActiveTab(tabName)
+					self:setActiveTab(tabSF)
 				else
-					self:setInactiveTab(tabName)
+					self:setInactiveTab(tabSF)
 				end
 			end
 		end)
 	end
-
-	self:SecureHook("OpenMail_Update", function()
---		self:Debug("OpenMail_Update")
-		self:moveObject(OpenMailAttachmentText, nil, nil, "-", 70)
-		self:moveObject(OpenMailLetterButton, nil, nil, "-", 70)
-		self:moveObject(OpenMailMoneyButton, nil, nil, "-", 70)
-		for i = 1, ATTACHMENTS_MAX_RECEIVE do
-			self:moveObject(_G["OpenMailAttachmentButton"..i], "+", 15, "-", 70)
-		end
-	end)
-
-	self:keepFontStrings(MailFrame)
-	MailFrame:SetWidth(MailFrame:GetWidth() * self.FxMult)
-	MailFrame:SetHeight(MailFrame:GetHeight() * self.FyMult)
-
-	self:moveObject(InboxCloseButton, "+", 28, "+", 8)
+	
+	self:addSkinFrame{obj=MailFrame, ftype=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=68}
 
 -->>--	Inbox Frame
-	self:moveObject(InboxTitleText, "-", 15, "+", 12)
-	self:moveObject(InboxCurrentPage, nil, nil, "+", 12)
-
 	for i = 1, 7 do
 		self:keepFontStrings(_G["MailItem"..i])
 	end
 
-	local xOfs, yOfs = 5, 20
-	self:moveObject(MailItem1, "-", xOfs, "+", yOfs)
-	self:moveObject(InboxPrevPageButton, "-", xOfs, "+", yOfs / 2)
-	self:moveObject(InboxNextPageButton, "-", xOfs, "+", yOfs / 2)
-
 -->>--	Send Mail Frame
 	self:keepFontStrings(SendMailFrame)
-	self:moveObject(SendMailTitleText, "-", 15, "+", 12)
 	self:removeRegions(SendMailScrollFrame)
 	self:skinScrollBar(SendMailScrollFrame)
-	self:moveObject(SendMailScrollFrame, "-", 5, nil, nil)
-
-	for _, v in pairs({SendMailCostMoneyFrame, SendMailPackageButton, SendMailCancelButton}) do
-		self:moveObject(v, "-", 5, "+", 10)
-	end
 	self:SecureHook("SendMailFrame_Update", function()
 		for i = 1, ATTACHMENTS_MAX_SEND do
 			local sma = _G["SendMailAttachment"..i]
-			self:moveObject(sma, "-", 10, "-", 10)
 			if not self.skinned[sma] then
-				self:removeRegions(sma, {1})
-				self:addSkinButton(sma, nil, nil, true)
+				self:keepFontStrings(sma)
+				self:addSkinButton{obj=sma, hide=true}
 			end
 		end
 	end)
 
-	self:moveObject(SendMailNameEditBox, "-", 20, "+", 10)
 	self:skinEditBox(SendMailNameEditBox, {6}) -- N.B. region 6 is text
 	self:skinEditBox(SendMailSubjectEditBox, {6}) -- N.B. region 6 is text
 	self:skinEditBox(SendMailBodyEditBox, nil, true)
 	local c = self.db.profile.BodyText
 	SendMailBodyEditBox:SetTextColor(c.r, c.g, c.b)
-
-	self:skinMoneyFrame(SendMailMoney)
-	self:moveObject(SendMailMoneyGold, "-", 10, nil, nil)
-	self:moveObject(SendMailMoneySilver, "-", 10, nil, nil)
-	self:moveObject(SendMailCancelButton, "-", 2, "-", 15)
+	self:skinMoneyFrame(SendMailMoney, nil, nil, true, true)
 
 -->>--	Open Mail Frame
-	self:keepFontStrings(OpenMailFrame)
-	OpenMailFrame:SetWidth(OpenMailFrame:GetWidth() * self.FxMult)
-	OpenMailFrame:SetHeight(OpenMailFrame:GetHeight() * self.FyMult)
-	self:moveObject(OpenMailTitleText, nil, nil, "-", 24)
-	self:moveObject(OpenMailCloseButton, "+", 28, "+", 8)
-	self:moveObject(OpenMailSenderLabel, "-", 5, "+", 10)
-	self:moveObject(OpenMailReportSpamButton, "+", 36, "+", 12)
-	self:moveObject(OpenMailSubjectLabel, "-", 5, "+", 10)
-	self:moveObject(OpenMailScrollFrame, "-", 5, "+", 10)
-	self:keepFontStrings(OpenMailScrollFrame)
+	self:removeRegions(OpenMailScrollFrame)
 	self:skinScrollBar(OpenMailScrollFrame)
-	self:moveObject(OpenMailCancelButton, "+", 30, "-", 72)
 	OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:storeAndSkin(ftype, OpenMailFrame)
-
+	self:addSkinFrame{obj=OpenMailFrame, ftype=ftype, kfs=true, x1=10, y1=-12, x2=-34, y2=68}
+	
 -->>-- Invoice Frame Text fields
 	OpenMailInvoiceItemLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
 	OpenMailInvoicePurchaser:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -331,18 +254,14 @@ function Skinner:MailFrame()
 	for i = 1, MailFrame.numTabs do
 		local tabName = _G["MailFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0)
-		else self:storeAndSkin(ftype, tabName) end
+		self:addSkinFrame{obj=tabName, ftype=ftype, ttab=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil, nil, "-", 69)
-			if self.db.profile.TexturedTab then self:setActiveTab(tabName) end
+			if self.isTT then self:setActiveTab(tabSF) end
 		else
-			self:moveObject(tabName, "+", 4, nil, nil)
-			if self.db.profile.TexturedTab then self:setInactiveTab(tabName) end
+			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-
-	self:storeAndSkin(ftype, MailFrame)
 
 end
 
@@ -350,106 +269,91 @@ function Skinner:AuctionUI()
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
+	if self.isTT then
+		-- hook this to change the texture for the Active and Inactive tabs
+		self:SecureHook("AuctionFrameTab_OnClick",function(...)
+			for i = 1, AuctionFrame.numTabs do
+				local tabSF = self.skinFrame[_G["AuctionFrameTab"..i]]
+				if i == AuctionFrame.selectedTab then
+					self:setActiveTab(tabSF)
+				else
+					self:setInactiveTab(tabSF)
+				end
+			end
+		end)
+	end
+
 	-- hide filter texture when filter is clicked
 	self:SecureHook("FilterButton_SetType", function(button, type, text, isLast)
 		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
 	end)
 
-	self:keepFontStrings(AuctionFrame)
-	AuctionFrame:SetHeight(AuctionFrame:GetHeight() - 6)
-	self:moveObject(AuctionFrameCloseButton, "-", 4, "+", 8)
-	self:moveObject(AuctionFrameMoneyFrame, nil, nil, "-", 6)
-	self:storeAndSkin(ftype, AuctionFrame)
+	self:addSkinFrame{obj=AuctionFrame, ftype=ftype, kfs=true, hdr=true, x1=10, y1=-12, x2=0, y2=3}
 
 -->>--	Browse Frame
-	self:moveObject(BrowseTitle, nil, nil, "+", 10)
 	for k, v in pairs({"Name", "MinLevel", "MaxLevel"}) do
 		local obj = _G["Browse"..v]
 		self:skinEditBox(obj, {9})
-		self:moveObject(obj, "-", (k ~= 3 and 10 or 5), "+", (k ~= 3 and 3 or 0)) -- don't move MaxLevel as far
-		obj:SetWidth(obj:GetWidth() + 4)
 	end
 	self:skinDropDown(BrowseDropDown)
-	self:moveObject(BrowseDropDownName, "+", 40, nil, nil)
 	for _, v in pairs({"Quality", "Level", "Duration", "HighBidder", "CurrentBid"}) do
 		local obj = _G["Browse"..v.."Sort"]
-		self:keepFontStrings(obj)
-		self:storeAndSkin(ftype, obj)
+		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
+		self:addSkinFrame{obj=obj, ftype=ftype}
 	end
 	self:removeRegions(BrowseFilterScrollFrame)
 	self:skinScrollBar(BrowseFilterScrollFrame)
 	for i = 1, NUM_FILTERS_TO_DISPLAY do
 		self:keepRegions(_G["AuctionFilterButton"..i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:storeAndSkin(ftype, _G["AuctionFilterButton"..i])
+		self:addSkinFrame{obj=_G["AuctionFilterButton"..i], ftype=ftype}
 	end
 	self:removeRegions(BrowseScrollFrame)
 	self:skinScrollBar(BrowseScrollFrame)
 	self:skinMoneyFrame(BrowseBidPrice, nil, nil, true)
 
 -->>--	Bid Frame
-	self:moveObject(BidTitle, nil, nil, "+", 10)
 	self:removeRegions(BidScrollFrame)
 	self:skinScrollBar(BidScrollFrame)
 	for _, v in pairs({"Quality", "Level", "Duration", "Buyout", "Status", "Bid"}) do
 		local obj = _G["Bid"..v.."Sort"]
-		self:keepFontStrings(obj)
-		self:storeAndSkin(ftype, obj)
+		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
+		self:addSkinFrame{obj=obj, ftype=ftype}
 	end
 	self:skinMoneyFrame(BidBidPrice, nil, nil, true)
 
 -->>--	Auctions Frame
-	self:moveObject(AuctionsTitle, nil, nil, "+", 10)
-	self:storeAndSkin(ftype, AuctionsItemButton)
+	self:addSkinFrame{obj=AuctionsItemButton, ftype=ftype}
 	self:removeRegions(AuctionsScrollFrame)
 	self:skinScrollBar(AuctionsScrollFrame)
 	for _, v in pairs({"Quality", "Duration", "HighBidder", "Bid"}) do
 		local obj = _G["Auctions"..v.."Sort"]
-		self:keepFontStrings(obj)
-		self:storeAndSkin(ftype, obj)
+		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
+		self:addSkinFrame{obj=obj, ftype=ftype}
 	end
 	self:skinMoneyFrame(StartPrice, nil, nil, true)
 	self:skinMoneyFrame(BuyoutPrice, nil, nil, true)
 
--->>--	AuctionDressUp Frame
+-->>--	Auction DressUp Frame
 	self:keepRegions(AuctionDressUpFrame, {3, 4}) --N.B. regions 3 & 4 are the background
-	AuctionDressUpFrame:SetWidth(AuctionDressUpFrame:GetWidth() - 6)
-	AuctionDressUpFrame:SetHeight(AuctionDressUpFrame:GetHeight() - 13)
 	self:keepRegions(AuctionDressUpFrameCloseButton, {1}) -- N.B. region 1 is the button artwork
-	self:moveObject(AuctionDressUpBackgroundTop, nil, nil, "+", 8)
 	AuctionDressUpModelRotateLeftButton:Hide()
 	AuctionDressUpModelRotateRightButton:Hide()
 	self:makeMFRotatable(AuctionDressUpModel)
-	self:storeAndSkin(ftype, AuctionDressUpFrame)
-
+	self:moveObject(AuctionDressUpFrame, "+", 6)
+	self:addSkinFrame{obj=AuctionDressUpFrame, ftype=ftype, x1=-6, y1=-3, x2=-2, y2=0}
 -->>--	Tabs
 	for i = 1, AuctionFrame.numTabs do
 		local tabName = _G["AuctionFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0)
-		else self:storeAndSkin(ftype, tabName) end
+		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		self:addSkinFrame{obj=tabName, ftype=ftype, ttab=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
-			self:moveObject(tabName, nil, nil, "-", 4)
-			if self.db.profile.TexturedTab then self:setActiveTab(tabName) end
+			if self.isTT then self:setActiveTab(tabSF) end
 		else
-			self:moveObject(tabName, "+", 3, nil, nil)
-			if self.db.profile.TexturedTab then self:setInactiveTab(tabName) end
+			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-
-	if self.db.profile.TexturedTab then
-		self:SecureHook("AuctionFrameTab_OnClick", function(index)
---			self:Debug("AuctionFrameTab_OnClick: [%s]", index)
-			for i = 1, AuctionFrame.numTabs do
-				local tabName = _G["AuctionFrameTab"..i]
-				if i == AuctionFrame.selectedTab then
-					self:setActiveTab(tabName)
-				else
-					self:setInactiveTab(tabName)
-				end
-			end
-		end)
-	end
-
+	
 end
 
 function Skinner:MainMenuBar()
@@ -463,69 +367,29 @@ function Skinner:MainMenuBar()
 	
 	if IsAddOnLoaded("Dominos") then return end
 
-	-- Don't move the Performance Bar if IPopBar is loaded as it keeps moving up the screen
-	if not IsAddOnLoaded("IPopBar") then
-		-- hook this to move the PerformanceBar
-		self:SecureHook("MainMenuBar_UpdateKeyRing", function()
-			if SHOW_KEYRING == 1 then self:moveObject(MainMenuBarPerformanceBarFrame, nil, nil, "+", 4) end
-		end)
-	end
-
-	-- Hook this to move the Reputation Watch Bar
-	self:SecureHook("ReputationWatchBar_Update", function(newLevel)
-		self:moveObject(ReputationWatchBar, nil, nil, "-", 4)
-	end)
-
-	self:keepFontStrings(MainMenuBar)
-	if not MainMenuBarMaxLevelBar:IsShown() then
-		MainMenuBar:SetHeight(MainMenuBar:GetHeight() * 1.15)
-		self:moveObject(ActionBarUpButton, nil, nil, "-", 4)
-		self:moveObject(ActionBarDownButton, nil, nil, "-", 4)
-	else
-		self:moveObject(ActionBarUpButton, nil, nil, "+", 4)
-		self:moveObject(ActionBarDownButton, nil, nil, "+", 4)
-		self:moveObject(MainMenuBarPageNumber, nil, nil, "+", 4)
-	end
-	self:moveObject(MainMenuBar, nil, nil, "-", 4)
-	self:storeAndSkin(ftype, MainMenuBar, nil, 0)
+-->>-- Main Menu Bar
+	self:keepFontStrings(MainMenuBarMaxLevelBar)
+	self:keepFontStrings(MainMenuBarArtFrame)
+	ExhaustionTick:SetAlpha(0)
+	MainMenuExpBar:SetHeight(MainMenuExpBar:GetHeight() - 2) -- shrink it so it moves up
+	self:addSkinFrame{obj=MainMenuBar, ftype=ftype, kfs=true, mmb=true, x1=-4, y1=-7, x2=4, y2=-4}
+	
+--[[
+	-- bugfix ??
 	if MainMenuBar:GetFrameLevel() > 0 then
 	    LowerFrameLevel(MainMenuBar)
 	end
+--]]
 
 	-- Experience Bar
 	self:keepRegions(MainMenuExpBar, {1, 7}) -- N.B. region 1 is rested XP, 7 is the normal XP
-	MainMenuExpBar:SetWidth(MainMenuExpBar:GetWidth() - 8)
-	MainMenuExpBar:SetHeight(MainMenuExpBar:GetHeight() * self.FyMult)
-	self:moveObject(MainMenuExpBar, nil, nil, "-", 4)
-	self:moveObject(MainMenuBarExpText, nil, nil, "-", 1)
 	-- Reputation Bar
 	self:keepRegions(ReputationWatchStatusBar, {10}) -- 10 is the normal texture
-	ReputationWatchStatusBar:SetWidth(MainMenuExpBar:GetWidth())
-	self:moveObject(ReputationWatchBar, nil, nil, "-", 4)
-
--->>--	MainMenuBarOverlayFrame
-	self:keepFontStrings(MainMenuBarMaxLevelBar)
-	self:keepFontStrings(MainMenuBarArtFrame)
-	self:moveObject(CharacterMicroButton, nil, nil, "+", 4)
-	-- Exhaustion Bar (i.e. Rested)
-	ExhaustionLevelFillBar:SetHeight(ExhaustionLevelFillBar:GetHeight() * self.FyMult)
-	ExhaustionTick:SetAlpha(0)
-
-	-- move Action Buttons, Micro buttons etc
-	self:moveObject(ActionButton1, nil, nil, "+", 3)
-	self:moveObject(MainMenuBarBackpackButton, nil, nil, "+", 4)
-
-	-- move the Bag count
-	for i = 0, 3 do
-		self:moveObject(_G["CharacterBag"..i.."SlotCount"], "+", 5, "-", 1)
-	end
 
 	local function toggleActionButtons()
 
 		local babf = BonusActionBarFrame
-
 --		Skinner:Debug("tAB: [%s, %s, %s, %s]", _G["ActionButton1"]:IsShown(),_G["BonusActionButton1"]:IsShown(), babf.mode,  babf.state)
-
 		if babf.mode == "show" or (babf.mode == "none" and babf.state == "top") then
 			for i = 1, 12 do
 				_G["ActionButton"..i]:SetAlpha(0)
@@ -538,9 +402,8 @@ function Skinner:MainMenuBar()
 
 	end
 
--->>--	BonusActionBar Frame
+-->>--	Bonus Action Bar Frame
 	self:keepFontStrings(BonusActionBarFrame)
-	self:moveObject(BonusActionButton1, nil, nil, "+", 3)
 	if BonusActionBarFrame.mode == "show" then
 		toggleActionButtons()
 	end
@@ -551,15 +414,19 @@ function Skinner:MainMenuBar()
 	self:SecureHook("HideBonusActionBar", function(this)
 		toggleActionButtons()
 	end)
--->>--	ShapeshiftBar Frame
+-->>--	Shapeshift Bar Frame
 	self:keepFontStrings(ShapeshiftBarFrame)
+	-- skin shapeshift buttons
+	for i = 1, NUM_SHAPESHIFT_SLOTS do
+		local ssBtn = _G["ShapeshiftButton"..i]
+		self:addSkinButton{obj=ssBtn}
+	end
 
--->>--	PossessBar Frame
+-->>--	Possess Bar Frame
 	self:keepFontStrings(PossessBarFrame)
 
--->>--	PetActionBar Frame
+-->>--	Pet Action Bar Frame
 	self:keepFontStrings(PetActionBarFrame)
-	self:moveObject(PetActionButton1, nil, nil, "+", 4)
 
 end
 
@@ -567,43 +434,29 @@ function Skinner:CoinPickup()
 	if not self.db.profile.CoinPickup or self.initialized.CoinPickup then return end
 	self.initialized.CoinPickup = true
 
-	self:keepFontStrings(CoinPickupFrame)
-	CoinPickupFrame:SetWidth(CoinPickupFrame:GetWidth() * 0.8)
-	CoinPickupFrame:SetHeight(CoinPickupFrame:GetHeight() * 0.65)
-	self:moveObject(CoinPickupGoldIcon, "+", 5, "-", 5)
-	self:moveObject(CoinPickupSilverIcon, "+", 5, "-", 5)
-	self:moveObject(CoinPickupCopperIcon, "+", 5, "-", 5)
-	self:moveObject(CoinPickupText, "+", 5, "-", 5)
-	self:moveObject(CoinPickupLeftButton, "+", 10, "-", 5)
-	self:moveObject(CoinPickupRightButton, "-", 10, "-", 5)
-	self:moveObject(CoinPickupOkayButton, "+", 3, "-", 13)
-	self:moveObject(CoinPickupCancelButton, "-", 5, "-", 13)
-	self:storeAndSkin(ftype, CoinPickupFrame)
-
+	self:addSkinFrame{obj=CoinPickupFrame, ftype=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
+	
 end
 
 function Skinner:GMSurveyUI()
 	if not self.db.profile.GMSurveyUI or self.initialized.GMSurveyUI then return end
 	self.initialized.GMSurveyUI = true
 
-	self:keepFontStrings(GMSurveyFrame)
 	self:keepFontStrings(GMSurveyHeader)
-
-	for i = 1, MAX_SURVEY_QUESTIONS do
-		self:storeAndSkin(ftype, _G["GMSurveyQuestion"..i])
-	end
-	self:storeAndSkin(ftype, GMSurveyCommentFrame)
-	self:moveObject(GMSurveyHeaderText, nil, nil, "-", 6)
-	self:moveObject(GMSurveyCloseButton, "+", 40, nil, nil)
-	self:moveObject(GMSurveyCancelButton, nil, nil, "-", 10)
-	self:moveObject(GMSurveySubmitButton, "+", 40, "-", 10)
+	self:moveObject(GMSurveyHeaderText, nil, nil, "-", 8)
+	self:addSkinFrame{obj=GMSurveyFrame, ftype=ftype, kfs=true, y1=-6, x2=-45}
 
 	self:removeRegions(GMSurveyScrollFrame)
 	self:skinScrollBar(GMSurveyScrollFrame)
+
+	-- this isn't working, questions are hidden behind the skin
+	for i = 1, MAX_SURVEY_QUESTIONS do
+		self:addSkinFrame{obj=_G["GMSurveyQuestion"..i], ftype=ftype, y1=-2}
+	end
+
 	self:removeRegions(GMSurveyCommentScrollFrame)
 	self:skinScrollBar(GMSurveyCommentScrollFrame)
-
-	self:storeAndSkin(ftype, GMSurveyFrame, true)
+	self:addSkinFrame{obj=GMSurveyCommentFrame, ftype=ftype}
 
 end
 
@@ -611,30 +464,24 @@ function Skinner:LFGFrame()
 	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
 	self.initialized.LFGFrame = true
 
-	self:moveObject(LFGParentFrameTitle, nil, nil, "+", 10)
-	self:moveObject(self:getChild(LFGParentFrame, 3), "+", 26, "+", 8) -- close button
-	self:moveObject(LFGFrameRolesBorder, "-", 20, nil, nil)
+	if self.isTT then
+		self:SecureHookScript(LFGFrame, "OnShow", function(this)
+			self:setActiveTab(self.skinFrame[LFGParentFrameTab1])
+			self:setInactiveTab(self.skinFrame[LFGParentFrameTab2])
+		end)
+		self:SecureHookScript(LFMFrame, "OnShow", function(this)
+			self:setActiveTab(self.skinFrame[LFGParentFrameTab2])
+			self:setInactiveTab(self.skinFrame[LFGParentFrameTab1])
+		end)
+	end
 	LFGFrameRolesBorder:SetBackdrop(nil)
-	self:moveObject(LFGFrameQueue1Border, "-", 20, nil, nil)
 	LFGFrameQueue1Border:SetBackdrop(nil)
 	LFGFrameQueue2Border:SetBackdrop(nil)
 	LFGFrameQueue3Border:SetBackdrop(nil)
-	self:SecureHookScript(LFGFrame, "OnShow", function(this)
-		self:setActiveTab(LFGParentFrameTab1)
-		self:setInactiveTab(LFGParentFrameTab2)
-	end)
-	self:SecureHookScript(LFMFrame, "OnShow", function(this)
-		self:setActiveTab(LFGParentFrameTab2)
-		self:setInactiveTab(LFGParentFrameTab1)
-	end)
 
-	LFGParentFrame:SetWidth(LFGParentFrame:GetWidth() * self.FxMult)
-	LFGParentFrame:SetHeight(LFGParentFrame:GetHeight() * self.FyMult)
-	self:keepFontStrings(LFGParentFrame)
-	self:storeAndSkin(ftype, LFGParentFrame)
-
+	self:addSkinFrame{obj=LFGParentFrame, ftype=ftype, kfs=true, x1=17, y1=-11, x2=-30, y2=70}
+	
 -->>--	LFG Frame
-	self:moveObject(LFGFrameNoRoleBackground, "+", 6, nil, nil)
 	self:keepFontStrings(AutoJoinBackground)
 	self:skinDropDown(LFGFrameNameDropDown1)
 	self:skinDropDown(LFGFrameNameDropDown2)
@@ -642,46 +489,40 @@ function Skinner:LFGFrame()
 	self:skinDropDown(LFGFrameTypeDropDown1)
 	self:skinDropDown(LFGFrameTypeDropDown2)
 	self:skinDropDown(LFGFrameTypeDropDown3)
-	self:moveObject(LFGSearchBg1, "+", 30, nil, nil)
-	self:keepRegions(LFGEye, {})
-	self:storeAndSkin(ftype, LFGEye)
-	self:moveObject(LFGFrameDoneButton, "+", 25, "-", 76)
-
+	self:addSkinFrame{obj=LFGEye, ftype=ftype, kfs=true}
+	
 -->>--	LFM Frame
+	self:keepRegions(LFMFrame, {2}) -- totals text
 	self:keepFontStrings(AddMemberBackground)
-	self:moveObject(LFMFrameTotals, nil, nil, "-", 76)
 	self:skinDropDown(LFMFrameTypeDropDown)
 	self:skinDropDown(LFMFrameNameDropDown)
 	self:keepFontStrings(LFMFrameDropDown1)
-	self:skinFFColHeads("LFMFrameColumnHeader", 3) -- first three
+	self:skinFFColHeads("LFMFrameColumnHeader", 3) -- first 3
 	self:keepRegions(LFMFrameColumnHeader4Group, {4, 5}) -- N.B 4 is text, 5 is highlight
-	self:storeAndSkin(ftype, LFMFrameColumnHeader4Group)
+	self:addSkinFrame{obj=LFMFrameColumnHeader4Group, ftype=ftype}
+	
 	for i = 4, 7 do
 		self:keepRegions(_G["LFMFrameColumnHeader"..i], {4, 5, 6}) -- N.B 4 is text, 5 is highlight, 6 is icon
-		self:storeAndSkin(ftype, _G["LFMFrameColumnHeader"..i])
+		self:addSkinFrame{obj=_G["LFMFrameColumnHeader"..i], ftype=ftype}
 	end
+
 	LFMFrameRoleBackground:Hide()
-	self:moveObject(LFMFrameTypeDropDown, "-", 10, nil, nil)
-	self:moveObject(LFMFrameColumnHeader1, "-", 10, nil, nil)
-	self:moveObject(LFMFrameButton1, "-", 10, nil, nil)
 	self:removeRegions(LFMListScrollFrame)
 	self:skinScrollBar(LFMListScrollFrame)
-	self:keepFontStrings(LFMEye)
-	self:storeAndSkin(ftype, LFMEye)
-	self:keepRegions(LFMFrame, {2}) -- totals text
-	self:moveObject(LFMFrameGroupInviteButton, "+", 25, "-", 76)
+	self:addSkinFrame{obj=LFMEye, ftype=ftype, kfs=true}
 
 -->>--	Tabs
-	self:keepRegions(LFGParentFrameTab1, {7, 8})
-	self:keepRegions(LFGParentFrameTab2, {7, 8})
-	self:moveObject(LFGParentFrameTab1, nil, nil, "-", 70)
-	self:moveObject(LFGParentFrameTab2, "+", 10, nil, nil)
-	if self.db.profile.TexturedTab then self:applySkin(LFGParentFrameTab1, nil, 0)
-	else self:storeAndSkin(ftype, LFGParentFrameTab1) end
-
-	if self.db.profile.TexturedTab then self:applySkin(LFGParentFrameTab2, nil, 0)
-	else self:storeAndSkin(ftype, LFGParentFrameTab2) end
-
+	for i = 1, 2 do
+		local tabName = _G["LFGParentFrameTab"..i]
+		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		self:addSkinFrame{obj=tabName, ftype=ftype, ttab=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		local tabSF = self.skinFrame[tabName]
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+	end
 
 end
 
@@ -689,32 +530,35 @@ function Skinner:ItemSocketingUI()
 	if not self.db.profile.ItemSocketingUI or self.initialized.ItemSocketingUI then return end
 	self.initialized.ItemSocketingUI = true
 
-	self:SecureHook("ItemSocketingFrame_Update", function()
+	local function colourSockets()
+	
 		for i = 1, GetNumSockets() do
-			-- colour the button border
 			local colour = GEM_TYPE_INFO[GetSocketTypes(i)]
 			self.sBut[_G["ItemSocketingSocket"..i]]:SetBackdropBorderColor(colour.r, colour.g, colour.b)
 		end
+
+	end
+	-- hook this to colour the button border
+	self:SecureHook("ItemSocketingFrame_Update", function()
+		colourSockets()
 	end)
 
-	ItemSocketingFrame:SetWidth(CharacterFrame:GetWidth())
-	ItemSocketingFrame:SetHeight(CharacterFrame:GetHeight())
-	self:moveObject(self:getRegion(ItemSocketingFrame, 3), nil, nil, "+", 8) -- title text
-	self:moveObject(ItemSocketingCloseButton, nil, nil, "+", 8)
+	self:addSkinFrame{obj=ItemSocketingFrame, ftype=ftype, kfs=true, x1=10, y1=-12, x2=-4, y2=26}
+
 	self:removeRegions(ItemSocketingScrollFrame)
 	self:skinScrollBar(ItemSocketingScrollFrame)
+
 	for i = 1, MAX_NUM_SOCKETS do
 		local isB = _G["ItemSocketingSocket"..i]
 		_G["ItemSocketingSocket"..i.."Left"]:SetAlpha(0)
 		_G["ItemSocketingSocket"..i.."Right"]:SetAlpha(0)
 		self:getRegion(isB, 3):SetAlpha(0) -- button texture
-		self:addSkinButton(isB, nil, nil, true)
-		if i == 1 then self:moveObject(isB, "-", 10, "+", 10) end
+		self:addSkinButton{obj=isB}
 	end
-	self:moveObject(ItemSocketingSocketButton, nil, nil, "-", 20)
-	self:keepFontStrings(ItemSocketingFrame)
-	self:storeAndSkin(ftype, ItemSocketingFrame)
-
+	-- now colour the sockets
+	colourSockets()
+	
+	-- Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then ItemSocketingDescription:SetBackdrop(self.backdrop) end
 		self:skinTooltip(ItemSocketingDescription)
@@ -726,17 +570,27 @@ function Skinner:GuildBankUI()
 	if not self.db.profile.GuildBankUI or self.initialized.GuildBankUI then return end
 	self.initialized.GuildBankUI = true
 
+	if self.isTT then
+		-- hook this to change the texture for the Active and Inactive tabs
+		self:SecureHook("GuildBankFrameTab_OnClick",function(...)
+			for i = 1, 4 do
+				local tabSF = self.skinFrame[_G["GuildBankFrameTab"..i]]
+				if i == GuildBankFrame.selectedTab then
+					self:setActiveTab(tabSF)
+				else
+					self:setInactiveTab(tabSF)
+				end
+			end
+		end)
+	end
+
 -->>--	Main Frame
 	GuildBankEmblemFrame:Hide()
-	self:keepFontStrings(GuildBankFrame)
-	self:moveObject(GuildBankTabTitle, nil, nil, "+", 40)
-	self:moveObject(self:getChild(GuildBankFrame, 13), "-", 2, "+", 9) -- Close Button
-	self:moveObject(GuildBankColumn1, "-", 5, "+", 10)
 	for i = 1, 7 do
 		_G["GuildBankColumn"..i.."Background"]:SetAlpha(0)
 	end
-	self:storeAndSkin(ftype, GuildBankFrame, true)
-
+	self:addSkinFrame{obj=GuildBankFrame, ftype=ftype, kfs=true, hdr=true, y1=-11, y2=1}
+	
 -->>--	Log Frame
 	self:removeRegions(GuildBankTransactionsScrollFrame)
 	self:skinScrollBar(GuildBankTransactionsScrollFrame)
@@ -745,48 +599,31 @@ function Skinner:GuildBankUI()
 	self:removeRegions(GuildBankInfoScrollFrame)
 	self:skinScrollBar(GuildBankInfoScrollFrame)
 
--->>--	GuildBank Tabs (on the RHS)
-	for i = 1, 6 do
-		local tabName = _G["GuildBankTab"..i]
-		self:keepRegions(tabName, {7, 8})
-		if i == 1 then self:moveObject(tabName, "-", 2, nil, nil) end
-	end
-
--->>--	GuildBank Frame Tabs (at the bottom)
-	for i = 1, MAX_GUILDBANK_TABS do
-		local tabName = _G["GuildBankFrameTab"..i]
-		if tabName then
-			self:keepFontStrings(tabName)
-			if self.db.profile.TexturedTab then
-				self:applySkin(tabName, nil, 0, 1)
-				if i == 1 then self:setActiveTab(tabName)
-				else self:setInactiveTab(tabName) end
-			else self:storeAndSkin(ftype, tabName) end
-			if i == 1 then self:moveObject(tabName, nil, nil, "-", 2)
-			else self:moveObject(tabName, "+", 13, nil, nil) end
-		end
-	end
-
-	if self.db.profile.TexturedTab then
-		self:SecureHook("GuildBankFrameTab_OnClick", function(id, doNotUpdate)
-			for i = 1, 4 do
-				local tabName = _G["GuildBankFrameTab"..i]
-				if i == GuildBankFrame.selectedTab then self:setActiveTab(tabName)
-				else self:setInactiveTab(tabName) end
-			end
-		end)
-	end
-
 -->>--	GuildBank Popup Frame
-	self:keepFontStrings(GuildBankPopupFrame)
 	self:skinEditBox(GuildBankPopupEditBox, {9})
 	self:removeRegions(GuildBankPopupScrollFrame)
 	self:skinScrollBar(GuildBankPopupScrollFrame)
-	self:moveObject(GuildBankPopupScrollFrame, "+", 18, nil, nil)
-	self:moveObject(GuildBankPopupButton1, "+", 18, nil, nil)
-	self:moveObject(GuildBankPopupCancelButton, "-", 12, "-", 14)
-	self:storeAndSkin(ftype, GuildBankPopupFrame, true)
+	self:addSkinFrame{obj=GuildBankPopupFrame, ftype=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
+	
+-->>--	GuildBank Tabs (side)
+	for i = 1, MAX_GUILDBANK_TABS do
+		local tabName = _G["GuildBankTab"..i]
+		self:keepRegions(tabName, {7, 8})
+	end
 
+-->>--	GuildBank Frame Tabs (bottom)
+	for i = 1, 4 do
+		local tabName = _G["GuildBankFrameTab"..i]
+		self:keepFontStrings(tabName)
+		self:addSkinFrame{obj=tabName, ftype=ftype, ttab=self.isTT, x1=6, x2=-6, y2=2}
+		local tabSF = self.skinFrame[tabName]
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+	end
+	
 end
 
 function Skinner:Nameplates()
