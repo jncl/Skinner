@@ -340,9 +340,6 @@ local function __addSkinButton(opts)
 	assert(opts.obj, "Unknown object __aSB\n"..debugstack())
 --@end-alpha@
 
-	-- handle missing object (usually when addon changes)
-	if not opts.obj then return end
-	
 	opts.parent = opts.parent or opts.obj:GetParent()
 	opts.hook = opts.hook or opts.obj
 
@@ -445,9 +442,6 @@ local function __addSkinFrame(opts)
 	assert(opts.obj, "Unknown object __aSF\n"..debugstack())
 --@end-alpha@
 
-	-- handle missing object (usually when addon changes)
-	if not opts.obj then return end
-	
 	-- remove the object's Backdrop if it has one
 	if opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
 
@@ -587,9 +581,6 @@ local function __applySkin(opts)
 	assert(opts.obj, "Unknown object __aS\n"..debugstack())
 --@end-alpha@
 
-	-- handle missing object (usually when addon changes)
-	if not opts.obj then return end
-	
 	local hasIOT = assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
 	if hasIOT and not opts.obj:IsObjectType("Frame") then
 		if Skinner.db.profile.Errors then
@@ -1019,9 +1010,6 @@ local function __moveObject(opts)
 	assert(opts.obj, "Unknown object __mO\n"..debugstack())
 --@end-alpha@
 
-	-- handle missing object (usually when addon changes)
-	if not opts.obj then return end
-	
 	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
 
 	relTo = opts.relTo or relTo
@@ -1233,9 +1221,6 @@ local function __skinDropDown(opts)
 	assert(opts.obj, "Unknown object__sDD\n"..debugstack())
 --@end-alpha@
 
-	-- handle missing object (usually when addon changes)
-	if not opts.obj then return end
-	
 	if not (opts.obj and opts.obj.GetName and opts.obj:GetName() and _G[opts.obj:GetName().."Right"]) then return end -- ignore tekKonfig dropdowns
 
 	if not Skinner.db.profile.TexturedDD or opts.noSkin then Skinner:keepFontStrings(opts.obj) return end
@@ -1386,9 +1371,6 @@ local function __skinMoneyFrame(opts)
 	assert(opts.obj, "Unknown object __sMF\n"..debugstack())
 --@end-alpha@
 
-	-- handle missing object (usually when addon changes)
-	if not opts.obj then return end
-	
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
 		local fName = _G[opts.obj:GetName()..v]
 		Skinner:skinEditBox{obj=fName, regs={9, 10}, noHeight=true} -- N.B. region 9 is the icon, 10 is text
@@ -1445,9 +1427,6 @@ local function __skinScrollBar(opts)
 	assert(opts.obj and opts.obj:IsObjectType("ScrollFrame"), "Not a ScrollFrame\n"..debugstack())
 --@end-alpha@
 
-	-- handle missing object (usually when addon changes)
-	if not opts.obj then return end
-	
 	-- remove all the object's regions, if required
 	if not opts.noRR then Skinner:removeRegions(opts.obj)end
 	
