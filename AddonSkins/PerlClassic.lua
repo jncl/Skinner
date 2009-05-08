@@ -1,11 +1,12 @@
+local tinsert = table.insert
 
 local barSuffixes = {"", "FadeBar", "BG"}
 local hmSuffixes = {"Health", "Mana"}
-local hmdSuffixes = CopyTable(hmSuffixes) table.insert(hmdSuffixes, "Druid")
-local hmphSuffixes = CopyTable(hmSuffixes) table.insert(hmphSuffixes, "PetHealth")
+local hmdSuffixes = CopyTable(hmSuffixes) tinsert(hmdSuffixes, "Druid")
+local hmphSuffixes = CopyTable(hmSuffixes) tinsert(hmphSuffixes, "PetHealth")
 local nsSuffixes = {"Name", "Stats"}
-local nspSuffixes = CopyTable(nsSuffixes) table.insert(nspSuffixes, "Portrait")
-local nsplSuffixes = CopyTable(nspSuffixes) table.insert(nsplSuffixes, "Level")
+local nspSuffixes = CopyTable(nsSuffixes) tinsert(nspSuffixes, "Portrait")
+local nsplSuffixes = CopyTable(nspSuffixes) tinsert(nsplSuffixes, "Level")
 
 local function changeBBC(frame)
 
@@ -26,11 +27,11 @@ function Skinner:Perl_CombatDisplay()
 	self:applySkin(Perl_CombatDisplay_Target_ManaFrame)
 
 	local combatdisplayframes = CopyTable(hmdSuffixes)
-	table.insert(combatdisplayframes, "CP")
-	table.insert(combatdisplayframes, "PetHealth")
-	table.insert(combatdisplayframes, "PetMana")
-	table.insert(combatdisplayframes, "Target_Health")
-	table.insert(combatdisplayframes, "Target_Mana")
+	tinsert(combatdisplayframes, "CP")
+	tinsert(combatdisplayframes, "PetHealth")
+	tinsert(combatdisplayframes, "PetMana")
+	tinsert(combatdisplayframes, "Target_Health")
+	tinsert(combatdisplayframes, "Target_Mana")
 	for _, b in pairs(combatdisplayframes) do
 		for _, t in pairs(barSuffixes) do
 			local bName = _G["Perl_CombatDisplay_"..b.."Bar"..t]
@@ -59,9 +60,9 @@ function Skinner:Perl_Focus()
 --	self:Debug("Perl_Focus")
 
 	local focusframes = CopyTable(nsplSuffixes)
-	table.insert(focusframes, "ClassName")
-	table.insert(focusframes, "Civilian")
-	table.insert(focusframes, "RareElite")
+	tinsert(focusframes, "ClassName")
+	tinsert(focusframes, "Civilian")
+	tinsert(focusframes, "RareElite")
 	for _, f in pairs(focusframes) do
 		self:applySkin(_G["Perl_Focus_"..f.."Frame"])
 	end
@@ -228,7 +229,7 @@ function Skinner:Perl_Player()
 --	self:Debug("Perl_Player")
 
 	local partyframes = CopyTable(nsplSuffixes)
-	table.insert(partyframes, "RaidGroupNumber")
+	tinsert(partyframes, "RaidGroupNumber")
 	for _, f in pairs(partyframes) do
 		self:applySkin(_G["Perl_Player_"..f.."Frame"])
 	end
@@ -326,10 +327,10 @@ function Skinner:Perl_Target()
 --	self:Debug("Perl_Target")
 
 	local targetframes = CopyTable(nsplSuffixes)
-	table.insert(targetframes, "ClassName")
-	table.insert(targetframes, "Guild")
-	table.insert(targetframes, "RareElite")
-	table.insert(targetframes, "CP")
+	tinsert(targetframes, "ClassName")
+	tinsert(targetframes, "Guild")
+	tinsert(targetframes, "RareElite")
+	tinsert(targetframes, "CP")
 	for _, f in pairs(targetframes) do
 		self:applySkin(_G["Perl_Target_"..f.."Frame"])
 	end
@@ -372,8 +373,8 @@ function Skinner:Perl_Target_Target()
 --	self:Debug("Perl_Target_Target")
 
 	local targettargetframes = CopyTable(hmSuffixes)
-	table.insert(targettargetframes, "Target_Health")
-	table.insert(targettargetframes, "Target_Mana")
+	tinsert(targettargetframes, "Target_Health")
+	tinsert(targettargetframes, "Target_Mana")
 	for _, b in pairs(targettargetframes) do
 		for _, t in pairs(barSuffixes) do
 			local bName = _G["Perl_Target_Target_"..b.."Bar"..t]
