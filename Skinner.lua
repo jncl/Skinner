@@ -393,6 +393,9 @@ function Skinner:addSkinButton(...)
 	assert(opts, "Unknown object aSB\n"..debugstack())
 --@end-alpha@
 
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+	
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 --		self:addSkinButton_old(...)
@@ -503,6 +506,9 @@ function Skinner:addSkinFrame(...)
 	assert(opts, "Unknown object aSF\n"..debugstack())
 --@end-alpha@
 
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+	
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -615,6 +621,9 @@ function Skinner:applySkin(...)
 	assert(opts, "Unknown object aS\n"..debugstack())
 --@end-alpha@
 
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+	
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1253,6 +1262,9 @@ function Skinner:skinDropDown(...)
 	assert(opts, "Unknown object sDD\n"..debugstack())
 --@end-alpha@
 
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+	
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1315,6 +1327,9 @@ function Skinner:skinEditBox(...)
 	assert(opts, "Unknown object sEB\n"..debugstack())
 --@end-alpha@
 
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+	
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1401,6 +1416,9 @@ function Skinner:skinMoneyFrame(...)
 	assert(opts, "Unknown object sMF\n"..debugstack())
 --@end-alpha@
 
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+	
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1449,6 +1467,9 @@ function Skinner:skinScrollBar(...)
 	assert(opts, "Unknown object sSB\n"..debugstack())
 --@end-alpha@
 
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+	
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1553,6 +1574,9 @@ function Skinner:skinUsingBD(...)
 	assert(opts, "Unknown object sUBD\n"..debugstack())
 --@end-alpha@
 
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+	
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
