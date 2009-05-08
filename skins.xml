@@ -48,6 +48,7 @@
 <script file="SkinMe\BeanCounter.lua"/>
 <script file="SkinMe\BeastTraining.lua"/>
 <script file="SkinMe\beql.lua"/>
+<script file="SkinMe\BetterBindingFrame.lua"/>
 <script file="SkinMe\BetterInbox.lua"/>
 <script file="SkinMe\BigBankStatement.lua"/>
 <script file="SkinMe\BigGuild.lua"/>
