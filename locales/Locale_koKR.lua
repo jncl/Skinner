@@ -34,6 +34,8 @@ L["Set Baggins Bank Bags Colour"] = true
 L["Right Click to display options menu"] = true
 L["Skin Tracker Frame"] = true
 L["Toggle the skin of the Tracker Frame"] = true
+L["GMChatUI Frame"] = true
+L["Toggle the skin of the GMChatUI Frame"] = true
 
 -- option names and descriptions
 L["Default Colours"] = "기본 색상"

@@ -57,6 +57,8 @@ L["Toggle the minimap icon"] = true
 L["Skin Settings"] = true
 L["Frames"] = true
 L["Other Settings"] = true
+L["GMChatUI Frame"] = true
+L["Toggle the skin of the GMChatUI Frame"] = true
 
 -- option names and descriptions
 L["Default Colours"] = "預設顏色"

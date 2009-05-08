@@ -1,5 +1,7 @@
-
 local ftype = "s"
+local ceil = math.ceil
+local tinsert = table.insert
+local CreateFrame = CreateFrame
 
 function Skinner:adjustTFOffset(reset)
 --	self:Debug("adjustTFOffset:[%s, %s, %s]", reset, self.db.profile.TopFrame.height, UIParent:GetAttribute("TOP_OFFSET"))
@@ -20,7 +22,7 @@ end
 function Skinner:TopFrame()
 	if not self.db.profile.TopFrame.shown then return end
 
-	local fh = nil
+	local fh
 
 	local frame = CreateFrame("Frame", "SkinnerTF", UIParent)
 	frame:SetFrameStrata("BACKGROUND")
@@ -40,11 +42,12 @@ function Skinner:TopFrame()
 	if self.db.profile.FadeHeight.enable and self.db.profile.FadeHeight.force then
 		-- set the Fade Height to the global value if 'forced'
 		-- making sure that it isn't greater than the frame height
-		fh = self.db.profile.FadeHeight.value <= math.ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or math.ceil(frame:GetHeight())
+		fh = self.db.profile.FadeHeight.value <= ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or ceil(frame:GetHeight())
 	elseif self.db.profile.TopFrame.fheight then
-		fh = self.db.profile.TopFrame.fheight <= math.ceil(frame:GetHeight()) and self.db.profile.TopFrame.fheight or math.ceil(frame:GetHeight())
+		fh = self.db.profile.TopFrame.fheight <= ceil(frame:GetHeight()) and self.db.profile.TopFrame.fheight or ceil(frame:GetHeight())
 	end
-	self:storeAndSkin(ftype, frame, nil, fb, self.db.profile.TopFrame.alpha, fh)
+	self:applySkin{obj=frame, bba=fb, ba=self.db.profile.TopFrame.alpha, fh=fh}
+	tinsert(self.gradFrames[ftype], frame)
 
 	-- keep a reference to the frame
 	self.topframe = frame
@@ -146,12 +149,13 @@ function Skinner:MiddleFrames()
 		if fhp.enable and fhp.force then
 		-- set the Fade Height to the global value if 'forced'
 		-- making sure that it isn't greater than the frame height
-			fh = fhp.value <= math.ceil(frame:GetHeight()) and fhp.value or math.ceil(frame:GetHeight())
+			fh = fhp.value <= ceil(frame:GetHeight()) and fhp.value or ceil(frame:GetHeight())
 		elseif mfp.fheight then
-			fh = mfp.fheight <= math.ceil(frame:GetHeight()) and mfp.fheight or math.ceil(frame:GetHeight())
+			fh = mfp.fheight <= ceil(frame:GetHeight()) and mfp.fheight or ceil(frame:GetHeight())
 		end
 		local fb = mfp.borderOff and 0 or 1
-		Skinner:storeAndSkin(ftype, frame, nil, fb, nil, fh)
+		self:applySkin{obj=frame, bba=fb, fh=fh}
+		tinsert(self.gradFrames[ftype], frame)
 		frame:SetBackdropColor(mfp.r, mfp.g, mfp.b, mfp.a)
 
 		Skinner["middleframe"..frameId] = frame
@@ -169,7 +173,7 @@ end
 function Skinner:BottomFrame()
 	if not self.db.profile.BottomFrame.shown then return end
 
-	local fh = nil
+	local fh
 
 	local frame = CreateFrame("Frame", "SkinnerBF", UIParent)
 	frame:SetFrameStrata("BACKGROUND")
@@ -189,11 +193,12 @@ function Skinner:BottomFrame()
 	if self.db.profile.FadeHeight.enable and self.db.profile.FadeHeight.force then
 	-- set the Fade Height to the global value if 'forced'
 	-- making sure that it isn't greater than the frame height
-		fh = self.db.profile.FadeHeight.value <= math.ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or math.ceil(frame:GetHeight())
+		fh = self.db.profile.FadeHeight.value <= ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or ceil(frame:GetHeight())
 	elseif self.db.profile.BottomFrame.fheight then
-		fh = self.db.profile.BottomFrame.fheight <= math.ceil(frame:GetHeight()) and self.db.profile.BottomFrame.fheight or math.ceil(frame:GetHeight())
+		fh = self.db.profile.BottomFrame.fheight <= ceil(frame:GetHeight()) and self.db.profile.BottomFrame.fheight or ceil(frame:GetHeight())
 	end
-	self:storeAndSkin(ftype, frame, nil, fb, self.db.profile.BottomFrame.alpha, fh)
+	self:applySkin{obj=frame, bba=fb, ba=self.db.profile.BottomFrame.alpha, fh=fh}
+	tinsert(self.gradFrames[ftype], frame)
 
 	-- keep a reference to the frame
 	self.bottomframe = frame

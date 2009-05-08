@@ -1,3 +1,11 @@
+local _G = _G
+local ceil = math.ceil
+local strjoin = string.join
+local strlower = string.lower
+local strmatch = string.match
+local ipairs =ipairs
+local pairs = pairs
+local IsAddOnLoaded = IsAddOnLoaded
 
 function Skinner:Defaults()
 
@@ -57,7 +65,6 @@ function Skinner:Defaults()
 		Buffs           = true,
 		AchieveFrame    = true,
 		AchieveAlert    = true,
-		AchieveWatch    = true,
 		VehicleMenuBar	= true,
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
@@ -78,30 +85,30 @@ function Skinner:Defaults()
 		Colours         = true,
 		WorldMap        = true,
 		HelpFrame       = true,
-		KnowledgeBase   = true,
+		Tutorial        = true,
+		GMSurveyUI      = true,
+		Feedback        = self.isPTR and true or nil,
 		InspectUI		= true,
 		BattleScore     = true,
 		BattlefieldMm   = true,
 		ScriptErrors    = true,
-		Tutorial        = true,
 		DropDowns       = true,
 		MinimapButtons  = false,
 		MinimapGloss    = false,
 		MovieProgress   = IsMacClient() and true or nil,
-		MenuFrames      = true,
+		TimeManager     = true,
+		Calendar        = true,
+		MenuFrames      = true, -- inc. MacroUI & BindingUI
 		BankFrame       = true,
 		MailFrame       = true,
 		AuctionUI	    = true,
 		MainMenuBar     = {skin = true, glazesb = true},
 		CoinPickup      = true,
-		GMSurveyUI      = true,
 		LFGFrame        = true,
 		ItemSocketingUI = true,
 		GuildBankUI     = true,
 		Nameplates      = true,
-		TimeManager     = true,
-		Calendar        = true,
-		Feedback        = self.isPTR and true or nil,
+		GMChatUI		= true,
 		-- NPC Frames
 		MerchantFrames  = true,
 		GossipFrame     = true,
@@ -119,7 +126,7 @@ function Skinner:Defaults()
 		TrackerFrame    = false,
 		-- DBIcon settings
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
-		
+
 	}}
 
 	self.db = LibStub("AceDB-3.0"):New("SkinnerDB", defaults, "Default")
@@ -134,7 +141,7 @@ function Skinner:Options()
 
 	local optTables = {
 
-		General = {	
+		General = {
 	    	name = aName,
 			type = "group",
 			get = function(info) return db[info[#info]] end,
@@ -706,9 +713,9 @@ function Skinner:Options()
 									if db.FadeHeight.enable and db.FadeHeight.force then
 									-- set the Fade Height to the global value if 'forced'
 									-- making sure that it isn't greater than the frame height
-										fh = db.FadeHeight.value <= math.ceil(self.topframe:GetHeight()) and db.FadeHeight.value or math.ceil(self.topframe:GetHeight())
+										fh = db.FadeHeight.value <= ceil(self.topframe:GetHeight()) and db.FadeHeight.value or ceil(self.topframe:GetHeight())
 									elseif value then
-										fh = value <= math.ceil(self.topframe:GetHeight()) and value or math.ceil(self.topframe:GetHeight())
+										fh = value <= ceil(self.topframe:GetHeight()) and value or ceil(self.topframe:GetHeight())
 									end
 									if db.TopFrame.invert then self.topframe.tfade:SetPoint("TOPRIGHT", self.topframe, "BOTTOMRIGHT", 4, (fh - 4))
 									else self.topframe.tfade:SetPoint("BOTTOMRIGHT", self.topframe, "TOPRIGHT", -4, -(fh - 4)) end
@@ -881,9 +888,9 @@ function Skinner:Options()
 									if db.FadeHeight.enable and db.FadeHeight.force then
 									-- set the Fade Height to the global value if 'forced'
 									-- making sure that it isn't greater than the frame height
-										fh = db.FadeHeight.value <= math.ceil(self.bottomframe:GetHeight()) and db.FadeHeight.value or math.ceil(self.bottomframe:GetHeight())
+										fh = db.FadeHeight.value <= ceil(self.bottomframe:GetHeight()) and db.FadeHeight.value or ceil(self.bottomframe:GetHeight())
 									elseif value then
-										fh = value <= math.ceil(self.bottomframe:GetHeight()) and value or math.ceil(self.bottomframe:GetHeight())
+										fh = value <= ceil(self.bottomframe:GetHeight()) and value or ceil(self.bottomframe:GetHeight())
 									end
 									if db.BottomFrame.invert then self.bottomframe.tfade:SetPoint("TOPRIGHT", self.bottomframe, "BOTTOMRIGHT", 4, (fh - 4))
 									else self.bottomframe.tfade:SetPoint("BOTTOMRIGHT", self.bottomframe, "TOPRIGHT", -4, -(fh - 4)) end
@@ -944,7 +951,7 @@ function Skinner:Options()
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				local uiOpt = string.match(info[#info], "UI" , -2)
+				local uiOpt = strmatch(info[#info], "UI" , -2)
 				-- handle Blizzard UI LoD Addons
 				if uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
@@ -1036,7 +1043,7 @@ function Skinner:Options()
 			set = function(info, value)
 				db[info[#info]] = value
 				-- handle Blizzard UI LoD Addons
-				local uiOpt = string.match(info[#info], "UI" , -2)
+				local uiOpt = strmatch(info[#info], "UI" , -2)
 				if uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
 						self:checkAndRun(info[#info])
@@ -1179,12 +1186,6 @@ function Skinner:Options()
 							name = self.L["Achievement Alerts"],
 							desc = self.L["Toggle the skin of the Achievement Alerts"],
 						},
-						AchieveWatch = {
-							type = "toggle",
-							order = 3,
-							name = self.L["Achievement Watch"],
-							desc = self.L["Toggle the skin of the Achievement Watch"],
-						},
 					},
 				},
 				VehicleMenuBar = {
@@ -1202,7 +1203,7 @@ function Skinner:Options()
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				local uiOpt = string.match(info[#info], "UI" , -2)
+				local uiOpt = strmatch(info[#info], "UI" , -2)
 				if info[#info] == "Colours" then self:checkAndRun("ColorPicker")
 				elseif info[#info] == "Feedback" then self:checkAndRun("FeedbackUI")
 				elseif info[#info] == "CombatLogQBF" then return
@@ -1335,6 +1336,11 @@ function Skinner:Options()
 						},
 					},
 				},
+				StaticPopups = {
+					type = "toggle",
+					name = self.L["Static Popups"],
+					desc = self.L["Toggle the skin of Static Popups"],
+				},
 				chatopts = {
 					type = "group",
 					inline = true,
@@ -1465,35 +1471,15 @@ function Skinner:Options()
 					name = self.L["Stack Split Frame"],
 					desc = self.L["Toggle the skin of the Stack Split Frame"],
 				},
-				CoinPickup = {
+				ItemText = {
 					type = "toggle",
-					name = self.L["Coin Pickup Frame"],
-					desc = self.L["Toggle the skin of the Coin Pickup Frame"],
+					name = self.L["Item Text Frame"],
+					desc = self.L["Toggle the skin of the Item Text Frame"],
 				},
 				Colours = {
 					type = "toggle",
 					name = self.L["Color Picker Frame"],
 					desc = self.L["Toggle the skin of the Color Picker Frame"],
-				},
-				StaticPopups = {
-					type = "toggle",
-					name = self.L["Static Popups"],
-					desc = self.L["Toggle the skin of Static Popups"],
-				},
-				ScriptErrors = {
-					type = "toggle",
-					name = self.L["Script Errors Frame"],
-					desc = self.L["Toggle the skin of the Script Errors Frame"],
-				},
-				Nameplates = {
-					type = "toggle",
-					name = self.L["Nameplates"],
-					desc = self.L["Toggle the skin of the Nameplates"],
-				},
-				ItemText = {
-					type = "toggle",
-					name = self.L["Item Text Frame"],
-					desc = self.L["Toggle the skin of the Item Text Frame"],
 				},
 				WorldMap = {
 					type = "toggle",
@@ -1529,11 +1515,6 @@ function Skinner:Options()
 						} or nil,
 					},
 				},
-				LFGFrame = {
-					type = "toggle",
-					name = self.L["LFG Frame"],
-					desc = self.L["Toggle the skin of the LFG Frame"],
-				},
 				InspectUI = {
 					type = "toggle",
 					name = self.L["Inspect Frame"],
@@ -1548,6 +1529,11 @@ function Skinner:Options()
 					type = "toggle",
 					name = self.L["Battlefield Minimap Frame"],
 					desc = self.L["Toggle the skin of the Battlefield Minimap Frame"],
+				},
+				ScriptErrors = {
+					type = "toggle",
+					name = self.L["Script Errors Frame"],
+					desc = self.L["Toggle the skin of the Script Errors Frame"],
 				},
 				minimapopts = {
 					type = "group",
@@ -1575,25 +1561,30 @@ function Skinner:Options()
 						},
 					},
 				},
-				MenuFrames = {
-					type = "toggle",
-					name = self.L["Menu Frames"],
-					desc = self.L["Toggle the skin of the Menu Frames"],
-				},
 				MovieProgress = IsMacClient and {
 					type = "toggle",
 					name = self.L["Movie Progress"],
 					desc = self.L["Toggle the skinning of Movie Progress"],
 				} or nil,
+				TimeManager = {
+					type = "toggle",
+					name = self.L["Time Manager"],
+					desc = self.L["Toggle the skin of the Time Manager Frame"],
+				},
+				Calendar = {
+					type = "toggle",
+					name = self.L["Calendar"],
+					desc = self.L["Toggle the skin of the Calendar Frame"],
+				},
+				MenuFrames = {
+					type = "toggle",
+					name = self.L["Menu Frames"],
+					desc = self.L["Toggle the skin of the Menu Frames"],
+				},
 				BankFrame = {
 					type = "toggle",
 					name = self.L["Bank Frame"],
 					desc = self.L["Toggle the skin of the Bank Frame"],
-				},
-				GuildBankUI = {
-					type = "toggle",
-					name = self.L["GuildBankUI Frame"],
-					desc = self.L["Toggle the skin of the GuildBankUI Frame"],
 				},
 				MailFrame = {
 					type = "toggle",
@@ -1632,20 +1623,35 @@ function Skinner:Options()
 						},
 					},
 				},
+				CoinPickup = {
+					type = "toggle",
+					name = self.L["Coin Pickup Frame"],
+					desc = self.L["Toggle the skin of the Coin Pickup Frame"],
+				},
+				LFGFrame = {
+					type = "toggle",
+					name = self.L["LFG Frame"],
+					desc = self.L["Toggle the skin of the LFG Frame"],
+				},
 				ItemSocketingUI = {
 					type = "toggle",
 					name = self.L["ItemSocketingUI Frame"],
 					desc = self.L["Toggle the skin of the ItemSocketingUI Frame"],
 				},
-				TimeManager = {
+				GuildBankUI = {
 					type = "toggle",
-					name = self.L["Time Manager"],
-					desc = self.L["Toggle the skin of the Time Manager Frame"],
+					name = self.L["GuildBankUI Frame"],
+					desc = self.L["Toggle the skin of the GuildBankUI Frame"],
 				},
-				Calendar = {
+				Nameplates = {
 					type = "toggle",
-					name = self.L["Calendar"],
-					desc = self.L["Toggle the skin of the Calendar Frame"],
+					name = self.L["Nameplates"],
+					desc = self.L["Toggle the skin of the Nameplates"],
+				},
+				GMChatUI = {
+					type = "toggle",
+					name = self.L["GMChatUI Frame"],
+					desc = self.L["Toggle the skin of the GMChatUI Frame"],
 				},
 			},
 		},
@@ -1752,10 +1758,10 @@ function Skinner:Options()
 	local optCheck = {}
 	for _, v in ipairs(optNames) do
 --		self:Debug("options: [%s]", v)
-		local optTitle = string.join(" ", aName, v)
+		local optTitle = strjoin(" ", aName, v)
 		ACR:RegisterOptionsTable(optTitle, optTables[v])
 		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
-		optCheck[string.lower(v)] = v
+		optCheck[strlower(v)] = v
 	end
 
 	-- Slash command handler
@@ -1764,8 +1770,8 @@ function Skinner:Options()
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters
 			InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame)
-		elseif optCheck[string.lower(input)] then
-			InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame[optCheck[string.lower(input)]])
+		elseif optCheck[strlower(input)] then
+			InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame[optCheck[strlower(input)]])
 		else
 			LibStub("AceConfigCmd-3.0"):HandleCommand(aName, aName, input)
 		end

@@ -448,3 +448,5 @@ L["Skin Settings"] = true
 L["Frames"] = true
 L["Other Settings"] = true
 L["Confirm reload of UI to activate profile changes"] = true
+L["GMChatUI Frame"] = true
+L["Toggle the skin of the GMChatUI Frame"] = true

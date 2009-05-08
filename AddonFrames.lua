@@ -1,3 +1,5 @@
+local pairs = pairs
+local IsAddOnLoaded = IsAddOnLoaded
 
 function Skinner:BlizzardFrames()
 --	self:Debug("BlizzardFrames")
@@ -144,13 +146,12 @@ function Skinner:AddonFrames()
 	if IsAddOnLoaded("Bongos") then self:checkAndRunAddOn("Bongos") end
 --]]
 
-	-- skin Dewdrop, Ace2, Tablet, Waterfall, OptionHouse, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip & tektip library objects
+	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip & tektip library objects
 	local libsToSkin = {
 		["Dewdrop-2.0"] = "Dewdrop",
 		["AceAddon-2.0"] = "Ace2",
 		["Tablet-2.0"] = "Tablet",
 		["Waterfall-1.0"] = "Waterfall",
-		--[[["OptionHouse-1.1"] = "OptionHouse",--]]
 		["AceGUI-3.0"] = "Ace3",
 		["LibSimpleOptions-1.0"] = "LibSimpleOptions",
 		["Configator"] = "Configator",
@@ -172,7 +173,6 @@ function Skinner:AddonFrames()
 
 	-- skin Rock Config
 	if Rock and Rock:HasLibrary("LibRockConfig-1.0") then
---		self:Debug("LibRockConfig found")
 		if self.RockConfig then self:checkAndRun("RockConfig")
 		else
 			if self.db.profile.Warnings then
@@ -184,8 +184,7 @@ function Skinner:AddonFrames()
 	-- skin KeyBound Dialog frame
 	if self.db.profile.MenuFrames then
 		if LibStub('LibKeyBound-1.0', true) then
-			self:keepFontStrings(KeyboundDialog)
-			self:applySkin(KeyboundDialog)
+			self:addSkinFrame{obj=KeyboundDialog, kfs=true}
 		end
 	end
 
@@ -194,8 +193,8 @@ function Skinner:AddonFrames()
 		local function skinLTTooltips(ttLib)
 			for key, tooltip in LibStub(ttLib):IterateTooltips() do
 -- 				self:Debug("%s:[%s, %s]", ttLib, key, tooltip)
-				if not self.skinned[tooltip] then
-					self:applySkin(tooltip)
+				if not self.skinFrame[tooltip] then
+					self:addSkinFrame{obj=tooltip}
 				end
 			end
 		end
@@ -208,7 +207,7 @@ function Skinner:AddonFrames()
 				end)
 				-- hook this to handle tooltips being released
 				self:SecureHook(LibStub(lib), "Release", function(this, tt)
-					if tt then self.skinned[tt] = nil end
+					if tt then self.skinFrame[tt] = nil end
 				end)
 				-- skin any existing ones
 				skinLTTooltips(lib)
@@ -272,15 +271,6 @@ function Skinner:LoDFrames(arg1)
 		elseif arg1 == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:FR_TrainerUI()
 		end
 	end
-
---[[
-	-- handle TradeTabs changes for TradeSkills
-	if IsAddOnLoaded("TradeTabs") then
-		if arg1 == "Blizzard_TradeSkillUI" then
-			self:checkAndRunAddOn("TradeTabs")
-		end
-	end
---]]
 
 end
 

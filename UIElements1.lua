@@ -1,3 +1,4 @@
+local _G = _G
 local ftype = "u"
 
 function Skinner:Tooltips()
@@ -19,7 +20,6 @@ function Skinner:Tooltips()
 
 		counts = counts + 1
 
---		Skinner:Debug("checkGTHeight: [%s, %s, %s]", cHeight, evt, math.ceil(GameTooltip:GetHeight()))
 		if cHeight ~= math.ceil(GameTooltip:GetHeight()) then
 			Skinner:skinTooltip(GameTooltip)
 			Skinner:CancelTimer(GTSBevt, true)
@@ -37,10 +37,8 @@ function Skinner:Tooltips()
 
 	-- Hook this to deal with GameTooltip FadeHeight issues
 	self:SecureHookScript(GameTooltipStatusBar, "OnHide", function(this)
---		self:Debug("GameTooltipStatusBar_OnHide: [%s]", this:GetName())
 		if GameTooltip:IsShown() then
 			cHeight = math.ceil(GameTooltip:GetHeight())
---			self:Debug("GTSB_OnHide: [%s]", cHeight)
 			if not GTSBevt then
 				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.2, cHeight)
 			end
@@ -50,9 +48,7 @@ function Skinner:Tooltips()
 	-- MUST hook to OnShow script rather than the Show method otherwise not every tooltip is skinned properly everytime
 	for _, tooltip in pairs(self.ttList) do
 		local ttip = _G[tooltip]
---		self:Debug("Tooltip:[%s, %s]", tooltip, ttip)
 		self:SecureHookScript(ttip, "OnShow", function(this)
---			self:Debug("Tooltip OnShow: [%s]", this:GetName())
 			self:skinTooltip(this)
 			if this == GameTooltip and self.db.profile.Tooltips.glazesb then
 				self:glazeStatusBar(GameTooltipStatusBar, 0)
@@ -73,7 +69,7 @@ function Skinner:MirrorTimers()
 		self:keepFontStrings(mTimer)
 		mTimer:SetHeight(mTimer:GetHeight() * 1.2)
 		mTimerSB:SetWidth(mTimerSB:GetWidth() * 0.7)
-		self:moveObject(mTimerText, nil, nil, "-", 2)
+		self:moveObject{obj=mTimerText, y=-2}
 		if self.db.profile.MirrorTimers.glaze then self:glazeStatusBar(mTimerSB, 0) end
 	end
 
@@ -101,14 +97,14 @@ function Skinner:CastingBar()
 		local cbfName = prefix.."CastingBarFrame"
 		if cbfName == "CastingBarFrame" then
 			self:SecureHook("CastingBarFrame_OnUpdate", function()
-				self:moveObject(cbfs, nil, nil, "-", 3)
+				self:moveObject{obj=CastingBarFrameSpark, y=-3}
 			end)
 		end
 
-		local cbft = _G[cbfName.."Text"]
+		local cbfObj = _G[cbfName]
 		local cbfs = _G[cbfName.."Spark"]
 		local cbff = _G[cbfName.."Flash"]
-		local cbfObj = _G[cbfName]
+		local cbft = _G[cbfName.."Text"]
 
 		self:keepFontStrings(cbfObj)
 		-- adjust size/placement of the casting frame and associated textures
@@ -118,9 +114,9 @@ function Skinner:CastingBar()
 		cbff:SetWidth(cbfObj:GetWidth())
 		cbff:SetHeight(cbfObj:GetHeight())
 		cbff:SetTexture(self.sbTexture)
-		self:moveObject(cbft, nil, nil, "-", 3)
-		self:moveObject(cbff, nil, nil, "-", 28)
-		
+		self:moveObject{obj=cbff, y=-28}
+		self:moveObject{obj=cbft, y=-3}
+
 		if self.db.profile.CastingBar.glaze then self:glazeStatusBar(cbfObj, 0) end
 
 	end
@@ -132,11 +128,10 @@ function Skinner:StaticPopups()
 	self.initialized.StaticPopups = true
 
 	for i = 1, STATICPOPUP_NUMDIALOGS do
-		self:skinEditBox(_G["StaticPopup"..i.."EditBox"])
-		self:skinEditBox(_G["StaticPopup"..i.."WideEditBox"])
-		self:skinMoneyFrame(_G["StaticPopup"..i.."MoneyInputFrame"])
-		_G["StaticPopup"..i]:SetBackdrop(nil)
-		self:addSkinFrame(_G["StaticPopup"..i], 10, 3, -10, 3, ftype)
+		self:skinEditBox{obj=_G["StaticPopup"..i.."EditBox"]}
+		self:skinEditBox{obj=_G["StaticPopup"..i.."WideEditBox"]}
+		self:skinMoneyFrame{obj=_G["StaticPopup"..i.."MoneyInputFrame"]}
+		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=10, y1=3, x2=-10, y2=3}
 	end
 
 end
@@ -145,14 +140,10 @@ function Skinner:ChatMenus()
 	if not self.db.profile.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
-	ChatMenu:SetBackdrop(nil)
-	self:addSkinFrame(ChatMenu, 0, 0, 0, 0, ftype)
-	EmoteMenu:SetBackdrop(nil)
-	self:addSkinFrame(EmoteMenu, 0, 0, 0, 0, ftype)
-	LanguageMenu:SetBackdrop(nil)
-	self:addSkinFrame(LanguageMenu, 0, 0, 0, 0, ftype)
-	VoiceMacroMenu:SetBackdrop(nil)
-	self:addSkinFrame(VoiceMacroMenu, 0, 0, 0, 0, ftype)
+	self:addSkinFrame{obj=ChatMenu, ft=ftype}
+	self:addSkinFrame{obj=EmoteMenu, ft=ftype}
+	self:addSkinFrame{obj=LanguageMenu, ft=ftype}
+	self:addSkinFrame{obj=VoiceMacroMenu, ft=ftype}
 
 end
 
@@ -160,13 +151,32 @@ function Skinner:ChatTabs()
 	if not self.db.profile.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true
 
+	if self.isTT then
+		-- hook this to change the texture for the Active and Inactive tabs
+		self:SecureHook("FCF_Tab_OnClick",function(this, ...)
+			for i = 1, 7 do
+				local tabSF = self.skinFrame[_G["ChatFrame"..i.."Tab"]]
+				if i == this:GetID() then
+					self:setActiveTab(tabSF)
+				else
+					self:setInactiveTab(tabSF)
+				end
+			end
+		end)
+	end
+
 	for i = 1, NUM_CHAT_WINDOWS do
 		local tabName = _G["ChatFrame"..i.."Tab"]
 		self:keepRegions(tabName, {4, 5}) --N.B. region 4 is text, 5 is highlight
-		self:addSkinFrame(tabName, 0, -8, 0, -5, ftype, self.isTT)
-		self.skinFrame[tabName]:SetFrameLevel(0)
+		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, y1=-8, y2=-5}
+		local tabSF = self.skinFrame[tabName]
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
 	end
-	
+
 end
 
 function Skinner:ChatFrames()
@@ -174,7 +184,6 @@ function Skinner:ChatFrames()
 	self.initialized.ChatFrames = true
 
 	self:SecureHook("FCF_StopResize", function()
---		self:Debug("FCF_StopResize: [%s, %s]", this:GetName(), this:GetParent():GetName())
 		local frame = _G["Skinner"..this:GetParent():GetName()]
 		if frame and frame.tfade then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -math.ceil(frame:GetHeight())) end
 	end)
@@ -188,15 +197,14 @@ function Skinner:ChatFrames()
 		else
 			yOfs1 = 4
 		end
-		self:addSkinFrame(cf, xOfs1, yOfs1, xOfs2, yOfs2, ftype)
+		self:addSkinFrame{obj=cf, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end
 
 	-- CombatLog Quick Button Frame & Progress Bar
 	if SIMPLE_CHAT ~= "1" and CHAT_LOCKED ~= "1" and self.db.profile.CombatLogQBF then
 		if clqbf_c then
 			self:keepFontStrings(clqbf_c)
-			self:addSkinFrame(clqbf_c, 0, 0, 0, 0, ftype)
-			
+			self:addSkinFrame{obj=clqbf_c, ft=ftype}
 			clqbf_c:SetHeight(clqbf_c:GetHeight() + 4)
 			self:glazeStatusBar(CombatLogQuickButtonFrame_CustomProgressBar, 0)
 		else
@@ -210,111 +218,94 @@ function Skinner:ChatConfig()
 	if not self.db.profile.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true
 
-	self:keepFontStrings(ChatConfigFrame)
-	ChatConfigFrame:SetBackdrop(nil)
-	self:moveObject(ChatConfigFrameHeaderText, nil, nil, "-", 6)
-	self:addSkinFrame(ChatConfigFrame, 0, 0, 0, 0, ftype)
-	ChatConfigCategoryFrame:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigCategoryFrame, 0, 0, 0, 0, ftype)
-	ChatConfigBackgroundFrame:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigBackgroundFrame, 0, 0, 0, 0, ftype)
+	self:addSkinFrame{obj=ChatConfigFrame, ft=ftype, kfs=true, hdr=true}
+	self:addSkinFrame{obj=ChatConfigCategoryFrame, ft=ftype}
+	self:addSkinFrame{obj=ChatConfigBackgroundFrame, ft=ftype}
 
 -->>--	Chat Settings
 	for i = 1, #CHAT_CONFIG_CHAT_LEFT do
 		_G["ChatConfigChatSettingsLeftCheckBox"..i]:SetBackdrop(nil)
 	end
-	ChatConfigChatSettingsLeft:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigChatSettingsLeft, 0, 0, 0, 0, ftype)
-	
+	self:addSkinFrame{obj=ChatConfigChatSettingsLeft, ft=ftype}
+
 	for i = 1, #CHAT_CONFIG_CHAT_RIGHT do
 		_G["ChatConfigChatSettingsRightCheckBox"..i]:SetBackdrop(nil)
 	end
-	ChatConfigChatSettingsRight:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigChatSettingsRight, 0, 0, 0, 0, ftype)
-	
+	self:addSkinFrame{obj=ChatConfigChatSettingsRight, ft=ftype}
+
 	for i = 1, #CHAT_CONFIG_CHAT_CREATURE_LEFT do
 		_G["ChatConfigChatSettingsCreatureLeftCheckBox"..i]:SetBackdrop(nil)
 	end
-	ChatConfigChatSettingsCreatureLeft:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigChatSettingsCreatureLeft, 0, 0, 0, 0, ftype)
-	
+	self:addSkinFrame{obj=ChatConfigChatSettingsCreatureLeft, ft=ftype}
+
 -->>--	Channel Settings
 	self:SecureHook(ChatConfigChannelSettings, "Show", function(this)
 		for i = 1, #ChatConfigChannelSettingsLeft.checkBoxTable do
 			local cccslcb = _G["ChatConfigChannelSettingsLeftCheckBox"..i]
 			if not self.skinFrame[cccslcb] then
-				self:addSkinFrame(cccslcb, 0, 0, 0, 0, ftype)
+				self:addSkinFrame{obj=cccslcb, ft=ftype}
 			end
 		end
 	end)
-	ChatConfigChannelSettingsLeft:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigChannelSettingsLeft, 0, 0, 0, 0, ftype)
+	self:addSkinFrame{obj=ChatConfigChannelSettingsLeft, ft=ftype}
 
 -->>--	Other Settings
 	for i = 1, #CHAT_CONFIG_OTHER_COMBAT do
 		_G["ChatConfigOtherSettingsCombatCheckBox"..i]:SetBackdrop(nil)
 	end
-	ChatConfigOtherSettingsCombat:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigOtherSettingsCombat, 0, 0, 0, 0, ftype)
-	
+	self:addSkinFrame{obj=ChatConfigOtherSettingsCombat, ft=ftype}
+
 	for i = 1, #CHAT_CONFIG_OTHER_PVP do
 		_G["ChatConfigOtherSettingsPVPCheckBox"..i]:SetBackdrop(nil)
 	end
-	ChatConfigOtherSettingsPVP:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigOtherSettingsPVP, 0, 0, 0, 0, ftype)
-	
+	self:addSkinFrame{obj=ChatConfigOtherSettingsPVP, ft=ftype}
+
 	for i = 1, #CHAT_CONFIG_OTHER_SYSTEM do
 		_G["ChatConfigOtherSettingsSystemCheckBox"..i]:SetBackdrop(nil)
 	end
-	ChatConfigOtherSettingsSystem:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigOtherSettingsSystem, 0, 0, 0, 0, ftype)
+	self:addSkinFrame{obj=ChatConfigOtherSettingsSystem, ft=ftype}
 
 -->>--	Combat Settings
 	-- Filters
 	ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
-	self:skinScrollBar(ChatConfigCombatSettingsFiltersScrollFrame)
-	ChatConfigCombatSettingsFilters:SetBackdrop(nil)
-	self:addSkinFrame(ChatConfigCombatSettingsFilters, 0, 0, 0, 0, ftype)
-	
+	self:skinScrollBar{obj=ChatConfigCombatSettingsFiltersScrollFrame} --, noRR=true}
+	self:addSkinFrame{obj=ChatConfigCombatSettingsFilters, ft=ftype}
+
 	-- Message Sources
 	if COMBAT_CONFIG_MESSAGESOURCES_BY then
 		for i = 1, #COMBAT_CONFIG_MESSAGESOURCES_BY do
 			_G["CombatConfigMessageSourcesDoneByCheckBox"..i]:SetBackdrop(nil)
 		end
-		CombatConfigMessageSourcesDoneBy:SetBackdrop(nil)
-		self:addSkinFrame(CombatConfigMessageSourcesDoneBy, 0, 0, 0, 0, ftype)
+		self:addSkinFrame{obj=CombatConfigMessageSourcesDoneBy, ft=ftype}
 	end
 	if COMBAT_CONFIG_MESSAGESOURCES_TO then
 		for i = 1, #COMBAT_CONFIG_MESSAGESOURCES_TO do
 			_G["CombatConfigMessageSourcesDoneToCheckBox"..i]:SetBackdrop(nil)
 		end
-		CombatConfigMessageSourcesDoneTo:SetBackdrop(nil)
-		self:addSkinFrame(CombatConfigMessageSourcesDoneTo, 0, 0, 0, 0, ftype)
+		self:addSkinFrame{obj=CombatConfigMessageSourcesDoneTo, ft=ftype}
 	end
-	
+
 	-- Colors
 	for i = 1, #COMBAT_CONFIG_UNIT_COLORS do
 		_G["CombatConfigColorsUnitColorsSwatch"..i]:SetBackdrop(nil)
 	end
-	CombatConfigColorsUnitColors:SetBackdrop(nil)
-	self:addSkinFrame(CombatConfigColorsUnitColors, 0, 0, 0, 0, ftype)
-	
+	self:addSkinFrame{obj=CombatConfigColorsUnitColors, ft=ftype}
+
 	local clrize, ccccObj
 	for i, v in ipairs({"Highlighting", "UnitName", "SpellNames", "DamageNumber", "DamageSchool", "EntireLine"}) do
 		clrize = i > 1 and "Colorize" or ""
 		ccccObj = _G["CombatConfigColors"..clrize..v]
-		ccccObj:SetBackdrop(nil)
-		self:addSkinFrame(ccccObj, 0, 0, 0, 0, ftype)
+		self:addSkinFrame{obj=ccccObj, ft=ftype}
 	end
-	
+
 	-- Settings
-	self:skinEditBox(CombatConfigSettingsNameEditBox , {9})
-	
+	self:skinEditBox{obj=CombatConfigSettingsNameEditBox , regs={9}}
+
 	-- Tabs
 	for i = 1, #COMBAT_CONFIG_TABS do
 		local tabName = _G["CombatConfigTab"..i]
 		self:keepRegions(tabName, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
-		self:addSkinFrame(tabName, 0, -8, 0, -4, ftype)
+		self:addSkinFrame{obj=tabName, ft=ftype, y1=-8, y2=-4}
 	end
 
 end
@@ -330,11 +321,9 @@ function Skinner:ChatEditBox()
 		local kRegions = CopyTable(self.ebRegions)
 		table.insert(kRegions, 9)
 		self:keepRegions(ChatFrameEditBox, kRegions)
-		ChatFrameEditBox:SetBackdrop(nil)
-		self:addSkinFrame(ChatFrameEditBox, 0, 0, 0, 0, ftype)
-		
+		self:addSkinFrame{obj=ChatFrameEditBox, ft=ftype, x1=2, y1=-2, x2=-2}
 	else
-		self:skinEditBox(ChatFrameEditBox, {9}, nil, true)
+		self:skinEditBox{obj=ChatFrameEditBox, regs={9}, noHeight=true}
 	end
 
 end
@@ -343,10 +332,9 @@ function Skinner:LootFrame()
 	if not self.db.profile.LootFrame or self.initialized.LootFrame then return end
 	self.initialized.LootFrame = true
 
-	self:keepFontStrings(LootFrame)
-	self:moveObject(self:getRegion(LootFrame, 3), "-", 12) -- title
-	self:addSkinFrame(LootFrame, 8, -13, -68, 0, ftype)
-	
+	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12} -- title
+	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-13, x2=-68}
+
 end
 
 function Skinner:GroupLoot()
@@ -356,37 +344,33 @@ function Skinner:GroupLoot()
 	local f = GameFontNormalSmall:GetFont()
 	local xMult, yMult = 0.75, 0.75
 
-	self:skinDropDown(GroupLootDropDown)
+	self:skinDropDown{obj=GroupLootDropDown}
 
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
 
 		local glf = "GroupLootFrame"..i
---		self:Debug("skinned GLF: [%s]", glf)
 		local glfo = _G[glf]
 		self:keepFontStrings(glfo)
 		self:removeRegions(_G[glf.."Timer"], {1})
 		self:glazeStatusBar(_G[glf.."Timer"], 0)
 		-- hook this to skin the group loot frame
 		self:SecureHook(glfo, "Show", function(this)
-			self:Debug("GLF_S(f): [%s, %s]", this, this:GetName())
 			this:SetBackdrop(nil)
 		end)
 
 		if self.db.profile.GroupLoot.size == 1 then
 
-			self:addSkinFrame(glfo, 4, -5, -4, 5, ftype)
+			self:addSkinFrame{obj=glfo, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
 
 		elseif self.db.profile.GroupLoot.size == 2 then
 
 			glfo:SetScale(0.75)
-		
-			self:addSkinFrame(glfo, 4, -5, -4, 5, ftype)
-			
+			self:addSkinFrame{obj=glfo, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
+
 		elseif self.db.profile.GroupLoot.size == 3 then
 
 			glfo:SetScale(0.75)
-
-			self:moveObject(_G[glf.."SlotTexture"], "+", 95, "+", 4)
+			self:moveObject{obj=_G[glf.."SlotTexture"], x=95, y=4} -- Loot item icon
 			_G[glf.."NameFrame"]:Hide()
 			_G[glf.."Name"]:Hide()
 			_G[glf.."RollButton"]:ClearAllPoints()
@@ -394,10 +378,9 @@ function Skinner:GroupLoot()
 			_G[glf.."GreedButton"]:ClearAllPoints()
 			_G[glf.."GreedButton"]:SetPoint("RIGHT", _G[glf.."RollButton"], "LEFT", 0, 0)
 			_G[glf.."Timer"]:SetWidth(_G[glf.."Timer"]:GetWidth() - 28)
-			self:moveObject(_G[glf.."Timer"], "-", 3)
+			self:moveObject{obj=_G[glf.."Timer"], x=-3}
+			self:addSkinFrame{obj=glfo, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
 
-			self:addSkinFrame(glfo, 102, -5, -4, 16, ftype)
-			
 		end
 
 	end
@@ -410,12 +393,11 @@ function Skinner:ContainerFrames()
 
 	for i = 1, NUM_CONTAINER_FRAMES do
 		local frameObj = _G["ContainerFrame"..i]
-		self:keepFontStrings(frameObj)
-		self:addSkinFrame(frameObj, 8, -4, -4, 0, ftype)
+		self:addSkinFrame{obj=frameObj, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 		-- resize and move the bag name to make it more readable
 		local frameName = _G["ContainerFrame"..i.."Name"]
 		frameName:SetWidth(145)
-		self:moveObject(frameName, "-", 30)
+		self:moveObject{obj=frameName, x=-30}
 	end
 
 end
@@ -424,8 +406,7 @@ function Skinner:StackSplit()
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
 
-	self:keepFontStrings(StackSplitFrame)
-	self:addSkinFrame(StackSplitFrame, 9, -12, -6, 12, ftype)
+	self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
 
 end
 
@@ -436,12 +417,11 @@ function Skinner:ItemText()
 	self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
 		ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end)
-	self:keepFontStrings(ItemTextFrame)
-	self:removeRegions(ItemTextScrollFrame)
-	self:skinScrollBar(ItemTextScrollFrame)
+
+	self:skinScrollBar{obj=ItemTextScrollFrame}
 	self:glazeStatusBar(ItemTextStatusBar, 0)
-	self:moveObject(ItemTextPrevPageButton, "-", 55)
-	self:addSkinFrame(ItemTextFrame, 10, -13, -32, 71, ftype)
+	self:moveObject{obj=ItemTextPrevPageButton, x=-55} -- move prev button left
+	self:addSkinFrame{obj=ItemTextFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 end
 
@@ -452,12 +432,12 @@ function Skinner:ColorPicker()
 	ColorPickerFrame:SetBackdrop(nil)
 	ColorPickerFrameHeader:SetAlpha(0)
 	self:skinSlider(OpacitySliderFrame, 4)
-	self:addSkinFrame(ColorPickerFrame, 6, 6, -6, nil, ftype)
-	
+	self:addSkinFrame{obj=ColorPickerFrame, ft=ftype, x1=6, y1=6, x2=-6, y2=4}
+
 -->>-- Opacity Frame, used by BattlefieldMinimap amongst others
 	OpacityFrame:SetBackdrop(nil)
 	self:skinSlider(OpacityFrameSlider)
-	self:addSkinFrame(OpacityFrame, 0, 0, 0, 0, ftype)
+	self:addSkinFrame{obj=OpacityFrame, ft=ftype}
 
 end
 
@@ -465,18 +445,21 @@ function Skinner:WorldMap()
 	if not self.db.profile.WorldMap or self.initialized.WorldMap then return end
 	self.initialized.WorldMap = true
 
-	self:keepFontStrings(WorldMapFrame)
-	self:skinDropDown(WorldMapContinentDropDown)
-	self:skinDropDown(WorldMapZoneDropDown)
-	self:skinDropDown(WorldMapZoneMinimapDropDown)
-	self:skinDropDown(WorldMapLevelDropDown)
+	self:skinDropDown{obj=WorldMapContinentDropDown}
+	self:skinDropDown{obj=WorldMapZoneDropDown}
+	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
+	self:skinDropDown{obj=WorldMapLevelDropDown}
 
-	if not IsAddOnLoaded("MetaMap") then
-		self:addSkinFrame(WorldMapFrame, 99, 0, -101, 18, ftype)
+	-- handle different map addons being loaded
+	if IsAddOnLoaded("Mapster") then
+		self:addSkinFrame{obj=WorldMapFrame, ftype=ftype, kfs=true}
+	elseif not IsAddOnLoaded("MetaMap")then
+		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=99, x2=-101, y2=18}
 	end
+
 -->>-- Tooltip
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then WorldMapTooltip:SetBackdrop(self.backdrop) end
+		if self.db.profile.Tooltips.style == 3 then WorldMapTooltip:SetBackdrop(self.Backdrop[1]) end
 		self:SecureHook(WorldMapTooltip, "Show", function()
 			self:skinTooltip(WorldMapTooltip)
 		end)
@@ -492,7 +475,6 @@ function Skinner:HelpFrame()
 	local kbTitle = self:getRegion(KnowledgeBaseFrame, 2)
 	-- hook these to manage frame titles
 	self:SecureHook("HelpFrame_ShowFrame", function(key)
---		self:Debug("HF_SF: [%s]", key)
 		hfTitle:SetAlpha(0)
 		kbTitle:SetAlpha(0)
 		if key == "KBase" then
@@ -502,38 +484,125 @@ function Skinner:HelpFrame()
 		end
 	end)
 	self:SecureHook("HelpFrame_PopFrame", function()
---		self:Debug("HF_PF: [%s]", HelpFrame.openFrame and HelpFrame.openFrame:GetName() or "<Anon>")
 		if HelpFrame.openFrame and HelpFrame.openFrame:GetName() == "KnowledgeBaseFrame" then
 			hfTitle:SetAlpha(0)
 			kbTitle:SetAlpha(1)
 		end
 	end)
-	
+
 -->>--	Help Frame
-	self:keepFontStrings(HelpFrame)
-	self:moveObject(hfTitle, nil, nil, "-", 8)
-	self:addSkinFrame(HelpFrame, 6, -6, -45, 14, ftype)
+	self:moveObject{obj=hfTitle, y=-8}
+	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
 
 -->>--	Open Ticket Frame
 	HelpFrameOpenTicketDivider:Hide()
-	self:removeRegions(HelpFrameOpenTicketScrollFrame)
-	self:skinScrollBar(HelpFrameOpenTicketScrollFrame)
+	self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
 
 -->>--	Ticket Status Frame
 	local tsfC = self:getChild(TicketStatusFrame, 2) -- skin this unnamed child
-	tsfC:SetBackdrop(nil)
-	self:addSkinFrame(tsfC, 0, 0, 0, 0, ftype)
-	
+	self:addSkinFrame{obj=tsfC, ft=ftype}
+
 -->>--	KnowledgeBase Frame
 	self:keepFontStrings(KnowledgeBaseFrame)
-	self:moveObject(kbTitle, nil, nil, "-", 8)
-	self:skinEditBox(KnowledgeBaseFrameEditBox)
-	self:skinDropDown(KnowledgeBaseFrameCategoryDropDown)
-	self:skinDropDown(KnowledgeBaseFrameSubCategoryDropDown)
+	self:moveObject{obj=kbTitle, y=-8}
+	self:skinEditBox{obj=KnowledgeBaseFrameEditBox}
+	self:skinDropDown{obj=KnowledgeBaseFrameCategoryDropDown}
+	self:skinDropDown{obj=KnowledgeBaseFrameSubCategoryDropDown}
 	KnowledgeBaseFrameDivider:Hide()
 	KnowledgeBaseFrameDivider2:Hide()
-	self:removeRegions(KnowledgeBaseArticleScrollFrame)
-	self:skinScrollBar(KnowledgeBaseArticleScrollFrame)
+	self:skinScrollBar{obj=KnowledgeBaseArticleScrollFrame}
+
+end
+
+function Skinner:Tutorial()
+	if not self.db.profile.Tutorial then return end
+
+	self:addSkinFrame{obj=TutorialFrame, ft=ftype}
+
+	-- skin the alert buttons
+	for i = 1, 10 do
+		local tfabObj = _G["TutorialFrameAlertButton"..i]
+		self:addSkinButton{obj=tfabObj, parent=tfabObj, x1=-2, y1=2, x2=1, y2=1}
+	end
+
+end
+
+function Skinner:GMSurveyUI()
+	if not self.db.profile.GMSurveyUI or self.initialized.GMSurveyUI then return end
+	self.initialized.GMSurveyUI = true
+
+	self:keepFontStrings(GMSurveyHeader)
+	self:moveObject{obj=GMSurveyHeaderText, y=-8}
+	self:addSkinFrame{obj=GMSurveyFrame, ft=ftype, kfs=true, y1=-6, x2=-45}
+
+	self:skinScrollBar{obj=GMSurveyScrollFrame}
+
+	-- FIXME: this isn't working, questions are hidden behind the skin
+	for i = 1, MAX_SURVEY_QUESTIONS do
+		self:addSkinFrame{obj=_G["GMSurveyQuestion"..i], ft=ftype, y1=-2}
+	end
+
+	self:skinScrollBar{obj=GMSurveyCommentScrollFrame}
+	self:addSkinFrame{obj=GMSurveyCommentFrame, ft=ftype}
+
+end
+
+-- PTR only
+function Skinner:FeedbackUI()
+	if not self.db.profile.Feedback or self.initialized.Feedback then return end
+	self.initialized.Feedback = true
+
+	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
+
+	self:keepFontStrings(FeedbackUITitleFrm)
+	self:moveObject{obj=FeedbackUIBtnClose, x=4, y=4}
+	FeedbackUIWelcomeFrame:SetBackdrop(nil)
+	self:keepFontStrings(FeedbackUI_ModifierKeyDropDown)
+	self:addSkinFrame{obj=FeedbackUI_ModifierKeyDropDownList, ft=ftype}
+	self:keepFontStrings(FeedbackUI_MouseButtonDropDown)
+	self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
+	self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
+
+-->-- Survey Frame
+	FeedbackUISurveyFrame:SetBackdrop(nil)
+	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlCategory)
+	self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlCategoryList, ft=ftype}
+	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlStatus)
+	self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
+	self:skinScrollBar{obj=FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
+	FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
+	FeedbackUISurveyFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype}
+	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
+	self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
+	self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
+
+-->>-- Suggestion Frame
+	FeedbackUISuggestFrame:SetBackdrop(nil)
+	FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUISuggestFrameStatusPanelLine:SetAlpha(0)
+	FeedbackUISuggestFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype}
+	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
+	self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelEditInput}
+	self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
+
+-->>-- Bug Frame
+	FeedbackUIBugFrame:SetBackdrop(nil)
+	FeedbackUIBugFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUIBugFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	FeedbackUIBugFrameStatusPanelLine:SetAlpha(0)
+	FeedbackUIBugFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype}
+	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
+	self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelEditInput}
+	self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
+
+	-- make the QuestLog Tip Label text visible
+	FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 end
 
@@ -554,10 +623,10 @@ function Skinner:InspectUI()
 			end
 		end)
 	end
-	
-	self:keepFontStrings(InspectFrame)
-	self:addSkinFrame(InspectFrame, 10, -12, -32, 69, ftype)
-	
+
+	self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
+
+	-- Inspect Model Frame
 	self:keepRegions(InspectPaperDollFrame, {5, 6, 7}) -- N.B. regions 5-7 are text
 	InspectModelRotateLeftButton:Hide()
 	InspectModelRotateRightButton:Hide()
@@ -569,8 +638,7 @@ function Skinner:InspectUI()
 -->>--	Talent Frame
 	self:keepRegions(InspectTalentFrame, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 8 & 9 are the background picture, 10 is text
 	InspectTalentFrameCloseButton:Hide()
-	self:removeRegions(InspectTalentFrameScrollFrame)
-	self:skinScrollBar(InspectTalentFrameScrollFrame)
+	self:skinScrollBar{obj=InspectTalentFrameScrollFrame}
 	self:keepFontStrings(InspectTalentFramePointsBar)
 	self:skinFFToggleTabs("InspectTalentFrameTab")
 
@@ -578,7 +646,7 @@ function Skinner:InspectUI()
 	for i = 1, InspectFrame.numTabs do
 		local tabName = _G["InspectFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
+		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
@@ -586,7 +654,7 @@ function Skinner:InspectUI()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	
+
 end
 
 function Skinner:BattleScore()
@@ -607,17 +675,15 @@ function Skinner:BattleScore()
 			end
 		end)
 	end
-	
-	self:keepFontStrings(WorldStateScoreFrame)
-	self:removeRegions(WorldStateScoreScrollFrame)
-	self:skinScrollBar(WorldStateScoreScrollFrame)
-	self:addSkinFrame(WorldStateScoreFrame, 10, -15, -113, 70, ftype)
+
+	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
+	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, x1=10, y1=-15, x2=-113, y2=70}
 
 -->>-- Tabs
 	for i = 1, 3 do
 		local tabName = _G["WorldStateScoreFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame(tabName, 7, 8, -7, 10, ftype, self.isTT)
+		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=7, y1=8, x2=-7, y2=10}
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
@@ -625,14 +691,13 @@ function Skinner:BattleScore()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	
+
 end
 
 function Skinner:BattlefieldMinimap()
 	if not self.db.profile.BattlefieldMm then return end
 
---	self:Debug("BMM")
-
+	-- change the skinFrame's opacity as required
 	self:SecureHook("BattlefieldMinimap_UpdateOpacity", function(opacity)
 		local alpha = 1.0 - BattlefieldMinimapOptions.opacity
 		if ( alpha >= 0.15 ) then alpha = alpha - 0.15 end
@@ -641,17 +706,18 @@ function Skinner:BattlefieldMinimap()
 	end)
 
 -->>--	Minimap Tab
-	self:keepRegions(BattlefieldMinimapTab, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-	if self.db.profile.TexturedTab then self:applySkin(BattlefieldMinimapTab, nil, 0, 1)
-	else self:storeAndSkin(ftype, BattlefieldMinimapTab) end
-	self:moveObject(BattlefieldMinimapTabText, nil, nil, "+", 4)
-
+	self:keepRegions(BattlefieldMinimapTab, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
+	asopts = self.isTT and {ba=1} or nil
+	self:addSkinFrame{obj=BattlefieldMinimapTab, ft=ftype, noBdr=self.isTT, aso=asopts, y1=-7, y2=-7}
+	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
 -->>--	Minimap
-	self:moveObject(BattlefieldMinimap, nil, nil, "+", 5)
 	-- change the draw layer so that the map is visible
+	for i = 1, NUM_WORLDMAP_DETAIL_TILES do
+		_G["BattlefieldMinimap"..i]:SetDrawLayer("ARTWORK")
+	end
 
 	-- Create a frame to skin as using the BattlefieldMinimap one causes issues with Capping
-	self:addSkinFrame(BattlefieldMinimap, -4, 4, -2, 1, ftype)
+	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, bg=true, x1=-4, y1=4, x2=-2, y2=-1}
 	-- hide the textures as the alpha values are changed in game
 	BattlefieldMinimapCorner:Hide()
 	BattlefieldMinimapBackground:Hide()
@@ -665,16 +731,7 @@ end
 function Skinner:ScriptErrors()
 	if not self.db.profile.ScriptErrors then return end
 
-	ScriptErrors:SetBackdrop(nil)
-	self:addSkinFrame(ScriptErrors, 0, 0, 0, 0, ftype)
-	
-end
-
-function Skinner:Tutorial()
-	if not self.db.profile.Tutorial then return end
-
-	TutorialFrame:SetBackdrop(nil)
-	self:addSkinFrame(TutorialFrame, 0, 0, 0, 0, ftype)
+	self:addSkinFrame{obj=ScriptErrors, ft=ftype}
 
 end
 
@@ -683,18 +740,15 @@ function Skinner:DropDowns()
 	self.initialized.DropDowns = true
 
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(level, index)
---		self:Debug("UIDDM_CF: [%s, %s]", level, index)
 		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
 			local ddl = "DropDownList"..i
 			local ddlObj = _G[ddl]
 			if not self:IsHooked(ddlObj, "Show") then
---				self:Debug("DD's: [%s, %s]", i, UIDROPDOWNMENU_MAXLEVELS)
 				self:SecureHook(ddlObj, "Show", function()
-					self:keepFontStrings(ddlObj)
 					_G[ddl.."Backdrop"]:Hide()
 					_G[ddl.."MenuBackdrop"]:Hide()
 					if not self.skinFrame[ddlObj] then
-						self:addSkinFrame(ddlObj, 0, 0, 0, 0, ftype)
+						self:addSkinFrame{obj=ddlObj, ft=ftype, kfs=true}
 					end
 				end)
 			end
@@ -710,14 +764,12 @@ function Skinner:MinimapButtons()
 	local function mmKids(mmObj)
 
 		local mmObjName = mmObj.GetName and mmObj:GetName() or "<Anon>"
---		Skinner:Debug("Checking %s kids", mmObjName)
 
 		for i = 1, mmObj:GetNumChildren() do
 			local obj = select(i, mmObj:GetChildren())
 			local objName = obj:GetName()
 			local objType = obj:GetObjectType()
---			Skinner:Debug("%s kids: [%s, %s, %s]", mmObjName, obj, objName, objType)
-			if not Skinner.skinned[obj] and objName
+			if not (Skinner.sBut[obj] or Skinner.skinFrame[obj]) and objName
 			and (objType == "Button" or objType == "Frame" and objName == "MiniMapMailFrame") then
 				for i = 1, obj:GetNumRegions() do
 					local reg = select(i, obj:GetRegions())
@@ -725,27 +777,22 @@ function Skinner:MinimapButtons()
 						local regName = reg:GetName()
 						local regTex = reg:GetTexture()
 						local regDL = reg:GetDrawLayer()
---						Skinner:Debug("%s obj: [%s, %s, %s]", mmObjName, objName, regName, regTex)
 						-- change the DrawLayer to make the Icon show if required
 						if (regName and string.find(regName, "[Ii]con"))
 						or (regTex and string.find(regTex, "[Ii]con")) then
---							Skinner:Debug("%s obj Icon: [%s, %s, %s, %s, %s]", mmObjName, objName, regName, regDL, math.ceil(reg:GetWidth()), math.ceil(reg:GetHeight()))
 							if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
 						elseif (regName and string.find(regName, "Border"))
 						or (regTex and string.find(regTex, "TrackingBorder")) then
---							Skinner:Debug("%s obj skinned: [%s, %s, %s]", mmObjName, obj:GetName(), math.ceil(obj:GetWidth()), math.ceil(obj:GetHeight()))
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)
 							if objType == "Button" then
-								Skinner:addSkinButton(obj, obj)
-								Skinner.sBut[obj]:ClearAllPoints()
-								Skinner.sBut[obj]:SetAllPoints(obj)
+								Skinner:addSkinButton{obj=obj, parent=obj, sap=true}
 							else
-								Skinner:addSkinFrame(obj, 0, 0 ,0, 0, ftype)
+								Skinner:addSkinFrame{obj=obj, ft=ftype}
 							end
 						end
 					end
@@ -762,7 +809,7 @@ function Skinner:MinimapButtons()
 
 	-- skin other Blizzard buttons
 	for _, obj in pairs({GameTimeFrame, MinimapZoomIn, MinimapZoomOut}) do
-		self:addSkinButton(obj, obj)
+		self:addSkinButton{obj=obj, parent=obj}
 		self.sBut[obj]:ClearAllPoints()
 		self.sBut[obj]:SetAllPoints(obj)
 	end
@@ -805,188 +852,9 @@ function Skinner:MinimapButtons()
 	}
 	for addon, obj in pairs(mmButs) do
 		if IsAddOnLoaded(addon) then
-			self:addSkinButton(obj, obj)
-			self.sBut[obj]:ClearAllPoints()
-			self.sBut[obj]:SetAllPoints(obj)
+			self:addSkinButton{obj=obj, parent=obj, sap=true}
 		end
 	end
 	mmButs = nil
-
-end
-
-function Skinner:MovieProgress()
-	if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
-	self.initialized.MovieProgress = true
-
-	if not MovieProgressFrame:IsShown() then
-		self:SecureHook(MovieProgressFrame, "Show", function(this)
-			self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
-			self:keepFontStrings(MovieProgressFrame)
-			self:glazeStatusBar(MovieProgressBar, 0)
-			self:Unhook(MovieProgressFrame, "Show")
-		end)
-	else
-		self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
-		self:keepFontStrings(MovieProgressFrame)
-		self:glazeStatusBar(MovieProgressBar, 0)
-	end
-
-end
-
-function Skinner:TimeManager()
-	if not self.db.profile.TimeManager or self.initialized.TimeManager then return end
-	self.initialized.TimeManager = true
-
--->>--	Time Manager Frame
-	self:keepFontStrings(TimeManagerFrame)
-	TimeManagerFrameTicker:Hide()
-	self:keepFontStrings(TimeManagerStopwatchFrame)
-	self:skinDropDown(TimeManagerAlarmHourDropDown)
-	TimeManagerAlarmHourDropDownMiddle:SetWidth(TimeManagerAlarmHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown(TimeManagerAlarmMinuteDropDown)
-	TimeManagerAlarmMinuteDropDownMiddle:SetWidth(TimeManagerAlarmMinuteDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown(TimeManagerAlarmAMPMDropDown)
-	self:skinEditBox(TimeManagerAlarmMessageEditBox, {9})
-	self:addSkinFrame(TimeManagerFrame, 14, -11, -50, 9, ftype)
-	
-
--->>--	Time Manager Clock Button
-	self:removeRegions(TimeManagerClockButton, {1})
-	self:addSkinFrame(TimeManagerClockButton, 7, -3, -7, 3, ftype)
-	
-
--->>--	Stopwatch Frame
-	self:keepFontStrings(StopwatchTabFrame)
-	self:keepFontStrings(StopwatchFrame)
-	self:addSkinFrame(StopwatchFrame, 0, -16, 0, 2, ftype)
-	
-end
-
-function Skinner:Calendar()
-	if not self.db.profile.Calendar or self.initialized.Calendar then return end
-	self.initialized.Calendar = true
-
--->>--	Calendar Frame
-
-	self:keepFontStrings(CalendarFrame)
-	self:skinDropDown(CalendarFilterFrame, nil, nil, true)
-	-- adjust non standard dropdown
-	CalendarFilterFrameMiddle:SetHeight(16)
-	self:moveObject(CalendarFilterButton, "-", 8)
-	self:moveObject(CalendarFilterFrameText, "-", 8)
-	-- move close button
-	self:moveObject(CalendarCloseButton, nil, nil, "+", 14)
-	CalendarFrame:SetBackdrop(nil)
-	self:addSkinFrame(CalendarFrame, 1, nil, 1, -7, ftype)
-	
--->>-- View Holiday Frame
-	self:keepFontStrings(CalendarViewHolidayTitleFrame)
-	self:moveObject(CalendarViewHolidayTitleFrame, nil, nil, "-", 6)
-	self:keepFontStrings(CalendarViewHolidayFrame)
-	self:removeRegions(CalendarViewHolidayCloseButton, {4})
-	self:removeRegions(CalendarViewHolidayScrollFrame)
-	self:skinScrollBar(CalendarViewHolidayScrollFrame)
-	CalendarViewHolidayFrame:SetBackdrop(nil)
-	self:addSkinFrame(CalendarViewHolidayFrame, 2, -3, -3, -2, ftype)
-	
--->>-- View Raid Frame
-	self:keepFontStrings(CalendarViewRaidTitleFrame)
-	self:moveObject(CalendarViewRaidTitleFrame, nil, nil, "-", 6)
-	self:keepFontStrings(CalendarViewRaidFrame)
-	self:removeRegions(CalendarViewRaidCloseButton, {4})
-	self:removeRegions(CalendarViewRaidScrollFrame)
-	self:skinScrollBar(CalendarViewRaidScrollFrame)
-	CalendarViewRaidFrame:SetBackdrop(nil)
-	self:addSkinFrame(CalendarViewRaidFrame, 2, -3, -3, -2, ftype)
-	
--->>-- View Event Frame
-	self:keepFontStrings(CalendarViewEventTitleFrame)
-	self:moveObject(CalendarViewEventTitleFrame, nil, nil, "-", 6)
-	self:keepFontStrings(CalendarViewEventFrame)
-	self:removeRegions(CalendarViewEventCloseButton, {4})
-	CalendarViewEventDescriptionContainer:SetBackdrop(nil)
-	self:addSkinFrame(CalendarViewEventDescriptionContainer, 0, 0, 0, 0, ftype)
-	self:removeRegions(CalendarViewEventDescriptionScrollFrame)
-	self:skinScrollBar(CalendarViewEventDescriptionScrollFrame)
-	self:keepFontStrings(CalendarViewEventInviteListSection)
-	CalendarViewEventInviteList:SetBackdrop(nil)
-	self:addSkinFrame(CalendarViewEventInviteList, 0, 0, 0, 0, ftype)
-	CalendarViewEventFrame:SetBackdrop(nil)
-	self:addSkinFrame(CalendarViewEventFrame, 2, -3, -3, -2, ftype)
-	
--->>-- Create Event Frame
-	self:keepFontStrings(CalendarCreateEventFrame)
-	CalendarCreateEventIcon:SetAlpha(1) -- show event icon
-	self:keepFontStrings(CalendarCreateEventTitleFrame)
-	self:moveObject(CalendarCreateEventTitleFrame, nil, nil, "-", 6)
-	self:removeRegions(CalendarCreateEventCloseButton, {4})
-	self:skinEditBox(CalendarCreateEventTitleEdit, {9})
-	self:skinDropDown(CalendarCreateEventTypeDropDown)
-	self:skinDropDown(CalendarCreateEventHourDropDown)
-	CalendarCreateEventHourDropDownMiddle:SetWidth(CalendarCreateEventHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown(CalendarCreateEventMinuteDropDown)
-	CalendarCreateEventMinuteDropDownMiddle:SetWidth(CalendarCreateEventMinuteDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown(CalendarCreateEventAMPMDropDown)
-	self:skinDropDown(CalendarCreateEventRepeatOptionDropDown)
-	CalendarCreateEventDescriptionContainer:SetBackdrop(nil)
-	self:addSkinFrame(CalendarCreateEventDescriptionContainer, 0, 0, 0, 0, ftype)
-	self:removeRegions(CalendarCreateEventDescriptionScrollFrame)
-	self:skinScrollBar(CalendarCreateEventDescriptionScrollFrame)
-	self:keepFontStrings(CalendarCreateEventInviteListSection)
-	CalendarCreateEventInviteList:SetBackdrop(nil)
-	self:addSkinFrame(CalendarCreateEventInviteList, 0, 0, 0, 0, ftype)
-	self:skinEditBox(CalendarCreateEventInviteEdit, {9})
-	CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
-	-- TODO Fix this to be skinned properly when in a raid
-	if CalendarCreateEventRaidInviteButtonBorder then CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0) end
-	CalendarCreateEventCreateButtonBorder:SetAlpha(0)
-	CalendarCreateEventFrame:SetBackdrop(nil)
-	self:addSkinFrame(CalendarCreateEventFrame, 2, -3, -3, -2, ftype)
-
--->>-- Mass Invite Frame
-	self:keepFontStrings(CalendarMassInviteTitleFrame)
-	self:moveObject(CalendarMassInviteTitleFrame, nil, nil, "-", 6)
-	self:keepFontStrings(CalendarMassInviteFrame)
-	self:removeRegions(CalendarMassInviteCloseButton, {4})
-	self:skinEditBox(CalendarMassInviteGuildMinLevelEdit, {9})
-	self:skinEditBox(CalendarMassInviteGuildMaxLevelEdit, {9})
-	self:skinDropDown(CalendarMassInviteGuildRankMenu)
-	CalendarMassInviteFrame:SetBackdrop(nil)
-	self:addSkinFrame(CalendarMassInviteFrame, 4, -3, -3, 26, ftype)
-
--->>-- Event Picker Frame
-	self:keepFontStrings(CalendarEventPickerTitleFrame)
-	self:moveObject(CalendarEventPickerTitleFrame, nil, nil, "-", 6)
-	self:keepFontStrings(CalendarEventPickerFrame)
-	self:skinSlider(CalendarEventPickerScrollBar)
-	self:removeRegions(CalendarEventPickerCloseButton, {7})
---[[
-	self:moveObject(CalendarEventPickerCloseButton, nil, nil, "-", 4)
-	self:storeAndSkin(ftype, CalendarEventPickerFrame)
---]]
-	CalendarEventPickerFrame:SetBackdrop(nil)
-	self:addSkinFrame(CalendarEventPickerFrame, 2, -3, -3, -2, ftype)
-
--->>-- Texture Picker Frame
-	self:keepFontStrings(CalendarTexturePickerTitleFrame)
-	self:moveObject(CalendarTexturePickerTitleFrame, nil, nil, "-", 6)
-	self:keepFontStrings(CalendarTexturePickerFrame)
-	self:skinSlider(CalendarTexturePickerScrollBar)
-	CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
-	CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
-	CalendarTexturePickerFrame:SetBackdrop(nil)
-	self:addSkinFrame(CalendarTexturePickerFrame, 5, -3, -3, 2, ftype)
-
--->>-- Class Button Container
-	for i = 1, MAX_CLASSES do -- allow for the total button
-		self:removeRegions(_G["CalendarClassButton"..i], {1})
-	end
-	self:keepFontStrings(CalendarClassTotalsButton)
-	-- Class Totals button, texture & size changes
-	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.itTex)
-	self:moveObject(CalendarClassTotalsButtonBackgroundMiddle, "+", 2, nil, nil)
-	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(18)
-	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(18)
-	CalendarClassTotalsButtonBackgroundMiddle:SetAlpha(1)
 
 end

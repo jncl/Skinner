@@ -3,6 +3,10 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Skinner", "zhCN", false)
 
 if not L then return end
 
+-- untranslated strings
+L["GMChatUI Frame"] = true
+L["Toggle the skin of the GMChatUI Frame"] = true
+
 -- option titles
 L["Colours"] = "颜色"
 L["Backdrop"] = "背景"

@@ -1,3 +1,4 @@
+local _G = _G
 local ftype = "n"
 
 function Skinner:MerchantFrames()
@@ -17,17 +18,17 @@ function Skinner:MerchantFrames()
 			end
 		end)
 	end
-	
-	self:keepFontStrings(MerchantFrame)
-	self:addSkinFrame(MerchantFrame, 10, -12, -32, 55, ftype)
+
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
-	
+
+	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=55}
+
 -->>-- Tabs
 	for i = 1, MerchantFrame.numTabs do
 		local tabName = _G["MerchantFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame(tabName, 6, 0, -6, 2, ftype, self.isTT)
+		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
@@ -35,30 +36,26 @@ function Skinner:MerchantFrames()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	
+
 end
 
 function Skinner:GossipFrame()
 	if not self.db.profile.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
---	setup ?_QUEST_DISPLAY to chosen Quest text colour
 	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
---	self:Debug("Quest Text Hex: [%s]", QTHex)
 	NORMAL_QUEST_DISPLAY = "|cff"..QTHex.."%s|r"
 	TRIVIAL_QUEST_DISPLAY = "|cff"..QTHex.."%s (low level)|r"
---	self:Debug("Changed Quest Display Colours, "..NORMAL_QUEST_DISPLAY..", "..TRIVIAL_QUEST_DISPLAY, "Normal", "Trivial")
 
-	self:keepFontStrings(GossipFrame)
 	self:keepFontStrings(GossipFrameGreetingPanel)
 	GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:removeRegions(GossipGreetingScrollFrame)
-	self:skinScrollBar(GossipGreetingScrollFrame)
+	self:skinScrollBar{obj=GossipGreetingScrollFrame}
 	for i = 1, NUMGOSSIPBUTTONS do
 		local text = self:getRegion(_G["GossipTitleButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	self:addSkinFrame(GossipFrame, 12, -18, -29, 66, ftype)
+
+	self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
 
 end
 
@@ -66,15 +63,13 @@ function Skinner:TrainerUI()
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
-	self:keepFontStrings(ClassTrainerFrame)
 	self:keepFontStrings(ClassTrainerExpandButtonFrame)
-	self:skinDropDown(ClassTrainerFrameFilterDropDown)
-	self:removeRegions(ClassTrainerListScrollFrame)
-	self:skinScrollBar(ClassTrainerListScrollFrame)
-	self:removeRegions(ClassTrainerDetailScrollFrame)
-	self:skinScrollBar(ClassTrainerDetailScrollFrame)
-	self:addSkinFrame(ClassTrainerFrame, 10, -12, -32, 74, ftype)
-	
+	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
+	self:skinScrollBar{obj=ClassTrainerListScrollFrame}
+	self:skinScrollBar{obj=ClassTrainerDetailScrollFrame}
+
+	self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=74}
+
 end
 
 function Skinner:TaxiFrame()
@@ -82,8 +77,9 @@ function Skinner:TaxiFrame()
 	self.initialized.TaxiFrame = true
 
 	self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
-	self:addSkinFrame(TaxiFrame, 10, -12, -32, 74, ftype)
-	
+
+	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
+
 end
 
 function Skinner:QuestFrame()
@@ -92,7 +88,6 @@ function Skinner:QuestFrame()
 
 	-- hook OnShow methods to change text colour
 	self:SecureHook("QuestFrameGreetingPanel_OnShow", function()
---		self:Debug("QFGP_OS")
 		for i = 1, MAX_NUM_QUESTS do
 			local text = self:getRegion(_G["QuestTitleButton"..i], 3)
 			text:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -105,27 +100,31 @@ function Skinner:QuestFrame()
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
 
-	self:keepFontStrings(QuestFrame)
-	self:addSkinFrame(QuestFrame, 12, -18, -29, 66, ftype)
-	
+	self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
+
 -->>--	Reward Panel
 	self:keepFontStrings(QuestFrameRewardPanel)
 	QuestRewardTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinScrollBar(QuestRewardScrollFrame)
+	self:skinScrollBar{obj=QuestRewardScrollFrame}
 
 -->>--	Progress Panel
 	self:keepFontStrings(QuestFrameProgressPanel)
 	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinScrollBar(QuestProgressScrollFrame)
+	self:skinScrollBar{obj=QuestProgressScrollFrame}
 
 -->>--	Detail Panel
 	self:keepFontStrings(QuestFrameDetailPanel)
 	QuestDetailTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinScrollBar(QuestDetailScrollFrame)
+	self:skinScrollBar{obj=QuestDetailScrollFrame}
 
 -->>--	Greeting Panel
-	self:keepFontStrings(QuestFrameGreetingPanel)
-	self:skinScrollBar(QuestGreetingScrollFrame)
+	self:skinScrollBar{obj=QuestGreetingScrollFrame}
+	if QuestFrameGreetingPanel:IsShown() then
+		GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		CurrentQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		AvailableQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		QuestFrameGreetingPanel_OnShow()  -- force recolour of quest lines
+	end
 
 end
 
@@ -133,11 +132,10 @@ function Skinner:Battlefields()
 	if not self.db.profile.Battlefields or self.initialized.Battlefields then return end
 	self.initialized.Battlefields = true
 
-	self:keepFontStrings(BattlefieldFrame)
-	self:removeRegions(BattlefieldListScrollFrame)
-	self:skinScrollBar(BattlefieldListScrollFrame)
+	self:skinScrollBar{obj=BattlefieldListScrollFrame}
 	BattlefieldFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame(BattlefieldFrame, 10, -12, -32, 71, ftype)
+
+	self:addSkinFrame{obj=BattlefieldFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 end
 
@@ -145,9 +143,9 @@ function Skinner:ArenaFrame()
 	if not self.db.profile.ArenaFrame or self.initialized.ArenaFrame then return end
 	self.initialized.ArenaFrame = true
 
-	self:keepFontStrings(ArenaFrame)
 	ArenaFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame(ArenaFrame, 10, -12, -32, 71, ftype)
+
+	self:addSkinFrame{obj=ArenaFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 end
 
@@ -156,7 +154,6 @@ function Skinner:ArenaRegistrar()
 	self.initialized.ArenaRegistrar = true
 
 -->>--	Arena Registrar Frame
-	self:keepFontStrings(ArenaRegistrarFrame)
 	self:keepFontStrings(ArenaRegistrarGreetingFrame)
 	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -165,16 +162,18 @@ function Skinner:ArenaRegistrar()
 		local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	self:skinEditBox(ArenaRegistrarFrameEditBox)
-	self:addSkinFrame(ArenaRegistrarFrame, 10, -12, -32, 71, ftype)
-	
+	self:skinEditBox{obj=ArenaRegistrarFrameEditBox}
+
+	self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+
 -->>--	PVP Banner Frame
 	self:keepRegions(PVPBannerFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
 
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
 	self:keepFontStrings(PVPBannerFrameCustomization2)
-	self:addSkinFrame(PVPBannerFrame, 10, -12, -32, 74, ftype)
+
+	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
 
 end
 
@@ -182,7 +181,6 @@ function Skinner:GuildRegistrar()
 	if not self.db.profile.GuildRegistrar or self.initialized.GuildRegistrar then return end
 	self.initialized.GuildRegistrar = true
 
-	self:keepFontStrings(GuildRegistrarFrame)
 	self:keepFontStrings(GuildRegistrarGreetingFrame)
 	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -190,16 +188,16 @@ function Skinner:GuildRegistrar()
 		local text = self:getRegion(_G["GuildRegistrarButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	self:skinEditBox(GuildRegistrarFrameEditBox)
-	self:addSkinFrame(GuildRegistrarFrame, 12, -17, -29, 65, ftype)
-	
+	self:skinEditBox{obj=GuildRegistrarFrameEditBox}
+
+	self:addSkinFrame{obj=GuildRegistrarFrame, ft=ftype, kfs=true, x1=12, y1=-17, x2=-29, y2=65}
+
 end
 
 function Skinner:Petition()
 	if not self.db.profile.Petition or self.initialized.Petition then return end
 	self.initialized.Petition = true
 
-	self:keepFontStrings(PetitionFrame)
 	PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	PetitionFrameMasterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -209,8 +207,9 @@ function Skinner:Petition()
 		_G["PetitionFrameMemberName"..i]:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 	PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame(PetitionFrame, 12, -17, -29, 65, ftype)
-	
+
+	self:addSkinFrame{obj=PetitionFrame, ft=ftype, kfs=true, x1=12, y1=-17, x2=-29, y2=65}
+
 end
 
 function Skinner:Tabard()
@@ -223,26 +222,27 @@ function Skinner:Tabard()
 	TabardCharacterModelRotateRightButton:Hide()
 	self:makeMFRotatable(TabardModel)
 	TabardFrameCostFrame:SetBackdrop(nil)
-	self:addSkinFrame(TabardFrameCostFrame, nil, nil, nil, nil, ftype)
+	self:addSkinFrame{obj=TabardFrameCostFrame, ft=ftype}
 	self:keepFontStrings(TabardFrameCustomizationFrame)
 	for i = 1, 5 do
 		self:keepFontStrings(_G["TabardFrameCustomization"..i])
 	end
-	self:addSkinFrame(TabardFrame, 10, -12, -32, 74, ftype)
-	
+
+	self:addSkinFrame{obj=TabardFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=74}
+
 end
 
 function Skinner:BarbershopUI()
 	if not self.db.profile.BarbershopUI or self.initialized.Barbershop then return end
 	self.initialized.Barbershop = true
 
--->>-- Barbershop Banner Frame	
+-->>-- Barbershop Banner Frame
 	self:keepFontStrings(BarberShopBannerFrame)
 	BarberShopBannerFrameCaption:ClearAllPoints()
 	BarberShopBannerFrameCaption:SetPoint("CENTER", BarberShopFrame, "TOP", 0, -46)
--->>-- Barbershop Frame	
-	self:keepFontStrings(BarberShopFrame)
+-->>-- Barbershop Frame
 	self:keepFontStrings(BarberShopFrameMoneyFrame)
-	self:addSkinFrame(BarberShopFrame, 35, -32, -32, 42, ftype)
-	
+
+	self:addSkinFrame{obj=BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
+
 end
