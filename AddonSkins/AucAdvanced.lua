@@ -28,16 +28,14 @@ function Skinner:AucAdvanced()
 	if AucAdvanced.Modules.Util.SearchUI then
 		-- skin the SearchUI Frame
 		self:SecureHook(AucAdvanced.Modules.Util.SearchUI, "CreateAuctionFrames", function()
-			local frame = AucAdvSearchUiAuctionFrame
-			self:addSkinFrame{obj=frame.backing}
-			frame.money:SetAlpha(0)
+			self:addSkinFrame{obj=AucAdvSearchUiAuctionFrame.backing}
+			AucAdvSearchUiAuctionFrame.money:SetAlpha(0)
 			self:Unhook(AucAdvanced.Modules.Util.SearchUI, "CreateAuctionFrames")
 		end)
 		-- skin the GUI frame as well
 		self:SecureHook(AucAdvanced.Modules.Util.SearchUI, "MakeGuiConfig", function()
-			local gui = AucAdvanced.Modules.Util.SearchUI.Private.gui
-			gui.frame.progressbar:SetBackdrop(nil)
-			self:glazeStatusBar(gui.frame.progressbar, 0)
+			AucAdvanced.Modules.Util.SearchUI.Private.gui.frame.progressbar:SetBackdrop(nil)
+			self:glazeStatusBar(AucAdvanced.Modules.Util.SearchUI.Private.gui.frame.progressbar, 0)
 			self:Unhook(AucAdvanced.Modules.Util.SearchUI, "MakeGuiConfig")
 		end)
 	end
@@ -55,7 +53,7 @@ function Skinner:AucAdvanced()
 			self:skinDropDown{obj=frame.salebox.model}
 			self:skinMoneyFrame{obj=frame.salebox.bid, noWidth=true, moveSEB=true, moveGEB=true}
 			self:skinMoneyFrame{obj=frame.salebox.buy, noWidth=true, moveSEB=true, moveGEB=true}
-			self:addSkinFrame{obj=frame.manifest, bg=true} -- a.k.a. Sidebar, put behind AH frame
+			self:addSkinFrame{obj=frame.manifest, bg=true, y1=-2, x2=-2} -- a.k.a. Sidebar, put behind AH frame
 			frame.imageview.purchase:SetBackdrop(nil)
 			frame.imageview.purchase:SetBackdropColor(0, 0, 0, 0)
 			self:Unhook(AucAdvanced.Modules.Util.Appraiser.Private,"CreateFrames")

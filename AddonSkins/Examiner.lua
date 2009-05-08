@@ -2,47 +2,34 @@
 function Skinner:Examiner()
 	if not self.db.profile.InspectUI then return end
 
-	Examiner:SetWidth(Examiner:GetWidth() * self.FxMult)
-	Examiner:SetHeight(Examiner:GetHeight() + 6)
 	self:keepRegions(Examiner, {2, 3, 4, 9, 10, 11, 12}) -- N.B. 2-4 are text and 9-12 are background regions
-	self:moveObject(self:getChild(Examiner, 1), "+", 30, "+", 8) -- Close Button
-	self:moveObject(Examiner.buttons[1], "-", 10, "-", 6)
-	self:moveObject(self:getRegion(Examiner, 3), nil, nil, "+", 10) -- Lvl & Class
-	self:moveObject(self:getRegion(Examiner, 9), "-", 8, "+", 10) -- Background Top Left
-	self:moveObject(Examiner.model, "+", 10, nil, nil) -- will move all its children as well
-	self:applySkin(Examiner)
+	self:addSkinFrame{obj=Examiner, x1=10, y1=-11, x2=-33}
 
 -->>--	Config Frame
-	self:applySkin(Examiner.frames[1])
+	self:addSkinFrame{obj=Examiner.frames[1]}
 -->>--	Cache Frame
-	self:keepFontStrings(ExaminerCacheScroll)
-	self:skinScrollBar(ExaminerCacheScroll)
-	self:applySkin(Examiner.frames[2])
+	self:skinScrollBar{obj=ExaminerCacheScroll}
+	self:addSkinFrame{obj=Examiner.frames[2]}
 -->>--	Stats Frame
-	self:keepFontStrings(ExaminerStatScroll)
-	self:skinScrollBar(ExaminerStatScroll)
-	self:applySkin(Examiner.frames[3])
+	self:skinScrollBar{obj=ExaminerStatScroll}
+	self:addSkinFrame{obj=Examiner.frames[3]}
 -->>--	PVP Frame
 	for i = 1, #Examiner.arena do
-		self:applySkin(Examiner.arena[i])
+		self:addSkinFrame{obj=Examiner.arena[i]}
 	end
-	self:applySkin(Examiner.frames[4])
+	self:addSkinFrame{obj=Examiner.frames[4]}
 -->>-- Feats Frame
 	Examiner.featsDropDown:SetBackdrop(nil)
 	-- hook this to skin the dropdown menu
 	self:SecureHookScript(Examiner.featsDropDown.button, "OnClick", function(this)
-		self:applySkin(AzDropDownScroll:GetParent())
-		self:keepFontStrings(AzDropDownScroll)
-		self:skinScrollBar(AzDropDownScroll)
+		self:skinScrollBar{obj=_G["AzDropDownScroll"..AzDropDown.vers]}
+		self:addSkinFrame{obj=_G["AzDropDownScroll"..AzDropDown.vers]:GetParent()}
 		self:Unhook(Examiner.featsDropDown.button, "OnClick")
 	end)
-	self:keepFontStrings(ExaminerFeatsScroll)
-	self:skinScrollBar(ExaminerFeatsScroll)
-	self:applySkin(Examiner.frames[5])
+	self:skinScrollBar{obj=ExaminerFeatsScroll}
+	self:addSkinFrame{obj=Examiner.frames[5]}
 -->>--	Talent Frame
 	self:skinFFToggleTabs("ExaminerTab", MAX_TALENT_TABS)
-	self:moveObject(ExaminerTab1, "-", 36, nil, nil)
-	self:keepFontStrings(ExaminerTalentsScrollChild)
-	self:skinScrollBar(ExaminerTalentsScrollChild)
+	self:skinScrollBar{obj=ExaminerTalentsScrollChild}
 
 end

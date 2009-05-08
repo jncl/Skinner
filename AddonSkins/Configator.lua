@@ -3,15 +3,15 @@ function Skinner:Configator()
 	
 	local function skinSearchUI(gui)
 	
-		Skinner:skinEditBox(gui.saves.name, {9})
-		Skinner:skinMoneyFrame(gui.frame.bidbox, nil, true, true)
+		Skinner:skinEditBox{obj=gui.saves.name, regs={9}}
+		Skinner:skinMoneyFrame{obj=gui.frame.bidbox, noWidth=true, moveSEB=true}
 		Skinner:glazeStatusBar(gui.frame.progressbar, 0)
 		
 		-- scan the gui tabs for known MoneyFrames
 		for i = 1, #gui.tabs do
 			local frame = gui.tabs[i].content
 			if frame.money and frame.money.isMoneyFrame then
-				Skinner:skinMoneyFrame(frame.money, nil, true, true)
+				Skinner:skinMoneyFrame{obj=frame.money, noWidth=true, moveSEB=true}
 			end
 		end
 		
@@ -22,7 +22,7 @@ function Skinner:Configator()
 	if sblib and sblib.frame then
 		self:applySkin(sblib.frame)
 		if self.db.profile.Tooltips.skin then
-			if self.db.profile.Tooltips.style == 3 then sblib.tooltip:SetBackdrop(self.backdrop) end
+			if self.db.profile.Tooltips.style == 3 then sblib.tooltip:SetBackdrop(self.Backdrop[1]) end
 			self:SecureHook(sblib.tooltip, "Show", function(this)
 				self:skinTooltip(sblib.tooltip)
 			end)
@@ -35,8 +35,8 @@ function Skinner:Configator()
 		self:RawHook(clib, "Create", function(this, ...)
 			local frame = self.hooks[clib].Create(this, ...)
 --			self:Debug("Configator_Create: [%s]", frame:GetName())
-			if not self.skinned[frame] then
-				self:applySkin(frame.Backdrop)
+			if not self.skinFrame[frame.Backdrop] then
+				self:addSkinFrame{obj=frame.Backdrop}
 				-- look for the SearchUI frame
 				local w, h, gw, gh, to, lo = select(3, ...)
 				if w == 900 and h == 500 and gw == 5 and gh == 350 and to == 20 and lo == 5 then
@@ -46,49 +46,47 @@ function Skinner:Configator()
 
 			-- skin the Tooltip
 			if self.db.profile.Tooltips.skin then
-				if not clib.tooltip.hooked then
-					if self.db.profile.Tooltips.style == 3 then clib.tooltip:SetBackdrop(self.backdrop) end
+				if not self:IsHooked(clib.tooltip, "Show") then
+					if self.db.profile.Tooltips.style == 3 then clib.tooltip:SetBackdrop(self.Backdrop[1]) end
 					self:SecureHook(clib.tooltip, "Show", function(this)
 						self:skinTooltip(clib.tooltip)
 					end)
-					clib.tooltip.hooked = true
 				end
 			end
 
 			-- skin the Help frame
-			if not self.skinned[clib.help] then
-				self:moveObject(clib.help.close, nil, nil, "-", 2)
-				self:applySkin(clib.help)
-				self:skinUsingBD2(clib.help.scroll.hScroll)
-				self:skinUsingBD2(clib.help.scroll.vScroll)
+			if not self.skinFrame[clib.help] then
+				self:moveObject{obj=clib.help.close, y=-2}
+				self:skinUsingBD{obj=clib.help.scroll.hScroll}
+				self:skinUsingBD{obj=clib.help.scroll.vScroll}
+				self:addSkinFrame{obj=clib.help}
 			end
 
 			-- hook this to skin various controls
 			self:RawHook(frame, "AddControl", function(this, id, cType, column, ...)
-	-- 		self:Debug("Configator_Create_AddControl: [%s, %s, %s, %s]", id, cType, column, ...)
 				local control = self.hooks[frame].AddControl(this, id, cType, column, ...)
+--	 			self:Debug("Configator_Create_AddControl: [%s, %s, %s, %s, %s]", control, id, cType, column, ...)
 				-- skin the sub-frame if required
-				if not self.skinned[this.tabs[id].frame] then
-					self:applySkin(this.tabs[id].frame)
+				if not self.skinFrame[this.tabs[id].frame] then
+					self:addSkinFrame{obj=this.tabs[id].frame}
 				end
 				-- skin the scroll bars
 				if this.tabs[id].scroll and not self.skinned[this.tabs[id].scroll] then
-					self:skinUsingBD2(this.tabs[id].scroll.hScroll)
-					self:skinUsingBD2(this.tabs[id].scroll.vScroll)
+					self:skinUsingBD{obj=this.tabs[id].scroll.hScroll}
+					self:skinUsingBD{obj=this.tabs[id].scroll.vScroll}
 				end
 				-- skin the DropDown
 				if cType == "Selectbox" then
-					self:skinDropDown(control)
-	--				self:keepFontStrings(control)
-					if not self.skinned[SelectBoxMenu] then
-						self:applySkin(SelectBoxMenu.back)
+					self:skinDropDown{obj=control}
+					if not self.skinFrame[SelectBoxMenu.back] then
+						self:addSkinFrame{obj=SelectBoxMenu.back}
 					end
 				end
 				if cType == "Text" or cType == "TinyNumber" or cType == "NumberBox" then
-					self:skinEditBox(control, {9})
+					self:skinEditBox{obj=control, regs={9}}
 				end
 				if cType == "MoneyFrame" or cType == "MoneyFramePinned" then
-					self:skinMoneyFrame(control, nil, true, true)
+					self:skinMoneyFrame{obj=control, noWidth=true, moveSEB=true}
 				end
 				return control
 				end, true)
@@ -101,14 +99,12 @@ function Skinner:Configator()
 		for i = 1, #clib.frames do
 			local frame = clib.frames[i]
 			if frame then
-				self:applySkin(frame)
-				self.skinned[frame] = true
+				self:addSkinFrame{obj=frame}
 			end
 			if frame.tabs then
 				for j = 1, #frame.tabs do
 					local tab = frame.tabs[j]
-					self:applySkin(tab.frame)
-					self.skinned[tab.frame] = true
+					self:addSkinFrame{obj=tab.frame}
 					if tab.frame.ctrls then
 						for k = 1, #tab.frame.ctrls do
 							local tfc = tab.frame.ctrls[k]
@@ -117,13 +113,13 @@ function Skinner:Configator()
 									local tfck = tfc.kids[l]
 									if tfck.stype then
 										if tfck.stype == "EditBox" then
-											self:skinEditBox(tfck, {9})
+											self:skinEditBox{obj=tfck, regs={9}}
 										end
 										if tfck.stype == "SelectBox" then
 											self:keepFontStrings(tfck)
 										end
 										if tfck.isMoneyFrame then
-											self:skinMoneyFrame(tfck, nil, true, true)
+											self:skinMoneyFrame{obj=tfck, noWidth=true, moveSEB=true}
 										end
 									end
 								end
@@ -131,8 +127,8 @@ function Skinner:Configator()
 						end
 					end
 					if tab.scroll then
-						self:skinUsingBD2(tab.scroll.hScroll)
-						self:skinUsingBD2(tab.scroll.vScroll)
+						self:skinUsingBD{obj=tab.scroll.hScroll}
+						self:skinUsingBD{obj=tab.scroll.vScroll}
 						self.skinned[tab.scroll] = true
 					end
 				end
@@ -142,27 +138,24 @@ function Skinner:Configator()
 
 	-- skin the Tooltip
 	if self.db.profile.Tooltips.skin then
-		if clib and not clib.tooltip.hooked then
+		if clib and not self:IsHooked(clib.tooltip, "Show") then
 			if self.db.profile.Tooltips.style == 3 then clib.tooltip:SetBackdrop(self.backdrop) end
 			self:SecureHook(clib.tooltip, "Show", function(this)
 				self:skinTooltip(clib.tooltip)
 			end)
-			clib.tooltip.hooked = true
 		end
 	end
 
 	-- skin the Help frame
 	if clib and clib.help then
-		self:moveObject(clib.help.close, nil, nil, "-", 2)
-		self:applySkin(clib.help)
-		self:skinUsingBD2(clib.help.scroll.hScroll)
-		self:skinUsingBD2(clib.help.scroll.vScroll)
-		self.skinned[clib.help] = true
+		self:moveObject{obj=clib.help.close, y=-2}
+		self:skinUsingBD{obj=clib.help.scroll.hScroll}
+		self:skinUsingBD{obj=clib.help.scroll.vScroll}
+		self:addSkinFrame{obj=clib.help}
 	end
 	-- skin DropDown menu
 	if SelectBoxMenu then
-		self:applySkin(SelectBoxMenu.back)
-		self.skinned[SelectBoxMenu] = true
+		self:addSkinFrame{obj=SelectBoxMenu.back}
 	end
 
 	-- skin ScrollSheets
@@ -170,10 +163,9 @@ function Skinner:Configator()
 	if sslib then
 		self:RawHook(sslib, "Create", function(this, parent, ...)
 			local sheet = self.hooks[sslib].Create(this, parent, ...)
-	--		self:Debug("ScrollSheet_Create: [%s]", sheet.name)
-			self:applySkin(parent)
-			self:skinUsingBD2(sheet.panel.hScroll)
-			self:skinUsingBD2(sheet.panel.vScroll)
+			self:skinUsingBD{obj=sheet.panel.hScroll}
+			self:skinUsingBD{obj=sheet.panel.vScroll}
+			self:addSkinFrame{obj=parent, x2=-3, y2=3}
 			return sheet
 		end, true)
 	end

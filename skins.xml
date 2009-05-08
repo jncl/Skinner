@@ -96,7 +96,6 @@
 <script file="SkinMe\Dominos.lua"/>
 <script file="SkinMe\DopieArenaInfo.lua"/>
 <script file="SkinMe\DoTimer.lua"/>
-<script file="SkinMe\DoubleWideTradeSkills.lua"/>
 <script file="SkinMe\DuckieBank.lua"/>
 <script file="SkinMe\Earth.lua"/>
 <script file="SkinMe\EasyTrack.lua"/>
@@ -116,7 +115,6 @@
 <script file="SkinMe\EquipCompare.lua"/>
 <!-- <script file="SkinMe\EveryQuest.lua"/> -->
 <script file="SkinMe\Examiner.lua"/>
-<script file="SkinMe\ExtendedQuestFrame.lua"/>
 <!-- <script file="SkinMe\FactionGrinder.lua"/> -->
 <script file="SkinMe\Factionizer.lua"/>
 <script file="SkinMe\FBagOfHolding.lua"/>

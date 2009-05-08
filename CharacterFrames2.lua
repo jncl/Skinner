@@ -137,9 +137,6 @@ function Skinner:TradeSkillUI()
 	if not self.db.profile.TradeSkillUI or self.initialized.TradeSkillUI then return end
 	self.initialized.TradeSkillUI = true
 
-	-- if DoubleWideTradeSkills is loaded then use it's skin for the TradeSkillFrame
-	if IsAddOnLoaded("DoubleWideTradeSkills") then return end
-
 	TradeSkillRankFrameBorder:SetAlpha(0)
 	self:glazeStatusBar(TradeSkillRankFrame, 0)
 	self:skinEditBox{obj=TradeSkillFrameEditBox, regs={9}}

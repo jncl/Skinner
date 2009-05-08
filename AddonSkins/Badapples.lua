@@ -9,7 +9,7 @@ function Skinner:Badapples()
 	if self.isTT then self:setInactiveTab(tabSF) end
 
 	-- Toggle Tabs
-	for _, v in pairs({"Friends", "Ignore", "Muted"}) do
+	for _, v in pairs{"Friends", "Ignore", "Muted"} do
 		local tabName = "Badapples"..v.."FrameToggleTab4"
 		local tabObj = _G[tabName]
 		tabObj:SetHeight(tabObj:GetHeight() - 5)
