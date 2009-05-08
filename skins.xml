@@ -32,7 +32,7 @@
 <!-- <script file="SkinMe\AutoBarConfig.lua"/> -->
 <script file="SkinMe\AutoDecline.lua"/>
 <script file="SkinMe\AutoProfit.lua"/>
-<script file="SkinMe\AutoProfitX.lua"/>
+<!-- <script file="SkinMe\AutoProfitX.lua"/> -->
 <script file="SkinMe\AxuItemMenus.lua"/>
 <script file="SkinMe\Badapples.lua"/>
 <script file="SkinMe\Baggins.lua"/>
@@ -95,7 +95,6 @@
 <script file="SkinMe\Dominos.lua"/>
 <script file="SkinMe\DopieArenaInfo.lua"/>
 <script file="SkinMe\DoTimer.lua"/>
-<script file="SkinMe\DoubleWide.lua"/>
 <script file="SkinMe\DoubleWideTradeSkills.lua"/>
 <script file="SkinMe\DuckieBank.lua"/>
 <script file="SkinMe\Earth.lua"/>
