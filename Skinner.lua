@@ -24,23 +24,22 @@ Skinner.isPTR = FeedbackUI and true or false
 
 -- local defs (for speed)
 local _G = _G
-local type = type
-local rawget = rawget
-local tostring = tostring
-local tonumber = tonumber
-local select = select
-local tcon = table.concat
-local tinsert = table.insert
 local assert = assert
-local pairs = pairs
-local geterrorhandler = geterrorhandler
-local pcall = pcall
-local xpcall = xpcall
 local ceil = math.ceil
 local floor = math.floor
-local unpack = unpack
+local geterrorhandler = geterrorhandler
+local pairs = pairs
+local pcall = pcall
+local rawget = rawget
+local select = select
 local strfind = string.find
-
+local tcon = table.concat
+local tinsert = table.insert
+local tonumber = tonumber
+local tostring = tostring
+local type = type
+local unpack = unpack
+local xpcall = xpcall
 local CreateFrame = CreateFrame
 local LowerFrameLevel = LowerFrameLevel
 local RaiseFrameLevel = RaiseFrameLevel
@@ -48,9 +47,8 @@ local IsAddOnLoaded = IsAddOnLoaded
 local IsAddOnLoadOnDemand = IsAddOnLoadOnDemand
 local EnumerateFrames = EnumerateFrames
 local Model_RotateLeft = Model_RotateLeft
-local Model_RotateRight =Model_RotateRight
+local Model_RotateRight = Model_RotateRight
 local PanelTemplates_TabResize = PanelTemplates_TabResize
-
 
 local function makeString(t)
 
@@ -244,7 +242,7 @@ function Skinner:OnInitialize()
 
 	-- define a metatable to have weak keys and to automatically add an entry if it doesn't exist
 	local mt = {__mode = "k", __index = function (t, k) t[k] = true end}
-	-- table to hold frames which have been skinned
+	-- table to hold objects which have been skinned
 	self.skinned = setmetatable({}, mt)
 
 	-- table to hold frames that have been added
@@ -486,7 +484,7 @@ local function __addSkinFrame(opts)
 
 	-- skin the frame using any supplied options
 	opts.aso.obj = skinFrame
-	Skinner:applySkin(opts.aso) -- use 'old style' call
+	Skinner:applySkin(opts.aso)
 
 	-- adjust frame level
 	local success, err = pcall(LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
@@ -1267,16 +1265,6 @@ function Skinner:skinDropDown(...)
 
 end
 
-local function __skinUsingBD(obj, size)
-
-	size = size or 3 -- default to medium
-
-	obj:SetBackdrop(Skinner.Backdrop[size])
-	obj:SetBackdropBorderColor(.2, .2, .2, 1)
-	obj:SetBackdropColor(.1, .1, .1, 1)
-
-end
-
 local function __skinEditBox(opts)
 --[[
 	Calling parameters:
@@ -1312,7 +1300,7 @@ local function __skinEditBox(opts)
 	if not opts.noWidth then opts.obj:SetWidth(opts.obj:GetWidth() + 5) end
 
 	-- apply the backdrop
-	if not opts.noSkin then __skinUsingBD(opts.obj) end
+	if not opts.noSkin then Skinner:skinUsingBD{obj=opts.obj} end
 
 	-- move to the left & up, if required
 	if opts.move then Skinner:moveObject{obj=opts.obj, x=-2, y=2} end
@@ -1353,9 +1341,6 @@ function Skinner:skinFFToggleTabs(tabName, tabCnt)
 		if i == 1 then self:moveObject{obj=togTab, y=3} end
 		self:moveObject{obj=_G[togTab:GetName().."Text"], x=-2, y=3}
 		self:moveObject{obj=_G[togTab:GetName().."HighlightTexture"], x=-2, y=5}
---[[
-		self:storeAndSkin(ftype, togTab)
---]]
 		self:addSkinFrame{obj=togTab}
 	end
 
@@ -1367,9 +1352,6 @@ function Skinner:skinFFColHeads(buttonName, noCols)
 	local numCols = noCols and noCols or 4
 	for i = 1, numCols do
 		self:keepRegions(_G[buttonName..i], {4, 5}) -- N.B 4 is text, 5 is highlight
---[[
-		self:storeAndSkin(ftype, _G[buttonName..i])
---]]
 		self:addSkinFrame{obj=_G[buttonName..i]}
 	end
 
@@ -1392,7 +1374,7 @@ local function __skinMoneyFrame(opts)
 	-- handle missing object (usually when addon changes)
 	if not opts.obj then return end
 	
-	for k, v in pairs({"Gold", "Silver", "Copper"}) do
+	for k, v in pairs{"Gold", "Silver", "Copper"} do
 		local fName = _G[opts.obj:GetName()..v]
 		Skinner:skinEditBox{obj=fName, regs={9, 10}, noHeight=true} -- N.B. region 9 is the icon, 10 is text
 		if k ~= 1 or opts.moveGIcon then
@@ -1438,7 +1420,7 @@ local function __skinScrollBar(opts)
 		obj = object
 		sbPrefix = Prefix to use
 		sbObj = ScrollBar object to use
-		size = backdrop size to use (2 - wide (default), 3 - medium, 4 - narrow)
+		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
 		noRR = Don't remove regions
 --]]
 --@alpha@
@@ -1455,7 +1437,7 @@ local function __skinScrollBar(opts)
 	local sBar = opts.sbObj and opts.sbObj or _G[opts.obj:GetName()..(opts.sbPrefix or "").."ScrollBar"]
 	
 	-- skin it
-	__skinUsingBD(sBar, opts.size)
+	Skinner:skinUsingBD{obj=sBar, size=opts.size}
 
 end
 
@@ -1488,7 +1470,7 @@ function Skinner:skinSlider(slider, size)
 	slider:SetAlpha(1)
 	slider:GetThumbTexture():SetAlpha(1)
 
-	__skinUsingBD(slider, size)
+	self:skinUsingBD{obj=slider, size=size}
 
 end
 
@@ -1545,47 +1527,47 @@ function Skinner:skinTooltip(frame)
 
 end
 
+local function __skinUsingBD(opts)
+--[[
+	Calling parameters:
+		obj = object
+		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
+--]]
+--@alpha@
+	assert(opts.obj, "Unknown object __sUBD\n"..debugstack())
+--@end-alpha@
+
+	opts.size = opts.size or 3 -- default to medium
+
+	opts.obj:SetBackdrop(Skinner.Backdrop[opts.size])
+	opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
+	opts.obj:SetBackdropColor(.1, .1, .1, 1)
+
+end
+
+function Skinner:skinUsingBD(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Unknown object sUBD\n"..debugstack())
+--@end-alpha@
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.size = select(2, ...) and select(2, ...) or 3
+	end
+	__skinUsingBD(opts)
+
+end
+
 function Skinner:skinUsingBD2(obj)
 
-	obj:SetBackdrop(self.backdrop2)
-	obj:SetBackdropBorderColor(.2, .2, .2, 1)
-	obj:SetBackdropColor(.1, .1, .1, 1)
-
+	self:skinUsingBD{obj=obj, size=2}
+	
 end
-
---[[
-function Skinner:skinUsingBD3(obj)
-
-	obj:SetBackdrop(self.backdrop3)
-	obj:SetBackdropBorderColor(.2, .2, .2, 1)
-	obj:SetBackdropColor(.1, .1, .1, 1)
-
-end
---]]
-
---[[
-function Skinner:skinUsingBD4(obj)
-
-	obj:SetBackdrop(self.backdrop4)
-	obj:SetBackdropBorderColor(.2, .2, .2, 1)
-	obj:SetBackdropColor(.1, .1, .1, 1)
-
-end
---]]
-
---[[
-function Skinner:storeAndSkin(ftype, frame, ...)
-
-	if ftype == "c" then tinsert(self.charFrames, frame)
-	elseif ftype == "u" then tinsert(self.uiFrames, frame)
-	elseif ftype == "n" then tinsert(self.npcFrames, frame)
-	elseif ftype == "s" then tinsert(self.skinnerFrames, frame)
-	end
-
-	self:applySkin(frame, ...)
-
-end
---]]
 
 function Skinner:updateSBTexture()
 

@@ -75,25 +75,11 @@ function Skinner:MirrorTimers()
 
 end
 
---[[
-function Skinner:QuestTimers()
-	if not self.db.profile.MirrorTimers or self.initialized.QuestTimers then return end
-	self.initialized.QuestTimers = true
-
-	self:keepFontStrings(QuestTimerFrame)
-	QuestTimerFrame:SetWidth(QuestTimerFrame:GetWidth() - 40)
-	QuestTimerFrame:SetHeight(QuestTimerFrame:GetHeight() - 20)
-	self:moveObject(QuestTimerHeader, nil, nil, "-", 4)
-	self:storeAndSkin(ftype, QuestTimerFrame)
-
-end
---]]
-
 function Skinner:CastingBar()
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
 
-	for _, prefix in pairs({"", "Pet"}) do
+	for _, prefix in pairs{"", "Pet"} do
 		local cbfName = prefix.."CastingBarFrame"
 		if cbfName == "CastingBarFrame" then
 			self:SecureHook("CastingBarFrame_OnUpdate", function()
@@ -292,7 +278,7 @@ function Skinner:ChatConfig()
 	self:addSkinFrame{obj=CombatConfigColorsUnitColors, ft=ftype}
 
 	local clrize, ccccObj
-	for i, v in ipairs({"Highlighting", "UnitName", "SpellNames", "DamageNumber", "DamageSchool", "EntireLine"}) do
+	for i, v in ipairs{"Highlighting", "UnitName", "SpellNames", "DamageNumber", "DamageSchool", "EntireLine"} do
 		clrize = i > 1 and "Colorize" or ""
 		ccccObj = _G["CombatConfigColors"..clrize..v]
 		self:addSkinFrame{obj=ccccObj, ft=ftype}
@@ -808,7 +794,7 @@ function Skinner:MinimapButtons()
 	mmKids(Minimap)
 
 	-- skin other Blizzard buttons
-	for _, obj in pairs({GameTimeFrame, MinimapZoomIn, MinimapZoomOut}) do
+	for _, obj in pairs{GameTimeFrame, MinimapZoomIn, MinimapZoomOut} do
 		self:addSkinButton{obj=obj, parent=obj}
 		self.sBut[obj]:ClearAllPoints()
 		self.sBut[obj]:SetAllPoints(obj)

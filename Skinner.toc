@@ -5,7 +5,7 @@
 ## Notes-zhCN: 更改默认 UI 的视觉样式.
 ## Notes-zhTW: 更改預設 UI 的視覺樣式.
 ## Author: Jncl
-## Version: @project-version@ 
+## Version: @project-version@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
@@ -25,7 +25,7 @@ libs\AceAddon-3.0\AceAddon-3.0.xml
 libs\AceConsole-3.0\AceConsole-3.0.xml
 libs\AceEvent-3.0\AceEvent-3.0.xml
 libs\AceHook-3.0\AceHook-3.0.xml
-libs\AceTimer-3.0\AceTimer-3.0.xml 
+libs\AceTimer-3.0\AceTimer-3.0.xml
 libs\AceDB-3.0\AceDB-3.0.xml
 libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
 libs\AceLocale-3.0\AceLocale-3.0.xml
@@ -70,11 +70,11 @@ CharacterFrames2.lua
 NPCFrames.lua
 #
 # UIElements1
-# inc. Tooltips, MirrorTimers, QuestTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, Tutorial, DropDowns, MinimapButtons, MovieProgress, TimeManager, Calendar
+# inc. Tooltips, MirrorTimers, --[[QuestTimers--]], CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), Tutorial, GMSurveyUI, FeedbackUI, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, DropDowns, MinimapButtons
 UIElements1.lua
 #
 # UIElements2
-# inc. Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, ModelFrames, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, GMSurveyUI, LFG, ItemSocketingUI, GuildBankUI, Nameplates, FeedbackUI
+# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI
 UIElements2.lua
 
 # Addon skins

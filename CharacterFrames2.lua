@@ -150,7 +150,7 @@ function Skinner:TradeSkillUI()
 	self:skinScrollBar{obj=TradeSkillDetailScrollFrame}
 	self:skinEditBox{obj=TradeSkillInputBox}
 	self:moveObject{obj=TradeSkillInputBox, x=-5}
-	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
+	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 end
 
@@ -242,7 +242,7 @@ function Skinner:RaidUI()
 			local pfBName = pfName.."Button"..i
 			local pfBObj = _G[pfBName]
 			if not self.skinFrame[pfBObj] then
-				for _, v in pairs({"HealthBar", "ManaBar", "Target", "TargetTarget"}) do
+				for _, v in pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
 					local sBar = _G[pfBName..v]
 					self:keepRegions(sBar, {3})
 					self:glazeStatusBar(sBar, 0)

@@ -537,7 +537,7 @@ function Skinner:AchievementUI()
 
 	-- Summary Panel
 	self:getChild(AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
-	for _, type in pairs({"Player", "Friend"}) do
+	for _, type in pairs{"Player", "Friend"} do
 		_G["AchievementFrameComparisonSummary"..type]:SetBackdrop(nil)
 		_G["AchievementFrameComparisonSummary"..type.."Background"]:SetAlpha(0)
 		skinSB("AchievementFrameComparisonSummary"..type.."StatusBar", "Title")

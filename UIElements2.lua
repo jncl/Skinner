@@ -431,12 +431,12 @@ function Skinner:AuctionUI()
 	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-12, y2=4}
 
 -->>--	Browse Frame
-	for k, v in pairs({"Name", "MinLevel", "MaxLevel"}) do
+	for k, v in pairs{"Name", "MinLevel", "MaxLevel"} do
 		local obj = _G["Browse"..v]
 		self:skinEditBox{obj=obj, regs={9}}
 	end
 	self:skinDropDown{obj=BrowseDropDown}
-	for _, v in pairs({"Quality", "Level", "Duration", "HighBidder", "CurrentBid"}) do
+	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		local obj = _G["Browse"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype}
@@ -451,7 +451,7 @@ function Skinner:AuctionUI()
 
 -->>--	Bid Frame
 	self:skinScrollBar{obj=BidScrollFrame}
-	for _, v in pairs({"Quality", "Level", "Duration", "Buyout", "Status", "Bid"}) do
+	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
 		local obj = _G["Bid"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype}
@@ -461,7 +461,7 @@ function Skinner:AuctionUI()
 -->>--	Auctions Frame
 	self:addSkinFrame{obj=AuctionsItemButton, ft=ftype}
 	self:skinScrollBar{obj=AuctionsScrollFrame}
-	for _, v in pairs({"Quality", "Duration", "HighBidder", "Bid"}) do
+	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 		local obj = _G["Auctions"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype}
