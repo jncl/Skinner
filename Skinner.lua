@@ -372,12 +372,21 @@ local function __addSkinButton(opts)
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then	but:SetFrameStrata("BACKGROUND") end
 
-	-- change the draw layer of the Icon and Count if it has them
-	if _G[opts.obj:GetName()] then
-		-- change the Icon's draw layer, if exists
-		if _G[opts.obj:GetName().."Icon"] then _G[opts.obj:GetName().."Icon"]:SetDrawLayer("ARTWORK") end
-		-- change the Count's draw layer, if exists
-		if _G[opts.obj:GetName().."Count"] then _G[opts.obj:GetName().."Count"]:SetDrawLayer("ARTWORK") end
+	-- change the draw layer of the Icon and Count, if necessary
+	for i = 1, opts.obj:GetNumRegions() do
+		local reg = select(i, opts.obj:GetRegions())
+		local regOT = reg:GetObjectType() 
+		if regOT == "Texture" or regOT == "FontString" then
+			local regName = reg:GetName()
+			local regDL = reg:GetDrawLayer()
+			local regTex = regOT == "Texture" and reg:GetTexture() or nil
+			-- change the DrawLayer to make the Icon show if required
+			if (regName and strfind(regName, "[Ii]con"))
+			or (regTex and strfind(regTex, "[Ii]con"))
+			or (regName and strfind(regName, "[Cc]ount")) then
+				if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
+			end
+		end
 	end
 
 end
@@ -830,25 +839,27 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
 
 	statusBar:SetStatusBarTexture(self.sbTexture)
-	tinsert(self.sbGlazed, statusBar)
+	self.sbGlazed[statusBar] = {glzd=true}
 
 	if fi then
-		if texture then
-			if not statusBar.bg then statusBar.bg = statusBar:CreateTexture(nil, "BORDER") end
-			statusBar.bg:SetTexture(self.sbTexture)
-			statusBar.bg:SetVertexColor(unpack(self.sbColour))
-		else
-			if not statusBar.bg then statusBar.bg = CreateFrame("StatusBar", nil, statusBar) end
-			local sbfs = statusBar:GetFrameStrata()
-			statusBar.bg:SetFrameStrata(sbfs ~= "UNKNOWN" and sbfs or "BACKGROUND")
-			local sbfl = statusBar:GetFrameLevel()
-			statusBar.bg:SetFrameLevel(sbfl > 0 and sbfl - 1 or 0)
-			statusBar.bg:SetStatusBarTexture(self.sbTexture)
-			statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
-			tinsert(self.sbGlazed, statusBar.bg)
+		if not self.sbGlazed[statusBar].bg then
+			if texture then
+				sbBG = statusBar:CreateTexture(nil, "BORDER")
+				sbBG:SetTexture(self.sbTexture)
+				sbBG:SetVertexColor(unpack(self.sbColour))
+			else
+				sbBG = CreateFrame("StatusBar", nil, statusBar)
+				local sbfs = statusBar:GetFrameStrata()
+				sbBG:SetFrameStrata(sbfs ~= "UNKNOWN" and sbfs or "BACKGROUND")
+				local sbfl = statusBar:GetFrameLevel()
+				sbBG:SetFrameLevel(sbfl > 0 and sbfl - 1 or 0)
+				sbBG:SetStatusBarTexture(self.sbTexture)
+				sbBG:SetStatusBarColor(unpack(self.sbColour))
+			end
+		sbBG:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
+		sbBG:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
+		self.sbGlazed[statusBar].bg = sbBG
 		end
-		statusBar.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
-		statusBar.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
 	end
 
 end
@@ -1574,19 +1585,20 @@ end
 
 function Skinner:updateSBTexture()
 
+	-- get updated colour/texture
 	local c = self.db.profile.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
 	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
 
-	for _, statusBar in pairs(self.sbGlazed) do
+	for statusBar, tab in pairs(self.sbGlazed) do
 		statusBar:SetStatusBarTexture(self.sbTexture)
-		if statusBar.bg then
-			if statusBar.bg:IsObjectType("StatusBar") then
-				statusBar.bg:SetStatusBarTexture(self.sbTexture)
-				statusBar.bg:SetStatusBarColor(unpack(self.sbColour))
+		if self.sbGlazed[statusBar].bg then
+			if self.sbGlazed[statusBar].bg:IsObjectType("StatusBar") then
+				self.sbGlazed[statusBar].bg:SetStatusBarTexture(self.sbTexture)
+				self.sbGlazed[statusBar].bg:SetStatusBarColor(unpack(self.sbColour))
 			else
-				statusBar.bg:SetTexture(self.sbTexture) -- handle backgrounds that aren't StatusBars
-				statusBar.bg:SetVertexColor(unpack(self.sbColour))
+				self.sbGlazed[statusBar].bg:SetTexture(self.sbTexture) -- handle backgrounds that aren't StatusBars
+				self.sbGlazed[statusBar].bg:SetVertexColor(unpack(self.sbColour))
 			end
 		end
 		local flashTex = _G[statusBar:GetName().."Flash"]
