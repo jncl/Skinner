@@ -120,7 +120,7 @@ function Skinner:Altoholic()
 		else self:applySkin(tabObj) end
 	end
 	if self.db.profile.TexturedTab then
-		self:SecureHook(Altoholic, "Tab_OnClick", function()
+		self:SecureHook(Altoholic.Tabs, "OnClick", function(this, ...)
 			for i = 1, numTabs do
 				local tabObj = _G["AltoholicFrameTab"..i]
 				if i == AltoholicFrame.selectedTab then self:setActiveTab(tabObj)
