@@ -101,7 +101,7 @@ function Skinner:AddonFrames()
 		"Quartz", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
 		"Sanity2", --[["SanityBags",--]] "SellJunk", "ShadowDancer3", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
-		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TheCollector", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest",
+		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TheCollector", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "tomQuest2", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", --[["Vendor",--]] "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
 		"WebDKP", "WIM", "WoWEquip",
@@ -192,9 +192,9 @@ function Skinner:AddonFrames()
 	if self.db.profile.Tooltips.skin then
 		local function skinLTTooltips(ttLib)
 			for key, tooltip in LibStub(ttLib):IterateTooltips() do
--- 				self:Debug("%s:[%s, %s]", ttLib, key, tooltip)
-				if not self.skinFrame[tooltip] then
-					self:addSkinFrame{obj=tooltip}
+-- 				Skinner:Debug("%s:[%s, %s]", ttLib, key, tooltip)
+				if not Skinner.skinFrame[tooltip] then
+					Skinner:addSkinFrame{obj=tooltip}
 				end
 			end
 		end
@@ -204,10 +204,6 @@ function Skinner:AddonFrames()
 				-- hook this to handle new tooltips
 				self:SecureHook(LibStub(lib), "Acquire", function(this, key, ...)
 					skinLTTooltips(lib)
-				end)
-				-- hook this to handle tooltips being released
-				self:SecureHook(LibStub(lib), "Release", function(this, tt)
-					if tt then self.skinFrame[tt] = nil end
 				end)
 				-- skin any existing ones
 				skinLTTooltips(lib)
