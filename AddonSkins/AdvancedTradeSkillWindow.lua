@@ -1,4 +1,4 @@
-
+	
 function Skinner:AdvancedTradeSkillWindow()
 	if not self.db.profile.TradeSkillUI then return end
 
@@ -45,9 +45,6 @@ function Skinner:AdvancedTradeSkillWindow()
 			self:skinTooltip(ATSWTradeskillTooltip)
 		end)
 	end
-
-	-- AutoBuyButton Frame
-	self:applySkin(ATSWAutoBuyButtonFrame)
 
 	-- Shopping List Frame
 	self:keepFontStrings(ATSWShoppingListFrame)
