@@ -2,34 +2,60 @@
 function Skinner:Examiner()
 	if not self.db.profile.InspectUI then return end
 
-	self:keepRegions(Examiner, {2, 3, 4, 9, 10, 11, 12}) -- N.B. 2-4 are text and 9-12 are background regions
-	self:addSkinFrame{obj=Examiner, x1=10, y1=-11, x2=-33}
+	-- this is used to add a texture to the dropdown
+	local function textureDD(dd)
 
--->>--	Config Frame
-	self:addSkinFrame{obj=Examiner.frames[1]}
--->>--	Cache Frame
-	self:skinScrollBar{obj=ExaminerCacheScroll}
-	self:addSkinFrame{obj=Examiner.frames[2]}
--->>--	Stats Frame
-	self:skinScrollBar{obj=ExaminerStatScroll}
-	self:addSkinFrame{obj=Examiner.frames[3]}
--->>--	PVP Frame
-	for i = 1, #Examiner.arena do
-		self:addSkinFrame{obj=Examiner.arena[i]}
+		self:keepFontStrings(dd)
+		if self.db.profile.TexturedDD then
+			dd.ddTex = dd:CreateTexture(nil, "BORDER")
+			dd.ddTex:SetTexture(Skinner.itTex)
+			dd.ddTex:ClearAllPoints()
+			dd.ddTex:SetPoint("TOPLEFT", dd, "TOPLEFT", 0, -2)
+			dd.ddTex:SetPoint("BOTTOMRIGHT", dd, "BOTTOMRIGHT", -3, 3)
+		end
+
 	end
-	self:addSkinFrame{obj=Examiner.frames[4]}
--->>-- Feats Frame
-	Examiner.featsDropDown:SetBackdrop(nil)
+
 	-- hook this to skin the dropdown menu
-	self:SecureHookScript(Examiner.featsDropDown.button, "OnClick", function(this)
+	self:SecureHook(AzDropDown, "ToggleMenu", function(...)
 		self:skinScrollBar{obj=_G["AzDropDownScroll"..AzDropDown.vers]}
 		self:addSkinFrame{obj=_G["AzDropDownScroll"..AzDropDown.vers]:GetParent()}
-		self:Unhook(Examiner.featsDropDown.button, "OnClick")
+		self:Unhook(AzDropDown, "ToggleMenu")
 	end)
-	self:skinScrollBar{obj=ExaminerFeatsScroll}
-	self:addSkinFrame{obj=Examiner.frames[5]}
--->>--	Talent Frame
-	self:skinFFToggleTabs("ExaminerTab", MAX_TALENT_TABS)
-	self:skinScrollBar{obj=ExaminerTalentsScrollChild}
+
+	self:removeRegions(Examiner, {1, 5, 6, 7, 8}) -- N.B. other regions are text or background
+	self:addSkinFrame{obj=Examiner, x1=10, y1=-11, x2=-33}
+
+	-- skin sub frames
+	for k, mod in pairs(Examiner.modules) do
+--		self:Debug("Examiner.modules: [%d, %s, %s]", k, mod.token, mod.page or "nil")
+		if mod.page then
+			if mod.token == "Config" then
+				self:SecureHookScript(mod.page, "OnShow", function(this)
+					textureDD(self:getChild(this, 1)) -- dropdown
+					self:Unhook(mod.page, "OnShow")
+				end)
+			elseif mod.token == "Cache" then
+				self:skinScrollBar{obj=ExaminerCacheScroll}
+			elseif mod.token == "PvP" then
+				-- arena panels
+				for i = 2, 4 do
+					self:addSkinFrame{obj=self:getChild(mod.page, i)}
+				end
+			elseif mod.token == "Feats" then
+				self:SecureHookScript(mod.page, "OnShow", function(this)
+					textureDD(self:getChild(this, 1)) -- dropdown
+					self:Unhook(mod.page, "OnShow")
+				end)
+				self:skinScrollBar{obj=ExaminerFeatsScroll}
+			elseif mod.token == "Stats" then
+				self:skinScrollBar{obj=ExaminerStatScroll}
+			elseif mod.token == "Talents" then
+				self:skinFFToggleTabs("ExaminerTab", MAX_TALENT_TABS)
+				self:skinScrollBar{obj=ExaminerTalentsScrollChild}
+			end
+			if mod.token ~= "Talents" then self:addSkinFrame{obj=mod.page} end
+		end
+	end
 
 end
