@@ -66,13 +66,9 @@ function Skinner:Outfitter()
 		self:Unhook(Outfitter.OutfitBar, "DragBar_OnClick")
 	end)
 
-	-- button on the PaperDoll frame
-	self:moveObject(OutfitterButton, "+", 33, "+", 7)
-
 -->>--	Outfitter Frame
 	self:SecureHook(OutfitterFrame, "Show", function(this, ...)
 		self:keepFontStrings(OutfitterFrame)
-		self:moveObject(OutfitterFrame, "+", 28, nil, nil)
 		self:moveObject(OutfitterCloseButton, "-", 4, "-", 4)
 		self:getChild(OutfitterFrame, 8):SetAlpha(0) -- hide band on the left
 		self:applySkin(OutfitterFrame)
@@ -113,9 +109,9 @@ function Skinner:Outfitter()
 	self:applySkin(OutfitterNameOutfitDialog)
 
 -->>--	ChooseIcon Dialog
-	self:keepFontStrings(OutfitterChooseIconDialog)
+	self:getChild(OutfitterChooseIconDialog, 1):SetBackdrop(nil) -- remove textures from anonymous frame
 	self:keepFontStrings(OutfitterChooseIconDialogIconSetMenu)
-	self:skinEditBox(OutfitterChooseIconDialogFilterEditBox, {9})
+	self:skinEditBox(OutfitterChooseIconDialogFilterEditBox, {6})
 	self:removeRegions(OutfitterChooseIconDialogScrollFrame)
 	self:skinScrollBar(OutfitterChooseIconDialogScrollFrame)
 	self:applySkin(OutfitterChooseIconDialog)
