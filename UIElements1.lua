@@ -1,4 +1,9 @@
 local _G = _G
+local ceil = math.ceil
+local select = select
+local strfind = string.find
+local type = type
+local IsAddOnLoaded = IsAddOnLoaded
 local ftype = "u"
 
 function Skinner:Tooltips()
@@ -20,7 +25,7 @@ function Skinner:Tooltips()
 
 		counts = counts + 1
 
-		if cHeight ~= math.ceil(GameTooltip:GetHeight()) then
+		if cHeight ~= ceil(GameTooltip:GetHeight()) then
 			Skinner:skinTooltip(GameTooltip)
 			Skinner:CancelTimer(GTSBevt, true)
 			GTSBevt = nil
@@ -38,7 +43,7 @@ function Skinner:Tooltips()
 	-- Hook this to deal with GameTooltip FadeHeight issues
 	self:SecureHookScript(GameTooltipStatusBar, "OnHide", function(this)
 		if GameTooltip:IsShown() then
-			cHeight = math.ceil(GameTooltip:GetHeight())
+			cHeight = ceil(GameTooltip:GetHeight())
 			if not GTSBevt then
 				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.2, cHeight)
 			end
@@ -171,7 +176,7 @@ function Skinner:ChatFrames()
 
 	self:SecureHook("FCF_StopResize", function()
 		local frame = _G["Skinner"..this:GetParent():GetName()]
-		if frame and frame.tfade then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -math.ceil(frame:GetHeight())) end
+		if frame and frame.tfade then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -ceil(frame:GetHeight())) end
 	end)
 
 	local clqbf_c = CombatLogQuickButtonFrame_Custom
@@ -328,7 +333,6 @@ function Skinner:GroupLoot()
 	self.initialized.GroupLoot = true
 
 	local f = GameFontNormalSmall:GetFont()
-	local xMult, yMult = 0.75, 0.75
 
 	self:skinDropDown{obj=GroupLootDropDown}
 
@@ -392,8 +396,13 @@ function Skinner:StackSplit()
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
 
-	self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
-
+	-- handle different addons being loaded
+	if IsAddOnLoaded("EnhancedStackSplit") then
+		self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true}
+	else
+		self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
+	end
+	
 end
 
 function Skinner:ItemText()
@@ -764,14 +773,14 @@ function Skinner:MinimapButtons()
 						local regTex = reg:GetTexture()
 						local regDL = reg:GetDrawLayer()
 						-- change the DrawLayer to make the Icon show if required
-						if (regName and string.find(regName, "[Ii]con"))
-						or (regTex and string.find(regTex, "[Ii]con")) then
+						if (regName and strfind(regName, "[Ii]con"))
+						or (regTex and strfind(regTex, "[Ii]con")) then
 							if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
-						elseif (regName and string.find(regName, "Border"))
-						or (regTex and string.find(regTex, "TrackingBorder")) then
+						elseif (regName and strfind(regName, "Border"))
+						or (regTex and strfind(regTex, "TrackingBorder")) then
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)

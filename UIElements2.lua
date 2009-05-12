@@ -1,4 +1,7 @@
 local _G = _G
+local select = select
+local strfind = string.find
+local IsAddOnLoaded = IsAddOnLoaded
 local ftype = "u"
 
 function Skinner:ModelFrames()
@@ -277,7 +280,7 @@ function Skinner:MenuFrames()
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 		-- skin tekKonfig library objects
 		if self.tekKonfig then self:tekKonfig() end
-		if not self.skinFrame[panel] then
+		if panel and not self.skinFrame[panel] then
 			for i = 1, panel:GetNumChildren() do
 				local child = select(i, panel:GetChildren())
 				if child then
@@ -347,7 +350,7 @@ function Skinner:MailFrame()
 		end)
 	end
 
-	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=68}
+	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
 
 -->>--	Inbox Frame
 	for i = 1, 7 do
@@ -792,7 +795,7 @@ function Skinner:Nameplates()
 	end
 
 	self:SecureHook("SetCVar", function(varName, varValue, ...)
-		if string.find(varName, "nameplateShow") and varValue == 1 then showFunc() end
+		if strfind(varName, "nameplateShow") and varValue == 1 then showFunc() end
 	end)
 
 	local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")

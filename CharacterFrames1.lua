@@ -1,5 +1,6 @@
 local _G = _G
 local unpack = unpack
+local RaiseFrameLevel = RaiseFrameLevel
 local ftype = "c"
 
 function Skinner:CharacterFrames()
@@ -365,15 +366,12 @@ function Skinner:AchievementUI()
 
 		end
 		self:SecureHook("AchievementFrameTab_OnClick", function(id)
-			self:Debug("AFT_OC: [%s]", id)
 			changeTT(id)
 		end)
 		self:SecureHook("AchievementFrameBaseTab_OnClick", function(id)
-			self:Debug("AFBT_OC: [%s]", id)
 			changeTT(id)
 		end)
 		self:SecureHook("AchievementFrameComparisonTab_OnClick", function(id)
-			self:Debug("AFCT_OC: [%s]", id)
 			changeTT(id)
 		end)
 
