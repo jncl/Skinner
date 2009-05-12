@@ -3,7 +3,7 @@ function Skinner:Chinchilla()
 
 	local function skinChinchilla()
 
-		if Chinchilla:GetDatabaseNamespace("Appearance").profile.shape == "SQUARE" then
+		if Chinchilla.db:GetNamespace("Appearance", true).profile.shape == "SQUARE" then
 			if GetCVar("rotateMinimap") == "1" then
 				Chinchilla_Appearance_MinimapFullTexture:SetAlpha(0)
 			else
@@ -21,37 +21,37 @@ function Skinner:Chinchilla()
 	end
 
 	-- skin the coordinates frame if it exists
-	if Chinchilla:IsModuleActive("Coordinates") and Chinchilla_Coordinates_Frame then
-		self:applySkin(Chinchilla_Coordinates_Frame)
-	end
-	-- hook the OnEnable method
-	if Chinchilla:HasModule("Coordinates") then
-		self:SecureHook(Chinchilla:GetModule("Coordinates"), "OnEnable", function()
+	if Chinchilla:GetModule("Coordinates", true) then
+		if Chinchilla_Coordinates_Frame then
 			self:applySkin(Chinchilla_Coordinates_Frame)
-		end)
+		else
+			-- hook the OnEnable method
+			self:SecureHook(Chinchilla:GetModule("Coordinates"), "OnEnable", function()
+				self:applySkin(Chinchilla_Coordinates_Frame)
+			end)
+		end
 	end
 
 	-- skin the location frame if it exists
-	if Chinchilla:IsModuleActive("Location") and Chinchilla_Location_Frame then
-		self:applySkin(Chinchilla_Location_Frame)
-		self:RawHook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
-		self:RawHook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
-	end
-	-- hook the OnEnable method
-	if Chinchilla:HasModule("Location") then
-		self:SecureHook(Chinchilla:GetModule("Location"), "OnEnable", function()
+	if Chinchilla:GetModule("Location", true) then
+		if Chinchilla_Location_Frame then
 			self:applySkin(Chinchilla_Location_Frame)
 			self:RawHook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
 			self:RawHook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
-		end)
+		else
+			-- hook the OnEnable method
+			self:SecureHook(Chinchilla:GetModule("Location"), "OnEnable", function()
+				self:RawHook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
+				self:RawHook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
+				self:applySkin(Chinchilla_Location_Frame)
+			end)
+		end
 	end
 
 	-- skin the Minimap if it's square
-	if Chinchilla:IsModuleActive("Appearance") then
+	if Chinchilla:GetModule("Appearance", true) then
 		skinChinchilla()
-	end
-	-- hook the OnEnable method
-	if Chinchilla:HasModule("Appearance") then
+		-- hook the OnEnable method
 		self:SecureHook(Chinchilla:GetModule("Appearance"), "OnEnable", function()
 			skinChinchilla()
 		end)
