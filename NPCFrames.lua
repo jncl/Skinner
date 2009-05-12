@@ -93,10 +93,10 @@ function Skinner:QuestFrame()
 			text:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
 	end)
-	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString)
+	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, ...)
 		fontString:SetTextColor(self.HTr, self.HTg, self.HTb)
 	end, true)
-	self:RawHook("QuestFrame_SetTextColor", function(fontString)
+	self:RawHook("QuestFrame_SetTextColor", function(fontString, ...)
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
 
@@ -118,6 +118,7 @@ function Skinner:QuestFrame()
 	self:skinScrollBar{obj=QuestDetailScrollFrame}
 
 -->>--	Greeting Panel
+	self:keepFontStrings(QuestFrameGreetingPanel)
 	self:skinScrollBar{obj=QuestGreetingScrollFrame}
 	if QuestFrameGreetingPanel:IsShown() then
 		GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
