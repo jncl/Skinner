@@ -200,10 +200,10 @@ function Skinner:OnInitialize()
 	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentUI", "DressUpFrame", "FriendsFrame", "TradeSkillUI", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "AchieveFrame", "AchieveAlert", "VehicleMenuBar"}
 	self.charKeys2 = {"QuestLog"}
 	self.npcKeys = {"MerchantFrames", "GossipFrame", "TrainerUI", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "BarbershopUI"}
-	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatConfig", "ChatTabs", "ChatFrames", "CombatLogQBF", "LootFrame", "StackSplit", "ItemText", "Colours", "WorldMap", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "ScriptErrors", "DropDowns", "MinimapButtons", "MinimapGloss", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "LFGFrame", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI"}
+	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatConfig", "ChatTabs", "ChatFrames", "CombatLogQBF", "LootFrame", "StackSplit", "ItemText", "Colours", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "ScriptErrors", "DropDowns", "MinimapButtons", "MinimapGloss", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "LFGFrame", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI"}
 	if IsMacClient() then tinsert(self.uiKeys1, "MovieProgress") end
 	if self.isPTR then tinsert(self.uiKeys1, "Feedback") end
-	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "MainMenuBar"}
+	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "MainMenuBar", "WorldMap"}
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 

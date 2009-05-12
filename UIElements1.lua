@@ -428,7 +428,7 @@ function Skinner:ColorPicker()
 end
 
 function Skinner:WorldMap()
-	if not self.db.profile.WorldMap or self.initialized.WorldMap then return end
+	if not self.db.profile.WorldMap.skin or self.initialized.WorldMap then return end
 	self.initialized.WorldMap = true
 
 	self:skinDropDown{obj=WorldMapContinentDropDown}
@@ -436,9 +436,9 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
 
-	-- handle different map addons being loaded
-	if IsAddOnLoaded("Mapster") then
-		self:addSkinFrame{obj=WorldMapFrame, ftype=ftype, kfs=true}
+	-- handle different map addons being loaded or fullscreen required
+	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") or IsAddOnLoaded("Cartographer") then
+		self:addSkinFrame{obj=WorldMapFrame, ftype=ftype, kfs=true, y1=1}
 	elseif not IsAddOnLoaded("MetaMap")then
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=99, x2=-101, y2=18}
 	end

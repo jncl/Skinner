@@ -7,6 +7,12 @@ if not L then return end
 L["GMChatUI Frame"] = true
 L["Toggle the skin of the GMChatUI Frame"] = true
 
+L["Change the World Map settings"] = true
+L["World Map Skin"] = true
+L["Toggle the skin of the World Map Frame"] = true
+L["World Map Size"] = true
+L["Set the World Map size (Normal, Fullscreen)"] = true
+
 -- option titles
 L["Colours"] = "颜色"
 L["Backdrop"] = "背景"
@@ -356,7 +362,6 @@ L["Toggle the skin of the Item Text Frame"] = "切换物品文本框架皮肤"
 L["Color Picker Frame"] = "拾取颜色框架"
 L["Toggle the skin of the Color Picker Frame"] = "切换拾取颜色框架皮肤"
 L["World Map Frame"] = "世界地图框架"
-L["Toggle the skin of the World Map Frame"] = "切换世界地图框架皮肤"
 L["Inspect Frame"] = "观察框架"
 L["Toggle the skin of the Inspect Frame"] = "切换观察框架皮肤"
 L["Battle Score Frame"] = "战斗积分框架"

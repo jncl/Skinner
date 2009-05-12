@@ -83,7 +83,7 @@ function Skinner:Defaults()
 		StackSplit      = true,
 		ItemText        = true,
 		Colours         = true,
-		WorldMap        = true,
+		WorldMap        = {skin = true, size = 1},
 		HelpFrame       = true,
 		Tutorial        = true,
 		GMSurveyUI      = true,
@@ -1483,8 +1483,31 @@ function Skinner:Options()
 				},
 				WorldMap = {
 					type = "toggle",
+					type = "group",
+					inline = true,
+					order = -1,
 					name = self.L["World Map Frame"],
-					desc = self.L["Toggle the skin of the World Map Frame"],
+					desc = self.L["Change the World Map Frame settings"],
+					get = function(info) return db.WorldMap[info[#info]] end,
+					set = function(info, value)
+						db.WorldMap[info[#info]] = value
+						self:checkAndRun("WorldMap")
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							order = 1,
+							name = self.L["World Map Skin"],
+							desc = self.L["Toggle the skin of the World Map Frame"],
+						},
+						size = {
+							type = "range",
+							order = 2,
+							name = self.L["World Map Size"],
+							desc = self.L["Set the World Map size (Normal, Fullscreen)"],
+							min = 1, max = 2, step = 1,
+						},
+					},
 				},
 				helpframes = {
 					type = "group",

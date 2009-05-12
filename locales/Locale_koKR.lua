@@ -37,6 +37,12 @@ L["Toggle the skin of the Tracker Frame"] = true
 L["GMChatUI Frame"] = true
 L["Toggle the skin of the GMChatUI Frame"] = true
 
+L["Change the World Map settings"] = true
+L["World Map Skin"] = true
+L["Toggle the skin of the World Map Frame"] = true
+L["World Map Size"] = true
+L["Set the World Map size (Normal, Fullscreen)"] = true
+
 -- option names and descriptions
 L["Default Colours"] = "기본 색상"
 L["Change the default colour settings"] = "기본 색상 설정을 변경합니다."
@@ -354,7 +360,6 @@ L["Toggle the skin of the Item Text Frame"] = "아이템 문자 프레임의 스
 L["Color Picker Frame"] = "색상 선택 프레임"
 L["Toggle the skin of the Color Picker Frame"] = "색상 선택 프레임의 스킨을 전환합니다."
 L["World Map Frame"] = "세계 지도 프레임"
-L["Toggle the skin of the World Map Frame"] = "세계 지도 프레임의 스킨을 전환합니다."
 L["Inspect Frame"] = "훔쳐보기 프레임"
 L["Toggle the skin of the Inspect Frame"] = "훔쳐보기 프레임의 스킨을 전환합니다."
 L["Battle Score Frame"] = "전장 득점 프레임"

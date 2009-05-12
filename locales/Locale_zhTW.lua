@@ -60,6 +60,12 @@ L["Other Settings"] = true
 L["GMChatUI Frame"] = true
 L["Toggle the skin of the GMChatUI Frame"] = true
 
+L["Change the World Map settings"] = true
+L["World Map Skin"] = true
+L["Toggle the skin of the World Map Frame"] = true
+L["World Map Size"] = true
+L["Set the World Map size (Normal, Fullscreen)"] = true
+
 -- option names and descriptions
 L["Default Colours"] = "預設顏色"
 L["Change the default colour settings"] = "更改預設顏色設定"
@@ -377,7 +383,6 @@ L["Toggle the skin of the Item Text Frame"] = "切換物品文字框架介面"
 L["Color Picker Frame"] = "拾取顏色框架"
 L["Toggle the skin of the Color Picker Frame"] = "切換拾取顏色框架介面"
 L["World Map Frame"] = "世界地圖框架"
-L["Toggle the skin of the World Map Frame"] = "切換世界地圖框架介面"
 L["Inspect Frame"] = "觀察框架"
 L["Toggle the skin of the Inspect Frame"] = "切換觀察框架介面"
 L["Battle Score Frame"] = "戰場積分框架"
