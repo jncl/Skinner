@@ -15,9 +15,8 @@ function Skinner:AckisRecipeList()
 			self:skinScrollBar{obj=ARL_RecipeScrollFrame}
 			self:glazeStatusBar(ARL_ProgressBar, 0)
 			self:addSkinFrame{obj=ARL.Frame, y1=-9, x2=2, y2=-4}
-			-- flyaway frame
-			self:keepFontStrings(ARL.Flyaway)
-			ARL.flyTexture:SetAlpha(0)
+			-- Flyaway frame (used when Filters button is clicked)
+			self:addSkinFrame{obj=ARL.Flyaway, kfs=true, bg=true, x2=2}
 			-- Tooltips
 			if self.db.profile.Tooltips.skin then
 				-- find the tooltips
@@ -32,5 +31,11 @@ function Skinner:AckisRecipeList()
 		end
 		self:Unhook(ARL, "CreateFrame")
 	end)
-
+	
+	self:SecureHook(ARL, "DisplayTextDump", function(this, ...)
+		self:skinScrollBar{obj=ARLCopyScroll}
+		self:addSkinFrame{obj=ARLCopyFrame}
+		self:Unhook(ARL, "DisplayTextDump")
+	end)
+	
 end
