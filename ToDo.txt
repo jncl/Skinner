@@ -66,12 +66,10 @@ S - Skin request
 	I	InventoryOnPar, reported by MegaManJuno, 11.05.09
 √		- button on PaperDollFrame misplaced
 
-	I	AckirRecipeList, reported by AesirRising, 11.05.09
+	I	AckisRecipeList, reported by AesirRising, 11.05.09
 √		- Filter Panel unskinned
 
 √	N	FramesResized_TalentUI, requested by next96, 13.05.09
-
-	I	Lag after last version, reported by several people on Curse
 
 	O 	VehicleMenuBar
 		- are pitch items moved properly
