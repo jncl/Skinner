@@ -1,25 +1,30 @@
 
 function Skinner:sRaidFrames()
 
-	self:SecureHook(sRaidFrames, "CreateUnitFrame", function(this, frame)
--- 		self:Debug("sRaidFrames_CUF: [%s, %s]", frame, frame:GetName() or "???")
-		if not self.skinned[frame] then
-			self:glazeStatusBar(frame.hpbar)
-			self:glazeStatusBar(frame.mpbar)
-			self:applySkin(frame)
-			self:RawHook(frame, "SetBackdropColor", function() end, true)
-			self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
-		end
-	end)
-
-	for _, frame in ipairs(sRaidFrames.frames) do
--- 		self:Debug("sRaidFrames: [%s, %s]", frame:GetName(), #sRaidFrames.frames)
-		self:glazeStatusBar(frame.hpbar)
-		self:glazeStatusBar(frame.mpbar)
-		self:applySkin(frame)
-		self:RawHook(frame, "SetBackdropColor", function() end, true)
-		self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
-		self.skinned[frame] = true
+	-- set StatusBar Texture
+	sRaidFrames.opt.Texture = self.db.profile.StatusBar.texture
+	local sbTex = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
+	for _, f in pairs(sRaidFrames.frames) do
+		f.hpbar:SetStatusBarTexture(sbTex)
+		f.mpbar:SetStatusBarTexture(sbTex)
+	end
+	-- set Border Texture
+	sRaidFrames.opt.BorderTexture = self.db.profile.BdBorderTexture
+	local bdTex = self.LSM:Fetch("border", self.db.profile.BdBorderTexture)
+	for _, frame in pairs(sRaidFrames.frames) do
+		local backdrop = frame:GetBackdrop()
+		backdrop.edgeFile = bdTex
+		frame:SetBackdrop(backdrop)
+	end
+	-- set Backdrop colour
+	local c = self.db.profile.Backdrop
+	sRaidFrames.opt.BackgroundColor = {r = c.r, g = c.g, b = c.b, a = c.a}
+	sRaidFrames:UpdateAllUnits()
+	-- set backdrop border colour
+	local c = self.db.profile.BackdropBorder
+	sRaidFrames.opt.BorderColor = {r = c.r, g = c.g, b = c.b, a = c.a}
+	for _, frame in pairs(sRaidFrames.frames) do
+		frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
 	end
 
 end
