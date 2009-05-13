@@ -373,18 +373,20 @@ local function __addSkinButton(opts)
 	if opts.bg then	but:SetFrameStrata("BACKGROUND") end
 
 	-- change the draw layer of the Icon and Count, if necessary
-	for i = 1, opts.obj:GetNumRegions() do
-		local reg = select(i, opts.obj:GetRegions())
-		local regOT = reg:GetObjectType() 
-		if regOT == "Texture" or regOT == "FontString" then
-			local regName = reg:GetName()
-			local regDL = reg:GetDrawLayer()
-			local regTex = regOT == "Texture" and reg:GetTexture() or nil
-			-- change the DrawLayer to make the Icon show if required
-			if (regName and strfind(regName, "[Ii]con"))
-			or (regTex and strfind(regTex, "[Ii]con"))
-			or (regName and strfind(regName, "[Cc]ount")) then
-				if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
+	if opts.obj:IsObjectType("Frame") then
+		for i = 1, opts.obj:GetNumRegions() do
+			local reg = select(i, opts.obj:GetRegions())
+			local regOT = reg:GetObjectType() 
+			if regOT == "Texture" or regOT == "FontString" then
+				local regName = reg:GetName()
+				local regDL = reg:GetDrawLayer()
+				local regTex = regOT == "Texture" and reg:GetTexture() or nil
+				-- change the DrawLayer to make the Icon show if required
+				if (regName and strfind(regName, "[Ii]con"))
+				or (regTex and strfind(regTex, "[Ii]con"))
+				or (regName and strfind(regName, "[Cc]ount")) then
+					if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
+				end
 			end
 		end
 	end
@@ -482,14 +484,14 @@ local function __addSkinFrame(opts)
 	-- handle header, if required
 	if opts.hdr then hideHeader(opts.obj) end
 
-	-- handle no Border, if required
-	if opts.noBdr then
-		if opts.aso then opts.aso.bba = 0
-		else opts.aso = {bba = 0} end
-	else opts.aso = {} end
-
-	-- skin the frame using any supplied options
+	-- setup applySkin options
+	opts.aso = opts.aso or {}
 	opts.aso.obj = skinFrame
+	
+	-- handle no Border, if required
+	if opts.noBdr then opts.aso.bba = 0	end
+
+	-- skin the frame using supplied options
 	Skinner:applySkin(opts.aso)
 
 	-- adjust frame level

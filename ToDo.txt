@@ -8,21 +8,70 @@ N - New Version
 O - Other change
 S - Skin request
 
-√	S	BetterBindingFrame, requested by KLSmili, 30.04.09
+	I 	Outfitter, reported by Kerecha/shadowrm, 8.05.09/9.05.09
+√		- button is offset
+√		- frame is offset
 
-√	I	FriendsFrame, reported by Xedriell, 01.05.09
+?		- tooltips not skinned properly
 
-√	I 	Badapples ,reported by Energizerbunny, 30.04.09
+√	I	Altoholic skin error, reported by Kerecha, 8.05.09
 
-	I	Watch Frame, reported by Kerecha, 28.04.09
-√		- Don't show large skinned tracker frame on login if it's collapsed
-√		- skin the frame that expands/contracts
+	I	AuctionFilterPlus, reported by Kerecha, 8.05.09
+√		- button offset
 
-√	I	QuestGuru, reported by pompachomp, 07.05.09
-		
-	I	StatusBars, remove .bg entry
-		- change added texture to use a name
-		- don't store the new frame within the existing statusbar
+√	I	Cartographer, reported by XeonBlue, 9.05.08 (Curse)
 
-	I 	VehicleMenuBar
+?	I	memory allocation errors, reported by XeonBlue, 9.05.08 (Curse)
+
+√	I	Quest greeting frame, reported by gizmo1972, 9.05.09
+√		- kfs the panel (as suggested by gizmo1972)
+
+	I	sRaidFrames, reported by Arzach, 9.05.09
+√		- Skinner overwrites the background coloring of raid frames. As a result you can't see the color of applied debuff (and you can't dispell 'em)
+
+√	I	epgp, reported by Arzach, 9.05.09
+
+√	I	AdvancedTradeSkillWindow, reported by Arzach, 9.05.09
+
+	I	Chinchilla, reported by Savanfaire, 9.05.09
+√		- Skinner-b2.9835.3\SkinMe\Chinchilla.lua:24: attempt to call method 'IsModuleActive' (a nil value)
+		(tail call): ?:
+
+	I 	WorldMap ,reported by Erlynn, 9.05.09
+√		- is there any way that the worldmap can have its border extended as it used to for a resolution of 1680 x 1050 wide
+
+	I	XPerl, reported by pompachomp/Krystallus/Uthane, 9.05.09/10.05.09
+√		- Skinner-b2.9835.3\Skinner.lua:376: attempt to call method 'GetNumRegions' (a nil value)
+		Skinner-b2.9835.3\Skinner.lua:416: in function `addSkinButton'
+		Skinner-b2.9835.3\SkinMe\XPerl.lua:88: in function <Interface\AddOns\Skinner\SkinMe\XPerl.lua:69>
+		(tail call): ?:
+√		- Skinner-b2.9835.3\Skinner.lua:376: attempt to call method 'GetNumRegions' (a nil value)
+		Skinner-b2.9835.3\Skinner.lua:416: in function `addSkinButton'
+		Skinner-b2.9835.3\SkinMe\XPerl.lua:182: in function <Interface\AddOns\Skinner\SkinMe\XPerl.lua:167>
+		(tail call): ?:
+
+√	S	tomQuest2, requested by Skylinee, 10.05.09
+
+	I	MenuFrames, reported by Skylinee, 10.05.09
+≈		- Skinner-b2.9835.3\UIElements2.lua:281: attempt to call method 'GetNumChildren' (a nil value)
+		(tail call): ?:
+		<in C code>: in function `InterfaceOptionsList_DisplayPanel'
+		Interface\FrameXML\UIOptionsFrame.lua:46: in function `InterfaceOptionsListButton_OnClick':
+		<string>:"*:OnClick":2: in function <[string "*:OnClick"]:1>
+
+	N	Examiner, reported by Skylinee, 10.05.09
+√		- Skinner-b2.9835.3\SkinMe\Examiner.lua:9: attempt to index field 'frames' (a nil value)
+		(tail call): ?:
+
+	I	InventoryOnPar, reported by MegaManJuno, 11.05.09
+√		- button on PaperDollFrame misplaced
+
+	I	AckirRecipeList, reported by AesirRising, 11.05.09
+√		- Filter Panel unskinned
+
+√	N	FramesResized_TalentUI, requested by next96, 13.05.09
+
+	I	Lag after last version, reported by several people on Curse
+
+	O 	VehicleMenuBar
 		- are pitch items moved properly

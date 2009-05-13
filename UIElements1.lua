@@ -449,7 +449,7 @@ function Skinner:WorldMap()
 	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") or IsAddOnLoaded("Cartographer") then
 		self:addSkinFrame{obj=WorldMapFrame, ftype=ftype, kfs=true, y1=1}
 	elseif not IsAddOnLoaded("MetaMap")then
-		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=99, x2=-101, y2=18}
+		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=99, y1=1, x2=-102, y2=18}
 	end
 
 -->>-- Tooltip
