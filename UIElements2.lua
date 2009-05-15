@@ -5,6 +5,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local ftype = "u"
 
 function Skinner:ModelFrames()
+	if not self.db.profile.CharacterFrames then return end
 --[[
 [12:55:21] <dreyruugr> http://ace.pastey.net/551
 [12:55:42] <dreyruugr> That should do framerate independant rotation of the model, based on how much the mouse moves
@@ -280,7 +281,7 @@ function Skinner:MenuFrames()
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 		-- skin tekKonfig library objects
 		if self.tekKonfig then self:tekKonfig() end
-		if panel and not self.skinFrame[panel] then
+		if panel and not self.skinFrame[panel] and panel:IsObjectType("Frame") then
 			for i = 1, panel:GetNumChildren() do
 				local child = select(i, panel:GetChildren())
 				if child then

@@ -1247,7 +1247,6 @@ function Skinner:Options()
 					get = function(info) return db.Tooltips[info[#info]] end,
 					set = function(info, value)
 						db.Tooltips[info[#info]] = value
-						self:checkAndRun("Tooltips")
 					end,
 					args = {
 						skin = {
@@ -1271,8 +1270,6 @@ function Skinner:Options()
 							min = 1, max = 3, step = 1,
 							set = function(info, value)
 								db.Tooltips.style = value
-								if value == 3 then self:setTTBackdrop(true)
-								else self:setTTBackdrop() end
 							end,
 						},
 						border = {

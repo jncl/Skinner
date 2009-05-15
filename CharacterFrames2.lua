@@ -368,7 +368,8 @@ function Skinner:VehicleMenuBar()
 end
 
 function Skinner:WatchFrame()
-
+	if not self.db.profile.TrackerFrame then return end
+	
 	local function glazeWatchLines()
 
 		-- glaze Achievement StatusBars
@@ -401,6 +402,7 @@ end
 
 --[[
 function Skinner:GearManager()
+	if not self.db.profile.GearManager then return end
 
 	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true}
 -->>-- Popup frame
