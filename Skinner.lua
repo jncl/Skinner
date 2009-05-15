@@ -245,14 +245,14 @@ function Skinner:OnInitialize()
 	-- table to hold objects which have been skinned
 	self.skinned = setmetatable({}, mt)
 
-	-- table to hold frames that have been added
-	self.skinFrame = {}
+	-- table to hold frames that have been added, with weak keys
+	self.skinFrame = setmetatable({}, {__mode = "k"})
 
-	-- table to hold buttons that have been added
-	self.sBut = {}
+	-- table to hold buttons that have been added, with weak keys
+	self.sBut = setmetatable({}, {__mode = "k"})
 
-	-- table to hold StatusBars that have been glazed
-	self.sbGlazed = {}
+	-- table to hold StatusBars that have been glazed, with weak keys
+	self.sbGlazed = setmetatable({}, {__mode = "k"})
 
 	-- shorthand for the TexturedTab profile setting
 	self.isTT = self.db.profile.TexturedTab and true or false
@@ -376,7 +376,7 @@ local function __addSkinButton(opts)
 	if opts.obj:IsObjectType("Frame") then
 		for i = 1, opts.obj:GetNumRegions() do
 			local reg = select(i, opts.obj:GetRegions())
-			local regOT = reg:GetObjectType() 
+			local regOT = reg:GetObjectType()
 			if regOT == "Texture" or regOT == "FontString" then
 				local regName = reg:GetName()
 				local regDL = reg:GetDrawLayer()
@@ -403,7 +403,7 @@ function Skinner:addSkinButton(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 --		self:addSkinButton_old(...)
@@ -487,7 +487,7 @@ local function __addSkinFrame(opts)
 	-- setup applySkin options
 	opts.aso = opts.aso or {}
 	opts.aso.obj = skinFrame
-	
+
 	-- handle no Border, if required
 	if opts.noBdr then opts.aso.bba = 0	end
 
@@ -513,7 +513,7 @@ function Skinner:addSkinFrame(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -625,7 +625,7 @@ function Skinner:applySkin(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -845,6 +845,7 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 
 	if fi then
 		if not self.sbGlazed[statusBar].bg then
+			local sbBG
 			if texture then
 				sbBG = statusBar:CreateTexture(nil, "BORDER")
 				sbBG:SetTexture(self.sbTexture)
@@ -858,9 +859,9 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 				sbBG:SetStatusBarTexture(self.sbTexture)
 				sbBG:SetStatusBarColor(unpack(self.sbColour))
 			end
-		sbBG:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
-		sbBG:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
-		self.sbGlazed[statusBar].bg = sbBG
+			sbBG:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
+			sbBG:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
+			self.sbGlazed[statusBar].bg = sbBG
 		end
 	end
 
@@ -1057,7 +1058,7 @@ function Skinner:moveObject(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1262,7 +1263,7 @@ function Skinner:skinDropDown(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1327,7 +1328,7 @@ function Skinner:skinEditBox(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1413,7 +1414,7 @@ function Skinner:skinMoneyFrame(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1442,10 +1443,10 @@ local function __skinScrollBar(opts)
 
 	-- remove all the object's regions, if required
 	if not opts.noRR then Skinner:removeRegions(opts.obj)end
-	
+
 	-- get the actual ScrollBar object
 	local sBar = opts.sbObj and opts.sbObj or _G[opts.obj:GetName()..(opts.sbPrefix or "").."ScrollBar"]
-	
+
 	-- skin it
 	Skinner:skinUsingBD{obj=sBar, size=opts.size}
 
@@ -1461,7 +1462,7 @@ function Skinner:skinScrollBar(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1568,7 +1569,7 @@ function Skinner:skinUsingBD(...)
 
 	-- handle missing object (usually when addon changes)
 	if not opts then return end
-	
+
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
 		opts = {}
@@ -1582,7 +1583,7 @@ end
 function Skinner:skinUsingBD2(obj)
 
 	self:skinUsingBD{obj=obj, size=2}
-	
+
 end
 
 function Skinner:updateSBTexture()
