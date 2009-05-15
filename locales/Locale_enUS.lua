@@ -60,7 +60,6 @@ L["Show Warnings"] = true
 L["Toggle the Showing of Warnings"] = true
 L["Show Errors"] = true
 L["Toggle the Showing of Errors"] = true
-L["Gradient"] = true
 L["Change the Gradient Effect settings"] = true
 L["Gradient Effect"] = true
 L["Toggle the Gradient Effect"] = true

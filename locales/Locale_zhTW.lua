@@ -6,7 +6,7 @@ if not L then return end
 -- option titles
 L["Colours"] = true
 L["Backdrop"] = true
-L["Gradient"] = true
+L["Gradient"] = "漸層"
 L["VP/TMBFrames"] = true
 L["PlayerFrames"] = true
 L["UIFrames"] = true
@@ -109,7 +109,6 @@ L["Show Warnings"] = "顯示警告"
 L["Toggle the Showing of Warnings"] = "切換警告顯示"
 L["Show Errors"] = "顯示錯誤"
 L["Toggle the Showing of Errors"] = "切換錯誤顯示"
-L["Gradient"] = "漸層"
 L["Change the Gradient Effect settings"] = "更改漸層效果設定"
 L["Gradient Effect"] = "漸層效果"
 L["Toggle the Gradient Effect"] = "切換漸層效果"
