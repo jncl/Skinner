@@ -147,5 +147,16 @@ function Skinner:DBM_GUI()
 			end, true)
 		else self:applySkin(tabName) end
 	end
-
+	
+-->>-- Range Check frame
+	self:RawHook(DBM.RangeCheck, "Show", function(this, ...)
+		self.hooks[this].Show(this, ...)
+		self:skinDropDown{obj=DBMRangeCheckDropdown}
+		if self.db.profile.Tooltips.skin then
+			self:skinTooltip(DBMRangeCheck)
+			if self.db.profile.Tooltips.style == 3 then DBMRangeCheck:SetBackdrop(self.Backdrop[1]) end
+		end
+		self:Unhook(DBM.RangeCheck, "Show")
+	end)
+	
 end
