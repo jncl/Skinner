@@ -86,10 +86,10 @@ function Skinner:QuestGuru()
 	self:skinEditBox{obj=QuestGuru_AnnounceFrameMessageQuest, regs={9}, noHeight=true}
 
 -->>--	Tracker Frame
-	if self.db.profile.TrackerFrame then
+	if IsAddOnLoaded("QuestGuru_Tracker") and self.db.profile.TrackerFrame then
 		self:addSkinFrame{obj=QGT_QuestWatchFrame, kfs=true}
-		self:RawHook("QGT_SetWatchBorder", function() end, true)
-		self:RawHook(QGT_QuestWatchFrame, "SetBackdropColor", function() end, true)
+		self:RawHook("QGT_SetQuestWatchBorder", function(...) end, true)
+--		self:RawHook(QGT_QuestWatchFrame, "SetBackdropColor", function() end, true)
 	end
 
 -->>--	QuestStartInfo Frame
