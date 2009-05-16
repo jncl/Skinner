@@ -1,9 +1,10 @@
 
 function Skinner:Cartographer()
-	if not self.db.profile.WorldMap then return end
+	if not self.db.profile.WorldMap.skin then return end
 
 	if CartographerLookNFeelNonOverlayHolder then
 		self:keepFontStrings(CartographerLookNFeelNonOverlayHolder)
+		self:addSkinFrame{obj=WorldMapFrame, kfs=true, bg=true, y1=1}
 	end
 
 	if Cartographer_Notes then self:Cartographer_Notes() end
@@ -49,6 +50,7 @@ function Skinner:Cartographer_Notes()
 
 end
 
+--[[
 function Skinner:Cartographer_QuestInfo()
 
 	if Cartographer_QuestInfo.db.profile.wideQuestLog then
@@ -61,7 +63,8 @@ function Skinner:Cartographer_QuestInfo()
 				LightHeadedFrame:SetWidth(QuestLogFrame:GetWidth() / 2)
 				LightHeadedFrame:SetHeight(QuestLogFrame:GetHeight())
 			end
-		end, 1)
+			end, 1)
 	end
 
 end
+--]]
