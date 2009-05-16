@@ -1,6 +1,6 @@
 
 function Skinner:InstanceMaps()
-	if not self.db.profile.WorldMap then return end
+	if not self.db.profile.WorldMap.skin then return end
 
 	local IM = LibStub:GetLibrary("AceAddon-3.0", true):GetAddon("InstanceMaps", true)
 	local IML = IM and IM:GetModule("Loot", true)
