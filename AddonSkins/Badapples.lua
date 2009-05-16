@@ -4,7 +4,7 @@ function Skinner:Badapples()
 
 	-- Frame Tab
 	self:keepRegions(BadapplesFriendsFrameTab6, {7, 8}) -- N.B. these regions are text & highlight
-	self:addSkinFrame{obj=BadapplesFriendsFrameTab6, ftype=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+	self:addSkinFrame{obj=BadapplesFriendsFrameTab6, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 	local tabSF = self.skinFrame[BadapplesFriendsFrameTab6]
 	if self.isTT then self:setInactiveTab(tabSF) end
 
