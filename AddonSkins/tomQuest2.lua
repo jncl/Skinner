@@ -19,22 +19,28 @@ function Skinner:tomQuest2()
 		self:SecureHook(info, "createQlGUI", function(this)
 			self:skinScrollBar{obj=tomQuest2QlScrollFrame}
 			self:addSkinFrame{obj=tomQuest2QlFrame}
-			self:addSkinFrame{obj=tomQuest2ParentFrame}
-			-- hook these to show/hide the individual skinFrames
-			self:SecureHook(tomQuest2ParentFrame, "Show", function()
-				self.skinFrame[tomQuest2LhFrame]:Hide()
-				self.skinFrame[tomQuest2QlFrame]:Hide()
-			end)
-			self:SecureHook(tomQuest2ParentFrame, "Hide", function()
-				self.skinFrame[tomQuest2LhFrame]:Show()
-				self.skinFrame[tomQuest2QlFrame]:Show()
-			end)
 			if self.db.profile.Tooltips.skin then
 				self:skinTooltip(tomQuest2QlTooltip)
 				if self.db.profile.Tooltips.style == 3 then tomQuest2QlTooltip:SetBackdrop(self.Backdrop[1]) end
 			end
 			self:Unhook(info, "createQlGUI")
 		end)
+		self:SecureHook(info, "lockUnlockQlFrame", function()
+			if tomQuest2ParentFrame then
+				self:addSkinFrame{obj=tomQuest2ParentFrame}
+				-- hook these to show/hide the individual skinFrames
+				self:SecureHook(tomQuest2ParentFrame, "Show", function()
+					self.skinFrame[tomQuest2LhFrame]:Hide()
+					self.skinFrame[tomQuest2QlFrame]:Hide()
+				end)
+				self:SecureHook(tomQuest2ParentFrame, "Hide", function()
+					self.skinFrame[tomQuest2LhFrame]:Show()
+					self.skinFrame[tomQuest2QlFrame]:Show()
+				end)
+				self:Unhook(info, "lockUnlockQlFrame")
+			end
+		end)
+		
 		info.db.profile.backDropColor = CopyTable(self.bColour)
 		info.db.profile.borderColor = CopyTable(self.bbColour)
 	end
