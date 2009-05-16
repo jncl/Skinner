@@ -13,6 +13,11 @@ L["Toggle the skin of the World Map Frame"] = true
 L["World Map Size"] = true
 L["Set the World Map size (Normal, Fullscreen)"] = true
 
+L["Tracker Frame"] = true
+L["Change the Tracker Frame settings"] = true
+L["Clean Textures"] = true
+L["Remove Blizzard Textures"] = true
+
 -- option titles
 L["Colours"] = "颜色"
 L["Backdrop"] = "背景"

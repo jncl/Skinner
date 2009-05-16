@@ -3,6 +3,15 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Skinner", "koKR", false)
 
 if not L then return end
 
+-- untranslated strings
+L["Baggins Bank Bags Colour"] = true
+L["Set Baggins Bank Bags Colour"] = true
+
+L["Tracker Frame"] = true
+L["Change the Tracker Frame settings"] = true
+L["Clean Textures"] = true
+L["Remove Blizzard Textures"] = true
+
 -- option titles
 L["Colours"] = "색상"
 L["Backdrop"] = "배경"
@@ -13,7 +22,7 @@ L["UIFrames"] = "UI 프레임"
 L["NPCFrames"] = "NPC 프레임"
 L["Profiles"] = "프로필"
 
--- untranslated strings
+-- option names and descriptions
 L["Vehicle Menu Bar"] = "탈것 메뉴 바"
 L["Toggle the skin of the Vehicle Menu Bar"] = "탈것 메뉴 바 프레임의 스킨을 전환합니다."
 L["UI Enhancement"] = "UI 확장"
@@ -27,23 +36,16 @@ L["Change the Help Request Frames"] = "도움말 및 GM요청 프레임의 설�
 L["Minimap Options"] = "미니맵 설정"
 L["Change the Minimap Options"] = "미니맵 설정을 변경합니다."
 L["Confirm reload of UI to activate profile changes"] = "프로필 변경 적용을 위해서 UI를 재시작합니다."
-
-L["Baggins Bank Bags Colour"] = true
-L["Set Baggins Bank Bags Colour"] = true
-
 L["Right Click to display options menu"] = "오른쪽 클릭으로 설정창을 엽니다."
 L["Skin Tracker Frame"] = "추적 프레임 스킨"
 L["Toggle the skin of the Tracker Frame"] = "추적 프레임의 스킨을 전환합니다."
 L["GMChatUI Frame"] = "GM대화창 프레임 스킨"
 L["Toggle the skin of the GMChatUI Frame"] = "GM대화창 프레임의 스킨을 전환합니다."
-
 L["Change the World Map settings"] = "세계지도 설정을 변경합니다."
 L["World Map Skin"] = "세계지도 스킨"
 L["Toggle the skin of the World Map Frame"] = "세계지도의 스킨을 전환합니다."
 L["World Map Size"] = "세계지도 크기"
 L["Set the World Map size (Normal, Fullscreen)"] = "세계지도의 크기(보통, 전체)를 설정합니다."
-
--- option names and descriptions
 L["Default Colours"] = "기본 색상"
 L["Change the default colour settings"] = "기본 색상 설정을 변경합니다."
 L["Tooltip Border Colors"] = "툴팁 테두리 색상"

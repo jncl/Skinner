@@ -124,7 +124,7 @@ function Skinner:Calendar()
 	self:skinDropDown{obj=CalendarCreateEventTypeDropDown}
 	self:skinDropDown{obj=CalendarCreateEventHourDropDown}
 	CalendarCreateEventHourDropDownMiddle:SetWidth(CalendarCreateEventHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{objCalendarCreateEventMinuteDropDown}
+	self:skinDropDown{obj=CalendarCreateEventMinuteDropDown}
 	CalendarCreateEventMinuteDropDownMiddle:SetWidth(CalendarCreateEventMinuteDropDownMiddle:GetWidth() + 8)
 	self:skinDropDown{obj=CalendarCreateEventAMPMDropDown}
 	self:skinDropDown{obj=CalendarCreateEventRepeatOptionDropDown}
@@ -281,7 +281,7 @@ function Skinner:MenuFrames()
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 		-- skin tekKonfig library objects
 		if self.tekKonfig then self:tekKonfig() end
-		if panel and not self.skinFrame[panel] and panel:IsObjectType("Frame") then
+		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
 			for i = 1, panel:GetNumChildren() do
 				local child = select(i, panel:GetChildren())
 				if child then
@@ -743,7 +743,7 @@ function Skinner:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
-	local npTex = "Interface\\Tooltips\\Nameplate-Border"
+	local npTex = [[Interface\Tooltips\Nameplate-Border]]
 	local npEvt
 	local function isNameplate(obj)
 
@@ -811,12 +811,12 @@ function Skinner:GMChatUI()
 
 -->>-- GM Chat Request frame
 	self:addSkinFrame{obj=self:getChild(GMChatStatusFrame, 2), ft=ftype}
-	
+
 -->>-- GMChat Frame
 	if self.db.profile.ChatFrames then
 		self:addSkinFrame{obj=GMChatFrame, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
 	end
-	
+
 -->>-- GMChat Frame Tab
 	self:addSkinFrame{obj=GMChatTab, ft=ftype, kfs=true, noBdr=self.isTT, y2=-4}
 

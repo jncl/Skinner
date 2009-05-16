@@ -402,7 +402,7 @@ function Skinner:StackSplit()
 	else
 		self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
 	end
-	
+
 end
 
 function Skinner:ItemText()
@@ -446,9 +446,9 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapLevelDropDown}
 
 	-- handle different map addons being loaded or fullscreen required
-	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") or IsAddOnLoaded("Cartographer") then
-		self:addSkinFrame{obj=WorldMapFrame, ftype=ftype, kfs=true, y1=1}
-	elseif not IsAddOnLoaded("MetaMap")then
+	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") then
+		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1}
+	elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer") then
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=99, y1=1, x2=-102, y2=18}
 	end
 
@@ -656,19 +656,18 @@ function Skinner:BattleScore()
 	if not self.db.profile.BattleScore or self.initialized.BattleScore then return end
 	self.initialized.BattleScore = true
 
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("WorldStateScoreFrameTab_OnClick",function(tab)
-			for i = 1, 3 do
-				local tabObj = _G["WorldStateScoreFrameTab"..i]
-				local tabSF = self.skinFrame[tabObj]
-				if tabObj == tab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
+	local function updTT(tab)
+
+		for i = 1, 3 do
+			local tabObj = _G["WorldStateScoreFrameTab"..i]
+			local tabSF = self.skinFrame[tabObj]
+			if i == WorldStateScoreFrame.selectedTab then
+				self:setActiveTab(tabSF)
+			else
+				self:setInactiveTab(tabSF)
 			end
-		end)
+		end
+
 	end
 
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
@@ -684,6 +683,11 @@ function Skinner:BattleScore()
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+		if self.isTT then -- hook this to manage tabs
+			self:SecureHookScript(tabName, "OnClick", function(this, ...)
+				updTT(this)
+			end)
 		end
 	end
 

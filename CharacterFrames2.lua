@@ -234,7 +234,7 @@ function Skinner:RaidUI()
 	-- hook this to skin the pullout character frames
 	self:SecureHook("RaidPullout_Update", function(pullOutFrame)
 		local pfName = pullOutFrame:GetName()
-		self:Debug("RP_U: [%s, %s]", pullOutFrame, pfName)
+--		self:Debug("RP_U: [%s, %s]", pullOutFrame, pfName)
 		for i = 1, pullOutFrame.numPulloutButtons do
 			local pfBName = pfName.."Button"..i
 			local pfBObj = _G[pfBName]
@@ -304,27 +304,21 @@ function Skinner:VehicleMenuBar()
 	if not self.db.profile.VehicleMenuBar or self.initialized.VehicleMenuBar then return end
 	self.initialized.VehicleMenuBar = true
 
-	local xOfs1, xOfs2, xOfs3
-	local yOfs1 = 42
+	local xOfs1, xOfs2
+	local yOfs1 = 30
 	local yOfs2 = -1
-	local yOfs3, yOfs4
 
-	local function skinVehicleMenuBar(pitchVisible, src)
+	local function skinVehicleMenuBar(opts)
+
+--		Skinner:Debug("sVMB: [%s, %s, %s]", opts.pv, opts.src, opts.sn)
 
 		-- expand frame width if mechanical vehicle
-		if pitchVisible then
+		if opts.pv then
 			xOfs1 = 132
-			xOfs2 = xOfs1 * -1
-			xOfs3 = -338
-			yOfs3 = 41
-			yOfs4 = 23
 		else
 			xOfs1 = 159
-			xOfs2 = xOfs1 * -1
-			xOfs3 = -355
-			yOfs3 = 44
-			yOfs4 = 24
 		end
+		xOfs2 = xOfs1 * -1
 
 		-- remove all textures
 		VehicleMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
@@ -333,16 +327,8 @@ function Skinner:VehicleMenuBar()
 		VehicleMenuBarArtFrame:DisableDrawLayer("OVERLAY")
 		 -- make it appear above the skin frame
 		VehicleMenuBarPitchSlider:SetFrameStrata("MEDIUM")
-		-- move the Micro Buttons
-		CharacterMicroButton:ClearAllPoints()
-		CharacterMicroButton:SetPoint("BOTTOMLEFT", VehicleMenuBar, "BOTTOMRIGHT", xOfs3, yOfs3)
-		SocialsMicroButton:ClearAllPoints()
-		SocialsMicroButton:SetPoint("TOPLEFT", CharacterMicroButton, "BOTTOMLEFT", 0, yOfs4)
-		-- move the Pitch controls & leave button
-		Skinner:moveObject{obj=VehicleMenuBarPitchUpButton, y=7, relTo=VehicleMenuBar}
-		Skinner:moveObject{obj=VehicleMenuBarPitchDownButton, y=7, relTo=VehicleMenuBar}
-		Skinner:moveObject{obj=VehicleMenuBarPitchSlider, y=5, relTo=VehicleMenuBar}
-		Skinner:moveObject{obj=VehicleMenuBarLeaveButton, y=7, relTo=VehicleMenuBar}
+		-- move the Action Button Frame
+		Skinner:moveObject{obj=VehicleMenuBarActionButtonFrame, y=-7}
 
 		local sf = Skinner.skinFrame[VehicleMenuBar]
 		if not sf then
@@ -356,46 +342,51 @@ function Skinner:VehicleMenuBar()
 	end
 
     self:SecureHook(VehicleMenuBar, "Show", function(this, ...)
-        skinVehicleMenuBar(nil, 1)
+        skinVehicleMenuBar{src=1}
     end)
 
     self:SecureHook("VehicleMenuBar_SetSkin", function(skinName, pitchVisible)
-        skinVehicleMenuBar(pitchVisible, 2)
+        skinVehicleMenuBar{pv=pitchVisible, src=2, sn=skinName}
     end)
 
-	if VehicleMenuBar:IsShown() then skinVehicleMenuBar(nil, 3) end
+	if VehicleMenuBar:IsShown() then skinVehicleMenuBar{src=3} end
 
 end
 
 function Skinner:WatchFrame()
-	if not self.db.profile.TrackerFrame then return end
-	
-	local function glazeWatchLines()
+	if not self.db.profile.TrackerFrame.skin
+	and not self.db.profile.TrackerFrame.clean
+	and not self.db.profile.TrackerFrame.glazesb then return end
 
-		-- glaze Achievement StatusBars
-		for i = 1, #WATCHFRAME_ACHIEVEMENTLINES do
-			local sBar = WATCHFRAME_ACHIEVEMENTLINES[i].statusBar
-			if not self.sbGlazed[sBar] then
-				Skinner:removeRegions(sBar, {3, 4, 5}) -- remove textures
-				Skinner:glazeStatusBar(sBar, 0)
-			end
-		end
-
-	end
-
-	-- hook this to manage the tracked Achievements
-	self:SecureHook("WatchFrame_Update", function(this)
-		glazeWatchLines()
-	end)
-
-	-- glaze any existing lines
-	glazeWatchLines()
-
-	self:keepFontStrings(WatchFrame)
-	if self.db.profile.TrackerFrame then
+	if self.db.profile.TrackerFrame.skin then
 		self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
 		self:SecureHook(WatchFrameLines, "Show", function(this) Skinner.skinFrame[this]:Show() end)
 		self:SecureHook(WatchFrameLines, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
+	end
+
+	if self.db.profile.TrackerFrame.clean then self:keepFontStrings(WatchFrame) end
+
+	if self.db.profile.TrackerFrame.glazesb then
+		local function glazeWatchLines()
+
+			-- glaze Achievement StatusBars
+			for i = 1, #WATCHFRAME_ACHIEVEMENTLINES do
+				local sBar = WATCHFRAME_ACHIEVEMENTLINES[i].statusBar
+				if not self.sbGlazed[sBar] then
+					Skinner:removeRegions(sBar, {3, 4, 5}) -- remove textures
+					Skinner:glazeStatusBar(sBar, 0)
+				end
+			end
+
+		end
+
+		-- hook this to manage the tracked Achievements
+		self:SecureHook("WatchFrame_Update", function(this)
+			glazeWatchLines()
+		end)
+
+		-- glaze any existing lines
+		glazeWatchLines()
 	end
 
 end

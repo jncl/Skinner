@@ -66,6 +66,11 @@ L["Toggle the skin of the World Map Frame"] = true
 L["World Map Size"] = true
 L["Set the World Map size (Normal, Fullscreen)"] = true
 
+L["Tracker Frame"] = true
+L["Change the Tracker Frame settings"] = true
+L["Clean Textures"] = true
+L["Remove Blizzard Textures"] = true
+
 -- option names and descriptions
 L["Default Colours"] = "預設顏色"
 L["Change the default colour settings"] = "更改預設顏色設定"

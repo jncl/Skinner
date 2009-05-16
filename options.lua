@@ -123,7 +123,7 @@ function Skinner:Defaults()
 		Tabard          = true,
 		BarbershopUI	= true,
 		-- Others
-		TrackerFrame    = false,
+		TrackerFrame    = {skin = false, clean = true, glazesb = true},
 		-- DBIcon settings
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
 
@@ -204,10 +204,37 @@ function Skinner:Options()
 					end,
 				},
 				TrackerFrame = {
-					type = "toggle",
+					type = "group",
+					inline = true,
 					order = 9,
-					name = self.L["Skin Tracker Frame"],
-					desc = self.L["Toggle the skin of the Tracker Frame"],
+					name = self.L["Tracker Frame"],
+					desc = self.L["Change the Tracker Frame settings"],
+					get = function(info) return db.TrackerFrame[info[#info]] end,
+					set = function(info, value)
+						db.TrackerFrame[info[#info]] = value
+						self:WatchFrame()
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Skin Tracker Frame"],
+							desc = self.L["Toggle the skin of the Tracker Frame"],
+						},
+						glazesb = {
+							type = "toggle",
+							order = 2,
+							width = "double",
+							name = self.L["Glaze Status Bar"],
+							desc = self.L["Toggle the glazing Status Bar"],
+						},
+						clean = {
+							type = "toggle",
+							order = 3,
+							name = self.L["Clean Textures"],
+							desc = self.L["Remove Blizzard Textures"],
+						},
+					},
 				},
 				Delay = {
 					type = "group",
@@ -1804,7 +1831,7 @@ function Skinner:Options()
 	-- setup the DB object
 	DBObj = LibStub("LibDataBroker-1.1"):NewDataObject("Skinner", {
 			type = "launcher",
-			icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+			icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
 			OnClick = function(clickedframe, button)
 				if button == "RightButton" then
 					if InterfaceOptionsFrame:IsShown() then HideUIPanel(InterfaceOptionsFrame)

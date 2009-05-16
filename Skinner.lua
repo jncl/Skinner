@@ -109,12 +109,17 @@ function Skinner:OnInitialize()
 	-- setup the Addon's options
 	self:Options()
 
+	-- change the TrackerFrame SV from a boolean to a table
+	if type(self.db.profile.TrackerFrame) == "boolean" then
+		self.db.profile.TrackerFrame = {skin = true, clean = true, glazesb = true}
+	end
+
 	-- register the default background texture
-	self.LSM:Register("background", "Blizzard ChatFrame Background", "Interface\\ChatFrame\\ChatFrameBackground")
+	self.LSM:Register("background", "Blizzard ChatFrame Background", [[Interface\ChatFrame\ChatFrameBackground]])
 	-- register the inactive tab texture
-	self.LSM:Register("background", "Inactive Tab", "Interface\\AddOns\\Skinner\\textures\\inactive")
+	self.LSM:Register("background", "Inactive Tab", [[Interface\AddOns\Skinner\textures\inactive]])
 	-- register the EditBox/ScrollBar texture
-	self.LSM:Register("border", "Skinner EditBox/ScrollBar Border", "Interface\\AddOns\\Skinner\\textures\\krsnik")
+	self.LSM:Register("border", "Skinner Border", [[Interface\AddOns\Skinner\textures\krsnik]])
 
 	-- Heading and Body Text colours
 	local c = self.db.profile.HeadText
@@ -172,7 +177,7 @@ function Skinner:OnInitialize()
 
 	self.Backdrop = {}
 	-- backdrop for ScrollBars & EditBoxes
-	local edgetex = self.LSM:Fetch("border", "Skinner EditBox/ScrollBar Border")
+	local edgetex = self.LSM:Fetch("border", "Skinner Border")
 	-- wide backdrop for ScrollBars (16,16,4)
 	self.backdrop2 = {
 		bgFile = bdtex, tile = true, tileSize = 16,
@@ -325,7 +330,7 @@ end
 local function __addSkinButton(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
 		parent = object to parent to, default is the object's parent
 		hook = object to hook Show/Hide methods, defaults to object
 		hide = Hide button skin
@@ -437,7 +442,7 @@ end
 local function __addSkinFrame(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
 		ft = Frame Type (Skinner classification)
 		kfs = Remove all textures, only keep font strings
 		hdr = Header Texture to be hidden
@@ -581,7 +586,9 @@ end
 local function __applySkin(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
+		ft = Frame Type (Skinner classification)
+		kfs = Remove all textures, only keep font strings
 		hdr = Header Texture to be hidden
 		bba = Backdrop Border Alpha value
 		ba = Backdrop Alpha value
@@ -599,6 +606,12 @@ local function __applySkin(opts)
 			return
 		end
 	end
+
+	-- store frame obj, if required
+	if opts.ft then tinsert(Skinner.gradFrames[opts.ft], opts.obj) end
+
+	-- remove all textures, if required
+	if opts.kfs then Skinner:keepFontStrings(opts.obj) end
 
 	-- setup the backdrop
 	opts.obj:SetBackdrop(opts.bd or Skinner.Backdrop[1])
@@ -867,7 +880,7 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 
 end
 
-local ddTex = "Interface\\Glues\\CharacterCreate\\CharacterCreate-LabelFrame"
+local ddTex = [[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]
 function Skinner:isDropDown(obj)
 --@alpha@
 	assert(obj, "Unknown object\n"..debugstack())
@@ -1015,7 +1028,7 @@ end
 local function __moveObject(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
 		x = left/right adjustment
 		y = up/down adjustment
 		relTo = object to move relative to
@@ -1226,7 +1239,7 @@ end
 local function __skinDropDown(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
 		moveTex = move Texture up
 		noSkin = don't skin the DropDown
 		move = move Button Left and down, Text down
@@ -1279,7 +1292,7 @@ end
 local function __skinEditBox(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
 		regs = regions to keep
 		noSkin = don't skin the frame
 		noHeight = don't change the height
@@ -1374,7 +1387,7 @@ end
 local function __skinMoneyFrame(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
 		regs = regions to keep
 		moveGIcon = move Gold Icon
 		noWidth = don't change the width
@@ -1431,7 +1444,7 @@ end
 local function __skinScrollBar(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
 		sbPrefix = Prefix to use
 		sbObj = ScrollBar object to use
 		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
@@ -1544,7 +1557,7 @@ end
 local function __skinUsingBD(opts)
 --[[
 	Calling parameters:
-		obj = object
+		obj = object (Mandatory)
 		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
 --]]
 --@alpha@
@@ -1595,16 +1608,16 @@ function Skinner:updateSBTexture()
 
 	for statusBar, tab in pairs(self.sbGlazed) do
 		statusBar:SetStatusBarTexture(self.sbTexture)
-		if self.sbGlazed[statusBar].bg then
-			if self.sbGlazed[statusBar].bg:IsObjectType("StatusBar") then
-				self.sbGlazed[statusBar].bg:SetStatusBarTexture(self.sbTexture)
-				self.sbGlazed[statusBar].bg:SetStatusBarColor(unpack(self.sbColour))
+		if tab.bg then
+			if tab.bg:IsObjectType("StatusBar") then
+				tab.bg:SetStatusBarTexture(self.sbTexture)
+				tab.bg:SetStatusBarColor(unpack(self.sbColour))
 			else
-				self.sbGlazed[statusBar].bg:SetTexture(self.sbTexture) -- handle backgrounds that aren't StatusBars
-				self.sbGlazed[statusBar].bg:SetVertexColor(unpack(self.sbColour))
+				tab.bg:SetTexture(self.sbTexture) -- handle backgrounds that aren't StatusBars
+				tab.bg:SetVertexColor(unpack(self.sbColour))
 			end
 		end
-		local flashTex = _G[statusBar:GetName().."Flash"]
+		local flashTex = _G[statusBar:GetName()] and _G[statusBar:GetName().."Flash"]
 		if flashTex and flashTex:IsObjectType("Texture") then flashTex:SetTexture(self.sbTexture) end -- handle CastingBar Flash
 	end
 
