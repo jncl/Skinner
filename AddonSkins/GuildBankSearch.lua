@@ -1,28 +1,19 @@
 
 function Skinner:GuildBankSearch()
 	if not self.db.profile.GuildBankUI then return end
-	
-	self:moveObject(GBS.FilterButton, "-", 30, "+", 36)
-	self:keepFontStrings(GBS)
-	local gbsP = GBS.Pane
-	self:moveObject(self:getRegion(gbsP, 1), "+", 6, "+", 2) -- title text
-	self:moveObject(gbsP.ClearButton, "+", 4, "+", 2)
-	self:getRegion(gbsP.CloseButton, 4):SetAlpha(0) -- hide close button background
-	self:skinEditBox(gbsP.NameEditBox, {9})
-	self:skinDropDown(gbsP.QualityMenu)
-	self:skinEditBox(gbsP.ItemLevelMinEditBox, {9})
-	self:skinEditBox(gbsP.ItemLevelMaxEditBox, {9})
-	self:skinEditBox(gbsP.ReqLevelMaxEditBox, {9})
-	self:skinEditBox(gbsP.ReqLevelMinEditBox, {9})
-	self:applySkin(GBSCategorySection)
-	self:skinDropDown(gbsP.TypeMenu)
-	self:skinDropDown(gbsP.SubTypeMenu)
-	self:skinDropDown(gbsP.SlotMenu)
-	self:applySkin(GBS)
-	-- hook this to move the tabs
-	self:SecureHookScript(GBS, "OnShow", function(this)
-		GuildBankTab1:ClearAllPoints();
-		GuildBankTab1:SetPoint( "TOPLEFT", this, "TOPRIGHT", -2, -16 );
-	end)
+
+	local GBS = GuildBankSearch
+	self:moveObject{obj=self:getChild(GBS, 9), x=-1, y=-1}
+	self:skinEditBox{obj=GBS.NameEditBox, regs={9}}
+	self:skinDropDown{obj=GBS.QualityMenu}
+	self:skinEditBox{obj=GBS.ItemLevelMinEditBox, regs={9}}
+	self:skinEditBox{obj=GBS.ItemLevelMaxEditBox, regs={9}}
+	self:skinEditBox{obj=GBS.ReqLevelMaxEditBox, regs={9}}
+	self:skinEditBox{obj=GBS.ReqLevelMinEditBox, regs={9}}
+	self:addSkinFrame{obj=GBS.CategorySection}
+	self:skinDropDown{obj=GBS.TypeMenu}
+	self:skinDropDown{obj=GBS.SubTypeMenu}
+	self:skinDropDown{obj=GBS.SlotMenu}
+	self:addSkinFrame{obj=GuildBankSearch, kfs=true, x1=-2, y1=-4, x2=-3, y2=2}
 
 end
