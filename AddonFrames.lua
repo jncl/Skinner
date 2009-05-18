@@ -253,8 +253,6 @@ function Skinner:LoDFrames(arg1)
 
 	-- handle addons linked to the InspectUI
 	if arg1 == "Blizzard_InspectUI" then
-		--	This addon creates a button on the Inspect Frame
-		self:checkAndRunAddOn("WoWEquip", nil, "WoWEquip_CITB")
 		--	This addon is dependent upon the Inspect Frame
 		self:checkAndRunAddOn("Spyglass")
 	end
