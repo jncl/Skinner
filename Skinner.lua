@@ -336,6 +336,7 @@ local function __addSkinButton(opts)
 		hide = Hide button skin
 		sap = SetAllPoints
 		bg = set FrameStrata to "BACKGROUND"
+		kfs = Remove all textures, only keep font strings
 		x1 = X offset for TOPLEFT, default -4
 		y1 = Y offset for TOPLEFT, default 4
 		x2 = X offset for BOTTOMRIGHT, default 4
@@ -344,6 +345,9 @@ local function __addSkinButton(opts)
 --@alpha@
 	assert(opts.obj, "Unknown object __aSB\n"..debugstack())
 --@end-alpha@
+
+	-- remove all textures, if required
+	if opts.kfs then Skinner:keepFontStrings(opts.obj) end
 
 	opts.parent = opts.parent or opts.obj:GetParent()
 	opts.hook = opts.hook or opts.obj
