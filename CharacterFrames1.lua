@@ -343,7 +343,7 @@ function Skinner:DressUpFrame()
 	DressUpModelRotateLeftButton:Hide()
 	DressUpModelRotateRightButton:Hide()
 	self:makeMFRotatable(DressUpModel)
-	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-31, y2=71}
+	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
 end
 

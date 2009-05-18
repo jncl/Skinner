@@ -351,7 +351,7 @@ function Skinner:MailFrame()
 		end)
 	end
 
-	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
+	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, x1=16, y1=-12, x2=-32, y2=69}
 
 -->>--	Inbox Frame
 	for i = 1, 7 do
@@ -365,23 +365,26 @@ function Skinner:MailFrame()
 		for i = 1, ATTACHMENTS_MAX_SEND do
 			local sma = _G["SendMailAttachment"..i]
 			if not self.sBut[sma] then
-				self:keepFontStrings(sma)
-				self:addSkinButton{obj=sma, hide=true}
+				self:addSkinButton{obj=sma, hide=true, kfs=true}
 			end
 		end
 	end)
 
-	self:skinEditBox{obj=SendMailNameEditBox, regs={6}} -- N.B. region 6 is text
-	self:skinEditBox{obj=SendMailSubjectEditBox, regs={6}} -- N.B. region 6 is text
+	self:skinEditBox{obj=SendMailNameEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
+	self:skinEditBox{obj=SendMailSubjectEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
 	self:skinEditBox{obj=SendMailBodyEditBox, noSkin=true}
 	local c = self.db.profile.BodyText
 	SendMailBodyEditBox:SetTextColor(c.r, c.g, c.b)
-	self:skinMoneyFrame{obj=SendMailMoney, moveSEB=true, moveGEB=true}
+	self:skinMoneyFrame{obj=SendMailMoney, moveSEB=true, moveGEB=true, noWidth=true}
 
 -->>--	Open Mail Frame
 	self:skinScrollBar{obj=OpenMailScrollFrame}
 	OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=OpenMailFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-34, y2=68}
+	for i = 1, ATTACHMENTS_MAX_RECEIVE do
+		local rma = _G["OpenMailAttachmentButton"..i]
+		self:addSkinButton{obj=rma, hide=true}
+	end
+	self:addSkinFrame{obj=OpenMailFrame, ft=ftype, kfs=true, x1=12, y1=-12, x2=-34, y2=70}
 
 -->>-- Invoice Frame Text fields
 	OpenMailInvoiceItemLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
