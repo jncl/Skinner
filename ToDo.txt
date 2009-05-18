@@ -51,3 +51,14 @@ S - Skin request
 		Skinner-b2.9835.5\Skinner.lua:661: in function `checkAndRun'
 		Skinner-b2.9835.5\options.lua:307: in function <Interface\AddOns\Skinner\options.lua:304>
 		(tail call): ?:
+		
+√		I	GuildBankSearch, reported by pompachomp, 17.05.09
+		- Skinner-b2.9835.5\SkinMe\GuildBankSearch.lua:5: attempt to index global 'GBS' (a nil value)
+		(tail call): ?:
+		<in C code>: ?
+		Skinner-b2.9835.5\Skinner.lua:649: in function <Interface\AddOns\Skinner\Skinner.lua:647>
+		Skinner-b2.9835.5\Skinner.lua:694: in function `checkAndRunAddOn'
+		Skinner-b2.9835.5\AddonFrames.lua:243: in function <Interface\AddOns\Skinner\AddonFrames.lua:233>
+		(tail call): ?:
+		
+√		N	WoWEquip, requested by Kerecha, 17.05.09
