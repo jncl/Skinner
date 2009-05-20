@@ -12,8 +12,9 @@ function Skinner:TipTac()
 
 	TipTac:ApplySettings()
 
-	self:applySkin(TipTac.anchor)
-
+	-- Anchor frame
+	self:addSkinFrame{obj=TipTac, x1=1, y1=-1, x2=-1, y2=1}
+	
 end
 
 function Skinner:TipTacOptions()
@@ -25,6 +26,14 @@ function Skinner:TipTacOptions()
 			local child = select(i, TipTacOptions:GetChildren())
 			if child.InitSelectedItem and not Skinner.skinned[child] then
 				child:SetBackdrop(nil)
+				-- add a texture, if required
+				if Skinner.db.profile.TexturedDD then
+					child.ddTex = child:CreateTexture(nil, "BORDER")
+					child.ddTex:SetTexture(Skinner.itTex)
+					child.ddTex:ClearAllPoints()
+					child.ddTex:SetPoint("TOPLEFT", child, "TOPLEFT", 0, -2)
+					child.ddTex:SetPoint("BOTTOMRIGHT", child, "BOTTOMRIGHT", -3, 3)
+				end
 			end
 		end
 		
@@ -32,7 +41,7 @@ function Skinner:TipTacOptions()
 		for i = 1, 7 do
 			local eb = _G["AzOptionsFactoryEditBox"..i]
 			if eb and not Skinner.skinned[eb] then
-				Skinner:skinEditBox(eb, {9})
+				Skinner:skinEditBox{obj=eb, regs={eb.text and 15 or nil}}
 			end
 		end
 
@@ -40,30 +49,20 @@ function Skinner:TipTacOptions()
 
 	-- hook this to skin new objects
 	self:SecureHook(TipTacOptions, "BuildCategoryPage", function()
-		self:Debug("TTO_BCP")
+--		self:Debug("TTO_BCP")
 		skinCatPg()
 	end)
 
-	local ddMenu
-	-- hook this to skin the DropDown menu
+	-- hook this to skin the dropdown menu
 	self:SecureHook(AzDropDown, "ToggleMenu", function(...)
-		self:Debug("ADD_TM")
-		if not ddMenu then
-			local obj = EnumerateFrames()
-			while obj do
-				if obj.text and obj.items and obj.list then
-					ddMenu = obj
-					break
-				end
-				obj = EnumerateFrames(obj)
-			end
-		end
-		self:applySkin(ddMenu)	
+		self:skinScrollBar{obj=_G["AzDropDownScroll"..AzDropDown.vers]}
+		self:addSkinFrame{obj=_G["AzDropDownScroll"..AzDropDown.vers]:GetParent()}
+		self:Unhook(AzDropDown, "ToggleMenu")
 	end)
 
 	-- skin already created objects
 	skinCatPg()
-	self:applySkin(TipTacOptions.outline)
-	self:applySkin(TipTacOptions)
+	self:addSkinFrame{obj=TipTacOptions.outline}
+	self:addSkinFrame{obj=TipTacOptions}
 
 end
