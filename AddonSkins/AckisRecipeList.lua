@@ -23,8 +23,8 @@ function Skinner:AckisRecipeList()
 				for i = 1, ARL.Frame:GetNumChildren() do
 					local child = select(i, ARL.Frame:GetChildren())
 					if child:IsObjectType("GameTooltip") then
-						self:skinTooltip(child)
 						if self.db.profile.Tooltips.style == 3 then child:SetBackdrop(self.Backdrop[1]) end
+						self:skinTooltip(child)
 					end
 				end
 			end

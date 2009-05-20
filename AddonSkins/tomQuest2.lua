@@ -11,8 +11,8 @@ function Skinner:tomQuest2()
 			self:skinScrollBar{obj=tomQuest2LhScrollFrame}
 			self:addSkinFrame{obj=tomQuest2LhFrame}
 			if self.db.profile.Tooltips.skin then
-				self:skinTooltip(tomQuest2LhTooltip)
 				if self.db.profile.Tooltips.style == 3 then tomQuest2LhTooltip:SetBackdrop(self.Backdrop[1]) end
+				self:skinTooltip(tomQuest2LhTooltip)
 			end
 			self:Unhook(info, "createLhGUI")
 		end)
@@ -20,8 +20,8 @@ function Skinner:tomQuest2()
 			self:skinScrollBar{obj=tomQuest2QlScrollFrame}
 			self:addSkinFrame{obj=tomQuest2QlFrame}
 			if self.db.profile.Tooltips.skin then
-				self:skinTooltip(tomQuest2QlTooltip)
 				if self.db.profile.Tooltips.style == 3 then tomQuest2QlTooltip:SetBackdrop(self.Backdrop[1]) end
+				self:skinTooltip(tomQuest2QlTooltip)
 			end
 			self:Unhook(info, "createQlGUI")
 		end)

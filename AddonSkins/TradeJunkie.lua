@@ -36,8 +36,8 @@ function Skinner:TradeJunkie()
 	end)
 
 	if self.db.profile.Tooltips.skin then
-		self:skinTooltip(TradeJunkieTooltip)
 		if self.db.profile.Tooltips.style == 3 then TradeJunkieTooltip:SetBackdrop(self.backdrop) end
+		self:skinTooltip(TradeJunkieTooltip)
 	end
 
 end

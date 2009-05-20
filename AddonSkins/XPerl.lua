@@ -142,8 +142,8 @@ function Skinner:XPerl_RaidHelper()
 	self:moveObject{obj=XPerl_Target_AssistFrame, y=1}
 
 	if self.db.profile.Tooltips.skin then
-		self:skinTooltip(XPerl_BottomTip)
 		if self.db.profile.Tooltips.style == 3 then XPerl_BottomTip:SetBackdrop(self.Backdrop[1]) end
+		self:skinTooltip(XPerl_BottomTip)
 	end
 
 end

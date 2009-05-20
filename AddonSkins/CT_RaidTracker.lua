@@ -151,8 +151,8 @@ function Skinner:CT_RaidTracker()
 
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
-		self:skinTooltip(CT_RTTooltip)
 		if self.db.profile.Tooltips.style == 3 then CT_RTTooltip:SetBackdrop(self.backdrop) end
+		self:skinTooltip(CT_RTTooltip)
 	end
 
 -->>--	Options Frame
