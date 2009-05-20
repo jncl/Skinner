@@ -120,7 +120,7 @@ function Skinner:AddonFrames()
 
 	-- handle Addons with odd names here
 	local oddlyNamedAddons = {
-		"Auc-Advanced", "Auc-Util-BigPicture", "Auto-Bag", "Enchantrix-Barker", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "!ImprovedErrorFrame", "Ogri'Lazy"
+		"Auc-Advanced", "Auc-Util-BigPicture", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "!ImprovedErrorFrame", "Ogri'Lazy"
 	}
 	for _, v in pairs(oddlyNamedAddons) do
 		v2, _ = string.gsub(v, "[-_!']", "")

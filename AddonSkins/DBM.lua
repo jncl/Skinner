@@ -1,6 +1,5 @@
 
 function Skinner:DBM_GUI()
--- 	self:Debug("DBM_GUI skin loaded")
 	
 	-- (BUGFIX for DBM): reparent the Huge Bar statusBar 
 	for bar in DBM.Bars:GetBarIterator() do
@@ -148,15 +147,18 @@ function Skinner:DBM_GUI()
 		else self:applySkin(tabName) end
 	end
 	
--->>-- Range Check frame
-	self:RawHook(DBM.RangeCheck, "Show", function(this, ...)
-		self.hooks[this].Show(this, ...)
+end
+
+function Skinner:DBMCore()
+
+	-- hook this to skin the RangeCheck frame (actually a tooltip)
+	self:SecureHook(DBM.RangeCheck, "Show", function(this, ...)
 		self:skinDropDown{obj=DBMRangeCheckDropdown}
 		if self.db.profile.Tooltips.skin then
-			self:skinTooltip(DBMRangeCheck)
 			if self.db.profile.Tooltips.style == 3 then DBMRangeCheck:SetBackdrop(self.Backdrop[1]) end
+			self:skinTooltip(DBMRangeCheck)
 		end
 		self:Unhook(DBM.RangeCheck, "Show")
-	end)
-	
+	end)	
+
 end
