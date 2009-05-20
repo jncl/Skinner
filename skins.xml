@@ -170,6 +170,7 @@
 <script file="SkinMe\ItemRack.lua"/>
 <script file="SkinMe\ItemSync.lua"/>
 <script file="SkinMe\JasonQuest.lua"/>
+<script file="SkinMe\Jobber.lua"/>
 <script file="SkinMe\Junk.lua"/>
 <script file="SkinMe\Karma.lua"/>
 <!-- <script file="SkinMe\KC_Items.lua"/> -->
