@@ -8,21 +8,6 @@ N - New Version
 O - Other change
 S - Skin request
 
-	S	Calendar_Broker and Broker_AllStats, reported by sirtyface, 14.05.09
-√		- tooltips not skinned properly, background changes after first mouseover
-		
-	I	DBM, reported by Kerecha, 14.05.09
-√		- skin 'new' range check frame (/range)
-	
-√	I	reported by Skylinee, 14.05.09
-		- Skinner-b2.9835.5\UIElements2.lua:284: attempt to call method 'GetNumChildren' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `InterfaceOptionsList_DisplayPanel'
-		Interface\FrameXML\UIOptionsFrame.lua:46: in function `InterfaceOptionsListButton_OnClick':
-		<string>:"*:OnClick":2: in function <[string "*:OnClick"]:1>
-		
-		--> happens when opening DockingStation's config and choosing either "panels" or "plugins"
-		
 ≈	I	Stuttering & lag with tooltip mods, reported by xavier2k3/Loads, 14.05.09
 	
 ≈	I	Gradient settings lost, reported by doriginal1, 14.05.09
@@ -30,35 +15,18 @@ S - Skin request
 	
 ≈	O	Lag occurring since version b2.9835.3
 
-√	I	Calendar, reported by Srosh, 15.05.09
-		- Skinner-@project-version@\Skinner.lua:1234: Unknown object__sDD
-		Skinner-@project-version@\Skinner.lua:1234: in function <Interface\AddOns\Skinner\Skinner.lua:1225>
-		Skinner-@project-version@\Skinner.lua:1274: in function `skinDropDown'
-		Skinner-@project-version@\UIElements2.lua:126: in function <Interface\AddOns\Skinner\UIElements2.lua:78>
-		(tail call): ?:
+√	I	DBM, reported by Kerecha, 18.05.09
+		- range indicator still unskinned
+		
+√	I	Combuctor, reported by Gabriel, 18.05.09
 	
-√	I	tomQuest2, reported by Skylinee, 15.05.09
-		- Skinner-b2.9835.5\Skinner.lua:457: attempt to index field 'obj' (a nil value)
-		Skinner-b2.9835.5\Skinner.lua:528: in function `addSkinFrame'
-		Skinner-b2.9835.5\SkinMe\tomQuest2.lua:22: in function <Interface\AddOns\Skinner\SkinMe\tomQuest2.lua:19>
-		(tail call): ?:
+√	I	TipTac, reported by Gabriel, 18.05.09
+	
+	I	QuestAgent & LightHeaded, reported by Gabriel, 19.05.09
+		- not aligning
 		
-√	I	StatusBar Texture change, reported by D2pink, 16.05.09
-		- Skinner-b2.9835.5\Skinner.lua:1606: attempt to concatenate a nil value
-		(tail call): ?:
-		<in C code>: ?
-		Skinner-b2.9835.5\Skinner.lua:649: in function <Interface\AddOns\Skinner\Skinner.lua:647>
-		Skinner-b2.9835.5\Skinner.lua:661: in function `checkAndRun'
-		Skinner-b2.9835.5\options.lua:307: in function <Interface\AddOns\Skinner\options.lua:304>
-		(tail call): ?:
-		
-√		I	GuildBankSearch, reported by pompachomp, 17.05.09
-		- Skinner-b2.9835.5\SkinMe\GuildBankSearch.lua:5: attempt to index global 'GBS' (a nil value)
-		(tail call): ?:
-		<in C code>: ?
-		Skinner-b2.9835.5\Skinner.lua:649: in function <Interface\AddOns\Skinner\Skinner.lua:647>
-		Skinner-b2.9835.5\Skinner.lua:694: in function `checkAndRunAddOn'
-		Skinner-b2.9835.5\AddonFrames.lua:243: in function <Interface\AddOns\Skinner\AddonFrames.lua:233>
-		(tail call): ?:
-		
-√		N	WoWEquip, requested by Kerecha, 17.05.09
+√	S	Jobber, requested by shadowrm, 19.05.09
+	
+	O	Patch 3.1.2
+√		- GearManager added
+	

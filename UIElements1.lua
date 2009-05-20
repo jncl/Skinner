@@ -122,7 +122,7 @@ function Skinner:StaticPopups()
 		self:skinEditBox{obj=_G["StaticPopup"..i.."EditBox"]}
 		self:skinEditBox{obj=_G["StaticPopup"..i.."WideEditBox"]}
 		self:skinMoneyFrame{obj=_G["StaticPopup"..i.."MoneyInputFrame"]}
-		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=10, y1=3, x2=-10, y2=3}
+		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=3, y1=3, x2=-3, y2=3}
 	end
 
 end

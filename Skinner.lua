@@ -118,7 +118,7 @@ function Skinner:OnInitialize()
 	self.LSM:Register("background", "Blizzard ChatFrame Background", [[Interface\ChatFrame\ChatFrameBackground]])
 	-- register the inactive tab texture
 	self.LSM:Register("background", "Inactive Tab", [[Interface\AddOns\Skinner\textures\inactive]])
-	-- register the EditBox/ScrollBar texture
+	-- register the texture used for EditBoxes & ScrollBars
 	self.LSM:Register("border", "Skinner Border", [[Interface\AddOns\Skinner\textures\krsnik]])
 
 	-- Heading and Body Text colours
@@ -1252,7 +1252,7 @@ local function __skinDropDown(opts)
 	assert(opts.obj, "Unknown object__sDD\n"..debugstack())
 --@end-alpha@
 
-	if not (opts.obj and opts.obj.GetName and opts.obj:GetName() and _G[opts.obj:GetName().."Right"]) then return end -- ignore tekKonfig dropdowns
+	if not (opts.obj and opts.obj.GetName and opts.obj:GetName() and _G[opts.obj:GetName().."Right"]) then return end -- ignore tekKonfig & Az dropdowns
 
 	if not Skinner.db.profile.TexturedDD or opts.noSkin then Skinner:keepFontStrings(opts.obj) return end
 
@@ -1302,12 +1302,17 @@ local function __skinEditBox(opts)
 		noHeight = don't change the height
 		noWidth = don't change the width
 		move = move the edit box, left and up
+		x = move the edit box left/right
+		y = move the edit box up/down
 --]]
 --@alpha@
 	assert(opts.obj and opts.obj:IsObjectType("EditBox"), "Not an EditBox\n"..debugstack())
 --@end-alpha@
 
 	if not opts.obj then return end
+	
+	opts.x = opts.x or 0
+	opts.y = opts.y or 0
 
 	local kRegions = CopyTable(Skinner.ebRegions)
 	if opts.regs then
@@ -1331,7 +1336,10 @@ local function __skinEditBox(opts)
 	if not opts.noSkin then Skinner:skinUsingBD{obj=opts.obj} end
 
 	-- move to the left & up, if required
-	if opts.move then Skinner:moveObject{obj=opts.obj, x=-2, y=2} end
+	if opts.move then opts.x, opts.y = -2, 2 end
+
+	-- move left/right & up/down, if required
+	Skinner:moveObject{obj=opts.obj, x=opts.x, y=opts.y}
 
 end
 
