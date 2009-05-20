@@ -457,3 +457,5 @@ L["Other Settings"] = true
 L["Confirm reload of UI to activate profile changes"] = true
 L["GMChatUI Frame"] = true
 L["Toggle the skin of the GMChatUI Frame"] = true
+L["Gear Manager Frame"] = true
+L["Toggle the skin of the Gear Manager Frame"] = true

@@ -391,15 +391,13 @@ function Skinner:WatchFrame()
 
 end
 
---[[
 function Skinner:GearManager()
 	if not self.db.profile.GearManager then return end
 
-	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=2}
 -->>-- Popup frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
 	self:skinEditBox{obj=GearManagerDialogPopupEditBox, regs={9}}
-	self:addSkinFrame{obj=GearManagerDialogPopup, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=GearManagerDialogPopup, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
 
 end
---]]

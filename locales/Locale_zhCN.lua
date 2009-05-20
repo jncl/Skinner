@@ -17,6 +17,8 @@ L["Tracker Frame"] = true
 L["Change the Tracker Frame settings"] = true
 L["Clean Textures"] = true
 L["Remove Blizzard Textures"] = true
+L["Gear Manager Frame"] = true
+L["Toggle the skin of the Gear Manager Frame"] = true
 
 -- option titles
 L["Colours"] = "颜色"

@@ -66,6 +66,8 @@ function Skinner:Defaults()
 		AchieveFrame    = true,
 		AchieveAlert    = true,
 		VehicleMenuBar	= true,
+		TrackerFrame    = {skin = false, clean = true, glazesb = true},
+		GearManager		= true,
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
@@ -122,8 +124,6 @@ function Skinner:Defaults()
 		Petition        = true,
 		Tabard          = true,
 		BarbershopUI	= true,
-		-- Others
-		TrackerFrame    = {skin = false, clean = true, glazesb = true},
 		-- DBIcon settings
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
 
@@ -1219,6 +1219,11 @@ function Skinner:Options()
 					type = "toggle",
 					name = self.L["Vehicle Menu Bar"],
 					desc = self.L["Toggle the skin of the Vehicle Menu Bar"],
+				},
+				GearManager = {
+					type = "toggle",
+					name = self.L["Gear Manager Frame"],
+					desc = self.L["Toggle the skin of the Gear Manager Frame"],
 				},
 			},
 		},

@@ -6,7 +6,7 @@ function Skinner:BlizzardFrames()
 
 	local blizzFrames = {
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame",
-		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame",
+		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager",
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard",
 		"MirrorTimers"--[[, "QuestTimers"--]], "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "BattleScore", "ScriptErrors", "Tutorial", "DropDowns",
 		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame",
