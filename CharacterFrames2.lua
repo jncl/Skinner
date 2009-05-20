@@ -364,7 +364,20 @@ function Skinner:WatchFrame()
 		self:SecureHook(WatchFrameLines, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
 	end
 
-	if self.db.profile.TrackerFrame.clean then self:keepFontStrings(WatchFrame) end
+	if self.db.profile.TrackerFrame.clean then
+		self:keepFontStrings(WatchFrame)
+		-- add textures to the resize buttons
+		-- texture and TexCoord code taken from Jobber (Author - Maul)
+		WatchFrameRightResizeThumb:SetWidth(12)
+		WatchFrameRightResizeThumb:SetHeight(12)
+		WatchFrameRightResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
+		self:getRegion(WatchFrameRightResizeThumb, 1):SetTexCoord(0.653125, 0.753125, 0.653125, 0.753125)
+		WatchFrameLeftResizeThumb:SetWidth(12)
+		WatchFrameLeftResizeThumb:SetHeight(12)
+		WatchFrameLeftResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
+		self:getRegion(WatchFrameLeftResizeThumb, 1):SetTexCoord(0.753125, 0.653125, 0.653125, 0.753125)
+	end
+		
 
 	if self.db.profile.TrackerFrame.glazesb then
 		local function glazeWatchLines()
@@ -381,9 +394,11 @@ function Skinner:WatchFrame()
 		end
 
 		-- hook this to manage the tracked Achievements
-		self:SecureHook("WatchFrame_Update", function(this)
-			glazeWatchLines()
-		end)
+		if not self:IsHooked("WatchFrame_Update") then
+			self:SecureHook("WatchFrame_Update", function(this)
+				glazeWatchLines()
+			end)
+		end
 
 		-- glaze any existing lines
 		glazeWatchLines()
