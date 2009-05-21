@@ -1,24 +1,7 @@
--- Many thanks to anahaid for the translation
+-- Many thanks to ananhaid for the translation
 local L = LibStub("AceLocale-3.0"):NewLocale("Skinner", "zhCN", false)
 
 if not L then return end
-
--- untranslated strings
-L["GMChatUI Frame"] = true
-L["Toggle the skin of the GMChatUI Frame"] = true
-
-L["Change the World Map settings"] = true
-L["World Map Skin"] = true
-L["Toggle the skin of the World Map Frame"] = true
-L["World Map Size"] = true
-L["Set the World Map size (Normal, Fullscreen)"] = true
-
-L["Tracker Frame"] = true
-L["Change the Tracker Frame settings"] = true
-L["Clean Textures"] = true
-L["Remove Blizzard Textures"] = true
-L["Gear Manager Frame"] = true
-L["Toggle the skin of the Gear Manager Frame"] = true
 
 -- option titles
 L["Colours"] = "颜色"
@@ -368,6 +351,11 @@ L["Toggle the skin of the Item Text Frame"] = "切换物品文本框架皮肤"
 L["Color Picker Frame"] = "拾取颜色框架"
 L["Toggle the skin of the Color Picker Frame"] = "切换拾取颜色框架皮肤"
 L["World Map Frame"] = "世界地图框架"
+L["Change the World Map settings"] = true
+L["World Map Skin"] = "世界地图皮肤"
+L["Toggle the skin of the World Map Frame"] = "切换世界地图框架皮肤"
+L["World Map Size"] = "世界地图大小"
+L["Set the World Map size (Normal, Fullscreen)"] = "设置世界地图大小（一般，全屏）"
 L["Inspect Frame"] = "观察框架"
 L["Toggle the skin of the Inspect Frame"] = "切换观察框架皮肤"
 L["Battle Score Frame"] = "战斗积分框架"
@@ -455,11 +443,19 @@ L["Toggle the skin of the Tabard Frame"] = "切换会徽框架皮肤"
 L["Barbershop Frame"] = "理发店框架"
 L["Toggle the skin of the Barbershop Frame"] = "切换理发店框架皮肤"
 L["Right Click to display options menu"] = "右键显示选项菜单"
+L["Tracker Frame"] = "监视框架"
+L["Change the Tracker Frame settings"] = "更改监视框架设置"
 L["Skin Tracker Frame"] = "皮肤跟踪框架"
 L["Toggle the skin of the Tracker Frame"] = "切换跟踪框架皮肤"
+L["Clean Textures"] = "清除文本"
+L["Remove Blizzard Textures"] = "移除暴雪文本"
 L["Minimap icon"] = "小地图图标"
 L["Toggle the minimap icon"] = "切换小地图图标"
 L["Skin Settings"] = "皮肤设置"
 L["Frames"] = "框架"
 L["Other Settings"] = "其他设置"
 L["Confirm reload of UI to activate profile changes"] = "确认配置文件改变并重新加载界面"
+L["GMChatUI Frame"] = "GM 聊天界面框架"
+L["Toggle the skin of the GMChatUI Frame"] = "切换 GM 聊天界面框架皮肤"
+L["Gear Manager Frame"] = "工具管理框架"
+L["Toggle the skin of the Gear Manager Frame"] = "切换工具管理框架皮肤"

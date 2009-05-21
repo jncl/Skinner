@@ -2,8 +2,8 @@
 ## Title: Skinner
 ## Notes: Changes the look of the default UI
 ## Notes-esES: Cambia el aspecto del UI predeterminado
-## Notes-zhCN: 更改默认 UI 的视觉样式.
-## Notes-zhTW: 更改預設 UI 的視覺樣式.
+## Notes-zhCN: 更改默认用户界面的视觉样式。
+## Notes-zhTW: 更改預設用戶介面的視覺樣式。
 ## Author: Jncl
 ## Version: @project-version@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
