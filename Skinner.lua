@@ -382,7 +382,7 @@ local function __addSkinButton(opts)
 	if opts.bg then	but:SetFrameStrata("BACKGROUND") end
 
 	-- change the draw layer of the Icon and Count, if necessary
-	if opts.obj:IsObjectType("Frame") then
+	if opts.obj.GetNumRegions then
 		for i = 1, opts.obj:GetNumRegions() do
 			local reg = select(i, opts.obj:GetRegions())
 			local regOT = reg:GetObjectType()
@@ -391,9 +391,9 @@ local function __addSkinButton(opts)
 				local regDL = reg:GetDrawLayer()
 				local regTex = regOT == "Texture" and reg:GetTexture() or nil
 				-- change the DrawLayer to make the Icon show if required
-				if (regName and strfind(regName, "[Ii]con"))
-				or (regTex and strfind(regTex, "[Ii]con"))
-				or (regName and strfind(regName, "[Cc]ount")) then
+				if (regName and (strfind(regName, "[Ii]con") or strfind(regName, "[Cc]ount")))
+--				or (regName and strfind(regName, "[Cc]ount"))
+				or (regTex and strfind(regTex, "[Ii]con")) then
 					if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 				end
 			end
@@ -449,6 +449,7 @@ local function __addSkinFrame(opts)
 		obj = object (Mandatory)
 		ft = Frame Type (Skinner classification)
 		kfs = Remove all textures, only keep font strings
+		hat = Hide all textures
 		hdr = Header Texture to be hidden
 		bg = set FrameStrata to "BACKGROUND"
 		noBdr = no border
@@ -469,7 +470,7 @@ local function __addSkinFrame(opts)
 	if opts.ft then tinsert(Skinner.gradFrames[opts.ft], opts.obj) end
 
 	-- remove all textures, if required
-	if opts.kfs then Skinner:keepFontStrings(opts.obj) end
+	if opts.kfs or opts.hat then Skinner:keepFontStrings(opts.obj, opts.hat) end
 
 	-- setup offset values
 	local xOfs1 = opts.x1 or 0
@@ -924,7 +925,7 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 
 end
 
-function Skinner:keepFontStrings(frame)
+function Skinner:keepFontStrings(frame, hide)
 --@alpha@
 	assert(frame, "Unknown object\n"..debugstack())
 --@end-alpha@
@@ -936,7 +937,7 @@ function Skinner:keepFontStrings(frame)
 	for i = 1, frame:GetNumRegions() do
 		local reg = select(i, frame:GetRegions())
 		if not reg:IsObjectType("FontString") then
-			reg:SetAlpha(0)
+			if not hide then reg:SetAlpha(0) else reg:Hide() end
 		end
 	end
 
@@ -1339,7 +1340,7 @@ local function __skinEditBox(opts)
 	if opts.move then opts.x, opts.y = -2, 2 end
 
 	-- move left/right & up/down, if required
-	Skinner:moveObject{obj=opts.obj, x=opts.x, y=opts.y}
+	if not opts.x and opts.y then Skinner:moveObject{obj=opts.obj, x=opts.x, y=opts.y} end
 
 end
 
