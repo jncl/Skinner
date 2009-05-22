@@ -16,12 +16,14 @@ function Skinner:Examiner()
 
 	end
 
-	-- hook this to skin the dropdown menu
-	self:SecureHook(AzDropDown, "ToggleMenu", function(...)
-		self:skinScrollBar{obj=_G["AzDropDownScroll"..AzDropDown.vers]}
-		self:addSkinFrame{obj=_G["AzDropDownScroll"..AzDropDown.vers]:GetParent()}
-		self:Unhook(AzDropDown, "ToggleMenu")
-	end)
+	-- hook this to skin the dropdown menu (also used by TipTac skin)
+	if not self:IsHooked(AzDropDown, "ToggleMenu") then
+		self:SecureHook(AzDropDown, "ToggleMenu", function(...)
+			self:skinScrollBar{obj=_G["AzDropDownScroll"..AzDropDown.vers]}
+			self:addSkinFrame{obj=_G["AzDropDownScroll"..AzDropDown.vers]:GetParent()}
+			self:Unhook(AzDropDown, "ToggleMenu")
+		end)
+	end
 
 	self:removeRegions(Examiner, {1, 5, 6, 7, 8}) -- N.B. other regions are text or background
 	self:addSkinFrame{obj=Examiner, x1=10, y1=-11, x2=-33}

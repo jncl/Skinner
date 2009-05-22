@@ -9,6 +9,8 @@ function Skinner:TipTac()
 	TipTac_Config.backdropInsets = self.backdrop.insets.left
 	TipTac_Config.tipColor = CopyTable(self.bColour)
 	TipTac_Config.tipBorderColor = CopyTable(self.bbColour)
+	
+	-- N.B. The ItemRefTooltip border will be set to reflect the item's quality by TipTac
 
 	TipTac:ApplySettings()
 
@@ -53,12 +55,14 @@ function Skinner:TipTacOptions()
 		skinCatPg()
 	end)
 
-	-- hook this to skin the dropdown menu
-	self:SecureHook(AzDropDown, "ToggleMenu", function(...)
-		self:skinScrollBar{obj=_G["AzDropDownScroll"..AzDropDown.vers]}
-		self:addSkinFrame{obj=_G["AzDropDownScroll"..AzDropDown.vers]:GetParent()}
-		self:Unhook(AzDropDown, "ToggleMenu")
-	end)
+	-- hook this to skin the dropdown menu (also used by Examiner skin)
+	if not self:IsHooked(AzDropDown, "ToggleMenu") then
+		self:SecureHook(AzDropDown, "ToggleMenu", function(...)
+			self:skinScrollBar{obj=_G["AzDropDownScroll"..AzDropDown.vers]}
+			self:addSkinFrame{obj=_G["AzDropDownScroll"..AzDropDown.vers]:GetParent()}
+			self:Unhook(AzDropDown, "ToggleMenu")
+		end)
+	end
 
 	-- skin already created objects
 	skinCatPg()
