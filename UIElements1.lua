@@ -323,7 +323,9 @@ function Skinner:LootFrame()
 	if not self.db.profile.LootFrame or self.initialized.LootFrame then return end
 	self.initialized.LootFrame = true
 
-	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12} -- title
+	LootFrame:SetHeight(LootFrame:GetHeight() - 34)
+	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-17} -- title
+	self:moveObject{obj=LootButton1, y=34}
 	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-13, x2=-68}
 
 end
@@ -447,7 +449,7 @@ function Skinner:WorldMap()
 
 	-- handle different map addons being loaded or fullscreen required
 	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") then
-		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1}
+		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
 	elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer") then
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=99, y1=1, x2=-102, y2=18}
 	end
@@ -629,6 +631,10 @@ function Skinner:InspectUI()
 
 -->>--	PVP Frame
 	self:keepFontStrings(InspectPVPFrame)
+	for i = 1, 3 do
+		_G["InspectPVPTeam"..i.."StandardBar"]:Hide()
+		self:addSkinFrame{obj=_G["InspectPVPTeam"..i], hat=true, x1=-40, y1=4, x2=-20, y2=-4}
+	end
 
 -->>--	Talent Frame
 	self:keepRegions(InspectTalentFrame, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 8 & 9 are the background picture, 10 is text
