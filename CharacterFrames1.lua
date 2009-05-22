@@ -573,14 +573,16 @@ function Skinner:AchievementAlerts()
 	if not self.db.profile.AchieveAlert or self.initialized.AchieveAlert then return end
 	self.initialized.AchieveAlert = true
 
-	local function skinAlertFrame()
+	local aafName = "AchievementAlertFrame"
+	
+	local function skinAlertFrames()
 
 		for i = 1, 2 do
-			local aaFrame = _G["AchievementAlertFrame"..i]
+			local aaFrame = _G[aafName..i]
 			if aaFrame and not Skinner.skinFrame[aaFrame] then
-				_G["AchievementAlertFrame"..i.."Background"]:SetAlpha(0)
-				_G["AchievementAlertFrame"..i.."Unlocked"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-				Skinner:keepRegions(_G["AchievementAlertFrame"..i.."Icon"], {3}) -- icon texture
+				_G[aafName..i.."Background"]:Hide() -- hide this as Alpha value is changed in Bliz code
+				_G[aafName..i.."Unlocked"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+				Skinner:keepRegions(_G[aafName..i.."Icon"], {3}) -- icon texture
 				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
 			end
 		end
@@ -588,14 +590,14 @@ function Skinner:AchievementAlerts()
 	end
 
 	if not AchievementAlertFrame2 then
-		self:SecureHook("AchievementAlertFrame_ShowAlert", function(id)
-			skinAlertFrame()
+		self:SecureHook(aafName.."_ShowAlert", function(id)
+			skinAlertFrames()
 			if AchievementAlertFrame2 then
-				self:Unhook("AchievementAlertFrame_ShowAlert")
+				self:Unhook(aafName.."_ShowAlert")
 			end
 		end)
 	end
 
-	skinAlertFrame()
+	skinAlertFrames()
 
 end
