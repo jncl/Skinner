@@ -3,9 +3,9 @@ function Skinner:Combuctor()
 	if not self.db.profile.ContainerFrames.skin then return end
 
 	-- skin Inventory & Bank frames
-	for i = 1, 2 do
+	for i = 1, #Combuctor.frames do
 		local frame = _G["CombuctorFrame"..i]
-		self:skinEditBox{obj=frame.nameFilter, regs={9}, noMove=true}
+		self:skinEditBox{obj=frame.nameFilter, regs={9}, noWidth=true, noMove=true}
 		self:addSkinFrame{obj=frame, kfs=true, x1=10, y1=-11, x2=-32, y2=55}
 	end
 	
