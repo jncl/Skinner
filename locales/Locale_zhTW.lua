@@ -3,6 +3,9 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Skinner", "zhTW", false)
 
 if not L then return end
 
+--@localization(locale="zhTW", format="lua_additive_table")@
+
+--[[
 -- option titles
 L["Colours"] = "顏色"
 L["Backdrop"] = "背景"
@@ -258,8 +261,6 @@ L["Social Frame"] = "社交框架"
 L["Toggle the skin of the Social Frame"] = "切換社交框架介面"
 L["Trade Skill Frame"] = "商業技能框架"
 L["Toggle the skin of the Trade Skill Frame"] = "切換商業技能框架介面"
-L["Craft Frame"] = "製作框架"
-L["Toggle the skin of the Craft Frame"] = "切換製作框架介面"
 L["Trade Frame"] = "交易框架"
 L["Toggle the skin of the Trade Frame"] = "切換交易框架介面"
 L["Quest Log"] = "任務日誌"
@@ -280,8 +281,6 @@ L["Achievements Frame"] = "成就框架"
 L["Toggle the skin of the Achievements Frame"] = "切換成就框架皮膚"
 L["Achievement Alerts"] = "成就提示"
 L["Toggle the skin of the Achievement Alerts"] = "切換成就提示皮膚"
-L["Achievement Watch"] = "成就監視"
-L["Toggle the skin of the Achievement Watch"] = "切換成就監視皮膚"
 L["Vehicle Menu Bar"] = "載具菜單條"
 L["Toggle the skin of the Vehicle Menu Bar"] = "切換載具菜單條皮膚"
 L["UI Frames"] = "介面框架"
@@ -450,11 +449,8 @@ L["Clean Textures"] = "清除文本"
 L["Remove Blizzard Textures"] = "移除暴雪文本"
 L["Minimap icon"] = "小地圖圖示"
 L["Toggle the minimap icon"] = "切換小地圖圖示"
-L["Skin Settings"] = "皮膚設定"
-L["Frames"] = "框架"
-L["Other Settings"] = "其它設定"
 L["Confirm reload of UI to activate profile changes"] = "確認配置文件改變并重新加載介面"
 L["GMChatUI Frame"] = "GM 聊天介面框架"
 L["Toggle the skin of the GMChatUI Frame"] = "切換 GM 聊天介面框架皮膚"
 L["Gear Manager Frame"] = "工具管理框架"
-L["Toggle the skin of the Gear Manager Frame"] = "切換工具管理框架皮膚"
+L["Toggle the skin of the Gear Manager Frame"] = "切換工具管理框架皮膚"--]]

@@ -1,7 +1,16 @@
 
-local L = LibStub("AceLocale-3.0"):NewLocale("Skinner", "enUS", true)
+local debug = false
+--@debug@
+debug = true
+--@end-debug@
+
+local L = LibStub("AceLocale-3.0"):NewLocale("Skinner", "enUS", true, debug)
 
 if not L then return end
+
+--@localization(locale="enUS", format="lua_additive_table", same-key-is-true=true)@
+
+--[[
 
 -- option titles
 L["Colours"] = true
@@ -258,8 +267,6 @@ L["Social Frame"] = true
 L["Toggle the skin of the Social Frame"] = true
 L["Trade Skill Frame"] = true
 L["Toggle the skin of the Trade Skill Frame"] = true
-L["Craft Frame"] = true
-L["Toggle the skin of the Craft Frame"] = true
 L["Trade Frame"] = true
 L["Toggle the skin of the Trade Frame"] = true
 L["Quest Log"] = true
@@ -280,8 +287,6 @@ L["Achievements Frame"] = true
 L["Toggle the skin of the Achievements Frame"] = true
 L["Achievement Alerts"] = true
 L["Toggle the skin of the Achievement Alerts"] = true
-L["Achievement Watch"] = true
-L["Toggle the skin of the Achievement Watch"] = true
 L["Vehicle Menu Bar"] = true
 L["Toggle the skin of the Vehicle Menu Bar"] = true
 L["UI Frames"] = true
@@ -351,7 +356,7 @@ L["Toggle the skin of the Item Text Frame"] = true
 L["Color Picker Frame"] = true
 L["Toggle the skin of the Color Picker Frame"] = true
 L["World Map Frame"] = true
-L["Change the World Map Frame settings"] = true
+L["Change the World Map settings"] = true
 L["World Map Skin"] = true
 L["Toggle the skin of the World Map Frame"] = true
 L["World Map Size"] = true
@@ -450,11 +455,9 @@ L["Clean Textures"] = true
 L["Remove Blizzard Textures"] = true
 L["Minimap icon"] = true
 L["Toggle the minimap icon"] = true
-L["Skin Settings"] = true
-L["Frames"] = true
-L["Other Settings"] = true
 L["Confirm reload of UI to activate profile changes"] = true
 L["GMChatUI Frame"] = true
 L["Toggle the skin of the GMChatUI Frame"] = true
 L["Gear Manager Frame"] = true
 L["Toggle the skin of the Gear Manager Frame"] = true
+--]]

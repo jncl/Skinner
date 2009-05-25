@@ -3,6 +3,9 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Skinner", "koKR", false)
 
 if not L then return end
 
+--@localization(locale="koKR", format="lua_additive_table")@
+
+--[[
 -- untranslated strings
 L["Baggins Bank Bags Colour"] = true
 L["Set Baggins Bank Bags Colour"] = true
@@ -283,8 +286,6 @@ L["Social Frame"] = "커뮤니티 프레임"
 L["Toggle the skin of the Social Frame"] = "커뮤니티 프레임의 스킨을 전환합니다."
 L["Trade Skill Frame"] = "전문 기술 프레임"
 L["Toggle the skin of the Trade Skill Frame"] = "전문 기술 프레임의 스킨을 전환합니다."
-L["Craft Frame"] = "제작 프레임"
-L["Toggle the skin of the Craft Frame"] = "제작 프레임의 스킨을 전환합니다."
 L["Trade Frame"] = "거래 프레임"
 L["Toggle the skin of the Trade Frame"] = "거래 프레임의 스킨을 전환합니다."
 L["Quest Log"] = "퀘스트 로그"
@@ -438,7 +439,6 @@ L["Petition Frame"] = "Petition 프레임"
 L["Toggle the skin of the Petition Frame"] = "Petition 프레임의 스킨을 전환합니다."
 L["Tabard Frame"] = "Tabard 프레임"
 L["Toggle the skin of the Tabard Frame"] = "Tabard 프레임의 스킨을 전환합니다."
-L["Right Click to display menu"] = "메뉴를 표시하려면 |cffeda55f오른쪽 클릭|r하세요."
 L["Skin Tracker Frame"] = "트래커 프레임"
 L["Toggle the skin of the Tracker Frame"] = "트래커 프레임의 스킨을 전환합니다."
 L["PVP Frame"] = "PVP 프레임"
@@ -451,8 +451,6 @@ L["Achievements Frame"] = "업적 프레임"
 L["Toggle the skin of the Achievements Frame"] = "업적 프레임의 스킨을 전환합니다."
 L["Achievement Alerts"] = "업적알림 프레임"
 L["Toggle the skin of the Achievement Alerts"] = "업적알림 프레임의 스킨을 전환합니다."
-L["Achievement Watch"] = "업적보기 프레임"
-L["Toggle the skin of the Achievement Watch"] = "업적보기 프레임의 스킨을 전환합니다."
 L["Calendar"] = "달력 프레임"
 L["Toggle the skin of the Calendar Frame"] = "달력 프레임의 스킨을 전환합니다."
 L["Feedback"] = "피드백 프레임"
@@ -461,6 +459,4 @@ L["Barbershop Frame"] = "미용실 프레임"
 L["Toggle the skin of the Barbershop Frame"] = "미용실 프레임의 스킨을 전환합니다."
 L["Minimap icon"] = "미니맵 아이콘"
 L["Toggle the minimap icon"] = "미니맵 아이콘의 스킨을 전환합니다."
-L["Skin Settings"] = "스킨 설정"
-L["Frames"] = "프레임"
-L["Other Settings"] = "기타 설정"
+--]]

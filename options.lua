@@ -1516,7 +1516,7 @@ function Skinner:Options()
 					inline = true,
 					order = -1,
 					name = self.L["World Map Frame"],
-					desc = self.L["Change the World Map Frame settings"],
+					desc = self.L["Change the World Map settings"],
 					get = function(info) return db.WorldMap[info[#info]] end,
 					set = function(info, value)
 						db.WorldMap[info[#info]] = value
