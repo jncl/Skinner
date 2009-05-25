@@ -11,7 +11,7 @@ function Skinner:tekKonfig()
 	if LibStub("tekKonfig-Dropdown", true) and not tKDd then
 		tKDd, ver = LibStub("tekKonfig-Dropdown")
 		self:RawHook(tKDd, "new", function(parent, label, ...)
-			self:Debug("tKDd:[%s, %s]", parent, label)
+--			self:Debug("tKDd:[%s, %s]", parent, label)
 			local frame, text, container = self.hooks[tKDd].new(parent, label, ...)
 			if not self.db.profile.TexturedDD then self:keepFontStrings(frame)
 			else
