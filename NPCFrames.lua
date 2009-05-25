@@ -156,16 +156,16 @@ function Skinner:ArenaRegistrar()
 
 -->>--	Arena Registrar Frame
 	self:keepFontStrings(ArenaRegistrarGreetingFrame)
-	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:getRegion(ArenaRegistrarGreetingFrame, 1):SetTextColor(self.HTr, self.HTg, self.HTb) -- AvailableServicesText (name also used by GuildRegistrar frame)
 	RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	for i = 1, 5 do
+	for i = 1, MAX_TEAM_BORDERS do
 		local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 	self:skinEditBox{obj=ArenaRegistrarFrameEditBox}
 
-	self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+	self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=64}
 
 -->>--	PVP Banner Frame
 	self:keepRegions(PVPBannerFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
