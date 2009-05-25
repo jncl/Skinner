@@ -114,6 +114,7 @@
 <script file="SkinMe\epgp.lua"/>
 <script file="SkinMe\EQL3.lua"/>
 <script file="SkinMe\EquipCompare.lua"/>
+<script file="SkinMe\EventEquip.lua"/>
 <!-- <script file="SkinMe\EveryQuest.lua"/> -->
 <script file="SkinMe\Examiner.lua"/>
 <!-- <script file="SkinMe\FactionGrinder.lua"/> -->
