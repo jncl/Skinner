@@ -9,34 +9,24 @@ O - Other change
 S - Skin request
 
 ≈	I	Stuttering & lag with tooltip mods, reported by xavier2k3/Loads, 14.05.09
-	
+
 ≈	I	Gradient settings lost, reported by doriginal1, 14.05.09
 		- lost after .5 released
-	
+
 ≈	O	Lag occurring since version b2.9835.3
+		- on mouseover, possibly caused by TipTop tooltip addon
 
 ≈	I	More lag/FPS reports from Curse
 
-√	I	QuestAgent & LightHeaded, reported by Gabriel, 19.05.09
-		- not aligning
-		
-	I	TipTac error, reported by Gabriel, 20.05.09
-√		- AceHook-3.0-5 (Ace3):177: Attempting to rehook already active hook ToggleMenu.
-		AceHook-3.0-5 (Ace3):177: in function <Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:115>
-		AceHook-3.0-5 (Ace3):341: in function `SecureHook'
-		Skinner-b2.9901.1\SkinMe\TipTac.lua:57: in function <Interface\AddOns\Skinner\SkinMe\TipTac.lua:20>
-		(tail call): ?:
-		
-√	I	Combuctor, reported by Gabriel, 20.05.09
-		- search box is out of whack
-		
-√	I	Ipopbar, reported by Sheepydaz, 20.05.09
+√	I	Outfitter tooltips, reported by Kerecha, 22.05.09
 
-	I	LootFrame, requested by sirtyface, 20.05.09
-√		- Remove extra space at top
+√	I	AchievementAlerts not being skinned after 3.1.2
+
+	I	LootFrame, reported by vadda, 22.05.09
+√		- 1st item not under cursor anymore
+
+	I	DockingStation, as reported by Gabriel, 25.05.09
+√		- new sidepanel for panels & plugins
+
+√	S	EventEquip, requested by Gabriel, 25.05.09
 	
-	I	Achievement Alerts
-√		- not being skinned any more, function must have changed in the last patch
-		
-	I	EditBox widths, reported by HunterZ, 22.05.09
-√		- using Routes, box is zero width
