@@ -13,7 +13,7 @@ function Skinner:AucAdvanced()
 	end)
 
 	if AucAdvanced.Modules.Util.SimpleAuction then
-		-- skin the Simple Auction Frame
+		-- skin the Simple Auction Frame (tab labelled Post)
 		self:SecureHook(AucAdvanced.Modules.Util.SimpleAuction.Private, "CreateFrames", function()
 			local frame = AucAdvanced.Modules.Util.SimpleAuction.Private.frame
 			self:moveObject{obj=frame.config, y=-2}
