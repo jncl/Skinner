@@ -93,6 +93,7 @@
 <script file="SkinMe\DepositBox.lua"/>
 <script file="SkinMe\Dewdrop.lua"/>
 <script file="SkinMe\DiamondThreatMeter.lua"/>
+<script file="SkinMe\DockingStation.lua"/>
 <script file="SkinMe\Dominos.lua"/>
 <script file="SkinMe\DopieArenaInfo.lua"/>
 <script file="SkinMe\DoTimer.lua"/>
