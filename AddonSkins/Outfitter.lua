@@ -33,16 +33,14 @@ function Skinner:Outfitter()
 
 		for i = 1, #this["Bars"] do
 			local oBar = _G["OutfitterOutfitBar"..i]
-			if not Skinner.skinned[oBar] then
-				Skinner:keepFontStrings(oBar)
-				Skinner:applySkin(oBar)
+			if not Skinner.skinFrame[oBar] then
+				self:addSkinFrame{obj=oBar, kfs=true, x1=-2, y1=3, x2=0, y2=1}
 			end
 		end
 		for i = 1, 2 do
 			local dBar = this["DragBar"..i]
-			if dBar and not Skinner.skinned[dBar] then
-				Skinner:keepFontStrings(dBar)
-				Skinner:applySkin(dBar)
+			if dBar and not Skinner.skinFrame[dBar] then
+				Skinner:addSkinFrame{obj=dBar, kfs=true, x1=-2, y1=3, x2=0, y2=1}
 				if not dBar.Vertical then dBar:SetWidth(20)
 				else dBar:SetHeight(20) end
 				-- hook this to handle an Orientation change
@@ -58,20 +56,31 @@ function Skinner:Outfitter()
 
  	-- hook these to handle the Outfit Bars
 	self:SecureHook(Outfitter.OutfitBar, "UpdateBar", function(this, ...)
---		self:Debug("O.OB_UB: [%s, %s]", this, ...)
 		skinOutfitBars(this, ...)
 	end)
 	self:SecureHook(Outfitter.OutfitBar, "DragBar_OnClick", function(this)
-		self:applySkin(OutfitBarSettingsDialog)
-		self:Unhook(Outfitter.OutfitBar, "DragBar_OnClick")
+		if OutfitBarSettingsDialog then
+			self:applySkin(OutfitBarSettingsDialog)
+			self:Unhook(Outfitter.OutfitBar, "DragBar_OnClick")
+		end
+	end)
+
+	-- hook this to skin additional Shopping tooltips
+	self:SecureHook(Outfitter._ExtendedCompareTooltip, "AddShoppingLink", function(this, ...)
+		for i = 1, #this.Tooltips do
+			if self.db.profile.Tooltips.skin then
+				if self.db.profile.Tooltips.style == 3 and not self.skinned[this.Tooltips[i]] then
+					this.Tooltips[i]:SetBackdrop(self.Backdrop[1])
+				end
+				self:skinTooltip(this.Tooltips[i])
+			end
+		end
 	end)
 
 -->>--	Outfitter Frame
 	self:SecureHook(OutfitterFrame, "Show", function(this, ...)
-		self:keepFontStrings(OutfitterFrame)
-		self:moveObject(OutfitterCloseButton, "-", 4, "-", 4)
 		self:getChild(OutfitterFrame, 8):SetAlpha(0) -- hide band on the left
-		self:applySkin(OutfitterFrame)
+		self:addSkinFrame{obj=OutfitterFrame, kfs=true, y1=2, x2=2, y2=-2}
 		self:Unhook(OutfitterFrame, "Show")
 	end)
 
@@ -101,26 +110,26 @@ function Skinner:Outfitter()
 	end
 
 -->>--	New Outfit Panel
-	self:keepFontStrings(OutfitterNameOutfitDialog)
-	self:skinEditBox(OutfitterNameOutfitDialogName, {15})
-	self:moveObject(OutfitterNameOutfitDialogTitle, nil, nil, "_", 6)
-	self:skinDropDown(OutfitterNameOutfitDialogAutomation)
-	self:skinDropDown(OutfitterNameOutfitDialogCreateUsing)
-	self:applySkin(OutfitterNameOutfitDialog)
+	self:skinEditBox{obj=OutfitterNameOutfitDialogName, regs={15, 16}}
+	self:moveObject{obj=OutfitterNameOutfitDialogTitle, y=-6}
+	self:skinDropDown{obj=OutfitterNameOutfitDialogAutomation}
+	self:skinDropDown{obj=OutfitterNameOutfitDialogCreateUsing}
+	-- align the dropdowns
+	OutfitterNameOutfitDialogCreateUsingMiddle:SetWidth(OutfitterNameOutfitDialogAutomationMiddle:GetWidth())
+	self:addSkinFrame{obj=OutfitterNameOutfitDialog, kfs=true, hdr=true, x1=10, y1=4, y2=4}
 
 -->>--	ChooseIcon Dialog
 	self:getChild(OutfitterChooseIconDialog, 1):SetBackdrop(nil) -- remove textures from anonymous frame
 	self:keepFontStrings(OutfitterChooseIconDialogIconSetMenu)
-	self:skinEditBox(OutfitterChooseIconDialogFilterEditBox, {6})
-	self:removeRegions(OutfitterChooseIconDialogScrollFrame)
-	self:skinScrollBar(OutfitterChooseIconDialogScrollFrame)
-	self:applySkin(OutfitterChooseIconDialog)
+	self:skinEditBox{obj=OutfitterChooseIconDialogFilterEditBox, regs={6}}
+	self:skinScrollBar{obj=OutfitterChooseIconDialogScrollFrame}
+	self:addSkinFrame{obj=OutfitterChooseIconDialog, x1=12, y1=-12, x2=-16, y2=16}
 
 -->>--	EditScriptDialog Frame
 	if OutfitterEditScriptDialog then
 		self:keepFontStrings(OutfitterEditScriptDialogPresetScript)
-		self:removeRegions(OutfitterEditScriptDialogSourceScript)
-		self:skinScrollBar(OutfitterEditScriptDialogSourceScript)
+		self:keepFontStrings(OutfitterEditScriptDialogSourceScript)
+		self:skinScrollBar{obj=OutfitterEditScriptDialogSourceScript, noRR=true}
 		self:keepFontStrings(OutfitterEditScriptDialog)
 		self:applySkin(OutfitterEditScriptDialog)
 		-- Tabs
