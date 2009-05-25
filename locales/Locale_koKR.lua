@@ -38,7 +38,6 @@ L["Change the Help Request Frames"] = "도움말 및 GM요청 프레임의 설�
 L["Minimap Options"] = "미니맵 설정"
 L["Change the Minimap Options"] = "미니맵 설정을 변경합니다."
 L["Confirm reload of UI to activate profile changes"] = "프로필 변경 적용을 위해서 UI를 재시작합니다."
-L["Right Click to display options menu"] = "오른쪽 클릭으로 설정창을 엽니다."
 L["Skin Tracker Frame"] = "추적 프레임 스킨"
 L["Toggle the skin of the Tracker Frame"] = "추적 프레임의 스킨을 전환합니다."
 L["GMChatUI Frame"] = "GM대화창 프레임 스킨"

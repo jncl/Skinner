@@ -1837,16 +1837,7 @@ function Skinner:Options()
 	DBObj = LibStub("LibDataBroker-1.1"):NewDataObject("Skinner", {
 			type = "launcher",
 			icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
-			OnClick = function(clickedframe, button)
-				if button == "RightButton" then
-					if InterfaceOptionsFrame:IsShown() then HideUIPanel(InterfaceOptionsFrame)
-					else Skinner:ShowConfig() end
-				end
-			end,
-			OnTooltipShow = function(tt)
-				tt:AddLine("Skinner")
-				tt:AddLine("|cffffff00" .. Skinner.L["Right Click to display options menu"])
-			end,
+			OnClick = function(...)	Skinner:ShowConfig() end,
 	})
 
 	-- register the data object to the Icon library

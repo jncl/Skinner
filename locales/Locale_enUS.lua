@@ -442,7 +442,6 @@ L["Tabard Frame"] = true
 L["Toggle the skin of the Tabard Frame"] = true
 L["Barbershop Frame"] = true
 L["Toggle the skin of the Barbershop Frame"] = true
-L["Right Click to display options menu"] = true
 L["Tracker Frame"] = true
 L["Change the Tracker Frame settings"] = true
 L["Skin Tracker Frame"] = true
