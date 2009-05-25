@@ -323,10 +323,11 @@ function Skinner:LootFrame()
 	if not self.db.profile.LootFrame or self.initialized.LootFrame then return end
 	self.initialized.LootFrame = true
 
-	LootFrame:SetHeight(LootFrame:GetHeight() - 34)
-	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-17} -- title
-	self:moveObject{obj=LootButton1, y=34}
-	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-13, x2=-68}
+	-- shrink the size of the LootFrame
+	-- move the title and close button and reduce the height of the skinFrame by 34
+	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-34} -- title
+	self:moveObject{obj=LootCloseButton, y=-34}
+	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-47, x2=-68}
 
 end
 
