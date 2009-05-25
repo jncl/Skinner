@@ -564,9 +564,6 @@ function Skinner:AchievementUI()
 		end
 	end
 
-	-- skin the Alert frames
-	self:checkAndRun("AchievementAlerts")
-
 end
 
 function Skinner:AchievementAlerts()
@@ -580,7 +577,7 @@ function Skinner:AchievementAlerts()
 		for i = 1, 2 do
 			local aaFrame = _G[aafName..i]
 			if aaFrame and not Skinner.skinFrame[aaFrame] then
-				_G[aafName..i.."Background"]:Hide() -- hide this as Alpha value is changed in Bliz code
+				_G[aafName..i.."Background"]:Hide() -- hide this as Alpha value is changed in Bliz code (3.1.2)
 				_G[aafName..i.."Unlocked"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 				Skinner:keepRegions(_G[aafName..i.."Icon"], {3}) -- icon texture
 				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
@@ -589,7 +586,8 @@ function Skinner:AchievementAlerts()
 
 	end
 
-	if not AchievementAlertFrame2 then
+	-- check for both frames now, (3.1.2) as the Bliz code changed
+	if not AchievementAlertFrame1 or AchievementAlertFrame2 then
 		self:SecureHook(aafName.."_ShowAlert", function(id)
 			skinAlertFrames()
 			if AchievementAlertFrame2 then
@@ -598,6 +596,7 @@ function Skinner:AchievementAlerts()
 		end)
 	end
 
+	-- just in case they have already been created
 	skinAlertFrames()
 
 end
