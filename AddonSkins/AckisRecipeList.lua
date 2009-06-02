@@ -5,8 +5,10 @@ function Skinner:AckisRecipeList()
 	local ARL
 	if LibStub("AceAddon-3.0") then ARL = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true) end
 	if not ARL then return end
+	
+	local hookfunc = ARL.DisplayFrame and "DisplayFrame" or "CreateFrame"
 
-	self:SecureHook(ARL, "CreateFrame", function()
+	self:SecureHook(ARL, hookfunc, function()
 		if not self.skinFrame[ARL.Frame] then
 			ARL.bgTexture:SetAlpha(0)
 			self:moveObject{obj=ARL_SwitcherButton, y=-9}
@@ -24,12 +26,14 @@ function Skinner:AckisRecipeList()
 					local child = select(i, ARL.Frame:GetChildren())
 					if child:IsObjectType("GameTooltip") then
 						if self.db.profile.Tooltips.style == 3 then child:SetBackdrop(self.Backdrop[1]) end
-						self:skinTooltip(child)
+						self:SecureHook(child, "Show", function()
+							self:skinTooltip(child)
+						end)
 					end
 				end
 			end
 		end
-		self:Unhook(ARL, "CreateFrame")
+		self:Unhook(ARL, hookfunc)
 	end)
 	
 	self:SecureHook(ARL, "DisplayTextDump", function(this, ...)
@@ -37,5 +41,5 @@ function Skinner:AckisRecipeList()
 		self:addSkinFrame{obj=ARLCopyFrame}
 		self:Unhook(ARL, "DisplayTextDump")
 	end)
-	
+
 end
