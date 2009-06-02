@@ -3,6 +3,7 @@ function Skinner:FramesResized()
 
 --	self:Debug("resize_LootFrame")
 	if self.db.profile.LootFrame and LootFrame_MidTextures then
+--[[
 		self:SecureHook(LootFrame, "Show", function(this)
 			local _, _, _, _, yOfs = self:getRegion(LootFrame, 3):GetPoint()
 			-- self:Debug("yOfs, LFyOfs: [%s, %s]", yOfs, self.LFyOfs)
@@ -18,14 +19,17 @@ function Skinner:FramesResized()
 				end
 			end
 		end)
+--]]
 		self:removeRegions(LootFrame_MidTextures)
 	end
 
 --	self:Debug("resize_QuestLog")
 	if self.db.profile.QuestLog and QuestLogFrame_MidTextures then
+--[[
 		self:SecureHook("QuestLog_OnShow", function()
 			QuestLogFrame:SetHeight(QuestLogFrame:GetHeight() - 64)
 		end)
+--]]
 		self:removeRegions(QuestLogFrame_MidTextures)
 	end
 
@@ -40,11 +44,15 @@ function Skinner:FR_TradeSkillUI()
 	if self.db.profile.TradeSkillUI and TradeSkillFrame_MidTextures then
 		self:removeRegions(TradeSkillFrame_MidTextures)
 		self:removeRegions(TradeSkillListScrollFrame_MidTextures)
+--[[
 		self:removeRegions(TradeSkillDetailScrollFrame)
 		self:moveObject(TradeSkillDetailScrollFrame, "-", 5, nil, nil)
 		self:skinScrollBar(TradeSkillDetailScrollFrame)
+--]]
+--[[
 		self:moveObject(TradeSkillCreateButton, nil, nil, "+", 20)
 		self:moveObject(TradeSkillCancelButton, nil, nil, "+", 20)
+--]]
 	end
 
 end
@@ -55,7 +63,9 @@ function Skinner:FR_TrainerUI()
 	if self.db.profile.TrainerUI and ClassTrainerFrame_MidTextures then
 		self:removeRegions(ClassTrainerFrame_MidTextures)
 		self:removeRegions(ClassTrainerListScrollFrame_MidTextures)
+--[[
 		ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() + 20)
+--]]
 	end
 
 end
