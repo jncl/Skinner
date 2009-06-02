@@ -85,11 +85,41 @@ function Skinner:QuestGuru()
 	self:skinEditBox{obj=QuestGuru_AnnounceFrameMessageEvent, regs={9}, noHeight=true}
 	self:skinEditBox{obj=QuestGuru_AnnounceFrameMessageQuest, regs={9}, noHeight=true}
 
--->>--	Tracker Frame
-	if IsAddOnLoaded("QuestGuru_Tracker") and self.db.profile.TrackerFrame then
-		self:addSkinFrame{obj=QGT_QuestWatchFrame, kfs=true}
-		self:RawHook("QGT_SetQuestWatchBorder", function(...) end, true)
---		self:RawHook(QGT_QuestWatchFrame, "SetBackdropColor", function() end, true)
+-->>--	Tracker Frame(s)
+	if IsAddOnLoaded("QuestGuru_Tracker") then
+		if self.db.profile.TrackerFrame.skin then
+			self:addSkinFrame{obj=QGT_QuestWatchFrame, kfs=true}
+			self:RawHook("QGT_SetQuestWatchBorder", function(...) end, true)
+			self:addSkinFrame{obj=QGT_AchievementWatchFrame, kfs=true}
+			self:RawHook("QGT_SetAchievementWatchBorder", function(...) end, true)
+		end
+		if self.db.profile.TrackerFrame.clean then
+			self:skinSlider(QGT_QuestWatchFrameSlider)
+			self:skinSlider(QGT_AchievementWatchFrameSlider)
+		end
+		if self.db.profile.TrackerFrame.glazesb then
+			-- glaze Achievement StatusBars
+			for i = 1, 40 do
+				local sBar = _G["QGT_AchievementWatchLine"..i].statusBar
+				if not self.sbGlazed[sBar] then
+					self:removeRegions(sBar, {3, 4, 5}) -- remove textures
+					self:glazeStatusBar(sBar, 0)
+				end
+			end
+		end
+		-- Tooltips
+		if self.db.profile.Tooltips.skin then
+			if self.db.profile.Tooltips.style == 3 then
+				QGT_AchievementWatchFrameTooltip:SetBackdrop(self.Backdrop[1])
+				QGT_QuestWatchFrameTooltip:SetBackdrop(self.Backdrop[1])
+			end
+			self:SecureHook(QGT_AchievementWatchFrameTooltip, "Show", function()
+				self:skinTooltip(QGT_AchievementWatchFrameTooltip)
+			end)
+			self:SecureHook(QGT_QuestWatchFrameTooltip, "Show", function()
+				self:skinTooltip(QGT_QuestWatchFrameTooltip)
+			end)
+		end
 	end
 
 -->>--	QuestStartInfo Frame
