@@ -451,7 +451,7 @@ function Skinner:WorldMap()
 	-- handle different map addons being loaded or fullscreen required
 	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") then
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
-	elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer") then
+	elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=99, y1=1, x2=-102, y2=18}
 	end
 

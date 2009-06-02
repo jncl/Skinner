@@ -4,7 +4,7 @@ function Skinner:Cartographer()
 
 	if CartographerLookNFeelNonOverlayHolder then
 		self:keepFontStrings(CartographerLookNFeelNonOverlayHolder)
-		self:addSkinFrame{obj=WorldMapFrame, kfs=true, bg=true, y1=1}
+		self:addSkinFrame{obj=WorldMapFrame, kfs=true, bg=true, y1=1, x2=1}
 	end
 
 	if Cartographer_Notes then self:Cartographer_Notes() end
@@ -39,32 +39,28 @@ function Skinner:Cartographer_Notes()
 	end
 
 	self:SecureHook(Cartographer_Notes, "OpenNewNoteFrame", function(this)
---		self:Debug("C_N_ONNF")
 		skinNNF()
 	end)
 
 	self:SecureHook(Cartographer_Notes, "ShowEditDialog", function(this)
---		self:Debug("C_N_SED")
 		skinNNF()
 	end)
 
 end
 
---[[
 function Skinner:Cartographer_QuestInfo()
 
+	-- use a timer here as the addon also uses a timer before adding the textures
 	if Cartographer_QuestInfo.db.profile.wideQuestLog then
-		self:ScheduleTimer(function()
-			self:keepFontStrings(QuestLogFrame)
-			self:applySkin(QuestLogFrame)
-			QuestLogFrame:SetWidth(694)
-			QuestLogFrame:SetHeight(463)
-			if IsAddOnLoaded("LightHeaded") then
-				LightHeadedFrame:SetWidth(QuestLogFrame:GetWidth() / 2)
-				LightHeadedFrame:SetHeight(QuestLogFrame:GetHeight())
-			end
-			end, 1)
+		self:ScheduleTimer(function() self:keepFontStrings(QuestLogFrame) end, 1)
 	end
 
+-->>-- Tooltip
+	if self.db.profile.Tooltips.skin then
+		if self.db.profile.Tooltips.style == 3 then CQI_Tooltip:SetBackdrop(self.Backdrop[1]) end
+		self:SecureHook(CQI_Tooltip, "Show", function()
+			self:skinTooltip(CQI_Tooltip)
+		end)
+	end
+	
 end
---]]
