@@ -305,15 +305,15 @@ function Skinner:VehicleMenuBar()
 	self.initialized.VehicleMenuBar = true
 
 	local xOfs1, xOfs2
-	local yOfs1 = 30
+	local yOfs1 = 42
 	local yOfs2 = -1
 
 	local function skinVehicleMenuBar(opts)
 
---		Skinner:Debug("sVMB: [%s, %s, %s]", opts.pv, opts.src, opts.sn)
+		Skinner:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
 
-		-- expand frame width if mechanical vehicle
-		if opts.pv then
+		-- expand frame width if mechanical vehicle or has pitch controls
+		if opts.pv or opts.sn == "Mechanical" or VehicleMenuBar.currSkin == "Mechanical" then
 			xOfs1 = 132
 		else
 			xOfs1 = 159
@@ -327,8 +327,6 @@ function Skinner:VehicleMenuBar()
 		VehicleMenuBarArtFrame:DisableDrawLayer("OVERLAY")
 		 -- make it appear above the skin frame
 		VehicleMenuBarPitchSlider:SetFrameStrata("MEDIUM")
-		-- move the Action Button Frame
-		Skinner:moveObject{obj=VehicleMenuBarActionButtonFrame, y=-7}
 
 		local sf = Skinner.skinFrame[VehicleMenuBar]
 		if not sf then
@@ -346,7 +344,7 @@ function Skinner:VehicleMenuBar()
     end)
 
     self:SecureHook("VehicleMenuBar_SetSkin", function(skinName, pitchVisible)
-        skinVehicleMenuBar{pv=pitchVisible, src=2, sn=skinName}
+        skinVehicleMenuBar{src=2, sn=skinName, pv=pitchVisible}
     end)
 
 	if VehicleMenuBar:IsShown() then skinVehicleMenuBar{src=3} end
