@@ -2,22 +2,11 @@
 function Skinner:Factionizer()
 	if not self.db.profile.CharacterFrames then return end
 
--->>--	Options Button
-	self:moveObject(FIZ_OrderByStandingCheckBox, "-", 60, "+", 16)
-	self:moveObject(FIZ_OptionsButton, nil, nil, "+", 16)
 -->>--	Reputation Detail Frame
-	FIZ_ReputationDetailFrame:SetHeight(FIZ_ReputationDetailFrame:GetHeight() - 8)
-	self:keepFontStrings(FIZ_ReputationDetailFrame)
-	self:moveObject(FIZ_ReputationDetailFrame, "+", 30, "+", 28)
-	self:keepFontStrings(FIZ_UpdateListScrollFrame)
-	self:skinScrollBar(FIZ_UpdateListScrollFrame)
-	self:applySkin(FIZ_ReputationDetailFrame)
+	self:skinScrollBar{obj=FIZ_UpdateListScrollFrame}
+	self:addSkinFrame{obj=FIZ_ReputationDetailFrame, kfs=true, x1=5, y1=-6, x2=-6, y2=5}
 -->>--	Options Frame
-	FIZ_OptionsFrame:SetWidth(FIZ_OptionsFrame:GetWidth() * self.FxMult)
-	FIZ_OptionsFrame:SetHeight(FIZ_OptionsFrame:GetHeight() * self.FyMult)
-	self:keepFontStrings(FIZ_OptionsFrame)
-	self:moveObject(FIZ_OptionsFrame, "+", 28, nil, nil)
-	self:moveObject(FIZ_OptionsFrameTitle, nil, nil, "-", 6)
-	self:applySkin(FIZ_OptionsFrame)
+	self:moveObject{obj=FIZ_OptionsFrameTitle, y=-6}
+	self:addSkinFrame{obj=FIZ_OptionsFrame, kfs=true, x1=4, y1=-4, x2=-4, y2=50}
 
 end
