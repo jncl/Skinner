@@ -1,27 +1,15 @@
 
 function Skinner:FishingBuddy()
 
-	FishingBuddyFrame:SetWidth(FishingBuddyFrame:GetWidth() * self.FxMult)
-	FishingBuddyFrame:SetHeight(FishingBuddyFrame:GetHeight() * self.FyMult)
-	self:keepFontStrings(FishingBuddyFrame)
-	self:moveObject(FishingBuddyNameFrame, nil, nil, "-", 20)
-	self:moveObject(FishingBuddyCloseButton, "+", 28, "+", 10)
-	self:applySkin(FishingBuddyFrame)
+	self:addSkinFrame{obj=FishingBuddyFrame, kfs=true, x1=10, y1=-13, x2=-31, y2=69}
 -->>--	Locations Frame
 	self:keepFontStrings(FishingLocationsFrame)
 	self:keepFontStrings(FishingLocationExpandButtonFrame)
-	self:moveObject(FishingLocationsSwitchButton, nil, nil, "+", 20)
-	self:keepFontStrings(FishingLocsScrollFrame)
-	self:skinScrollBar(FishingLocsScrollFrame)
+	self:skinScrollBar{obj=FishingLocsScrollFrame}
 -->>--	Options Frame
-	FishingOptionsFrame:SetWidth(FishingBuddyFrame:GetWidth())
-	FishingOptionsFrame:SetHeight(FishingBuddyFrame:GetHeight())
 	self:keepFontStrings(FishingOptionsFrame)
-	self:moveObject(FishingBuddyOption_ShowNewFishies, "-", 10, "+", 40)
-	self:keepFontStrings(FishingBuddyOption_EasyCastKeys)
-	self:skinDropDown(FishingBuddyOption_OutfitMenu)
-	self:moveObject(FishingBuddyOption_MinimapPosSlider, nil, nil, "-", 70)
-	self:moveObject(FishingBuddyOption_MinimapRadSlider, nil, nil, "-", 70)
+	self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
+	self:skinDropDown{obj=FishingBuddyOption_OutfitMenu}
 -->>--	Fishing Extravaganza Frame
 	self:applySkin(FishingExtravaganzaFrame)
 -->>--	FishingWatch Tab
@@ -37,8 +25,6 @@ function Skinner:FishingBuddy()
 -->>--	Tabs
 	local function fbTabs()
 
---		Skinner:Debug("fbTabs")
-
 		for i = 1, FishingBuddyFrame.numTabs do
 			local tabName = _G["FishingBuddyFrameTab"..i]
 			if Skinner.db.profile.TexturedTab then
@@ -48,8 +34,8 @@ function Skinner:FishingBuddy()
 					Skinner:setInactiveTab(tabName)
 				end
 			end
-			if i == 1 then Skinner:moveObject(tabName, nil, nil, "-", 69)
-			else Skinner:moveObject(tabName, "+", 14, nil, nil) end
+			if i == 1 then Skinner:moveObject{obj=tabName, x=4}
+			else Skinner:moveObject{obj=tabName, x=14} end
 		end
 
 	end
@@ -64,35 +50,13 @@ function Skinner:FishingBuddy()
 	end
 	-- hook these to handle tab movement
 	self:SecureHook("ToggleFishingBuddyFrame", function(target)
---		self:Debug("TFBF:[%s]", target)
 		fbTabs()
 	end)
 	self:SecureHook("FishingBuddyFrameTab_OnClick", function()
---		self:Debug("FBFT_OC")
 		fbTabs()
 	end)
 	self:SecureHook("FishingBuddyFrame_OnShow", function()
---		self:Debug("FBF_OS")
 		fbTabs()
 	end)
-
-end
-
-function Skinner:FBOutfitDisplayFrame()
-
-	self:keepFontStrings(FishingOutfitFrame)
-	self:moveObject(FishingOutfitSwitchButton, nil, nil, "+", 20)
-	self:moveObject(FishingOutfitFrameHeadSlot, "-", 6, "+", 10)
-	self:moveObject(FishingOutfitFrameHandsSlot, "-", 6, "+", 10)
-	self:moveObject(FishingOutfitFrameMainHandSlot, nil, nil, "-", 64)
-	FishingOutfitFrameModelRotateLeftButton:Hide()
-	FishingOutfitFrameModelRotateRightButton:Hide()
-	self:makeMFRotatable(FishingOutfitFrameModel)
-
-end
-
-function Skinner:FBTrackingFrame()
-
-	self:keepFontStrings(FishingTrackingFrame)
 
 end
