@@ -310,7 +310,7 @@ function Skinner:VehicleMenuBar()
 
 	local function skinVehicleMenuBar(opts)
 
-		Skinner:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
+--		Skinner:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
 
 		-- expand frame width if mechanical vehicle or has pitch controls
 		if opts.pv or opts.sn == "Mechanical" or VehicleMenuBar.currSkin == "Mechanical" then
