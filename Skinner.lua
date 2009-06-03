@@ -893,9 +893,15 @@ function Skinner:isDropDown(obj)
 
 	local objTexName
 	if obj:GetName() then objTexName = _G[obj:GetName().."Left"] end
---	self:Debug("isDropDown: [%s, %s]", obj:GetName(), objTexName)
-	if obj:IsObjectType("Frame") and objTexName and objTexName:GetTexture() == ddTex then return true
-	else return false end
+
+	if obj:IsObjectType("Frame")
+	and objTexName
+	and objTexName.GetTexture
+	and objTexName:GetTexture() == ddTex then
+		return true
+	else
+		return false
+	end
 
 end
 
