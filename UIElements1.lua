@@ -93,20 +93,15 @@ function Skinner:CastingBar()
 		end
 
 		local cbfObj = _G[cbfName]
-		local cbfs = _G[cbfName.."Spark"]
 		local cbff = _G[cbfName.."Flash"]
-		local cbft = _G[cbfName.."Text"]
 
 		self:keepFontStrings(cbfObj)
-		-- adjust size/placement of the casting frame and associated textures
-		cbfObj:SetWidth(cbfObj:GetWidth() * 0.7)
-		cbfObj:SetHeight(cbfObj:GetHeight() * 1.2)
-		cbfs:SetHeight(cbfs:GetHeight() * 1.5)
+		-- adjust size/placement of the associated textures
 		cbff:SetWidth(cbfObj:GetWidth())
 		cbff:SetHeight(cbfObj:GetHeight())
 		cbff:SetTexture(self.sbTexture)
-		self:moveObject{obj=cbff, y=-28}
-		self:moveObject{obj=cbft, y=-3}
+		self:moveObject{obj=cbff, y=-28} -- otherwise it's above the casting bar
+		self:moveObject{obj=_G[cbfName.."Text"], y=-3}
 
 		if self.db.profile.CastingBar.glaze then self:glazeStatusBar(cbfObj, 0) end
 
