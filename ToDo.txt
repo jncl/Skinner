@@ -18,58 +18,14 @@ S - Skin request
 
 ≈	I	More lag/FPS reports from Curse
 
-	I	Cartographer, reported by lucaseve/Tebasile, 29/30.05.09
-√		- skin map frame when different modules loaded
-√		- QuestInfo has Bliz textures still
+√	I	Move LibQTip skin code into its own skin file
 
-	I	FramesResized, reported by shadowrm, 28.05.09
-√		- buttons and lower section are offset
-
-?	I	Clock time not visible, reported by tat2mikki, 27.05.09 (Curse)
-
-√	I	AutoProfitX still being used, reported by Namdrof, 28.05.09
-
-	I	QuestGuru tracker, reported by strongbow2, 28.05.09
-√		- not honouring the tracker option setting
-
-	I	QuestGuru tracker, reported by lucaseve, 29.05.09
-√		- Alpha and border settings in QuestGuru tracker options are ignored. The tracker now displays a border and a solid background regardless of the setting in QuestGuru options. This worked fine in the last version of Skinner.
-
-	I	StatusBar texture, reported by Reacean1, 29.05.09
-?		- not using selected texture, uses Blizzard one instead
-
-√	I	AckisRecipeList r1930, reported by pompachomp, 29.05.09
-		- (r1928, renamed CreateFrame() to DisplayFrame() )
-		Skinner-b2.9901.5\SkinMe\AckisRecipeList.lua:9: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):200: in function <Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:107>
-		AceHook-3.0-5 (Ace3):276: in function `SecureHook'
-		Skinner-b2.9901.5\SkinMe\AckisRecipeList.lua:9: in function <Interface\AddOns\Skinner\SkinMe\AckisRecipeList.l ua:2>
-		(tail call): ?:
-
-√	I	VehicleMenuBar, reported by jh032008, 29.05.09
-		- There's an issue with the Blizzard vehicle UI and Skinner. When the bar changes while still on a vehicle, like changing modes in the bomber daily quest in Icecrown or moving to the kill phase in the dragon wrestling daily in Storm Peaks, the vehicle bar starts to slide off screen each time the bar changes. After about three changes, it's completely off the screen.
-
-	I	ArkInventory, reported by trinine, 31.05.09 (Curse)
-≈		- ArkInventory's background is now on top of my item slots, so I cannot interact with the items in my bank.
-			- there is an option to 'fix' this behaviour in AI's config
-
-	I	Glyph/Talent, reported by kingjirith1, 01.06.09 (Curse)
-≈		- there's a problem with the glyph/talent window
-
-√	I	Factionizer, reported by pompachomp, 01.06.09
-		- things are misplaced like text and options, and it's own options frame.
-
-√	I	fishingbuddy, reported by pompachomp, 01.06.09
-		- basically the scrollbar needs to be moved.
-
-√	I	thecollector, reported by pompachomp, 01.06.09
-		- the titles tab needs to be skinned.
-
-√	I	InterfaceOptions, reported by pompachomp, 01.06.09
-		- Skinner-b2.9901.5\Skinner.lua:897: attempt to call method 'GetTexture' (a nil value)
-		Skinner-b2.9901.5\UIElements2.lua:288: in function <Interface\AddOns\Skinner\UIElements2.lua:281>
-		(tail call): ?:
-		<in C code>: in function `InterfaceOptionsList_DisplayPanel'
-		Interface\FrameXML\UIOptionsFrame.lua:46: in function `InterfaceOptionsListButton_OnClick':
-		<string>:"*:OnClick":2: in function <[string "*:OnClick"]:1>
+	I	TipTac, reported by MegaManJuno, 5.06.09
+		- I seem to be having issues with TipTac stretching my custom background texture applied by Skinner instead of tiling it on login.  Seems if I go into the Skinner options and change the tooltip skinning option from 2 and back again, that it will stay tiled until next login.
+	
+√	I	XPerl, requested by Namdrof
+		- Allow Elite graphics to be shown
+		
+	I	LilSparksWorkshop
+?		- skin the progressBar
 		
