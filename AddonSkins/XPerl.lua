@@ -68,20 +68,9 @@ function Skinner:XPerl_Target()
 	
 	RaiseFrameLevel(XPerl_TargetnameFrame)
 
-	XPerl_TargeteliteFrame:SetAlpha(0)
-
-	-- use text label
-	XPerlDB.target.elite = true
-	XPerlDB.target.eliteGfx = nil
-
 -->>--	Focus
 	-- Put a border around the class icon
 	skinClassIcon(XPerl_FocustypeFramePlayer)
-
-	XPerl_FocuseliteFrame:SetAlpha(0)
-
-	-- use text label
-	XPerlDB.focus.elite = true
 
 end
 
@@ -195,7 +184,9 @@ function Skinner:XPerl_Options()
 	self:addSkinFrame{obj=XPerl_Options_Focus_Options_FocusTarget, x1=-2, y1=2, x2=2, y2=-2}
 -->-- Party Options subpanel
 	self:addSkinFrame{obj=XPerl_Options_Party_Options_PartyPets, x1=-2, y1=2, x2=2, y2=-2}
-	self:addSkinFrame{obj=XPerl_Party_AnchorVirtual, x1=-2, y1=2, x2=2, y2=-2}
+	if XPerl_Party_AnchorVirtual then
+		self:addSkinFrame{obj=XPerl_Party_AnchorVirtual, x1=-2, y1=2, x2=2, y2=-2}
+	end
 -->>-- Raid Options subpanel
 	self:addSkinFrame{obj=XPerl_Options_Raid_Options_Groups, x1=-2, y1=2, x2=2, y2=-2}
 --[[
