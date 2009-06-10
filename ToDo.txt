@@ -8,24 +8,9 @@ N - New Version
 O - Other change
 S - Skin request
 
-≈	I	Stuttering & lag with tooltip mods, reported by xavier2k3/Loads, 14.05.09
-
-≈	I	Gradient settings lost, reported by doriginal1, 14.05.09
-		- lost after .5 released
-
-≈	O	Lag occurring since version b2.9835.3
-		- on mouseover, possibly caused by TipTop tooltip addon
-
-≈	I	More lag/FPS reports from Curse
-
-√	I	Move LibQTip skin code into its own skin file
-
-	I	TipTac, reported by MegaManJuno, 5.06.09
-		- I seem to be having issues with TipTac stretching my custom background texture applied by Skinner instead of tiling it on login.  Seems if I go into the Skinner options and change the tooltip skinning option from 2 and back again, that it will stay tiled until next login.
-	
-√	I	XPerl, requested by Namdrof
-		- Allow Elite graphics to be shown
-		
 	I	LilSparksWorkshop
-?		- skin the progressBar
+√		- skin the progressBar
+
+	I	Altoholic, reported by Kerecha, 9.06.09
+√		- menu button needs skinning
 		

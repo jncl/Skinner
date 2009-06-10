@@ -48,7 +48,7 @@ function Skinner:Tooltips()
 				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.2, cHeight)
 			end
 		end
-		end)
+	end)
 
 	-- MUST hook to OnShow script rather than the Show method otherwise not every tooltip is skinned properly everytime
 	for _, tooltip in pairs(self.ttList) do
@@ -58,7 +58,7 @@ function Skinner:Tooltips()
 			if this == GameTooltip and self.db.profile.Tooltips.glazesb then
 				self:glazeStatusBar(GameTooltipStatusBar, 0)
 			end
-			end)
+		end)
 	end
 
 end
