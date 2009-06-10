@@ -9,6 +9,7 @@ function Skinner:TipTac()
 	TipTac_Config.backdropInsets = self.backdrop.insets.left
 	TipTac_Config.tipColor = CopyTable(self.bColour)
 	TipTac_Config.tipBorderColor = CopyTable(self.bbColour)
+	TipTac_Config.barTexture = self.sbTexture
 	
 	-- N.B. The ItemRefTooltip border will be set to reflect the item's quality by TipTac
 
