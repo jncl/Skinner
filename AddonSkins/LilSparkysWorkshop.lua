@@ -1,11 +1,24 @@
 
 function Skinner:LilSparkysWorkshop()
 
-	if self.db.profile.Tooltips.skin then
-		self:SecureHookScript(LSW_Tooltip, "OnShow", function(this)
-			self:skinTooltip(LSW_Tooltip)
-		end)
-		if self.db.profile.Tooltips.style == 3 then LSW_Tooltip:SetBackdrop(self.backdrop) end
+	local lswEvt
+	
+	local function skinpb()
+	
+		-- search through LSW.parentFrame backwards looking for the progressBar
+		for i = LSW.parentFrame:GetNumChildren(), 1, -1 do
+			local child = select(i, LSW.parentFrame:GetChildren())
+			if child:GetWidth() == 310 and child:GetHeight() == 30 then
+				Skinner:CancelTimer(lswEvt, true)
+				Skinner:applySkin(child)
+				lswEvt = nil
+				break
+			end
+		end
+		
 	end
-
+	
+	-- start a timer to skin the progressBar
+	lswEvt = Skinner:ScheduleRepeatingTimer(skinpb, 0.1)
+	
 end
