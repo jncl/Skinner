@@ -23,14 +23,16 @@ function Skinner:Altoholic()
 	local obj
 	-- Summary tab
 	self:skinDropDown(AltoholicTabSummary_SelectLocation)
-	for i = 1, 7 do -- menu items
+	for i = 1, 9 do -- menu items
 		obj = _G["AltoholicTabSummaryMenuItem"..i]
+		if not obj then break end
 		self:keepRegions(obj, {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)
 	end
-	for i = 1, 8 do -- sort headers
+	for i = 1, 9 do -- sort headers
 		obj = _G["AltoholicTabSummary_Sort"..i]
 		if i == 1 then self:moveObject(obj, nil, nil, "+", 6) end
+		if not obj then break end
 		obj:SetHeight(obj:GetHeight() + 3)
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
 		self:applySkin(obj)
@@ -38,8 +40,9 @@ function Skinner:Altoholic()
 	-- Characters tab
 	self:skinDropDown(AltoholicTabCharacters_SelectRealm)
 	self:skinDropDown(AltoholicTabCharacters_SelectChar)
-	for i = 1, 4 do -- sort headers
+	for i = 1, 9 do -- sort headers
 		obj = _G["AltoholicTabCharacters_Sort"..i]
+		if not obj then break end
 		if i == 1 then self:moveObject(obj, nil, nil, "+", 6) end
 		obj:SetHeight(obj:GetHeight() + 3)
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
@@ -66,13 +69,15 @@ function Skinner:Altoholic()
 	self:moveObject(AltoholicTabSearch_SelectSlot, nil, nil, "+", 3)
 	self:skinDropDown(AltoholicTabSearch_SelectLocation)
 	self:moveObject(AltoholicTabSearch_SelectLocation, nil, nil, "+", 3)
-	for i = 1, 15 do
+	for i = 1, 20 do
 		obj = _G["AltoholicTabSearchMenuItem"..i]
+		if not obj then break end
 		self:keepRegions(obj, {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)
 	end
-	for i = 1, 8 do
+	for i = 1, 9 do
 		obj = _G["AltoholicTabSearch_Sort"..i]
+		if not obj then break end
 		if i == 1 then self:moveObject(obj, nil, nil, "+", 4) end
 		obj:SetHeight(obj:GetHeight() + 2)
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
@@ -81,8 +86,9 @@ function Skinner:Altoholic()
 	-- GuildBank tab
 	self:skinDropDown(AltoholicTabGuildBank_SelectGuild)
 	self:moveObject(AltoholicTabGuildBank_SelectGuild, nil, nil, "+", 8)
-	for i = 1, 6 do
+	for i = 1, 9 do
 		obj = _G["AltoholicTabGuildBankMenuItem"..i]
+		if not obj then break end
 		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)
 	end
@@ -91,22 +97,24 @@ function Skinner:Altoholic()
 	self:skinScrollBar(AltoholicFrameAchievementsScrollFrame)
 	self:removeRegions(AltoholicAchievementsMenuScrollFrame)
 	self:skinScrollBar(AltoholicAchievementsMenuScrollFrame)
-	for i = 1, 15 do
+	for i = 1, 20 do
 		obj = _G["AltoholicTabAchievementsMenuItem"..i]
+		if not obj then break end
 		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)
 	end
 	-- Options tab
-	for i = 1, 5 do
+	for i = 1, 9 do
 		obj = _G["AltoholicTabOptionsMenuItem"..i]
+		if not obj then break end
 		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)
 	end
 
 -->>-- Tabs
-	local numTabs = 6
-	for i = 1, numTabs do
+	for i = 1, 9 do
 		local tabObj = _G["AltoholicFrameTab"..i]
+		if not tabObj then break end
 		if i == 1 then
 			self:moveObject(tabObj, nil, nil, "-", 4)
 		else
@@ -121,8 +129,9 @@ function Skinner:Altoholic()
 	end
 	if self.db.profile.TexturedTab then
 		self:SecureHook(Altoholic.Tabs, "OnClick", function(this, ...)
-			for i = 1, numTabs do
+			for i = 1, 9 do
 				local tabObj = _G["AltoholicFrameTab"..i]
+				if not tabObj then break end
 				if i == AltoholicFrame.selectedTab then self:setActiveTab(tabObj)
 				else self:setInactiveTab(tabObj) end
 			end
