@@ -189,10 +189,19 @@ function Skinner:XPerl_Options()
 	end
 -->>-- Raid Options subpanel
 	self:addSkinFrame{obj=XPerl_Options_Raid_Options_Groups, x1=-2, y1=2, x2=2, y2=-2}
---[[
-	self:moveObject(XPerl_Options_Raid_Options_Custom_Alpha, "-", 20, nil, nil)
---]]
+	if XPerl_Raid_Title1 then
+		for i = 1, 10 do
+			self:addSkinFrame{obj=_G["XPerl_Raid_Title"..i.."Virtual"]}
+		end
+	end
 	self:addSkinFrame{obj=XPerl_Options_Raid_Options_Custom, x1=-2, y1=2, x2=2, y2=-2}
+-->>-- Custom Raid Highlights Config
+	self:skinEditBox{obj=XPerl_Custom_ConfigNew_Zone, regs={9}}
+	self:skinEditBox{obj=XPerl_Custom_ConfigNew_Search, regs={9}}
+	self:addSkinFrame{obj=XPerl_Custom_ConfigzoneList}
+	self:addSkinFrame{obj=XPerl_Custom_Configdebuffs}
+	self:glazeStatusBar(XPerl_Custom_ConfigiconCollect)
+	self:addSkinFrame{obj=XPerl_Custom_Config}
 -->>-- All Options subpanel
 	self:addSkinFrame{obj=XPerl_Options_All_Options_AddOns, x1=-2, y1=2, x2=2, y2=-2}
 -->>-- Colours Options subpanel
@@ -204,20 +213,13 @@ function Skinner:XPerl_Options()
 	self:addSkinFrame{obj=XPerl_Options_Helper_Options_Assists, x1=-2, y1=2, x2=2, y2=-2}
 
 -->>-- Colour Picker Frame
-	colourBD(XPerl_ColourPicker)
+	self:addSkinFrame{obj=XPerl_ColourPicker}
 -->>--	Texture Select Frame
 	self:skinScrollBar{obj=XPerl_Options_TextureSelectscrollBar}
-	colourBD(XPerl_Options_TextureSelect)
+	self:addSkinFrame{obj=XPerl_Options_TextureSelect}
 -->>--	Options Question Dialog
-	colourBD(XPerl_OptionsQuestionDialog)
+	self:addSkinFrame{obj=XPerl_OptionsQuestionDialog}
 -->>-- Tooltip Config
-	colourBD(XPerl_Options_TooltipConfig)
--->>-- Custom Config
-	self:skinEditBox{obj=XPerl_Custom_ConfigNew_Zone, regs={9}}
-	self:skinEditBox{obj=XPerl_Custom_ConfigNew_Search, regs={9}}
-	self:addSkinFrame{obj=XPerl_Custom_ConfigzoneList}
-	self:addSkinFrame{obj=XPerl_Custom_Configdebuffs}
-	self:glazeStatusBar(XPerl_Custom_ConfigiconCollect)
-	colourBD(XPerl_Custom_Config)
+	self:addSkinFrame{obj=XPerl_Options_TooltipConfig}
 
 end
