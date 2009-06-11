@@ -7,10 +7,4 @@ I - Issue/Bug
 N - New Version
 O - Other change
 S - Skin request
-
-	I	LilSparksWorkshop
-√		- skin the progressBar
-
-	I	Altoholic, reported by Kerecha, 9.06.09
-√		- menu button needs skinning
 		
