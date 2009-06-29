@@ -85,6 +85,9 @@ function Skinner:Configator()
 				if cType == "Text" or cType == "TinyNumber" or cType == "NumberBox" then
 					self:skinEditBox{obj=control, regs={9}}
 				end
+				if cType == "NumeriSlider" or cType == "NumeriWide" or cType == "NumeriTiny" then
+					self:skinEditBox{obj=control.slave, regs={9}}
+				end
 				if cType == "MoneyFrame" or cType == "MoneyFramePinned" then
 					self:skinMoneyFrame{obj=control, noWidth=true, moveSEB=true}
 				end
@@ -114,6 +117,9 @@ function Skinner:Configator()
 									if tfck.stype then
 										if tfck.stype == "EditBox" then
 											self:skinEditBox{obj=tfck, regs={9}}
+										end
+										if tfck.stype == "Slider" and tfck.slave then
+											self:skinEditBox{obj=tfck.slave, regs={9}}
 										end
 										if tfck.stype == "SelectBox" then
 											self:keepFontStrings(tfck)
