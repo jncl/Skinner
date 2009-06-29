@@ -1,20 +1,22 @@
 -- check to see if LibStub is loaded
-assert(LibStub, "LibStub unavailable, Skinner not loaded")
+assert(LibStub, "Skinner requires LibStub")
+assert(LibStub:GetLibrary("CallbackHandler-1.0", true), "Skinner requires CallbackHandler-1.0")
 -- check to see if AceAddon-3.0 is loaded
-assert(LibStub("AceAddon-3.0", true), "AceAddon-3.0 unavailable, Skinner not loaded")
-
+assert(LibStub:GetLibrary("AceAddon-3.0", true), "Skinner requires AceAddon-3.0")
+-- create the addon
 Skinner = LibStub("AceAddon-3.0"):NewAddon("Skinner", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
-
+-- check to see if we were created successfully
 assert(Skinner, "Skinner creation failed, missing Libraries")
 
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
 
 -- Get Locale
+assert(LibStub:GetLibrary("AceLocale-3.0", true), "Skinner requires AceLocale-3.0")
 Skinner.L = LibStub("AceLocale-3.0"):GetLocale("Skinner")
 
 -- check to see if LibSharedMedia-3.0 is loaded
-assert(LibStub("LibSharedMedia-3.0", true), "LibSharedMedia-3.0 unavailable, Skinner not loaded")
+assert(LibStub:GetLibrary("LibSharedMedia-3.0", true), "Skinner requires LibSharedMedia-3.0")
 Skinner.LSM = LibStub("LibSharedMedia-3.0")
 
 --check to see if running on PTR
@@ -1665,7 +1667,7 @@ end
 
 function Skinner:ShowInfo(obj, showKids, noDepth)
 
-	local showKids = showKids and true or false
+	local showKids = showKids or false
 
 	local function showIt(fmsg, ...)
 
