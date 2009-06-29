@@ -179,6 +179,7 @@
 <!-- <script file="SkinMe\KingOfTheJungle.lua"/> -->
 <script file="SkinMe\KLHThreatMeter.lua"/>
 <script file="SkinMe\KombatStats.lua"/>
+<script file="SkinMe\LauncherMenu.lua"/>
 <script file="SkinMe\LibExtraTip.lua"/>
 <script file="SkinMe\LibQTip.lua"/>
 <script file="SkinMe\LibSimpleOptions.lua"/>
