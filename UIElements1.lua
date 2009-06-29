@@ -118,6 +118,8 @@ function Skinner:StaticPopups()
 		self:skinEditBox{obj=_G["StaticPopup"..i.."WideEditBox"]}
 		self:skinMoneyFrame{obj=_G["StaticPopup"..i.."MoneyInputFrame"]}
 		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=3, y1=3, x2=-3, y2=3}
+		-- prevent FrameLevel from being changed (LibRock does this)
+		self:RawHook(self.skinFrame[_G["StaticPopup"..i]], "SetFrameLevel", function() end, true)
 	end
 
 end
