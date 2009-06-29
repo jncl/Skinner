@@ -89,7 +89,7 @@ function Skinner:Calendar()
 	self:moveObject{obj=CalendarFilterFrameText, x=-8}
 	-- move close button
 	self:moveObject{obj=CalendarCloseButton, y=14}
-	self:addSkinFrame{obj=CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=1, y2=-7}
+	self:addSkinFrame{obj=CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=2, y2=-7}
 
 -->>-- View Holiday Frame
 	self:keepFontStrings(CalendarViewHolidayTitleFrame)
