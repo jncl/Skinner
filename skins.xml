@@ -143,6 +143,7 @@
 <script file="SkinMe\Grid.lua"/>
 <script file="SkinMe\GrimReaper.lua"/>
 <script file="SkinMe\GroupCalendar.lua"/>
+<script file="SkinMe\GroupCalendar5.lua"/>
 <script file="SkinMe\Guild_Alliance.lua"/>
 <script file="SkinMe\Guild_Log.lua"/>
 <script file="SkinMe\GuildAds.lua"/>
