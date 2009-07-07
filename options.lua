@@ -1837,16 +1837,10 @@ function Skinner:Options()
 	DBObj = LibStub("LibDataBroker-1.1"):NewDataObject("Skinner", {
 			type = "launcher",
 			icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
-			OnClick = function(...)	Skinner:ShowConfig() end,
+			OnClick = function() InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame) end,
 	})
 
 	-- register the data object to the Icon library
 	DBIcon:Register(aName, DBObj, db.MinimapIcon)
-
-end
-
-function Skinner:ShowConfig()
-
-	InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame)
 
 end
