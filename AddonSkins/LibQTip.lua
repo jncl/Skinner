@@ -14,7 +14,7 @@ function Skinner:LibQTip()
 		
 	end
 	
-	local lt = {"LibTooltip-1.0", "LibQTip-1.0"}
+	local lt = {"LibTooltip-1.0", "LibQTip-1.0", "LibQTipClick-1.1"}
 
 	for _, lib in pairs(lt) do
 		if LibStub(lib, true) then
