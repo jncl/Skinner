@@ -7,4 +7,7 @@ I - Issue/Bug
 N - New Version
 O - Other change
 S - Skin request
-		
+
+√	S	CT_Raidtracker, reported by Luckyjack_SL, 15.06.09
+		- guildlaunch version
+		- http://glmods.guildlaunch.com/gwiki/index.php?page_name=Guild_Launch_Modded_CT_RaidTracker&gid=68936
