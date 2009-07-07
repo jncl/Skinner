@@ -11,11 +11,12 @@ function Skinner:Tooltips()
 	self.initialized.Tooltips = true
 
 	-- 	change the default Tooltip Border colour here
-	TOOLTIP_DEFAULT_COLOR = self.db.profile.TooltipBorder
+	TOOLTIP_DEFAULT_COLOR = CopyTable(self.db.profile.TooltipBorder)
 
 	-- fix for TinyTip tooltip becoming 'fractured'
 	if self.db.profile.Tooltips.style == 3 then
-		TOOLTIP_DEFAULT_BACKGROUND_COLOR = self.db.profile.Backdrop
+		local c = self.db.profile.Backdrop
+		TOOLTIP_DEFAULT_BACKGROUND_COLOR = {c.r, c.g, c.b}
 		self:setTTBackdrop(true)
 	end
 
@@ -40,25 +41,28 @@ function Skinner:Tooltips()
 
 	end
 
+	local gtH
 	-- Hook this to deal with GameTooltip FadeHeight issues
 	self:HookScript(GameTooltipStatusBar, "OnHide", function(this)
 		if GameTooltip:IsShown() then
-			cHeight = ceil(GameTooltip:GetHeight())
+			gtH = ceil(GameTooltip:GetHeight())
 			if not GTSBevt then
-				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.2, cHeight)
+				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.1, gtH)
 			end
 		end
 	end)
 
 	-- MUST hook to OnShow script rather than the Show method otherwise not every tooltip is skinned properly everytime
+	local ttip
 	for _, tooltip in pairs(self.ttList) do
-		local ttip = _G[tooltip]
+		ttip = _G[tooltip]
 		self:HookScript(ttip, "OnShow", function(this)
 			self:skinTooltip(this)
 			if this == GameTooltip and self.db.profile.Tooltips.glazesb then
 				self:glazeStatusBar(GameTooltipStatusBar, 0)
 			end
 		end)
+		self:skinTooltip(ttip) -- skin here so tooltip initially skinnned when logged on
 	end
 
 end

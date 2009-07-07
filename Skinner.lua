@@ -115,6 +115,8 @@ function Skinner:OnInitialize()
 	if type(self.db.profile.TrackerFrame) == "boolean" then
 		self.db.profile.TrackerFrame = {skin = true, clean = true, glazesb = true}
 	end
+	-- remove TooltipBorder alpha value, not required anymore
+	if self.db.profile.TooltipBorder.a then self.db.profile.TooltipBorder.a = nil end
 
 	-- register the default background texture
 	self.LSM:Register("background", "Blizzard ChatFrame Background", [[Interface\ChatFrame\ChatFrameBackground]])
@@ -853,6 +855,7 @@ function Skinner:getRegion(obj, regNo)
 
 end
 
+local sbBG, sbFS, sbFL
 function Skinner:glazeStatusBar(statusBar, fi, texture)
 --@alpha@
 	assert(statusBar and statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n"..debugstack())
@@ -861,21 +864,22 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
 
 	statusBar:SetStatusBarTexture(self.sbTexture)
-	self.sbGlazed[statusBar] = {glzd=true}
+	if not self.sbGlazed[statusBar] then
+		self.sbGlazed[statusBar] = {glzd=true}
+	end
 
 	if fi then
 		if not self.sbGlazed[statusBar].bg then
-			local sbBG
 			if texture then
 				sbBG = statusBar:CreateTexture(nil, "BORDER")
 				sbBG:SetTexture(self.sbTexture)
 				sbBG:SetVertexColor(unpack(self.sbColour))
 			else
 				sbBG = CreateFrame("StatusBar", nil, statusBar)
-				local sbfs = statusBar:GetFrameStrata()
-				sbBG:SetFrameStrata(sbfs ~= "UNKNOWN" and sbfs or "BACKGROUND")
-				local sbfl = statusBar:GetFrameLevel()
-				sbBG:SetFrameLevel(sbfl > 0 and sbfl - 1 or 0)
+				sbFS = statusBar:GetFrameStrata()
+				sbBG:SetFrameStrata(sbFS ~= "UNKNOWN" and sbFS or "BACKGROUND")
+				sbFL = statusBar:GetFrameLevel()
+				sbBG:SetFrameLevel(sbFL > 0 and sbFL - 1 or 0)
 				sbBG:SetStatusBarTexture(self.sbTexture)
 				sbBG:SetStatusBarColor(unpack(self.sbColour))
 			end
