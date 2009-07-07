@@ -157,11 +157,8 @@ function Skinner:Outfitter()
 
 -->>-- QuickSlots frame
 	self:SecureHook(Outfitter, "InitializeQuickSlots", function()
-		self:keepFontStrings(OutfitterQuickSlots)
-		self:applySkin(OutfitterQuickSlots)
-		self:SecureHook(OutfitterQuickSlots, "Show", function(this)
-			self:moveObject(OutfitterQuickSlotsButton0, "+", 1, "-", 1)
-		end)
+		self:addSkinFrame{obj=OutfitterQuickSlots, kfs=true, x2=-3, y2=3}
+		OutfitterQuickSlots.HideBackground = true
 		self:Unhook(Outfitter, "InitializeQuickSlots")
 	end)
 	
