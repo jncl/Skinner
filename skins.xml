@@ -150,6 +150,7 @@
 <script file="SkinMe\GuildBankAccount.lua"/>
 <script file="SkinMe\GuildBankSearch.lua"/>
 <!-- <script file="SkinMe\GuildEventManager2.lua"/> -->
+<script file="SkinMe\GuildLaunchCT_RaidTracker.lua"/>
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>
 <script file="SkinMe\HatTrick.lua"/>
