@@ -1,4 +1,6 @@
 local pairs = pairs
+local strgsub = string.gsub
+local tinsert = table.insert
 local IsAddOnLoaded = IsAddOnLoaded
 
 function Skinner:BlizzardFrames()
@@ -12,12 +14,14 @@ function Skinner:BlizzardFrames()
 		"MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame", -- uie2
 	}
 
-	if self.isPTR then table.insert(blizzFrames, "FeedbackUI") end
+	if self.isPTR then tinsert(blizzFrames, "FeedbackUI") else self.FeedbackUI = nil end -- uie1
+	if self.isPatch then tinsert(blizzFrames, "AutoComplete") end -- uie2
 
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
 	end
-
+	blizzFrames = nil
+	
 	-- handle non standard ones here
 	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
 	self:checkAndRun("ChatConfig") -- done here even though it's LoD, as it is always loaded with Blizzard_CombatLog
@@ -43,7 +47,6 @@ function Skinner:SkinnerFrames()
 	for _, v in pairs(skinnerFrames) do
 		self:checkAndRun(v)
 	end
-
 	skinnerFrames = nil
 
 end
@@ -51,6 +54,7 @@ end
 local blizzLoDFrames = {
 	 "AchievementUI", "AuctionUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "GlyphUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI",
 }
+if Skinner.isPTR then tinsert(blizzLoDFrames, "DebugTools") else Skinner.DebugTools = nil end -- uie2
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v
@@ -124,7 +128,7 @@ function Skinner:AddonFrames()
 		"Auc-Advanced", "Auc-Util-BigPicture", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "!ImprovedErrorFrame", "Ogri'Lazy"
 	}
 	for _, v in pairs(oddlyNamedAddons) do
-		v2, _ = string.gsub(v, "[-_!']", "")
+		v2, _ = strgsub(v, "[-_!']", "")
 		self:checkAndRunAddOn(v, nil, v2)
 	end
 	oddlyNamedAddons = nil

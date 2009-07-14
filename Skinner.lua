@@ -21,8 +21,8 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0")
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
---check to see if running on patch 3.1.0
---Skinner.isPatch = RaiseFrameLevelByTwo and true or false
+--check to see if running on patch 3.2.0
+Skinner.isPatch = CanAlterSkin and true or false
 
 -- local defs (for speed)
 local _G = _G
@@ -104,7 +104,7 @@ function Skinner:OnInitialize()
 
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
---	if self.isPatch then self:Debug("Patch detected") end
+	if self.isPatch then self:Debug("Patch detected") end
 --@end-alpha@
 
 	-- setup the default DB values and register them
@@ -220,6 +220,11 @@ function Skinner:OnInitialize()
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
 	-- use strings as the objects may not exist when we start
 	self.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip"}
+	if self.isPatch then
+		tinsert(self.ttCheck, "ItemRefShoppingTooltip1")
+		tinsert(self.ttCheck, "ItemRefShoppingTooltip2")
+		tinsert(self.ttCheck, "ItemRefShoppingTooltip3")
+	end
 	-- list of Tooltips used when the Tooltip style is 3
 	self.ttList = CopyTable(self.ttCheck)
 	tinsert(self.ttList, "SmallTextTooltip")
@@ -1324,7 +1329,7 @@ local function __skinEditBox(opts)
 --@end-alpha@
 
 	if not opts.obj then return end
-	
+
 	opts.x = opts.x or 0
 	opts.y = opts.y or 0
 

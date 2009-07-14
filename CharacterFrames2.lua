@@ -178,7 +178,9 @@ function Skinner:QuestLog()
 	end)
 
 	self:keepFontStrings(QuestLogCount)
-	self:removeRegions(QuestLogCollapseAllButton, {7, 8, 9})
+	if not self.isPatch then
+		self:removeRegions(QuestLogCollapseAllButton, {7, 8, 9})
+	end
 	self:keepFontStrings(EmptyQuestLogFrame)
 
 	QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -191,9 +193,15 @@ function Skinner:QuestLog()
 	QuestLogDescriptionTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	QuestLogQuestDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 
-	self:skinScrollBar{obj=QuestLogListScrollFrame}
+	if not self.isPatch then
+		self:skinScrollBar{obj=QuestLogListScrollFrame}
+	end
 	self:skinScrollBar{obj=QuestLogDetailScrollFrame}
-	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=48}
+	if self.isPatch then
+		self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=6}
+	else
+		self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=48}
+	end
 
 end
 

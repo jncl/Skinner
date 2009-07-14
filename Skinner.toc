@@ -1,4 +1,4 @@
-﻿## Interface: 30100
+﻿## Interface: 30200
 ## Title: Skinner
 ## Notes: Changes the look of the default UI
 ## Notes-esES: Cambia el aspecto del UI predeterminado
@@ -69,11 +69,11 @@ CharacterFrames2.lua
 NPCFrames.lua
 #
 # UIElements1
-# inc. Tooltips, MirrorTimers, --[[QuestTimers--]], CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), Tutorial, GMSurveyUI, FeedbackUI, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, DropDowns, MinimapButtons
+# inc. Tooltips, MirrorTimers, --[[QuestTimers--]], CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), Tutorial, GMSurveyUI, FeedbackUI, InspectUI, BattleScore, BattlefieldMinimap, ScriptErrors, DropDowns, MinimapButtons, FeedbackUI
 UIElements1.lua
 #
 # UIElements2
-# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI
+# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools
 UIElements2.lua
 
 # Addon skins

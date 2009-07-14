@@ -33,7 +33,12 @@ end
 
 function Skinner:CharacterFrame()
 
-	self:skinDropDown{obj=PlayerTitleDropDown}
+	if not self.isPatch then
+		self:skinDropDown{obj=PlayerTitleDropDown}
+	else
+		self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
+		self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}--, x1=10, y1=-12, x2=-32, y2=71}
+	end
 	self:skinDropDown{obj=PlayerStatFrameLeftDropDown, moveTex=true}
 	self:skinDropDown{obj=PlayerStatFrameRightDropDown, moveTex=true}
 	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
@@ -62,6 +67,17 @@ function Skinner:PaperDollFrame()
 	self:makeMFRotatable(CharacterModelFrame)
 	self:keepFontStrings(CharacterAttributesFrame)
 	self:removeRegions(CharacterAmmoSlot, {1})
+	-- hide ItemFlyout background textures
+	if self.isPatch then
+		local bA = PaperDollFrameItemFlyout.buttonFrame
+		self:addSkinFrame{obj=bA, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
+		self:SecureHook("PaperDollFrameItemFlyout_Show", function(paperDollItemSlot)
+			self:Debug("PDFIF_S: [%s]", paperDollItemSlot)
+			for i = 1, bA["numBGs"] do
+				bA["bg" .. i]:SetAlpha(0)
+			end
+		end)
+	end
 
 end
 
@@ -175,6 +191,9 @@ function Skinner:PVPFrame()
 -->>-- PVP Battleground Frame
 	self:keepFontStrings(PVPBattlegroundFrame)
 	self:skinScrollBar{obj=PVPBattlegroundFrameInstanceScrollFrame}
+	if self.isPatch then
+		self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
+	end
 	PVPBattlegroundFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 -->>-- PVP Team Details Frame
 	self:skinDropDown{obj=PVPDropDown}
@@ -331,7 +350,6 @@ function Skinner:TalentUI()
 		local tabName = _G["PlayerSpecTab"..i]
 		self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
 	end
-
 
 end
 

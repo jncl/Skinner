@@ -517,13 +517,6 @@ function Skinner:MainMenuBar()
 	MainMenuExpBar:SetHeight(MainMenuExpBar:GetHeight() - 2) -- shrink it so it moves up
 	self:addSkinFrame{obj=MainMenuBar, ft=ftype, kfs=true, noBdr=true, x1=-4, y1=-7, x2=4, y2=-4}
 
---[[
-	-- bugfix ??
-	if MainMenuBar:GetFrameLevel() > 0 then
-	    LowerFrameLevel(MainMenuBar)
-	end
---]]
-
 	-- Experience Bar
 	self:keepRegions(MainMenuExpBar, {1, 7}) -- N.B. region 1 is rested XP, 7 is the normal XP
 	-- Reputation Bar
@@ -544,7 +537,7 @@ function Skinner:MainMenuBar()
 
 	end
 
--->>--	Bonus Action Bar Frame
+-->>-- Bonus Action Bar Frame
 	self:keepFontStrings(BonusActionBarFrame)
 	if BonusActionBarFrame.mode == "show" then
 		toggleActionButtons()
@@ -556,7 +549,7 @@ function Skinner:MainMenuBar()
 	self:SecureHook("HideBonusActionBar", function(this)
 		toggleActionButtons()
 	end)
--->>--	Shapeshift Bar Frame
+-->>-- Shapeshift Bar Frame
 	self:keepFontStrings(ShapeshiftBarFrame)
 	-- skin shapeshift buttons
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
@@ -565,11 +558,16 @@ function Skinner:MainMenuBar()
 		self:addSkinButton{obj=ssBtn, parent=ssBtn}
 	end
 
--->>--	Possess Bar Frame
+-->>-- Possess Bar Frame
 	self:keepFontStrings(PossessBarFrame)
 
--->>--	Pet Action Bar Frame
+-->>-- Pet Action Bar Frame
 	self:keepFontStrings(PetActionBarFrame)
+
+-->>-- Shaman's Totem Frame
+	if self.isPatch then
+		self:addSkinFrame{obj=MultiCastFlyoutFrame, kfs=true, ft=ftype, y1=-4, y2=-4}
+	end
 
 end
 
@@ -600,7 +598,7 @@ function Skinner:LFGFrame()
 	LFGFrameQueue2Border:SetBackdrop(nil)
 	LFGFrameQueue3Border:SetBackdrop(nil)
 
-	self:addSkinFrame{obj=LFGParentFrame, ft=ftype, kfs=true, x1=17, y1=-11, x2=-30, y2=70}
+	self:addSkinFrame{obj=LFGParentFrame, ft=ftype, kfs=true, x1=17, y1=-11, x2=-29, y2=70}
 
 -->>--	LFG Frame
 	self:keepFontStrings(AutoJoinBackground)
@@ -825,3 +823,30 @@ function Skinner:GMChatUI()
 
 end
 
+function Skinner:AutoComplete()
+
+	self:addSkinFrame{obj=AutoCompleteBox, kfs=true, ft=ftype}--, x1=10, y1=-12, x2=-32, y2=71}
+
+end
+
+function Skinner:DebugTools()
+
+	self:addSkinFrame{obj=EventTraceFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
+	self:skinSlider(EventTraceFrameScroll)
+	self:addSkinFrame{obj=ScriptErrorsFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
+	self:skinScrollBar{obj=ScriptErrorsFrameScrollFrame}
+
+	if self.db.profile.Tooltips.skin then
+		if self.db.profile.Tooltips.style == 3 then
+			FrameStackTooltip:SetBackdrop(self.Backdrop[1])
+			EventTraceTooltip:SetBackdrop(self.Backdrop[1])
+		end
+		self:SecureHook(FrameStackTooltip, "Show", function()
+			self:skinTooltip(FrameStackTooltip)
+		end)
+		self:SecureHook(EventTraceTooltip, "Show", function()
+			self:skinTooltip(EventTraceTooltip)
+		end)
+	end
+
+end
