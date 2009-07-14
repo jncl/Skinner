@@ -2,12 +2,58 @@ ToDos
 
 N.B. √ is Alt+v - indicates completed
  	 ≈ is Alt+x - indicates partially completed
+	 x          - indicates nothing to change
 
 I - Issue/Bug
 N - New Version
 O - Other change
 S - Skin request
 
-√	S	CT_Raidtracker, reported by Luckyjack_SL, 15.06.09
-		- guildlaunch version
-		- http://glmods.guildlaunch.com/gwiki/index.php?page_name=Guild_Launch_Modded_CT_RaidTracker&gid=68936
+	N	PTR 3.2.0
+x		- BarberShopUI
+			- additional selector for Skin Colour
+x		- ShoppingTooltip3 [New]?
+x		- UIOpionsFrame ==> InterfaceOptionsFrame
+			- Features Panel [New]
+x		- LootFrame icons now have a count fontstring
+x		- CastingBarFrame
+			- has a border and shield, displayed dependant on whether the spell is interruptable
+√		- AutoCompleteFrame [New]
+√		- MultiCastActionBarFrame [New] (for shaman totems)
+			- MultiCastFlyoutFrame
+√		- PaperDollFrameItemFlyout
+√		- ItemRefTooltip1-3 [New]
+√		- PVPBattlegroundFrame
+			- ScrollFrame added
+√		- QuestLog now doublewide
+√		- ChatConfigFrame
+			- Class colours panel
+			- Creature Messages panel
+√		- FeedbackUI
+			- ScrollFrames now just frames
+√		- TicketStatusFrame changes ?
+√		- HelpFrameViewResponse [New]
+≈		- PlayerTitle is now a ScrollFrame rather than a dropdown
+		- Blizzard_DebugTools ?
+
+√	I	Resize Frame skins
+		- LFGParentFrame
+		- MerchantFrame
+		- PVPParentFrame
+
+√	I	TalentFrame
+		- Hide background texture, title & scrollbar when Glyphs are displayed
+
+√	I	MoneyFrames now using text instead of icons (ColorBlind mode causes this)
+		- TradePlayerInputMoneyFrame
+		- _G["StaticPopup"..i.."MoneyInputFrame"]
+		- SendMailMoney
+		- BrowseBidPrice
+		- BidBidPrice
+		- StartPrice
+		- BuyoutPrice
+		
+	I	Change RawHook functions that do nothing to use nop function instead
+		
+	N	QuestGuruTracker, reported by xtoq, 10.07.09
+		- now in separate module
