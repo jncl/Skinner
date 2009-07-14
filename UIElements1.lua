@@ -5,6 +5,7 @@ local strfind = string.find
 local type = type
 local IsAddOnLoaded = IsAddOnLoaded
 local ftype = "u"
+local nop = function () end
 
 function Skinner:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
@@ -123,7 +124,7 @@ function Skinner:StaticPopups()
 		self:skinMoneyFrame{obj=_G["StaticPopup"..i.."MoneyInputFrame"]}
 		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=3, y1=3, x2=-3, y2=3}
 		-- prevent FrameLevel from being changed (LibRock does this)
-		self:RawHook(self.skinFrame[_G["StaticPopup"..i]], "SetFrameLevel", function() end, true)
+		self.skinFrame[_G["StaticPopup"..i]].SetFrameLevel = nop
 	end
 
 end
@@ -775,8 +776,8 @@ function Skinner:MinimapButtons()
 	MiniMapTrackingIcon:ClearAllPoints()
 	MiniMapTrackingIcon:SetPoint("CENTER", MiniMapTrackingButton)
 	MiniMapTrackingIcon:SetParent(MiniMapTrackingButton)
-	-- hook this to stop the icon being moved
-	self:RawHook(MiniMapTrackingIcon, "SetPoint", function(this, ...) end, true)
+	-- change this to stop the icon being moved
+	MiniMapTrackingIcon.SetPoint = nop
 
 	-- move GameTime a.k.a. Calendar texture up a layer
 	GameTimeFrame:GetNormalTexture():SetDrawLayer("BORDER")
