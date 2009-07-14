@@ -22,7 +22,7 @@ function Skinner:MerchantFrames()
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
 
-	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=55}
+	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}
 
 -->>-- Tabs
 	for i = 1, MerchantFrame.numTabs do

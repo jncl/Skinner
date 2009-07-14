@@ -150,7 +150,7 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 	end
 
 -->>-- Popup Frame
-	self:addSkinFrame{obj=TokenFramePopup,ft=ftype, kfs=true}
+	self:addSkinFrame{obj=TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
 
 end
 
@@ -170,7 +170,7 @@ function Skinner:PVPFrame()
 	end
 
 	self:keepFontStrings(PVPFrame)
-	self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
+	self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 -->>-- PVP Battleground Frame
 	self:keepFontStrings(PVPBattlegroundFrame)
