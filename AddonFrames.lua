@@ -90,7 +90,7 @@ function Skinner:AddonFrames()
 		"Earth", "EasyTrack", "EasyUnlock", "EavesDrop", "EditingUI", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "Epeen", "epgp", "EQL3", "EquipCompare", "EventEquip", --[["EveryQuest",--]] "Examiner",
 		--[["FactionGrinder",--]] "Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "ForteWarlock", "FramesResized", "FreierGeist_InstanceTime", "FruityLoots", --[["FuBar_PoisonReminderFu",--]]
 		"Gatherer", "GCInfo", "GemHelper", "GemMe", "GFW_FeedOMatic", "GlowFoSho", "Gossipmonger", "GotWood", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "Guild_Alliance", "Guild_Log", "GuildAds", "GuildBankAccount", --[["GuildEventManager2",--]] "GuildLaunchCT_RaidTracker",
-		"Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadHunter", "HealBot", "HealersAssist", "HealingEstimator", "HealOrganizer", "Historian", "HitsMode", "HoloFriends",
+		"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadHunter", "HealBot", "HealersAssist", "HealingEstimator", "HealOrganizer", "Historian", "HitsMode", "HoloFriends",
 		"IgorsMassAuction", "InspectEquip", "InstanceMaps", "InsultDevice", "InventoryOnPar", "IPopBar", "ItemDB", "ItemEnchantApplication", "ItemRack", "ItemSync",
 		"JasonQuest", "Jobber", "Junk",
 		"Karma", --[["KC_Items",--]] "KLHThreatMeter", "KombatStats",
