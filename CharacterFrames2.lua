@@ -169,6 +169,7 @@ function Skinner:QuestLog()
 			local r, g, b, a = _G["QuestLogObjective"..i]:GetTextColor()
 			_G["QuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb)
 		end
+		QuestLogTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		local r, g, b, a = QuestLogRequiredMoneyText:GetTextColor()
 		QuestLogRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb)
 		QuestLogRewardTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
