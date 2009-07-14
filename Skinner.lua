@@ -51,6 +51,7 @@ local EnumerateFrames = EnumerateFrames
 local Model_RotateLeft = Model_RotateLeft
 local Model_RotateRight = Model_RotateRight
 local PanelTemplates_TabResize = PanelTemplates_TabResize
+local GetCVarBool = GetCVarBool
 
 local function makeString(t)
 
@@ -1423,11 +1424,17 @@ local function __skinMoneyFrame(opts)
 	assert(opts.obj, "Unknown object __sMF\n"..debugstack())
 --@end-alpha@
 
+	local cbMode = GetCVarBool("colorblindMode")
+	Skinner:Debug("ccbMode: [%s]", cbMode)
+
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
 		local fName = _G[opts.obj:GetName()..v]
-		Skinner:skinEditBox{obj=fName, regs={9, 10}, noHeight=true} -- N.B. region 9 is the icon, 10 is text
+		Skinner:skinEditBox{obj=fName, regs={9, 10}, noHeight=true, noWidth=true} -- N.B. region 9 is the icon, 10 is text
+		-- move label to the right for colourblind mode
 		if k ~= 1 or opts.moveGIcon then
-			Skinner:moveObject{obj=Skinner:getRegion(fName, 9), x=10}
+			Skinner:moveObject{obj=fName.texture, x=10}
+			Skinner:moveObject{obj=fName.label, x=10}
+--			Skinner:moveObject{obj=Skinner:getRegion(fName, 9), x=10}
 		end
 		if not opts.noWidth and k ~= 1 then
 			fName:SetWidth(fName:GetWidth() + 5)
