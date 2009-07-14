@@ -277,33 +277,33 @@ function Skinner:TalentUI()
 	self.initialized.TalentUI = true
 
 	local numTabs = MAX_TALENT_TABS + 1 -- add 1 for the Glyph talent tab
-	-- hook this to manage textured tabs
-	if self.isTT then
-		self:SecureHook("TalentFrame_Update", function(this)
-			local curTab
-			curTab = this.selectedTab
-			if this == PlayerTalentFrame then
-				for i = 1, numTabs do
+	local curTab
+	-- hook this to manage textured tabs & hide/show objects when glyph frame shown
+	self:SecureHook("TalentFrame_Update", function(this)
+		curTab = this.selectedTab
+		if this == PlayerTalentFrame then
+			for i = 1, numTabs do
+				if self.isTT then
 					local tabSF = self.skinFrame[_G["PlayerTalentFrameTab"..i]]
 					if i == curTab then
 						self:setActiveTab(tabSF)
 					else
 						self:setInactiveTab(tabSF)
 					end
-					-- check to see if this is the glyph frame, if so, hide some objects
-					if i == numTabs and i == curTab then
-						PlayerTalentFrameTitleText:Hide()
-						PlayerTalentFrameScrollFrame:Hide()
-						PlayerTalentFramePointsBar:Hide()
-					else
-						PlayerTalentFrameTitleText:Show()
-						PlayerTalentFrameScrollFrame:Show()
-						PlayerTalentFramePointsBar:Show()
-					end
+				end
+				-- check to see if this is the glyph frame, if so, hide some objects
+				if i == numTabs and i == curTab then
+					PlayerTalentFrameTitleText:Hide()
+					PlayerTalentFrameScrollFrame:Hide()
+					PlayerTalentFramePointsBar:Hide()
+				else
+					PlayerTalentFrameTitleText:Show()
+					PlayerTalentFrameScrollFrame:Show()
+					PlayerTalentFramePointsBar:Show()
 				end
 			end
-		end)
-	end
+		end
+	end)
 
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
 	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6}) -- other regions are background textures
