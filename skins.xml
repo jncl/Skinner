@@ -3,6 +3,7 @@
 
 <!-- Addon skins are here, must be prefixed by SkinMe\ -->
 
+<script file="SkinMe\Accomplishment.lua"/>
 <script file="SkinMe\Accountant.lua"/>
 <script file="SkinMe\Ace2.lua"/>
 <script file="SkinMe\Ace3.lua"/>
