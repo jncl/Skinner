@@ -1430,7 +1430,6 @@ local function __skinMoneyFrame(opts)
 --@end-alpha@
 
 	local cbMode = GetCVarBool("colorblindMode")
-	Skinner:Debug("ccbMode: [%s]", cbMode)
 
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
 		local fName = _G[opts.obj:GetName()..v]
