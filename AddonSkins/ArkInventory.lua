@@ -2,16 +2,17 @@
 function Skinner:ArkInventory()
 	if not self.db.profile.ContainerFrames then return end
 
+	-- stop frames being painted
+	ArkInventory.Frame_Main_Paint = function() end
+	
 	local aiFrames = {"Title", "Search", "Container", "Changer", "Status"}
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
---		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
+		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
 		local af = frame:GetName()
 		if not self.skinned[frame] then
 			for _, v in pairs(aiFrames) do
 				self:keepFontStrings(_G[af..v])
 				self:applySkin(_G[af..v])
-				self:RawHook(_G[af..v], "SetBackdrop", function() end, true)
-				self:RawHook(_G[af..v], "SetBackdropBorderColor", function() end, true)
 			end
 			self:skinEditBox(_G[af.."SearchFilter"], {9})
 			if _G[af.."StatusText"] then _G[af.."StatusText"]:SetAlpha(1) end
@@ -29,10 +30,6 @@ function Skinner:ArkInventory()
 	self:keepFontStrings(ARKINV_RulesFrameViewTableScroll)
 	self:skinScrollBar(ARKINV_RulesFrameViewTableScroll)
 	self:applySkin(ARKINV_RulesFrameViewMenu)
-	self:RawHook(ARKINV_RulesTitle, "SetBackdrop", function() end, true)
-	self:RawHook(ARKINV_RulesTitle, "SetBackdropBorderColor", function() end, true)
-	self:RawHook(ARKINV_RulesFrame, "SetBackdrop", function() end, true)
-	self:RawHook(ARKINV_RulesFrame, "SetBackdropBorderColor", function() end, true)
 -->>--	RF Add
 	self:applySkin(ARKINV_RulesFrameModifyTitle)
 	self:applySkin(ARKINV_RulesFrameModifyMenu)
@@ -50,9 +47,5 @@ function Skinner:ArkInventory()
 	self:applySkin(ARKINV_SearchFrameViewTable)
 	self:keepFontStrings(ARKINV_SearchFrameViewTableScroll)
 	self:skinScrollBar(ARKINV_SearchFrameViewTableScroll)
-	self:RawHook(ARKINV_SearchTitle, "SetBackdrop", function() end, true)
-	self:RawHook(ARKINV_SearchTitle, "SetBackdropBorderColor", function() end, true)
-	self:RawHook(ARKINV_SearchFrame, "SetBackdrop", function() end, true)
-	self:RawHook(ARKINV_SearchFrame, "SetBackdropBorderColor", function() end, true)
 
 end
