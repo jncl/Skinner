@@ -63,7 +63,7 @@ function Skinner:AucAdvanced()
 	-- skin the Buy prompt frame
 	if AucAdvanced.Buy then
 		self:skinEditBox{obj=AucAdvanced.Buy.Private.Prompt.Reason, regs={9}}
-		self:addSkinFrame{obj=AucAdvanced.Buy.Private.Prompt}
+		self:addSkinFrame{obj=AucAdvanced.Buy.Private.Prompt.Frame}
 	end
 
 end
