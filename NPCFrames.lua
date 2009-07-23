@@ -78,7 +78,7 @@ function Skinner:TaxiFrame()
 
 	self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
 
-	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
+	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-11, x2=-32, y2=74}
 
 end
 
