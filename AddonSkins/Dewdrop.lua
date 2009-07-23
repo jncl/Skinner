@@ -1,20 +1,21 @@
+local nop = function() end
 
 function Skinner:Dewdrop()
 	if not self.db.profile.Tooltips.skin then return end
 
-	local sf, eb
+	local frame, sf, eb
 
 	local function skinDewdrop()
 
 		local i = 1
 		while _G["Dewdrop20Level"..i] do
 --			Skinner:Debug("Dewdrop20Level"..i)
-			local frame = _G["Dewdrop20Level"..i]
+			frame = _G["Dewdrop20Level"..i]
 			if not Skinner.skinned[frame] then
 				Skinner:applySkin(frame)
-				-- hook these to stop the Backdrop colours from being changed
-				Skinner:RawHook(frame, "SetBackdropColor", function() end, true)
-				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
+				-- change these to stop the Backdrop colours from being changed
+				frame.SetBackdropColor = nop
+				frame.SetBackdropBorderColor = nop
 				-- hide the backdrop frame
 				Skinner:getChild(frame, 1):Hide()
 			end
@@ -39,7 +40,7 @@ function Skinner:Dewdrop()
 		-- if so then check to see if they have been created yet
 		-- if they have then skin them
 		if not sf then
-			local sf = Skinner:findFrame(170, 100, {"Slider", "EditBox"})
+			sf = Skinner:findFrame(170, 100, {"Slider", "EditBox"})
 			if sf and not Skinner.skinned[sf] then
 				Skinner:skinEditBox(sf.currentText, {9})
 				-- Make it wider to display 4 digits
@@ -50,7 +51,7 @@ function Skinner:Dewdrop()
 			end
 		end
 		if not eb then
-			local eb = Skinner:findFrame(40, 200, {"EditBox"})
+			eb = Skinner:findFrame(40, 200, {"EditBox"})
 			if eb and not Skinner.skinned[eb] then
 				Skinner:skinEditBox(eb.editBox, {9})
 				eb.editBox:SetWidth(180)
