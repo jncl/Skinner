@@ -1,4 +1,8 @@
+b2.10116.1
 Jncl:
+	ToDo.txt
+	Added changelog entry to .pkgmeta
+	Added changelog text file
 	Updated usage of string functions
 	Changed way Quest Text is coloured
 	Resized TaxiFrame skin
