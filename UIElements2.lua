@@ -1,6 +1,5 @@
 local _G = _G
 local select = select
-local strfind = string.find
 local IsAddOnLoaded = IsAddOnLoaded
 local ftype = "u"
 
@@ -797,7 +796,7 @@ function Skinner:Nameplates()
 	end
 
 	self:SecureHook("SetCVar", function(varName, varValue, ...)
-		if strfind(varName, "nameplateShow") and varValue == 1 then showFunc() end
+		if varName:find("nameplateShow") and varValue == 1 then showFunc() end
 	end)
 
 	local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")

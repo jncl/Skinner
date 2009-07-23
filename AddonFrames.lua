@@ -1,5 +1,4 @@
 local pairs = pairs
-local strgsub = string.gsub
 local tinsert = table.insert
 local IsAddOnLoaded = IsAddOnLoaded
 
@@ -128,7 +127,7 @@ function Skinner:AddonFrames()
 		"Auc-Advanced", "Auc-Util-BigPicture", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "!ImprovedErrorFrame", "Ogri'Lazy"
 	}
 	for _, v in pairs(oddlyNamedAddons) do
-		v2, _ = strgsub(v, "[-_!']", "")
+		v2, _ = v:gsub("[-_!']", "")
 		self:checkAndRunAddOn(v, nil, v2)
 	end
 	oddlyNamedAddons = nil

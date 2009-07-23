@@ -1,8 +1,5 @@
 local _G = _G
 local ceil = math.ceil
-local strjoin = string.join
-local strlower = string.lower
-local strmatch = string.match
 local ipairs =ipairs
 local pairs = pairs
 local IsAddOnLoaded = IsAddOnLoaded
@@ -978,7 +975,7 @@ function Skinner:Options()
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				local uiOpt = strmatch(info[#info], "UI" , -2)
+				local uiOpt = info[#info]:match("UI" , -2)
 				-- handle Blizzard UI LoD Addons
 				if uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
@@ -1070,7 +1067,7 @@ function Skinner:Options()
 			set = function(info, value)
 				db[info[#info]] = value
 				-- handle Blizzard UI LoD Addons
-				local uiOpt = strmatch(info[#info], "UI" , -2)
+				local uiOpt = info[#info]:match("UI" , -2)
 				if uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
 						self:checkAndRun(info[#info])
@@ -1190,7 +1187,7 @@ function Skinner:Options()
 					get = function(info) return db[info[#info]] end,
 					set = function(info, value)
 						db[info[#info]] = value
-						local aOpt = string.sub(info[#info], -5)
+						local aOpt = info[#info]:sub(-5)
 						local aFunc
 						if IsAddOnLoaded("Blizzard_AchievementUI") then
 							if aOpt == "Frame" then aFunc = "UI"
@@ -1235,7 +1232,7 @@ function Skinner:Options()
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				local uiOpt = strmatch(info[#info], "UI" , -2)
+				local uiOpt = info[#info]:match("UI" , -2)
 				if info[#info] == "Colours" then self:checkAndRun("ColorPicker")
 				elseif info[#info] == "Feedback" then self:checkAndRun("FeedbackUI")
 				elseif info[#info] == "CombatLogQBF" then return
@@ -1810,10 +1807,10 @@ function Skinner:Options()
 	local optCheck = {}
 	for _, v in ipairs(optNames) do
 --		self:Debug("options: [%s]", v)
-		local optTitle = strjoin(" ", aName, v)
+		local optTitle = (" "):join(aName, v)
 		ACR:RegisterOptionsTable(optTitle, optTables[v])
 		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
-		optCheck[strlower(v)] = v
+		optCheck[v:lower()] = v
 	end
 
 	-- Slash command handler
@@ -1822,8 +1819,8 @@ function Skinner:Options()
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters
 			InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame)
-		elseif optCheck[strlower(input)] then
-			InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame[optCheck[strlower(input)]])
+		elseif optCheck[input:lower()] then
+			InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame[optCheck[input:lower()]])
 		else
 			LibStub("AceConfigCmd-3.0"):HandleCommand(aName, aName, input)
 		end

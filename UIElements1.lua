@@ -1,11 +1,10 @@
 local _G = _G
 local ceil = math.ceil
 local select = select
-local strfind = string.find
 local type = type
 local IsAddOnLoaded = IsAddOnLoaded
 local ftype = "u"
-local nop = function () end
+local nop = function() end
 
 function Skinner:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
@@ -751,14 +750,14 @@ function Skinner:MinimapButtons()
 						local regTex = reg:GetTexture()
 						local regDL = reg:GetDrawLayer()
 						-- change the DrawLayer to make the Icon show if required
-						if (regName and strfind(regName, "[Ii]con"))
-						or (regTex and strfind(regTex, "[Ii]con")) then
+						if (regName and regName:find("[Ii]con"))
+						or (regTex and regTex:find("[Ii]con")) then
 							if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
-						elseif (regName and strfind(regName, "Border"))
-						or (regTex and strfind(regTex, "TrackingBorder")) then
+						elseif (regName and regName:find("Border"))
+						or (regTex and regTex:find("TrackingBorder")) then
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)

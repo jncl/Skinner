@@ -34,7 +34,6 @@ local pairs = pairs
 local pcall = pcall
 local rawget = rawget
 local select = select
-local strfind = string.find
 local tcon = table.concat
 local tinsert = table.insert
 local tonumber = tonumber
@@ -416,9 +415,8 @@ local function __addSkinButton(opts)
 				local regDL = reg:GetDrawLayer()
 				local regTex = regOT == "Texture" and reg:GetTexture() or nil
 				-- change the DrawLayer to make the Icon show if required
-				if (regName and (strfind(regName, "[Ii]con") or strfind(regName, "[Cc]ount")))
---				or (regName and strfind(regName, "[Cc]ount"))
-				or (regTex and strfind(regTex, "[Ii]con")) then
+				if (regName and (regName:find("[Ii]con") or regName:find("[Cc]ount")))
+				or (regTex and regTex:find("[Ii]con")) then
 					if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 				end
 			end
@@ -1697,6 +1695,12 @@ end
 
 function Skinner:ShowInfo(obj, showKids, noDepth)
 
+--@alpha@
+	assert(obj, "Unknown object ShowInfo\n"..debugstack())
+--@end-alpha@
+
+	if not obj then return end
+
 	local showKids = showKids or false
 
 	local function showIt(fmsg, ...)
@@ -1717,7 +1721,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 	local function getChildren(frame, lvl)
 
 		if not showKids then return end
-		if strfind(lvl, "-") == 2 and noDepth then return end
+		if type(lvl) == "string" and lvl:find("-") == 2 and noDepth then return end
 
 		for i = 1, frame:GetNumChildren() do
 			local v = select(i, frame:GetChildren())
