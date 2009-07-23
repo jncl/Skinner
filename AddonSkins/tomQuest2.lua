@@ -40,23 +40,13 @@ function Skinner:tomQuest2()
 				self:Unhook(info, "lockUnlockQlFrame")
 			end
 		end)
-		
+
 		info.db.profile.backDropColor = CopyTable(self.bColour)
 		info.db.profile.borderColor = CopyTable(self.bbColour)
 	end
--->>-- Colour the Quest Tracker
-	local qTrkr = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("questsTracker", true)
-	if qTrkr then
-		qTrkr.db.profile.backDropColor = CopyTable(self.bColour)
-		qTrkr.db.profile.borderColor = CopyTable(self.bbColour)
-	end
--->>-- Colour the Achievement Tracker
-	local aTrkr = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("achievementTracker", true)
-	if aTrkr then
-		aTrkr.db.profile.backDropColor = CopyTable(self.bColour)
-		aTrkr.db.profile.borderColor = CopyTable(self.bbColour)
-	end
 
+	local qTrkr = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("questsTracker", true)
+	local aTrkr = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("achievementTracker", true)
 	-- find the tracker anchors and skin them
 	if qTrkr or aTrkr then
 		for i = 1, UIParent:GetNumChildren() do
@@ -74,6 +64,19 @@ function Skinner:tomQuest2()
 					end
 				end
 			end
+		end
+	end
+
+-->>-- Colour the Quest Tracker & Achievement Tracker if required
+	if self.db.profile.TrackerFrame.skin then
+		if qTrkr then
+			qTrkr.db.profile.backDropColor = CopyTable(self.bColour)
+			qTrkr.db.profile.borderColor = CopyTable(self.bbColour)
+		end
+		if aTrkr then
+			aTrkr.db.profile.backDropColor = CopyTable(self.bColour)
+			aTrkr.db.profile.borderColor = CopyTable(self.bbColour)
+			aTrkr.db.profile.statusBarTexture = self.sbTexture
 		end
 	end
 

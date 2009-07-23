@@ -1,12 +1,22 @@
 
+Skinner.ignoreLQTT = {}
+
 function Skinner:LibQTip()
 	if not self.db.profile.Tooltips.skin or self.initialized.LibQTip then return end
 	self.initialized.LibQTip = true
 
+	-- handle tomQuest2 Tracker & Achievements tooltips (frames)
+	if IsAddOnLoaded("tomQuest2") and not self.db.profile.TrackerFrame.skin then
+		self.ignoreLQTT["tomQuest2Tracker"] = true
+		self.ignoreLQTT["tomQuest2Achievements"] = true
+	end
+	
 	local function skinLTTooltips(ttLib)
 	
 		for key, tooltip in LibStub(ttLib):IterateTooltips() do
--- 				Skinner:Debug("%s:[%s, %s]", ttLib, key, tooltip)
+-- 			Skinner:Debug("%s:[%s, %s]", ttLib, key, tooltip)
+			-- ignore tooltips if required
+			if self.ignoreLQTT[key] then return end
 			if not Skinner.skinned[tooltip] then
 				Skinner:applySkin{obj=tooltip}
 			end
