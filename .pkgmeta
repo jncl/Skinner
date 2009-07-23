@@ -22,3 +22,5 @@ externals:
 ignore:
 
 	- ToDo.txt
+
+manual-changelog: Changelog.txt

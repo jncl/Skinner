@@ -1,0 +1,14 @@
+Jncl:
+	Updated usage of string functions
+	Changed way Quest Text is coloured
+	Resized TaxiFrame skin
+	Updated Dewdrop & Tablet skins
+	Updated tomQuest2 & LibQTip skins
+	Skinned Quel'evel
+	Updated Hack skin
+	Added Changelog.history
+	Updated ArkInventory skin
+	Updated AucAdvanced skin
+    ToDo.txt
+    Removed Debug message
+    Skinned Accomplishment
