@@ -15,3 +15,15 @@ S - Skin request
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 		
 √	N	Accomplishment, requested by jdhas, 14.07.09
+
+	I	GossipText, reported by Skylinee, Kerecha & Pseudopath, 20.07.09
+		- text colour is black, caused by Quest Level Addon(s)
+√			- Quelevel
+			- tomQuest2
+			- nQuestLog
+			- SmoothQuest
+			
+√		- reworked the text colours used for Quest info display
+
+√	I	tomQuest2, reported by X-buZZ, 23.07.09
+		- the addon TomQuest2 offers the ability to color the background and the border of its quest and archievment trackers. When using Skinner, these color are reset everytime you log in. Can you please modify Skinner this way so the coloring of TomQuest2 is working again?
