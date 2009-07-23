@@ -48,12 +48,7 @@ function Skinner:GossipFrame()
 	TRIVIAL_QUEST_DISPLAY = "|cff"..QTHex.."%s (low level)|r"
 
 	self:keepFontStrings(GossipFrameGreetingPanel)
-	GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=GossipGreetingScrollFrame}
-	for i = 1, NUMGOSSIPBUTTONS do
-		local text = self:getRegion(_G["GossipTitleButton"..i], 3)
-		text:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
 
 	self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
 
@@ -86,46 +81,23 @@ function Skinner:QuestFrame()
 	if not self.db.profile.QuestFrame or self.initialized.QuestFrame then return end
 	self.initialized.QuestFrame = true
 
-	-- hook OnShow methods to change text colour
-	self:SecureHook("QuestFrameGreetingPanel_OnShow", function()
-		for i = 1, MAX_NUM_QUESTS do
-			local text = self:getRegion(_G["QuestTitleButton"..i], 3)
-			text:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
-	end)
-	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, ...)
-		fontString:SetTextColor(self.HTr, self.HTg, self.HTb)
-	end, true)
-	self:RawHook("QuestFrame_SetTextColor", function(fontString, ...)
-		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end, true)
-
 	self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
 
 -->>--	Reward Panel
 	self:keepFontStrings(QuestFrameRewardPanel)
-	QuestRewardTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinScrollBar{obj=QuestRewardScrollFrame}
 
 -->>--	Progress Panel
 	self:keepFontStrings(QuestFrameProgressPanel)
-	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=QuestProgressScrollFrame}
 
 -->>--	Detail Panel
 	self:keepFontStrings(QuestFrameDetailPanel)
-	QuestDetailTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinScrollBar{obj=QuestDetailScrollFrame}
 
 -->>--	Greeting Panel
 	self:keepFontStrings(QuestFrameGreetingPanel)
 	self:skinScrollBar{obj=QuestGreetingScrollFrame}
-	if QuestFrameGreetingPanel:IsShown() then
-		GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		CurrentQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		AvailableQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestFrameGreetingPanel_OnShow()  -- force recolour of quest lines
-	end
 
 end
 
