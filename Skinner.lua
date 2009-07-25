@@ -131,21 +131,6 @@ function Skinner:OnInitialize()
 	local c = self.db.profile.BodyText
 	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
 
-	-- change text colour
-	QuestTitleFont:SetTextColor(self.HTr, self.HTg, self.HTb)
-	QuestFont:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestFontLeft:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestFontHighlight:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestFontNormalSmall:SetTextColor(self.BTr, self.BTg, self.BTb)
-	GameFontBlack:SetTextColor(self.BTr, self.BTg, self.BTb)
-	GameFontBlackSmall:SetTextColor(self.BTr, self.BTg, self.BTb)
-	GameFontBlackTiny:SetTextColor(self.BTr, self.BTg, self.BTb)
-	-- used by the Quest Frame
-	MATERIAL_TEXT_COLOR_TABLE["Default"] = {self.BTr, self.BTg, self.BTb}
-	MATERIAL_TEXT_COLOR_TABLE["Parchment"] = {self.BTr, self.BTg, self.BTb}
-	MATERIAL_TITLETEXT_COLOR_TABLE["Default"] = {self.HTr, self.HTg, self.HTb}
-	MATERIAL_TITLETEXT_COLOR_TABLE["Parchment"] = {self.HTr, self.HTg, self.HTb}
-
 	-- Frame multipliers
 	self.FxMult, self.FyMult = 0.9, 0.87
 	-- Frame Tab multipliers

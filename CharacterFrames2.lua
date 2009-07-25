@@ -164,14 +164,17 @@ function Skinner:QuestLog()
 	if not self.db.profile.QuestLog.skin or self.initialized.QuestLog then return end
 	self.initialized.QuestLog = true
 
-	-- hook this as colours are changed
 	self:SecureHook("QuestLog_UpdateQuestDetails", function(doNotScroll)
-		for i = 1, 10 do
-			local r, g, b, a = _G["QuestLogObjective"..i]:GetTextColor()
-			_G["QuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb)
+		for i = 1, MAX_OBJECTIVES do
+			local r, g, b = _G["QuestLogObjective"..i]:GetTextColor()
+			_G["QuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
-		local r, g, b, a = QuestLogRequiredMoneyText:GetTextColor()
-		QuestLogRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb)
+        QuestLogTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		local r, g, b = QuestLogRequiredMoneyText:GetTextColor()
+		QuestLogRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		QuestLogRewardTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		QuestLogItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		QuestLogItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end)
 
 	self:keepFontStrings(QuestLogCount)
@@ -180,6 +183,12 @@ function Skinner:QuestLog()
 	end
 	self:keepFontStrings(EmptyQuestLogFrame)
 
+	QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	QuestLogObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	QuestLogSuggestedGroupNum:SetTextColor(self.HTr, self.HTg, self.HTb)
+	QuestLogDescriptionTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	QuestLogQuestDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	
 	if not self.isPatch then
 		self:skinScrollBar{obj=QuestLogListScrollFrame}
 	end
