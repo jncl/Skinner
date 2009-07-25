@@ -63,7 +63,7 @@ function Skinner:TimeManager()
 	TimeManagerAlarmMinuteDropDownMiddle:SetWidth(TimeManagerAlarmMinuteDropDownMiddle:GetWidth() + 8)
 	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown}
 	self:skinEditBox{obj=TimeManagerAlarmMessageEditBox, regs={9}}
-	self:addSkinFrame{obj=TimeManagerFrame, ft=ftype, kfs=true, x1=14, y1=-11, x2=-50, y2=9}
+	self:addSkinFrame{obj=TimeManagerFrame, ft=ftype, kfs=true, x1=14, y1=-11, x2=-49, y2=9}
 
 -->>--	Time Manager Clock Button
 	self:removeRegions(TimeManagerClockButton, {1})
