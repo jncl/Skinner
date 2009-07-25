@@ -1,3 +1,4 @@
+local _G = _G
 local ceil = math.ceil
 local floor = math.floor
 local select = select
@@ -79,5 +80,15 @@ function Skinner:tomQuest2()
 			aTrkr.db.profile.statusBarTexture = self.sbTexture
 		end
 	end
+
+	local qG = LibStub("AceAddon-3.0"):GetAddon("tomQuest2"):GetModule("questsGivers")
+	-- hook this and change text colour before level number added
+	self:RawHook(qG, "QUEST_GREETING", function(this)
+		for i = 1, MAX_NUM_QUESTS do
+			local text = self:getRegion(_G["QuestTitleButton"..i], 3)
+			text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
+		self.hooks[qG].QUEST_GREETING(this)
+	end, true)
 
 end
