@@ -1,3 +1,25 @@
+b2.10116.1
+Jncl:
+	Renamed Change.history to Change_History.txt
+	Just a I decided to add a changelog I notice that the issue has been fixed
+	Updated changelog.txt
+	ToDo.txt
+	Added changelog entry to .pkgmeta
+	Added changelog text file
+	Updated usage of string functions
+	Changed way Quest Text is coloured
+	Resize TaxiFrame skin
+	Updated Dewdrop & Tablet skins
+	Updated tomQuest2 & LibQTip skins
+	Skinned Quel'evel
+	Updated Hack skin
+	Added Changelog.history
+	Updated ArkInventory skin
+	Updated AucAdvanced skin
+	ToDo.txt
+	Removed Debug message
+	Skinned Accomplishment
+
 b2.10083.1
 Jncl:
     ToDo.txt
