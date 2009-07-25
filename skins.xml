@@ -283,6 +283,7 @@
 <script file="SkinMe\Skillet.lua"/>
 <script file="SkinMe\SmartBuff.lua"/>
 <script file="SkinMe\SmartDebuff.lua"/>
+<script file="SkinMe\SmoothQuest.lua"/>
 <script file="SkinMe\SpamSentry.lua"/>
 <!-- <script file="SkinMe\SpecialTalentUI.lua"/> -->
 <!-- <script file="SkinMe\SpellBinder.lua"/> -->
