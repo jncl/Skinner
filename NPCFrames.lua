@@ -103,6 +103,7 @@ function Skinner:QuestFrame()
 
 -->>--	Reward Panel
 	self:keepFontStrings(QuestFrameRewardPanel)
+	QuestRewardHonorFrameHonorReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestRewardTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinScrollBar{obj=QuestRewardScrollFrame}
 
@@ -113,6 +114,7 @@ function Skinner:QuestFrame()
 
 -->>--	Detail Panel
 	self:keepFontStrings(QuestFrameDetailPanel)
+	QuestDetailHonorFrameHonorReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestDetailTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinScrollBar{obj=QuestDetailScrollFrame}
 
