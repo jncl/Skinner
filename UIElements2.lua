@@ -742,6 +742,7 @@ function Skinner:Nameplates()
 	self.initialized.Nameplates = true
 
 	local npTex = [[Interface\Tooltips\Nameplate-Border]]
+	local shldTex = [[Interface\AchievementFrame\UI-Achievement-Progressive-Shield]]
 	local npEvt
 	local function isNameplate(obj)
 
@@ -760,12 +761,18 @@ function Skinner:Nameplates()
 			local child = select(i, WorldFrame:GetChildren())
 			if isNameplate(child) then
 -- 				Skinner:ShowInfo(child, true)
-				-- child 1 is the flash texture
+--				 child 1 is the flash texture
 				select(2, child:GetRegions()):SetAlpha(0) -- hide border texture
 				select(3, child:GetRegions()):SetAlpha(0) -- hide border texture
-				-- child 4 is the spell icon
-				select(5, child:GetRegions()):SetAlpha(0) -- hide glow effect
-				-- children 6 & 7 are text, 8 & 9 are raid icons, 10 is the elite icon
+				-- child 4 is the shield icon, replace texture with Achievement's Shield texture
+				local shldReg = select(4, child:GetRegions())
+				shldReg:SetHeight(30)
+				shldReg:SetWidth(30)
+				shldReg:SetTexture(shldTex)
+				shldReg:SetTexCoord(0, 0.75, 0, 0.75)
+				-- child 5 is the spell icon
+				select(6, child:GetRegions()):SetAlpha(0) -- hide glow effect
+				-- children 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
 				for i = 1, 2 do -- skin both status bars
 					local sb = select(i, child:GetChildren())
 					if not Skinner.sbGlazed[sb] then
@@ -788,7 +795,7 @@ function Skinner:Nameplates()
 	local function showFunc()
 
 		if not npEvt then
-			npEvt = Skinner:ScheduleRepeatingTimer(skinNameplates, 0.2)
+			npEvt = Skinner:ScheduleRepeatingTimer(skinNameplates, 0.1)
 		end
 
 	end
