@@ -505,6 +505,7 @@ function Skinner:MainMenuBar()
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(MainMenuExpBar, 0)
  		self:glazeStatusBar(ReputationWatchStatusBar, 0)
+ 		ExhaustionLevelFillBar:SetTexture(self.sbTexture)
 	end
 
 	if IsAddOnLoaded("Dominos") then return end
@@ -514,6 +515,7 @@ function Skinner:MainMenuBar()
 	self:keepFontStrings(MainMenuBarArtFrame)
 	ExhaustionTick:SetAlpha(0)
 	MainMenuExpBar:SetHeight(MainMenuExpBar:GetHeight() - 2) -- shrink it so it moves up
+	ExhaustionLevelFillBar:SetHeight(MainMenuExpBar:GetHeight()) -- mirror the XP bar
 	self:addSkinFrame{obj=MainMenuBar, ft=ftype, kfs=true, noBdr=true, x1=-4, y1=-7, x2=4, y2=-4}
 
 	-- Experience Bar
