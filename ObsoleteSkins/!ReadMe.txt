@@ -6,4 +6,4 @@ Hi,
   
   Jncl
   
-  The Skinner topic URL is : http://www.wowace.com/forums/index.php?topic=2941
+  The Skinner topic URL is : http://forums.wowace.com/showthread.php?t=2923
