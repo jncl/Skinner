@@ -672,12 +672,6 @@ function Skinner:ItemSocketingUI()
 	-- now colour the sockets
 	colourSockets()
 
-	-- Tooltip
-	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then ItemSocketingDescription:SetBackdrop(self.Backdrop[1]) end
-		self:skinTooltip(ItemSocketingDescription)
-	end
-
 end
 
 function Skinner:GuildBankUI()
