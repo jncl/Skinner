@@ -220,19 +220,7 @@ function Skinner:ChatConfig()
 	end
 	self:addSkinFrame{obj=ChatConfigChatSettingsLeft, ft=ftype}
 
-	if not self.isPatch then
-		for i = 1, #CHAT_CONFIG_CHAT_RIGHT do
-			_G["ChatConfigChatSettingsRightCheckBox"..i]:SetBackdrop(nil)
-		end
-		self:addSkinFrame{obj=ChatConfigChatSettingsRight, ft=ftype}
-
-		for i = 1, #CHAT_CONFIG_CHAT_CREATURE_LEFT do
-			_G["ChatConfigChatSettingsCreatureLeftCheckBox"..i]:SetBackdrop(nil)
-		end
-		self:addSkinFrame{obj=ChatConfigChatSettingsCreatureLeft, ft=ftype}
-	else
-		self:addSkinFrame{obj=ChatConfigChatSettingsClassColorLegend, ft=ftype}
-	end
+	self:addSkinFrame{obj=ChatConfigChatSettingsClassColorLegend, ft=ftype}
 
 -->>--	Channel Settings
 	self:SecureHook(ChatConfigChannelSettings, "Show", function(this, ...)
@@ -241,9 +229,7 @@ function Skinner:ChatConfig()
 		end
 	end)
 	self:addSkinFrame{obj=ChatConfigChannelSettingsLeft, ft=ftype}
-	if self.isPatch then
-		self:addSkinFrame{obj=ChatConfigChannelSettingsClassColorLegend, ft=ftype}
-	end
+	self:addSkinFrame{obj=ChatConfigChannelSettingsClassColorLegend, ft=ftype}
 
 -->>--	Other Settings
 	for i = 1, #CHAT_CONFIG_OTHER_COMBAT do
@@ -261,12 +247,10 @@ function Skinner:ChatConfig()
 	end
 	self:addSkinFrame{obj=ChatConfigOtherSettingsSystem, ft=ftype}
 
-	if self.isPatch then
-		for i = 1, #CHAT_CONFIG_CHAT_CREATURE_LEFT do
-			_G["ChatConfigOtherSettingsCreatureCheckBox"..i]:SetBackdrop(nil)
-		end
-		self:addSkinFrame{obj=ChatConfigOtherSettingsCreature, ft=ftype}
+	for i = 1, #CHAT_CONFIG_CHAT_CREATURE_LEFT do
+		_G["ChatConfigOtherSettingsCreatureCheckBox"..i]:SetBackdrop(nil)
 	end
+	self:addSkinFrame{obj=ChatConfigOtherSettingsCreature, ft=ftype}
 	
 -->>--	Combat Settings
 	-- Filters
@@ -509,19 +493,12 @@ function Skinner:HelpFrame()
 	self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
 
 -->>-- View Response SubFrame
-	if self.isPatch then
-		self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
-		HelpFrameViewResponseDivider:Hide()
-		self:skinScrollBar{obj=HelpFrameViewResponseMessageScrollFrame}
-	end
+	self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
+	HelpFrameViewResponseDivider:Hide()
+	self:skinScrollBar{obj=HelpFrameViewResponseMessageScrollFrame}
 
 -->>--	Ticket Status Frame
-	if not self.isPatch then
-		local tsfC = self:getChild(TicketStatusFrame, 2) -- skin this unnamed child
-		self:addSkinFrame{obj=tsfC, ft=ftype}
-	else
-		self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
-	end
+	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
 	
 -->>--	KnowledgeBase Frame
 	self:keepFontStrings(KnowledgeBaseFrame)
@@ -698,15 +675,6 @@ function Skinner:BattlefieldMinimap()
 
 end
 
-function Skinner:ScriptErrors()
-	if not self.db.profile.ScriptErrors then return end
-
-	if not self.isPatch then
-		self:addSkinFrame{obj=ScriptErrors, ft=ftype}
-	end
-
-end
-
 function Skinner:DropDowns()
 	if not self.db.profile.DropDowns or self.initialized.DropDowns then return end
 	self.initialized.DropDowns = true
@@ -851,12 +819,8 @@ function Skinner:FeedbackUI() -- PTR only
 	self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlCategoryList, ft=ftype}
 	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlStatus)
 	self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
-	if not self.isPatch then
-		self:skinScrollBar{obj=FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
-	else
-		FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
-		self:skinUsingBD{obj=FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
-	end
+	FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
+	self:skinUsingBD{obj=FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
 	FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
 	FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
 	FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
@@ -864,11 +828,7 @@ function Skinner:FeedbackUI() -- PTR only
 	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype}
 	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
 	self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
-	if not self.isPatch then
-		self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
-	else
-		self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
-	end
+	self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
 	-- skin the alert buttons
 	for i = 1, 10 do
 		local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
@@ -884,11 +844,7 @@ function Skinner:FeedbackUI() -- PTR only
 	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype}
 	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
 	self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelEditInput}
-	if not self.isPatch then
-		self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
-	else
-		self:skinUsingBD{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
-	end
+	self:skinUsingBD{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
 
 -->>-- Bug Frame
 	FeedbackUIBugFrame:SetBackdrop(nil)
@@ -899,11 +855,7 @@ function Skinner:FeedbackUI() -- PTR only
 	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype}
 	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
 	self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelEditInput}
-	if not self.isPatch then
-		self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
-	else	
-		self:skinUsingBD{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
-	end
+	self:skinUsingBD{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
 
 	-- make the QuestLog Tip Label text visible
 	FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)

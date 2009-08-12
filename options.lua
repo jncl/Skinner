@@ -90,7 +90,7 @@ function Skinner:Defaults()
 		InspectUI		= true,
 		BattleScore     = true,
 		BattlefieldMm   = true,
-		ScriptErrors    = true,
+		DebugTools		= true,
 		DropDowns       = true,
 		MinimapButtons  = false,
 		MinimapGloss    = false,
@@ -1579,10 +1579,10 @@ function Skinner:Options()
 					name = self.L["Battlefield Minimap Frame"],
 					desc = self.L["Toggle the skin of the Battlefield Minimap Frame"],
 				},
-				ScriptErrors = {
+				DebugTools = {
 					type = "toggle",
-					name = self.L["Script Errors Frame"],
-					desc = self.L["Toggle the skin of the Script Errors Frame"],
+					name = self.L["Debug Tools Frames"],
+					desc = self.L["Toggle the skin of the Debug Tools Frames"],
 				},
 				minimapopts = {
 					type = "group",

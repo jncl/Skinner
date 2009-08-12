@@ -564,9 +564,7 @@ function Skinner:MainMenuBar()
 	self:keepFontStrings(PetActionBarFrame)
 
 -->>-- Shaman's Totem Frame
-	if self.isPatch then
-		self:addSkinFrame{obj=MultiCastFlyoutFrame, kfs=true, ft=ftype, y1=-4, y2=-4}
-	end
+	self:addSkinFrame{obj=MultiCastFlyoutFrame, kfs=true, ft=ftype, y1=-4, y2=-4}
 
 end
 
@@ -829,6 +827,8 @@ function Skinner:AutoComplete()
 end
 
 function Skinner:DebugTools()
+	if not self.db.profile.DebugTools or self.initialized.DebugTools then return end
+	self.initialized.DebugTools = true
 
 	self:addSkinFrame{obj=EventTraceFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
 	self:skinSlider(EventTraceFrameScroll)

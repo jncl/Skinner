@@ -164,7 +164,7 @@ function Skinner:QuestLog()
 	if not self.db.profile.QuestLog.skin or self.initialized.QuestLog then return end
 	self.initialized.QuestLog = true
 
-	self:SecureHook("QuestLog_UpdateQuestDetails", function(doNotScroll)
+	self:SecureHook("QuestLog_UpdateQuestDetails", function(...)
 		for i = 1, MAX_OBJECTIVES do
 			local r, g, b = _G["QuestLogObjective"..i]:GetTextColor()
 			_G["QuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
@@ -178,9 +178,6 @@ function Skinner:QuestLog()
 	end)
 
 	self:keepFontStrings(QuestLogCount)
-	if not self.isPatch then
-		self:removeRegions(QuestLogCollapseAllButton, {7, 8, 9})
-	end
 	self:keepFontStrings(EmptyQuestLogFrame)
 
 	QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -188,16 +185,11 @@ function Skinner:QuestLog()
 	QuestLogSuggestedGroupNum:SetTextColor(self.HTr, self.HTg, self.HTb)
 	QuestLogDescriptionTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	QuestLogQuestDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=6}
 	
-	if not self.isPatch then
-		self:skinScrollBar{obj=QuestLogListScrollFrame}
-	end
+-->>-- QuestLogDetail Frame
 	self:skinScrollBar{obj=QuestLogDetailScrollFrame}
-	if self.isPatch then
-		self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=6}
-	else
-		self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=48}
-	end
+	self:addSkinFrame{obj=QuestLogDetailFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=1}
 
 end
 
