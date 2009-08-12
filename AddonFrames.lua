@@ -159,9 +159,8 @@ function Skinner:AddonFrames()
 		["Configator"] = "Configator",
 		["LibExtraTip-1"] = "LibExtraTip",
 		["tektip-1.0"] = "tektip",
-		["LibQTip-1.0"] = "LibQTip",
 		["LibTooltip-1.0"] = "LibQTip",
-		["LibQTipClick-1.1"] = "LibQTip",
+		["LibQTip-1.0"] = "LibQTip",
 	}
 	for k, v in pairs(libsToSkin) do
 --		self:Debug("skin Libs:[%s, %s]", k, v)
