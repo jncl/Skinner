@@ -20,11 +20,11 @@ function Skinner:Talented()
 		self:Unhook(Talented, "CreateBaseFrame")
 	end)
 	
--->>-- Glyphs frame
-	self:SecureHook(Talented, "MakeGlyphFrame", function(this, parent)
-		self:moveObject{obj=TalentedGlyphs.title, x=-14}
-		self:addSkinFrame{obj=TalentedGlyphs, kfs=true, y1=-12, x2=-32, y2=78}
-		self:Unhook(Talented, "MakeGlyphFrame")
-	end)
+end
+
+function Skinner:Talented_GlyphFrame()
+
+	self:moveObject{obj=TalentedGlyphs.title, x=-14}
+	self:addSkinFrame{obj=TalentedGlyphs, kfs=true, y1=-12, x2=-31, y2=78}
 
 end
