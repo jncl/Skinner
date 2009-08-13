@@ -28,16 +28,30 @@ function Skinner:ShadowDancer3()
 		local weaponObjs = {"WeaponName", "WpsMain", "WpsOff", "WpsRange", "WpsAmmo"}
 		for _, v in pairs(weaponObjs) do
 			dd = weaponCon:GetChild(v)
-			self:applySkin(dd.__UI)
-			self:applySkin(dd.__List.__UI)
+			if dd.__List then
+				self:applySkin(dd.__UI)
+				self:applySkin(dd.__List.__UI)
+			end
 		end
 		self:applySkin(weaponF)
 		-- Skill Tab
-		local skillObjs = {"Time", "SkillName", "WpsMain", "WpsOff", "WpsRange", "WpsAmmo"}
+		local skillObjs = {"Time", "SkillName"}
 		for _, v in pairs(skillObjs) do
 			dd = skillCon:GetChild(v)
-			self:applySkin(dd.__UI)
-			self:applySkin(dd.__List.__UI)
+			if dd.__List then
+				self:applySkin(dd.__UI)
+				self:applySkin(dd.__List.__UI)
+			end
+		end
+		local fsObjs = {"Action_", "Wps1_", "Wps2_"}
+		for _, v in pairs(fsObjs) do
+			for i = 1, 10 do
+				dd = skillCon.Sets:GetChild(v..i)
+				if dd and dd.__List then
+					self:applySkin(dd.__UI)
+					self:applySkin(dd.__List.__UI)
+				end
+			end
 		end
 		self:applySkin(skillF)
 		self:Unhook(obj, "OpenGUI")
