@@ -29,7 +29,7 @@ end
 
 function Skinner:MobMapDatabaseStub2()
 
--->>--	Quests Frame
+-->>--	Quests Detail Frame
 	self:skinEditBox(MobMapQuestListNameFilter, {9})
 	self:skinEditBox(MobMapQuestListNPCFilter, {9})
 	self:skinEditBox(MobMapQuestListZoneFilter)
@@ -41,6 +41,12 @@ function Skinner:MobMapDatabaseStub2()
 	self:skinScrollBar(MobMapQuestListScrollFrame)
 	self:applySkin(MobMapQuestDetailFrame)
 	MobMapQuestDetailFrameBackground:Hide()
+-->>--	Quests Comment Frame
+	MobMapQuestCommentFrameBackground:Hide()
+	self:applySkin(MobMapQuestCommentFrame)
+-->>--	Quests Comment Editor Frame
+	MobMapQuestCommentEditorFrameBackground:Hide()
+	self:applySkin(MobMapQuestCommentEditorFrame)
 
 end
 

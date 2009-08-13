@@ -209,6 +209,7 @@ lodFrames = nil
 for i = 1, 8 do
 	lodAddons["MobMapDatabaseStub"..i] = "MobMapDatabaseStub"..i
 end
+lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 
 function Skinner:LoDFrames(arg1)
 --	self:Debug("LoDFrames: [%s]", arg1)
