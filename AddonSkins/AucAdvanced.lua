@@ -2,8 +2,6 @@
 function Skinner:AucAdvanced()
 	if not self.db.profile.AuctionUI then return end
 
-	if IsAddOnLoaded("EnhTooltip") then self:checkAndRunAddOn("EnhTooltip") end
-
 	-- move and skin the progress bars
 	self:SecureHook(AucAdvanced.Scan , "ProgressBars", function(sbObj, value, show, text)
 		if not self.sbGlazed[sbObj] then
