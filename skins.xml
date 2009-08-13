@@ -3,6 +3,7 @@
 
 <!-- Addon skins are here, must be prefixed by SkinMe\ -->
 
+<script file="SkinMe\_NPCScan.lua"/>
 <script file="SkinMe\Accomplishment.lua"/>
 <script file="SkinMe\Accountant.lua"/>
 <script file="SkinMe\Ace2.lua"/>
@@ -56,6 +57,7 @@
 <script file="SkinMe\BigTrouble.lua"/>
 <!-- <script file="SkinMe\Bongos3.lua"/> -->
 <script file="SkinMe\Bonuses.lua"/>
+<script file="SkinMe\BriefQuestComplete.lua"/>
 <script file="SkinMe\Broker_Transport.lua"/>
 <!-- <script file="SkinMe\BtmScan.lua"/> -->
 <script file="SkinMe\Buffalo.lua"/>
@@ -73,6 +75,7 @@
 <script file="SkinMe\cgCrafty.lua"/>
 <script file="SkinMe\CharacterInfo.lua"/>
 <!-- <script file="SkinMe\CharactersViewer.lua"/> -->
+<script file="SkinMe\ChatBar.lua"/>
 <script file="SkinMe\Chatr.lua"/>
 <script file="SkinMe\Chatter.lua"/>
 <script file="SkinMe\Chinchilla.lua"/>
