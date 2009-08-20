@@ -9,7 +9,10 @@ function Skinner:LibExtraTip()
 		local ttip = self.hooks[lib].GetFreeExtraTipObject(this)
 		self:skinTooltip(ttip)
 		if not self.skinned[ttip] then
-			if self.db.profile.Tooltips.style == 3 then ttip:SetBackdrop(self.backdrop) end
+			if self.db.profile.Tooltips.style == 3 then ttip:SetBackdrop(self.Backdrop[1]) end
+			self:HookScript(ttip, "OnShow", function(this)
+				self:skinTooltip(this)
+			end)
 		end
 		return ttip
 	end, true)
