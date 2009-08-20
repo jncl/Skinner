@@ -1,6 +1,12 @@
 
 function Skinner:_NPCScan()
 
+-->>-- NPC Alert Button
+	self:getRegion(_NPCScanButton, 4):SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_NPCScanButton, kfs=true}
+	_NPCScanButton.SetBackdropBorderColor = nop
+
+-->>-- Config settings
 	self:skinDropDown{obj=_NPCScanConfigSoundDropdown}
 	
 -->>-- Search Frame
