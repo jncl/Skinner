@@ -10,7 +10,7 @@ function Skinner:Panda(LoD)
 		Skinner:keepFontStrings(frame)
 		Skinner:moveObject(Skinner:getRegion(frame, 2), nil, nil, "+", 10) -- titletext
 		Skinner:moveObject(Skinner:getChild(frame, 1), nil, ni, "+", 11) -- close button
-		for i = 4, 7 do -- Skill tabs
+		for i = 4, 8 do -- Skill tabs
 			local btn = Skinner:getChild(frame, i)
 			Skinner:removeRegions(btn, {3}) -- N.B. other regions are icon and highlight
 			btn:SetWidth(btn:GetWidth() * 1.25)
