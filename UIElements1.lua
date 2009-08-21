@@ -535,13 +535,15 @@ function Skinner:GMSurveyUI()
 
 	self:skinScrollBar{obj=GMSurveyScrollFrame}
 
-	-- FIXME: this isn't working, questions are hidden behind the skin
 	for i = 1, MAX_SURVEY_QUESTIONS do
-		self:addSkinFrame{obj=_G["GMSurveyQuestion"..i], ft=ftype, y1=-2}
+		local gmsQ = _G["GMSurveyQuestion"..i]
+		self:applySkin{obj=gmsQ, ft=ftype} -- must use applySkin otherwise text is behind gradient
+		gmsQ.SetBackdropColor = nop
+		gmsQ.SetBackdropBorderColor = nop
 	end
 
 	self:skinScrollBar{obj=GMSurveyCommentScrollFrame}
-	self:addSkinFrame{obj=GMSurveyCommentFrame, ft=ftype}
+	self:applySkin{obj=GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
 
 end
 
