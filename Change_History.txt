@@ -1,3 +1,12 @@
+b1.10128.1
+Jncl:
+	ToDo.txt
+	Change_History.txt
+	Resized TimeManagerFrame
+	Reinstate Quest Text colouring code
+	Updated nQuestLog, Quel'evel & tomQuest2 skins
+	Skinned SmoothQuest
+
 b2.10116.1
 Jncl:
 	Renamed Change.history to Change_History.txt
