@@ -104,7 +104,7 @@ function Skinner:AddonFrames()
 		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "RaidBuffStatus", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
 		"Sanity2", --[["SanityBags",--]] "SellJunk", "ShadowDancer3", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SmoothQuest", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
-		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekKompare", "tekPad", "TheCollector", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "tomQuest2", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest",
+		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "tomQuest2", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", --[["Vendor",--]] "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
 		"WebDKP", "WIM", "WoWEquip",

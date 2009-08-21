@@ -309,7 +309,6 @@
 <script file="SkinMe\tekBlocks.lua"/>
 <script file="SkinMe\tekDebug.lua"/>
 <script file="SkinMe\tekErr.lua"/>
-<script file="SkinMe\tekKompare.lua"/>
 <script file="SkinMe\tekKonfig.lua"/>
 <script file="SkinMe\tekPad.lua"/>
 <script file="SkinMe\tektip.lua"/>
