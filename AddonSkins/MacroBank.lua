@@ -4,23 +4,26 @@ function Skinner:MacroBank()
 	
 	self:SecureHook(MacroBank.MainFrame, "Show", function(this, ...)
 		local frame = MacroBank.MainFrame
-		frame:ClearAllPoints();
-	    frame:SetPoint("TOPLEFT", MacroFrame, "TOPRIGHT")
-		self:keepFontStrings(frame)
 		frame.HeaderTexture:Hide()
 		frame.HeaderTexture:SetPoint("TOP", frame, "TOP", 0, 7)
-		self:keepFontStrings(frame.MacroList.ScrollFrame)
-		self:skinScrollBar(frame.MacroList.ScrollFrame)
-		self:applySkin(frame.MacroList)
-		self:skinEditBox(frame.MacroCategory, {9})
-		self:skinEditBox(frame.MacroDescription, {9})
-		self:skinEditBox(frame.MacroName, {9})
-		self:keepFontStrings(frame.MacroBody.ScrollFrame)
-		self:skinScrollBar(frame.MacroBody.ScrollFrame)
-		self:applySkin(frame.MacroBody)
-		self:applySkin(frame)
-		-- wait for a half a second to resize the frame 
-		self:ScheduleTimer(function() frame:SetWidth(MacroFrame:GetWidth()) 	frame:SetHeight(MacroFrame:GetHeight())end, 0.5)
+		self:applySkin{obj=frame, kfs=true}
+		-- ToMacroBank frame
+		self:applySkin{obj=frame.Macros.ToMacroBank}
+		-- FromMacroBank frame
+		self:applySkin{obj=frame.Macros.FromMacroBank}
+		-- MacroList frame
+		self:skinScrollBar{obj=frame.Macros.MacroList.ScrollFrame, size=3}
+		self:applySkin(frame.Macros.MacroList)
+		-- Macros frame
+		self:skinEditBox(frame.Macros.MacroCategory, {9})
+		self:skinEditBox(frame.Macros.MacroDescription, {9})
+		self:skinEditBox(frame.Macros.MacroName, {9})
+		-- IconChoice frame
+		self:skinScrollBar{obj=frame.Macros.IconChoice.ScrollFrame}
+		self:applySkin{obj=frame.Macros.IconChoice, kfs=true}
+		-- MacroBody frame
+		self:skinScrollBar{obj=frame.Macros.MacroBody.ScrollFrame, size=3}
+		self:applySkin(frame.Macros.MacroBody)
 		self:Unhook(MacroBank.MainFrame, "Show")
 	end)
 
