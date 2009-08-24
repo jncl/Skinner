@@ -834,7 +834,7 @@ function Skinner:DebugTools()
 	self.initialized.DebugTools = true
 
 	self:addSkinFrame{obj=EventTraceFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
-	self:skinSlider(EventTraceFrameScroll)
+	self:skinSlider{obj=EventTraceFrameScroll, size=3}
 	self:addSkinFrame{obj=ScriptErrorsFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
 	self:skinScrollBar{obj=ScriptErrorsFrameScrollFrame}
 
