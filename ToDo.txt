@@ -11,10 +11,33 @@ S - Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-	I	oRA3, reported by acirac, 03.08.09
-√		- Readycheck frame isn't skinned
+√	I	MacroBank, reported by , 24.08.09
+		- Skinner-b2.10314.2\SkinMe\MacroBank.lua:12: attempt to index field 'MacroList' (a nil value)
+		(tail call): ?:
+		<in C code>: in function `Show'
+		MacroBank-1.5\MacroBank.lua:424: in function <Interface\AddOns\MacroBank\MacroBank.lua:422>
+		<in C code>: in function `Show'
+		Interface\FrameXML\UIParent.lua:1570: in function `SetUIPanel':
+		Interface\FrameXML\UIParent.lua:1415: in function `ShowUIPanel':
+		Interface\FrameXML\UIParent.lua:1308: in function <Interface\FrameXML\UIParent.lua:1304>:
+		<in C code>: in function `SetAttribute'
+		Interface\FrameXML\UIParent.lua:1934: in function `ShowUIPanel':
+		Blizzard_MacroUI\Blizzard_MacroUI.lua:12: in function <...terface\AddOns\Blizzard_MacroUI\Blizzard_MacroUI.lua:11>
+		<in C code>: in function `MacroFrame_Show'
+		Interface\FrameXML\UIParent.lua:336: in function <Interface\FrameXML\UIParent.lua:333>:
+		<in C code>: in function `ShowMacroFrame'
+		<string>:"*:OnClick":3: in function <[string "*:OnClick"]:1>
 
-√	S	BlackList, requested by slickwalker, 22.08.09
-	
-	I	Enchantrix, reported by sammael666, 21.08.09
-√		- auto de prompt still not skinned (version issue)
+	I	FramesResized, reported by shadowrm, 24.08.09
+√		- Raid Info panel needs skinning
+
+	O	HealBot, reported by acirac, 24.08.09
+√		- updated skin supplied
+
+	I	DBM, reported by Kerecha, 10.08.09
+		- Also still having major problems getting the DBM /range window to skin properly.
+
+		Tooltip style 3 uses my Background and Border, but at full Alpha instead of 0.5 as its supposed to. 
+		Also if i change the range from the right click dropdown the background changed to pure black and my texture goes away (border remains the same)
+
+		(1 and 2 just looks plain unskinned)
