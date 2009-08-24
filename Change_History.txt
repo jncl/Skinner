@@ -1,4 +1,31 @@
-b1.10128.1
+b2.10314.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated GMSurveyUI skin
+	Removed tekKompare skin
+	Skinned RaidBuffStatus
+	Skinned Enchantrix
+	Updated _NPCScan skin
+	Updated LibExtraTip skin
+	Updated Panda skin
+	Skinned _NPCScan, BriefQuestComplete & ChatBar
+	Updated ShadowDancer3 skin
+	Updated Talented skin
+	Updated LibExtraTip skin
+	Updated ImprovedErrorFrame skin
+	Updated AucAdvanced skin
+	Updated MobMap skin
+	Fix height and texture of the Rested XP bar
+	Updated forum URL's in ReadMe.txt files
+	Updated ItemSocketing skin
+	Shield on Nameplate castbar now displays
+	Colour Quest honor text
+	Removed reference to LibQTipClick
+	Updated LibQTip skin
+	Consolidate PTR changes
+
+b2.10128.1
 Jncl:
 	ToDo.txt
 	Change_History.txt
