@@ -1517,16 +1517,42 @@ function Skinner:skinScrollBar(...)
 
 end
 
-function Skinner:skinSlider(slider, size)
+local function __skinSlider(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
+--]]
 --@alpha@
-	assert(slider and slider:IsObjectType("Slider"), "Not a Slider\n"..debugstack())
+	assert(opts.obj and opts.obj:IsObjectType("Slider"), "Not a Slider\n"..debugstack())
 --@end-alpha@
 
-	self:keepFontStrings(slider)
-	slider:SetAlpha(1)
-	slider:GetThumbTexture():SetAlpha(1)
+	Skinner:keepFontStrings(opts.obj)
+	opts.obj:SetAlpha(1)
+	opts.obj:GetThumbTexture():SetAlpha(1)
 
-	self:skinUsingBD{obj=slider, size=size}
+	Skinner:skinUsingBD{obj=opts.obj, size=opts.size}
+
+end
+
+function Skinner:skinSlider(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Unknown object sS\n"..debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.size = select(2, ...) and select(2, ...) or 2
+	end
+	__skinSlider(opts)
 
 end
 
