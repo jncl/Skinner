@@ -1,3 +1,4 @@
+local tonumber = tonumber
 
 function Skinner:Enchantrix()
 
@@ -6,9 +7,11 @@ function Skinner:Enchantrix()
 		self:addSkinFrame{obj=Enchantrix_Manifest.messageFrame, kfs=true}
 		self:Unhook(Enchantrix_Manifest, "ShowMessage")
 	end)
-	
--->>-- AutoDisenchant prompt	
-	local auto_de_prompt = self:findFrame2(UIParent, "Frame", 130, 400)
-	self:addSkinFrame{obj=auto_de_prompt, kfs=true}
+
+-->>-- AutoDisenchant prompt
+	local eVer = tonumber(GetAddOnMetadata("Enchantrix", "Version"):match("%d\.%d\.(%d%d%d%d)"))
+	local height = eVer == 4293 and 130 or 170
+	local auto_de_prompt = self:findFrame2(UIParent, "Frame", height, 400)
+	if auto_de_prompt then self:addSkinFrame{obj=auto_de_prompt, kfs=true} end
 
 end
