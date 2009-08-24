@@ -14,8 +14,8 @@ function Skinner:oRA3()
 			end
 		end)
 	end
-	
-	self:addSkinFrame{obj=oRA3Frame, kfs=true, bg=true, x1=10 , y1=1, x2=1, y2=-3}
+
+	self:addSkinFrame{obj=oRA3Frame, kfs=true, x1=10 , y1=1, x2=1, y2=-3}
 
 	if not oRA3.db.profile.open then oRA3Frame.title:SetAlpha(0) end
 	-- show the title when opened
@@ -26,13 +26,13 @@ function Skinner:oRA3()
 	self:SecureHook(oRA3FrameSub, "Hide", function()
 		oRA3Frame.title:SetAlpha(0)
 	end)
-	
--->>-- SubFrame	
+
+-->>-- SubFrame
 	oRA3FrameSub:SetBackdrop(nil)
 	oRA3ScrollFrameBottom:SetBackdrop(nil)
 	oRA3ScrollFrameTop:SetBackdrop(nil)
 	self:skinScrollBar{obj=oRA3ScrollFrame}
-	
+
 -->>-- ScrollHeaders
 	local shCnt = 4
 	self:skinFFColHeads("oRA3ScrollHeader", shCnt)
@@ -42,7 +42,7 @@ function Skinner:oRA3()
 		self:keepRegions(sh, {4, 5}) -- N.B 4 is text, 5 is highlight
 		self:addSkinFrame{obj=sh}
 	end)
-	
+
 -->>-- Tabs
 	for i = 1, #oRA3.panels do
 		local tabName = _G["oRA3FrameTab"..i]
@@ -56,5 +56,15 @@ function Skinner:oRA3()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	
+
+-->>-- ReadyCheck Frame
+	if oRA3ReadyCheck then
+		self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
+	else
+		self:SecureHook(LibStub("AceAddon-3.0"):GetAddon("oRA3"):GetModule("ReadyCheck"), "SetupGUI", function()
+			self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
+			self:Unhook(LibStub("AceAddon-3.0"):GetAddon("oRA3"):GetModule("ReadyCheck"), "SetupGUI")
+		end)
+	end
+
 end
