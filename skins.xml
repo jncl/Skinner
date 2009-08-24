@@ -55,6 +55,7 @@
 <script file="SkinMe\BigBankStatement.lua"/>
 <script file="SkinMe\BigGuild.lua"/>
 <script file="SkinMe\BigTrouble.lua"/>
+<script file="SkinMe\BlackList.lua"/>
 <!-- <script file="SkinMe\Bongos3.lua"/> -->
 <script file="SkinMe\Bonuses.lua"/>
 <script file="SkinMe\BriefQuestComplete.lua"/>

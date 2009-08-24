@@ -16,9 +16,10 @@ function Skinner:FriendsFrame()
 				-- handle additional Tabs with altered names or numbers
 				local prefix = (v == "BadapplesFrame" and "Badapples" or "")
 				local tabId = (v == "BadapplesFrame" and 6 or j)
+				if v == "BlackListFrame" then tabId = 1 end -- handle the BlackListFrame
 				local tabSF = self.skinFrame[_G[prefix.."FriendsFrameTab"..tabId]]
-				-- ignore the IgnoreListFrame (also the MutedListFrame)
- 				if v ~= "IgnoreListFrame" and v ~= "MutedListFrame" then
+				-- ignore the IgnoreListFrame (also the MutedListFrame) (and the BlackListFrame)
+ 				if v ~= "IgnoreListFrame" and v ~= "MutedListFrame" and v ~= "BlackListFrame" then
 					self:setInactiveTab(tabSF)
 				end
 				if v == frameName then
@@ -29,7 +30,7 @@ function Skinner:FriendsFrame()
 	end
 -->>--	Friends Frame
 	self:skinFFToggleTabs("FriendsFrameToggleTab")
-self:skinScrollBar{obj=FriendsFrameFriendsScrollFrame}
+	self:skinScrollBar{obj=FriendsFrameFriendsScrollFrame}
 	self:moveObject{obj=FriendsFrameAddFriendButton, y=1}
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, x1=12, y1=-11, x2=-33, y2=71}
 
