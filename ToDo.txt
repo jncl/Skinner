@@ -9,52 +9,12 @@ N - New Version
 O - Other change
 S - Skin request
 
-	N	PTR 3.2.0
-√		- PlayerTitle is now a ScrollFrame rather than a dropdown
-√		- remove all patch code
-√		- skin QuestLogDetailFrame
-
-	I	CastingBar
-√		- replace shield texture with Achievement Shield
-
-√	I	replace ScriptErrors with DebugTools
-
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-	I	Enchantrix, reported by sammael666, 1.08.09
-√		- how do i make it skin the popup window while disenchanting / milling / prospecting like it skins the auctioneer appraiser module popups ?
-
-	I	Forum URL's reported by Yewbacca, 9.08.08
-√		- refer to the old ones
-√		- LibQTipClick now part of LibQTip
-
 	I	oRA3, reported by acirac, 03.08.09
-≈		- Readycheck frame isn't skinned
+√		- Readycheck frame isn't skinned
 
-√	S	_NPCScan, requested by Kerecha, 7.08.09
-
-√	I	Talented, reported by toin7,essmene, & esullivan, 7.08.09/12.08.09
-
-√	S	RaidBuffStatus, requested by xtoq, 7.08.09
-
-	I	MobMap, requested by X-buZZ, 8.08.09
-√		- quest comment frame
-
-	S	BriefQuestComplete, requested by Kerecha, 9.08.08
-√		- Tooltip that opens when clicking the "Rewards" link in chat.
-
-	S 	ChatBar, requested by Kerecha, 9.08.08
-√		- Tooltip when hovering the buttons in the bar. (saying what channel it is)
-
-	I	Nameplate Castbars, reported by nijle4u, 10.08.09
-√		- Hello, is there any way to enable nameplate castbars when skinner skinning the nameplates?
-		It seems castbars go away with the nameplates option checked.
-
-√	I/N	ShadowDancer3, reported by Gabriel, 11.08.09
-	I	DBM /range window, reported by Kerecha, 9.08.08
-		- Tooltip style 3 uses my Background and Border, but at full Alpha instead of 0.5 as its supposed to.
-		Also if i change the range from the right click dropdown the background changed to pure black and my texture goes away (border remains the same)
-		(1 and 2 just looks plain unskinned)
-
-	I	GMSurveyUI, reported by NeoZeus, 20.08.09
-√		- Last night when I finished talking to a GM, he sent me an ingame survey to fill out. The only problem was I couldn't see anything because it was totally black
+√	S	BlackList, requested by slickwalker, 22.08.09
+	
+	I	Enchantrix, reported by sammael666, 21.08.09
+√		- auto de prompt still not skinned (version issue)
