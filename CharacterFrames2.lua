@@ -116,8 +116,10 @@ function Skinner:FriendsFrame()
 	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
 -->>--	RaidInfo Frame
-	self:skinScrollBar{obj=RaidInfoScrollFrame}
-	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, x1=10, y1=-6, x2=-5}
+	self:addSkinFrame{obj=RaidInfoInstanceLabel, kfs=true}
+	self:addSkinFrame{obj=RaidInfoIDLabel, kfs=true}
+	self:skinSlider{obj=RaidInfoScrollFrameScrollBar}
+	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 
 -->>--	Frame Tabs
 	for i = 1, FriendsFrame.numTabs do
