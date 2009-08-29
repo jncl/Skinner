@@ -78,13 +78,14 @@ function Skinner:DBM_GUI()
 	self:keepFontStrings(DBM_GUI_OptionsFrame)
 	self:moveObject(DBM_GUI_OptionsFrameHeaderText, nil, nil, "-", 6)
 	self:keepFontStrings(DBM_GUI_OptionsFrameBossModsList)
-	self:skinSlider(DBM_GUI_OptionsFrameBossModsListScrollBar)
-	self:applySkin(DBM_GUI_OptionsFrameBossMods)
-	self:applySkin(DBM_GUI_OptionsFrameDBMOptions)
-	self:keepFontStrings(DBM_GUI_OptionsFramePanelContainerFOV)
-	self:skinScrollBar(DBM_GUI_OptionsFramePanelContainerFOV)
+	self:skinSlider(DBM_GUI_OptionsFrameBossModsListScrollBar, 3)
+	self:addSkinFrame{obj=DBM_GUI_OptionsFrameBossMods, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+	self:addSkinFrame{obj=DBM_GUI_OptionsFrameDBMOptions, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+	self:skinScrollBar{obj=DBM_GUI_OptionsFramePanelContainerFOV, size=3}
 	self:applySkin(DBM_GUI_OptionsFramePanelContainer)
 	self:applySkin(DBM_GUI_OptionsFrame)
+	-- skin dropdown
+	self:addSkinFrame{obj=DBM_GUI_DropDown}
 	
 	-- hook this to skin sub panels
 	self:SecureHook(DBM_GUI, "CreateNewPanel", function(this, ...)
@@ -153,12 +154,14 @@ function Skinner:DBMCore()
 
 	-- hook this to skin the RangeCheck frame (actually a tooltip)
 	self:SecureHook(DBM.RangeCheck, "Show", function(this, ...)
-		self:skinDropDown{obj=DBMRangeCheckDropdown}
+--		self:Debug("DBM.RC_Show")
+		if not self.skinned[DBMRangeCheck] then
+			self:skinDropDown{obj=DBMRangeCheckDropdown}
+		end
 		if self.db.profile.Tooltips.skin then
 			if self.db.profile.Tooltips.style == 3 then DBMRangeCheck:SetBackdrop(self.Backdrop[1]) end
 			self:skinTooltip(DBMRangeCheck)
 		end
-		self:Unhook(DBM.RangeCheck, "Show")
 	end)	
 
 end
