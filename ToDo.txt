@@ -11,33 +11,28 @@ S - Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-√	I	MacroBank, reported by , 24.08.09
-		- Skinner-b2.10314.2\SkinMe\MacroBank.lua:12: attempt to index field 'MacroList' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `Show'
-		MacroBank-1.5\MacroBank.lua:424: in function <Interface\AddOns\MacroBank\MacroBank.lua:422>
-		<in C code>: in function `Show'
-		Interface\FrameXML\UIParent.lua:1570: in function `SetUIPanel':
-		Interface\FrameXML\UIParent.lua:1415: in function `ShowUIPanel':
-		Interface\FrameXML\UIParent.lua:1308: in function <Interface\FrameXML\UIParent.lua:1304>:
-		<in C code>: in function `SetAttribute'
-		Interface\FrameXML\UIParent.lua:1934: in function `ShowUIPanel':
-		Blizzard_MacroUI\Blizzard_MacroUI.lua:12: in function <...terface\AddOns\Blizzard_MacroUI\Blizzard_MacroUI.lua:11>
-		<in C code>: in function `MacroFrame_Show'
-		Interface\FrameXML\UIParent.lua:336: in function <Interface\FrameXML\UIParent.lua:333>:
-		<in C code>: in function `ShowMacroFrame'
-		<string>:"*:OnClick":3: in function <[string "*:OnClick"]:1>
-
-	I	FramesResized, reported by shadowrm, 24.08.09
-√		- Raid Info panel needs skinning
-
-	O	HealBot, reported by acirac, 24.08.09
-√		- updated skin supplied
-
-	I	DBM, reported by Kerecha, 10.08.09
+√	I	DBM, reported by Kerecha, 10.08.09
 		- Also still having major problems getting the DBM /range window to skin properly.
 
-		Tooltip style 3 uses my Background and Border, but at full Alpha instead of 0.5 as its supposed to. 
+		Tooltip style 3 uses my Background and Border, but at full Alpha instead of 0.5 as its supposed to.
 		Also if i change the range from the right click dropdown the background changed to pure black and my texture goes away (border remains the same)
 
 		(1 and 2 just looks plain unskinned)
+
+√	S	PartyBuilder, requested by Gabriel, 25.08.09
+	 	- http://www.wowinterface.com/download...tyBuilder.html
+
+√	S	Neatfreak, requested by Gabriel, 25.08.09
+		- http://www.wowinterface.com/download...NeatFreak.html
+
+√	N	Recount, reported by re1pa5e, 26.08.09
+		- The latest Skinner and Recount don't seem to be interacting together, the close button and the title aren't in-line with the other buttons.
+		- Probably, in part, due to the recent addition of being able to hide the close button that changed something. Hiding the close button also seems to cause the rightmost button hang outside of the frame slightly now.
+
+√	N	Quartz, reported by Draemon, 27.08.09
+
+√	I	Raid Tracker, reported by Draemon, 27.08.09
+		-  seems to be showing a smaller skin than the size of the window.
+
+√	I	MSBT, reported by Ice222, 27.08.09
+		- I'm geting a problem with the MSBT config and it seems to be due to skinner. Buttons and such are now missing and/or unclickable. Also Skinner doesn't show up in Addon Control Panel.
