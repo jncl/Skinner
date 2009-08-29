@@ -46,7 +46,7 @@ function Skinner:tekKonfig()
 		self:RawHook(tKS, "new", function(parent, offset, step)
 --			self:Debug("tKS:[%s, %s, %s]", parent, offset, step)
 			local frame, up, down, border = self.hooks[tKS].new(parent, offset, step)
-			self:skinSlider(frame)
+			self:skinSlider{obj=frame, size=3}
 			border:SetBackdrop(nil)
 			return frame, up, down, border
 		end, true)
