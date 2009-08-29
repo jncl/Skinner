@@ -226,6 +226,7 @@
 <!-- <script file="SkinMe\myBindings.lua"/> -->
 <script file="SkinMe\myClock.lua"/>
 <script file="SkinMe\myMusic.lua"/>
+<script file="SkinMe\NeatFreak.lua"/>
 <script file="SkinMe\NECB.lua"/>
 <script file="SkinMe\NeonChat.lua"/>
 <script file="SkinMe\NicheCombatConfig.lua"/>
@@ -245,6 +246,7 @@
 <script file="SkinMe\Palatank.lua"/>
 <script file="SkinMe\PallyPower.lua"/>
 <script file="SkinMe\Panda.lua"/>
+<script file="SkinMe\PartyBuilder.lua"/>
 <script file="SkinMe\PartyQuests.lua"/>
 <script file="SkinMe\PassLoot.lua"/>
 <script file="SkinMe\Pawn.lua"/>
