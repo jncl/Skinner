@@ -50,10 +50,6 @@ function Skinner:MSBTOptions()
 	local function skinMSBTOptions()
 
 	-->>-- Main Frame
-		MSBTMainOptionsFrame:SetHeight(MSBTMainOptionsFrame:GetHeight() - 40)
-		Skinner:keepFontStrings(MSBTMainOptionsFrame)
-		Skinner:moveObject(Skinner:getRegion(MSBTMainOptionsFrame, 12), nil, nil, "+", 8) -- move the title up
-		Skinner:moveObject(Skinner:getChild(MSBTMainOptionsFrame, 1), "+", 4, "+", 8) -- move the close button
 		for i = 2, 8 do
 			local cframe = Skinner:getChild(MSBTMainOptionsFrame, i)
 			Skinner:moveObject(cframe, nil, nil, "+", 40) -- move the child frame up
@@ -80,23 +76,24 @@ function Skinner:MSBTOptions()
 				end)
 			end
 		end
-		Skinner:applySkin(MSBTMainOptionsFrame)
+--		Skinner:applySkin(MSBTMainOptionsFrame)
+		Skinner:addSkinFrame{obj=MSBTMainOptionsFrame, kfs=true, x1=16, y1=-11, x2=-6, y2=38}
 
 	-->>--	TabList frame
 		local tabList = Skinner:getChild(MSBTMainOptionsFrame, 2)
 		Skinner:skinUsingBD2(tabList.sliderFrame)
-		Skinner:applySkin(tabList) -- skin the tablist frame
+		Skinner:addSkinFrame{obj=tabList, x1=-2, y1=4}
 		Skinner.skinned[tabList] = true
 
-	-->>--	General tab of the Options Frame dropdown
-		Skinner:keepFontStrings(Skinner:getChild(Skinner:getChild(MSBTMainOptionsFrame, 3), 2))
+	-->>--	Options Frame profile dropdown
+		Skinner:keepFontStrings(Skinner:getChild(Skinner:getChild(MSBTMainOptionsFrame, 4), 2))
 
 	-->>--	dropdown listbox frame
 		for i = 1, UIParent:GetNumChildren() do
 			local obj = select(i, UIParent:GetChildren())
 			if obj:GetName() == nil and obj:IsObjectType("Frame") then
 				local backdrop = obj:GetBackdrop()
-				if backdrop and backdrop.bgFile == "Interface\\Addons\\MSBTOptions\\Artwork\\PlainBackdrop" then
+				if backdrop and backdrop.bgFile == [[Interface\Addons\MSBTOptions\Artwork\PlainBackdrop]] then
 					if not Skinner.skinned[obj] then
 						Skinner:skinUsingBD2(obj.listbox.sliderFrame)
 						Skinner:applySkin(obj)
