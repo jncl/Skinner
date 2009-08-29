@@ -1,3 +1,15 @@
+b2.10314.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated skinSlider code
+	Updated Eventtrace skin
+	Updated HealBot skin
+	- many thanks to acirac for the updated skin
+	Updated MacroBank skin
+	Updated FramesResized skin
+	Updated RaidInfo skin
+
 b2.10314.3
 Jncl:
 	ToDo.txt
