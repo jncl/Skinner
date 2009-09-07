@@ -53,9 +53,9 @@ end
 function Skinner:PaperDollFrame()
 
 	self:keepFontStrings(PaperDollFrame)
-	self:skinDropDown{obj=PlayerTitleFrame}--, moveTex=true, noSkin=true, move=true}
+	self:skinDropDown{obj=PlayerTitleFrame}
 	self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
-	self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}--, x1=10, y1=-12, x2=-32, y2=71}
+	self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}
 	CharacterModelFrameRotateLeftButton:Hide()
 	CharacterModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(CharacterModelFrame)
@@ -67,7 +67,7 @@ function Skinner:PaperDollFrame()
 	local bA = PaperDollFrameItemFlyout.buttonFrame
 	self:addSkinFrame{obj=bA, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
 	self:SecureHook("PaperDollFrameItemFlyout_Show", function(paperDollItemSlot)
-		self:Debug("PDFIF_S: [%s]", paperDollItemSlot)
+--		self:Debug("PDFIF_S: [%s]", paperDollItemSlot)
 		for i = 1, bA["numBGs"] do
 			bA["bg" .. i]:SetAlpha(0)
 		end
@@ -123,7 +123,7 @@ function Skinner:SkillFrame()
 	self:keepFontStrings(SkillFrame)
 	self:removeRegions(SkillFrameExpandButtonFrame)
 	self:skinScrollBar{obj=SkillListScrollFrame}
-	
+
 	for i = 1, SKILLS_TO_DISPLAY do
 		self:keepRegions(_G["SkillRankFrame"..i.."Border"], {2}) -- N.B. region 2 is highlight
 		self:glazeStatusBar(_G["SkillRankFrame"..i], 0)
@@ -465,7 +465,14 @@ function Skinner:AchievementUI()
 	end)
 
 	self:moveObject{obj=AchievementFrameFilterDropDown, y=-10}
-	self:addSkinFrame{obj=AchievementFrame, ft=ftype, kfs=true, y1=1, y2=-5}
+	if self.db.profile.TexturedDD then
+		local tex = AchievementFrameFilterDropDown:CreateTexture(nil, "ARTWORK")
+		tex:SetTexture(self.itTex)
+		tex:SetWidth(110)
+		tex:SetHeight(19)
+		tex:SetPoint("RIGHT", AchievementFrameFilterDropDown, "RIGHT", -3, 4)
+	end
+	self:addSkinFrame{obj=AchievementFrame, ft=ftype, kfs=true, y1=1, y2=-3}
 
 -->>-- move Header info
 	self:keepFontStrings(AchievementFrameHeader)
@@ -564,8 +571,9 @@ function Skinner:AchievementUI()
 -->>-- Tabs
 	for i = 1, AchievementFrame.numTabs do
 		local tabName = _G["AchievementFrameTab"..i]
+		tabName.text.SetPoint = function() end -- stop text moving
 		self:keepRegions(tabName, {7, 8, 9, 10}) -- N.B. region 7, 8 & 9 are highlights, 10 is text
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=9, x2=-9, y2=-10}
+		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=9, y1=2, x2=-9, y2=-10}
 		local tabSF = self.skinFrame[tabName]
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
@@ -581,7 +589,7 @@ function Skinner:AchievementAlerts()
 	self.initialized.AchieveAlert = true
 
 	local aafName = "AchievementAlertFrame"
-	
+
 	local function skinAlertFrames()
 
 		for i = 1, 2 do

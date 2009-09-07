@@ -434,7 +434,7 @@ function Skinner:AuctionUI()
 		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
 	end)
 
-	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-12, y2=4}
+	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=4}
 
 -->>--	Browse Frame
 	for k, v in pairs{"Name", "MinLevel", "MaxLevel"} do
