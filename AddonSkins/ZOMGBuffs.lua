@@ -20,8 +20,9 @@ function Skinner:ZOMGBuffs()
 		return hf
 	end, true)
 
-	-- if there's a border around the icon then skin it
-	if ZOMGBuffs.icon.border then self:applySkin(ZOMGBuffs.icon.border) end
+	-- skin the icon button
+	self:getRegion(ZOMGBuffs.icon, 7):SetAlpha(0) -- hide the normal texture
+	self:addSkinButton{obj=ZOMGBuffs.icon, parent=ZOMGBuffs.icon}
 
 	-- set the bar texture
 	ZOMGBuffs.db.profile.bartexture = self.db.profile.StatusBar.texture
