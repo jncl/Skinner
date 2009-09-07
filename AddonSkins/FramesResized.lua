@@ -2,7 +2,10 @@
 function Skinner:FramesResized()
 
 	if self.db.profile.LootFrame and LootFrame_MidTextures then
-		self:removeRegions(LootFrame_MidTextures)
+		local title = LootFrame_MidTextures:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+		title:SetText(self:getRegion(LootFrame, 3):GetText())
+		title:SetPoint("CENTER", -24, 150)
+		self:addSkinFrame{obj=LootFrame_MidTextures, kfs=true, x1=8, y1=-47, x2=-68}
 	end
 
 	if self.db.profile.QuestLog and QuestLogFrame_MidTextures then
