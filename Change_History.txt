@@ -1,3 +1,15 @@
+b2.10314.5
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Skinned NeatFreak & PartyBuilder
+	Updated DBM skin
+	Updated MSBTOptions skin
+	Updated Quartz skin
+	Updated RaidTracker skin
+	Updated Recount skin
+	Updated tekKonfig skin
+
 b2.10314.4
 Jncl:
 	ToDo.txt
