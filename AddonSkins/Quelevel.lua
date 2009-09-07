@@ -1,18 +1,16 @@
 local _G = _G
-local origNQD = NORMAL_QUEST_DISPLAY
-local origTQD = TRIVIAL_QUEST_DISPLAY
 
 function Skinner:Quelevel()
 
-	local TRIVIAL = "|cff%02x%02x%02x[%d]|r "..TRIVIAL_QUEST_DISPLAY
-	local NORMAL = "|cff%02x%02x%02x[%d]|r ".. NORMAL_QUEST_DISPLAY
+	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
 
 	for i = 1, NUMGOSSIPBUTTONS do
 		self:RawHook(_G["GossipTitleButton"..i], "SetFormattedText", function(this, fmt, ...)
-			if fmt:find(origNQD, 1, true) then
-				fmt = NORMAL
-			elseif fmt:find(origTQD, 1, true) then
-				fmt = TRIVIAL
+			local f, l = fmt:find("000000", 1, true) -- look for original colour stringx
+			if f then
+				f = fmt:sub(1, f - 1)
+				l = fmt:sub(l + 1, -1)
+				fmt = f .. QTHex .. l
 			end
 			self.hooks[this].SetFormattedText(this, fmt, ...)
 		end, true)
