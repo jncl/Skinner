@@ -1,44 +1,42 @@
 
 function Skinner:Skillet()
-	if not self.db.profile.TradeSkillUI and self.db.profile.CraftFrame then return end
+	if not self.db.profile.TradeSkillUI then return end
 
 	self:SecureHook(Skillet, "ShowTradeSkillWindow", function()
-		self:keepFontStrings(SkilletFrame)
 		SkilletRankFrameBorder:Hide()
 		self:glazeStatusBar(SkilletRankFrame, 0)
-		self:applySkin(SkilletSkillListParent)
-		self:keepFontStrings(SkilletSkillList)
-		self:keepFontStrings(SkilletSortDropdown)
-		self:skinScrollBar(SkilletSkillList)
+		self:skinDropDown{obj=SkilletRecipeGroupDropdown}
+		self:skinDropDown{obj=SkilletSortDropdown}
 		self:skinEditBox(SkilletFilterBox, {9})
+		self:skinScrollBar{obj=SkilletSkillList, size=3}
+		self:applySkin(SkilletSkillListParent)
 		self:applySkin(SkilletReagentParent)
 		self:skinEditBox(SkilletItemCountInputBox, {9})
+		self:skinScrollBar{obj=SkilletQueueList, size=3}
 		self:applySkin(SkilletQueueParent)
-		self:applySkin(SkilletFrame)
+		self:addSkinFrame{obj=SkilletFrame, kfs=true}
 		self:Unhook(Skillet, "ShowTradeSkillWindow")
-	end)
-
--->>--	Move the Buy Button
-	self:SecureHook(SkilletMerchantBuyFrame, "Show", function(this)
-		self:moveObject(SkilletMerchantBuyFrame, "-", 40, "+", 14)
 	end)
 
 -->>--	SkilletShoppingList
 	self:SecureHook(SkilletShoppingList, "Show", function(this)
-		self:removeRegions(SkilletShoppingList, {1, 2})
-		self:keepFontStrings(SkilletShoppingListList)
-		self:skinScrollBar(SkilletShoppingListList)
-		self:applySkin(SkilletShoppingList)
+		self:skinScrollBar{obj=SkilletShoppingListList, size=3}
 		self:applySkin(SkilletShoppingListParent)
+		self:addSkinFrame{obj=SkilletShoppingList, kfs=true}
 		self:Unhook(SkilletShoppingList, "Show")
 	end)
 
 -->>--	SkilletRecipeNotes Frame
 	self:SecureHook(SkilletRecipeNotesFrame, "Show", function(this)
+		self:skinScrollBar{obj=SkilletNotesList, size=3}
 		self:applySkin(SkilletRecipeNotesFrame)
 		self:Unhook(SkilletRecipeNotesFrame, "Show")
 	end)
-
+	self:SecureHook(Skillet, "RecipeNote_OnClick", function(this, button)
+		self:skinEditBox{obj=self:getChild(button, 2), regs={9}} -- skin EditBox
+		self:Unhook(Skillet, "RecipeNote_OnClick")
+	end)
+	
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then SkilletTradeskillTooltip:SetBackdrop(self.backdrop) end
