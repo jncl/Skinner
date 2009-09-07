@@ -1274,7 +1274,7 @@ local function __skinDropDown(opts)
 	_G[opts.obj:GetName().."Middle"]:SetHeight(19)
 
 	if not opts.noMove then
-		Skinner:moveObject{obj=_G[opts.obj:GetName().."Button"], x=-6, y=-2}
+		Skinner:moveObject{obj=_G[opts.obj:GetName().."Button"], x=-6, y=-1}
 		Skinner:moveObject{obj=_G[opts.obj:GetName().."Text"], y=-2}
 	end
 
