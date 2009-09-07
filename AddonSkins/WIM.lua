@@ -11,7 +11,6 @@ function Skinner:WIM() -- WIM3
 		local xOfs = select(4, msgFrame.widgets.close:GetPoint())
 		xOfs = math.floor(xOfs)
 		if xOfs == 4 then
---			Skinner:Debug("WIM_CWW_eb")
 			eBox:SetHeight(eBox:GetHeight() - 5)
 			Skinner:skinEditBox(eBox, {9})
 			Skinner:moveObject(eBox, "-", 16, "-", 0)
@@ -28,11 +27,8 @@ function Skinner:WIM() -- WIM3
 	
 		if Skinner.skinned[obj] then return end
 		
---		Skinner:Debug("checkKids:[%s, %s]", obj, obj:GetName() or "<Anon>")
-		
 		for i = 1, obj:GetNumChildren() do
 			local child = select(i, obj:GetChildren())
---			Skinner:Debug("checkKids#2:[%s, %s]", obj, child)
 			if Skinner:isDropDown(child) then Skinner:skinDropDown(child)
 			elseif child.backdrop then
 				Skinner:keepFontStrings(child) Skinner:applySkin(child)
@@ -48,7 +44,6 @@ function Skinner:WIM() -- WIM3
 	
 	-- hook this to skin the options frame
 	self:SecureHook(WIM.options, "OnShow", function(this)
---		self:Debug("WIM.options_Show:[%s, %s]", this, this:GetName() or "<Anon>")
 		local optFrame = WIM.options.frame
 		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
 		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
@@ -74,7 +69,6 @@ function Skinner:WIM() -- WIM3
 	end)
 	-- hook this to skin the filter frame
 	self:SecureHook(WIM, "ShowFilterFrame", function(this, ...)
---		self:Debug("WIN_SFF:[%s, %s]", this, ...)
 		local fFrame = self:findFrame3("WIM3_FilterFrame", "nameText")
 		fFrame.title:SetPoint("TOPLEFT", 50 , -7);
 		fFrame.close:SetPoint("TOPRIGHT", -4, -4);
@@ -91,27 +85,23 @@ function Skinner:WIM() -- WIM3
 	end)
 	-- hook these to skin the Message Frames
 	self:RawHook(WIM, "CreateWhisperWindow", function(playerName)
---		self:Debug("WIM_CWW:[%s]", playerName)
 		local msgFrame = self.hooks[WIM].CreateWhisperWindow(playerName)
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
 	self:RawHook(WIM, "CreateChatWindow", function(chatName)
---		self:Debug("WIM_CCW:[%s]", chatName)
 		local msgFrame = self.hooks[WIM].CreateChatWindow(chatName)
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
 	self:RawHook(WIM, "CreateW2WWindow", function(w2wname)
---		self:Debug("WIM_CW2WW:[%s]", w2wname)
 		local msgFrame = self.hooks[WIM].CreateW2WWindow(w2wname)
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
 	-- skin the history viewer
 	self:SecureHook(WIM, "ShowHistoryViewer", function(this, ...)
---		self:Debug("WIM_SHV:[%s, %s]", this, ...)
-		local hvFrame = self:findFrame3("WIM3_FilterFrame", "nav")
+		local hvFrame = WIM3_HistoryFrame
 		hvFrame.title:SetPoint("TOPLEFT", 50 , -7)
 		hvFrame.close:SetPoint("TOPRIGHT", -4, -4)
 	    hvFrame.resize:SetPoint("BOTTOMRIGHT", 0, 0)
@@ -119,19 +109,19 @@ function Skinner:WIM() -- WIM3
 		-- navigation panel
 		hvFrame.nav.border:Hide()
 		self:skinDropDown(hvFrame.nav.user)
-		self:skinScrollBar(hvFrame.nav.filters.scroll)
+		self:skinScrollBar{obj=hvFrame.nav.filters.scroll, size=3}
 		hvFrame.nav.filters.border:Hide()
-		self:skinScrollBar(hvFrame.nav.userList.scroll)
+		self:applySkin(hvFrame.nav.filters)
+		self:skinScrollBar{obj=hvFrame.nav.userList.scroll, size=3}
 		hvFrame.nav.userList.border:Hide()
 		self:applySkin(hvFrame.nav.userList)
-		self:applySkin(hvFrame.nav.filters)
 		-- search
 		hvFrame.search.bg:Hide()
 		self:keepFontStrings(hvFrame.search.text)
 		self:skinEditBox(hvFrame.search.text, {9})
 		-- content panel
 		hvFrame.content.border:Hide()
-		self:skinScrollBar(hvFrame.content.textFrame)
+		self:skinScrollBar{obj=hvFrame.content.textFrame, size=3}
 		self:applySkin(hvFrame.content)
 		-- progress viewer
 		self:keepFontStrings(hvFrame.progressBar)
@@ -140,15 +130,13 @@ function Skinner:WIM() -- WIM3
 	end)
 	-- skin the Menu (Minimap/LDB)
 	self:SecureHook(WIM.Menu, "Show", function(this, ...)
---		self:Debug("WIM.Menu_Show")
 		for i = 1, #WIM.Menu.groups do
 			local group = WIM.Menu.groups[i]
-			group:SetBackdrop(nil) -- remove backdrop
+			group:SetBackdrop(nil)
 			group.title:SetPoint("TOPLEFT", 10, -8)
 			group.title:SetPoint("TOPRIGHT", -10, -8);
 		end
 		self:SecureHook(WIM.Menu, "Refresh", function(this)
---			self:Debug("WIM.Menu.Refresh")
 			this:SetWidth(this:GetWidth() - 30)
 			this:SetHeight(this:GetHeight() - 20)
 		end)
