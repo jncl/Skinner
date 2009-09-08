@@ -1,11 +1,8 @@
 
 function Skinner:AtlasQuest()
 
-	self:keepFontStrings(AtlasQuestFrame)
+	AQBACKGROUNDTEXTUR:SetAlpha(0)
 	self:applySkin(AtlasQuestFrame)
-	
-	--	button on Atlas frame
-	self:moveObject(CLOSEbutton3, nil, nil, "+", 10)
 	
 -->>--	Options Frame
 	self:keepFontStrings(AtlasQuestOptionFrame)
