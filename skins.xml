@@ -70,6 +70,7 @@
 <script file="SkinMe\BuyPoisons.lua"/>
 <script file="SkinMe\CallToArms.lua"/>
 <script file="SkinMe\Capping.lua"/>
+<script file="SkinMe\Carbonite.lua"/>
 <script file="SkinMe\Cartographer.lua"/>
 <script file="SkinMe\Cartographer3.lua"/>
 <script file="SkinMe\CBRipoff.lua"/>
