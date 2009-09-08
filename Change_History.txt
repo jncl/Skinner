@@ -1,3 +1,13 @@
+b2.10392.1
+Jncl:
+	Changed default DropDown button position
+	Updated PaperDoll, Achievement & AuctionUI skins
+	Updated ZOMGBuffs skin
+	Updated WIM skin
+	Updated Skillet skin
+	Updated Quelevel skin
+	Updated FramesResized skin
+
 b2.10314.5
 Jncl:
 	ToDo.txt
