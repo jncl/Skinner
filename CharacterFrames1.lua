@@ -466,7 +466,7 @@ function Skinner:AchievementUI()
 
 	self:moveObject{obj=AchievementFrameFilterDropDown, y=-10}
 	if self.db.profile.TexturedDD then
-		local tex = AchievementFrameFilterDropDown:CreateTexture(nil, "ARTWORK")
+		local tex = AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
 		tex:SetTexture(self.itTex)
 		tex:SetWidth(110)
 		tex:SetHeight(19)
