@@ -37,19 +37,19 @@ function Skinner:Carbonite()
 			break
 		end
 	end
-	
+
 	local function onUpdate(win)
-	
+
 		local alpha, max = win.NxW.BaF, win.NxW.BAD
 --		self:Debug("win_OnU: [%s, %s, %s]", win, alpha, max)
 		if alpha >= max then win.tfade:Show()
 		else win.tfade:Hide() end
-		
+
 	end
 
 	-- skin Title frame
 	self:addSkinFrame{obj=Nx.Tit.Frm, kfs=true}
-	
+
 	-- add a gradient to the existing frames
 	for win, _ in pairs(Nx.Win.Win2) do
 		self:applyGradient(win.Frm)
@@ -86,5 +86,8 @@ function Skinner:Carbonite()
 		self:applyGradient(men.MaF)
 		return men
 	end)
-	
+
+	-- use Skinner skin
+	Nx.Ski:Set("Skinner")
+
 end
