@@ -18,8 +18,8 @@ S - Skin request
 ?	I	LibExtraTip, reported by ExEvolution, 27.08.09
 		- not skinned properly
 			- which ones ? (AucAdvanced) - seems ok to me
-
-√	I	AtlasQuest, reported by shine2009, 6.09.09
-		- The skinning of AtlasQuest makes the Alliance & Horde Symbol disappear, which can be confusing sometimes
-
-√	S	Carbonite, requested by shine2009, 6.09.09
+			
+	I	tomQuest2, reported by Craxziz, 8.09.09
+√		- Skinner-b2.10392.1\SkinMe\tomQuest2.lua:24: attempt to index global 'tomQuest2QlTooltip' (a nil value)
+		(tail call): ?:
+		--> now using LibQTip
