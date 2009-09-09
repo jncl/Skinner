@@ -11,19 +11,11 @@ function Skinner:tomQuest2()
 		self:SecureHook(info, "createLhGUI", function(this)
 			self:skinScrollBar{obj=tomQuest2LhScrollFrame}
 			self:addSkinFrame{obj=tomQuest2LhFrame}
-			if self.db.profile.Tooltips.skin then
-				if self.db.profile.Tooltips.style == 3 then tomQuest2LhTooltip:SetBackdrop(self.Backdrop[1]) end
-				self:skinTooltip(tomQuest2LhTooltip)
-			end
 			self:Unhook(info, "createLhGUI")
 		end)
 		self:SecureHook(info, "createQlGUI", function(this)
 			self:skinScrollBar{obj=tomQuest2QlScrollFrame}
 			self:addSkinFrame{obj=tomQuest2QlFrame}
-			if self.db.profile.Tooltips.skin then
-				if self.db.profile.Tooltips.style == 3 then tomQuest2QlTooltip:SetBackdrop(self.Backdrop[1]) end
-				self:skinTooltip(tomQuest2QlTooltip)
-			end
 			self:Unhook(info, "createQlGUI")
 		end)
 		self:SecureHook(info, "lockUnlockQlFrame", function()
