@@ -1,5 +1,16 @@
+b2.10392.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Changed Layer for DropDown texture
+	Skinned Carbonite
+	Updated Atlas skin
+	Updated AtlasQuest skin
+
 b2.10392.1
 Jncl:
+	ToDo.txt
+	Updated Change_History.txt
 	Changed default DropDown button position
 	Updated PaperDoll, Achievement & AuctionUI skins
 	Updated ZOMGBuffs skin
