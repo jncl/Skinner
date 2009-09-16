@@ -149,7 +149,7 @@ function Skinner:AddonFrames()
 	if IsAddOnLoaded("Bongos") then self:checkAndRunAddOn("Bongos") end
 --]]
 
-	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip, tektip & LibQTip/LibTooltip library objects
+	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip, tektip,  LibQTip/LibTooltip & LibSimpleFrame library objects
 	local libsToSkin = {
 		["Dewdrop-2.0"] = "Dewdrop",
 		["AceAddon-2.0"] = "Ace2",
@@ -162,6 +162,7 @@ function Skinner:AddonFrames()
 		["tektip-1.0"] = "tektip",
 		["LibTooltip-1.0"] = "LibQTip",
 		["LibQTip-1.0"] = "LibQTip",
+		["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
 	}
 	for k, v in pairs(libsToSkin) do
 --		self:Debug("skin Libs:[%s, %s]", k, v)
