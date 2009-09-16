@@ -6,16 +6,19 @@ function Skinner:Quelevel()
 
 	for i = 1, NUMGOSSIPBUTTONS do
 		self:RawHook(_G["GossipTitleButton"..i], "SetFormattedText", function(this, fmt, ...)
-			local f, l = fmt:find("000000", 1, true) -- look for original colour stringx
-			if f then
-				f = fmt:sub(1, f - 1)
-				l = fmt:sub(l + 1, -1)
-				fmt = f .. QTHex .. l
+			if fmt then
+				local f, l = fmt:find("000000", 1, true) -- look for original colour stringx
+				if f then
+					f = fmt:sub(1, f - 1)
+					l = fmt:sub(l + 1, -1)
+					fmt = f .. QTHex .. l
+				end
 			end
 			self.hooks[this].SetFormattedText(this, fmt, ...)
 		end, true)
 	end
 
+	local TRIVIAL, NORMAL = "|cff%02x%02x%02x[%d]|r "..TRIVIAL_QUEST_DISPLAY, "|cff%02x%02x%02x[%d]|r ".. NORMAL_QUEST_DISPLAY
 	-- Add tags to quest greeting frame (currently not supported by the addon)
 	QuestFrameGreetingPanel:HookScript("OnShow", function()
 		local numActQs = GetNumActiveQuests()
