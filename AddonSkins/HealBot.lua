@@ -37,6 +37,7 @@ function Skinner:HealBot()
 	end
 
 	self:keepFontStrings(HealBot_Options_EmergencyFilter)
+	self:keepFontStrings(HealBot_Options_UseHBinHeals)
 	self:keepFontStrings(HealBot_Options_ExtraSort)
 	self:keepFontStrings(HealBot_Options_ExtraOptFrame)
 	self:applySkin(HealBot_Options_ExtraOptFrame, nil)
