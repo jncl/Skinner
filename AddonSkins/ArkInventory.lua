@@ -7,7 +7,7 @@ function Skinner:ArkInventory()
 	
 	local aiFrames = {"Title", "Search", "Container", "Changer", "Status"}
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
-		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
+--		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
 		local af = frame:GetName()
 		if not self.skinned[frame] then
 			for _, v in pairs(aiFrames) do
