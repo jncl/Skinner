@@ -1,27 +1,24 @@
 
 function Skinner:PassLoot()
 
--->>--	Options Frame
-	self:applySkin(PassLoot_MainFrame, true)
-	-- Tabbed SubFrame
-	self:skinFFToggleTabs("PassLoot_TabbedMenuContainerTab", PassLoot_TabbedMenuContainer.numTabs)
-	self:moveObject(PassLoot_TabbedMenuContainerTab1, nil, nil, "-", 8)
+-->>--	Main Frame
+	PassLoot.MainFrame.HeaderTexture:SetAlpha(0)
+	self:addSkinFrame{obj=PassLoot.MainFrame, kfs=true, x1=4, y1=4, x2=-4, y2=4}
+	-- Tabs
+	local plmftm = PassLoot.MainFrame.TabMenu
+	self:skinFFToggleTabs("PassLoot_TabbedMenuContainerTab", plmftm.numTabs)
 	-- Rules SubFrame
-	self:keepFontStrings(PassLoot_Rules_RuleList_Scroll)
-	self:skinScrollBar(PassLoot_Rules_RuleList_Scroll)
-	self:applySkin(PassLoot_Rules_RuleList)
+	self:skinScrollBar{obj=plmftm.Rules.List.ScrollFrame}
+	self:addSkinFrame{obj=plmftm.Rules.List, kfs=true}
 	-- Rules Settings SubFrame
-	self:skinEditBox(PassLoot_Rules_Settings_Desc, {9})
-	self:applySkin(PassLoot_Rules_Settings)
-	self:keepFontStrings(PassLoot_Rules_Settings_Options_Scroll)
-	self:skinScrollBar(PassLoot_Rules_Settings_Options_Scroll)
-	self:applySkin(PassLoot_Rules_Settings_Options)
-	self:keepFontStrings(PassLoot_Rules_Settings_Filters_Scroll)
-	self:skinScrollBar(PassLoot_Rules_Settings_Filters_Scroll)
-	self:applySkin(PassLoot_Rules_Settings_Filters)
+	self:skinEditBox{obj=plmftm.Rules.Settings.Desc, regs={15}}
+	self:skinScrollBar{obj=plmftm.Rules.Settings.AvailableFilters.ScrollFrame}
+	self:addSkinFrame{obj=plmftm.Rules.Settings.AvailableFilters, kfs=true}
+	self:skinScrollBar{obj=plmftm.Rules.Settings.ActiveFilters.ScrollFrame}
+	self:addSkinFrame{obj=plmftm.Rules.Settings.ActiveFilters, kfs=true}
+	self:addSkinFrame{obj=plmftm.Rules.Settings, kfs=true}
 	-- Widgets
 	self:skinEditBox(PassLoot_Frames_Widgets_Zone, {15})
-	self:moveObject(PassLoot_Rules_Settings_Zone, "+", 4, nil, nil)
 	self:skinDropDown(PassLoot_Frames_Widgets_ZoneType)
 	self:skinDropDown(PassLoot_Frames_Widgets_Quality)
 	self:skinDropDown(PassLoot_Frames_Widgets_Bind)
@@ -31,26 +28,26 @@ function Skinner:PassLoot()
 	self:skinDropDown(PassLoot_Frames_Widgets_ItemLevelComparison)
 	self:skinDropDown(PassLoot_Frames_Widgets_RequiredLevelComparison)
 	self:skinDropDown(PassLoot_Frames_Widgets_GroupRaid)
-	self:keepFontStrings(PassLoot_Frames_Widgets_LootWonComparison)
+	self:skinDropDown(PassLoot_Frames_Widgets_LootWonComparison)
 	self:skinEditBox(PassLoot_Frames_Widgets_LootWonCounter, {15})
 	self:skinEditBox(PassLoot_Frames_Widgets_ItemNameTextBox, {15})
 	self:skinDropDown(PassLoot_Frames_Widgets_ItemPriceComparison)
+	-- ItemPrice comparison widget money frame
+	local mf = (PassLoot_Frames_Widgets_ItemPriceComparison:GetParent()).MoneyInputFrame
+	self:skinEditBox{obj=mf.Gold, regs={9, 10}, noHeight=true, noWidth=true} 
+	self:skinEditBox{obj=mf.Silver, regs={9, 10}, noHeight=true, noWidth=true} 
+	self:moveObject{obj=mf.Silver, x=-10}
+	self:moveObject{obj=mf.Silver.IconTexture, x=10}
+	self:skinEditBox{obj=mf.Copper, regs={9, 10}, noHeight=true, noWidth=true} 
+	self:moveObject{obj=mf.Copper.IconTexture, x=10}
+	
 	-- Modules SubFrame
-	self:keepFontStrings(PassLoot_Modules_ScrollFrame)
-	self:skinScrollBar(PassLoot_Modules_ScrollFrame)
-	self:applySkin(PassLoot_Modules_ScrollFrame_Content)
-	self:applySkin(PassLoot_Modules)
+	self:skinScrollBar{obj=plmftm.Modules.ScrollFrame}
+	self:applySkin{obj=plmftm.Modules.ScrollFrame.ScrollChild}
+	self:addSkinFrame{obj=plmftm.Modules, kfs=true}
+	-- ModuleHeaders
 	for _, v in pairs(PassLoot.ModuleHeaders) do
-		self:applySkin(PassLoot.PluginInfo[v].ProfileHeader.Box)
+		self:addSkinFrame{obj=PassLoot.PluginInfo[v].ProfileHeader.Box, kfs=true, y1=2}
 	end
-	-- Settings SubFrame
-	self:keepFontStrings(PassLoot_Settings_OutputFrameMain)
-	self:applySkin(PassLoot_Settings)
-	-- Profiles SubFrame
-	self:skinDropDown(PassLoot_Profiles_CurrentProfile)
-	self:skinDropDown(PassLoot_Profiles_CopyProfile)
-	self:skinDropDown(PassLoot_Profiles_DeleteProfile)
-	self:skinEditBox(PassLoot_Profiles_NewProfileName, {15})
-	self:applySkin(PassLoot_Profiles)
 
 end
