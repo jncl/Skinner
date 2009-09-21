@@ -20,8 +20,8 @@ function Skinner:EditingUI()
 	end
 
 -->>--	Toggle Button
-	self:moveObject(EditingFrameToggleButton, nil, nil, "-", 30)
-	self:moveObject(EditingFrameTitleBar, nil, nil, "-", 30)
+	self:moveObject(EditingFrameToggleButton, nil, nil, "-", 18)
+	self:moveObject(EditingFrameTitleBar, nil, nil, "-", 18)
 
 -->>--	Title Panel
 	self:applySkin(EditingFrameTitleBar)
