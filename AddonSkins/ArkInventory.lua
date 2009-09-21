@@ -38,7 +38,6 @@ function Skinner:ArkInventory()
 	self:skinEditBox(ARKINV_RulesFrameModifyDataDescription, {9})
 	self:keepFontStrings(ARKINV_RulesFrameModifyDataScroll)
 	self:skinScrollBar(ARKINV_RulesFrameModifyDataScroll)
-
 -->>--	Search Frame
 	self:applySkin(ARKINV_SearchTitle)
 	self:applySkin(ARKINV_SearchFrame)
@@ -47,5 +46,7 @@ function Skinner:ArkInventory()
 	self:applySkin(ARKINV_SearchFrameViewTable)
 	self:keepFontStrings(ARKINV_SearchFrameViewTableScroll)
 	self:skinScrollBar(ARKINV_SearchFrameViewTableScroll)
+-->>-- GuildBank Log Frame
+	self:applySkin{obj=ARKINV_Frame4Log}
 
 end
