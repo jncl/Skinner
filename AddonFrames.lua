@@ -11,6 +11,7 @@ function Skinner:BlizzardFrames()
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "DropDowns", -- uie1
 		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame", -- uie2
+		"UnitFrames", -- uf 
 	}
 
 	if self.isPTR then tinsert(blizzFrames, "FeedbackUI") else self.FeedbackUI = nil end -- uie1

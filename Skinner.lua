@@ -21,8 +21,10 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0")
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
---check to see if running on patch 3.2.0
---Skinner.isPatch = CanAlterSkin and true or false
+--check to see if running on patch 3.2.2
+Skinner.isPatch = FocusFrameTextureFrameSmall and true or false
+-- store player class
+Skinner.uCls = select(2, UnitClass("player"))
 
 -- local defs (for speed)
 local _G = _G
@@ -602,6 +604,7 @@ local function __applySkin(opts)
 		ba = Backdrop Alpha value
 		fh = Fade Height
 		bd = Backdrop table to use
+		ng = No Gradient effect
 --]]
 --@alpha@
 	assert(opts.obj, "Unknown object __aS\n"..debugstack())
@@ -632,7 +635,7 @@ local function __applySkin(opts)
 	if opts.hdr then hideHeader(opts.obj) end
 
 	-- apply the 'Skinner' effect
-	Skinner:applyGradient(opts.obj, opts.fh)
+	if not opts.ng then Skinner:applyGradient(opts.obj, opts.fh) end
 
 end
 
@@ -1274,7 +1277,7 @@ local function __skinDropDown(opts)
 	_G[opts.obj:GetName().."Middle"]:SetHeight(19)
 
 	if not opts.noMove then
-		Skinner:moveObject{obj=_G[opts.obj:GetName().."Button"], x=-6, y=-1}
+		Skinner:moveObject{obj=_G[opts.obj:GetName().."Button"], x=-6, y=-2}
 		Skinner:moveObject{obj=_G[opts.obj:GetName().."Text"], y=-2}
 	end
 

@@ -75,6 +75,10 @@ UIElements1.lua
 # UIElements2
 # inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools
 UIElements2.lua
+#
+# UnitFrames
+# inc. PlayerFrame, RuneFrame, TotemFrame, ComboFrame, PetFrame, TargetFrame, TargetofTargetFrame, FocusFrame, TargetofFocusFrame, PartyFrames (inc. Party Members Pets)
+UnitFrames.lua
 
 # Addon skins
 skins.xml

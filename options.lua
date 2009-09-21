@@ -123,6 +123,8 @@ function Skinner:Defaults()
 		BarbershopUI	= true,
 		-- DBIcon settings
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
+		-- UnitFrames
+		UnitFrames		= {player = false, target = false, focus = false, party = false},
 
 	}}
 
@@ -1705,6 +1707,43 @@ function Skinner:Options()
 			},
 		},
 
+		UnitFrames = {
+			type = "group",
+			name = self.L["Unit Frames"],
+			desc = self.L["Change the Unit Frames settings"],
+			get = function(info) return db.UnitFrames[info[#info]] end,
+			set = function(info, value)
+				self:Debug("UF opts: [%s, %s, %s]", info, value, info[#info])
+				db.UnitFrames[info[#info]] = value
+				self:checkAndRun("UnitFrames")
+			end,
+			args = {
+				player = {
+					type = "toggle",
+					order = 1,
+					name = self.L["Player"],
+					desc = self.L["Toggle the skin of the Player UnitFrames"],
+				},
+				target = {
+					type = "toggle",
+					order = 2,
+					name = self.L["Target"],
+					desc = self.L["Toggle the skin of the Target UnitFrames"],
+				},
+				focus = {
+					type = "toggle",
+					order = 3,
+					name = self.L["Focus"],
+					desc = self.L["Toggle the skin of the Focus UnitFrames"],
+				},
+				party = {
+					type = "toggle",
+					order = 4,
+					name = self.L["Party"],
+					desc = self.L["Toggle the skin of the Party UnitFrames"],
+				},
+			},
+		},
 	}
 
 	local FrameStrata = {
@@ -1793,7 +1832,7 @@ function Skinner:Options()
 
 	-- option tables list
 	local optNames = {
-		"Backdrop", "Colours", "Gradient", "VP/TMBFrames", "NPCFrames", "PlayerFrames", "UIFrames", "Profiles"
+		"Backdrop", "Colours", "Gradient", "VP/TMBFrames", "NPCFrames", "PlayerFrames", "UIFrames", "UnitFrames", "Profiles"
 	}
 	-- register the options tables and add them to the blizzard frame
 	local ACR = LibStub("AceConfigRegistry-3.0")
