@@ -5,7 +5,6 @@ function Skinner:LibSimpleFrame()
 
 	local function skinFrames()
 		for name, frame	in pairs(lsf.registry) do
-			print(name, frame)
 			if not Skinner.skinFrame[frame] then self:addSkinFrame{obj=frame} end
 		end
 	end
