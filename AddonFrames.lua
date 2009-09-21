@@ -266,6 +266,7 @@ function Skinner:AUCTION_HOUSE_SHOW()
 	self:checkAndRunAddOn("BtmScan")
 	self:checkAndRunAddOn("Fence")
 	self:checkAndRunAddOn("AuctionFilterPlus")
+	self:checkAndRunAddOn("Auctionator")
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
 
