@@ -586,6 +586,7 @@ function Skinner:InspectUI()
 	self:skinScrollBar{obj=InspectTalentFrameScrollFrame}
 	self:keepFontStrings(InspectTalentFramePointsBar)
 	self:skinFFToggleTabs("InspectTalentFrameTab")
+	self:moveObject{obj=InspectTalentFrameTab1, x=-30}
 
 -->>--	Frame Tabs
 	for i = 1, InspectFrame.numTabs do
