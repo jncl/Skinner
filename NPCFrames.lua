@@ -223,7 +223,6 @@ function Skinner:Tabard()
 	TabardCharacterModelRotateRightButton:Hide()
 	self:makeMFRotatable(TabardModel)
 	TabardFrameCostFrame:SetBackdrop(nil)
-	self:addSkinFrame{obj=TabardFrameCostFrame, ft=ftype}
 	self:keepFontStrings(TabardFrameCustomizationFrame)
 	for i = 1, 5 do
 		self:keepFontStrings(_G["TabardFrameCustomization"..i])
