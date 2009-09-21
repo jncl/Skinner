@@ -757,18 +757,18 @@ function Skinner:Nameplates()
 			local child = select(i, WorldFrame:GetChildren())
 			if isNameplate(child) then
 -- 				Skinner:ShowInfo(child, true)
---				 child 1 is the flash texture
+--				 region 1 is the flash texture
 				select(2, child:GetRegions()):SetAlpha(0) -- hide border texture
 				select(3, child:GetRegions()):SetAlpha(0) -- hide border texture
-				-- child 4 is the shield icon, replace texture with Achievement's Shield texture
+				-- region 4 is the shield icon, replace texture with Achievement's Shield texture
 				local shldReg = select(4, child:GetRegions())
 				shldReg:SetHeight(30)
 				shldReg:SetWidth(30)
 				shldReg:SetTexture(shldTex)
 				shldReg:SetTexCoord(0, 0.75, 0, 0.75)
-				-- child 5 is the spell icon
+				-- region 5 is the spell icon
 				select(6, child:GetRegions()):SetAlpha(0) -- hide glow effect
-				-- children 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
+				-- regions 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
 				for i = 1, 2 do -- skin both status bars
 					local sb = select(i, child:GetChildren())
 					if not Skinner.sbGlazed[sb] then
