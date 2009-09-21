@@ -18,8 +18,33 @@ S - Skin request
 ?	I	LibExtraTip, reported by ExEvolution, 27.08.09
 		- not skinned properly
 			- which ones ? (AucAdvanced) - seems ok to me
-			
-	I	tomQuest2, reported by Craxziz, 8.09.09
-√		- Skinner-b2.10392.1\SkinMe\tomQuest2.lua:24: attempt to index global 'tomQuest2QlTooltip' (a nil value)
+
+	O	Skin Unitframes
+√		- PlayerFrame
+√			- Rogue <-> Combat points frame
+√			- Death Knight <-> Rune frame & Totem frame
+√			- Shaman <-> Totem frame
+√		- PetFrame
+√		- Target
+√		- TargetOfTarget
+√		- Focus
+√		- TargetOfFocus
+√		- PartyMemberFrame1-5
+√		- PartyMemberPetFrame1-5
+√		- add options to toggle skinning of each type
+√		- add strings to localisations
+
+	S	Nauticus, requested by gamemaster128, 15.09.09
+√		- actually means skinning LibSimpleFrames
+
+√	S	Auctionator, requested by gizmo1972, 16.09.09
+
+√	I	Passloot, reported by Kerecha, 17.09.09
+		- has changed how the optionsmenu works (it now uses the blizz options window) and is now popping an error.
+		- Skinner-b2.10314.5\SkinMe\PassLoot.lua:7: attempt to index global 'PassLoot_TabbedMenuContainer' (a nil value)
 		(tail call): ?:
-		--> now using LibQTip
+		<in C code>: ?
+		Skinner-b2.10314.5\Skinner.lua:670: in function <Interface\AddOns\Skinner\Skinner.lua:668>
+		Skinner-b2.10314.5\Skinner.lua:715: in function `?'
+		Skinner-b2.10314.5\AddonFrames.lua:117: in function <Interface\AddOns\Skinner\AddonFrames.lua:61>
+		(tail call): ?:
