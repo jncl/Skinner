@@ -32,6 +32,8 @@ function Skinner:oRA3()
 	oRA3ScrollFrameBottom:SetBackdrop(nil)
 	oRA3ScrollFrameTop:SetBackdrop(nil)
 	self:skinScrollBar{obj=oRA3ScrollFrame}
+	oRA3ScrollFrameBottom.bar:SetAlpha(0)
+	oRA3ScrollFrameTop.bar:SetAlpha(0)
 
 -->>-- ScrollHeaders
 	local shCnt = 4
