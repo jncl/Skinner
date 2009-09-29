@@ -88,18 +88,26 @@ function Skinner:CastingBar()
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
 
-	for _, prefix in pairs{"", "Pet"} do
-		local cbfName = prefix.."CastingBarFrame"
-		if cbfName == "CastingBarFrame" then
-			self:SecureHook("CastingBarFrame_OnUpdate", function()
-				self:moveObject{obj=CastingBarFrameSpark, y=-3}
-			end)
+	-- hook this to move the spark down on the casting bar
+	self:SecureHook("CastingBarFrame_OnUpdate", function(this, ...)
+		local barSpark = _G[this:GetName().."Spark"]
+		local yOfs = -3
+		if this == CastingBarFrame then
+		elseif self.db.profile.UnitFrames.target and this == TargetFrameSpellBar then
+		elseif self.db.profile.UnitFrames.focus and this == FocusFrameSpellBar then
+		else yOfs = 0
 		end
+		self:moveObject{obj=barSpark, y=yOfs}
+	end)
 
+	for _, prefix in pairs{"", "Pet"} do
+	
+		local cbfName = prefix.."CastingBarFrame"
 		local cbfObj = _G[cbfName]
 		local cbff = _G[cbfName.."Flash"]
 
-		self:keepFontStrings(cbfObj)
+		_G[cbfName.."Border"]:SetTexture(nil)
+		_G[cbfName.."BorderShield"]:SetTexture(nil)
 		-- adjust size/placement of the associated textures
 		cbff:SetWidth(cbfObj:GetWidth())
 		cbff:SetHeight(cbfObj:GetHeight())
