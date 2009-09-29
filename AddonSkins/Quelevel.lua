@@ -18,6 +18,13 @@ function Skinner:Quelevel()
 		end, true)
 	end
 
+	if self.db.profile.QuestFrame then
+		-- setup Quest display colours here
+		local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
+		TRIVIAL_QUEST_DISPLAY = "|cff"..QTHex.."%s (low level)|r"
+		NORMAL_QUEST_DISPLAY = "|cff"..QTHex.."%s|r"
+	end
+	
 	local TRIVIAL, NORMAL = "|cff%02x%02x%02x[%d]|r "..TRIVIAL_QUEST_DISPLAY, "|cff%02x%02x%02x[%d]|r ".. NORMAL_QUEST_DISPLAY
 	-- Add tags to quest greeting frame (currently not supported by the addon)
 	QuestFrameGreetingPanel:HookScript("OnShow", function()
