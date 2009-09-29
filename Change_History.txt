@@ -1,3 +1,27 @@
+b2.10468.2
+Jncl:
+	Missed localisation
+	
+b2.10468.1
+Jncl:
+	Updated Change_History.txt
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Nameplates skin
+	Updated InspectUI skin
+	Updated TabardUI skin
+	Skinned UntiFrames
+	Skinned Auctionator
+	Updated PassLoot skin
+	Updated LibSimpleFrame skin
+	Updated EditingUI skin
+	Updated ArkInventory skin
+	Skinned LibSimpleFrame
+	Updated Quelevel skin
+	Updated LibQTip skin
+	Updated HealBot skin from acirac
+	Updated ArkInventory skin
+
 b2.10392.3
 Jncl:
     ToDo.txt
