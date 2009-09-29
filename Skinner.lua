@@ -22,7 +22,7 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0")
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 3.2.2
-Skinner.isPatch = FocusFrameTextureFrameSmall and true or false
+--Skinner.isPatch = FocusFrameTextureFrameSmall and true or false
 -- store player class
 Skinner.uCls = select(2, UnitClass("player"))
 
@@ -1354,7 +1354,7 @@ local function __skinEditBox(opts)
 	if opts.move then opts.x, opts.y = -2, 2 end
 
 	-- move left/right & up/down, if required
-	if not opts.x and opts.y then Skinner:moveObject{obj=opts.obj, x=opts.x, y=opts.y} end
+	if opts.x ~= 0 or opts.y ~= 0 then Skinner:moveObject{obj=opts.obj, x=opts.x, y=opts.y} end
 
 end
 
