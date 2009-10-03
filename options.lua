@@ -88,7 +88,7 @@ function Skinner:Defaults()
 		GMSurveyUI      = true,
 		Feedback        = self.isPTR and true or nil,
 		InspectUI		= true,
-		BattleScore     = true,
+		BattleScore     = true, -- a.k.a. WorldState
 		BattlefieldMm   = true,
 		DebugTools		= true,
 		DropDowns       = true,

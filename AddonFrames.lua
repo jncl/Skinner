@@ -9,7 +9,7 @@ function Skinner:BlizzardFrames()
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AchievementAlerts", -- cf1
 		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
-		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "DropDowns", -- uie1
+		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "WorldState", "DropDowns", -- uie1
 		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame", -- uie2
 		"UnitFrames", -- uf 
 	}

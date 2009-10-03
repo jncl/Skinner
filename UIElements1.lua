@@ -611,7 +611,7 @@ function Skinner:InspectUI()
 
 end
 
-function Skinner:BattleScore()
+function Skinner:WorldState()
 	if not self.db.profile.BattleScore or self.initialized.BattleScore then return end
 	self.initialized.BattleScore = true
 
