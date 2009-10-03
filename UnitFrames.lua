@@ -22,13 +22,13 @@ local function changeShield(parent)
 end
 
 local function changeFlash(parent)
-	
+
 	local flshReg = _G[parent:GetName().."Flash"]
 	flshReg:SetWidth(parent:GetWidth())
 	flshReg:SetHeight(parent:GetHeight())
 	flshReg:SetTexture(Skinner.sbTexture)
 	Skinner:moveObject{obj=flshReg, x=(parent==FocusFrameSpellBar and 2 or 0), y=-20} -- otherwise it's above the casting bar
-	
+
 end
 
 function Skinner:UnitFrames()
@@ -208,32 +208,32 @@ end
 function Skinner:Party()
 	if self.initialized.Party then return end
 	self.initialized.Party = true
-	
+
 	local rpTmr
 	local function resetPosn(pF)
-	
+
 		-- handle in combat
 		if InCombatLockdown() then return end
-	
+
 		_G[pF.."Portrait"]:SetPoint("TOPLEFT", 7, -6)
 		_G[pF.."LeaderIcon"]:SetPoint("TOPLEFT", 0, 0)
 		_G[pF.."MasterIcon"]:SetPoint("TOPLEFT", 32, 0)
 		_G[pF.."PVPIcon"]:SetPoint("TOPLEFT", -9, -15)
 		_G[pF.."Disconnect"]:SetPoint("LEFT", -7, -1)
-	
+
 		-- cancel repeating timer
 		Skinner:CancelTimer(rpTmr, true)
 		rpTmr = nil
-			
+
 	end
-	
+
 	-- hook this to change positions
 	self:SecureHook("PartyMemberFrame_ToVehicleArt", function(this, ...)
 		if not rpTmr then
 			rpTmr = self:ScheduleRepeatingTimer(resetPosn, 0.1, this:GetName())
 		end
 	end)
-	
+
 	for i = 1, MAX_PARTY_MEMBERS do
 		local pF = "PartyMemberFrame"..i
 		_G[pF.."Background"]:SetTexture(nil)
@@ -245,7 +245,7 @@ function Skinner:Party()
 		if _G[pF].state == "vehicle" then
 			rpTmr = self:ScheduleRepeatingTimer(resetPosn, 0.1, pF)
 		end
-		
+
 		-- status bars
 		self:glazeStatusBar(_G[pF.."HealthBar"], 0)
 		self:glazeStatusBar(_G[pF.."ManaBar"], 0)
