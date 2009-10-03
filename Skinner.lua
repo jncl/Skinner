@@ -180,32 +180,38 @@ function Skinner:OnInitialize()
 			insets = {left = bdi, right = bdi, top = bdi, bottom = bdi},
 		}
 	end
-
 	self.Backdrop = {}
+	self.Backdrop[1] = self.backdrop
 	-- backdrop for ScrollBars & EditBoxes
 	local edgetex = self.LSM:Fetch("border", "Skinner Border")
 	-- wide backdrop for ScrollBars (16,16,4)
-	self.backdrop2 = {
+	self.Backdrop[2] = {
 		bgFile = bdtex, tile = true, tileSize = 16,
 		edgeFile = edgetex, edgeSize = 16,
 		insets = {left = 4, right = 4, top = 4, bottom = 4},
 	}
 	-- medium backdrop for ScrollBars (12,12,3)
-	self.backdrop3 = {
+	self.Backdrop[3] = {
 		bgFile = bdtex, tile = true, tileSize = 12,
 		edgeFile = edgetex, edgeSize = 12,
 		insets = {left = 3, right = 3, top = 3, bottom = 3},
 	}
 	-- narrow backdrop for ScrollBars (8,8,2)
-	self.backdrop4 = {
+	self.Backdrop[4] = {
 		bgFile = bdtex, tile = true, tileSize = 8,
 		edgeFile = edgetex, edgeSize = 8,
 		insets = {left = 2, right = 2, top = 2, bottom = 2},
 	}
-	self.Backdrop[1] = self.backdrop
-	self.Backdrop[2] = self.backdrop2
-	self.Backdrop[3] = self.backdrop3
-	self.Backdrop[4] = self.backdrop4
+	-- this backdrop is for small UI buttons, e.g. minus/plus in QuestLog
+	self.Backdrop[5] = CopyTable(self.backdrop)
+	--[[
+		TODO understand how all the backdrop values work
+	--]]
+	if self.db.profile.BdDefault then
+		self.Backdrop[5].tileSize = 8
+		self.Backdrop[5].edgeSize = 8
+		self.Backdrop[5].insets = {left = 2, right = 2, top = 2, bottom = 2}
+	end
 
 	-- these are used to disable frames from being skinned
 	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentUI", "DressUpFrame", "FriendsFrame", "TradeSkillUI", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "AchieveFrame", "AchieveAlert", "VehicleMenuBar", "GearManager"}
@@ -343,6 +349,7 @@ local function __addSkinButton(opts)
 		sap = SetAllPoints
 		bg = set FrameStrata to "BACKGROUND"
 		kfs = Remove all textures, only keep font strings
+		aso = applySkin options
 		x1 = X offset for TOPLEFT, default -4
 		y1 = Y offset for TOPLEFT, default 4
 		x2 = X offset for BOTTOMRIGHT, default 4
@@ -361,7 +368,6 @@ local function __addSkinButton(opts)
 	local but = CreateFrame("Button", nil, opts.parent)
 	LowerFrameLevel(but)
 	but:EnableMouse(false) -- allow clickthrough
-	Skinner:applySkin{obj=but}
 	Skinner.sBut[opts.hook] = but
 	-- hook Show/Hide methods
 	if not Skinner:IsHooked(opts.hook, "Show") then
@@ -380,6 +386,10 @@ local function __addSkinButton(opts)
 		but:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
 		but:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 	end
+	-- setup applySkin options
+	opts.aso = opts.aso or {}
+	opts.aso.obj = but
+	Skinner:applySkin(opts.aso)
 
 	-- hide button skin, if required or not shown
 	if opts.hide or not opts.obj:IsShown() then but:Hide() end
@@ -603,7 +613,7 @@ local function __applySkin(opts)
 		bba = Backdrop Border Alpha value
 		ba = Backdrop Alpha value
 		fh = Fade Height
-		bd = Backdrop table to use
+		bd = Backdrop table to use, default is 1
 		ng = No Gradient effect
 --]]
 --@alpha@
@@ -721,6 +731,24 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 				self:CustomPrint(1, 0, 0, "function ["..addonFunc.."] not found in Skinner")
 			end
 		end
+	end
+
+end
+
+function Skinner:checkTex(obj)
+
+	local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
+--	self:Debug("checkTex: [%s, %s]", obj:GetName(), nTex)
+	self.sBut[obj]:Show()
+	if nTex then
+		if nTex:find("MinusButton") then
+			self.sBut[obj]:SetText(self.minus)
+		elseif nTex:find("PlusButton") then
+			self.sBut[obj]:SetText(self.plus)
+		end
+	else -- not a header line
+		self.sBut[obj]:SetText("")
+		self.sBut[obj]:Hide()
 	end
 
 end
@@ -893,7 +921,6 @@ function Skinner:glazeStatusBar(statusBar, fi, texture)
 
 end
 
-local ddTex = [[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]]
 function Skinner:isDropDown(obj)
 --@alpha@
 	assert(obj, "Unknown object\n"..debugstack())
@@ -905,7 +932,7 @@ function Skinner:isDropDown(obj)
 	if obj:IsObjectType("Frame")
 	and objTexName
 	and objTexName.GetTexture
-	and objTexName:GetTexture() == ddTex then
+	and objTexName:GetTexture():find("CharacterCreate") then
 		return true
 	else
 		return false
@@ -1252,6 +1279,73 @@ function Skinner:shrinkBag(frame, bpMF)
 --	self:Debug("sB - Frame, Fade Height: [%s, %s]", frame:GetName(), fh)
 
 	if fh and frame.tfade then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -fh) end
+
+end
+
+-- characters used on buttons
+Skinner.mult = "×"
+Skinner.plus = "+"
+Skinner.minus = "−"
+-- create font to use for Close Buttons
+local fontX= CreateFont("fontX")
+fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
+fontX:SetTextColor(1.0, 0.82, 0)
+-- create font to use for Minus/Plus Buttons
+local fontP= CreateFont("fontP")
+fontP:SetFont([[Fonts\ARIALN.TTF]], 14)
+fontP:SetTextColor(1.0, 0.82, 0)
+function Skinner:skinButton(opts)
+--[[
+	type = button template type
+	cb = close button
+	mp = minus/plus button
+	other options as per addSkinButton
+--]]
+	if not self.db.profile.Buttons then return end
+
+--@alpha@
+	assert(opts.obj, "Unknown object skinButton\n"..debugstack())
+--@end-alpha@
+
+	if not opts.obj then return end
+
+	local objName = opts.obj:GetName()
+	if opts.type == 2 then
+		_G[objName.."Left"]:SetAlpha(0)
+		_G[objName.."Middle"]:SetAlpha(0)
+		_G[objName.."Right"]:SetAlpha(0)
+	else
+		opts.obj:GetNormalTexture():SetAlpha(0)
+		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
+		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+	end
+
+	if opts.cb then
+		opts.obj:SetNormalFontObject(fontX)
+		opts.obj:SetText(self.mult)
+		self:moveObject{obj=self:getRegion(opts.obj, opts.obj:GetNumRegions()), x=-1} -- move fontstring left, fontstring is the last region
+		opts.obj:SetPushedTextOffset(-1, -2)
+		if opts.obj ~= StopwatchCloseButton then
+			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=5, y1=-6, x2=-6, y2=6}
+		else
+			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
+		end
+	elseif opts.mp then
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}}
+		self.sBut[opts.obj]:ClearAllPoints()
+		local relTo = _G[objName.."NormalText"] or _G[objName.."Text"]
+		self.sBut[opts.obj]:SetPoint("RIGHT", relTo, "LEFT", -2, 0)
+		self.sBut[opts.obj]:SetWidth(15)
+		self.sBut[opts.obj]:SetHeight(14)
+		self.sBut[opts.obj]:SetNormalFontObject(fontP)
+		self.sBut[opts.obj]:SetText(self.minus)
+	else
+		local x1 = opts.x1 or 2
+		local y1 = opts.y1 or 1
+		local x2 = opts.x2 or -2
+		local y2 = opts.y2 or -2
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
+	end
 
 end
 

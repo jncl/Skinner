@@ -65,6 +65,8 @@ function Skinner:Tooltips()
 		self:skinTooltip(ttip) -- skin here so tooltip initially skinnned when logged on
 	end
 
+	self:skinButton{obj=ItemRefCloseButton, cb=true}
+
 end
 
 function Skinner:MirrorTimers()
@@ -101,7 +103,7 @@ function Skinner:CastingBar()
 	end)
 
 	for _, prefix in pairs{"", "Pet"} do
-	
+
 		local cbfName = prefix.."CastingBarFrame"
 		local cbfObj = _G[cbfName]
 		local cbff = _G[cbfName.."Flash"]
@@ -125,10 +127,30 @@ function Skinner:StaticPopups()
 	if not self.db.profile.StaticPopups or self.initialized.StaticPopups then return end
 	self.initialized.StaticPopups = true
 
+	-- hook this to handle close button texture changes
+	self:SecureHook("StaticPopup_Show", function(...)
+		for i = 1, STATICPOPUP_NUMDIALOGS do
+			local spcb = _G["StaticPopup"..i.."CloseButton"]
+			local nTex = spcb:GetNormalTexture() and spcb:GetNormalTexture():GetTexture() or nil
+			if nTex:find("HideButton") then
+				spcb:SetText(self.minus)
+			elseif nTex:find("MinimizeButton") then
+				spcb:SetText(self.mult)
+			end
+--			spcb:GetNormalTexture():SetAlpha(0)
+--			spcb:GetPushedTexture():SetAlpha(0)
+--			spcb:GetDisabledTexture():SetAlpha(0)
+		end
+	end)
+
 	for i = 1, STATICPOPUP_NUMDIALOGS do
 		self:skinEditBox{obj=_G["StaticPopup"..i.."EditBox"]}
 		self:skinEditBox{obj=_G["StaticPopup"..i.."WideEditBox"]}
 		self:skinMoneyFrame{obj=_G["StaticPopup"..i.."MoneyInputFrame"]}
+		self:skinButton{obj=_G["StaticPopup"..i.."CloseButton"], cb=true}
+		self:skinButton{obj=_G["StaticPopup"..i.."Button1"]}
+		self:skinButton{obj=_G["StaticPopup"..i.."Button2"]}
+		self:skinButton{obj=_G["StaticPopup"..i.."Button3"]}
 		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=3, y1=3, x2=-3, y2=3}
 		-- prevent FrameLevel from being changed (LibRock does this)
 		self.skinFrame[_G["StaticPopup"..i]].SetFrameLevel = nop
@@ -218,10 +240,14 @@ function Skinner:ChatConfig()
 	if not self.db.profile.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true
 
+	self:skinButton{obj=ChatConfigFrameDefaultButton}
+	self:skinButton{obj=CombatLogDefaultButton}
+	self:skinButton{obj=ChatConfigFrameCancelButton}
+	self:skinButton{obj=ChatConfigFrameOkayButton}
 	self:addSkinFrame{obj=ChatConfigFrame, ft=ftype, kfs=true, hdr=true}
 	self:addSkinFrame{obj=ChatConfigCategoryFrame, ft=ftype}
 	self:addSkinFrame{obj=ChatConfigBackgroundFrame, ft=ftype}
-	
+
 -->>--	Chat Settings
 	for i = 1, #CHAT_CONFIG_CHAT_LEFT do
 		_G["ChatConfigChatSettingsLeftCheckBox"..i]:SetBackdrop(nil)
@@ -259,11 +285,14 @@ function Skinner:ChatConfig()
 		_G["ChatConfigOtherSettingsCreatureCheckBox"..i]:SetBackdrop(nil)
 	end
 	self:addSkinFrame{obj=ChatConfigOtherSettingsCreature, ft=ftype}
-	
+
 -->>--	Combat Settings
 	-- Filters
 	ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
 	self:skinScrollBar{obj=ChatConfigCombatSettingsFiltersScrollFrame} --, noRR=true}
+	self:skinButton{obj=ChatConfigCombatSettingsFiltersDeleteButton}
+	self:skinButton{obj=ChatConfigCombatSettingsFiltersAddFilterButton}
+	self:skinButton{obj=ChatConfigCombatSettingsFiltersCopyFilterButton}
 	self:addSkinFrame{obj=ChatConfigCombatSettingsFilters, ft=ftype}
 
 	-- Message Sources
@@ -295,6 +324,7 @@ function Skinner:ChatConfig()
 
 	-- Settings
 	self:skinEditBox{obj=CombatConfigSettingsNameEditBox , regs={9}}
+	self:skinButton{obj=CombatConfigSettingsSaveButton}
 
 	-- Tabs
 	for i = 1, #COMBAT_CONFIG_TABS do
@@ -331,6 +361,7 @@ function Skinner:LootFrame()
 	-- move the title and close button and reduce the height of the skinFrame by 34
 	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-34} -- title
 	self:moveObject{obj=LootCloseButton, y=-34}
+	self:skinButton{obj=LootCloseButton, cb=true}
 	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-47, x2=-68}
 
 end
@@ -355,6 +386,7 @@ function Skinner:GroupLoot()
 			this:SetBackdrop(nil)
 		end)
 
+		self:skinButton{obj=_G[glf.."PassButton"], cb=true}
 		if self.db.profile.GroupLoot.size == 1 then
 
 			self:addSkinFrame{obj=glfo, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
@@ -390,6 +422,7 @@ function Skinner:ContainerFrames()
 
 	for i = 1, NUM_CONTAINER_FRAMES do
 		local frameObj = _G["ContainerFrame"..i]
+		self:skinButton{obj=_G["ContainerFrame"..i.."CloseButton"], cb=true}
 		self:addSkinFrame{obj=frameObj, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 		-- resize and move the bag name to make it more readable
 		local frameName = _G["ContainerFrame"..i.."Name"]
@@ -403,6 +436,8 @@ function Skinner:StackSplit()
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
 
+	self:skinButton{obj=StackSplitOkayButton}
+	self:skinButton{obj=StackSplitCancelButton}
 	-- handle different addons being loaded
 	if IsAddOnLoaded("EnhancedStackSplit") then
 		self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, y2=-24}
@@ -423,6 +458,7 @@ function Skinner:ItemText()
 	self:skinScrollBar{obj=ItemTextScrollFrame}
 	self:glazeStatusBar(ItemTextStatusBar, 0)
 	self:moveObject{obj=ItemTextPrevPageButton, x=-55} -- move prev button left
+	self:skinButton{obj=ItemTextCloseButton, cb=true}
 	self:addSkinFrame{obj=ItemTextFrame, ft=ftype, kfs=true, x1=10, y1=-13, x2=-32, y2=71}
 
 end
@@ -433,12 +469,15 @@ function Skinner:ColorPicker()
 
 	ColorPickerFrame:SetBackdrop(nil)
 	ColorPickerFrameHeader:SetAlpha(0)
+	self:skinButton{obj=ColorPickerCancelButton}
+	self:skinButton{obj=ColorPickerOkayButton}
 	self:skinSlider(OpacitySliderFrame, 4)
-	self:addSkinFrame{obj=ColorPickerFrame, ft=ftype, x1=6, y1=6, x2=-6, y2=4}
+	self:addSkinFrame{obj=ColorPickerFrame, ft=ftype, x1=4, y1=2, x2=-6, y2=4}
 
 -->>-- Opacity Frame, used by BattlefieldMinimap amongst others
 	OpacityFrame:SetBackdrop(nil)
 	self:skinSlider(OpacityFrameSlider)
+--	self:skinButton{obj=OpacityFrameCloseButton, cb=true} -- ?
 	self:addSkinFrame{obj=OpacityFrame, ft=ftype}
 
 end
@@ -451,6 +490,8 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
+	self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
+	self:skinButton{obj=WorldMapZoomOutButton}
 
 	-- handle different map addons being loaded or fullscreen required
 	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") then
@@ -494,11 +535,14 @@ function Skinner:HelpFrame()
 
 -->>--	Help Frame
 	self:moveObject{obj=hfTitle, y=-8}
+	self:skinButton{obj=HelpFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
 
 -->>--	Open Ticket SubFrame
 	HelpFrameOpenTicketDivider:Hide()
 	self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
+	self:skinButton{obj=HelpFrameOpenTicketSubmit}
+	self:skinButton{obj=HelpFrameOpenTicketCancel}
 
 -->>-- View Response SubFrame
 	self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
@@ -507,16 +551,38 @@ function Skinner:HelpFrame()
 
 -->>--	Ticket Status Frame
 	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
-	
+
 -->>--	KnowledgeBase Frame
 	self:keepFontStrings(KnowledgeBaseFrame)
 	self:moveObject{obj=kbTitle, y=-8}
+	self:skinButton{obj=GMChatOpenLog}
+	self:skinButton{obj=KnowledgeBaseFrameTopIssuesButton}
 	self:skinEditBox{obj=KnowledgeBaseFrameEditBox}
 	self:skinDropDown{obj=KnowledgeBaseFrameCategoryDropDown}
 	self:skinDropDown{obj=KnowledgeBaseFrameSubCategoryDropDown}
+	self:skinButton{obj=KnowledgeBaseFrameSearchButton}
 	KnowledgeBaseFrameDivider:Hide()
 	KnowledgeBaseFrameDivider2:Hide()
+	self:skinButton{obj=KnowledgeBaseFrameGMTalk}
+	self:skinButton{obj=KnowledgeBaseFrameReportIssue}
+	self:skinButton{obj=KnowledgeBaseFrameStuck}
+	self:skinButton{obj=KnowledgeBaseFrameCancel}
+-->>-- Article Scroll Frame
 	self:skinScrollBar{obj=KnowledgeBaseArticleScrollFrame}
+	--[[
+		TODO the button text appears behind the gradient
+	--]]
+	self:skinButton{obj=KnowledgeBaseArticleScrollChildFrameBackButton}
+-->>-- Talk to a GM panel
+	self:skinButton{obj=HelpFrameGMTalkOpenTicket, type=2}
+	self:skinButton{obj=HelpFrameGMTalkCancel}
+-->>-- Report an Issue panel
+	self:skinButton{obj=HelpFrameReportIssueOpenTicket, type=2}
+	self:skinButton{obj=HelpFrameReportIssueCancel}
+-->>-- Character Stuck panel
+	self:skinButton{obj=HelpFrameStuckStuck, type=2}
+	self:skinButton{obj=HelpFrameStuckOpenTicket, type=2}
+	self:skinButton{obj=HelpFrameStuckCancel}
 
 end
 
@@ -551,6 +617,7 @@ function Skinner:GMSurveyUI()
 	end
 
 	self:skinScrollBar{obj=GMSurveyCommentScrollFrame}
+	self:skinButton{obj=GMSurveyCloseButton, cb=true}
 	self:applySkin{obj=GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
 
 end
@@ -573,6 +640,7 @@ function Skinner:InspectUI()
 		end)
 	end
 
+	self:skinButton{obj=InspectFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
 
 	-- Inspect Model Frame
@@ -630,6 +698,8 @@ function Skinner:WorldState()
 	end
 
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
+	self:skinButton{obj=WorldStateScoreFrameCloseButton, cb=true}
+	self:skinButton{obj=WorldStateScoreFrameLeaveButton}
 	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, x1=10, y1=-15, x2=-113, y2=70}
 
 -->>-- Tabs
@@ -675,6 +745,7 @@ function Skinner:BattlefieldMinimap()
 	end
 
 	-- Create a frame to skin as using the BattlefieldMinimap one causes issues with Capping
+	self:skinButton{obj=BattlefieldMinimapCloseButton, cb=true}
 	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, bg=true, x1=-4, y1=4, x2=-2, y2=-1}
 	-- hide the textures as the alpha values are changed in game
 	BattlefieldMinimapCorner:Hide()
@@ -845,7 +916,7 @@ function Skinner:FeedbackUI() -- PTR only
 		local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
 		self:addSkinButton{obj=tfabObj, parent=tfabObj, x1=-2, y1=2, x2=1, y2=1}
 	end
-	
+
 -->>-- Suggestion Frame
 	FeedbackUISuggestFrame:SetBackdrop(nil)
 	FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)

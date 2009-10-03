@@ -32,6 +32,11 @@ function Skinner:FriendsFrame()
 	self:skinFFToggleTabs("FriendsFrameToggleTab")
 	self:skinScrollBar{obj=FriendsFrameFriendsScrollFrame}
 	self:moveObject{obj=FriendsFrameAddFriendButton, y=1}
+	self:skinButton{obj=FriendsFrameCloseButton, cb=true}
+	self:skinButton{obj=FriendsFrameAddFriendButton}
+	self:skinButton{obj=FriendsFrameRemoveFriendButton}
+	self:skinButton{obj=FriendsFrameSendMessageButton}
+	self:skinButton{obj=FriendsFrameGroupInviteButton}
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, x1=12, y1=-11, x2=-33, y2=71}
 
 -->>--	Ignore Frame
@@ -39,13 +44,17 @@ function Skinner:FriendsFrame()
 	self:skinFFToggleTabs("IgnoreFrameToggleTab")
 	self:skinScrollBar{obj=FriendsFrameIgnoreScrollFrame}
 	self:moveObject{obj=FriendsFrameIgnorePlayerButton, y=1}
+	self:skinButton{obj=FriendsFrameIgnorePlayerButton}
+	self:skinButton{obj=FriendsFrameStopIgnoreButton}
 
 -->>--	MutedList Frame
 	self:keepFontStrings(MutedListFrame)
 	self:skinFFToggleTabs("MutedFrameToggleTab")
 	self:skinScrollBar{obj=FriendsFrameMutedScrollFrame}
 	self:moveObject{obj=FriendsFrameMutedPlayerButton, y=1}
+	self:skinButton{obj=FriendsFrameMutedPlayerButton}
 	self:moveObject{obj=FriendsFrameUnmuteButton, x=4}
+	self:skinButton{obj=FriendsFrameUnmuteButton}
 
 -->>--	Who Frame
 	self:skinFFColHeads("WhoFrameColumnHeader")
@@ -55,18 +64,25 @@ function Skinner:FriendsFrame()
 	self:skinEditBox{obj=WhoFrameEditBox, move=true}
 	WhoFrameEditBox:SetWidth(WhoFrameEditBox:GetWidth() +  24)
 	self:moveObject{obj=WhoFrameEditBox, x=12}
+	self:skinButton{obj=WhoFrameGroupInviteButton}
+	self:skinButton{obj=WhoFrameAddFriendButton}
+	self:skinButton{obj=WhoFrameWhoButton}
 
 -->>--	Guild Frame
 	self:keepFontStrings(GuildFrameLFGFrame)
 	self:skinFFColHeads("GuildFrameColumnHeader")
 	self:skinFFColHeads("GuildFrameGuildStatusColumnHeader")
 	self:skinScrollBar{obj=GuildListScrollFrame}
+	self:skinButton{obj=GuildFrameControlButton}
+	self:skinButton{obj=GuildFrameAddMemberButton}
+	self:skinButton{obj=GuildFrameGuildInformationButton}
 	-- Guild Control Popup Frame
 	self:skinDropDown{obj=GuildControlPopupFrameDropDown}
 	self:skinEditBox{obj=GuildControlPopupFrameEditBox, regs={9}}
 	self:skinEditBox{obj=GuildControlWithdrawGoldEditBox, regs={9}}
 	self:skinEditBox{obj=GuildControlWithdrawItemsEditBox, regs={9}}
 	self:addSkinFrame{obj=GuildControlPopupFrameTabPermissions, ft=ftype}
+	self:skinButton{obj=GuildControlPopupAcceptButton}
 	self:addSkinFrame{obj=GuildControlPopupFrame, ft=ftype, kfs=true, x1=3, y1=-6, x2=-28, y2=25}
 
 	for i = 1, MAX_GUILDBANK_TABS do
@@ -76,18 +92,31 @@ function Skinner:FriendsFrame()
 -->>--	GuildInfo Frame
 	self:skinScrollBar{obj=GuildInfoFrameScrollFrame}
 	self:addSkinFrame{obj=GuildInfoTextBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildInfoFrame, ft=ftype, kfs=true}
--->>--	GuildMemberDetail Frame
-	self:keepFontStrings(GuildMemberDetailFrame)
-	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype}
+	self:skinButton{obj=GuildInfoCloseButton, cb=true}
+	self:skinButton{obj=GuildInfoSaveButton}
+	self:skinButton{obj=GuildInfoCancelButton}
+	self:skinButton{obj=GuildInfoGuildEventButton}
+	self:addSkinFrame{obj=GuildInfoFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
 -->>--	GuildEventLog Frame
 	self:addSkinFrame{obj=GuildEventFrame, ft=ftype}
 	self:skinScrollBar{obj=GuildEventLogScrollFrame}
-	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true}
+	self:skinButton{obj=GuildEventLogCloseButton, cb=true}
+	self:skinButton{obj=GuildEventLogCancelButton}
+	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
+-->>--	GuildMemberDetail Frame
+	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
+	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
+	self:skinButton{obj=GuildMemberDetailCloseButton, cb=true}
+	self:moveObject{obj=GuildMemberRemoveButton, x=-2}
+	self:skinButton{obj=GuildMemberRemoveButton}
+	self:skinButton{obj=GuildMemberGroupInviteButton}
+	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
 -->>--	Channel Frame
 	self:keepFontStrings(ChannelFrame)
+	self:skinButton{obj=ChannelFrameNewButton}
+--	self:skinButton{obj=ChannelFrameJoinButton}
+--	self:skinButton{obj=ChannelFrameOkayButton}
+--	self:skinButton{obj=ChannelFrameCancelButton}
 	-- hook this to skin channel buttons
 	self:SecureHook("ChannelList_Update", function()
 		for i = 1, MAX_CHANNEL_BUTTONS do
@@ -103,15 +132,21 @@ function Skinner:FriendsFrame()
 	self:addSkinFrame{obj=ChannelPulloutTab, ft=ftype}
 	self:addSkinFrame{obj=ChannelPullout, ft=ftype}
 -->>--	Daughter Frame
-	self:addSkinFrame{obj=ChannelFrameDaughterFrame, ft=ftype, kfs=true}
-	self:skinEditBox{obj=ChannelFrameDaughterFrameChannelName, regs={9}, move=true}
-	self:skinEditBox{obj=ChannelFrameDaughterFrameChannelPassword, regs={9, 10}, move=true} -- N.B. regions 9 & 10 are text
+	self:skinButton{obj=ChannelFrameDaughterFrameDetailCloseButton, cb=true}
+	self:skinEditBox{obj=ChannelFrameDaughterFrameChannelName, regs={9}, noWidth=true}
+	self:skinEditBox{obj=ChannelFrameDaughterFrameChannelPassword, regs={9, 10}, noWidth=true}
+	self:moveObject{obj=ChannelFrameDaughterFrameOkayButton, x=-2}
+	self:skinButton{obj=ChannelFrameDaughterFrameOkayButton}
+	self:skinButton{obj=ChannelFrameDaughterFrameCancelButton}
+	self:addSkinFrame{obj=ChannelFrameDaughterFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-5}
 	self:skinDropDown{obj=ChannelListDropDown}
 	self:skinDropDown{obj=ChannelRosterDropDown}
 
 -->>--	Raid Frame
 	self:moveObject{obj=RaidFrameConvertToRaidButton, x=-50}
+	self:skinButton{obj=RaidFrameConvertToRaidButton}
 	self:moveObject{obj=RaidFrameRaidInfoButton, x=50}
+	self:skinButton{obj=RaidFrameRaidInfoButton}
 
 	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
@@ -119,6 +154,9 @@ function Skinner:FriendsFrame()
 	self:addSkinFrame{obj=RaidInfoInstanceLabel, kfs=true}
 	self:addSkinFrame{obj=RaidInfoIDLabel, kfs=true}
 	self:skinSlider{obj=RaidInfoScrollFrameScrollBar}
+	self:skinButton{obj=RaidInfoExtendButton, type=2}
+	self:skinButton{obj=RaidInfoCancelButton, type=2}
+	self:skinButton{obj=RaidInfoCloseButton, cb=true}
 	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 
 -->>--	Frame Tabs
@@ -140,17 +178,37 @@ function Skinner:TradeSkillUI()
 	if not self.db.profile.TradeSkillUI or self.initialized.TradeSkillUI then return end
 	self.initialized.TradeSkillUI = true
 
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("TradeSkillFrame_Update", function()
+			for i = 1, TRADE_SKILLS_DISPLAYED do
+				self:checkTex(_G["TradeSkillSkill"..i])
+			end
+			self:checkTex(TradeSkillCollapseAllButton)
+		end)
+	end
+
 	TradeSkillRankFrameBorder:SetAlpha(0)
 	self:glazeStatusBar(TradeSkillRankFrame, 0)
 	self:skinEditBox{obj=TradeSkillFrameEditBox, regs={9}}
 	self:removeRegions(TradeSkillExpandButtonFrame)
+	self:skinButton{obj=TradeSkillCollapseAllButton, mp=true}
 	self:skinDropDown{obj=TradeSkillSubClassDropDown}
 	self:skinDropDown{obj=TradeSkillInvSlotDropDown}
+	for i = 1, TRADE_SKILLS_DISPLAYED do
+		self:skinButton{obj=_G["TradeSkillSkill"..i], mp=true}
+	end
 	self:skinScrollBar{obj=TradeSkillListScrollFrame}
 	self:skinScrollBar{obj=TradeSkillDetailScrollFrame}
 	self:skinEditBox{obj=TradeSkillInputBox}
 	self:moveObject{obj=TradeSkillInputBox, x=-5}
+	self:skinButton{obj=TradeSkillFrameCloseButton, cb=true}
+	self:skinButton{obj=TradeSkillFrameCreateButton}
+	self:skinButton{obj=TradeSkillFrameCancelButton}
+	self:skinButton{obj=TradeSkillFrameCreateAllButton}
 	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+
+	if self.db.profile.Buttons then TradeSkillFrame_Update() end -- force update for button textures
 
 end
 
@@ -159,6 +217,9 @@ function Skinner:TradeFrame()
 	self.initialized.TradeFrame = true
 
 	self:skinMoneyFrame{obj=TradePlayerInputMoneyFrame}
+	self:skinButton{obj=TradeFrameCloseButton, cb=true}
+	self:skinButton{obj=TradeFrameTradeButton}
+	self:skinButton{obj=TradeFrameCancelButton}
 	self:addSkinFrame{obj=TradeFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-28, y2=48}
 
 end
@@ -183,15 +244,34 @@ function Skinner:QuestLog()
 	self:keepFontStrings(QuestLogCount)
 	self:keepFontStrings(EmptyQuestLogFrame)
 
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("QuestLog_Update", function()
+			for i = 1, #QuestLogScrollFrame.buttons do
+				self:checkTex(QuestLogScrollFrame.buttons[i])
+			end
+		end)
+	end
+	-- skin minus/plus buttons
+	for i = 1, #QuestLogScrollFrame.buttons do
+		self:skinButton{obj=QuestLogScrollFrame.buttons[i], mp=true}
+	end
 	QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	QuestLogObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestLogSuggestedGroupNum:SetTextColor(self.HTr, self.HTg, self.HTb)
 	QuestLogDescriptionTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	QuestLogQuestDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinScrollBar{obj=QuestLogScrollFrame}
+	self:skinButton{obj=QuestLogFrameCloseButton, cb=true}
+	self:skinButton{obj=QuestLogFrameAbandonButton}
+	self:skinButton{obj=QuestLogFrameTrackButton}
+	self:skinButton{obj=QuestLogFramePushQuestButton}
+	self:skinButton{obj=QuestLogFrameCancelButton}
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=6}
-	
+
 -->>-- QuestLogDetail Frame
 	self:skinScrollBar{obj=QuestLogDetailScrollFrame}
+	self:skinButton{obj=QuestLogDetailFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=QuestLogDetailFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=1}
 
 end
@@ -201,7 +281,9 @@ function Skinner:RaidUI()
 	self.initialized.RaidUI = true
 
 	self:moveObject{obj=RaidFrameAddMemberButton, x=-30}
+	self:skinButton{obj=RaidFrameAddMemberButton}
 	self:moveObject{obj=RaidGroup1,x= 2}
+	self:skinButton{obj=RaidFrameReadyCheckButton}
 
 	-- Raid Groups
 	for i = 1, MAX_RAID_GROUPS do
@@ -258,6 +340,8 @@ function Skinner:ReadyCheck()
 	self.initialized.ReadyCheck = true
 
 -->>--	Ready Check Frame
+	self:skinButton{obj=ReadyCheckFrameYesButton}
+	self:skinButton{obj=ReadyCheckFrameNoButton}
 	self:addSkinFrame{obj=ReadyCheckListenerFrame, ft=ftype, kfs=true}
 
 end
@@ -375,7 +459,7 @@ function Skinner:WatchFrame()
 		WatchFrameLeftResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
 		self:getRegion(WatchFrameLeftResizeThumb, 1):SetTexCoord(0.753125, 0.653125, 0.653125, 0.753125)
 	end
-		
+
 
 	if self.db.profile.TrackerFrame.glazesb then
 		local function glazeWatchLines()
@@ -404,13 +488,19 @@ function Skinner:WatchFrame()
 
 end
 
-function Skinner:GearManager()
+function Skinner:GearManager() -- inc in PaperDollFrame.xml
 	if not self.db.profile.GearManager then return end
 
+	self:skinButton{obj=GearManagerDialogClose, cb=true}
+	self:skinButton{obj=GearManagerDialogDeleteSet}
+	self:skinButton{obj=GearManagerDialogEquipSet}
+	self:skinButton{obj=GearManagerDialogSaveSet}
 	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=2}
 -->>-- Popup frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
 	self:skinEditBox{obj=GearManagerDialogPopupEditBox, regs={9}}
+	self:skinButton{obj=GearManagerDialogPopupOkay}
+	self:skinButton{obj=GearManagerDialogPopupCancel}
 	self:addSkinFrame{obj=GearManagerDialogPopup, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
 
 end

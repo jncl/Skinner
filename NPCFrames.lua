@@ -22,6 +22,7 @@ function Skinner:MerchantFrames()
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
 
+	self:skinButton{obj=MerchantFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}
 
 -->>-- Tabs
@@ -55,7 +56,9 @@ function Skinner:GossipFrame()
 		local text = self:getRegion(_G["GossipTitleButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
+	self:skinButton{obj=GossipFrameGreetingGoodbyeButton}
 
+	self:skinButton{obj=GossipFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
 
 end
@@ -64,12 +67,30 @@ function Skinner:TrainerUI()
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("ClassTrainerFrame_Update", function()
+			for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
+				self:checkTex(_G["ClassTrainerSkill"..i])
+			end
+			self:checkTex(ClassTrainerCollapseAllButton)
+		end)
+	end
+
 	self:keepFontStrings(ClassTrainerExpandButtonFrame)
+	self:skinButton{obj=ClassTrainerCollapseAllButton, mp=true}
 	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
+	for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
+		self:skinButton{obj=_G["ClassTrainerSkill"..i], mp=true}
+	end
 	self:skinScrollBar{obj=ClassTrainerListScrollFrame}
 	self:skinScrollBar{obj=ClassTrainerDetailScrollFrame}
-
+	self:skinButton{obj=ClassTrainerTrainButton}
+	self:skinButton{obj=ClassTrainerCancelButton}
+	self:skinButton{obj=ClassTrainerFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=74}
+
+	if self.db.profile.Buttons then ClassTrainerFrame_Update() end -- force update for button textures
 
 end
 
@@ -79,6 +100,7 @@ function Skinner:TaxiFrame()
 
 	self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
 
+	self:skinButton{obj=TaxiCloseButton, cb=true}
 	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-11, x2=-32, y2=74}
 
 end
@@ -99,27 +121,35 @@ function Skinner:QuestFrame()
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
 
+	self:skinButton{obj=QuestFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
 
 -->>--	Reward Panel
 	self:keepFontStrings(QuestFrameRewardPanel)
 	QuestRewardHonorFrameHonorReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestRewardTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinButton{obj=QuestFrameCancelButton}
+	self:skinButton{obj=QuestFrameCompleteQuestButton}
 	self:skinScrollBar{obj=QuestRewardScrollFrame}
 
 -->>--	Progress Panel
 	self:keepFontStrings(QuestFrameProgressPanel)
 	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:skinButton{obj=QuestFrameGoodbyeButton}
+	self:skinButton{obj=QuestFrameCompleteButton}
 	self:skinScrollBar{obj=QuestProgressScrollFrame}
 
 -->>--	Detail Panel
 	self:keepFontStrings(QuestFrameDetailPanel)
 	QuestDetailHonorFrameHonorReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestDetailTalentFrameTalentReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinButton{obj=QuestFrameAcceptButton}
+	self:skinButton{obj=QuestFrameDeclineButton}
 	self:skinScrollBar{obj=QuestDetailScrollFrame}
 
 -->>--	Greeting Panel
 	self:keepFontStrings(QuestFrameGreetingPanel)
+	self:skinButton{obj=QuestFrameGreetingGoodbyeButton}
 	self:skinScrollBar{obj=QuestGreetingScrollFrame}
 	if QuestFrameGreetingPanel:IsShown() then
 		GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -136,6 +166,9 @@ function Skinner:Battlefields()
 	self:skinScrollBar{obj=BattlefieldListScrollFrame}
 	BattlefieldFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 
+	self:skinButton{obj=BattlefieldFrameCloseButton, cb=true}
+	self:skinButton{obj=BattlefieldFrameCancelButton}
+	self:skinButton{obj=BattlefieldFrameJoinButton}
 	self:addSkinFrame{obj=BattlefieldFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 end
@@ -146,6 +179,10 @@ function Skinner:ArenaFrame()
 
 	ArenaFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 
+	self:skinButton{obj=ArenaFrameCancelButton}
+	self:skinButton{obj=ArenaFrameJoinButton}
+	self:skinButton{obj=ArenaFrameGroupJoinButton}
+	self:skinButton{obj=ArenaFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=ArenaFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 end
@@ -155,16 +192,19 @@ function Skinner:ArenaRegistrar()
 	self.initialized.ArenaRegistrar = true
 
 -->>--	Arena Registrar Frame
+	self:skinButton{obj=ArenaRegistrarFrameCloseButton, cb=true}
 	self:keepFontStrings(ArenaRegistrarGreetingFrame)
 	self:getRegion(ArenaRegistrarGreetingFrame, 1):SetTextColor(self.HTr, self.HTg, self.HTb) -- AvailableServicesText (name also used by GuildRegistrar frame)
 	RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinButton{obj=ArenaRegistrarFrameGoodbyeButton}
 	for i = 1, MAX_TEAM_BORDERS do
 		local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
+	ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinButton{obj=ArenaRegistrarFrameCancelButton}
+	self:skinButton{obj=ArenaRegistrarFramePurchaseButton}
 	self:skinEditBox{obj=ArenaRegistrarFrameEditBox}
-
 	self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=64}
 
 -->>--	PVP Banner Frame
@@ -173,7 +213,15 @@ function Skinner:ArenaRegistrar()
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
 	self:keepFontStrings(PVPBannerFrameCustomization2)
+	self:skinButton{obj=PVPColorPickerButton1}
+	self:skinButton{obj=PVPColorPickerButton2}
+	self:skinButton{obj=PVPColorPickerButton3}
+	self:skinButton{obj=PVPBannerFrameCancelButton}
+	self:skinButton{obj=PVPBannerFrameSaveButton}
 
+	self:skinButton{obj=PVPBannerFrameAcceptButton}
+	self:skinButton{obj=self:getChild(PVPBannerFrame, 4)} -- PVPBannerFrameCancelButton (name used by PVPBannerFrameCustomizationFrame)
+	self:skinButton{obj=PVPBannerFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
 
 end
@@ -191,6 +239,10 @@ function Skinner:GuildRegistrar()
 	end
 	self:skinEditBox{obj=GuildRegistrarFrameEditBox}
 
+	self:skinButton{obj=GuildRegistrarFrameCloseButton, cb=true}
+	self:skinButton{obj=GuildRegistrarFrameGoodbyeButton}
+	self:skinButton{obj=GuildRegistrarFrameCancelButton}
+	self:skinButton{obj=GuildRegistrarFramePurchaseButton}
 	self:addSkinFrame{obj=GuildRegistrarFrame, ft=ftype, kfs=true, x1=12, y1=-17, x2=-29, y2=65}
 
 end
@@ -209,6 +261,11 @@ function Skinner:Petition()
 	end
 	PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
 
+	self:skinButton{obj=PetitionFrameCloseButton, cb=true}
+	self:skinButton{obj=PetitionFrameCancelButton}
+	self:skinButton{obj=PetitionFrameSignButton}
+	self:skinButton{obj=PetitionFrameRequestButton}
+	self:skinButton{obj=PetitionFrameRenameButton}
 	self:addSkinFrame{obj=PetitionFrame, ft=ftype, kfs=true, x1=12, y1=-17, x2=-29, y2=65}
 
 end
@@ -228,6 +285,9 @@ function Skinner:Tabard()
 		self:keepFontStrings(_G["TabardFrameCustomization"..i])
 	end
 
+	self:skinButton{obj=TabardFrameCloseButton, cb=true}
+	self:skinButton{obj=TabardFrameAcceptButton}
+	self:skinButton{obj=TabardFrameCancelButton}
 	self:addSkinFrame{obj=TabardFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=74}
 
 end
@@ -243,6 +303,9 @@ function Skinner:BarbershopUI()
 -->>-- Barbershop Frame
 	self:keepFontStrings(BarberShopFrameMoneyFrame)
 
+	self:skinButton{obj=BarberShopFrameOkayButton}
+	self:skinButton{obj=BarberShopFrameCancelButton}
+	self:skinButton{obj=BarberShopFrameResetButton}
 	self:addSkinFrame{obj=BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
 
 end

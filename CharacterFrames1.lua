@@ -33,6 +33,7 @@ end
 
 function Skinner:CharacterFrame()
 
+	self:skinButton{obj=CharacterFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
 
 --	CharacterFrameTab1-5
@@ -88,12 +89,14 @@ function Skinner:PetPaperDollFrame()
 	self:makeMFRotatable(PetModelFrame)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetPaperDollPetInfo)
+--	self:skinButton{obj=PetPaperDollCloseButton}
 
 -->>-- Companion Frame
 	self:keepFontStrings(PetPaperDollFrameCompanionFrame)
 	CompanionModelFrameRotateLeftButton:Hide()
 	CompanionModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(CompanionModelFrame)
+	self:skinButton{obj=CompanionSummonButton}
 
 -->>-- Tabs
 	self:skinFFToggleTabs("PetPaperDollFrameTab")
@@ -122,6 +125,8 @@ function Skinner:SkillFrame()
 
 	self:keepFontStrings(SkillFrame)
 	self:removeRegions(SkillFrameExpandButtonFrame)
+--	self:skinButton{obj=SkillFrameAcceptButton}
+	self:skinButton{obj=SkillFrameCancelButton}
 	self:skinScrollBar{obj=SkillListScrollFrame}
 
 	for i = 1, SKILLS_TO_DISPLAY do
@@ -150,7 +155,6 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 	end
 
 	self:keepFontStrings(TokenFrame)
-
 	self:skinScrollBar{obj=TokenFrameContainer}
 
 	-- remove header textures
@@ -158,8 +162,10 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 		TokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
 		TokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
 	end
+	self:skinButton{obj=TokenFrameCancelButton}
 
 -->>-- Popup Frame
+	self:skinButton{obj=TokenFramePopupCloseButton, cb=true}
 	self:addSkinFrame{obj=TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
 
 end
@@ -180,6 +186,7 @@ function Skinner:PVPFrame()
 	end
 
 	self:keepFontStrings(PVPFrame)
+	self:skinButton{obj=PVPParentFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 -->>-- PVP Battleground Frame
@@ -187,9 +194,14 @@ function Skinner:PVPFrame()
 	self:skinScrollBar{obj=PVPBattlegroundFrameInstanceScrollFrame}
 	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
 	PVPBattlegroundFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
+	self:skinButton{obj=PVPBattlegroundFrameCancelButton}
+	self:skinButton{obj=PVPBattlegroundFrameJoinButton}
+	self:skinButton{obj=PVPBattlegroundFrameGroupJoinButton}
 -->>-- PVP Team Details Frame
 	self:skinDropDown{obj=PVPDropDown}
 	self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
+	self:skinButton{obj=PVPTeamDetailsCloseButton, cb=true}
 	self:addSkinFrame{obj=PVPTeamDetails, ft=ftype, kfs=true, x1=8, y1=-2, x2=-2, y2=12}
 
 -->>-- Tabs
@@ -216,6 +228,8 @@ function Skinner:PetStableFrame()
 	self:makeMFRotatable(PetStableModel)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetStablePetInfo)
+	self:skinButton{obj=PetStableFrameCloseButton, cb=true}
+	self:skinButton{obj=PetStablePurchaseButton}
 	self:addSkinFrame{obj=PetStableFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
 
 end
@@ -247,6 +261,7 @@ function Skinner:SpellBookFrame()
 		end)
 	end
 
+	self:skinButton{obj=SpellBookCloseButton, cb=true}
 	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=70}
 	-- colour the spell name text
 	for i = 1, SPELLS_PER_PAGE do
@@ -317,11 +332,15 @@ function Skinner:TalentUI()
 	end)
 
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
+	self:skinButton{obj=PlayerTalentFrameCloseButton, cb=true}
+	self:skinButton{obj=PlayerTalentFrameActivateButton, type=2}
 	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6}) -- other regions are background textures
 	self:skinScrollBar{obj=PlayerTalentFrameScrollFrame, noRR=true}
 	self:keepFontStrings(PlayerTalentFrameStatusFrame)
 	self:keepFontStrings(PlayerTalentFramePointsBar)
 	self:keepFontStrings(PlayerTalentFramePreviewBar)
+	self:skinButton{obj=PlayerTalentFrameResetButton}
+	self:skinButton{obj=PlayerTalentFrameLearnButton}
 	self:keepFontStrings(PlayerTalentFramePreviewBarFiller)
 	self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, x1=10, y1=-12, x2=-31, y2=71}
 
@@ -353,6 +372,9 @@ function Skinner:DressUpFrame()
 	DressUpModelRotateLeftButton:Hide()
 	DressUpModelRotateRightButton:Hide()
 	self:makeMFRotatable(DressUpModel)
+	self:skinButton{obj=DressUpFrameCloseButton, cb=true}
+	self:skinButton{obj=DressUpFrameCancelButton}
+	self:skinButton{obj=DressUpFrameResetButton}
 	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
 end
@@ -472,6 +494,7 @@ function Skinner:AchievementUI()
 		tex:SetHeight(19)
 		tex:SetPoint("RIGHT", AchievementFrameFilterDropDown, "RIGHT", -3, 4)
 	end
+	self:skinButton{obj=AchievementFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=AchievementFrame, ft=ftype, kfs=true, y1=1, y2=-3}
 
 -->>-- move Header info

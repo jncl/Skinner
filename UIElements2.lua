@@ -47,6 +47,7 @@ function Skinner:MovieProgress()
 		self:keepFontStrings(MovieProgressFrame)
 		self:glazeStatusBar(MovieProgressBar, 0)
 	end
+	self:skinButton{obj=MovieRecordingCancelButton, cb=true}
 
 end
 
@@ -63,6 +64,8 @@ function Skinner:TimeManager()
 	TimeManagerAlarmMinuteDropDownMiddle:SetWidth(TimeManagerAlarmMinuteDropDownMiddle:GetWidth() + 8)
 	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown}
 	self:skinEditBox{obj=TimeManagerAlarmMessageEditBox, regs={9}}
+	self:skinButton{obj=TimeManagerAlarmEnabledButton}
+	self:skinButton{obj=TimeManagerCloseButton, cb=true}
 	self:addSkinFrame{obj=TimeManagerFrame, ft=ftype, kfs=true, x1=14, y1=-11, x2=-49, y2=9}
 
 -->>--	Time Manager Clock Button
@@ -71,6 +74,7 @@ function Skinner:TimeManager()
 
 -->>--	Stopwatch Frame
 	self:keepFontStrings(StopwatchTabFrame)
+	self:skinButton{obj=StopwatchCloseButton, cb=true}
 	self:addSkinFrame{obj=StopwatchFrame, ft=ftype, kfs=true, y1=-16, y2=2}
 
 end
@@ -88,12 +92,14 @@ function Skinner:Calendar()
 	self:moveObject{obj=CalendarFilterFrameText, x=-8}
 	-- move close button
 	self:moveObject{obj=CalendarCloseButton, y=14}
+	self:skinButton{obj=CalendarCloseButton, cb=true}
 	self:addSkinFrame{obj=CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=2, y2=-7}
 
 -->>-- View Holiday Frame
 	self:keepFontStrings(CalendarViewHolidayTitleFrame)
 	self:moveObject{obj=CalendarViewHolidayTitleFrame, y=-6}
 	self:removeRegions(CalendarViewHolidayCloseButton, {4})
+	self:skinButton{obj=CalendarViewHolidayCloseButton, cb=true}
 	self:skinScrollBar{obj=CalendarViewHolidayScrollFrame}
 	self:addSkinFrame{obj=CalendarViewHolidayFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=-2}
 
@@ -101,6 +107,7 @@ function Skinner:Calendar()
 	self:keepFontStrings(CalendarViewRaidTitleFrame)
 	self:moveObject{obj=CalendarViewRaidTitleFrame, y=-6}
 	self:removeRegions(CalendarViewRaidCloseButton, {4})
+	self:skinButton{obj=CalendarViewRaidCloseButton, cb=true}
 	self:skinScrollBar{obj=CalendarViewRaidScrollFrame}
 	self:addSkinFrame{obj=CalendarViewRaidFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
@@ -108,10 +115,14 @@ function Skinner:Calendar()
 	self:keepFontStrings(CalendarViewEventTitleFrame)
 	self:moveObject{obj=CalendarViewEventTitleFrame, y=-6}
 	self:removeRegions(CalendarViewEventCloseButton, {4})
+	self:skinButton{obj=CalendarViewEventCloseButton, cb=true}
 	self:addSkinFrame{obj=CalendarViewEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=CalendarViewEventDescriptionScrollFrame}
 	self:keepFontStrings(CalendarViewEventInviteListSection)
 	self:addSkinFrame{obj=CalendarViewEventInviteList, ft=ftype}
+	self:skinButton{obj=CalendarViewEventAcceptButton, type=2}
+	self:skinButton{obj=CalendarViewEventDeclineButton, type=2}
+	self:skinButton{obj=CalendarViewEventRemoveButton, type=2}
 	self:addSkinFrame{obj=CalendarViewEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Create Event Frame
@@ -119,6 +130,7 @@ function Skinner:Calendar()
 	self:keepFontStrings(CalendarCreateEventTitleFrame)
 	self:moveObject{obj=CalendarCreateEventTitleFrame, y=-6}
 	self:removeRegions(CalendarCreateEventCloseButton, {4})
+	self:skinButton{obj=CalendarCreateEventCloseButton, cb=true}
 	self:skinEditBox{obj=CalendarCreateEventTitleEdit, regs={9}}
 	self:skinDropDown{obj=CalendarCreateEventTypeDropDown}
 	self:skinDropDown{obj=CalendarCreateEventHourDropDown}
@@ -132,19 +144,24 @@ function Skinner:Calendar()
 	self:keepFontStrings(CalendarCreateEventInviteListSection)
 	self:addSkinFrame{obj=CalendarCreateEventInviteList, ft=ftype}
 	self:skinEditBox{obj=CalendarCreateEventInviteEdit, regs={9}}
+	self:skinButton{obj=CalendarCreateEventInviteButton, type=2}
 	CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
-	-- TODO Fix this to be skinned properly when in a raid
-	if CalendarCreateEventRaidInviteButtonBorder then CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0) end
+	self:skinButton{obj=CalendarCreateEventMassInviteButton, type=2}
+	CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
+	self:skinButton{obj=CalendarCreateEventRaidInviteButton, type=2}
 	CalendarCreateEventCreateButtonBorder:SetAlpha(0)
+	self:skinButton{obj=CalendarCreateEventCreateButton, type=2}
 	self:addSkinFrame{obj=CalendarCreateEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Mass Invite Frame
 	self:keepFontStrings(CalendarMassInviteTitleFrame)
 	self:moveObject{obj=CalendarMassInviteTitleFrame, y=-6}
 	self:removeRegions(CalendarMassInviteCloseButton, {4})
+	self:skinButton{obj=CalendarMassInviteCloseButton, cb=true}
 	self:skinEditBox{obj=CalendarMassInviteGuildMinLevelEdit, regs={9}}
 	self:skinEditBox{obj=CalendarMassInviteGuildMaxLevelEdit, regs={9}}
 	self:skinDropDown{obj=CalendarMassInviteGuildRankMenu}
+	self:skinButton{obj=CalendarMassInviteGuildAcceptButton, type=2}
 	self:addSkinFrame{obj=CalendarMassInviteFrame, ft=ftype, kfs=true, x1=4, y1=-3, x2=-3, y2=26}
 
 -->>-- Event Picker Frame
@@ -153,6 +170,7 @@ function Skinner:Calendar()
 	self:keepFontStrings(CalendarEventPickerFrame)
 	self:skinSlider(CalendarEventPickerScrollBar)
 	self:removeRegions(CalendarEventPickerCloseButton, {7})
+	self:skinButton{obj=CalendarEventPickerCloseButton, type=2}
 	self:addSkinFrame{obj=CalendarEventPickerFrame, ft=ftype, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Texture Picker Frame
@@ -160,7 +178,9 @@ function Skinner:Calendar()
 	self:moveObject{obj=CalendarTexturePickerTitleFrame, y=-6}
 	self:skinSlider(CalendarTexturePickerScrollBar)
 	CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
+	self:skinButton{obj=CalendarTexturePickerCancelButton, type=2}
 	CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
+	self:skinButton{obj=CalendarTexturePickerAcceptButton, type=2}
 	self:addSkinFrame{obj=CalendarTexturePickerFrame, ft=ftype, kfs=true, x1=5, y1=-3, x2=-3, y2=2}
 
 -->>-- Class Button Container
@@ -171,9 +191,14 @@ function Skinner:Calendar()
 	-- Class Totals button, texture & size changes
 	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.itTex)
 	self:moveObject{obj=CalendarClassTotalsButtonBackgroundMiddle, x=2}
-	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(18)
-	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(18)
+	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(20)
+	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(20)
 	CalendarClassTotalsButtonBackgroundMiddle:SetAlpha(1)
+
+-->>-- ContextMenus
+	self:applySkin{obj=CalendarContextMenu}
+	self:applySkin{obj=CalendarArenaTeamContextMenu}
+	self:applySkin{obj=CalendarInviteStatusContextMenu}
 
 end
 
@@ -182,9 +207,23 @@ function Skinner:MenuFrames()
 	self.initialized.MenuFrames = true
 
 -->>-- Game Menu Frame
+	self:skinButton{obj=GameMenuButtonOptions}
+	self:skinButton{obj=GameMenuButtonSoundOptions}
+	self:skinButton{obj=GameMenuButtonUIOptions}
+	self:skinButton{obj=GameMenuButtonMacOptions}
+	self:skinButton{obj=GameMenuButtonKeybindings}
+	self:skinButton{obj=GameMenuButtonMacros}
+	self:skinButton{obj=GameMenuButtonRatings}
+	self:skinButton{obj=GameMenuButtonLogout}
+	self:skinButton{obj=GameMenuButtonQuit}
+	self:skinButton{obj=GameMenuButtonContinue}
 	self:addSkinFrame{obj=GameMenuFrame, ft=ftype, kfs=true, hdr=true}
 
 -->>-- Video Options
+	self:skinButton{obj=VideoOptionsFrameDefaults}
+	self:skinButton{obj=VideoOptionsFrameOkay}
+	self:skinButton{obj=VideoOptionsFrameCancel}
+	self:skinButton{obj=VideoOptionsFrameApply}
 	self:addSkinFrame{obj=VideoOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	self:addSkinFrame{obj=VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true}
 	self:skinSlider(VideoOptionsFrameCategoryFrameListScrollBar)
@@ -202,6 +241,9 @@ function Skinner:MenuFrames()
 	self:addSkinFrame{obj=VideoOptionsEffectsPanelShaders, ft=ftype}
 
 -->>-- Sound & Voice Options
+	self:skinButton{obj=AudioOptionsFrameDefaults}
+	self:skinButton{obj=AudioOptionsFrameOkay}
+	self:skinButton{obj=AudioOptionsFrameCancel}
 	self:addSkinFrame{obj=AudioOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	self:skinSlider(AudioOptionsFrameCategoryFrameListScrollBar)
 	self:addSkinFrame{obj=AudioOptionsFrameCategoryFrame, ft=ftype, kfs=true}
@@ -216,8 +258,13 @@ function Skinner:MenuFrames()
 	self:addSkinFrame{obj=AudioOptionsVoicePanel, ft=ftype}
 	self:addSkinFrame{obj=AudioOptionsVoicePanelTalking, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsVoicePanelInputDeviceDropDown}
+	self:skinButton{obj=RecordLoopbackSoundButton, x1=-2, x2=2}
+	self:skinButton{obj=PlayLoopbackSoundButton, x1=-2, x2=2}
+	self:addSkinFrame{obj=LoopbackVUMeter:GetParent(), ft=ftype, aso={ng=true}}
+	self:glazeStatusBar(LoopbackVUMeter)
 	self:addSkinFrame{obj=AudioOptionsVoicePanelBinding, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsVoicePanelChatModeDropDown}
+	self:skinButton{obj=AudioOptionsVoicePanelChatMode1KeyBindingButton}
 	self:addSkinFrame{obj=AudioOptionsVoicePanelListening, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsVoicePanelOutputDeviceDropDown}
 	self:addSkinFrame{obj=VoiceChatTalkers, ft=ftype}
@@ -225,12 +272,19 @@ function Skinner:MenuFrames()
 
 -->>-- Mac Options
 	if IsMacClient() then
+		self:skinButton{obj=MacOptionsButtonCompress}
+		self:skinButton{obj=MacOptionsFrameDefaults}
+		self:skinButton{obj=MacOptionsButtonKeybindings}
+		self:skinButton{obj=MacOptionsFrameDefaults}
+		self:skinButton{obj=MacOptionsFrameOkay}
+		self:skinButton{obj=MacOptionsFrameDefaults}
+		self:skinButton{obj=MacOptionsFrameCancel}
 		self:addSkinFrame{obj=MacOptionsFrame, ft=ftype, kfs=true, hdr=true}
-		self:addSkinFrame{obj=MacOptionsFrameMovieRecording, ft=ftype}
+		self:addSkinFrame{obj=MacOptionsFrameMovieRecording, ft=ftype, y1=-2}
 		self:skinDropDown{obj=MacOptionsFrameResolutionDropDown}
 		self:skinDropDown{obj=MacOptionsFrameFramerateDropDown}
 		self:skinDropDown{obj=MacOptionsFrameCodecDropDown}
-		self:addSkinFrame{obj=MacOptionsITunesRemote, ft=ftype}
+		self:addSkinFrame{obj=MacOptionsITunesRemote, ft=ftype, y1=-2}
 		self:addSkinFrame{obj=MacOptionsCompressFrame, ft=ftype, kfs=true, hdr=true}
 		self:addSkinFrame{obj=MacOptionsCancelFrame, ft=ftype, kfs=true, hdr=true}
 		self:addSkinFrame{obj=FolderPicker, ft=ftype, kfs=true, hdr=true}
@@ -254,6 +308,9 @@ function Skinner:MenuFrames()
 		end)
 	end
 
+	self:skinButton{obj=InterfaceOptionsFrameDefaults}
+	self:skinButton{obj=InterfaceOptionsFrameOkay}
+	self:skinButton{obj=InterfaceOptionsFrameCancel}
 	self:addSkinFrame{obj=InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
 	self:skinScrollBar{obj=InterfaceOptionsFrameCategoriesList}
@@ -262,6 +319,11 @@ function Skinner:MenuFrames()
 	self:skinSlider(InterfaceOptionsFrameAddOnsListScrollBar)
 	self:addSkinFrame{obj=InterfaceOptionsFrameAddOns, ft=ftype, kfs=true}
 	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ft=ftype}
+	self:skinButton{obj=InterfaceOptionsHelpPanelResetTutorials}
+
+-->>-- Rating Menu
+	self:skinButton{obj=RatingMenuButtonOkay}
+	self:addSkinFrame{obj=RatingMenuFrame, ft=ftype, hdr=true}--, x1=10, y1=-12, x2=-32, y2=71}
 
 	-- Tabs
 	for i = 1, 2 do
@@ -295,6 +357,23 @@ function Skinner:MenuFrames()
 
 end
 
+function Skinner:BindingUI()
+	if not self.db.profile.MenuFrames or self.initialized.BindingUI then return end
+	self.initialized.BindingUI = true
+
+	for i = 1, 17 do
+		self:skinButton{obj=_G["KeyBindingFrameBinding"..i.."Key1Button"], type=2}
+		self:skinButton{obj=_G["KeyBindingFrameBinding"..i.."Key2Button"], type=2}
+	end
+	self:skinScrollBar{obj=KeyBindingFrameScrollFrame}
+	self:skinButton{obj=KeyBindingFrameDefaultButton}
+	self:skinButton{obj=KeyBindingFrameUnbindButton}
+	self:skinButton{obj=KeyBindingFrameOkayButton}
+	self:skinButton{obj=KeyBindingFrameCancelButton}
+	self:addSkinFrame{obj=KeyBindingFrame, ft=ftype, kfs=true, hdr=true, x2=-42, y2=10}
+
+end
+
 function Skinner:MacroUI()
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
@@ -306,21 +385,19 @@ function Skinner:MacroUI()
 	self:skinScrollBar{obj=MacroFrameScrollFrame}
 	self:skinEditBox{obj=MacroFrameText, noSkin=true}
 	self:addSkinFrame{obj=MacroFrameTextBackground, ft=ftype}
+	self:skinButton{obj=MacroFrameCloseButton, cb=true}
+	self:skinButton{obj=MacroEditButton}
+	self:skinButton{obj=MacroDeleteButton}
+	self:skinButton{obj=MacroNewButton}
+	self:skinButton{obj=MacroExitButton}
 	self:addSkinFrame{obj=MacroFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, x2=-32, y2=71}
 
 -->>-- Macro Popup Frame
 	self:skinEditBox{obj=MacroPopupEditBox}
 	self:skinScrollBar{obj=MacroPopupScrollFrame}
+	self:skinButton{obj=MacroPopupOkayButton}
+	self:skinButton{obj=MacroPopupCancelButton}
 	self:addSkinFrame{obj=MacroPopupFrame, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
-
-end
-
-function Skinner:BindingUI()
-	if not self.db.profile.MenuFrames or self.initialized.BindingUI then return end
-	self.initialized.BindingUI = true
-
-	self:skinScrollBar{obj=KeyBindingFrameScrollFrame}
-	self:addSkinFrame{obj=KeyBindingFrame, ft=ftype, kfs=true, hdr=true, x2=-42, y2=10}
 
 end
 
@@ -328,6 +405,8 @@ function Skinner:BankFrame()
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
+	self:skinButton{obj=BankCloseButton, cb=true}
+	self:skinButton{obj=BankFramePurchaseButton}
 	self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-25, y2=91}
 
 end
@@ -356,6 +435,7 @@ function Skinner:MailFrame()
 	for i = 1, 7 do
 		self:keepFontStrings(_G["MailItem"..i])
 	end
+	self:skinButton{obj=InboxCloseButton, cb=true}
 
 -->>--	Send Mail Frame
 	self:keepFontStrings(SendMailFrame)
@@ -375,6 +455,10 @@ function Skinner:MailFrame()
 	local c = self.db.profile.BodyText
 	SendMailBodyEditBox:SetTextColor(c.r, c.g, c.b)
 	self:skinMoneyFrame{obj=SendMailMoney, moveSEB=true, moveGEB=true, noWidth=true}
+	self:skinButton{obj=SendMailCancelButton}
+	self:skinButton{obj=SendMailMailButton}
+
+-->>-- Stationery Popup Frame ??
 
 -->>--	Open Mail Frame
 	self:skinScrollBar{obj=OpenMailScrollFrame}
@@ -383,6 +467,11 @@ function Skinner:MailFrame()
 		local rma = _G["OpenMailAttachmentButton"..i]
 		self:addSkinButton{obj=rma, hide=true}
 	end
+	self:skinButton{obj=OpenMailCloseButton, cb=true}
+	self:skinButton{obj=OpenMailReportSpamButton}
+	self:skinButton{obj=OpenMailCancelButton}
+	self:skinButton{obj=OpenMailDeleteButton}
+	self:skinButton{obj=OpenMailReplyButton}
 	self:addSkinFrame{obj=OpenMailFrame, ft=ftype, kfs=true, x1=12, y1=-12, x2=-34, y2=70}
 
 -->>-- Invoice Frame Text fields
@@ -434,6 +523,7 @@ function Skinner:AuctionUI()
 		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
 	end)
 
+	self:skinButton{obj=AuctionFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=4}
 
 -->>--	Browse Frame
@@ -453,6 +543,11 @@ function Skinner:AuctionUI()
 		self:addSkinFrame{obj=_G["AuctionFilterButton"..i], ft=ftype}
 	end
 	self:skinScrollBar{obj=BrowseScrollFrame}
+	self:skinButton{obj=BrowseSearchButton}
+	self:skinButton{obj=BrowseCloseButton}
+	self:skinButton{obj=BrowseBuyoutButton}
+	self:skinButton{obj=BrowseBidButton}
+	self:skinButton{obj=BrowseResetButton}
 	self:skinMoneyFrame{obj=BrowseBidPrice, moveSEB=true}
 
 -->>--	Bid Frame
@@ -463,6 +558,9 @@ function Skinner:AuctionUI()
 		self:addSkinFrame{obj=obj, ft=ftype}
 	end
 	self:skinMoneyFrame{obj=BidBidPrice, moveSEB=true}
+	self:skinButton{obj=BidCloseButton}
+	self:skinButton{obj=BidBuyoutButton}
+	self:skinButton{obj=BidBidButton}
 
 -->>--	Auctions Frame
 	self:addSkinFrame{obj=AuctionsItemButton, ft=ftype}
@@ -474,6 +572,9 @@ function Skinner:AuctionUI()
 	end
 	self:skinMoneyFrame{obj=StartPrice, moveSEB=true}
 	self:skinMoneyFrame{obj=BuyoutPrice, moveSEB=true}
+	self:skinButton{obj=AuctionsCloseButton}
+	self:skinButton{obj=AuctionsCancelAuctionButton}
+	self:skinButton{obj=AuctionsCreateAuctionButton}
 
 -->>--	Auction DressUp Frame
 	self:keepRegions(AuctionDressUpFrame, {3, 4}) --N.B. regions 3 & 4 are the background
@@ -482,6 +583,8 @@ function Skinner:AuctionUI()
 	AuctionDressUpModelRotateRightButton:Hide()
 	self:makeMFRotatable(AuctionDressUpModel)
 	self:moveObject{obj=AuctionDressUpFrame, x=6}
+	self:skinButton{obj=AuctionDressUpFrameCloseButton, cb=true}
+	self:skinButton{obj=AuctionDressUpFrameResetButton}
 	self:addSkinFrame{obj=AuctionDressUpFrame, ft=ftype, x1=-6, y1=-3, x2=-2}
 -->>--	Tabs
 	for i = 1, AuctionFrame.numTabs do
@@ -574,6 +677,8 @@ function Skinner:CoinPickup()
 	if not self.db.profile.CoinPickup or self.initialized.CoinPickup then return end
 	self.initialized.CoinPickup = true
 
+	self:skinButton{obj=CoinPickupOkayButton}
+	self:skinButton{obj=CoinPickupCancelButton}
 	self:addSkinFrame{obj=CoinPickupFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
 
 end
@@ -597,6 +702,10 @@ function Skinner:LFGFrame()
 	LFGFrameQueue2Border:SetBackdrop(nil)
 	LFGFrameQueue3Border:SetBackdrop(nil)
 
+	self:skinButton{obj=self:getChild(LFGParentFrame, 3), cb=true} -- close button
+	self:skinButton{obj=LFGFrameDoneButton}
+	self:skinButton{obj=LFGFrameClearAllButton}
+	self:skinButton{obj=LFGFrameCommentButton}
 	self:addSkinFrame{obj=LFGParentFrame, ft=ftype, kfs=true, x1=17, y1=-11, x2=-29, y2=70}
 
 -->>--	LFG Frame
@@ -627,6 +736,9 @@ function Skinner:LFGFrame()
 	LFMFrameRoleBackground:Hide()
 	self:skinScrollBar{obj=LFMListScrollFrame}
 	self:addSkinFrame{obj=LFMEye, ft=ftype, kfs=true}
+	self:skinButton{obj=LFMFrameGroupInviteButton}
+	self:skinButton{obj=LFMFrameSendMessageButton}
+	self:skinButton{obj=LFMFrameCommentButton}
 
 -->>--	Tabs
 	for i = 1, 2 do
@@ -660,6 +772,7 @@ function Skinner:ItemSocketingUI()
 		colourSockets()
 	end)
 
+	self:skinButton{obj=ItemSocketingCloseButton, cb=true}
 	self:addSkinFrame{obj=ItemSocketingFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-4, y2=26}
 
 	self:skinScrollBar{obj=ItemSocketingScrollFrame}
@@ -699,17 +812,23 @@ function Skinner:GuildBankUI()
 	for i = 1, 7 do
 		_G["GuildBankColumn"..i.."Background"]:SetAlpha(0)
 	end
+	self:skinButton{obj=self:getChild(GuildBankFrame, 13), cb=true} -- close button
+	self:skinButton{obj=GuildBankFrameDepositButton}
+	self:skinButton{obj=GuildBankFrameWithdrawButton}
+	self:skinButton{obj=GuildBankFramePurchaseButton}
 	self:addSkinFrame{obj=GuildBankFrame, ft=ftype, kfs=true, hdr=true, y1=-11, y2=1}
 
 -->>--	Log Frame
 	self:skinScrollBar{obj=GuildBankTransactionsScrollFrame}
 
 -->>--	Info Frame
+	self:skinButton{obj=GuildBankInfoSaveButton}
 	self:skinScrollBar{obj=GuildBankInfoScrollFrame}
 
 -->>--	GuildBank Popup Frame
 	self:skinEditBox{obj=GuildBankPopupEditBox, regs={9}}
 	self:skinScrollBar{obj=GuildBankPopupScrollFrame}
+	self:skinButton{obj=GuildBankPopupOkayButton}
 	self:addSkinFrame{obj=GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
 
 -->>--	GuildBank Tabs (side)
@@ -815,6 +934,7 @@ function Skinner:GMChatUI()
 
 -->>-- GMChat Frame
 	if self.db.profile.ChatFrames then
+		self:skinButton{obj=GMChatFrameCloseButton, cb=true} -- ??
 		self:addSkinFrame{obj=GMChatFrame, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
 	end
 
@@ -833,10 +953,14 @@ function Skinner:DebugTools()
 	if not self.db.profile.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
+	self:skinButton{obj=EventTraceFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=EventTraceFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
 	self:skinSlider{obj=EventTraceFrameScroll, size=3}
 	self:addSkinFrame{obj=ScriptErrorsFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
 	self:skinScrollBar{obj=ScriptErrorsFrameScrollFrame}
+	self:skinButton{obj=ScriptErrorsFrame.previous}
+	self:skinButton{obj=ScriptErrorsFrame.next}
+	self:skinButton{obj=ScriptErrorsFrame.close}
 
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then

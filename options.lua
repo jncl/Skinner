@@ -32,6 +32,9 @@ function Skinner:Defaults()
 		Gradient		= {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Blizzard ChatFrame Background"},
 		FadeHeight		= {enable = false, value = 500, force = false},
 		Delay			= {Init = 0.5, Addons = 0.5, LoDs = 0.5},
+		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
+		Buttons			= true,
+		-- Viewport & Top/Middle/Bottom frames
 		ViewPort		= {top = 64, bottom = 64, YResolution = 1050, YScaling = 768/1050, left = 128, right = 128, XResolution = 768, XScaling = 768/1050, shown = false, overlay = false, r = 0, g = 0, b = 0, a = 1},
 		TopFrame		= {height = 64, width = 1920, shown = false, fheight = 50, xyOff = true, borderOff = false, alpha = 0.9, invert = false, rotate = false},
 		MiddleFrame		= {fheight = 50, borderOff = false, lock = false, r = 0, g = 0, b = 0, a = 0.9},
@@ -45,7 +48,6 @@ function Skinner:Defaults()
 		MiddleFrame8	= {height = 64, width = 64, shown = false, xOfs = 0, yOfs = 0, flevel = 0, fstrata = "BACKGROUND"},
 		MiddleFrame9	= {height = 64, width = 64, shown = false, xOfs = 0, yOfs = 0, flevel = 0, fstrata = "BACKGROUND"},
 		BottomFrame		= {height = 200, width = 1920, shown = false, fheight = 50, xyOff = true, borderOff = false, alpha = 0.9, invert = false, rotate = false},
-		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
 		-- Character Frames
 		CharacterFrames = true,
 		PVPFrame  		= true,
@@ -205,7 +207,7 @@ function Skinner:Options()
 				TrackerFrame = {
 					type = "group",
 					inline = true,
-					order = 9,
+					order = 20,
 					name = self.L["Tracker Frame"],
 					desc = self.L["Change the Tracker Frame settings"],
 					get = function(info) return db.TrackerFrame[info[#info]] end,
@@ -237,7 +239,7 @@ function Skinner:Options()
 				},
 				Delay = {
 					type = "group",
-					order = 10,
+					order = 21,
 					inline = true,
 					name = self.L["Skinning Delays"],
 					desc = self.L["Change the Skinning Delays settings"],
@@ -269,7 +271,7 @@ function Skinner:Options()
 				},
 				FadeHeight = {
 					type = "group",
-					order = 11,
+					order = 22,
 					inline = true,
 					name = self.L["Fade Height"],
 					desc = self.L["Change the Fade Height settings"],
@@ -299,7 +301,7 @@ function Skinner:Options()
 				},
 				StatusBar = {
 					type = "group",
-					order = 12,
+					order = 23,
 					inline = true,
 					name = self.L["StatusBar"],
 					desc = self.L["Change the StatusBar settings"],
@@ -334,6 +336,12 @@ function Skinner:Options()
 							end,
 						},
 					},
+				},
+				Buttons = {
+					type = "toggle",
+					order = 9,
+					name = self.L["UI Buttons"],
+					desc = self.L["Toggle the skin of the UI Buttons"],
 				},
 			},
 		},
