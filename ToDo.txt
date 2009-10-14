@@ -11,14 +11,4 @@ S - Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-√	I 	PassLoot, reported by Kerecha, 24.09.09
-		- Skinner-b2.10468.2\SkinMe\PassLoot.lua:5: attempt to index field 'MainFrame' (a nil value)
-		(tail call): ?:
-		<in C code>: ?
-		Skinner-b2.10468.2\Skinner.lua:673: in function <Skinner\Skinner.lua:671>
-		Skinner-b2.10468.2\Skinner.lua:718: in function `?'
-		Skinner-b2.10468.2\AddonFrames.lua:118: in function <Skinner\AddonFrames.lua:62>
-		(tail call): ?:
-		<in C code>: ?
-
 	S	Default Buttons etc, requested by Hobbbbit/Kerecha, 23.09.09
