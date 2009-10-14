@@ -1,3 +1,4 @@
+local ipairs = ipairs
 
 function Skinner:Recount()
 
@@ -23,11 +24,12 @@ function Skinner:Recount()
 	self:addSkinFrame{obj=Recount_GraphWindow, kfs=true, hdr=true, x1=-2, y1=-8, x2=2, y2=-2}
 
 -->>-- skin Realtime frames already created
-	for i = 1, UIParent:GetNumChildren() do
-		local obj = select(i, UIParent:GetChildren())
-		if obj:GetName() == nil and obj:IsObjectType("Frame") and obj.Graph then
-			self:addSkinFrame{obj=obj, kfs=true, x1=-4, y1=-10, x2=4, y2=-4}
+	local kids = {UIParent:GetChildren()}
+	for _, child in ipairs(kids) do
+		if child:GetName() == nil and child:IsObjectType("Frame") and child.Graph then
+			self:addSkinFrame{obj=child, kfs=true, x1=-4, y1=-10, x2=4, y2=-4}
 		end
 	end
+	kids = nil
 
 end

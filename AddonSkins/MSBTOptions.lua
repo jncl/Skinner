@@ -1,3 +1,4 @@
+local ipairs = ipairs
 
 function Skinner:MSBTOptions()
 
@@ -89,18 +90,19 @@ function Skinner:MSBTOptions()
 		Skinner:keepFontStrings(Skinner:getChild(Skinner:getChild(MSBTMainOptionsFrame, 4), 2))
 
 	-->>--	dropdown listbox frame
-		for i = 1, UIParent:GetNumChildren() do
-			local obj = select(i, UIParent:GetChildren())
-			if obj:GetName() == nil and obj:IsObjectType("Frame") then
-				local backdrop = obj:GetBackdrop()
+		local kids = {UIParent:GetChildren()}
+		for _, child in ipairs(kids) do
+			if child:GetName() == nil and child:IsObjectType("Frame") then
+				local backdrop = child:GetBackdrop()
 				if backdrop and backdrop.bgFile == [[Interface\Addons\MSBTOptions\Artwork\PlainBackdrop]] then
-					if not Skinner.skinned[obj] then
-						Skinner:skinUsingBD2(obj.listbox.sliderFrame)
-						Skinner:applySkin(obj)
+					if not Skinner.skinned[child] then
+						Skinner:skinUsingBD2(child.listbox.sliderFrame)
+						Skinner:applySkin(child)
 					end
 				end
 			end
 		end
+		kids = nil
 
 	end
 

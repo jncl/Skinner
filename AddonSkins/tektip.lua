@@ -1,3 +1,4 @@
+local ipairs = ipairs
 
 function Skinner:tektip()
 
@@ -20,9 +21,11 @@ function Skinner:tektip()
 	end, true)
 	
 	-- skin existing tooltips
+	local kids = UIParent:GetChildren()
 	for i = 1, UIParent:GetNumChildren() do
-		local child = select(i, UIParent:GetChildren())
+		local child = select(i, kids)
 		if child:GetFrameStrata() == "TOOLTIP" and child.AddLine and child.Clear then skinTT(child) end
 	end
+	kids = nil
 
 end

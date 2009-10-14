@@ -32,6 +32,7 @@ local assert = assert
 local ceil = math.ceil
 local floor = math.floor
 local geterrorhandler = geterrorhandler
+local ipairs = ipairs
 local pairs = pairs
 local pcall = pcall
 local rawget = rawget
@@ -849,15 +850,16 @@ function Skinner:findFrame3(name, element)
 
 	local frame
 
-	for i = 1, UIParent:GetNumChildren() do
-		local obj = select(i, UIParent:GetChildren())
-		if obj:GetName() == name then
-			if obj[element] then
-				frame = obj
+	local kids = {UIParent:GetChildren()}
+	for _, child in ipairs(kids) do
+		if child:GetName() == name then
+			if child[element] then
+				frame = child
 				break
 			end
 		end
 	end
+	kids = nil
 
 	return frame
 

@@ -1,6 +1,7 @@
 local _G = _G
 local ceil = math.ceil
 local floor = math.floor
+local ipairs = ipairs
 local select = select
 
 function Skinner:tomQuest2()
@@ -42,22 +43,21 @@ function Skinner:tomQuest2()
 	local aTrkr = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("achievementTracker", true)
 	-- find the tracker anchors and skin them
 	if qTrkr or aTrkr then
-		for i = 1, UIParent:GetNumChildren() do
-			local obj = select(i, UIParent:GetChildren())
-			if obj:GetName() == nil then
-				if obj:IsObjectType("Button") then
-					if floor(obj:GetHeight()) == 24 and obj:GetFrameStrata() == "MEDIUM" then
-						local r, g, b, a = obj:GetBackdropColor()
-						if  ("%.2f"):format(r) == "0.09"
-						and ("%.2f"):format(g) == "0.09"
-						and ("%.2f"):format(b) == "0.19"
-						and ("%.1f"):format(a) == "0.5" then
-							self:addSkinFrame{obj=obj, x1=-2, x2=2} -- tracker anchor frame
-						end
+		local kids = {UIParent:GetChildren()}
+		for _, child in ipairs(kids) do
+			if child:IsObjectType("Button") and child:GetName() == nil then
+				if floor(child:GetHeight()) == 24 and child:GetFrameStrata() == "MEDIUM" then
+					local r, g, b, a = child:GetBackdropColor()
+					if  ("%.2f"):format(r) == "0.09"
+					and ("%.2f"):format(g) == "0.09"
+					and ("%.2f"):format(b) == "0.19"
+					and ("%.1f"):format(a) == "0.5" then
+						self:addSkinFrame{obj=child, x1=-2, x2=2} -- tracker anchor frame
 					end
 				end
 			end
 		end
+		kids = nil
 	end
 
 -->>-- Colour the Quest Tracker & Achievement Tracker if required

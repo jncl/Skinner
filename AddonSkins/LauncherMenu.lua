@@ -1,3 +1,4 @@
+local ipairs = ipairs
 
 function Skinner:LauncherMenu()
 
@@ -10,18 +11,19 @@ function Skinner:LauncherMenu()
 --		self:Debug("LauncherMenu OnClick: [%s]", frame)
 		self.hooks[lm].OnClick(frame)
 		-- now find the menu frame
-		for i = 1, UIParent:GetNumChildren() do
-			local obj = select(i, UIParent:GetChildren())
-			if obj and obj:GetName() == nil and obj.buttons and obj.numButtons then
-				self:applySkin{obj=obj}
+		local kids = {UIParent:GetChildren()}
+		for _, child in ipairs(kids) do
+			if child and child:GetName() == nil and child.buttons and child.numButtons then
+				self:applySkin{obj=child}
 				-- hook the frame's OnShow script to adjust gradient as required
-				self:HookScript(obj, "OnShow", function(this)
-					self.hooks[obj].OnShow(this)
-					self:applyGradient(obj)
+				self:HookScript(child, "OnShow", function(this)
+					self.hooks[child].OnShow(this)
+					self:applyGradient(child)
 				end)
 				break
 			end
 		end
+		kids = nil
 		self:Unhook(lm, "OnClick")
 	end)
 	

@@ -12,3 +12,25 @@ S - Skin request
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
 	S	Default Buttons etc, requested by Hobbbbit/Kerecha, 23.09.09
+
+√	I	Recount, reported by Craxziz, 8.09.09
+		- Skinner-b2.10505.1\SkinMe\Recount.lua:27: UIParent:GetChildren(): Stack overflow
+		Skinner-b2.10505.1\SkinMe\Recount.lua:27: in function <Skinner\SkinMe\Recount.lua:2>
+		(tail call): ?:
+		<in C code>: ?
+		Skinner-b2.10505.1\Skinner.lua:673: in function <Skinner\Skinner.lua:671>
+		Skinner-b2.10505.1\Skinner.lua:718: in function `?'
+		Skinner-b2.10505.1\AddonFrames.lua:118: in function <Skinner\AddonFrames.lua:62>
+		(tail call): ?:
+		- didn't get these errors but changed the code anyway
+
+√	I	tomQuest2, reported by Craxziz, 8.09.09
+		- Skinner-b2.10505.1\SkinMe\tomQuest2.lua:46: UIParent:GetChildren(): Stack overflow
+		Skinner-b2.10505.1\SkinMe\tomQuest2.lua:46: in function <Skinner\SkinMe\tomQuest2.lua:6>
+		(tail call): ?:
+		<in C code>: ?
+		Skinner-b2.10505.1\Skinner.lua:673: in function <Skinner\Skinner.lua:671>
+		Skinner-b2.10505.1\Skinner.lua:718: in function `?'
+		Skinner-b2.10505.1\AddonFrames.lua:118: in function <Skinner\AddonFrames.lua:62>
+		(tail call): ?:
+		- didn't get these errors but changed the code anyway

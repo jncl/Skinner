@@ -1,3 +1,4 @@
+local ipairs = ipairs
 
 function Skinner:Quartz()
 
@@ -33,17 +34,18 @@ function Skinner:Quartz()
 
 	local function skinSBs()
 
-		for i = 1, UIParent:GetNumChildren() do
-			local obj = select(i, UIParent:GetChildren())
+		local kids = {UIParent:GetChildren()}
+		for _, child in ipairs(kids) do
 			-- if this is a Quartz Mirror/Buff Bar then skin it
-			if obj:IsObjectType('StatusBar') and obj.timetext then
-				if not Skinner.skinned[obj]then
-					obj:SetBackdrop(nil)
-					Skinner:glazeStatusBar(obj, 0)
-					obj.SetStatusBarTexture = function() end
+			if child:IsObjectType('StatusBar') and child.timetext then
+				if not Skinner.skinned[child]then
+					child:SetBackdrop(nil)
+					Skinner:glazeStatusBar(child, 0)
+					child.SetStatusBarTexture = function() end
 				end
 			end
 		end
+		kids = nil
 
 	end
 

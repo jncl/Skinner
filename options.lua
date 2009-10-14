@@ -1,6 +1,6 @@
 local _G = _G
 local ceil = math.ceil
-local ipairs =ipairs
+local ipairs = ipairs
 local pairs = pairs
 local IsAddOnLoaded = IsAddOnLoaded
 
