@@ -33,7 +33,7 @@ function Skinner:Defaults()
 		FadeHeight		= {enable = false, value = 500, force = false},
 		Delay			= {Init = 0.5, Addons = 0.5, LoDs = 0.5},
 		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
-		Buttons			= true,
+		Buttons			= false,
 		-- Viewport & Top/Middle/Bottom frames
 		ViewPort		= {top = 64, bottom = 64, YResolution = 1050, YScaling = 768/1050, left = 128, right = 128, XResolution = 768, XScaling = 768/1050, shown = false, overlay = false, r = 0, g = 0, b = 0, a = 1},
 		TopFrame		= {height = 64, width = 1920, shown = false, fheight = 50, xyOff = true, borderOff = false, alpha = 0.9, invert = false, rotate = false},
