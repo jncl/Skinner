@@ -1299,6 +1299,7 @@ function Skinner:skinButton(opts)
 	type = button template type
 	cb = close button
 	mp = minus/plus button
+	mp2 = minus/plus button style 2
 	other options as per addSkinButton
 --]]
 	if not self.db.profile.Buttons then return end
@@ -1330,13 +1331,17 @@ function Skinner:skinButton(opts)
 		else
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		end
-	elseif opts.mp then
+	elseif opts.mp then -- uses ClassTrainerSkillButtonTemplate
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}}
 		self.sBut[opts.obj]:ClearAllPoints()
 		local relTo = _G[objName.."NormalText"] or _G[objName.."Text"]
 		self.sBut[opts.obj]:SetPoint("RIGHT", relTo, "LEFT", -2, 0)
-		self.sBut[opts.obj]:SetWidth(15)
-		self.sBut[opts.obj]:SetHeight(14)
+		self.sBut[opts.obj]:SetWidth(16)
+		self.sBut[opts.obj]:SetHeight(15)
+		self.sBut[opts.obj]:SetNormalFontObject(fontP)
+		self.sBut[opts.obj]:SetText(self.minus)
+	elseif opts.mp2 then
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 		self.sBut[opts.obj]:SetNormalFontObject(fontP)
 		self.sBut[opts.obj]:SetText(self.minus)
 	else

@@ -203,9 +203,9 @@ function Skinner:TradeSkillUI()
 	self:skinEditBox{obj=TradeSkillInputBox}
 	self:moveObject{obj=TradeSkillInputBox, x=-5}
 	self:skinButton{obj=TradeSkillFrameCloseButton, cb=true}
-	self:skinButton{obj=TradeSkillFrameCreateButton}
-	self:skinButton{obj=TradeSkillFrameCancelButton}
-	self:skinButton{obj=TradeSkillFrameCreateAllButton}
+	self:skinButton{obj=TradeSkillCreateButton}
+	self:skinButton{obj=TradeSkillCancelButton}
+	self:skinButton{obj=TradeSkillCreateAllButton}
 	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 	if self.db.profile.Buttons then TradeSkillFrame_Update() end -- force update for button textures

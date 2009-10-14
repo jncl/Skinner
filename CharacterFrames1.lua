@@ -105,15 +105,24 @@ end
 
 function Skinner:ReputationFrame()
 
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("ReputationFrame_Update", function()
+			for i = 1, NUM_FACTIONS_DISPLAYED do
+				self:checkTex(_G["ReputationBar"..i.."ExpandOrCollapseButton"])
+			end
+		end)
+	end
+
 	self:keepFontStrings(ReputationFrame)
 	self:skinScrollBar{obj=ReputationListScrollFrame}
 
-	-- glaze all the rep bars
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		_G["ReputationBar"..i.."Background"]:SetAlpha(0)
 		_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetAlpha(0)
 		_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetAlpha(0)
 		self:glazeStatusBar(_G["ReputationBar"..i.."ReputationBar"], 0)
+		self:skinButton{obj=_G["ReputationBar"..i.."ExpandOrCollapseButton"], mp2=true, x1=4, y1=0, x2=6, y2=-1}
 	end
 
 -->>-- Reputation Detail Frame
@@ -123,15 +132,26 @@ end
 
 function Skinner:SkillFrame()
 
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("SkillFrame_UpdateSkills", function()
+			for i = 1, SKILLS_TO_DISPLAY do
+				self:checkTex(_G["SkillTypeLabel"..i])
+			end
+			self:checkTex(SkillFrameCollapseAllButton)
+		end)
+	end
+
 	self:keepFontStrings(SkillFrame)
 	self:removeRegions(SkillFrameExpandButtonFrame)
---	self:skinButton{obj=SkillFrameAcceptButton}
 	self:skinButton{obj=SkillFrameCancelButton}
 	self:skinScrollBar{obj=SkillListScrollFrame}
+	self:skinButton{obj=SkillFrameCollapseAllButton, mp2=true, x1=3, y1=-4, x2=-21, y2=4}
 
 	for i = 1, SKILLS_TO_DISPLAY do
 		self:keepRegions(_G["SkillRankFrame"..i.."Border"], {2}) -- N.B. region 2 is highlight
 		self:glazeStatusBar(_G["SkillRankFrame"..i], 0)
+		self:skinButton{obj=_G["SkillTypeLabel"..i], mp2=true, x1=3, y1=0, x2=-267, y2=0}
 	end
 
 	self:skinScrollBar{obj=SkillDetailScrollFrame}
