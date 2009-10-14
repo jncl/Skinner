@@ -27,7 +27,7 @@ function Skinner:HealBot()
 			self:setInactiveTab(tabName)
 		end
 		self:setActiveTab(HealBot_OptionsTab1)
-		self:SecureHook("HealBot_Options_OnUpdate", function(this)
+		self:SecureHook("HealBot_Options_ShowPanel", function(this)
 			for i = 1, 8 do
 				local tabName = _G["HealBot_OptionsTab"..i]
 				if i == HealBot_Options.selectedTab then self:setActiveTab(tabName)
@@ -116,6 +116,8 @@ function Skinner:HealBot()
 	self:applySkin(HealBot_Options_TooltipsPanel, nil)
 	self:keepFontStrings(HealBot_Options_TooltipsPanel2)
 	self:applySkin(HealBot_Options_TooltipsPanel2, nil)
+	self:keepFontStrings(HealBot_Options_incHealsPanel)
+	self:applySkin(HealBot_Options_incHealsPanel, nil)
 	self:keepFontStrings(HealBot_Options_FrameCols)
 	self:applySkin(HealBot_Options_FrameCols, nil)
 	self:keepFontStrings(HealBot_Options_Skins_HoTs2)
