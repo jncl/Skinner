@@ -1,3 +1,8 @@
+b2.10505.4
+Jncl:
+	Bugfix for tektip
+	Updated Change_History.txt
+	
 b2.10505.3
 Jncl:
 	Bugfix for Frame finding code
