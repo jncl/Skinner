@@ -209,9 +209,9 @@ function Skinner:OnInitialize()
 		TODO understand how all the backdrop values work
 	--]]
 	if self.db.profile.BdDefault then
-		self.Backdrop[5].tileSize = 8
-		self.Backdrop[5].edgeSize = 8
-		self.Backdrop[5].insets = {left = 2, right = 2, top = 2, bottom = 2}
+		self.Backdrop[5].tileSize = 12
+		self.Backdrop[5].edgeSize = 12
+		self.Backdrop[5].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	end
 
 	-- these are used to disable frames from being skinned
@@ -1294,7 +1294,7 @@ fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
 fontX:SetTextColor(1.0, 0.82, 0)
 -- create font to use for Minus/Plus Buttons
 local fontP= CreateFont("fontP")
-fontP:SetFont([[Fonts\ARIALN.TTF]], 14)
+fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
 fontP:SetTextColor(1.0, 0.82, 0)
 function Skinner:skinButton(opts)
 --[[
@@ -1333,19 +1333,16 @@ function Skinner:skinButton(opts)
 		else
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		end
-	elseif opts.mp then -- uses ClassTrainerSkillButtonTemplate
+	elseif opts.mp then
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}}
-		self.sBut[opts.obj]:ClearAllPoints()
-		local relTo = _G[objName.."NormalText"] or _G[objName.."Text"]
-		self.sBut[opts.obj]:SetPoint("RIGHT", relTo, "LEFT", -2, 0)
-		self.sBut[opts.obj]:SetWidth(16)
-		self.sBut[opts.obj]:SetHeight(15)
-		self.sBut[opts.obj]:SetNormalFontObject(fontP)
-		self.sBut[opts.obj]:SetText(self.minus)
-	elseif opts.mp2 then
-		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
-		self.sBut[opts.obj]:SetNormalFontObject(fontP)
-		self.sBut[opts.obj]:SetText(self.minus)
+		local btn = self.sBut[opts.obj]
+		btn:ClearAllPoints()
+		btn:SetPoint("LEFT", opts.obj, "LEFT", 3, 0)
+		btn:SetWidth(16)
+		btn:SetHeight(16)
+		btn:SetNormalFontObject(fontP)
+		btn:SetText(self.minus)
+		self:moveObject{obj=self:getRegion(btn, btn:GetNumRegions()), y=-1} -- move fontstring down, fontstring is the last region
 	else
 		local x1 = opts.x1 or 2
 		local y1 = opts.y1 or 1
