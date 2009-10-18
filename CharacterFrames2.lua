@@ -254,7 +254,7 @@ function Skinner:QuestLog()
 	end
 	-- skin minus/plus buttons
 	for i = 1, #QuestLogScrollFrame.buttons do
-		self:skinButton{obj=QuestLogScrollFrame.buttons[i], mp2=true, x1=3, y1=-1, x2=-281, y2=1}
+		self:skinButton{obj=QuestLogScrollFrame.buttons[i], mp=true}
 	end
 	QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	QuestLogObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
