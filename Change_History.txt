@@ -1,3 +1,13 @@
+b2.10505.5
+Jncl:
+	Merge branch 'UIButtons'
+	Skin TutorialFrameOkayButton
+	Bugfix for tektip skin
+	UIButtons minus/plus changes
+	UnitFrame changes
+	Updated Change_History.txt
+	More UIButton changes
+	
 b2.10505.4
 Jncl:
 	Bugfix for tektip
