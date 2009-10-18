@@ -142,7 +142,7 @@ function Skinner:Target()
 	changeShield(TargetFrameSpellBar)
 	changeFlash(TargetFrameSpellBar)
 
-	self:addSkinFrame{obj=TargetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=1, y1=-7, x2=-37, y2=9}
+	self:addSkinFrame{obj=TargetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, y1=-7, x2=-37, y2=6}
 
 -->>-- TargetofTarget Frame
 	TargetofTargetBackground:SetTexture(nil)
