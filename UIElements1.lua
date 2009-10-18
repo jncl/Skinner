@@ -589,6 +589,7 @@ end
 function Skinner:Tutorial()
 	if not self.db.profile.Tutorial then return end
 
+	self:skinButton{obj=TutorialFrameOkayButton}
 	self:addSkinFrame{obj=TutorialFrame, ft=ftype}
 
 	-- skin the alert buttons
