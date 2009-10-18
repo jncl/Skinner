@@ -55,6 +55,7 @@ function Skinner:Player()
 	-- status bars
 	self:glazeStatusBar(PlayerFrameHealthBar, 0)
 	self:glazeStatusBar(PlayerFrameManaBar, 0)
+	self:moveObject{obj=PlayerFrameManaBar, y=-1}
 	-- move level & highlevel down, so they are more visible
 	self:moveObject{obj=PlayerLevelText, y=lOfs}
 	self:moveObject{obj=PlayerRestIcon, y=lOfs} -- covers level text when resting
@@ -129,6 +130,7 @@ function Skinner:Target()
 	-- status bars
 	self:glazeStatusBar(TargetFrameHealthBar, 0)
 	self:glazeStatusBar(TargetFrameManaBar, 0)
+	self:moveObject{obj=TargetFrameManaBar, y=-1}
 	self:glazeStatusBar(TargetFrameSpellBar, 0)
 	self:removeRegions(TargetFrameNumericalThreat, {3}) -- threat border
 	-- move level & highlevel down, so they are more visible
@@ -165,6 +167,7 @@ function Skinner:Focus()
 	-- status bars
 	self:glazeStatusBar(FocusFrameHealthBar, 0)
 	self:glazeStatusBar(FocusFrameManaBar, 0)
+	self:moveObject{obj=FocusFrameManaBar, y=-1}
 	self:glazeStatusBar(FocusFrameSpellBar, 0)
 	self:removeRegions(FocusFrameNumericalThreat, {3}) -- threat border
 	--[[
@@ -178,7 +181,7 @@ function Skinner:Focus()
 
 	-- handle different sized frames
 	if FocusFrame.fullSize then
-	 	x1 ,y1, x2, y2 = 1, -7, -37, 9
+	 	x1 ,y1, x2, y2 = 0, -7, -37, 6
  	else
  		x1 ,y1, x2, y2 = 6, 2, -5, 24
 	end
