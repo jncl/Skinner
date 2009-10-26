@@ -132,28 +132,23 @@ function Skinner:StaticPopups()
 		for i = 1, STATICPOPUP_NUMDIALOGS do
 			local spcb = _G["StaticPopup"..i.."CloseButton"]
 			local nTex = spcb:GetNormalTexture() and spcb:GetNormalTexture():GetTexture() or nil
-			if nTex:find("HideButton") then
-				spcb:SetText(self.minus)
-			elseif nTex:find("MinimizeButton") then
-				spcb:SetText(self.mult)
+			if nTex:find("HideButton") then spcb:SetText(self.minus)
+			elseif nTex:find("MinimizeButton") then spcb:SetText(self.mult)
 			end
---			spcb:GetNormalTexture():SetAlpha(0)
---			spcb:GetPushedTexture():SetAlpha(0)
---			spcb:GetDisabledTexture():SetAlpha(0)
 		end
 	end)
 
 	for i = 1, STATICPOPUP_NUMDIALOGS do
-		self:skinEditBox{obj=_G["StaticPopup"..i.."EditBox"]}
-		self:skinEditBox{obj=_G["StaticPopup"..i.."WideEditBox"]}
-		self:skinMoneyFrame{obj=_G["StaticPopup"..i.."MoneyInputFrame"]}
 		self:skinButton{obj=_G["StaticPopup"..i.."CloseButton"], cb=true}
 		self:skinButton{obj=_G["StaticPopup"..i.."Button1"]}
 		self:skinButton{obj=_G["StaticPopup"..i.."Button2"]}
 		self:skinButton{obj=_G["StaticPopup"..i.."Button3"]}
-		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=3, y1=3, x2=-3, y2=3}
+		self:skinEditBox{obj=_G["StaticPopup"..i.."EditBox"]}
+		self:skinEditBox{obj=_G["StaticPopup"..i.."WideEditBox"]}
+		self:skinMoneyFrame{obj=_G["StaticPopup"..i.."MoneyInputFrame"]}
+		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 		-- prevent FrameLevel from being changed (LibRock does this)
-		self.skinFrame[_G["StaticPopup"..i]].SetFrameLevel = nop
+		self.skinFrame[_G["StaticPopup"..i]].SetFrameLevel = function() end
 	end
 
 end
@@ -567,6 +562,8 @@ function Skinner:HelpFrame()
 	self:skinButton{obj=KnowledgeBaseFrameReportIssue}
 	self:skinButton{obj=KnowledgeBaseFrameStuck}
 	self:skinButton{obj=KnowledgeBaseFrameCancel}
+	self:skinButton{obj=KnowledgeBaseFrameEditTicket}
+	self:skinButton{obj=KnowledgeBaseFrameAbandonTicket}
 -->>-- Article Scroll Frame
 	self:skinScrollBar{obj=KnowledgeBaseArticleScrollFrame}
 	--[[
@@ -574,14 +571,14 @@ function Skinner:HelpFrame()
 	--]]
 	self:skinButton{obj=KnowledgeBaseArticleScrollChildFrameBackButton}
 -->>-- Talk to a GM panel
-	self:skinButton{obj=HelpFrameGMTalkOpenTicket, type=2}
+	self:skinButton{obj=HelpFrameGMTalkOpenTicket}
 	self:skinButton{obj=HelpFrameGMTalkCancel}
 -->>-- Report an Issue panel
-	self:skinButton{obj=HelpFrameReportIssueOpenTicket, type=2}
+	self:skinButton{obj=HelpFrameReportIssueOpenTicket}
 	self:skinButton{obj=HelpFrameReportIssueCancel}
 -->>-- Character Stuck panel
-	self:skinButton{obj=HelpFrameStuckStuck, type=2}
-	self:skinButton{obj=HelpFrameStuckOpenTicket, type=2}
+	self:skinButton{obj=HelpFrameStuckStuck}
+	self:skinButton{obj=HelpFrameStuckOpenTicket}
 	self:skinButton{obj=HelpFrameStuckCancel}
 
 end

@@ -205,6 +205,7 @@ function Skinner:OnInitialize()
 	}
 	-- this backdrop is for small UI buttons, e.g. minus/plus in QuestLog
 	self.Backdrop[5] = CopyTable(self.backdrop)
+	self.Backdrop[6] = CopyTable(self.backdrop)
 	--[[
 		TODO understand how all the backdrop values work
 	--]]
@@ -212,6 +213,11 @@ function Skinner:OnInitialize()
 		self.Backdrop[5].tileSize = 12
 		self.Backdrop[5].edgeSize = 12
 		self.Backdrop[5].insets = {left = 3, right = 3, top = 3, bottom = 3}
+	end
+	if self.db.profile.BdDefault then
+		self.Backdrop[6].tileSize = 10
+		self.Backdrop[6].edgeSize = 10
+		self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	end
 
 	-- these are used to disable frames from being skinned
@@ -750,6 +756,24 @@ function Skinner:checkTex(obj)
 	else -- not a header line
 		self.sBut[obj]:SetText("")
 		self.sBut[obj]:Hide()
+	end
+
+end
+
+function Skinner:checkTex2(obj)
+
+	local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
+--	self:Debug("checkTex: [%s, %s]", obj:GetName(), nTex)
+	obj:Show()
+	if nTex then
+		if nTex:find("MinusButton") then
+			obj:SetText(self.minus)
+		elseif nTex:find("PlusButton") then
+			obj:SetText(self.plus)
+		end
+	else -- not a header line
+		obj:SetText("")
+		obj:Hide()
 	end
 
 end
@@ -1301,7 +1325,8 @@ function Skinner:skinButton(opts)
 	type = button template type
 	cb = close button
 	mp = minus/plus button
-	mp2 = minus/plus button style 2
+	mp2 = minus/plus button style 2 (on RHS)
+	plus = use plus sign
 	other options as per addSkinButton
 --]]
 	if not self.db.profile.Buttons then return end
@@ -1312,15 +1337,15 @@ function Skinner:skinButton(opts)
 
 	if not opts.obj then return end
 
-	local objName = opts.obj:GetName()
-	if opts.type == 2 then
-		_G[objName.."Left"]:SetAlpha(0)
-		_G[objName.."Middle"]:SetAlpha(0)
-		_G[objName.."Right"]:SetAlpha(0)
-	else
+	if opts.obj:GetNormalTexture() then
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+	else
+		local objName = opts.obj:GetName()
+		_G[objName.."Left"]:SetAlpha(0)
+		_G[objName.."Middle"]:SetAlpha(0)
+		_G[objName.."Right"]:SetAlpha(0)
 	end
 
 	if opts.cb then
@@ -1336,18 +1361,24 @@ function Skinner:skinButton(opts)
 	elseif opts.mp then
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}}
 		local btn = self.sBut[opts.obj]
+		local xOfs = opts.noMove and 0 or 3
 		btn:ClearAllPoints()
-		btn:SetPoint("LEFT", opts.obj, "LEFT", 3, 0)
+		btn:SetPoint("LEFT", opts.obj, "LEFT", xOfs, 0)
 		btn:SetWidth(16)
 		btn:SetHeight(16)
 		btn:SetNormalFontObject(fontP)
-		btn:SetText(self.minus)
+		btn:SetText(opts.plus and self.plus or self.minus)
 		self:moveObject{obj=self:getRegion(btn, btn:GetNumRegions()), y=-1} -- move fontstring down, fontstring is the last region
+	elseif opts.mp2 then
+		opts.obj:SetNormalFontObject(fontP)
+		opts.obj:SetText(self.minus)
+		opts.obj:SetPushedTextOffset(-1, -2)
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[6]}, sap=true}
 	else
-		local x1 = opts.x1 or 2
-		local y1 = opts.y1 or 1
-		local x2 = opts.x2 or -2
-		local y2 = opts.y2 or -2
+		local x1 = opts.x1 or 1
+		local y1 = opts.y1 or -1
+		local x2 = opts.x2 or -1
+		local y2 = opts.y2 or -1
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
 	end
 
@@ -1366,6 +1397,9 @@ local function __skinDropDown(opts)
 --@end-alpha@
 
 	if not (opts.obj and opts.obj.GetName and opts.obj:GetName() and _G[opts.obj:GetName().."Right"]) then return end -- ignore tekKonfig & Az dropdowns
+
+	-- don't skin it twice
+	if Skinner.skinned[opts.obj] then return end
 
 	if not Skinner.db.profile.TexturedDD or opts.noSkin then Skinner:keepFontStrings(opts.obj) return end
 
@@ -1423,6 +1457,9 @@ local function __skinEditBox(opts)
 --@end-alpha@
 
 	if not opts.obj then return end
+
+	-- don't skin it twice
+	if Skinner.skinned[opts.obj] then return end
 
 	opts.x = opts.x or 0
 	opts.y = opts.y or 0
@@ -1523,6 +1560,9 @@ local function __skinMoneyFrame(opts)
 	assert(opts.obj, "Unknown object __sMF\n"..debugstack())
 --@end-alpha@
 
+	-- don't skin it twice
+	if Skinner.skinned[opts.obj] then return end
+
 	local cbMode = GetCVarBool("colorblindMode")
 
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
@@ -1584,6 +1624,9 @@ local function __skinScrollBar(opts)
 	assert(opts.obj and opts.obj:IsObjectType("ScrollFrame"), "Not a ScrollFrame\n"..debugstack())
 --@end-alpha@
 
+	-- don't skin it twice
+	if Skinner.skinned[opts.obj] then return end
+
 	-- remove all the object's regions, if required
 	if not opts.noRR then Skinner:removeRegions(opts.obj)end
 
@@ -1627,6 +1670,9 @@ local function __skinSlider(opts)
 --@alpha@
 	assert(opts.obj and opts.obj:IsObjectType("Slider"), "Not a Slider\n"..debugstack())
 --@end-alpha@
+
+	-- don't skin it twice
+	if Skinner.skinned[opts.obj] then return end
 
 	Skinner:keepFontStrings(opts.obj)
 	opts.obj:SetAlpha(1)

@@ -126,7 +126,8 @@ function Skinner:ReputationFrame()
 	end
 
 -->>-- Reputation Detail Frame
-	self:addSkinFrame{obj=ReputationDetailFrame, ft=ftype, kfs=true}
+	self:skinButton{obj=ReputationDetailCloseButton, cb=true}
+	self:addSkinFrame{obj=ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
 end
 
@@ -183,6 +184,7 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 		TokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
 	end
 	self:skinButton{obj=TokenFrameCancelButton}
+	-- ? close button
 
 -->>-- Popup Frame
 	self:skinButton{obj=TokenFramePopupCloseButton, cb=true}
@@ -220,8 +222,9 @@ function Skinner:PVPFrame()
 	self:skinButton{obj=PVPBattlegroundFrameGroupJoinButton}
 -->>-- PVP Team Details Frame
 	self:skinDropDown{obj=PVPDropDown}
-	self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
 	self:skinButton{obj=PVPTeamDetailsCloseButton, cb=true}
+	self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
+	self:skinButton{obj=PVPTeamDetailsAddTeamMember}
 	self:addSkinFrame{obj=PVPTeamDetails, ft=ftype, kfs=true, x1=8, y1=-2, x2=-2, y2=12}
 
 -->>-- Tabs
@@ -353,7 +356,7 @@ function Skinner:TalentUI()
 
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
 	self:skinButton{obj=PlayerTalentFrameCloseButton, cb=true}
-	self:skinButton{obj=PlayerTalentFrameActivateButton, type=2}
+	self:skinButton{obj=PlayerTalentFrameActivateButton}
 	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6}) -- other regions are background textures
 	self:skinScrollBar{obj=PlayerTalentFrameScrollFrame, noRR=true}
 	self:keepFontStrings(PlayerTalentFrameStatusFrame)

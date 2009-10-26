@@ -78,11 +78,14 @@ function Skinner:FriendsFrame()
 	self:skinButton{obj=GuildFrameGuildInformationButton}
 	-- Guild Control Popup Frame
 	self:skinDropDown{obj=GuildControlPopupFrameDropDown}
-	self:skinEditBox{obj=GuildControlPopupFrameEditBox, regs={9}}
+	self:skinButton{obj=GuildControlPopupFrameAddRankButton, mp=true, noMove=true, plus=true}
+	self:skinButton{obj=GuildControlPopupFrameRemoveRankButton, mp=true, noMove=true}
 	self:skinEditBox{obj=GuildControlWithdrawGoldEditBox, regs={9}}
+	self:skinButton{obj=GuildControlPopupFrameCancelButton}
+	self:skinButton{obj=GuildControlPopupAcceptButton}
+	self:skinEditBox{obj=GuildControlPopupFrameEditBox, regs={9}}
 	self:skinEditBox{obj=GuildControlWithdrawItemsEditBox, regs={9}}
 	self:addSkinFrame{obj=GuildControlPopupFrameTabPermissions, ft=ftype}
-	self:skinButton{obj=GuildControlPopupAcceptButton}
 	self:addSkinFrame{obj=GuildControlPopupFrame, ft=ftype, kfs=true, x1=3, y1=-6, x2=-28, y2=25}
 
 	for i = 1, MAX_GUILDBANK_TABS do
@@ -97,12 +100,6 @@ function Skinner:FriendsFrame()
 	self:skinButton{obj=GuildInfoCancelButton}
 	self:skinButton{obj=GuildInfoGuildEventButton}
 	self:addSkinFrame{obj=GuildInfoFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
--->>--	GuildEventLog Frame
-	self:addSkinFrame{obj=GuildEventFrame, ft=ftype}
-	self:skinScrollBar{obj=GuildEventLogScrollFrame}
-	self:skinButton{obj=GuildEventLogCloseButton, cb=true}
-	self:skinButton{obj=GuildEventLogCancelButton}
-	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
 -->>--	GuildMemberDetail Frame
 	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
 	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
@@ -111,6 +108,12 @@ function Skinner:FriendsFrame()
 	self:skinButton{obj=GuildMemberRemoveButton}
 	self:skinButton{obj=GuildMemberGroupInviteButton}
 	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
+-->>--	GuildEventLog Frame
+	self:addSkinFrame{obj=GuildEventFrame, ft=ftype}
+	self:skinScrollBar{obj=GuildEventLogScrollFrame}
+	self:skinButton{obj=GuildEventLogCloseButton, cb=true}
+	self:skinButton{obj=GuildEventLogCancelButton}
+	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
 -->>--	Channel Frame
 	self:keepFontStrings(ChannelFrame)
 	self:skinButton{obj=ChannelFrameNewButton}
@@ -153,10 +156,10 @@ function Skinner:FriendsFrame()
 -->>--	RaidInfo Frame
 	self:addSkinFrame{obj=RaidInfoInstanceLabel, kfs=true}
 	self:addSkinFrame{obj=RaidInfoIDLabel, kfs=true}
-	self:skinSlider{obj=RaidInfoScrollFrameScrollBar}
-	self:skinButton{obj=RaidInfoExtendButton, type=2}
-	self:skinButton{obj=RaidInfoCancelButton, type=2}
 	self:skinButton{obj=RaidInfoCloseButton, cb=true}
+	self:skinSlider{obj=RaidInfoScrollFrameScrollBar}
+	self:skinButton{obj=RaidInfoExtendButton}
+	self:skinButton{obj=RaidInfoCancelButton}
 	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 
 -->>--	Frame Tabs
@@ -282,8 +285,8 @@ function Skinner:RaidUI()
 
 	self:moveObject{obj=RaidFrameAddMemberButton, x=-30}
 	self:skinButton{obj=RaidFrameAddMemberButton}
-	self:moveObject{obj=RaidGroup1,x= 2}
 	self:skinButton{obj=RaidFrameReadyCheckButton}
+	self:moveObject{obj=RaidGroup1,x= 2}
 
 	-- Raid Groups
 	for i = 1, MAX_RAID_GROUPS do

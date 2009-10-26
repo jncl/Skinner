@@ -120,9 +120,9 @@ function Skinner:Calendar()
 	self:skinScrollBar{obj=CalendarViewEventDescriptionScrollFrame}
 	self:keepFontStrings(CalendarViewEventInviteListSection)
 	self:addSkinFrame{obj=CalendarViewEventInviteList, ft=ftype}
-	self:skinButton{obj=CalendarViewEventAcceptButton, type=2}
-	self:skinButton{obj=CalendarViewEventDeclineButton, type=2}
-	self:skinButton{obj=CalendarViewEventRemoveButton, type=2}
+	self:skinButton{obj=CalendarViewEventAcceptButton}
+	self:skinButton{obj=CalendarViewEventDeclineButton}
+	self:skinButton{obj=CalendarViewEventRemoveButton}
 	self:addSkinFrame{obj=CalendarViewEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Create Event Frame
@@ -144,13 +144,13 @@ function Skinner:Calendar()
 	self:keepFontStrings(CalendarCreateEventInviteListSection)
 	self:addSkinFrame{obj=CalendarCreateEventInviteList, ft=ftype}
 	self:skinEditBox{obj=CalendarCreateEventInviteEdit, regs={9}}
-	self:skinButton{obj=CalendarCreateEventInviteButton, type=2}
+	self:skinButton{obj=CalendarCreateEventInviteButton}
 	CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
-	self:skinButton{obj=CalendarCreateEventMassInviteButton, type=2}
+	self:skinButton{obj=CalendarCreateEventMassInviteButton}
 	CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
-	self:skinButton{obj=CalendarCreateEventRaidInviteButton, type=2}
+	self:skinButton{obj=CalendarCreateEventRaidInviteButton}
 	CalendarCreateEventCreateButtonBorder:SetAlpha(0)
-	self:skinButton{obj=CalendarCreateEventCreateButton, type=2}
+	self:skinButton{obj=CalendarCreateEventCreateButton}
 	self:addSkinFrame{obj=CalendarCreateEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Mass Invite Frame
@@ -161,7 +161,7 @@ function Skinner:Calendar()
 	self:skinEditBox{obj=CalendarMassInviteGuildMinLevelEdit, regs={9}}
 	self:skinEditBox{obj=CalendarMassInviteGuildMaxLevelEdit, regs={9}}
 	self:skinDropDown{obj=CalendarMassInviteGuildRankMenu}
-	self:skinButton{obj=CalendarMassInviteGuildAcceptButton, type=2}
+	self:skinButton{obj=CalendarMassInviteGuildAcceptButton}
 	self:addSkinFrame{obj=CalendarMassInviteFrame, ft=ftype, kfs=true, x1=4, y1=-3, x2=-3, y2=26}
 
 -->>-- Event Picker Frame
@@ -170,7 +170,7 @@ function Skinner:Calendar()
 	self:keepFontStrings(CalendarEventPickerFrame)
 	self:skinSlider(CalendarEventPickerScrollBar)
 	self:removeRegions(CalendarEventPickerCloseButton, {7})
-	self:skinButton{obj=CalendarEventPickerCloseButton, type=2}
+	self:skinButton{obj=CalendarEventPickerCloseButton}
 	self:addSkinFrame{obj=CalendarEventPickerFrame, ft=ftype, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Texture Picker Frame
@@ -178,9 +178,9 @@ function Skinner:Calendar()
 	self:moveObject{obj=CalendarTexturePickerTitleFrame, y=-6}
 	self:skinSlider(CalendarTexturePickerScrollBar)
 	CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
-	self:skinButton{obj=CalendarTexturePickerCancelButton, type=2}
+	self:skinButton{obj=CalendarTexturePickerCancelButton}
 	CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
-	self:skinButton{obj=CalendarTexturePickerAcceptButton, type=2}
+	self:skinButton{obj=CalendarTexturePickerAcceptButton}
 	self:addSkinFrame{obj=CalendarTexturePickerFrame, ft=ftype, kfs=true, x1=5, y1=-3, x2=-3, y2=2}
 
 -->>-- Class Button Container
@@ -319,7 +319,18 @@ function Skinner:MenuFrames()
 	self:skinSlider(InterfaceOptionsFrameAddOnsListScrollBar)
 	self:addSkinFrame{obj=InterfaceOptionsFrameAddOns, ft=ftype, kfs=true}
 	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ft=ftype}
-	self:skinButton{obj=InterfaceOptionsHelpPanelResetTutorials}
+	-- skin toggle buttons
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("OptionsList_DisplayButton", function(button, element)
+			if element.hasChildren then
+				self:checkTex2(button.toggle)
+			end
+		end)
+	end
+	for i = 1, #InterfaceOptionsFrameAddOns.buttons do
+		self:skinButton{obj=InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true}
+	end
 
 -->>-- Rating Menu
 	self:skinButton{obj=RatingMenuButtonOkay}
@@ -338,19 +349,35 @@ function Skinner:MenuFrames()
 		end
 	end
 
-	-- Hook this to skin any Interface Option panels
+	local function checkKids(obj)
+
+		local kids = {obj:GetChildren()}
+		for _, child in ipairs(kids) do
+		 	if self:isDropDown(child) then self:skinDropDown{obj=child}
+			elseif child:IsObjectType("EditBox") then self:skinEditBox{obj=child, regs={9}}
+			elseif child:IsObjectType("Button") then
+				local nTex = child:GetNormalTexture() and child:GetNormalTexture():GetTexture() or nil
+				local cName = child:GetName() or nil
+				if nTex and nTex:find("UI-Panel-Button", 1, true) then
+					Skinner:skinButton{obj=child}
+				elseif cName and _G[cName.."Left"] and not cName:find("AceGUI30Button") then -- ignore AceGUI buttons
+					Skinner:skinButton{obj=child}
+				else
+					checkKids(child)
+				end
+			else
+				checkKids(child)
+			end
+		end
+		kids = nil
+
+	end
+	-- Hook this to skin any Interface Option panels and their elements
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 		-- skin tekKonfig library objects
 		if self.tekKonfig then self:tekKonfig() end
 		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
-			for i = 1, panel:GetNumChildren() do
-				local child = select(i, panel:GetChildren())
-				if child then
-				 	if self:isDropDown(child) then self:skinDropDown{obj=child}
-					elseif child:IsObjectType("EditBox") then self:skinEditBox{obj=child, regs={9}}
-					end
-				end
-			end
+			checkKids(panel)
 			self:addSkinFrame{obj=panel, ft=ftype, kfs=true}
 		end
 	end)
@@ -362,8 +389,8 @@ function Skinner:BindingUI()
 	self.initialized.BindingUI = true
 
 	for i = 1, 17 do
-		self:skinButton{obj=_G["KeyBindingFrameBinding"..i.."Key1Button"], type=2}
-		self:skinButton{obj=_G["KeyBindingFrameBinding"..i.."Key2Button"], type=2}
+		self:skinButton{obj=_G["KeyBindingFrameBinding"..i.."Key1Button"]}
+		self:skinButton{obj=_G["KeyBindingFrameBinding"..i.."Key2Button"]}
 	end
 	self:skinScrollBar{obj=KeyBindingFrameScrollFrame}
 	self:skinButton{obj=KeyBindingFrameDefaultButton}
@@ -773,6 +800,7 @@ function Skinner:ItemSocketingUI()
 	end)
 
 	self:skinButton{obj=ItemSocketingCloseButton, cb=true}
+	self:skinButton{obj=ItemSocketingSocketButton}
 	self:addSkinFrame{obj=ItemSocketingFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-4, y2=26}
 
 	self:skinScrollBar{obj=ItemSocketingScrollFrame}
