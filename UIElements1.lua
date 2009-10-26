@@ -4,7 +4,6 @@ local select = select
 local type = type
 local IsAddOnLoaded = IsAddOnLoaded
 local ftype = "u"
-local nop = function() end
 
 function Skinner:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
@@ -610,8 +609,8 @@ function Skinner:GMSurveyUI()
 	for i = 1, MAX_SURVEY_QUESTIONS do
 		local gmsQ = _G["GMSurveyQuestion"..i]
 		self:applySkin{obj=gmsQ, ft=ftype} -- must use applySkin otherwise text is behind gradient
-		gmsQ.SetBackdropColor = nop
-		gmsQ.SetBackdropBorderColor = nop
+		gmsQ.SetBackdropColor = function() end
+		gmsQ.SetBackdropBorderColor = function() end
 	end
 
 	self:skinScrollBar{obj=GMSurveyCommentScrollFrame}
@@ -848,7 +847,7 @@ function Skinner:MinimapButtons()
 	MiniMapTrackingIcon:SetPoint("CENTER", MiniMapTrackingButton)
 	MiniMapTrackingIcon:SetParent(MiniMapTrackingButton)
 	-- change this to stop the icon being moved
-	MiniMapTrackingIcon.SetPoint = nop
+	MiniMapTrackingIcon.SetPoint = function() end
 
 	-- move GameTime a.k.a. Calendar texture up a layer
 	GameTimeFrame:GetNormalTexture():SetDrawLayer("BORDER")
