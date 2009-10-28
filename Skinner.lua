@@ -372,10 +372,10 @@ local function __addSkinButton(opts)
 	opts.parent = opts.parent or opts.obj:GetParent()
 	opts.hook = opts.hook or opts.obj
 
-	local but = CreateFrame("Button", nil, opts.parent)
-	LowerFrameLevel(but)
-	but:EnableMouse(false) -- allow clickthrough
-	Skinner.sBut[opts.hook] = but
+	local btn = CreateFrame("Button", nil, opts.parent)
+	LowerFrameLevel(btn)
+	btn:EnableMouse(false) -- allow clickthrough
+	Skinner.sBut[opts.hook] = btn
 	-- hook Show/Hide methods
 	if not Skinner:IsHooked(opts.hook, "Show") then
 		Skinner:SecureHook(opts.hook, "Show", function(this) Skinner.sBut[this]:Show() end)
@@ -383,26 +383,26 @@ local function __addSkinButton(opts)
 	end
 	-- position the button skin
 	if opts.sap then
-		but:SetAllPoints(opts.obj)
+		btn:SetAllPoints(opts.obj)
 	else
 		-- setup offset values
 		local xOfs1 = opts.x1 or -4
 		local yOfs1 = opts.y1 or 4
 		local xOfs2 = opts.x2 or 4
 		local yOfs2 = opts.y2 or -4
-		but:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
-		but:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+		btn:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
+		btn:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 	end
 	-- setup applySkin options
 	opts.aso = opts.aso or {}
-	opts.aso.obj = but
+	opts.aso.obj = btn
 	Skinner:applySkin(opts.aso)
 
 	-- hide button skin, if required or not shown
-	if opts.hide or not opts.obj:IsShown() then but:Hide() end
+	if opts.hide or not opts.obj:IsShown() then btn:Hide() end
 
 	 -- make sure it's lower than its parent's Frame Strata
-	if opts.bg then	but:SetFrameStrata("BACKGROUND") end
+	if opts.bg then	btn:SetFrameStrata("BACKGROUND") end
 
 	-- change the draw layer of the Icon and Count, if necessary
 	if opts.obj.GetNumRegions then
@@ -744,36 +744,34 @@ end
 
 function Skinner:checkTex(obj)
 
-	local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
+	local nTex = obj.GetNormalTexture and obj:GetNormalTexture():GetTexture() or nil
 --	self:Debug("checkTex: [%s, %s]", obj:GetName(), nTex)
-	self.sBut[obj]:Show()
+	local btn = self.sBut[obj]
+	btn:Show()
 	if nTex then
 		if nTex:find("MinusButton") then
-			self.sBut[obj]:SetText(self.minus)
+			btn:SetText(self.minus)
 		elseif nTex:find("PlusButton") then
-			self.sBut[obj]:SetText(self.plus)
+			btn:SetText(self.plus)
 		end
 	else -- not a header line
-		self.sBut[obj]:SetText("")
-		self.sBut[obj]:Hide()
+		btn:SetText("")
+		btn:Hide()
 	end
 
 end
 
-function Skinner:checkTex2(obj)
-
-	local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
---	self:Debug("checkTex: [%s, %s]", obj:GetName(), nTex)
-	obj:Show()
+function Skinner:checkMPTex(btn, nTex)
+	-- used for mp2 type buttons
+--	self:Debug("checkMPTex: [%s, %s]", btn:GetName(), nTex)
 	if nTex then
 		if nTex:find("MinusButton") then
-			obj:SetText(self.minus)
+			btn:SetText(self.minus)
 		elseif nTex:find("PlusButton") then
-			obj:SetText(self.plus)
+			btn:SetText(self.plus)
 		end
 	else -- not a header line
-		obj:SetText("")
-		obj:Hide()
+		btn:SetText("")
 	end
 
 end
@@ -1322,7 +1320,7 @@ fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
 fontP:SetTextColor(1.0, 0.82, 0)
 function Skinner:skinButton(opts)
 --[[
-	type = button template type
+	as = use applySkin rather than addSkinButton
 	cb = close button
 	mp = minus/plus button
 	mp2 = minus/plus button style 2 (on RHS)
@@ -1337,29 +1335,36 @@ function Skinner:skinButton(opts)
 
 	if not opts.obj then return end
 
-	if opts.obj:GetNormalTexture() then
+	if opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... or derivatives]
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
-	else
+	else -- [UIPanelButtonTemplate2/... or derivatives]
 		local objName = opts.obj:GetName()
 		_G[objName.."Left"]:SetAlpha(0)
-		_G[objName.."Middle"]:SetAlpha(0)
 		_G[objName.."Right"]:SetAlpha(0)
+		_G[objName.."Middle"]:SetAlpha(0)
 	end
 
-	if opts.cb then
+	-- setup default backdrop to use
+	local aso={bd=self.Backdrop[5]}
+
+	if opts.cb then -- it's a close button
 		opts.obj:SetNormalFontObject(fontX)
 		opts.obj:SetText(self.mult)
-		self:moveObject{obj=self:getRegion(opts.obj, opts.obj:GetNumRegions()), x=-1} -- move fontstring left, fontstring is the last region
 		opts.obj:SetPushedTextOffset(-1, -2)
-		if opts.obj ~= StopwatchCloseButton then
-			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=5, y1=-6, x2=-6, y2=6}
-		else
+		self:moveObject{obj=self:getRegion(opts.obj, opts.obj:GetNumRegions()), x=-1} -- move fontstring left, fontstring is the last region
+		if opts.sap then
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
+		else
+			local x1 = opts.x1 or 5
+			local y1 = opts.y1 or -6
+			local x2 = opts.x2 or -6
+			local y2 = opts.y2 or 6
+			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
-	elseif opts.mp then
-		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}}
+	elseif opts.mp then -- it's a minus/plus button (LHS) [inherited from ClassTrainerSkillButtonTemplate]
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso}
 		local btn = self.sBut[opts.obj]
 		local xOfs = opts.noMove and 0 or 3
 		btn:ClearAllPoints()
@@ -1369,18 +1374,61 @@ function Skinner:skinButton(opts)
 		btn:SetNormalFontObject(fontP)
 		btn:SetText(opts.plus and self.plus or self.minus)
 		self:moveObject{obj=self:getRegion(btn, btn:GetNumRegions()), y=-1} -- move fontstring down, fontstring is the last region
-	elseif opts.mp2 then
+	elseif opts.mp2 then -- it's a smaller minus/plus button (RHS) [inherited from OptionsListButtonTemplate]
+		aso={bd=self.Backdrop[6]}
 		opts.obj:SetNormalFontObject(fontP)
-		opts.obj:SetText(self.minus)
+		opts.obj:SetText(opts.plus and self.plus or self.minus)
 		opts.obj:SetPushedTextOffset(-1, -2)
-		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[6]}, sap=true}
-	else
-		local x1 = opts.x1 or 1
-		local y1 = opts.y1 or -1
-		local x2 = opts.x2 or -1
-		local y2 = opts.y2 or -1
-		self:addSkinButton{obj=opts.obj, parent=opts.obj, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, sap=true}
+		self:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
+			self:checkMPTex(this, nTex)
+		end)
+	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
+		if not opts.as then
+			aso = opts.obj:GetHeight() > 18 and aso or {bd=self.Backdrop[6]} -- use narrower backdrop if required
+			local x1 = opts.x1 or 1
+			local y1 = opts.y1 or -1
+			local x2 = opts.x2 or -1
+			local y2 = opts.y2 or -1
+			self:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
+		else
+			self:applySkin{obj=opts.obj}
+		end
 	end
+
+end
+
+local function isButton(obj)
+
+	if obj:IsObjectType("Button")
+	and obj.GetNormalTexture -- is it a true button
+	and not obj.GetChecked -- and not a checkbutton
+	and not obj.SetSlot -- and not a lootbutton
+	then
+		return true
+	else
+		return false
+	end
+
+end
+
+function Skinner:skinAllButtons(obj)
+
+	local kids = {obj:GetChildren()}
+	for _, child in ipairs(kids) do
+		if isButton(child) then
+			self:skinButton{obj=child}
+		else
+			local grandkids = {child:GetChildren()}
+			for _, grandchild in ipairs(grandkids) do
+				if isButton(grandchild) then
+					self:skinButton{obj=grandchild}
+				end
+			end
+			grandkids = nil
+		end
+	end
+	kids = nil
 
 end
 
@@ -1879,7 +1927,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 		for i = 1, frame:GetNumChildren() do
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", objType or "nil", v:GetFrameStrata() or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", objType or "nil", v:GetFrameLevel() or "nil", v:GetFrameStrata() or "nil")
 			if objType == "Frame" or objType == "Button" or objType == "StatusBar" or objType == "Slider" or objType == "ScrollFrame" then
 				getRegions(v, lvl.."-"..i)
 				getChildren(v, lvl.."-"..i)
@@ -1888,7 +1936,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	end
 
-	showIt("%s : %s : %s : %s : %s : %s", obj:GetName() or "<Anon>", obj:GetWidth() or "nil", obj:GetHeight() or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
+	showIt("%s : %s : %s : %s : %s : %s", obj:GetName() or "<Anon>", round2(obj:GetWidth(), 2) or "nil", round2(obj:GetHeight(), 2) or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
 	showIt("Started Regions")
 	getRegions(obj, 0)

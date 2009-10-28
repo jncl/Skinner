@@ -15,7 +15,8 @@ function Skinner:Hack()
 		end)
 	end
 	
-	self:addSkinFrame{obj=HackListFrame, kfs=true, x2=1}
+	self:skinButton{obj=HackListFrameClose, cb=true}
+	self:addSkinFrame{obj=HackListFrame, kfs=true, y1=-2, x2=-1}
 	self:skinEditBox{obj=HackSearchEdit, regs={9}, noHeight=true, noWidth=true}	
 	HackSearchEdit:SetHeight(18)
 	self:skinScrollBar{obj=HackListScrollFrame}
@@ -32,7 +33,8 @@ function Skinner:Hack()
 		end
 	end
 	
-	self:addSkinFrame{obj=HackEditFrame, kfs=true}
+	self:skinButton{obj=HackEditFrameClose, cb=true}
 	self:skinScrollBar{obj=HackEditScrollFrame}
+	self:addSkinFrame{obj=HackEditFrame, kfs=true, y1=-2, x2=-1}
 
 end

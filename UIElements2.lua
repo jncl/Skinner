@@ -74,7 +74,7 @@ function Skinner:TimeManager()
 
 -->>--	Stopwatch Frame
 	self:keepFontStrings(StopwatchTabFrame)
-	self:skinButton{obj=StopwatchCloseButton, cb=true}
+	self:skinButton{obj=StopwatchCloseButton, cb=true, sap=true}
 	self:addSkinFrame{obj=StopwatchFrame, ft=ftype, kfs=true, y1=-16, y2=2}
 
 end
@@ -320,14 +320,6 @@ function Skinner:MenuFrames()
 	self:addSkinFrame{obj=InterfaceOptionsFrameAddOns, ft=ftype, kfs=true}
 	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ft=ftype}
 	-- skin toggle buttons
-	if self.db.profile.Buttons then
-		-- hook to manage changes to button textures
-		self:SecureHook("OptionsList_DisplayButton", function(button, element)
-			if element.hasChildren then
-				self:checkTex2(button.toggle)
-			end
-		end)
-	end
 	for i = 1, #InterfaceOptionsFrameAddOns.buttons do
 		self:skinButton{obj=InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true}
 	end
@@ -360,7 +352,7 @@ function Skinner:MenuFrames()
 				local cName = child:GetName() or nil
 				if nTex and nTex:find("UI-Panel-Button", 1, true) then
 					Skinner:skinButton{obj=child}
-				elseif cName and _G[cName.."Left"] and not cName:find("AceGUI30Button") then -- ignore AceGUI buttons
+				elseif cName and _G[cName.."Left"] and not cName:find("AceGUI") then -- ignore AceGUI objects
 					Skinner:skinButton{obj=child}
 				else
 					checkKids(child)

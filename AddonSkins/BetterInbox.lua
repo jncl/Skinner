@@ -13,6 +13,9 @@ function Skinner:BetterInbox(LoD)
 		bib.scrollframe.t1:SetAlpha(0)
 		bib.scrollframe.t2:SetAlpha(0)
 		Skinner:skinScrollBar{obj=bib.scrollframe}
+		-- skin the buttons
+		Skinner:skinButton{obj=BetterInboxOpenButton}
+		Skinner:skinButton{obj=BetterInboxCancelButton}
 
 	end
 

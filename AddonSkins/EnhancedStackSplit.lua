@@ -10,5 +10,12 @@ function Skinner:EnhancedStackSplit()
 		if mode == 3 then StackSplitText:Hide()
 		else StackSplitText:Show() end
 	end)
+	-- skin buttons
+	self:skinButton{obj=EnhancedStackSplitAuto1Button}
+	for i = 1, 10 do
+		self:skinButton{obj=_G["EnhancedStackSplitButton"..i]}
+	end
+	self:skinButton{obj=EnhancedStackSplitModeTXTButton}
+	self:skinButton{obj=EnhancedStackSplitAutoSplitButton}
 
 end

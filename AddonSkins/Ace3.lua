@@ -3,7 +3,7 @@ function Skinner:Ace3()
 
 	self:RawHook(LibStub("AceGUI-3.0"), "Create", function(this, objType)
 		local obj = self.hooks[this].Create(this, objType)
---		self:Debug("Ace3GUI_Create: [%s, %s, %s]", this, objType, obj)
+		self:Debug("Ace3GUI_Create: [%s, %s, %s]", this, objType, obj)
 		if obj and not self.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
 				self:keepFontStrings(obj.frame)
@@ -25,13 +25,14 @@ function Skinner:Ace3()
 				end, true)
 			elseif objType == "MultiLineEditBox" then
 				self:applySkin(obj.backdrop)
-				for i = 1, obj.backdrop:GetNumChildren() do
-					local child = select(i, obj.backdrop:GetChildren())
+				local kids = {obj.backdrop:GetChildren()}
+				for _, child in ipairs(kids) do -- find scroll bar
 					if child:IsObjectType("ScrollFrame") then
 						self:skinScrollBar{obj=child}
 						break
 					end
 				end
+				kids = nil
 			elseif objType == "Slider" then
 				obj.editbox.bg:SetAlpha(0)
 				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
@@ -39,9 +40,10 @@ function Skinner:Ace3()
 				obj.editbox:SetWidth(60)
 			elseif objType == "Frame" then
 				self:keepFontStrings(obj.frame)
-				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 				self:applySkin(obj.frame)
+				self:skinButton{obj=obj.closebutton, y1=1}
 				self:applySkin(obj.statusbg)
+				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "ScrollFrame" then
 				self:keepRegions(obj.scrollbar, {1})
 				self:skinUsingBD{obj=obj.scrollbar}
@@ -50,14 +52,20 @@ function Skinner:Ace3()
 				self:skinUsingBD{obj=obj.scrollbar}
 				self:applySkin(obj.border)
 				self:applySkin(obj.treeframe)
-				self:SecureHook(obj, "RefreshTree", function()
-					for i = 1, #obj.buttons do
-						local button = obj.buttons[i]
-						if button and button:GetNormalTexture() then
-						    button:GetNormalTexture():SetAlpha(0)
+				if self.db.profile.Buttons then
+					-- hook to manage changes to button textures
+					self:SecureHook(obj, "RefreshTree", function()
+--						self:Debug("RefreshTree: [%s]", #obj.buttons)
+						for i = 1, #obj.buttons do
+							local button = obj.buttons[i]
+							if not self.skinned[button.toggle] then
+								self:skinButton{obj=button.toggle, mp2=true, plus=true} -- default to plus
+							end
 						end
-					end
-				end)
+					end)
+				end
+			elseif objType == "Button" then
+				self:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
 			end
 		end
 		return obj

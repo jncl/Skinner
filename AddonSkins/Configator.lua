@@ -1,23 +1,7 @@
 
 function Skinner:Configator()
-	
-	local function skinSearchUI(gui)
-	
-		Skinner:skinEditBox{obj=gui.saves.name, regs={9}}
-		Skinner:skinMoneyFrame{obj=gui.frame.bidbox, noWidth=true, moveSEB=true}
-		Skinner:glazeStatusBar(gui.frame.progressbar, 0)
-		
-		-- scan the gui tabs for known MoneyFrames
-		for i = 1, #gui.tabs do
-			local frame = gui.tabs[i].content
-			if frame.money and frame.money.isMoneyFrame then
-				Skinner:skinMoneyFrame{obj=frame.money, noWidth=true, moveSEB=true}
-			end
-		end
-		
-	end
 
-	-- hook this to skin Slide bar
+	-- hook this to skin Slide bars
 	local sblib = LibStub("SlideBar", true)
 	if sblib and sblib.frame then
 		self:applySkin(sblib.frame)
@@ -29,19 +13,24 @@ function Skinner:Configator()
 		end
 	end
 
-	-- hook this to skin Configator frames
 	local clib = LibStub("Configator", true)
+	local function skinHelp()
+
+		self:moveObject{obj=clib.help.close, y=-2}
+		self:skinButton{obj=clib.help.close, cb=true}
+		self:skinUsingBD{obj=clib.help.scroll.hScroll}
+		self:skinUsingBD{obj=clib.help.scroll.vScroll}
+		self:addSkinFrame{obj=clib.help}
+
+	end
+	-- hook this to skin Configator frames
 	if clib then
 		self:RawHook(clib, "Create", function(this, ...)
 			local frame = self.hooks[clib].Create(this, ...)
 --			self:Debug("Configator_Create: [%s]", frame:GetName())
 			if not self.skinFrame[frame.Backdrop] then
+				self:skinButton{obj=frame.Done}
 				self:addSkinFrame{obj=frame.Backdrop}
-				-- look for the SearchUI frame
-				local w, h, gw, gh, to, lo = select(3, ...)
-				if w == 900 and h == 500 and gw == 5 and gh == 350 and to == 20 and lo == 5 then
-					self:ScheduleTimer(skinSearchUI, 0.1, frame) -- wait for frame to be populated
-				end
 			end
 
 			-- skin the Tooltip
@@ -55,12 +44,7 @@ function Skinner:Configator()
 			end
 
 			-- skin the Help frame
-			if not self.skinFrame[clib.help] then
-				self:moveObject{obj=clib.help.close, y=-2}
-				self:skinUsingBD{obj=clib.help.scroll.hScroll}
-				self:skinUsingBD{obj=clib.help.scroll.vScroll}
-				self:addSkinFrame{obj=clib.help}
-			end
+			if not self.skinFrame[clib.help] then skinHelp() end
 
 			-- hook this to skin various controls
 			self:RawHook(frame, "AddControl", function(this, id, cType, column, ...)
@@ -81,18 +65,17 @@ function Skinner:Configator()
 					if not self.skinFrame[SelectBoxMenu.back] then
 						self:addSkinFrame{obj=SelectBoxMenu.back}
 					end
-				end
-				if cType == "Text" or cType == "TinyNumber" or cType == "NumberBox" then
+				elseif cType == "Text" or cType == "TinyNumber" or cType == "NumberBox" then
 					self:skinEditBox{obj=control, regs={9}}
-				end
-				if cType == "NumeriSlider" or cType == "NumeriWide" or cType == "NumeriTiny" then
+				elseif cType == "NumeriSlider" or cType == "NumeriWide" or cType == "NumeriTiny" then
 					self:skinEditBox{obj=control.slave, regs={9}}
-				end
-				if cType == "MoneyFrame" or cType == "MoneyFramePinned" then
+				elseif cType == "MoneyFrame" or cType == "MoneyFramePinned" then
 					self:skinMoneyFrame{obj=control, noWidth=true, moveSEB=true}
+				elseif cType == "Button" then
+					self:skinButton{obj=control, as=true} -- just skin it otherwise text is hidden
 				end
 				return control
-				end, true)
+			end, true)
 			return frame
 		end, true)
 	end
@@ -153,16 +136,9 @@ function Skinner:Configator()
 	end
 
 	-- skin the Help frame
-	if clib and clib.help then
-		self:moveObject{obj=clib.help.close, y=-2}
-		self:skinUsingBD{obj=clib.help.scroll.hScroll}
-		self:skinUsingBD{obj=clib.help.scroll.vScroll}
-		self:addSkinFrame{obj=clib.help}
-	end
+	if clib and clib.help then skinHelp() end
 	-- skin DropDown menu
-	if SelectBoxMenu then
-		self:addSkinFrame{obj=SelectBoxMenu.back}
-	end
+	if SelectBoxMenu then self:addSkinFrame{obj=SelectBoxMenu.back}	end
 
 	-- skin ScrollSheets
 	local sslib = LibStub("ScrollSheet", true)
@@ -171,7 +147,7 @@ function Skinner:Configator()
 			local sheet = self.hooks[sslib].Create(this, parent, ...)
 			self:skinUsingBD{obj=sheet.panel.hScroll}
 			self:skinUsingBD{obj=sheet.panel.vScroll}
-			self:addSkinFrame{obj=parent, x2=-3, y2=3}
+			self:applySkin{obj=parent} -- just skin it otherwise text is hidden
 			return sheet
 		end, true)
 	end
