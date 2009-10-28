@@ -254,8 +254,10 @@
 <script file="SkinMe\PassLoot.lua"/>
 <script file="SkinMe\Pawn.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
+<script file="SkinMe\PetListPlus.lua"/>
 <script file="SkinMe\Planner.lua"/>
 <script file="SkinMe\PlayerExpBar.lua"/>
+<script file="SkinMe\PlusOneTable.lua"/>
 <script file="SkinMe\PoliteWhisper.lua"/>
 <script file="SkinMe\Possessions.lua"/>
 <script file="SkinMe\Postal.lua"/>
