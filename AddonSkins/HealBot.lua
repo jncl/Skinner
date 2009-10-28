@@ -1,5 +1,5 @@
 -- many thanks to acirac for the updated skin
-function Skinner:HealBot() 
+function Skinner:HealBot() -- version 3.2.2.4
 	if not self.db.profile.Tooltips.skin then return end
 
 -->>--	Tooltips
@@ -12,7 +12,7 @@ function Skinner:HealBot()
 
 -- Tabs
 	self:resizeTabs(HealBot_Options)
-	for i = 1, 8 do
+	for i = 1, 6 do
 		local tabName = _G["HealBot_OptionsTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
 		if i == 1 then self:moveObject(tabName, "+", 2, "-", 1)
@@ -22,13 +22,13 @@ function Skinner:HealBot()
 	end
 
 	if self.db.profile.TexturedTab then
-		for i = 1, 8 do
+		for i = 1, 6 do
 			local tabName = _G["HealBot_OptionsTab"..i]
 			self:setInactiveTab(tabName)
 		end
 		self:setActiveTab(HealBot_OptionsTab1)
 		self:SecureHook("HealBot_Options_ShowPanel", function(this)
-			for i = 1, 8 do
+			for i = 1, 6 do
 				local tabName = _G["HealBot_OptionsTab"..i]
 				if i == HealBot_Options.selectedTab then self:setActiveTab(tabName)
 				else self:setInactiveTab(tabName) end
@@ -46,32 +46,6 @@ function Skinner:HealBot()
 	self:keepFontStrings(HealBot_Options_EmergencyFClass)
 	self:keepFontStrings(HealBot_Options_EmergLFrame)
 	self:applySkin(HealBot_Options_EmergLFrame, nil)	
-	
-	self:keepFontStrings(HealBot_Options_Panel1)
-	self:applySkin(HealBot_Options_Panel1, nil)
-	self:keepFontStrings(HealBot_Options_Panel2)
-	self:applySkin(HealBot_Options_Panel2, nil)
-	self:keepFontStrings(HealBot_Options_Panel3)
-	self:applySkin(HealBot_Options_Panel3, nil)
-	self:keepFontStrings(HealBot_Options_Panel4)
-	self:applySkin(HealBot_Options_Panel4, nil)
-	self:keepFontStrings(HealBot_Options_Panel5)
-	self:applySkin(HealBot_Options_Panel5, nil)
-	self:keepFontStrings(HealBot_Options_Panel6)
-	self:applySkin(HealBot_Options_Panel6, nil)
-	self:keepFontStrings(HealBot_Options_Panel7)
-	self:applySkin(HealBot_Options_Panel7, nil)	
-	
-	self:keepFontStrings(HealBot_Buff1Colour)
-	self:keepFontStrings(HealBot_Buff2Colour)
-	self:keepFontStrings(HealBot_Buff3Colour)
-	self:keepFontStrings(HealBot_Buff4Colour)
-	self:keepFontStrings(HealBot_Buff5Colour)
-	self:keepFontStrings(HealBot_Buff6Colour)
-	self:keepFontStrings(HealBot_Buff7Colour)
-	self:keepFontStrings(HealBot_Buff8Colour)
-	self:keepFontStrings(HealBot_Buff9Colour)
-	self:keepFontStrings(HealBot_Buff10Colour)
 	
 	self:keepFontStrings(HealBot_Options_BuffTxt1)
 	self:keepFontStrings(HealBot_Options_BuffTxt2)
@@ -107,6 +81,7 @@ function Skinner:HealBot()
 	self:applySkin(HealBot_Options_BuffsPanel, nil)	
 	self:keepFontStrings(HealBot_Options_ComboClassButton)
 	self:keepFontStrings(HealBot_Options_ActionBarsCombo)
+	self:keepFontStrings(HealBot_Options_SkinPartyRaidDefault)
 	self:keepFontStrings(HealBot_Options_KeysFrame)
 	self:applySkin(HealBot_Options_KeysFrame, nil)
 	self:keepFontStrings(HealBot_Options_DisabledBarPanel)
@@ -124,14 +99,25 @@ function Skinner:HealBot()
 	self:applySkin(HealBot_Options_Skins_HoTs2, nil)
 	self:keepFontStrings(HealBot_Options_Skins_Bars2)
 	self:applySkin(HealBot_Options_Skins_Bars2, nil)
+	self:keepFontStrings(HealBot_Options_GeneralSkinsFrame)
+	self:applySkin(HealBot_Options_GeneralSkinsFrame, nil)
+	self:keepFontStrings(HealBot_Options_HealingSkinsFrame)
+	self:applySkin(HealBot_Options_HealingSkinsFrame, nil)			
+	self:keepFontStrings(HealBot_Options_IncHealsSkinsFrame)
+	self:applySkin(HealBot_Options_IncHealsSkinsFrame, nil)
+	self:keepFontStrings(HealBot_Options_ChatSkinsFrame)
+	self:applySkin(HealBot_Options_ChatSkinsFrame, nil)	
+	self:keepFontStrings(HealBot_Options_HeadersSkinsFrame)
+	self:applySkin(HealBot_Options_HeadersSkinsFrame, nil)	
+	self:keepFontStrings(HealBot_Options_BarsSkinsFrame)
+	self:applySkin(HealBot_Options_BarsSkinsFrame, nil)	
+	self:keepFontStrings(HealBot_Options_TextSkinsFrame)
+	self:applySkin(HealBot_Options_TextSkinsFrame, nil)	
+	self:keepFontStrings(HealBot_Options_IconsSkinsFrame)
+	self:applySkin(HealBot_Options_IconsSkinsFrame, nil)	
 		
 	self:keepFontStrings(HealBot_Options_CureDispelCleanseWarn)
 	self:applySkin(HealBot_Options_CureDispelCleanseWarn, nil)
-	self:keepFontStrings(HealBot_DiseaseColorpick)
-	self:keepFontStrings(HealBot_MagicColorpick)
-	self:keepFontStrings(HealBot_PoisonColorpick)
-	self:keepFontStrings(HealBot_CurseColorpick)
-	self:keepFontStrings(HealBot_CustomColorpick)
 	
 	self:keepFontStrings(HealBot_Options_CustomDebuffCol)	
 	self:keepFontStrings(HealBot_Options_CureDispelCleanseCol)
@@ -141,16 +127,8 @@ function Skinner:HealBot()
 	self:applySkin(HealBot_Options_CureDispelCleanse, nil)	
 	self:keepFontStrings(HealBot_Options_Skins)
 	self:keepFontStrings(HealBot_Options_Skins2)
-	self:keepFontStrings(HealBot_BackgroundColorpick)
-	self:keepFontStrings(HealBot_EnTextColorpick)
-	self:keepFontStrings(HealBot_BorderColorpick)
-	self:keepFontStrings(HealBot_DebTextColorpick)
-	self:keepFontStrings(HealBot_DisTextColorpick)
-	self:keepFontStrings(HealBot_EnTextColorpickin)
 	self:keepFontStrings(HealBot_Options_Scale)
 	self:applySkin(HealBot_Options_Scale, nil)
-	self:keepFontStrings(HealBot_HeadBarColorpick)
-	self:keepFontStrings(HealBot_HeadTextColorpick)
 	self:keepFontStrings(HealBot_Options_HeaderFrame)
 	self:applySkin(HealBot_Options_HeaderFrame, nil)	
 	self:keepFontStrings(HealBot_Options_Chat)
@@ -164,6 +142,8 @@ function Skinner:HealBot()
 	self:moveObject(HealBot_Options_ActionBarsCombo, nil, nil, "+", 5)
 	self:moveObject(HealBot_ComboButtons_ButtonText, nil, nil, "+", 7)
 	self:moveObject(HealBot_ComboButtons_Button1, nil, nil, "+", 7)
+	self:moveObject(HealBot_AutoTarget_ButtonText, nil, nil, "+", 10)
+	self:moveObject(HealBot_AutoTrinket_ButtonText, nil, nil, "+", 10)
 	self:moveObject(HealBot_Options_Click, nil, nil, "+", 10)
 	self:moveObject(HealBot_Options_NewCDebuff, nil, nil, "+", 4)
 	self:moveObject(HealBot_Options_NewSkin, nil, nil, "+", 4)
