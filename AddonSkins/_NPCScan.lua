@@ -19,7 +19,7 @@ function Skinner:_NPCScan()
 		local obj = _NPCScan.Config.Search.Table.View
 		if not self:getChild(obj, 2) then -- if not already created
 			self:SecureHookScript(obj, "OnScrollRangeChanged", function(this)
-				self:Debug("OnScrollRangeChanged: [%s, %s]", this, nil)
+--				self:Debug("OnScrollRangeChanged: [%s, %s]", this, nil)
 				self:ShowInfo(this, true, true)
 				self:skinSlider(self:getChild(this, 2))
 				self:Unhook(obj, "OnScrollRangeChanged")

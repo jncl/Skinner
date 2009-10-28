@@ -22,7 +22,7 @@ function Skinner:Bagnon(LoD)
 		local Bagnon = LibStub('AceAddon-3.0'):GetAddon('Bagnon')
 		-- skin the bag frame
 		self:RawHook(Bagnon.Frame, "New", function(this, frameID)
-			self:Debug("Bagnon.Frame_New: [%s, %s]", this, frameID)
+--			self:Debug("Bagnon.Frame_New: [%s, %s]", this, frameID)
 			local frame = self.hooks[Bagnon.Frame].New(this, frameID)
 			self:applySkin(frame)
 			self:RawHook(frame, "SetBackdropColor", function() end, true)

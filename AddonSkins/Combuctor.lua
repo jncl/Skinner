@@ -46,7 +46,7 @@ function Skinner:Combuctor()
 
 	-- Side Tabs aka SideFilter
 	self:SecureHook(Combuctor.SideFilter, "UpdateFilters", function(this)
-		self:Debug("C.SF_UF: [%s]", this:GetName())
+--		self:Debug("C.SF_UF: [%s]", this:GetName())
 		for i = 1, #this.buttons do
 			local tabObj = this.buttons[i]
 			if not self.skinned[tabObj] then

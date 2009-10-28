@@ -31,7 +31,7 @@ function Skinner:Carbonite()
 	}
 	-- add entry to options
 	for i, v in pairs(Nx.OpD) do
-		self:Debug("Carbonite: [%s, %s]", i, v.N)
+--		self:Debug("Carbonite: [%s, %s]", i, v.N)
 		if v.N == "Skin" then
 			table.insert(Nx.OpD[i], {N = "Skinner", F = "NXCmdSkin", Dat = "Skinner"})
 			break

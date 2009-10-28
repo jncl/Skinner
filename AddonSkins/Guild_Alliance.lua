@@ -4,7 +4,7 @@ function Skinner:Guild_Alliance()
 
 	-- Tab
 	self:SecureHook("GA_Tab_OnLoad", function()
-		-- self:Debug("GA_Tab_OnLoad: [%s, %s]", FriendsFrame.numTabs, this:GetName())
+--		self:Debug("GA_Tab_OnLoad: [%s, %s]", FriendsFrame.numTabs, this:GetName())
 		local tabName = this
 		self:keepRegions(tabName, {7, 8}) -- N.B. these regions are text & highlight
 		self:moveObject(tabName, "+", 10, nil, nil)

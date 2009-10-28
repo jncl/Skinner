@@ -29,7 +29,7 @@ function Skinner:Dominos_Config()
 
 	-- hook the create menu function
 	self:SecureHook(Dominos.Menu, "New", function(this, name)
-		self:Debug("D.M.N:[%s, %s]", this, name)
+--		self:Debug("D.M.N:[%s, %s]", this, name)
 		local panel = _G["DominosFrameMenu"..name]
 		if not self.skinned[panel] then
 			self:applySkin(panel)
@@ -37,7 +37,7 @@ function Skinner:Dominos_Config()
 	end)
 	-- hook the shop panel function to skin dropdowns & editboxes
 	self:SecureHook(Dominos.Menu, "ShowPanel", function(this, name)
-		self:Debug("D.M.SP:[%s, %s, %s]", this, this:GetName(), name)
+--		self:Debug("D.M.SP:[%s, %s, %s]", this, this:GetName(), name)
 		if this.dropdown and not self.skinned[this.dropdown] then
 			self:skinDropDown(this.dropdown)
 		end

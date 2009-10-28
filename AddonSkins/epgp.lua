@@ -42,13 +42,13 @@ function Skinner:epgp()
 	
 	if not EPGPFrame then
 		self:SecureHook(epgpUI, "OnEnable", function()
-			self:Debug("EPGP_UI_OnEnable")
+--			self:Debug("EPGP_UI_OnEnable")
 			skinEPGPUI()
 			self:Unhook(EPGPFrame, "Show")
 		end)
 	else
 		self:SecureHook(EPGPFrame, "Show", function(this)
-			self:Debug("EPGPFrame_Show")
+--			self:Debug("EPGPFrame_Show")
 			skinEPGPUI()
 			self:Unhook(EPGPFrame, "Show")
 		end)

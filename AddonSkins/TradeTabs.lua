@@ -4,7 +4,7 @@ function Skinner:TradeTabs()
 
 	local function skinTradeTabs(frame, xAdj, xOfs)
 
- 		Skinner:Debug("skinTradeTabs: [%s, %s, %s]", frame:GetName(), xAdj, xOfs)
+-- 		Skinner:Debug("skinTradeTabs: [%s, %s, %s]", frame:GetName(), xAdj, xOfs)
 
 		local prev
 

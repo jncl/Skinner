@@ -61,7 +61,7 @@ function Skinner:MSBTOptions()
 						local obj = select(i, this:GetChildren())
 						if obj:IsObjectType("Frame") and not Skinner.skinned[obj] then
 							if obj.selectedItem then -- it's a dropdown
-	--							Skinner:Debug("obj has .selectedItem [%s, %s]", obj, obj.selectedItem)
+--								Skinner:Debug("obj has .selectedItem [%s, %s]", obj, obj.selectedItem)
 								Skinner:keepFontStrings(obj)
 							end
 						end

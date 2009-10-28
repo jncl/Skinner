@@ -28,7 +28,7 @@ function Skinner:Overachiever()
 		for i = 1, #tab.items do
 			local itm = _G["TjOptionsItemNumber"..i]
 			if itm and itm.TjDDM then
-				self:Debug("Found a DropDown: [%s]", i)
+--				self:Debug("Found a DropDown: [%s]", i)
 				self:skinDropDown(itm)
 			end
 		end

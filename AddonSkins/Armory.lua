@@ -45,9 +45,9 @@ function Skinner:Armory()
 	
 	-- hook this to manage tabs when character has a pet
 	self:SecureHook("ArmoryPetTab_Update", function()
-		self:Debug("APT_U")
+--		self:Debug("APT_U")
 		if ArmoryFrameTab2:IsShown() then
-			self:Debug("APT_U - Move")
+--			self:Debug("APT_U - Move")
 			ArmoryFrameTab3:SetPoint("LEFT", "ArmoryFrameTab2", "RIGHT", -6, 0)
 		end
 	end)
@@ -386,13 +386,13 @@ function Skinner:Armory()
 	self:applySkin(ArmoryAchievementFrame)
 	
 	local function moveRow(row)
-		Skinner:Debug("moveRow")
+--		Skinner:Debug("moveRow")
 		Skinner:moveObject(row, "+", 40, "+", 10)
 		moveRow = nil
 	end
 	-- hook this to manage displaying the rows
 	self:SecureHook("ArmoryAchievementFrame_SetRowType", function(achievementRow, rowType, hasQuantity)
-		self:Debug("AAF_SRT: [%s]", achievementRow:GetName())
+--		self:Debug("AAF_SRT: [%s]", achievementRow:GetName())
 		if achievementRow == ArmoryAchievementBar1 and moveRow then moveRow(achievementRow) end
 		local achievementRowName = achievementRow:GetName()
 		local sBar = _G[achievementRowName.."AchievementBar"]

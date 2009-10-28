@@ -24,7 +24,7 @@ function Skinner:Luggage()
 	end, true)
 	-- hook this to skin the Options Frame
 	self:SecureHook(Luggage, "CreateDialog", function(this)
-		self:Debug("Luggage_CD")
+--		self:Debug("Luggage_CD")
 		self:ShowInfo(this.dialog.frame)
 		self:removeRegions(this.dialog.frame, {10, 11, 12}) -- Header Textures
 		self:applySkin(this.dialog.statusbg)

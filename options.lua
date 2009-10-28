@@ -1721,7 +1721,7 @@ function Skinner:Options()
 			desc = self.L["Change the Unit Frames settings"],
 			get = function(info) return db.UnitFrames[info[#info]] end,
 			set = function(info, value)
-				self:Debug("UF opts: [%s, %s, %s]", info, value, info[#info])
+--				self:Debug("UF opts: [%s, %s, %s]", info, value, info[#info])
 				db.UnitFrames[info[#info]] = value
 				self:checkAndRun("UnitFrames")
 			end,
