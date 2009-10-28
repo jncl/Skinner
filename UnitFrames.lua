@@ -117,6 +117,7 @@ function Skinner:Target()
 		uCat:SetTexture(eTex)
 		if classification == "worldboss" then
 		elseif classification == "rareelite" then
+			uCat:SetVertexColor(0, 0, 0) -- make it black
 		elseif classification == "elite" then
 		elseif classification == "rare" then
 		else uCat:SetTexture(nil)
