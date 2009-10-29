@@ -17,6 +17,7 @@
 <script file="SkinMe\AlphaMap.lua"/>
 <script file="SkinMe\Altoholic.lua"/>
 <script file="SkinMe\Analyst.lua"/>
+<script file="SkinMe\AnnounceIt.lua"/>
 <script file="SkinMe\AoTRDungeonQuester.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
 <script file="SkinMe\Armory.lua"/>
@@ -210,6 +211,7 @@
 <script file="SkinMe\MacroBank.lua"/>
 <script file="SkinMe\MageEatDrinkAid.lua"/>
 <script file="SkinMe\MailTo.lua"/>
+<script file="SkinMe\MacroBrokerGUI.lua"/>
 <script file="SkinMe\MakeRocketGoNow.lua"/>
 <!-- <script file="SkinMe\MCP.lua"/> -->
 <!-- <script file="SkinMe\MetaMap.lua"/> -->
@@ -259,6 +261,7 @@
 <script file="SkinMe\PlayerExpBar.lua"/>
 <script file="SkinMe\PlusOneTable.lua"/>
 <script file="SkinMe\PoliteWhisper.lua"/>
+<script file="SkinMe\PoMTracker.lua"/>
 <script file="SkinMe\Possessions.lua"/>
 <script file="SkinMe\Postal.lua"/>
 <script file="SkinMe\PowerAuras.lua"/>
