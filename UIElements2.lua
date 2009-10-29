@@ -393,10 +393,9 @@ function Skinner:MacroUI()
 -->>-- Macro Frame
 	self:skinFFToggleTabs("MacroFrameTab", 2)
 	self:skinScrollBar{obj=MacroButtonScrollFrame}
-	self:moveObject{obj=MacroFrameCharLimitText, y=-2}
 	self:skinScrollBar{obj=MacroFrameScrollFrame}
 	self:skinEditBox{obj=MacroFrameText, noSkin=true}
-	self:addSkinFrame{obj=MacroFrameTextBackground, ft=ftype}
+	self:addSkinFrame{obj=MacroFrameTextBackground, ft=ftype, y2=2}
 	self:skinButton{obj=MacroFrameCloseButton, cb=true}
 	self:skinButton{obj=MacroEditButton}
 	self:skinButton{obj=MacroDeleteButton}
