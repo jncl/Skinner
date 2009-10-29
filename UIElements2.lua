@@ -343,20 +343,14 @@ function Skinner:MenuFrames()
 
 	local function checkKids(obj)
 
+		local oName = obj.GetName and obj:GetName() or nil
+		if oName and (oName:find("AceConfig") or oName:find("AceGUI")) then return end  -- ignore AceConfig/AceGUI objects
+
 		local kids = {obj:GetChildren()}
 		for _, child in ipairs(kids) do
-		 	if self:isDropDown(child) then self:skinDropDown{obj=child}
-			elseif child:IsObjectType("EditBox") then self:skinEditBox{obj=child, regs={9}}
-			elseif child:IsObjectType("Button") then
-				local nTex = child:GetNormalTexture() and child:GetNormalTexture():GetTexture() or nil
-				local cName = child:GetName() or nil
-				if nTex and nTex:find("UI-Panel-Button", 1, true) then
-					Skinner:skinButton{obj=child}
-				elseif cName and _G[cName.."Left"] and not cName:find("AceGUI") then -- ignore AceGUI objects
-					Skinner:skinButton{obj=child}
-				else
-					checkKids(child)
-				end
+		 	if Skinner:isDropDown(child) then Skinner:skinDropDown{obj=child}
+			elseif child:IsObjectType("EditBox") then Skinner:skinEditBox{obj=child, regs={9}}
+			elseif Skinner:isButton(child) then Skinner:skinButton{obj=child}
 			else
 				checkKids(child)
 			end
@@ -364,12 +358,11 @@ function Skinner:MenuFrames()
 		kids = nil
 
 	end
-	-- Hook this to skin any Interface Option panels and their elements
+	-- Hook these to skin any Interface Option panels and their elements
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
-		-- skin tekKonfig library objects
-		if self.tekKonfig then self:tekKonfig() end
+		if self.tekKonfig then self:tekKonfig() end -- skin tekKonfig library objects
 		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
-			checkKids(panel)
+			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
 			self:addSkinFrame{obj=panel, ft=ftype, kfs=true}
 		end
 	end)

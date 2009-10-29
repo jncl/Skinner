@@ -744,7 +744,7 @@ end
 
 function Skinner:checkTex(obj)
 
-	local nTex = obj.GetNormalTexture and obj:GetNormalTexture():GetTexture() or nil
+	local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
 --	self:Debug("checkTex: [%s, %s]", obj:GetName(), nTex)
 	local btn = self.sBut[obj]
 	btn:Show()
@@ -1398,17 +1398,22 @@ function Skinner:skinButton(opts)
 
 end
 
-local function isButton(obj)
+function Skinner:isButton(obj)
 
 	if obj:IsObjectType("Button")
 	and obj.GetNormalTexture -- is it a true button
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
-	then
-		return true
-	else
-		return false
+	then -- check textures are as expected
+		local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
+		local oName = obj:GetName() or nil
+		if nTex and nTex:find("UI-Panel-Button", 1, true)
+		or cName and _G[cName.."Left"] then
+			return true
+		end
 	end
+
+	return false
 
 end
 
@@ -1416,12 +1421,12 @@ function Skinner:skinAllButtons(obj)
 
 	local kids = {obj:GetChildren()}
 	for _, child in ipairs(kids) do
-		if isButton(child) then
+		if self:isButton(child) then
 			self:skinButton{obj=child}
 		else
 			local grandkids = {child:GetChildren()}
 			for _, grandchild in ipairs(grandkids) do
-				if isButton(grandchild) then
+				if self:isButton(grandchild) then
 					self:skinButton{obj=grandchild}
 				end
 			end
