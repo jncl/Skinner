@@ -18,11 +18,17 @@ function Skinner:Ace3()
 				or objType == "TabGroup" then
 				self:keepFontStrings(obj.border)
 				self:applySkin(obj.border)
-			elseif objType == "EditBox" then
+			elseif objType == "EditBox"
+				or objType == "NumberEditBox" then
 				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
 				self:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
 					return left + 6, right, top, bottom
 				end, true)
+				self:skinButton{obj=obj.button, as=true}
+				if objType == "NumberEditBox" then
+					self:skinButton{obj=obj.minus, as=true}
+					self:skinButton{obj=obj.plus, as=true}
+				end
 			elseif objType == "MultiLineEditBox" then
 				self:applySkin(obj.backdrop)
 				local kids = {obj.backdrop:GetChildren()}
@@ -33,6 +39,7 @@ function Skinner:Ace3()
 					end
 				end
 				kids = nil
+				self:skinButton{obj=obj.button, as=true}
 			elseif objType == "Slider" then
 				obj.editbox.bg:SetAlpha(0)
 				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
@@ -66,6 +73,9 @@ function Skinner:Ace3()
 				end
 			elseif objType == "Button" then
 				self:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+			elseif objType == "Keybinding" then
+				self:skinButton{obj=obj.minus, as=true}
+				self:applySkin{obj=obj.msgframe}
 			end
 		end
 		return obj

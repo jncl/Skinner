@@ -122,7 +122,7 @@ function Skinner:ReputationFrame()
 		_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetAlpha(0)
 		_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetAlpha(0)
 		self:glazeStatusBar(_G["ReputationBar"..i.."ReputationBar"], 0)
-		self:skinButton{obj=_G["ReputationBar"..i.."ExpandOrCollapseButton"], mp=true}
+		self:skinButton{obj=_G["ReputationBar"..i.."ExpandOrCollapseButton"], mp=true, ty=0}
 	end
 
 -->>-- Reputation Detail Frame

@@ -12,7 +12,9 @@ function Skinner:Ace2()
 	
 	-- Skin the AceAddon About Frame
 	self:SecureHook(LibStub("AceAddon-2.0").prototype, "PrintAddonInfo", function()
+		self:skinButton{obj=AceAddon20AboutFrameButton}
 		self:addSkinFrame{obj=AceAddon20AboutFrame}
+		self:skinButton{obj=AceAddon20AboutFrameDonateButton}
 		self:Unhook(LibStub("AceAddon-2.0").prototype, "PrintAddonInfo")
 	end)
 
