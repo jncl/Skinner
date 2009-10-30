@@ -11,26 +11,100 @@ S - Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-	S	Default Buttons etc, requested by Hobbbbit/Kerecha, 23.09.09
+	S	Buttons
+√		- ReputationDetailFrame close button
+√		- BetterInbox
+√		- BugSack
+√		- AucAdvanced
+√		- Configator
+√		- Ace3 (inc +/- on tree control)
+√		- EditingUI
+√		- EnhancedStackSplit
+√		- Spew
+√		- Hack
+√		- LightHeaded
+√		- Ace2
+√		- ArkInventory
 
-√	I	Recount, reported by Craxziz, 8.09.09
-		- Skinner-b2.10505.1\SkinMe\Recount.lua:27: UIParent:GetChildren(): Stack overflow
-		Skinner-b2.10505.1\SkinMe\Recount.lua:27: in function <Skinner\SkinMe\Recount.lua:2>
-		(tail call): ?:
-		<in C code>: ?
-		Skinner-b2.10505.1\Skinner.lua:673: in function <Skinner\Skinner.lua:671>
-		Skinner-b2.10505.1\Skinner.lua:718: in function `?'
-		Skinner-b2.10505.1\AddonFrames.lua:118: in function <Skinner\AddonFrames.lua:62>
-		(tail call): ?:
-		- didn't get these errors but changed the code anyway
+	S	Buttons, requested by Kerecha, 18.10.09
+√		- AddonControlPanel (menu button and options buttons)
+√		- Collector (pets pane "toggle" button)
+√		- Think its petlist+ that causes an unskinned close button on pet panel
+√		- InterfaceOptionsAddonPanel(s)
+√		- Altoholic all buttons, inc "expiring mails" popup
+√		- Mapster, button on WorldMap
+√		- TipTac
+√		- Prat3
+√		- KeyBoundExtra
+√		- Bartender4 --> Ace3GUI widgets
+√		- Icehud --> IOP button --> Waterfall
+√		- Aloft --> Waterfall
+√		- Sorren's Timers --> Waterfall
+?		- Pitbull4 --> Ace3GUI widgets ??
 
-√	I	tomQuest2, reported by Craxziz, 8.09.09
-		- Skinner-b2.10505.1\SkinMe\tomQuest2.lua:46: UIParent:GetChildren(): Stack overflow
-		Skinner-b2.10505.1\SkinMe\tomQuest2.lua:46: in function <Skinner\SkinMe\tomQuest2.lua:6>
+	S	Buttons, reported by Hobbbbit, 20.10.09
+√		- Guild Control -> Cancel (old)
+√		– Guild Control -> "+" (old)
+√		– QuestLog -> "+"/"-" (broken)
+√		– PvP -> Arena Team info -> "Add Member" and ">" (old)
+√		– Everything inside Interface->AddOns (as already mentioned) including "+"/"-" on the addon list.
+√		– Reputation -> "+"/"-" (look very strange when using Skinner Border Texture)
+√		– Skills -> "+"/"-" (same as above)
+x		– Guild -> ">" (old) next to player status
+x		– Spellbook -> "<" and ">" (old)
+x		– Skill -> Unlern profession button (old)
+		– Bags/Keys -> Close button "x" (old) (not sure about that one, it could be Bagnon)
+x		– Mini-map -> Close button "x" (old) (that's probably fine. Skinned button would look funny there anyways).
+x		– Calendar -> "<"/">" (old)
+x		– Merchant Interface -> "<"/">" (old)
+x		– Browse Auctions -> "<"/">" (old)
+
+		- It seems that all of the "<" ">" buttons are using old texture, that's probably because their texture is a bit different from the rest of buttons. Same with scrollbar buttons as well... Not a big deal anyways.
+
+	S	Buttons, reported by Kerecha, 21.10.09
+√		- Socket Gems
+
+	S	Buttons, requested by xtoq, 19.10.09
+√		- Postal
+√		- Recount (inside the config menu)
+√		- BankItems
+
+		- Question: is it possible to skin the slots of the default Blizzard bags using Skinner or another mod?  I use Button Facade for my action bars, but that doesn't do it for the default bags.
+
+	S	Readycheck, reported by Kerecha, 19.10.09
+?		- Readycheck "playerlist" close button (window is also still unskinned) its the blizz one according to the RL.
+
+√	S	Prayer Of Mending Tracker, requested by Sinbinner, 17.10.09
+
+√	S	Loot Master +1 (a.k.a. PlusOneTable), requested by xtoq, 19.10.09
+
+√	S	AnnounceIt, requested by xtoq, 19.10.09
+
+√	S	MacroBroker, requested by xtoq, 19.10.09
+
+√	S	Highlight, requested by xtoq, 19.10.09
+		- the local bag search tool (the search bar below the bags would look better skinned)
+
+?	S	GreedBeacon, requested by xtoq, 19.10.09
+		- (tooltip that pops up)
+
+√	S	TinyPad, requested by xtoq, 19.10.09
+
+√	S	Mountiful, requested by shine2009, 19.10.09
+		- The AddOn "Mountiful" adds a 4th tap to the Pets (under Character) window. It also then opens one.
+
+√	S	Livestock, requested by Kerecha, 19.10.09
+
+	I	QuestLog, reported by OttoDeFe, 18.10.09
+?		- text is black when 2 or more quests available
+
+	I	Volumizer, reported by xtoq, 19.10.09
+√		-  (right click frame is still not skinned, and I have put its skin in the folder)
+
+	I	UnitFrames, reported by NeoZeus, 21.10.09
+√		- could you please skin the the target frame in Silver Dragon that pops up when a rare mob is found
+
+	I	TrainerUI, reported by pompachomp, 25.10.09
+?		- Skinner-b2.10505.5\Skinner.lua:743: attempt to index field '?' (a nil value)
+		Skinner-b2.10505.5\NPCFrames.lua:74: in function <Interface\AddOns\Skinner\NPCFrames.lua:72>
 		(tail call): ?:
-		<in C code>: ?
-		Skinner-b2.10505.1\Skinner.lua:673: in function <Skinner\Skinner.lua:671>
-		Skinner-b2.10505.1\Skinner.lua:718: in function `?'
-		Skinner-b2.10505.1\AddonFrames.lua:118: in function <Skinner\AddonFrames.lua:62>
-		(tail call): ?:
-		- didn't get these errors but changed the code anyway
