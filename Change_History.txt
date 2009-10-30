@@ -1,3 +1,31 @@
+b2.10505.6
+Jncl:
+	ToDo.txt
+	More UIButton changes
+	Obsoleted Prat skin
+	Skinned Highlight, Livestock, Mountiful, Prat3 & TinyPad
+	More UIButton changes:
+	- Updated Ace2, Ace3, ArkInventory, TipTac & Waterfall skins
+	- Updated RepBar skin
+	Updated MacroFrame skin
+	Handle InterfaceOption Panels which load OnShow
+	Better identification of buttons to skin
+	Skinned AnnouncIt, MacroBrokerGUI & PoMTracker
+	Commented out Debug statements:
+	- Updated Ace3, Armory, Bagnon, Carbonite, Combuctor, Dominos, Guild_Alliance, Luggage, MSBTOptions, MakeRocketGoNow, Overachiever, TradeTabs, _NPCScan & epgp skins
+	 Updated options
+	Make UnitFrame RareElite icon black
+	Updated HealBot skin (thanks to acirac)
+	Skinned PetListPlus & PlusOneTable
+	UIButton changes
+	- Updated ACP, Ace3, Altoholic, AucAdvanced, BankItems, BetterInbox, BugSack, Configator, EditingUI, EnhancedStackSplit, Hack, LightHeaded, Postal, Recount, Spew, TheCollector & Volumizer skins
+	- Updated Skinner & UIElements2
+	Replace nop with corresponding function
+	More UIButton changes
+	Make Target frame skin bigger
+	Bugfix for QuestLog minus/plus buttons
+	Updated Change_History.txt
+
 b2.10505.5
 Jncl:
 	Merge branch 'UIButtons'
