@@ -203,22 +203,15 @@ function Skinner:OnInitialize()
 		edgeFile = edgetex, edgeSize = 8,
 		insets = {left = 2, right = 2, top = 2, bottom = 2},
 	}
-	-- this backdrop is for small UI buttons, e.g. minus/plus in QuestLog
+	-- these backdrops are for small UI buttons, e.g. minus/plus in QuestLog/IOP/Skills etc
 	self.Backdrop[5] = CopyTable(self.backdrop)
+	self.Backdrop[5].tileSize = 12
+	self.Backdrop[5].edgeSize = 12
+	self.Backdrop[5].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	self.Backdrop[6] = CopyTable(self.backdrop)
-	--[[
-		TODO understand how all the backdrop values work
-	--]]
-	if self.db.profile.BdDefault then
-		self.Backdrop[5].tileSize = 12
-		self.Backdrop[5].edgeSize = 12
-		self.Backdrop[5].insets = {left = 3, right = 3, top = 3, bottom = 3}
-	end
-	if self.db.profile.BdDefault then
-		self.Backdrop[6].tileSize = 10
-		self.Backdrop[6].edgeSize = 10
-		self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
-	end
+	self.Backdrop[6].tileSize = 10
+	self.Backdrop[6].edgeSize = 10
+	self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
 
 	-- these are used to disable frames from being skinned
 	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentUI", "DressUpFrame", "FriendsFrame", "TradeSkillUI", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "AchieveFrame", "AchieveAlert", "VehicleMenuBar", "GearManager"}
@@ -742,37 +735,56 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 end
 
-function Skinner:checkTex(obj)
+local function __checkTex(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		nTex = Texture
+		mp2 = minus/plus type 2
+--]]
+--@alpha@
+	assert(opts.obj, "Unknown object __cT\n"..debugstack())
+--@end-alpha@
 
-	local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
---	self:Debug("checkTex: [%s, %s]", obj:GetName(), nTex)
-	local btn = self.sBut[obj]
-	btn:Show()
+	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
+	local btn = opts.mp2 and opts.obj or Skinner.sBut[opts.obj]
+
+--	Skinner:Debug("__checkTex: [%s, %s, %s]", btn:GetName(), nTex, opts.mp2)
+
+	if not opts.mp2 then btn:Show() end
+
 	if nTex then
 		if nTex:find("MinusButton") then
-			btn:SetText(self.minus)
+			btn:SetText(Skinner.minus)
 		elseif nTex:find("PlusButton") then
-			btn:SetText(self.plus)
+			btn:SetText(Skinner.plus)
 		end
 	else -- not a header line
 		btn:SetText("")
-		btn:Hide()
+		if not opts.mp2 then btn:Hide() end
 	end
 
 end
 
-function Skinner:checkMPTex(btn, nTex)
-	-- used for mp2 type buttons
---	self:Debug("checkMPTex: [%s, %s]", btn:GetName(), nTex)
-	if nTex then
-		if nTex:find("MinusButton") then
-			btn:SetText(self.minus)
-		elseif nTex:find("PlusButton") then
-			btn:SetText(self.plus)
-		end
-	else -- not a header line
-		btn:SetText("")
+function Skinner:checkTex(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Unknown object cT\n"..debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.nTex = select(2, ...) and select(2, ...) or nil
+		opts.mp2 = select(3, ...) and select(3, ...) or nil
 	end
+	__checkTex(opts)
 
 end
 
@@ -1311,20 +1323,23 @@ Skinner.mult = "×"
 Skinner.plus = "+"
 Skinner.minus = "−"
 -- create font to use for Close Buttons
-local fontX= CreateFont("fontX")
-fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
-fontX:SetTextColor(1.0, 0.82, 0)
+Skinner.fontX= CreateFont("fontX")
+Skinner.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
+Skinner.fontX:SetTextColor(1.0, 0.82, 0)
 -- create font to use for Minus/Plus Buttons
-local fontP= CreateFont("fontP")
-fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
-fontP:SetTextColor(1.0, 0.82, 0)
+Skinner.fontP= CreateFont("fontP")
+Skinner.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
+Skinner.fontP:SetTextColor(1.0, 0.82, 0)
 function Skinner:skinButton(opts)
 --[[
 	as = use applySkin rather than addSkinButton
 	cb = close button
+	cb2 = close button style 2 (based upon OptionsButtonTemplate)
 	mp = minus/plus button
 	mp2 = minus/plus button style 2 (on RHS)
 	plus = use plus sign
+	tx = x offset for button text
+	ty = y offset for button text
 	other options as per addSkinButton
 --]]
 	if not self.db.profile.Buttons then return end
@@ -1346,14 +1361,13 @@ function Skinner:skinButton(opts)
 		_G[objName.."Middle"]:SetAlpha(0)
 	end
 
-	-- setup default backdrop to use
-	local aso={bd=self.Backdrop[5]}
-
 	if opts.cb then -- it's a close button
-		opts.obj:SetNormalFontObject(fontX)
+		opts.obj:SetNormalFontObject(self.fontX)
 		opts.obj:SetText(self.mult)
 		opts.obj:SetPushedTextOffset(-1, -2)
-		self:moveObject{obj=self:getRegion(opts.obj, opts.obj:GetNumRegions()), x=-1} -- move fontstring left, fontstring is the last region
+		local x = opts.tx or -1
+		local y = opts.ty or 0
+		if x ~= 0 or y ~=0 then self:moveObject{obj=opts.obj:GetFontString(), x=x, y=y} end -- move text
 		if opts.sap then
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
@@ -1363,36 +1377,49 @@ function Skinner:skinButton(opts)
 			local y2 = opts.y2 or 6
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
+	elseif opts.cb2 then -- it's pretending to be a close button (ArkInventory)
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=-2, y1=2, x2=2, y2=-2}
+		local btn = self.sBut[opts.obj]
+		btn:SetNormalFontObject(self.fontX)
+		btn:SetText(self.mult)
 	elseif opts.mp then -- it's a minus/plus button (LHS) [inherited from ClassTrainerSkillButtonTemplate]
-		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso}
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}}
 		local btn = self.sBut[opts.obj]
 		local xOfs = opts.noMove and 0 or 3
 		btn:ClearAllPoints()
 		btn:SetPoint("LEFT", opts.obj, "LEFT", xOfs, 0)
 		btn:SetWidth(16)
 		btn:SetHeight(16)
-		btn:SetNormalFontObject(fontP)
+		btn:SetNormalFontObject(self.fontP)
 		btn:SetText(opts.plus and self.plus or self.minus)
-		self:moveObject{obj=self:getRegion(btn, btn:GetNumRegions()), y=-1} -- move fontstring down, fontstring is the last region
+		local x = opts.tx or 0
+		local y = opts.ty or -1
+		if x ~= 0 or y ~=0 then self:moveObject{obj=self:getRegion(btn, btn:GetNumRegions()), x=x, y=y} end -- move text
 	elseif opts.mp2 then -- it's a smaller minus/plus button (RHS) [inherited from OptionsListButtonTemplate]
-		aso={bd=self.Backdrop[6]}
-		opts.obj:SetNormalFontObject(fontP)
+		opts.obj:SetNormalFontObject(self.fontP)
 		opts.obj:SetText(opts.plus and self.plus or self.minus)
 		opts.obj:SetPushedTextOffset(-1, -2)
-		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, sap=true}
+		local x = opts.tx or 0
+		local y = opts.ty or -1
+		if x ~= 0 or y ~=0 then self:moveObject{obj=opts.obj:GetFontString(), x=x, y=y} end -- move text
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[6]}, sap=true}
 		self:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
-			self:checkMPTex(this, nTex)
+			self:checkTex{obj=this, nTex=nTex, mp2=true}
 		end)
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
+		local bHgt = opts.obj:GetHeight()
+		aso = {bd=self.Backdrop[bHgt > 18 and 5 or 6]} -- use narrower backdrop if required
 		if not opts.as then
-			aso = opts.obj:GetHeight() > 18 and aso or {bd=self.Backdrop[6]} -- use narrower backdrop if required
 			local x1 = opts.x1 or 1
 			local y1 = opts.y1 or -1
 			local x2 = opts.x2 or -1
 			local y2 = opts.y2 or -1
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
 		else
-			self:applySkin{obj=opts.obj}
+			local x = opts.tx or 0
+			local y = opts.ty or 0
+			if x ~= 0 or y ~=0 then self:moveObject{obj=opts.obj:GetFontString(), x=x, y=y} end -- move text
+			self:applySkin{obj=opts.obj, bd=aso.bd}
 		end
 	end
 
@@ -1408,7 +1435,8 @@ function Skinner:isButton(obj)
 		local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
 		local oName = obj:GetName() or nil
 		if nTex and nTex:find("UI-Panel-Button", 1, true)
-		or cName and _G[cName.."Left"] then
+		or oName and _G[oName.."Left"]
+		and not (oName:find("AceConfig") or oName:find("AceGUI")) then -- ignore AceConfig/AceGui buttons
 			return true
 		end
 	end
@@ -1572,18 +1600,19 @@ function Skinner:skinEditBox(...)
 end
 
 function Skinner:skinFFToggleTabs(tabName, tabCnt)
---	self:Debug("skinFFToggleTabs: [%s]", tabName)
+--	self:Debug("skinFFToggleTabs: [%s, %s]", tabName, tabCnt)
 
-	if not tabCnt then tabCnt = 3 end
-	for i = 1, tabCnt do
+	for i = 1, tabCnt or 3 do
 		local togTab = _G[tabName..i]
 		if not togTab then break end -- handle missing Tabs (e.g. Muted)
-		self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text/scripts
-		togTab:SetHeight(togTab:GetHeight() - 5)
-		if i == 1 then self:moveObject{obj=togTab, y=3} end
-		self:moveObject{obj=_G[togTab:GetName().."Text"], x=-2, y=3}
-		self:moveObject{obj=_G[togTab:GetName().."HighlightTexture"], x=-2, y=5}
-		self:addSkinFrame{obj=togTab}
+		if not self.skinned[togTab] then -- don't skin it twice
+			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text/scripts
+			togTab:SetHeight(togTab:GetHeight() - 5)
+			if i == 1 then self:moveObject{obj=togTab, y=3} end
+			self:moveObject{obj=_G[togTab:GetName().."Text"], x=-2, y=3}
+			self:moveObject{obj=_G[togTab:GetName().."HighlightTexture"], x=-2, y=5}
+			self:addSkinFrame{obj=togTab}
+		end
 	end
 
 end

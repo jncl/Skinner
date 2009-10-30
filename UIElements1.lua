@@ -484,7 +484,7 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
-	self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
+	self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
 	self:skinButton{obj=WorldMapZoomOutButton}
 
 	-- handle different map addons being loaded or fullscreen required
@@ -501,6 +501,9 @@ function Skinner:WorldMap()
 			self:skinTooltip(WorldMapTooltip)
 		end)
 	end
+
+	-- skin Mapster button on WorldMap frame
+	if IsAddOnLoaded("Mapster") then self:skinButton{obj=MapsterOptionsButton} end
 
 end
 
