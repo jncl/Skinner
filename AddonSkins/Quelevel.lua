@@ -29,15 +29,16 @@ function Skinner:Quelevel()
 	-- Add tags to quest greeting frame (currently not supported by the addon)
 	QuestFrameGreetingPanel:HookScript("OnShow", function()
 		local numActQs = GetNumActiveQuests()
+		local numAvlQs = GetNumAvailableQuests()
 		local GetTitle, GetLevel, GetTriviality = GetActiveTitle, GetActiveLevel, IsActiveQuestTrivial
 		local j = 0
-		for i = 1, numActQs + GetNumAvailableQuests() do
+		for i = 1, numActQs + numAvlQs do
 			if i == numActQs + 1 then
 				GetTitle, GetLevel, GetTriviality = GetAvailableTitle, GetAvailableLevel, IsAvailableQuestTrivial
 				j = numActQs
 			end
 			local title, level, isTrivial = GetTitle(i - j), GetLevel(i - j), GetTriviality(i - j)
-			local color = GetDifficultyColor(level)
+			local color = GetQuestDifficultyColor(level)
 			_G["QuestTitleButton"..i]:SetFormattedText(isTrivial and TRIVIAL or NORMAL, color.r*255, color.g*255, color.b*255, level, title)
 		end
 	end)
