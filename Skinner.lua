@@ -39,6 +39,7 @@ local pairs = pairs
 local pcall = pcall
 local rawget = rawget
 local select = select
+local strfind = string.find
 local tcon = table.concat
 local tinsert = table.insert
 local tonumber = tonumber
@@ -680,6 +681,47 @@ function Skinner:applySkin(...)
 
 end
 
+local function __adjHeight(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		adj = value to adjust height by
+--]]
+--@alpha@
+	assert(opts.obj, "Unknown object __aH\n"..debugstack())
+--@end-alpha@
+	if opts.adj == 0 then return end
+
+	if not strfind(tostring(opts.adj), "+") then -- if not negative value
+		opts.obj:SetHeight(opts.obj:GetHeight() + opts.adj)
+	else
+		opts.adj = opts.adj * -1 -- make it positive
+		opts.obj:SetHeight(opts.obj:GetHeight() - opts.adj)
+	end
+
+end
+
+function Skinner:adjHeight(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Unknown object aH\n"..debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.adj = select(2, ...) and select(2, ...) or 0
+	end
+	__adjHeight(opts)
+
+end
+
 local function errorhandler(err)
 	return geterrorhandler()(err)
 end
@@ -754,6 +796,7 @@ local function __checkTex(opts)
 
 	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
 	local btn = opts.mp2 and opts.obj or Skinner.sBut[opts.obj]
+	if not btn then return end -- allow for unskinned buttons
 
 --	Skinner:Debug("__checkTex: [%s, %s, %s]", btn:GetName(), nTex, opts.mp2)
 
@@ -1303,9 +1346,9 @@ function Skinner:shrinkBag(frame, bpMF)
 		end
 		self:moveObject(_G[frameName.."Item1"], nil, nil, "+", 19)
 	end
-	if ceil(bgTop:GetHeight()) == 94 then frame:SetHeight(frame:GetHeight() - 20) end
-	if ceil(bgTop:GetHeight()) == 86 then frame:SetHeight(frame:GetHeight() - 20) end
-	if ceil(bgTop:GetHeight()) == 72 then frame:SetHeight(frame:GetHeight() + 2) end -- 6, 10 or 14 slot bag
+	if ceil(bgTop:GetHeight()) == 94 then self:adjHeight{obj=frame , adj=-20} end
+	if ceil(bgTop:GetHeight()) == 86 then self:adjHeight{obj=frame , adj=-20} end
+	if ceil(bgTop:GetHeight()) == 72 then self:adjHeight{obj=frame , adj=2} end -- 6, 10 or 14 slot bag
 
 	frame:SetWidth(frame:GetWidth() - 10)
 	self:moveObject(_G[frameName.."Item1"], "+", 3)
@@ -1616,7 +1659,7 @@ function Skinner:skinFFToggleTabs(tabName, tabCnt)
 		if not togTab then break end -- handle missing Tabs (e.g. Muted)
 		if not self.skinned[togTab] then -- don't skin it twice
 			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text/scripts
-			togTab:SetHeight(togTab:GetHeight() - 5)
+			self:adjHeight{obj=togTab , adj=-5}
 			if i == 1 then self:moveObject{obj=togTab, y=3} end
 			self:moveObject{obj=_G[togTab:GetName().."Text"], x=-2, y=3}
 			self:moveObject{obj=_G[togTab:GetName().."HighlightTexture"], x=-2, y=5}
