@@ -15,10 +15,11 @@ function Skinner:Hack()
 		end)
 	end
 	
-	self:skinButton{obj=HackListFrameClose, cb=true}
+	self:skinButton{obj=HackListFrameClose, cb=true, tx=0}
 	self:addSkinFrame{obj=HackListFrame, kfs=true, y1=-2, x2=-1}
-	self:skinEditBox{obj=HackSearchEdit, regs={9}, noHeight=true, noWidth=true}	
-	HackSearchEdit:SetHeight(18)
+	self:skinEditBox{obj=HackSearchEdit, regs={9}}
+	self:adjHeight{obj=HackSearchEdit, adj=-4}
+	self:moveObject{obj=HackSearchEdit, y=4}
 	self:skinScrollBar{obj=HackListScrollFrame}
 	for i = 1, HackListFrame.numTabs do
 		local tabName = _G["HackListFrameTab"..i]

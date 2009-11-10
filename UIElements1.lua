@@ -893,6 +893,10 @@ function Skinner:FeedbackUI() -- PTR only
 	self:addSkinFrame{obj=FeedbackUI_ModifierKeyDropDownList, ft=ftype}
 	self:keepFontStrings(FeedbackUI_MouseButtonDropDown)
 	self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
+	self:skinButton{obj=FeedbackUIBtnClose, cb=true}
+	self:skinButton{obj=FeedbackUIWelcomeFrameSurveysBtn}
+	self:skinButton{obj=FeedbackUIWelcomeFrameSuggestionsBtn}
+	self:skinButton{obj=FeedbackUIWelcomeFrameBugsBtn}
 	self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
 
 -->-- Survey Frame
@@ -902,15 +906,22 @@ function Skinner:FeedbackUI() -- PTR only
 	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlStatus)
 	self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
 	FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
+	for i = 1, 8 do
+		self:skinButton{obj=_G["FeedbackUISurveyFrameSurveysPanelScrollButtonsOption"..i.."Btn"], mp2=true}
+	end
 	self:skinUsingBD{obj=FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
 	FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
 	FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
 	FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
 	FeedbackUISurveyFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype}
+	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
 	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
 	self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
 	self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
+	self:skinButton{obj=FeedbackUISurveyFrameBack}
+	self:skinButton{obj=FeedbackUISurveyFrameSkip}
+	self:skinButton{obj=FeedbackUISurveyFrameReset}
+	self:skinButton{obj=FeedbackUISurveyFrameSubmit}
 	-- skin the alert buttons
 	for i = 1, 10 do
 		local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
@@ -923,10 +934,13 @@ function Skinner:FeedbackUI() -- PTR only
 	FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
 	FeedbackUISuggestFrameStatusPanelLine:SetAlpha(0)
 	FeedbackUISuggestFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype}
+	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
 	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
 	self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelEditInput}
 	self:skinUsingBD{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
+	self:skinButton{obj=FeedbackUISuggestFrameBack}
+	self:skinButton{obj=FeedbackUISuggestFrameReset}
+	self:skinButton{obj=FeedbackUISuggestFrameSubmit}
 
 -->>-- Bug Frame
 	FeedbackUIBugFrame:SetBackdrop(nil)
@@ -934,10 +948,13 @@ function Skinner:FeedbackUI() -- PTR only
 	FeedbackUIBugFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
 	FeedbackUIBugFrameStatusPanelLine:SetAlpha(0)
 	FeedbackUIBugFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype}
+	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
 	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
 	self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelEditInput}
 	self:skinUsingBD{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
+	self:skinButton{obj=FeedbackUIBugFrameBack}
+	self:skinButton{obj=FeedbackUIBugFrameReset}
+	self:skinButton{obj=FeedbackUIBugFrameSubmit}
 
 	-- make the QuestLog Tip Label text visible
 	FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)

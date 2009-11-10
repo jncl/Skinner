@@ -78,8 +78,8 @@ function Skinner:FriendsFrame()
 	self:skinButton{obj=GuildFrameGuildInformationButton}
 	-- Guild Control Popup Frame
 	self:skinDropDown{obj=GuildControlPopupFrameDropDown}
-	self:skinButton{obj=GuildControlPopupFrameAddRankButton, mp=true, noMove=true, plus=true}
-	self:skinButton{obj=GuildControlPopupFrameRemoveRankButton, mp=true, noMove=true}
+	self:skinButton{obj=GuildControlPopupFrameAddRankButton, mp2=true, plus=true}
+	self:skinButton{obj=GuildControlPopupFrameRemoveRankButton, mp2=true}
 	self:skinEditBox{obj=GuildControlWithdrawGoldEditBox, regs={9}}
 	self:skinButton{obj=GuildControlPopupFrameCancelButton}
 	self:skinButton{obj=GuildControlPopupAcceptButton}
@@ -248,11 +248,20 @@ function Skinner:QuestLog()
 	self:keepFontStrings(EmptyQuestLogFrame)
 
 	if self.db.profile.Buttons then
-		-- hook to manage changes to button textures
-		self:SecureHook("QuestLog_Update", function()
+		local function qlUpd()
+
 			for i = 1, #QuestLogScrollFrame.buttons do
 				self:checkTex(QuestLogScrollFrame.buttons[i])
 			end
+
+		end
+		-- hook to manage changes to button textures
+		self:SecureHook("QuestLog_Update", function()
+			qlUpd()
+		end)
+		-- hook this as well as it's a copy of QuestLog_Update
+		self:SecureHook(QuestLogScrollFrame, "update", function()
+			qlUpd()
 		end)
 	end
 	-- skin minus/plus buttons

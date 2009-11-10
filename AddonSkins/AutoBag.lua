@@ -8,6 +8,10 @@ function Skinner:AutoBag()
 	self:skinDropDown{obj=AB_Bag_Dropdown}
 	self:skinDropDown{obj=AB_Bag_Dropdown2}
 	self:skinEditBox{obj=AB_Arrange_AddTextInput, regs={9}, noHeight=true, noWidth=true, x=-8, y=-2}
+	self:skinButton{obj=AB_Options_Reset}
+	self:skinButton{obj=AB_Arrange_Delete}
+	self:skinButton{obj=AB_Arrange_Add}
+	self:skinButton{obj=AB_Options_Close}
 	self:addSkinFrame{obj=AB_Options, kfs=true, hdr=true, y2=10}
 
 end

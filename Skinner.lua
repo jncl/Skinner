@@ -1365,64 +1365,67 @@ function Skinner:skinButton(opts)
 		_G[objName.."Middle"]:SetAlpha(0)
 	end
 
+	local x1, x2, y1, y2, tx, ty, btn, xOfs, bHgt
 	if opts.cb then -- it's a close button
 		opts.obj:SetNormalFontObject(self.fontX)
 		opts.obj:SetText(self.mult)
-		opts.obj:SetPushedTextOffset(-1, -2)
-		local x = opts.tx or -1
-		local y = opts.ty or 0
-		if x ~= 0 or y ~=0 then self:moveObject{obj=opts.obj:GetFontString(), x=x, y=y} end -- move text
+		opts.obj:SetPushedTextOffset(-1, -1)
+		tx = opts.tx or -1
+		ty = opts.ty or 0
+		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
 		if opts.sap then
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
-			local x1 = opts.x1 or 5
-			local y1 = opts.y1 or -6
-			local x2 = opts.x2 or -6
-			local y2 = opts.y2 or 6
+			x1 = opts.x1 or 6
+			y1 = opts.y1 or -6
+			x2 = opts.x2 or -6
+			y2 = opts.y2 or 6
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	elseif opts.cb2 then -- it's pretending to be a close button (ArkInventory)
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=-2, y1=2, x2=2, y2=-2}
-		local btn = self.sBut[opts.obj]
+		btn = self.sBut[opts.obj]
 		btn:SetNormalFontObject(self.fontX)
 		btn:SetText(self.mult)
-	elseif opts.mp then -- it's a minus/plus button (LHS) [inherited from ClassTrainerSkillButtonTemplate]
-		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[5]}}
-		local btn = self.sBut[opts.obj]
-		local xOfs = opts.noMove and 0 or 3
+	elseif opts.mp then -- it's a minus/plus texture on a larger button
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[6]}}
+		btn = self.sBut[opts.obj]
+		xOfs = opts.noMove and 0 or 3
 		btn:ClearAllPoints()
 		btn:SetPoint("LEFT", opts.obj, "LEFT", xOfs, 0)
 		btn:SetWidth(16)
 		btn:SetHeight(16)
 		btn:SetNormalFontObject(self.fontP)
 		btn:SetText(opts.plus and self.plus or self.minus)
-		local x = opts.tx or 0
-		local y = opts.ty or -1
-		if x ~= 0 or y ~=0 then self:moveObject{obj=self:getRegion(btn, btn:GetNumRegions()), x=x, y=y} end -- move text
-	elseif opts.mp2 then -- it's a smaller minus/plus button (RHS) [inherited from OptionsListButtonTemplate]
+		tx = opts.tx or 0
+		ty = opts.ty or -1
+		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=btn:GetFontString(), x=tx, y=ty} end -- move text
+	elseif opts.mp2 then -- it's a minus/plus button
 		opts.obj:SetNormalFontObject(self.fontP)
 		opts.obj:SetText(opts.plus and self.plus or self.minus)
-		opts.obj:SetPushedTextOffset(-1, -2)
-		local x = opts.tx or 0
-		local y = opts.ty or -1
-		if x ~= 0 or y ~=0 then self:moveObject{obj=opts.obj:GetFontString(), x=x, y=y} end -- move text
+		opts.obj:SetPushedTextOffset(-1, -1)
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[6]}, sap=true}
 		self:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
 			self:checkTex{obj=this, nTex=nTex, mp2=true}
 		end)
+		tx = opts.tx or 0
+		ty = opts.ty or -1
+		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
-		local bHgt = opts.obj:GetHeight()
+		bHgt = opts.obj:GetHeight()
 		aso = {bd=self.Backdrop[bHgt > 18 and 5 or 6]} -- use narrower backdrop if required
 		if not opts.as then
-			local x1 = opts.x1 or 1
-			local y1 = opts.y1 or -1
-			local x2 = opts.x2 or -1
-			local y2 = opts.y2 or -1
+			x1 = opts.x1 or 1
+			y1 = opts.y1 or -1
+			x2 = opts.x2 or -1
+			y2 = opts.y2 or -1
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
+			if opts.obj:GetFontString() then -- StaticPopup buttons don't have a FontString
+				tx = opts.tx or 0
+				ty = opts.ty or -1
+				if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
+			end
 		else
-			local x = opts.tx or 0
-			local y = opts.ty or 0
-			if x ~= 0 or y ~=0 then self:moveObject{obj=opts.obj:GetFontString(), x=x, y=y} end -- move text
 			self:applySkin{obj=opts.obj, bd=aso.bd}
 		end
 	end

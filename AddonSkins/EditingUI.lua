@@ -22,7 +22,7 @@ function Skinner:EditingUI()
 	end
 
 -->>--	Toggle Button
-	self:skinButton{obj=EditingFrameToggleButton, mp2=true, plus=true}
+	self:skinButton{obj=EditingFrameToggleButton, mp2=true, plus=true, ty=0}
 	self:moveObject{obj=EditingFrameToggleButton, y=-18}
 	self:moveObject{obj=EditingFrame, y=-18, relTo=UIParent}
 

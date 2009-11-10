@@ -34,4 +34,8 @@ function Skinner:Badapples()
 	self:addSkinFrame{obj=BadapplesFrameReasonColumnHeader, kfs=true}
 	self:keepFontStrings(BadapplesFrame)
 
+	self:skinButton{obj=BadapplesFrameColorButton}
+	self:skinButton{obj=BadapplesFrameAddButton}
+	self:skinButton{obj=BadapplesFrameRemoveButton}
+
 end

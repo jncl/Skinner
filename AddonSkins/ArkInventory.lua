@@ -59,5 +59,9 @@ function Skinner:ArkInventory()
 	self:skinScrollBar{obj=ARKINV_SearchFrameViewTableScroll}
 -->>-- GuildBank Log Frame
 	self:applySkin{obj=ARKINV_Frame4Log}
+-->>-- GuildBank buttons
+	self:skinButton{obj=ARKINV_Frame4ChangerWindowPurchaseInfoPurchaseButton}
+	self:skinButton{obj=ARKINV_Frame4ChangerWindowDepositButton}
+	self:skinButton{obj=ARKINV_Frame4ChangerWindowWithdrawButton}
 
 end

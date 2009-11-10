@@ -321,7 +321,7 @@ function Skinner:MenuFrames()
 	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ft=ftype}
 	-- skin toggle buttons
 	for i = 1, #InterfaceOptionsFrameAddOns.buttons do
-		self:skinButton{obj=InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true}
+		self:skinButton{obj=InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true, ty=0}
 	end
 
 -->>-- Rating Menu

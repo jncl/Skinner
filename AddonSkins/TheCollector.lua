@@ -23,5 +23,8 @@ function Skinner:TheCollector()
 	for i = 1, COLLECTOR_NUM_ITEMS_TO_DISPLAY do
 		self:skinButton{obj=_G["TheCollectorFrameScrollFrameHeader"..i], mp=true}
 	end
+	self:skinButton{obj=TheCollectorPetToggleButton, y1=-2}
+	self:skinButton{obj=TheCollectorTitleToggleButtonLeft}
+	self:skinButton{obj=TheCollectorTitleToggleButtonRight}
 	
 end

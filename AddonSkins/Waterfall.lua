@@ -22,7 +22,7 @@ function Skinner:Waterfall()
 
 			opts.obj:SetNormalFontObject(Skinner.fontP)
 			opts.obj:SetText(Skinner.plus)
-			opts.obj:SetPushedTextOffset(-1, -2)
+			opts.obj:SetPushedTextOffset(-1, -1)
 			Skinner:moveObject{obj=opts.obj:GetFontString(), x=-1, y=-1} -- move text
 			Skinner:applySkin{obj=opts.obj, bd=Skinner.Backdrop[6]}
 			opts.obj.skin = true
@@ -61,7 +61,7 @@ function Skinner:Waterfall()
 			-- Main Frame
 			frame.titlebar:Hide()
 			frame.titlebar2:Hide()
-			Skinner:skinButton{obj=frame.closebutton, cb=true, ty=-1}
+			Skinner:skinButton{obj=frame.closebutton, cb=true}
 			Skinner:applySkin(frame.frame)
 			-- Treeview Frame
 			Skinner:skinSlider{obj=frame.treeview.scrollbar}

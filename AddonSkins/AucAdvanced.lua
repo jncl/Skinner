@@ -105,18 +105,18 @@ function Skinner:AucAdvanced()
 			self:skinButton{obj=frame.config}
 			self:addSkinFrame{obj=frame.itembox}
 			self:skinSlider(frame.scroller)
-			self:skinButton{obj=frame.switchToStack}
-			self:skinButton{obj=frame.switchToStack2}
+			self:skinButton{obj=frame.switchToStack, y1=1}
+			self:skinButton{obj=frame.switchToStack2, y1=1}
 			self:addSkinFrame{obj=frame.salebox}
 			self:skinEditBox{obj=frame.salebox.numberentry, regs={9}}
 			self:skinEditBox{obj=frame.salebox.stackentry, regs={9}}
 			self:skinDropDown{obj=frame.salebox.model}
 			self:skinMoneyFrame{obj=frame.salebox.bid, noWidth=true, moveSEB=true, moveGEB=true}
 			self:skinMoneyFrame{obj=frame.salebox.buy, noWidth=true, moveSEB=true, moveGEB=true}
-			self:skinButton{obj=frame.manifest.close, cb=true}
-			self:addSkinFrame{obj=frame.manifest, bg=true, y1=-2, x2=-2} -- a.k.a. Sidebar, put behind AH frame
-			self:skinButton{obj=frame.imageview.purchase.buy}
-			self:skinButton{obj=frame.imageview.purchase.bid}
+			self:skinButton{obj=frame.manifest.close, cb=true, x1=3, y1=-3, x2=-3, y2=3}
+			self:addSkinFrame{obj=frame.manifest, bg=true} -- a.k.a. Sidebar, put behind AH frame
+			self:skinButton{obj=frame.imageview.purchase.buy, x1=-1}
+			self:skinButton{obj=frame.imageview.purchase.bid, x1=-1}
 			frame.imageview.purchase:SetBackdrop(nil)
 			frame.imageview.purchase:SetBackdropColor(0, 0, 0, 0)
 			self:skinButton{obj=frame.go}

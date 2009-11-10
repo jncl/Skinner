@@ -5,6 +5,7 @@ function Skinner:Ace2()
 		-- Skin the AceAddon Donation Frame
 		self:SecureHook(LibStub("AceAddon-2.0").prototype, "OpenDonationFrame", function()
 			self:skinScrollBar{obj=AceAddon20FrameScrollFrame}
+			self:skinButton{obj=AceAddon20FrameButton}
 			self:addSkinFrame{obj=AceAddon20Frame}
 			self:Unhook(LibStub("AceAddon-2.0").prototype, "OpenDonationFrame")
 		end)
