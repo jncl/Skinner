@@ -58,7 +58,7 @@ function Skinner:Defaults()
 		FriendsFrame    = true,
 		TradeSkillUI	= true,
 		TradeFrame      = true,
-		QuestLog        = {skin = true, size = 1},
+		QuestLog        = true,
 		RaidUI          = true,
 		ReadyCheck      = true,
 		Buffs           = true,
@@ -1146,32 +1146,10 @@ function Skinner:Options()
 					desc = self.L["Toggle the skin of the Trade Frame"],
 				},
 				QuestLog = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Quest Log"],
-					desc = self.L["Change the Quest Log settings"],
-					get = function(info) return db.QuestLog[info[#info]] end,
-					set = function(info, value)
-						db.QuestLog[info[#info]] = value
-						if info[#info] == "skin" then self:checkAndRun("QuestLog")
-						else self:checkAndRun("ResizeQW") end
-					end,
-					args = {
-						skin = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Quest Log Skin"],
-							desc = self.L["Toggle the skin of the Quest Log Frame"],
-						},
-						size = {
-							type = "range",
-							order = 2,
-							name = self.L["Quest Watch Size"],
-							desc = self.L["Set the Quest Watch Font Size (Normal, Small)"],
-							min = 1, max = 2, step = 1,
-						},
-					},
+					type = "toggle",
+					order = 1,
+					name = self.L["Quest Log Skin"],
+					desc = self.L["Toggle the skin of the Quest Log Frame"],
 				},
 				RaidUI = {
 					type = "toggle",

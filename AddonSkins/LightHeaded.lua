@@ -1,6 +1,6 @@
 
 function Skinner:LightHeaded()
-	if not self.db.profile.QuestLog.skin then return end
+	if not self.db.profile.QuestLog then return end
 
 	self:skinEditBox{obj=LightHeadedSearchBox, regs={9}}
 	self:skinScrollBar{obj=LightHeadedScrollFrame}

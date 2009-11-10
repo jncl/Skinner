@@ -1,6 +1,6 @@
 
 function Skinner:beql()
-	if not self.db.profile.QuestLog.skin then return end
+	if not self.db.profile.QuestLog then return end
 
 	-- if only using default QuestLog
 	if beql.db.profile.simplequestlog then return end

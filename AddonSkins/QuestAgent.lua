@@ -1,6 +1,6 @@
 
 function Skinner:QuestAgent()
-	if not self.db.profile.QuestLog.skin then return end
+	if not self.db.profile.QuestLog then return end
 	
 	local function chgTextCols()
 		

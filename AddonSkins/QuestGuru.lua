@@ -1,6 +1,6 @@
 
 function Skinner:QuestGuru()
-	if not self.db.profile.QuestLog.skin then return end
+	if not self.db.profile.QuestLog then return end
 
 	-- hook this for LightHeaded support
 	if IsAddOnLoaded("LightHeaded") then

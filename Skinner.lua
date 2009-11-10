@@ -120,6 +120,10 @@ function Skinner:OnInitialize()
 	end
 	-- remove TooltipBorder alpha value, not required anymore
 	if self.db.profile.TooltipBorder.a then self.db.profile.TooltipBorder.a = nil end
+	-- change the QuestLog SV from a table into a boolean
+	if type(self.db.profile.QuestLog) == "table" then
+		self.db.profile.QuestLog = self.db.profile.QuestLog.skin
+	end
 
 	-- register the default background texture
 	self.LSM:Register("background", "Blizzard ChatFrame Background", [[Interface\ChatFrame\ChatFrameBackground]])
