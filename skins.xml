@@ -75,6 +75,7 @@
 <script file="SkinMe\Carbonite.lua"/>
 <script file="SkinMe\Cartographer.lua"/>
 <script file="SkinMe\Cartographer3.lua"/>
+<script file="SkinMe\Cauldron.lua"/>
 <script file="SkinMe\CBRipoff.lua"/>
 <script file="SkinMe\cgCrafty.lua"/>
 <script file="SkinMe\CharacterInfo.lua"/>
@@ -164,6 +165,7 @@
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>
 <script file="SkinMe\HatTrick.lua"/>
+<script file="SkinMe\HeadCount.lua"/>
 <script file="SkinMe\HeadHunter.lua"/>
 <script file="SkinMe\HealBot.lua"/>
 <script file="SkinMe\HealersAssist.lua"/>
@@ -341,6 +343,7 @@
 <script file="SkinMe\TradeTabs.lua"/>
 <!-- <script file="SkinMe\Trinity2.lua"/> -->
 <script file="SkinMe\TuringTest.lua"/>
+<script file="SkinMe\TwinValkyr_shieldmonitor.lua"/>
 <script file="SkinMe\UberQuest.lua"/>
 <script file="SkinMe\UrbanAchiever.lua"/>
 <script file="SkinMe\VanasKoS.lua"/>
