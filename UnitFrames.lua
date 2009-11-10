@@ -107,7 +107,28 @@ function Skinner:Player()
 
 end
 
+local function skinToT(parent)
+
+	if not Skinner.isPatch then
+		_G[parent.."Background"]:SetTexture(nil)
+		_G[parent.."Texture"]:SetTexture(nil)
+		-- status bars
+		Skinner:glazeStatusBar(_G[parent.."HealthBar"], 0)
+		Skinner:glazeStatusBar(_G[parent.."ManaBar"], 0)
+		Skinner:moveObject{obj=_G[parent.."Frame"], y=-12}
+	else
+		_G[parent.."Background"]:SetTexture(nil)
+		_G[parent.."TextureFrameTexture"]:SetTexture(nil)
+		-- status bars
+		Skinner:glazeStatusBar(_G[parent.."HealthBar"], 0)
+		Skinner:glazeStatusBar(_G[parent.."ManaBar"], 0)
+		Skinner:moveObject{obj=_G[parent], y=-12}
+	end
+
+end
 local eTex = [[Interface\Tooltips\EliteNameplateIcon]]
+local reTex = [[Interface\AddOns\Skinner\textures\RareEliteNameplateIcon]]
+local rTex = [[Interface\AddOns\Skinner\textures\RareNameplateIcon]]
 function Skinner:Target()
 	if self.initialized.Target then return end
 	self.initialized.Target = true
@@ -137,7 +158,11 @@ function Skinner:Target()
 	TargetFrameFlash:SetTexture(nil)
 	TargetFrameBackground:SetTexture(nil)
 --	TargetFrameNameBackground:SetTexture(nil) -- used for faction colouring
-	TargetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon mob type
+	if not self.isPatch then
+		TargetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon mob type
+	else
+		TargetFrameTextureFrameTexture:SetAlpha(0) -- texture file is changed dependant upon mob type
+	end
 	-- status bars
 	self:glazeStatusBar(TargetFrameHealthBar, 0)
 	self:glazeStatusBar(TargetFrameManaBar, 0)
@@ -145,8 +170,12 @@ function Skinner:Target()
 	self:glazeStatusBar(TargetFrameSpellBar, 0)
 	self:removeRegions(TargetFrameNumericalThreat, {3}) -- threat border
 	-- move level & highlevel down, so they are more visible
-	self:moveObject{obj=TargetLevelText, y=lOfs}
-	self:moveObject{obj=TargetHighLevelTexture, y=lOfs} -- elite texture
+	if not self.isPatch then
+		self:moveObject{obj=TargetLevelText, y=lOfs}
+		self:moveObject{obj=TargetHighLevelTexture, y=lOfs} -- elite texture
+	else
+		self:moveObject{obj=TargetFrameTextureFrameLevelText, y=lOfs}
+	end
 	-- casting bar
 	TargetFrameSpellBarBorder:SetAlpha(0) -- texture file is changed dependant upon spell type
 --	TargetFrameSpellBarBorderShield:SetAlpha(0) -- used for shield texture
@@ -156,13 +185,32 @@ function Skinner:Target()
 	self:addSkinFrame{obj=TargetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, y1=-7, x2=-37, y2=6}
 
 -->>-- TargetofTarget Frame
-	TargetofTargetBackground:SetTexture(nil)
-	TargetofTargetTexture:SetTexture(nil)
-	-- status bars
-	self:glazeStatusBar(TargetofTargetHealthBar, 0)
-	self:glazeStatusBar(TargetofTargetManaBar, 0)
+	if not self.isPatch then
+		skinToT("TargetofTarget")
+		self:addSkinFrame{obj=TargetofTargetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+	else
+		skinToT("TargetFrameToT")
+		self:addSkinFrame{obj=TargetFrameToT, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+	end
 
-	self:addSkinFrame{obj=TargetofTargetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+-->>--Boss Target Frames
+	if self.isPatch then
+		for i = 1, 4 do
+			_G["Boss"..i.."TargetFrameFlash"]:SetTexture(nil)
+			_G["Boss"..i.."TargetFrameBackground"]:SetTexture(nil)
+			_G["Boss"..i.."TargetFrameTextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
+			self:glazeStatusBar(_G["Boss"..i.."TargetFrameHealthBar"], 0)
+			self:glazeStatusBar(_G["Boss"..i.."TargetFrameManaBar"], 0)
+			self:removeRegions(_G["Boss"..i.."TargetFrameNumericalThreat"], {3}) -- threat border
+			self:addSkinFrame{obj=_G["Boss"..i.."TargetFrame"], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=-1,  y1=-14, x2=-72, y2=5}
+			-- create a texture to show Elite dragon
+			local bCat = _G["Boss"..i.."TargetFrameTextureFrame"]:CreateTexture(nil, "BACKGROUND")
+			bCat:SetWidth(80)
+			bCat:SetHeight(50)
+			bCat:SetPoint("CENTER", 30, -21)
+			bCat:SetTexture(eTex)
+		end
+	end
 
 end
 
@@ -173,17 +221,21 @@ function Skinner:Focus()
 	FocusFrameFlash:SetAlpha(0) -- texture file is changed dependant upon size
 	FocusFrameBackground:SetTexture(nil)
 --	FocusFrameNameBackground:SetTexture(nil) -- used for faction colouring
-	FocusFrameTexture:SetTexture(nil)
-	FocusFrameTextureFrameFullSizeTexture:SetTexture(nil)
+	if not self.isPatch then
+		FocusFrameTexture:SetTexture(nil)
+		FocusFrameTextureFrameFullSizeTexture:SetTexture(nil)
+	else
+		FocusFrameTextureFrameTexture:SetAlpha(0) -- texture file is changed dependant upon size
+	end
 	-- status bars
 	self:glazeStatusBar(FocusFrameHealthBar, 0)
 	self:glazeStatusBar(FocusFrameManaBar, 0)
 	self:moveObject{obj=FocusFrameManaBar, y=-1}
 	self:glazeStatusBar(FocusFrameSpellBar, 0)
 	self:removeRegions(FocusFrameNumericalThreat, {3}) -- threat border
-	--[[
-		TODO change casting bar flash texture
-	--]]
+	if self.isPatch then
+		self:moveObject{obj=FocusFrameTextureFrameLevelText, y=lOfs}
+	end
 	-- casting bar
 	FocusFrameSpellBarBorder:SetAlpha(0) -- texture file is changed dependant upon spell type
 --	FocusFrameSpellBarBorderShield:SetAlpha(0) -- used for shield texture
@@ -191,31 +243,35 @@ function Skinner:Focus()
 	changeFlash(FocusFrameSpellBar)
 
 	-- handle different sized frames
-	if FocusFrame.fullSize then
-	 	x1 ,y1, x2, y2 = 0, -7, -37, 6
- 	else
- 		x1 ,y1, x2, y2 = 6, 2, -5, 24
+	local x1 ,y1, x2, y2 = 1, -7, -37, 9
+	if not self.isPatch then
+		if not FocusFrame.fullSize then
+	 		x1 ,y1, x2, y2 = 6, 2, -5, 24
+		end
 	end
 	self:addSkinFrame{obj=FocusFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=x1, y1=y1, x2=x2, y2=y2}
 
-	self:SecureHook("FocusFrame_SetFullSize", function(fullSize)
-		if fullSize then
-			Skinner.skinFrame[FocusFrame]:SetPoint("TOPLEFT", FocusFrame, "TOPLEFT", 1, -7)
-			Skinner.skinFrame[FocusFrame]:SetPoint("BOTTOMRIGHT", FocusFrame, "BOTTOMRIGHT", -37, 9)
-		else
-			Skinner.skinFrame[FocusFrame]:SetPoint("TOPLEFT", FocusFrame, "TOPLEFT", 6, 2)
-			Skinner.skinFrame[FocusFrame]:SetPoint("BOTTOMRIGHT", FocusFrame, "BOTTOMRIGHT", -5, 24)
-		end
-	end)
+	if not self.isPatch then
+		self:SecureHook("FocusFrame_SetFullSize", function(fullSize)
+			self.skinFrame[FocusFrame]:ClearAllPoints()
+			if fullSize then
+				self.skinFrame[FocusFrame]:SetPoint("TOPLEFT", FocusFrame, "TOPLEFT", 1, -7)
+				self.skinFrame[FocusFrame]:SetPoint("BOTTOMRIGHT", FocusFrame, "BOTTOMRIGHT", -37, 9)
+			else
+				self.skinFrame[FocusFrame]:SetPoint("TOPLEFT", FocusFrame, "TOPLEFT", 6, 2)
+				self.skinFrame[FocusFrame]:SetPoint("BOTTOMRIGHT", FocusFrame, "BOTTOMRIGHT", -5, 24)
+			end
+		end)
+	end
 
 -->>-- TargetofFocus Frame
-	TargetofFocusBackground:SetTexture(nil)
-	TargetofFocusTexture:SetTexture(nil)
-	-- status bars
-	self:glazeStatusBar(TargetofFocusHealthBar, 0)
-	self:glazeStatusBar(TargetofFocusManaBar, 0)
-
-	self:addSkinFrame{obj=TargetofFocusFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+	if not self.isPatch then
+		skinToT("TargetofFocus")
+		self:addSkinFrame{obj=TargetofFocusFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+	else
+		skinToT("FocusFrameToT")
+		self:addSkinFrame{obj=FocusFrameToT, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+	end
 
 end
 

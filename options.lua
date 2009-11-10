@@ -63,7 +63,8 @@ function Skinner:Defaults()
 		ReadyCheck      = true,
 		Buffs           = true,
 		AchieveFrame    = true,
-		AchieveAlert    = true,
+		AchieveAlert    = self.isPatch and nil or true,
+		Alerts    		= self.isPatch and true or nil,
 		VehicleMenuBar	= true,
 		TrackerFrame    = {skin = false, clean = true, glazesb = true},
 		GearManager		= true,
@@ -1180,7 +1181,6 @@ function Skinner:Options()
 						if IsAddOnLoaded("Blizzard_AchievementUI") then
 							if aOpt == "Frame" then aFunc = "UI"
 							elseif aOpt == "Alert" then aFunc = "Alerts"
-							elseif aOpt == "Watch" then aFunc = "Watch"
 							end
 							self:checkAndRun("Achievement"..aFunc)
 						end
@@ -1192,7 +1192,7 @@ function Skinner:Options()
 							name = self.L["Achievements Frame"],
 							desc = self.L["Toggle the skin of the Achievements Frame"],
 						},
-						AchieveAlert = {
+						AchieveAlert = self.isPatch and nil or {
 							type = "toggle",
 							order = 2,
 							name = self.L["Achievement Alerts"],
@@ -1210,6 +1210,11 @@ function Skinner:Options()
 					name = self.L["Gear Manager Frame"],
 					desc = self.L["Toggle the skin of the Gear Manager Frame"],
 				},
+				Alerts = self.isPatch and {
+					type = "toggle",
+					name = self.L["Alert Frames"],
+					desc = self.L["Toggle the skin of the Alert Frames"],
+				} or nil,
 			},
 		},
 

@@ -701,6 +701,8 @@ function Skinner:LFGFrame()
 	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
 	self.initialized.LFGFrame = true
 
+	if self.isPatch then return end
+
 	if self.isTT then
 		self:SecureHookScript(LFGFrame, "OnShow", function(this)
 			self:setActiveTab(self.skinFrame[LFGParentFrameTab1])
@@ -989,5 +991,47 @@ function Skinner:DebugTools()
 			self:skinTooltip(EventTraceTooltip)
 		end)
 	end
+
+end
+
+function Skinner:LFDFrame()
+	if not self.db.profile.LFGFrame or self.initialized.LFDFrame then return end
+	self.initialized.LFDFrame = true
+
+	-- LFD DungeonReady Popup a.k.a. ReadyCheck
+	self:addSkinFrame{obj=LFDDungeonReadyStatus, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=LFDDungeonReadyDialog, kfs=true, ft=ftype}
+	self:skinButton{obj=LFDDungeonReadyDialogEnterDungeonButton, type=2}
+	self:skinButton{obj=LFDDungeonReadyDialogLeaveQueueButton, type=2}
+	LFDDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
+	LFDDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
+	-- LFD RoleCheck Popup
+	self:addSkinFrame{obj=LFDRoleCheckPopup, kfs=true, ft=ftype}
+	self:skinButton{obj=LFDRoleCheckPopupAcceptButton, type=2}
+	-- Search Status Frame
+	self:addSkinFrame{obj=LFDSearchStatus, ft=ftype}
+	-- LFD Parent Frame
+	self:skinButton{obj=self:getChild(LFDParentFrame, 1), cb=true} -- close button
+	self:skinButton{obj=LFDQueueFrameFindGroupButton, type=2}
+	self:skinButton{obj=LFDQueueFrameCancelButton, type=2}
+	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
+	-- Queue Frame
+	LFDQueueFrameBackground:SetAlpha(0)
+	LFDQueueFrameLayout:SetAlpha(0)
+	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
+	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
+	-- Specific List subFrame
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("LFDQueueFrameSpecificList_Update", function()
+			for i = 1, NUM_LFD_CHOICE_BUTTONS do
+				self:checkTex(_G["LFDQueueFrameSpecificListButton"..i].expandOrCollapseButton)
+			end
+		end)
+	end
+	for i = 1, NUM_LFD_CHOICE_BUTTONS do
+		self:skinButton{obj=_G["LFDQueueFrameSpecificListButton"..i].expandOrCollapseButton, mp2=true, x1=4, y1=0, x2=6, y2=-1}
+	end
+	self:skinScrollBar{obj=LFDQueueFrameSpecificListScrollFrame}
 
 end

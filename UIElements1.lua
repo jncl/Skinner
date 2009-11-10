@@ -484,6 +484,22 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
+	if self.isPatch then
+		self:skinScrollBar{obj=WorldMapQuestScrollFrame}
+		self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
+		self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
+		-- handle size change
+		self:SecureHook("WorldMap_ToggleSizeUp", function()
+			self.skinFrame[WorldMapFrame]:ClearAllPoints()
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPRIGHT", WorldMapFrame, "TOPRIGHT", -102, 1)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMLEFT", WorldMapFrame, "BOTTOMLEFT", 102, 1)
+		end)
+		self:SecureHook("WorldMap_ToggleSizeDown", function()
+			self.skinFrame[WorldMapFrame]:ClearAllPoints()
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPRIGHT", WorldMapFrame, "TOPRIGHT", 1, 2)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMLEFT", WorldMapFrame, "BOTTOMLEFT", 2, 2)
+		end)
+	end
 	self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
 	self:skinButton{obj=WorldMapZoomOutButton}
 
@@ -491,7 +507,15 @@ function Skinner:WorldMap()
 	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") then
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
 	elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
-		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=99, y1=1, x2=-102, y2=18}
+		local x1, y1, x2, y2 = 102, 1, -102, 18
+		if self.isPatch then
+			if WorldMapFrame.sizedDown then
+				x1, y1, x2, y2 = 2, 2, 1, 2
+			else
+				y2 = 1
+			end
+		end
+		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
 	end
 
 -->>-- Tooltip
@@ -500,6 +524,22 @@ function Skinner:WorldMap()
 		self:SecureHook(WorldMapTooltip, "Show", function()
 			self:skinTooltip(WorldMapTooltip)
 		end)
+		if self.isPatch then
+			if self.db.profile.Tooltips.style == 3 then
+				WorldMapCompareTooltip1:SetBackdrop(self.Backdrop[1])
+				WorldMapCompareTooltip2:SetBackdrop(self.Backdrop[1])
+				WorldMapCompareTooltip2:SetBackdrop(self.Backdrop[1])
+			end
+			self:SecureHookScript(WorldMapCompareTooltip1, "OnShow", function(this)
+				self:skinTooltip(this)
+			end)
+			self:SecureHookScript(WorldMapCompareTooltip2, "OnShow", function(this)
+				self:skinTooltip(this)
+			end)
+			self:SecureHookScript(WorldMapCompareTooltip3, "OnShow", function(this)
+				self:skinTooltip(this)
+			end)
+		end
 	end
 
 	-- skin Mapster button on WorldMap frame
@@ -562,6 +602,9 @@ function Skinner:HelpFrame()
 	KnowledgeBaseFrameDivider2:Hide()
 	self:skinButton{obj=KnowledgeBaseFrameGMTalk}
 	self:skinButton{obj=KnowledgeBaseFrameReportIssue}
+	if self.isPatch then
+		self:skinButton{obj=KnowledgeBaseFrameLag}
+	end
 	self:skinButton{obj=KnowledgeBaseFrameStuck}
 	self:skinButton{obj=KnowledgeBaseFrameCancel}
 	self:skinButton{obj=KnowledgeBaseFrameEditTicket}
@@ -588,13 +631,27 @@ end
 function Skinner:Tutorial()
 	if not self.db.profile.Tutorial then return end
 
-	self:skinButton{obj=TutorialFrameOkayButton}
-	self:addSkinFrame{obj=TutorialFrame, ft=ftype}
+	if not self.isPatch then
+		self:skinButton{obj=TutorialFrameOkayButton}
+		self:addSkinFrame{obj=TutorialFrame, ft=ftype}
+	else
+		TutorialFrame:DisableDrawLayer("BACKGROUND")
+		TutorialFrame:DisableDrawLayer("BORDER")
+		TutorialTextBorder:SetAlpha(0)
+		self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
+		self:skinButton{obj=self:getChild(TutorialFrame, 5), cb=true} -- close button, last child
+		self:skinButton{obj=TutorialFrameOkayButton}
+		self:addSkinFrame{obj=TutorialFrame, ft=ftype, x1=10, y1=-11, x2=1}
+	end
 
-	-- skin the alert buttons
-	for i = 1, 10 do
-		local tfabObj = _G["TutorialFrameAlertButton"..i]
-		self:addSkinButton{obj=tfabObj, parent=tfabObj, x1=-2, y1=2, x2=1, y2=1}
+	-- skin the alert button(s)
+	if not self.isPatch then
+		for i = 1, 10 do
+			local tfabObj = _G["TutorialFrameAlertButton"..i]
+			self:addSkinButton{obj=tfabObj, parent=tfabObj, x1=-2, y1=2, x2=1, y2=1}
+		end
+	else
+		self:addSkinButton{obj=_G["TutorialFrameAlertButton"], parent=_G["TutorialFrameAlertButton"], x1=-3, y1=5, x2=5, y2=-3}
 	end
 
 end

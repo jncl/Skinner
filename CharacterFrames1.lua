@@ -215,7 +215,12 @@ function Skinner:PVPFrame()
 	self:keepFontStrings(PVPBattlegroundFrame)
 	self:skinScrollBar{obj=PVPBattlegroundFrameInstanceScrollFrame}
 	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
-	PVPBattlegroundFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	if not self.isPatch then
+		PVPBattlegroundFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	else
+		self:skinSlider{obj=PVPBattlegroundFrameZoneDescriptionScrollFrameScrollBar}
+		PVPBattlegroundFrameZoneDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
 	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
 	self:skinButton{obj=PVPBattlegroundFrameCancelButton}
 	self:skinButton{obj=PVPBattlegroundFrameJoinButton}
@@ -662,5 +667,49 @@ function Skinner:AchievementAlerts()
 
 	-- just in case they have already been created
 	skinAlertFrames()
+
+end
+
+function Skinner:AlertFrames()
+	if not self.db.profile.Alerts or self.initialized.Alerts then return end
+	self.initialized.Alerts = true
+
+	local aafName = "AchievementAlertFrame"
+
+	local function skinAlertFrames()
+
+		for i = 1, 2 do
+			local aaFrame = _G[aafName..i]
+			if aaFrame and not Skinner.skinFrame[aaFrame] then
+				_G[aafName..i.."Background"]:Hide() -- hide this as Alpha value is changed in Bliz code (3.1.2)
+				_G[aafName..i.."Unlocked"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+				Skinner:keepRegions(_G[aafName..i.."Icon"], {3}) -- icon texture
+				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
+			end
+		end
+
+	end
+
+	-- check for both Achievement Alert frames now, (3.1.2) as the Bliz code changed
+	if not AchievementAlertFrame1 or AchievementAlertFrame2 then
+		self:SecureHook(aafName.."_ShowAlert", function(id)
+			skinAlertFrames()
+			if AchievementAlertFrame2 then
+				self:Unhook(aafName.."_ShowAlert")
+			end
+		end)
+	end
+	-- skin any existing Achievement Alert Frames
+	skinAlertFrames()
+
+	-- hook dungeon rewards function
+	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, index)
+		frame:DisableDrawLayer("OVERLAY") -- border texture
+	end)
+
+	-- dungeon completion alert frame will already exist, only 1 atm (0.3.0.10772)
+	DungeonCompletionAlertFrame1:DisableDrawLayer("BORDER") -- border textures
+	_G["DungeonCompletionAlertFrame1Reward1"]:DisableDrawLayer("OVERLAY") -- border texture
+	Skinner:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, x1=5, y1=-13, x2=-5, y2=4}
 
 end

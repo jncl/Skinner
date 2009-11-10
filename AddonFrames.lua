@@ -6,16 +6,23 @@ function Skinner:BlizzardFrames()
 --	self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
-		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AchievementAlerts", -- cf1
+		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", -- cf1
 		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "WorldState", "DropDowns", -- uie1
-		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "LFGFrame", "PVPFrame", -- uie2
+		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "PVPFrame", -- uie2
 		"UnitFrames", -- uf 
 	}
 
 	if self.isPTR then tinsert(blizzFrames, "FeedbackUI") else self.FeedbackUI = nil end -- uie1
 
+	if not self.isPatch then
+		tinsert(blizzFrames, "AchievementAlerts") -- cf1
+		tinsert(blizzFrames, "LFGFrame") -- uie2
+	else
+		tinsert(blizzFrames, "AlertFrames") -- cf1
+		tinsert(blizzFrames, "LFDFrame") -- uie2
+	end
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
 	end

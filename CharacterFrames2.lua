@@ -228,21 +228,23 @@ function Skinner:TradeFrame()
 end
 
 function Skinner:QuestLog()
-	if not self.db.profile.QuestLog.skin or self.initialized.QuestLog then return end
+	if not self.db.profile.QuestLog or self.initialized.QuestLog then return end
 	self.initialized.QuestLog = true
 
-	self:SecureHook("QuestLog_UpdateQuestDetails", function(...)
-		for i = 1, MAX_OBJECTIVES do
-			local r, g, b = _G["QuestLogObjective"..i]:GetTextColor()
-			_G["QuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
-		end
-        QuestLogTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		local r, g, b = QuestLogRequiredMoneyText:GetTextColor()
-		QuestLogRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
-		QuestLogRewardTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestLogItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestLogItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end)
+	if not self.isPatch then
+		self:SecureHook("QuestLog_UpdateQuestDetails", function(...)
+			for i = 1, MAX_OBJECTIVES do
+				local r, g, b = _G["QuestLogObjective"..i]:GetTextColor()
+				_G["QuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+			end
+	        QuestLogTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			local r, g, b = QuestLogRequiredMoneyText:GetTextColor()
+			QuestLogRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+			QuestLogRewardTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+			QuestLogItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestLogItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end)
+	end
 
 	self:keepFontStrings(QuestLogCount)
 	self:keepFontStrings(EmptyQuestLogFrame)
@@ -268,11 +270,13 @@ function Skinner:QuestLog()
 	for i = 1, #QuestLogScrollFrame.buttons do
 		self:skinButton{obj=QuestLogScrollFrame.buttons[i], mp=true}
 	end
-	QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	QuestLogObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestLogSuggestedGroupNum:SetTextColor(self.HTr, self.HTg, self.HTb)
-	QuestLogDescriptionTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	QuestLogQuestDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	if not self.isPatch then
+		QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+		QuestLogObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		QuestLogSuggestedGroupNum:SetTextColor(self.HTr, self.HTg, self.HTb)
+		QuestLogDescriptionTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+		QuestLogQuestDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
 	self:skinScrollBar{obj=QuestLogScrollFrame}
 	self:skinButton{obj=QuestLogFrameCloseButton, cb=true}
 	self:skinButton{obj=QuestLogFrameAbandonButton}
@@ -282,9 +286,16 @@ function Skinner:QuestLog()
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=6}
 
 -->>-- QuestLogDetail Frame
+	if self.isPatch then
+		QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	end
 	self:skinScrollBar{obj=QuestLogDetailScrollFrame}
 	self:skinButton{obj=QuestLogDetailFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=QuestLogDetailFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=1}
+
+	if self.isPatch then
+		self:QuestInfo()
+	end
 
 end
 
@@ -385,7 +396,7 @@ function Skinner:Buffs()
 		skinBuffs()
 	end)
 
-	-- skin any urrent Buffs/Debuffs
+	-- skin any current Buffs/Debuffs
 	skinBuffs()
 
 	-- skin Main and Off Hand Enchant buttons (Poisons/Oils etc)
@@ -393,6 +404,12 @@ function Skinner:Buffs()
 	self:moveObject{obj=_G["TempEnchant1".."Duration"], y=-2}
 	self:addSkinButton{obj=TempEnchant2}
 	self:moveObject{obj=_G["TempEnchant2".."Duration"], y=-2}
+
+	if self.isPatch then
+--		ConsolidatedBuffs
+--		ConsolidatedBuffsTooltip
+--		ConsolidatedBuffsContainer
+	end
 
 end
 
@@ -458,18 +475,20 @@ function Skinner:WatchFrame()
 		self:SecureHook(WatchFrameLines, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
 	end
 
-	if self.db.profile.TrackerFrame.clean then
-		self:keepFontStrings(WatchFrame)
-		-- add textures to the resize buttons
-		-- texture and TexCoord code taken from Jobber (Author - Maul)
-		WatchFrameRightResizeThumb:SetWidth(12)
-		WatchFrameRightResizeThumb:SetHeight(12)
-		WatchFrameRightResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
-		self:getRegion(WatchFrameRightResizeThumb, 1):SetTexCoord(0.653125, 0.753125, 0.653125, 0.753125)
-		WatchFrameLeftResizeThumb:SetWidth(12)
-		WatchFrameLeftResizeThumb:SetHeight(12)
-		WatchFrameLeftResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
-		self:getRegion(WatchFrameLeftResizeThumb, 1):SetTexCoord(0.753125, 0.653125, 0.653125, 0.753125)
+	if not self.isPatch then
+		if self.db.profile.TrackerFrame.clean then
+			self:keepFontStrings(WatchFrame)
+			-- add textures to the resize buttons
+			-- texture and TexCoord code taken from Jobber (Author - Maul)
+			WatchFrameRightResizeThumb:SetWidth(12)
+			WatchFrameRightResizeThumb:SetHeight(12)
+			WatchFrameRightResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
+			self:getRegion(WatchFrameRightResizeThumb, 1):SetTexCoord(0.653125, 0.753125, 0.653125, 0.753125)
+			WatchFrameLeftResizeThumb:SetWidth(12)
+			WatchFrameLeftResizeThumb:SetHeight(12)
+			WatchFrameLeftResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
+			self:getRegion(WatchFrameLeftResizeThumb, 1):SetTexCoord(0.753125, 0.653125, 0.653125, 0.753125)
+		end
 	end
 
 

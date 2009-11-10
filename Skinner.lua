@@ -21,10 +21,12 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0")
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
---check to see if running on patch 3.2.2
---Skinner.isPatch = FocusFrameTextureFrameSmall and true or false
+--check to see if running on patch 0.3.0
+Skinner.isPatch = QuestInfoFrame and true or false
 -- store player class
 Skinner.uCls = select(2, UnitClass("player"))
+-- store player name
+Skinner.uName = UnitName("player")
 
 -- local defs (for speed)
 local _G = _G
