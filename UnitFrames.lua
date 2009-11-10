@@ -46,10 +46,12 @@ function Skinner:Player()
 	if self.initialized.Player then return end
 	self.initialized.Player = true
 
+	PlayerFrameFlash:SetTexture(nil) -- threat indicator texture
 	PlayerFrameBackground:SetTexture(nil)
 	PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 	PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 	PlayerStatusTexture:SetTexture(nil)
+	PlayerAttackBackground:SetTexture(nil)
 	PlayerRestGlow:SetTexture(nil)
 	PlayerAttackGlow:SetTexture(nil)
 	-- status bars
@@ -69,7 +71,7 @@ function Skinner:Player()
 			rBdrTex:SetTexture(nil)
 		end
 	end
---	if the player class is a Shaman then skin the TotemFrame
+--	if the player class is a Shaman/DeathKnight then skin the TotemFrame
 	if self.uCls == "SHAMAN" or self.uCls == "DEATHKNIGHT" then
 		for i = 1, 4 do
 			_G["TotemFrameTotem"..i.."Background"]:SetAlpha(0)
@@ -77,12 +79,17 @@ function Skinner:Player()
 			tfTBdrTex:SetAlpha(0)
 		end
 	end
---	if the player class is a Rogue then skin the ComboFrame
-	if self.uCls == "ROGUE" then
+--	if the player class is a Rogue/Druid then skin the ComboFrame
+	if self.uCls == "ROGUE" or self.uCls == "DRUID" then
 		for i = 1, 5 do
 			local cPtTex = select(1, _G["ComboPoint"..i]:GetRegions())
 			cPtTex:SetTexture(nil)
 		end
+	end
+-- if the player class is a Druid then skin the AlternateManaBar
+	if self.uCls == "DRUID" then
+		PlayerFrameAlternateManaBarBorder:SetTexture(nil)
+		self:glazeStatusBar(PlayerFrameAlternateManaBar, 0)
 	end
 
 -->>-- Pet frame
@@ -114,12 +121,15 @@ function Skinner:Target()
 	-- hook this to show/hide the elite texture
 	self:SecureHook("TargetFrame_CheckClassification", function(this)
 		local classification = UnitClassification("target")
-		uCat:SetTexture(eTex)
+--		self:Debug("TF_CC: [%s]", classification)
 		if classification == "worldboss" then
+			uCat:SetTexture(eTex)
 		elseif classification == "rareelite" then
-			uCat:SetVertexColor(0, 0, 0) -- make it black
+			uCat:SetTexture(reTex)
 		elseif classification == "elite" then
+			uCat:SetTexture(eTex)
 		elseif classification == "rare" then
+			uCat:SetTexture(rTex)
 		else uCat:SetTexture(nil)
 		end
 	end)
