@@ -671,8 +671,8 @@ function Skinner:AchievementAlerts()
 end
 
 function Skinner:AlertFrames()
-	if not self.db.profile.Alerts or self.initialized.Alerts then return end
-	self.initialized.Alerts = true
+	if not self.db.profile.AlertFrames or self.initialized.AlertFrames then return end
+	self.initialized.AlertFrames = true
 
 	local aafName = "AchievementAlertFrame"
 
@@ -683,7 +683,12 @@ function Skinner:AlertFrames()
 			if aaFrame and not Skinner.skinFrame[aaFrame] then
 				_G[aafName..i.."Background"]:Hide() -- hide this as Alpha value is changed in Bliz code (3.1.2)
 				_G[aafName..i.."Unlocked"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-				Skinner:keepRegions(_G[aafName..i.."Icon"], {3}) -- icon texture
+				-- on the PTR an unknown texture is displayed with Alpha(1) covering the text
+				-- on the PTR there are two sets of icon textures created
+				local icon = _G[aafName..i.."Icon"]
+				icon:DisableDrawLayer("BACKGROUND")
+				icon:DisableDrawLayer("BORDER")
+				icon:DisableDrawLayer("OVERLAY")
 				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
 			end
 		end

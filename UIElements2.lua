@@ -1015,6 +1015,9 @@ function Skinner:LFDFrame()
 	self:skinButton{obj=LFDQueueFrameFindGroupButton, type=2}
 	self:skinButton{obj=LFDQueueFrameCancelButton, type=2}
 	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
+	-- Portrait
+	LFDParentFramePortraitTexture:SetAlpha(0)
+	LFDParentFramePortraitIcon:SetAlpha(0)
 	-- Queue Frame
 	LFDQueueFrameBackground:SetAlpha(0)
 	LFDQueueFrameLayout:SetAlpha(0)

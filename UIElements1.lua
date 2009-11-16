@@ -491,13 +491,13 @@ function Skinner:WorldMap()
 		-- handle size change
 		self:SecureHook("WorldMap_ToggleSizeUp", function()
 			self.skinFrame[WorldMapFrame]:ClearAllPoints()
-			self.skinFrame[WorldMapFrame]:SetPoint("TOPRIGHT", WorldMapFrame, "TOPRIGHT", -102, 1)
-			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMLEFT", WorldMapFrame, "BOTTOMLEFT", 102, 1)
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 102, 1)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
 		end)
 		self:SecureHook("WorldMap_ToggleSizeDown", function()
 			self.skinFrame[WorldMapFrame]:ClearAllPoints()
-			self.skinFrame[WorldMapFrame]:SetPoint("TOPRIGHT", WorldMapFrame, "TOPRIGHT", 1, 2)
-			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMLEFT", WorldMapFrame, "BOTTOMLEFT", 2, 2)
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 14, -26)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 30, -7)
 		end)
 	end
 	self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
@@ -507,10 +507,10 @@ function Skinner:WorldMap()
 	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") then
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
 	elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
-		local x1, y1, x2, y2 = 102, 1, -102, 18
+		local x1, y1, x2, y2 = 102, 1, -102, 1
 		if self.isPatch then
 			if WorldMapFrame.sizedDown then
-				x1, y1, x2, y2 = 2, 2, 1, 2
+				x1, y1, x2, y2 = 14, -26, 30, -7
 			else
 				y2 = 1
 			end
