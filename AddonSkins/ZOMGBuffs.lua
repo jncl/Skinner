@@ -8,6 +8,7 @@ function Skinner:ZOMGBuffs()
 			local frame = self.hooks[this].Create(this, ...)
 --			self:Debug("ZFrame Create:[%s]", frame)
 			self:moveObject(frame.ZMain.title, nil, nil, "-", 0, frame.ZMain)
+			self:skinButton{obj=frame.ZMain.close, cb=true, sap=true}
 			self:moveObject(frame.ZMain.close, "-", 1, "+", 9, frame.ZMain)
 			self:applySkin(frame.ZMain)
 			return frame
@@ -15,6 +16,7 @@ function Skinner:ZOMGBuffs()
 	end
 	self:RawHook(ZOMGBuffs, "CreateHelpFrame", function(this)
 		local hf = self.hooks[this].CreateHelpFrame(this)
+		self:skinButton{obj=self:getChild(hf, 1)} -- close button (N.B. hf.close doesn't work)
 		self:applySkin(hf)
 		self:Unhook(ZOMGBuffs, "CreateHelpFrame")
 		return hf
@@ -40,6 +42,7 @@ function Skinner:ZOMGBuffs_BlessingsManager()
 				self:applySkin(frame.column[i])
 			end
 		end)
+		-- need to skin the panel buttons
 	end
 
 end
