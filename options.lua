@@ -64,10 +64,10 @@ function Skinner:Defaults()
 		Buffs           = true,
 		AchieveFrame    = true,
 		AchieveAlert    = self.isPatch and nil or true,
-		Alerts    		= self.isPatch and true or nil,
 		VehicleMenuBar	= true,
 		TrackerFrame    = {skin = false, clean = true, glazesb = true},
 		GearManager		= true,
+		AlertFrames		= self.isPatch and true or nil,
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
@@ -1148,8 +1148,7 @@ function Skinner:Options()
 				},
 				QuestLog = {
 					type = "toggle",
-					order = 1,
-					name = self.L["Quest Log Skin"],
+					name = self.L["Quest Log Frame"],
 					desc = self.L["Toggle the skin of the Quest Log Frame"],
 				},
 				RaidUI = {
@@ -1210,7 +1209,7 @@ function Skinner:Options()
 					name = self.L["Gear Manager Frame"],
 					desc = self.L["Toggle the skin of the Gear Manager Frame"],
 				},
-				Alerts = self.isPatch and {
+				AlertFrames = self.isPatch and {
 					type = "toggle",
 					name = self.L["Alert Frames"],
 					desc = self.L["Toggle the skin of the Alert Frames"],
