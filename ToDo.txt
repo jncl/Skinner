@@ -12,29 +12,23 @@ S - Skin request
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
 	S	PTR 0.3.0 (10772)
-√		- TutorialFrame additional buttons
-√		- AchievementAlerts --> AlertFrames, inc. DungeonCompletionAlert
+√		- WorldMap frame size
+√		- LFD Portrait
 		- Consolidated Buffs frame ?
 
-√	I	Change QuestLog SV from a table into a boolean
+√	I	MTLove,	reported by burber, 11.11.09
+		-  ..\AddOns\Skinner\SkinMe\MTLove.lua line 26:
+		attempt to index global 'MTLove_GUI_Frame_TabPage1' (a nil value)
 
-	S	Buttons
-√		- TourGuide Objectives panel
-√		- Ace2 Donations Frame
-√		- ZOMGBuffs About panel
-√		- ArkInventory, Guild tab panel
-√		- Auto-Bag
-√		- When QuestLog is scrolled all the minus/plus buttons are displayed
-		- ZOMGBuffs BlessingsManager panel
+√	S	PhoenixStyle, requested by Kerecha, 12.11.09
 
-√	I	TheCollector, reported by Kerecha, 31.10.09
-		- missing skin for the "toggle" button on the character pet frame
+√	I	TwinValkyr_shieldmonitor, reported by Kerecha, 12.11.09
+		- the textboxes are to high up and overlaps the text. also the boxes need to be bigger (3 letters instead of 2) if possible since it uses mainly 3 number values
 
-√	I	Badapples, requested by Kerecha, 4.11.09
-		- set color/add/remove buttons on the social pane needs skinning
+	I	AckisRecipeList, reported by pompachomp, 13.11.09
+		- Skinner-b2.10772.1\Skinner.lua:1171: attempt to index field 'obj' (a nil value)
+		Skinner-b2.10772.1\Skinner.lua:1216: in function `moveObject'
+		Skinner-b2.10772.1\SkinMe\AckisRecipeList.lua:14: in function <Interface\AddOns\Skinner\SkinMe\AckisRecipeList.lua:11>
+		(tail call): ?:
 
-√	S	HeadCount, requested by xtoq, 30.10.09
-
-√	S	Cauldron, requested by Gabriel, 31.10.09
-
-√	S	TwinValkyr_Shieldmonitor, requested by Kerecha, 5.11.09
+√	S	MrTrader, requested by sammael666, 14.11.09
