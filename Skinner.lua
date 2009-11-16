@@ -722,6 +722,47 @@ function Skinner:adjHeight(...)
 
 end
 
+local function __adjWidth(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		adj = value to adjust width by
+--]]
+--@alpha@
+	assert(opts.obj, "Unknown object __aH\n"..debugstack())
+--@end-alpha@
+	if opts.adj == 0 then return end
+
+	if not strfind(tostring(opts.adj), "+") then -- if not negative value
+		opts.obj:SetWidth(opts.obj:GetWidth() + opts.adj)
+	else
+		opts.adj = opts.adj * -1 -- make it positive
+		opts.obj:SetWidth(opts.obj:GetWidth() - opts.adj)
+	end
+
+end
+
+function Skinner:adjWidth(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Unknown object aH\n"..debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.adj = select(2, ...) and select(2, ...) or 0
+	end
+	__adjWidth(opts)
+
+end
+
 local function errorhandler(err)
 	return geterrorhandler()(err)
 end
@@ -1379,6 +1420,7 @@ Skinner.fontX:SetTextColor(1.0, 0.82, 0)
 Skinner.fontP= CreateFont("fontP")
 Skinner.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
 Skinner.fontP:SetTextColor(1.0, 0.82, 0)
+local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture"}
 function Skinner:skinButton(opts)
 --[[
 	as = use applySkin rather than addSkinButton
@@ -1405,9 +1447,10 @@ function Skinner:skinButton(opts)
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 	else -- [UIPanelButtonTemplate2/... or derivatives]
 		local objName = opts.obj:GetName()
-		_G[objName.."Left"]:SetAlpha(0)
-		_G[objName.."Right"]:SetAlpha(0)
-		_G[objName.."Middle"]:SetAlpha(0)
+		for _, tName in pairs(btnTexNames) do
+			local bTex = _G[objName..tName]
+			if bTex then bTex:SetAlpha(0) end
+		end
 	end
 
 	local x1, x2, y1, y2, tx, ty, btn, xOfs, bHgt
