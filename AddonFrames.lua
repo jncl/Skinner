@@ -107,7 +107,7 @@ function Skinner:AddonFrames()
 		"LauncherMenu", "LightHeaded", "LinkHeaven", "Links", "LinksList", "LinkWrangler", "Livestock", "LoadIT", "LootHog", "LootLink", "LootScroll", "Ludwig", "Luggage",
 		"MacroBank", "MageEatDrinkAid", "MailTo", "MacroBrokerGUI", "MakeRocketGoNow", --[["MCP", "MetaMap",--]]	 "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MTLove", --[["MultiTips",--]] "MusicPlayer", "MyBags", "myClock", "myMusic",
 		"NeatFreak", "NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
-		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA2", "oRA3", "Outfitter", "Overachiever",
+		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
 		"Palatank", "PallyPower", "Panda", "PartyBuilder", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoliteWhisper", "PoMTracker", "Possessions", "Postal", "PowerAuras", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
 		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "RaidBuffStatus", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
@@ -211,7 +211,7 @@ end
 
 local lodFrames = {
 	"Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", "BetterBindingFrame", --[["Bongos", "Bongos_Options",--]]
-	"Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "DockingStation_Config", "Dominos_Config", "DoTimer_Options", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GuildBankSearch", "ItemRackOptions",  "LilSparkysWorkshop", "MrTrader_SkillWindow", "MSBTOptions", "Overachiever_Tabs", "Perl_Config_Options", "PhoenixStyleMod_Coliseum", "PhoenixStyleMod_Ulduar", "SpamSentry_report", --[[SpecialTalentUI",--]] "SuperInspect_UI", "Talented_GlyphFrame", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
+	"Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "DockingStation_Config", "Dominos_Config", "DoTimer_Options", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GuildBankSearch", "ItemRackOptions",  "LilSparkysWorkshop", "MrTrader_SkillWindow", "MSBTOptions", "oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs", "Perl_Config_Options", "PhoenixStyleMod_Coliseum", "PhoenixStyleMod_Ulduar", "SpamSentry_report", --[[SpecialTalentUI",--]] "SuperInspect_UI", "Talented_GlyphFrame", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
 }
 local lodAddons = {}
 for _, v in pairs(lodFrames) do
