@@ -12,23 +12,23 @@ S - Skin request
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
 	S	PTR 0.3.0 (10772)
-√		- WorldMap frame size
-√		- LFD Portrait
-		- Consolidated Buffs frame ?
+√		- LFR frame
+√		- GroupLoot frame disenchant button
+√		- WorldMap again...
+√		- WatchFrame changes
+√		- HelpFrame changes
 
-√	I	MTLove,	reported by burber, 11.11.09
-		-  ..\AddOns\Skinner\SkinMe\MTLove.lua line 26:
-		attempt to index global 'MTLove_GUI_Frame_TabPage1' (a nil value)
-
-√	S	PhoenixStyle, requested by Kerecha, 12.11.09
-
-√	I	TwinValkyr_shieldmonitor, reported by Kerecha, 12.11.09
-		- the textboxes are to high up and overlaps the text. also the boxes need to be bigger (3 letters instead of 2) if possible since it uses mainly 3 number values
-
-	I	AckisRecipeList, reported by pompachomp, 13.11.09
+√	I	AckisRecipeList, reported by pompachomp, 13.11.09
 		- Skinner-b2.10772.1\Skinner.lua:1171: attempt to index field 'obj' (a nil value)
 		Skinner-b2.10772.1\Skinner.lua:1216: in function `moveObject'
 		Skinner-b2.10772.1\SkinMe\AckisRecipeList.lua:14: in function <Interface\AddOns\Skinner\SkinMe\AckisRecipeList.lua:11>
 		(tail call): ?:
 
-√	S	MrTrader, requested by sammael666, 14.11.09
+	I	/framestack
+√		- popup panel has default border and white background on subsequent displays
+
+√	S	DailiesQuestTracker, requested by Gabriel, 18.11.09
+		- Please skin the LDB Tooltip for this mod
+
+	I	PhoenixStyle, reported by Kerecha, 19.11.09
+		- the instance specific options panels aren't being skinned (at least not coloseum one)
