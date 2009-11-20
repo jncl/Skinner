@@ -94,6 +94,7 @@
 <script file="SkinMe\CT_MailMod.lua"/>
 <!-- <script file="SkinMe\CT_RaidAssist.lua"/> -->
 <script file="SkinMe\CT_RaidTracker.lua"/>
+<script file="SkinMe\DailiesQuestTracker.lua"/>
 <script file="SkinMe\DamageMeters.lua"/>
 <script file="SkinMe\DBM.lua"/>
 <script file="SkinMe\DebuffFilter.lua"/>
