@@ -1,10 +1,14 @@
 local _G = _G
-local ceil = math.ceil
 local floor = math.floor
 local ipairs = ipairs
-local select = select
 
 function Skinner:tomQuest2()
+
+	-- handle tomQuest2 Tracker & Achievements tooltips (frames)
+	if not self.db.profile.TrackerFrame.skin then
+		self.ignoreLQTT["tomQuest2Tracker"] = true
+		self.ignoreLQTT["tomQuest2Achievements"] = true
+	end
 
 -->>-- Parent Frame
 	local info = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("informations", true)

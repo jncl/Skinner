@@ -2,10 +2,9 @@
 function Skinner:AckisRecipeList()
 	if not self.db.profile.TradeSkillUI then return end
 
-	local ARL
-	if LibStub("AceAddon-3.0") then ARL = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true) end
+	local ARL = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
 	if not ARL then return end
-	
+
 	local hookfunc = ARL.DisplayFrame and "DisplayFrame" or "CreateFrame"
 
 	self:SecureHook(ARL, hookfunc, function()
@@ -32,14 +31,22 @@ function Skinner:AckisRecipeList()
 					end
 				end
 			end
+			-- buttons
+			self:skinAllButtons(ARL.Frame)
+			--	minus/plus buttons
+			for i = 1, #ARL.Frame.waterfall_buttons do
+				self:skinButton{obj=ARL.Frame.waterfall_buttons[i], mp2=true, plus=true, tx=-3, ty=0}
+			end
 		end
 		self:Unhook(ARL, hookfunc)
 	end)
-	
-	self:SecureHook(ARL, "DisplayTextDump", function(this, ...)
-		self:skinScrollBar{obj=ARLCopyScroll}
-		self:addSkinFrame{obj=ARLCopyFrame}
-		self:Unhook(ARL, "DisplayTextDump")
-	end)
+
+	-- TextDump frame
+	self:skinScrollBar{obj=ARLCopyScroll}
+	self:skinAllButtons(ARLCopyFrame)
+	self:addSkinFrame{obj=ARLCopyFrame}
+
+	-- button on Tradeskill frame
+	self:skinButton{obj=ARL_ScanButton, ty=0}
 
 end

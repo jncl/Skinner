@@ -18,21 +18,11 @@ function Skinner:Waterfall()
 
 		end
 
-		local function skinMPButton(opts)
-
-			opts.obj:SetNormalFontObject(Skinner.fontP)
-			opts.obj:SetText(Skinner.plus)
-			opts.obj:SetPushedTextOffset(-1, -1)
-			Skinner:moveObject{obj=opts.obj:GetFontString(), x=-1, y=-1} -- move text
-			Skinner:applySkin{obj=opts.obj, bd=Skinner.Backdrop[6]}
-			opts.obj.skin = true
-
-		end
 		local function checkTex(btn)
 
 			local nTex = btn:GetNormalTexture() and btn:GetNormalTexture():GetTexture() or nil
 --			Skinner:Debug("checkTex: [%s, %s, %s]", btn.skin, btn.obj.id, nTex)
-			if not btn.skin then skinMPButton{obj=btn} end -- add skin if required
+			if not btn.skin then Skinner:skinButton{obj=btn, mp3=true} end -- add skin if required
 
 			if btn:GetNormalTexture() then btn:GetNormalTexture():SetAlpha(0) end
 			if btn:GetPushedTexture() then btn:GetPushedTexture():SetAlpha(0) end
