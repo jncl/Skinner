@@ -1,6 +1,7 @@
 local _G = _G
 local select = select
 local IsAddOnLoaded = IsAddOnLoaded
+local IsMacClient = IsMacClient
 local ftype = "u"
 
 function Skinner:ModelFrames()
@@ -31,24 +32,26 @@ This does the trick, but it might be worth stealing chester's code from SuperIns
 
 end
 
-function Skinner:MovieProgress()
-	if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
-	self.initialized.MovieProgress = true
+if IsMacClient() then
+	function Skinner:MovieProgress()
+		if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
+		self.initialized.MovieProgress = true
 
-	if not MovieProgressFrame:IsShown() then
-		self:SecureHook(MovieProgressFrame, "Show", function(this)
+		if not MovieProgressFrame:IsShown() then
+			self:SecureHook(MovieProgressFrame, "Show", function(this)
+				self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
+				self:keepFontStrings(MovieProgressFrame)
+				self:glazeStatusBar(MovieProgressBar, 0)
+				self:Unhook(MovieProgressFrame, "Show")
+			end)
+		else
 			self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
 			self:keepFontStrings(MovieProgressFrame)
 			self:glazeStatusBar(MovieProgressBar, 0)
-			self:Unhook(MovieProgressFrame, "Show")
-		end)
-	else
-		self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
-		self:keepFontStrings(MovieProgressFrame)
-		self:glazeStatusBar(MovieProgressBar, 0)
-	end
-	self:skinButton{obj=MovieRecordingCancelButton, cb=true}
+		end
+		self:skinButton{obj=MovieRecordingCancelButton, cb=true}
 
+	end
 end
 
 function Skinner:TimeManager()
@@ -697,78 +700,72 @@ function Skinner:CoinPickup()
 
 end
 
-function Skinner:LFGFrame()
-	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
-	self.initialized.LFGFrame = true
+if not Skinner.isPatch then
+	function Skinner:LFGFrame()
+		if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
+		self.initialized.LFGFrame = true
 
-	if self.isPatch then return end
-
-	if self.isTT then
-		self:SecureHookScript(LFGFrame, "OnShow", function(this)
-			self:setActiveTab(self.skinFrame[LFGParentFrameTab1])
-			self:setInactiveTab(self.skinFrame[LFGParentFrameTab2])
-		end)
-		self:SecureHookScript(LFMFrame, "OnShow", function(this)
-			self:setActiveTab(self.skinFrame[LFGParentFrameTab2])
-			self:setInactiveTab(self.skinFrame[LFGParentFrameTab1])
-		end)
-	end
-	LFGFrameRolesBorder:SetBackdrop(nil)
-	LFGFrameQueue1Border:SetBackdrop(nil)
-	LFGFrameQueue2Border:SetBackdrop(nil)
-	LFGFrameQueue3Border:SetBackdrop(nil)
-
-	self:skinButton{obj=self:getChild(LFGParentFrame, 3), cb=true} -- close button
-	self:skinButton{obj=LFGFrameDoneButton}
-	self:skinButton{obj=LFGFrameClearAllButton}
-	self:skinButton{obj=LFGFrameCommentButton}
-	self:addSkinFrame{obj=LFGParentFrame, ft=ftype, kfs=true, x1=17, y1=-11, x2=-29, y2=70}
-
--->>--	LFG Frame
-	self:keepFontStrings(AutoJoinBackground)
-	self:skinDropDown{obj=LFGFrameNameDropDown1}
-	self:skinDropDown{obj=LFGFrameNameDropDown2}
-	self:skinDropDown{obj=LFGFrameNameDropDown3}
-	self:skinDropDown{obj=LFGFrameTypeDropDown1}
-	self:skinDropDown{obj=LFGFrameTypeDropDown2}
-	self:skinDropDown{obj=LFGFrameTypeDropDown3}
-	self:addSkinFrame{obj=LFGEye, ft=ftype, kfs=true}
-
--->>--	LFM Frame
-	self:keepRegions(LFMFrame, {2}) -- totals text
-	self:keepFontStrings(AddMemberBackground)
-	self:skinDropDown{obj=LFMFrameTypeDropDown}
-	self:skinDropDown{obj=LFMFrameNameDropDown}
-	self:keepFontStrings(LFMFrameDropDown1)
-	self:skinFFColHeads("LFMFrameColumnHeader", 3) -- first 3
-	self:keepRegions(LFMFrameColumnHeader4Group, {4, 5}) -- N.B 4 is text, 5 is highlight
-	self:addSkinFrame{obj=LFMFrameColumnHeader4Group, ft=ftype}
-
-	for i = 4, 7 do
-		self:keepRegions(_G["LFMFrameColumnHeader"..i], {4, 5, 6}) -- N.B 4 is text, 5 is highlight, 6 is icon
-		self:addSkinFrame{obj=_G["LFMFrameColumnHeader"..i], ft=ftype}
-	end
-
-	LFMFrameRoleBackground:Hide()
-	self:skinScrollBar{obj=LFMListScrollFrame}
-	self:addSkinFrame{obj=LFMEye, ft=ftype, kfs=true}
-	self:skinButton{obj=LFMFrameGroupInviteButton}
-	self:skinButton{obj=LFMFrameSendMessageButton}
-	self:skinButton{obj=LFMFrameCommentButton}
-
--->>--	Tabs
-	for i = 1, 2 do
-		local tabName = _G["LFGParentFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
+		if self.isTT then
+			self:SecureHookScript(LFGFrame, "OnShow", function(this)
+				self:setActiveTab(self.skinFrame[LFGParentFrameTab1])
+				self:setInactiveTab(self.skinFrame[LFGParentFrameTab2])
+			end)
+			self:SecureHookScript(LFMFrame, "OnShow", function(this)
+				self:setActiveTab(self.skinFrame[LFGParentFrameTab2])
+				self:setInactiveTab(self.skinFrame[LFGParentFrameTab1])
+			end)
 		end
-	end
+		LFGFrameRolesBorder:SetBackdrop(nil)
+		LFGFrameQueue1Border:SetBackdrop(nil)
+		LFGFrameQueue2Border:SetBackdrop(nil)
+		LFGFrameQueue3Border:SetBackdrop(nil)
 
+		self:skinButton{obj=self:getChild(LFGParentFrame, 3), cb=true} -- close button
+		self:skinButton{obj=LFGFrameDoneButton}
+		self:skinButton{obj=LFGFrameClearAllButton}
+		self:skinButton{obj=LFGFrameCommentButton}
+		self:addSkinFrame{obj=LFGParentFrame, ft=ftype, kfs=true, x1=17, y1=-11, x2=-29, y2=70}
+
+	-->>--	LFG Frame
+		self:keepFontStrings(AutoJoinBackground)
+		self:skinDropDown{obj=LFGFrameNameDropDown1}
+		self:skinDropDown{obj=LFGFrameNameDropDown2}
+		self:skinDropDown{obj=LFGFrameNameDropDown3}
+		self:skinDropDown{obj=LFGFrameTypeDropDown1}
+		self:skinDropDown{obj=LFGFrameTypeDropDown2}
+		self:skinDropDown{obj=LFGFrameTypeDropDown3}
+		self:addSkinFrame{obj=LFGEye, ft=ftype, kfs=true}
+
+	-->>--	LFM Frame
+		self:keepRegions(LFMFrame, {2}) -- totals text
+		self:keepFontStrings(AddMemberBackground)
+		self:skinDropDown{obj=LFMFrameTypeDropDown}
+		self:skinDropDown{obj=LFMFrameNameDropDown}
+		self:keepFontStrings(LFMFrameDropDown1)
+		self:skinFFColHeads("LFMFrameColumnHeader", 7, 6)  -- 6 is the icon texture
+		self:keepRegions(LFMFrameColumnHeader4Group, {4, 5}) -- N.B 4 is text, 5 is highlight
+		self:addSkinFrame{obj=LFMFrameColumnHeader4Group, ft=ftype}
+		LFMFrameRoleBackground:Hide()
+		self:skinScrollBar{obj=LFMListScrollFrame}
+		self:addSkinFrame{obj=LFMEye, ft=ftype, kfs=true}
+		self:skinButton{obj=LFMFrameGroupInviteButton}
+		self:skinButton{obj=LFMFrameSendMessageButton}
+		self:skinButton{obj=LFMFrameCommentButton}
+
+	-->>--	Tabs
+		for i = 1, 2 do
+			local tabName = _G["LFGParentFrameTab"..i]
+			self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
+			local tabSF = self.skinFrame[tabName]
+			if i == 1 then
+				if self.isTT then self:setActiveTab(tabSF) end
+			else
+				if self.isTT then self:setInactiveTab(tabSF) end
+			end
+		end
+
+	end
 end
 
 function Skinner:ItemSocketingUI()
@@ -962,7 +959,7 @@ end
 
 function Skinner:AutoComplete()
 
-	self:addSkinFrame{obj=AutoCompleteBox, kfs=true, ft=ftype}--, x1=10, y1=-12, x2=-32, y2=71}
+	self:addSkinFrame{obj=AutoCompleteBox, kfs=true, ft=ftype}
 
 end
 
@@ -984,57 +981,125 @@ function Skinner:DebugTools()
 			FrameStackTooltip:SetBackdrop(self.Backdrop[1])
 			EventTraceTooltip:SetBackdrop(self.Backdrop[1])
 		end
-		self:SecureHook(FrameStackTooltip, "Show", function()
-			self:skinTooltip(FrameStackTooltip)
+		self:HookScript(FrameStackTooltip, "OnUpdate", function(this)
+			self:skinTooltip(this)
 		end)
-		self:SecureHook(EventTraceTooltip, "Show", function()
-			self:skinTooltip(EventTraceTooltip)
+		self:HookScript(EventTraceTooltip, "OnShow", function(this)
+			self:skinTooltip(this)
 		end)
+		self:skinTooltip(FrameStackTooltip)
 	end
 
 end
 
-function Skinner:LFDFrame()
-	if not self.db.profile.LFGFrame or self.initialized.LFDFrame then return end
-	self.initialized.LFDFrame = true
+if Skinner.isPatch then
+	function Skinner:LFDFrame()
+		if not self.db.profile.LFDFrame or self.initialized.LFDFrame then return end
+		self.initialized.LFDFrame = true
 
-	-- LFD DungeonReady Popup a.k.a. ReadyCheck
-	self:addSkinFrame{obj=LFDDungeonReadyStatus, kfs=true, ft=ftype}
-	self:addSkinFrame{obj=LFDDungeonReadyDialog, kfs=true, ft=ftype}
-	self:skinButton{obj=LFDDungeonReadyDialogEnterDungeonButton, type=2}
-	self:skinButton{obj=LFDDungeonReadyDialogLeaveQueueButton, type=2}
-	LFDDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
-	LFDDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
-	-- LFD RoleCheck Popup
-	self:addSkinFrame{obj=LFDRoleCheckPopup, kfs=true, ft=ftype}
-	self:skinButton{obj=LFDRoleCheckPopupAcceptButton, type=2}
-	-- Search Status Frame
-	self:addSkinFrame{obj=LFDSearchStatus, ft=ftype}
-	-- LFD Parent Frame
-	self:skinButton{obj=self:getChild(LFDParentFrame, 1), cb=true} -- close button
-	self:skinButton{obj=LFDQueueFrameFindGroupButton, type=2}
-	self:skinButton{obj=LFDQueueFrameCancelButton, type=2}
-	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
-	-- Portrait
-	LFDParentFramePortraitTexture:SetAlpha(0)
-	LFDParentFramePortraitIcon:SetAlpha(0)
-	-- Queue Frame
-	LFDQueueFrameBackground:SetAlpha(0)
-	LFDQueueFrameLayout:SetAlpha(0)
-	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
-	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
-	-- Specific List subFrame
-	if self.db.profile.Buttons then
-		-- hook to manage changes to button textures
-		self:SecureHook("LFDQueueFrameSpecificList_Update", function()
-			for i = 1, NUM_LFD_CHOICE_BUTTONS do
-				self:checkTex(_G["LFDQueueFrameSpecificListButton"..i].expandOrCollapseButton)
+		-- LFD DungeonReady Popup a.k.a. ReadyCheck
+		self:addSkinFrame{obj=LFDDungeonReadyStatus, kfs=true, ft=ftype}
+		self:addSkinFrame{obj=LFDDungeonReadyDialog, kfs=true, ft=ftype}
+		self:skinButton{obj=LFDDungeonReadyDialogEnterDungeonButton}
+		self:skinButton{obj=LFDDungeonReadyDialogLeaveQueueButton}
+		LFDDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
+		LFDDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
+		-- LFD RoleCheck Popup
+		self:addSkinFrame{obj=LFDRoleCheckPopup, kfs=true, ft=ftype}
+		self:skinButton{obj=LFDRoleCheckPopupAcceptButton}
+		-- Search Status Frame
+		self:addSkinFrame{obj=LFDSearchStatus, ft=ftype}
+		-- LFD Parent Frame
+		self:skinButton{obj=self:getChild(LFDParentFrame, 1), cb=true} -- close button
+		self:skinButton{obj=LFDQueueFrameFindGroupButton}
+		self:skinButton{obj=LFDQueueFrameCancelButton}
+		self:skinButton{obj=LFDQueueFrameNoLFDWhileLFRLeaveQueueButton}
+		self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
+		-- Portrait
+		LFDParentFramePortraitTexture:SetAlpha(0)
+		LFDParentFramePortraitIcon:SetAlpha(0)
+		-- Queue Frame
+		LFDQueueFrameBackground:SetAlpha(0)
+		LFDQueueFrameLayout:SetAlpha(0)
+		self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
+		self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
+		-- Specific List subFrame
+		if self.db.profile.Buttons then
+			-- hook to manage changes to button textures
+			self:SecureHook("LFDQueueFrameSpecificList_Update", function()
+				for i = 1, NUM_LFD_CHOICE_BUTTONS do
+					self:checkTex(_G["LFDQueueFrameSpecificListButton"..i].expandOrCollapseButton)
+				end
+			end)
+		end
+		for i = 1, NUM_LFD_CHOICE_BUTTONS do
+			self:skinButton{obj=_G["LFDQueueFrameSpecificListButton"..i].expandOrCollapseButton, mp2=true, x1=4, y1=0, x2=6, y2=-1}
+		end
+		self:skinScrollBar{obj=LFDQueueFrameSpecificListScrollFrame}
+
+	end
+
+	function Skinner:LFRFrame()
+		if not self.db.profile.LFRFrame or self.initialized.LFRFrame then return end
+		self.initialized.LFRFrame = true
+
+		if self.isTT then
+			-- hook this to change the texture for the Active and Inactive tabs
+			self:SecureHook("LFRFrame_SetActiveTab",function(...)
+				for i = 1, LFRParentFrame.numTabs do
+					local tabSF = self.skinFrame[_G["LFRParentFrameTab"..i]]
+					if i == LFRParentFrame.selectedTab then
+						self:setActiveTab(tabSF)
+					else
+						self:setInactiveTab(tabSF)
+					end
+				end
+			end)
+		end
+		
+	-->>-- LFR Parent Frame/ Queue Frame
+		self:skinButton{obj=self:getChild(LFRParentFrame, 1), cb=true} -- close button
+		LFRQueueFrameLayout:SetAlpha(0)
+		self:skinButton{obj=LFRQueueFrameFindGroupButton}
+		self:skinButton{obj=LFRQueueFrameAcceptCommentButton}
+		self:skinButton{obj=LFRQueueFrameNoLFRWhileLFDLeaveQueueButton}
+		self:addSkinFrame{obj=LFRParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
+		-- Specific List subFrame
+		if self.db.profile.Buttons then
+			-- hook to manage changes to button textures
+			self:SecureHook("LFRQueueFrameSpecificList_Update", function()
+				for i = 1, NUM_LFR_CHOICE_BUTTONS do
+					self:checkTex(_G["LFRQueueFrameSpecificListButton"..i].expandOrCollapseButton)
+				end
+			end)
+		end
+		for i = 1, NUM_LFR_CHOICE_BUTTONS do
+			self:skinButton{obj=_G["LFRQueueFrameSpecificListButton"..i].expandOrCollapseButton, mp2=true, x1=4, y1=0, x2=6, y2=-1}
+		end
+		self:skinScrollBar{obj=LFRQueueFrameSpecificListScrollFrame}
+
+	-->>-- LFR Browse Frame
+		self:skinDropDown{obj=LFRBrowseFrameRaidDropDown}
+		self:skinFFColHeads("LFRBrowseFrameColumnHeader", 7, 6) -- 6 is the icon texture
+		self:skinScrollBar{obj=LFRBrowseFrameListScrollFrame}
+		self:skinButton{obj=LFRBrowseFrameSendMessageButton}
+		self:skinButton{obj=LFRBrowseFrameInviteButton}
+		self:skinButton{obj=LFRBrowseFrameRefreshButton}
+		self:keepFontStrings(LFRBrowseFrame)
+		
+	-->>-- Tabs
+		for i = 1, LFRParentFrame.numTabs do
+			local tabObj = _G["LFRParentFrameTab"..i]
+			self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+			local tabSF = self.skinFrame[tabObj]
+			if i == 1 then
+				if self.isTT then self:setActiveTab(tabSF) end
+			else
+				if self.isTT then self:setInactiveTab(tabSF) end
 			end
-		end)
+		end
+		
 	end
-	for i = 1, NUM_LFD_CHOICE_BUTTONS do
-		self:skinButton{obj=_G["LFDQueueFrameSpecificListButton"..i].expandOrCollapseButton, mp2=true, x1=4, y1=0, x2=6, y2=-1}
-	end
-	self:skinScrollBar{obj=LFDQueueFrameSpecificListScrollFrame}
-
+	
 end

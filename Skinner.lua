@@ -117,6 +117,25 @@ function Skinner:OnInitialize()
 	-- setup the Addon's options
 	self:Options()
 
+	if self.isPatch then
+		if self.db.profile.AchieveAlert then
+			self.db.profile.AlertFrames = self.db.profile.AchieveAlert
+			self.db.profile.AchieveAlert = nil
+		end
+		if self.db.profile.AchieveFrame then
+			self.db.profile.AchievementUI = self.db.profile.AchieveFrame
+			self.db.profile.AchieveFrame = nil
+		end
+		if self.db.profile.LFGFrame then
+			self.db.profile.LFDFrame = self.db.profile.LFGFrame
+			self.db.profile.LFRFrame = self.db.profile.LFGFrame
+			self.db.profile.LFGFrame = nil
+		end
+		if self.db.profile.TrackerFrame then
+			self.db.profile.WatchFrame = self.db.profile.TrackerFrame.skin
+			self.db.profile.TrackerFrame = nil
+		end
+	end
 	-- change the TrackerFrame SV from a boolean to a table
 	if type(self.db.profile.TrackerFrame) == "boolean" then
 		self.db.profile.TrackerFrame = {skin = true, clean = true, glazesb = true}
@@ -221,13 +240,25 @@ function Skinner:OnInitialize()
 	self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
 
 	-- these are used to disable frames from being skinned
-	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "TalentUI", "DressUpFrame", "FriendsFrame", "TradeSkillUI", "TradeFrame", "RaidUI", "ReadyCheck", "Buffs", "AchieveFrame", "AchieveAlert", "VehicleMenuBar", "GearManager"}
-	self.charKeys2 = {"QuestLog", "TrackerFrame"}
+	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "GlyphUI", "TalentUI", "DressUpFrame", "AchievementUI", "FriendsFrame", "TradeSkillUI", "TradeFrame", "QuestLog", "RaidUI", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager"}
+	self.charKeys2 = {}
 	self.npcKeys = {"MerchantFrames", "GossipFrame", "TrainerUI", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "BarbershopUI"}
-	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatConfig", "ChatTabs", "ChatFrames", "CombatLogQBF", "DebugTools", "LootFrame", "StackSplit", "ItemText", "Colours", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "DropDowns", "MinimapButtons", "MinimapGloss", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "LFGFrame", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI"}
-	if IsMacClient() then tinsert(self.uiKeys1, "MovieProgress") end
-	if self.isPTR then tinsert(self.uiKeys1, "Feedback") end
+	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatConfig", "LootFrame", "StackSplit", "ItemText", "Colours", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "DropDowns", "MinimapButtons", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI", "DebugTools"}
 	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "WorldMap", "MainMenuBar"}
+
+	-- optional/patched frames
+	if IsMacClient() then tinsert(self.uiKeys1, "MovieProgress") end
+	if self.isPTR then tinsert(self.uiKeys1, "FeedbackUI") end
+	if not self.isPatch then
+		tinsert(self.charKeys1, "AchievementAlerts")
+		tinsert(self.uiKeys1, "LFGFrame")
+	else
+		tinsert(self.charKeys1, "AlertFrames")
+		tinsert(self.npcKeys, "QuestInfo")
+		tinsert(self.uiKeys1, "LFDFrame")
+		tinsert(self.uiKeys1, "LFRFrame")
+	end
+
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
@@ -1423,11 +1454,12 @@ Skinner.fontP:SetTextColor(1.0, 0.82, 0)
 local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture"}
 function Skinner:skinButton(opts)
 --[[
-	as = use applySkin rather than addSkinButton
+	as = use applySkin rather than addSkinButton, used when text appears behind the gradient
 	cb = close button
 	cb2 = close button style 2 (based upon OptionsButtonTemplate)
 	mp = minus/plus button
 	mp2 = minus/plus button style 2 (on RHS)
+	mp3 = minus/plus button style 3, just skin it
 	plus = use plus sign
 	tx = x offset for button text
 	ty = y offset for button text
@@ -1447,9 +1479,11 @@ function Skinner:skinButton(opts)
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 	else -- [UIPanelButtonTemplate2/... or derivatives]
 		local objName = opts.obj:GetName()
-		for _, tName in pairs(btnTexNames) do
-			local bTex = _G[objName..tName]
-			if bTex then bTex:SetAlpha(0) end
+		if objName then -- handle unnamed objects (e.g. Waterfall MP buttons)
+			for _, tName in pairs(btnTexNames) do
+				local bTex = _G[objName..tName]
+				if bTex then bTex:SetAlpha(0) end
+			end
 		end
 	end
 
@@ -1464,10 +1498,11 @@ function Skinner:skinButton(opts)
 		if opts.sap then
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
-			x1 = opts.x1 or 6
-			y1 = opts.y1 or -6
-			x2 = opts.x2 or -6
-			y2 = opts.y2 or 6
+			bHgt = floor(opts.obj:GetHeight())
+			x1 = opts.x1 or bHgt == 32 and 6 or 4
+			y1 = opts.y1 or bHgt == 32 and -6 or -4
+			x2 = opts.x2 or bHgt == 32 and -6 or -4
+			y2 = opts.y2 or bHgt == 32 and 6 or 4
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	elseif opts.cb2 then -- it's pretending to be a close button (ArkInventory)
@@ -1499,6 +1534,15 @@ function Skinner:skinButton(opts)
 		tx = opts.tx or 0
 		ty = opts.ty or -1
 		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
+	elseif opts.mp3 then -- it's a minus/plus button, just skin it (used by Waterfall)
+		opts.obj:SetNormalFontObject(self.fontP)
+		opts.obj:SetText(self.plus)
+		opts.obj:SetPushedTextOffset(-1, -1)
+		self:applySkin{obj=opts.obj, bd=self.Backdrop[6]}
+		opts.obj.skin = true
+		tx = opts.tx or -1
+		ty = opts.ty or -1
+		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		bHgt = opts.obj:GetHeight()
 		aso = {bd=self.Backdrop[bHgt > 18 and 5 or 6]} -- use narrower backdrop if required
@@ -1520,7 +1564,7 @@ function Skinner:skinButton(opts)
 
 end
 
-function Skinner:isButton(obj)
+function Skinner:isButton(obj, cb)
 
 	if obj:IsObjectType("Button")
 	and obj.GetNormalTexture -- is it a true button
@@ -1528,11 +1572,17 @@ function Skinner:isButton(obj)
 	and not obj.SetSlot -- and not a lootbutton
 	then -- check textures are as expected
 		local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
-		local oName = obj:GetName() or nil
-		if nTex and nTex:find("UI-Panel-Button", 1, true)
-		or oName and _G[oName.."Left"]
-		and not (oName:find("AceConfig") or oName:find("AceGUI")) then -- ignore AceConfig/AceGui buttons
-			return true
+		if not cb then
+			local oName = obj:GetName() or nil
+			if nTex and nTex:find("UI-Panel-Button", 1, true)
+			or oName and (_G[oName.."Left"] or _G[oName.."_LeftTexture"])
+			and not (oName:find("AceConfig") or oName:find("AceGUI")) then -- ignore AceConfig/AceGui buttons
+				return true
+			end
+		else
+			if nTex and nTex:find("UI-Panel-MinimizeButton", 1, true) then
+				return true
+			end
 		end
 	end
 
@@ -1546,11 +1596,15 @@ function Skinner:skinAllButtons(obj)
 	for _, child in ipairs(kids) do
 		if self:isButton(child) then
 			self:skinButton{obj=child}
+		elseif self:isButton(child, true) then
+			self:skinButton{obj=child, cb=true}
 		else
 			local grandkids = {child:GetChildren()}
 			for _, grandchild in ipairs(grandkids) do
 				if self:isButton(grandchild) then
 					self:skinButton{obj=grandchild}
+				elseif self:isButton(child, true) then
+					self:skinButton{obj=child, cb=true}
 				end
 			end
 			grandkids = nil
@@ -1712,12 +1766,12 @@ function Skinner:skinFFToggleTabs(tabName, tabCnt)
 
 end
 
-function Skinner:skinFFColHeads(buttonName, noCols)
+function Skinner:skinFFColHeads(buttonName, noCols, iconReg)
 -- 	self:Debug("skinFFColHeads: [%s]", buttonName)
 
 	local numCols = noCols and noCols or 4
 	for i = 1, numCols do
-		self:keepRegions(_G[buttonName..i], {4, 5}) -- N.B 4 is text, 5 is highlight
+		self:keepRegions(_G[buttonName..i], {4, 5, iconReg}) -- N.B 4 is text, 5 is highlight, iconReg is icon
 		self:addSkinFrame{obj=_G[buttonName..i]}
 	end
 

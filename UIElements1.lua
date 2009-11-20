@@ -400,6 +400,10 @@ function Skinner:GroupLoot()
 			_G[glf.."RollButton"]:SetPoint("RIGHT", _G[glf.."PassButton"], "LEFT", 5, -5)
 			_G[glf.."GreedButton"]:ClearAllPoints()
 			_G[glf.."GreedButton"]:SetPoint("RIGHT", _G[glf.."RollButton"], "LEFT", 0, 0)
+			if self.isPatch then
+				_G[glf.."DisenchantButton"]:ClearAllPoints()
+				_G[glf.."DisenchantButton"]:SetPoint("RIGHT", _G[glf.."GreedButton"], "LEFT", 0, 0)
+			end
 			_G[glf.."Timer"]:SetWidth(_G[glf.."Timer"]:GetWidth() - 28)
 			self:moveObject{obj=_G[glf.."Timer"], x=-3}
 			self:addSkinFrame{obj=glfo, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
@@ -485,22 +489,32 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
 	if self.isPatch then
-		self:skinScrollBar{obj=WorldMapQuestScrollFrame}
-		self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
-		self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
 		-- handle size change
 		self:SecureHook("WorldMap_ToggleSizeUp", function()
+			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
 			self.skinFrame[WorldMapFrame]:ClearAllPoints()
 			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 102, 1)
 			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
 		end)
 		self:SecureHook("WorldMap_ToggleSizeDown", function()
+			WorldMapFrameMiniBorderLeft:SetAlpha(0)
+			WorldMapFrameMiniBorderRight:SetAlpha(0)
+			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
 			self.skinFrame[WorldMapFrame]:ClearAllPoints()
-			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 14, -26)
-			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 30, -7)
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 2, 2)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 0, 0)
 		end)
+		self:skinScrollBar{obj=WorldMapQuestScrollFrame}
+		self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
+		self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
+		if WorldMapFrame.sizedDown then
+			self:skinButton{obj=WorldMapFrameCloseButton, cb=true, tx=0}
+		else
+			self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
+		end
+	else
+		self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
 	end
-	self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
 	self:skinButton{obj=WorldMapZoomOutButton}
 
 	-- handle different map addons being loaded or fullscreen required
@@ -510,7 +524,7 @@ function Skinner:WorldMap()
 		local x1, y1, x2, y2 = 102, 1, -102, 1
 		if self.isPatch then
 			if WorldMapFrame.sizedDown then
-				x1, y1, x2, y2 = 14, -26, 30, -7
+				x1, y1, x2, y2 = 2, 2, 0, 0
 			else
 				y2 = 1
 			end
@@ -551,7 +565,7 @@ function Skinner:HelpFrame()
 	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
 	self.initialized.HelpFrame = true
 
-	local hfTitle = self:getRegion(HelpFrame, 8)
+	local hfTitle = self:getRegion(HelpFrame, self.isPatch and 11 or 8)
 	local kbTitle = self:getRegion(KnowledgeBaseFrame, 2)
 	-- hook these to manage frame titles
 	self:SecureHook("HelpFrame_ShowFrame", function(key)
@@ -570,24 +584,13 @@ function Skinner:HelpFrame()
 		end
 	end)
 
--->>--	Help Frame
-	self:moveObject{obj=hfTitle, y=-8}
-	self:skinButton{obj=HelpFrameCloseButton, cb=true}
-	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
-
--->>--	Open Ticket SubFrame
-	HelpFrameOpenTicketDivider:Hide()
-	self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
-	self:skinButton{obj=HelpFrameOpenTicketSubmit}
-	self:skinButton{obj=HelpFrameOpenTicketCancel}
-
--->>-- View Response SubFrame
-	self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
-	HelpFrameViewResponseDivider:Hide()
-	self:skinScrollBar{obj=HelpFrameViewResponseMessageScrollFrame}
-
 -->>--	Ticket Status Frame
 	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
+
+-->>--	Help Frame
+	self:moveObject{obj=hfTitle, y=-8}
+	self:skinButton{obj=HelpFrameCloseButton, cb=true, tx=0}
+	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
 
 -->>--	KnowledgeBase Frame
 	self:keepFontStrings(KnowledgeBaseFrame)
@@ -611,20 +614,35 @@ function Skinner:HelpFrame()
 	self:skinButton{obj=KnowledgeBaseFrameAbandonTicket}
 -->>-- Article Scroll Frame
 	self:skinScrollBar{obj=KnowledgeBaseArticleScrollFrame}
-	--[[
-		TODO the button text appears behind the gradient
-	--]]
-	self:skinButton{obj=KnowledgeBaseArticleScrollChildFrameBackButton}
+	self:skinButton{obj=KnowledgeBaseArticleScrollChildFrameBackButton, as=true}
 -->>-- Talk to a GM panel
 	self:skinButton{obj=HelpFrameGMTalkOpenTicket}
 	self:skinButton{obj=HelpFrameGMTalkCancel}
 -->>-- Report an Issue panel
 	self:skinButton{obj=HelpFrameReportIssueOpenTicket}
 	self:skinButton{obj=HelpFrameReportIssueCancel}
+	if self.isPatch then
+		self:skinButton{obj=HelpFrameLagLoot}
+		self:skinButton{obj=HelpFrameLagAuctionHouse}
+		self:skinButton{obj=HelpFrameLagMail}
+		self:skinButton{obj=HelpFrameLagChat}
+		self:skinButton{obj=HelpFrameLagMovement}
+		self:skinButton{obj=HelpFrameLagSpell}
+		self:skinButton{obj=HelpFrameLagCancel}
+	end
 -->>-- Character Stuck panel
 	self:skinButton{obj=HelpFrameStuckStuck}
 	self:skinButton{obj=HelpFrameStuckOpenTicket}
 	self:skinButton{obj=HelpFrameStuckCancel}
+-->>--	Open Ticket SubFrame
+	HelpFrameOpenTicketDivider:Hide()
+	self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
+	self:skinButton{obj=HelpFrameOpenTicketSubmit}
+	self:skinButton{obj=HelpFrameOpenTicketCancel}
+-->>-- View Response SubFrame
+	self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
+	HelpFrameViewResponseDivider:Hide()
+	self:skinScrollBar{obj=HelpFrameViewResponseMessageScrollFrame}
 
 end
 
@@ -938,82 +956,84 @@ function Skinner:MinimapButtons()
 
 end
 
-function Skinner:FeedbackUI() -- PTR only
-	if not self.db.profile.Feedback or self.initialized.Feedback then return end
-	self.initialized.Feedback = true
+if Skinner.isPTR then
+	function Skinner:FeedbackUI()
+		if not self.db.profile.Feedback or self.initialized.Feedback then return end
+		self.initialized.Feedback = true
 
-	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
+		local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
-	self:keepFontStrings(FeedbackUITitleFrm)
-	FeedbackUIWelcomeFrame:SetBackdrop(nil)
-	self:keepFontStrings(FeedbackUI_ModifierKeyDropDown)
-	self:addSkinFrame{obj=FeedbackUI_ModifierKeyDropDownList, ft=ftype}
-	self:keepFontStrings(FeedbackUI_MouseButtonDropDown)
-	self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
-	self:skinButton{obj=FeedbackUIBtnClose, cb=true}
-	self:skinButton{obj=FeedbackUIWelcomeFrameSurveysBtn}
-	self:skinButton{obj=FeedbackUIWelcomeFrameSuggestionsBtn}
-	self:skinButton{obj=FeedbackUIWelcomeFrameBugsBtn}
-	self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
+		self:keepFontStrings(FeedbackUITitleFrm)
+		FeedbackUIWelcomeFrame:SetBackdrop(nil)
+		self:keepFontStrings(FeedbackUI_ModifierKeyDropDown)
+		self:addSkinFrame{obj=FeedbackUI_ModifierKeyDropDownList, ft=ftype}
+		self:keepFontStrings(FeedbackUI_MouseButtonDropDown)
+		self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
+		self:skinButton{obj=FeedbackUIBtnClose, cb=true}
+		self:skinButton{obj=FeedbackUIWelcomeFrameSurveysBtn}
+		self:skinButton{obj=FeedbackUIWelcomeFrameSuggestionsBtn}
+		self:skinButton{obj=FeedbackUIWelcomeFrameBugsBtn}
+		self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
 
--->-- Survey Frame
-	FeedbackUISurveyFrame:SetBackdrop(nil)
-	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlCategory)
-	self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlCategoryList, ft=ftype}
-	self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlStatus)
-	self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
-	FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
-	for i = 1, 8 do
-		self:skinButton{obj=_G["FeedbackUISurveyFrameSurveysPanelScrollButtonsOption"..i.."Btn"], mp2=true}
+	-->-- Survey Frame
+		FeedbackUISurveyFrame:SetBackdrop(nil)
+		self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlCategory)
+		self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlCategoryList, ft=ftype}
+		self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlStatus)
+		self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
+		FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
+		for i = 1, 8 do
+			self:skinButton{obj=_G["FeedbackUISurveyFrameSurveysPanelScrollButtonsOption"..i.."Btn"], mp2=true}
+		end
+		self:skinUsingBD{obj=FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
+		FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
+		FeedbackUISurveyFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
+		self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
+		self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
+		self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
+		self:skinButton{obj=FeedbackUISurveyFrameBack}
+		self:skinButton{obj=FeedbackUISurveyFrameSkip}
+		self:skinButton{obj=FeedbackUISurveyFrameReset}
+		self:skinButton{obj=FeedbackUISurveyFrameSubmit}
+		-- skin the alert buttons
+		for i = 1, 10 do
+			local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
+			self:addSkinButton{obj=tfabObj, parent=tfabObj, x1=-2, y1=2, x2=1, y2=1}
+		end
+
+	-->>-- Suggestion Frame
+		FeedbackUISuggestFrame:SetBackdrop(nil)
+		FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		FeedbackUISuggestFrameStatusPanelLine:SetAlpha(0)
+		FeedbackUISuggestFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
+		self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
+		self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelEditInput}
+		self:skinUsingBD{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
+		self:skinButton{obj=FeedbackUISuggestFrameBack}
+		self:skinButton{obj=FeedbackUISuggestFrameReset}
+		self:skinButton{obj=FeedbackUISuggestFrameSubmit}
+
+	-->>-- Bug Frame
+		FeedbackUIBugFrame:SetBackdrop(nil)
+		FeedbackUIBugFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		FeedbackUIBugFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		FeedbackUIBugFrameStatusPanelLine:SetAlpha(0)
+		FeedbackUIBugFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
+		self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
+		self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelEditInput}
+		self:skinUsingBD{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
+		self:skinButton{obj=FeedbackUIBugFrameBack}
+		self:skinButton{obj=FeedbackUIBugFrameReset}
+		self:skinButton{obj=FeedbackUIBugFrameSubmit}
+
+		-- make the QuestLog Tip Label text visible
+		FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+
 	end
-	self:skinUsingBD{obj=FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
-	FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
-	FeedbackUISurveyFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
-	self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
-	self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
-	self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
-	self:skinButton{obj=FeedbackUISurveyFrameBack}
-	self:skinButton{obj=FeedbackUISurveyFrameSkip}
-	self:skinButton{obj=FeedbackUISurveyFrameReset}
-	self:skinButton{obj=FeedbackUISurveyFrameSubmit}
-	-- skin the alert buttons
-	for i = 1, 10 do
-		local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
-		self:addSkinButton{obj=tfabObj, parent=tfabObj, x1=-2, y1=2, x2=1, y2=1}
-	end
-
--->>-- Suggestion Frame
-	FeedbackUISuggestFrame:SetBackdrop(nil)
-	FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	FeedbackUISuggestFrameStatusPanelLine:SetAlpha(0)
-	FeedbackUISuggestFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
-	self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
-	self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelEditInput}
-	self:skinUsingBD{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
-	self:skinButton{obj=FeedbackUISuggestFrameBack}
-	self:skinButton{obj=FeedbackUISuggestFrameReset}
-	self:skinButton{obj=FeedbackUISuggestFrameSubmit}
-
--->>-- Bug Frame
-	FeedbackUIBugFrame:SetBackdrop(nil)
-	FeedbackUIBugFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	FeedbackUIBugFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	FeedbackUIBugFrameStatusPanelLine:SetAlpha(0)
-	FeedbackUIBugFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
-	self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
-	self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelEditInput}
-	self:skinUsingBD{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
-	self:skinButton{obj=FeedbackUIBugFrameBack}
-	self:skinButton{obj=FeedbackUIBugFrameReset}
-	self:skinButton{obj=FeedbackUIBugFrameSubmit}
-
-	-- make the QuestLog Tip Label text visible
-	FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
-
 end

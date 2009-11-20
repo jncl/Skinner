@@ -62,10 +62,12 @@ function Skinner:Defaults()
 		RaidUI          = true,
 		ReadyCheck      = true,
 		Buffs           = true,
-		AchieveFrame    = true,
+		AchieveFrame    = self.isPatch and nil or true,
 		AchieveAlert    = self.isPatch and nil or true,
+		AchievementUI	= self.isPatch and true or nil,
 		VehicleMenuBar	= true,
-		TrackerFrame    = {skin = false, clean = true, glazesb = true},
+		TrackerFrame    = self.isPatch and nil or {skin = false, clean = true, glazesb = true}, -- a.k.a. WatchFrame
+		WatchFrame		= self.isPatch and true or nil,
 		GearManager		= true,
 		AlertFrames		= self.isPatch and true or nil,
 		-- UI Frames
@@ -106,7 +108,9 @@ function Skinner:Defaults()
 		AuctionUI	    = true,
 		MainMenuBar     = {skin = true, glazesb = true},
 		CoinPickup      = true,
-		LFGFrame        = true,
+		LFGFrame        = self.isPatch and nil or true,
+		LFDFrame        = self.isPatch and true or nil,
+		LFRFrame        = self.isPatch and true or nil,
 		ItemSocketingUI = true,
 		GuildBankUI     = true,
 		Nameplates      = true,
@@ -205,7 +209,8 @@ function Skinner:Options()
 						self.isTT = db[info[#info]] and true or false
 					end,
 				},
-				TrackerFrame = {
+--[=[
+				TrackerFrame = { -- a.k.a. WatchFrame
 					type = "group",
 					inline = true,
 					order = 20,
@@ -238,6 +243,7 @@ function Skinner:Options()
 						},
 					},
 				},
+--]=]
 				Delay = {
 					type = "group",
 					order = 21,
@@ -1166,39 +1172,6 @@ function Skinner:Options()
 					name = self.L["Buffs Buttons"],
 					desc = self.L["Toggle the skin of the Buffs Buttons"],
 				},
-				achievements = {
-					type = "group",
-					inline = true,
-					order = -2,
-					name = self.L["AchievementUI"],
-					desc = self.L["Change the AchievementUI settings"],
-					get = function(info) return db[info[#info]] end,
-					set = function(info, value)
-						db[info[#info]] = value
-						local aOpt = info[#info]:sub(-5)
-						local aFunc
-						if IsAddOnLoaded("Blizzard_AchievementUI") then
-							if aOpt == "Frame" then aFunc = "UI"
-							elseif aOpt == "Alert" then aFunc = "Alerts"
-							end
-							self:checkAndRun("Achievement"..aFunc)
-						end
-					end,
-					args = {
-						AchieveFrame = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Achievements Frame"],
-							desc = self.L["Toggle the skin of the Achievements Frame"],
-						},
-						AchieveAlert = self.isPatch and nil or {
-							type = "toggle",
-							order = 2,
-							name = self.L["Achievement Alerts"],
-							desc = self.L["Toggle the skin of the Achievement Alerts"],
-						},
-					},
-				},
 				VehicleMenuBar = {
 					type = "toggle",
 					name = self.L["Vehicle Menu Bar"],
@@ -1209,11 +1182,6 @@ function Skinner:Options()
 					name = self.L["Gear Manager Frame"],
 					desc = self.L["Toggle the skin of the Gear Manager Frame"],
 				},
-				AlertFrames = self.isPatch and {
-					type = "toggle",
-					name = self.L["Alert Frames"],
-					desc = self.L["Toggle the skin of the Alert Frames"],
-				} or nil,
 			},
 		},
 
@@ -1602,11 +1570,6 @@ function Skinner:Options()
 						},
 					},
 				},
-				MovieProgress = IsMacClient and {
-					type = "toggle",
-					name = self.L["Movie Progress"],
-					desc = self.L["Toggle the skinning of Movie Progress"],
-				} or nil,
 				TimeManager = {
 					type = "toggle",
 					name = self.L["Time Manager"],
@@ -1669,11 +1632,6 @@ function Skinner:Options()
 					name = self.L["Coin Pickup Frame"],
 					desc = self.L["Toggle the skin of the Coin Pickup Frame"],
 				},
-				LFGFrame = {
-					type = "toggle",
-					name = self.L["LFG Frame"],
-					desc = self.L["Toggle the skin of the LFG Frame"],
-				},
 				ItemSocketingUI = {
 					type = "toggle",
 					name = self.L["ItemSocketingUI Frame"],
@@ -1735,7 +1693,122 @@ function Skinner:Options()
 			},
 		},
 	}
-
+	
+	-- optional options
+	if self.isPTR then
+		optTables.UIFrames.args["Feedback"] = {
+			type = "toggle",
+			name = self.L["FeedbackUI"],
+			desc = self.L["Toggle the skinning of FeedbackUI"],
+		}
+	end
+	if IsMacClient() then
+		optTables.UIFrames.args["MovieProgress"] = {
+			type = "toggle",
+			name = self.L["Movie Progress"],
+			desc = self.L["Toggle the skinning of Movie Progress"],
+		}
+	end
+	if not self.isPatch then
+		optTables.General.args["TrackerFrame"] = {
+			type = "group",
+			inline = true,
+			order = 20,
+			name = self.L["Tracker Frame"],
+			desc = self.L["Change the Tracker Frame settings"],
+			get = function(info) return db.TrackerFrame[info[#info]] end,
+			set = function(info, value)
+				db.TrackerFrame[info[#info]] = value
+				self:WatchFrame()
+			end,
+			args = {
+				skin = {
+					type = "toggle",
+					order = 1,
+					name = self.L["Skin Tracker Frame"],
+					desc = self.L["Toggle the skin of the Tracker Frame"],
+				},
+				glazesb = {
+					type = "toggle",
+					order = 2,
+					width = "double",
+					name = self.L["Glaze Status Bar"],
+					desc = self.L["Toggle the glazing Status Bar"],
+				},
+				clean = {
+					type = "toggle",
+					order = 3,
+					name = self.L["Clean Textures"],
+					desc = self.L["Remove Blizzard Textures"],
+				},
+			},
+		}
+		optTables.PlayerFrames.args["achievements"] = {
+			type = "group",
+			inline = true,
+			order = -2,
+			name = self.L["AchievementUI"],
+			desc = self.L["Change the AchievementUI settings"],
+			get = function(info) return db[info[#info]] end,
+			set = function(info, value)
+				db[info[#info]] = value
+				local aOpt = info[#info]:sub(-5)
+				local aFunc
+				if IsAddOnLoaded("Blizzard_AchievementUI") then
+					if aOpt == "Frame" then aFunc = "UI"
+					elseif aOpt == "Alert" then aFunc = "Alerts"
+					end
+					self:checkAndRun("Achievement"..aFunc)
+				end
+			end,
+			args = {
+				AchieveFrame = {
+					type = "toggle",
+					order = 1,
+					name = self.L["Achievements Frame"],
+					desc = self.L["Toggle the skin of the Achievements Frame"],
+				},
+				AchieveAlert = self.isPatch and nil or {
+					type = "toggle",
+					order = 2,
+					name = self.L["Achievement Alerts"],
+					desc = self.L["Toggle the skin of the Achievement Alerts"],
+				},
+			}
+		}
+		optTables.UIFrames.args["LFGFrame"] = {
+			type = "toggle",
+			name = self.L["LFG Frame"],
+			desc = self.L["Toggle the skin of the LFG Frame"],
+		}
+	else
+		optTables.General.args["WatchFrame"] = {
+			type = "toggle",
+			name = self.L["Watch Frame"],
+			desc = self.L["Toggle the skin of the Watch Frame"],
+		}
+		optTables.PlayerFrames.args["AchievementUI"] = {
+			type = "toggle",
+			name = self.L["AchievementUI"],
+			desc = self.L["Toggle the skin of the AchievementUI"],
+		}
+		optTables.PlayerFrames.args["AlertFrames"] = {
+			type = "toggle",
+			name = self.L["Alert Frames"],
+			desc = self.L["Toggle the skin of the Alert Frames"],
+		}
+		optTables.UIFrames.args["LFDFrame"] = {
+			type = "toggle",
+			name = self.L["LFD Frame"],
+			desc = self.L["Toggle the skin of the LFD Frame"],
+		}
+		optTables.UIFrames.args["LFRFrame"] = {
+			type = "toggle",
+			name = self.L["LFR Frame"],
+			desc = self.L["Toggle the skin of the LFR Frame"],
+		}
+	end
+	
 	local FrameStrata = {
 		BACKGROUND = "Background",
 		LOW = "Low",
@@ -1860,7 +1933,7 @@ function Skinner:Options()
 	self:RegisterChatCommand("skin", chatCommand)
 
 	-- setup the DB object
-	DBObj = LibStub("LibDataBroker-1.1"):NewDataObject("Skinner", {
+	DBObj = LibStub("LibDataBroker-1.1"):NewDataObject(aName, {
 			type = "launcher",
 			icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
 			OnClick = function() InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame) end,

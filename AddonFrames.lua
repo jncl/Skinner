@@ -11,28 +11,30 @@ function Skinner:BlizzardFrames()
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "WorldState", "DropDowns", -- uie1
 		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "PVPFrame", -- uie2
-		"UnitFrames", -- uf 
+		"UnitFrames", -- uf
 	}
 
+	-- optional frames
+	if IsMacClient() then self:checkAndRun("MovieProgress") end
 	if self.isPTR then tinsert(blizzFrames, "FeedbackUI") else self.FeedbackUI = nil end -- uie1
-
+	-- patched frames
 	if not self.isPatch then
 		tinsert(blizzFrames, "AchievementAlerts") -- cf1
 		tinsert(blizzFrames, "LFGFrame") -- uie2
 	else
 		tinsert(blizzFrames, "AlertFrames") -- cf1
 		tinsert(blizzFrames, "LFDFrame") -- uie2
+		tinsert(blizzFrames, "LFRFrame") -- uie2
 	end
+
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
 	end
 	blizzFrames = nil
-	
+
 	-- handle non standard ones here
 	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
 	self:checkAndRun("ChatConfig") -- done here even though it's LoD, as it is always loaded with Blizzard_CombatLog
-
-	if IsMacClient() then self:checkAndRun("MovieProgress") end
 
 --[[
 	QuestLog -- checked with EQL3 below
@@ -112,7 +114,7 @@ function Skinner:AddonFrames()
 		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon",
 		"RABuffs", "RaidBuffStatus", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
 		"Sanity2", --[["SanityBags",--]] "SellJunk", "ShadowDancer3", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SmoothQuest", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
-		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "tomQuest2", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest", "TwinValkyr_shieldmonitor", 
+		"Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "tomQuest2", "TomTom", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "TuringTest", "TwinValkyr_shieldmonitor",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", --[["Vendor",--]] "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
 		"WebDKP", "WIM", "WoWEquip",

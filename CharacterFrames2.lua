@@ -465,11 +465,15 @@ function Skinner:VehicleMenuBar()
 end
 
 function Skinner:WatchFrame()
-	if not self.db.profile.TrackerFrame.skin
-	and not self.db.profile.TrackerFrame.clean
-	and not self.db.profile.TrackerFrame.glazesb then return end
+	if not self.isPatch then
+		if not self.db.profile.TrackerFrame.skin
+		and not self.db.profile.TrackerFrame.clean
+		and not self.db.profile.TrackerFrame.glazesb then return end
+	else
+		if not self.db.profile.WatchFrame then return end
+	end
 
-	if self.db.profile.TrackerFrame.skin then
+	if self.db.profile.WatchFrame or self.db.profile.TrackerFrame.skin then
 		self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
 		self:SecureHook(WatchFrameLines, "Show", function(this) Skinner.skinFrame[this]:Show() end)
 		self:SecureHook(WatchFrameLines, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
@@ -489,32 +493,30 @@ function Skinner:WatchFrame()
 			WatchFrameLeftResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
 			self:getRegion(WatchFrameLeftResizeThumb, 1):SetTexCoord(0.753125, 0.653125, 0.653125, 0.753125)
 		end
-	end
+		if self.db.profile.TrackerFrame.glazesb then
+			local function glazeWatchLines()
 
-
-	if self.db.profile.TrackerFrame.glazesb then
-		local function glazeWatchLines()
-
-			-- glaze Achievement StatusBars
-			for i = 1, #WATCHFRAME_ACHIEVEMENTLINES do
-				local sBar = WATCHFRAME_ACHIEVEMENTLINES[i].statusBar
-				if not self.sbGlazed[sBar] then
-					Skinner:removeRegions(sBar, {3, 4, 5}) -- remove textures
-					Skinner:glazeStatusBar(sBar, 0)
+				-- glaze Achievement StatusBars
+				for i = 1, #WATCHFRAME_ACHIEVEMENTLINES do
+					local sBar = WATCHFRAME_ACHIEVEMENTLINES[i].statusBar
+					if not self.sbGlazed[sBar] then
+						Skinner:removeRegions(sBar, {3, 4, 5}) -- remove textures
+						Skinner:glazeStatusBar(sBar, 0)
+					end
 				end
+
 			end
 
-		end
+			-- hook this to manage the tracked Achievements
+			if not self:IsHooked("WatchFrame_Update") then
+				self:SecureHook("WatchFrame_Update", function(this)
+					glazeWatchLines()
+				end)
+			end
 
-		-- hook this to manage the tracked Achievements
-		if not self:IsHooked("WatchFrame_Update") then
-			self:SecureHook("WatchFrame_Update", function(this)
-				glazeWatchLines()
-			end)
+			-- glaze any existing lines
+			glazeWatchLines()
 		end
-
-		-- glaze any existing lines
-		glazeWatchLines()
 	end
 
 end

@@ -318,57 +318,59 @@ function Skinner:BarbershopUI()
 
 end
 
-function Skinner:QuestInfo()
-	if not self.db.profile.QuestFrame or self.initialized.QuestInfo then return end
-	self.initialized.QuestInfo = true
+if Skinner.isPatch then
+	function Skinner:QuestInfo()
+		if not self.db.profile.QuestFrame or self.initialized.QuestInfo then return end
+		self.initialized.QuestInfo = true
 
-	local function colourText()
+		local function colourText()
 
-		-- headers
-		QuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestInfoDescriptionHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestInfoObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestInfoRewardsHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		-- other text
-		QuestInfoDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoGroupSize:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoRewardText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		-- reward frame text
-		QuestInfoItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoHonorFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoArenaPointsFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoTalentFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		for i = 1, MAX_REPUTATIONS do
-			_G["QuestInfoReputation"..i.."Faction"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+			-- headers
+			QuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+			QuestInfoDescriptionHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+			QuestInfoObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+			QuestInfoRewardsHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+			-- other text
+			QuestInfoDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoGroupSize:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoRewardText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			-- reward frame text
+			QuestInfoItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoHonorFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoArenaPointsFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoTalentFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			QuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			for i = 1, MAX_REPUTATIONS do
+				_G["QuestInfoReputation"..i.."Faction"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+			end
+			local r, g, b = QuestInfoRequiredMoneyText:GetTextColor()
+			QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+
 		end
-		local r, g, b = QuestInfoRequiredMoneyText:GetTextColor()
-		QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		local function colourObjectives()
 
-	end
-	local function colourObjectives()
+			for i = 1, MAX_OBJECTIVES do
+				local r, g, b = _G["QuestInfoObjective"..i]:GetTextColor()
+				_G["QuestInfoObjective"..i]:SetTextColor(Skinner.BTr - r, Skinner.BTg - g, Skinner.BTb - b)
+			end
 
-		for i = 1, MAX_OBJECTIVES do
-			local r, g, b = _G["QuestInfoObjective"..i]:GetTextColor()
-			_G["QuestInfoObjective"..i]:SetTextColor(Skinner.BTr - r, Skinner.BTg - g, Skinner.BTb - b)
 		end
 
-	end
+		-- hook this for objectives text colours
+		self:SecureHook("QuestInfo_Display", function(...)
+			colourText()
+			colourObjectives()
+		end)
 
-	-- hook this for objectives text colours
-	self:SecureHook("QuestInfo_Display", function(...)
 		colourText()
 		colourObjectives()
-	end)
 
-	colourText()
-	colourObjectives()
+		QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
 
-	QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
-
+	end
 end
