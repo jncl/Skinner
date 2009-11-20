@@ -1,3 +1,24 @@
+b2.10805.3
+Jncl:
+	Updated BugSack skin
+
+b2.10805.2
+Jncl:
+	Updated BugSack skin
+
+b2.10805.1
+Jncl:
+	ToDo.txt
+	Updated TOC number and comment
+	More PTR changes
+	BugFix for option changes
+	Added function to Adjust Widths
+	Skinned MrTrader_SkillWindow & PhoenixStyle
+	Updated ZOMGBuffs skin
+	Updated TwinValkyr_shieldmonitor skin
+	Updated MTLove skin
+	Updated Change_History.txt
+
 b2.10772.1
 Jncl:
 	ToDo.txt
@@ -10,7 +31,7 @@ Jncl:
 	Skinned Cauldron, HeadCount & TwinValkyr_shieldmonitor
 	Changes to QuestLog SV
 	Updated Change_History.txt
-	
+
 b2.10505.6
 Jncl:
 	ToDo.txt
@@ -48,18 +69,18 @@ Jncl:
 	UnitFrame changes
 	Updated Change_History.txt
 	More UIButton changes
-	
+
 b2.10505.4
 Jncl:
 	Bugfix for tektip
 	Updated Change_History.txt
-	
+
 b2.10505.3
 Jncl:
 	Bugfix for Frame finding code
 	Updated HealtBot skin (thanks to acirac)
 	Updated Change_History.txt
-	
+
 b2.10505.2
 Jncl:
 	ToDo.txt
