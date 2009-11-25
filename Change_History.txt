@@ -1,3 +1,12 @@
+b2.10835.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	UPdated TOC to add reference to LFRFrame
+	More UIButton changes
+	Bugfix for UnitFrame StatusBar positions (Blizz error)
+	Updated AckisRecipeList, AutoDecline, BugSack, HealBot, Skillet & tekKonfig skins
+
 b2.10835.1
 Jncl:
 	ToDo.txt
