@@ -11,24 +11,26 @@ S - Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-	S	PTR 0.3.0 (10772)
-√		- LFR frame
-√		- GroupLoot frame disenchant button
-√		- WorldMap again...
-√		- WatchFrame changes
-√		- HelpFrame changes
+	S	PTR 0.3.0 (10835)
 
-√	I	AckisRecipeList, reported by pompachomp, 13.11.09
-		- Skinner-b2.10772.1\Skinner.lua:1171: attempt to index field 'obj' (a nil value)
-		Skinner-b2.10772.1\Skinner.lua:1216: in function `moveObject'
-		Skinner-b2.10772.1\SkinMe\AckisRecipeList.lua:14: in function <Interface\AddOns\Skinner\SkinMe\AckisRecipeList.lua:11>
+x	I	oRA2, reported by Kerecha, 18.11.09
+		- still not skinned
+
+x	I	PhoenixStyle, reported by Kerecha, 19.11.09
+		- the instance specific options panels aren't being skinned (at least not coloseum one)
+
+√	I	Skillet, reported by Kerecha, 21.11.09
+		- Buttons need skinning
+
+√	I	BugSack (r215), reported by pompachomp, 21.11.09
+		- Skinner-b2.10835.1\Skinner.lua:299: table index is nil
+		Skinner-b2.10835.1\Skinner.lua:1859: in function <Skinner\Skinner.lua:1845>
+		Skinner-b2.10835.1\Skinner.lua:1891: in function `skinScrollBar'
+		Skinner-b2.10835.1\SkinMe\BugSack.lua:15: in function <Skinner\SkinMe\BugSack.lua:2>
 		(tail call): ?:
 
-	I	/framestack
-√		- popup panel has default border and white background on subsequent displays
-
-√	S	DailiesQuestTracker, requested by Gabriel, 18.11.09
-		- Please skin the LDB Tooltip for this mod
-
-	I	PhoenixStyle, reported by Kerecha, 19.11.09
-		- the instance specific options panels aren't being skinned (at least not coloseum one)
+√	I	ARL (r2683), reported by pompachomp, 21.11.09
+		- Skinner-b2.10835.1\Skinner.lua:1243: attempt to index field 'obj' (a nil value)
+		Skinner-b2.10835.1\Skinner.lua:1288: in function `moveObject'
+		Skinner-b2.10835.1\SkinMe\AckisRecipeList.lua:13: in function <Skinner\SkinMe\AckisRecipeList.lua:10>
+		(tail call): ?:
