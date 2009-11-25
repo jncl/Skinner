@@ -1,5 +1,5 @@
 
-local allHooked, tKDd, tKG, tKS, tKAP, ver
+local allHooked, tKDd, tKG, tKS, tKAP, tkB, ver
 	
 function Skinner:tekKonfig()
 	if not self.db.profile.MenuFrames then return end
@@ -67,6 +67,15 @@ function Skinner:tekKonfig()
 		end)
 	end
 
-	if tKDd and tKG and tKS and tKAP then allHooked = true end
+	if LibStub("tekKonfig-Button", true) and not tkB then
+		tkB = LibStub("tekKonfig-Button")
+		self:RawHook(tkB, "new", function(...)
+		local btn = self.hooks[tkB].new(...)
+		self:skinButton{obj=btn}
+		return btn
+		end)
+	end
+
+	if tKDd and tKG and tKS and tKAP and tkB then allHooked = true end
 	
 end

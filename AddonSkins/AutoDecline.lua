@@ -1,9 +1,8 @@
 
 function Skinner:AutoDecline()
 
-	self:keepFontStrings(AD_TogglesBorder)
-	self:applySkin(AD_TogglesBorder, true)
-	self:keepFontStrings(ADOptionsFrame)
-	self:applySkin(ADOptionsFrame, true)
+	self:addSkinFrame{obj=AD_TogglesBorder, kfs=true, hdr=true, y2=6}
+	self:addSkinFrame{obj=ADOptionsFrame, kfs=true, hdr=true, y2=4}
+	self:skinAllButtons(ADOptionsFrame)
 
 end

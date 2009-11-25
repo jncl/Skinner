@@ -1,5 +1,5 @@
 -- many thanks to acirac for the updated skin
-function Skinner:HealBot() -- version 3.2.2.4
+function Skinner:HealBot() -- version 3.2.2.8
 	if not self.db.profile.Tooltips.skin then return end
 
 -->>--	Tooltips
@@ -39,6 +39,7 @@ function Skinner:HealBot() -- version 3.2.2.4
 	self:keepFontStrings(HealBot_Options_EmergencyFilter)
 	self:keepFontStrings(HealBot_Options_UseHBinHeals)
 	self:keepFontStrings(HealBot_Options_ExtraSort)
+	self:keepFontStrings(HealBot_Options_ExtraSubSort)
 	self:keepFontStrings(HealBot_Options_ExtraOptFrame)
 	self:applySkin(HealBot_Options_ExtraOptFrame, nil)
 	self:keepFontStrings(HealBot_Options_HealTargetFrame)
