@@ -688,6 +688,9 @@ function Skinner:MainMenuBar()
 -->>-- Shaman's Totem Frame
 	self:addSkinFrame{obj=MultiCastFlyoutFrame, kfs=true, ft=ftype, y1=-4, y2=-4}
 
+-->>-- Vehicle Leave Button
+	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton, parent=MainMenuBarVehicleLeaveButton, hook=MainMenuBarVehicleLeaveButton, hide=true}
+
 end
 
 function Skinner:CoinPickup()

@@ -1574,8 +1574,9 @@ function Skinner:isButton(obj, cb)
 		local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
 		if not cb then
 			local oName = obj:GetName() or nil
+			local lTex = oName and (_G[oName.."Left"] and _G[oName.."Left"]:GetTexture() or _G[oName.."_LeftTexture"] and  _G[oName.."_LeftTexture"]:GetTexture()) or nil
 			if nTex and nTex:find("UI-Panel-Button", 1, true)
-			or oName and (_G[oName.."Left"] or _G[oName.."_LeftTexture"])
+			or oName and lTex and lTex:find("UI-Panel-Button", 1, true)
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) then -- ignore AceConfig/AceGui buttons
 				return true
 			end
