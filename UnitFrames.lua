@@ -56,12 +56,13 @@ function Skinner:Player()
 	PlayerAttackGlow:SetTexture(nil)
 	-- status bars
 	self:glazeStatusBar(PlayerFrameHealthBar, 0)
+	self:adjHeight{obj=PlayerFrameHealthBar , adj=-1} -- handle bug in PlayerFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	self:glazeStatusBar(PlayerFrameManaBar, 0)
-	self:moveObject{obj=PlayerFrameManaBar, y=-1}
 	-- move level & highlevel down, so they are more visible
 	self:moveObject{obj=PlayerLevelText, y=lOfs}
 	self:moveObject{obj=PlayerRestIcon, y=lOfs} -- covers level text when resting
-
+	-- remove group indicator textures
+	self:keepFontStrings(PlayerFrameGroupIndicator)
 	self:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=37, y1=-7, y2=9}
 
 --	if the player class is a DeathKnight then skin the RuneFrame
@@ -165,8 +166,8 @@ function Skinner:Target()
 	end
 	-- status bars
 	self:glazeStatusBar(TargetFrameHealthBar, 0)
+	self:adjHeight{obj=TargetFrameHealthBar , adj=-1} -- handle bug in TargetFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	self:glazeStatusBar(TargetFrameManaBar, 0)
-	self:moveObject{obj=TargetFrameManaBar, y=-1}
 	self:glazeStatusBar(TargetFrameSpellBar, 0)
 	self:removeRegions(TargetFrameNumericalThreat, {3}) -- threat border
 	-- move level & highlevel down, so they are more visible
@@ -229,8 +230,8 @@ function Skinner:Focus()
 	end
 	-- status bars
 	self:glazeStatusBar(FocusFrameHealthBar, 0)
+--	self:adjHeight{obj=FocusFrameHealthBar , adj=-1} -- handle bug in FocusFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	self:glazeStatusBar(FocusFrameManaBar, 0)
-	self:moveObject{obj=FocusFrameManaBar, y=-1}
 	self:glazeStatusBar(FocusFrameSpellBar, 0)
 	self:removeRegions(FocusFrameNumericalThreat, {3}) -- threat border
 	if self.isPatch then
@@ -306,6 +307,7 @@ function Skinner:Party()
 
 	for i = 1, MAX_PARTY_MEMBERS do
 		local pF = "PartyMemberFrame"..i
+		_G[pF.."Flash"]:SetTexture(nil)
 		_G[pF.."Background"]:SetTexture(nil)
 		_G[pF.."Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G[pF.."VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
