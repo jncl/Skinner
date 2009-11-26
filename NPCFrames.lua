@@ -153,6 +153,7 @@ function Skinner:QuestFrame()
 
 -->>--	Greeting Panel
 	self:keepFontStrings(QuestFrameGreetingPanel)
+	self:keepFontStrings(QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
 	self:skinButton{obj=QuestFrameGreetingGoodbyeButton}
 	self:skinScrollBar{obj=QuestGreetingScrollFrame}
 	if QuestFrameGreetingPanel:IsShown() then
