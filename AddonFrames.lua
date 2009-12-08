@@ -119,7 +119,7 @@ function Skinner:AddonFrames()
 		"VanasKoS", "vBagnon", --[["Vendor",--]] "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
 		"WebDKP", "WIM", "WoWEquip",
 		"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper", "XPerl_GrimReaper", "XRS",
-		"ZOMGBuffs"
+		"zfpoison", "ZOMGBuffs"
 	}
 
 	-- used for Addons that aren't LoadOnDemand

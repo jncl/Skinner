@@ -364,6 +364,7 @@
 <script file="SkinMe\XLoot.lua"/>
 <script file="SkinMe\XPerl.lua"/>
 <script file="SkinMe\XRS.lua"/>
+<script file="SkinMe\zfpoison.lua"/>
 <script file="SkinMe\ZOMGBuffs.lua"/>
 
 </Ui>
