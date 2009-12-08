@@ -532,17 +532,17 @@ function Skinner:WorldMap()
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
 	end
 
--->>-- Tooltip
+-->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then WorldMapTooltip:SetBackdrop(self.Backdrop[1]) end
-		self:SecureHook(WorldMapTooltip, "Show", function()
-			self:skinTooltip(WorldMapTooltip)
+		self:SecureHookScript(WorldMapTooltip, "OnShow", function(this)
+			self:skinTooltip(this)
 		end)
 		if self.isPatch then
 			if self.db.profile.Tooltips.style == 3 then
 				WorldMapCompareTooltip1:SetBackdrop(self.Backdrop[1])
 				WorldMapCompareTooltip2:SetBackdrop(self.Backdrop[1])
-				WorldMapCompareTooltip2:SetBackdrop(self.Backdrop[1])
+				WorldMapCompareTooltip3:SetBackdrop(self.Backdrop[1])
 			end
 			self:SecureHookScript(WorldMapCompareTooltip1, "OnShow", function(this)
 				self:skinTooltip(this)
@@ -798,7 +798,8 @@ function Skinner:WorldState()
 end
 
 function Skinner:BattlefieldMinimap()
-	if not self.db.profile.BattlefieldMm then return end
+	if not self.db.profile.BattlefieldMm or self.initialized.BattlefieldMm then return end
+	self.initialized.BattlefieldMm = true
 
 	-- change the skinFrame's opacity as required
 	self:SecureHook("BattlefieldMinimap_UpdateOpacity", function(opacity)
