@@ -1591,27 +1591,56 @@ function Skinner:isButton(obj, cb)
 
 end
 
-function Skinner:skinAllButtons(obj)
+local function __skinAllButtons(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		other options as per skinButton
+--]]
+--@alpha@
+	assert(opts.obj, "Unknown object__sDD\n"..debugstack())
+--@end-alpha@
+	if not opts.obj then return end
 
-	local kids = {obj:GetChildren()}
+	local kids = {opts.obj:GetChildren()}
 	for _, child in ipairs(kids) do
-		if self:isButton(child) then
-			self:skinButton{obj=child}
-		elseif self:isButton(child, true) then
-			self:skinButton{obj=child, cb=true}
+		if Skinner:isButton(child) then
+			Skinner:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, tx=opts.tx, ty=opts.ty}
+		elseif Skinner:isButton(child, true) then
+			Skinner:skinButton{obj=child, cb=true}
 		else
 			local grandkids = {child:GetChildren()}
 			for _, grandchild in ipairs(grandkids) do
-				if self:isButton(grandchild) then
-					self:skinButton{obj=grandchild}
-				elseif self:isButton(child, true) then
-					self:skinButton{obj=child, cb=true}
+				if Skinner:isButton(grandchild) then
+					Skinner:skinButton{obj=grandchild, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, tx=opts.tx, ty=opts.ty}
+				elseif Skinner:isButton(child, true) then
+					Skinner:skinButton{obj=child, cb=true}
 				end
 			end
 			grandkids = nil
 		end
 	end
 	kids = nil
+
+end
+
+function Skinner:skinAllButtons(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Unknown object sAB\n"..debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+	end
+	__skinAllButtons(opts)
 
 end
 
