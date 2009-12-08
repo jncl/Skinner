@@ -1,16 +1,16 @@
 
 function Skinner:xcalc()
 
-	self:SecureHook("xcalc_windowframe", function()
-		self:keepFontStrings(xcalc_window)
-		self:applySkin(xcalc_window)
-		self:Unhook("xcalc_windowframe")
+	self:SecureHook(xcalc, "windowframe", function(this)
+		self:skinAllButtons{obj=xcalc_window, x1=-2, y1=-2, x2=2, y2=2, ty=0}
+		self:addSkinFrame{obj=xcalc_window, kfs=true}
+		self:Unhook(xcalc, "windowframe")
 	end)
 
-	self:SecureHook("xcalc_optionframe", function()
-		self:keepFontStrings(xcalc_optionwindow)
-		self:applySkin(xcalc_optionwindow)
-		self:Unhook("xcalc_optionframe")
+	self:SecureHook(xcalc, "optionframe", function(this)
+		self:skinAllButtons{obj=xcalc_optionwindow}
+		self:addSkinFrame{obj=xcalc_optionwindow, kfs=true}
+		self:Unhook(xcalc, "optionframe")
 	end)
 
 end
