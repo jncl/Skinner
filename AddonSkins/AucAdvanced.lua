@@ -34,8 +34,11 @@ function Skinner:AucAdvanced()
 	local sUI = AucAdvanced.Modules.Util.SearchUI
 	if sUI then
 		self:SecureHook(sUI, "CreateAuctionFrames", function()
-			self:addSkinFrame{obj=AucAdvSearchUiAuctionFrame.backing}
-			AucAdvSearchUiAuctionFrame.money:SetAlpha(0)
+			local frame = sUI.Private.gui.AuctionFrame
+			if frame then
+				frame.money:SetAlpha(0)
+				self:addSkinFrame{obj=frame.backing}
+			end
 			self:Unhook(sUI, "CreateAuctionFrames")
 		end)
 		self:SecureHook(sUI, "MakeGuiConfig", function()
@@ -70,30 +73,36 @@ function Skinner:AucAdvanced()
 		end)
 		-- control button for the RealTimeSearch
 		local lib = sUI.Searchers["RealTime"]
-		self:SecureHook(lib, "HookAH", function()
-			local frame = self:getChild(AuctionFrameBrowse, AuctionFrameBrowse:GetNumChildren()) -- get last child
-			self:skinButton{obj=frame.control, x1=-2, y1=1, x2=2}
-			self:Unhook(lib, "HookAH")
-		end)
+		if lib then
+			self:SecureHook(lib, "HookAH", function()
+				local frame = self:getChild(AuctionFrameBrowse, AuctionFrameBrowse:GetNumChildren()) -- get last child
+				self:skinButton{obj=frame.control, x1=-2, y1=1, x2=2}
+				self:Unhook(lib, "HookAH")
+			end)
+		end
 		-- controls for the SnatchSearcher
 		local lib = sUI.Searchers["Snatch"]
-		self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
-			self:skinEditBox{obj=lib.Private.frame.pctBox, regs={9}}
-			self:skinButton{obj=lib.Private.frame.additem, as=true} -- just skin it otherwise text is hidden
-			self:skinButton{obj=lib.Private.frame.removeitem, as=true} -- just skin it otherwise text is hidden
-			self:skinButton{obj=lib.Private.frame.resetList, as=true} -- just skin it otherwise text is hidden
-			self:Unhook(lib, "MakeGuiConfig")
-		end)
+		if lib then
+			self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
+				self:skinEditBox{obj=lib.Private.frame.pctBox, regs={9}}
+				self:skinButton{obj=lib.Private.frame.additem, as=true} -- just skin it otherwise text is hidden
+				self:skinButton{obj=lib.Private.frame.removeitem, as=true} -- just skin it otherwise text is hidden
+				self:skinButton{obj=lib.Private.frame.resetList, as=true} -- just skin it otherwise text is hidden
+				self:Unhook(lib, "MakeGuiConfig")
+			end)
+		end
 		-- remove button for the ItemPriceFilter
 		local lib = sUI.Filters["ItemPrice"]
-		self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
-			local exists, id = gui:GetTabByName(lib.tabname, "Filters")
-			if exists then
-				local btn = self:getChild(gui.tabs[id][3], gui.tabs[id][3]:GetNumChildren()) -- last child
-				self:skinButton{obj=btn, as=true} -- just skin it otherwise text is hidden}
-			end
-			self:Unhook(lib, "MakeGuiConfig")
-		end)
+		if lib then
+			self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
+				local exists, id = gui:GetTabByName(lib.tabname, "Filters")
+				if exists then
+					local btn = self:getChild(gui.tabs[id][3], gui.tabs[id][3]:GetNumChildren()) -- last child
+					self:skinButton{obj=btn, as=true} -- just skin it otherwise text is hidden}
+				end
+				self:Unhook(lib, "MakeGuiConfig")
+			end)
+		end
 	end
 
 	-- Appraiser

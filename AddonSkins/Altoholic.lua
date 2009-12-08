@@ -2,12 +2,11 @@
 function Skinner:Altoholic()
 
 	self:skinEditBox(AltoholicFrame_SearchEditBox, {9})
-	self:skinButton{obj=AltoholicFrameCloseButton, cb=true}
+	self:skinAllButtons{obj=AltoholicFrame}
 	self:addSkinFrame{obj=AltoholicFrame, kfs=true, y1=-11}
 
 -->>-- Message Box
-	self:skinButton{obj=AltoMsgBoxYesButton}
-	self:skinButton{obj=AltoMsgBoxNoButton}
+	self:skinAllButtons{obj=AltoMsgBox}
 	self:addSkinFrame{obj=AltoMsgBox, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
 -->>--	Other Frames
@@ -22,10 +21,6 @@ function Skinner:Altoholic()
 	local obj
 	-- Summary tab
 	self:skinDropDown(AltoholicTabSummary_SelectLocation)
-	self:skinButton{obj=AltoholicTabSummaryToggleView, mp2=true}
-	self:skinButton{obj=AltoholicTabSummary_RequestSharing}
-	self:skinButton{obj=AltoholicFrame_ResetButton}
-	self:skinButton{obj=AltoholicFrame_SearchButton}
 
 	for i = 1, 9 do -- menu items
 		obj = _G["AltoholicTabSummaryMenuItem"..i]
@@ -47,12 +42,14 @@ function Skinner:Altoholic()
 		self:skinButton{obj=_G["AltoholicFrameActivityEntry"..i.."Collapse"], mp2=true}
 		self:skinButton{obj=_G["AltoholicFrameBagUsageEntry"..i.."Collapse"], mp2=true}
 		self:skinButton{obj=_G["AltoholicFrameGuildBankTabsEntry"..i.."Collapse"], mp2=true}
+		self:skinButton{obj=_G["AltoholicFrameGuildBankTabsEntry"..i.."UpdateTab"]}
 		self:skinButton{obj=_G["AltoholicFrameGuildMembersEntry"..i.."Collapse"], mp2=true}
 		self:skinButton{obj=_G["AltoholicFrameGuildProfessionsEntry"..i.."Collapse"], mp2=true}
 		self:skinButton{obj=_G["AltoholicFrameQuestsEntry"..i.."Collapse"], mp2=true}
 		self:skinButton{obj=_G["AltoholicFrameRecipesEntry"..i.."Collapse"], mp2=true}
 		self:skinButton{obj=_G["AltoholicFrameSkillsEntry"..i.."Collapse"], mp2=true}
 	end
+	self:skinButton{obj=AltoholicTabSummaryToggleView, mp2=true, plus=true}
 
 	-- Characters tab
 	self:skinDropDown(AltoholicTabCharacters_SelectRealm)
@@ -115,35 +112,6 @@ function Skinner:Altoholic()
 		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)
 	end
-	-- Options tab
-	self:skinButton{obj=AltoholicTabOptionsFrame1_ResetButton}
-	self:skinButton{obj=AltoholicTabOptionsFrame1_ApplyButton}
-	for i = 1, 9 do
-		obj = _G["AltoholicTabOptionsMenuItem"..i]
-		if not obj then break end
-		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(obj)
-	end
-	-- Account Sharing menu panel (buttons and panels)
-	self:skinButton{obj=AltoholicTabOptionsFrame4_InfoButton, x1=-2, x2=2}
-	self:skinButton{obj=AltoholicTabOptionsFrame4_ToggleAll, mp2=true}
-	self:skinButton{obj=AltoholicTabOptionsFrame4_SharedContentInfoButton, x1=-2, x2=2}
-	self:skinScrollBar{obj=AltoholicFrameSharingClientsScrollFrame}
-	self:addSkinFrame{obj=AltoholicFrameSharingClients, kfs=true}
-	self:skinScrollBar{obj=AltoholicFrameSharedContentScrollFrame}
-	for i = 1, 10 do
-		self:skinButton{obj=_G["AltoholicFrameSharedContentEntry"..i.."Collapse"], mp2=true}
-	end
-	self:addSkinFrame{obj=AltoholicFrameSharedContent, kfs=true}
-	self:skinEditBox{obj=AltoholicTabOptionsFrame4_CharNameEditBox, regs={9}}
-	self:skinButton{obj=AltoholicTabOptionsFrame4_AddButton}
-	self:skinButton{obj=AltoholicTabOptionsFrame4_DelButton}
-
-	-- Calendar panel
-	self:skinDropDown{obj=AltoholicTabOptionsFrame6_WarningType1}
-	self:skinDropDown{obj=AltoholicTabOptionsFrame6_WarningType2}
-	self:skinDropDown{obj=AltoholicTabOptionsFrame6_WarningType3}
-	self:skinDropDown{obj=AltoholicTabOptionsFrame6_WarningType4}
 
 -->>-- Tabs
 	for i = 1, 9 do
@@ -178,6 +146,20 @@ function Skinner:Altoholic()
 		self:SecureHookScript(AltoTooltip, "OnShow", function(this)
 			self:skinTooltip(AltoTooltip)
 		end)
+	end
+
+-->>-- Account Sharing option menu panel (buttons and panels)
+	-- make sure icons are visible by changing their draw layer
+	AltoholicAccountSharingOptionsIconNever:SetDrawLayer("OVERLAY")
+	AltoholicAccountSharingOptionsIconAsk:SetDrawLayer("OVERLAY")
+	AltoholicAccountSharingOptionsIconAuto:SetDrawLayer("OVERLAY")
+	self:skinScrollBar{obj=AltoholicFrameSharingClientsScrollFrame}
+	self:addSkinFrame{obj=AltoholicFrameSharingClients}
+	self:skinScrollBar{obj=AltoholicFrameSharedContentScrollFrame}
+	self:addSkinFrame{obj=AltoholicFrameSharedContent}
+	self:skinButton{obj=AltoholicAccountSharingOptions_ToggleAll, mp2=true}
+	for i = 1, 10 do
+		self:skinButton{obj=_G["AltoholicFrameSharedContentEntry"..i.."Collapse"], mp2=true}
 	end
 
 -->>-- Account Sharing frame

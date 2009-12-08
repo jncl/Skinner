@@ -4,7 +4,7 @@ function Skinner:ArkInventory()
 
 	-- stop frames being painted
 	ArkInventory.Frame_Main_Paint = function() end
-	
+
 	local aiFrames = {"Title", "Search", "Container", "Changer", "Status"}
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
 --		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
@@ -63,5 +63,7 @@ function Skinner:ArkInventory()
 	self:skinButton{obj=ARKINV_Frame4ChangerWindowPurchaseInfoPurchaseButton}
 	self:skinButton{obj=ARKINV_Frame4ChangerWindowDepositButton}
 	self:skinButton{obj=ARKINV_Frame4ChangerWindowWithdrawButton}
+-->>-- Bank button
+	self:skinButton{obj=ARKINV_Frame3ChangerWindowPurchaseInfoPurchaseButton}
 
 end
