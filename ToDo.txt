@@ -8,13 +8,44 @@ I - Issue/Bug
 N - New Version
 O - Other change
 S - Skin request
+B - Button(s) Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
 	S	PTR 0.3.0 (10835)
+√		- Button on Raid Panel
 
 x	I	oRA2, reported by Kerecha, 18.11.09
 		- still not skinned
 
 x	I	PhoenixStyle, reported by Kerecha, 19.11.09
 		- the instance specific options panels aren't being skinned (at least not coloseum one)
+
+√	I	xcalc, reported by justcallmefred, 26.11.09
+		- Skinner-b2.10835.3\SkinMe\xcalc.lua:4: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (HandyNotes):208: in function <...e\AddOns\HandyNotes\Libs\AceHook-3.0\AceHook-3.0.lua:115>
+		AceHook-3.0-5 (HandyNotes):341: in function `SecureHook'
+		Skinner-b2.10835.3\SkinMe\xcalc.lua:4: in function <Interface\AddOns\Skinner\SkinMe\xcalc.lua:2>
+		(tail call): ?:
+
+√	I	AucAdvanced, reported by justcallmefred, 26.11.09
+		- Skinner-b2.10835.3\SkinMe\AucAdvanced.lua:80: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (HandyNotes):208: in function <...e\AddOns\HandyNotes\Libs\AceHook-3.0\AceHook-3.0.lua:115>
+		AceHook-3.0-5 (HandyNotes):341: in function `SecureHook'
+		Skinner-b2.10835.3\SkinMe\AucAdvanced.lua:80: in function <Interface\AddOns\Skinner\SkinMe\AucAdvanced.lua:2 >
+		(tail call): ?:
+	
+√	S	zfpoison, requested by Kerecha, 27.11.09
+
+√	I	Duplicate Hook, reported by justcallmefred, 29.11.09
+		- AceHook-3.0-5 (HandyNotes):177: Attempting to rehook already active hook BattlefieldMinimap_UpdateOpacity.
+		AceHook-3.0-5 (HandyNotes):177: in function <...e\AddOns\HandyNotes\Libs\AceHook-3.0\AceHook-3.0.lua:115>
+		AceHook-3.0-5 (HandyNotes):341: in function `SecureHook'
+		Skinner-b2.10835.3\UIElements1.lua:804: in function <Interface\AddOns\Skinner\UIElements1.lua:800>
+		(tail call): ?:
+
+√	I	AucAdvanced, reported by jh032008, 7.12.09
+		- Skinner-b2.10835.3\SkinMe\AucAdvanced.lua:37: attempt to index global 'AucAdvSearchUiAuctionFrame' (a nil value)
+	
+√	B	Altoholic, reported by Kerecha, 8.12.09
+		- New version of altoholic has an unskinned optionsbutton on the summary tab (this also overlaps with the calendar month selection)
