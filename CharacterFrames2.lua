@@ -150,6 +150,9 @@ function Skinner:FriendsFrame()
 	self:skinButton{obj=RaidFrameConvertToRaidButton}
 	self:moveObject{obj=RaidFrameRaidInfoButton, x=50}
 	self:skinButton{obj=RaidFrameRaidInfoButton}
+	if self.isPatch then
+		self:skinButton{obj=RaidFrameNotInRaidRaidBrowserButton}
+	end
 
 	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
@@ -303,6 +306,41 @@ function Skinner:RaidUI()
 	if not self.db.profile.RaidUI or self.initialized.RaidUI then return end
 	self.initialized.RaidUI = true
 
+	local function skinPulloutFrames()
+
+		for i = 1, NUM_RAID_PULLOUT_FRAMES 	do
+			local rp = _G["RaidPullout"..i]
+			if not self.skinFrame[rp] then
+				self:skinDropDown{obj=_G["RaidPullout"..i.."DropDown"]}
+				_G["RaidPullout"..i.."MenuBackdrop"]:SetBackdrop(nil)
+				self:addSkinFrame{obj=rp, ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
+			end
+		end
+
+	end
+	-- hook this to skin the pullout group frames
+	self:SecureHook("RaidPullout_GetFrame", function(...)
+		skinPulloutFrames()
+	end)
+	-- hook this to skin the pullout character frames
+	self:SecureHook("RaidPullout_Update", function(pullOutFrame)
+		local pfName = pullOutFrame:GetName()
+--		self:Debug("RP_U: [%s, %s]", pullOutFrame, pfName)
+		for i = 1, pullOutFrame.numPulloutButtons do
+			local pfBName = pfName.."Button"..i
+			local pfBObj = _G[pfBName]
+			if not self.skinFrame[pfBObj] then
+				for _, v in pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
+					local sBar = _G[pfBName..v]
+					self:keepRegions(sBar, {3})
+					self:glazeStatusBar(sBar, 0)
+				end
+				self:addSkinFrame{obj=_G[pfBName.."TargetTargetFrame"], ft=ftype, x1=4, x2=-4, y2=2}
+				self:addSkinFrame{obj=pfBObj, ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
+			end
+		end
+	end)
+
 	self:moveObject{obj=RaidFrameAddMemberButton, x=-30}
 	self:skinButton{obj=RaidFrameAddMemberButton}
 	self:skinButton{obj=RaidFrameReadyCheckButton}
@@ -325,36 +363,9 @@ function Skinner:RaidUI()
 		local tabName = _G["RaidClassButton"..i]
 		self:removeRegions(tabName, {1}) -- N.B. region 2 is the icon, 3 is the text
 	end
-	-- hook this to skin the pullout group frames
-	self:SecureHook("RaidPullout_GetFrame", function(filterID)
-		for i = 1, NUM_RAID_PULLOUT_FRAMES 	do
-			local rp = _G["RaidPullout"..i]
-			if not self.skinFrame[rp] then
-				self:skinDropDown{obj=_G["RaidPullout"..i.."DropDown"]}
-				_G["RaidPullout"..i.."MenuBackdrop"]:SetBackdrop(nil)
-				self:addSkinFrame{obj=rp, ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
-			end
-		end
-	end)
-	-- hook this to skin the pullout character frames
-	self:SecureHook("RaidPullout_Update", function(pullOutFrame)
-		local pfName = pullOutFrame:GetName()
---		self:Debug("RP_U: [%s, %s]", pullOutFrame, pfName)
-		for i = 1, pullOutFrame.numPulloutButtons do
-			local pfBName = pfName.."Button"..i
-			local pfBObj = _G[pfBName]
-			if not self.skinFrame[pfBObj] then
-				for _, v in pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
-					local sBar = _G[pfBName..v]
-					self:keepRegions(sBar, {3})
-					self:glazeStatusBar(sBar, 0)
-				end
-				self:addSkinFrame{obj=_G[pfBName.."TargetTargetFrame"], ft=ftype, x1=4, x2=-4, y2=2}
-				self:addSkinFrame{obj=pfBObj, ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
-			end
-		end
-	end)
 
+	-- skin existing frames
+	skinPulloutFrames()
 
 end
 
