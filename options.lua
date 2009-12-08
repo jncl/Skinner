@@ -1784,6 +1784,7 @@ function Skinner:Options()
 	else
 		optTables.General.args["WatchFrame"] = {
 			type = "toggle",
+			order = 10,
 			name = self.L["Watch Frame"],
 			desc = self.L["Toggle the skin of the Watch Frame"],
 		}
