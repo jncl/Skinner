@@ -993,6 +993,10 @@ function Skinner:DebugTools()
 		self:skinTooltip(FrameStackTooltip)
 	end
 
+	-- skin Basic Script Errors Frame
+	self:skinAllButtons{obj=BasicScriptErrors}
+	self:addSkinFrame{obj=BasicScriptErrors, kfs=true, ft=ftype}
+
 end
 
 if Skinner.isPatch then
@@ -1027,16 +1031,10 @@ if Skinner.isPatch then
 		self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
 		self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
 		-- Specific List subFrame
-		if self.db.profile.Buttons then
-			-- hook to manage changes to button textures
-			self:SecureHook("LFDQueueFrameSpecificList_Update", function()
-				for i = 1, NUM_LFD_CHOICE_BUTTONS do
-					self:checkTex(_G["LFDQueueFrameSpecificListButton"..i].expandOrCollapseButton)
-				end
-			end)
-		end
 		for i = 1, NUM_LFD_CHOICE_BUTTONS do
-			self:skinButton{obj=_G["LFDQueueFrameSpecificListButton"..i].expandOrCollapseButton, mp2=true, x1=4, y1=0, x2=6, y2=-1}
+			local btn = "LFDQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
+			self:skinButton{obj=_G[btn], mp2=true}
+			self:moveObject{obj=_G[btn.."Highlight"], x=-3} -- move highlight to the left
 		end
 		self:skinScrollBar{obj=LFDQueueFrameSpecificListScrollFrame}
 
@@ -1059,7 +1057,7 @@ if Skinner.isPatch then
 				end
 			end)
 		end
-		
+
 	-->>-- LFR Parent Frame/ Queue Frame
 		self:skinButton{obj=self:getChild(LFRParentFrame, 1), cb=true} -- close button
 		LFRQueueFrameLayout:SetAlpha(0)
@@ -1068,16 +1066,10 @@ if Skinner.isPatch then
 		self:skinButton{obj=LFRQueueFrameNoLFRWhileLFDLeaveQueueButton}
 		self:addSkinFrame{obj=LFRParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
 		-- Specific List subFrame
-		if self.db.profile.Buttons then
-			-- hook to manage changes to button textures
-			self:SecureHook("LFRQueueFrameSpecificList_Update", function()
-				for i = 1, NUM_LFR_CHOICE_BUTTONS do
-					self:checkTex(_G["LFRQueueFrameSpecificListButton"..i].expandOrCollapseButton)
-				end
-			end)
-		end
 		for i = 1, NUM_LFR_CHOICE_BUTTONS do
-			self:skinButton{obj=_G["LFRQueueFrameSpecificListButton"..i].expandOrCollapseButton, mp2=true, x1=4, y1=0, x2=6, y2=-1}
+			local btn = "LFRQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
+			self:skinButton{obj=_G[btn], mp2=true}
+			self:moveObject{obj=_G[btn.."Highlight"], x=-3} -- move highlight to the left
 		end
 		self:skinScrollBar{obj=LFRQueueFrameSpecificListScrollFrame}
 
@@ -1089,7 +1081,7 @@ if Skinner.isPatch then
 		self:skinButton{obj=LFRBrowseFrameInviteButton}
 		self:skinButton{obj=LFRBrowseFrameRefreshButton}
 		self:keepFontStrings(LFRBrowseFrame)
-		
+
 	-->>-- Tabs
 		for i = 1, LFRParentFrame.numTabs do
 			local tabObj = _G["LFRParentFrameTab"..i]
@@ -1102,7 +1094,7 @@ if Skinner.isPatch then
 				if self.isTT then self:setInactiveTab(tabSF) end
 			end
 		end
-		
+
 	end
-	
+
 end
