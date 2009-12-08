@@ -1,9 +1,8 @@
-
 local _G = _G
 local ftype = "c"
 local select = select
 
-local ba = 0.15 -- set background alpha
+local ba = 0.25 -- set background alpha
 local lOfs = -9 -- level text offset
 
 local shldTex = [[Interface\AchievementFrame\UI-Achievement-Progressive-Shield]]
@@ -63,6 +62,7 @@ function Skinner:Player()
 	self:moveObject{obj=PlayerRestIcon, y=lOfs} -- covers level text when resting
 	-- remove group indicator textures
 	self:keepFontStrings(PlayerFrameGroupIndicator)
+	self:moveObject{obj=PlayerFrameGroupIndicatorText, y=-1}
 	self:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=37, y1=-7, y2=9}
 
 --	if the player class is a DeathKnight then skin the RuneFrame
