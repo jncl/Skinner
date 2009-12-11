@@ -1,29 +1,18 @@
-local nop = function() end
 
 function Skinner:Tablet()
 	if not self.db.profile.Tooltips.skin then return end
 
-	local qftinfo, tt, frame
+	local frame
 	
 	local function skinTablet()
-
-		if not Skinner.db.profile.TrackerFrame.skin then
-			-- Check for the QuestsFu_Tracker
-			qftinfo = LibStub("Tablet-2.0", true).registry['QuestsFu_Tracker']
-			if qftinfo and qftinfo.tooltip then
-				tt = qftinfo.tooltip
-				tt:SetBackdrop(nil)
-				Skinner.skinned[tt] = true
-			end
-		end
 
 		if Tablet20Frame then
 			frame = Tablet20Frame
 			if not Skinner.skinned[frame] then
 				Skinner:applySkin(frame)
 				-- change these to stop the Backdrop colours from being changed
-				frame.SetBackdropColor = nop
-				frame.SetBackdropBorderColor = nop
+				frame.SetBackdropColor = function() end
+				frame.SetBackdropBorderColor = function() end
 			end
 		end
 
@@ -33,8 +22,8 @@ function Skinner:Tablet()
 			if not Skinner.skinned[frame] then
 				Skinner:applySkin(frame)
 				-- change these to stop the Backdrop colours from being changed
-				frame.SetBackdropColor = nop
-				frame.SetBackdropBorderColor = nop
+				frame.SetBackdropColor = function() end
+				frame.SetBackdropBorderColor = function() end
 			end
 			i = i + 1
 		end

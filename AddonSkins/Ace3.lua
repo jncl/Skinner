@@ -41,7 +41,6 @@ function Skinner:Ace3()
 				kids = nil
 				self:skinButton{obj=obj.button, as=true}
 			elseif objType == "Slider" then
-				obj.editbox.bg:SetAlpha(0)
 				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
 				obj.editbox:SetHeight(20)
 				obj.editbox:SetWidth(60)

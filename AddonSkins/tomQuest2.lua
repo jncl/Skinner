@@ -5,26 +5,64 @@ local ipairs = ipairs
 function Skinner:tomQuest2()
 
 	-- handle tomQuest2 Tracker & Achievements tooltips (frames)
-	if not self.db.profile.TrackerFrame.skin then
+	if not self.db.profile.WatchFrame then
 		self.ignoreLQTT["tomQuest2Tracker"] = true
 		self.ignoreLQTT["tomQuest2Achievements"] = true
 	end
 
+	local tq2 = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true)
+
+	-- hook this to handle collapse buttons
+	if self.db.profile.Buttons then
+		self:RawHook(tq2, "getCollapseButton", function(this)
+			local btn = self.hooks[this].getCollapseButton(this)
+--			self:Debug("getCollapseButton: [%s]", btn)
+			if not self:IsHooked(btn.iconTexture, "SetTexture") then
+				self:RawHook(btn.iconTexture, "SetTexture", function(this, iconTex)
+--					self:Debug("SetTexture: [%s, %s, %s]", btn, this, iconTex)
+					self.hooks[this].SetTexture(this, iconTex)
+					this:SetAlpha(1) -- show texture
+					if not iconTex:find("Icons") then -- it's a m/p button
+						if not btn.skin then self:skinButton{obj=btn, mp3=true, tx=0, ty=0} end
+						this:SetAlpha(0)
+					end
+					if iconTex:find("MinusButton") then
+						btn:SetText(Skinner.minus)
+					elseif iconTex:find("PlusButton") then
+						btn:SetText(Skinner.plus)
+					end
+				end, true)
+			end
+			return btn
+		end, true)
+		self:SecureHook(tq2, "recycleButton", function(this, btn)
+--			self:Debug("recycleButton: [%s, %s, %s]", this, btn, btn.type)
+			if btn.type == "collapse" then
+				btn:SetText("")
+				self:unSkin(btn)
+				btn.skin = nil
+			end
+		end)
+
+	end
 -->>-- Parent Frame
-	local info = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("informations", true)
+	local info = tq2:GetModule("informations", true)
 	if info then
 		self:SecureHook(info, "createLhGUI", function(this)
 			self:skinScrollBar{obj=tomQuest2LhScrollFrame}
+			self:skinAllButtons{obj=tomQuest2LhFrame}
 			self:addSkinFrame{obj=tomQuest2LhFrame}
 			self:Unhook(info, "createLhGUI")
 		end)
 		self:SecureHook(info, "createQlGUI", function(this)
 			self:skinScrollBar{obj=tomQuest2QlScrollFrame}
+			self:skinAllButtons{obj=tomQuest2QlFrame}
 			self:addSkinFrame{obj=tomQuest2QlFrame}
 			self:Unhook(info, "createQlGUI")
 		end)
 		self:SecureHook(info, "lockUnlockQlFrame", function()
 			if tomQuest2ParentFrame then
+				self:skinAllButtons{obj=tomQuest2ParentFrame}
 				self:addSkinFrame{obj=tomQuest2ParentFrame}
 				-- hook these to show/hide the individual skinFrames
 				self:SecureHook(tomQuest2ParentFrame, "Show", function()
@@ -43,8 +81,8 @@ function Skinner:tomQuest2()
 		info.db.profile.borderColor = CopyTable(self.bbColour)
 	end
 
-	local qTrkr = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("questsTracker", true)
-	local aTrkr = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true):GetModule("achievementTracker", true)
+	local qTrkr = tq2:GetModule("questsTracker", true)
+	local aTrkr = tq2:GetModule("achievementTracker", true)
 	-- find the tracker anchors and skin them
 	if qTrkr or aTrkr then
 		local kids = {UIParent:GetChildren()}
@@ -65,19 +103,19 @@ function Skinner:tomQuest2()
 	end
 
 -->>-- Colour the Quest Tracker & Achievement Tracker if required
-	if self.db.profile.TrackerFrame.skin then
-		if qTrkr then
-			qTrkr.db.profile.backDropColor = CopyTable(self.bColour)
-			qTrkr.db.profile.borderColor = CopyTable(self.bbColour)
-		end
-		if aTrkr then
-			aTrkr.db.profile.backDropColor = CopyTable(self.bColour)
-			aTrkr.db.profile.borderColor = CopyTable(self.bbColour)
-			aTrkr.db.profile.statusBarTexture = self.sbTexture
-		end
+	if qTrkr then
+		qTrkr.db.profile.backDropColor = CopyTable(self.bColour)
+		qTrkr.db.profile.borderColor = CopyTable(self.bbColour)
+	end
+	if aTrkr then
+		aTrkr.db.profile.backDropColor = CopyTable(self.bColour)
+		aTrkr.db.profile.borderColor = CopyTable(self.bbColour)
+		aTrkr.db.profile.statusBarTexture = self.db.profile.StatusBar.texture
+		aTrkr:updateAchievementTracker() -- force update
 	end
 
-	local qG = LibStub("AceAddon-3.0"):GetAddon("tomQuest2"):GetModule("questsGivers")
+
+	local qG = tq2:GetModule("questsGivers")
 	-- hook this and change text colour before level number added
 	self:RawHook(qG, "QUEST_GREETING", function(this)
 		for i = 1, MAX_NUM_QUESTS do

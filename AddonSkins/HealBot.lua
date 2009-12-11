@@ -1,5 +1,5 @@
 -- many thanks to acirac for the updated skin
-function Skinner:HealBot() -- version 3.2.2.8
+function Skinner:HealBot() -- version 3.3.0.0
 	if not self.db.profile.Tooltips.skin then return end
 
 -->>--	Tooltips
@@ -36,8 +36,11 @@ function Skinner:HealBot() -- version 3.2.2.8
 		end)
 	end
 
+
+	self:keepFontStrings(HealBot_Options_HealCommMethod)
 	self:keepFontStrings(HealBot_Options_EmergencyFilter)
-	self:keepFontStrings(HealBot_Options_UseHBinHeals)
+	self:keepFontStrings(HealBot_Options_CastButton)
+	self:keepFontStrings(HealBot_Options_ButtonCastMethod)
 	self:keepFontStrings(HealBot_Options_ExtraSort)
 	self:keepFontStrings(HealBot_Options_ExtraSubSort)
 	self:keepFontStrings(HealBot_Options_ExtraOptFrame)
@@ -128,6 +131,7 @@ function Skinner:HealBot() -- version 3.2.2.8
 	self:applySkin(HealBot_Options_CureDispelCleanse, nil)	
 	self:keepFontStrings(HealBot_Options_Skins)
 	self:keepFontStrings(HealBot_Options_Skins2)
+	self:keepFontStrings(HealBot_Options_ShareSkin)
 	self:keepFontStrings(HealBot_Options_Scale)
 	self:applySkin(HealBot_Options_Scale, nil)
 	self:keepFontStrings(HealBot_Options_HeaderFrame)
@@ -160,6 +164,8 @@ function Skinner:HealBot() -- version 3.2.2.8
 	self:skinEditBox(HealBot_Options_Shift, {9})
 	self:skinEditBox(HealBot_Options_Ctrl, {9})
 	self:skinEditBox(HealBot_Options_Alt, {9})
+	self:skinEditBox(HealBot_Options_CtrlShift, {9})
+	self:skinEditBox(HealBot_Options_AltShift, {9})
 	self:skinEditBox(HealBot_Options_NewCDebuff, {9,10})
 	self:skinEditBox(HealBot_Options_NewSkin, {9,10})
 	
