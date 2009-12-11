@@ -113,6 +113,7 @@
 <script file="SkinMe\EasyUnlock.lua"/>
 <script file="SkinMe\EavesDrop.lua"/>
 <script file="SkinMe\EditingUI.lua"/>
+<script file="SkinMe\EggTimer.lua"/>
 <script file="SkinMe\EnchantMe.lua"/>
 <script file="SkinMe\Enchantrix.lua"/>
 <script file="SkinMe\EnchantrixBarker.lua"/>
