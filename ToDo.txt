@@ -12,40 +12,49 @@ B - Button(s) Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-	S	PTR 0.3.0 (10835)
-√		- Button on Raid Panel
-
-x	I	oRA2, reported by Kerecha, 18.11.09
-		- still not skinned
-
-x	I	PhoenixStyle, reported by Kerecha, 19.11.09
-		- the instance specific options panels aren't being skinned (at least not coloseum one)
-
-√	I	xcalc, reported by justcallmefred, 26.11.09
-		- Skinner-b2.10835.3\SkinMe\xcalc.lua:4: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (HandyNotes):208: in function <...e\AddOns\HandyNotes\Libs\AceHook-3.0\AceHook-3.0.lua:115>
-		AceHook-3.0-5 (HandyNotes):341: in function `SecureHook'
-		Skinner-b2.10835.3\SkinMe\xcalc.lua:4: in function <Interface\AddOns\Skinner\SkinMe\xcalc.lua:2>
-		(tail call): ?:
-
-√	I	AucAdvanced, reported by justcallmefred, 26.11.09
-		- Skinner-b2.10835.3\SkinMe\AucAdvanced.lua:80: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (HandyNotes):208: in function <...e\AddOns\HandyNotes\Libs\AceHook-3.0\AceHook-3.0.lua:115>
-		AceHook-3.0-5 (HandyNotes):341: in function `SecureHook'
-		Skinner-b2.10835.3\SkinMe\AucAdvanced.lua:80: in function <Interface\AddOns\Skinner\SkinMe\AucAdvanced.lua:2 >
-		(tail call): ?:
+	O	PTR/patch 3.3.0
+√		- remove all patch/PR checks now and all old code
+√		- consolidated buffs, buffs moving in and out of cb panel
+√		- worldmap now moveable and opacity can be changed
+√		- Achievement Alert Frames not displaying properly
 	
-√	S	zfpoison, requested by Kerecha, 27.11.09
+√	O	Add Background Opacity setting for UnitFrames
 
-√	I	Duplicate Hook, reported by justcallmefred, 29.11.09
-		- AceHook-3.0-5 (HandyNotes):177: Attempting to rehook already active hook BattlefieldMinimap_UpdateOpacity.
-		AceHook-3.0-5 (HandyNotes):177: in function <...e\AddOns\HandyNotes\Libs\AceHook-3.0\AceHook-3.0.lua:115>
-		AceHook-3.0-5 (HandyNotes):341: in function `SecureHook'
-		Skinner-b2.10835.3\UIElements1.lua:804: in function <Interface\AddOns\Skinner\UIElements1.lua:800>
+√	I	Nameplates threat border
+
+√	S	EggTimer, requested by gamemaster128, 9.12.09
+		- Can you skin the prompt that EggTimer makes in CalendarPrompt.lua?
+
+√	I	Tablet, reported by gamemaster128, 9.12.09
+		- Skinner-b2.10958.1\SkinMe\Tablet.lua:10: attempt to index field 'TrackerFrame' (a nil value)
+		Skinner-b2.10958.1\SkinMe\Tablet.lua:51: in function <Skinner\SkinMe\Tablet.lua:3>
 		(tail call): ?:
 
-√	I	AucAdvanced, reported by jh032008, 7.12.09
-		- Skinner-b2.10835.3\SkinMe\AucAdvanced.lua:37: attempt to index global 'AucAdvSearchUiAuctionFrame' (a nil value)
-	
-√	B	Altoholic, reported by Kerecha, 8.12.09
-		- New version of altoholic has an unskinned optionsbutton on the summary tab (this also overlaps with the calendar month selection)
+√	I	Ace3, reported by gamemaster128, 9.12.09
+		- Skinner-b2.10958.1\SkinMe\Ace3.lua:44: attempt to index field 'bg' (a nil value)
+		(tail call): ?:
+		AceConfigDialog-3.0-42:1158: in function <...nfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.lua:1045>
+		AceConfigDialog-3.0-42:1536: in function `FeedGroup'
+		AceConfigDialog-3.0-42:1809: in function `Open'
+		AceConfigDialog-3.0-42:1832: in function <...nfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.lua:1830>
+		(tail call): ?:
+
+	O	HealBot, suuplied by acirac, 9.12.09
+		- new version
+
+?	I	RaidBrowser, reported by Gabriel, 9.12.09
+		- New Raid Browser on the Raid frame needs to be moved up a a little but, it is currently covering the tabs.
+
+√	I	QuestGuru, reported by xtoq, 9.12.09
+		- ..\AddOns\Skinner\SkinMe\QuestGuru.lua line 15:
+		   Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+?	I	Lootcounter, reported by xtoq, 9.12.09
+		- ..\AddOns\Lootcounter\Lootcounter.lua line 1644:
+		   attempt to call method 'SetMultilineIndent' (a nil value)
+
+	I	tomQuest2, reported by Kerecha, 9.12.09
+√		- Skinner-b2.10958.1\SkinMe\tomQuest2.lua:8: attempt to index field 'TrackerFrame' (a nil value)
+		(tail call): ?:
+√		- skin collapse buttons
+√		- skin status bars
