@@ -2,8 +2,8 @@ local _G = _G
 local ftype = "c"
 local select = select
 
-local ba = 0.25 -- set background alpha
-local lOfs = -9 -- level text offset
+local ba -- background alpha setting
+local lOfs = -10 -- level text offset
 
 local shldTex = [[Interface\AchievementFrame\UI-Achievement-Progressive-Shield]]
 local function changeShield(parent)
@@ -34,6 +34,8 @@ function Skinner:UnitFrames()
 
 	local db = self.db.profile.UnitFrames
 
+	ba = self.db.profile.UnitFrames.alpha
+
 	if db.player then self:Player() end
 	if db.target then self:Target() end
 	if db.focus then self:Focus() end
@@ -57,7 +59,7 @@ function Skinner:Player()
 	self:glazeStatusBar(PlayerFrameHealthBar, 0)
 	self:adjHeight{obj=PlayerFrameHealthBar , adj=-1} -- handle bug in PlayerFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	self:glazeStatusBar(PlayerFrameManaBar, 0)
-	-- move level & highlevel down, so they are more visible
+	-- move level & rest icon down, so they are more visible
 	self:moveObject{obj=PlayerLevelText, y=lOfs}
 	self:moveObject{obj=PlayerRestIcon, y=lOfs} -- covers level text when resting
 	-- remove group indicator textures
@@ -110,21 +112,12 @@ end
 
 local function skinToT(parent)
 
-	if not Skinner.isPatch then
-		_G[parent.."Background"]:SetTexture(nil)
-		_G[parent.."Texture"]:SetTexture(nil)
-		-- status bars
-		Skinner:glazeStatusBar(_G[parent.."HealthBar"], 0)
-		Skinner:glazeStatusBar(_G[parent.."ManaBar"], 0)
-		Skinner:moveObject{obj=_G[parent.."Frame"], y=-12}
-	else
-		_G[parent.."Background"]:SetTexture(nil)
-		_G[parent.."TextureFrameTexture"]:SetTexture(nil)
-		-- status bars
-		Skinner:glazeStatusBar(_G[parent.."HealthBar"], 0)
-		Skinner:glazeStatusBar(_G[parent.."ManaBar"], 0)
-		Skinner:moveObject{obj=_G[parent], y=-12}
-	end
+	_G[parent.."Background"]:SetTexture(nil)
+	_G[parent.."TextureFrameTexture"]:SetTexture(nil)
+	-- status bars
+	Skinner:glazeStatusBar(_G[parent.."HealthBar"], 0)
+	Skinner:glazeStatusBar(_G[parent.."ManaBar"], 0)
+	Skinner:moveObject{obj=_G[parent], y=-12}
 
 end
 local eTex = [[Interface\Tooltips\EliteNameplateIcon]]
@@ -138,7 +131,7 @@ function Skinner:Target()
 	local uCat = TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
 	uCat:SetWidth(80)
 	uCat:SetHeight(50)
-	uCat:SetPoint("CENTER", 84, -31)
+	uCat:SetPoint("CENTER", 86, -22 + lOfs)
 
 	-- hook this to show/hide the elite texture
 	self:SecureHook("TargetFrame_CheckClassification", function(this)
@@ -159,11 +152,7 @@ function Skinner:Target()
 	TargetFrameFlash:SetTexture(nil)
 	TargetFrameBackground:SetTexture(nil)
 --	TargetFrameNameBackground:SetTexture(nil) -- used for faction colouring
-	if not self.isPatch then
-		TargetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon mob type
-	else
-		TargetFrameTextureFrameTexture:SetAlpha(0) -- texture file is changed dependant upon mob type
-	end
+	TargetFrameTextureFrameTexture:SetAlpha(0) -- texture file is changed dependant upon mob type
 	-- status bars
 	self:glazeStatusBar(TargetFrameHealthBar, 0)
 	self:adjHeight{obj=TargetFrameHealthBar , adj=-1} -- handle bug in TargetFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
@@ -171,12 +160,7 @@ function Skinner:Target()
 	self:glazeStatusBar(TargetFrameSpellBar, 0)
 	self:removeRegions(TargetFrameNumericalThreat, {3}) -- threat border
 	-- move level & highlevel down, so they are more visible
-	if not self.isPatch then
-		self:moveObject{obj=TargetLevelText, y=lOfs}
-		self:moveObject{obj=TargetHighLevelTexture, y=lOfs} -- elite texture
-	else
-		self:moveObject{obj=TargetFrameTextureFrameLevelText, y=lOfs}
-	end
+	self:moveObject{obj=TargetFrameTextureFrameLevelText, x=2, y=lOfs}
 	-- casting bar
 	TargetFrameSpellBarBorder:SetAlpha(0) -- texture file is changed dependant upon spell type
 --	TargetFrameSpellBarBorderShield:SetAlpha(0) -- used for shield texture
@@ -186,31 +170,24 @@ function Skinner:Target()
 	self:addSkinFrame{obj=TargetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, y1=-7, x2=-37, y2=6}
 
 -->>-- TargetofTarget Frame
-	if not self.isPatch then
-		skinToT("TargetofTarget")
-		self:addSkinFrame{obj=TargetofTargetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
-	else
-		skinToT("TargetFrameToT")
-		self:addSkinFrame{obj=TargetFrameToT, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
-	end
+	skinToT("TargetFrameToT")
+	self:addSkinFrame{obj=TargetFrameToT, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
 
 -->>--Boss Target Frames
-	if self.isPatch then
-		for i = 1, 4 do
-			_G["Boss"..i.."TargetFrameFlash"]:SetTexture(nil)
-			_G["Boss"..i.."TargetFrameBackground"]:SetTexture(nil)
-			_G["Boss"..i.."TargetFrameTextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
-			self:glazeStatusBar(_G["Boss"..i.."TargetFrameHealthBar"], 0)
-			self:glazeStatusBar(_G["Boss"..i.."TargetFrameManaBar"], 0)
-			self:removeRegions(_G["Boss"..i.."TargetFrameNumericalThreat"], {3}) -- threat border
-			self:addSkinFrame{obj=_G["Boss"..i.."TargetFrame"], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=-1,  y1=-14, x2=-72, y2=5}
-			-- create a texture to show Elite dragon
-			local bCat = _G["Boss"..i.."TargetFrameTextureFrame"]:CreateTexture(nil, "BACKGROUND")
-			bCat:SetWidth(80)
-			bCat:SetHeight(50)
-			bCat:SetPoint("CENTER", 30, -21)
-			bCat:SetTexture(eTex)
-		end
+	for i = 1, 4 do
+		_G["Boss"..i.."TargetFrameFlash"]:SetTexture(nil)
+		_G["Boss"..i.."TargetFrameBackground"]:SetTexture(nil)
+		_G["Boss"..i.."TargetFrameTextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
+		self:glazeStatusBar(_G["Boss"..i.."TargetFrameHealthBar"], 0)
+		self:glazeStatusBar(_G["Boss"..i.."TargetFrameManaBar"], 0)
+		self:removeRegions(_G["Boss"..i.."TargetFrameNumericalThreat"], {3}) -- threat border
+		self:addSkinFrame{obj=_G["Boss"..i.."TargetFrame"], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=-1,  y1=-14, x2=-72, y2=5}
+		-- create a texture to show Elite dragon
+		local bCat = _G["Boss"..i.."TargetFrameTextureFrame"]:CreateTexture(nil, "BACKGROUND")
+		bCat:SetWidth(80)
+		bCat:SetHeight(50)
+		bCat:SetPoint("CENTER", 30, -21)
+		bCat:SetTexture(eTex)
 	end
 
 end
@@ -222,21 +199,14 @@ function Skinner:Focus()
 	FocusFrameFlash:SetAlpha(0) -- texture file is changed dependant upon size
 	FocusFrameBackground:SetTexture(nil)
 --	FocusFrameNameBackground:SetTexture(nil) -- used for faction colouring
-	if not self.isPatch then
-		FocusFrameTexture:SetTexture(nil)
-		FocusFrameTextureFrameFullSizeTexture:SetTexture(nil)
-	else
-		FocusFrameTextureFrameTexture:SetAlpha(0) -- texture file is changed dependant upon size
-	end
+	FocusFrameTextureFrameTexture:SetAlpha(0) -- texture file is changed dependant upon size
 	-- status bars
 	self:glazeStatusBar(FocusFrameHealthBar, 0)
 --	self:adjHeight{obj=FocusFrameHealthBar , adj=-1} -- handle bug in FocusFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	self:glazeStatusBar(FocusFrameManaBar, 0)
 	self:glazeStatusBar(FocusFrameSpellBar, 0)
 	self:removeRegions(FocusFrameNumericalThreat, {3}) -- threat border
-	if self.isPatch then
-		self:moveObject{obj=FocusFrameTextureFrameLevelText, y=lOfs}
-	end
+	self:moveObject{obj=FocusFrameTextureFrameLevelText, y=lOfs}
 	-- casting bar
 	FocusFrameSpellBarBorder:SetAlpha(0) -- texture file is changed dependant upon spell type
 --	FocusFrameSpellBarBorderShield:SetAlpha(0) -- used for shield texture
@@ -245,34 +215,11 @@ function Skinner:Focus()
 
 	-- handle different sized frames
 	local x1 ,y1, x2, y2 = 1, -7, -37, 9
-	if not self.isPatch then
-		if not FocusFrame.fullSize then
-	 		x1 ,y1, x2, y2 = 6, 2, -5, 24
-		end
-	end
 	self:addSkinFrame{obj=FocusFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=x1, y1=y1, x2=x2, y2=y2}
 
-	if not self.isPatch then
-		self:SecureHook("FocusFrame_SetFullSize", function(fullSize)
-			self.skinFrame[FocusFrame]:ClearAllPoints()
-			if fullSize then
-				self.skinFrame[FocusFrame]:SetPoint("TOPLEFT", FocusFrame, "TOPLEFT", 1, -7)
-				self.skinFrame[FocusFrame]:SetPoint("BOTTOMRIGHT", FocusFrame, "BOTTOMRIGHT", -37, 9)
-			else
-				self.skinFrame[FocusFrame]:SetPoint("TOPLEFT", FocusFrame, "TOPLEFT", 6, 2)
-				self.skinFrame[FocusFrame]:SetPoint("BOTTOMRIGHT", FocusFrame, "BOTTOMRIGHT", -5, 24)
-			end
-		end)
-	end
-
 -->>-- TargetofFocus Frame
-	if not self.isPatch then
-		skinToT("TargetofFocus")
-		self:addSkinFrame{obj=TargetofFocusFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
-	else
-		skinToT("FocusFrameToT")
-		self:addSkinFrame{obj=FocusFrameToT, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
-	end
+	skinToT("FocusFrameToT")
+	self:addSkinFrame{obj=FocusFrameToT, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
 
 end
 
@@ -335,5 +282,24 @@ function Skinner:Party()
 	self:addSkinFrame{obj=PartyMemberBuffTooltip, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=2, y1=-2, x2=-2, y2=2}
 	-- PartyMemberBackground
 	self:addSkinFrame{obj=PartyMemberBackground, ft=ftype, x1=4, y1=2, x2=1, y2=2}
+
+end
+
+function Skinner:changeUFOpacity()
+
+	local r, g, b, _ = unpack(self.bColour)
+	local a = self.db.profile.UnitFrames.alpha
+
+	for _, uFrame in pairs{"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip"} do
+		self:Debug("changeUFOpacity: [%s, %s]", uFrame, self.skinFrame[_G[uFrame]])
+		self.skinFrame[_G[uFrame]]:SetBackdropColor(r, g, b, a)
+	end
+	for i = 1, MAX_PARTY_MEMBERS do
+		self.skinFrame[_G["PartyMemberFrame"..i]]:SetBackdropColor(r, g, b, a)
+		self.skinFrame[_G["PartyMemberFrame"..i.."PetFrame"]]:SetBackdropColor(r, g, b, a)
+	end
+	for i = 1, 4 do
+		self.skinFrame[_G["Boss"..i.."TargetFrame"]]:SetBackdropColor(r, g, b, a)
+	end
 
 end

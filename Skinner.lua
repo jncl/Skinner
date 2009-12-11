@@ -22,7 +22,7 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0")
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 0.3.0
-Skinner.isPatch = QuestInfoFrame and true or false
+--Skinner.isPatch = QuestInfoFrame and true or false
 -- store player class
 Skinner.uCls = select(2, UnitClass("player"))
 -- store player name
@@ -117,34 +117,23 @@ function Skinner:OnInitialize()
 	-- setup the Addon's options
 	self:Options()
 
-	if self.isPatch then
-		if self.db.profile.AchieveAlert then
-			self.db.profile.AlertFrames = self.db.profile.AchieveAlert
-			self.db.profile.AchieveAlert = nil
-		end
-		if self.db.profile.AchieveFrame then
-			self.db.profile.AchievementUI = self.db.profile.AchieveFrame
-			self.db.profile.AchieveFrame = nil
-		end
-		if self.db.profile.LFGFrame then
-			self.db.profile.LFDFrame = self.db.profile.LFGFrame
-			self.db.profile.LFRFrame = self.db.profile.LFGFrame
-			self.db.profile.LFGFrame = nil
-		end
-		if self.db.profile.TrackerFrame then
-			self.db.profile.WatchFrame = self.db.profile.TrackerFrame.skin
-			self.db.profile.TrackerFrame = nil
-		end
+	-- update changed profile option settings
+	if self.db.profile.AchieveAlert then
+		self.db.profile.AlertFrames = self.db.profile.AchieveAlert
+		self.db.profile.AchieveAlert = nil
 	end
-	-- change the TrackerFrame SV from a boolean to a table
-	if type(self.db.profile.TrackerFrame) == "boolean" then
-		self.db.profile.TrackerFrame = {skin = true, clean = true, glazesb = true}
+	if self.db.profile.AchieveFrame then
+		self.db.profile.AchievementUI = self.db.profile.AchieveFrame
+		self.db.profile.AchieveFrame = nil
 	end
-	-- remove TooltipBorder alpha value, not required anymore
-	if self.db.profile.TooltipBorder.a then self.db.profile.TooltipBorder.a = nil end
-	-- change the QuestLog SV from a table into a boolean
-	if type(self.db.profile.QuestLog) == "table" then
-		self.db.profile.QuestLog = self.db.profile.QuestLog.skin
+	if self.db.profile.LFGFrame then
+		self.db.profile.LFDFrame = self.db.profile.LFGFrame
+		self.db.profile.LFRFrame = self.db.profile.LFGFrame
+		self.db.profile.LFGFrame = nil
+	end
+	if self.db.profile.TrackerFrame then
+		self.db.profile.WatchFrame = self.db.profile.TrackerFrame.skin
+		self.db.profile.TrackerFrame = nil
 	end
 
 	-- register the default background texture
@@ -240,24 +229,15 @@ function Skinner:OnInitialize()
 	self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
 
 	-- these are used to disable frames from being skinned
-	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "GlyphUI", "TalentUI", "DressUpFrame", "AchievementUI", "FriendsFrame", "TradeSkillUI", "TradeFrame", "QuestLog", "RaidUI", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager"}
+	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "GlyphUI", "TalentUI", "DressUpFrame", "AchievementUI", "FriendsFrame", "TradeSkillUI", "TradeFrame", "QuestLog", "RaidUI", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", "AlertFrames"}
 	self.charKeys2 = {}
-	self.npcKeys = {"MerchantFrames", "GossipFrame", "TrainerUI", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "BarbershopUI"}
-	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatConfig", "LootFrame", "StackSplit", "ItemText", "Colours", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "DropDowns", "MinimapButtons", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI", "DebugTools"}
+	self.npcKeys = {"MerchantFrames", "GossipFrame", "TrainerUI", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "BarbershopUI", "QuestInfo"}
+	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatConfig", "LootFrame", "StackSplit", "ItemText", "Colours", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "DropDowns", "MinimapButtons", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI", "DebugTools", "LFDFrame", "LFRFrame"}
 	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "WorldMap", "MainMenuBar"}
 
 	-- optional/patched frames
 	if IsMacClient() then tinsert(self.uiKeys1, "MovieProgress") end
 	if self.isPTR then tinsert(self.uiKeys1, "FeedbackUI") end
-	if not self.isPatch then
-		tinsert(self.charKeys1, "AchievementAlerts")
-		tinsert(self.uiKeys1, "LFGFrame")
-	else
-		tinsert(self.charKeys1, "AlertFrames")
-		tinsert(self.npcKeys, "QuestInfo")
-		tinsert(self.uiKeys1, "LFDFrame")
-		tinsert(self.uiKeys1, "LFRFrame")
-	end
 
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
@@ -2059,6 +2039,15 @@ end
 function Skinner:skinUsingBD2(obj)
 
 	self:skinUsingBD{obj=obj, size=2}
+
+end
+
+function Skinner:unSkin(obj)
+
+	obj:SetBackdrop(nil)
+	obj:SetBackdropColor(nil)
+	obj:SetBackdropBorderColor(nil)
+	if obj.tfade then obj.tfade:SetTexture(nil) end
 
 end
 

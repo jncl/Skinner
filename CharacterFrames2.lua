@@ -150,9 +150,7 @@ function Skinner:FriendsFrame()
 	self:skinButton{obj=RaidFrameConvertToRaidButton}
 	self:moveObject{obj=RaidFrameRaidInfoButton, x=50}
 	self:skinButton{obj=RaidFrameRaidInfoButton}
-	if self.isPatch then
-		self:skinButton{obj=RaidFrameNotInRaidRaidBrowserButton}
-	end
+	self:skinButton{obj=RaidFrameNotInRaidRaidBrowserButton}
 
 	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
@@ -234,21 +232,6 @@ function Skinner:QuestLog()
 	if not self.db.profile.QuestLog or self.initialized.QuestLog then return end
 	self.initialized.QuestLog = true
 
-	if not self.isPatch then
-		self:SecureHook("QuestLog_UpdateQuestDetails", function(...)
-			for i = 1, MAX_OBJECTIVES do
-				local r, g, b = _G["QuestLogObjective"..i]:GetTextColor()
-				_G["QuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
-			end
-	        QuestLogTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			local r, g, b = QuestLogRequiredMoneyText:GetTextColor()
-			QuestLogRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
-			QuestLogRewardTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
-			QuestLogItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			QuestLogItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end)
-	end
-
 	self:keepFontStrings(QuestLogCount)
 	self:keepFontStrings(EmptyQuestLogFrame)
 
@@ -273,32 +256,21 @@ function Skinner:QuestLog()
 	for i = 1, #QuestLogScrollFrame.buttons do
 		self:skinButton{obj=QuestLogScrollFrame.buttons[i], mp=true}
 	end
-	if not self.isPatch then
-		QuestLogQuestTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestLogObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestLogSuggestedGroupNum:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestLogDescriptionTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestLogQuestDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
 	self:skinScrollBar{obj=QuestLogScrollFrame}
 	self:skinButton{obj=QuestLogFrameCloseButton, cb=true}
 	self:skinButton{obj=QuestLogFrameAbandonButton}
 	self:skinButton{obj=QuestLogFrameTrackButton}
 	self:skinButton{obj=QuestLogFramePushQuestButton}
 	self:skinButton{obj=QuestLogFrameCancelButton}
-	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=6}
+	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
 
 -->>-- QuestLogDetail Frame
-	if self.isPatch then
-		QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	end
+	QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=QuestLogDetailScrollFrame}
 	self:skinButton{obj=QuestLogDetailFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=QuestLogDetailFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=1}
 
-	if self.isPatch then
-		self:QuestInfo()
-	end
+	self:QuestInfo()
 
 end
 
@@ -341,8 +313,8 @@ function Skinner:RaidUI()
 		end
 	end)
 
-	self:moveObject{obj=RaidFrameAddMemberButton, x=-30}
-	self:skinButton{obj=RaidFrameAddMemberButton}
+	self:moveObject{obj=RaidFrameRaidBrowserButton, x=-30}
+	self:skinButton{obj=RaidFrameRaidBrowserButton}
 	self:skinButton{obj=RaidFrameReadyCheckButton}
 	self:moveObject{obj=RaidGroup1,x= 2}
 
@@ -389,7 +361,7 @@ function Skinner:Buffs()
 		for i= 1, BUFF_MAX_DISPLAY do
 			local bb = _G["BuffButton"..i]
 			if bb and not Skinner.sBut[bb] then
-				Skinner:addSkinButton{obj=bb}
+				Skinner:addSkinButton{obj=bb, parent=bb}
 				Skinner:moveObject{obj=_G["BuffButton"..i.."Duration"], y=-2}
 			end
 		end
@@ -416,11 +388,8 @@ function Skinner:Buffs()
 	self:addSkinButton{obj=TempEnchant2}
 	self:moveObject{obj=_G["TempEnchant2".."Duration"], y=-2}
 
-	if self.isPatch then
---		ConsolidatedBuffs
---		ConsolidatedBuffsTooltip
---		ConsolidatedBuffsContainer
-	end
+	-- Consolidated Buffs
+	self:addSkinFrame{obj=ConsolidatedBuffsTooltip}
 
 end
 
@@ -476,63 +445,17 @@ function Skinner:VehicleMenuBar()
 end
 
 function Skinner:WatchFrame()
-	if not self.isPatch then
-		if not self.db.profile.TrackerFrame.skin
-		and not self.db.profile.TrackerFrame.clean
-		and not self.db.profile.TrackerFrame.glazesb then return end
-	else
-		if not self.db.profile.WatchFrame then return end
-	end
+	if not self.db.profile.WatchFrame then return end
 
-	if self.db.profile.WatchFrame or self.db.profile.TrackerFrame.skin then
+	if self.db.profile.WatchFrame then
 		self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
 		self:SecureHook(WatchFrameLines, "Show", function(this) Skinner.skinFrame[this]:Show() end)
 		self:SecureHook(WatchFrameLines, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
 	end
 
-	if not self.isPatch then
-		if self.db.profile.TrackerFrame.clean then
-			self:keepFontStrings(WatchFrame)
-			-- add textures to the resize buttons
-			-- texture and TexCoord code taken from Jobber (Author - Maul)
-			WatchFrameRightResizeThumb:SetWidth(12)
-			WatchFrameRightResizeThumb:SetHeight(12)
-			WatchFrameRightResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
-			self:getRegion(WatchFrameRightResizeThumb, 1):SetTexCoord(0.653125, 0.753125, 0.653125, 0.753125)
-			WatchFrameLeftResizeThumb:SetWidth(12)
-			WatchFrameLeftResizeThumb:SetHeight(12)
-			WatchFrameLeftResizeThumb:SetNormalTexture([[Interface\Buttons\UI-AutoCastableOverlay]])
-			self:getRegion(WatchFrameLeftResizeThumb, 1):SetTexCoord(0.753125, 0.653125, 0.653125, 0.753125)
-		end
-		if self.db.profile.TrackerFrame.glazesb then
-			local function glazeWatchLines()
-
-				-- glaze Achievement StatusBars
-				for i = 1, #WATCHFRAME_ACHIEVEMENTLINES do
-					local sBar = WATCHFRAME_ACHIEVEMENTLINES[i].statusBar
-					if not self.sbGlazed[sBar] then
-						Skinner:removeRegions(sBar, {3, 4, 5}) -- remove textures
-						Skinner:glazeStatusBar(sBar, 0)
-					end
-				end
-
-			end
-
-			-- hook this to manage the tracked Achievements
-			if not self:IsHooked("WatchFrame_Update") then
-				self:SecureHook("WatchFrame_Update", function(this)
-					glazeWatchLines()
-				end)
-			end
-
-			-- glaze any existing lines
-			glazeWatchLines()
-		end
-	end
-
 end
 
-function Skinner:GearManager() -- inc in PaperDollFrame.xml
+function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 	if not self.db.profile.GearManager then return end
 
 	self:skinButton{obj=GearManagerDialogClose, cb=true}

@@ -6,11 +6,11 @@ function Skinner:BlizzardFrames()
 --	self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
-		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", -- cf1
+		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
 		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "WorldState", "DropDowns", -- uie1
-		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "PVPFrame", -- uie2
+		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "PVPFrame", "LFDFrame", "LFRFrame", -- uie2
 		"UnitFrames", -- uf
 	}
 
@@ -18,14 +18,6 @@ function Skinner:BlizzardFrames()
 	if IsMacClient() then self:checkAndRun("MovieProgress") end
 	if self.isPTR then tinsert(blizzFrames, "FeedbackUI") else self.FeedbackUI = nil end -- uie1
 	-- patched frames
-	if not self.isPatch then
-		tinsert(blizzFrames, "AchievementAlerts") -- cf1
-		tinsert(blizzFrames, "LFGFrame") -- uie2
-	else
-		tinsert(blizzFrames, "AlertFrames") -- cf1
-		tinsert(blizzFrames, "LFDFrame") -- uie2
-		tinsert(blizzFrames, "LFRFrame") -- uie2
-	end
 
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
@@ -76,7 +68,7 @@ function Skinner:AddonFrames()
 
 	-- skin the QuestLog if EQL3 or QuestGuru aren't loaded
 	-- N.B. Do it here as other Addons use the QuestLog size
-	 if not IsAddOnLoaded("EQL3") and not IsAddOnLoaded("QuestGuru") then self:checkAndRun("QuestLog") end
+	 if not IsAddOnLoaded("EQL3") --[[and not IsAddOnLoaded("QuestGuru")--]] then self:checkAndRun("QuestLog") end
 
 	-- skin the CastingBar if Quartz isn't loaded
 	if not IsAddOnLoaded("Quartz") then self:checkAndRun("CastingBar") end

@@ -215,12 +215,8 @@ function Skinner:PVPFrame()
 	self:keepFontStrings(PVPBattlegroundFrame)
 	self:skinScrollBar{obj=PVPBattlegroundFrameInstanceScrollFrame}
 	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
-	if not self.isPatch then
-		PVPBattlegroundFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	else
-		self:skinSlider{obj=PVPBattlegroundFrameZoneDescriptionScrollFrameScrollBar}
-		PVPBattlegroundFrameZoneDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
+	self:skinSlider{obj=PVPBattlegroundFrameZoneDescriptionScrollFrameScrollBar}
+	PVPBattlegroundFrameZoneDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
 	self:skinButton{obj=PVPBattlegroundFrameCancelButton}
 	self:skinButton{obj=PVPBattlegroundFrameJoinButton}
@@ -408,11 +404,7 @@ function Skinner:DressUpFrame()
 end
 
 function Skinner:AchievementUI()
-	if not self.isPatch then
-		if not self.db.profile.AchieveFrame or self.initialized.AchievementUI then return end
-	else
-		if not self.db.profile.AchievementUI or self.initialized.AchievementUI then return end
-	end
+	if not self.db.profile.AchievementUI or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
 
 	-- hook this to manage textured tabs
@@ -639,88 +631,48 @@ function Skinner:AchievementUI()
 
 end
 
-if not Skinner.isPatch then
-	function Skinner:AchievementAlerts()
-		if not self.db.profile.AchieveAlert or self.initialized.AchieveAlert then return end
-		self.initialized.AchieveAlert = true
+function Skinner:AlertFrames()
+	if not self.db.profile.AlertFrames or self.initialized.AlertFrames then return end
+	self.initialized.AlertFrames = true
 
-		local aafName = "AchievementAlertFrame"
+	local aafName = "AchievementAlertFrame"
 
-		local function skinAlertFrames()
+	local function skinAlertFrames()
 
-			for i = 1, 2 do
-				local aaFrame = _G[aafName..i]
-				if aaFrame and not Skinner.skinFrame[aaFrame] then
-					_G[aafName..i.."Background"]:Hide() -- hide this as Alpha value is changed in Bliz code (3.1.2)
-					_G[aafName..i.."Unlocked"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-					Skinner:keepRegions(_G[aafName..i.."Icon"], {3}) -- icon texture
-					Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
-				end
+		for i = 1, MAX_ACHIEVEMENT_ALERTS do
+			local aaFrame = _G[aafName..i]
+			if aaFrame and not Skinner.skinFrame[aaFrame] then
+				_G[aafName..i.."Background"]:Hide() -- hide this as Alpha value is changed in Bliz code (3.1.2)
+				_G[aafName..i.."Unlocked"]:SetTextColor(Skinner.BTr, Skinner.BTg, Skinner.BTb)
+				local icon = _G[aafName..i.."Icon"]
+				icon:DisableDrawLayer("BACKGROUND")
+				icon:DisableDrawLayer("BORDER")
+				icon:DisableDrawLayer("OVERLAY")
+				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16, aso={ng=true}} -- no gradient as animation changes the alpha value of it
 			end
-
 		end
-
-		-- check for both frames now, (3.1.2) as the Bliz code changed
-		if not AchievementAlertFrame1 or AchievementAlertFrame2 then
-			self:SecureHook(aafName.."_ShowAlert", function(id)
-				skinAlertFrames()
-				if AchievementAlertFrame2 then
-					self:Unhook(aafName.."_ShowAlert")
-				end
-			end)
-		end
-
-		-- just in case they have already been created
-		skinAlertFrames()
 
 	end
-else
-	function Skinner:AlertFrames()
-		if not self.db.profile.AlertFrames or self.initialized.AlertFrames then return end
-		self.initialized.AlertFrames = true
-
-		local aafName = "AchievementAlertFrame"
-
-		local function skinAlertFrames()
-
-			for i = 1, 2 do
-				local aaFrame = _G[aafName..i]
-				if aaFrame and not Skinner.skinFrame[aaFrame] then
-					_G[aafName..i.."Background"]:Hide() -- hide this as Alpha value is changed in Bliz code (3.1.2)
-					_G[aafName..i.."Unlocked"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-					-- on the PTR an unknown texture is displayed with Alpha(1) covering the text
-					-- on the PTR there are two sets of icon textures created
-					local icon = _G[aafName..i.."Icon"]
-					icon:DisableDrawLayer("BACKGROUND")
-					icon:DisableDrawLayer("BORDER")
-					icon:DisableDrawLayer("OVERLAY")
-					Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
-				end
+	-- check for both Achievement Alert frames now, (3.1.2) as the Bliz code changed
+	if not AchievementAlertFrame1 or AchievementAlertFrame2 then
+		self:SecureHook(aafName.."_GetAlertFrame", function()
+			skinAlertFrames()
+			if AchievementAlertFrame2 then
+				self:Unhook(aafName.."_GetAlertFrame")
 			end
-
-		end
-
-		-- check for both Achievement Alert frames now, (3.1.2) as the Bliz code changed
-		if not AchievementAlertFrame1 or AchievementAlertFrame2 then
-			self:SecureHook(aafName.."_ShowAlert", function(id)
-				skinAlertFrames()
-				if AchievementAlertFrame2 then
-					self:Unhook(aafName.."_ShowAlert")
-				end
-			end)
-		end
-		-- skin any existing Achievement Alert Frames
-		skinAlertFrames()
-
-		-- hook dungeon rewards function
-		self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, index)
-			frame:DisableDrawLayer("OVERLAY") -- border texture
 		end)
-
-		-- dungeon completion alert frame will already exist, only 1 atm (0.3.0.10772)
-		DungeonCompletionAlertFrame1:DisableDrawLayer("BORDER") -- border textures
-		_G["DungeonCompletionAlertFrame1Reward1"]:DisableDrawLayer("OVERLAY") -- border texture
-		Skinner:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, x1=5, y1=-13, x2=-5, y2=4}
-
 	end
+	-- skin any existing Achievement Alert Frames
+	skinAlertFrames()
+
+	-- hook dungeon rewards function
+	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, index)
+		frame:DisableDrawLayer("OVERLAY") -- border texture
+	end)
+
+	-- dungeon completion alert frame will already exist, only 1 atm (0.3.0.10772)
+	DungeonCompletionAlertFrame1:DisableDrawLayer("BORDER") -- border textures
+	_G["DungeonCompletionAlertFrame1Reward1"]:DisableDrawLayer("OVERLAY") -- border texture
+	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, x1=5, y1=-13, x2=-5, y2=4, aso={ng=true}} -- no gradient as animation changes the alpha value of it
+
 end

@@ -400,10 +400,8 @@ function Skinner:GroupLoot()
 			_G[glf.."RollButton"]:SetPoint("RIGHT", _G[glf.."PassButton"], "LEFT", 5, -5)
 			_G[glf.."GreedButton"]:ClearAllPoints()
 			_G[glf.."GreedButton"]:SetPoint("RIGHT", _G[glf.."RollButton"], "LEFT", 0, 0)
-			if self.isPatch then
-				_G[glf.."DisenchantButton"]:ClearAllPoints()
-				_G[glf.."DisenchantButton"]:SetPoint("RIGHT", _G[glf.."GreedButton"], "LEFT", 0, 0)
-			end
+			_G[glf.."DisenchantButton"]:ClearAllPoints()
+			_G[glf.."DisenchantButton"]:SetPoint("RIGHT", _G[glf.."GreedButton"], "LEFT", 0, 0)
 			_G[glf.."Timer"]:SetWidth(_G[glf.."Timer"]:GetWidth() - 28)
 			self:moveObject{obj=_G[glf.."Timer"], x=-3}
 			self:addSkinFrame{obj=glfo, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
@@ -474,8 +472,7 @@ function Skinner:ColorPicker()
 
 -->>-- Opacity Frame, used by BattlefieldMinimap amongst others
 	OpacityFrame:SetBackdrop(nil)
-	self:skinSlider(OpacityFrameSlider)
---	self:skinButton{obj=OpacityFrameCloseButton, cb=true} -- ?
+	self:skinSlider{obj=OpacityFrameSlider, size=3}
 	self:addSkinFrame{obj=OpacityFrame, ft=ftype}
 
 end
@@ -484,50 +481,66 @@ function Skinner:WorldMap()
 	if not self.db.profile.WorldMap.skin or self.initialized.WorldMap then return end
 	self.initialized.WorldMap = true
 
+	-- handle size change
+	self:SecureHook("WorldMap_ToggleSizeUp", function()
+		self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
+		self.skinFrame[WorldMapFrame]:ClearAllPoints()
+		self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 102, 1)
+		self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
+	end)
+	self:SecureHook("WorldMap_ToggleSizeDown", function()
+		self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
+		self.skinFrame[WorldMapFrame]:ClearAllPoints()
+		self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 12, -12)
+		self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -20, -10)
+	end)
+	self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
+		self:Debug("WorldMapFrame_ToggleAdvanced: [%s]", WORLDMAP_OPTIONS.advanced)
+		if not WORLDMAP_OPTIONS.advanced then -- frame not moveable
+			x1, y1, x2, y2 = 12, -12, -20, -10
+		else -- frame moveable
+			x1, y1, x2, y2 = 0, 2, 0, 0
+		end
+		self.skinFrame[WorldMapFrame]:ClearAllPoints()
+		self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", x1, y1)
+		self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", x2, y2)
+	end)
+
+	-- textures removed as they are shown and alphas are changed
+	WorldMapFrameMiniBorderLeft:SetTexture(nil)
+	WorldMapFrameMiniBorderRight:SetTexture(nil)
+
 	self:skinDropDown{obj=WorldMapContinentDropDown}
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
-	if self.isPatch then
-		-- handle size change
-		self:SecureHook("WorldMap_ToggleSizeUp", function()
-			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
-			self.skinFrame[WorldMapFrame]:ClearAllPoints()
-			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 102, 1)
-			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
-		end)
-		self:SecureHook("WorldMap_ToggleSizeDown", function()
-			WorldMapFrameMiniBorderLeft:SetAlpha(0)
-			WorldMapFrameMiniBorderRight:SetAlpha(0)
-			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
-			self.skinFrame[WorldMapFrame]:ClearAllPoints()
-			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 2, 2)
-			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 0, 0)
-		end)
-		self:skinScrollBar{obj=WorldMapQuestScrollFrame}
-		self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
-		self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
-		if WorldMapFrame.sizedDown then
-			self:skinButton{obj=WorldMapFrameCloseButton, cb=true, tx=0}
-		else
-			self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
-		end
+	self:skinButton{obj=WorldMapZoomOutButton}
+	if WorldMapFrame.sizedDown then
+		self:skinButton{obj=WorldMapFrameCloseButton, cb=true, tx=0}
 	else
 		self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
 	end
-	self:skinButton{obj=WorldMapZoomOutButton}
+	self:skinScrollBar{obj=WorldMapQuestScrollFrame}
+	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
+	self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
+
+	--[[
+		TODO Handle Moveable World Map
+	--]]
 
 	-- handle different map addons being loaded or fullscreen required
-	if self.db.profile.WorldMap.size == 2 or IsAddOnLoaded("Mapster") then
+	if self.db.profile.WorldMap.size == 2 --[[or IsAddOnLoaded("Mapster")--]] then
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
 	elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
 		local x1, y1, x2, y2 = 102, 1, -102, 1
-		if self.isPatch then
-			if WorldMapFrame.sizedDown then
-				x1, y1, x2, y2 = 2, 2, 0, 0
-			else
-				y2 = 1
+		if WorldMapFrame.sizedDown then
+			if not WORLDMAP_OPTIONS.advanced then -- frame not moveable
+				x1, y1, x2, y2 = 12, -12, -20, -10
+			else -- frame moveable
+				x1, y1, x2, y2 = 0, 2, 0, 0
 			end
+		else
+			y2 = 1
 		end
 		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
 	end
@@ -538,26 +551,21 @@ function Skinner:WorldMap()
 		self:SecureHookScript(WorldMapTooltip, "OnShow", function(this)
 			self:skinTooltip(this)
 		end)
-		if self.isPatch then
-			if self.db.profile.Tooltips.style == 3 then
-				WorldMapCompareTooltip1:SetBackdrop(self.Backdrop[1])
-				WorldMapCompareTooltip2:SetBackdrop(self.Backdrop[1])
-				WorldMapCompareTooltip3:SetBackdrop(self.Backdrop[1])
-			end
-			self:SecureHookScript(WorldMapCompareTooltip1, "OnShow", function(this)
-				self:skinTooltip(this)
-			end)
-			self:SecureHookScript(WorldMapCompareTooltip2, "OnShow", function(this)
-				self:skinTooltip(this)
-			end)
-			self:SecureHookScript(WorldMapCompareTooltip3, "OnShow", function(this)
-				self:skinTooltip(this)
-			end)
+		if self.db.profile.Tooltips.style == 3 then
+			WorldMapCompareTooltip1:SetBackdrop(self.Backdrop[1])
+			WorldMapCompareTooltip2:SetBackdrop(self.Backdrop[1])
+			WorldMapCompareTooltip3:SetBackdrop(self.Backdrop[1])
 		end
+		self:SecureHookScript(WorldMapCompareTooltip1, "OnShow", function(this)
+			self:skinTooltip(this)
+		end)
+		self:SecureHookScript(WorldMapCompareTooltip2, "OnShow", function(this)
+			self:skinTooltip(this)
+		end)
+		self:SecureHookScript(WorldMapCompareTooltip3, "OnShow", function(this)
+			self:skinTooltip(this)
+		end)
 	end
-
-	-- skin Mapster button on WorldMap frame
-	if IsAddOnLoaded("Mapster") then self:skinButton{obj=MapsterOptionsButton} end
 
 end
 
@@ -565,7 +573,7 @@ function Skinner:HelpFrame()
 	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
 	self.initialized.HelpFrame = true
 
-	local hfTitle = self:getRegion(HelpFrame, self.isPatch and 11 or 8)
+	local hfTitle = self:getRegion(HelpFrame, 11)
 	local kbTitle = self:getRegion(KnowledgeBaseFrame, 2)
 	-- hook these to manage frame titles
 	self:SecureHook("HelpFrame_ShowFrame", function(key)
@@ -605,9 +613,7 @@ function Skinner:HelpFrame()
 	KnowledgeBaseFrameDivider2:Hide()
 	self:skinButton{obj=KnowledgeBaseFrameGMTalk}
 	self:skinButton{obj=KnowledgeBaseFrameReportIssue}
-	if self.isPatch then
-		self:skinButton{obj=KnowledgeBaseFrameLag}
-	end
+	self:skinButton{obj=KnowledgeBaseFrameLag}
 	self:skinButton{obj=KnowledgeBaseFrameStuck}
 	self:skinButton{obj=KnowledgeBaseFrameCancel}
 	self:skinButton{obj=KnowledgeBaseFrameEditTicket}
@@ -621,15 +627,13 @@ function Skinner:HelpFrame()
 -->>-- Report an Issue panel
 	self:skinButton{obj=HelpFrameReportIssueOpenTicket}
 	self:skinButton{obj=HelpFrameReportIssueCancel}
-	if self.isPatch then
-		self:skinButton{obj=HelpFrameLagLoot}
-		self:skinButton{obj=HelpFrameLagAuctionHouse}
-		self:skinButton{obj=HelpFrameLagMail}
-		self:skinButton{obj=HelpFrameLagChat}
-		self:skinButton{obj=HelpFrameLagMovement}
-		self:skinButton{obj=HelpFrameLagSpell}
-		self:skinButton{obj=HelpFrameLagCancel}
-	end
+	self:skinButton{obj=HelpFrameLagLoot}
+	self:skinButton{obj=HelpFrameLagAuctionHouse}
+	self:skinButton{obj=HelpFrameLagMail}
+	self:skinButton{obj=HelpFrameLagChat}
+	self:skinButton{obj=HelpFrameLagMovement}
+	self:skinButton{obj=HelpFrameLagSpell}
+	self:skinButton{obj=HelpFrameLagCancel}
 -->>-- Character Stuck panel
 	self:skinButton{obj=HelpFrameStuckStuck}
 	self:skinButton{obj=HelpFrameStuckOpenTicket}
@@ -649,28 +653,16 @@ end
 function Skinner:Tutorial()
 	if not self.db.profile.Tutorial then return end
 
-	if not self.isPatch then
-		self:skinButton{obj=TutorialFrameOkayButton}
-		self:addSkinFrame{obj=TutorialFrame, ft=ftype}
-	else
-		TutorialFrame:DisableDrawLayer("BACKGROUND")
-		TutorialFrame:DisableDrawLayer("BORDER")
-		TutorialTextBorder:SetAlpha(0)
-		self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
-		self:skinButton{obj=self:getChild(TutorialFrame, 5), cb=true} -- close button, last child
-		self:skinButton{obj=TutorialFrameOkayButton}
-		self:addSkinFrame{obj=TutorialFrame, ft=ftype, x1=10, y1=-11, x2=1}
-	end
+	TutorialFrame:DisableDrawLayer("BACKGROUND")
+	TutorialFrame:DisableDrawLayer("BORDER")
+	TutorialTextBorder:SetAlpha(0)
+	self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
+	self:skinButton{obj=self:getChild(TutorialFrame, 5), cb=true} -- close button, last child
+	self:skinButton{obj=TutorialFrameOkayButton}
+	self:addSkinFrame{obj=TutorialFrame, ft=ftype, x1=10, y1=-11, x2=1}
 
 	-- skin the alert button(s)
-	if not self.isPatch then
-		for i = 1, 10 do
-			local tfabObj = _G["TutorialFrameAlertButton"..i]
-			self:addSkinButton{obj=tfabObj, parent=tfabObj, x1=-2, y1=2, x2=1, y2=1}
-		end
-	else
-		self:addSkinButton{obj=_G["TutorialFrameAlertButton"], parent=_G["TutorialFrameAlertButton"], x1=-3, y1=5, x2=5, y2=-3}
-	end
+	self:addSkinButton{obj=_G["TutorialFrameAlertButton"], parent=_G["TutorialFrameAlertButton"], x1=-3, y1=5, x2=5, y2=-3}
 
 end
 
