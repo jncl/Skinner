@@ -64,7 +64,7 @@ function Skinner:Defaults()
 		Buffs           = true,
 		AchievementUI	= true,
 		VehicleMenuBar	= true,
-		WatchFrame		= true,
+		WatchFrame		= false,
 		GearManager		= true,
 		AlertFrames		= true,
 		-- UI Frames

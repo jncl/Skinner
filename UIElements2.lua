@@ -937,21 +937,17 @@ function Skinner:LFDFrame()
 
 	-- LFD DungeonReady Popup a.k.a. ReadyCheck
 	self:addSkinFrame{obj=LFDDungeonReadyStatus, kfs=true, ft=ftype}
+	self:skinAllButtons{obj=LFDDungeonReadyDialog}
 	self:addSkinFrame{obj=LFDDungeonReadyDialog, kfs=true, ft=ftype}
-	self:skinButton{obj=LFDDungeonReadyDialogEnterDungeonButton}
-	self:skinButton{obj=LFDDungeonReadyDialogLeaveQueueButton}
 	LFDDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
 	LFDDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
 	-- LFD RoleCheck Popup
+	self:skinAllButtons{obj=LFDRoleCheckPopup}
 	self:addSkinFrame{obj=LFDRoleCheckPopup, kfs=true, ft=ftype}
-	self:skinButton{obj=LFDRoleCheckPopupAcceptButton}
 	-- Search Status Frame
 	self:addSkinFrame{obj=LFDSearchStatus, ft=ftype}
 	-- LFD Parent Frame
-	self:skinButton{obj=self:getChild(LFDParentFrame, 1), cb=true} -- close button
-	self:skinButton{obj=LFDQueueFrameFindGroupButton}
-	self:skinButton{obj=LFDQueueFrameCancelButton}
-	self:skinButton{obj=LFDQueueFrameNoLFDWhileLFRLeaveQueueButton}
+	self:skinAllButtons{obj=LFDParentFrame}
 	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
 	-- Portrait
 	LFDParentFramePortraitTexture:SetAlpha(0)
@@ -992,9 +988,7 @@ function Skinner:LFRFrame()
 -->>-- LFR Parent Frame/ Queue Frame
 	self:skinButton{obj=self:getChild(LFRParentFrame, 1), cb=true} -- close button
 	LFRQueueFrameLayout:SetAlpha(0)
-	self:skinButton{obj=LFRQueueFrameFindGroupButton}
-	self:skinButton{obj=LFRQueueFrameAcceptCommentButton}
-	self:skinButton{obj=LFRQueueFrameNoLFRWhileLFDLeaveQueueButton}
+	self:skinAllButtons{obj=LFRParentFrame}
 	self:addSkinFrame{obj=LFRParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
 	-- Specific List subFrame
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
@@ -1008,9 +1002,7 @@ function Skinner:LFRFrame()
 	self:skinDropDown{obj=LFRBrowseFrameRaidDropDown}
 	self:skinFFColHeads("LFRBrowseFrameColumnHeader", 7, 6) -- 6 is the icon texture
 	self:skinScrollBar{obj=LFRBrowseFrameListScrollFrame}
-	self:skinButton{obj=LFRBrowseFrameSendMessageButton}
-	self:skinButton{obj=LFRBrowseFrameInviteButton}
-	self:skinButton{obj=LFRBrowseFrameRefreshButton}
+	self:skinAllButtons{obj=LFRBrowseFrame}
 	self:keepFontStrings(LFRBrowseFrame)
 
 -->>-- Tabs

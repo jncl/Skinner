@@ -1453,6 +1453,9 @@ function Skinner:skinButton(opts)
 
 	if not opts.obj then return end
 
+	-- don't skin it twice
+	if self.sBut[opts.obj] then return end
+
 	if opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... or derivatives]
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
@@ -1589,15 +1592,8 @@ local function __skinAllButtons(opts)
 		elseif Skinner:isButton(child, true) then
 			Skinner:skinButton{obj=child, cb=true}
 		else
-			local grandkids = {child:GetChildren()}
-			for _, grandchild in ipairs(grandkids) do
-				if Skinner:isButton(grandchild) then
-					Skinner:skinButton{obj=grandchild, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, tx=opts.tx, ty=opts.ty}
-				elseif Skinner:isButton(child, true) then
-					Skinner:skinButton{obj=child, cb=true}
-				end
-			end
-			grandkids = nil
+			opts.obj=child
+			__skinAllButtons(opts)
 		end
 	end
 	kids = nil

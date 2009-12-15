@@ -481,30 +481,48 @@ function Skinner:WorldMap()
 	if not self.db.profile.WorldMap.skin or self.initialized.WorldMap then return end
 	self.initialized.WorldMap = true
 
-	-- handle size change
-	self:SecureHook("WorldMap_ToggleSizeUp", function()
-		self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
-		self.skinFrame[WorldMapFrame]:ClearAllPoints()
-		self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 102, 1)
-		self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
-	end)
-	self:SecureHook("WorldMap_ToggleSizeDown", function()
-		self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
-		self.skinFrame[WorldMapFrame]:ClearAllPoints()
-		self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 12, -12)
-		self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -20, -10)
-	end)
-	self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
-		self:Debug("WorldMapFrame_ToggleAdvanced: [%s]", WORLDMAP_OPTIONS.advanced)
-		if not WORLDMAP_OPTIONS.advanced then -- frame not moveable
-			x1, y1, x2, y2 = 12, -12, -20, -10
-		else -- frame moveable
-			x1, y1, x2, y2 = 0, 2, 0, 0
+	if not IsAddOnLoaded("Mapster") then
+		-- handle size change
+		self:SecureHook("WorldMap_ToggleSizeUp", function()
+			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
+			self.skinFrame[WorldMapFrame]:ClearAllPoints()
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 102, 1)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
+		end)
+		self:SecureHook("WorldMap_ToggleSizeDown", function()
+			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
+			self.skinFrame[WorldMapFrame]:ClearAllPoints()
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 12, -12)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -20, -10)
+		end)
+		self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
+			self:Debug("WorldMapFrame_ToggleAdvanced: [%s]", WORLDMAP_OPTIONS.advanced)
+			if not WORLDMAP_OPTIONS.advanced then -- frame not moveable
+				x1, y1, x2, y2 = 12, -12, -20, -10
+			else -- frame moveable
+				x1, y1, x2, y2 = 0, 2, 0, 0
+			end
+			self.skinFrame[WorldMapFrame]:ClearAllPoints()
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", x1, y1)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", x2, y2)
+		end)
+		-- handle different map addons being loaded or fullscreen required
+		if self.db.profile.WorldMap.size == 2 then
+			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
+		elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
+			local x1, y1, x2, y2 = 102, 1, -102, 1
+			if WorldMapFrame.sizedDown then
+				if not WORLDMAP_OPTIONS.advanced then -- frame not moveable
+					x1, y1, x2, y2 = 12, -12, -20, -10
+				else -- frame moveable
+					x1, y1, x2, y2 = 0, 2, 0, 0
+				end
+			else
+				y2 = 1
+			end
+			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
-		self.skinFrame[WorldMapFrame]:ClearAllPoints()
-		self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", x1, y1)
-		self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", x2, y2)
-	end)
+	end
 
 	-- textures removed as they are shown and alphas are changed
 	WorldMapFrameMiniBorderLeft:SetTexture(nil)
@@ -523,27 +541,6 @@ function Skinner:WorldMap()
 	self:skinScrollBar{obj=WorldMapQuestScrollFrame}
 	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
 	self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
-
-	--[[
-		TODO Handle Moveable World Map
-	--]]
-
-	-- handle different map addons being loaded or fullscreen required
-	if self.db.profile.WorldMap.size == 2 --[[or IsAddOnLoaded("Mapster")--]] then
-		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
-	elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
-		local x1, y1, x2, y2 = 102, 1, -102, 1
-		if WorldMapFrame.sizedDown then
-			if not WORLDMAP_OPTIONS.advanced then -- frame not moveable
-				x1, y1, x2, y2 = 12, -12, -20, -10
-			else -- frame moveable
-				x1, y1, x2, y2 = 0, 2, 0, 0
-			end
-		else
-			y2 = 1
-		end
-		self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
-	end
 
 -->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then

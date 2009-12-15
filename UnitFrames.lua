@@ -65,7 +65,7 @@ function Skinner:Player()
 	-- remove group indicator textures
 	self:keepFontStrings(PlayerFrameGroupIndicator)
 	self:moveObject{obj=PlayerFrameGroupIndicatorText, y=-1}
-	self:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=37, y1=-7, y2=9}
+	self:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=37, y1=-7, y2=6}
 
 --	if the player class is a DeathKnight then skin the RuneFrame
 	if self.uCls == "DEATHKNIGHT" then
@@ -120,12 +120,40 @@ local function skinToT(parent)
 	Skinner:moveObject{obj=_G[parent], y=-12}
 
 end
-local eTex = [[Interface\Tooltips\EliteNameplateIcon]]
-local reTex = [[Interface\AddOns\Skinner\textures\RareEliteNameplateIcon]]
-local rTex = [[Interface\AddOns\Skinner\textures\RareNameplateIcon]]
+
+local function skinUFrame(frame)
+
+	_G[frame.."Flash"]:SetAlpha(0) -- texture file is changed dependant upon size
+	_G[frame.."Background"]:SetTexture(nil)
+--	<frame>NameBackground:SetTexture(nil) -- used for faction colouring
+	_G[frame.."TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
+	-- status bars
+	Skinner:glazeStatusBar(_G[frame.."HealthBar"], 0)
+	Skinner:adjHeight{obj=_G[frame.."HealthBar"] , adj=-1} -- handle bug in <frame> XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
+	Skinner:glazeStatusBar(_G[frame.."ManaBar"], 0)
+	Skinner:glazeStatusBar(_G[frame.."SpellBar"], 0)
+	Skinner:removeRegions(_G[frame.."NumericalThreat"], {3}) -- threat border
+	-- move level & highlevel down, so they are more visible
+	Skinner:moveObject{obj=_G[frame.."TextureFrameLevelText"], x=2, y=lOfs}
+	-- casting bar
+	_G[frame.."SpellBarBorder"]:SetAlpha(0) -- texture file is changed dependant upon spell type
+--	<frame>SpellBarBorderShield:SetAlpha(0) -- used for shield texture
+	changeShield(_G[frame.."SpellBar"])
+	changeFlash(_G[frame.."SpellBar"])
+
+	Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, y1=-7, x2=-37, y2=6}
+
+-->>-- TargetofTarget Frame
+	skinToT(frame.."ToT")
+	Skinner:addSkinFrame{obj=_G[frame.."ToT"], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+
+end
+
 function Skinner:Target()
 	if self.initialized.Target then return end
 	self.initialized.Target = true
+
+	skinUFrame("TargetFrame")
 
 	-- create a texture to show UnitClassification
 	local uCat = TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
@@ -138,40 +166,16 @@ function Skinner:Target()
 		local classification = UnitClassification("target")
 --		self:Debug("TF_CC: [%s]", classification)
 		if classification == "worldboss" then
-			uCat:SetTexture(eTex)
+			uCat:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		elseif classification == "rareelite" then
-			uCat:SetTexture(reTex)
+			uCat:SetTexture([[Interface\AddOns\Skinner\textures\RareEliteNameplateIcon]])
 		elseif classification == "elite" then
-			uCat:SetTexture(eTex)
+			uCat:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		elseif classification == "rare" then
-			uCat:SetTexture(rTex)
+			uCat:SetTexture([[Interface\AddOns\Skinner\textures\RareNameplateIcon]])
 		else uCat:SetTexture(nil)
 		end
 	end)
-
-	TargetFrameFlash:SetTexture(nil)
-	TargetFrameBackground:SetTexture(nil)
---	TargetFrameNameBackground:SetTexture(nil) -- used for faction colouring
-	TargetFrameTextureFrameTexture:SetAlpha(0) -- texture file is changed dependant upon mob type
-	-- status bars
-	self:glazeStatusBar(TargetFrameHealthBar, 0)
-	self:adjHeight{obj=TargetFrameHealthBar , adj=-1} -- handle bug in TargetFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
-	self:glazeStatusBar(TargetFrameManaBar, 0)
-	self:glazeStatusBar(TargetFrameSpellBar, 0)
-	self:removeRegions(TargetFrameNumericalThreat, {3}) -- threat border
-	-- move level & highlevel down, so they are more visible
-	self:moveObject{obj=TargetFrameTextureFrameLevelText, x=2, y=lOfs}
-	-- casting bar
-	TargetFrameSpellBarBorder:SetAlpha(0) -- texture file is changed dependant upon spell type
---	TargetFrameSpellBarBorderShield:SetAlpha(0) -- used for shield texture
-	changeShield(TargetFrameSpellBar)
-	changeFlash(TargetFrameSpellBar)
-
-	self:addSkinFrame{obj=TargetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, y1=-7, x2=-37, y2=6}
-
--->>-- TargetofTarget Frame
-	skinToT("TargetFrameToT")
-	self:addSkinFrame{obj=TargetFrameToT, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
 
 -->>--Boss Target Frames
 	for i = 1, 4 do
@@ -196,30 +200,7 @@ function Skinner:Focus()
 	if self.initialized.Focus then return end
 	self.initialized.Focus = true
 
-	FocusFrameFlash:SetAlpha(0) -- texture file is changed dependant upon size
-	FocusFrameBackground:SetTexture(nil)
---	FocusFrameNameBackground:SetTexture(nil) -- used for faction colouring
-	FocusFrameTextureFrameTexture:SetAlpha(0) -- texture file is changed dependant upon size
-	-- status bars
-	self:glazeStatusBar(FocusFrameHealthBar, 0)
---	self:adjHeight{obj=FocusFrameHealthBar , adj=-1} -- handle bug in FocusFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
-	self:glazeStatusBar(FocusFrameManaBar, 0)
-	self:glazeStatusBar(FocusFrameSpellBar, 0)
-	self:removeRegions(FocusFrameNumericalThreat, {3}) -- threat border
-	self:moveObject{obj=FocusFrameTextureFrameLevelText, y=lOfs}
-	-- casting bar
-	FocusFrameSpellBarBorder:SetAlpha(0) -- texture file is changed dependant upon spell type
---	FocusFrameSpellBarBorderShield:SetAlpha(0) -- used for shield texture
-	changeShield(FocusFrameSpellBar)
-	changeFlash(FocusFrameSpellBar)
-
-	-- handle different sized frames
-	local x1 ,y1, x2, y2 = 1, -7, -37, 9
-	self:addSkinFrame{obj=FocusFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=x1, y1=y1, x2=x2, y2=y2}
-
--->>-- TargetofFocus Frame
-	skinToT("FocusFrameToT")
-	self:addSkinFrame{obj=FocusFrameToT, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+	skinUFrame("FocusFrame")
 
 end
 

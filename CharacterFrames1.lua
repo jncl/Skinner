@@ -308,8 +308,8 @@ function Skinner:SpellBookFrame()
 	end
 -->>-- Tabs (side)
 	for i = 1, MAX_SKILLLINE_TABS do
-		local tabName = _G["SpellBookSkillLineTab"..i]
-		self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
+		local tabObj = _G["SpellBookSkillLineTab"..i]
+		self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
 	end
 
 end
