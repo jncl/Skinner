@@ -12,49 +12,29 @@ B - Button(s) Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-	O	PTR/patch 3.3.0
-√		- remove all patch/PR checks now and all old code
-√		- consolidated buffs, buffs moving in and out of cb panel
-√		- worldmap now moveable and opacity can be changed
-√		- Achievement Alert Frames not displaying properly
-	
-√	O	Add Background Opacity setting for UnitFrames
+√	S	Vendorizer, requested by gamemaster128, 11.12.09
 
-√	I	Nameplates threat border
+√	S	Mapster, requested by sirtyface, 11.12.09
 
-√	S	EggTimer, requested by gamemaster128, 9.12.09
-		- Can you skin the prompt that EggTimer makes in CalendarPrompt.lua?
+	I	AucAdvanced, reported by Gabriel, 12.12.09
+√		- new module Glypher
+		- latest prewiew version of AuctionAdvanced Version: 5.8.4568, skin is throwing multiple errors.
 
-√	I	Tablet, reported by gamemaster128, 9.12.09
-		- Skinner-b2.10958.1\SkinMe\Tablet.lua:10: attempt to index field 'TrackerFrame' (a nil value)
-		Skinner-b2.10958.1\SkinMe\Tablet.lua:51: in function <Skinner\SkinMe\Tablet.lua:3>
-		(tail call): ?:
+√	B	LFG, reported by Kerecha, 13.12.09
+		- cancel button (when u confirm ur role when grp is getting replacements)
 
-√	I	Ace3, reported by gamemaster128, 9.12.09
-		- Skinner-b2.10958.1\SkinMe\Ace3.lua:44: attempt to index field 'bg' (a nil value)
-		(tail call): ?:
-		AceConfigDialog-3.0-42:1158: in function <...nfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.lua:1045>
-		AceConfigDialog-3.0-42:1536: in function `FeedGroup'
-		AceConfigDialog-3.0-42:1809: in function `Open'
-		AceConfigDialog-3.0-42:1832: in function <...nfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.lua:1830>
-		(tail call): ?:
+√	I	Dominos, reported by Grelian, 13.12.09
 
-	O	HealBot, suuplied by acirac, 9.12.09
-		- new version
+√	B/S	TooManyAddons, requested by toin7, 13.12.09
 
-?	I	RaidBrowser, reported by Gabriel, 9.12.09
-		- New Raid Browser on the Raid frame needs to be moved up a a little but, it is currently covering the tabs.
+	I	tomQuest2, reported by X-buZZ
+√		- change skinning of panels (done by LibQTip skin) so they are skinned if the watchframe should be skinned
+√		- force update of tracker panels if UI buttons are to be skinned
 
-√	I	QuestGuru, reported by xtoq, 9.12.09
-		- ..\AddOns\Skinner\SkinMe\QuestGuru.lua line 15:
-		   Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+√	S	PhoenixStyle, requested by toin7, 14.12.09
+		- new Icecrown module
 
-?	I	Lootcounter, reported by xtoq, 9.12.09
-		- ..\AddOns\Lootcounter\Lootcounter.lua line 1644:
-		   attempt to call method 'SetMultilineIndent' (a nil value)
+√	S	Tabbed Dungeon Browser (tabDB), requested by griddark, 15.12.09
 
-	I	tomQuest2, reported by Kerecha, 9.12.09
-√		- Skinner-b2.10958.1\SkinMe\tomQuest2.lua:8: attempt to index field 'TrackerFrame' (a nil value)
-		(tail call): ?:
-√		- skin collapse buttons
-√		- skin status bars
+?	I	Waterfall, reported by Antimattern, 15.12.09
+		- e.g. Bartender4, options not being displayed
