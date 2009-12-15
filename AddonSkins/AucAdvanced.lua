@@ -91,7 +91,7 @@ function Skinner:AucAdvanced()
 				self:Unhook(lib, "MakeGuiConfig")
 			end)
 		end
-		-- remove button for the ItemPriceFilter
+		-- skin the remove button for the ItemPriceFilter
 		local lib = sUI.Filters["ItemPrice"]
 		if lib then
 			self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
@@ -165,6 +165,18 @@ function Skinner:AucAdvanced()
 		self:skinButton{obj=autosellframe.bagList}
 		self:addSkinFrame{obj=autosellframe, kfs=true}
 		self:getRegion(autosellframe, 2):SetAlpha(1) -- make slot texture visible
+	end
+
+	-- Glypher
+	local gly = AucAdvanced.Modules.Util.Glypher
+	if gly then
+		self:SecureHook(gly.Private, "SetupConfigGui", function(this, gui)
+			local frame = gly.Private.frame
+			self:skinButton{obj=frame.refreshButton, as=true} -- just skin it otherwise text is hidden
+			self:skinButton{obj=frame.searchButton, as=true} -- just skin it otherwise text is hidden
+			self:skinButton{obj=frame.skilletButton, as=true} -- just skin it otherwise text is hidden
+			self:Unhook(gly.Private, "SetupConfigGui")
+		end)
 	end
 
 	--	configure button on AH frame

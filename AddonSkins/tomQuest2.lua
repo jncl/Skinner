@@ -4,14 +4,10 @@ local ipairs = ipairs
 
 function Skinner:tomQuest2()
 
-	-- handle tomQuest2 Tracker & Achievements tooltips (frames)
-	if not self.db.profile.WatchFrame then
-		self.ignoreLQTT["tomQuest2Tracker"] = true
-		self.ignoreLQTT["tomQuest2Achievements"] = true
-	end
-
 	local tq2 = LibStub("AceAddon-3.0"):GetAddon("tomQuest2", true)
 
+	local qTrkr = tq2:GetModule("questsTracker", true)
+	local aTrkr = tq2:GetModule("achievementTracker", true)
 	-- hook this to handle collapse buttons
 	if self.db.profile.Buttons then
 		self:RawHook(tq2, "getCollapseButton", function(this)
@@ -43,9 +39,16 @@ function Skinner:tomQuest2()
 				btn.skin = nil
 			end
 		end)
-
+		-- force existing buttons to be skinned
+		if qTrkr then
+			qTrkr:updateQuestsTracker() -- force update
+		end
+		if aTrkr then
+			aTrkr:updateAchievementTracker() -- force update
+		end
 	end
--->>-- Parent Frame
+
+	-- Parent Frame
 	local info = tq2:GetModule("informations", true)
 	if info then
 		self:SecureHook(info, "createLhGUI", function(this)
@@ -81,8 +84,6 @@ function Skinner:tomQuest2()
 		info.db.profile.borderColor = CopyTable(self.bbColour)
 	end
 
-	local qTrkr = tq2:GetModule("questsTracker", true)
-	local aTrkr = tq2:GetModule("achievementTracker", true)
 	-- find the tracker anchors and skin them
 	if qTrkr or aTrkr then
 		local kids = {UIParent:GetChildren()}
@@ -102,18 +103,22 @@ function Skinner:tomQuest2()
 		kids = nil
 	end
 
--->>-- Colour the Quest Tracker & Achievement Tracker if required
-	if qTrkr then
-		qTrkr.db.profile.backDropColor = CopyTable(self.bColour)
-		qTrkr.db.profile.borderColor = CopyTable(self.bbColour)
-	end
-	if aTrkr then
-		aTrkr.db.profile.backDropColor = CopyTable(self.bColour)
-		aTrkr.db.profile.borderColor = CopyTable(self.bbColour)
-		aTrkr.db.profile.statusBarTexture = self.db.profile.StatusBar.texture
-		aTrkr:updateAchievementTracker() -- force update
-	end
-
+	-- skin the Quest & Achievement Trackers if required
+	if self.db.profile.WatchFrame then
+		if qTrkr then
+			qTrkr.db.profile.backDropColor = CopyTable(self.bColour)
+			qTrkr.db.profile.borderColor = CopyTable(self.bbColour)
+		end
+		if aTrkr then
+			aTrkr.db.profile.backDropColor = CopyTable(self.bColour)
+			aTrkr.db.profile.borderColor = CopyTable(self.bbColour)
+			aTrkr.db.profile.statusBarTexture = self.db.profile.StatusBar.texture
+			aTrkr:updateAchievementTracker() -- force update
+		end
+	else
+		self.ignoreLQTT["tomQuest2Tracker"] = true
+		self.ignoreLQTT["tomQuest2Achievements"] = true
+	end	
 
 	local qG = tq2:GetModule("questsGivers")
 	-- hook this and change text colour before level number added
