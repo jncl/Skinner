@@ -215,10 +215,11 @@
 <script file="SkinMe\Ludwig.lua"/>
 <script file="SkinMe\Luggage.lua"/>
 <script file="SkinMe\MacroBank.lua"/>
+<script file="SkinMe\MacroBrokerGUI.lua"/>
 <script file="SkinMe\MageEatDrinkAid.lua"/>
 <script file="SkinMe\MailTo.lua"/>
-<script file="SkinMe\MacroBrokerGUI.lua"/>
 <script file="SkinMe\MakeRocketGoNow.lua"/>
+<script file="SkinMe\Mapster.lua"/>
 <!-- <script file="SkinMe\MCP.lua"/> -->
 <!-- <script file="SkinMe\MetaMap.lua"/> -->
 <script file="SkinMe\MinimapButtonFrame.lua"/>
@@ -321,6 +322,7 @@
 <script file="SkinMe\SuperMacro.lua"/>
 <script file="SkinMe\SW_Stats.lua"/>
 <script file="SkinMe\SystemMessageControlTool.lua"/>
+<script file="SkinMe\tabDB.lua"/>
 <script file="SkinMe\Tablet.lua"/>
 <script file="SkinMe\Talented.lua"/>
 <script file="SkinMe\Tankadin.lua"/>
@@ -340,6 +342,7 @@
 <script file="SkinMe\TitanExitGame.lua"/>
 <script file="SkinMe\tomQuest2.lua"/>
 <script file="SkinMe\TomTom.lua"/>
+<script file="SkinMe\TooManyAddons.lua"/>
 <script file="SkinMe\Toons.lua"/>
 <script file="SkinMe\TotemCaddy.lua"/>
 <script file="SkinMe\TourGuide.lua"/>
@@ -353,6 +356,7 @@
 <script file="SkinMe\VanasKoS.lua"/>
 <script file="SkinMe\vBagnon.lua"/>
 <!-- <script file="SkinMe\Vendor.lua"/> -->
+<script file="SkinMe\Vendorizer.lua"/>
 <script file="SkinMe\VendorSearch.lua"/>
 <script file="SkinMe\Violation.lua"/>
 <script file="SkinMe\Visor2GUI.lua"/>
