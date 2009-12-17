@@ -12,29 +12,32 @@ B - Button(s) Skin request
 
 ≈	I	Change RawHook functions that do nothing to use nop function instead
 
-√	S	Vendorizer, requested by gamemaster128, 11.12.09
-
-√	S	Mapster, requested by sirtyface, 11.12.09
-
-	I	AucAdvanced, reported by Gabriel, 12.12.09
-√		- new module Glypher
-		- latest prewiew version of AuctionAdvanced Version: 5.8.4568, skin is throwing multiple errors.
-
-√	B	LFG, reported by Kerecha, 13.12.09
-		- cancel button (when u confirm ur role when grp is getting replacements)
-
-√	I	Dominos, reported by Grelian, 13.12.09
-
-√	B/S	TooManyAddons, requested by toin7, 13.12.09
-
-	I	tomQuest2, reported by X-buZZ
-√		- change skinning of panels (done by LibQTip skin) so they are skinned if the watchframe should be skinned
-√		- force update of tracker panels if UI buttons are to be skinned
-
-√	S	PhoenixStyle, requested by toin7, 14.12.09
-		- new Icecrown module
-
-√	S	Tabbed Dungeon Browser (tabDB), requested by griddark, 15.12.09
+	O	Changed how Blizzard Frame Tabs are handled if TexturedTabs set 
 
 ?	I	Waterfall, reported by Antimattern, 15.12.09
 		- e.g. Bartender4, options not being displayed
+
+	I	UrbanAchiever, reported by Kerecha, 15.12.09
+√		- not being skinned (I hadn't changed the option it checks in the skin)
+	I	Overachiever
+√		- not being skinned (I hadn't changed the option it checks in the skin)
+
+	I	Mapster, reported by jh032008, 15.12.09
+?		- ..\AddOns\Skinner\Skinner.lua line 1223:
+		attempt to index field 'obj' (a nil value)
+		Debug:
+		[C]: ?
+		Skinner\Skinner.lua:1223:
+		Skinner\Skinner.lua:1211
+		Skinner\Skinner.lua:1268: moveObject()
+		Skinner\SkinMe\Mapster.lua:9:
+		Skinner\SkinMe\Mapster.lua:8
+		(tail call): ?
+		[C]: SizeDown()
+		Mapster\Mapster.lua:218: ToggleMapSize()
+		Mapster\Mapster.lua:123:
+		Mapster\Mapster.lua:123
+?		- not being skinned
+
+	S	SexyGroup, requested by Gabriel, 16.12.09
+		- it's an Alpha !
