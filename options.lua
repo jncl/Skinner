@@ -1650,8 +1650,8 @@ function Skinner:Options()
 			set = function(info, value)
 --				self:Debug("UF opts: [%s, %s, %s]", info, value, info[#info])
 				db.UnitFrames[info[#info]] = value
-				if not info[#info] == "alpha" then self:checkAndRun("UnitFrames")
-				else self:checkAndRun("changeUFOpacity") end
+				if info[#info] == "alpha" then self:checkAndRun("changeUFOpacity")
+				else self:checkAndRun("UnitFrames") end
 			end,
 			args = {
 				player = {

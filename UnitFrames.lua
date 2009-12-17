@@ -272,15 +272,21 @@ function Skinner:changeUFOpacity()
 	local a = self.db.profile.UnitFrames.alpha
 
 	for _, uFrame in pairs{"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip"} do
-		self:Debug("changeUFOpacity: [%s, %s]", uFrame, self.skinFrame[_G[uFrame]])
-		self.skinFrame[_G[uFrame]]:SetBackdropColor(r, g, b, a)
+--		self:Debug("changeUFOpacity: [%s, %s]", uFrame, self.skinFrame[_G[uFrame]])
+		if self.skinFrame[_G[uFrame]] then
+			self.skinFrame[_G[uFrame]]:SetBackdropColor(r, g, b, a)
+		end
 	end
 	for i = 1, MAX_PARTY_MEMBERS do
-		self.skinFrame[_G["PartyMemberFrame"..i]]:SetBackdropColor(r, g, b, a)
-		self.skinFrame[_G["PartyMemberFrame"..i.."PetFrame"]]:SetBackdropColor(r, g, b, a)
+		if self.skinFrame[_G["PartyMemberFrame"..i]] then
+			self.skinFrame[_G["PartyMemberFrame"..i]]:SetBackdropColor(r, g, b, a)
+			self.skinFrame[_G["PartyMemberFrame"..i.."PetFrame"]]:SetBackdropColor(r, g, b, a)
+		end
 	end
 	for i = 1, 4 do
-		self.skinFrame[_G["Boss"..i.."TargetFrame"]]:SetBackdropColor(r, g, b, a)
+		if self.skinFrame[_G["Boss"..i.."TargetFrame"]] then
+			self.skinFrame[_G["Boss"..i.."TargetFrame"]]:SetBackdropColor(r, g, b, a)
+		end
 	end
 
 end
