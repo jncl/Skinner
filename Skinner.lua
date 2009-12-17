@@ -292,6 +292,23 @@ function Skinner:OnInitialize()
 	-- shorthand for the TexturedTab profile setting
 	self.isTT = self.db.profile.TexturedTab and true or false
 
+	-- hook to handle textured tabs on Blizzard & other Frames
+	self.tabFrames = {}
+	if self.db.profile.TexturedTab then
+		self:SecureHook("PanelTemplates_SetTab", function(frame, id)
+--			self:Debug("PT_ST: [%s, %s, %s, %s]", frame, id, frame.numTabs or "nil", frame.selectedTab or "nil")
+			if not self.tabFrames[frame] then return end -- ignore frame
+			for i = 1, frame.numTabs do
+				local tabSF = self.skinFrame[_G[frame:GetName().."Tab"..i]]
+				if i == id then
+					self:setActiveTab(tabSF)
+				else
+					self:setInactiveTab(tabSF)
+				end
+			end
+		end)
+	end
+
 end
 
 function Skinner:OnEnable()

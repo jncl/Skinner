@@ -9,20 +9,6 @@ function Skinner:CharacterFrames()
 
 	local cfSubframes = {"PaperDollFrame", "PetPaperDollFrame", "ReputationFrame", "SkillFrame", "TokenFrame"}
 
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("CharacterFrame_ShowSubFrame",function(frameName)
-			for i, v in pairs(cfSubframes) do
-				local tabSF = self.skinFrame[_G["CharacterFrameTab"..i]]
-				if v == frameName then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
-
 	-- skin each sub frame
 	self:checkAndRun("CharacterFrame")
 	for _, v in pairs(cfSubframes) do
@@ -48,6 +34,7 @@ function Skinner:CharacterFrame()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[CharacterFrame] = true end -- add entry as tabs now exist
 
 end
 
@@ -196,17 +183,6 @@ function Skinner:PVPFrame()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
-	if self.isTT then
-		self:SecureHookScript(PVPFrame, "OnShow", function(this)
-			self:setActiveTab(self.skinFrame[PVPParentFrameTab1])
-			self:setInactiveTab(self.skinFrame[PVPParentFrameTab2])
-		end)
-		self:SecureHookScript(PVPBattlegroundFrame, "OnShow", function(this)
-			self:setActiveTab(self.skinFrame[PVPParentFrameTab2])
-			self:setInactiveTab(self.skinFrame[PVPParentFrameTab1])
-		end)
-	end
-
 	self:keepFontStrings(PVPFrame)
 	self:skinButton{obj=PVPParentFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
@@ -240,6 +216,7 @@ function Skinner:PVPFrame()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[PVPParentFrame] = true end -- add entry as tabs now exist
 
 end
 
@@ -325,24 +302,13 @@ end
 function Skinner:TalentUI()
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
-
-	local numTabs = MAX_TALENT_TABS + 1 -- add 1 for the Glyph talent tab
-	local curTab
-	-- hook this to manage textured tabs & hide/show objects when glyph frame shown
+	
+	-- hook this to hide/show objects when glyph frame shown
 	self:SecureHook("TalentFrame_Update", function(this)
-		curTab = this.selectedTab
 		if this == PlayerTalentFrame then
-			for i = 1, numTabs do
-				if self.isTT then
-					local tabSF = self.skinFrame[_G["PlayerTalentFrameTab"..i]]
-					if i == curTab then
-						self:setActiveTab(tabSF)
-					else
-						self:setInactiveTab(tabSF)
-					end
-				end
+			for i = 1, PlayerTalentFrame.numTabs do
 				-- check to see if this is the glyph frame, if so, hide some objects
-				if i == numTabs and i == curTab then
+				if i == PlayerTalentFrame.numTabs and i == PlayerTalentFrame.selectedTab then
 					PlayerTalentFrameTitleText:Hide()
 					PlayerTalentFrameScrollFrame:Hide()
 					PlayerTalentFramePointsBar:Hide()
@@ -369,17 +335,19 @@ function Skinner:TalentUI()
 	self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, x1=10, y1=-12, x2=-31, y2=71}
 
 -->>-- Tabs (bottom)
-	for i = 1, numTabs do
+	for i = 1, PlayerTalentFrame.numTabs do
 		local tabName = _G["PlayerTalentFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		local tabSF = self.skinFrame[tabName]
-		if i == 1 then
+		-- panel opens to last access tab not the first one every time
+		if i == PlayerTalentFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[PlayerTalentFrame] = true end -- add entry as tabs now exist
 -->>-- Tabs (side)
 	for i = 1, 3 do
 		local tabName = _G["PlayerSpecTab"..i]
@@ -406,32 +374,6 @@ end
 function Skinner:AchievementUI()
 	if not self.db.profile.AchievementUI or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
-
-	-- hook this to manage textured tabs
-	if self.isTT then
-		local function changeTT(id)
-
-			for i = 1, AchievementFrame.numTabs do
-				local tabSF = self.skinFrame[_G["AchievementFrameTab"..i]]
-				if i == id then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-
-		end
-		self:SecureHook("AchievementFrameTab_OnClick", function(id)
-			changeTT(id)
-		end)
-		self:SecureHook("AchievementFrameBaseTab_OnClick", function(id)
-			changeTT(id)
-		end)
-		self:SecureHook("AchievementFrameComparisonTab_OnClick", function(id)
-			changeTT(id)
-		end)
-
-	end
 
 	local function skinSB(statusBar, type)
 
@@ -622,12 +564,13 @@ function Skinner:AchievementUI()
 		self:keepRegions(tabName, {7, 8, 9, 10}) -- N.B. region 7, 8 & 9 are highlights, 10 is text
 		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=9, y1=2, x2=-9, y2=-10}
 		local tabSF = self.skinFrame[tabName]
-		if i == 1 then
+		if i == AchievementFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[AchievementFrame] = true end -- add entry as tabs now exist
 
 end
 

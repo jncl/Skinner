@@ -297,20 +297,6 @@ function Skinner:MenuFrames()
 	end
 
 -->>-- Interface
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("InterfaceOptionsFrame_TabOnClick",function()
-			for i = 1, InterfaceOptionsFrame.numTabs do
-				local tabSF = self.skinFrame[_G["InterfaceOptionsFrameTab"..i]]
-				if i == InterfaceOptionsFrame.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
-
 	self:skinButton{obj=InterfaceOptionsFrameDefaults}
 	self:skinButton{obj=InterfaceOptionsFrameOkay}
 	self:skinButton{obj=InterfaceOptionsFrameCancel}
@@ -343,6 +329,7 @@ function Skinner:MenuFrames()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[InterfaceOptionsFrame] = true end -- add entry as tabs now exist
 
 	local function checkKids(obj)
 
@@ -396,6 +383,9 @@ function Skinner:MacroUI()
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
 
+	-- ignore this frame when checking tabs
+	self.frames2ignore[MacroFrame] = true
+
 -->>-- Macro Frame
 	self:skinFFToggleTabs("MacroFrameTab", 2)
 	self:skinScrollBar{obj=MacroButtonScrollFrame}
@@ -431,20 +421,6 @@ end
 function Skinner:MailFrame()
 	if not self.db.profile.MailFrame or self.initialized.MailFrame then return end
 	self.initialized.MailFrame = true
-
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("MailFrameTab_OnClick",function(...)
-			for i = 1, MailFrame.numTabs do
-				local tabSF = self.skinFrame[_G["MailFrameTab"..i]]
-				if i == MailFrame.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
 
 	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, x1=16, y1=-12, x2=-32, y2=69}
 
@@ -508,32 +484,19 @@ function Skinner:MailFrame()
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		local tabSF = self.skinFrame[tabName]
-		if i == 1 then
+		if i == MailFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[MailFrame] = true end -- add entry as tabs now exist
 
 end
 
 function Skinner:AuctionUI()
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
-
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("AuctionFrameTab_OnClick",function(...)
-			for i = 1, AuctionFrame.numTabs do
-				local tabSF = self.skinFrame[_G["AuctionFrameTab"..i]]
-				if i == AuctionFrame.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
 
 	-- hide filter texture when filter is clicked
 	self:SecureHook("FilterButton_SetType", function(button, type, text, isLast)
@@ -609,12 +572,13 @@ function Skinner:AuctionUI()
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		local tabSF = self.skinFrame[tabName]
-		if i == 1 then
+		if i == AuctionFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[AuctionFrame] = true end -- add entry as tabs now exist
 
 end
 
@@ -742,20 +706,6 @@ function Skinner:GuildBankUI()
 	if not self.db.profile.GuildBankUI or self.initialized.GuildBankUI then return end
 	self.initialized.GuildBankUI = true
 
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("GuildBankFrameTab_OnClick",function(...)
-			for i = 1, 4 do
-				local tabSF = self.skinFrame[_G["GuildBankFrameTab"..i]]
-				if i == GuildBankFrame.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
-
 -->>--	Main Frame
 	GuildBankEmblemFrame:Hide()
 	for i = 1, 7 do
@@ -787,17 +737,18 @@ function Skinner:GuildBankUI()
 	end
 
 -->>--	GuildBank Frame Tabs (bottom)
-	for i = 1, 4 do
+	for i = 1, GuildBankFrame.numTabs do
 		local tabName = _G["GuildBankFrameTab"..i]
 		self:keepFontStrings(tabName)
 		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		local tabSF = self.skinFrame[tabName]
-		if i == 1 then
+		if i == GuildBankFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[GuildBankFrame] = true end -- add entry as tabs now exist
 
 end
 
@@ -971,20 +922,6 @@ function Skinner:LFRFrame()
 	if not self.db.profile.LFRFrame or self.initialized.LFRFrame then return end
 	self.initialized.LFRFrame = true
 
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("LFRFrame_SetActiveTab",function(...)
-			for i = 1, LFRParentFrame.numTabs do
-				local tabSF = self.skinFrame[_G["LFRParentFrameTab"..i]]
-				if i == LFRParentFrame.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
-
 -->>-- LFR Parent Frame/ Queue Frame
 	self:skinButton{obj=self:getChild(LFRParentFrame, 1), cb=true} -- close button
 	LFRQueueFrameLayout:SetAlpha(0)
@@ -1017,5 +954,6 @@ function Skinner:LFRFrame()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[LFRParentFrame] = true end -- add entry as tabs now exist
 
 end

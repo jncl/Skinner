@@ -690,20 +690,6 @@ function Skinner:InspectUI()
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("InspectSwitchTabs",function(newID)
-			for i = 1, InspectFrame.numTabs do
-				local tabSF = self.skinFrame[_G["InspectFrameTab"..i]]
-				if i == newID then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
-
 	self:skinButton{obj=InspectFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
 
@@ -740,26 +726,13 @@ function Skinner:InspectUI()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[InspectFrame] = true end -- add entry as tabs now exist
 
 end
 
 function Skinner:WorldState()
 	if not self.db.profile.BattleScore or self.initialized.BattleScore then return end
 	self.initialized.BattleScore = true
-
-	local function updTT(tab)
-
-		for i = 1, 3 do
-			local tabObj = _G["WorldStateScoreFrameTab"..i]
-			local tabSF = self.skinFrame[tabObj]
-			if i == WorldStateScoreFrame.selectedTab then
-				self:setActiveTab(tabSF)
-			else
-				self:setInactiveTab(tabSF)
-			end
-		end
-
-	end
 
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
 	self:skinButton{obj=WorldStateScoreFrameCloseButton, cb=true}
@@ -777,12 +750,8 @@ function Skinner:WorldState()
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
-		if self.isTT then -- hook this to manage tabs
-			self:SecureHookScript(tabName, "OnClick", function(this, ...)
-				updTT(this)
-			end)
-		end
 	end
+	if self.isTT then self.tabFrames[WorldStateScoreFrame] = true end -- add entry as tabs now exist
 
 end
 

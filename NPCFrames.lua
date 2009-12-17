@@ -5,20 +5,6 @@ function Skinner:MerchantFrames()
 	if not self.db.profile.MerchantFrames or self.initialized.MerchantFrames then return end
 	self.initialized.MerchantFrames = true
 
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("MerchantFrame_Update",function()
-			for i = 1, MerchantFrame.numTabs do
-				local tabSF = self.skinFrame[_G["MerchantFrameTab"..i]]
-				if i == MerchantFrame.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
-
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
 
@@ -37,6 +23,7 @@ function Skinner:MerchantFrames()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	if self.isTT then self.tabFrames[MerchantFrame] = true end -- add entry as tabs now exist
 
 end
 
