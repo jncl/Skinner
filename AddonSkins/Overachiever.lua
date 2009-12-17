@@ -1,6 +1,6 @@
 
 function Skinner:Overachiever()
-	if not self.db.profile.AchieveFrame then return end
+	if not self.db.profile.AchievementUI then return end
 
 	local function findOptionsPanel(panel)
 		local panelName
@@ -22,14 +22,13 @@ function Skinner:Overachiever()
 	self:SecureHookScript(panel, "OnShow", function(this)
     	local tab = this.TjOpt_tab
 		if tab.scrolling then
-			self:keepFontStrings(TjOptionsScrollFrame1)
-			self:skinScrollBar(TjOptionsScrollFrame1)
+			self:skinScrollBar{obj=TjOptionsScrollFrame1}
 		end
 		for i = 1, #tab.items do
 			local itm = _G["TjOptionsItemNumber"..i]
 			if itm and itm.TjDDM then
 --				self:Debug("Found a DropDown: [%s]", i)
-				self:skinDropDown(itm)
+				self:skinDropDown{obj=itm}
 			end
 		end
 		self:Unhook(panel, "OnShow")
@@ -39,8 +38,9 @@ end
 
 
 function Skinner:Overachiever_Tabs()
-	if not self.db.profile.AchieveFrame then return end
+	if not self.db.profile.AchievementUI then return end
 
+	self:skinAllButtons{obj=Overachiever_LeftFrame}
 -->>-- Search Frame
 	self:keepFontStrings(Overachiever_SearchFrame)
 	self:skinDropDown(Overachiever_SearchFrameSortDrop)
@@ -56,8 +56,18 @@ function Skinner:Overachiever_Tabs()
 -->>-- Suggestions Frame
 	self:keepFontStrings(Overachiever_SuggestionsFrame)
 	self:skinDropDown(Overachiever_SuggestionsFrameSortDrop)
+	self:skinEditBox{obj=Overachiever_SuggestionsFrameZoneOverrideEdit, regs={9}}
+	self:skinDropDown(Overachiever_SuggestionsFrameSubzoneDrop)
 	self:skinSlider(Overachiever_SuggestionsFrameContainerScrollBar)
 	self:applySkin(self:getChild(Overachiever_SuggestionsFrame, 1))
 	LowerFrameLevel(self:getChild(Overachiever_SuggestionsFrame, 1))
+
+-->>-- Watch Frame
+	self:keepFontStrings(Overachiever_WatchFrame)
+	self:skinDropDown(Overachiever_WatchFrameSortDrop)
+	self:skinSlider(Overachiever_WatchFrameContainerScrollBar)
+	local wFrame = self:getChild(Overachiever_WatchFrame, 1)
+	self:applySkin(wFrame)
+	wFrame:SetFrameLevel(wFrame:GetFrameLevel() - 2) -- make sure text is shown
 
 end

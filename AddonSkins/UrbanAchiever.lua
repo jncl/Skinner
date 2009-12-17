@@ -1,6 +1,11 @@
 
 function Skinner:UrbanAchiever()
-	if not self.db.profile.AchieveFrame then return end
+	if not self.db.profile.AchievementUI then return end
+	
+	-- bugfix to handle Initialize not called by Addon if it is the last addon loaded
+	if not UrbanAchiever.frame and UrbanAchiever.Initialize then
+		UrbanAchiever:Initialize()
+	end
 
 	local function skinStatusBar(sBaro)
 		
@@ -14,6 +19,7 @@ function Skinner:UrbanAchiever()
 	local this = UrbanAchiever
 	self:keepFontStrings(this.frame)
 	this.frame.close:SetPoint("TOPRIGHT", this.frame, "TOPRIGHT")
+	self:skinButton{obj=this.frame.close, cb=true}
 	local uaPS = UrbanAchieverFramePointShield
 	uaPS:SetAlpha(1)
 	uaPS:SetPoint("TOP", this.frame, "TOP", 60, -5)
