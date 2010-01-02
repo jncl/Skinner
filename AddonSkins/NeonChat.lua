@@ -5,6 +5,6 @@ function Skinner:NeonChat()
 	local ncEB = self:getChild(ChatFrameEditBox, 2)
 
 	self:applySkin(ncEB)
-	self:RawHook(ncEB, "SetBackdropColor", function() end, true)
+	ncEB.SetBackdropColor = function() end
 
 end

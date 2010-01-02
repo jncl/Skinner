@@ -6,8 +6,8 @@ function Skinner:MinimapButtonFrame()
 
 	-- create a button skin
 	MBFAddSkin("Skinner", nil, nil, 35)
-	
-	self:RawHook(MinimapButtonFrame, "SetBackdropColor", function() end, true)
-	self:RawHook(MinimapButtonFrame, "SetBackdropBorderColor", function() end, true)
+
+	MinimapButtonFrame.SetBackdropColor = function() end
+	MinimapButtonFrame.SetBackdropBorderColor = function() end
 
 end

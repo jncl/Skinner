@@ -76,11 +76,11 @@ function Skinner:QuestHistory()
 	QuestHistoryDetailDescriptionTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	QuestHistoryDetailQuestDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestHistoryDetailRewardTitleText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:RawHook(QuestHistoryDetailRewardTitleText, "SetTextColor", function() end, true)
+	QuestHistoryDetailRewardTitleText.SetTextColor = function() end
 	QuestHistoryDetailItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:RawHook(QuestHistoryDetailItemChooseText, "SetTextColor", function() end, true)
+	QuestHistoryDetailItemChooseText.SetTextColor = function() end
 	QuestHistoryDetailItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:RawHook(QuestHistoryDetailItemReceiveText, "SetTextColor", function() end, true)
+	QuestHistoryDetailItemReceiveText.SetTextColor = function() end
 	self:applySkin(QuestHistoryDetailFrame)
 
 end

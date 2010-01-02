@@ -15,8 +15,7 @@ function Skinner:vBagnon()
 		local frame = self.hooks[BagnonFrame].CreateSaved(name, sets, defaultBags, isBank)
 --		self:Debug("BF.CS: [%s]", frame:GetName())
 		self:applySkin(frame)
-		-- hook this to stop the Backdrop colours from being changed
-		self:RawHook(frame, "SetBackdropColor", function() end, true)
+		frame.SetBackdropColor = function() end
 		return frame
 	end)
 

@@ -5,12 +5,8 @@ function Skinner:LootLink()
 
 		local frame = LootLink.QUICKSEARCH_SEARCH_FRAME
 
-		if Skinner:IsHooked(frame, "SetBackdropBorderColor") then
-			Skinner:Unhook(frame, "SetBackdropBorderColor")
-		end
-
 		Skinner:applySkin(frame)
-		Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
+		frame.SetBackdropBorderColor = function() end
 
 		frame:ClearAllPoints()
 		frame:SetPoint("BOTTOMLEFT", LootLink_ResultsFrame, "BOTTOMLEFT", 10, 5)

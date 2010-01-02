@@ -10,6 +10,6 @@ function Skinner:SmartDebuff()
 	self:skinScrollBar(SmartDebuffAOFOrder_ScrollFrame)
 	self:applySkin(SmartDebuffAOFKeys)
 
-	self:RawHook(SmartDebuffSF, "SetBackdrop", function() end, true)
+	SmartDebuffSF.SetBackdrop = function() end
 
 end

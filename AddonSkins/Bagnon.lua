@@ -13,9 +13,8 @@ function Skinner:Bagnon(LoD)
 	--	if Addon is LoD then it's the original one
 	if LoD then
 		self:applySkin(Bagnon)
-		-- hook these to stop the Backdrop colours from being changed
-		self:RawHook(Bagnon, "SetBackdropColor", function() end, true)
-		self:RawHook(Bagnon, "SetBackdropBorderColor", function() end, true)
+		Bagnon.SetBackdropColor = function() end
+		Bagnon.SetBackdropBorderColor = function() end
 		
 	-- it's the newest version from Curse	
 	else
@@ -25,8 +24,8 @@ function Skinner:Bagnon(LoD)
 --			self:Debug("Bagnon.Frame_New: [%s, %s]", this, frameID)
 			local frame = self.hooks[Bagnon.Frame].New(this, frameID)
 			self:applySkin(frame)
-			self:RawHook(frame, "SetBackdropColor", function() end, true)
-			self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
+			frame.SetBackdropColor = function() end
+			frame.SetBackdropBorderColor = function() end
 			return frame
 		end)
 		-- skin the Search EditBox
@@ -44,9 +43,8 @@ function Skinner:Banknon()
 	if not self.db.profile.ContainerFrames then return end
 
 	self:applySkin(Banknon)
-	-- hook these to stop the Backdrop colours from being changed
-	self:RawHook(Banknon, "SetBackdropColor", function() end, true)
-	self:RawHook(Banknon, "SetBackdropBorderColor", function() end, true)
+	Bagnon.SetBackdropColor = function() end
+	Bagnon.SetBackdropBorderColor = function() end
 
 end
 

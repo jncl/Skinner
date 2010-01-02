@@ -46,17 +46,17 @@ function Skinner:skinXLoot(frame)
 
 	if not self.skinned[frame] then
 		self:applySkin(frame)
-		self:RawHook(frame, "SetBackdropBorderColor", function() end, true)
+		frame.SetBackdropBorderColor = function() end
 		if string.find(frame:GetName(), "Wrapper") then
 			LowerFrameLevel(frame)
-			self:RawHook(frame, "SetBackdrop", function() end, true)
+			frame.SetBackdrop = function() end
 			local button = frame:GetParent()
 			frame:SetWidth(button:GetWidth() + 9)
 			frame:SetHeight(button:GetHeight() + 9)
 			local xlr = string.find(frame:GetName(), "XLRow")
 			if xlr and button.border then
 				button.border:SetTexture(nil)
-				self:RawHook(button.border, "Show", function() end, true)
+				button.border.Show = function() end
 			end
 		end
 	end

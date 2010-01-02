@@ -25,7 +25,7 @@ function Skinner:RecipeRadar()
 	self:applySkin(RecipeRadarFrame, true)
 -->>-- RecipeRadarAvailability Tooltip
 	self:applySkin(RecipeRadarAvailabilityTooltip)
-	self:RawHook(RecipeRadarAvailabilityTooltip, "SetBackdropColor", function() end, true)
+	RecipeRadarAvailabilityTooltip.SetBackdropColor = function() end
 -->>-- RecipeRadarOptions Frame
 	self:keepFontStrings(RecipeRadarOptionsFrame)
 	self:keepFontStrings(RecipeRadar_ContinentDropDown)

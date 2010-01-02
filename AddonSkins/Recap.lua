@@ -15,9 +15,9 @@ function Skinner:Recap()
 	self:skinScrollBar(RecapScrollBar)
 	self:applySkin(RecapFrame)
 
-	self:RawHook(RecapFrame, "SetBackdrop", function() end, true)
-	self:RawHook(RecapFrame, "SetBackdropColor", function() end, true)
-	self:RawHook(RecapFrame, "SetBackdropBorderColor", function() end, true)
+	RecapFrame.SetBackdrop = function() end
+	RecapFrame.SetBackdropColor = function() end
+	RecapFrame.SetBackdropBorderColor = function() end
 
 -->>-- Recap Panel
 	self:keepFontStrings(RecapPanel_xml_424)
@@ -29,7 +29,7 @@ function Skinner:Recap()
 	self:keepFontStrings(RecapPanel)
 	self:applySkin(RecapPanel, nil)
 
-	self:RawHook(RecapPanel, "SetBackdrop", function() end, true)
+	RecapPanel.SetBackdrop = function() end
 
 -->>-- Recap Options Frame
 	self:keepFontStrings(Recap_DropMenu)
@@ -53,7 +53,7 @@ function Skinner:Recap()
 	self:keepFontStrings(RecapOptFrame)
 	self:applySkin(RecapOptFrame)
 
-	self:RawHook(RecapOptFrame, "SetBackdrop", function() end, true)
+	RecapOptFrame.SetBackdrop = function() end
 
 	if self.db.profile.Tooltips.skin then
 		self:SecureHookScript(RecapTooltip, "OnShow", function(this)

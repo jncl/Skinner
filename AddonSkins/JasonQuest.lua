@@ -8,7 +8,7 @@ function Skinner:JasonQuest()
 			_G["JQuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb)
 		end
 	end)
-	self:RawHook(JQuest, "Log_RefreshTextures", function() end, true)
+	JQuest.Log_RefreshTextures = function() end
 
 	self:keepFontStrings(JQuestLogFrame)
 	JQuestLogFrame:SetWidth(QuestLogFrame:GetWidth())

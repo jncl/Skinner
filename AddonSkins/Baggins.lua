@@ -14,9 +14,7 @@ function Skinner:Baggins()
 		if Baggins.db.profile.bags[bagid].isBank then
 			bagname:SetBackdropColor(self.db.profile.BagginsBBC.r, self.db.profile.BagginsBBC.g, self.db.profile.BagginsBBC.b, self.db.profile.BagginsBBC.a)
 		end
-		if not self:IsHooked(bagname, "SetBackdropColor") then
-			self:RawHook(bagname, "SetBackdropColor", function() end, true)
-		end
+		bagname.SetBackdropColor = function() end
 	end)
 
 	for k, frame in ipairs(Baggins.bagframes) do
@@ -24,7 +22,7 @@ function Skinner:Baggins()
 		if Baggins.db.profile.bags[k].isBank then
 			frame:SetBackdropColor(self.db.profile.BagginsBBC.r, self.db.profile.BagginsBBC.g, self.db.profile.BagginsBBC.b, self.db.profile.BagginsBBC.a)
 		end
-		self:RawHook(frame, "SetBackdropColor", function() end, true)
+		frame.SetBackdropColor = function() end
 	end
 
 end

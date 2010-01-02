@@ -10,8 +10,8 @@ function Skinner:InstanceMaps()
 		self:SecureHook(IML, "UpdateViewer", function()
 			self:applySkin(InstanceMaps_LootViewer)
 			InstanceMaps_LootViewer:SetFrameLevel(InstanceMaps_Notes_Button1:GetFrameLevel() + 1 )
-			self:RawHook(InstanceMaps_LootViewer, "SetBackdropColor", function() end, true)
-			self:RawHook(InstanceMaps_LootViewer, "SetBackdropBorderColor", function() end, true)
+			InstanceMaps_LootViewer.SetBackdropColor = function() end
+			InstanceMaps_LootViewer.SetBackdropBorderColor = function() end
 			self:moveObject(self:getChild(InstanceMaps_LootViewer, 1), "+", 2, "+", 2)
 			self:Unhook(IML, "UpdateViewer")
 		end)

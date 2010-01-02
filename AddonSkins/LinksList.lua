@@ -41,7 +41,7 @@ function Skinner:LinksList()
 					elseif string.match(objName, llsfr.."EditBox") then
 						self:skinEditBox(v, {9})
 						v:SetWidth(v:GetWidth() - 5)
-						self:RawHook(v, "SetHeight", function() end, true)
+						v.SetHeight = function() end
 					end
 				end
 			end

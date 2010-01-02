@@ -36,14 +36,14 @@ function Skinner:Chinchilla()
 	if Chinchilla:GetModule("Location", true) then
 		if Chinchilla_Location_Frame then
 			self:applySkin(Chinchilla_Location_Frame)
-			self:RawHook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
-			self:RawHook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
+			Chinchilla_Location_Frame.SetBackdropColor = function() end
+			Chinchilla_Location_Frame.SetBackdropBorderColor = function() end
 		else
 			-- hook the OnEnable method
 			self:SecureHook(Chinchilla:GetModule("Location"), "OnEnable", function()
-				self:RawHook(Chinchilla_Location_Frame, "SetBackdropColor", function() end, true)
-				self:RawHook(Chinchilla_Location_Frame, "SetBackdropBorderColor", function() end, true)
 				self:applySkin(Chinchilla_Location_Frame)
+				Chinchilla_Location_Frame.SetBackdropColor = function() end
+				Chinchilla_Location_Frame.SetBackdropBorderColor = function() end
 			end)
 		end
 	end

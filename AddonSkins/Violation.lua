@@ -22,8 +22,7 @@ function Skinner:Violation()
 				end
 				Skinner:applySkin(frame)
 				violationsSkinned[frame] = true
-				-- hook this to stop the BackdropBorder colour from being changed
-				Skinner:RawHook(frame, "SetBackdropBorderColor", function() end, true)
+				frame.SetBackdropBorderColor = function() end
 			end
 
 		end
@@ -89,7 +88,6 @@ function Skinner:Violation()
 -- 		self:Debug("V - DeleteWindow: [%s, %s]", window, window.frame)
 		violationsSkinned[window.frame] = nil
 		if self:IsHooked(frame, "OnShow") then self:Unhook(frame, "OnShow") end
-		if self:IsHooked(frame, "SetBackdropBorderColor") then self:Unhook(frame, "SetBackdropBorderColor") end
 	end)
 
 	skinViolation()

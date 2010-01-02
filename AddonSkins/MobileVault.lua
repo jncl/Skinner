@@ -16,8 +16,8 @@ function Skinner:MobileVault()
 		local tabObj = MobileVault.tab_buttons[i]
 		self:keepRegions(tabObj, {1}) -- N.B. region 1 is the Icon
 		self:applySkin(tabObj)
-		self:RawHook(tabObj, "SetBackdropColor", function() end, true)
-		self:RawHook(tabObj, "SetBackdropBorderColor", function() end, true)
+		tabObj.SetBackdropColor = function() end
+		tabObj.SetBackdropBorderColor = function() end
 	end
 
 end

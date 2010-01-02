@@ -38,7 +38,7 @@ function Skinner:GuildLaunchCT_RaidTracker()
 		_G["CT_RaidTrackerPlayerLine"..i.."Join"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["CT_RaidTrackerPlayerLine"..i.."Leave"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["CT_RaidTrackerPlayerLine"..i.."DeleteText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:RawHook(_G["CT_RaidTrackerPlayerLine"..i.."DeleteText"], "SetTextColor", function() end, true)
+		_G["CT_RaidTrackerPlayerLine"..i.."DeleteText"].SetTextColor = function() end
 	end
 	self:skinScrollBar{obj=CT_RaidTrackerDetailScrollFramePlayers}
 
@@ -59,7 +59,7 @@ function Skinner:GuildLaunchCT_RaidTracker()
 		_G["CT_RaidTrackerPlayerRaid"..i.."Name"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["CT_RaidTrackerPlayerRaid"..i.."Note"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["CT_RaidTrackerPlayerRaid"..i.."DeleteText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:RawHook(_G["CT_RaidTrackerPlayerRaid"..i.."DeleteText"], "SetTextColor", function() end, true)
+		_G["CT_RaidTrackerPlayerRaid"..i.."DeleteText"].SetTextColor = function() end
 	end
 	-- Raid Bosses Scroll Frame
 	CT_RaidTrackerEventsText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -95,7 +95,7 @@ function Skinner:GuildLaunchCT_RaidTracker()
 		_G["CT_RaidTrackerItem"..i.."Looted"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["CT_RaidTrackerItem"..i.."Count"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["CT_RaidTrackerItem"..i.."DeleteText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:RawHook(_G["CT_RaidTrackerItem"..i.."DeleteText"], "SetTextColor", function() end, true)
+		_G["CT_RaidTrackerItem"..i.."DeleteText"].SetTextColor = function() end
 	end
 
 	-- other frames

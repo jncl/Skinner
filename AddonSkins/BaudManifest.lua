@@ -39,7 +39,6 @@ function Skinner:BaudManifest()
 	self:moveObject(BaudManifestVersionText, nil, nil, "-", 8)
 	self:applySkin(BaudManifestOptions, true)
 
-	-- hook this to stop the Backdrop being changed
-	self:RawHook("BaudManifestUpdateBGTexture", function() end, true)
+	BaudManifestUpdateBGTexture = function() end
 
 end
