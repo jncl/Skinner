@@ -383,9 +383,6 @@ function Skinner:MacroUI()
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
 
-	-- ignore this frame when checking tabs
-	self.frames2ignore[MacroFrame] = true
-
 -->>-- Macro Frame
 	self:skinFFToggleTabs("MacroFrameTab", 2)
 	self:skinScrollBar{obj=MacroButtonScrollFrame}
