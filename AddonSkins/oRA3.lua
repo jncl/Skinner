@@ -15,6 +15,7 @@ function Skinner:oRA3()
 		end)
 	end
 
+	self:skinAllButtons{obj=oRA3Frame}
 	self:addSkinFrame{obj=oRA3Frame, kfs=true, x1=10 , y1=1, x2=1, y2=-3}
 
 	if not oRA3.db.profile.open then oRA3Frame.title:SetAlpha(0) end
