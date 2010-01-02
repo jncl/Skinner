@@ -26,11 +26,12 @@
 <script file="SkinMe\Atlas.lua"/>
 <script file="SkinMe\AtlasLoot.lua"/>
 <script file="SkinMe\AtlasQuest.lua"/>
+<script file="SkinMe\AucAdvanced.lua"/>
 <!-- <script file="SkinMe\Auctioneer.lua"/> -->
 <script file="SkinMe\Auctionator.lua"/>
 <script file="SkinMe\AuctionFilterPlus.lua"/>
-<script file="SkinMe\AucAdvanced.lua"/>
 <!-- <script file="SkinMe\AucExtras.lua"/> -->
+<script file="SkinMe\Auctionsnatch.lua"/>
 <script file="SkinMe\AuldLangSyne.lua"/>
 <script file="SkinMe\AutoBag.lua"/>
 <!-- <script file="SkinMe\AutoBarConfig.lua"/> -->
@@ -127,7 +128,7 @@
 <script file="SkinMe\EQL3.lua"/>
 <script file="SkinMe\EquipCompare.lua"/>
 <script file="SkinMe\EventEquip.lua"/>
-<!-- <script file="SkinMe\EveryQuest.lua"/> -->
+<script file="SkinMe\EveryQuest.lua"/>
 <script file="SkinMe\Examiner.lua"/>
 <!-- <script file="SkinMe\FactionGrinder.lua"/> -->
 <script file="SkinMe\Factionizer.lua"/>
@@ -163,6 +164,7 @@
 <script file="SkinMe\GuildBankSearch.lua"/>
 <!-- <script file="SkinMe\GuildEventManager2.lua"/> -->
 <script file="SkinMe\GuildLaunchCT_RaidTracker.lua"/>
+<script file="SkinMe\GupCharacter.lua"/>
 <script file="SkinMe\Hack.lua"/>
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>
@@ -287,6 +289,7 @@
 <script file="SkinMe\QuestGuru.lua"/>
 <script file="SkinMe\QuestHistory.lua"/>
 <script file="SkinMe\QuestIon.lua"/>
+<script file="SkinMe\QuickMark.lua"/>
 <script file="SkinMe\RABuffs.lua"/>
 <script file="SkinMe\RaidBuffStatus.lua"/>
 <script file="SkinMe\RaidTracker.lua"/>
@@ -302,6 +305,7 @@
 <script file="SkinMe\Sanity2.lua"/>
 <!-- <script file="SkinMe\SanityBags.lua"/> -->
 <script file="SkinMe\SellJunk.lua"/>
+<script file="SkinMe\SexyGroup.lua"/>
 <script file="SkinMe\ShadowDancer3.lua"/>
 <script file="SkinMe\ShieldLeft.lua"/>
 <script file="SkinMe\sienasGemViewer.lua"/>
