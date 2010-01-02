@@ -10,20 +10,14 @@ O - Other change
 S - Skin request
 B - Button(s) Skin request
 
-≈	I	Change RawHook functions that do nothing to use nop function instead
+	O	Check to see which skins can be obsoleted
 
-	O	Changed how Blizzard Frame Tabs are handled if TexturedTabs set 
+	I	Frames overlaying text, reported by several posters
+		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
+?		- is it caused by an addon "re-layering" frames ?
 
-?	I	Waterfall, reported by Antimattern, 15.12.09
-		- e.g. Bartender4, options not being displayed
-
-	I	UrbanAchiever, reported by Kerecha, 15.12.09
-√		- not being skinned (I hadn't changed the option it checks in the skin)
-	I	Overachiever
-√		- not being skinned (I hadn't changed the option it checks in the skin)
-
-	I	Mapster, reported by jh032008, 15.12.09
-?		- ..\AddOns\Skinner\Skinner.lua line 1223:
+?	I	Mapster, reported by jh032008, 15.12.09
+		- ..\AddOns\Skinner\Skinner.lua line 1223:
 		attempt to index field 'obj' (a nil value)
 		Debug:
 		[C]: ?
@@ -37,7 +31,58 @@ B - Button(s) Skin request
 		Mapster\Mapster.lua:218: ToggleMapSize()
 		Mapster\Mapster.lua:123:
 		Mapster\Mapster.lua:123
-?		- not being skinned
 
-	S	SexyGroup, requested by Gabriel, 16.12.09
-		- it's an Alpha !
+≈	S	SexyGroup, requested by Gabriel, 16.12.09
+
+√	N	EveryQuest, requested by nydgirl, 18.12.09
+		- Un-Obsolete it and update the existing skin
+
+√	I	MacroUI, reported by ichik & Kerecha, 19/21.12.09
+		- Skinner-b2.11159.2\UIElements2.lua:387: attempt to index field 'frames2ignore' (a nil value)
+		(tail call): ?:
+
+√	N	tabDB, reported by ichik, 22.12.09
+		- new skin provided by DefectiveUser
+
+	I	oRA3, reported by khariv, 22.12.09
+		- Skinner seems to break the checks in ORA3. When I have skinner enabled, I cannot see the results of any of the checks (radur, razone, etc.) Ready checks work just fine and if I delete the ORA3.LUA from the \skinme directory, it works just fine and I can see the results of the checks.
+
+?	I	Dewdrop, reported by StormFX, 23.12.09
+		- skin not working
+
+√	I	Ace3
+		- Keybinding button error
+
+√	O	Disable Nameplate skinning if TidyPlates is loaded, requested by suicidalkatt, 25.12.09
+
+√	S	GupCharacter, requested by Vizime, 25.12.09
+		- http://wow.curse.com/downloads/wow-addons/details/gupcharacter.aspx
+
+√	N	beql, requested by toin7, 25.12.09
+
+?	I	WorldMap, reported by shammyz, 26.12.09
+		- Skinner-b2.11159.2\UIElements1.lua:505: attempt to index field '?' (a nil value)
+		(tail call): ?:
+		<in C code>: in function `WorldMapFrame_ToggleAdvanced'
+		<string>:"*:OnLoad":3: in function `setFunc'
+		Interface\FrameXML\InterfaceOptionsPanels.lua:90: in function <Interface\FrameXML\InterfaceOptionsPanels.lua:86>:
+		<in C code>: in function `pcall'
+		Interface\FrameXML\InterfaceOptionsFrame.lua:217: in function <Interface\FrameXML\InterfaceOptionsFrame.lua:216>:
+		<in C code>: in function `securecall'
+		Interface\FrameXML\InterfaceOptionsFrame.lua:252: in function <Interface\FrameXML\InterfaceOptionsFrame.lua:248>:
+		<in C code>: in function `Click'
+		Interface\FrameXML\UIParent.lua:2880: in function `ToggleGameMenu':
+		<string>:"TOGGLEGAMEMENU":1: in function <[string "TOGGLEGAMEMENU"]:1>
+
+√	S	QuickMark, requested by Sinistar, 30.12.09
+
+√	S	AuctionSnatch, requested by xtoq, 30.12.09
+
+√	I	QuestGuru, reported by eymbrokn, 01.01.10
+		- Skinner-b2.11159.2\SkinMe\QuestGuru.lua:18: attempt to index global 'QuestGuru_HistoryFrameExpandCollapseButton' (a nil value)
+		(tail call): ?:
+		<in C code>: ?
+		Skinner-b2.11159.2\Skinner.lua:800: in function <Skinner\Skinner.lua:798>
+		Skinner-b2.11159.2\Skinner.lua:845: in function `?'
+		Skinner-b2.11159.2\AddonFrames.lua:119: in function <Skinner\AddonFrames.lua:63>
+		(tail call): ?:
