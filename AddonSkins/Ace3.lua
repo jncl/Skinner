@@ -73,7 +73,7 @@ function Skinner:Ace3()
 			elseif objType == "Button" then
 				self:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
 			elseif objType == "Keybinding" then
-				self:skinButton{obj=obj.minus, as=true}
+				self:skinButton{obj=obj.button, as=true}
 				self:applySkin{obj=obj.msgframe}
 			end
 		end
