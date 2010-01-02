@@ -239,7 +239,7 @@ function Skinner:QuestLog()
 		local function qlUpd()
 
 			for i = 1, #QuestLogScrollFrame.buttons do
-				self:checkTex(QuestLogScrollFrame.buttons[i])
+				Skinner:checkTex(QuestLogScrollFrame.buttons[i])
 			end
 
 		end

@@ -1,4 +1,3 @@
-local nop = function() end
 
 function Skinner:Dewdrop()
 	if not self.db.profile.Tooltips.skin then return end
@@ -14,8 +13,8 @@ function Skinner:Dewdrop()
 			if not Skinner.skinned[frame] then
 				Skinner:applySkin(frame)
 				-- change these to stop the Backdrop colours from being changed
-				frame.SetBackdropColor = nop
-				frame.SetBackdropBorderColor = nop
+				frame.SetBackdropColor = function() end
+				frame.SetBackdropBorderColor = function() end
 				-- hide the backdrop frame
 				Skinner:getChild(frame, 1):Hide()
 			end

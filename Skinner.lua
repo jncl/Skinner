@@ -863,11 +863,16 @@ local function __checkTex(opts)
 	assert(opts.obj, "Unknown object __cT\n"..debugstack())
 --@end-alpha@
 
+	-- hide existing textures if they exist (GupCharacter requires this)
+	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
+	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
+	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+
 	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
 	local btn = opts.mp2 and opts.obj or Skinner.sBut[opts.obj]
 	if not btn then return end -- allow for unskinned buttons
 
---	Skinner:Debug("__checkTex: [%s, %s, %s]", btn:GetName(), nTex, opts.mp2)
+--	Skinner:Debug("__checkTex: [%s, %s, %s]", opts.obj, nTex, opts.mp2)
 
 	if not opts.mp2 then btn:Show() end
 
@@ -1239,6 +1244,9 @@ local function __moveObject(opts)
 
 	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
 
+	-- handle no Point info
+	if not point then return end
+
 	relTo = opts.relTo or relTo
 --@alpha@
 	assert(relTo, "__moveObject relTo is nil\n"..debugstack())
@@ -1598,7 +1606,7 @@ local function __skinAllButtons(opts)
 		other options as per skinButton
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object__sDD\n"..debugstack())
+	assert(opts.obj, "Unknown object__sAB\n"..debugstack())
 --@end-alpha@
 	if not opts.obj then return end
 
@@ -1607,7 +1615,7 @@ local function __skinAllButtons(opts)
 		if Skinner:isButton(child) then
 			Skinner:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, tx=opts.tx, ty=opts.ty}
 		elseif Skinner:isButton(child, true) then
-			Skinner:skinButton{obj=child, cb=true}
+			Skinner:skinButton{obj=child, cb=true, sap=opts.sap}
 		else
 			opts.obj=child
 			__skinAllButtons(opts)
