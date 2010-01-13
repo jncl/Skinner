@@ -1,6 +1,5 @@
 
 function Skinner:Dewdrop()
-	if not self.db.profile.Tooltips.skin then return end
 
 	local frame, sf, eb
 

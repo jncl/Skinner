@@ -21,10 +21,10 @@ function Skinner:FramesResized()
 	end
 
 -->>-- Options panel
-	self:addSkinFrame{obj=FramesResizedPanel_LootFrame_Box, kfs=true}
-	self:addSkinFrame{obj=FramesResizedPanel_RaidInfo_Box, kfs=true}
-	self:addSkinFrame{obj=FramesResizedPanel_TraidSkillUI_Box, kfs=true}
-	self:addSkinFrame{obj=FramesResizedPanel_TrainerUI_Box, kfs=true}
+	self:addSkinFrame{obj=FramesResizedPanel_LootFrame_Box, x1=1, y1=-1, x2=-1, y2=1}
+	self:addSkinFrame{obj=FramesResizedPanel_RaidInfo_Box, x1=1, y1=-1, x2=-1, y2=1}
+	self:addSkinFrame{obj=FramesResizedPanel_TraidSkillUI_Box, x1=1, y1=-1, x2=-1, y2=1}
+	self:addSkinFrame{obj=FramesResizedPanel_TrainerUI_Box, x1=1, y1=-1, x2=-1, y2=1}
 	
 	if IsAddOnLoaded("Blizzard_TradeSkillUI") then self:FR_TradeSkillUI() end
 	if IsAddOnLoaded("Blizzard_TrainerUI") then self:FR_TrainerUI() end

@@ -15,9 +15,10 @@ function Skinner:QuestGuru()
 	local function colourText(type)
 
 		_G["QuestGuru_Quest"..type.."StartLabel"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."StartLabel"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["QuestGuru_Quest"..type.."StartPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G["QuestGuru_Quest"..type.."StartNPCName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["QuestGuru_Quest"..type.."FinishLabel"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G["QuestGuru_Quest"..type.."FinishPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["QuestGuru_Quest"..type.."FinishNPCName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["QuestGuru_Quest"..type.."FinishPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G["QuestGuru_Quest"..type.."QuestTitle"]:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -50,12 +51,14 @@ function Skinner:QuestGuru()
 				self:checkTex(_G["QuestGuru_QuestLogTitle"..i])
 			end
 		end)
-		-- hook to manage changes to button textures (History Tab)
-		self:SecureHook("QuestGuru_UpdateHistory", function()
-			for i = 1, QUESTGURU_QUESTS_DISPLAYED do
-				self:checkTex(_G["QuestGuru_QuestHistoryTitle"..i])
-			end
-		end)
+		if IsAddOnLoaded("QuestGuru_History") then
+			-- hook to manage changes to button textures (History Tab)
+			self:SecureHook("QuestGuru_UpdateHistory", function()
+				for i = 1, QUESTGURU_QUESTS_DISPLAYED do
+					self:checkTex(_G["QuestGuru_QuestHistoryTitle"..i])
+				end
+			end)
+		end
 		-- hook to manage changes to button textures (Abandoned Tab)
 		self:SecureHook("QuestGuru_UpdateAbandon", function()
 			for i = 1, QUESTGURU_QUESTS_DISPLAYED do
@@ -94,22 +97,24 @@ function Skinner:QuestGuru()
 	self:skinButton{obj=QuestGuru_QuestFramePushQuestButton}
 	self:skinScrollBar{obj=QuestGuru_QuestLogDetailScrollFrame}
 -->>-- Tab2 (History)
-	self:SecureHook("QuestLog_UpdateQuestHistoryDetails", function(...)
-		colourText("History")
-		-- Quest objectives
-		for i = 1, MAX_OBJECTIVES do
-			local r, g, b = _G["QuestGuru_QuestHistoryObjective"..i]:GetTextColor()
-			_G["QuestGuru_QuestHistoryObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+	if IsAddOnLoaded("QuestGuru_History") then
+		self:SecureHook("QuestLog_UpdateQuestHistoryDetails", function(...)
+			colourText("History")
+			-- Quest objectives
+			for i = 1, MAX_OBJECTIVES do
+				local r, g, b = _G["QuestGuru_QuestHistoryObjective"..i]:GetTextColor()
+				_G["QuestGuru_QuestHistoryObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+			end
+		end)
+		self:skinEditBox{obj=QuestGuru_QuestHistorySearch, regs={9}}
+		for i = 1, QUESTGURU_QUESTS_DISPLAYED do
+			self:skinButton{obj=_G["QuestGuru_QuestHistoryTitle"..i], mp=true}
 		end
-	end)
-	self:skinEditBox{obj=QuestGuru_QuestHistorySearch, regs={9}}
-	for i = 1, QUESTGURU_QUESTS_DISPLAYED do
-		self:skinButton{obj=_G["QuestGuru_QuestHistoryTitle"..i], mp=true}
+		self:skinScrollBar{obj=QuestGuru_QuestHistoryListScrollFrame}
+		self:skinScrollBar{obj=QuestGuru_QuestHistoryDetailScrollFrame}
+		self:skinAllButtons{obj=QuestGuru_TabPage2}
+		self:addSkinFrame{obj=QuestGuru_TabPage2, kfs=true, x1=10, y1=-6, x2=-45, y2=16}
 	end
-	self:skinScrollBar{obj=QuestGuru_QuestHistoryListScrollFrame}
-	self:skinScrollBar{obj=QuestGuru_QuestHistoryDetailScrollFrame}
-	self:skinAllButtons{obj=QuestGuru_TabPage2}
-	self:addSkinFrame{obj=QuestGuru_TabPage2, kfs=true, x1=10, y1=-6, x2=-45, y2=16}
 -->>-- Tab3 (Abandoned)
 	self:SecureHook("QuestLog_UpdateQuestAbandonDetails", function(...)
 		colourText("Abandon")

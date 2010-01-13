@@ -12,6 +12,9 @@ function Skinner:oRA3()
 					self:setInactiveTab(tabSF)
 				end
 			end
+			local xOfs = select(4, oRA3FrameTab1:GetPoint())
+			self:Debug("oRA3_SelectPanel: [%s]", xOfs)
+			self:moveObject{obj=oRA3FrameTab1, x=(xOfs == 0 and oRA3.groupStatus == oRA3.INRAID) and -26 or 0}
 		end)
 	end
 
@@ -42,7 +45,7 @@ function Skinner:oRA3()
 	self:SecureHook(oRA3, "CreateScrollHeader", function()
 		shCnt = shCnt + 1
 		local sh = _G["oRA3ScrollHeader"..shCnt]
-		self:keepRegions(sh, {4, 5}) -- N.B 4 is text, 5 is highlight
+		self:removeRegions(sh, {1, 2, 3})
 		self:addSkinFrame{obj=sh}
 	end)
 
@@ -62,9 +65,11 @@ function Skinner:oRA3()
 
 -->>-- ReadyCheck Frame
 	if oRA3ReadyCheck then
+		self:skinAllButtons{obj=oRA3ReadyCheck}
 		self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
 	else
 		self:SecureHook(LibStub("AceAddon-3.0"):GetAddon("oRA3"):GetModule("ReadyCheck"), "SetupGUI", function()
+			self:skinAllButtons{obj=oRA3ReadyCheck}
 			self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
 			self:Unhook(LibStub("AceAddon-3.0"):GetAddon("oRA3"):GetModule("ReadyCheck"), "SetupGUI")
 		end)

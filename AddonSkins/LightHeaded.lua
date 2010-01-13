@@ -12,8 +12,10 @@ function Skinner:LightHeaded()
 
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then LightHeadedTooltip:SetBackdrop(self.backdrop) end
-		self:skinTooltip(LightHeadedTooltip)
+		if self.db.profile.Tooltips.style == 3 then LightHeadedTooltip:SetBackdrop(self.Backdrop[1]) end
+		self:SecureHookScript(LightHeadedTooltip, "OnShow", function(this)
+			self:skinTooltip(this)
+		end)
 	end
 
 end

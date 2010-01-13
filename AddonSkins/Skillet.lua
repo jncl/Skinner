@@ -58,14 +58,6 @@ function Skinner:Skillet()
 
 -->>-- Buttons
 	if self.db.profile.Buttons then
-		-- skin plugin buttons
-		self:SecureHook(Skillet, "PluginButton_OnClick", function(this, button)
-			self:Debug("Skillet_PB_OC: [%s, %s]", this, button)
-			for i = 1, #SkilletFrame.added_buttons do
-				local btn = _G["SkilletPluginDropdown"..i]
-				if not self.sBut[btn] then self:skinButton{obj=btn} end
-			end
-		end)
 		-- skin queue buttons
 		SkilletQueueButton1:SetParent(SkilletQueueParent) -- reparent it
 		self.sBut[SkilletQueueButton1] = nil -- remove old skin button

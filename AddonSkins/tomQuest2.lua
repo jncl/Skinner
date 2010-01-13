@@ -116,8 +116,11 @@ function Skinner:tomQuest2()
 			aTrkr:updateAchievementTracker() -- force update
 		end
 	else
-		self.ignoreLQTT["tomQuest2Tracker"] = true
-		self.ignoreLQTT["tomQuest2Achievements"] = true
+		-- if LibQTip skin is loaded then flag them to be ignored
+		if self.ignoreLQTT then
+			self.ignoreLQTT["tomQuest2Tracker"] = true
+			self.ignoreLQTT["tomQuest2Achievements"] = true
+		end
 	end	
 
 	local qG = tq2:GetModule("questsGivers")

@@ -50,6 +50,11 @@ function Skinner:Ace3()
 				self:skinButton{obj=obj.closebutton, y1=1}
 				self:applySkin(obj.statusbg)
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+			elseif objType == "Window" then
+				self:keepFontStrings(obj.frame)
+				self:applySkin(obj.frame)
+				self:skinButton{obj=obj.closebutton, cb=true}
+				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "ScrollFrame" then
 				self:keepRegions(obj.scrollbar, {1})
 				self:skinUsingBD{obj=obj.scrollbar}

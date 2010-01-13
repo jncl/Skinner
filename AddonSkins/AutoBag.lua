@@ -1,7 +1,10 @@
+local tinsert = table.insert
 
 function Skinner:AutoBag()
 	if not self.db.profile.ContainerFrames.skin then return end
 
+	tinsert(UISpecialFrames,"AB_Options") -- make it closeable via the Esc key
+	
 	AB_Divider_AutoBag:Hide()
 	self:addSkinFrame{obj=AB_Arrange_ListBox, kfs=true, x1=-1}
 	self:skinScrollBar{obj=AB_Arrange_ListBoxScrollFrame}
