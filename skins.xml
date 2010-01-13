@@ -95,6 +95,7 @@
 <script file="SkinMe\CT_MailMod.lua"/>
 <!-- <script file="SkinMe\CT_RaidAssist.lua"/> -->
 <script file="SkinMe\CT_RaidTracker.lua"/>
+<script file="SkinMe\DaemonMailAssist.lua"/>
 <script file="SkinMe\DailiesQuestTracker.lua"/>
 <script file="SkinMe\DamageMeters.lua"/>
 <script file="SkinMe\DBM.lua"/>
@@ -115,6 +116,7 @@
 <script file="SkinMe\EavesDrop.lua"/>
 <script file="SkinMe\EditingUI.lua"/>
 <script file="SkinMe\EggTimer.lua"/>
+<script file="SkinMe\ElitistGroup.lua"/>
 <script file="SkinMe\EnchantMe.lua"/>
 <script file="SkinMe\Enchantrix.lua"/>
 <script file="SkinMe\EnchantrixBarker.lua"/>
@@ -244,6 +246,7 @@
 <script file="SkinMe\myMusic.lua"/>
 <script file="SkinMe\NeatFreak.lua"/>
 <script file="SkinMe\NECB.lua"/>
+<script file="SkinMe\Necrosis.lua"/>
 <script file="SkinMe\NeonChat.lua"/>
 <script file="SkinMe\NicheCombatConfig.lua"/>
 <script file="SkinMe\Notebook.lua"/>
@@ -305,7 +308,6 @@
 <script file="SkinMe\Sanity2.lua"/>
 <!-- <script file="SkinMe\SanityBags.lua"/> -->
 <script file="SkinMe\SellJunk.lua"/>
-<script file="SkinMe\SexyGroup.lua"/>
 <script file="SkinMe\ShadowDancer3.lua"/>
 <script file="SkinMe\ShieldLeft.lua"/>
 <script file="SkinMe\sienasGemViewer.lua"/>
