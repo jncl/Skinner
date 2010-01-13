@@ -65,6 +65,7 @@ end
 
 function Skinner:PetPaperDollFrame()
 
+	self:skinAllButtons{obj=PetPaperDollFrame}
 	self:keepFontStrings(PetPaperDollFrame)
 
 -->>-- Pet Frame
@@ -76,14 +77,12 @@ function Skinner:PetPaperDollFrame()
 	self:makeMFRotatable(PetModelFrame)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetPaperDollPetInfo)
---	self:skinButton{obj=PetPaperDollCloseButton}
 
 -->>-- Companion Frame
 	self:keepFontStrings(PetPaperDollFrameCompanionFrame)
 	CompanionModelFrameRotateLeftButton:Hide()
 	CompanionModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(CompanionModelFrame)
-	self:skinButton{obj=CompanionSummonButton}
 
 -->>-- Tabs
 	self:skinFFToggleTabs("PetPaperDollFrameTab")
@@ -285,8 +284,7 @@ function Skinner:SpellBookFrame()
 	end
 -->>-- Tabs (side)
 	for i = 1, MAX_SKILLLINE_TABS do
-		local tabObj = _G["SpellBookSkillLineTab"..i]
-		self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
+		self:removeRegions(_G["SpellBookSkillLineTab"..i], {1}) -- N.B. other regions are icon and highlight
 	end
 
 end

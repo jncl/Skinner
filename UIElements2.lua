@@ -425,6 +425,7 @@ function Skinner:MailFrame()
 	for i = 1, 7 do
 		self:keepFontStrings(_G["MailItem"..i])
 	end
+	self:moveObject{obj=InboxTooMuchMail, y=-24}
 	self:skinButton{obj=InboxCloseButton, cb=true}
 
 -->>--	Send Mail Frame
@@ -873,10 +874,6 @@ function Skinner:DebugTools()
 		self:skinTooltip(FrameStackTooltip)
 	end
 
-	-- skin Basic Script Errors Frame
-	self:skinAllButtons{obj=BasicScriptErrors}
-	self:addSkinFrame{obj=BasicScriptErrors, kfs=true, ft=ftype}
-
 end
 
 function Skinner:LFDFrame()
@@ -934,7 +931,7 @@ function Skinner:LFRFrame()
 
 -->>-- LFR Browse Frame
 	self:skinDropDown{obj=LFRBrowseFrameRaidDropDown}
-	self:skinFFColHeads("LFRBrowseFrameColumnHeader", 7, 6) -- 6 is the icon texture
+	self:skinFFColHeads("LFRBrowseFrameColumnHeader", 7)
 	self:skinScrollBar{obj=LFRBrowseFrameListScrollFrame}
 	self:skinAllButtons{obj=LFRBrowseFrame}
 	self:keepFontStrings(LFRBrowseFrame)

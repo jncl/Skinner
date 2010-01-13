@@ -389,7 +389,7 @@ function Skinner:Buffs()
 	self:moveObject{obj=_G["TempEnchant2".."Duration"], y=-2}
 
 	-- Consolidated Buffs
-	self:addSkinFrame{obj=ConsolidatedBuffsTooltip}
+	self:addSkinFrame{obj=ConsolidatedBuffsTooltip, x1=5, y1=-3, x2=-5, y2=4}
 
 end
 

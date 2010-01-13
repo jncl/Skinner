@@ -1797,12 +1797,12 @@ function Skinner:skinFFToggleTabs(tabName, tabCnt)
 
 end
 
-function Skinner:skinFFColHeads(buttonName, noCols, iconReg)
--- 	self:Debug("skinFFColHeads: [%s]", buttonName)
+function Skinner:skinFFColHeads(buttonName, noCols)
+-- 	self:Debug("skinFFColHeads: [%s, %s]", buttonName, noCols)
 
 	local numCols = noCols and noCols or 4
 	for i = 1, numCols do
-		self:keepRegions(_G[buttonName..i], {4, 5, iconReg}) -- N.B 4 is text, 5 is highlight, iconReg is icon
+		self:removeRegions(_G[buttonName..i], {1, 2, 3})
 		self:addSkinFrame{obj=_G[buttonName..i]}
 	end
 
