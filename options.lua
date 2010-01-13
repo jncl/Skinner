@@ -92,6 +92,7 @@ function Skinner:Defaults()
 		InspectUI		= true,
 		BattleScore     = true, -- a.k.a. WorldState
 		BattlefieldMm   = true,
+		ScriptErrors	= true,
 		DebugTools		= true,
 		DropDowns       = true,
 		MinimapButtons  = false,
@@ -1515,6 +1516,11 @@ function Skinner:Options()
 					type = "toggle",
 					name = self.L["Battlefield Minimap Frame"],
 					desc = self.L["Toggle the skin of the Battlefield Minimap Frame"],
+				},
+				ScriptErrors = {
+					type = "toggle",
+					name = self.L["Script Errors Frame"],
+					desc = self.L["Toggle the skin of the Script Errors Frame"],
 				},
 				DebugTools = {
 					type = "toggle",

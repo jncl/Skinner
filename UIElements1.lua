@@ -791,6 +791,16 @@ function Skinner:BattlefieldMinimap()
 
 end
 
+function Skinner:ScriptErrors()
+	if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
+	self.initialized.ScriptErrors = true
+
+	-- skin Basic Script Errors Frame (BasicControls.xml)
+	self:skinAllButtons{obj=BasicScriptErrors}
+	self:addSkinFrame{obj=BasicScriptErrors, kfs=true, ft=ftype}
+
+end
+
 function Skinner:DropDowns()
 	if not self.db.profile.DropDowns or self.initialized.DropDowns then return end
 	self.initialized.DropDowns = true
