@@ -1,3 +1,14 @@
+b2.11159.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Other fixes
+	Bugfix for MacroFrame
+	Updated QuestGuru, beql, oRA3 & tabDB skins
+	Bugfix for Ace3 skin
+	Changed RawHooks into nil functions
+	Skinned Auctionsnatch, EveryQuest, GupCharacter, QuickMark & SexyGroup
+
 b2.11159.2
 Jncl:
 	ToDo.txt
