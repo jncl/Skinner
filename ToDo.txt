@@ -16,30 +16,52 @@ B - Button(s) Skin request
 		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
 ?		- is it caused by an addon "re-layering" frames ?
 
-√	S	DaemonMailAssist, requested by ichik, 02.01.10
+?	I	WorldMapFrame, reported by TBABlackPanther, 14.01.10
+		- Skinner-b2.11159.4\UIElements1.lua:505: attempt to index field '?' (a nil value)
+		(tail call): ?:
+		<in C code>: in function `WorldMapFrame_ToggleAdvanced'
+		<string>:"*:OnLoad":3: in function `setFunc'
+		Interface\FrameXML\InterfaceOptionsPanels.lua:90: in function <Interface\FrameXML\InterfaceOptionsPanels.lua:86>:
+		<in C code>: in function `pcall'
+		Interface\FrameXML\InterfaceOptionsFrame.lua:217: in function <Interface\FrameXML\InterfaceOptionsFrame.lua:216>:
+		<in C code>: in function `securecall'
+		Interface\FrameXML\InterfaceOptionsFrame.lua:252: in function <Interface\FrameXML\InterfaceOptionsFrame.lua:248>:
+		<in C code>: in function `Click'
+		Interface\FrameXML\UIParent.lua:2880: in function `ToggleGameMenu':
+		<string>:"TOGGLEGAMEMENU":1: in function <[string "TOGGLEGAMEMENU"]:1>
 
-√	I	tomQuest2, reported by ichik, 03.01.10
-		- Skinner-b2.11159.3\SkinMe\tomQuest2.lua:119: attempt to index field 'ignoreLQTT' (a nil value)
+√	N	Fishing Buddy reported by Gabriel, 14.01.10
+
+√	I	QuestGuru, reported by Elanie, 17.01.10
+		- Skinner-b2.11159.4\Skinner.lua:1245: attempt to index field 'obj' (a nil value)
+		Skinner-b2.11159.4\Skinner.lua:1293: in function `moveObject'
+		Skinner-b2.11159.4\SkinMe\QuestGuru.lua:7: in function <Skinner\SkinMe\QuestGuru.lua:3>
 		(tail call): ?:
 		<in C code>: ?
-		Skinner-b2.11159.3\Skinner.lua:800: in function <Skinner\Skinner.lua:798>
-		Skinner-b2.11159.3\Skinner.lua:845: in function `?'
-		Skinner-b2.11159.3\AddonFrames.lua:123: in function <Skinner\AddonFrames.lua:63>
+		Skinner-b2.11159.4\Skinner.lua:800: in function <Skinner\Skinner.lua:798>
+		Skinner-b2.11159.4\Skinner.lua:845: in function `?'
+		Skinner-b2.11159.4\AddonFrames.lua:123: in function <Skinner\AddonFrames.lua:63>
 		(tail call): ?:
-
-	I	QuestGuru, reported by pompachomp, 08.01.10
-√		- Skinner-b2.11159.3\SkinMe\QuestGuru.lua:54: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b2.11159.3\SkinMe\QuestGuru.lua:54: in function <Skinner\SkinMe\QuestGuru.lua:3>
+		<in C code>: ?
+		<string>:"safecall Dispatcher[2]":9: in function <[string "safecall Dispatcher[2]"]:5>
 		(tail call): ?:
+		AceTimer-3.0-5 (Ace3):164: in function <Ace3\AceTimer-3.0\AceTimer-3.0.lua:138>
 
-	O	SexyGroup, reported by pompachomp, 08.01.10
-√		- Rename to ElitistGroup
-√		- possible code changes as well
+√	S	BasicChatMods requested by ichik, 17.01.10
+		-  urlcopy and chat copy windows
 
-	I	oRA3
-√		- Scroll items missing
-√		- Cooldown options panel needs skinning
 
-√	S	Necrosis
+√	I	IceHud, reported by ndnjon, 20.01.10
+		-  In the IceHud configuration tab there is a section called "Module Settings' with a drop down menu.  I was trying to move my Rune Bar but while Skinner was loaded, it would only show a blank area, and there was no way to access the drop down
+?		- Uses Waterfall for GUI config, maybe has UI buttons checked but no Waterfall skin
+
+√	S	Producer, requested by Curace, 20.01.10
+		- http://wow.curse.com/downloads/wow-addons/details/producer.aspx
+
+?	I	tomQuest2, reported by Craxziz, 21.01.10
+		- Using Skinner Version: b2.11159.4 and tomQuest2 3.3 beta 5, with the questwatch skinning option turned off and the tomQuest2 skin loaded, I'm getting gradual but cumulative FPS loss.
+
+		FPS loss occurs when quest objectives update, quests complete and are handed in, exiting combat and also from  changing zones. When doing dailies over the course of about 20 minutes my ooc fps will drop from ~60fps to a constant <20fps, with probable freezes when the above events happen. This effect occurs gradually overtime as the above actions happen. However when in combat with tomQuest2's quest tracker hidden my fps returns to normal.
+
+		With the tomQuest2 skin removed from the skinme directory there are no fps issues.
+		
