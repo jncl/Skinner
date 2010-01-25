@@ -1,6 +1,3 @@
-local pairs = pairs
-local tinsert = table.insert
-local IsAddOnLoaded = IsAddOnLoaded
 
 function Skinner:BlizzardFrames()
 --	self:Debug("BlizzardFrames")
@@ -9,7 +6,7 @@ function Skinner:BlizzardFrames()
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
 		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
-		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "WorldState", "DropDowns", -- uie1
+		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "WorldState", "ScriptErrors", "DropDowns", -- uie1
 		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "PVPFrame", "LFDFrame", "LFRFrame", -- uie2
 		"UnitFrames", -- uf
 	}
@@ -92,7 +89,7 @@ function Skinner:AddonFrames()
 	local addonFrames = {
 		"_NPCScan",
 		"Accomplishment", "Accountant", "AceProfit", "Acheron", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", "aftt_extreme", "AlphaMap", "Altoholic", "Analyst", "AnnounceIt", "AoTRDungeonQuester", "ArkInventory", "Armory", --[["Ash_Cooldowns", "Ash_Core", "Ash_DoTimer", "Assessment",--]] "Atlas", "AtlasLoot", "AtlasQuest", "Auctionsnatch", "AuldLangSyne", "AuldLangSyne_Note", "AutoDecline", "AutoProfit", "AutoProfitX", "AxuItemMenus",
-		"Badapples", "Baggins", "Baggins_Search", "Bagnon", "Bagnon_Forever", "BankAccountant", "BankItems", "BattleChat", "BattleCry", "BaudBag", "BaudManifest", "BaudMenu", "BeanCounter", "BeastTraining", "beql", "BetterInbox", "BigBankStatement", "BigGuild", "BigTrouble", "BlackList", --[["Bongos_AB",--]] "Bonuses", "BriefQuestComplete", "Broker_Transport", "Buffalo", --[["Buffalo2",--]]	"BuffQ", "BugSack", "Butsu", "BuyEmAll", "BuyPoisons",
+		"Badapples", "Baggins", "Baggins_Search", "Bagnon", "Bagnon_Forever", "BankAccountant", "BankItems", "BasicChatMods", "BattleChat", "BattleCry", "BaudBag", "BaudManifest", "BaudMenu", "BeanCounter", "BeastTraining", "beql", "BetterInbox", "BigBankStatement", "BigGuild", "BigTrouble", "BlackList", --[["Bongos_AB",--]] "Bonuses", "BriefQuestComplete", "Broker_Transport", "Buffalo", --[["Buffalo2",--]]	"BuffQ", "BugSack", "Butsu", "BuyEmAll", "BuyPoisons",
 		"CallToArms", "Capping", "Carbonite", "Cartographer", "Cartographer_QuestInfo", "Cartographer3", "Cauldron", "CBRipoff", "CEnemyCastBar", --[["CharactersViewer",--]] "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", --[["CT_RaidAssist",--]] "CT_RaidTracker",
 		"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "DebuffFilter", "Demon", "DemonTrainerFrame", "DepositBox", "DiamondThreatMeter", "Dominos", "DopieArenaInfo", "DuckieBank",
 		"Earth", "EasyTrack", "EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "Epeen", "epgp", "EQL3", "EquipCompare", "EventEquip", "EveryQuest", "Examiner",
@@ -106,7 +103,7 @@ function Skinner:AddonFrames()
 		"MacroBank", "MacroBrokerGUI", "MageEatDrinkAid", "MailTo", "MakeRocketGoNow", "Mapster", --[["MCP", "MetaMap",--]]	 "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MTLove", --[["MultiTips",--]] "MusicPlayer", "MyBags", "myClock", "myMusic",
 		"NeatFreak", "Necrosis", "NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
 		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
-		"Palatank", "PallyPower", "Panda", "PartyBuilder", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoliteWhisper", "PoMTracker", "Possessions", "Postal", "PowerAuras", "ProcMeter", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
+		"Palatank", "PallyPower", "Panda", "PartyBuilder", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoliteWhisper", "PoMTracker", "Possessions", "Postal", "PowerAuras", "ProcMeter", "Producer", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
 		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon", "QuickMark",
 		"RABuffs", "RaidBuffStatus", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
 		"Sanity2", --[["SanityBags",--]] "SellJunk", "ShadowDancer3", "ShieldLeft", "sienasGemViewer", "SimpleMouseoverTarget", "Skillet", "SmartBuff", "SmartDebuff", "SmoothQuest", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",

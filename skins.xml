@@ -44,6 +44,7 @@
 <script file="SkinMe\Bagnon.lua"/>
 <script file="SkinMe\BankAccountant.lua"/>
 <script file="SkinMe\BankItems.lua"/>
+<script file="SkinMe\BasicChatMods.lua"/>
 <script file="SkinMe\BattleChat.lua"/>
 <script file="SkinMe\BattleCry.lua"/>
 <script file="SkinMe\BaudAuction.lua"/>
@@ -282,6 +283,7 @@
 <script file="SkinMe\PowerAuras.lua"/>
 <script file="SkinMe\Prat3.lua"/>
 <script file="SkinMe\ProcMeter.lua"/>
+<script file="SkinMe\Producer.lua"/>
 <script file="SkinMe\ProfessionsBook.lua"/>
 <script file="SkinMe\Proximo.lua"/>
 <script file="SkinMe\PVPCooldown.lua"/>
