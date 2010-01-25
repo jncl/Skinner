@@ -1,7 +1,4 @@
 local _G = _G
-local select = select
-local IsAddOnLoaded = IsAddOnLoaded
-local IsMacClient = IsMacClient
 local ftype = "u"
 
 function Skinner:ModelFrames()
@@ -725,7 +722,7 @@ function Skinner:GuildBankUI()
 -->>--	GuildBank Popup Frame
 	self:skinEditBox{obj=GuildBankPopupEditBox, regs={9}}
 	self:skinScrollBar{obj=GuildBankPopupScrollFrame}
-	self:skinButton{obj=GuildBankPopupOkayButton}
+	self:skinAllButtons{obj=GuildBankPopupFrame}
 	self:addSkinFrame{obj=GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
 
 -->>--	GuildBank Tabs (side)

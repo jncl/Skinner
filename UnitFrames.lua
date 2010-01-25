@@ -1,11 +1,11 @@
 local _G = _G
 local ftype = "c"
-local select = select
 
+local uCls = select(2, UnitClass("player")) -- player class
 local ba -- background alpha setting
 local lOfs = -10 -- level text offset
-
 local shldTex = [[Interface\AchievementFrame\UI-Achievement-Progressive-Shield]]
+
 local function changeShield(parent)
 
 	local shldReg = _G[parent:GetName().."BorderShield"]
@@ -68,14 +68,14 @@ function Skinner:Player()
 	self:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=37, y1=-7, y2=6}
 
 --	if the player class is a DeathKnight then skin the RuneFrame
-	if self.uCls == "DEATHKNIGHT" then
+	if uCls == "DEATHKNIGHT" then
 		for i = 1, 6 do
 			local rBdrTex = _G["RuneButtonIndividual"..i.."BorderTexture"]
 			rBdrTex:SetTexture(nil)
 		end
 	end
 --	if the player class is a Shaman/DeathKnight then skin the TotemFrame
-	if self.uCls == "SHAMAN" or self.uCls == "DEATHKNIGHT" then
+	if uCls == "SHAMAN" or uCls == "DEATHKNIGHT" then
 		for i = 1, 4 do
 			_G["TotemFrameTotem"..i.."Background"]:SetAlpha(0)
 			local tfTBdrTex = self:getRegion(self:getChild(_G["TotemFrameTotem"..i], 2), 1) -- Totem Border texture
@@ -83,14 +83,14 @@ function Skinner:Player()
 		end
 	end
 --	if the player class is a Rogue/Druid then skin the ComboFrame
-	if self.uCls == "ROGUE" or self.uCls == "DRUID" then
+	if uCls == "ROGUE" or uCls == "DRUID" then
 		for i = 1, 5 do
 			local cPtTex = select(1, _G["ComboPoint"..i]:GetRegions())
 			cPtTex:SetTexture(nil)
 		end
 	end
 -- if the player class is a Druid then skin the AlternateManaBar
-	if self.uCls == "DRUID" then
+	if uCls == "DRUID" then
 		PlayerFrameAlternateManaBarBorder:SetTexture(nil)
 		self:glazeStatusBar(PlayerFrameAlternateManaBar, 0)
 	end

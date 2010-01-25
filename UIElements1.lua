@@ -1,8 +1,4 @@
 local _G = _G
-local ceil = math.ceil
-local select = select
-local type = type
-local IsAddOnLoaded = IsAddOnLoaded
 local ftype = "u"
 
 function Skinner:Tooltips()
@@ -484,16 +480,23 @@ function Skinner:WorldMap()
 	if not IsAddOnLoaded("Mapster") then
 		-- handle size change
 		self:SecureHook("WorldMap_ToggleSizeUp", function()
+			self:Debug("WorldMap_ToggleSizeUp")
 			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
 			self.skinFrame[WorldMapFrame]:ClearAllPoints()
 			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 102, 1)
 			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
 		end)
 		self:SecureHook("WorldMap_ToggleSizeDown", function()
+			self:Debug("WorldMap_ToggleSizeDown")
+			if not WORLDMAP_OPTIONS.advanced then -- frame not moveable
+				x1, y1, x2, y2 = 12, -12, -20, -10
+			else -- frame moveable
+				x1, y1, x2, y2 = 0, 2, 0, 0
+			end
 			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
 			self.skinFrame[WorldMapFrame]:ClearAllPoints()
-			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 12, -12)
-			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -20, -10)
+			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", x1, y1)
+			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", x2, y2)
 		end)
 		self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
 			self:Debug("WorldMapFrame_ToggleAdvanced: [%s]", WORLDMAP_OPTIONS.advanced)

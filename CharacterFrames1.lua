@@ -1,6 +1,4 @@
 local _G = _G
-local unpack = unpack
-local RaiseFrameLevel = RaiseFrameLevel
 local ftype = "c"
 
 function Skinner:CharacterFrames()

@@ -1,7 +1,4 @@
 local ftype = "s"
-local ceil = math.ceil
-local tinsert = table.insert
-local CreateFrame = CreateFrame
 
 function Skinner:adjustTFOffset(reset)
 --	self:Debug("adjustTFOffset:[%s, %s, %s]", reset, self.db.profile.TopFrame.height, UIParent:GetAttribute("TOP_OFFSET"))

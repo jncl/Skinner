@@ -1,3 +1,5 @@
+local _G = _G
+
 -- check to see if LibStub is loaded
 assert(LibStub, "Skinner requires LibStub")
 assert(LibStub:GetLibrary("CallbackHandler-1.0", true), "Skinner requires CallbackHandler-1.0")
@@ -23,40 +25,6 @@ Skinner.LSM = LibStub("LibSharedMedia-3.0")
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 0.3.0
 --Skinner.isPatch = QuestInfoFrame and true or false
--- store player class
-Skinner.uCls = select(2, UnitClass("player"))
--- store player name
-Skinner.uName = UnitName("player")
-
--- local defs (for speed)
-local _G = _G
-local assert = assert
-local ceil = math.ceil
-local floor = math.floor
-local geterrorhandler = geterrorhandler
-local ipairs = ipairs
-local pairs = pairs
-local pcall = pcall
-local rawget = rawget
-local select = select
-local strfind = string.find
-local tcon = table.concat
-local tinsert = table.insert
-local tonumber = tonumber
-local tostring = tostring
-local type = type
-local unpack = unpack
-local xpcall = xpcall
-local CreateFrame = CreateFrame
-local LowerFrameLevel = LowerFrameLevel
-local RaiseFrameLevel = RaiseFrameLevel
-local IsAddOnLoaded = IsAddOnLoaded
-local IsAddOnLoadOnDemand = IsAddOnLoadOnDemand
-local EnumerateFrames = EnumerateFrames
-local Model_RotateLeft = Model_RotateLeft
-local Model_RotateRight = Model_RotateRight
-local PanelTemplates_TabResize = PanelTemplates_TabResize
-local GetCVarBool = GetCVarBool
 
 local function makeString(t)
 
@@ -86,7 +54,7 @@ local function makeText(a1, ...)
 		for i = 1, select('#', ...) do
 			tmpTab[i+2] = makeString(select(i, ...))
 		end
-		output = tcon(tmpTab, " ")
+		output = table.concat(tmpTab, " ")
 	end
 
 	return output
@@ -1514,10 +1482,17 @@ function Skinner:skinButton(opts)
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	elseif opts.cb2 then -- it's pretending to be a close button (ArkInventory)
-		self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=-2, y1=2, x2=2, y2=-2}
+		x1 = opts.x1 or 0
+		y1 = opts.y1 or 0
+		x2 = opts.x2 or 0
+		y2 = opts.y2 or 0
+		self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=x1, y1=y1, x2=x2, y2=y2}
 		btn = self.sBut[opts.obj]
 		btn:SetNormalFontObject(self.fontX)
 		btn:SetText(self.mult)
+		tx = opts.tx or 0
+		ty = opts.ty or 0
+		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=btn:GetFontString(), x=tx, y=ty} end -- move text
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[6]}}
 		btn = self.sBut[opts.obj]
@@ -1542,7 +1517,7 @@ function Skinner:skinButton(opts)
 		tx = opts.tx or 0
 		ty = opts.ty or -1
 		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
-	elseif opts.mp3 then -- it's a minus/plus button, just skin it (used by Waterfall)
+	elseif opts.mp3 then -- it's a minus/plus button, just skin it (used by Waterfall & tomQuest2)
 		opts.obj:SetNormalFontObject(self.fontP)
 		opts.obj:SetText(self.plus)
 		opts.obj:SetPushedTextOffset(-1, -1)
@@ -2060,15 +2035,6 @@ end
 function Skinner:skinUsingBD2(obj)
 
 	self:skinUsingBD{obj=obj, size=2}
-
-end
-
-function Skinner:unSkin(obj)
-
-	obj:SetBackdrop(nil)
-	obj:SetBackdropColor(nil)
-	obj:SetBackdropBorderColor(nil)
-	if obj.tfade then obj.tfade:SetTexture(nil) end
 
 end
 
