@@ -14,12 +14,12 @@ function Skinner:Ace3()
 			elseif objType == "Dropdown-Pullout" then
 				self:applySkin(obj.frame)
 			elseif objType == "DropdownGroup"
-				or objType == "InlineGroup"
-				or objType == "TabGroup" then
+			or objType == "InlineGroup"
+			or objType == "TabGroup" then
 				self:keepFontStrings(obj.border)
 				self:applySkin(obj.border)
 			elseif objType == "EditBox"
-				or objType == "NumberEditBox" then
+			or objType == "NumberEditBox" then
 				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
 				self:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
 					return left + 6, right, top, bottom
@@ -80,6 +80,39 @@ function Skinner:Ace3()
 			elseif objType == "Keybinding" then
 				self:skinButton{obj=obj.button, as=true}
 				self:applySkin{obj=obj.msgframe}
+
+			-- Snowflake objects
+			elseif objType == "SnowflakeGroup" then
+				self:applySkin{obj=obj.frame}
+				self:skinSlider{obj=obj.slider, size=2}
+				-- hook this for frame refresh
+				self:SecureHook(obj, "Refresh", function(this)
+					this.frame:SetBackdrop(self.Backdrop[1])
+					local bCr, bCg, bCb, bCa = unpack(self.bColour)
+					local bbCr, bbCg, bbCb, bbCa = unpack(self.bbColour)
+					this.frame:SetBackdropColor(bCr, bCg, bCb, bCa)
+					this.frame:SetBackdropBorderColor(bbCr, bbCg, bbCb, bbCa)
+				end)
+			elseif objType == "SnowflakeEditBox" then
+				self:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
+
+			-- Producer objects
+			elseif objType == "ProducerHead" then
+				self:applySkin{obj=obj.frame}
+				self:skinButton{obj=obj.close, cb2=true}
+				obj.SetBorder = function() end -- disable background changes
+
+			-- ignore these types for now
+			elseif objType == "CheckBox"
+			or objType == "Dropdown-Item-Toggle"
+			or objType == "SnowflakeButton"
+			or objType == "SnowflakeEscape"
+			or objType == "SnowflakePlain"
+			or objType == "SnowflakeTitle"
+			then
+			-- any other types
+			else
+				self:Debug("AceGUI, unmatched type - %s", objType)
 			end
 		end
 		return obj

@@ -21,11 +21,11 @@ function Skinner:tomQuest2()
 					if not iconTex:find("Icons") then -- it's a m/p button
 						if not btn.skin then self:skinButton{obj=btn, mp3=true, tx=0, ty=0} end
 						this:SetAlpha(0)
-					end
-					if iconTex:find("MinusButton") then
-						btn:SetText(Skinner.minus)
-					elseif iconTex:find("PlusButton") then
-						btn:SetText(Skinner.plus)
+						if iconTex:find("MinusButton") then
+							btn:SetText(self.minus)
+						elseif iconTex:find("PlusButton") then
+							btn:SetText(self.plus)
+						end
 					end
 				end, true)
 			end
@@ -35,7 +35,10 @@ function Skinner:tomQuest2()
 --			self:Debug("recycleButton: [%s, %s, %s]", this, btn, btn.type)
 			if btn.type == "collapse" then
 				btn:SetText("")
-				self:unSkin(btn)
+				btn:SetBackdrop(nil)
+				btn:SetBackdropColor(nil)
+				btn:SetBackdropBorderColor(nil)
+				if btn.tfade then btn.tfade:SetTexture(nil) end
 				btn.skin = nil
 			end
 		end)

@@ -1,62 +1,60 @@
 
 function Skinner:FishingBuddy()
 
+	self:skinAllButtons{obj=FishingBuddyFrame}
 	self:addSkinFrame{obj=FishingBuddyFrame, kfs=true, x1=10, y1=-13, x2=-31, y2=69}
 -->>--	Locations Frame
 	self:keepFontStrings(FishingLocationsFrame)
 	self:keepFontStrings(FishingLocationExpandButtonFrame)
 	self:skinScrollBar{obj=FishingLocsScrollFrame}
+	-- m/p buttons
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook(FishingBuddy.Locations, "Update", function(...)
+			for i = 1, 21 do
+				self:checkTex(_G["FishingLocations"..i])
+			end
+			self:checkTex(FishingLocationsCollapseAllButton)
+		end)
+	end
+	for i = 1, 21 do
+		self:skinButton{obj=_G["FishingLocations"..i], mp=true}
+	end
+	self:skinButton{obj=FishingLocationsCollapseAllButton, mp=true}
+
 -->>--	Options Frame
 	self:keepFontStrings(FishingOptionsFrame)
 	self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
 	self:skinDropDown{obj=FishingBuddyOption_OutfitMenu}
--->>--	Fishing Extravaganza Frame
-	self:applySkin(FishingExtravaganzaFrame)
--->>--	FishingWatch Tab
-	self:keepRegions(FishingWatchTab, {4, 5}) -- N.B. region 4 is the Text, 5 is the Highlight
-	if self.db.profile.TexturedTab then self:applySkin(FishingWatchTab, nil, 0, 1)
-	else self:applySkin(FishingWatchTab) end
-	self:moveObject(FishingWatchTab, nil, nil, "-", 4)
-	self:moveObject(FishingWatchTabText, nil, nil, "+", 4)
-	local FWTTH = self:getRegion(FishingWatchTab, 5) -- Text Highlight
-	self:moveObject(FWTTH, nil, nil, "+", 4)
-	FWTTH:SetWidth(FWTTH:GetWidth() - 20)
+-->>-- Tabs (side)
+	for i = 1, 3 do
+		self:removeRegions(_G["FishingBuddyOptionTab"..i], {1}) -- N.B. other regions are icon and highlight
+	end
 
--->>--	Tabs
-	local function fbTabs()
-
-		for i = 1, FishingBuddyFrame.numTabs do
-			local tabName = _G["FishingBuddyFrameTab"..i]
-			if Skinner.db.profile.TexturedTab then
+-->>--	Tabs (bottom)
+	if self.isTT then
+		-- hook this to change the texture for the Active and Inactive tabs
+		self:SecureHook("FishingBuddyFrameTab_OnClick",function(...)
+			for i = 1, FishingBuddyFrame.numTabs do
+				local tabSF = self.skinFrame[_G["FishingBuddyFrameTab"..i]]
 				if i == FishingBuddyFrame.selectedTab then
-					Skinner:setActiveTab(tabName)
+					self:setActiveTab(tabSF)
 				else
-					Skinner:setInactiveTab(tabName)
+					self:setInactiveTab(tabSF)
 				end
 			end
-			if i == 1 then Skinner:moveObject{obj=tabName, x=4}
-			else Skinner:moveObject{obj=tabName, x=14} end
-		end
-
+		end)
 	end
-
 	for i = 1, FishingBuddyFrame.numTabs do
-		local tabName = _G["FishingBuddyFrameTab"..i]
-		local tabNameText = _G["FishingBuddyFrameTab"..i.."Text"]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0, 1)
-		else self:applySkin(tabName) end
-		self:moveObject(tabNameText, nil, nil, "-", 2)
+		local tabObj = _G["FishingBuddyFrameTab"..i]
+		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		local tabSF = self.skinFrame[tabObj]
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
 	end
-	-- hook these to handle tab movement
-	self:SecureHook("ToggleFishingBuddyFrame", function(target)
-		fbTabs()
-	end)
-	self:SecureHook("FishingBuddyFrameTab_OnClick", function()
-		fbTabs()
-	end)
-	self:SecureHook("FishingBuddyFrame_OnShow", function()
-		fbTabs()
-	end)
 
 end

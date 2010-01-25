@@ -20,6 +20,8 @@ function Skinner:Waterfall()
 
 		local function checkTex(btn)
 
+			if not self.db.profile.Buttons then return end
+
 			local nTex = btn:GetNormalTexture() and btn:GetNormalTexture():GetTexture() or nil
 --			Skinner:Debug("checkTex: [%s, %s, %s]", btn.skin, btn.obj.id, nTex)
 			if not btn.skin then Skinner:skinButton{obj=btn, mp3=true} end -- add skin if required

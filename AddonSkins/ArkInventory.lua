@@ -14,7 +14,7 @@ function Skinner:ArkInventory()
 				y1 = v == "Container" and -1 or 0
 				self:addSkinFrame{obj=_G[af..v], kfs=true, y1=y1}
 				if v == "Title" then
-					self:skinButton{obj=_G[af..v.."Close"], cb2=true}
+					self:skinButton{obj=_G[af..v.."Close"], cb2=true, tx=-1, x1=-2, y1=2, x2=2, y2=-2}
 				end
 			end
 			self:skinEditBox(_G[af.."SearchFilter"], {9})
@@ -25,7 +25,7 @@ function Skinner:ArkInventory()
 -->>--	Rules Frame
 	ArkInventory.db.profile.option.ui.rules.border.colour = CopyTable(self.db.profile.BackdropBorder)
 	self:applySkin(ARKINV_RulesTitle)
-	self:skinButton{obj=ARKINV_RulesTitleClose, cb2=true}
+	self:skinButton{obj=ARKINV_RulesTitleClose, cb2=true, tx=-1, x1=-1, y1=1, x2=1, y2=-1}
 	self:applySkin(ARKINV_RulesFrame)
 	self:applySkin(ARKINV_RulesFrameViewTitle)
 	self:applySkin(ARKINV_RulesFrameViewSearch)
@@ -51,7 +51,7 @@ function Skinner:ArkInventory()
 -->>--	Search Frame
 	ArkInventory.db.profile.option.ui.search.border.colour = CopyTable(self.db.profile.BackdropBorder)
 	self:applySkin(ARKINV_SearchTitle)
-	self:skinButton{obj=ARKINV_SearchTitleClose, cb2=true}
+	self:skinButton{obj=ARKINV_SearchTitleClose, cb2=true, tx=-1, x1=-1, y1=1, x2=1, y2=-1}
 	self:applySkin(ARKINV_SearchFrame)
 	self:applySkin(ARKINV_SearchFrameViewSearch)
 	self:skinEditBox(ARKINV_SearchFrameViewSearchFilter, {9})

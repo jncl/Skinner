@@ -4,13 +4,14 @@ function Skinner:QuestGuru()
 	if not self.db.profile.QuestLog then return end
 
 	-- LightHeaded support
-	self:moveObject{obj=LightHeadedFrame, x=-55}
-	self:RawHook(LightHeadedFrame, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
-		self:Debug("LHF_SP: [%s, %s, %s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs, relTo == QuestGuru_QuestLogFrame, floor(xOfs) > -16)
-		if relTo == QuestGuru_QuestLogFrame and floor(xOfs) > -56 then xOfs = -55 end
-		self.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, yOfs)
-	end, true)
-
+	if IsAddOnLoaded("LightHeaded") then
+		self:moveObject{obj=LightHeadedFrame, x=-55}
+		self:RawHook(LightHeadedFrame, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
+			self:Debug("LHF_SP: [%s, %s, %s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs, relTo == QuestGuru_QuestLogFrame, floor(xOfs) > -16)
+			if relTo == QuestGuru_QuestLogFrame and floor(xOfs) > -56 then xOfs = -55 end
+			self.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, yOfs)
+		end, true)
+	end
 
 	local function colourText(type)
 

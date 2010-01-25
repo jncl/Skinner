@@ -13,7 +13,7 @@ function Skinner:oRA3()
 				end
 			end
 			local xOfs = select(4, oRA3FrameTab1:GetPoint())
-			self:Debug("oRA3_SelectPanel: [%s]", xOfs)
+--			self:Debug("oRA3_SelectPanel: [%s]", xOfs)
 			self:moveObject{obj=oRA3FrameTab1, x=(xOfs == 0 and oRA3.groupStatus == oRA3.INRAID) and -26 or 0}
 		end)
 	end

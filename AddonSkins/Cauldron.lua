@@ -13,11 +13,13 @@ function Skinner:Cauldron()
 	self:skinButton{obj=CauldronSkillListFrameExpandButtonFrameCollapseAllButton, mp=true}
 	self:skinScrollBar{obj=CauldronSkillListFrameScrollFrame}
 	if self.db.profile.Buttons then
+		-- store player name
+		local uName = UnitName("player")
 		-- hook to manage changes to button textures
 		self:SecureHook(Cauldron, "UpdateSkillList", function()
 			local skillName = CURRENT_TRADESKILL
 			if IsTradeSkillLinked() then skillName = "Linked-"..skillName end
-			local skillList = Cauldron:GetSkillList(self.uName, skillName)
+			local skillList = Cauldron:GetSkillList(uName, skillName)
 			for i = 1, #skillList do
 				local btn = _G["CauldronSkillItem"..i.."DiscloseButton"]
 				if not btn then break end

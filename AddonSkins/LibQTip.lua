@@ -10,9 +10,10 @@ function Skinner:LibQTip()
 		for key, tooltip in LibStub(ttLib):IterateTooltips() do
 -- 			Skinner:Debug("%s:[%s, %s]", ttLib, key, tooltip)
 			-- ignore tooltips if required
-			if Skinner.ignoreLQTT[key] then return end
-			if not Skinner.skinned[tooltip] then
-				Skinner:applySkin{obj=tooltip}
+			if not Skinner.ignoreLQTT[key] then
+				if not Skinner.skinned[tooltip] then
+					Skinner:applySkin{obj=tooltip}
+				end
 			end
 		end
 		
