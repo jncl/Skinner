@@ -1,3 +1,14 @@
+b2.11159.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Minor UI changes
+	Skinned BasicScriptErrors frame and added option for it
+	Updated Ace3, AutoBag, Dewdrop, FramesResized, HealBot, LightHeaded, QuestGuru, RecipeBook, Skillet, oRA3 & tomQuest2 skins
+	Skinned DaemonMailAssist & Necrosis
+	Renamed SexyGroup to ElitistGroup
+	Updated ElitistGroup skin
+
 b2.11159.3
 Jncl:
 	ToDo.txt
