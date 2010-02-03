@@ -11,57 +11,44 @@ S - Skin request
 B - Button(s) Skin request
 
 	O	Check to see which skins can be obsoleted
+	O	Move Unhook statement directly after Hook statement
 
 	I	Frames overlaying text, reported by several posters
 		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
 ?		- is it caused by an addon "re-layering" frames ?
 
-?	I	WorldMapFrame, reported by TBABlackPanther, 14.01.10
-		- Skinner-b2.11159.4\UIElements1.lua:505: attempt to index field '?' (a nil value)
+√	S	Collectinator, requested by Gabriel, 26.01.10
+
+x	I	ATSW, reported by ratskinmahoney, 27.01.10
+√		- skin UI buttons
+
+√	S	WoWPro
+
+√	I	PassLoot, reported by Kerecha, 27.01.10
+		- Skinner-b2.11159.5\SkinMe\PassLoot.lua:39: attempt to index field 'ModulesFrame' (a nil value)
 		(tail call): ?:
-		<in C code>: in function `WorldMapFrame_ToggleAdvanced'
-		<string>:"*:OnLoad":3: in function `setFunc'
-		Interface\FrameXML\InterfaceOptionsPanels.lua:90: in function <Interface\FrameXML\InterfaceOptionsPanels.lua:86>:
-		<in C code>: in function `pcall'
-		Interface\FrameXML\InterfaceOptionsFrame.lua:217: in function <Interface\FrameXML\InterfaceOptionsFrame.lua:216>:
-		<in C code>: in function `securecall'
-		Interface\FrameXML\InterfaceOptionsFrame.lua:252: in function <Interface\FrameXML\InterfaceOptionsFrame.lua:248>:
-		<in C code>: in function `Click'
-		Interface\FrameXML\UIParent.lua:2880: in function `ToggleGameMenu':
-		<string>:"TOGGLEGAMEMENU":1: in function <[string "TOGGLEGAMEMENU"]:1>
-
-√	N	Fishing Buddy reported by Gabriel, 14.01.10
-
-√	I	QuestGuru, reported by Elanie, 17.01.10
-		- Skinner-b2.11159.4\Skinner.lua:1245: attempt to index field 'obj' (a nil value)
-		Skinner-b2.11159.4\Skinner.lua:1293: in function `moveObject'
-		Skinner-b2.11159.4\SkinMe\QuestGuru.lua:7: in function <Skinner\SkinMe\QuestGuru.lua:3>
+		<in C code>: in function `xpcall'
+		Skinner-b2.11159.5\Skinner.lua:768: in function <Skinner\Skinner.lua:766>
+		Skinner-b2.11159.5\Skinner.lua:813: in function `?'
+		Skinner-b2.11159.5\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
 		(tail call): ?:
-		<in C code>: ?
-		Skinner-b2.11159.4\Skinner.lua:800: in function <Skinner\Skinner.lua:798>
-		Skinner-b2.11159.4\Skinner.lua:845: in function `?'
-		Skinner-b2.11159.4\AddonFrames.lua:123: in function <Skinner\AddonFrames.lua:63>
+
+	N	tomQuest2, reported by gagou, 29.01.10
+		- Just to inform you that since a few alpha tomQuest2 is no more using LibQTip for ldb tooltips and trackers. I've replaced it with three frames of my own named:
+		tomQuest2QuestsTooltip
+		tomQuest2QuestsTracker
+		tomQuest2AchievementsTracker
+
+√	I	ElitistGroup, replaced by Elanie, 1.02.10
+		- Skinner-b2.11159.5\SkinMe\ElitistGroup.lua:13: attempt to index field 'databaseFrame' (a nil value)
 		(tail call): ?:
-		<in C code>: ?
-		<string>:"safecall Dispatcher[2]":9: in function <[string "safecall Dispatcher[2]"]:5>
-		(tail call): ?:
-		AceTimer-3.0-5 (Ace3):164: in function <Ace3\AceTimer-3.0\AceTimer-3.0.lua:138>
+		<in C code>: in function `CreateUI'
+		ElitistGroup-1.7\modules\users.lua:75: in function `BuildUI'
+		ElitistGroup-1.7\modules\users.lua:69: in function `Show'
+		ElitistGroup-1.7\modules\config.lua:526: in function `ELITISTGROUP'
+		ElitistGroup-1.7\ElitistGroup.lua:731: in function `_onclick'
+		ButtonBin-1.0.69\ButtonBin.lua:260: in function <ButtonBin\ButtonBin.lua:257>
 
-√	S	BasicChatMods requested by ichik, 17.01.10
-		-  urlcopy and chat copy windows
+√	S	AlleyMap, requested by ichik, 31.01.10
 
-
-√	I	IceHud, reported by ndnjon, 20.01.10
-		-  In the IceHud configuration tab there is a section called "Module Settings' with a drop down menu.  I was trying to move my Rune Bar but while Skinner was loaded, it would only show a blank area, and there was no way to access the drop down
-?		- Uses Waterfall for GUI config, maybe has UI buttons checked but no Waterfall skin
-
-√	S	Producer, requested by Curace, 20.01.10
-		- http://wow.curse.com/downloads/wow-addons/details/producer.aspx
-
-?	I	tomQuest2, reported by Craxziz, 21.01.10
-		- Using Skinner Version: b2.11159.4 and tomQuest2 3.3 beta 5, with the questwatch skinning option turned off and the tomQuest2 skin loaded, I'm getting gradual but cumulative FPS loss.
-
-		FPS loss occurs when quest objectives update, quests complete and are handed in, exiting combat and also from  changing zones. When doing dailies over the course of about 20 minutes my ooc fps will drop from ~60fps to a constant <20fps, with probable freezes when the above events happen. This effect occurs gradually overtime as the above actions happen. However when in combat with tomQuest2's quest tracker hidden my fps returns to normal.
-
-		With the tomQuest2 skin removed from the skinme directory there are no fps issues.
-		
+√	S	BindPad, requested by ichik, 1.02.10
