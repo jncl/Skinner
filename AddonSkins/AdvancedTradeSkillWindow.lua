@@ -1,77 +1,83 @@
-	
+
 function Skinner:AdvancedTradeSkillWindow()
 	if not self.db.profile.TradeSkillUI then return end
 
-	self:keepFontStrings(ATSWFrame)
-	ATSWFrame:SetWidth(ATSWFrame:GetWidth() -30)
-	ATSWFrame:SetHeight(ATSWFrame:GetHeight() -10)
-	self:moveObject(ATSWFrameTitleText, nil, nil, "+", 8)
-	self:moveObject(ATSWFrameCloseButton, "+", 28, "+", 8)
 	self:keepFontStrings(ATSWRankFrame)
 	self:keepFontStrings(ATSWRankFrameBorder)
-	self:moveObject(ATSWRankFrame, "+", 4, "+", 5)
 	self:glazeStatusBar(ATSWRankFrame, 0)
-	self:keepFontStrings(ATSWListScrollFrame)
-	self:skinScrollBar(ATSWListScrollFrame)
+	self:skinScrollBar{obj=ATSWListScrollFrame}
 	self:keepFontStrings(ATSWExpandButtonFrame)
-	self:keepFontStrings(ATSWInvSlotDropDown)
-	self:keepFontStrings(ATSWSubClassDropDown)
-	self:keepFontStrings(ATSWQueueScrollFrame)
-	self:skinScrollBar(ATSWQueueScrollFrame)
-	self:skinEditBox(ATSWInputBox)
-	ATSWInputBox:SetWidth(ATSWInputBox:GetWidth() + 6)
-	self:moveObject(ATSWInputBox, "-", 6, nil, nil)
-	self:skinEditBox(ATSWFilterBox)
-	self:applySkin(ATSWFrame)
-
-	-- Reagent Frame
-	self:keepFontStrings(ATSWReagentFrame)
-	ATSWReagentFrame:SetWidth(ATSWReagentFrame:GetWidth() * self.FxMult + 20)
-	ATSWReagentFrame:SetHeight(ATSWReagentFrame:GetHeight() * self.FyMult)
-	self:moveObject(ATSWReagentFrameCloseButton, "+", 28, "+", 8)
-	self:applySkin(ATSWReagentFrame)
-
-	-- Options Frame
-	ATSWOptionsFrame:SetWidth(ATSWOptionsFrame:GetWidth() * self.FxMult + 30)
-	self:applySkin(ATSWOptionsFrame)
-
-	-- Continue Frame
-	self:applySkin(ATSWContinueFrame)
-
-	-- Tooltips
-	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then ATSWTradeskillTooltip:SetBackdrop(self.backdrop) end
-		self:SecureHookScript(ATSWTradeskillTooltip, "OnShow", function(this)
-			self:skinTooltip(ATSWTradeskillTooltip)
+	self:skinDropDown{obj=ATSWInvSlotDropDown}
+	self:skinDropDown{obj=ATSWSubClassDropDown}
+	self:skinScrollBar{obj=ATSWQueueScrollFrame}
+	self:skinEditBox{obj=ATSWInputBox, regs={9}, noWidth=true}
+	self:skinEditBox{obj=ATSWFilterBox, regs={9}}
+	self:skinAllButtons{obj=ATSWFrame}
+	self:addSkinFrame{obj=ATSWFrame, kfs=true, x1=14, y1=-11, x2=-32, y2=10}
+	-- m/p buttons
+	self:skinButton{obj=ATSWCollapseAllButton, mp=true}
+	for i = 1, ATSW_TRADE_SKILLS_DISPLAYED do
+		self:skinButton{obj=_G["ATSWSkill"..i], mp=true}
+	end
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("ATSWFrame_Update", function()
+			for i = 1, ATSW_TRADE_SKILLS_DISPLAYED do
+				self:checkTex(_G["ATSWSkill"..i])
+			end
 		end)
 	end
 
-	-- Shopping List Frame
-	self:keepFontStrings(ATSWShoppingListFrame)
-	ATSWShoppingListFrame:SetWidth(ATSWShoppingListFrame:GetWidth() * self.FxMult + 20)
-	ATSWShoppingListFrame:SetHeight(ATSWShoppingListFrame:GetHeight() * self.FyMult)
-	self:keepFontStrings(ATSWSLScrollFrame)
-	self:skinScrollBar(ATSWSLScrollFrame)
-	self:applySkin(ATSWShoppingListFrame)
+	-- Reagent frame
+	self:skinAllButtons{obj=ATSWReagentFrame}
+	self:addSkinFrame{obj=ATSWReagentFrame, kfs=true, x1=14, y1=-13, x2=-34, y2=10}
 
-	-- Custom Sorting Frame
-	self:keepFontStrings(ATSWCSFrame)
-	ATSWCSFrame:SetWidth(ATSWFrame:GetWidth())
-	self:moveObject(ATSWCSFrameCloseButton, "+", 28, "+", 8)
-	self:removeRegions(ATSWCSUListScrollFrame)
-	self:skinScrollBar(ATSWCSUListScrollFrame)
-	self:removeRegions(ATSWCSSListScrollFrame)
-	self:skinScrollBar(ATSWCSSListScrollFrame)
+	-- Options frame
+	self:skinAllButtons{obj=ATSWOptionsFrame}
+	self:addSkinFrame{obj=ATSWOptionsFrame}
+
+	-- Continue frame
+	self:skinAllButtons{obj=ATSWContinueFrame}
+	self:addSkinFrame{obj=ATSWContinueFrame}
+
+	-- Tooltips
+	if self.db.profile.Tooltips.skin then
+		if self.db.profile.Tooltips.style == 3 then ATSWTradeskillTooltip:SetBackdrop(self.Backdrop[1]) end
+		self:SecureHookScript(ATSWTradeskillTooltip, "OnShow", function(this)
+			self:skinTooltip(this)
+		end)
+	end
+
+	-- Shopping List frame
+	self:skinScrollBar{obj=ATSWSLScrollFrame}
+	self:addSkinFrame{obj=ATSWShoppingListFrame, kfs=true, x1=16, y1=-2, x2=-30, y2=40}
+
+	-- Recipe Sorting Editor frame
+	self:skinScrollBar{obj=ATSWCSUListScrollFrame}
+	self:skinScrollBar{obj=ATSWCSSListScrollFrame}
 	self:skinEditBox(ATSWCSNewCategoryBox)
-	self:applySkin(ATSWCSFrame)
--->>--	All Reagent List Frame
-	self:keepFontStrings(ATSWAllReagentListFrame)
-	self:moveObject(ATSWAllReagentListFrameCloseButton, "+", 30, "-", 4)
-	self:keepFontStrings(ATSWAllReagentListCharDropDown)
-	self:applySkin(ATSWAllReagentListFrame)
--->>--	Scan Delay Frame
-	self:keepFontStrings(ATSWScanDelayFrame)
+	self:skinAllButtons{obj=ATSWCSFrame}
+	self:addSkinFrame{obj=ATSWCSFrame, kfs=true, x1=14, y1=-11, x2=-32, y2=10}
+	-- m/p buttons
+	for i = 1, 17 do
+		self:skinButton{obj=_G["ATSWCSCSkill"..i.."SkillButton"], mp=true}
+	end
+	if self.db.profile.Buttons then
+		-- hook to manage changes to button textures
+		self:SecureHook("ATSWCS_UpdateSkillList", function()
+			for i = 1, 17 do
+				self:checkTex(_G["ATSWCSCSkill"..i.."SkillButton"])
+			end
+		end)
+	end
+
+-->>--	All Reagent List frame
+	self:skinDropDown{obj=ATSWAllReagentListCharDropDown}
+	self:skinAllButtons{obj=ATSWAllReagentListFrame}
+	self:addSkinFrame{obj=ATSWAllReagentListFrame, kfs=true, x1=14, y1=-1, x2=-35}
+-->>--	Scan Delay frame
 	self:glazeStatusBar(ATSWScanDelayFrameBar, 0)
-	self:applySkin(ATSWScanDelayFrame)
+	self:skinAllButtons{obj=ATSWScanDelayFrame}
+	self:addSkinFrame{obj=ATSWScanDelayFrame, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
 
 end

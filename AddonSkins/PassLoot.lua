@@ -35,13 +35,5 @@ function Skinner:PassLoot()
 	self:moveObject{obj=mf.Silver.IconTexture, x=10}
 	self:skinEditBox{obj=mf.Copper, regs={9, 10}, noHeight=true, noWidth=true} 
 	self:moveObject{obj=mf.Copper.IconTexture, x=10}
-	-- Modules subpanel
-	self:skinScrollBar{obj=PassLoot.ModulesFrame.ScrollFrame}
-	self:applySkin{obj=PassLoot.ModulesFrame.ScrollFrame.ScrollChild}
-	self:addSkinFrame{obj=PassLoot.ModulesFrame, kfs=true}
-	-- ModuleHeaders
-	for _, v in pairs(PassLoot.ModuleHeaders) do
-		self:addSkinFrame{obj=PassLoot.PluginInfo[v].ProfileHeader.Box, kfs=true, y1=2}
-	end
 
 end

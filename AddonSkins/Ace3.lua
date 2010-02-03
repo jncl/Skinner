@@ -105,6 +105,7 @@ function Skinner:Ace3()
 			-- ignore these types for now
 			elseif objType == "CheckBox"
 			or objType == "Dropdown-Item-Toggle"
+			or objType == "Label"
 			or objType == "SnowflakeButton"
 			or objType == "SnowflakeEscape"
 			or objType == "SnowflakePlain"

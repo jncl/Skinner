@@ -27,6 +27,8 @@ function Skinner:Mapster()
 	else
 		self:addSkinFrame{obj=WorldMapFrame, ft="u", kfs=true, y1=1, x2=1}
 	end
+	-- on WorldMap frame
 	self:skinButton{obj=MapsterOptionsButton}
+	self:skinDropDown{obj=MapsterQuestObjectivesDropDown}
 
 end
