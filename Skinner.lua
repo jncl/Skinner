@@ -10,6 +10,9 @@ Skinner = LibStub("AceAddon-3.0"):NewAddon("Skinner", "AceConsole-3.0", "AceEven
 -- check to see if we were created successfully
 assert(Skinner, "Skinner creation failed, missing Libraries")
 
+-- put version info into Addons' table for debuggers
+Skinner.version = GetAddOnMetadata("Skinner", "Version")
+
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
 
@@ -1453,6 +1456,10 @@ function Skinner:skinButton(opts)
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+	elseif opts.obj.left then -- ARL & Collectinator
+		opts.obj.left:SetAlpha(0)
+		opts.obj.middle:SetAlpha(0)
+		opts.obj.right:SetAlpha(0)
 	else -- [UIPanelButtonTemplate2/... or derivatives]
 		local objName = opts.obj:GetName()
 		if objName then -- handle unnamed objects (e.g. Waterfall MP buttons)
@@ -1559,8 +1566,11 @@ function Skinner:isButton(obj, cb)
 			local oName = obj:GetName() or nil
 			local lTex = oName and (_G[oName.."Left"] and _G[oName.."Left"]:GetTexture() or _G[oName.."_LeftTexture"] and  _G[oName.."_LeftTexture"]:GetTexture()) or nil
 			if nTex and nTex:find("UI-Panel-Button", 1, true)
+			or obj.left and string.find(obj.left:GetTexture(), "UI-Panel-Button", 1, true) -- ARL & Collectinator
+--			or obj.left and obj.left:GetTexture():find("UI-Panel-Button", 1, true) -- ARL & Collectinator
 			or oName and lTex and lTex:find("UI-Panel-Button", 1, true)
-			and not (oName:find("AceConfig") or oName:find("AceGUI")) then -- ignore AceConfig/AceGui buttons
+			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
+			then
 				return true
 			end
 		else
