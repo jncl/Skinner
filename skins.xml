@@ -87,6 +87,7 @@
 <script file="SkinMe\Chatter.lua"/>
 <script file="SkinMe\Chinchilla.lua"/>
 <script file="SkinMe\Clique.lua"/>
+<script file="SkinMe\Collectinator.lua"/>
 <script file="SkinMe\Combuctor.lua"/>
 <script file="SkinMe\Configator.lua"/>
 <script file="SkinMe\ConcessionStand.lua"/>
@@ -373,6 +374,7 @@
 <script file="SkinMe\WebDKP.lua"/>
 <script file="SkinMe\WIM.lua"/>
 <script file="SkinMe\WoWEquip.lua"/>
+<script file="SkinMe\WoWPro.lua"/>
 <script file="SkinMe\xcalc.lua"/>
 <script file="SkinMe\XLoot.lua"/>
 <script file="SkinMe\XPerl.lua"/>

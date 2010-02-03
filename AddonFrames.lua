@@ -90,7 +90,7 @@ function Skinner:AddonFrames()
 		"_NPCScan",
 		"Accomplishment", "Accountant", "AceProfit", "Acheron", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", "aftt_extreme", "AlphaMap", "Altoholic", "Analyst", "AnnounceIt", "AoTRDungeonQuester", "ArkInventory", "Armory", --[["Ash_Cooldowns", "Ash_Core", "Ash_DoTimer", "Assessment",--]] "Atlas", "AtlasLoot", "AtlasQuest", "Auctionsnatch", "AuldLangSyne", "AuldLangSyne_Note", "AutoDecline", "AutoProfit", "AutoProfitX", "AxuItemMenus",
 		"Badapples", "Baggins", "Baggins_Search", "Bagnon", "Bagnon_Forever", "BankAccountant", "BankItems", "BasicChatMods", "BattleChat", "BattleCry", "BaudBag", "BaudManifest", "BaudMenu", "BeanCounter", "BeastTraining", "beql", "BetterInbox", "BigBankStatement", "BigGuild", "BigTrouble", "BlackList", --[["Bongos_AB",--]] "Bonuses", "BriefQuestComplete", "Broker_Transport", "Buffalo", --[["Buffalo2",--]]	"BuffQ", "BugSack", "Butsu", "BuyEmAll", "BuyPoisons",
-		"CallToArms", "Capping", "Carbonite", "Cartographer", "Cartographer_QuestInfo", "Cartographer3", "Cauldron", "CBRipoff", "CEnemyCastBar", --[["CharactersViewer",--]] "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", --[["CT_RaidAssist",--]] "CT_RaidTracker",
+		"CallToArms", "Capping", "Carbonite", "Cartographer", "Cartographer_QuestInfo", "Cartographer3", "Cauldron", "CBRipoff", "CEnemyCastBar", --[["CharactersViewer",--]] "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", --[["CT_RaidAssist",--]] "CT_RaidTracker",
 		"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "DebuffFilter", "Demon", "DemonTrainerFrame", "DepositBox", "DiamondThreatMeter", "Dominos", "DopieArenaInfo", "DuckieBank",
 		"Earth", "EasyTrack", "EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "Epeen", "epgp", "EQL3", "EquipCompare", "EventEquip", "EveryQuest", "Examiner",
 		--[["FactionGrinder",--]] "Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "ForteWarlock", "FramesResized", "FreierGeist_InstanceTime", "FruityLoots", --[["FuBar_PoisonReminderFu",--]]
@@ -126,7 +126,7 @@ function Skinner:AddonFrames()
 
 	-- handle Addons with odd names here
 	local oddlyNamedAddons = {
-		"Auc-Advanced", "Auc-Util-BigPicture", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "!ImprovedErrorFrame", "Ogri'Lazy", "Prat-3.0",
+		"Auc-Advanced", "Auc-Util-BigPicture", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "!ImprovedErrorFrame", "Ogri'Lazy", "Prat-3.0", "WoW-Pro"
 	}
 	for _, v in pairs(oddlyNamedAddons) do
 		v2, _ = v:gsub("[-_!'\.]", "")
