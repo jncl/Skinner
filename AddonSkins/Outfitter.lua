@@ -2,6 +2,8 @@
 function Skinner:Outfitter()
 	if not self.db.profile.CharacterFrames then return end
 
+	-- N.B. Outfitter changes the framelevel and framestrata of some of its frames and their children
+
 	local function skinOutfitterTabs(tabId)
 
 		for i = 1, OutfitterFrame.numTabs do
@@ -54,14 +56,40 @@ function Skinner:Outfitter()
 
 	end
 
+	local function skinDropDown(obj)
+
+		if not Skinner.db.profile.TexturedDD then Skinner:keepFontStrings(obj) return end
+		-- dropdown
+		self:moveObject{obj=obj.LeftTexture, x=2, y=-21}
+		obj.LeftTexture:SetAlpha(0)
+		obj.LeftTexture:SetHeight(19)
+		obj.LeftTexture:SetWidth(2)
+		obj.RightTexture:SetAlpha(0)
+		obj.RightTexture:SetHeight(19)
+		obj.RightTexture:SetWidth(2)
+		obj.MiddleTexture:SetTexture(Skinner.itTex)
+
+	end
+
+	local function skinMultiStats(obj)
+
+		for i = 1, #obj.ConfigLines do
+			if not Skinner.skinned[obj.ConfigLines[i]] then
+				skinDropDown(obj.ConfigLines[i].StatMenu)
+				skinDropDown(obj.ConfigLines[i].OpMenu)
+				if obj.ConfigLines[i].DeleteButton then Skinner:skinButton{obj=obj.ConfigLines[i].DeleteButton} end
+			end
+		end
+
+	end
  	-- hook these to handle the Outfit Bars
 	self:SecureHook(Outfitter.OutfitBar, "UpdateBar", function(this, ...)
 		skinOutfitBars(this, ...)
 	end)
 	self:SecureHook(Outfitter.OutfitBar, "DragBar_OnClick", function(this)
 		if OutfitBarSettingsDialog then
-			self:applySkin(OutfitBarSettingsDialog)
 			self:Unhook(Outfitter.OutfitBar, "DragBar_OnClick")
+			self:applySkin(OutfitBarSettingsDialog)
 		end
 	end)
 
@@ -79,9 +107,11 @@ function Skinner:Outfitter()
 
 -->>--	Outfitter Frame
 	self:SecureHook(OutfitterFrame, "Show", function(this, ...)
-		self:getChild(OutfitterFrame, 8):SetAlpha(0) -- hide band on the left
-		self:addSkinFrame{obj=OutfitterFrame, kfs=true, y1=2, x2=2, y2=-2}
 		self:Unhook(OutfitterFrame, "Show")
+		self:getChild(OutfitterFrame, 8):SetAlpha(0) -- hide band on the left
+		self:skinButton{obj=OutfitterCloseButton, cb2=true, x1=6, y1=-6, x2=-6, y2=6} -- due to frame level & strata being changed we pretend it's not a proper close button
+		self:skinButton{obj=OutfitterNewButton, as=true}
+		self:addSkinFrame{obj=OutfitterFrame, kfs=true, y1=2, x2=2, y2=-2}
 	end)
 
 -->>--	Main Frame
@@ -110,58 +140,92 @@ function Skinner:Outfitter()
 	end
 
 -->>--	New Outfit Panel
-	self:skinEditBox{obj=OutfitterNameOutfitDialogName, regs={15, 16}}
-	self:moveObject{obj=OutfitterNameOutfitDialogTitle, y=-6}
-	self:skinDropDown{obj=OutfitterNameOutfitDialogAutomation}
-	self:skinDropDown{obj=OutfitterNameOutfitDialogCreateUsing}
-	-- align the dropdowns
-	OutfitterNameOutfitDialogCreateUsingMiddle:SetWidth(OutfitterNameOutfitDialogAutomationMiddle:GetWidth())
-	self:addSkinFrame{obj=OutfitterNameOutfitDialog, kfs=true, hdr=true, x1=10, y1=4, y2=4}
+	self:SecureHook(Outfitter.NameOutfitDialog, "Show", function(this)
+		self:Unhook(Outfitter.NameOutfitDialog, "Show")
+		self:skinEditBox{obj=this.Name, regs={9, 15, 16}}
+		self:moveObject{obj=this.Title, y=-6}
+		skinDropDown(this.ScriptMenu)
+		self:applySkin{obj=this.InfoSection}
+		self:applySkin{obj=this.BuildSection}
+		self:applySkin{obj=this.StatsSection}
+		local msc = this.MultiStatConfig
+		skinMultiStats(msc)
+		self:skinButton{obj=msc.AddStatButton, as=true}
+		self:SecureHook(msc, "SetNumConfigLines", function(this2, ...)
+			skinMultiStats(this2)
+		end)
+		self:skinButton{obj=this.CancelButton, as=true}
+		self:skinButton{obj=this.DoneButton, as=true}
+		self:applySkin{obj=this, kfs=true} -- apply skin as title is hidden on redisplay
+	end)
+-->>--	Rebuild Outfit Panel
+	self:SecureHook(Outfitter.RebuildOutfitDialog, "Show", function(this)
+		self:Unhook(Outfitter.RebuildOutfitDialog, "Show")
+		self:moveObject{obj=this.Title, y=-6}
+		self:applySkin{obj=this.StatsSection}
+		local msc = this.MultiStatConfig
+		skinMultiStats(msc)
+		self:skinButton{obj=msc.AddStatButton, as=true}
+		self:SecureHook(msc, "SetNumConfigLines", function(this2, ...)
+			skinMultiStats(this2)
+		end)
+		self:skinButton{obj=this.CancelButton, as=true}
+		self:skinButton{obj=this.DoneButton, as=true}
+		self:applySkin{obj=this, kfs=true} -- apply skin as title is hidden on redisplay
+	end)
 
 -->>--	ChooseIcon Dialog
 	self:getChild(OutfitterChooseIconDialog, 1):SetBackdrop(nil) -- remove textures from anonymous frame
-	self:keepFontStrings(OutfitterChooseIconDialogIconSetMenu)
+--	self:keepFontStrings(OutfitterChooseIconDialogIconSetMenu)
+	self:skinDropDown{obj=OutfitterChooseIconDialogIconSetMenu}
 	self:skinEditBox{obj=OutfitterChooseIconDialogFilterEditBox, regs={6}}
 	self:skinScrollBar{obj=OutfitterChooseIconDialogScrollFrame}
+	self:skinAllButtons{obj=OutfitterChooseIconDialog}
 	self:addSkinFrame{obj=OutfitterChooseIconDialog, x1=12, y1=-12, x2=-16, y2=16}
 
--->>--	EditScriptDialog Frame
+-->>--	EditScript Dialog
 	if OutfitterEditScriptDialog then
-		self:keepFontStrings(OutfitterEditScriptDialogPresetScript)
+		self:skinButton{obj=OutfitterEditScriptDialog.CloseButton, cb=true, x1=-1, y1=1, x2=1, y2=-1}
+		self:skinDropDown{obj=OutfitterEditScriptDialogPresetScript}
 		self:keepFontStrings(OutfitterEditScriptDialogSourceScript)
 		self:skinScrollBar{obj=OutfitterEditScriptDialogSourceScript, noRR=true}
-		self:keepFontStrings(OutfitterEditScriptDialog)
-		self:applySkin(OutfitterEditScriptDialog)
+		self:skinButton{obj=OutfitterEditScriptDialogCancelButton}
+		self:skinButton{obj=OutfitterEditScriptDialogDoneButton}
+		self:addSkinFrame{obj=OutfitterEditScriptDialog, kfs=true, y2=-5}
 		-- Tabs
-		self:keepRegions(OutfitterEditScriptDialogTab1, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		if self.db.profile.TexturedTab then self:applySkin(OutfitterEditScriptDialogTab1, nil, 0, 1)
-		else self:applySkin(OutfitterEditScriptDialogTab1) end
-		self:moveObject(OutfitterEditScriptDialogTab1, nil, nil, "+", 4)
-		self:setActiveTab(OutfitterEditScriptDialogTab1)
-		self:keepRegions(OutfitterEditScriptDialogTab2, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		if self.db.profile.TexturedTab then self:applySkin(OutfitterEditScriptDialogTab2, nil, 0, 1)
-		else self:applySkin(OutfitterEditScriptDialogTab2) end
-		self:moveObject(OutfitterEditScriptDialogTab2, "+", 8, nil, nil)
-		self:setInactiveTab(OutfitterEditScriptDialogTab2)
-		if self.db.profile.TexturedTab then
-			-- Hook these to manage the Tabs
-			self:SecureHook(OutfitterEditScriptDialog, "SetPanelIndex", function(this, pIndex)
---				self:Debug("Outfitter_ESD_SetPanelIndex: [%s, %s]", this:GetName(), pIndex)
-				self:setInactiveTab(OutfitterEditScriptDialogTab1)
-				self:setInactiveTab(OutfitterEditScriptDialogTab2)
-				if this.selectedTab == 1 then self:setActiveTab(OutfitterEditScriptDialogTab1)
-				else self:setActiveTab(OutfitterEditScriptDialogTab2) end
-				end)
+		for i = 1, OutfitterEditScriptDialog.numTabs do
+			local tabObj = _G["OutfitterEditScriptDialogTab"..i]
+			self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+			local tabSF = self.skinFrame[tabObj]
+			if i == 1 then
+				if self.isTT then self:setActiveTab(tabSF) end
+			else
+				if self.isTT then self:setInactiveTab(tabSF) end
+			end
+		end
+		if self.isTT then
+			-- hook this to change the texture for the Active and Inactive tabs
+			self:SecureHook(OutfitterEditScriptDialog, "SetPanelIndex",function(...)
+				for i = 1, OutfitterEditScriptDialog.numTabs do
+					local tabSF = self.skinFrame[_G["OutfitterEditScriptDialogTab"..i]]
+					if i == OutfitterEditScriptDialog.selectedTab then
+						self:setActiveTab(tabSF)
+					else
+						self:setInactiveTab(tabSF)
+					end
+				end
+			end)
 		end
 	end
 
 -->>-- QuickSlots frame
 	self:SecureHook(Outfitter, "InitializeQuickSlots", function()
-		self:addSkinFrame{obj=OutfitterQuickSlots, kfs=true, x2=-3, y2=3}
-		OutfitterQuickSlots.HideBackground = true
 		self:Unhook(Outfitter, "InitializeQuickSlots")
+		self:addSkinFrame{obj=Outfitter.QuickSlots, kfs=true, x2=-3, y2=3}
+		Outfitter.QuickSlots.HideBackground = true
 	end)
-	
+
 -->>-- Outfit Bars
 	self:ScheduleTimer(skinOutfitBars, 1, Outfitter.OutfitBar) -- wait for a second before skinning the Outfit Bars
 

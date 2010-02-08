@@ -1265,6 +1265,30 @@ function Skinner:moveObject(...)
 
 end
 
+function Skinner:moveButtonText(...)
+
+	if not self.db.profile.Buttons then return end
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Unknown object mBT\n"..debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.x = select(2, ...) and select(2, ...) or nil
+		opts.y = select(3, ...) and select(3, ...) or nil
+	end
+	__moveObject(opts)
+
+end
+
 function Skinner:removeRegions(frame, regions)
 --@alpha@
 	assert(frame, "Unknown object\n"..debugstack())
@@ -1477,7 +1501,7 @@ function Skinner:skinButton(opts)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		tx = opts.tx or -1
 		ty = opts.ty or 0
-		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
+		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
 		if opts.sap then
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
@@ -1499,7 +1523,7 @@ function Skinner:skinButton(opts)
 		btn:SetText(self.mult)
 		tx = opts.tx or 0
 		ty = opts.ty or 0
-		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=btn:GetFontString(), x=tx, y=ty} end -- move text
+		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=btn:GetFontString(), x=tx, y=ty} end
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[6]}}
 		btn = self.sBut[opts.obj]
@@ -1512,7 +1536,7 @@ function Skinner:skinButton(opts)
 		btn:SetText(opts.plus and self.plus or self.minus)
 		tx = opts.tx or 0
 		ty = opts.ty or -1
-		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=btn:GetFontString(), x=tx, y=ty} end -- move text
+		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=btn:GetFontString(), x=tx, y=ty} end
 	elseif opts.mp2 then -- it's a minus/plus button
 		opts.obj:SetNormalFontObject(self.fontP)
 		opts.obj:SetText(opts.plus and self.plus or self.minus)
@@ -1523,7 +1547,7 @@ function Skinner:skinButton(opts)
 		end)
 		tx = opts.tx or 0
 		ty = opts.ty or -1
-		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
+		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
 	elseif opts.mp3 then -- it's a minus/plus button, just skin it (used by Waterfall & tomQuest2)
 		opts.obj:SetNormalFontObject(self.fontP)
 		opts.obj:SetText(self.plus)
@@ -1532,7 +1556,7 @@ function Skinner:skinButton(opts)
 		opts.obj.skin = true
 		tx = opts.tx or -1
 		ty = opts.ty or -1
-		if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
+		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		bHgt = opts.obj:GetHeight()
 		aso = {bd=self.Backdrop[bHgt > 18 and 5 or 6]} -- use narrower backdrop if required
@@ -1545,7 +1569,7 @@ function Skinner:skinButton(opts)
 			if opts.obj:GetFontString() then -- StaticPopup buttons don't have a FontString
 				tx = opts.tx or 0
 				ty = opts.ty or -1
-				if tx ~= 0 or ty ~= 0 then self:moveObject{obj=opts.obj:GetFontString(), x=tx, y=ty} end -- move text
+				if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
 			end
 		else
 			self:applySkin{obj=opts.obj, bd=aso.bd}

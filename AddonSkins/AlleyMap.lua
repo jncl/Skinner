@@ -27,18 +27,18 @@ function Skinner:AlleyMap()
 	end
 	self:SecureHook("WorldMap_ToggleSizeUp", function()
 		sizeUp()
-		self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), y=-1}
+		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), y=-1}
 	end)
 	self:SecureHook("WorldMap_ToggleSizeDown", function()
 		sizeDown()
-		self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), y=1}
+		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), y=1}
 	end)
 	
 	self:addSkinFrame{obj=WorldMapFrame, ft="u", kfs=true}
 	-- handle big/small map sizes
 	if WorldMapFrame.sizedDown then
 		sizeDown()
-		self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=-1}
+		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=-1}
 	else
 		sizeUp()
 	end

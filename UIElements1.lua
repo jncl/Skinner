@@ -502,11 +502,11 @@ function Skinner:WorldMap()
 		-- handle size change
 		self:SecureHook("WorldMap_ToggleSizeUp", function()
 			sizeUp()
-			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
+			self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
 		end)
 		self:SecureHook("WorldMap_ToggleSizeDown", function()
 			sizeDown()
-			self:moveObject{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
+			self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
 		end)
 		self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
 			if WorldMapFrame.sizedDown then
