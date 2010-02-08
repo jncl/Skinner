@@ -33,7 +33,7 @@ local function makeString(t)
 
 	if type(t) == "table" then
 		if type(rawget(t, 0)) == "userdata" and type(t.GetObjectType) == "function" then
-			return ("<%s:%s>"):format(t:GetObjectType(), t:GetName() or "(Anon)")
+			return ("<%s:%s:%s>"):format(tostring(t), t:GetObjectType(), t:GetName() or "(Anon)")
 		end
 	end
 
@@ -64,7 +64,7 @@ local function makeText(a1, ...)
 
 end
 
-local function print(text, frame, r, g, b)
+local function printIt(text, frame, r, g, b)
 
 	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
 
@@ -328,7 +328,7 @@ function Skinner:Debug(a1, ...)
 
 	local output = ("|cff7fff7f(DBG) %s:[%s.%3d]|r"):format("Skinner", date("%H:%M:%S"), (GetTime() % 1) * 1000)
 
-	print(output.." "..makeText(a1, ...), self.debugFrame)
+	printIt(output.." "..makeText(a1, ...), self.debugFrame)
 
 end
 --@end-debug@
@@ -340,7 +340,7 @@ function Skinner:CustomPrint(r, g, b, a1, ...)
 
 	local output = ("|cffffff78Skinner:|r")
 
-	print(output.." "..makeText(a1, ...), nil, r, g, b)
+	printIt(output.." "..makeText(a1, ...), nil, r, g, b)
 
 end
 
@@ -372,6 +372,7 @@ local function __addSkinButton(opts)
 	opts.hook = opts.hook or opts.obj
 
 	local btn = CreateFrame("Button", nil, opts.parent)
+	-- lower frame level
 	LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
 	Skinner.sBut[opts.hook] = btn
@@ -1484,6 +1485,10 @@ function Skinner:skinButton(opts)
 		opts.obj.left:SetAlpha(0)
 		opts.obj.middle:SetAlpha(0)
 		opts.obj.right:SetAlpha(0)
+	elseif opts.obj.LeftTexture then -- Outfitter
+		opts.obj.LeftTexture:SetAlpha(0)
+		opts.obj.MiddleTexture:SetAlpha(0)
+		opts.obj.RightTexture:SetAlpha(0)
 	else -- [UIPanelButtonTemplate2/... or derivatives]
 		local objName = opts.obj:GetName()
 		if objName then -- handle unnamed objects (e.g. Waterfall MP buttons)
@@ -2129,7 +2134,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	local function showIt(fmsg, ...)
 
-		print("dbg:"..makeText(fmsg, ...), Skinner.debugFrame)
+		printIt("dbg:"..makeText(fmsg, ...), Skinner.debugFrame)
 
 	end
 
@@ -2137,7 +2142,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 		for i = 1, object:GetNumRegions() do
 			local v = select(i, object:GetRegions())
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v:GetObjectType() or "nil", v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", v:GetObjectType() == "Texture" and ("%s : %s"):format(v:GetTexture() or "nil", v:GetDrawLayer() or "nil") or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v, v:GetObjectType() or "nil", v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", v:GetObjectType() == "Texture" and ("%s : %s"):format(v:GetTexture() or "nil", v:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
@@ -2150,8 +2155,13 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 		for i = 1, frame:GetNumChildren() do
 			local v = select(i, frame:GetChildren())
 			local objType = v:GetObjectType()
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s : %s]", lvl, i, v:GetName() or "<Anon>", v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", objType or "nil", v:GetFrameLevel() or "nil", v:GetFrameStrata() or "nil")
-			if objType == "Frame" or objType == "Button" or objType == "StatusBar" or objType == "Slider" or objType == "ScrollFrame" then
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v, v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", v:GetFrameLevel() or "nil", v:GetFrameStrata() or "nil")
+			if objType == "Frame"
+			or objType == "Button"
+			or objType == "StatusBar"
+			or objType == "Slider"
+			or objType == "ScrollFrame"
+			then
 				getRegions(v, lvl.."-"..i)
 				getChildren(v, lvl.."-"..i)
 			end
@@ -2159,7 +2169,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	end
 
-	showIt("%s : %s : %s : %s : %s : %s", obj:GetName() or "<Anon>", round2(obj:GetWidth(), 2) or "nil", round2(obj:GetHeight(), 2) or "nil", obj:GetObjectType() or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
+	showIt("%s : %s : %s : %s : %s", obj, round2(obj:GetWidth(), 2) or "nil", round2(obj:GetHeight(), 2) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
 	showIt("Started Regions")
 	getRegions(obj, 0)

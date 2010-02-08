@@ -17,7 +17,7 @@ end
 
 function Skinner:CharacterFrame()
 
-	self:skinButton{obj=CharacterFrameCloseButton, cb=true}
+	self:skinButton{obj=CharacterFrameCloseButton, cb=true, tx=0}
 	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
 
 --	CharacterFrameTab1-5
