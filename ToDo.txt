@@ -17,38 +17,35 @@ B - Button(s) Skin request
 		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
 ?		- is it caused by an addon "re-layering" frames ?
 
-√	S	Collectinator, requested by Gabriel, 26.01.10
-
-x	I	ATSW, reported by ratskinmahoney, 27.01.10
-√		- skin UI buttons
-
-√	S	WoWPro
-
-√	I	PassLoot, reported by Kerecha, 27.01.10
-		- Skinner-b2.11159.5\SkinMe\PassLoot.lua:39: attempt to index field 'ModulesFrame' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b2.11159.5\Skinner.lua:768: in function <Skinner\Skinner.lua:766>
-		Skinner-b2.11159.5\Skinner.lua:813: in function `?'
-		Skinner-b2.11159.5\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
-		(tail call): ?:
-
 	N	tomQuest2, reported by gagou, 29.01.10
 		- Just to inform you that since a few alpha tomQuest2 is no more using LibQTip for ldb tooltips and trackers. I've replaced it with three frames of my own named:
 		tomQuest2QuestsTooltip
 		tomQuest2QuestsTracker
 		tomQuest2AchievementsTracker
 
-√	I	ElitistGroup, replaced by Elanie, 1.02.10
-		- Skinner-b2.11159.5\SkinMe\ElitistGroup.lua:13: attempt to index field 'databaseFrame' (a nil value)
+√	I	Mapster, reported by jh032008, 4.02.10
+		- ..\AddOns\Skinner\Skinner.lua line 1216:
+		attempt to index field 'obj' (a nil value)
+		Debug:
+		[C]: ?
+		Skinner\Skinner.lua:1216:
+		Skinner\Skinner.lua:1204
+		Skinner\Skinner.lua:1264: moveObject()
+		Skinner\SkinMe\Mapster.lua:9:
+		Skinner\SkinMe\Mapster.lua:8
+		(tail call): ?
+		[C]: SizeDown()
+		Mapster\Mapster.lua:282: ToggleMapSize()
+		Mapster\Mapster.lua:128:
+		Mapster\Mapster.lua:128
+
+√	I	Outfitter, reported by toin7, 4.02.10
+		- Skinner-b2.11403.1\Skinner.lua:1216: attempt to index field 'obj' (a nil value)
+		Skinner-b2.11403.1\Skinner.lua:1264: in function `moveObject'
+		Skinner-b2.11403.1\SkinMe\Outfitter.lua:114: in function <Skinner\SkinMe\Outfitter.lua:2>
 		(tail call): ?:
-		<in C code>: in function `CreateUI'
-		ElitistGroup-1.7\modules\users.lua:75: in function `BuildUI'
-		ElitistGroup-1.7\modules\users.lua:69: in function `Show'
-		ElitistGroup-1.7\modules\config.lua:526: in function `ELITISTGROUP'
-		ElitistGroup-1.7\ElitistGroup.lua:731: in function `_onclick'
-		ButtonBin-1.0.69\ButtonBin.lua:260: in function <ButtonBin\ButtonBin.lua:257>
-
-√	S	AlleyMap, requested by ichik, 31.01.10
-
-√	S	BindPad, requested by ichik, 1.02.10
+		<in C code>: in function `xpcall'
+		Skinner-b2.11403.1\Skinner.lua:771: in function <Skinner\Skinner.lua:769>
+		Skinner-b2.11403.1\Skinner.lua:816: in function `?'
+		Skinner-b2.11403.1\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
+		(tail call): ?:
