@@ -96,11 +96,11 @@ function Skinner:AddonFrames()
 		--[["FactionGrinder",--]] "Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "ForteWarlock", "FramesResized", "FreierGeist_InstanceTime", "FruityLoots", --[["FuBar_PoisonReminderFu",--]]
 		"Gatherer", "GCInfo", "GemHelper", "GemMe", "GFW_FeedOMatic", "GlowFoSho", "Gossipmonger", "GotWood", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "Guild_Alliance", "Guild_Log", "GuildAds", "GuildBankAccount", --[["GuildEventManager2",--]] "GuildLaunchCT_RaidTracker", "GupCharacter",
 		"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", "HeadHunter", "HealBot", "HealersAssist", "HealingEstimator", "HealOrganizer", "Highlight", "Historian", "HitsMode", "HoloFriends",
-		"IgorsMassAuction", "InspectEquip", "InstanceMaps", "InsultDevice", "InventoryOnPar", "IPopBar", "ItemDB", "ItemEnchantApplication", "ItemRack", "ItemSync",
+		"IgorsMassAuction", "InspectEquip", "InstanceMaps", "InsultDevice", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemEnchantApplication", "ItemRack", "ItemSync",
 		"JasonQuest", "Jobber", "Junk",
 		"Karma", --[["KC_Items",--]] "KLHThreatMeter", "KombatStats",
 		"LauncherMenu", "LightHeaded", "LinkHeaven", "Links", "LinksList", "LinkWrangler", "Livestock", "LoadIT", "LootHog", "LootLink", "LootScroll", "Ludwig", "Luggage",
-		"MacroBank", "MacroBrokerGUI", "MageEatDrinkAid", "MailTo", "MakeRocketGoNow", "Mapster", --[["MCP", "MetaMap",--]]	 "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MTLove", --[["MultiTips",--]] "MusicPlayer", "MyBags", "myClock", "myMusic",
+		"MacroBank", "MacroBrokerGUI", "MageEatDrinkAid", "MailTo", "MakeRocketGoNow", "Mapster", --[["MCP", "MetaMap",--]]	 "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "MoveAnything", "Mountiful", "MTLove", --[["MultiTips",--]] "MusicPlayer", "MyBags", "myClock", "myMusic",
 		"NeatFreak", "Necrosis", "NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
 		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
 		"Palatank", "PallyPower", "Panda", "PartyBuilder", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoliteWhisper", "PoMTracker", "Possessions", "Postal", "PowerAuras", "ProcMeter", "Producer", "ProfessionsBook", "Proximo", "PVPCooldown", "PVPCooldownReborn", "PvpMessages",
