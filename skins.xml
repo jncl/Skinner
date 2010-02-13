@@ -13,7 +13,7 @@
 <script file="SkinMe\AckisRecipeList.lua"/>
 <script file="SkinMe\ACP.lua"/>
 <script file="SkinMe\AdvancedTradeSkillWindow.lua"/>
-<script file="SkinMe\aftt_extreme.lua"/>
+<!-- <script file="SkinMe\aftt_extreme.lua"/> -->
 <script file="SkinMe\AlleyMap.lua"/>
 <script file="SkinMe\AlphaMap.lua"/>
 <script file="SkinMe\Altoholic.lua"/>
@@ -33,7 +33,7 @@
 <script file="SkinMe\AuctionFilterPlus.lua"/>
 <!-- <script file="SkinMe\AucExtras.lua"/> -->
 <script file="SkinMe\Auctionsnatch.lua"/>
-<script file="SkinMe\AuldLangSyne.lua"/>
+<!-- <script file="SkinMe\AuldLangSyne.lua"/> -->
 <script file="SkinMe\AutoBag.lua"/>
 <!-- <script file="SkinMe\AutoBarConfig.lua"/> -->
 <script file="SkinMe\AutoDecline.lua"/>
