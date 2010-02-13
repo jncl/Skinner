@@ -206,7 +206,7 @@ end
 
 local lodFrames = {
 	"Bagnon", "Bagnon_Options", "Banknon", "BaudAuction", "BetterBindingFrame", --[["Bongos", "Bongos_Options",--]]
-	"Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "DockingStation_Config", "Dominos_Config", "DoTimer_Options", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GuildBankSearch", "ItemRackOptions",  "LilSparkysWorkshop", "MrTrader_SkillWindow", "MSBTOptions", "oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs", "Perl_Config_Options", "PhoenixStyleMod_Coliseum", "PhoenixStyleMod_Ulduar", "PhoenixStyleMod_Icecrown", "SpamSentry_report", --[[SpecialTalentUI",--]] "SuperInspect_UI", "Talented_GlyphFrame", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
+	"Cartographer_Notes", "CECB_Options", "cgCrafty", "CharacterInfo", "DockingStation_Config", "Dominos_Config", "DoTimer_Options", "Enchantrix", "EnhTooltip", "FilterTradeSkill", "FramesResized_TalentUI", "GnomishAuctionShrinker", "GuildBankSearch", "ItemRackOptions",  "LilSparkysWorkshop", "MrTrader_SkillWindow", "MSBTOptions", "oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs", "Perl_Config_Options", "PhoenixStyleMod_Coliseum", "PhoenixStyleMod_Ulduar", "PhoenixStyleMod_Icecrown", "SpamSentry_report", --[[SpecialTalentUI",--]] "SuperInspect_UI", "Talented_GlyphFrame", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
 }
 local lodAddons = {}
 for _, v in pairs(lodFrames) do
