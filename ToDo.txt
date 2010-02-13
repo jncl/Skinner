@@ -23,29 +23,22 @@ B - Button(s) Skin request
 		tomQuest2QuestsTracker
 		tomQuest2AchievementsTracker
 
-√	I	Mapster, reported by jh032008, 4.02.10
-		- ..\AddOns\Skinner\Skinner.lua line 1216:
-		attempt to index field 'obj' (a nil value)
-		Debug:
-		[C]: ?
-		Skinner\Skinner.lua:1216:
-		Skinner\Skinner.lua:1204
-		Skinner\Skinner.lua:1264: moveObject()
-		Skinner\SkinMe\Mapster.lua:9:
-		Skinner\SkinMe\Mapster.lua:8
-		(tail call): ?
-		[C]: SizeDown()
-		Mapster\Mapster.lua:282: ToggleMapSize()
-		Mapster\Mapster.lua:128:
-		Mapster\Mapster.lua:128
+√	O	Test changes to AddonFrames code dealing with loading specified addons safely
 
-√	I	Outfitter, reported by toin7, 4.02.10
-		- Skinner-b2.11403.1\Skinner.lua:1216: attempt to index field 'obj' (a nil value)
-		Skinner-b2.11403.1\Skinner.lua:1264: in function `moveObject'
-		Skinner-b2.11403.1\SkinMe\Outfitter.lua:114: in function <Skinner\SkinMe\Outfitter.lua:2>
+√	I	Outfitter, reported by sixthepaladin, 9.02.10
+		- Skinner-b2.11403.2\SkinMe\Outfitter.lua:143: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (AuctionMaster):211: in function <...ddOns\AuctionMaster\libs\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (AuctionMaster):344: in function `SecureHook'
+		Skinner-b2.11403.2\SkinMe\Outfitter.lua:143: in function <Skinner\SkinMe\Outfitter.lua:2>
 		(tail call): ?:
 		<in C code>: in function `xpcall'
-		Skinner-b2.11403.1\Skinner.lua:771: in function <Skinner\Skinner.lua:769>
-		Skinner-b2.11403.1\Skinner.lua:816: in function `?'
-		Skinner-b2.11403.1\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
+		Skinner-b2.11403.2\Skinner.lua:772: in function <Skinner\Skinner.lua:770>
+		Skinner-b2.11403.2\Skinner.lua:817: in function `?'
+		Skinner-b2.11403.2\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
 		(tail call): ?:
+
+?	I	StaticPopups, reported by ichik, 9.02.10
+		- tekAccept - With Skinner this does nothing, no errors are shown, but this snippet seems to have no access to popup.
+		If i get invite while loading to world all goes smooth (i guess that is the time when popups are not skinned actually).
+		Furthermore: using of AcceptGroup() and StaticPop_Hide seems not helping too.
+		The popup stays on screen requiring manual input to close it
