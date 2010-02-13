@@ -1,3 +1,4 @@
+local aName, Skinner = ...
 local _G = _G
 
 function Skinner:Defaults()
@@ -135,7 +136,6 @@ end
 local DBIcon = LibStub("LibDBIcon-1.0")
 function Skinner:Options()
 
-	local aName = "Skinner"
 	local db = self.db.profile
 
 	local optTables = {
@@ -149,7 +149,7 @@ function Skinner:Options()
 				desc = {
 					type = "description",
 					order = 1,
-					name = self.L["UI Enhancement"] .." - "..GetAddOnMetadata("Skinner", "Version").. "\n",
+					name = self.L["UI Enhancement"] .." - "..GetAddOnMetadata(aName, "Version").. "\n",
 				},
 				longdesc = {
 					type = "description",
@@ -176,7 +176,7 @@ function Skinner:Options()
 					get = function(info) return not db.MinimapIcon.hide end,
 					set = function(info, value)
 						db.MinimapIcon.hide = not value
-						if value then DBIcon:Show("Skinner") else DBIcon:Hide("Skinner") end
+						if value then DBIcon:Show(aName) else DBIcon:Hide(aName) end
 					end,
 					hidden = function() return not DBIcon end,
 				},
@@ -1690,7 +1690,7 @@ function Skinner:Options()
 			},
 		},
 	}
-	
+
 	-- optional options
 	if self.isPTR then
 		optTables.UIFrames.args["Feedback"] = {
@@ -1706,7 +1706,7 @@ function Skinner:Options()
 			desc = self.L["Toggle the skinning of Movie Progress"],
 		}
 	end
-	
+
 	local FrameStrata = {
 		BACKGROUND = "Background",
 		LOW = "Low",

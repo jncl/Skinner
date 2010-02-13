@@ -1,27 +1,28 @@
+local aName, Skinner = ...
 local _G = _G
 
--- check to see if LibStub is loaded
-assert(LibStub, "Skinner requires LibStub")
-assert(LibStub:GetLibrary("CallbackHandler-1.0", true), "Skinner requires CallbackHandler-1.0")
--- check to see if AceAddon-3.0 is loaded
-assert(LibStub:GetLibrary("AceAddon-3.0", true), "Skinner requires AceAddon-3.0")
+-- check to see if required libraries are loaded
+assert(LibStub, aName.." requires LibStub")
+local libsToLoad = {"CallbackHandler-1.0", "AceAddon-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0",}
+for _, lib in pairs(libsToLoad) do
+	assert(LibStub:GetLibrary(lib, true), aName.." requires "..lib)
+end
+
 -- create the addon
-Skinner = LibStub("AceAddon-3.0"):NewAddon("Skinner", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
--- check to see if we were created successfully
-assert(Skinner, "Skinner creation failed, missing Libraries")
+assert(LibStub("AceAddon-3.0"):NewAddon(Skinner, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0"))
+-- Add a pointer to the Addon into the Global pool for accessibility
+_G.Skinner = Skinner
 
 -- put version info into Addons' table for debuggers
-Skinner.version = GetAddOnMetadata("Skinner", "Version")
+Skinner.version = GetAddOnMetadata(aName, "Version")
 
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
 
 -- Get Locale
-assert(LibStub:GetLibrary("AceLocale-3.0", true), "Skinner requires AceLocale-3.0")
-Skinner.L = LibStub("AceLocale-3.0"):GetLocale("Skinner")
+Skinner.L = LibStub("AceLocale-3.0"):GetLocale(aName)
 
 -- check to see if LibSharedMedia-3.0 is loaded
-assert(LibStub:GetLibrary("LibSharedMedia-3.0", true), "Skinner requires LibSharedMedia-3.0")
 Skinner.LSM = LibStub("LibSharedMedia-3.0")
 
 --check to see if running on PTR
@@ -297,6 +298,15 @@ function Skinner:OnEnable()
 	self.db.RegisterCallback(self, "OnProfileCopied", "ReloadAddon")
 	self.db.RegisterCallback(self, "OnProfileReset", "ReloadAddon")
 
+--@debug@
+	-- define some helpful slash commands (ex Baddiel)
+	self:RegisterChatCommand("lo", function(msg) Logout() end)
+	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
+	self:RegisterChatCommand("ft", 
+	function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
+	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg], true, false) end)
+--@end-debug@
+
 end
 
 function Skinner:ReloadAddon(callback)
@@ -326,7 +336,7 @@ end
 --@debug@
 function Skinner:Debug(a1, ...)
 
-	local output = ("|cff7fff7f(DBG) %s:[%s.%3d]|r"):format("Skinner", date("%H:%M:%S"), (GetTime() % 1) * 1000)
+	local output = ("|cff7fff7f(DBG) %s:[%s.%3d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
 
 	printIt(output.." "..makeText(a1, ...), self.debugFrame)
 
@@ -338,7 +348,7 @@ function Skinner:Debug() end
 
 function Skinner:CustomPrint(r, g, b, a1, ...)
 
-	local output = ("|cffffff78Skinner:|r")
+	local output = ("|cffffff78"..aName..":|r")
 
 	printIt(output.." "..makeText(a1, ...), nil, r, g, b)
 
@@ -376,7 +386,7 @@ local function __addSkinButton(opts)
 	LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
 	Skinner.sBut[opts.hook] = btn
-	-- hook Show/Hide methods
+	-- hook Show/Hide methods if required
 	if not Skinner:IsHooked(opts.hook, "Show") then
 		Skinner:SecureHook(opts.hook, "Show", function(this) Skinner.sBut[this]:Show() end)
 		Skinner:SecureHook(opts.hook, "Hide", function(this) Skinner.sBut[this]:Hide() end)
@@ -406,8 +416,8 @@ local function __addSkinButton(opts)
 
 	-- change the draw layer of the Icon and Count, if necessary
 	if opts.obj.GetNumRegions then
-		for i = 1, opts.obj:GetNumRegions() do
-			local reg = select(i, opts.obj:GetRegions())
+		local regions = {opts.obj:GetRegions()}
+		for _, reg in ipairs(regions) do
 			local regOT = reg:GetObjectType()
 			if regOT == "Texture" or regOT == "FontString" then
 				local regName = reg:GetName()
@@ -420,8 +430,9 @@ local function __addSkinButton(opts)
 				end
 			end
 		end
+		regions = nil
 	end
-
+		
 end
 
 function Skinner:addSkinButton(...)
@@ -784,7 +795,7 @@ function Skinner:checkAndRun(funcName)
 		safecall(funcName)
 	else
 		if self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, "function ["..funcName.."] not found in Skinner")
+			self:CustomPrint(1, 0, 0, "function ["..funcName.."] not found in "..aName)
 		end
 	end
 
@@ -817,7 +828,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 			safecall(addonFunc, LoD)
 		else
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, "function ["..addonFunc.."] not found in Skinner")
+				self:CustomPrint(1, 0, 0, "function ["..addonFunc.."] not found in "..aName)
 			end
 		end
 	end
