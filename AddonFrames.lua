@@ -173,7 +173,7 @@ function Skinner:AddonFrames()
 	for k, v in pairs(libsToSkin) do
 --		self:Debug("skin Libs:[%s, %s]", k, v)
 		if LibStub(k, true) then
-			if self[v] then self:checkAndRun(v)
+			if self[v] then self:checkAndRun(v) -- not an addon in its own right
 			else
 				if self.db.profile.Warnings then
 					self:CustomPrint(1, 0, 0, v, "loaded but skin not found in SkinMe directory")
@@ -185,7 +185,7 @@ function Skinner:AddonFrames()
 
 	-- skin Rock Config
 	if Rock and Rock:HasLibrary("LibRockConfig-1.0") then
-		if self.RockConfig then self:checkAndRun("RockConfig")
+		if self.RockConfig then self:checkAndRun("RockConfig") -- not an addon in its own right
 		else
 			if self.db.profile.Warnings then
 				self:CustomPrint(1, 0, 0, "RockConfig", "loaded but skin not found in SkinMe directory")
@@ -203,7 +203,7 @@ function Skinner:AddonFrames()
 	end
 
 	-- skin tekKonfig library objects
-	if self.tekKonfig then self:tekKonfig() end
+	if self.tekKonfig then self:checkAndRun("tekKonfig") end -- not an addon in its own right
 
 end
 
@@ -252,8 +252,8 @@ function Skinner:LoDFrames(arg1)
 
 	-- handle FramesResized changes
 	if IsAddOnLoaded("FramesResized") then
-		if arg1 == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:FR_TradeSkillUI()
-		elseif arg1 == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:FR_TrainerUI()
+		if arg1 == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:checkAndRun("FR_TradeSkillUI") -- not an addon in its own right
+		elseif arg1 == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:checkAndRun("FR_TrainerUI") -- not an addon in its own right
 		end
 	end
 
