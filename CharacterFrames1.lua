@@ -160,6 +160,8 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 	end
 
 	self:keepFontStrings(TokenFrame)
+	-- hide the close button
+	self:getChild(TokenFrame, 4):Hide()
 	self:skinScrollBar{obj=TokenFrameContainer}
 
 	-- remove header textures

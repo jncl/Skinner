@@ -101,16 +101,16 @@ function Skinner:Player()
 	PetAttackModeTexture:SetTexture(nil)
 	-- status bars
 	self:glazeStatusBar(PetFrameHealthBar, 0)
-	self:adjHeight{obj=PetFrameHealthBar , adj=-1} -- handle bug in PetFrame XML & lua which places mana bar 7 pixels below the healthbar, when their heights are 8
-	self:adjWidth{obj=PetFrameHealthBar , adj=6}
+	self:adjHeight{obj=PetFrameHealthBar, adj=-1} -- handle bug in PetFrame XML & lua which places mana bar 7 pixels below the healthbar, when their heights are 8
+	self:adjWidth{obj=PetFrameHealthBar, adj=6}
 	self:glazeStatusBar(PetFrameManaBar, 0)
-	self:adjWidth{obj=PetFrameManaBar , adj=6}
+	self:adjWidth{obj=PetFrameManaBar, adj=6}
 	-- casting bar
 	self:keepFontStrings(PetCastingBarFrame)
 	self:glazeStatusBar(PetCastingBarFrame, 0)
 
 	self:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars
-	self:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=2, y1=-1, x2=1, y2=5}
+	self:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=2, y1=-1, x2=1}
 
 end
 
