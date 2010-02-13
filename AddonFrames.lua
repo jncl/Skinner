@@ -121,6 +121,9 @@ function Skinner:AddonFrames()
 	end
 	addonFrames = nil
 
+	-- handle non standard ones here
+	self:ScheduleTimer("checkAndRunAddOn", 1.2, "Outfitter") -- wait for a bit before skinning Outfitter as it waits as well
+
 	self:checkAndRunAddOn("NicheCombatConfig", true) -- done here even though it's LoD, as it is always loaded with Blizzard_CombatLog -- use true so it isn't treated as a LoadManaged Addon
 	self:checkAndRunAddOn("SuperInspect_UI", true) -- use true so it isn't treated as a LoadManaged Addon
 
