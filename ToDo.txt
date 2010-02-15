@@ -11,7 +11,6 @@ S - Skin request
 B - Button(s) Skin request
 
 	O	Check to see which skins can be obsoleted
-	O	Move Unhook statement directly after Hook statement
 
 	I	Frames overlaying text, reported by several posters
 		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
@@ -23,22 +22,34 @@ B - Button(s) Skin request
 		tomQuest2QuestsTracker
 		tomQuest2AchievementsTracker
 
-√	O	Test changes to AddonFrames code dealing with loading specified addons safely
-
-√	I	Outfitter, reported by sixthepaladin, 9.02.10
-		- Skinner-b2.11403.2\SkinMe\Outfitter.lua:143: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (AuctionMaster):211: in function <...ddOns\AuctionMaster\libs\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (AuctionMaster):344: in function `SecureHook'
-		Skinner-b2.11403.2\SkinMe\Outfitter.lua:143: in function <Skinner\SkinMe\Outfitter.lua:2>
+√	I	Outfitter, reported by Elanie, 12.02.10
+		- Skinner-b2.11403.3\SkinMe\Outfitter.lua:143: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
+		Skinner-b2.11403.3\SkinMe\Outfitter.lua:143: in function <Skinner\SkinMe\Outfitter.lua:2>
 		(tail call): ?:
 		<in C code>: in function `xpcall'
-		Skinner-b2.11403.2\Skinner.lua:772: in function <Skinner\Skinner.lua:770>
-		Skinner-b2.11403.2\Skinner.lua:817: in function `?'
-		Skinner-b2.11403.2\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
+		Skinner-b2.11403.3\Skinner.lua:783: in function <Skinner\Skinner.lua:781>
+		Skinner-b2.11403.3\Skinner.lua:828: in function <Skinner\Skinner.lua:804>
 		(tail call): ?:
 
-?	I	StaticPopups, reported by ichik, 9.02.10
-		- tekAccept - With Skinner this does nothing, no errors are shown, but this snippet seems to have no access to popup.
-		If i get invite while loading to world all goes smooth (i guess that is the time when popups are not skinned actually).
-		Furthermore: using of AcceptGroup() and StaticPop_Hide seems not helping too.
-		The popup stays on screen requiring manual input to close it
+√	I	ItemDB, reported by Craziz, 14.02.10
+		- The filter popout toggled by the arrow button in the top right of the ItemDB frame needs skinning still
+
+√	I	WIM, reported by shine2009, 13.02.10
+		- Skinning WIM is broken. Doesn't skin the chat window.
+			- WIM doesn't get skinned if some (any) of the modules are deleted.
+
+√	N	Quartz, reported by Draemon, 13.02.10
+		- Quartz (http://wow.curse.com/downloads/wow-a...ls/quartz.aspx) has just had a major overhaul, the original Skinner skins are not working at all with the latest version.
+
+√	I	oRA3, reported by ichik, 15.02.10
+		- [09:33:05] Interface\AddOns\Skinner\SkinMe\oRA3.lua:39: attempt to index field 'bar' (a nil value)
+		(tail call): ?
+		Interface\AddOns\Skinner\SkinMe\oRA3.lua:39: in function <Interface\AddOns\Skinner\SkinMe\oRA3.lua:2>
+		(tail call): ?
+		[C]: in function `xpcall'
+		Interface\AddOns\Skinner\Skinner.lua:783: in function <Interface\AddOns\Skinner\Skinner.lua:781>
+		Interface\AddOns\Skinner\Skinner.lua:828: in function `?'
+		Interface\AddOns\Skinner\AddonFrames.lua:120: in function <Interface\AddOns\Skinner\AddonFrames.lua:60>
+		(tail call): ?
