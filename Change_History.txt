@@ -1,3 +1,15 @@
+b2.11403.3
+Jncl:
+	ToDo.txt
+	Updated Change_History
+	Rejigged startup and library checks
+	Load all skins using checkAndRun function(s)
+	BugFix for Outfitter
+	Updated Ace3, Cork, TokenUI, IOP & PetFrame skins
+	Removed references to removed skins
+	Obsoleted AuldLangSyne & aftt_extreme skins
+	Skinned GnomishAuctionShrinker
+
 b2.11403.2
 Jncl:
 	ToDo.txt
@@ -6,7 +18,7 @@ Jncl:
 	Updated AlleyMap, Mapster & Outfitter
 	Added moveButtonText function
 	Added IntricateChatMods & MoveAnything skins
-	
+
 b2.11403.1
 Jncl:
 	ToDo.txt
@@ -17,7 +29,7 @@ Jncl:
 	UIButton skin fixes for ARL & Collectinator
 	Updated Ace3, AckisRecipeList, AdvancedTradeSkillWindow, HealBot, Mapster, PassLoot & TourGuide
 	Skinned Collectinator & WoWPro
-	
+
 b2.11159.5
 Jncl:
 	ToDo.txt
