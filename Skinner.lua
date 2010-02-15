@@ -1674,9 +1674,11 @@ local function __skinDropDown(opts)
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
-		moveTex = move Texture up
 		noSkin = don't skin the DropDown
 		move = move Button Left and down, Text down
+		moveTex = move Texture up
+		tx = move Texture left/right
+		ty = move Texture up/down
 --]]
 --@alpha@
 	assert(opts.obj, "Unknown object__sDD\n"..debugstack())
@@ -1699,7 +1701,9 @@ local function __skinDropDown(opts)
 		Skinner:moveObject{obj=_G[opts.obj:GetName().."Text"], y=-2}
 	end
 
-	if opts.moveTex then Skinner:moveObject{obj=_G[opts.obj:GetName().."Middle"], y=2} end
+	local mtx = opts.mtx or 0
+	local mty = opts.moveTex and 2 or (opts.mty or 0)
+	if mtx ~= 0 or mty ~= 0 then Skinner:moveObject{obj=_G[opts.obj:GetName().."Middle"], x=mtx, y=mty} end
 
 end
 
