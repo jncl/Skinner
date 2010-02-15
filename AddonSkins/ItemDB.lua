@@ -1,28 +1,24 @@
 
 function Skinner:ItemDB()
 
-	local IDB
-	if LibStub("AceAddon-3.0") then IDB = LibStub("AceAddon-3.0"):GetAddon("ItemDB", true) end
+	local IDB = LibStub("AceAddon-3.0"):GetAddon("ItemDB", true)
 	if not IDB then return end
 
 	-- Browser
-	self:keepFontStrings(ItemDB_Browser)
-	self:moveObject(ItemDB_Browser_CloseButtonTR, "+", 1, "+", 11)
-	self:moveObject(ItemDB_Browser_Title, nil, nil, "+", 10)
-	self:moveObject(ItemDB_Browser_Filter_NameText, nil, nil, "+", 10)
-	self:skinEditBox(ItemDB_Browser_Filter_Name)
-	self:moveObject(ItemDB_Browser_Filter_LevelText, nil, nil, "+", 15)
-	self:skinEditBox(ItemDB_Browser_Filter_MinLevel)
-	self:skinEditBox(ItemDB_Browser_Filter_MaxLevel)
-	self:skinDropDown(ItemDB_Browser_Filter_RarityDropDown)
+	self:skinEditBox{obj=ItemDB_Browser_Filter_Name, noWidth=true, x=-5}
+	self:skinEditBox{obj=ItemDB_Browser_Filter_MinLevel, noWidth=true, x=-5, y=4}
+	self:skinEditBox{obj=ItemDB_Browser_Filter_MaxLevel, noWidth=true, x=-5}
+	self:skinDropDown{obj=ItemDB_Browser_Filter_RarityDropDown, mtx=-5, mty=2}
 	self:skinDropDown(ItemDB_Browser_FilterDropDown)
-	self:removeRegions(ItemDB_Browser_FilterScrollFrame)
-	self:skinScrollBar(ItemDB_Browser_FilterScrollFrame)
-	self:removeRegions(ItemDB_Browser_ItemScrollFrame)
-	self:skinScrollBar(ItemDB_Browser_ItemScrollFrame)
-	
-	self:applySkin(ItemDB_Browser)
-	
+	self:skinScrollBar{obj=ItemDB_Browser_FilterScrollFrame}
+	self:skinScrollBar{obj=ItemDB_Browser_ItemScrollFrame}
+	self:skinAllButtons{obj=ItemDB_Browser}
+	self:addSkinFrame{obj=ItemDB_Browser, kfs=true, x1=10, y1=-11, y2=4}
+	-- Advanced Filters panel
+	self:getRegion(ItemDB_Browser_AdvancedFiltersCloseButton, 4):SetAlpha(0)
+	self:skinButton{obj=ItemDB_Browser_AdvancedFiltersCloseButton, cb=true}
+	self:addSkinFrame{obj=ItemDB_Browser_AdvancedFilters, kfs=true, x1=-1, y1=-3, x2=-3}
+
 	-- sort buttons
 	local sortNames= {"Rarity", "Name", "MinLevel", "ItemLevel", "Value"}
 	for _, v in pairs(sortNames) do
@@ -43,26 +39,27 @@ function Skinner:ItemDB()
 	-- Tabs
 	for i = 1, ItemDB_Browser.numTabs do
 		local tabObj = _G["ItemDB_BrowserTab"..i]
+		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		local tabSF = self.skinFrame[tabObj]
 		if i == 1 then
-			self:moveObject(tabObj, nil, nil, "-", 4)
+			if self.isTT then self:setActiveTab(tabSF) end
 		else
-			self:moveObject(tabObj, "+", 3, nil, nil)
-		end 
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		if self.db.profile.TexturedTab then
-			self:applySkin(tabObj, nil, 0, 1)
-			if i == 1 then self:setActiveTab(tabObj)
-			else self:setInactiveTab(tabObj) end
-		else self:applySkin(tabObj) end
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
 	end
-	if self.db.profile.TexturedTab then 
-		self:SecureHook(IDB, "SelectItemProvider", function(id)
+	if self.isTT then
+		-- hook this to change the texture for the Active and Inactive tabs
+		self:SecureHook(IDB, "SelectItemProvider",function(...)
 			for i = 1, ItemDB_Browser.numTabs do
-				local tabObj = _G["ItemDB_BrowserTab"..i]
-				if i == ItemDB_Browser.selectedTab then self:setActiveTab(tabObj)
-				else self:setInactiveTab(tabObj) end
+				local tabSF = self.skinFrame[_G["ItemDB_BrowserTab"..i]]
+				if i == ItemDB_Browser.selectedTab then
+					self:setActiveTab(tabSF)
+				else
+					self:setInactiveTab(tabSF)
+				end
 			end
 		end)
 	end
-	
+
 end

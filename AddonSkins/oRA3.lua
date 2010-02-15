@@ -33,11 +33,9 @@ function Skinner:oRA3()
 
 -->>-- SubFrame
 	oRA3FrameSub:SetBackdrop(nil)
-	oRA3ScrollFrameBottom:SetBackdrop(nil)
-	oRA3ScrollFrameTop:SetBackdrop(nil)
 	self:skinScrollBar{obj=oRA3ScrollFrame}
-	oRA3ScrollFrameBottom.bar:SetAlpha(0)
-	oRA3ScrollFrameTop.bar:SetAlpha(0)
+	self:getChild(oRA3ScrollFrameBottom, 1):SetAlpha(0)
+	self:getChild(oRA3ScrollFrameTop, 1):SetAlpha(0)
 
 -->>-- ScrollHeaders
 	local shCnt = 4
@@ -68,10 +66,10 @@ function Skinner:oRA3()
 		self:skinAllButtons{obj=oRA3ReadyCheck}
 		self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
 	else
-		self:SecureHook(LibStub("AceAddon-3.0"):GetAddon("oRA3"):GetModule("ReadyCheck"), "SetupGUI", function()
+		self:SecureHook(oRA3:GetModule("ReadyCheck"), "SetupGUI", function(this)
 			self:skinAllButtons{obj=oRA3ReadyCheck}
 			self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
-			self:Unhook(LibStub("AceAddon-3.0"):GetAddon("oRA3"):GetModule("ReadyCheck"), "SetupGUI")
+			self:Unhook(oRA3:GetModule("ReadyCheck"), "SetupGUI")
 		end)
 	end
 

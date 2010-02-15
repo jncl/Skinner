@@ -1,36 +1,8 @@
-local ipairs = ipairs
 
-function Skinner:Quartz()
+function Skinner:Quartz() -- Quartz3
 
-	local function addShieldAndSkin(parent, type) -- add a shield to the casting bar
-
-		local db = Quartz:AcquireDBNamespace(type).profile
-		local nibTex = Skinner.LSM:Fetch('border', db.noInterruptBorder)
-		local csb = Skinner:getChild(parent, 1)
-
-		parent.shld = csb:CreateTexture(nil, "OVERLAY")
-		parent.shld:SetHeight(db.h + 22)
-		parent.shld:SetWidth(db.h + 22)
-		parent.shld:SetTexture([[Interface\AchievementFrame\UI-Achievement-Progressive-Shield]])
-		parent.shld:SetTexCoord(0, 0.75, 0, 0.75)
-		parent.shld:SetPoint("CENTER", csb, "CENTER")
-		parent.shld:Hide()
-
-		self:applySkin(parent)
-		self:glazeStatusBar(csb)
-
-		parent.SetBackdrop = function(this, bd)
---			Skinner:Debug("aSaS: [%s, %s, %s]", this, bd.edgeFile, nibTex)
-			if bd.edgeFile == nibTex then
-				this.shld:Show()
-			else
-				this.shld:Hide()
-			end
-		end
-		parent.SetBackdropColor = function() end
-		parent.SetBackdropBorderColor = function() end
-
-	end
+	local Quartz3 = LibStub("AceAddon-3.0"):GetAddon("Quartz3", true)
+	if not Quartz3 then return end
 
 	local function skinSBs()
 
@@ -49,26 +21,31 @@ function Skinner:Quartz()
 
 	end
 
-	if Quartz:HasModule('Player') and Quartz:IsModuleActive('Player') then
-		self:applySkin(QuartzCastBar)
-		self:glazeStatusBar(self:getChild(QuartzCastBar, 1))
+	local qModules = {"Player", "Target", "Focus", "Pet", "Swing"}
+	for _, modName in pairs(qModules) do
+		local mod = Quartz3:GetModule(modName, true)
+		if mod and mod:IsEnabled() then
+			local bar = modName == "Player" and "Cast" or modName
+			self:applySkin(_G["Quartz3"..bar.."Bar"])
+			self:glazeStatusBar(self:getChild(_G["Quartz3"..bar.."Bar"], 1))
+		end
 	end
-	if Quartz:HasModule('Target') and Quartz:IsModuleActive('Target') then
-		addShieldAndSkin(QuartzTargetBar, "Target")
-	end
-	if Quartz:HasModule('Focus') and Quartz:IsModuleActive('Focus') then
-		addShieldAndSkin(QuartzFocusBar, "Focus")
+	local mod = Quartz3:GetModule("Latency", true)
+	if mod and mod:IsEnabled() then
+		mod.lagbox:SetTexture(self.sbTexture)
 	end
 -->>-- Mirror Status Bars
-	if Quartz:HasModule('Mirror') and Quartz:IsModuleActive('Mirror') then
-		self:SecureHook(Quartz:GetModule('Mirror'), "ApplySettings", function()
+	local qMirror = Quartz3:GetModule("Mirror", true)
+	if qMirror then
+		self:SecureHook(qMirror, "ApplySettings", function()
 			skinSBs()
 		end)
 		skinSBs()
 	end
 -->>-- Buff Status Bars
-	if Quartz:HasModule('Buff') and Quartz:IsModuleActive('Buff') then
-		self:SecureHook(Quartz:GetModule('Buff'), "ApplySettings", function()
+	local qBuff = Quartz3:GetModule("Buff", true)
+	if qBuff then
+		self:SecureHook(qBuff, "ApplySettings", function()
 			skinSBs()
 		end)
 		skinSBs()

@@ -102,7 +102,7 @@ function Skinner:AddonFrames()
 		"LauncherMenu", "LightHeaded", "LinkHeaven", "Links", "LinksList", "LinkWrangler", "Livestock", "LoadIT", "LootHog", "LootLink", "LootScroll", "Ludwig", "Luggage",
 		"MacroBank", "MacroBrokerGUI", "MageEatDrinkAid", "MailTo", "MakeRocketGoNow", "Mapster", --[["MCP", "MetaMap",--]]	 "MinimapButtonFrame", "Mirror", "MobileFrames", "MobileVault", "MobMap", "Moleskine", "MonkeyQuest", "MonkeyQuestLog", "MoveAnything", "Mountiful", "MTLove", --[["MultiTips",--]] "MusicPlayer", "MyBags", "myClock", "myMusic",
 		"NeatFreak", "Necrosis", "NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
-		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA3", "Overachiever",
+		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA3", "Overachiever", "Outfitter",
 		"Palatank", "PallyPower", "Panda", "PartyBuilder", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoliteWhisper", "PoMTracker", "Possessions", "Postal", "PowerAuras", "ProcMeter", "Producer", "ProfessionsBook", "Proximo", "PVPCooldown", --[=["PVPCooldownReborn", --]=]"PvpMessages",
 		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon", "QuickMark",
 		"RABuffs", "RaidBuffStatus", "RaidTracker", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
@@ -122,8 +122,6 @@ function Skinner:AddonFrames()
 	addonFrames = nil
 
 	-- handle non standard ones here
-	self:ScheduleTimer("checkAndRunAddOn", 1.2, "Outfitter") -- wait for a bit before skinning Outfitter as it waits as well
-
 	self:checkAndRunAddOn("NicheCombatConfig", true) -- done here even though it's LoD, as it is always loaded with Blizzard_CombatLog -- use true so it isn't treated as a LoadManaged Addon
 	self:checkAndRunAddOn("SuperInspect_UI", true) -- use true so it isn't treated as a LoadManaged Addon
 

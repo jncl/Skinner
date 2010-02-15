@@ -2,6 +2,12 @@
 function Skinner:Outfitter()
 	if not self.db.profile.CharacterFrames then return end
 
+	 -- wait until Outfitter has been initialized
+	if not Outfitter.Initialized then
+		self:ScheduleTimer("checkAndRunAddOn", 0.1, "Outfitter")
+		return
+	end
+
 	-- N.B. Outfitter changes the framelevel and framestrata of some of its frames and their children
 
 	local function skinOutfitterTabs(tabId)
@@ -140,6 +146,7 @@ function Skinner:Outfitter()
 	end
 
 -->>--	New Outfit Panel
+--[=[
 	self:SecureHook(Outfitter.NameOutfitDialog, "Show", function(this)
 		self:Unhook(Outfitter.NameOutfitDialog, "Show")
 		self:skinEditBox{obj=this.Name, regs={9, 15, 16}}
@@ -173,6 +180,7 @@ function Skinner:Outfitter()
 		self:skinButton{obj=this.DoneButton, as=true}
 		self:applySkin{obj=this, kfs=true} -- apply skin as title is hidden on redisplay
 	end)
+--]=]
 
 -->>--	ChooseIcon Dialog
 	self:getChild(OutfitterChooseIconDialog, 1):SetBackdrop(nil) -- remove textures from anonymous frame
