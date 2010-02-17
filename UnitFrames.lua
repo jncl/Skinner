@@ -4,19 +4,16 @@ local ftype = "c"
 local uCls = select(2, UnitClass("player")) -- player class
 local ba -- background alpha setting
 local lOfs = -10 -- level text offset
-local shldTex = [[Interface\AchievementFrame\UI-Achievement-Progressive-Shield]]
 
 local function changeShield(parent)
 
 	local shldReg = _G[parent:GetName().."BorderShield"]
-	shldReg:SetWidth(55)
-	shldReg:SetHeight(55)
-	shldReg:SetTexture(shldTex)
-	shldReg:SetDrawLayer("BORDER") -- make it display behind the spell icon
-	shldReg:SetTexCoord(0, 0.75, 0, 0.75)
+	shldReg:SetTexCoord(0, 36/256, 0, 1)
+	shldReg:SetWidth(32)
+	shldReg:SetHeight(56)
 	-- move so it is behind the icon
 	shldReg:ClearAllPoints()
-	shldReg:SetPoint("RIGHT", parent, "LEFT", 18, 0)
+	shldReg:SetPoint("CENTER", _G[parent:GetName().."Icon"], "CENTER", -2, -1)
 
 end
 
@@ -59,7 +56,8 @@ function Skinner:Player()
 	self:glazeStatusBar(PlayerFrameHealthBar, 0)
 	self:adjHeight{obj=PlayerFrameHealthBar , adj=-1} -- handle bug in PlayerFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	self:glazeStatusBar(PlayerFrameManaBar, 0)
-	-- move level & rest icon down, so they are more visible
+	-- move PvP timer, level & rest icon down, so they are more visible
+	self:moveObject{obj=PlayerPVPTimerText, y=lOfs}
 	self:moveObject{obj=PlayerLevelText, y=lOfs}
 	self:moveObject{obj=PlayerRestIcon, y=lOfs} -- covers level text when resting
 	-- remove group indicator textures
