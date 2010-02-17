@@ -1,3 +1,10 @@
+b2.11403.4
+Jncl:
+	ToDo.txt
+	Updated Change_History
+	Updated skinDropDown function
+	Updated ItemDB, Outfitter, Quartz, WIM & oRA3 skins
+
 b2.11403.3
 Jncl:
 	ToDo.txt
