@@ -13,9 +13,6 @@ assert(LibStub("AceAddon-3.0"):NewAddon(Skinner, aName, "AceConsole-3.0", "AceEv
 -- Add a pointer to the Addon into the Global pool for accessibility
 _G.Skinner = Skinner
 
--- put version info into Addons' table for debuggers
-Skinner.version = GetAddOnMetadata(aName, "Version")
-
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
 
@@ -1566,7 +1563,7 @@ function Skinner:skinButton(opts)
 		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
 	elseif opts.mp3 then -- it's a minus/plus button, just skin it (used by Waterfall & tomQuest2)
 		opts.obj:SetNormalFontObject(self.fontP)
-		opts.obj:SetText(self.plus)
+		opts.obj:SetText(opts.plus and self.plus or self.minus)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		self:applySkin{obj=opts.obj, bd=self.Backdrop[6]}
 		opts.obj.skin = true
@@ -1640,7 +1637,7 @@ local function __skinAllButtons(opts)
 		if Skinner:isButton(child) then
 			Skinner:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, tx=opts.tx, ty=opts.ty}
 		elseif Skinner:isButton(child, true) then
-			Skinner:skinButton{obj=child, cb=true, sap=opts.sap}
+			Skinner:skinButton{obj=child, cb=true, tx=opts.tx, ty=opts.ty, sap=opts.sap}
 		else
 			opts.obj=child
 			__skinAllButtons(opts)
