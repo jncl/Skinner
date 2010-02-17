@@ -21,14 +21,34 @@ function Skinner:Quartz() -- Quartz3
 
 	end
 
-	local qModules = {"Player", "Target", "Focus", "Pet", "Swing"}
+	-- set border colours
+	local c = self.db.profile.Backdrop
+	Quartz3.db.profile.backgroundcolor = {c.r, c.g, c.b}
+	Quartz3.db.profile.backgroundalpha = c.a
+	local c = self.db.profile.BackdropBorder
+	Quartz3.db.profile.bordercolor = {c.r, c.g, c.b}
+	Quartz3.db.profile.borderalpha = c.a
+
+	local qModules = {"Player", "Target", "Focus", "Pet"}
 	for _, modName in pairs(qModules) do
 		local mod = Quartz3:GetModule(modName, true)
 		if mod and mod:IsEnabled() then
-			local bar = modName == "Player" and "Cast" or modName
-			self:applySkin(_G["Quartz3"..bar.."Bar"])
-			self:glazeStatusBar(self:getChild(_G["Quartz3"..bar.."Bar"], 1))
+			self:applySkin{obj=mod.Bar}
+			self:glazeStatusBar(mod.Bar.Bar, 1)
+			mod.Bar.backdrop = CopyTable(self.backdrop) -- make backdrop mirror Skinner's
+			mod.db.profile.texture = self.db.profile.StatusBar.texture
+			-- handle changes for interrupt toggle code in Quartz
+			if not modName == "Player" then
+				mod.config.noInterruptChangeColor = false
+				mod.config.noInterruptChangeBorder = false
+				mod.config.border = self.backdrop.edgeFile
+			end
 		end
+	end
+	local mod = Quartz3:GetModule("Swing", true)
+	if mod and mod:IsEnabled() then
+		self:applySkin(_G["Quartz3SwingBar"])
+		self:glazeStatusBar(self:getChild(_G["Quartz3SwingBar"], 1))
 	end
 	local mod = Quartz3:GetModule("Latency", true)
 	if mod and mod:IsEnabled() then
