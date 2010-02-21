@@ -22,6 +22,9 @@ Skinner.L = LibStub("AceLocale-3.0"):GetLocale(aName)
 -- check to see if LibSharedMedia-3.0 is loaded
 Skinner.LSM = LibStub("LibSharedMedia-3.0")
 
+-- player class
+Skinner.uCls = select(2, UnitClass("player"))
+
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 0.3.0

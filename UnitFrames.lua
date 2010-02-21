@@ -1,7 +1,6 @@
 local _G = _G
 local ftype = "c"
 
-local uCls = select(2, UnitClass("player")) -- player class
 local ba -- background alpha setting
 local lOfs = -10 -- level text offset
 
@@ -34,6 +33,7 @@ function Skinner:UnitFrames()
 	ba = self.db.profile.UnitFrames.alpha
 
 	if db.player then self:Player() end
+	if db.pet then self:Pet() end
 	if db.target then self:Target() end
 	if db.focus then self:Focus() end
 	if db.party then self:Party() end
@@ -66,14 +66,14 @@ function Skinner:Player()
 	self:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=37, y1=-7, y2=6}
 
 --	if the player class is a DeathKnight then skin the RuneFrame
-	if uCls == "DEATHKNIGHT" then
+	if self.uCls == "DEATHKNIGHT" then
 		for i = 1, 6 do
 			local rBdrTex = _G["RuneButtonIndividual"..i.."BorderTexture"]
 			rBdrTex:SetTexture(nil)
 		end
 	end
 --	if the player class is a Shaman/DeathKnight then skin the TotemFrame
-	if uCls == "SHAMAN" or uCls == "DEATHKNIGHT" then
+	if self.uCls == "SHAMAN" or self.uCls == "DEATHKNIGHT" then
 		for i = 1, 4 do
 			_G["TotemFrameTotem"..i.."Background"]:SetAlpha(0)
 			local tfTBdrTex = self:getRegion(self:getChild(_G["TotemFrameTotem"..i], 2), 1) -- Totem Border texture
@@ -81,17 +81,23 @@ function Skinner:Player()
 		end
 	end
 --	if the player class is a Rogue/Druid then skin the ComboFrame
-	if uCls == "ROGUE" or uCls == "DRUID" then
+	if self.uCls == "ROGUE" or self.uCls == "DRUID" then
 		for i = 1, 5 do
 			local cPtTex = select(1, _G["ComboPoint"..i]:GetRegions())
 			cPtTex:SetTexture(nil)
 		end
 	end
 -- if the player class is a Druid then skin the AlternateManaBar
-	if uCls == "DRUID" then
+	if self.uCls == "DRUID" then
 		PlayerFrameAlternateManaBarBorder:SetTexture(nil)
 		self:glazeStatusBar(PlayerFrameAlternateManaBar, 0)
 	end
+
+end
+
+function Skinner:Pet()
+	if self.initialized.Pet then return end
+	self.initialized.Pet = true
 
 -->>-- Pet frame
 	PetFrameFlash:SetTexture(nil)
@@ -109,6 +115,26 @@ function Skinner:Player()
 
 	self:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars
 	self:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=2, y1=-1, x2=1}
+	-- Add Pet's Level to frame sif a Hunter
+	if self.uCls == "HUNTER" and self.db.profile.UnitFrames.petlevel then
+		local plt = self.skinFrame[PetFrame]:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
+		plt:SetPoint("BOTTOMLEFT", 4, 4)
+		local lvlXP = 0
+		local function checkLevel(event, ...)
+--			Skinner:Debug("checkLevel: [%s]", event)
+			if event == "UNIT_PET" then lvlXP = 0 end -- pet changed
+			local currXP, nextXP = GetPetExperience()
+			if nextXP > lvlXP then
+				plt:SetText(UnitLevel(PetFrame.unit))
+				lvlXP = nextXP
+			end
+		end
+		self:SecureHook("PetFrame_Update", function(this, ...)
+			checkLevel("pfu")
+		end)
+		self:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
+		self:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for level-up
+	end
 
 end
 

@@ -125,7 +125,7 @@ function Skinner:Defaults()
 		-- DBIcon settings
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
 		-- UnitFrames
-		UnitFrames		= {player = false, target = false, focus = false, party = false, alpha = 0.25},
+		UnitFrames		= {player = false, target = false, focus = false, party = false, alpha = 0.25, pet = false, petlevel = false},
 
 	}}
 
@@ -1660,33 +1660,46 @@ function Skinner:Options()
 					type = "toggle",
 					order = 1,
 					name = self.L["Player"],
-					desc = self.L["Toggle the skin of the Player UnitFrames"],
+					desc = self.L["Toggle the skin of the Player UnitFrame"],
 				},
 				target = {
 					type = "toggle",
-					order = 2,
+					order = 4,
 					name = self.L["Target"],
-					desc = self.L["Toggle the skin of the Target UnitFrames"],
+					desc = self.L["Toggle the skin of the Target UnitFrame"],
 				},
 				focus = {
 					type = "toggle",
-					order = 3,
+					order = 5,
 					name = self.L["Focus"],
-					desc = self.L["Toggle the skin of the Focus UnitFrames"],
+					desc = self.L["Toggle the skin of the Focus UnitFrame"],
 				},
 				party = {
 					type = "toggle",
-					order = 4,
+					order = 6,
 					name = self.L["Party"],
 					desc = self.L["Toggle the skin of the Party UnitFrames"],
 				},
 				alpha = {
 					type = "range",
 					order = 9,
+					width = "double",
 					name = self.L["UnitFrame Background Opacity"],
 					desc = self.L["Change Opacity value of the UnitFrames Background"],
 					min = 0, max = 1, step = 0.05,
 				},
+				pet = {
+					type = "toggle",
+					order = 2,
+					name = self.L["Pet"],
+					desc = self.L["Toggle the skin of the Pet UnitFrame"],
+				},
+				petlevel = self.uCls == "HUNTER" and {
+					type = "toggle",
+					order = 3,
+					name = self.L["Pet Level"],
+					desc = self.L["Toggle the Pet Level on the Pet Frame"],
+				} or nil,
 			},
 		},
 	}
