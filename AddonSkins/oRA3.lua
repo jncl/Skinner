@@ -1,6 +1,9 @@
 
 function Skinner:oRA3()
 
+	local ver = tonumber(string.match(GetAddOnMetadata("oRA3", "X-Curse-Packaged-Version"), "%d+"))
+--	self:Debug("oRA3 ver: [%s]", ver)
+
 	-- hook this to manage textured tabs
 	if self.isTT then
 		self:SecureHook(oRA3, "SelectPanel", function(this, name)
@@ -66,10 +69,13 @@ function Skinner:oRA3()
 		self:skinAllButtons{obj=oRA3ReadyCheck}
 		self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
 	else
-		self:SecureHook(oRA3:GetModule("ReadyCheck"), "SetupGUI", function(this)
-			self:skinAllButtons{obj=oRA3ReadyCheck}
-			self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
-			self:Unhook(oRA3:GetModule("ReadyCheck"), "SetupGUI")
+		local method = ver < 313 and "SetupGUI" or "READY_CHECK"
+		self:SecureHook(oRA3:GetModule("ReadyCheck"), method, function(this, ...)
+			if oRA3.db:GetNamespace("ReadyCheck", true).profile.gui then
+				self:skinAllButtons{obj=oRA3ReadyCheck}
+				self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
+			end
+			self:Unhook(oRA3:GetModule("ReadyCheck"), method)
 		end)
 	end
 
