@@ -14,6 +14,8 @@ B - Button(s) Skin request
 
 	O	Look into using LSM callbacks to change media
 
+√	O	Add Pet level to Pet Frame
+
 	I	Frames overlaying text, reported by several posters
 		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
 ?		- is it caused by an addon "re-layering" frames ?
@@ -21,24 +23,14 @@ B - Button(s) Skin request
 ?	I	TipTac/Skinner, reported by shine2009, 15.02.10
 		- StatusBar textures don't stick
 
-√	I	Quartz, reported by Eatsbrains, 15.02.10
-		- Skinner-@project-version@\Skinner.lua:675: Unknown object aS
-		Skinner-@project-version@\Skinner.lua:675: in function `applySkin'
-		Skinner-@project-version@\SkinMe\Quartz.lua:29: in function <Skinner\SkinMe\Quartz.lua:2>
+√	I	oRA3, reported by khariv, 19.02.10
+		- Skinner-b2.11403.5\SkinMe\oRA3.lua:69: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
+		Skinner-b2.11403.5\SkinMe\oRA3.lua:69: in function <Skinner\SkinMe\oRA3.lua:2>
 		(tail call): ?:
 		<in C code>: in function `xpcall'
-		Skinner-@project-version@\Skinner.lua:783: in function <Skinner\Skinner.lua:781>
-		Skinner-@project-version@\Skinner.lua:828: in function `?'
-		Skinner-@project-version@\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
-		(tail call): ?:
-
-√	I	tomQuest2, reported by Eatsbrains, 15.02.10
-		- Skinner-@project-version@\SkinMe\tomQuest2.lua:129: Usage: GetModule(name, silent): 'name' - Cannot find module 'questsGivers'.
-		AceAddon-3.0-5 (Ace3):232: in function `GetModule'
-		Skinner-@project-version@\SkinMe\tomQuest2.lua:129: in function <Skinner\SkinMe\tomQuest2.lua:5>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-@project-version@\Skinner.lua:783: in function <Skinner\Skinner.lua:781>
-		Skinner-@project-version@\Skinner.lua:828: in function `?'
-		Skinner-@project-version@\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
+		Skinner-b2.11403.5\Skinner.lua:780: in function <Skinner\Skinner.lua:778>
+		Skinner-b2.11403.5\Skinner.lua:825: in function `?'
+		Skinner-b2.11403.5\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
 		(tail call): ?:
