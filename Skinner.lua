@@ -9,9 +9,7 @@ for _, lib in pairs(libsToLoad) do
 end
 
 -- create the addon
-assert(LibStub("AceAddon-3.0"):NewAddon(Skinner, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0"))
--- Add a pointer to the Addon into the Global pool for accessibility
-_G.Skinner = Skinner
+_G[aName] = LibStub("AceAddon-3.0"):NewAddon(Skinner, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 -- specify where debug messages go
 Skinner.debugFrame = ChatFrame7
@@ -27,8 +25,8 @@ Skinner.uCls = select(2, UnitClass("player"))
 
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
---check to see if running on patch 0.3.0
---Skinner.isPatch = QuestInfoFrame and true or false
+--check to see if running on patch 0.3.3
+Skinner.isPatch = WIN and true or false
 
 local function makeString(t)
 
@@ -302,8 +300,7 @@ function Skinner:OnEnable()
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("lo", function(msg) Logout() end)
 	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
-	self:RegisterChatCommand("ft", 
-	function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
+	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
 	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg], true, false) end)
 --@end-debug@
 
@@ -432,7 +429,7 @@ local function __addSkinButton(opts)
 		end
 		regions = nil
 	end
-		
+
 end
 
 function Skinner:addSkinButton(...)
@@ -1677,8 +1674,8 @@ local function __skinDropDown(opts)
 		noSkin = don't skin the DropDown
 		move = move Button Left and down, Text down
 		moveTex = move Texture up
-		tx = move Texture left/right
-		ty = move Texture up/down
+		mtx = move Texture left/right
+		mty = move Texture up/down
 --]]
 --@alpha@
 	assert(opts.obj, "Unknown object__sDD\n"..debugstack())

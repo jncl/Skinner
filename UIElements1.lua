@@ -487,9 +487,10 @@ function Skinner:WorldMap()
 			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
 
 		end
+		local wmOpt = self.isPatch and WORLDMAP_SETTINGS or WORLDMAP_OPTIONS
 		local function sizeDown()
 
-			if not WORLDMAP_OPTIONS.advanced then -- frame not moveable
+			if not wmOpt.advanced then -- frame not moveable
 				x1, y1, x2, y2 = 12, -12, -20, -10
 			else -- frame moveable
 				x1, y1, x2, y2 = 0, 2, 0, 0
@@ -509,7 +510,9 @@ function Skinner:WorldMap()
 			self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
 		end)
 		self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
-			if WorldMapFrame.sizedDown then
+			if WorldMapFrame.sizedDown
+			or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+			then
 				sizeDown()
 			end
 		end)
@@ -518,7 +521,9 @@ function Skinner:WorldMap()
 			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
 		elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
 			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true}
-			if WorldMapFrame.sizedDown then
+			if WorldMapFrame.sizedDown
+			or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+			then
 				sizeDown()
 			else
 				sizeUp()

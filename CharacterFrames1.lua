@@ -183,19 +183,23 @@ function Skinner:PVPFrame()
 	self.initialized.PVPFrame = true
 
 	self:keepFontStrings(PVPFrame)
-	self:skinButton{obj=PVPParentFrameCloseButton, cb=true}
+	self:skinAllButtons{obj=PVPParentFrame}
 	self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 -->>-- PVP Battleground Frame
 	self:keepFontStrings(PVPBattlegroundFrame)
-	self:skinScrollBar{obj=PVPBattlegroundFrameInstanceScrollFrame}
+	if not self.isPatch then
+		self:skinScrollBar{obj=PVPBattlegroundFrameInstanceScrollFrame}
+		self:skinSlider{obj=PVPBattlegroundFrameZoneDescriptionScrollFrameScrollBar}
+		PVPBattlegroundFrameZoneDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	else
+		self:skinSlider{obj=PVPBattlegroundFrameInfoScrollFrameScrollBar}
+		PVPBattlegroundFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+		PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
 	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
-	self:skinSlider{obj=PVPBattlegroundFrameZoneDescriptionScrollFrameScrollBar}
-	PVPBattlegroundFrameZoneDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
-	self:skinButton{obj=PVPBattlegroundFrameCancelButton}
-	self:skinButton{obj=PVPBattlegroundFrameJoinButton}
-	self:skinButton{obj=PVPBattlegroundFrameGroupJoinButton}
+
 -->>-- PVP Team Details Frame
 	self:skinDropDown{obj=PVPDropDown}
 	self:skinButton{obj=PVPTeamDetailsCloseButton, cb=true}
@@ -230,7 +234,7 @@ function Skinner:PetStableFrame()
 	RaiseFrameLevel(PetStablePetInfo)
 	self:skinButton{obj=PetStableFrameCloseButton, cb=true}
 	self:skinButton{obj=PetStablePurchaseButton}
-	self:addSkinFrame{obj=PetStableFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
+	self:addSkinFrame{obj=PetStableFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 end
 
@@ -300,7 +304,7 @@ end
 function Skinner:TalentUI()
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
-	
+
 	-- hook this to hide/show objects when glyph frame shown
 	self:SecureHook("TalentFrame_Update", function(this)
 		if this == PlayerTalentFrame then

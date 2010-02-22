@@ -497,7 +497,7 @@ function Skinner:AuctionUI()
 		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
 	end)
 
-	self:skinButton{obj=AuctionFrameCloseButton, cb=true}
+	self:skinAllButtons{obj=AuctionFrame}
 	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=4}
 
 -->>--	Browse Frame
@@ -517,11 +517,6 @@ function Skinner:AuctionUI()
 		self:addSkinFrame{obj=_G["AuctionFilterButton"..i], ft=ftype}
 	end
 	self:skinScrollBar{obj=BrowseScrollFrame}
-	self:skinButton{obj=BrowseSearchButton}
-	self:skinButton{obj=BrowseCloseButton}
-	self:skinButton{obj=BrowseBuyoutButton}
-	self:skinButton{obj=BrowseBidButton}
-	self:skinButton{obj=BrowseResetButton}
 	self:skinMoneyFrame{obj=BrowseBidPrice, moveSEB=true}
 
 -->>--	Bid Frame
@@ -532,9 +527,6 @@ function Skinner:AuctionUI()
 		self:addSkinFrame{obj=obj, ft=ftype}
 	end
 	self:skinMoneyFrame{obj=BidBidPrice, moveSEB=true}
-	self:skinButton{obj=BidCloseButton}
-	self:skinButton{obj=BidBuyoutButton}
-	self:skinButton{obj=BidBidButton}
 
 -->>--	Auctions Frame
 	self:addSkinFrame{obj=AuctionsItemButton, ft=ftype}
@@ -544,11 +536,20 @@ function Skinner:AuctionUI()
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype}
 	end
+	if self.isPatch then
+		self:getRegion(AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in code
+		self:skinEditBox{obj=AuctionsStackSizeEntry, regs={9}, noWidth=true}
+		self:skinEditBox{obj=AuctionsNumStacksEntry, regs={9}, noWidth=true}
+		self:skinDropDown{obj=PriceDropDown}
+		self:skinDropDown{obj=DurationDropDown}
+		AuctionProgressFrame:DisableDrawLayer("BACKGROUND")
+		AuctionProgressFrame:DisableDrawLayer("ARTWORK")
+		self:keepFontStrings(AuctionProgressBar)
+		self:moveObject{obj=_G["AuctionProgressBar".."Text"], y=-2}
+		self:glazeStatusBar(AuctionProgressBar, 0)
+	end
 	self:skinMoneyFrame{obj=StartPrice, moveSEB=true}
 	self:skinMoneyFrame{obj=BuyoutPrice, moveSEB=true}
-	self:skinButton{obj=AuctionsCloseButton}
-	self:skinButton{obj=AuctionsCancelAuctionButton}
-	self:skinButton{obj=AuctionsCreateAuctionButton}
 
 -->>--	Auction DressUp Frame
 	self:keepRegions(AuctionDressUpFrame, {3, 4}) --N.B. regions 3 & 4 are the background
@@ -557,8 +558,7 @@ function Skinner:AuctionUI()
 	AuctionDressUpModelRotateRightButton:Hide()
 	self:makeMFRotatable(AuctionDressUpModel)
 	self:moveObject{obj=AuctionDressUpFrame, x=6}
-	self:skinButton{obj=AuctionDressUpFrameCloseButton, cb=true}
-	self:skinButton{obj=AuctionDressUpFrameResetButton}
+	self:skinAllButtons{obj=AuctionDressUpFrame}
 	self:addSkinFrame{obj=AuctionDressUpFrame, ft=ftype, x1=-6, y1=-3, x2=-2}
 -->>--	Tabs
 	for i = 1, AuctionFrame.numTabs do

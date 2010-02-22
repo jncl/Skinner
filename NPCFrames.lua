@@ -150,12 +150,14 @@ function Skinner:Battlefields()
 	self.initialized.Battlefields = true
 
 	self:skinScrollBar{obj=BattlefieldListScrollFrame}
-	BattlefieldFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-
-	self:skinButton{obj=BattlefieldFrameCloseButton, cb=true}
-	self:skinButton{obj=BattlefieldFrameCancelButton}
-	self:skinButton{obj=BattlefieldFrameJoinButton}
-	self:addSkinFrame{obj=BattlefieldFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+	if not self.isPatch then
+		BattlefieldFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	else
+		BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+		BattlefieldFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
+	self:skinAllButtons{obj=BattlefieldFrame}
+	self:addSkinFrame{obj=BattlefieldFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 end
 
