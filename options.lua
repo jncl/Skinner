@@ -698,7 +698,7 @@ function Skinner:Options()
 							order = 7,
 							name = self.L["TF Width"],
 							desc = self.L["Change Width of the TopFrame"],
-							min = 0, max = 2000, step = 1,
+							min = 0, max = 2500, step = 1,
 							set = function(info, value)
 								db.TopFrame.width = value
 								if SkinnerTF then
@@ -873,7 +873,7 @@ function Skinner:Options()
 							order = 7,
 							name = self.L["BF Width"],
 							desc = self.L["Change Width of the BottomFrame"],
-							min = 0, max = 2000, step = 1,
+							min = 0, max = 2500, step = 1,
 							set = function(info, value)
 								db.BottomFrame.width = value
 								if SkinnerBF then
