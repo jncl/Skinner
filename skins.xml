@@ -32,6 +32,7 @@
 <script file="SkinMe\Auctionator.lua"/>
 <script file="SkinMe\AuctionFilterPlus.lua"/>
 <!-- <script file="SkinMe\AucExtras.lua"/> -->
+<script file="SkinMe\AuctionLite.lua"/>
 <script file="SkinMe\Auctionsnatch.lua"/>
 <!-- <script file="SkinMe\AuldLangSyne.lua"/> -->
 <script file="SkinMe\AutoBag.lua"/>
@@ -304,6 +305,7 @@
 <script file="SkinMe\RABuffs.lua"/>
 <script file="SkinMe\RaidBuffStatus.lua"/>
 <script file="SkinMe\RaidTracker.lua"/>
+<script file="SkinMe\RaidyCheck.lua"/>
 <script file="SkinMe\RandomPet30.lua"/>
 <script file="SkinMe\ReadySpells.lua"/>
 <script file="SkinMe\ReagentHeaven.lua"/>

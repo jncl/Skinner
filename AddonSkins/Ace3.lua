@@ -102,6 +102,18 @@ function Skinner:Ace3()
 				self:skinButton{obj=obj.close, cb2=true}
 				obj.SetBorder = function() end -- disable background changes
 
+			-- ListBox object (AuctionLite)
+			elseif objType == "ListBox" then
+				local kids = {obj.box:GetChildren()}
+				for _, child in ipairs(kids) do -- find scroll bar
+					if child:IsObjectType("ScrollFrame") then
+						child:SetBackdrop(nil)
+						self:skinScrollBar{obj=child}
+						break
+					end
+				end
+				kids = nil
+				self:applySkin{obj=obj.box, kfs=true}
 			-- ignore these types for now
 			elseif objType == "CheckBox"
 			or objType == "Dropdown-Item-Toggle"
