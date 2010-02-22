@@ -10,11 +10,17 @@ O - Other change
 S - Skin request
 B - Button(s) Skin request
 
+	N	Patch 0.3.3.11573
+√		- Battlefields changed
+√		- PVPBattlegroundFrame changed
+√		- AuctionUI changes
+√		- WorldMap changes
+?		- StatusBar changes
+x		- WatchFrame is resizeable
+
 	O	Check to see which skins can be obsoleted
 
 	O	Look into using LSM callbacks to change media
-
-√	O	Add Pet level to Pet Frame
 
 	I	Frames overlaying text, reported by several posters
 		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
@@ -23,14 +29,6 @@ B - Button(s) Skin request
 ?	I	TipTac/Skinner, reported by shine2009, 15.02.10
 		- StatusBar textures don't stick
 
-√	I	oRA3, reported by khariv, 19.02.10
-		- Skinner-b2.11403.5\SkinMe\oRA3.lua:69: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b2.11403.5\SkinMe\oRA3.lua:69: in function <Skinner\SkinMe\oRA3.lua:2>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b2.11403.5\Skinner.lua:780: in function <Skinner\Skinner.lua:778>
-		Skinner-b2.11403.5\Skinner.lua:825: in function `?'
-		Skinner-b2.11403.5\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
-		(tail call): ?:
+√	S	RaidyCheck, requested by gamemaster128, 21.02.10
+
+√	S	AuctionLite requested by gamemaster128, 21.02.10
