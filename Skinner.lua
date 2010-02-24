@@ -496,7 +496,7 @@ local function __addSkinFrame(opts)
 --@end-alpha@
 
 	-- remove the object's Backdrop if it has one
-	if opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
+	if opts.obj.GetBackdrop then opts.obj:SetBackdrop(nil) end
 
 	-- store frame obj, if required
 	if opts.ft then tinsert(Skinner.gradFrames[opts.ft], opts.obj) end
