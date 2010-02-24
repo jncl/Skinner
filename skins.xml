@@ -159,6 +159,7 @@
 <!-- <script file="SkinMe\GFW_HuntersHelperUI.lua"/> -->
 <script file="SkinMe\GlowFoSho.lua"/>
 <script file="SkinMe\GnomishAuctionShrinker.lua"/>
+<script file="SkinMe\GnomishVendorShrinker.lua"/>
 <script file="SkinMe\Gossipmonger.lua"/>
 <script file="SkinMe\GotWood.lua"/>
 <script file="SkinMe\Grid.lua"/>
