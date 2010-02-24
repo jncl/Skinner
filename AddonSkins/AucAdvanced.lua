@@ -15,8 +15,9 @@ function Skinner:AucAdvanced()
 	if sAuc then
 		self:SecureHook(sAuc.Private, "CreateFrames", function()
 			local frame = sAuc.Private.frame
-			self:skinMoneyFrame{obj=frame.minprice, noWidth=true, moveSEB=true, moveGEB=true}
-			self:skinMoneyFrame{obj=frame.buyout, noWidth=true, moveSEB=true, moveGEB=true}
+			frame.slot:SetTexture(self.esTex)
+			self:skinMoneyFrame{obj=frame.minprice, noWidth=true, moveSEB=true}
+			self:skinMoneyFrame{obj=frame.buyout, noWidth=true, moveSEB=true}
 			self:skinEditBox{obj=frame.stacks.num, regs={9}}
 			self:skinEditBox{obj=frame.stacks.size, regs={9}}
 			self:skinButton{obj=frame.create}
@@ -117,6 +118,7 @@ function Skinner:AucAdvanced()
 			self:skinButton{obj=frame.switchToStack, y1=1}
 			self:skinButton{obj=frame.switchToStack2, y1=1}
 			self:addSkinFrame{obj=frame.salebox}
+			frame.salebox.slot:SetTexture(self.esTex)
 			self:skinEditBox{obj=frame.salebox.numberentry, regs={9}}
 			self:skinEditBox{obj=frame.salebox.stackentry, regs={9}}
 			self:skinDropDown{obj=frame.salebox.model}

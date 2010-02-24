@@ -116,6 +116,7 @@ function Skinner:Ace3()
 				self:applySkin{obj=obj.box, kfs=true}
 			-- ignore these types for now
 			elseif objType == "CheckBox"
+			or objType == "Dropdown-Item-Execute"
 			or objType == "Dropdown-Item-Toggle"
 			or objType == "Label"
 			or objType == "Heading"

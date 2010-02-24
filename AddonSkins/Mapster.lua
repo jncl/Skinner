@@ -33,8 +33,10 @@ function Skinner:Mapster()
 	end)
 	self:addSkinFrame{obj=WorldMapFrame, ft="u", kfs=true}
 	-- handle big/small map sizes
-	if WorldMapFrame.sizedDown then
-		sizedDown()
+	if WorldMapFrame.sizedDown
+	or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+	then
+		sizeDown()
 	else
 		sizeUp()
 	end

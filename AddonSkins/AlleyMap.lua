@@ -36,7 +36,9 @@ function Skinner:AlleyMap()
 	
 	self:addSkinFrame{obj=WorldMapFrame, ft="u", kfs=true}
 	-- handle big/small map sizes
-	if WorldMapFrame.sizedDown then
+	if WorldMapFrame.sizedDown
+	or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+	then
 		sizeDown()
 		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=-1}
 	else
