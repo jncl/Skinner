@@ -10,14 +10,6 @@ O - Other change
 S - Skin request
 B - Button(s) Skin request
 
-	N	Patch 0.3.3.11573
-√		- Battlefields changed
-√		- PVPBattlegroundFrame changed
-√		- AuctionUI changes
-√		- WorldMap changes
-?		- StatusBar changes
-x		- WatchFrame is resizeable
-
 	O	Check to see which skins can be obsoleted
 
 	O	Look into using LSM callbacks to change media
@@ -29,6 +21,38 @@ x		- WatchFrame is resizeable
 ?	I	TipTac/Skinner, reported by shine2009, 15.02.10
 		- StatusBar textures don't stick
 
-√	S	RaidyCheck, requested by gamemaster128, 21.02.10
+√	I	_addSkinFrame, reported by mikec1183, 22.02.10
+		- ..\AddOns\Skinner\Skinner.lua line 497:
+		attempt to call method 'GetBackdrop' (a nil value)
+		Debug:
+		(tail call): ?
+		Skinner\Skinner.lua:497:
+		Skinner\Skinner.lua:476
+		Skinner\Skinner.lua:568: addSkinFrame()
+		Skinner\SkinMe\TipTac.lua:20:
+		Skinner\SkinMe\TipTac.lua:2
+		(tail call): ?
 
-√	S	AuctionLite requested by gamemaster128, 21.02.10
+√	S	GnomishVendorShrinker, requested by ichik, 23.02.10
+
+√	O	Changed slot textures on Merchant, Quest, Mail Frames and AuctionUI panels
+
+√	I	Mapster, reported by gamemaster128, 24.02.10
+		- Skinner-b2.11573.2\SkinMe\Mapster.lua:37: attempt to call global 'sizedDown' (a nil value)
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b2.11573.2\Skinner.lua:780: in function <Skinner\Skinner.lua:778>
+		Skinner-b2.11573.2\Skinner.lua:825: in function `?'
+		Skinner-b2.11573.2\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
+		(tail call): ?:
+
+√	I/N	oRA3, reported by gamemaster128, 24.02.10
+		- Skinner-b2.11573.2\Skinner.lua:497: attempt to index field 'obj' (a nil value)
+		Skinner-b2.11573.2\Skinner.lua:568: in function `addSkinFrame'
+		Skinner-b2.11573.2\SkinMe\oRA3.lua:25: in function <Skinner\SkinMe\oRA3.lua:2>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b2.11573.2\Skinner.lua:780: in function <Skinner\Skinner.lua:778>
+		Skinner-b2.11573.2\Skinner.lua:825: in function `?'
+		Skinner-b2.11573.2\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
+		(tail call): ?:
