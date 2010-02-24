@@ -5,9 +5,12 @@ function Skinner:MerchantFrames()
 	if not self.db.profile.MerchantFrames or self.initialized.MerchantFrames then return end
 	self.initialized.MerchantFrames = true
 
+	for i = 1, BUYBACK_ITEMS_PER_PAGE do
+		_G["MerchantItem"..i.."SlotTexture"]:SetTexture(self.esTex)
+	end
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
-
+	MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
 	self:skinButton{obj=MerchantFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}
 
@@ -108,32 +111,25 @@ function Skinner:QuestFrame()
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
 
-	self:skinButton{obj=QuestFrameCloseButton, cb=true}
+	self:skinAllButtons{obj=QuestFrame}
 	self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
 
 -->>--	Reward Panel
 	self:keepFontStrings(QuestFrameRewardPanel)
-	self:skinButton{obj=QuestFrameCancelButton}
-	self:skinButton{obj=QuestFrameCompleteQuestButton}
 	self:skinScrollBar{obj=QuestRewardScrollFrame}
 
 -->>--	Progress Panel
 	self:keepFontStrings(QuestFrameProgressPanel)
 	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinButton{obj=QuestFrameGoodbyeButton}
-	self:skinButton{obj=QuestFrameCompleteButton}
 	self:skinScrollBar{obj=QuestProgressScrollFrame}
 
 -->>--	Detail Panel
 	self:keepFontStrings(QuestFrameDetailPanel)
-	self:skinButton{obj=QuestFrameAcceptButton}
-	self:skinButton{obj=QuestFrameDeclineButton}
 	self:skinScrollBar{obj=QuestDetailScrollFrame}
 
 -->>--	Greeting Panel
 	self:keepFontStrings(QuestFrameGreetingPanel)
 	self:keepFontStrings(QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
-	self:skinButton{obj=QuestFrameGreetingGoodbyeButton}
 	self:skinScrollBar{obj=QuestGreetingScrollFrame}
 	if QuestFrameGreetingPanel:IsShown() then
 		GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)

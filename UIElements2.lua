@@ -415,62 +415,45 @@ function Skinner:MailFrame()
 	if not self.db.profile.MailFrame or self.initialized.MailFrame then return end
 	self.initialized.MailFrame = true
 
+	self:skinAllButtons{obj=MailFrame}
 	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, x1=16, y1=-12, x2=-32, y2=69}
 
 -->>--	Inbox Frame
-	for i = 1, 7 do
+	for i = 1, INBOXITEMS_TO_DISPLAY do
 		self:keepFontStrings(_G["MailItem"..i])
 	end
-	self:moveObject{obj=InboxTooMuchMail, y=-24}
+	self:moveObject{obj=InboxTooMuchMail, y=-24} -- move icon down
 	self:skinButton{obj=InboxCloseButton, cb=true}
 
 -->>--	Send Mail Frame
 	self:keepFontStrings(SendMailFrame)
 	self:skinScrollBar{obj=SendMailScrollFrame}
-	self:SecureHook("SendMailFrame_Update", function()
-		for i = 1, ATTACHMENTS_MAX_SEND do
-			local sma = _G["SendMailAttachment"..i]
-			if not self.sBut[sma] then
-				self:addSkinButton{obj=sma, hide=true, kfs=true}
-			end
-		end
-	end)
-
+	for i = 1, ATTACHMENTS_MAX_SEND do
+		local aTex = self:getRegion(_G["SendMailAttachment"..i], 1)
+		aTex:SetTexture(self.esTex)
+		aTex:SetWidth(64)
+		aTex:SetHeight(64)
+		aTex:SetTexCoord(0, 1, 0, 1)
+		aTex:ClearAllPoints()
+		aTex:SetPoint("CENTER", aTex:GetParent())
+	end
 	self:skinEditBox{obj=SendMailNameEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
 	self:skinEditBox{obj=SendMailSubjectEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
 	self:skinEditBox{obj=SendMailBodyEditBox, noSkin=true}
 	local c = self.db.profile.BodyText
 	SendMailBodyEditBox:SetTextColor(c.r, c.g, c.b)
 	self:skinMoneyFrame{obj=SendMailMoney, moveSEB=true, moveGEB=true, noWidth=true}
-	self:skinButton{obj=SendMailCancelButton}
-	self:skinButton{obj=SendMailMailButton}
-
--->>-- Stationery Popup Frame ??
 
 -->>--	Open Mail Frame
 	self:skinScrollBar{obj=OpenMailScrollFrame}
 	OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	for i = 1, ATTACHMENTS_MAX_RECEIVE do
-		local rma = _G["OpenMailAttachmentButton"..i]
-		self:addSkinButton{obj=rma, hide=true}
-	end
-	self:skinButton{obj=OpenMailCloseButton, cb=true}
-	self:skinButton{obj=OpenMailReportSpamButton}
-	self:skinButton{obj=OpenMailCancelButton}
-	self:skinButton{obj=OpenMailDeleteButton}
-	self:skinButton{obj=OpenMailReplyButton}
+	self:skinAllButtons{obj=OpenMailFrame}
 	self:addSkinFrame{obj=OpenMailFrame, ft=ftype, kfs=true, x1=12, y1=-12, x2=-34, y2=70}
 
 -->>-- Invoice Frame Text fields
-	OpenMailInvoiceItemLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
-	OpenMailInvoicePurchaser:SetTextColor(self.BTr, self.BTg, self.BTb)
-	OpenMailInvoiceBuyMode:SetTextColor(self.BTr, self.BTg, self.BTb)
-	OpenMailInvoiceSalePrice:SetTextColor(self.BTr, self.BTg, self.BTb)
-	OpenMailInvoiceDeposit:SetTextColor(self.BTr, self.BTg, self.BTb)
-	OpenMailInvoiceHouseCut:SetTextColor(self.BTr, self.BTg, self.BTb)
-	OpenMailInvoiceAmountReceived:SetTextColor(self.BTr, self.BTg, self.BTb)
-	OpenMailInvoiceNotYetSent:SetTextColor(self.BTr, self.BTg, self.BTb)
-	OpenMailInvoiceMoneyDelay:SetTextColor(self.BTr, self.BTg, self.BTb)
+	for _, v in pairs{"ItemLabel", "Purchaser", "BuyMode", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"} do
+		_G["OpenMailInvoice"..v]:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
 
 -->>--	FrameTabs
 	for i = 1, MailFrame.numTabs do
@@ -504,7 +487,9 @@ function Skinner:AuctionUI()
 	for k, v in pairs{"Name", "MinLevel", "MaxLevel"} do
 		local obj = _G["Browse"..v]
 		self:skinEditBox{obj=obj, regs={9}}
+		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
 	end
+--	self:moveObject{obj=BrowseMaxLevel, x=-2}
 	self:skinDropDown{obj=BrowseDropDown}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		local obj = _G["Browse"..v.."Sort"]
@@ -517,25 +502,41 @@ function Skinner:AuctionUI()
 		self:addSkinFrame{obj=_G["AuctionFilterButton"..i], ft=ftype}
 	end
 	self:skinScrollBar{obj=BrowseScrollFrame}
+	for i = 1, NUM_BROWSE_TO_DISPLAY do
+		self:keepFontStrings(_G["BrowseButton"..i])
+		_G["BrowseButton"..i.."Highlight"]:SetAlpha(1)
+	end
 	self:skinMoneyFrame{obj=BrowseBidPrice, moveSEB=true}
 
 -->>--	Bid Frame
-	self:skinScrollBar{obj=BidScrollFrame}
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
 		local obj = _G["Bid"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype}
 	end
+	for i = 1, NUM_BIDS_TO_DISPLAY do
+		self:keepFontStrings(_G["BidButton"..i])
+		_G["BidButton"..i.."Highlight"]:SetAlpha(1)
+	end
+	self:skinScrollBar{obj=BidScrollFrame}
 	self:skinMoneyFrame{obj=BidBidPrice, moveSEB=true}
 
 -->>--	Auctions Frame
-	self:addSkinFrame{obj=AuctionsItemButton, ft=ftype}
-	self:skinScrollBar{obj=AuctionsScrollFrame}
+	local sTex = AuctionsItemButton:CreateTexture(nil, "BACKGROUND") -- add texture
+	sTex:SetTexture(self.esTex)
+	sTex:SetWidth(64)
+	sTex:SetHeight(64)
+	sTex:SetPoint("CENTER", AuctionsItemButton)
 	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 		local obj = _G["Auctions"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype}
 	end
+	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
+		self:keepFontStrings(_G["AuctionsButton"..i])
+		_G["AuctionsButton"..i.."Highlight"]:SetAlpha(1)
+	end
+	self:skinScrollBar{obj=AuctionsScrollFrame}
 	if self.isPatch then
 		self:getRegion(AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in code
 		self:skinEditBox{obj=AuctionsStackSizeEntry, regs={9}, noWidth=true}

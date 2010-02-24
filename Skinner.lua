@@ -235,6 +235,8 @@ function Skinner:OnInitialize()
 	self.bbColour = {c.r, c.g, c.b, c.a}
 	-- Inactive Tab texture
 	self.itTex = self.LSM:Fetch("background", "Inactive Tab")
+	-- Empty Slot texture
+	self.esTex = [[Interface\Buttons\UI-Quickslot2]]
 
 	-- class table
 	self.classTable = {"Druid", "Priest", "Paladin", "Hunter", "Rogue", "Shaman", "Mage", "Warlock", "Warrior", "DeathKnight"}

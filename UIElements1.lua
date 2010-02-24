@@ -390,8 +390,8 @@ function Skinner:GroupLoot()
 
 			glfo:SetScale(0.75)
 			self:moveObject{obj=_G[glf.."SlotTexture"], x=95, y=4} -- Loot item icon
-			_G[glf.."NameFrame"]:Hide()
-			_G[glf.."Name"]:Hide()
+			_G[glf.."NameFrame"]:SetTexture(nil)
+			_G[glf.."Name"]:SetAlpha(0)
 			_G[glf.."RollButton"]:ClearAllPoints()
 			_G[glf.."RollButton"]:SetPoint("RIGHT", _G[glf.."PassButton"], "LEFT", 5, -5)
 			_G[glf.."GreedButton"]:ClearAllPoints()
@@ -540,7 +540,9 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
 	self:skinButton{obj=WorldMapZoomOutButton}
-	if WorldMapFrame.sizedDown then
+	if WorldMapFrame.sizedDown
+	or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+	then
 		self:skinButton{obj=WorldMapFrameCloseButton, cb=true, tx=0}
 	else
 		self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
