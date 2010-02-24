@@ -1,3 +1,8 @@
+b2.11573.2
+Jncl:
+	Updated Change_History
+	Updated Top & Bottom frame max width to 2500
+
 b2.11573.1
 Jncl:
 	ToDo.txt
