@@ -504,7 +504,7 @@ function Skinner:AuctionUI()
 	self:skinScrollBar{obj=BrowseScrollFrame}
 	for i = 1, NUM_BROWSE_TO_DISPLAY do
 		self:keepFontStrings(_G["BrowseButton"..i])
-		_G["BrowseButton"..i.."Highlight"]:SetAlpha(1)
+		if _G["BrowseButton"..i.."Highlight"] then _G["BrowseButton"..i.."Highlight"]:SetAlpha(1) end
 	end
 	self:skinMoneyFrame{obj=BrowseBidPrice, moveSEB=true}
 
@@ -516,7 +516,7 @@ function Skinner:AuctionUI()
 	end
 	for i = 1, NUM_BIDS_TO_DISPLAY do
 		self:keepFontStrings(_G["BidButton"..i])
-		_G["BidButton"..i.."Highlight"]:SetAlpha(1)
+		if _G["BidButton"..i.."Highlight"] then _G["BidButton"..i.."Highlight"]:SetAlpha(1) end
 	end
 	self:skinScrollBar{obj=BidScrollFrame}
 	self:skinMoneyFrame{obj=BidBidPrice, moveSEB=true}
@@ -534,7 +534,7 @@ function Skinner:AuctionUI()
 	end
 	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
 		self:keepFontStrings(_G["AuctionsButton"..i])
-		_G["AuctionsButton"..i.."Highlight"]:SetAlpha(1)
+		if _G["AuctionsButton"..i.."Highlight"] then _G["AuctionsButton"..i.."Highlight"]:SetAlpha(1) end
 	end
 	self:skinScrollBar{obj=AuctionsScrollFrame}
 	if self.isPatch then
