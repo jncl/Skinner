@@ -220,10 +220,14 @@ function Skinner:TradeFrame()
 	if not self.db.profile.TradeFrame or self.initialized.TradeFrame then return end
 	self.initialized.TradeFrame = true
 
+	for i = 1, MAX_TRADE_ITEMS do
+		_G["TradeRecipientItem"..i.."SlotTexture"]:SetTexture(self.esTex)
+		_G["TradeRecipientItem"..i.."NameFrame"]:SetTexture(nil)
+		_G["TradePlayerItem"..i.."SlotTexture"]:SetTexture(self.esTex)
+		_G["TradePlayerItem"..i.."NameFrame"]:SetTexture(nil)
+	end
 	self:skinMoneyFrame{obj=TradePlayerInputMoneyFrame}
-	self:skinButton{obj=TradeFrameCloseButton, cb=true}
-	self:skinButton{obj=TradeFrameTradeButton}
-	self:skinButton{obj=TradeFrameCancelButton}
+	self:skinAllButtons{obj=TradeFrame}
 	self:addSkinFrame{obj=TradeFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-28, y2=48}
 
 end

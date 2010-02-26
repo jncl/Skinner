@@ -5,12 +5,22 @@ function Skinner:MerchantFrames()
 	if not self.db.profile.MerchantFrames or self.initialized.MerchantFrames then return end
 	self.initialized.MerchantFrames = true
 
+	-- display limited availability item's stock count even when zero
+	self:SecureHook("SetItemButtonStock", function(button, numInStock)
+		if numInStock == 0 then
+			_G[button:GetName().."Stock"]:SetFormattedText(MERCHANT_STOCK, numInStock)
+			_G[button:GetName().."Stock"]:Show()
+		end
+	end)
+
 	for i = 1, BUYBACK_ITEMS_PER_PAGE do
 		_G["MerchantItem"..i.."SlotTexture"]:SetTexture(self.esTex)
+		_G["MerchantItem"..i.."NameFrame"]:SetTexture(nil)
 	end
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
 	MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
+	MerchantBuyBackItemNameFrame:SetTexture(nil)
 	self:skinButton{obj=MerchantFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}
 
@@ -346,5 +356,9 @@ function Skinner:QuestInfo()
 
 	QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
+
+	for i = 1, MAX_NUM_ITEMS do
+		_G["QuestInfoItem"..i.."NameFrame"]:SetTexture(nil)
+	end
 
 end

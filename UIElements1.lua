@@ -352,6 +352,9 @@ function Skinner:LootFrame()
 	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-34} -- title
 	self:moveObject{obj=LootCloseButton, y=-34}
 	self:skinButton{obj=LootCloseButton, cb=true}
+	for i = 1, LOOTFRAME_NUMBUTTONS do
+		_G["LootButton"..i.."NameFrame"]:SetTexture(nil)
+	end
 	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-47, x2=-68}
 
 end
@@ -369,6 +372,8 @@ function Skinner:GroupLoot()
 		local glf = "GroupLootFrame"..i
 		local glfo = _G[glf]
 		self:keepFontStrings(glfo)
+		_G[glf.."SlotTexture"]:SetTexture(self.esTex)
+		_G[glf.."NameFrame"]:SetTexture(nil)
 		self:removeRegions(_G[glf.."Timer"], {1})
 		self:glazeStatusBar(_G[glf.."Timer"], 0)
 		-- hook this to skin the group loot frame
@@ -390,7 +395,6 @@ function Skinner:GroupLoot()
 
 			glfo:SetScale(0.75)
 			self:moveObject{obj=_G[glf.."SlotTexture"], x=95, y=4} -- Loot item icon
-			_G[glf.."NameFrame"]:SetTexture(nil)
 			_G[glf.."Name"]:SetAlpha(0)
 			_G[glf.."RollButton"]:ClearAllPoints()
 			_G[glf.."RollButton"]:SetPoint("RIGHT", _G[glf.."PassButton"], "LEFT", 5, -5)
