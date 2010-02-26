@@ -1,3 +1,13 @@
+b2.11573.3
+Jncl:
+	ToDo.txt
+	Updated Change_History
+	Removed unnecessary table
+	Bugfix for GetBackdrop error
+	Updated slot textures on Merchant, Quest, Mail Frames and AuctionUI panels
+	Updated Ace3, AlleyMap, AucAdvanced, Mapster & oRA3 skins
+	Skinned GnomishVendorShrinker
+
 b2.11573.2
 Jncl:
 	Updated Change_History
