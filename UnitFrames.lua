@@ -3,28 +3,7 @@ local ftype = "c"
 
 local ba -- background alpha setting
 local lOfs = -10 -- level text offset
-
-local function changeShield(parent)
-
-	local shldReg = _G[parent:GetName().."BorderShield"]
-	shldReg:SetTexCoord(0, 36/256, 0, 1)
-	shldReg:SetWidth(32)
-	shldReg:SetHeight(56)
-	-- move so it is behind the icon
-	shldReg:ClearAllPoints()
-	shldReg:SetPoint("CENTER", _G[parent:GetName().."Icon"], "CENTER", -2, -1)
-
-end
-
-local function changeFlash(parent)
-
-	local flshReg = _G[parent:GetName().."Flash"]
-	flshReg:SetWidth(parent:GetWidth())
-	flshReg:SetHeight(parent:GetHeight())
-	flshReg:SetTexture(Skinner.sbTexture)
-	Skinner:moveObject{obj=flshReg, x=(parent==FocusFrameSpellBar and 2 or 0), y=-20} -- otherwise it's above the casting bar
-
-end
+local totOfs = -12 -- TargetofTarget frame offset
 
 function Skinner:UnitFrames()
 
@@ -145,7 +124,7 @@ local function skinToT(parent)
 	-- status bars
 	Skinner:glazeStatusBar(_G[parent.."HealthBar"], 0)
 	Skinner:glazeStatusBar(_G[parent.."ManaBar"], 0)
-	Skinner:moveObject{obj=_G[parent], y=-12}
+	Skinner:moveObject{obj=_G[parent], y=totOfs}
 
 end
 
@@ -165,10 +144,13 @@ local function skinUFrame(frame)
 	Skinner:moveObject{obj=_G[frame.."TextureFrameLevelText"], x=2, y=lOfs}
 	-- casting bar
 	_G[frame.."SpellBarBorder"]:SetAlpha(0) -- texture file is changed dependant upon spell type
---	<frame>SpellBarBorderShield:SetAlpha(0) -- used for shield texture
-	changeShield(_G[frame.."SpellBar"])
-	changeFlash(_G[frame.."SpellBar"])
-
+	Skinner:changeShield(_G[frame.."SpellBarBorderShield"], _G[frame.."SpellBarIcon"])
+	local cBar = _G[frame.."SpellBar"]
+	local flshReg = _G[frame.."SpellBarFlash"]
+	flshReg:SetWidth(cBar:GetWidth())
+	flshReg:SetHeight(cBar:GetHeight())
+	flshReg:SetTexture(Skinner.sbTexture)
+	Skinner:moveObject{obj=flshReg, y=-20} -- otherwise it's above the casting bar
 	Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, y1=-7, x2=-37, y2=6}
 
 -->>-- TargetofTarget Frame

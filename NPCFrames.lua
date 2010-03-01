@@ -308,8 +308,7 @@ function Skinner:QuestInfo()
 	if not self.db.profile.QuestFrame or self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
 
-	local function colourText()
-
+	self:SecureHook("QuestInfo_Display", function(...)
 		-- headers
 		QuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 		QuestInfoDescriptionHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -329,30 +328,18 @@ function Skinner:QuestInfo()
 		QuestInfoTalentFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		QuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		QuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		-- reputation rewards
 		for i = 1, MAX_REPUTATIONS do
 			_G["QuestInfoReputation"..i.."Faction"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
 		local r, g, b = QuestInfoRequiredMoneyText:GetTextColor()
 		QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
-
-	end
-	local function colourObjectives()
-
+		-- Objectives
 		for i = 1, MAX_OBJECTIVES do
 			local r, g, b = _G["QuestInfoObjective"..i]:GetTextColor()
-			_G["QuestInfoObjective"..i]:SetTextColor(Skinner.BTr - r, Skinner.BTg - g, Skinner.BTb - b)
+			_G["QuestInfoObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
-
-	end
-
-	-- hook this for objectives text colours
-	self:SecureHook("QuestInfo_Display", function(...)
-		colourText()
-		colourObjectives()
 	end)
-
-	colourText()
-	colourObjectives()
 
 	QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)

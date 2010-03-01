@@ -92,7 +92,7 @@ function Skinner:Calendar()
 	self:moveObject{obj=CalendarFilterFrameText, x=-8}
 	-- move close button
 	self:moveObject{obj=CalendarCloseButton, y=14}
-	self:skinButton{obj=CalendarCloseButton, cb=true}
+	self:skinButton{obj=CalendarCloseButton, cb=true, y2=8}
 	self:addSkinFrame{obj=CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=2, y2=-7}
 
 -->>-- View Holiday Frame
@@ -751,46 +751,52 @@ function Skinner:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
-	local npTex = [[Interface\Tooltips\Nameplate-Border]]
-	local shldTex = [[Interface\AchievementFrame\UI-Achievement-Progressive-Shield]]
-	local npEvt
 	local function isNameplate(obj)
 
-		if obj:GetName() then return false end
+		if obj.GetName and obj:GetName() then return false end
 
-		local region
-		region = select(2, obj:GetRegions()) -- get the second region used by the nameplate
-		if region and region:IsObjectType("Texture") and region:GetTexture() == npTex then return true
-		else return false end
+		local region = Skinner:getRegion(obj, 2)
+
+		if region
+		and region:IsObjectType("Texture")
+		and region:GetTexture() == [[Interface\Tooltips\Nameplate-Border]]
+		then return true
+		else return false
+		end
 
 	end
 
+	local npEvt
 	local function skinNameplates()
 
-		for i = 1, WorldFrame:GetNumChildren() do
-			local child = select(i, WorldFrame:GetChildren())
+		local kids = {WorldFrame:GetChildren()}
+		for _, child in ipairs(kids) do
 			if isNameplate(child) then
 -- 				Skinner:ShowInfo(child, true)
-				-- region 1 is the flash texture, toggled using aggro warning option
-				select(2, child:GetRegions()):SetAlpha(0) -- hide border texture
-				select(3, child:GetRegions()):SetAlpha(0) -- hide border texture
-				-- region 4 is the shield icon, replace texture with Achievement's Shield texture
-				local shldReg = select(4, child:GetRegions())
-				shldReg:SetHeight(30)
-				shldReg:SetWidth(30)
-				shldReg:SetTexture(shldTex)
-				shldReg:SetTexCoord(0, 0.75, 0, 0.75)
-				-- region 5 is the spell icon
-				select(6, child:GetRegions()):SetAlpha(0) -- hide glow effect
-				-- regions 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
+				local regions = {child:GetRegions()}
+				for k, reg in ipairs(regions) do
+					-- region 1 is the flash texture, toggled using aggro warning option
+					if k == 2 -- border texture
+					or k == 3 -- border texture
+					or k == 6 -- glow effect
+					then
+						reg:SetAlpha(0)
+					elseif k == 4 -- non-interrupt shield
+					then
+						Skinner:changeShield(reg, Skinner:getRegion(child, 5)) -- region 5 is the spell icon
+					end
+					-- regions 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
+				end
+				regions = nil
 				for i = 1, 2 do -- skin both status bars
-					local sb = select(i, child:GetChildren())
+					local sb = Skinner:getChild(child, i)
 					if not Skinner.sbGlazed[sb] then
 						Skinner:glazeStatusBar(sb, 0, true)
 					end
 				end
 			end
 		end
+		kids = nil
 
 		-- if the nameplates are off then disable the skinning code
 		local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")
@@ -899,6 +905,7 @@ function Skinner:LFDFrame()
 	LFDQueueFrameLayout:SetAlpha(0)
 	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
 	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
+	LFDQueueFrameRandomScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
 	-- Specific List subFrame
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		local btn = "LFDQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"

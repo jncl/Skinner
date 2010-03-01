@@ -303,6 +303,7 @@ function Skinner:OnEnable()
 	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
 	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
 	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg], true, false) end)
+	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg], false, false) end)
 --@end-debug@
 
 end
@@ -862,6 +863,9 @@ local function __checkTex(opts)
 			btn:SetText(Skinner.minus)
 		elseif nTex:find("PlusButton") then
 			btn:SetText(Skinner.plus)
+		else -- not a header line
+			btn:SetText("")
+			if not opts.mp2 then btn:Hide() end
 		end
 	else -- not a header line
 		btn:SetText("")
@@ -889,6 +893,18 @@ function Skinner:checkTex(...)
 		opts.mp2 = select(3, ...) and select(3, ...) or nil
 	end
 	__checkTex(opts)
+
+end
+
+function Skinner:changeShield(shldReg, iconReg)
+
+	shldReg:SetTexture([[Interface\CastingBar\UI-CastingBar-Arena-Shield]])
+	shldReg:SetTexCoord(0, 1, 0, 1)
+	shldReg:SetWidth(46)
+	shldReg:SetHeight(46)
+	-- move it behind the icon
+	shldReg:ClearAllPoints()
+	shldReg:SetPoint("CENTER", iconReg, "CENTER", 9, -1)
 
 end
 
@@ -1467,9 +1483,9 @@ function Skinner:skinButton(opts)
 	as = use applySkin rather than addSkinButton, used when text appears behind the gradient
 	cb = close button
 	cb2 = close button style 2 (based upon OptionsButtonTemplate)
-	mp = minus/plus button
-	mp2 = minus/plus button style 2 (on RHS)
-	mp3 = minus/plus button style 3, just skin it
+	mp = minus/plus texture on a larger button
+	mp2 = minus/plus button
+	mp3 = minus/plus button, just skin it
 	plus = use plus sign
 	tx = x offset for button text
 	ty = y offset for button text
@@ -1486,7 +1502,7 @@ function Skinner:skinButton(opts)
 	-- don't skin it twice
 	if self.sBut[opts.obj] then return end
 
-	if opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... or derivatives]
+	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... or derivatives]
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
@@ -1519,11 +1535,11 @@ function Skinner:skinButton(opts)
 		if opts.sap then
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
-			bHgt = floor(opts.obj:GetHeight())
-			x1 = opts.x1 or bHgt == 32 and 6 or 4
-			y1 = opts.y1 or bHgt == 32 and -6 or -4
-			x2 = opts.x2 or bHgt == 32 and -6 or -4
-			y2 = opts.y2 or bHgt == 32 and 6 or 4
+			bW = floor(opts.obj:GetWidth())
+			x1 = opts.x1 or bW == 32 and 6 or 4
+			y1 = opts.y1 or bW == 32 and -6 or -4
+			x2 = opts.x2 or bW == 32 and -6 or -4
+			y2 = opts.y2 or bW == 32 and 6 or 4
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	elseif opts.cb2 then -- it's pretending to be a close button (ArkInventory)
@@ -1806,15 +1822,17 @@ function Skinner:skinEditBox(...)
 
 end
 
-function Skinner:skinFFToggleTabs(tabName, tabCnt)
---	self:Debug("skinFFToggleTabs: [%s, %s]", tabName, tabCnt)
+function Skinner:skinFFToggleTabs(tabName, tabCnt, noHeight)
+--	self:Debug("skinFFToggleTabs: [%s, %s, %s]", tabName, tabCnt, noHeight)
 
 	for i = 1, tabCnt or 3 do
 		local togTab = _G[tabName..i]
 		if not togTab then break end -- handle missing Tabs (e.g. Muted)
 		if not self.skinned[togTab] then -- don't skin it twice
-			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text/scripts
-			self:adjHeight{obj=togTab , adj=-5}
+			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text & highlight
+			if not noHeight then
+				self:adjHeight{obj=togTab, adj=-5}
+			end
 			if i == 1 then self:moveObject{obj=togTab, y=3} end
 			self:moveObject{obj=_G[togTab:GetName().."Text"], x=-2, y=3}
 			self:moveObject{obj=_G[togTab:GetName().."HighlightTexture"], x=-2, y=5}

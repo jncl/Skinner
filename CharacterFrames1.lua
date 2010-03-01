@@ -102,11 +102,12 @@ function Skinner:ReputationFrame()
 	self:skinScrollBar{obj=ReputationListScrollFrame}
 
 	for i = 1, NUM_FACTIONS_DISPLAYED do
-		_G["ReputationBar"..i.."Background"]:SetAlpha(0)
-		_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetAlpha(0)
-		_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetAlpha(0)
-		self:glazeStatusBar(_G["ReputationBar"..i.."ReputationBar"], 0)
-		self:skinButton{obj=_G["ReputationBar"..i.."ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
+		local bar = "ReputationBar"..i
+		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
+		_G[bar.."Background"]:SetAlpha(0)
+		_G[bar.."ReputationBarLeftTexture"]:SetAlpha(0)
+		_G[bar.."ReputationBarRightTexture"]:SetAlpha(0)
+		self:glazeStatusBar(_G[bar.."ReputationBar"], 0)
 	end
 
 -->>-- Reputation Detail Frame
@@ -269,7 +270,7 @@ function Skinner:SpellBookFrame()
 	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=70}
 	-- colour the spell name text
 	for i = 1, SPELLS_PER_PAGE do
-		self:removeRegions(_G["SpellButton"..i], {1})
+		_G["SpellButton"..i.."Background"]:SetAlpha(0)
 		_G["SpellButton"..i.."SpellName"]:SetTextColor(self.HTr, self.HTg, self.HTb)
 		_G["SpellButton"..i.."SubSpellName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end

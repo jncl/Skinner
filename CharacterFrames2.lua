@@ -204,13 +204,15 @@ function Skinner:TradeSkillUI()
 	end
 	self:skinScrollBar{obj=TradeSkillListScrollFrame}
 	self:skinScrollBar{obj=TradeSkillDetailScrollFrame}
+	self:keepFontStrings(TradeSkillDetailScrollChildFrame)
 	self:skinEditBox{obj=TradeSkillInputBox}
 	self:moveObject{obj=TradeSkillInputBox, x=-5}
-	self:skinButton{obj=TradeSkillFrameCloseButton, cb=true}
-	self:skinButton{obj=TradeSkillCreateButton}
-	self:skinButton{obj=TradeSkillCancelButton}
-	self:skinButton{obj=TradeSkillCreateAllButton}
+	self:skinAllButtons{obj=TradeSkillFrame}
 	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+
+	for i = 1, MAX_TRADE_SKILL_REAGENTS do
+		_G["TradeSkillReagent"..i.."NameFrame"]:SetTexture(nil)
+	end
 
 	if self.db.profile.Buttons then TradeSkillFrame_Update() end -- force update for button textures
 
