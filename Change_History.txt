@@ -1,3 +1,13 @@
+b2.11573.4
+Jncl:
+	ToDo.txt
+	Updated Change_History
+	Removed NameFrame texture on GroupLoot, Loot, Merchant, QuestInfo & Trade Frames
+	Changed SlotTexture as well
+	BugFix for AuctionUI errors
+	Updated BetterInbox & GnomishVendorShrinker skins
+	Skinned GupPet
+
 b2.11573.3
 Jncl:
 	ToDo.txt
