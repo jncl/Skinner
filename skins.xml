@@ -153,6 +153,7 @@
 <!-- <script file="SkinMe\FuBar_PoisonReminderFu.lua"/> -->
 <script file="SkinMe\Gatherer.lua"/>
 <script file="SkinMe\GCInfo.lua"/>
+<script file="SkinMe\GearScore.lua"/>
 <script file="SkinMe\GemHelper.lua"/>
 <script file="SkinMe\GemMe.lua"/>
 <script file="SkinMe\GFW_FeedOMatic.lua"/>
