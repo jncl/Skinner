@@ -34,7 +34,7 @@ function Skinner:Hack()
 		end
 	end
 	
-	self:skinButton{obj=HackEditFrameClose, cb=true}
+	self:skinButton{obj=HackEditFrameClose, cb=true, tx=0}
 	self:skinScrollBar{obj=HackEditScrollFrame}
 	self:addSkinFrame{obj=HackEditFrame, kfs=true, y1=-2, x2=-1}
 
