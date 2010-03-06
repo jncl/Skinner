@@ -5,11 +5,9 @@ function Skinner:CharacterFrames()
 	if not self.db.profile.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
 
-	local cfSubframes = {"PaperDollFrame", "PetPaperDollFrame", "ReputationFrame", "SkillFrame", "TokenFrame"}
-
 	-- skin each sub frame
 	self:checkAndRun("CharacterFrame")
-	for _, v in pairs(cfSubframes) do
+	for _, v in pairs{"PaperDollFrame", "PetPaperDollFrame", "ReputationFrame", "SkillFrame", "TokenFrame"} do
 		self:checkAndRun(v)
 	end
 

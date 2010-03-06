@@ -335,8 +335,7 @@ function Skinner:MenuFrames()
 		local oName = obj.GetName and obj:GetName() or nil
 		if oName and (oName:find("AceConfig") or oName:find("AceGUI"))then return end  -- ignore AceConfig/AceGUI objects
 
-		local kids = {obj:GetChildren()}
-		for _, child in ipairs(kids) do
+		for _, child in pairs{obj:GetChildren()} do
 		 	if Skinner:isDropDown(child) then Skinner:skinDropDown{obj=child}
 			elseif child:IsObjectType("EditBox") then Skinner:skinEditBox{obj=child, regs={9}}
 			elseif Skinner:isButton(child) then Skinner:skinButton{obj=child}
@@ -751,52 +750,33 @@ function Skinner:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
-	local function isNameplate(obj)
-
-		if obj.GetName and obj:GetName() then return false end
-
-		local region = Skinner:getRegion(obj, 2)
-
-		if region
-		and region:IsObjectType("Texture")
-		and region:GetTexture() == [[Interface\Tooltips\Nameplate-Border]]
-		then return true
-		else return false
-		end
-
-	end
-
 	local npEvt
 	local function skinNameplates()
 
-		local kids = {WorldFrame:GetChildren()}
-		for _, child in ipairs(kids) do
-			if isNameplate(child) then
+		for _, child in pairs{WorldFrame:GetChildren()} do
+			if child:GetNumChildren() == 2 and child:GetNumRegions() == 11 then -- Nameplate frame
 -- 				Skinner:ShowInfo(child, true)
-				local regions = {child:GetRegions()}
-				for k, reg in ipairs(regions) do
+				local shieldReg
+				for k, reg in ipairs{child:GetRegions()} do -- process in key order
 					-- region 1 is the flash texture, toggled using aggro warning option
 					if k == 2 -- border texture
 					or k == 3 -- border texture
 					or k == 6 -- glow effect
-					then
-						reg:SetAlpha(0)
-					elseif k == 4 -- non-interrupt shield
-					then
-						Skinner:changeShield(reg, Skinner:getRegion(child, 5)) -- region 5 is the spell icon
+					then reg:SetAlpha(0)
+					elseif k == 4 then shieldReg = reg -- non-interruptible shield texture
+					elseif k == 5 then Skinner:changeShield(shieldReg, reg) -- spell icon
 					end
 					-- regions 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
 				end
-				regions = nil
-				for i = 1, 2 do -- skin both status bars
-					local sb = Skinner:getChild(child, i)
-					if not Skinner.sbGlazed[sb] then
-						Skinner:glazeStatusBar(sb, 0, true)
+				-- skin both status bars
+				for _, grandchild in pairs{child:GetChildren()} do
+					if not Skinner.sbGlazed[grandchild]	then
+--						Skinner:ShowInfo(child, true)
+						Skinner:glazeStatusBar(grandchild, 0)
 					end
 				end
 			end
 		end
-		kids = nil
 
 		-- if the nameplates are off then disable the skinning code
 		local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")

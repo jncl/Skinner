@@ -415,8 +415,7 @@ local function __addSkinButton(opts)
 
 	-- change the draw layer of the Icon and Count, if necessary
 	if opts.obj.GetNumRegions then
-		local regions = {opts.obj:GetRegions()}
-		for _, reg in ipairs(regions) do
+		for _, reg in pairs{opts.obj:GetRegions()} do
 			local regOT = reg:GetObjectType()
 			if regOT == "Texture" or regOT == "FontString" then
 				local regName = reg:GetName()
@@ -909,6 +908,7 @@ function Skinner:changeShield(shldReg, iconReg)
 end
 
 function Skinner:findFrame(height, width, children)
+	-- find frame by matching children's object types
 
 	local frame
 	local obj = EnumerateFrames()
@@ -921,10 +921,8 @@ function Skinner:findFrame(height, width, children)
 --					self:Debug("UnNamed Frame's H, W: [%s, %s]", obj:GetHeight(), obj:GetWidth())
 					if ceil(obj:GetHeight()) == height and ceil(obj:GetWidth()) == width then
 						local kids = {}
-						for i = 1, obj:GetNumChildren() do
-							local v = select(i, obj:GetChildren())
---							self:Debug("UnNamed Frame's Children's Type: [%s]", v:GetObjectType())
-							kids[i] = v:GetObjectType()
+						for _, child in pairs{obj:GetChildren()} do
+							kids[#kids + 1] = child:GetObjectType()
 						end
 						local matched = 0
 						for _, c in pairs(children) do
@@ -1004,8 +1002,7 @@ function Skinner:findFrame3(name, element)
 
 	local frame
 
-	local kids = {UIParent:GetChildren()}
-	for _, child in ipairs(kids) do
+	for _, child in pairs{UIParent:GetChildren()} do
 		if child:GetName() == name then
 			if child[element] then
 				frame = child
@@ -1013,7 +1010,6 @@ function Skinner:findFrame3(name, element)
 			end
 		end
 	end
-	kids = nil
 
 	return frame
 
@@ -1162,14 +1158,15 @@ function Skinner:keepRegions(frame, regions)
 	regions	= revTable(regions)
 
 --	self:Debug("keepRegions: [%s]", frame:GetName() or "<Anon>")
-	for i = 1, frame:GetNumRegions() do
-		local reg = select(i, frame:GetRegions())
+	for k, reg in pairs{frame:GetRegions()} do
 		-- if we have a list, hide the regions not in that list
-		if regions and not regions[i] then
+		if regions
+		and not regions[k]
+		then
 --			self:Debug("hide region: [%s, %s]", i, reg:GetName() or "<Anon>")
 			reg:SetAlpha(0)
 --@debug@
-			if reg:IsObjectType("FontString") then self:Debug("kr FS: [%s, %s]", frame:GetName() or "<Anon>", i) end
+			if reg:IsObjectType("FontString") then self:Debug("kr FS: [%s, %s]", frame:GetName() or "<Anon>", k) end
 --@end-debug@
 		end
 	end
@@ -1325,13 +1322,15 @@ function Skinner:removeRegions(frame, regions)
 	regions	= revTable(regions)
 
 --	self:Debug("removeRegions: [%s]", frame:GetName() or "<Anon>")
-	for i = 1, frame:GetNumRegions() do
-		local reg = select(i, frame:GetRegions())
-		if not regions or regions and regions[i] then
+	for k, reg in pairs{frame:GetRegions()} do
+		if not regions
+		or regions
+		and regions[k]
+		then
 --			self:Debug("hide region: [%s, %s]", i, reg:GetName() or "<Anon>")
 			reg:SetAlpha(0)
 --@debug@
-			if reg:IsObjectType("FontString") then self:Debug("rr FS: [%s, %s]", frame:GetName() or "<Anon>", i) end
+			if reg:IsObjectType("FontString") then self:Debug("rr FS: [%s, %s]", frame:GetName() or "<Anon>", k) end
 --@end-debug@
 		end
 	end
@@ -1649,18 +1648,16 @@ local function __skinAllButtons(opts)
 --@end-alpha@
 	if not opts.obj then return end
 
-	local kids = {opts.obj:GetChildren()}
-	for _, child in ipairs(kids) do
-		if Skinner:isButton(child) then
-			Skinner:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, tx=opts.tx, ty=opts.ty}
-		elseif Skinner:isButton(child, true) then
-			Skinner:skinButton{obj=child, cb=true, tx=opts.tx, ty=opts.ty, sap=opts.sap}
+	for _, child in pairs{opts.obj:GetChildren()} do
+		if Skinner:isButton(child) then -- normal button
+			Skinner:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+		elseif Skinner:isButton(child, true) then -- close button
+			Skinner:skinButton{obj=child, cb=true, sap=opts.sap}
 		else
 			opts.obj=child
 			__skinAllButtons(opts)
 		end
 	end
-	kids = nil
 
 end
 
