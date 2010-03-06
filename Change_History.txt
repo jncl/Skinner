@@ -1,3 +1,11 @@
+b2.11599.1
+Jncl:
+	ToDo.txt
+	Updated Change_History
+	More Texture changes
+	Updated Armory, Hack & tekDebug skins
+	Skinned GearScore
+
 b2.11573.4
 Jncl:
 	ToDo.txt
