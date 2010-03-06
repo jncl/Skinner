@@ -10,13 +10,27 @@ O - Other change
 S - Skin request
 B - Button(s) Skin request
 
-	O	Check to see which skins can be obsoleted
+≈	O	Check to see which skins can be obsoleted (ongoing)
 
-	O	Look into using LSM callbacks to change media
+≈	O	Look into using LSM callbacks to change media and LSM default media as defaults
+
+√	O	Remove local tables only used for arrays
+
+	O	Review Function Hooks
+		- Blizzard skins function hooks
+		- Addon skins function hooks
+
+	O	Status Bars
+√		- Change glazing code to only create a texture and not another status bar
+√		- use existing textures wherever possible
+√		- handle extra textures, e.g. FillBar/Flash
+√		- make sure they are all updated when texture is changed
 
 	N	PTR 0.3.3.11599
 		- StatusBars look odd, partial bar(s) being displayed
-			- XP bar especially
+√			- XP bar especially (changed code, seems to fix it for the moment)
+?			- Nameplate bar texture changes from UI-StatusBar to UI-Targetingframe-BarFill 64 --> 512 width
+				this causes the display to look odd
 
 	I	Frames overlaying text, reported by several posters
 		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
@@ -25,6 +39,19 @@ B - Button(s) Skin request
 ?	I	TipTac/Skinner, reported by shine2009, 15.02.10
 		- StatusBar textures don't stick
 
-√	N	Armory, reported by Gryzvwald, 26.02.10
+≈	I	tomQuest2, reported by gizmo1972 & Eatsbrains, 3.03.10
+		- updated Alpha version
 
-√	S	GearScore, requested by gamemaster128, 27.02.10
+	I	oRA3, reported by Eatsbrains, 4.03.10
+		- Skinner-@project-version@\SkinMe\oRA3.lua:4: bad argument #1 to 'match' (string expected, got nil)
+		Skinner-@project-version@\SkinMe\oRA3.lua:4: in function <Skinner\SkinMe\oRA3.lua:2>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-@project-version@\Skinner.lua:782: in function <Skinner\Skinner.lua:780>
+		Skinner-@project-version@\Skinner.lua:827: in function `?'
+		Skinner-@project-version@\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
+		(tail call): ?:
+
+≈	O	Add support for Tukui
+
+	S	Skada, requested by Gryzwald, 5.03.10
