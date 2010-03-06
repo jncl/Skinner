@@ -2,8 +2,7 @@
 function Skinner:MobileVault()
 	if not self.db.profile.GuildBankUI then return end
 
-	local mvFrames = {MobileVault.anchor, MobileVault.anchor.bg} -- , MobileVault.Bottom
-	for _, v in pairs(mvFrames) do
+	for _, v in pairs{MobileVault.anchor, MobileVault.anchor.bg} do
 		v:SetWidth(v:GetWidth() + 10)
 		self:applySkin(v)
 	end

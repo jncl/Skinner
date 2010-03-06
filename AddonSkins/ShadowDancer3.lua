@@ -25,8 +25,7 @@ function Skinner:ShadowDancer3()
 		self:applySkin(dd.__List.__UI)
 		self:applySkin(summaryF)
 		-- Weapon Tab
-		local weaponObjs = {"WeaponName", "WpsMain", "WpsOff", "WpsRange", "WpsAmmo"}
-		for _, v in pairs(weaponObjs) do
+		for _, v in pairs{"WeaponName", "WpsMain", "WpsOff", "WpsRange", "WpsAmmo"} do
 			dd = weaponCon:GetChild(v)
 			if dd.__List then
 				self:applySkin(dd.__UI)
@@ -35,16 +34,14 @@ function Skinner:ShadowDancer3()
 		end
 		self:applySkin(weaponF)
 		-- Skill Tab
-		local skillObjs = {"Time", "SkillName"}
-		for _, v in pairs(skillObjs) do
+		for _, v in pairs{"Time", "SkillName"} do
 			dd = skillCon:GetChild(v)
 			if dd.__List then
 				self:applySkin(dd.__UI)
 				self:applySkin(dd.__List.__UI)
 			end
 		end
-		local fsObjs = {"Action_", "Wps1_", "Wps2_"}
-		for _, v in pairs(fsObjs) do
+		for _, v in pairs{"Action_", "Wps1_", "Wps2_"} do
 			for i = 1, 10 do
 				dd = skillCon.Sets:GetChild(v..i)
 				if dd and dd.__List then

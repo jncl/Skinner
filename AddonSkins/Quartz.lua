@@ -6,18 +6,17 @@ function Skinner:Quartz() -- Quartz3
 
 	local function skinSBs()
 
-		local kids = {UIParent:GetChildren()}
-		for _, child in ipairs(kids) do
+		for _, child in pairs{UIParent:GetChildren()} do
 			-- if this is a Quartz Mirror/Buff Bar then skin it
-			if child:IsObjectType('StatusBar') and child.timetext then
-				if not Skinner.skinned[child]then
+			if child:IsObjectType('StatusBar')
+			and child.timetext
+			then
+				if not Skinner.skinned[child] then
 					child:SetBackdrop(nil)
 					Skinner:glazeStatusBar(child, 0)
-					child.SetStatusBarTexture = function() end
 				end
 			end
 		end
-		kids = nil
 
 	end
 
@@ -29,8 +28,7 @@ function Skinner:Quartz() -- Quartz3
 	Quartz3.db.profile.bordercolor = {c.r, c.g, c.b}
 	Quartz3.db.profile.borderalpha = c.a
 
-	local qModules = {"Player", "Target", "Focus", "Pet"}
-	for _, modName in pairs(qModules) do
+	for _, modName in pairs{"Player", "Target", "Focus", "Pet"} do
 		local mod = Quartz3:GetModule(modName, true)
 		if mod and mod:IsEnabled() then
 			self:applySkin{obj=mod.Bar}

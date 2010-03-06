@@ -4,7 +4,7 @@ function Skinner:AdvancedTradeSkillWindow()
 
 	self:keepFontStrings(ATSWRankFrame)
 	self:keepFontStrings(ATSWRankFrameBorder)
-	self:glazeStatusBar(ATSWRankFrame, 0)
+	self:glazeStatusBar(ATSWRankFrame, 0, ATSWRankFrameBackground)
 	self:skinScrollBar{obj=ATSWListScrollFrame}
 	self:keepFontStrings(ATSWExpandButtonFrame)
 	self:skinDropDown{obj=ATSWInvSlotDropDown}
@@ -26,6 +26,9 @@ function Skinner:AdvancedTradeSkillWindow()
 				self:checkTex(_G["ATSWSkill"..i])
 			end
 		end)
+	end
+	for i = 1, ATSW_MAX_TRADE_SKILL_REAGENTS do
+		_G["ATSWReagent"..i.."NameFrame"]:SetTexture(nil)
 	end
 
 	-- Reagent frame
@@ -76,7 +79,7 @@ function Skinner:AdvancedTradeSkillWindow()
 	self:skinAllButtons{obj=ATSWAllReagentListFrame}
 	self:addSkinFrame{obj=ATSWAllReagentListFrame, kfs=true, x1=14, y1=-1, x2=-35}
 -->>--	Scan Delay frame
-	self:glazeStatusBar(ATSWScanDelayFrameBar, 0)
+	self:glazeStatusBar(ATSWScanDelayFrameBar, 0, ATSWScanDelayFrameBarBackground)
 	self:skinAllButtons{obj=ATSWScanDelayFrame}
 	self:addSkinFrame{obj=ATSWScanDelayFrame, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
 

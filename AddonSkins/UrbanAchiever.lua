@@ -17,46 +17,47 @@ function Skinner:UrbanAchiever()
 	end
 	
 	local this = UrbanAchiever
-	self:keepFontStrings(this.frame)
-	this.frame.close:SetPoint("TOPRIGHT", this.frame, "TOPRIGHT")
-	self:skinButton{obj=this.frame.close, cb=true}
+	local uaFrame = this.frame
+	self:keepFontStrings(uaFrame)
+	uaFrame.close:SetPoint("TOPRIGHT", uaFrame, "TOPRIGHT")
+	self:skinButton{obj=uaFrame.close, cb=true}
 	local uaPS = UrbanAchieverFramePointShield
 	uaPS:SetAlpha(1)
-	uaPS:SetPoint("TOP", this.frame, "TOP", 60, -5)
+	uaPS:SetPoint("TOP", uaFrame, "TOP", 60, -5)
 	this.pointsText:SetPoint("LEFT", uaPS, "RIGHT", 5, 2)
-	this.compPointsText:SetPoint("TOPRIGHT", this.frame, "TOP", -67, -5)
-	self:skinEditBox(self:getChild(this.frame.editbox, 1), {9})
-	skinStatusBar(this.frame.summaryBar)
-	self:glazeStatusBar(this.frame.summaryBar, 0)
-	skinStatusBar(this.frame.comparisonSummaryBar)
-	self:glazeStatusBar(this.frame.comparisonSummaryBar, 0)
-	self:skinSlider(this.frame.catScroll)
-	self:skinSlider(this.frame.achScroll)
+	this.compPointsText:SetPoint("TOPRIGHT", uaFrame, "TOP", -67, -5)
+	self:skinEditBox(self:getChild(uaFrame.editbox, 1), {9})
+	skinStatusBar(uaFrame.summaryBar)
+	self:glazeStatusBar(uaFrame.summaryBar, 0, _G[uaFrame.summaryBar:GetName().."BG"])
+	skinStatusBar(uaFrame.comparisonSummaryBar)
+	self:glazeStatusBar(uaFrame.comparisonSummaryBar, 0, _G[uaFrame.comparisonSummaryBar:GetName().."BG"])
+	self:skinSlider(uaFrame.catScroll)
+	self:skinSlider(uaFrame.achScroll)
 	-- Category frame
-	this.frame.category.backdrop:SetAlpha(0)
-	self:moveObject(this.frame.category, "-", 10, nil, nil)
-	self:applySkin(this.frame.category)
-	self:applySkin(this.frame, true)
+	uaFrame.category.backdrop:SetAlpha(0)
+	self:moveObject(uaFrame.category, "-", 10, nil, nil)
+	self:applySkin(uaFrame.category)
+	self:applySkin(uaFrame, true)
 
 -->>-- Category Buttons
 	local bDrop = CopyTable(self.backdrop)
 	bDrop.edgeSize = 8
-	for i = 1, #this.frame.catButtons do
-		local catBtn = this.frame.catButtons[i]
+	for i = 1, #uaFrame.catButtons do
+		local catBtn = uaFrame.catButtons[i]
 		self:keepFontStrings(catBtn)
 		self:getRegion(catBtn, 3):SetAlpha(1) -- highlight texture
 		self:applySkin(catBtn, nil, nil, nil, nil, bDrop)
 	end
 -->>-- Achievement Display Frame
-	skinStatusBar(this.frame.display.bar)
-	self:glazeStatusBar(this.frame.display.bar, 0)
-	skinStatusBar(this.frame.display.compareBar)
-	self:glazeStatusBar(this.frame.display.compareBar, 0)
-	self:skinSlider(this.frame.criteriaScroll)
+	skinStatusBar(uaFrame.display.bar)
+	self:glazeStatusBar(uaFrame.display.bar, 0, _G[uaFrame.display.bar:GetName().."BG"])
+	skinStatusBar(uaFrame.display.compareBar)
+	self:glazeStatusBar(uaFrame.display.compareBar, 0, _G[uaFrame.display.compareBar:GetName().."BG"])
+	self:skinSlider(uaFrame.criteriaScroll)
 
 -->>-- Tabs
-	for i = 1, #this.frame.tabButtons do
-		local tabObj = this.frame.tabButtons[i]
+	for i = 1, #uaFrame.tabButtons do
+		local tabObj = uaFrame.tabButtons[i]
 		tabObj.backdrop:SetAlpha(0)
 		if self.db.profile.TexturedTab then
 			self:applySkin(tabObj, nil, 0, 1)
@@ -66,13 +67,13 @@ function Skinner:UrbanAchiever()
 	end
 	if self.db.profile.TexturedTab then
 		self:SecureHook(this, "RefreshCategoryButtons", function(this)
-			for i = 1, #this.frame.tabButtons do
+			for i = 1, #uaFrame.tabButtons do
 				if this.currentTab == "achievements" then
-					self:setActiveTab(this.frame.tabButtons[1])
-					self:setInactiveTab(this.frame.tabButtons[2])
+					self:setActiveTab(uaFrame.tabButtons[1])
+					self:setInactiveTab(uaFrame.tabButtons[2])
 				else
-					self:setActiveTab(this.frame.tabButtons[2])
-					self:setInactiveTab(this.frame.tabButtons[1])
+					self:setActiveTab(uaFrame.tabButtons[2])
+					self:setInactiveTab(uaFrame.tabButtons[1])
 				end
 			end
 		end)

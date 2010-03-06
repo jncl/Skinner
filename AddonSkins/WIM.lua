@@ -27,8 +27,7 @@ function Skinner:WIM() -- WIM3
 		if Skinner.skinned[obj] then return end
 		Skinner:skinAllButtons{obj=obj}
 		
-		local kids = {obj:GetChildren()}
-		for _, child in ipairs(kids) do
+		for _, child in pairs{obj:GetChildren()} do
 			if Skinner:isDropDown(child) then
 				Skinner:skinDropDown(child)
 			elseif child.backdrop then
@@ -39,7 +38,6 @@ function Skinner:WIM() -- WIM3
 			else checkKids(child)
 			end
 		end
-		kids = nil
 		
 	end
 	

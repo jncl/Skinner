@@ -21,11 +21,9 @@ function Skinner:Mapster()
 	-- hook these to handle map size changes
 	self:SecureHook(Mapster, "SizeDown", function()
 		sizeDown()
-		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
 	end)
 	self:SecureHook(Mapster, "SizeUp", function()
 		sizeUp()
-		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
 	end)
 	self:SecureHook(Mapster, "UpdateBorderVisibility", function()
 		if Mapster.bordersVisible then self.skinFrame[WorldMapFrame]:Show()

@@ -12,11 +12,9 @@ function Skinner:AlleyMap()
 	end
 	local function sizeDown()
 
-		local kids = {WorldMapDetailFrame:GetChildren()}
-		for _, child in pairs(kids) do
+		for _, child in pairs{WorldMapDetailFrame:GetChildren()} do
 			child:SetAlpha(0)
 		end
-		kids = nil
 	
 		self.skinFrame[WorldMapFrame]:SetParent(WorldMapDetailFrame) -- handle frame movement
 		self.skinFrame[WorldMapFrame]:SetFrameStrata("LOW")
@@ -27,11 +25,9 @@ function Skinner:AlleyMap()
 	end
 	self:SecureHook("WorldMap_ToggleSizeUp", function()
 		sizeUp()
-		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), y=-1}
 	end)
 	self:SecureHook("WorldMap_ToggleSizeDown", function()
 		sizeDown()
-		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), y=1}
 	end)
 	
 	self:addSkinFrame{obj=WorldMapFrame, ft="u", kfs=true}
@@ -40,7 +36,6 @@ function Skinner:AlleyMap()
 	or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
 	then
 		sizeDown()
-		self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=-1}
 	else
 		sizeUp()
 	end

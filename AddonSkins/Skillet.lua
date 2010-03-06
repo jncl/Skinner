@@ -1,11 +1,10 @@
-local floor = math.floor
 
 function Skinner:Skillet()
 	if not self.db.profile.TradeSkillUI then return end
 
 	self:SecureHook(Skillet, "ShowTradeSkillWindow", function()
 		SkilletRankFrameBorder:Hide()
-		self:glazeStatusBar(SkilletRankFrame, 0)
+		self:glazeStatusBar(SkilletRankFrame, 0, SkilletRankFrameBackground)
 		self:skinDropDown{obj=SkilletRecipeGroupDropdown}
 		self:skinDropDown{obj=SkilletSortDropdown}
 		self:skinEditBox(SkilletFilterBox, {9})
@@ -62,7 +61,7 @@ function Skinner:Skillet()
 		SkilletQueueButton1:SetParent(SkilletQueueParent) -- reparent it
 		self.sBut[SkilletQueueButton1] = nil -- remove old skin button
 		self:SecureHook(Skillet, "UpdateQueueWindow", function()
-			for i = 1, floor(SkilletQueueList:GetHeight() / SKILLET_TRADE_SKILL_HEIGHT) do
+			for i = 1, math.floor(SkilletQueueList:GetHeight() / SKILLET_TRADE_SKILL_HEIGHT) do
 				local dBtn = _G["SkilletQueueButton"..i.."DeleteButton"]
 				if not self.sBut[dBtn] then self:skinButton{obj=dBtn, x1=-3, y1=-3, x2=3, y2=1} end
 			end

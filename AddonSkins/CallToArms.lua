@@ -11,8 +11,7 @@ function Skinner:CallToArms()
 	self:applySkin(CTA_MainFrame)
 	
 	-- Main Frame Tabs
-	local tabNames = {"Search", "MyRaid", "LFG", "MFF"}
-	for _, v in pairs(tabNames) do
+	for _, v in pairs{"Search", "MyRaid", "LFG", "MFF"} do
 		local tabName = _G["CTA_Show"..v.."Button"]
 		self:keepRegions(tabName, {7, 8})
 		if v == "Search" then self:moveObject(tabName, "-", 5, "+", 28)
@@ -25,8 +24,7 @@ function Skinner:CallToArms()
 	end
 	
 	-- Search Frame
-	local butNames = {"Results", "Options"}
-	for _, v in pairs(butNames) do
+	for _, v in pairs{"Results", "Options"} do
 		local butName = _G["CTA_Show"..v.."Button"]
 		self:keepRegions(butName, {7, 8})
 		if v == "Results" then self:moveObject(butName, nil, nil, "-", 10) end
@@ -47,8 +45,7 @@ function Skinner:CallToArms()
 	-- LFG Frame
 	
 	-- More Features Frame
-	local butNames = {"ShowBlacklist", "SettingsFrame", "LogFrame"}
-	for _, v in pairs(butNames) do
+	for _, v in pairs{"ShowBlacklist", "SettingsFrame", "LogFrame"} do
 		local butName = _G["CTA_"..v.."Button"]
 		self:keepRegions(butName, {7, 8})
 		if v == "ShowBlacklist" then self:moveObject(butName, nil, nil, "-", 10) end

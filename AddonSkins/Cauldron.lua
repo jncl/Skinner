@@ -26,6 +26,10 @@ function Skinner:Cauldron()
 				if not btn.skin then -- skin button if required
 					self:skinButton{obj=btn, mp=true, plus=true}
 					btn.skin = true
+					-- remove reagent item textures as well
+					for j = 1, 8 do
+						_G["CauldronSkillItem"..i.."ReagentsItemDetail"..j.."NameFrame"]:SetTexture(nil)
+					end
 				end
 				if btn then self:checkTex(btn) end
 			end
@@ -35,24 +39,17 @@ function Skinner:Cauldron()
 	
 	-- Skill Info frame
 	self:keepFontStrings(CauldronRankFrame)
-	self:glazeStatusBar(CauldronRankFrame, 0)
+	self:glazeStatusBar(CauldronRankFrame, 0, CauldronRankFrameBackground)
 	-- Queue frame
 	self:skinScrollBar{obj=CauldronQueueFrameScrollFrame}
 	CauldronQueueFrameQueueEmptyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- Buttons frame
-	self:skinButton{obj=CauldronQueueAllButton}
-	self:skinButton{obj=CauldronCreateAllButton}
-	self:skinEditBox{obj=CauldronAmountInputBox}
-	self:adjHeight{obj=CauldronAmountInputBox, adj=-4}
-	self:moveObject{obj=CauldronAmountInputBox, x=-4}
-	self:skinButton{obj=CauldronCreateButton}
-	self:skinButton{obj=CauldronQueueButton}
-	self:skinButton{obj=CauldronProcessButton}
-	self:skinButton{obj=CauldronClearQueueButton}
-	self:skinButton{obj=CauldronCloseButton}
+	self:skinEditBox{obj=CauldronAmountInputBox, noHeight=true, x=-3}
+	self:moveObject{obj=CauldronAmountIncrementButton, x=3}
+	self:skinAllButtons{obj=CauldronButtonsFrame}
 
 -->>-- Shopping List
 	self:skinButton{obj=CauldronShoppingListFrameCloseButton, cb=true}
-	self:addSkinFrame{obj=CauldronShoppingListFrame, x1=-2}
+	self:addSkinFrame{obj=CauldronShoppingListFrame, x1=-2, y1=-1, x2=-1, y2=-1}
 
 end

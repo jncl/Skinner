@@ -150,8 +150,9 @@ function Skinner:Armory()
 	self:skinScrollBar{obj=ArmorySkillListScrollFrame}
 
 	for i = 1, ARMORY_NUM_SKILLS_DISPLAYED do
-		self:removeRegions(_G["ArmorySkillRankFrame"..i.."Border"], {1}) -- N.B. region 2 is highlight
-		self:glazeStatusBar(_G["ArmorySkillRankFrame"..i], 0)
+		local bar = "ArmorySkillRankFrame"..i
+		self:removeRegions(_G[bar.."Border"], {1}) -- N.B. region 2 is highlight
+		self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
 		self:skinButton{obj=_G["ArmorySkillTypeLabel"..i], mp=true}
 	end
 	if self.db.profile.Buttons then
@@ -368,11 +369,11 @@ function Skinner:Armory()
 
 	for i = 1, ARMORY_NUM_FACTIONS_DISPLAYED do
 		local bar = "ArmoryAchievementBar"..i
-		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
-		self:glazeStatusBar(_G[bar.."AchievementBar"], 0)
 		_G[bar.."Background"]:SetAlpha(0)
 		_G[bar.."AchievementBarLeftTexture"]:SetAlpha(0)
 		_G[bar.."AchievementBarRightTexture"]:SetAlpha(0)
+		self:glazeStatusBar(_G[bar.."AchievementBar"], 0)
+		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
 	end
 	-- collapse all button
 	self:removeRegions(ArmoryAchievementCollapseAllButton, {1, 2, 3}) -- textures

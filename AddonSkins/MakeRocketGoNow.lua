@@ -1,10 +1,10 @@
-local ipairs = ipairs
 
 function Skinner:MakeRocketGoNow()
 
-	local kids = {UIParent:GetChildren()}
-	for _, child in ipairs(kids) do
-		if child:IsObjectType("Button") and child:GetName() == nil then
+	for _, child in pairs{UIParent:GetChildren()} do
+		if child:IsObjectType("Button")
+		and child:GetName() == nil
+		then
 			if child.GetBackdropColor then
 				local r, g, b ,a = child:GetBackdropColor()
 				if r and r > 0 then
@@ -21,6 +21,5 @@ function Skinner:MakeRocketGoNow()
 			end
 		end
 	end
-	kids = nil
 
 end

@@ -19,15 +19,13 @@ function Skinner:BankItems()
 		self:skinDropDown{obj=BankItems_GuildDropdown}
 		self:skinButton{obj=BankItems_GBFrame_CloseButton, cb=true}
 		self:addSkinFrame{obj=BankItems_GBFrame, kfs=true, y1=-11}
-		local kids = {BankItems_GBFrame:GetChildren()}
-		for _, child in ipairs(kids) do
+		for _, child in pairs{BankItems_GBFrame:GetChildren()} do
 			if not child:IsObjectType("Button") then
 				if math.floor(child:GetWidth()) == 42 and math.ceil(child:GetHeight()) == 50 then
 					self:keepFontStrings(child) -- remove tab texture
 				end
 			end
 		end
-		kids = nil
 		self:Unhook("BankItems_CreateFrames")
 	end)
 	

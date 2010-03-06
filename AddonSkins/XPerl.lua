@@ -1,14 +1,13 @@
-local select = select
 
 local function colourBD(...)
-	
+
 	local frm = select(1, ...)
 	local alpha = select(2, ...)
 	local c = XPerlDB.colour.frame
 	frm:SetBackdropColor(c.r, c.g, c.b, alpha or c.a)
 	local c = XPerlDB.colour.border
 	frm:SetBackdropBorderColor(c.r, c.g, c.b, alpha or c.a)
-	
+
 end
 
 function Skinner:XPerl()
@@ -41,12 +40,12 @@ function Skinner:XPerl_Player()
 	-- Put a border around the class icon
 	local frame = XPerl_PlayerclassFrame
 	self:applySkin(frame)
-	frame:SetWidth(frame:GetWidth() + 7)
-	frame:SetHeight(frame:GetHeight() + 6)
+	self:adjWidth{obj=frame, adj=7}
+	self:adjHeight{obj=frame, adj=6}
 	self:moveObject(frame, "+", 3, "-", 2)
 	local fTex = XPerl_PlayerclassFrametex
-	fTex:SetWidth(fTex:GetWidth() - 1)
-	fTex:SetHeight(fTex:GetHeight() - 2)
+	self:adjWidth{obj=fTex, adj=-1}
+	self:adjHeight{obj=fTex, adj=-2}
 	self:moveObject(fTex, "-", 4, "+", 4)
 
 end
@@ -55,17 +54,16 @@ function Skinner:XPerl_Target()
 
 
 	local function skinClassIcon(frame)
-	
-		frame:SetWidth(frame:GetWidth() - 1)
-		frame:SetHeight(frame:GetHeight() - 2)
-		self:moveObject(frame, nil, nil, "+", 2)
+
+		self:adjWidth{obj=frame, adj=-1}
+		self:adjHeight{obj=frame, adj=-2}
+		self:moveObject{obj=frame, y=2}
 		self:addSkinButton(frame, frame)
-		
+
 	end
 -->>--	Target
 	-- Put a border around the class icon
 	skinClassIcon(XPerl_TargettypeFramePlayer)
-	
 	RaiseFrameLevel(XPerl_TargetnameFrame)
 
 -->>--	Focus
@@ -81,12 +79,12 @@ function Skinner:XPerl_Party()
 		local pfName = "XPerl_party"..i
 		local pfLName = pfName.."levelFrame"
 		local fTex = _G[pfLName.."classTexture"]
-		fTex:SetWidth(fTex:GetWidth() - 1)
-		fTex:SetHeight(fTex:GetHeight() - 2)
+		self:adjWidth{obj=fTex, adj=-1}
+		self:adjHeight{obj=fTex, adj=-2}
 		self:moveObject{obj=fTex, x=-2, y=1}
 		self:addSkinButton(fTex, _G[pfName], _G[pfLName])
 	end
-	
+
 end
 
 function Skinner:XPerl_RaidMonitor()
@@ -103,15 +101,14 @@ function Skinner:XPerl_RaidAdmin()
 	end
 
 	self:skinEditBox(XPerl_AdminFrame_Controls_Edit)
-	self:moveObject(XPerl_AdminFrame_Controls_Edit, "-", 5)
+	self:moveObject{obj=XPerl_AdminFrame_Controls_Edit, x=-5}
 	self:applySkin(XPerl_AdminFrame_Controls_Roster)
 	self:applySkin(XPerl_AdminFrame)
 -->>-- Item Checker Frame
 	self:skinDropDown(XPerl_CheckButtonChannel)
 	self:applySkin(XPerl_Check)
 -->>-- Roster Text Frame
-	self:removeRegions(XPerl_RosterTexttextFramescroll)
-	self:skinScrollBar(XPerl_RosterTexttextFramescroll)
+	self:skinScrollBar{obj=XPerl_RosterTexttextFramescroll}
 	self:applySkin(XPerl_RosterTexttextFrame)
 	self:applySkin(XPerl_RosterText)
 
@@ -127,7 +124,7 @@ function Skinner:XPerl_RaidHelper()
 	XPerl_SetupFrameSimple(XPerl_Frame)
 	XPerl_SetupFrameSimple(XPerl_Assists_Frame)
 	XPerl_SetupFrameSimple(XPerl_Target_AssistFrame)
-	
+
 	self:moveObject{obj=XPerl_Target_AssistFrame, y=1}
 
 	if self.db.profile.Tooltips.skin then
@@ -143,19 +140,19 @@ function Skinner:XPerl_Options()
 	for _, frm in pairs{"Options", "ColourPicker", "Options_TooltipConfig", "Options_TextureSelect", "OptionsQuestionDialog",  "Custom_Config"} do
 		self:RawHook(_G["XPerl_"..frm], "Setup", function() end)
 	end
-	
+
 -->>-- Options Frame
 	colourBD(XPerl_Options)
 
 	self:skinDropDown{obj=XPerl_Options_DropDown_LoadSettings}
-	self:addSkinFrame{obj=XPerl_Options_Area_Align, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Area_Align, x1=-2, y1=4, x2=2, y2=-2}
 	self:skinEditBox{obj=XPerl_Options_Layout_Name, regs={9}}
 	self:addSkinFrame{obj=XPerl_Options_Area_Global, x1=-2, y1=2, x2=2, y2=-2}
 	self:addSkinFrame{obj=XPerl_Options_Layout_List, x1=-2, y1=2, x2=2, y2=-2}
 	self:skinScrollBar{obj=XPerl_Options_Layout_ListScrollBar}
 	self:addSkinFrame{obj=XPerl_Options_Area_Tabs, x1=-2, y1=1, x2=2, y2=-2}
 	-- player alignment
-	XPerl_Options_Player_Gap:SetWidth(XPerl_Options_Player_Gap:GetWidth() - 10)
+	self:adjWidth{obj=XPerl_Options_Player_Gap, adj=-10}
 	self:moveObject{obj=XPerl_Options_Player_Gap, x=-10}
 	self:moveObject{obj=XPerl_Options_Player_BiggerGap, x=4}
 	self:skinEditBox{obj=XPerl_Options_Player_Gap, regs={9}}
@@ -166,60 +163,67 @@ function Skinner:XPerl_Options()
 	self:skinEditBox{obj=XPerl_Options_Party_Gap, regs={9}}
 	-- raid alignment
 	self:skinDropDown{obj=XPerl_Options_Raid_Anchor}
-	XPerl_Options_Raid_Gap:SetWidth(XPerl_Options_Raid_Gap:GetWidth() - 10)
+	self:adjWidth{obj=XPerl_Options_Raid_Gap, adj=-10}
 	self:moveObject{obj=XPerl_Options_Raid_Gap, x=-10}
 	self:moveObject{obj=XPerl_Options_Raid_BiggerGap, x=4}
 	self:skinEditBox{obj=XPerl_Options_Raid_Gap, regs={9}}
 	-- separator line
 	XPerl_Options_Global_Options_RangeFinderSeparator:Hide()
-	
+
 -->>-- Player Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_Player_Options_Buffs, x1=-2, y1=2, x2=2, y2=-2}
-	self:addSkinFrame{obj=XPerl_Options_Player_Options_Totems, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Player_Options_Buffs, x1=-2, y1=2, x2=2}
+	self:addSkinFrame{obj=XPerl_Options_Player_Options_Totems, x1=-2, y1=2, x2=2}
 -->>-- Pet Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_Pet_Options_PetTarget, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Pet_Options_PetTarget, x1=-2, y1=2, x2=2}
 -->>-- Target Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_Target_Options_TargetTarget, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Target_Options_TargetTarget, x1=-2, y1=2, x2=2, y2=-6}
 -->>-- Focus Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_Focus_Options_FocusTarget, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Focus_Options_FocusTarget, x1=-2, y1=2, x2=2}
 -->-- Party Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_Party_Options_PartyPets, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Party_Options_PartyPets, x1=-2, y1=2, x2=2}
 	if XPerl_Party_AnchorVirtual then
-		self:addSkinFrame{obj=XPerl_Party_AnchorVirtual, x1=-2, y1=2, x2=2, y2=-2}
+		self:addSkinFrame{obj=XPerl_Party_AnchorVirtual, x1=-2, y1=2, x2=2}
 	end
 -->>-- Raid Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_Raid_Options_Groups, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Raid_Options_Groups, x1=-2, y1=2, x2=2}
 	if XPerl_Raid_Title1 then
 		for i = 1, 10 do
 			self:addSkinFrame{obj=_G["XPerl_Raid_Title"..i.."Virtual"]}
 		end
 	end
-	self:addSkinFrame{obj=XPerl_Options_Raid_Options_Custom, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Raid_Options_Custom, x1=-2, y1=2, x2=2}
 -->>-- Custom Raid Highlights Config
 	self:skinEditBox{obj=XPerl_Custom_ConfigNew_Zone, regs={9}}
 	self:skinEditBox{obj=XPerl_Custom_ConfigNew_Search, regs={9}}
-	self:addSkinFrame{obj=XPerl_Custom_ConfigzoneList}
-	self:addSkinFrame{obj=XPerl_Custom_Configdebuffs}
-	self:glazeStatusBar(XPerl_Custom_ConfigiconCollect)
-	self:addSkinFrame{obj=XPerl_Custom_Config}
+	self:addSkinFrame{obj=XPerl_Custom_ConfigzoneList, y1=2, y2=-3}
+	self:skinScrollBar{obj=XPerl_Custom_ConfigdebuffsscrollBar}
+	self:addSkinFrame{obj=XPerl_Custom_Configdebuffs, y1=2, y2=-3}
+--	self:glazeStatusBar(XPerl_Custom_ConfigiconCollect)
+	self:addSkinFrame{obj=XPerl_Custom_Config, y1=-1}
+	self:skinAllButtons{obj=XPerl_Custom_Config, ty=0}
 -->>-- All Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_All_Options_AddOns, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_All_Options_AddOns, x1=-2, y1=2, x2=2}
 -->>-- Colours Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_Colour_Options_BarColours, x1=-2, y1=2, x2=2, y2=-2}
-	self:addSkinFrame{obj=XPerl_Options_Colour_Options_UnitReactions, x1=-2, y1=2, x2=2, y2=-2}
-	self:addSkinFrame{obj=XPerl_Options_Colour_Options_Appearance, x1=-2, y1=2, x2=2, y2=-2}
-	self:addSkinFrame{obj=XPerl_Options_Colour_Options_FrameColours, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Colour_Options_BarColours, x1=-2, y1=2, x2=2}
+	self:addSkinFrame{obj=XPerl_Options_Colour_Options_UnitReactions, x1=-2, y1=2, x2=2}
+	self:addSkinFrame{obj=XPerl_Options_Colour_Options_Appearance, x1=-2, y1=2, x2=2}
+	self:addSkinFrame{obj=XPerl_Options_Colour_Options_FrameColours, x1=-2, y1=2, x2=2}
 -->>-- Helper Options subpanel
-	self:addSkinFrame{obj=XPerl_Options_Helper_Options_Assists, x1=-2, y1=2, x2=2, y2=-2}
+	self:addSkinFrame{obj=XPerl_Options_Helper_Options_Assists, x1=-2, y1=2, x2=2}
 
 -->>-- Colour Picker Frame
 	self:addSkinFrame{obj=XPerl_ColourPicker}
+	self:skinAllButtons{obj=XPerl_ColourPicker, ty=0}
 -->>--	Texture Select Frame
 	self:skinScrollBar{obj=XPerl_Options_TextureSelectscrollBar}
 	self:addSkinFrame{obj=XPerl_Options_TextureSelect}
+	self:skinAllButtons{obj=XPerl_Options_TextureSelect, ty=0}
 -->>--	Options Question Dialog
 	self:addSkinFrame{obj=XPerl_OptionsQuestionDialog}
+	self:skinAllButtons{obj=XPerl_OptionsQuestionDialog, ty=0}
 -->>-- Tooltip Config
 	self:addSkinFrame{obj=XPerl_Options_TooltipConfig}
+	-- skin buttons
+	self:skinAllButtons{obj=XPerl_Options, ty=0}
 
 end

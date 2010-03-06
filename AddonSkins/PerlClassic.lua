@@ -1,4 +1,3 @@
-local tinsert = table.insert
 
 local barSuffixes = {"", "FadeBar", "BG"}
 local hmSuffixes = {"Health", "Mana"}
@@ -169,7 +168,7 @@ function Skinner:Perl_Party_Pet()
 		self:SecureHook("Perl_Party_Pet_Buff_UpdateAll", function(unit)
 --			self:Debug("Perl_Party_Pet_Buff_UpdateAll: [%s]", unit)
 			local id = string.sub(unit, 9, 9)
-			for _, f in pairs(partypet) do
+			for _, f in pairs(partypetframes) do
 				changeBBC(_G["Perl_Party_Pet"..id.."_"..f.."Frame"])
 			end
 		end)
@@ -423,22 +422,28 @@ function Skinner:Perl_Config_Options()
 
 --Config
 	Perl_Config_Header:Hide()
-	self:moveObject(Perl_Config_Header, nil, nil, "-", 6)
+	self:moveObject{obj=Perl_Config_Header, y=-6}
 	Perl_Config_NotInstalled_Header:Hide()
 	Perl_Config_All_Header:Hide()
 	self:keepFontStrings(Perl_Config_All_Frame_DropDown1)
+	self:skinAllButtons{obj=Perl_Config_All_Frame}
 	Perl_Config_ArcaneBar_Header:Hide()
 	Perl_Config_CombatDisplay_Header:Hide()
+	self:skinAllButtons{obj=Perl_Config_CombatDisplay_Frame}
 	Perl_Config_Focus_Header:Hide()
 	Perl_Config_Party_Header:Hide()
 	Perl_Config_Party_Pet_Header:Hide()
+	self:skinAllButtons{obj=Perl_Config_Party_Pet_Frame}
 	Perl_Config_Party_Target_Header:Hide()
+	self:skinAllButtons{obj=Perl_Config_Party_Target_Frame, x1=-2, x2=2}
 	Perl_Config_Player_Header:Hide()
 	Perl_Config_Player_Buff_Header:Hide()
 	Perl_Config_Player_Pet_Header:Hide()
+	self:skinAllButtons{obj=Perl_Config_Player_Pet_Frame, x1=-2, x2=2}
 	Perl_Config_Target_Header:Hide()
 	Perl_Config_Target_Target_Header:Hide()
-
+	self:skinAllButtons{obj=Perl_Config_Target_Target_Frame}
+	self:skinAllButtons{obj=Perl_Config_Frame}
 	self:applySkin(Perl_Config_Frame)
 
 end

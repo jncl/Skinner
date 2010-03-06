@@ -1,4 +1,3 @@
-local floor = math.floor
 
 function Skinner:QuestGuru()
 	if not self.db.profile.QuestLog then return end
@@ -7,35 +6,38 @@ function Skinner:QuestGuru()
 	if IsAddOnLoaded("LightHeaded") then
 		self:moveObject{obj=LightHeadedFrame, x=-55}
 		self:RawHook(LightHeadedFrame, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
-			self:Debug("LHF_SP: [%s, %s, %s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs, relTo == QuestGuru_QuestLogFrame, floor(xOfs) > -16)
-			if relTo == QuestGuru_QuestLogFrame and floor(xOfs) > -56 then xOfs = -55 end
+			self:Debug("LHF_SP: [%s, %s, %s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs, relTo == QuestGuru_QuestLogFrame, math.floor(xOfs) > -16)
+			if relTo == QuestGuru_QuestLogFrame and math.floor(xOfs) > -56 then xOfs = -55 end
 			self.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, yOfs)
 		end, true)
 	end
 
 	local function colourText(type)
-
-		_G["QuestGuru_Quest"..type.."StartLabel"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."StartPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."StartNPCName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."FinishLabel"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."FinishPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."FinishNPCName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."FinishPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."QuestTitle"]:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G["QuestGuru_Quest"..type.."DescriptionTitle"]:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G["QuestGuru_Quest"..type.."RewardTitleText"]:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G["QuestGuru_Quest"..type.."PlayerTitleText"]:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G["QuestGuru_Quest"..type.."ObjectivesText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."TimerText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."RequiredMoneyText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."SuggestedGroupNum"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."QuestDescription"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."ItemChooseText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."ItemReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."SpellLearnText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."HonorFrameReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G["QuestGuru_Quest"..type.."TalentFrameReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+	
+		local prefix = "QuestGuru_Quest"..type
+		-- headers
+		_G[prefix.."QuestTitle"]:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G[prefix.."DescriptionTitle"]:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G[prefix.."RewardTitleText"]:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G[prefix.."PlayerTitleText"]:SetTextColor(self.HTr, self.HTg, self.HTb)
+		-- others
+		_G[prefix.."StartLabel"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."StartPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."StartNPCName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."FinishLabel"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."FinishPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."FinishNPCName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."FinishPos"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."ObjectivesText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."TimerText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."RequiredMoneyText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."SuggestedGroupNum"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."QuestDescription"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."ItemChooseText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."ItemReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."SpellLearnText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."HonorFrameReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."TalentFrameReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- XP text
 		if type == "Log" then
 			QuestGuru_QuestLogXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -141,10 +143,10 @@ function Skinner:QuestGuru()
 		self:skinSlider(QGT_AchievementWatchFrameSlider)
 		-- glaze Achievement StatusBars
 		for i = 1, 40 do
-			local sBar = _G["QGT_AchievementWatchLine"..i].statusBar
-			if not self.sbGlazed[sBar] then
-				self:removeRegions(sBar, {3, 4, 5}) -- remove textures
-				self:glazeStatusBar(sBar, 0)
+			local sBar = "QGT_AchievementWatchLine"..i.."StatusBar"
+			if not self.sbGlazed[_G[sBar]] then
+				self:removeRegions(_G[sBar], {3, 4, 5}) -- remove textures
+				self:glazeStatusBar(_G[sBar], 0, _G[sBar.."BG"])
 			end
 		end
 		-- Tooltips

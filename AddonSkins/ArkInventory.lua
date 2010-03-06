@@ -5,16 +5,15 @@ function Skinner:ArkInventory()
 	-- stop frames being painted
 	ArkInventory.Frame_Main_Paint = function() end
 
-	local aiFrames = {"Title", "Search", "Container", "Changer", "Status"}
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
 --		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
 		local af = frame:GetName()
 		if not self.skinned[frame] then
-			for _, v in ipairs(aiFrames) do
+			for _, v in pairs{"Title", "Search", "Container", "Changer", "Status"} do
 				y1 = v == "Container" and -1 or 0
 				self:addSkinFrame{obj=_G[af..v], kfs=true, y1=y1}
 				if v == "Title" then
-					self:skinButton{obj=_G[af..v.."Close"], cb2=true, tx=-1, x1=-2, y1=2, x2=2, y2=-2}
+					self:skinButton{obj=_G[af..v.."Close"], cb2=true, x1=-2, y1=2, x2=2, y2=-2}
 				end
 			end
 			self:skinEditBox(_G[af.."SearchFilter"], {9})

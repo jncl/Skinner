@@ -26,9 +26,10 @@ function Skinner:TipTacOptions()
 	local function skinCatPg()
 
 		-- skin DropDowns & EditBoxes
-		local kids = {TipTacOptions:GetChildren()}
-		for _, child in ipairs(kids) do
-			if child.InitSelectedItem and not Skinner.skinned[child] then
+		for _, child in pairs{TipTacOptions:GetChildren()} do
+			if child.InitSelectedItem
+			and not Skinner.skinned[child]
+			then
 				child:SetBackdrop(nil)
 				-- add a texture, if required
 				if Skinner.db.profile.TexturedDD then
@@ -44,13 +45,12 @@ function Skinner:TipTacOptions()
 				Skinner:skinEditBox{obj=child, regs={child.text and 15 or nil}, noWidth=true}
 			end
 		end
-		kids = nil
 		
 	end
 
 	-- hook this to skin new objects
 	self:SecureHook(TipTacOptions, "BuildCategoryPage", function()
-		self:Debug("TTO_BCP")
+--		self:Debug("TTO_BCP")
 		skinCatPg()
 	end)
 

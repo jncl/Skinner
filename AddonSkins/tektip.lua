@@ -1,4 +1,3 @@
-local ipairs = ipairs
 
 function Skinner:tektip()
 
@@ -6,10 +5,12 @@ function Skinner:tektip()
 	
 	local function skinTT(ttip)
 	
-		Skinner:SecureHookScript(ttip, "OnShow", function(this)
-			Skinner:skinTooltip(ttip)
-		end)
-		if Skinner.db.profile.Tooltips.style == 3 then ttip:SetBackdrop(Skinner.backdrop) end
+		if Skinner.db.profile.Tooltips.skin then
+			if Skinner.db.profile.Tooltips.style == 3 then ttip:SetBackdrop(Skinner.Backdrop[1]) end
+			Skinner:SecureHookScript(ttip, "OnShow", function(this)
+				Skinner:skinTooltip(this)
+			end)
+		end
 		
 	end
 
@@ -21,10 +22,13 @@ function Skinner:tektip()
 	end, true)
 	
 	-- skin existing tooltips
-	local kids = {UIParent:GetChildren()}
-	for _, child in ipairs(kids) do
-		if child:GetFrameStrata() == "TOOLTIP" and child.AddLine and child.Clear then skinTT(child) end
+	for _, child in pairs{UIParent:GetChildren()} do
+		if child:GetFrameStrata() == "TOOLTIP"
+		and child.AddLine
+		and child.Clear
+		then
+			skinTT(child)
+		end
 	end
-	kids = nil
 
 end

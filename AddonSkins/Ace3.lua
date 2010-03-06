@@ -15,11 +15,13 @@ function Skinner:Ace3()
 				self:applySkin(obj.frame)
 			elseif objType == "DropdownGroup"
 			or objType == "InlineGroup"
-			or objType == "TabGroup" then
+			or objType == "TabGroup"
+			then
 				self:keepFontStrings(obj.border)
 				self:applySkin(obj.border)
 			elseif objType == "EditBox"
-			or objType == "NumberEditBox" then
+			or objType == "NumberEditBox"
+			then
 				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
 				self:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
 					return left + 6, right, top, bottom
@@ -31,14 +33,12 @@ function Skinner:Ace3()
 				end
 			elseif objType == "MultiLineEditBox" then
 				self:applySkin(obj.backdrop)
-				local kids = {obj.backdrop:GetChildren()}
-				for _, child in ipairs(kids) do -- find scroll bar
+				for _, child in pairs{obj.backdrop:GetChildren()} do -- find scroll bar
 					if child:IsObjectType("ScrollFrame") then
 						self:skinScrollBar{obj=child}
 						break
 					end
 				end
-				kids = nil
 				self:skinButton{obj=obj.button, as=true}
 			elseif objType == "Slider" then
 				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
@@ -104,15 +104,13 @@ function Skinner:Ace3()
 
 			-- ListBox object (AuctionLite)
 			elseif objType == "ListBox" then
-				local kids = {obj.box:GetChildren()}
-				for _, child in ipairs(kids) do -- find scroll bar
+				for _, child in pairs{obj.box:GetChildren()} do -- find scroll bar
 					if child:IsObjectType("ScrollFrame") then
 						child:SetBackdrop(nil)
 						self:skinScrollBar{obj=child}
 						break
 					end
 				end
-				kids = nil
 				self:applySkin{obj=obj.box, kfs=true}
 			-- ignore these types for now
 			elseif objType == "CheckBox"
