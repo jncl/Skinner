@@ -36,11 +36,10 @@ function Skinner:Tooltips()
 
 	end
 
-	local gtH
 	-- Hook this to deal with GameTooltip FadeHeight issues
 	self:HookScript(GameTooltipStatusBar, "OnHide", function(this)
 		if GameTooltip:IsShown() then
-			gtH = ceil(GameTooltip:GetHeight())
+			local gtH = ceil(GameTooltip:GetHeight())
 			if not GTSBevt then
 				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.1, gtH)
 			end
@@ -48,9 +47,8 @@ function Skinner:Tooltips()
 	end)
 
 	-- MUST hook to OnShow script rather than the Show method otherwise not every tooltip is skinned properly everytime
-	local ttip
 	for _, tooltip in pairs(self.ttList) do
-		ttip = _G[tooltip]
+		local ttip = _G[tooltip]
 		self:HookScript(ttip, "OnShow", function(this)
 			self:skinTooltip(this)
 			if this == GameTooltip and self.db.profile.Tooltips.glazesb then
@@ -62,6 +60,19 @@ function Skinner:Tooltips()
 
 	self:skinButton{obj=ItemRefCloseButton, cb=true}
 
+	-- Hook this to skin the GameTooltip StatusBars
+	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
+		if GameTooltipStatusBar1 then
+			self:removeRegions(GameTooltipStatusBar1, {2})
+			self:glazeStatusBar(GameTooltipStatusBar1, 0)
+		end
+		if GameTooltipStatusBar2 then
+			self:removeRegions(GameTooltipStatusBar2, {2})
+			self:glazeStatusBar(GameTooltipStatusBar2, 0)
+			self:Unhook("GameTooltip_ShowStatusBar")
+		end
+	end)
+
 end
 
 function Skinner:MirrorTimers()
@@ -69,14 +80,19 @@ function Skinner:MirrorTimers()
 	self.initialized.MirrorTimers = true
 
 	for i = 1, MIRRORTIMER_NUMTIMERS do
-		local mTimer = _G["MirrorTimer"..i]
-		local mTimerText = _G["MirrorTimer"..i.."Text"]
-		local mTimerSB = _G["MirrorTimer"..i.."StatusBar"]
-		self:keepFontStrings(mTimer)
-		mTimer:SetHeight(mTimer:GetHeight() * 1.2)
-		mTimerSB:SetWidth(mTimerSB:GetWidth() * 0.7)
+		local bar = "MirrorTimer"..i
+		local mTimer = _G[bar]
+		local mTimerText = _G[bar.."Text"]
+		local mTimerBG = self:getRegion(mTimer, 1)
+		local mTimerSB = _G[bar.."StatusBar"]
+		self:removeRegions(mTimer, {3})
+		mTimer:SetHeight(mTimer:GetHeight() * 1.25)
 		self:moveObject{obj=mTimerText, y=-2}
-		if self.db.profile.MirrorTimers.glaze then self:glazeStatusBar(mTimerSB, 0) end
+		mTimerBG:SetWidth(mTimerBG:GetWidth() * 0.75)
+		mTimerSB:SetWidth(mTimerSB:GetWidth() * 0.75)
+		if self.db.profile.MirrorTimers.glaze then
+			self:glazeStatusBar(mTimerSB, 0, mTimerBG)
+		end
 	end
 
 end
@@ -100,19 +116,13 @@ function Skinner:CastingBar()
 	for _, prefix in pairs{"", "Pet"} do
 
 		local cbfName = prefix.."CastingBarFrame"
-		local cbfObj = _G[cbfName]
-		local cbff = _G[cbfName.."Flash"]
-
-		_G[cbfName.."Border"]:SetTexture(nil)
-		_G[cbfName.."BorderShield"]:SetTexture(nil)
-		-- adjust size/placement of the associated textures
-		cbff:SetWidth(cbfObj:GetWidth())
-		cbff:SetHeight(cbfObj:GetHeight())
-		cbff:SetTexture(self.sbTexture)
-		self:moveObject{obj=cbff, y=-28} -- otherwise it's above the casting bar
-		self:moveObject{obj=_G[cbfName.."Text"], y=-3}
-
-		if self.db.profile.CastingBar.glaze then self:glazeStatusBar(cbfObj, 0) end
+		_G[cbfName.."Border"]:SetAlpha(0)
+		self:changeShield(_G[cbfName.."BorderShield"], _G[cbfName.."Icon"])
+		_G[cbfName.."Flash"]:SetAllPoints()
+		self:moveObject{obj=_G[cbfName.."Text"], y=-2}
+		if self.db.profile.CastingBar.glaze	then
+			self:glazeStatusBar(_G[cbfName], 0, self:getRegion(_G[cbfName], 1), {_G[cbfName.."Flash"]})
+		end
 
 	end
 
@@ -200,27 +210,32 @@ function Skinner:ChatFrames()
 		if frame and frame.tfade then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -ceil(frame:GetHeight())) end
 	end)
 
-	local clqbf_c = CombatLogQuickButtonFrame_Custom
-	local xOfs1, yOfs1, xOfs2, yOfs2 = -4, nil, 4, -8
+	local clqbf = "CombatLogQuickButtonFrame"
+	local clqbf_c = clqbf.."_Custom"
+	local yOfs1 = 4
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame"..i]
-		if SIMPLE_CHAT ~= "1" and CHAT_LOCKED ~= "1" and cf:GetName() == "ChatFrame2" and clqbf_c:IsShown() then
+		if i == 2
+		and SIMPLE_CHAT ~= "1"
+		and CHAT_LOCKED ~= "1"
+		and _G[clqbf_c]:IsShown()
+		then
 			yOfs1 = 31
 		else
 			yOfs1 = 4
 		end
-		self:addSkinFrame{obj=cf, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		self:addSkinFrame{obj=cf, ft=ftype, x1=-4, y1=yOfs1, x2=4, y2=-8}
 	end
 
 	-- CombatLog Quick Button Frame & Progress Bar
 	if SIMPLE_CHAT ~= "1" and CHAT_LOCKED ~= "1" and self.db.profile.CombatLogQBF then
-		if clqbf_c then
-			self:keepFontStrings(clqbf_c)
-			self:addSkinFrame{obj=clqbf_c, ft=ftype}
-			clqbf_c:SetHeight(clqbf_c:GetHeight() + 4)
-			self:glazeStatusBar(CombatLogQuickButtonFrame_CustomProgressBar, 0)
+		if _G[clqbf_c] then
+			self:keepFontStrings(_G[clqbf_c])
+			self:addSkinFrame{obj=_G[clqbf_c], ft=ftype}
+			self:adjHeight{obj=_G[clqbf_c], adj=4}
+			self:glazeStatusBar(_G[clqbf_c.."ProgressBar"], 0, _G[clqbf_c.."Texture"])
 		else
-			self:glazeStatusBar(CombatLogQuickButtonFrameProgressBar, 0)
+			self:glazeStatusBar(_G[clqbf.."ProgressBar"], 0, _G[clqbf.."Texture"])
 		end
 	end
 
@@ -402,7 +417,7 @@ function Skinner:GroupLoot()
 			_G[glf.."GreedButton"]:SetPoint("RIGHT", _G[glf.."RollButton"], "LEFT", 0, 0)
 			_G[glf.."DisenchantButton"]:ClearAllPoints()
 			_G[glf.."DisenchantButton"]:SetPoint("RIGHT", _G[glf.."GreedButton"], "LEFT", 0, 0)
-			_G[glf.."Timer"]:SetWidth(_G[glf.."Timer"]:GetWidth() - 28)
+			self:adjWidth{obj=_G[glf.."Timer"], adj=-28}
 			self:moveObject{obj=_G[glf.."Timer"], x=-3}
 			self:addSkinFrame{obj=glfo, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
 
@@ -507,11 +522,9 @@ function Skinner:WorldMap()
 		-- handle size change
 		self:SecureHook("WorldMap_ToggleSizeUp", function()
 			sizeUp()
-			self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=-1, y=-1}
 		end)
 		self:SecureHook("WorldMap_ToggleSizeDown", function()
 			sizeDown()
-			self:moveButtonText{obj=WorldMapFrameCloseButton:GetFontString(), x=1, y=1}
 		end)
 		self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
 			if WorldMapFrame.sizedDown
@@ -547,9 +560,9 @@ function Skinner:WorldMap()
 	if WorldMapFrame.sizedDown
 	or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
 	then
-		self:skinButton{obj=WorldMapFrameCloseButton, cb=true, tx=0}
+		self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
 	else
-		self:skinButton{obj=WorldMapFrameCloseButton, cb=true, ty=-1}
+		self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
 	end
 	self:skinScrollBar{obj=WorldMapQuestScrollFrame}
 	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
@@ -607,7 +620,7 @@ function Skinner:HelpFrame()
 
 -->>--	Help Frame
 	self:moveObject{obj=hfTitle, y=-8}
-	self:skinButton{obj=HelpFrameCloseButton, cb=true, tx=0}
+	self:skinButton{obj=HelpFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
 
 -->>--	KnowledgeBase Frame
@@ -708,8 +721,6 @@ function Skinner:InspectUI()
 
 	-- Inspect Model Frame
 	self:keepRegions(InspectPaperDollFrame, {5, 6, 7}) -- N.B. regions 5-7 are text
-	InspectModelRotateLeftButton:Hide()
-	InspectModelRotateRightButton:Hide()
 	self:makeMFRotatable(InspectModelFrame)
 
 -->>--	PVP Frame

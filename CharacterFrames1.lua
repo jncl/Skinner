@@ -15,7 +15,7 @@ end
 
 function Skinner:CharacterFrame()
 
-	self:skinButton{obj=CharacterFrameCloseButton, cb=true, tx=0}
+	self:skinButton{obj=CharacterFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
 
 --	CharacterFrameTab1-5
@@ -40,8 +40,6 @@ function Skinner:PaperDollFrame()
 	self:skinDropDown{obj=PlayerTitleFrame}
 	self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
 	self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}
-	CharacterModelFrameRotateLeftButton:Hide()
-	CharacterModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(CharacterModelFrame)
 	self:keepFontStrings(CharacterAttributesFrame)
 	self:skinDropDown{obj=PlayerStatFrameLeftDropDown, moveTex=true}
@@ -61,23 +59,19 @@ end
 
 function Skinner:PetPaperDollFrame()
 
-	self:skinAllButtons{obj=PetPaperDollFrame}
 	self:keepFontStrings(PetPaperDollFrame)
+	self:skinAllButtons{obj=PetPaperDollFrame}
 
 -->>-- Pet Frame
 	self:keepFontStrings(PetAttributesFrame)
-	self:keepRegions(PetPaperDollFrameExpBar, {3, 4}) -- N.B. region 3 is text
+	self:removeRegions(PetPaperDollFrameExpBar, {1, 2})
 	self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
-	PetModelFrameRotateLeftButton:Hide()
-	PetModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(PetModelFrame)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetPaperDollPetInfo)
 
 -->>-- Companion Frame
 	self:keepFontStrings(PetPaperDollFrameCompanionFrame)
-	CompanionModelFrameRotateLeftButton:Hide()
-	CompanionModelFrameRotateRightButton:Hide()
 	self:makeMFRotatable(CompanionModelFrame)
 
 -->>-- Tabs
@@ -101,7 +95,7 @@ function Skinner:ReputationFrame()
 
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		local bar = "ReputationBar"..i
-		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
+		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true} -- treat as just a texture
 		_G[bar.."Background"]:SetAlpha(0)
 		_G[bar.."ReputationBarLeftTexture"]:SetAlpha(0)
 		_G[bar.."ReputationBarRightTexture"]:SetAlpha(0)
@@ -127,21 +121,23 @@ function Skinner:SkillFrame()
 	end
 
 	self:keepFontStrings(SkillFrame)
+	self:skinAllButtons{obj=SkillFrame}
 	self:removeRegions(SkillFrameExpandButtonFrame)
-	self:skinButton{obj=SkillFrameCancelButton}
 	self:skinScrollBar{obj=SkillListScrollFrame}
-	self:skinButton{obj=SkillFrameCollapseAllButton, mp=true}
-
+	-- m/p buttons
 	for i = 1, SKILLS_TO_DISPLAY do
-		self:keepRegions(_G["SkillRankFrame"..i.."Border"], {2}) -- N.B. region 2 is highlight
-		self:glazeStatusBar(_G["SkillRankFrame"..i], 0)
+		local bar = "SkillRankFrame"..i
+		_G[bar.."BorderNormal"]:SetAlpha(0)
+		self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
 		self:skinButton{obj=_G["SkillTypeLabel"..i], mp=true}
 	end
+	self:skinButton{obj=SkillFrameCollapseAllButton, mp=true}
 
+	-- detail frame
 	self:skinScrollBar{obj=SkillDetailScrollFrame}
-	self:keepFontStrings(SkillDetailStatusBar)
-	SkillDetailStatusBarBackground:SetTexture(self.sbTexture)
-	self:glazeStatusBar(SkillDetailStatusBar, 0)
+	local bar = "SkillDetailStatusBar"
+	_G[bar.."Border"]:SetAlpha(0)
+	self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
 
 end
 
@@ -159,6 +155,7 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 	end
 
 	self:keepFontStrings(TokenFrame)
+	self:skinAllButtons{obj=TokenFrame}
 	-- hide the close button
 	self:getChild(TokenFrame, 4):Hide()
 	self:skinScrollBar{obj=TokenFrameContainer}
@@ -168,7 +165,6 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 		TokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
 		TokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
 	end
-	self:skinButton{obj=TokenFrameCancelButton}
 	-- ? close button
 
 -->>-- Popup Frame
@@ -226,13 +222,10 @@ function Skinner:PetStableFrame()
 	if not self.db.profile.PetStableFrame or self.initialized.PetStableFrame then return end
 	self.initialized.PetStableFrame = true
 
-	PetStableModelRotateLeftButton:Hide()
-	PetStableModelRotateRightButton:Hide()
 	self:makeMFRotatable(PetStableModel)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetStablePetInfo)
-	self:skinButton{obj=PetStableFrameCloseButton, cb=true}
-	self:skinButton{obj=PetStablePurchaseButton}
+	self:skinAllButtons{obj=PetStableFrame}
 	self:addSkinFrame{obj=PetStableFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 end
@@ -264,7 +257,7 @@ function Skinner:SpellBookFrame()
 		end)
 	end
 
-	self:skinButton{obj=SpellBookCloseButton, cb=true}
+	self:skinAllButtons{obj=SpellBookFrame}
 	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=70}
 	-- colour the spell name text
 	for i = 1, SPELLS_PER_PAGE do
@@ -323,15 +316,12 @@ function Skinner:TalentUI()
 	end)
 
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
-	self:skinButton{obj=PlayerTalentFrameCloseButton, cb=true}
-	self:skinButton{obj=PlayerTalentFrameActivateButton}
+	self:skinAllButtons{obj=PlayerTalentFrame}
 	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6}) -- other regions are background textures
 	self:skinScrollBar{obj=PlayerTalentFrameScrollFrame, noRR=true}
 	self:keepFontStrings(PlayerTalentFrameStatusFrame)
 	self:keepFontStrings(PlayerTalentFramePointsBar)
 	self:keepFontStrings(PlayerTalentFramePreviewBar)
-	self:skinButton{obj=PlayerTalentFrameResetButton}
-	self:skinButton{obj=PlayerTalentFrameLearnButton}
 	self:keepFontStrings(PlayerTalentFramePreviewBarFiller)
 	self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, x1=10, y1=-12, x2=-31, y2=71}
 
@@ -362,12 +352,8 @@ function Skinner:DressUpFrame()
 	self.initialized.DressUpFrame = true
 
 	self:removeRegions(DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
-	DressUpModelRotateLeftButton:Hide()
-	DressUpModelRotateRightButton:Hide()
 	self:makeMFRotatable(DressUpModel)
-	self:skinButton{obj=DressUpFrameCloseButton, cb=true}
-	self:skinButton{obj=DressUpFrameCancelButton}
-	self:skinButton{obj=DressUpFrameResetButton}
+	self:skinAllButtons{obj=DressUpFrame}
 	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
 end
@@ -383,7 +369,7 @@ function Skinner:AchievementUI()
 		_G[statusBar.."Left"]:SetAlpha(0)
 		_G[statusBar.."Right"]:SetAlpha(0)
 		_G[statusBar.."Middle"]:SetAlpha(0)
-		Skinner:glazeStatusBar(_G[statusBar], 0)
+		self:glazeStatusBar(_G[statusBar], 0, _G[statusBar.."FillBar"])
 
 	end
 
@@ -400,17 +386,13 @@ function Skinner:AchievementUI()
 
 	end
 
-	local function glazeProgressBar(pBar, pBaro)
+	local function glazeProgressBar(pBar)
 
 		if not Skinner.sbGlazed[pBaro] then
-			local pBarBG = Skinner:getRegion(pBaro, 1)
-			pBarBG:SetTexture(Skinner.sbTexture)
-			pBarBG:SetVertexColor(unpack(Skinner.sbColour))
 			_G[pBar.."BorderLeft"]:SetAlpha(0)
 			_G[pBar.."BorderRight"]:SetAlpha(0)
 			_G[pBar.."BorderCenter"]:SetAlpha(0)
-			Skinner:glazeStatusBar(pBaro)
-			pBaro.bg = pBarBG -- store this so it will get retextured as required
+			Skinner:glazeStatusBar(_G[pBar], 0, _G[pBar.."BG"])
 		end
 
 	end
@@ -439,19 +421,6 @@ function Skinner:AchievementUI()
 	end
 
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
-
-	-- Hook this to skin the GameTooltip StatusBars
-	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
-		if GameTooltipStatusBar1 then
-			self:removeRegions(GameTooltipStatusBar1, {2})
-			self:glazeStatusBar(GameTooltipStatusBar1, 0)
-		end
-		if GameTooltipStatusBar2 then
-			self:removeRegions(GameTooltipStatusBar2, {2})
-			self:glazeStatusBar(GameTooltipStatusBar2, 0)
-			self:Unhook("GameTooltip_ShowStatusBar")
-		end
-	end)
 
 	self:moveObject{obj=AchievementFrameFilterDropDown, y=-10}
 	if self.db.profile.TexturedDD then
@@ -487,14 +456,13 @@ function Skinner:AchievementUI()
 	-- glaze any existing progress bars
 	for i = 1, 10 do
 		local pBar = "AchievementFrameProgressBar"..i
-		local pBaro = _G[pBar]
-		if pBaro then glazeProgressBar(pBar, pBaro) end
+		if _G[pBar] then glazeProgressBar(pBar) end
 	end
 
 	-- hook this to skin StatusBars used by the Objectives mini panels
 	self:RawHook("AchievementButton_GetProgressBar", function(index)
 		local pBaro = self.hooks["AchievementButton_GetProgressBar"](index)
-		glazeProgressBar(pBaro:GetName(), pBaro)
+		glazeProgressBar(pBaro:GetName())
 		return pBaro
 	end, true)
 

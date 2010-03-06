@@ -34,19 +34,11 @@ if IsMacClient() then
 		if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
 		self.initialized.MovieProgress = true
 
-		if not MovieProgressFrame:IsShown() then
-			self:SecureHook(MovieProgressFrame, "Show", function(this)
-				self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
-				self:keepFontStrings(MovieProgressFrame)
-				self:glazeStatusBar(MovieProgressBar, 0)
-				self:Unhook(MovieProgressFrame, "Show")
-			end)
-		else
-			self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
-			self:keepFontStrings(MovieProgressFrame)
-			self:glazeStatusBar(MovieProgressBar, 0)
-		end
+		self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
+		self:removeRegions(MovieProgressFrame)
+		self:glazeStatusBar(MovieProgressBar, 0, self:getRegion(MovieProgressBar, 1))
 		self:skinButton{obj=MovieRecordingCancelButton, cb=true}
+		self:addSkinFrame{obj=MovieProgressFrame, ft=ftype, x1=-6, y1=6, x2=6, y2=-6}
 
 	end
 end
@@ -92,7 +84,8 @@ function Skinner:Calendar()
 	self:moveObject{obj=CalendarFilterFrameText, x=-8}
 	-- move close button
 	self:moveObject{obj=CalendarCloseButton, y=14}
-	self:skinButton{obj=CalendarCloseButton, cb=true, y2=8}
+	self:skinButton{obj=CalendarCloseButton, cb=true}
+	self:adjHeight{obj=CalendarCloseButton, adj=-2}
 	self:addSkinFrame{obj=CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=2, y2=-7}
 
 -->>-- View Holiday Frame
@@ -261,7 +254,7 @@ function Skinner:MenuFrames()
 	self:skinButton{obj=RecordLoopbackSoundButton, x1=-2, x2=2}
 	self:skinButton{obj=PlayLoopbackSoundButton, x1=-2, x2=2}
 	self:addSkinFrame{obj=LoopbackVUMeter:GetParent(), ft=ftype, aso={ng=true}}
-	self:glazeStatusBar(LoopbackVUMeter)
+	self:glazeStatusBar(LoopbackVUMeter) -- no background required
 	self:addSkinFrame{obj=AudioOptionsVoicePanelBinding, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsVoicePanelChatModeDropDown}
 	self:skinButton{obj=AudioOptionsVoicePanelChatMode1KeyBindingButton}
@@ -284,13 +277,13 @@ function Skinner:MenuFrames()
 		self:skinDropDown{obj=MacOptionsFrameResolutionDropDown}
 		self:skinDropDown{obj=MacOptionsFrameFramerateDropDown}
 		self:skinDropDown{obj=MacOptionsFrameCodecDropDown}
+		-- popup frames
 		self:addSkinFrame{obj=MacOptionsITunesRemote, ft=ftype, y1=-2}
+		self:skinAllButtons{obj=MacOptionsCompressFrame}
 		self:addSkinFrame{obj=MacOptionsCompressFrame, ft=ftype, kfs=true, hdr=true}
+		self:skinAllButtons{obj=MacOptionsCancelFrame}
 		self:addSkinFrame{obj=MacOptionsCancelFrame, ft=ftype, kfs=true, hdr=true}
 		self:addSkinFrame{obj=FolderPicker, ft=ftype, kfs=true, hdr=true}
-		-- Movie Progres Frame
-		self:glazeStatusBar(MovieProgressBar, 0)
-		self:addSkinFrame{obj=MovieProgressFrame, ft=ftype}
 	end
 
 -->>-- Interface
@@ -307,7 +300,7 @@ function Skinner:MenuFrames()
 	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ft=ftype}
 	-- skin toggle buttons
 	for i = 1, #InterfaceOptionsFrameAddOns.buttons do
-		self:skinButton{obj=InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true, ty=0}
+		self:skinButton{obj=InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true}
 	end
 
 -->>-- Rating Menu
@@ -343,7 +336,6 @@ function Skinner:MenuFrames()
 				checkKids(child)
 			end
 		end
-		kids = nil
 
 	end
 	-- Hook these to skin any Interface Option panels and their elements
@@ -546,7 +538,7 @@ function Skinner:AuctionUI()
 		AuctionProgressFrame:DisableDrawLayer("ARTWORK")
 		self:keepFontStrings(AuctionProgressBar)
 		self:moveObject{obj=_G["AuctionProgressBar".."Text"], y=-2}
-		self:glazeStatusBar(AuctionProgressBar, 0)
+		self:glazeStatusBar(AuctionProgressBar, 0) -- ?? background
 	end
 	self:skinMoneyFrame{obj=StartPrice, moveSEB=true}
 	self:skinMoneyFrame{obj=BuyoutPrice, moveSEB=true}
@@ -554,8 +546,6 @@ function Skinner:AuctionUI()
 -->>--	Auction DressUp Frame
 	self:keepRegions(AuctionDressUpFrame, {3, 4}) --N.B. regions 3 & 4 are the background
 	self:keepRegions(AuctionDressUpFrameCloseButton, {1}) -- N.B. region 1 is the button artwork
-	AuctionDressUpModelRotateLeftButton:Hide()
-	AuctionDressUpModelRotateRightButton:Hide()
 	self:makeMFRotatable(AuctionDressUpModel)
 	self:moveObject{obj=AuctionDressUpFrame, x=6}
 	self:skinAllButtons{obj=AuctionDressUpFrame}
@@ -581,25 +571,20 @@ function Skinner:MainMenuBar()
 	self.initialized.MainMenuBar = true
 
 	if self.db.profile.MainMenuBar.glazesb then
-		self:glazeStatusBar(MainMenuExpBar, 0)
- 		self:glazeStatusBar(ReputationWatchStatusBar, 0)
- 		ExhaustionLevelFillBar:SetTexture(self.sbTexture)
+		self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 6), {ExhaustionLevelFillBar})
+ 		self:glazeStatusBar(ReputationWatchStatusBar, 0, self:getRegion(ReputationWatchStatusBar, 9))
 	end
 
 	if IsAddOnLoaded("Dominos") then return end
 
--->>-- Main Menu Bar
+	ExhaustionTick:SetAlpha(0)
+	self:adjHeight{obj=MainMenuExpBar, adj=-2} -- shrink it so it moves up
+	self:adjHeight{obj=ExhaustionLevelFillBar, adj=-2} -- mirror the XP bar
+	self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-7, x2=4, y2=-4}
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
 	self:keepFontStrings(MainMenuBarArtFrame)
-	ExhaustionTick:SetAlpha(0)
-	MainMenuExpBar:SetHeight(MainMenuExpBar:GetHeight() - 2) -- shrink it so it moves up
-	ExhaustionLevelFillBar:SetHeight(MainMenuExpBar:GetHeight()) -- mirror the XP bar
-	self:addSkinFrame{obj=MainMenuBar, ft=ftype, kfs=true, noBdr=true, x1=-4, y1=-7, x2=4, y2=-4}
-
-	-- Experience Bar
-	self:keepRegions(MainMenuExpBar, {1, 7}) -- N.B. region 1 is rested XP, 7 is the normal XP
-	-- Reputation Bar
-	self:keepRegions(ReputationWatchStatusBar, {10}) -- 10 is the normal texture
+	self:keepRegions(MainMenuExpBar, {1, 6, 7}) -- N.B. region 1 is rested XP, 6 is background, 7 is the normal XP
+	self:keepRegions(ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
 
 	local function toggleActionButtons()
 
@@ -791,7 +776,7 @@ function Skinner:Nameplates()
 	local function showFunc()
 
 		if not npEvt then
-			npEvt = Skinner:ScheduleRepeatingTimer(skinNameplates, 0.1)
+			npEvt = Skinner:ScheduleRepeatingTimer(skinNameplates, 0.2)
 		end
 
 	end

@@ -35,6 +35,7 @@ function Skinner:Player()
 	self:glazeStatusBar(PlayerFrameHealthBar, 0)
 	self:adjHeight{obj=PlayerFrameHealthBar , adj=-1} -- handle bug in PlayerFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	self:glazeStatusBar(PlayerFrameManaBar, 0)
+	-- casting bar handled in CastingBar function (UIE1)
 	-- move PvP timer, level & rest icon down, so they are more visible
 	self:moveObject{obj=PlayerPVPTimerText, y=lOfs}
 	self:moveObject{obj=PlayerLevelText, y=lOfs}
@@ -88,13 +89,10 @@ function Skinner:Pet()
 	self:adjWidth{obj=PetFrameHealthBar, adj=6}
 	self:glazeStatusBar(PetFrameManaBar, 0)
 	self:adjWidth{obj=PetFrameManaBar, adj=6}
-	-- casting bar
-	self:keepFontStrings(PetCastingBarFrame)
-	self:glazeStatusBar(PetCastingBarFrame, 0)
-
+	-- casting bar handled in CastingBar function (UIE1)
 	self:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars
 	self:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=2, y1=-1, x2=1}
-	-- Add Pet's Level to frame sif a Hunter
+	-- Add Pet's Level to frame if a Hunter and required
 	if self.uCls == "HUNTER" and self.db.profile.UnitFrames.petlevel then
 		local plt = self.skinFrame[PetFrame]:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
 		plt:SetPoint("BOTTOMLEFT", 4, 4)
@@ -112,7 +110,7 @@ function Skinner:Pet()
 			checkLevel("pfu")
 		end)
 		self:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
-		self:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for level-up
+		self:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
 	end
 
 end
@@ -124,12 +122,14 @@ local function skinToT(parent)
 	-- status bars
 	Skinner:glazeStatusBar(_G[parent.."HealthBar"], 0)
 	Skinner:glazeStatusBar(_G[parent.."ManaBar"], 0)
+	Skinner:moveObject{obj=_G[parent.."ManaBar"], y=1} -- handle bug in <frame> XML & lua which places mana bar 8 pixels below the healthbar, when their heights are 7
 	Skinner:moveObject{obj=_G[parent], y=totOfs}
 
 end
 
 local function skinUFrame(frame)
 
+	Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, y1=-7, x2=-37, y2=6}
 	_G[frame.."Flash"]:SetAlpha(0) -- texture file is changed dependant upon size
 	_G[frame.."Background"]:SetTexture(nil)
 --	<frame>NameBackground:SetTexture(nil) -- used for faction colouring
@@ -138,24 +138,21 @@ local function skinUFrame(frame)
 	Skinner:glazeStatusBar(_G[frame.."HealthBar"], 0)
 	Skinner:adjHeight{obj=_G[frame.."HealthBar"] , adj=-1} -- handle bug in <frame> XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	Skinner:glazeStatusBar(_G[frame.."ManaBar"], 0)
-	Skinner:glazeStatusBar(_G[frame.."SpellBar"], 0)
 	Skinner:removeRegions(_G[frame.."NumericalThreat"], {3}) -- threat border
 	-- move level & highlevel down, so they are more visible
 	Skinner:moveObject{obj=_G[frame.."TextureFrameLevelText"], x=2, y=lOfs}
 	-- casting bar
-	_G[frame.."SpellBarBorder"]:SetAlpha(0) -- texture file is changed dependant upon spell type
-	Skinner:changeShield(_G[frame.."SpellBarBorderShield"], _G[frame.."SpellBarIcon"])
-	local cBar = _G[frame.."SpellBar"]
-	local flshReg = _G[frame.."SpellBarFlash"]
-	flshReg:SetWidth(cBar:GetWidth())
-	flshReg:SetHeight(cBar:GetHeight())
-	flshReg:SetTexture(Skinner.sbTexture)
-	Skinner:moveObject{obj=flshReg, y=-20} -- otherwise it's above the casting bar
-	Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, y1=-7, x2=-37, y2=6}
+	local cBar = frame.."SpellBar"
+	Skinner:adjHeight{obj=_G[cBar], adj=4}
+	_G[cBar.."Border"]:SetAlpha(0) -- texture file is changed dependant upon spell type
+	Skinner:changeShield(_G[cBar.."BorderShield"], _G[cBar.."Icon"])
+	_G[cBar.."Flash"]:SetAllPoints()
+	Skinner:moveObject{obj=_G[cBar.."Text"], y=-2}
+	Skinner:glazeStatusBar(_G[cBar], 0, Skinner:getRegion(_G[cBar], 1), {_G[cBar.."Flash"]})
 
 -->>-- TargetofTarget Frame
 	skinToT(frame.."ToT")
-	Skinner:addSkinFrame{obj=_G[frame.."ToT"], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6}
+	Skinner:addSkinFrame{obj=_G[frame.."ToT"], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x2=6, y2=-1}
 
 end
 
@@ -189,19 +186,20 @@ function Skinner:Target()
 
 -->>--Boss Target Frames
 	for i = 1, 4 do
-		_G["Boss"..i.."TargetFrameFlash"]:SetTexture(nil)
-		_G["Boss"..i.."TargetFrameBackground"]:SetTexture(nil)
-		_G["Boss"..i.."TargetFrameTextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
-		self:glazeStatusBar(_G["Boss"..i.."TargetFrameHealthBar"], 0)
-		self:glazeStatusBar(_G["Boss"..i.."TargetFrameManaBar"], 0)
-		self:removeRegions(_G["Boss"..i.."TargetFrameNumericalThreat"], {3}) -- threat border
-		self:addSkinFrame{obj=_G["Boss"..i.."TargetFrame"], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=-1,  y1=-14, x2=-72, y2=5}
+		local frame = "Boss"..i.."TargetFrame"
+		_G[frame.."Flash"]:SetTexture(nil)
+		_G[frame.."Background"]:SetTexture(nil)
+		_G[frame.."TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
+		self:glazeStatusBar(_G[frame.."HealthBar"], 0)
+		self:glazeStatusBar(_G[frame.."ManaBar"], 0)
+		self:removeRegions(_G[frame.."NumericalThreat"], {3}) -- threat border
+		self:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso={ba=ba, ng=true}, x1=-1,  y1=-14, x2=-72, y2=5}
 		-- create a texture to show Elite dragon
-		local bCat = _G["Boss"..i.."TargetFrameTextureFrame"]:CreateTexture(nil, "BACKGROUND")
+		local bCat = _G[frame.."TextureFrame"]:CreateTexture(nil, "BACKGROUND")
 		bCat:SetWidth(80)
 		bCat:SetHeight(50)
 		bCat:SetPoint("CENTER", 30, -21)
-		bCat:SetTexture(eTex)
+		bCat:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 	end
 
 end
@@ -282,7 +280,6 @@ function Skinner:changeUFOpacity()
 	local a = self.db.profile.UnitFrames.alpha
 
 	for _, uFrame in pairs{"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip"} do
---		self:Debug("changeUFOpacity: [%s, %s]", uFrame, self.skinFrame[_G[uFrame]])
 		if self.skinFrame[_G[uFrame]] then
 			self.skinFrame[_G[uFrame]]:SetBackdropColor(r, g, b, a)
 		end

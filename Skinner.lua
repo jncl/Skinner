@@ -1037,37 +1037,44 @@ function Skinner:getRegion(obj, regNo)
 
 end
 
-local sbBG, sbFS, sbFL
-function Skinner:glazeStatusBar(statusBar, fi, texture)
+function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 --@alpha@
 	assert(statusBar and statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n"..debugstack())
 --@end-alpha@
 
 	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
 
+	local c = self.db.profile.StatusBar
+
 	statusBar:SetStatusBarTexture(self.sbTexture)
 	if not self.sbGlazed[statusBar] then
-		self.sbGlazed[statusBar] = {glzd=true}
+		self.sbGlazed[statusBar] = {}
 	end
+	local sbG = self.sbGlazed[statusBar]
+
+	-- change StatusBar Texture's draw layer if required
+	local sbTex = statusBar:GetStatusBarTexture()
+	local sbDL = sbTex:GetDrawLayer()
+	if sbDL == "BACKGROUND" then sbTex:SetDrawLayer("BORDER") end
 
 	if fi then
-		if not self.sbGlazed[statusBar].bg then
-			if texture then
-				sbBG = statusBar:CreateTexture(nil, "BORDER")
-				sbBG:SetTexture(self.sbTexture)
-				sbBG:SetVertexColor(unpack(self.sbColour))
-			else
-				sbBG = CreateFrame("StatusBar", nil, statusBar)
-				sbFS = statusBar:GetFrameStrata()
-				sbBG:SetFrameStrata(sbFS ~= "UNKNOWN" and sbFS or "BACKGROUND")
-				sbFL = statusBar:GetFrameLevel()
-				sbBG:SetFrameLevel(sbFL > 0 and sbFL - 1 or 0)
-				sbBG:SetStatusBarTexture(self.sbTexture)
-				sbBG:SetStatusBarColor(unpack(self.sbColour))
+		if not sbG.bg then
+			sbG.bg = bgTex or statusBar:CreateTexture(nil, "BACKGROUND")
+			sbG.bg:SetTexture(self.sbTexture)
+			sbG.bg:SetVertexColor(c.r, c.g, c.b, c.a)
+			if not bgTex then
+				sbG.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
+				sbG.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
 			end
-			sbBG:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
-			sbBG:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
-			self.sbGlazed[statusBar].bg = sbBG
+		end
+	end
+	-- apply statusbar texture and store other textures
+	if otherTex
+	and type(otherTex) == "table"
+	then
+		for _, tex in pairs(otherTex) do
+			tex:SetTexture(self.sbTexture)
+			sbG[#sbG + 1] = tex
 		end
 	end
 
@@ -1186,6 +1193,14 @@ function Skinner:makeMFRotatable(frame)
 	frame.draggingDirection = nil
 	frame.cursorPosition = {}
 
+	-- hide rotation buttons
+	for _, child in pairs{frame:GetChildren()} do
+		local cName = child:GetName()
+		if cName:find("Rotate") then
+			child:Hide()
+		end
+	end
+
 	if not self:IsHooked(frame, "OnUpdate") then
 		self:SecureHookScript(frame, "OnUpdate", function(...)
 			if this.dragging then
@@ -1283,30 +1298,6 @@ function Skinner:moveObject(...)
 		opts.y = select(5, ...) and select(5, ...) or nil
 		if select(4, ...) and select(4, ...) == "-" then opts.y = opts.y * -1 end
 		opts.relTo = select(6, ...) and select(6, ...) or nil
-	end
-	__moveObject(opts)
-
-end
-
-function Skinner:moveButtonText(...)
-
-	if not self.db.profile.Buttons then return end
-
-	local opts = select(1, ...)
-
---@alpha@
-	assert(opts, "Unknown object mBT\n"..debugstack())
---@end-alpha@
-
-	-- handle missing object (usually when addon changes)
-	if not opts then return end
-
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
-		-- old style call
-		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.x = select(2, ...) and select(2, ...) or nil
-		opts.y = select(3, ...) and select(3, ...) or nil
 	end
 	__moveObject(opts)
 
@@ -1486,8 +1477,6 @@ function Skinner:skinButton(opts)
 	mp2 = minus/plus button
 	mp3 = minus/plus button, just skin it
 	plus = use plus sign
-	tx = x offset for button text
-	ty = y offset for button text
 	other options as per addSkinButton
 --]]
 	if not self.db.profile.Buttons then return end
@@ -1501,7 +1490,7 @@ function Skinner:skinButton(opts)
 	-- don't skin it twice
 	if self.sBut[opts.obj] then return end
 
-	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... or derivatives]
+	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... and derivatives]
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
@@ -1513,7 +1502,7 @@ function Skinner:skinButton(opts)
 		opts.obj.LeftTexture:SetAlpha(0)
 		opts.obj.MiddleTexture:SetAlpha(0)
 		opts.obj.RightTexture:SetAlpha(0)
-	else -- [UIPanelButtonTemplate2/... or derivatives]
+	else -- [UIPanelButtonTemplate2/... and derivatives]
 		local objName = opts.obj:GetName()
 		if objName then -- handle unnamed objects (e.g. Waterfall MP buttons)
 			for _, tName in pairs(btnTexNames) do
@@ -1523,14 +1512,11 @@ function Skinner:skinButton(opts)
 		end
 	end
 
-	local x1, x2, y1, y2, tx, ty, btn, xOfs, bHgt
+	local x1, x2, y1, y2, btn, xOfs, bHgt
 	if opts.cb then -- it's a close button
 		opts.obj:SetNormalFontObject(self.fontX)
 		opts.obj:SetText(self.mult)
 		opts.obj:SetPushedTextOffset(-1, -1)
-		tx = opts.tx or -1
-		ty = opts.ty or 0
-		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
 		if opts.sap then
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
@@ -1541,7 +1527,7 @@ function Skinner:skinButton(opts)
 			y2 = opts.y2 or bW == 32 and 6 or 4
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
-	elseif opts.cb2 then -- it's pretending to be a close button (ArkInventory)
+	elseif opts.cb2 then -- it's pretending to be a close button (e.g. ArkInventory)
 		x1 = opts.x1 or 0
 		y1 = opts.y1 or 0
 		x2 = opts.x2 or 0
@@ -1550,23 +1536,14 @@ function Skinner:skinButton(opts)
 		btn = self.sBut[opts.obj]
 		btn:SetNormalFontObject(self.fontX)
 		btn:SetText(self.mult)
-		tx = opts.tx or 0
-		ty = opts.ty or 0
-		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=btn:GetFontString(), x=tx, y=ty} end
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
 		self:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=self.Backdrop[6]}}
 		btn = self.sBut[opts.obj]
-		xOfs = opts.noMove and 0 or 3
-		btn:ClearAllPoints()
-		btn:SetPoint("LEFT", opts.obj, "LEFT", xOfs, 0)
-		btn:SetWidth(16)
-		btn:SetHeight(16)
+		btn:SetAllPoints(opts.obj:GetNormalTexture())
 		btn:SetNormalFontObject(self.fontP)
 		btn:SetText(opts.plus and self.plus or self.minus)
-		tx = opts.tx or 0
-		ty = opts.ty or -1
-		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=btn:GetFontString(), x=tx, y=ty} end
-	elseif opts.mp2 then -- it's a minus/plus button
+--		btn:SetPushedTextOffset(-1, -1) -- doesn't seem to work
+	elseif opts.mp2 then -- it's a minus/plus button (IOF has them on RHS)
 		opts.obj:SetNormalFontObject(self.fontP)
 		opts.obj:SetText(opts.plus and self.plus or self.minus)
 		opts.obj:SetPushedTextOffset(-1, -1)
@@ -1574,18 +1551,12 @@ function Skinner:skinButton(opts)
 		self:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
 			self:checkTex{obj=this, nTex=nTex, mp2=true}
 		end)
-		tx = opts.tx or 0
-		ty = opts.ty or -1
-		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
 	elseif opts.mp3 then -- it's a minus/plus button, just skin it (used by Waterfall & tomQuest2)
 		opts.obj:SetNormalFontObject(self.fontP)
 		opts.obj:SetText(opts.plus and self.plus or self.minus)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		self:applySkin{obj=opts.obj, bd=self.Backdrop[6]}
 		opts.obj.skin = true
-		tx = opts.tx or -1
-		ty = opts.ty or -1
-		if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		bHgt = opts.obj:GetHeight()
 		aso = {bd=self.Backdrop[bHgt > 18 and 5 or 6]} -- use narrower backdrop if required
@@ -1595,14 +1566,15 @@ function Skinner:skinButton(opts)
 			x2 = opts.x2 or -1
 			y2 = opts.y2 or -1
 			self:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
-			if opts.obj:GetFontString() then -- StaticPopup buttons don't have a FontString
-				tx = opts.tx or 0
-				ty = opts.ty or -1
-				if tx ~= 0 or ty ~= 0 then self:moveButtonText{obj=opts.obj:GetFontString(), x=tx, y=ty} end
-			end
 		else
 			self:applySkin{obj=opts.obj, bd=aso.bd}
 		end
+	end
+	-- centre text on button
+	if btn then
+		btn:GetFontString():SetAllPoints()
+	elseif opts.obj:GetFontString() then -- StaticPopup buttons don't have a FontString
+		opts.obj:GetFontString():SetAllPoints()
 	end
 
 end
@@ -2114,17 +2086,10 @@ function Skinner:updateSBTexture()
 
 	for statusBar, tab in pairs(self.sbGlazed) do
 		statusBar:SetStatusBarTexture(self.sbTexture)
-		if tab.bg then
-			if tab.bg:IsObjectType("StatusBar") then
-				tab.bg:SetStatusBarTexture(self.sbTexture)
-				tab.bg:SetStatusBarColor(unpack(self.sbColour))
-			else
-				tab.bg:SetTexture(self.sbTexture) -- handle backgrounds that aren't StatusBars
-				tab.bg:SetVertexColor(unpack(self.sbColour))
-			end
+		for type, tex in pairs(tab) do
+			tex:SetTexture(self.sbTexture)
+			if type == bg then tex:SetVertexColor(c.r, c.g, c.b, c.a) end
 		end
-		local flashTex = _G[statusBar:GetName()] and _G[statusBar:GetName().."Flash"]
-		if flashTex and flashTex:IsObjectType("Texture") then flashTex:SetTexture(self.sbTexture) end -- handle CastingBar Flash
 	end
 
 end

@@ -270,8 +270,6 @@ function Skinner:Tabard()
 
 	self:keepRegions(TabardFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
 
-	TabardCharacterModelRotateLeftButton:Hide()
-	TabardCharacterModelRotateRightButton:Hide()
 	self:makeMFRotatable(TabardModel)
 	TabardFrameCostFrame:SetBackdrop(nil)
 	self:keepFontStrings(TabardFrameCustomizationFrame)

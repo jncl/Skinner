@@ -192,9 +192,11 @@ function Skinner:TradeSkillUI()
 		end)
 	end
 
-	TradeSkillRankFrameBorder:SetAlpha(0)
-	self:glazeStatusBar(TradeSkillRankFrame, 0)
-	self:skinEditBox{obj=TradeSkillFrameEditBox, regs={9}}
+	local bar = "TradeSkillRankFrame"
+	_G[bar.."Border"]:SetAlpha(0)
+	self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"])
+	self:moveObject{obj=_G[bar], x=-2}
+	self:skinEditBox{obj=TradeSkillFrameEditBox, regs={9}, x=1}
 	self:removeRegions(TradeSkillExpandButtonFrame)
 	self:skinButton{obj=TradeSkillCollapseAllButton, mp=true}
 	self:skinDropDown{obj=TradeSkillSubClassDropDown}
@@ -205,8 +207,7 @@ function Skinner:TradeSkillUI()
 	self:skinScrollBar{obj=TradeSkillListScrollFrame}
 	self:skinScrollBar{obj=TradeSkillDetailScrollFrame}
 	self:keepFontStrings(TradeSkillDetailScrollChildFrame)
-	self:skinEditBox{obj=TradeSkillInputBox}
-	self:moveObject{obj=TradeSkillInputBox, x=-5}
+	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
 	self:skinAllButtons{obj=TradeSkillFrame}
 	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
@@ -263,11 +264,8 @@ function Skinner:QuestLog()
 		self:skinButton{obj=QuestLogScrollFrame.buttons[i], mp=true}
 	end
 	self:skinScrollBar{obj=QuestLogScrollFrame}
-	self:skinButton{obj=QuestLogFrameCloseButton, cb=true}
-	self:skinButton{obj=QuestLogFrameAbandonButton}
-	self:skinButton{obj=QuestLogFrameTrackButton}
-	self:skinButton{obj=QuestLogFramePushQuestButton}
-	self:skinButton{obj=QuestLogFrameCancelButton}
+	self:skinAllButtons{obj=QuestLogControlPanel} -- Abandon/Push/Track
+	self:skinAllButtons{obj=QuestLogFrame} -- Close/Cancel
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
 
 -->>-- QuestLogDetail Frame
@@ -309,9 +307,9 @@ function Skinner:RaidUI()
 			local pfBObj = _G[pfBName]
 			if not self.skinFrame[pfBObj] then
 				for _, v in pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
-					local sBar = _G[pfBName..v]
-					self:keepRegions(sBar, {3})
-					self:glazeStatusBar(sBar, 0)
+					local sBar = pfBName..v
+					self:removeRegions(_G[sBar], {2})
+					self:glazeStatusBar(_G[sBar], 0, _G[sBar.."Background"])
 				end
 				self:addSkinFrame{obj=_G[pfBName.."TargetTargetFrame"], ft=ftype, x1=4, x2=-4, y2=2}
 				self:addSkinFrame{obj=pfBObj, ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
@@ -469,6 +467,9 @@ function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 	self:skinButton{obj=GearManagerDialogEquipSet}
 	self:skinButton{obj=GearManagerDialogSaveSet}
 	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=2}
+	for i = 1, MAX_EQUIPMENT_SETS_PER_PLAYER do
+		self:getRegion(_G["GearSetButton"..i], 2):SetTexture(self.esTex)
+	end
 -->>-- Popup frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
 	self:skinEditBox{obj=GearManagerDialogPopupEditBox, regs={9}}
