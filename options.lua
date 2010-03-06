@@ -1,6 +1,8 @@
 local aName, Skinner = ...
 local _G = _G
 
+local maxwidth = 2600 -- screen width
+
 function Skinner:Defaults()
 
 	local defaults = { profile = {
@@ -614,7 +616,7 @@ function Skinner:Options()
 							order = 9,
 							name = self.L["VP YResolution"],
 							desc = self.L["Change Y Resolution"],
-							min = 0, max = 2600, step = 2,
+							min = 0, max = maxwidth, step = 2,
 							set = function(info, value)
 								db.ViewPort.YResolution = value
 								db.ViewPort.YScaling = 768 / value
@@ -698,7 +700,7 @@ function Skinner:Options()
 							order = 7,
 							name = self.L["TF Width"],
 							desc = self.L["Change Width of the TopFrame"],
-							min = 0, max = 2500, step = 1,
+							min = 0, max = maxwidth, step = 1,
 							set = function(info, value)
 								db.TopFrame.width = value
 								if SkinnerTF then
@@ -873,7 +875,7 @@ function Skinner:Options()
 							order = 7,
 							name = self.L["BF Width"],
 							desc = self.L["Change Width of the BottomFrame"],
-							min = 0, max = 2500, step = 1,
+							min = 0, max = maxwidth, step = 1,
 							set = function(info, value)
 								db.BottomFrame.width = value
 								if SkinnerBF then
@@ -972,8 +974,9 @@ function Skinner:Options()
 					name = self.L["Disable all NPC Frames"],
 					desc = self.L["Disable all the NPC Frames from being skinned"],
 					func = function()
+						local bVal = IsAltKeyDown() and true or false
 						for _, keyName in pairs(self.npcKeys) do
-							db[keyName] = false
+							db[keyName] = bVal
 						end
 					end,
 				},
@@ -1063,11 +1066,12 @@ function Skinner:Options()
 					name = self.L["Disable all Character Frames"],
 					desc = self.L["Disable all the Character Frames from being skinned"],
 					func = function()
+						local bVal = IsAltKeyDown() and true or false
 						for _, keyName in pairs(self.charKeys1) do
-							db[keyName] = false
+							db[keyName] = bVal
 						end
 						for _, keyName in pairs(self.charKeys2) do
-							db[keyName].skin = false
+							db[keyName].skin = bVal
 						end
 					end,
 				},
@@ -1193,11 +1197,12 @@ function Skinner:Options()
 					name = self.L["Disable all UI Frames"],
 					desc = self.L["Disable all the UI Frames from being skinned"],
 					func = function()
+						local bVal = IsAltKeyDown() and true or false
 						for _, keyName in pairs(self.uiKeys1) do
-							db[keyName] = false
+							db[keyName] = bVal
 						end
 						for _, keyName in pairs(self.uiKeys2) do
-							db[keyName].skin = false
+							db[keyName].skin = bVal
 						end
 					end,
 				},

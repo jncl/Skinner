@@ -182,7 +182,7 @@ function Skinner:OnInitialize()
 	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "GlyphUI", "TalentUI", "DressUpFrame", "AchievementUI", "FriendsFrame", "TradeSkillUI", "TradeFrame", "QuestLog", "RaidUI", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", "AlertFrames"}
 	self.charKeys2 = {}
 	self.npcKeys = {"MerchantFrames", "GossipFrame", "TrainerUI", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "BarbershopUI", "QuestInfo"}
-	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatConfig", "LootFrame", "StackSplit", "ItemText", "Colours", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "DropDowns", "MinimapButtons", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI", "DebugTools", "LFDFrame", "LFRFrame"}
+	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatConfig", "LootFrame", "StackSplit", "ItemText", "Colours", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "DropDowns", "MinimapButtons", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI", "DebugTools", "LFDFrame", "LFRFrame", "ScriptErrors"}
 	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "WorldMap", "MainMenuBar"}
 
 	-- optional/patched frames
@@ -228,7 +228,7 @@ function Skinner:OnInitialize()
 	self.initialized = {}
 
 	-- define a metatable to have weak keys and to automatically add an entry if it doesn't exist
-	local mt = {__mode = "k", __index = function (t, k) t[k] = true end}
+	local mt = {__mode = "k", __index = function(t, k) t[k] = true end}
 	-- table to hold objects which have been skinned
 	self.skinned = setmetatable({}, mt)
 
@@ -246,7 +246,7 @@ function Skinner:OnInitialize()
 
 	-- hook to handle textured tabs on Blizzard & other Frames
 	self.tabFrames = {}
-	if self.db.profile.TexturedTab then
+	if self.isTT then
 		self:SecureHook("PanelTemplates_SetTab", function(frame, id)
 --			self:Debug("PT_ST: [%s, %s, %s, %s]", frame, id, frame.numTabs or "nil", frame.selectedTab or "nil")
 			if not self.tabFrames[frame] then return end -- ignore frame
@@ -278,13 +278,25 @@ function Skinner:OnEnable()
 	self.db.RegisterCallback(self, "OnProfileCopied", "ReloadAddon")
 	self.db.RegisterCallback(self, "OnProfileReset", "ReloadAddon")
 
+	-- handle statusbar changes
+	self.LSM.RegisterCallback(self, "LibSharedMedia_SetGlobal", function(mtype, override)
+		if mtype == "statusbar" then
+			self.db.profile.StatusBar.texture = override
+			self:updateSBTexture()
+		elseif mtype == "background" then
+			self.db.profile.BdTexture = override
+		elseif mtype == "border" then
+			self.db.profile.BdBorderTexture = override
+		end
+	end)
+
 --@debug@
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("lo", function(msg) Logout() end)
 	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
 	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
-	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg], true, false) end)
-	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg], false, false) end)
+	self:RegisterChatCommand("si", function(msg) self:ShowInfo(GetMouseFocus() or _G[msg], true, false) end)
+	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(GetMouseFocus() or _G[msg], false, false) end)
 --@end-debug@
 
 end
@@ -409,7 +421,6 @@ local function __addSkinButton(opts)
 				end
 			end
 		end
-		regions = nil
 	end
 
 end
@@ -427,15 +438,13 @@ function Skinner:addSkinButton(...)
 
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
---		self:addSkinButton_old(...)
 		opts = {}
 		opts.obj = select(1, ...) and select(1, ...) or nil
 		opts.parent = select(2, ...) and select(2, ...) or nil
 		opts.hook = select(3, ...) and select(3, ...) or nil
 		opts.hide = select(4, ...) and select(4, ...) or nil
---	else
---		-- new style call
 	end
+	-- new style call
 	__addSkinButton(opts)
 
 end
