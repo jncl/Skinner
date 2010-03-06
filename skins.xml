@@ -49,7 +49,7 @@
 <script file="SkinMe\BasicChatMods.lua"/>
 <script file="SkinMe\BattleChat.lua"/>
 <script file="SkinMe\BattleCry.lua"/>
-<script file="SkinMe\BaudAuction.lua"/>
+<!-- <script file="SkinMe\BaudAuction.lua"/> -->
 <script file="SkinMe\BaudBag.lua"/>
 <script file="SkinMe\BaudManifest.lua"/>
 <script file="SkinMe\BaudMenu.lua"/>
@@ -81,7 +81,7 @@
 <script file="SkinMe\Cartographer.lua"/>
 <script file="SkinMe\Cartographer3.lua"/>
 <script file="SkinMe\Cauldron.lua"/>
-<script file="SkinMe\CBRipoff.lua"/>
+<!-- <script file="SkinMe\CBRipoff.lua"/> -->
 <script file="SkinMe\cgCrafty.lua"/>
 <script file="SkinMe\CharacterInfo.lua"/>
 <!-- <script file="SkinMe\CharactersViewer.lua"/> -->
@@ -114,7 +114,7 @@
 <script file="SkinMe\Dominos.lua"/>
 <script file="SkinMe\DopieArenaInfo.lua"/>
 <script file="SkinMe\DoTimer.lua"/>
-<script file="SkinMe\DuckieBank.lua"/>
+<!-- <script file="SkinMe\DuckieBank.lua"/> -->
 <script file="SkinMe\Earth.lua"/>
 <script file="SkinMe\EasyTrack.lua"/>
 <script file="SkinMe\EasyUnlock.lua"/>
@@ -184,7 +184,7 @@
 <script file="SkinMe\HeadHunter.lua"/>
 <script file="SkinMe\HealBot.lua"/>
 <script file="SkinMe\HealersAssist.lua"/>
-<script file="SkinMe\HealingEstimator.lua"/>
+<!-- <script file="SkinMe\HealingEstimator.lua"/> -->
 <script file="SkinMe\HealOrganizer.lua"/>
 <script file="SkinMe\Highlight.lua"/>
 <script file="SkinMe\Historian.lua"/>
@@ -203,9 +203,9 @@
 <script file="SkinMe\ItemRack.lua"/>
 <script file="SkinMe\ItemSync.lua"/>
 <script file="SkinMe\JasonQuest.lua"/>
-<script file="SkinMe\Jobber.lua"/>
+<!-- <script file="SkinMe\Jobber.lua"/> -->
 <script file="SkinMe\Junk.lua"/>
-<script file="SkinMe\Karma.lua"/>
+<!-- <script file="SkinMe\Karma.lua"/> -->
 <!-- <script file="SkinMe\KC_Items.lua"/> -->
 <!-- <script file="SkinMe\KingOfTheJungle.lua"/> -->
 <script file="SkinMe\KLHThreatMeter.lua"/>
@@ -250,13 +250,13 @@
 <script file="SkinMe\MSBTOptions.lua"/>
 <script file="SkinMe\MTLove.lua"/>
 <!-- <script file="SkinMe\MultiTips.lua"/> -->
-<script file="SkinMe\MusicPlayer.lua"/>
+<!-- <script file="SkinMe\MusicPlayer.lua"/> -->
 <script file="SkinMe\MyBags.lua"/>
 <!-- <script file="SkinMe\myBindings.lua"/> -->
 <script file="SkinMe\myClock.lua"/>
 <script file="SkinMe\myMusic.lua"/>
 <script file="SkinMe\NeatFreak.lua"/>
-<script file="SkinMe\NECB.lua"/>
+<!-- <script file="SkinMe\NECB.lua"/> -->
 <script file="SkinMe\Necrosis.lua"/>
 <script file="SkinMe\NeonChat.lua"/>
 <script file="SkinMe\NicheCombatConfig.lua"/>
@@ -322,9 +322,9 @@
 <!-- <script file="SkinMe\SanityBags.lua"/> -->
 <script file="SkinMe\SellJunk.lua"/>
 <script file="SkinMe\ShadowDancer3.lua"/>
-<script file="SkinMe\ShieldLeft.lua"/>
+<!-- <script file="SkinMe\ShieldLeft.lua"/> -->
 <script file="SkinMe\sienasGemViewer.lua"/>
-<script file="SkinMe\SimpleMouseoverTarget.lua"/>
+<!-- <script file="SkinMe\SimpleMouseoverTarget.lua"/> -->
 <script file="SkinMe\Skillet.lua"/>
 <script file="SkinMe\SmartBuff.lua"/>
 <script file="SkinMe\SmartDebuff.lua"/>
@@ -337,7 +337,7 @@
 <script file="SkinMe\Squeenix.lua"/>
 <script file="SkinMe\sRaidFrames.lua"/>
 <script file="SkinMe\StanceSets.lua"/>
-<script file="SkinMe\SuperInspect_UI.lua"/>
+<!-- <script file="SkinMe\SuperInspect_UI.lua"/> -->
 <script file="SkinMe\SuperMacro.lua"/>
 <script file="SkinMe\SW_Stats.lua"/>
 <script file="SkinMe\SystemMessageControlTool.lua"/>
