@@ -82,28 +82,9 @@ function Skinner:OnInitialize()
 --@end-alpha@
 
 	-- setup the default DB values and register them
-	self:Defaults()
+	self:checkAndRun("Defaults", true)
 	-- setup the Addon's options
-	self:Options()
-
-	-- update changed profile option settings
-	if self.db.profile.AchieveAlert then
-		self.db.profile.AlertFrames = self.db.profile.AchieveAlert
-		self.db.profile.AchieveAlert = nil
-	end
-	if self.db.profile.AchieveFrame then
-		self.db.profile.AchievementUI = self.db.profile.AchieveFrame
-		self.db.profile.AchieveFrame = nil
-	end
-	if self.db.profile.LFGFrame then
-		self.db.profile.LFDFrame = self.db.profile.LFGFrame
-		self.db.profile.LFRFrame = self.db.profile.LFGFrame
-		self.db.profile.LFGFrame = nil
-	end
-	if self.db.profile.TrackerFrame then
-		self.db.profile.WatchFrame = self.db.profile.TrackerFrame.skin
-		self.db.profile.TrackerFrame = nil
-	end
+	self:checkAndRun("Options")
 
 	-- register the default background texture
 	self.LSM:Register("background", "Blizzard ChatFrame Background", [[Interface\ChatFrame\ChatFrameBackground]])
@@ -776,9 +757,13 @@ local function errorhandler(err)
 	return geterrorhandler()(err)
 end
 
-local function safecall(funcName, LoD)
+local function safecall(funcName, LoD, quiet)
 	-- handle errors from internal functions
 	local success, err = xpcall(function() return Skinner[funcName](Skinner, LoD) end, errorhandler)
+	if quiet then
+--		print(funcName, success, err)
+		return success, err
+	end
 	if not success then
 		if Skinner.db.profile.Errors then
 			Skinner:CustomPrint(1, 0, 0, "Error running", funcName)
@@ -786,11 +771,11 @@ local function safecall(funcName, LoD)
 	end
 end
 
-function Skinner:checkAndRun(funcName)
+function Skinner:checkAndRun(funcName, quiet)
 --	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 
 	if type(self[funcName]) == "function" then
-		safecall(funcName)
+		return safecall(funcName, nil, quiet)
 	else
 		if self.db.profile.Warnings then
 			self:CustomPrint(1, 0, 0, "function ["..funcName.."] not found in "..aName)
