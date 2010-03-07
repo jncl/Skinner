@@ -12,19 +12,9 @@ B - Button(s) Skin request
 
 ≈	O	Check to see which skins can be obsoleted (ongoing)
 
-≈	O	Look into using LSM callbacks to change media and LSM default media as defaults
-
-√	O	Remove local tables only used for arrays
-
 	O	Review Function Hooks
 		- Blizzard skins function hooks
 		- Addon skins function hooks
-
-	O	Status Bars
-√		- Change glazing code to only create a texture and not another status bar
-√		- use existing textures wherever possible
-√		- handle extra textures, e.g. FillBar/Flash
-√		- make sure they are all updated when texture is changed
 
 	N	PTR 0.3.3.11599
 		- StatusBars look odd, partial bar(s) being displayed
@@ -41,8 +31,10 @@ B - Button(s) Skin request
 
 ≈	I	tomQuest2, reported by gizmo1972 & Eatsbrains, 3.03.10
 		- updated Alpha version
+?		- QuestLevel text colour
+?		- minus/plus buttons
 
-	I	oRA3, reported by Eatsbrains, 4.03.10
+√	I	oRA3, reported by Eatsbrains, 4.03.10
 		- Skinner-@project-version@\SkinMe\oRA3.lua:4: bad argument #1 to 'match' (string expected, got nil)
 		Skinner-@project-version@\SkinMe\oRA3.lua:4: in function <Skinner\SkinMe\oRA3.lua:2>
 		(tail call): ?:
@@ -52,6 +44,4 @@ B - Button(s) Skin request
 		Skinner-@project-version@\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
 		(tail call): ?:
 
-≈	O	Add support for Tukui
-
-	S	Skada, requested by Gryzwald, 5.03.10
+√	S	Skada, requested by Gryzwald, 5.03.10
