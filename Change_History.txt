@@ -1,3 +1,11 @@
+b2.11623.2
+Jncl:
+	ToDo.txt
+	Updated Change_History
+	Added isEnabledAddon function
+	Skinned Skada
+	Bugfixes for Tukui & oRA3
+
 b2.11623.1
 Jncl:
 	ToDo.txt
