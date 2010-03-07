@@ -325,6 +325,7 @@
 <!-- <script file="SkinMe\ShieldLeft.lua"/> -->
 <script file="SkinMe\sienasGemViewer.lua"/>
 <!-- <script file="SkinMe\SimpleMouseoverTarget.lua"/> -->
+<script file="SkinMe\Skada.lua"/>
 <script file="SkinMe\Skillet.lua"/>
 <script file="SkinMe\SmartBuff.lua"/>
 <script file="SkinMe\SmartDebuff.lua"/>

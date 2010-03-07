@@ -62,7 +62,7 @@ function Skinner:AddonFrames()
 
 	-- skin the QuestLog if EQL3 or QuestGuru aren't loaded
 	-- N.B. Do it here as other Addons use the QuestLog size
-	 if not IsAddOnLoaded("EQL3")
+	if not IsAddOnLoaded("EQL3")
 	and not IsAddOnLoaded("QuestGuru") then self:checkAndRun("QuestLog") end
 
 	-- skin the CastingBar if Quartz isn't loaded
@@ -103,7 +103,7 @@ function Skinner:AddonFrames()
 		"Palatank", "PallyPower", "Panda", "PartyBuilder", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoliteWhisper", "PoMTracker", "Possessions", "Postal", "PowerAuras", "ProcMeter", "Producer", "ProfessionsBook", "Proximo", "PVPCooldown", --[=["PVPCooldownReborn", --]=]"PvpMessages",
 		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon", "QuickMark",
 		"RABuffs", "RaidBuffStatus", "RaidTracker", "RaidyCheck", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
-		"Sanity2", --[["SanityBags",--]] "SellJunk", "ShadowDancer3", --[=["ShieldLeft", --]=]"sienasGemViewer", --[=["SimpleMouseoverTarget", --]=]"Skillet", "SmartBuff", "SmartDebuff", "SmoothQuest", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
+		"Sanity2", --[["SanityBags",--]] "SellJunk", "ShadowDancer3", --[=["ShieldLeft", --]=]"sienasGemViewer", --[=["SimpleMouseoverTarget", --]=]"Skada", "Skillet", "SmartBuff", "SmartDebuff", "SmoothQuest", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
 		"tabDB", "Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "Tukui", "TuringTest", "TwinValkyr_shieldmonitor",
 		"UberQuest", "UrbanAchiever",
 		"VanasKoS", "vBagnon", --[["Vendor",--]] "Vendorizer", "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
@@ -152,7 +152,7 @@ function Skinner:AddonFrames()
 	if IsAddOnLoaded("Bongos") then self:checkAndRunAddOn("Bongos") end
 --]]
 
-	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip, tektip,  LibQTip/LibTooltip & LibSimpleFrame library objects
+	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip, tektip,  LibQTip & LibSimpleFrame library objects
 	local libsToSkin = {
 		["Dewdrop-2.0"] = "Dewdrop",
 		["AceAddon-2.0"] = "Ace2",
@@ -163,7 +163,6 @@ function Skinner:AddonFrames()
 		["Configator"] = "Configator",
 		["LibExtraTip-1"] = "LibExtraTip",
 		["tektip-1.0"] = "tektip",
-		["LibTooltip-1.0"] = "LibQTip",
 		["LibQTip-1.0"] = "LibQTip",
 		["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
 	}
