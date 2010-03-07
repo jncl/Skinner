@@ -295,8 +295,8 @@ function Skinner:OnEnable()
 	self:RegisterChatCommand("lo", function(msg) Logout() end)
 	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
 	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
-	self:RegisterChatCommand("si", function(msg) self:ShowInfo(GetMouseFocus() or _G[msg], true, false) end)
-	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(GetMouseFocus() or _G[msg], false, false) end)
+	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, false) end)
+	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end)
 --@end-debug@
 
 end
@@ -780,6 +780,12 @@ local function safecall(funcName, LoD, quiet)
 	end
 end
 
+function Skinner:isAddonEnabled(addonName)
+
+	return select(4, GetAddOnInfo(addonName))
+
+end
+
 function Skinner:checkAndRun(funcName, quiet)
 --	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 
@@ -807,7 +813,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 		-- Nil out loaded Skins for Addons that aren't loaded
 		elseif self[addonFunc] then
 			self[addonFunc] = nil
---			self:Debug(addonName, "skin unloaded as Addon not loaded")
+--			self:Debug(addonFunc, "skin unloaded as Addon not loaded")
 		end
 	else
 		-- check to see if AddonSkin is loaded when Addon is loaded
@@ -1585,7 +1591,7 @@ function Skinner:isButton(obj, cb)
 			local oName = obj:GetName() or nil
 			local lTex = oName and (_G[oName.."Left"] and _G[oName.."Left"]:GetTexture() or _G[oName.."_LeftTexture"] and  _G[oName.."_LeftTexture"]:GetTexture()) or nil
 			if nTex and nTex:find("UI-Panel-Button", 1, true)
-			or obj.left and string.find(obj.left:GetTexture(), "UI-Panel-Button", 1, true) -- ARL & Collectinator
+			or obj.left and strfind(obj.left:GetTexture(), "UI-Panel-Button", 1, true) -- ARL & Collectinator
 --			or obj.left and obj.left:GetTexture():find("UI-Panel-Button", 1, true) -- ARL & Collectinator
 			or oName and lTex and lTex:find("UI-Panel-Button", 1, true)
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
