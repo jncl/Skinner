@@ -1,33 +1,36 @@
+if not Skinner:isAddonEnabled("Tukui") then return end
 
 function Skinner:Tukui()
 
 -->>-- Bags
-	self:SecureHook(Stuffing, "CreateBagFrame", function(this, bType)
-		self:skinButton{obj=_G["Stuffing_CloseButton"..bType], cb=true}
-	end)
-	self:skinEditBox{obj=StuffingFrameBags.editbox}
-	StuffingFrameBags.editbox:ClearAllPoints()
-	StuffingFrameBags.editbox:SetPoint("topleft", StuffingFrameBags, "topleft", 12, -9)
-	StuffingFrameBags.editbox:SetPoint("bottomright", StuffingFrameBags, "topright", -40, -28)
-	self:skinButton{obj=Stuffing_CloseButtonBags, cb=true}
+	if TukuiBags then
+		self:SecureHook(Stuffing, "CreateBagFrame", function(this, bType)
+			self:skinButton{obj=_G["Stuffing_CloseButton"..bType], cb=true}
+		end)
+		self:skinEditBox{obj=StuffingFrameBags.editbox}
+		StuffingFrameBags.editbox:ClearAllPoints()
+		StuffingFrameBags.editbox:SetPoint("topleft", StuffingFrameBags, "topleft", 12, -9)
+		StuffingFrameBags.editbox:SetPoint("bottomright", StuffingFrameBags, "topright", -40, -28)
+		self:skinButton{obj=Stuffing_CloseButtonBags, cb=true}
+	end
 
 -->>-- Chat Copy frame
-	for i = 1, NUM_CHAT_WINDOWS do
-		self:SecureHookScript(_G["ButtonCF"..i], "OnClick", function(this)
-			self:skinButton{obj=CopyCloseButton, cb=true}
-			self:skinScrollBar{obj=CopyScroll}
-			for i = 1, NUM_CHAT_WINDOWS do
-				self:Unhook(_G["ButtonCF"..i], "OnClick")
-			end
-		end)
+	if TukuiChat then
+		for i = 1, NUM_CHAT_WINDOWS do
+			self:SecureHookScript(_G["ButtonCF"..i], "OnClick", function(this)
+				self:skinButton{obj=CopyCloseButton, cb=true}
+				self:skinScrollBar{obj=CopyScroll}
+				for i = 1, NUM_CHAT_WINDOWS do
+					self:Unhook(_G["ButtonCF"..i], "OnClick")
+				end
+			end)
+		end
 	end
 
 end
 
 -- The following code handles the Initial setup of Skinner when the TukUI is loaded
 function Skinner:TukuiInit()
-
-	self:Debug("TukuiInit loaded")
 
 	self:RawHook(self, "OnInitialize", function(this)
 		-- Do these before we run the function
@@ -41,29 +44,32 @@ function Skinner:TukuiInit()
 		self.LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\media\WHITE64X64]])
 		self.LSM:Register("statusbar", "Tukui StatusBar", [[Interface\AddOns\Tukui\media\normTex]])
 
-		-- create and use a new db profile called Tukui, populated with default values
-		self.db:SetProfile("Tukui")
-		self.db:CopyProfile("Default")
+		-- create and use a new db profile called Tukui
+		local dbProfile = self.db:GetCurrentProfile()
+		if dbProfile ~= "Tukui" then
+			self.db:SetProfile("Tukui") -- create new profile
+			self.db:CopyProfile(dbProfile) -- use settings from previous profile
 
-		-- change settings
-		self.db.profile.TooltipBorder  = {r = 0.6, g = 0.6, b = 0.6, a = 1}
-		self.db.profile.BackdropBorder = {r = 0.6, g = 0.6, b = 0.6, a = 1}
-		self.db.profile.Backdrop       = {r = 0.1, g = 0.1, b = 0.1, a = 1}
-		self.db.profile.BdDefault = false
-		self.db.profile.BdFile = "None"
-		self.db.profile.BdEdgeFile = "None"
-		self.db.profile.BdTexture = "Tukui Background"
-		self.db.profile.BdBorderTexture = "Tukui Border"
-		self.db.profile.StatusBar.texture = "Tukui StatusBar"
-		self.db.profile.BdTileSize = 0
-		self.db.profile.BdEdgeSize = 1
-		self.db.profile.BdInset = -1
-		self.db.profile.Gradient = {enable = false, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Tukui Background"}
-		self.db.profile.Buffs = false
-		self.db.profile.Nameplates = false
-		self.db.profile.ChatEditBox = {skin = false, style = 1}
-		self.db.profile.StatusBar = {texture = "Tukui StatusBar", r = 0, g = 0.5, b = 0.5, a = 0.5}
-		self.db.profile.WorldMap = {skin = false, size = 1}
+			-- change settings
+			self.db.profile.TooltipBorder  = {r = 0.6, g = 0.6, b = 0.6, a = 1}
+			self.db.profile.BackdropBorder = {r = 0.6, g = 0.6, b = 0.6, a = 1}
+			self.db.profile.Backdrop       = {r = 0.1, g = 0.1, b = 0.1, a = 1}
+			self.db.profile.BdDefault = false
+			self.db.profile.BdFile = "None"
+			self.db.profile.BdEdgeFile = "None"
+			self.db.profile.BdTexture = "Tukui Background"
+			self.db.profile.BdBorderTexture = "Tukui Border"
+			self.db.profile.StatusBar.texture = "Tukui StatusBar"
+			self.db.profile.BdTileSize = 0
+			self.db.profile.BdEdgeSize = 1
+			self.db.profile.BdInset = -1
+			self.db.profile.Gradient = {enable = false, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Tukui Background"}
+			self.db.profile.Buffs = false
+			self.db.profile.Nameplates = false
+			self.db.profile.ChatEditBox = {skin = false, style = 1}
+			self.db.profile.StatusBar = {texture = "Tukui StatusBar", r = 0, g = 0.5, b = 0.5, a = 0.5}
+			self.db.profile.WorldMap = {skin = false, size = 1}
+		end
 
 		-- run the function
 		self.hooks[this].OnInitialize(this)
@@ -84,7 +90,7 @@ function Skinner:TukuiInit()
 	self:SecureHook(self, "addSkinFrame", function(this, opts)
 		local oName = opts.obj.GetName and opts.obj:GetName()
 		if oName
-		and (string.find(oName,'Tab(%d+)$') or string.find(oName,'TabButton(%d+)$'))
+		and (strfind(oName,'Tab(%d+)$') or strfind(oName,'TabButton(%d+)$'))
 		then
 			local xOfs1 = (opts.x1 or 0) + 4
 			local yOfs1 = (opts.y1 or 0) - 6
@@ -98,7 +104,7 @@ function Skinner:TukuiInit()
 	self:RawHook(self, "addSkinButton", function(this, opts)
 		local oName = opts.obj.GetName and opts.obj:GetName()
 		if oName
-		and string.find(oName, 'ShapeshiftButton(%d)$')
+		and strfind(oName, 'ShapeshiftButton(%d)$')
 		then
 			return
 		end
@@ -220,11 +226,8 @@ function Skinner:TukuiInit()
 
 end
 
--- Load support for TukUI if required
-local name, _, _, enabled, _, _, _ = GetAddOnInfo("Tukui")
-if enabled then
-	local success, err = Skinner:checkAndRun(name.."Init", true)
-	if not success then
-		print("Error running", name, err)
-	end
+-- Load support for TukUI
+local success, err = Skinner:checkAndRun("TukuiInit", true)
+if not success then
+	print("Error running", "Tukui", err)
 end

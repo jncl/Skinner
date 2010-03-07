@@ -1,17 +1,15 @@
+if not Skinner:isAddonEnabled("oRA3") then return end
 
 function Skinner:oRA3()
-
-	local ver = tonumber(string.match(GetAddOnMetadata("oRA3", "X-Curse-Packaged-Version"), "%d+"))
---	self:Debug("oRA3 ver: [%s]", ver)
 
 	-- hook this to manage textured tabs
 	if self.isTT then
 		self:SecureHook(oRA3, "SelectPanel", function(this, name)
-			self:Debug("SP: [%s, %s, %s]", this, name, oRA3Frame.selectedTab)
+--			self:Debug("SP: [%s, %s, %s]", this, name, oRA3Frame.selectedTab)
 			for i = 1, oRA3Frame.numTabs do
 				local tabSF = self.skinFrame[_G["oRA3FrameTab"..i]]
 				if i == oRA3Frame.selectedTab
-				or ver < 326 and _G["oRA3FrameTab"..i].tabName == name
+				or oRA3.VERSION < 326 and _G["oRA3FrameTab"..i].tabName == name
 				then
 					self:setActiveTab(tabSF)
 				else
@@ -30,16 +28,24 @@ function Skinner:oRA3()
 		self:skinAllButtons{obj=oRA3Frame}
 		self:addSkinFrame{obj=oRA3Frame, kfs=true, x1=10 , y1=1, x2=1, y2=-3}
 
-		local subFrame = oRA3FrameSub or oRA3Disband:GetParent()
+		local subFrame = oRA3FrameSub or oRA3Disband:GetParent() -- a.k.a. contentFrame
+		-- handle hiddenMsg
+		local hiddenMsg = self:getRegion(oRA3Frame, 11)
+		hiddenMsg:Hide()
+		self:SecureHook(hiddenMsg, "Show", function(this)
+			if subFrame:IsShown() then this:Hide() end
+		end)
 
 		if not oRA3.db.profile.open then oRA3Frame.title:SetAlpha(0) end
 		-- show the title when opened
 		self:SecureHook(subFrame, "Show", function()
 			oRA3Frame.title:SetAlpha(1)
+			hiddenMsg:Hide()
 		end)
 		-- hide the title when closed
 		self:SecureHook(subFrame, "Hide", function()
 			oRA3Frame.title:SetAlpha(0)
+			hiddenMsg:Show()
 		end)
 
 	-->>-- SubFrame
@@ -55,7 +61,7 @@ function Skinner:oRA3()
 				self:addSkinFrame{obj=header}
 			end
 		end)
-		if ver < 326 then
+		if oRA3.VERSION < 326 then
 			self:skinFFColHeads("oRA3ScrollHeader", 4)
 		end
 
@@ -83,19 +89,22 @@ function Skinner:oRA3()
 	end
 
 -->>-- ReadyCheck Frame
-	local function skinRCFrame()
+	local rc = oRA3:GetModule("ReadyCheck", true)
+	if rc then
+		local function skinRCFrame()
 
-		self:skinAllButtons{obj=oRA3ReadyCheck}
-		self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
+			self:skinAllButtons{obj=oRA3ReadyCheck}
+			self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
 
-	end
-	if oRA3ReadyCheck then skinRCFrame()
-	else
-		local method = ver < 313 and "SetupGUI" or "READY_CHECK"
-		self:SecureHook(oRA3:GetModule("ReadyCheck"), method, function(this, ...)
-			if oRA3.db:GetNamespace("ReadyCheck", true).profile.gui then skinRCFrame() end
-			self:Unhook(oRA3:GetModule("ReadyCheck"), method)
-		end)
+		end
+		if oRA3ReadyCheck then skinRCFrame()
+		else
+			local method = rc.VERSION < 313 and "SetupGUI" or "READY_CHECK"
+			self:SecureHook(rc, method, function(this, ...)
+				if this.db.profile.gui then skinRCFrame() end
+				self:Unhook(rc, method)
+			end)
+		end
 	end
 
 end
