@@ -544,6 +544,7 @@ function Skinner:Options()
 					type = "description",
 					name = self.L["Change the ViewPort & TMB Frames settings"] .. "\n",
 				},
+--[=[
 				ViewPort = {
 					type = "group",
 					order = 1,
@@ -653,6 +654,7 @@ function Skinner:Options()
 						},
 					},
 				},
+--]=]
 				TopFrame =  {
 					type = "group",
 					order = 2,
@@ -1708,6 +1710,13 @@ function Skinner:Options()
 			},
 		},
 	}
+
+	-- ViewPort module options
+	for _, mod in self:IterateModules() do
+		if mod.GetOptions then
+			optTables["VP/TMBFrames"].args[mod.name] = mod.GetOptions()
+		end
+	end
 
 	-- optional options
 	if self.isPTR then

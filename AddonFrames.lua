@@ -39,7 +39,7 @@ end
 function Skinner:SkinnerFrames()
 --	self:Debug("SkinnerFrames")
 
-	for _, v in pairs{"ViewPort", "TopFrame", "MiddleFrames", "BottomFrame"} do
+	for _, v in pairs{--[=["ViewPort", --]=]"TopFrame", "MiddleFrames", "BottomFrame"} do
 		self:checkAndRun(v)
 	end
 
