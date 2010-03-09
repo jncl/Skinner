@@ -8,7 +8,6 @@ function Skinner:BlizzardFrames()
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "WorldState", "ScriptErrors", "DropDowns", -- uie1
 		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "PVPFrame", "LFDFrame", "LFRFrame", -- uie2
-		"UnitFrames", -- uf
 	}
 
 	-- optional frames
@@ -33,15 +32,6 @@ function Skinner:BlizzardFrames()
 	Nameplates -- checked with Aloft below
 	ModelFrames -- checked with CloseUp below
 ]]
-
-end
-
-function Skinner:SkinnerFrames()
---	self:Debug("SkinnerFrames")
-
-	for _, v in pairs{--[=["ViewPort", --]=]"TopFrame", "MiddleFrames", "BottomFrame"} do
-		self:checkAndRun(v)
-	end
 
 end
 

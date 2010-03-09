@@ -1,6 +1,7 @@
 local Skinner = LibStub("AceAddon-3.0"):GetAddon("Skinner")
 local module = Skinner:NewModule("ViewPort")
 
+local db
 local defaults = {
 	profile = {
 		shown = false,
@@ -14,47 +15,97 @@ local defaults = {
 		YRes = 1050,
 	}
 }
+
+local vpoF
+local function checkOverlay()
+
+--	print("checkOverlay", db.shown, db.overlay, vpoF)
+
+	if db.shown then
+		if db.overlay then
+			local xScale = db.XRes / 1050
+			local yScale = 768 / db.YRes
+			if not vpoF then
+				vpoF = CreateFrame("Frame", nil)
+				vpoF:SetAllPoints(UIParent)
+				vpoF:SetFrameLevel(0)
+				vpoF:SetFrameStrata("BACKGROUND")
+				vpoF:EnableMouse(false)
+				vpoF:SetMovable(false)
+				vpoF.top = vpoF:CreateTexture(nil, "BACKGROUND")
+				vpoF.btm = vpoF:CreateTexture(nil, "BACKGROUND")
+				vpoF.left = vpoF:CreateTexture(nil, "BACKGROUND")
+				vpoF.right = vpoF:CreateTexture(nil, "BACKGROUND")
+			end
+			vpoF.top:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+			vpoF.btm:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+			vpoF.left:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+			vpoF.right:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
+			vpoF.top:ClearAllPoints()
+			vpoF.top:SetPoint("TOPLEFT")
+			vpoF.top:SetPoint("BOTTOMRIGHT", vpoF, "TOPRIGHT", 0, -(db.top * yScale))
+			vpoF.btm:ClearAllPoints()
+			vpoF.btm:SetPoint("BOTTOMLEFT")
+			vpoF.btm:SetPoint("TOPRIGHT", vpoF, "BOTTOMRIGHT", 0, (db.bottom * yScale))
+			vpoF.left:ClearAllPoints()
+			vpoF.left:SetPoint("TOPLEFT", vpoF, "TOPLEFT", 0, -(db.top * yScale))
+			vpoF.left:SetPoint("BOTTOMRIGHT", vpoF, "BOTTOMLEFT", (db.left * yScale), (db.bottom * yScale))
+			vpoF.right:ClearAllPoints()
+			vpoF.right:SetPoint("TOPRIGHT", vpoF, "TOPRIGHT", 0, -(db.top * yScale))
+			vpoF.right:SetPoint("BOTTOMLEFT", vpoF, "BOTTOMRIGHT", -(db.right * yScale), (db.bottom * yScale))
+			-- show the overlay frame
+			vpoF:Show()
+		elseif vpoF then
+			vpoF:Hide()
+		end
+	elseif vpoF then
+		vpoF:Hide()
+	end
+
+end
+
 function module:OnInitialize()
 
---	print("VP OnInitialize")
+	-- check to see if any other Viewport Addons are enabled
+	if Skinner:isAddonEnabled("Aperture")
+	or Skinner:isAddonEnabled("Btex")
+	or Skinner:isAddonEnabled("CT_Viewport")
+	or Skinner:isAddonEnabled("SunnArt")
+	then
+		self:Disable() -- disable ourself
+		return
+	end
+
 	self.db = Skinner.db:RegisterNamespace("ViewPort", defaults)
+	db = self.db.profile
+
+	-- convert any old settings
+	if Skinner.db.profile.ViewPort then
+		for k, v in pairs(Skinner.db.profile.ViewPort) do
+			db[k] = v
+		end
+		Skinner.db.profile.ViewPort = nil
+	end
 
 end
 
 function module:OnEnable()
 
---	print("VP OnEnable", self.db.profile.shown)
-	if self.db.profile.shown then self:adjustViewPort("init") end
+	if db.shown then self:adjustViewPort("init") end
 
 end
 
-local vpOverlay
-local function checkOverlay(db)
-
-	print("VP checkOverlay", db.overlay, vpOverlay, db.colour.r, db.colour.g, db.colour.b, db.colour.a)
-	if db.overlay then
-		vpOverlay = vpOverlay or WorldFrame:CreateTexture(nil, "BACKGROUND")
-		vpOverlay:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
---		vpOverlay:SetAllPoints("UIParent")
-		vpOverlay:SetPoint("TOPLEFT", UIParent, -1, 1)
-		vpOverlay:SetPoint("BOTTOMRIGHT", UIParent, 1, -1)
-	elseif vpOverlay then
-		vpOverlay = nil
-	end
-	
-end
 function module:adjustViewPort(opt)
 
-	print("VP adjustViewPort", opt)
-	Spew("vp", self.db.profile)
+--	print("adjustViewPort", opt)
 
-	local db = self.db.profile
 	local xScale = db.XRes / 1050
 	local yScale = 768 / db.YRes
-	local c = db.colour
-	
+
 	if (opt == "init" and db.shown)
 	or (opt == "shown" and db.shown)
+	or (opt == "top" and db.shown)
+	or (opt == "bottom" and db.shown)
 	or (opt == "left" and db.shown)
 	or (opt == "right" and db.shown)
 	or (opt == "XRes" and db.shown)
@@ -62,26 +113,20 @@ function module:adjustViewPort(opt)
 	then
 		WorldFrame:SetPoint("TOPLEFT", (db.left * xScale), -(db.top * yScale))
 		WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * xScale), (db.bottom * yScale))
-		checkOverlay(db)
+		checkOverlay()
 	elseif opt == "overlay"
 	or opt == "colour"
 	then
-		checkOverlay(db)
-	elseif opt == "top" then
-		WorldFrame:SetPoint("TOPLEFT", (db.left * xScale), -(db.top * yScale))
-		WorldFrame:SetPoint("TOPRIGHT", -(db.right * xScale), -(db.top * yScale))
-	elseif opt == "bottom" then
-		WorldFrame:SetPoint("BOTTOMLEFT", (db.left * xScale), (db.bottom * yScale))
-		WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * xScale), (db.bottom * yScale))
+		checkOverlay()
 	elseif opt == "shown" and not db.shown
 	then
 		WorldFrame:ClearAllPoints()
 		WorldFrame:SetPoint("TOPLEFT")
 		WorldFrame:SetPoint("BOTTOMRIGHT")
+		checkOverlay()
 	end
 
 end
-
 
 function module:GetOptions()
 
@@ -91,7 +136,9 @@ function module:GetOptions()
 		name = Skinner.L["View Port"],
 		desc = Skinner.L["Change the ViewPort settings"],
 		get = function(info) return module.db.profile[info[#info]] end,
-		set = function(info, value) module.db.profile[info[#info]] = value
+		set = function(info, value)
+			module.db.profile.shown = true -- always enable viewport if any option is changed
+			module.db.profile[info[#info]] = value
 			module:adjustViewPort(info[#info])
 		end,
 		args = {
@@ -164,12 +211,13 @@ function module:GetOptions()
 				set = function(info, r, g, b, a)
 					local c = module.db.profile[info[#info]]
 					c.r, c.g, c.b, c.a = r, g, b, a
-					module.db.profile.overlay = true
+					module.db.profile.shown = true -- enable viewport
+					module.db.profile.overlay = true -- enable overlay
 					module:adjustViewPort("colour")
 				end,
 			},
 		}
 	}
 	return options
-	
+
 end

@@ -46,15 +46,21 @@ locales\Locale_koKR.lua
 
 Skinner.lua
 options.lua
-ViewPort.lua
-TMBFrames.lua
+modules\ViewPort.lua
+modules\TopFrame.lua
+modules\MiddleFrames.lua
+modules\BottomFrame.lua
+#
+# UnitFrames
+# inc. PlayerFrame, RuneFrame, TotemFrame, ComboFrame, PetFrame, TargetFrame, TargetofTargetFrame, FocusFrame, TargetofFocusFrame, PartyFrames (inc. Party Members Pets)
+modules\UnitFrames.lua
 
 #
-# The individual lua files skin the default frames as follows;
-#
 # AddonFrames
-# inc. ViewPort, TopFrame, MiddleFrame(s), BottomFrame
+# Controls the skinning of the Blizzard frames and the Addon frames
 AddonFrames.lua
+#
+# The individual lua files skin the default frames as follows;
 #
 # CharacterFrames1
 # inc. Character (inc. Pet, Reputation, Skill, Token), PVP, PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI
@@ -75,10 +81,6 @@ UIElements1.lua
 # UIElements2
 # inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools, LFDFrame, LFRFrame
 UIElements2.lua
-#
-# UnitFrames
-# inc. PlayerFrame, RuneFrame, TotemFrame, ComboFrame, PetFrame, TargetFrame, TargetofTargetFrame, FocusFrame, TargetofFocusFrame, PartyFrames (inc. Party Members Pets)
-UnitFrames.lua
 
 # Addon skins
 skins.xml

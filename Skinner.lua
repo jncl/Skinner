@@ -270,7 +270,6 @@ function Skinner:OnEnable()
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 
 	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
-	self:ScheduleTimer("SkinnerFrames", self.db.profile.Delay.Init + 0.1)
 	self:ScheduleTimer("AddonFrames", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1)
 
 	-- handle profile changes
