@@ -93,10 +93,11 @@ function Skinner:OnInitialize()
 	-- register the texture used for EditBoxes & ScrollBars
 	self.LSM:Register("border", "Skinner Border", [[Interface\AddOns\Skinner\textures\krsnik]])
 
+	local db = self.db.profile
 	-- Heading and Body Text colours
-	local c = self.db.profile.HeadText
+	local c = db.HeadText
 	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
-	local c = self.db.profile.BodyText
+	local c = db.BodyText
 	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
 
 	-- Frame multipliers
@@ -107,42 +108,37 @@ function Skinner:OnInitialize()
 	self.ebRegions = {1, 2, 3, 4, 5} -- 1 is text, 2-5 are textures
 
 	-- Gradient settings
-	local c = self.db.profile.GradientMin
-	self.MinR, self.MinG, self.MinB, self.MinA = c.r, c.g, c.b, c.a
-	local c = self.db.profile.GradientMax
-	self.MaxR, self.MaxG, self.MaxB, self.MaxA = c.r, c.g, c.b, c.a
-	local orientation = self.db.profile.Gradient.rotate and "HORIZONTAL" or "VERTICAL"
-	self.gradientOn = self.db.profile.Gradient.invert and {orientation, self.MaxR, self.MaxG, self.MaxB, self.MaxA, self.MinR, self.MinG, self.MinB, self.MinA} or {orientation, self.MinR, self.MinG, self.MinB, self.MinA, self.MaxR, self.MaxG, self.MaxB, self.MaxA}
-	self.gradientOff = {orientation, 0, 0, 0, 1, 0, 0, 0, 1}
-	self.gradientTab = {orientation, .5, .5, .5, 1, .25, .25, .25, 0}
-	self.gradientCBar = {orientation, .25, .25, .55, 1, 0, 0, 0, 1}
-	self.gradientTexture = self.LSM:Fetch("background", self.db.profile.Gradient.texture)
+	self.gradientOn = self:getGradientInfo(db.Gradient)
+	self.gradientOff = {db.Gradient.rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1}
+	self.gradientTab = {db.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
+	self.gradientCBar = {db.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .25, .25, .55, 1, 0, 0, 0, 1}
+	self.gradientTexture = self.LSM:Fetch("background", db.Gradient.texture)
 
 	-- backdrop for Frames etc
 	local bdtex = self.LSM:Fetch("background", "Blizzard ChatFrame Background")
 	local bdbtex = self.LSM:Fetch("border", "Blizzard Tooltip")
-	if self.db.profile.BdDefault then
+	if db.BdDefault then
 		self.backdrop = {
 			bgFile = bdtex, tile = true, tileSize = 16,
 			edgeFile = bdbtex, edgeSize = 16,
 			insets = {left = 4, right = 4, top = 4, bottom = 4},
 		}
 	else
-		if self.db.profile.BdFile and self.db.profile.BdFile ~= "None" then
-			bdtex = self.db.profile.BdFile
+		if db.BdFile and db.BdFile ~= "None" then
+			bdtex = db.BdFile
 		else
-			bdtex = self.LSM:Fetch("background", self.db.profile.BdTexture)
+			bdtex = self.LSM:Fetch("background", db.BdTexture)
 		end
-		if self.db.profile.BdEdgeFile and self.db.profile.BdEdgeFile ~= "None" then
-			bdbtex = self.db.profile.BdEdgeFile
+		if db.BdEdgeFile and db.BdEdgeFile ~= "None" then
+			bdbtex = db.BdEdgeFile
 		else
-			bdbtex = self.LSM:Fetch("border", self.db.profile.BdBorderTexture)
+			bdbtex = self.LSM:Fetch("border", db.BdBorderTexture)
 		end
-		local bdi = self.db.profile.BdInset
-		local bdt = self.db.profile.BdTileSize > 0 and true or false
+		local bdi = db.BdInset
+		local bdt = db.BdTileSize > 0 and true or false
 		self.backdrop = {
-			bgFile = bdtex, tile = bdt, tileSize = self.db.profile.BdTileSize,
-			edgeFile = bdbtex, edgeSize = self.db.profile.BdEdgeSize,
+			bgFile = bdtex, tile = bdt, tileSize = db.BdTileSize,
+			edgeFile = bdbtex, edgeSize = db.BdEdgeSize,
 			insets = {left = bdi, right = bdi, top = bdi, bottom = bdi},
 		}
 	end
@@ -201,17 +197,17 @@ function Skinner:OnInitialize()
 	-- Set the Tooltip Border
 	self.ttBorder = true
 	-- TooltipBorder colours
-	local c = self.db.profile.TooltipBorder
+	local c = db.TooltipBorder
 	self.tbColour = {c.r, c.g, c.b, c.a}
 	-- StatusBar colours
-	local c = self.db.profile.StatusBar
+	local c = db.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
-	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
+	self.sbTexture = self.LSM:Fetch("statusbar", db.StatusBar.texture)
 	-- Backdrop colours
-	local c = self.db.profile.Backdrop
+	local c = db.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a}
 	-- BackdropBorder colours
-	local c = self.db.profile.BackdropBorder
+	local c = db.BackdropBorder
 	self.bbColour = {c.r, c.g, c.b, c.a}
 	-- Inactive Tab texture
 	self.itTex = self.LSM:Fetch("background", "Inactive Tab")
@@ -227,10 +223,9 @@ function Skinner:OnInitialize()
 	-- table to hold which functions have been actioned
 	self.initialized = {}
 
-	-- define a metatable to have weak keys and to automatically add an entry if it doesn't exist
-	local mt = {__mode = "k", __index = function(t, k) t[k] = true end}
 	-- table to hold objects which have been skinned
-	self.skinned = setmetatable({}, mt)
+	-- with a metatable having weak keys and automatically adding an entry if it doesn't exist
+	self.skinned = setmetatable({}, {__mode = "k", __index = function(t, k) t[k] = true end})
 
 	-- table to hold frames that have been added, with weak keys
 	self.skinFrame = setmetatable({}, {__mode = "k"})
@@ -242,7 +237,7 @@ function Skinner:OnInitialize()
 	self.sbGlazed = setmetatable({}, {__mode = "k"})
 
 	-- shorthand for the TexturedTab profile setting
-	self.isTT = self.db.profile.TexturedTab and true or false
+	self.isTT = db.TexturedTab and true or false
 
 	-- hook to handle textured tabs on Blizzard & other Frames
 	self.tabFrames = {}
@@ -296,6 +291,7 @@ function Skinner:OnEnable()
 	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
 	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, false) end)
 	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end)
+	self:RegisterChatCommand("sp", function(msg) Spew("xyz", msg) end)
 --@end-debug@
 
 end
@@ -342,6 +338,18 @@ function Skinner:CustomPrint(r, g, b, a1, ...)
 	local output = ("|cffffff78"..aName..":|r")
 
 	printIt(output.." "..makeText(a1, ...), nil, r, g, b)
+
+end
+
+function Skinner:getGradientInfo(db)
+
+	local c = self.db.profile.GradientMin
+	MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
+	local c = self.db.profile.GradientMax
+	MaxR, MaxG, MaxB, MaxA = c.r, c.g, c.b, c.a
+
+	return db.invert and {db.rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA} or {db.rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA}
+
 
 end
 
@@ -559,7 +567,7 @@ function Skinner:addSkinFrame(...)
 
 end
 
-function Skinner:applyGradient(frame, fh)
+function Skinner:applyGradient(frame, fh, invert)
 
 	-- don't apply a gradient if required
 	if not self.db.profile.Gradient.char then
@@ -593,7 +601,7 @@ function Skinner:applyGradient(frame, fh)
 	end
 --	self:Debug("aG Fade Height: [%s, %s, %s]", frame:GetName(), frame:GetHeight(), fh)
 
-	if self.db.profile.Gradient.invert then
+	if invert then
 		frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 4, 4)
 		if fh then frame.tfade:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT", -4, -(fh - 4))
 		else frame.tfade:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -4, -4) end
@@ -650,7 +658,9 @@ local function __applySkin(opts)
 	if opts.hdr then hideHeader(opts.obj) end
 
 	-- apply the 'Skinner' effect
-	if not opts.ng then Skinner:applyGradient(opts.obj, opts.fh) end
+	if not opts.ng then
+		Skinner:applyGradient(opts.obj, opts.fh, opts.invert or Skinner.db.profile.Gradient.invert)
+	end
 
 end
 
@@ -781,7 +791,7 @@ end
 
 function Skinner:isAddonEnabled(addonName)
 
-	return select(4, GetAddOnInfo(addonName))
+	return (select(4, GetAddOnInfo(addonName)))
 
 end
 
@@ -1019,9 +1029,7 @@ function Skinner:getChild(obj, childNo)
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
-	local child
-	if obj and childNo then child = select(childNo, obj:GetChildren()) end
-	return child
+	if obj and childNo then return (select(childNo, obj:GetChildren())) end
 
 end
 
@@ -1030,9 +1038,7 @@ function Skinner:getRegion(obj, regNo)
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
-	local region
-	if obj and regNo then region = select(regNo, obj:GetRegions()) end
-	return region
+	if obj and regNo then return (select(regNo, obj:GetRegions())) end
 
 end
 
