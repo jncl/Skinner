@@ -182,7 +182,7 @@ function Skinner:TradeSkillUI()
 	if not self.db.profile.TradeSkillUI or self.initialized.TradeSkillUI then return end
 	self.initialized.TradeSkillUI = true
 
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("TradeSkillFrame_Update", function()
 			for i = 1, TRADE_SKILLS_DISPLAYED do
@@ -215,7 +215,7 @@ function Skinner:TradeSkillUI()
 		_G["TradeSkillReagent"..i.."NameFrame"]:SetTexture(nil)
 	end
 
-	if self.db.profile.Buttons then TradeSkillFrame_Update() end -- force update for button textures
+	if self.modBtns then TradeSkillFrame_Update() end -- force update for button textures
 
 end
 
@@ -242,7 +242,7 @@ function Skinner:QuestLog()
 	self:keepFontStrings(QuestLogCount)
 	self:keepFontStrings(EmptyQuestLogFrame)
 
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		local function qlUpd()
 
 			for i = 1, #QuestLogScrollFrame.buttons do

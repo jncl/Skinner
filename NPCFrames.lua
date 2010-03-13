@@ -67,7 +67,7 @@ function Skinner:TrainerUI()
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ClassTrainerFrame_Update", function()
 			for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
@@ -85,12 +85,9 @@ function Skinner:TrainerUI()
 	end
 	self:skinScrollBar{obj=ClassTrainerListScrollFrame}
 	self:skinScrollBar{obj=ClassTrainerDetailScrollFrame}
-	self:skinButton{obj=ClassTrainerTrainButton}
-	self:skinButton{obj=ClassTrainerCancelButton}
-	self:skinButton{obj=ClassTrainerFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=74}
 
-	if self.db.profile.Buttons then ClassTrainerFrame_Update() end -- force update for button textures
+	if self.modBtns then ClassTrainerFrame_Update() end -- force update for button textures
 
 end
 

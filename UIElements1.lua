@@ -101,13 +101,20 @@ function Skinner:CastingBar()
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
 
+	local modUF = self:GetModule("UnitFrames", true):IsEnabled() and self:GetModule("UnitFrames", true)
 	-- hook this to move the spark down on the casting bar
 	self:SecureHook("CastingBarFrame_OnUpdate", function(this, ...)
 		local barSpark = _G[this:GetName().."Spark"]
 		local yOfs = -3
 		if this == CastingBarFrame then
-		elseif self.db.profile.UnitFrames.target and this == TargetFrameSpellBar then
-		elseif self.db.profile.UnitFrames.focus and this == FocusFrameSpellBar then
+		elseif this == TargetFrameSpellBar
+		and modUF
+		and modUF.db.profile.target
+		then
+		elseif this == FocusFrameSpellBar
+		and modUF
+		and modUF.db.profile.focus
+		then
 		else yOfs = 0
 		end
 		self:moveObject{obj=barSpark, y=yOfs}

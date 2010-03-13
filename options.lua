@@ -32,7 +32,6 @@ function Skinner:Defaults()
 		FadeHeight		= {enable = false, value = 500, force = false},
 		Delay			= {Init = 0.5, Addons = 0.5, LoDs = 0.5},
 		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
-		Buttons			= false,
 		-- Character Frames
 		CharacterFrames = true,
 		PVPFrame  		= true,
@@ -287,12 +286,6 @@ function Skinner:Options()
 							end,
 						},
 					},
-				},
-				Buttons = {
-					type = "toggle",
-					order = 9,
-					name = self.L["UI Buttons"],
-					desc = self.L["Toggle the skin of the UI Buttons"],
 				},
 				WatchFrame = {
 					type = "toggle",

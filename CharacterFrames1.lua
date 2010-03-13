@@ -81,7 +81,7 @@ end
 
 function Skinner:ReputationFrame()
 
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ReputationFrame_Update", function()
 			for i = 1, NUM_FACTIONS_DISPLAYED do
@@ -110,7 +110,7 @@ end
 
 function Skinner:SkillFrame()
 
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("SkillFrame_UpdateSkills", function()
 			for i = 1, SKILLS_TO_DISPLAY do
