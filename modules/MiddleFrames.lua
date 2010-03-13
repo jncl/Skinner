@@ -1,4 +1,4 @@
-local Skinner = LibStub("AceAddon-3.0"):GetAddon("Skinner")
+local _, Skinner = ...
 local module = Skinner:NewModule("MiddleFrames")
 local ftype = "s"
 
@@ -11,7 +11,8 @@ local defaults = {
 		colour = {r = 0, g = 0, b = 0, a = 0.9},
 	}
 }
-for i = 1, 9 do
+local MAX_MIDDLEFRAMES = 9
+for i = 1, MAX_MIDDLEFRAMES do
 	defaults.profile["mf"..i] = {shown = false, height = 100, width = 100, xOfs = -300, yOfs = 300, flevel = 0, fstrata = "BACKGROUND"}
 end
 
@@ -127,7 +128,7 @@ function module:OnInitialize()
 		end
 		Skinner.db.profile.MiddleFrame = nil
 	end
-	for i = 1, 9 do
+	for i = 1, MAX_MIDDLEFRAMES do
 		if Skinner.db.profile["MiddleFrame"..i] then
 			for k, v in pairs(Skinner.db.profile["MiddleFrame"..i]) do
 				db["mf"..i][k] = v
@@ -135,6 +136,15 @@ function module:OnInitialize()
 			Skinner.db.profile["MiddleFrame"..i] = nil
 		end
 	end
+
+	local enable
+	for i = 1, MAX_MIDDLEFRAMES do
+		if db["mf"..i].shown then
+			enable = true
+			break
+		end
+	end
+	if not enable then self:Disable() end -- disable ourself
 
 end
 
@@ -149,7 +159,7 @@ function module:adjustMiddleFrames(opt, key)
 --	print("adjustMiddleFrames", opt, key)
 
 	if not key then
-		for i = 1, 9 do
+		for i = 1, MAX_MIDDLEFRAMES do
 			local key = "mf"..i
 --			print("adjustMiddleFrames loop", key, db[key].shown)
 			adjustFrame(key)
@@ -169,6 +179,7 @@ function module:GetOptions()
 		desc = Skinner.L["Change the MiddleFrame(s) settings"],
 		get = function(info) return module.db.profile[info[#info]]	end,
 		set = function(info, value)
+			if not module:IsEnabled() then module:Enable() end
 			module.db.profile[info[#info]] = value
 			module:adjustMiddleFrames(info[#info])
 		end,
@@ -197,6 +208,7 @@ function module:GetOptions()
 					return c.r, c.g, c.b, c.a
 				end,
 				set = function(info, r, g, b, a)
+					if not module:IsEnabled() then module:Enable() end
 					local c = module.db.profile[info[#info]]
 					c.r, c.g, c.b, c.a = r, g, b, a
 					module:adjustMiddleFrames("colour")
@@ -224,7 +236,7 @@ function module:GetOptions()
 
 	-- setup middleframe(s) options
 	local mfkey
-	for i = 1, 9 do
+	for i = 1, MAX_MIDDLEFRAMES do
 		mfkey = {}
 		mfkey.type = "group"
 		mfkey.inline = true
@@ -234,6 +246,8 @@ function module:GetOptions()
 			return module.db.profile[info[#info - 1]][info[#info]]
 		end
 		mfkey.set = function(info, value)
+			if not module:IsEnabled() then module:Enable() end
+			module.db.profile[info[#info - 1]].shown = true -- always enable if any option is changed
 			module.db.profile[info[#info - 1]][info[#info]] = value
 			module:adjustMiddleFrames(info[#info], info[#info - 1])
 		end

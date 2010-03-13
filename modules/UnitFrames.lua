@@ -1,4 +1,4 @@
-local Skinner = LibStub("AceAddon-3.0"):GetAddon("Skinner")
+local _, Skinner = ...
 local module = Skinner:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local _G = _G
 local ftype = "c"
@@ -78,7 +78,6 @@ local function skinPlayerF()
 	end
 
 end
-
 local plt
 local function skinPetF()
 
@@ -156,11 +155,11 @@ local function skinUFrame(frame)
 	Skinner:moveObject{obj=_G[frame.."TextureFrameLevelText"], x=2, y=lOfs}
 	-- casting bar
 	local cBar = frame.."SpellBar"
-	Skinner:adjHeight{obj=_G[cBar], adj=4}
+	Skinner:adjHeight{obj=_G[cBar], adj=2}
+	Skinner:moveObject{obj=_G[cBar.."Text"], y=-1}
+	_G[cBar.."Flash"]:SetAllPoints()
 	_G[cBar.."Border"]:SetAlpha(0) -- texture file is changed dependant upon spell type
 	Skinner:changeShield(_G[cBar.."BorderShield"], _G[cBar.."Icon"])
-	_G[cBar.."Flash"]:SetAllPoints()
-	Skinner:moveObject{obj=_G[cBar.."Text"], y=-2}
 	Skinner:glazeStatusBar(_G[cBar], 0, Skinner:getRegion(_G[cBar], 1), {_G[cBar.."Flash"]})
 
 -->>-- TargetofTarget Frame
@@ -327,6 +326,16 @@ function module:OnInitialize()
 		Skinner.db.profile.UnitFrames = nil
 	end
 
+	 -- disable ourself if required
+	if not db.player
+	and not db.target
+	and not db.focus
+	and not db.party
+	and not db.pet
+	then
+		self:Disable()
+	end
+
 end
 
 function module:OnEnable()
@@ -371,6 +380,7 @@ function module:GetOptions()
 		desc = Skinner.L["Change the Unit Frames settings"],
 		get = function(info) return module.db.profile[info[#info]] end,
 		set = function(info, value)
+			if not module:IsEnabled() then module:Enable() end
 			module.db.profile[info[#info]] = value
 			module:adjustUnitFrames(info[#info])
 		end,

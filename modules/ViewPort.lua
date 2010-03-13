@@ -87,6 +87,8 @@ function module:OnInitialize()
 		Skinner.db.profile.ViewPort = nil
 	end
 
+	if not db.shown then self:Disable() end -- disable ourself
+
 end
 
 function module:OnEnable()
@@ -137,7 +139,8 @@ function module:GetOptions()
 		desc = Skinner.L["Change the ViewPort settings"],
 		get = function(info) return module.db.profile[info[#info]] end,
 		set = function(info, value)
-			module.db.profile.shown = true -- always enable viewport if any option is changed
+			if not module:IsEnabled() then module:Enable() end
+			module.db.profile.shown = true -- always enable if any option is changed
 			module.db.profile[info[#info]] = value
 			module:adjustViewPort(info[#info])
 		end,

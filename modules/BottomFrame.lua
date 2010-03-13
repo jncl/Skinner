@@ -1,4 +1,4 @@
-local Skinner = LibStub("AceAddon-3.0"):GetAddon("Skinner")
+local _, Skinner = ...
 local module = Skinner:NewModule("BottomFrame")
 local ftype = "s"
 
@@ -29,6 +29,8 @@ function module:OnInitialize()
 		end
 		Skinner.db.profile.BottomFrame = nil
 	end
+
+	if not db.shown then self:Disable() end -- disable ourself
 
 end
 
@@ -88,6 +90,8 @@ function module:GetOptions()
 		desc = Skinner.L["Change the BottomFrame settings"],
 		get = function(info) return module.db.profile[info[#info]] end,
 		set = function(info, value)
+			if not module:IsEnabled() then module:Enable() end
+			module.db.profile.shown = true -- always enable if any option is changed
 			module.db.profile[info[#info]] = value
 			module:adjustBottomFrame(info[#info])
 		end,
