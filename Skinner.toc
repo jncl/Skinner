@@ -35,7 +35,7 @@ libs\AceConfig-3.0\AceConfig-3.0.xml
 # LSM must be loaded before SMW
 libs\LibSharedMedia-3.0\lib.xml
 libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
-libs\LibBetterBlizzOptions-1.0\LibBetterBlizzOptions-1.0.lua
+libs\LibBetterBlizzOptions-1.0\lib.xml
 #@end-no-lib-strip@
 #
 # Locale files
