@@ -1,7 +1,4 @@
 local aName, Skinner = ...
-local _G = _G
-
-local maxwidth = 2600 -- screen width
 
 function Skinner:Defaults()
 
@@ -512,7 +509,7 @@ function Skinner:Options()
 			childGroups = "tab",
 			name = self.L["Module settings"],
 			args = {
-				longdesc = {
+				desc = {
 					type = "description",
 					name = self.L["Change the Module's settings"],
 				},
