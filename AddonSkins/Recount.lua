@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Recount") then return end
 
 function Skinner:Recount()
 
@@ -7,15 +8,9 @@ function Skinner:Recount()
 		if window:GetName() == "Recount_ReportWindow" then -- report window
 			self:skinEditBox{obj=window.Whisper, regs={9}, noHeight=true}
 			window.Whisper:SetHeight(window.Whisper:GetHeight() + 6)
-			self:skinButton{obj=window.ReportButton}
 			x1, y1, x2, y2 = -2, -8, 2, -2
 		elseif window:GetName() == "Recount_ConfigWindow" then -- config window(s)
-			self:skinAllButtons(window.Data)
-			self:skinAllButtons(window.Window)
-			self:skinAllButtons(window.ColorOpt)
-			x1, y1, x2, y2 = -4, -8, 3, -2
-		elseif window.YesButton then -- reset window
-			self:skinAllButtons(window)
+			x1, y1, x2, y2 = -4, -8, 5, -2
 		end
 		self:addSkinFrame{obj=window, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
 	end)

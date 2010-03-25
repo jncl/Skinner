@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("ArkInventory") then return end
 
 function Skinner:ArkInventory()
 	if not self.db.profile.ContainerFrames.skin then return end
@@ -12,9 +13,6 @@ function Skinner:ArkInventory()
 			for _, v in pairs{"Title", "Search", "Container", "Changer", "Status"} do
 				y1 = v == "Container" and -1 or 0
 				self:addSkinFrame{obj=_G[af..v], kfs=true, y1=y1}
-				if v == "Title" then
-					self:skinButton{obj=_G[af..v.."Close"], cb2=true, x1=-2, y1=2, x2=2, y2=-2}
-				end
 			end
 			self:skinEditBox(_G[af.."SearchFilter"], {9})
 			if _G[af.."StatusText"] then _G[af.."StatusText"]:SetAlpha(1) end
@@ -23,9 +21,7 @@ function Skinner:ArkInventory()
 
 -->>--	Rules Frame
 	ArkInventory.db.profile.option.ui.rules.border.colour = CopyTable(self.db.profile.BackdropBorder)
-	self:applySkin(ARKINV_RulesTitle)
-	self:skinButton{obj=ARKINV_RulesTitleClose, cb2=true, tx=-1, x1=-1, y1=1, x2=1, y2=-1}
-	self:applySkin(ARKINV_RulesFrame)
+	self:addSkinFrame{obj=ARKINV_RulesTitle}
 	self:applySkin(ARKINV_RulesFrameViewTitle)
 	self:applySkin(ARKINV_RulesFrameViewSearch)
 	self:skinEditBox(ARKINV_RulesFrameViewSearchFilter, {9})
@@ -33,14 +29,10 @@ function Skinner:ArkInventory()
 	self:applySkin(ARKINV_RulesFrameViewTable)
 	self:skinScrollBar{obj=ARKINV_RulesFrameViewTableScroll}
 	self:applySkin(ARKINV_RulesFrameViewMenu)
-	self:skinButton{obj=ARKINV_RulesFrameViewMenuAdd, y2=1}
-	self:skinButton{obj=ARKINV_RulesFrameViewMenuEdit, y2=1}
-	self:skinButton{obj=ARKINV_RulesFrameViewMenuRemove, y2=1}
+	self:addSkinFrame{obj=ARKINV_RulesFrame}
 -->>--	RF Add
 	self:applySkin(ARKINV_RulesFrameModifyTitle)
 	self:applySkin(ARKINV_RulesFrameModifyMenu)
-	self:skinButton{obj=ARKINV_RulesFrameModifyMenuOk, y2=1}
-	self:skinButton{obj=ARKINV_RulesFrameModifyMenuCancel, y2=1}
 	self:applySkin(ARKINV_RulesFrameModifyData)
 	self:skinEditBox(ARKINV_RulesFrameModifyDataOrder, {9})
 	self:skinEditBox(ARKINV_RulesFrameModifyDataDescription, {9})
@@ -49,20 +41,13 @@ function Skinner:ArkInventory()
 	ARKINV_RulesFrameModifyDataScrollBarBackground:SetAlpha(0)
 -->>--	Search Frame
 	ArkInventory.db.profile.option.ui.search.border.colour = CopyTable(self.db.profile.BackdropBorder)
-	self:applySkin(ARKINV_SearchTitle)
-	self:skinButton{obj=ARKINV_SearchTitleClose, cb2=true, tx=-1, x1=-1, y1=1, x2=1, y2=-1}
-	self:applySkin(ARKINV_SearchFrame)
+	self:addSkinFrame{obj=ARKINV_SearchTitle}
 	self:applySkin(ARKINV_SearchFrameViewSearch)
 	self:skinEditBox(ARKINV_SearchFrameViewSearchFilter, {9})
 	self:applySkin(ARKINV_SearchFrameViewTable)
 	self:skinScrollBar{obj=ARKINV_SearchFrameViewTableScroll}
+	self:addSkinFrame{obj=ARKINV_SearchFrame}
 -->>-- GuildBank Log Frame
 	self:applySkin{obj=ARKINV_Frame4Log}
--->>-- GuildBank buttons
-	self:skinButton{obj=ARKINV_Frame4ChangerWindowPurchaseInfoPurchaseButton}
-	self:skinButton{obj=ARKINV_Frame4ChangerWindowDepositButton}
-	self:skinButton{obj=ARKINV_Frame4ChangerWindowWithdrawButton}
--->>-- Bank button
-	self:skinButton{obj=ARKINV_Frame3ChangerWindowPurchaseInfoPurchaseButton}
 
 end

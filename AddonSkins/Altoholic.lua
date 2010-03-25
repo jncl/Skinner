@@ -1,26 +1,25 @@
+if not Skinner:isAddonEnabled("Altoholic") then return end
 
 function Skinner:Altoholic()
 
-	self:skinEditBox(AltoholicFrame_SearchEditBox, {9})
-	self:skinAllButtons{obj=AltoholicFrame}
+	self:skinEditBox{obj=AltoholicFrame_SearchEditBox, regs={9}}
 	self:addSkinFrame{obj=AltoholicFrame, kfs=true, y1=-11}
 
 -->>-- Message Box
-	self:skinAllButtons{obj=AltoMsgBox}
 	self:addSkinFrame{obj=AltoMsgBox, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
 -->>--	Other Frames
 	for _, v in pairs({"Activity", "Auctions", "BagUsage", "Containers", "Equipment", "GuildMembers", "GuildProfessions", "GuildBankTabs", "Mail", "Quests", "Recipes", "Reputations", "Search", "Skills", "Summary"}) do
 		local rcmObj = _G["AltoholicFrame"..v.."RightClickMenu"]
 		local sfObj = _G["AltoholicFrame"..v.."ScrollFrame"]
-		if rcmObj then self:skinDropDown(rcmObj) end
+		if rcmObj then self:skinDropDown{obj=rcmObj} end
 		self:skinScrollBar{obj=sfObj}
 	end
 
 -->>--	Tabbed Frames
 	local obj
 	-- Summary tab
-	self:skinDropDown(AltoholicTabSummary_SelectLocation)
+	self:skinDropDown{obj=AltoholicTabSummary_SelectLocation}
 
 	for i = 1, 9 do -- menu items
 		obj = _G["AltoholicTabSummaryMenuItem"..i]
@@ -32,7 +31,7 @@ function Skinner:Altoholic()
 		obj = _G["AltoholicTabSummary_Sort"..i]
 		if i == 1 then self:moveObject(obj, nil, nil, "+", 6) end
 		if not obj then break end
-		obj:SetHeight(obj:GetHeight() + 3)
+		self:adjHeight{obj=obj, adj=3}
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
 		self:applySkin(obj)
 	end
@@ -52,32 +51,29 @@ function Skinner:Altoholic()
 	self:skinButton{obj=AltoholicTabSummaryToggleView, mp2=true, plus=true}
 
 	-- Characters tab
-	self:skinDropDown(AltoholicTabCharacters_SelectRealm)
-	self:skinDropDown(AltoholicTabCharacters_SelectChar)
+	self:skinDropDown{obj=AltoholicTabCharacters_SelectRealm}
+	self:skinDropDown{obj=AltoholicTabCharacters_SelectChar}
 	for i = 1, 9 do -- sort headers
 		obj = _G["AltoholicTabCharacters_Sort"..i]
 		if not obj then break end
 		if i == 1 then self:moveObject(obj, nil, nil, "+", 6) end
-		obj:SetHeight(obj:GetHeight() + 3)
+		self:adjHeight{obj=obj, adj=3}
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
 		self:applySkin(obj)
 	end
 	-- Container View
-	self:skinDropDown(AltoholicFrameContainers_SelectContainerView)
-	self:skinDropDown(AltoholicFrameContainers_SelectRarity)
+	self:skinDropDown{obj=AltoholicFrameContainers_SelectContainerView}
+	self:skinDropDown{obj=AltoholicFrameContainers_SelectRarity}
 	-- Companions/Mounts View
-	self:skinDropDown(AltoholicFramePets_SelectPetView)
-	AltoholicFramePetsNormal_ModelFrameRotateLeftButton:Hide()
-	AltoholicFramePetsNormal_ModelFrameRotateRightButton:Hide()
+	self:skinDropDown{obj=AltoholicFramePets_SelectPetView}
 	self:makeMFRotatable(AltoholicFramePetsNormal_ModelFrame)
 	-- Search Tab
-	self:removeRegions(AltoholicSearchMenuScrollFrame)
-	self:skinScrollBar(AltoholicSearchMenuScrollFrame)
-	self:skinEditBox(AltoholicTabSearch_MinLevel, {9})
-	self:skinEditBox(AltoholicTabSearch_MaxLevel, {9})
-	self:skinDropDown(AltoholicTabSearch_SelectRarity)
-	self:skinDropDown(AltoholicTabSearch_SelectSlot)
-	self:skinDropDown(AltoholicTabSearch_SelectLocation)
+	self:skinScrollBar{obj=AltoholicSearchMenuScrollFrame}
+	self:skinEditBox{obj=AltoholicTabSearch_MinLevel, regs={9}}
+	self:skinEditBox{obj=AltoholicTabSearch_MaxLevel, regs={9}}
+	self:skinDropDown{obj=AltoholicTabSearch_SelectRarity}
+	self:skinDropDown{obj=AltoholicTabSearch_SelectSlot}
+	self:skinDropDown{obj=AltoholicTabSearch_SelectLocation}
 	for i = 1, 20 do
 		obj = _G["AltoholicTabSearchMenuItem"..i]
 		if not obj then break end
@@ -88,13 +84,13 @@ function Skinner:Altoholic()
 		obj = _G["AltoholicTabSearch_Sort"..i]
 		if not obj then break end
 		if i == 1 then self:moveObject(obj, nil, nil, "+", 4) end
-		obj:SetHeight(obj:GetHeight() + 2)
+		self:adjHeight{obj=obj, adj=2}
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
 		self:applySkin(obj)
 	end
 	-- GuildBank tab
-	self:skinDropDown(AltoholicTabGuildBank_SelectGuild)
-	self:skinButton{obj=AltoholicTabGuildBank_DeleteGuildButton}
+	self:skinDropDown{obj=AltoholicTabGuildBank_SelectGuild}
+	self:skinDropDown{obj=AltoholicTabGuildBank_DeleteGuildButton}
 	for i = 1, 9 do
 		obj = _G["AltoholicTabGuildBankMenuItem"..i]
 		if not obj then break end
@@ -102,10 +98,8 @@ function Skinner:Altoholic()
 		self:applySkin(obj)
 	end
 	-- Achievements tab
-	self:removeRegions(AltoholicFrameAchievementsScrollFrame)
-	self:skinScrollBar(AltoholicFrameAchievementsScrollFrame)
-	self:removeRegions(AltoholicAchievementsMenuScrollFrame)
-	self:skinScrollBar(AltoholicAchievementsMenuScrollFrame)
+	self:skinScrollBar{obj=AltoholicFrameAchievementsScrollFrame}
+	self:skinScrollBar{obj=AltoholicAchievementsMenuScrollFrame}
 	for i = 1, 20 do
 		obj = _G["AltoholicTabAchievementsMenuItem"..i]
 		if not obj then break end
@@ -156,19 +150,17 @@ function Skinner:Altoholic()
 	self:skinScrollBar{obj=AltoholicFrameSharingClientsScrollFrame}
 	self:addSkinFrame{obj=AltoholicFrameSharingClients}
 	self:skinScrollBar{obj=AltoholicFrameSharedContentScrollFrame}
+-->>-- SharedContent option menu panel
+	self:skinButton{obj=AltoholicSharedContent_ToggleAll, mp2=true}
 	self:addSkinFrame{obj=AltoholicFrameSharedContent}
-	self:skinButton{obj=AltoholicAccountSharingOptions_ToggleAll, mp2=true}
 	for i = 1, 10 do
 		self:skinButton{obj=_G["AltoholicFrameSharedContentEntry"..i.."Collapse"], mp2=true}
 	end
 
 -->>-- Account Sharing frame
 	self:skinEditBox{obj=AltoAccountSharing_AccNameEditBox, regs={9}}
-	self:skinButton{obj=AltoAccountSharing_InfoButton, x1=-2, x2=2}
-	self:skinEditBox{obj=AltoAccountSharing_AccTargetEditBox, regs={9}}
-	self:skinButton{obj=AltoAccountSharing_SendButton}
-	self:skinButton{obj=AltoAccountSharing_CancelButton}
 	self:skinButton{obj=AltoAccountSharing_ToggleAll, mp2=true}
+	self:skinEditBox{obj=AltoAccountSharing_AccTargetEditBox, regs={9}}
 	self:skinScrollBar{obj=AltoholicFrameAvailableContentScrollFrame}
 	for i = 1, 10 do
 		self:skinButton{obj=_G["AltoholicFrameAvailableContentEntry"..i.."Collapse"], mp2=true}

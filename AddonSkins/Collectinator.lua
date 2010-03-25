@@ -1,8 +1,6 @@
+if not Skinner:isAddonEnabled("Collectinator") then return end
 
 function Skinner:Collectinator()
-
-	-- button on PetPaperDoll frame
-	self:skinButton{obj=Collectinator.ScanButton, ty=0}
 
 	-- skin the frame
 	self:SecureHook(Collectinator, "DisplayFrame", function(this)
@@ -21,13 +19,19 @@ function Skinner:Collectinator()
 				self:skinTooltip(this)
 			end)
 		end
-		-- buttons
-		self:skinAllButtons{obj=this.Frame} -- not working as the textures aren't named !!!
 		--	minus/plus buttons
-		for i = 1, #this.PlusListButton do 
-			self:skinButton{obj=this.PlusListButton[i], mp2=true, plus=true, tx=-3, ty=0}
+		for _, btn in pairs(this.PlusListButton) do
+			self:skinButton{obj=btn, mp2=true, plus=true}
+			btn.text:SetJustifyH("CENTER")
 		end
 		self:Unhook(Collectinator, "DisplayFrame")
 	end)
 	
+	-- TextDump frame
+	self:skinScrollBar{obj=CollectinatorCopyScroll}
+	self:addSkinFrame{obj=CollectinatorCopyFrame}
+
+	-- button on PetPaperDoll frame
+	self:skinButton{obj=Collectinator.ScanButton}
+
 end

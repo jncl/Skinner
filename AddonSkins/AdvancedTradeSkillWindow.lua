@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("AdvancedTradeSkillWindow") then return end
 
 function Skinner:AdvancedTradeSkillWindow()
 	if not self.db.profile.TradeSkillUI then return end
@@ -12,14 +13,13 @@ function Skinner:AdvancedTradeSkillWindow()
 	self:skinScrollBar{obj=ATSWQueueScrollFrame}
 	self:skinEditBox{obj=ATSWInputBox, regs={9}, noWidth=true}
 	self:skinEditBox{obj=ATSWFilterBox, regs={9}}
-	self:skinAllButtons{obj=ATSWFrame}
 	self:addSkinFrame{obj=ATSWFrame, kfs=true, x1=14, y1=-11, x2=-32, y2=10}
 	-- m/p buttons
 	self:skinButton{obj=ATSWCollapseAllButton, mp=true}
 	for i = 1, ATSW_TRADE_SKILLS_DISPLAYED do
 		self:skinButton{obj=_G["ATSWSkill"..i], mp=true}
 	end
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ATSWFrame_Update", function()
 			for i = 1, ATSW_TRADE_SKILLS_DISPLAYED do
@@ -32,15 +32,12 @@ function Skinner:AdvancedTradeSkillWindow()
 	end
 
 	-- Reagent frame
-	self:skinAllButtons{obj=ATSWReagentFrame}
 	self:addSkinFrame{obj=ATSWReagentFrame, kfs=true, x1=14, y1=-13, x2=-34, y2=10}
 
 	-- Options frame
-	self:skinAllButtons{obj=ATSWOptionsFrame}
 	self:addSkinFrame{obj=ATSWOptionsFrame}
 
 	-- Continue frame
-	self:skinAllButtons{obj=ATSWContinueFrame}
 	self:addSkinFrame{obj=ATSWContinueFrame}
 
 	-- Tooltips
@@ -58,14 +55,13 @@ function Skinner:AdvancedTradeSkillWindow()
 	-- Recipe Sorting Editor frame
 	self:skinScrollBar{obj=ATSWCSUListScrollFrame}
 	self:skinScrollBar{obj=ATSWCSSListScrollFrame}
-	self:skinEditBox(ATSWCSNewCategoryBox)
-	self:skinAllButtons{obj=ATSWCSFrame}
+	self:skinEditBox{obj=ATSWCSNewCategoryBox}
 	self:addSkinFrame{obj=ATSWCSFrame, kfs=true, x1=14, y1=-11, x2=-32, y2=10}
 	-- m/p buttons
 	for i = 1, 17 do
 		self:skinButton{obj=_G["ATSWCSCSkill"..i.."SkillButton"], mp=true}
 	end
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ATSWCS_UpdateSkillList", function()
 			for i = 1, 17 do
@@ -76,11 +72,9 @@ function Skinner:AdvancedTradeSkillWindow()
 
 -->>--	All Reagent List frame
 	self:skinDropDown{obj=ATSWAllReagentListCharDropDown}
-	self:skinAllButtons{obj=ATSWAllReagentListFrame}
 	self:addSkinFrame{obj=ATSWAllReagentListFrame, kfs=true, x1=14, y1=-1, x2=-35}
 -->>--	Scan Delay frame
 	self:glazeStatusBar(ATSWScanDelayFrameBar, 0, ATSWScanDelayFrameBarBackground)
-	self:skinAllButtons{obj=ATSWScanDelayFrame}
-	self:addSkinFrame{obj=ATSWScanDelayFrame, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+	self:addSkinFrame{obj=ATSWScanDelayFrame, kfs=true}
 
 end

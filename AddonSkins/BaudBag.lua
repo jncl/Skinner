@@ -1,22 +1,27 @@
+if not Skinner:isAddonEnabled("BaudBag") then return end
 
 function Skinner:BaudBag()
 	if not self.db.profile.ContainerFrames.skin then return end
 
 	-- hook this to skin the bag frames
 	self:SecureHook("BaudBagUpdateContainer", function(Container)
---		self:Debug("BBUC: [%s, %s]", Container, Container:GetName() or "nil")
-		_G[Container:GetName().."BackdropTextures"]:Hide()
-		self:applySkin(_G[Container:GetName().."Backdrop"])
+--		self:Debug("BBUC: [%s, %s]", Container, Container:GetName())
+		local frame = Container:GetName()
+		_G[frame.."BackdropTextures"]:Hide()
+		if not self.skinned[Container] then
+			self:skinButton{obj=_G[frame.."MenuButton"], mp=true, plus=true}
+			self:skinAllButtons{obj=Container}
+			self:addSkinFrame{obj=_G[frame.."Backdrop"], nb=true}
+		end
 	end)
-	self:applySkin(BBCont1_1BagsFrame)
-	self:applySkin(BBCont2_1BagsFrame)
-	self:skinDropDown(BaudBagContainerDropDown)
+	self:skinDropDown{obj=BaudBagContainerDropDown}
+	self:addSkinFrame{obj=BBCont1_1BagsFrame}
+	self:addSkinFrame{obj=BBCont2_1BagsFrame}
 
 -->>-- Options Frame
-	self:keepFontStrings(BaudBagOptionsFrame)
-	self:skinDropDown(BaudBagOptionsSetDropDown)
+	self:skinDropDown{obj=BaudBagOptionsSetDropDown}
 	self:skinEditBox(BaudBagNameEditBox, {9})
-	self:skinDropDown(BaudBagOptionsBackgroundDropDown)
-	self:applySkin(BaudBagOptionsFrame, true)
+	self:skinDropDown{obj=BaudBagOptionsBackgroundDropDown}
+	self:addSkinFrame{obj=BaudBagOptionsFrame, kfs=true, hdr=true}
 
 end

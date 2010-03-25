@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("WIM") then return end
 
 function Skinner:WIM() -- WIM3
 
@@ -9,7 +10,7 @@ function Skinner:WIM() -- WIM3
 		local eBox = msgFrame.widgets.msg_box
 		eBox:SetWidth(msgFrame:GetWidth() - 20)
 		local xOfs = select(4, msgFrame.widgets.close:GetPoint())
-		xOfs = math.floor(xOfs)
+		xOfs = floor(xOfs)
 		if xOfs == 4 then
 			eBox:SetHeight(eBox:GetHeight() - 5)
 			Skinner:skinEditBox(eBox, {9})
@@ -47,13 +48,10 @@ function Skinner:WIM() -- WIM3
 		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
 		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
 		optFrame.nav.bg:Hide()
-		self:skinAllButtons{obj=optFrame}
-		self:applySkin(optFrame)
+		self:addSkinFrame{obj=optFrame}
 		-- if frame is a function then hook it, otherwise check it
-		for i = 1, #WIM.options.frame.nav.category do
-			local cat = WIM.options.frame.nav.category[i]
-			for j = 1, #cat.info.subCategories do
-				local subCat = cat.info.subCategories[j]
+		for _, cat in pairs(WIM.options.frame.nav.category) do
+			for _, subCat in pairs(cat.info.subCategories) do
 				if type(subCat["frame"]) == "function" then -- if the frame hasn't been created yet
 					self:RawHook(subCat, "frame", function()
 						local catFrame = self.hooks[subCat].frame()
@@ -84,7 +82,9 @@ function Skinner:WIM() -- WIM3
 		return msgFrame
 	end, true)
 	-- hook this to skin the filter frame
-	if WIM.modules["Filters"] and WIM.modules["Filters"].enabled then
+	if WIM.modules["Filters"]
+	and WIM.modules["Filters"].enabled
+	then
 		self:SecureHook(WIM, "ShowFilterFrame", function(this, ...)
 			local fFrame = self:findFrame3("WIM3_FilterFrame", "nameText")
 			fFrame.title:SetPoint("TOPLEFT", 50 , -7);
@@ -97,13 +97,14 @@ function Skinner:WIM() -- WIM3
 			self:applySkin(fFrame.level)
 			self:skinDropDown(fFrame.action)
 			fFrame.border:Hide()
-			self:skinAllButtons{obj=fFrame}
-			self:applySkin(fFrame)
+			self:addSkinFrame{obj=fFrame}
 			self:Unhook(WIM, "ShowFilterFrame")
 		end)
 	end
 	-- skin the history viewer
-	if WIM.modules["History"] and WIM.modules["History"].enabled then
+	if WIM.modules["History"]
+	and WIM.modules["History"].enabled
+	then
 		self:SecureHook(WIM, "ShowHistoryViewer", function(this, ...)
 			local hvFrame = WIM3_HistoryFrame
 			hvFrame.title:SetPoint("TOPLEFT", 50 , -7)
@@ -134,17 +135,18 @@ function Skinner:WIM() -- WIM3
 		end)
 	end
 	-- skin the Menu (Minimap/LDB)
-	if WIM.modules["Menu"] and WIM.modules["Menu"].enabled then
+	if WIM.modules["Menu"]
+	and WIM.modules["Menu"].enabled
+	then
 		self:SecureHook(WIM.Menu, "Show", function(this, ...)
-			for i = 1, #WIM.Menu.groups do
-				local group = WIM.Menu.groups[i]
+			for _, group in pairs(WIM.Menu.groups) do
 				group:SetBackdrop(nil)
 				group.title:SetPoint("TOPLEFT", 10, -8)
 				group.title:SetPoint("TOPRIGHT", -10, -8);
 			end
 			self:SecureHook(WIM.Menu, "Refresh", function(this)
-				this:SetWidth(this:GetWidth() - 30)
-				this:SetHeight(this:GetHeight() - 20)
+				self:adjWidth{obj=this, adj=-30}
+				self:adjHeight{obj=this, adj=-20}
 			end)
 			self:adjWidth{obj=WIM.Menu, adj=-30}
 			self:adjHeight{obj=WIM.Menu, adj=-20}

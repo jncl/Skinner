@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("ElitistGroup") then return end
 
 function Skinner:ElitistGroup()
 
@@ -17,7 +18,6 @@ function Skinner:ElitistGroup()
 		self:Unhook(egUsr, "CreateUI")
 		local frame = this.frame
 		self:moveObject{obj=frame.title, y=-6}
-		self:skinAllButtons{obj=frame}
 		self:addSkinFrame{obj=frame, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
 		-- Database frame (pullout on RHS)
 		self:skinEditBox{obj=this.databaseFrame.search, regs={9}}
@@ -71,7 +71,6 @@ function Skinner:ElitistGroup()
 		self:Unhook(egPS, "CreateUI")
 		local frame = this.frame
 		self:moveObject{obj=frame.title, y=-6}
-		self:skinAllButtons{obj=frame}
 		self:addSkinFrame{obj=frame, kfs=true}
 	end)
 -->>-- RaidSummary frame
@@ -81,7 +80,6 @@ function Skinner:ElitistGroup()
 		self:Unhook(egRS, "CreateUI")
 		local frame = this.frame
 		self:moveObject{obj=frame.title, y=-6}
-		self:skinAllButtons{obj=frame}
 		self:skinScrollBar{obj=frame.scroll}
 		self:addSkinFrame{obj=frame, kfs=true}
 	end)

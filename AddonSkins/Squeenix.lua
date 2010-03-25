@@ -1,32 +1,34 @@
+if not Skinner:isAddonEnabled("Squeenix") then return end
 
 function Skinner:Squeenix()
 
---	self:Debug("Squeenix skin loaded")
-
 	-- Find & Skin the Squeenix border & direction indicators
-	for i = 1, Minimap:GetNumChildren() do
-		local child = select(i, Minimap:GetChildren())
-		if child:IsObjectType("Button") and child:GetName() == nil then
+	for _, child in pairs{Minimap:GetChildren()} do
+		if child:IsObjectType("Button")
+		and child:GetName() == nil
+		then
 			child:Hide()
-			self:addSkinButton(Minimap, Minimap)
-			self.minimapskin = self.sBut[Minimap]
+			self.minimapskin = self:addSkinButton{obj=Minimap, parent=Minimap}
 			if not self.db.profile.MinimapGloss then LowerFrameLevel(self.minimapskin) end
 		end
 		-- Move the compass points text
-		if child:IsObjectType("Frame") and child:GetName() == nil and child:GetFrameStrata() == "BACKGROUND" and math.ceil(child:GetWidth()) == 140 and math.ceil(child:GetHeight()) == 140 then
+		if child:IsObjectType("Frame")
+		and child:GetName() == nil
+		and child:GetFrameStrata() == "BACKGROUND"
+		and ceil(child:GetWidth()) == 140
+		and ceil(child:GetHeight()) == 140
+		then
 --			self:Debug("Squeenix, found Compass Frame")
-			for j = 1, child:GetNumRegions() do
-				local grandchild = select(j, child:GetRegions())
-				if grandchild:IsObjectType("FontString") then
+			for _, reg in ipairs{child:GetRegions()} do
+				if reg:IsObjectType("FontString") then
 --					self:Debug("Squeenix found direction text")
-					if grandchild:GetText() == "E" then self:moveObject(grandchild, "+", 1, nil, nil)
-					elseif grandchild:GetText() == "W" then self:moveObject(grandchild, "-", 1, nil, nil)
+					if reg:GetText() == "E" then self:moveObject{obj=reg, x=1}
+					elseif reg:GetText() == "W" then self:moveObject{obj=reg, x=-1}
 					end
 				end
 			end
 		end
 	end
-
-	self:moveObject(MinimapNorthTag, nil, nil, "+", 4) -- North
+	self:moveObject{obj=MinimapNorthTag, y=4}
 
 end

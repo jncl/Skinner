@@ -1,3 +1,4 @@
+-- This is a Framework
 
 function Skinner:Ace3()
 
@@ -63,10 +64,10 @@ function Skinner:Ace3()
 				self:skinUsingBD{obj=obj.scrollbar}
 				self:applySkin(obj.border)
 				self:applySkin(obj.treeframe)
-				if self.db.profile.Buttons then
+				if self.modBtns then
 					-- hook to manage changes to button textures
 					self:SecureHook(obj, "RefreshTree", function()
---						self:Debug("RefreshTree: [%s]", #obj.buttons)
+						self:Debug("RefreshTree: [%s]", #obj.buttons)
 						for i = 1, #obj.buttons do
 							local button = obj.buttons[i]
 							if not self.skinned[button.toggle] then

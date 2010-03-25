@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("EveryQuest") then return end
 
 function Skinner:EveryQuest()
 	if not self.db.profile.QuestLog then return end
@@ -8,7 +9,6 @@ function Skinner:EveryQuest()
 	self:skinButton{obj=eq.frames.Show}
 	-- Main frame
 	self:skinDropDown{obj=eq.frames.Menu}
-	self:skinAllButtons{obj=EveryQuestFrame}
 	self:skinScrollBar{obj=EveryQuestListScrollFrame}
 	self:addSkinFrame{obj=EveryQuestFrame, kfs=true, x1=10, y1=-11, x2=-31, y2=-2}
 

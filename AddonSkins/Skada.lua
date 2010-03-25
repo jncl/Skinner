@@ -5,7 +5,7 @@ function Skinner:Skada()
 	local function changeSettings(db)
 
 		db.barcolor = CopyTable(Skinner.db.profile.StatusBar)
-		db.bartexture = db.barcolor.texture
+		db.bartexture = db.bartexture == "Empty" and db.bartexture or db.barcolor.texture -- change if not "Empty" texture
 		db.barcolor.texture = nil -- remove texture element
 		-- background settings
 		db.background.texture = Skinner.db.profile.BdTexture

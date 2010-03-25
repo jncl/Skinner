@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Outfitter") then return end
 
 function Skinner:Outfitter()
 	if not self.db.profile.CharacterFrames then return end
@@ -117,7 +118,7 @@ function Skinner:Outfitter()
 		self:getChild(OutfitterFrame, 8):SetAlpha(0) -- hide band on the left
 		self:skinButton{obj=OutfitterCloseButton, cb2=true, x1=6, y1=-6, x2=-6, y2=6} -- due to frame level & strata being changed we pretend it's not a proper close button
 		self:skinButton{obj=OutfitterNewButton, as=true}
-		self:addSkinFrame{obj=OutfitterFrame, kfs=true, y1=2, x2=2, y2=-2}
+		self:addSkinFrame{obj=OutfitterFrame, kfs=true, bg=true, y1=2, x2=2, y2=-2, nb=true}
 	end)
 
 -->>--	Main Frame
@@ -125,6 +126,14 @@ function Skinner:Outfitter()
 	self:removeRegions(OutfitterMainFrameScrollbarTrench)
 	self:keepFontStrings(OutfitterMainFrameScrollFrame)
 	self:skinScrollBar(OutfitterMainFrameScrollFrame)
+	-- m/p buttons
+	for i = 0, Outfitter.cMaxDisplayedItems - 1 do
+		local iBtn = "OutfitterItem"..i
+		self:skinButton{obj=_G[iBtn.."CategoryExpand"], mp=true} -- treat as a texture
+		self:SecureHook(_G[iBtn.."CategoryExpand"], "SetNormalTexture", function(this, nTex)
+			self:checkTex{obj=this, nTex=nTex}
+		end)
+	end
 
 -->>--	Outfitter Tabs
 	for i = 1, #Outfitter.cPanelFrames do
@@ -137,16 +146,15 @@ function Skinner:Outfitter()
 		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0, 1)
 		else self:applySkin(tabName) end
 		if i == 1 then
-			self:moveObject(tabName, nil, nil, "+", 4)
+			self:moveObject{obj=tabName, y=4}
 			self:setActiveTab(tabName)
 		else
-			self:moveObject(tabName, "-", 10, nil, nil)
+			self:moveObject{obj=tabName, x=-10}
 			self:setInactiveTab(tabName)
 		end
 	end
 
 -->>--	New Outfit Panel
---[=[
 	self:SecureHook(Outfitter.NameOutfitDialog, "Show", function(this)
 		self:Unhook(Outfitter.NameOutfitDialog, "Show")
 		self:skinEditBox{obj=this.Name, regs={9, 15, 16}}
@@ -180,26 +188,20 @@ function Skinner:Outfitter()
 		self:skinButton{obj=this.DoneButton, as=true}
 		self:applySkin{obj=this, kfs=true} -- apply skin as title is hidden on redisplay
 	end)
---]=]
 
 -->>--	ChooseIcon Dialog
 	self:getChild(OutfitterChooseIconDialog, 1):SetBackdrop(nil) -- remove textures from anonymous frame
---	self:keepFontStrings(OutfitterChooseIconDialogIconSetMenu)
 	self:skinDropDown{obj=OutfitterChooseIconDialogIconSetMenu}
 	self:skinEditBox{obj=OutfitterChooseIconDialogFilterEditBox, regs={6}}
 	self:skinScrollBar{obj=OutfitterChooseIconDialogScrollFrame}
-	self:skinAllButtons{obj=OutfitterChooseIconDialog}
 	self:addSkinFrame{obj=OutfitterChooseIconDialog, x1=12, y1=-12, x2=-16, y2=16}
 
 -->>--	EditScript Dialog
 	if OutfitterEditScriptDialog then
-		self:skinButton{obj=OutfitterEditScriptDialog.CloseButton, cb=true, x1=-1, y1=1, x2=1, y2=-1}
 		self:skinDropDown{obj=OutfitterEditScriptDialogPresetScript}
 		self:keepFontStrings(OutfitterEditScriptDialogSourceScript)
 		self:skinScrollBar{obj=OutfitterEditScriptDialogSourceScript, noRR=true}
-		self:skinButton{obj=OutfitterEditScriptDialogCancelButton}
-		self:skinButton{obj=OutfitterEditScriptDialogDoneButton}
-		self:addSkinFrame{obj=OutfitterEditScriptDialog, kfs=true, y2=-5}
+		self:addSkinFrame{obj=OutfitterEditScriptDialog, kfs=true, x2=1, y2=-5}
 		-- Tabs
 		for i = 1, OutfitterEditScriptDialog.numTabs do
 			local tabObj = _G["OutfitterEditScriptDialogTab"..i]

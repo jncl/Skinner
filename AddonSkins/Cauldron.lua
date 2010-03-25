@@ -1,18 +1,19 @@
+if not Skinner:isAddonEnabled("Cauldron") then return end
 
 function Skinner:Cauldron()
 
 	-- Main frame
-	self:skinButton{obj=CauldronFrameCloseButton, cb=true}
 	self:skinDropDown{obj=CauldronFiltersFilterDropDown}
 	self:skinEditBox{obj=CauldronFiltersSearchEditBox}
 	self:skinDropDown{obj=CauldronFiltersCategoryDropDown}
 	self:skinDropDown{obj=CauldronFiltersInvSlotDropDown}
+	self:moveObject{obj=CauldronCloseButton, x=-4}
 	self:addSkinFrame{obj=CauldronFrame, kfs=true, x1=9, y1=-11, x2=-5, y2=-1}
 	-- List frame
 	self:removeRegions(CauldronSkillListFrameExpandButtonFrame)
 	self:skinButton{obj=CauldronSkillListFrameExpandButtonFrameCollapseAllButton, mp=true}
 	self:skinScrollBar{obj=CauldronSkillListFrameScrollFrame}
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- store player name
 		local uName = UnitName("player")
 		-- hook to manage changes to button textures
@@ -20,6 +21,7 @@ function Skinner:Cauldron()
 			local skillName = CURRENT_TRADESKILL
 			if IsTradeSkillLinked() then skillName = "Linked-"..skillName end
 			local skillList = Cauldron:GetSkillList(uName, skillName)
+			if not skillList then return end
 			for i = 1, #skillList do
 				local btn = _G["CauldronSkillItem"..i.."DiscloseButton"]
 				if not btn then break end
@@ -49,7 +51,6 @@ function Skinner:Cauldron()
 	self:skinAllButtons{obj=CauldronButtonsFrame}
 
 -->>-- Shopping List
-	self:skinButton{obj=CauldronShoppingListFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=CauldronShoppingListFrame, x1=-2, y1=-1, x2=-1, y2=-1}
 
 end

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("MoveAnything") then return end
 -- thanks to sixthepaladin
 local _G = _G
 
@@ -7,7 +8,6 @@ function Skinner:MoveAnything()
 -->>-- Options frame
 	self:skinScrollBar{obj=MAScrollFrame}
 	MAScrollBorder:SetAlpha(0)
-	self:skinAllButtons{obj=MAOptions}
 	self:addSkinFrame{obj=MAOptions, kfs=true, hdr=true}
 	-- category buttons
 	for i = 1, 17 do
@@ -15,6 +15,6 @@ function Skinner:MoveAnything()
 	end
 -->>-- Nudger frame
 	self:skinAllButtons{obj=MANudger, x1=-1, x2=1}
-	self:addSkinFrame{obj=MANudger}
+	self:addSkinFrame{obj=MANudger, nb=true}
 
 end

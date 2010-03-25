@@ -1,9 +1,9 @@
+if not Skinner:isAddonEnabled("BasicChatMods") then return end
 
 function Skinner:BasicChatMods()
 
 	local function skinBCMCopyFrame()
 		
-		self:skinAllButtons{obj=BCMCopyFrame}
 		self:skinScrollBar{obj=BCMCopyScroll}
 		self:addSkinFrame{obj=BCMCopyFrame}
 		

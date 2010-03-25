@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GupPet") then return end
 
 function Skinner:GupPet()
 
@@ -74,10 +75,10 @@ function Skinner:GupPet()
 			local gcim = GUPPET_CN_INTERFACE_MAINFRAME
 			self:glazeStatusBar(UnknownDataStatusBar, 0)
 			self:getChild(UnknownDataStatusBar, 1):Hide() -- child button border
-			self:skinSlider{obj=UnknownDataContainerScrollBar, size=2}
+			self:skinSlider{obj=UnknownDataContainerScrollBar}
 			UnknownDataContainerScrollBarBorder:SetBackdrop(nil)
 			self:addSkinFrame{obj=gcim.Data.Frame}
-			self:addSkinFrame{obj=gcim.Filter}
+			self:addSkinFrame{obj=gcim.Filter, y2=-2}
 			self:addSkinFrame{obj=gcim.GameTooltip}
 			self:Unhook("GupPet_CollectMe_Interface")
 		end)
@@ -147,7 +148,7 @@ function Skinner:GupPet()
 	GupPet_InterfaceOptionsFrameVersionHeader:Hide()
 	self:moveObject{obj=GupPet_InterfaceOptionsFrameVersionHeaderText, y=-6}
 	self:skinAllButtons{obj=GupPet_InterfaceOptionsFrame, y1=1, y2=-3}
-	self:addSkinFrame{obj=GupPet_InterfaceOptionsFrame, kfs=true}
+	self:addSkinFrame{obj=GupPet_InterfaceOptionsFrame, kfs=true, np=true}
 -->>-- Tabs on Options Menu frame
 	for i = 1, 3 do
 		local tabObj = _G["GupPet_InterfaceOptionsFrameTab"..i]
@@ -172,7 +173,7 @@ function Skinner:GupPet()
 	if self.isTT then
 		self:SecureHook("GupPet_Interface_Show", function(type, option, frame)
 			if option == "Show" then
-				local ltr = string.sub(frame:GetName(), 29, 29) -- get 1st letter after common frame name
+				local ltr = strsub(frame:GetName(), 29, 29) -- get 1st letter after common frame name
 --				self:Debug("GP_I_S: [%s, %s, %s, %s]", type, option, frame, ltr)
 				for i = 1, 3 do
 					local tabObj = _G["GupPet_InterfaceOptionsFrameTab"..i]

@@ -1,14 +1,14 @@
+if not Skinner:isAddonEnabled("GearScore") then return end
 
 function Skinner:GearScore()
 
 	-- Display frame
-	self:skinAllButtons{obj=GS_DisplayFrame}
 	self:addSkinFrame{obj=GS_DisplayFrame, y1=-9, x2=-9, y2=-2}
 	-- Tabs
 	for i = 1, GS_DisplayFrame.numTabs do
 		local tabObj = _G["GS_DisplayFrameTab"..i]
 		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		local tabSF = self.skinFrame[tabObj]
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
@@ -16,14 +16,14 @@ function Skinner:GearScore()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 		if i == 3 then -- option tab
-			self:moveObject{obj=tabObj, x=-10, y=0}
+			self:moveObject{obj=tabObj, x=-10}
 			tabObj:SetHeight(32)
 		end
 	end
 	if self.isTT then self.tabFrames[GS_DisplayFrame] = true end -- add entry as tabs now exist
 
 	-- Default frame
-	self:skinEditBox{obj=GS_EditBox1, regs={9}}
+	self:skinEditBox{obj=GS_EditBox1, regs={9}, y=-4}
 	-- Gear frame
 	for i = 1, 4 do
 		self:glazeStatusBar(_G["GS_SpecBar"..i], 0)
@@ -45,9 +45,8 @@ function Skinner:GearScore()
 	self:SecureHook("GearScore_DisplayDatabase", function(...)
 		GS_DatabaseFrame.tooltip.tfade:SetTexture(nil) -- remove gradient as alpha value is changed
 	end)
-	self:moveObject{obj=GSDatabaseFrameCloseButton, y=-1}
+	self:moveObject{obj=GSDatabaseFrameCloseButton, x=-1, y=-1}
 	self:skinEditBox{obj=GS_SearchXBox, y=4}
-	self:skinAllButtons{obj=GS_DatabaseFrame}
 	self:addSkinFrame{obj=GS_DatabaseFrame, y2=-1}
 	-- Tooltip
 	if self.db.profile.Tooltips.skin then
@@ -64,7 +63,7 @@ function Skinner:GearScore()
 	for i = 1, GS_DatabaseFrame.numTabs do
 		local tabObj = _G["GS_DatabaseFrameTab"..i]
 		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		local tabSF = self.skinFrame[tabObj]
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end

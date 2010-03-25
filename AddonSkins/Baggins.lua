@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Baggins") then return end
 
 function Skinner:Baggins()
 	if not self.db.profile.ContainerFrames then return end
@@ -10,25 +11,19 @@ function Skinner:Baggins()
 	-- Hook this to skin the Bags after they are created
 	self:SecureHook(Baggins, "CreateBagFrame", function(this, bagid)
 		local bagname = _G["BagginsBag"..bagid]
-		self:applySkin(bagname)
+		self:addSkinFrame{obj=bagname, y1=-3, x2=-3}
 		if Baggins.db.profile.bags[bagid].isBank then
 			bagname:SetBackdropColor(self.db.profile.BagginsBBC.r, self.db.profile.BagginsBBC.g, self.db.profile.BagginsBBC.b, self.db.profile.BagginsBBC.a)
 		end
 		bagname.SetBackdropColor = function() end
 	end)
 
-	for k, frame in ipairs(Baggins.bagframes) do
-		self:applySkin(frame)
+	for k, frame in pairs(Baggins.bagframes) do
+		self:addSkinFrame{obj=frame, y1=-3, x2=-3}
 		if Baggins.db.profile.bags[k].isBank then
 			frame:SetBackdropColor(self.db.profile.BagginsBBC.r, self.db.profile.BagginsBBC.g, self.db.profile.BagginsBBC.b, self.db.profile.BagginsBBC.a)
 		end
 		frame.SetBackdropColor = function() end
 	end
-
-end
-
-function Skinner:Baggins_Search()
-
-	self:applySkin(BagginsSearch_EditBox)
 
 end

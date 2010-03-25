@@ -1,15 +1,12 @@
+if not Skinner:isAddonEnabled("Converse") then return end
 
 function Skinner:Converse()
 
-	self:removeRegions(ConverseFrame, {1,2,3,4,5,6,7})
-	self:applySkin(ConverseFrame)
-	self:moveObject(ConverseFrameCloseButton, nil, nil, "+", 10)
-	self:removeRegions(ConverseFrameItemsScrollFrame)
-	self:skinScrollBar(ConverseFrameItemsScrollFrame)
-	self:removeRegions(ConverseFrameHistoryScrollFrame)
-	self:skinScrollBar(ConverseFrameHistoryScrollFrame)
-	self:removeRegions(ConverseFrameLinksPanel, {1,2})
-	self:applySkin(ConverseFrameLinksPanel)
-	self:skinEditBox(ConverseFrameAltEditFrameText)
+	self:addSkinFrame{obj=ConverseFrame, kfs=true, x1=10, y1=-11, y2=8}
+	self:skinScrollBar{obj=ConverseFrameItemsScrollFrame}
+	self:moveObject{obj=ConverseFrameItemsScrollFrame, x=-2}
+	self:skinScrollBar{obj=ConverseFrameHistoryScrollFrame}
+	self:addSkinFrame{obj=ConverseFrameLinksPanel, kfs=true, y1=-3, x2=-2, y2=8}
+	self:skinEditBox{obj=ConverseFrameAltEditFrameText}
 
 end

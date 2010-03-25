@@ -1,14 +1,14 @@
+if not Skinner:isAddonEnabled("FishingBuddy") then return end
 
 function Skinner:FishingBuddy()
 
-	self:skinAllButtons{obj=FishingBuddyFrame}
 	self:addSkinFrame{obj=FishingBuddyFrame, kfs=true, x1=10, y1=-13, x2=-31, y2=69}
 -->>--	Locations Frame
 	self:keepFontStrings(FishingLocationsFrame)
 	self:keepFontStrings(FishingLocationExpandButtonFrame)
 	self:skinScrollBar{obj=FishingLocsScrollFrame}
 	-- m/p buttons
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook(FishingBuddy.Locations, "Update", function(...)
 			for i = 1, 21 do

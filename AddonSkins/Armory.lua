@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Armory") then return end
 
 function Skinner:Armory()
 
@@ -8,7 +9,6 @@ function Skinner:Armory()
 	-- move character selection button to top of portrait
 	self:moveObject{obj=ArmoryFrameLeftButton, x=-2, y=54}
 	self:moveObject{obj=ArmoryFrameRightButton, x=-2, y=54}
-	self:skinAllButtons{obj=ArmoryFrame}
 	self:addSkinFrame{obj=ArmoryFrame, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
 	ArmoryFramePortrait:SetAlpha(1) -- used to delete characters
 	self:moveObject{obj=ArmoryBuffFrame, y=-2}
@@ -47,24 +47,22 @@ function Skinner:Armory()
 	self:keepFontStrings(ArmoryPaperDollFrame)
 	self:addSkinFrame{obj=ArmoryGearSetFrame, kfs=true}
 	self:addSkinFrame{obj=ArmoryPaperDollTalentFrame, kfs=true}
-	self:glazeStatusBar(ArmoryPaperDollTradeSkillFrame1Bar)
-	self:glazeStatusBar(ArmoryPaperDollTradeSkillFrame1BackgroundBar)
-	ArmoryPaperDollTradeSkillFrame1BackgroundBar:SetStatusBarColor(unpack(self.sbColour))
-	self:glazeStatusBar(ArmoryPaperDollTradeSkillFrame2Bar)
-	self:glazeStatusBar(ArmoryPaperDollTradeSkillFrame2BackgroundBar)
-	ArmoryPaperDollTradeSkillFrame2BackgroundBar:SetStatusBarColor(unpack(self.sbColour))
+	for i = 1, 2 do
+		local sBar = "ArmoryPaperDollTradeSkillFrame"..i
+		self:glazeStatusBar(_G[sBar.."Bar"])
+		self:glazeStatusBar(_G[sBar.."BackgroundBar"])
+		_G[sBar.."BackgroundBar"]:SetStatusBarColor(unpack(self.sbColour))
+	end
 	self:addSkinFrame{obj=ArmoryPaperDollTradeSkillFrame, kfs=true}
 	self:glazeStatusBar(ArmoryHealthBar)
 	self:glazeStatusBar(ArmoryHealthBackgroundBar)
-	ArmoryHealthBackgroundBar:SetStatusBarColor(unpack(self.sbColour))
 	self:glazeStatusBar(ArmoryManaBar)
 	self:glazeStatusBar(ArmoryManaBackgroundBar)
-	ArmoryManaBackgroundBar:SetStatusBarColor(unpack(self.sbColour))
 	self:addSkinFrame{obj=ArmoryHealthFrame, kfs=true, y2=-6}
 	self:skinDropDown{obj=ArmoryPlayerStatFrameLeftDropDown}
 	self:skinDropDown{obj=ArmoryPlayerStatFrameRightDropDown}
 	self:addSkinFrame{obj=ArmoryAttributesFrame, kfs=true, y2=-8}
-	self:removeRegions(ArmoryAmmoSlot, {1})
+	self:removeRegions(ArmoryAmmoSlot, {1}) -- remove texture
 
 -->>-- Pet Frame
 	self:keepFontStrings(ArmoryPetFrame)
@@ -131,12 +129,12 @@ function Skinner:Armory()
 	for i = 1, ARMORY_NUM_FACTIONS_DISPLAYED do
 		local bar = "ArmoryReputationBar"..i
 		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
-		_G[bar.."Background"]:SetAlpha(0)
 		_G[bar.."ReputationBarLeftTexture"]:SetAlpha(0)
 		_G[bar.."ReputationBarRightTexture"]:SetAlpha(0)
+		 _G[bar.."Background"]:SetAlpha(0)
 		self:glazeStatusBar(_G[bar.."ReputationBar"], 0)
 	end
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ArmoryReputationFrame_Update", function()
 			for i = 1, ARMORY_NUM_FACTIONS_DISPLAYED do
@@ -155,7 +153,7 @@ function Skinner:Armory()
 		self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
 		self:skinButton{obj=_G["ArmorySkillTypeLabel"..i], mp=true}
 	end
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ArmorySkillFrame_UpdateSkills", function()
 			for i = 1, ARMORY_NUM_SKILLS_DISPLAYED do
@@ -182,7 +180,6 @@ function Skinner:Armory()
 	self:skinEditBox(ArmoryInventoryFrameEditBox, {9})
 	self:keepFontStrings(ArmoryInventoryExpandButtonFrame)
 	self:skinButton{obj=ArmoryInventoryCollapseAllButton, mp=true}
-	self:skinAllButtons{obj=ArmoryInventoryFrame}
 	self:addSkinFrame{obj=ArmoryInventoryFrame, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 	-- Tabs
 	for i = 1, ArmoryInventoryFrame.numTabs do
@@ -204,7 +201,7 @@ function Skinner:Armory()
 	for i = 1, 19 do
 		self:skinButton{obj=_G["ArmoryInventoryContainer"..i.."Label"], mp=true}
 	end
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ArmoryInventoryIconViewFrame_Update", function()
 			for i = 1, 19 do
@@ -218,7 +215,7 @@ function Skinner:Armory()
 	for i = 1, ARMORY_INVENTORY_LINES_DISPLAYED do
 		self:skinButton{obj=_G["ArmoryInventoryLine"..i], mp=true}
 	end
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ArmoryInventoryListViewFrame_Update", function()
 			for i = 1, ARMORY_INVENTORY_LINES_DISPLAYED do
@@ -237,7 +234,7 @@ function Skinner:Armory()
 		for i = 1, ARMORY_INVENTORY_LINES_DISPLAYED do
 			self:skinButton{obj=_G["ArmoryInventoryGuildBankLine"..i], mp=true}
 		end
-		if self.db.profile.Buttons then
+		if self.modBtns then
 			-- hook to manage changes to button textures
 			self:SecureHook("ArmoryInventoryGuildBankFrame_Update", function()
 				for i = 1, ARMORY_INVENTORY_LINES_DISPLAYED do
@@ -296,7 +293,7 @@ function Skinner:Armory()
 	for i = 1, ARMORY_QUESTS_DISPLAYED do
 		self:skinButton{obj=_G["ArmoryQuestLogTitle"..i], mp=true}
 	end
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ArmoryQuestLog_Update", function()
 			for i = 1, ARMORY_QUESTS_DISPLAYED do
@@ -373,12 +370,12 @@ function Skinner:Armory()
 		_G[bar.."AchievementBarLeftTexture"]:SetAlpha(0)
 		_G[bar.."AchievementBarRightTexture"]:SetAlpha(0)
 		self:glazeStatusBar(_G[bar.."AchievementBar"], 0)
-		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
+		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true} -- treat as just a texture
 	end
 	-- collapse all button
 	self:removeRegions(ArmoryAchievementCollapseAllButton, {1, 2, 3}) -- textures
-	self:skinButton{obj=ArmoryAchievementCollapseAllButton, mp=true, ty=0} -- treat as just a texture
-	if self.db.profile.Buttons then
+	self:skinButton{obj=ArmoryAchievementCollapseAllButton, mp=true} -- treat as just a texture
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ArmoryAchievementFrame_Update", function()
 			for i = 1, ARMORY_NUM_FACTIONS_DISPLAYED do
@@ -439,9 +436,9 @@ function Skinner:Armory()
 		self:skinButton{obj=_G["ArmoryTradeSkillSkill"..i], mp=true}
 	end
 	-- collapse all button
-	self:removeRegions(ArmoryTradeSkillCollapseAllButton, {1, 2, 3}) -- textures
-	self:skinButton{obj=ArmoryTradeSkillCollapseAllButton, mp=true, ty=0} -- treat as just a texture
-	if self.db.profile.Buttons then
+--	self:removeRegions(ArmoryTradeSkillCollapseAllButton, {1, 2, 3}) -- textures
+	self:skinButton{obj=ArmoryTradeSkillCollapseAllButton, mp=true} -- treat as just a texture
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ArmoryTradeSkillFrame_Update", function()
 			for i = 1, ARMORY_TRADE_SKILLS_DISPLAYED do

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("BugSack") then return end
 
 function Skinner:BugSack()
 
@@ -5,7 +6,6 @@ function Skinner:BugSack()
 	if BugSack and BugSack.OpenSack then
 		self:SecureHook(BugSack, "OpenSack", function(this)
 			self:skinScrollBar{obj=BugSackFrameScroll}
-			self:skinAllButtons(BugSackFrame)
 			self:addSkinFrame{obj=BugSackFrame, kfs=true, y1=-2, x2=-1, y2=2}
 			-- tabs
 			local tabs = {BugSackTabAll, BugSackTabSession, BugSackTabLast}
@@ -30,7 +30,6 @@ function Skinner:BugSack()
 		end)
 	else
 		self:skinScrollBar{obj=BugSackFrameScroll}
-		self:skinAllButtons(BugSackFrame)
 		self:addSkinFrame{obj=BugSackFrame, kfs=true, y2=8}
 	end
 
