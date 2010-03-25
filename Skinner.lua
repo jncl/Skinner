@@ -437,6 +437,8 @@ local function __addSkinButton(opts)
 		end
 	end
 
+	return Skinner.sBut[opts.hook]
+
 end
 
 function Skinner:addSkinButton(...)
@@ -459,7 +461,7 @@ function Skinner:addSkinButton(...)
 		opts.hide = select(4, ...) and select(4, ...) or nil
 	end
 	-- new style call
-	__addSkinButton(opts)
+	return __addSkinButton(opts)
 
 end
 
@@ -493,6 +495,8 @@ local function __addSkinFrame(opts)
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
+		nb = don't skin UI buttons
+		bgen = generations of button children to traverse
 --]]
 --@alpha@
 	assert(opts.obj, "Unknown object __aSF\n"..debugstack())
@@ -545,6 +549,13 @@ local function __addSkinFrame(opts)
 
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then	skinFrame:SetFrameStrata("BACKGROUND") end
+
+	-- skin the buttons unless not required
+	if not opts.nb -- don't skin buttons
+	and not opts.noBdr -- this is a tab/unit frame
+	then
+		Skinner:skinAllButtons{obj=opts.obj, bgen=opts.bgen}
+	end
 
 end
 

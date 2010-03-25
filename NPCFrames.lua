@@ -7,7 +7,7 @@ function Skinner:MerchantFrames()
 
 	-- display limited availability item's stock count even when zero
 	self:SecureHook("SetItemButtonStock", function(button, numInStock)
-		if numInStock == 0 then
+		if numInStock == 0 and not button == MerchantBuyBackItemItemButton then
 			_G[button:GetName().."Stock"]:SetFormattedText(MERCHANT_STOCK, numInStock)
 			_G[button:GetName().."Stock"]:Show()
 		end
@@ -21,7 +21,6 @@ function Skinner:MerchantFrames()
 	self:removeRegions(MerchantNextPageButton, {2})
 	MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
 	MerchantBuyBackItemNameFrame:SetTexture(nil)
-	self:skinButton{obj=MerchantFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}
 
 -->>-- Tabs
@@ -56,9 +55,7 @@ function Skinner:GossipFrame()
 		local text = self:getRegion(_G["GossipTitleButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	self:skinButton{obj=GossipFrameGreetingGoodbyeButton}
 
-	self:skinButton{obj=GossipFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
 
 end
@@ -97,7 +94,6 @@ function Skinner:TaxiFrame()
 
 	self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
 
-	self:skinButton{obj=TaxiCloseButton, cb=true}
 	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-11, x2=-32, y2=74}
 
 end
@@ -118,7 +114,6 @@ function Skinner:QuestFrame()
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
 
-	self:skinAllButtons{obj=QuestFrame}
 	self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
 
 -->>--	Reward Panel
@@ -153,13 +148,8 @@ function Skinner:Battlefields()
 	self.initialized.Battlefields = true
 
 	self:skinScrollBar{obj=BattlefieldListScrollFrame}
-	if not self.isPatch then
-		BattlefieldFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	else
-		BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-		BattlefieldFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
-	self:skinAllButtons{obj=BattlefieldFrame}
+	BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	BattlefieldFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=BattlefieldFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 end
@@ -169,11 +159,6 @@ function Skinner:ArenaFrame()
 	self.initialized.ArenaFrame = true
 
 	ArenaFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-
-	self:skinButton{obj=ArenaFrameCancelButton}
-	self:skinButton{obj=ArenaFrameJoinButton}
-	self:skinButton{obj=ArenaFrameGroupJoinButton}
-	self:skinButton{obj=ArenaFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=ArenaFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 end
@@ -183,36 +168,22 @@ function Skinner:ArenaRegistrar()
 	self.initialized.ArenaRegistrar = true
 
 -->>--	Arena Registrar Frame
-	self:skinButton{obj=ArenaRegistrarFrameCloseButton, cb=true}
 	self:keepFontStrings(ArenaRegistrarGreetingFrame)
 	self:getRegion(ArenaRegistrarGreetingFrame, 1):SetTextColor(self.HTr, self.HTg, self.HTb) -- AvailableServicesText (name also used by GuildRegistrar frame)
 	RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinButton{obj=ArenaRegistrarFrameGoodbyeButton}
 	for i = 1, MAX_TEAM_BORDERS do
 		local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
 		text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 	ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinButton{obj=ArenaRegistrarFrameCancelButton}
-	self:skinButton{obj=ArenaRegistrarFramePurchaseButton}
 	self:skinEditBox{obj=ArenaRegistrarFrameEditBox}
 	self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=64}
 
 -->>--	PVP Banner Frame
 	self:keepRegions(PVPBannerFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
-
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
 	self:keepFontStrings(PVPBannerFrameCustomization2)
-	self:skinButton{obj=PVPColorPickerButton1}
-	self:skinButton{obj=PVPColorPickerButton2}
-	self:skinButton{obj=PVPColorPickerButton3}
-	self:skinButton{obj=PVPBannerFrameCancelButton}
-	self:skinButton{obj=PVPBannerFrameSaveButton}
-
-	self:skinButton{obj=PVPBannerFrameAcceptButton}
-	self:skinButton{obj=self:getChild(PVPBannerFrame, 4)} -- PVPBannerFrameCancelButton (name used by PVPBannerFrameCustomizationFrame)
-	self:skinButton{obj=PVPBannerFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
 
 end
@@ -230,10 +201,6 @@ function Skinner:GuildRegistrar()
 	end
 	self:skinEditBox{obj=GuildRegistrarFrameEditBox}
 
-	self:skinButton{obj=GuildRegistrarFrameCloseButton, cb=true}
-	self:skinButton{obj=GuildRegistrarFrameGoodbyeButton}
-	self:skinButton{obj=GuildRegistrarFrameCancelButton}
-	self:skinButton{obj=GuildRegistrarFramePurchaseButton}
 	self:addSkinFrame{obj=GuildRegistrarFrame, ft=ftype, kfs=true, x1=12, y1=-17, x2=-29, y2=65}
 
 end
@@ -252,11 +219,6 @@ function Skinner:Petition()
 	end
 	PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
 
-	self:skinButton{obj=PetitionFrameCloseButton, cb=true}
-	self:skinButton{obj=PetitionFrameCancelButton}
-	self:skinButton{obj=PetitionFrameSignButton}
-	self:skinButton{obj=PetitionFrameRequestButton}
-	self:skinButton{obj=PetitionFrameRenameButton}
 	self:addSkinFrame{obj=PetitionFrame, ft=ftype, kfs=true, x1=12, y1=-17, x2=-29, y2=65}
 
 end
@@ -274,9 +236,6 @@ function Skinner:Tabard()
 		self:keepFontStrings(_G["TabardFrameCustomization"..i])
 	end
 
-	self:skinButton{obj=TabardFrameCloseButton, cb=true}
-	self:skinButton{obj=TabardFrameAcceptButton}
-	self:skinButton{obj=TabardFrameCancelButton}
 	self:addSkinFrame{obj=TabardFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=74}
 
 end
@@ -292,9 +251,6 @@ function Skinner:BarbershopUI()
 -->>-- Barbershop Frame
 	self:keepFontStrings(BarberShopFrameMoneyFrame)
 
-	self:skinButton{obj=BarberShopFrameOkayButton}
-	self:skinButton{obj=BarberShopFrameCancelButton}
-	self:skinButton{obj=BarberShopFrameResetButton}
 	self:addSkinFrame{obj=BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
 
 end

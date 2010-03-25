@@ -29,11 +29,12 @@ local function __checkTex(opts)
 	local btn = opts.mp2 and opts.obj or Skinner.sBut[opts.obj]
 	if not btn then return end -- allow for unskinned buttons
 
-	Skinner:Debug("__checkTex: [%s, %s, %s]", opts.obj, nTex, opts.mp2)
+--	Skinner:Debug("__checkTex: [%s, %s, %s]", opts.obj, nTex, opts.mp2)
 
 	if not opts.mp2 then btn:Show() end
 
 	if nTex then
+		if btn.skin then btn:Show() end -- Waterfall/tomQuest2
 		if nTex:find("MinusButton") then
 			btn:SetText(module.minus)
 		elseif nTex:find("PlusButton") then
@@ -44,11 +45,14 @@ local function __checkTex(opts)
 		end
 	else -- not a header line
 		btn:SetText("")
-		if not opts.mp2 then btn:Hide() end
+		if not opts.mp2
+		or btn.skin -- Waterfall/tomQuest2
+		then
+			btn:Hide()
+		end
 	end
 
 end
-
 function module:checkTex(...)
 
 	local opts = select(1, ...)
@@ -91,7 +95,7 @@ function module:skinButton(opts)
 	cb2 = close button style 2 (based upon OptionsButtonTemplate)
 	mp = minus/plus texture on a larger button
 	mp2 = minus/plus button
-	mp3 = minus/plus button, just skin it
+	ob = other button, text supplied
 	plus = use plus sign
 	other options as per addSkinButton
 --]]
@@ -167,16 +171,28 @@ function module:skinButton(opts)
 		opts.obj:SetNormalFontObject(module.fontP)
 		opts.obj:SetText(opts.plus and module.plus or module.minus)
 		opts.obj:SetPushedTextOffset(-1, -1)
-		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[6]}, sap=true}
-		module:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
-			module:checkTex{obj=this, nTex=nTex, mp2=true}
-		end)
-	elseif opts.mp3 then -- it's a minus/plus button, just skin it (used by Waterfall & tomQuest2)
+		if not opts.as then
+			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[6]}, sap=true}
+			module:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
+				module:checkTex{obj=this, nTex=nTex, mp2=true}
+			end)
+		else -- just skin it (used by Waterfall & tomQuest2)
+			Skinner:applySkin{obj=opts.obj, bd=Skinner.Backdrop[6]}
+			opts.obj.skin = true
+		end
+	elseif opts.ob then -- it's another type of button, text supplied (e.g. beql minimize)
 		opts.obj:SetNormalFontObject(module.fontP)
-		opts.obj:SetText(opts.plus and module.plus or module.minus)
+		opts.obj:SetText(opts.ob)
 		opts.obj:SetPushedTextOffset(-1, -1)
-		Skinner:applySkin{obj=opts.obj, bd=Skinner.Backdrop[6]}
-		opts.obj.skin = true
+		if opts.sap then
+			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
+		else
+			x1 = opts.x1 or bW == 32 and 6 or 4
+			y1 = opts.y1 or bW == 32 and -6 or -4
+			x2 = opts.x2 or bW == 32 and -6 or -4
+			y2 = opts.y2 or bW == 32 and 6 or 4
+			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[5]}, x1=x1, y1=y1, x2=x2, y2=y2}
+		end
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		bHgt = opts.obj:GetHeight()
 		aso = {bd=Skinner.Backdrop[bHgt > 18 and 5 or 6]} -- use narrower backdrop if required
@@ -242,11 +258,11 @@ function module:isButton(obj, cb)
 
 end
 
-local function __skinAllButtons(opts)
+local function __skinAllButtons(opts, bgen)
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
-		bgen = generations of children to traverse (default is 5)
+		bgen = generations of children to traverse
 		other options as per skinButton
 --]]
 --@alpha@
@@ -254,22 +270,23 @@ local function __skinAllButtons(opts)
 --@end-alpha@
 	if not opts.obj then return end
 	
-	opts.bgen = opts.bgen or 5
+	-- maximum number of button generations to traverse
+	bgen = bgen or (opts.bgen and opts.bgen or 3)
+--	print(bgen)
 
 	for _, child in pairs{opts.obj:GetChildren()} do
 		if module:isButton(child) then -- normal button
 			module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 		elseif module:isButton(child, true) then -- close button
 			module:skinButton{obj=child, cb=true, sap=opts.sap}
-		elseif opts.bgen > 0 then
+		elseif child:IsObjectType("Frame") 
+		and bgen > 0 then
 			opts.obj=child
-			opts.bgen=opts.bgen - 1 -- reduce traversal depth as we traverse
-			__skinAllButtons(opts)
+			__skinAllButtons(opts, bgen - 1)
 		end
 	end
 
 end
-
 function module:skinAllButtons(...)
 
 	local opts = select(1, ...)

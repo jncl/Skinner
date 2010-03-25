@@ -151,16 +151,14 @@ function Skinner:StaticPopups()
 	end)
 
 	for i = 1, STATICPOPUP_NUMDIALOGS do
-		self:skinButton{obj=_G["StaticPopup"..i.."CloseButton"], cb=true}
-		self:skinButton{obj=_G["StaticPopup"..i.."Button1"]}
-		self:skinButton{obj=_G["StaticPopup"..i.."Button2"]}
-		self:skinButton{obj=_G["StaticPopup"..i.."Button3"]}
-		self:skinEditBox{obj=_G["StaticPopup"..i.."EditBox"]}
-		self:skinEditBox{obj=_G["StaticPopup"..i.."WideEditBox"]}
-		self:skinMoneyFrame{obj=_G["StaticPopup"..i.."MoneyInputFrame"]}
-		self:addSkinFrame{obj=_G["StaticPopup"..i], ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
+		local sPU = "StaticPopup"..i
+		self:skinEditBox{obj=_G[sPU.."EditBox"]}
+		self:skinEditBox{obj=_G[sPU.."WideEditBox"]}
+		self:skinMoneyFrame{obj=_G[sPU.."MoneyInputFrame"]}
+		self:addSkinFrame{obj=_G[sPU], ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 		-- prevent FrameLevel from being changed (LibRock does this)
-		self.skinFrame[_G["StaticPopup"..i]].SetFrameLevel = function() end
+		self.skinFrame[_G[sPU]].SetFrameLevel = function() end
+		_G[sPU.."ItemFrameNameFrame"]:SetTexture(nil)
 	end
 
 end
@@ -252,10 +250,6 @@ function Skinner:ChatConfig()
 	if not self.db.profile.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true
 
-	self:skinButton{obj=ChatConfigFrameDefaultButton}
-	self:skinButton{obj=CombatLogDefaultButton}
-	self:skinButton{obj=ChatConfigFrameCancelButton}
-	self:skinButton{obj=ChatConfigFrameOkayButton}
 	self:addSkinFrame{obj=ChatConfigFrame, ft=ftype, kfs=true, hdr=true}
 	self:addSkinFrame{obj=ChatConfigCategoryFrame, ft=ftype}
 	self:addSkinFrame{obj=ChatConfigBackgroundFrame, ft=ftype}
@@ -302,9 +296,6 @@ function Skinner:ChatConfig()
 	-- Filters
 	ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
 	self:skinScrollBar{obj=ChatConfigCombatSettingsFiltersScrollFrame} --, noRR=true}
-	self:skinButton{obj=ChatConfigCombatSettingsFiltersDeleteButton}
-	self:skinButton{obj=ChatConfigCombatSettingsFiltersAddFilterButton}
-	self:skinButton{obj=ChatConfigCombatSettingsFiltersCopyFilterButton}
 	self:addSkinFrame{obj=ChatConfigCombatSettingsFilters, ft=ftype}
 
 	-- Message Sources
@@ -336,7 +327,6 @@ function Skinner:ChatConfig()
 
 	-- Settings
 	self:skinEditBox{obj=CombatConfigSettingsNameEditBox , regs={9}}
-	self:skinButton{obj=CombatConfigSettingsSaveButton}
 
 	-- Tabs
 	for i = 1, #COMBAT_CONFIG_TABS do
@@ -373,7 +363,6 @@ function Skinner:LootFrame()
 	-- move the title and close button and reduce the height of the skinFrame by 34
 	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-34} -- title
 	self:moveObject{obj=LootCloseButton, y=-34}
-	self:skinButton{obj=LootCloseButton, cb=true}
 	for i = 1, LOOTFRAME_NUMBUTTONS do
 		_G["LootButton"..i.."NameFrame"]:SetTexture(nil)
 	end
@@ -403,7 +392,6 @@ function Skinner:GroupLoot()
 			this:SetBackdrop(nil)
 		end)
 
-		self:skinButton{obj=_G[glf.."PassButton"], cb=true}
 		if self.db.profile.GroupLoot.size == 1 then
 
 			self:addSkinFrame{obj=glfo, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
@@ -440,7 +428,6 @@ function Skinner:ContainerFrames()
 
 	for i = 1, NUM_CONTAINER_FRAMES do
 		local frameObj = _G["ContainerFrame"..i]
-		self:skinButton{obj=_G["ContainerFrame"..i.."CloseButton"], cb=true}
 		self:addSkinFrame{obj=frameObj, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 		-- resize and move the bag name to make it more readable
 		local frameName = _G["ContainerFrame"..i.."Name"]
@@ -454,8 +441,6 @@ function Skinner:StackSplit()
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
 
-	self:skinButton{obj=StackSplitOkayButton}
-	self:skinButton{obj=StackSplitCancelButton}
 	-- handle different addons being loaded
 	if IsAddOnLoaded("EnhancedStackSplit") then
 		self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, y2=-24}
@@ -476,7 +461,6 @@ function Skinner:ItemText()
 	self:skinScrollBar{obj=ItemTextScrollFrame}
 	self:glazeStatusBar(ItemTextStatusBar, 0)
 	self:moveObject{obj=ItemTextPrevPageButton, x=-55} -- move prev button left
-	self:skinButton{obj=ItemTextCloseButton, cb=true}
 	self:addSkinFrame{obj=ItemTextFrame, ft=ftype, kfs=true, x1=10, y1=-13, x2=-32, y2=71}
 
 end
@@ -487,8 +471,6 @@ function Skinner:ColorPicker()
 
 	ColorPickerFrame:SetBackdrop(nil)
 	ColorPickerFrameHeader:SetAlpha(0)
-	self:skinButton{obj=ColorPickerCancelButton}
-	self:skinButton{obj=ColorPickerOkayButton}
 	self:skinSlider(OpacitySliderFrame, 4)
 	self:addSkinFrame{obj=ColorPickerFrame, ft=ftype, x1=4, y1=2, x2=-6, y2=4}
 
@@ -513,10 +495,9 @@ function Skinner:WorldMap()
 			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
 
 		end
-		local wmOpt = self.isPatch and WORLDMAP_SETTINGS or WORLDMAP_OPTIONS
 		local function sizeDown()
 
-			if not wmOpt.advanced then -- frame not moveable
+			if not WORLDMAP_SETTINGS.advanced then -- frame not moveable
 				x1, y1, x2, y2 = 12, -12, -20, -10
 			else -- frame moveable
 				x1, y1, x2, y2 = 0, 2, 0, 0
@@ -534,8 +515,7 @@ function Skinner:WorldMap()
 			sizeDown()
 		end)
 		self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
-			if WorldMapFrame.sizedDown
-			or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+			if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
 			then
 				sizeDown()
 			end
@@ -545,8 +525,7 @@ function Skinner:WorldMap()
 			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
 		elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
 			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true}
-			if WorldMapFrame.sizedDown
-			or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+			if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
 			then
 				sizeDown()
 			else
@@ -563,9 +542,7 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
-	self:skinButton{obj=WorldMapZoomOutButton}
-	if WorldMapFrame.sizedDown
-	or WORLDMAP_SETTINGS and WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+	if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE
 	then
 		self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
 	else
@@ -627,52 +604,26 @@ function Skinner:HelpFrame()
 
 -->>--	Help Frame
 	self:moveObject{obj=hfTitle, y=-8}
-	self:skinButton{obj=HelpFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
 
 -->>--	KnowledgeBase Frame
 	self:keepFontStrings(KnowledgeBaseFrame)
 	self:moveObject{obj=kbTitle, y=-8}
 	self:skinButton{obj=GMChatOpenLog}
-	self:skinButton{obj=KnowledgeBaseFrameTopIssuesButton}
 	self:skinEditBox{obj=KnowledgeBaseFrameEditBox}
 	self:skinDropDown{obj=KnowledgeBaseFrameCategoryDropDown}
 	self:skinDropDown{obj=KnowledgeBaseFrameSubCategoryDropDown}
-	self:skinButton{obj=KnowledgeBaseFrameSearchButton}
 	KnowledgeBaseFrameDivider:Hide()
 	KnowledgeBaseFrameDivider2:Hide()
-	self:skinButton{obj=KnowledgeBaseFrameGMTalk}
-	self:skinButton{obj=KnowledgeBaseFrameReportIssue}
-	self:skinButton{obj=KnowledgeBaseFrameLag}
-	self:skinButton{obj=KnowledgeBaseFrameStuck}
-	self:skinButton{obj=KnowledgeBaseFrameCancel}
-	self:skinButton{obj=KnowledgeBaseFrameEditTicket}
-	self:skinButton{obj=KnowledgeBaseFrameAbandonTicket}
 -->>-- Article Scroll Frame
 	self:skinScrollBar{obj=KnowledgeBaseArticleScrollFrame}
 	self:skinButton{obj=KnowledgeBaseArticleScrollChildFrameBackButton, as=true}
 -->>-- Talk to a GM panel
-	self:skinButton{obj=HelpFrameGMTalkOpenTicket}
-	self:skinButton{obj=HelpFrameGMTalkCancel}
 -->>-- Report an Issue panel
-	self:skinButton{obj=HelpFrameReportIssueOpenTicket}
-	self:skinButton{obj=HelpFrameReportIssueCancel}
-	self:skinButton{obj=HelpFrameLagLoot}
-	self:skinButton{obj=HelpFrameLagAuctionHouse}
-	self:skinButton{obj=HelpFrameLagMail}
-	self:skinButton{obj=HelpFrameLagChat}
-	self:skinButton{obj=HelpFrameLagMovement}
-	self:skinButton{obj=HelpFrameLagSpell}
-	self:skinButton{obj=HelpFrameLagCancel}
 -->>-- Character Stuck panel
-	self:skinButton{obj=HelpFrameStuckStuck}
-	self:skinButton{obj=HelpFrameStuckOpenTicket}
-	self:skinButton{obj=HelpFrameStuckCancel}
 -->>--	Open Ticket SubFrame
 	HelpFrameOpenTicketDivider:Hide()
 	self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
-	self:skinButton{obj=HelpFrameOpenTicketSubmit}
-	self:skinButton{obj=HelpFrameOpenTicketCancel}
 -->>-- View Response SubFrame
 	self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
 	HelpFrameViewResponseDivider:Hide()
@@ -687,8 +638,6 @@ function Skinner:Tutorial()
 	TutorialFrame:DisableDrawLayer("BORDER")
 	TutorialTextBorder:SetAlpha(0)
 	self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
-	self:skinButton{obj=self:getChild(TutorialFrame, 5), cb=true} -- close button, last child
-	self:skinButton{obj=TutorialFrameOkayButton}
 	self:addSkinFrame{obj=TutorialFrame, ft=ftype, x1=10, y1=-11, x2=1}
 
 	-- skin the alert button(s)
@@ -714,7 +663,6 @@ function Skinner:GMSurveyUI()
 	end
 
 	self:skinScrollBar{obj=GMSurveyCommentScrollFrame}
-	self:skinButton{obj=GMSurveyCloseButton, cb=true}
 	self:applySkin{obj=GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
 
 end
@@ -723,7 +671,6 @@ function Skinner:InspectUI()
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
-	self:skinButton{obj=InspectFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
 
 	-- Inspect Model Frame
@@ -766,8 +713,6 @@ function Skinner:WorldState()
 	self.initialized.BattleScore = true
 
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
-	self:skinButton{obj=WorldStateScoreFrameCloseButton, cb=true}
-	self:skinButton{obj=WorldStateScoreFrameLeaveButton}
 	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, x1=10, y1=-15, x2=-113, y2=70}
 
 -->>-- Tabs
@@ -810,7 +755,6 @@ function Skinner:BattlefieldMinimap()
 	end
 
 	-- Create a frame to skin as using the BattlefieldMinimap one causes issues with Capping
-	self:skinButton{obj=BattlefieldMinimapCloseButton, cb=true}
 	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, bg=true, x1=-4, y1=4, x2=-2, y2=-1}
 	-- hide the textures as the alpha values are changed in game
 	BattlefieldMinimapCorner:Hide()
@@ -827,7 +771,6 @@ function Skinner:ScriptErrors()
 	self.initialized.ScriptErrors = true
 
 	-- skin Basic Script Errors Frame (BasicControls.xml)
-	self:skinAllButtons{obj=BasicScriptErrors}
 	self:addSkinFrame{obj=BasicScriptErrors, kfs=true, ft=ftype}
 
 end
@@ -969,10 +912,12 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUI_ModifierKeyDropDownList, ft=ftype}
 		self:keepFontStrings(FeedbackUI_MouseButtonDropDown)
 		self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
+--[=[
 		self:skinButton{obj=FeedbackUIBtnClose, cb=true}
 		self:skinButton{obj=FeedbackUIWelcomeFrameSurveysBtn}
 		self:skinButton{obj=FeedbackUIWelcomeFrameSuggestionsBtn}
 		self:skinButton{obj=FeedbackUIWelcomeFrameBugsBtn}
+--]=]
 		self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
 
 	-->-- Survey Frame
@@ -994,10 +939,12 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
 		self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
 		self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
+--[=[
 		self:skinButton{obj=FeedbackUISurveyFrameBack}
 		self:skinButton{obj=FeedbackUISurveyFrameSkip}
 		self:skinButton{obj=FeedbackUISurveyFrameReset}
 		self:skinButton{obj=FeedbackUISurveyFrameSubmit}
+--]=]
 		-- skin the alert buttons
 		for i = 1, 10 do
 			local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
@@ -1014,9 +961,11 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
 		self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelEditInput}
 		self:skinUsingBD{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
+--[=[
 		self:skinButton{obj=FeedbackUISuggestFrameBack}
 		self:skinButton{obj=FeedbackUISuggestFrameReset}
 		self:skinButton{obj=FeedbackUISuggestFrameSubmit}
+--]=]
 
 	-->>-- Bug Frame
 		FeedbackUIBugFrame:SetBackdrop(nil)
@@ -1028,9 +977,11 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
 		self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelEditInput}
 		self:skinUsingBD{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
+--[=[
 		self:skinButton{obj=FeedbackUIBugFrameBack}
 		self:skinButton{obj=FeedbackUIBugFrameReset}
 		self:skinButton{obj=FeedbackUIBugFrameSubmit}
+--]=]
 
 		-- make the QuestLog Tip Label text visible
 		FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)

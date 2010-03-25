@@ -15,8 +15,7 @@ end
 
 function Skinner:CharacterFrame()
 
-	self:skinButton{obj=CharacterFrameCloseButton, cb=true}
-	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
+	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, bgen=2, x1=10, y1=-12, x2=-31, y2=71} -- only allow 2 generations of button children, Outfitter adds extra generations that we don't want to handle here
 
 --	CharacterFrameTab1-5
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
@@ -103,7 +102,6 @@ function Skinner:ReputationFrame()
 	end
 
 -->>-- Reputation Detail Frame
-	self:skinButton{obj=ReputationDetailCloseButton, cb=true}
 	self:addSkinFrame{obj=ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
 end
@@ -168,7 +166,6 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 	-- ? close button
 
 -->>-- Popup Frame
-	self:skinButton{obj=TokenFramePopupCloseButton, cb=true}
 	self:addSkinFrame{obj=TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
 
 end
@@ -178,28 +175,19 @@ function Skinner:PVPFrame()
 	self.initialized.PVPFrame = true
 
 	self:keepFontStrings(PVPFrame)
-	self:skinAllButtons{obj=PVPParentFrame}
 	self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 -->>-- PVP Battleground Frame
 	self:keepFontStrings(PVPBattlegroundFrame)
-	if not self.isPatch then
-		self:skinScrollBar{obj=PVPBattlegroundFrameInstanceScrollFrame}
-		self:skinSlider{obj=PVPBattlegroundFrameZoneDescriptionScrollFrameScrollBar}
-		PVPBattlegroundFrameZoneDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	else
-		self:skinSlider{obj=PVPBattlegroundFrameInfoScrollFrameScrollBar}
-		PVPBattlegroundFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-		PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
+	self:skinSlider{obj=PVPBattlegroundFrameInfoScrollFrameScrollBar}
+	PVPBattlegroundFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
 	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
 
 -->>-- PVP Team Details Frame
 	self:skinDropDown{obj=PVPDropDown}
-	self:skinButton{obj=PVPTeamDetailsCloseButton, cb=true}
 	self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
-	self:skinButton{obj=PVPTeamDetailsAddTeamMember}
 	self:addSkinFrame{obj=PVPTeamDetails, ft=ftype, kfs=true, x1=8, y1=-2, x2=-2, y2=12}
 
 -->>-- Tabs
@@ -225,7 +213,6 @@ function Skinner:PetStableFrame()
 	self:makeMFRotatable(PetStableModel)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetStablePetInfo)
-	self:skinAllButtons{obj=PetStableFrame}
 	self:addSkinFrame{obj=PetStableFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 end
@@ -257,7 +244,6 @@ function Skinner:SpellBookFrame()
 		end)
 	end
 
-	self:skinAllButtons{obj=SpellBookFrame}
 	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=70}
 	-- colour the spell name text
 	for i = 1, SPELLS_PER_PAGE do
@@ -316,7 +302,6 @@ function Skinner:TalentUI()
 	end)
 
 	self:keepRegions(PlayerTalentFrame, {2, 7}) -- N.B. 2 is Active Spec Tab Highlight, 7 is the title
-	self:skinAllButtons{obj=PlayerTalentFrame}
 	self:removeRegions(PlayerTalentFrameScrollFrame, {5, 6}) -- other regions are background textures
 	self:skinScrollBar{obj=PlayerTalentFrameScrollFrame, noRR=true}
 	self:keepFontStrings(PlayerTalentFrameStatusFrame)
@@ -353,7 +338,6 @@ function Skinner:DressUpFrame()
 
 	self:removeRegions(DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
 	self:makeMFRotatable(DressUpModel)
-	self:skinAllButtons{obj=DressUpFrame}
 	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
 end
@@ -430,7 +414,6 @@ function Skinner:AchievementUI()
 		tex:SetHeight(19)
 		tex:SetPoint("RIGHT", AchievementFrameFilterDropDown, "RIGHT", -3, 4)
 	end
-	self:skinButton{obj=AchievementFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=AchievementFrame, ft=ftype, kfs=true, y1=1, y2=-3}
 
 -->>-- move Header info

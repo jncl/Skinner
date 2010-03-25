@@ -80,12 +80,14 @@ UIElements2.lua
 # inc. PlayerFrame, RuneFrame, TotemFrame, ComboFrame, PetFrame, TargetFrame, TargetofTargetFrame, FocusFrame, TargetofFocusFrame, PartyFrames (inc. Party Members Pets)
 modules\UnitFrames.lua
 #
+# UIButtons
+modules\UIButtons.lua
+#
 # these modules add additional features
 modules\ViewPort.lua
 modules\TopFrame.lua
 modules\MiddleFrames.lua
 modules\BottomFrame.lua
-modules\UIButtons.lua
 #
 # Addon skins
 skins.xml
