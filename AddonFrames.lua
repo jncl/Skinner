@@ -75,30 +75,28 @@ function Skinner:AddonFrames()
 
 	local addonFrames = {
 		"_NPCScan",
-		"Accomplishment", --[=["Accountant", "AceProfit", --]=]"Acheron", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", --[=["aftt_extreme", --]=]"AlleyMap", --[=["AlphaMap", --]=]"Altoholic", "Analyst", "AnnounceIt", --[=["AoTRDungeonQuester", --]=]"ArkInventory", "Armory", "ArmoryGuildBank", --[["Ash_Cooldowns", "Ash_Core", "Ash_DoTimer", "Assessment",--]] "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", --[=["AuldLangSyne", "AuldLangSyne_Note", --]=]"AutoDecline", "AutoProfit", --[=["AutoProfitX", "AxuItemMenus",--]=]
-		"Badapples", "Baggins", --[=["Baggins_Search", --]=]"Bagnon", "Bagnon_Forever", --[=["BankAccountant",--]=] "BankItems", "BasicChatMods", --[=["BattleChat", "BattleCry", --]=]"BaudBag", --[=["BaudManifest", "BaudMenu", --]=]"BeanCounter", --[=["BeastTraining", --]=]"beql", "BetterInbox", --[=["BigBankStatement", "BigGuild", "BigTrouble", --]=]"BindPad", "BlackList", --[["Bongos_AB",--]] --[=["Bonuses", --]=]"BriefQuestComplete", "Broker_Transport", "Buffalo", --[["Buffalo2", "BuffQ",--]]"BugSack", "Butsu", "BuyEmAll",--[=[ "BuyPoisons",--]=]
-		"CallToArms", "Capping", "Carbonite",--[=[ "Cartographer", "Cartographer_QuestInfo", "Cartographer3",--]=] "Cauldron", --[=["CBRipoff", "CEnemyCastBar", "CharactersViewer",--]=] "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", --[["CT_RaidAssist",--]] "CT_RaidTracker",
-		"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", --[=["DebuffFilter", "Demon", "DemonTrainerFrame", "DepositBox", "DiamondThreatMeter", --]=]"Dominos", --[=["DopieArenaInfo", "DuckieBank",--]=]
-		--[=["Earth", "EasyTrack", --]=]"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills",--[=[ "Epeen",--]=] "epgp",--[=[ "EQL3",--]=] "EquipCompare", "EventEquip", "EveryQuest", "Examiner",
-		--[["FactionGrinder",--]] "Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", --[=["ForteWarlock", --]=]"FramesResized", "FreierGeist_InstanceTime", --[=["FruityLoots",  "FuBar_PoisonReminderFu",--]=]
-		"Gatherer", --[=["GCInfo", --]=]"GearScore", "GemHelper", "GemMe", "GFW_FeedOMatic", "GlowFoSho", "GnomishVendorShrinker", "Gossipmonger", --[=["GotWood", --]=]"Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", --[=["Guild_Alliance", "Guild_Log", --]=]"GuildAds", "GuildBankAccount", --[["GuildEventManager2",--]] "GuildLaunchCT_RaidTracker", "GupCharacter", "GupPet",
-		"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", --[=["HeadHunter", --]=]"HealBot", --[=["HealersAssist", "HealingEstimator", --]=]"HealOrganizer", "Highlight", --[=["Historian", --]=]"HitsMode", "HoloFriends",
-		"IgorsMassAuction", "InspectEquip", --[=["InstanceMaps", "InsultDevice", --]=]"IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", --[=["ItemEnchantApplication", "ItemRack", --]=]"ItemSync",
-		--[=["JasonQuest", "Jobber", --]=]"Junk",
-		--[=["Karma", --]=]--[["KC_Items","KLHThreatMeter", "KombatStats",--]] 
-		"LauncherMenu", "LightHeaded", --[=["LinkHeaven", --]=]"Links", "LinksList", "LinkWrangler", "Livestock", "LoadIT", "LootHog", --[=["LootLink", "LootScroll", --]=]"Ludwig", "Luggage",
-		"MacroBank", "MacroBrokerGUI", --[=["MageEatDrinkAid", --]=]"MailTo", "MakeRocketGoNow", "Mapster", --[["MCP", "MetaMap",--]]"MinimapButtonFrame", --[=["Mirror", "MobileFrames", --]=]"MobileVault", "MobMap", --[=["Moleskine", --]=]"MonkeyQuest", "MonkeyQuestLog", "MoveAnything", "Mountiful", "MTLove", --[["MultiTips",--]] --[=["MusicPlayer",--]=] "MyBags", "myClock", "myMusic",
-		"NeatFreak", "Necrosis", "NeonChat", "Notebook", "NotesUNeed", "nQuestLog",
-		"Omen", "Omnibus", "OneBag3", "OneBank3", "oRA3", "Overachiever", "Outfitter",
-		"Palatank", "PallyPower", "Panda", "PartyBuilder", "PartyQuests", "Pawn", "PassLoot", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoliteWhisper", "PoMTracker", "Possessions", "Postal", "PowerAuras", "ProcMeter", "Producer", "ProfessionsBook", "Proximo", "PVPCooldown", --[=["PVPCooldownReborn", --]=]"PvpMessages",
-		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuestIon", "QuickMark",
-		"RABuffs", "RaidBuffStatus", "RaidTracker", "RaidyCheck", "RandomPet30", "ReadySpells", "ReagentHeaven", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
-		"Sanity2", --[["SanityBags",--]] "SellJunk", "ShadowDancer3", --[=["ShieldLeft", --]=]"sienasGemViewer", --[=["SimpleMouseoverTarget", --]=]"Skada", "Skillet", "SmartBuff", "SmartDebuff", "SmoothQuest", "SpamSentry", "Spew", "Spyglass", "Squeenix", "sRaidFrames", "StanceSets", "SuperMacro", "SW_Stats", "SW_UniLog", "SystemMessageControlTool",
-		"tabDB", "Talented", "Tankadin", "TankPoints", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", --[["TinyTip",--]] "TipBuddy", "TipTac", "TitanExitGame", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "TradeJunkie", "Tukui", "TuringTest", "TwinValkyr_shieldmonitor",
+		"Accomplishment", "Acheron", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "ArkInventory", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
+		"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
+		"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", "CT_RaidTracker",
+		"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "Dominos",
+		"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "EquipCompare", "EventEquip", "EveryQuest", "Examiner",
+		"Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "FramesResized",
+		"Gatherer", "GearScore", "GemHelper", "GemMe", "GnomishVendorShrinker", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildLaunchCT_RaidTracker", "GupCharacter", "GupPet",
+		"Hack", "Hadar_FocusFrame", "HatTrick", "HeadCount", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
+		"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemSync",
+		"LauncherMenu", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Ludwig", "Luggage",
+		"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MinimapButtonFrame", "MobMap", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MyBags", "myClock",
+		"NeatFreak", "Necrosis", "NeonChat", "nQuestLog",
+		"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
+		"PallyPower", "Panda", "PartyBuilder", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoMTracker", "Postal", "PowerAuras", "Producer", "ProfessionsBook", "PvpMessages",
+		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuickMark",
+		"RABuffs", "RaidBuffStatus", "RaidTracker", "RaidyCheck", "RandomPet30", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
+		"ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "SmoothQuest", "Spew", "Squeenix", "sRaidFrames",
+		"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "TotemCaddy", "TourGuide", "Tukui", "TwinValkyr_shieldmonitor",
 		"UberQuest", "UrbanAchiever",
-		"VanasKoS", "vBagnon", --[["Vendor",--]] "Vendorizer", "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
+		"vBagnon", "Vendorizer", "VendorSearch", "Visor2GUI", "Volumizer",
 		"WebDKP", "WIM", "WoWEquip",
-		"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper", --[=["XPerl_GrimReaper", --]=]"XRS",
+		"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 		"zfpoison", "ZOMGBuffs"
 	}
 
@@ -109,14 +107,10 @@ function Skinner:AddonFrames()
 	addonFrames = nil
 
 	-- handle non standard ones here
-	self:checkAndRunAddOn("NicheCombatConfig", true) -- done here even though it's LoD, as it is always loaded with Blizzard_CombatLog -- use true so it isn't treated as a LoadManaged Addon
---[=[
-	self:checkAndRunAddOn("SuperInspect_UI", true) -- use true so it isn't treated as a LoadManaged Addon
---]=]
 
 	-- handle Addons with odd names here
 	local oddlyNamedAddons = {
-		"Auc-Advanced", --[=["Auc-Util-BigPicture", --]=]"Auto-Bag", "DBM-Core", "Enchantrix-Barker", "!ImprovedErrorFrame", "Ogri'Lazy", "Prat-3.0", "WoW-Pro"
+		"Auc-Advanced", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "Ogri'Lazy", "Prat-3.0", "WoW-Pro"
 	}
 	for _, v in pairs(oddlyNamedAddons) do
 		v2, _ = v:gsub("[-_!'\.]", "")
@@ -136,11 +130,6 @@ function Skinner:AddonFrames()
 	if IsAddOnLoaded("FuBar_MSBTFu") then
 		self:checkAndRunAddOn("MSBTOptions", true) -- use true so it isn't treated as a LoadManaged Addon
 	end
-
---[[
-	--	load Bongos support here if it is loaded
-	if IsAddOnLoaded("Bongos") then self:checkAndRunAddOn("Bongos") end
---]]
 
 	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip, tektip,  LibQTip & LibSimpleFrame library objects
 	local libsToSkin = {
@@ -194,7 +183,21 @@ function Skinner:AddonFrames()
 end
 
 local lodFrames = {
-	"AzCastBarOptions", "Bagnon", "Bagnon_Options", "Banknon", --[=["BaudAuction", --]=]"BetterBindingFrame", --[=["Bongos", "Bongos_Options", "Cartographer_Notes","CECB_Options", --]=]"cgCrafty", --[=["CharacterInfo",--]=] "DockingStation_Config", "Dominos_Config", "DoTimer_Options", "Enchantrix", "EnhTooltip",--[=[ "FilterTradeSkill",--]=] "FramesResized_TalentUI", "GnomishAuctionShrinker", "GuildBankSearch", "ItemRackOptions",  "LilSparkysWorkshop", "MrTrader_SkillWindow", "MSBTOptions", "oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs", "Perl_Config_Options", "PhoenixStyleMod_Coliseum", "PhoenixStyleMod_Ulduar", "PhoenixStyleMod_Icecrown", "SpamSentry_report", --[=[SpecialTalentUI", "SuperInspect_UI", --]=]"Talented_GlyphFrame", "TradeTabs", "TipTacOptions", "WIM_Options", "XPerl_Options", "ZOMGBuffs_BlessingsManager",
+	"AzCastBarOptions",
+	"Bagnon", "Bagnon_Options", "Banknon", "BetterBindingFrame",
+	"DockingStation_Config", "Dominos_Config", "DoTimer_Options",
+	"Enchantrix", "EnhTooltip",
+	"FramesResized_TalentUI",
+	"GnomishAuctionShrinker", "GuildBankSearch",
+	"ItemRackOptions",
+	"LilSparkysWorkshop",
+	"MrTrader_SkillWindow", "MSBTOptions",
+	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
+	"Perl_Config_Options", "PhoenixStyleMod_Coliseum", "PhoenixStyleMod_Ulduar", "PhoenixStyleMod_Icecrown",
+	"Talented_GlyphFrame", "TradeTabs", "TipTacOptions",
+	"WIM_Options",
+	"XPerl_Options",
+	"ZOMGBuffs_BlessingsManager",
 }
 local lodAddons = {}
 for _, v in pairs(lodFrames) do
@@ -257,7 +260,6 @@ function Skinner:AUCTION_HOUSE_SHOW()
 	self:checkAndRun("AuctionUI")
 	-- trigger these when AH loads otherwise errors occur
 	self:checkAndRunAddOn("BtmScan")
-	self:checkAndRunAddOn("Fence")
 	self:checkAndRunAddOn("AuctionFilterPlus")
 	self:checkAndRunAddOn("Auctionator")
 
