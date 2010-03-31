@@ -4,13 +4,17 @@ N.B. √ is Alt+v - indicates completed
  	 ≈ is Alt+x - indicates partially completed or dry-coded
 	 x          - indicates nothing to change
 
-I - Issue/Bug
-N - New Version
 O - Other change
+N - New Version
 S - Skin request
+I - Issue/Bug
 B - Button(s) Skin request
 
 ≈	O	Check to see which skins can be obsoleted (ongoing)
+
+√	O	Add skinAllButtons function call to addSkinFrame function
+
+√	O	Move all UIButton code into a module
 
 	O	Review Function Hooks
 		- Blizzard skins function hooks
@@ -21,6 +25,19 @@ B - Button(s) Skin request
 √			- XP bar especially (changed code, seems to fix it for the moment)
 ?			- Nameplate bar texture changes from UI-StatusBar to UI-Targetingframe-BarFill 64 --> 512 width
 				this causes the display to look odd
+
+√	N	Tukui, reported by Josaline, 27.03.10
+
+√	S	AzCastBar, reported by Kerecha, 11.03.10
+		- AzCastBar optionspanel not skinned
+
+√	S	Chaos Frame Modifier, requested by Gryzvwald, 16.03.10
+
+√	S	CalendarNotify, requested by Kerecha, 20.03.10
+
+√	S	AutoPartyButtons, requested by Cokedriver, 24.03.10
+
+√	S	Odyssey, requested by Gabriel, 28.03.10
 
 	I	Frames overlaying text, reported by several posters
 		- maybe add an option to force frames to use applySkin instead of addSkinFrame ?
@@ -34,14 +51,58 @@ B - Button(s) Skin request
 ?		- QuestLevel text colour
 ?		- minus/plus buttons
 
-√	I	oRA3, reported by Eatsbrains, 4.03.10
-		- Skinner-@project-version@\SkinMe\oRA3.lua:4: bad argument #1 to 'match' (string expected, got nil)
-		Skinner-@project-version@\SkinMe\oRA3.lua:4: in function <Skinner\SkinMe\oRA3.lua:2>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-@project-version@\Skinner.lua:782: in function <Skinner\Skinner.lua:780>
-		Skinner-@project-version@\Skinner.lua:827: in function `?'
-		Skinner-@project-version@\AddonFrames.lua:120: in function <Skinner\AddonFrames.lua:60>
+√	I	oRA3, reported by Curace, 9.03.10
+		- 11x Skinner-b2.11623.2\Skinner.lua:488: attempt to index field 'obj' (a nil value)
+		Skinner-b2.11623.2\Skinner.lua:559: in function `addSkinFrame'
+		Skinner-b2.11623.2\SkinMe\oRA3.lua:97: in function <Skinner\SkinMe\oRA3.lua:94>
+		Skinner-b2.11623.2\SkinMe\oRA3.lua:104: in function <Skinner\SkinMe\oRA3.lua:103>
 		(tail call): ?:
 
-√	S	Skada, requested by Gryzwald, 5.03.10
+	I	Skada, reported by Kerecha, 11.03.10
+√		- StatusBar textures "forced" to be Skinner's texture
+
+≈	I	Skinner/TipTac, reported by Luckyjack_SL, 17.03.10
+		- Message: ..\AddOns\TipTac\core.lua line 1011:
+		   attempt to index upvalue 'cfg' (a nil value)
+		Debug:
+		   (tail call): ?
+		   (tail call): ?
+		   (tail call): ?
+		   TipTac\core.lua:1011: ApplySettings()
+		   Skinner\SkinMe\TipTac.lua:16:
+		      Skinner\SkinMe\TipTac.lua:2
+		   (tail call): ?
+		   [C]: xpcall()
+		   Skinner\Skinner.lua:771:
+		      Skinner\Skinner.lua:769
+		   Skinner\Skinner.lua:826: ?()
+		   Skinner\AddonFrames.lua:117:
+		      Skinner\AddonFrames.lua:57
+		   (tail call): ?
+
+√	I	Calendar, reported by Kerecha, 20.03.10
+		- Tentative button not skinned
+
+√	I	oRA3, reported by Eatsbrains, 21.03.10
+		- Skinner-@project-version@\SkinMe\oRA3.lua:85: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
+		Skinner-@project-version@\SkinMe\oRA3.lua:85: in function <Skinner\SkinMe\oRA3.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-@project-version@\Skinner.lua:771: in function <Skinner\Skinner.lua:769>
+		Skinner-@project-version@\Skinner.lua:826: in function `?'
+		Skinner-@project-version@\AddonFrames.lua:117: in function <Skinner\AddonFrames.lua:57>
+		(tail call): ?:
+
+√	I	HoloFriends, reported by
+		-  Skinner just simply gives me an error with HoloFriends... and the frame isn't skinned completely, for example buttons are off of the main HF frame
+
+?	I	Ara Broker Tradeskills, reported by X-buZZ, 26.03.10
+		- ignoring status bar texture
+
+√	I	AuctionFrame, reported by crazykilla224, 28.03.10
+		- no highlighting on items (CompactUI from Auctioneer)
+
+?	I	GuildBank, TalentFrame, reported by burber, 28.03.10
+		- sees standard ones after patch
