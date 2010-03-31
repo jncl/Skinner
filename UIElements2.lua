@@ -421,6 +421,7 @@ function Skinner:AuctionUI()
 	end
 	self:skinScrollBar{obj=BrowseScrollFrame}
 	for i = 1, NUM_BROWSE_TO_DISPLAY do
+		if _G["BrowseButton"..i].Orig then break end -- Auctioneer CompactUI loaded
 		self:keepFontStrings(_G["BrowseButton"..i])
 		if _G["BrowseButton"..i.."Highlight"] then _G["BrowseButton"..i.."Highlight"]:SetAlpha(1) end
 	end
