@@ -16,7 +16,7 @@ Skinner.debugFrame = ChatFrame7
 -- Get Locale
 Skinner.L = LibStub("AceLocale-3.0"):GetLocale(aName)
 
--- check to see if LibSharedMedia-3.0 is loaded
+-- pointer to LibSharedMedia-3.0 library
 Skinner.LSM = LibStub("LibSharedMedia-3.0")
 
 -- player class
@@ -68,7 +68,6 @@ local function printIt(text, frame, r, g, b)
 
 end
 
-local prdb
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
 
@@ -84,6 +83,7 @@ function Skinner:OnInitialize()
 
 	-- setup the default DB values and register them
 	self:checkAndRun("Defaults", true)
+	local prdb = self.db.profile
 	-- setup the Addon's options
 	self:checkAndRun("Options")
 
@@ -96,7 +96,6 @@ function Skinner:OnInitialize()
 	-- register the statubar texture used by Nameplates
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 
-	prdb = self.db.profile
 	-- Heading and Body Text colours
 	local c = prdb.HeadText
 	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
@@ -274,8 +273,8 @@ function Skinner:OnEnable()
 	self:RegisterEvent("ADDON_LOADED")
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 
-	self:ScheduleTimer("BlizzardFrames", prdb.Delay.Init)
-	self:ScheduleTimer("AddonFrames", prdb.Delay.Init + prdb.Delay.Addons + 0.1)
+	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
+	self:ScheduleTimer("AddonFrames", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1)
 
 	-- handle profile changes
 	self.db.RegisterCallback(self, "OnProfileChanged", "ReloadAddon")
@@ -285,12 +284,12 @@ function Skinner:OnEnable()
 	-- handle statusbar changes
 	self.LSM.RegisterCallback(self, "LibSharedMedia_SetGlobal", function(mtype, override)
 		if mtype == "statusbar" then
-			prdb.StatusBar.texture = override
+			self.db.profile.StatusBar.texture = override
 			self:updateSBTexture()
 		elseif mtype == "background" then
-			prdb.BdTexture = override
+			self.db.profile.BdTexture = override
 		elseif mtype == "border" then
-			prdb.BdBorderTexture = override
+			self.db.profile.BdBorderTexture = override
 		end
 	end)
 
@@ -302,7 +301,7 @@ function Skinner:OnEnable()
 	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
 	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, false) end)
 	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end)
-	self:RegisterChatCommand("sp", function(msg) Spew("xyz", _G[msg]) end)
+	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
 --@end-debug@
 
 end
@@ -354,9 +353,9 @@ end
 
 function Skinner:getGradientInfo(db)
 
-	local c = prdb.GradientMin
+	local c = self.db.profile.GradientMin
 	MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
-	local c = prdb.GradientMax
+	local c = self.db.profile.GradientMax
 	MaxR, MaxG, MaxB, MaxA = c.r, c.g, c.b, c.a
 
 	return db.invert and {db.rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA} or {db.rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA}
@@ -592,22 +591,22 @@ end
 function Skinner:applyGradient(frame, fh, invert)
 
 	-- don't apply a gradient if required
-	if not prdb.Gradient.char then
+	if not self.db.profile.Gradient.char then
 		for _, v in pairs(self.gradFrames["c"]) do
 			if v == frame then return end
 		end
 	end
-	if not prdb.Gradient.ui then
+	if not self.db.profile.Gradient.ui then
 		for _, v in pairs(self.gradFrames["u"]) do
 			if v == frame then return end
 		end
 	end
-	if not prdb.Gradient.npc then
+	if not self.db.profile.Gradient.npc then
 		for _, v in pairs(self.gradFrames["n"]) do
 			if v == frame then return end
 		end
 	end
-	if not prdb.Gradient.skinner then
+	if not self.db.profile.Gradient.skinner then
 		for _, v in pairs(self.gradFrames["s"]) do
 			if v == frame then return end
 		end
@@ -616,10 +615,10 @@ function Skinner:applyGradient(frame, fh, invert)
 	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
 	frame.tfade:SetTexture(self.gradientTexture)
 
-	if prdb.FadeHeight.enable and (prdb.FadeHeight.force or not fh) then
+	if self.db.profile.FadeHeight.enable and (self.db.profile.FadeHeight.force or not fh) then
 		-- set the Fade Height if not already passed to this function or 'forced'
 		-- making sure that it isn't greater than the frame height
-		fh = prdb.FadeHeight.value <= ceil(frame:GetHeight()) and prdb.FadeHeight.value or ceil(frame:GetHeight())
+		fh = self.db.profile.FadeHeight.value <= ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or ceil(frame:GetHeight())
 	end
 --	self:Debug("aG Fade Height: [%s, %s, %s]", frame:GetName(), frame:GetHeight(), fh)
 
@@ -634,7 +633,7 @@ function Skinner:applyGradient(frame, fh, invert)
 	end
 
 	frame.tfade:SetBlendMode("ADD")
-	frame.tfade:SetGradientAlpha(unpack(prdb.Gradient.enable and self.gradientOn or self.gradientOff))
+	frame.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientOff))
 
 end
 
@@ -823,7 +822,7 @@ function Skinner:checkAndRun(funcName, quiet)
 	if type(self[funcName]) == "function" then
 		return safecall(funcName, nil, quiet)
 	else
-		if prdb.Warnings then
+		if not quiet and self.db.profile.Warnings then
 			self:CustomPrint(1, 0, 0, "function ["..funcName.."] not found in "..aName)
 		end
 	end
@@ -849,14 +848,14 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 	else
 		-- check to see if AddonSkin is loaded when Addon is loaded
 		if not LoD and not self[addonFunc] then
-			if prdb.Warnings then
+			if self.db.profile.Warnings then
 				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the SkinMe directory")
 			end
 		elseif type(self[addonFunc]) == "function" then
 --			self:Debug("checkAndRunAddOn#2:[%s, %s]", addonFunc, self[addonFunc])
 			safecall(addonFunc, LoD)
 		else
-			if prdb.Warnings then
+			if self.db.profile.Warnings then
 				self:CustomPrint(1, 0, 0, "function ["..addonFunc.."] not found in "..aName)
 			end
 		end
@@ -1009,7 +1008,7 @@ function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 
 	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
 
-	local c = prdb.StatusBar
+	local c = self.db.profile.StatusBar
 
 	statusBar:SetStatusBarTexture(self.sbTexture)
 	if not self.sbGlazed[statusBar] then
@@ -1080,7 +1079,7 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 		if verNoReqd == actualVerNo then hasMatched = true end
 	end
 
-	if not hasMatched and prdb.Warnings then
+	if not hasMatched and self.db.profile.Warnings then
 		local addText = ""
 		if type(verNoReqd) ~= "table" then addText = "Version "..verNoReqd.." is required" end
 		self:CustomPrint(1, 0.25, 0.25, "Version", actualVerNo, "of", addonName, "is unsupported.", addText)
@@ -1161,7 +1160,7 @@ function Skinner:makeMFRotatable(frame)
 	-- hide rotation buttons
 	for _, child in pairs{frame:GetChildren()} do
 		local cName = child:GetName()
-		if cName:find("Rotate") then
+		if cName and cName:find("Rotate") then
 			child:Hide()
 		end
 	end
@@ -1217,6 +1216,8 @@ local function __moveObject(opts)
 --@end-alpha@
 
 	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
+
+--	Skinner:Debug("__mO: [%s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs)
 
 	-- handle no Point info
 	if not point then return end
@@ -1334,7 +1335,7 @@ function Skinner:setActiveTab(tabName)
 --	self:Debug("setActiveTab : [%s]", tabName:GetName())
 
 	tabName.tfade:SetTexture(self.gradientTexture)
-	tabName.tfade:SetGradientAlpha(unpack(prdb.Gradient.enable and self.gradientOn or self.gradientOff))
+	tabName.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientOff))
 
 end
 
@@ -1349,7 +1350,7 @@ function Skinner:setInactiveTab(tabName)
 --	self:Debug("setInactiveTab : [%s]", tabName:GetName())
 
 	tabName.tfade:SetTexture(self.itTex)
-	tabName.tfade:SetGradientAlpha(unpack(prdb.Gradient.enable and self.gradientOn or self.gradientTab))
+	tabName.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientTab))
 
 end
 
@@ -1370,7 +1371,7 @@ end
 function Skinner:setTTBBC()
 -- 	self:Debug("setTTBBC: [%s, %s, %s, %s]", unpack(self.tbColour))
 
-	if prdb.Tooltips.border == 1 then
+	if self.db.profile.Tooltips.border == 1 then
 		return unpack(self.bbColour)
 	else
 		return unpack(self.tbColour)
@@ -1407,12 +1408,12 @@ function Skinner:shrinkBag(frame, bpMF)
 	self:moveObject(_G[frameName.."Item1"], "+", 3)
 
 	-- use default fade height
-	local fh = prdb.ContainerFrames.fheight <= ceil(frame:GetHeight()) and prdb.ContainerFrames.fheight or ceil(frame:GetHeight())
+	local fh = self.db.profile.ContainerFrames.fheight <= ceil(frame:GetHeight()) and self.db.profile.ContainerFrames.fheight or ceil(frame:GetHeight())
 
-	if prdb.FadeHeight.enable and prdb.FadeHeight.force then
+	if self.db.profile.FadeHeight.enable and self.db.profile.FadeHeight.force then
 	-- set the Fade Height
 	-- making sure that it isn't greater than the frame height
-		fh = prdb.FadeHeight.value <= ceil(frame:GetHeight()) and prdb.FadeHeight.value or ceil(frame:GetHeight())
+		fh = self.db.profile.FadeHeight.value <= ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or ceil(frame:GetHeight())
 	end
 --	self:Debug("sB - Frame, Fade Height: [%s, %s]", frame:GetName(), fh)
 
@@ -1488,6 +1489,7 @@ local function __skinEditBox(opts)
 		noSkin = don't skin the frame
 		noHeight = don't change the height
 		noWidth = don't change the width
+		noInsert = don't change the Inserts
 		move = move the edit box, left and up
 		x = move the edit box left/right
 		y = move the edit box up/down
@@ -1512,9 +1514,11 @@ local function __skinEditBox(opts)
 	end
 	Skinner:keepRegions(opts.obj, kRegions)
 
-	-- adjust the left & right text inserts
-	local l, r, t, b = opts.obj:GetTextInsets()
-	opts.obj:SetTextInsets(l + 5, r + 5, t, b)
+	if not opts.noInsert then
+		-- adjust the left & right text inserts
+		local l, r, t, b = opts.obj:GetTextInsets()
+		opts.obj:SetTextInsets(l + 5, r + 5, t, b)
+	end
 
 	-- change height, if required
 	if not (opts.noHeight or opts.obj:IsMultiLine()) then opts.obj:SetHeight(24) end
@@ -1747,14 +1751,14 @@ function Skinner:skinSlider(...)
 end
 
 function Skinner:skinTooltip(frame)
-	if not prdb.Tooltips.skin then return end
+	if not self.db.profile.Tooltips.skin then return end
 --@alpha@
 	assert(frame, "Unknown object\n"..debugstack())
 --@end-alpha@
 
 	if not frame then return end
 
-	if not prdb.Gradient.ui then return end
+	if not self.db.profile.Gradient.ui then return end
 
 	local ttHeight = ceil(frame:GetHeight())
 
@@ -1763,16 +1767,16 @@ function Skinner:skinTooltip(frame)
 	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
 	frame.tfade:SetTexture(self.gradientTexture)
 
-	if prdb.Tooltips.style == 1 then
+	if self.db.profile.Tooltips.style == 1 then
 		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -6)
 		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -6, -27)
-	elseif prdb.Tooltips.style == 2 then
+	elseif self.db.profile.Tooltips.style == 2 then
 		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
 		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4)
 	else
 		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
 		-- set the Fade Height making sure that it isn't greater than the frame height
-		local fh = prdb.FadeHeight.value <= ttHeight and prdb.FadeHeight.value or ttHeight
+		local fh = self.db.profile.FadeHeight.value <= ttHeight and self.db.profile.FadeHeight.value or ttHeight
 		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -(fh - 4))
 		frame:SetBackdropColor(unpack(self.bColour))
 	end
@@ -1795,7 +1799,7 @@ function Skinner:skinTooltip(frame)
 	frame:SetBackdropBorderColor(self:setTTBBC())
 
 	frame.tfade:SetBlendMode("ADD")
-	frame.tfade:SetGradientAlpha(unpack(prdb.Gradient.enable and self.gradientOn or self.gradientOff))
+	frame.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientOff))
 
 end
 
@@ -1847,9 +1851,9 @@ end
 function Skinner:updateSBTexture()
 
 	-- get updated colour/texture
-	local c = prdb.StatusBar
+	local c = self.db.profile.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
-	self.sbTexture = self.LSM:Fetch("statusbar", prdb.StatusBar.texture)
+	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
 
 	for statusBar, tab in pairs(self.sbGlazed) do
 		statusBar:SetStatusBarTexture(self.sbTexture)
