@@ -1,14 +1,14 @@
+if not Skinner:isAddonEnabled("HealOrganizer") then return end
 
 function Skinner:HealOrganizer()
 
-	self:keepFontStrings(HealOrganizerDialog)
-	self:applySkin(HealOrganizerDialog, true)
+	self:addSkinFrame{obj=HealOrganizerDialog, kfs=true, hdr=true}
 	self:applySkin(HealOrganizerDialogEinteilung)
 	self:applySkin(HealOrganizerDialogEinteilungOptionen)
 	self:applySkin(HealOrganizerDialogEinteilungStats)
 	self:skinEditBox(HealOrganizerDialogEinteilungRestAction, {9})
 	self:applySkin(HealOrganizerDialogEinteilungSets)
-	self:keepFontStrings(HealOrganizerDialogEinteilungSetsDropDown)
+	self:skinDropDown{obj=HealOrganizerDialogEinteilungSetsDropDown}
 	self:applySkin(HealOrganizerDialogBroadcast)
 	self:skinEditBox(HealOrganizerDialogBroadcastChannelEditbox, {9})
 	self:moveObject(HealOrganizerDialogClose, nil, nil, "-", 5)

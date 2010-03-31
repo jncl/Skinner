@@ -1,8 +1,9 @@
-﻿
+if not Skinner:isAddonEnabled("EnhancedTradeSkills") then return end
+
 function Skinner:EnhancedTradeSkills()
 	if not self.db.profile.TradeSkillUI then return end
 
-	self:applySkin(PinkyConfigFrame, true)
+	self:addSkinFrame{obj=PinkyConfigFrame, hdr=true, y1=4, y2=4}
 
 	if IsAddOnLoaded("FramesResized") then
 		self:removeRegions(TradeSkillFrame_MidTextures)

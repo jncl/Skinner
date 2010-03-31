@@ -1,7 +1,7 @@
+if not Skinner:isAddonEnabled("ConcessionStand") then return end
 
 function Skinner:ConcessionStand()
 
-	self:moveObject(ConcessionStandFrame, "+", 20, "+", 10)
-	self:applySkin(ConcessionStandFrame)
+	self:addSkinFrame{obj=ConcessionStandFrame, nb=true}
 
 end

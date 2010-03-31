@@ -40,8 +40,8 @@ function Skinner:TukuiInit()
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures
-		self.LSM:Register("background", "Tukui Background", [[Interface\AddOns\Tukui\media\WHITE64X64]])
-		self.LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\media\WHITE64X64]])
+		self.LSM:Register("background", "Tukui Background", [[Interface\AddOns\Tukui\media\blank]])
+		self.LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\media\blank]])
 		self.LSM:Register("statusbar", "Tukui StatusBar", [[Interface\AddOns\Tukui\media\normTex]])
 
 		-- create and use a new db profile called Tukui
@@ -110,17 +110,24 @@ function Skinner:TukuiInit()
 		end
 		self.hooks[this].addSkinButton(this, opts)
 	end)
-	-- hook to ignore minus/plus button skinning
-	self:RawHook(self, "skinButton", function(this, opts)
-		if opts.mp
-		or opts.mp2
-		or opts.mp3
-		then
-			return
-		end
-		self.hooks[this].skinButton(this, opts)
-	end)
-	self.checkTex = function() end
+
+	if self:GetModule("UIButtons", true):IsEnabled() then
+		-- hook this as UIButton code is now in a module
+		self:SecureHook(self, "OnEnable", function(this)
+			-- hook to ignore minus/plus button skinning
+			self:RawHook(self, "skinButton", function(this, opts)
+				if opts.mp
+				or opts.mp2
+				or opts.mp3
+				then
+					return
+				end
+				self.hooks[this].skinButton(this, opts)
+			end)
+			self.checkTex = function() end
+			self:Unhook(self, "OnEnable")
+		end)
+	end
 
 	-- create a ButtonFacade skin
 	local LBF = LibStub("LibButtonFacade", true)
