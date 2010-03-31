@@ -1,10 +1,10 @@
+if not Skinner:isAddonEnabled("IntricateChatMods") then return end
 -- thanks to ichik
 
 function Skinner:IntricateChatMods()
 
 	local function skinBCMCopyFrame()
 
-		self:skinAllButtons{obj=BCMCopyFrame}
 		self:skinScrollBar{obj=BCMCopyScroll}
 		self:addSkinFrame{obj=BCMCopyFrame}
 

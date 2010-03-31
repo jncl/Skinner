@@ -1,4 +1,5 @@
-﻿
+if not Skinner:isAddonEnabled("RecipeBook") then return end
+
 function Skinner:RecipeBook()
 
 	if self.isTT then
@@ -16,7 +17,6 @@ function Skinner:RecipeBook()
 	end
 
 -->>-- Main Frame
-	self:skinAllButtons{obj=RBUI_MainFrame}
 	self:moveObject{obj=RBUI_MainFrame_TitleText, y=-6}
 	self:addSkinFrame{obj=RBUI_MainFrame, kfs=true}
 	-- Tabs
@@ -40,7 +40,6 @@ function Skinner:RecipeBook()
 	self:keepFontStrings(RBUI_SkillFrame_DD_SortType)
 	self:skinScrollBar{obj=RBUI_SkillFrame_ScrollFrame}
 -->>-- Skill Tracking Sub Frame
-	self:skinAllButtons{obj=RBSkillTrackFrame}
 	self:addSkinFrame{obj=RBSkillTrackFrame, kfs=true}
 -->>-- Sharing Frame (Tab 3)
 	self:skinScrollBar{obj=RBUI_SharingFrame_WhoScrollFrame}
@@ -69,7 +68,6 @@ function Skinner:RecipeBook()
 		rbDB = LibStub("LibDataBroker-1.1"):NewDataObject("RecipeBook", {
 			type = "launcher",
 			icon = "Interface\\AddOns\\RecipeBook\\Icons\\Minimap",
-			text = "RecipeBook",
 			OnClick = function(button)
 				if button == "LeftButton" then
 					if RBUI_MainFrame:IsVisible() then RBUI_MainFrame:Hide()

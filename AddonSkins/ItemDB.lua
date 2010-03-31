@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("ItemDB") then return end
 
 function Skinner:ItemDB()
 
@@ -12,7 +13,6 @@ function Skinner:ItemDB()
 	self:skinDropDown(ItemDB_Browser_FilterDropDown)
 	self:skinScrollBar{obj=ItemDB_Browser_FilterScrollFrame}
 	self:skinScrollBar{obj=ItemDB_Browser_ItemScrollFrame}
-	self:skinAllButtons{obj=ItemDB_Browser}
 	self:addSkinFrame{obj=ItemDB_Browser, kfs=true, x1=10, y1=-11, y2=4}
 	-- Advanced Filters panel
 	self:getRegion(ItemDB_Browser_AdvancedFiltersCloseButton, 4):SetAlpha(0)

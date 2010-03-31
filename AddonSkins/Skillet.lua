@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Skillet") then return end
 
 function Skinner:Skillet()
 	if not self.db.profile.TradeSkillUI then return end
@@ -14,7 +15,6 @@ function Skinner:Skillet()
 		self:skinEditBox(SkilletItemCountInputBox, {9})
 		self:skinScrollBar{obj=SkilletQueueList, size=3}
 		self:applySkin(SkilletQueueParent)
-		self:skinAllButtons(SkilletFrame)
 		self:addSkinFrame{obj=SkilletFrame, kfs=true}
 		self:Unhook(Skillet, "ShowTradeSkillWindow")
 	end)
@@ -23,7 +23,6 @@ function Skinner:Skillet()
 	self:SecureHook(SkilletShoppingList, "Show", function(this)
 		self:skinScrollBar{obj=SkilletShoppingListList, size=3}
 		self:applySkin(SkilletShoppingListParent)
-		self:skinAllButtons(SkilletShoppingList)
 		self:addSkinFrame{obj=SkilletShoppingList, kfs=true}
 		self:Unhook(SkilletShoppingList, "Show")
 	end)
@@ -31,7 +30,6 @@ function Skinner:Skillet()
 -->>--	SkilletRecipeNotes Frame
 	self:SecureHook(SkilletRecipeNotesFrame, "Show", function(this)
 		self:skinScrollBar{obj=SkilletNotesList, size=3}
-		self:skinAllButtons(SkilletRecipeNotesFrame)
 		self:applySkin(SkilletRecipeNotesFrame)
 		self:Unhook(SkilletRecipeNotesFrame, "Show")
 	end)
@@ -42,7 +40,6 @@ function Skinner:Skillet()
 
 -->>-- InventoryInfoPopup
 	self:SecureHook(Skillet, "ShowInventoryInfoPopup", function()
-		self:skinAllButtons(SkilletInfoBoxFrame)
 		self:addSkinFrame{obj=SkilletInfoBoxFrame}
 		self:Unhook(Skillet, "ShowInventoryInfoPopup")
 	end)
@@ -56,12 +53,12 @@ function Skinner:Skillet()
 	end
 
 -->>-- Buttons
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- skin queue buttons
 		SkilletQueueButton1:SetParent(SkilletQueueParent) -- reparent it
 		self.sBut[SkilletQueueButton1] = nil -- remove old skin button
 		self:SecureHook(Skillet, "UpdateQueueWindow", function()
-			for i = 1, math.floor(SkilletQueueList:GetHeight() / SKILLET_TRADE_SKILL_HEIGHT) do
+			for i = 1, floor(SkilletQueueList:GetHeight() / SKILLET_TRADE_SKILL_HEIGHT) do
 				local dBtn = _G["SkilletQueueButton"..i.."DeleteButton"]
 				if not self.sBut[dBtn] then self:skinButton{obj=dBtn, x1=-3, y1=-3, x2=3, y2=1} end
 			end

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("TheCollector") then return end
 
 function Skinner:TheCollector()
 
@@ -8,9 +9,15 @@ function Skinner:TheCollector()
 	self:glazeStatusBar(TheCollectorFrameStatusBar, 0)
 	self:keepFontStrings(TheCollectorFrameHeaderFrame)
 	self:addSkinFrame{obj=TheCollectorFrame, kfs=true, x1=4, y1=-5, x2=-5, y2=-10}
+--[=[
+-->>-- Model frame (not currently used)
+	self:makeMFRotatable(TheCollectorModel)
+	TheCollectorModel:SetBackdrop(nil)
+	self:addSkinFrame{obj=TheCollectorModelFrame}
+--]=]
 	
-	-- skin buttons
-	if self.db.profile.Buttons then
+	-- m/p buttons
+	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("TheCollectorScrollFrameUpdate", function()
 			for i = 1, COLLECTOR_NUM_ITEMS_TO_DISPLAY do
@@ -18,13 +25,8 @@ function Skinner:TheCollector()
 			end
 		end)
 	end
-	self:skinButton{obj=self:getChild(TheCollectorFrame, 3), cb=true} -- close button TRHC
-	self:skinButton{obj=self:getChild(TheCollectorFrame, 4)} -- close button BRHC
 	for i = 1, COLLECTOR_NUM_ITEMS_TO_DISPLAY do
 		self:skinButton{obj=_G["TheCollectorFrameScrollFrameHeader"..i], mp=true}
 	end
-	self:skinButton{obj=TheCollectorPetToggleButton, y1=-2}
-	self:skinButton{obj=TheCollectorTitleToggleButtonLeft}
-	self:skinButton{obj=TheCollectorTitleToggleButtonRight}
 	
 end

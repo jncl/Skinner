@@ -1,4 +1,4 @@
-local _G = _G
+if not Skinner:isAddonEnabled("TooManyAddons") then return end
 
 function Skinner:TooManyAddons()
 
@@ -6,11 +6,11 @@ function Skinner:TooManyAddons()
 	local TMAprofileframe = _G[TMA_PROFILE_LIST_NAME.."frame"]
 	local TMAglobalprofileframe = _G[TMA_GLOBAL_PROFILE_LIST_NAME.."frame"]
 	-- Frames
-	self:skinAllButtons{obj=TMAaddonframe}
+	TMAoptionbutton:SetWidth(20)
+	TMAclosebutton:SetWidth(20)
+	TMAclosebutton:SetText("X")
 	self:addSkinFrame{obj=TMAaddonframe}
-	self:skinAllButtons{obj=TMAprofileframe}
 	self:addSkinFrame{obj=TMAprofileframe}
-	self:skinAllButtons{obj=TMAglobalprofileframe}
 	self:addSkinFrame{obj=TMAglobalprofileframe}
 	-- scrollbars
 	self:skinScrollBar{obj=_G[TMA_ADDON_LIST_NAME.."scrollbar"]}

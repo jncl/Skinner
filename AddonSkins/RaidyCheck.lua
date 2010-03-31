@@ -1,9 +1,10 @@
+if not Skinner:isAddonEnabled("RaidyCheck") then return end
 
 function Skinner:RaidyCheck()
 
 -->>-- Anchor frame
 	self:skinAllButtons{obj=RaidyCheck.anchor, x1=-1, y1=-1}
-	self:addSkinFrame{obj=RaidyCheck.anchor, kfs=true, y2=-2}
+	self:addSkinFrame{obj=RaidyCheck.anchor, kfs=true, y2=-2, nb=true}
 
 -->>-- Panel
 	-- skin it here as the Backdrop and colours are changed after LibQTip creates it

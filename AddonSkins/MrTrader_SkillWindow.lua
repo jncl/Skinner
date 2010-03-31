@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("MrTrader_SkillWindow") then return end
 
 function Skinner:MrTrader_SkillWindow()
 
@@ -20,7 +21,6 @@ function Skinner:MrTrader_SkillWindow()
 	self:skinScrollBar{obj=MRTDetailScrollFrame}
 	self:keepFontStrings(MRTDetailScrollChildFrame)
 	self:skinEditBox{obj=MRTSkillInputBox, x=-6}
-	self:skinAllButtons{obj=MRTSkillFrame}
 	self:addSkinFrame{obj=MRTSkillFrame, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 	for i = 1, MAX_TRADE_SKILL_REAGENTS do
@@ -29,7 +29,6 @@ function Skinner:MrTrader_SkillWindow()
 
 -->>-- New Category frame
 	self:skinEditBox{obj=MRTNewCategoryFrameCategoryName, x=-3}
-	self:skinAllButtons{obj=MRTNewCategoryFrame}
 	self:addSkinFrame{obj=MRTNewCategoryFrame, kfs=true, x1=5, y1=-6, x2=-5, y2=6}
 
 end

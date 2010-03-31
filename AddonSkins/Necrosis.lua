@@ -1,8 +1,8 @@
+if not Skinner:isAddonEnabled("Necrosis") then return end
 
 function Skinner:Necrosis()
 
 	self:SecureHook(Necrosis, "OpenConfigPanel", function()
-		self:skinAllButtons{obj=NecrosisGeneralFrame}
 		self:addSkinFrame{obj=NecrosisGeneralFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
 	-->>-- Tabs (side)
 		for i = 1, 6 do

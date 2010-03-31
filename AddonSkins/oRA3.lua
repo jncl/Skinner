@@ -1,6 +1,6 @@
 if not Skinner:isAddonEnabled("oRA3") then return end
 
-function Skinner:oRA3()
+function Skinner:oRA3() -- last tested with r421
 
 	-- hook this to manage textured tabs
 	if self.isTT then
@@ -25,16 +25,9 @@ function Skinner:oRA3()
 
 	local function skinFrame()
 
-		self:skinAllButtons{obj=oRA3Frame}
-		self:addSkinFrame{obj=oRA3Frame, kfs=true, x1=10 , y1=1, x2=1, y2=-3}
+		self:addSkinFrame{obj=oRA3Frame, kfs=true, x1=10 , y1=-11, x2=-33, y2=73}
 
-		local subFrame = oRA3FrameSub or oRA3Disband:GetParent() -- a.k.a. contentFrame
-		-- handle hiddenMsg
-		local hiddenMsg = self:getRegion(oRA3Frame, 11)
-		hiddenMsg:Hide()
-		self:SecureHook(hiddenMsg, "Show", function(this)
-			if subFrame:IsShown() then this:Hide() end
-		end)
+		local subFrame = oRA3FrameSub or oRA3ListFrame:GetParent() -- a.k.a. contentFrame
 
 		if not oRA3.db.profile.open then oRA3Frame.title:SetAlpha(0) end
 		-- show the title when opened
@@ -82,9 +75,19 @@ function Skinner:oRA3()
 	end
 	if oRA3Frame then skinFrame()
 	else
-		self:SecureHook(oRA3, "SetupGUI", function(this)
+		self:SecureHook(oRA3, "ToggleFrame", function(this, ...)
 			skinFrame()
-			self:Unhook(oRA3, "SetupGUI")
+			self:Unhook(oRA3, "ToggleFrame")
+		end)
+	end
+
+-->-- Tanks module
+	local tanks = oRA3:GetModule("Tanks", true)
+	if tanks then
+		self:SecureHook(tanks, "CreateFrame", function(this)
+			self:skinScrollBar{obj=oRA3TankTopScrollFrame}
+			self:skinScrollBar{obj=oRA3TankBottomScrollFrame}
+			self:Unhook(tanks, "CreateFrame")
 		end)
 	end
 
@@ -93,16 +96,17 @@ function Skinner:oRA3()
 	if rc then
 		local function skinRCFrame()
 
-			self:skinAllButtons{obj=oRA3ReadyCheck}
-			self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-1}
+			self:addSkinFrame{obj=oRA3ReadyCheck, kfs=true, y1=-2, x2=-1}
 
 		end
 		if oRA3ReadyCheck then skinRCFrame()
 		else
 			local method = rc.VERSION < 313 and "SetupGUI" or "READY_CHECK"
 			self:SecureHook(rc, method, function(this, ...)
-				if this.db.profile.gui then skinRCFrame() end
-				self:Unhook(rc, method)
+				if oRA3ReadyCheck then 
+					skinRCFrame()
+					self:Unhook(rc, method)
+				end
 			end)
 		end
 	end

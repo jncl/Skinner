@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("QuestGuru") then return end
 
 function Skinner:QuestGuru()
 	if not self.db.profile.QuestLog then return end
@@ -6,8 +7,8 @@ function Skinner:QuestGuru()
 	if IsAddOnLoaded("LightHeaded") then
 		self:moveObject{obj=LightHeadedFrame, x=-55}
 		self:RawHook(LightHeadedFrame, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
-			self:Debug("LHF_SP: [%s, %s, %s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs, relTo == QuestGuru_QuestLogFrame, math.floor(xOfs) > -16)
-			if relTo == QuestGuru_QuestLogFrame and math.floor(xOfs) > -56 then xOfs = -55 end
+--			self:Debug("LHF_SP: [%s, %s, %s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs, relTo == QuestGuru_QuestLogFrame, floor(xOfs) > -16)
+			if relTo == QuestGuru_QuestLogFrame and floor(xOfs) > -56 then xOfs = -55 end
 			self.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, yOfs)
 		end, true)
 	end
@@ -45,9 +46,14 @@ function Skinner:QuestGuru()
 		if type == "History" then
 			QuestGuru_QuestHistoryXPText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
+		-- Quest objectives
+		for i = 1, MAX_OBJECTIVES do
+			local r, g, b = _G[prefix.."Objective"..i]:GetTextColor()
+			_G[prefix.."Objective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		end
 	end
 	-- m/p buttons
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		-- hook to manage changes to button textures (Current Tab)
 		self:SecureHook("QuestLog_Update", function()
 			for i = 1, QUESTGURU_QUESTS_DISPLAYED do
@@ -72,10 +78,6 @@ function Skinner:QuestGuru()
 -->>-- Quest Log frame
 	self:keepFontStrings(QuestGuru_QuestLogCount)
 	self:keepFontStrings(QuestGuru_EmptyQuestLogFrame)
-	self:skinButton{obj=QuestGuru_QuestFrameExpandCollapseButton, x1=-2}
-	self:skinButton{obj=QuestGuru_QuestLogFrameCloseButton, cb=true}
-	self:skinButton{obj=QuestGuru_QuestFrameExitButton}
-	self:skinButton{obj=QuestGuru_QuestFrameOptionsButton}
 	self:skinFFToggleTabs("QuestGuru_QuestLogFrameTab", QUESTGURU_NUMTABS)
 	self:moveObject{obj=QuestGuru_QuestLogFrameTab1, y=-10}
 	QuestGuru_QuestLogFrameTab1.SetPoint = function() end -- stop it being moved again
@@ -86,28 +88,16 @@ function Skinner:QuestGuru()
 -->>-- Tab1 (Current)
 	self:SecureHook("QuestLog_UpdateQuestDetails", function(...)
 		colourText("Log")
-		-- Quest objectives
-		for i = 1, MAX_OBJECTIVES do
-			local r, g, b = _G["QuestGuru_QuestLogObjective"..i]:GetTextColor()
-			_G["QuestGuru_QuestLogObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
-		end
 	end)
 	for i = 1, QUESTGURU_QUESTS_DISPLAYED do
 		self:skinButton{obj=_G["QuestGuru_QuestLogTitle"..i], mp=true}
 	end
 	self:skinScrollBar{obj=QuestGuru_QuestLogListScrollFrame}
-	self:skinButton{obj=QuestGuru_QuestLogFrameAbandonButton}
-	self:skinButton{obj=QuestGuru_QuestFramePushQuestButton}
 	self:skinScrollBar{obj=QuestGuru_QuestLogDetailScrollFrame}
 -->>-- Tab2 (History)
 	if IsAddOnLoaded("QuestGuru_History") then
 		self:SecureHook("QuestLog_UpdateQuestHistoryDetails", function(...)
 			colourText("History")
-			-- Quest objectives
-			for i = 1, MAX_OBJECTIVES do
-				local r, g, b = _G["QuestGuru_QuestHistoryObjective"..i]:GetTextColor()
-				_G["QuestGuru_QuestHistoryObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
-			end
 		end)
 		self:skinEditBox{obj=QuestGuru_QuestHistorySearch, regs={9}}
 		for i = 1, QUESTGURU_QUESTS_DISPLAYED do
@@ -115,7 +105,6 @@ function Skinner:QuestGuru()
 		end
 		self:skinScrollBar{obj=QuestGuru_QuestHistoryListScrollFrame}
 		self:skinScrollBar{obj=QuestGuru_QuestHistoryDetailScrollFrame}
-		self:skinAllButtons{obj=QuestGuru_TabPage2}
 		self:addSkinFrame{obj=QuestGuru_TabPage2, kfs=true, x1=10, y1=-6, x2=-45, y2=16}
 	end
 -->>-- Tab3 (Abandoned)
@@ -123,7 +112,6 @@ function Skinner:QuestGuru()
 		colourText("Abandon")
 	end)
 	self:skinEditBox{obj=QuestGuru_QuestAbandonSearch, regs={9}}
-	self:skinButton{obj=QuestGuru_QuestAbandonClearList}
 	for i = 1, QUESTGURU_QUESTS_DISPLAYED do
 		self:skinButton{obj=_G["QuestGuru_QuestAbandonTitle"..i], mp=true}
 	end

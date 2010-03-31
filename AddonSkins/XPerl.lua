@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("XPerl") then return end
 
 local function colourBD(...)
 
@@ -200,7 +201,6 @@ function Skinner:XPerl_Options()
 	self:addSkinFrame{obj=XPerl_Custom_Configdebuffs, y1=2, y2=-3}
 --	self:glazeStatusBar(XPerl_Custom_ConfigiconCollect)
 	self:addSkinFrame{obj=XPerl_Custom_Config, y1=-1}
-	self:skinAllButtons{obj=XPerl_Custom_Config, ty=0}
 -->>-- All Options subpanel
 	self:addSkinFrame{obj=XPerl_Options_All_Options_AddOns, x1=-2, y1=2, x2=2}
 -->>-- Colours Options subpanel
@@ -213,17 +213,14 @@ function Skinner:XPerl_Options()
 
 -->>-- Colour Picker Frame
 	self:addSkinFrame{obj=XPerl_ColourPicker}
-	self:skinAllButtons{obj=XPerl_ColourPicker, ty=0}
 -->>--	Texture Select Frame
 	self:skinScrollBar{obj=XPerl_Options_TextureSelectscrollBar}
 	self:addSkinFrame{obj=XPerl_Options_TextureSelect}
-	self:skinAllButtons{obj=XPerl_Options_TextureSelect, ty=0}
 -->>--	Options Question Dialog
 	self:addSkinFrame{obj=XPerl_OptionsQuestionDialog}
-	self:skinAllButtons{obj=XPerl_OptionsQuestionDialog, ty=0}
 -->>-- Tooltip Config
 	self:addSkinFrame{obj=XPerl_Options_TooltipConfig}
 	-- skin buttons
-	self:skinAllButtons{obj=XPerl_Options, ty=0}
+	self:skinAllButtons{obj=XPerl_Options}
 
 end

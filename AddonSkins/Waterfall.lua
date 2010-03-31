@@ -1,54 +1,40 @@
+-- This is a Library
 
 function Skinner:Waterfall()
 
+	local function skinControls(frame)
+
+		for _, obj in pairs(frame.controls) do
+			if obj.class == WaterfallTextBox and not Skinner.skinned[obj] then
+				Skinner:skinEditBox(obj.frame, {9})
+			elseif obj.class == WaterfallDropdown and not Skinner.skinned[obj] then
+				if obj.editbox then Skinner:skinEditBox(obj.editbox, {9}) end
+				if obj.pullout then Skinner:applySkin(obj.pullout)	end
+			elseif obj.class == WaterfallButton and not Skinner.skinned[obj] then
+				Skinner:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+			end
+		end
+
+	end
+
+	local function checkTex(btn)
+
+		if not btn.skin then
+			Skinner:skinButton{obj=btn, mp2=true, as=true}
+		end
+
+		Skinner:checkTex{obj=btn, mp2=true}
+
+		local btnText = btn:GetFontString()
+		if btn.obj.disabled then
+			btnText:SetTextColor(0.5, 0.5, 0.5) -- grey
+		else
+			btnText:SetTextColor(1, 0.82, 0) -- yellow
+		end
+
+	end
 	local function skinWaterfall(frame)
 
-		local function skinControls(frame)
-
-			for _, obj in pairs(frame.controls) do
-				if obj.class == WaterfallTextBox and not Skinner.skinned[obj] then
-					Skinner:skinEditBox(obj.frame, {9})
-				elseif obj.class == WaterfallDropdown and not Skinner.skinned[obj] then
-					if obj.editbox then Skinner:skinEditBox(obj.editbox, {9}) end
-					if obj.pullout then Skinner:applySkin(obj.pullout)	end
-				elseif obj.class == WaterfallButton and not Skinner.skinned[obj] then
-					Skinner:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
-				end
-			end
-
-		end
-
-		local function checkTex(btn)
-
-			if not self.db.profile.Buttons then return end
-
-			local nTex = btn:GetNormalTexture() and btn:GetNormalTexture():GetTexture() or nil
---			Skinner:Debug("checkTex: [%s, %s, %s]", btn.skin, btn.obj.id, nTex)
-			if not btn.skin then Skinner:skinButton{obj=btn, mp3=true} end -- add skin if required
-
-			if btn:GetNormalTexture() then btn:GetNormalTexture():SetAlpha(0) end
-			if btn:GetPushedTexture() then btn:GetPushedTexture():SetAlpha(0) end
-			if btn:GetDisabledTexture() then btn:GetDisabledTexture():SetAlpha(0) end
-
-			if nTex then
-				btn:Show()
-				if nTex:find("MinusButton") then
-					btn:SetText(Skinner.minus)
-				elseif nTex:find("PlusButton") then
-					btn:SetText(Skinner.plus)
-				end
-				local btnText = btn:GetFontString()
-				if btn.obj.disabled then
-					btnText:SetTextColor(0.5, 0.5, 0.5) -- grey
-				else
-					btnText:SetTextColor(1, 0.82, 0) -- yellow
-				end
-			else -- not an expandable line
-				btn:SetText("")
-				btn:Hide()
-			end
-
-		end
 		if not Skinner.skinned[frame] then
 			-- Main Frame
 			frame.titlebar:Hide()
@@ -83,7 +69,7 @@ function Skinner:Waterfall()
 	end
 
 	self:SecureHook(LibStub("Waterfall-1.0", true), "Open", function(this, pane)
- 		self:Debug("WaterfallOpen: [%s, %s]", this, pane)
+-- 		self:Debug("WaterfallOpen: [%s, %s]", this, pane)
 		skinWaterfall(this.registry[pane].frame)
 	end)
 

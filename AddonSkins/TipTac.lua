@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("TipTac") then return end
 
 function Skinner:TipTac()
 	if not self.db.profile.Tooltips.skin then return end
@@ -16,8 +17,8 @@ function Skinner:TipTac()
 	TipTac:ApplySettings()
 
 	-- Anchor frame
-	self:skinButton{obj=TipTac.close, cb=true, tx=0, x1=2, y1=-2, x2=-2, y2=2}
-	self:addSkinFrame{obj=TipTac, y1=1, y2=-1}
+	self:skinButton{obj=TipTac.close, cb=true, x1=2, y1=-2, x2=-2, y2=2}
+	self:addSkinFrame{obj=TipTac, y1=1, y2=-1, nb=true}
 	
 end
 
@@ -26,7 +27,7 @@ function Skinner:TipTacOptions()
 	local function skinCatPg()
 
 		-- skin DropDowns & EditBoxes
-		for _, child in pairs{TipTacOptions:GetChildren()} do
+		for _, child in ipairs{TipTacOptions:GetChildren()} do
 			if child.InitSelectedItem
 			and not Skinner.skinned[child]
 			then
@@ -66,9 +67,6 @@ function Skinner:TipTacOptions()
 	-- skin already created objects
 	skinCatPg()
 	self:addSkinFrame{obj=TipTacOptions.outline}
-	self:skinButton{obj=TipTacOptions.btnAnchor}
-	self:skinButton{obj=TipTacOptions.btnReset}
-	self:skinButton{obj=TipTacOptions.btnClose}
 	self:addSkinFrame{obj=TipTacOptions}
 
 end

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("oRA2") then return end
 
 function Skinner:oRA2_Leader()
 
@@ -5,7 +6,6 @@ function Skinner:oRA2_Leader()
 	if lr then
 		local rf = self:findFrame2(UIParent, "Frame", 325, 325)
 		if rf then
-			self:skinAllButtons(rf)
 			self:addSkinFrame{obj=rf, kfs=true}
 		end
 	end
@@ -19,7 +19,6 @@ function Skinner:oRA2_Participant()
 		self:SecureHook(pr, "SetupFrames", function()
 			local rf = self:findFrame2(UIParent, "Frame", 125, 325)
 			if rf then
-				self:skinAllButtons(rf)
 				self:addSkinFrame{obj=rf, kfs=true}
 			end
 			self:Unhook(pr, "SetupFrames")

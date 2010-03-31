@@ -1,4 +1,4 @@
-local _G = _G
+if not Skinner:isAddonEnabled("tomQuest2") then return end
 
 function Skinner:tomQuest2()
 
@@ -52,7 +52,6 @@ function Skinner:tomQuest2()
 			tq2Evt = nil
 			-- skin the Parent frame and its sub panels
 			-- Parent Frame
-			self:skinAllButtons{obj=tomQuest2ParentFrame}
 			self:addSkinFrame{obj=tomQuest2ParentFrame, x1=3, y1=-3, x2=-3, y2=3}
 			-- Quest Log sub panel
 			self:moveObject{obj=tomQuest2ParentFrame.ql.title, y=-5}
@@ -85,7 +84,7 @@ function Skinner:tq233beta5(tq2) -- 3.3 beta 5
 	local qTrkr = tq2:GetModule("questsTracker", true)
 	local aTrkr = tq2:GetModule("achievementTracker", true)
 	-- hook this to handle collapse buttons
-	if self.db.profile.Buttons then
+	if self.modBtns then
 		self:RawHook(tq2, "getCollapseButton", function(this)
 			local btn = self.hooks[this].getCollapseButton(this)
 --			self:Debug("getCollapseButton: [%s]", btn)
@@ -133,20 +132,17 @@ function Skinner:tq233beta5(tq2) -- 3.3 beta 5
 		self:SecureHook(info, "createLhGUI", function(this)
 			self:moveObject{obj=tomQuest2LhFrame.title, y=-5}
 			self:skinScrollBar{obj=tomQuest2LhScrollFrame}
-			self:skinAllButtons{obj=tomQuest2LhFrame}
 			self:addSkinFrame{obj=tomQuest2LhFrame, x1=3, y1=-3, x2=-3, y2=3}
 			self:Unhook(info, "createLhGUI")
 		end)
 		self:SecureHook(info, "createQlGUI", function(this)
 			self:moveObject{obj=tomQuest2QlFrame.title, y=-5}
 			self:skinScrollBar{obj=tomQuest2QlScrollFrame}
-			self:skinAllButtons{obj=tomQuest2QlFrame}
 			self:addSkinFrame{obj=tomQuest2QlFrame, x1=3, y1=-3, x2=-3, y2=3}
 			self:Unhook(info, "createQlGUI")
 		end)
 		self:SecureHook(info, "lockUnlockQlFrame", function()
 			if tomQuest2ParentFrame then
-				self:skinAllButtons{obj=tomQuest2ParentFrame}
 				self:addSkinFrame{obj=tomQuest2ParentFrame}
 				-- hook these to show/hide the individual skinFrames
 				self:SecureHook(tomQuest2ParentFrame, "Show", function()

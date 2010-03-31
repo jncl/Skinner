@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Perl_Config") then return end
 
 local barSuffixes = {"", "FadeBar", "BG"}
 local hmSuffixes = {"Health", "Mana"}
@@ -10,7 +11,7 @@ local nsplSuffixes = CopyTable(nspSuffixes) tinsert(nsplSuffixes, "Level")
 local function changeBBC(frame)
 
 	local r, g, b, a = frame:GetBackdropBorderColor()
-	r, g, b, a = string.sub(r, 2, 3), string.sub(g, 2, 3), string.sub(b, 2, 3), math.ceil(a)
+	r, g, b, a = strsub(r, 2, 3), strsub(g, 2, 3), strsub(b, 2, 3), ceil(a)
 --	Skinner:Debug("changeBBC: [%s, %s, %s, %s, %s]", frame:GetName(), r, g, b, a)
 	if r == ".5" and g == ".5" and b == ".5" and a == 1 then
 --		Skinner:Debug("changeBBC match")
@@ -167,7 +168,7 @@ function Skinner:Perl_Party_Pet()
 	if not self:IsHooked("Perl_Party_Pet_Buff_UpdateAll") then
 		self:SecureHook("Perl_Party_Pet_Buff_UpdateAll", function(unit)
 --			self:Debug("Perl_Party_Pet_Buff_UpdateAll: [%s]", unit)
-			local id = string.sub(unit, 9, 9)
+			local id = strsub(unit, 9, 9)
 			for _, f in pairs(partypetframes) do
 				changeBBC(_G["Perl_Party_Pet"..id.."_"..f.."Frame"])
 			end
@@ -443,7 +444,6 @@ function Skinner:Perl_Config_Options()
 	Perl_Config_Target_Header:Hide()
 	Perl_Config_Target_Target_Header:Hide()
 	self:skinAllButtons{obj=Perl_Config_Target_Target_Frame}
-	self:skinAllButtons{obj=Perl_Config_Frame}
-	self:applySkin(Perl_Config_Frame)
+	self:addSkinFrame{obj=Perl_Config_Frame}
 
 end

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("PlayerExpBar") then return end
 
 function Skinner:PlayerExpBar()
 
@@ -8,7 +9,6 @@ function Skinner:PlayerExpBar()
 
 -->>--	Config Frame
 	self:keepFontStrings(PlayerExpBarOptionsFrame)
-	self:skinAllButtons{obj=PlayerExpBarOptionsFrame}
 	self:applySkin(PlayerExpBarOptionsFrame)
 	self:SecureHook(PlayerExpBarOptionsFrame, "Show", function()
 		self:moveObject(self:getRegion(PlayerExpBarOptionsFrame, 2), nil, nil, "-", 6)
