@@ -1,3 +1,25 @@
+b3.11723.1
+Jncl:
+	Updated skins to only load if Addon present
+	ToDo.txt
+	Reverted some excessive use of upvalue
+	Bugfix for mising Auctioneer CompactUI highlight
+	Skinned AutoPartyButtons, AzCastBarOptions, CFM, CalendarNotify & Odyssey
+	Updated ConcessionStand, EditingUI, EnhancedTradeSkills, HealOrganizer, HoloFriends & Tukui skins
+	Updates for UIButton changes
+	Obsoleted more skins
+	Other changes
+	Core file updates for UIButton changes
+	Skin updates for UIButton changes, part 1
+	Tidy up library contents
+	Obsoleted more skins
+	Disable Modules if not being used
+	Moved all UIButton code into a module
+	Changes for Modules, using db shorthand
+	Made ViewPort/Top/Middle/BottomFrames/UnitFrames code into modules
+	Make ViewPort code a module
+	Updated Change_History
+
 b2.11623.2
 Jncl:
 	ToDo.txt
