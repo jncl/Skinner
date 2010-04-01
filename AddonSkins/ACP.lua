@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("ACP") then return end
 
 function Skinner:ACP()
 

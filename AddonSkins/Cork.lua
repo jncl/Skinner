@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Cork") then return end
 
 function Skinner:Cork()
 

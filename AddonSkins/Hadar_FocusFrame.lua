@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Hadar_FocusFrame") then return end
 
 function Skinner:Hadar_FocusFrame()
 

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("WebDKP") then return end
 
 function Skinner:WebDKP()
 

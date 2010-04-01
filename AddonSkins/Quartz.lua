@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Quartz") then return end
 
 function Skinner:Quartz() -- Quartz3
 

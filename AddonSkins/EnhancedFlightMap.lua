@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("EnhancedFlightMap") then return end
 
 function Skinner:EnhancedFlightMap()
 

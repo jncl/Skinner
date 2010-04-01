@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("UberQuest") then return end
 
 function Skinner:UberQuest()
 	if not self.db.profile.QuestLog then return end

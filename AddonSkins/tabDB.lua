@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("tabDB") then return end
 -- many thanks to DefectiveUser
 
 function Skinner:tabDB()

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("TotemCaddy") then return end
 
 function Skinner:TotemCaddy()
 

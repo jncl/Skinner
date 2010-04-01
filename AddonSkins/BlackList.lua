@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("BlackList") then return end
 
 function Skinner:BlackList()
 	if not self.db.profile.FriendsFrame then return end

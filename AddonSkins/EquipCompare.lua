@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("EquipCompare") then return end
 
 function Skinner:EquipCompare()
 	if not self.db.profile.Tooltips.skin then return end

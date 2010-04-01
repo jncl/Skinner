@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Talented") then return end
 
 function Skinner:Talented()
 

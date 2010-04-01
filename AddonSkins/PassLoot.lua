@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("PassLoot") then return end
 
 function Skinner:PassLoot()
 

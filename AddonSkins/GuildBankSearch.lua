@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GuildBankSearch") then return end
 
 function Skinner:GuildBankSearch()
 	if not self.db.profile.GuildBankUI then return end

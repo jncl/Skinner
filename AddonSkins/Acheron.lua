@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Acheron") then return end
 
 function Skinner:Acheron()
 

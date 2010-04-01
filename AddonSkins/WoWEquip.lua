@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("WoWEquip") then return end
 
 function Skinner:WoWEquip()
 

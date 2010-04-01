@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("MailTo") then return end
 
 function Skinner:MailTo()
 	if not self.db.profile.MailFrame then return end

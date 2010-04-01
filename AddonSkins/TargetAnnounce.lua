@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("TargetAnnounce") then return end
 
 function Skinner:TargetAnnounce()
 

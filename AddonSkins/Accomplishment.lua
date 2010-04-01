@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Accomplishment") then return end
 
 function Skinner:Accomplishment()
 

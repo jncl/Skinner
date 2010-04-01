@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("FeedMachine") then return end
 
 function Skinner:FeedMachine()
 

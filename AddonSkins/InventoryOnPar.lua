@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("InventoryOnPar") then return end
 
 function Skinner:InventoryOnPar()
 

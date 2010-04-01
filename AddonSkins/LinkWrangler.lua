@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("LinkWrangler") then return end
 
 function Skinner:LinkWrangler()
 	if not self.db.profile.Tooltips.skin then return end

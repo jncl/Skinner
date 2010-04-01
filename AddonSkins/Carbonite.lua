@@ -1,9 +1,9 @@
+if not Skinner:isAddonEnabled("Carbonite") then return end
 
 function Skinner:Carbonite()
 
 	local lshift = bit.lshift
 	local band = bit.band
-	local strfmt = string.format
 
 	local function P_23(r, g, b, a)
 

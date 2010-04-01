@@ -1,5 +1,4 @@
-local ceil = math.ceil
-local select = select
+if not Skinner:isAddonEnabled("EventEquip") then return end
 
 function Skinner:EventEquip()
 	if not self.db.profile.GearManager then return end

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("TwinValkyr_shieldmonitor") then return end
 
 function Skinner:TwinValkyr_shieldmonitor()
 

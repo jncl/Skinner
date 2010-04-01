@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Enchantrix") then return end
 local tonumber = tonumber
 
 function Skinner:Enchantrix()

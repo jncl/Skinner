@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("HitsMode") then return end
 
 function Skinner:HitsMode()
 

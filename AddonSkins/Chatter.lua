@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Chatter") then return end
 
 function Skinner:Chatter()
 

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Combuctor") then return end
 
 function Skinner:Combuctor()
 	if not self.db.profile.ContainerFrames.skin then return end

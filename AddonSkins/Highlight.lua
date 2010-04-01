@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Highlight") then return end
 
 function Skinner:Highlight()
 

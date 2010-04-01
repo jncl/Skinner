@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("QuestAgent") then return end
 
 function Skinner:QuestAgent()
 	if not self.db.profile.QuestLog then return end

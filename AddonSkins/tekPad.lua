@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("tekPad") then return end
 
 function Skinner:tekPad()
 

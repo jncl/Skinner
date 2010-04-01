@@ -1,4 +1,4 @@
-local _G = _G
+if not Skinner:isAddonEnabled("nQuestLog") then return end
 
 function Skinner:nQuestLog()
 

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GnomishVendorShrinker") then return end
 
 function Skinner:GnomishVendorShrinker()
 

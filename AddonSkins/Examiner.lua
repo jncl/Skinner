@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Examiner") then return end
 
 function Skinner:Examiner()
 	if not self.db.profile.InspectUI then return end

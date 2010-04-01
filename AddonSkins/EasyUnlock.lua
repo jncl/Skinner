@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("EasyUnlock") then return end
 
 function Skinner:EasyUnlock()
 

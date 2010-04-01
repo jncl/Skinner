@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("MSBTOptions") then return end
 local ipairs = ipairs
 
 function Skinner:MSBTOptions()

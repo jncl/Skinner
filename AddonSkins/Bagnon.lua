@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Bagnon") then return end
 --This Skin is for the Original Bagnon/Banknon Addon found here: http://wowui.incgamers.com/ui.php?id=4060
 -- and here http://wow.curse.com/downloads/details/2090/
 -- and also for the Bagnon Addon formerly known as vBagnon, found here: http://wow-en.curse-gaming.com/files/details/2090/vbagnon/ or here http://wowui.incgamers.com/ui.php?id=3197

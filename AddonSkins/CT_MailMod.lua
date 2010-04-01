@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("CT_MailMod") then return end
 
 function Skinner:CT_MailMod()
 	if not self.db.profile.MailFrame then return end

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("MonkeyQuestLog") then return end
 
 function Skinner:MonkeyQuestLog()
 

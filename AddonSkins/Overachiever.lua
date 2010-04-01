@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Overachiever") then return end
 
 function Skinner:Overachiever()
 	if not self.db.profile.AchievementUI then return end

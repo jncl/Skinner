@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("tekDebug") then return end
 
 function Skinner:tekDebug()
 

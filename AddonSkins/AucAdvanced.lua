@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Auc-Advanced") then return end
 
 function Skinner:AucAdvanced()
 	if not self.db.profile.AuctionUI then return end
@@ -181,13 +182,12 @@ function Skinner:AucAdvanced()
 		end)
 	end
 
+	--	CompactUI module
 	--	configure button on AH frame
 	local cUI = AucAdvanced.Modules.Util.CompactUI
 	if cUI then
 		self:skinButton{obj=cUI.Private.switchUI, y1=2, y2=-3}
 	end
---	CompactUI module ?
-
 
 --	Settings frames(s) ??
 

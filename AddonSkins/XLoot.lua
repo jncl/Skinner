@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("XLoot") then return end
 
 function Skinner:XLoot()
 
@@ -47,13 +48,13 @@ function Skinner:skinXLoot(frame)
 	if not self.skinned[frame] then
 		self:applySkin(frame)
 		frame.SetBackdropBorderColor = function() end
-		if string.find(frame:GetName(), "Wrapper") then
+		if strfind(frame:GetName(), "Wrapper") then
 			LowerFrameLevel(frame)
 			frame.SetBackdrop = function() end
 			local button = frame:GetParent()
 			frame:SetWidth(button:GetWidth() + 9)
 			frame:SetHeight(button:GetHeight() + 9)
-			local xlr = string.find(frame:GetName(), "XLRow")
+			local xlr = strfind(frame:GetName(), "XLRow")
 			if xlr and button.border then
 				button.border:SetTexture(nil)
 				button.border.Show = function() end

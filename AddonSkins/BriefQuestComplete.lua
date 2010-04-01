@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("BriefQuestComplete") then return end
 
 function Skinner:BriefQuestComplete()
 

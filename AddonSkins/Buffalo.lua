@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Buffalo") then return end
 
 function Skinner:Buffalo()
 

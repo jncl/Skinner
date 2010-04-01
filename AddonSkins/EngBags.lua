@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("EngBags") then return end
 
 function Skinner:EngBags()
 	if not self.db.profile.ContainerFrames then return end

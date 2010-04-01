@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("ZOMGBuffs") then return end
 
 function Skinner:ZOMGBuffs()
 

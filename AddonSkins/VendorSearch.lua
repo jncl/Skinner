@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("VendorSearch") then return end
 
 function Skinner:VendorSearch()
 

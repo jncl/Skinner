@@ -1,3 +1,4 @@
+-- This is a Library
 
 function Skinner:LibExtraTip()
 	if not self.db.profile.Tooltips.skin then return end

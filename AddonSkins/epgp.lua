@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("epgp") then return end
 
 function Skinner:epgp()
 

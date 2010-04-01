@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("vBagnon") then return end
 
 function Skinner:vBagnon()
 	if not self.db.profile.ContainerFrames then return end

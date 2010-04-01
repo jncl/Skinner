@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Postal") then return end
 
 function Skinner:Postal()
 

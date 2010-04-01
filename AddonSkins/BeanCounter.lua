@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("BeanCounter") then return end
 
 function Skinner:BeanCounter()
 	if not self.db.profile.AuctionUI then return end

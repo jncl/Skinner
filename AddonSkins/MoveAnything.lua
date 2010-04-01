@@ -1,6 +1,5 @@
 if not Skinner:isAddonEnabled("MoveAnything") then return end
 -- thanks to sixthepaladin
-local _G = _G
 
 function Skinner:MoveAnything()
 

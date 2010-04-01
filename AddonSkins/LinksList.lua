@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("LinksList") then return end
 
 function Skinner:LinksList()
 
@@ -37,8 +38,8 @@ function Skinner:LinksList()
 				local v = select(i, LinksList_SearchFrame:GetChildren())
 				if not self.skinned[v] then
 					local objName = v:GetName()
-					if string.match(objName, llsfr.."Frame") then self:skinDropDown(v)
-					elseif string.match(objName, llsfr.."EditBox") then
+					if strmatch(objName, llsfr.."Frame") then self:skinDropDown(v)
+					elseif strmatch(objName, llsfr.."EditBox") then
 						self:skinEditBox(v, {9})
 						v:SetWidth(v:GetWidth() - 5)
 						v.SetHeight = function() end

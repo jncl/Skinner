@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Panda") then return end
 
 function Skinner:Panda(LoD)
 
@@ -29,7 +30,7 @@ function Skinner:Panda(LoD)
 			local firstBtn
 			for i = 2, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())
-				if child:IsObjectType("Button") and math.floor(child:GetWidth()) == 158 then
+				if child:IsObjectType("Button") and floor(child:GetWidth()) == 158 then
 					Skinner:removeRegions(child, {1}) -- remove the filter texture from the button
 					if not firstBtn then
 						child:SetPoint("TOPLEFT", frame, 23, -76) -- move the buttons up

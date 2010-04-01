@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("LilSparkysWorkshop") then return end
 
 function Skinner:LilSparkysWorkshop()
 

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("sienasGemViewer") then return end
 
 function Skinner:sienasGemViewer()
 	if not self.db.profile.AuctionUI then return end

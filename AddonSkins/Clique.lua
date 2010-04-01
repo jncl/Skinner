@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Clique") then return end
 
 function Skinner:Clique()
 	if not self.db.profile.SpellBookFrame then return end

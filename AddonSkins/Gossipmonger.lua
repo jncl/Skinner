@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Gossipmonger") then return end
 
 function Skinner:Gossipmonger()
 

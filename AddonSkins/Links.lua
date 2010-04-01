@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Links") then return end
 
 function Skinner:Links()
 	if not self.db.profile.Tooltips.skin then return end

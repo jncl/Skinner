@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("myClock") then return end
 
 function Skinner:myClock()
 

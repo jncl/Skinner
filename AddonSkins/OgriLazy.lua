@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Ogri'Lazy") then return end
 
 function Skinner:OgriLazy()
 

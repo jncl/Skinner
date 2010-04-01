@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("RaidTracker") then return end
 
 function Skinner:RaidTracker()
 

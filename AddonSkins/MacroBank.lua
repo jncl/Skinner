@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("MacroBank") then return end
 
 function Skinner:MacroBank()
 	if not self.db.profile.MenuFrames then return end

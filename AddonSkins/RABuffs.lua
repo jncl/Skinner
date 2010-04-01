@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("RABuffs") then return end
 
 function Skinner:RABuffs()
 

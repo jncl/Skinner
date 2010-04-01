@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Pawn") then return end
 
 function Skinner:Pawn()
 

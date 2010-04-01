@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Badapples") then return end
 
 function Skinner:Badapples()
 	if not self.db.profile.FriendsFrame then return end

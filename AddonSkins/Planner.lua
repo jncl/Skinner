@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Planner") then return end
 
 function Skinner:Planner()
 	if not self.db.profile.Tooltips.skin then return end

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("ChatBar") then return end
 
 function Skinner:ChatBar()
 

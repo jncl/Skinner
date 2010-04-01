@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("PowerAuras") then return end
 
 function Skinner:PowerAuras()
 

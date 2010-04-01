@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GnomishAuctionShrinker") then return end
 
 function Skinner:GnomishAuctionShrinker()
 

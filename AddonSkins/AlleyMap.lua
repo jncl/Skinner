@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("AlleyMap") then return end
 
 function Skinner:AlleyMap()
 

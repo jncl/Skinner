@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("EnchantMe") then return end
 
 function Skinner:EnchantMe()
 

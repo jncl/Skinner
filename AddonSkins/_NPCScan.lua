@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("_NPCScan") then return end
 
 function Skinner:_NPCScan()
 

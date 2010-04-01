@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("DoTimer") then return end
 
 function Skinner:DoTimer_Options()
 
@@ -26,7 +27,7 @@ function Skinner:DoTimer_Options()
 	
 	self:SecureHook(GUILib, "GenerateItem", function(this, module, frame, item, extras)
 --		self:Debug("GUILib_GenerateItem: [%s, %s, %s, %s]", module, frame, item, extras)
-		if string.sub(item.type, 1, 7) == "editBox" then skinEBs(frame) end
+		if strsub(item.type, 1, 7) == "editBox" then skinEBs(frame) end
 	end)
 	
 	-- skin already created panel objects

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Gatherer") then return end
 
 function Skinner:Gatherer()
 

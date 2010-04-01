@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("EavesDrop") then return end
 
 function Skinner:EavesDrop()
 

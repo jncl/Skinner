@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("PallyPower") then return end
 
 function Skinner:PallyPower()
 

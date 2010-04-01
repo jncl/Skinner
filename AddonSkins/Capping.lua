@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Capping") then return end
 
 local hb, nrw
 
@@ -22,7 +23,7 @@ function Skinner:Capping_ModMap(...)
 	if not self.skinFrame[BattlefieldMinimap] then return end
 
 	local skinFrame = self.skinFrame[BattlefieldMinimap]
-	local bmmbw = math.floor(BattlefieldMinimapBackground:GetWidth())
+	local bmmbw = floor(BattlefieldMinimapBackground:GetWidth())
 --	self:Debug("Capping_ModMap#2: [%s, %s]", bmmw, bmmbw)
 
 	if Capping.db.narrow then

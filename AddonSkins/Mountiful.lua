@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Mountiful") then return end
 
 function Skinner:Mountiful()
 

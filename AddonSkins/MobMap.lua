@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("MobMap") then return end
 
 function Skinner:MobMap()
 

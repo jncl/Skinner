@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("PoMTracker") then return end
 
 function Skinner:PoMTracker()
 

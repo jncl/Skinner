@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Enchantrix-Barker") then return end
 
 function Skinner:EnchantrixBarker()
 	if self.initialized.EnchantrixBarker then return end

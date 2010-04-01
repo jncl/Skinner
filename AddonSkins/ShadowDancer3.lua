@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("ShadowDancer3") then return end
 
 function Skinner:ShadowDancer3()
 

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GuildAds") then return end
 
 function Skinner:GuildAds()
 

@@ -1,4 +1,4 @@
-local _G = _G
+if not Skinner:isAddonEnabled("SmoothQuest") then return end
 
 function Skinner:SmoothQuest()
 

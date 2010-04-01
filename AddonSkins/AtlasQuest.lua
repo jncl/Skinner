@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("AtlasQuest") then return end
 
 function Skinner:AtlasQuest()
 

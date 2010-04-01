@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GemHelper") then return end
 
 function Skinner:GemHelper()
 

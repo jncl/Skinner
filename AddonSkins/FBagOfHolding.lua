@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("FBagOfHolding") then return end
 
 function Skinner:FBagOfHolding()
 	if not self.db.profile.ContainerFrames.skin then return end

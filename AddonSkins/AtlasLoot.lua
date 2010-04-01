@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("AtlasLoot") then return end
 
 function Skinner:AtlasLoot()
 

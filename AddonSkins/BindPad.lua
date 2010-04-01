@@ -1,5 +1,4 @@
 if not Skinner:isAddonEnabled("BindPad") then return end
-local _G = _G
 
 function Skinner:BindPad()
 

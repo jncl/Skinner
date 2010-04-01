@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("MinimapButtonFrame") then return end
 
 function Skinner:MinimapButtonFrame()
 

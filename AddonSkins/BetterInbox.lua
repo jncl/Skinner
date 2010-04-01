@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("BetterInbox") then return end
 
 function Skinner:BetterInbox(LoD)
 	if not self.db.profile.MailFrame then return end

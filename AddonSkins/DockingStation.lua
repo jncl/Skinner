@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("DockingStation") then return end
 local select = select
 
 function Skinner:DockingStation_Config()

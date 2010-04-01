@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("EnhancedStackSplit") then return end
 
 function Skinner:EnhancedStackSplit()
 	if not self.db.profile.StackSplit then return end

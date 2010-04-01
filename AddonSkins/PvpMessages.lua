@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("PvpMessages") then return end
 
 function Skinner:PvpMessages()
 

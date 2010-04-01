@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("PetListPlus") then return end
 
 function Skinner:PetListPlus()
 

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Luggage") then return end
 
 function Skinner:Luggage()
 	if not self.db.profile.ContainerFrames.skin then return end

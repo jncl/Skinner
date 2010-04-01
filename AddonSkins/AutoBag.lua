@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Auto-Bag") then return end
 
 function Skinner:AutoBag()
 	if not self.db.profile.ContainerFrames.skin then return end

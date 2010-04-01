@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("NeatFreak") then return end
 
 function Skinner:NeatFreak()
 

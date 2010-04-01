@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("sRaidFrames") then return end
 
 function Skinner:sRaidFrames()
 

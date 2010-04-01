@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("TomTom") then return end
 
 function Skinner:TomTom()
 

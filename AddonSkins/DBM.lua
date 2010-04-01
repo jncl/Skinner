@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("DBM-Core") then return end
 
 function Skinner:DBM_GUI()
 	
@@ -43,7 +44,7 @@ function Skinner:DBM_GUI()
 		local fName = subPanel.framename
 		if _G[fName.."Title"]:GetText() == DBM_GUI_Translations.PizzaTimer_Headline then
 -- 			Skinner:Debug("Found Pizza Timer panel:[%s]", fName)
-			local si, ei, fNo = string.find(fName, panelPrefix.."(%d+)")
+			local si, ei, fNo = strfind(fName, panelPrefix.."(%d+)")
 -- 			Skinner:Debug("find info:[%s, %s, %s]", si, ei, fNo)
 			-- next four option frames are editboxes
 			for i = fNo + 1, fNo + 4 do

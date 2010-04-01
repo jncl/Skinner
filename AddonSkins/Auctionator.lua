@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Auctionator") then return end
 
 function Skinner:Auctionator()
 

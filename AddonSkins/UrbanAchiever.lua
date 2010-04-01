@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("UrbanAchiever") then return end
 
 function Skinner:UrbanAchiever()
 	if not self.db.profile.AchievementUI then return end

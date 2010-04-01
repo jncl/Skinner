@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Prat-3.0") then return end
 
 function Skinner:Prat30() -- concatenation of Prat-3.0
 

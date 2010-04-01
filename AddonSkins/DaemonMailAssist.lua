@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("DaemonMailAssist") then return end
 
 function Skinner:DaemonMailAssist()
 

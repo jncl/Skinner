@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GrimReaper") then return end
 
 function Skinner:GrimReaper()
 

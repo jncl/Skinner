@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("BuyEmAll") then return end
 
 function Skinner:BuyEmAll()
 

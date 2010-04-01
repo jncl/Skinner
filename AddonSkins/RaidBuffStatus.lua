@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("RaidBuffStatus") then return end
 
 function Skinner:RaidBuffStatus()
 

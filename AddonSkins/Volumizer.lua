@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Volumizer") then return end
 
 function Skinner:Volumizer()
 

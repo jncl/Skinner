@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("RandomPet30") then return end
 
 function Skinner:RandomPet30()
 

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("QuestHistory") then return end
 
 function Skinner:QuestHistory()
 

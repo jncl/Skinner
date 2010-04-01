@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("TradeTabs") then return end
 
 function Skinner:TradeTabs()
 	if not self.db.profile.TradeSkillUI then return end

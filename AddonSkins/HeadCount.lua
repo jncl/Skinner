@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("HeadCount") then return end
 
 function Skinner:HeadCount()
 

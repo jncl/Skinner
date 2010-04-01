@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GuildLaunchCT_RaidTracker") then return end
 
 function Skinner:GuildLaunchCT_RaidTracker()
 

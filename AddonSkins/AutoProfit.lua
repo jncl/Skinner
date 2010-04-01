@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("AutoProfit") then return end
 
 function Skinner:AutoProfit()
 	if not self.db.profile.MerchantFrames then return end

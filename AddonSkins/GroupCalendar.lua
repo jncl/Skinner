@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("GroupCalendar") then return end
 
 function Skinner:GroupCalendar()
 -- This is for GroupCalendar version 3

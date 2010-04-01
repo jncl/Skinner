@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("NeonChat") then return end
 
 function Skinner:NeonChat()
 	if not self.db.profile.ChatEditBox.skin then return end

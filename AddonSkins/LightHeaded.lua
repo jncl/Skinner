@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("LightHeaded") then return end
 
 function Skinner:LightHeaded()
 	if not self.db.profile.QuestLog then return end

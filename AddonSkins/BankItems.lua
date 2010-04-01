@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("BankItems") then return end
 
 function Skinner:BankItems()
 	if not self.db.profile.BankFrame then return end
@@ -21,7 +22,7 @@ function Skinner:BankItems()
 		self:addSkinFrame{obj=BankItems_GBFrame, kfs=true, y1=-11}
 		for _, child in pairs{BankItems_GBFrame:GetChildren()} do
 			if not child:IsObjectType("Button") then
-				if math.floor(child:GetWidth()) == 42 and math.ceil(child:GetHeight()) == 50 then
+				if floor(child:GetWidth()) == 42 and ceil(child:GetHeight()) == 50 then
 					self:keepFontStrings(child) -- remove tab texture
 				end
 			end

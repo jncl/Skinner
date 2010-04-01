@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Omen") then return end
 
 function Skinner:Omen()
 

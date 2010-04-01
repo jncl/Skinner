@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("ItemSync") then return end
 
 function Skinner:ItemSync()
 

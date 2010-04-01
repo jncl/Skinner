@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("BetterBindingFrame") then return end
 
 function Skinner:BetterBindingFrame()
 	if not self.db.profile.MenuFrames then return end

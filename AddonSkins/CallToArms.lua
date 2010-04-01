@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("CallToArms") then return end
 
 function Skinner:CallToArms()
 

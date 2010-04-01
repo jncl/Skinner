@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Hack") then return end
 
 function Skinner:Hack()
 

@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("FramesResized") then return end
 
 function Skinner:FramesResized()
 

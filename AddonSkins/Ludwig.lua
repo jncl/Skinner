@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Ludwig") then return end
 
 function Skinner:Ludwig()
 

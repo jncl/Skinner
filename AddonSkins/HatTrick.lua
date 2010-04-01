@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("HatTrick") then return end
 
 function Skinner:HatTrick()
 

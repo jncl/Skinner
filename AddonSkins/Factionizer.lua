@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Factionizer") then return end
 
 function Skinner:Factionizer()
 	if not self.db.profile.CharacterFrames then return end

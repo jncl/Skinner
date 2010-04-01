@@ -1,4 +1,4 @@
-local strupr = string.upper
+if not Skinner:isAddonEnabled("GroupCalendar5") then return end
 
 function Skinner:GroupCalendar5()
 
@@ -77,8 +77,8 @@ function Skinner:GroupCalendar5()
 	local clD = gcUI.ClassLimitsDialog
 	skinDD(clD.PriorityMenu)
 	for _, class in pairs(self.classTable) do	
-		self:skinEditBox{obj=clD[strupr(class)].Min, regs={9}, noWidth=true}
-		self:skinEditBox{obj=clD[strupr(class)].Max, regs={9}, noWidth=true}
+		self:skinEditBox{obj=clD[strupper(class)].Min, regs={9}, noWidth=true}
+		self:skinEditBox{obj=clD[strupper(class)].Max, regs={9}, noWidth=true}
 	end
 	skinDD(clD.MaxPartySizeMenu)
 	self:addSkinFrame{obj=clD, kfs=true, y1=4, y2=4}
@@ -90,7 +90,7 @@ function Skinner:GroupCalendar5()
 		self:skinEditBox{obj=rlD[role].Min, regs={9}, noWidth=true}
 		self:skinEditBox{obj=rlD[role].Max, regs={9}, noWidth=true}
 		for _, class in pairs(self.classTable) do	
-			self:skinEditBox{obj=rlD[role][strupr(class)], regs={9}, noWidth=true}
+			self:skinEditBox{obj=rlD[role][strupper(class)], regs={9}, noWidth=true}
 		end
 	end
 	skinDD(rlD.MaxPartySizeMenu)

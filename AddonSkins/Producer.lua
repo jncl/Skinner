@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Producer") then return end
 
 function Skinner:Producer()
 

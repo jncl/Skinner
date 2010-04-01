@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Livestock") then return end
 
 function Skinner:Livestock()
 

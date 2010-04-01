@@ -1,4 +1,4 @@
-local _G = _G
+if not Skinner:isAddonEnabled("Quelevel") then return end
 
 function Skinner:Quelevel()
 

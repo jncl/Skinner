@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Visor2GUI") then return end
 
 function Skinner:Visor2GUI()
 
