@@ -130,14 +130,14 @@ function module:skinButton(opts)
 		end
 	end
 
-	local x1, x2, y1, y2, btn, bHgt
-	local bW = floor(opts.obj:GetWidth())
+	local x1, x2, y1, y2, btn
+	local bW, bH = floor(opts.obj:GetWidth()), floor(opts.obj:GetHeight())
 	if bW <= 20 and opts.cb then -- ArkInventory/Recount close buttons
 		local adj = bW < 20 and bW + 1 or bW
 --		print(opts.obj:GetParent():GetName(), bW, adj)
 		opts.cb2 = opts.cb
 		opts.cb = nil
-		opts.x1, opts. y1, opts.x2, opts.y2 = bW - adj, 0, adj - bW, 0
+		opts.x1, opts.y1, opts.x2, opts.y2 = bW - adj, 0, adj - bW, 0
 	end
 	if opts.cb then -- it's a close button
 		opts.obj:SetNormalFontObject(module.fontX)
@@ -194,8 +194,7 @@ function module:skinButton(opts)
 			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[5]}, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
-		bHgt = opts.obj:GetHeight()
-		aso = {bd=Skinner.Backdrop[bHgt > 18 and 5 or 6]} -- use narrower backdrop if required
+		aso = {bd=Skinner.Backdrop[bH > 18 and 5 or 6]} -- use narrower backdrop if required
 		if not opts.as then
 			x1 = opts.x1 or 1
 			y1 = opts.y1 or -1
@@ -241,6 +240,7 @@ function module:isButton(obj, cb)
 			local lTex = oName and (getTexture(_G[oName.."Left"]) or getTexture(_G[oName.."_LeftTexture"])) or nil
 			if nTex and nTex:find("UI-Panel-Button", 1, true)
 			or nTex and nTex:find("UI-DialogBox", 1, true) -- StaticPopups
+			or nTex and nTex:find("UI-Achievement", 1, true) -- AtlasLoot "new" style
 			or obj.left and strfind(obj.left:GetTexture(), "UI-Panel-Button", 1, true) -- ARL & Collectinator
 			or oName and lTex and lTex:find("UI-Panel-Button", 1, true)
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
