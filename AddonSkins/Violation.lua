@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("Violation") then return end
 
 function Skinner:Violation()
 

@@ -240,6 +240,7 @@
 <script file="SkinMe\vBagnon.lua"/>
 <script file="SkinMe\Vendorizer.lua"/>
 <script file="SkinMe\VendorSearch.lua"/>
+<script file="SkinMe\Violation.lua"/>
 <script file="SkinMe\Visor2GUI.lua"/>
 <script file="SkinMe\Volumizer.lua"/>
 <script file="SkinMe\Waterfall.lua"/>

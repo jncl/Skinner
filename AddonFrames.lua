@@ -94,7 +94,7 @@ function Skinner:AddonFrames()
 		"ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "SmoothQuest", "Spew", "Squeenix", "sRaidFrames",
 		"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "TotemCaddy", "TourGuide", "Tukui", "TwinValkyr_shieldmonitor",
 		"UberQuest", "UrbanAchiever",
-		"vBagnon", "Vendorizer", "VendorSearch", "Visor2GUI", "Volumizer",
+		"vBagnon", "Vendorizer", "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
 		"WebDKP", "WIM", "WoWEquip",
 		"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 		"zfpoison", "ZOMGBuffs"
