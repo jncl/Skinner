@@ -14,7 +14,10 @@ function Skinner:TipTac()
 	
 	-- N.B. The ItemRefTooltip border will be set to reflect the item's quality by TipTac
 
-	TipTac:ApplySettings()
+	-- check to see if settings have been applied yet
+	if not TipTac.VARIABLES_LOADED then
+		TipTac:ApplySettings()
+	end
 
 	-- Anchor frame
 	self:skinButton{obj=TipTac.close, cb=true, x1=2, y1=-2, x2=-2, y2=2}

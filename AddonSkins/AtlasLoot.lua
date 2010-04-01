@@ -2,29 +2,36 @@ if not Skinner:isAddonEnabled("AtlasLoot") then return end
 
 function Skinner:AtlasLoot()
 
--->>--	Items Frame
-	self:keepFontStrings(AtlasLootInfo)
-	self:moveObject(AtlasLootInfo_Text1, nil, nil, "+", 10)
-	self:moveObject(AtlasLootInfoHidePanel, nil, nil, "+", 10)
-	self:keepFontStrings(AtlasLootItemsFrame)
-	self:applySkin(AtlasLootItemsFrame)
--->>--	Panel
-	self:keepFontStrings(AtlasLootPanel)
-	self:moveObject(AtlasLootPanel_Title, nil, nil, "-", 6)
-	self:skinEditBox(AtlasLootSearchBox, {9})
-	self:applySkin(AtlasLootPanel)
 -->>--	Default Frame
-	-- Hook this to move the title
-	self:SecureHook("AtlasLootDefaultFrame_OnShow", function()
-		self:moveObject(self:getRegion(AtlasLootDefaultFrame, 2), nil, nil, "-", 6)
-		self:Unhook("AtlasLootDefaultFrame_OnShow")
-	end)
-	self:keepFontStrings(AtlasLootDefaultFrame)
-	self:moveObject(self:getRegion(AtlasLootDefaultFrame, 2), nil, nil, "-", 6)
-	self:moveObject(AtlasLootDefaultFrame_CloseButton, "+", 10, "+", 10)
+	AtlasLootDefaultFrame_LootBackground:SetBackdrop(nil)
 	self:keepFontStrings(AtlasLootDefaultFrame_LootBackground)
-	self:skinEditBox(AtlasLootDefaultFrameSearchBox, {9})
-	self:applySkin(AtlasLootDefaultFrame)
+	self:skinEditBox{obj=AtlasLootDefaultFrameSearchBox, regs={9}}
+	self:addSkinFrame{obj=AtlasLootDefaultFrame, kfs=true, y1=3}
+
+-->>--	Items Frame
+	self:addSkinFrame{obj=AtlasLootItemsFrame, kfs=true}
+
+-->>--	Loot Panel
+	self:skinEditBox(AtlasLootSearchBox, {9})
+	self:addSkinFrame{obj=AtlasLootPanel, kfs=true}
+
+-->>-- FilterOptions panel
+	-- fix for buttons on filter page
+	for _, child in ipairs{AtlasLootFilterOptionsScrollInhalt:GetChildren()} do
+--		self:Debug("ALFOSI: [%s, %s]", child, self:isButton(child))
+		if self:isButton(child) then
+			self:skinButton{obj=child, as=true}
+		end
+	end
+	AtlasLootFilterOptionsScrollFrame:SetBackdrop(nil)
+	self:addSkinFrame{obj=AtlasLootFilterOptionsScrollFrame:GetParent(), kfs=true, nb=true}
+	self:skinScrollBar{obj=AtlasLootFilterOptionsScrollFrame}
+	
+-->>-- WishList Add frame	
+	self:addSkinFrame{obj=AtlasLootWishList_AddFrame, kfs=true}
+	self:skinEditBox{obj=AtlasLootWishListNewName, regs={9}}
+	self:skinScrollBar{obj=AtlasLootWishlistAddFrameIconList}
+	
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then AtlasLootTooltip:SetBackdrop(self.backdrop) end

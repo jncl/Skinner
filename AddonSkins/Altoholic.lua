@@ -97,15 +97,7 @@ function Skinner:Altoholic()
 		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:applySkin(obj)
 	end
-	-- Achievements tab
-	self:skinScrollBar{obj=AltoholicFrameAchievementsScrollFrame}
-	self:skinScrollBar{obj=AltoholicAchievementsMenuScrollFrame}
-	for i = 1, 20 do
-		obj = _G["AltoholicTabAchievementsMenuItem"..i]
-		if not obj then break end
-		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(obj)
-	end
+	-- Achievements tab, now a separate addon (r83)
 
 -->>-- Tabs
 	for i = 1, 9 do
@@ -167,5 +159,18 @@ function Skinner:Altoholic()
 	end
 	self:addSkinFrame{obj=AltoholicFrameAvailableContent}
 	self:addSkinFrame{obj=AltoAccountSharing}
+
+end
+
+function Skinner:Altoholic_Achievements()
+
+	self:skinScrollBar{obj=AltoholicAchievementsMenuScrollFrame}
+	for i = 1, 20 do
+		obj = _G["AltoholicTabAchievementsMenuItem"..i]
+		if not obj then break end
+		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		self:applySkin(obj)
+	end
+	self:skinScrollBar{obj=AltoholicFrameAchievementsScrollFrame}
 
 end
