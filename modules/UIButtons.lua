@@ -241,7 +241,7 @@ function module:isButton(obj, cb)
 			if nTex and nTex:find("UI-Panel-Button", 1, true)
 			or nTex and nTex:find("UI-DialogBox", 1, true) -- StaticPopups
 			or nTex and nTex:find("UI-Achievement", 1, true) -- AtlasLoot "new" style
-			or obj.left and strfind(obj.left:GetTexture(), "UI-Panel-Button", 1, true) -- ARL & Collectinator
+			or obj.left and obj.left:GetTexture() and strfind(obj.left:GetTexture(), "UI-Panel-Button", 1, true) -- ARL & Collectinator
 			or oName and lTex and lTex:find("UI-Panel-Button", 1, true)
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
 			then
