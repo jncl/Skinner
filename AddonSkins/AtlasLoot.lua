@@ -7,15 +7,25 @@ function Skinner:AtlasLoot()
 	self:keepFontStrings(AtlasLootDefaultFrame_LootBackground)
 	self:skinEditBox{obj=AtlasLootDefaultFrameSearchBox, regs={9}}
 	self:addSkinFrame{obj=AtlasLootDefaultFrame, kfs=true, y1=3}
+	-- prevent style being changed
+	AtlasLoot_SetNewStyle = function() end
+	-- disable button textures
+	AtlasLootDefaultFrameWishListButton:DisableDrawLayer("BACKGROUND")
+	AtlasLootDefaultFrameSearchButton:DisableDrawLayer("BACKGROUND")
+	AtlasLootDefaultFrameSearchClearButton:DisableDrawLayer("BACKGROUND")
+	AtlasLootDefaultFrameLastResultButton:DisableDrawLayer("BACKGROUND")
+
 
 -->>--	Items Frame
+	AtlasLootItemsFrame_PREV:DisableDrawLayer("BACKGROUND")
+	AtlasLootItemsFrame_NEXT:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=AtlasLootItemsFrame, kfs=true}
 
 -->>--	Loot Panel
 	self:skinEditBox(AtlasLootSearchBox, {9})
 	self:addSkinFrame{obj=AtlasLootPanel, kfs=true}
 
--->>-- FilterOptions panel
+-->>-- Filter Options panel
 	-- fix for buttons on filter page
 	for _, child in ipairs{AtlasLootFilterOptionsScrollInhalt:GetChildren()} do
 --		self:Debug("ALFOSI: [%s, %s]", child, self:isButton(child))
@@ -26,12 +36,21 @@ function Skinner:AtlasLoot()
 	AtlasLootFilterOptionsScrollFrame:SetBackdrop(nil)
 	self:addSkinFrame{obj=AtlasLootFilterOptionsScrollFrame:GetParent(), kfs=true, nb=true}
 	self:skinScrollBar{obj=AtlasLootFilterOptionsScrollFrame}
-	
--->>-- WishList Add frame	
+-->>-- Wishlist Options panel
+	AtlasLootWishlistOwnOptionsScrollFrame:SetBackdrop(nil)
+	self:skinScrollBar{obj=AtlasLootWishlistOwnOptionsScrollFrame}
+-->>-- Help Options panel
+	self:SecureHook("AtlasLoot_DisplayHelp", function()
+		AtlasLootHelpFrame_HelpTextFrameScroll:SetBackdrop(nil)
+		self:skinScrollBar{obj=AtlasLootHelpFrame_HelpTextFrameScroll}
+		self:Unhook("AtlasLoot_DisplayHelp")
+	end)
+
+-->>-- WishList Add frame
 	self:addSkinFrame{obj=AtlasLootWishList_AddFrame, kfs=true}
 	self:skinEditBox{obj=AtlasLootWishListNewName, regs={9}}
 	self:skinScrollBar{obj=AtlasLootWishlistAddFrameIconList}
-	
+
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then AtlasLootTooltip:SetBackdrop(self.backdrop) end

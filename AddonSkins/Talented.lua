@@ -16,7 +16,10 @@ function Skinner:Talented()
 	end
 	
 	self:SecureHook(Talented, "CreateBaseFrame", function()
-		self:addSkinFrame{obj=Talented.base}
+		self:addSkinFrame{obj=TalentedFrame}
+		self:skinButton{obj=TalentedFrame.bactions}
+		self:skinButton{obj=TalentedFrame.bmode}
+		self:skinButton{obj=TalentedFrame.bglyphs}
 		skinTalented_SpecTabs()
 		self:Unhook(Talented, "CreateBaseFrame")
 	end)
