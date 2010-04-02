@@ -279,7 +279,6 @@ function Skinner:MenuFrames()
 		for _, child in pairs{obj:GetChildren()} do
 		 	if Skinner:isDropDown(child) then Skinner:skinDropDown{obj=child}
 			elseif child:IsObjectType("EditBox") then Skinner:skinEditBox{obj=child, regs={9}}
-			elseif child:IsObjectType("ScrollFrame") then Skinner:skinScrollBar{obj=child}
 			else
 				checkKids(child)
 			end
