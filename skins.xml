@@ -182,6 +182,7 @@
 <script file="SkinMe\PlayerExpBar.lua"/>
 <script file="SkinMe\PlusOneTable.lua"/>
 <script file="SkinMe\PoMTracker.lua"/>
+<script file="SkinMe\Possessions.lua"/>
 <script file="SkinMe\Postal.lua"/>
 <script file="SkinMe\PowerAuras.lua"/>
 <script file="SkinMe\Prat3.lua"/>
@@ -230,6 +231,7 @@
 <script file="SkinMe\tomQuest2.lua"/>
 <script file="SkinMe\TomTom.lua"/>
 <script file="SkinMe\TooManyAddons.lua"/>
+<script file="SkinMe\Toons.lua"/>
 <script file="SkinMe\TotemCaddy.lua"/>
 <script file="SkinMe\TourGuide.lua"/>
 <script file="SkinMe\TradeTabs.lua"/>
