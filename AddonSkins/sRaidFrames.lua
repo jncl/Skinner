@@ -7,7 +7,11 @@ function Skinner:sRaidFrames()
 	local sbTex = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
 	for _, f in pairs(sRaidFrames.frames) do
 		f.hpbar:SetStatusBarTexture(sbTex)
+		f.hpbar:GetStatusBarTexture():SetHorizTile(false)
+		f.hpbar:GetStatusBarTexture():SetVertTile(false)
 		f.mpbar:SetStatusBarTexture(sbTex)
+		f.mpbar:GetStatusBarTexture():SetHorizTile(false)
+		f.mpbar:GetStatusBarTexture():SetVertTile(false)
 	end
 	-- set Border Texture
 	sRaidFrames.opt.BorderTexture = self.db.profile.BdBorderTexture

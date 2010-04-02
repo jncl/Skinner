@@ -1011,6 +1011,10 @@ function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 	local c = self.db.profile.StatusBar
 
 	statusBar:SetStatusBarTexture(self.sbTexture)
+	-- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
+	statusBar:GetStatusBarTexture():SetHorizTile(false)
+	statusBar:GetStatusBarTexture():SetVertTile(false)
+
 	if not self.sbGlazed[statusBar] then
 		self.sbGlazed[statusBar] = {}
 	end
@@ -1585,8 +1589,8 @@ end
 function Skinner:skinFFColHeads(buttonName, noCols)
 -- 	self:Debug("skinFFColHeads: [%s, %s]", buttonName, noCols)
 
-	local numCols = noCols and noCols or 4
-	for i = 1, numCols do
+	noCols = noCols or 4
+	for i = 1, noCols do
 		self:removeRegions(_G[buttonName..i], {1, 2, 3})
 		self:addSkinFrame{obj=_G[buttonName..i]}
 	end
