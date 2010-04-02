@@ -10,44 +10,42 @@ S - Skin request
 I - Issue/Bug
 B - Button(s) Skin request
 
-	O	Review Function Hooks
-		- Blizzard skins function hooks
-		- Addon skins function hooks
+√	O	Unobsolete Possessions, requested by next96, 2.04.10
 
-√	I	AltlasLoot, reported by Luckyjack_SL, 30.03.10
+√	O	Unobsolete Toons, requested by next96, 2.04.10
 
-√	I	Altoholic, reported by burber, 1.04.10
-		- Message: ..\AddOns\Skinner\Skinner.lua line 230:
-		table index is nil
-		Debug:
+√	I	Talented, reported by spAnser, 2.04.10
+
+√	I	IOP, reported by ichik, 2.04.10
+		- Interface\AddOns\Skinner\Skinner.lua:1681: attempt to concatenate a nil value
 		(tail call): ?
-		(tail call): ?
-		Skinner\Skinner.lua:230:
-		Skinner\Skinner.lua:230
-		Skinner\Skinner.lua:1675:
-		Skinner\Skinner.lua:1661
-		Skinner\Skinner.lua:1707: skinScrollBar()
-		Skinner\SkinMe\Altoholic.lua:101:
-		Skinner\SkinMe\Altoholic.lua:3
+		Interface\AddOns\Skinner\Skinner.lua:1681: in function <Interface\AddOns\Skinner\Skinner.lua:1661>
+		Interface\AddOns\Skinner\Skinner.lua:1707: in function `skinScrollBar'
+		Interface\AddOns\Skinner\UIElements2.lua:282: in function <Interface\AddOns\Skinner\UIElements2.lua:274>
+		Interface\AddOns\Skinner\UIElements2.lua:284: in function <Interface\AddOns\Skinner\UIElements2.lua:274>
+		Interface\AddOns\Skinner\UIElements2.lua:284: in function <Interface\AddOns\Skinner\UIElements2.lua:274>
+		Interface\AddOns\Skinner\UIElements2.lua:284: in function <Interface\AddOns\Skinner\UIElements2.lua:274>
+		Interface\AddOns\Skinner\UIElements2.lua:284: in function <Interface\AddOns\Skinner\UIElements2.lua:274>
+		Interface\AddOns\Skinner\UIElements2.lua:284: in function <Interface\AddOns\Skinner\UIElements2.lua:274>
 		(tail call): ?
 
-√	I	Violation, requested by CrazyBenny, 1.04.10
-		- unobsolete
-
-≈	I	TipTac, reported by Luckyjack_SL, 1.04.10
-		- ..\AddOns\TipTac\core.lua line 1011:
-		   attempt to index upvalue 'cfg' (a nil value)
+√	I	IOP, reported by Alcotraz, 2.04.10
+		- ..\AddOns\Skinner\Skinner.lua line 1681:
+		   attempt to concatenate a nil value
 		Debug:
 		   (tail call): ?
+		   Skinner\Skinner.lua:1681:
+		      Skinner\Skinner.lua:1661
+		   Skinner\Skinner.lua:1707: skinScrollBar()
+		   Skinner\UIElements2.lua:282:
+		      Skinner\UIElements2.lua:274
+		   Skinner\UIElements2.lua:284:
+		      Skinner\UIElements2.lua:274
+		   Skinner\UIElements2.lua:284:
+		      Skinner\UIElements2.lua:274
 		   (tail call): ?
-		   TipTac\core.lua:1011: ApplySettings()
-		   Skinner\SkinMe\TipTac.lua:17:
-		      Skinner\SkinMe\TipTac.lua:3
-		   (tail call): ?
-		   [C]: xpcall()
-		   Skinner\Skinner.lua:801:
-		      Skinner\Skinner.lua:799
-		   Skinner\Skinner.lua:856: checkAndRunAddOn()
-		   Skinner\AddonFrames.lua:105:
-		      Skinner\AddonFrames.lua:47
-		   (tail call): ?
+
+√	I	StatusBar textures tiling, fix supplied by foreverphk
+
+?	I	AltasLoot Enhanced, reported by Arenikus, 2.04.10
+		- causing professions and guildbank to display unskinned
