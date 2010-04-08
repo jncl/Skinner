@@ -143,13 +143,7 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 
 	if self.db.profile.ContainerFrames.skin then
 		BACKPACK_TOKENFRAME_HEIGHT = BACKPACK_TOKENFRAME_HEIGHT - 6
-		self:SecureHook("ManageBackpackTokenFrame", function(backpack)
-			if not backpack then backpack = GetBackpackFrame() end
-			if not backpack then return end
-			if BackpackTokenFrame_IsShown() then
-				self:keepFontStrings(BackpackTokenFrame)
-			end
-		end)
+		BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
 	end
 
 	self:keepFontStrings(TokenFrame)
@@ -163,7 +157,6 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 		TokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
 		TokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
 	end
-	-- ? close button
 
 -->>-- Popup Frame
 	self:addSkinFrame{obj=TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
@@ -356,7 +349,6 @@ function Skinner:AchievementUI()
 		self:glazeStatusBar(_G[statusBar], 0, _G[statusBar.."FillBar"])
 
 	end
-
 	local function skinStats()
 
 		for i = 1, #AchievementFrameStatsContainer.buttons do
@@ -369,7 +361,6 @@ function Skinner:AchievementUI()
 		end
 
 	end
-
 	local function glazeProgressBar(pBar)
 
 		if not Skinner.sbGlazed[pBaro] then
@@ -380,7 +371,6 @@ function Skinner:AchievementUI()
 		end
 
 	end
-
 	local function skinCategories()
 
 		for i = 1, #AchievementFrameCategoriesContainer.buttons do
@@ -388,7 +378,6 @@ function Skinner:AchievementUI()
 		end
 
 	end
-
 	local function skinComparisonStats()
 
 		for i = 1, #AchievementFrameComparisonStatsContainer.buttons do
