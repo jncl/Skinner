@@ -120,6 +120,7 @@
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
 <script file="SkinMe\HatTrick.lua"/>
 <script file="SkinMe\HeadCount.lua"/>
+<script file="SkinMe\HealBot.lua"/>
 <script file="SkinMe\HealOrganizer.lua"/>
 <script file="SkinMe\Highlight.lua"/>
 <script file="SkinMe\HitsMode.lua"/>
@@ -227,7 +228,6 @@
 <script file="SkinMe\TheCollector.lua"/>
 <script file="SkinMe\TinyPad.lua"/>
 <script file="SkinMe\TipTac.lua"/>
-<script file="SkinMe\TitanExitGame.lua"/>
 <script file="SkinMe\tomQuest2.lua"/>
 <script file="SkinMe\TomTom.lua"/>
 <script file="SkinMe\TooManyAddons.lua"/>

@@ -82,7 +82,7 @@ function Skinner:AddonFrames()
 		"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "EquipCompare", "EventEquip", "EveryQuest", "Examiner",
 		"Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "FramesResized",
 		"Gatherer", "GearScore", "GemHelper", "GemMe", "GnomishVendorShrinker", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildLaunchCT_RaidTracker", "GupCharacter", "GupPet",
-		"Hack", "Hadar_FocusFrame", "HatTrick", "HeadCount", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
+		"Hack", "Hadar_FocusFrame", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
 		"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemSync",
 		"LauncherMenu", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Ludwig", "Luggage",
 		"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MinimapButtonFrame", "MobMap", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MyBags", "myClock",
