@@ -3,7 +3,7 @@ local _G = _G
 
 -- check to see if required libraries are loaded
 assert(LibStub, aName.." requires LibStub")
-for _, lib in pairs{"CallbackHandler-1.0", "AceAddon-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0",} do
+for _, lib in pairs{"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0",} do
 	assert(LibStub:GetLibrary(lib, true), aName.." requires "..lib)
 end
 
@@ -38,7 +38,6 @@ local function makeString(t)
 	return tostring(t)
 
 end
-
 local function makeText(a1, ...)
 
 	local tmpTab = {}
@@ -61,7 +60,6 @@ local function makeText(a1, ...)
 	return output
 
 end
-
 local function printIt(text, frame, r, g, b)
 
 	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
@@ -102,10 +100,8 @@ function Skinner:OnInitialize()
 	local c = prdb.BodyText
 	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
 
-	-- Frame multipliers
+	-- Frame multipliers (still used in older skins)
 	self.FxMult, self.FyMult = 0.9, 0.87
-	-- Frame Tab multipliers
-	self.FTxMult, self.FTyMult = 0.5, 0.75
 	-- EditBox regions to keep
 	self.ebRegions = {1, 2, 3, 4, 5} -- 1 is text, 2-5 are textures
 
@@ -298,7 +294,7 @@ function Skinner:OnEnable()
 	self:RegisterChatCommand("rl", function(msg) ReloadUI() end)
 	self:RegisterChatCommand("lo", function(msg) Logout() end)
 	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
-	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (strfind(lvl, "Grand") and "Great" or "Grand")..lvl end end)
+	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl end end)
 	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, false) end)
 	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end)
 	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
@@ -354,12 +350,11 @@ end
 function Skinner:getGradientInfo(db)
 
 	local c = self.db.profile.GradientMin
-	MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
+	local MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
 	local c = self.db.profile.GradientMax
-	MaxR, MaxG, MaxB, MaxA = c.r, c.g, c.b, c.a
+	local MaxR, MaxG, MaxB, MaxA = c.r, c.g, c.b, c.a
 
 	return db.invert and {db.rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA} or {db.rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA}
-
 
 end
 
@@ -925,13 +920,12 @@ function Skinner:findFrame2(parent, objType, ...)
 
 	local frame
 
-	for i = 1, parent:GetNumChildren() do
-		local obj = select(i, parent:GetChildren())
-		if obj:GetName() == nil then
-			if obj:IsObjectType(objType) then
+	for _, child in pairs{parent:GetChildren()} do
+		if child:GetName() == nil then
+			if child:IsObjectType(objType) then
 				if select("#", ...) > 2 then
 					-- base checks on position
-					local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint()
+					local point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
 					xOfs = ceil(xOfs)
 					yOfs = ceil(yOfs)
 --					self:Debug("UnNamed Object's Point: [%s, %s, %s, %s, %s]", point, relativeTo, relativePoint, xOfs, yOfs)
@@ -940,16 +934,16 @@ function Skinner:findFrame2(parent, objType, ...)
 					and relativePoint == select(3, ...)
 					and xOfs          == select(4, ...)
 					and yOfs          == select(5, ...) then
-						frame = obj
+						frame = child
 						break
 					end
 				else
 					-- base checks on size
-					local height, width = ceil(obj:GetHeight()), ceil(obj:GetWidth())
+					local height, width = ceil(child:GetHeight()), ceil(child:GetWidth())
 -- 					self:Debug("UnNamed Object's H, W: [%s, %s]", height, width)
 					if  height == select(1, ...)
 					and width  == select(2, ...) then
-						frame = obj
+						frame = child
 						break
 					end
 				end
@@ -1008,12 +1002,7 @@ function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 
 	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
 
-	local c = self.db.profile.StatusBar
-
 	statusBar:SetStatusBarTexture(self.sbTexture)
-	-- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
-	statusBar:GetStatusBarTexture():SetHorizTile(false)
-	statusBar:GetStatusBarTexture():SetVertTile(false)
 
 	if not self.sbGlazed[statusBar] then
 		self.sbGlazed[statusBar] = {}
@@ -1024,12 +1013,15 @@ function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 	local sbTex = statusBar:GetStatusBarTexture()
 	local sbDL = sbTex:GetDrawLayer()
 	if sbDL == "BACKGROUND" then sbTex:SetDrawLayer("BORDER") end
+	-- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
+	sbTex:SetHorizTile(false)
+	sbTex:SetVertTile(false)
 
 	if fi then
 		if not sbG.bg then
 			sbG.bg = bgTex or statusBar:CreateTexture(nil, "BACKGROUND")
 			sbG.bg:SetTexture(self.sbTexture)
-			sbG.bg:SetVertexColor(c.r, c.g, c.b, c.a)
+			sbG.bg:SetVertexColor(unpack(self.sbColour))
 			if not bgTex then
 				sbG.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
 				sbG.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
@@ -1073,7 +1065,7 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 	local hasMatched = false
 
 	if type(verNoReqd) == "table" then
-		for _, v in pairs(verNoReqd) do
+		for _, v in ipairs(verNoReqd) do
 			if v == actualVerNo then
 				hasMatched = true
 				break
@@ -1101,9 +1093,7 @@ function Skinner:keepFontStrings(frame, hide)
 	if not frame then return end
 
 --	self:Debug("keepFontStrings: [%s]", frame:GetName() or "???")
-
-	for i = 1, frame:GetNumRegions() do
-		local reg = select(i, frame:GetRegions())
+	for _, reg in pairs{frame:GetRegions()} do
 		if not reg:IsObjectType("FontString") then
 			if not hide then reg:SetAlpha(0) else reg:Hide() end
 		end
@@ -1148,46 +1138,46 @@ function Skinner:keepRegions(frame, regions)
 
 end
 
-function Skinner:makeMFRotatable(frame)
+function Skinner:makeMFRotatable(modelFrame)
 --@alpha@
-	assert(frame, "Unknown object\n"..debugstack())
+	assert(modelFrame and modelFrame:IsObjectType("PlayerModel"), "Not a PlayerModel\n"..debugstack())
 --@end-alpha@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
 	if IsAddOnLoaded("CloseUp") then return end
 
 	--frame:EnableMouseWheel(true)
-	frame:EnableMouse(true)
-	frame.draggingDirection = nil
-	frame.cursorPosition = {}
+	modelFrame:EnableMouse(true)
+	modelFrame.draggingDirection = nil
+	modelFrame.cursorPosition = {}
 
 	-- hide rotation buttons
-	for _, child in pairs{frame:GetChildren()} do
+	for _, child in pairs{modelFrame:GetChildren()} do
 		local cName = child:GetName()
 		if cName and cName:find("Rotate") then
 			child:Hide()
 		end
 	end
 
-	if not self:IsHooked(frame, "OnUpdate") then
-		self:SecureHookScript(frame, "OnUpdate", function(...)
+	if not self:IsHooked(modelFrame, "OnUpdate") then
+		self:SecureHookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
 			if this.dragging then
-				local x,y = GetCursorPosition()
+				local x, y = GetCursorPosition()
 				if this.cursorPosition.x > x then
-					Model_RotateLeft(frame, (this.cursorPosition.x - x) * arg1)
+					Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
 				elseif this.cursorPosition.x < x then
-					Model_RotateRight(frame, (x - this.cursorPosition.x) * arg1)
+					Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
 				end
 				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
 			end
 		end)
-		self:SecureHookScript(frame, "OnMouseDown", function()
-			if arg1 == "LeftButton" then
+		self:SecureHookScript(modelFrame, "OnMouseDown", function(this, button)
+			if button == "LeftButton" then
 				this.dragging = true
 				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
 			end
 		end)
-		self:SecureHookScript(frame, "OnMouseUp", function()
+		self:SecureHookScript(modelFrame, "OnMouseUp", function(this, button)
 			if this.dragging then
 				this.dragging = false
 				this.cursorPosition.x, this.cursorPosition.y = nil
@@ -1196,12 +1186,12 @@ function Skinner:makeMFRotatable(frame)
 	end
 
 	--[[ MouseWheel to zoom Modelframe - in/out works, but needs to be fleshed out
-	frame:SetScript("OnMouseWheel", function()
+	modelFrame:SetScript("OnMouseWheel", function()
 		local xPos, yPos, zPos = frame:GetPosition()
 		if arg1 == 1 then
-			frame:SetPosition(xPos+00.1, 0, 0)
+			modelFrame:SetPosition(xPos+00.1, 0, 0)
 		else
-			frame:SetPosition(xPos-00.1, 0, 0)
+			modelFrame:SetPosition(xPos-00.1, 0, 0)
 		end
 	end) ]]
 
@@ -1233,7 +1223,7 @@ local function __moveObject(opts)
 	-- Workaround for relativeTo crash
 	if not relTo then
 		if Skinner.db.profile.Warnings then
-			Skinner:CustomPrint(1, 0, 0, "moveObject (relativeTo) is nil:", tostring(objName))
+			Skinner:CustomPrint(1, 0, 0, "moveObject (relativeTo) is nil: %s", opts.obj)
 		end
 		return
 	end
@@ -1304,7 +1294,7 @@ function Skinner:resizeTabs(frame)
 	local tabName = fN.."Tab"
 	local nT
 	-- get the number of tabs
-	nT = ((fN == "CharacterFrame" and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
+	nT = ((frame == CharacterFrame and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
 --	self:Debug("rT: [%s, %s]", tabName, nT)
 	-- accumulate the tab text widths
 	local tTW = 0
@@ -1404,9 +1394,9 @@ function Skinner:shrinkBag(frame, bpMF)
 		end
 		self:moveObject(_G[frameName.."Item1"], nil, nil, "+", 19)
 	end
-	if ceil(bgTop:GetHeight()) == 94 then self:adjHeight{obj=frame , adj=-20} end
-	if ceil(bgTop:GetHeight()) == 86 then self:adjHeight{obj=frame , adj=-20} end
-	if ceil(bgTop:GetHeight()) == 72 then self:adjHeight{obj=frame , adj=2} end -- 6, 10 or 14 slot bag
+	if ceil(bgTop:GetHeight()) == 94 then self:adjHeight{obj=frame, adj=-20} end
+	if ceil(bgTop:GetHeight()) == 86 then self:adjHeight{obj=frame, adj=-20} end
+	if ceil(bgTop:GetHeight()) == 72 then self:adjHeight{obj=frame, adj=2} end -- 6, 10 or 14 slot bag
 
 	frame:SetWidth(frame:GetWidth() - 10)
 	self:moveObject(_G[frameName.."Item1"], "+", 3)
@@ -1855,15 +1845,15 @@ end
 function Skinner:updateSBTexture()
 
 	-- get updated colour/texture
-	local c = self.db.profile.StatusBar
-	self.sbColour = {c.r, c.g, c.b, c.a}
-	self.sbTexture = self.LSM:Fetch("statusbar", self.db.profile.StatusBar.texture)
+	local sb = self.db.profile.StatusBar
+	self.sbColour = {sb.r, sb.g, sb.b, sb.a}
+	self.sbTexture = self.LSM:Fetch("statusbar", sb.texture)
 
 	for statusBar, tab in pairs(self.sbGlazed) do
 		statusBar:SetStatusBarTexture(self.sbTexture)
-		for type, tex in pairs(tab) do
+		for k, tex in pairs(tab) do
 			tex:SetTexture(self.sbTexture)
-			if type == bg then tex:SetVertexColor(c.r, c.g, c.b, c.a) end
+			if k == bg then tex:SetVertexColor(sb.r, sb.g, sb.b, sb.a) end
 		end
 	end
 
