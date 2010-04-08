@@ -1,3 +1,14 @@
+b3.11723.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Added AlertFrames to CF1 list
+	Fix for StatusBar tiling issue
+	Updated AtlasLoot & Talented skins
+	Bugfix for IOP ScrollFrames
+	Bugfix in UIButtons module
+	Unobsoleted Possessions & Toons
+
 b3.11723.2
 Jncl:
 	ToDo.txt
