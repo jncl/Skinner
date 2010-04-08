@@ -5,15 +5,31 @@ function Skinner:EnhancedStackSplit()
 
 	self:keepFontStrings(EnhancedStackSplitTopTextureFrame)
 	self:keepFontStrings(EnhancedStackSplitBottomTextureFrame)
+	self:keepFontStrings(EnhancedStackSplitBottom2TextureFrame)
 	self:keepFontStrings(EnhancedStackSplitAutoTextureFrame)
-	-- hide the StackSplit amount when in Auto Mode
-	self:SecureHook("EnhancedStackSplit_ModeSettings", function(mode)
-		if mode == 3 then StackSplitText:Hide()
-		else StackSplitText:Show() end
+	-- resize skin frame if in XL mode
+	if floor(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
+		self.skinFrame[StackSplitFrame]:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
+	end
+	-- hook these to show/hide stack split value
+	self:SecureHookScript(StackSplitOkayButton, "OnShow", function(this)
+		StackSplitText:Show()
 	end)
+	self:SecureHookScript(StackSplitOkayButton, "OnHide", function(this)
+		StackSplitText:Hide()
+	end)
+	-- hook this to handle XL mode
+	self:SecureHookScript(EnhancedStackSplitXLModeButton, "OnClick", function(this)
+		if floor(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
+			self.skinFrame[StackSplitFrame]:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
+		else
+			self.skinFrame[StackSplitFrame]:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -24)
+		end
+	end)
+
 	-- skin buttons
 	self:skinButton{obj=EnhancedStackSplitAuto1Button}
-	for i = 1, 10 do
+	for i = 1, 16 do
 		self:skinButton{obj=_G["EnhancedStackSplitButton"..i]}
 	end
 	self:skinButton{obj=EnhancedStackSplitModeTXTButton}

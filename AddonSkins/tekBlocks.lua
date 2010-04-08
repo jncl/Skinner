@@ -1,5 +1,4 @@
 if not Skinner:isAddonEnabled("tekBlocks") then return end
-local ipairs = ipairs
 
 function Skinner:tekBlocks()
 

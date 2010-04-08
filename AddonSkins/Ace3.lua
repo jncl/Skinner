@@ -67,7 +67,6 @@ function Skinner:Ace3()
 				if self.modBtns then
 					-- hook to manage changes to button textures
 					self:SecureHook(obj, "RefreshTree", function()
-						self:Debug("RefreshTree: [%s]", #obj.buttons)
 						for i = 1, #obj.buttons do
 							local button = obj.buttons[i]
 							if not self.skinned[button.toggle] then

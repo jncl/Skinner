@@ -19,7 +19,9 @@ function Skinner:WIM() -- WIM3
 			Skinner:moveObject{obj=msgFrame.widgets.class_icon, y=-2}
 		end
 
-		Skinner:addSkinFrame{obj=msgFrame, kfs=true}
+		if not Skinner.skinFrame[msgFrame] then
+			Skinner:addSkinFrame{obj=msgFrame, kfs=true}
+		end
 
 	end
 

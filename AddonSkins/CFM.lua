@@ -1,3 +1,4 @@
+if not Skinner:isAddonEnabled("CFM") then return end
 
 function Skinner:CFM()
 
