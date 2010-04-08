@@ -24,20 +24,27 @@ function Skinner:BlizzardFrames()
 	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
 	self:checkAndRun("ChatConfig") -- done here even though it's LoD, as it is always loaded with Blizzard_CombatLog
 
---[[
+--[=[
 	QuestLog -- checked with EQL3 & QuestGuru below
 	CastingBar -- checked with Quartz below
 	Tooltips -- checked with TipTac below
 	MainMenuBar -- checked with Bongos below
 	Nameplates -- checked with Aloft below
 	ModelFrames -- checked with CloseUp below
-]]
+--]=]
 
 end
 
 local blizzLoDFrames = {
-	 "AchievementUI", "AuctionUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GlyphUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI",
+	 "AchievementUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GlyphUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI",
 }
+--[=[
+	AuctionUI -- loaded when AUCTION_HOUSE_SHOW event is fired
+	ArenaUI -- unitframes not currently skinned
+	CombatLog -- managed with ChatConfig skin
+	CombatText -- nothing to skin
+	TokenUI -- part of CharacterFrames skinning process
+--]=]
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v
@@ -53,7 +60,10 @@ function Skinner:AddonFrames()
 	-- skin the QuestLog if EQL3 or QuestGuru aren't loaded
 	-- N.B. Do it here as other Addons use the QuestLog size
 	if not IsAddOnLoaded("EQL3")
-	and not IsAddOnLoaded("QuestGuru") then self:checkAndRun("QuestLog") end
+	and not IsAddOnLoaded("QuestGuru")
+	then
+		self:checkAndRun("QuestLog")
+	end
 
 	-- skin the CastingBar if Quartz isn't loaded
 	if not IsAddOnLoaded("Quartz") then self:checkAndRun("CastingBar") end
@@ -63,12 +73,18 @@ function Skinner:AddonFrames()
 
 	-- skin the MenuBar if Bongos isn't loaded
 	if not IsAddOnLoaded("Bongos")
-	and not IsAddOnLoaded("Bongos2") then self:checkAndRun("MainMenuBar") end
+	and not IsAddOnLoaded("Bongos2")
+	then
+		self:checkAndRun("MainMenuBar")
+	end
 
 	-- skin the Nameplates if Aloft, nerNameplates or TidyPlates aren't loaded
 	if not IsAddOnLoaded("Aloft")
 	and not IsAddOnLoaded("nerNameplates")
-	and not IsAddOnLoaded("TidyPlates") then self:checkAndRun("Nameplates") end
+	and not IsAddOnLoaded("TidyPlates")
+	then
+		self:checkAndRun("Nameplates")
+	end
 
 	--	don't make Model Frames Rotatable if CloseUp is loaded
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
@@ -106,8 +122,6 @@ function Skinner:AddonFrames()
 	end
 	addonFrames = nil
 
-	-- handle non standard ones here
-
 	-- handle Addons with odd names here
 	local oddlyNamedAddons = {
 		"Auc-Advanced", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "Ogri'Lazy", "Prat-3.0", "WoW-Pro"
@@ -131,7 +145,7 @@ function Skinner:AddonFrames()
 		self:checkAndRunAddOn("MSBTOptions", true) -- use true so it isn't treated as a LoadManaged Addon
 	end
 
-	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip, tektip,  LibQTip & LibSimpleFrame library objects
+	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip, tektip, LibQTip & LibSimpleFrame library objects
 	local libsToSkin = {
 		["Dewdrop-2.0"] = "Dewdrop",
 		["AceAddon-2.0"] = "Ace2",
