@@ -213,7 +213,7 @@ function module:skinButton(opts)
 		-- centre highlight as well
 		if opts.obj:GetHighlightTexture() then opts.obj:GetHighlightTexture():SetAllPoints() end
 	end
-	
+
 end
 
 local function getTexture(obj)
@@ -225,7 +225,7 @@ local function getTexture(obj)
 	else
 		return
 	end
-	
+
 end
 function module:isButton(obj, cb)
 
@@ -234,7 +234,7 @@ function module:isButton(obj, cb)
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then -- check textures are as expected
-		local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
+		local nTex = getTexture(obj:GetNormalTexture())
 		if not cb then
 			local oName = obj:GetName() or nil
 			local lTex = oName and (getTexture(_G[oName.."Left"]) or getTexture(_G[oName.."_LeftTexture"])) or nil
@@ -269,17 +269,16 @@ local function __skinAllButtons(opts, bgen)
 	assert(opts.obj, "Unknown object__sAB\n"..debugstack())
 --@end-alpha@
 	if not opts.obj then return end
-	
+
 	-- maximum number of button generations to traverse
 	bgen = bgen or (opts.bgen and opts.bgen or 3)
---	print(bgen)
 
-	for _, child in pairs{opts.obj:GetChildren()} do
+	for _, child in ipairs{opts.obj:GetChildren()} do
 		if module:isButton(child) then -- normal button
 			module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 		elseif module:isButton(child, true) then -- close button
 			module:skinButton{obj=child, cb=true, sap=opts.sap}
-		elseif child:IsObjectType("Frame") 
+		elseif child:IsObjectType("Frame")
 		and bgen > 0 then
 			opts.obj=child
 			__skinAllButtons(opts, bgen - 1)
@@ -319,7 +318,7 @@ function module:OnInitialize()
 	end
 
 	if not db.UIButtons then self:Disable() end -- disable ourself
-	
+
 end
 
 function module:GetOptions()
