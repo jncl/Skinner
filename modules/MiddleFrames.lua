@@ -106,7 +106,7 @@ local function adjustFrame(key)
 		then
 			fh = db.fheight <= ceil(frame:GetHeight()) and db.fheight or ceil(frame:GetHeight())
 		end
-		Skinner:applySkin{obj=frame, bba=db.borderOff and 0 or 1, fh=fh}
+		Skinner:applySkin{obj=frame, ftype=ftype, bba=db.borderOff and 0 or 1, fh=fh}
 		frame:SetBackdropColor(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
 		frame:Show()
 		frames[key] = frame

@@ -85,9 +85,10 @@ function module:adjustTopFrame(opt)
 		-- gradient settings
 		if Skinner.db.profile.Gradient.skinner then
 			local gradientOn = Skinner:getGradientInfo(db)
-			local gradientOffTF = {db.rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1}
+			local gradientOff = {db.rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1}
 			--	apply the Gradient
 			topframe.tfade:SetGradientAlpha(unpack(Skinner.db.profile.Gradient.enable and gradientOn or gradientOff))
+		elseif topframe.tfade then topframe.tfade:SetTexture(nil)
 		end
 		-- adjust the TopFrame offset
 		adjustTFOffset(db)

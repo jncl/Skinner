@@ -1,4 +1,4 @@
-local Skinner = LibStub("AceAddon-3.0"):GetAddon("Skinner")
+local _, Skinner = ...
 local module = Skinner:NewModule("ViewPort")
 
 local db
@@ -192,7 +192,7 @@ function module:GetOptions()
 				order = 9,
 				name = Skinner.L["VP YResolution"],
 				desc = Skinner.L["Change Y Resolution"],
-				min = 0, max = maxwidth, step = 2,
+				min = 0, max = 2600, step = 2,
 			},
 			overlay = {
 				type = "toggle",
