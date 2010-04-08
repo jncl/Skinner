@@ -289,6 +289,10 @@ function Skinner:Options()
 					order = 10,
 					name = self.L["Watch Frame"],
 					desc = self.L["Toggle the skin of the Watch Frame"],
+					set = function(info, value)
+						db[info[#info]] = value
+						self:checkAndRun(info[#info])
+					end,
 				},
 			},
 		},
