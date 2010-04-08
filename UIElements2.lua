@@ -225,7 +225,6 @@ function Skinner:MenuFrames()
 	self:skinDropDown{obj=AudioOptionsVoicePanelOutputDeviceDropDown}
 	self:addSkinFrame{obj=VoiceChatTalkers, ft=ftype}
 
-
 -->>-- Mac Options
 	if IsMacClient() then
 		self:addSkinFrame{obj=MacOptionsFrame, ft=ftype, kfs=true, hdr=true}
@@ -276,7 +275,7 @@ function Skinner:MenuFrames()
 		local oName = obj.GetName and obj:GetName() or nil
 		if oName and (oName:find("AceConfig") or oName:find("AceGUI"))then return end  -- ignore AceConfig/AceGUI objects
 
-		for _, child in pairs{obj:GetChildren()} do
+		for _, child in ipairs{obj:GetChildren()} do
 		 	if Skinner:isDropDown(child) then Skinner:skinDropDown{obj=child}
 			elseif child:IsObjectType("EditBox") then Skinner:skinEditBox{obj=child, regs={9}}
 			else
@@ -290,7 +289,8 @@ function Skinner:MenuFrames()
 --		self:Debug("IOL_DP: [%s]", panel)
 		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
-			self:addSkinFrame{obj=panel, ft=ftype, kfs=true}
+			self:ScheduleTimer("skinAllButtons", 0.1, panel) -- wait for 1/10th second for panel to be populated
+			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 		end
 	end)
 
