@@ -403,18 +403,16 @@ function Skinner:VehicleMenuBar()
 end
 
 function Skinner:WatchFrame()
-	if not self.db.profile.WatchFrame then return end
+	if not self.db.profile.WatchFrame or self.initialized.WatchFrame then return end
+	self.initialized.WatchFrame = true
 
-	if self.db.profile.WatchFrame then
-		self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
-		self:SecureHook(WatchFrameLines, "Show", function(this) Skinner.skinFrame[this]:Show() end)
-		self:SecureHook(WatchFrameLines, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
-	end
+	self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
 
 end
 
 function Skinner:GearManager() -- inc. in PaperDollFrame.xml
-	if not self.db.profile.GearManager then return end
+	if not self.db.profile.GearManager or self.initialized.GearManager then return end
+	self.initialized.GearManager = true
 
 	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=2}
 	for i = 1, MAX_EQUIPMENT_SETS_PER_PLAYER do
