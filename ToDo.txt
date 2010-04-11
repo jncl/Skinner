@@ -28,47 +28,6 @@ B - Button(s) Skin request
 
 	I	guild bank and talent tree unskinned, reported by burber, 3.04.10
 
-√	I	ViewPort Module, reported by XeonBlue, 3.04.10
-		- VP YResolution is limited to 100, this was significantly larger in earlier versions and allowed finer control over the viewport
-
-√	I	BottomFrame, reported by 2drunk2funk, 4.04.10
-		- ..\AddOns\Skinner\modules\BottomFrame.lua line 75:
-		bad argument #1 to 'unpack' (table expected, got nil)
-		Debug:
-		(tail call): ?
-		[C]: unpack()
-		Skinner\modules\BottomFrame.lua:75: adjustBottomFrame()
-		Skinner\modules\BottomFrame.lua:39:
-		Skinner\modules\BottomFrame.lua:37
-		(tail call): ?
-
-√	I	MainMenuBar statusbar texture is tiled when changed
-
-√	I	WIM, reported by spAnser, 4.04.10
-		- slowly builds upto a white window for messaging
-
-√	N	HealBot, original skin supplied by acirac
-
-√	N	Cork, reported by Tinface, 6.04.10
-		- Skinner-b3.11723.3\SkinMe\Cork.lua:5: attempt to index global 'Cork' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b3.11723.3\Skinner.lua:801: in function <Skinner\Skinner.lua:799>
-		Skinner-b3.11723.3\Skinner.lua:856: in function `checkAndRunAddOn'
-		Skinner-b3.11723.3\AddonFrames.lua:105: in function <Skinner\AddonFrames.lua:47>
-		(tail call): ?:
-
-√	I	AutoPartyFrames, reported by Cokedriver, 7.04.10
-
-√	I	EnhancedStackSplit, reported by bbarnett444, 7.04.10
-		- Skinner-b3.11723.3\SkinMe\EnhancedStackSplit.lua:10: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b3.11723.3\SkinMe\EnhancedStackSplit.lua:10: in function <...terface\AddOns\Skinner\SkinMe\EnhancedStackSplit.lua:3>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b3.11723.3\Skinner.lua:801: in function <Skinner\Skinner.lua:799>
-		Skinner-b3.11723.3\Skinner.lua:856: in function `checkAndRunAddOn'
-		Skinner-b3.11723.3\AddonFrames.lua:105: in function <Skinner\AddonFrames.lua:47>
-		(tail call): ?:
-
+√	I	WIM, reported by spAnser/anubis12, 8.04.10
+		- still getting whiter when closed not just hidden
+		- Editbox shrinking
