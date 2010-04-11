@@ -4,6 +4,8 @@ function Skinner:WIM() -- WIM3
 
 	local function skinWindow(msgFrame)
 
+		if Skinner.skinFrame[msgFrame] then return end
+
 		Skinner:keepFontStrings(msgFrame.widgets.Backdrop)
 		msgFrame.widgets.class_icon:SetAlpha(1)
 
@@ -19,17 +21,15 @@ function Skinner:WIM() -- WIM3
 			Skinner:moveObject{obj=msgFrame.widgets.class_icon, y=-2}
 		end
 
-		if not Skinner.skinFrame[msgFrame] then
-			Skinner:addSkinFrame{obj=msgFrame, kfs=true}
-		end
+		Skinner:addSkinFrame{obj=msgFrame, kfs=true}
 
 	end
 
 	local function checkKids(obj)
-	
+
 		if Skinner.skinned[obj] then return end
 		Skinner:skinAllButtons{obj=obj}
-		
+
 		for _, child in pairs{obj:GetChildren()} do
 			if Skinner:isDropDown(child) then
 				Skinner:skinDropDown(child)
@@ -41,9 +41,9 @@ function Skinner:WIM() -- WIM3
 			else checkKids(child)
 			end
 		end
-		
+
 	end
-	
+
 	-- hook this to skin the options frame
 	self:SecureHook(WIM.options, "OnShow", function(this)
 		local optFrame = WIM.options.frame
@@ -155,6 +155,12 @@ function Skinner:WIM() -- WIM3
 			self:applySkin(WIM.Menu)
 			self:Unhook(WIM.Menu, "Show")
 		end)
+	end
+
+	-- skin any existing chat windows
+	for i = 1, 10 do
+		local mFrame = _G["WIM3_msgFrame"..i]
+		if mFrame then skinWindow(mFrame) end
 	end
 
 end
