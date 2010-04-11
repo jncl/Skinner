@@ -1,3 +1,20 @@
+b3.11723.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Tidied up Skinner code
+	Skin IOF panel buttons
+	Added checks to WatchFrame and GearManager skins
+	Tidied up CharacterFrame1 code
+	Tidied up AddonFrames code
+	Updated skins
+	- Ace3, AutoPartyButtons, AzCastBarOptions, CFM, CalendarNotify, Cork, DockingStation, Enchantrix, EnhancedStackSplit,LibQTip, MSBTOptions, MakeRocketGoNow, Odyssey, WIM & tekBlocks
+	Tidied up UIButtons code
+	Updated WatchFrame options
+	Added HealBot skin (thanks to acirac)
+	Bugfixes for Top/Middle/Bottom frames & Viewport modules
+	Added frFr & deDE locale files
+
 b3.11723.3
 Jncl:
 	ToDo.txt
