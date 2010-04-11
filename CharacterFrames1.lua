@@ -413,7 +413,7 @@ function Skinner:AchievementUI()
 
 -->>-- Categories Panel (on the Left)
 	self:skinSlider(AchievementFrameCategoriesContainerScrollBar)
-	self:addSkinFrame{obj=AchievementFrameCategories, ft=ftype}
+	self:addSkinFrame{obj=AchievementFrameCategories, ft=ftype, y2=-2}
 
 	self:SecureHook("AchievementFrameCategories_Update", function()
 		skinCategories()

@@ -423,6 +423,7 @@ function Skinner:AuctionUI()
 		if _G["BrowseButton"..i].Orig then break end -- Auctioneer CompactUI loaded
 		self:keepFontStrings(_G["BrowseButton"..i])
 		if _G["BrowseButton"..i.."Highlight"] then _G["BrowseButton"..i.."Highlight"]:SetAlpha(1) end
+		_G["BrowseButton"..i.."ItemCount"]:SetDrawLayer("ARTWORK") -- fix for 3.3.3 bug
 	end
 	self:skinMoneyFrame{obj=BrowseBidPrice, moveSEB=true}
 
