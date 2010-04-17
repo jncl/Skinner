@@ -120,8 +120,10 @@ function Skinner:AucAdvanced()
 			self:skinButton{obj=frame.switchToStack2, y1=1}
 			self:addSkinFrame{obj=frame.salebox}
 			frame.salebox.slot:SetTexture(self.esTex)
-			self:skinEditBox{obj=frame.salebox.numberentry, regs={9}}
-			self:skinEditBox{obj=frame.salebox.stackentry, regs={9}}
+			self:skinEditBox{obj=frame.salebox.stackentry, regs={9}, noWidth=true}
+			self:adjWidth{obj=frame.salebox.stackentry, adj=10}
+			self:skinEditBox{obj=frame.salebox.numberentry, regs={9}, noWidth=true}
+			self:adjWidth{obj=frame.salebox.numberentry, adj=10}
 			self:skinDropDown{obj=frame.salebox.model}
 			self:skinMoneyFrame{obj=frame.salebox.bid, noWidth=true, moveSEB=true, moveGEB=true}
 			self:skinMoneyFrame{obj=frame.salebox.buy, noWidth=true, moveSEB=true, moveGEB=true}

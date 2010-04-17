@@ -15,7 +15,6 @@ function Skinner:AtlasLoot()
 	AtlasLootDefaultFrameSearchClearButton:DisableDrawLayer("BACKGROUND")
 	AtlasLootDefaultFrameLastResultButton:DisableDrawLayer("BACKGROUND")
 
-
 -->>--	Items Frame
 	AtlasLootItemsFrame_PREV:DisableDrawLayer("BACKGROUND")
 	AtlasLootItemsFrame_NEXT:DisableDrawLayer("BACKGROUND")
@@ -26,11 +25,13 @@ function Skinner:AtlasLoot()
 	self:addSkinFrame{obj=AtlasLootPanel, kfs=true}
 
 -->>-- Filter Options panel
-	-- fix for buttons on filter page
-	for _, child in ipairs{AtlasLootFilterOptionsScrollInhalt:GetChildren()} do
---		self:Debug("ALFOSI: [%s, %s]", child, self:isButton(child))
-		if self:isButton(child) then
-			self:skinButton{obj=child, as=true}
+	if self.modBtns then
+		-- fix for buttons on filter page
+		for _, child in pairs{AtlasLootFilterOptionsScrollInhalt:GetChildren()} do
+--			self:Debug("ALFOSI: [%s, %s]", child, self:isButton(child))
+			if self:isButton(child) then
+				self:skinButton{obj=child, as=true}
+			end
 		end
 	end
 	AtlasLootFilterOptionsScrollFrame:SetBackdrop(nil)

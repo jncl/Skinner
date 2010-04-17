@@ -4,43 +4,32 @@ function Skinner:Quelevel()
 
 	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
 
+	local function colourText(tString)
+
+		if tString then
+			local f, l = tString:find("000000", 1, true) -- look for original colour strings
+			if f then
+				f = tString:sub(1, f - 1)
+				l = tString:sub(l + 1, -1)
+				tString = f .. QTHex .. l
+			end
+		end
+		return tString
+
+	end
+
+	-- colour Gossip Panel quest text
 	for i = 1, NUMGOSSIPBUTTONS do
 		self:RawHook(_G["GossipTitleButton"..i], "SetFormattedText", function(this, fmt, ...)
-			if fmt then
-				local f, l = fmt:find("000000", 1, true) -- look for original colour stringx
-				if f then
-					f = fmt:sub(1, f - 1)
-					l = fmt:sub(l + 1, -1)
-					fmt = f .. QTHex .. l
-				end
-			end
-			self.hooks[this].SetFormattedText(this, fmt, ...)
+			self.hooks[this].SetFormattedText(this, colourText(fmt), ...)
 		end, true)
 	end
 
-	if self.db.profile.QuestFrame then
-		-- setup Quest display colours here
-		local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
-		TRIVIAL_QUEST_DISPLAY = "|cff"..QTHex.."%s (low level)|r"
-		NORMAL_QUEST_DISPLAY = "|cff"..QTHex.."%s|r"
+	-- colour Quest Greeting Panel quest text
+	for i = 1, MAX_NUM_QUESTS do
+		self:RawHook(_G["QuestTitleButton"..i], "SetFormattedText", function(this, fmt, ...)
+			self.hooks[this].SetFormattedText(this, colourText(fmt), ...)
+		end, true)
 	end
-	
-	local TRIVIAL, NORMAL = "|cff%02x%02x%02x[%d]|r "..TRIVIAL_QUEST_DISPLAY, "|cff%02x%02x%02x[%d]|r ".. NORMAL_QUEST_DISPLAY
-	-- Add tags to quest greeting frame (currently not supported by the addon)
-	QuestFrameGreetingPanel:HookScript("OnShow", function()
-		local numActQs = GetNumActiveQuests()
-		local numAvlQs = GetNumAvailableQuests()
-		local GetTitle, GetLevel, GetTriviality = GetActiveTitle, GetActiveLevel, IsActiveQuestTrivial
-		local j = 0
-		for i = 1, numActQs + numAvlQs do
-			if i == numActQs + 1 then
-				GetTitle, GetLevel, GetTriviality = GetAvailableTitle, GetAvailableLevel, IsAvailableQuestTrivial
-				j = numActQs
-			end
-			local title, level, isTrivial = GetTitle(i - j), GetLevel(i - j), GetTriviality(i - j)
-			local color = GetQuestDifficultyColor(level)
-			_G["QuestTitleButton"..i]:SetFormattedText(isTrivial and TRIVIAL or NORMAL, color.r*255, color.g*255, color.b*255, level, title)
-		end
-	end)
 
 end

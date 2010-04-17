@@ -97,9 +97,9 @@ function Skinner:tq233beta5(tq2) -- 3.3 beta 5
 						if not btn.skin then self:skinButton{obj=btn, mp3=true} end
 						this:SetAlpha(0)
 						if iconTex:find("MinusButton") then
-							btn:SetText(self.minus)
+							btn:SetText(self.modBtns.minus)
 						elseif iconTex:find("PlusButton") then
-							btn:SetText(self.plus)
+							btn:SetText(self.modBtns.plus)
 						end
 					end
 				end, true)
