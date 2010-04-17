@@ -1301,13 +1301,13 @@ function Skinner:Options()
 	self:RegisterChatCommand("skin", chatCommand)
 
 	-- setup the DB object
-	DBObj = LibStub("LibDataBroker-1.1"):NewDataObject(aName, {
-			type = "launcher",
-			icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
-			OnClick = function() InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame) end,
+	self.DBObj = LibStub("LibDataBroker-1.1"):NewDataObject(aName, {
+		type = "launcher",
+		icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
+		OnClick = function() InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame) end,
 	})
 
 	-- register the data object to the Icon library
-	DBIcon:Register(aName, DBObj, db.MinimapIcon)
+	DBIcon:Register(aName, self.DBObj, db.MinimapIcon)
 
 end
