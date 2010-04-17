@@ -22,12 +22,41 @@ B - Button(s) Skin request
 		- Since 3.3.3 dropped i've been getting a bleeding effect on my backdrop. It'll skin the very top of the frame and then blend the backdrop down the rest of the frame. This is with a custom backdrop and the Blizzard ones as well.
 
 	I	professions and guild bank unskinned, reported by Arenikus, 2.04.10
-?		- maybe caused by AtlasLoot
-
 	I	achievement and guild bank unskinned, reported by malak72, 2.04.10
-
 	I	guild bank and talent tree unskinned, reported by burber, 3.04.10
+		- seen this, don't know why, maybe a timing issue ?
+		- seems to occur when LightHeaded Data files are loaded on started instead of LoD
 
 √	I	WIM, reported by spAnser/anubis12, 8.04.10
 		- still getting whiter when closed not just hidden
 		- Editbox shrinking
+
+	N	HealBot v3.3.3.2, supplied by acirac, 12.04.10
+
+√	I	CharBar, reported by Luckyjack_SL, 12.04.10
+		- entry missing from skins.xml
+
+	I	WIM, reported by spAnser, 12.04.10
+		- Plus/Minus, one is a Questionmark and is misplaced ?
+
+√	I	EnhancedStackSplit
+		- timing issue ?
+
+?	I	AtlasLoot, reported by Luckyjack_SL, 13.04.10
+		- AtlasLoot, vv5.10.01, Skinner, vb3.11723.5
+		- ..\AddOns\Skinner\SkinMe\AtlasLoot.lua line 30:
+		   attempt to index global 'AtlasLootFilterOptionsScrollInhalt' (a nil value)
+		Debug:
+		   (tail call): ?
+		   (tail call): ?
+		   (tail call): ?
+		   Skinner\SkinMe\AtlasLoot.lua:30:
+		      Skinner\SkinMe\AtlasLoot.lua:3
+		   (tail call): ?
+		   [C]: xpcall()
+		   Skinner\Skinner.lua:796:
+		      Skinner\Skinner.lua:794
+		   Skinner\Skinner.lua:851: checkAndRunAddOn()
+		   Skinner\AddonFrames.lua:121:
+		      Skinner\AddonFrames.lua:54
+		   (tail call): ?
