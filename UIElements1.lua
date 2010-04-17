@@ -139,16 +139,18 @@ function Skinner:StaticPopups()
 	if not self.db.profile.StaticPopups or self.initialized.StaticPopups then return end
 	self.initialized.StaticPopups = true
 
-	-- hook this to handle close button texture changes
-	self:SecureHook("StaticPopup_Show", function(...)
-		for i = 1, STATICPOPUP_NUMDIALOGS do
-			local spcb = _G["StaticPopup"..i.."CloseButton"]
-			local nTex = spcb:GetNormalTexture() and spcb:GetNormalTexture():GetTexture() or nil
-			if nTex:find("HideButton") then spcb:SetText(self.minus)
-			elseif nTex:find("MinimizeButton") then spcb:SetText(self.mult)
+	if self.modBtns then
+		-- hook this to handle close button texture changes
+		self:SecureHook("StaticPopup_Show", function(...)
+			for i = 1, STATICPOPUP_NUMDIALOGS do
+				local spcb = _G["StaticPopup"..i.."CloseButton"]
+				local nTex = spcb:GetNormalTexture() and spcb:GetNormalTexture():GetTexture() or nil
+				if nTex:find("HideButton") then spcb:SetText(self.modBtns.minus)
+				elseif nTex:find("MinimizeButton") then spcb:SetText(self.modBtns.mult)
+				end
 			end
-		end
-	end)
+		end)
+	end
 
 	for i = 1, STATICPOPUP_NUMDIALOGS do
 		local sPU = "StaticPopup"..i
