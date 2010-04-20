@@ -37,8 +37,7 @@ function Skinner:ArkInventory()
 	self:skinEditBox(ARKINV_RulesFrameModifyDataOrder, {9})
 	self:skinEditBox(ARKINV_RulesFrameModifyDataDescription, {9})
 	self:skinScrollBar{obj=ARKINV_RulesFrameModifyDataScroll}
-	self:addSkinFrame{obj=ARKINV_RulesFrameModifyDataScrollTextBackground}
-	ARKINV_RulesFrameModifyDataScrollBarBackground:SetAlpha(0)
+	self:addSkinFrame{obj=ARKINV_RulesFrameModifyDataScrollTextBorder}
 -->>--	Search Frame
 	ArkInventory.db.profile.option.ui.search.border.colour = CopyTable(self.db.profile.BackdropBorder)
 	self:addSkinFrame{obj=ARKINV_SearchTitle}

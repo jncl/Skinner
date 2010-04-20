@@ -63,6 +63,15 @@ function Skinner:Skillet()
 				if not self.sBut[dBtn] then self:skinButton{obj=dBtn, x1=-3, y1=-3, x2=3, y2=1} end
 			end
 		end)
+		self:SecureHook(Skillet, "PluginButton_OnClick", function(this, button)
+			for i = 1, #SkilletFrame.added_buttons do
+				local btn = _G["SkilletPluginDropdown"..i]
+				if not self.sBut[btn] then
+					self:skinButton{obj=btn}
+				end
+			end
+		end)
+		
 	end
 
 end
