@@ -15,8 +15,10 @@ B - Button(s) Skin request
 	O	Frame Borders à la Beautycase, requested by gamemaster128, 11.03.10
 		- Is there a way to get Skinner to create borders the way in which !Beautycase makes them? Maybe even using its CreateBorder function?
 
-	I	Ara Broker Tradeskills & StatusBar textures, reported by X-buZZ, 15.03.10/27.03.10
+√	I	Ara Broker Tradeskills & StatusBar textures, reported by X-buZZ, 15.03.10/27.03.10
 		- when using the skinner default settings, the border display fine for me but the status bar texture setting is ignored. Just change the status (glaze?) bar texture to something other than the default and install Ara Broker Tradeskills and you will notice, that the setting is ignored.
+		- issue was caused by Optional Deps. entry in Ara Broker... TOC file(s)
+		- Aranarth is going to change this
 
 	I	Backdrop Texture, reported by Nevyr28/mdss, 1.04.10
 		- Since 3.3.3 dropped i've been getting a bleeding effect on my backdrop. It'll skin the very top of the frame and then blend the backdrop down the rest of the frame. This is with a custom backdrop and the Blizzard ones as well.
@@ -27,20 +29,8 @@ B - Button(s) Skin request
 		- seen this, don't know why, maybe a timing issue ?
 		- seems to occur when LightHeaded Data files are loaded on started instead of LoD
 
-√	I	WIM, reported by spAnser/anubis12, 8.04.10
-		- still getting whiter when closed not just hidden
-		- Editbox shrinking
-
-	N	HealBot v3.3.3.2, supplied by acirac, 12.04.10
-
-√	I	CharBar, reported by Luckyjack_SL, 12.04.10
-		- entry missing from skins.xml
-
-	I	WIM, reported by spAnser, 12.04.10
-		- Plus/Minus, one is a Questionmark and is misplaced ?
-
-√	I	EnhancedStackSplit
-		- timing issue ?
+√	I	Minus sign being replaced by ?, reported by spAnser, 12.04.10
+		- Font issue, Twenty Century Font being used (SCT addon has it labeled as SCTTwenCen)
 
 ?	I	AtlasLoot, reported by Luckyjack_SL, 13.04.10
 		- AtlasLoot, vv5.10.01, Skinner, vb3.11723.5
@@ -60,3 +50,27 @@ B - Button(s) Skin request
 		   Skinner\AddonFrames.lua:121:
 		      Skinner\AddonFrames.lua:54
 		   (tail call): ?
+
+√	I	ArkInventory, reported by Eatsbrains, 17.04.10
+		- Skinner-@project-version@\Skinner.lua:500: Unknown object __aSF
+		Skinner-@project-version@\Skinner.lua:500: in function <Skinner\Skinner.lua:481>
+		Skinner-@project-version@\Skinner.lua:582: in function `addSkinFrame'
+		Skinner-@project-version@\SkinMe\ArkInventory.lua:40: in function <Skinner\SkinMe\ArkInventory.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-@project-version@\Skinner.lua:796: in function <Skinner\Skinner.lua:794>
+		Skinner-@project-version@\Skinner.lua:851: in function `checkAndRunAddOn'
+		Skinner-@project-version@\AddonFrames.lua:121: in function <Skinner\AddonFrames.lua:54>
+		(tail call): ?:
+
+√	I	ARL, reported by Eatsbrains, 17.04.10
+		- Skinner-@project-version@\SkinMe\AckisRecipeList.lua:12: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
+		Skinner-@project-version@\SkinMe\AckisRecipeList.lua:12: in function <Skinner\SkinMe\AckisRecipeList.lua:4>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-@project-version@\Skinner.lua:796: in function <Skinner\Skinner.lua:794>
+		Skinner-@project-version@\Skinner.lua:851: in function `checkAndRunAddOn'
+		Skinner-@project-version@\AddonFrames.lua:121: in function <Skinner\AddonFrames.lua:54>
+		(tail call): ?:
