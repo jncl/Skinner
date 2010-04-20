@@ -1,3 +1,13 @@
+b3.11723.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Add ChatBar to skins.xml
+	Store ref to LDB object
+	UIButton change
+	Updated skins
+	- AtlasLoot, AucAdvanced, EnhancedStackSplit, HealBot, Quelevel & tomQuest2
+
 b3.11723.5
 Jncl:
 	ToDo.txt
