@@ -1028,12 +1028,13 @@ function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 			end
 		end
 	end
-	-- apply statusbar texture and store other textures
+	-- apply texture and store other texture objects
 	if otherTex
 	and type(otherTex) == "table"
 	then
 		for _, tex in pairs(otherTex) do
 			tex:SetTexture(self.sbTexture)
+			tex:SetVertexColor(unpack(self.sbColour))
 			sbG[#sbG + 1] = tex
 		end
 	end

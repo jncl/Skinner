@@ -497,7 +497,8 @@ function Skinner:MainMenuBar()
 
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 6), {ExhaustionLevelFillBar})
- 		self:glazeStatusBar(ReputationWatchStatusBar, 0, self:getRegion(ReputationWatchStatusBar, 9))
+		ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
+ 		self:glazeStatusBar(ReputationWatchStatusBar, 0, ReputationWatchStatusBarBackground)
 	end
 
 	if IsAddOnLoaded("Dominos") then return end
