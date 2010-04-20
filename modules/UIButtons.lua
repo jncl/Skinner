@@ -78,7 +78,7 @@ end
 -- characters used on buttons
 module.mult = "×"
 module.plus = "+"
-module.minus = "−"
+module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
 -- create font to use for Close Buttons
 module.fontX= CreateFont("fontX")
 module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
