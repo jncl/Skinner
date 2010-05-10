@@ -9,6 +9,7 @@
 <script file="SkinMe\Acheron.lua"/>
 <script file="SkinMe\AckisRecipeList.lua"/>
 <script file="SkinMe\ACP.lua"/>
+<script file="SkinMe\AdiBags.lua"/>
 <script file="SkinMe\AdvancedTradeSkillWindow.lua"/>
 <script file="SkinMe\AlleyMap.lua"/>
 <script file="SkinMe\Altoholic.lua"/>
@@ -59,6 +60,7 @@
 <script file="SkinMe\Chatter.lua"/>
 <script file="SkinMe\Chinchilla.lua"/>
 <script file="SkinMe\Clique.lua"/>
+<script file="SkinMe\CloseUp.lua"/>
 <script file="SkinMe\Collectinator.lua"/>
 <script file="SkinMe\Combuctor.lua"/>
 <script file="SkinMe\ConcessionStand.lua"/>
@@ -100,6 +102,7 @@
 <script file="SkinMe\FlightMap.lua"/>
 <script file="SkinMe\FramesResized.lua"/>
 <script file="SkinMe\FramesResized_TalentUI.lua"/>
+<script file="SkinMe\FreierGeist_InstanceTime.lua"/>
 <script file="SkinMe\Gatherer.lua"/>
 <script file="SkinMe\GearScore.lua"/>
 <script file="SkinMe\GemHelper.lua"/>

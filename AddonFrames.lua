@@ -91,12 +91,12 @@ function Skinner:AddonFrames()
 
 	local addonFrames = {
 		"_NPCScan",
-		"Accomplishment", "Acheron", "AckisRecipeList", "ACP", "AdvancedTradeSkillWindow", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "ArkInventory", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
+		"Accomplishment", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "ArkInventory", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
 		"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
-		"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", "CT_RaidTracker",
+		"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", "CT_RaidTracker",
 		"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "Dominos",
 		"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "EquipCompare", "EventEquip", "EveryQuest", "Examiner",
-		"Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "FramesResized",
+		"Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "FramesResized", "FreierGeist_InstanceTime",
 		"Gatherer", "GearScore", "GemHelper", "GemMe", "GnomishVendorShrinker", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildLaunchCT_RaidTracker", "GupCharacter", "GupPet",
 		"Hack", "Hadar_FocusFrame", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
 		"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemSync",
