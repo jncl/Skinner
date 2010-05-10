@@ -114,6 +114,7 @@ function Skinner:AucAdvanced()
 			local frame = apr.Private.frame
 			self:skinButton{obj=frame.toggleManifest}
 			self:skinButton{obj=frame.config}
+			self:moveObject{obj=frame.itembox.showAuctions, x=-10}
 			self:addSkinFrame{obj=frame.itembox}
 			self:skinSlider(frame.scroller)
 			self:skinButton{obj=frame.switchToStack, y1=1}
@@ -121,9 +122,9 @@ function Skinner:AucAdvanced()
 			self:addSkinFrame{obj=frame.salebox}
 			frame.salebox.slot:SetTexture(self.esTex)
 			self:skinEditBox{obj=frame.salebox.stackentry, regs={9}, noWidth=true}
-			self:adjWidth{obj=frame.salebox.stackentry, adj=10}
+			self:adjWidth{obj=frame.salebox.stackentry, adj=14}
 			self:skinEditBox{obj=frame.salebox.numberentry, regs={9}, noWidth=true}
-			self:adjWidth{obj=frame.salebox.numberentry, adj=10}
+			self:adjWidth{obj=frame.salebox.numberentry, adj=14}
 			self:skinDropDown{obj=frame.salebox.model}
 			self:skinMoneyFrame{obj=frame.salebox.bid, noWidth=true, moveSEB=true, moveGEB=true}
 			self:skinMoneyFrame{obj=frame.salebox.buy, noWidth=true, moveSEB=true, moveGEB=true}

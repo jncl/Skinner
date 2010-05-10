@@ -1,7 +1,7 @@
 -- many thanks to acirac for the updated skin
 if not Skinner:isAddonEnabled("HealBot") then return end
 
-function Skinner:HealBot() -- version 3.3.3.2
+function Skinner:HealBot() -- version 3.3.3.4
 	if not self.db.profile.Tooltips.skin then return end
 
 -->>--	Tooltips
@@ -14,7 +14,7 @@ function Skinner:HealBot() -- version 3.3.3.2
 
 -- Tabs
 	self:resizeTabs(HealBot_Options)
-	for i = 1, 6 do
+	for i = 1, 7 do
 		local tabName = _G["HealBot_OptionsTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
 		if i == 1 then self:moveObject(tabName, "+", 2, "-", 1)
@@ -24,13 +24,13 @@ function Skinner:HealBot() -- version 3.3.3.2
 	end
 
 	if self.db.profile.TexturedTab then
-		for i = 1, 6 do
+		for i = 1, 7 do
 			local tabName = _G["HealBot_OptionsTab"..i]
 			self:setInactiveTab(tabName)
 		end
 		self:setActiveTab(HealBot_OptionsTab1)
 		self:SecureHook("HealBot_Options_ShowPanel", function(this)
-			for i = 1, 6 do
+			for i = 1, 7 do
 				local tabName = _G["HealBot_OptionsTab"..i]
 				if i == HealBot_Options.selectedTab then self:setActiveTab(tabName)
 				else self:setInactiveTab(tabName) end
@@ -44,6 +44,7 @@ function Skinner:HealBot() -- version 3.3.3.2
 	self:keepFontStrings(HealBot_Options_SelectItemsCombo)
 	self:keepFontStrings(HealBot_Options_SelectCmdsCombo)
 	
+	self:keepFontStrings(HealBot_Options_hbCommands)
 	self:keepFontStrings(HealBot_Options_HealCommMethod)
 	self:keepFontStrings(HealBot_Options_EmergencyFilter)
 	self:keepFontStrings(HealBot_Options_BarHealthNumFormatAggro)
@@ -122,7 +123,18 @@ function Skinner:HealBot() -- version 3.3.3.2
 	self:keepFontStrings(HealBot_Options_DisabledBarPanel)
 	self:applySkin(HealBot_Options_DisabledBarPanel, nil)	
 	self:keepFontStrings(HealBot_Options_SelectSpellsFrame)
-	self:applySkin(HealBot_Options_SelectSpellsFrame, nil)	
+	self:applySkin(HealBot_Options_SelectSpellsFrame, nil)
+	self:keepFontStrings(HealBot_Options_HealAlertFrame)
+	self:applySkin(HealBot_Options_HealAlertFrame, nil)
+	self:keepFontStrings(HealBot_Options_HealRaidFrame)
+	self:applySkin(HealBot_Options_HealRaidFrame, nil)	
+	self:keepFontStrings(HealBot_Options_HealSortFrame)
+	self:applySkin(HealBot_Options_HealSortFrame, nil)	
+	self:keepFontStrings(HealBot_Options_AggroSkinsFrame)
+	self:applySkin(HealBot_Options_AggroSkinsFrame, nil)
+	self:keepFontStrings(HealBot_Options_IconTextSkinsFrame)
+	self:applySkin(HealBot_Options_IconTextSkinsFrame, nil)	
+	
 	self:keepFontStrings(HealBot_Options_TooltipPos)
 	self:keepFontStrings(HealBot_Options_TooltipsPanel)
 	self:applySkin(HealBot_Options_TooltipsPanel, nil)

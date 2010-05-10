@@ -26,8 +26,7 @@ function Skinner:Hack()
 		local tabName = _G["HackListFrameTab"..i]
 		if i == 1 then self:moveObject{obj=tabName, y=4} end
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else

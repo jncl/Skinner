@@ -25,32 +25,51 @@ function Skinner:AtlasLoot()
 	self:addSkinFrame{obj=AtlasLootPanel, kfs=true}
 
 -->>-- Filter Options panel
-	if self.modBtns then
-		-- fix for buttons on filter page
-		for _, child in pairs{AtlasLootFilterOptionsScrollInhalt:GetChildren()} do
---			self:Debug("ALFOSI: [%s, %s]", child, self:isButton(child))
-			if self:isButton(child) then
-				self:skinButton{obj=child, as=true}
+	local function skinFOpts()
+
+		if self.modBtns then
+			-- fix for buttons on filter page
+			for _, child in pairs{AtlasLootFilterOptionsScrollInhalt:GetChildren()} do
+	--			self:Debug("ALFOSI: [%s, %s]", child, self:isButton(child))
+				if self:isButton(child) then
+					self:skinButton{obj=child, as=true}
+				end
 			end
 		end
+		AtlasLootFilterOptionsScrollFrame:SetBackdrop(nil)
+		self:addSkinFrame{obj=AtlasLootFilterOptionsScrollFrame:GetParent(), kfs=true, nb=true}
+		self:skinScrollBar{obj=AtlasLootFilterOptionsScrollFrame}
+
 	end
-	AtlasLootFilterOptionsScrollFrame:SetBackdrop(nil)
-	self:addSkinFrame{obj=AtlasLootFilterOptionsScrollFrame:GetParent(), kfs=true, nb=true}
-	self:skinScrollBar{obj=AtlasLootFilterOptionsScrollFrame}
+	if not AtlasLootFilterOptionsScrollFrame then
+		self:SecureHook("AtlasLoot_CreateFilterOptions", function()
+			skinFOpts()
+			self:Unhook("AtlasLoot_CreateFilterOptions")
+		end)
+	else skinFOpts() end
 -->>-- Wishlist Options panel
-	AtlasLootWishlistOwnOptionsScrollFrame:SetBackdrop(nil)
-	self:skinScrollBar{obj=AtlasLootWishlistOwnOptionsScrollFrame}
+	local function skinWOpts()
+
+		AtlasLootWishlistOwnOptionsScrollFrame:SetBackdrop(nil)
+		self:skinScrollBar{obj=AtlasLootWishlistOwnOptionsScrollFrame}
+		-- WishList Add frame
+		self:addSkinFrame{obj=AtlasLootWishList_AddFrame, kfs=true}
+		self:skinEditBox{obj=AtlasLootWishListNewName, regs={9}}
+		self:skinScrollBar{obj=AtlasLootWishlistAddFrameIconList}
+
+	end
+	if not AtlasLootWishlistOwnOptionsScrollFrame then
+		self:SecureHook("AtlasLoot_CreateWishlistOptions", function()
+			skinWOpts()
+			self:Unhook("AtlasLoot_CreateWishlistOptions")
+		end)
+	else skinWOpts() end
 -->>-- Help Options panel
 	self:SecureHook("AtlasLoot_DisplayHelp", function()
 		AtlasLootHelpFrame_HelpTextFrameScroll:SetBackdrop(nil)
 		self:skinScrollBar{obj=AtlasLootHelpFrame_HelpTextFrameScroll}
 		self:Unhook("AtlasLoot_DisplayHelp")
 	end)
-
--->>-- WishList Add frame
-	self:addSkinFrame{obj=AtlasLootWishList_AddFrame, kfs=true}
-	self:skinEditBox{obj=AtlasLootWishListNewName, regs={9}}
-	self:skinScrollBar{obj=AtlasLootWishlistAddFrameIconList}
 
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
