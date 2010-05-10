@@ -1,3 +1,13 @@
+b3.11723.7
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Misc changes
+	Updated UIButtons module
+	- Use different minus character (Font issue)
+	Updated skins
+	- AckisRecipeList, ArkInventory & Skillet
+
 b3.11723.6
 Jncl:
 	ToDo.txt
