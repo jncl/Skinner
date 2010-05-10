@@ -435,7 +435,7 @@ local function __addSkinButton(opts)
 		end
 	end
 
-	return Skinner.sBut[opts.hook]
+	return btn
 
 end
 
@@ -501,7 +501,7 @@ local function __addSkinFrame(opts)
 --@end-alpha@
 
 	-- remove the object's Backdrop if it has one
-	if opts.obj.GetBackdrop then opts.obj:SetBackdrop(nil) end
+	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
 
 	-- store frame obj, if required
 	if opts.ft then tinsert(Skinner.gradFrames[opts.ft], opts.obj) end
@@ -555,6 +555,8 @@ local function __addSkinFrame(opts)
 		Skinner:skinAllButtons{obj=opts.obj, bgen=opts.bgen}
 	end
 
+	return skinFrame
+
 end
 
 function Skinner:addSkinFrame(...)
@@ -579,7 +581,8 @@ function Skinner:addSkinFrame(...)
 		opts.ft = select(6, ...) and select(6, ...) or nil
 		opts.noBdr = select(7, ...) and select(7, ...) or nil
 	end
-	__addSkinFrame(opts)
+
+	return __addSkinFrame(opts)
 
 end
 
