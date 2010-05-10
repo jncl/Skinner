@@ -27,8 +27,7 @@ function Skinner:MerchantFrames()
 	for i = 1, MerchantFrame.numTabs do
 		local tabName = _G["MerchantFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else

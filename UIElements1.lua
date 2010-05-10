@@ -197,8 +197,7 @@ function Skinner:ChatTabs()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local tabName = _G["ChatFrame"..i.."Tab"]
 		self:keepRegions(tabName, {4, 5}) --N.B. region 4 is text, 5 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, y1=-8, y2=-5}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, y1=-8, y2=-5}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -698,8 +697,7 @@ function Skinner:InspectUI()
 	for i = 1, InspectFrame.numTabs do
 		local tabName = _G["InspectFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -721,8 +719,7 @@ function Skinner:WorldState()
 	for i = 1, 3 do
 		local tabName = _G["WorldStateScoreFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=7, y1=8, x2=-7, y2=10}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=7, y1=8, x2=-7, y2=10}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else

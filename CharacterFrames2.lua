@@ -128,8 +128,7 @@ function Skinner:FriendsFrame()
 	for i = 1, FriendsFrame.numTabs do
 		local tabName = _G["FriendsFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -409,6 +408,19 @@ function Skinner:WatchFrame()
 	self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
 
 end
+
+--@alpha@
+WATCHFRAME_LINEHEIGHT = 12
+WATCHFRAMELINES_FONTHEIGHT = 10
+WATCHFRAMELINES_FONTSPACING = (WATCHFRAME_LINEHEIGHT - WATCHFRAMELINES_FONTHEIGHT) / 2
+-- hook this to change font size on WatchFrame lines
+Skinner:RawHook(WatchFrame.lineCache, "GetFrame", function(this)
+	local wfLine = Skinner.hooks[this].GetFrame(this)
+	local fontName, fontHeight, fontFlags = wfLine.text:GetFont()
+	wfLine.text:SetFont(fontName, 10, fontFlags)
+	return wfLine
+end, true)
+--@end-alpha@
 
 function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 	if not self.db.profile.GearManager or self.initialized.GearManager then return end

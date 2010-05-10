@@ -21,8 +21,7 @@ function Skinner:CharacterFrame()
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
 		local tabName = _G["CharacterFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -187,8 +186,7 @@ function Skinner:PVPFrame()
 	for i = 1, PVPParentFrame.numTabs do
 		local tabName = _G["PVPParentFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -249,8 +247,7 @@ function Skinner:SpellBookFrame()
 	for i = 1, 3 do -- actually only 2, but 3 exist in xml file
 		local tabName = _G["SpellBookFrameTabButton"..i]
 		self:keepRegions(tabName, {1, 3}) -- N.B. region 1 is the Text, 3 is the highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=14, y1=-16, x2=-10, y2=18}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=14, y1=-16, x2=-10, y2=18}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -307,8 +304,7 @@ function Skinner:TalentUI()
 	for i = 1, PlayerTalentFrame.numTabs do
 		local tabName = _G["PlayerTalentFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		-- panel opens to last access tab not the first one every time
 		if i == PlayerTalentFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
@@ -503,8 +499,7 @@ function Skinner:AchievementUI()
 		local tabName = _G["AchievementFrameTab"..i]
 		tabName.text.SetPoint = function() end -- stop text moving
 		self:keepRegions(tabName, {7, 8, 9, 10}) -- N.B. region 7, 8 & 9 are highlights, 10 is text
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=9, y1=2, x2=-9, y2=-10}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=9, y1=2, x2=-9, y2=-10}
 		if i == AchievementFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else

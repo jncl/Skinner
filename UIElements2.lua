@@ -260,8 +260,7 @@ function Skinner:MenuFrames()
 	for i = 1, 2 do
 		local tabName = _G["InterfaceOptionsFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=-4}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=-4}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -378,8 +377,7 @@ function Skinner:MailFrame()
 	for i = 1, MailFrame.numTabs do
 		local tabName = _G["MailFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		if i == MailFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -479,8 +477,7 @@ function Skinner:AuctionUI()
 	for i = 1, AuctionFrame.numTabs do
 		local tabName = _G["AuctionFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		if i == AuctionFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -636,8 +633,7 @@ function Skinner:GuildBankUI()
 	for i = 1, GuildBankFrame.numTabs do
 		local tabName = _G["GuildBankFrameTab"..i]
 		self:keepFontStrings(tabName)
-		self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabName]
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		if i == GuildBankFrame.selectedTab then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -785,7 +781,6 @@ function Skinner:LFDFrame()
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		local btn = "LFDQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
 		self:skinButton{obj=_G[btn], mp2=true}
-		self:moveObject{obj=_G[btn.."Highlight"], x=-3} -- move highlight to the left
 	end
 	self:skinScrollBar{obj=LFDQueueFrameSpecificListScrollFrame}
 
@@ -816,8 +811,7 @@ function Skinner:LFRFrame()
 	for i = 1, LFRParentFrame.numTabs do
 		local tabObj = _G["LFRParentFrameTab"..i]
 		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabObj]
+		local tabSF = self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
