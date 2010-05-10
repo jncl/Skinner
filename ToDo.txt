@@ -15,24 +15,17 @@ B - Button(s) Skin request
 	O	Frame Borders à la Beautycase, requested by gamemaster128, 11.03.10
 		- Is there a way to get Skinner to create borders the way in which !Beautycase makes them? Maybe even using its CreateBorder function?
 
-√	I	Ara Broker Tradeskills & StatusBar textures, reported by X-buZZ, 15.03.10/27.03.10
-		- when using the skinner default settings, the border display fine for me but the status bar texture setting is ignored. Just change the status (glaze?) bar texture to something other than the default and install Ara Broker Tradeskills and you will notice, that the setting is ignored.
-		- issue was caused by Optional Deps. entry in Ara Broker... TOC file(s)
-		- Aranarth is going to change this
-
-	I	Backdrop Texture, reported by Nevyr28/mdss, 1.04.10
+	I	Backdrop Texture, reported by Nevyr28/mdss/BlackDespondency, 1.04.10/20.04.10
 		- Since 3.3.3 dropped i've been getting a bleeding effect on my backdrop. It'll skin the very top of the frame and then blend the backdrop down the rest of the frame. This is with a custom backdrop and the Blizzard ones as well.
 
 	I	professions and guild bank unskinned, reported by Arenikus, 2.04.10
 	I	achievement and guild bank unskinned, reported by malak72, 2.04.10
 	I	guild bank and talent tree unskinned, reported by burber, 3.04.10
+	I	tradeskill/guild bank/talent frame, reported by Akk1, 30.04.10
 		- seen this, don't know why, maybe a timing issue ?
 		- seems to occur when LightHeaded Data files are loaded on started instead of LoD
 
-√	I	Minus sign being replaced by ?, reported by spAnser, 12.04.10
-		- Font issue, Twenty Century Font being used (SCT addon has it labeled as SCTTwenCen)
-
-?	I	AtlasLoot, reported by Luckyjack_SL, 13.04.10
+√	I	AtlasLoot, reported by Luckyjack_SL, 13.04.10
 		- AtlasLoot, vv5.10.01, Skinner, vb3.11723.5
 		- ..\AddOns\Skinner\SkinMe\AtlasLoot.lua line 30:
 		   attempt to index global 'AtlasLootFilterOptionsScrollInhalt' (a nil value)
@@ -50,27 +43,50 @@ B - Button(s) Skin request
 		   Skinner\AddonFrames.lua:121:
 		      Skinner\AddonFrames.lua:54
 		   (tail call): ?
+		- reported 2.05.10
+		..\AddOns\Skinner\SkinMe\AtlasLoot.lua line 37:
+		   attempt to index global 'AtlasLootFilterOptionsScrollFrame' (a nil value)
+		Debug:
+		   (tail call): ?
+		   (tail call): ?
+		   (tail call): ?
+		   Skinner\SkinMe\AtlasLoot.lua:37:
+		      Skinner\SkinMe\AtlasLoot.lua:3
+		   (tail call): ?
+		   [C]: xpcall()
+		   Skinner\Skinner.lua:796:
+		      Skinner\Skinner.lua:794
+		   Skinner\Skinner.lua:851: checkAndRunAddOn()
+		   Skinner\AddonFrames.lua:121:
+		      Skinner\AddonFrames.lua:54
+		   (tail call): ?
 
-√	I	ArkInventory, reported by Eatsbrains, 17.04.10
-		- Skinner-@project-version@\Skinner.lua:500: Unknown object __aSF
-		Skinner-@project-version@\Skinner.lua:500: in function <Skinner\Skinner.lua:481>
-		Skinner-@project-version@\Skinner.lua:582: in function `addSkinFrame'
-		Skinner-@project-version@\SkinMe\ArkInventory.lua:40: in function <Skinner\SkinMe\ArkInventory.lua:3>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-@project-version@\Skinner.lua:796: in function <Skinner\Skinner.lua:794>
-		Skinner-@project-version@\Skinner.lua:851: in function `checkAndRunAddOn'
-		Skinner-@project-version@\AddonFrames.lua:121: in function <Skinner\AddonFrames.lua:54>
-		(tail call): ?:
+≈	I	LFD, reported by Alcotraz, 23.04.10
+		- cooldownFrame saying 'you recently queued for a random dungeon.... time left mm Min ss Secs', is behind the LFD panel instrad of on top of it
 
-√	I	ARL, reported by Eatsbrains, 17.04.10
-		- Skinner-@project-version@\SkinMe\AckisRecipeList.lua:12: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-@project-version@\SkinMe\AckisRecipeList.lua:12: in function <Skinner\SkinMe\AckisRecipeList.lua:4>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-@project-version@\Skinner.lua:796: in function <Skinner\Skinner.lua:794>
-		Skinner-@project-version@\Skinner.lua:851: in function `checkAndRunAddOn'
-		Skinner-@project-version@\AddonFrames.lua:121: in function <Skinner\AddonFrames.lua:54>
-		(tail call): ?:
+√	I	Grid, reported by Alcotraz, 23.04.10
+		- Alpha version
+		- ..\AddOns\Skinner\SkinMe\Grid.lua line 7:
+		  attempt to index global 'GridLayout' (a nil value)
+		Debug:
+		  (tail call): ?
+		  Skinner\SkinMe\Grid.lua:7:
+		     Skinner\SkinMe\Grid.lua:3
+		  (tail call): ?
+		  [C]: xpcall()
+		  Skinner\Skinner.lua:796:
+		     Skinner\Skinner.lua:794
+		  Skinner\Skinner.lua:851: checkAndRunAddOn()
+		  Skinner\AddonFrames.lua:121:
+		     Skinner\AddonFrames.lua:54
+		  (tail call): ?
+
+√	I	XLoot, reported by Kerecha, 26.04.10
+		- Having a small issue with the xloot monitor skin.	The first item looted shows a white background, the rest gets skinned properly with my choose texture as background. This "error" appears each time the monitor is displayed. (ie if i loot a few items and then loot more before the old ones has faded from timeout the new items will display normally, but if the list fades completely the next item looted will be partially skinned again)
+
+√	S	CloseUp, skin supplied by sixthepaladin
+
+√	I	FreierGeist_InstanceTime, reported by Josaline, 7.05.10
+		- activate again
+
+√	S	AdiBags, requested by gamemaster128, 8.05.10
