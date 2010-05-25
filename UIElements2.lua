@@ -503,7 +503,8 @@ function Skinner:MainMenuBar()
 	ExhaustionTick:SetAlpha(0)
 	self:adjHeight{obj=MainMenuExpBar, adj=-2} -- shrink it so it moves up
 	self:adjHeight{obj=ExhaustionLevelFillBar, adj=-2} -- mirror the XP bar
-	self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-7, x2=4, y2=-4}
+	local yOfs = IsAddOnLoaded("DragonCore") and -47 or -4
+	self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-7, x2=4, y2=yOfs}
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
 	self:keepFontStrings(MainMenuBarArtFrame)
 	self:keepRegions(MainMenuExpBar, {1, 6, 7}) -- N.B. region 1 is rested XP, 6 is background, 7 is the normal XP

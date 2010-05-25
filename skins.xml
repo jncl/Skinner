@@ -78,6 +78,7 @@
 <script file="SkinMe\DockingStation.lua"/>
 <script file="SkinMe\Dominos.lua"/>
 <script file="SkinMe\DoTimer.lua"/>
+<script file="SkinMe\DragonCore.lua"/>
 <script file="SkinMe\EasyUnlock.lua"/>
 <script file="SkinMe\EavesDrop.lua"/>
 <script file="SkinMe\EditingUI.lua"/>

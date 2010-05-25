@@ -78,10 +78,11 @@ function Skinner:AddonFrames()
 		self:checkAndRun("MainMenuBar")
 	end
 
-	-- skin the Nameplates if Aloft, nerNameplates or TidyPlates aren't loaded
+	-- skin the Nameplates if other nameplate addons aren't loaded
 	if not IsAddOnLoaded("Aloft")
 	and not IsAddOnLoaded("nerNameplates")
 	and not IsAddOnLoaded("TidyPlates")
+	and not IsAddOnLoaded("DocsUI_Nameplates")
 	then
 		self:checkAndRun("Nameplates")
 	end
@@ -94,7 +95,7 @@ function Skinner:AddonFrames()
 		"Accomplishment", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "ArkInventory", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
 		"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
 		"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", "CT_RaidTracker",
-		"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "Dominos",
+		"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "Dominos", "DragonCore",
 		"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "EquipCompare", "EventEquip", "EveryQuest", "Examiner",
 		"Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "FramesResized", "FreierGeist_InstanceTime",
 		"Gatherer", "GearScore", "GemHelper", "GemMe", "GnomishVendorShrinker", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildLaunchCT_RaidTracker", "GupCharacter", "GupPet",
