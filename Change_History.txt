@@ -1,3 +1,15 @@
+b3.11723.8
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated code to return objects
+	Updated Backdrop option settings
+	Updated Frame Tab skinning code
+	Updated skins
+	- AtlasLoot, AucAdvanced, Grid, GroupCalendar5, GuildLaunchCT_RaidTracker, Hack, HealBot, XLoot
+	Skinned AdiBags, CloseUp
+	Unobsoleted FrierGeist_InstanceTime
+
 b3.11723.7
 Jncl:
 	ToDo.txt
