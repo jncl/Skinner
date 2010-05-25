@@ -48,7 +48,8 @@ locales\Locale_koKR.lua
 #
 # Main files
 Skinner.lua
-options.lua
+UtilFuncs.lua
+Options.lua
 #
 # AddonFrames
 # Controls the skinning of the Blizzard frames and the Addon frames
