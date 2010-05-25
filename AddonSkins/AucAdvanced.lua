@@ -128,6 +128,8 @@ function Skinner:AucAdvanced()
 			self:skinDropDown{obj=frame.salebox.model}
 			self:skinMoneyFrame{obj=frame.salebox.bid, noWidth=true, moveSEB=true, moveGEB=true}
 			self:skinMoneyFrame{obj=frame.salebox.buy, noWidth=true, moveSEB=true, moveGEB=true}
+			self:skinMoneyFrame{obj=frame.salebox.bid.stack, noWidth=true, moveSEB=true, moveGEB=true}
+			self:skinMoneyFrame{obj=frame.salebox.buy.stack, noWidth=true, moveSEB=true, moveGEB=true}
 			self:skinButton{obj=frame.manifest.close, cb=true, x1=3, y1=-3, x2=-3, y2=3}
 			self:addSkinFrame{obj=frame.manifest, bg=true} -- a.k.a. Sidebar, put behind AH frame
 			self:skinButton{obj=frame.imageview.purchase.buy, x1=-1}

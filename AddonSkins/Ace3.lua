@@ -4,7 +4,8 @@ function Skinner:Ace3()
 
 	self:RawHook(LibStub("AceGUI-3.0"), "Create", function(this, objType)
 		local obj = self.hooks[this].Create(this, objType)
---		self:Debug("Ace3GUI_Create: [%s, %s, %s]", this, objType, obj)
+		local objVer = LibStub("AceGUI-3.0"):GetWidgetVersion(objType)
+--		self:Debug("Ace3GUI_Create: [%s, %s, %s, %s]", this, objType, obj, objVer)
 		if obj and not self.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
 				self:keepFontStrings(obj.frame)
@@ -33,14 +34,14 @@ function Skinner:Ace3()
 					self:skinButton{obj=obj.plus, as=true}
 				end
 			elseif objType == "MultiLineEditBox" then
-				self:applySkin(obj.backdrop)
-				for _, child in pairs{obj.backdrop:GetChildren()} do -- find scroll bar
-					if child:IsObjectType("ScrollFrame") then
-						self:skinScrollBar{obj=child}
-						break
-					end
-				end
 				self:skinButton{obj=obj.button, as=true}
+				if objVer < 20 then
+					self:skinScrollBar{obj=obj.scrollframe}
+					self:applySkin(obj.backdrop)
+				else
+					self:skinScrollBar{obj=obj.scrollFrame}
+					self:applySkin{obj=self:getChild(obj.frame, 2)} -- backdrop frame
+				end
 			elseif objType == "Slider" then
 				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
 				obj.editbox:SetHeight(20)
@@ -48,8 +49,13 @@ function Skinner:Ace3()
 			elseif objType == "Frame" then
 				self:keepFontStrings(obj.frame)
 				self:applySkin(obj.frame)
-				self:skinButton{obj=obj.closebutton, y1=1}
-				self:applySkin(obj.statusbg)
+				if objVer < 20 then
+					self:skinButton{obj=obj.closebutton, y1=1}
+					self:applySkin(obj.statusbg)
+				else
+					self:skinButton{obj=self:getChild(obj.frame, 1), y1=1}
+					self:applySkin{obj=self:getChild(obj.frame, 2)} -- backdrop frame
+				end
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "Window" then
 				self:keepFontStrings(obj.frame)
@@ -123,6 +129,7 @@ function Skinner:Ace3()
 			or objType == "SnowflakeEscape"
 			or objType == "SnowflakePlain"
 			or objType == "SnowflakeTitle"
+			or objType == "SimpleGroup"
 			then
 			-- any other types
 			else
