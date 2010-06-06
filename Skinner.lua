@@ -11,7 +11,7 @@ end
 _G[aName] = LibStub("AceAddon-3.0"):NewAddon(Skinner, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 -- specify where debug messages go
-Skinner.debugFrame = _G["ChatFrame"..NUM_CHAT_WINDOWS]
+Skinner.debugFrame = ChatFrame7
 
 -- Get Locale
 Skinner.L = LibStub("AceLocale-3.0"):GetLocale(aName)
@@ -25,7 +25,7 @@ Skinner.uCls = select(2, UnitClass("player"))
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 0.3.5
-Skinner.isPatch = BN_WHISPER and true or false
+Skinner.isPatch = BATTLENET_FRIEND and true or false
 
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
@@ -1074,7 +1074,7 @@ local function __skinDropDown(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		noSkin = don't skin the DropDown
-		move = move Button Left and down, Text down
+		noMove = don't move button & Text
 		moveTex = move Texture up
 		mtx = move Texture left/right
 		mty = move Texture up/down
@@ -1095,6 +1095,7 @@ local function __skinDropDown(opts)
 	_G[opts.obj:GetName().."Middle"]:SetTexture(Skinner.itTex)
 	_G[opts.obj:GetName().."Middle"]:SetHeight(19)
 
+	-- move Button Left and down, Text down
 	if not opts.noMove then
 		Skinner:moveObject{obj=_G[opts.obj:GetName().."Button"], x=-6, y=-2}
 		Skinner:moveObject{obj=_G[opts.obj:GetName().."Text"], y=-2}

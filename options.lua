@@ -93,6 +93,7 @@ function Skinner:Defaults()
 		GuildBankUI     = true,
 		Nameplates      = true,
 		GMChatUI		= true,
+		BNFrames		= self.isPatch and true or nil,
 		-- NPC Frames
 		MerchantFrames  = true,
 		GossipFrame     = true,
@@ -119,6 +120,7 @@ local DBIcon = LibStub("LibDBIcon-1.0")
 function Skinner:Options()
 
 	local db = self.db.profile
+	local dflts = self.db.defaults.profile
 
 	local optTables = {
 
@@ -1215,6 +1217,11 @@ function Skinner:Options()
 					name = self.L["LFR Frame"],
 					desc = self.L["Toggle the skin of the LFR Frame"],
 				},
+				BNFrames = self.isPatch and {
+					type = "toggle",
+					name = self.L["BattleNet Frames"],
+					desc = self.L["Toggle the skin of the BattleNet Frames"],
+				} or nil,
 			},
 		},
 
@@ -1281,6 +1288,20 @@ function Skinner:Options()
 		ACR:RegisterOptionsTable(optTitle, optTables[v])
 		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
 		optCheck[v:lower()] = v
+	end
+
+	-- runs when the player clicks "Defaults"
+	self.optionsFrame[self.L["Backdrop"]].default = function()
+		db.BdDefault = dflts.BdDefault
+		db.BdFile = dflts.BdFile
+		db.BdTexture = dflts.BdTexture
+		db.BdTileSize = dflts.BdTileSize
+		db.BdEdgeFile = dflts.BdEdgeFile
+		db.BdBorderTexture = dflts.BdBorderTexture
+		db.BdEdgeSize = dflts.BdEdgeSize
+		db.BdInset = dflts.BdInset
+		-- refresh panel
+		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
 	end
 
 	-- Slash command handler

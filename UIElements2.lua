@@ -822,3 +822,16 @@ function Skinner:LFRFrame()
 	if self.isTT then self.tabFrames[LFRParentFrame] = true end -- add entry as tabs now exist
 
 end
+
+-- BattleNet additions (patch .3.5)
+function Skinner:BNFrames()
+	if not self.db.profile.BNFrames or self.initialized.BNFrames then return end
+	self.initialized.BNFrames = true
+
+	self:addSkinFrame{obj=BNToastFrame, ft=ftype}
+
+	self:skinScrollBar{obj=BNetReportFrameCommentScrollFrame}
+	self:addSkinFrame{obj=BNetReportFrameComment, ft=ftype}
+	self:addSkinFrame{obj=BNetReportFrame, ft=ftype}
+
+end
