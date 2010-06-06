@@ -2,9 +2,11 @@
 
 function Skinner:Ace3()
 
-	self:RawHook(LibStub("AceGUI-3.0"), "Create", function(this, objType)
+	local AceGUI = LibStub("AceGUI-3.0")
+	
+	self:RawHook(AceGUI, "Create", function(this, objType)
 		local obj = self.hooks[this].Create(this, objType)
-		local objVer = LibStub("AceGUI-3.0"):GetWidgetVersion(objType)
+		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
 --		self:Debug("Ace3GUI_Create: [%s, %s, %s, %s]", this, objType, obj, objVer)
 		if obj and not self.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
