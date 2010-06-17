@@ -13,6 +13,7 @@ B - Button(s) Skin request
 	PTR 3.5
 √		- Addition of BattleNet friends feature (ToastFrame, CommentFrame)
 		- ChatFrame changes
+			- SIMPLE_CHAT has been removed
 √			- ChatFrameEditBox(es)
 √			- Chat frames when undocked, can now be minimized
 √			- dock manager frame(s)
@@ -31,55 +32,28 @@ B - Button(s) Skin request
 	O	Frame Borders à la Beautycase, requested by gamemaster128, 11.03.10
 		- Is there a way to get Skinner to create borders the way in which !Beautycase makes them? Maybe even using its CreateBorder function?
 
-	I	professions and guild bank unskinned, reported by Arenikus, 2.04.10
-	I	achievement and guild bank unskinned, reported by malak72, 2.04.10
-	I	guild bank and talent tree unskinned, reported by burber, 3.04.10
-	I	tradeskill/guild bank/talent frame, reported by Akk1, 30.04.10
-		- seen this, don't know why, maybe a timing issue ?
-		- seems to occur when LightHeaded Data files are loaded on started instead of LoD
-
+√	I	professions and guild bank unskinned, reported by Arenikus, 2.04.10
+√	I	achievement and guild bank unskinned, reported by malak72, 2.04.10
+√	I	guild bank and talent tree unskinned, reported by burber, 3.04.10
+√	I	tradeskill/guild bank/talent frame, reported by Akk1, 30.04.10
+√	I	SimpleSelfRebuff, reported by Vyrt, 30.05.10
+		- the skins for guild bank, calendar, achievements, inspect, talents, and glyphs are gone.
 
 ≈	I	LFG/LFD, reported by Alcotraz, 23.04.10/5.06.10
 		- cooldownFrame saying 'you recently queued for a random dungeon.... time left mm Min ss Secs', is behind the LFD panel instead of on top of it
 
 	I 	StatusBars, reported by Oakayam, 15.05.10
-		- I have a weird issue. Skinner doesn't change statusbar texture from default Blizzard to custom one from Shared Media. I can see all my textures in dropdown menu. I tried relogging and exiting the game. In the settings the texture is set correctly but statusbars are not being skinned. I use 11723.8. I had this issue with 11723.2 ( I updated from it today ).
+		- I have a weird issue. Skinner doesn't change statusbar texture from default Blizzard to custom one from Shared Media. I can see all my textures in dropdown menu. I tried relogging and exiting the game. In the settings the texture is set correctly but statusbars are not being skinned. I use 11723.8. I had this issue with 11723.2
 
-x	I	XLoot, reported by tordenflesk/Kerecha, 29.05.10
-		- Texture not being applied to backgrounds
+√	S	GnomeWorks, requested by gamemaster128, 3.06.10
 
-	I	SimpleSelfRebuff, reported by Vyrt, 30.05.10
-		- the skins for guild bank, calendar, achievements, inspect, talents, and glyphs are gone.
-
-√	I	Ace3, reported by ichik, 31.05.10
-		- Interface\AddOns\Skinner\SkinMe\Ace3.lua:7: attempt to call method 'GetWidgetVersion' (a nil value)
-		(tail call): ?
-		Interface\AddOns\Skinner\SkinMe\Ace3.lua:7: in function <Interface\AddOns\Skinner\SkinMe\Ace3.lua:5>
-		(tail call): ?
-		...nfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.lua:1875: in function `AddToBlizOptions'
-		Interface\AddOns\nanoTalk\nanoTalk.lua:408: in function `SetupOptions'
-		Interface\AddOns\nanoTalk\nanoTalk.lua:188: in function <Interface\AddOns\nanoTalk\nanoTalk.lua:180>
-		(tail call): ?
-
-√	I	Skillet, reported by CrazyBenny, 31.05.10
-		- supplied new skin
-
-≈	I	Outfitter, reported by dogvetusa, 31.05.10
-		- ..\AddOns\Skinner\SkinMe\Outfitter.lua line 158:
-		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		Debug:
-		(tail call): ?
-		[C]: ?
-		...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:211:
-		...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:118
-		...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
-		Skinner\SkinMe\Outfitter.lua:158:
-		Skinner\SkinMe\Outfitter.lua:3
-		(tail call): ?
-
-	S	GnomeWorks, requested by gamemaster128, 3.06.10
-
-√	N	AdiBags, reported by gamemaster128, 3.06.10
-
-	S	RaidAchievement, requested by Kerecha, 5.06.10
+√	S	RaidAchievement, requested by Kerecha, 5.06.10
 		- options panel
+
+	I	UnitFrames
+		- Aggro texture should remain, option in Interface toggles it on/off
+
+≈	I	XLoot, reported by tordenflesk/Kerecha, 27.05.10
+		- Roll & Grouploot panels not being skinned
+		
+√	N	AckisRecipeList, requested by Gabriel, 15.06.10
