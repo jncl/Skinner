@@ -93,7 +93,7 @@ function Skinner:Defaults()
 		GuildBankUI     = true,
 		Nameplates      = true,
 		GMChatUI		= true,
-		BNFrames		= self.isPatch and true or nil,
+		BNFrames		= true,
 		-- NPC Frames
 		MerchantFrames  = true,
 		GossipFrame     = true,
@@ -1217,11 +1217,11 @@ function Skinner:Options()
 					name = self.L["LFR Frame"],
 					desc = self.L["Toggle the skin of the LFR Frame"],
 				},
-				BNFrames = self.isPatch and {
+				BNFrames = {
 					type = "toggle",
 					name = self.L["BattleNet Frames"],
 					desc = self.L["Toggle the skin of the BattleNet Frames"],
-				} or nil,
+				},
 			},
 		},
 

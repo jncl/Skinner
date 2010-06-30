@@ -29,50 +29,29 @@ function Skinner:FriendsFrame()
 		end)
 	end
 -->>--	Friends Frame
-	if not self.isPatch then
-		self:skinFFToggleTabs("FriendsFrameToggleTab")
-	else
-		self:skinDropDown{obj=FriendsFrameStatusDropDown}
-		self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
-		-- Add a skin frame to include the icon at the front
-		self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
-		self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true}, x1=-24}
-		self:skinFFToggleTabs("FriendsTabHeaderTab")
-		self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
-	end
+	self:skinDropDown{obj=FriendsFrameStatusDropDown}
+	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
+	-- Add a skin frame to include the icon at the front
+	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
+	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true}, x1=-24}
+	self:skinFFToggleTabs("FriendsTabHeaderTab")
+	self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
 	self:skinScrollBar{obj=FriendsFrameFriendsScrollFrame}
 	--[=[
 		TODO Scroll bar texture too narrow (.3.5 patch)
 	--]=]
-	if not self.isPatch then
-		self:moveObject{obj=FriendsFrameAddFriendButton, y=1}
-	else
-		self:moveObject{obj=FriendsFrameAddFriendButton, x=3}
-	end
-	if self.isPatch then
-		-- Add Friend Frame
-		self:addSkinFrame{obj=AddFriendFrame, kfs=true}
-		self:skinEditBox{obj=AddFriendNameEditBox, regs={9}}
-		self:addSkinFrame{obj=AddFriendNoteFrame, kfs=true}
-		self:skinScrollBar{obj=AddFriendNoteFrameScrollFrame}
-	end
+	self:moveObject{obj=FriendsFrameAddFriendButton, x=3}
+	-- Add Friend Frame
+	self:addSkinFrame{obj=AddFriendFrame, kfs=true}
+	self:skinEditBox{obj=AddFriendNameEditBox, regs={9}}
+	self:addSkinFrame{obj=AddFriendNoteFrame, kfs=true}
+	self:skinScrollBar{obj=AddFriendNoteFrameScrollFrame}
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, bgen=2, x1=12, y1=-11, x2=-33, y2=71}
 
 -->>--	Ignore Frame
 	self:keepFontStrings(IgnoreListFrame)
-	if not self.isPatch then
-		self:skinFFToggleTabs("IgnoreFrameToggleTab")
-	end
 	self:skinScrollBar{obj=FriendsFrameIgnoreScrollFrame}
 	self:moveObject{obj=FriendsFrameIgnorePlayerButton, y=1}
-
-	if not self.isPatch then
--->>--	MutedList Frame
-		self:keepFontStrings(MutedListFrame)
-		self:skinFFToggleTabs("MutedFrameToggleTab")
-		self:skinScrollBar{obj=FriendsFrameMutedScrollFrame}
-		self:moveObject{obj=FriendsFrameMutedPlayerButton, y=1}
-	end
 
 -->>--	Who Frame
 	self:skinFFColHeads("WhoFrameColumnHeader")

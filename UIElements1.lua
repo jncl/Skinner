@@ -174,9 +174,7 @@ function Skinner:ChatMenus()
 	self:addSkinFrame{obj=EmoteMenu, ft=ftype}
 	self:addSkinFrame{obj=LanguageMenu, ft=ftype}
 	self:addSkinFrame{obj=VoiceMacroMenu, ft=ftype}
-	if self.isPatch then
-		self:addSkinFrame{obj=GeneralDockManagerOverflowButtonList, ft=ftype}
-	end
+	self:addSkinFrame{obj=GeneralDockManagerOverflowButtonList, ft=ftype}
 
 end
 
@@ -184,36 +182,31 @@ function Skinner:ChatTabs()
 	if not self.db.profile.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true
 
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("FCF_Tab_OnClick",function(this, ...)
-			for i = 1, NUM_CHAT_WINDOWS do
-				local tabSF = self.skinFrame[_G["ChatFrame"..i.."Tab"]]
-				if i == this:GetID() then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
+	-- hook this to handle Tab alpha changes as they have been reparented
+	self:SecureHook("FCFTab_UpdateAlpha", function(this)
+		local chatTab = _G[this:GetName().."Tab"]
+		local tabSF = self.skinFrame[chatTab]
+		if chatTab.hasBeenFaded then
+			tabSF:SetAlpha(chatTab.mouseOverAlpha)
+		else
+			tabSF:SetAlpha(chatTab.noMouseAlpha)
+		end
+	end)
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local tabName = _G["ChatFrame"..i.."Tab"]
-		if not self.isPatch then
-			self:keepRegions(tabName, {4, 5}) --N.B. region 4 is text, 5 is highlight
-		else
-			self:keepRegions(tabName, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
-			--[=[
-				TODO Text appears below tab texture when docked if not tab1 or tab2 (.3.5 patch)
-			--]=]
-		end
+		self:keepRegions(tabName, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
 		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, y1=-8, y2=-5}
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
+		-- hook this to fix tab gradient texture overlaying text & highlight
+		self:SecureHook(tabName, "SetParent", function(this, parent)
+			local tabSF = self.skinFrame[this]
+			if parent == GeneralDockManager.scrollFrame.child then
+				tabSF:SetParent(GeneralDockManager)
+			else
+				tabSF:SetParent(this)
+				tabSF:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
+			end
+		end)
 	end
 
 end
@@ -222,21 +215,12 @@ function Skinner:ChatFrames()
 	if not self.db.profile.ChatFrames or self.initialized.ChatFrames then return end
 	self.initialized.ChatFrames = true
 
-	if not self.isPatch then
-		self:SecureHook("FCF_StopResize", function()
-			local frame = _G["Skinner"..this:GetParent():GetName()]
-			if frame and frame.tfade then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -ceil(frame:GetHeight())) end
-		end)
-	end
-
 	local clqbf = "CombatLogQuickButtonFrame"
 	local clqbf_c = clqbf.."_Custom"
 	local yOfs1 = 4
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame"..i]
-		if i == 2
-		and SIMPLE_CHAT ~= "1"
-		and CHAT_LOCKED ~= "1"
+		if cf == COMBATLOG
 		and _G[clqbf_c]:IsShown()
 		then
 			yOfs1 = 31
@@ -247,10 +231,10 @@ function Skinner:ChatFrames()
 	end
 
 	-- CombatLog Quick Button Frame & Progress Bar
-	if SIMPLE_CHAT ~= "1" and CHAT_LOCKED ~= "1" and self.db.profile.CombatLogQBF then
+	if self.db.profile.CombatLogQBF then
 		if _G[clqbf_c] then
 			self:keepFontStrings(_G[clqbf_c])
-			self:addSkinFrame{obj=_G[clqbf_c], ft=ftype}
+			self:addSkinFrame{obj=_G[clqbf_c], ft=ftype, x1=-4, x2=4}
 			self:adjHeight{obj=_G[clqbf_c], adj=4}
 			self:glazeStatusBar(_G[clqbf_c.."ProgressBar"], 0, _G[clqbf_c.."Texture"])
 		else
@@ -259,13 +243,11 @@ function Skinner:ChatFrames()
 	end
 
 	-- minimized chat frames
-	if self.isPatch then
-		self:SecureHook("FCF_CreateMinimizedFrame", function(chatFrame)
-			local cfm = _G[chatFrame:GetName().."Minimized"]
-			self:removeRegions(cfm, {1, 2, 3})
-			self:addSkinFrame{obj=cfm, ft=ftype}
-		end)
-	end
+	self:SecureHook("FCF_CreateMinimizedFrame", function(chatFrame)
+		local cfm = _G[chatFrame:GetName().."Minimized"]
+		self:removeRegions(cfm, {1, 2, 3})
+		self:addSkinFrame{obj=cfm, ft=ftype, x1=1, y1=-2, x2=-1, y2=2}
+	end)
 
 end
 
@@ -365,28 +347,17 @@ function Skinner:ChatEditBox()
 	if not self.db.profile.ChatEditBox.skin then return end
 
 	-- these addons replace the Chat Edit Box
-	if IsAddOnLoaded("NeonChat") or IsAddOnLoaded("Chatter") then return end
+	if IsAddOnLoaded("NeonChat") or IsAddOnLoaded("Chatter") or IsAddOnLoaded("Prat-3.0") then return end
 
-	if not self.isPatch then
+	for i = 1, NUM_CHAT_WINDOWS do
+		local cfeb = _G["ChatFrame"..i.."EditBox"]
 		if self.db.profile.ChatEditBox.style == 1 then
 			local kRegions = CopyTable(self.ebRegions)
-			table.insert(kRegions, 9)
-			self:keepRegions(ChatFrameEditBox, kRegions)
-			self:addSkinFrame{obj=ChatFrameEditBox, ft=ftype, x1=2, y1=-2, x2=-2}
+			table.insert(kRegions, 12)
+			self:keepRegions(cfeb, kRegions)
+			self:addSkinFrame{obj=cfeb, ft=ftype, x1=2, y1=-2, x2=-2}
 		else
-			self:skinEditBox{obj=ChatFrameEditBox, regs={9}, noHeight=true}
-		end
-	else
-		for i = 1, NUM_CHAT_WINDOWS do
-			local cfeb = _G["ChatFrame"..i.."EditBox"]
-			if self.db.profile.ChatEditBox.style == 1 then
-				local kRegions = CopyTable(self.ebRegions)
-				table.insert(kRegions, 12)
-				self:keepRegions(cfeb, kRegions)
-				self:addSkinFrame{obj=cfeb, ft=ftype, x1=2, y1=-2, x2=-2}
-			else
-				self:skinEditBox{obj=cfeb, regs={12}, noHeight=true}
-			end
+			self:skinEditBox{obj=cfeb, regs={12}, noHeight=true}
 		end
 	end
 

@@ -25,7 +25,7 @@ Skinner.uCls = select(2, UnitClass("player"))
 --check to see if running on PTR
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 0.3.5
-Skinner.isPatch = BATTLENET_FRIEND and true or false
+--Skinner.isPatch = BATTLENET_FRIEND and true or false
 
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
