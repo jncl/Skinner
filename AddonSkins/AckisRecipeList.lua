@@ -7,7 +7,7 @@ function Skinner:AckisRecipeList()
 	if not ARL then return end
 
 	local isDevel = ARL.version == "Devel" and true or false
-	self:Debug("ARL isDevel: [%s]", isDevel)
+--	self:Debug("ARL isDevel: [%s]", isDevel)
 	
 	self:SecureHookScript(ARL_MainPanel, "OnShow", function(this)
 		--	minus/plus buttons
