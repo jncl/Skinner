@@ -227,12 +227,12 @@ function Skinner:OnEnable()
 	self.isButton = self.modBtns and self.modBtns.isButton or function() end
 	self.skinAllButtons = self.modBtns and self.modBtns.skinAllButtons or function() end
 
-	-- register for events after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
+	self:RegisterEvent("AUCTION_HOUSE_SHOW")
+	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
 	self:ScheduleTimer(function()
 		self:RegisterEvent("ADDON_LOADED")
-		self:RegisterEvent("AUCTION_HOUSE_SHOW")
 --		print("OE", aef:IsEventRegistered("ADDON_LOADED"))
-	end, 0.5)
+	end, 1)
 
 	-- skin the Blizzard frames
 	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
