@@ -1303,6 +1303,29 @@ function Skinner:Options()
 		-- refresh panel
 		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
 	end
+	self.optionsFrame[self.L["Colours"]].default = function()
+		db.TooltipBorder = dflts.TooltipBorder
+		db.BackdropBorder = dflts.BackdropBorder
+		db.Backdrop = dflts.Backdrop
+		db.HeadText = dflts.HeadText
+		db.BodyText = dflts.BodyText
+		db.GradientMin = dflts.GradientMin
+		db.GradientMax = dflts.GradientMax
+		-- refresh panel
+		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Colours"]])
+	end
+	self.optionsFrame[self.L["Gradient"]].default = function()
+		db.Gradient.enable = dflts.Gradient.enable
+		db.Gradient.invert = dflts.Gradient.invert
+		db.Gradient.rotate = dflts.Gradient.rotate
+		db.Gradient.char = dflts.Gradient.char
+		db.Gradient.ui = dflts.Gradient.ui
+		db.Gradient.npc = dflts.Gradient.npc
+		db.Gradient.skinner = dflts.Gradient.skinner
+		db.Gradient.texture = dflts.Gradient.texture
+		-- refresh panel
+		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Gradient"]])
+	end
 
 	-- Slash command handler
 	local function chatCommand(input)
