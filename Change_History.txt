@@ -1,3 +1,12 @@
+b3.12213.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Misc UtilFunc changes
+	Bugfix for Blizzard LoD issue
+	Skinned GnomeWorks & RaidAchievement
+	Updated AckisRecipeList & XLoot skins
+
 b3.12166.1
 Jncl:
 	ToDo.txt
