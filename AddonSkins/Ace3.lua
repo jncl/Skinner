@@ -1,13 +1,24 @@
 -- This is a Framework
 
+Skinner.ItemPimper = true -- to stop IP skinning its frame
+
+local AceGUI = LibStub("AceGUI-3.0")
+local objectsToSkin = {}
+
+if AceGUI then
+	Skinner:RawHook(AceGUI, "Create", function(this, objType)
+		local obj = Skinner.hooks[this].Create(this, objType)
+		objectsToSkin[obj] = objType
+		return obj
+	end, true)
+end
+
 function Skinner:Ace3()
 
-	local AceGUI = LibStub("AceGUI-3.0")
-	
-	self:RawHook(AceGUI, "Create", function(this, objType)
-		local obj = self.hooks[this].Create(this, objType)
+	local function skinAceGUI(obj, objType)
+
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
---		self:Debug("Ace3GUI_Create: [%s, %s, %s, %s]", this, objType, obj, objVer)
+--		self:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
 		if obj and not self.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
 				self:keepFontStrings(obj.frame)
@@ -138,7 +149,23 @@ function Skinner:Ace3()
 				self:Debug("AceGUI, unmatched type - %s", objType)
 			end
 		end
+
+	end
+
+	if self:IsHooked(AceGUI, "Create") then
+		self:Unhook(AceGUI, "Create")
+	end
+
+	self:RawHook(AceGUI, "Create", function(this, objType)
+		local obj = self.hooks[this].Create(this, objType)
+		skinAceGUI(obj, objType)
 		return obj
 	end, true)
+
+	-- skin any objects created earlier
+	for obj in pairs(objectsToSkin) do
+		skinAceGUI(obj, objectsToSkin[obj])
+	end
+	objectsToSkin = nil
 
 end
