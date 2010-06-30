@@ -13,7 +13,7 @@ B - Button(s) Skin request
 	PTR 3.5
 √		- Addition of BattleNet friends feature (ToastFrame, CommentFrame)
 		- ChatFrame changes
-			- SIMPLE_CHAT has been removed
+√			- SIMPLE_CHAT has been removed
 √			- ChatFrameEditBox(es)
 √			- Chat frames when undocked, can now be minimized
 √			- dock manager frame(s)
@@ -51,7 +51,10 @@ B - Button(s) Skin request
 x	I	ItemPimper, reported by Draemon, 22.06.10
 		- still not working with latest version of Skinner
 
-	I	Chatter, reported by VQKatsuko, 23.06.10
+≈	I	Blizzard LoD's not being skinned, reported by jamesmray, 23.06.10
+		- increase delay
+
+√	I	Chatter, reported by VQKatsuko, 23.06.10
 		- after 3.3.5
 		- Skinner-b3.12213.1\Skinner.lua:552: attempt to index local 'frame' (a nil value)
 		Skinner-b3.12213.1\SkinMe\Chatter.lua:35: in function <Skinner\SkinMe\Chatter.lua:3>
@@ -63,15 +66,12 @@ x	I	ItemPimper, reported by Draemon, 22.06.10
 		(tail call): ?:
 		<in C code>: ?
 
-≈	I	Blizzard LoD's not being skinned, reported by jamesmray, 23.06.10
-
-	I	Tukui, reported by solzemus/Manaman, 23.06.10
+√	I	Tukui, reported by solzemus/Manaman, 23.06.10
 		- after 3.3.5
 		- transparent background to all panels
 
-	I	Dewdrop, reported by solzemus, 23.06.10
+√	I	Prat, reported by Alcotraz/Lighttank, 24.06.10
 		- after 3.3.5
 
-	I	Prat, reported by Alcotraz/Lighttank, 24.06.10
-		- after 3.3.5
-
+√	I	ChatFrameTabs, reported by Chryyz, 26.06.10
+		- Text and highlight are behind skin frame
