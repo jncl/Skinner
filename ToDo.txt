@@ -21,7 +21,7 @@ B - Button(s) Skin request
 √			- no Mute button/panel ?
 √			- new PendingListFrame
 √			- new AddFriendFrame, AddFriendEntryFrame, AddFriendNoteFrame
-			- new FriendsFriendsFrame, FriendsFriendsWaitFrame
+?			- new FriendsFriendsFrame, FriendsFriendsWaitFrame
 		- InterfaceOptionsFrame
 √			- Social Panel changes
 √			- new Battle.net Options Panel
@@ -32,28 +32,46 @@ B - Button(s) Skin request
 	O	Frame Borders à la Beautycase, requested by gamemaster128, 11.03.10
 		- Is there a way to get Skinner to create borders the way in which !Beautycase makes them? Maybe even using its CreateBorder function?
 
-√	I	professions and guild bank unskinned, reported by Arenikus, 2.04.10
-√	I	achievement and guild bank unskinned, reported by malak72, 2.04.10
-√	I	guild bank and talent tree unskinned, reported by burber, 3.04.10
-√	I	tradeskill/guild bank/talent frame, reported by Akk1, 30.04.10
-√	I	SimpleSelfRebuff, reported by Vyrt, 30.05.10
-		- the skins for guild bank, calendar, achievements, inspect, talents, and glyphs are gone.
-
 ≈	I	LFG/LFD, reported by Alcotraz, 23.04.10/5.06.10
 		- cooldownFrame saying 'you recently queued for a random dungeon.... time left mm Min ss Secs', is behind the LFD panel instead of on top of it
+		- can't replicate this behaviour atm
 
-	I 	StatusBars, reported by Oakayam, 15.05.10
-		- I have a weird issue. Skinner doesn't change statusbar texture from default Blizzard to custom one from Shared Media. I can see all my textures in dropdown menu. I tried relogging and exiting the game. In the settings the texture is set correctly but statusbars are not being skinned. I use 11723.8. I had this issue with 11723.2
-
-√	S	GnomeWorks, requested by gamemaster128, 3.06.10
-
-√	S	RaidAchievement, requested by Kerecha, 5.06.10
-		- options panel
-
-	I	UnitFrames
+≈	I	UnitFrames
 		- Aggro texture should remain, option in Interface toggles it on/off
 
 ≈	I	XLoot, reported by tordenflesk/Kerecha, 27.05.10
 		- Roll & Grouploot panels not being skinned
-		
-√	N	AckisRecipeList, requested by Gabriel, 15.06.10
+
+√	N	Accountant, requested by Excitor0, 21.06.10
+		- unobsolete and update
+
+√	I	Ace3GUI
+		- handle objects created before its skinning code is loaded
+
+x	I	ItemPimper, reported by Draemon, 22.06.10
+		- still not working with latest version of Skinner
+
+	I	Chatter, reported by VQKatsuko, 23.06.10
+		- after 3.3.5
+		- Skinner-b3.12213.1\Skinner.lua:552: attempt to index local 'frame' (a nil value)
+		Skinner-b3.12213.1\SkinMe\Chatter.lua:35: in function <Skinner\SkinMe\Chatter.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b3.12213.1\UtilFuncs.lua:84: in function <Skinner\UtilFuncs.lua:82>
+		Skinner-b3.12213.1\UtilFuncs.lua:133: in function `?'
+		Skinner-b3.12213.1\AddonFrames.lua:122: in function <Skinner\AddonFrames.lua:54>
+		(tail call): ?:
+		<in C code>: ?
+
+≈	I	Blizzard LoD's not being skinned, reported by jamesmray, 23.06.10
+
+	I	Tukui, reported by solzemus/Manaman, 23.06.10
+		- after 3.3.5
+		- transparent background to all panels
+
+	I	Dewdrop, reported by solzemus, 23.06.10
+		- after 3.3.5
+
+	I	Prat, reported by Alcotraz/Lighttank, 24.06.10
+		- after 3.3.5
+
