@@ -28,10 +28,12 @@ function Skinner:Chatter()
 	ebp.db.profile.tileSize = 16
 	ebp.db.profile.edgeSize = 16
 
-	-- then apply these changes to the ChatEditBox
+	-- then apply these changes to the ChatEditBoxes
 	ebp:SetBackdrop()
 
-	-- apply the fade/gradient to the ChatEditBox
-	self:applyGradient(ChatFrameEditBox)
+	-- apply the fade/gradient to the ChatEditBoxes
+	for _, cfeb in pairs(ebp.frames) do
+		self:applyGradient(cfeb)
+	end
 
 end

@@ -40,9 +40,9 @@ function Skinner:TukuiInit()
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures
-		self.LSM:Register("background", "Tukui Background", [[Interface\AddOns\Tukui\media\blank]])
-		self.LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\media\blank]])
-		self.LSM:Register("statusbar", "Tukui StatusBar", [[Interface\AddOns\Tukui\media\normTex]])
+		self.LSM:Register("background", "Tukui Background", [[Interface\AddOns\Tukui\media\textures\blank]])
+		self.LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\media\textures\blank]])
+		self.LSM:Register("statusbar", "Tukui StatusBar", [[Interface\AddOns\Tukui\media\textures\normTex]])
 
 		-- create and use a new db profile called Tukui
 		local dbProfile = self.db:GetCurrentProfile()
