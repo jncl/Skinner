@@ -25,7 +25,6 @@ local function skinPlayerF()
 	if db.player
 	and not isSkinned["Player"]
 	then
-		PlayerFrameFlash:SetTexture(nil) -- threat indicator texture
 		PlayerFrameBackground:SetTexture(nil)
 		PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -84,15 +83,12 @@ local function skinPetF()
 	if db.pet
 	and not isSkinned["Pet"]
 	then
-		PetFrameFlash:SetTexture(nil)
 		PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		PetAttackModeTexture:SetTexture(nil)
 		-- status bars
 		Skinner:glazeStatusBar(PetFrameHealthBar, 0)
 		Skinner:adjHeight{obj=PetFrameHealthBar, adj=-1} -- handle bug in PetFrame XML & lua which places mana bar 7 pixels below the healthbar, when their heights are 8
-		Skinner:adjWidth{obj=PetFrameHealthBar, adj=6}
 		Skinner:glazeStatusBar(PetFrameManaBar, 0)
-		Skinner:adjWidth{obj=PetFrameManaBar, adj=6}
 		-- casting bar handled in CastingBar function (UIE1)
 		Skinner:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars
 		Skinner:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, x1=2, y1=-1, x2=1}
@@ -142,9 +138,7 @@ end
 local function skinUFrame(frame)
 
 	Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, y1=-7, x2=-37, y2=6}
-	_G[frame.."Flash"]:SetAlpha(0) -- texture file is changed dependant upon size
 	_G[frame.."Background"]:SetTexture(nil)
---	<frame>NameBackground:SetTexture(nil) -- used for faction colouring
 	_G[frame.."TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
 	-- status bars
 	Skinner:glazeStatusBar(_G[frame.."HealthBar"], 0)
@@ -183,7 +177,6 @@ local function skinTargetF()
 		-- hook this to show/hide the elite texture
 		module:SecureHook("TargetFrame_CheckClassification", function(this)
 			local uCls = UnitClassification("target")
---			print("TF_CC", uCls)
 			if uCls == "worldboss"
 			or uCls == "elite"
 			then
@@ -199,7 +192,6 @@ local function skinTargetF()
 	-->>--Boss Target Frames
 		for i = 1, MAX_BOSS_FRAMES do
 			local frame = "Boss"..i.."TargetFrame"
-			_G[frame.."Flash"]:SetTexture(nil)
 			_G[frame.."Background"]:SetTexture(nil)
 			_G[frame.."TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
 			Skinner:glazeStatusBar(_G[frame.."HealthBar"], 0)
@@ -256,7 +248,6 @@ local function skinPartyF()
 
 		for i = 1, MAX_PARTY_MEMBERS do
 			local pF = "PartyMemberFrame"..i
-			_G[pF.."Flash"]:SetTexture(nil)
 			_G[pF.."Background"]:SetTexture(nil)
 			_G[pF.."Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G[pF.."VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -345,8 +336,6 @@ function module:OnEnable()
 end
 
 function module:adjustUnitFrames(opt)
-
---	print("adjustUnitFrames", opt)
 
 	if opt == "init" then
 		skinPlayerF()
