@@ -93,6 +93,17 @@ local function safecall(funcName, LoD, quiet)
 	end
 end
 
+function Skinner:avoidWhiteout(frame)
+
+	-- change parent to prevent Animation causing gradient 'whiteout'
+	self.skinFrame[frame]:SetParent(UIParent)
+	-- hook Show and Hide methods
+	self:SecureHook(frame, "Show", function(this) self.skinFrame[this]:Show() end)
+	self:SecureHook(frame, "Hide", function(this) self.skinFrame[this]:Hide() end)
+	if not frame:IsShown() then self.skinFrame[frame]:Hide() end
+
+end
+
 function Skinner:checkAndRun(funcName, quiet)
 --	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 

@@ -527,7 +527,8 @@ function Skinner:AlertFrames()
 				icon:DisableDrawLayer("BACKGROUND")
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
-				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16, aso={ng=true}} -- no gradient as animation changes the alpha value of it
+				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
+				Skinner:avoidWhiteout(aaFrame)
 			end
 		end
 
@@ -552,6 +553,7 @@ function Skinner:AlertFrames()
 	-- dungeon completion alert frame will already exist, only 1 atm (0.3.0.10772)
 	DungeonCompletionAlertFrame1:DisableDrawLayer("BORDER") -- border textures
 	_G["DungeonCompletionAlertFrame1Reward1"]:DisableDrawLayer("OVERLAY") -- border texture
-	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, x1=5, y1=-13, x2=-5, y2=4, aso={ng=true}} -- no gradient as animation changes the alpha value of it
+	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, x1=5, y1=-13, x2=-5, y2=4}
+	Skinner:avoidWhiteout(DungeonCompletionAlertFrame1)
 
 end
