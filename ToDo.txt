@@ -10,68 +10,51 @@ S - Skin request
 I - Issue/Bug
 B - Button(s) Skin request
 
-	PTR 3.5
-√		- Addition of BattleNet friends feature (ToastFrame, CommentFrame)
-		- ChatFrame changes
-√			- SIMPLE_CHAT has been removed
-√			- ChatFrameEditBox(es)
-√			- Chat frames when undocked, can now be minimized
-√			- dock manager frame(s)
-		- FriendsFrame
-√			- no Mute button/panel ?
-√			- new PendingListFrame
-√			- new AddFriendFrame, AddFriendEntryFrame, AddFriendNoteFrame
-?			- new FriendsFriendsFrame, FriendsFriendsWaitFrame
-		- InterfaceOptionsFrame
-√			- Social Panel changes
-√			- new Battle.net Options Panel
-		- DynamicScrollFrame(s) ?
-
-? 	O	ArenaUI - unit frames
-
-	O	Frame Borders à la Beautycase, requested by gamemaster128, 11.03.10
-		- Is there a way to get Skinner to create borders the way in which !Beautycase makes them? Maybe even using its CreateBorder function?
-
 ≈	I	LFG/LFD, reported by Alcotraz, 23.04.10/5.06.10
 		- cooldownFrame saying 'you recently queued for a random dungeon.... time left mm Min ss Secs', is behind the LFD panel instead of on top of it
 		- can't replicate this behaviour atm
-
-≈	I	UnitFrames
-		- Aggro texture should remain, option in Interface toggles it on/off
+		- possibly reparent the skinframe ??
 
 ≈	I	XLoot, reported by tordenflesk/Kerecha, 27.05.10
 		- Roll & Grouploot panels not being skinned
+		- getting the color instead of the texture on rollframe and looted items display
+		- reverting to skin from b3.11723.5 fixes these issues
 
-√	N	Accountant, requested by Excitor0, 21.06.10
-		- unobsolete and update
+√	S	GuildGreet, requested by mkcorp, 1.07.10
+√	S	MuffinMOTD, requested by mkcorp, 1.07.10
+√	S	ExtendedRaidInfo, requested by mkcorp, 1.07.10
+√	S	LazyAFK, requested by mkcorp, 1.07.10
+√	S	Misdirectionhelper, requested by mkcorp, 1.07.10
 
-√	I	Ace3GUI
-		- handle objects created before its skinning code is loaded
+	I	FriendsFrame (3.3.5)
+√		- texture behind name
+√		- new tooltip frame on mouseover
 
-x	I	ItemPimper, reported by Draemon, 22.06.10
-		- still not working with latest version of Skinner
+√	I	NeonChat, reported by burber, 3.07.10
 
-≈	I	Blizzard LoD's not being skinned, reported by jamesmray, 23.06.10
-		- increase delay
+√	N	ItemRack, reported by dwarven, 4.07.10
 
-√	I	Chatter, reported by VQKatsuko, 23.06.10
-		- after 3.3.5
-		- Skinner-b3.12213.1\Skinner.lua:552: attempt to index local 'frame' (a nil value)
-		Skinner-b3.12213.1\SkinMe\Chatter.lua:35: in function <Skinner\SkinMe\Chatter.lua:3>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b3.12213.1\UtilFuncs.lua:84: in function <Skinner\UtilFuncs.lua:82>
-		Skinner-b3.12213.1\UtilFuncs.lua:133: in function `?'
-		Skinner-b3.12213.1\AddonFrames.lua:122: in function <Skinner\AddonFrames.lua:54>
-		(tail call): ?:
-		<in C code>: ?
+√	I	Blizzard LoD frames, reported by Normally45, 4.07.10
+		- still not being skinned at startup
+		- using Init delay value to control this
 
-√	I	Tukui, reported by solzemus/Manaman, 23.06.10
-		- after 3.3.5
-		- transparent background to all panels
+√	I	Prat reported by Red-winter, 5.07.10
+		- not skinning the editbox properly. It does not save the after log out.
 
-√	I	Prat, reported by Alcotraz/Lighttank, 24.06.10
-		- after 3.3.5
+?	I	Outfitter, reported by Littlelizzi, 6.07.10
+		- Interface\AddOns\Skinner\SkinMe\Outfitter.lua:158: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		Time: 07/06/10 07:49:29
+		Count: 1
+		Stack: (tail call): ?
+		[C]: ?
+		Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:211: in function <Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:344: in function `SecureHook'
+		Interface\AddOns\Skinner\SkinMe\Outfitter.lua:158: in function <Interface\AddOns\Skinner\SkinMe\Outfitter.lua:3 >
+		(tail call): ?
 
-√	I	ChatFrameTabs, reported by Chryyz, 26.06.10
-		- Text and highlight are behind skin frame
+√	I	AckisRecipeList, reported by Gabriel/Luckyjack_SL, 6/07/10
+		- Happens only with RC1 - xx versions.
+		- The RC1 release doesn't have this issue (for your info).
+
+√	I	FriendFrame, reported by Luckyjack_SL, 6.07.10
+		- Status icon missing (not textured DD)
