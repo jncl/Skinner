@@ -1,3 +1,20 @@
+b3.12340.1
+Jncl:
+	ToDo.txt
+	Added code to reset Colours & Gradient settings to default values
+	Removed Patch checking code
+	Bugfix for ChatTabs skin covering text & highlight
+	Updated Chatter, Prat-3.0 & Tukui skins
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Ace3 skin
+	- capture Ace3GUI objects being created before skin is loaded and then skinning them
+	- stop ItemPimper from skinning itself
+	Updated fix for Blizzard LoD issue
+	Updated UnitFrames modules to show Threat indicator if Interface option selected
+	Removed debug msg from ARL skin
+	Unobsoleted Accountant skin
+
 b3.12213.1
 Jncl:
 	ToDo.txt
