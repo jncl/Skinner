@@ -20,7 +20,7 @@ function Skinner:GearScore()
 			tabObj:SetHeight(32)
 		end
 	end
-	if self.isTT then self.tabFrames[GS_DisplayFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[GS_DisplayFrame] = true
 
 	-- Default frame
 	self:skinEditBox{obj=GS_EditBox1, regs={9}, y=-4}
@@ -71,6 +71,6 @@ function Skinner:GearScore()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[GS_DatabaseFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[GS_DatabaseFrame] = true
 
 end

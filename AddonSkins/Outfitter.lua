@@ -239,4 +239,8 @@ function Skinner:Outfitter()
 -->>-- Outfit Bars
 	self:ScheduleTimer(skinOutfitBars, 1, Outfitter.OutfitBar) -- wait for a second before skinning the Outfit Bars
 
+-->>-- Character panel buttons
+	self:skinButton{obj=OutfitterEnableAll}
+	self:skinButton{obj=OutfitterEnableNone}
+
 end

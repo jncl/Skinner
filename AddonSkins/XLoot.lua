@@ -2,11 +2,10 @@ if not Skinner:isAddonEnabled("XLoot") then return end
 
 local function skinXLoot(frame)
 
---		Skinner:Debug("skinXLoot [%s, %s]", frame:GetName(), rawget(Skinner.skinned, frame))
+--	Skinner:Debug("skinXLoot [%s, %s]", frame:GetName(), rawget(Skinner.skinned, frame))
 
 	if not Skinner.skinned[frame] then
 		Skinner:applySkin(frame)
-		frame.SetBackdropColor = function() end
 		frame.SetBackdropBorderColor = function() end
 		if strfind(frame:GetName(), "Wrapper") then
 			LowerFrameLevel(frame)
@@ -26,6 +25,12 @@ end
 
 function Skinner:XLoot()
 
+	-- Hook the XLoot copy of the original skinning function
+	self:RawHook(XLoot, "Skin", function(this, frame)
+--		self:Debug("XL_Skin [%s, %s]", this, frame:GetName())
+		skinXLoot(frame)
+	end, true)
+
 	self:SecureHook(XLoot, "AddLootFrame", function(this, id)
 --		self:Debug("XL_ALF [%s, %s]", this, id)
 		skinXLoot(XLoot.frames[id])
@@ -42,14 +47,6 @@ end
 function Skinner:XLootGroup()
 
 	self:applySkin(XLootGroup.AA.stacks.roll.frame)
-
-	self:RawHook(XLootGroup, "GroupBuildRow", function(this, ...)
-		local row = self.hooks[this].GroupBuildRow(this, ...)
-		skinXLoot(row)
-		skinXLoot(row.button.wrapper)
-		self:glazeStatusBar(row.status, 0, nil)
-		return row
-	end, true)
 
 end
 

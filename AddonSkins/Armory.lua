@@ -25,7 +25,7 @@ function Skinner:Armory()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[ArmoryFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[ArmoryFrame] = true
 
 -->>--	Frame Line Tabs
 	for i = 1, ARMORY_MAX_LINE_TABS do
@@ -79,7 +79,7 @@ function Skinner:Armory()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[ArmoryPetFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[ArmoryPetFrame] = true
 
 -->>--	Talents Frame
 	self:keepRegions(ArmoryTalentFrame, {5, 6, 7, 8}) -- N.B. 5-8 are the background pictures
@@ -98,7 +98,7 @@ function Skinner:Armory()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[ArmoryTalentFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[ArmoryTalentFrame] = true
 
 -->>--	PVP Frame
 	self:keepFontStrings(ArmoryPVPFrame)
@@ -120,7 +120,7 @@ function Skinner:Armory()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[ArmoryOtherFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[ArmoryOtherFrame] = true
 
 	-- Reputation SubFrame
 	self:keepFontStrings(ArmoryReputationFrame)
@@ -193,7 +193,7 @@ function Skinner:Armory()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[ArmoryInventoryFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[ArmoryInventoryFrame] = true
 
 	-- Icon View SubFrame
 	self:skinScrollBar{obj=ArmoryInventoryIconViewFrame}
@@ -408,7 +408,7 @@ function Skinner:Armory()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[ArmoryAchievementFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[ArmoryAchievementFrame] = true
 
 -->>-- Social Frame
 	self:skinFFToggleTabs("ArmorySocialFrameTab", 3, true)
