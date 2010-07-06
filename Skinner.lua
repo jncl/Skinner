@@ -229,11 +229,7 @@ function Skinner:OnEnable()
 
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
-	self:ScheduleTimer(function()
-		self:RegisterEvent("ADDON_LOADED")
---		print("OE", aef:IsEventRegistered("ADDON_LOADED"))
-	end, 1)
-
+	self:ScheduleTimer(function() self:RegisterEvent("ADDON_LOADED") end, self.db.profile.Delay.Init)
 	-- skin the Blizzard frames
 	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
 	-- skin the loaded AddOns frames
@@ -402,7 +398,7 @@ function Skinner:addSkinButton(...)
 
 end
 
-local hdrTexNames = {"Header", "_Header", "_HeaderBox", "FrameHeader", "HeaderTexture", "HeaderFrame"}
+local hdrTexNames = {"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"}
 local function hideHeader(obj)
 
 	-- hide the Header Texture and move the Header text, if required
