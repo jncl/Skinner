@@ -267,7 +267,7 @@ function Skinner:MenuFrames()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[InterfaceOptionsFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[InterfaceOptionsFrame] = true
 
 	local function checkKids(obj)
 
@@ -384,7 +384,7 @@ function Skinner:MailFrame()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[MailFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[MailFrame] = true
 
 end
 
@@ -484,7 +484,7 @@ function Skinner:AuctionUI()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[AuctionFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[AuctionFrame] = true
 
 end
 
@@ -641,7 +641,7 @@ function Skinner:GuildBankUI()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[GuildBankFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[GuildBankFrame] = true
 
 end
 
@@ -719,7 +719,7 @@ function Skinner:GMChatUI()
 	self:skinButton{obj=GMChatFrameCloseButton, cb=true}
 
 -->>-- GMChat Frame Tab
-	self:addSkinFrame{obj=GMChatTab, ft=ftype, kfs=true, noBdr=self.isTT, y2=-4}
+	self:addSkinFrame{obj=GMChatTab, kfs=true, ft=ftype, noBdr=self.isTT, y2=-4}
 
 end
 
@@ -819,7 +819,7 @@ function Skinner:LFRFrame()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[LFRParentFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[LFRParentFrame] = true
 
 end
 

@@ -28,7 +28,7 @@ function Skinner:CharacterFrame()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[CharacterFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[CharacterFrame] = true
 
 end
 
@@ -193,7 +193,7 @@ function Skinner:PVPFrame()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[PVPParentFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[PVPParentFrame] = true
 
 end
 
@@ -312,7 +312,7 @@ function Skinner:TalentUI()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[PlayerTalentFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[PlayerTalentFrame] = true
 -->>-- Tabs (side)
 	for i = 1, 3 do
 		local tabName = _G["PlayerSpecTab"..i]
@@ -506,7 +506,7 @@ function Skinner:AchievementUI()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[AchievementFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[AchievementFrame] = true
 
 end
 

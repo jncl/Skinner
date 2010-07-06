@@ -714,7 +714,7 @@ function Skinner:InspectUI()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[InspectFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[InspectFrame] = true
 
 end
 
@@ -736,7 +736,7 @@ function Skinner:WorldState()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[WorldStateScoreFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[WorldStateScoreFrame] = true
 
 end
 

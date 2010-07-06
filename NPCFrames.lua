@@ -34,7 +34,7 @@ function Skinner:MerchantFrames()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
-	if self.isTT then self.tabFrames[MerchantFrame] = true end -- add entry as tabs now exist
+	self.tabFrames[MerchantFrame] = true
 
 end
 
