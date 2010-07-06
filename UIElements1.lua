@@ -351,13 +351,16 @@ function Skinner:ChatEditBox()
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cfeb = _G["ChatFrame"..i.."EditBox"]
-		if self.db.profile.ChatEditBox.style == 1 then
+		if self.db.profile.ChatEditBox.style == 1 then -- Frame
 			local kRegions = CopyTable(self.ebRegions)
 			table.insert(kRegions, 12)
 			self:keepRegions(cfeb, kRegions)
 			self:addSkinFrame{obj=cfeb, ft=ftype, x1=2, y1=-2, x2=-2}
-		else
+		elseif self.db.profile.ChatEditBox.style == 2 then -- Editbox
 			self:skinEditBox{obj=cfeb, regs={12}, noHeight=true}
+		else -- Borderless
+			self:removeRegions(cfeb, {6, 7, 8})
+			self:addSkinFrame{obj=cfeb, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		end
 	end
 
