@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
+../../FrameXML/UI.xsd">
 
 <!-- Addon skins are here, must be prefixed by SkinMe\ -->
 
@@ -97,6 +97,7 @@
 <script file="SkinMe\EventEquip.lua"/>
 <script file="SkinMe\EveryQuest.lua"/>
 <script file="SkinMe\Examiner.lua"/>
+<script file="SkinMe\ExtendedRaidInfo.lua"/>
 <script file="SkinMe\Factionizer.lua"/>
 <script file="SkinMe\FBagOfHolding.lua"/>
 <script file="SkinMe\FeedMachine.lua"/>
@@ -120,6 +121,7 @@
 <script file="SkinMe\GuildAds.lua"/>
 <script file="SkinMe\GuildBankAccount.lua"/>
 <script file="SkinMe\GuildBankSearch.lua"/>
+<script file="SkinMe\GuildGreet.lua"/>
 <script file="SkinMe\GuildLaunchCT_RaidTracker.lua"/>
 <script file="SkinMe\GupCharacter.lua"/>
 <script file="SkinMe\GupPet.lua"/>
@@ -137,7 +139,10 @@
 <script file="SkinMe\InventoryOnPar.lua"/>
 <script file="SkinMe\IPopBar.lua"/>
 <script file="SkinMe\ItemDB.lua"/>
+<script file="SkinMe\ItemRack.lua"/>
+<script file="SkinMe\ItemSync.lua"/>
 <script file="SkinMe\LauncherMenu.lua"/>
+<script file="SkinMe\LazyAFK.lua"/>
 <script file="SkinMe\LibExtraTip.lua"/>
 <script file="SkinMe\LibQTip.lua"/>
 <script file="SkinMe\LibSimpleFrame.lua"/>
@@ -156,6 +161,7 @@
 <script file="SkinMe\MakeRocketGoNow.lua"/>
 <script file="SkinMe\Mapster.lua"/>
 <script file="SkinMe\MinimapButtonFrame.lua"/>
+<script file="SkinMe\Misdirectionhelper.lua"/>
 <script file="SkinMe\MobMap.lua"/>
 <script file="SkinMe\MonkeyQuest.lua"/>
 <script file="SkinMe\MonkeyQuestLog.lua"/>
@@ -164,6 +170,7 @@
 <script file="SkinMe\MrTrader_SkillWindow.lua"/>
 <script file="SkinMe\MSBTOptions.lua"/>
 <script file="SkinMe\MTLove.lua"/>
+<script file="SkinMe\MuffinMOTD.lua"/>
 <script file="SkinMe\MyBags.lua"/>
 <script file="SkinMe\myClock.lua"/>
 <script file="SkinMe\NeatFreak.lua"/>
