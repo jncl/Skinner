@@ -823,15 +823,17 @@ function Skinner:LFRFrame()
 
 end
 
--- BattleNet additions (patch .3.5)
+-- BattleNet additions (patch 3.3.5)
 function Skinner:BNFrames()
 	if not self.db.profile.BNFrames or self.initialized.BNFrames then return end
 	self.initialized.BNFrames = true
 
+-->>-- Toast frame
 	self:addSkinFrame{obj=BNToastFrame, ft=ftype}
-
+-->>-- Report frame
+	BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
 	self:skinScrollBar{obj=BNetReportFrameCommentScrollFrame}
-	self:addSkinFrame{obj=BNetReportFrameComment, ft=ftype}
+	self:skinEditBox{obj=BNetReportFrameCommentBox, regs={6}}
 	self:addSkinFrame{obj=BNetReportFrame, ft=ftype}
 
 end
