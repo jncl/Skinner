@@ -11,15 +11,15 @@ function Skinner:FriendsFrame()
 			for i, v in pairs(FRIENDSFRAME_SUBFRAMES) do
 				-- handle Friends and Ignore on the same Tab
 				local j = ( i > 1 and i - 1 or i)
-				-- handle Friends, Ignore and Muted on the same Tab
+				-- handle Friends, Ignore and Pending on the same Tab
 				j = ( j > 1 and j - 1 or j)
 				-- handle additional Tabs with altered names or numbers
 				local prefix = (v == "BadapplesFrame" and "Badapples" or "")
 				local tabId = (v == "BadapplesFrame" and 6 or j)
 				if v == "BlackListFrame" then tabId = 1 end -- handle the BlackListFrame
 				local tabSF = self.skinFrame[_G[prefix.."FriendsFrameTab"..tabId]]
-				-- ignore the IgnoreListFrame (also the MutedListFrame) (and the BlackListFrame)
- 				if v ~= "IgnoreListFrame" and v ~= "MutedListFrame" and v ~= "BlackListFrame" then
+				-- ignore the IgnoreListFrame (also the PendingListFrame) (and the BlackListFrame)
+ 				if v ~= "IgnoreListFrame" and v ~= "PendingListFrame" and v ~= "BlackListFrame" then
 					self:setInactiveTab(tabSF)
 				end
 				if v == frameName then
@@ -28,18 +28,19 @@ function Skinner:FriendsFrame()
 			end
 		end)
 	end
--->>--	Friends Frame
+-->>--	FriendsList Frame
 	self:skinDropDown{obj=FriendsFrameStatusDropDown}
+	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
 	-- Add a skin frame to include the icon at the front
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
 	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true}, x1=-24}
 	self:skinFFToggleTabs("FriendsTabHeaderTab")
 	self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
-	self:skinScrollBar{obj=FriendsFrameFriendsScrollFrame}
-	--[=[
-		TODO Scroll bar texture too narrow (.3.5 patch)
-	--]=]
+	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar, size=4}
+	for i = 1, FRIENDS_FRIENDS_TO_DISPLAY do
+		_G["FriendsFrameFriendsScrollFrameButton"..i].background:SetAlpha(0)
+	end
 	self:moveObject{obj=FriendsFrameAddFriendButton, x=3}
 	-- Add Friend Frame
 	self:addSkinFrame{obj=AddFriendFrame, kfs=true}
@@ -47,11 +48,17 @@ function Skinner:FriendsFrame()
 	self:addSkinFrame{obj=AddFriendNoteFrame, kfs=true}
 	self:skinScrollBar{obj=AddFriendNoteFrameScrollFrame}
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, bgen=2, x1=12, y1=-11, x2=-33, y2=71}
+	-- Friends Tooltip
+	self:addSkinFrame{obj=FriendsTooltip}
 
--->>--	Ignore Frame
+-->>--	IgnoreList Frame
 	self:keepFontStrings(IgnoreListFrame)
 	self:skinScrollBar{obj=FriendsFrameIgnoreScrollFrame}
-	self:moveObject{obj=FriendsFrameIgnorePlayerButton, y=1}
+
+-->>--	PendingList Frame
+	self:keepFontStrings(PendingListFrame)
+	self:skinDropDown{obj=PendingListFrameDropDown}
+	self:skinScrollBar{obj=FriendsFramePendingScrollFrame}
 
 -->>--	Who Frame
 	self:skinFFColHeads("WhoFrameColumnHeader")
@@ -94,6 +101,7 @@ function Skinner:FriendsFrame()
 	self:addSkinFrame{obj=GuildEventFrame, ft=ftype}
 	self:skinScrollBar{obj=GuildEventLogScrollFrame}
 	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
+
 -->>--	Channel Frame
 	self:keepFontStrings(ChannelFrame)
 	self:skinButton{obj=ChannelFrameNewButton}
