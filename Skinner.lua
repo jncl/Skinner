@@ -55,6 +55,14 @@ function Skinner:OnInitialize()
 	-- register the statubar texture used by Nameplates
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 
+	-- register any User defined textures used
+	if prdb.BdFile and prdb.BdFile ~= "None" then
+		self.LSM:Register("background", "Skinner User Background", prdb.BdFile)
+	end
+	if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
+		self.LSM:Register("border", "Skinner User Border", prdb.BdEdgeFile)
+	end
+
 	-- Heading and Body Text colours
 	local c = prdb.HeadText
 	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
@@ -84,12 +92,12 @@ function Skinner:OnInitialize()
 		}
 	else
 		if prdb.BdFile and prdb.BdFile ~= "None" then
-			bdtex = prdb.BdFile
+			bdtex = self.LSM:Fetch("background", "Skinner User Background")
 		else
 			bdtex = self.LSM:Fetch("background", prdb.BdTexture)
 		end
 		if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
-			bdbtex = prdb.BdEdgeFile
+			bdbtex = self.LSM:Fetch("border", "Skinner User Border")
 		else
 			bdbtex = self.LSM:Fetch("border", prdb.BdBorderTexture)
 		end

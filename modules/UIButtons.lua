@@ -83,6 +83,10 @@ module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font 
 module.fontX= CreateFont("fontX")
 module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
 module.fontX:SetTextColor(1.0, 0.82, 0)
+-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
+module.fontSBX= CreateFont("fontSBX")
+module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
+module.fontSBX:SetTextColor(0.2, 0.6, 0.8)
 -- create font to use for Minus/Plus Buttons
 module.fontP= CreateFont("fontP")
 module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
@@ -161,6 +165,13 @@ function module:skinButton(opts)
 		btn = Skinner.sBut[opts.obj]
 		btn:SetNormalFontObject(module.fontX)
 		btn:SetText(module.mult)
+	elseif opts.cb3 then -- it's a small blue close button
+		Skinner:adjWidth{obj=opts.obj, adj=-4}
+		Skinner:adjHeight{obj=opts.obj, adj=-4}
+		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[5], bba=0}, x1=2, y1=1, x2=2, y2=1}
+		btn = Skinner.sBut[opts.obj]
+		btn:SetNormalFontObject(module.fontSBX)
+		btn:SetText(module.mult)
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
 		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[6]}}
 		btn = Skinner.sBut[opts.obj]
@@ -227,7 +238,7 @@ local function getTexture(obj)
 	end
 
 end
-function module:isButton(obj, cb)
+function module:isButton(obj, cb, blue)
 
 	if obj:IsObjectType("Button")
 	and obj.GetNormalTexture -- is it a true button
@@ -247,8 +258,14 @@ function module:isButton(obj, cb)
 			then
 				return true
 			end
-		else
-			if nTex and nTex:find("UI-Panel-MinimizeButton", 1, true) then
+		elseif not blue then
+			if nTex and nTex:find("UI-Panel-MinimizeButton", 1, true)
+			then
+				return true
+			end
+		else	
+			if nTex and nTex:find("UI-Toast-CloseButton", 1, true)
+			then
 				return true
 			end
 		end
@@ -278,6 +295,8 @@ local function __skinAllButtons(opts, bgen)
 			module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 		elseif module:isButton(child, true) then -- close button
 			module:skinButton{obj=child, cb=true, sap=opts.sap}
+		elseif module:isButton(child, true, true) then -- small blue close button
+			module:skinButton{obj=child, cb3=true}
 		elseif child:IsObjectType("Frame")
 		and bgen > 0 then
 			opts.obj=child

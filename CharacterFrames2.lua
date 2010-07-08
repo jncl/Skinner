@@ -386,8 +386,8 @@ function Skinner:VehicleMenuBar()
 	self.initialized.VehicleMenuBar = true
 
 	local xOfs1, xOfs2
-	local yOfs1 = 42
-	local yOfs2 = -1
+	local yOfs1 = 28
+	local yOfs2 = 1
 
 	local function skinVehicleMenuBar(opts)
 
