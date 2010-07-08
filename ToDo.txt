@@ -13,33 +13,7 @@ B - Button(s) Skin request
 ≈	I	LFG/LFD, reported by Alcotraz, 23.04.10/5.06.10
 		- cooldownFrame saying 'you recently queued for a random dungeon.... time left mm Min ss Secs', is behind the LFD panel instead of on top of it
 		- can't replicate this behaviour atm
-		- possibly reparent the skinframe ??
-
-≈	I	XLoot, reported by tordenflesk/Kerecha, 27.05.10
-		- Roll & Grouploot panels not being skinned
-		- getting the color instead of the texture on rollframe and looted items display
-		- reverting to skin from b3.11723.5 fixes these issues
-
-√	S	GuildGreet, requested by mkcorp, 1.07.10
-√	S	MuffinMOTD, requested by mkcorp, 1.07.10
-√	S	ExtendedRaidInfo, requested by mkcorp, 1.07.10
-√	S	LazyAFK, requested by mkcorp, 1.07.10
-√	S	Misdirectionhelper, requested by mkcorp, 1.07.10
-
-	I	FriendsFrame (3.3.5)
-√		- texture behind name
-√		- new tooltip frame on mouseover
-
-√	I	NeonChat, reported by burber, 3.07.10
-
-√	N	ItemRack, reported by dwarven, 4.07.10
-
-√	I	Blizzard LoD frames, reported by Normally45, 4.07.10
-		- still not being skinned at startup
-		- using Init delay value to control this
-
-√	I	Prat reported by Red-winter, 5.07.10
-		- not skinning the editbox properly. It does not save the after log out.
+√		- reparent the skinframe
 
 ?	I	Outfitter, reported by Littlelizzi, 6.07.10
 		- Interface\AddOns\Skinner\SkinMe\Outfitter.lua:158: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
@@ -51,10 +25,25 @@ B - Button(s) Skin request
 		Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:344: in function `SecureHook'
 		Interface\AddOns\Skinner\SkinMe\Outfitter.lua:158: in function <Interface\AddOns\Skinner\SkinMe\Outfitter.lua:3 >
 		(tail call): ?
+		- working ok with 5.0b8
 
-√	I	AckisRecipeList, reported by Gabriel/Luckyjack_SL, 6/07/10
-		- Happens only with RC1 - xx versions.
-		- The RC1 release doesn't have this issue (for your info).
+√	I	ARL, reported by pompachomp, 7.07.10
+		- latest alpha breaks the skin
 
-√	I	FriendFrame, reported by Luckyjack_SL, 6.07.10
-		- Status icon missing (not textured DD)
+√	I	BasicChatMods, reported by Kerecha, 7.07.10
+		-  Skinner-b3.12340.2\SkinMe\BasicChatMods.lua:16: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		AceHook-3.0-5 (Ace3):146: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):414: in function `SecureHookScript'
+		Skinner-b3.12340.2\SkinMe\BasicChatMods.lua:16: in function <Skinner\SkinMe\BasicChatMods.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b3.12340.2\UtilFuncs.lua:84: in function <Skinner\UtilFuncs.lua:82>
+		Skinner-b3.12340.2\UtilFuncs.lua:144: in function `?'
+		Skinner-b3.12340.2\AddonFrames.lua:122: in function <Skinner\AddonFrames.lua:54>
+		(tail call): ?:
+
+≈	I	Prat, reported by Kerecha, 7.07.10
+		- minor bugg in the Prat skin makes the editbox plain white background instead of using my selected texture (making it impossible to see what i type)
+
+√	I	BN Toast frame, reported by Kerecha 7.07.10
+		- the toast popup is behaving oddly (probably due to the delay in skinning) it pops up "unskinned" (just color no texture making it pure white in my case) for liek a second then it becomes fully skinned.
