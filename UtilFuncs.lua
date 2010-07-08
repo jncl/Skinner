@@ -39,11 +39,13 @@ local function printIt(text, frame, r, g, b)
 	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
 
 end
-
 --@debug@
+function printTS(...)
+	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
+end
 function Skinner:Debug(a1, ...)
 
-	local output = ("|cff7fff7f(DBG) %s:[%s.%3d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
+	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
 
 	printIt(output.." "..makeText(a1, ...), self.debugFrame)
 
@@ -91,17 +93,6 @@ local function safecall(funcName, LoD, quiet)
 			Skinner:CustomPrint(1, 0, 0, "Error running", funcName)
 		end
 	end
-end
-
-function Skinner:avoidWhiteout(frame)
-
-	-- change parent to prevent Animation causing gradient 'whiteout'
-	self.skinFrame[frame]:SetParent(UIParent)
-	-- hook Show and Hide methods
-	self:SecureHook(frame, "Show", function(this) self.skinFrame[this]:Show() end)
-	self:SecureHook(frame, "Hide", function(this) self.skinFrame[this]:Hide() end)
-	if not frame:IsShown() then self.skinFrame[frame]:Hide() end
-
 end
 
 function Skinner:checkAndRun(funcName, quiet)
@@ -336,6 +327,27 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 	end
 
 	return hasMatched
+
+end
+
+function Skinner:reParentSB(button, parent)
+
+	-- change the parent of the skin button
+	-- 1. to prevent Animation causing gradient 'whiteout' (e.g. BNToast frame)
+	self.sBut[button]:SetParent(parent)
+
+end
+
+function Skinner:reParentSF(frame)
+
+	-- change the parent of the skin frame
+	-- 1. to prevent Animation causing gradient 'whiteout' (e.g. Alert frames)
+	-- 2. to prevent other child frames from appearing behind the skin frame (e.g. LFD random cooldown)
+	self.skinFrame[frame]:SetParent(UIParent)
+	-- hook Show and Hide methods
+	self:SecureHook(frame, "Show", function(this) self.skinFrame[this]:Show() end)
+	self:SecureHook(frame, "Hide", function(this) self.skinFrame[this]:Hide() end)
+	if not frame:IsShown() then self.skinFrame[frame]:Hide() end
 
 end
 

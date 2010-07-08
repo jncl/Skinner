@@ -36,6 +36,7 @@ function Skinner:PaperDollFrame()
 
 	self:keepFontStrings(PaperDollFrame)
 	self:skinDropDown{obj=PlayerTitleFrame}
+	self:moveObject{obj=PlayerTitleFrameButton, y=1}
 	self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
 	self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}
 	self:makeMFRotatable(CharacterModelFrame)
@@ -528,7 +529,7 @@ function Skinner:AlertFrames()
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
 				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
-				Skinner:avoidWhiteout(aaFrame)
+				Skinner:reParentSF(aaFrame)
 			end
 		end
 
@@ -554,6 +555,6 @@ function Skinner:AlertFrames()
 	DungeonCompletionAlertFrame1:DisableDrawLayer("BORDER") -- border textures
 	_G["DungeonCompletionAlertFrame1Reward1"]:DisableDrawLayer("OVERLAY") -- border texture
 	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, x1=5, y1=-13, x2=-5, y2=4}
-	Skinner:avoidWhiteout(DungeonCompletionAlertFrame1)
+	Skinner:reParentSF(DungeonCompletionAlertFrame1)
 
 end
