@@ -1,3 +1,20 @@
+b3.12340.2
+Jncl:
+	ToDo.txt
+	Updated AckisRecipeList skin
+	Updated Change_History.txt
+	Updated comment
+	Fix for BlizzardLoD frames issue
+	Frames with Tabs changes
+	Updated BattleNet skin
+	Fixed AlertFrame backgrounds
+	Added new ChatEditBox style (Borderless)
+	Updated FriendsFrame skin
+	Updated skins
+	- Armory, GearScore, NeonChat, Outfitter, Prat3 & XLoot
+	Skinned ExtendedRaidInfo, GuildGreet, LazyAFK, Misdirectionhelper & MuffinMOTD
+	Unobsoleted ItemRack
+
 b3.12340.1
 Jncl:
 	ToDo.txt
