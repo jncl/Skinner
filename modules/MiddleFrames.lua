@@ -44,6 +44,7 @@ local function OnMouseUp(self, mBtn)
 			self.db[self.key].yOfs = y - py
 			self.db[self.key].width = floor(self:GetWidth())
 			self.db[self.key].height = floor(self:GetHeight())
+			Skinner:applyGradient(self)
 		end
 	end
 
