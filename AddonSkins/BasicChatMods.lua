@@ -2,20 +2,10 @@ if not Skinner:isAddonEnabled("BasicChatMods") then return end
 
 function Skinner:BasicChatMods()
 
-	local function skinBCMCopyFrame()
-		
+	self:SecureHookScript(BCMCopyChat, "OnClick", function(this)
 		self:skinScrollBar{obj=BCMCopyScroll}
 		self:addSkinFrame{obj=BCMCopyFrame}
-		
-		for i = 1, NUM_CHAT_WINDOWS do
-			self:Unhook(_G["BCMButtonCF"..i], "OnClick")
-		end
-	end
-
-	for i = 1, NUM_CHAT_WINDOWS do
-		self:SecureHookScript(_G["BCMButtonCF"..i], "OnClick", function(this)
-			skinBCMCopyFrame()
-		end)
-	end
+		self:Unhook(BCMCopyChat, "OnClick")
+	end)
 	
 end

@@ -32,8 +32,13 @@ function Skinner:Ace3()
 			or objType == "InlineGroup"
 			or objType == "TabGroup"
 			then
-				self:keepFontStrings(obj.border)
-				self:applySkin(obj.border)
+				if objVer < 20 then
+					self:keepFontStrings(obj.border)
+					self:applySkin(obj.border)
+				else
+					self:keepFontStrings(obj.content:GetParent())
+					self:applySkin(obj.content:GetParent())
+				end
 			elseif objType == "EditBox"
 			or objType == "NumberEditBox"
 			then
