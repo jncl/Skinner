@@ -1,7 +1,7 @@
 -- many thanks to acirac for the updated skin
 if not Skinner:isAddonEnabled("HealBot") then return end
 
-function Skinner:HealBot() -- version 3.3.3.4
+function Skinner:HealBot() -- version 3.3.5.0
 	if not self.db.profile.Tooltips.skin then return end
 
 -->>--	Tooltips
@@ -117,6 +117,7 @@ function Skinner:HealBot() -- version 3.3.3.4
 	self:applySkin(HealBot_Options_BuffsPanel, nil)	
 	self:keepFontStrings(HealBot_Options_ComboClassButton)
 	self:keepFontStrings(HealBot_Options_ActionBarsCombo)
+	self:keepFontStrings(HealBot_Options_MouseWheelModKey)
 	self:keepFontStrings(HealBot_Options_SkinPartyRaidDefault)
 	self:keepFontStrings(HealBot_Options_KeysFrame)
 	self:applySkin(HealBot_Options_KeysFrame, nil)
@@ -189,17 +190,20 @@ function Skinner:HealBot() -- version 3.3.3.4
 	self:keepFontStrings(HealBot_Options_Chat)
 	self:applySkin(HealBot_Options_Chat, nil)
 	self:keepFontStrings(HealBot_Options_ActionAnchor)
+	self:keepFontStrings(HealBot_Options_ActionBarsAnchor)
 	self:keepFontStrings(HealBot_Options_GenFrame)
 	self:applySkin(HealBot_Options_GenFrame, nil)
 	self:keepFontStrings(HealBot_Options_BuffTimers)
 	self:applySkin(HealBot_Options_BuffTimers, nil)	
 	
 	self:moveObject(HealBot_Options_ActionBarsCombo, nil, nil, "+", 5)
-	self:moveObject(HealBot_ComboButtons_ButtonText, nil, nil, "+", 7)
-	self:moveObject(HealBot_ComboButtons_Button1, nil, nil, "+", 7)
-	self:moveObject(HealBot_AutoTarget_ButtonText, nil, nil, "+", 10)
-	self:moveObject(HealBot_AutoTrinket_ButtonText, nil, nil, "+", 10)
-	self:moveObject(HealBot_Options_Click, nil, nil, "+", 10)
+	self:moveObject(HealBot_Options_CastButton, nil, nil, "+", 5)
+	self:moveObject(HealBot_ComboButtons_ButtonText, nil, nil, "+", 12)
+	self:moveObject(HealBot_ComboButtons_Button1, nil, nil, "+", 12)
+	self:moveObject(HealBot_AutoTarget_ButtonText, nil, nil, "+", 15)
+	self:moveObject(HealBot_AutoTrinket_ButtonText, nil, nil, "+", 15)
+	self:moveObject(HealBot_Options_Click, nil, nil, "+", 15)
+	self:moveObject(HealBot_Options_EnableMouseWheel, nil, nil, "+", 5)
 	self:moveObject(HealBot_Options_NewCDebuff, nil, nil, "+", 4)
 	self:moveObject(HealBot_Options_NewSkin, nil, nil, "+", 4)
 	self:moveObject(HealBot_Options_NewCDebuffBtn, "-", 5, nil, nil)
