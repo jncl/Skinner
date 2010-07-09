@@ -30,6 +30,7 @@ function Skinner:Prat30() -- concatenation of Prat-3.0
 		bc.r, bc.g, bc.b, bc.a = unpack(self.bColour)
 		local bbc = prof.borderColor
 		bbc.r, bbc.g, bbc.b, bbc.a = unpack(self.bbColour)
+		prof.colorByChannel = false
 		if self.db.profile.ChatEditBox.style == 2 then -- Editbox
 			prof.border = "Skinner Border"
 			prof.inset = 4

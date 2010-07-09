@@ -18,112 +18,112 @@ function Skinner:Ace3()
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
---		self:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
-		if obj and not self.skinned[obj] then
+--		Skinner:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
+		if obj and not Skinner.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
-				self:keepFontStrings(obj.frame)
-				self:applySkin(obj.frame)
+				Skinner:keepFontStrings(obj.frame)
+				Skinner:applySkin(obj.frame)
 			elseif objType == "Dropdown" then
-				self:skinDropDown{obj=obj.dropdown}
-				self:applySkin(obj.pullout.frame)
+				Skinner:skinDropDown{obj=obj.dropdown}
+				Skinner:applySkin(obj.pullout.frame)
 			elseif objType == "Dropdown-Pullout" then
-				self:applySkin(obj.frame)
+				Skinner:applySkin(obj.frame)
 			elseif objType == "DropdownGroup"
 			or objType == "InlineGroup"
 			or objType == "TabGroup"
 			then
 				if objVer < 20 then
-					self:keepFontStrings(obj.border)
-					self:applySkin(obj.border)
+					Skinner:keepFontStrings(obj.border)
+					Skinner:applySkin(obj.border)
 				else
-					self:keepFontStrings(obj.content:GetParent())
-					self:applySkin(obj.content:GetParent())
+					Skinner:keepFontStrings(obj.content:GetParent())
+					Skinner:applySkin(obj.content:GetParent())
 				end
 			elseif objType == "EditBox"
 			or objType == "NumberEditBox"
 			then
-				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
-				self:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
+				Skinner:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
+				Skinner:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
 					return left + 6, right, top, bottom
 				end, true)
-				self:skinButton{obj=obj.button, as=true}
+				Skinner:skinButton{obj=obj.button, as=true}
 				if objType == "NumberEditBox" then
-					self:skinButton{obj=obj.minus, as=true}
-					self:skinButton{obj=obj.plus, as=true}
+					Skinner:skinButton{obj=obj.minus, as=true}
+					Skinner:skinButton{obj=obj.plus, as=true}
 				end
 			elseif objType == "MultiLineEditBox" then
-				self:skinButton{obj=obj.button, as=true}
+				Skinner:skinButton{obj=obj.button, as=true}
 				if objVer < 20 then
-					self:skinScrollBar{obj=obj.scrollframe}
-					self:applySkin(obj.backdrop)
+					Skinner:skinScrollBar{obj=obj.scrollframe}
+					Skinner:applySkin(obj.backdrop)
 				else
-					self:skinScrollBar{obj=obj.scrollFrame}
-					self:applySkin{obj=self:getChild(obj.frame, 2)} -- backdrop frame
+					Skinner:skinScrollBar{obj=obj.scrollFrame}
+					Skinner:applySkin{obj=Skinner:getChild(obj.frame, 2)} -- backdrop frame
 				end
 			elseif objType == "Slider" then
-				self:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
+				Skinner:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
 				obj.editbox:SetHeight(20)
 				obj.editbox:SetWidth(60)
 			elseif objType == "Frame" then
-				self:keepFontStrings(obj.frame)
-				self:applySkin(obj.frame)
+				Skinner:keepFontStrings(obj.frame)
+				Skinner:applySkin(obj.frame)
 				if objVer < 20 then
-					self:skinButton{obj=obj.closebutton, y1=1}
-					self:applySkin(obj.statusbg)
+					Skinner:skinButton{obj=obj.closebutton, y1=1}
+					Skinner:applySkin(obj.statusbg)
 				else
-					self:skinButton{obj=self:getChild(obj.frame, 1), y1=1}
-					self:applySkin{obj=self:getChild(obj.frame, 2)} -- backdrop frame
+					Skinner:skinButton{obj=Skinner:getChild(obj.frame, 1), y1=1}
+					Skinner:applySkin{obj=Skinner:getChild(obj.frame, 2)} -- backdrop frame
 				end
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "Window" then
-				self:keepFontStrings(obj.frame)
-				self:applySkin(obj.frame)
-				self:skinButton{obj=obj.closebutton, cb=true}
+				Skinner:keepFontStrings(obj.frame)
+				Skinner:applySkin(obj.frame)
+				Skinner:skinButton{obj=obj.closebutton, cb=true}
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "ScrollFrame" then
-				self:keepRegions(obj.scrollbar, {1})
-				self:skinUsingBD{obj=obj.scrollbar}
+				Skinner:keepRegions(obj.scrollbar, {1})
+				Skinner:skinUsingBD{obj=obj.scrollbar}
 			elseif objType == "TreeGroup" then
-				self:keepRegions(obj.scrollbar, {1})
-				self:skinUsingBD{obj=obj.scrollbar}
-				self:applySkin(obj.border)
-				self:applySkin(obj.treeframe)
-				if self.modBtns then
+				Skinner:keepRegions(obj.scrollbar, {1})
+				Skinner:skinUsingBD{obj=obj.scrollbar}
+				Skinner:applySkin(obj.border)
+				Skinner:applySkin(obj.treeframe)
+				if Skinner.modBtns then
 					-- hook to manage changes to button textures
-					self:SecureHook(obj, "RefreshTree", function()
+					Skinner:SecureHook(obj, "RefreshTree", function()
 						for i = 1, #obj.buttons do
 							local button = obj.buttons[i]
-							if not self.skinned[button.toggle] then
-								self:skinButton{obj=button.toggle, mp2=true, plus=true} -- default to plus
+							if not Skinner.skinned[button.toggle] then
+								Skinner:skinButton{obj=button.toggle, mp2=true, plus=true} -- default to plus
 							end
 						end
 					end)
 				end
 			elseif objType == "Button" then
-				self:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+				Skinner:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
 			elseif objType == "Keybinding" then
-				self:skinButton{obj=obj.button, as=true}
-				self:applySkin{obj=obj.msgframe}
+				Skinner:skinButton{obj=obj.button, as=true}
+				Skinner:applySkin{obj=obj.msgframe}
 
 			-- Snowflake objects
 			elseif objType == "SnowflakeGroup" then
-				self:applySkin{obj=obj.frame}
-				self:skinSlider{obj=obj.slider, size=2}
+				Skinner:applySkin{obj=obj.frame}
+				Skinner:skinSlider{obj=obj.slider, size=2}
 				-- hook this for frame refresh
-				self:SecureHook(obj, "Refresh", function(this)
-					this.frame:SetBackdrop(self.Backdrop[1])
-					local bCr, bCg, bCb, bCa = unpack(self.bColour)
-					local bbCr, bbCg, bbCb, bbCa = unpack(self.bbColour)
+				Skinner:SecureHook(obj, "Refresh", function(this)
+					this.frame:SetBackdrop(Skinner.Backdrop[1])
+					local bCr, bCg, bCb, bCa = unpack(Skinner.bColour)
+					local bbCr, bbCg, bbCb, bbCa = unpack(Skinner.bbColour)
 					this.frame:SetBackdropColor(bCr, bCg, bCb, bCa)
 					this.frame:SetBackdropBorderColor(bbCr, bbCg, bbCb, bbCa)
 				end)
 			elseif objType == "SnowflakeEditBox" then
-				self:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
+				Skinner:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
 
 			-- Producer objects
 			elseif objType == "ProducerHead" then
-				self:applySkin{obj=obj.frame}
-				self:skinButton{obj=obj.close, cb2=true}
+				Skinner:applySkin{obj=obj.frame}
+				Skinner:skinButton{obj=obj.close, cb2=true}
 				obj.SetBorder = function() end -- disable background changes
 
 			-- ListBox object (AuctionLite)
@@ -131,11 +131,11 @@ function Skinner:Ace3()
 				for _, child in pairs{obj.box:GetChildren()} do -- find scroll bar
 					if child:IsObjectType("ScrollFrame") then
 						child:SetBackdrop(nil)
-						self:skinScrollBar{obj=child}
+						Skinner:skinScrollBar{obj=child}
 						break
 					end
 				end
-				self:applySkin{obj=obj.box, kfs=true}
+				Skinner:applySkin{obj=obj.box, kfs=true}
 			-- ignore these types for now
 			elseif objType == "CheckBox"
 			or objType == "Dropdown-Item-Execute"
@@ -151,7 +151,7 @@ function Skinner:Ace3()
 			then
 			-- any other types
 			else
-				self:Debug("AceGUI, unmatched type - %s", objType)
+				Skinner:Debug("AceGUI, unmatched type - %s", objType)
 			end
 		end
 

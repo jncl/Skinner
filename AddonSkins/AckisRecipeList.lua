@@ -15,9 +15,7 @@ function Skinner:AckisRecipeList()
 		["2.0-rc2"] = 5, -- beta
 	}
 	local ver = GetAddOnMetadata("AckisRecipeList", "Version")
-	printTS("ARL ver#1:", ver)
 	ver = vTab[ver] or ver:sub(1, 10) > "2.0-rc2-10" and 6 -- handle alpha
-	printTS("ARL ver#2:", ver)
 	if not type(ver) == number then self:CustomPrint(1, 0, 0, "Unsupported ARL version") return end
 
 	local function skinARL(frame)
