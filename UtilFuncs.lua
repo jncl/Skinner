@@ -332,6 +332,8 @@ end
 
 function Skinner:reParentSB(button, parent)
 
+	if not self.modBtns then return end -- UIButtons not being skinned therefore no need to do this
+
 	-- change the parent of the skin button
 	-- 1. to prevent Animation causing gradient 'whiteout' (e.g. BNToast frame)
 	self.sBut[button]:SetParent(parent)
