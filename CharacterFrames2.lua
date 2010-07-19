@@ -50,6 +50,12 @@ function Skinner:FriendsFrame()
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, bgen=2, x1=12, y1=-11, x2=-33, y2=71}
 	-- Friends Tooltip
 	self:addSkinFrame{obj=FriendsTooltip}
+	-- FriendsFriends frame
+	self:skinDropDown{obj=FriendsFriendsFrameDropDown}
+	self:addSkinFrame{obj=FriendsFriendsList, ft=ftype}
+	self:skinScrollBar{obj=FriendsFriendsScrollFrame}
+	self:addSkinFrame{obj=FriendsFriendsNoteFrame, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=FriendsFriendsFrame, ft=ftype}
 
 -->>--	IgnoreList Frame
 	self:keepFontStrings(IgnoreListFrame)
@@ -166,21 +172,6 @@ function Skinner:TradeSkillUI()
 			self:checkTex(TradeSkillCollapseAllButton)
 		end)
 	end
-
---@alpha@
-	-- taken from FramesResized, credit to Elkano
-	for i = TRADE_SKILLS_DISPLAYED + 1, TRADE_SKILLS_DISPLAYED * 2 do
-		frame = CreateFrame("Button", "TradeSkillSkill"..i, TradeSkillFrame, "TradeSkillSkillButtonTemplate")
-		frame:SetPoint("TOPLEFT", _G["TradeSkillSkill"..(i - 1)], "BOTTOMLEFT")
-	end
-	local adj = TRADE_SKILLS_DISPLAYED * TRADE_SKILL_HEIGHT
-	TRADE_SKILLS_DISPLAYED = TRADE_SKILLS_DISPLAYED * 2
-	TradeSkillFrame:SetHeight(512 + adj)
-	TradeSkillListScrollFrame:SetHeight(130 + adj)
-	TradeSkillDetailScrollFrame:SetPoint("TOPLEFT", 20, -(234 + adj))
-	TradeSkillCreateButton:SetPoint("CENTER", TradeSkillCreateButton:GetParent(), "TOPLEFT", 224, -(422 + adj))
-	TradeSkillCancelButton:SetPoint("CENTER", TradeSkillCancelButton:GetParent(), "TOPLEFT", 305, -(422 + adj))
---@end-alpha@
 
 	local bar = "TradeSkillRankFrame"
 	_G[bar.."Border"]:SetAlpha(0)
@@ -439,20 +430,6 @@ function Skinner:WatchFrame()
 	self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
 
 end
---@alpha@
-WATCHFRAME_LINEHEIGHT = 12
-WATCHFRAMELINES_FONTHEIGHT = 10
-WATCHFRAMELINES_FONTSPACING = (WATCHFRAME_LINEHEIGHT - WATCHFRAMELINES_FONTHEIGHT) / 2
--- hook this to change font size on WatchFrame lines
-Skinner:RawHook("WatchFrame_SetLine", function(line, ...)
---	Skinner:Debug("WF_SL: [%s]", line)
-	local fontName, fontHeight, fontFlags = line.text:GetFont()
-	line.text:SetFont(fontName, 10, fontFlags)
-	line.dash:SetFont(fontName, 10, fontFlags)
-	return Skinner.hooks["WatchFrame_SetLine"](line, ...)
-end, true)
-
---@end-alpha@
 
 function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 	if not self.db.profile.GearManager or self.initialized.GearManager then return end
