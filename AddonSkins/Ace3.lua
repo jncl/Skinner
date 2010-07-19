@@ -105,7 +105,7 @@ function Skinner:Ace3()
 				Skinner:skinButton{obj=obj.button, as=true}
 				Skinner:applySkin{obj=obj.msgframe}
 
-			-- Snowflake objects
+			-- Snowflake objects (Producer AddOn)
 			elseif objType == "SnowflakeGroup" then
 				Skinner:applySkin{obj=obj.frame}
 				Skinner:skinSlider{obj=obj.slider, size=2}
@@ -163,7 +163,7 @@ function Skinner:Ace3()
 
 	self:RawHook(AceGUI, "Create", function(this, objType)
 		local obj = self.hooks[this].Create(this, objType)
-		skinAceGUI(obj, objType)
+		if not objectsToSkin[obj] then skinAceGUI(obj, objType) end -- Bugfix: ignore objects awaiting skinning
 		return obj
 	end, true)
 
@@ -171,6 +171,6 @@ function Skinner:Ace3()
 	for obj in pairs(objectsToSkin) do
 		skinAceGUI(obj, objectsToSkin[obj])
 	end
-	objectsToSkin = nil
+	wipe(objectsToSkin)
 
 end
