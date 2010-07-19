@@ -1,3 +1,11 @@
+b3.12340.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Ace3, AckisRecipeList and Prat3 skins
+	Bugfix for BNFrames error
+	Updated HealBot skin (thanks to acirac)
+
 b3.12340.3
 Jncl:
 	ToDo.txt
