@@ -10,44 +10,23 @@ S - Skin request
 I - Issue/Bug
 B - Button(s) Skin request
 
-√	I	BNFrames, reported by Curace, 8.07.10
-		- Skinner-b3.12340.3\\UtilFuncs.lua:337: attempt to index field '?' (a nil value)
-		Skinner-b3.12340.3\\UIElements2.lua:834: in function <Interface\\AddOns\\Skinner\\UIElements2.lua:828>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b3.12340.3\\UtilFuncs.lua:86: in function <Interface\\AddOns\\Skinner\\UtilFuncs.lua:84>
-		(tail call): ?:
-		Skinner-b3.12340.3\\AddonFrames.lua:19: in function <Interface\\AddOns\\Skinner\\AddonFrames.lua:2>
-		(tail call): ?:
-		<in C code>: ?
-		<string>:\"safecall Dispatcher[2]\":9: in function <[string \"safecall Dispatcher[2]\"]:5>
-		(tail call): ?:
-		AceTimer-3.0-5 (Ace3):164: in function <Interface\\AddOns\\Ace3\\AceTimer-3.0\\AceTimer-3.0.lua:138>
-
-√	I	AckisRecipeList, reported by  Curace, 8.07.10
-		- Skinner-b3.12340.3\\SkinMe\\AckisRecipeList.lua:18: attempt to call global 'printTS' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b3.12340.3\\UtilFuncs.lua:86: in function <Interface\\AddOns\\Skinner\\UtilFuncs.lua:84>
-		Sk inner-b3.12340.3\\UtilFuncs.lua:135: in function `?'
-		Skinner-b3.12340.3\\AddonFrames.lua:122: in function <Interface\\AddOns\\Skinner\\AddonFrames.lua:54>
-		 (tail call): ?:
-		<in C code>: ?
-		<string>:\"safecall Dispatcher[2]\":9: in function <[string \"safecall Dispatcher[2]\"]:5>\n(tail call): ?:
-		AceTimer-3.0-5 (Ace3):164: in function <Interface\\AddOns\\Ace3\\AceTimer-3.0\\AceTimer-3.0.lua:138>
-
-≈	I	Ace3, reported by  Curace, 8.07.10
+√	I	Ace3, reported by Curace, 10.07.10
 		- AceHook-3.0-5 (Ace3):180: Attempting to rehook already active hook Refresh.
-		AceHook-3.0-5 (Ace3):180: in function <Interface\\AddOns\\Ace3\\AceHook-3.0\\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
 		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b3.12340.3\\SkinMe\\Ace3.lua:113: in function `skinAceGUI'
-		Skinner-b3.12340.3\\SkinMe\\Ace3.lua:172: in function <Interface\\AddOns\\Skinner\\SkinMe\\Ace3.lua:16>
+		Skinner-b3.12340.4\SkinMe\Ace3.lua:113: in function `skinAceGUI'
+		Skinner-b3.12340.4\SkinMe\Ace3.lua:172: in function <Skinner\SkinMe\Ace3.lua:16>
 		(tail call): ?:
 		<in C code>: in function `xpcall'
-		Skinner-b3.12340.3\\UtilFuncs.lua:86: in function <Interface\\AddOns\\Skinner\\UtilFuncs.lua:84>
+		Skinner-b3.12340.4\UtilFuncs.lua:86: in function <Skinner\UtilFuncs.lua:84>
 		(tail call): ?:
-		Skinner-b3.12340.3\\AddonFrames.lua:166: in function <Interface\\AddOns\\Skinner\\AddonFrames.lua:54>
+		Skinner-b3.12340.4\AddonFrames.lua:166: in function <Skinner\AddonFrames.lua:54>
 		(tail call): ?:
-		<in C code>: ?
-		<string>:\"safecall Dispatcher[2]\":9: in function <[string \"safecall Dispatcher[2]\"]:5>\n(tail call): ?:
-		AceTimer-3.0-5 (Ace3):164: in function <Interface\\AddOns\\Ace3\\AceTimer-3.0\\AceTimer-3.0.lua:138>
+
+√	S	BattleNet FriendsFriends frame, reported by acirac, 11.07.10
+
+	O	Grid, requested by tordenflesk, 15.07.10
+		- disable gradient ?
+
+√	S	GnomeWorks, requested by Kerecha, 16.07.10
+		- (background, some buttons and searchboxes and stuff)
