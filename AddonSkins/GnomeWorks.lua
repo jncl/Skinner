@@ -10,7 +10,7 @@ function Skinner:GnomeWorks() --r45
 		self:glazeStatusBar(GnomeWorks.levelStatusBar, 0, nil)
 		self:skinEditBox{obj=GnomeWorks.searchBoxFrame}
 		self:addSkinFrame{obj=GnomeWorks.MainWindow, kfs=true, y1=3, x2=3}
-		self:addSkinFrame{obj=GnomeWorks.skillFrame, x1=-2, y1=2, x2=-16, y2=-2}
+		self:addSkinFrame{obj=GnomeWorks.skillFrame, x1=-3, y1=2, x2=2, y2=-2}
 		self:addSkinFrame{obj=GnomeWorks.detailFrame, x1=-2, y1=2, x2=2, y2=-2}
 		self:addSkinFrame{obj=GnomeWorks.reagentFrame, x1=-2, y1=2, x2=2, y2=-2}
 		for _, child in pairs{GnomeWorks.controlFrame.QueueButtons:GetChildren()} do

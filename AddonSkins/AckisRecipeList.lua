@@ -13,9 +13,10 @@ function Skinner:AckisRecipeList()
 		["v1.1.0-beta2"] = 3, -- beta
 		["2.0-rc1"] = 4, -- beta
 		["2.0-rc2"] = 5, -- beta
+		["v2.0"] = 6, -- release
 	}
 	local ver = GetAddOnMetadata("AckisRecipeList", "Version")
-	ver = vTab[ver] or ver:sub(1, 10) > "2.0-rc2-10" and 6 -- handle alpha
+	ver = vTab[ver]
 	if not type(ver) == number then self:CustomPrint(1, 0, 0, "Unsupported ARL version") return end
 
 	local function skinARL(frame)
@@ -35,22 +36,24 @@ function Skinner:AckisRecipeList()
 		end
 		if ver > 2 then
 			-- expand button frame
-			local ebF = self:getChild(frame, 7)
+			local ebF = self:getChild(frame, ver < 6 and 7 or 3)
 			self:keepRegions(ebF, {ver == 1 and 6})
 			self:moveObject{obj=ebF, y=6}
-			self:skinButton{obj=frame.expand_all_button, mp=true, plus=true}
-			self:SecureHookScript(frame.expand_all_button, "OnClick", function(this)
+			local eBtn = ver > 5 and frame.expand_button or frame.expand_all_button
+			self:skinButton{obj=eBtn, mp=true, plus=true}
+			self:SecureHookScript(eBtn, "OnClick", function(this)
 				self:checkTex(this)
 			end)
 		end
+		local sF = ver > 5 and frame.list_frame or frame.scroll_frame
 		if ver == 1 then
-			self:skinScrollBar{obj=frame.scroll_frame}
+			self:skinScrollBar{obj=sF}
 		else
-			self:skinSlider{obj=frame.scroll_frame.scroll_bar}
-			frame.scroll_frame:SetBackdrop(nil)
+			self:skinSlider{obj=sF.scroll_bar}
+			sF:SetBackdrop(nil)
 		end
 		--	minus/plus buttons
-		for _, btn in pairs(frame.scroll_frame.state_buttons) do
+		for _, btn in pairs(sF.state_buttons) do
 			self:skinButton{obj=btn, mp2=true, plus=true}
 			if ver < 6 then btn.text:SetJustifyH("CENTER") end
 		end
@@ -102,7 +105,7 @@ function Skinner:AckisRecipeList()
 		end)
 		if ver < 4 then
 			self:addSkinFrame{obj=frame.filter_menu, kfs=true, bg=true} -- separate Flyaway panel
-		else
+		elseif ver < 6 then
 			self:getRegion(frame.filter_menu.misc, 1):SetTextColor(self.BTr, self.BTg, self.BTb) -- filter text
 		end
 		local function changeTextColour(frame)
@@ -116,21 +119,27 @@ function Skinner:AckisRecipeList()
 			end
 
 		end
-		-- change the text colour of the filter text
-		changeTextColour(frame.filter_menu)
+		if ver < 6 then
+			changeTextColour(frame.filter_menu)
+		else
+			self:SecureHookScript(frame.filter_toggle, "OnClick", function(this)
+				changeTextColour(frame.filter_menu)
+				self:getRegion(frame.filter_menu.misc, 1):SetTextColor(self.BTr, self.BTg, self.BTb)
+				self:Unhook(frame.filter_toggle, "OnClick")
+			end)
+		end
 
 	end
-
-	if ver > 2 then
+	if ver > 2 and ver < 6 then
 		self:SecureHookScript(ARL_MainPanel, "OnShow", function(this)
 			skinARL(this)
 			self:Unhook(ARL_MainPanel, "OnShow")
 		end)
 	else
-		local hookfunc = ARL.DisplayFrame and "DisplayFrame" or "CreateFrame"
-		self:SecureHook(ARL, hookfunc, function()
+		local hookFunc = ARL.Scan and "Scan" or ARL.DisplayFrame and "DisplayFrame" or "CreateFrame"
+		self:SecureHook(ARL, hookFunc, function()
 			skinARL(ARL.Frame)
-			self:Unhook(ARL, hookfunc)
+			self:Unhook(ARL, hookFunc)
 		end)
 	end
 
@@ -142,9 +151,10 @@ function Skinner:AckisRecipeList()
 	self:skinButton{obj=ARL.scan_button}
 
 -->>-- Tooltip
+	local tTip = ver > 5 and AckisRecipeList_SpellTooltip or arlSpellTooltip
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then arlSpellTooltip:SetBackdrop(self.Backdrop[1]) end
-		self:SecureHookScript(arlSpellTooltip, "OnShow", function(this)
+		if self.db.profile.Tooltips.style == 3 then tTip:SetBackdrop(self.Backdrop[1]) end
+		self:SecureHookScript(tTip, "OnShow", function(this)
 			self:skinTooltip(this)
 		end)
 	end
