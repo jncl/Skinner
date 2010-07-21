@@ -10,23 +10,35 @@ S - Skin request
 I - Issue/Bug
 B - Button(s) Skin request
 
-√	I	Ace3, reported by Curace, 10.07.10
-		- AceHook-3.0-5 (Ace3):180: Attempting to rehook already active hook Refresh.
-		AceHook-3.0-5 (Ace3):180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b3.12340.4\SkinMe\Ace3.lua:113: in function `skinAceGUI'
-		Skinner-b3.12340.4\SkinMe\Ace3.lua:172: in function <Skinner\SkinMe\Ace3.lua:16>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b3.12340.4\UtilFuncs.lua:86: in function <Skinner\UtilFuncs.lua:84>
-		(tail call): ?:
-		Skinner-b3.12340.4\AddonFrames.lua:166: in function <Skinner\AddonFrames.lua:54>
-		(tail call): ?:
-
-√	S	BattleNet FriendsFriends frame, reported by acirac, 11.07.10
+√	O	Arena Unit Frames
 
 	O	Grid, requested by tordenflesk, 15.07.10
 		- disable gradient ?
 
-√	S	GnomeWorks, requested by Kerecha, 16.07.10
-		- (background, some buttons and searchboxes and stuff)
+√	I	GnomeWorks, reported by Kerecha, 19.07.10
+		- skill panel right border needs moving right
+
+√	I	BasicChatMods, reported by Kerecha, 19.07.10
+		- Skinner-b3.12340.5\SkinMe\BasicChatMods.lua:5: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		AceHook-3.0-5 (Ace3):146: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):414: in function `SecureHookScript'
+		Skinner-b3.12340.5\SkinMe\BasicChatMods.lua:5: in function <Skinner\SkinMe\BasicChatMods.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b3.12340.5\UtilFuncs.lua:86: in function <Skinner\UtilFuncs.lua:84>
+		Skinner-b3.12340.5\UtilFuncs.lua:135: in function `?'
+		Skinner-b3.12340.5\AddonFrames.lua:122: in function <Skinner\AddonFrames.lua:54>
+		(tail call): ?:
+		<in C code>: ?
+
+√	I	ARL, reported by Tinface, 20.07.10
+		- Skinner-b3.12340.5\SkinMe\AckisRecipeList.lua:125: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		AceHook-3.0-5 (Bartender4):146: in function <...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Bartender4):414: in function `SecureHookScript'
+		Skinner-b3.12340.5\SkinMe\AckisRecipeList.lua:125: in function <Skinner\SkinMe\AckisRecipeList.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b3.12340.5\UtilFuncs.lua:86: in function <Skinner\UtilFuncs.lua:84>
+		Skinner-b3.12340.5\UtilFuncs.lua:135: in function `?'
+		Skinner-b3.12340.5\AddonFrames.lua:122: in function <Skinner\AddonFrames.lua:54>
+		(tail call): ?:
