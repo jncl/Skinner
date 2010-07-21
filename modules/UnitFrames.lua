@@ -3,7 +3,7 @@ local module = Skinner:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0", "A
 local _G = _G
 local ftype = "c"
 
-local db
+local db, aso
 local defaults = {
 	profile = {
 		player = false,
@@ -13,6 +13,7 @@ local defaults = {
 		pet = false,
 		petlevel = Skinner.uCls and false or nil,
 		alpha = 0.25,
+		arena = false,
 	}
 }
 local lOfs = -10 -- level text offset
@@ -44,7 +45,7 @@ local function skinPlayerF()
 		-- remove group indicator textures
 		Skinner:keepFontStrings(PlayerFrameGroupIndicator)
 		Skinner:moveObject{obj=PlayerFrameGroupIndicatorText, y=-1}
-		Skinner:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, x1=37, y1=-7, y2=6}
+		Skinner:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso=aso, x1=37, y1=-7, y2=6}
 
 		--	if the player class is a DeathKnight then skin the RuneFrame
 		if Skinner.uCls == "DEATHKNIGHT" then
@@ -91,7 +92,7 @@ local function skinPetF()
 		Skinner:glazeStatusBar(PetFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
 		Skinner:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars
-		Skinner:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, x1=2, y1=-1, x2=1}
+		Skinner:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-1, x2=1}
 	end
 
 	-- Add Pet's Level to frame if required (only for a Hunter's pets)
@@ -122,7 +123,7 @@ local function skinPetF()
 	elseif plt then
 		plt:Hide()
 	end
-	
+
 end
 local function skinToT(parent)
 
@@ -137,7 +138,7 @@ local function skinToT(parent)
 end
 local function skinUFrame(frame)
 
-	Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, y1=-7, x2=-37, y2=6}
+	Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso=aso, y1=-7, x2=-37, y2=6}
 	_G[frame.."Background"]:SetTexture(nil)
 	_G[frame.."TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
 	-- status bars
@@ -158,7 +159,7 @@ local function skinUFrame(frame)
 
 -->>-- TargetofTarget Frame
 	skinToT(frame.."ToT")
-	Skinner:addSkinFrame{obj=_G[frame.."ToT"], ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, x2=6, y2=-1}
+	Skinner:addSkinFrame{obj=_G[frame.."ToT"], ft=ftype, noBdr=true, aso=aso, x2=6, y2=-1}
 
 end
 local function skinTargetF()
@@ -197,7 +198,7 @@ local function skinTargetF()
 			Skinner:glazeStatusBar(_G[frame.."HealthBar"], 0)
 			Skinner:glazeStatusBar(_G[frame.."ManaBar"], 0)
 			Skinner:removeRegions(_G[frame.."NumericalThreat"], {3}) -- threat border
-			Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, x1=-1,  y1=-14, x2=-72, y2=5}
+			Skinner:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso=aso, x1=-1,  y1=-14, x2=-72, y2=5}
 			-- create a texture to show Elite dragon
 			local bcTex = _G[frame.."TextureFrame"]:CreateTexture(nil, "BACKGROUND")
 			bcTex:SetWidth(80)
@@ -261,7 +262,7 @@ local function skinPartyF()
 			-- status bars
 			Skinner:glazeStatusBar(_G[pF.."HealthBar"], 0)
 			Skinner:glazeStatusBar(_G[pF.."ManaBar"], 0)
-			Skinner:addSkinFrame{obj=_G[pF], ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, x1=2, y1=5, x2=-1}
+			Skinner:addSkinFrame{obj=_G[pF], ft=ftype, noBdr=true, aso=aso, x1=2, y1=5, x2=-1}
 
 			-- pet frame
 			local pPF = pF.."PetFrame"
@@ -269,17 +270,58 @@ local function skinPartyF()
 			_G[pPF.."Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			Skinner:glazeStatusBar(_G[pPF.."HealthBar"], 0)
-			Skinner:addSkinFrame{obj=_G[pPF], ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, x1=-2, y1=1, y2=1}
+			Skinner:addSkinFrame{obj=_G[pPF], ft=ftype, noBdr=true, aso=aso, x1=-2, y1=1, y2=1}
 		end
 		-- PartyMember Buff Tooltip
-		Skinner:addSkinFrame{obj=PartyMemberBuffTooltip, ft=ftype, noBdr=true, aso={ba=db.alpha, ng=true}, x1=2, y1=-2, x2=-2, y2=2}
+		Skinner:addSkinFrame{obj=PartyMemberBuffTooltip, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-2, x2=-2, y2=2}
 		-- PartyMemberBackground
 		Skinner:addSkinFrame{obj=PartyMemberBackground, ft=ftype, x1=4, y1=2, x2=1, y2=2}
 	end
 
 end
+local function skinArenaF()
+
+	if db.arena
+	and not isSkinned["Arena"]
+	then
+		Skinner:SecureHook("Arena_LoadUI", function()
+			for i = 1, MAX_ARENA_ENEMIES do
+				local aF = "ArenaEnemyFrame"..i
+				_G[aF.."Background"]:SetTexture(nil)
+				_G[aF.."Texture"]:SetTexture(nil)
+				_G[aF.."Status"]:SetTexture(nil)
+
+				-- status bars
+				Skinner:glazeStatusBar(_G[aF.."HealthBar"], 0)
+				Skinner:glazeStatusBar(_G[aF.."ManaBar"], 0)
+				Skinner:addSkinFrame{obj=_G[aF], ft=ftype, noBdr=true, aso=aso, x1=-3, x2=3, y2=-6}
+
+				-- pet frame
+				local aPF = aF.."PetFrame"
+				_G[aPF.."Flash"]:SetTexture(nil)
+				_G[aPF.."Texture"]:SetTexture(nil)
+				-- status bar
+				Skinner:glazeStatusBar(_G[aPF.."HealthBar"], 0)
+				Skinner:addSkinFrame{obj=_G[aPF], ft=ftype, noBdr=true, aso=aso, y1=1, x2=1, y2=2}
+				-- move pet frame
+				Skinner:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
+
+				-- casting bar
+				local cBar = aF.."CastingBar"
+				Skinner:adjHeight{obj=_G[cBar], adj=2}
+				Skinner:moveObject{obj=_G[cBar.."Text"], y=-1}
+				_G[cBar.."Flash"]:SetAllPoints()
+				Skinner:glazeStatusBar(_G[cBar], 0, Skinner:getRegion(_G[cBar], 1), {_G[cBar.."Flash"]})
+			end
+			-- ArenaEnemyBackground
+			Skinner:addSkinFrame{obj=ArenaEnemyBackground, ft=ftype}
+			Skinner:Unhook("Arena_LoadUI")
+		end)
+	end
+
+end
 local unitFrames = {
-	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground"
+	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground",
 }
 local function changeUFOpacity()
 
@@ -299,6 +341,12 @@ local function changeUFOpacity()
 	for i = 1, MAX_BOSS_FRAMES do
 		if Skinner.skinFrame[_G["Boss"..i.."TargetFrame"]] then
 			Skinner.skinFrame[_G["Boss"..i.."TargetFrame"]]:SetBackdropColor(r, g, b, db.alpha)
+		end
+	end
+	for i = 1, MAX_ARENA_ENEMIES do
+		if Skinner.skinFrame[_G["ArenaEnemyFrame"..i]] then
+			Skinner.skinFrame[_G["ArenaEnemyFrame"..i]]:SetBackdropColor(r, g, b, db.alpha)
+			Skinner.skinFrame[_G["ArenaEnemyFrame"..i.."PetFrame"]]:SetBackdropColor(r, g, b, db.alpha)
 		end
 	end
 
@@ -323,9 +371,13 @@ function module:OnInitialize()
 	and not db.focus
 	and not db.party
 	and not db.pet
+	and not db.arena
 	then
 		self:Disable()
 	end
+
+	-- setup default applySkin options
+	aso = {ba=db.alpha, ng=true}
 
 end
 
@@ -343,18 +395,21 @@ function module:adjustUnitFrames(opt)
 		skinTargetF()
 		skinFocusF()
 		skinPartyF()
+		skinArenaF()
 	elseif opt == "player" then
 		skinPlayerF()
-	elseif opt == "pet" 
-	or opt == "petlevel" 
+	elseif opt == "pet"
+	or opt == "petlevel"
 	then
 		skinPetF()
 	elseif opt == "target" then
 		skinTargetF()
-	elseif opt == "focus" then 
+	elseif opt == "focus" then
 		skinFocusF()
 	elseif opt == "party" then
 		skinPartyF()
+	elseif opt == "areana" then
+		skinArenaF()
 	elseif opt == "alpha" then
 		changeUFOpacity()
 	end
@@ -397,6 +452,12 @@ function module:GetOptions()
 				order = 6,
 				name = Skinner.L["Party"],
 				desc = Skinner.L["Toggle the skin of the Party UnitFrames"],
+			},
+			arena = {
+				type = "toggle",
+				order = 7,
+				name = Skinner.L["Arena"],
+				desc = Skinner.L["Toggle the skin of the Arena UnitFrames"],
 			},
 			alpha = {
 				type = "range",
