@@ -1,3 +1,10 @@
+b3.12340.5
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Skinned FriendsFriends frame
+	Updated Ace3 & GnomeWorks skins
+
 b3.12340.4
 Jncl:
 	ToDo.txt
