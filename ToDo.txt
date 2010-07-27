@@ -10,35 +10,36 @@ S - Skin request
 I - Issue/Bug
 B - Button(s) Skin request
 
-√	O	Arena Unit Frames
-
 	O	Grid, requested by tordenflesk, 15.07.10
 		- disable gradient ?
 
-√	I	GnomeWorks, reported by Kerecha, 19.07.10
-		- skill panel right border needs moving right
+	O	Minimap buttons, requested by jahf, 23.07.10
+√		- Could you add an option for "minimal minimap buttons" tooltip like [removes backdrop from minimap button frame]?
+√		- A similar option for the minimap clock would be great, but it isn't as bad with a backdrop as the buttons are.
+≈		- Skinner doesn't skin the frame for the Calendar icon, mail icon (which seems to have no visible frame ... which is actually exactly what I want) nor for a couple of addons like DBM and DPM
 
-√	I	BasicChatMods, reported by Kerecha, 19.07.10
-		- Skinner-b3.12340.5\SkinMe\BasicChatMods.lua:5: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-		AceHook-3.0-5 (Ace3):146: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):414: in function `SecureHookScript'
-		Skinner-b3.12340.5\SkinMe\BasicChatMods.lua:5: in function <Skinner\SkinMe\BasicChatMods.lua:3>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b3.12340.5\UtilFuncs.lua:86: in function <Skinner\UtilFuncs.lua:84>
-		Skinner-b3.12340.5\UtilFuncs.lua:135: in function `?'
-		Skinner-b3.12340.5\AddonFrames.lua:122: in function <Skinner\AddonFrames.lua:54>
-		(tail call): ?:
-		<in C code>: ?
+√	I	BottomFrame, reported by jahf, 23.07.10
+		- bug: I have a bottom frame enabled with gradient with the "inverted" option set. The gradient doesn't actually show though until I open the options and unselect "inverted" and reselect it ... it just shows as solid black until I do that. Once I unselect "inverted" it shows the gradient, then I can invert it properly.
 
-√	I	ARL, reported by Tinface, 20.07.10
-		- Skinner-b3.12340.5\SkinMe\AckisRecipeList.lua:125: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-		AceHook-3.0-5 (Bartender4):146: in function <...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Bartender4):414: in function `SecureHookScript'
-		Skinner-b3.12340.5\SkinMe\AckisRecipeList.lua:125: in function <Skinner\SkinMe\AckisRecipeList.lua:3>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b3.12340.5\UtilFuncs.lua:86: in function <Skinner\UtilFuncs.lua:84>
-		Skinner-b3.12340.5\UtilFuncs.lua:135: in function `?'
-		Skinner-b3.12340.5\AddonFrames.lua:122: in function <Skinner\AddonFrames.lua:54>
-		(tail call): ?:
+		NOTE: If I leave it set with "inverted" off, the gradient appears properly (though not the direction I would like) when I log in, but the gradient isn't the same as it "should" be. The gradient is much more compressed.
+
+		NOTE: I left this option off and instead tried to invert the gradient in the Gradient options. It still didn't appear until I toggled options in the Bottom Frame. Seems to be an issue with the Bottom Frame not getting painted in the right order (or painted at all maybe) when first logging in.
+
+√	O	Feature Request, requested by xtoq, 24.07.10
+		- On my DPS toon, I have one type of UI and on my tank and healer I have another.  I use Skinner for all of them, but on my DPS toon I use kgPanels to create backgrounds for Recount and Omen (because the textures I use on that toon are different).  On my other toons I'd like to use the Skinner textures for Recount and Omen.  The way Skinner currently works, I don't put the Omen/Recount skins in the Skin Me folder (since my DPS uses different textures for them) so I have to recreate the Skinner look for my tank and healer with kgPanels.
+
+		- How difficult would it be to implement the ability to turn off skins on different toons/profiles?  Would it be that much overhead if there was a Skin Me GUI (optional if possible) that allowed you to select which addons you want skinned, much like the addon selection screen?  And given all that, how rewarding do you think it would be in the end?
+
+√	S	Ara_Broker_Guild_Friends, requested by cheburashka2, 24.07.10
+
+√	I	ARL, reported by Craxziz, 25.07.10
+
+√	I	AceGUI-3.0-SharedMediaWidgets, reported by Craxziz, 25.07.10
+
+	I	Elitistgroup, reported by Craxziz, 25.07.10
+≈		- ratings frame (type /rate when grouped to bring it up)
+≈		- report frame
+
+√	S	Gobling, requested by xtoq, 25.07.10
+
+√	S	!Swatter, requested by xtoq, 25.07.10
