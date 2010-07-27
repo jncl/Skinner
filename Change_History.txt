@@ -1,3 +1,10 @@
+b3.12340.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Skinned Arena Unit Frames
+	Updated AckisRecipeList, BasicChatMods & GnomeWorks skins
+
 b3.12340.5
 Jncl:
 	ToDo.txt
