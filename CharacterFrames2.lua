@@ -65,6 +65,13 @@ function Skinner:FriendsFrame()
 	self:keepFontStrings(PendingListFrame)
 	self:skinDropDown{obj=PendingListFrameDropDown}
 	self:skinScrollBar{obj=FriendsFramePendingScrollFrame}
+	for i = 1, PENDING_INVITES_TO_DISPLAY do
+		local ffpBtn = "FriendsFramePendingButton"..i
+		self:addSkinFrame{obj=_G[ffpBtn]}
+		self:reParentSB(_G[ffpBtn.."AcceptButton"], self.skinFrame[_G[ffpBtn]])
+		self:reParentSB(_G[ffpBtn.."DeclineButton"], self.skinFrame[_G[ffpBtn]])
+		self:reParentSF(_G[ffpBtn], FriendsFramePendingScrollFrameScrollChild)
+	end
 
 -->>--	Who Frame
 	self:skinFFColHeads("WhoFrameColumnHeader")

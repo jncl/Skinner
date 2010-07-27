@@ -840,5 +840,9 @@ function Skinner:BNFrames()
 	self:skinScrollBar{obj=BNetReportFrameCommentScrollFrame}
 	self:skinEditBox{obj=BNetReportFrameCommentBox, regs={6}}
 	self:addSkinFrame{obj=BNetReportFrame, ft=ftype}
+-->>-- ConversationInvite frame
+	self:addSkinFrame{obj=BNConversationInviteDialogList, ft=ftype}
+	self:skinScrollBar{obj=BNConversationInviteDialogListScrollFrame}
+	self:addSkinFrame{obj=BNConversationInviteDialog, kfs=true, ft=ftype, hdr=true}
 
 end
