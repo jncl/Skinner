@@ -110,6 +110,8 @@ function Skinner:Defaults()
 		BarbershopUI	= true,
 		-- DBIcon settings
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
+		-- disabled skins table
+		DisabledSkins	= {},
 
 	}}
 
@@ -126,8 +128,8 @@ function Skinner:Options()
 	local optTables = {
 
 		General = {
-	    	name = aName,
 			type = "group",
+	    	name = aName,
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value) db[info[#info]] = value end,
 			args = {
@@ -303,7 +305,6 @@ function Skinner:Options()
 		Backdrop = {
 			type = "group",
 			name = self.L["Default Backdrop"],
-			desc = self.L["Change the default backdrop settings"],
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value == "" and "None" or value
@@ -376,7 +377,6 @@ function Skinner:Options()
 		Colours = {
 			type = "group",
 			name = self.L["Default Colours"],
-			desc = self.L["Change the default colour settings"],
 			get = function(info)
 				local c = db[info[#info]]
 				return c.r, c.g, c.b, c.a
@@ -446,7 +446,6 @@ function Skinner:Options()
 		Gradient = {
 			type = "group",
 			name = self.L["Gradient"],
-			desc = self.L["Change the Gradient Effect settings"],
 			get = function(info) return db.Gradient[info[#info]] end,
 			set = function(info, value) db.Gradient[info[#info]] = value end,
 			args = {
@@ -513,8 +512,8 @@ function Skinner:Options()
 
 		Modules = {
 			type = "group",
-			childGroups = "tab",
 			name = self.L["Module settings"],
+			childGroups = "tab",
 			args = {
 				desc = {
 					type = "description",
@@ -526,7 +525,6 @@ function Skinner:Options()
 		NPCFrames = {
 			type = "group",
 			name = self.L["NPC Frames"],
-			desc = self.L["Change the NPC Frames settings"],
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
@@ -618,7 +616,6 @@ function Skinner:Options()
 		PlayerFrames = {
 			type = "group",
 			name = self.L["Character Frames"],
-			desc = self.L["Change the Character Frames settings"],
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
@@ -738,7 +735,6 @@ function Skinner:Options()
 		UIFrames = {
 			type = "group",
 			name = self.L["UI Frames"],
-			desc = self.L["Change the UI Elements settings"],
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
@@ -1235,6 +1231,15 @@ function Skinner:Options()
 			},
 		},
 
+		DisabledSkins = {
+			type = "group",
+			name = self.L["Disable Addon Skins"],
+			get = function(info) return db.DisabledSkins[info[#info]] end,
+			set = function(info, value) db.DisabledSkins[info[#info]] = value end,
+			args = {
+			},
+		},
+
 	}
 
 	-- module options
@@ -1275,12 +1280,32 @@ function Skinner:Options()
 		bbckey = nil
 	end
 
+	-- add DisabledSkins options
+	local function addDSOpt(name)
+		optTables["DisabledSkins"].args[name] = {
+			type = "toggle",
+			name = name,
+			desc = self.L["Toggle the skinning of "]..name,
+			width = name:len() > 20 and "double" or nil,
+		}
+
+	end
+	for _, addonName in ipairs(self.addonSkins) do
+		addDSOpt(addonName)
+	end
+	for _, addonName in ipairs(self.oddlyNamedAddons) do
+		addDSOpt(addonName)
+	end
+	for _, addonName in ipairs(self.lodAddons) do
+		addDSOpt(addonName)
+	end
+
 	-- add DB profile options
 	optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
 	-- option tables list
 	local optNames = {
-		"Backdrop", "Colours", "Gradient", "Modules", "NPCFrames", "PlayerFrames", "UIFrames", "Profiles"
+		"Backdrop", "Colours", "Gradient", "Modules", "NPCFrames", "PlayerFrames", "UIFrames", "DisabledSkins", "Profiles"
 	}
 	-- register the options tables and add them to the blizzard frame
 	local ACR = LibStub("AceConfigRegistry-3.0")

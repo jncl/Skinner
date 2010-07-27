@@ -110,6 +110,14 @@ end
 
 function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 
+	-- don't skin any Addons whose skins are flagged as disabled
+	if self.db.profile.DisabledSkins[addonName] then
+		if self.db.profile.Warnings then
+			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled")
+		end
+		return
+	end
+
 	if not addonFunc then addonFunc = addonName end
 
 --	self:Debug("checkAndRunAddOn:[%s, %s, %s, %s, %s]", addonName, LoD, IsAddOnLoaded(addonName), IsAddOnLoadOnDemand(addonName), type(self[addonFunc]))
