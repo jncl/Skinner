@@ -78,6 +78,7 @@ function Skinner:Defaults()
 		DropDowns       = true,
 		MinimapButtons  = false,
 		MinimapGloss    = false,
+		MinimalMMBtns	= false,
 		MovieProgress   = IsMacClient() and true or nil,
 		TimeManager     = true,
 		Calendar        = true,
@@ -1108,6 +1109,7 @@ function Skinner:Options()
 					args = {
 						MinimapButtons = {
 							type = "toggle",
+							order = 2,
 							name = self.L["Minimap Buttons"],
 							desc = self.L["Toggle the skin of the Minimap Buttons"],
 						},
@@ -1115,6 +1117,7 @@ function Skinner:Options()
 							type = "toggle",
 							name = self.L["Minimap Gloss Effect"],
 							desc = self.L["Toggle the Gloss Effect for the Minimap"],
+							order = 1,
 							set = function(info, value)
 								db.MinimapGloss = value
 								if self.minimapskin then
@@ -1122,6 +1125,13 @@ function Skinner:Options()
 									else RaiseFrameLevel(self.minimapskin) end
 								end
 							end,
+						},
+						MinimalMMBtns = {
+							type = "toggle",
+							order = 3,
+							name = self.L["Minimal Minimap Buttons"],
+							desc = self.L["Toggle the style of the Minimap Buttons"],
+							set = function(info, value) db[info[#info]] = value end
 						},
 					},
 				},

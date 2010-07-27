@@ -1,5 +1,4 @@
 local _G = _G
-
 local ftype = "u"
 
 function Skinner:Tooltips()
@@ -810,6 +809,8 @@ function Skinner:MinimapButtons()
 	if not self.db.profile.MinimapButtons or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
 
+	local minBtn = self.db.profile.MinimalMMBtns
+
 	local function mmKids(mmObj)
 
 		local mmObjName = mmObj.GetName and mmObj:GetName() or "<Anon>"
@@ -838,10 +839,12 @@ function Skinner:MinimapButtons()
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)
-							if objType == "Button" then
-								Skinner:addSkinButton{obj=obj, parent=obj, sap=true}
-							else
-								Skinner:addSkinFrame{obj=obj, ft=ftype}
+							if not minBtn then
+								if objType == "Button" then
+									Skinner:addSkinButton{obj=obj, parent=obj, sap=true}
+								else
+									Skinner:addSkinFrame{obj=obj, ft=ftype}
+								end
 							end
 						end
 					end
@@ -857,11 +860,13 @@ function Skinner:MinimapButtons()
 	mmKids(Minimap)
 
 	-- skin other Blizzard buttons
-	for _, obj in pairs{GameTimeFrame, MinimapZoomIn, MinimapZoomOut} do
-		self:addSkinButton{obj=obj, parent=obj}
-		self.sBut[obj]:ClearAllPoints()
-		self.sBut[obj]:SetAllPoints(obj)
+	if not minBtn then
+		for _, obj in pairs{GameTimeFrame, MinimapZoomIn, MinimapZoomOut} do
+			self:addSkinButton{obj=obj, parent=obj, sap=true}
+		end
 	end
+	-- change Mail icon
+	MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	-- resize other buttons
 	MiniMapMailFrame:SetWidth(28)
 	MiniMapMailFrame:SetHeight(28)
@@ -873,9 +878,10 @@ function Skinner:MinimapButtons()
 	MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
 
 	-- MiniMap Tracking button
-	MiniMapTrackingIcon:ClearAllPoints()
-	MiniMapTrackingIcon:SetPoint("CENTER", MiniMapTrackingButton)
+	MiniMapTracking:DisableDrawLayer("BACKGROUND")
 	MiniMapTrackingIcon:SetParent(MiniMapTrackingButton)
+	MiniMapTrackingIcon:ClearAllPoints()
+	MiniMapTrackingIcon:SetPoint("CENTER")
 	-- change this to stop the icon being moved
 	MiniMapTrackingIcon.SetPoint = function() end
 
@@ -891,20 +897,23 @@ function Skinner:MinimapButtons()
 	if IsAddOnLoaded("Bongos") then Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
 
 	-- skin other minimap buttons as required
-	local mmButs = {
-		["SmartBuff"] = SmartBuff_MiniMapButton,
-		["WebDKP"] = WebDKP_MinimapButton,
-		["GuildAds"] = GuildAdsMinimapButton,
-		["Outfitter"] = OutfitterMinimapButton,
-		["Perl_Config"] = PerlButton,
-		["WIM"] = WIM3MinimapButton
-	}
-	for addon, obj in pairs(mmButs) do
-		if IsAddOnLoaded(addon) then
-			self:addSkinButton{obj=obj, parent=obj, sap=true}
+	if not minBtn then
+		local mmButs = {
+			["SmartBuff"] = SmartBuff_MiniMapButton,
+			["WebDKP"] = WebDKP_MinimapButton,
+			["GuildAds"] = GuildAdsMinimapButton,
+			["Outfitter"] = OutfitterMinimapButton,
+			["Perl_Config"] = PerlButton,
+			["WIM"] = WIM3MinimapButton,
+			["DBM-Core"] = DBMMinimapButton,
+		}
+		for addon, obj in pairs(mmButs) do
+			if IsAddOnLoaded(addon) then
+				self:addSkinButton{obj=obj, parent=obj, sap=true}
+			end
 		end
+		mmButs = nil
 	end
-	mmButs = nil
 
 end
 

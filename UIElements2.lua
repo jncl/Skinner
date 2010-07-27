@@ -59,7 +59,9 @@ function Skinner:TimeManager()
 
 -->>--	Time Manager Clock Button
 	self:removeRegions(TimeManagerClockButton, {1})
-	self:addSkinFrame{obj=TimeManagerClockButton, ft=ftype, x1=7, y1=-3, x2=-7, y2=3}
+	if not self.db.profile.MinimalMMBtns then
+		self:addSkinFrame{obj=TimeManagerClockButton, ft=ftype, x1=7, y1=-3, x2=-7, y2=3}
+	end
 
 -->>--	Stopwatch Frame
 	self:keepFontStrings(StopwatchTabFrame)
