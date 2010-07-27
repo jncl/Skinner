@@ -2,8 +2,8 @@
 
 Skinner.ItemPimper = true -- to stop IP skinning its frame
 
-local AceGUI = LibStub("AceGUI-3.0")
 local objectsToSkin = {}
+local AceGUI = LibStub("AceGUI-3.0", true)
 
 if AceGUI then
 	Skinner:RawHook(AceGUI, "Create", function(this, objType)
@@ -15,10 +15,14 @@ end
 
 function Skinner:Ace3()
 
+	local bCr, bCg, bCb, bCa = unpack(self.bColour)
+	local bbCr, bbCg, bbCb, bbCa = unpack(self.bbColour)
+
 	local function skinAceGUI(obj, objType)
 
+
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
---		Skinner:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
+		Skinner:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
 		if obj and not Skinner.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
 				Skinner:keepFontStrings(obj.frame)
@@ -112,8 +116,6 @@ function Skinner:Ace3()
 				-- hook this for frame refresh
 				Skinner:SecureHook(obj, "Refresh", function(this)
 					this.frame:SetBackdrop(Skinner.Backdrop[1])
-					local bCr, bCg, bCb, bCa = unpack(Skinner.bColour)
-					local bbCr, bbCg, bbCb, bbCa = unpack(Skinner.bbColour)
 					this.frame:SetBackdropColor(bCr, bCg, bCb, bCa)
 					this.frame:SetBackdropBorderColor(bbCr, bbCg, bbCb, bbCa)
 				end)
@@ -136,6 +138,23 @@ function Skinner:Ace3()
 					end
 				end
 				Skinner:applySkin{obj=obj.box, kfs=true}
+
+			-- LibSharedMedia objects
+			elseif objType == "LSM30_Background"
+			or objType == "LSM30_Border"
+			or objType == "LSM30_Font"
+			or objType == "LSM30_Sound"
+			or objType == "LSM30_Statusbar"
+			then
+				obj.frame.DLeft:SetAlpha(0)
+				obj.frame.DRight:SetAlpha(0)
+				obj.frame.DMiddle:SetHeight(20)
+				obj.frame.DMiddle:SetTexture(Skinner.itTex)
+				obj.frame.DMiddle:SetTexCoord(0, 1, 0, 1)
+				obj.frame.DMiddle:ClearAllPoints()
+				obj.frame.DMiddle:SetPoint("BOTTOMLEFT", obj.frame.DLeft, "RIGHT", -6, -8)
+				obj.frame.DMiddle:SetPoint("BOTTOMRIGHT", obj.frame.DRight, "LEFT", 6, -8)
+
 			-- ignore these types for now
 			elseif objType == "CheckBox"
 			or objType == "Dropdown-Item-Execute"
@@ -172,5 +191,22 @@ function Skinner:Ace3()
 		skinAceGUI(obj, objectsToSkin[obj])
 	end
 	wipe(objectsToSkin)
+
+	-- hook this to skin AGSMW dropdown frame(s)
+	local AGSMW = LibStub("AceGUISharedMediaWidgets-1.0", true)
+	if AGSMW then
+		self:RawHook(AGSMW, "GetDropDownFrame", function(this)
+			local frame = self.hooks[this].GetDropDownFrame(this)
+			local bdrop = frame:GetBackdrop()
+			if bdrop.edgeFile:find("UI-DialogBox-Border", 1, true) then -- if default backdrop
+				frame:SetBackdrop(nil)
+				if not self.skinFrame[frame] then
+					self:skinSlider{obj=frame.slider, size=4}
+					self:addSkinFrame{obj=frame, x1=6, y1=-5, x2=-6, y2=5}
+				end
+			end
+			return frame
+		end, true)
+	end
 
 end

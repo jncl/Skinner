@@ -19,6 +19,21 @@ function Skinner:ArkInventory()
 		end
 	end)
 
+-->>--	Search Frame
+	ArkInventory.db.profile.option.ui.search.border.colour = CopyTable(self.db.profile.BackdropBorder)
+	self:addSkinFrame{obj=ARKINV_SearchTitle}
+	self:applySkin(ARKINV_SearchFrameViewSearch)
+	self:skinEditBox(ARKINV_SearchFrameViewSearchFilter, {9})
+	self:applySkin(ARKINV_SearchFrameViewTable)
+	self:skinScrollBar{obj=ARKINV_SearchFrameViewTableScroll}
+	self:addSkinFrame{obj=ARKINV_SearchFrame}
+-->>-- GuildBank Log Frame
+	self:applySkin{obj=ARKINV_Frame4Log}
+
+end
+
+function Skinner:ArkInventoryRules()
+
 -->>--	Rules Frame
 	ArkInventory.db.profile.option.ui.rules.border.colour = CopyTable(self.db.profile.BackdropBorder)
 	self:addSkinFrame{obj=ARKINV_RulesTitle}
@@ -38,15 +53,5 @@ function Skinner:ArkInventory()
 	self:skinEditBox(ARKINV_RulesFrameModifyDataDescription, {9})
 	self:skinScrollBar{obj=ARKINV_RulesFrameModifyDataScroll}
 	self:addSkinFrame{obj=ARKINV_RulesFrameModifyDataScrollTextBorder}
--->>--	Search Frame
-	ArkInventory.db.profile.option.ui.search.border.colour = CopyTable(self.db.profile.BackdropBorder)
-	self:addSkinFrame{obj=ARKINV_SearchTitle}
-	self:applySkin(ARKINV_SearchFrameViewSearch)
-	self:skinEditBox(ARKINV_SearchFrameViewSearchFilter, {9})
-	self:applySkin(ARKINV_SearchFrameViewTable)
-	self:skinScrollBar{obj=ARKINV_SearchFrameViewTableScroll}
-	self:addSkinFrame{obj=ARKINV_SearchFrame}
--->>-- GuildBank Log Frame
-	self:applySkin{obj=ARKINV_Frame4Log}
 
 end

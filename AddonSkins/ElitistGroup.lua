@@ -73,6 +73,7 @@ function Skinner:ElitistGroup()
 		self:moveObject{obj=frame.title, y=-6}
 		self:addSkinFrame{obj=frame, kfs=true}
 	end)
+
 -->>-- RaidSummary frame
 	local egRS = eGrp:GetModule("RaidSummary", true)
 	if not egRS then return end
@@ -82,6 +83,40 @@ function Skinner:ElitistGroup()
 		self:moveObject{obj=frame.title, y=-6}
 		self:skinScrollBar{obj=frame.scroll}
 		self:addSkinFrame{obj=frame, kfs=true}
+	end)
+
+-->>-- GroupRating frame
+	local egGR = eGrp:GetModule("Notes", true)
+	if not egGR then return end
+	self:SecureHook(egGR, "CreateUI", function(this)
+		self:Unhook(egGR, "CreateUI")
+		local frame = this.frame
+		self:moveObject{obj=frame.title, y=-6}
+		self:skinScrollBar{obj=frame.scroll}
+		self:addSkinFrame{obj=frame, kfs=true}
+		for i = 1, 8 do
+			self:skinEditBox{obj=frame.rows[i].comment, regs={9}}
+		end
+	end)
+
+-->>-- Report frame
+	local egR = eGrp:GetModule("Report", true)
+	if not egR then return end
+	self:SecureHook(egR, "CreateUI", function(this)
+		self:Unhook(egR, "CreateUI")
+		local frame = this.frame
+		self:moveObject{obj=frame.title, y=-6}
+		self:addSkinFrame{obj=frame, kfs=true}
+		-- general config frame
+		self:skinDropDown{obj=frame.generalFrame.levelFilter}
+		self:skinDropDown{obj=frame.generalFrame.equipmentFilter}
+		self:skinDropDown{obj=frame.generalFrame.enchantFilter}
+		self:skinDropDown{obj=frame.generalFrame.gemFilter}
+		self:skinDropDown{obj=frame.generalFrame.channelFilter}
+		self:skinDropDown{obj=frame.generalFrame.matchFilters}
+		self:addSkinFrame{obj=frame.generalFrame, kfs=true}
+		-- class toggles frame
+		self:addSkinFrame{obj=frame.classFrame, kfs=true}
 	end)
 
 end
