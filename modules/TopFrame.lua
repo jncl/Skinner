@@ -8,7 +8,8 @@ local defaults = {
 		shown = false,
 		height = 64,
 		width = 1920,
-		fheight = 50,
+		fheight = 64,
+		fixedfh = false,
 		xyOff = true,
 		borderOff = false,
 		alpha = 0.9,
@@ -77,19 +78,11 @@ function module:adjustTopFrame(opt)
 		-- set the fade height
 		local fh = nil
 		if not Skinner.db.profile.FadeHeight.enable
-		and db.fheight
+		and db.fixedfh
 		then
 			fh = db.fheight <= ceil(topframe:GetHeight()) and db.fheight or ceil(topframe:GetHeight())
 		end
-		Skinner:applySkin{obj=topframe, ft=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert}
-		-- gradient settings
-		if Skinner.db.profile.Gradient.skinner then
-			local gradientOn = Skinner:getGradientInfo(db)
-			local gradientOff = {db.rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1}
-			--	apply the Gradient
-			topframe.tfade:SetGradientAlpha(unpack(Skinner.db.profile.Gradient.enable and gradientOn or gradientOff))
-		elseif topframe.tfade then topframe.tfade:SetTexture(nil)
-		end
+		Skinner:applySkin{obj=topframe, ft=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil}
 		-- adjust the TopFrame offset
 		adjustTFOffset(db)
 		topframe:Show()
@@ -136,10 +129,16 @@ function module:GetOptions()
 			},
 			fheight = {
 				type = "range",
-				order = 8,
+				order = 9,
 				name = Skinner.L["TF Fade Height"],
 				desc = Skinner.L["Change the Height of the Fade Effect"],
 				min = 0, max = 500, step = 1,
+			},
+			fixedfh = {
+				type = "toggle",
+				order = 10,
+				name = Skinner.L["Fixed Fade Height"],
+				desc = Skinner.L["Fix the Height of the Fade Effect"],
 			},
 			xyOff = {
 				type = "toggle",
@@ -156,7 +155,7 @@ function module:GetOptions()
 			},
 			alpha = {
 				type = "range",
-				order = 9,
+				order = 8,
 				name = Skinner.L["TF Alpha"],
 				desc = Skinner.L["Change Alpha value of the TopFrame"],
 				min = 0, max = 1, step = 0.1,

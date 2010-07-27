@@ -5,7 +5,8 @@ local ftype = "s"
 local db
 local defaults = {
 	profile = {
-		fheight = 50,
+		fheight = 100,
+		fixedfh = false,
 		borderOff = false,
 		lock = false,
 		colour = {r = 0, g = 0, b = 0, a = 0.9},
@@ -103,7 +104,7 @@ local function adjustFrame(key)
 		-- set the fade height
 		fh = nil
 		if not Skinner.db.profile.FadeHeight.enable
-		and db.fheight
+		and db.fixedfh
 		then
 			fh = db.fheight <= ceil(frame:GetHeight()) and db.fheight or ceil(frame:GetHeight())
 		end
@@ -191,6 +192,12 @@ function module:GetOptions()
 				name = Skinner.L["MF Fade Height"],
 				desc = Skinner.L["Change the Height of the Fade Effect"],
 				min = 0, max = 500, step = 1,
+			},
+			fixedfh = {
+				type = "toggle",
+				order = 5,
+				name = Skinner.L["Fixed Fade Height"],
+				desc = Skinner.L["Fix the Height of the Fade Effect"],
 			},
 			borderOff = {
 				type = "toggle",

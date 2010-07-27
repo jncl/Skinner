@@ -27,6 +27,7 @@ Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 0.3.5
 --Skinner.isPatch = BATTLENET_FRIEND and true or false
 
+local prdb
 function Skinner:OnInitialize()
 --	self:Debug("OnInitialize")
 
@@ -42,7 +43,8 @@ function Skinner:OnInitialize()
 
 	-- setup the default DB values and register them
 	self:checkAndRun("Defaults", true)
-	local prdb = self.db.profile
+	prdb = self.db.profile
+--	local prdb = self.db.profile
 	-- setup the Addon's options
 	self:checkAndRun("Options")
 
@@ -75,8 +77,6 @@ function Skinner:OnInitialize()
 	self.ebRegions = {1, 2, 3, 4, 5} -- 1 is text, 2-5 are textures
 
 	-- Gradient settings
-	self.gradientOn = self:getGradientInfo(prdb.Gradient)
-	self.gradientOff = {prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1}
 	self.gradientTab = {prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
 	self.gradientCBar = {prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .25, .25, .55, 1, 0, 0, 0, 1}
 	self.gradientTexture = self.LSM:Fetch("background", prdb.Gradient.texture)
@@ -290,14 +290,22 @@ function Skinner:ReloadAddon(callback)
 
 end
 
-function Skinner:getGradientInfo(db)
+function Skinner:getGradientInfo(invert, rotate)
 
-	local c = self.db.profile.GradientMin
+	local c = prdb.GradientMin
 	local MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
-	local c = self.db.profile.GradientMax
+	local c = prdb.GradientMax
 	local MaxR, MaxG, MaxB, MaxA = c.r, c.g, c.b, c.a
 
-	return db.invert and {db.rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA} or {db.rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA}
+	if prdb.Gradient.enable then
+		if invert then
+			return rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA
+		else
+			return rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA
+		end
+	else
+		return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
+	end
 
 end
 
@@ -529,25 +537,25 @@ function Skinner:addSkinFrame(...)
 
 end
 
-function Skinner:applyGradient(frame, fh, invert)
+function Skinner:applyGradient(frame, fh, invert, rotate)
 
 	-- don't apply a gradient if required
-	if not self.db.profile.Gradient.char then
+	if not prdb.Gradient.char then
 		for _, v in pairs(self.gradFrames["c"]) do
 			if v == frame then return end
 		end
 	end
-	if not self.db.profile.Gradient.ui then
+	if not prdb.Gradient.ui then
 		for _, v in pairs(self.gradFrames["u"]) do
 			if v == frame then return end
 		end
 	end
-	if not self.db.profile.Gradient.npc then
+	if not prdb.Gradient.npc then
 		for _, v in pairs(self.gradFrames["n"]) do
 			if v == frame then return end
 		end
 	end
-	if not self.db.profile.Gradient.skinner then
+	if not prdb.Gradient.skinner then
 		for _, v in pairs(self.gradFrames["s"]) do
 			if v == frame then return end
 		end
@@ -556,25 +564,42 @@ function Skinner:applyGradient(frame, fh, invert)
 	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
 	frame.tfade:SetTexture(self.gradientTexture)
 
-	if self.db.profile.FadeHeight.enable and (self.db.profile.FadeHeight.force or not fh) then
+	if prdb.FadeHeight.enable and (prdb.FadeHeight.force or not fh) then
 		-- set the Fade Height if not already passed to this function or 'forced'
 		-- making sure that it isn't greater than the frame height
-		fh = self.db.profile.FadeHeight.value <= ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or ceil(frame:GetHeight())
+		fh = prdb.FadeHeight.value <= ceil(frame:GetHeight()) and prdb.FadeHeight.value or ceil(frame:GetHeight())
 	end
---	self:Debug("aG Fade Height: [%s, %s, %s]", frame:GetName(), frame:GetHeight(), fh)
+--	self:Debug("aG Fade Height: [%s, %s, %s, %s, %s]", frame:GetName(), frame:GetHeight(), fh, invert, rotate)
 
-	if invert then
-		frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 4, 4)
-		if fh then frame.tfade:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT", -4, -(fh - 4))
-		else frame.tfade:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -4, -4) end
-	else
+	frame.tfade:ClearAllPoints()
+	if not invert -- fade from top
+	and not rotate
+	then
 		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
 		if fh then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -(fh - 4))
+		else frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4) end
+	elseif invert -- fade from bottom
+	and not rotate
+	then
+		frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 4, 4)
+		if fh then frame.tfade:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT", -4, (fh - 4))
+		else frame.tfade:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -4, -4) end
+	elseif not invert -- fade from right
+	and rotate
+	then
+		frame.tfade:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -4, -4)
+		if fh then frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT", -(fh - 4), 4)
+		else frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 4, 4) end
+	elseif invert -- fade from left
+	and rotate
+	then
+		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
+		if fh then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", fh - 4, 4)
 		else frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4) end
 	end
 
 	frame.tfade:SetBlendMode("ADD")
-	frame.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientOff))
+	frame.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
 
 end
 
@@ -621,7 +646,7 @@ local function __applySkin(opts)
 
 	-- apply the 'Skinner' effect
 	if not opts.ng then
-		Skinner:applyGradient(opts.obj, opts.fh, opts.invert or Skinner.db.profile.Gradient.invert)
+		Skinner:applyGradient(opts.obj, opts.fh, opts.invert or Skinner.db.profile.Gradient.invert, opts.rotate or Skinner.db.profile.Gradient.rotate)
 	end
 
 end
@@ -993,7 +1018,7 @@ function Skinner:setActiveTab(tabName)
 --	self:Debug("setActiveTab : [%s]", tabName:GetName())
 
 	tabName.tfade:SetTexture(self.gradientTexture)
-	tabName.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientOff))
+	tabName.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
 end
 
@@ -1008,7 +1033,7 @@ function Skinner:setInactiveTab(tabName)
 --	self:Debug("setInactiveTab : [%s]", tabName:GetName())
 
 	tabName.tfade:SetTexture(self.itTex)
-	tabName.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientTab))
+	tabName.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
 end
 
@@ -1417,7 +1442,7 @@ function Skinner:skinTooltip(frame)
 
 	if not frame then return end
 
-	if not self.db.profile.Gradient.ui then return end
+	if not prdb.Gradient.ui then return end
 
 	local ttHeight = ceil(frame:GetHeight())
 
@@ -1426,16 +1451,16 @@ function Skinner:skinTooltip(frame)
 	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
 	frame.tfade:SetTexture(self.gradientTexture)
 
-	if self.db.profile.Tooltips.style == 1 then
+	if prdb.Tooltips.style == 1 then
 		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -6)
 		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -6, -27)
-	elseif self.db.profile.Tooltips.style == 2 then
+	elseif prdb.Tooltips.style == 2 then
 		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
 		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4)
 	else
 		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
 		-- set the Fade Height making sure that it isn't greater than the frame height
-		local fh = self.db.profile.FadeHeight.value <= ttHeight and self.db.profile.FadeHeight.value or ttHeight
+		local fh = prdb.FadeHeight.value <= ttHeight and prdb.FadeHeight.value or ttHeight
 		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -(fh - 4))
 		frame:SetBackdropColor(unpack(self.bColour))
 	end
@@ -1458,7 +1483,7 @@ function Skinner:skinTooltip(frame)
 	frame:SetBackdropBorderColor(self:setTTBBC())
 
 	frame.tfade:SetBlendMode("ADD")
-	frame.tfade:SetGradientAlpha(unpack(self.db.profile.Gradient.enable and self.gradientOn or self.gradientOff))
+	frame.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
 end
 
