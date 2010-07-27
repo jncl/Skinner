@@ -3,6 +3,8 @@
 
 <!-- Addon skins are here, must be prefixed by SkinMe\ -->
 
+<script file="SkinMe\_NPCScan.lua"/>
+<script file="SkinMe\!Swatter.lua"/>
 <script file="SkinMe\Accomplishment.lua"/>
 <script file="SkinMe\Accountant.lua"/>
 <script file="SkinMe\Ace2.lua"/>
@@ -16,6 +18,7 @@
 <script file="SkinMe\Altoholic.lua"/>
 <script file="SkinMe\Analyst.lua"/>
 <script file="SkinMe\AnnounceIt.lua"/>
+<script file="SkinMe\Ara_Broker_Guild_Friends.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
 <script file="SkinMe\Armory.lua"/>
 <script file="SkinMe\Atlas.lua"/>
@@ -112,6 +115,7 @@
 <script file="SkinMe\GnomeWorks.lua"/>
 <script file="SkinMe\GnomishAuctionShrinker.lua"/>
 <script file="SkinMe\GnomishVendorShrinker.lua"/>
+<script file="SkinMe\Gobling.lua"/>
 <script file="SkinMe\Gossipmonger.lua"/>
 <script file="SkinMe\Grid.lua"/>
 <script file="SkinMe\GrimReaper.lua"/>
@@ -269,6 +273,5 @@
 <script file="SkinMe\XPerl.lua"/>
 <script file="SkinMe\zfpoison.lua"/>
 <script file="SkinMe\ZOMGBuffs.lua"/>
-<script file="SkinMe\_NPCScan.lua"/>
 
 </Ui>

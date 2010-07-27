@@ -51,6 +51,35 @@ for _, v in pairs(blizzLoDFrames) do
 end
 blizzLoDFrames = nil
 
+Skinner.addonSkins = {
+	"_NPCScan",
+	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "Ara_Broker_Guild_Friends", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
+	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
+	"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", "CT_RaidTracker",
+	"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "Dominos", "DragonCore",
+	"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "EquipCompare", "EventEquip", "EveryQuest", "Examiner", "ExtendedRaidInfo",
+	"Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "FramesResized", "FreierGeist_InstanceTime",
+	"Gatherer", "GearScore", "GemHelper", "GemMe", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GupCharacter", "GupPet",
+	"Hack", "Hadar_FocusFrame", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
+	"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
+	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Ludwig", "Luggage",
+	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MinimapButtonFrame", "Misdirectionhelper", "MobMap", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MuffinMOTD", "MyBags", "myClock",
+	"NeatFreak", "Necrosis", "NeonChat", "nQuestLog",
+	"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
+	"PallyPower", "Panda", "PartyBuilder", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoMTracker", "Possessions", "Postal", "PowerAuras", "Producer", "ProfessionsBook", "PvpMessages",
+	"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuickMark",
+	"RABuffs", "RaidAchievement", "RaidBuffStatus", "RaidTracker", "RaidyCheck", "RandomPet30", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
+	"ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "SmoothQuest", "Spew", "Squeenix", "sRaidFrames",
+	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "Tukui", "TwinValkyr_shieldmonitor",
+	"UberQuest", "UrbanAchiever",
+	"vBagnon", "Vendorizer", "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
+	"WebDKP", "WIM", "WoWEquip",
+	"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
+	"zfpoison", "ZOMGBuffs"
+}
+Skinner.oddlyNamedAddons = {
+	"!Swatter", "Auc-Advanced", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "Ogri'Lazy", "Prat-3.0", "WoW-Pro"
+}
 function Skinner:AddonFrames()
 --	self:Debug("AddonFrames")
 
@@ -90,48 +119,18 @@ function Skinner:AddonFrames()
 	--	don't make Model Frames Rotatable if CloseUp is loaded
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
-	local addonFrames = {
-		"_NPCScan",
-		"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "ArkInventory", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
-		"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
-		"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", "CT_RaidTracker",
-		"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "Dominos", "DragonCore",
-		"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "EquipCompare", "EventEquip", "EveryQuest", "Examiner", "ExtendedRaidInfo",
-		"Factionizer", "FBagOfHolding", "FeedMachine", "FishingBuddy", "FlightMap", "FramesResized", "FreierGeist_InstanceTime",
-		"Gatherer", "GearScore", "GemHelper", "GemMe", "GnomeWorks", "GnomishVendorShrinker", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GupCharacter", "GupPet",
-		"Hack", "Hadar_FocusFrame", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
-		"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
-		"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Ludwig", "Luggage",
-		"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MinimapButtonFrame", "Misdirectionhelper", "MobMap", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MuffinMOTD", "MyBags", "myClock",
-		"NeatFreak", "Necrosis", "NeonChat", "nQuestLog",
-		"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
-		"PallyPower", "Panda", "PartyBuilder", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "PoMTracker", "Possessions", "Postal", "PowerAuras", "Producer", "ProfessionsBook", "PvpMessages",
-		"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHistory", "QuickMark",
-		"RABuffs", "RaidAchievement", "RaidBuffStatus", "RaidTracker", "RaidyCheck", "RandomPet30", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
-		"ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "SmoothQuest", "Spew", "Squeenix", "sRaidFrames",
-		"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "Tukui", "TwinValkyr_shieldmonitor",
-		"UberQuest", "UrbanAchiever",
-		"vBagnon", "Vendorizer", "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
-		"WebDKP", "WIM", "WoWEquip",
-		"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
-		"zfpoison", "ZOMGBuffs"
-	}
-
 	-- used for Addons that aren't LoadOnDemand
-	for _, v in pairs(addonFrames) do
+	for _, v in pairs(self.addonSkins) do
 		self:checkAndRunAddOn(v)
 	end
-	addonFrames = nil
+	self.addonSkins = nil
 
 	-- handle Addons with odd names here
-	local oddlyNamedAddons = {
-		"Auc-Advanced", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "Ogri'Lazy", "Prat-3.0", "WoW-Pro"
-	}
-	for _, v in pairs(oddlyNamedAddons) do
+	for _, v in pairs(self.oddlyNamedAddons) do
 		v2, _ = v:gsub("[-_!'\.]", "")
 		self:checkAndRunAddOn(v, nil, v2)
 	end
-	oddlyNamedAddons = nil
+	self.oddlyNamedAddons = nil
 
 	-- this addon has a relation
 	self:checkAndRunAddOn("EnhancedTradeSkills", nil, "EnhancedTradeCrafts")
@@ -215,15 +214,15 @@ local lodFrames = {
 	"XPerl_Options",
 	"ZOMGBuffs_BlessingsManager",
 }
-local lodAddons = {}
+Skinner.lodAddons = {}
 for _, v in pairs(lodFrames) do
-	lodAddons[v] = v
+	Skinner.lodAddons[v] = v
 end
 lodFrames = nil
 for i = 1, 8 do
-	lodAddons["MobMapDatabaseStub"..i] = "MobMapDatabaseStub"..i
+	Skinner.lodAddons["MobMapDatabaseStub"..i] = "MobMapDatabaseStub"..i
 end
-lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
+Skinner.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 
 function Skinner:LoDFrames(arg1)
 --	self:Debug("LoDFrames: [%s]", arg1)
@@ -235,7 +234,7 @@ function Skinner:LoDFrames(arg1)
 	if blizzLoD[arg1] then self:checkAndRun(blizzLoD[arg1]) end
 
 	-- used for User LoadOnDemand Addons
-	if lodAddons[arg1] then self:checkAndRunAddOn(lodAddons[arg1], true) end
+	if self.lodAddons[arg1] then self:checkAndRunAddOn(self.lodAddons[arg1], true) end
 
 	-- handle renamed DBM-GUI addon
 	if arg1 == "DBM-GUI" then
