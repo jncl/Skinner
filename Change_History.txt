@@ -1,3 +1,15 @@
+b3.12340.7
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Allow frames to be reparented to a named parent
+	Skinned BattleNet Invites panel(s)
+	Added panel to allow skins to be Disabled
+	Added Minimal MiniMap buttons option
+	Updated Gradient code for Top/Bottom/MiddleFrames
+	Updated Ace3, AckisRecipeList, ArkInventory & ElitistGroup skins
+	Skinned !Swatter, Ara_Broker_Guild_Friends & Gobling
+
 b3.12340.6
 Jncl:
 	ToDo.txt
