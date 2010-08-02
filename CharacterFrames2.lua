@@ -67,10 +67,9 @@ function Skinner:FriendsFrame()
 	self:skinScrollBar{obj=FriendsFramePendingScrollFrame}
 	for i = 1, PENDING_INVITES_TO_DISPLAY do
 		local ffpBtn = "FriendsFramePendingButton"..i
-		self:addSkinFrame{obj=_G[ffpBtn]}
-		self:reParentSB(_G[ffpBtn.."AcceptButton"], self.skinFrame[_G[ffpBtn]])
-		self:reParentSB(_G[ffpBtn.."DeclineButton"], self.skinFrame[_G[ffpBtn]])
-		self:reParentSF(_G[ffpBtn], FriendsFramePendingScrollFrameScrollChild)
+		self:applySkin{obj=_G[ffpBtn]}
+		self:applySkin{obj=_G[ffpBtn.."AcceptButton"]}
+		self:applySkin{obj=_G[ffpBtn.."DeclineButton"]}
 	end
 
 -->>--	Who Frame
