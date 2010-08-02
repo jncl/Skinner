@@ -12,3 +12,6 @@ B - Button(s) Skin request
 
 	O	Grid, requested by tordenflesk, 15.07.10
 		- disable gradient ?
+
+√	I	PendingInvite frame(s), reported by gamemaster128, 01.08.10
+		- unusable, skin frames cover text
