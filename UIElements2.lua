@@ -771,7 +771,7 @@ function Skinner:LFDFrame()
 	self:addSkinFrame{obj=LFDSearchStatus, ft=ftype}
 	-- LFD Parent Frame
 	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
-	self:reParentSF(LFDParentFrame) -- hopefully allow Random cooldown frame to appear in front now
+	LowerFrameLevel(self.skinFrame[LFDParentFrame]) -- hopefully allow Random cooldown frame to appear in front now
 	-- Portrait
 	LFDParentFramePortraitTexture:SetAlpha(0)
 	LFDParentFramePortraitIcon:SetAlpha(0)
