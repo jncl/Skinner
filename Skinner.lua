@@ -92,7 +92,8 @@ function Skinner:OnInitialize()
 		}
 	else
 		if prdb.BdFile and prdb.BdFile ~= "None" then
-			bdtex = self.LSM:Fetch("background", "Skinner User Background")
+            -- bdtex = self.LSM:Fetch("background", "Skinner User Background")
+            bdtex = nil
 		else
 			bdtex = self.LSM:Fetch("background", prdb.BdTexture)
 		end
@@ -636,6 +637,20 @@ local function __applySkin(opts)
 
 	-- setup the backdrop
 	opts.obj:SetBackdrop(opts.bd or Skinner.Backdrop[1])
+    -- fix for backdrop textures not tiling vertically
+	if Skinner.db.profile.BdFile and Skinner.db.profile.BdFile ~= "None" then
+	    local bdTex = opts.obj:CreateTexture(nil, "BACKGROUND")
+	    bdTex:SetTexture(Skinner.LSM:Fetch("background", "Skinner User Background"))
+        -- allow for border inset
+        local bdi = Skinner.db.profile.BdInset
+        bdTex:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", bdi, -bdi)
+        bdTex:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", -bdi, bdi)
+        -- the following tiling methods MUST be false otherwise the texture wont be stretched as required
+        bdTex:SetHorizTile(false)
+        bdTex:SetVertTile(false)
+	    -- disable gradient effect
+	    opts.ng = true
+	end
 	local r, g, b, a = unpack(Skinner.bColour)
 	opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
 	local r, g, b, a = unpack(Skinner.bbColour)
