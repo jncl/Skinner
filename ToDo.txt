@@ -10,8 +10,70 @@ S - Skin request
 I - Issue/Bug
 B - Button(s) Skin request
 
-	O	Grid, requested by tordenflesk, 15.07.10
-		- disable gradient ?
+	N	Cataclysm Beta
+		- TOC Interface is 40000
+		- New Blizzard AddOns:
+			- ArchaeologyUI
+			- CompactRaidFrames
+			- GuildControlUI
+			- GuildUI
+			- ReforgingUI
+		- New Frames:
+			- CompactPartyFrame
+			- CompactRaidGroup
+			- CompactUnitFrame
+			- EclipseBarFrame
+			- FlowContainer
+			- LevelUpDisplay
+			- PaladinPowerBar
+			- RolePoll
+			- ShardBar
+		- Removed Frames:
+			- ClassTrainerFrameTemplates
+			- PVPBattlegroundFrame
+			- QuestTimerFrame
+			- SkillFrame
+		- Changed Frames:
+			- Character
+				- Currency
+				- PaperDoll
+				- PetPaperDoll
+				- Reputation
+			- DropDownMenu
+			- Friends
+			- Loot, now shows quest item texture
+			- SpellBook
+			- PVP
+			- RaidUI
+			- PetStable
+			- Quest
+			- TalentUI
+			- Taxi
+			- TradeSkillUI
+			- TrainerUI
+			- UIPanelTemplates
+			- Unit
+				- Party
+				- PartyPet
+				- Player
+				- PlayerPet
+			- VehicleMenuBar, Exp Bar now shown
+			- Watch
+		- New layer option - textureSubLevel
 
-√	I	PendingInvite frame(s), reported by gamemaster128, 01.08.10
-		- unusable, skin frames cover text
+√	I	Backdrop textures, reported by MegaManJuno, 4.08.10
+		- Just wanted to check if the backdrop tiling issues have been addressed yet? I recently tried reapplying a texture I used to use and still seem to have the same issues that were reported a few pages back, where it will tile properly horizontally, but vertically it seems to only use the bottom row of pixels from the texture, resulting in a "smear" look.
+		
+√	I	LFD, reported by dwarven,  8.08.10
+		- Not sure whether this is a healbot or skinner issue but here goes, I have my Healbot lefthand side of the UI, basically where the original party frames would display, whenever I open the random dungeon panel it appears behind Healbot, any other panel ie character / talents/ profession open correctly over the top of Healbot. Any thoughts?
+		
+√	I	AucAdvanced (5.9), reported by tordenflesk, 8.8.10
+		- Interface\AddOns\Skinner\SkinMe\AucAdvanced.lua:9: attempt to call method 'SetBackdrop' (a nil value)
+		Count: 1
+
+		Call Stack:
+		[C]: in function `SetBackdrop'
+		Interface\AddOns\Skinner\SkinMe\AucAdvanced.lua:9: in function <Interface\AddOns\Skinner\SkinMe\AucAdvanced.lua:7 >
+		(tail call): ?
+
+		
