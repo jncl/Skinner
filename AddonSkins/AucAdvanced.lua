@@ -3,19 +3,32 @@ if not Skinner:isAddonEnabled("Auc-Advanced") then return end
 function Skinner:AucAdvanced()
 	if not self.db.profile.AuctionUI then return end
 
+	local aVer = GetAddOnMetadata("Auc-Advanced", "Version")
+
 	-- progress bars
-	self:SecureHook(AucAdvanced.Scan , "ProgressBars", function(sbObj, value, show, text)
-		if not self.sbGlazed[sbObj] then
-			sbObj:SetBackdrop(nil)
-			self:glazeStatusBar(sbObj, 0)
-		end
+	local lib = AucAdvanced.Scan
+	self:SecureHook(lib , "ProgressBars", function(sbObj, ...)
+	    if aVer:sub(1,3) > "5.8" then
+	        for i = 1, #lib.availableBars do
+	           local gpb = lib["GenericProgressBar"..i]
+           		if gpb and not self.sbGlazed[gpb] then
+           			gpb:SetBackdrop(nil)
+           			self:glazeStatusBar(gpb, 0)
+           		end
+	        end
+	    else
+    		if not self.sbGlazed[sbObj] then
+    			sbObj:SetBackdrop(nil)
+    			self:glazeStatusBar(sbObj, 0)
+    		end
+    	end
 	end)
 
 	-- Simple Auction (tab labelled Post)
-	local sAuc = AucAdvanced.Modules.Util.SimpleAuction
-	if sAuc then
-		self:SecureHook(sAuc.Private, "CreateFrames", function()
-			local frame = sAuc.Private.frame
+	local mod = AucAdvanced.Modules.Util.SimpleAuction
+	if mod then
+		self:SecureHook(mod.Private, "CreateFrames", function()
+			local frame = mod.Private.frame
 			frame.slot:SetTexture(self.esTex)
 			self:skinMoneyFrame{obj=frame.minprice, noWidth=true, moveSEB=true}
 			self:skinMoneyFrame{obj=frame.buyout, noWidth=true, moveSEB=true}
@@ -28,23 +41,23 @@ function Skinner:AucAdvanced()
 			self:skinButton{obj=frame.refresh}
 			self:skinButton{obj=frame.bid}
 			self:skinButton{obj=frame.buy}
-			self:Unhook(sAuc.Private, "CreateFrames")
+			self:Unhook(mod.Private, "CreateFrames")
 		end)
 	end
 
 	-- SearchUI
-	local sUI = AucAdvanced.Modules.Util.SearchUI
-	if sUI then
-		self:SecureHook(sUI, "CreateAuctionFrames", function()
-			local frame = sUI.Private.gui.AuctionFrame
+	local mod = AucAdvanced.Modules.Util.SearchUI
+	if mod then
+		self:SecureHook(mod, "CreateAuctionFrames", function()
+			local frame = mod.Private.gui.AuctionFrame
 			if frame then
 				frame.money:SetAlpha(0)
 				self:addSkinFrame{obj=frame.backing}
 			end
-			self:Unhook(sUI, "CreateAuctionFrames")
+			self:Unhook(mod, "CreateAuctionFrames")
 		end)
-		self:SecureHook(sUI, "MakeGuiConfig", function()
-			local gui = sUI.Private.gui
+		self:SecureHook(mod, "MakeGuiConfig", function()
+			local gui = mod.Private.gui
 			gui.frame.progressbar:SetBackdrop(nil)
 			self:glazeStatusBar(gui.frame.progressbar, 0)
 			self:skinEditBox{obj=gui.saves.name, regs={9}}
@@ -71,10 +84,10 @@ function Skinner:AucAdvanced()
 					Skinner:skinMoneyFrame{obj=frame.money, noWidth=true, moveSEB=true}
 				end
 			end
-			self:Unhook(sUI, "MakeGuiConfig")
+			self:Unhook(mod, "MakeGuiConfig")
 		end)
 		-- control button for the RealTimeSearch
-		local lib = sUI.Searchers["RealTime"]
+		local lib = mod.Searchers["RealTime"]
 		if lib then
 			self:SecureHook(lib, "HookAH", function()
 				local frame = self:getChild(AuctionFrameBrowse, AuctionFrameBrowse:GetNumChildren()) -- get last child
@@ -83,7 +96,7 @@ function Skinner:AucAdvanced()
 			end)
 		end
 		-- controls for the SnatchSearcher
-		local lib = sUI.Searchers["Snatch"]
+		local lib = mod.Searchers["Snatch"]
 		if lib then
 			self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
 				self:skinEditBox{obj=lib.Private.frame.pctBox, regs={9}}
@@ -94,7 +107,7 @@ function Skinner:AucAdvanced()
 			end)
 		end
 		-- skin the remove button for the ItemPriceFilter
-		local lib = sUI.Filters["ItemPrice"]
+		local lib = mod.Filters["ItemPrice"]
 		if lib then
 			self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
 				local exists, id = gui:GetTabByName(lib.tabname, "Filters")
@@ -108,10 +121,10 @@ function Skinner:AucAdvanced()
 	end
 
 	-- Appraiser
-	local apr = AucAdvanced.Modules.Util.Appraiser
-	if apr then
-		self:SecureHook(apr.Private, "CreateFrames", function()
-			local frame = apr.Private.frame
+	local mod = AucAdvanced.Modules.Util.Appraiser
+	if mod then
+		self:SecureHook(mod.Private, "CreateFrames", function()
+			local frame = mod.Private.frame
 			self:skinButton{obj=frame.toggleManifest}
 			self:skinButton{obj=frame.config}
 			self:moveObject{obj=frame.itembox.showAuctions, x=-10}
@@ -140,22 +153,22 @@ function Skinner:AucAdvanced()
 			self:skinButton{obj=frame.gobatch}
 			self:skinButton{obj=frame.refresh}
 			self:skinButton{obj=frame.cancel, x1=-2, y1=1, x2=2}
-			self:Unhook(apr.Private,"CreateFrames")
+			self:Unhook(mod.Private,"CreateFrames")
 		end)
 	end
 
 	-- ScanButtons
-	local sBtn = AucAdvanced.Modules.Util.ScanButton
-	if sBtn then
-		self:SecureHook(sBtn.Private, "HookAH", function(this)
-			local obj = sBtn.Private
+	local mod = AucAdvanced.Modules.Util.ScanButton
+	if mod then
+		self:SecureHook(mod.Private, "HookAH", function(this)
+			local obj = mod.Private
 			self:skinButton{obj=obj.buttons.stop, x1=-2, y1=1, x2=2}
 			self:skinButton{obj=obj.buttons.play, x1=-2, y1=1, x2=2}
 			self:skinButton{obj=obj.buttons.pause, x1=-2, y1=1, x2=2}
 			self:skinButton{obj=obj.buttons.getall, x1=-2, y1=1, x2=2}
 			self:skinButton{obj=obj.message.Done}
 			self:addSkinFrame{obj=obj.message, kfs=true}
-			self:Unhook(sBtn.Private, "HookAH")
+			self:Unhook(mod.Private, "HookAH")
 		end)
 	end
 
@@ -176,22 +189,22 @@ function Skinner:AucAdvanced()
 	end
 
 	-- Glypher
-	local gly = AucAdvanced.Modules.Util.Glypher
-	if gly then
-		self:SecureHook(gly.Private, "SetupConfigGui", function(this, gui)
-			local frame = gly.Private.frame
+	local mod = AucAdvanced.Modules.Util.Glypher
+	if mod then
+		self:SecureHook(mod.Private, "SetupConfigGui", function(this, gui)
+			local frame = mod.Private.frame
 			self:skinButton{obj=frame.refreshButton, as=true} -- just skin it otherwise text is hidden
 			self:skinButton{obj=frame.searchButton, as=true} -- just skin it otherwise text is hidden
 			self:skinButton{obj=frame.skilletButton, as=true} -- just skin it otherwise text is hidden
-			self:Unhook(gly.Private, "SetupConfigGui")
+			self:Unhook(mod.Private, "SetupConfigGui")
 		end)
 	end
 
 	--	CompactUI module
 	--	configure button on AH frame
-	local cUI = AucAdvanced.Modules.Util.CompactUI
-	if cUI then
-		self:skinButton{obj=cUI.Private.switchUI, y1=2, y2=-3}
+	local mod = AucAdvanced.Modules.Util.CompactUI
+	if mod then
+		self:skinButton{obj=mod.Private.switchUI, y1=2, y2=-3}
 	end
 
 --	Settings frames(s) ??
