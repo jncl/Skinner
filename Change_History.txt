@@ -1,3 +1,11 @@
+b3.12340.10
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Fix for Backdrop textures being stretched
+	Bugfix for LFD skinframe frame level being too low
+	Updated AucAdvanced skin to handle beta 5.9 version changes
+
 b3.12340.9
 Jncl:
 	ToDo.txt
