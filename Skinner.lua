@@ -79,59 +79,54 @@ function Skinner:OnInitialize()
 	-- Gradient settings
 	self.gradientTab = {prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
 	self.gradientCBar = {prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .25, .25, .55, 1, 0, 0, 0, 1}
-	self.gradientTexture = self.LSM:Fetch("background", prdb.Gradient.texture)
+	self.gradientTex = self.LSM:Fetch("background", prdb.Gradient.texture)
 
 	-- backdrop for Frames etc
-	local bdtex = self.LSM:Fetch("background", "Blizzard ChatFrame Background")
-	local bdbtex = self.LSM:Fetch("border", "Blizzard Tooltip")
+	local bdTex = self.LSM:Fetch("background", "Blizzard ChatFrame Background")
+	local bdbTex = self.LSM:Fetch("border", "Blizzard Tooltip")
 	if prdb.BdDefault then
 		self.backdrop = {
-			bgFile = bdtex, tile = true, tileSize = 16,
-			edgeFile = bdbtex, edgeSize = 16,
+			bgFile = bdTex, tile = true, tileSize = 16,
+			edgeFile = bdbTex, edgeSize = 16,
 			insets = {left = 4, right = 4, top = 4, bottom = 4},
 		}
 	else
 		if prdb.BdFile and prdb.BdFile ~= "None" then
-            -- bdtex = self.LSM:Fetch("background", "Skinner User Background")
-            bdtex = nil
-		else
-			bdtex = self.LSM:Fetch("background", prdb.BdTexture)
+            self.bdTex = self.LSM:Fetch("background", "Skinner User Background")
+        else
+			self.bdTex = self.LSM:Fetch("background", prdb.BdTexture)
 		end
 		if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
-			bdbtex = self.LSM:Fetch("border", "Skinner User Border")
+			bdbTex = self.LSM:Fetch("border", "Skinner User Border")
 		else
-			bdbtex = self.LSM:Fetch("border", prdb.BdBorderTexture)
+			bdbTex = self.LSM:Fetch("border", prdb.BdBorderTexture)
 		end
 		local bdi = prdb.BdInset
 		local bdt = prdb.BdTileSize > 0 and true or false
 		self.backdrop = {
-			bgFile = bdtex, tile = bdt, tileSize = prdb.BdTileSize,
-			edgeFile = bdbtex, edgeSize = prdb.BdEdgeSize,
+			bgFile = bdTex, -- use default (fix for texture tiling issue)
+			tile = bdt, tileSize = prdb.BdTileSize,
+			edgeFile = bdbTex, edgeSize = prdb.BdEdgeSize,
 			insets = {left = bdi, right = bdi, top = bdi, bottom = bdi},
 		}
 	end
 	self.Backdrop = {}
-	self.Backdrop[1] = self.backdrop
+	self.Backdrop[1] = CopyTable(self.backdrop)
 	-- backdrop for ScrollBars & EditBoxes
 	local edgetex = self.LSM:Fetch("border", "Skinner Border")
 	-- wide backdrop for ScrollBars (16,16,4)
-	self.Backdrop[2] = {
-		bgFile = bdtex, tile = true, tileSize = 16,
-		edgeFile = edgetex, edgeSize = 16,
-		insets = {left = 4, right = 4, top = 4, bottom = 4},
-	}
+	self.Backdrop[2] = CopyTable(self.backdrop)
+	self.Backdrop[2].edgeFile = edgetex
 	-- medium backdrop for ScrollBars (12,12,3)
-	self.Backdrop[3] = {
-		bgFile = bdtex, tile = true, tileSize = 12,
-		edgeFile = edgetex, edgeSize = 12,
-		insets = {left = 3, right = 3, top = 3, bottom = 3},
-	}
+	self.Backdrop[3] = CopyTable(self.Backdrop[2])
+	self.Backdrop[3].tileSize = 12
+	self.Backdrop[3].edgeSize = 12
+	self.Backdrop[3].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	-- narrow backdrop for ScrollBars (8,8,2)
-	self.Backdrop[4] = {
-		bgFile = bdtex, tile = true, tileSize = 8,
-		edgeFile = edgetex, edgeSize = 8,
-		insets = {left = 2, right = 2, top = 2, bottom = 2},
-	}
+	self.Backdrop[4] = CopyTable(self.Backdrop[2])
+    self.Backdrop[4].tileSize = 8
+	self.Backdrop[4].edgeSize = 8
+	self.Backdrop[4].insets = {left = 2, right = 2, top = 2, bottom = 2}
 	-- these backdrops are for small UI buttons, e.g. minus/plus in QuestLog/IOP/Skills etc
 	self.Backdrop[5] = CopyTable(self.backdrop)
 	self.Backdrop[5].tileSize = 12
@@ -563,7 +558,7 @@ function Skinner:applyGradient(frame, fh, invert, rotate)
 	end
 
 	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
-	frame.tfade:SetTexture(self.gradientTexture)
+	frame.tfade:SetTexture(self.gradientTex)
 
 	if prdb.FadeHeight.enable and (prdb.FadeHeight.force or not fh) then
 		-- set the Fade Height if not already passed to this function or 'forced'
@@ -638,16 +633,18 @@ local function __applySkin(opts)
 	-- setup the backdrop
 	opts.obj:SetBackdrop(opts.bd or Skinner.Backdrop[1])
     -- fix for backdrop textures not tiling vertically
-	if Skinner.db.profile.BdFile and Skinner.db.profile.BdFile ~= "None" then
-	    local bdTex = opts.obj:CreateTexture(nil, "BACKGROUND")
-	    bdTex:SetTexture(Skinner.LSM:Fetch("background", "Skinner User Background"))
+    -- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
+    if not Skinner.db.profile.BdDefault then
+	    local bdTex = opts.obj:CreateTexture(nil, "BORDER")
+        bdTex:SetTexture(Skinner.bdTex, true) -- have to use true for tiling to work
+	    bdTex:SetBlendMode("ADD") -- use background alpha setting
         -- allow for border inset
         local bdi = Skinner.db.profile.BdInset
         bdTex:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", bdi, -bdi)
         bdTex:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", -bdi, bdi)
-        -- the following tiling methods MUST be false otherwise the texture wont be stretched as required
-        bdTex:SetHorizTile(false)
-        bdTex:SetVertTile(false)
+        -- the texture will be stretched if the following tiling methods are set to false
+        bdTex:SetHorizTile(Skinner.db.profile.BdTileSize > 0 and true or false)
+        bdTex:SetVertTile(Skinner.db.profile.BdTileSize > 0 and true or false)
 	    -- disable gradient effect
 	    opts.ng = true
 	end
@@ -1032,7 +1029,7 @@ function Skinner:setActiveTab(tabName)
 
 --	self:Debug("setActiveTab : [%s]", tabName:GetName())
 
-	tabName.tfade:SetTexture(self.gradientTexture)
+	tabName.tfade:SetTexture(self.gradientTex)
 	tabName.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
 end
@@ -1464,7 +1461,7 @@ function Skinner:skinTooltip(frame)
 --	self:Debug("sT: [%s, %s, %s, %s]", frame, frame:GetName(), self.ttBorder, ttHeight)
 
 	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
-	frame.tfade:SetTexture(self.gradientTexture)
+	frame.tfade:SetTexture(self.gradientTex)
 
 	if prdb.Tooltips.style == 1 then
 		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -6)
