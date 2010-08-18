@@ -22,7 +22,7 @@ function Skinner:Ace3()
 
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
-		Skinner:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
+        -- Skinner:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
 		if obj and not Skinner.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
 				Skinner:keepFontStrings(obj.frame)

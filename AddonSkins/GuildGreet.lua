@@ -37,7 +37,7 @@ function Skinner:GuildGreet()
 	self:skinScrollBar{obj=GuildGreetFramePlayersSubMainAltScrollbar}
 	-- Information (a.k.a Todo)
 	self:SecureHook("GLDG_TodoShow", function(frame)
-		self:Debug("GLDG_TodoShow: [%s]", frame)
+--      self:Debug("GLDG_TodoShow: [%s]", frame)
 		self:skinScrollBar{obj=GuildGreetFrameTodoScroll}
 		self:addSkinFrame{obj=GuildGreetFrameTodoList}
 		self:Unhook("GLDG_TodoShow")

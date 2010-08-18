@@ -32,19 +32,6 @@ function Skinner:FishingBuddy()
 	end
 
 -->>--	Tabs (bottom)
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("FishingBuddyFrameTab_OnClick",function(...)
-			for i = 1, FishingBuddyFrame.numTabs do
-				local tabSF = self.skinFrame[_G["FishingBuddyFrameTab"..i]]
-				if i == FishingBuddyFrame.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
 	for i = 1, FishingBuddyFrame.numTabs do
 		local tabObj = _G["FishingBuddyFrameTab"..i]
 		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
@@ -56,5 +43,6 @@ function Skinner:FishingBuddy()
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+    self.tabFrames[FishingBuddyFrame] = true
 
 end
