@@ -58,12 +58,15 @@ function Skinner:OnInitialize()
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 
 	-- register any User defined textures used
-	if prdb.BdFile and prdb.BdFile ~= "None" then
-		self.LSM:Register("background", "Skinner User Background", prdb.BdFile)
-	end
+    if prdb.BdFile and prdb.BdFile ~= "None" then
+        self.LSM:Register("background", "Skinner User Backdrop", prdb.BdFile)
+    end
 	if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
 		self.LSM:Register("border", "Skinner User Border", prdb.BdEdgeFile)
 	end
+    if prdb.BgFile and prdb.BgFile ~= "None" then
+        self.LSM:Register("background", "Skinner User Background", prdb.BgFile)
+    end
 
 	-- Heading and Body Text colours
 	local c = prdb.HeadText
@@ -92,9 +95,9 @@ function Skinner:OnInitialize()
 		}
 	else
 		if prdb.BdFile and prdb.BdFile ~= "None" then
-            self.bdTex = self.LSM:Fetch("background", "Skinner User Background")
+            bdTex = self.LSM:Fetch("background", "Skinner User Backdrop")
         else
-			self.bdTex = self.LSM:Fetch("background", prdb.BdTexture)
+			bdTex = self.LSM:Fetch("background", prdb.BdTexture)
 		end
 		if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
 			bdbTex = self.LSM:Fetch("border", "Skinner User Border")
@@ -136,7 +139,14 @@ function Skinner:OnInitialize()
 	self.Backdrop[6].tileSize = 10
 	self.Backdrop[6].edgeSize = 10
 	self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
-
+	-- setup background texture
+	if prdb.BgUseTex then
+    	if prdb.BgFile and prdb.BgFile ~= "None" then
+            self.bgTex = self.LSM:Fetch("background", "Skinner User Background")
+        else
+    		self.bgTex = self.LSM:Fetch("background", prdb.BgTexture)
+    	end
+    end
 	-- these are used to disable frames from being skinned
 	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "GlyphUI", "TalentUI", "DressUpFrame", "AchievementUI", "FriendsFrame", "TradeSkillUI", "TradeFrame", "QuestLog", "RaidUI", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", "AlertFrames"}
 	self.charKeys2 = {}
@@ -145,20 +155,12 @@ function Skinner:OnInitialize()
 	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "WorldMap", "MainMenuBar"}
 
 	-- optional/patched frames
-	if IsMacClient() then tinsert(self.uiKeys1, "MovieProgress") end
-	if self.isPTR then tinsert(self.uiKeys1, "FeedbackUI") end
+	if IsMacClient() then self:add2Table(self.uiKeys1, "MovieProgress") end
+	if self.isPTR then self:add2Table(self.uiKeys1, "FeedbackUI") end
 
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
-	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
-	-- use strings as the objects may not exist when we start
-	self.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "ItemRefShoppingTooltip3"}
-	-- list of Tooltips used when the Tooltip style is 3
-	self.ttList = CopyTable(self.ttCheck)
-	tinsert(self.ttList, "SmallTextTooltip")
-	-- Set the Tooltip Border
-	self.ttBorder = true
 	-- TooltipBorder colours
 	local c = prdb.TooltipBorder
 	self.tbColour = {c.r, c.g, c.b, c.a}
@@ -451,7 +453,7 @@ local function __addSkinFrame(opts)
 	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
 
 	-- store frame obj, if required
-	if opts.ft then tinsert(Skinner.gradFrames[opts.ft], opts.obj) end
+	if opts.ft then Skinner:add2Table(Skinner.gradFrames[opts.ft], opts.obj) end
 
 	-- remove all textures, if required
 	if opts.kfs or opts.hat then Skinner:keepFontStrings(opts.obj, opts.hat) end
@@ -599,6 +601,21 @@ function Skinner:applyGradient(frame, fh, invert, rotate)
 
 end
 
+function Skinner:applyTexture(frame)
+
+    frame.tbg = frame:CreateTexture(nil, "BORDER")
+    frame.tbg:SetTexture(self.bgTex, true) -- have to use true for tiling to work
+    frame.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
+    -- allow for border inset
+    local bdi = self.db.profile.BdInset
+    frame.tbg:SetPoint("TOPLEFT", frame, "TOPLEFT", bdi, -bdi)
+    frame.tbg:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -bdi, bdi)
+    -- the texture will be stretched if the following tiling methods are set to false
+    frame.tbg:SetHorizTile(self.db.profile.BgTile)
+    frame.tbg:SetVertTile(self.db.profile.BgTile)
+
+end
+
 local function __applySkin(opts)
 --[[
 	Calling parameters:
@@ -625,33 +642,26 @@ local function __applySkin(opts)
 	end
 
 	-- store frame obj, if required
-	if opts.ft then tinsert(Skinner.gradFrames[opts.ft], opts.obj) end
+	if opts.ft then Skinner:add2Table(Skinner.gradFrames[opts.ft], opts.obj) end
 
 	-- remove all textures, if required
 	if opts.kfs then Skinner:keepFontStrings(opts.obj) end
 
 	-- setup the backdrop
 	opts.obj:SetBackdrop(opts.bd or Skinner.Backdrop[1])
-    -- fix for backdrop textures not tiling vertically
-    -- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
-    if not Skinner.db.profile.BdDefault then
-	    local bdTex = opts.obj:CreateTexture(nil, "BORDER")
-        bdTex:SetTexture(Skinner.bdTex, true) -- have to use true for tiling to work
-	    bdTex:SetBlendMode("ADD") -- use background alpha setting
-        -- allow for border inset
-        local bdi = Skinner.db.profile.BdInset
-        bdTex:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", bdi, -bdi)
-        bdTex:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", -bdi, bdi)
-        -- the texture will be stretched if the following tiling methods are set to false
-        bdTex:SetHorizTile(Skinner.db.profile.BdTileSize > 0 and true or false)
-        bdTex:SetVertTile(Skinner.db.profile.BdTileSize > 0 and true or false)
-	    -- disable gradient effect
-	    opts.ng = true
-	end
+	-- colour the backdrop
 	local r, g, b, a = unpack(Skinner.bColour)
 	opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
 	local r, g, b, a = unpack(Skinner.bbColour)
 	opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
+
+    -- fix for backdrop textures not tiling vertically
+    -- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
+    if Skinner.db.profile.BgUseTex then
+        if not opts.obj.tbg then Skinner:applyTexture(opts.obj) end
+	elseif opts.obj.tbg then
+	    opts.obj.tbg = nil -- remove background texture if it exists
+	end
 
 	-- handle header, if required
 	if opts.hdr then hideHeader(opts.obj) end
@@ -1049,20 +1059,22 @@ function Skinner:setInactiveTab(tabName)
 
 end
 
+--[=[
 function Skinner:setTTBackdrop(bdReqd)
---	self:Debug("setTTBackdrop: [%s]", bdReqd)
+--  self:Debug("setTTBackdrop: [%s]", bdReqd)
 
-	for _, tooltip in pairs(self.ttList) do
---		self:Debug("sTTB: [%s]", tooltip)
-		local ttip = _G[tooltip]
-		if ttip then
-			if bdReqd then ttip:SetBackdrop(self.Backdrop[1])
-			else ttip:SetBackdrop(nil) end
-		end
-	end
+    for _, tooltip in pairs(self.ttList) do
+--      self:Debug("sTTB: [%s]", tooltip)
+        local ttip = _G[tooltip]
+        if ttip then
+            if bdReqd then ttip:SetBackdrop(self.Backdrop[1])
+            else ttip:SetBackdrop(nil) end
+        end
+    end
 
 end
 
+--]=]
 function Skinner:setTTBBC()
 -- 	self:Debug("setTTBBC: [%s, %s, %s, %s]", unpack(self.tbColour))
 
@@ -1205,7 +1217,7 @@ local function __skinEditBox(opts)
 	local kRegions = CopyTable(Skinner.ebRegions)
 	if opts.regs then
 		for _, v in pairs(opts.regs) do
-			tinsert(kRegions, v)
+		    Skinner:add2Table(kRegions, v)
 		end
 	end
 	Skinner:keepRegions(opts.obj, kRegions)
@@ -1456,9 +1468,18 @@ function Skinner:skinTooltip(frame)
 
 	if not prdb.Gradient.ui then return end
 
+    -- add background texture if required
+    if self.db.profile.Tooltips.style == 3 then
+        if self.db.profile.BgUseTex then
+            if not frame.tbg then self:applyTexture(frame) end
+        elseif frame.tbg then
+            frame.tbg = nil -- remove background texture if it exists
+        end
+    end
+
 	local ttHeight = ceil(frame:GetHeight())
 
---	self:Debug("sT: [%s, %s, %s, %s]", frame, frame:GetName(), self.ttBorder, ttHeight)
+--    self:Debug("sT: [%s, %s, %s, %s]", frame, frame:GetName(), self.ttBorder, ttHeight)
 
 	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
 	frame.tfade:SetTexture(self.gradientTex)
@@ -1477,6 +1498,9 @@ function Skinner:skinTooltip(frame)
 		frame:SetBackdropColor(unpack(self.bColour))
 	end
 
+	frame.tfade:SetBlendMode("ADD")
+	frame.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
+
 	-- Check to see if we need to colour the Border
 	if not self.ttBorder then
 		for _, tooltip in pairs(self.ttCheck) do
@@ -1493,9 +1517,6 @@ function Skinner:skinTooltip(frame)
 	end
 
 	frame:SetBackdropBorderColor(self:setTTBBC())
-
-	frame.tfade:SetBlendMode("ADD")
-	frame.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
 end
 

@@ -741,17 +741,13 @@ function Skinner:DebugTools()
 	self:addSkinFrame{obj=ScriptErrorsFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
 
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then
-			FrameStackTooltip:SetBackdrop(self.Backdrop[1])
-			EventTraceTooltip:SetBackdrop(self.Backdrop[1])
-		end
+        if self.db.profile.Tooltips.style == 3 then
+            self:add2Table(self.ttList, "FrameStackTooltip")
+            self:add2Table(self.ttList, "EventTraceTooltip")
+        end
 		self:HookScript(FrameStackTooltip, "OnUpdate", function(this)
 			self:skinTooltip(this)
 		end)
-		self:HookScript(EventTraceTooltip, "OnShow", function(this)
-			self:skinTooltip(this)
-		end)
-		self:skinTooltip(FrameStackTooltip)
 	end
 
 end

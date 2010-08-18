@@ -1,6 +1,30 @@
 local _G = _G
 local ftype = "u"
 
+-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
+-- use strings as the objects may not exist when we start
+Skinner.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "ItemRefShoppingTooltip3"}
+-- list of Tooltips used when the Tooltip style is 3
+-- using a metatable to manage tooltips when they are added in different functions
+Skinner.ttList = setmetatable({}, {__newindex = function(t, k, v)
+--    Skinner:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
+    rawset(t, k, v)
+    -- set the backdrop if required
+	if Skinner.db.profile.Tooltips.style == 3 then
+	    _G[v]:SetBackdrop(Skinner.Backdrop[1])
+	end
+    -- hook the OnShow method
+	Skinner:HookScript(_G[v], "OnShow", function(this)
+		Skinner:skinTooltip(this)
+		if this == GameTooltip and Skinner.db.profile.Tooltips.glazesb then
+			Skinner:glazeStatusBar(GameTooltipStatusBar, 0)
+		end
+	end)
+	Skinner:skinTooltip(_G[v]) -- skin here so tooltip initially skinnned when logged on
+end})
+-- Set the Tooltip Border
+Skinner.ttBorder = true
+
 function Skinner:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
@@ -12,8 +36,11 @@ function Skinner:Tooltips()
 	if self.db.profile.Tooltips.style == 3 then
 		local c = self.db.profile.Backdrop
 		TOOLTIP_DEFAULT_BACKGROUND_COLOR = {c.r, c.g, c.b}
-		self:setTTBackdrop(true)
+        -- self:setTTBackdrop(true)
 	end
+
+    -- skin Item Ref Tooltip's close button
+	self:skinButton{obj=ItemRefCloseButton, cb=true}
 
 	local counts = 0
 	local GTSBevt
@@ -46,19 +73,11 @@ function Skinner:Tooltips()
 		end
 	end)
 
-	-- MUST hook to OnShow script rather than the Show method otherwise not every tooltip is skinned properly everytime
-	for _, tooltip in pairs(self.ttList) do
-		local ttip = _G[tooltip]
-		self:HookScript(ttip, "OnShow", function(this)
-			self:skinTooltip(this)
-			if this == GameTooltip and self.db.profile.Tooltips.glazesb then
-				self:glazeStatusBar(GameTooltipStatusBar, 0)
-			end
-		end)
-		self:skinTooltip(ttip) -- skin here so tooltip initially skinnned when logged on
-	end
-
-	self:skinButton{obj=ItemRefCloseButton, cb=true}
+    -- add tooltips to table to set backdrop and hook OnShow method
+    for _, tooltip in pairs(self.ttCheck) do
+	    self:add2Table(self.ttList, tooltip)
+    end
+    self:add2Table(self.ttList, "SmallTextTooltip")
 
 	-- Hook this to skin the GameTooltip StatusBars
 	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
@@ -563,25 +582,13 @@ function Skinner:WorldMap()
 	self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
 
 -->>-- Tooltip(s)
-	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then WorldMapTooltip:SetBackdrop(self.Backdrop[1]) end
-		self:SecureHookScript(WorldMapTooltip, "OnShow", function(this)
-			self:skinTooltip(this)
-		end)
-		if self.db.profile.Tooltips.style == 3 then
-			WorldMapCompareTooltip1:SetBackdrop(self.Backdrop[1])
-			WorldMapCompareTooltip2:SetBackdrop(self.Backdrop[1])
-			WorldMapCompareTooltip3:SetBackdrop(self.Backdrop[1])
-		end
-		self:SecureHookScript(WorldMapCompareTooltip1, "OnShow", function(this)
-			self:skinTooltip(this)
-		end)
-		self:SecureHookScript(WorldMapCompareTooltip2, "OnShow", function(this)
-			self:skinTooltip(this)
-		end)
-		self:SecureHookScript(WorldMapCompareTooltip3, "OnShow", function(this)
-			self:skinTooltip(this)
-		end)
+	if self.db.profile.Tooltips.skin
+	and self.db.profile.Tooltips.style == 3
+	then
+	    self:add2Table(self.ttList, "WorldMapTooltip")
+	    self:add2Table(self.ttList, "WorldMapCompareTooltip1")
+	    self:add2Table(self.ttList, "WorldMapCompareTooltip2")
+	    self:add2Table(self.ttList, "WorldMapCompareTooltip3")
 	end
 
 end

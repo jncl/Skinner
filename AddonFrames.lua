@@ -1,6 +1,6 @@
 
 function Skinner:BlizzardFrames()
---	self:Debug("BlizzardFrames")
+--    self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
@@ -27,7 +27,7 @@ function Skinner:BlizzardFrames()
 --[=[
 	QuestLog -- checked with EQL3 & QuestGuru below
 	CastingBar -- checked with Quartz below
-	Tooltips -- checked with TipTac below
+	Tooltips -- checked below
 	MainMenuBar -- checked with Bongos below
 	Nameplates -- checked with Aloft below
 	ModelFrames -- checked with CloseUp below
@@ -81,10 +81,17 @@ Skinner.oddlyNamedAddons = {
 	"!Swatter", "Auc-Advanced", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "Ogri'Lazy", "Prat-3.0", "WoW-Pro"
 }
 function Skinner:AddonFrames()
---	self:Debug("AddonFrames")
+--     self:Debug("AddonFrames")
 
-	-- this addon colour the Tooltip Border
-	if IsAddOnLoaded("Chippu") then self.ttBorder = false end
+	-- these addons colour the Tooltip Border
+	if IsAddOnLoaded("Chippu")
+	or IsAddOnLoaded("TipTac")
+	then
+	    self.ttBorder = false
+	end
+
+    -- skin tooltips here after checking whether the ttBorder setting needed changing
+	self:checkAndRun("Tooltips")
 
 	-- skin the QuestLog if EQL3 or QuestGuru aren't loaded
 	-- N.B. Do it here as other Addons use the QuestLog size
@@ -96,9 +103,6 @@ function Skinner:AddonFrames()
 
 	-- skin the CastingBar if Quartz isn't loaded
 	if not IsAddOnLoaded("Quartz") then self:checkAndRun("CastingBar") end
-
-	-- skin the Tooltips if TipTac isn't loaded
-	if not IsAddOnLoaded("TipTac") then self:checkAndRun("Tooltips") end
 
 	-- skin the MenuBar if Bongos isn't loaded
 	if not IsAddOnLoaded("Bongos")

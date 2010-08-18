@@ -95,6 +95,12 @@ local function safecall(funcName, LoD, quiet)
 	end
 end
 
+function Skinner:add2Table(table, value)
+
+    table[#table + 1] = value
+
+end
+
 function Skinner:checkAndRun(funcName, quiet)
 --	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 

@@ -20,6 +20,11 @@ function Skinner:Defaults()
 		BdBorderTexture = "Blizzard Tooltip",
 		BdEdgeSize		= 16,
 		BdInset			= 4,
+		-- Background Texture settings
+		BgUseTex        = false,
+		BgFile          = "None",
+		BgTexture       = "None",
+		BgTile          = false,
 		-- Other
 		TexturedTab		= false,
 		TexturedDD		= false,
@@ -302,77 +307,119 @@ function Skinner:Options()
 			},
 		},
 
-		Backdrop = {
-			type = "group",
-			name = self.L["Default Backdrop"],
-			get = function(info) return db[info[#info]] end,
-			set = function(info, value)
-				db[info[#info]] = value == "" and "None" or value
-				if info[#info] ~= "BdDefault" then db.BdDefault = false end
-			end,
-			args = {
-				BdDefault = {
-					type = "toggle",
-					order = 1,
-					width = "double",
-					name = self.L["Use Default Backdrop"],
-					desc = self.L["Toggle the Default Backdrop"],
-				},
-				BdFile = {
-					type = "input",
-					order = 2,
-					width = "full",
-					name = self.L["Backdrop Texture File"],
-					desc = self.L["Set Backdrop Texture Filename"],
-				},
-				BdTexture = AceGUIWidgetLSMlists and {
-					type = "select",
-					order = 3,
-					width = "double",
-					name = self.L["Backdrop Texture"],
-					desc = self.L["Choose the Texture for the Backdrop"],
-					dialogControl = "LSM30_Background",
-					values = AceGUIWidgetLSMlists.background,
-				} or nil,
-				BdTileSize = {
-					type = "range",
-					order = 4,
-					name = self.L["Backdrop TileSize"],
-					desc = self.L["Set Backdrop TileSize"],
-					min = 0, max = 128, step = 4,
-				},
-				BdEdgeFile = {
-					type = "input",
-					order = 5,
-					width = "full",
-					name = self.L["Border Texture File"],
-					desc = self.L["Set Border Texture Filename"],
-				},
-				BdBorderTexture = AceGUIWidgetLSMlists and {
-					type = "select",
-					order = 6,
-					width = "double",
-					name = self.L["Border Texture"],
-					desc = self.L["Choose the Texture for the Border"],
-					dialogControl = 'LSM30_Border',
-					values = AceGUIWidgetLSMlists.border,
-				} or nil,
-				BdEdgeSize = {
-					type = "range",
-					order = 7,
-					name = self.L["Border Width"],
-					desc = self.L["Set Border Width"],
-					min = 0, max = 32, step = 2,
-				},
-				BdInset = {
-					type = "range",
-					order = 8,
-					name = self.L["Border Inset"],
-					desc = self.L["Set Border Inset"],
-					min = 0, max = 8, step = 1,
-				},
-			},
-		},
+        Backdrop = {
+            type = "group",
+            name = self.L["Default Backdrop"],
+            get = function(info) return db[info[#info]] end,
+            set = function(info, value)
+                db[info[#info]] = value == "" and "None" or value
+                if info[#info] ~= "BdDefault" then db.BdDefault = false end
+            end,
+            args = {
+                BdDefault = {
+                    type = "toggle",
+                    order = 1,
+                    width = "double",
+                    name = self.L["Use Default Backdrop"],
+                    desc = self.L["Toggle the Default Backdrop"],
+                },
+                BdFile = {
+                    type = "input",
+                    order = 2,
+                    width = "full",
+                    name = self.L["Backdrop Texture File"],
+                    desc = self.L["Set Backdrop Texture Filename"],
+                },
+                BdTexture = AceGUIWidgetLSMlists and {
+                    type = "select",
+                    order = 3,
+                    width = "double",
+                    name = self.L["Backdrop Texture"],
+                    desc = self.L["Choose the Texture for the Backdrop"],
+                    dialogControl = "LSM30_Background",
+                    values = AceGUIWidgetLSMlists.background,
+                } or nil,
+                BdTileSize = {
+                    type = "range",
+                    order = 4,
+                    name = self.L["Backdrop TileSize"],
+                    desc = self.L["Set Backdrop TileSize"],
+                    min = 0, max = 128, step = 4,
+                },
+                BdEdgeFile = {
+                    type = "input",
+                    order = 5,
+                    width = "full",
+                    name = self.L["Border Texture File"],
+                    desc = self.L["Set Border Texture Filename"],
+                },
+                BdBorderTexture = AceGUIWidgetLSMlists and {
+                    type = "select",
+                    order = 6,
+                    width = "double",
+                    name = self.L["Border Texture"],
+                    desc = self.L["Choose the Texture for the Border"],
+                    dialogControl = 'LSM30_Border',
+                    values = AceGUIWidgetLSMlists.border,
+                } or nil,
+                BdEdgeSize = {
+                    type = "range",
+                    order = 7,
+                    name = self.L["Border Width"],
+                    desc = self.L["Set Border Width"],
+                    min = 0, max = 32, step = 2,
+                },
+                BdInset = {
+                    type = "range",
+                    order = 8,
+                    name = self.L["Border Inset"],
+                    desc = self.L["Set Border Inset"],
+                    min = 0, max = 8, step = 1,
+                },
+            },
+        },
+
+        Background = {
+            type = "group",
+            name = self.L["Background Settings"],
+            get = function(info) return db[info[#info]] end,
+            set = function(info, value)
+                db[info[#info]] = value == "" and "None" or value
+                if info[#info] ~= "BgUseTex" then db.BgUseTex = true end
+                if db.BgUseTex then db.Tooltips.style = 3 end -- set Tooltip style to Custom
+            end,
+            args = {
+                BgUseTex = {
+                    type = "toggle",
+                    order = 1,
+                    width = "double",
+                    name = self.L["Use Background Texture"],
+                    desc = self.L["Toggle the Background Texture"],
+                },
+                BgFile = {
+                    type = "input",
+                    order = 2,
+                    width = "full",
+                    name = self.L["Background Texture File"],
+                    desc = self.L["Set Background Texture Filename"],
+                },
+                BgTexture = AceGUIWidgetLSMlists and {
+                    type = "select",
+                    order = 3,
+                    width = "double",
+                    name = self.L["Background Texture"],
+                    desc = self.L["Choose the Texture for the Background"],
+                    dialogControl = "LSM30_Background",
+                    values = AceGUIWidgetLSMlists.background,
+                } or nil,
+                BgTile = {
+                    type = "toggle",
+                    order = 4,
+                    name = self.L["Tile Background"],
+                    desc = self.L["Tile or Stretch Background"],
+                },
+            },
+        },
 
 		Colours = {
 			type = "group",
@@ -781,9 +828,7 @@ function Skinner:Options()
 					name = self.L["Tooltips"],
 					desc = self.L["Change the Tooltip settings"],
 					get = function(info) return db.Tooltips[info[#info]] end,
-					set = function(info, value)
-						db.Tooltips[info[#info]] = value
-					end,
+					set = function(info, value) db.Tooltips[info[#info]] = value end,
 					args = {
 						skin = {
 							type = "toggle",
@@ -804,9 +849,7 @@ function Skinner:Options()
 							name = self.L["Tooltips Style"],
 							desc = self.L["Set the Tooltips style (Rounded, Flat, Custom)"],
 							min = 1, max = 3, step = 1,
-							set = function(info, value)
-								db.Tooltips.style = value
-							end,
+							set = function(info, value) db.Tooltips.style = value end,
 						},
 						border = {
 							type = "range",
@@ -1305,7 +1348,7 @@ function Skinner:Options()
 
 	-- option tables list
 	local optNames = {
-		"Backdrop", "Colours", "Gradient", "Modules", "NPCFrames", "PlayerFrames", "UIFrames", "DisabledSkins", "Profiles"
+		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPCFrames", "PlayerFrames", "UIFrames", "DisabledSkins", "Profiles"
 	}
 	-- register the options tables and add them to the blizzard frame
 	local ACR = LibStub("AceConfigRegistry-3.0")
@@ -1326,18 +1369,26 @@ function Skinner:Options()
 	end
 
 	-- runs when the player clicks "Defaults"
-	self.optionsFrame[self.L["Backdrop"]].default = function()
-		db.BdDefault = dflts.BdDefault
-		db.BdFile = dflts.BdFile
-		db.BdTexture = dflts.BdTexture
-		db.BdTileSize = dflts.BdTileSize
-		db.BdEdgeFile = dflts.BdEdgeFile
-		db.BdBorderTexture = dflts.BdBorderTexture
-		db.BdEdgeSize = dflts.BdEdgeSize
-		db.BdInset = dflts.BdInset
-		-- refresh panel
-		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
-	end
+    self.optionsFrame[self.L["Backdrop"]].default = function()
+        db.BdDefault = dflts.BdDefault
+        db.BdFile = dflts.BdFile
+        db.BdTexture = dflts.BdTexture
+        db.BdTileSize = dflts.BdTileSize
+        db.BdEdgeFile = dflts.BdEdgeFile
+        db.BdBorderTexture = dflts.BdBorderTexture
+        db.BdEdgeSize = dflts.BdEdgeSize
+        db.BdInset = dflts.BdInset
+        -- refresh panel
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
+    end
+    self.optionsFrame[self.L["Background"]].default = function()
+        db.BgUseTex = dflts.BgUseTex
+        db.BgFile = dflts.BgFile
+        db.BgTexture = dflts.BgTexture
+        db.BgTile = dflts.BgTile
+        -- refresh panel
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
+    end
 	self.optionsFrame[self.L["Colours"]].default = function()
 		db.TooltipBorder = dflts.TooltipBorder
 		db.BackdropBorder = dflts.BackdropBorder
