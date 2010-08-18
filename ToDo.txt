@@ -61,5 +61,62 @@ B - Button(s) Skin request
 			- Watch
 		- New layer option - textureSubLevel
 
-√	I	Textures, reported by Kerecha, 15.08.10
-		 - After updating to b3.12340.10-nolib i lost all transparancy on textures (everything became solid despite being supposed to be at 50% alpha) and all tooltips (default game ones, the ones modified by tiptac and LDB ones) lost textures entirely (just plain white background instead of textures).
+√	O	Backdrop changes
+		- revert all changes to the Backdrop code
+
+√	O	Background Texture
+		- Add new options panel to handle Background texture
+		- use Background settings instead of Backdrop settings where required
+
+√	O	ttList table
+		- add metatable method for additions to the table
+			- hook the OnShow script
+			- set a backdrop if required
+		- use for all tooltips that need it
+			- change:
+				if self.db.profile.Tooltips.style == 3 then tTip:SetBackdrop(self.Backdrop[1]) end
+				self:SecureHookScript(tTip, "OnShow", function(this)
+					self:skinTooltip(this)
+				end)
+			  to:
+				tinsert(self.ttList, "tTip")
+
+x	I	BasicChatMods, reported by Kerecha, 16.08.10
+		- Skinner-b3.12340.9\Skinner.lua:195: table index is nil
+		Skinner-b3.12340.9\Skinner.lua:1359: in function <Skinner\Skinner.lua:1345>
+		Skinner-b3.12340.9\Skinner.lua:1391: in function `skinScrollBar'
+		Skinner-b3.12340.9\SkinMe\BasicChatMods.lua:5: in function <Skinner\SkinMe\BasicChatMods.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b3.12340.9\UtilFuncs.lua:86: in function <Skinner\UtilFuncs.lua:84>
+		Skinner-b3.12340.9\UtilFuncs.lua:143: in function `checkAndRunAddOn'
+		Skinner-b3.12340.9\AddonFrames.lua:124: in function <Skinner\AddonFrames.lua:83>
+		(tail call): ?:
+
+	I	Textured backgrounds, reported by Kerecha, 16.08.10
+√		- For LDB i get 3-4 different looks, either no texture (travellers referense and a few others), extremely bright texture (gets a strong white "glow" in the colors instead of black), Pico Guild/Friends is still white and some comes out solid black (no transparency)
+		- but i seem to have lost textures entirely on tooltips (i just get a plain flat black background), effects all "normal" tooltips (tiptac and ratingbuster active)
+√		- using Tablet for tooltip
+√		- using LibQTip for tooltip (N.B. Tooltip Alpha is set to 1 by the library)
+√		- using GameTooltip for tooltip
+√/?		- TipTac (currently tooltip code is disabled when TipTac is loaded)
+√		- RatingBuster
+√		- TheTravellersReference
+√		- PicoFriends/Guild
+
+x	I	FishingBuddy, reported by Suddendeath2000, 17.08.10
+		- ..\AddOns\Skinner\SkinMe\FishingBuddy.lua line 48:
+		   'for' limit must be a number
+		Debug:
+		   (tail call): ?
+		   (tail call): ?
+		   Skinner\SkinMe\FishingBuddy.lua:48:
+		      Skinner\SkinMe\FishingBuddy.lua:3
+		   (tail call): ?
+		   [C]: xpcall()
+		   Skinner\UtilFuncs.lua:86:
+		      Skinner\UtilFuncs.lua:84
+		   Skinner\UtilFuncs.lua:143: checkAndRunAddOn()
+		   Skinner\AddonFrames.lua:124:
+		      Skinner\AddonFrames.lua:83
+		   (tail call): ?
