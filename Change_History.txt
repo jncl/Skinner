@@ -1,3 +1,10 @@
+b3.12340.12
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Changes for new Background Texture feature
+	Updated Ace3, FishingBuddy & GuildGreet skins
+
 b3.12340.11
 Jncl:
 	ToDo.txt
