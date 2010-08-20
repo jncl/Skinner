@@ -1059,22 +1059,6 @@ function Skinner:setInactiveTab(tabName)
 
 end
 
---[=[
-function Skinner:setTTBackdrop(bdReqd)
---  self:Debug("setTTBackdrop: [%s]", bdReqd)
-
-    for _, tooltip in pairs(self.ttList) do
---      self:Debug("sTTB: [%s]", tooltip)
-        local ttip = _G[tooltip]
-        if ttip then
-            if bdReqd then ttip:SetBackdrop(self.Backdrop[1])
-            else ttip:SetBackdrop(nil) end
-        end
-    end
-
-end
-
---]=]
 function Skinner:setTTBBC()
 -- 	self:Debug("setTTBBC: [%s, %s, %s, %s]", unpack(self.tbColour))
 
