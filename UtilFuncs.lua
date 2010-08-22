@@ -116,6 +116,10 @@ end
 
 function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 
+	if not addonFunc then addonFunc = addonName end
+
+--    self:Debug("checkAndRunAddOn:[%s, %s, %s, %s, %s]", addonName, LoD, IsAddOnLoaded(addonName), IsAddOnLoadOnDemand(addonName), type(self[addonFunc]))
+
 	-- don't skin any Addons whose skins are flagged as disabled
 	if self.db.profile.DisabledSkins[addonName] then
 		if self.db.profile.Warnings then
@@ -124,15 +128,11 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 		return
 	end
 
-	if not addonFunc then addonFunc = addonName end
-
---	self:Debug("checkAndRunAddOn:[%s, %s, %s, %s, %s]", addonName, LoD, IsAddOnLoaded(addonName), IsAddOnLoadOnDemand(addonName), type(self[addonFunc]))
-
 	if not IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
 		if IsAddOnLoadOnDemand(addonName) and not LoD then
---			self:Debug(addonName, "is managed by a LoadManager, converting to LoD status")
-			self.lmAddons[addonName] = addonFunc
+            self:Debug(addonName, "is managed by a LoadManager, converting to LoD status")
+			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
 		-- Nil out loaded Skins for Addons that aren't loaded
 		elseif self[addonFunc] then
 			self[addonFunc] = nil

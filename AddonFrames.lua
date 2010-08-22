@@ -228,48 +228,49 @@ for i = 1, 8 do
 end
 Skinner.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 
-function Skinner:LoDFrames(arg1)
---	self:Debug("LoDFrames: [%s]", arg1)
+function Skinner:LoDFrames(addon)
+--    self:Debug("LoDFrames: [%s]", addon)
 
-	if arg1 == prev_arg1 then return end
-	local prev_arg1 = arg1
+	if addon == prev_addon then return end
+	local prev_addon = addon
 
 	-- used for Blizzard LoadOnDemand Addons
-	if blizzLoD[arg1] then self:checkAndRun(blizzLoD[arg1]) end
+	if blizzLoD[addon] then self:checkAndRun(blizzLoD[addon]) end
 
 	-- used for User LoadOnDemand Addons
-	if self.lodAddons[arg1] then self:checkAndRunAddOn(self.lodAddons[arg1], true) end
+	if self.lodAddons[addon] then self:checkAndRunAddOn(self.lodAddons[addon], true) end
 
 	-- handle renamed DBM-GUI addon
-	if arg1 == "DBM-GUI" then
-		self:checkAndRunAddOn(arg1, true, "DBM_GUI")
+	if addon == "DBM-GUI" then
+		self:checkAndRunAddOn(addon, true, "DBM_GUI")
 	end
 
 	-- handle addons linked to the InspectUI
-	if arg1 == "Blizzard_InspectUI" then
+	if addon == "Blizzard_InspectUI" then
 		--	This addon is dependent upon the Inspect Frame
 		self:checkAndRunAddOn("Spyglass")
 	end
 
-	--	deal with Addons under the control of an LoadManager
-	if self.lmAddons[arg1] then
-		self:checkAndRunAddOn(arg1, true, self.lmAddons[arg1])
-		self.lmAddons[arg1] = nil
+	-- deal with Addons under the control of an LoadManager
+	-- use lowercase addonname (lazyafk issue)
+	if self.lmAddons[addon:lower()] then
+		self:checkAndRunAddOn(addon, true, self.lmAddons[addon:lower()])
+		self.lmAddons[addon:lower()] = nil
 	end
 
 	-- handle FramesResized changes
 	if IsAddOnLoaded("FramesResized") then
-		if arg1 == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:checkAndRun("FR_TradeSkillUI") -- not an addon in its own right
-		elseif arg1 == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:checkAndRun("FR_TrainerUI") -- not an addon in its own right
+		if addon == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:checkAndRun("FR_TradeSkillUI") -- not an addon in its own right
+		elseif addon == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:checkAndRun("FR_TrainerUI") -- not an addon in its own right
 		end
 	end
 
 end
 
-function Skinner:ADDON_LOADED(event, arg1)
---	self:Debug("ADDON_LOADED: [%s]", arg1)
+function Skinner:ADDON_LOADED(event, addon)
+--	self:Debug("ADDON_LOADED: [%s]", addon)
 
-	self:ScheduleTimer("LoDFrames", self.db.profile.Delay.LoDs, arg1)
+	self:ScheduleTimer("LoDFrames", self.db.profile.Delay.LoDs, addon)
 
 end
 
