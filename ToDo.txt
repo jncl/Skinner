@@ -61,7 +61,14 @@ B - Button(s) Skin request
 			- Watch
 		- New layer option - textureSubLevel
 
-√	N	LazyAFK, reported by mkcorp, 19.08.10
-
-√	I	BasicChatMods, reported by Kerecha, 19.08.10
-		- error occurs when button & do not disable modules are enabled, all others disabled
+≈	I	LazyAFK, reported by mkcorp, 21.08.10
+		- ..\AddOns\Skinner\Skinner.lua line 453:
+		attempt to index field 'obj' (a nil value)
+		Debug:
+		(tail call): ?
+		Skinner\Skinner.lua:453:
+		Skinner\Skinner.lua:430
+		(tail call): ?
+		Skinner\SkinMe\LazyAFK.lua:5:
+		Skinner\SkinMe\LazyAFK.lua:3
+		(tail call): ?
