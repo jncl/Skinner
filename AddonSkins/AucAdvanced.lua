@@ -188,17 +188,27 @@ function Skinner:AucAdvanced()
 		self:getRegion(autosellframe, 2):SetAlpha(1) -- make slot texture visible
 	end
 
-	-- Glypher
-	local mod = AucAdvanced.Modules.Util.Glypher
-	if mod then
-		self:SecureHook(mod.Private, "SetupConfigGui", function(this, gui)
-			local frame = mod.Private.frame
-			self:skinButton{obj=frame.refreshButton, as=true} -- just skin it otherwise text is hidden
-			self:skinButton{obj=frame.searchButton, as=true} -- just skin it otherwise text is hidden
-			self:skinButton{obj=frame.skilletButton, as=true} -- just skin it otherwise text is hidden
-			self:Unhook(mod.Private, "SetupConfigGui")
-		end)
-	end
+    -- Glypher
+    local mod = AucAdvanced.Modules.Util.Glypher
+    if mod then
+        self:SecureHook(mod.Private, "SetupConfigGui", function(this, gui)
+            local frame = mod.Private.frame
+            self:skinButton{obj=frame.refreshButton, as=true} -- just skin it otherwise text is hidden
+            self:skinButton{obj=frame.searchButton, as=true} -- just skin it otherwise text is hidden
+            self:skinButton{obj=frame.skilletButton, as=true} -- just skin it otherwise text is hidden
+            self:Unhook(mod.Private, "SetupConfigGui")
+        end)
+    end
+
+    -- GlypherPost
+    local mod = AucAdvanced.Modules.Util.GlypherPost
+    if mod then
+        self:SecureHook(mod.Private, "SetupConfigGui", function(this, gui)
+            local frame = mod.Private.frame
+            self:skinButton{obj=frame.refreshButton, as=true} -- just skin it otherwise text is hidden
+            self:Unhook(mod.Private, "SetupConfigGui")
+        end)
+    end
 
 	--	CompactUI module
 	--	configure button on AH frame

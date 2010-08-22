@@ -146,14 +146,18 @@ function Skinner:Ace3()
 			or objType == "LSM30_Sound"
 			or objType == "LSM30_Statusbar"
 			then
-				obj.frame.DLeft:SetAlpha(0)
-				obj.frame.DRight:SetAlpha(0)
-				obj.frame.DMiddle:SetHeight(20)
-				obj.frame.DMiddle:SetTexture(Skinner.itTex)
-				obj.frame.DMiddle:SetTexCoord(0, 1, 0, 1)
-				obj.frame.DMiddle:ClearAllPoints()
-				obj.frame.DMiddle:SetPoint("BOTTOMLEFT", obj.frame.DLeft, "RIGHT", -6, -8)
-				obj.frame.DMiddle:SetPoint("BOTTOMRIGHT", obj.frame.DRight, "LEFT", 6, -8)
+			    if not Skinner.db.profile.TexturedDD then
+			        Skinner:keepFontStrings(obj.frame)
+			    else
+    				obj.frame.DLeft:SetAlpha(0)
+    				obj.frame.DRight:SetAlpha(0)
+    				obj.frame.DMiddle:SetHeight(20)
+    				obj.frame.DMiddle:SetTexture(Skinner.itTex)
+    				obj.frame.DMiddle:SetTexCoord(0, 1, 0, 1)
+    				obj.frame.DMiddle:ClearAllPoints()
+    				obj.frame.DMiddle:SetPoint("BOTTOMLEFT", obj.frame.DLeft, "RIGHT", -6, -8)
+    				obj.frame.DMiddle:SetPoint("BOTTOMRIGHT", obj.frame.DRight, "LEFT", 6, -8)
+    			end
 
 			-- ignore these types for now
 			elseif objType == "CheckBox"
