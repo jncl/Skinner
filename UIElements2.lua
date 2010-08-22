@@ -165,11 +165,13 @@ function Skinner:Calendar()
 	end
 	self:keepFontStrings(CalendarClassTotalsButton)
 	-- Class Totals button, texture & size changes
-	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.itTex)
-	self:moveObject{obj=CalendarClassTotalsButtonBackgroundMiddle, x=2}
-	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(20)
-	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(20)
-	CalendarClassTotalsButtonBackgroundMiddle:SetAlpha(1)
+	if self.db.profile.TexturedDD then
+    	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.itTex)
+    	self:moveObject{obj=CalendarClassTotalsButtonBackgroundMiddle, x=2}
+    	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(20)
+    	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(20)
+    	CalendarClassTotalsButtonBackgroundMiddle:SetAlpha(1)
+    end
 
 -->>-- ContextMenus
 	self:applySkin{obj=CalendarContextMenu}
