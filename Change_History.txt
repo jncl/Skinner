@@ -1,3 +1,10 @@
+b3.12340.13
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Removed redundant code
+	Updated BasicChatMods & LazyAFK skins
+
 b3.12340.12
 Jncl:
 	ToDo.txt
