@@ -40,10 +40,14 @@ function Skinner:PaperDollFrame()
 	self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
 	self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}
 	self:makeMFRotatable(CharacterModelFrame)
-	self:keepFontStrings(CharacterAttributesFrame)
-	self:skinDropDown{obj=PlayerStatFrameLeftDropDown, moveTex=true}
-	self:skinDropDown{obj=PlayerStatFrameRightDropDown, moveTex=true}
-	self:removeRegions(CharacterAmmoSlot, {1})
+	if not self.isBeta then
+	   self:keepFontStrings(CharacterAttributesFrame)
+	end
+    if not self.isBeta then
+    	self:skinDropDown{obj=PlayerStatFrameLeftDropDown, moveTex=true}
+	    self:skinDropDown{obj=PlayerStatFrameRightDropDown, moveTex=true}
+	    self:removeRegions(CharacterAmmoSlot, {1})
+    end
 	-- hide ItemFlyout background textures
 	local bA = PaperDollFrameItemFlyout.buttonFrame
 	self:addSkinFrame{obj=bA, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
@@ -58,21 +62,26 @@ end
 
 function Skinner:PetPaperDollFrame()
 
-	self:keepFontStrings(PetPaperDollFrame)
-	self:skinAllButtons{obj=PetPaperDollFrame}
+	if not self.isBeta then
+	   self:keepFontStrings(PetPaperDollFrame)
+	   self:skinAllButtons{obj=PetPaperDollFrame}
+	end
 
 -->>-- Pet Frame
-	self:keepFontStrings(PetAttributesFrame)
+	if not self.isBeta then
+	   self:keepFontStrings(PetAttributesFrame)
+	end
 	self:removeRegions(PetPaperDollFrameExpBar, {1, 2})
 	self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
 	self:makeMFRotatable(PetModelFrame)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetPaperDollPetInfo)
 
--->>-- Companion Frame
-	self:keepFontStrings(PetPaperDollFrameCompanionFrame)
-	self:makeMFRotatable(CompanionModelFrame)
-
+    if not self.isBeta then
+        -->>-- Companion Frame
+    	self:keepFontStrings(PetPaperDollFrameCompanionFrame)
+    	self:makeMFRotatable(CompanionModelFrame)
+    end
 -->>-- Tabs
 	self:skinFFToggleTabs("PetPaperDollFrameTab")
 
@@ -108,34 +117,34 @@ end
 
 function Skinner:SkillFrame()
 
-	if self.modBtns then
-		-- hook to manage changes to button textures
-		self:SecureHook("SkillFrame_UpdateSkills", function()
-			for i = 1, SKILLS_TO_DISPLAY do
-				self:checkTex(_G["SkillTypeLabel"..i])
-			end
-			self:checkTex(SkillFrameCollapseAllButton)
-		end)
+	if not self.isBeta then
+    	if self.modBtns then
+    		-- hook to manage changes to button textures
+    		self:SecureHook("SkillFrame_UpdateSkills", function()
+    			for i = 1, SKILLS_TO_DISPLAY do
+    				self:checkTex(_G["SkillTypeLabel"..i])
+    			end
+    			self:checkTex(SkillFrameCollapseAllButton)
+    		end)
+    	end
+	   self:keepFontStrings(SkillFrame)
+	   self:skinAllButtons{obj=SkillFrame}
+	   self:removeRegions(SkillFrameExpandButtonFrame)
+	   self:skinScrollBar{obj=SkillListScrollFrame}
+    	-- m/p buttons
+    	for i = 1, SKILLS_TO_DISPLAY do
+    		local bar = "SkillRankFrame"..i
+    		_G[bar.."BorderNormal"]:SetAlpha(0)
+    		self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
+    		self:skinButton{obj=_G["SkillTypeLabel"..i], mp=true}
+    	end
+    	self:skinButton{obj=SkillFrameCollapseAllButton, mp=true}
+    	-- detail frame
+    	self:skinScrollBar{obj=SkillDetailScrollFrame}
+    	local bar = "SkillDetailStatusBar"
+    	_G[bar.."Border"]:SetAlpha(0)
+    	self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
 	end
-
-	self:keepFontStrings(SkillFrame)
-	self:skinAllButtons{obj=SkillFrame}
-	self:removeRegions(SkillFrameExpandButtonFrame)
-	self:skinScrollBar{obj=SkillListScrollFrame}
-	-- m/p buttons
-	for i = 1, SKILLS_TO_DISPLAY do
-		local bar = "SkillRankFrame"..i
-		_G[bar.."BorderNormal"]:SetAlpha(0)
-		self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
-		self:skinButton{obj=_G["SkillTypeLabel"..i], mp=true}
-	end
-	self:skinButton{obj=SkillFrameCollapseAllButton, mp=true}
-
-	-- detail frame
-	self:skinScrollBar{obj=SkillDetailScrollFrame}
-	local bar = "SkillDetailStatusBar"
-	_G[bar.."Border"]:SetAlpha(0)
-	self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
 
 end
 
@@ -149,15 +158,18 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 	self:keepFontStrings(TokenFrame)
 	self:skinAllButtons{obj=TokenFrame}
 	-- hide the close button
-	self:getChild(TokenFrame, 4):Hide()
+	if not self.isBeta then
+	   self:getChild(TokenFrame, 4):Hide()
+	end
 	self:skinScrollBar{obj=TokenFrameContainer}
 
-	-- remove header textures
-	for i = 1, #TokenFrameContainer.buttons do
-		TokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
-		TokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
-	end
-
+    if not self.isBeta then
+    	-- remove header textures
+    	for i = 1, #TokenFrameContainer.buttons do
+    		TokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
+    		TokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
+    	end
+    end
 -->>-- Popup Frame
 	self:addSkinFrame{obj=TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
 
@@ -167,34 +179,34 @@ function Skinner:PVPFrame()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
-	self:keepFontStrings(PVPFrame)
-	self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+	if not self.isBeta then
+        self:keepFontStrings(PVPFrame)
+        self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+        -->>-- PVP Battleground Frame
+    	self:keepFontStrings(PVPBattlegroundFrame)
+    	self:skinSlider{obj=PVPBattlegroundFrameInfoScrollFrameScrollBar}
+    	PVPBattlegroundFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+    	PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+    	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
+    	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
+    -->>-- PVP Team Details Frame
+    	self:skinDropDown{obj=PVPDropDown}
+    	self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
+    	self:addSkinFrame{obj=PVPTeamDetails, ft=ftype, kfs=true, x1=8, y1=-2, x2=-2, y2=12}
+    -->>-- Tabs
+    	for i = 1, PVPParentFrame.numTabs do
+    		local tabName = _G["PVPParentFrameTab"..i]
+    		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+    		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
+    		if i == 1 then
+    			if self.isTT then self:setActiveTab(tabSF) end
+    		else
+    			if self.isTT then self:setInactiveTab(tabSF) end
+    		end
+    	end
+    	self.tabFrames[PVPParentFrame] = true
+    end
 
--->>-- PVP Battleground Frame
-	self:keepFontStrings(PVPBattlegroundFrame)
-	self:skinSlider{obj=PVPBattlegroundFrameInfoScrollFrameScrollBar}
-	PVPBattlegroundFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
-	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
-
--->>-- PVP Team Details Frame
-	self:skinDropDown{obj=PVPDropDown}
-	self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
-	self:addSkinFrame{obj=PVPTeamDetails, ft=ftype, kfs=true, x1=8, y1=-2, x2=-2, y2=12}
-
--->>-- Tabs
-	for i = 1, PVPParentFrame.numTabs do
-		local tabName = _G["PVPParentFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[PVPParentFrame] = true
 
 end
 
@@ -213,13 +225,15 @@ function Skinner:SpellBookFrame()
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
 
-	self:SecureHook("SpellBookFrame_Update", function(showing)
-		if SpellBookFrame.bookType ~= INSCRIPTION then
-			SpellBookTitleText:Show()
-		else
-			SpellBookTitleText:Hide() -- hide Inscriptions title
-		end
-	end)
+    if not self.isBeta then
+        self:SecureHook("SpellBookFrame_Update", function(showing)
+    		if SpellBookFrame.bookType ~= INSCRIPTION then
+    			SpellBookTitleText:Show()
+    		else
+    			SpellBookTitleText:Hide() -- hide Inscriptions title
+    		end
+	    end)
+    end
 
 	if self.isTT then
 		-- hook to handle tabs

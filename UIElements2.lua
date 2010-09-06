@@ -192,16 +192,18 @@ function Skinner:MenuFrames()
 	self:skinSlider(VideoOptionsFrameCategoryFrameListScrollBar)
 	self:addSkinFrame{obj=VideoOptionsFramePanelContainer, ft=ftype}
 	-- Resolution Panel
-	self:skinDropDown{obj=VideoOptionsResolutionPanelResolutionDropDown}
-	self:skinDropDown{obj=VideoOptionsResolutionPanelRefreshDropDown}
-	self:skinDropDown{obj=VideoOptionsResolutionPanelMultiSampleDropDown}
-	self:addSkinFrame{obj=VideoOptionsResolutionPanel, ft=ftype}
-	-- Brightness subPanel
-	self:addSkinFrame{obj=VideoOptionsResolutionPanelBrightness, ft=ftype}
-	-- Effects Panel
-	self:addSkinFrame{obj=VideoOptionsEffectsPanel, ft=ftype}
-	self:addSkinFrame{obj=VideoOptionsEffectsPanelQuality, ft=ftype}
-	self:addSkinFrame{obj=VideoOptionsEffectsPanelShaders, ft=ftype}
+	if not self.isBeta then
+        self:skinDropDown{obj=VideoOptionsResolutionPanelResolutionDropDown}
+        self:skinDropDown{obj=VideoOptionsResolutionPanelRefreshDropDown}
+        self:skinDropDown{obj=VideoOptionsResolutionPanelMultiSampleDropDown}
+        self:addSkinFrame{obj=VideoOptionsResolutionPanel, ft=ftype}
+    	-- Brightness subPanel
+    	self:addSkinFrame{obj=VideoOptionsResolutionPanelBrightness, ft=ftype}
+    	-- Effects Panel
+        self:addSkinFrame{obj=VideoOptionsEffectsPanel, ft=ftype}
+        self:addSkinFrame{obj=VideoOptionsEffectsPanelQuality, ft=ftype}
+        self:addSkinFrame{obj=VideoOptionsEffectsPanelShaders, ft=ftype}
+	end
 
 -->>-- Sound & Voice Options
 	self:addSkinFrame{obj=AudioOptionsFrame, ft=ftype, kfs=true, hdr=true}

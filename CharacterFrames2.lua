@@ -82,37 +82,38 @@ function Skinner:FriendsFrame()
 	self:moveObject{obj=WhoFrameEditBox, x=12}
 
 -->>--	Guild Frame
-	self:keepFontStrings(GuildFrameLFGFrame)
-	self:skinFFColHeads("GuildFrameColumnHeader")
-	self:skinFFColHeads("GuildFrameGuildStatusColumnHeader")
-	self:skinScrollBar{obj=GuildListScrollFrame}
-	-- Guild Control Popup Frame
-	self:skinDropDown{obj=GuildControlPopupFrameDropDown}
-	self:skinButton{obj=GuildControlPopupFrameAddRankButton, mp2=true, plus=true}
-	self:skinButton{obj=GuildControlPopupFrameRemoveRankButton, mp2=true}
-	self:skinEditBox{obj=GuildControlWithdrawGoldEditBox, regs={9}}
-	self:skinEditBox{obj=GuildControlPopupFrameEditBox, regs={9}}
-	self:skinEditBox{obj=GuildControlWithdrawItemsEditBox, regs={9}}
-	self:addSkinFrame{obj=GuildControlPopupFrameTabPermissions, ft=ftype}
-	self:addSkinFrame{obj=GuildControlPopupFrame, ft=ftype, kfs=true, x1=3, y1=-6, x2=-28, y2=25}
-
-	for i = 1, MAX_GUILDBANK_TABS do
-		local gbtpt = _G["GuildBankTabPermissionsTab"..i]
-		self:addSkinFrame{obj=gbtpt, ft=ftype, kfs=true, y1=-8}
+	if not self.isBeta then
+	   self:keepFontStrings(GuildFrameLFGFrame)
+	   self:skinFFColHeads("GuildFrameColumnHeader")
+	   self:skinFFColHeads("GuildFrameGuildStatusColumnHeader")
+	   self:skinScrollBar{obj=GuildListScrollFrame}
+    	-- Guild Control Popup Frame
+    	self:skinDropDown{obj=GuildControlPopupFrameDropDown}
+    	self:skinButton{obj=GuildControlPopupFrameAddRankButton, mp2=true, plus=true}
+    	self:skinButton{obj=GuildControlPopupFrameRemoveRankButton, mp2=true}
+    	self:skinEditBox{obj=GuildControlWithdrawGoldEditBox, regs={9}}
+    	self:skinEditBox{obj=GuildControlPopupFrameEditBox, regs={9}}
+    	self:skinEditBox{obj=GuildControlWithdrawItemsEditBox, regs={9}}
+    	self:addSkinFrame{obj=GuildControlPopupFrameTabPermissions, ft=ftype}
+    	self:addSkinFrame{obj=GuildControlPopupFrame, ft=ftype, kfs=true, x1=3, y1=-6, x2=-28, y2=25}
+    	for i = 1, MAX_GUILDBANK_TABS do
+    		local gbtpt = _G["GuildBankTabPermissionsTab"..i]
+    		self:addSkinFrame{obj=gbtpt, ft=ftype, kfs=true, y1=-8}
+    	end
+    -->>--	GuildInfo Frame
+    	self:skinScrollBar{obj=GuildInfoFrameScrollFrame}
+    	self:addSkinFrame{obj=GuildInfoTextBackground, ft=ftype}
+    	self:addSkinFrame{obj=GuildInfoFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
+    -->>--	GuildMemberDetail Frame
+    	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
+    	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
+    	self:moveObject{obj=GuildMemberRemoveButton, x=-2}
+    	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
+    -->>--	GuildEventLog Frame
+    	self:addSkinFrame{obj=GuildEventFrame, ft=ftype}
+    	self:skinScrollBar{obj=GuildEventLogScrollFrame}
+    	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
 	end
--->>--	GuildInfo Frame
-	self:skinScrollBar{obj=GuildInfoFrameScrollFrame}
-	self:addSkinFrame{obj=GuildInfoTextBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildInfoFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
--->>--	GuildMemberDetail Frame
-	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
-	self:moveObject{obj=GuildMemberRemoveButton, x=-2}
-	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
--->>--	GuildEventLog Frame
-	self:addSkinFrame{obj=GuildEventFrame, ft=ftype}
-	self:skinScrollBar{obj=GuildEventLogScrollFrame}
-	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
 
 -->>--	Channel Frame
 	self:keepFontStrings(ChannelFrame)

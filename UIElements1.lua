@@ -145,7 +145,7 @@ function Skinner:CastingBar()
 		_G[cbfName.."Border"]:SetAlpha(0)
 		self:changeShield(_G[cbfName.."BorderShield"], _G[cbfName.."Icon"])
 		_G[cbfName.."Flash"]:SetAllPoints()
-		self:moveObject{obj=_G[cbfName.."Text"], y=-2}
+		self:moveObject{obj=_G[cbfName.."Text"], y=-3}
 		if self.db.profile.CastingBar.glaze	then
 			self:glazeStatusBar(_G[cbfName], 0, self:getRegion(_G[cbfName], 1), {_G[cbfName.."Flash"]})
 		end

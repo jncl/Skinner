@@ -34,7 +34,7 @@ B - Button(s) Skin request
 			- QuestTimerFrame
 			- SkillFrame
 		- Changed Frames:
-			- Character
+			- Character (Width, Height)
 				- Currency
 				- PaperDoll
 				- PetPaperDoll
@@ -55,11 +55,31 @@ B - Button(s) Skin request
 			- Unit
 				- Party
 				- PartyPet
-				- Player
+				- Player (Warlock shards)
 				- PlayerPet
 			- VehicleMenuBar, Exp Bar now shown
 			- Watch
 		- New layer option - textureSubLevel
+		- Spell fly-out UI feature for Warlock pets
+		- Spell fly-out UI feature for Mage portals
+
+	New User Interface features:
+		Talent pane
+		Character sheet
+		Spellbook
+		Professions listings
+		Raid frame and raid panel
+		Threat indicators
+		Trainer windows and options
+		Tradeskill layouts
+		New class resources (i.e. druid Eclipse bar, paladin Holy Power bar, warlock Soul Shard bar)
+		Level-up notifications
+		Thaumaturgy (reforging)
+		Arena team interface
+		PvP queuing functionality
+		Spell button fly-outs (i.e. grouped mage Teleport/Portal, hunter pets, and warlock demon summons buttons)
+
+
 
 ≈	I	LazyAFK, reported by mkcorp, 21.08.10
 		- ..\AddOns\Skinner\Skinner.lua line 453:

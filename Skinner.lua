@@ -26,6 +26,10 @@ Skinner.uCls = select(2, UnitClass("player"))
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 0.3.5
 --Skinner.isPatch = BATTLENET_FRIEND and true or false
+-- check to see if running on Beta
+local version, build, date, tocversion = GetBuildInfo()
+print(version, build, date, tocversion)
+Skinner.isBeta = tocversion == 40000 and true or false
 
 local prdb
 function Skinner:OnInitialize()
@@ -39,6 +43,7 @@ function Skinner:OnInitialize()
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end
+	if self.isBeta then self:Print("Beta detected") end
 --@end-alpha@
 
 	-- setup the default DB values and register them
