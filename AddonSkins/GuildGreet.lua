@@ -3,7 +3,9 @@ if not Skinner:isAddonEnabled("GuildGreet") then return end
 function Skinner:GuildGreet()
 
 -->>-- Greet List frame
+	GuildGreetListTitleTexture:Hide()
 	self:skinButton{obj=GuildGreetListClose, cb=true}
+	self:addSkinFrame{obj=GuildGreetList, x1=-2, y1=3, x2=2}
 	
 -->>-- Paste List frame
     self:skinScrollBar{obj=GLDG_PasteList.List.Scroll}
