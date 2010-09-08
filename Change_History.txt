@@ -1,3 +1,11 @@
+b3.12340.14
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for Textured Dropdowns
+	Bugfix for LoadManaged addons
+	Updated Ace3, AucAdvanced & LazyAFK skins
+
 b3.12340.13
 Jncl:
 	ToDo.txt
