@@ -83,11 +83,15 @@ function Skinner:Tooltips()
 	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
 		if GameTooltipStatusBar1 then
 			self:removeRegions(GameTooltipStatusBar1, {2})
-			self:glazeStatusBar(GameTooltipStatusBar1, 0)
+			if Skinner.db.profile.Tooltips.glazesb then
+				self:glazeStatusBar(GameTooltipStatusBar1, 0)
+			end
 		end
 		if GameTooltipStatusBar2 then
 			self:removeRegions(GameTooltipStatusBar2, {2})
-			self:glazeStatusBar(GameTooltipStatusBar2, 0)
+			if Skinner.db.profile.Tooltips.glazesb then
+				self:glazeStatusBar(GameTooltipStatusBar2, 0)
+			end
 			self:Unhook("GameTooltip_ShowStatusBar")
 		end
 	end)
