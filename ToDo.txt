@@ -12,38 +12,11 @@ Legend:
 			- Update commands page for changes requiring a Reload
 			- Change code to reduce the number of Reloads required if possible
 
-√		- 2. The recent update to fix the textured drop-down menus didn't seem to change anything. If I have "Textured Drop-Downs" checked, they all look the default way that Kerecha's looked in the screenshot on the previous page, and I can't seem to find anywhere to change them. I've tried changing a variety of settings, and nothing has any effect. I've turned that function off, but now they're just boring solid-colour and blending in with the background. I'd like some effect, just not the default texture.
-			- Add an option to specify a texture to use
+√	I	GuildGreet, reported by mkcorp, 8.09.10
+		- popup window when people login or get achievements not skinned
 
-x		- 3. When mousing through drop-down or pop-out menus, the item my mouse is over isn't highlighted. Sometimes it is for the first second or two, then they all stop. Sure, I can just see where my mouse is, but it makes it feel like something's hung up and my selection won't be registered when I click. (It is registered, but it's the feel of play that's being affected.)
-			- Works for me
+√	I	LazyAFK, reported by mkcorp, 8.09.10
+		- still not being skinned
 
-x		- 4. When I have the Battlefield Minimap Frame being skinned on a leveling toon who doesn't have the whole zone uncovered yet, the map will continually flash and alter which areas are uncovered and which are fogged. As soon as I unchecked that feature under UI Frames, the map stopped changing, so that was definitely what was doing it.
-			- Check this out
-
-x		- 5. In any window with container slots or item icons (looting, mail, character pane, talent pane, tradeskills, bags...), the containers aren't skinned. The outside of the pane is, and any clickable buttons within it, but not the containers. Under UI Frames - Container Frames, I do have Containers Skin checked. Maybe I'm using the wrong term for the elements I want. Are the slots within a bag, or the borders of an item icon in a loot window (and other such "bins") supposed to be skinned with this addon? If not, can they be? Does anyone know an addon that does that?
-			- Not skinned atm, no plans to do so
-
-√	I	ARL, reported by mkcorp, 27.08.10
-		- Skinner: Unsupported ARL version [v2.01]
-
-√	N	UrbanAchiever, reported by T0mate, 31.08.10
-		- new skin supplied
-
-√	S	QuestHelper, requested by skyggesang, 01.09.10
-
-	I	reported by skyggesang, 01.09.10
-x		- Would it be possible to add an option to skin the /range check window
-		 	- what is this frame?
-
-x		- Also, I am not sure if this is a Skinner error or not, but when I exit a vehicle in combat (involuntarily) and sometimes even out of combat (voluntarily), the interface does not return the default action bars and I am unable to use any of my skills without reloading the UI, at which point (especially in pvp situations) I am dead by the time to UI is finished reloading. Sometimes it returns only the top two action bars but most of the time it does not return any, even the side bars.
-		- not a Skinner issue afaik
-
-√	S	xMerchant, requested by X-buZZ, 02.09.10
-
-√	S	BossNotes, requested by Luckyjack_SL, 04.09.10
-
-x	I	Tukui, requested by Flippy734, 05.09.10
-		- The totem bar gets skinned twice. Once from skinner and once from tukui, this cause it not to function. I see there is an exception not to skin the shape-shift bar, but not the totem bar. Adding an exception not to skin the totem bar as well would be great thanks.
-			- already fixed by Tukz
-
+x	I	CurseClient, reported by Alcotraz, 8.09.10
+		- update addon exceptions ?
