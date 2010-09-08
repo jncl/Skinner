@@ -25,9 +25,12 @@ function Skinner:Defaults()
 		BgFile          = "None",
 		BgTexture       = "None",
 		BgTile          = false,
-		-- Other
+		-- Tab and DropDown Texture settings
 		TexturedTab		= false,
 		TexturedDD		= false,
+		TabDDFile		= "None",
+		TabDDTexture	= "Skinner Inactive Tab",
+		-- Other
 		Warnings		= true,
 		Errors			= true,
 		Gradient		= {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Blizzard ChatFrame Background"},
@@ -178,21 +181,45 @@ function Skinner:Options()
 					name = self.L["DropDowns"],
 					desc = self.L["Toggle the skin of the DropDowns"],
 				},
-				TexturedDD = {
-					type = "toggle",
-					order = 7,
-					name = self.L["Textured DropDown"],
-					desc = self.L["Toggle the Texture of the DropDowns"],
-				},
-				TexturedTab = {
-					type = "toggle",
-					order = 8,
-					name = self.L["Textured Tab"],
-					desc = self.L["Toggle the Texture of the Tabs"],
-					set = function(info, value)
-						db[info[#info]] = value
-						self.isTT = db[info[#info]] and true or false
-					end,
+				TabDDTextures = {
+					type = "group",
+					order = 10,
+					inline = true,
+					name = self.L["Inactive Tab & DropDown Texture Settings"],
+					args = {
+						TexturedDD = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Textured DropDown"],
+							desc = self.L["Toggle the Texture of the DropDowns"],
+						},
+						TexturedTab = {
+							type = "toggle",
+							order = 2,
+							name = self.L["Textured Tab"],
+							desc = self.L["Toggle the Texture of the Tabs"],
+							set = function(info, value)
+								db[info[#info]] = value
+								self.isTT = db[info[#info]] and true or false
+							end,
+						},
+		                TabDDFile = {
+		                    type = "input",
+		                    order = 3,
+		                    width = "full",
+		                    name = self.L["Inactive Tab & DropDown Texture File"],
+		                    desc = self.L["Set Inactive Tab & DropDown Texture Filename"],
+		                },
+		                TabDDTexture = AceGUIWidgetLSMlists and {
+		                    type = "select",
+		                    order = 4,
+		                    width = "double",
+		                    name = self.L["Inactive Tab & DropDown Texture"],
+		                    desc = self.L["Choose the Texture for the Inactive Tab & DropDowns"],
+		                    dialogControl = "LSM30_Background",
+		                    values = AceGUIWidgetLSMlists.background,
+		                } or nil,
+					},
 				},
 				Delay = {
 					type = "group",
@@ -296,7 +323,7 @@ function Skinner:Options()
 				},
 				WatchFrame = {
 					type = "toggle",
-					order = 10,
+					order = 8,
 					name = self.L["Watch Frame"],
 					desc = self.L["Toggle the skin of the Watch Frame"],
 					set = function(info, value)

@@ -51,7 +51,7 @@ function Skinner:OnInitialize()
 	-- register the default background texture
 	self.LSM:Register("background", "Blizzard ChatFrame Background", [[Interface\ChatFrame\ChatFrameBackground]])
 	-- register the inactive tab texture
-	self.LSM:Register("background", "Inactive Tab", [[Interface\AddOns\Skinner\textures\inactive]])
+	self.LSM:Register("background", "Skinner Inactive Tab", [[Interface\AddOns\Skinner\textures\inactive]])
 	-- register the texture used for EditBoxes & ScrollBars
 	self.LSM:Register("border", "Skinner Border", [[Interface\AddOns\Skinner\textures\krsnik]])
 	-- register the statubar texture used by Nameplates
@@ -66,6 +66,9 @@ function Skinner:OnInitialize()
 	end
     if prdb.BgFile and prdb.BgFile ~= "None" then
         self.LSM:Register("background", "Skinner User Background", prdb.BgFile)
+    end
+    if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
+        self.LSM:Register("background", "Skinner User TabDDTexture", prdb.TabDDFile)
     end
 
 	-- Heading and Body Text colours
@@ -174,8 +177,12 @@ function Skinner:OnInitialize()
 	-- BackdropBorder colours
 	local c = prdb.BackdropBorder
 	self.bbColour = {c.r, c.g, c.b, c.a}
-	-- Inactive Tab texture
-	self.itTex = self.LSM:Fetch("background", "Inactive Tab")
+	-- Inactive Tab & DropDowns texture
+	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
+        self.itTex = self.LSM:Fetch("background", "Skinner User TabDDTexture")
+    else
+		self.itTex = self.LSM:Fetch("background", prdb.TabDDTexture)
+	end
 	-- Empty Slot texture
 	self.esTex = [[Interface\Buttons\UI-Quickslot2]]
 
@@ -1055,7 +1062,8 @@ function Skinner:setInactiveTab(tabName)
 --	self:Debug("setInactiveTab : [%s]", tabName:GetName())
 
 	tabName.tfade:SetTexture(self.itTex)
-	tabName.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
+	tabName.tfade:SetAlpha(1)
+--	tabName.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
 end
 
@@ -1063,9 +1071,9 @@ function Skinner:setTTBBC()
 -- 	self:Debug("setTTBBC: [%s, %s, %s, %s]", unpack(self.tbColour))
 
 	if self.db.profile.Tooltips.border == 1 then
-		return unpack(self.bbColour)
-	else
 		return unpack(self.tbColour)
+	else
+		return unpack(self.bbColour)
 	end
 
 end
