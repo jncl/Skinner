@@ -14,6 +14,7 @@ function Skinner:AckisRecipeList()
 		["2.0-rc1"] = 4, -- beta
 		["2.0-rc2"] = 5, -- beta
 		["v2.0"] = 6, -- release
+		["v2.01"] = 7, -- release
 	}
 	local aVer = GetAddOnMetadata("AckisRecipeList", "Version")
 	local ver = vTab[aVer]
@@ -102,6 +103,10 @@ function Skinner:AckisRecipeList()
 				else xOfs = -33 end
 			end
 			self.skinFrame[frame]:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", xOfs, yOfs)
+			-- Reset button
+			if not self.sBut[frame.filter_reset] then
+				self:skinButton{obj=frame.filter_reset}
+			end
 		end)
 		if ver < 4 then
 			self:addSkinFrame{obj=frame.filter_menu, kfs=true, bg=true} -- separate Flyaway panel
@@ -137,7 +142,7 @@ function Skinner:AckisRecipeList()
 		end)
 	else
 		local hookFunc = ARL.Scan and "Scan" or ARL.DisplayFrame and "DisplayFrame" or "CreateFrame"
-		self:SecureHook(ARL, hookFunc, function()
+		self:SecureHook(ARL, hookFunc, function(this)
 			skinARL(ARL.Frame)
 			self:Unhook(ARL, hookFunc)
 		end)

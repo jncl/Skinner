@@ -4,6 +4,10 @@ function Skinner:GuildGreet()
 
 -->>-- Greet List frame
 	self:skinButton{obj=GuildGreetListClose, cb=true}
+	
+-->>-- Paste List frame
+    self:skinScrollBar{obj=GLDG_PasteList.List.Scroll}
+    self:addSkinFrame{obj=GLDG_PasteList.List}
 
 -->>-- Configuration main frame
 	self:moveObject{obj=GuildGreetFrameTitle, y=-6}

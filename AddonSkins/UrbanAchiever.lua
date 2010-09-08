@@ -31,6 +31,14 @@ function Skinner:UrbanAchiever()
 	skinStatusBar(uaFrame.summaryBar)
 	self:glazeStatusBar(uaFrame.summaryBar, 0, _G[uaFrame.summaryBar:GetName().."BG"])
 	skinStatusBar(uaFrame.comparisonSummaryBar)
+	skinStatusBar(uaFrame.category[92])
+	skinStatusBar(uaFrame.category[97])
+	skinStatusBar(uaFrame.category[168])
+	skinStatusBar(uaFrame.category[201])
+	skinStatusBar(uaFrame.category[96])
+	skinStatusBar(uaFrame.category[95])
+	skinStatusBar(uaFrame.category[169])
+	skinStatusBar(uaFrame.category[155])
 	self:glazeStatusBar(uaFrame.comparisonSummaryBar, 0, _G[uaFrame.comparisonSummaryBar:GetName().."BG"])
 	self:skinSlider(uaFrame.catScroll)
 	self:skinSlider(uaFrame.achScroll)
@@ -62,9 +70,14 @@ function Skinner:UrbanAchiever()
 		tabObj.backdrop:SetAlpha(0)
 		if self.db.profile.TexturedTab then
 			self:applySkin(tabObj, nil, 0, 1)
-			if i == 1 then self:setActiveTab(tabObj)
-			else self:setInactiveTab(tabObj) end
-		else self:applySkin(tabObj) end
+			if i == 1 then
+				self:setActiveTab(tabObj)
+			else
+				self:setInactiveTab(tabObj)
+			end
+		else
+			self:applySkin(tabObj)
+		end
 	end
 	if self.db.profile.TexturedTab then
 		self:SecureHook(this, "RefreshCategoryButtons", function(this)
