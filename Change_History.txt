@@ -1,3 +1,13 @@
+b3.12340.15
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	comment out debug message
+	Check for Tooltip StatusBar glazing
+	Added options to select texture for Inactive Tab & DropDowns
+	Skinned BossNotes, QuestHelper & xMerchant
+	Updated AckisRecipeList, GuildGreet & UrbanAchiever skins
+
 b3.12340.14
 Jncl:
 	ToDo.txt
