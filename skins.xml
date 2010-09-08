@@ -46,6 +46,7 @@
 <script file="SkinMe\BetterInbox.lua"/>
 <script file="SkinMe\BindPad.lua"/>
 <script file="SkinMe\BlackList.lua"/>
+<script file="SkinMe\BossNotes.lua"/>
 <script file="SkinMe\BriefQuestComplete.lua"/>
 <script file="SkinMe\Broker_Transport.lua"/>
 <script file="SkinMe\Buffalo.lua"/>
@@ -211,6 +212,7 @@
 <script file="SkinMe\Quelevel.lua"/>
 <script file="SkinMe\QuestAgent.lua"/>
 <script file="SkinMe\QuestGuru.lua"/>
+<script file="SkinMe\QuestHelper.lua"/>
 <script file="SkinMe\QuestHistory.lua"/>
 <script file="SkinMe\QuickMark.lua"/>
 <script file="SkinMe\RABuffs.lua"/>
@@ -270,6 +272,7 @@
 <script file="SkinMe\WoWPro.lua"/>
 <script file="SkinMe\xcalc.lua"/>
 <script file="SkinMe\XLoot.lua"/>
+<script file="SkinMe\xMerchant.lua"/>
 <script file="SkinMe\XPerl.lua"/>
 <script file="SkinMe\zfpoison.lua"/>
 <script file="SkinMe\ZOMGBuffs.lua"/>
