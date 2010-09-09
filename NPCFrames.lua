@@ -325,8 +325,8 @@ function Skinner:QuestInfo()
 	for i = 1, MAX_NUM_ITEMS do
 		_G["QuestInfoItem"..i.."NameFrame"]:SetTexture(nil)
 	end
-	QuestInfoRewardSpellNameFrame:SetTexture(nil)
 	if self.isBeta then
+		QuestInfoRewardSpellNameFrame:SetTexture(nil)
 		QuestInfoRewardSpellSpellBorder:SetTexture(nil)
 	end
 
