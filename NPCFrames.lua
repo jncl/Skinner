@@ -73,17 +73,24 @@ function Skinner:TrainerUI()
 		end)
 	end
 
-	self:keepFontStrings(ClassTrainerExpandButtonFrame)
-	self:skinButton{obj=ClassTrainerCollapseAllButton, mp=true}
-	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
-	for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
-		self:skinButton{obj=_G["ClassTrainerSkill"..i], mp=true}
+	if not self.isBeta then
+		self:keepFontStrings(ClassTrainerExpandButtonFrame)
+		self:skinButton{obj=ClassTrainerCollapseAllButton, mp=true}
+		for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
+			self:skinButton{obj=_G["ClassTrainerSkill"..i], mp=true}
+		end
+		if self.modBtns then ClassTrainerFrame_Update() end -- force update for button textures
+		self:skinScrollBar{obj=ClassTrainerListScrollFrame}
+		self:skinScrollBar{obj=ClassTrainerDetailScrollFrame}
+		self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=74}
+	else
+		self:skinSlider{obj=ClassTrainerScrollFrameScrollBar}
+		ClassTrainerFrame.bottomInset:DisableDrawLayer("BACKGROUND")
+		ClassTrainerFrame.bottomInset:DisableDrawLayer("BORDER")
+		self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
 	end
-	self:skinScrollBar{obj=ClassTrainerListScrollFrame}
-	self:skinScrollBar{obj=ClassTrainerDetailScrollFrame}
-	self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=74}
+	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
 
-	if self.modBtns then ClassTrainerFrame_Update() end -- force update for button textures
 
 end
 
@@ -91,9 +98,14 @@ function Skinner:TaxiFrame()
 	if not self.db.profile.TaxiFrame or self.initialized.TaxiFrame then return end
 	self.initialized.TaxiFrame = true
 
-	self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
+	if not self.isBeta then
+		self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
+		self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-11, x2=-32, y2=74}
+	else
+		self:keepRegions(TaxiFrame, {6, 13})-- N.B. region 6 is Title, 13 is the Map background
+		self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
+	end
 
-	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-11, x2=-32, y2=74}
 
 end
 
@@ -146,10 +158,14 @@ function Skinner:Battlefields()
 	if not self.db.profile.Battlefields or self.initialized.Battlefields then return end
 	self.initialized.Battlefields = true
 
-	self:skinScrollBar{obj=BattlefieldListScrollFrame}
-	BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	BattlefieldFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=BattlefieldFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+	if not self.isBeta then
+	   self:skinScrollBar{obj=BattlefieldListScrollFrame}
+	end
+	if not self.isBeta then
+	   BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	   BattlefieldFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+	   self:addSkinFrame{obj=BattlefieldFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+	end
 
 end
 
@@ -157,8 +173,10 @@ function Skinner:ArenaFrame()
 	if not self.db.profile.ArenaFrame or self.initialized.ArenaFrame then return end
 	self.initialized.ArenaFrame = true
 
-	ArenaFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=ArenaFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+	if not self.isBeta then
+	   ArenaFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	   self:addSkinFrame{obj=ArenaFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+	end
 
 end
 
@@ -167,23 +185,31 @@ function Skinner:ArenaRegistrar()
 	self.initialized.ArenaRegistrar = true
 
 -->>--	Arena Registrar Frame
-	self:keepFontStrings(ArenaRegistrarGreetingFrame)
-	self:getRegion(ArenaRegistrarGreetingFrame, 1):SetTextColor(self.HTr, self.HTg, self.HTb) -- AvailableServicesText (name also used by GuildRegistrar frame)
-	RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	for i = 1, MAX_TEAM_BORDERS do
-		local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
-		text:SetTextColor(self.BTr, self.BTg, self.BTb)
+	if not self.isBeta then
+	   self:keepFontStrings(ArenaRegistrarGreetingFrame)
+	   self:getRegion(ArenaRegistrarGreetingFrame, 1):SetTextColor(self.HTr, self.HTg, self.HTb) -- AvailableServicesText (name also used by GuildRegistrar frame)
+	   RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
+    	for i = 1, MAX_TEAM_BORDERS do
+    		local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
+    		text:SetTextColor(self.BTr, self.BTg, self.BTb)
+    	end
+    	ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+    	self:skinEditBox{obj=ArenaRegistrarFrameEditBox}
+    	self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=64}
 	end
-	ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinEditBox{obj=ArenaRegistrarFrameEditBox}
-	self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=64}
 
 -->>--	PVP Banner Frame
-	self:keepRegions(PVPBannerFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
+	if not self.isBeta then
+		self:keepRegions(PVPBannerFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
+		self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
+	else
+		self:skinEditBox{obj=PVPBannerFrameEditBox, regs={9}}
+		self:keepRegions(PVPBannerFrame, {7, 17, 28, 29, 30, 31, 32, 33, 34}) -- N.B. region 7 is the title, 17 is the background, 28 - 31 are the emblem, 32 - 34 are the text
+		self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1}
+	end
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
 	self:keepFontStrings(PVPBannerFrameCustomization2)
-	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
 
 end
 
@@ -275,7 +301,9 @@ function Skinner:QuestInfo()
 		QuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		QuestInfoHonorFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		QuestInfoArenaPointsFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoTalentFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		if not self.isBeta then
+		  QuestInfoTalentFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
 		QuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		QuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- reputation rewards
@@ -296,6 +324,10 @@ function Skinner:QuestInfo()
 
 	for i = 1, MAX_NUM_ITEMS do
 		_G["QuestInfoItem"..i.."NameFrame"]:SetTexture(nil)
+	end
+	QuestInfoRewardSpellNameFrame:SetTexture(nil)
+	if self.isBeta then
+		QuestInfoRewardSpellSpellBorder:SetTexture(nil)
 	end
 
 end

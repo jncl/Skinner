@@ -34,7 +34,7 @@ function Skinner:FriendsFrame()
 	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
 	-- Add a skin frame to include the icon at the front
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
-	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true}, x1=-24}
+	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-24}
 	self:skinFFToggleTabs("FriendsTabHeaderTab")
 	self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
 	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar, size=4}
@@ -82,37 +82,38 @@ function Skinner:FriendsFrame()
 	self:moveObject{obj=WhoFrameEditBox, x=12}
 
 -->>--	Guild Frame
-	self:keepFontStrings(GuildFrameLFGFrame)
-	self:skinFFColHeads("GuildFrameColumnHeader")
-	self:skinFFColHeads("GuildFrameGuildStatusColumnHeader")
-	self:skinScrollBar{obj=GuildListScrollFrame}
-	-- Guild Control Popup Frame
-	self:skinDropDown{obj=GuildControlPopupFrameDropDown}
-	self:skinButton{obj=GuildControlPopupFrameAddRankButton, mp2=true, plus=true}
-	self:skinButton{obj=GuildControlPopupFrameRemoveRankButton, mp2=true}
-	self:skinEditBox{obj=GuildControlWithdrawGoldEditBox, regs={9}}
-	self:skinEditBox{obj=GuildControlPopupFrameEditBox, regs={9}}
-	self:skinEditBox{obj=GuildControlWithdrawItemsEditBox, regs={9}}
-	self:addSkinFrame{obj=GuildControlPopupFrameTabPermissions, ft=ftype}
-	self:addSkinFrame{obj=GuildControlPopupFrame, ft=ftype, kfs=true, x1=3, y1=-6, x2=-28, y2=25}
-
-	for i = 1, MAX_GUILDBANK_TABS do
-		local gbtpt = _G["GuildBankTabPermissionsTab"..i]
-		self:addSkinFrame{obj=gbtpt, ft=ftype, kfs=true, y1=-8}
+	if not self.isBeta then
+	   self:keepFontStrings(GuildFrameLFGFrame)
+	   self:skinFFColHeads("GuildFrameColumnHeader")
+	   self:skinFFColHeads("GuildFrameGuildStatusColumnHeader")
+	   self:skinScrollBar{obj=GuildListScrollFrame}
+    	-- Guild Control Popup Frame
+    	self:skinDropDown{obj=GuildControlPopupFrameDropDown}
+    	self:skinButton{obj=GuildControlPopupFrameAddRankButton, mp2=true, plus=true}
+    	self:skinButton{obj=GuildControlPopupFrameRemoveRankButton, mp2=true}
+    	self:skinEditBox{obj=GuildControlWithdrawGoldEditBox, regs={9}}
+    	self:skinEditBox{obj=GuildControlPopupFrameEditBox, regs={9}}
+    	self:skinEditBox{obj=GuildControlWithdrawItemsEditBox, regs={9}}
+    	self:addSkinFrame{obj=GuildControlPopupFrameTabPermissions, ft=ftype}
+    	self:addSkinFrame{obj=GuildControlPopupFrame, ft=ftype, kfs=true, x1=3, y1=-6, x2=-28, y2=25}
+    	for i = 1, MAX_GUILDBANK_TABS do
+    		local gbtpt = _G["GuildBankTabPermissionsTab"..i]
+    		self:addSkinFrame{obj=gbtpt, ft=ftype, kfs=true, y1=-8}
+    	end
+    -->>--	GuildInfo Frame
+    	self:skinScrollBar{obj=GuildInfoFrameScrollFrame}
+    	self:addSkinFrame{obj=GuildInfoTextBackground, ft=ftype}
+    	self:addSkinFrame{obj=GuildInfoFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
+    -->>--	GuildMemberDetail Frame
+    	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
+    	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
+    	self:moveObject{obj=GuildMemberRemoveButton, x=-2}
+    	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
+    -->>--	GuildEventLog Frame
+    	self:addSkinFrame{obj=GuildEventFrame, ft=ftype}
+    	self:skinScrollBar{obj=GuildEventLogScrollFrame}
+    	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
 	end
--->>--	GuildInfo Frame
-	self:skinScrollBar{obj=GuildInfoFrameScrollFrame}
-	self:addSkinFrame{obj=GuildInfoTextBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildInfoFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
--->>--	GuildMemberDetail Frame
-	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
-	self:moveObject{obj=GuildMemberRemoveButton, x=-2}
-	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
--->>--	GuildEventLog Frame
-	self:addSkinFrame{obj=GuildEventFrame, ft=ftype}
-	self:skinScrollBar{obj=GuildEventLogScrollFrame}
-	self:addSkinFrame{obj=GuildEventLogFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-6}
 
 -->>--	Channel Frame
 	self:keepFontStrings(ChannelFrame)
@@ -183,12 +184,21 @@ function Skinner:TradeSkillUI()
 	_G[bar.."Border"]:SetAlpha(0)
 	self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"])
 	self:moveObject{obj=_G[bar], x=-2}
-	self:skinEditBox{obj=TradeSkillFrameEditBox, regs={9}, x=1}
-	self:moveObject{obj=TradeSkillFrameEditBox, x=-1}
+	if not self.isBeta then
+		self:skinEditBox{obj=TradeSkillFrameEditBox, regs={9}, x=1}
+		self:moveObject{obj=TradeSkillFrameEditBox, x=-1}
+	else
+		-- Add a skin frame to include the icon at the front
+		self:skinEditBox{obj=TradeSkillFrameSearchBox, regs={9}, noSkin=true} -- region 9 is icon
+		self:addSkinFrame{obj=TradeSkillFrameSearchBox, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-6}
+		self:skinButton{obj=TradeSkillFilterButton}
+	end
 	self:removeRegions(TradeSkillExpandButtonFrame)
 	self:skinButton{obj=TradeSkillCollapseAllButton, mp=true}
-	self:skinDropDown{obj=TradeSkillSubClassDropDown}
-	self:skinDropDown{obj=TradeSkillInvSlotDropDown}
+	if not self.isBeta then
+		self:skinDropDown{obj=TradeSkillSubClassDropDown}
+		self:skinDropDown{obj=TradeSkillInvSlotDropDown}
+	end
 	for i = 1, TRADE_SKILLS_DISPLAYED do
 		self:skinButton{obj=_G["TradeSkillSkill"..i], mp=true}
 	end
@@ -196,7 +206,11 @@ function Skinner:TradeSkillUI()
 	self:skinScrollBar{obj=TradeSkillDetailScrollFrame}
 	self:keepFontStrings(TradeSkillDetailScrollChildFrame)
 	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
-	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+	if not self.isBeta then
+		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+	else
+		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=0}
+	end
 
 	for i = 1, MAX_TRADE_SKILL_REAGENTS do
 		_G["TradeSkillReagent"..i.."NameFrame"]:SetTexture(nil)

@@ -12,11 +12,86 @@ Legend:
 			- Update commands page for changes requiring a Reload
 			- Change code to reduce the number of Reloads required if possible
 
-√	I	GuildGreet, reported by mkcorp, 8.09.10
-		- popup window when people login or get achievements not skinned
+	N	Cataclysm Beta
+√		- TOC Interface is 40000
+		- New Blizzard AddOns:
+			- ArchaeologyUI
+			- CompactRaidFrames
+			- GuildControlUI
+			- GuildUI
+			- ReforgingUI (NPC)
+		- New Frames:
+			- CompactPartyFrame
+			- CompactRaidGroup
+			- CompactUnitFrame
+			- EclipseBarFrame
+			- FlowContainer
+			- LevelUpDisplay
+			- PaladinPowerBar
+			- RolePoll
+			- ShardBar
+		- Removed Frames:
+			- ClassTrainerFrameTemplates
+			- PVPBattlegroundFrame
+			- QuestTimerFrame
+			- SkillFrame
+		- Changed Frames:
+√			- Character (Width, Height)
+√				- PaperDoll
+√				- PetPaperDoll
+x				- Reputation
+√				- Currency
+x			- DropDownMenu
+x			- Friends
+x			- Loot, now shows quest item texture
+√			- SpellBook
+√				- Spellbook
+√				- Professions
+√				- Mounts/Companions
+√			- PVP
+			- RaidUI
+√			- PetStable
+≈			- Quest
+√			- TalentUI
+√				- Talents
+√				- Pet Talents
+√				- Glyphs
+√			- TradeSkillUI
+√			- TrainerUI
+√			- PVP Banner Frame
+√			- Taxi
+x			- UIPanelTemplates
+			- Unit
+≈				- Player (ShardBar, PaladinPowerBar, EclipseBar)
+x				- PlayerPet
+x				- Target
+x				- TargetofTarget
+x				- Focus
+				- Party
+				- PartyPet
+			- VehicleMenuBar, Exp Bar now shown
+x			- Watch
+√			- Shapeshift Buttons (regions changed)
+√			- MainMenu Bar
+√				- Exp bar rested tick shows
+√				- Bar not high enough
+√			- Options
+√				- Video
+		- New layer option - textureSubLevel
+		- Spell fly-out UI feature for pet/portal classes
 
-√	I	LazyAFK, reported by mkcorp, 8.09.10
-		- still not being skinned
-
-x	I	CurseClient, reported by Alcotraz, 8.09.10
-		- update addon exceptions ?
+	New User Interface features:
+		Talent pane
+		Character sheet
+		Spellbook
+		Professions listings
+		Raid frame and raid panel
+		Threat indicators
+		Trainer windows and options
+		Tradeskill layouts
+		New class resources (i.e. druid Eclipse bar, paladin Holy Power bar, warlock Soul Shard bar)
+		Level-up notifications
+		Thaumaturgy (reforging)
+		Arena team interface
+		PvP queuing functionality
+		Spell button fly-outs (i.e. grouped mage Teleport/Portal, hunter pets, and warlock demon summons buttons)

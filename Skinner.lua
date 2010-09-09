@@ -26,6 +26,8 @@ Skinner.uCls = select(2, UnitClass("player"))
 Skinner.isPTR = FeedbackUI and true or false
 --check to see if running on patch 0.3.5
 --Skinner.isPatch = BATTLENET_FRIEND and true or false
+-- check to see if running on Beta
+Skinner.isBeta = EXPANSION_NAME3 and true or false
 
 local prdb
 function Skinner:OnInitialize()
@@ -39,6 +41,7 @@ function Skinner:OnInitialize()
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end
+	if self.isBeta then self:Debug("Beta detected") end
 --@end-alpha@
 
 	-- setup the default DB values and register them
@@ -451,6 +454,7 @@ local function __addSkinFrame(opts)
 		y2 = Y offset for BOTTOMRIGHT
 		nb = don't skin UI buttons
 		bgen = generations of button children to traverse
+		ri = Disable Inset DrawLayers (Cataclysm Beta)
 --]]
 --@alpha@
 	assert(opts.obj, "Unknown object __aSF\n"..debugstack())
@@ -458,6 +462,11 @@ local function __addSkinFrame(opts)
 
 	-- remove the object's Backdrop if it has one
 	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
+
+	if opts.ri then
+		opts.obj.Inset:DisableDrawLayer("BACKGROUND")
+		opts.obj.Inset:DisableDrawLayer("BORDER")
+	end
 
 	-- store frame obj, if required
 	if opts.ft then Skinner:add2Table(Skinner.gradFrames[opts.ft], opts.obj) end
@@ -635,6 +644,7 @@ local function __applySkin(opts)
 		fh = Fade Height
 		bd = Backdrop table to use, default is 1
 		ng = No Gradient effect
+		ebc = Use EditBox Colours
 --]]
 --@alpha@
 	assert(opts.obj, "Unknown object __aS\n"..debugstack())
@@ -656,11 +666,16 @@ local function __applySkin(opts)
 
 	-- setup the backdrop
 	opts.obj:SetBackdrop(opts.bd or Skinner.Backdrop[1])
-	-- colour the backdrop
-	local r, g, b, a = unpack(Skinner.bColour)
-	opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
-	local r, g, b, a = unpack(Skinner.bbColour)
-	opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
+	if not opts.ebc then
+		-- colour the backdrop if required
+		local r, g, b, a = unpack(Skinner.bColour)
+		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
+		local r, g, b, a = unpack(Skinner.bbColour)
+		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
+	else
+		opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
+		opts.obj:SetBackdropColor(.1, .1, .1, 1)
+	end
 
     -- fix for backdrop textures not tiling vertically
     -- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
