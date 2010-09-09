@@ -92,6 +92,11 @@ module.fontP= CreateFont("fontP")
 module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
 module.fontP:SetTextColor(1.0, 0.82, 0)
 local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture"}
+-- Add these to handle Magic Button textures
+if Skinner.isBeta then
+	Skinner:add2Table(btnTexNames, "_LeftSeparator")
+	Skinner:add2Table(btnTexNames, "_RightSeparator")
+end
 function module:skinButton(opts)
 --[[
 	as = use applySkin rather than addSkinButton, used when text appears behind the gradient
@@ -263,7 +268,7 @@ function module:isButton(obj, cb, blue)
 			then
 				return true
 			end
-		else	
+		else
 			if nTex and nTex:find("UI-Toast-CloseButton", 1, true)
 			then
 				return true

@@ -57,7 +57,7 @@ local function skinPlayerF()
 		if Skinner.uCls == "SHAMAN"
 		or Skinner.uCls == "DEATHKNIGHT"
 		then
-			for i = 1, 4 do
+			for i = 1, MAX_TOTEMS do
 				_G["TotemFrameTotem"..i.."Background"]:SetAlpha(0)
 				Skinner:getRegion(Skinner:getChild(_G["TotemFrameTotem"..i], 2), 1):SetAlpha(0) -- Totem Border texture
 			end
@@ -66,7 +66,7 @@ local function skinPlayerF()
 		if Skinner.uCls == "ROGUE"
 		or Skinner.uCls == "DRUID"
 		then
-			for i = 1, 5 do
+			for i = 1, MAX_COMBO_POINTS do
 				Skinner:getRegion(_G["ComboPoint"..i], 1):SetTexture(nil)
 			end
 		end
@@ -74,6 +74,22 @@ local function skinPlayerF()
 		if Skinner.uCls == "DRUID" then
 			PlayerFrameAlternateManaBarBorder:SetTexture(nil)
 			Skinner:glazeStatusBar(PlayerFrameAlternateManaBar, 0)
+		end
+		if Skinner.isBeta then
+			-- if the player class is a Warlock then skin the ShardBar
+			if Skinner.uCls == "WARLOCK" then
+				for i = 1, SHARD_BAR_NUM_SHARDS do
+					_G["ShardBarFrameShard"..i]:DisableDrawLayer("BORDER")
+				end
+			end
+			-- if the player class is a Paladin then skin the PowerBar
+			if Skinner.uCls == "PALADIN" then
+				PaladinPowerBarBG:Hide()
+			end
+			-- if the player class is a Druid then skin the EclipseBar
+			if Skinner.uCls == "DRUID" then
+--				EclipseBarFrame
+			end
 		end
 	end
 

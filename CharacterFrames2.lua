@@ -34,7 +34,7 @@ function Skinner:FriendsFrame()
 	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
 	-- Add a skin frame to include the icon at the front
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
-	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true}, x1=-24}
+	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-24}
 	self:skinFFToggleTabs("FriendsTabHeaderTab")
 	self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
 	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar, size=4}
@@ -184,12 +184,21 @@ function Skinner:TradeSkillUI()
 	_G[bar.."Border"]:SetAlpha(0)
 	self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"])
 	self:moveObject{obj=_G[bar], x=-2}
-	self:skinEditBox{obj=TradeSkillFrameEditBox, regs={9}, x=1}
-	self:moveObject{obj=TradeSkillFrameEditBox, x=-1}
+	if not self.isBeta then
+		self:skinEditBox{obj=TradeSkillFrameEditBox, regs={9}, x=1}
+		self:moveObject{obj=TradeSkillFrameEditBox, x=-1}
+	else
+		-- Add a skin frame to include the icon at the front
+		self:skinEditBox{obj=TradeSkillFrameSearchBox, regs={9}, noSkin=true} -- region 9 is icon
+		self:addSkinFrame{obj=TradeSkillFrameSearchBox, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-6}
+		self:skinButton{obj=TradeSkillFilterButton}
+	end
 	self:removeRegions(TradeSkillExpandButtonFrame)
 	self:skinButton{obj=TradeSkillCollapseAllButton, mp=true}
-	self:skinDropDown{obj=TradeSkillSubClassDropDown}
-	self:skinDropDown{obj=TradeSkillInvSlotDropDown}
+	if not self.isBeta then
+		self:skinDropDown{obj=TradeSkillSubClassDropDown}
+		self:skinDropDown{obj=TradeSkillInvSlotDropDown}
+	end
 	for i = 1, TRADE_SKILLS_DISPLAYED do
 		self:skinButton{obj=_G["TradeSkillSkill"..i], mp=true}
 	end
@@ -197,7 +206,11 @@ function Skinner:TradeSkillUI()
 	self:skinScrollBar{obj=TradeSkillDetailScrollFrame}
 	self:keepFontStrings(TradeSkillDetailScrollChildFrame)
 	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
-	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+	if not self.isBeta then
+		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+	else
+		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=0}
+	end
 
 	for i = 1, MAX_TRADE_SKILL_REAGENTS do
 		_G["TradeSkillReagent"..i.."NameFrame"]:SetTexture(nil)

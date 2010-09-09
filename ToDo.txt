@@ -11,13 +11,13 @@ I - Issue/Bug
 B - Button(s) Skin request
 
 	N	Cataclysm Beta
-		- TOC Interface is 40000
+√		- TOC Interface is 40000
 		- New Blizzard AddOns:
 			- ArchaeologyUI
 			- CompactRaidFrames
 			- GuildControlUI
 			- GuildUI
-			- ReforgingUI
+			- ReforgingUI (NPC)
 		- New Frames:
 			- CompactPartyFrame
 			- CompactRaidGroup
@@ -34,34 +34,49 @@ B - Button(s) Skin request
 			- QuestTimerFrame
 			- SkillFrame
 		- Changed Frames:
-			- Character (Width, Height)
-				- Currency
-				- PaperDoll
-				- PetPaperDoll
-				- Reputation
-			- DropDownMenu
-			- Friends
-			- Loot, now shows quest item texture
-			- SpellBook
-			- PVP
+√			- Character (Width, Height)
+√				- PaperDoll
+√				- PetPaperDoll
+x				- Reputation
+√				- Currency
+x			- DropDownMenu
+x			- Friends
+x			- Loot, now shows quest item texture
+√			- SpellBook
+√				- Spellbook
+√				- Professions
+√				- Mounts/Companions
+√			- PVP
 			- RaidUI
-			- PetStable
-			- Quest
-			- TalentUI
-			- Taxi
-			- TradeSkillUI
-			- TrainerUI
-			- UIPanelTemplates
+√			- PetStable
+≈			- Quest
+√			- TalentUI
+√				- Talents
+√				- Pet Talents
+√				- Glyphs
+√			- TradeSkillUI
+√			- TrainerUI
+√			- PVP Banner Frame
+√			- Taxi
+x			- UIPanelTemplates
 			- Unit
+≈				- Player (ShardBar, PaladinPowerBar, EclipseBar)
+x				- PlayerPet
+x				- Target
+x				- TargetofTarget
+x				- Focus
 				- Party
 				- PartyPet
-				- Player (Warlock shards)
-				- PlayerPet
 			- VehicleMenuBar, Exp Bar now shown
-			- Watch
+x			- Watch
+√			- Shapeshift Buttons (regions changed)
+√			- MainMenu Bar
+√				- Exp bar rested tick shows
+√				- Bar not high enough
+√			- Options
+√				- Video
 		- New layer option - textureSubLevel
-		- Spell fly-out UI feature for Warlock pets
-		- Spell fly-out UI feature for Mage portals
+		- Spell fly-out UI feature for pet/portal classes
 
 	New User Interface features:
 		Talent pane

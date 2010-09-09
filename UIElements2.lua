@@ -203,6 +203,17 @@ function Skinner:MenuFrames()
         self:addSkinFrame{obj=VideoOptionsEffectsPanel, ft=ftype}
         self:addSkinFrame{obj=VideoOptionsEffectsPanelQuality, ft=ftype}
         self:addSkinFrame{obj=VideoOptionsEffectsPanelShaders, ft=ftype}
+	else
+		for _, child in ipairs{Graphics_:GetChildren()} do
+			if child:GetName():find("DropDown") then
+				self:skinDropDown{obj=child}
+			end
+		end
+		for _, child in ipairs{VideoOptionsEffectsPanel:GetChildren()} do
+			if child:GetName():find("DropDown") then
+				self:skinDropDown{obj=child}
+			end
+		end
 	end
 
 -->>-- Sound & Voice Options
@@ -499,7 +510,11 @@ function Skinner:MainMenuBar()
 	self.initialized.MainMenuBar = true
 
 	if self.db.profile.MainMenuBar.glazesb then
-		self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 6), {ExhaustionLevelFillBar})
+		if not self.isBeta then
+			self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 6), {ExhaustionLevelFillBar})
+		else
+			self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 5), {ExhaustionLevelFillBar})
+		end
 		ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
  		self:glazeStatusBar(ReputationWatchStatusBar, 0, ReputationWatchStatusBarBackground)
 	end
@@ -510,10 +525,15 @@ function Skinner:MainMenuBar()
 	self:adjHeight{obj=MainMenuExpBar, adj=-2} -- shrink it so it moves up
 	self:adjHeight{obj=ExhaustionLevelFillBar, adj=-2} -- mirror the XP bar
 	local yOfs = IsAddOnLoaded("DragonCore") and -47 or -4
-	self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-7, x2=4, y2=yOfs}
+	if not self.isBeta then
+		self:keepRegions(MainMenuExpBar, {1, 6, 7}) -- N.B. region 1 is rested XP, 6 is background, 7 is the normal XP
+		self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-7, x2=4, y2=yOfs}
+	else	
+		self:keepRegions(MainMenuExpBar, {1, 5, 6}) -- N.B. region 1 is rested XP, 5 is background, 6 is the normal XP
+		self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=yOfs}
+	end
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
 	self:keepFontStrings(MainMenuBarArtFrame)
-	self:keepRegions(MainMenuExpBar, {1, 6, 7}) -- N.B. region 1 is rested XP, 6 is background, 7 is the normal XP
 	self:keepRegions(ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
 
 	local function toggleActionButtons()
@@ -549,7 +569,12 @@ function Skinner:MainMenuBar()
 	-- skin shapeshift buttons
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		local ssBtn = _G["ShapeshiftButton"..i]
-		self:removeRegions(ssBtn, {6, 7, 8}) -- remove textures
+		if not self.isBeta then
+			self:removeRegions(ssBtn, {6, 7, 8}) -- remove textures
+		else	
+--			self:removeRegions(ssBtn, {3, 4}) -- remove flyout textures
+			ssBtn:GetNormalTexture():SetAlpha(0)
+		end
 		self:addSkinButton{obj=ssBtn, parent=ssBtn}
 	end
 
