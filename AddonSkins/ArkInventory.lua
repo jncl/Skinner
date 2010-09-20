@@ -5,6 +5,8 @@ function Skinner:ArkInventory()
 
 	-- stop frames being painted
 	ArkInventory.Frame_Main_Paint = function() end
+	-- stop borders being painted
+	ArkInventory.Frame_Border_Paint = function() end
 
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
 --		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
