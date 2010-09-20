@@ -106,6 +106,7 @@
 <script file="SkinMe\FeedMachine.lua"/>
 <script file="SkinMe\FishingBuddy.lua"/>
 <script file="SkinMe\FlightMap.lua"/>
+<script file="SkinMe\FPSideBar.lua"/>
 <script file="SkinMe\FramesResized.lua"/>
 <script file="SkinMe\FramesResized_TalentUI.lua"/>
 <script file="SkinMe\FreierGeist_InstanceTime.lua"/>
@@ -200,6 +201,7 @@
 <script file="SkinMe\Planner.lua"/>
 <script file="SkinMe\PlayerExpBar.lua"/>
 <script file="SkinMe\PlusOneTable.lua"/>
+<script file="SkinMe\POMAssist.lua"/>
 <script file="SkinMe\PoMTracker.lua"/>
 <script file="SkinMe\Possessions.lua"/>
 <script file="SkinMe\Postal.lua"/>
@@ -269,6 +271,7 @@
 <script file="SkinMe\WebDKP.lua"/>
 <script file="SkinMe\WIM.lua"/>
 <script file="SkinMe\WoWEquip.lua"/>
+<script file="SkinMe\WowLua.lua"/>
 <script file="SkinMe\WoWPro.lua"/>
 <script file="SkinMe\xcalc.lua"/>
 <script file="SkinMe\XLoot.lua"/>
