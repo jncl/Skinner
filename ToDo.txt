@@ -2,40 +2,54 @@ ToDos
 ±±±±±
 
 Legend:
-	√ is Alt+v - indicates completed
-	≈ is Alt+x - indicates partially completed or dry-coded
-	x          - indicates nothing to change
-	S/B/N/I/O  - Skin request/Button(s) Skin request/New Version/Issue(Bug)/Other change
+	√ is Alt+v	- indicates completed
+	≈ is Alt+x	- indicates partially completed or dry-coded
+	x         	- indicates nothing to change
+	¶ is Alt+7  - indicates localisation changes required
+	S/B/N/I/O 	- Skin request/Button(s) Skin request/New Version/Issue(Bug)/Other change
 
 	I	Usability issues, reported by TaliaMokani, 23.08.10
-≈		- 1. I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
+≈		- I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
 			- Update commands page for changes requiring a Reload
 			- Change code to reduce the number of Reloads required if possible
+
+	I	UI Buttons, requested by TaliaMokani/Kerecha, 23.08.10/08.09.10
+		- In any window with container slots or item icons (looting, mail, character pane, talent pane, tradeskills, bags...), the containers aren't skinned. This is also true for the Action Buttons etc.
+		- Try creating a ButttonFacade skin a la Tukui and prompting users to use BF instead
+
+BETA changes
+±±±±±±±±±±±±
+
+	N.B DON'T forget the Localisation changes!
 
 	N	Cataclysm Beta
 √		- TOC Interface is 40000
 		- New Blizzard AddOns:
-			- ArchaeologyUI
-			- CompactRaidFrames
-			- GuildControlUI
-			- GuildUI
-			- ReforgingUI (NPC)
+√¶			- ArchaeologyUI
+√¶			- ReforgingUI (NPC)
+≈¶			- CompactRaidFrames (in UnitFrames.lua)
+				- CompactRaidFrameContainer
+				- CompactRaidFrameManager
+					- RolePoll
+≈				- CompactRaidGroup
+≈					- CompactUnitFrame
+≈					- CompactPartyFrame
+≈¶			- GuildUI
+≈¶			- GuildControlUI
 		- New Frames:
-			- CompactPartyFrame
-			- CompactRaidGroup
-			- CompactUnitFrame
+√¶			- LevelUpDisplay
+√¶			- CinematicFrame (CloseDialog)
+√¶			- Spell fly-out UI feature for pet/portal classes
+√¶			- GuildInvite
+√			- PaladinPowerBar
+√			- ShardBar
 			- EclipseBarFrame
-			- FlowContainer
-			- LevelUpDisplay
-			- PaladinPowerBar
-			- RolePoll
-			- ShardBar
-		- Removed Frames:
-			- ClassTrainerFrameTemplates
-			- PVPBattlegroundFrame
-			- QuestTimerFrame
-			- SkillFrame
-		- Changed Frames:
+√		- Removed Frames:
+√			- ClassTrainerFrameTemplates
+√			- PVPBattlegroundFrame
+√			- QuestTimerFrame
+√			- SkillFrame
+√		- Changed Frames:
 √			- Character (Width, Height)
 √				- PaperDoll
 √				- PetPaperDoll
@@ -49,9 +63,10 @@ x			- Loot, now shows quest item texture
 √				- Professions
 √				- Mounts/Companions
 √			- PVP
-			- RaidUI
+≈			- RaidUI
+				- Auras ??
 √			- PetStable
-≈			- Quest
+√			- Quest (Frame, Log, Info)
 √			- TalentUI
 √				- Talents
 √				- Pet Talents
@@ -61,37 +76,35 @@ x			- Loot, now shows quest item texture
 √			- PVP Banner Frame
 √			- Taxi
 x			- UIPanelTemplates
-			- Unit
+≈			- Unit
 ≈				- Player (ShardBar, PaladinPowerBar, EclipseBar)
 x				- PlayerPet
-x				- Target
+≈				- Target
 x				- TargetofTarget
 x				- Focus
-				- Party
-				- PartyPet
-			- VehicleMenuBar, Exp Bar now shown
+x				- Party
+x				- PartyPet
+√			- VehicleMenuBar, Exp Bar now shown
 x			- Watch
 √			- Shapeshift Buttons (regions changed)
-√			- MainMenu Bar
+≈			- MainMenu Bar
 √				- Exp bar rested tick shows
 √				- Bar not high enough
 √			- Options
 √				- Video
-		- New layer option - textureSubLevel
-		- Spell fly-out UI feature for pet/portal classes
+√			- Tutorial
+√				- has animations now
+√			- Glow boxes
+√				- TalentMicroButtonAlert
+√				- PVPFrame
+√					- noTeams
+√					- invalidTeam
+√					- lowLevelFrame
+x		- New layer option - textureSubLevel
 
-	New User Interface features:
-		Talent pane
-		Character sheet
-		Spellbook
-		Professions listings
-		Raid frame and raid panel
-		Threat indicators
-		Trainer windows and options
-		Tradeskill layouts
-		New class resources (i.e. druid Eclipse bar, paladin Holy Power bar, warlock Soul Shard bar)
-		Level-up notifications
-		Thaumaturgy (reforging)
-		Arena team interface
-		PvP queuing functionality
-		Spell button fly-outs (i.e. grouped mage Teleport/Portal, hunter pets, and warlock demon summons buttons)
+	O	AchievementFrame
+√		- remove button textures
+
+√	S	POM Assist, requested by skyggesang, 15.09.10
+
+√	S	FPSideBar, requested by mkcorp, 18.09.10
