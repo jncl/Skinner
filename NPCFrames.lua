@@ -5,6 +5,8 @@ function Skinner:MerchantFrames()
 	if not self.db.profile.MerchantFrames or self.initialized.MerchantFrames then return end
 	self.initialized.MerchantFrames = true
 
+	self:add2Table(self.npcKeys, "MerchantFrames")
+
 	-- display limited availability item's stock count even when zero
 	self:SecureHook("SetItemButtonStock", function(button, numInStock)
 		if numInStock == 0 and not button == MerchantBuyBackItemItemButton then
@@ -42,6 +44,8 @@ function Skinner:GossipFrame()
 	if not self.db.profile.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
+	self:add2Table(self.npcKeys, "GossipFrame")
+
 	-- setup Quest display colours here
 	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
 	NORMAL_QUEST_DISPLAY = "|cff"..QTHex.."%s|r"
@@ -59,7 +63,7 @@ function Skinner:GossipFrame()
 
 end
 
-function Skinner:TrainerUI()
+function Skinner:TrainerUI() -- LoD
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
@@ -98,6 +102,8 @@ function Skinner:TaxiFrame()
 	if not self.db.profile.TaxiFrame or self.initialized.TaxiFrame then return end
 	self.initialized.TaxiFrame = true
 
+	self:add2Table(self.npcKeys, "TaxiFrame")
+
 	if not self.isBeta then
 		self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
 		self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-11, x2=-32, y2=74}
@@ -112,6 +118,8 @@ end
 function Skinner:QuestFrame()
 	if not self.db.profile.QuestFrame or self.initialized.QuestFrame then return end
 	self.initialized.QuestFrame = true
+
+	self:add2Table(self.npcKeys, "QuestFrame")
 
 	-- setup Quest display colours here
 	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
@@ -158,6 +166,8 @@ function Skinner:Battlefields()
 	if not self.db.profile.Battlefields or self.initialized.Battlefields then return end
 	self.initialized.Battlefields = true
 
+	self:add2Table(self.npcKeys, "Battlefields")
+
 	if not self.isBeta then
 	   self:skinScrollBar{obj=BattlefieldListScrollFrame}
 	end
@@ -173,6 +183,8 @@ function Skinner:ArenaFrame()
 	if not self.db.profile.ArenaFrame or self.initialized.ArenaFrame then return end
 	self.initialized.ArenaFrame = true
 
+	self:add2Table(self.npcKeys, "ArenaFrame")
+
 	if not self.isBeta then
 	   ArenaFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 	   self:addSkinFrame{obj=ArenaFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
@@ -184,7 +196,8 @@ function Skinner:ArenaRegistrar()
 	if not self.db.profile.ArenaRegistrar or self.initialized.ArenaRegistrar then return end
 	self.initialized.ArenaRegistrar = true
 
--->>--	Arena Registrar Frame
+	self:add2Table(self.npcKeys, "ArenaRegistrar")
+
 	if not self.isBeta then
 	   self:keepFontStrings(ArenaRegistrarGreetingFrame)
 	   self:getRegion(ArenaRegistrarGreetingFrame, 1):SetTextColor(self.HTr, self.HTg, self.HTb) -- AvailableServicesText (name also used by GuildRegistrar frame)
@@ -217,6 +230,8 @@ function Skinner:GuildRegistrar()
 	if not self.db.profile.GuildRegistrar or self.initialized.GuildRegistrar then return end
 	self.initialized.GuildRegistrar = true
 
+	self:add2Table(self.npcKeys, "GuildRegistrar")
+
 	self:keepFontStrings(GuildRegistrarGreetingFrame)
 	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -233,6 +248,8 @@ end
 function Skinner:Petition()
 	if not self.db.profile.Petition or self.initialized.Petition then return end
 	self.initialized.Petition = true
+
+	self:add2Table(self.npcKeys, "Petition")
 
 	PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -252,6 +269,8 @@ function Skinner:Tabard()
 	if not self.db.profile.Tabard or self.initialized.Tabard then return end
 	self.initialized.Tabard = true
 
+	self:add2Table(self.npcKeys, "Tabard")
+
 	self:keepRegions(TabardFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
 
 	self:makeMFRotatable(TabardModel)
@@ -265,7 +284,7 @@ function Skinner:Tabard()
 
 end
 
-function Skinner:BarbershopUI()
+function Skinner:BarbershopUI() -- LoD
 	if not self.db.profile.BarbershopUI or self.initialized.Barbershop then return end
 	self.initialized.Barbershop = true
 
@@ -283,6 +302,8 @@ end
 function Skinner:QuestInfo()
 	if not self.db.profile.QuestFrame or self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
+
+	self:add2Table(self.npcKeys, "QuestInfo")
 
 	self:SecureHook("QuestInfo_Display", function(...)
 		-- headers

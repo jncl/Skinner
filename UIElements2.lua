@@ -11,6 +11,8 @@ function Skinner:ModelFrames()
 This does the trick, but it might be worth stealing chester's code from SuperInspect
 
 ]]
+	self:add2Table(self.uiKeys1, "ModelFrames")
+
 	-- these are hooked to suppress the sound the normal functions use
 	self:SecureHook("Model_RotateLeft", function(model, rotationIncrement)
 		if not rotationIncrement then
@@ -34,6 +36,8 @@ if IsMacClient() then
 		if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
 		self.initialized.MovieProgress = true
 
+		self:add2Table(self.uiKeys1, "MovieProgress")
+
 		self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
 		self:removeRegions(MovieProgressFrame)
 		self:glazeStatusBar(MovieProgressBar, 0, self:getRegion(MovieProgressBar, 1))
@@ -42,7 +46,7 @@ if IsMacClient() then
 	end
 end
 
-function Skinner:TimeManager()
+function Skinner:TimeManager() -- LoD
 	if not self.db.profile.TimeManager or self.initialized.TimeManager then return end
 	self.initialized.TimeManager = true
 
@@ -70,12 +74,11 @@ function Skinner:TimeManager()
 
 end
 
-function Skinner:Calendar()
+function Skinner:Calendar() -- LoD
 	if not self.db.profile.Calendar or self.initialized.Calendar then return end
 	self.initialized.Calendar = true
 
 -->>--	Calendar Frame
-
 	self:skinDropDown{obj=CalendarFilterFrame, noMove=true}
 	-- adjust non standard dropdown
 	CalendarFilterFrameMiddle:SetHeight(16)
@@ -183,6 +186,8 @@ end
 function Skinner:MenuFrames()
 	if not self.db.profile.MenuFrames or self.initialized.MenuFrames then return end
 	self.initialized.MenuFrames = true
+
+	self:add2Table(self.uiKeys1, "MenuFrames")
 
 -->>-- Game Menu Frame
 	self:addSkinFrame{obj=GameMenuFrame, ft=ftype, kfs=true, hdr=true}
@@ -344,6 +349,8 @@ function Skinner:BankFrame()
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
+	self:add2Table(self.uiKeys1, "BankFrame")
+
 	self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-25, y2=91}
 
 end
@@ -351,6 +358,8 @@ end
 function Skinner:MailFrame()
 	if not self.db.profile.MailFrame or self.initialized.MailFrame then return end
 	self.initialized.MailFrame = true
+
+	self:add2Table(self.uiKeys1, "MailFrame")
 
 	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, x1=16, y1=-12, x2=-32, y2=69}
 
@@ -405,7 +414,7 @@ function Skinner:MailFrame()
 
 end
 
-function Skinner:AuctionUI()
+function Skinner:AuctionUI() -- LoD
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
@@ -509,6 +518,8 @@ function Skinner:MainMenuBar()
 	if not self.db.profile.MainMenuBar.skin or self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
 
+	self:add2Table(self.uiKeys2, "MainMenuBar")
+
 	if self.db.profile.MainMenuBar.glazesb then
 		if not self.isBeta then
 			self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 6), {ExhaustionLevelFillBar})
@@ -528,7 +539,7 @@ function Skinner:MainMenuBar()
 	if not self.isBeta then
 		self:keepRegions(MainMenuExpBar, {1, 6, 7}) -- N.B. region 1 is rested XP, 6 is background, 7 is the normal XP
 		self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-7, x2=4, y2=yOfs}
-	else	
+	else
 		self:keepRegions(MainMenuExpBar, {1, 5, 6}) -- N.B. region 1 is rested XP, 5 is background, 6 is the normal XP
 		self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=yOfs}
 	end
@@ -571,7 +582,7 @@ function Skinner:MainMenuBar()
 		local ssBtn = _G["ShapeshiftButton"..i]
 		if not self.isBeta then
 			self:removeRegions(ssBtn, {6, 7, 8}) -- remove textures
-		else	
+		else
 --			self:removeRegions(ssBtn, {3, 4}) -- remove flyout textures
 			ssBtn:GetNormalTexture():SetAlpha(0)
 		end
@@ -596,11 +607,13 @@ function Skinner:CoinPickup()
 	if not self.db.profile.CoinPickup or self.initialized.CoinPickup then return end
 	self.initialized.CoinPickup = true
 
+	self:add2Table(self.uiKeys1, "CoinPickup")
+
 	self:addSkinFrame{obj=CoinPickupFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
 
 end
 
-function Skinner:ItemSocketingUI()
+function Skinner:ItemSocketingUI() -- LoD
 	if not self.db.profile.ItemSocketingUI or self.initialized.ItemSocketingUI then return end
 	self.initialized.ItemSocketingUI = true
 
@@ -633,7 +646,7 @@ function Skinner:ItemSocketingUI()
 
 end
 
-function Skinner:GuildBankUI()
+function Skinner:GuildBankUI() -- LoD
 	if not self.db.profile.GuildBankUI or self.initialized.GuildBankUI then return end
 	self.initialized.GuildBankUI = true
 
@@ -679,6 +692,8 @@ end
 function Skinner:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
+
+	self:add2Table(self.uiKeys1, "Nameplates")
 
 	local npEvt
 	local function skinNameplates()
@@ -736,7 +751,7 @@ function Skinner:Nameplates()
 
 end
 
-function Skinner:GMChatUI()
+function Skinner:GMChatUI() -- LoD
 	if not self.db.profile.GMChatUI or self.initialized.GMChatUI then return end
 	self.initialized.GMChatUI = true
 
@@ -756,11 +771,13 @@ end
 
 function Skinner:AutoComplete()
 
+	self:add2Table(self.uiKeys1, "AutoComplete")
+
 	self:addSkinFrame{obj=AutoCompleteBox, kfs=true, ft=ftype}
 
 end
 
-function Skinner:DebugTools()
+function Skinner:DebugTools() -- LoD
 	if not self.db.profile.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
@@ -777,6 +794,9 @@ function Skinner:DebugTools()
 		self:HookScript(FrameStackTooltip, "OnUpdate", function(this)
 			self:skinTooltip(this)
 		end)
+		self:HookScript(EventTraceTooltip, "OnUpdate", function(this)
+			self:skinTooltip(this)
+		end)
 	end
 
 end
@@ -784,6 +804,8 @@ end
 function Skinner:LFDFrame()
 	if not self.db.profile.LFDFrame or self.initialized.LFDFrame then return end
 	self.initialized.LFDFrame = true
+
+	self:add2Table(self.uiKeys1, "LFDFrame")
 
 	-- LFD DungeonReady Popup a.k.a. ReadyCheck
 	self:addSkinFrame{obj=LFDDungeonReadyStatus, kfs=true, ft=ftype}
@@ -818,6 +840,8 @@ end
 function Skinner:LFRFrame()
 	if not self.db.profile.LFRFrame or self.initialized.LFRFrame then return end
 	self.initialized.LFRFrame = true
+
+	self:add2Table(self.uiKeys1, "LFRFrame")
 
 -->>-- LFR Parent Frame/ Queue Frame
 	LFRQueueFrameLayout:SetAlpha(0)
@@ -856,10 +880,10 @@ function Skinner:BNFrames()
 	if not self.db.profile.BNFrames or self.initialized.BNFrames then return end
 	self.initialized.BNFrames = true
 
+	self:add2Table(self.uiKeys1, "BNFrames")
+
 -->>-- Toast frame
-	self:addSkinFrame{obj=BNToastFrame, ft=ftype}
-	self:reParentSB(BNToastFrameCloseButton, self.skinFrame[BNToastFrame])
-	self:reParentSF(BNToastFrame)
+	self:addSkinFrame{obj=BNToastFrame, ft=ftype, anim=true}
 -->>-- Report frame
 	BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
 	self:skinScrollBar{obj=BNetReportFrameCommentScrollFrame}

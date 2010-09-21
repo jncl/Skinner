@@ -29,6 +29,8 @@ function Skinner:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
+	self:add2Table(self.uiKeys2, "Tooltips")
+
 	-- 	change the default Tooltip Border colour here
 	TOOLTIP_DEFAULT_COLOR = CopyTable(self.db.profile.TooltipBorder)
 
@@ -102,6 +104,8 @@ function Skinner:MirrorTimers()
 	if not self.db.profile.MirrorTimers.skin or self.initialized.MirrorTimers then return end
 	self.initialized.MirrorTimers = true
 
+	self:add2Table(self.uiKeys2, "MirrorTimers")
+
 	for i = 1, MIRRORTIMER_NUMTIMERS do
 		local bar = "MirrorTimer"..i
 		local mTimer = _G[bar]
@@ -123,6 +127,8 @@ end
 function Skinner:CastingBar()
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
+
+	self:add2Table(self.uiKeys2, "CastingBar")
 
 	local modUF = self:GetModule("UnitFrames", true):IsEnabled() and self:GetModule("UnitFrames", true)
 	-- hook this to move the spark down on the casting bar
@@ -162,6 +168,8 @@ function Skinner:StaticPopups()
 	if not self.db.profile.StaticPopups or self.initialized.StaticPopups then return end
 	self.initialized.StaticPopups = true
 
+	self:add2Table(self.uiKeys1, "StaticPopups")
+
 	if self.modBtns then
 		-- hook this to handle close button texture changes
 		self:SecureHook("StaticPopup_Show", function(...)
@@ -192,6 +200,8 @@ function Skinner:ChatMenus()
 	if not self.db.profile.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
+	self:add2Table(self.uiKeys1, "ChatMenus")
+
 	self:addSkinFrame{obj=ChatMenu, ft=ftype}
 	self:addSkinFrame{obj=EmoteMenu, ft=ftype}
 	self:addSkinFrame{obj=LanguageMenu, ft=ftype}
@@ -203,6 +213,8 @@ end
 function Skinner:ChatTabs()
 	if not self.db.profile.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true
+
+	self:add2Table(self.uiKeys1, "ChatTabs")
 
 	-- hook this to handle Tab alpha changes as they have been reparented
 	self:SecureHook("FCFTab_UpdateAlpha", function(this)
@@ -236,6 +248,8 @@ end
 function Skinner:ChatFrames()
 	if not self.db.profile.ChatFrames or self.initialized.ChatFrames then return end
 	self.initialized.ChatFrames = true
+
+	self:add2Table(self.uiKeys1, "ChatFrames")
 
 	local clqbf = "CombatLogQuickButtonFrame"
 	local clqbf_c = clqbf.."_Custom"
@@ -276,6 +290,8 @@ end
 function Skinner:ChatConfig()
 	if not self.db.profile.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true
+
+	self:add2Table(self.uiKeys1, "ChatConfig")
 
 	self:addSkinFrame{obj=ChatConfigFrame, ft=ftype, kfs=true, hdr=true}
 	self:addSkinFrame{obj=ChatConfigCategoryFrame, ft=ftype}
@@ -368,6 +384,8 @@ function Skinner:ChatEditBox()
 	-- don't use an initialized value to allow for dynamic changes
 	if not self.db.profile.ChatEditBox.skin then return end
 
+	self:add2Table(self.uiKeys2, "ChatEditBox")
+
 	-- these addons replace the Chat Edit Box
 	if IsAddOnLoaded("NeonChat") or IsAddOnLoaded("Chatter") or IsAddOnLoaded("Prat-3.0") then return end
 
@@ -392,6 +410,8 @@ function Skinner:LootFrame()
 	if not self.db.profile.LootFrame or self.initialized.LootFrame then return end
 	self.initialized.LootFrame = true
 
+	self:add2Table(self.uiKeys1, "LootFrame")
+
 	-- shrink the size of the LootFrame
 	-- move the title and close button and reduce the height of the skinFrame by 34
 	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-34} -- title
@@ -406,6 +426,8 @@ end
 function Skinner:GroupLoot()
 	if not self.db.profile.GroupLoot.skin or self.initialized.GroupLoot then return end
 	self.initialized.GroupLoot = true
+
+	self:add2Table(self.uiKeys2, "GroupLoot")
 
 	local f = GameFontNormalSmall:GetFont()
 
@@ -459,6 +481,8 @@ function Skinner:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
+	self:add2Table(self.uiKeys2, "ContainerFrames")
+
 	for i = 1, NUM_CONTAINER_FRAMES do
 		local frameObj = _G["ContainerFrame"..i]
 		self:addSkinFrame{obj=frameObj, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
@@ -474,6 +498,8 @@ function Skinner:StackSplit()
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
 
+	self:add2Table(self.uiKeys1, "StackSplit")
+
 	-- handle different addons being loaded
 	if IsAddOnLoaded("EnhancedStackSplit") then
 		self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, y2=-24}
@@ -486,6 +512,8 @@ end
 function Skinner:ItemText()
 	if not self.db.profile.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
+
+	self:add2Table(self.uiKeys1, "ItemText")
 
 	self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
 		ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -502,6 +530,8 @@ function Skinner:ColorPicker()
 	if not self.db.profile.Colours or self.initialized.Colours then return end
 	self.initialized.Colours = true
 
+	self:add2Table(self.uiKeys1, "Colours")
+
 	ColorPickerFrame:SetBackdrop(nil)
 	ColorPickerFrameHeader:SetAlpha(0)
 	self:skinSlider(OpacitySliderFrame, 4)
@@ -517,6 +547,8 @@ end
 function Skinner:WorldMap()
 	if not self.db.profile.WorldMap.skin or self.initialized.WorldMap then return end
 	self.initialized.WorldMap = true
+
+	self:add2Table(self.uiKeys2, "WorldMap")
 
 	if not IsAddOnLoaded("Mapster")
 	and not IsAddOnLoaded("AlleyMap")
@@ -601,6 +633,8 @@ function Skinner:HelpFrame()
 	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
 	self.initialized.HelpFrame = true
 
+	self:add2Table(self.uiKeys1, "HelpFrame")
+
 	local hfTitle = self:getRegion(HelpFrame, 11)
 	local kbTitle = self:getRegion(KnowledgeBaseFrame, 2)
 	-- hook these to manage frame titles
@@ -653,20 +687,35 @@ function Skinner:HelpFrame()
 end
 
 function Skinner:Tutorial()
-	if not self.db.profile.Tutorial then return end
+	if not self.db.profile.Tutorial or self.initialized.Tutorial then return end
+	self.initialized.Tutorial = true
+
+	self:add2Table(self.uiKeys1, "Tutorial")
 
 	TutorialFrame:DisableDrawLayer("BACKGROUND")
-	TutorialFrame:DisableDrawLayer("BORDER")
+	TutorialFrameTop:SetTexture(nil)
+	TutorialFrameBottom:SetTexture(nil)
+	for i = 1, 30 do
+		_G["TutorialFrameLeft"..i]:SetTexture(nil)
+		_G["TutorialFrameRight"..i]:SetTexture(nil)
+	end
 	TutorialTextBorder:SetAlpha(0)
 	self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
-	self:addSkinFrame{obj=TutorialFrame, ft=ftype, x1=10, y1=-11, x2=1}
+	if self.isBeta then
+		AnimateCallout:Stop() -- stop animation, otherwise button textures are still displayed
+	end
+	self:addSkinFrame{obj=TutorialFrame, ft=ftype, anim=true, x1=10, y1=-11, x2=1}
 
-	-- skin the alert button(s)
-	self:addSkinButton{obj=_G["TutorialFrameAlertButton"], parent=_G["TutorialFrameAlertButton"], x1=-3, y1=5, x2=5, y2=-3}
+	-- Alert button
+	TutorialFrameAlertButton:GetNormalTexture():SetAlpha(0)
+	TutorialFrameAlertButton:SetNormalFontObject("ZoneTextFont")
+	TutorialFrameAlertButton:SetText("?")
+	self:moveObject{obj=TutorialFrameAlertButton:GetFontString(), x=4}
+	self:addSkinButton{obj=TutorialFrameAlertButton, parent=TutorialFrameAlertButton, x1=30, y1=-1, x2=-25, y2=10}
 
 end
 
-function Skinner:GMSurveyUI()
+function Skinner:GMSurveyUI() -- LoD
 	if not self.db.profile.GMSurveyUI or self.initialized.GMSurveyUI then return end
 	self.initialized.GMSurveyUI = true
 
@@ -688,7 +737,7 @@ function Skinner:GMSurveyUI()
 
 end
 
-function Skinner:InspectUI()
+function Skinner:InspectUI() -- LoD
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
@@ -728,9 +777,11 @@ function Skinner:InspectUI()
 
 end
 
-function Skinner:WorldState()
+function Skinner:BattleScore()
 	if not self.db.profile.BattleScore or self.initialized.BattleScore then return end
 	self.initialized.BattleScore = true
+
+	self:add2Table(self.uiKeys1, "BattleScore")
 
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
 	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, x1=10, y1=-15, x2=-113, y2=70}
@@ -750,7 +801,7 @@ function Skinner:WorldState()
 
 end
 
-function Skinner:BattlefieldMinimap()
+function Skinner:BattlefieldMinimap() -- LoD
 	if not self.db.profile.BattlefieldMm or self.initialized.BattlefieldMm then return end
 	self.initialized.BattlefieldMm = true
 
@@ -789,6 +840,8 @@ function Skinner:ScriptErrors()
 	if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
 	self.initialized.ScriptErrors = true
 
+	self:add2Table(self.uiKeys1, "ScriptErrors")
+
 	-- skin Basic Script Errors Frame (BasicControls.xml)
 	self:addSkinFrame{obj=BasicScriptErrors, kfs=true, ft=ftype}
 
@@ -797,6 +850,8 @@ end
 function Skinner:DropDowns()
 	if not self.db.profile.DropDowns or self.initialized.DropDowns then return end
 	self.initialized.DropDowns = true
+
+	self:add2Table(self.uiKeys1, "DropDowns")
 
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(level, index)
 		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
@@ -819,6 +874,8 @@ end
 function Skinner:MinimapButtons()
 	if not self.db.profile.MinimapButtons or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
+
+	self:add2Table(self.uiKeys1, "MinimapButtons")
 
 	local minBtn = self.db.profile.MinimalMMBtns
 
@@ -932,6 +989,8 @@ if Skinner.isPTR then
 	function Skinner:FeedbackUI()
 		if not self.db.profile.Feedback or self.initialized.Feedback then return end
 		self.initialized.Feedback = true
+
+		self:add2Table(self.uiKeys1, "FeedbackUI")
 
 		local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 

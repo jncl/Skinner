@@ -5,6 +5,8 @@ function Skinner:FriendsFrame()
 	if not self.db.profile.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
+	self:add2Table(self.charKeys1, "FriendsFrame")
+
 	-- hook this to manage textured tabs
 	if self.isTT then
 		self:SecureHook("FriendsFrame_ShowSubFrame", function(frameName)
@@ -166,7 +168,7 @@ function Skinner:FriendsFrame()
 
 end
 
-function Skinner:TradeSkillUI()
+function Skinner:TradeSkillUI() -- LoD
 	if not self.db.profile.TradeSkillUI or self.initialized.TradeSkillUI then return end
 	self.initialized.TradeSkillUI = true
 
@@ -224,6 +226,8 @@ function Skinner:TradeFrame()
 	if not self.db.profile.TradeFrame or self.initialized.TradeFrame then return end
 	self.initialized.TradeFrame = true
 
+	self:add2Table(self.charKeys1, "TradeFrame")
+
 	for i = 1, MAX_TRADE_ITEMS do
 		_G["TradeRecipientItem"..i.."SlotTexture"]:SetTexture(self.esTex)
 		_G["TradeRecipientItem"..i.."NameFrame"]:SetTexture(nil)
@@ -238,6 +242,8 @@ end
 function Skinner:QuestLog()
 	if not self.db.profile.QuestLog or self.initialized.QuestLog then return end
 	self.initialized.QuestLog = true
+
+	self:add2Table(self.charKeys1, "QuestLog")
 
 	self:keepFontStrings(QuestLogCount)
 	self:keepFontStrings(EmptyQuestLogFrame)
@@ -276,7 +282,7 @@ function Skinner:QuestLog()
 
 end
 
-function Skinner:RaidUI()
+function Skinner:RaidUI() -- LoD
 	if not self.db.profile.RaidUI or self.initialized.RaidUI then return end
 	self.initialized.RaidUI = true
 
@@ -346,7 +352,8 @@ function Skinner:ReadyCheck()
 	if not self.db.profile.ReadyCheck or self.initialized.ReadyCheck then return end
 	self.initialized.ReadyCheck = true
 
--->>--	Ready Check Frame
+	self:add2Table(self.charKeys1, "ReadyCheck")
+
 	self:addSkinFrame{obj=ReadyCheckListenerFrame, ft=ftype, kfs=true}
 
 end
@@ -354,6 +361,8 @@ end
 function Skinner:Buffs()
 	if not self.db.profile.Buffs or self.initialized.Buffs then return end
 	self.initialized.Buffs = true
+
+	self:add2Table(self.charKeys1, "Buffs")
 
 	local function skinBuffs()
 
@@ -396,19 +405,26 @@ function Skinner:VehicleMenuBar()
 	if not self.db.profile.VehicleMenuBar or self.initialized.VehicleMenuBar then return end
 	self.initialized.VehicleMenuBar = true
 
-	local xOfs1, xOfs2
-	local yOfs1 = 28
-	local yOfs2 = 1
+	self:add2Table(self.charKeys1, "VehicleMenuBar")
+
+	local xOfs1, xOfs2, yOfs1, yOfs2
 
 	local function skinVehicleMenuBar(opts)
 
 --		Skinner:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
 
-		-- expand frame width if mechanical vehicle or has pitch controls
-		if opts.pv or opts.sn == "Mechanical" or VehicleMenuBar.currSkin == "Mechanical" then
+		-- expand frame width if mechanical vehicle
+		if opts.sn == "Mechanical"
+		or VehicleMenuBar.currSkin == "Mechanical"
+		then
 			xOfs1 = 132
+			yOfs1 = 41
+			yOfs2 = -1
 		else
+			-- "Natural" settings
 			xOfs1 = 159
+			yOfs1 = 46
+			yOfs2 = -2
 		end
 		xOfs2 = xOfs1 * -1
 
@@ -417,6 +433,9 @@ function Skinner:VehicleMenuBar()
 		VehicleMenuBarArtFrame:DisableDrawLayer("BORDER")
 		VehicleMenuBarArtFrame:DisableDrawLayer("ARTWORK")
 		VehicleMenuBarArtFrame:DisableDrawLayer("OVERLAY")
+		-- Pitch Slider
+		self:moveObject{obj=VehicleMenuBarPitchSlider, y=2}
+		VehicleMenuBarPitchSlider:DisableDrawLayer("OVERLAY")
 		 -- make it appear above the skin frame
 		VehicleMenuBarPitchSlider:SetFrameStrata("MEDIUM")
 
@@ -447,6 +466,8 @@ function Skinner:WatchFrame()
 	if not self.db.profile.WatchFrame or self.initialized.WatchFrame then return end
 	self.initialized.WatchFrame = true
 
+	self:add2Table(self.charKeys1, "WatchFrame")
+
 	self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
 
 end
@@ -454,6 +475,8 @@ end
 function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 	if not self.db.profile.GearManager or self.initialized.GearManager then return end
 	self.initialized.GearManager = true
+
+	self:add2Table(self.charKeys1, "GearManager")
 
 	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=2}
 	for i = 1, MAX_EQUIPMENT_SETS_PER_PLAYER do

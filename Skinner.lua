@@ -1389,8 +1389,8 @@ local function __skinScrollBar(opts)
 	-- don't skin it twice
 	if Skinner.skinned[opts.obj] then return end
 
-	-- remove all the object's regions, if required
-	if not opts.noRR then Skinner:removeRegions(opts.obj)end
+	-- remove all the object's regions except text ones, if required
+	if not opts.noRR then Skinner:keepFontStrings(opts.obj) end
 
 	-- get the actual ScrollBar object
 	local sBar = opts.sbObj and opts.sbObj or _G[opts.obj:GetName()..(opts.sbPrefix or "").."ScrollBar"]

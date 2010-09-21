@@ -5,6 +5,8 @@ function Skinner:CharacterFrames()
 	if not self.db.profile.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
 
+	self:add2Table(self.charKeys1, "CharacterFrames")
+
 	-- skin each sub frame
 	self:checkAndRun("CharacterFrame")
 	for _, v in pairs{"PaperDollFrame", "PetPaperDollFrame", "ReputationFrame", "SkillFrame", "TokenFrame"} do
@@ -205,6 +207,8 @@ function Skinner:PVPFrame()
 	self.initialized.PVPFrame = true
 
 	if not self.isBeta then
+		self:add2Table(self.charKeys1, "PVPFrame")
+
         self:keepFontStrings(PVPFrame)
         self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
         -->>-- PVP Battleground Frame
@@ -272,6 +276,8 @@ function Skinner:PetStableFrame()
 	if not self.db.profile.PetStableFrame or self.initialized.PetStableFrame then return end
 	self.initialized.PetStableFrame = true
 
+	self:add2Table(self.charKeys1, "PetStableFrame")
+
 	self:makeMFRotatable(PetStableModel)
 	-- up the Frame level otherwise the tooltip doesn't work
 	if not self.isBeta then
@@ -301,6 +307,8 @@ end
 function Skinner:SpellBookFrame()
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
+
+	self:add2Table(self.charKeys1, "SpellBookFrame")
 
 	if self.isTT then
 		-- hook to handle tabs
@@ -437,7 +445,7 @@ function Skinner:GlyphUI()
 
 end
 
-function Skinner:TalentUI()
+function Skinner:TalentUI() -- LoD
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
 
@@ -529,13 +537,15 @@ function Skinner:DressUpFrame()
 	if not self.db.profile.DressUpFrame or self.initialized.DressUpFrame then return end
 	self.initialized.DressUpFrame = true
 
+	self:add2Table(self.charKeys1, "DressUpFrame")
+
 	self:removeRegions(DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
 	self:makeMFRotatable(DressUpModel)
 	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
 end
 
-function Skinner:AchievementUI()
+function Skinner:AchievementUI() -- LoD
 	if not self.db.profile.AchievementUI or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
 
@@ -717,6 +727,8 @@ end
 function Skinner:AlertFrames()
 	if not self.db.profile.AlertFrames or self.initialized.AlertFrames then return end
 	self.initialized.AlertFrames = true
+
+	self:add2Table(self.charKeys1, "AlertFrames")
 
 	local aafName = "AchievementAlertFrame"
 
