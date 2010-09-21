@@ -67,17 +67,16 @@ function Skinner:TrainerUI() -- LoD
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
-	if self.modBtns then
-		-- hook to manage changes to button textures
-		self:SecureHook("ClassTrainerFrame_Update", function()
-			for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
-				self:checkTex(_G["ClassTrainerSkill"..i])
-			end
-			self:checkTex(ClassTrainerCollapseAllButton)
-		end)
-	end
-
 	if not self.isBeta then
+		if self.modBtns then
+			-- hook to manage changes to button textures
+			self:SecureHook("ClassTrainerFrame_Update", function()
+				for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
+					self:checkTex(_G["ClassTrainerSkill"..i])
+				end
+				self:checkTex(ClassTrainerCollapseAllButton)
+			end)
+		end
 		self:keepFontStrings(ClassTrainerExpandButtonFrame)
 		self:skinButton{obj=ClassTrainerCollapseAllButton, mp=true}
 		for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
@@ -94,7 +93,6 @@ function Skinner:TrainerUI() -- LoD
 		self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
 	end
 	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
-
 
 end
 
@@ -141,6 +139,11 @@ function Skinner:QuestFrame()
 
 -->>--	Progress Panel
 	self:keepFontStrings(QuestFrameProgressPanel)
+	if self.isBeta then
+		QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
 	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=QuestProgressScrollFrame}
 
@@ -211,14 +214,14 @@ function Skinner:ArenaRegistrar()
     	self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=64}
 	end
 
--->>--	PVP Banner Frame
+	--	PVP Banner Frame
 	if not self.isBeta then
 		self:keepRegions(PVPBannerFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
 		self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
 	else
 		self:skinEditBox{obj=PVPBannerFrameEditBox, regs={9}}
-		self:keepRegions(PVPBannerFrame, {7, 17, 28, 29, 30, 31, 32, 33, 34}) -- N.B. region 7 is the title, 17 is the background, 28 - 31 are the emblem, 32 - 34 are the text
-		self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1}
+		self:keepRegions(PVPBannerFrame, {8, 18, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 18 is the background, 29 - 32 are the emblem, 33 - 35 are the text
+		self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
 	end
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
@@ -288,14 +291,12 @@ function Skinner:BarbershopUI() -- LoD
 	if not self.db.profile.BarbershopUI or self.initialized.Barbershop then return end
 	self.initialized.Barbershop = true
 
--->>-- Barbershop Banner Frame
+	self:keepFontStrings(BarberShopFrameMoneyFrame)
+	self:addSkinFrame{obj=BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
+	-- Banner Frame
 	self:keepFontStrings(BarberShopBannerFrame)
 	BarberShopBannerFrameCaption:ClearAllPoints()
 	BarberShopBannerFrameCaption:SetPoint("CENTER", BarberShopFrame, "TOP", 0, -46)
--->>-- Barbershop Frame
-	self:keepFontStrings(BarberShopFrameMoneyFrame)
-
-	self:addSkinFrame{obj=BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
 
 end
 
@@ -338,6 +339,9 @@ function Skinner:QuestInfo()
 			local r, g, b = _G["QuestInfoObjective"..i]:GetTextColor()
 			_G["QuestInfoObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
+		if self.isBeta then
+			QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
 	end)
 
 	QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -349,6 +353,26 @@ function Skinner:QuestInfo()
 	if self.isBeta then
 		QuestInfoRewardSpellNameFrame:SetTexture(nil)
 		QuestInfoRewardSpellSpellBorder:SetTexture(nil)
+	end
+
+end
+
+if Skinner.isBeta then
+
+	function Skinner:ReforgingUI()
+		if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
+		self.initialized.ReforgingUI = true
+
+		ReforgingFrame.topInset:DisableDrawLayer("BACKGROUND")
+		ReforgingFrame.topInset:DisableDrawLayer("BORDER")
+		ReforgingFrame.bottomInset:DisableDrawLayer("BACKGROUND")
+		ReforgingFrame.bottomInset:DisableDrawLayer("BORDER")
+		ReforgingFrameItemButtonFrame:Hide()
+		ReforgingFrameTopInsetLableBg:Hide()
+		ReforgingFrameItemButton.missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ReforgingFrame.missingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+
 	end
 
 end

@@ -22,7 +22,7 @@ function Skinner:CharacterFrame()
 	else
 		CharacterFrameInsetRight:DisableDrawLayer("BACKGROUND")
 		CharacterFrameInsetRight:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, bgen=2, y1=2, x2=1, y2=-4}
+		self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, bgen=2, y1=2, x2=1, y2=-6}
 	end
 
 --	CharacterFrameTab1-5
@@ -176,13 +176,11 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 
 	self:keepFontStrings(TokenFrame)
 	self:skinAllButtons{obj=TokenFrame}
-	-- hide the close button
-	if not self.isBeta then
-	   self:getChild(TokenFrame, 4):Hide()
-	end
 	self:skinScrollBar{obj=TokenFrameContainer}
 
     if not self.isBeta then
+		-- hide the close button
+		   self:getChild(TokenFrame, 4):Hide()
     	-- remove header textures
     	for i = 1, #TokenFrameContainer.buttons do
     		TokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
@@ -216,6 +214,8 @@ function Skinner:PVPFrame()
     	self:skinSlider{obj=PVPBattlegroundFrameInfoScrollFrameScrollBar}
     	PVPBattlegroundFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
     	PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+		PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
+		PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
     	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
     	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
     -->>-- PVP Team Details Frame
@@ -241,21 +241,30 @@ function Skinner:PVPFrame()
 		PVPFrameConquestBarBorder:Hide()
         self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
 	-->>-- Honor frame
-		self:keepFontStrings(PVPHonorFrame)
-		self:skinScrollBar{obj=PVPHonorFrame.bgTypeScrollFrame}
+		self:keepFontStrings(PVPFrame.panel1)
+		self:skinScrollBar{obj=PVPFrame.panel1.bgTypeScrollFrame}
 		PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 		PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+		PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
+		PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
 	-->>-- Conquest frame
-		self:keepFontStrings(PVPConquestFrame)
+		self:keepFontStrings(PVPFrame.panel2)
+		PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
+		PVPFrame.panel2.infoButton:DisableDrawLayer("BORDER")
 	-->>-- Team Management frame
-		self:keepFontStrings(PVPTeamManagementFrame)
-		PVPTeamManagementFrame.flag2.NormalHeader:SetAlpha(0)
-		PVPTeamManagementFrame.flag3.NormalHeader:SetAlpha(0)
-		PVPTeamManagementFrame.flag5.NormalHeader:SetAlpha(0)
+		self:keepFontStrings(PVPFrame.panel3)
 		self:keepFontStrings(PVPTeamManagementFrameWeeklyDisplay)
 		self:skinUsingBD{obj=PVPTeamManagementFrameWeeklyDisplay}
-		self:skinScrollBar{obj=PVPTeamManagementFrameTeamScrollFrame}
+		PVPFrame.panel3.flag2.NormalHeader:SetAlpha(0)
+		PVPFrame.panel3.flag3.NormalHeader:SetAlpha(0)
+		PVPFrame.panel3.flag5.NormalHeader:SetAlpha(0)
+		self:skinFFColHeads("PVPTeamManagementFrameHeader", 4)
+		self:skinScrollBar{obj=PVPFrame.panel3.teamMemberScrollFrame}
 		self:skinDropDown{obj=PVPTeamManagementFrameTeamDropDown}
+		-- Glow boxes
+		self:addSkinFrame{obj=PVPFrame.panel3.noTeams, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=PVPFrame.panel3.invalidTeam, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=PVPFrame.lowLevelFrame, ft=ftype, kfs=true}
     -->>-- Tabs
     	for i = 1, PVPFrame.numTabs do
     		local tabName = _G["PVPFrameTab"..i]
@@ -268,6 +277,8 @@ function Skinner:PVPFrame()
     		end
     	end
     	self.tabFrames[PVPFrame] = true
+	-->>-- Static Popup Special frame
+		self:addSkinFrame{obj=PVPFramePopup, ft=ftype, kfs=true, x1=9, y1=-9, x2=-7, y2=9}
     end
 
 end
@@ -291,11 +302,11 @@ function Skinner:PetStableFrame()
 		for i = 1, NUM_PET_ACTIVE_SLOTS do
 			_G["PetStableActivePet"..i.."Border"]:Hide()
 			_G["PetStableActivePet"..i.."Background"]:Hide()
-			self:addSkinButton{obj=_G["PetStableActivePet"..i], parent=_G["PetStableActivePet"..i], hook=_G["PetStableActivePet"..i]}
+			self:addSkinButton{obj=_G["PetStableActivePet"..i], parent=_G["PetStableActivePet"..i]}
 		end
 		for i = 1, NUM_PET_STABLE_SLOTS do
 			_G["PetStableStabledPet"..i.."Background"]:Hide()
-			self:addSkinButton{obj=_G["PetStableStabledPet"..i], parent=_G["PetStableStabledPet"..i], hook=_G["PetStableStabledPet"..i]}
+			self:addSkinButton{obj=_G["PetStableStabledPet"..i], parent=_G["PetStableStabledPet"..i]}
 		end
 		PetStableFrame.BottomInset:DisableDrawLayer("BORDER")
 		PetStableFrameStableBg:Hide()
@@ -335,7 +346,7 @@ function Skinner:SpellBookFrame()
 	    end)
 		self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=70}
 	else
-		self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-4}
+		self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 	-->>- Spellbook Panel
 		SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- hook this to change text colour as required
@@ -344,7 +355,7 @@ function Skinner:SpellBookFrame()
 				this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
 				this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
 			end
-			if this.TrainFrame:IsShown() then -- see Trainer
+			if this.TrainFrame and this.TrainFrame:IsShown() then -- see Trainer
 				this.SpellName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 				this.SpellSubName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 			else
@@ -384,7 +395,7 @@ function Skinner:SpellBookFrame()
 			btn.Background:Hide()
 			btn.TextBackground:Hide()
 			btn.IconTextureBg:Hide()
-			self:addSkinButton{obj=btn, parent=btn, hook=btn}
+			self:addSkinButton{obj=btn, parent=btn}
 		end
 	end
 	-- colour the spell name text
@@ -440,6 +451,12 @@ function Skinner:GlyphUI()
 			self:removeRegions(_G["GlyphFrameHeader"..i], {1, 2, 3})
 			self:applySkin{obj=_G["GlyphFrameHeader"..i], ft=ftype, nb=true} -- use applySkin so text is seen
 		end
+		-- remove Glyph item textures
+		for i = 1, #GlyphFrame.scrollFrame.buttons do
+			local btn = GlyphFrame.scrollFrame.buttons[i]:GetNormalTexture():SetAlpha(0)
+			local btn = GlyphFrame.scrollFrame.buttons[i].selectedTex:SetAlpha(0)
+			local btn = GlyphFrame.scrollFrame.buttons[i].disabledBG:SetAlpha(0)
+		end
 		self:skinSlider{obj=GlyphFrameScrollFrameScrollBar, size=2}
 	end
 
@@ -491,12 +508,12 @@ function Skinner:TalentUI() -- LoD
 			self:skinScrollBar{obj=panel.Summary.Description}
 			-- talent info panel(s)
 			panel:DisableDrawLayer("BORDER")
-			panel.HeaderBackground:Hide()
-			panel.HeaderBorder:Hide()
-			panel.HeaderIcon.PrimaryBorder:Hide()
-			panel.HeaderIcon.SecondaryBorder:Hide()
-			panel.HeaderIcon.PointsSpentBgGold:Hide()
-			panel.HeaderIcon.PointsSpentBgSilver:Hide()
+			panel.HeaderBackground:SetAlpha(0)
+			panel.HeaderBorder:SetAlpha(0)
+			panel.HeaderIcon:DisableDrawLayer("ARTWORK")
+			panel.HeaderIcon.PointsSpentBgGold:SetAlpha(0)
+			panel.HeaderIcon.PointsSpentBgSilver:SetAlpha(0)
+			self:moveObject{obj=panel.HeaderIcon.PointsSpent, x=8}
 		end
 	-->>-- Pet Talents Panel
 		PlayerTalentFramePetModelBg:Hide()
@@ -508,8 +525,12 @@ function Skinner:TalentUI() -- LoD
 		PlayerTalentFramePetPanel.HeaderIcon.Border:Hide()
 		PlayerTalentFramePetPanel.HeaderIcon.PointsSpentBgGold:Hide()
 		PlayerTalentFramePetPanel:DisableDrawLayer("BORDER")
+		self:moveObject{obj=PlayerTalentFramePetPanel.HeaderIcon.PointsSpent, x=8}
 	-->>-- Glyph Panel
 	-- see GlyphUI above
+	-->>-- Glow boxes
+		self:addSkinFrame{obj=PlayerTalentFrameHeaderHelpBox, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=PlayerTalentFrameLearnButtonTutorial, ft=ftype, kfs=true, y1=3, x2=3}
 	end
 
 -->>-- Tabs (side)
@@ -548,6 +569,11 @@ end
 function Skinner:AchievementUI() -- LoD
 	if not self.db.profile.AchievementUI or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
+
+	ACHIEVEMENTUI_REDBORDER_R = self.bbColour[1]
+	ACHIEVEMENTUI_REDBORDER_G = self.bbColour[2]
+	ACHIEVEMENTUI_REDBORDER_B = self.bbColour[3]
+	ACHIEVEMENTUI_REDBORDER_A = self.bbColour[4]
 
 	local function skinSB(statusBar, type)
 
@@ -602,6 +628,45 @@ function Skinner:AchievementUI() -- LoD
 		end
 
 	end
+	local btnObj, btnName
+	local function cleanButtons(frame, type)
+
+		-- remove textures etc from buttons
+		for i = 1, #frame.buttons do
+			btnObj = frame.buttons[i]
+			btnName = btnObj:GetName()
+			btnObj = type == "Comparison" and _G[btnName.."Player"] or btnObj
+			btnObj:DisableDrawLayer("BACKGROUND")
+			btnObj:DisableDrawLayer("ARTWORK")
+			btnObj.icon:DisableDrawLayer("BACKGROUND")
+			btnObj.icon:DisableDrawLayer("BORDER")
+			btnObj.icon:DisableDrawLayer("OVERLAY")
+			-- hook this to handle description text colour changes
+			self:SecureHook(btnObj, "Saturate", function(this)
+				this.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+			end)
+			if type == "Achievements" then
+				_G[btnName.."TopTsunami1"]:SetAlpha(0)
+				_G[btnName.."BottomTsunami1"]:SetAlpha(0)
+				btnObj.hiddenDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+			elseif type == "Summary" then
+				if not btnObj.tooltipTitle then btnObj:Saturate() end
+			elseif type == "Comparison" then
+				-- force update to colour the button
+				if btnObj.completed then btnObj:Saturate() end
+				-- Friend
+				btnObj = _G[btnName.."Friend"]
+				btnObj:DisableDrawLayer("BACKGROUND")
+				btnObj:DisableDrawLayer("ARTWORK")
+				btnObj.icon:DisableDrawLayer("BACKGROUND")
+				btnObj.icon:DisableDrawLayer("BORDER")
+				btnObj.icon:DisableDrawLayer("OVERLAY")
+				-- force update to colour the button
+				if btnObj.completed then btnObj:Saturate() end
+			end
+		end
+
+	end
 
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
@@ -624,7 +689,6 @@ function Skinner:AchievementUI() -- LoD
 -->>-- Categories Panel (on the Left)
 	self:skinSlider(AchievementFrameCategoriesContainerScrollBar)
 	self:addSkinFrame{obj=AchievementFrameCategories, ft=ftype, y2=-2}
-
 	self:SecureHook("AchievementFrameCategories_Update", function()
 		skinCategories()
 	end)
@@ -634,13 +698,25 @@ function Skinner:AchievementUI() -- LoD
 	self:keepFontStrings(AchievementFrameAchievements)
 	self:getChild(AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
-
+	-- remove textures etc from buttons
+	cleanButtons(AchievementFrameAchievementsContainer, "Achievements")
+	-- hook this to handle objectives text colour changes
+	self:SecureHookScript(AchievementFrameAchievementsObjectives, "OnShow", function(this)
+		if this.completed then
+			for _, child in ipairs{this:GetChildren()} do
+				for _, reg in ipairs{child:GetRegions()} do
+					if reg:IsObjectType("FontString") then
+						reg:SetTextColor(self.BTr, self.BTg, self.BTb)
+					end
+				end
+			end
+		end
+	end)
 	-- glaze any existing progress bars
 	for i = 1, 10 do
 		local pBar = "AchievementFrameProgressBar"..i
 		if _G[pBar] then glazeProgressBar(pBar) end
 	end
-
 	-- hook this to skin StatusBars used by the Objectives mini panels
 	self:RawHook("AchievementButton_GetProgressBar", function(index)
 		local pBaro = self.hooks["AchievementButton_GetProgressBar"](index)
@@ -664,7 +740,15 @@ function Skinner:AchievementUI() -- LoD
 	AchievementFrameSummaryBackground:SetAlpha(0)
 	AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
 	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
-
+	-- remove textures etc from buttons
+	if not AchievementFrameSummary:IsShown() then
+		self:SecureHookScript(AchievementFrameSummary, "OnShow", function()
+			cleanButtons(AchievementFrameSummaryAchievements, "Summary")
+			self:Unhook(AchievementFrameSummary, "OnShow")
+		end)
+	else
+		cleanButtons(AchievementFrameSummaryAchievements, "Summary")
+	end
 	-- Categories SubPanel
 	self:keepFontStrings(AchievementFrameSummaryCategoriesHeader)
 	for i = 1, 8 do
@@ -689,7 +773,6 @@ function Skinner:AchievementUI() -- LoD
 	AchievementFrameComparisonHeaderName:SetPoint("RIGHT", AchievementFrameComparisonHeaderPoints, "LEFT", -10, 0)
 	-- Container
 	self:skinSlider(AchievementFrameComparisonContainerScrollBar)
-
 	-- Summary Panel
 	self:getChild(AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	for _, type in pairs{"Player", "Friend"} do
@@ -697,7 +780,15 @@ function Skinner:AchievementUI() -- LoD
 		_G["AchievementFrameComparisonSummary"..type.."Background"]:SetAlpha(0)
 		skinSB("AchievementFrameComparisonSummary"..type.."StatusBar", "Title")
 	end
-
+	-- remove textures etc from buttons
+	if not AchievementFrameComparison:IsShown() then
+		self:SecureHookScript(AchievementFrameComparison, "OnShow", function()
+			cleanButtons(AchievementFrameComparisonContainer, "Comparison")
+			self:Unhook("AchievementFrameSummary_OnShow")
+		end)
+	else
+		cleanButtons(AchievementFrameComparisonContainer, "Comparison")
+	end
 	-- Stats Panel
 	self:skinSlider(AchievementFrameComparisonStatsContainerScrollBar)
 	self:SecureHook("AchievementFrameComparison_UpdateStats", function()
@@ -743,8 +834,7 @@ function Skinner:AlertFrames()
 				icon:DisableDrawLayer("BACKGROUND")
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
-				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, x1=7, y1=-13, x2=-7, y2=16}
-				Skinner:reParentSF(aaFrame)
+				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, anim=true, x1=7, y1=-13, x2=-7, y2=16}
 			end
 		end
 
@@ -769,7 +859,6 @@ function Skinner:AlertFrames()
 	-- dungeon completion alert frame will already exist, only 1 atm (0.3.0.10772)
 	DungeonCompletionAlertFrame1:DisableDrawLayer("BORDER") -- border textures
 	_G["DungeonCompletionAlertFrame1Reward1"]:DisableDrawLayer("OVERLAY") -- border texture
-	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, x1=5, y1=-13, x2=-5, y2=4}
-	Skinner:reParentSF(DungeonCompletionAlertFrame1)
+	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
 
 end

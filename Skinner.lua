@@ -153,16 +153,22 @@ function Skinner:OnInitialize()
     		self.bgTex = self.LSM:Fetch("background", prdb.BgTexture)
     	end
     end
-	-- these are used to disable frames from being skinned
-	self.charKeys1 = {"CharacterFrames", "PVPFrame", "PetStableFrame", "SpellBookFrame", "GlyphUI", "TalentUI", "DressUpFrame", "AchievementUI", "FriendsFrame", "TradeSkillUI", "TradeFrame", "QuestLog", "RaidUI", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", "AlertFrames"}
-	self.charKeys2 = {}
-	self.npcKeys = {"MerchantFrames", "GossipFrame", "TrainerUI", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "BarbershopUI", "QuestInfo"}
-	self.uiKeys1 = {"StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatConfig", "LootFrame", "StackSplit", "ItemText", "Colours", "HelpFrame", "Tutorial", "GMSurveyUI", "InspectUI", "BattleScore", "BattlefieldMm", "DropDowns", "MinimapButtons", "TimeManager", "Calendar", "MenuFrames", "BankFrame", "MailFrame", "AuctionUI", "CoinPickup", "ItemSocketingUI", "GuildBankUI", "Nameplates", "GMChatUI", "DebugTools", "LFDFrame", "LFRFrame", "ScriptErrors"}
-	self.uiKeys2 = {"Tooltips", "MirrorTimers", "CastingBar", "ChatEditBox", "GroupLoot", "ContainerFrames", "WorldMap", "MainMenuBar"}
 
-	-- optional/patched frames
-	if IsMacClient() then self:add2Table(self.uiKeys1, "MovieProgress") end
-	if self.isPTR then self:add2Table(self.uiKeys1, "FeedbackUI") end
+	-- these are used to disable frames from being skinned, LoD frames are entered here
+	-- other frames are added when their code is loaded
+	self.charKeys1 = {"AchievementUI", "GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI"} -- LoD frames
+	if self.isBeta then
+		self:add2Table(self.charKeys1, "ArchaeologyUI")
+	end
+	self.npcKeys = {"BarbershopUI", "TrainerUI"} -- LoD frames
+	if self.isBeta then
+		self:add2Table(self.npcKeys, "ReforgingUI")
+	end
+	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager"} -- LoD frames
+	if self.isBeta then
+		self:add2Table(self.uiKeys1, "GuildControlUI", "GuildUI")
+	end
+	self.uiKeys2 = {}
 
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
@@ -454,6 +460,7 @@ local function __addSkinFrame(opts)
 		y2 = Y offset for BOTTOMRIGHT
 		nb = don't skin UI buttons
 		bgen = generations of button children to traverse
+		anim = reparent skinFrame to avoid whiteout issues caused by animations
 		ri = Disable Inset DrawLayers (Cataclysm Beta)
 --]]
 --@alpha@
@@ -462,11 +469,6 @@ local function __addSkinFrame(opts)
 
 	-- remove the object's Backdrop if it has one
 	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
-
-	if opts.ri then
-		opts.obj.Inset:DisableDrawLayer("BACKGROUND")
-		opts.obj.Inset:DisableDrawLayer("BORDER")
-	end
 
 	-- store frame obj, if required
 	if opts.ft then Skinner:add2Table(Skinner.gradFrames[opts.ft], opts.obj) end
@@ -517,7 +519,24 @@ local function __addSkinFrame(opts)
 	if not opts.nb -- don't skin buttons
 	and not opts.noBdr -- this is a tab/unit frame
 	then
-		Skinner:skinAllButtons{obj=opts.obj, bgen=opts.bgen}
+		Skinner:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim}
+	end
+
+	-- reparent skinFrame to avoid whiteout issues caused by animations
+	if opts.anim then
+		Skinner.skinFrame[opts.obj]:SetParent(UIParent)
+		-- hook Show and Hide methods
+		Skinner:SecureHook(opts.obj, "Show", function(this) Skinner.skinFrame[this]:Show() end)
+		Skinner:SecureHook(opts.obj, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
+		if not opts.obj:IsShown() then Skinner.skinFrame[opts.obj]:Hide() end
+	end
+
+	if Skinner.isBeta then
+		-- remove inset textures
+		if opts.ri then
+			opts.obj.Inset:DisableDrawLayer("BACKGROUND")
+			opts.obj.Inset:DisableDrawLayer("BORDER")
+		end
 	end
 
 	return skinFrame

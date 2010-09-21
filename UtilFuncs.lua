@@ -344,29 +344,6 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 
 end
 
-function Skinner:reParentSB(button, parent)
-
-	if not self.modBtns then return end -- UIButtons not being skinned therefore no need to do this
-
-	-- change the parent of the skin button
-	-- 1. to prevent Animation causing gradient 'whiteout' (e.g. BNToast frame)
-	self.sBut[button]:SetParent(parent)
-
-end
-
-function Skinner:reParentSF(frame, parent)
-
-	-- change the parent of the skin frame
-	-- 1. to prevent Animation causing gradient 'whiteout' (e.g. Alert frames)
-	-- 2. to prevent other child frames from appearing behind the skin frame (e.g. LFD random cooldown)
-	self.skinFrame[frame]:SetParent(parent or UIParent)
-	-- hook Show and Hide methods
-	self:SecureHook(frame, "Show", function(this) self.skinFrame[this]:Show() end)
-	self:SecureHook(frame, "Hide", function(this) self.skinFrame[this]:Hide() end)
-	if not frame:IsShown() then self.skinFrame[frame]:Hide() end
-
-end
-
 function Skinner:resizeTabs(frame)
 
 	local fN = frame:GetName()

@@ -186,7 +186,9 @@ function Skinner:StaticPopups()
 	for i = 1, STATICPOPUP_NUMDIALOGS do
 		local sPU = "StaticPopup"..i
 		self:skinEditBox{obj=_G[sPU.."EditBox"]}
-		self:skinEditBox{obj=_G[sPU.."WideEditBox"]}
+		if not self.isBeta then
+			self:skinEditBox{obj=_G[sPU.."WideEditBox"]}
+		end
 		self:skinMoneyFrame{obj=_G[sPU.."MoneyInputFrame"]}
 		self:addSkinFrame{obj=_G[sPU], ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 		-- prevent FrameLevel from being changed (LibRock does this)
@@ -1000,12 +1002,6 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUI_ModifierKeyDropDownList, ft=ftype}
 		self:keepFontStrings(FeedbackUI_MouseButtonDropDown)
 		self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
---[=[
-		self:skinButton{obj=FeedbackUIBtnClose, cb=true}
-		self:skinButton{obj=FeedbackUIWelcomeFrameSurveysBtn}
-		self:skinButton{obj=FeedbackUIWelcomeFrameSuggestionsBtn}
-		self:skinButton{obj=FeedbackUIWelcomeFrameBugsBtn}
---]=]
 		self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
 
 	-->-- Survey Frame
@@ -1027,12 +1023,6 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
 		self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
 		self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
---[=[
-		self:skinButton{obj=FeedbackUISurveyFrameBack}
-		self:skinButton{obj=FeedbackUISurveyFrameSkip}
-		self:skinButton{obj=FeedbackUISurveyFrameReset}
-		self:skinButton{obj=FeedbackUISurveyFrameSubmit}
---]=]
 		-- skin the alert buttons
 		for i = 1, 10 do
 			local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
@@ -1049,11 +1039,6 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
 		self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelEditInput}
 		self:skinUsingBD{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
---[=[
-		self:skinButton{obj=FeedbackUISuggestFrameBack}
-		self:skinButton{obj=FeedbackUISuggestFrameReset}
-		self:skinButton{obj=FeedbackUISuggestFrameSubmit}
---]=]
 
 	-->>-- Bug Frame
 		FeedbackUIBugFrame:SetBackdrop(nil)
@@ -1065,11 +1050,6 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
 		self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelEditInput}
 		self:skinUsingBD{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
---[=[
-		self:skinButton{obj=FeedbackUIBugFrameBack}
-		self:skinButton{obj=FeedbackUIBugFrameReset}
-		self:skinButton{obj=FeedbackUIBugFrameSubmit}
---]=]
 
 		-- make the QuestLog Tip Label text visible
 		FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)

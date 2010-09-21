@@ -106,6 +106,7 @@ function module:skinButton(opts)
 	mp2 = minus/plus button
 	ob = other button, text supplied
 	plus = use plus sign
+	anim = reparent skinButton to avoid whiteout issues caused by animations
 	other options as per addSkinButton
 --]]
 --@alpha@
@@ -221,6 +222,7 @@ function module:skinButton(opts)
 			Skinner:applySkin{obj=opts.obj, bd=aso.bd}
 		end
 	end
+
 	-- centre text on button
 	if btn then
 		btn:GetFontString():SetAllPoints()
@@ -228,6 +230,11 @@ function module:skinButton(opts)
 		opts.obj:GetFontString():SetAllPoints()
 		-- centre highlight as well
 		if opts.obj:GetHighlightTexture() then opts.obj:GetHighlightTexture():SetAllPoints() end
+	end
+
+	-- reparent skinButton to avoid whiteout issues caused by animations
+	if opts.anim and Skinner.sBut[opts.obj] then
+		Skinner.sBut[opts.obj]:SetParent(Skinner.skinFrame[opts.obj:GetParent()])
 	end
 
 end
@@ -265,6 +272,7 @@ function module:isButton(obj, cb, blue)
 			end
 		elseif not blue then
 			if nTex and nTex:find("UI-Panel-MinimizeButton", 1, true)
+			or nTex and nTex:find("UI-Panel-HideButton", 1, true) -- PVPFramePopup (Cataclysm)
 			then
 				return true
 			end
@@ -297,11 +305,11 @@ local function __skinAllButtons(opts, bgen)
 
 	for _, child in ipairs{opts.obj:GetChildren()} do
 		if module:isButton(child) then -- normal button
-			module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+			module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim}
 		elseif module:isButton(child, true) then -- close button
-			module:skinButton{obj=child, cb=true, sap=opts.sap}
+			module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
 		elseif module:isButton(child, true, true) then -- small blue close button
-			module:skinButton{obj=child, cb3=true}
+			module:skinButton{obj=child, cb3=true, anim=opts.anim}
 		elseif child:IsObjectType("Frame")
 		and bgen > 0 then
 			opts.obj=child

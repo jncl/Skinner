@@ -56,6 +56,9 @@ function Skinner:Defaults()
 		WatchFrame		= false,
 		GearManager		= true,
 		AlertFrames		= true,
+		ArchaeologyUI	= self.isBeta and true or nil,
+		GuildUI			= self.isBeta and true or nil,
+		GuildControlUI	= self.isBeta and true or nil,
 		-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
@@ -103,6 +106,10 @@ function Skinner:Defaults()
 		Nameplates      = true,
 		GMChatUI		= true,
 		BNFrames		= true,
+		CinematicFrame	= self.isBeta and true or nil,
+		LevelUpDisplay	= self.isBeta and true or nil,
+		SpellFlyout		= self.isBeta and true or nil,
+		GuildInvite		= self.isBeta and true or nil,
 		-- NPC Frames
 		MerchantFrames  = true,
 		GossipFrame     = true,
@@ -116,6 +123,7 @@ function Skinner:Defaults()
 		Petition        = true,
 		Tabard          = true,
 		BarbershopUI	= true,
+		ReforgingUI		= self.isBeta and true or nil,
 		-- DBIcon settings
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
 		-- disabled skins table
@@ -684,6 +692,11 @@ function Skinner:Options()
 					name = self.L["Barbershop Frame"],
 					desc = self.L["Toggle the skin of the Barbershop Frame"],
 				},
+				ReforgingUI = self.isBeta and {
+					type = "toggle",
+					name = self.L["Reforging Frame"],
+					desc = self.L["Toggle the skin of the Reforging Frame"],
+				} or nil,
 			},
 		},
 
@@ -712,9 +725,6 @@ function Skinner:Options()
 						local bVal = IsAltKeyDown() and true or false
 						for _, keyName in pairs(self.charKeys1) do
 							db[keyName] = bVal
-						end
-						for _, keyName in pairs(self.charKeys2) do
-							db[keyName].skin = bVal
 						end
 					end,
 				},
@@ -803,6 +813,21 @@ function Skinner:Options()
 					name = self.L["Gear Manager Frame"],
 					desc = self.L["Toggle the skin of the Gear Manager Frame"],
 				},
+				ArchaeologyUI = self.isBeta and {
+					type = "toggle",
+					name = self.L["ArchaeologyUI"],
+					desc = self.L["Toggle the skin of the ArchaeologyUI"],
+				} or nil,
+				GuildUI = self.isBeta and {
+					type = "toggle",
+					name = self.L["GuildUI"],
+					desc = self.L["Toggle the skin of the GuildUI"],
+				} or nil,
+				GuildControlUI = self.isBeta and {
+					type = "toggle",
+					name = self.L["GuildControlUI"],
+					desc = self.L["Toggle the skin of the GuildControlUI"],
+				} or nil,
 			},
 		},
 
@@ -1298,6 +1323,26 @@ function Skinner:Options()
 					name = self.L["BattleNet Frames"],
 					desc = self.L["Toggle the skin of the BattleNet Frames"],
 				},
+				CinematicFrame = self.isBeta and {
+					type = "toggle",
+					name = self.L["Cinematic Frame"],
+					desc = self.L["Toggle the skin of the Cinematic Frame"],
+				} or nil,
+				LevelUpDisplay = self.isBeta and {
+					type = "toggle",
+					name = self.L["LevelUp Display"],
+					desc = self.L["Toggle the skin of the LevelUp Display"],
+				} or nil,
+				SpellFlyout = self.isBeta and {
+					type = "toggle",
+					name = self.L["SpellFlyouts"],
+					desc = self.L["Toggle the skin of the SpellFlyouts"],
+				} or nil,
+				GuildInvite = self.isBeta and {
+					type = "toggle",
+					name = self.L["Guild Invite Frame"],
+					desc = self.L["Toggle the skin of the Guild Invite Frame"],
+				} or nil,
 			},
 		},
 

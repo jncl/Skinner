@@ -214,7 +214,7 @@ function Skinner:MenuFrames()
 				self:skinDropDown{obj=child}
 			end
 		end
-		for _, child in ipairs{VideoOptionsEffectsPanel:GetChildren()} do
+		for _, child in ipairs{Advanced_:GetChildren()} do
 			if child:GetName():find("DropDown") then
 				self:skinDropDown{obj=child}
 			end
@@ -600,6 +600,16 @@ function Skinner:MainMenuBar()
 
 -->>-- Vehicle Leave Button
 	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton, parent=MainMenuBarVehicleLeaveButton, hide=true}
+	if self.isBeta then
+		self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
+			self:moveObject{obj=MainMenuBarVehicleLeaveButton, y=3}
+		end)
+	end
+
+	if self.isBeta then
+	-->>-- TalentMicroButtonAlert
+		self:addSkinFrame{obj=TalentMicroButtonAlert, ft=ftype, kfs=true, y1=3, x2=3}
+	end
 
 end
 
@@ -893,5 +903,60 @@ function Skinner:BNFrames()
 	self:addSkinFrame{obj=BNConversationInviteDialogList, ft=ftype}
 	self:skinScrollBar{obj=BNConversationInviteDialogListScrollFrame}
 	self:addSkinFrame{obj=BNConversationInviteDialog, kfs=true, ft=ftype, hdr=true}
+
+end
+
+if Skinner.isBeta then
+	function Skinner:CinematicFrame()
+		if not self.db.profile.CinematicFrame or self.initialized.CinematicFrame then return end
+		self.initialized.CinematicFrame = true
+
+		self:add2Table(self.uiKeys1, "CinematicFrame")
+
+		self:addSkinFrame{obj=CinematicFrame.closeDialog, ft=ftype}
+
+	end
+
+	function Skinner:LevelUpDisplay()
+		if not self.db.profile.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
+		self.initialized.LevelUpDisplay = true
+
+		self:add2Table(self.uiKeys1, "LevelUpDisplay")
+
+		LevelUpDisplay:DisableDrawLayer("BACKGROUND")
+
+	end
+
+	function Skinner:SpellFlyout()
+		if not self.db.profile.SpellFlyout or self.initialized.SpellFlyout then return end
+		self.initialized.SpellFlyout = true
+
+		self:add2Table(self.uiKeys1, "SpellFlyout")
+
+		self:SecureHook("ActionButton_UpdateFlyout", function(this)
+			if this.FlyoutBorder
+			and not self.skinned[this]
+			then
+				this.FlyoutBorder:SetAlpha(0)
+				this.FlyoutBorderShadow:SetAlpha(0)
+			end
+		end)
+
+	end
+
+	function Skinner:GuildInvite()
+		if not self.db.profile.GuildInvite or self.initialized.GuildInvite then return end
+		self.initialized.GuildInvite = true
+
+		self:add2Table(self.uiKeys1, "GuildInvite")
+
+		self:keepFontStrings(GuildInviteFrameLevel)
+		GuildInviteFrame:DisableDrawLayer("BACKGROUND")
+		GuildInviteFrame:DisableDrawLayer("BORDER")
+		GuildInviteFrame:DisableDrawLayer("ARTWORK")
+		GuildInviteFrame:DisableDrawLayer("OVERLAY")
+		self:addSkinFrame{obj=GuildInviteFrame, ft=ftype}
+
+	end
 
 end

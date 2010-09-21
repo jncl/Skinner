@@ -211,7 +211,9 @@ function Skinner:TradeSkillUI() -- LoD
 	if not self.isBeta then
 		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 	else
-		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=0}
+		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=-4}
+		self:addSkinFrame{obj=TradeSkillGuildFrameContainer, ft=ftype}
+		self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, x1=7, y1=-7, x2=-7, y2=7}
 	end
 
 	for i = 1, MAX_TRADE_SKILL_REAGENTS do
@@ -486,5 +488,194 @@ function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
 	self:skinEditBox{obj=GearManagerDialogPopupEditBox, regs={9}}
 	self:addSkinFrame{obj=GearManagerDialogPopup, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
+
+end
+
+if Skinner.isBeta then
+
+	function Skinner:ArchaeologyUI()
+		if not self.db.profile.ArchaeologyUI or self.initialized.ArchaeologyUI then return end
+		self.initialized.ArchaeologyUI = true
+
+		self:skinDropDown{obj=ArchaeologyFrame.raceFilterDropDown}
+		self:glazeStatusBar(ArchaeologyFrame.rankBar, 0,  ArchaeologyFrameRankBarBackground)
+		ArchaeologyFrameRankBarBorder:Hide()
+		self:addSkinFrame{obj=ArchaeologyFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+	-->>-- Summary Page
+		self:keepFontStrings(ArchaeologyFrame.summaryPage) -- remove title textures
+		ArchaeologyFrameSummaryPageTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+		for i = 1, ARCHAEOLOGY_MAX_RACES do
+			ArchaeologyFrame.summaryPage["race"..i].raceName:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
+	-->>-- Completed Page
+		self:keepFontStrings(ArchaeologyFrame.completedPage) -- remove title textures
+		ArchaeologyFrame.completedPage.infoText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ArchaeologyFrame.completedPage.titleBig:SetTextColor(self.HTr, self.HTg, self.HTb)
+		ArchaeologyFrame.completedPage.titleTop:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ArchaeologyFrame.completedPage.titleMid:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ArchaeologyFrame.completedPage.pageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		for i = 1, ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
+			ArchaeologyFrame.completedPage["artifact"..i].artifactName:SetTextColor(self.HTr, self.HTg, self.HTb)
+			ArchaeologyFrame.completedPage["artifact"..i].artifactSubText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			ArchaeologyFrame.completedPage["artifact"..i].border:Hide()
+			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Bg"]:Hide()
+		end
+	-->>-- Artifact Page
+		self:removeRegions(ArchaeologyFrame.artifactPage, {3, 4}) -- title textures
+		ArchaeologyFrame.artifactPage:DisableDrawLayer("BACKGROUND")
+		ArchaeologyFrame.artifactPage:DisableDrawLayer("BORDER")
+		ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+		ArchaeologyFrame.artifactPage.historyText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		-- Solve Frame
+		ArchaeologyFrameArtifactPageSolveFrameStatusBarBarBG:Hide()
+		self:glazeStatusBar(ArchaeologyFrame.artifactPage.solveFrame.statusBar, 0,  nil)
+		ArchaeologyFrame.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
+
+	end
+
+	function Skinner:GuildUI()
+
+		-- Guild Panel
+		GuildFrameBottomInset:DisableDrawLayer("BACKGROUND")
+		GuildFrameBottomInset:DisableDrawLayer("BORDER")
+		self:skinDropDown{obj=GuildDropDown}
+		GuildLevelFrame:DisableDrawLayer("BACKGROUND")
+		--[=[
+			TODO XPBar not using sb texture/ background
+		--]=]
+		GuildXPBar:DisableDrawLayer("BORDER")
+		GuildXPBarProgress:SetTexture(self.sbTexture)
+		GuildXPBarShadow:SetAlpha(0)
+		GuildXPBarCap:SetTexture(self.sbTexture)
+		--[=[
+			TODO faction bar not using statusbar texture
+		--]=]
+		self:glazeStatusBar(GuildFactionBar, 0, GuildFactionBarBG)
+		GuildFactionBarLeft:SetAlpha(0)
+		GuildFactionBarRight:SetAlpha(0)
+		GuildFactionBarMiddle:SetAlpha(0)
+		-- GuildMain Frame
+		GuildPerksToggleButton:DisableDrawLayer("BACKGROUND")
+		GuildNewPerksFrame:DisableDrawLayer("BACKGROUND")
+		GuildUpdatesNoNews:SetTextColor(self.BTr, self.BTg, self.BTb)
+		GuildUpdatesDivider:SetAlpha(0)
+		GuildUpdatesNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
+		GuildLatestPerkButtonNameFrame:SetTexture(nil)
+		GuildNextPerkButtonNameFrame:SetTexture(nil)
+		GuildAllPerksFrame:DisableDrawLayer("BACKGROUND")
+		self:skinSlider{obj=GuildPerksContainerScrollBar, size=2}
+		for i = 1, #GuildPerksContainer.buttons do
+			--[=[
+				TODO textures reappear when scrolling
+			--]=]
+			GuildPerksContainer.buttons[i]:DisableDrawLayer("BACKGROUND")
+			GuildPerksContainer.buttons[i]:DisableDrawLayer("BORDER")
+		end
+		self:addSkinFrame{obj=GuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
+		-- Roster Panel
+		self:skinDropDown{obj=GuildRosterViewDropdown}
+		self:skinFFColHeads("GuildRosterColumnButton", 5)
+		self:skinSlider{obj=GuildRosterContainerScrollBar, size=2}
+		for i = 1, #GuildRosterContainer.buttons do
+			GuildRosterContainer.buttons[i]:DisableDrawLayer("BACKGROUND")
+			GuildRosterContainer.buttons[i].barTexture:SetTexture(self.sbTexture)
+			--[=[
+				TODO handle header lines, when textures removed other text is revealed
+			--]=]
+--			GuildRosterContainer.buttons[i].header:DisableDrawLayer("BORDER")
+--			GuildRosterContainer.buttons[i].header:DisableDrawLayer("BACKGROUND")
+		end
+		self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true}--, x1=10, y1=-12, x2=-32, y2=71}
+		-- News Panel
+		GuildNewsFrame:DisableDrawLayer("BACKGROUND")
+		self:skinSlider{obj=GuildNewsContainerScrollBar, size=2}
+		for i = 1, #GuildNewsContainer.buttons do
+			GuildNewsContainer.buttons[i].header:SetAlpha(0)
+		end
+		self:skinDropDown{obj=GuildNewsDropDown}
+		self:addSkinFrame{obj=GuildNewsFiltersFrame, ft=ftype, kfs=true, x1=7, y1=-7, x2=-7, y2=7}
+		self:addSkinFrame{obj=GuildNewsBossModel, ft=ftype, kfs=true}
+		-- Rewards Panel
+		GuildRewardsFrame:DisableDrawLayer("BACKGROUND")
+		self:skinSlider{obj=GuildRewardsContainerScrollBar, size=2}
+		for i = 1, #GuildRewardsContainer.buttons do
+			GuildRewardsContainer.buttons[i]:GetNormalTexture():SetAlpha(0)
+		end
+		self:skinDropDown{obj=GuildRewardsDropDown}
+		-- Info Panel
+		self:removeRegions(GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
+		self:skinSlider{obj=GuildInfoEventsContainerScrollBar, size=2}
+		GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, size=2}
+		-- Guild Text Edit frame
+		--[=[
+			TODO close button is too large
+		--]=]
+		self:skinSlider{obj=GuildTextEditScrollFrameScrollBar, size=2}
+		self:addSkinFrame{obj=GuildTextEditContainer, ft=ftype, nb=true}
+		self:addSkinFrame{obj=GuildTextEditFrame, ft=ftype, kfs=true, nb=true, x1=7, y1=-7, x2=-7, y2=7}
+		-- Guild Log Frame
+		--[=[
+			TODO close button is too large
+		--]=]
+		self:skinSlider{obj=GuildLogScrollFrameScrollBar, size=2}
+		self:addSkinFrame{obj=GuildLogContainer, ft=ftype, nb=true}
+		self:addSkinFrame{obj=GuildLogFrame, ft=ftype, kfs=true, nb=true, x1=7, y1=-7, x2=-7, y2=7}
+
+	-->>-- Tabs
+		for i = 1, GuildFrame.numTabs do
+			local tabObj = _G["GuildFrameTab"..i]
+			self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			local tabSF = self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+			if i == 1 then
+				if self.isTT then self:setActiveTab(tabSF) end
+			else
+				if self.isTT then self:setInactiveTab(tabSF) end
+			end
+		end
+		self.tabFrames[GuildFrame] = true
+
+	end
+
+	function Skinner:GuildControlUI()
+
+		GuildControlUI:DisableDrawLayer("BACKGROUND")
+		GuildControlUIHbar:SetAlpha(0)
+		self:skinDropDown{obj=GuildControlUI.dropdown}
+		self:addSkinFrame{obj=GuildControlUI, ft=ftype, kfs=true, x1=10, y1=-10, x2=-10, y2=10}
+		-- Guild Ranks Panel
+		local function skinROFrames()
+
+			for i = 1, MAX_GUILDRANKS do
+				local frame = _G["GuildControlUIRankOrderFrameRank"..i]
+				if frame
+				and not Skinner.skinned[frame]
+				then
+					Skinner:skinEditBox{obj=frame.nameBox, regs={9}, x=-5}
+				end
+			end
+
+		end
+		self:SecureHook("GuildControlUI_RankOrder_Update", function(...)
+			skinROFrames()
+		end)
+		skinROFrames()
+		-- Rank Permissions Panel
+		self:skinSlider{obj=GuildControlUIRankBankFrameInsetScrollFrameScrollBar, size=2}
+		GuildControlUI.rankPermFrame:DisableDrawLayer("BACKGROUND")
+		self:skinDropDown{obj=GuildControlUI.rankPermFrame.dropdown}
+		self:skinEditBox{obj=GuildControlUI.rankPermFrame.goldBox, regs={9}}
+		-- Bank Tab Permissions panel
+		self:skinDropDown{obj=GuildControlUI.bankTabFrame.dropdown}
+		GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BACKGROUND")
+		GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BORDER")
+		for i = 1, #GuildControlUI.bankTabFrame.scrollFrame.buttons do
+			local btn = GuildControlUI.bankTabFrame.scrollFrame.buttons[i]
+			btn:DisableDrawLayer("BACKGROUND")
+			self:skinEditBox{obj=btn.owned.editBox, regs={9}}
+			self:skinButton{obj=btn.buy.button, as=true}
+		end
+
+	end
 
 end

@@ -11,9 +11,10 @@ local defaults = {
 		focus = false,
 		party = false,
 		pet = false,
-		petlevel = Skinner.uCls and false or nil,
+		petlevel = (Skinner.uCls == "HUNTER" or Skinner.uCls == "WARLOCK") and false or nil,
 		alpha = 0.25,
 		arena = false,
+		compact = Skinner.isBeta and false or nil,
 	}
 }
 local lOfs = -10 -- level text offset
@@ -45,7 +46,7 @@ local function skinPlayerF()
 		-- remove group indicator textures
 		Skinner:keepFontStrings(PlayerFrameGroupIndicator)
 		Skinner:moveObject{obj=PlayerFrameGroupIndicatorText, y=-1}
-		Skinner:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso=aso, x1=37, y1=-7, y2=6}
+		Skinner:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso=aso, x1=37, y1=-7, y2=Skinner.uCls == "PALADIN" and 3 or 6}
 
 		--	if the player class is a DeathKnight then skin the RuneFrame
 		if Skinner.uCls == "DEATHKNIGHT" then
@@ -84,7 +85,8 @@ local function skinPlayerF()
 			end
 			-- if the player class is a Paladin then skin the PowerBar
 			if Skinner.uCls == "PALADIN" then
-				PaladinPowerBarBG:Hide()
+				PaladinPowerBar:DisableDrawLayer("BACKGROUND")
+				PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 			end
 			-- if the player class is a Druid then skin the EclipseBar
 			if Skinner.uCls == "DRUID" then
@@ -107,28 +109,26 @@ local function skinPetF()
 		Skinner:adjHeight{obj=PetFrameHealthBar, adj=-1} -- handle bug in PetFrame XML & lua which places mana bar 7 pixels below the healthbar, when their heights are 8
 		Skinner:glazeStatusBar(PetFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
-		Skinner:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars
+		Skinner:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars (Hunter's only)
 		Skinner:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-1, x2=1}
 	end
 
-	-- Add Pet's Level to frame if required (only for a Hunter's pets)
-	if db.petlevel then
+	-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
+	if db.petlevel
+	and Skinner.uCls == "HUNTER"
+	or Skinner.uCls == "WARLOCK"
+	then
 		if not plt then
 			plt = Skinner.skinFrame[PetFrame]:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
 			plt:SetPoint("BOTTOMLEFT", 4, 4)
 			local lvlXP = 0
 			local function checkLevel(event, ...)
---				print("checkLevel", event)
-				if event == "UNIT_PET" then lvlXP = 0 end -- pet changed
-				local currXP, nextXP = GetPetExperience()
-				if nextXP > lvlXP then
-					plt:SetText(UnitLevel(PetFrame.unit))
-					lvlXP = nextXP
-				end
+				plt:SetText(UnitLevel(PetFrame.unit))
 			end
 			module:SecureHook("PetFrame_Update", function(this, ...)
 				checkLevel("pfu")
 			end)
+			module:RegisterEvent("PET_BAR_UPDATE", checkLevel) -- for pet changes
 			module:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
 			module:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
 			checkLevel("init")
@@ -336,9 +336,44 @@ local function skinArenaF()
 	end
 
 end
+local function skinCompactF()
+
+	if db.compact
+	and not isSkinned["Compact"]
+	then
+		-- skin Compact Party Frame
+		CompactPartyFrame.borderFrame:DisableDrawLayer("ARTWORK")
+		for i = 1, MEMBERS_PER_RAID_GROUP do
+			_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
+			_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
+		end
+		Skinner:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+		-- hook this to skin Compact Raid Unit Frame(s)
+		Skinner:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
+			local frame = Skinner.hooks[this].CompactRaidFrameContainer_GetUnitFrame(...)
+			frame:DisableDrawLayer("BACKGROUND")
+			frame:DisableDrawLayer("BORDER")
+			return frame
+		end, true)
+		-- hook this to skin Compact Raid Group Frame(s)
+		Skinner:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
+			local frame = Skinner.hooks[this].CompactRaidGroup_GenerateForGroup(...)
+			frame.borderFrame:DisableDrawLayer("ARTWORK")
+			Skinner:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+			return frame
+		end, true)
+	end
+
+end
+if not Skinner.isBeta then
+	skinCompactF = nil
+end
 local unitFrames = {
-	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground",
+	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground", 
 }
+if Skinner.isBeta then
+	Skinner:add2Table(unitFrames, "CompactPartyFrame")
+end
 local function changeUFOpacity()
 
 	local r, g, b = unpack(Skinner.bColour)
@@ -412,6 +447,7 @@ function module:adjustUnitFrames(opt)
 		skinFocusF()
 		skinPartyF()
 		skinArenaF()
+		if Skinner.isBeta then skinCompactF() end
 	elseif opt == "player" then
 		skinPlayerF()
 	elseif opt == "pet"
@@ -424,10 +460,12 @@ function module:adjustUnitFrames(opt)
 		skinFocusF()
 	elseif opt == "party" then
 		skinPartyF()
-	elseif opt == "areana" then
+	elseif opt == "arena" then
 		skinArenaF()
 	elseif opt == "alpha" then
 		changeUFOpacity()
+	elseif opt == "compact" then
+		skinCompactF()
 	end
 
 end
@@ -477,7 +515,7 @@ function module:GetOptions()
 			},
 			alpha = {
 				type = "range",
-				order = 9,
+				order = 10,
 				width = "double",
 				name = Skinner.L["UnitFrame Background Opacity"],
 				desc = Skinner.L["Change Opacity value of the UnitFrames Background"],
@@ -494,7 +532,7 @@ function module:GetOptions()
 					module:adjustUnitFrames(info[#info])
 				end or nil,
 			},
-			petlevel = Skinner.uCls == "HUNTER" and {
+			petlevel = (Skinner.uCls == "HUNTER" or Skinner.uCls == "WARLOCK") and {
 				type = "toggle",
 				order = 3,
 				name = Skinner.L["Pet Level"],
@@ -504,6 +542,12 @@ function module:GetOptions()
 					if value then module.db.profile.pet = true end -- enable pet frame when enabled
 					module:adjustUnitFrames(info[#info])
 				end,
+			} or nil,
+			compact = Skinner.isBeta and {
+				type = "toggle",
+				order = 8,
+				name = Skinner.L["Compact"],
+				desc = Skinner.L["Toggle the skin of the Compact UnitFrames"],
 			} or nil,
 		},
 	}

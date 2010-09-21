@@ -6,13 +6,19 @@ function Skinner:BlizzardFrames()
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
 		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
-		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "WorldState", "ScriptErrors", "DropDowns", -- uie1
+		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "ScriptErrors", "DropDowns", -- uie1
 		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "PVPFrame", "LFDFrame", "LFRFrame", "BNFrames", -- uie2
 	}
 
 	-- optional frames
 	if IsMacClient() then self:checkAndRun("MovieProgress") end
-	if self.isPTR then tinsert(blizzFrames, "FeedbackUI") else self.FeedbackUI = nil end -- uie1
+	if self.isPTR then self:add2Table(blizzFrames, "FeedbackUI") end -- uie1
+	if self.isBeta then
+		self:add2Table(blizzFrames, "CinematicFrame") -- uie1
+		self:add2Table(blizzFrames, "LevelUpDisplay") -- uie1
+		self:add2Table(blizzFrames, "SpellFlyout") -- uie1
+		self:add2Table(blizzFrames, "GuildInvite") -- uie1
+	end
 	-- patched frames
 
 	for _, v in pairs(blizzFrames) do
@@ -36,14 +42,20 @@ function Skinner:BlizzardFrames()
 end
 
 local blizzLoDFrames = {
-	 "AchievementUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GlyphUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI",
+	 "AchievementUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GlyphUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI"
 }
+if Skinner.isBeta then
+	Skinner:add2Table(blizzLoDFrames, "ReforgingUI") -- npc
+	Skinner:add2Table(blizzLoDFrames, "ArchaeologyUI") -- cf2
+	Skinner:add2Table(blizzLoDFrames, "GuildUI") -- cf2
+	Skinner:add2Table(blizzLoDFrames, "GuildControlUI") -- cf2
+end
 --[=[
 	AuctionUI -- loaded when AUCTION_HOUSE_SHOW event is fired
-	ArenaUI -- unitframes not currently skinned
-	CombatLog -- managed with ChatConfig skin
+	ArenaUI -- unitframes skinned in UnitFrames.lua
+	CombatLog -- managed within ChatConfig skin
 	CombatText -- nothing to skin
-	TokenUI -- part of CharacterFrames skinning process
+	TokenUI -- loaded when CURRENCY_DISPLAY_UPDATE event is fired, actioned by MainMenuBar_OnEvent
 --]=]
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
