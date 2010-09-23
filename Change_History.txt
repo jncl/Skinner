@@ -1,3 +1,12 @@
+b4.12984.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	More Beta/PTR changes
+	Improve Frame Enabling/Disabling code
+	Updated ArkInventory skin
+	Skinned FPSideBar, POMAssist & WowLua
+
 b4.12857.1
 Jncl:
 	Beta change
