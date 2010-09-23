@@ -1169,27 +1169,41 @@ local function __skinDropDown(opts)
 	assert(opts.obj, "Unknown object__sDD\n"..debugstack())
 --@end-alpha@
 
-	if not (opts.obj and opts.obj.GetName and opts.obj:GetName() and _G[opts.obj:GetName().."Right"]) then return end -- ignore tekKonfig & Az dropdowns
+	if not (opts.obj and (opts.obj.GetName and _G[opts.obj:GetName().."Left"]) or opts.obj.leftTexture) then return end -- ignore tekKonfig & Az dropdowns, handle FeedbackUI ones
 
 	-- don't skin it twice
 	if Skinner.skinned[opts.obj] then return end
 
 	if not Skinner.db.profile.TexturedDD or opts.noSkin then Skinner:keepFontStrings(opts.obj) return end
 
-	_G[opts.obj:GetName().."Left"]:SetAlpha(0)
-	_G[opts.obj:GetName().."Right"]:SetAlpha(0)
-	_G[opts.obj:GetName().."Middle"]:SetTexture(Skinner.itTex)
-	_G[opts.obj:GetName().."Middle"]:SetHeight(19)
+	local mTex, btn, txt
+	if opts.obj.leftTexture then
+		opts.obj.leftTexture:SetAlpha(0)
+		opts.obj.rightTexture:SetAlpha(0)
+		opts.obj.middleTexture:SetTexture(Skinner.itTex)
+		opts.obj.middleTexture:SetHeight(19)
+		mTex = opts.obj.middleTexture
+		btn = opts.obj.button
+		txt = opts.obj.label
+	else
+		_G[opts.obj:GetName().."Left"]:SetAlpha(0)
+		_G[opts.obj:GetName().."Right"]:SetAlpha(0)
+		_G[opts.obj:GetName().."Middle"]:SetTexture(Skinner.itTex)
+		_G[opts.obj:GetName().."Middle"]:SetHeight(19)
+		mTex = _G[opts.obj:GetName().."Middle"]
+		btn = _G[opts.obj:GetName().."Button"]
+		txt = _G[opts.obj:GetName().."Text"]
+	end
 
 	-- move Button Left and down, Text down
 	if not opts.noMove then
-		Skinner:moveObject{obj=_G[opts.obj:GetName().."Button"], x=-6, y=-2}
-		Skinner:moveObject{obj=_G[opts.obj:GetName().."Text"], y=-2}
+		Skinner:moveObject{obj=btn, x=-6, y=-2}
+		Skinner:moveObject{obj=txt, y=-2}
 	end
 
 	local mtx = opts.mtx or 0
 	local mty = opts.moveTex and 2 or (opts.mty or 0)
-	if mtx ~= 0 or mty ~= 0 then Skinner:moveObject{obj=_G[opts.obj:GetName().."Middle"], x=mtx, y=mty} end
+	if mtx ~= 0 or mty ~= 0 then Skinner:moveObject{obj=mTex, x=mtx, y=mty} end
 
 end
 

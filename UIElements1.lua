@@ -988,7 +988,7 @@ function Skinner:MinimapButtons()
 end
 
 if Skinner.isPTR then
-	function Skinner:FeedbackUI()
+	function Skinner:FeedbackUI() -- LoD
 		if not self.db.profile.Feedback or self.initialized.Feedback then return end
 		self.initialized.Feedback = true
 
@@ -998,17 +998,22 @@ if Skinner.isPTR then
 
 		self:keepFontStrings(FeedbackUITitleFrm)
 		FeedbackUIWelcomeFrame:SetBackdrop(nil)
-		self:keepFontStrings(FeedbackUI_ModifierKeyDropDown)
+		self:skinDropDown{obj=FeedbackUI_ModifierKeyDropDown}
 		self:addSkinFrame{obj=FeedbackUI_ModifierKeyDropDownList, ft=ftype}
-		self:keepFontStrings(FeedbackUI_MouseButtonDropDown)
+		self:skinDropDown{obj=FeedbackUI_MouseButtonDropDown}
 		self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
 		self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
 
+	-->>-- Welcome Frame panels
+		FeedbackUIWelcomeFrameSurveys:DisableDrawLayer("BORDER")
+		FeedbackUIWelcomeFrameSuggestions:DisableDrawLayer("BORDER")
+		FeedbackUIWelcomeFrameBugs:DisableDrawLayer("BORDER")
+
 	-->-- Survey Frame
 		FeedbackUISurveyFrame:SetBackdrop(nil)
-		self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlCategory)
+		self:skinDropDown{obj=FeedbackUISurveyFrameSurveysPanelDdlCategory}
 		self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlCategoryList, ft=ftype}
-		self:keepFontStrings(FeedbackUISurveyFrameSurveysPanelDdlStatus)
+		self:skinDropDown{obj=FeedbackUISurveyFrameSurveysPanelDdlStatus}
 		self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
 		FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
 		for i = 1, 8 do
