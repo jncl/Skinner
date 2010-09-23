@@ -51,7 +51,7 @@ function Skinner:Defaults()
 		RaidUI          = true,
 		ReadyCheck      = true,
 		Buffs           = true,
-		AchievementUI	= true,
+		AchievementUI	= {skin = true, style = 2},
 		VehicleMenuBar	= true,
 		WatchFrame		= false,
 		GearManager		= true,
@@ -726,12 +726,31 @@ function Skinner:Options()
 						for _, keyName in pairs(self.charKeys1) do
 							db[keyName] = bVal
 						end
+						for _, keyName in pairs(self.charKeys2) do
+							db[keyName].skin = bVal
+						end
 					end,
 				},
 				AchievementUI = {
-					type = "toggle",
+					type = "group",
+					order = -2,
+					inline = true,
 					name = self.L["AchievementUI"],
-					desc = self.L["Toggle the skin of the AchievementUI"],
+					get = function(info) return db.AchievementUI[info[#info]] end,
+					set = function(info, value) db.AchievementUI[info[#info]] = value end,
+					args = {
+						skin = {
+							type = "toggle",
+							name = self.L["AchievementUI Skin"],
+							desc = self.L["Toggle the skin of the AchievementUI"],
+						},
+						style = {
+							type = "range",
+							name = self.L["Achievement Style"],
+							desc = self.L["Set the Achievement style (Textured, Untextured)"],
+							min = 1, max = 2, step = 1,
+						},
+					},
 				},
 				AlertFrames = {
 					type = "toggle",

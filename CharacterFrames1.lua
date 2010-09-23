@@ -567,13 +567,17 @@ function Skinner:DressUpFrame()
 end
 
 function Skinner:AchievementUI() -- LoD
-	if not self.db.profile.AchievementUI or self.initialized.AchievementUI then return end
+	if not self.db.profile.AchievementUI.skin or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
 
-	ACHIEVEMENTUI_REDBORDER_R = self.bbColour[1]
-	ACHIEVEMENTUI_REDBORDER_G = self.bbColour[2]
-	ACHIEVEMENTUI_REDBORDER_B = self.bbColour[3]
-	ACHIEVEMENTUI_REDBORDER_A = self.bbColour[4]
+	local prdbA = self.db.profile.AchievementUI
+
+	if prdbA.style == 2 then
+		ACHIEVEMENTUI_REDBORDER_R = self.bbColour[1]
+		ACHIEVEMENTUI_REDBORDER_G = self.bbColour[2]
+		ACHIEVEMENTUI_REDBORDER_B = self.bbColour[3]
+		ACHIEVEMENTUI_REDBORDER_A = self.bbColour[4]
+	end
 
 	local function skinSB(statusBar, type)
 
@@ -630,6 +634,8 @@ function Skinner:AchievementUI() -- LoD
 	end
 	local btnObj, btnName
 	local function cleanButtons(frame, type)
+
+		if prdbA.style == 1 then return end -- don't remove textures if option not chosen
 
 		-- remove textures etc from buttons
 		for i = 1, #frame.buttons do
@@ -698,20 +704,22 @@ function Skinner:AchievementUI() -- LoD
 	self:keepFontStrings(AchievementFrameAchievements)
 	self:getChild(AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
-	-- remove textures etc from buttons
-	cleanButtons(AchievementFrameAchievementsContainer, "Achievements")
-	-- hook this to handle objectives text colour changes
-	self:SecureHookScript(AchievementFrameAchievementsObjectives, "OnShow", function(this)
-		if this.completed then
-			for _, child in ipairs{this:GetChildren()} do
-				for _, reg in ipairs{child:GetRegions()} do
-					if reg:IsObjectType("FontString") then
-						reg:SetTextColor(self.BTr, self.BTg, self.BTb)
+	if prdbA.style == 2 then
+		-- remove textures etc from buttons
+		cleanButtons(AchievementFrameAchievementsContainer, "Achievements")
+		-- hook this to handle objectives text colour changes
+		self:SecureHookScript(AchievementFrameAchievementsObjectives, "OnShow", function(this)
+			if this.completed then
+				for _, child in ipairs{this:GetChildren()} do
+					for _, reg in ipairs{child:GetRegions()} do
+						if reg:IsObjectType("FontString") then
+							reg:SetTextColor(self.BTr, self.BTg, self.BTb)
+						end
 					end
 				end
 			end
-		end
-	end)
+		end)
+	end
 	-- glaze any existing progress bars
 	for i = 1, 10 do
 		local pBar = "AchievementFrameProgressBar"..i
@@ -741,7 +749,7 @@ function Skinner:AchievementUI() -- LoD
 	AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
 	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
 	-- remove textures etc from buttons
-	if not AchievementFrameSummary:IsShown() then
+	if not AchievementFrameSummary:IsShown() and prdbA.style == 2 then
 		self:SecureHookScript(AchievementFrameSummary, "OnShow", function()
 			cleanButtons(AchievementFrameSummaryAchievements, "Summary")
 			self:Unhook(AchievementFrameSummary, "OnShow")
@@ -781,10 +789,10 @@ function Skinner:AchievementUI() -- LoD
 		skinSB("AchievementFrameComparisonSummary"..type.."StatusBar", "Title")
 	end
 	-- remove textures etc from buttons
-	if not AchievementFrameComparison:IsShown() then
+	if not AchievementFrameComparison:IsShown() and prdbA.style == 2 then
 		self:SecureHookScript(AchievementFrameComparison, "OnShow", function()
 			cleanButtons(AchievementFrameComparisonContainer, "Comparison")
-			self:Unhook("AchievementFrameSummary_OnShow")
+			self:Unhook(AchievementFrameSummary, "OnShow")
 		end)
 	else
 		cleanButtons(AchievementFrameComparisonContainer, "Comparison")

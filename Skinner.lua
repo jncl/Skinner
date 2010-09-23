@@ -156,7 +156,8 @@ function Skinner:OnInitialize()
 
 	-- these are used to disable frames from being skinned, LoD frames are entered here
 	-- other frames are added when their code is loaded
-	self.charKeys1 = {"AchievementUI", "GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI"} -- LoD frames
+	self.charKeys1 = {"GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI"} -- LoD frames
+	self.charKeys2 = {"AchievementUI"}
 	if self.isBeta then
 		self:add2Table(self.charKeys1, "ArchaeologyUI")
 	end
