@@ -15,32 +15,33 @@ Legend:
 
 	I	UI Buttons, requested by TaliaMokani/Kerecha, 23.08.10/08.09.10
 		- In any window with container slots or item icons (looting, mail, character pane, talent pane, tradeskills, bags...), the containers aren't skinned. This is also true for the Action Buttons etc.
-		- Try creating a ButttonFacade skin a la Tukui and prompting users to use BF instead
+		- Use ButtonFacade
+
+√	I	AchievementUI, reported by Alcotraz, 21.09.10
+		- add an option to revert to the default Achievement textures
 
 BETA changes
 ±±±±±±±±±±±±
 
-	N.B DON'T forget the Localisation changes!
-
 	N	Cataclysm Beta
 √		- TOC Interface is 40000
 		- New Blizzard AddOns:
-√¶			- ArchaeologyUI
-√¶			- ReforgingUI (NPC)
-≈¶			- CompactRaidFrames (in UnitFrames.lua)
+√			- ArchaeologyUI
+√			- ReforgingUI (NPC)
+≈			- CompactRaidFrames (in UnitFrames.lua)
 				- CompactRaidFrameContainer
 				- CompactRaidFrameManager
 					- RolePoll
 ≈				- CompactRaidGroup
 ≈					- CompactUnitFrame
 ≈					- CompactPartyFrame
-≈¶			- GuildUI
-≈¶			- GuildControlUI
+√			- GuildUI
+√			- GuildControlUI
 		- New Frames:
-√¶			- LevelUpDisplay
-√¶			- CinematicFrame (CloseDialog)
-√¶			- Spell fly-out UI feature for pet/portal classes
-√¶			- GuildInvite
+√			- LevelUpDisplay
+√			- CinematicFrame (CloseDialog)
+√			- Spell fly-out UI feature for pet/portal classes
+√			- GuildInvite
 √			- PaladinPowerBar
 √			- ShardBar
 			- EclipseBarFrame
@@ -71,6 +72,7 @@ x			- Loot, now shows quest item texture
 √				- Talents
 √				- Pet Talents
 √				- Glyphs
+					- need to replace Glyph Ring textures
 √			- TradeSkillUI
 √			- TrainerUI
 √			- PVP Banner Frame
@@ -85,9 +87,10 @@ x				- Focus
 x				- Party
 x				- PartyPet
 √			- VehicleMenuBar, Exp Bar now shown
-x			- Watch
+√			- Watch
+√				- AutoPopup(s)
 √			- Shapeshift Buttons (regions changed)
-≈			- MainMenu Bar
+√			- MainMenu Bar
 √				- Exp bar rested tick shows
 √				- Bar not high enough
 √			- Options
@@ -100,11 +103,5 @@ x			- Watch
 √					- noTeams
 √					- invalidTeam
 √					- lowLevelFrame
-x		- New layer option - textureSubLevel
-
-	O	AchievementFrame
-√		- remove button textures
-
-√	S	POM Assist, requested by skyggesang, 15.09.10
-
-√	S	FPSideBar, requested by mkcorp, 18.09.10
+√			- Magic Button textures
+?		- New layer option - textureSubLevel
