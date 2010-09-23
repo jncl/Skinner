@@ -3,15 +3,20 @@ local aName, Skinner = ...
 function Skinner:Defaults()
 
 	local defaults = { profile = {
-		-- Colours
-		TooltipBorder	= {r = 0.5, g = 0.5, b = 0.5, a = 1},
-		BackdropBorder	= {r = 0.5, g = 0.5, b = 0.5, a = 1},
-		Backdrop		= {r = 0, g = 0, b = 0, a = 0.9},
-		HeadText		= {r = 0.8, g = 0.8, b = 0.0},
-		BodyText		= {r = 0.7, g = 0.7, b = 0.0},
-		GradientMin		= {r = 0.1, g = 0.1, b = 0.1, a = 0},
-		GradientMax		= {r = 0.25, g = 0.25, b = 0.25, a = 1},
-		-- Backdrop Settings
+	-->>-- General
+		Warnings		= true,
+		Errors			= true,
+		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
+		DropDowns       = true,
+		-- Tab and DropDown Texture settings
+		TexturedTab		= false,
+		TexturedDD		= false,
+		TabDDFile		= "None",
+		TabDDTexture	= "Skinner Inactive Tab",
+		Delay			= {Init = 0.5, Addons = 0.5, LoDs = 0.5},
+		FadeHeight		= {enable = false, value = 500, force = false},
+		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
+	-->>-- Backdrop Settings
 		BdDefault		= true,
 		BdFile			= "None",
 		BdTexture		= "Blizzard ChatFrame Background",
@@ -20,24 +25,38 @@ function Skinner:Defaults()
 		BdBorderTexture = "Blizzard Tooltip",
 		BdEdgeSize		= 16,
 		BdInset			= 4,
-		-- Background Texture settings
+	-->>-- Background Texture settings
 		BgUseTex        = false,
 		BgFile          = "None",
 		BgTexture       = "None",
 		BgTile          = false,
-		-- Tab and DropDown Texture settings
-		TexturedTab		= false,
-		TexturedDD		= false,
-		TabDDFile		= "None",
-		TabDDTexture	= "Skinner Inactive Tab",
-		-- Other
-		Warnings		= true,
-		Errors			= true,
+	-->>-- Colours
+		TooltipBorder	= {r = 0.5, g = 0.5, b = 0.5, a = 1},
+		BackdropBorder	= {r = 0.5, g = 0.5, b = 0.5, a = 1},
+		Backdrop		= {r = 0, g = 0, b = 0, a = 0.9},
+		HeadText		= {r = 0.8, g = 0.8, b = 0.0},
+		BodyText		= {r = 0.7, g = 0.7, b = 0.0},
+		GradientMin		= {r = 0.1, g = 0.1, b = 0.1, a = 0},
+		GradientMax		= {r = 0.25, g = 0.25, b = 0.25, a = 1},
+	-->>-- Gradient
 		Gradient		= {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Blizzard ChatFrame Background"},
-		FadeHeight		= {enable = false, value = 500, force = false},
-		Delay			= {Init = 0.5, Addons = 0.5, LoDs = 0.5},
-		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
-		-- Character Frames
+	-->>-- Modules
+		-- populated below
+	-->>-- NPC Frames
+		MerchantFrames  = true,
+		GossipFrame     = true,
+		TrainerUI	    = true,
+		TaxiFrame       = true,
+		QuestFrame      = true,
+		Battlefields    = true,
+		ArenaFrame      = true,
+		ArenaRegistrar  = true,
+		GuildRegistrar  = true,
+		Petition        = true,
+		Tabard          = true,
+		BarbershopUI	= true,
+		ReforgingUI		= self.isBeta and true or nil,
+	-->>-- Player Frames
 		CharacterFrames = true,
 		PVPFrame  		= true,
 		PetStableFrame  = true,
@@ -59,7 +78,7 @@ function Skinner:Defaults()
 		ArchaeologyUI	= self.isBeta and true or nil,
 		GuildUI			= self.isBeta and true or nil,
 		GuildControlUI	= self.isBeta and true or nil,
-		-- UI Frames
+	-->>-- UI Frames
 		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers    = {skin = true, glaze = true},
 		CastingBar      = {skin = true, glaze = true},
@@ -86,7 +105,6 @@ function Skinner:Defaults()
 		BattlefieldMm   = true,
 		ScriptErrors	= true,
 		DebugTools		= true,
-		DropDowns       = true,
 		MinimapButtons  = false,
 		MinimapGloss    = false,
 		MinimalMMBtns	= false,
@@ -110,24 +128,10 @@ function Skinner:Defaults()
 		LevelUpDisplay	= self.isBeta and true or nil,
 		SpellFlyout		= self.isBeta and true or nil,
 		GuildInvite		= self.isBeta and true or nil,
-		-- NPC Frames
-		MerchantFrames  = true,
-		GossipFrame     = true,
-		TrainerUI	    = true,
-		TaxiFrame       = true,
-		QuestFrame      = true,
-		Battlefields    = true,
-		ArenaFrame      = true,
-		ArenaRegistrar  = true,
-		GuildRegistrar  = true,
-		Petition        = true,
-		Tabard          = true,
-		BarbershopUI	= true,
-		ReforgingUI		= self.isBeta and true or nil,
-		-- DBIcon settings
-		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
-		-- disabled skins table
+	-->>-- Disabled Skins
 		DisabledSkins	= {},
+	-->-- Profiles
+		-- populated below
 
 	}}
 
@@ -234,7 +238,6 @@ function Skinner:Options()
 					order = 21,
 					inline = true,
 					name = self.L["Skinning Delays"],
-					desc = self.L["Change the Skinning Delays settings"],
 					get = function(info) return db.Delay[info[#info]] end,
 					set = function(info, value) db.Delay[info[#info]] = value end,
 					args = {
@@ -266,7 +269,6 @@ function Skinner:Options()
 					order = 22,
 					inline = true,
 					name = self.L["Fade Height"],
-					desc = self.L["Change the Fade Height settings"],
 					get = function(info) return db.FadeHeight[info[#info]] end,
 					set = function(info, value) db.FadeHeight[info[#info]] = value end,
 					args = {
@@ -296,7 +298,6 @@ function Skinner:Options()
 					order = 23,
 					inline = true,
 					name = self.L["StatusBar"],
-					desc = self.L["Change the StatusBar settings"],
 					args = {
 						texture = AceGUIWidgetLSMlists and {
 							type = "select",
@@ -911,7 +912,6 @@ function Skinner:Options()
 					inline = true,
 					order = -1,
 					name = self.L["Tooltips"],
-					desc = self.L["Change the Tooltip settings"],
 					get = function(info) return db.Tooltips[info[#info]] end,
 					set = function(info, value) db.Tooltips[info[#info]] = value end,
 					args = {
@@ -934,7 +934,6 @@ function Skinner:Options()
 							name = self.L["Tooltips Style"],
 							desc = self.L["Set the Tooltips style (Rounded, Flat, Custom)"],
 							min = 1, max = 3, step = 1,
-							set = function(info, value) db.Tooltips.style = value end,
 						},
 						border = {
 							type = "range",
@@ -950,7 +949,6 @@ function Skinner:Options()
 					inline = true,
 					order = -2,
 					name = self.L["Timer Frames"],
-					desc = self.L["Change the Timer Settings"],
 					get = function(info) return db.MirrorTimers[info[#info]] end,
 					set = function(info, value)
 						db.MirrorTimers[info[#info]] = value
@@ -976,7 +974,6 @@ function Skinner:Options()
 					inline = true,
 					order = -10,
 					name = self.L["Casting Bar Frame"],
-					desc = self.L["Change the Casting Bar Settings"],
 					get = function(info) return db.CastingBar[info[#info]] end,
 					set = function(info, value)
 						db.CastingBar[info[#info]] = value
@@ -1007,7 +1004,6 @@ function Skinner:Options()
 					inline = true,
 					order = -8,
 					name = self.L["Chat Sub Frames"],
-					desc = self.L["Change the Chat Sub Frames"],
 					args = {
 						ChatMenus = {
 							type = "toggle",
@@ -1046,7 +1042,6 @@ function Skinner:Options()
 					inline = true,
 					order = -9,
 					name = self.L["Chat Edit Box"],
-					desc = self.L["Change the Chat Edit Box settings"],
 					get = function(info) return db.ChatEditBox[info[#info]] end,
 					set = function(info, value)
 						db.ChatEditBox[info[#info]] = value
@@ -1078,7 +1073,6 @@ function Skinner:Options()
 					inline = true,
 					order = -6,
 					name = self.L["Group Loot Frame"],
-					desc = self.L["Change the GroupLoot settings"],
 					get = function(info) return db.GroupLoot[info[#info]] end,
 					set = function(info, value)
 						db.GroupLoot[info[#info]] = value
@@ -1105,7 +1099,6 @@ function Skinner:Options()
 					inline = true,
 					order = -7,
 					name = self.L["Container Frames"],
-					desc = self.L["Change the Container Frames settings"],
 					get = function(info) return db.ContainerFrames[info[#info]] end,
 					set = function(info, value)
 						db.ContainerFrames[info[#info]] = value
@@ -1143,12 +1136,10 @@ function Skinner:Options()
 					desc = self.L["Toggle the skin of the Color Picker Frame"],
 				},
 				WorldMap = {
-					type = "toggle",
 					type = "group",
 					inline = true,
 					order = -1,
 					name = self.L["World Map Frame"],
-					desc = self.L["Change the World Map settings"],
 					get = function(info) return db.WorldMap[info[#info]] end,
 					set = function(info, value)
 						db.WorldMap[info[#info]] = value
@@ -1175,7 +1166,6 @@ function Skinner:Options()
 					inline = true,
 					order = -5,
 					name = self.L["Help Request Frames"],
-					desc = self.L["Change the Help Request Frames"],
 					args = {
 						HelpFrame = {
 							type = "toggle",
@@ -1229,7 +1219,6 @@ function Skinner:Options()
 					inline = true,
 					order = -3,
 					name = self.L["Minimap Options"],
-					desc = self.L["Change the Minimap Options"],
 					args = {
 						MinimapButtons = {
 							type = "toggle",
@@ -1294,7 +1283,6 @@ function Skinner:Options()
 					inline = true,
 					order = -4,
 					name = self.L["Main Menu Bar"],
-					desc = self.L["Change the Main Menu Bar Frame Settings"],
 					get = function(info) return db.MainMenuBar[info[#info]] end,
 					set = function(info, value)
 						db.MainMenuBar[info[#info]] = value

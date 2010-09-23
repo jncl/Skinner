@@ -1,33 +1,35 @@
 local aName, Skinner = ...
 local _G = _G
 
--- check to see if required libraries are loaded
-assert(LibStub, aName.." requires LibStub")
-for _, lib in pairs{"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0",} do
-	assert(LibStub:GetLibrary(lib, true), aName.." requires "..lib)
+do
+	-- check to see if required libraries are loaded
+	assert(LibStub, aName.." requires LibStub")
+	for _, lib in pairs{"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0",} do
+		assert(LibStub:GetLibrary(lib, true), aName.." requires "..lib)
+	end
+
+	-- create the addon
+	_G[aName] = LibStub("AceAddon-3.0"):NewAddon(Skinner, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+
+	-- specify where debug messages go
+	Skinner.debugFrame = ChatFrame10
+
+	-- Get Locale
+	Skinner.L = LibStub("AceLocale-3.0"):GetLocale(aName)
+
+	-- pointer to LibSharedMedia-3.0 library
+	Skinner.LSM = LibStub("LibSharedMedia-3.0")
+
+	-- player class
+	Skinner.uCls = select(2, UnitClass("player"))
+
+	--check to see if running on PTR
+	Skinner.isPTR = FeedbackUI and true or false
+	--check to see if running on patch 0.3.5
+	--Skinner.isPatch = BATTLENET_FRIEND and true or false
+	-- check to see if running on Beta
+	Skinner.isBeta = EXPANSION_NAME3 and true or false
 end
-
--- create the addon
-_G[aName] = LibStub("AceAddon-3.0"):NewAddon(Skinner, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
-
--- specify where debug messages go
-Skinner.debugFrame = ChatFrame7
-
--- Get Locale
-Skinner.L = LibStub("AceLocale-3.0"):GetLocale(aName)
-
--- pointer to LibSharedMedia-3.0 library
-Skinner.LSM = LibStub("LibSharedMedia-3.0")
-
--- player class
-Skinner.uCls = select(2, UnitClass("player"))
-
---check to see if running on PTR
-Skinner.isPTR = FeedbackUI and true or false
---check to see if running on patch 0.3.5
---Skinner.isPatch = BATTLENET_FRIEND and true or false
--- check to see if running on Beta
-Skinner.isBeta = EXPANSION_NAME3 and true or false
 
 local prdb
 function Skinner:OnInitialize()

@@ -583,7 +583,6 @@ function Skinner:MainMenuBar()
 		if not self.isBeta then
 			self:removeRegions(ssBtn, {6, 7, 8}) -- remove textures
 		else
---			self:removeRegions(ssBtn, {3, 4}) -- remove flyout textures
 			ssBtn:GetNormalTexture():SetAlpha(0)
 		end
 		self:addSkinButton{obj=ssBtn, parent=ssBtn}
