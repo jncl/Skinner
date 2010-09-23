@@ -53,7 +53,7 @@ function Skinner:Defaults()
 		Buffs           = true,
 		AchievementUI	= {skin = true, style = 2},
 		VehicleMenuBar	= true,
-		WatchFrame		= false,
+		WatchFrame		= self.isBeta and {skin = false, popups = true} or false,
 		GearManager		= true,
 		AlertFrames		= true,
 		ArchaeologyUI	= self.isBeta and true or nil,
@@ -328,16 +328,6 @@ function Skinner:Options()
 							end,
 						},
 					},
-				},
-				WatchFrame = {
-					type = "toggle",
-					order = 8,
-					name = self.L["Watch Frame"],
-					desc = self.L["Toggle the skin of the Watch Frame"],
-					set = function(info, value)
-						db[info[#info]] = value
-						self:checkAndRun(info[#info])
-					end,
 				},
 			},
 		},
@@ -831,6 +821,30 @@ function Skinner:Options()
 					type = "toggle",
 					name = self.L["Gear Manager Frame"],
 					desc = self.L["Toggle the skin of the Gear Manager Frame"],
+				},
+				WatchFrame = self.isBeta and {
+					type = "group",
+					order = -1,
+					inline = true,
+					name = self.L["Tracker Frame"],
+					get = function(info) return db.WatchFrame[info[#info]] end,
+					set = function(info, value) db.WatchFrame[info[#info]] = value end,
+					args = {
+						skin = {
+							type = "toggle",
+							name = self.L["Tracker Frame Skin"],
+							desc = self.L["Toggle the skin of the Tracker Frame"],
+						},
+						popups = {
+							type = "toggle",
+							name = self.L["AutoPopUps Skin"],
+							desc = self.L["Toggle the skin of the AutoPopUps"],
+						},
+					},
+				} or {
+					type = "toggle",
+					name = self.L["Tracker Frame"],
+					desc = self.L["Toggle the skin of the Tracker Frame"],
 				},
 				ArchaeologyUI = self.isBeta and {
 					type = "toggle",

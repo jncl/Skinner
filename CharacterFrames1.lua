@@ -240,13 +240,24 @@ function Skinner:PVPFrame()
 		self:glazeStatusBar(PVPFrameConquestBar, 0,  PVPFrameConquestBarBG)
 		PVPFrameConquestBarBorder:Hide()
         self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
+		-- Magic Button textures
+		for _, v in pairs{"Left", "Right"} do
+			local btn = "PVPFrame"..v.."Button"
+			if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+			if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
+		end
 	-->>-- Honor frame
 		self:keepFontStrings(PVPFrame.panel1)
 		self:skinScrollBar{obj=PVPFrame.panel1.bgTypeScrollFrame}
+		self:skinSlider{obj=PVPHonorFrameInfoScrollFrameScrollBar}
 		PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 		PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
 		PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
 		PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
+		-- Magic Button textures
+		local btn = "PVPHonorFrameWarGameButton"
+		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	-->>-- Conquest frame
 		self:keepFontStrings(PVPFrame.panel2)
 		PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
@@ -265,6 +276,7 @@ function Skinner:PVPFrame()
 		self:addSkinFrame{obj=PVPFrame.panel3.noTeams, ft=ftype, kfs=true}
 		self:addSkinFrame{obj=PVPFrame.panel3.invalidTeam, ft=ftype, kfs=true}
 		self:addSkinFrame{obj=PVPFrame.lowLevelFrame, ft=ftype, kfs=true}
+
     -->>-- Tabs
     	for i = 1, PVPFrame.numTabs do
     		local tabName = _G["PVPFrameTab"..i]
@@ -368,6 +380,9 @@ function Skinner:SpellBookFrame()
 		for i = 1, 2 do
 			local prof = "PrimaryProfession"..i
 			_G[prof.."IconBorder"]:Hide()
+			if not _G[prof].missingHeader:IsShown() then
+				_G[prof].icon:SetDesaturated(nil) -- show in colour
+			end
 			_G[prof].missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 			_G[prof].button1:DisableDrawLayer("BACKGROUND")
 			_G[prof].button1.subSpellString:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -395,7 +410,6 @@ function Skinner:SpellBookFrame()
 			btn.Background:Hide()
 			btn.TextBackground:Hide()
 			btn.IconTextureBg:Hide()
-			self:addSkinButton{obj=btn, parent=btn}
 		end
 	end
 	-- colour the spell name text
@@ -496,7 +510,7 @@ function Skinner:TalentUI() -- LoD
 
 	else
 		self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
-	-->>-- Talents Panel
+	-->>-- Talents Frame
 		for i = 1, 3 do
 			local panel = _G["PlayerTalentFramePanel"..i]
 			-- Summary panel(s)
@@ -514,6 +528,12 @@ function Skinner:TalentUI() -- LoD
 			panel.HeaderIcon.PointsSpentBgGold:SetAlpha(0)
 			panel.HeaderIcon.PointsSpentBgSilver:SetAlpha(0)
 			self:moveObject{obj=panel.HeaderIcon.PointsSpent, x=8}
+		end
+		-- Magic Button textures
+		for _, v in pairs{"Reset", "Learn", "ToggleSummaries"} do
+			local btn = "PlayerTalentFrame"..v.."Button"
+			if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+			if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 		end
 	-->>-- Pet Talents Panel
 		PlayerTalentFramePetModelBg:Hide()
@@ -639,10 +659,10 @@ function Skinner:AchievementUI() -- LoD
 
 		-- remove textures etc from buttons
 		for i = 1, #frame.buttons do
-			btnObj = frame.buttons[i]
-			btnName = btnObj:GetName()
-			btnObj = type == "Comparison" and _G[btnName.."Player"] or btnObj
+			btnName = frame.buttons[i]:GetName()..(type == "Comparison" and "Player" or "")
+			btnObj = _G[btnName]
 			btnObj:DisableDrawLayer("BACKGROUND")
+			-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
 			btnObj:DisableDrawLayer("ARTWORK")
 			btnObj.icon:DisableDrawLayer("BACKGROUND")
 			btnObj.icon:DisableDrawLayer("BORDER")
@@ -652,8 +672,11 @@ function Skinner:AchievementUI() -- LoD
 				this.description:SetTextColor(self.BTr, self.BTg, self.BTb)
 			end)
 			if type == "Achievements" then
-				_G[btnName.."TopTsunami1"]:SetAlpha(0)
-				_G[btnName.."BottomTsunami1"]:SetAlpha(0)
+				-- set textures to nil and prevent them from being changed as guildview changes the textures
+				_G[btnName.."TopTsunami1"]:SetTexture(nil)
+				_G[btnName.."TopTsunami1"].SetTexture = function() end
+				_G[btnName.."BottomTsunami1"]:SetTexture(nil)
+				_G[btnName.."BottomTsunami1"].SetTexture = function() end
 				btnObj.hiddenDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 			elseif type == "Summary" then
 				if not btnObj.tooltipTitle then btnObj:Saturate() end
@@ -661,7 +684,7 @@ function Skinner:AchievementUI() -- LoD
 				-- force update to colour the button
 				if btnObj.completed then btnObj:Saturate() end
 				-- Friend
-				btnObj = _G[btnName.."Friend"]
+				btnObj = _G[btnName:gsub("Player", "Friend")]
 				btnObj:DisableDrawLayer("BACKGROUND")
 				btnObj:DisableDrawLayer("ARTWORK")
 				btnObj.icon:DisableDrawLayer("BACKGROUND")
@@ -737,7 +760,7 @@ function Skinner:AchievementUI() -- LoD
 	self:skinSlider(AchievementFrameStatsContainerScrollBar)
 	AchievementFrameStatsBG:SetAlpha(0)
 	self:getChild(AchievementFrameStats, 3):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
-
+	-- hook this to skin buttons
 	self:SecureHook("AchievementFrameStats_Update", function()
 		skinStats()
 	end)

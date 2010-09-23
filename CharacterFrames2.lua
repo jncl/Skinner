@@ -212,6 +212,12 @@ function Skinner:TradeSkillUI() -- LoD
 		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 	else
 		self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=-4}
+		-- Magic Button textures
+		for _, v in pairs{"CreateAll", "Cancel", "Create", "ViewGuildCrafters"} do
+			local btn = "TradeSkill"..v.."Button"
+			if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+			if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
+		end
 		self:addSkinFrame{obj=TradeSkillGuildFrameContainer, ft=ftype}
 		self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, x1=7, y1=-7, x2=-7, y2=7}
 	end
@@ -274,6 +280,12 @@ function Skinner:QuestLog()
 	self:skinScrollBar{obj=QuestLogScrollFrame}
 	self:skinAllButtons{obj=QuestLogControlPanel} -- Abandon/Push/Track
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
+	if self.isBeta then
+		-- Magic Button textures
+		local btn = "QuestLogFrameCompleteButton"
+		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
+	end
 
 -->>-- QuestLogDetail Frame
 	QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -465,12 +477,59 @@ function Skinner:VehicleMenuBar()
 end
 
 function Skinner:WatchFrame()
-	if not self.db.profile.WatchFrame or self.initialized.WatchFrame then return end
+	if not self.isBeta then
+		if not self.db.profile.WatchFrame or self.initialized.WatchFrame then return end
+	else
+		if not self.db.profile.WatchFrame.skin
+		and not self.db.profile.WatchFrame.popups
+		or self.initialized.WatchFrame then return end
+	end
 	self.initialized.WatchFrame = true
 
 	self:add2Table(self.charKeys1, "WatchFrame")
 
-	self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-10, y1=4, x2=10}
+	if self.isBeta then
+		if self.db.profile.WatchFrame.skin then
+			self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-30, y1=4, x2=10}
+			-- hook this to handle displaying of the WatchFrameLines skin frame
+			self:SecureHook("WatchFrame_Update", function(this)
+				if not WatchFrameHeader:IsShown() then
+					self.skinFrame[WatchFrameLines]:Hide()
+				else
+					self.skinFrame[WatchFrameLines]:Show()
+				end
+			end)
+		end
+		if self.db.profile.WatchFrame.popups then
+			local function skinAutoPopUps()
+				for i = 1, GetNumAutoQuestPopUps() do
+					local frame = _G["WatchFrameAutoQuestPopUp"..i.."ScrollChild"]
+					if not Skinner.skinned[frame] then
+						for key, reg in ipairs{frame:GetRegions()} do
+							if key < 11 or key == 17 then reg:SetTexture(nil) end -- Animated textures
+						end
+						Skinner:applySkin{obj=frame}
+					end
+				end
+			end
+			WatchFrameLines.AutoQuestShadow:SetTexture(nil) -- Animated texture
+			-- hook this to skin the AutoPopUps
+			self:SecureHook("WatchFrameAutoQuest_GetOrCreateFrame", function(parent, index)
+				skinAutoPopUps()
+			end)
+			skinAutoPopUps()
+		end
+	else
+		self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-30, y1=4, x2=10}
+		-- hook this to handle displaying of the WatchFrameLines skin frame
+		self:SecureHook("WatchFrame_Update", function(this)
+			if not WatchFrameHeader:IsShown() then
+				self.skinFrame[WatchFrameLines]:Hide()
+			else
+				self.skinFrame[WatchFrameLines]:Show()
+			end
+		end)
+	end
 
 end
 
@@ -482,7 +541,14 @@ function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 
 	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=2}
 	for i = 1, MAX_EQUIPMENT_SETS_PER_PLAYER do
-		self:getRegion(_G["GearSetButton"..i], 2):SetTexture(self.esTex)
+		local btn = _G["GearSetButton"..i]
+		if not self.db.profile.ItemButtons then
+			self:getRegion(btn, 2):SetTexture(self.esTex)
+		else
+			-- skin Item Buttons if required
+			btn:DisableDrawLayer("BACKGROUND")
+			self:addSkinButton{obj=btn, parent=btn}
+		end
 	end
 -->>-- Popup frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
@@ -500,7 +566,7 @@ if Skinner.isBeta then
 		self:skinDropDown{obj=ArchaeologyFrame.raceFilterDropDown}
 		self:glazeStatusBar(ArchaeologyFrame.rankBar, 0,  ArchaeologyFrameRankBarBackground)
 		ArchaeologyFrameRankBarBorder:Hide()
-		self:addSkinFrame{obj=ArchaeologyFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+		self:addSkinFrame{obj=ArchaeologyFrame, ft=ftype, kfs=true, ri=true, x1=30, y1=2, x2=1}
 	-->>-- Summary Page
 		self:keepFontStrings(ArchaeologyFrame.summaryPage) -- remove title textures
 		ArchaeologyFrameSummaryPageTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -521,15 +587,21 @@ if Skinner.isBeta then
 			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Bg"]:Hide()
 		end
 	-->>-- Artifact Page
-		self:removeRegions(ArchaeologyFrame.artifactPage, {3, 4}) -- title textures
+		self:removeRegions(ArchaeologyFrame.artifactPage, {2, 3}) -- title textures
 		ArchaeologyFrame.artifactPage:DisableDrawLayer("BACKGROUND")
 		ArchaeologyFrame.artifactPage:DisableDrawLayer("BORDER")
 		ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		ArchaeologyFrame.artifactPage.historyText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ArchaeologyFrame.artifactPage.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- Solve Frame
 		ArchaeologyFrameArtifactPageSolveFrameStatusBarBarBG:Hide()
 		self:glazeStatusBar(ArchaeologyFrame.artifactPage.solveFrame.statusBar, 0,  nil)
 		ArchaeologyFrame.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
+	-->>-- Help Page
+		self:removeRegions(ArchaeologyFrame.helpPage, {2, 3}) -- title textures
+		ArchaeologyFrame.helpPage.titleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		ArchaeologyFrameHelpPageDigTex:SetTexCoord(0.05, 0.885, 0.055, 0.9) -- remove texture surrounds
+		ArchaeologyFrameHelpPageDigTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+		ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 	end
 
@@ -540,20 +612,23 @@ if Skinner.isBeta then
 		GuildFrameBottomInset:DisableDrawLayer("BORDER")
 		self:skinDropDown{obj=GuildDropDown}
 		GuildLevelFrame:DisableDrawLayer("BACKGROUND")
-		--[=[
-			TODO XPBar not using sb texture/ background
-		--]=]
+		-- XP Bar
 		GuildXPBar:DisableDrawLayer("BORDER")
 		GuildXPBarProgress:SetTexture(self.sbTexture)
 		GuildXPBarShadow:SetAlpha(0)
 		GuildXPBarCap:SetTexture(self.sbTexture)
-		--[=[
-			TODO faction bar not using statusbar texture
-		--]=]
+		GuildXPBarCapMarker:SetAlpha(0)
+		-- Faction Bar
 		self:glazeStatusBar(GuildFactionBar, 0, GuildFactionBarBG)
 		GuildFactionBarLeft:SetAlpha(0)
 		GuildFactionBarRight:SetAlpha(0)
 		GuildFactionBarMiddle:SetAlpha(0)
+		-- Magic Button textures
+		for _, v in pairs{"AddMember", "Control", "ViewLog"} do
+			local btn = "Guild"..v.."Button"
+			if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+			if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
+		end
 		-- GuildMain Frame
 		GuildPerksToggleButton:DisableDrawLayer("BACKGROUND")
 		GuildNewPerksFrame:DisableDrawLayer("BACKGROUND")
@@ -565,11 +640,8 @@ if Skinner.isBeta then
 		GuildAllPerksFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=GuildPerksContainerScrollBar, size=2}
 		for i = 1, #GuildPerksContainer.buttons do
-			--[=[
-				TODO textures reappear when scrolling
-			--]=]
-			GuildPerksContainer.buttons[i]:DisableDrawLayer("BACKGROUND")
-			GuildPerksContainer.buttons[i]:DisableDrawLayer("BORDER")
+			-- can't use DisableDrawLayer as the update code uses it
+			self:removeRegions(GuildPerksContainer.buttons[i], {1, 2, 3, 4, 5, 6})
 		end
 		self:addSkinFrame{obj=GuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 		-- Roster Panel
@@ -579,13 +651,12 @@ if Skinner.isBeta then
 		for i = 1, #GuildRosterContainer.buttons do
 			GuildRosterContainer.buttons[i]:DisableDrawLayer("BACKGROUND")
 			GuildRosterContainer.buttons[i].barTexture:SetTexture(self.sbTexture)
-			--[=[
-				TODO handle header lines, when textures removed other text is revealed
-			--]=]
---			GuildRosterContainer.buttons[i].header:DisableDrawLayer("BORDER")
---			GuildRosterContainer.buttons[i].header:DisableDrawLayer("BACKGROUND")
+			GuildRosterContainer.buttons[i].header.leftEdge:SetAlpha(0)
+			GuildRosterContainer.buttons[i].header.rightEdge:SetAlpha(0)
+			GuildRosterContainer.buttons[i].header.middle:SetAlpha(0)
+			self:applySkin{obj=GuildRosterContainer.buttons[i].header}
 		end
-		self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true}--, x1=10, y1=-12, x2=-32, y2=71}
+		self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, x1=6, y1=-6, x2=-6, y2=6}
 		-- News Panel
 		GuildNewsFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=GuildNewsContainerScrollBar, size=2}
@@ -600,6 +671,7 @@ if Skinner.isBeta then
 		self:skinSlider{obj=GuildRewardsContainerScrollBar, size=2}
 		for i = 1, #GuildRewardsContainer.buttons do
 			GuildRewardsContainer.buttons[i]:GetNormalTexture():SetAlpha(0)
+			GuildRewardsContainer.buttons[i].disabledBG:SetAlpha(0)
 		end
 		self:skinDropDown{obj=GuildRewardsDropDown}
 		-- Info Panel
@@ -608,16 +680,10 @@ if Skinner.isBeta then
 		GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
 		self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, size=2}
 		-- Guild Text Edit frame
-		--[=[
-			TODO close button is too large
-		--]=]
 		self:skinSlider{obj=GuildTextEditScrollFrameScrollBar, size=2}
 		self:addSkinFrame{obj=GuildTextEditContainer, ft=ftype, nb=true}
 		self:addSkinFrame{obj=GuildTextEditFrame, ft=ftype, kfs=true, nb=true, x1=7, y1=-7, x2=-7, y2=7}
 		-- Guild Log Frame
-		--[=[
-			TODO close button is too large
-		--]=]
 		self:skinSlider{obj=GuildLogScrollFrameScrollBar, size=2}
 		self:addSkinFrame{obj=GuildLogContainer, ft=ftype, nb=true}
 		self:addSkinFrame{obj=GuildLogFrame, ft=ftype, kfs=true, nb=true, x1=7, y1=-7, x2=-7, y2=7}

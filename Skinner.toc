@@ -62,11 +62,11 @@ AddonFrames.lua
 CharacterFrames1.lua
 #
 # CharacterFrames2
-# inc. Social (inc. Friends, Who, Guild, Chat, Raid), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs, VehicleMenuBar, Watch (Quests & Achievements), GearManager
+# inc. Social (inc. Friends, Who, Guild, Chat, Raid), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs, VehicleMenuBar, Watch (Quests & Achievements), GearManager, ArchaeologyUI, GuildUI, GuildControlUI
 CharacterFrames2.lua
 #
 # NPCFrames
-# inc. Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI
+# inc. Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI, ReforgingUI
 NPCFrames.lua
 #
 # UIElements1
@@ -74,7 +74,7 @@ NPCFrames.lua
 UIElements1.lua
 #
 # UIElements2
-# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools, LFDFrame, LFRFrame, BNFrames
+# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools, LFDFrame, LFRFrame, BNFrames, CinematicFrame, LevelUpDisplay, SpellFlyout, GuildInvite
 UIElements2.lua
 #
 # Modules
