@@ -264,10 +264,10 @@ function Skinner:MenuFrames()
 -->>-- Interface
 	self:addSkinFrame{obj=InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
-	self:skinScrollBar{obj=InterfaceOptionsFrameCategoriesList}
+	self:skinScrollBar{obj=InterfaceOptionsFrameCategoriesList, size=2}
 	self:addSkinFrame{obj=InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
 	InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)
-	self:skinSlider(InterfaceOptionsFrameAddOnsListScrollBar)
+	self:skinScrollBar{obj=InterfaceOptionsFrameAddOnsList, size=2}
 	self:addSkinFrame{obj=InterfaceOptionsFrameAddOns, ft=ftype, kfs=true}
 	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ft=ftype}
 	-- skin toggle buttons
