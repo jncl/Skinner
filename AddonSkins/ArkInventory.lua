@@ -32,10 +32,6 @@ function Skinner:ArkInventory()
 -->>-- GuildBank Log Frame
 	self:applySkin{obj=ARKINV_Frame4Log}
 
-end
-
-function Skinner:ArkInventoryRules()
-
 -->>--	Rules Frame
 	ArkInventory.db.profile.option.ui.rules.border.colour = CopyTable(self.db.profile.BackdropBorder)
 	self:addSkinFrame{obj=ARKINV_RulesTitle}
