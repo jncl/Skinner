@@ -1,7 +1,8 @@
 -- This is a Library
 
 function Skinner:LibExtraTip()
-	if not self.db.profile.Tooltips.skin then return end
+	if not self.db.profile.Tooltips.skin or self.initialized.LibExtraTip then return end
+	self.initialized.LibExtraTip = true
 	
 	local lib = LibStub("LibExtraTip-1")
 	

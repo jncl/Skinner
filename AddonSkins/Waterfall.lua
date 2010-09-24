@@ -1,6 +1,8 @@
 -- This is a Library
 
 function Skinner:Waterfall()
+	if self.initialized.Waterfall then return end
+	self.initialized.Waterfall = true
 
 	local function skinControls(frame)
 

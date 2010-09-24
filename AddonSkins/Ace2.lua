@@ -1,6 +1,8 @@
 -- This is a Framework
 
 function Skinner:Ace2()
+	if self.initialized.Ace2 then return end
+	self.initialized.Ace2 = true
 
 	if LibStub("AceAddon-2.0").prototype.OpenDonationFrame then
 		-- Skin the AceAddon Donation Frame

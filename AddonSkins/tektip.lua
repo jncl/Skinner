@@ -1,6 +1,8 @@
 -- This is a Library
 
 function Skinner:tektip()
+	if self.initialized.tektip then return end
+	self.initialized.tektip = true
 
 	local lib = LibStub("tektip-1.0")
 	

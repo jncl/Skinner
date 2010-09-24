@@ -1,7 +1,8 @@
 -- This is a Library
 
 function Skinner:Tablet()
-	if not self.db.profile.Tooltips.skin then return end
+	if not self.db.profile.Tooltips.skin or self.initialized.Tablet then return end
+	self.initialized.Tablet = true
 
 	local frame
 	

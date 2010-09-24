@@ -14,6 +14,8 @@ if AceGUI then
 end
 
 function Skinner:Ace3()
+	if self.initialized.Ace3 then return end
+	self.initialized.Ace3 = true
 
 	local bCr, bCg, bCb, bCa = unpack(self.bColour)
 	local bbCr, bbCg, bbCb, bbCa = unpack(self.bbColour)

@@ -1,6 +1,8 @@
 -- This is a Library
 
 function Skinner:Configator()
+	if self.initialized.Configator then return end
+	self.initialized.Configator = true
 
 	-- hook this to skin Slide bars
 	local sblib = LibStub("SlideBar", true)

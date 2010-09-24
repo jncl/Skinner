@@ -1,6 +1,8 @@
 -- This is a Library
 
 function Skinner:LibSimpleOptions()
+	if self.initialized.LibSimpleOptions then return end
+	self.initialized.LibSimpleOptions = true
 
 	local function skinLSOPanel(panel)
 	

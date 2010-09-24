@@ -1,6 +1,8 @@
 -- This is a Library
 
 function Skinner:LibSimpleFrame()
+	if self.initialized.LibSimpleFrame then return end
+	self.initialized.LibSimpleFrame = true
 
 	local lsf = LibStub("LibSimpleFrame-Mod-1.0")
 

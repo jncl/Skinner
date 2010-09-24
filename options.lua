@@ -1417,22 +1417,25 @@ function Skinner:Options()
 	end
 
 	-- add DisabledSkins options
-	local function addDSOpt(name)
+	local function addDSOpt(name, lib)
 		optTables["DisabledSkins"].args[name] = {
 			type = "toggle",
-			name = name,
+			name = name..(lib and " (Lib)" or ""),
 			desc = self.L["Toggle the skinning of "]..name,
 			width = name:len() > 20 and "double" or nil,
 		}
 
 	end
-	for _, addonName in ipairs(self.addonSkins) do
+	for _, addonName in pairs(self.addonSkins) do
 		addDSOpt(addonName)
 	end
-	for _, addonName in ipairs(self.oddlyNamedAddons) do
+	for _, addonName in pairs(self.oddlyNamedAddons) do
 		addDSOpt(addonName)
 	end
-	for _, addonName in ipairs(self.lodAddons) do
+	for _, addonName in pairs(self.libsToSkin) do
+		addDSOpt(addonName, true)
+	end
+	for _, addonName in pairs(self.lodAddons) do
 		addDSOpt(addonName)
 	end
 

@@ -1,6 +1,8 @@
 -- This is a Library
 
 function Skinner:Dewdrop()
+	if self.initialized.Dewdrop then return end
+	self.initialized.Dewdrop = true
 
 	local frame, sf, eb
 

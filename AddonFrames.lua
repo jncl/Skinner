@@ -92,6 +92,19 @@ Skinner.addonSkins = {
 Skinner.oddlyNamedAddons = {
 	"!Swatter", "Auc-Advanced", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "Ogri'Lazy", "Prat-3.0", "WoW-Pro"
 }
+Skinner.libsToSkin = {
+	["Dewdrop-2.0"] = "Dewdrop",
+	["AceAddon-2.0"] = "Ace2",
+	["Tablet-2.0"] = "Tablet",
+	["Waterfall-1.0"] = "Waterfall",
+	["AceGUI-3.0"] = "Ace3",
+	["LibSimpleOptions-1.0"] = "LibSimpleOptions",
+	["Configator"] = "Configator",
+	["LibExtraTip-1"] = "LibExtraTip",
+	["tektip-1.0"] = "tektip",
+	["LibQTip-1.0"] = "LibQTip",
+	["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
+}
 function Skinner:AddonFrames()
 --     self:Debug("AddonFrames")
 
@@ -161,21 +174,8 @@ function Skinner:AddonFrames()
 		self:checkAndRunAddOn("MSBTOptions", true) -- use true so it isn't treated as a LoadManaged Addon
 	end
 
-	-- skin Dewdrop, Ace2, Tablet, Waterfall, Ace3GUI, LibSimpleOptions, Configator, LibExtraTip, tektip, LibQTip & LibSimpleFrame library objects
-	local libsToSkin = {
-		["Dewdrop-2.0"] = "Dewdrop",
-		["AceAddon-2.0"] = "Ace2",
-		["Tablet-2.0"] = "Tablet",
-		["Waterfall-1.0"] = "Waterfall",
-		["AceGUI-3.0"] = "Ace3",
-		["LibSimpleOptions-1.0"] = "LibSimpleOptions",
-		["Configator"] = "Configator",
-		["LibExtraTip-1"] = "LibExtraTip",
-		["tektip-1.0"] = "tektip",
-		["LibQTip-1.0"] = "LibQTip",
-		["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
-	}
-	for k, v in pairs(libsToSkin) do
+	-- skin library objects
+	for k, v in pairs(self.libsToSkin) do
 --		self:Debug("skin Libs:[%s, %s]", k, v)
 		if LibStub(k, true) then
 			if self[v] then self:checkAndRun(v) -- not an addon in its own right
@@ -186,7 +186,6 @@ function Skinner:AddonFrames()
 			end
 		end
 	end
-	libsToSkin = nil
 
 	-- skin Rock Config
 	if Rock and Rock:HasLibrary("LibRockConfig-1.0") then
@@ -274,6 +273,15 @@ function Skinner:LoDFrames(addon)
 	if IsAddOnLoaded("FramesResized") then
 		if addon == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:checkAndRun("FR_TradeSkillUI") -- not an addon in its own right
 		elseif addon == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:checkAndRun("FR_TrainerUI") -- not an addon in its own right
+		end
+	end
+
+	-- load library skins here as well, they may only get loaded by a LoD AddOn
+	-- e.g. Dewdrop by ArkInventory when an AddonLoader is used
+	for k, v in pairs(self.libsToSkin) do
+--		self:Debug("skin Lib:[%s, %s]", k, v)
+		if LibStub(k, true) then
+			if self[v] then self:checkAndRun(v) end
 		end
 	end
 
