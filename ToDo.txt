@@ -13,12 +13,21 @@ Legend:
 			- Update commands page for changes requiring a Reload
 			- Change code to reduce the number of Reloads required if possible
 
-	I	UI Buttons, requested by TaliaMokani/Kerecha, 23.08.10/08.09.10
-		- In any window with container slots or item icons (looting, mail, character pane, talent pane, tradeskills, bags...), the containers aren't skinned. This is also true for the Action Buttons etc.
-		- Use ButtonFacade
+	I	ItemButtons ,requested by TaliaMokani/Kerecha, 23.08.10
+		- should all have borders
+≈		- add function to add just a border to Buttons à la ArkInventory Borders
+!			- N.B. Adding a child frame causes taint
+!			- ActionBarButtons still have a border
 
-√	I	AchievementUI, reported by Alcotraz, 21.09.10
-		- add an option to revert to the default Achievement textures
+√	I	InterfaceOptionsFrame, reported by cheburashka2, 24.09.10
+		- having issue with scroller
+
+√	I	Dewdrop20
+		- skin not being loaded if used by an Addon loaded by an addon loader
+
+	I	ArkInventory, reported by spAnser, 25.09.10
+√		- Whichever the last version you updated ArkInventory in I can no longer skin the border of the items displayed by Ark. Right now they are stuck borderless.
+√		- Rule frame not being skinned
 
 BETA changes
 ±±±±±±±±±±±±
@@ -45,6 +54,7 @@ BETA changes
 √			- PaladinPowerBar
 √			- ShardBar
 			- EclipseBarFrame
+≈¶			- GhostFrame
 √		- Removed Frames:
 √			- ClassTrainerFrameTemplates
 √			- PVPBattlegroundFrame
@@ -56,6 +66,7 @@ BETA changes
 √				- PetPaperDoll
 x				- Reputation
 √				- Currency
+			- InspectFrame
 x			- DropDownMenu
 x			- Friends
 x			- Loot, now shows quest item texture
