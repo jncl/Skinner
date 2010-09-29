@@ -1,3 +1,12 @@
+b4.12984.2
+Jncl:
+	ToDo.txt
+	Updated change_History.txt
+	Tidyup code
+	FeedbackUI changes
+	More Beta changes
+	Added option to keep Achievement textures
+
 b4.12984.1
 Jncl:
 	ToDo.txt
