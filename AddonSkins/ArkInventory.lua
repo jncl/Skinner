@@ -5,16 +5,23 @@ function Skinner:ArkInventory()
 
 	-- stop frames being painted
 	ArkInventory.Frame_Main_Paint = function() end
-	-- stop borders being painted
-	ArkInventory.Frame_Border_Paint = function() end
-
+	-- hook this to manage the frame borders
+	self:RawHook(ArkInventory, "Frame_Border_Paint", function(border, slot, file, size, offset, scale, r, g, b, a)
+		-- ignore Item frames
+		if not border:GetName():find("Item") then
+			file = self.Backdrop[1].edgeFile
+			local c = self.db.profile.BackdropBorder
+			r, g, b, a = c.r, c.g, c.b, c.a
+		end
+		self.hooks[ArkInventory].Frame_Border_Paint(border, slot, file, size, offset, scale, r, g, b, a)
+	end, true)
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
---		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
+		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
 		local af = frame:GetName()
 		if not self.skinned[frame] then
 			for _, v in pairs{"Title", "Search", "Container", "Changer", "Status"} do
 				y1 = v == "Container" and -1 or 0
-				self:addSkinFrame{obj=_G[af..v], kfs=true, y1=y1}
+				self:addSkinFrame{obj=_G[af..v], kfs=v~= "Status" and true or nil, y1=y1} -- show currency icons
 			end
 			self:skinEditBox(_G[af.."SearchFilter"], {9})
 			if _G[af.."StatusText"] then _G[af.."StatusText"]:SetAlpha(1) end
