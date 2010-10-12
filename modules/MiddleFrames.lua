@@ -78,10 +78,10 @@ local function adjustFrame(key)
 --	print("adjustFrame", key, db[key].shown, frames[key])
 
 	if db[key].shown then
-		frame = frames[key] or CreateFrame("Frame", nil, UIParent)
+		frame = frames[key] or CreateFrame("Frame", db.name and "SkinnerMF"..key:sub(-1) or nil, UIParent)
 		frame.db = db
 		frame.key = key
-		frame.name = "Middle Frame"..strsub(key, -1)
+		frame.name = db.name and "SkinnerMF"..key:sub(-1) or "Middle Frame"..key:sub(-1)
 		frame:SetFrameStrata(db[key].fstrata)
 		frame:SetFrameLevel(db[key].flevel)
 		frame:SetMovable(true)
@@ -115,7 +115,7 @@ local function adjustFrame(key)
 	elseif frames[key] then
 		frames[key]:Hide()
 	end
-	
+
 end
 
 function module:OnInitialize()
@@ -188,26 +188,22 @@ function module:GetOptions()
 		args = {
 			fheight = {
 				type = "range",
-				order = 4,
 				name = Skinner.L["MF Fade Height"],
 				desc = Skinner.L["Change the Height of the Fade Effect"],
 				min = 0, max = 500, step = 1,
 			},
 			fixedfh = {
 				type = "toggle",
-				order = 5,
 				name = Skinner.L["Fixed Fade Height"],
 				desc = Skinner.L["Fix the Height of the Fade Effect"],
 			},
 			borderOff = {
 				type = "toggle",
-				order = 2,
 				name = Skinner.L["MF Toggle Border"],
 				desc = Skinner.L["Toggle the Border"],
 			},
 			colour = {
 				type = "color",
-				order = 3,
 				name = Skinner.L["MF Colour"],
 				desc = Skinner.L["Change the Colour of the MiddleFrame(s)"],
 				hasAlpha = true,
@@ -227,6 +223,11 @@ function module:GetOptions()
 				order = 1,
 				name = Skinner.L["MF Lock Frames"],
 				desc = Skinner.L["Toggle the Frame Lock"],
+			},
+			name = {
+				type = "toggle",
+				name = Skinner.L["MF Names"],
+				desc = Skinner.L["Toggle the Frame Name(s)"],
 			},
 		},
 	}
