@@ -11,7 +11,7 @@ function Skinner:LibQTip()
 		local function skinLTTooltips(lib)
 	
 			for key, tooltip in lib:IterateTooltips() do
---	 			Skinner:Debug("%s:[%s, %s]", ttLib, key, tooltip)
+--	 			Skinner:Debug("%s:[%s, %s]", lib, key, tooltip)
 				-- ignore tooltips if required
 				if not Skinner.ignoreLQTT[key] then
 					if not Skinner.skinned[tooltip] then

@@ -21,6 +21,7 @@ function Skinner:AckisRecipeList()
 	if not ver then	self:CustomPrint(1, 0, 0, "%s [%s]", "Unsupported ARL version", aVer) return end
 
 	local function skinARL(frame)
+
 		if ver < 4 then
 			frame.backdrop:SetAlpha(0)
 		end
@@ -135,6 +136,7 @@ function Skinner:AckisRecipeList()
 		end
 
 	end
+
 	if ver > 2 and ver < 6 then
 		self:SecureHookScript(ARL_MainPanel, "OnShow", function(this)
 			skinARL(this)
