@@ -4,9 +4,9 @@ ToDos
 Legend:
 	√ is Alt+v	- indicates completed
 	≈ is Alt+x	- indicates partially completed or dry-coded
-	x         	- indicates nothing to change
-	¶ is Alt+7  - indicates localisation changes required
-	S/B/N/I/O 	- Skin request/Button(s) Skin request/New Version/Issue(Bug)/Other change
+	x			- indicates nothing to change
+	¶ is Alt+7	- indicates localisation changes required
+	S/B/N/I/O	- Skin request/Button(s) Skin request/New Version/Issue(Bug)/Other change
 
 	I	Usability issues, reported by TaliaMokani, 23.08.10
 ≈		- I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
@@ -15,35 +15,45 @@ Legend:
 
 	I	ItemButtons ,requested by TaliaMokani/Kerecha, 23.08.10
 		- should all have borders
-≈		- add function to add just a border to Buttons à la ArkInventory Borders
-!			- ActionBarButtons still have a border (SetVertexColor function)
+√		- add function to add just a border to Buttons à la ArkInventory Borders
+
+	I	Calendar
+√		- ContextMenu(s) border colour incorrect
+√		- Class buttons (add border)
+
+	I	Tooltip default colours
+√		- Not correct if style isn't 1
+
+	I	Middleframes, reported by IRID1UM, 11.10.10
+√		- add an option to name the middleframes
 
 BETA changes
 ±±±±±±±±±±±±
 
 	N	Cataclysm Beta
 √		- TOC Interface is 40000
-		- New Blizzard AddOns:
+√		- New Blizzard AddOns:
 √			- ArchaeologyUI
 √			- ReforgingUI (NPC)
 ≈			- CompactRaidFrames (in UnitFrames.lua)
-				- CompactRaidFrameContainer
-				- CompactRaidFrameManager
-					- RolePoll
+?				- CompactRaidFrameContainer
+?				- CompactRaidFrameManager
+?					- RolePoll
 ≈				- CompactRaidGroup
 ≈					- CompactUnitFrame
 ≈					- CompactPartyFrame
-√			- GuildUI
+≈			- GuildUI
+				- GuildLogFrameCloseButton too big
 √			- GuildControlUI
-		- New Frames:
+√		- New Frames:
 √			- LevelUpDisplay
 √			- CinematicFrame (CloseDialog)
 √			- Spell fly-out UI feature for pet/portal classes
 √			- GuildInvite
 √			- PaladinPowerBar
 √			- ShardBar
-			- EclipseBarFrame
-≈¶			- GhostFrame
+√			- EclipseBarFrame
+√			- GhostFrame
 √		- Removed Frames:
 √			- ClassTrainerFrameTemplates
 √			- PVPBattlegroundFrame
@@ -55,7 +65,8 @@ BETA changes
 √				- PetPaperDoll
 x				- Reputation
 √				- Currency
-			- InspectFrame
+√			- InspectFrame
+√				- PVP containers too large, reduce height by 3
 x			- DropDownMenu
 x			- Friends
 x			- Loot, now shows quest item texture
@@ -65,25 +76,24 @@ x			- Loot, now shows quest item texture
 √				- Mounts/Companions
 √			- PVP
 ≈			- RaidUI
-				- Auras ??
+?				- Auras
 √			- PetStable
 √			- Quest (Frame, Log, Info)
 √				- QuestNPCModel
-				- QuestInfoSkillPointFrame
+√				- QuestInfoSkillPointFrame
 √			- TalentUI
 √				- Talents
 √				- Pet Talents
 √				- Glyphs
-					- need to replace Glyph Ring textures
 √			- TradeSkillUI
 √			- TrainerUI
 √			- PVP Banner Frame
 √			- Taxi
 x			- UIPanelTemplates
-≈			- Unit
-≈				- Player (ShardBar, PaladinPowerBar, EclipseBar)
+√			- Unit
+√				- Player (ShardBar, PaladinPowerBar, EclipseBar)
 x				- PlayerPet
-≈				- Target
+√				- Target
 x				- TargetofTarget
 x				- Focus
 x				- Party
@@ -106,4 +116,8 @@ x				- PartyPet
 √					- invalidTeam
 √					- lowLevelFrame
 √			- Magic Button textures
+√			- Calendar
+√				- Close button texture (various frames)
+√			- MoneyFrame
+√				- coins now in Edit boxes
 ?		- New layer option - textureSubLevel
