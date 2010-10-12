@@ -1,23 +1,24 @@
 
 function Skinner:BlizzardFrames()
---    self:Debug("BlizzardFrames")
+--	  self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
 		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", --cf2
-		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
+		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "BankFrame", "Battlefields", "ArenaFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "ScriptErrors", "DropDowns", -- uie1
-		"AutoComplete", "MenuFrames", "BankFrame", "MailFrame", "CoinPickup", "PVPFrame", "LFDFrame", "LFRFrame", "BNFrames", -- uie2
+		"AutoComplete", "MenuFrames", "MailFrame", "CoinPickup", "PVPFrame", "LFDFrame", "LFRFrame", "BNFrames", -- uie2
 	}
 
 	-- optional frames
 	if IsMacClient() then self:checkAndRun("MovieProgress") end
 	if self.isPTR then self:add2Table(blizzFrames, "FeedbackUI") end -- uie1
 	if self.isBeta then
-		self:add2Table(blizzFrames, "CinematicFrame") -- uie1
-		self:add2Table(blizzFrames, "LevelUpDisplay") -- uie1
-		self:add2Table(blizzFrames, "SpellFlyout") -- uie1
-		self:add2Table(blizzFrames, "GuildInvite") -- uie1
+		self:add2Table(blizzFrames, "CinematicFrame") -- uie2
+		self:add2Table(blizzFrames, "LevelUpDisplay") -- uie2
+		self:add2Table(blizzFrames, "SpellFlyout") -- uie2
+		self:add2Table(blizzFrames, "GuildInvite") -- uie2
+		self:add2Table(blizzFrames, "GhostFrame") -- uie2
 	end
 	-- patched frames
 
@@ -106,16 +107,16 @@ Skinner.libsToSkin = {
 	["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
 }
 function Skinner:AddonFrames()
---     self:Debug("AddonFrames")
+--	   self:Debug("AddonFrames")
 
 	-- these addons colour the Tooltip Border
 	if IsAddOnLoaded("Chippu")
 	or IsAddOnLoaded("TipTac")
 	then
-	    self.ttBorder = false
+		self.ttBorder = false
 	end
 
-    -- skin tooltips here after checking whether the ttBorder setting needed changing
+	-- skin tooltips here after checking whether the ttBorder setting needed changing
 	self:checkAndRun("Tooltips")
 
 	-- skin the QuestLog if EQL3 or QuestGuru aren't loaded
@@ -240,7 +241,7 @@ end
 Skinner.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 
 function Skinner:LoDFrames(addon)
---    self:Debug("LoDFrames: [%s]", addon)
+--	  self:Debug("LoDFrames: [%s]", addon)
 
 	if addon == prev_addon then return end
 	local prev_addon = addon
@@ -297,7 +298,7 @@ end
 function Skinner:AUCTION_HOUSE_SHOW()
 --	self:Debug("AUCTION_HOUSE_SHOW")
 
-	self:checkAndRun("AuctionUI")
+	self:checkAndRun("AuctionUI") -- npc
 	-- trigger these when AH loads otherwise errors occur
 	self:checkAndRunAddOn("BtmScan")
 	self:checkAndRunAddOn("AuctionFilterPlus")

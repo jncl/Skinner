@@ -1,11 +1,12 @@
 local _, Skinner = ...
-local module = Skinner:NewModule("UIButtons", "AceHook-3.0")
+local module = Skinner:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 local _G = _G
 
 local db
 local defaults = {
 	profile = {
 		UIButtons = false,
+		ButtonBorders = false,
 	}
 }
 
@@ -75,22 +76,24 @@ function module:checkTex(...)
 
 end
 
--- characters used on buttons
-module.mult = "×"
-module.plus = "+"
-module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
--- create font to use for Close Buttons
-module.fontX= CreateFont("fontX")
-module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
-module.fontX:SetTextColor(1.0, 0.82, 0)
--- create font to use for small blue Close Buttons (e.g. BNToastFrame)
-module.fontSBX= CreateFont("fontSBX")
-module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
-module.fontSBX:SetTextColor(0.2, 0.6, 0.8)
--- create font to use for Minus/Plus Buttons
-module.fontP= CreateFont("fontP")
-module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
-module.fontP:SetTextColor(1.0, 0.82, 0)
+do
+	-- characters used on buttons
+	module.mult = "×"
+	module.plus = "+"
+	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
+	-- create font to use for Close Buttons
+	module.fontX= CreateFont("fontX")
+	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
+	module.fontX:SetTextColor(1.0, 0.82, 0)
+	-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
+	module.fontSBX= CreateFont("fontSBX")
+	module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
+	module.fontSBX:SetTextColor(0.2, 0.6, 0.8)
+	-- create font to use for Minus/Plus Buttons
+	module.fontP= CreateFont("fontP")
+	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
+	module.fontP:SetTextColor(1.0, 0.82, 0)
+end
 local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture"}
 -- Add these to handle Magic Button textures
 if Skinner.isBeta then
@@ -223,14 +226,14 @@ function module:skinButton(opts)
 		end
 	end
 
-	-- centre text on button
-	if btn then
-		btn:GetFontString():SetAllPoints()
-	elseif opts.obj:GetFontString() then -- StaticPopup buttons don't have a FontString
-		opts.obj:GetFontString():SetAllPoints()
-		-- centre highlight as well
-		if opts.obj:GetHighlightTexture() then opts.obj:GetHighlightTexture():SetAllPoints() end
-	end
+--	-- centre text on button -- Why ????
+--	if btn then
+--		btn:GetFontString():SetAllPoints()
+--	elseif opts.obj:GetFontString() then -- StaticPopup buttons don't have a FontString
+--		opts.obj:GetFontString():SetAllPoints()
+--		-- centre highlight as well
+--		if opts.obj:GetHighlightTexture() then opts.obj:GetHighlightTexture():SetAllPoints() end
+--	end
 
 	-- reparent skinButton to avoid whiteout issues caused by animations
 	if opts.anim and Skinner.sBut[opts.obj] then
@@ -252,39 +255,34 @@ local function getTexture(obj)
 end
 function module:isButton(obj, cb, blue)
 
-	if obj:IsObjectType("Button")
-	and obj.GetNormalTexture -- is it a true button
+	if obj.GetNormalTexture -- is it a true button
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then -- check textures are as expected
-		local nTex = getTexture(obj:GetNormalTexture())
-		if not cb then
-			local oName = obj:GetName() or nil
-			local lTex = oName and (getTexture(_G[oName.."Left"]) or getTexture(_G[oName.."_LeftTexture"])) or nil
-			if nTex and nTex:find("UI-Panel-Button", 1, true)
-			or nTex and nTex:find("UI-DialogBox", 1, true) -- StaticPopups
-			or nTex and nTex:find("UI-Achievement", 1, true) -- AtlasLoot "new" style
-			or obj.left and obj.left:GetTexture() and strfind(obj.left:GetTexture(), "UI-Panel-Button", 1, true) -- ARL & Collectinator
-			or oName and lTex and lTex:find("UI-Panel-Button", 1, true)
+		local oName = obj:GetName() or nil
+		local oTex = getTexture(obj:GetNormalTexture()) or getTexture(Skinner:getRegion(obj, 1))
+--		print(oName, oTex)
+		if oTex then
+			if oTex:find("UI-Panel-Button", 1, true)
+			or oTex:find("UI-DialogBox", 1, true) -- StaticPopups
+			or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
 			then
-				return true
+				return "normal"
 			end
-		elseif not blue then
-			if nTex and nTex:find("UI-Panel-MinimizeButton", 1, true)
-			or nTex and nTex:find("UI-Panel-HideButton", 1, true) -- PVPFramePopup (Cataclysm)
+			if oTex:find("UI-Panel-MinimizeButton", 1, true)
+			or oTex:find("UI-Panel-HideButton", 1, true) -- PVPFramePopup (Cataclysm)
 			then
-				return true
+				return "close"
 			end
-		else
-			if nTex and nTex:find("UI-Toast-CloseButton", 1, true)
+			if oTex:find("UI-Toast-CloseButton", 1, true)
 			then
-				return true
+				return "toast"
 			end
 		end
 	end
 
-	return false
+	return
 
 end
 
@@ -304,16 +302,19 @@ local function __skinAllButtons(opts, bgen)
 	bgen = bgen or (opts.bgen and opts.bgen or 3)
 
 	for _, child in ipairs{opts.obj:GetChildren()} do
-		if module:isButton(child) then -- normal button
-			module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim}
-		elseif module:isButton(child, true) then -- close button
-			module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
-		elseif module:isButton(child, true, true) then -- small blue close button
-			module:skinButton{obj=child, cb3=true, anim=opts.anim}
-		elseif child:IsObjectType("Frame")
-		and bgen > 0 then
+		if child:IsObjectType("Frame") or child:GetNumChildren() > 0 and bgen > 0 then
 			opts.obj=child
 			__skinAllButtons(opts, bgen - 1)
+		end
+		if child:IsObjectType("Button") then
+			bType = module:isButton(child)
+			if bType == "normal" then
+				module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim}
+			elseif bType == "close" then
+				module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
+			elseif bType == "toast" then
+				module:skinButton{obj=child, cb3=true, anim=opts.anim}
+			end
 		end
 	end
 
@@ -338,6 +339,138 @@ function module:skinAllButtons(...)
 
 end
 
+local function __addButtonBorder(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		relTo = object to position relative to
+		hide = hook Hide/Show scripts of relTo object
+		ofs = global offset
+		abt = Action Button template
+		pabt = Pet Action Button template
+		ibt = Item Button template
+		tibt = Talent Item Button template
+		libt = Large Item Button template
+		spbt = Simple Popup Button template
+		mb = Main Menu Bar Micro Button
+		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
+		es = edgeSize, used for small icons
+		x1 = X offset for TOPLEFT
+		y1 = Y offset for TOPLEFT
+		x2 = X offset for BOTTOMRIGHT
+		y2 = Y offset for BOTTOMRIGHT
+--]]
+--@alpha@
+	assert(opts.obj, "Unknown object__aBB\n"..debugstack())
+--@end-alpha@
+	if not opts.obj then return end
+
+	-- remove Normal texture if required
+	if opts.ibt
+	or opts.abt
+	or opts.pabt
+	then
+		opts.obj:GetNormalTexture():SetAlpha(0) -- vertex colour changed in blizzard code
+	end
+
+	-- create the border frame
+	opts.obj.sknrBdr = CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+	-- DON'T lower the frame level otherwise the border appears below the frame
+	-- setup and apply the backdrop
+	opts.obj.sknrBdr:SetBackdrop({edgeFile = Skinner.Backdrop[1].edgeFile,
+								  edgeSize = opts.es or Skinner.Backdrop[1].edgeSize})
+	local c = Skinner.db.profile.BackdropBorder
+	opts.obj.sknrBdr:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
+	-- position the frame
+	opts.ofs = opts.ofs or 2
+	local xOfs1 = opts.x1 or (opts.ofs * -1)
+	local yOfs1 = opts.y1 or opts.ofs
+	local xOfs2 = opts.x2 or opts.ofs
+	local yOfs2 = opts.y2 or (opts.ofs * -1)
+	-- (Large) Item Button templates have an IconTexture to position to
+	relTo = opts.relTo
+			or opts.libt and _G[opts.obj:GetName().."IconTexture"]
+			or nil
+	opts.obj.sknrBdr:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
+	opts.obj.sknrBdr:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+
+	if opts.hide and opts.relTo then
+		-- hook Show and Hide methods of the relTo object
+		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sknrBdr:Show() end)
+		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sknrBdr:Hide() end)
+	end
+
+	-- reparent these textures so they are displayed above the border
+	if opts.abt then -- Action Buttons
+		_G[opts.obj:GetName().."HotKey"]:SetParent(opts.obj.sknrBdr)
+		if Skinner.isBeta then
+		-- reparent FlyoutArrow so it is displayed above the border
+			opts.obj.FlyoutArrow:SetParent(opts.obj.sknrBdr)
+		end
+	end
+	if opts.pabt then -- Pet Action Buttons
+		_G[opts.obj:GetName().."AutoCastable"]:SetParent(opts.obj.sknrBdr)
+		_G[opts.obj:GetName().."Shine"]:SetParent(opts.obj.sknrBdr)
+	end
+	if opts.ibt then -- Item Buttons
+		_G[opts.obj:GetName().."Count"]:SetParent(opts.obj.sknrBdr)
+		_G[opts.obj:GetName().."Stock"]:SetParent(opts.obj.sknrBdr)
+	end
+	if opts.tibt then -- Talents
+		_G[opts.obj:GetName().."RankBorder"]:SetParent(opts.obj.sknrBdr)
+		_G[opts.obj:GetName().."Rank"]:SetParent(opts.obj.sknrBdr)
+		if _G[opts.obj:GetName().."RankBorderGreen"] then
+			_G[opts.obj:GetName().."RankBorderGreen"]:SetParent(opts.obj.sknrBdr)
+		end
+	end
+	if opts.libt or opts.abt then -- Action/Large Item Buttons
+		_G[opts.obj:GetName().."Name"]:SetParent(opts.obj.sknrBdr)
+		_G[opts.obj:GetName().."Count"]:SetParent(opts.obj.sknrBdr)
+	end
+	if opts.spbt then -- Simple Popup Buttons
+		_G[opts.obj:GetName().."Name"]:SetParent(opts.obj.sknrBdr)
+	end
+	if opts.mb then -- Micro Buttons
+		_G[opts.obj:GetName().."Flash"]:SetParent(opts.obj.sknrBdr)
+	end
+
+end
+--[=[
+local function pRE(...)
+
+	for k, v in pairs(btnTab) do
+		module:addButtonBorder(v)
+	end
+	wipe(btnTab)
+
+end
+--]=]
+function module:addButtonBorder(...)
+
+	local opts = select(1, ...)
+
+	-- handle in combat
+	if InCombatLockdown() then
+		Skinner:add2Table(module.btnTab, opts)
+		return
+	end
+
+--@alpha@
+	assert(opts, "Unknown object sAB\n"..debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+	end
+	__addButtonBorder(opts)
+
+end
+
 function module:OnInitialize()
 
 	self.db = Skinner.db:RegisterNamespace("UIButtons", defaults)
@@ -349,18 +482,52 @@ function module:OnInitialize()
 		Skinner.db.profile.Buttons = nil
 	end
 
-	if not db.UIButtons then self:Disable() end -- disable ourself
+	if not db.UIButtons
+	and not db.ButtonBorders
+	then
+		self:Disable()
+	end -- disable ourself
+
+end
+
+function module:OnEnable()
+
+	-- this code will handle button border creation during combat
+	if module.db.profile.ButtonBorders then
+		module.btnTab = {}
+		module:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+			for k, v in pairs(module.btnTab) do
+				module:addButtonBorder(v)
+			end
+			wipe(module.btnTab)
+		end)
+	end
 
 end
 
 function module:GetOptions()
 
 	local options = {
-		type = "toggle",
-		name = Skinner.L["UI Buttons"],
-		desc = Skinner.L["Toggle the skinning of the UI Buttons, reload required"],
-		get = function(info) return module.db.profile.UIButtons end,
-		set = function(info, value) module.db.profile.UIButtons = value end,
+		type = "group",
+		name = Skinner.L["Button Settings"],
+		order = 1,
+		get = function(info) return db[info[#info]] end,
+		set = function(info, value)
+			if info[#info] == "ButtonBorders" and not module:IsEnabled() then module:Enable() end
+			db[info[#info]] = value
+		end,
+		args = {
+			UIButtons = {
+				type = "toggle",
+				name = Skinner.L["UI Buttons"],
+				desc = Skinner.L["Toggle the skinning of the UI Buttons, reload required"],
+			},
+			ButtonBorders = {
+				type = "toggle",
+				name = Skinner.L["Button Borders"],
+				desc = Skinner.L["Toggle the skinning of the Button Borders, reload required"],
+			},
+		},
 	}
 	return options
 

@@ -62,25 +62,25 @@ AddonFrames.lua
 CharacterFrames1.lua
 #
 # CharacterFrames2
-# inc. Social (inc. Friends, Who, Guild, Chat, Raid), TradeSkillUI, Trade, QuestLog, ResizeQW, RaidUI, ReadyCheck, Buffs, VehicleMenuBar, Watch (Quests & Achievements), GearManager, ArchaeologyUI, GuildUI, GuildControlUI
+# inc. Social (inc. Friends, Who, Guild, Chat, Raid), TradeSkillUI, Trade, QuestLog, RaidUI, ReadyCheck, Buffs, VehicleMenuBar, Watch (Quests & Achievements), GearManager, ArchaeologyUI, GuildUI, GuildControlUI
 CharacterFrames2.lua
 #
 # NPCFrames
-# inc. Merchant, Gossip, TrainerUI, Taxi, Quest, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI, ReforgingUI
+# inc. Merchant, Gossip, TrainerUI, Taxi, Quest, AuctionUI, Bank, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI, QuestInfo, ReforgingUI
 NPCFrames.lua
 #
 # UIElements1
-# inc. Tooltips, MirrorTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), Tutorial, GMSurveyUI, FeedbackUI, InspectUI, WorldState (a.k.a. BattleScore), BattlefieldMinimap, ScriptErrors, DropDowns, MinimapButtons, FeedbackUI
+# inc. Tooltips, MirrorTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), Tutorial, GMSurveyUI, InspectUI, WorldState (a.k.a. BattleScore), BattlefieldMinimap, ScriptErrors, DropDowns, MinimapButtons, FeedbackUI
 UIElements1.lua
 #
 # UIElements2
-# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), MacroUI, BindingUI, Bank, Mail, AuctionUI, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools, LFDFrame, LFRFrame, BNFrames, CinematicFrame, LevelUpDisplay, SpellFlyout, GuildInvite
+# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), BindingUI, MacroUI, Mail, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools, LFDFrame, LFRFrame, BNFrames, CinematicFrame, LevelUpDisplay, SpellFlyout, GuildInvite, GhostFrame
 UIElements2.lua
 #
 # Modules
 #
 # UnitFrames
-# inc. PlayerFrame, RuneFrame, TotemFrame, ComboFrame, PetFrame, TargetFrame, TargetofTargetFrame, FocusFrame, TargetofFocusFrame, PartyFrames (inc. Party Members Pets)
+# inc. PlayerFrame (inc. RuneFrame, TotemFrame, ComboFrame, ShardBar, PowerBar, EclipseBar), PetFrame, TargetFrame, TargetofTargetFrame, FocusFrame, TargetofFocusFrame, PartyFrames (inc. Party Members Pets), ArenaFrames, CompactFrames (inc. Party, Raid Unit, Raid Group)
 modules\UnitFrames.lua
 #
 # UIButtons

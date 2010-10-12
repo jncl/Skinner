@@ -97,7 +97,7 @@ end
 
 function Skinner:add2Table(table, value)
 
-    table[#table + 1] = value
+	table[#table + 1] = value
 
 end
 
@@ -118,7 +118,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 	if not addonFunc then addonFunc = addonName end
 
---    self:Debug("checkAndRunAddOn:[%s, %s, %s, %s, %s]", addonName, LoD, IsAddOnLoaded(addonName), IsAddOnLoadOnDemand(addonName), type(self[addonFunc]))
+--	  self:Debug("checkAndRunAddOn:[%s, %s, %s, %s, %s]", addonName, LoD, IsAddOnLoaded(addonName), IsAddOnLoadOnDemand(addonName), type(self[addonFunc]))
 
 	-- don't skin any Addons whose skins are flagged as disabled
 	if self.db.profile.DisabledSkins[addonName] then
@@ -227,19 +227,19 @@ function Skinner:findFrame2(parent, objType, ...)
 					xOfs = ceil(xOfs)
 					yOfs = ceil(yOfs)
 --					self:Debug("UnNamed Object's Point: [%s, %s, %s, %s, %s]", point, relativeTo, relativePoint, xOfs, yOfs)
-					if  point         == select(1, ...)
-					and relativeTo    == select(2, ...)
+					if	point		  == select(1, ...)
+					and relativeTo	  == select(2, ...)
 					and relativePoint == select(3, ...)
-					and xOfs          == select(4, ...)
-					and yOfs          == select(5, ...) then
+					and xOfs		  == select(4, ...)
+					and yOfs		  == select(5, ...) then
 						frame = child
 						break
 					end
 				else
 					-- base checks on size
 					local height, width = ceil(child:GetHeight()), ceil(child:GetWidth())
--- 					self:Debug("UnNamed Object's H, W: [%s, %s]", height, width)
-					if  height == select(1, ...)
+--					self:Debug("UnNamed Object's H, W: [%s, %s]", height, width)
+					if	height == select(1, ...)
 					and width  == select(2, ...) then
 						frame = child
 						break
@@ -365,12 +365,23 @@ function Skinner:resizeTabs(frame)
 	local tlw = (tTW > fW and (40 - (tTW - fW) / nT) / 2 or 20)
 	-- set minimum left width
 	tlw = ("%.2f"):format(tlw >= 6 and tlw or 5.5)
--- 	self:Debug("resizeTabs: [%s, %s, %s, %s, %s]", fN, nT, tTW, fW, tlw)
+--	self:Debug("resizeTabs: [%s, %s, %s, %s, %s]", fN, nT, tTW, fW, tlw)
 	-- update each tab
 	for i = 1, nT do
 		_G[tabName..i.."Left"]:SetWidth(tlw)
 		PanelTemplates_TabResize(_G[tabName..i], 0)
 	end
+
+end
+
+function Skinner:resizeEmptyTexture(texture)
+
+	texture:SetTexture(self.esTex)
+	texture:SetWidth(64)
+	texture:SetHeight(64)
+	texture:SetTexCoord(0, 1, 0, 1)
+	texture:ClearAllPoints()
+	texture:SetPoint("CENTER", texture:GetParent())
 
 end
 

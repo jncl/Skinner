@@ -53,6 +53,7 @@ function Skinner:TimeManager() -- LoD
 -->>--	Time Manager Frame
 	TimeManagerFrameTicker:Hide()
 	self:keepFontStrings(TimeManagerStopwatchFrame)
+	self:addButtonBorder{obj=TimeManagerStopwatchCheck}
 	self:skinDropDown{obj=TimeManagerAlarmHourDropDown}
 	TimeManagerAlarmHourDropDownMiddle:SetWidth(TimeManagerAlarmHourDropDownMiddle:GetWidth() + 8)
 	self:skinDropDown{obj=TimeManagerAlarmMinuteDropDown}
@@ -92,21 +93,21 @@ function Skinner:Calendar() -- LoD
 -->>-- View Holiday Frame
 	self:keepFontStrings(CalendarViewHolidayTitleFrame)
 	self:moveObject{obj=CalendarViewHolidayTitleFrame, y=-6}
-	self:removeRegions(CalendarViewHolidayCloseButton, {4})
+	self:removeRegions(CalendarViewHolidayCloseButton, {self.isBeta and 5 or 4})
 	self:skinScrollBar{obj=CalendarViewHolidayScrollFrame}
 	self:addSkinFrame{obj=CalendarViewHolidayFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=-2}
 
 -->>-- View Raid Frame
 	self:keepFontStrings(CalendarViewRaidTitleFrame)
 	self:moveObject{obj=CalendarViewRaidTitleFrame, y=-6}
-	self:removeRegions(CalendarViewRaidCloseButton, {4})
+	self:removeRegions(CalendarViewRaidCloseButton, {self.isBeta and 5 or 4})
 	self:skinScrollBar{obj=CalendarViewRaidScrollFrame}
 	self:addSkinFrame{obj=CalendarViewRaidFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- View Event Frame
 	self:keepFontStrings(CalendarViewEventTitleFrame)
 	self:moveObject{obj=CalendarViewEventTitleFrame, y=-6}
-	self:removeRegions(CalendarViewEventCloseButton, {4})
+	self:removeRegions(CalendarViewEventCloseButton, {self.isBeta and 5 or 4})
 	self:addSkinFrame{obj=CalendarViewEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=CalendarViewEventDescriptionScrollFrame}
 	self:keepFontStrings(CalendarViewEventInviteListSection)
@@ -117,7 +118,7 @@ function Skinner:Calendar() -- LoD
 	CalendarCreateEventIcon:SetAlpha(1) -- show event icon
 	self:keepFontStrings(CalendarCreateEventTitleFrame)
 	self:moveObject{obj=CalendarCreateEventTitleFrame, y=-6}
-	self:removeRegions(CalendarCreateEventCloseButton, {4})
+	self:removeRegions(CalendarCreateEventCloseButton, {self.isBeta and 5 or 4})
 	self:skinEditBox{obj=CalendarCreateEventTitleEdit, regs={9}}
 	self:skinDropDown{obj=CalendarCreateEventTypeDropDown}
 	self:skinDropDown{obj=CalendarCreateEventHourDropDown}
@@ -139,7 +140,7 @@ function Skinner:Calendar() -- LoD
 -->>-- Mass Invite Frame
 	self:keepFontStrings(CalendarMassInviteTitleFrame)
 	self:moveObject{obj=CalendarMassInviteTitleFrame, y=-6}
-	self:removeRegions(CalendarMassInviteCloseButton, {4})
+	self:removeRegions(CalendarMassInviteCloseButton, {self.isBeta and 5 or 4})
 	self:skinEditBox{obj=CalendarMassInviteGuildMinLevelEdit, regs={9}}
 	self:skinEditBox{obj=CalendarMassInviteGuildMaxLevelEdit, regs={9}}
 	self:skinDropDown{obj=CalendarMassInviteGuildRankMenu}
@@ -164,22 +165,23 @@ function Skinner:Calendar() -- LoD
 
 -->>-- Class Button Container
 	for i = 1, MAX_CLASSES do -- allow for the total button
-		self:removeRegions(_G["CalendarClassButton"..i], {1})
+		local btn = _G["CalendarClassButton"..i]
+		self:removeRegions(btn, {1})
+		self:addButtonBorder{obj=btn}
 	end
 	self:keepFontStrings(CalendarClassTotalsButton)
 	-- Class Totals button, texture & size changes
-	if self.db.profile.TexturedDD then
-    	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.itTex)
-    	self:moveObject{obj=CalendarClassTotalsButtonBackgroundMiddle, x=2}
-    	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(20)
-    	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(20)
-    	CalendarClassTotalsButtonBackgroundMiddle:SetAlpha(1)
-    end
+	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.itTex)
+	self:moveObject{obj=CalendarClassTotalsButtonBackgroundMiddle, x=2}
+	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(20)
+	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(20)
+	CalendarClassTotalsButtonBackgroundMiddle:SetAlpha(1)
+	self:addButtonBorder{obj=CalendarClassTotalsButton, relTo=CalendarClassTotalsButtonBackgroundMiddle}
 
 -->>-- ContextMenus
-	self:applySkin{obj=CalendarContextMenu}
-	self:applySkin{obj=CalendarArenaTeamContextMenu}
-	self:applySkin{obj=CalendarInviteStatusContextMenu}
+	self:addSkinFrame{obj=CalendarContextMenu}
+	self:addSkinFrame{obj=CalendarArenaTeamContextMenu}
+	self:addSkinFrame{obj=CalendarInviteStatusContextMenu}
 
 end
 
@@ -198,16 +200,16 @@ function Skinner:MenuFrames()
 	self:addSkinFrame{obj=VideoOptionsFramePanelContainer, ft=ftype}
 	-- Resolution Panel
 	if not self.isBeta then
-        self:skinDropDown{obj=VideoOptionsResolutionPanelResolutionDropDown}
-        self:skinDropDown{obj=VideoOptionsResolutionPanelRefreshDropDown}
-        self:skinDropDown{obj=VideoOptionsResolutionPanelMultiSampleDropDown}
-        self:addSkinFrame{obj=VideoOptionsResolutionPanel, ft=ftype}
-    	-- Brightness subPanel
-    	self:addSkinFrame{obj=VideoOptionsResolutionPanelBrightness, ft=ftype}
-    	-- Effects Panel
-        self:addSkinFrame{obj=VideoOptionsEffectsPanel, ft=ftype}
-        self:addSkinFrame{obj=VideoOptionsEffectsPanelQuality, ft=ftype}
-        self:addSkinFrame{obj=VideoOptionsEffectsPanelShaders, ft=ftype}
+		self:skinDropDown{obj=VideoOptionsResolutionPanelResolutionDropDown}
+		self:skinDropDown{obj=VideoOptionsResolutionPanelRefreshDropDown}
+		self:skinDropDown{obj=VideoOptionsResolutionPanelMultiSampleDropDown}
+		self:addSkinFrame{obj=VideoOptionsResolutionPanel, ft=ftype}
+		-- Brightness subPanel
+		self:addSkinFrame{obj=VideoOptionsResolutionPanelBrightness, ft=ftype}
+		-- Effects Panel
+		self:addSkinFrame{obj=VideoOptionsEffectsPanel, ft=ftype}
+		self:addSkinFrame{obj=VideoOptionsEffectsPanelQuality, ft=ftype}
+		self:addSkinFrame{obj=VideoOptionsEffectsPanelShaders, ft=ftype}
 	else
 		for _, child in ipairs{Graphics_:GetChildren()} do
 			if child:GetName():find("DropDown") then
@@ -282,7 +284,8 @@ function Skinner:MenuFrames()
 	for i = 1, 2 do
 		local tabName = _G["InterfaceOptionsFrameTab"..i]
 		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=-4}
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, y1=2, x2=-6, y2=-4}
+		tabSF.up = true -- indicates should grow upwards
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -297,7 +300,7 @@ function Skinner:MenuFrames()
 		if oName and (oName:find("AceConfig") or oName:find("AceGUI"))then return end  -- ignore AceConfig/AceGUI objects
 
 		for _, child in ipairs{obj:GetChildren()} do
-		 	if Skinner:isDropDown(child) then Skinner:skinDropDown{obj=child}
+			if Skinner:isDropDown(child) then Skinner:skinDropDown{obj=child}
 			elseif child:IsObjectType("EditBox") then Skinner:skinEditBox{obj=child, regs={9}}
 			else
 				checkKids(child)
@@ -337,21 +340,28 @@ function Skinner:MacroUI()
 	self:skinEditBox{obj=MacroFrameText, noSkin=true}
 	self:addSkinFrame{obj=MacroFrameTextBackground, ft=ftype, y2=2}
 	self:addSkinFrame{obj=MacroFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, x2=-32, y2=71}
+	if self.modBtnBs then
+		-- add button borders
+		local btnName = "MacroFrameSelectedMacroButton"
+		_G[btnName]:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."Icon"]}
+		for i = 1, MAX_ACCOUNT_MACROS do
+			local btnName = "MacroButton"..i
+			_G[btnName]:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."Icon"], spbt=true}
+		end
+	end
 
 -->>-- Macro Popup Frame
 	self:skinEditBox{obj=MacroPopupEditBox}
 	self:skinScrollBar{obj=MacroPopupScrollFrame}
 	self:addSkinFrame{obj=MacroPopupFrame, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
-
-end
-
-function Skinner:BankFrame()
-	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
-	self.initialized.BankFrame = true
-
-	self:add2Table(self.uiKeys1, "BankFrame")
-
-	self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-25, y2=91}
+	-- add button borders
+	for i = 1, NUM_MACRO_ICONS_SHOWN do
+		local btnName = "MacroPopupButton"..i
+		_G[btnName]:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."Icon"], spbt=true}
+	end
 
 end
 
@@ -366,6 +376,11 @@ function Skinner:MailFrame()
 -->>--	Inbox Frame
 	for i = 1, INBOXITEMS_TO_DISPLAY do
 		self:keepFontStrings(_G["MailItem"..i])
+		local btn = _G["MailItem"..i.."Button"]
+		if self.modBtnBs then
+			btn:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=btn}
+		end
 	end
 	self:moveObject{obj=InboxTooMuchMail, y=-24} -- move icon down
 	self:skinButton{obj=InboxCloseButton, cb=true}
@@ -374,13 +389,13 @@ function Skinner:MailFrame()
 	self:keepFontStrings(SendMailFrame)
 	self:skinScrollBar{obj=SendMailScrollFrame}
 	for i = 1, ATTACHMENTS_MAX_SEND do
-		local aTex = self:getRegion(_G["SendMailAttachment"..i], 1)
-		aTex:SetTexture(self.esTex)
-		aTex:SetWidth(64)
-		aTex:SetHeight(64)
-		aTex:SetTexCoord(0, 1, 0, 1)
-		aTex:ClearAllPoints()
-		aTex:SetPoint("CENTER", aTex:GetParent())
+		local btn = _G["SendMailAttachment"..i]
+		if not self.modBtnBs then
+			self:resizeEmptyTexture(self:getRegion(btn, 1))
+		else
+			btn:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=btn}
+		end
 	end
 	self:skinEditBox{obj=SendMailNameEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
 	self:skinEditBox{obj=SendMailSubjectEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
@@ -393,7 +408,12 @@ function Skinner:MailFrame()
 	self:skinScrollBar{obj=OpenMailScrollFrame}
 	OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=OpenMailFrame, ft=ftype, kfs=true, x1=12, y1=-12, x2=-34, y2=70}
-
+	self:addButtonBorder{obj=OpenMailLetterButton, ibt=true}
+	self:addButtonBorder{obj=OpenMailMoneyButton, ibt=true}
+	for i = 1, ATTACHMENTS_MAX_RECEIVE do
+		local btn = _G["OpenMailAttachmentButton"..i]
+		self:addButtonBorder{obj=btn, ibt=true}
+	end
 -->>-- Invoice Frame Text fields
 	for _, v in pairs{"ItemLabel", "Purchaser", "BuyMode", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"} do
 		_G["OpenMailInvoice"..v]:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -414,106 +434,6 @@ function Skinner:MailFrame()
 
 end
 
-function Skinner:AuctionUI() -- LoD
-	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
-	self.initialized.AuctionUI = true
-
-	-- hide filter texture when filter is clicked
-	self:SecureHook("FilterButton_SetType", function(button, type, text, isLast)
-		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
-	end)
-
-	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=4}
-
--->>--	Browse Frame
-	for k, v in pairs{"Name", "MinLevel", "MaxLevel"} do
-		local obj = _G["Browse"..v]
-		self:skinEditBox{obj=obj, regs={9}}
-		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
-	end
-	self:skinDropDown{obj=BrowseDropDown}
-	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
-		local obj = _G["Browse"..v.."Sort"]
-		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
-	end
-	self:skinScrollBar{obj=BrowseFilterScrollFrame}
-	for i = 1, NUM_FILTERS_TO_DISPLAY do
-		self:keepRegions(_G["AuctionFilterButton"..i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:addSkinFrame{obj=_G["AuctionFilterButton"..i], ft=ftype, nb=true}
-	end
-	self:skinScrollBar{obj=BrowseScrollFrame}
-	for i = 1, NUM_BROWSE_TO_DISPLAY do
-		if _G["BrowseButton"..i].Orig then break end -- Auctioneer CompactUI loaded
-		self:keepFontStrings(_G["BrowseButton"..i])
-		if _G["BrowseButton"..i.."Highlight"] then _G["BrowseButton"..i.."Highlight"]:SetAlpha(1) end
-		_G["BrowseButton"..i.."ItemCount"]:SetDrawLayer("ARTWORK") -- fix for 3.3.3 bug
-	end
-	self:skinMoneyFrame{obj=BrowseBidPrice, moveSEB=true}
-
--->>--	Bid Frame
-	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
-		local obj = _G["Bid"..v.."Sort"]
-		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
-	end
-	for i = 1, NUM_BIDS_TO_DISPLAY do
-		self:keepFontStrings(_G["BidButton"..i])
-		if _G["BidButton"..i.."Highlight"] then _G["BidButton"..i.."Highlight"]:SetAlpha(1) end
-	end
-	self:skinScrollBar{obj=BidScrollFrame}
-	self:skinMoneyFrame{obj=BidBidPrice, moveSEB=true}
-
--->>--	Auctions Frame
-	local sTex = AuctionsItemButton:CreateTexture(nil, "BACKGROUND") -- add texture
-	sTex:SetTexture(self.esTex)
-	sTex:SetWidth(64)
-	sTex:SetHeight(64)
-	sTex:SetPoint("CENTER", AuctionsItemButton)
-	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
-		local obj = _G["Auctions"..v.."Sort"]
-		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
-	end
-	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
-		self:keepFontStrings(_G["AuctionsButton"..i])
-		if _G["AuctionsButton"..i.."Highlight"] then _G["AuctionsButton"..i.."Highlight"]:SetAlpha(1) end
-	end
-	self:skinScrollBar{obj=AuctionsScrollFrame}
-	self:getRegion(AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in code
-	self:skinEditBox{obj=AuctionsStackSizeEntry, regs={9}, noWidth=true}
-	self:skinEditBox{obj=AuctionsNumStacksEntry, regs={9}, noWidth=true}
-	self:skinDropDown{obj=PriceDropDown}
-	self:skinDropDown{obj=DurationDropDown}
-	AuctionProgressFrame:DisableDrawLayer("BACKGROUND")
-	AuctionProgressFrame:DisableDrawLayer("ARTWORK")
-	self:keepFontStrings(AuctionProgressBar)
-	self:moveObject{obj=_G["AuctionProgressBar".."Text"], y=-2}
-	self:glazeStatusBar(AuctionProgressBar, 0)
-	self:skinMoneyFrame{obj=StartPrice, moveSEB=true}
-	self:skinMoneyFrame{obj=BuyoutPrice, moveSEB=true}
-
--->>--	Auction DressUp Frame
-	self:keepRegions(AuctionDressUpFrame, {3, 4}) --N.B. regions 3 & 4 are the background
-	self:keepRegions(AuctionDressUpFrameCloseButton, {1}) -- N.B. region 1 is the button artwork
-	self:makeMFRotatable(AuctionDressUpModel)
-	self:moveObject{obj=AuctionDressUpFrame, x=6}
-	self:addSkinFrame{obj=AuctionDressUpFrame, ft=ftype, x1=-6, y1=-3, x2=-2}
--->>--	Tabs
-	for i = 1, AuctionFrame.numTabs do
-		local tabName = _G["AuctionFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		if i == AuctionFrame.selectedTab then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[AuctionFrame] = true
-
-end
-
 function Skinner:MainMenuBar()
 	if not self.db.profile.MainMenuBar.skin or self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
@@ -527,14 +447,14 @@ function Skinner:MainMenuBar()
 			self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 5), {ExhaustionLevelFillBar})
 		end
 		ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
- 		self:glazeStatusBar(ReputationWatchStatusBar, 0, ReputationWatchStatusBarBackground)
+		self:glazeStatusBar(ReputationWatchStatusBar, 0, ReputationWatchStatusBarBackground)
 	end
 
 	if IsAddOnLoaded("Dominos") then return end
 
 	ExhaustionTick:SetAlpha(0)
 	self:adjHeight{obj=MainMenuExpBar, adj=-2} -- shrink it so it moves up
-	self:adjHeight{obj=ExhaustionLevelFillBar, adj=-2} -- mirror the XP bar
+	self:adjHeight{obj=ExhaustionLevelFillBar, adj=self.isBeta and -1 or -2} -- mirror the XP bar
 	local yOfs = IsAddOnLoaded("DragonCore") and -47 or -4
 	if not self.isBeta then
 		self:keepRegions(MainMenuExpBar, {1, 6, 7}) -- N.B. region 1 is rested XP, 6 is background, 7 is the normal XP
@@ -546,35 +466,74 @@ function Skinner:MainMenuBar()
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
 	self:keepFontStrings(MainMenuBarArtFrame)
 	self:keepRegions(ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
-
-	local function toggleActionButtons()
-
-		if BonusActionBarFrame.mode == "show"
-		or (BonusActionBarFrame.mode == "none" and BonusActionBarFrame.state == "top")
-		then
-			for i = 1, NUM_ACTIONBAR_BUTTONS do
-				_G["ActionButton"..i]:SetAlpha(0)
-			end
-		else
-			for i = 1, NUM_ACTIONBAR_BUTTONS do
-				_G["ActionButton"..i]:SetAlpha(1)
-			end
+	-- add button borders
+	for i = 1, NUM_ACTIONBAR_BUTTONS do
+		local btnName = "ActionButton"..i
+		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
+		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
+		-- stop grid being shown
+		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
+	end
+	for i = 1, NUM_BONUS_ACTION_SLOTS do
+		local btnName = "BonusActionButton"..i
+		local btn = _G[btnName]
+		if self.isBeta then
+			btn.bg:SetAlpha(0) -- texture changed in the blizzard code
 		end
-
+		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
+		self:addButtonBorder{obj=btn, abt=true, sec=true}
+		-- stop grid being shown
+		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
+	end
+	-- Micro buttons
+	local microBtns = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "PVP", "LFD", "MainMenu", "Help"}
+	if not self.isBeta then
+		self:add2Table(microBtns, "Socials")
+	else
+		self:add2Table(microBtns, "Guild")
+	end
+	for _, v in pairs(microBtns) do
+		self:addButtonBorder{obj=_G[v.."MicroButton"], mb=self.isBeta and true or nil, ofs=0, y1=-21}
+	end
+	self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
+	-- Keyring button
+	self:addButtonBorder{obj=KeyRingButton}
+	-- Bag buttons
+	self:addButtonBorder{obj=MainMenuBarBackpackButton}
+	self:addButtonBorder{obj=CharacterBag0Slot}
+	self:addButtonBorder{obj=CharacterBag1Slot}
+	self:addButtonBorder{obj=CharacterBag2Slot}
+	self:addButtonBorder{obj=CharacterBag3Slot}
+	-- MultiBars
+	for _, v in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
+		for i = 1, NUM_MULTIBAR_BUTTONS do
+			local btnName = "MultiBar"..v.."Button"..i
+			local btn = _G[btnName]
+			_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
+			self:addButtonBorder{obj=btn, abt=true, sec=true}
+			-- stop grid being shown
+			self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
+		end
 	end
 
 -->>-- Bonus Action Bar Frame
-	self:keepFontStrings(BonusActionBarFrame)
-	if BonusActionBarFrame.mode == "show" then
-		toggleActionButtons()
+	local function toggleActionButtons(show)
+
+		for i = 1, NUM_ACTIONBAR_BUTTONS do
+			_G["ActionButton"..i]:SetAlpha(show and 0 or 1)
+		end
+
 	end
+	self:keepFontStrings(BonusActionBarFrame)
+	if BonusActionBarFrame:IsShown() then toggleActionButtons(true) end
 	-- hook these to hide/show ActionButtons when shapeshifting (Druid/Rogue)
 	self:SecureHook("ShowBonusActionBar", function(this)
-		toggleActionButtons()
+		toggleActionButtons(true)
 	end)
 	self:SecureHook("HideBonusActionBar", function(this)
 		toggleActionButtons()
 	end)
+
 -->>-- Shapeshift Bar Frame
 	self:keepFontStrings(ShapeshiftBarFrame)
 	-- skin shapeshift buttons
@@ -582,10 +541,9 @@ function Skinner:MainMenuBar()
 		local ssBtn = _G["ShapeshiftButton"..i]
 		if not self.isBeta then
 			self:removeRegions(ssBtn, {6, 7, 8}) -- remove textures
-		else
-			ssBtn:GetNormalTexture():SetAlpha(0)
 		end
-		self:addSkinButton{obj=ssBtn, parent=ssBtn}
+		-- add button borders
+		self:addButtonBorder{obj=ssBtn, abt=true, sec=true}
 	end
 
 -->>-- Possess Bar Frame
@@ -593,6 +551,11 @@ function Skinner:MainMenuBar()
 
 -->>-- Pet Action Bar Frame
 	self:keepFontStrings(PetActionBarFrame)
+	-- add button borders
+	for i = 1, NUM_PET_ACTION_SLOTS do
+		local btnName = "PetActionButton"..i
+		self:addButtonBorder{obj=_G[btnName], pabt=true, sec=true}
+	end
 
 -->>-- Shaman's Totem Frame
 	self:addSkinFrame{obj=MultiCastFlyoutFrame, kfs=true, ft=ftype, y1=-4, y2=-4}
@@ -661,8 +624,12 @@ function Skinner:GuildBankUI() -- LoD
 
 -->>--	Main Frame
 	GuildBankEmblemFrame:Hide()
-	for i = 1, 7 do
-		_G["GuildBankColumn"..i.."Background"]:SetAlpha(0)
+	for i = 1, NUM_GUILDBANK_COLUMNS do
+		local col = "GuildBankColumn"..i
+		_G[col.."Background"]:SetAlpha(0)
+		for j = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
+			self:addButtonBorder{obj=_G[col.."Button"..j], ibt=true}
+		end
 	end
 	self:addSkinFrame{obj=GuildBankFrame, ft=ftype, kfs=true, hdr=true, y1=-11, y2=1}
 
@@ -709,7 +676,7 @@ function Skinner:Nameplates()
 
 		for _, child in pairs{WorldFrame:GetChildren()} do
 			if child:GetNumChildren() == 2 and child:GetNumRegions() == 11 then -- Nameplate frame
--- 				Skinner:ShowInfo(child, true)
+--				Skinner:ShowInfo(child, true)
 				local shieldReg
 				for k, reg in ipairs{child:GetRegions()} do -- process in key order
 					-- region 1 is the flash texture, toggled using aggro warning option
@@ -724,7 +691,7 @@ function Skinner:Nameplates()
 				end
 				-- skin both status bars
 				for _, grandchild in pairs{child:GetChildren()} do
-					if not Skinner.sbGlazed[grandchild]	then
+					if not Skinner.sbGlazed[grandchild] then
 --						Skinner:ShowInfo(grandchild, true)
 						Skinner:glazeStatusBar(grandchild, 0)
 					end
@@ -796,10 +763,10 @@ function Skinner:DebugTools() -- LoD
 	self:addSkinFrame{obj=ScriptErrorsFrame, kfs=true, ft=ftype, x1=1, y1=-2, x2=-1, y2=4}
 
 	if self.db.profile.Tooltips.skin then
-        if self.db.profile.Tooltips.style == 3 then
-            self:add2Table(self.ttList, "FrameStackTooltip")
-            self:add2Table(self.ttList, "EventTraceTooltip")
-        end
+		if self.db.profile.Tooltips.style == 3 then
+			self:add2Table(self.ttList, "FrameStackTooltip")
+			self:add2Table(self.ttList, "EventTraceTooltip")
+		end
 		self:HookScript(FrameStackTooltip, "OnUpdate", function(this)
 			self:skinTooltip(this)
 		end)
@@ -836,7 +803,15 @@ function Skinner:LFDFrame()
 	LFDQueueFrameLayout:SetAlpha(0)
 	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
 	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
-	LFDQueueFrameRandomScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
+	self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
+		for i = 1, 5 do
+			local btnName = "LFDQueueFrameRandomScrollFrameChildFrameItem"..i
+			if _G[btnName] then
+				_G[btnName.."NameFrame"]:SetTexture(nil)
+				self:addButtonBorder{obj=_G[btnName], libt=true}
+			end
+		end
+	end)
 	-- Specific List subFrame
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		local btn = "LFDQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
@@ -852,9 +827,10 @@ function Skinner:LFRFrame()
 
 	self:add2Table(self.uiKeys1, "LFRFrame")
 
--->>-- LFR Parent Frame/ Queue Frame
-	LFRQueueFrameLayout:SetAlpha(0)
+-->>-- LFR Parent Frame
 	self:addSkinFrame{obj=LFRParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
+-->>-- LFR Queue Frame
+	LFRQueueFrameLayout:SetAlpha(0)
 	-- Specific List subFrame
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
 		local btn = "LFRQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
@@ -955,6 +931,17 @@ if Skinner.isBeta then
 		GuildInviteFrame:DisableDrawLayer("ARTWORK")
 		GuildInviteFrame:DisableDrawLayer("OVERLAY")
 		self:addSkinFrame{obj=GuildInviteFrame, ft=ftype}
+
+	end
+
+	function Skinner:GhostFrame()
+		if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
+		self.initialized.GhostFrame = true
+
+		self:add2Table(self.uiKeys1, "GhostFrame")
+
+		self:addButtonBorder{obj=GhostFrameContentsFrame, relTo=GhostFrameContentsFrameIcon}
+		self:addSkinFrame{obj=GhostFrame, ft=ftype, kfs=true}
 
 	end
 

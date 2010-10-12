@@ -10,7 +10,7 @@ local defaults = {
 		bottom = 64,
 		left = 128,
 		right = 128,
-		colour = {r = 0, g = 0,	b = 0, a = 1},
+		colour = {r = 0, g = 0, b = 0, a = 1},
 		XRes = 768,
 		YRes = 1050,
 	}

@@ -42,14 +42,6 @@ end
 
 function Skinner:PaperDollFrame()
 
-	if self.isBeta then
-		for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
-			child:DisableDrawLayer("BACKGROUND")
-		end
-		CharacterModelFrame:DisableDrawLayer("BACKGROUND")
-		CharacterModelFrame:DisableDrawLayer("BORDER")
-		CharacterModelFrame:DisableDrawLayer("OVERLAY")
-	end
 	self:keepFontStrings(PaperDollFrame)
 	self:skinDropDown{obj=PlayerTitleFrame}
 	self:moveObject{obj=PlayerTitleFrameButton, y=1}
@@ -57,16 +49,32 @@ function Skinner:PaperDollFrame()
 	self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}
 	self:makeMFRotatable(CharacterModelFrame)
 	if not self.isBeta then
-	   self:keepFontStrings(CharacterAttributesFrame)
+		self:keepFontStrings(CharacterAttributesFrame)
+		self:skinDropDown{obj=PlayerStatFrameLeftDropDown, moveTex=true}
+		self:skinDropDown{obj=PlayerStatFrameRightDropDown, moveTex=true}
+		self:removeRegions(CharacterAmmoSlot, {1})
+		if self.modBtnBs then
+			for _, child in ipairs{PaperDollFrame:GetChildren()} do
+				if child:IsObjectType("Button") and child:GetName():find("Slot") then
+					self:addButtonBorder{obj=child}
+				end
+			end
+		end
 	else
+		for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
+			child:DisableDrawLayer("BACKGROUND")
+			if self.modBtnBs then
+				if child:IsObjectType("Button") and child:GetName():find("Slot") then
+					self:addButtonBorder{obj=child}
+				end
+			end
+		end
+		CharacterModelFrame:DisableDrawLayer("BACKGROUND")
+		CharacterModelFrame:DisableDrawLayer("BORDER")
+		CharacterModelFrame:DisableDrawLayer("OVERLAY")
 		CharacterStatsPane:DisableDrawLayer("ARTWORK")
 		self:skinSlider{obj=CharacterStatsPaneScrollBar, size=3}
 	end
-    if not self.isBeta then
-    	self:skinDropDown{obj=PlayerStatFrameLeftDropDown, moveTex=true}
-	    self:skinDropDown{obj=PlayerStatFrameRightDropDown, moveTex=true}
-	    self:removeRegions(CharacterAmmoSlot, {1})
-    end
 	-- hide ItemFlyout background textures
 	local bA = PaperDollFrameItemFlyout.buttonFrame
 	self:addSkinFrame{obj=bA, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
@@ -76,6 +84,7 @@ function Skinner:PaperDollFrame()
 			bA["bg" .. i]:SetAlpha(0)
 		end
 	end)
+	self:addButtonBorder{obj=GearManagerToggleButton, x1=1, x2=-1}
 
 end
 
@@ -83,11 +92,18 @@ function Skinner:PetPaperDollFrame()
 
 -->>-- Pet Frame
 	if not self.isBeta then
-	   self:keepFontStrings(PetPaperDollFrame)
-	   self:skinAllButtons{obj=PetPaperDollFrame}
-	   self:keepFontStrings(PetAttributesFrame)
+		self:keepFontStrings(PetPaperDollFrame)
+		self:skinAllButtons{obj=PetPaperDollFrame}
+		self:keepFontStrings(PetAttributesFrame)
+		if self.modBtnBs then
+			for i = 1, NUM_COMPANIONS_PER_PAGE do
+				local btn = _G["CompanionButton"..i]
+				btn:GetDisabledTexture():SetAlpha(0)
+				self:addButtonBorder{obj=btn}
+			end
+		end
 	else
-		PetPaperDollPetModelBg:SetAlpha(0) -- changed in code
+		PetPaperDollPetModelBg:SetAlpha(0) -- changed in blizzard code
 		PetModelFrameShadowOverlay:Hide()
 	end
 	self:removeRegions(PetPaperDollFrameExpBar, {1, 2})
@@ -96,13 +112,14 @@ function Skinner:PetPaperDollFrame()
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetPaperDollPetInfo)
 
-    if not self.isBeta then
-        -->>-- Companion Frame
-    	self:keepFontStrings(PetPaperDollFrameCompanionFrame)
-    	self:makeMFRotatable(CompanionModelFrame)
-    end
+	if not self.isBeta then
+		-->>-- Companion Frame
+		self:keepFontStrings(PetPaperDollFrameCompanionFrame)
+		self:makeMFRotatable(CompanionModelFrame)
+	end
 -->>-- Tabs
 	self:skinFFToggleTabs("PetPaperDollFrameTab")
+
 
 end
 
@@ -137,32 +154,32 @@ end
 function Skinner:SkillFrame()
 
 	if not self.isBeta then
-    	if self.modBtns then
-    		-- hook to manage changes to button textures
-    		self:SecureHook("SkillFrame_UpdateSkills", function()
-    			for i = 1, SKILLS_TO_DISPLAY do
-    				self:checkTex(_G["SkillTypeLabel"..i])
-    			end
-    			self:checkTex(SkillFrameCollapseAllButton)
-    		end)
-    	end
+		if self.modBtns then
+			-- hook to manage changes to button textures
+			self:SecureHook("SkillFrame_UpdateSkills", function()
+				for i = 1, SKILLS_TO_DISPLAY do
+					self:checkTex(_G["SkillTypeLabel"..i])
+				end
+				self:checkTex(SkillFrameCollapseAllButton)
+			end)
+		end
 	   self:keepFontStrings(SkillFrame)
 	   self:skinAllButtons{obj=SkillFrame}
 	   self:removeRegions(SkillFrameExpandButtonFrame)
 	   self:skinScrollBar{obj=SkillListScrollFrame}
-    	-- m/p buttons
-    	for i = 1, SKILLS_TO_DISPLAY do
-    		local bar = "SkillRankFrame"..i
-    		_G[bar.."BorderNormal"]:SetAlpha(0)
-    		self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
-    		self:skinButton{obj=_G["SkillTypeLabel"..i], mp=true}
-    	end
-    	self:skinButton{obj=SkillFrameCollapseAllButton, mp=true}
-    	-- detail frame
-    	self:skinScrollBar{obj=SkillDetailScrollFrame}
-    	local bar = "SkillDetailStatusBar"
-    	_G[bar.."Border"]:SetAlpha(0)
-    	self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
+		-- m/p buttons
+		for i = 1, SKILLS_TO_DISPLAY do
+			local bar = "SkillRankFrame"..i
+			_G[bar.."BorderNormal"]:SetAlpha(0)
+			self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
+			self:skinButton{obj=_G["SkillTypeLabel"..i], mp=true}
+		end
+		self:skinButton{obj=SkillFrameCollapseAllButton, mp=true}
+		-- detail frame
+		self:skinScrollBar{obj=SkillDetailScrollFrame}
+		local bar = "SkillDetailStatusBar"
+		_G[bar.."Border"]:SetAlpha(0)
+		self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
 	end
 
 end
@@ -178,23 +195,23 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 	self:skinAllButtons{obj=TokenFrame}
 	self:skinScrollBar{obj=TokenFrameContainer}
 
-    if not self.isBeta then
+	if not self.isBeta then
 		-- hide the close button
 		   self:getChild(TokenFrame, 4):Hide()
-    	-- remove header textures
-    	for i = 1, #TokenFrameContainer.buttons do
-    		TokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
-    		TokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
-    	end
+		-- remove header textures
+		for i = 1, #TokenFrameContainer.buttons do
+			TokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
+			TokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
+		end
 	else
 		self:SecureHookScript(TokenFrame, "OnShow", function(this)
-	    	-- remove header textures
-	    	for i = 1, #TokenFrameContainer.buttons do
+			-- remove header textures
+			for i = 1, #TokenFrameContainer.buttons do
 				self:removeRegions(TokenFrameContainer.buttons[i], {6, 7, 8})
-	    	end
+			end
 			self:Unhook(TokenFrame, "OnShow")
 		end)
-    end
+	end
 -->>-- Popup Frame
 	self:addSkinFrame{obj=TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
 
@@ -207,39 +224,39 @@ function Skinner:PVPFrame()
 	if not self.isBeta then
 		self:add2Table(self.charKeys1, "PVPFrame")
 
-        self:keepFontStrings(PVPFrame)
-        self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
-        -->>-- PVP Battleground Frame
-    	self:keepFontStrings(PVPBattlegroundFrame)
-    	self:skinSlider{obj=PVPBattlegroundFrameInfoScrollFrameScrollBar}
-    	PVPBattlegroundFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-    	PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:keepFontStrings(PVPFrame)
+		self:addSkinFrame{obj=PVPParentFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+	-->>-- PVP Battleground Frame
+		self:keepFontStrings(PVPBattlegroundFrame)
+		self:skinSlider{obj=PVPBattlegroundFrameInfoScrollFrameScrollBar}
+		PVPBattlegroundFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+		PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
 		PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
 		PVPBattlegroundFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
-    	self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
-    	self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
-    -->>-- PVP Team Details Frame
-    	self:skinDropDown{obj=PVPDropDown}
-    	self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
-    	self:addSkinFrame{obj=PVPTeamDetails, ft=ftype, kfs=true, x1=8, y1=-2, x2=-2, y2=12}
-    -->>-- Tabs
-    	for i = 1, PVPParentFrame.numTabs do
-    		local tabName = _G["PVPParentFrameTab"..i]
-    		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-    		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-    		if i == 1 then
-    			if self.isTT then self:setActiveTab(tabSF) end
-    		else
-    			if self.isTT then self:setInactiveTab(tabSF) end
-    		end
-    	end
-    	self.tabFrames[PVPParentFrame] = true
+		self:skinScrollBar{obj=PVPBattlegroundFrameTypeScrollFrame}
+		self:moveObject{obj=PVPBattlegroundFrameCancelButton, x=-2}
+		-->>-- PVP Team Details Frame
+		self:skinDropDown{obj=PVPDropDown}
+		self:skinFFColHeads("PVPTeamDetailsFrameColumnHeader", 5)
+		self:addSkinFrame{obj=PVPTeamDetails, ft=ftype, kfs=true, x1=8, y1=-2, x2=-2, y2=12}
+		-->>-- Tabs
+		for i = 1, PVPParentFrame.numTabs do
+			local tabName = _G["PVPParentFrameTab"..i]
+			self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
+			if i == 1 then
+				if self.isTT then self:setActiveTab(tabSF) end
+			else
+				if self.isTT then self:setInactiveTab(tabSF) end
+			end
+		end
+		self.tabFrames[PVPParentFrame] = true
 	else
 		PVPFrame.topInset:DisableDrawLayer("BACKGROUND")
 		PVPFrame.topInset:DisableDrawLayer("BORDER")
-		self:glazeStatusBar(PVPFrameConquestBar, 0,  PVPFrameConquestBarBG)
+		self:glazeStatusBar(PVPFrameConquestBar, 0,	 PVPFrameConquestBarBG)
 		PVPFrameConquestBarBorder:Hide()
-        self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
+		self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
 		-- Magic Button textures
 		for _, v in pairs{"Left", "Right"} do
 			local btn = "PVPFrame"..v.."Button"
@@ -277,21 +294,21 @@ function Skinner:PVPFrame()
 		self:addSkinFrame{obj=PVPFrame.panel3.invalidTeam, ft=ftype, kfs=true}
 		self:addSkinFrame{obj=PVPFrame.lowLevelFrame, ft=ftype, kfs=true}
 
-    -->>-- Tabs
-    	for i = 1, PVPFrame.numTabs do
-    		local tabName = _G["PVPFrameTab"..i]
-    		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-    		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-    		if i == 1 then
-    			if self.isTT then self:setActiveTab(tabSF) end
-    		else
-    			if self.isTT then self:setInactiveTab(tabSF) end
-    		end
-    	end
-    	self.tabFrames[PVPFrame] = true
+	-->>-- Tabs
+		for i = 1, PVPFrame.numTabs do
+			local tabName = _G["PVPFrameTab"..i]
+			self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
+			if i == 1 then
+				if self.isTT then self:setActiveTab(tabSF) end
+			else
+				if self.isTT then self:setInactiveTab(tabSF) end
+			end
+		end
+		self.tabFrames[PVPFrame] = true
 	-->>-- Static Popup Special frame
 		self:addSkinFrame{obj=PVPFramePopup, ft=ftype, kfs=true, x1=9, y1=-9, x2=-7, y2=9}
-    end
+	end
 
 end
 
@@ -302,23 +319,42 @@ function Skinner:PetStableFrame()
 	self:add2Table(self.charKeys1, "PetStableFrame")
 
 	self:makeMFRotatable(PetStableModel)
-	-- up the Frame level otherwise the tooltip doesn't work
+
 	if not self.isBeta then
-		RaiseFrameLevel(PetStablePetInfo)
+		RaiseFrameLevel(PetStablePetInfo) -- up the Frame level otherwise the tooltip doesn't work
+		local btnName = "PetStableCurrentPet"
+		_G[btnName.."Background"]:SetAlpha(0)
+		self:addButtonBorder{obj=_G[btnName], ibt=self.isBeta and true or nil}
+		for i = 1, 4 do
+			local btnName = "PetStableStabledPet"..i
+			_G[btnName.."Background"]:SetAlpha(0)
+			self:addButtonBorder{obj=_G[btnName], ibt=self.isBeta and true or nil}
+		end
 		self:addSkinFrame{obj=PetStableFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 	else
 		PetStableFrameModelBg:Hide()
 		PetStableModelShadow:Hide()
 		PetStableFrame.LeftInset:DisableDrawLayer("BORDER")
 		PetStableActiveBg:Hide()
+		self:addButtonBorder{obj=PetStablePetInfo, relTo=PetStableSelectedPetIcon}
 		for i = 1, NUM_PET_ACTIVE_SLOTS do
-			_G["PetStableActivePet"..i.."Border"]:Hide()
-			_G["PetStableActivePet"..i.."Background"]:Hide()
-			self:addSkinButton{obj=_G["PetStableActivePet"..i], parent=_G["PetStableActivePet"..i]}
+			local btn = _G["PetStableActivePet"..i]
+			btn.Border:Hide()
+			if not self.modBtnBs then
+				self:resizeEmptyTexture(btn.Background)
+			else
+				btn.Background:Hide()
+				self:addButtonBorder{obj=btn}
+			end
 		end
 		for i = 1, NUM_PET_STABLE_SLOTS do
-			_G["PetStableStabledPet"..i.."Background"]:Hide()
-			self:addSkinButton{obj=_G["PetStableStabledPet"..i], parent=_G["PetStableStabledPet"..i]}
+			local btn = _G["PetStableStabledPet"..i]
+			if not self.modBtnBs then
+				self:resizeEmptyTexture(btn.Background)
+			else
+				btn.Background:Hide()
+				self:addButtonBorder{obj=btn}
+			end
 		end
 		PetStableFrame.BottomInset:DisableDrawLayer("BORDER")
 		PetStableFrameStableBg:Hide()
@@ -340,7 +376,7 @@ function Skinner:SpellBookFrame()
 				local tabName = _G["SpellBookFrameTabButton"..i]
 				local tabSF = self.skinFrame[tabName]
 				if tabName.bookType == bookType then
-					self:setActiveTab(tabSF)
+					self:setActiveTab(tabSF, true)
 				else
 					self:setInactiveTab(tabSF)
 				end
@@ -349,13 +385,13 @@ function Skinner:SpellBookFrame()
 	end
 
 	if not self.isBeta then
-        self:SecureHook("SpellBookFrame_Update", function(showing)
-    		if SpellBookFrame.bookType ~= INSCRIPTION then
-    			SpellBookTitleText:Show()
-    		else
-    			SpellBookTitleText:Hide() -- hide Inscriptions title
-    		end
-	    end)
+		self:SecureHook("SpellBookFrame_Update", function(showing)
+			if SpellBookFrame.bookType ~= INSCRIPTION then
+				SpellBookTitleText:Show()
+			else
+				SpellBookTitleText:Hide() -- hide Inscriptions title
+			end
+		end)
 		self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=70}
 	else
 		self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
@@ -370,7 +406,8 @@ function Skinner:SpellBookFrame()
 			if this.TrainFrame and this.TrainFrame:IsShown() then -- see Trainer
 				this.SpellName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 				this.SpellSubName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
-			else
+			end
+			if this.SpellName then
 				this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
 				this.SpellSubName:SetTextColor(self.BTr, self.BTg, self.BTb)
 			end
@@ -386,8 +423,10 @@ function Skinner:SpellBookFrame()
 			_G[prof].missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 			_G[prof].button1:DisableDrawLayer("BACKGROUND")
 			_G[prof].button1.subSpellString:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=_G[prof].button1, sec=true}
 			_G[prof].button2:DisableDrawLayer("BACKGROUND")
 			_G[prof].button2.subSpellString:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=_G[prof].button2, sec=true}
 			_G[prof.."StatusBar"]:DisableDrawLayer("BACKGROUND")
 		end
 		-- Secondary professions
@@ -397,8 +436,10 @@ function Skinner:SpellBookFrame()
 			_G[sec].missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 			_G[sec].button1:DisableDrawLayer("BACKGROUND")
 			_G[sec].button1.subSpellString:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=_G[sec].button1, sec=true}
 			_G[sec].button2:DisableDrawLayer("BACKGROUND")
 			_G[sec].button2.subSpellString:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=_G[sec].button2, sec=true}
 			_G[sec.."StatusBar"]:DisableDrawLayer("BACKGROUND")
 		end
 	-->>-- Companions/Mounts Panel
@@ -410,35 +451,51 @@ function Skinner:SpellBookFrame()
 			btn.Background:Hide()
 			btn.TextBackground:Hide()
 			btn.IconTextureBg:Hide()
+			self:addButtonBorder{obj=btn, sec=true}
 		end
 	end
 	-- colour the spell name text
 	for i = 1, SPELLS_PER_PAGE do
+		local btnName = "SpellButton"..i
 		if not self.isBeta then
-			_G["SpellButton"..i.."Background"]:SetAlpha(0)
-			_G["SpellButton"..i.."SpellName"]:SetTextColor(self.HTr, self.HTg, self.HTb)
-			_G["SpellButton"..i.."SubSpellName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+			_G[btnName.."Background"]:SetAlpha(0)
+			_G[btnName.."SpellName"]:SetTextColor(self.HTr, self.HTg, self.HTb)
+			_G[btnName.."SubSpellName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=_G[btnName], ibt=self.isBeta and true or nil, sec=true}
 		else
-			local btn = _G["SpellButton"..i]
+			local btn = _G[btnName]
 			btn:DisableDrawLayer("BACKGROUND")
 			btn:DisableDrawLayer("BORDER")
-			btn:DisableDrawLayer("OVERLAY")
+			_G[btnName.."SlotFrame"]:SetAlpha(0)
+			btn.UnlearnedFrame:SetAlpha(0)
+			btn.TrainFrame:SetAlpha(0)
+			self:addButtonBorder{obj=_G[btnName], sec=true}
 		end
 	end
+-->>-- Tabs (side)
+	for i = 1, MAX_SKILLLINE_TABS do
+		local tabName = _G["SpellBookSkillLineTab"..i]
+		self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
+		self:addButtonBorder{obj=tabName}
+	end
 -->>-- Tabs (bottom)
+	local x1, y1, x2, y2
+	if self.isPTR then
+		x1, y1, x2, y2 = 8, 1, -8, 2
+	elseif self.isBeta then
+		x1, y1, x2, y2 = 6, 1, -6, 2
+	else
+		x1, y1, x2, y2 = 14, -16, -10, 18
+	end
 	for i = 1, self.isBeta and 5 or 3 do -- actually only 2, but 3 exist in xml file
 		local tabName = _G["SpellBookFrameTabButton"..i]
-		self:keepRegions(tabName, {1, 3}) -- N.B. region 1 is the Text, 3 is the highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=14, y1=-16, x2=-10, y2=18}
+		self:keepRegions(tabName, self.isBeta and {7, 8} or {1, 3}) -- N.B. region 1 is the Text, 3 is the highlight
+		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=x1, y1=y1, x2=x2, y2=y2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
-	end
--->>-- Tabs (side)
-	for i = 1, MAX_SKILLLINE_TABS do
-		self:removeRegions(_G["SpellBookSkillLineTab"..i], {1}) -- N.B. other regions are icon and highlight
 	end
 
 end
@@ -460,6 +517,7 @@ function Skinner:GlyphUI()
 		GlyphFrame.sideInset:DisableDrawLayer("BACKGROUND")
 		GlyphFrame.sideInset:DisableDrawLayer("BORDER")
 		self:skinEditBox{obj=GlyphFrameSearchBox, regs={9}}
+		self:moveObject{obj=GlyphFrameSearchBox.searchIcon, x=3}
 		self:skinDropDown{obj=GlyphFrameFilterDropDown}
 		for i = 1, #GLYPH_STRING do
 			self:removeRegions(_G["GlyphFrameHeader"..i], {1, 2, 3})
@@ -467,11 +525,14 @@ function Skinner:GlyphUI()
 		end
 		-- remove Glyph item textures
 		for i = 1, #GlyphFrame.scrollFrame.buttons do
-			local btn = GlyphFrame.scrollFrame.buttons[i]:GetNormalTexture():SetAlpha(0)
-			local btn = GlyphFrame.scrollFrame.buttons[i].selectedTex:SetAlpha(0)
-			local btn = GlyphFrame.scrollFrame.buttons[i].disabledBG:SetAlpha(0)
+			local btn = GlyphFrame.scrollFrame.buttons[i]
+			btn:GetNormalTexture():SetAlpha(0)
+			btn.selectedTex:SetAlpha(0)
+			btn.disabledBG:SetAlpha(0)
+			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
 		self:skinSlider{obj=GlyphFrameScrollFrameScrollBar, size=2}
+		self:addButtonBorder{obj=GlyphFrameClearInfoFrame}
 	end
 
 end
@@ -507,17 +568,29 @@ function Skinner:TalentUI() -- LoD
 		self:keepFontStrings(PlayerTalentFramePreviewBar)
 		self:keepFontStrings(PlayerTalentFramePreviewBarFiller)
 		self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, x1=10, y1=-12, x2=-31, y2=71}
-
+		if self.modBtnBs then
+			-- add button borders
+			for i = 1, MAX_NUM_TALENTS do
+				local btnName = "PlayerTalentFrameTalent"..i
+				_G[btnName.."Slot"]:SetAlpha(0)
+				self:addButtonBorder{obj=_G[btnName], tibt=true}
+			end
+		end
 	else
 		self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 	-->>-- Talents Frame
 		for i = 1, 3 do
-			local panel = _G["PlayerTalentFramePanel"..i]
+			local panelName = "PlayerTalentFramePanel"..i
+			local panel = _G[panelName]
 			-- Summary panel(s)
 			panel.Summary.IconBorder:SetAlpha(0) -- so linked item is still position properly
-			_G["PlayerTalentFramePanel"..i.."SummaryActiveBonus1"].IconBorder:Hide()
+			local sAB1 = panelName.."SummaryActiveBonus1"
+			_G[sAB1].IconBorder:Hide()
+			self:addButtonBorder{obj=_G[sAB1], relTo=_G[sAB1].Icon}
 			for j = 1, 5 do
-				_G["PlayerTalentFramePanel"..i.."SummaryBonus"..j].IconBorder:Hide()
+				local sB = panelName.."SummaryBonus"..j
+				_G[sB].IconBorder:Hide()
+				self:addButtonBorder{obj=_G[sB], es=12, relTo=_G[sB].Icon}
 			end
 			self:skinScrollBar{obj=panel.Summary.Description}
 			-- talent info panel(s)
@@ -527,7 +600,19 @@ function Skinner:TalentUI() -- LoD
 			panel.HeaderIcon:DisableDrawLayer("ARTWORK")
 			panel.HeaderIcon.PointsSpentBgGold:SetAlpha(0)
 			panel.HeaderIcon.PointsSpentBgSilver:SetAlpha(0)
-			self:moveObject{obj=panel.HeaderIcon.PointsSpent, x=8}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=panel.HeaderIcon, relTo=panel.HeaderIcon.Icon}
+				panel.HeaderIcon.PointsSpent:SetParent(panel.HeaderIcon.sknrBdr) -- reparent points spent
+				panel.HeaderIcon.LockIcon:SetParent(panel.HeaderIcon.sknrBdr) -- reparent lock icon
+				-- add button borders
+				for i = 1, MAX_NUM_TALENTS do
+					self:addButtonBorder{obj=_G[panelName.."Talent"..i], tibt=true}
+				end
+				RaiseFrameLevel(_G[panelName.."Arrow"]) -- so arrows appear above border
+				RaiseFrameLevel(panel.InactiveShadow) -- so arrows appear below the InactiveShadow
+				RaiseFrameLevel(panel.Summary) -- so summary panel appears above the InactiveShadow
+				RaiseFrameLevel(panel.SelectTreeButton) -- so button can be clicked
+			end
 		end
 		-- Magic Button textures
 		for _, v in pairs{"Reset", "Learn", "ToggleSummaries"} do
@@ -536,6 +621,7 @@ function Skinner:TalentUI() -- LoD
 			if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 		end
 	-->>-- Pet Talents Panel
+		PlayerTalentFramePetPanel:DisableDrawLayer("BORDER")
 		PlayerTalentFramePetModelBg:Hide()
 		PlayerTalentFramePetShadowOverlay:Hide()
 		self:makeMFRotatable(PlayerTalentFramePetModel)
@@ -544,8 +630,16 @@ function Skinner:TalentUI() -- LoD
 		PlayerTalentFramePetPanel.HeaderBorder:Hide()
 		PlayerTalentFramePetPanel.HeaderIcon.Border:Hide()
 		PlayerTalentFramePetPanel.HeaderIcon.PointsSpentBgGold:Hide()
-		PlayerTalentFramePetPanel:DisableDrawLayer("BORDER")
 		self:moveObject{obj=PlayerTalentFramePetPanel.HeaderIcon.PointsSpent, x=8}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=PlayerTalentFramePetInfo, relTo=PlayerTalentFramePetIcon}
+			self:addButtonBorder{obj=PlayerTalentFramePetPanel.HeaderIcon}
+			for i = 1, 24 do
+				local btnName = "PlayerTalentFramePetPanelTalent"..i
+				local btn = _G[btnName]
+				self:addButtonBorder{obj=btn, tibt=true}
+			end
+		end
 	-->>-- Glyph Panel
 	-- see GlyphUI above
 	-->>-- Glow boxes
@@ -557,6 +651,7 @@ function Skinner:TalentUI() -- LoD
 	for i = 1, self.isBeta and 2 or 3 do
 		local tabName = _G["PlayerSpecTab"..i]
 		self:removeRegions(tabName, {1}) -- N.B. other regions are icon and highlight
+		self:addButtonBorder{obj=tabName}
 	end
 -->>-- Tabs (bottom)
 	for i = 1, PlayerTalentFrame.numTabs do
@@ -565,7 +660,7 @@ function Skinner:TalentUI() -- LoD
 		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 		-- panel opens to last access tab not the first one every time
 		if i == PlayerTalentFrame.selectedTab then
-			if self.isTT then self:setActiveTab(tabSF) end
+			if self.isTT then self:setActiveTab(tabSF, true) end -- done here as Beta only has 1 Tab atm
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
@@ -664,9 +759,11 @@ function Skinner:AchievementUI() -- LoD
 			btnObj:DisableDrawLayer("BACKGROUND")
 			-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
 			btnObj:DisableDrawLayer("ARTWORK")
+			if btnObj.plusMinus then btnObj.plusMinus:SetAlpha(0) end
 			btnObj.icon:DisableDrawLayer("BACKGROUND")
 			btnObj.icon:DisableDrawLayer("BORDER")
 			btnObj.icon:DisableDrawLayer("OVERLAY")
+			self:addButtonBorder{obj=btnObj.icon, x1=4, y1=-1, x2=-4, y2=6}
 			-- hook this to handle description text colour changes
 			self:SecureHook(btnObj, "Saturate", function(this)
 				this.description:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -686,10 +783,12 @@ function Skinner:AchievementUI() -- LoD
 				-- Friend
 				btnObj = _G[btnName:gsub("Player", "Friend")]
 				btnObj:DisableDrawLayer("BACKGROUND")
+				-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
 				btnObj:DisableDrawLayer("ARTWORK")
 				btnObj.icon:DisableDrawLayer("BACKGROUND")
 				btnObj.icon:DisableDrawLayer("BORDER")
 				btnObj.icon:DisableDrawLayer("OVERLAY")
+				self:addButtonBorder{obj=btnObj.icon, x1=4, y1=-1, x2=-4, y2=6}
 				-- force update to colour the button
 				if btnObj.completed then btnObj:Saturate() end
 			end
@@ -742,6 +841,13 @@ function Skinner:AchievementUI() -- LoD
 				end
 			end
 		end)
+		-- hook this to remove icon border used by the Objectives mini panels
+		self:RawHook("AchievementButton_GetMeta", function(index)
+			local frame = self.hooks["AchievementButton_GetMeta"](index)
+			frame:DisableDrawLayer("BORDER")
+			self:addButtonBorder{obj=frame, es=12, relTo=frame.icon}
+			return frame
+		end, true)
 	end
 	-- glaze any existing progress bars
 	for i = 1, 10 do
@@ -865,6 +971,7 @@ function Skinner:AlertFrames()
 				icon:DisableDrawLayer("BACKGROUND")
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
+				Skinner:addButtonBorder{obj=icon, relTo=_G[aafName..i.."IconTexture"]}
 				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, anim=true, x1=7, y1=-13, x2=-7, y2=16}
 			end
 		end

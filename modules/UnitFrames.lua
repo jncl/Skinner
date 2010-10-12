@@ -3,7 +3,7 @@ local module = Skinner:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0", "A
 local _G = _G
 local ftype = "c"
 
-local db, aso
+local db, aso, plt
 local defaults = {
 	profile = {
 		player = false,
@@ -21,6 +21,10 @@ local lOfs = -10 -- level text offset
 local totOfs = -12 -- TargetofTarget frame offset
 local tDelay = 0.2 -- repeating timer delay
 local isSkinned = setmetatable({}, {__index = function(table, key) table[key] = true end})
+local rpTmr = {}
+local unitFrames = {
+	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground",
+}
 
 local function skinPlayerF()
 
@@ -70,7 +74,9 @@ local function skinPlayerF()
 			for i = 1, MAX_COMBO_POINTS do
 				Skinner:getRegion(_G["ComboPoint"..i], 1):SetTexture(nil)
 			end
+			Skinner:moveObject{obj=ComboFrame, x=3, y=3}
 		end
+
 		-- if the player class is a Druid then skin the AlternateManaBar
 		if Skinner.uCls == "DRUID" then
 			PlayerFrameAlternateManaBarBorder:SetTexture(nil)
@@ -81,6 +87,7 @@ local function skinPlayerF()
 			if Skinner.uCls == "WARLOCK" then
 				for i = 1, SHARD_BAR_NUM_SHARDS do
 					_G["ShardBarFrameShard"..i]:DisableDrawLayer("BORDER")
+					_G["ShardBarFrameShard"..i]:DisableDrawLayer("OVERLAY") -- Glow texture
 				end
 			end
 			-- if the player class is a Paladin then skin the PowerBar
@@ -88,15 +95,16 @@ local function skinPlayerF()
 				PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 				PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 			end
-			-- if the player class is a Druid then skin the EclipseBar
+			-- if the player class is a Druid then skin the EclipseBarFrame
 			if Skinner.uCls == "DRUID" then
---				EclipseBarFrame
+				EclipseBarFrameBar:Hide()
+				EclipseBarFrame.sunBar:Hide()
+				EclipseBarFrame.moonBar:Hide()
 			end
 		end
 	end
 
 end
-local plt
 local function skinPetF()
 
 	if db.pet
@@ -123,7 +131,9 @@ local function skinPetF()
 			plt:SetPoint("BOTTOMLEFT", 4, 4)
 			local lvlXP = 0
 			local function checkLevel(event, ...)
+
 				plt:SetText(UnitLevel(PetFrame.unit))
+
 			end
 			module:SecureHook("PetFrame_Update", function(this, ...)
 				checkLevel("pfu")
@@ -234,23 +244,6 @@ local function skinFocusF()
 	end
 
 end
-local rpTmr = {}
-local function resetPosn(pF)
-
-	-- handle in combat
-	if InCombatLockdown() then return end
-
-	_G[pF.."Portrait"]:SetPoint("TOPLEFT", 7, -6)
-	_G[pF.."LeaderIcon"]:SetPoint("TOPLEFT")
-	_G[pF.."MasterIcon"]:SetPoint("TOPLEFT", 32, 0)
-	_G[pF.."PVPIcon"]:SetPoint("TOPLEFT", -9, -15)
-	_G[pF.."Disconnect"]:SetPoint("LEFT", -7, -1)
-
-	-- cancel repeating timer
-	module:CancelTimer(rpTmr[_G[pF]], true)
-	rpTmr[_G[pF]] = nil
-
-end
 local function skinPartyF()
 
 	if db.party
@@ -336,43 +329,54 @@ local function skinArenaF()
 	end
 
 end
-local function skinCompactF()
-
-	if db.compact
-	and not isSkinned["Compact"]
-	then
-		-- skin Compact Party Frame
-		CompactPartyFrame.borderFrame:DisableDrawLayer("ARTWORK")
-		for i = 1, MEMBERS_PER_RAID_GROUP do
-			_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
-			_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
-		end
-		Skinner:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
-		-- hook this to skin Compact Raid Unit Frame(s)
-		Skinner:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
-			local frame = Skinner.hooks[this].CompactRaidFrameContainer_GetUnitFrame(...)
-			frame:DisableDrawLayer("BACKGROUND")
-			frame:DisableDrawLayer("BORDER")
-			return frame
-		end, true)
-		-- hook this to skin Compact Raid Group Frame(s)
-		Skinner:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
-			local frame = Skinner.hooks[this].CompactRaidGroup_GenerateForGroup(...)
-			frame.borderFrame:DisableDrawLayer("ARTWORK")
-			Skinner:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
-			return frame
-		end, true)
-	end
-
-end
-if not Skinner.isBeta then
-	skinCompactF = nil
-end
-local unitFrames = {
-	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground", 
-}
+local skinCompactF
 if Skinner.isBeta then
 	Skinner:add2Table(unitFrames, "CompactPartyFrame")
+	function skinCompactF()
+
+		if db.compact
+		and not isSkinned["Compact"]
+		then
+			-- skin Compact Party Frame
+			CompactPartyFrame.borderFrame:DisableDrawLayer("ARTWORK")
+			for i = 1, MEMBERS_PER_RAID_GROUP do
+				_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
+				_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
+			end
+			Skinner:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+			-- hook this to skin Compact Raid Unit Frame(s)
+			Skinner:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
+				local frame = Skinner.hooks[this].CompactRaidFrameContainer_GetUnitFrame(...)
+				frame:DisableDrawLayer("BACKGROUND")
+				frame:DisableDrawLayer("BORDER")
+				return frame
+			end, true)
+			-- hook this to skin Compact Raid Group Frame(s)
+			Skinner:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
+				local frame = Skinner.hooks[this].CompactRaidGroup_GenerateForGroup(...)
+				frame.borderFrame:DisableDrawLayer("ARTWORK")
+				Skinner:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+				return frame
+			end, true)
+		end
+
+	end
+end
+local function resetPosn(pF)
+
+	-- handle in combat
+	if InCombatLockdown() then return end
+
+	_G[pF.."Portrait"]:SetPoint("TOPLEFT", 7, -6)
+	_G[pF.."LeaderIcon"]:SetPoint("TOPLEFT")
+	_G[pF.."MasterIcon"]:SetPoint("TOPLEFT", 32, 0)
+	_G[pF.."PVPIcon"]:SetPoint("TOPLEFT", -9, -15)
+	_G[pF.."Disconnect"]:SetPoint("LEFT", -7, -1)
+
+	-- cancel repeating timer
+	module:CancelTimer(rpTmr[_G[pF]], true)
+	rpTmr[_G[pF]] = nil
+
 end
 local function changeUFOpacity()
 
@@ -464,7 +468,7 @@ function module:adjustUnitFrames(opt)
 		skinArenaF()
 	elseif opt == "alpha" then
 		changeUFOpacity()
-	elseif opt == "compact" then
+	elseif opt == "compact" and Skinner.isBeta then
 		skinCompactF()
 	end
 

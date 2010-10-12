@@ -7,7 +7,7 @@ function Skinner:Defaults()
 		Warnings		= true,
 		Errors			= true,
 		MinimapIcon		= {hide = false, minimapPos = 210, radius = 80},
-		DropDowns       = true,
+		DropDowns		= true,
 		-- Tab and DropDown Texture settings
 		TexturedTab		= false,
 		TexturedDD		= false,
@@ -26,10 +26,10 @@ function Skinner:Defaults()
 		BdEdgeSize		= 16,
 		BdInset			= 4,
 	-->>-- Background Texture settings
-		BgUseTex        = false,
-		BgFile          = "None",
-		BgTexture       = "None",
-		BgTile          = false,
+		BgUseTex		= false,
+		BgFile			= "None",
+		BgTexture		= "None",
+		BgTile			= false,
 	-->>-- Colours
 		TooltipBorder	= {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		BackdropBorder	= {r = 0.5, g = 0.5, b = 0.5, a = 1},
@@ -43,33 +43,35 @@ function Skinner:Defaults()
 	-->>-- Modules
 		-- populated below
 	-->>-- NPC Frames
-		MerchantFrames  = true,
-		GossipFrame     = true,
-		TrainerUI	    = true,
-		TaxiFrame       = true,
-		QuestFrame      = true,
-		Battlefields    = true,
-		ArenaFrame      = true,
-		ArenaRegistrar  = true,
-		GuildRegistrar  = true,
-		Petition        = true,
-		Tabard          = true,
+		MerchantFrames	= true,
+		GossipFrame		= true,
+		TrainerUI		= true,
+		TaxiFrame		= true,
+		QuestFrame		= true,
+		AuctionUI		= true,
+		BankFrame		= true,
+		Battlefields	= true,
+		ArenaFrame		= true,
+		ArenaRegistrar	= true,
+		GuildRegistrar	= true,
+		Petition		= true,
+		Tabard			= true,
 		BarbershopUI	= true,
 		ReforgingUI		= self.isBeta and true or nil,
 	-->>-- Player Frames
 		CharacterFrames = true,
-		PVPFrame  		= true,
-		PetStableFrame  = true,
-		SpellBookFrame  = true,
+		PVPFrame		= true,
+		PetStableFrame	= true,
+		SpellBookFrame	= true,
 		TalentUI		= true,
-		DressUpFrame    = true,
-		FriendsFrame    = true,
+		DressUpFrame	= true,
+		FriendsFrame	= true,
 		TradeSkillUI	= true,
-		TradeFrame      = true,
-		QuestLog        = true,
-		RaidUI          = true,
-		ReadyCheck      = true,
-		Buffs           = true,
+		TradeFrame		= true,
+		QuestLog		= true,
+		RaidUI			= true,
+		ReadyCheck		= true,
+		Buffs			= true,
 		AchievementUI	= {skin = true, style = 2},
 		VehicleMenuBar	= true,
 		WatchFrame		= self.isBeta and {skin = false, popups = true} or false,
@@ -79,55 +81,54 @@ function Skinner:Defaults()
 		GuildUI			= self.isBeta and true or nil,
 		GuildControlUI	= self.isBeta and true or nil,
 	-->>-- UI Frames
-		Tooltips        = {skin = true, style = 1, glazesb = true, border = 1},
-		MirrorTimers    = {skin = true, glaze = true},
-		CastingBar      = {skin = true, glaze = true},
-		StaticPopups    = true,
-		ChatMenus       = true,
-		ChatConfig      = true,
-		ChatTabs        = false,
-		ChatFrames      = false,
-		CombatLogQBF    = false,
-		ChatEditBox     = {skin = true, style = 3},
-		LootFrame       = true,
-		GroupLoot       = {skin = true, size = 1},
+		Tooltips		= {skin = true, style = 1, glazesb = true, border = 1},
+		MirrorTimers	= {skin = true, glaze = true},
+		CastingBar		= {skin = true, glaze = true},
+		StaticPopups	= true,
+		ChatMenus		= true,
+		ChatConfig		= true,
+		ChatTabs		= false,
+		ChatFrames		= false,
+		CombatLogQBF	= false,
+		ChatEditBox		= {skin = true, style = 3},
+		LootFrame		= true,
+		GroupLoot		= {skin = true, size = 1},
 		ContainerFrames = {skin = true, fheight = 100},
-		StackSplit      = true,
-		ItemText        = true,
-		Colours         = true,
-		WorldMap        = {skin = true, size = 1},
-		HelpFrame       = true,
-		Tutorial        = true,
-		GMSurveyUI      = true,
-		Feedback        = self.isPTR and true or nil,
+		StackSplit		= true,
+		ItemText		= true,
+		Colours			= true,
+		WorldMap		= {skin = true, size = 1},
+		HelpFrame		= true,
+		Tutorial		= true,
+		GMSurveyUI		= true,
+		Feedback		= self.isPTR and true or nil,
 		InspectUI		= true,
-		BattleScore     = true, -- a.k.a. WorldState
-		BattlefieldMm   = true,
+		BattleScore		= true, -- a.k.a. WorldState
+		BattlefieldMm	= true,
 		ScriptErrors	= true,
 		DebugTools		= true,
-		MinimapButtons  = false,
-		MinimapGloss    = false,
+		MinimapButtons	= false,
+		MinimapGloss	= false,
 		MinimalMMBtns	= false,
-		MovieProgress   = IsMacClient() and true or nil,
-		TimeManager     = true,
-		Calendar        = true,
-		MenuFrames      = true, -- inc. MacroUI & BindingUI
-		BankFrame       = true,
-		MailFrame       = true,
-		AuctionUI	    = true,
-		MainMenuBar     = {skin = true, glazesb = true},
-		CoinPickup      = true,
-		LFDFrame        = true,
-		LFRFrame        = true,
+		MovieProgress	= IsMacClient() and true or nil,
+		TimeManager		= true,
+		Calendar		= true,
+		MenuFrames		= true, -- inc. MacroUI & BindingUI
+		MailFrame		= true,
+		MainMenuBar		= {skin = true, glazesb = true},
+		CoinPickup		= true,
+		LFDFrame		= true,
+		LFRFrame		= true,
 		ItemSocketingUI = true,
-		GuildBankUI     = true,
-		Nameplates      = true,
+		GuildBankUI		= true,
+		Nameplates		= true,
 		GMChatUI		= true,
 		BNFrames		= true,
 		CinematicFrame	= self.isBeta and true or nil,
 		LevelUpDisplay	= self.isBeta and true or nil,
 		SpellFlyout		= self.isBeta and true or nil,
 		GuildInvite		= self.isBeta and true or nil,
+		GhostFrame		= self.isBeta and true or nil,
 	-->>-- Disabled Skins
 		DisabledSkins	= {},
 	-->-- Profiles
@@ -149,7 +150,7 @@ function Skinner:Options()
 
 		General = {
 			type = "group",
-	    	name = aName,
+			name = aName,
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value) db[info[#info]] = value end,
 			args = {
@@ -215,22 +216,22 @@ function Skinner:Options()
 								self.isTT = db[info[#info]] and true or false
 							end,
 						},
-		                TabDDFile = {
-		                    type = "input",
-		                    order = 3,
-		                    width = "full",
-		                    name = self.L["Inactive Tab & DropDown Texture File"],
-		                    desc = self.L["Set Inactive Tab & DropDown Texture Filename"],
-		                },
-		                TabDDTexture = AceGUIWidgetLSMlists and {
-		                    type = "select",
-		                    order = 4,
-		                    width = "double",
-		                    name = self.L["Inactive Tab & DropDown Texture"],
-		                    desc = self.L["Choose the Texture for the Inactive Tab & DropDowns"],
-		                    dialogControl = "LSM30_Background",
-		                    values = AceGUIWidgetLSMlists.background,
-		                } or nil,
+						TabDDFile = {
+							type = "input",
+							order = 3,
+							width = "full",
+							name = self.L["Inactive Tab & DropDown Texture File"],
+							desc = self.L["Set Inactive Tab & DropDown Texture Filename"],
+						},
+						TabDDTexture = AceGUIWidgetLSMlists and {
+							type = "select",
+							order = 4,
+							width = "double",
+							name = self.L["Inactive Tab & DropDown Texture"],
+							desc = self.L["Choose the Texture for the Inactive Tab & DropDowns"],
+							dialogControl = "LSM30_Background",
+							values = AceGUIWidgetLSMlists.background,
+						} or nil,
 					},
 				},
 				Delay = {
@@ -333,119 +334,119 @@ function Skinner:Options()
 			},
 		},
 
-        Backdrop = {
-            type = "group",
-            name = self.L["Default Backdrop"],
-            get = function(info) return db[info[#info]] end,
-            set = function(info, value)
-                db[info[#info]] = value == "" and "None" or value
-                if info[#info] ~= "BdDefault" then db.BdDefault = false end
-            end,
-            args = {
-                BdDefault = {
-                    type = "toggle",
-                    order = 1,
-                    width = "double",
-                    name = self.L["Use Default Backdrop"],
-                    desc = self.L["Toggle the Default Backdrop"],
-                },
-                BdFile = {
-                    type = "input",
-                    order = 2,
-                    width = "full",
-                    name = self.L["Backdrop Texture File"],
-                    desc = self.L["Set Backdrop Texture Filename"],
-                },
-                BdTexture = AceGUIWidgetLSMlists and {
-                    type = "select",
-                    order = 3,
-                    width = "double",
-                    name = self.L["Backdrop Texture"],
-                    desc = self.L["Choose the Texture for the Backdrop"],
-                    dialogControl = "LSM30_Background",
-                    values = AceGUIWidgetLSMlists.background,
-                } or nil,
-                BdTileSize = {
-                    type = "range",
-                    order = 4,
-                    name = self.L["Backdrop TileSize"],
-                    desc = self.L["Set Backdrop TileSize"],
-                    min = 0, max = 128, step = 4,
-                },
-                BdEdgeFile = {
-                    type = "input",
-                    order = 5,
-                    width = "full",
-                    name = self.L["Border Texture File"],
-                    desc = self.L["Set Border Texture Filename"],
-                },
-                BdBorderTexture = AceGUIWidgetLSMlists and {
-                    type = "select",
-                    order = 6,
-                    width = "double",
-                    name = self.L["Border Texture"],
-                    desc = self.L["Choose the Texture for the Border"],
-                    dialogControl = 'LSM30_Border',
-                    values = AceGUIWidgetLSMlists.border,
-                } or nil,
-                BdEdgeSize = {
-                    type = "range",
-                    order = 7,
-                    name = self.L["Border Width"],
-                    desc = self.L["Set Border Width"],
-                    min = 0, max = 32, step = 2,
-                },
-                BdInset = {
-                    type = "range",
-                    order = 8,
-                    name = self.L["Border Inset"],
-                    desc = self.L["Set Border Inset"],
-                    min = 0, max = 8, step = 1,
-                },
-            },
-        },
+		Backdrop = {
+			type = "group",
+			name = self.L["Default Backdrop"],
+			get = function(info) return db[info[#info]] end,
+			set = function(info, value)
+				db[info[#info]] = value == "" and "None" or value
+				if info[#info] ~= "BdDefault" then db.BdDefault = false end
+			end,
+			args = {
+				BdDefault = {
+					type = "toggle",
+					order = 1,
+					width = "double",
+					name = self.L["Use Default Backdrop"],
+					desc = self.L["Toggle the Default Backdrop"],
+				},
+				BdFile = {
+					type = "input",
+					order = 2,
+					width = "full",
+					name = self.L["Backdrop Texture File"],
+					desc = self.L["Set Backdrop Texture Filename"],
+				},
+				BdTexture = AceGUIWidgetLSMlists and {
+					type = "select",
+					order = 3,
+					width = "double",
+					name = self.L["Backdrop Texture"],
+					desc = self.L["Choose the Texture for the Backdrop"],
+					dialogControl = "LSM30_Background",
+					values = AceGUIWidgetLSMlists.background,
+				} or nil,
+				BdTileSize = {
+					type = "range",
+					order = 4,
+					name = self.L["Backdrop TileSize"],
+					desc = self.L["Set Backdrop TileSize"],
+					min = 0, max = 128, step = 4,
+				},
+				BdEdgeFile = {
+					type = "input",
+					order = 5,
+					width = "full",
+					name = self.L["Border Texture File"],
+					desc = self.L["Set Border Texture Filename"],
+				},
+				BdBorderTexture = AceGUIWidgetLSMlists and {
+					type = "select",
+					order = 6,
+					width = "double",
+					name = self.L["Border Texture"],
+					desc = self.L["Choose the Texture for the Border"],
+					dialogControl = 'LSM30_Border',
+					values = AceGUIWidgetLSMlists.border,
+				} or nil,
+				BdEdgeSize = {
+					type = "range",
+					order = 7,
+					name = self.L["Border Width"],
+					desc = self.L["Set Border Width"],
+					min = 0, max = 32, step = 2,
+				},
+				BdInset = {
+					type = "range",
+					order = 8,
+					name = self.L["Border Inset"],
+					desc = self.L["Set Border Inset"],
+					min = 0, max = 8, step = 1,
+				},
+			},
+		},
 
-        Background = {
-            type = "group",
-            name = self.L["Background Settings"],
-            get = function(info) return db[info[#info]] end,
-            set = function(info, value)
-                db[info[#info]] = value == "" and "None" or value
-                if info[#info] ~= "BgUseTex" then db.BgUseTex = true end
-                if db.BgUseTex then db.Tooltips.style = 3 end -- set Tooltip style to Custom
-            end,
-            args = {
-                BgUseTex = {
-                    type = "toggle",
-                    order = 1,
-                    width = "double",
-                    name = self.L["Use Background Texture"],
-                    desc = self.L["Toggle the Background Texture"],
-                },
-                BgFile = {
-                    type = "input",
-                    order = 2,
-                    width = "full",
-                    name = self.L["Background Texture File"],
-                    desc = self.L["Set Background Texture Filename"],
-                },
-                BgTexture = AceGUIWidgetLSMlists and {
-                    type = "select",
-                    order = 3,
-                    width = "double",
-                    name = self.L["Background Texture"],
-                    desc = self.L["Choose the Texture for the Background"],
-                    dialogControl = "LSM30_Background",
-                    values = AceGUIWidgetLSMlists.background,
-                } or nil,
-                BgTile = {
-                    type = "toggle",
-                    order = 4,
-                    name = self.L["Tile Background"],
-                    desc = self.L["Tile or Stretch Background"],
-                },
-            },
-        },
+		Background = {
+			type = "group",
+			name = self.L["Background Settings"],
+			get = function(info) return db[info[#info]] end,
+			set = function(info, value)
+				db[info[#info]] = value == "" and "None" or value
+				if info[#info] ~= "BgUseTex" then db.BgUseTex = true end
+				if db.BgUseTex then db.Tooltips.style = 3 end -- set Tooltip style to Custom
+			end,
+			args = {
+				BgUseTex = {
+					type = "toggle",
+					order = 1,
+					width = "double",
+					name = self.L["Use Background Texture"],
+					desc = self.L["Toggle the Background Texture"],
+				},
+				BgFile = {
+					type = "input",
+					order = 2,
+					width = "full",
+					name = self.L["Background Texture File"],
+					desc = self.L["Set Background Texture Filename"],
+				},
+				BgTexture = AceGUIWidgetLSMlists and {
+					type = "select",
+					order = 3,
+					width = "double",
+					name = self.L["Background Texture"],
+					desc = self.L["Choose the Texture for the Background"],
+					dialogControl = "LSM30_Background",
+					values = AceGUIWidgetLSMlists.background,
+				} or nil,
+				BgTile = {
+					type = "toggle",
+					order = 4,
+					name = self.L["Tile Background"],
+					desc = self.L["Tile or Stretch Background"],
+				},
+			},
+		},
 
 		Colours = {
 			type = "group",
@@ -647,6 +648,16 @@ function Skinner:Options()
 					type = "toggle",
 					name = self.L["Quest Frame"],
 					desc = self.L["Toggle the skin of the Quest Frame"],
+				},
+				AuctionUI = {
+					type = "toggle",
+					name = self.L["Auction Frame"],
+					desc = self.L["Toggle the skin of the Auction Frame"],
+				},
+				BankFrame = {
+					type = "toggle",
+					name = self.L["Bank Frame"],
+					desc = self.L["Toggle the skin of the Bank Frame"],
 				},
 				Battlefields = {
 					type = "toggle",
@@ -1263,20 +1274,10 @@ function Skinner:Options()
 					name = self.L["Menu Frames"],
 					desc = self.L["Toggle the skin of the Menu Frames"],
 				},
-				BankFrame = {
-					type = "toggle",
-					name = self.L["Bank Frame"],
-					desc = self.L["Toggle the skin of the Bank Frame"],
-				},
 				MailFrame = {
 					type = "toggle",
 					name = self.L["Mail Frame"],
 					desc = self.L["Toggle the skin of the Mail Frame"],
-				},
-				AuctionUI = {
-					type = "toggle",
-					name = self.L["Auction Frame"],
-					desc = self.L["Toggle the skin of the Auction Frame"],
 				},
 				MainMenuBar = {
 					type = "group",
@@ -1364,6 +1365,11 @@ function Skinner:Options()
 					name = self.L["Guild Invite Frame"],
 					desc = self.L["Toggle the skin of the Guild Invite Frame"],
 				} or nil,
+				GhostFrame = self.isBeta and {
+					type = "toggle",
+					name = self.L["Ghost Frame"],
+					desc = self.L["Toggle the skin of the Ghost Frame"],
+				} or nil,
 			},
 		},
 
@@ -1418,6 +1424,7 @@ function Skinner:Options()
 
 	-- add DisabledSkins options
 	local function addDSOpt(name, lib)
+
 		optTables["DisabledSkins"].args[name] = {
 			type = "toggle",
 			name = name..(lib and " (Lib)" or ""),
@@ -1465,26 +1472,26 @@ function Skinner:Options()
 	end
 
 	-- runs when the player clicks "Defaults"
-    self.optionsFrame[self.L["Backdrop"]].default = function()
-        db.BdDefault = dflts.BdDefault
-        db.BdFile = dflts.BdFile
-        db.BdTexture = dflts.BdTexture
-        db.BdTileSize = dflts.BdTileSize
-        db.BdEdgeFile = dflts.BdEdgeFile
-        db.BdBorderTexture = dflts.BdBorderTexture
-        db.BdEdgeSize = dflts.BdEdgeSize
-        db.BdInset = dflts.BdInset
-        -- refresh panel
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
-    end
-    self.optionsFrame[self.L["Background"]].default = function()
-        db.BgUseTex = dflts.BgUseTex
-        db.BgFile = dflts.BgFile
-        db.BgTexture = dflts.BgTexture
-        db.BgTile = dflts.BgTile
-        -- refresh panel
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
-    end
+	self.optionsFrame[self.L["Backdrop"]].default = function()
+		db.BdDefault = dflts.BdDefault
+		db.BdFile = dflts.BdFile
+		db.BdTexture = dflts.BdTexture
+		db.BdTileSize = dflts.BdTileSize
+		db.BdEdgeFile = dflts.BdEdgeFile
+		db.BdBorderTexture = dflts.BdBorderTexture
+		db.BdEdgeSize = dflts.BdEdgeSize
+		db.BdInset = dflts.BdInset
+		-- refresh panel
+		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
+	end
+	self.optionsFrame[self.L["Background"]].default = function()
+		db.BgUseTex = dflts.BgUseTex
+		db.BgFile = dflts.BgFile
+		db.BgTexture = dflts.BgTexture
+		db.BgTile = dflts.BgTile
+		-- refresh panel
+		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
+	end
 	self.optionsFrame[self.L["Colours"]].default = function()
 		db.TooltipBorder = dflts.TooltipBorder
 		db.BackdropBorder = dflts.BackdropBorder

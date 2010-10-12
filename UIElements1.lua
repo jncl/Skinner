@@ -1,29 +1,31 @@
 local _G = _G
 local ftype = "u"
 
--- list of Tooltips to check to see whether we should colour the Tooltip Border or not
--- use strings as the objects may not exist when we start
-Skinner.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "ItemRefShoppingTooltip3"}
--- list of Tooltips used when the Tooltip style is 3
--- using a metatable to manage tooltips when they are added in different functions
-Skinner.ttList = setmetatable({}, {__newindex = function(t, k, v)
---    Skinner:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
-    rawset(t, k, v)
-    -- set the backdrop if required
-	if Skinner.db.profile.Tooltips.style == 3 then
-	    _G[v]:SetBackdrop(Skinner.Backdrop[1])
-	end
-    -- hook the OnShow method
-	Skinner:HookScript(_G[v], "OnShow", function(this)
-		Skinner:skinTooltip(this)
-		if this == GameTooltip and Skinner.db.profile.Tooltips.glazesb then
-			Skinner:glazeStatusBar(GameTooltipStatusBar, 0)
+do
+	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
+	-- use strings as the objects may not exist when we start
+	Skinner.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "ItemRefShoppingTooltip3"}
+	-- list of Tooltips used when the Tooltip style is 3
+	-- using a metatable to manage tooltips when they are added in different functions
+	Skinner.ttList = setmetatable({}, {__newindex = function(t, k, v)
+	--	  Skinner:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
+		rawset(t, k, v)
+		-- set the backdrop if required
+		if Skinner.db.profile.Tooltips.style == 3 then
+			_G[v]:SetBackdrop(Skinner.Backdrop[1])
 		end
-	end)
-	Skinner:skinTooltip(_G[v]) -- skin here so tooltip initially skinnned when logged on
-end})
--- Set the Tooltip Border
-Skinner.ttBorder = true
+		-- hook the OnShow method
+		Skinner:HookScript(_G[v], "OnShow", function(this)
+			Skinner:skinTooltip(this)
+			if this == GameTooltip and Skinner.db.profile.Tooltips.glazesb then
+				Skinner:glazeStatusBar(GameTooltipStatusBar, 0)
+			end
+		end)
+		Skinner:skinTooltip(_G[v]) -- skin here so tooltip initially skinnned when logged on
+	end})
+	-- Set the Tooltip Border
+	Skinner.ttBorder = true
+end
 
 function Skinner:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
@@ -31,17 +33,26 @@ function Skinner:Tooltips()
 
 	self:add2Table(self.uiKeys2, "Tooltips")
 
-	-- 	change the default Tooltip Border colour here
-	TOOLTIP_DEFAULT_COLOR = CopyTable(self.db.profile.TooltipBorder)
+	--	change the default Tooltip Border colour here
+	--[=[
+		TODO this currently causes taint in Beta
+	--]=]
+	local r, g, b, a = self:setTTBBC()
+	TOOLTIP_DEFAULT_COLOR = {r=r, g=g, b=b}
 
 	-- fix for TinyTip tooltip becoming 'fractured'
 	if self.db.profile.Tooltips.style == 3 then
-		local c = self.db.profile.Backdrop
-		TOOLTIP_DEFAULT_BACKGROUND_COLOR = {c.r, c.g, c.b}
-        -- self:setTTBackdrop(true)
+		--[=[
+			TODO this currently causes taint in Beta
+		--]=]
+--		if not self.isBeta then
+			local c = self.db.profile.Backdrop
+			TOOLTIP_DEFAULT_BACKGROUND_COLOR = {r = c.r, g = c.g, b = c.b}
+--		end
+		-- self:setTTBackdrop(true)
 	end
 
-    -- skin Item Ref Tooltip's close button
+	-- skin Item Ref Tooltip's close button
 	self:skinButton{obj=ItemRefCloseButton, cb=true}
 
 	local counts = 0
@@ -75,11 +86,11 @@ function Skinner:Tooltips()
 		end
 	end)
 
-    -- add tooltips to table to set backdrop and hook OnShow method
-    for _, tooltip in pairs(self.ttCheck) do
-	    self:add2Table(self.ttList, tooltip)
-    end
-    self:add2Table(self.ttList, "SmallTextTooltip")
+	-- add tooltips to table to set backdrop and hook OnShow method
+	for _, tooltip in pairs(self.ttCheck) do
+		self:add2Table(self.ttList, tooltip)
+	end
+	self:add2Table(self.ttList, "SmallTextTooltip")
 
 	-- Hook this to skin the GameTooltip StatusBars
 	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
@@ -156,7 +167,7 @@ function Skinner:CastingBar()
 		self:changeShield(_G[cbfName.."BorderShield"], _G[cbfName.."Icon"])
 		_G[cbfName.."Flash"]:SetAllPoints()
 		self:moveObject{obj=_G[cbfName.."Text"], y=-3}
-		if self.db.profile.CastingBar.glaze	then
+		if self.db.profile.CastingBar.glaze then
 			self:glazeStatusBar(_G[cbfName], 0, self:getRegion(_G[cbfName], 1), {_G[cbfName.."Flash"]})
 		end
 
@@ -176,8 +187,8 @@ function Skinner:StaticPopups()
 			for i = 1, STATICPOPUP_NUMDIALOGS do
 				local spcb = _G["StaticPopup"..i.."CloseButton"]
 				local nTex = spcb:GetNormalTexture() and spcb:GetNormalTexture():GetTexture() or nil
-				if nTex:find("HideButton") then spcb:SetText(self.modBtns.minus)
-				elseif nTex:find("MinimizeButton") then spcb:SetText(self.modBtns.mult)
+				if nTex:find("HideButton") then spcb:SetText(self.modUIBtns.minus)
+				elseif nTex:find("MinimizeButton") then spcb:SetText(self.modUIBtns.mult)
 				end
 			end
 		end)
@@ -194,6 +205,7 @@ function Skinner:StaticPopups()
 		-- prevent FrameLevel from being changed (LibRock does this)
 		self.skinFrame[_G[sPU]].SetFrameLevel = function() end
 		_G[sPU.."ItemFrameNameFrame"]:SetTexture(nil)
+		self:addButtonBorder{obj=_G[sPU.."ItemFrame"], ibt=true}
 	end
 
 end
@@ -420,6 +432,7 @@ function Skinner:LootFrame()
 	self:moveObject{obj=LootCloseButton, y=-34}
 	for i = 1, LOOTFRAME_NUMBUTTONS do
 		_G["LootButton"..i.."NameFrame"]:SetTexture(nil)
+		self:addButtonBorder{obj=_G["LootButton"..i], ibt=true}
 	end
 	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-47, x2=-68}
 
@@ -440,8 +453,9 @@ function Skinner:GroupLoot()
 		local glf = "GroupLootFrame"..i
 		local glfo = _G[glf]
 		self:keepFontStrings(glfo)
-		_G[glf.."SlotTexture"]:SetTexture(self.esTex)
+		_G[glf.."SlotTexture"]:SetTexture(nil)
 		_G[glf.."NameFrame"]:SetTexture(nil)
+		self:addButtonBorder{obj=_G[glf.."IconFrame"]}
 		self:removeRegions(_G[glf.."Timer"], {1})
 		self:glazeStatusBar(_G[glf.."Timer"], 0)
 		-- hook this to skin the group loot frame
@@ -492,6 +506,10 @@ function Skinner:ContainerFrames()
 		local frameName = _G["ContainerFrame"..i.."Name"]
 		frameName:SetWidth(145)
 		self:moveObject{obj=frameName, x=-30}
+		-- add button borders
+		for j = 1, MAX_CONTAINER_ITEMS do
+			self:addButtonBorder{obj=_G["ContainerFrame"..i.."Item"..j]}
+		end
 	end
 
 end
@@ -609,12 +627,7 @@ function Skinner:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
-	if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE
-	then
-		self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
-	else
-		self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
-	end
+	self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
 	self:skinScrollBar{obj=WorldMapQuestScrollFrame}
 	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
 	self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
@@ -623,10 +636,10 @@ function Skinner:WorldMap()
 	if self.db.profile.Tooltips.skin
 	and self.db.profile.Tooltips.style == 3
 	then
-	    self:add2Table(self.ttList, "WorldMapTooltip")
-	    self:add2Table(self.ttList, "WorldMapCompareTooltip1")
-	    self:add2Table(self.ttList, "WorldMapCompareTooltip2")
-	    self:add2Table(self.ttList, "WorldMapCompareTooltip3")
+		self:add2Table(self.ttList, "WorldMapTooltip")
+		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
+		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
+		self:add2Table(self.ttList, "WorldMapCompareTooltip3")
 	end
 
 end
@@ -743,27 +756,63 @@ function Skinner:InspectUI() -- LoD
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
-	self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
+	if not self.isBeta then
+		self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
+	else
+		self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
+	end
 
+-->>-- Inspect PaperDoll frame
 	-- Inspect Model Frame
-	self:keepRegions(InspectPaperDollFrame, {5, 6, 7}) -- N.B. regions 5-7 are text
 	self:makeMFRotatable(InspectModelFrame)
+	if not self.isBeta then
+		-- add button borders
+		for _, child in ipairs{InspectPaperDollFrame:GetChildren()} do
+			if child:IsObjectType("Button") and child:GetName():find("Slot") then
+				self:addButtonBorder{obj=child}
+			end
+		end
+		self:keepRegions(InspectPaperDollFrame, {5, 6, 7}) -- N.B. regions 5-7 are text
+	else
+		for _, child in ipairs{InspectPaperDollItemsFrame:GetChildren()} do
+			child:DisableDrawLayer("BACKGROUND")
+			-- add button borders
+			if child:IsObjectType("Button") and child:GetName():find("Slot") then
+				self:addButtonBorder{obj=child, ibt=true}
+			end
+		end
+		InspectModelFrame:DisableDrawLayer("BACKGROUND")
+		InspectModelFrame:DisableDrawLayer("BORDER")
+		InspectModelFrame:DisableDrawLayer("OVERLAY")
+	end
 
 -->>--	PVP Frame
 	self:keepFontStrings(InspectPVPFrame)
-	for i = 1, 3 do
+	for i = 1, MAX_ARENA_TEAMS do
 		_G["InspectPVPTeam"..i.."StandardBar"]:Hide()
-		self:addSkinFrame{obj=_G["InspectPVPTeam"..i], hat=true, x1=-40, y1=4, x2=-20, y2=-4}
+		self:addSkinFrame{obj=_G["InspectPVPTeam"..i], hat=true, x1=-40, y1=4, x2=-20, y2=self.isBeta and 0 or -4}
 	end
 
 -->>--	Talent Frame
 	self:keepRegions(InspectTalentFrame, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 8 & 9 are the background picture, 10 is text
-	InspectTalentFrameCloseButton:Hide()
+	if not self.isBeta then
+		InspectTalentFrameCloseButton:Hide()
+	end
 	self:skinScrollBar{obj=InspectTalentFrameScrollFrame}
 	self:keepFontStrings(InspectTalentFramePointsBar)
 	self:skinFFToggleTabs("InspectTalentFrameTab")
 	self:moveObject{obj=InspectTalentFrameTab1, x=-30}
+	-- add button borders
+	for i = 1, MAX_NUM_TALENTS do
+		local btnName = "InspectTalentFrameTalent"..i
+		_G[btnName.."Slot"]:SetAlpha(0)
+		self:addButtonBorder{obj=_G[btnName], tibt=true}
+	end
 
+	if self.isBeta then
+	-->>-- Guild Frame
+		InspectGuildFrameBG:SetAlpha(0)
+	end
 -->>--	Frame Tabs
 	for i = 1, InspectFrame.numTabs do
 		local tabName = _G["InspectFrameTab"..i]
@@ -1003,11 +1052,15 @@ if Skinner.isPTR then
 		self:skinDropDown{obj=FeedbackUI_MouseButtonDropDown}
 		self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
 		self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
+		tinsert(UISpecialFrames, "FeedbackUI") -- make it closeable with Esc key
 
 	-->>-- Welcome Frame panels
 		FeedbackUIWelcomeFrameSurveys:DisableDrawLayer("BORDER")
+		self:addButtonBorder{obj=FeedbackUIWelcomeFrameSurveys, relTo=FeedbackUIWelcomeFrameSurveysIcon}
 		FeedbackUIWelcomeFrameSuggestions:DisableDrawLayer("BORDER")
+		self:addButtonBorder{obj=FeedbackUIWelcomeFrameSuggestions, relTo=FeedbackUIWelcomeFrameSuggestionsIcon}
 		FeedbackUIWelcomeFrameBugs:DisableDrawLayer("BORDER")
+		self:addButtonBorder{obj=FeedbackUIWelcomeFrameBugs, relTo=FeedbackUIWelcomeFrameBugsIcon}
 
 	-->-- Survey Frame
 		FeedbackUISurveyFrame:SetBackdrop(nil)
@@ -1028,10 +1081,12 @@ if Skinner.isPTR then
 		self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
 		self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
 		self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
-		-- skin the alert buttons
-		for i = 1, 10 do
-			local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
-			self:addSkinButton{obj=tfabObj, parent=tfabObj, x1=-2, y1=2, x2=1, y2=1}
+		if self.modBtnBs then
+			-- skin the alert buttons
+			for i = 1, 10 do
+				local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
+				self:addButtonBorder{obj=tfabObj, ofs=0, x2=-2, y2=3}
+			end
 		end
 
 	-->>-- Suggestion Frame
