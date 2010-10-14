@@ -792,7 +792,7 @@ function Skinner:AlertFrames()
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
 				Skinner:addButtonBorder{obj=icon, relTo=_G[aafName..i.."IconTexture"]}
-				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, anim=true, x1=7, y1=-13, x2=-7, y2=16}
+				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, anim=true}
 			end
 		end
 
@@ -808,6 +808,23 @@ function Skinner:AlertFrames()
 	end
 	-- skin any existing Achievement Alert Frames
 	skinAlertFrames()
+
+	-- adjust frame size for guild achievements
+	if self.isCata then
+		self:SecureHook("AchievementAlertFrame_ShowAlert", function(achID)
+			for i = 1, MAX_ACHIEVEMENT_ALERTS do
+				local aaFrame = _G[aafName..i]
+				if aaFrame then
+					y1, y2 = -10, 12
+ 	 				if aaFrame.guildDisplay then
+						y1, y2 = -8, 8
+					end
+					Skinner.skinFrame[aaFrame]:SetPoint("TOPLEFT", aaFrame, "TOPLEFT", 5, y1)
+					Skinner.skinFrame[aaFrame]:SetPoint("BOTTOMRIGHT", aaFrame, "BOTTOMRIGHT", -5, y2)
+				end
+			end
+		end)
+	end
 
 	-- hook dungeon rewards function
 	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, index)
