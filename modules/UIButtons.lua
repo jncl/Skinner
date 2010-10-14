@@ -256,7 +256,6 @@ function module:isButton(obj, cb, blue)
 	then -- check textures are as expected
 		local oName = obj:GetName() or nil
 		local oTex = getTexture(obj:GetNormalTexture()) or getTexture(Skinner:getRegion(obj, 1))
---		print(oName, oTex)
 		if oTex then
 			if oTex:find("UI-Panel-Button", 1, true)
 			or oTex:find("UI-DialogBox", 1, true) -- StaticPopups
@@ -301,15 +300,14 @@ local function __skinAllButtons(opts, bgen)
 			if child:GetNumChildren() > 0 and bgen > 0 then
 				opts.obj=child
 				__skinAllButtons(opts, bgen - 1)
-			else
-				bType = module:isButton(child)
-				if bType == "normal" then
-					module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim}
-				elseif bType == "close" then
-					module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
-				elseif bType == "toast" then
-					module:skinButton{obj=child, cb3=true, anim=opts.anim}
-				end
+			end
+			bType = module:isButton(child)
+			if bType == "normal" then
+				module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim}
+			elseif bType == "close" then
+				module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
+			elseif bType == "toast" then
+				module:skinButton{obj=child, cb3=true, anim=opts.anim}
 			end
 		elseif child:IsObjectType("Frame") and bgen > 0 then
 			opts.obj=child
@@ -430,7 +428,7 @@ local function __addButtonBorder(opts)
 		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
 	end
 	if opts.mb then -- Micro Buttons
-		_G[btnName.."Flash"]:SetParent(opts.obj.sknrBdr)
+		opts.obj.Flash:SetParent(opts.obj.sknrBdr)
 	end
 
 end
