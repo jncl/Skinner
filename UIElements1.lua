@@ -713,15 +713,29 @@ function Skinner:Tutorial()
 	end
 	TutorialTextBorder:SetAlpha(0)
 	self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
-	AnimateCallout:Stop() -- stop animation, otherwise button textures are still displayed
 	self:addSkinFrame{obj=TutorialFrame, ft=ftype, anim=true, x1=10, y1=-11, x2=1}
-
-	-- Alert button
-	TutorialFrameAlertButton:GetNormalTexture():SetAlpha(0)
-	TutorialFrameAlertButton:SetNormalFontObject("ZoneTextFont")
-	TutorialFrameAlertButton:SetText("?")
-	self:moveObject{obj=TutorialFrameAlertButton:GetFontString(), x=4}
-	self:addSkinButton{obj=TutorialFrameAlertButton, parent=TutorialFrameAlertButton, x1=30, y1=-1, x2=-25, y2=10}
+	-- use the same frame level & strata as TutorialFrame so it appears above other frames
+	self.skinFrame[TutorialFrame]:SetFrameLevel(TutorialFrame:GetFrameLevel())
+	self.skinFrame[TutorialFrame]:SetFrameStrata(TutorialFrame:GetFrameStrata())
+	-- hook this as the TutorialFrame frame level keeps changing
+	self:SecureHookScript(self.skinFrame[TutorialFrame], "OnShow", function(this)
+		self.skinFrame[TutorialFrame]:SetFrameLevel(TutorialFrame:GetFrameLevel())
+	end)
+	-- hook this to hide the skin frame if required (e.g. arrow keys tutorial)
+	self:SecureHook("TutorialFrame_Update", function(currTut)
+		if TutorialFrameTop:IsShown() then
+			self.skinFrame[TutorialFrame]:Show()
+		else
+			self.skinFrame[TutorialFrame]:Hide()
+		end
+	end)
+-->>-- Alert button
+	local btn = TutorialFrameAlertButton
+	btn:GetNormalTexture():SetAlpha(0)
+	btn:SetNormalFontObject("ZoneTextFont")
+	btn:SetText("?")
+	self:moveObject{obj=btn:GetFontString(), x=4}
+	self:addSkinButton{obj=btn, parent=btn, x1=30, y1=-1, x2=-25, y2=10}
 
 end
 
