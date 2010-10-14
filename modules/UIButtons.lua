@@ -294,22 +294,26 @@ local function __skinAllButtons(opts, bgen)
 	if not opts.obj then return end
 
 	-- maximum number of button generations to traverse
-	bgen = bgen or (opts.bgen and opts.bgen or 3)
+	bgen = bgen or opts.bgen or 3
 
 	for _, child in ipairs{opts.obj:GetChildren()} do
-		if child:IsObjectType("Frame") or child:GetNumChildren() > 0 and bgen > 0 then
+		if child:IsObjectType("Button") then
+			if child:GetNumChildren() > 0 and bgen > 0 then
+				opts.obj=child
+				__skinAllButtons(opts, bgen - 1)
+			else
+				bType = module:isButton(child)
+				if bType == "normal" then
+					module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim}
+				elseif bType == "close" then
+					module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
+				elseif bType == "toast" then
+					module:skinButton{obj=child, cb3=true, anim=opts.anim}
+				end
+			end
+		elseif child:IsObjectType("Frame") and bgen > 0 then
 			opts.obj=child
 			__skinAllButtons(opts, bgen - 1)
-		end
-		if child:IsObjectType("Button") then
-			bType = module:isButton(child)
-			if bType == "normal" then
-				module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim}
-			elseif bType == "close" then
-				module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
-			elseif bType == "toast" then
-				module:skinButton{obj=child, cb3=true, anim=opts.anim}
-			end
 		end
 	end
 

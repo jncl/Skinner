@@ -669,7 +669,8 @@ function Skinner:HelpFrame()
 
 -->>--	Help Frame
 	self:moveObject{obj=hfTitle, y=-8}
-	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
+	 --> N.B. restrict button children traversal for KnowledgeBase button below
+	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, bgen=2, x1=6, y1=-6, x2=-45, y2=14}
 
 -->>--	KnowledgeBase Frame
 	self:keepFontStrings(KnowledgeBaseFrame)
@@ -686,6 +687,7 @@ function Skinner:HelpFrame()
 -->>-- Talk to a GM panel
 -->>-- Report an Issue panel
 -->>-- Character Stuck panel
+	self:addButtonBorder{obj=HelpFrameStuckHearthstone, es=20}
 -->>--	Open Ticket SubFrame
 	HelpFrameOpenTicketDivider:Hide()
 	self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
