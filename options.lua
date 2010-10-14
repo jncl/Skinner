@@ -1167,11 +1167,6 @@ function Skinner:Options()
 							name = self.L["Help Frame"],
 							desc = self.L["Toggle the skin of the Help Frame"],
 						},
-						Tutorial = {
-							type = "toggle",
-							name = self.L["Tutorial Frame"],
-							desc = self.L["Toggle the skin of the Tutorial Frame"],
-						},
 						GMSurveyUI = {
 							type = "toggle",
 							name = self.L["GM Survey UI Frame"],
@@ -1183,6 +1178,11 @@ function Skinner:Options()
 							desc = self.L["Toggle the skin of the Feedback Frame"],
 						} or nil,
 					},
+				},
+				Tutorial = {
+					type = "toggle",
+					name = self.L["Tutorial Frame"],
+					desc = self.L["Toggle the skin of the Tutorial Frame"],
 				},
 				InspectUI = {
 					type = "toggle",
