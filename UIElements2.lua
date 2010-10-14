@@ -93,21 +93,21 @@ function Skinner:Calendar() -- LoD
 -->>-- View Holiday Frame
 	self:keepFontStrings(CalendarViewHolidayTitleFrame)
 	self:moveObject{obj=CalendarViewHolidayTitleFrame, y=-6}
-	self:removeRegions(CalendarViewHolidayCloseButton, {self.isBeta and 5 or 4})
+	self:removeRegions(CalendarViewHolidayCloseButton, {5})
 	self:skinScrollBar{obj=CalendarViewHolidayScrollFrame}
 	self:addSkinFrame{obj=CalendarViewHolidayFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=-2}
 
 -->>-- View Raid Frame
 	self:keepFontStrings(CalendarViewRaidTitleFrame)
 	self:moveObject{obj=CalendarViewRaidTitleFrame, y=-6}
-	self:removeRegions(CalendarViewRaidCloseButton, {self.isBeta and 5 or 4})
+	self:removeRegions(CalendarViewRaidCloseButton, {5})
 	self:skinScrollBar{obj=CalendarViewRaidScrollFrame}
 	self:addSkinFrame{obj=CalendarViewRaidFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- View Event Frame
 	self:keepFontStrings(CalendarViewEventTitleFrame)
 	self:moveObject{obj=CalendarViewEventTitleFrame, y=-6}
-	self:removeRegions(CalendarViewEventCloseButton, {self.isBeta and 5 or 4})
+	self:removeRegions(CalendarViewEventCloseButton, {5})
 	self:addSkinFrame{obj=CalendarViewEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=CalendarViewEventDescriptionScrollFrame}
 	self:keepFontStrings(CalendarViewEventInviteListSection)
@@ -118,7 +118,7 @@ function Skinner:Calendar() -- LoD
 	CalendarCreateEventIcon:SetAlpha(1) -- show event icon
 	self:keepFontStrings(CalendarCreateEventTitleFrame)
 	self:moveObject{obj=CalendarCreateEventTitleFrame, y=-6}
-	self:removeRegions(CalendarCreateEventCloseButton, {self.isBeta and 5 or 4})
+	self:removeRegions(CalendarCreateEventCloseButton, {5})
 	self:skinEditBox{obj=CalendarCreateEventTitleEdit, regs={9}}
 	self:skinDropDown{obj=CalendarCreateEventTypeDropDown}
 	self:skinDropDown{obj=CalendarCreateEventHourDropDown}
@@ -140,7 +140,7 @@ function Skinner:Calendar() -- LoD
 -->>-- Mass Invite Frame
 	self:keepFontStrings(CalendarMassInviteTitleFrame)
 	self:moveObject{obj=CalendarMassInviteTitleFrame, y=-6}
-	self:removeRegions(CalendarMassInviteCloseButton, {self.isBeta and 5 or 4})
+	self:removeRegions(CalendarMassInviteCloseButton, {5})
 	self:skinEditBox{obj=CalendarMassInviteGuildMinLevelEdit, regs={9}}
 	self:skinEditBox{obj=CalendarMassInviteGuildMaxLevelEdit, regs={9}}
 	self:skinDropDown{obj=CalendarMassInviteGuildRankMenu}
@@ -199,27 +199,14 @@ function Skinner:MenuFrames()
 	self:skinSlider(VideoOptionsFrameCategoryFrameListScrollBar)
 	self:addSkinFrame{obj=VideoOptionsFramePanelContainer, ft=ftype}
 	-- Resolution Panel
-	if not self.isBeta then
-		self:skinDropDown{obj=VideoOptionsResolutionPanelResolutionDropDown}
-		self:skinDropDown{obj=VideoOptionsResolutionPanelRefreshDropDown}
-		self:skinDropDown{obj=VideoOptionsResolutionPanelMultiSampleDropDown}
-		self:addSkinFrame{obj=VideoOptionsResolutionPanel, ft=ftype}
-		-- Brightness subPanel
-		self:addSkinFrame{obj=VideoOptionsResolutionPanelBrightness, ft=ftype}
-		-- Effects Panel
-		self:addSkinFrame{obj=VideoOptionsEffectsPanel, ft=ftype}
-		self:addSkinFrame{obj=VideoOptionsEffectsPanelQuality, ft=ftype}
-		self:addSkinFrame{obj=VideoOptionsEffectsPanelShaders, ft=ftype}
-	else
-		for _, child in ipairs{Graphics_:GetChildren()} do
-			if child:GetName():find("DropDown") then
-				self:skinDropDown{obj=child}
-			end
+	for _, child in ipairs{Graphics_:GetChildren()} do
+		if child:GetName():find("DropDown") then
+			self:skinDropDown{obj=child}
 		end
-		for _, child in ipairs{Advanced_:GetChildren()} do
-			if child:GetName():find("DropDown") then
-				self:skinDropDown{obj=child}
-			end
+	end
+	for _, child in ipairs{Advanced_:GetChildren()} do
+		if child:GetName():find("DropDown") then
+			self:skinDropDown{obj=child}
 		end
 	end
 
@@ -441,11 +428,7 @@ function Skinner:MainMenuBar()
 	self:add2Table(self.uiKeys2, "MainMenuBar")
 
 	if self.db.profile.MainMenuBar.glazesb then
-		if not self.isBeta then
-			self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 6), {ExhaustionLevelFillBar})
-		else
-			self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 5), {ExhaustionLevelFillBar})
-		end
+		self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 5), {ExhaustionLevelFillBar})
 		ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
 		self:glazeStatusBar(ReputationWatchStatusBar, 0, ReputationWatchStatusBarBackground)
 	end
@@ -454,15 +437,10 @@ function Skinner:MainMenuBar()
 
 	ExhaustionTick:SetAlpha(0)
 	self:adjHeight{obj=MainMenuExpBar, adj=-2} -- shrink it so it moves up
-	self:adjHeight{obj=ExhaustionLevelFillBar, adj=self.isBeta and -1 or -2} -- mirror the XP bar
+	self:adjHeight{obj=ExhaustionLevelFillBar, adj=-1} -- mirror the XP bar
 	local yOfs = IsAddOnLoaded("DragonCore") and -47 or -4
-	if not self.isBeta then
-		self:keepRegions(MainMenuExpBar, {1, 6, 7}) -- N.B. region 1 is rested XP, 6 is background, 7 is the normal XP
-		self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-7, x2=4, y2=yOfs}
-	else
-		self:keepRegions(MainMenuExpBar, {1, 5, 6}) -- N.B. region 1 is rested XP, 5 is background, 6 is the normal XP
-		self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=yOfs}
-	end
+	self:keepRegions(MainMenuExpBar, {1, 5, 6}) -- N.B. region 1 is rested XP, 5 is background, 6 is the normal XP
+	self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=yOfs}
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
 	self:keepFontStrings(MainMenuBarArtFrame)
 	self:keepRegions(ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
@@ -477,23 +455,16 @@ function Skinner:MainMenuBar()
 	for i = 1, NUM_BONUS_ACTION_SLOTS do
 		local btnName = "BonusActionButton"..i
 		local btn = _G[btnName]
-		if self.isBeta then
-			btn.bg:SetAlpha(0) -- texture changed in the blizzard code
-		end
+		btn.bg:SetAlpha(0) -- texture changed in the blizzard code
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 		-- stop grid being shown
 		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
 	end
 	-- Micro buttons
-	local microBtns = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "PVP", "LFD", "MainMenu", "Help"}
-	if not self.isBeta then
-		self:add2Table(microBtns, "Socials")
-	else
-		self:add2Table(microBtns, "Guild")
-	end
+	local microBtns = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "PVP", "LFD", "MainMenu", "Help", "Guild"}
 	for _, v in pairs(microBtns) do
-		self:addButtonBorder{obj=_G[v.."MicroButton"], mb=self.isBeta and true or nil, ofs=0, y1=-21}
+		self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
 	end
 	self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
 	-- Keyring button
@@ -539,9 +510,6 @@ function Skinner:MainMenuBar()
 	-- skin shapeshift buttons
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		local ssBtn = _G["ShapeshiftButton"..i]
-		if not self.isBeta then
-			self:removeRegions(ssBtn, {6, 7, 8}) -- remove textures
-		end
 		-- add button borders
 		self:addButtonBorder{obj=ssBtn, abt=true, sec=true}
 	end
@@ -562,16 +530,12 @@ function Skinner:MainMenuBar()
 
 -->>-- Vehicle Leave Button
 	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton, parent=MainMenuBarVehicleLeaveButton, hide=true}
-	if self.isBeta then
-		self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
-			self:moveObject{obj=MainMenuBarVehicleLeaveButton, y=3}
-		end)
-	end
+	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
+		self:moveObject{obj=MainMenuBarVehicleLeaveButton, y=3}
+	end)
 
-	if self.isBeta then
-	-->>-- TalentMicroButtonAlert
-		self:addSkinFrame{obj=TalentMicroButtonAlert, ft=ftype, kfs=true, y1=3, x2=3}
-	end
+-->>-- TalentMicroButtonAlert
+	self:addSkinFrame{obj=TalentMicroButtonAlert, ft=ftype, kfs=true, y1=3, x2=3}
 
 end
 
@@ -646,8 +610,9 @@ function Skinner:GuildBankUI() -- LoD
 
 -->>--	GuildBank Tabs (side)
 	for i = 1, MAX_GUILDBANK_TABS do
-		local tabName = _G["GuildBankTab"..i]
-		self:keepRegions(tabName, {7, 8})
+		local tabName = "GuildBankTab"..i
+		_G[tabName]:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=_G[tabName.."Button"], relTo=_G[tabName.."ButtonIconTexture"]}
 	end
 
 -->>--	GuildBank Frame Tabs (bottom)
@@ -860,7 +825,6 @@ function Skinner:LFRFrame()
 
 end
 
--- BattleNet additions (patch 3.3.5)
 function Skinner:BNFrames()
 	if not self.db.profile.BNFrames or self.initialized.BNFrames then return end
 	self.initialized.BNFrames = true
@@ -881,68 +845,65 @@ function Skinner:BNFrames()
 
 end
 
-if Skinner.isBeta then
-	function Skinner:CinematicFrame()
-		if not self.db.profile.CinematicFrame or self.initialized.CinematicFrame then return end
-		self.initialized.CinematicFrame = true
+function Skinner:CinematicFrame()
+	if not self.db.profile.CinematicFrame or self.initialized.CinematicFrame then return end
+	self.initialized.CinematicFrame = true
 
-		self:add2Table(self.uiKeys1, "CinematicFrame")
+	self:add2Table(self.uiKeys1, "CinematicFrame")
 
-		self:addSkinFrame{obj=CinematicFrame.closeDialog, ft=ftype}
+	self:addSkinFrame{obj=CinematicFrame.closeDialog, ft=ftype}
 
-	end
+end
 
-	function Skinner:LevelUpDisplay()
-		if not self.db.profile.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
-		self.initialized.LevelUpDisplay = true
+function Skinner:LevelUpDisplay()
+	if not self.db.profile.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
+	self.initialized.LevelUpDisplay = true
 
-		self:add2Table(self.uiKeys1, "LevelUpDisplay")
+	self:add2Table(self.uiKeys1, "LevelUpDisplay")
 
-		LevelUpDisplay:DisableDrawLayer("BACKGROUND")
+	LevelUpDisplay:DisableDrawLayer("BACKGROUND")
 
-	end
+end
 
-	function Skinner:SpellFlyout()
-		if not self.db.profile.SpellFlyout or self.initialized.SpellFlyout then return end
-		self.initialized.SpellFlyout = true
+function Skinner:SpellFlyout()
+	if not self.db.profile.SpellFlyout or self.initialized.SpellFlyout then return end
+	self.initialized.SpellFlyout = true
 
-		self:add2Table(self.uiKeys1, "SpellFlyout")
+	self:add2Table(self.uiKeys1, "SpellFlyout")
 
-		self:SecureHook("ActionButton_UpdateFlyout", function(this)
-			if this.FlyoutBorder
-			and not self.skinned[this]
-			then
-				this.FlyoutBorder:SetAlpha(0)
-				this.FlyoutBorderShadow:SetAlpha(0)
-			end
-		end)
+	self:SecureHook("ActionButton_UpdateFlyout", function(this)
+		if this.FlyoutBorder
+		and not self.skinned[this]
+		then
+			this.FlyoutBorder:SetAlpha(0)
+			this.FlyoutBorderShadow:SetAlpha(0)
+		end
+	end)
 
-	end
+end
 
-	function Skinner:GuildInvite()
-		if not self.db.profile.GuildInvite or self.initialized.GuildInvite then return end
-		self.initialized.GuildInvite = true
+function Skinner:GuildInvite()
+	if not self.db.profile.GuildInvite or self.initialized.GuildInvite then return end
+	self.initialized.GuildInvite = true
 
-		self:add2Table(self.uiKeys1, "GuildInvite")
+	self:add2Table(self.uiKeys1, "GuildInvite")
 
-		self:keepFontStrings(GuildInviteFrameLevel)
-		GuildInviteFrame:DisableDrawLayer("BACKGROUND")
-		GuildInviteFrame:DisableDrawLayer("BORDER")
-		GuildInviteFrame:DisableDrawLayer("ARTWORK")
-		GuildInviteFrame:DisableDrawLayer("OVERLAY")
-		self:addSkinFrame{obj=GuildInviteFrame, ft=ftype}
+	self:keepFontStrings(GuildInviteFrameLevel)
+	GuildInviteFrame:DisableDrawLayer("BACKGROUND")
+	GuildInviteFrame:DisableDrawLayer("BORDER")
+	GuildInviteFrame:DisableDrawLayer("ARTWORK")
+	GuildInviteFrame:DisableDrawLayer("OVERLAY")
+	self:addSkinFrame{obj=GuildInviteFrame, ft=ftype}
 
-	end
+end
 
-	function Skinner:GhostFrame()
-		if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
-		self.initialized.GhostFrame = true
+function Skinner:GhostFrame()
+	if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
+	self.initialized.GhostFrame = true
 
-		self:add2Table(self.uiKeys1, "GhostFrame")
+	self:add2Table(self.uiKeys1, "GhostFrame")
 
-		self:addButtonBorder{obj=GhostFrameContentsFrame, relTo=GhostFrameContentsFrameIcon}
-		self:addSkinFrame{obj=GhostFrame, ft=ftype, kfs=true}
-
-	end
+	self:addButtonBorder{obj=GhostFrameContentsFrame, relTo=GhostFrameContentsFrameIcon}
+	self:addSkinFrame{obj=GhostFrame, ft=ftype, kfs=true}
 
 end

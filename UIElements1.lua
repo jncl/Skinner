@@ -35,7 +35,7 @@ function Skinner:Tooltips()
 
 	--	change the default Tooltip Border colour here
 	--[=[
-		TODO this currently causes taint in Beta
+		TODO this currently causes taint in Beta ???
 	--]=]
 	local r, g, b, a = self:setTTBBC()
 	TOOLTIP_DEFAULT_COLOR = {r=r, g=g, b=b}
@@ -43,12 +43,10 @@ function Skinner:Tooltips()
 	-- fix for TinyTip tooltip becoming 'fractured'
 	if self.db.profile.Tooltips.style == 3 then
 		--[=[
-			TODO this currently causes taint in Beta
+			TODO this currently causes taint in Beta ???
 		--]=]
---		if not self.isBeta then
-			local c = self.db.profile.Backdrop
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR = {r = c.r, g = c.g, b = c.b}
---		end
+		local c = self.db.profile.Backdrop
+		TOOLTIP_DEFAULT_BACKGROUND_COLOR = {r = c.r, g = c.g, b = c.b}
 		-- self:setTTBackdrop(true)
 	end
 
@@ -197,9 +195,6 @@ function Skinner:StaticPopups()
 	for i = 1, STATICPOPUP_NUMDIALOGS do
 		local sPU = "StaticPopup"..i
 		self:skinEditBox{obj=_G[sPU.."EditBox"]}
-		if not self.isBeta then
-			self:skinEditBox{obj=_G[sPU.."WideEditBox"]}
-		end
 		self:skinMoneyFrame{obj=_G[sPU.."MoneyInputFrame"]}
 		self:addSkinFrame{obj=_G[sPU], ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 		-- prevent FrameLevel from being changed (LibRock does this)
@@ -716,9 +711,7 @@ function Skinner:Tutorial()
 	end
 	TutorialTextBorder:SetAlpha(0)
 	self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
-	if self.isBeta then
-		AnimateCallout:Stop() -- stop animation, otherwise button textures are still displayed
-	end
+	AnimateCallout:Stop() -- stop animation, otherwise button textures are still displayed
 	self:addSkinFrame{obj=TutorialFrame, ft=ftype, anim=true, x1=10, y1=-11, x2=1}
 
 	-- Alert button
@@ -756,48 +749,31 @@ function Skinner:InspectUI() -- LoD
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
-	if not self.isBeta then
-		self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=69}
-	else
-		self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
-	end
+	self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 
 -->>-- Inspect PaperDoll frame
 	-- Inspect Model Frame
 	self:makeMFRotatable(InspectModelFrame)
-	if not self.isBeta then
+	for _, child in ipairs{InspectPaperDollItemsFrame:GetChildren()} do
+		child:DisableDrawLayer("BACKGROUND")
 		-- add button borders
-		for _, child in ipairs{InspectPaperDollFrame:GetChildren()} do
-			if child:IsObjectType("Button") and child:GetName():find("Slot") then
-				self:addButtonBorder{obj=child}
-			end
+		if child:IsObjectType("Button") and child:GetName():find("Slot") then
+			self:addButtonBorder{obj=child, ibt=true}
 		end
-		self:keepRegions(InspectPaperDollFrame, {5, 6, 7}) -- N.B. regions 5-7 are text
-	else
-		for _, child in ipairs{InspectPaperDollItemsFrame:GetChildren()} do
-			child:DisableDrawLayer("BACKGROUND")
-			-- add button borders
-			if child:IsObjectType("Button") and child:GetName():find("Slot") then
-				self:addButtonBorder{obj=child, ibt=true}
-			end
-		end
-		InspectModelFrame:DisableDrawLayer("BACKGROUND")
-		InspectModelFrame:DisableDrawLayer("BORDER")
-		InspectModelFrame:DisableDrawLayer("OVERLAY")
 	end
+	InspectModelFrame:DisableDrawLayer("BACKGROUND")
+	InspectModelFrame:DisableDrawLayer("BORDER")
+	InspectModelFrame:DisableDrawLayer("OVERLAY")
 
 -->>--	PVP Frame
 	self:keepFontStrings(InspectPVPFrame)
 	for i = 1, MAX_ARENA_TEAMS do
 		_G["InspectPVPTeam"..i.."StandardBar"]:Hide()
-		self:addSkinFrame{obj=_G["InspectPVPTeam"..i], hat=true, x1=-40, y1=4, x2=-20, y2=self.isBeta and 0 or -4}
+		self:addSkinFrame{obj=_G["InspectPVPTeam"..i], hat=true, x1=-40, y1=4, x2=-20}
 	end
 
 -->>--	Talent Frame
 	self:keepRegions(InspectTalentFrame, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 8 & 9 are the background picture, 10 is text
-	if not self.isBeta then
-		InspectTalentFrameCloseButton:Hide()
-	end
 	self:skinScrollBar{obj=InspectTalentFrameScrollFrame}
 	self:keepFontStrings(InspectTalentFramePointsBar)
 	self:skinFFToggleTabs("InspectTalentFrameTab")
@@ -809,10 +785,8 @@ function Skinner:InspectUI() -- LoD
 		self:addButtonBorder{obj=_G[btnName], tibt=true}
 	end
 
-	if self.isBeta then
-	-->>-- Guild Frame
-		InspectGuildFrameBG:SetAlpha(0)
-	end
+-->>-- Guild Frame
+	InspectGuildFrameBG:SetAlpha(0)
 -->>--	Frame Tabs
 	for i = 1, InspectFrame.numTabs do
 		local tabName = _G["InspectFrameTab"..i]

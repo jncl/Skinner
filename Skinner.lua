@@ -27,8 +27,8 @@ do
 	Skinner.isPTR = FeedbackUI and true or false
 	--check to see if running on patch 0.3.5
 	--Skinner.isPatch = BATTLENET_FRIEND and true or false
-	-- check to see if running on Beta
-	Skinner.isBeta = EXPANSION_NAME3 and true or false
+	-- check to see if running on Cataclysm Beta
+	Skinner.isCata = ARCHAEOLOGY_RANK_TOOLTIP and true or false
 end
 
 local prdb
@@ -43,7 +43,8 @@ function Skinner:OnInitialize()
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end
-	if self.isBeta then self:Debug("Beta detected") end
+--	if self.isBeta then self:Debug("Beta detected") end
+	if self.isCata then self:Debug("Cataclysm Beta detected") end
 --@end-alpha@
 
 	-- setup the default DB values and register them
@@ -158,19 +159,10 @@ function Skinner:OnInitialize()
 
 	-- these are used to disable frames from being skinned, LoD frames are entered here
 	-- other frames are added when their code is loaded
-	self.charKeys1 = {"GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI"} -- LoD frames
+	self.charKeys1 = {"GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI", "ArchaeologyUI"} -- LoD frames
 	self.charKeys2 = {"AchievementUI"}
-	if self.isBeta then
-		self:add2Table(self.charKeys1, "ArchaeologyUI")
-	end
-	self.npcKeys = {"BarbershopUI", "TrainerUI"} -- LoD frames
-	if self.isBeta then
-		self:add2Table(self.npcKeys, "ReforgingUI")
-	end
-	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager"} -- LoD frames
-	if self.isBeta then
-		self:add2Table(self.uiKeys1, "GuildControlUI", "GuildUI")
-	end
+	self.npcKeys = {"BarbershopUI", "TrainerUI", "ReforgingUI"} -- LoD frames
+	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager", "GuildUI", "GuildControlUI"} -- LoD frames
 	self.uiKeys2 = {}
 
 	-- these are used to disable the gradient
@@ -232,7 +224,7 @@ function Skinner:OnInitialize()
 			for i = 1, frame.numTabs do
 				local tabSF = self.skinFrame[_G[frame:GetName().."Tab"..i]]
 				if i == id then
-					self:setActiveTab(tabSF, true)
+					self:setActiveTab(tabSF)
 				else
 					self:setInactiveTab(tabSF)
 				end
@@ -544,12 +536,10 @@ local function __addSkinFrame(opts)
 		if not opts.obj:IsShown() then Skinner.skinFrame[opts.obj]:Hide() end
 	end
 
-	if Skinner.isBeta then
-		-- remove inset textures
-		if opts.ri then
-			opts.obj.Inset:DisableDrawLayer("BACKGROUND")
-			opts.obj.Inset:DisableDrawLayer("BORDER")
-		end
+	-- remove inset textures
+	if opts.ri then
+		opts.obj.Inset:DisableDrawLayer("BACKGROUND")
+		opts.obj.Inset:DisableDrawLayer("BORDER")
 	end
 
 	return skinFrame
@@ -1085,7 +1075,7 @@ function Skinner:removeRegions(frame, regions)
 
 end
 
-function Skinner:setActiveTab(tabSF, move)
+function Skinner:setActiveTab(tabSF)
 --@alpha@
 	assert(tabSF, "Unknown object\n"..debugstack())
 --@end-alpha@
@@ -1098,7 +1088,7 @@ function Skinner:setActiveTab(tabSF, move)
 	tabSF.tfade:SetTexture(self.gradientTex)
 	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
-	if self.isBeta and move and not tabSF.grown then
+	if not tabSF.grown then
 		if not tabSF.up then
 			local point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 --			self:Debug("sAT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
@@ -1125,7 +1115,7 @@ function Skinner:setInactiveTab(tabSF)
 
 	tabSF.tfade:SetTexture(self.itTex)
 	tabSF.tfade:SetAlpha(1)
-	if self.isBeta and tabSF.grown then
+	if tabSF.grown then
 		if not tabSF.up then
 			local point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 --			self:Debug("sIT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)

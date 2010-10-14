@@ -50,14 +50,12 @@ function Skinner:Defaults()
 		QuestFrame		= true,
 		AuctionUI		= true,
 		BankFrame		= true,
-		Battlefields	= true,
-		ArenaFrame		= true,
 		ArenaRegistrar	= true,
 		GuildRegistrar	= true,
 		Petition		= true,
 		Tabard			= true,
 		BarbershopUI	= true,
-		ReforgingUI		= self.isBeta and true or nil,
+		ReforgingUI		= true,
 	-->>-- Player Frames
 		CharacterFrames = true,
 		PVPFrame		= true,
@@ -74,12 +72,12 @@ function Skinner:Defaults()
 		Buffs			= true,
 		AchievementUI	= {skin = true, style = 2},
 		VehicleMenuBar	= true,
-		WatchFrame		= self.isBeta and {skin = false, popups = true} or false,
+		WatchFrame		= {skin = false, popups = true},
 		GearManager		= true,
 		AlertFrames		= true,
-		ArchaeologyUI	= self.isBeta and true or nil,
-		GuildUI			= self.isBeta and true or nil,
-		GuildControlUI	= self.isBeta and true or nil,
+		ArchaeologyUI	= true,
+		GuildUI			= true,
+		GuildControlUI	= true,
 	-->>-- UI Frames
 		Tooltips		= {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers	= {skin = true, glaze = true},
@@ -124,11 +122,11 @@ function Skinner:Defaults()
 		Nameplates		= true,
 		GMChatUI		= true,
 		BNFrames		= true,
-		CinematicFrame	= self.isBeta and true or nil,
-		LevelUpDisplay	= self.isBeta and true or nil,
-		SpellFlyout		= self.isBeta and true or nil,
-		GuildInvite		= self.isBeta and true or nil,
-		GhostFrame		= self.isBeta and true or nil,
+		CinematicFrame	= true,
+		LevelUpDisplay	= true,
+		SpellFlyout		= true,
+		GuildInvite		= true,
+		GhostFrame		= true,
 	-->>-- Disabled Skins
 		DisabledSkins	= {},
 	-->-- Profiles
@@ -659,16 +657,6 @@ function Skinner:Options()
 					name = self.L["Bank Frame"],
 					desc = self.L["Toggle the skin of the Bank Frame"],
 				},
-				Battlefields = {
-					type = "toggle",
-					name = self.L["Battlefields Frame"],
-					desc = self.L["Toggle the skin of the Battlefields Frame"],
-				},
-				ArenaFrame = {
-					type = "toggle",
-					name = self.L["Arena Frame"],
-					desc = self.L["Toggle the skin of the Arena Frame"],
-				},
 				ArenaRegistrar = {
 					type = "toggle",
 					name = self.L["Arena Registrar Frame"],
@@ -694,11 +682,11 @@ function Skinner:Options()
 					name = self.L["Barbershop Frame"],
 					desc = self.L["Toggle the skin of the Barbershop Frame"],
 				},
-				ReforgingUI = self.isBeta and {
+				ReforgingUI = {
 					type = "toggle",
 					name = self.L["Reforging Frame"],
 					desc = self.L["Toggle the skin of the Reforging Frame"],
-				} or nil,
+				},
 			},
 		},
 
@@ -834,7 +822,7 @@ function Skinner:Options()
 					name = self.L["Gear Manager Frame"],
 					desc = self.L["Toggle the skin of the Gear Manager Frame"],
 				},
-				WatchFrame = self.isBeta and {
+				WatchFrame = {
 					type = "group",
 					order = -1,
 					inline = true,
@@ -853,26 +841,22 @@ function Skinner:Options()
 							desc = self.L["Toggle the skin of the AutoPopUps"],
 						},
 					},
-				} or {
-					type = "toggle",
-					name = self.L["Tracker Frame"],
-					desc = self.L["Toggle the skin of the Tracker Frame"],
 				},
-				ArchaeologyUI = self.isBeta and {
+				ArchaeologyUI = {
 					type = "toggle",
 					name = self.L["ArchaeologyUI"],
 					desc = self.L["Toggle the skin of the ArchaeologyUI"],
-				} or nil,
-				GuildUI = self.isBeta and {
+				},
+				GuildUI = {
 					type = "toggle",
 					name = self.L["GuildUI"],
 					desc = self.L["Toggle the skin of the GuildUI"],
-				} or nil,
-				GuildControlUI = self.isBeta and {
+				},
+				GuildControlUI = {
 					type = "toggle",
 					name = self.L["GuildControlUI"],
 					desc = self.L["Toggle the skin of the GuildControlUI"],
-				} or nil,
+				},
 			},
 		},
 
@@ -1345,31 +1329,31 @@ function Skinner:Options()
 					name = self.L["BattleNet Frames"],
 					desc = self.L["Toggle the skin of the BattleNet Frames"],
 				},
-				CinematicFrame = self.isBeta and {
+				CinematicFrame = {
 					type = "toggle",
 					name = self.L["Cinematic Frame"],
 					desc = self.L["Toggle the skin of the Cinematic Frame"],
-				} or nil,
-				LevelUpDisplay = self.isBeta and {
+				},
+				LevelUpDisplay = {
 					type = "toggle",
 					name = self.L["LevelUp Display"],
 					desc = self.L["Toggle the skin of the LevelUp Display"],
-				} or nil,
-				SpellFlyout = self.isBeta and {
+				},
+				SpellFlyout = {
 					type = "toggle",
 					name = self.L["SpellFlyouts"],
 					desc = self.L["Toggle the skin of the SpellFlyouts"],
-				} or nil,
-				GuildInvite = self.isBeta and {
+				},
+				GuildInvite = {
 					type = "toggle",
 					name = self.L["Guild Invite Frame"],
 					desc = self.L["Toggle the skin of the Guild Invite Frame"],
-				} or nil,
-				GhostFrame = self.isBeta and {
+				},
+				GhostFrame = {
 					type = "toggle",
 					name = self.L["Ghost Frame"],
 					desc = self.L["Toggle the skin of the Ghost Frame"],
-				} or nil,
+				},
 			},
 		},
 

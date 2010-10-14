@@ -85,47 +85,24 @@ function Skinner:TrainerUI() -- LoD
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
-	if not self.isBeta then
-		if self.modBtns then
-			-- hook to manage changes to button textures
-			self:SecureHook("ClassTrainerFrame_Update", function()
-				for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
-					self:checkTex(_G["ClassTrainerSkill"..i])
-				end
-				self:checkTex(ClassTrainerCollapseAllButton)
-			end)
-		end
-		self:keepFontStrings(ClassTrainerExpandButtonFrame)
-		self:skinButton{obj=ClassTrainerCollapseAllButton, mp=true}
-		for i = 1, CLASS_TRAINER_SKILLS_DISPLAYED do
-			self:skinButton{obj=_G["ClassTrainerSkill"..i], mp=true}
-		end
-		if self.modBtns then ClassTrainerFrame_Update() end -- force update for button textures
-		self:skinScrollBar{obj=ClassTrainerListScrollFrame}
-		self:skinScrollBar{obj=ClassTrainerDetailScrollFrame}
-		self:getRegion(ClassTrainerSkillIcon, 1):SetAlpha(0)
-		self:addButtonBorder{obj=ClassTrainerSkillIcon}
-		self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=74}
-	else
-		local btn = ClassTrainerFrame.skillStepButton
+	local btn = ClassTrainerFrame.skillStepButton
+	btn.disabledBG:SetAlpha(0)
+	btn:GetNormalTexture():SetAlpha(0)
+	self:addButtonBorder{obj=btn, relTo=btn.icon}
+	self:skinSlider{obj=ClassTrainerScrollFrameScrollBar}
+	ClassTrainerFrame.bottomInset:DisableDrawLayer("BACKGROUND")
+	ClassTrainerFrame.bottomInset:DisableDrawLayer("BORDER")
+	self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+	for i = 1, #ClassTrainerFrame.scrollFrame.buttons do
+		local btn = ClassTrainerFrame.scrollFrame.buttons[i]
 		btn.disabledBG:SetAlpha(0)
 		btn:GetNormalTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
-		self:skinSlider{obj=ClassTrainerScrollFrameScrollBar}
-		ClassTrainerFrame.bottomInset:DisableDrawLayer("BACKGROUND")
-		ClassTrainerFrame.bottomInset:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
-		for i = 1, #ClassTrainerFrame.scrollFrame.buttons do
-			local btn = ClassTrainerFrame.scrollFrame.buttons[i]
-			btn.disabledBG:SetAlpha(0)
-			btn:GetNormalTexture():SetAlpha(0)
-			self:addButtonBorder{obj=btn, relTo=btn.icon}
-		end
-		-- Magic Button textures
-		local btn = "ClassTrainerTrainButton"
-		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	end
+	-- Magic Button textures
+	local btn = "ClassTrainerTrainButton"
+	if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+	if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
 
 end
@@ -136,13 +113,8 @@ function Skinner:TaxiFrame()
 
 	self:add2Table(self.npcKeys, "TaxiFrame")
 
-	if not self.isBeta then
-		self:keepRegions(TaxiFrame, {6, 7}) -- N.B. region 6 is TaxiName, 7 is the Map background
-		self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=10, y1=-11, x2=-32, y2=74}
-	else
-		self:keepRegions(TaxiFrame, {6, 13})-- N.B. region 6 is Title, 13 is the Map background
-		self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:keepRegions(TaxiFrame, {6, 13})-- N.B. region 6 is Title, 13 is the Map background
+	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
 
 
 end
@@ -173,11 +145,9 @@ function Skinner:QuestFrame()
 
 -->>--	Progress Panel
 	self:keepFontStrings(QuestFrameProgressPanel)
-	if self.isBeta then
-		QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
+	QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=QuestProgressScrollFrame}
 	for i = 1, MAX_REQUIRED_ITEMS do
@@ -200,13 +170,11 @@ function Skinner:QuestFrame()
 		AvailableQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	end
 
-	if self.isBeta then
-	-->>-- QuestNPCModel
-		self:keepFontStrings(QuestNPCModel)
-		self:keepFontStrings(QuestNPCModelTextFrame)
-		self:skinScrollBar{obj=QuestNPCModelTextScrollFrame}
-		self:addSkinFrame{obj=QuestNPCModel, ft=ftype, x1=-4, y1=4, x2=4, y2=-81}
-	end
+-->>-- QuestNPCModel
+	self:keepFontStrings(QuestNPCModel)
+	self:keepFontStrings(QuestNPCModelTextFrame)
+	self:skinScrollBar{obj=QuestNPCModelTextScrollFrame}
+	self:addSkinFrame{obj=QuestNPCModel, ft=ftype, x1=-4, y1=4, x2=4, y2=-81}
 
 	self:QuestInfo()
 
@@ -338,69 +306,21 @@ function Skinner:BankFrame()
 
 end
 
-function Skinner:Battlefields()
-	if not self.db.profile.Battlefields or self.initialized.Battlefields then return end
-	self.initialized.Battlefields = true
-
-	self:add2Table(self.npcKeys, "Battlefields")
-
-	if not self.isBeta then
-	   self:skinScrollBar{obj=BattlefieldListScrollFrame}
-	end
-	if not self.isBeta then
-	   BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	   BattlefieldFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	   self:addSkinFrame{obj=BattlefieldFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
-	end
-
-end
-
-function Skinner:ArenaFrame()
-	if not self.db.profile.ArenaFrame or self.initialized.ArenaFrame then return end
-	self.initialized.ArenaFrame = true
-
-	self:add2Table(self.npcKeys, "ArenaFrame")
-
-	if not self.isBeta then
-	   ArenaFrameZoneDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	   self:addSkinFrame{obj=ArenaFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
-	end
-
-end
-
 function Skinner:ArenaRegistrar()
 	if not self.db.profile.ArenaRegistrar or self.initialized.ArenaRegistrar then return end
 	self.initialized.ArenaRegistrar = true
 
 	self:add2Table(self.npcKeys, "ArenaRegistrar")
 
-	if not self.isBeta then
-	   self:keepFontStrings(ArenaRegistrarGreetingFrame)
-	   self:getRegion(ArenaRegistrarGreetingFrame, 1):SetTextColor(self.HTr, self.HTg, self.HTb) -- AvailableServicesText (name also used by GuildRegistrar frame)
-	   RegistrationText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		for i = 1, MAX_TEAM_BORDERS do
-			local text = self:getRegion(_G["ArenaRegistrarButton"..i], 3)
-			text:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
-		ArenaRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:skinEditBox{obj=ArenaRegistrarFrameEditBox}
-		self:addSkinFrame{obj=ArenaRegistrarFrame, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=64}
-	end
-
 	--	PVP Banner Frame
-	if not self.isBeta then
-		self:keepRegions(PVPBannerFrame, {17, 18, 19, 20, 21, 22}) -- N.B. regions 17 - 20 are the emblem, 21, 22 are the text
-		self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
-	else
-		self:skinEditBox{obj=PVPBannerFrameEditBox, regs={9}}
-		self:keepRegions(PVPBannerFrame, {8, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 29 - 32 are the emblem, 33 - 35 are the text
-		self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
-		-- Magic Button textures
-		for _, v in pairs{"Cancel", "Accept"} do
-			local btn = "PVPBannerFrame"..v.."Button"
-			if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-			if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
-		end
+	self:skinEditBox{obj=PVPBannerFrameEditBox, regs={9}}
+	self:keepRegions(PVPBannerFrame, {8, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 29 - 32 are the emblem, 33 - 35 are the text
+	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
+	-- Magic Button textures
+	for _, v in pairs{"Cancel", "Accept"} do
+		local btn = "PVPBannerFrame"..v.."Button"
+		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	end
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
@@ -500,11 +420,6 @@ function Skinner:QuestInfo()
 		QuestInfoItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		QuestInfoItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		QuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		if not self.isBeta then
-			QuestInfoTalentFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			QuestInfoHonorFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			QuestInfoArenaPointsFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
 		QuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		QuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- reputation rewards
@@ -518,9 +433,7 @@ function Skinner:QuestInfo()
 			local r, g, b = _G["QuestInfoObjective"..i]:GetTextColor()
 			_G["QuestInfoObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
-		if self.isBeta then
-			QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
+		QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end)
 
 	QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -531,48 +444,40 @@ function Skinner:QuestInfo()
 		_G[btnName.."NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName], libt=true}
 	end
-	if self.isBeta then
-		QuestInfoRewardSpellNameFrame:SetTexture(nil)
-		QuestInfoRewardSpellSpellBorder:SetTexture(nil)
-	end
+	QuestInfoRewardSpellNameFrame:SetTexture(nil)
+	QuestInfoRewardSpellSpellBorder:SetTexture(nil)
 
-	if self.isBeta then
-		local btnName = "QuestInfoSkillPointFrame"
-		_G[btnName.."NameFrame"]:SetTexture(nil)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G[btnName], libt=true}
-			_G[btnName.."SkillPointBg"]:SetParent(_G[btnName].sknrBdr)
-			_G[btnName.."SkillPointBgGlow"]:SetParent(_G[btnName].sknrBdr)
-			_G[btnName.."Points"]:SetParent(_G[btnName].sknrBdr)
-		end
+	local btnName = "QuestInfoSkillPointFrame"
+	_G[btnName.."NameFrame"]:SetTexture(nil)
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G[btnName], libt=true}
+		_G[btnName.."SkillPointBg"]:SetParent(_G[btnName].sknrBdr)
+		_G[btnName.."SkillPointBgGlow"]:SetParent(_G[btnName].sknrBdr)
+		_G[btnName.."Points"]:SetParent(_G[btnName].sknrBdr)
 	end
 
 end
 
-if Skinner.isBeta then
+function Skinner:ReforgingUI()
+	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
+	self.initialized.ReforgingUI = true
 
-	function Skinner:ReforgingUI()
-		if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
-		self.initialized.ReforgingUI = true
-
-		ReforgingFrame.topInset:DisableDrawLayer("BACKGROUND")
-		ReforgingFrame.topInset:DisableDrawLayer("BORDER")
-		ReforgingFrame.bottomInset:DisableDrawLayer("BACKGROUND")
-		ReforgingFrame.bottomInset:DisableDrawLayer("BORDER")
-		ReforgingFrameItemButton:DisableDrawLayer("OVERLAY")
-		ReforgingFrameTopInsetLableBg:Hide()
-		ReforgingFrameItemButton.missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		ReforgingFrame.missingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:skinDropDown{obj=ReforgingFrameFilterOldStat}
-		self:skinDropDown{obj=ReforgingFrameFilterNewStat}
-		self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
-		-- Magic Button textures
-		for _, v in pairs{"Reforge", "Restore"} do
-			local btn = "ReforgingFrame"..v.."Button"
-			if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-			if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
-		end
-
+	ReforgingFrame.topInset:DisableDrawLayer("BACKGROUND")
+	ReforgingFrame.topInset:DisableDrawLayer("BORDER")
+	ReforgingFrame.bottomInset:DisableDrawLayer("BACKGROUND")
+	ReforgingFrame.bottomInset:DisableDrawLayer("BORDER")
+	ReforgingFrameItemButton:DisableDrawLayer("OVERLAY")
+	ReforgingFrameTopInsetLableBg:Hide()
+	ReforgingFrameItemButton.missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	ReforgingFrame.missingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinDropDown{obj=ReforgingFrameFilterOldStat}
+	self:skinDropDown{obj=ReforgingFrameFilterNewStat}
+	self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+	-- Magic Button textures
+	for _, v in pairs{"Reforge", "Restore"} do
+		local btn = "ReforgingFrame"..v.."Button"
+		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	end
 
 end

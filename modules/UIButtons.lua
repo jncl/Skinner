@@ -94,12 +94,7 @@ do
 	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
 	module.fontP:SetTextColor(1.0, 0.82, 0)
 end
-local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture"}
--- Add these to handle Magic Button textures
-if Skinner.isBeta then
-	Skinner:add2Table(btnTexNames, "_LeftSeparator")
-	Skinner:add2Table(btnTexNames, "_RightSeparator")
-end
+local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture", "_LeftSeparator", "_RightSeparator"}
 function module:skinButton(opts)
 --[[
 	as = use applySkin rather than addSkinButton, used when text appears behind the gradient
@@ -365,6 +360,8 @@ local function __addButtonBorder(opts)
 --@end-alpha@
 	if not opts.obj then return end
 
+	local btnName = opts.obj:GetName()
+
 	-- remove Normal texture if required
 	if opts.ibt
 	or opts.abt
@@ -387,9 +384,9 @@ local function __addButtonBorder(opts)
 	local yOfs1 = opts.y1 or opts.ofs
 	local xOfs2 = opts.x2 or opts.ofs
 	local yOfs2 = opts.y2 or (opts.ofs * -1)
-	-- (Large) Item Button templates have an IconTexture to position to
+	-- Large Item Button templates have an IconTexture to position to
 	relTo = opts.relTo
-			or opts.libt and _G[opts.obj:GetName().."IconTexture"]
+			or opts.libt and _G[btnName.."IconTexture"]
 			or nil
 	opts.obj.sknrBdr:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
 	opts.obj.sknrBdr:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
@@ -402,36 +399,34 @@ local function __addButtonBorder(opts)
 
 	-- reparent these textures so they are displayed above the border
 	if opts.abt then -- Action Buttons
-		_G[opts.obj:GetName().."HotKey"]:SetParent(opts.obj.sknrBdr)
-		if Skinner.isBeta then
+		_G[btnName.."HotKey"]:SetParent(opts.obj.sknrBdr)
 		-- reparent FlyoutArrow so it is displayed above the border
-			opts.obj.FlyoutArrow:SetParent(opts.obj.sknrBdr)
-		end
+		opts.obj.FlyoutArrow:SetParent(opts.obj.sknrBdr)
 	end
 	if opts.pabt then -- Pet Action Buttons
-		_G[opts.obj:GetName().."AutoCastable"]:SetParent(opts.obj.sknrBdr)
-		_G[opts.obj:GetName().."Shine"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."AutoCastable"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Shine"]:SetParent(opts.obj.sknrBdr)
 	end
 	if opts.ibt then -- Item Buttons
-		_G[opts.obj:GetName().."Count"]:SetParent(opts.obj.sknrBdr)
-		_G[opts.obj:GetName().."Stock"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Stock"]:SetParent(opts.obj.sknrBdr)
 	end
 	if opts.tibt then -- Talents
-		_G[opts.obj:GetName().."RankBorder"]:SetParent(opts.obj.sknrBdr)
-		_G[opts.obj:GetName().."Rank"]:SetParent(opts.obj.sknrBdr)
-		if _G[opts.obj:GetName().."RankBorderGreen"] then
-			_G[opts.obj:GetName().."RankBorderGreen"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."RankBorder"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Rank"]:SetParent(opts.obj.sknrBdr)
+		if _G[btnName.."RankBorderGreen"] then
+			_G[btnName.."RankBorderGreen"]:SetParent(opts.obj.sknrBdr)
 		end
 	end
 	if opts.libt or opts.abt then -- Action/Large Item Buttons
-		_G[opts.obj:GetName().."Name"]:SetParent(opts.obj.sknrBdr)
-		_G[opts.obj:GetName().."Count"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
 	end
 	if opts.spbt then -- Simple Popup Buttons
-		_G[opts.obj:GetName().."Name"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
 	end
 	if opts.mb then -- Micro Buttons
-		_G[opts.obj:GetName().."Flash"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Flash"]:SetParent(opts.obj.sknrBdr)
 	end
 
 end

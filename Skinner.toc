@@ -58,7 +58,7 @@ AddonFrames.lua
 # These individual lua files skin the default frames as follows;
 #
 # CharacterFrames1
-# inc. Character (inc. Pet, Reputation, Skill, Token), PVP, PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI, AlertFrames
+# inc. Character (inc. Pet, Reputation, Token), PVP, PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI, AlertFrames
 CharacterFrames1.lua
 #
 # CharacterFrames2
@@ -66,7 +66,7 @@ CharacterFrames1.lua
 CharacterFrames2.lua
 #
 # NPCFrames
-# inc. Merchant, Gossip, TrainerUI, Taxi, Quest, AuctionUI, Bank, Battlefields, Arena, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI, QuestInfo, ReforgingUI
+# inc. Merchant, Gossip, TrainerUI, Taxi, Quest, AuctionUI, Bank, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI, QuestInfo, ReforgingUI
 NPCFrames.lua
 #
 # UIElements1

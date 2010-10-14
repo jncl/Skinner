@@ -14,7 +14,7 @@ local defaults = {
 		petlevel = (Skinner.uCls == "HUNTER" or Skinner.uCls == "WARLOCK") and false or nil,
 		alpha = 0.25,
 		arena = false,
-		compact = Skinner.isBeta and false or nil,
+		compact = false,
 	}
 }
 local lOfs = -10 -- level text offset
@@ -23,7 +23,7 @@ local tDelay = 0.2 -- repeating timer delay
 local isSkinned = setmetatable({}, {__index = function(table, key) table[key] = true end})
 local rpTmr = {}
 local unitFrames = {
-	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground",
+	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground", "CompactPartyFrame"
 }
 
 local function skinPlayerF()
@@ -82,25 +82,23 @@ local function skinPlayerF()
 			PlayerFrameAlternateManaBarBorder:SetTexture(nil)
 			Skinner:glazeStatusBar(PlayerFrameAlternateManaBar, 0)
 		end
-		if Skinner.isBeta then
-			-- if the player class is a Warlock then skin the ShardBar
-			if Skinner.uCls == "WARLOCK" then
-				for i = 1, SHARD_BAR_NUM_SHARDS do
-					_G["ShardBarFrameShard"..i]:DisableDrawLayer("BORDER")
-					_G["ShardBarFrameShard"..i]:DisableDrawLayer("OVERLAY") -- Glow texture
-				end
+		-- if the player class is a Warlock then skin the ShardBar
+		if Skinner.uCls == "WARLOCK" then
+			for i = 1, SHARD_BAR_NUM_SHARDS do
+				_G["ShardBarFrameShard"..i]:DisableDrawLayer("BORDER")
+				_G["ShardBarFrameShard"..i]:DisableDrawLayer("OVERLAY") -- Glow texture
 			end
-			-- if the player class is a Paladin then skin the PowerBar
-			if Skinner.uCls == "PALADIN" then
-				PaladinPowerBar:DisableDrawLayer("BACKGROUND")
-				PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
-			end
-			-- if the player class is a Druid then skin the EclipseBarFrame
-			if Skinner.uCls == "DRUID" then
-				EclipseBarFrameBar:Hide()
-				EclipseBarFrame.sunBar:Hide()
-				EclipseBarFrame.moonBar:Hide()
-			end
+		end
+		-- if the player class is a Paladin then skin the PowerBar
+		if Skinner.uCls == "PALADIN" then
+			PaladinPowerBar:DisableDrawLayer("BACKGROUND")
+			PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
+		end
+		-- if the player class is a Druid then skin the EclipseBarFrame
+		if Skinner.uCls == "DRUID" then
+			EclipseBarFrameBar:Hide()
+			EclipseBarFrame.sunBar:Hide()
+			EclipseBarFrame.moonBar:Hide()
 		end
 	end
 
@@ -329,38 +327,34 @@ local function skinArenaF()
 	end
 
 end
-local skinCompactF
-if Skinner.isBeta then
-	Skinner:add2Table(unitFrames, "CompactPartyFrame")
-	function skinCompactF()
+local function skinCompactF()
 
-		if db.compact
-		and not isSkinned["Compact"]
-		then
-			-- skin Compact Party Frame
-			CompactPartyFrame.borderFrame:DisableDrawLayer("ARTWORK")
-			for i = 1, MEMBERS_PER_RAID_GROUP do
-				_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
-				_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
-			end
-			Skinner:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
-			-- hook this to skin Compact Raid Unit Frame(s)
-			Skinner:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
-				local frame = Skinner.hooks[this].CompactRaidFrameContainer_GetUnitFrame(...)
-				frame:DisableDrawLayer("BACKGROUND")
-				frame:DisableDrawLayer("BORDER")
-				return frame
-			end, true)
-			-- hook this to skin Compact Raid Group Frame(s)
-			Skinner:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
-				local frame = Skinner.hooks[this].CompactRaidGroup_GenerateForGroup(...)
-				frame.borderFrame:DisableDrawLayer("ARTWORK")
-				Skinner:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
-				return frame
-			end, true)
+	if db.compact
+	and not isSkinned["Compact"]
+	then
+		-- skin Compact Party Frame
+		CompactPartyFrame.borderFrame:DisableDrawLayer("ARTWORK")
+		for i = 1, MEMBERS_PER_RAID_GROUP do
+			_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
+			_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
 		end
-
+		Skinner:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+		-- hook this to skin Compact Raid Unit Frame(s)
+		Skinner:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
+			local frame = Skinner.hooks[this].CompactRaidFrameContainer_GetUnitFrame(...)
+			frame:DisableDrawLayer("BACKGROUND")
+			frame:DisableDrawLayer("BORDER")
+			return frame
+		end, true)
+		-- hook this to skin Compact Raid Group Frame(s)
+		Skinner:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
+			local frame = Skinner.hooks[this].CompactRaidGroup_GenerateForGroup(...)
+			frame.borderFrame:DisableDrawLayer("ARTWORK")
+			Skinner:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+			return frame
+		end, true)
 	end
+
 end
 local function resetPosn(pF)
 
@@ -451,7 +445,7 @@ function module:adjustUnitFrames(opt)
 		skinFocusF()
 		skinPartyF()
 		skinArenaF()
-		if Skinner.isBeta then skinCompactF() end
+		skinCompactF()
 	elseif opt == "player" then
 		skinPlayerF()
 	elseif opt == "pet"
@@ -468,7 +462,7 @@ function module:adjustUnitFrames(opt)
 		skinArenaF()
 	elseif opt == "alpha" then
 		changeUFOpacity()
-	elseif opt == "compact" and Skinner.isBeta then
+	elseif opt == "compact" then
 		skinCompactF()
 	end
 
@@ -547,12 +541,12 @@ function module:GetOptions()
 					module:adjustUnitFrames(info[#info])
 				end,
 			} or nil,
-			compact = Skinner.isBeta and {
+			compact = {
 				type = "toggle",
 				order = 8,
 				name = Skinner.L["Compact"],
 				desc = Skinner.L["Toggle the skin of the Compact UnitFrames"],
-			} or nil,
+			},
 		},
 	}
 	return options
