@@ -169,7 +169,7 @@ function Skinner:TradeSkillUI() -- LoD
 	self:keepFontStrings(TradeSkillDetailScrollChildFrame)
 	self:addButtonBorder{obj=TradeSkillSkillIcon}
 	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
-	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=-4}
+	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-4}
 	-- Magic Button textures
 	for _, v in pairs{"CreateAll", "Cancel", "Create", "ViewGuildCrafters"} do
 		local btn = "TradeSkill"..v.."Button"
