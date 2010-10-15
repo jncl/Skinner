@@ -6,9 +6,19 @@ function Skinner:AucAdvanced()
 	local aVer = GetAddOnMetadata("Auc-Advanced", "Version")
 
 	-- progress bars
-	local lib = AucAdvanced.Scan
+	local lib = aVer:sub(1,3) < "5.9" and  AucAdvanced.Scan or AucAdvanced.API
 	self:SecureHook(lib , "ProgressBars", function(sbObj, ...)
 	    if aVer:sub(1,3) > "5.8" then
+			i = 1
+			while lib["GenericProgressBar"..i] do
+	           local gpb = lib["GenericProgressBar"..i]
+           		if gpb and not self.sbGlazed[gpb] then
+           			gpb:SetBackdrop(nil)
+           			self:glazeStatusBar(gpb, 0)
+           		end
+				i = i + 1
+			end
+	    elseif aVer:sub(1,3) == "5.8" then
 	        for i = 1, #lib.availableBars do
 	           local gpb = lib["GenericProgressBar"..i]
            		if gpb and not self.sbGlazed[gpb] then
@@ -16,7 +26,7 @@ function Skinner:AucAdvanced()
            			self:glazeStatusBar(gpb, 0)
            		end
 	        end
-	    else
+	    elseif aVer:sub(1,3) < "5.8" then
     		if not self.sbGlazed[sbObj] then
     			sbObj:SetBackdrop(nil)
     			self:glazeStatusBar(sbObj, 0)

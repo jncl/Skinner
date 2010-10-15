@@ -7,8 +7,6 @@ function Skinner:tekKonfig()
 	
 	if allHooked then return end
 	
---	self:Debug("tekKonfig skin")
-	
 	if LibStub("tekKonfig-Dropdown", true) and not tKDd then
 		tKDd, ver = LibStub("tekKonfig-Dropdown")
 		self:RawHook(tKDd, "new", function(parent, label, ...)

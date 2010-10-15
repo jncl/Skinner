@@ -11,8 +11,9 @@ function Skinner:_NPCScan()
 	self:skinDropDown{obj=_NPCScanConfigSoundDropdown}
 	
 -->>-- Search Frame
-	self:skinEditBox{obj=_NPCScanSearchName, regs={9}}
-	self:skinEditBox{obj=_NPCScanSearchID, regs={9}}
+	self:skinEditBox{obj=_NPCScanSearchNpcName, regs={9}}
+	self:skinEditBox{obj=_NPCScanSearchNpcID, regs={9}}
+	self:skinEditBox{obj=_NPCScanSearchNpcWorld, regs={9}}
 	
 	-- hook this to skin slider
 	local function hookAndSkin()

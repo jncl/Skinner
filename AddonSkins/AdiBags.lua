@@ -16,7 +16,7 @@ function Skinner:AdiBags()
 --			self:Debug("OnBagFrameCreated: [%s, %s]", bag, bag.bagName)
 			local frame = bag:GetFrame()
 			self:addSkinFrame{obj=frame}
-			if bag.bagName == "Backpack" then self:skinEditBox{obj=AdiBagsSearchEditBox, regs={9}} end
+			if bag.bagName == "Backpack" then self:skinEditBox{obj=AdiBagsSearchFrame.editBox, regs={9}} end
 		end, 0.2, bag) -- wait for 2/10th second for frame to be created fully
 	end)
 

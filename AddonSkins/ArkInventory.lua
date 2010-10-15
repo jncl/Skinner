@@ -16,7 +16,7 @@ function Skinner:ArkInventory()
 		self.hooks[ArkInventory].Frame_Border_Paint(border, slot, file, size, offset, scale, r, g, b, a)
 	end, true)
 	self:SecureHook(ArkInventory, "Frame_Main_Draw", function(frame)
-		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
+--		self:Debug("ArkInventory.Frame_Main_Draw: [%s]", frame)
 		local af = frame:GetName()
 		if not self.skinned[frame] then
 			for _, v in pairs{"Title", "Search", "Container", "Changer", "Status"} do
@@ -38,6 +38,10 @@ function Skinner:ArkInventory()
 	self:addSkinFrame{obj=ARKINV_SearchFrame}
 -->>-- GuildBank Log Frame
 	self:applySkin{obj=ARKINV_Frame4Log}
+
+end
+
+function Skinner:ArkInventoryRules()
 
 -->>--	Rules Frame
 	ArkInventory.db.profile.option.ui.rules.border.colour = CopyTable(self.db.profile.BackdropBorder)

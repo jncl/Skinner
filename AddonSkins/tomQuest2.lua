@@ -33,7 +33,7 @@ function Skinner:tomQuest2()
 		self:addSkinFrame{obj=tomQuest2QuestsTooltip}
 	end
 	-- skin the Quest & Achievement Trackers if required
-	if self.db.profile.WatchFrame then
+	if self.db.profile.WatchFrame.skin then
 		changeDefaults("questsTracker")
 		self:skinSlider{obj=tomQuest2QuestsTracker.slider, size=4}
 		self:addSkinFrame{obj=tomQuest2QuestsTracker}
@@ -182,7 +182,7 @@ function Skinner:tq233beta5(tq2) -- 3.3 beta 5
 	end
 
 	-- skin the Quest & Achievement Trackers if required
-	if self.db.profile.WatchFrame then
+	if self.db.profile.WatchFrame.skin then
 		if qTrkr then
 			qTrkr.db.profile.backDropColor = CopyTable(self.bColour)
 			qTrkr.db.profile.borderColor = CopyTable(self.bbColour)

@@ -37,8 +37,7 @@ function Skinner:QuestGuru()
 		_G[prefix.."ItemChooseText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G[prefix.."ItemReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G[prefix.."SpellLearnText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G[prefix.."HonorFrameReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G[prefix.."TalentFrameReceiveText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G[prefix.."PlayerTitleText"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- XP text
 		if type == "Log" then
 			QuestGuru_QuestLogXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -121,7 +120,7 @@ function Skinner:QuestGuru()
 -->>-- Tab5
 -->>--	Tracker Frame(s)
 	if IsAddOnLoaded("QuestGuru_Tracker") then
-		if self.db.profile.WatchFrame then
+		if self.db.profile.WatchFrame.skin then
 			self:addSkinFrame{obj=QGT_QuestWatchFrame, kfs=true}
 			QGT_SetQuestWatchBorder = function() end
 			self:addSkinFrame{obj=QGT_AchievementWatchFrame, kfs=true}

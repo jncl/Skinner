@@ -54,18 +54,12 @@ function Skinner:Armory()
 		_G[sBar.."BackgroundBar"]:SetStatusBarColor(unpack(self.sbColour))
 	end
 	self:addSkinFrame{obj=ArmoryPaperDollTradeSkillFrame, kfs=true}
-	self:glazeStatusBar(ArmoryHealthBar)
-	self:glazeStatusBar(ArmoryHealthBackgroundBar)
-	self:glazeStatusBar(ArmoryManaBar)
-	self:glazeStatusBar(ArmoryManaBackgroundBar)
-	self:addSkinFrame{obj=ArmoryHealthFrame, kfs=true, y2=-6}
-	self:skinDropDown{obj=ArmoryPlayerStatFrameLeftDropDown}
-	self:skinDropDown{obj=ArmoryPlayerStatFrameRightDropDown}
+	self:skinDropDown{obj=ArmoryPlayerStatFrameDropDown}
 	self:addSkinFrame{obj=ArmoryAttributesFrame, kfs=true, y2=-8}
-	self:removeRegions(ArmoryAmmoSlot, {1}) -- remove texture
 
 -->>-- Pet Frame
 	self:keepFontStrings(ArmoryPetFrame)
+	self:skinDropDown{obj=ArmoryPetStatFrameDropDown}
 	self:addSkinFrame{obj=ArmoryPetAttributesFrame, kfs=true, x2=1}
 	self:skinScrollBar{obj=ArmoryPetTalentFrameScrollFrame}
 	for i = 1, ArmoryPetFrame.numTabs do
@@ -102,6 +96,12 @@ function Skinner:Armory()
 
 -->>--	PVP Frame
 	self:keepFontStrings(ArmoryPVPFrame)
+	ArmoryPVPTeam1TeamType:SetDrawLayer("OVERLAY")
+	ArmoryPVPTeam1:DisableDrawLayer("BACKGROUND")
+	ArmoryPVPTeam2TeamType:SetDrawLayer("OVERLAY")
+	ArmoryPVPTeam2:DisableDrawLayer("BACKGROUND")
+	ArmoryPVPTeam3TeamType:SetDrawLayer("OVERLAY")
+	ArmoryPVPTeam3:DisableDrawLayer("BACKGROUND")
 
 -->>--	PVP Team Details Frame
 	self:addSkinFrame{obj=ArmoryPVPTeamDetails, kfs=true}
@@ -143,25 +143,6 @@ function Skinner:Armory()
 		end)
 	end
 
-	--	Skills SubFrame
-	self:keepFontStrings(ArmorySkillFrame)
-	self:skinScrollBar{obj=ArmorySkillListScrollFrame}
-
-	for i = 1, ARMORY_NUM_SKILLS_DISPLAYED do
-		local bar = "ArmorySkillRankFrame"..i
-		self:removeRegions(_G[bar.."Border"], {1}) -- N.B. region 2 is highlight
-		self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"], {_G[bar.."FillBar"]})
-		self:skinButton{obj=_G["ArmorySkillTypeLabel"..i], mp=true}
-	end
-	if self.modBtns then
-		-- hook to manage changes to button textures
-		self:SecureHook("ArmorySkillFrame_UpdateSkills", function()
-			for i = 1, ARMORY_NUM_SKILLS_DISPLAYED do
-				self:checkTex(_G["ArmorySkillTypeLabel"..i])
-			end
-		end)
-	end
-
 	--	RaidInfo SubFrame
 	self:keepFontStrings(ArmoryRaidInfoFrame)
 	self:skinScrollBar{obj=ArmoryRaidInfoScrollFrame}
@@ -170,7 +151,7 @@ function Skinner:Armory()
 	self:keepFontStrings(ArmoryTokenFrame)
 	self:skinSlider(ArmoryTokenFrameContainerScrollBar)
 	-- remove header textures
-	for i = 1, #TokenFrameContainer.buttons do
+	for i = 1, #ArmoryTokenFrameContainer.buttons do
 		ArmoryTokenFrameContainer.buttons[i].categoryLeft:SetAlpha(0)
 		ArmoryTokenFrameContainer.buttons[i].categoryRight:SetAlpha(0)
 	end
@@ -285,7 +266,7 @@ function Skinner:Armory()
 	ArmoryQuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ArmoryQuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
 
-	self:skinEditBox{obj=ArmoryQuestLogFrameEditBox, regs={9}}
+	self:skinEditBox{obj=ArmoryQuestFrameEditBox, regs={9}}
 	self:removeRegions(ArmoryQuestLogCollapseAllButton, {5, 6, 7})
 	self:skinButton{obj=ArmoryQuestLogCollapseAllButton, mp=true}
 	self:keepFontStrings(ArmoryEmptyQuestLogFrame)
@@ -322,9 +303,12 @@ function Skinner:Armory()
 
 	for i = 1, SPELLS_PER_PAGE do
 		_G["ArmorySpellButton"..i.."Background"]:SetAlpha(0)
-		_G["ArmorySpellButton"..i.."SpellName"]:SetTextColor(self.HTr, self.HTg, self.HTb)
 		_G["ArmorySpellButton"..i.."SubSpellName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G["ArmorySpellButton"..i.."RequiredLevelString"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
+	self:SecureHook("ArmorySpellButton_UpdateButton", function(this)
+		this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
+	end)
 
 	-- Tabs (bottom)
 	for i = 1, 3 do
@@ -357,7 +341,8 @@ function Skinner:Armory()
 		self:removeRegions(_G["ArmorySpellBookSkillLineTab"..i], {1}) -- N.B. other regions are icon and highlight
 	end
 	-- Glyphs SubFrame
-	self:removeRegions(ArmoryGlyphFrame, {1, 2}) -- icon and background
+	ArmoryGlyphFrame:DisableDrawLayer("BACKGROUND")
+	ArmoryGlyphFrameBackground:SetAlpha(0)
 
 -->>-- Achievements
 	self:skinEditBox(ArmoryAchievementFrameEditBox, {9})

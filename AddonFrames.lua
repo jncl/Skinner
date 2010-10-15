@@ -52,7 +52,7 @@ blizzLoDFrames = nil
 
 Skinner.addonSkins = {
 	"_NPCScan",
-	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "Ara_Broker_Guild_Friends", "ArkInventory", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
+	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "Ara_Broker_Guild_Friends", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
 	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
 	"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "CowTip", "CT_MailMod", "CT_RaidTracker",
 	"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "Dominos", "DragonCore",
@@ -67,7 +67,7 @@ Skinner.addonSkins = {
 	"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
 	"PallyPower", "Panda", "PartyBuilder", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "Producer", "ProfessionsBook", "PvpMessages",
 	"Quartz", "Quelevel", "QuestAgent", "QuestGuru", "QuestHelper", "QuestHistory", "QuickMark",
-	"RABuffs", "RaidAchievement", "RaidBuffStatus", "RaidTracker", "RaidyCheck", "RandomPet30", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
+	"RABuffs", "RaidAchievement", "RaidAchievement_AchieveReminder", "RaidBuffStatus", "RaidTracker", "RaidyCheck", "RandomPet30", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
 	"ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "SmoothQuest", "Spew", "Squeenix", "sRaidFrames",
 	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "Tukui", "TwinValkyr_shieldmonitor",
 	"UberQuest", "UrbanAchiever",
@@ -91,6 +91,7 @@ Skinner.libsToSkin = {
 	["tektip-1.0"] = "tektip",
 	["LibQTip-1.0"] = "LibQTip",
 	["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
+	["ArkDewdrop-3.0"] = "ArkDewdrop",
 }
 function Skinner:AddonFrames()
 --	   self:Debug("AddonFrames")

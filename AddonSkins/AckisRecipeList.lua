@@ -15,6 +15,7 @@ function Skinner:AckisRecipeList()
 		["2.0-rc2"] = 5, -- beta
 		["v2.0"] = 6, -- release
 		["v2.01"] = 7, -- release
+		["2.0.4"] = 8, -- release
 	}
 	local aVer = GetAddOnMetadata("AckisRecipeList", "Version")
 	local ver = vTab[aVer]

@@ -64,7 +64,7 @@ function Skinner:beql()
 		end)
 	end
 -->>-- Watch frames
-	if self.db.profile.WatchFrame then
+	if self.db.profile.WatchFrame.skin then
 		-- QuestWatch frame
 		self:addSkinFrame{obj=beqlQuestWatchFrame.TitleFrame}
 		self:addSkinFrame{obj=beqlQuestWatchFrame.Backdrop, y1=-2, y2=2}
