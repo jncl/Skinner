@@ -257,8 +257,8 @@ function module:isButton(obj, cb, blue)
 		local oName = obj:GetName() or nil
 		local oTex = getTexture(obj:GetNormalTexture()) or getTexture(Skinner:getRegion(obj, 1))
 		if oTex then
-			if oTex:find("UI-Panel-Button", 1, true)
-			or oTex:find("UI-DialogBox", 1, true) -- StaticPopups
+			if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
+			or oTex:find("UI-DialogBox-Button-Up", 1, true) -- Static Popup Button
 			or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
 			then
@@ -400,48 +400,34 @@ local function __addButtonBorder(opts)
 	end
 
 	-- reparent these textures so they are displayed above the border
-	if opts.abt then -- Action Buttons
-		_G[btnName.."HotKey"]:SetParent(opts.obj.sknrBdr)
-		-- reparent FlyoutArrow so it is displayed above the border
-		opts.obj.FlyoutArrow:SetParent(opts.obj.sknrBdr)
-	end
-	if opts.pabt then -- Pet Action Buttons
-		_G[btnName.."AutoCastable"]:SetParent(opts.obj.sknrBdr)
-		_G[btnName.."Shine"]:SetParent(opts.obj.sknrBdr)
-	end
 	if opts.ibt then -- Item Buttons
 		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
 		_G[btnName.."Stock"]:SetParent(opts.obj.sknrBdr)
-	end
-	if opts.tibt then -- Talents
+	elseif opts.abt then -- Action Buttons
+		_G[btnName.."HotKey"]:SetParent(opts.obj.sknrBdr)
+		-- reparent FlyoutArrow so it is displayed above the border
+		opts.obj.FlyoutArrow:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
+	elseif opts.libt then -- Large Item Buttons
+		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
+	elseif opts.mb then -- Micro Buttons
+		opts.obj.Flash:SetParent(opts.obj.sknrBdr)
+	elseif opts.pabt then -- Pet Action Buttons
+		_G[btnName.."AutoCastable"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Shine"]:SetParent(opts.obj.sknrBdr)
+	elseif opts.tibt then -- Talents
 		_G[btnName.."RankBorder"]:SetParent(opts.obj.sknrBdr)
 		_G[btnName.."Rank"]:SetParent(opts.obj.sknrBdr)
 		if _G[btnName.."RankBorderGreen"] then
 			_G[btnName.."RankBorderGreen"]:SetParent(opts.obj.sknrBdr)
 		end
-	end
-	if opts.libt or opts.abt then -- Action/Large Item Buttons
+	elseif opts.spbt then -- Simple Popup Buttons
 		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
-		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
-	end
-	if opts.spbt then -- Simple Popup Buttons
-		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
-	end
-	if opts.mb then -- Micro Buttons
-		opts.obj.Flash:SetParent(opts.obj.sknrBdr)
 	end
 
 end
---[=[
-local function pRE(...)
-
-	for k, v in pairs(btnTab) do
-		module:addButtonBorder(v)
-	end
-	wipe(btnTab)
-
-end
---]=]
 function module:addButtonBorder(...)
 
 	local opts = select(1, ...)
