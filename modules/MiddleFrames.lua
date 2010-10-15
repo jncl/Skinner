@@ -90,6 +90,11 @@ local function adjustFrame(key)
 		frame:SetHeight(db[key].height)
 		frame:SetPoint("CENTER", UIParent, "CENTER", db[key].xOfs, db[key].yOfs)
 		frame:RegisterForDrag("LeftButtonUp")
+		 -- set scripts here as IsMouseEnabled is set to true by them (patch 4.0.1)
+		frame:SetScript("OnMouseUp", OnMouseUp)
+		frame:SetScript("OnHide", OnHide)
+		frame:SetScript("OnEnter", OnEnter)
+		frame:SetScript("OnLeave", OnLeave)
 		if db.lock then
 			frame:SetScript("OnMouseDown", function() end)
 			frame:EnableMouse(false)
@@ -97,10 +102,6 @@ local function adjustFrame(key)
 			frame:SetScript("OnMouseDown", OnMouseDown)
 			frame:EnableMouse(true)
 		end
-		frame:SetScript("OnMouseUp", OnMouseUp)
-		frame:SetScript("OnHide", OnHide)
-		frame:SetScript("OnEnter", OnEnter)
-		frame:SetScript("OnLeave", OnLeave)
 		-- set the fade height
 		fh = nil
 		if not Skinner.db.profile.FadeHeight.enable
