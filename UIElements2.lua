@@ -265,7 +265,7 @@ function Skinner:MenuFrames()
 	end
 
 -->>-- Rating Menu
-	self:addSkinFrame{obj=RatingMenuFrame, ft=ftype, hdr=true}--, x1=10, y1=-12, x2=-32, y2=71}
+	self:addSkinFrame{obj=RatingMenuFrame, ft=ftype, hdr=true}
 
 	-- Tabs
 	for i = 1, 2 do
@@ -287,8 +287,13 @@ function Skinner:MenuFrames()
 		if oName and (oName:find("AceConfig") or oName:find("AceGUI"))then return end  -- ignore AceConfig/AceGUI objects
 
 		for _, child in ipairs{obj:GetChildren()} do
-			if Skinner:isDropDown(child) then Skinner:skinDropDown{obj=child}
-			elseif child:IsObjectType("EditBox") then Skinner:skinEditBox{obj=child, regs={9}}
+--			Skinner:Debug("checkKids: [%s, %s]", child:GetName(), child:GetObjectType())
+			if Skinner:isDropDown(child) then
+				Skinner:skinDropDown{obj=child}
+			elseif child:IsObjectType("EditBox") then
+				Skinner:skinEditBox{obj=child, regs={9}}
+			elseif child:IsObjectType("ScrollFrame") and child:GetName() then -- named ScrollFrame(s)
+				Skinner:skinScrollBar{obj=child}
 			else
 				checkKids(child)
 			end
