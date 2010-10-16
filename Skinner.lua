@@ -1088,7 +1088,7 @@ function Skinner:setActiveTab(tabSF)
 	tabSF.tfade:SetTexture(self.gradientTex)
 	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
-	if not tabSF.grown then
+	if not tabSF.ignore and not tabSF.grown then
 		if not tabSF.up then
 			local point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 --			self:Debug("sAT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
@@ -1115,7 +1115,7 @@ function Skinner:setInactiveTab(tabSF)
 
 	tabSF.tfade:SetTexture(self.itTex)
 	tabSF.tfade:SetAlpha(1)
-	if tabSF.grown then
+	if not tabSF.ignore and tabSF.grown then
 		if not tabSF.up then
 			local point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 --			self:Debug("sIT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
