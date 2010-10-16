@@ -1,3 +1,24 @@
+b4.13164.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Skinned ArkDewdrop
+	Tidyup UIButtons code
+	Updated IOF panel skin
+	Updated skins
+	- AckisRecipeList, AdiBags, ArkInventory, Armory, AucAdvanced, CFM, Clique, Grid, PallyPower, QuestGuru, RaidAchievement, _NPCScan, beql, tekKonfig & tomQuest2
+	Bugfix (4.0.1) for MiddleFrames
+	Moved Tutorial Option
+	Updated UIButtons skin code
+	Updated TimeManager skin
+	Updated Tutorial skin
+	Updated TradeSkill skin
+	Beta change:
+	Updated AlertFrame skin for Guild Achievements
+	Updated HealBot skin (thanks to acirac)
+	Bugfix for KnowledgeBase button skinning
+	Updated all code and consolidated changes for Patch 4.0.1
+
 b4.13164.1
 Jncl:
 	ToDo.txt
