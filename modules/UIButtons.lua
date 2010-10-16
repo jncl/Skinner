@@ -258,6 +258,7 @@ function module:isButton(obj, cb, blue)
 		local oTex = getTexture(obj:GetNormalTexture()) or getTexture(Skinner:getRegion(obj, 1))
 		if oTex then
 			if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
+			or oTex:find("UI-Panel-Button-Disabled", 1, true) -- UI Panel Button (Gray template)
 			or oTex:find("UI-DialogBox-Button-Up", 1, true) -- Static Popup Button
 			or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
