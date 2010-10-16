@@ -19,28 +19,29 @@ function Skinner:GupPet()
 	then
 		self:addSkinFrame{obj=gio.ClassFrame}
 	end
-	self:addSkinFrame{obj=_G[gpIOFname.."Options"]}
+	self:addSkinFrame{obj=_G[gpIOFname.."Options"], nb=true}
 	-- Help panel
-	self:addSkinFrame{obj=gio.SlashFrame}
-	self:addSkinFrame{obj=_G[gpIOFname.."Help"]}
+	self:addSkinFrame{obj=gio.SlashFrame, nb=true}
+	self:addSkinFrame{obj=_G[gpIOFname.."Help"], nb=true}
 	-- Mounts & Companions panel
 	local gim = GUPPET_INTERFACE_MAINFRAME
-	self:addSkinFrame{obj=gim.Aquatic.Frame}
-	self:addSkinFrame{obj=gim.SlowGround.Frame}
-	self:addSkinFrame{obj=gim.FastGround.Frame}
-	self:addSkinFrame{obj=gim.MultiGround.Frame}
-	self:addSkinFrame{obj=gim.SlowFly.Frame}
-	self:addSkinFrame{obj=gim.FastFly.Frame}
-	self:addSkinFrame{obj=gim.Companion.Frame}
-	self:addSkinFrame{obj=_G[gpIOFname.."MountsCompanionsLocations"]}
+	-- fix button sizes
+	for _, f in pairs{"Aquatic", "Ground", "Multi", "Fly", "Companion"} do
+		for _, b in pairs{"Enable", "Disable"} do
+			_G[f..b]:SetHeight(16)
+			_G[f..b]:SetPoint("TOPRIGHT", 0, b=="Enable" and 32 or 16)
+		end
+		self:addSkinFrame{obj=gim[f].Frame}
+	end
+	self:addSkinFrame{obj=_G[gpIOFname.."MountsCompanionsLocations"], nb=true}
 	-->> Location Tabs (treat like buttons)
 	for _, v in pairs{"Add", "Remove"} do
 		local tabObj = _G[gpIOFname.."MountsCompanionsLocationsTab"..v]
 		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, x1=6, y1=-3, x2=-6, y2=-3}
+		self:addSkinFrame{obj=tabObj, ft=ftype, nb=true, x1=6, y1=-3, x2=-6, y2=-3}
 	end
 	--<< Location Tabs
-	self:addSkinFrame{obj=_G[gpIOFname.."MountsCompanionsMain"]}
+	self:addSkinFrame{obj=_G[gpIOFname.."MountsCompanionsMain"], nb=true}
 	-->> Main Tabs
 	local mainTabs = {"Aquatic", "Ground", "Fly", "Companion"}
 	local updMainTabs
@@ -57,9 +58,10 @@ function Skinner:GupPet()
 	for _, v in pairs(mainTabs) do
 		local tabObj = _G[gpIOFname.."MountsCompanionsMainTab"..v]
 		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=-6}
+		self:addSkinFrame{obj=tabObj, ft=ftype, nb=true, noBdr=self.isTT, x1=6, x2=-6, y2=-6}
 		if self.isTT then
 			local tabSF = self.skinFrame[tabObj]
+			tabSF.ignore = true -- don't resize tab
 			self:setInactiveTab(tabSF)
 			if v == "Ground" then self:setActiveTab(tabSF) end -- default tab
 			self:SecureHookScript(tabObj, "OnClick", function(this)
@@ -68,7 +70,7 @@ function Skinner:GupPet()
 		end
 	end
 	--<< Main Tabs
-	self:addSkinFrame{obj=_G[gpIOFname.."MountsCompanions"]}
+	self:addSkinFrame{obj=_G[gpIOFname.."MountsCompanions"], nb=true}
 	-- CollectMe panel
 	if gpCM then
 		self:SecureHook("GupPet_CollectMe_Interface", function()
@@ -80,6 +82,7 @@ function Skinner:GupPet()
 			self:addSkinFrame{obj=gcim.Data.Frame}
 			self:addSkinFrame{obj=gcim.Filter, y2=-2}
 			self:addSkinFrame{obj=gcim.GameTooltip}
+			self:addSkinFrame{obj=gcim.Export}
 			self:Unhook("GupPet_CollectMe_Interface")
 		end)
 		self:addSkinFrame{obj=GupPet_CollectMe_Main}
@@ -103,6 +106,7 @@ function Skinner:GupPet()
 			self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=-6}
 			if self.isTT then
 				local tabSF = self.skinFrame[tabObj]
+				tabSF.ignore = true -- don't resize tab
 				self:setInactiveTab(tabSF)
 				if v == "Mount" then self:setActiveTab(tabSF) end -- default tab
 				self:SecureHookScript(tabObj, "OnClick", function(this)

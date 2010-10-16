@@ -12,15 +12,17 @@ function Skinner:PhoenixStyle()
 	-- Addon
 	self:addSkinFrame{obj=PSFmain3, x1=x1, y1=y1}
 	-- Autoupdate marks
-	self:skinEditBox{obj=PSFmain4_secrefmark2}
-	self:skinEditBox{obj=PSFmain4_setmark10}
-	self:skinEditBox{obj=PSFmain4_setmark20}
-	self:skinEditBox{obj=PSFmain4_setmark30}
-	self:skinEditBox{obj=PSFmain4_setmark40}
-	self:skinEditBox{obj=PSFmain4_setmark50}
-	self:skinEditBox{obj=PSFmain4_setmark60}
-	self:skinEditBox{obj=PSFmain4_setmark70}
-	self:skinEditBox{obj=PSFmain4_setmark80}
+	self:SecureHook("psfautomarldraw", function()
+		self:skinEditBox{obj=pseb1}
+		self:skinEditBox{obj=pseb2}
+		self:skinEditBox{obj=pseb3}
+		self:skinEditBox{obj=pseb4}
+		self:skinEditBox{obj=pseb5}
+		self:skinEditBox{obj=pseb6}
+		self:skinEditBox{obj=pseb7}
+		self:skinEditBox{obj=pseb8}
+		self:Unhook("psfautomarldraw")
+	end)
 	self:addSkinFrame{obj=PSFmain4, x1=x1, y1=y1}
 	-- Timers
 	self:skinEditBox{obj=PSFmain5_timertopull1, x=-5}
@@ -34,9 +36,13 @@ function Skinner:PhoenixStyle()
 	end)
 	self:addSkinFrame{obj=PSFmain5, kfs=true, x1=x1, y1=y1}
 	-- Error frame
-	self:addSkinFrame{obj=PSFmain12, x1=x1, y1=y1}
+	self:addSkinFrame{obj=PSFerrorframeuniq, x1=x1, y1=y1}
 	-- Potions check
 	self:addSkinFrame{obj=PSFpotioncheckframe, x1=x1, y1=y1}
+	-- Flask check
+	self:addSkinFrame{obj=PSFrscflask, x1=x1, y1=y1}
+	-- Rebirth - Rebuff
+	self:addSkinFrame{obj=PSFrscbuff, x1=x1, y1=y1}
 	-- Raid Achievements
 	self:addSkinFrame{obj=PSFmainrano, x1=x1, y1=y1}
 	-- Chat options
@@ -125,27 +131,35 @@ function Skinner:PhoenixStyleMod_Icecrown()
 	self:skinDropDown{obj=DropDownchatic}
 	self:skinDropDown{obj=DropDownchatic2}
 	self:addSkinFrame{obj=PSFmainic1, kfs=true, x1=x1, y1=y1}
-	
+
 	-- Deathbringer Saurfang module
-	self:skinEditBox{obj=PSFiccsaurf_heal10}
-	self:skinEditBox{obj=PSFiccsaurf_heal20}
-	self:skinEditBox{obj=PSFiccsaurf_heal30}
-	self:skinEditBox{obj=PSFiccsaurf_heal40}
-	self:skinEditBox{obj=PSFiccsaurf_heal50}
-	self:skinEditBox{obj=PSFiccsaurf_heal60}
-	self:skinEditBox{obj=PSFiccsaurf_heal70}
-	self:skinEditBox{obj=PSFiccsaurf_heal80}
+	self:SecureHook("PSF_iccsaurfang", function()
+		self:skinEditBox{obj=psebs1}
+		self:skinEditBox{obj=psebs2}
+		self:skinEditBox{obj=psebs3}
+		self:skinEditBox{obj=psebs4}
+		self:skinEditBox{obj=psebs5}
+		self:skinEditBox{obj=psebs6}
+		self:skinEditBox{obj=psebs7}
+		self:skinEditBox{obj=psebs8}
+		self:Unhook("PSF_iccsaurfang")
+	end)
 	self:SecureHook("openmenureporticcsaurf", function()
 		self:skinDropDown{obj=DropDownMenureporticcsaurf}
 		self:Unhook("openmenureporticcsaurf")
 	end)
 	self:addSkinFrame{obj=PSFiccsaurf, x1=x1, y1=y1}
-	
+
 	-- Blood Queen Lana'thel module
 	self:skinEditBox{obj=PSFicclana_edbox1}
 	self:skinEditBox{obj=PSFicclana_edbox2}
 	self:addSkinFrame{obj=PSFicclana, x1=x1, y1=y1}
-	
+
+	-- Professor Putricide module
+	self:skinEditBox{obj=PSFiccprofframe_edbox1}
+	self:skinEditBox{obj=PSFiccprofframe_edbox2}
+	self:addSkinFrame{obj=PSFiccprofframe, x1=x1, y1=y1}
+
 	-- Damage/Switch info module
 	self:SecureHook("openicccombarchoose", function()
 		self:skinDropDown{obj=DropDownicccombarchoose}
@@ -164,5 +178,24 @@ function Skinner:PhoenixStyleMod_Icecrown()
 		self:Unhook("openicclogchat")
 	end)
 	self:addSkinFrame{obj=PSFiccdamageinfo, x1=x1, y1=y1}
+
+	-- Saved Reports module
+	self:SecureHook("psiccaftcombop", function()
+		self:skinScrollBar{obj=psiccinfscroll}
+		self:Unhook("psiccaftcombop")
+	end)
+	self:SecureHook("openiccbosschsv", function()
+		self:skinDropDown{obj=DropDowniccbosschsv}
+		self:Unhook("openiccbosschsv")
+	end)
+	self:SecureHook("openicclogfailchat", function()
+		self:skinDropDown{obj=DropDownicclogfailchat}
+		self:Unhook("openicclogfailchat")
+	end)
+	self:skinEditBox{obj=PSFiccaftercombinfoframe_edbox2}
+	self:addSkinFrame{obj=PSFiccaftercombinfoframe, x1=x1, y1=y1}
+
+	-- Sindragosa modules
+	self:addSkinFrame{obj=PSFiccaddonno, x1=x1, y1=y1}
 
 end

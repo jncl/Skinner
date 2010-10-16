@@ -22,7 +22,7 @@ function Skinner:Grid()
 	local tabObj = GridLayout.frame.tab
 	self:keepRegions(tabObj, {4}) -- N.B. region 4 is text
 	local tabSF = self:addSkinFrame{obj=tabObj, noBdr=self.isTT, x1=-3, y1=1, y2=-2}
-	tabSF.grown = true -- stop tabSF being changed
+	tabSF.ignore = true -- don't resize tab
 	if self.isTT then self:setActiveTab(tabSF) end
 
 end
