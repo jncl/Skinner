@@ -13,146 +13,26 @@ Legend:
 			- Update commands page for changes requiring a Reload
 			- Change code to reduce the number of Reloads required if possible
 
-√	O	Remove Beta code checks and non Beta code as patch 4.0.1 has now gone live
-
-√	I	MiddleFrames, reported by IRID1UM, 13.10.10
-		- AceLocale-3.0: Skinner: Missing entry for 'SkinnerMF2'
-
-√	I	MiddleFrames, reported by zaitezaite, 15.10.10
-		- Middle Frames which are locked ("MF Lock Frames" is ticked) are no longer click-through and when hovering the mouse the popup dialog "Middle frame 1, Alt-Drag to move, Ctrl-...." is still displayed.
-
 	I	Ghostly artifacts, reported by Kerecha, 13.10.10
 ?		- Getting some buggy ghost graphics from buttons (the x button from toastframe for instance has a buggy border always showing even when the frame isn't there) the info popup about pallys holypower also generates them.
 
-√	N	Healbot, reported by acirac, 14.10.10
-		- supplied new skin
-		- Interface\AddOns\Skinner\Skinner.lua:891: attempt to index local 'frame' (a nil value)
-		Time: 10/15/10 10:08:56
-		Count: 1
-		Stack: Interface\AddOns\Skinner\Skinner.lua:891: in function `keepFontStrings'
-		Interface\AddOns\Skinner\SkinMe\HealBot.lua:48: in function <Interface\AddOns\Skinner\SkinMe\HealBot.lua:4>
-		(tail call): ?
-
-√	I	CFM, reported by jkqsquires, 13.10.10
-		- ..\AddOns\Skinner\CFM.lua:6: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5:211: in function <...\ArkInventory\Externals\Ace3-AceHook\AceHook-3.0.lua:118>
-		AceHook-3.0-5:344: in function `SecureHook'
-		..\AddOns\Skinner\CFM.lua:6: in function <Skinner\SkinMe\CFM.lua:3>
-		(tail call): ?:
-
-√	I	Clique, reported by jkqsquires/Luckyjack_SL, 13/14.10.10
-		- ..\AddOns\Skinner\SkinMe\Clique.lua line 55:
-		   Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		Debug:
-		   (tail call): ?
-		   (tail call): ?
-		   [C]: ?
-		   Ace3\AceHook-3.0\AceHook-3.0.lua:211:
-		      Ace3\AceHook-3.0\AceHook-3.0.lua:118
-		   Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
-		   Skinner\SkinMe\Clique.lua:55:
-		      Skinner\SkinMe\Clique.lua:3
-		   (tail call): ?
-
-√	I	AdiBags, reported by skyggesang, 14.10.10
-		- 1x Skinner-b4.13164.1\Skinner.lua:212: table index is nil
+√	I	PhoenixStyle, reported by Decabah, 15.10.10
+		- Skinner-b4.13164.1\Skinner.lua:212: table index is nil
 		Skinner-b4.13164.1\Skinner.lua:1294: in function <Skinner\Skinner.lua:1276>
 		Skinner-b4.13164.1\Skinner.lua:1351: in function `skinEditBox'
-		Skinner-b4.13164.1\SkinMe\AdiBags.lua:19: in function <Skinner\SkinMe\AdiBags.lua:15>
+		Skinner-b4.13164.1\SkinMe\PhoenixStyle.lua:15: in function <Skinner\SkinMe\PhoenixStyle.lua:4>
 		(tail call): ?:
 
-√	I	QuestGuru, reported by mkcorp, 14.10.10
-		- ..\AddOns\Skinner\SkinMe\QuestGuru.lua line 40:
-		attempt to index field '?' (a nil value)
-		Debug:
-		[C]: ?
-		Skinner\SkinMe\QuestGuru.lua:40:
-		Skinner\SkinMe\QuestGuru.lua:16
-		Skinner\SkinMe\QuestGuru.lua:90:
-		Skinner\SkinMe\QuestGuru.lua:89
-		(tail call): ?
-√		- Tracker being skinned again
-
-√	I	Grid, reported by Luckyjack_SL, 14.10.10
-		- ..\AddOns\Skinner\SkinMe\Grid.lua line 5:
-		   attempt to call method 'IsActive' (a nil value)
-		Debug:
-		   (tail call): ?
-		   (tail call): ?
-		   Skinner\SkinMe\Grid.lua:5:
-		      Skinner\SkinMe\Grid.lua:3
-		   (tail call): ?
-
-√	I	PallyPower, reported by Luckyjack_SL, 15.10.10
-		- ..\AddOns\Skinner\SkinMe\PallyPower.lua line 6:
-		   Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-		Debug:
-		   (tail call): ?
-		   (tail call): ?
-		   [C]: ?
-		   Ace3\AceHook-3.0\AceHook-3.0.lua:146:
-		      Ace3\AceHook-3.0\AceHook-3.0.lua:118
-		   Ace3\AceHook-3.0\AceHook-3.0.lua:414: SecureHookScript()
-		   Skinner\SkinMe\PallyPower.lua:6:
-		      Skinner\SkinMe\PallyPower.lua:3
-		   (tail call): ?
-
-√	I	Auc-Advanced, reported by Luckyjack_SL, 15.10.10
-		- ..\AddOns\Skinner\SkinMe\AucAdvanced.lua line 12:
-		   attempt to get length of field 'availableBars' (a nil value)tpp
-		Debug:
-		   (tail call): ?
-		   [C]: ?
-		   Skinner\SkinMe\AucAdvanced.lua:12:
-		      Skinner\SkinMe\AucAdvanced.lua:10
-		   (tail call): ?
-
-x	I	Lightheaded, reported mkcorp, 14.10.10
-
-√	I	ARL, reported by mkcorp/hammer2, 14.10.10
-		- Skinner-b4.13164.1\SkinMe\AckisRecipeList.lua:11: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b4.13164.1\SkinMe\AckisRecipeList.lua:11: in function <Skinner\SkinMe\AckisRecipeList.lua:3>
+√	I	!Swatter, reported by Decabah, 15.10.10
+		- Skinner-b4.13164.1\Skinner.lua:212: table index is nil
+		Skinner-b4.13164.1\Skinner.lua:1512: in function <Skinner\Skinner.lua:1501>
+		Skinner-b4.13164.1\Skinner.lua:1539: in function `skinSlider'
+		Skinner-b4.13164.1\SkinMe\!Swatter.lua:5: in function <Skinner\SkinMe\!Swatter.lua:3>
 		(tail call): ?:
 
-√	I	_NPCScan, reported by mkcorp, 14.10.10
-		- ..\AddOns\Skinner\Skinner.lua line 212:
-		table index is nil
-		Debug:
-		(tail call): ?
-		Skinner\Skinner.lua:212:
-		Skinner\Skinner.lua:212
-		Skinner\Skinner.lua:1294:
-		Skinner\Skinner.lua:1276
-		Skinner\Skinner.lua:1351: skinEditBox()
-		Skinner\SkinMe\_NPCScan.lua:14:
-		Skinner\SkinMe\_NPCScan.lua:3
-		(tail call): ?
-
-√	N	RaidAchievement, reported by mkcorp, 14.10.10
-
-√	I	ArkInventory, reported by Buckleman, 15.10.10
-		- ..\AddOns\Skinner\Skinner.lua line 484:
-		attempt to index field 'obj' (a nil value)
-		Debug:
-		(tail call): ?
-		Skinner\Skinner.lua:484:
-		Skinner\Skinner.lua:459
-		(tail call): ?
-		Skinner\SkinMe\ArkInventory.lua:37:
-		Skinner\SkinMe\ArkInventory.lua:3
-		(tail call): ?
-
-√	I	Armory, reported by Buckleman, 15.10.10
-		- ..\AddOns\Skinner\Skinner.lua line 844:
-		attempt to index local 'statusBar' (a nil value)
-		Debug:
-		(tail call): ?
-		Skinner\Skinner.lua:844: glazeStatusBar()
-		Skinner\SkinMe\Armory.lua:57:
-		Skinner\SkinMe\Armory.lua:3
-		(tail call): ?
+√	I	GupPet, reported by Decabah, 15.10.10
+		- Skinner-b4.13164.1\SkinMe\GupPet.lua:29: attempt to index field 'SlowGround' (a nil value)
+		(tail call): ?:
 
 BETA changes
 ±±±±±±±±±±±±
