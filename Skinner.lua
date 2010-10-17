@@ -124,11 +124,9 @@ function Skinner:OnInitialize()
 	end
 	self.Backdrop = {}
 	self.Backdrop[1] = CopyTable(self.backdrop)
-	-- backdrop for ScrollBars & EditBoxes
-	local edgetex = self.LSM:Fetch("border", "Skinner Border")
-	-- wide backdrop for ScrollBars (16,16,4)
+	-- wide backdrop for ScrollBars & EditBoxes (16,16,4)
 	self.Backdrop[2] = CopyTable(self.backdrop)
-	self.Backdrop[2].edgeFile = edgetex
+	self.Backdrop[2].edgeFile = self.LSM:Fetch("border", "Skinner Border")
 	-- medium backdrop for ScrollBars (12,12,3)
 	self.Backdrop[3] = CopyTable(self.Backdrop[2])
 	self.Backdrop[3].tileSize = 12

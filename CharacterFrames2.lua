@@ -1,7 +1,7 @@
 local _G = _G
 local ftype = "c"
 
-function Skinner:FriendsFrame()
+	function Skinner:FriendsFrame()
 	if not self.db.profile.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
@@ -39,7 +39,10 @@ function Skinner:FriendsFrame()
 	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-24}
 	self:skinFFToggleTabs("FriendsTabHeaderTab")
 	self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
-	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar, size=4}
+	-- adjust width of FFFSF
+	FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
+	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar}
+
 	for i = 1, FRIENDS_FRIENDS_TO_DISPLAY do
 		local btn = _G["FriendsFrameFriendsScrollFrameButton"..i]
 		btn.background:SetAlpha(0)
@@ -68,7 +71,7 @@ function Skinner:FriendsFrame()
 -->>--	PendingList Frame
 	self:keepFontStrings(PendingListFrame)
 	self:skinDropDown{obj=PendingListFrameDropDown}
-	self:skinScrollBar{obj=FriendsFramePendingScrollFrame}
+	self:skinSlider{obj=FriendsFramePendingScrollFrame.scrollBar}
 	for i = 1, PENDING_INVITES_TO_DISPLAY do
 		local ffpBtn = "FriendsFramePendingButton"..i
 		self:applySkin{obj=_G[ffpBtn]}
