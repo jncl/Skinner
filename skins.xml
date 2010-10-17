@@ -198,6 +198,7 @@
 <script file="SkinMe\Pawn.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
 <script file="SkinMe\PetListPlus.lua"/>
+<script file="SkinMe\PetsPlus.lua"/>
 <script file="SkinMe\PhoenixStyle.lua"/>
 <script file="SkinMe\Planner.lua"/>
 <script file="SkinMe\PlayerExpBar.lua"/>
