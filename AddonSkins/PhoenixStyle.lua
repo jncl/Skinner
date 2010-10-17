@@ -56,11 +56,6 @@ function Skinner:PhoenixStyle()
 	end)
 	self:addSkinFrame{obj=PSFmainchated, x1=x1, y1=y1}
 
-	-- skin minimap button
-	if self.db.profile.MinimapButtons then
-		self:addSkinButton{obj=PS_MinimapButton, parent=PS_MinimapButton, sap=true}
-	end
-
 end
 
 function Skinner:PhoenixStyleMod_Coliseum()

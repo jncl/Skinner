@@ -3,36 +3,14 @@ if not Skinner:isAddonEnabled("Outfitter") then return end
 function Skinner:Outfitter()
 	if not self.db.profile.CharacterFrames then return end
 
+	-- disable Frame Level & Strata being changed
+	Outfitter.SetFrameLevel = function() end
+	Outfitter.SetFrameStrata = function() end
+
 	 -- wait until Outfitter has been initialized
 	if not Outfitter.Initialized then
 		self:ScheduleTimer("checkAndRunAddOn", 0.1, "Outfitter")
 		return
-	end
-
-	-- N.B. Outfitter changes the framelevel and framestrata of some of its frames and their children
-
-	local function skinOutfitterTabs(tabId)
-
-		for i = 1, OutfitterFrame.numTabs do
-			if i == OutfitterFrame.selectedTab then Skinner:setActiveTab(_G["OutfitterFrameTab"..i])
-			else Skinner:setInactiveTab(_G["OutfitterFrameTab"..i]) end
-		end
-
-	end
-
-	if self.db.profile.TexturedTab then
-		--  Handle new and old versions
-		if type(Outfitter['ShowPanel']) == "function" then
-			self:SecureHook(Outfitter, "ShowPanel", function(tabId)
---				self:Debug("Outfitter:ShowPanel: [%s]", tabId)
-				skinOutfitterTabs(tabId)
-			end)
-		else
-			self:SecureHook(Outfitter_ShowPanel, function(tabId)
---				self:Debug("Outfitter_ShowPanel: [%s]", tabId)
-				skinOutfitterTabs(tabId)
-			end)
-		end
 	end
 
 	local function skinOutfitBars(this, ...)
@@ -67,7 +45,7 @@ function Skinner:Outfitter()
 
 		if not Skinner.db.profile.TexturedDD then Skinner:keepFontStrings(obj) return end
 		-- dropdown
-		self:moveObject{obj=obj.LeftTexture, x=2, y=-21}
+		Skinner:moveObject{obj=obj.LeftTexture, x=2, y=-21}
 		obj.LeftTexture:SetAlpha(0)
 		obj.LeftTexture:SetHeight(19)
 		obj.LeftTexture:SetWidth(2)
@@ -89,6 +67,7 @@ function Skinner:Outfitter()
 		end
 
 	end
+
  	-- hook these to handle the Outfit Bars
 	self:SecureHook(Outfitter.OutfitBar, "UpdateBar", function(this, ...)
 		skinOutfitBars(this, ...)
@@ -114,18 +93,15 @@ function Skinner:Outfitter()
 
 -->>--	Outfitter Frame
 	self:SecureHook(OutfitterFrame, "Show", function(this, ...)
-		self:Unhook(OutfitterFrame, "Show")
 		self:getChild(OutfitterFrame, 8):SetAlpha(0) -- hide band on the left
-		self:skinButton{obj=OutfitterCloseButton, cb2=true, x1=6, y1=-6, x2=-6, y2=6} -- due to frame level & strata being changed we pretend it's not a proper close button
-		self:skinButton{obj=OutfitterNewButton, as=true}
-		self:addSkinFrame{obj=OutfitterFrame, kfs=true, bg=true, y1=2, x2=2, y2=-2, nb=true}
+		self:addSkinFrame{obj=OutfitterFrame, kfs=true--[=[, bg=true--]=], x1=-2, y1=2, x2=2, y2=-7}
+		self:Unhook(OutfitterFrame, "Show")
 	end)
 
 -->>--	Main Frame
 	self:keepRegions(OutfitterMainFrame, {2, 3}) -- N.B. region 2 is text, 3 is background texture
 	self:removeRegions(OutfitterMainFrameScrollbarTrench)
-	self:keepFontStrings(OutfitterMainFrameScrollFrame)
-	self:skinScrollBar(OutfitterMainFrameScrollFrame)
+	self:skinScrollBar{obj=OutfitterMainFrameScrollFrame}
 	-- m/p buttons
 	for i = 0, Outfitter.cMaxDisplayedItems - 1 do
 		local iBtn = "OutfitterItem"..i
@@ -136,57 +112,58 @@ function Skinner:Outfitter()
 	end
 
 -->>--	Outfitter Tabs
-	for i = 1, #Outfitter.cPanelFrames do
-		local tabName = _G["OutfitterFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		-- nil out the OnShow script to stop the tabs being resized
-		tabName:SetScript("OnShow", nil)
-		tabName:SetWidth(tabName:GetTextWidth() + 30)
-		_G[tabName:GetName().."HighlightTexture"]:SetWidth(tabName:GetTextWidth() + 30)
-		if self.db.profile.TexturedTab then self:applySkin(tabName, nil, 0, 1)
-		else self:applySkin(tabName) end
+	for i = 1, OutfitterFrame.numTabs do
+		local tabObj = _G["OutfitterFrameTab"..i]
+		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		local tabSF = self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 		if i == 1 then
-			self:moveObject{obj=tabName, y=4}
-			self:setActiveTab(tabName)
+			if self.isTT then self:setActiveTab(tabSF) end
 		else
-			self:moveObject{obj=tabName, x=-10}
-			self:setInactiveTab(tabName)
+			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	self.tabFrames[OutfitterFrame] = true
 
 -->>--	New Outfit Panel
 	self:SecureHook(Outfitter.NameOutfitDialog, "Show", function(this)
-		self:Unhook(Outfitter.NameOutfitDialog, "Show")
 		self:skinEditBox{obj=this.Name, regs={9, 15, 16}}
 		self:moveObject{obj=this.Title, y=-6}
 		skinDropDown(this.ScriptMenu)
-		self:applySkin{obj=this.InfoSection}
-		self:applySkin{obj=this.BuildSection}
-		self:applySkin{obj=this.StatsSection}
+		self:addSkinFrame{obj=this.InfoSection}
+		self:addSkinFrame{obj=this.BuildSection}
+		self:addSkinFrame{obj=this.StatsSection}
 		local msc = this.MultiStatConfig
 		skinMultiStats(msc)
-		self:skinButton{obj=msc.AddStatButton, as=true}
+		self:skinButton{obj=msc.AddStatButton}
 		self:SecureHook(msc, "SetNumConfigLines", function(this2, ...)
 			skinMultiStats(this2)
 		end)
-		self:skinButton{obj=this.CancelButton, as=true}
-		self:skinButton{obj=this.DoneButton, as=true}
-		self:applySkin{obj=this, kfs=true} -- apply skin as title is hidden on redisplay
+		self:skinButton{obj=this.CancelButton}
+		self:skinButton{obj=this.DoneButton}
+		self:addSkinFrame{obj=this, kfs=true, nb=true}
+		self:Unhook(Outfitter.NameOutfitDialog, "Show")
+	end)
+	self:SecureHook(Outfitter, "BeginCombiProgress", function(this, ...)
+		local cpd = this.CombiProgressDialog
+		self:glazeStatusBar(cpd.ProgressBar, 0,  nil)
+		self:skinButton{obj=cpd.CancelButton}
+		self:addSkinFrame{obj=cpd.ContentFrame}
+		self:Unhook(Outfitter, "BeginCombiProgress")
 	end)
 -->>--	Rebuild Outfit Panel
 	self:SecureHook(Outfitter.RebuildOutfitDialog, "Show", function(this)
-		self:Unhook(Outfitter.RebuildOutfitDialog, "Show")
 		self:moveObject{obj=this.Title, y=-6}
-		self:applySkin{obj=this.StatsSection}
+		self:addSkinFrame{obj=this.StatsSection}
 		local msc = this.MultiStatConfig
 		skinMultiStats(msc)
-		self:skinButton{obj=msc.AddStatButton, as=true}
+		self:skinButton{obj=msc.AddStatButton}
 		self:SecureHook(msc, "SetNumConfigLines", function(this2, ...)
 			skinMultiStats(this2)
 		end)
-		self:skinButton{obj=this.CancelButton, as=true}
-		self:skinButton{obj=this.DoneButton, as=true}
-		self:applySkin{obj=this, kfs=true} -- apply skin as title is hidden on redisplay
+		self:skinButton{obj=this.CancelButton}
+		self:skinButton{obj=this.DoneButton}
+		self:addSkinFrame{obj=this, kfs=true, nb=true}
+		self:Unhook(Outfitter.RebuildOutfitDialog, "Show")
 	end)
 
 -->>--	ChooseIcon Dialog
@@ -206,27 +183,14 @@ function Skinner:Outfitter()
 		for i = 1, OutfitterEditScriptDialog.numTabs do
 			local tabObj = _G["OutfitterEditScriptDialogTab"..i]
 			self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-			self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-			local tabSF = self.skinFrame[tabObj]
+			local tabSF = self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 			if i == 1 then
 				if self.isTT then self:setActiveTab(tabSF) end
 			else
 				if self.isTT then self:setInactiveTab(tabSF) end
 			end
 		end
-		if self.isTT then
-			-- hook this to change the texture for the Active and Inactive tabs
-			self:SecureHook(OutfitterEditScriptDialog, "SetPanelIndex",function(...)
-				for i = 1, OutfitterEditScriptDialog.numTabs do
-					local tabSF = self.skinFrame[_G["OutfitterEditScriptDialogTab"..i]]
-					if i == OutfitterEditScriptDialog.selectedTab then
-						self:setActiveTab(tabSF)
-					else
-						self:setInactiveTab(tabSF)
-					end
-				end
-			end)
-		end
+		self.tabFrames[OutfitterEditScriptDialog] = true
 	end
 
 -->>-- QuickSlots frame

@@ -243,7 +243,7 @@ function Skinner:Perl_Player()
 	self:glazeStatusBar(Perl_Player_XPBar)
 	self:glazeStatusBar(Perl_Player_XPBarBG)
 	self:glazeStatusBar(Perl_Player_XPRestBar)
-	self:glazeStatusBar(Perl_Player_EnergyTicker)
+	self:glazeStatusBar(Perl_Player_FiveSecondRule)
 	self:glazeStatusBar(Perl_ArcaneBar_player)
 
 	if not self:IsHooked("Perl_Player_BuffUpdateAll") then
