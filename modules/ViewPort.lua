@@ -113,6 +113,7 @@ function module:adjustViewPort(opt)
 	or (opt == "XRes" and db.shown)
 	or (opt == "YRes" and db.shown)
 	then
+		WorldFrame:ClearAllPoints()
 		WorldFrame:SetPoint("TOPLEFT", (db.left * xScale), -(db.top * yScale))
 		WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * xScale), (db.bottom * yScale))
 		checkOverlay()
