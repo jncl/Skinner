@@ -1,3 +1,11 @@
+b4.13164.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for TexturedTab sizes
+	Updated UIButtons code
+	Updated !Swatter, Grid, GupPet & PhoenixStyle skins
+
 b4.13164.2
 Jncl:
 	ToDo.txt
