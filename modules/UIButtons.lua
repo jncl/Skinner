@@ -82,15 +82,19 @@ do
 	module.plus = "+"
 	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
 	-- create font to use for Close Buttons
-	module.fontX= CreateFont("fontX")
+	module.fontX = CreateFont("fontX")
 	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
 	module.fontX:SetTextColor(1.0, 0.82, 0)
+	-- create font for disabled text
+	module.fontDX = CreateFont("fontDX")
+	module.fontDX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
+	module.fontDX:SetTextColor(0.35, 0.35, 0.35)
 	-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
-	module.fontSBX= CreateFont("fontSBX")
+	module.fontSBX = CreateFont("fontSBX")
 	module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
 	module.fontSBX:SetTextColor(0.2, 0.6, 0.8)
 	-- create font to use for Minus/Plus Buttons
-	module.fontP= CreateFont("fontP")
+	module.fontP = CreateFont("fontP")
 	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
 	module.fontP:SetTextColor(1.0, 0.82, 0)
 end
@@ -398,6 +402,8 @@ local function __addButtonBorder(opts)
 		-- hook Show and Hide methods of the relTo object
 		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sknrBdr:Show() end)
 		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sknrBdr:Hide() end)
+		-- hide border if required
+		if not opts.relTo:IsShown() then opts.obj.sknrBdr:Hide() end
 	end
 
 	-- reparent these textures so they are displayed above the border

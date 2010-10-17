@@ -922,29 +922,33 @@ function Skinner:MinimapButtons()
 
 	local function mmKids(mmObj)
 
-		local mmObjName = mmObj.GetName and mmObj:GetName() or "<Anon>"
-
-		for i = 1, mmObj:GetNumChildren() do
-			local obj = select(i, mmObj:GetChildren())
+		for _, obj in ipairs{mmObj:GetChildren()} do
 			local objName = obj:GetName()
 			local objType = obj:GetObjectType()
-			if not (Skinner.sBut[obj] or Skinner.skinFrame[obj]) and objName
-			and (objType == "Button" or objType == "Frame" and objName == "MiniMapMailFrame") then
-				for i = 1, obj:GetNumRegions() do
-					local reg = select(i, obj:GetRegions())
+--			print(objName, objType)
+			if not Skinner.sBut[obj]
+			and not Skinner.skinFrame[obj]
+--			and objName
+			and objType == "Button"
+			or (objType == "Frame" and objName == "MiniMapMailFrame")
+			then
+--				print("Checking Regions")
+				for _, reg in ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
 						local regName = reg:GetName()
 						local regTex = reg:GetTexture()
-						local regDL = reg:GetDrawLayer()
+--						print(regName, regTex)
 						-- change the DrawLayer to make the Icon show if required
 						if (regName and regName:find("[Ii]con"))
-						or (regTex and regTex:find("[Ii]con")) then
-							if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
+						or (regTex and regTex:find("[Ii]con"))
+						then
+							if reg:GetDrawLayer() == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
 						elseif (regName and regName:find("Border"))
-						or (regTex and regTex:find("TrackingBorder")) then
+						or (regTex and regTex:find("TrackingBorder"))
+						then
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)
@@ -969,18 +973,35 @@ function Skinner:MinimapButtons()
 	mmKids(Minimap)
 
 	-- skin other Blizzard buttons
-	if not minBtn then
-		for _, obj in pairs{GameTimeFrame, MinimapZoomIn, MinimapZoomOut} do
-			self:addSkinButton{obj=obj, parent=obj, sap=true}
-		end
+	-- Calendar button
+	self:addSkinButton{obj=GameTimeFrame, parent=GameTimeFrame, x1=2, y1=-2, x2=-2, y2=2}
+	GameTimeFrame:GetNormalTexture():SetAlpha(0)
+	GameTimeFrame:GetPushedTexture():SetAlpha(0)
+	GameTimeFrame:SetPushedTextOffset(2, -2)
+	GameTimeFrame:GetFontString():SetTextColor(self.BTr, self.BTg, self.BTb)
+	-- MinimapZoomIn/Out buttons
+	local modUIBtns = self:GetModule("UIButtons", true)
+	for k, obj in pairs{MinimapZoomIn, MinimapZoomOut} do
+		obj:GetNormalTexture():SetAlpha(0)
+		obj:GetPushedTexture():SetAlpha(0)
+		obj:GetDisabledTexture():SetAlpha(0)
+		self:adjWidth{obj=obj, adj=-8}
+		self:adjHeight{obj=obj, adj=-8}
+		self:addSkinButton{obj=obj, parent=obj}
+		local btn = self.sBut[obj]
+		btn:SetAllPoints(obj:GetNormalTexture())
+		btn:SetNormalFontObject(modUIBtns.fontX)
+		btn:SetDisabledFontObject(modUIBtns.fontDX)
+		btn:SetPushedTextOffset(1, 1)
+		btn:SetText(k == 1 and modUIBtns.plus or modUIBtns.minus)
+		if not obj:IsEnabled() then btn:Disable() end
 	end
+	
 	-- change Mail icon
 	MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	-- resize other buttons
 	MiniMapMailFrame:SetWidth(28)
 	MiniMapMailFrame:SetHeight(28)
-	GameTimeFrame:SetWidth(36)
-	GameTimeFrame:SetHeight(36)
 	MiniMapVoiceChatFrame:SetWidth(32)
 	MiniMapVoiceChatFrame:SetHeight(32)
 	MiniMapVoiceChatFrameIcon:ClearAllPoints()
@@ -993,11 +1014,6 @@ function Skinner:MinimapButtons()
 	MiniMapTrackingIcon:SetPoint("CENTER")
 	-- change this to stop the icon being moved
 	MiniMapTrackingIcon.SetPoint = function() end
-
-	-- move GameTime a.k.a. Calendar texture up a layer
-	GameTimeFrame:GetNormalTexture():SetDrawLayer("BORDER")
-	GameTimeFrame:GetPushedTexture():SetDrawLayer("BORDER")
-	GameTimeFrame:GetFontString():SetDrawLayer("BORDER")
 
 	-- skin any moved Minimap buttons if required
 	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(MinimapButtonFrame) end
@@ -1015,6 +1031,7 @@ function Skinner:MinimapButtons()
 			["Perl_Config"] = PerlButton,
 			["WIM"] = WIM3MinimapButton,
 			["DBM-Core"] = DBMMinimapButton,
+--			["PhoenixStyle"] = PS_MinimapButton,
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then

@@ -358,10 +358,12 @@ local function __addSkinButton(opts)
 	LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
 	Skinner.sBut[opts.hook] = btn
-	-- hook Show/Hide methods if required
+	-- hook Show/Hide/Enable/Disable methods
 	if not Skinner:IsHooked(opts.hook, "Show") then
 		Skinner:SecureHook(opts.hook, "Show", function(this) Skinner.sBut[this]:Show() end)
 		Skinner:SecureHook(opts.hook, "Hide", function(this) Skinner.sBut[this]:Hide() end)
+		Skinner:SecureHook(opts.hook, "Enable", function(this) Skinner.sBut[this]:Enable() end)
+		Skinner:SecureHook(opts.hook, "Disable", function(this) Skinner.sBut[this]:Disable() end)
 	end
 	-- position the button skin
 	if opts.sap then
