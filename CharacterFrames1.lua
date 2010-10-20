@@ -792,7 +792,7 @@ function Skinner:AlertFrames()
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
 				Skinner:addButtonBorder{obj=icon, relTo=_G[aafName..i.."IconTexture"]}
-				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, anim=true}
+				Skinner:addSkinFrame{obj=aaFrame, ft=ftype, anim=true, x1=5, y1=-10, x2=-5, y2=12}
 			end
 		end
 
@@ -820,7 +820,7 @@ function Skinner:AlertFrames()
 						y1, y2 = -8, 8
 					end
 					Skinner.skinFrame[aaFrame]:SetPoint("TOPLEFT", aaFrame, "TOPLEFT", 5, y1)
-					Skinner.skinFrame[aaFrame]:SetPoint("BOTTOMRIGHT", aaFrame, "BOTTOMRIGHT", -5, y2)
+					Skinner.skinFrame[aaFrame]:SetPoint("BOTTOMRIGHT", aaFrame, "BOTTOMRIGHT", 5, y2)
 				end
 			end
 		end)
