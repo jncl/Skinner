@@ -911,6 +911,7 @@ function Skinner:GhostFrame()
 	self:add2Table(self.uiKeys1, "GhostFrame")
 
 	self:addButtonBorder{obj=GhostFrameContentsFrame, relTo=GhostFrameContentsFrameIcon}
-	self:addSkinFrame{obj=GhostFrame, ft=ftype, kfs=true}
+	self:addSkinButton{obj=GhostFrame, parent=GhostFrame, kfs=true, sap=true, hide=true}
+	GhostFrame:SetFrameStrata("HIGH") -- make it appear above other frames (i.e. Corkboard)
 
 end
