@@ -1,12 +1,12 @@
 -- This is a Framework
 
 local allHooked, tKDd, tKG, tKS, tKAP, tkB, ver
-	
+
 function Skinner:tekKonfig()
 	if not self.db.profile.MenuFrames then return end
-	
+
 	if allHooked then return end
-	
+
 	if LibStub("tekKonfig-Dropdown", true) and not tKDd then
 		tKDd, ver = LibStub("tekKonfig-Dropdown")
 		self:RawHook(tKDd, "new", function(parent, label, ...)
@@ -76,5 +76,5 @@ function Skinner:tekKonfig()
 	end
 
 	if tKDd and tKG and tKS and tKAP and tkB then allHooked = true end
-	
+
 end

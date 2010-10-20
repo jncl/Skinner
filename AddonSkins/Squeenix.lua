@@ -9,7 +9,7 @@ function Skinner:Squeenix()
 		then
 			child:Hide()
 			self.minimapskin = self:addSkinButton{obj=Minimap, parent=Minimap}
-			if not self.db.profile.MinimapGloss then LowerFrameLevel(self.minimapskin) end
+			if not self.db.profile.Minimap.gloss then LowerFrameLevel(self.minimapskin) end
 		end
 		-- Move the compass points text
 		if child:IsObjectType("Frame")

@@ -8,7 +8,7 @@ function Skinner:RicoMiniMap()
 
 		if not Skinner.sBut[Minimap] then
 			Skinner.minimapskin = Skinner:addSkinButton(Minimap, Minimap)
-			if not Skinner.db.profile.MinimapGloss then LowerFrameLevel(Skinner.minimapskin) end
+			if not Skinner.db.profile.Minimap.gloss then LowerFrameLevel(Skinner.minimapskin) end
 		else
 			Skinner.sBut[Minimap]:Show()
 		end
