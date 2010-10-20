@@ -303,6 +303,8 @@ function Skinner:MenuFrames()
 	-- Hook these to skin any Interface Option panels and their elements
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 --		self:Debug("IOL_DP: [%s]", panel)
+		-- skin tekKonfig library objects here as well as in AddonFrames to handle late loading of libraries
+		if self.tekKonfig then self:checkAndRun("tekKonfig") end
 		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
 			self:ScheduleTimer("skinAllButtons", 0.1, panel) -- wait for 1/10th second for panel to be populated
