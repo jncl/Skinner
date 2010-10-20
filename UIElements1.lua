@@ -912,13 +912,44 @@ function Skinner:DropDowns()
 
 end
 
+function Skinner:Minimap()
+	if not self.db.profile.Minimap.skin or self.initialized.Minimap then return end
+	self.initialized.Minimap = true
+
+-->>-- Cluster Frame
+	MinimapBorderTop:Hide()
+	self:addSkinButton{obj=MinimapZoneTextButton, parent=MinimapZoneTextButton, x1=0, x2=0}
+	self:moveObject{obj=MinimapZoneTextButton, x=2, y=2}
+	MiniMapWorldMapButton:Hide()
+
+-->>-- Minimap
+	Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
+	self.minimapskin = self:addSkinFrame{obj=Minimap, x1=-5, y1=5, x2=5, y2=-5}
+	if self.db.profile.Minimap.gloss then
+		RaiseFrameLevel(self.minimapskin)
+	else
+		LowerFrameLevel(self.minimapskin)
+	end
+
+-->>-- Minimap Backdrop Frame
+	MinimapBorder:SetAlpha(0)
+	MinimapNorthTag:SetAlpha(0)
+	MinimapCompassTexture:SetAlpha(0)
+	-- move buttons
+	self:moveObject{obj=MinimapZoomIn, x=16, y=-10}
+	self:moveObject{obj=MinimapZoomOut, x=20, y=-12}
+
+end
+
 function Skinner:MinimapButtons()
-	if not self.db.profile.MinimapButtons or self.initialized.MinimapButtons then return end
+	if not self.db.profile.Minimap.btns or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
 
+--[=[
 	self:add2Table(self.uiKeys1, "MinimapButtons")
 
-	local minBtn = self.db.profile.MinimalMMBtns
+--]=]
+	local minBtn = self.db.profile.Minimap.style
 
 	local function mmKids(mmObj)
 
@@ -959,6 +990,8 @@ function Skinner:MinimapButtons()
 									Skinner:addSkinFrame{obj=obj, ft=ftype}
 								end
 							end
+						elseif (regTex and regTex:find("Background")) then
+							reg:SetTexture(nil)
 						end
 					end
 				end
@@ -973,21 +1006,29 @@ function Skinner:MinimapButtons()
 	mmKids(Minimap)
 
 	-- skin other Blizzard buttons
+	local aso = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
 	-- Calendar button
-	self:addSkinButton{obj=GameTimeFrame, parent=GameTimeFrame, x1=2, y1=-2, x2=-2, y2=2}
-	GameTimeFrame:GetNormalTexture():SetAlpha(0)
-	GameTimeFrame:GetPushedTexture():SetAlpha(0)
-	GameTimeFrame:SetPushedTextOffset(2, -2)
-	GameTimeFrame:GetFontString():SetTextColor(self.BTr, self.BTg, self.BTb)
+	--[=[
+		TODO make sure button is behind textures
+	--]=]
+	GameTimeFrame:SetWidth(26)
+	GameTimeFrame:SetHeight(26)
+	GameTimeFrame:GetNormalTexture():SetTexCoord(0.1, 0.31, 0.16, 0.6)
+	GameTimeFrame:GetPushedTexture():SetTexCoord(0.6, 0.81, 0.16, 0.6)
+	self:addSkinButton{obj=GameTimeFrame, parent=GameTimeFrame, bg=true, aso=aso}
 	-- MinimapZoomIn/Out buttons
 	local modUIBtns = self:GetModule("UIButtons", true)
 	for k, obj in pairs{MinimapZoomIn, MinimapZoomOut} do
-		obj:GetNormalTexture():SetAlpha(0)
-		obj:GetPushedTexture():SetAlpha(0)
-		obj:GetDisabledTexture():SetAlpha(0)
+		obj:GetNormalTexture():SetTexture(nil)
+		obj:GetPushedTexture():SetTexture(nil)
+		if minBtn then
+			obj:GetDisabledTexture():SetTexture([[Interface\Minimap\UI-Minimap-Background]])
+		else
+			obj:GetDisabledTexture():SetTexture(nil)
+		end
 		self:adjWidth{obj=obj, adj=-8}
 		self:adjHeight{obj=obj, adj=-8}
-		self:addSkinButton{obj=obj, parent=obj}
+		self:addSkinButton{obj=obj, parent=obj, aso=aso}
 		local btn = self.sBut[obj]
 		btn:SetAllPoints(obj:GetNormalTexture())
 		btn:SetNormalFontObject(modUIBtns.fontX)
@@ -996,7 +1037,6 @@ function Skinner:MinimapButtons()
 		btn:SetText(k == 1 and modUIBtns.plus or modUIBtns.minus)
 		if not obj:IsEnabled() then btn:Disable() end
 	end
-	
 	-- change Mail icon
 	MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	-- resize other buttons
@@ -1006,14 +1046,16 @@ function Skinner:MinimapButtons()
 	MiniMapVoiceChatFrame:SetHeight(32)
 	MiniMapVoiceChatFrameIcon:ClearAllPoints()
 	MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
-
-	-- MiniMap Tracking button
-	MiniMapTracking:DisableDrawLayer("BACKGROUND")
+	-- MiniMap Tracking
+	MiniMapTrackingBackground:SetTexture(nil)
 	MiniMapTrackingIcon:SetParent(MiniMapTrackingButton)
 	MiniMapTrackingIcon:ClearAllPoints()
 	MiniMapTrackingIcon:SetPoint("CENTER")
 	-- change this to stop the icon being moved
 	MiniMapTrackingIcon.SetPoint = function() end
+	if not minBtn then
+		self:addSkinFrame{obj=MiniMapTracking, ft=ftype}
+	end
 
 	-- skin any moved Minimap buttons if required
 	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(MinimapButtonFrame) end
@@ -1031,7 +1073,6 @@ function Skinner:MinimapButtons()
 			["Perl_Config"] = PerlButton,
 			["WIM"] = WIM3MinimapButton,
 			["DBM-Core"] = DBMMinimapButton,
---			["PhoenixStyle"] = PS_MinimapButton,
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then

@@ -105,9 +105,7 @@ function Skinner:Defaults()
 		BattlefieldMm	= true,
 		ScriptErrors	= true,
 		DebugTools		= true,
-		MinimapButtons	= false,
-		MinimapGloss	= false,
-		MinimalMMBtns	= false,
+		Minimap			= {skin = false, gloss = false, btns = false, style = false},
 		MovieProgress	= IsMacClient() and true or nil,
 		TimeManager		= true,
 		Calendar		= true,
@@ -866,6 +864,7 @@ function Skinner:Options()
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
+				print("UIFrames", info[#info], info[#info - 1])
 				local uiOpt = info[#info]:match("UI" , -2)
 				if info[#info] == "Colours" then self:checkAndRun("ColorPicker")
 				elseif info[#info] == "Feedback" then self:checkAndRun("FeedbackUI")
@@ -1209,37 +1208,52 @@ function Skinner:Options()
 					name = self.L["Debug Tools Frames"],
 					desc = self.L["Toggle the skin of the Debug Tools Frames"],
 				},
-				minimapopts = {
+				Minimap = {
 					type = "group",
 					inline = true,
 					order = -3,
 					name = self.L["Minimap Options"],
+					get = function(info) return db.Minimap[info[#info]] end,
+					set = function(info, value)
+						db.Minimap[info[#info]] = value
+						if info[#info] == "skin" then self:checkAndRun("Minimap")
+						elseif info[#info] == "gloss" and self.minimapskin then
+							if value then
+								RaiseFrameLevel(self.minimapskin)
+							else
+								LowerFrameLevel(self.minimapskin)
+							end
+						elseif info[#info] == "btns" then self:checkAndRun("MinimapButtons")
+						elseif info[#info] == "style" then
+							db.Minimap.btns = true
+							self:checkAndRun("MinimapButtons")
+						end
+					end,
 					args = {
-						MinimapButtons = {
+						skin = {
 							type = "toggle",
-							order = 2,
-							name = self.L["Minimap Buttons"],
-							desc = self.L["Toggle the skin of the Minimap Buttons"],
+							name = self.L["Minimap"],
+							desc = self.L["Toggle the skin of the Minimap"],
+							order = 1,
 						},
-						MinimapGloss = {
+						gloss = {
 							type = "toggle",
 							name = self.L["Minimap Gloss Effect"],
 							desc = self.L["Toggle the Gloss Effect for the Minimap"],
-							order = 1,
-							set = function(info, value)
-								db.MinimapGloss = value
-								if self.minimapskin then
-									if not value then LowerFrameLevel(self.minimapskin)
-									else RaiseFrameLevel(self.minimapskin) end
-								end
-							end,
+							order = 2,
 						},
-						MinimalMMBtns = {
+						btns = {
 							type = "toggle",
 							order = 3,
+							name = self.L["Minimap Buttons"],
+							desc = self.L["Toggle the skin of the Minimap Buttons"],
+						},
+						style = {
+							type = "toggle",
+							order = 4,
 							name = self.L["Minimal Minimap Buttons"],
 							desc = self.L["Toggle the style of the Minimap Buttons"],
-							set = function(info, value) db[info[#info]] = value end
+							width = "double",
 						},
 					},
 				},

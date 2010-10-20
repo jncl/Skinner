@@ -50,7 +50,12 @@ function Skinner:OnInitialize()
 	-- setup the default DB values and register them
 	self:checkAndRun("Defaults", true)
 	prdb = self.db.profile
---	local prdb = self.db.profile
+
+	-- convert any old settings
+	if prdb.MinimapGloss then prdb.Minimap.gloss = prdb.MinimapGloss prdb.MinimapGloss = nil end
+	if prdb.MinimapButtons then prdb.Minimap.btns = prdb.MinimapButtons prdb.MinimapButtons = nil end
+	if prdb.MinimalMMBtns then prdb.Minimap.style = prdb.MinimalMMBtns prdb.MinimalMMBtns = nil end
+
 	-- setup the Addon's options
 	self:checkAndRun("Options")
 
@@ -362,8 +367,10 @@ local function __addSkinButton(opts)
 	if not Skinner:IsHooked(opts.hook, "Show") then
 		Skinner:SecureHook(opts.hook, "Show", function(this) Skinner.sBut[this]:Show() end)
 		Skinner:SecureHook(opts.hook, "Hide", function(this) Skinner.sBut[this]:Hide() end)
-		Skinner:SecureHook(opts.hook, "Enable", function(this) Skinner.sBut[this]:Enable() end)
-		Skinner:SecureHook(opts.hook, "Disable", function(this) Skinner.sBut[this]:Disable() end)
+		if opts.obj:IsObjectType("Button") then -- handle non button objects
+			Skinner:SecureHook(opts.hook, "Enable", function(this) Skinner.sBut[this]:Enable() end)
+			Skinner:SecureHook(opts.hook, "Disable", function(this) Skinner.sBut[this]:Disable() end)
+		end
 	end
 	-- position the button skin
 	if opts.sap then
