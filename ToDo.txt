@@ -8,6 +8,11 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/N/I/O	- Skin request/Button(s) Skin request/New Version/Issue(Bug)/Other change
 
+√	O	Skin Minimap and change option coding to handle this addition
+
+√	O	GhostFrame
+		- make skinframe same level as GhostFrame so it is above cork Frame
+
 	I	Usability issues, reported by TaliaMokani, 23.08.10
 ≈		- I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
 			- Update commands page for changes requiring a Reload
@@ -15,47 +20,66 @@ Legend:
 
 	I	Ghostly artifacts, reported by Kerecha, 13.10.10
 ?		- Getting some buggy ghost graphics from buttons (the x button from toastframe for instance has a buggy border always showing even when the frame isn't there) the info popup about pallys holypower also generates them.
+		- If NOT using UIButton skinning, what can be done about this ?
 
 ?	I	PendingInvites, reported by gamemaster128, 16.10.10
 		- I have to disable Skinner in order to accept pending RealID friend requests.
 
-√	N	PetsPlus, requested by Decabah, 16.10.10
+√	I	Chinchilla, reported by mkcorp, 17.10.10
+		- ..\AddOns\Skinner\Skinner.lua line 365:
+		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		Debug:
+		(tail call): ?
+		[C]: ?
+		Ace3\AceHook-3.0\AceHook-3.0.lua:211:
+		Ace3\AceHook-3.0\AceHook-3.0.lua:118
+		Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
+		Skinner\Skinner.lua:365:
+		Skinner\Skinner.lua:330
+		(tail call): ?
+		Skinner\SkinMe\Chinchilla.lua:17: skinChinchilla()
+		Skinner\SkinMe\Chinchilla.lua:53:
+		Skinner\SkinMe\Chinchilla.lua:3
+		(tail call): ?
 
-√	I	Outfitter, reported by flyinion, 16.10.10
-		- Skinner-b4.13164.3\Skinner.lua:1095: attempt to perform arithmetic on local 'yOfs' (a nil value)
-		Skinner-b4.13164.3\SkinMe\Outfitter.lua:150: in function <Skinner\SkinMe\Outfitter.lua:3>
+?	I	XPerl, reported by mkcorp/Namdrof, 17.10.10
+		- ..\AddOns\Skinner\Skinner.lua line 365:
+		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		Debug:
+		(tail call): ?
+		[C]: ?
+		Ace3\AceHook-3.0\AceHook-3.0.lua:211:
+		Ace3\AceHook-3.0\AceHook-3.0.lua:118
+		Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
+		Skinner\Skinner.lua:365:
+		Skinner\Skinner.lua:330
+		(tail call): ?
+		Skinner\SkinMe\XPerl.lua:62: skinClassIcon()
+		Skinner\SkinMe\XPerl.lua:67:
+		Skinner\SkinMe\XPerl.lua:54
+		(tail call): ?
+
+√	I	Pawn, reported by VQKatsuko, 17.10.10
+		- Skinner-b4.13164.4\Skinner.lua:1095: attempt to perform arithmetic on local 'yOfs' (a nil value)
+		Skinner-b4.13164.4\SkinMe\Pawn.lua:46: in function <Skinner\SkinMe\Pawn.lua:3>
 		(tail call): ?:
 
-√	I 	Swatter, reported by Decabah, 16.10.10
-		- Skinner-b4.13164.3\SkinMe\!Swatter.lua:5: attempt to index global 'SwatterErrorInputScroll' (a nil value)
-		(tail call): ?:
-		- Allow for the fact that it loaded but detected another bug catching addon and didn't initialise.
-
-√	I	Altoholic, reported by Decabah, 16.10.10
-		- Skinner-b4.13164.3\Skinner.lua:204: table index is nil
-		Skinner-b4.13164.3\Skinner.lua:1455: in function <Skinner\Skinner.lua:1441>
-		Skinner-b4.13164.3\Skinner.lua:1487: in function `skinScrollBar'
-		Skinner-b4.13164.3\SkinMe\Altoholic.lua:16: in function <Skinner\SkinMe\Altoholic.lua:3>
+√	I	!Swatter, reported by Decabah, 17.10.10
+		- Skinner-b4.13164.4\SkinMe\!Swatter.lua:6: attempt to index global 'Swatter' (a nil value)
 		(tail call): ?:
 
-√	I	Perl Classic, reported by flare1985, 16.10.10
-		- perl_target, perl_focus and perl_player
+x	I	tomQuest2, reported by X-buZZ, 17.10.10
+		- i am having trouble with TomQuest2 since the 4.01 updates of Skinner:
+			It is not possible to set the quest trackers border and the background to 0% opacity.
+			I have tried to set tq2 to disabled in the skinner config but it does not change anything.
 
-x	I	Viewport, reported by Eilensar/Tebasile, 16.10.10
-		- Through about 2 days of tweaking my video card (grr) I figured out Blizzard does not like viewports, not just Skinner's as SpartanUI and SunnArt have same issue. With your viewport adjusted and you come across water higher levels of the liquid display setting creates double imaging. From a bit of digging around, it seems that the world has been split for rendering certain sections at different levels. So the viewport adjusts the worldframe, but not the new frame for the fancy water. Setting water at low or fair works.
+√	I	ArkInventory, reported by chrisgriffith25, 18.10.10
+		- Bag changer borders aren't skinned
 
-√	I	RaidAchievement, reported by mkcorp, 17.10.10
-		- Keep getting this one while entering dungeon now
-			- ..\AddOns\Skinner\Skinner.lua line 1204:
-			attempt to index field 'obj' (a nil value)
-			Debug:
-			(tail call): ?
-			Skinner\Skinner.lua:1204:
-			Skinner\Skinner.lua:1186
-			Skinner\Skinner.lua:1262: skinDropDown()
-			Skinner\SkinMe\RaidAchievement.lua:41:
-			Skinner\SkinMe\RaidAchievement.lua:39
-			(tail call): ?
+√	N	RaidChecklist, requested by mkcorp, 18.10.10
+
+?	I	Background Textures, reported by QuackersEQ, 18.10.10
+		-	The textures aren't loading in with skinner that i added from kgpanels, the options are still there but they aren't showing up since the patch
 
 BETA changes
 ±±±±±±±±±±±±
