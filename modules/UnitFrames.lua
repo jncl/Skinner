@@ -124,13 +124,12 @@ local function skinPetF()
 	and Skinner.uCls == "HUNTER"
 	or Skinner.uCls == "WARLOCK"
 	then
-		if not plt then
-			plt = Skinner.skinFrame[PetFrame]:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-			plt:SetPoint("BOTTOMLEFT", 4, 4)
-			local lvlXP = 0
+		if not PetFrame.lvl then
+			PetFrame.lvl = Skinner.skinFrame[PetFrame]:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
+			PetFrame.lvl:SetPoint("BOTTOMLEFT", 4, 4)
 			local function checkLevel(event, ...)
 
-				plt:SetText(UnitLevel(PetFrame.unit))
+				PetFrame.lvl:SetText(UnitLevel(PetFrame.unit))
 
 			end
 			module:SecureHook("PetFrame_Update", function(this, ...)
@@ -140,12 +139,12 @@ local function skinPetF()
 			module:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
 			module:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
 			checkLevel("init")
-			plt:Show()
+			PetFrame.lvl:Show()
 		else
-			plt:Show()
+			PetFrame.lvl:Show()
 		end
-	elseif plt then
-		plt:Hide()
+	elseif PetFrame.lvl then
+		PetFrame.lvl:Hide()
 	end
 
 end
@@ -244,6 +243,7 @@ local function skinFocusF()
 end
 local function skinPartyF()
 
+	local pF
 	if db.party
 	and not isSkinned["Party"]
 	then
@@ -254,8 +254,13 @@ local function skinPartyF()
 			end
 		end)
 
+
 		for i = 1, MAX_PARTY_MEMBERS do
-			local pF = "PartyMemberFrame"..i
+			pF = "PartyMemberFrame"..i
+			Skinner:moveObject{obj=_G[pF.."Portrait"], y=6}
+			--[=[
+				TODO stop portrait being moved
+			--]=]
 			_G[pF.."Background"]:SetTexture(nil)
 			_G[pF.."Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G[pF.."VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -265,7 +270,6 @@ local function skinPartyF()
 			if _G[pF].state == "vehicle" then
 				rpTmr[_G[pF]] = module:ScheduleRepeatingTimer(resetPosn, tDelay, pF)
 			end
-
 			-- status bars
 			Skinner:glazeStatusBar(_G[pF.."HealthBar"], 0)
 			Skinner:glazeStatusBar(_G[pF.."ManaBar"], 0)
@@ -278,6 +282,7 @@ local function skinPartyF()
 			-- status bar
 			Skinner:glazeStatusBar(_G[pPF.."HealthBar"], 0)
 			Skinner:addSkinFrame{obj=_G[pPF], ft=ftype, noBdr=true, aso=aso, x1=-2, y1=1, y2=1}
+
 		end
 		-- PartyMember Buff Tooltip
 		Skinner:addSkinFrame{obj=PartyMemberBuffTooltip, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-2, x2=-2, y2=2}
@@ -487,38 +492,6 @@ function module:GetOptions()
 				name = Skinner.L["Player"],
 				desc = Skinner.L["Toggle the skin of the Player UnitFrame"],
 			},
-			target = {
-				type = "toggle",
-				order = 4,
-				name = Skinner.L["Target"],
-				desc = Skinner.L["Toggle the skin of the Target UnitFrame"],
-			},
-			focus = {
-				type = "toggle",
-				order = 5,
-				name = Skinner.L["Focus"],
-				desc = Skinner.L["Toggle the skin of the Focus UnitFrame"],
-			},
-			party = {
-				type = "toggle",
-				order = 6,
-				name = Skinner.L["Party"],
-				desc = Skinner.L["Toggle the skin of the Party UnitFrames"],
-			},
-			arena = {
-				type = "toggle",
-				order = 7,
-				name = Skinner.L["Arena"],
-				desc = Skinner.L["Toggle the skin of the Arena UnitFrames"],
-			},
-			alpha = {
-				type = "range",
-				order = 10,
-				width = "double",
-				name = Skinner.L["UnitFrame Background Opacity"],
-				desc = Skinner.L["Change Opacity value of the UnitFrames Background"],
-				min = 0, max = 1, step = 0.05,
-			},
 			pet = {
 				type = "toggle",
 				order = 2,
@@ -541,11 +514,43 @@ function module:GetOptions()
 					module:adjustUnitFrames(info[#info])
 				end,
 			} or nil,
-			compact = {
+			target = {
+				type = "toggle",
+				order = 4,
+				name = Skinner.L["Target"],
+				desc = Skinner.L["Toggle the skin of the Target UnitFrame"],
+			},
+			focus = {
+				type = "toggle",
+				order = 5,
+				name = Skinner.L["Focus"],
+				desc = Skinner.L["Toggle the skin of the Focus UnitFrame"],
+			},
+			party = {
+				type = "toggle",
+				order = 6,
+				name = Skinner.L["Party"],
+				desc = Skinner.L["Toggle the skin of the Party UnitFrames"],
+			},
+			arena = {
 				type = "toggle",
 				order = 8,
+				name = Skinner.L["Arena"],
+				desc = Skinner.L["Toggle the skin of the Arena UnitFrames"],
+			},
+			compact = {
+				type = "toggle",
+				order = 9,
 				name = Skinner.L["Compact"],
 				desc = Skinner.L["Toggle the skin of the Compact UnitFrames"],
+			},
+			alpha = {
+				type = "range",
+				order = 10,
+				width = "double",
+				name = Skinner.L["UnitFrame Background Opacity"],
+				desc = Skinner.L["Change Opacity value of the UnitFrames Background"],
+				min = 0, max = 1, step = 0.05,
 			},
 		},
 	}
