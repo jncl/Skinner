@@ -8,10 +8,12 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/N/I/O	- Skin request/Button(s) Skin request/New Version/Issue(Bug)/Other change
 
-√	O	Skin Minimap and change option coding to handle this addition
+	O	Major overhaul of skinning code
+		-- Need to add functionality to get LibSharedMedia callbacks and apply them to the relevant objects
+		-- also need to apply any colour changes selected by the user
+		-- and any backdrop/background changes
 
-√	O	GhostFrame
-		- make skinframe same level as GhostFrame so it is above cork Frame
+	O	Update WoWAce commands page
 
 	I	Usability issues, reported by TaliaMokani, 23.08.10
 ≈		- I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
@@ -25,61 +27,71 @@ Legend:
 ?	I	PendingInvites, reported by gamemaster128, 16.10.10
 		- I have to disable Skinner in order to accept pending RealID friend requests.
 
-√	I	Chinchilla, reported by mkcorp, 17.10.10
-		- ..\AddOns\Skinner\Skinner.lua line 365:
-		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		Debug:
-		(tail call): ?
-		[C]: ?
-		Ace3\AceHook-3.0\AceHook-3.0.lua:211:
-		Ace3\AceHook-3.0\AceHook-3.0.lua:118
-		Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
-		Skinner\Skinner.lua:365:
-		Skinner\Skinner.lua:330
-		(tail call): ?
-		Skinner\SkinMe\Chinchilla.lua:17: skinChinchilla()
-		Skinner\SkinMe\Chinchilla.lua:53:
-		Skinner\SkinMe\Chinchilla.lua:3
-		(tail call): ?
-
-?	I	XPerl, reported by mkcorp/Namdrof, 17.10.10
-		- ..\AddOns\Skinner\Skinner.lua line 365:
-		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		Debug:
-		(tail call): ?
-		[C]: ?
-		Ace3\AceHook-3.0\AceHook-3.0.lua:211:
-		Ace3\AceHook-3.0\AceHook-3.0.lua:118
-		Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
-		Skinner\Skinner.lua:365:
-		Skinner\Skinner.lua:330
-		(tail call): ?
-		Skinner\SkinMe\XPerl.lua:62: skinClassIcon()
-		Skinner\SkinMe\XPerl.lua:67:
-		Skinner\SkinMe\XPerl.lua:54
-		(tail call): ?
-
-√	I	Pawn, reported by VQKatsuko, 17.10.10
-		- Skinner-b4.13164.4\Skinner.lua:1095: attempt to perform arithmetic on local 'yOfs' (a nil value)
-		Skinner-b4.13164.4\SkinMe\Pawn.lua:46: in function <Skinner\SkinMe\Pawn.lua:3>
-		(tail call): ?:
-
-√	I	!Swatter, reported by Decabah, 17.10.10
-		- Skinner-b4.13164.4\SkinMe\!Swatter.lua:6: attempt to index global 'Swatter' (a nil value)
-		(tail call): ?:
-
 x	I	tomQuest2, reported by X-buZZ, 17.10.10
 		- i am having trouble with TomQuest2 since the 4.01 updates of Skinner:
 			It is not possible to set the quest trackers border and the background to 0% opacity.
 			I have tried to set tq2 to disabled in the skinner config but it does not change anything.
 
-√	I	ArkInventory, reported by chrisgriffith25, 18.10.10
-		- Bag changer borders aren't skinned
-
-√	N	RaidChecklist, requested by mkcorp, 18.10.10
-
 ?	I	Background Textures, reported by QuackersEQ, 18.10.10
 		-	The textures aren't loading in with skinner that i added from kgpanels, the options are still there but they aren't showing up since the patch
+		- I added the textures thru kgpanel as .tga paths, and as soon as i did, they have the drop down in skinners list w/ blizzard out of control...etc bliz options along with the textures i added to kgpanels...they used to work before patch and now don't ...http://tinypic.com/r/2h31k4i/7....this is how looked before patch and now its empty, no border, no pics behind her....but the options for those textures are still in my drop down menu... i didn't change anything, they just don't show up when picked now...
+
+
+√	I	RaidAchievement, reported by mkcorp,
+		-  ..\AddOns\Skinner\Skinner.lua line 202:
+		table index is nil
+		Debug:
+		[C]: ?
+		Skinner\Skinner.lua:202:
+		Skinner\Skinner.lua:202
+		Skinner\Skinner.lua:1284:
+		Skinner\Skinner.lua:1266
+		Skinner\Skinner.lua:1341: skinEditBox()
+		Skinner\SkinMe\RaidAchievement.lua:63:
+		Skinner\SkinMe\RaidAchievement.lua:62
+		(tail call): ?
+		[C]: iclldrawtext()
+		..._AchieveReminder\RaidAchievement_AchieveReminde r.lua:164: icll_button2()
+		RaidAchievement\RaidAchievement.lua:562: PSFea_listach()
+		[string "*:OnClick"]:1:
+		[string "*:OnClick"]:1
+
+x	I	Chinchilla, reported by Dranore, 20.10.10
+		- Interface\AddOns\Skinner\Skinner.lua:365: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		Time: 10/20/10 12:48:00
+		Count: 1
+		Stack: [C]: ?
+		...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:211: in function <...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:118>
+		...e\AddOns\Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:344: in function `SecureHook'
+		Interface\AddOns\Skinner\Skinner.lua:365: in function <Interface\AddOns\Skinner\Skinner.lua:330>
+		(tail call): ?
+		Interface\AddOns\Skinner\SkinMe\Chinchilla.lua:17: in function `skinChinchilla'
+		Interface\AddOns\Skinner\SkinMe\Chinchilla.lua:53: in function <Interface\AddOns\Skinner\SkinMe\Chinchilla.lua: 3>
+		(tail call): ?
+
+	I	reported by skyggesang, 20.10.10
+		- I have a number of issues to report this time. When I shift-click to compare items or mouseover a comparable item in the auction house, the tooltip for my equipped item has a blindingly white background making it difficult to read as you can see in this picture. The same thing happens when I click a linked item in chat (picture) for the first time after logging in to a character or reloading my UI.
+
+x		- Also, on the bottom-most action bar, the buttons are not showing if I do not have an ability, item, macro or profession shortcut in them as seen here.
+√		- Also in the same picture on the top right hand side, the shaman totem bar (moved via MoveAnything) is not skinning at all.
+
+		And finally a request. I don't know if this was covered in the raid updates for v. b4.13164.5 and I am just missing the option, but if not, would you mind skinning both of the default raid frames shown in this picture
+√		- compact raid frames (move from UnitFrames)
+		 and the role check as shown in this picture.
+√		- RolePollPopup
+
+√	N	RaidComp, requested by X-buZZ, 20.10.10
+
+√	I	InspectEquip, reported by mkcorp, 21.10.10
+
+√	I	TradeTabs, reported by mkcorp, 21.10.10
+
+x	I	ArkInventory, reported by chrisgriffith25, 22.10.10
+		- I updated to the latest version of skinner and the bags still aren't being skinned with the appropriate border in arkinventory.  If i don't apply skinner the bags take the border, but when I apply skinner the default to a blurred blizzard boarder.  I'm not getting any errors
+
+√	N	MrTrader, requested by X-buZZ, 22.10.10
+
+√	N	AISeller, requested by mkcorp, 24.10.10
 
 BETA changes
 ±±±±±±±±±±±±
