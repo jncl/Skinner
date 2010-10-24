@@ -797,11 +797,12 @@ function Skinner:AlertFrames()
 	-- check for both Achievement Alert frames now, (3.1.2) as the Bliz code changed
 	if not AchievementAlertFrame1 or AchievementAlertFrame2 then
 		self:RawHook("AchievementAlertFrame_GetAlertFrame", function()
+			local frame = self.hooks.AchievementAlertFrame_GetAlertFrame()
 			skinAlertFrames()
 			if AchievementAlertFrame2 then
 				self:Unhook("AchievementAlertFrame_GetAlertFrame")
 			end
-			self.hooks.AchievementAlertFrame_GetAlertFrame()
+			return frame
 		end, true)
 	end
 	-- skin any existing Achievement Alert Frames
