@@ -1,3 +1,14 @@
+b4.13164.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Tidyup Tab code
+	Rationalise use of locals
+	Updated Minimap & MinimpaButtons code and options
+	Skinned RolePollPopup & CompactUnitFrames
+	Skinned AISeller & RaidComp
+	Updated Ace3, AucAdvanced, Chinchilla, InspectEquip, MrTrader_SkillWindow, RaidAchievement & TradeTab skins
+
 b4.13164.5
 Jncl:
 	ToDo.txt
