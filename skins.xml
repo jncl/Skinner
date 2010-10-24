@@ -14,6 +14,7 @@
 <script file="SkinMe\ACP.lua"/>
 <script file="SkinMe\AdiBags.lua"/>
 <script file="SkinMe\AdvancedTradeSkillWindow.lua"/>
+<script file="SkinMe\AISeller.lua"/>
 <script file="SkinMe\AlleyMap.lua"/>
 <script file="SkinMe\Altoholic.lua"/>
 <script file="SkinMe\Analyst.lua"/>
@@ -223,6 +224,7 @@
 <script file="SkinMe\RaidAchievement.lua"/>
 <script file="SkinMe\RaidBuffStatus.lua"/>
 <script file="SkinMe\RaidChecklist.lua"/>
+<script file="SkinMe\RaidComp.lua"/>
 <script file="SkinMe\RaidTracker.lua"/>
 <script file="SkinMe\RaidyCheck.lua"/>
 <script file="SkinMe\RandomPet30.lua"/>
