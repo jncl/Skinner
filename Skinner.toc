@@ -74,7 +74,7 @@ NPCFrames.lua
 UIElements1.lua
 #
 # UIElements2
-# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), BindingUI, MacroUI, Mail, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools, LFDFrame, LFRFrame, BNFrames, CinematicFrame, LevelUpDisplay, SpellFlyout, GuildInvite, GhostFrame
+# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), BindingUI, MacroUI, Mail, MainMenuBar, CoinPickup, LFG, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools, RolePollPopup, LFDFrame, LFRFrame, BNFrames, CinematicFrame, LevelUpDisplay, SpellFlyout, GuildInvite, GhostFrame
 UIElements2.lua
 #
 # Modules

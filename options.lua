@@ -74,6 +74,7 @@ function Skinner:Defaults()
 		VehicleMenuBar	= true,
 		WatchFrame		= {skin = false, popups = true},
 		GearManager		= true,
+		CompactFrames	= true,
 		AlertFrames		= true,
 		ArchaeologyUI	= true,
 		GuildUI			= true,
@@ -105,7 +106,8 @@ function Skinner:Defaults()
 		BattlefieldMm	= true,
 		ScriptErrors	= true,
 		DebugTools		= true,
-		Minimap			= {skin = false, gloss = false, btns = false, style = false},
+		Minimap			= {skin = false, gloss = false},
+		MinimapButtons	= {skin = false, style = false},
 		MovieProgress	= IsMacClient() and true or nil,
 		TimeManager		= true,
 		Calendar		= true,
@@ -113,6 +115,7 @@ function Skinner:Defaults()
 		MailFrame		= true,
 		MainMenuBar		= {skin = true, glazesb = true},
 		CoinPickup		= true,
+		RolePollPopup	= true,
 		LFDFrame		= true,
 		LFRFrame		= true,
 		ItemSocketingUI = true,
@@ -820,6 +823,11 @@ function Skinner:Options()
 					name = self.L["Gear Manager Frame"],
 					desc = self.L["Toggle the skin of the Gear Manager Frame"],
 				},
+				CompactFrames = {
+					type = "toggle",
+					name = self.L["Compact Frames"],
+					desc = self.L["Toggle the skin of the Compact Frames"],
+				},
 				WatchFrame = {
 					type = "group",
 					order = -1,
@@ -996,7 +1004,7 @@ function Skinner:Options()
 				chatopts = {
 					type = "group",
 					inline = true,
-					order = -8,
+					order = -1,
 					name = self.L["Chat Sub Frames"],
 					args = {
 						ChatMenus = {
@@ -1034,7 +1042,7 @@ function Skinner:Options()
 				ChatEditBox = {
 					type = "group",
 					inline = true,
-					order = -9,
+					order = -1,
 					name = self.L["Chat Edit Box"],
 					get = function(info) return db.ChatEditBox[info[#info]] end,
 					set = function(info, value)
@@ -1065,7 +1073,7 @@ function Skinner:Options()
 				GroupLoot = {
 					type = "group",
 					inline = true,
-					order = -6,
+					order = -1,
 					name = self.L["Group Loot Frame"],
 					get = function(info) return db.GroupLoot[info[#info]] end,
 					set = function(info, value)
@@ -1091,7 +1099,7 @@ function Skinner:Options()
 				ContainerFrames = {
 					type = "group",
 					inline = true,
-					order = -7,
+					order = -1,
 					name = self.L["Container Frames"],
 					get = function(info) return db.ContainerFrames[info[#info]] end,
 					set = function(info, value)
@@ -1158,7 +1166,7 @@ function Skinner:Options()
 				helpframes = {
 					type = "group",
 					inline = true,
-					order = -5,
+					order = -1,
 					name = self.L["Help Request Frames"],
 					args = {
 						HelpFrame = {
@@ -1211,7 +1219,7 @@ function Skinner:Options()
 				Minimap = {
 					type = "group",
 					inline = true,
-					order = -3,
+					order = -1,
 					name = self.L["Minimap Options"],
 					get = function(info) return db.Minimap[info[#info]] end,
 					set = function(info, value)
@@ -1242,15 +1250,31 @@ function Skinner:Options()
 							desc = self.L["Toggle the Gloss Effect for the Minimap"],
 							order = 2,
 						},
-						btns = {
+					},
+				},
+				MinimapButtons = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Minimap Button Options"],
+					get = function(info) return db.MinimapButtons[info[#info]] end,
+					set = function(info, value)
+						db.MinimapButtons[info[#info]] = value
+						if info[#info] == "skin" then self:checkAndRun("MinimapButtons")
+						elseif info[#info] == "style" then
+							db.MinimapButtons.skin = true
+							self:checkAndRun("MinimapButtons")
+						end
+					end,
+					args = {
+						skin = {
 							type = "toggle",
-							order = 3,
+							order = 1,
 							name = self.L["Minimap Buttons"],
 							desc = self.L["Toggle the skin of the Minimap Buttons"],
 						},
 						style = {
 							type = "toggle",
-							order = 4,
 							name = self.L["Minimal Minimap Buttons"],
 							desc = self.L["Toggle the style of the Minimap Buttons"],
 							width = "double",
@@ -1280,7 +1304,7 @@ function Skinner:Options()
 				MainMenuBar = {
 					type = "group",
 					inline = true,
-					order = -4,
+					order = -1,
 					name = self.L["Main Menu Bar"],
 					get = function(info) return db.MainMenuBar[info[#info]] end,
 					set = function(info, value)
@@ -1327,6 +1351,11 @@ function Skinner:Options()
 					type = "toggle",
 					name = self.L["GMChatUI Frame"],
 					desc = self.L["Toggle the skin of the GMChatUI Frame"],
+				},
+				RolePollPopup = {
+					type = "toggle",
+					name = self.L["Role Poll Popup"],
+					desc = self.L["Toggle the skin of the Role Poll Popup"],
 				},
 				LFDFrame = {
 					type = "toggle",

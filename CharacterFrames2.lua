@@ -544,7 +544,37 @@ function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 
 end
 
-function Skinner:ArchaeologyUI()
+function Skinner:CompactFrames()
+	if not self.db.profile.CompactFrames or self.initialized.CompactFrames then return end
+	self.initialized.CompactFrames = true
+
+-->>-- Compact Party Frame
+	CompactPartyFrame.borderFrame:DisableDrawLayer("ARTWORK")
+	for i = 1, MEMBERS_PER_RAID_GROUP do
+		_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
+		_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
+	end
+	self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+
+-->>-- Compact Raid Group Frame(s)
+	self:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
+		local frame, didCreate = self.hooks.CompactRaidGroup_GenerateForGroup(...)
+		frame.borderFrame:DisableDrawLayer("ARTWORK")
+		self:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+		return frame, didCreate
+	end, true)
+
+-->>-- Compact Raid Unit Frame(s)
+	self:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
+		local frame = self.hooks.CompactRaidFrameContainer_GetUnitFrame(...)
+		frame:DisableDrawLayer("BACKGROUND")
+		frame:DisableDrawLayer("BORDER")
+		return frame
+	end, true)
+
+end
+
+function Skinner:ArchaeologyUI() -- LoD
 	if not self.db.profile.ArchaeologyUI or self.initialized.ArchaeologyUI then return end
 	self.initialized.ArchaeologyUI = true
 

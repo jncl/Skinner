@@ -916,11 +916,16 @@ function Skinner:Minimap()
 	if not self.db.profile.Minimap.skin or self.initialized.Minimap then return end
 	self.initialized.Minimap = true
 
+	self:add2Table(self.uiKeys2, "Minimap")
+
 -->>-- Cluster Frame
 	MinimapBorderTop:Hide()
-	self:addSkinButton{obj=MinimapZoneTextButton, parent=MinimapZoneTextButton, x1=0, x2=0}
-	self:moveObject{obj=MinimapZoneTextButton, x=2, y=2}
-	MiniMapWorldMapButton:Hide()
+	MinimapZoneTextButton:ClearAllPoints()
+	MinimapZoneTextButton:SetPoint("BOTTOMLEFT", Minimap, "TOPLEFT", 0, 5)
+	MinimapZoneTextButton:SetPoint("BOTTOMRIGHT", Minimap, "TOPRIGHT", 0, 5)
+	MinimapZoneText:ClearAllPoints()
+	MinimapZoneText:SetPoint("CENTER")
+	self:addSkinButton{obj=MinimapZoneTextButton, parent=MinimapZoneTextButton}
 
 -->>-- Minimap
 	Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
@@ -935,27 +940,46 @@ function Skinner:Minimap()
 	MinimapBorder:SetAlpha(0)
 	MinimapNorthTag:SetAlpha(0)
 	MinimapCompassTexture:SetAlpha(0)
-	-- move buttons
-	self:moveObject{obj=MinimapZoomIn, x=16, y=-10}
-	self:moveObject{obj=MinimapZoomOut, x=20, y=-12}
+
+-->>-- Buttons
+	MiniMapWorldMapButton:Hide()
+	-- on LHS
+	local xOfs, yOfs = 0, 4
+	for _, v in pairs{MiniMapTracking, MiniMapLFGFrame, MiniMapRecordingButton, MiniMapVoiceChatFrame} do
+		v:ClearAllPoints()
+		v:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", xOfs, yOfs)
+		yOfs = yOfs - v:GetHeight() + 3
+	end
+	self:moveObject{obj=MiniMapInstanceDifficulty, x=-10}
+	self:moveObject{obj=GuildInstanceDifficulty, x=-10}
+	-- on RHS
+	MiniMapMailFrame:ClearAllPoints()
+	MiniMapMailFrame:SetPoint("LEFT", Minimap, "RIGHT", -10, 28)
+	MinimapZoomIn:ClearAllPoints()
+	MinimapZoomIn:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMRIGHT", -4, -3)
+	MinimapZoomOut:ClearAllPoints()
+	MinimapZoomOut:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 3, 4)
+	-- on Bottom
+	MiniMapBattlefieldFrame:ClearAllPoints()
+	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 10, 6)
 
 end
 
 function Skinner:MinimapButtons()
-	if not self.db.profile.Minimap.btns or self.initialized.MinimapButtons then return end
+	if not self.db.profile.MinimapButtons.skin or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
 
---[=[
-	self:add2Table(self.uiKeys1, "MinimapButtons")
+	self:add2Table(self.uiKeys2, "MinimapButtons")
 
---]=]
-	local minBtn = self.db.profile.Minimap.style
+	local minBtn = self.db.profile.MinimapButtons.style
+	local objName, objType, tex, texName
 
 	local function mmKids(mmObj)
 
+		local objName, objType, tex, texName
 		for _, obj in ipairs{mmObj:GetChildren()} do
-			local objName = obj:GetName()
-			local objType = obj:GetObjectType()
+			objName = obj:GetName()
+			objType = obj:GetObjectType()
 --			print(objName, objType)
 			if not Skinner.sBut[obj]
 			and not Skinner.skinFrame[obj]
@@ -966,19 +990,19 @@ function Skinner:MinimapButtons()
 --				print("Checking Regions")
 				for _, reg in ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
-						local regName = reg:GetName()
-						local regTex = reg:GetTexture()
---						print(regName, regTex)
+						texName = reg:GetName()
+						tex = reg:GetTexture()
+--						print(texName, tex)
 						-- change the DrawLayer to make the Icon show if required
-						if (regName and regName:find("[Ii]con"))
-						or (regTex and regTex:find("[Ii]con"))
+						if (texName and texName:find("[Ii]con"))
+						or (tex and tex:find("[Ii]con"))
 						then
 							if reg:GetDrawLayer() == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
-						elseif (regName and regName:find("Border"))
-						or (regTex and regTex:find("TrackingBorder"))
+						elseif (texName and texName:find("Border"))
+						or (tex and tex:find("TrackingBorder"))
 						then
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
@@ -990,7 +1014,7 @@ function Skinner:MinimapButtons()
 									Skinner:addSkinFrame{obj=obj, ft=ftype}
 								end
 							end
-						elseif (regTex and regTex:find("Background")) then
+						elseif (tex and tex:find("Background")) then
 							reg:SetTexture(nil)
 						end
 					end
@@ -1006,18 +1030,19 @@ function Skinner:MinimapButtons()
 	mmKids(Minimap)
 
 	-- skin other Blizzard buttons
-	local aso = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
+	asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
 	-- Calendar button
-	--[=[
-		TODO make sure button is behind textures
-	--]=]
-	GameTimeFrame:SetWidth(26)
-	GameTimeFrame:SetHeight(26)
-	GameTimeFrame:GetNormalTexture():SetTexCoord(0.1, 0.31, 0.16, 0.6)
-	GameTimeFrame:GetPushedTexture():SetTexCoord(0.6, 0.81, 0.16, 0.6)
-	self:addSkinButton{obj=GameTimeFrame, parent=GameTimeFrame, bg=true, aso=aso}
+	obj = GameTimeFrame
+	obj:SetWidth(26)
+	obj:SetHeight(26)
+	obj:GetNormalTexture():SetTexCoord(0.1, 0.31, 0.16, 0.6)
+	obj:GetPushedTexture():SetTexCoord(0.6, 0.81, 0.16, 0.6)
+	self:addSkinFrame{obj=obj, aso=asopts, x1=-4, y1=4, x2=4, y2=-4}
+	-- make sure textures appear above skinFrame
+	LowerFrameLevel(self.skinFrame[obj])
+
 	-- MinimapZoomIn/Out buttons
-	local modUIBtns = self:GetModule("UIButtons", true)
+	local modUIBtns = self.modUIBtns or self:GetModule("UIButtons", true)
 	for k, obj in pairs{MinimapZoomIn, MinimapZoomOut} do
 		obj:GetNormalTexture():SetTexture(nil)
 		obj:GetPushedTexture():SetTexture(nil)
@@ -1028,8 +1053,8 @@ function Skinner:MinimapButtons()
 		end
 		self:adjWidth{obj=obj, adj=-8}
 		self:adjHeight{obj=obj, adj=-8}
-		self:addSkinButton{obj=obj, parent=obj, aso=aso}
-		local btn = self.sBut[obj]
+		self:addSkinButton{obj=obj, parent=obj, aso=asopts}
+		btn = self.sBut[obj]
 		btn:SetAllPoints(obj:GetNormalTexture())
 		btn:SetNormalFontObject(modUIBtns.fontX)
 		btn:SetDisabledFontObject(modUIBtns.fontDX)
@@ -1056,6 +1081,18 @@ function Skinner:MinimapButtons()
 	if not minBtn then
 		self:addSkinFrame{obj=MiniMapTracking, ft=ftype}
 	end
+	-- FeedbackUI Minimap Button
+	if self.isPTR then
+		for _, reg in ipairs{FeedbackUIButton:GetRegions()} do
+			reg:SetWidth(26)
+			reg:SetHeight(26)
+		end
+	end
+	-- Instance Difficulty
+	MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.135, 0.5) -- remove top hanger texture
+	self:moveObject{obj=MiniMapInstanceDifficulty, y=-5}
+	-- Guild Instance Difficulty
+	GuildInstanceDifficultyHanger:SetAlpha(0)
 
 	-- skin any moved Minimap buttons if required
 	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(MinimapButtonFrame) end

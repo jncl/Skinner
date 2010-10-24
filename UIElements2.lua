@@ -749,6 +749,12 @@ function Skinner:DebugTools() -- LoD
 
 end
 
+function Skinner:RolePollPopup()
+
+	self:addSkinFrame{obj=RolePollPopup, ft=ftype, x1=5, y1=-5, x2=-5, y2=5}
+
+end
+
 function Skinner:LFDFrame()
 	if not self.db.profile.LFDFrame or self.initialized.LFDFrame then return end
 	self.initialized.LFDFrame = true

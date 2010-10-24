@@ -4,10 +4,10 @@ function Skinner:BlizzardFrames()
 
 	local blizzFrames = {
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
-		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", --cf2
+		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "GearManager", "CompactFrames", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "BankFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"Minimap", "MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "ScriptErrors", "DropDowns", -- uie1
-		"AutoComplete", "MenuFrames", "MailFrame", "CoinPickup", "PVPFrame", "LFDFrame", "LFRFrame", "BNFrames", "CinematicFrame", "LevelUpDisplay", "SpellFlyout", "GuildInvite", "GhostFrame"-- uie2
+		"AutoComplete", "MenuFrames", "MailFrame", "CoinPickup", "PVPFrame", "RolePollPopup", "LFDFrame", "LFRFrame", "BNFrames", "CinematicFrame", "LevelUpDisplay", "SpellFlyout", "GuildInvite", "GhostFrame"-- uie2
 	}
 
 	-- optional frames

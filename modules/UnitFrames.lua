@@ -14,7 +14,6 @@ local defaults = {
 		petlevel = (Skinner.uCls == "HUNTER" or Skinner.uCls == "WARLOCK") and false or nil,
 		alpha = 0.25,
 		arena = false,
-		compact = false,
 	}
 }
 local lOfs = -10 -- level text offset
@@ -23,7 +22,7 @@ local tDelay = 0.2 -- repeating timer delay
 local isSkinned = setmetatable({}, {__index = function(table, key) table[key] = true end})
 local rpTmr = {}
 local unitFrames = {
-	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground", "CompactPartyFrame"
+	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground"
 }
 
 local function skinPlayerF()
@@ -332,35 +331,6 @@ local function skinArenaF()
 	end
 
 end
-local function skinCompactF()
-
-	if db.compact
-	and not isSkinned["Compact"]
-	then
-		-- skin Compact Party Frame
-		CompactPartyFrame.borderFrame:DisableDrawLayer("ARTWORK")
-		for i = 1, MEMBERS_PER_RAID_GROUP do
-			_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
-			_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
-		end
-		Skinner:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
-		-- hook this to skin Compact Raid Unit Frame(s)
-		Skinner:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
-			local frame = Skinner.hooks[this].CompactRaidFrameContainer_GetUnitFrame(...)
-			frame:DisableDrawLayer("BACKGROUND")
-			frame:DisableDrawLayer("BORDER")
-			return frame
-		end, true)
-		-- hook this to skin Compact Raid Group Frame(s)
-		Skinner:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
-			local frame = Skinner.hooks[this].CompactRaidGroup_GenerateForGroup(...)
-			frame.borderFrame:DisableDrawLayer("ARTWORK")
-			Skinner:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
-			return frame
-		end, true)
-	end
-
-end
 local function resetPosn(pF)
 
 	-- handle in combat
@@ -450,7 +420,6 @@ function module:adjustUnitFrames(opt)
 		skinFocusF()
 		skinPartyF()
 		skinArenaF()
-		skinCompactF()
 	elseif opt == "player" then
 		skinPlayerF()
 	elseif opt == "pet"
@@ -467,8 +436,6 @@ function module:adjustUnitFrames(opt)
 		skinArenaF()
 	elseif opt == "alpha" then
 		changeUFOpacity()
-	elseif opt == "compact" then
-		skinCompactF()
 	end
 
 end
@@ -537,12 +504,6 @@ function module:GetOptions()
 				order = 8,
 				name = Skinner.L["Arena"],
 				desc = Skinner.L["Toggle the skin of the Arena UnitFrames"],
-			},
-			compact = {
-				type = "toggle",
-				order = 9,
-				name = Skinner.L["Compact"],
-				desc = Skinner.L["Toggle the skin of the Compact UnitFrames"],
 			},
 			alpha = {
 				type = "range",
