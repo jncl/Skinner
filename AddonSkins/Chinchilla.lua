@@ -26,8 +26,9 @@ function Skinner:Chinchilla()
 			self:addSkinFrame{obj=Chinchilla_Coordinates_Frame}
 		else
 			-- hook the OnEnable method
-			self:SecureHook(Chinchilla:GetModule("Coordinates"), "OnEnable", function()
+			self:SecureHook(Chinchilla:GetModule("Coordinates"), "OnEnable", function(this)
 				self:addSkinFrame{obj=Chinchilla_Coordinates_Frame}
+				self:Unhook(Chinchilla:GetModule("Coordinates"), "OnEnable")
 			end)
 		end
 	end
@@ -40,10 +41,11 @@ function Skinner:Chinchilla()
 			Chinchilla_Location_Frame.SetBackdropBorderColor = function() end
 		else
 			-- hook the OnEnable method
-			self:SecureHook(Chinchilla:GetModule("Location"), "OnEnable", function()
+			self:SecureHook(Chinchilla:GetModule("Location"), "OnEnable", function(this)
 				self:addSkinFrame{obj=Chinchilla_Location_Frame}
 				Chinchilla_Location_Frame.SetBackdropColor = function() end
 				Chinchilla_Location_Frame.SetBackdropBorderColor = function() end
+				self:Unhook(Chinchilla:GetModule("Location"), "OnEnable")
 			end)
 		end
 	end
@@ -54,6 +56,7 @@ function Skinner:Chinchilla()
 		-- hook the OnEnable method
 		self:SecureHook(Chinchilla:GetModule("Appearance"), "OnEnable", function()
 			skinChinchilla()
+			self:Unhook(Chinchilla:GetModule("Appearance"), "OnEnable")
 		end)
 	end
 

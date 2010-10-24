@@ -18,40 +18,56 @@ end
 function Skinner:RaidAchievement_Icecrown()
 
 	self:addSkinFrame{obj=icramain6, x1=x1, y1=y1}
-	self:SecureHook("openmenureporticra", function()
+	if not DropDownMenureporticra then
+		self:SecureHook("openmenureporticra", function()
+			self:skinDropDown{obj=DropDownMenureporticra}
+			self:Unhook("openmenureporticra")
+		end)
+	else
 		self:skinDropDown{obj=DropDownMenureporticra}
-		self:Unhook("openmenureporticra")
-	end)
+	end
 
 end
 
 function Skinner:RaidAchievement_Naxxramas()
 
 	self:addSkinFrame{obj=nxramain6, x1=x1, y1=y1}
-	self:SecureHook("openmenureportnxra", function()
+	if not DropDownMenureportnxra then
+		self:SecureHook("openmenureportnxra", function()
+			self:skinDropDown{obj=DropDownMenureportnxra}
+			self:Unhook("openmenureportnxra")
+		end)
+	else
 		self:skinDropDown{obj=DropDownMenureportnxra}
-		self:Unhook("openmenureportnxra")
-	end)
+	end
 
 end
 
 function Skinner:RaidAchievement_Ulduar()
 
 	self:addSkinFrame{obj=PSFeamain7, x1=x1, y1=y1}
-	self:SecureHook("openmenureportra", function()
+	if not DropDownMenureportra then
+		self:SecureHook("openmenureportra", function()
+			self:skinDropDown{obj=DropDownMenureportra}
+			self:Unhook("openmenureportra")
+		end)
+	else
 		self:skinDropDown{obj=DropDownMenureportra}
-		self:Unhook("openmenureportra")
-	end)
+	end
 
 end
 
 function Skinner:RaidAchievement_WotlkHeroics()
 
 	self:addSkinFrame{obj=whramain6, x1=x1, y1=y1}
-	self:SecureHook("openmenureportwhra", function()
+	if not DropDownMenureportwhra then
+		self:SecureHook("openmenureportwhra", function()
+			self:skinDropDown{obj=DropDownMenureportwhra}
+			self:Unhook("openmenureportwhra")
+		end)
+	else
 		self:skinDropDown{obj=DropDownMenureportwhra}
-		self:Unhook("openmenureportwhra")
-	end)
+	end
 
 
 end
@@ -60,13 +76,17 @@ function Skinner:RaidAchievement_AchieveReminder()
 
 	self:addSkinFrame{obj=icralistach, x1=x1, y1=y1}
 	self:SecureHook("iclldrawtext", function()
-		self:skinEditBox{obj=pseb1, regs={9}}
+		self:skinEditBox{obj=rallpseb1, regs={9}}
 		self:skinScrollBar{obj=psllinfscroll}
 		self:Unhook("iclldrawtext")
 	end)
-	self:SecureHook("openmenull", function()
+	if not DropDownMenureportll then
+		self:SecureHook("openmenull", function()
+			self:skinDropDown{obj=DropDownMenureportll}
+			self:Unhook("openmenull")
+		end)
+	else
 		self:skinDropDown{obj=DropDownMenureportll}
-		self:Unhook("openmenull")
-	end)
+	end
 
 end

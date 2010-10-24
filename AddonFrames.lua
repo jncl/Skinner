@@ -208,7 +208,7 @@ local lodFrames = {
 	"GnomishAuctionShrinker", "GuildBankSearch",
 	"ItemRackOptions",
 	"LilSparkysWorkshop",
-	"MrTrader_SkillWindow", "MSBTOptions",
+	"MSBTOptions",
 	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
 	"Perl_Config_Options", "PhoenixStyleMod_Coliseum", "PhoenixStyleMod_Ulduar", "PhoenixStyleMod_Icecrown",
 	"RaidAchievement_Icecrown", "RaidAchievement_Naxxramas", "RaidAchievement_Ulduar", "RaidAchievement_WotlkHeroics",
@@ -292,5 +292,16 @@ function Skinner:AUCTION_HOUSE_SHOW()
 	self:checkAndRunAddOn("Auctionator")
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
+
+end
+
+function Skinner:TRADE_SKILL_SHOW()
+	self:Debug("TRADE_SKILL_SHOW")
+
+	self:checkAndRun("TradeSkillUI") -- cf2
+	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
+	self:checkAndRunAddOn("MrTrader_SkillWindow")
+
+	self:UnregisterEvent("TRADE_SKILL_SHOW")
 
 end

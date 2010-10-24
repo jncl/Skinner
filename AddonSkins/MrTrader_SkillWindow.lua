@@ -3,28 +3,34 @@ if not Skinner:isAddonEnabled("MrTrader_SkillWindow") then return end
 function Skinner:MrTrader_SkillWindow()
 
 	-- hide filter texture when filter is clicked
-	self:SecureHook("MRTUIUtils_FilterButton_SetType", function(button, type, text, isLast)
-		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
+	self:SecureHook("MRTUIUtils_FilterButton_SetType", function(btn, type, ...)
+		self:Debug("MRTUIU_FB_ST: [%s, %s, %s, %s, %s, %s]", btn, type, ...)
+		btn:GetNormalTexture():SetAlpha(0)
+		if type == "checkbox"
+		or type == "command"
+		then
+			self.skinFrame[btn]:Hide()
+		else
+			self.skinFrame[btn]:Show()
+		end
 	end)
 
 	self:skinDropDown{obj=MRTSkillItemDropDown}
-	self:keepFontStrings(MRTAvailableFilterFrame)
 	self:skinEditBox{obj=MRTSkillFrameEditBox}
-	MRTSkillRankFrameBorder:SetAlpha(0)
-	self:glazeStatusBar(MRTSkillRankFrame, 0, MRTSkillRankFrameBackground)
-	for i = 1, 18 do
-		self:keepRegions(_G["MRTSkillFilterButton"..i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:addSkinFrame{obj=_G["MRTSkillFilterButton"..i]}
+	-- Filter buttons
+	for i = 1, 22 do
+		local btn = _G["MRTSkillFilterButton"..i]
+		btn:GetNormalTexture():SetAlpha(0)
+		self:addSkinFrame{obj=btn}
 	end
 	self:skinScrollBar{obj=MRTSkillFilterScrollFrame}
 	self:skinScrollBar{obj=MRTSkillListScrollFrame}
-	self:skinScrollBar{obj=MRTDetailScrollFrame}
-	self:keepFontStrings(MRTDetailScrollChildFrame)
+	self:glazeStatusBar(MRTSkillRankFrame, 0, MRTSkillRankFrameBackground)
 	self:skinEditBox{obj=MRTSkillInputBox, x=-6}
-	self:addSkinFrame{obj=MRTSkillFrame, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
-
-	for i = 1, MAX_TRADE_SKILL_REAGENTS do
-		_G["MRTSkillReagent"..i.."NameFrame"]:SetTexture(nil)
+	self:addSkinFrame{obj=MRTSkillFrame, kfs=true, x1=10, y1=-11, x2=0, y2=71}
+	-- Reagents
+	for i = 1, 10 do
+		_G["MRTSkillButton"..i.."Border"]:SetBackdrop(nil)
 	end
 
 -->>-- New Category frame

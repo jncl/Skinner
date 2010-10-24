@@ -234,7 +234,13 @@ function Skinner:AucAdvanced()
 		self:skinEditBox{obj=AucAdvanced.Buy.Private.Prompt.Reason, regs={9}}
 		self:skinButton{obj=AucAdvanced.Buy.Private.Prompt.Yes}
 		self:skinButton{obj=AucAdvanced.Buy.Private.Prompt.No}
-		self:addSkinFrame{obj=AucAdvanced.Buy.Private.Prompt.Frame}
+		self:addSkinFrame{obj=AucAdvanced.Buy.Private.Prompt.Frame, nb=true}
 	end
 
+	-- Post prompt
+	if AucAdvanced.Post then
+		self:skinButton{obj=AucAdvanced.Post.Private.Prompt.Yes}
+		self:skinButton{obj=AucAdvanced.Post.Private.Prompt.No}
+		self:addSkinFrame{obj=AucAdvanced.Post.Private.Prompt.Frame, nb=true}
+	end
 end
