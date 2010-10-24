@@ -1,5 +1,6 @@
 local aName, Skinner = ...
 local _G = _G
+local obj, objName, tex, texName, btn, btnName, tab, tabSF
 
 local function makeString(t)
 
@@ -43,9 +44,10 @@ end
 function printTS(...)
 	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
 end
+local output
 function Skinner:Debug(a1, ...)
 
-	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
+	output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
 
 	printIt(output.." "..makeText(a1, ...), self.debugFrame)
 
@@ -57,7 +59,7 @@ function Skinner:Debug() end
 
 function Skinner:CustomPrint(r, g, b, a1, ...)
 
-	local output = ("|cffffff78"..aName..":|r")
+	output = ("|cffffff78"..aName..":|r")
 
 	printIt(output.." "..makeText(a1, ...), nil, r, g, b)
 
@@ -80,10 +82,10 @@ end
 local function errorhandler(err)
 	return geterrorhandler()(err)
 end
-
+local success, err
 local function safecall(funcName, LoD, quiet)
 	-- handle errors from internal functions
-	local success, err = xpcall(function() return Skinner[funcName](Skinner, LoD) end, errorhandler)
+	success, err = xpcall(function() return Skinner[funcName](Skinner, LoD) end, errorhandler)
 	if quiet then
 --		print(funcName, success, err)
 		return success, err
@@ -171,8 +173,8 @@ end
 function Skinner:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
-	local frame
-	local obj = EnumerateFrames()
+	local kids, frame, matched = {}
+	obj = EnumerateFrames()
 
 	while obj do
 
@@ -181,11 +183,11 @@ function Skinner:findFrame(height, width, children)
 				if obj:GetParent() == nil then
 --					self:Debug("UnNamed Frame's H, W: [%s, %s]", obj:GetHeight(), obj:GetWidth())
 					if ceil(obj:GetHeight()) == height and ceil(obj:GetWidth()) == width then
-						local kids = {}
+						kids = {}
 						for _, child in pairs{obj:GetChildren()} do
 							kids[#kids + 1] = child:GetObjectType()
 						end
-						local matched = 0
+						matched = 0
 						for _, c in pairs(children) do
 							for _, k in pairs(kids) do
 								if c == k then matched = matched + 1 end
@@ -216,14 +218,14 @@ function Skinner:findFrame2(parent, objType, ...)
 
 --	self:Debug("findFrame2: [%s, %s, %s, %s, %s, %s, %s]", parent, objType, select(1, ...) or nil, select(2, ...) or nil, select(3, ...) or nil, select(4, ...) or nil, select(5, ...) or nil)
 
-	local frame
+	local frame, point, relativeTo, relativePoint, xOfs, yOfs, height, width
 
 	for _, child in pairs{parent:GetChildren()} do
 		if child:GetName() == nil then
 			if child:IsObjectType(objType) then
 				if select("#", ...) > 2 then
 					-- base checks on position
-					local point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
+					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
 					xOfs = ceil(xOfs)
 					yOfs = ceil(yOfs)
 --					self:Debug("UnNamed Object's Point: [%s, %s, %s, %s, %s]", point, relativeTo, relativePoint, xOfs, yOfs)
@@ -237,7 +239,7 @@ function Skinner:findFrame2(parent, objType, ...)
 					end
 				else
 					-- base checks on size
-					local height, width = ceil(child:GetHeight()), ceil(child:GetWidth())
+					height, width = ceil(child:GetHeight()), ceil(child:GetWidth())
 --					self:Debug("UnNamed Object's H, W: [%s, %s]", height, width)
 					if	height == select(1, ...)
 					and width  == select(2, ...) then
@@ -304,13 +306,12 @@ function Skinner:isDropDown(obj)
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
-	local objTexName
-	if obj:GetName() then objTexName = _G[obj:GetName().."Left"] end
+	if obj:GetName() then tex = _G[obj:GetName().."Left"] end
 
 	if obj:IsObjectType("Frame")
-	and objTexName
-	and objTexName.GetTexture
-	and objTexName:GetTexture():find("CharacterCreate") then
+	and tex
+	and tex.GetTexture
+	and tex:GetTexture():find("CharacterCreate") then
 		return true
 	else
 		return false

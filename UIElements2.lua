@@ -1,5 +1,6 @@
 local _G = _G
 local ftype = "u"
+local obj, objName, tex, texName, btn, btnName, tab, tabSF, asopts
 
 function Skinner:ModelFrames()
 	if not self.db.profile.CharacterFrames then return end
@@ -165,7 +166,7 @@ function Skinner:Calendar() -- LoD
 
 -->>-- Class Button Container
 	for i = 1, MAX_CLASSES do -- allow for the total button
-		local btn = _G["CalendarClassButton"..i]
+		btn = _G["CalendarClassButton"..i]
 		self:removeRegions(btn, {1})
 		self:addButtonBorder{obj=btn}
 	end
@@ -268,11 +269,12 @@ function Skinner:MenuFrames()
 	self:addSkinFrame{obj=RatingMenuFrame, ft=ftype, hdr=true}
 
 	-- Tabs
-	for i = 1, 2 do
-		local tabName = _G["InterfaceOptionsFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, y1=2, x2=-6, y2=-4}
-		tabSF.up = true -- indicates should grow upwards
+	for i = 1, InterfaceOptionsFrame.numTabs do
+		tab = _G["InterfaceOptionsFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=2, x2=-6, y2=-4}
+		tabSF.up = true -- grow upwards
+		-- set textures here first time thru
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -314,7 +316,7 @@ function Skinner:MenuFrames()
 
 end
 
-function Skinner:BindingUI()
+function Skinner:BindingUI() -- LoD
 	if not self.db.profile.MenuFrames or self.initialized.BindingUI then return end
 	self.initialized.BindingUI = true
 
@@ -323,7 +325,7 @@ function Skinner:BindingUI()
 
 end
 
-function Skinner:MacroUI()
+function Skinner:MacroUI() -- LoD
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
 
@@ -336,11 +338,11 @@ function Skinner:MacroUI()
 	self:addSkinFrame{obj=MacroFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, x2=-32, y2=71}
 	if self.modBtnBs then
 		-- add button borders
-		local btnName = "MacroFrameSelectedMacroButton"
+		btnName = "MacroFrameSelectedMacroButton"
 		_G[btnName]:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."Icon"]}
 		for i = 1, MAX_ACCOUNT_MACROS do
-			local btnName = "MacroButton"..i
+			btnName = "MacroButton"..i
 			_G[btnName]:DisableDrawLayer("BACKGROUND")
 			self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."Icon"], spbt=true}
 		end
@@ -352,7 +354,7 @@ function Skinner:MacroUI()
 	self:addSkinFrame{obj=MacroPopupFrame, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
 	-- add button borders
 	for i = 1, NUM_MACRO_ICONS_SHOWN do
-		local btnName = "MacroPopupButton"..i
+		btnName = "MacroPopupButton"..i
 		_G[btnName]:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."Icon"], spbt=true}
 	end
@@ -370,7 +372,7 @@ function Skinner:MailFrame()
 -->>--	Inbox Frame
 	for i = 1, INBOXITEMS_TO_DISPLAY do
 		self:keepFontStrings(_G["MailItem"..i])
-		local btn = _G["MailItem"..i.."Button"]
+		btn = _G["MailItem"..i.."Button"]
 		if self.modBtnBs then
 			btn:DisableDrawLayer("BACKGROUND")
 			self:addButtonBorder{obj=btn}
@@ -383,7 +385,7 @@ function Skinner:MailFrame()
 	self:keepFontStrings(SendMailFrame)
 	self:skinScrollBar{obj=SendMailScrollFrame}
 	for i = 1, ATTACHMENTS_MAX_SEND do
-		local btn = _G["SendMailAttachment"..i]
+		btn = _G["SendMailAttachment"..i]
 		if not self.modBtnBs then
 			self:resizeEmptyTexture(self:getRegion(btn, 1))
 		else
@@ -405,7 +407,7 @@ function Skinner:MailFrame()
 	self:addButtonBorder{obj=OpenMailLetterButton, ibt=true}
 	self:addButtonBorder{obj=OpenMailMoneyButton, ibt=true}
 	for i = 1, ATTACHMENTS_MAX_RECEIVE do
-		local btn = _G["OpenMailAttachmentButton"..i]
+		btn = _G["OpenMailAttachmentButton"..i]
 		self:addButtonBorder{obj=btn, ibt=true}
 	end
 -->>-- Invoice Frame Text fields
@@ -413,16 +415,11 @@ function Skinner:MailFrame()
 		_G["OpenMailInvoice"..v]:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 
--->>--	FrameTabs
+-->>--	Tabs
 	for i = 1, MailFrame.numTabs do
-		local tabName = _G["MailFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		if i == MailFrame.selectedTab then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
+		tab = _G["MailFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 	end
 	self.tabFrames[MailFrame] = true
 
@@ -451,50 +448,35 @@ function Skinner:MainMenuBar()
 	self:keepFontStrings(MainMenuBarMaxLevelBar)
 	self:keepFontStrings(MainMenuBarArtFrame)
 	self:keepRegions(ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
-	-- add button borders
+
+	-- Shapeshift Bar Frame
+	self:keepFontStrings(ShapeshiftBarFrame)
+	-- Possess Bar Frame
+	self:keepFontStrings(PossessBarFrame)
+	-- Pet Action Bar Frame
+	self:keepFontStrings(PetActionBarFrame)
+	-- Shaman's Totem Frame
+	self:keepFontStrings(MultiCastFlyoutFrame)
+
+-->>-- Action Buttons
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
-		local btnName = "ActionButton"..i
+		btnName = "ActionButton"..i
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
 		-- stop grid being shown
 		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
 	end
+
+-->>-- Bonus Action Bar Buttons
 	for i = 1, NUM_BONUS_ACTION_SLOTS do
-		local btnName = "BonusActionButton"..i
-		local btn = _G[btnName]
+		btnName = "BonusActionButton"..i
+		btn = _G[btnName]
 		btn.bg:SetAlpha(0) -- texture changed in the blizzard code
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 		-- stop grid being shown
 		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
 	end
-	-- Micro buttons
-	local microBtns = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "PVP", "LFD", "MainMenu", "Help", "Guild"}
-	for _, v in pairs(microBtns) do
-		self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
-	end
-	self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
-	-- Keyring button
-	self:addButtonBorder{obj=KeyRingButton}
-	-- Bag buttons
-	self:addButtonBorder{obj=MainMenuBarBackpackButton}
-	self:addButtonBorder{obj=CharacterBag0Slot}
-	self:addButtonBorder{obj=CharacterBag1Slot}
-	self:addButtonBorder{obj=CharacterBag2Slot}
-	self:addButtonBorder{obj=CharacterBag3Slot}
-	-- MultiBars
-	for _, v in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
-		for i = 1, NUM_MULTIBAR_BUTTONS do
-			local btnName = "MultiBar"..v.."Button"..i
-			local btn = _G[btnName]
-			_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
-			self:addButtonBorder{obj=btn, abt=true, sec=true}
-			-- stop grid being shown
-			self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
-		end
-	end
-
--->>-- Bonus Action Bar Frame
 	local function toggleActionButtons(show)
 
 		for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -512,29 +494,51 @@ function Skinner:MainMenuBar()
 		toggleActionButtons()
 	end)
 
--->>-- Shapeshift Bar Frame
-	self:keepFontStrings(ShapeshiftBarFrame)
-	-- skin shapeshift buttons
-	for i = 1, NUM_SHAPESHIFT_SLOTS do
-		local ssBtn = _G["ShapeshiftButton"..i]
-		-- add button borders
-		self:addButtonBorder{obj=ssBtn, abt=true, sec=true}
+-->>-- MultiBar Buttons
+	for _, v in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
+		for i = 1, NUM_MULTIBAR_BUTTONS do
+			btnName = "MultiBar"..v.."Button"..i
+			btn = _G[btnName]
+			_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
+			self:addButtonBorder{obj=btn, abt=true, sec=true}
+			-- stop grid being shown
+			self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
+		end
 	end
 
--->>-- Possess Bar Frame
-	self:keepFontStrings(PossessBarFrame)
-
--->>-- Pet Action Bar Frame
-	self:keepFontStrings(PetActionBarFrame)
-	-- add button borders
-	for i = 1, NUM_PET_ACTION_SLOTS do
-		local btnName = "PetActionButton"..i
-		self:addButtonBorder{obj=_G[btnName], pabt=true, sec=true}
+-->>-- add button borders if required
+	if self.modBtnBs then
+		-- Micro buttons
+		for _, v in pairs{"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "PVP", "LFD", "MainMenu", "Help", "Guild"} do
+			self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
+		end
+		self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
+		-- Keyring button
+		self:addButtonBorder{obj=KeyRingButton}
+		-- Bag buttons
+		self:addButtonBorder{obj=MainMenuBarBackpackButton}
+		self:addButtonBorder{obj=CharacterBag0Slot}
+		self:addButtonBorder{obj=CharacterBag1Slot}
+		self:addButtonBorder{obj=CharacterBag2Slot}
+		self:addButtonBorder{obj=CharacterBag3Slot}
+		for i = 1, NUM_SHAPESHIFT_SLOTS do
+			btn = _G["ShapeshiftButton"..i]
+			self:addButtonBorder{obj=btn, abt=true, sec=true}
+		end
+		for i = 1, NUM_POSSESS_SLOTS do
+			btn = _G["PossessButton"..i]
+			self:addButtonBorder{obj=btn, abt=true, sec=true}
+		end
+		for i = 1, NUM_PET_ACTION_SLOTS do
+			btn = _G["PetActionButton"..i]
+			self:addButtonBorder{obj=btn, pabt=true, sec=true}
+		end
+		self:addButtonBorder{obj=MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
+		self:addButtonBorder{obj=MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
+		for i = 1, NUM_MULTI_CAST_PAGES * NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+			self:addButtonBorder{obj=_G["MultiCastActionButton"..i], abt=true, sec=true, ofs=5}
+		end
 	end
-
--->>-- Shaman's Totem Frame
-	self:addSkinFrame{obj=MultiCastFlyoutFrame, kfs=true, ft=ftype, y1=-4, y2=-4}
-
 -->>-- Vehicle Leave Button
 	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton, parent=MainMenuBarVehicleLeaveButton, hide=true}
 	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
@@ -560,10 +564,11 @@ function Skinner:ItemSocketingUI() -- LoD
 	if not self.db.profile.ItemSocketingUI or self.initialized.ItemSocketingUI then return end
 	self.initialized.ItemSocketingUI = true
 
+	local colour
 	local function colourSockets()
 
 		for i = 1, GetNumSockets() do
-			local colour = GEM_TYPE_INFO[GetSocketTypes(i)]
+			colour = GEM_TYPE_INFO[GetSocketTypes(i)]
 			self.sBut[_G["ItemSocketingSocket"..i]]:SetBackdropBorderColor(colour.r, colour.g, colour.b)
 		end
 
@@ -578,11 +583,12 @@ function Skinner:ItemSocketingUI() -- LoD
 	self:skinScrollBar{obj=ItemSocketingScrollFrame}
 
 	for i = 1, MAX_NUM_SOCKETS do
-		local isB = _G["ItemSocketingSocket"..i]
-		_G["ItemSocketingSocket"..i.."Left"]:SetAlpha(0)
-		_G["ItemSocketingSocket"..i.."Right"]:SetAlpha(0)
-		self:getRegion(isB, 3):SetAlpha(0) -- button texture
-		self:addSkinButton{obj=isB}
+		objName = "ItemSocketingSocket"..i
+		obj = _G[objName]
+		_G[objName.."Left"]:SetAlpha(0)
+		_G[objName.."Right"]:SetAlpha(0)
+		self:getRegion(obj, 3):SetAlpha(0) -- button texture
+		self:addSkinButton{obj=obj}
 	end
 	-- now colour the sockets
 	colourSockets()
@@ -596,10 +602,10 @@ function Skinner:GuildBankUI() -- LoD
 -->>--	Main Frame
 	GuildBankEmblemFrame:Hide()
 	for i = 1, NUM_GUILDBANK_COLUMNS do
-		local col = "GuildBankColumn"..i
-		_G[col.."Background"]:SetAlpha(0)
+		objName = "GuildBankColumn"..i
+		_G[objName.."Background"]:SetAlpha(0)
 		for j = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
-			self:addButtonBorder{obj=_G[col.."Button"..j], ibt=true}
+			self:addButtonBorder{obj=_G[objName.."Button"..j], ibt=true}
 		end
 	end
 	self:addSkinFrame{obj=GuildBankFrame, ft=ftype, kfs=true, hdr=true, y1=-11, y2=1}
@@ -615,19 +621,20 @@ function Skinner:GuildBankUI() -- LoD
 	self:skinScrollBar{obj=GuildBankPopupScrollFrame}
 	self:addSkinFrame{obj=GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
 
--->>--	GuildBank Tabs (side)
+-->>--	Tabs (side)
 	for i = 1, MAX_GUILDBANK_TABS do
-		local tabName = "GuildBankTab"..i
-		_G[tabName]:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=_G[tabName.."Button"], relTo=_G[tabName.."ButtonIconTexture"]}
+		objName = "GuildBankTab"..i
+		_G[objName]:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=_G[objName.."Button"], relTo=_G[objName.."ButtonIconTexture"]}
 	end
 
--->>--	GuildBank Frame Tabs (bottom)
+-->>--	Tabs (bottom)
 	for i = 1, GuildBankFrame.numTabs do
-		local tabName = _G["GuildBankFrameTab"..i]
-		self:keepFontStrings(tabName)
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		if i == GuildBankFrame.selectedTab then
+		tab = _G["GuildBankFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -646,18 +653,18 @@ function Skinner:Nameplates()
 	local npEvt
 	local function skinNameplates()
 
+		local tex
 		for _, child in pairs{WorldFrame:GetChildren()} do
 			if child:GetNumChildren() == 2 and child:GetNumRegions() == 11 then -- Nameplate frame
 --				Skinner:ShowInfo(child, true)
-				local shieldReg
 				for k, reg in ipairs{child:GetRegions()} do -- process in key order
 					-- region 1 is the flash texture, toggled using aggro warning option
 					if k == 2 -- border texture
 					or k == 3 -- border texture
 					or k == 6 -- glow effect
 					then reg:SetAlpha(0)
-					elseif k == 4 then shieldReg = reg -- non-interruptible shield texture
-					elseif k == 5 then Skinner:changeShield(shieldReg, reg) -- spell icon
+					elseif k == 4 then tex = reg -- non-interruptible shield texture
+					elseif k == 5 then Skinner:changeShield(tex, reg) -- spell icon
 					end
 					-- regions 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
 				end
@@ -672,9 +679,9 @@ function Skinner:Nameplates()
 		end
 
 		-- if the nameplates are off then disable the skinning code
-		local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")
-		local SHOW_FRIENDS = GetCVarBool("nameplateShowFriends")
-		if not SHOW_ENEMIES and not SHOW_FRIENDS then
+		if not GetCVarBool("nameplateShowEnemies")
+		and not GetCVarBool("nameplateShowFriends")
+		then
 			Skinner:CancelTimer(npEvt, true)
 			npEvt = nil
 		end
@@ -693,9 +700,11 @@ function Skinner:Nameplates()
 		if varName:find("nameplateShow") and varValue == 1 then showFunc() end
 	end)
 
-	local SHOW_ENEMIES = GetCVarBool("nameplateShowEnemies")
-	local SHOW_FRIENDS = GetCVarBool("nameplateShowFriends")
-	if SHOW_ENEMIES or SHOW_FRIENDS then showFunc() end
+	if GetCVarBool("nameplateShowEnemies")
+	or GetCVarBool("nameplateShowFriends")
+	then
+		showFunc()
+	end
 
 end
 
@@ -782,8 +791,9 @@ function Skinner:LFDFrame()
 	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
 	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
 	self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
+		local btnName
 		for i = 1, 5 do
-			local btnName = "LFDQueueFrameRandomScrollFrameChildFrameItem"..i
+			btnName = "LFDQueueFrameRandomScrollFrameChildFrameItem"..i
 			if _G[btnName] then
 				_G[btnName.."NameFrame"]:SetTexture(nil)
 				self:addButtonBorder{obj=_G[btnName], libt=true}
@@ -792,7 +802,7 @@ function Skinner:LFDFrame()
 	end)
 	-- Specific List subFrame
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
-		local btn = "LFDQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
+		btn = "LFDQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
 		self:skinButton{obj=_G[btn], mp2=true}
 	end
 	self:skinScrollBar{obj=LFDQueueFrameSpecificListScrollFrame}
@@ -811,7 +821,7 @@ function Skinner:LFRFrame()
 	LFRQueueFrameLayout:SetAlpha(0)
 	-- Specific List subFrame
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
-		local btn = "LFRQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
+		btn = "LFRQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
 		self:skinButton{obj=_G[btn], mp2=true}
 		self:moveObject{obj=_G[btn.."Highlight"], x=-3} -- move highlight to the left
 	end
@@ -825,9 +835,10 @@ function Skinner:LFRFrame()
 
 -->>-- Tabs
 	for i = 1, LFRParentFrame.numTabs do
-		local tabObj = _G["LFRParentFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		tab = _G["LFRParentFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		-- set textures here first time thru
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else

@@ -1,11 +1,12 @@
 local aName, Skinner = ...
 local _G = _G
+local obj, objName, tex, texName, btn, btnName, tab, tabSF, objHeight, prdb, c, opts
 
 do
 	-- check to see if required libraries are loaded
 	assert(LibStub, aName.." requires LibStub")
 	for _, lib in pairs{"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0",} do
-		assert(LibStub:GetLibrary(lib, true), aName.." requires "..lib)
+		assert(LibStub(lib, true), aName.." requires "..lib)
 	end
 
 	-- create the addon
@@ -43,7 +44,6 @@ function Skinner:OnInitialize()
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end
---	if self.isBeta then self:Debug("Beta detected") end
 	if self.isCata then self:Debug("Cataclysm Beta detected") end
 --@end-alpha@
 
@@ -53,8 +53,14 @@ function Skinner:OnInitialize()
 
 	-- convert any old settings
 	if prdb.MinimapGloss then prdb.Minimap.gloss = prdb.MinimapGloss prdb.MinimapGloss = nil end
-	if prdb.MinimapButtons then prdb.Minimap.btns = prdb.MinimapButtons prdb.MinimapButtons = nil end
-	if prdb.MinimalMMBtns then prdb.Minimap.style = prdb.MinimalMMBtns prdb.MinimalMMBtns = nil end
+	if prdb.MinimapButtons and type(prdb.MinimapButtons) == "boolean" then
+		local val = prdb.MinimapButtons
+		prdb.MinimapButtons = {}
+		prdb.MinimapButtons.skin = val
+	end
+	if prdb.MinimalMMBtns then prdb.MinimapButtons.style = prdb.MinimalMMBtns prdb.MinimalMMBtns = nil end
+	if prdb.Minimap.btns then prdb.MinimapButtons.skin = prdb.Minimap.btns prdb.Minimap.btns = nil end
+	if prdb.Minimap.style then prdb.MinimapButtons.style = prdb.Minimap.style prdb.Minimap.style = nil end
 
 	-- setup the Addon's options
 	self:checkAndRun("Options")
@@ -67,7 +73,6 @@ function Skinner:OnInitialize()
 	self.LSM:Register("border", "Skinner Border", [[Interface\AddOns\Skinner\textures\krsnik]])
 	-- register the statubar texture used by Nameplates
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
-
 	-- register any User defined textures used
 	if prdb.BdFile and prdb.BdFile ~= "None" then
 		self.LSM:Register("background", "Skinner User Backdrop", prdb.BdFile)
@@ -83,9 +88,9 @@ function Skinner:OnInitialize()
 	end
 
 	-- Heading and Body Text colours
-	local c = prdb.HeadText
+	c = prdb.HeadText
 	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
-	local c = prdb.BodyText
+	c = prdb.BodyText
 	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
 
 	-- Frame multipliers (still used in older skins)
@@ -121,7 +126,7 @@ function Skinner:OnInitialize()
 		local bdi = prdb.BdInset
 		local bdt = prdb.BdTileSize > 0 and true or false
 		self.backdrop = {
-			bgFile = bdTex, -- use default (fix for texture tiling issue)
+			bgFile = bdTex,
 			tile = bdt, tileSize = prdb.BdTileSize,
 			edgeFile = bdbTex, edgeSize = prdb.BdEdgeSize,
 			insets = {left = bdi, right = bdi, top = bdi, bottom = bdi},
@@ -162,27 +167,28 @@ function Skinner:OnInitialize()
 
 	-- these are used to disable frames from being skinned, LoD frames are entered here
 	-- other frames are added when their code is loaded
-	self.charKeys1 = {"GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI", "ArchaeologyUI"} -- LoD frames
+	self.charKeys1 = {"GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI", "ArchaeologyUI", "GuildUI", "GuildControlUI"} -- LoD frames
 	self.charKeys2 = {"AchievementUI"}
 	self.npcKeys = {"BarbershopUI", "TrainerUI", "ReforgingUI"} -- LoD frames
-	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager", "GuildUI", "GuildControlUI"} -- LoD frames
+	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager"} -- LoD frames
 	self.uiKeys2 = {}
 
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
 	-- TooltipBorder colours
-	local c = prdb.TooltipBorder
+	c = prdb.TooltipBorder
 	self.tbColour = {c.r, c.g, c.b, c.a}
 	-- StatusBar colours
-	local c = prdb.StatusBar
+	c = prdb.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
+	-- StatusBar texture
 	self.sbTexture = self.LSM:Fetch("statusbar", prdb.StatusBar.texture)
 	-- Backdrop colours
-	local c = prdb.Backdrop
+	c = prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a}
 	-- BackdropBorder colours
-	local c = prdb.BackdropBorder
+	c = prdb.BackdropBorder
 	self.bbColour = {c.r, c.g, c.b, c.a}
 	-- Inactive Tab & DropDowns texture
 	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
@@ -221,11 +227,13 @@ function Skinner:OnInitialize()
 	-- hook to handle textured tabs on Blizzard & other Frames
 	self.tabFrames = {}
 	if self.isTT then
-		self:SecureHook("PanelTemplates_SetTab", function(frame, id)
---			self:Debug("PT_ST: [%s, %s, %s, %s]", frame, id, frame.numTabs or "nil", frame.selectedTab or "nil")
-			if not self.tabFrames[frame] then return end -- ignore frame
-			for i = 1, frame.numTabs do
-				local tabSF = self.skinFrame[_G[frame:GetName().."Tab"..i]]
+		self:SecureHook("PanelTemplates_SetTab", function(obj, id)
+--			self:Debug("PT_ST: [%s, %s, %s, %s]", obj, id, obj.numTabs or "nil", obj.selectedTab or "nil")
+			if not self.tabFrames[obj] then return end -- ignore frame if not monitored
+--			self:Debug("PT_ST#2")
+			local tabSF
+			for i = 1, obj.numTabs do
+				tabSF = self.skinFrame[_G[obj:GetName().."Tab"..i]]
 				if i == id then
 					self:setActiveTab(tabSF)
 				else
@@ -291,11 +299,9 @@ function Skinner:OnEnable()
 
 end
 
-function Skinner:ReloadAddon(callback)
---	self:Debug("ReloadAddon:[%s]", callback)
-
+do
 	StaticPopupDialogs["Skinner_Reload_UI"] = {
-		text = self.L["Confirm reload of UI to activate profile changes"],
+		text = Skinner.L["Confirm reload of UI to activate profile changes"],
 		button1 = OKAY,
 		button2 = CANCEL,
 		OnAccept = function()
@@ -303,7 +309,7 @@ function Skinner:ReloadAddon(callback)
 		end,
 		OnCancel = function(this, data, reason)
 			if reason == "timeout" or reason == "clicked" then
-				self:CustomPrint(1, 1, 0, "The profile '"..Skinner.db:GetCurrentProfile().."' will be activated next time you Login or Reload the UI")
+				Skinner:CustomPrint(1, 1, 0, "The profile '"..Skinner.db:GetCurrentProfile().."' will be activated next time you Login or Reload the UI")
 			end
 		end,
 		timeout = 0,
@@ -311,15 +317,19 @@ function Skinner:ReloadAddon(callback)
 		exclusive = 1,
 		hideOnEscape = 1
 	}
+end
+function Skinner:ReloadAddon(callback)
+--	self:Debug("ReloadAddon:[%s]", callback)
+
 	StaticPopup_Show("Skinner_Reload_UI")
 
 end
 
 function Skinner:getGradientInfo(invert, rotate)
 
-	local c = prdb.GradientMin
+	c = prdb.GradientMin
 	local MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
-	local c = prdb.GradientMax
+	c = prdb.GradientMax
 	local MaxR, MaxG, MaxB, MaxA = c.r, c.g, c.b, c.a
 
 	if prdb.Gradient.enable then
@@ -361,7 +371,7 @@ local function __addSkinButton(opts)
 	opts.parent = opts.parent or opts.obj:GetParent()
 	opts.hook = opts.hook or opts.obj
 
-	local btn = CreateFrame("Button", nil, opts.parent)
+	btn = CreateFrame("Button", nil, opts.parent)
 	-- lower frame level
 	LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
@@ -400,12 +410,13 @@ local function __addSkinButton(opts)
 
 	-- change the draw layer of the Icon and Count, if necessary
 	if opts.obj.GetNumRegions then
+		local regOT, regName, regDL, regTex
 		for _, reg in pairs{opts.obj:GetRegions()} do
-			local regOT = reg:GetObjectType()
+			regOT = reg:GetObjectType()
 			if regOT == "Texture" or regOT == "FontString" then
-				local regName = reg:GetName()
-				local regDL = reg:GetDrawLayer()
-				local regTex = regOT == "Texture" and reg:GetTexture() or nil
+				regName = reg:GetName()
+				regDL = reg:GetDrawLayer()
+				regTex = regOT == "Texture" and reg:GetTexture() or nil
 				-- change the DrawLayer to make the Icon show if required
 				if (regName and (regName:find("[Ii]con") or regName:find("[Cc]ount")))
 				or (regTex and regTex:find("[Ii]con")) then
@@ -421,7 +432,7 @@ end
 
 function Skinner:addSkinButton(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object aSB\n"..debugstack())
@@ -446,9 +457,10 @@ end
 local hdrTexNames = {"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"}
 local function hideHeader(obj)
 
+	local hdr
 	-- hide the Header Texture and move the Header text, if required
 	for _, htex in pairs(hdrTexNames) do
-		local hdr = _G[obj:GetName()..htex]
+		hdr = _G[obj:GetName()..htex]
 		if hdr then
 			hdr:Hide()
 			hdr:SetPoint("TOP", obj, "TOP", 0, 7)
@@ -558,7 +570,7 @@ end
 
 function Skinner:addSkinFrame(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object aSF\n"..debugstack())
@@ -583,84 +595,85 @@ function Skinner:addSkinFrame(...)
 
 end
 
-function Skinner:applyGradient(frame, fh, invert, rotate)
+function Skinner:applyGradient(obj, fh, invert, rotate)
 
 	-- don't apply a gradient if required
 	if not prdb.Gradient.char then
 		for _, v in pairs(self.gradFrames["c"]) do
-			if v == frame then return end
+			if v == obj then return end
 		end
 	end
 	if not prdb.Gradient.ui then
 		for _, v in pairs(self.gradFrames["u"]) do
-			if v == frame then return end
+			if v == obj then return end
 		end
 	end
 	if not prdb.Gradient.npc then
 		for _, v in pairs(self.gradFrames["n"]) do
-			if v == frame then return end
+			if v == obj then return end
 		end
 	end
 	if not prdb.Gradient.skinner then
 		for _, v in pairs(self.gradFrames["s"]) do
-			if v == frame then return end
+			if v == obj then return end
 		end
 	end
 
-	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
-	frame.tfade:SetTexture(self.gradientTex)
+	if not obj.tfade then obj.tfade = obj:CreateTexture(nil, "BORDER") end
+	obj.tfade:SetTexture(self.gradientTex)
 
+	objHeight = ceil(obj:GetHeight())
 	if prdb.FadeHeight.enable and (prdb.FadeHeight.force or not fh) then
 		-- set the Fade Height if not already passed to this function or 'forced'
 		-- making sure that it isn't greater than the frame height
-		fh = prdb.FadeHeight.value <= ceil(frame:GetHeight()) and prdb.FadeHeight.value or ceil(frame:GetHeight())
+		fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
 	end
---	self:Debug("aG Fade Height: [%s, %s, %s, %s, %s]", frame:GetName(), frame:GetHeight(), fh, invert, rotate)
+--	self:Debug("aG Fade Height: [%s, %s, %s, %s, %s]", obj:GetName(), obj:GetHeight(), fh, invert, rotate)
 
-	frame.tfade:ClearAllPoints()
+	obj.tfade:ClearAllPoints()
 	if not invert -- fade from top
 	and not rotate
 	then
-		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
-		if fh then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -(fh - 4))
-		else frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4) end
+		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
+		if fh then obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -(fh - 4))
+		else obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4) end
 	elseif invert -- fade from bottom
 	and not rotate
 	then
-		frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 4, 4)
-		if fh then frame.tfade:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT", -4, (fh - 4))
-		else frame.tfade:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -4, -4) end
+		obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", 4, 4)
+		if fh then obj.tfade:SetPoint("TOPRIGHT", obj, "BOTTOMRIGHT", -4, (fh - 4))
+		else obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", -4, -4) end
 	elseif not invert -- fade from right
 	and rotate
 	then
-		frame.tfade:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -4, -4)
-		if fh then frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMRIGHT", -(fh - 4), 4)
-		else frame.tfade:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 4, 4) end
+		obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", -4, -4)
+		if fh then obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMRIGHT", -(fh - 4), 4)
+		else obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", 4, 4) end
 	elseif invert -- fade from left
 	and rotate
 	then
-		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
-		if fh then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", fh - 4, 4)
-		else frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4) end
+		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
+		if fh then obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMLEFT", fh - 4, 4)
+		else obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4) end
 	end
 
-	frame.tfade:SetBlendMode("ADD")
-	frame.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
+	obj.tfade:SetBlendMode("ADD")
+	obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
 
 end
 
-function Skinner:applyTexture(frame)
+function Skinner:applyTexture(obj)
 
-	frame.tbg = frame:CreateTexture(nil, "BORDER")
-	frame.tbg:SetTexture(self.bgTex, true) -- have to use true for tiling to work
-	frame.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
+	obj.tbg = obj:CreateTexture(nil, "BORDER")
+	obj.tbg:SetTexture(self.bgTex, true) -- have to use true for tiling to work
+	obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
 	-- allow for border inset
 	local bdi = self.db.profile.BdInset
-	frame.tbg:SetPoint("TOPLEFT", frame, "TOPLEFT", bdi, -bdi)
-	frame.tbg:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -bdi, bdi)
+	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", bdi, -bdi)
+	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -bdi, bdi)
 	-- the texture will be stretched if the following tiling methods are set to false
-	frame.tbg:SetHorizTile(self.db.profile.BgTile)
-	frame.tbg:SetVertTile(self.db.profile.BgTile)
+	obj.tbg:SetHorizTile(self.db.profile.BgTile)
+	obj.tbg:SetVertTile(self.db.profile.BgTile)
 
 end
 
@@ -702,7 +715,7 @@ local function __applySkin(opts)
 		-- colour the backdrop if required
 		local r, g, b, a = unpack(Skinner.bColour)
 		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
-		local r, g, b, a = unpack(Skinner.bbColour)
+		r, g, b, a = unpack(Skinner.bbColour)
 		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
 	else
 		opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
@@ -729,7 +742,7 @@ end
 
 function Skinner:applySkin(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object aS\n"..debugstack())
@@ -774,7 +787,7 @@ end
 
 function Skinner:adjHeight(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object aH\n"..debugstack())
@@ -815,7 +828,7 @@ end
 
 function Skinner:adjWidth(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object aH\n"..debugstack())
@@ -880,15 +893,15 @@ function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 
 end
 
-function Skinner:keepFontStrings(frame, hide)
+function Skinner:keepFontStrings(obj, hide)
 --@alpha@
-	assert(frame, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
 --	if not frame then return end
 
---	self:Debug("keepFontStrings: [%s]", frame:GetName() or "???")
-	for _, reg in pairs{frame:GetRegions()} do
+--	self:Debug("keepFontStrings: [%s]", obj:GetName() or "???")
+	for _, reg in pairs{obj:GetRegions()} do
 		if not reg:IsObjectType("FontString") then
 			if not hide then reg:SetAlpha(0) else reg:Hide() end
 		end
@@ -909,16 +922,16 @@ local function revTable(curTab)
 
 end
 
-function Skinner:keepRegions(frame, regions)
+function Skinner:keepRegions(obj, regions)
 --@alpha@
-	assert(frame, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
 --	if not frame then return end
 	regions = revTable(regions)
 
---	self:Debug("keepRegions: [%s]", frame:GetName() or "<Anon>")
-	for k, reg in pairs{frame:GetRegions()} do
+--	self:Debug("keepRegions: [%s]", obj:GetName() or "<Anon>")
+	for k, reg in pairs{obj:GetRegions()} do
 		-- if we have a list, hide the regions not in that list
 		if regions
 		and not regions[k]
@@ -926,7 +939,7 @@ function Skinner:keepRegions(frame, regions)
 --			self:Debug("hide region: [%s, %s]", i, reg:GetName() or "<Anon>")
 			reg:SetAlpha(0)
 --@debug@
-			if reg:IsObjectType("FontString") then self:Debug("kr FS: [%s, %s]", frame:GetName() or "<Anon>", k) end
+			if reg:IsObjectType("FontString") then self:Debug("kr FS: [%s, %s]", obj:GetName() or "<Anon>", k) end
 --@end-debug@
 		end
 	end
@@ -948,8 +961,8 @@ function Skinner:makeMFRotatable(modelFrame)
 
 	-- hide rotation buttons
 	for _, child in pairs{modelFrame:GetChildren()} do
-		local cName = child:GetName()
-		if cName and cName:find("Rotate") then
+		objName = child:GetName()
+		if objName and objName:find("Rotate") then
 			child:Hide()
 		end
 	end
@@ -1037,7 +1050,7 @@ end
 
 function Skinner:moveObject(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object mO\n"..debugstack())
@@ -1060,17 +1073,17 @@ function Skinner:moveObject(...)
 
 end
 
-function Skinner:removeRegions(frame, regions)
+function Skinner:removeRegions(obj, regions)
 --@alpha@
-	assert(frame, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
 --	if not frame then return end
 
 	regions = revTable(regions)
 
---	self:Debug("removeRegions: [%s]", frame:GetName() or "<Anon>")
-	for k, reg in pairs{frame:GetRegions()} do
+--	self:Debug("removeRegions: [%s]", obj:GetName() or "<Anon>")
+	for k, reg in pairs{obj:GetRegions()} do
 		if not regions
 		or regions
 		and regions[k]
@@ -1078,7 +1091,7 @@ function Skinner:removeRegions(frame, regions)
 --			self:Debug("hide region: [%s, %s]", i, reg:GetName() or "<Anon>")
 			reg:SetAlpha(0)
 --@debug@
-			if reg:IsObjectType("FontString") then self:Debug("rr FS: [%s, %s]", frame:GetName() or "<Anon>", k) end
+			if reg:IsObjectType("FontString") then self:Debug("rr FS: [%s, %s]", obj:GetName() or "<Anon>", k) end
 --@end-debug@
 		end
 	end
@@ -1099,12 +1112,13 @@ function Skinner:setActiveTab(tabSF)
 	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
 	if not tabSF.ignore and not tabSF.grown then
+		local point, relativeTo, relativePoint, xOfs, yOfs
 		if not tabSF.up then
-			local point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
+			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 --			self:Debug("sAT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs - 6)
 		else
-			local point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
+			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
 --			self:Debug("sAT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs + 6)
 		end
@@ -1126,12 +1140,13 @@ function Skinner:setInactiveTab(tabSF)
 	tabSF.tfade:SetTexture(self.itTex)
 	tabSF.tfade:SetAlpha(1)
 	if not tabSF.ignore and tabSF.grown then
+		local point, relativeTo, relativePoint, xOfs, yOfs
 		if not tabSF.up then
-			local point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
+			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 --			self:Debug("sIT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs + 6)
 		else
-			local point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
+			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
 --			self:Debug("sIT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs - 6)
 		end
@@ -1151,45 +1166,46 @@ function Skinner:setTTBBC()
 
 end
 
-function Skinner:shrinkBag(frame, bpMF)
+function Skinner:shrinkBag(obj, bpMF)
 --@alpha@
-	assert(frame, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
-	if not frame then return end
+	if not obj then return end
 
-	local frameName = frame:GetName()
-	local bgTop = _G[frameName.."BackgroundTop"]
+	objName = obj:GetName()
+	local bgTop = _G[objName.."BackgroundTop"]
 	if floor(bgTop:GetHeight()) == 256 then -- this is the backpack
 --		self:Debug("Backpack found")
 		if bpMF then -- is this a backpack Money Frame
-			local yOfs = select(5, _G[frameName.."MoneyFrame"]:GetPoint())
+			local yOfs = select(5, _G[objName.."MoneyFrame"]:GetPoint())
 --			self:Debug("Backpack Money Frame found: [%s, %s]", yOfs, floor(yOfs))
 			if floor(yOfs) == -216 or floor(yOfs) == -217 then -- is it still in its original position
 --				self:Debug("Backpack Money Frame moved")
-				self:moveObject(_G[frameName.."MoneyFrame"], nil, nil, "+", 22)
+				self:moveObject(_G[objName.."MoneyFrame"], nil, nil, "+", 22)
 			end
 		end
-		self:moveObject(_G[frameName.."Item1"], nil, nil, "+", 19)
+		self:moveObject(_G[objName.."Item1"], nil, nil, "+", 19)
 	end
-	if ceil(bgTop:GetHeight()) == 94 then self:adjHeight{obj=frame, adj=-20} end
-	if ceil(bgTop:GetHeight()) == 86 then self:adjHeight{obj=frame, adj=-20} end
-	if ceil(bgTop:GetHeight()) == 72 then self:adjHeight{obj=frame, adj=2} end -- 6, 10 or 14 slot bag
+	if ceil(bgTop:GetHeight()) == 94 then self:adjHeight{obj=obj, adj=-20} end
+	if ceil(bgTop:GetHeight()) == 86 then self:adjHeight{obj=obj, adj=-20} end
+	if ceil(bgTop:GetHeight()) == 72 then self:adjHeight{obj=obj, adj=2} end -- 6, 10 or 14 slot bag
 
-	frame:SetWidth(frame:GetWidth() - 10)
-	self:moveObject(_G[frameName.."Item1"], "+", 3)
+	self:adjWidth{obj=obj, adj=-10}
+	self:moveObject{obj=_G[objName.."Item1"], x=3}
 
+	objHeight = ceil(obj:GetHeight())
 	-- use default fade height
-	local fh = self.db.profile.ContainerFrames.fheight <= ceil(frame:GetHeight()) and self.db.profile.ContainerFrames.fheight or ceil(frame:GetHeight())
+	local fh = prdb.ContainerFrames.fheight <= objHeight and prdb.ContainerFrames.fheight or objHeight
 
-	if self.db.profile.FadeHeight.enable and self.db.profile.FadeHeight.force then
+	if prdb.FadeHeight.enable and prdb.FadeHeight.force then
 	-- set the Fade Height
 	-- making sure that it isn't greater than the frame height
-		fh = self.db.profile.FadeHeight.value <= ceil(frame:GetHeight()) and self.db.profile.FadeHeight.value or ceil(frame:GetHeight())
+		fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
 	end
 --	self:Debug("sB - Frame, Fade Height: [%s, %s]", frame:GetName(), fh)
 
-	if fh and frame.tfade then frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -fh) end
+	if fh and obj.tfade then obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -fh) end
 
 end
 
@@ -1207,12 +1223,14 @@ local function __skinDropDown(opts)
 	assert(opts.obj, "Unknown object__sDD\n"..debugstack())
 --@end-alpha@
 
-	if opts.obj
-	and opts.obj.GetName
-	and not _G[opts.obj:GetName().."Left"] -- ignore Az DropDowns
-	and not opts.obj.leftTexture -- handle FeedbackUI ones
-	or opts.obj:GetName():find("tekKonfigDropdown") -- ignore tekKonfigDropdown
-	then
+	if opts.obj and opts.obj.GetName and opts.obj:GetName() then -- if named object
+		if opts.obj:GetName():find("tekKonfigDropdown") -- ignore tekKonfigDropdown
+		or not _G[opts.obj:GetName().."Left"] -- ignore Az DropDowns
+		and not opts.obj.leftTexture -- handle FeedbackUI ones
+		then
+			return
+		end
+	else
 		return
 	end
 
@@ -1252,7 +1270,7 @@ end
 
 function Skinner:skinDropDown(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object sDD\n"..debugstack())
@@ -1329,7 +1347,7 @@ end
 
 function Skinner:skinEditBox(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object sEB\n"..debugstack())
@@ -1355,14 +1373,17 @@ end
 function Skinner:skinFFToggleTabs(tabName, tabCnt, noHeight)
 --	self:Debug("skinFFToggleTabs: [%s, %s, %s]", tabName, tabCnt, noHeight)
 
+	local togTab
 	for i = 1, tabCnt or 3 do
-		local togTab = _G[tabName..i]
+		togTab = _G[tabName..i]
 		if not togTab then break end -- handle missing Tabs (e.g. Muted)
 		if not self.skinned[togTab] then -- don't skin it twice
 			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text & highlight
+--[=[
 			if not noHeight then
 				self:adjHeight{obj=togTab, adj=-5}
 			end
+--]=]
 			if i == 1 then self:moveObject{obj=togTab, y=3} end
 			self:moveObject{obj=_G[togTab:GetName().."Text"], x=-2, y=3}
 			self:moveObject{obj=_G[togTab:GetName().."HighlightTexture"], x=-2, y=5}
@@ -1402,23 +1423,24 @@ local function __skinMoneyFrame(opts)
 
 	local cbMode = GetCVarBool("colorblindMode")
 
+	local obj
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
-		local fName = _G[opts.obj:GetName()..v]
-		Skinner:skinEditBox{obj=fName, regs={9, 10}, noHeight=true, noWidth=true} -- N.B. region 9 is the icon, 10 is text
+		obj = _G[opts.obj:GetName()..v]
+		Skinner:skinEditBox{obj=obj, regs={9, 10}, noHeight=true, noWidth=true} -- N.B. region 9 is the icon, 10 is text
 		-- move label to the right for colourblind mode
 		if k ~= 1 or opts.moveGIcon then
-			Skinner:moveObject{obj=fName.texture, x=10}
-			Skinner:moveObject{obj=fName.label, x=10}
+			Skinner:moveObject{obj=obj.texture, x=10}
+			Skinner:moveObject{obj=obj.label, x=10}
 --			Skinner:moveObject{obj=Skinner:getRegion(fName, 9), x=10}
 		end
 		if not opts.noWidth and k ~= 1 then
-			fName:SetWidth(fName:GetWidth() + 5)
+			Skinner:adjWidth{obj=obj, adj=5}
 		end
 		if v == "Gold" and opts.moveGEB then
-			Skinner:moveObject{obj=fName, x=-8}
+			Skinner:moveObject{obj=obj, x=-8}
 		end
 		if v == "Silver" and opts.moveSEB then
-			Skinner:moveObject{obj=fName, x=-10}
+			Skinner:moveObject{obj=obj, x=-10}
 		end
 	end
 
@@ -1426,7 +1448,7 @@ end
 
 function Skinner:skinMoneyFrame(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object sMF\n"..debugstack())
@@ -1477,7 +1499,7 @@ end
 
 function Skinner:skinScrollBar(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object sSB\n"..debugstack())
@@ -1521,7 +1543,7 @@ end
 
 function Skinner:skinSlider(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object sS\n"..debugstack())
@@ -1540,65 +1562,66 @@ function Skinner:skinSlider(...)
 
 end
 
-function Skinner:skinTooltip(frame)
+function Skinner:skinTooltip(obj)
 	if not self.db.profile.Tooltips.skin then return end
 --@alpha@
-	assert(frame, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
-	if not frame then return end
+	if not obj then return end
 
 	if not prdb.Gradient.ui then return end
 
 	-- add background texture if required
 	if self.db.profile.Tooltips.style == 3 then
 		if self.db.profile.BgUseTex then
-			if not frame.tbg then self:applyTexture(frame) end
-		elseif frame.tbg then
-			frame.tbg = nil -- remove background texture if it exists
+			if not obj.tbg then self:applyTexture(obj) end
+		elseif obj.tbg then
+			obj.tbg = nil -- remove background texture if it exists
 		end
 	end
 
-	local ttHeight = ceil(frame:GetHeight())
+	objHeight = ceil(obj:GetHeight())
 
 --	  self:Debug("sT: [%s, %s, %s, %s]", frame, frame:GetName(), self.ttBorder, ttHeight)
 
-	if not frame.tfade then frame.tfade = frame:CreateTexture(nil, "BORDER") end
-	frame.tfade:SetTexture(self.gradientTex)
+	if not obj.tfade then obj.tfade = obj:CreateTexture(nil, "BORDER") end
+	obj.tfade:SetTexture(self.gradientTex)
 
 	if prdb.Tooltips.style == 1 then
-		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -6)
-		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -6, -27)
+		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 6, -6)
+		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -6, -27)
 	elseif prdb.Tooltips.style == 2 then
-		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
-		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4)
+		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
+		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4)
 	else
-		frame.tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
+		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
 		-- set the Fade Height making sure that it isn't greater than the frame height
-		local fh = prdb.FadeHeight.value <= ttHeight and prdb.FadeHeight.value or ttHeight
-		frame.tfade:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -4, -(fh - 4))
-		frame:SetBackdropColor(unpack(self.bColour))
+		local fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
+		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -(fh - 4))
+		obj:SetBackdropColor(unpack(self.bColour))
 	end
 
-	frame.tfade:SetBlendMode("ADD")
-	frame.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
+	obj.tfade:SetBlendMode("ADD")
+	obj.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
 	-- Check to see if we need to colour the Border
 	if not self.ttBorder then
-		for _, tooltip in pairs(self.ttCheck) do
-			if tooltip == frame:GetName() then
-				local r, g, b, a = frame:GetBackdropBorderColor()
+		local r, g, b, a
+		for _, tip in pairs(self.ttCheck) do
+			if tip == obj:GetName() then
+				r, g, b, a = obj:GetBackdropBorderColor()
 				r = ("%.2f"):format(r)
 				g = ("%.2f"):format(g)
 				b = ("%.2f"):format(b)
 				a = ("%.2f"):format(a)
---				self:Debug("checkTTBBC: [%s, %s, %s, %s, %s]", frame:GetName(), r, g, b, a)
+--				self:Debug("checkTTBBC: [%s, %s, %s, %s, %s]", obj:GetName(), r, g, b, a)
 				if r ~= "1.00" or g ~= "1.00" or b ~= "1.00" or a ~= "1.00" then return end
 			end
 		end
 	end
 
-	frame:SetBackdropBorderColor(self:setTTBBC())
+	obj:SetBackdropBorderColor(self:setTTBBC())
 
 end
 
@@ -1622,7 +1645,7 @@ end
 
 function Skinner:skinUsingBD(...)
 
-	local opts = select(1, ...)
+	opts = select(1, ...)
 
 --@alpha@
 	assert(opts, "Unknown object sUBD\n"..debugstack())

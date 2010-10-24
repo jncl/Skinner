@@ -35,10 +35,15 @@ function Skinner:BlizzardFrames()
 end
 
 local blizzLoDFrames = {
-	 "AchievementUI", "BarbershopUI", "BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GlyphUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "RaidUI", "TalentUI", "TimeManager", "TradeSkillUI", "TrainerUI", "ArchaeologyUI", "GuildUI", "GuildControlUI", "ReforgingUI"
+	"GlyphUI", "TalentUI", "AchievementUI", -- cf1
+	"RaidUI", "ArchaeologyUI", "GuildUI", "GuildControlUI", -- cf2
+	"TrainerUI", "BarbershopUI", "ReforgingUI", -- npc
+	"GMSurveyUI", "InspectUI", "BattlefieldMinimap", -- uie1
+	"TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", --uie2
 }
 --[=[
 	AuctionUI -- loaded when AUCTION_HOUSE_SHOW event is fired
+	TradeSkillUI -- loaded when TRADE_SKILL_SHOW event is fired
 	ArenaUI -- unitframes skinned in UnitFrames.lua
 	CombatLog -- managed within ChatConfig skin
 	CombatText -- nothing to skin
@@ -226,12 +231,12 @@ for i = 1, 8 do
 	Skinner.lodAddons["MobMapDatabaseStub"..i] = "MobMapDatabaseStub"..i
 end
 Skinner.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
-
+local prev_addon
 function Skinner:LoDFrames(addon)
 --	  self:Debug("LoDFrames: [%s]", addon)
 
 	if addon == prev_addon then return end
-	local prev_addon = addon
+	prev_addon = addon
 
 	-- used for Blizzard LoadOnDemand Addons
 	if blizzLoD[addon] then self:checkAndRun(blizzLoD[addon]) end

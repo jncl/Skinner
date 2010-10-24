@@ -1,5 +1,6 @@
 local _G = _G
 local ftype = "n"
+local obj, objName, tex, texName, btn, btnName, tab, tabSF
 
 function Skinner:MerchantFrames()
 	if not self.db.profile.MerchantFrames or self.initialized.MerchantFrames then return end
@@ -16,7 +17,7 @@ function Skinner:MerchantFrames()
 	end)
 	-- Items/Buyback Items
 	for i = 1, BUYBACK_ITEMS_PER_PAGE do
-		local btnName = "MerchantItem"..i
+		btnName = "MerchantItem"..i
 		_G[btnName.."NameFrame"]:SetTexture(nil)
 		if not self.modBtnBs then
 			_G[btnName.."SlotTexture"]:SetTexture(self.esTex)
@@ -25,7 +26,7 @@ function Skinner:MerchantFrames()
 			self:addButtonBorder{obj=_G[btnName.."ItemButton"], ibt=true}
 		end
 	end
-	local btnName = "MerchantBuyBackItem"
+	btnName = "MerchantBuyBackItem"
 	_G[btnName.."NameFrame"]:SetTexture(nil)
 	if not self.modBtnBs then
 		_G[btnName.."SlotTexture"]:SetTexture(self.esTex)
@@ -45,14 +46,9 @@ function Skinner:MerchantFrames()
 
 -->>-- Tabs
 	for i = 1, MerchantFrame.numTabs do
-		local tabName = _G["MerchantFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
+		tab = _G["MerchantFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 	end
 	self.tabFrames[MerchantFrame] = true
 
@@ -73,8 +69,8 @@ function Skinner:GossipFrame()
 	GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=GossipGreetingScrollFrame}
 	for i = 1, NUMGOSSIPBUTTONS do
-		local text = self:getRegion(_G["GossipTitleButton"..i], 3)
-		text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		obj = self:getRegion(_G["GossipTitleButton"..i], 3)
+		obj:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 
 	self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
@@ -85,7 +81,7 @@ function Skinner:TrainerUI() -- LoD
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
-	local btn = ClassTrainerFrame.skillStepButton
+	btn = ClassTrainerFrame.skillStepButton
 	btn.disabledBG:SetAlpha(0)
 	btn:GetNormalTexture():SetAlpha(0)
 	self:addButtonBorder{obj=btn, relTo=btn.icon}
@@ -94,13 +90,13 @@ function Skinner:TrainerUI() -- LoD
 	ClassTrainerFrame.bottomInset:DisableDrawLayer("BORDER")
 	self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 	for i = 1, #ClassTrainerFrame.scrollFrame.buttons do
-		local btn = ClassTrainerFrame.scrollFrame.buttons[i]
+		btn = ClassTrainerFrame.scrollFrame.buttons[i]
 		btn.disabledBG:SetAlpha(0)
 		btn:GetNormalTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
 	-- Magic Button textures
-	local btn = "ClassTrainerTrainButton"
+	btn = "ClassTrainerTrainButton"
 	if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
 	if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
@@ -151,7 +147,7 @@ function Skinner:QuestFrame()
 	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=QuestProgressScrollFrame}
 	for i = 1, MAX_REQUIRED_ITEMS do
-		local btnName = "QuestProgressItem"..i
+		btnName = "QuestProgressItem"..i
 		_G[btnName.."NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName], libt=true}
 	end
@@ -193,13 +189,13 @@ function Skinner:AuctionUI() -- LoD
 
 -->>--	Browse Frame
 	for k, v in pairs{"Name", "MinLevel", "MaxLevel"} do
-		local obj = _G["Browse"..v]
+		obj = _G["Browse"..v]
 		self:skinEditBox{obj=obj, regs={9}}
 		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
 	end
 	self:skinDropDown{obj=BrowseDropDown}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
-		local obj = _G["Browse"..v.."Sort"]
+		obj = _G["Browse"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
@@ -210,7 +206,7 @@ function Skinner:AuctionUI() -- LoD
 	end
 	self:skinScrollBar{obj=BrowseScrollFrame}
 	for i = 1, NUM_BROWSE_TO_DISPLAY do
-		local btnName = "BrowseButton"..i
+		btnName = "BrowseButton"..i
 		if _G[btnName].Orig then break end -- Auctioneer CompactUI loaded
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName.."Highlight"] then _G[btnName.."Highlight"]:SetAlpha(1) end
@@ -221,12 +217,12 @@ function Skinner:AuctionUI() -- LoD
 
 -->>--	Bid Frame
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
-		local obj = _G["Bid"..v.."Sort"]
+		obj = _G["Bid"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
 	for i = 1, NUM_BIDS_TO_DISPLAY do
-		local btnName = "BidButton"..i
+		btnName = "BidButton"..i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName.."Highlight"] then _G[btnName.."Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName.."Item"], ibt=true}
@@ -242,12 +238,12 @@ function Skinner:AuctionUI() -- LoD
 		self:addButtonBorder{obj=AuctionsItemButton}
 	end
 	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
-		local obj = _G["Auctions"..v.."Sort"]
+		obj = _G["Auctions"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
 	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
-		local btnName = "AuctionsButton"..i
+		btnName = "AuctionsButton"..i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName.."Highlight"] then _G[btnName.."Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName.."Item"], ibt=true}
@@ -273,10 +269,11 @@ function Skinner:AuctionUI() -- LoD
 	self:addSkinFrame{obj=AuctionDressUpFrame, ft=ftype, x1=-6, y1=-3, x2=-2}
 -->>--	Tabs
 	for i = 1, AuctionFrame.numTabs do
-		local tabName = _G["AuctionFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		if i == AuctionFrame.selectedTab then
+		tab = _G["AuctionFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -318,7 +315,7 @@ function Skinner:ArenaRegistrar()
 	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
 	-- Magic Button textures
 	for _, v in pairs{"Cancel", "Accept"} do
-		local btn = "PVPBannerFrame"..v.."Button"
+		btn = "PVPBannerFrame"..v.."Button"
 		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
 		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	end
@@ -338,8 +335,8 @@ function Skinner:GuildRegistrar()
 	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	for i = 1, 2 do
-		local text = self:getRegion(_G["GuildRegistrarButton"..i], 3)
-		text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		obj = self:getRegion(_G["GuildRegistrarButton"..i], 3)
+		obj:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 	self:skinEditBox{obj=GuildRegistrarFrameEditBox}
 
@@ -405,6 +402,7 @@ function Skinner:QuestInfo()
 
 	self:add2Table(self.npcKeys, "QuestInfo")
 
+	local r, g, b
 	self:SecureHook("QuestInfo_Display", function(...)
 		-- headers
 		QuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -426,11 +424,11 @@ function Skinner:QuestInfo()
 		for i = 1, MAX_REPUTATIONS do
 			_G["QuestInfoReputation"..i.."Faction"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
-		local r, g, b = QuestInfoRequiredMoneyText:GetTextColor()
+		r, g, b = QuestInfoRequiredMoneyText:GetTextColor()
 		QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		-- Objectives
 		for i = 1, MAX_OBJECTIVES do
-			local r, g, b = _G["QuestInfoObjective"..i]:GetTextColor()
+			r, g, b = _G["QuestInfoObjective"..i]:GetTextColor()
 			_G["QuestInfoObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
 		QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -440,14 +438,14 @@ function Skinner:QuestInfo()
 	QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 	for i = 1, MAX_NUM_ITEMS do
-		local btnName = "QuestInfoItem"..i
+		btnName = "QuestInfoItem"..i
 		_G[btnName.."NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName], libt=true}
 	end
 	QuestInfoRewardSpellNameFrame:SetTexture(nil)
 	QuestInfoRewardSpellSpellBorder:SetTexture(nil)
 
-	local btnName = "QuestInfoSkillPointFrame"
+	btnName = "QuestInfoSkillPointFrame"
 	_G[btnName.."NameFrame"]:SetTexture(nil)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G[btnName], libt=true}
@@ -458,7 +456,7 @@ function Skinner:QuestInfo()
 
 end
 
-function Skinner:ReforgingUI()
+function Skinner:ReforgingUI() -- LoD
 	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
 	self.initialized.ReforgingUI = true
 
@@ -475,7 +473,7 @@ function Skinner:ReforgingUI()
 	self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 	-- Magic Button textures
 	for _, v in pairs{"Reforge", "Restore"} do
-		local btn = "ReforgingFrame"..v.."Button"
+		btn = "ReforgingFrame"..v.."Button"
 		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
 		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	end

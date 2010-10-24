@@ -1,25 +1,28 @@
 local _G = _G
 local ftype = "c"
+local obj, objName, tex, texName, btn, btnName, tab, tabSF
 
-	function Skinner:FriendsFrame()
+function Skinner:FriendsFrame()
 	if not self.db.profile.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
 	self:add2Table(self.charKeys1, "FriendsFrame")
 
 	-- hook this to manage textured tabs
+--[=[
 	if self.isTT then
 		self:SecureHook("FriendsFrame_ShowSubFrame", function(frameName)
+			local j, prefix, tabID, tabSF
 			for i, v in pairs(FRIENDSFRAME_SUBFRAMES) do
 				-- handle Friends and Ignore on the same Tab
-				local j = ( i > 1 and i - 1 or i)
+				j = ( i > 1 and i - 1 or i)
 				-- handle Friends, Ignore and Pending on the same Tab
 				j = ( j > 1 and j - 1 or j)
 				-- handle additional Tabs with altered names or numbers
-				local prefix = (v == "BadapplesFrame" and "Badapples" or "")
-				local tabId = (v == "BadapplesFrame" and 6 or j)
-				if v == "BlackListFrame" then tabId = 1 end -- handle the BlackListFrame
-				local tabSF = self.skinFrame[_G[prefix.."FriendsFrameTab"..tabId]]
+				prefix = (v == "BadapplesFrame" and "Badapples" or "")
+				tabID = (v == "BadapplesFrame" and 6 or j)
+				if v == "BlackListFrame" then tabID = 1 end -- handle the BlackListFrame
+				tabSF = self.skinFrame[_G[prefix.."FriendsFrameTab"..tabID]]
 				-- ignore the IgnoreListFrame (also the PendingListFrame) (and the BlackListFrame)
 				if v ~= "IgnoreListFrame" and v ~= "PendingListFrame" and v ~= "BlackListFrame" then
 					self:setInactiveTab(tabSF)
@@ -30,6 +33,7 @@ local ftype = "c"
 			end
 		end)
 	end
+--]=]
 -->>--	FriendsList Frame
 	self:skinDropDown{obj=FriendsFrameStatusDropDown}
 	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
@@ -38,13 +42,13 @@ local ftype = "c"
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
 	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-24}
 	self:skinFFToggleTabs("FriendsTabHeaderTab")
-	self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
+--	self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
 	-- adjust width of FFFSF
 	FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
 	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar}
 
 	for i = 1, FRIENDS_FRIENDS_TO_DISPLAY do
-		local btn = _G["FriendsFrameFriendsScrollFrameButton"..i]
+		btn = _G["FriendsFrameFriendsScrollFrameButton"..i]
 		btn.background:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.gameIcon, hide=true, ofs=0}
 	end
@@ -73,10 +77,10 @@ local ftype = "c"
 	self:skinDropDown{obj=PendingListFrameDropDown}
 	self:skinSlider{obj=FriendsFramePendingScrollFrame.scrollBar}
 	for i = 1, PENDING_INVITES_TO_DISPLAY do
-		local ffpBtn = "FriendsFramePendingButton"..i
-		self:applySkin{obj=_G[ffpBtn]}
-		self:applySkin{obj=_G[ffpBtn.."AcceptButton"]}
-		self:applySkin{obj=_G[ffpBtn.."DeclineButton"]}
+		btn = "FriendsFramePendingButton"..i
+		self:applySkin{obj=_G[btn]}
+		self:applySkin{obj=_G[btn.."AcceptButton"]}
+		self:applySkin{obj=_G[btn.."DeclineButton"]}
 	end
 
 -->>--	Who Frame
@@ -94,8 +98,8 @@ local ftype = "c"
 	-- hook this to skin channel buttons
 	self:SecureHook("ChannelList_Update", function()
 		for i = 1, MAX_CHANNEL_BUTTONS do
-			local cbnt = _G["ChannelButton"..i.."NormalTexture"]
-			cbnt:SetAlpha(0)
+			tex = _G["ChannelButton"..i.."NormalTexture"]
+			tex:SetAlpha(0)
 		end
 	end)
 	ChannelFrameVerticalBar:Hide()
@@ -125,17 +129,19 @@ local ftype = "c"
 	self:skinSlider{obj=RaidInfoScrollFrameScrollBar}
 	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 
--->>--	Frame Tabs
+-->>-- Tabs
 	for i = 1, FriendsFrame.numTabs do
-		local tabName = _G["FriendsFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
+		tab = _G["FriendsFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		-- set textures here first time thru
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	self.tabFrames[FriendsFrame] = true
 
 end
 
@@ -153,10 +159,11 @@ function Skinner:TradeSkillUI() -- LoD
 		end)
 	end
 
-	local bar = "TradeSkillRankFrame"
-	_G[bar.."Border"]:SetAlpha(0)
-	self:glazeStatusBar(_G[bar], 0, _G[bar.."Background"])
-	self:moveObject{obj=_G[bar], x=-2}
+	objName = "TradeSkillRankFrame"
+	obj = _G[objName]
+	_G[objName.."Border"]:SetAlpha(0)
+	self:glazeStatusBar(obj, 0, _G[objName.."Background"])
+	self:moveObject{obj=obj, x=-2}
 	-- Add a skin frame to include the icon at the front
 	self:skinEditBox{obj=TradeSkillFrameSearchBox, regs={9}, noSkin=true} -- region 9 is icon
 	self:addSkinFrame{obj=TradeSkillFrameSearchBox, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-6}
@@ -175,7 +182,7 @@ function Skinner:TradeSkillUI() -- LoD
 	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-4}
 	-- Magic Button textures
 	for _, v in pairs{"CreateAll", "Cancel", "Create", "ViewGuildCrafters"} do
-		local btn = "TradeSkill"..v.."Button"
+		btn = "TradeSkill"..v.."Button"
 		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
 		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	end
@@ -245,7 +252,7 @@ function Skinner:QuestLog()
 	self:addButtonBorder{obj=QuestLogFrameShowMapButton, relTo=QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
 	-- Magic Button textures
-	local btn = "QuestLogFrameCompleteButton"
+	btn = "QuestLogFrameCompleteButton"
 	if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
 	if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 
@@ -263,13 +270,14 @@ function Skinner:RaidUI() -- LoD
 	self.initialized.RaidUI = true
 
 	local function skinPulloutFrames()
-
+		local obj, objName
 		for i = 1, NUM_RAID_PULLOUT_FRAMES	do
-			local rp = _G["RaidPullout"..i]
-			if not self.skinFrame[rp] then
-				self:skinDropDown{obj=_G["RaidPullout"..i.."DropDown"]}
-				_G["RaidPullout"..i.."MenuBackdrop"]:SetBackdrop(nil)
-				self:addSkinFrame{obj=rp, ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
+			objName = "RaidPullout"..i
+			obj = _G[objName]
+			if not self.skinFrame[obj] then
+				self:skinDropDown{obj=_G[objName.."DropDown"]}
+				_G[objName.."MenuBackdrop"]:SetBackdrop(nil)
+				self:addSkinFrame{obj=obj, ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
 			end
 		end
 
@@ -281,18 +289,20 @@ function Skinner:RaidUI() -- LoD
 	-- hook this to skin the pullout character frames
 	self:SecureHook("RaidPullout_Update", function(pullOutFrame)
 		local pfName = pullOutFrame:GetName()
+		local obj, objName
 --		self:Debug("RP_U: [%s, %s]", pullOutFrame, pfName)
 		for i = 1, pullOutFrame.numPulloutButtons do
-			local pfBName = pfName.."Button"..i
-			local pfBObj = _G[pfBName]
-			if not self.skinFrame[pfBObj] then
+			objName = pfName.."Button"..i
+			obj = _G[pfBName]
+			if not self.skinFrame[obj] then
+				local sBar
 				for _, v in pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
-					local sBar = pfBName..v
+					sBar = objName..v
 					self:removeRegions(_G[sBar], {2})
 					self:glazeStatusBar(_G[sBar], 0, _G[sBar.."Background"])
 				end
-				self:addSkinFrame{obj=_G[pfBName.."TargetTargetFrame"], ft=ftype, x1=4, x2=-4, y2=2}
-				self:addSkinFrame{obj=pfBObj, ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
+				self:addSkinFrame{obj=_G[objName.."TargetTargetFrame"], ft=ftype, x1=4, x2=-4, y2=2}
+				self:addSkinFrame{obj=obj, ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
 			end
 		end
 	end)
@@ -304,19 +314,17 @@ function Skinner:RaidUI() -- LoD
 
 	-- Raid Groups
 	for i = 1, MAX_RAID_GROUPS do
-		local rGrp = _G["RaidGroup"..i]
-		self:addSkinFrame{obj=rGrp, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=_G["RaidGroup"..i], ft=ftype, kfs=true}
 	end
 	-- Raid Group Buttons
 	for i = 1, MAX_RAID_GROUPS * 5 do
-		local rgBtn = _G["RaidGroupButton"..i]
-		self:removeRegions(rgBtn, {4})
-		self:addSkinFrame{obj=rgBtn, ft=ftype, aso={bd=self.Backdrop[5]}, y1=1, y2=-3}
+		btn = _G["RaidGroupButton"..i]
+		self:removeRegions(btn, {4})
+		self:addSkinFrame{obj=btn, ft=ftype, aso={bd=self.Backdrop[5]}, y1=1, y2=-3}
 	end
 	-- Raid Class Tabs (side)
 	for i = 1, MAX_RAID_CLASS_BUTTONS do
-		local tabName = _G["RaidClassButton"..i]
-		self:removeRegions(tabName, {1}) -- N.B. region 2 is the icon, 3 is the text
+		self:removeRegions(_G["RaidClassButton"..i], {1}) -- N.B. region 2 is the icon, 3 is the text
 	end
 
 	-- skin existing frames
@@ -342,11 +350,12 @@ function Skinner:Buffs()
 
 	local function skinBuffs()
 
+		local btn
 		for i= 1, BUFF_MAX_DISPLAY do
-			local bb = _G["BuffButton"..i]
-			if bb and not bb.sknrBdr then
+			btn = _G["BuffButton"..i]
+			if btn and not btn.sknrBdr then
 				-- add button borders
-				Skinner:addButtonBorder{obj=bb}
+				Skinner:addButtonBorder{obj=btn}
 			end
 		end
 
@@ -393,8 +402,7 @@ function Skinner:VehicleMenuBar()
 
 	self:add2Table(self.charKeys1, "VehicleMenuBar")
 
-	local xOfs1, xOfs2, yOfs1, yOfs2
-
+	local xOfs1, xOfs2, yOfs1, yOfs2, sf
 	local function skinVehicleMenuBar(opts)
 
 --		Skinner:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
@@ -425,7 +433,7 @@ function Skinner:VehicleMenuBar()
 		 -- make it appear above the skin frame
 		VehicleMenuBarPitchSlider:SetFrameStrata("MEDIUM")
 
-		local sf = Skinner.skinFrame[VehicleMenuBar]
+		sf = Skinner.skinFrame[VehicleMenuBar]
 		if not sf then
 			self:addSkinFrame{obj=VehicleMenuBar, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 		else
@@ -449,7 +457,7 @@ function Skinner:VehicleMenuBar()
 	if self.modBtnBs then
 		self:addButtonBorder{obj=VehicleMenuBarLeaveButton}
 		for i = 1, VEHICLE_MAX_ACTIONBUTTONS do
-			local btn = _G["VehicleMenuBarActionButton"..i]
+			btn = _G["VehicleMenuBarActionButton"..i]
 			self:addButtonBorder{obj=btn, abt=true, sec=true, es=20}
 		end
 	end
@@ -470,8 +478,9 @@ function Skinner:WatchFrame()
 	if self.modBtnBs then
 		local function skinWFBtns()
 
+			local btn
 			for i = 1, WATCHFRAME_NUM_ITEMS do
-				local btn = _G["WatchFrameItem"..i]
+				btn = _G["WatchFrameItem"..i]
 				if not btn.sknrBdr then
 					self:addButtonBorder{obj=btn, ibt=true}
 				end
@@ -500,13 +509,14 @@ function Skinner:WatchFrame()
 	if self.db.profile.WatchFrame.popups then
 		local function skinAutoPopUps()
 
+			local obj
 			for i = 1, GetNumAutoQuestPopUps() do
-				local frame = _G["WatchFrameAutoQuestPopUp"..i.."ScrollChild"]
-				if not Skinner.skinned[frame] then
-					for key, reg in ipairs{frame:GetRegions()} do
+				obj = _G["WatchFrameAutoQuestPopUp"..i.."ScrollChild"]
+				if not Skinner.skinned[obj] then
+					for key, reg in ipairs{obj:GetRegions()} do
 						if key < 11 or key == 17 then reg:SetTexture(nil) end -- Animated textures
 					end
-					Skinner:applySkin{obj=frame}
+					Skinner:applySkin{obj=obj}
 				end
 			end
 
@@ -529,7 +539,7 @@ function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 
 	self:addSkinFrame{obj=GearManagerDialog, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=2}
 	for i = 1, MAX_EQUIPMENT_SETS_PER_PLAYER do
-		local btn = _G["GearSetButton"..i]
+		btn = _G["GearSetButton"..i]
 		if not self.modBtnBs then
 			self:getRegion(btn, 2):SetTexture(self.esTex)
 		else
@@ -620,7 +630,7 @@ function Skinner:ArchaeologyUI() -- LoD
 
 end
 
-function Skinner:GuildUI()
+function Skinner:GuildUI() -- LoD
 	if not self.db.profile.GuildUI or self.initialized.GuildUI then return end
 	self.initialized.GuildUI = true
 
@@ -642,7 +652,7 @@ function Skinner:GuildUI()
 	GuildFactionBarMiddle:SetAlpha(0)
 	-- Magic Button textures
 	for _, v in pairs{"AddMember", "Control", "ViewLog"} do
-		local btn = "Guild"..v.."Button"
+		btn = "Guild"..v.."Button"
 		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
 		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
 	end
@@ -663,7 +673,7 @@ function Skinner:GuildUI()
 	self:skinSlider{obj=GuildPerksContainerScrollBar, size=2}
 	for i = 1, #GuildPerksContainer.buttons do
 		-- can't use DisableDrawLayer as the update code uses it
-		local btn = GuildPerksContainer.buttons[i]
+		btn = GuildPerksContainer.buttons[i]
 		self:removeRegions(btn, {1, 2, 3, 4, 5, 6})
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 		if self.modBtnBs then
@@ -677,7 +687,7 @@ function Skinner:GuildUI()
 	self:skinFFColHeads("GuildRosterColumnButton", 5)
 	self:skinSlider{obj=GuildRosterContainerScrollBar, size=2}
 	for i = 1, #GuildRosterContainer.buttons do
-		local btn = GuildRosterContainer.buttons[i]
+		btn = GuildRosterContainer.buttons[i]
 		btn:DisableDrawLayer("BACKGROUND")
 		btn.barTexture:SetTexture(self.sbTexture)
 		btn.header.leftEdge:SetAlpha(0)
@@ -700,7 +710,7 @@ function Skinner:GuildUI()
 	GuildRewardsFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=GuildRewardsContainerScrollBar, size=2}
 	for i = 1, #GuildRewardsContainer.buttons do
-		local btn = GuildRewardsContainer.buttons[i]
+		btn = GuildRewardsContainer.buttons[i]
 		btn:GetNormalTexture():SetAlpha(0)
 		btn.disabledBG:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
@@ -725,9 +735,10 @@ function Skinner:GuildUI()
 
 -->>-- Tabs
 	for i = 1, GuildFrame.numTabs do
-		local tabObj = _G["GuildFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		tab = _G["GuildFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		-- set textures here first time thru as it's LoD
 		if i == (self.isCata and 1 or 2) then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -738,7 +749,7 @@ function Skinner:GuildUI()
 
 end
 
-function Skinner:GuildControlUI()
+function Skinner:GuildControlUI() -- LoD
 	if not self.db.profile.GuildControlUI or self.initialized.GuildControlUI then return end
 	self.initialized.GuildControlUI = true
 
@@ -749,12 +760,13 @@ function Skinner:GuildControlUI()
 	-- Guild Ranks Panel
 	local function skinROFrames()
 
+		local obj
 		for i = 1, MAX_GUILDRANKS do
-			local frame = _G["GuildControlUIRankOrderFrameRank"..i]
-			if frame
-			and not Skinner.skinned[frame]
+			obj = _G["GuildControlUIRankOrderFrameRank"..i]
+			if obj
+			and not Skinner.skinned[obj]
 			then
-				Skinner:skinEditBox{obj=frame.nameBox, regs={9}, x=-5}
+				Skinner:skinEditBox{obj=obj.nameBox, regs={9}, x=-5}
 			end
 		end
 
@@ -775,15 +787,16 @@ function Skinner:GuildControlUI()
 	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BORDER")
 	if self.isCata then
 		for i = 1, #GuildControlUI.bankTabFrame.scrollFrame.buttons do
-			local btn = GuildControlUI.bankTabFrame.scrollFrame.buttons[i]
+			btn = GuildControlUI.bankTabFrame.scrollFrame.buttons[i]
 			btn:DisableDrawLayer("BACKGROUND")
 			self:skinEditBox{obj=btn.owned.editBox, regs={9}}
 			self:skinButton{obj=btn.buy.button, as=true}
 		end
 	else
 		self:SecureHook("GuildControlUI_BankTabPermissions_Update", function()
+			local btn
 			for i = 1, MAX_BUY_GUILDBANK_TABS do
-				local btn = _G["GuildControlBankTab"..i]
+				btn = _G["GuildControlBankTab"..i]
 				if btn and not self.skinned[btn] then
 					btn:DisableDrawLayer("BACKGROUND")
 					self:skinEditBox{obj=btn.owned.editBox, regs={9}}

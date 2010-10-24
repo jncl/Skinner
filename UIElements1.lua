@@ -1,5 +1,6 @@
 local _G = _G
 local ftype = "u"
+local obj, objName, tex, texName, btn, btnName, tab, tabSF, asopts
 
 do
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
@@ -77,9 +78,8 @@ function Skinner:Tooltips()
 	-- Hook this to deal with GameTooltip FadeHeight issues
 	self:HookScript(GameTooltipStatusBar, "OnHide", function(this)
 		if GameTooltip:IsShown() then
-			local gtH = ceil(GameTooltip:GetHeight())
 			if not GTSBevt then
-				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.1, gtH)
+				GTSBevt = self:ScheduleRepeatingTimer(checkGTHeight, 0.1, ceil(GameTooltip:GetHeight()))
 			end
 		end
 	end)
@@ -115,19 +115,19 @@ function Skinner:MirrorTimers()
 
 	self:add2Table(self.uiKeys2, "MirrorTimers")
 
+	local objBG, objSB
 	for i = 1, MIRRORTIMER_NUMTIMERS do
-		local bar = "MirrorTimer"..i
-		local mTimer = _G[bar]
-		local mTimerText = _G[bar.."Text"]
-		local mTimerBG = self:getRegion(mTimer, 1)
-		local mTimerSB = _G[bar.."StatusBar"]
-		self:removeRegions(mTimer, {3})
-		mTimer:SetHeight(mTimer:GetHeight() * 1.25)
-		self:moveObject{obj=mTimerText, y=-2}
-		mTimerBG:SetWidth(mTimerBG:GetWidth() * 0.75)
-		mTimerSB:SetWidth(mTimerSB:GetWidth() * 0.75)
+		objName = "MirrorTimer"..i
+		obj = _G[objName]
+		objBG = self:getRegion(obj, 1)
+		objSB = _G[objName.."StatusBar"]
+		self:removeRegions(obj, {3})
+		obj:SetHeight(obj:GetHeight() * 1.25)
+		self:moveObject{obj=_G[objName.."Text"], y=-2}
+		objBG:SetWidth(objBG:GetWidth() * 0.75)
+		objSB:SetWidth(objSB:GetWidth() * 0.75)
 		if self.db.profile.MirrorTimers.glaze then
-			self:glazeStatusBar(mTimerSB, 0, mTimerBG)
+			self:glazeStatusBar(objSB, 0, objBG)
 		end
 	end
 
@@ -142,7 +142,7 @@ function Skinner:CastingBar()
 	local modUF = self:GetModule("UnitFrames", true):IsEnabled() and self:GetModule("UnitFrames", true)
 	-- hook this to move the spark down on the casting bar
 	self:SecureHook("CastingBarFrame_OnUpdate", function(this, ...)
-		local barSpark = _G[this:GetName().."Spark"]
+		local obj = _G[this:GetName().."Spark"]
 		local yOfs = -3
 		if this == CastingBarFrame then
 		elseif this == TargetFrameSpellBar
@@ -155,18 +155,18 @@ function Skinner:CastingBar()
 		then
 		else yOfs = 0
 		end
-		self:moveObject{obj=barSpark, y=yOfs}
+		self:moveObject{obj=obj, y=yOfs}
 	end)
 
 	for _, prefix in pairs{"", "Pet"} do
 
-		local cbfName = prefix.."CastingBarFrame"
-		_G[cbfName.."Border"]:SetAlpha(0)
-		self:changeShield(_G[cbfName.."BorderShield"], _G[cbfName.."Icon"])
-		_G[cbfName.."Flash"]:SetAllPoints()
-		self:moveObject{obj=_G[cbfName.."Text"], y=-3}
+		objName = prefix.."CastingBarFrame"
+		_G[objName.."Border"]:SetAlpha(0)
+		self:changeShield(_G[objName.."BorderShield"], _G[objName.."Icon"])
+		_G[objName.."Flash"]:SetAllPoints()
+		self:moveObject{obj=_G[objName.."Text"], y=-3}
 		if self.db.profile.CastingBar.glaze then
-			self:glazeStatusBar(_G[cbfName], 0, self:getRegion(_G[cbfName], 1), {_G[cbfName.."Flash"]})
+			self:glazeStatusBar(_G[objName], 0, self:getRegion(_G[objName], 1), {_G[objName.."Flash"]})
 		end
 
 	end
@@ -182,25 +182,31 @@ function Skinner:StaticPopups()
 	if self.modBtns then
 		-- hook this to handle close button texture changes
 		self:SecureHook("StaticPopup_Show", function(...)
+			local obj, tex
 			for i = 1, STATICPOPUP_NUMDIALOGS do
-				local spcb = _G["StaticPopup"..i.."CloseButton"]
-				local nTex = spcb:GetNormalTexture() and spcb:GetNormalTexture():GetTexture() or nil
-				if nTex:find("HideButton") then spcb:SetText(self.modUIBtns.minus)
-				elseif nTex:find("MinimizeButton") then spcb:SetText(self.modUIBtns.mult)
+				obj = _G["StaticPopup"..i.."CloseButton"]
+				tex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
+				if tex then
+					if tex:find("HideButton") then
+						obj:SetText(self.modUIBtns.minus)
+					elseif tex:find("MinimizeButton") then
+						obj:SetText(self.modUIBtns.mult)
+					end
 				end
 			end
 		end)
 	end
 
 	for i = 1, STATICPOPUP_NUMDIALOGS do
-		local sPU = "StaticPopup"..i
-		self:skinEditBox{obj=_G[sPU.."EditBox"]}
-		self:skinMoneyFrame{obj=_G[sPU.."MoneyInputFrame"]}
-		self:addSkinFrame{obj=_G[sPU], ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
+		objName = "StaticPopup"..i
+		obj = _G[objName]
+		self:skinEditBox{obj=_G[objName.."EditBox"]}
+		self:skinMoneyFrame{obj=_G[objName.."MoneyInputFrame"]}
+		_G[objName.."ItemFrameNameFrame"]:SetTexture(nil)
+		self:addButtonBorder{obj=_G[objName.."ItemFrame"], ibt=true}
+		self:addSkinFrame{obj=obj, ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 		-- prevent FrameLevel from being changed (LibRock does this)
-		self.skinFrame[_G[sPU]].SetFrameLevel = function() end
-		_G[sPU.."ItemFrameNameFrame"]:SetTexture(nil)
-		self:addButtonBorder{obj=_G[sPU.."ItemFrame"], ibt=true}
+		self.skinFrame[obj].SetFrameLevel = function() end
 	end
 
 end
@@ -227,21 +233,21 @@ function Skinner:ChatTabs()
 
 	-- hook this to handle Tab alpha changes as they have been reparented
 	self:SecureHook("FCFTab_UpdateAlpha", function(this)
-		local chatTab = _G[this:GetName().."Tab"]
-		local tabSF = self.skinFrame[chatTab]
-		if chatTab.hasBeenFaded then
-			tabSF:SetAlpha(chatTab.mouseOverAlpha)
+		local tab = _G[this:GetName().."Tab"]
+		local tabSF = self.skinFrame[obj]
+		if obj.hasBeenFaded then
+			tabSF:SetAlpha(obj.mouseOverAlpha)
 		else
-			tabSF:SetAlpha(chatTab.noMouseAlpha)
+			tabSF:SetAlpha(obj.noMouseAlpha)
 		end
 	end)
 
 	for i = 1, NUM_CHAT_WINDOWS do
-		local tabName = _G["ChatFrame"..i.."Tab"]
-		self:keepRegions(tabName, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, y1=-8, y2=-5}
+		tab = _G["ChatFrame"..i.."Tab"]
+		self:keepRegions(tab, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, y1=-8, y2=-5}
 		-- hook this to fix tab gradient texture overlaying text & highlight
-		self:SecureHook(tabName, "SetParent", function(this, parent)
+		self:SecureHook(obj, "SetParent", function(this, parent)
 			local tabSF = self.skinFrame[this]
 			if parent == GeneralDockManager.scrollFrame.child then
 				tabSF:SetParent(GeneralDockManager)
@@ -264,15 +270,15 @@ function Skinner:ChatFrames()
 	local clqbf_c = clqbf.."_Custom"
 	local yOfs1 = 4
 	for i = 1, NUM_CHAT_WINDOWS do
-		local cf = _G["ChatFrame"..i]
-		if cf == COMBATLOG
+		obj = _G["ChatFrame"..i]
+		if obj == COMBATLOG
 		and _G[clqbf_c]:IsShown()
 		then
 			yOfs1 = 31
 		else
 			yOfs1 = 4
 		end
-		self:addSkinFrame{obj=cf, ft=ftype, x1=-4, y1=yOfs1, x2=4, y2=-8}
+		self:addSkinFrame{obj=obj, ft=ftype, x1=-4, y1=yOfs1, x2=4, y2=-8}
 	end
 
 	-- CombatLog Quick Button Frame & Progress Bar
@@ -289,9 +295,9 @@ function Skinner:ChatFrames()
 
 	-- minimized chat frames
 	self:SecureHook("FCF_CreateMinimizedFrame", function(chatFrame)
-		local cfm = _G[chatFrame:GetName().."Minimized"]
-		self:removeRegions(cfm, {1, 2, 3})
-		self:addSkinFrame{obj=cfm, ft=ftype, x1=1, y1=-2, x2=-1, y2=2}
+		local obj = _G[chatFrame:GetName().."Minimized"]
+		self:removeRegions(obj, {1, 2, 3})
+		self:addSkinFrame{obj=obj, ft=ftype, x1=1, y1=-2, x2=-1, y2=2}
 	end)
 
 end
@@ -370,11 +376,11 @@ function Skinner:ChatConfig()
 	end
 	self:addSkinFrame{obj=CombatConfigColorsUnitColors, ft=ftype}
 
-	local clrize, ccccObj
+	local clrize
 	for i, v in ipairs{"Highlighting", "UnitName", "SpellNames", "DamageNumber", "DamageSchool", "EntireLine"} do
 		clrize = i > 1 and "Colorize" or ""
-		ccccObj = _G["CombatConfigColors"..clrize..v]
-		self:addSkinFrame{obj=ccccObj, ft=ftype}
+		obj = _G["CombatConfigColors"..clrize..v]
+		self:addSkinFrame{obj=obj, ft=ftype}
 	end
 
 	-- Settings
@@ -382,9 +388,9 @@ function Skinner:ChatConfig()
 
 	-- Tabs
 	for i = 1, #COMBAT_CONFIG_TABS do
-		local tabName = _G["CombatConfigTab"..i]
-		self:keepRegions(tabName, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
-		self:addSkinFrame{obj=tabName, ft=ftype, y1=-8, y2=-4}
+		obj = _G["CombatConfigTab"..i]
+		self:keepRegions(obj, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
+		self:addSkinFrame{obj=obj, ft=ftype, y1=-8, y2=-4}
 	end
 
 end
@@ -399,17 +405,17 @@ function Skinner:ChatEditBox()
 	if IsAddOnLoaded("NeonChat") or IsAddOnLoaded("Chatter") or IsAddOnLoaded("Prat-3.0") then return end
 
 	for i = 1, NUM_CHAT_WINDOWS do
-		local cfeb = _G["ChatFrame"..i.."EditBox"]
+		obj = _G["ChatFrame"..i.."EditBox"]
 		if self.db.profile.ChatEditBox.style == 1 then -- Frame
 			local kRegions = CopyTable(self.ebRegions)
 			table.insert(kRegions, 12)
-			self:keepRegions(cfeb, kRegions)
-			self:addSkinFrame{obj=cfeb, ft=ftype, x1=2, y1=-2, x2=-2}
+			self:keepRegions(obj, kRegions)
+			self:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
 		elseif self.db.profile.ChatEditBox.style == 2 then -- Editbox
-			self:skinEditBox{obj=cfeb, regs={12}, noHeight=true}
+			self:skinEditBox{obj=obj, regs={12}, noHeight=true}
 		else -- Borderless
-			self:removeRegions(cfeb, {6, 7, 8})
-			self:addSkinFrame{obj=cfeb, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
+			self:removeRegions(obj, {6, 7, 8})
+			self:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		end
 	end
 
@@ -439,48 +445,46 @@ function Skinner:GroupLoot()
 
 	self:add2Table(self.uiKeys2, "GroupLoot")
 
-	local f = GameFontNormalSmall:GetFont()
-
 	self:skinDropDown{obj=GroupLootDropDown}
 
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
 
-		local glf = "GroupLootFrame"..i
-		local glfo = _G[glf]
-		self:keepFontStrings(glfo)
-		_G[glf.."SlotTexture"]:SetTexture(nil)
-		_G[glf.."NameFrame"]:SetTexture(nil)
-		self:addButtonBorder{obj=_G[glf.."IconFrame"]}
-		self:removeRegions(_G[glf.."Timer"], {1})
-		self:glazeStatusBar(_G[glf.."Timer"], 0)
+		objName = "GroupLootFrame"..i
+		obj = _G[objName]
+		self:keepFontStrings(obj)
+		_G[objName.."SlotTexture"]:SetTexture(nil)
+		_G[objName.."NameFrame"]:SetTexture(nil)
+		self:addButtonBorder{obj=_G[objName.."IconFrame"]}
+		self:removeRegions(_G[objName.."Timer"], {1})
+		self:glazeStatusBar(_G[objName.."Timer"], 0)
 		-- hook this to skin the group loot frame
-		self:SecureHook(glfo, "Show", function(this)
+		self:SecureHook(obj, "Show", function(this)
 			this:SetBackdrop(nil)
 		end)
 
 		if self.db.profile.GroupLoot.size == 1 then
 
-			self:addSkinFrame{obj=glfo, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
+			self:addSkinFrame{obj=obj, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
 
 		elseif self.db.profile.GroupLoot.size == 2 then
 
-			glfo:SetScale(0.75)
-			self:addSkinFrame{obj=glfo, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
+			obj:SetScale(0.75)
+			self:addSkinFrame{obj=obj, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
 
 		elseif self.db.profile.GroupLoot.size == 3 then
 
-			glfo:SetScale(0.75)
-			self:moveObject{obj=_G[glf.."SlotTexture"], x=95, y=4} -- Loot item icon
-			_G[glf.."Name"]:SetAlpha(0)
-			_G[glf.."RollButton"]:ClearAllPoints()
-			_G[glf.."RollButton"]:SetPoint("RIGHT", _G[glf.."PassButton"], "LEFT", 5, -5)
-			_G[glf.."GreedButton"]:ClearAllPoints()
-			_G[glf.."GreedButton"]:SetPoint("RIGHT", _G[glf.."RollButton"], "LEFT", 0, 0)
-			_G[glf.."DisenchantButton"]:ClearAllPoints()
-			_G[glf.."DisenchantButton"]:SetPoint("RIGHT", _G[glf.."GreedButton"], "LEFT", 0, 0)
-			self:adjWidth{obj=_G[glf.."Timer"], adj=-28}
-			self:moveObject{obj=_G[glf.."Timer"], x=-3}
-			self:addSkinFrame{obj=glfo, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
+			obj:SetScale(0.75)
+			self:moveObject{obj=_G[objName.."SlotTexture"], x=95, y=4} -- Loot item icon
+			_G[objName.."Name"]:SetAlpha(0)
+			_G[objName.."RollButton"]:ClearAllPoints()
+			_G[objName.."RollButton"]:SetPoint("RIGHT", _G[objName.."PassButton"], "LEFT", 5, -5)
+			_G[objName.."GreedButton"]:ClearAllPoints()
+			_G[objName.."GreedButton"]:SetPoint("RIGHT", _G[objName.."RollButton"], "LEFT", 0, 0)
+			_G[objName.."DisenchantButton"]:ClearAllPoints()
+			_G[objName.."DisenchantButton"]:SetPoint("RIGHT", _G[objName.."GreedButton"], "LEFT", 0, 0)
+			self:adjWidth{obj=_G[objName.."Timer"], adj=-28}
+			self:moveObject{obj=_G[objName.."Timer"], x=-3}
+			self:addSkinFrame{obj=obj, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
 
 		end
 
@@ -495,15 +499,15 @@ function Skinner:ContainerFrames()
 	self:add2Table(self.uiKeys2, "ContainerFrames")
 
 	for i = 1, NUM_CONTAINER_FRAMES do
-		local frameObj = _G["ContainerFrame"..i]
-		self:addSkinFrame{obj=frameObj, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
+		objName = "ContainerFrame"..i
+		self:addSkinFrame{obj=_G[objName], ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 		-- resize and move the bag name to make it more readable
-		local frameName = _G["ContainerFrame"..i.."Name"]
-		frameName:SetWidth(145)
-		self:moveObject{obj=frameName, x=-30}
+		obj = _G[objName.."Name"]
+		obj:SetWidth(145)
+		self:moveObject{obj=obj, x=-30}
 		-- add button borders
 		for j = 1, MAX_CONTAINER_ITEMS do
-			self:addButtonBorder{obj=_G["ContainerFrame"..i.."Item"..j]}
+			self:addButtonBorder{obj=_G[objName.."Item"..j]}
 		end
 	end
 
@@ -704,6 +708,13 @@ function Skinner:Tutorial()
 
 	self:add2Table(self.uiKeys1, "Tutorial")
 
+	local function resetSF()
+
+		-- use the same frame level & strata as TutorialFrame so it appears above other frames
+		self.skinFrame[TutorialFrame]:SetFrameLevel(TutorialFrame:GetFrameLevel())
+		self.skinFrame[TutorialFrame]:SetFrameStrata(TutorialFrame:GetFrameStrata())
+
+	end
 	TutorialFrame:DisableDrawLayer("BACKGROUND")
 	TutorialFrameTop:SetTexture(nil)
 	TutorialFrameBottom:SetTexture(nil)
@@ -713,24 +724,27 @@ function Skinner:Tutorial()
 	end
 	TutorialTextBorder:SetAlpha(0)
 	self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
+	-- stop animation before skinning, otherwise textures reappear
+	AnimateMouse:Stop()
+	AnimateCallout:Stop()
 	self:addSkinFrame{obj=TutorialFrame, ft=ftype, anim=true, x1=10, y1=-11, x2=1}
-	-- use the same frame level & strata as TutorialFrame so it appears above other frames
-	self.skinFrame[TutorialFrame]:SetFrameLevel(TutorialFrame:GetFrameLevel())
-	self.skinFrame[TutorialFrame]:SetFrameStrata(TutorialFrame:GetFrameStrata())
+	resetSF()
 	-- hook this as the TutorialFrame frame level keeps changing
 	self:SecureHookScript(self.skinFrame[TutorialFrame], "OnShow", function(this)
-		self.skinFrame[TutorialFrame]:SetFrameLevel(TutorialFrame:GetFrameLevel())
+		resetSF()
 	end)
 	-- hook this to hide the skin frame if required (e.g. arrow keys tutorial)
 	self:SecureHook("TutorialFrame_Update", function(currTut)
+		resetSF()
 		if TutorialFrameTop:IsShown() then
 			self.skinFrame[TutorialFrame]:Show()
 		else
 			self.skinFrame[TutorialFrame]:Hide()
 		end
 	end)
+
 -->>-- Alert button
-	local btn = TutorialFrameAlertButton
+	btn = TutorialFrameAlertButton
 	btn:GetNormalTexture():SetAlpha(0)
 	btn:SetNormalFontObject("ZoneTextFont")
 	btn:SetText("?")
@@ -750,10 +764,10 @@ function Skinner:GMSurveyUI() -- LoD
 	self:skinScrollBar{obj=GMSurveyScrollFrame}
 
 	for i = 1, MAX_SURVEY_QUESTIONS do
-		local gmsQ = _G["GMSurveyQuestion"..i]
-		self:applySkin{obj=gmsQ, ft=ftype} -- must use applySkin otherwise text is behind gradient
-		gmsQ.SetBackdropColor = function() end
-		gmsQ.SetBackdropBorderColor = function() end
+		obj = _G["GMSurveyQuestion"..i]
+		self:applySkin{obj=obj, ft=ftype} -- must use applySkin otherwise text is behind gradient
+		obj.SetBackdropColor = function() end
+		obj.SetBackdropBorderColor = function() end
 	end
 
 	self:skinScrollBar{obj=GMSurveyCommentScrollFrame}
@@ -796,18 +810,19 @@ function Skinner:InspectUI() -- LoD
 	self:moveObject{obj=InspectTalentFrameTab1, x=-30}
 	-- add button borders
 	for i = 1, MAX_NUM_TALENTS do
-		local btnName = "InspectTalentFrameTalent"..i
+		btnName = "InspectTalentFrameTalent"..i
 		_G[btnName.."Slot"]:SetAlpha(0)
 		self:addButtonBorder{obj=_G[btnName], tibt=true}
 	end
 
 -->>-- Guild Frame
 	InspectGuildFrameBG:SetAlpha(0)
--->>--	Frame Tabs
+-->>-- Tabs
 	for i = 1, InspectFrame.numTabs do
-		local tabName = _G["InspectFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
+		tab = _G["InspectFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		-- set textures here first time thru as it's LoD
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -824,19 +839,15 @@ function Skinner:BattleScore()
 
 	self:add2Table(self.uiKeys1, "BattleScore")
 
+	self:skinDropDown{obj=ScorePlayerDropDown}
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
-	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, x1=10, y1=-15, x2=-113, y2=70}
+	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=10, y1=-15, x2=-113, y2=70}
 
 -->>-- Tabs
-	for i = 1, 3 do
-		local tabName = _G["WorldStateScoreFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabName, ft=ftype, noBdr=self.isTT, x1=7, y1=8, x2=-7, y2=10}
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
+	for i = 1, WorldStateScoreFrame.numTabs do
+		tab = _G["WorldStateScoreFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 	end
 	self.tabFrames[WorldStateScoreFrame] = true
 
@@ -894,16 +905,17 @@ function Skinner:DropDowns()
 
 	self:add2Table(self.uiKeys1, "DropDowns")
 
-	self:SecureHook("UIDropDownMenu_CreateFrames", function(level, index)
+	self:SecureHook("UIDropDownMenu_CreateFrames", function(...)
+		local obj, objName
 		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
-			local ddl = "DropDownList"..i
-			local ddlObj = _G[ddl]
-			if not self:IsHooked(ddlObj, "Show") then
-				self:SecureHook(ddlObj, "Show", function()
-					_G[ddl.."Backdrop"]:Hide()
-					_G[ddl.."MenuBackdrop"]:Hide()
-					if not self.skinFrame[ddlObj] then
-						self:addSkinFrame{obj=ddlObj, ft=ftype, kfs=true}
+			objName = "DropDownList"..i
+			obj = _G[objName]
+			if not self:IsHooked(obj, "Show") then
+				self:SecureHook(obj, "Show", function(this)
+					_G[this:GetName().."Backdrop"]:Hide()
+					_G[this:GetName().."MenuBackdrop"]:Hide()
+					if not self.skinFrame[this] then
+						self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 					end
 				end)
 			end
@@ -1169,8 +1181,8 @@ if Skinner.isPTR then
 		if self.modBtnBs then
 			-- skin the alert buttons
 			for i = 1, 10 do
-				local tfabObj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
-				self:addButtonBorder{obj=tfabObj, ofs=0, x2=-2, y2=3}
+				obj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton"..i]
+				self:addButtonBorder{obj=obj, ofs=0, x2=-2, y2=3}
 			end
 		end
 
