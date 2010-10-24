@@ -956,7 +956,7 @@ function Skinner:Minimap()
 -->>-- Buttons
 	MiniMapWorldMapButton:Hide()
 	-- on LHS
-	local xOfs, yOfs = 0, 4
+	local xOfs, yOfs = 6, 4
 	for _, v in pairs{MiniMapTracking, MiniMapLFGFrame, MiniMapRecordingButton, MiniMapVoiceChatFrame} do
 		v:ClearAllPoints()
 		v:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", xOfs, yOfs)
@@ -975,6 +975,8 @@ function Skinner:Minimap()
 	MiniMapBattlefieldFrame:ClearAllPoints()
 	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 10, 6)
 
+	-- move BuffFrame
+	self:moveObject{obj=BuffFrame, x=-10}
 end
 
 function Skinner:MinimapButtons()
