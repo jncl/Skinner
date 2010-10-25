@@ -38,6 +38,37 @@ x	I	tomQuest2, reported by X-buZZ, 17.10.10
 x	I	ArkInventory, reported by chrisgriffith25, 22.10.10
 		- I updated to the latest version of skinner and the bags still aren't being skinned with the appropriate border in arkinventory.  If i don't apply skinner the bags take the border, but when I apply skinner the default to a blurred blizzard boarder.  I'm not getting any errors
 
+√	I	MrTrader_SkillWindow, reported by X-buZZ, 24.10.10
+
+√	I	Quartz, reported by Eatsbrains, 25.10.10
+		- Skinner-@project-version@\Skinner.lua:852: Not a StatusBar
+		Skinner-@project-version@\Skinner.lua:852: in function `glazeStatusBar'
+		Skinner-@project-version@\SkinMe\Quartz.lua:36: in function <Skinner\SkinMe\Quartz.lua:3>
+		(tail call): ?:
+
+√	I	reported by mkcorp, 25.10.10
+		-  ..\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua line 180:
+		Attempting to rehook already active hook SetParent.
+		Debug:
+		(tail call): ?
+		[C]: ?
+		Ace3\AceHook-3.0\AceHook-3.0.lua:180:
+		Ace3\AceHook-3.0\AceHook-3.0.lua:118
+		Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
+		Skinner\UIElements1.lua:250:
+		Skinner\UIElements1.lua:228
+		(tail call): ?
+
+√	I	reported by mkcorp, 25.10.10
+		- ..\AddOns\Skinner\UIElements1.lua line 241:
+		Usage: <unnamed>:SetAlpha(alpha 0 to 1)
+		Debug:
+		[C]: ?
+		[C]: SetAlpha()
+		Skinner\UIElements1.lua:241:
+		Skinner\UIElements1.lua:235
+		(tail call): ?
+
 BETA changes
 ±±±±±±±±±±±±
 
