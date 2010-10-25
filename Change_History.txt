@@ -1,3 +1,10 @@
+b4.13164.7
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Move BuffFrame when skinning Minimap
+	Bugfix for AlertFrames skin
+
 b4.13164.6
 Jncl:
 	ToDo.txt
