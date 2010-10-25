@@ -4,7 +4,7 @@ function Skinner:MrTrader_SkillWindow()
 
 	-- hide filter texture when filter is clicked
 	self:SecureHook("MRTUIUtils_FilterButton_SetType", function(btn, type, ...)
-		self:Debug("MRTUIU_FB_ST: [%s, %s, %s, %s, %s, %s]", btn, type, ...)
+--		self:Debug("MRTUIU_FB_ST: [%s, %s, %s, %s, %s, %s]", btn, type, ...)
 		btn:GetNormalTexture():SetAlpha(0)
 		if type == "checkbox"
 		or type == "command"
@@ -17,6 +17,7 @@ function Skinner:MrTrader_SkillWindow()
 
 	self:skinDropDown{obj=MRTSkillItemDropDown}
 	self:skinEditBox{obj=MRTSkillFrameEditBox}
+	MRTSkillFilterButtons:DisableDrawLayer("OVERLAY") -- hide vertical bar
 	-- Filter buttons
 	for i = 1, 22 do
 		local btn = _G["MRTSkillFilterButton"..i]
@@ -27,7 +28,7 @@ function Skinner:MrTrader_SkillWindow()
 	self:skinScrollBar{obj=MRTSkillListScrollFrame}
 	self:glazeStatusBar(MRTSkillRankFrame, 0, MRTSkillRankFrameBackground)
 	self:skinEditBox{obj=MRTSkillInputBox, x=-6}
-	self:addSkinFrame{obj=MRTSkillFrame, kfs=true, x1=10, y1=-11, x2=0, y2=71}
+	self:addSkinFrame{obj=MRTSkillFrame, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 	-- Reagents
 	for i = 1, 10 do
 		_G["MRTSkillButton"..i.."Border"]:SetBackdrop(nil)

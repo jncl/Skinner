@@ -5,6 +5,13 @@ function Skinner:Quartz() -- Quartz3
 	local Quartz3 = LibStub("AceAddon-3.0"):GetAddon("Quartz3", true)
 	if not Quartz3 then return end
 
+	-- hook this to skin Unlock dialog frame
+	self:SecureHook(Quartz3, "ShowUnlockDialog", function(this)
+		self:skinButton{obj=self:getChild(this.unlock_dialog, 1)} -- it's a checkbutton
+		self:addSkinFrame{obj=this.unlock_dialog, kfs=true, nb=true, y1=6}
+		self:Unhook(Quartz3, "ShowUnlockDialog")
+	end)
+
 	local function skinSBs()
 
 		for _, child in pairs{UIParent:GetChildren()} do
@@ -14,7 +21,7 @@ function Skinner:Quartz() -- Quartz3
 			then
 				if not Skinner.skinned[child] then
 					child:SetBackdrop(nil)
-					Skinner:glazeStatusBar(child, 0)
+					child.__texture:SetTexture(self.sbTexture)
 				end
 			end
 		end
@@ -33,7 +40,7 @@ function Skinner:Quartz() -- Quartz3
 		local mod = Quartz3:GetModule(modName, true)
 		if mod and mod:IsEnabled() then
 			self:applySkin{obj=mod.Bar}
-			self:glazeStatusBar(mod.Bar.Bar, 1)
+			mod.Bar.Bar.__texture:SetTexture(self.sbTexture)
 			mod.Bar.backdrop = CopyTable(self.backdrop) -- make backdrop mirror Skinner's
 			mod.db.profile.texture = self.db.profile.StatusBar.texture
 			-- handle changes for interrupt toggle code in Quartz
@@ -47,7 +54,7 @@ function Skinner:Quartz() -- Quartz3
 	local mod = Quartz3:GetModule("Swing", true)
 	if mod and mod:IsEnabled() then
 		self:applySkin(_G["Quartz3SwingBar"])
-		self:glazeStatusBar(self:getChild(_G["Quartz3SwingBar"], 1))
+		self:getChild(_G["Quartz3SwingBar"], 1).__texture:SetTexture(self.sbTexture)
 	end
 	local mod = Quartz3:GetModule("Latency", true)
 	if mod and mod:IsEnabled() then
