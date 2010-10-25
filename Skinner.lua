@@ -1379,15 +1379,8 @@ function Skinner:skinFFToggleTabs(tabName, tabCnt, noHeight)
 		if not togTab then break end -- handle missing Tabs (e.g. Muted)
 		if not self.skinned[togTab] then -- don't skin it twice
 			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text & highlight
---[=[
-			if not noHeight then
-				self:adjHeight{obj=togTab, adj=-5}
-			end
---]=]
-			if i == 1 then self:moveObject{obj=togTab, y=3} end
-			self:moveObject{obj=_G[togTab:GetName().."Text"], x=-2, y=3}
-			self:moveObject{obj=_G[togTab:GetName().."HighlightTexture"], x=-2, y=5}
-			self:addSkinFrame{obj=togTab}
+			if not noHeight then self:adjHeight{obj=togTab, adj=-5}	end
+			self:addSkinFrame{obj=togTab, y1=-2, x2=2, y2=-2}
 		end
 	end
 

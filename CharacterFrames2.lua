@@ -8,32 +8,6 @@ function Skinner:FriendsFrame()
 
 	self:add2Table(self.charKeys1, "FriendsFrame")
 
-	-- hook this to manage textured tabs
---[=[
-	if self.isTT then
-		self:SecureHook("FriendsFrame_ShowSubFrame", function(frameName)
-			local j, prefix, tabID, tabSF
-			for i, v in pairs(FRIENDSFRAME_SUBFRAMES) do
-				-- handle Friends and Ignore on the same Tab
-				j = ( i > 1 and i - 1 or i)
-				-- handle Friends, Ignore and Pending on the same Tab
-				j = ( j > 1 and j - 1 or j)
-				-- handle additional Tabs with altered names or numbers
-				prefix = (v == "BadapplesFrame" and "Badapples" or "")
-				tabID = (v == "BadapplesFrame" and 6 or j)
-				if v == "BlackListFrame" then tabID = 1 end -- handle the BlackListFrame
-				tabSF = self.skinFrame[_G[prefix.."FriendsFrameTab"..tabID]]
-				-- ignore the IgnoreListFrame (also the PendingListFrame) (and the BlackListFrame)
-				if v ~= "IgnoreListFrame" and v ~= "PendingListFrame" and v ~= "BlackListFrame" then
-					self:setInactiveTab(tabSF)
-				end
-				if v == frameName then
-					self:setActiveTab(tabSF)
-				end
-			end
-		end)
-	end
---]=]
 -->>--	FriendsList Frame
 	self:skinDropDown{obj=FriendsFrameStatusDropDown}
 	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
@@ -42,8 +16,7 @@ function Skinner:FriendsFrame()
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
 	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-24}
 	self:skinFFToggleTabs("FriendsTabHeaderTab")
---	self:moveObject{obj=FriendsTabHeaderTab1, y=-4}
-	-- adjust width of FFFSF
+	-- adjust width of FFFSF so it looks right (too thin by default)
 	FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
 	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar}
 
