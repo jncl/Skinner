@@ -234,11 +234,11 @@ function Skinner:ChatTabs()
 	-- hook this to handle Tab alpha changes as they have been reparented
 	self:SecureHook("FCFTab_UpdateAlpha", function(this)
 		local tab = _G[this:GetName().."Tab"]
-		local tabSF = self.skinFrame[obj]
-		if obj.hasBeenFaded then
-			tabSF:SetAlpha(obj.mouseOverAlpha)
+		local tabSF = self.skinFrame[tab]
+		if tab.hasBeenFaded then
+			tabSF:SetAlpha(tab.mouseOverAlpha)
 		else
-			tabSF:SetAlpha(obj.noMouseAlpha)
+			tabSF:SetAlpha(tab.noMouseAlpha)
 		end
 	end)
 
@@ -247,7 +247,7 @@ function Skinner:ChatTabs()
 		self:keepRegions(tab, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
 		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, y1=-8, y2=-5}
 		-- hook this to fix tab gradient texture overlaying text & highlight
-		self:SecureHook(obj, "SetParent", function(this, parent)
+		self:SecureHook(tab, "SetParent", function(this, parent)
 			local tabSF = self.skinFrame[this]
 			if parent == GeneralDockManager.scrollFrame.child then
 				tabSF:SetParent(GeneralDockManager)
