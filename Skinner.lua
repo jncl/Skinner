@@ -61,6 +61,12 @@ function Skinner:OnInitialize()
 	if prdb.MinimalMMBtns then prdb.MinimapButtons.style = prdb.MinimalMMBtns prdb.MinimalMMBtns = nil end
 	if prdb.Minimap.btns then prdb.MinimapButtons.skin = prdb.Minimap.btns prdb.Minimap.btns = nil end
 	if prdb.Minimap.style then prdb.MinimapButtons.style = prdb.Minimap.style prdb.Minimap.style = nil end
+	if prdb.WatchFrame and type(prdb.WatchFrame) == "boolean" then
+		local val = prdb.WatchFrame
+		prdb.WatchFrame = {}
+		prdb.WatchFrame.skin = val
+		prdb.WatchFrame.popups = true
+	end
 
 	-- setup the Addon's options
 	self:checkAndRun("Options")
