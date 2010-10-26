@@ -9,9 +9,8 @@ Legend:
 	S/B/N/I/O	- Skin request/Button(s) Skin request/New Version/Issue(Bug)/Other change
 
 	O	Major overhaul of skinning code
-		-- Need to add functionality to get LibSharedMedia callbacks and apply them to the relevant objects
-		-- also need to apply any colour changes selected by the user
-		-- and any backdrop/background changes
+		-- need to add functionality to get LibSharedMedia callbacks and apply them to the relevant objects
+		-- need to apply any colour/backdrop/background/gradient changes selected by the user
 
 	O	Update WoWAce commands page
 
@@ -24,50 +23,65 @@ Legend:
 ?		- Getting some buggy ghost graphics from buttons (the x button from toastframe for instance has a buggy border always showing even when the frame isn't there) the info popup about pallys holypower also generates them.
 		- If NOT using UIButton skinning, what can be done about this ?
 
-?	I	PendingInvites, reported by gamemaster128, 16.10.10
-		- I have to disable Skinner in order to accept pending RealID friend requests.
+√	N	Flightmap, reported by Curace, 26.10.10
 
-x	I	tomQuest2, reported by X-buZZ, 17.10.10
-		- i am having trouble with TomQuest2 since the 4.01 updates of Skinner:
-			It is not possible to set the quest trackers border and the background to 0% opacity.
-			I have tried to set tq2 to disabled in the skinner config but it does not change anything.
-
-	I	reported by skyggesang, 20.10.10
-		- I have a number of issues to report this time. When I shift-click to compare items or mouseover a comparable item in the auction house, the tooltip for my equipped item has a blindingly white background making it difficult to read as you can see in this picture. The same thing happens when I click a linked item in chat (picture) for the first time after logging in to a character or reloading my UI.
-
-x	I	ArkInventory, reported by chrisgriffith25, 22.10.10
-		- I updated to the latest version of skinner and the bags still aren't being skinned with the appropriate border in arkinventory.  If i don't apply skinner the bags take the border, but when I apply skinner the default to a blurred blizzard boarder.  I'm not getting any errors
-
-√	I	MrTrader_SkillWindow, reported by X-buZZ, 24.10.10
-
-√	I	Quartz, reported by Eatsbrains, 25.10.10
-		- Skinner-@project-version@\Skinner.lua:852: Not a StatusBar
-		Skinner-@project-version@\Skinner.lua:852: in function `glazeStatusBar'
-		Skinner-@project-version@\SkinMe\Quartz.lua:36: in function <Skinner\SkinMe\Quartz.lua:3>
+√	I	Quartz, reported by gizmo1972,, 26.10.10
+		- Skinner-b4.13164.8\SkinMe\Quartz.lua:24: attempt to index field '__texture' (a nil value)
+		Skinner-b4.13164.8\SkinMe\Quartz.lua:69: in function <Skinner\SkinMe\Quartz.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b4.13164.8\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
+		Skinner-b4.13164.8\UtilFuncs.lua:151: in function `checkAndRunAddOn'
+		Skinner-b4.13164.8\AddonFrames.lua:146: in function <Skinner\AddonFrames.lua:101>
 		(tail call): ?:
 
-√	I	reported by mkcorp, 25.10.10
-		-  ..\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua line 180:
-		Attempting to rehook already active hook SetParent.
-		Debug:
-		(tail call): ?
-		[C]: ?
-		Ace3\AceHook-3.0\AceHook-3.0.lua:180:
-		Ace3\AceHook-3.0\AceHook-3.0.lua:118
-		Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
-		Skinner\UIElements1.lua:250:
-		Skinner\UIElements1.lua:228
-		(tail call): ?
+√	N	Altoholic, reported by gizmo1972, 26.10.10
 
-√	I	reported by mkcorp, 25.10.10
-		- ..\AddOns\Skinner\UIElements1.lua line 241:
-		Usage: <unnamed>:SetAlpha(alpha 0 to 1)
-		Debug:
-		[C]: ?
-		[C]: SetAlpha()
-		Skinner\UIElements1.lua:241:
-		Skinner\UIElements1.lua:235
-		(tail call): ?
+√	I	ChatTabs, reported by essmene, 26.10.10
+		- Skinner-b4.13164.7\UIElements1.lua:241: Usage: <unnamed>:SetAlpha(alpha 0 to 1)
+		Skinner-b4.13164.7\UIElements1.lua:241: in function <Skinner\UIElements1.lua:235>
+		(tail call): ?:
+		<in C code>: in function `FCFTab_UpdateAlpha'
+		Interface\FrameXML\FloatingChatFrame.lua:2088: in function `FCFDock_UpdateTabs':
+		Interface\FrameXML\FloatingChatFrame.lua:1362: in function <Interface\FrameXML\FloatingChatFrame.lua:1361>:
+		Blizzard_CombatLog\Blizzard_CombatLog.lua:3549: in function `FCF_DockUpdate'
+		Interface\FrameXML\UIParent.lua:1843: in function `UIParentManageFramePositions':
+		Interface\FrameXML\UIParent.lua:1207: in function <Interface\FrameXML\UIParent.lua:1194>:
+		<in C code>: in function `SetAttribute'
+		Interface\FrameXML\UIParent.lua:1850: in function <Interface\FrameXML\UIParent.lua:1848>:
+		<in C code>: in function `UIParent_ManageFramePositions'
+		Interface\FrameXML\MainMenuBar.lua:169: in function <Interface\FrameXML\MainMenuBar.lua:150>:
+		<in C code>: in function `MainMenuBarVehicleLeaveButton_Update'
+		Interface\FrameXML\MainMenuBar.lua:147: in function <Interface\FrameXML\MainMenuBar.lua:146>:
+
+√	I	MrTrader, reported by X-buzz, 26.10.10
+		- Magic Button textures
+
+√	I	GuildUI, reported by baiya, 26.10.10
+		- I don't know if already someone came up with this, but can you pls change the GuildUI skin so the full guildcolors are shown, not only the icon?
+
+√	I	tomQuest2, reported by Kerecha, 26.10.10
+		- Skinner-b4.13164.8\SkinMe\tomQuest2.lua:36: attempt to index field 'WatchFrame' (a boolean value)
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b4.13164.8\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
+		Skinner-b4.13164.8\UtilFuncs.lua:151: in function `checkAndRunAddOn'
+		Skinner-b4.13164.8\AddonFrames.lua:146: in function <Skinner\AddonFrames.lua:101>
+		(tail call): ?:
+
+√	I	UrbanAchiever, reported by Kerecha, 26.10.10
+		- Skinner-b4.13164.8\Skinner.lua:1119: attempt to perform arithmetic on local 'yOfs' (a nil value)
+		Skinner-b4.13164.8\SkinMe\UrbanAchiever.lua:74: in function <Skinner\SkinMe\UrbanAchiever.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b4.13164.8\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
+		Skinner-b4.13164.8\UtilFuncs.lua:151: in function `checkAndRunAddOn'
+		Skinner-b4.13164.8\AddonFrames.lua:146: in function <Skinner\AddonFrames.lua:101>
+		(tail call): ?:
+
+√	I	WatchFrame, reported by Kerecha, 26.101.10
+		- Skinner-b4.13164.8\CharacterFrames2.lua:441: attempt to index field 'WatchFrame' (a boolean value)
+		(tail call): ?:
 
 BETA changes
 ±±±±±±±±±±±±
