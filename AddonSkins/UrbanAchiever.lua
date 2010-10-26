@@ -49,13 +49,22 @@ function Skinner:UrbanAchiever()
 	self:applySkin(uaFrame, true)
 
 -->>-- Category Buttons
-	local bDrop = CopyTable(self.backdrop)
-	bDrop.edgeSize = 8
+	local btn
 	for i = 1, #uaFrame.catButtons do
-		local catBtn = uaFrame.catButtons[i]
-		self:keepFontStrings(catBtn)
-		self:getRegion(catBtn, 3):SetAlpha(1) -- highlight texture
-		self:applySkin(catBtn, nil, nil, nil, nil, bDrop)
+		btn = uaFrame.catButtons[i]
+		self:keepFontStrings(btn)
+		self:getRegion(btn, 3):SetAlpha(1) -- highlight texture
+		self:applySkin{obj=btn, bd=7}
+	end
+	--	Achievement Sort Buttons
+	for _, v in pairs{"name", "points", "completed", "comparison"} do
+		uaFrame.achSort[v]:GetNormalTexture():SetAlpha(0)
+	end
+	--	Achievement Buttons
+	for i = 1, #uaFrame.achButtons do
+		btn = uaFrame.achButtons[i]
+		btn.background:SetAlpha(0)
+		btn.comparison.background:SetAlpha(0)
 	end
 -->>-- Achievement Display Frame
 	skinStatusBar(uaFrame.display.bar)
@@ -70,6 +79,7 @@ function Skinner:UrbanAchiever()
 		tabObj.backdrop:SetAlpha(0)
 		if self.db.profile.TexturedTab then
 			self:applySkin(tabObj, nil, 0, 1)
+			tabObj.ignore = true -- don't resize
 			if i == 1 then
 				self:setActiveTab(tabObj)
 			else

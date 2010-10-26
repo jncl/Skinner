@@ -205,7 +205,7 @@ function Skinner:AddonFrames()
 end
 
 local lodFrames = {
-	"Altoholic_Achievements", "AzCastBarOptions",
+	"Altoholic_Achievements", "Altoholic_Guild", "AzCastBarOptions",
 	"Bagnon", "Bagnon_Options", "Banknon", "BetterBindingFrame",
 	"DockingStation_Config", "Dominos_Config", "DoTimer_Options",
 	"Enchantrix", "EnhTooltip",

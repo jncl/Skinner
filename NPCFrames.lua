@@ -96,9 +96,7 @@ function Skinner:TrainerUI() -- LoD
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
 	-- Magic Button textures
-	btn = "ClassTrainerTrainButton"
-	if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-	if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
+	self:removeMagicBtnTex("ClassTrainerTrainButton")
 	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
 
 end
@@ -314,11 +312,8 @@ function Skinner:ArenaRegistrar()
 	self:keepRegions(PVPBannerFrame, {8, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 29 - 32 are the emblem, 33 - 35 are the text
 	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
 	-- Magic Button textures
-	for _, v in pairs{"Cancel", "Accept"} do
-		btn = "PVPBannerFrame"..v.."Button"
-		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
-	end
+	self:removeMagicBtnTex("PVPBannerFrameCancelButton")
+	self:removeMagicBtnTex("PVPBannerFrameAcceptButton")
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
 	self:keepFontStrings(PVPBannerFrameCustomization1)
 	self:keepFontStrings(PVPBannerFrameCustomization2)
@@ -472,10 +467,7 @@ function Skinner:ReforgingUI() -- LoD
 	self:skinDropDown{obj=ReforgingFrameFilterNewStat}
 	self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 	-- Magic Button textures
-	for _, v in pairs{"Reforge", "Restore"} do
-		btn = "ReforgingFrame"..v.."Button"
-		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
-	end
+	self:removeMagicBtnTex("ReforgingFrameReforgeButton")
+	self:removeMagicBtnTex("ReforgingFrameRestoreButton")
 
 end

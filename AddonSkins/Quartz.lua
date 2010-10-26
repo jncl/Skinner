@@ -17,7 +17,7 @@ function Skinner:Quartz() -- Quartz3
 		for _, child in pairs{UIParent:GetChildren()} do
 			-- if this is a Quartz Mirror/Buff Bar then skin it
 			if child:IsObjectType('StatusBar')
-			and child.timetext
+			and child.__texture
 			then
 				if not Skinner.skinned[child] then
 					child:SetBackdrop(nil)
@@ -36,8 +36,9 @@ function Skinner:Quartz() -- Quartz3
 	Quartz3.db.profile.bordercolor = {c.r, c.g, c.b}
 	Quartz3.db.profile.borderalpha = c.a
 
+	local mod
 	for _, modName in pairs{"Player", "Target", "Focus", "Pet"} do
-		local mod = Quartz3:GetModule(modName, true)
+		mod = Quartz3:GetModule(modName, true)
 		if mod and mod:IsEnabled() then
 			self:applySkin{obj=mod.Bar}
 			mod.Bar.Bar.__texture:SetTexture(self.sbTexture)
@@ -51,27 +52,27 @@ function Skinner:Quartz() -- Quartz3
 			end
 		end
 	end
-	local mod = Quartz3:GetModule("Swing", true)
+	mod = Quartz3:GetModule("Swing", true)
 	if mod and mod:IsEnabled() then
 		self:applySkin(_G["Quartz3SwingBar"])
 		self:getChild(_G["Quartz3SwingBar"], 1).__texture:SetTexture(self.sbTexture)
 	end
-	local mod = Quartz3:GetModule("Latency", true)
+	mod = Quartz3:GetModule("Latency", true)
 	if mod and mod:IsEnabled() then
 		mod.lagbox:SetTexture(self.sbTexture)
 	end
 -->>-- Mirror Status Bars
-	local qMirror = Quartz3:GetModule("Mirror", true)
-	if qMirror then
-		self:SecureHook(qMirror, "ApplySettings", function()
+	mod = Quartz3:GetModule("Mirror", true)
+	if mod and mod:IsEnabled() then
+		self:SecureHook(mod, "ApplySettings", function()
 			skinSBs()
 		end)
 		skinSBs()
 	end
 -->>-- Buff Status Bars
-	local qBuff = Quartz3:GetModule("Buff", true)
-	if qBuff then
-		self:SecureHook(qBuff, "ApplySettings", function()
+	mod = Quartz3:GetModule("Buff", true)
+	if mod and mod:IsEnabled() then
+		self:SecureHook(mod, "ApplySettings", function()
 			skinSBs()
 		end)
 		skinSBs()

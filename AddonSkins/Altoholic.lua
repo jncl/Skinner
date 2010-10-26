@@ -1,5 +1,27 @@
 if not Skinner:isAddonEnabled("Altoholic") then return end
 
+local function skinMenuItms(itmName, cnt)
+
+	local itm
+	for i = 1, cnt do
+		itm = _G[itmName..i]
+		Skinner:keepRegions(itm, {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		Skinner:applySkin(itm)
+	end
+
+end
+local function skinSortBtns(btnName, cnt)
+
+	local btn
+	for i = 1, cnt do
+		btn = _G[btnName..i]
+		if i == 1 then Skinner:moveObject{obj=btn, y=6} end
+		Skinner:adjHeight{obj=btn, adj=3}
+		Skinner:keepRegions(btn, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
+		Skinner:applySkin(btn)
+	end
+
+end
 function Skinner:Altoholic()
 
 -->>-- Main Frame
@@ -25,39 +47,26 @@ function Skinner:Altoholic()
 	-- skin minus/plus buttons
 	for i = 1, 14 do
 		self:skinButton{obj=_G["AltoholicFrameSummaryEntry"..i.."Collapse"], mp2=true}
-		self:skinButton{obj=_G["AltoholicFrameActivityEntry"..i.."Collapse"], mp2=true}
 		self:skinButton{obj=_G["AltoholicFrameBagUsageEntry"..i.."Collapse"], mp2=true}
-		self:skinButton{obj=_G["AltoholicFrameGuildBankTabsEntry"..i.."Collapse"], mp2=true}
-		self:skinButton{obj=_G["AltoholicFrameGuildBankTabsEntry"..i.."UpdateTab"]}
-		self:skinButton{obj=_G["AltoholicFrameGuildMembersEntry"..i.."Collapse"], mp2=true}
+		self:skinButton{obj=_G["AltoholicFrameActivityEntry"..i.."Collapse"], mp2=true}
 		self:skinButton{obj=_G["AltoholicFrameSkillsEntry"..i.."Collapse"], mp2=true}
+		self:skinButton{obj=_G["AltoholicFrameQuestsEntry"..i.."Collapse"], mp2=true}
+		self:skinButton{obj=_G["AltoholicFrameRecipesEntry"..i.."Collapse"], mp2=true}
 	end
 
-	local obj
 -->>-- Summary tab
-	for i = 1, 7 do -- menu items
-		obj = _G["AltoholicTabSummaryMenuItem"..i]
-		self:keepRegions(obj, {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(obj)
-	end
-	for i = 1, 8 do -- sort headers
-		obj = _G["AltoholicTabSummary_Sort"..i]
-		if i == 1 then self:moveObject(obj, nil, nil, "+", 6) end
-		self:adjHeight{obj=obj, adj=3}
-		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
-		self:applySkin(obj)
-	end
+	skinMenuItms("AltoholicTabSummaryMenuItem", 5)
+	skinSortBtns("AltoholicTabSummary_Sort", 8)
 	self:skinButton{obj=AltoholicTabSummaryToggleView, mp2=true, plus=true}
 	self:skinDropDown{obj=AltoholicTabSummary_SelectLocation}
+	self:skinScrollBar{obj=AltoholicFrameSummaryScrollFrame}
+	self:skinScrollBar{obj=AltoholicFrameBagUsageScrollFrame}
+	self:skinScrollBar{obj=AltoholicFrameSkillsScrollFrame}
+	self:skinScrollBar{obj=AltoholicFrameActivityScrollFrame}
+
 -->>-- Characters tab, now a separate addon (r92)
 -->>-- Search Tab, now a separate addon (r92)
--->>-- GuildBank tab
-	self:skinDropDown{obj=AltoholicTabGuildBank_SelectGuild}
-	for i = 1, 6 do
-		obj = _G["AltoholicTabGuildBankMenuItem"..i]
-		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(obj)
-	end
+-->>-- Guild tab, now a separate addon (r97)
 -->>-- Achievements tab, now a separate addon (r83)
 
 -->>--	Tooltip
@@ -91,53 +100,69 @@ function Skinner:Altoholic()
 	for i = 1, 10 do
 		self:skinButton{obj=_G["AltoholicFrameAvailableContentEntry"..i.."Collapse"], mp2=true}
 	end
-	self:addSkinFrame{obj=AltoholicFrameAvailableContent}
 	self:addSkinFrame{obj=AltoAccountSharing}
 
 end
 
 function Skinner:Altoholic_Characters()
 
--->>-- Characters tab
+ 	-- Icons on LHS
+ 	-- Characters
 	self:skinDropDown{obj=AltoholicTabCharacters_SelectRealm}
-	self:skinDropDown{obj=AltoholicTabCharacters_SelectChar}
-	for i = 1, 4 do -- sort headers
-		obj = _G["AltoholicTabCharacters_Sort"..i]
-		if i == 1 then self:moveObject(obj, nil, nil, "+", 6) end
-		self:adjHeight{obj=obj, adj=3}
-		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
-		self:applySkin(obj)
-	end
-	-- Bags View
-	self:skinDropDown{obj=AltoholicFrameContainers_SelectContainerView}
-	self:skinDropDown{obj=AltoholicFrameContainers_SelectRarity}
-	self:skinScrollBar{obj=AltoholicFrameContainersScrollFrame}
-	-- Equipment View
+	skinSortBtns("AltoholicTabCharacters_Sort", 4)
+	-- Equipment
 	self:skinScrollBar{obj=AltoholicFrameEquipmentScrollFrame}
-	-- Quests View
-	self:skinScrollBar{obj=AltoholicFrameQuestsScrollFrame}
-	-- Talents View
-	self:skinScrollBar{obj=AltoholicFrameTalents_ScrollFrame}
-	-- Auctions/Bids View
-	self:skinDropDown{obj=AltoholicFrameAuctionsRightClickMenu}
-	self:skinScrollBar{obj=AltoholicFrameAuctionsScrollFrame}
-	-- Mails View
-	self:skinScrollBar{obj=AltoholicFrameMailScrollFrame}
-	-- Pets/Mounts View
-	self:skinDropDown{obj=AltoholicFramePets_SelectPetView}
-	self:makeMFRotatable(AltoholicFramePetsNormal_ModelFrame)
-	self:skinScrollBar{obj=AltoholicFramePetsAllInOneScrollFrame}
-	-- Factions View
+	-- Reputations
 	self:skinDropDown{obj=AltoholicFrameReputations_SelectFaction}
 	self:skinScrollBar{obj=AltoholicFrameReputationsScrollFrame}
-	-- Tokens View
+	-- Currency
 	self:skinDropDown{obj=AltoholicFrameCurrencies_SelectCurrencies}
 	self:skinScrollBar{obj=AltoholicFrameCurrenciesScrollFrame}
-	-- Cooking/FirstAid/Prof1/Prof2 View
+
+	-- Icons at the Top in  Character View
+	-- Containers
+	self:skinScrollBar{obj=AltoholicFrameContainersScrollFrame}
+	-- Quests
+	self:skinScrollBar{obj=AltoholicFrameQuestsScrollFrame}
+	-- Talents/Glyphs
+	self:skinScrollBar{obj=AltoholicFrameTalents_ScrollFrame}
+	-- AuctionsHose
+	self:skinScrollBar{obj=AltoholicFrameAuctionsScrollFrame}
+	-- Mailbox
+	self:skinScrollBar{obj=AltoholicFrameMailScrollFrame}
+	-- SpellBook/Mounts/Companions/Glyphs
+	for i = 1, 12 do
+		btnName = "AltoholicFrameSpellbook_SpellIcon"..i
+		btn = _G[btnName]
+		btn:DisableDrawLayer("BACKGROUND")
+		btn:DisableDrawLayer("BORDER")
+		_G[btnName.."SlotFrame"]:SetAlpha(0)
+		btn.UnlearnedFrame:SetAlpha(0)
+		btn.TrainFrame:SetAlpha(0)
+		btn.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
+		btn.SeeTrainerString:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
+	local btn, btnName
+	local function clrTxt()
+
+		for i = 1, 12 do
+			btnName = "AltoholicFrameSpellbook_SpellIcon"..i
+			btn = _G[btnName]
+			btn.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
+			btn.SpellSubName:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
+
+	end
+	-- hook this to colour Spell text
+	self:SecureHook(Altoholic.Spellbook, "Update", function(this)
+		clrTxt()
+	end)
+	-- hook this to colour Glyph text
+	self:SecureHook(Altoholic.Spellbook, "UpdateKnownGlyphs", function(this)
+		clrTxt()
+	end)
+	-- Professions
 	self:skinButton{obj=AltoholicFrameRecipesInfo_ToggleAll, mp2=true}
-	self:skinDropDown{obj=AltoholicFrameRecipesInfo_SelectColor}
-	self:skinDropDown{obj=AltoholicFrameRecipesInfo_SelectSubclass}
-	self:skinDropDown{obj=AltoholicFrameRecipesInfo_SelectInvSlot}
 	self:skinScrollBar{obj=AltoholicFrameRecipesScrollFrame}
 	
 end
@@ -150,19 +175,9 @@ function Skinner:Altoholic_Search()
 	self:skinDropDown{obj=AltoholicTabSearch_SelectRarity}
 	self:skinDropDown{obj=AltoholicTabSearch_SelectSlot}
 	self:skinDropDown{obj=AltoholicTabSearch_SelectLocation}
-	for i = 1, 15 do
-		obj = _G["AltoholicTabSearchMenuItem"..i]
-		self:keepRegions(obj, {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(obj)
-	end
-	for i = 1, 8 do
-		obj = _G["AltoholicTabSearch_Sort"..i]
-		if i == 1 then self:moveObject(obj, nil, nil, "+", 4) end
-		self:adjHeight{obj=obj, adj=2}
-		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 6 is the highlight, 4 is the text & 5 is the arrow
-		self:applySkin(obj)
-	end
 	self:skinScrollBar{obj=AltoholicFrameSearchScrollFrame}
+	skinMenuItms("AltoholicTabSearchMenuItem", 15)
+	skinSortBtns("AltoholicTabSearch_Sort", 8)
 
 end
 
@@ -170,11 +185,17 @@ end
 function Skinner:Altoholic_Achievements()
 
 	self:skinScrollBar{obj=AltoholicAchievementsMenuScrollFrame}
-	for i = 1, 15 do
-		obj = _G["AltoholicTabAchievementsMenuItem"..i]
-		self:keepRegions(obj , {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:applySkin(obj)
-	end
 	self:skinScrollBar{obj=AltoholicFrameAchievementsScrollFrame}
+	skinMenuItms("AltoholicTabAchievementsMenuItem", 15)
+
+end
+
+function Skinner:Altoholic_Guild()
+
+	skinMenuItms("AltoholicTabGuildMenuItem", 2)
+	for i = 1, 14 do
+		self:skinButton{obj=_G["AltoholicFrameGuildMembersEntry"..i.."Collapse"], mp2=true}
+	end
+	skinSortBtns("AltoholicTabGuild_Sort", 5)
 
 end

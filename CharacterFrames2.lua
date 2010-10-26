@@ -154,11 +154,10 @@ function Skinner:TradeSkillUI() -- LoD
 	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
 	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-4}
 	-- Magic Button textures
-	for _, v in pairs{"CreateAll", "Cancel", "Create", "ViewGuildCrafters"} do
-		btn = "TradeSkill"..v.."Button"
-		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
-	end
+	self:removeMagicBtnTex("TradeSkillCreateAllButton")
+	self:removeMagicBtnTex("TradeSkillCancelButton")
+	self:removeMagicBtnTex("TradeSkillCreateButton")
+	self:removeMagicBtnTex("TradeSkillViewGuildCraftersButton")
 	self:addSkinFrame{obj=TradeSkillGuildFrameContainer, ft=ftype}
 	self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, x1=7, y1=-7, x2=-7, y2=7}
 
@@ -225,9 +224,7 @@ function Skinner:QuestLog()
 	self:addButtonBorder{obj=QuestLogFrameShowMapButton, relTo=QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
 	-- Magic Button textures
-	btn = "QuestLogFrameCompleteButton"
-	if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-	if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
+	self:removeMagicBtnTex("QuestLogFrameCompleteButton")
 
 -->>-- QuestLogDetail Frame
 	QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -668,11 +665,9 @@ function Skinner:GuildUI() -- LoD
 	GuildFactionBarRight:SetAlpha(0)
 	GuildFactionBarMiddle:SetAlpha(0)
 	-- Magic Button textures
-	for _, v in pairs{"AddMember", "Control", "ViewLog"} do
-		btn = "Guild"..v.."Button"
-		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
-	end
+	self:removeMagicBtnTex("GuildAddMemberButton")
+	self:removeMagicBtnTex("GuildControlButton")
+	self:removeMagicBtnTex("GuildViewLogButton")
 	-- GuildMain Frame
 	GuildPerksToggleButton:DisableDrawLayer("BACKGROUND")
 	GuildNewPerksFrame:DisableDrawLayer("BACKGROUND")

@@ -345,6 +345,14 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 
 end
 
+function Skinner:removeMagicBtnTex(btn)
+
+	-- Magic Button textures
+	if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
+	if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
+
+end
+
 function Skinner:resizeTabs(frame)
 
 	local fN = frame:GetName()

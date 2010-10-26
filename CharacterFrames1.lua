@@ -150,11 +150,8 @@ function Skinner:PVPFrame()
 	PVPFrameConquestBarBorder:Hide()
 	self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
 	-- Magic Button textures
-	for _, v in pairs{"Left", "Right"} do
-		btn = "PVPFrame"..v.."Button"
-		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
-	end
+	self:removeMagicBtnTex("PVPFrameLeftButton")
+	self:removeMagicBtnTex("PVPFrameRightButton")
 -->>-- Honor frame
 	self:keepFontStrings(PVPFrame.panel1)
 	self:skinScrollBar{obj=PVPFrame.panel1.bgTypeScrollFrame}
@@ -164,9 +161,7 @@ function Skinner:PVPFrame()
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
 	-- Magic Button textures
-	btn = "PVPHonorFrameWarGameButton"
-	if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-	if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
+	self:removeMagicBtnTex("PVPHonorFrameWarGameButton")
 -->>-- Conquest frame
 	self:keepFontStrings(PVPFrame.panel2)
 	PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
@@ -428,11 +423,9 @@ function Skinner:TalentUI() -- LoD
 		end
 	end
 	-- Magic Button textures
-	for _, v in pairs{"Reset", "Learn", "ToggleSummaries"} do
-		btn = "PlayerTalentFrame"..v.."Button"
-		if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
-		if _G[btn.."_RightSeparator"] then _G[btn.."_RightSeparator"]:SetAlpha(0) end
-	end
+	self:removeMagicBtnTex("PlayerTalentFrameResetButton")
+	self:removeMagicBtnTex("PlayerTalentFrameLearnButton")
+	self:removeMagicBtnTex("PlayerTalentFrameToggleSummariesButton")
 -->>-- Pet Talents Panel
 	PlayerTalentFramePetPanel:DisableDrawLayer("BORDER")
 	PlayerTalentFramePetModelBg:Hide()

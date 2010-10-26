@@ -33,6 +33,10 @@ function Skinner:MrTrader_SkillWindow()
 	for i = 1, 10 do
 		_G["MRTSkillButton"..i.."Border"]:SetBackdrop(nil)
 	end
+	-- Magic Button textures
+	self:removeMagicBtnTex("MRTSkillViewCraftersButton")
+	self:removeMagicBtnTex("MRTSkillCreateButton")
+	self:removeMagicBtnTex("MRTSkillCreateAllButton")
 
 -->>-- New Category frame
 	self:skinEditBox{obj=MRTNewCategoryFrameCategoryName, x=-3}
