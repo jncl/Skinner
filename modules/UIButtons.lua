@@ -162,26 +162,26 @@ function module:skinButton(opts)
 			y1 = opts.y1 or bW == 32 and -6 or -4
 			x2 = opts.x2 or bW == 32 and -6 or -4
 			y2 = opts.y2 or bW == 32 and 6 or 4
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[5]}, x1=x1, y1=y1, x2=x2, y2=y2}
+			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	elseif opts.cb2 then -- it's pretending to be a close button (e.g. ArkInventory/Recount/Outfitter)
 		x1 = opts.x1 or 0
 		y1 = opts.y1 or 0
 		x2 = opts.x2 or 0
 		y2 = opts.y2 or 0
-		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[5]}, x1=x1, y1=y1, x2=x2, y2=y2}
+		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		btn = Skinner.sBut[opts.obj]
 		btn:SetNormalFontObject(module.fontX)
 		btn:SetText(module.mult)
 	elseif opts.cb3 then -- it's a small blue close button
 		Skinner:adjWidth{obj=opts.obj, adj=-4}
 		Skinner:adjHeight{obj=opts.obj, adj=-4}
-		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[5], bba=0}, x1=2, y1=1, x2=2, y2=1}
+		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5, bba=0}, x1=2, y1=1, x2=2, y2=1}
 		btn = Skinner.sBut[opts.obj]
 		btn:SetNormalFontObject(module.fontSBX)
 		btn:SetText(module.mult)
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
-		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[6]}}
+		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}}
 		btn = Skinner.sBut[opts.obj]
 		btn:SetAllPoints(opts.obj:GetNormalTexture())
 		btn:SetNormalFontObject(module.fontP)
@@ -191,12 +191,12 @@ function module:skinButton(opts)
 		opts.obj:SetText(opts.plus and module.plus or module.minus)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		if not opts.as then
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[6]}, sap=true}
+			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}, sap=true}
 			module:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
 				module:checkTex{obj=this, nTex=nTex, mp2=true}
 			end)
 		else -- just skin it (used by Waterfall & tomQuest2)
-			Skinner:applySkin{obj=opts.obj, bd=Skinner.Backdrop[6]}
+			Skinner:applySkin{obj=opts.obj, bd=6}
 			opts.obj.skin = true
 		end
 	elseif opts.ob then -- it's another type of button, text supplied (e.g. beql minimize)
@@ -210,10 +210,10 @@ function module:skinButton(opts)
 			y1 = opts.y1 or bW == 32 and -6 or -4
 			x2 = opts.x2 or bW == 32 and -6 or -4
 			y2 = opts.y2 or bW == 32 and 6 or 4
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=Skinner.Backdrop[5]}, x1=x1, y1=y1, x2=x2, y2=y2}
+			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
-		aso = {bd=Skinner.Backdrop[bH > 18 and 5 or 6]} -- use narrower backdrop if required
+		aso = {bd=bH > 18 and 5 or 6} -- use narrower backdrop if required
 		if not opts.as then
 			x1 = opts.x1 or 1
 			y1 = opts.y1 or -1

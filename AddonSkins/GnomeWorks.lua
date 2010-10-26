@@ -35,7 +35,7 @@ function Skinner:GnomeWorks() --r45
 			for _, state in pairs{"Disabled", "Up", "Down"} do
 				btn.state[state]:DisableDrawLayer("BACKGROUND")
 			end
-			self:applySkin{obj=btn, bd=Skinner.Backdrop[6]}
+			self:applySkin{obj=btn, bd=6}
 			return btn
 		end, true)
 	end

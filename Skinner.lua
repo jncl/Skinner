@@ -710,7 +710,7 @@ local function __applySkin(opts)
 	if opts.kfs then Skinner:keepFontStrings(opts.obj) end
 
 	-- setup the backdrop
-	opts.obj:SetBackdrop(opts.bd or Skinner.Backdrop[1])
+	opts.obj:SetBackdrop(Skinner.Backdrop[opts.bd or 1])
 	if not opts.ebc then
 		-- colour the backdrop if required
 		local r, g, b, a = unpack(Skinner.bColour)

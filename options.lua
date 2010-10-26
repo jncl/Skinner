@@ -74,7 +74,7 @@ function Skinner:Defaults()
 		VehicleMenuBar	= true,
 		WatchFrame		= {skin = false, popups = true},
 		GearManager		= true,
-		CompactFrames	= true,
+		CompactFrames	= false,
 		AlertFrames		= true,
 		ArchaeologyUI	= true,
 		GuildUI			= true,

@@ -14,7 +14,7 @@ function Skinner:FriendsFrame()
 	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
 	-- Add a skin frame to include the icon at the front
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
-	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-24}
+	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=3, ng=true, ebc=true}, x1=-24}
 	self:skinFFToggleTabs("FriendsTabHeaderTab")
 	-- adjust width of FFFSF so it looks right (too thin by default)
 	FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
@@ -139,7 +139,7 @@ function Skinner:TradeSkillUI() -- LoD
 	self:moveObject{obj=obj, x=-2}
 	-- Add a skin frame to include the icon at the front
 	self:skinEditBox{obj=TradeSkillFrameSearchBox, regs={9}, noSkin=true} -- region 9 is icon
-	self:addSkinFrame{obj=TradeSkillFrameSearchBox, nb=true, aso={bd=self.Backdrop[3], ng=true, ebc=true}, x1=-6}
+	self:addSkinFrame{obj=TradeSkillFrameSearchBox, nb=true, aso={bd=3, ng=true, ebc=true}, x1=-6}
 	self:skinButton{obj=TradeSkillFilterButton}
 	self:addButtonBorder{obj=TradeSkillLinkButton, x1=1, y1=-5, x2=-3, y2=2}
 	self:removeRegions(TradeSkillExpandButtonFrame)
@@ -287,13 +287,13 @@ function Skinner:RaidUI() -- LoD
 
 	-- Raid Groups
 	for i = 1, MAX_RAID_GROUPS do
-		self:addSkinFrame{obj=_G["RaidGroup"..i], ft=ftype, kfs=true}
+		self:addSkinFrame{obj=_G["RaidGroup"..i], ft=ftype, kfs=true, x1=-2, y1=2, x2=1, y2=-1}
 	end
 	-- Raid Group Buttons
 	for i = 1, MAX_RAID_GROUPS * 5 do
 		btn = _G["RaidGroupButton"..i]
 		self:removeRegions(btn, {4})
-		self:addSkinFrame{obj=btn, ft=ftype, aso={bd=self.Backdrop[5]}, y1=1, y2=-3}
+		self:addSkinFrame{obj=btn, ft=ftype, aso={bd=5}, x1=-2, y1=2, x2=1, y2=-1}
 	end
 	-- Raid Class Tabs (side)
 	for i = 1, MAX_RAID_CLASS_BUTTONS do
@@ -321,43 +321,30 @@ function Skinner:Buffs()
 
 	self:add2Table(self.charKeys1, "Buffs")
 
-	local function skinBuffs()
+	if self.modBtnBs then
+		local function skinBuffs()
 
-		local btn
-		for i= 1, BUFF_MAX_DISPLAY do
-			btn = _G["BuffButton"..i]
-			if btn and not btn.sknrBdr then
-				-- add button borders
-				Skinner:addButtonBorder{obj=btn}
+			local btn
+			for i= 1, BUFF_MAX_DISPLAY do
+				btn = _G["BuffButton"..i]
+				if btn and not btn.sknrBdr then
+					-- add button borders
+					Skinner:addButtonBorder{obj=btn}
+				end
 			end
-		end
 
-		-- Debuffs already have a coloured border
---[=[
-		for i= 1, DEBUFF_MAX_DISPLAY do
-			local db = _G["DebuffButton"..i]
-			if db and not db.sknrBdr then
-				-- add button borders
-				Skinner:addButtonBorder{obj=db}
-			end
 		end
---]=]
+		-- hook this to skin new Buffs
+		self:SecureHook("BuffFrame_Update", function()
+			skinBuffs()
+		end)
+		-- skin any current Buffs/Debuffs
+		skinBuffs()
 
 	end
 
-	self:SecureHook("BuffFrame_Update", function()
-		skinBuffs()
-	end)
-
-	-- skin any current Buffs/Debuffs
-	skinBuffs()
-
+	-- Debuffs already have a coloured border
 	-- Temp Enchants already have a coloured border
---[=[
-	-- add button borders to Main and Off Hand Enchant buttons (Poisons/Oils etc)
-	self:addButtonBorder{obj=TempEnchant1, ofs=4} -- allow for border
-	self:addButtonBorder{obj=TempEnchant2, ofs=4} -- allow for border
---]=]
 
 -->>-- Consolidated Buffs
 	-- add button borders
@@ -537,23 +524,80 @@ function Skinner:CompactFrames()
 		_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
 		_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
 	end
-	self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+	self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
 
--->>-- Compact Raid Group Frame(s)
+	local function skinUnit(unit)
+
+		unit:DisableDrawLayer("BACKGROUND")
+		unit:DisableDrawLayer("BORDER")
+
+	end
+	local function skinGrp(grp)
+
+		local grpName = grp:GetName()
+
+		self:keepFontStrings(grp.borderFrame)
+		for i = 1, MEMBERS_PER_RAID_GROUP do
+			skinUnit(_G[grpName.."Member"..i])
+		end
+
+	end
+	-- hook this to skin any new CompactRaidGroup(s)
 	self:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
+		self:Debug("CRG_GFG: [%s]", ...)
 		local frame, didCreate = self.hooks.CompactRaidGroup_GenerateForGroup(...)
-		frame.borderFrame:DisableDrawLayer("ARTWORK")
-		self:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=-11, x2=-3, y2=3}
+		if didCreate then skinGrp(frame) end
 		return frame, didCreate
 	end, true)
-
--->>-- Compact Raid Unit Frame(s)
+	-- skin any existing group(s)
+	for _, v in pairs(CompactRaidFrameContainer.frameUpdateList.group) do
+		skinGrp(v)
+	end
+	-- hook this to skin any new CompactRaidUnitFrame(s)
 	self:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
+		self:Debug("CRG_GFG: [%s]", ...)
 		local frame = self.hooks.CompactRaidFrameContainer_GetUnitFrame(...)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame:DisableDrawLayer("BORDER")
+		skinUnit(frame)
 		return frame
 	end, true)
+	-- skin any existing unit(s)
+	for _, v in pairs(CompactRaidFrameContainer.frameUpdateList.normal) do
+		skinUnit(v)
+	end
+	for _, v in pairs(CompactRaidFrameContainer.frameUpdateList.mini) do
+		skinUnit(v)
+	end
+
+-->>-- Compact RaidFrame Container
+	self:addSkinFrame{obj=CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-5, y2=4}
+
+-->>-- Compact RaidFrame Manager
+	local function skinButton(btn)
+
+		self:removeRegions(btn, {1, 2, 3})
+		self:skinButton{obj=btn}
+
+	end
+	-- Buttons
+	for _, v in pairs{"Tank", "Healer", "Damager"} do
+		skinButton(_G["CompactRaidFrameManagerDisplayFrameFilterRole"..v])
+	end
+	for i = 1, 8 do
+		skinButton(_G["CompactRaidFrameManagerDisplayFrameFilterGroup"..i])
+	end
+	skinButton(CompactRaidFrameManagerDisplayFrameLockedModeToggle)
+	skinButton(CompactRaidFrameManagerDisplayFrameHiddenModeToggle)
+	-- Leader Options
+	skinButton(CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton)
+	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
+	skinButton(CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck)
+	skinButton(CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll)
+	-- Display Frame
+	self:keepFontStrings(CompactRaidFrameManagerDisplayFrame)
+	-- Resize Frame
+	self:addSkinFrame{obj=CompactRaidFrameManagerContainerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
+	-- Raid Frame Manager Frame
+	self:addSkinFrame{obj=CompactRaidFrameManager, ft=ftype, kfs=true}
 
 end
 
