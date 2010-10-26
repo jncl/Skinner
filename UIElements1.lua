@@ -233,13 +233,10 @@ function Skinner:ChatTabs()
 
 	-- hook this to handle Tab alpha changes as they have been reparented
 	self:SecureHook("FCFTab_UpdateAlpha", function(this)
+--		print("FCFTab_UpdateAlpha", this, this:GetName())
 		local tab = _G[this:GetName().."Tab"]
 		local tabSF = self.skinFrame[tab]
-		if tab.hasBeenFaded then
-			tabSF:SetAlpha(tab.mouseOverAlpha)
-		else
-			tabSF:SetAlpha(tab.noMouseAlpha)
-		end
+		tabSF:SetAlpha(tab:GetAlpha())
 	end)
 
 	for i = 1, NUM_CHAT_WINDOWS do
