@@ -692,7 +692,10 @@ function Skinner:GuildUI() -- LoD
 			btn.lock:SetParent(btn.sknrBdr)
 		end
 	end
-	self:keepRegions(GuildFrame, {8, 19, 20, 21}) -- regions 8, 19, 20 are text, 21 is tabard emblem
+	self:keepRegions(GuildFrame, {8, 19, 20, 18, 21, 22}) -- regions 8, 19, 20 are text, 18, 21 & 22 are tabard
+	self:moveObject{obj=GuildFrameTabardBackground, x=6, y=-10}
+	self:moveObject{obj=GuildFrameTabardEmblem, x=6, y=-10}
+	self:moveObject{obj=GuildFrameTabardBorder, x=6, y=-10}
 	self:addSkinFrame{obj=GuildFrame, ft=ftype, ri=true, x1=-5, y1=2, x2=1, y2=-6}
 	-- Roster Panel
 	self:skinDropDown{obj=GuildRosterViewDropdown}
