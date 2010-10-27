@@ -23,65 +23,8 @@ Legend:
 ?		- Getting some buggy ghost graphics from buttons (the x button from toastframe for instance has a buggy border always showing even when the frame isn't there) the info popup about pallys holypower also generates them.
 		- If NOT using UIButton skinning, what can be done about this ?
 
-√	N	Flightmap, reported by Curace, 26.10.10
-
-√	I	Quartz, reported by gizmo1972,, 26.10.10
-		- Skinner-b4.13164.8\SkinMe\Quartz.lua:24: attempt to index field '__texture' (a nil value)
-		Skinner-b4.13164.8\SkinMe\Quartz.lua:69: in function <Skinner\SkinMe\Quartz.lua:3>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.13164.8\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-b4.13164.8\UtilFuncs.lua:151: in function `checkAndRunAddOn'
-		Skinner-b4.13164.8\AddonFrames.lua:146: in function <Skinner\AddonFrames.lua:101>
-		(tail call): ?:
-
-√	N	Altoholic, reported by gizmo1972, 26.10.10
-
-√	I	ChatTabs, reported by essmene, 26.10.10
-		- Skinner-b4.13164.7\UIElements1.lua:241: Usage: <unnamed>:SetAlpha(alpha 0 to 1)
-		Skinner-b4.13164.7\UIElements1.lua:241: in function <Skinner\UIElements1.lua:235>
-		(tail call): ?:
-		<in C code>: in function `FCFTab_UpdateAlpha'
-		Interface\FrameXML\FloatingChatFrame.lua:2088: in function `FCFDock_UpdateTabs':
-		Interface\FrameXML\FloatingChatFrame.lua:1362: in function <Interface\FrameXML\FloatingChatFrame.lua:1361>:
-		Blizzard_CombatLog\Blizzard_CombatLog.lua:3549: in function `FCF_DockUpdate'
-		Interface\FrameXML\UIParent.lua:1843: in function `UIParentManageFramePositions':
-		Interface\FrameXML\UIParent.lua:1207: in function <Interface\FrameXML\UIParent.lua:1194>:
-		<in C code>: in function `SetAttribute'
-		Interface\FrameXML\UIParent.lua:1850: in function <Interface\FrameXML\UIParent.lua:1848>:
-		<in C code>: in function `UIParent_ManageFramePositions'
-		Interface\FrameXML\MainMenuBar.lua:169: in function <Interface\FrameXML\MainMenuBar.lua:150>:
-		<in C code>: in function `MainMenuBarVehicleLeaveButton_Update'
-		Interface\FrameXML\MainMenuBar.lua:147: in function <Interface\FrameXML\MainMenuBar.lua:146>:
-
-√	I	MrTrader, reported by X-buzz, 26.10.10
-		- Magic Button textures
-
-√	I	GuildUI, reported by baiya, 26.10.10
-		- I don't know if already someone came up with this, but can you pls change the GuildUI skin so the full guildcolors are shown, not only the icon?
-
-√	I	tomQuest2, reported by Kerecha, 26.10.10
-		- Skinner-b4.13164.8\SkinMe\tomQuest2.lua:36: attempt to index field 'WatchFrame' (a boolean value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.13164.8\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-b4.13164.8\UtilFuncs.lua:151: in function `checkAndRunAddOn'
-		Skinner-b4.13164.8\AddonFrames.lua:146: in function <Skinner\AddonFrames.lua:101>
-		(tail call): ?:
-
-√	I	UrbanAchiever, reported by Kerecha, 26.10.10
-		- Skinner-b4.13164.8\Skinner.lua:1119: attempt to perform arithmetic on local 'yOfs' (a nil value)
-		Skinner-b4.13164.8\SkinMe\UrbanAchiever.lua:74: in function <Skinner\SkinMe\UrbanAchiever.lua:3>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.13164.8\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-b4.13164.8\UtilFuncs.lua:151: in function `checkAndRunAddOn'
-		Skinner-b4.13164.8\AddonFrames.lua:146: in function <Skinner\AddonFrames.lua:101>
-		(tail call): ?:
-
-√	I	WatchFrame, reported by Kerecha, 26.101.10
-		- Skinner-b4.13164.8\CharacterFrames2.lua:441: attempt to index field 'WatchFrame' (a boolean value)
-		(tail call): ?:
+√	N	FishingBuddy -- OutfitDisplay, requested by mkcorp, 27.10.10
+√	N	FishingBuddy -- Tracking, requested by mkcorp, 27.10.10
 
 BETA changes
 ±±±±±±±±±±±±
