@@ -1,4 +1,8 @@
+.DS_Store
+libs/
+
 # ignore SkinMe skin files
 /SkinMe/*.lua
+
 # ignore .ackrc
 .ackrc
