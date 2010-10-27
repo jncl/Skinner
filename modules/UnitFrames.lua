@@ -295,9 +295,10 @@ local function skinArenaF()
 	if db.arena
 	and not isSkinned["Arena"]
 	then
+		local aF, aPF, cBar
 		Skinner:SecureHook("Arena_LoadUI", function()
 			for i = 1, MAX_ARENA_ENEMIES do
-				local aF = "ArenaEnemyFrame"..i
+				aF = "ArenaEnemyFrame"..i
 				_G[aF.."Background"]:SetTexture(nil)
 				_G[aF.."Texture"]:SetTexture(nil)
 				_G[aF.."Status"]:SetTexture(nil)
@@ -308,7 +309,7 @@ local function skinArenaF()
 				Skinner:addSkinFrame{obj=_G[aF], ft=ftype, noBdr=true, aso=aso, x1=-3, x2=3, y2=-6}
 
 				-- pet frame
-				local aPF = aF.."PetFrame"
+				aPF = aF.."PetFrame"
 				_G[aPF.."Flash"]:SetTexture(nil)
 				_G[aPF.."Texture"]:SetTexture(nil)
 				-- status bar
@@ -318,7 +319,7 @@ local function skinArenaF()
 				Skinner:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
 
 				-- casting bar
-				local cBar = aF.."CastingBar"
+				cBar = aF.."CastingBar"
 				Skinner:adjHeight{obj=_G[cBar], adj=2}
 				Skinner:moveObject{obj=_G[cBar.."Text"], y=-1}
 				_G[cBar.."Flash"]:SetAllPoints()

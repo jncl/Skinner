@@ -1491,7 +1491,6 @@ function Skinner:Options()
 	-- build the table used by the chatCommand function
 	local optCheck = {}
 	for _, v in ipairs(optNames) do
---		self:Debug("options: [%s]", v)
 		local optTitle = (" "):join(aName, v)
 		ACR:RegisterOptionsTable(optTitle, optTables[v])
 		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)

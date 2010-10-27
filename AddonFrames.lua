@@ -169,7 +169,6 @@ function Skinner:AddonFrames()
 
 	-- skin library objects
 	for k, v in pairs(self.libsToSkin) do
---		self:Debug("skin Libs:[%s, %s]", k, v)
 		if LibStub(k, true) then
 			if self[v] then self:checkAndRun(v) -- not an addon in its own right
 			else
@@ -272,7 +271,6 @@ function Skinner:LoDFrames(addon)
 	-- load library skins here as well, they may only get loaded by a LoD AddOn
 	-- e.g. Dewdrop by ArkInventory when an AddonLoader is used
 	for k, v in pairs(self.libsToSkin) do
---		self:Debug("skin Lib:[%s, %s]", k, v)
 		if LibStub(k, true) then
 			if self[v] then self:checkAndRun(v) end
 		end
@@ -301,7 +299,7 @@ function Skinner:AUCTION_HOUSE_SHOW()
 end
 
 function Skinner:TRADE_SKILL_SHOW()
-	self:Debug("TRADE_SKILL_SHOW")
+--	self:Debug("TRADE_SKILL_SHOW")
 
 	self:checkAndRun("TradeSkillUI") -- cf2
 	-- trigger this when TradeSkill loads otherwise it doesn't get loaded

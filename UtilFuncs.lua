@@ -104,7 +104,6 @@ function Skinner:add2Table(table, value)
 end
 
 function Skinner:checkAndRun(funcName, quiet)
---	self:Debug("checkAndRun:[%s]", funcName or "<Anon>")
 
 	if type(self[funcName]) == "function" then
 		return safecall(funcName, nil, quiet)
@@ -120,8 +119,6 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 	if not addonFunc then addonFunc = addonName end
 
---	  self:Debug("checkAndRunAddOn:[%s, %s, %s, %s, %s]", addonName, LoD, IsAddOnLoaded(addonName), IsAddOnLoadOnDemand(addonName), type(self[addonFunc]))
-
 	-- don't skin any Addons whose skins are flagged as disabled
 	if self.db.profile.DisabledSkins[addonName] then
 		if self.db.profile.Warnings then
@@ -133,12 +130,10 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 	if not IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
 		if IsAddOnLoadOnDemand(addonName) and not LoD then
---			self:Debug(addonName, "is managed by a LoadManager, converting to LoD status")
 			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
 		-- Nil out loaded Skins for Addons that aren't loaded
 		elseif self[addonFunc] then
 			self[addonFunc] = nil
---			self:Debug(addonFunc, "skin unloaded as Addon not loaded")
 		end
 	else
 		-- check to see if AddonSkin is loaded when Addon is loaded
@@ -147,7 +142,6 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the SkinMe directory")
 			end
 		elseif type(self[addonFunc]) == "function" then
---			self:Debug("checkAndRunAddOn#2:[%s, %s]", addonFunc, self[addonFunc])
 			safecall(addonFunc, LoD)
 		else
 			if self.db.profile.Warnings then
@@ -181,7 +175,6 @@ function Skinner:findFrame(height, width, children)
 		if obj:IsObjectType("Frame") then
 			if obj:GetName() == nil then
 				if obj:GetParent() == nil then
---					self:Debug("UnNamed Frame's H, W: [%s, %s]", obj:GetHeight(), obj:GetWidth())
 					if ceil(obj:GetHeight()) == height and ceil(obj:GetWidth()) == width then
 						kids = {}
 						for _, child in pairs{obj:GetChildren()} do
@@ -216,8 +209,6 @@ function Skinner:findFrame2(parent, objType, ...)
 
 	if not parent then return end
 
---	self:Debug("findFrame2: [%s, %s, %s, %s, %s, %s, %s]", parent, objType, select(1, ...) or nil, select(2, ...) or nil, select(3, ...) or nil, select(4, ...) or nil, select(5, ...) or nil)
-
 	local frame, point, relativeTo, relativePoint, xOfs, yOfs, height, width
 
 	for _, child in pairs{parent:GetChildren()} do
@@ -228,7 +219,6 @@ function Skinner:findFrame2(parent, objType, ...)
 					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
 					xOfs = ceil(xOfs)
 					yOfs = ceil(yOfs)
---					self:Debug("UnNamed Object's Point: [%s, %s, %s, %s, %s]", point, relativeTo, relativePoint, xOfs, yOfs)
 					if	point		  == select(1, ...)
 					and relativeTo	  == select(2, ...)
 					and relativePoint == select(3, ...)
@@ -240,7 +230,6 @@ function Skinner:findFrame2(parent, objType, ...)
 				else
 					-- base checks on size
 					height, width = ceil(child:GetHeight()), ceil(child:GetWidth())
---					self:Debug("UnNamed Object's H, W: [%s, %s]", height, width)
 					if	height == select(1, ...)
 					and width  == select(2, ...) then
 						frame = child
@@ -259,8 +248,6 @@ function Skinner:findFrame3(name, element)
 --@alpha@
 	assert(name, "Unknown object\n"..debugstack())
 --@end-alpha@
-
---	self:Debug("findFrame3: [%s, %s]", name, element)
 
 	local frame
 
@@ -320,7 +307,6 @@ function Skinner:isDropDown(obj)
 end
 
 function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
---	self:Debug("isVersion: [%s, %s, %s]", addonName, verNoReqd, actualVerNo)
 
 	local hasMatched = false
 
@@ -360,7 +346,6 @@ function Skinner:resizeTabs(frame)
 	local nT
 	-- get the number of tabs
 	nT = ((frame == CharacterFrame and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
---	self:Debug("rT: [%s, %s]", tabName, nT)
 	-- accumulate the tab text widths
 	local tTW = 0
 	for i = 1, nT do
@@ -374,7 +359,6 @@ function Skinner:resizeTabs(frame)
 	local tlw = (tTW > fW and (40 - (tTW - fW) / nT) / 2 or 20)
 	-- set minimum left width
 	tlw = ("%.2f"):format(tlw >= 6 and tlw or 5.5)
---	self:Debug("resizeTabs: [%s, %s, %s, %s, %s]", fN, nT, tTW, fW, tlw)
 	-- update each tab
 	for i = 1, nT do
 		_G[tabName..i.."Left"]:SetWidth(tlw)

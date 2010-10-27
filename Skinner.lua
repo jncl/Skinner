@@ -32,9 +32,7 @@ do
 	Skinner.isCata = ARCHAEOLOGY_RANK_TOOLTIP and true or false
 end
 
-local prdb
 function Skinner:OnInitialize()
---	self:Debug("OnInitialize")
 
 --@debug@
 	self:Print("Debugging is enabled")
@@ -254,7 +252,6 @@ function Skinner:OnInitialize()
 end
 
 function Skinner:OnEnable()
---	self:Debug("OnEnable")
 
 	-- add support for UIButton skinning
 	local btnModDB = self.db:GetNamespace("UIButtons", true)
@@ -327,7 +324,6 @@ do
 	}
 end
 function Skinner:ReloadAddon(callback)
---	self:Debug("ReloadAddon:[%s]", callback)
 
 	StaticPopup_Show("Skinner_Reload_UI")
 
@@ -636,7 +632,6 @@ function Skinner:applyGradient(obj, fh, invert, rotate)
 		-- making sure that it isn't greater than the frame height
 		fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
 	end
---	self:Debug("aG Fade Height: [%s, %s, %s, %s, %s]", obj:GetName(), obj:GetHeight(), fh, invert, rotate)
 
 	obj.tfade:ClearAllPoints()
 	if not invert -- fade from top
@@ -908,7 +903,6 @@ function Skinner:keepFontStrings(obj, hide)
 
 --	if not frame then return end
 
---	self:Debug("keepFontStrings: [%s]", obj:GetName() or "???")
 	for _, reg in pairs{obj:GetRegions()} do
 		if not reg:IsObjectType("FontString") then
 			if not hide then reg:SetAlpha(0) else reg:Hide() end
@@ -938,13 +932,11 @@ function Skinner:keepRegions(obj, regions)
 --	if not frame then return end
 	regions = revTable(regions)
 
---	self:Debug("keepRegions: [%s]", obj:GetName() or "<Anon>")
 	for k, reg in pairs{obj:GetRegions()} do
 		-- if we have a list, hide the regions not in that list
 		if regions
 		and not regions[k]
 		then
---			self:Debug("hide region: [%s, %s]", i, reg:GetName() or "<Anon>")
 			reg:SetAlpha(0)
 --@debug@
 			if reg:IsObjectType("FontString") then self:Debug("kr FS: [%s, %s]", obj:GetName() or "<Anon>", k) end
@@ -1090,13 +1082,11 @@ function Skinner:removeRegions(obj, regions)
 
 	regions = revTable(regions)
 
---	self:Debug("removeRegions: [%s]", obj:GetName() or "<Anon>")
 	for k, reg in pairs{obj:GetRegions()} do
 		if not regions
 		or regions
 		and regions[k]
 		then
---			self:Debug("hide region: [%s, %s]", i, reg:GetName() or "<Anon>")
 			reg:SetAlpha(0)
 --@debug@
 			if reg:IsObjectType("FontString") then self:Debug("rr FS: [%s, %s]", obj:GetName() or "<Anon>", k) end
@@ -1114,8 +1104,6 @@ function Skinner:setActiveTab(tabSF)
 	if not tabSF then return end
 	if not tabSF.tfade then return end
 
---	self:Debug("setActiveTab : [%s]", tabSF)
-
 	tabSF.tfade:SetTexture(self.gradientTex)
 	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
 
@@ -1123,11 +1111,9 @@ function Skinner:setActiveTab(tabSF)
 		local point, relativeTo, relativePoint, xOfs, yOfs
 		if not tabSF.up then
 			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
---			self:Debug("sAT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs - 6)
 		else
 			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
---			self:Debug("sAT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs + 6)
 		end
 		tabSF.grown = true
@@ -1143,19 +1129,15 @@ function Skinner:setInactiveTab(tabSF)
 	if not tabSF then return end
 	if not tabSF.tfade then return end
 
---	self:Debug("setInactiveTab : [%s]", tabSF)
-
 	tabSF.tfade:SetTexture(self.itTex)
 	tabSF.tfade:SetAlpha(1)
 	if not tabSF.ignore and tabSF.grown then
 		local point, relativeTo, relativePoint, xOfs, yOfs
 		if not tabSF.up then
 			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
---			self:Debug("sIT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs + 6)
 		else
 			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
---			self:Debug("sIT: [%s, %s, %s, %s, %s]", point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs - 6)
 		end
 		tabSF.grown = nil
@@ -1164,7 +1146,6 @@ function Skinner:setInactiveTab(tabSF)
 end
 
 function Skinner:setTTBBC()
---	self:Debug("setTTBBC: [%s, %s, %s, %s]", unpack(self.tbColour))
 
 	if self.db.profile.Tooltips.border == 1 then
 		return unpack(self.tbColour)
@@ -1184,12 +1165,9 @@ function Skinner:shrinkBag(obj, bpMF)
 	objName = obj:GetName()
 	local bgTop = _G[objName.."BackgroundTop"]
 	if floor(bgTop:GetHeight()) == 256 then -- this is the backpack
---		self:Debug("Backpack found")
 		if bpMF then -- is this a backpack Money Frame
 			local yOfs = select(5, _G[objName.."MoneyFrame"]:GetPoint())
---			self:Debug("Backpack Money Frame found: [%s, %s]", yOfs, floor(yOfs))
 			if floor(yOfs) == -216 or floor(yOfs) == -217 then -- is it still in its original position
---				self:Debug("Backpack Money Frame moved")
 				self:moveObject(_G[objName.."MoneyFrame"], nil, nil, "+", 22)
 			end
 		end
@@ -1211,7 +1189,6 @@ function Skinner:shrinkBag(obj, bpMF)
 	-- making sure that it isn't greater than the frame height
 		fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
 	end
---	self:Debug("sB - Frame, Fade Height: [%s, %s]", frame:GetName(), fh)
 
 	if fh and obj.tfade then obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -fh) end
 
@@ -1379,7 +1356,6 @@ function Skinner:skinEditBox(...)
 end
 
 function Skinner:skinFFToggleTabs(tabName, tabCnt, noHeight)
---	self:Debug("skinFFToggleTabs: [%s, %s, %s]", tabName, tabCnt, noHeight)
 
 	local togTab
 	for i = 1, tabCnt or 3 do
@@ -1395,7 +1371,6 @@ function Skinner:skinFFToggleTabs(tabName, tabCnt, noHeight)
 end
 
 function Skinner:skinFFColHeads(buttonName, noCols)
---	self:Debug("skinFFColHeads: [%s, %s]", buttonName, noCols)
 
 	noCols = noCols or 4
 	for i = 1, noCols do
@@ -1584,8 +1559,6 @@ function Skinner:skinTooltip(obj)
 
 	objHeight = ceil(obj:GetHeight())
 
---	  self:Debug("sT: [%s, %s, %s, %s]", frame, frame:GetName(), self.ttBorder, ttHeight)
-
 	if not obj.tfade then obj.tfade = obj:CreateTexture(nil, "BORDER") end
 	obj.tfade:SetTexture(self.gradientTex)
 
@@ -1616,7 +1589,6 @@ function Skinner:skinTooltip(obj)
 				g = ("%.2f"):format(g)
 				b = ("%.2f"):format(b)
 				a = ("%.2f"):format(a)
---				self:Debug("checkTTBBC: [%s, %s, %s, %s, %s]", obj:GetName(), r, g, b, a)
 				if r ~= "1.00" or g ~= "1.00" or b ~= "1.00" or a ~= "1.00" then return end
 			end
 		end

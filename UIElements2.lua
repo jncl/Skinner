@@ -304,7 +304,6 @@ function Skinner:MenuFrames()
 	end
 	-- Hook these to skin any Interface Option panels and their elements
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
---		self:Debug("IOL_DP: [%s]", panel)
 		-- skin tekKonfig library objects here as well as in AddonFrames to handle late loading of libraries
 		if self.tekKonfig then self:checkAndRun("tekKonfig") end
 		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
@@ -464,7 +463,7 @@ function Skinner:MainMenuBar()
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
 		-- stop grid being shown
-		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
+		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function() end, true)
 	end
 
 -->>-- Bonus Action Bar Buttons
@@ -475,7 +474,7 @@ function Skinner:MainMenuBar()
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 		-- stop grid being shown
-		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
+		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function() end, true)
 	end
 	local function toggleActionButtons(show)
 
@@ -502,7 +501,7 @@ function Skinner:MainMenuBar()
 			_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 			self:addButtonBorder{obj=btn, abt=true, sec=true}
 			-- stop grid being shown
-			self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function(...) end, true)
+			self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function() end, true)
 		end
 	end
 

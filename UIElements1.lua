@@ -731,7 +731,7 @@ function Skinner:Tutorial()
 		resetSF()
 	end)
 	-- hook this to hide the skin frame if required (e.g. arrow keys tutorial)
-	self:SecureHook("TutorialFrame_Update", function(currTut)
+	self:SecureHook("TutorialFrame_Update", function(...)
 		resetSF()
 		if TutorialFrameTop:IsShown() then
 			self.skinFrame[TutorialFrame]:Show()
@@ -857,7 +857,7 @@ function Skinner:BattlefieldMinimap() -- LoD
 	-- change the skinFrame's opacity as required
 	self:SecureHook("BattlefieldMinimap_UpdateOpacity", function(opacity)
 		local alpha = 1.0 - BattlefieldMinimapOptions.opacity
-		if ( alpha >= 0.15 ) then alpha = alpha - 0.15 end
+		alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
 		self.skinFrame[BattlefieldMinimap]:SetAlpha(alpha)
 		self.skinFrame[BattlefieldMinimap].tfade:SetAlpha(alpha)
 	end)

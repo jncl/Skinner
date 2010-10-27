@@ -56,8 +56,7 @@ function Skinner:PaperDollFrame()
 	-- hide ItemFlyout background textures
 	local btnFrame = PaperDollFrameItemFlyout.buttonFrame
 	self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
-	self:SecureHook("PaperDollFrameItemFlyout_Show", function(paperDollItemSlot)
---		self:Debug("PDFIF_S: [%s]", paperDollItemSlot)
+	self:SecureHook("PaperDollFrameItemFlyout_Show", function(...)
 		for i = 1, btnFrame["numBGs"] do
 			btnFrame["bg" .. i]:SetAlpha(0)
 		end
@@ -650,8 +649,8 @@ function Skinner:AchievementUI() -- LoD
 			end
 		end)
 		-- hook this to remove icon border used by the Objectives mini panels
-		self:RawHook("AchievementButton_GetMeta", function(index)
-			local obj = self.hooks["AchievementButton_GetMeta"](index)
+		self:RawHook("AchievementButton_GetMeta", function(...)
+			local obj = self.hooks.AchievementButton_GetMeta(...)
 			obj:DisableDrawLayer("BORDER")
 			self:addButtonBorder{obj=obj, es=12, relTo=obj.icon}
 			return obj
@@ -663,8 +662,8 @@ function Skinner:AchievementUI() -- LoD
 		if _G[objName] then glazeProgressBar(objName) end
 	end
 	-- hook this to skin StatusBars used by the Objectives mini panels
-	self:RawHook("AchievementButton_GetProgressBar", function(index)
-		local obj = self.hooks["AchievementButton_GetProgressBar"](index)
+	self:RawHook("AchievementButton_GetProgressBar", function(...)
+		local obj = self.hooks.AchievementButton_GetProgressBar(...)
 		glazeProgressBar(obj:GetName())
 		return obj
 	end, true)
@@ -767,21 +766,21 @@ function Skinner:AlertFrames()
 
 	self:add2Table(self.charKeys1, "AlertFrames")
 
-	local objName = "AchievementAlertFrame"
+	local aafName = "AchievementAlertFrame"
 
 	local function skinAlertFrames()
 
 		local obj, icon
 		for i = 1, MAX_ACHIEVEMENT_ALERTS do
-			obj = _G[objName..i]
+			obj = _G[aafName..i]
 			if obj and not Skinner.skinFrame[obj] then
-				_G[objName..i.."Background"]:SetTexture(nil)
-				_G[objName..i.."Background"].SetTexture = function() end
-				_G[objName..i.."Unlocked"]:SetTextColor(Skinner.BTr, Skinner.BTg, Skinner.BTb)
-				icon = _G[objName..i.."Icon"]
+				_G[aafName..i.."Background"]:SetTexture(nil)
+				_G[aafName..i.."Background"].SetTexture = function() end
+				_G[aafName..i.."Unlocked"]:SetTextColor(Skinner.BTr, Skinner.BTg, Skinner.BTb)
+				icon = _G[aafName..i.."Icon"]
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
-				Skinner:addButtonBorder{obj=icon, relTo=_G[objName..i.."IconTexture"]}
+				Skinner:addButtonBorder{obj=icon, relTo=_G[aafName..i.."IconTexture"]}
 				Skinner:addSkinFrame{obj=obj, ft=ftype, anim=true, x1=5, y1=-10, x2=-5, y2=12}
 			end
 		end
@@ -789,8 +788,8 @@ function Skinner:AlertFrames()
 	end
 	-- check for both Achievement Alert frames now, (3.1.2) as the Bliz code changed
 	if not AchievementAlertFrame1 or AchievementAlertFrame2 then
-		self:RawHook("AchievementAlertFrame_GetAlertFrame", function()
-			local frame = self.hooks.AchievementAlertFrame_GetAlertFrame()
+		self:RawHook("AchievementAlertFrame_GetAlertFrame", function(...)
+			local frame = self.hooks.AchievementAlertFrame_GetAlertFrame(...)
 			skinAlertFrames()
 			if AchievementAlertFrame2 then
 				self:Unhook("AchievementAlertFrame_GetAlertFrame")
@@ -803,10 +802,10 @@ function Skinner:AlertFrames()
 
 	-- adjust frame size for guild achievements
 	if self.isCata then
-		self:SecureHook("AchievementAlertFrame_ShowAlert", function(achID)
+		self:SecureHook("AchievementAlertFrame_ShowAlert", function(...)
 			local obj, y1, y2
 			for i = 1, MAX_ACHIEVEMENT_ALERTS do
-				obj = _G[objName..i]
+				obj = _G[aafName..i]
 				if obj then
 					y1, y2 = -10, 12
  	 				if obj.guildDisplay then
@@ -820,7 +819,7 @@ function Skinner:AlertFrames()
 	end
 
 	-- hook dungeon rewards function
-	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, index)
+	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, ...)
 		frame:DisableDrawLayer("OVERLAY") -- border texture
 	end)
 

@@ -71,8 +71,7 @@ function Skinner:FriendsFrame()
 	-- hook this to skin channel buttons
 	self:SecureHook("ChannelList_Update", function()
 		for i = 1, MAX_CHANNEL_BUTTONS do
-			tex = _G["ChannelButton"..i.."NormalTexture"]
-			tex:SetAlpha(0)
+			_G["ChannelButton"..i.."NormalTexture"]:SetAlpha(0)
 		end
 	end)
 	ChannelFrameVerticalBar:Hide()
@@ -259,20 +258,17 @@ function Skinner:RaidUI() -- LoD
 	-- hook this to skin the pullout character frames
 	self:SecureHook("RaidPullout_Update", function(pullOutFrame)
 		local pfName = pullOutFrame:GetName()
-		local obj, objName
---		self:Debug("RP_U: [%s, %s]", pullOutFrame, pfName)
+		local objName, barName
 		for i = 1, pullOutFrame.numPulloutButtons do
 			objName = pfName.."Button"..i
-			obj = _G[pfBName]
 			if not self.skinFrame[obj] then
-				local sBar
 				for _, v in pairs{"HealthBar", "ManaBar", "Target", "TargetTarget"} do
-					sBar = objName..v
-					self:removeRegions(_G[sBar], {2})
-					self:glazeStatusBar(_G[sBar], 0, _G[sBar.."Background"])
+					barName = objName..v
+					self:removeRegions(_G[barName], {2})
+					self:glazeStatusBar(_G[barName], 0, _G[barName.."Background"])
 				end
 				self:addSkinFrame{obj=_G[objName.."TargetTargetFrame"], ft=ftype, x1=4, x2=-4, y2=2}
-				self:addSkinFrame{obj=obj, ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
+				self:addSkinFrame{obj=_G[objName], ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
 			end
 		end
 	end)
@@ -541,7 +537,6 @@ function Skinner:CompactFrames()
 	end
 	-- hook this to skin any new CompactRaidGroup(s)
 	self:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
-		self:Debug("CRG_GFG: [%s]", ...)
 		local frame, didCreate = self.hooks.CompactRaidGroup_GenerateForGroup(...)
 		if didCreate then skinGrp(frame) end
 		return frame, didCreate
@@ -552,7 +547,6 @@ function Skinner:CompactFrames()
 	end
 	-- hook this to skin any new CompactRaidUnitFrame(s)
 	self:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
-		self:Debug("CRG_GFG: [%s]", ...)
 		local frame = self.hooks.CompactRaidFrameContainer_GetUnitFrame(...)
 		skinUnit(frame)
 		return frame
