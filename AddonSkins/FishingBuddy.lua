@@ -27,8 +27,11 @@ function Skinner:FishingBuddy()
 	self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
 	self:skinDropDown{obj=FishingBuddyOption_OutfitMenu}
 -->>-- Tabs (side)
-	for i = 1, 3 do
-		self:removeRegions(_G["FishingBuddyOptionTab"..i], {1}) -- N.B. other regions are icon and highlight
+	for i = 1, 5 do -- allow for 5 tabs (inc. Outfit & Tracking plugins)
+		local tab = _G["FishingBuddyOptionTab"..i]
+		if tab then
+			self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
+		end
 	end
 
 -->>--	Tabs (bottom)
@@ -44,5 +47,24 @@ function Skinner:FishingBuddy()
 		end
 	end
     self.tabFrames[FishingBuddyFrame] = true
+
+end
+
+if not Skinner:isAddonEnabled("FB_OutfitDisplayFrame") then return end
+
+function Skinner:FB_OutfitDisplayFrame()
+
+	self:keepFontStrings(FishingOutfitFrame)
+	self:skinButton{obj=FishingOutfitSwitchButton}
+	self:makeMFRotatable(FishingOutfitFrameModel)
+
+end
+
+if not Skinner:isAddonEnabled("FB_TrackingFrame") then return end
+
+function Skinner:FB_TrackingFrame()
+
+	self:keepFontStrings(FishingTrackingFrame)
+	self:skinScrollBar{obj=FishingTrackingScrollFrame}
 
 end
