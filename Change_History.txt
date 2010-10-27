@@ -1,3 +1,16 @@
+b4.13164.9
+Jncl:
+	Updated .gitignore
+	Updated HealBot skin
+	Bugfix for WatchFrame errors
+	Bugfix for ChatTabs
+	Updated GuildUI skin
+	Updated Altoholic, FlightMap, MrTrader_SkillWindow, Quartz & UrbanAchiever skins
+	ToDo.txt
+	Updated Change_History.txt
+	Updated CompactRaidFrames skin
+	Made CompactFrames skin default false
+
 b4.13164.8
 Jncl:
 	ToDo.txt
