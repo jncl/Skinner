@@ -513,8 +513,6 @@ function Skinner:AchievementUI() -- LoD
 		local btn
 		for i = 1, #AchievementFrameStatsContainer.buttons do
 			btn = _G["AchievementFrameStatsContainerButton"..i]
---			if btn.isHeader then btn.background:SetAlpha(0) end
---			if btn.background:GetAlpha() == 1 then btn.background:SetAlpha(0) end
 			btn.background:SetTexture(nil)
 			btn.left:SetAlpha(0)
 			btn.middle:SetAlpha(0)

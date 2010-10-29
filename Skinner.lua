@@ -492,7 +492,7 @@ local function __addSkinFrame(opts)
 		nb = don't skin UI buttons
 		bgen = generations of button children to traverse
 		anim = reparent skinFrame to avoid whiteout issues caused by animations
-		ri = Disable Inset DrawLayers (Cataclysm Beta)
+		ri = Disable Inset DrawLayers
 --]]
 --@alpha@
 	assert(opts.obj, "Unknown object __aSF\n"..debugstack())

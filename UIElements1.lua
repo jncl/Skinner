@@ -970,7 +970,7 @@ function Skinner:Minimap()
 	MinimapZoomOut:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 3, 4)
 	-- on Bottom
 	MiniMapBattlefieldFrame:ClearAllPoints()
-	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 10, 6)
+	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 10, 10)
 
 	-- move BuffFrame
 	self:moveObject{obj=BuffFrame, x=-10}
@@ -1053,7 +1053,6 @@ function Skinner:MinimapButtons()
 	LowerFrameLevel(self.skinFrame[obj])
 
 	-- MinimapZoomIn/Out buttons
-	local modUIBtns = self.modUIBtns or self:GetModule("UIButtons", true)
 	for k, obj in pairs{MinimapZoomIn, MinimapZoomOut} do
 		obj:GetNormalTexture():SetTexture(nil)
 		obj:GetPushedTexture():SetTexture(nil)
@@ -1067,10 +1066,10 @@ function Skinner:MinimapButtons()
 		self:addSkinButton{obj=obj, parent=obj, aso=asopts}
 		btn = self.sBut[obj]
 		btn:SetAllPoints(obj:GetNormalTexture())
-		btn:SetNormalFontObject(modUIBtns.fontX)
-		btn:SetDisabledFontObject(modUIBtns.fontDX)
+		btn:SetNormalFontObject(self.modUIBtns.fontX)
+		btn:SetDisabledFontObject(self.modUIBtns.fontDX)
 		btn:SetPushedTextOffset(1, 1)
-		btn:SetText(k == 1 and modUIBtns.plus or modUIBtns.minus)
+		btn:SetText(k == 1 and self.modUIBtns.plus or self.modUIBtns.minus)
 		if not obj:IsEnabled() then btn:Disable() end
 	end
 	-- change Mail icon
