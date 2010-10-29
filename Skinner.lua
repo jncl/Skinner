@@ -255,8 +255,8 @@ function Skinner:OnEnable()
 
 	-- add support for UIButton skinning
 	local btnModDB = self.db:GetNamespace("UIButtons", true)
-	if self:GetModule("UIButtons", true):IsEnabled() then
-		self.modUIBtns = self:GetModule("UIButtons", true)
+	self.modUIBtns = self:GetModule("UIButtons", true)
+	if self.modUIBtns:IsEnabled() then
 		if btnModDB.profile.UIButtons then
 			self.modBtns = true
 		end

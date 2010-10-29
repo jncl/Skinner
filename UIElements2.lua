@@ -855,12 +855,28 @@ function Skinner:BNFrames()
 	self:add2Table(self.uiKeys1, "BNFrames")
 
 -->>-- Toast frame
+	-- remove textures from close button
+	-- this involves using text instead of a texture
+	if not self.modBtns then
+		local btn = BNToastFrameCloseButton
+		-- create font to use
+		btn:GetNormalTexture():SetTexture(nil)
+		btn:GetPushedTexture():SetTexture(nil)
+		btn:SetText(self.modUIBtns.mult)
+		btn:SetNormalFontObject(self.modUIBtns.fontSBX)
+		self:adjWidth{obj=btn, adj=-2}
+		self:adjHeight{obj=btn, adj=-2}
+		btn:GetFontString():ClearAllPoints()
+		btn:GetFontString():SetPoint("TOPRIGHT", -1, 0)
+	end
 	self:addSkinFrame{obj=BNToastFrame, ft=ftype, anim=true}
+
 -->>-- Report frame
 	BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
 	self:skinScrollBar{obj=BNetReportFrameCommentScrollFrame}
 	self:skinEditBox{obj=BNetReportFrameCommentBox, regs={6}}
 	self:addSkinFrame{obj=BNetReportFrame, ft=ftype}
+
 -->>-- ConversationInvite frame
 	self:addSkinFrame{obj=BNConversationInviteDialogList, ft=ftype}
 	self:skinScrollBar{obj=BNConversationInviteDialogListScrollFrame}
