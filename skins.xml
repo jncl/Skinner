@@ -212,6 +212,7 @@
 <script file="SkinMe\Prat3.lua"/>
 <script file="SkinMe\Producer.lua"/>
 <script file="SkinMe\ProfessionsBook.lua"/>
+<script file="SkinMe\ProfessionTabs.lua"/>
 <script file="SkinMe\PvpMessages.lua"/>
 <script file="SkinMe\Quartz.lua"/>
 <script file="SkinMe\Quelevel.lua"/>
