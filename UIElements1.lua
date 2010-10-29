@@ -830,7 +830,7 @@ function Skinner:InspectUI() -- LoD
 
 end
 
-function Skinner:BattleScore()
+function Skinner:BattleScore() -- a.k.a. WorldStateScoreFrame
 	if not self.db.profile.BattleScore or self.initialized.BattleScore then return end
 	self.initialized.BattleScore = true
 
@@ -838,7 +838,7 @@ function Skinner:BattleScore()
 
 	self:skinDropDown{obj=ScorePlayerDropDown}
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
-	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=10, y1=-15, x2=-113, y2=70}
+	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 
 -->>-- Tabs
 	for i = 1, WorldStateScoreFrame.numTabs do
