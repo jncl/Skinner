@@ -108,13 +108,22 @@ function Skinner:AucAdvanced()
 		-- controls for the SnatchSearcher
 		local lib = mod.Searchers["Snatch"]
 		if lib then
-			self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
+			local function skinSnatch()
+
 				self:skinEditBox{obj=lib.Private.frame.pctBox, regs={9}}
 				self:skinButton{obj=lib.Private.frame.additem, as=true} -- just skin it otherwise text is hidden
 				self:skinButton{obj=lib.Private.frame.removeitem, as=true} -- just skin it otherwise text is hidden
 				self:skinButton{obj=lib.Private.frame.resetList, as=true} -- just skin it otherwise text is hidden
-				self:Unhook(lib, "MakeGuiConfig")
-			end)
+
+			end
+			if lib.MakeGuiConfig then
+				self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
+					skinSnatch()
+					self:Unhook(lib, "MakeGuiConfig")
+				end)
+ 			elseif lib.Private.frame then
+				skinSnatch()
+			end
 		end
 		-- skin the remove button for the ItemPriceFilter
 		local lib = mod.Filters["ItemPrice"]

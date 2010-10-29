@@ -8,17 +8,16 @@ function Skinner:Panda(LoD)
 	
 	local function skinPanda()
 	
-		Skinner:keepFontStrings(frame)
-		Skinner:moveObject(Skinner:getRegion(frame, 2), nil, nil, "+", 10) -- titletext
-		Skinner:moveObject(Skinner:getChild(frame, 1), nil, ni, "+", 11) -- close button
+		local btn
 		for i = 4, 8 do -- Skill tabs
-			local btn = Skinner:getChild(frame, i)
+			btn = Skinner:getChild(frame, i)
 			Skinner:removeRegions(btn, {3}) -- N.B. other regions are icon and highlight
 			btn:SetWidth(btn:GetWidth() * 1.25)
 			btn:SetHeight(btn:GetHeight() * 1.25)
 			if i == 4 then Skinner:moveObject(btn, "-", 3, nil, nil) end
+			self:addButtonBorder{obj=btn, sec=true}
 		end
-		Skinner:applySkin(frame)
+		self:addSkinFrame{obj=frame, kfs=true, y1=-11, y2=6}
 		
 		local function skinPanel(frame)
 		
@@ -28,10 +27,10 @@ function Skinner:Panda(LoD)
 			subPanel:SetPoint("TOPLEFT", 190, -80)
 			subPanel:SetPoint("BOTTOMRIGHT", -12, 39)
 			local firstBtn
-			for i = 2, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
+			for _, child in ipairs{frame:GetChildren()} do
 				if child:IsObjectType("Button") and floor(child:GetWidth()) == 158 then
 					Skinner:removeRegions(child, {1}) -- remove the filter texture from the button
+					self:addSkinFrame{obj=child}
 					if not firstBtn then
 						child:SetPoint("TOPLEFT", frame, 23, -76) -- move the buttons up
 						firstBtn = child
@@ -59,5 +58,10 @@ function Skinner:Panda(LoD)
 	else
 		skinPanda()
 	end
+	self:RawHook(Panda, "RefreshButtonFactory", function(...)
+		self:Debug("Panda_RBF: [%s, %s, %s]", ...)
+		local btn = self.hooks[Panda].RefreshButtonFactory(...)
+		if not self.sBut[btn] then self:skinButton{obj=btn} end
+	end, true)
 	
 end

@@ -25,13 +25,11 @@ function Skinner:ArkDewdrop()
 		-- hook the OnEnter script for the buttons and use that to skin from
 		local i = 1
 		while _G["ArkDewdrop30Button"..i] do
---			Skinner:Debug("DB found: [%s]", i)
 			if not Skinner:IsHooked(_G["ArkDewdrop30Button"..i], "OnEnter") then
 				Skinner:HookScript(_G["ArkDewdrop30Button"..i], "OnEnter", function(this)
 					Skinner.hooks[this].OnEnter(this)
 					if not this.disabled and this.hasArrow then
--- 						Skinner:Debug("DB has Arrow: [%s]", this:GetName())
-						skinDewdrop()
+						skinArkDewdrop()
 					end
 				end)
 			end
@@ -63,7 +61,6 @@ function Skinner:ArkDewdrop()
 
 	-- Hook this to skin new ArkDewdrop components
 	self:SecureHook(LibStub("ArkDewdrop-3.0", true), "Open", function(parent)
---		self:Debug("DewdropOpen: [%s]", parent)
 		skinArkDewdrop()
 	end)
 

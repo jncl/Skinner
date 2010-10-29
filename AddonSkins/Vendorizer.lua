@@ -16,4 +16,8 @@ function Skinner:Vendorizer()
 	VendorizerFrameProfit:DisableDrawLayer("BORDER")
 	self:addSkinFrame{obj=VendorizerFrame, aso={bba=0}} -- turn off border alpha
 
+	self:addButtonBorder{obj=VendorizerFrameBuyTab}
+	self:addButtonBorder{obj=VendorizerFrameSellTab}
+	self:addButtonBorder{obj=VendorizerFrameSaveTab}
+
 end
