@@ -429,13 +429,13 @@ function Skinner:WatchFrame()
 	self:add2Table(self.charKeys2, "WatchFrame")
 
 	if self.modBtnBs then
+		local btn
 		local function skinWFBtns()
 
-			local btn
 			for i = 1, WATCHFRAME_NUM_ITEMS do
 				btn = _G["WatchFrameItem"..i]
 				if not btn.sknrBdr then
-					self:addButtonBorder{obj=btn, ibt=true}
+					Skinner:addButtonBorder{obj=btn, ibt=true}
 				end
 			end
 
@@ -447,8 +447,7 @@ function Skinner:WatchFrame()
 		skinWFBtns() -- skin any existing buttons
 	end
 
-	if self.db.profile.WatchFrame.skin
-	then
+	if self.db.profile.WatchFrame.skin then
 		self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-30, y1=4, x2=10}
 		-- hook this to handle displaying of the WatchFrameLines skin frame
 		self:SecureHook("WatchFrame_Update", function(this)
@@ -671,20 +670,14 @@ function Skinner:GuildUI() -- LoD
 	self:removeRegions(GuildLatestPerkButton, {2, 5, 6}) -- region2 is NameFrame, 5-6 are borders
 	self:addButtonBorder{obj=GuildLatestPerkButton, libt=true}
 	GuildNextPerkButtonNameFrame:SetTexture(nil)
-	self:addButtonBorder{obj=GuildNextPerkButton, libt=true}
-	if self.modBtnBs then
-		GuildNextPerkButtonLockTexture:SetParent(GuildNextPerkButton.sknrBdr)
-	end
+	self:addButtonBorder{obj=GuildNextPerkButton, libt=true, reParent={GuildNextPerkButtonLockTexture}}
 	GuildAllPerksFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=GuildPerksContainerScrollBar, size=2}
 	for i = 1, #GuildPerksContainer.buttons do
 		-- can't use DisableDrawLayer as the update code uses it
 		btn = GuildPerksContainer.buttons[i]
 		self:removeRegions(btn, {1, 2, 3, 4, 5, 6})
-		self:addButtonBorder{obj=btn, relTo=btn.icon}
-		if self.modBtnBs then
-			btn.lock:SetParent(btn.sknrBdr)
-		end
+		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
 	end
 	self:keepRegions(GuildFrame, {8, 19, 20, 18, 21, 22}) -- regions 8, 19, 20 are text, 18, 21 & 22 are tabard
 	self:moveObject{obj=GuildFrameTabardBackground, x=6, y=-10}
@@ -722,10 +715,7 @@ function Skinner:GuildUI() -- LoD
 		btn = GuildRewardsContainer.buttons[i]
 		btn:GetNormalTexture():SetAlpha(0)
 		btn.disabledBG:SetAlpha(0)
-		self:addButtonBorder{obj=btn, relTo=btn.icon}
-		if self.modBtnBs then
-			btn.lock:SetParent(btn.sknrBdr)
-		end
+		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
 	end
 	self:skinDropDown{obj=GuildRewardsDropDown}
 	-- Info Panel

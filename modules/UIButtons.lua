@@ -356,6 +356,7 @@ local function __addButtonBorder(opts)
 		spbt = Simple Popup Button template
 		mb = Main Menu Bar Micro Button
 		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
+		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
 		x1 = X offset for TOPLEFT
 		y1 = Y offset for TOPLEFT
@@ -406,6 +407,12 @@ local function __addButtonBorder(opts)
 		if not opts.relTo:IsShown() then opts.obj.sknrBdr:Hide() end
 	end
 
+	-- reparent objects if required
+	if opts.reParent then
+		for _, obj in pairs(opts.reParent) do
+			obj:SetParent(opts.obj.sknrBdr)
+		end
+	end
 	-- reparent these textures so they are displayed above the border
 	if opts.ibt then -- Item Buttons
 		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
@@ -486,7 +493,7 @@ function module:OnEnable()
 	if module.db.profile.ButtonBorders then
 		module.btnTab = {}
 		module:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-			for k, v in pairs(module.btnTab) do
+			for _, v in pairs(module.btnTab) do
 				module:addButtonBorder(v)
 			end
 			wipe(module.btnTab)

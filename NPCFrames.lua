@@ -443,10 +443,7 @@ function Skinner:QuestInfo()
 	btnName = "QuestInfoSkillPointFrame"
 	_G[btnName.."NameFrame"]:SetTexture(nil)
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G[btnName], libt=true}
-		_G[btnName.."SkillPointBg"]:SetParent(_G[btnName].sknrBdr)
-		_G[btnName.."SkillPointBgGlow"]:SetParent(_G[btnName].sknrBdr)
-		_G[btnName.."Points"]:SetParent(_G[btnName].sknrBdr)
+		self:addButtonBorder{obj=_G[btnName], libt=true, reParent={_G[btnName.."SkillPointBg"], _G[btnName.."SkillPointBgGlow"], _G[btnName.."Points"]}}
 	end
 
 end

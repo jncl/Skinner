@@ -408,9 +408,7 @@ function Skinner:TalentUI() -- LoD
 		obj.HeaderIcon.PointsSpentBgGold:SetAlpha(0)
 		obj.HeaderIcon.PointsSpentBgSilver:SetAlpha(0)
 		if self.modBtnBs then
-			self:addButtonBorder{obj=obj.HeaderIcon, relTo=obj.HeaderIcon.Icon}
-			obj.HeaderIcon.PointsSpent:SetParent(obj.HeaderIcon.sknrBdr) -- reparent points spent
-			obj.HeaderIcon.LockIcon:SetParent(obj.HeaderIcon.sknrBdr) -- reparent lock icon
+			self:addButtonBorder{obj=obj.HeaderIcon, relTo=obj.HeaderIcon.Icon, reParent={obj.HeaderIcon.PointsSpent, obj.HeaderIcon.LockIcon}}
 			-- add button borders
 			for i = 1, MAX_NUM_TALENTS do
 				self:addButtonBorder{obj=_G[objName.."Talent"..i], tibt=true}

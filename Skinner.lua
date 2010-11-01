@@ -485,6 +485,7 @@ local function __addSkinFrame(opts)
 		bg = set FrameStrata to "BACKGROUND"
 		noBdr = no border
 		aso = applySkin options
+		ofs = offset value to use
 		x1 = X offset for TOPLEFT
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
@@ -508,10 +509,10 @@ local function __addSkinFrame(opts)
 	if opts.kfs or opts.hat then Skinner:keepFontStrings(opts.obj, opts.hat) end
 
 	-- setup offset values
-	local xOfs1 = opts.x1 or 0
-	local yOfs1 = opts.y1 or 0
-	local xOfs2 = opts.x2 or 0
-	local yOfs2 = opts.y2 or 0
+	local xOfs1 = opts.ofs and opts.ofs * -1 or opts.x1 or 0
+	local yOfs1 = opts.ofs or opts.y1 or 0
+	local xOfs2 = opts.ofs or opts.x2 or 0
+	local yOfs2 = opts.ofs and opts.ofs * -1 or opts.y2 or 0
 
 	-- add a frame around the current object
 	local skinFrame = CreateFrame("Frame", nil, opts.obj)
