@@ -215,7 +215,6 @@ local lodFrames = {
 	"MSBTOptions",
 	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
 	"Perl_Config_Options", "PhoenixStyleMod_Coliseum", "PhoenixStyleMod_Ulduar", "PhoenixStyleMod_Icecrown",
-	"RaidAchievement_Icecrown", "RaidAchievement_Naxxramas", "RaidAchievement_Ulduar", "RaidAchievement_WotlkHeroics",
 	"Talented_GlyphFrame", "TradeTabs", "TipTacOptions",
 	"WIM_Options",
 	"XPerl_Options",
@@ -226,10 +225,15 @@ for _, v in pairs(lodFrames) do
 	Skinner.lodAddons[v] = v
 end
 lodFrames = nil
+-- MobMap Databases
 for i = 1, 8 do
 	Skinner.lodAddons["MobMapDatabaseStub"..i] = "MobMapDatabaseStub"..i
 end
 Skinner.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
+-- RaidAchievement modules
+for _, v in pairs{"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids"} do
+	Skinner.lodAddons["RaidAchievement_"..v] = "RaidAchievement_"..v
+end
 local prev_addon
 function Skinner:LoDFrames(addon)
 --	  self:Debug("LoDFrames: [%s]", addon)

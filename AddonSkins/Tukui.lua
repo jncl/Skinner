@@ -76,12 +76,9 @@ function Skinner:TukuiInit()
 
 		-- Now do this after we have run the function
 		-- setup backdrop(s)
-		self.Backdrop[1] = self.backdrop
-		self.Backdrop[2] = self.backdrop
-		self.Backdrop[3] = self.backdrop
-		self.Backdrop[4] = self.backdrop
-		self.Backdrop[5] = self.backdrop
-		self.Backdrop[6] = self.backdrop
+		for i, _ in ipairs(self.Backdrop) do
+			self.Backdrop[i] = self.backdrop
+		end
 
 		self:Unhook(self, "OnInitialize")
 	end)

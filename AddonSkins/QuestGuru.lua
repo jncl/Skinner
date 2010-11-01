@@ -66,6 +66,12 @@ function Skinner:QuestGuru()
 					self:checkTex(_G["QuestGuru_QuestHistoryTitle"..i])
 				end
 			end)
+			-- HistoryList
+			self:SecureHook("QuestGuru_HistoryList_Update", function()
+				for i = 1, QUESTGURU_QUESTS_DISPLAYED do
+					self:checkTex(_G["QuestGuru_HistoryListTitle"..i])
+				end
+			end)
 		end
 		-- hook to manage changes to button textures (Abandoned Tab)
 		self:SecureHook("QuestGuru_UpdateAbandon", function()
@@ -102,9 +108,21 @@ function Skinner:QuestGuru()
 		for i = 1, QUESTGURU_QUESTS_DISPLAYED do
 			self:skinButton{obj=_G["QuestGuru_QuestHistoryTitle"..i], mp=true}
 		end
+		-- run the TabExpand function to make sure all buttons are displayed properly
+		QuestGuru_HistoryTabExpand()
 		self:skinScrollBar{obj=QuestGuru_QuestHistoryListScrollFrame}
 		self:skinScrollBar{obj=QuestGuru_QuestHistoryDetailScrollFrame}
 		self:addSkinFrame{obj=QuestGuru_TabPage2, kfs=true, x1=10, y1=-6, x2=-45, y2=16}
+		-- HistoryList Frame
+		self:skinEditBox{obj=QuestGuru_HistoryListSearch, regs={9}}
+		self:skinButton{obj=QuestGuru_HistoryListFrameExpandCollapseButton, mp=true, plus=true}
+		for i = 1, QUESTGURU_QUESTS_DISPLAYED do
+			self:skinButton{obj=_G["QuestGuru_HistoryListTitle"..i], mp=true}
+		end
+		-- run the ExpandCollapse function to make sure all buttons are displayed properly
+		QuestGuru_HistoryListExpandCollapse()
+		self:skinScrollBar{obj=QuestGuru_HistoryListListScrollFrame}
+		self:addSkinFrame{obj=QuestGuru_HistoryListFrame, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
 	end
 -->>-- Tab3 (Abandoned)
 	self:SecureHook("QuestLog_UpdateQuestAbandonDetails", function(...)

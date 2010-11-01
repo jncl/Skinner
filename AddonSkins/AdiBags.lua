@@ -8,6 +8,9 @@ function Skinner:AdiBags()
 	self:RawHook(aBag, "CreateBagSlotPanel", function(this, ...)
 		local bPanel = self.hooks[this].CreateBagSlotPanel(this, ...)
 		self:addSkinFrame{obj=bPanel}
+		for _, v in pairs(bPanel.buttons) do
+			self:addButtonBorder{obj=v}
+		end
 		return bPanel
 	end, true)
 	-- hook this for bag creation

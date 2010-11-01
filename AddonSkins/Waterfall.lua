@@ -19,21 +19,24 @@ function Skinner:Waterfall()
 
 	end
 
-	local function checkTex(btn)
+	local checkTex
+	if self.modBtns then
+		function checkTex(btn)
 
-		if not btn.skin then
-			Skinner:skinButton{obj=btn, mp2=true, as=true}
+			if not btn.skin then
+				Skinner:skinButton{obj=btn, mp2=true, as=true}
+			end
+
+			Skinner:checkTex{obj=btn, mp2=true}
+
+			local btnText = btn:GetFontString()
+			if btn.obj.disabled then
+				btnText:SetTextColor(0.5, 0.5, 0.5) -- grey
+			else
+				btnText:SetTextColor(1, 0.82, 0) -- yellow
+			end
+
 		end
-
-		Skinner:checkTex{obj=btn, mp2=true}
-
-		local btnText = btn:GetFontString()
-		if btn.obj.disabled then
-			btnText:SetTextColor(0.5, 0.5, 0.5) -- grey
-		else
-			btnText:SetTextColor(1, 0.82, 0) -- yellow
-		end
-
 	end
 	local function skinWaterfall(frame)
 
@@ -43,24 +46,24 @@ function Skinner:Waterfall()
 			frame.titlebar2:Hide()
 			Skinner:skinButton{obj=frame.closebutton, cb=true}
 			Skinner:applySkin(frame.frame)
+			Skinner:applySkin(frame.treeview.frame)
 			-- Treeview Frame
 			Skinner:skinSlider{obj=frame.treeview.scrollbar}
-			-- skin minus/plus buttons
-			for i = 1, #frame.treeview.scrollchild.lines do
-				checkTex(frame.treeview.scrollchild.lines[i].expand)
-			end
-			Skinner:applySkin(frame.treeview.frame)
-			-- hook refresh function to handle minus/plus buttons
-			Skinner:SecureHook(frame.treeview, "Refresh", function(this, noupdate)
---				Skinner:Debug("WTV_Refresh: [%s, %s]", this, noupdate)
-				for i = 1, #this.scrollchild.lines do
-					checkTex(this.scrollchild.lines[i].expand)
+			if self.modBtns then
+				-- skin minus/plus buttons
+				for i = 1, #frame.treeview.scrollchild.lines do
+					checkTex(frame.treeview.scrollchild.lines[i].expand)
 				end
-			end)
+				-- hook refresh function to handle minus/plus buttons
+				Skinner:SecureHook(frame.treeview, "Refresh", function(this, noupdate)
+					for i = 1, #this.scrollchild.lines do
+						checkTex(this.scrollchild.lines[i].expand)
+					end
+				end)
+			end
 			-- Mainpane Frame
 			-- hook this to skin the controls
 			Skinner:SecureHook(frame.mainpane, "DoLayout", function(this)
---				Skinner:Debug("wfmp_dl:[%s]", this)
 				skinControls(this)
 			end)
 			skinControls(frame.mainpane)
@@ -71,7 +74,6 @@ function Skinner:Waterfall()
 	end
 
 	self:SecureHook(LibStub("Waterfall-1.0", true), "Open", function(this, pane)
--- 		self:Debug("WaterfallOpen: [%s, %s]", this, pane)
 		skinWaterfall(this.registry[pane].frame)
 	end)
 

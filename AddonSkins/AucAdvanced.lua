@@ -110,6 +110,8 @@ function Skinner:AucAdvanced()
 		if lib then
 			local function skinSnatch()
 
+				local self = Skinner
+				lib.Private.frame.slot:SetTexture(self.esTex)
 				self:skinEditBox{obj=lib.Private.frame.pctBox, regs={9}}
 				self:skinButton{obj=lib.Private.frame.additem, as=true} -- just skin it otherwise text is hidden
 				self:skinButton{obj=lib.Private.frame.removeitem, as=true} -- just skin it otherwise text is hidden
@@ -142,7 +144,9 @@ function Skinner:AucAdvanced()
 	-- Appraiser
 	local mod = AucAdvanced.Modules.Util.Appraiser
 	if mod then
-		self:SecureHook(mod.Private, "CreateFrames", function()
+		function skinFrames()
+
+			local self = Skinner
 			local frame = mod.Private.frame
 			self:skinButton{obj=frame.toggleManifest}
 			self:skinButton{obj=frame.config}
@@ -172,8 +176,16 @@ function Skinner:AucAdvanced()
 			self:skinButton{obj=frame.gobatch}
 			self:skinButton{obj=frame.refresh}
 			self:skinButton{obj=frame.cancel, x1=-2, y1=1, x2=2}
-			self:Unhook(mod.Private,"CreateFrames")
-		end)
+
+		end
+		if mod.Private.CreateFrames then
+			self:SecureHook(mod.Private, "CreateFrames", function()
+				skinFrames()
+				self:Unhook(mod.Private,"CreateFrames")
+			end)
+		else
+			skinFrames()
+		end
 	end
 
 	-- ScanButtons
