@@ -21,28 +21,28 @@ Legend:
 
 	I	Ghostly artifacts, reported by Kerecha, 13.10.10
 		- Getting some buggy ghost graphics from buttons
-√ 			- the x button from toastframe for instance has a buggy border always showing even when the frame isn't there)
 ?			-the info popup about pallys holypower also generates them.
 
-√	I	WorldStateScoreFrame, reported by jkasquires, 28.10.10
-		- The PVP Score frame is all jacked up
+√	I	QuestGuru, reported by mkcorp, 29.10.10
+		- There's one window that is missing skin in Quest Guru - the one that pops when You click on "History List".
 
-√	I	ArkDewdrop, reported by Pathur, 28.10.10
-		- line 34 should be skinArkDewdrop() not skinDewdrop()
-
-√	Nb	ProfessionsTab, requested by X-buZZ, 28.10.10
-√	b	Vendorizer, requested by X-buZZ, 28.10.10
-
-√	I	AucAdvanced, reported by Talissa, 28.10.10
-		- ..\AddOns\Skinner\SkinMe\AucAdvanced.lua line 111:
+√	I	AucAdvanced, reported by Talissa, 30.10.10
+		- ..\AddOns\Skinner\SkinMe\AucAdvanced.lua line 145:
 		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 		Debug:
 		(tail call): ?
 
-√	I	GuildBankSearch, reported by Craxziz, 28.10.10
-		- Skinner-b4.13205.1\UtilFuncs.lua:272: attempt to call method 'GetChildren' (a nil value)
-		Skinner-b4.13205.1\SkinMe\GuildBankSearch.lua:7: in function <Skinner\SkinMe\GuildBankSearch.lua:3>
-		(tail call): ?:
+x	b	AdiBags, requested by X-buZZ, 30.10.10
+
+√	I	Waterfall, reported by Decabah, 31.10.10
+		- Skinner-b4.13205.2\SkinMe\Waterfall.lua:34: attempt to index local 'btnText' (a nil value)
+	Skinner-b4.13205.2\SkinMe\Waterfall.lua:50: in function <Skinner\SkinMe\Waterfall.lua:38>
+	Skinner-b4.13205.2\SkinMe\Waterfall.lua:75: in function <Skinner\SkinMe\Waterfall.lua:73>
+	(tail call): ?:
+
+√	N	SayGMOTD, requested by mkcorp, 31.10.10
+
+√	N	RaidAchievement, reported by mkcorp, 1.11.10
 
 BETA changes
 ±±±±±±±±±±±±
