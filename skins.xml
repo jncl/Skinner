@@ -235,6 +235,7 @@
 <script file="SkinMe\Recount.lua"/>
 <script file="SkinMe\RicoMiniMap.lua"/>
 <script file="SkinMe\RockConfig.lua"/>
+<script file="SkinMe\SayGMOTD.lua"/>
 <script file="SkinMe\ShadowDancer3.lua"/>
 <script file="SkinMe\sienasGemViewer.lua"/>
 <script file="SkinMe\Skada.lua"/>
@@ -254,6 +255,7 @@
 <script file="SkinMe\tekPad.lua"/>
 <script file="SkinMe\tektip.lua"/>
 <script file="SkinMe\TheCollector.lua"/>
+<script file="SkinMe\TinyDPS.lua"/>
 <script file="SkinMe\TinyPad.lua"/>
 <script file="SkinMe\TipTac.lua"/>
 <script file="SkinMe\tomQuest2.lua"/>
