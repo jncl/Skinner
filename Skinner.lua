@@ -366,7 +366,7 @@ local function __addSkinButton(opts)
 		y2 = Y offset for BOTTOMRIGHT
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __aSB\n"..debugstack())
+	assert(opts.obj, "Missing object __aSB\n"..debugstack())
 --@end-alpha@
 
 	-- remove all textures, if required
@@ -439,7 +439,7 @@ function Skinner:addSkinButton(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object aSB\n"..debugstack())
+	assert(opts, "Missing object aSB\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -496,7 +496,7 @@ local function __addSkinFrame(opts)
 		ri = Disable Inset DrawLayers
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __aSF\n"..debugstack())
+	assert(opts.obj, "Missing object __aSF\n"..debugstack())
 --@end-alpha@
 
 	-- remove the object's Backdrop if it has one
@@ -578,7 +578,7 @@ function Skinner:addSkinFrame(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object aSF\n"..debugstack())
+	assert(opts, "Missing object aSF\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -696,7 +696,7 @@ local function __applySkin(opts)
 		ebc = Use EditBox Colours
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __aS\n"..debugstack())
+	assert(opts.obj, "Missing object __aS\n"..debugstack())
 --@end-alpha@
 
 	local hasIOT = assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
@@ -749,7 +749,7 @@ function Skinner:applySkin(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object aS\n"..debugstack())
+	assert(opts, "Missing object aS\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -776,7 +776,7 @@ local function __adjHeight(opts)
 		adj = value to adjust height by
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __aH\n"..debugstack())
+	assert(opts.obj, "Missing object __aH\n"..debugstack())
 --@end-alpha@
 	if opts.adj == 0 then return end
 
@@ -794,7 +794,7 @@ function Skinner:adjHeight(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object aH\n"..debugstack())
+	assert(opts, "Missing object aH\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -817,7 +817,7 @@ local function __adjWidth(opts)
 		adj = value to adjust width by
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __aH\n"..debugstack())
+	assert(opts.obj, "Missing object __aW\n"..debugstack())
 --@end-alpha@
 	if opts.adj == 0 then return end
 
@@ -835,7 +835,7 @@ function Skinner:adjWidth(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object aH\n"..debugstack())
+	assert(opts, "Missing object aW\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -899,7 +899,7 @@ end
 
 function Skinner:keepFontStrings(obj, hide)
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Missing object kFS\n"..debugstack())
 --@end-alpha@
 
 --	if not frame then return end
@@ -927,7 +927,7 @@ end
 
 function Skinner:keepRegions(obj, regions)
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Missing object kR\n"..debugstack())
 --@end-alpha@
 
 --	if not frame then return end
@@ -1015,7 +1015,7 @@ local function __moveObject(opts)
 		relTo = object to move relative to
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __mO\n"..debugstack())
+	assert(opts.obj, "Missing object __mO\n"..debugstack())
 --@end-alpha@
 
 	if not opts.obj then return end
@@ -1054,7 +1054,7 @@ function Skinner:moveObject(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object mO\n"..debugstack())
+	assert(opts, "Missing object mO\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1076,7 +1076,7 @@ end
 
 function Skinner:removeRegions(obj, regions)
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Missing object rR\n"..debugstack())
 --@end-alpha@
 
 --	if not frame then return end
@@ -1099,7 +1099,7 @@ end
 
 function Skinner:setActiveTab(tabSF)
 --@alpha@
-	assert(tabSF, "Unknown object\n"..debugstack())
+	assert(tabSF, "Missing object sAT\n"..debugstack())
 --@end-alpha@
 
 	if not tabSF then return end
@@ -1124,7 +1124,7 @@ end
 
 function Skinner:setInactiveTab(tabSF)
 --@alpha@
-	assert(tabSF, "Unknown object\n"..debugstack())
+	assert(tabSF, "Missing object sIT\n"..debugstack())
 --@end-alpha@
 
 	if not tabSF then return end
@@ -1158,7 +1158,7 @@ end
 
 function Skinner:shrinkBag(obj, bpMF)
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Missing object sB\n"..debugstack())
 --@end-alpha@
 
 	if not obj then return end
@@ -1206,7 +1206,7 @@ local function __skinDropDown(opts)
 		mty = move Texture up/down
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object__sDD\n"..debugstack())
+	assert(opts.obj, "Missing object __sDD\n"..debugstack())
 --@end-alpha@
 
 	if opts.obj and opts.obj.GetName and opts.obj:GetName() then -- if named object
@@ -1259,7 +1259,7 @@ function Skinner:skinDropDown(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object sDD\n"..debugstack())
+	assert(opts, "Missing object sDD\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1336,7 +1336,7 @@ function Skinner:skinEditBox(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object sEB\n"..debugstack())
+	assert(opts, "Missing object sEB\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1392,7 +1392,7 @@ local function __skinMoneyFrame(opts)
 		moveGEB = move the Gold edit box left
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __sMF\n"..debugstack())
+	assert(opts.obj, "Missing object __sMF\n"..debugstack())
 --@end-alpha@
 
 	-- don't skin it twice
@@ -1428,7 +1428,7 @@ function Skinner:skinMoneyFrame(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object sMF\n"..debugstack())
+	assert(opts, "Missing object sMF\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1479,7 +1479,7 @@ function Skinner:skinScrollBar(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object sSB\n"..debugstack())
+	assert(opts, "Missing object sSB\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1523,7 +1523,7 @@ function Skinner:skinSlider(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object sS\n"..debugstack())
+	assert(opts, "Missing object sS\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1542,7 +1542,7 @@ end
 function Skinner:skinTooltip(obj)
 	if not self.db.profile.Tooltips.skin then return end
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Missing object sT\n"..debugstack())
 --@end-alpha@
 
 	if not obj then return end
@@ -1606,7 +1606,7 @@ local function __skinUsingBD(opts)
 		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __sUBD\n"..debugstack())
+	assert(opts.obj, "Missing object __sUBD\n"..debugstack())
 --@end-alpha@
 
 	opts.size = opts.size or 3 -- default to medium
@@ -1622,7 +1622,7 @@ function Skinner:skinUsingBD(...)
 	opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object sUBD\n"..debugstack())
+	assert(opts, "Missing object sUBD\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)

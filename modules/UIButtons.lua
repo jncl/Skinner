@@ -18,7 +18,7 @@ local function __checkTex(opts)
 		mp2 = minus/plus type 2
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object __cT\n"..debugstack())
+	assert(opts.obj, "Missing object __cT\n"..debugstack())
 --@end-alpha@
 
 	-- hide existing textures if they exist (GupCharacter requires this)
@@ -59,7 +59,7 @@ function module:checkTex(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object cT\n"..debugstack())
+	assert(opts, "Missing object cT\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -112,7 +112,7 @@ function module:skinButton(opts)
 	other options as per addSkinButton
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object skinButton\n"..debugstack())
+	assert(opts.obj, "Missing object skinButton\n"..debugstack())
 --@end-alpha@
 
 	if not opts.obj then return end
@@ -293,7 +293,7 @@ local function __skinAllButtons(opts, bgen)
 		other options as per skinButton
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object__sAB\n"..debugstack())
+	assert(opts.obj, "Missing object__sAB\n"..debugstack())
 --@end-alpha@
 	if not opts.obj then return end
 
@@ -326,7 +326,7 @@ function module:skinAllButtons(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Unknown object sAB\n"..debugstack())
+	assert(opts, "Missing object sAB\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -364,7 +364,7 @@ local function __addButtonBorder(opts)
 		y2 = Y offset for BOTTOMRIGHT
 --]]
 --@alpha@
-	assert(opts.obj, "Unknown object__aBB\n"..debugstack())
+	assert(opts.obj, "Missing object__aBB\n"..debugstack())
 --@end-alpha@
 	if not opts.obj then return end
 
@@ -453,7 +453,7 @@ function module:addButtonBorder(...)
 	end
 
 --@alpha@
-	assert(opts, "Unknown object sAB\n"..debugstack())
+	assert(opts, "Missing object sAB\n"..debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
