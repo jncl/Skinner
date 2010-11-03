@@ -23,26 +23,16 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-√	I	QuestGuru, reported by mkcorp, 29.10.10
-		- There's one window that is missing skin in Quest Guru - the one that pops when You click on "History List".
+√	I	tabDB, reported by chrisgriffith25, 2.11.10
+√	I	XLoot, reported by chrisgriffith25, 2.11.10
+√	I	AucAdvanced, reported flyinion, 2.11.10
+√	I	CompactRaidFrames, reported by gizmo1972, 2.11.10
+√	I	TinyDPS
+√	I	Acheron, reported by Gershuun, 2.11.10
+√	N	Auction Profit Master, requested by dalai333, 3.11.10
+√	I	GnomeWorks, reported by dalai333, 3.11.10
 
-√	I	AucAdvanced, reported by Talissa, 30.10.10
-		- ..\AddOns\Skinner\SkinMe\AucAdvanced.lua line 145:
-		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		Debug:
-		(tail call): ?
-
-x	b	AdiBags, requested by X-buZZ, 30.10.10
-
-√	I	Waterfall, reported by Decabah, 31.10.10
-		- Skinner-b4.13205.2\SkinMe\Waterfall.lua:34: attempt to index local 'btnText' (a nil value)
-	Skinner-b4.13205.2\SkinMe\Waterfall.lua:50: in function <Skinner\SkinMe\Waterfall.lua:38>
-	Skinner-b4.13205.2\SkinMe\Waterfall.lua:75: in function <Skinner\SkinMe\Waterfall.lua:73>
-	(tail call): ?:
-
-√	N	SayGMOTD, requested by mkcorp, 31.10.10
-
-√	N	RaidAchievement, reported by mkcorp, 1.11.10
+?	I	Prat 3.0, reported by Gershuun, 2.100.10
 
 BETA changes
 ±±±±±±±±±±±±
