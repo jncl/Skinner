@@ -1,3 +1,13 @@
+b4.13205.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated TOC
+	Updated messages
+	Bugfix for CompactRaidFrames
+	Updated Acheron, AucAdvanced, GnomeWorks, TinyDPS, XLoot & tabDB skins
+	Skinned AuctionProfitMaster & XLoot1.0
+
 b4.13205.3
 Jncl:
 	ToDo.txt
