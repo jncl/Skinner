@@ -510,14 +510,6 @@ function Skinner:CompactFrames()
 	if not self.db.profile.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
--->>-- Compact Party Frame
-	CompactPartyFrame.borderFrame:DisableDrawLayer("ARTWORK")
-	for i = 1, MEMBERS_PER_RAID_GROUP do
-		_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BACKGROUND")
-		_G["CompactPartyFrameMember"..i]:DisableDrawLayer("BORDER")
-	end
-	self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
-
 	local function skinUnit(unit)
 
 		unit:DisableDrawLayer("BACKGROUND")
@@ -526,36 +518,38 @@ function Skinner:CompactFrames()
 	end
 	local function skinGrp(grp)
 
+		grp.borderFrame:SetAlpha(0)
 		local grpName = grp:GetName()
-
-		self:keepFontStrings(grp.borderFrame)
 		for i = 1, MEMBERS_PER_RAID_GROUP do
 			skinUnit(_G[grpName.."Member"..i])
 		end
 
 	end
+-->>-- Compact Party Frame
+	CompactPartyFrame.borderFrame:SetAlpha(0)
+	for i = 1, MEMBERS_PER_RAID_GROUP do
+		skinUnit(_G["CompactPartyFrameMember"..i])
+	end
+	self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
 	-- hook this to skin any new CompactRaidGroup(s)
-	self:RawHook("CompactRaidGroup_GenerateForGroup", function(...)
-		local frame, didCreate = self.hooks.CompactRaidGroup_GenerateForGroup(...)
-		if didCreate then skinGrp(frame) end
-		return frame, didCreate
-	end, true)
-	-- skin any existing group(s)
-	for _, v in pairs(CompactRaidFrameContainer.frameUpdateList.group) do
-		skinGrp(v)
-	end
-	-- hook this to skin any new CompactRaidUnitFrame(s)
-	self:RawHook("CompactRaidFrameContainer_GetUnitFrame", function(...)
-		local frame = self.hooks.CompactRaidFrameContainer_GetUnitFrame(...)
-		skinUnit(frame)
-		return frame
-	end, true)
-	-- skin any existing unit(s)
-	for _, v in pairs(CompactRaidFrameContainer.frameUpdateList.normal) do
-		skinUnit(v)
-	end
-	for _, v in pairs(CompactRaidFrameContainer.frameUpdateList.mini) do
-		skinUnit(v)
+	self:SecureHook("CompactRaidGroup_UpdateBorder", function(frame)
+		skinGrp(frame)
+	end)
+	-- hook this to skin any new CompactRaidFrameContainer entries
+	self:SecureHook("FlowContainer_AddObject", function(container, object)
+		if container.frameUpdateList.group[object] then
+			skinGrp(object)
+		else
+			skinUnit(object)
+		end
+	end)
+	-- skin any existing unit(s) [group, mini, normal]
+	for type, frame in ipairs(CompactRaidFrameContainer.frameUpdateList) do
+		if type == "group" then
+			skinGrp(frame)
+		else	
+			skinUnit(frame)
+		end
 	end
 
 -->>-- Compact RaidFrame Container
