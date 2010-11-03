@@ -1,7 +1,9 @@
 if not Skinner:isAddonEnabled("RaidAchievement") then return end
 
+local aVer = GetAddOnMetadata("RaidAchievement", "Version")
 local x1, y1 = -2, -4
 function Skinner:RaidAchievement()
+	
 
 -->>-- Main Frames
 	self:skinAllButtons{obj=PSFeamain1}
@@ -24,13 +26,6 @@ function Skinner:RaidAchievement_AchieveReminder()
 		self:Unhook("iclldrawtext2")
 	end)
 	self:addSkinFrame{obj=icralistach2, x1=x1, y1=y1}
-	self:SecureHook("iclldrawtext3", function()
-		self:skinEditBox{obj=rallpsebf3, regs={9}}
-		self:skinScrollBar{obj=rallinfscroll}
-		self:skinEditBox{obj=rallinfframe, regs={9}}
-		self:Unhook("iclldrawtext3")
-	end)
-	self:addSkinFrame{obj=icralistach3, x1=x1, y1=y1}
 	self:SecureHook("iclldrawtext", function()
 		self:skinEditBox{obj=rallpseb1, regs={9}}
 		self:skinScrollBar{obj=psllinfscroll}
@@ -51,14 +46,6 @@ function Skinner:RaidAchievement_AchieveReminder()
 		end)
 	else
 		self:skinDropDown{obj=DropDownMenureportll2}
-	end
-	if not DropDownMenureportll3 then
-		self:SecureHook("openmenull3", function()
-			self:skinDropDown{obj=DropDownMenureportll3}
-			self:Unhook("openmenull3")
-		end)
-	else
-		self:skinDropDown{obj=DropDownMenureportll3}
 	end
 	if not DropDownMenullch1 then
 		self:SecureHook("openmenullch1", function()
@@ -84,13 +71,31 @@ function Skinner:RaidAchievement_AchieveReminder()
 	else
 		self:skinDropDown{obj=DropDownMenullch3}
 	end
-	if not DropDownMenullch34 then
-		self:SecureHook("openmenullch34", function()
-			self:skinDropDown{obj=DropDownMenullch34}
-			self:Unhook("openmenullch34")
+	-- check for Beta version
+	if aVer == "1.052" then
+		self:SecureHook("iclldrawtext3", function()
+			self:skinEditBox{obj=rallpsebf3, regs={9}}
+			self:skinScrollBar{obj=rallinfscroll}
+			self:skinEditBox{obj=rallinfframe, regs={9}}
+			self:Unhook("iclldrawtext3")
 		end)
-	else
-		self:skinDropDown{obj=DropDownMenullch34}
+		self:addSkinFrame{obj=icralistach3, x1=x1, y1=y1}
+		if not DropDownMenureportll3 then
+			self:SecureHook("openmenull3", function()
+				self:skinDropDown{obj=DropDownMenureportll3}
+				self:Unhook("openmenull3")
+			end)
+		else
+			self:skinDropDown{obj=DropDownMenureportll3}
+		end
+		if not DropDownMenullch34 then
+			self:SecureHook("openmenullch34", function()
+				self:skinDropDown{obj=DropDownMenullch34}
+				self:Unhook("openmenullch34")
+			end)
+		else
+			self:skinDropDown{obj=DropDownMenullch34}
+		end
 	end
 
 end
