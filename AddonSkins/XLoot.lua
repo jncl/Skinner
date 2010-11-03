@@ -25,6 +25,9 @@ end
 
 function Skinner:XLoot()
 
+	-- check to see if this is the dummy plugin version
+	if not XLoot.AddLootFrame then return end
+
 	-- Hook the XLoot copy of the original skinning function
 	self:RawHook(XLoot, "Skin", function(this, frame)
 --		self:Debug("XL_Skin [%s, %s]", this, frame:GetName())

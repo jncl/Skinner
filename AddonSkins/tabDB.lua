@@ -8,7 +8,7 @@ function Skinner:tabDB()
 			for k, v in pairs(tabDB_tabFrames) do
 				local tabId = libTab.Data.TabDBtabs.tab["fid_"..v.Frame]
 				local tabObj = _G["libTabTabDBtabs"..tabId]
-				self:removeRegions(tabObj, {1})
+				self:removeRegions(tabObj, {libTab.Version < 1402 and 1 or 2})
 				if ( v.Frame == "LFDParentFrame" ) then
 					libTab.Data.TabDBtabs.tab[tabId].offsetX = 0 -- We no longer need an offset for this frame when using Skinner
 				end

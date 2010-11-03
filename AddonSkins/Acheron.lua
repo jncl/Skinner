@@ -3,11 +3,13 @@ if not Skinner:isAddonEnabled("Acheron") then return end
 function Skinner:Acheron()
 
 	local obj = Acheron.frame
+
 	self:keepFontStrings(obj.frame)
 	obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -8)
 	self:applySkin(obj.frame)
-	self:applySkin(obj.statusbg)
-	
+	self:skinButton{obj=self:getChild(obj.frame, 1), y1=1}
+	self:applySkin{obj=self:getChild(obj.frame, 2)} -- backdrop frame
+
 	local kids = obj.children
 	-- Filter options
 	obj = kids[1] -- InlineGroup object
@@ -16,7 +18,7 @@ function Skinner:Acheron()
 	obj = kids[1].children[1] -- Dropdown object
 	self:skinDropDown(obj.dropdown)
 	self:applySkin(obj.pullout.frame)
-	
+
 	-- Report options
 	obj = kids[2] -- InlineGroup object
 	self:keepFontStrings(obj.border)
@@ -29,6 +31,12 @@ function Skinner:Acheron()
 	self:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
 		return left + 6, right, top, bottom
 	end, true)
+
+	-- Buttons
+	obj = kids[3]
+	self:skinButton{obj=obj.frame, as=true}
+	obj = kids[4]
+	self:skinButton{obj=obj.frame, as=true}
 
 	-- Death Report panels
 	obj = kids[6] -- TreeGroup object

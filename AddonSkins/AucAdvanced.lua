@@ -3,12 +3,19 @@ if not Skinner:isAddonEnabled("Auc-Advanced") then return end
 function Skinner:AucAdvanced()
 	if not self.db.profile.AuctionUI then return end
 
+	-- check version, if not a specified release or beta then don't skin it
+	local vTab = {
+		["5.8"] = 1,
+		["5.9"] = 2,
+		["5.10"] = 3,
+	}
 	local aVer = GetAddOnMetadata("Auc-Advanced", "Version")
+	local ver = vTab[aVer:match("(%d.%d+).%d+")] or 0
 
 	-- progress bars
-	local lib = aVer:sub(1,3) < "5.9" and  AucAdvanced.Scan or AucAdvanced.API
+	local lib = ver == 1 and AucAdvanced.Scan or AucAdvanced.API
 	self:SecureHook(lib , "ProgressBars", function(sbObj, ...)
-	    if aVer:sub(1,3) > "5.8" then
+	    if ver > 1 then
 			i = 1
 			while lib["GenericProgressBar"..i] do
 	           local gpb = lib["GenericProgressBar"..i]
@@ -18,7 +25,7 @@ function Skinner:AucAdvanced()
            		end
 				i = i + 1
 			end
-	    elseif aVer:sub(1,3) == "5.8" then
+	    elseif ver == 1 then
 	        for i = 1, #lib.availableBars do
 	           local gpb = lib["GenericProgressBar"..i]
            		if gpb and not self.sbGlazed[gpb] then
@@ -26,7 +33,7 @@ function Skinner:AucAdvanced()
            			self:glazeStatusBar(gpb, 0)
            		end
 	        end
-	    elseif aVer:sub(1,3) < "5.8" then
+	    elseif ver < 1 then
     		if not self.sbGlazed[sbObj] then
     			sbObj:SetBackdrop(nil)
     			self:glazeStatusBar(sbObj, 0)
