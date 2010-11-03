@@ -23,16 +23,14 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-√	I	tabDB, reported by chrisgriffith25, 2.11.10
-√	I	XLoot, reported by chrisgriffith25, 2.11.10
-√	I	AucAdvanced, reported flyinion, 2.11.10
-√	I	CompactRaidFrames, reported by gizmo1972, 2.11.10
-√	I	TinyDPS
-√	I	Acheron, reported by Gershuun, 2.11.10
-√	N	Auction Profit Master, requested by dalai333, 3.11.10
-√	I	GnomeWorks, reported by dalai333, 3.11.10
-
 ?	I	Prat 3.0, reported by Gershuun, 2.100.10
+
+√	I	RaidAchievement, reported by Decabah, 3.11.10
+		- Skinner-b4.13205.3\SkinMe\RaidAchievement.lua:27: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
+		Skinner-b4.13205.3\SkinMe\RaidAchievement.lua:27: in function <Skinner\SkinMe\RaidAchievement.lua:18>
+		(tail call): ?:
 
 BETA changes
 ±±±±±±±±±±±±
