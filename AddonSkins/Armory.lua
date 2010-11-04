@@ -2,6 +2,7 @@ if not Skinner:isAddonEnabled("Armory") then return end
 
 function Skinner:Armory()
 
+	local tab, tabSF
 -->>--	Main Frame
 	-- move portrait down and right
 	self:moveObject{obj=ArmoryFramePortrait, x=6, y=-10}
@@ -15,10 +16,10 @@ function Skinner:Armory()
 
 -->>--	Frame Tabs
 	for i = 1, ArmoryFrame.numTabs do
-		local tabObj = _G["ArmoryFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabObj]
+		tab = _G["ArmoryFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, x2=-6, y2=2}
+		-- set textures here first time thru
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -46,27 +47,42 @@ function Skinner:Armory()
 -->>--	PaperDoll Frame
 	self:keepFontStrings(ArmoryPaperDollFrame)
 	self:addSkinFrame{obj=ArmoryGearSetFrame, kfs=true}
-	self:addSkinFrame{obj=ArmoryPaperDollTalentFrame, kfs=true}
+	self:keepFontStrings(ArmoryPaperDollTalent)
 	for i = 1, 2 do
 		local sBar = "ArmoryPaperDollTradeSkillFrame"..i
 		self:glazeStatusBar(_G[sBar.."Bar"])
 		self:glazeStatusBar(_G[sBar.."BackgroundBar"])
 		_G[sBar.."BackgroundBar"]:SetStatusBarColor(unpack(self.sbColour))
 	end
-	self:addSkinFrame{obj=ArmoryPaperDollTradeSkillFrame, kfs=true}
-	self:skinDropDown{obj=ArmoryPlayerStatFrameDropDown}
-	self:addSkinFrame{obj=ArmoryAttributesFrame, kfs=true, y2=-8}
+	self:keepFontStrings(ArmoryPaperDollTradeSkill)
+	self:skinDropDown{obj=ArmoryAttributesFramePlayerStatDropDown}
+	ArmoryAttributesFrame:DisableDrawLayer("BACKGROUND")
 
+-->>-- PaperDollOverlay Frame
+	self:keepFontStrings(ArmoryPaperDollTalentOverlay)
+	for i = 1, 2 do
+		local sBar = "ArmoryPaperDollTradeSkillOverlayFrame"..i
+		self:glazeStatusBar(_G[sBar.."Bar"])
+		self:glazeStatusBar(_G[sBar.."BackgroundBar"])
+		_G[sBar.."BackgroundBar"]:SetStatusBarColor(unpack(self.sbColour))
+	end
+	self:keepFontStrings(ArmoryPaperDollTradeSkillOverlay)
+	self:skinDropDown{obj=ArmoryAttributesOverlayTopFramePlayerStatDropDown}
+	ArmoryAttributesOverlayTopFrame:DisableDrawLayer("BACKGROUND")
+	self:skinDropDown{obj=ArmoryAttributesOverlayBottomFramePlayerStatDropDown}
+	ArmoryAttributesOverlayBottomFrame:DisableDrawLayer("BACKGROUND")
+	
 -->>-- Pet Frame
 	self:keepFontStrings(ArmoryPetFrame)
 	self:skinDropDown{obj=ArmoryPetStatFrameDropDown}
-	self:addSkinFrame{obj=ArmoryPetAttributesFrame, kfs=true, x2=1}
+	ArmoryPetAttributesFrame:DisableDrawLayer("BACKGROUND")
 	self:skinScrollBar{obj=ArmoryPetTalentFrameScrollFrame}
 	for i = 1, ArmoryPetFrame.numTabs do
-		local tabObj = _G["ArmoryPetFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=2, y1=2, x2=-2, y2=-4}
-		local tabSF = self.skinFrame[tabObj]
+		tab = _G["ArmoryPetFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=2, y1=2, x2=-2, y2=-4}
+		tabSF.ignore = true -- ignore size changes
+		-- set textures here first time thru
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -82,10 +98,10 @@ function Skinner:Armory()
 	self:skinScrollBar{obj=ArmoryTalentFrameScrollFrame}
 	-- Tabs
 	for i = 1, ArmoryTalentFrame.numTabs do
-		local tabObj = _G["ArmoryTalentFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=2, y1=2, x2=-2, y2=-4}
-		local tabSF = self.skinFrame[tabObj]
+		tab = _G["ArmoryTalentFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=2, y1=2, x2=-2, y2=-4}
+		-- set textures here first time thru
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -106,14 +122,15 @@ function Skinner:Armory()
 -->>--	PVP Team Details Frame
 	self:addSkinFrame{obj=ArmoryPVPTeamDetails, kfs=true}
 
--->>--	Other Frame (parent for the Reputation, Skills, RaidInfo & Currency Frames)
+-->>--	Other Frame (parent for the Reputation, RaidInfo & Currency Frames)
 	self:keepFontStrings(ArmoryOtherFrame)
 	-- Tabs
 	for i = 1, ArmoryOtherFrame.numTabs do
-		local tabObj = _G["ArmoryOtherFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=2, y1=2, x2=-2, y2=-4}
-		local tabSF = self.skinFrame[tabObj]
+		tab = _G["ArmoryOtherFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=2, y1=2, x2=-2, y2=-4}
+		tabSF.ignore = true -- ignore size changes
+		-- set textures here first time thru
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -121,11 +138,9 @@ function Skinner:Armory()
 		end
 	end
 	self.tabFrames[ArmoryOtherFrame] = true
-
 	-- Reputation SubFrame
 	self:keepFontStrings(ArmoryReputationFrame)
 	self:skinScrollBar{obj=ArmoryReputationListScrollFrame}
-
 	for i = 1, ARMORY_NUM_FACTIONS_DISPLAYED do
 		local bar = "ArmoryReputationBar"..i
 		self:skinButton{obj=_G[bar.."ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
@@ -142,11 +157,9 @@ function Skinner:Armory()
 			end
 		end)
 	end
-
 	--	RaidInfo SubFrame
 	self:keepFontStrings(ArmoryRaidInfoFrame)
 	self:skinScrollBar{obj=ArmoryRaidInfoScrollFrame}
-
 	-- Currency SubFrame
 	self:keepFontStrings(ArmoryTokenFrame)
 	self:skinSlider(ArmoryTokenFrameContainerScrollBar)
@@ -164,18 +177,11 @@ function Skinner:Armory()
 	self:addSkinFrame{obj=ArmoryInventoryFrame, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 	-- Tabs
 	for i = 1, ArmoryInventoryFrame.numTabs do
-		local tabObj = _G["ArmoryInventoryFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=1, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabObj]
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
+		tab = _G["ArmoryInventoryFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, x2=-6, y2=2}
 	end
 	self.tabFrames[ArmoryInventoryFrame] = true
-
 	-- Icon View SubFrame
 	self:skinScrollBar{obj=ArmoryInventoryIconViewFrame}
 	-- m/p buttons
@@ -245,9 +251,6 @@ function Skinner:Armory()
 		ArmoryQuestInfoItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
         ArmoryQuestInfoItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
         ArmoryQuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
-        ArmoryQuestInfoHonorFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-        ArmoryQuestInfoArenaPointsFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-        ArmoryQuestInfoTalentFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
         ArmoryQuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
         ArmoryQuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- reputation rewards
@@ -262,10 +265,8 @@ function Skinner:Armory()
 			_G["ArmoryQuestInfoObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
 	end)
-
 	ArmoryQuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ArmoryQuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
-
 	self:skinEditBox{obj=ArmoryQuestFrameEditBox, regs={9}}
 	self:removeRegions(ArmoryQuestLogCollapseAllButton, {5, 6, 7})
 	self:skinButton{obj=ArmoryQuestLogCollapseAllButton, mp=true}
@@ -285,7 +286,6 @@ function Skinner:Armory()
 	self:skinScrollBar{obj=ArmoryQuestLogListScrollFrame}
 	self:skinScrollBar{obj=ArmoryQuestLogDetailScrollFrame}
 	self:addSkinFrame{obj=ArmoryQuestLogFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=52}
-
 	for i = 1, ARMORY_MAX_NUM_ITEMS do
 		_G["ArmoryQuestInfoItem"..i.."NameFrame"]:SetTexture(nil)
 	end
@@ -300,7 +300,6 @@ function Skinner:Armory()
 			ArmorySpellBookTitleText:Hide() -- hide Inscriptions title
 		end
 	end)
-
 	for i = 1, SPELLS_PER_PAGE do
 		_G["ArmorySpellButton"..i.."Background"]:SetAlpha(0)
 		_G["ArmorySpellButton"..i.."SubSpellName"]:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -309,13 +308,11 @@ function Skinner:Armory()
 	self:SecureHook("ArmorySpellButton_UpdateButton", function(this)
 		this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
 	end)
-
 	-- Tabs (bottom)
 	for i = 1, 3 do
-		local tabObj = _G["ArmorySpellBookFrameTabButton"..i]
-		self:keepRegions(tabObj, {1, 3}) -- N.B. region 1 is text, 3 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=14, y1=-16, x2=-10, y2=18}
-		local tabSF = self.skinFrame[tabObj]
+		tab = _G["ArmorySpellBookFrameTabButton"..i]
+		self:keepRegions(tab, {1, 3}) -- N.B. region 1 is text, 3 is highlight
+		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=14, y1=-16, x2=-10, y2=18}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -369,7 +366,6 @@ function Skinner:Armory()
 			self:checkTex(ArmoryAchievementCollapseAllButton)
 		end)
 	end
-
 	-- hook this to manage displaying the rows
 	self:SecureHook("ArmoryAchievementFrame_SetRowType", function(achievementRow, rowType, hasQuantity)
 		local achievementRowName = achievementRow:GetName()
@@ -380,13 +376,12 @@ function Skinner:Armory()
 			self.sbGlazed[sBar].bg:Show()
 		end
 	end)
-
 	-- Tabs
 	for i = 1, ArmoryAchievementFrame.numTabs do
-		local tabObj = _G["ArmoryAchievementFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabObj]
+		tab = _G["ArmoryAchievementFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, x2=-6, y2=2}
+		-- set textures here first time thru
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -421,7 +416,6 @@ function Skinner:Armory()
 		self:skinButton{obj=_G["ArmoryTradeSkillSkill"..i], mp=true}
 	end
 	-- collapse all button
---	self:removeRegions(ArmoryTradeSkillCollapseAllButton, {1, 2, 3}) -- textures
 	self:skinButton{obj=ArmoryTradeSkillCollapseAllButton, mp=true} -- treat as just a texture
 	if self.modBtns then
 		-- hook to manage changes to button textures
