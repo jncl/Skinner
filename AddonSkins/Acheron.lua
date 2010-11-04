@@ -3,26 +3,44 @@ if not Skinner:isAddonEnabled("Acheron") then return end
 function Skinner:Acheron()
 
 	local obj = Acheron.frame
+	local AceGUI = LibStub("AceGUI-3.0", true)
+	local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion("Frame") or 0
 
 	self:keepFontStrings(obj.frame)
 	obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -8)
 	self:applySkin(obj.frame)
-	self:skinButton{obj=self:getChild(obj.frame, 1), y1=1}
-	self:applySkin{obj=self:getChild(obj.frame, 2)} -- backdrop frame
+	if objVer < 20 then
+		self:skinButton{obj=obj.closebutton, y1=1}
+		self:applySkin(obj.statusbg) -- backdrop frame
+	else
+		self:skinButton{obj=self:getChild(obj.frame, 1), y1=1}
+		self:applySkin{obj=self:getChild(obj.frame, 2)} -- backdrop frame
+	end
 
 	local kids = obj.children
+	objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion("InlineGroup") or 0
 	-- Filter options
 	obj = kids[1] -- InlineGroup object
-	self:keepFontStrings(obj.border)
-	self:applySkin(obj.border)
+	if objVer < 20 then
+		self:keepFontStrings(obj.border)
+		self:applySkin(obj.border)
+	else
+		self:keepFontStrings(obj.content:GetParent())
+		self:applySkin(obj.content:GetParent())
+	end
 	obj = kids[1].children[1] -- Dropdown object
 	self:skinDropDown(obj.dropdown)
 	self:applySkin(obj.pullout.frame)
 
 	-- Report options
 	obj = kids[2] -- InlineGroup object
-	self:keepFontStrings(obj.border)
-	self:applySkin(obj.border)
+	if objVer < 20 then
+		self:keepFontStrings(obj.border)
+		self:applySkin(obj.border)
+	else
+		self:keepFontStrings(obj.content:GetParent())
+		self:applySkin(obj.content:GetParent())
+	end
 	obj = kids[2].children[2] -- Dropdown object
 	self:skinDropDown(obj.dropdown)
 	self:applySkin(obj.pullout.frame)
@@ -44,13 +62,17 @@ function Skinner:Acheron()
 	self:skinUsingBD2(obj.scrollbar)
 	self:applySkin(obj.border)
 	self:applySkin(obj.treeframe)
-	self:SecureHook(obj, "RefreshTree", function()
-		for i = 1, #obj.buttons do
-			local button = obj.buttons[i]
-			if button and button:GetNormalTexture() then
-			    button:GetNormalTexture():SetAlpha(0)
+	if self.modBtns then
+		-- hook to manage changes to button textures
+		self:SecureHook(obj, "RefreshTree", function()
+			local btn
+			for i = 1, #obj.buttons do
+				btn = obj.buttons[i]
+				if not self.skinned[btn.toggle] then
+					self:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
+				end
 			end
-		end
-	end)
+		end)
+	end
 
 end

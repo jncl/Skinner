@@ -96,10 +96,11 @@ function Skinner:Ace3()
 				if Skinner.modBtns then
 					-- hook to manage changes to button textures
 					Skinner:SecureHook(obj, "RefreshTree", function()
+						local btn
 						for i = 1, #obj.buttons do
-							local button = obj.buttons[i]
-							if not Skinner.skinned[button.toggle] then
-								Skinner:skinButton{obj=button.toggle, mp2=true, plus=true} -- default to plus
+							btn = obj.buttons[i]
+							if not Skinner.skinned[btn.toggle] then
+								Skinner:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
 							end
 						end
 					end)
