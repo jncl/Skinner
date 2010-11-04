@@ -551,7 +551,7 @@ function Skinner:ColorPicker()
 	ColorPickerFrame:SetBackdrop(nil)
 	ColorPickerFrameHeader:SetAlpha(0)
 	self:skinSlider(OpacitySliderFrame, 4)
-	self:addSkinFrame{obj=ColorPickerFrame, ft=ftype, x1=4, y1=2, x2=-6, y2=4}
+	self:addSkinFrame{obj=ColorPickerFrame, ft=ftype, y1=6}
 
 -->>-- Opacity Frame, used by BattlefieldMinimap amongst others
 	OpacityFrame:SetBackdrop(nil)
