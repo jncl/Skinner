@@ -30,13 +30,24 @@ function Skinner:AuctionProfitMaster()
 			for i = 1, #this.rows do
 				self:skinButton{obj=this.rows[i].button, mp=true}
 			end
-			self:SecureHook(this, "Update", function(this)
+			self:SecureHook(this, "Update", function()
 				for i = 1, #this.rows do
 					self:checkTex(this.rows[i].button)
 				end
 			end)
 		end
 		self:Unhook(APM.Summary, "CreateGUI")
+	end)
+
+-->>-- Post popup
+	self:adjHeight{obj=APM.Post.post.skipButton, adj=6}
+	self:adjHeight{obj=APM.Post.post.cancelButton, adj=6}
+	self:addSkinFrame{obj=APM.Post.post}
+	
+-->>-- Cancel Frame
+	self:SecureHook(APM.Manage, "FinalCancel", function(this)
+		self:addSkinFrame{obj=self:getChild(AuctionFrame, AuctionFrame:GetNumChildren())} -- last child added
+		self:Unhook(APM.Manage, "FinalCancel")
 	end)
 
 end
