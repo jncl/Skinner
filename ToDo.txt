@@ -23,20 +23,8 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-√	I	Prat 3.0, reported by Gershuun, 2.11.10
-		- ..\AddOns\Skinner\SkinMe\Prat3.lua line 6:
-		   attempt to index local 'eb' (a nil value)
-		- Also the only Prat modules I have enabled are:
-		ChannelSticky, CopyChat, and UrlCopy
-
-√	I	Acheron, reported by Gershuun, 3.11.10
-		- ..\AddOns\Skinner\Skinner.lua line 907:
-		   attempt to index local 'obj' (a nil value)
-		   (tail call): ?
-		   Skinner\Skinner.lua:907: keepFontStrings()
-		   Skinner\SkinMe\Acheron.lua:16:
-		      Skinner\SkinMe\Acheron.lua:3
-		   (tail call): ?
+√	I	AuctionProfitMaster, reported by dalai333, 3.11.10
+		- popups for posting/cancelling need skinning
 
 BETA changes
 ±±±±±±±±±±±±
