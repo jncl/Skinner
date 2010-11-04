@@ -23,8 +23,15 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-√	I	AuctionProfitMaster, reported by dalai333, 3.11.10
-		- popups for posting/cancelling need skinning
+√	I	Armory, reported by burber, 4.11.10
+		- Interface\AddOns\Skinner\Skinner.lua:503: attempt to index field 'obj' (a nil value)
+		Time: 11/04/10 12:28:09
+		Count: 1
+		Stack: (tail call): ?
+		Interface\AddOns\Skinner\Skinner.lua:503: in function <Interface\AddOns\Skinner\Skinner.lua:477>
+		(tail call): ?
+		Interface\AddOns\Skinner\SkinMe\Armory.lua:49: in function <Interface\AddOns\Skinner\SkinMe\Armory.lua:3>
+		(tail call): ?
 
 BETA changes
 ±±±±±±±±±±±±
