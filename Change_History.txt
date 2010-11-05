@@ -1,3 +1,11 @@
+b4.13205.8
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated ColorPicker skin
+	Updated Armory skin
+	Skinned EnhancedColourPicker
+
 b4.13205.7
 Jncl:
 	ToDo.txt
