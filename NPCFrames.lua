@@ -1,8 +1,9 @@
+local aName, aObj = ...
 local _G = _G
 local ftype = "n"
 local obj, objName, tex, texName, btn, btnName, tab, tabSF
 
-function Skinner:MerchantFrames()
+function aObj:MerchantFrames()
 	if not self.db.profile.MerchantFrames or self.initialized.MerchantFrames then return end
 	self.initialized.MerchantFrames = true
 
@@ -54,7 +55,7 @@ function Skinner:MerchantFrames()
 
 end
 
-function Skinner:GossipFrame()
+function aObj:GossipFrame()
 	if not self.db.profile.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
@@ -77,7 +78,7 @@ function Skinner:GossipFrame()
 
 end
 
-function Skinner:TrainerUI() -- LoD
+function aObj:TrainerUI() -- LoD
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
@@ -101,7 +102,7 @@ function Skinner:TrainerUI() -- LoD
 
 end
 
-function Skinner:TaxiFrame()
+function aObj:TaxiFrame()
 	if not self.db.profile.TaxiFrame or self.initialized.TaxiFrame then return end
 	self.initialized.TaxiFrame = true
 
@@ -113,7 +114,7 @@ function Skinner:TaxiFrame()
 
 end
 
-function Skinner:QuestFrame()
+function aObj:QuestFrame()
 	if not self.db.profile.QuestFrame or self.initialized.QuestFrame then return end
 	self.initialized.QuestFrame = true
 
@@ -174,7 +175,7 @@ function Skinner:QuestFrame()
 
 end
 
-function Skinner:AuctionUI() -- LoD
+function aObj:AuctionUI() -- LoD
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
@@ -281,7 +282,7 @@ function Skinner:AuctionUI() -- LoD
 
 end
 
-function Skinner:BankFrame()
+function aObj:BankFrame()
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
@@ -301,7 +302,7 @@ function Skinner:BankFrame()
 
 end
 
-function Skinner:ArenaRegistrar()
+function aObj:ArenaRegistrar()
 	if not self.db.profile.ArenaRegistrar or self.initialized.ArenaRegistrar then return end
 	self.initialized.ArenaRegistrar = true
 
@@ -320,7 +321,7 @@ function Skinner:ArenaRegistrar()
 
 end
 
-function Skinner:GuildRegistrar()
+function aObj:GuildRegistrar()
 	if not self.db.profile.GuildRegistrar or self.initialized.GuildRegistrar then return end
 	self.initialized.GuildRegistrar = true
 
@@ -339,7 +340,7 @@ function Skinner:GuildRegistrar()
 
 end
 
-function Skinner:Petition()
+function aObj:Petition()
 	if not self.db.profile.Petition or self.initialized.Petition then return end
 	self.initialized.Petition = true
 
@@ -359,7 +360,7 @@ function Skinner:Petition()
 
 end
 
-function Skinner:Tabard()
+function aObj:Tabard()
 	if not self.db.profile.Tabard or self.initialized.Tabard then return end
 	self.initialized.Tabard = true
 
@@ -378,7 +379,7 @@ function Skinner:Tabard()
 
 end
 
-function Skinner:BarbershopUI() -- LoD
+function aObj:BarbershopUI() -- LoD
 	if not self.db.profile.BarbershopUI or self.initialized.Barbershop then return end
 	self.initialized.Barbershop = true
 
@@ -391,7 +392,7 @@ function Skinner:BarbershopUI() -- LoD
 
 end
 
-function Skinner:QuestInfo()
+function aObj:QuestInfo()
 	if not self.db.profile.QuestFrame or self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
 
@@ -448,7 +449,7 @@ function Skinner:QuestInfo()
 
 end
 
-function Skinner:ReforgingUI() -- LoD
+function aObj:ReforgingUI() -- LoD
 	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
 	self.initialized.ReforgingUI = true
 

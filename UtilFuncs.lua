@@ -1,4 +1,4 @@
-local aName, Skinner = ...
+local aName, aObj = ...
 local _G = _G
 local obj, objName, tex, texName, btn, btnName, tab, tabSF
 
@@ -45,7 +45,7 @@ function printTS(...)
 	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
 end
 local output
-function Skinner:Debug(a1, ...)
+function aObj:Debug(a1, ...)
 
 	output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
 
@@ -54,10 +54,10 @@ function Skinner:Debug(a1, ...)
 end
 --@end-debug@
 --[===[@non-debug@
-function Skinner:Debug() end
+function aObj:Debug() end
 --@end-non-debug@]===]
 
-function Skinner:CustomPrint(r, g, b, a1, ...)
+function aObj:CustomPrint(r, g, b, a1, ...)
 
 	output = ("|cffffff78"..aName..":|r")
 
@@ -65,7 +65,7 @@ function Skinner:CustomPrint(r, g, b, a1, ...)
 
 end
 
-function Skinner:SetupCmds()
+function aObj:SetupCmds()
 
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("rl", function(msg) ReloadUI() end)
@@ -85,25 +85,25 @@ end
 local success, err
 local function safecall(funcName, LoD, quiet)
 	-- handle errors from internal functions
-	success, err = xpcall(function() return Skinner[funcName](Skinner, LoD) end, errorhandler)
+	success, err = xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
 	if quiet then
 --		print(funcName, success, err)
 		return success, err
 	end
 	if not success then
-		if Skinner.db.profile.Errors then
-			Skinner:CustomPrint(1, 0, 0, "Error running", funcName)
+		if aObj.db.profile.Errors then
+			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
 		end
 	end
 end
 
-function Skinner:add2Table(table, value)
+function aObj:add2Table(table, value)
 
 	table[#table + 1] = value
 
 end
 
-function Skinner:checkAndRun(funcName, quiet)
+function aObj:checkAndRun(funcName, quiet)
 
 	if type(self[funcName]) == "function" then
 		return safecall(funcName, nil, quiet)
@@ -115,7 +115,7 @@ function Skinner:checkAndRun(funcName, quiet)
 
 end
 
-function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
+function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 	if not addonFunc then addonFunc = addonName end
 
@@ -152,7 +152,7 @@ function Skinner:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 end
 
-function Skinner:changeShield(shldReg, iconReg)
+function aObj:changeShield(shldReg, iconReg)
 
 	shldReg:SetTexture([[Interface\CastingBar\UI-CastingBar-Arena-Shield]])
 	shldReg:SetTexCoord(0, 1, 0, 1)
@@ -164,7 +164,7 @@ function Skinner:changeShield(shldReg, iconReg)
 
 end
 
-function Skinner:findFrame(height, width, children)
+function aObj:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
 	local kids, frame, matched = {}
@@ -202,7 +202,7 @@ function Skinner:findFrame(height, width, children)
 
 end
 
-function Skinner:findFrame2(parent, objType, ...)
+function aObj:findFrame2(parent, objType, ...)
 --@alpha@
 	assert(parent, "Unknown object\n"..debugstack())
 --@end-alpha@
@@ -244,7 +244,7 @@ function Skinner:findFrame2(parent, objType, ...)
 
 end
 
-function Skinner:findFrame3(name, element)
+function aObj:findFrame3(name, element)
 --@alpha@
 	assert(name, "Unknown object\n"..debugstack())
 --@end-alpha@
@@ -264,7 +264,7 @@ function Skinner:findFrame3(name, element)
 
 end
 
-function Skinner:getChild(obj, childNo)
+function aObj:getChild(obj, childNo)
 --@alpha@
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
@@ -273,7 +273,7 @@ function Skinner:getChild(obj, childNo)
 
 end
 
-function Skinner:getRegion(obj, regNo)
+function aObj:getRegion(obj, regNo)
 --@alpha@
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
@@ -282,13 +282,13 @@ function Skinner:getRegion(obj, regNo)
 
 end
 
-function Skinner:isAddonEnabled(addonName)
+function aObj:isAddonEnabled(addonName)
 
 	return (select(4, GetAddOnInfo(addonName))) -- in brackets so only one value is returned
 
 end
 
-function Skinner:isDropDown(obj)
+function aObj:isDropDown(obj)
 --@alpha@
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
@@ -306,7 +306,7 @@ function Skinner:isDropDown(obj)
 
 end
 
-function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
+function aObj:isVersion(addonName, verNoReqd, actualVerNo)
 
 	local hasMatched = false
 
@@ -331,7 +331,7 @@ function Skinner:isVersion(addonName, verNoReqd, actualVerNo)
 
 end
 
-function Skinner:removeMagicBtnTex(btn)
+function aObj:removeMagicBtnTex(btn)
 
 	-- Magic Button textures
 	if _G[btn.."_LeftSeparator"] then _G[btn.."_LeftSeparator"]:SetAlpha(0) end
@@ -339,7 +339,7 @@ function Skinner:removeMagicBtnTex(btn)
 
 end
 
-function Skinner:resizeTabs(frame)
+function aObj:resizeTabs(frame)
 
 	local fN = frame:GetName()
 	local tabName = fN.."Tab"
@@ -367,7 +367,7 @@ function Skinner:resizeTabs(frame)
 
 end
 
-function Skinner:resizeEmptyTexture(texture)
+function aObj:resizeEmptyTexture(texture)
 
 	texture:SetTexture(self.esTex)
 	texture:SetWidth(64)
@@ -378,7 +378,7 @@ function Skinner:resizeEmptyTexture(texture)
 
 end
 
-function Skinner:updateSBTexture()
+function aObj:updateSBTexture()
 
 	-- get updated colour/texture
 	local sb = self.db.profile.StatusBar
@@ -397,7 +397,7 @@ end
 
 -- This function was copied from WoWWiki
 -- http://www.wowwiki.com/RGBPercToHex
-function Skinner:RGBPercToHex(r, g, b)
+function aObj:RGBPercToHex(r, g, b)
 
 --	Check to see if the passed values are strings, if so then use some default values
 	if type(r) == "string" then r, g, b = 0.8, 0.8, 0.0 end
@@ -416,7 +416,7 @@ local function round2(num, ndp)
 
 end
 
-function Skinner:ShowInfo(obj, showKids, noDepth)
+function aObj:ShowInfo(obj, showKids, noDepth)
 
 --@alpha@
 	assert(obj, "Unknown object ShowInfo\n"..debugstack())
@@ -428,7 +428,7 @@ function Skinner:ShowInfo(obj, showKids, noDepth)
 
 	local function showIt(fmsg, ...)
 
-		printIt("dbg:"..makeText(fmsg, ...), Skinner.debugFrame)
+		printIt("dbg:"..makeText(fmsg, ...), aObj.debugFrame)
 
 	end
 

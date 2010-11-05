@@ -1,8 +1,9 @@
+local aName, aObj = ...
 local _G = _G
 local ftype = "u"
 local obj, objName, tex, texName, btn, btnName, tab, tabSF, asopts
 
-function Skinner:ModelFrames()
+function aObj:ModelFrames()
 	if not self.db.profile.CharacterFrames then return end
 --[[
 [12:55:21] <dreyruugr> http://ace.pastey.net/551
@@ -33,7 +34,7 @@ This does the trick, but it might be worth stealing chester's code from SuperIns
 end
 
 if IsMacClient() then
-	function Skinner:MovieProgress()
+	function aObj:MovieProgress()
 		if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
 		self.initialized.MovieProgress = true
 
@@ -47,7 +48,7 @@ if IsMacClient() then
 	end
 end
 
-function Skinner:TimeManager() -- LoD
+function aObj:TimeManager() -- LoD
 	if not self.db.profile.TimeManager or self.initialized.TimeManager then return end
 	self.initialized.TimeManager = true
 
@@ -76,7 +77,7 @@ function Skinner:TimeManager() -- LoD
 
 end
 
-function Skinner:Calendar() -- LoD
+function aObj:Calendar() -- LoD
 	if not self.db.profile.Calendar or self.initialized.Calendar then return end
 	self.initialized.Calendar = true
 
@@ -186,7 +187,7 @@ function Skinner:Calendar() -- LoD
 
 end
 
-function Skinner:MenuFrames()
+function aObj:MenuFrames()
 	if not self.db.profile.MenuFrames or self.initialized.MenuFrames then return end
 	self.initialized.MenuFrames = true
 
@@ -289,13 +290,13 @@ function Skinner:MenuFrames()
 		if oName and (oName:find("AceConfig") or oName:find("AceGUI"))then return end  -- ignore AceConfig/AceGUI objects
 
 		for _, child in ipairs{obj:GetChildren()} do
---			Skinner:Debug("checkKids: [%s, %s]", child:GetName(), child:GetObjectType())
-			if Skinner:isDropDown(child) then
-				Skinner:skinDropDown{obj=child}
+--			aObj:Debug("checkKids: [%s, %s]", child:GetName(), child:GetObjectType())
+			if aObj:isDropDown(child) then
+				aObj:skinDropDown{obj=child}
 			elseif child:IsObjectType("EditBox") then
-				Skinner:skinEditBox{obj=child, regs={9}}
+				aObj:skinEditBox{obj=child, regs={9}}
 			elseif child:IsObjectType("ScrollFrame") and child:GetName() then -- named ScrollFrame(s)
-				Skinner:skinScrollBar{obj=child}
+				aObj:skinScrollBar{obj=child}
 			else
 				checkKids(child)
 			end
@@ -315,7 +316,7 @@ function Skinner:MenuFrames()
 
 end
 
-function Skinner:BindingUI() -- LoD
+function aObj:BindingUI() -- LoD
 	if not self.db.profile.MenuFrames or self.initialized.BindingUI then return end
 	self.initialized.BindingUI = true
 
@@ -324,7 +325,7 @@ function Skinner:BindingUI() -- LoD
 
 end
 
-function Skinner:MacroUI() -- LoD
+function aObj:MacroUI() -- LoD
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
 
@@ -360,7 +361,7 @@ function Skinner:MacroUI() -- LoD
 
 end
 
-function Skinner:MailFrame()
+function aObj:MailFrame()
 	if not self.db.profile.MailFrame or self.initialized.MailFrame then return end
 	self.initialized.MailFrame = true
 
@@ -424,7 +425,7 @@ function Skinner:MailFrame()
 
 end
 
-function Skinner:MainMenuBar()
+function aObj:MainMenuBar()
 	if not self.db.profile.MainMenuBar.skin or self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
 
@@ -549,7 +550,7 @@ function Skinner:MainMenuBar()
 
 end
 
-function Skinner:CoinPickup()
+function aObj:CoinPickup()
 	if not self.db.profile.CoinPickup or self.initialized.CoinPickup then return end
 	self.initialized.CoinPickup = true
 
@@ -559,7 +560,7 @@ function Skinner:CoinPickup()
 
 end
 
-function Skinner:ItemSocketingUI() -- LoD
+function aObj:ItemSocketingUI() -- LoD
 	if not self.db.profile.ItemSocketingUI or self.initialized.ItemSocketingUI then return end
 	self.initialized.ItemSocketingUI = true
 
@@ -594,7 +595,7 @@ function Skinner:ItemSocketingUI() -- LoD
 
 end
 
-function Skinner:GuildBankUI() -- LoD
+function aObj:GuildBankUI() -- LoD
 	if not self.db.profile.GuildBankUI or self.initialized.GuildBankUI then return end
 	self.initialized.GuildBankUI = true
 
@@ -643,7 +644,7 @@ function Skinner:GuildBankUI() -- LoD
 
 end
 
-function Skinner:Nameplates()
+function aObj:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
@@ -655,7 +656,7 @@ function Skinner:Nameplates()
 		local tex
 		for _, child in pairs{WorldFrame:GetChildren()} do
 			if child:GetNumChildren() == 2 and child:GetNumRegions() == 11 then -- Nameplate frame
---				Skinner:ShowInfo(child, true)
+--				aObj:ShowInfo(child, true)
 				for k, reg in ipairs{child:GetRegions()} do -- process in key order
 					-- region 1 is the flash texture, toggled using aggro warning option
 					if k == 2 -- border texture
@@ -663,15 +664,15 @@ function Skinner:Nameplates()
 					or k == 6 -- glow effect
 					then reg:SetAlpha(0)
 					elseif k == 4 then tex = reg -- non-interruptible shield texture
-					elseif k == 5 then Skinner:changeShield(tex, reg) -- spell icon
+					elseif k == 5 then aObj:changeShield(tex, reg) -- spell icon
 					end
 					-- regions 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
 				end
 				-- skin both status bars
 				for _, grandchild in pairs{child:GetChildren()} do
-					if not Skinner.sbGlazed[grandchild] then
---						Skinner:ShowInfo(grandchild, true)
-						Skinner:glazeStatusBar(grandchild, 0)
+					if not aObj.sbGlazed[grandchild] then
+--						aObj:ShowInfo(grandchild, true)
+						aObj:glazeStatusBar(grandchild, 0)
 					end
 				end
 			end
@@ -681,7 +682,7 @@ function Skinner:Nameplates()
 		if not GetCVarBool("nameplateShowEnemies")
 		and not GetCVarBool("nameplateShowFriends")
 		then
-			Skinner:CancelTimer(npEvt, true)
+			aObj:CancelTimer(npEvt, true)
 			npEvt = nil
 		end
 
@@ -690,7 +691,7 @@ function Skinner:Nameplates()
 	local function showFunc()
 
 		if not npEvt then
-			npEvt = Skinner:ScheduleRepeatingTimer(skinNameplates, 0.2)
+			npEvt = aObj:ScheduleRepeatingTimer(skinNameplates, 0.2)
 		end
 
 	end
@@ -707,7 +708,7 @@ function Skinner:Nameplates()
 
 end
 
-function Skinner:GMChatUI() -- LoD
+function aObj:GMChatUI() -- LoD
 	if not self.db.profile.GMChatUI or self.initialized.GMChatUI then return end
 	self.initialized.GMChatUI = true
 
@@ -725,7 +726,7 @@ function Skinner:GMChatUI() -- LoD
 
 end
 
-function Skinner:AutoComplete()
+function aObj:AutoComplete()
 
 	self:add2Table(self.uiKeys1, "AutoComplete")
 
@@ -733,7 +734,7 @@ function Skinner:AutoComplete()
 
 end
 
-function Skinner:DebugTools() -- LoD
+function aObj:DebugTools() -- LoD
 	if not self.db.profile.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
@@ -757,13 +758,13 @@ function Skinner:DebugTools() -- LoD
 
 end
 
-function Skinner:RolePollPopup()
+function aObj:RolePollPopup()
 
 	self:addSkinFrame{obj=RolePollPopup, ft=ftype, x1=5, y1=-5, x2=-5, y2=5}
 
 end
 
-function Skinner:LFDFrame()
+function aObj:LFDFrame()
 	if not self.db.profile.LFDFrame or self.initialized.LFDFrame then return end
 	self.initialized.LFDFrame = true
 
@@ -808,7 +809,7 @@ function Skinner:LFDFrame()
 
 end
 
-function Skinner:LFRFrame()
+function aObj:LFRFrame()
 	if not self.db.profile.LFRFrame or self.initialized.LFRFrame then return end
 	self.initialized.LFRFrame = true
 
@@ -848,7 +849,7 @@ function Skinner:LFRFrame()
 
 end
 
-function Skinner:BNFrames()
+function aObj:BNFrames()
 	if not self.db.profile.BNFrames or self.initialized.BNFrames then return end
 	self.initialized.BNFrames = true
 
@@ -884,7 +885,7 @@ function Skinner:BNFrames()
 
 end
 
-function Skinner:CinematicFrame()
+function aObj:CinematicFrame()
 	if not self.db.profile.CinematicFrame or self.initialized.CinematicFrame then return end
 	self.initialized.CinematicFrame = true
 
@@ -894,7 +895,7 @@ function Skinner:CinematicFrame()
 
 end
 
-function Skinner:LevelUpDisplay()
+function aObj:LevelUpDisplay()
 	if not self.db.profile.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
 	self.initialized.LevelUpDisplay = true
 
@@ -904,7 +905,7 @@ function Skinner:LevelUpDisplay()
 
 end
 
-function Skinner:SpellFlyout()
+function aObj:SpellFlyout()
 	if not self.db.profile.SpellFlyout or self.initialized.SpellFlyout then return end
 	self.initialized.SpellFlyout = true
 
@@ -921,7 +922,7 @@ function Skinner:SpellFlyout()
 
 end
 
-function Skinner:GuildInvite()
+function aObj:GuildInvite()
 	if not self.db.profile.GuildInvite or self.initialized.GuildInvite then return end
 	self.initialized.GuildInvite = true
 
@@ -936,7 +937,7 @@ function Skinner:GuildInvite()
 
 end
 
-function Skinner:GhostFrame()
+function aObj:GhostFrame()
 	if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
 	self.initialized.GhostFrame = true
 

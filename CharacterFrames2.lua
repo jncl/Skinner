@@ -1,8 +1,9 @@
+local aName, aObj = ...
 local _G = _G
 local ftype = "c"
 local obj, objName, tex, texName, btn, btnName, tab, tabSF
 
-function Skinner:FriendsFrame()
+function aObj:FriendsFrame()
 	if not self.db.profile.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
@@ -117,7 +118,7 @@ function Skinner:FriendsFrame()
 
 end
 
-function Skinner:TradeSkillUI() -- LoD
+function aObj:TradeSkillUI() -- LoD
 	if not self.db.profile.TradeSkillUI or self.initialized.TradeSkillUI then return end
 	self.initialized.TradeSkillUI = true
 
@@ -169,7 +170,7 @@ function Skinner:TradeSkillUI() -- LoD
 
 end
 
-function Skinner:TradeFrame()
+function aObj:TradeFrame()
 	if not self.db.profile.TradeFrame or self.initialized.TradeFrame then return end
 	self.initialized.TradeFrame = true
 
@@ -188,7 +189,7 @@ function Skinner:TradeFrame()
 
 end
 
-function Skinner:QuestLog()
+function aObj:QuestLog()
 	if not self.db.profile.QuestLog or self.initialized.QuestLog then return end
 	self.initialized.QuestLog = true
 
@@ -201,7 +202,7 @@ function Skinner:QuestLog()
 		local function qlUpd()
 
 			for i = 1, #QuestLogScrollFrame.buttons do
-				Skinner:checkTex(QuestLogScrollFrame.buttons[i])
+				aObj:checkTex(QuestLogScrollFrame.buttons[i])
 			end
 
 		end
@@ -234,7 +235,7 @@ function Skinner:QuestLog()
 
 end
 
-function Skinner:RaidUI() -- LoD
+function aObj:RaidUI() -- LoD
 	if not self.db.profile.RaidUI or self.initialized.RaidUI then return end
 	self.initialized.RaidUI = true
 
@@ -298,7 +299,7 @@ function Skinner:RaidUI() -- LoD
 
 end
 
-function Skinner:ReadyCheck()
+function aObj:ReadyCheck()
 	if not self.db.profile.ReadyCheck or self.initialized.ReadyCheck then return end
 	self.initialized.ReadyCheck = true
 
@@ -308,7 +309,7 @@ function Skinner:ReadyCheck()
 
 end
 
-function Skinner:Buffs()
+function aObj:Buffs()
 	if not self.db.profile.Buffs or self.initialized.Buffs then return end
 	self.initialized.Buffs = true
 
@@ -322,7 +323,7 @@ function Skinner:Buffs()
 				btn = _G["BuffButton"..i]
 				if btn and not btn.sknrBdr then
 					-- add button borders
-					Skinner:addButtonBorder{obj=btn}
+					aObj:addButtonBorder{obj=btn}
 				end
 			end
 
@@ -349,7 +350,7 @@ function Skinner:Buffs()
 
 end
 
-function Skinner:VehicleMenuBar()
+function aObj:VehicleMenuBar()
 	if not self.db.profile.VehicleMenuBar or self.initialized.VehicleMenuBar then return end
 	self.initialized.VehicleMenuBar = true
 
@@ -358,7 +359,7 @@ function Skinner:VehicleMenuBar()
 	local xOfs1, xOfs2, yOfs1, yOfs2, sf
 	local function skinVehicleMenuBar(opts)
 
---		Skinner:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
+--		aObj:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
 
 		-- expand frame width if mechanical vehicle
 		if opts.sn == "Mechanical"
@@ -386,7 +387,7 @@ function Skinner:VehicleMenuBar()
 		 -- make it appear above the skin frame
 		VehicleMenuBarPitchSlider:SetFrameStrata("MEDIUM")
 
-		sf = Skinner.skinFrame[VehicleMenuBar]
+		sf = aObj.skinFrame[VehicleMenuBar]
 		if not sf then
 			self:addSkinFrame{obj=VehicleMenuBar, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 		else
@@ -417,7 +418,7 @@ function Skinner:VehicleMenuBar()
 
 end
 
-function Skinner:WatchFrame()
+function aObj:WatchFrame()
 	if not self.db.profile.WatchFrame.skin
 	and not self.db.profile.WatchFrame.popups
 	or self.initialized.WatchFrame
@@ -435,7 +436,7 @@ function Skinner:WatchFrame()
 			for i = 1, WATCHFRAME_NUM_ITEMS do
 				btn = _G["WatchFrameItem"..i]
 				if not btn.sknrBdr then
-					Skinner:addButtonBorder{obj=btn, ibt=true}
+					aObj:addButtonBorder{obj=btn, ibt=true}
 				end
 			end
 
@@ -464,11 +465,11 @@ function Skinner:WatchFrame()
 			local obj
 			for i = 1, GetNumAutoQuestPopUps() do
 				obj = _G["WatchFrameAutoQuestPopUp"..i.."ScrollChild"]
-				if not Skinner.skinned[obj] then
+				if not aObj.skinned[obj] then
 					for key, reg in ipairs{obj:GetRegions()} do
 						if key < 11 or key == 17 then reg:SetTexture(nil) end -- Animated textures
 					end
-					Skinner:applySkin{obj=obj}
+					aObj:applySkin{obj=obj}
 				end
 			end
 
@@ -483,7 +484,7 @@ function Skinner:WatchFrame()
 
 end
 
-function Skinner:GearManager() -- inc. in PaperDollFrame.xml
+function aObj:GearManager() -- inc. in PaperDollFrame.xml
 	if not self.db.profile.GearManager or self.initialized.GearManager then return end
 	self.initialized.GearManager = true
 
@@ -506,7 +507,7 @@ function Skinner:GearManager() -- inc. in PaperDollFrame.xml
 
 end
 
-function Skinner:CompactFrames()
+function aObj:CompactFrames()
 	if not self.db.profile.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
@@ -585,7 +586,7 @@ function Skinner:CompactFrames()
 
 end
 
-function Skinner:ArchaeologyUI() -- LoD
+function aObj:ArchaeologyUI() -- LoD
 	if not self.db.profile.ArchaeologyUI or self.initialized.ArchaeologyUI then return end
 	self.initialized.ArchaeologyUI = true
 
@@ -631,7 +632,7 @@ function Skinner:ArchaeologyUI() -- LoD
 
 end
 
-function Skinner:GuildUI() -- LoD
+function aObj:GuildUI() -- LoD
 	if not self.db.profile.GuildUI or self.initialized.GuildUI then return end
 	self.initialized.GuildUI = true
 
@@ -742,7 +743,7 @@ function Skinner:GuildUI() -- LoD
 
 end
 
-function Skinner:GuildControlUI() -- LoD
+function aObj:GuildControlUI() -- LoD
 	if not self.db.profile.GuildControlUI or self.initialized.GuildControlUI then return end
 	self.initialized.GuildControlUI = true
 
@@ -757,9 +758,9 @@ function Skinner:GuildControlUI() -- LoD
 		for i = 1, MAX_GUILDRANKS do
 			obj = _G["GuildControlUIRankOrderFrameRank"..i]
 			if obj
-			and not Skinner.skinned[obj]
+			and not aObj.skinned[obj]
 			then
-				Skinner:skinEditBox{obj=obj.nameBox, regs={9}, x=-5}
+				aObj:skinEditBox{obj=obj.nameBox, regs={9}, x=-5}
 			end
 		end
 

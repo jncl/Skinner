@@ -1,5 +1,5 @@
-local _, Skinner = ...
-local module = Skinner:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
+local aName, aObj = ...
+local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 local _G = _G
 
 local db
@@ -27,10 +27,10 @@ local function __checkTex(opts)
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 
 	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
-	local btn = opts.mp2 and opts.obj or Skinner.sBut[opts.obj]
+	local btn = opts.mp2 and opts.obj or aObj.sBut[opts.obj]
 	if not btn then return end -- allow for unskinned buttons
 
---	Skinner:Debug("__checkTex: [%s, %s, %s]", opts.obj, nTex, opts.mp2)
+--	aObj:Debug("__checkTex: [%s, %s, %s]", opts.obj, nTex, opts.mp2)
 
 	if not opts.mp2 then btn:Show() end
 
@@ -118,7 +118,7 @@ function module:skinButton(opts)
 	if not opts.obj then return end
 
 	-- don't skin it twice
-	if Skinner.sBut[opts.obj] then return end
+	if aObj.sBut[opts.obj] then return end
 
 	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... and derivatives]
 		opts.obj:GetNormalTexture():SetAlpha(0)
@@ -156,33 +156,33 @@ function module:skinButton(opts)
 		opts.obj:SetText(module.mult)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		if opts.sap then
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
+			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
 			x1 = opts.x1 or bW == 32 and 6 or 4
 			y1 = opts.y1 or bW == 32 and -6 or -4
 			x2 = opts.x2 or bW == 32 and -6 or -4
 			y2 = opts.y2 or bW == 32 and 6 or 4
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
+			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	elseif opts.cb2 then -- it's pretending to be a close button (e.g. ArkInventory/Recount/Outfitter)
 		x1 = opts.x1 or 0
 		y1 = opts.y1 or 0
 		x2 = opts.x2 or 0
 		y2 = opts.y2 or 0
-		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
-		btn = Skinner.sBut[opts.obj]
+		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
+		btn = aObj.sBut[opts.obj]
 		btn:SetNormalFontObject(module.fontX)
 		btn:SetText(module.mult)
 	elseif opts.cb3 then -- it's a small blue close button
-		Skinner:adjWidth{obj=opts.obj, adj=-4}
-		Skinner:adjHeight{obj=opts.obj, adj=-4}
-		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5, bba=0}, x1=2, y1=1, x2=2, y2=1}
-		btn = Skinner.sBut[opts.obj]
+		aObj:adjWidth{obj=opts.obj, adj=-4}
+		aObj:adjHeight{obj=opts.obj, adj=-4}
+		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5, bba=0}, x1=2, y1=1, x2=2, y2=1}
+		btn = aObj.sBut[opts.obj]
 		btn:SetNormalFontObject(module.fontSBX)
 		btn:SetText(module.mult)
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
-		Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}}
-		btn = Skinner.sBut[opts.obj]
+		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}}
+		btn = aObj.sBut[opts.obj]
 		btn:SetAllPoints(opts.obj:GetNormalTexture())
 		btn:SetNormalFontObject(module.fontP)
 		btn:SetText(opts.plus and module.plus or module.minus)
@@ -191,12 +191,12 @@ function module:skinButton(opts)
 		opts.obj:SetText(opts.plus and module.plus or module.minus)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		if not opts.as then
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}, sap=true}
+			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}, sap=true}
 			module:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
 				module:checkTex{obj=this, nTex=nTex, mp2=true}
 			end)
 		else -- just skin it (used by Waterfall & tomQuest2)
-			Skinner:applySkin{obj=opts.obj, bd=6}
+			aObj:applySkin{obj=opts.obj, bd=6}
 			opts.obj.skin = true
 		end
 	elseif opts.ob then -- it's another type of button, text supplied (e.g. beql minimize)
@@ -204,13 +204,13 @@ function module:skinButton(opts)
 		opts.obj:SetText(opts.ob)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		if opts.sap then
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
+			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
 			x1 = opts.x1 or bW == 32 and 6 or 4
 			y1 = opts.y1 or bW == 32 and -6 or -4
 			x2 = opts.x2 or bW == 32 and -6 or -4
 			y2 = opts.y2 or bW == 32 and 6 or 4
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
+			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		aso = {bd=bH > 18 and 5 or 6} -- use narrower backdrop if required
@@ -219,9 +219,9 @@ function module:skinButton(opts)
 			y1 = opts.y1 or -1
 			x2 = opts.x2 or -1
 			y2 = opts.y2 or -1
-			Skinner:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
+			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
 		else
-			Skinner:applySkin{obj=opts.obj, bd=aso.bd}
+			aObj:applySkin{obj=opts.obj, bd=aso.bd}
 		end
 	end
 
@@ -235,8 +235,8 @@ function module:skinButton(opts)
 --	end
 
 	-- reparent skinButton to avoid whiteout issues caused by animations
-	if opts.anim and Skinner.sBut[opts.obj] then
-		Skinner.sBut[opts.obj]:SetParent(Skinner.skinFrame[opts.obj:GetParent()])
+	if opts.anim and aObj.sBut[opts.obj] then
+		aObj.sBut[opts.obj]:SetParent(aObj.skinFrame[opts.obj:GetParent()])
 	end
 
 end
@@ -259,7 +259,7 @@ function module:isButton(obj, cb, blue)
 	and not obj.SetSlot -- and not a lootbutton
 	then -- check textures are as expected
 		local oName = obj:GetName() or nil
-		local oTex = getTexture(obj:GetNormalTexture()) or getTexture(Skinner:getRegion(obj, 1))
+		local oTex = getTexture(obj:GetNormalTexture()) or getTexture(aObj:getRegion(obj, 1))
 		if oTex then
 			if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
 			or oTex:find("UI-Panel-Button-Disabled", 1, true) -- UI Panel Button (Gray template)
@@ -382,9 +382,9 @@ local function __addButtonBorder(opts)
 	opts.obj.sknrBdr = CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
-	opts.obj.sknrBdr:SetBackdrop({edgeFile = Skinner.Backdrop[1].edgeFile,
-								  edgeSize = opts.es or Skinner.Backdrop[1].edgeSize})
-	local c = Skinner.db.profile.BackdropBorder
+	opts.obj.sknrBdr:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile,
+								  edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
+	local c = aObj.db.profile.BackdropBorder
 	opts.obj.sknrBdr:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
 	-- position the frame
 	opts.ofs = opts.ofs or 2
@@ -448,7 +448,7 @@ function module:addButtonBorder(...)
 
 	-- handle in combat
 	if InCombatLockdown() then
-		Skinner:add2Table(module.btnTab, opts)
+		aObj:add2Table(module.btnTab, opts)
 		return
 	end
 
@@ -470,13 +470,13 @@ end
 
 function module:OnInitialize()
 
-	self.db = Skinner.db:RegisterNamespace("UIButtons", defaults)
+	self.db = aObj.db:RegisterNamespace("UIButtons", defaults)
 	db = self.db.profile
 
 	-- convert any old settings
-	if Skinner.db.profile.Buttons then
-		db.UIButtons = Skinner.db.profile.Buttons
-		Skinner.db.profile.Buttons = nil
+	if aObj.db.profile.Buttons then
+		db.UIButtons = aObj.db.profile.Buttons
+		aObj.db.profile.Buttons = nil
 	end
 
 	if not db.UIButtons
@@ -506,7 +506,7 @@ function module:GetOptions()
 
 	local options = {
 		type = "group",
-		name = Skinner.L["Button Settings"],
+		name = aObj.L["Button Settings"],
 		order = 1,
 		get = function(info) return db[info[#info]] end,
 		set = function(info, value)
@@ -516,13 +516,13 @@ function module:GetOptions()
 		args = {
 			UIButtons = {
 				type = "toggle",
-				name = Skinner.L["UI Buttons"],
-				desc = Skinner.L["Toggle the skinning of the UI Buttons, reload required"],
+				name = aObj.L["UI Buttons"],
+				desc = aObj.L["Toggle the skinning of the UI Buttons, reload required"],
 			},
 			ButtonBorders = {
 				type = "toggle",
-				name = Skinner.L["Button Borders"],
-				desc = Skinner.L["Toggle the skinning of the Button Borders, reload required"],
+				name = aObj.L["Button Borders"],
+				desc = aObj.L["Toggle the skinning of the Button Borders, reload required"],
 			},
 		},
 	}

@@ -1,5 +1,5 @@
-local _, Skinner = ...
-local module = Skinner:NewModule("MiddleFrames")
+local aName, aObj = ...
+local module = aObj:NewModule("MiddleFrames")
 local ftype = "s"
 
 local db
@@ -45,7 +45,7 @@ local function OnMouseUp(self, mBtn)
 			self.db[self.key].yOfs = y - py
 			self.db[self.key].width = floor(self:GetWidth())
 			self.db[self.key].height = floor(self:GetHeight())
-			Skinner:applyGradient(self)
+			aObj:applyGradient(self)
 		end
 	end
 
@@ -61,9 +61,9 @@ end
 local function OnEnter(self)
 
 	GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
-	GameTooltip:AddLine(Skinner.L[self.name])
-	GameTooltip:AddLine(Skinner.L["Alt-Drag to move"], 1, 1, 1)
-	GameTooltip:AddLine(Skinner.L["Ctrl-Drag to resize"], 1, 1, 1)
+	GameTooltip:AddLine(aObj.L[self.name])
+	GameTooltip:AddLine(aObj.L["Alt-Drag to move"], 1, 1, 1)
+	GameTooltip:AddLine(aObj.L["Ctrl-Drag to resize"], 1, 1, 1)
 	GameTooltip:Show()
 
 end
@@ -78,10 +78,10 @@ local function adjustFrame(key)
 --	print("adjustFrame", key, db[key].shown, frames[key])
 
 	if db[key].shown then
-		frame = frames[key] or CreateFrame("Frame", db.name and "SkinnerMF"..key:sub(-1) or nil, UIParent)
+		frame = frames[key] or CreateFrame("Frame", db.name and aName.."MF"..key:sub(-1) or nil, UIParent)
 		frame.db = db
 		frame.key = key
-		frame.name = db.name and "SkinnerMF"..key:sub(-1) or "Middle Frame"..key:sub(-1)
+		frame.name = db.name and aName.."MF"..key:sub(-1) or "Middle Frame"..key:sub(-1)
 		frame:SetFrameStrata(db[key].fstrata)
 		frame:SetFrameLevel(db[key].flevel)
 		frame:SetMovable(true)
@@ -104,12 +104,12 @@ local function adjustFrame(key)
 		end
 		-- set the fade height
 		fh = nil
-		if not Skinner.db.profile.FadeHeight.enable
+		if not aObj.db.profile.FadeHeight.enable
 		and db.fixedfh
 		then
 			fh = db.fheight <= ceil(frame:GetHeight()) and db.fheight or ceil(frame:GetHeight())
 		end
-		Skinner:applySkin{obj=frame, ftype=ftype, bba=db.borderOff and 0 or 1, fh=fh}
+		aObj:applySkin{obj=frame, ftype=ftype, bba=db.borderOff and 0 or 1, fh=fh}
 		frame:SetBackdropColor(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
 		frame:Show()
 		frames[key] = frame
@@ -121,22 +121,22 @@ end
 
 function module:OnInitialize()
 
-	self.db = Skinner.db:RegisterNamespace("MiddleFrames", defaults)
+	self.db = aObj.db:RegisterNamespace("MiddleFrames", defaults)
 	db = self.db.profile
 
 	-- convert any old settings
-	if Skinner.db.profile.MiddleFrame then
-		for k, v in pairs(Skinner.db.profile.MiddleFrame) do
+	if aObj.db.profile.MiddleFrame then
+		for k, v in pairs(aObj.db.profile.MiddleFrame) do
 			db[k] = v
 		end
-		Skinner.db.profile.MiddleFrame = nil
+		aObj.db.profile.MiddleFrame = nil
 	end
 	for i = 1, MAX_MIDDLEFRAMES do
-		if Skinner.db.profile["MiddleFrame"..i] then
-			for k, v in pairs(Skinner.db.profile["MiddleFrame"..i]) do
+		if aObj.db.profile["MiddleFrame"..i] then
+			for k, v in pairs(aObj.db.profile["MiddleFrame"..i]) do
 				db["mf"..i][k] = v
 			end
-			Skinner.db.profile["MiddleFrame"..i] = nil
+			aObj.db.profile["MiddleFrame"..i] = nil
 		end
 	end
 
@@ -178,8 +178,8 @@ function module:GetOptions()
 	local options = {
 		type = "group",
 		order = 3,
-		name = Skinner.L["Middle Frame(s)"],
-		desc = Skinner.L["Change the MiddleFrame(s) settings"],
+		name = aObj.L["Middle Frame(s)"],
+		desc = aObj.L["Change the MiddleFrame(s) settings"],
 		get = function(info) return module.db.profile[info[#info]]	end,
 		set = function(info, value)
 			if not module:IsEnabled() then module:Enable() end
@@ -189,24 +189,24 @@ function module:GetOptions()
 		args = {
 			fheight = {
 				type = "range",
-				name = Skinner.L["MF Fade Height"],
-				desc = Skinner.L["Change the Height of the Fade Effect"],
+				name = aObj.L["MF Fade Height"],
+				desc = aObj.L["Change the Height of the Fade Effect"],
 				min = 0, max = 500, step = 1,
 			},
 			fixedfh = {
 				type = "toggle",
-				name = Skinner.L["Fixed Fade Height"],
-				desc = Skinner.L["Fix the Height of the Fade Effect"],
+				name = aObj.L["Fixed Fade Height"],
+				desc = aObj.L["Fix the Height of the Fade Effect"],
 			},
 			borderOff = {
 				type = "toggle",
-				name = Skinner.L["MF Toggle Border"],
-				desc = Skinner.L["Toggle the Border"],
+				name = aObj.L["MF Toggle Border"],
+				desc = aObj.L["Toggle the Border"],
 			},
 			colour = {
 				type = "color",
-				name = Skinner.L["MF Colour"],
-				desc = Skinner.L["Change the Colour of the MiddleFrame(s)"],
+				name = aObj.L["MF Colour"],
+				desc = aObj.L["Change the Colour of the MiddleFrame(s)"],
 				hasAlpha = true,
 				get = function(info)
 					local c = module.db.profile[info[#info]]
@@ -222,13 +222,13 @@ function module:GetOptions()
 			lock = {
 				type = "toggle",
 				order = 1,
-				name = Skinner.L["MF Lock Frames"],
-				desc = Skinner.L["Toggle the Frame Lock"],
+				name = aObj.L["MF Lock Frames"],
+				desc = aObj.L["Toggle the Frame Lock"],
 			},
 			name = {
 				type = "toggle",
-				name = Skinner.L["MF Names"],
-				desc = Skinner.L["Toggle the Frame Name(s)"],
+				name = aObj.L["MF Names"],
+				desc = aObj.L["Toggle the Frame Name(s)"],
 			},
 		},
 	}
@@ -250,8 +250,8 @@ function module:GetOptions()
 		mfkey = {}
 		mfkey.type = "group"
 		mfkey.inline = true
-		mfkey.name = Skinner.L["Middle Frame"..i]
-		mfkey.desc = Skinner.L["Change MiddleFrame"..i.." settings"]
+		mfkey.name = aObj.L["Middle Frame"..i]
+		mfkey.desc = aObj.L["Change MiddleFrame"..i.." settings"]
 		mfkey.get = function(info)
 			return module.db.profile[info[#info - 1]][info[#info]]
 		end
@@ -265,19 +265,19 @@ function module:GetOptions()
 		mfkey.args.shown = {}
 		mfkey.args.shown.type = "toggle"
 		mfkey.args.shown.order = 1
-		mfkey.args.shown.name = Skinner.L["MiddleFrame"..i.." Show"]
-		mfkey.args.shown.desc = Skinner.L["Toggle the MiddleFrame"..i]
+		mfkey.args.shown.name = aObj.L["MiddleFrame"..i.." Show"]
+		mfkey.args.shown.desc = aObj.L["Toggle the MiddleFrame"..i]
 		mfkey.args.flevel = {}
 		mfkey.args.flevel.type = "range"
-		mfkey.args.flevel.name = Skinner.L["MF"..i.." Frame Level"]
-		mfkey.args.flevel.desc = Skinner.L["Change the MF"..i.." Frame Level"]
+		mfkey.args.flevel.name = aObj.L["MF"..i.." Frame Level"]
+		mfkey.args.flevel.desc = aObj.L["Change the MF"..i.." Frame Level"]
 		mfkey.args.flevel.min = 0
 		mfkey.args.flevel.max = 20
 		mfkey.args.flevel.step = 1
 		mfkey.args.fstrata = {}
 		mfkey.args.fstrata.type = "select"
-		mfkey.args.fstrata.name = Skinner.L["MF"..i.." Frame Strata"]
-		mfkey.args.fstrata.desc = Skinner.L["Change the MF"..i.." Frame Strata"]
+		mfkey.args.fstrata.name = aObj.L["MF"..i.." Frame Strata"]
+		mfkey.args.fstrata.desc = aObj.L["Change the MF"..i.." Frame Strata"]
 		mfkey.args.fstrata.values = FrameStrata
 		options.args["mf"..i] = mfkey
 	end

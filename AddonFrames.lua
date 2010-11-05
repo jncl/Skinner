@@ -1,5 +1,6 @@
+local aName, aObj = ...
 
-function Skinner:BlizzardFrames()
+function aObj:BlizzardFrames()
 --	  self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
@@ -55,7 +56,7 @@ for _, v in pairs(blizzLoDFrames) do
 end
 blizzLoDFrames = nil
 
-Skinner.addonSkins = {
+aObj.addonSkins = {
 	"_NPCScan",
 	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Altoholic_Characters", "Altoholic_Search", "Analyst", "AnnounceIt", "Ara_Broker_Guild_Friends", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
 	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
@@ -81,10 +82,10 @@ Skinner.addonSkins = {
 	"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"zfpoison", "ZOMGBuffs"
 }
-Skinner.oddlyNamedAddons = {
+aObj.oddlyNamedAddons = {
 	"!Swatter", "Auc-Advanced", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "Ogri'Lazy", "Prat-3.0", "WoW-Pro", "XLoot1.0"
 }
-Skinner.libsToSkin = {
+aObj.libsToSkin = {
 	["Dewdrop-2.0"] = "Dewdrop",
 	["AceAddon-2.0"] = "Ace2",
 	["Tablet-2.0"] = "Tablet",
@@ -98,7 +99,7 @@ Skinner.libsToSkin = {
 	["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
 	["ArkDewdrop-3.0"] = "ArkDewdrop",
 }
-function Skinner:AddonFrames()
+function aObj:AddonFrames()
 --	   self:Debug("AddonFrames")
 
 	-- these addons colour the Tooltip Border
@@ -220,22 +221,22 @@ local lodFrames = {
 	"XPerl_Options",
 	"ZOMGBuffs_BlessingsManager",
 }
-Skinner.lodAddons = {}
+aObj.lodAddons = {}
 for _, v in pairs(lodFrames) do
-	Skinner.lodAddons[v] = v
+	aObj.lodAddons[v] = v
 end
 lodFrames = nil
 -- MobMap Databases
 for i = 1, 8 do
-	Skinner.lodAddons["MobMapDatabaseStub"..i] = "MobMapDatabaseStub"..i
+	aObj.lodAddons["MobMapDatabaseStub"..i] = "MobMapDatabaseStub"..i
 end
-Skinner.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
+aObj.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 -- RaidAchievement modules
 for _, v in pairs{"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids"} do
-	Skinner.lodAddons["RaidAchievement_"..v] = "RaidAchievement_"..v
+	aObj.lodAddons["RaidAchievement_"..v] = "RaidAchievement_"..v
 end
 local prev_addon
-function Skinner:LoDFrames(addon)
+function aObj:LoDFrames(addon)
 --	  self:Debug("LoDFrames: [%s]", addon)
 
 	if addon == prev_addon then return end
@@ -282,14 +283,14 @@ function Skinner:LoDFrames(addon)
 
 end
 
-function Skinner:ADDON_LOADED(event, addon)
+function aObj:ADDON_LOADED(event, addon)
 --	self:Debug("ADDON_LOADED: [%s]", addon)
 
 	self:ScheduleTimer("LoDFrames", self.db.profile.Delay.LoDs, addon)
 
 end
 
-function Skinner:AUCTION_HOUSE_SHOW()
+function aObj:AUCTION_HOUSE_SHOW()
 --	self:Debug("AUCTION_HOUSE_SHOW")
 
 	self:checkAndRun("AuctionUI") -- npc
@@ -302,7 +303,7 @@ function Skinner:AUCTION_HOUSE_SHOW()
 
 end
 
-function Skinner:TRADE_SKILL_SHOW()
+function aObj:TRADE_SKILL_SHOW()
 --	self:Debug("TRADE_SKILL_SHOW")
 
 	self:checkAndRun("TradeSkillUI") -- cf2

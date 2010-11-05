@@ -1,4 +1,4 @@
-local aName, Skinner = ...
+local aName, aObj = ...
 local _G = _G
 local obj, objName, tex, texName, btn, btnName, tab, tabSF, objHeight, prdb, c, opts
 
@@ -10,29 +10,29 @@ do
 	end
 
 	-- create the addon
-	_G[aName] = LibStub("AceAddon-3.0"):NewAddon(Skinner, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+	_G[aName] = LibStub("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 	-- specify where debug messages go
-	Skinner.debugFrame = ChatFrame10
+	aObj.debugFrame = ChatFrame10
 
 	-- Get Locale
-	Skinner.L = LibStub("AceLocale-3.0"):GetLocale(aName)
+	aObj.L = LibStub("AceLocale-3.0"):GetLocale(aName)
 
 	-- pointer to LibSharedMedia-3.0 library
-	Skinner.LSM = LibStub("LibSharedMedia-3.0")
+	aObj.LSM = LibStub("LibSharedMedia-3.0")
 
 	-- player class
-	Skinner.uCls = select(2, UnitClass("player"))
+	aObj.uCls = select(2, UnitClass("player"))
 
 	--check to see if running on PTR
-	Skinner.isPTR = FeedbackUI and true or false
+	aObj.isPTR = FeedbackUI and true or false
 	--check to see if running on patch 0.3.5
-	--Skinner.isPatch = BATTLENET_FRIEND and true or false
+	--aObj.isPatch = BATTLENET_FRIEND and true or false
 	-- check to see if running on Cataclysm Beta
-	Skinner.isCata = ARCHAEOLOGY_RANK_TOOLTIP and true or false
+	aObj.isCata = ARCHAEOLOGY_RANK_TOOLTIP and true or false
 end
 
-function Skinner:OnInitialize()
+function aObj:OnInitialize()
 
 --@debug@
 	self:Print("Debugging is enabled")
@@ -72,23 +72,23 @@ function Skinner:OnInitialize()
 	-- register the default background texture
 	self.LSM:Register("background", "Blizzard ChatFrame Background", [[Interface\ChatFrame\ChatFrameBackground]])
 	-- register the inactive tab texture
-	self.LSM:Register("background", "Skinner Inactive Tab", [[Interface\AddOns\Skinner\textures\inactive]])
+	self.LSM:Register("background", aName.." Inactive Tab", [[Interface\AddOns\]]..aName..[[\textures\inactive]])
 	-- register the texture used for EditBoxes & ScrollBars
-	self.LSM:Register("border", "Skinner Border", [[Interface\AddOns\Skinner\textures\krsnik]])
+	self.LSM:Register("border", aName.." Border", [[Interface\AddOns\]]..aName..[[\textures\krsnik]])
 	-- register the statubar texture used by Nameplates
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 	-- register any User defined textures used
 	if prdb.BdFile and prdb.BdFile ~= "None" then
-		self.LSM:Register("background", "Skinner User Backdrop", prdb.BdFile)
+		self.LSM:Register("background", aName.." User Backdrop", prdb.BdFile)
 	end
 	if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
-		self.LSM:Register("border", "Skinner User Border", prdb.BdEdgeFile)
+		self.LSM:Register("border", aName.." User Border", prdb.BdEdgeFile)
 	end
 	if prdb.BgFile and prdb.BgFile ~= "None" then
-		self.LSM:Register("background", "Skinner User Background", prdb.BgFile)
+		self.LSM:Register("background", aName.." User Background", prdb.BgFile)
 	end
 	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
-		self.LSM:Register("background", "Skinner User TabDDTexture", prdb.TabDDFile)
+		self.LSM:Register("background", aName.." User TabDDTexture", prdb.TabDDFile)
 	end
 
 	-- Heading and Body Text colours
@@ -118,12 +118,12 @@ function Skinner:OnInitialize()
 		}
 	else
 		if prdb.BdFile and prdb.BdFile ~= "None" then
-			bdTex = self.LSM:Fetch("background", "Skinner User Backdrop")
+			bdTex = self.LSM:Fetch("background", aName.." User Backdrop")
 		else
 			bdTex = self.LSM:Fetch("background", prdb.BdTexture)
 		end
 		if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
-			bdbTex = self.LSM:Fetch("border", "Skinner User Border")
+			bdbTex = self.LSM:Fetch("border",aName.." User Border")
 		else
 			bdbTex = self.LSM:Fetch("border", prdb.BdBorderTexture)
 		end
@@ -140,7 +140,7 @@ function Skinner:OnInitialize()
 	self.Backdrop[1] = CopyTable(self.backdrop)
 	-- wide backdrop for ScrollBars & EditBoxes (16,16,4)
 	self.Backdrop[2] = CopyTable(self.backdrop)
-	self.Backdrop[2].edgeFile = self.LSM:Fetch("border", "Skinner Border")
+	self.Backdrop[2].edgeFile = self.LSM:Fetch("border", aName.." Border")
 	-- medium backdrop for ScrollBars (12,12,3)
 	self.Backdrop[3] = CopyTable(self.Backdrop[2])
 	self.Backdrop[3].tileSize = 12
@@ -165,7 +165,7 @@ function Skinner:OnInitialize()
 	-- setup background texture
 	if prdb.BgUseTex then
 		if prdb.BgFile and prdb.BgFile ~= "None" then
-			self.bgTex = self.LSM:Fetch("background", "Skinner User Background")
+			self.bgTex = self.LSM:Fetch("background", aName.." User Background")
 		else
 			self.bgTex = self.LSM:Fetch("background", prdb.BgTexture)
 		end
@@ -198,7 +198,7 @@ function Skinner:OnInitialize()
 	self.bbColour = {c.r, c.g, c.b, c.a}
 	-- Inactive Tab & DropDowns texture
 	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
-		self.itTex = self.LSM:Fetch("background", "Skinner User TabDDTexture")
+		self.itTex = self.LSM:Fetch("background", aName.." User TabDDTexture")
 	else
 		self.itTex = self.LSM:Fetch("background", prdb.TabDDTexture)
 	end
@@ -251,7 +251,7 @@ function Skinner:OnInitialize()
 
 end
 
-function Skinner:OnEnable()
+function aObj:OnEnable()
 
 	-- add support for UIButton skinning
 	local btnModDB = self.db:GetNamespace("UIButtons", true)
@@ -305,8 +305,8 @@ function Skinner:OnEnable()
 end
 
 do
-	StaticPopupDialogs["Skinner_Reload_UI"] = {
-		text = Skinner.L["Confirm reload of UI to activate profile changes"],
+	StaticPopupDialogs[aName.."_Reload_UI"] = {
+		text = aObj.L["Confirm reload of UI to activate profile changes"],
 		button1 = OKAY,
 		button2 = CANCEL,
 		OnAccept = function()
@@ -314,7 +314,7 @@ do
 		end,
 		OnCancel = function(this, data, reason)
 			if reason == "timeout" or reason == "clicked" then
-				Skinner:CustomPrint(1, 1, 0, "The profile '"..Skinner.db:GetCurrentProfile().."' will be activated next time you Login or Reload the UI")
+				aObj:CustomPrint(1, 1, 0, "The profile '"..aObj.db:GetCurrentProfile().."' will be activated next time you Login or Reload the UI")
 			end
 		end,
 		timeout = 0,
@@ -323,13 +323,13 @@ do
 		hideOnEscape = 1
 	}
 end
-function Skinner:ReloadAddon(callback)
+function aObj:ReloadAddon(callback)
 
-	StaticPopup_Show("Skinner_Reload_UI")
+	StaticPopup_Show(aName.."_Reload_UI")
 
 end
 
-function Skinner:getGradientInfo(invert, rotate)
+function aObj:getGradientInfo(invert, rotate)
 
 	c = prdb.GradientMin
 	local MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
@@ -370,7 +370,7 @@ local function __addSkinButton(opts)
 --@end-alpha@
 
 	-- remove all textures, if required
-	if opts.kfs then Skinner:keepFontStrings(opts.obj) end
+	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
 	opts.parent = opts.parent or opts.obj:GetParent()
 	opts.hook = opts.hook or opts.obj
@@ -379,14 +379,14 @@ local function __addSkinButton(opts)
 	-- lower frame level
 	LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
-	Skinner.sBut[opts.hook] = btn
+	aObj.sBut[opts.hook] = btn
 	-- hook Show/Hide/Enable/Disable methods
-	if not Skinner:IsHooked(opts.hook, "Show") then
-		Skinner:SecureHook(opts.hook, "Show", function(this) Skinner.sBut[this]:Show() end)
-		Skinner:SecureHook(opts.hook, "Hide", function(this) Skinner.sBut[this]:Hide() end)
+	if not aObj:IsHooked(opts.hook, "Show") then
+		aObj:SecureHook(opts.hook, "Show", function(this) aObj.sBut[this]:Show() end)
+		aObj:SecureHook(opts.hook, "Hide", function(this) aObj.sBut[this]:Hide() end)
 		if opts.obj:IsObjectType("Button") then -- handle non button objects
-			Skinner:SecureHook(opts.hook, "Enable", function(this) Skinner.sBut[this]:Enable() end)
-			Skinner:SecureHook(opts.hook, "Disable", function(this) Skinner.sBut[this]:Disable() end)
+			aObj:SecureHook(opts.hook, "Enable", function(this) aObj.sBut[this]:Enable() end)
+			aObj:SecureHook(opts.hook, "Disable", function(this) aObj.sBut[this]:Disable() end)
 		end
 	end
 	-- position the button skin
@@ -404,7 +404,7 @@ local function __addSkinButton(opts)
 	-- setup applySkin options
 	opts.aso = opts.aso or {}
 	opts.aso.obj = btn
-	Skinner:applySkin(opts.aso)
+	aObj:applySkin(opts.aso)
 
 	-- hide button skin, if required or not shown
 	if opts.hide or not opts.obj:IsShown() then btn:Hide() end
@@ -434,7 +434,7 @@ local function __addSkinButton(opts)
 
 end
 
-function Skinner:addSkinButton(...)
+function aObj:addSkinButton(...)
 
 	opts = select(1, ...)
 
@@ -503,10 +503,10 @@ local function __addSkinFrame(opts)
 	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
 
 	-- store frame obj, if required
-	if opts.ft then Skinner:add2Table(Skinner.gradFrames[opts.ft], opts.obj) end
+	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
 
 	-- remove all textures, if required
-	if opts.kfs or opts.hat then Skinner:keepFontStrings(opts.obj, opts.hat) end
+	if opts.kfs or opts.hat then aObj:keepFontStrings(opts.obj, opts.hat) end
 
 	-- setup offset values
 	local xOfs1 = opts.ofs and opts.ofs * -1 or opts.x1 or 0
@@ -525,7 +525,7 @@ local function __addSkinFrame(opts)
 	end
 
 	-- store reference to the frame
-	Skinner.skinFrame[opts.obj] = skinFrame
+	aObj.skinFrame[opts.obj] = skinFrame
 
 	-- handle header, if required
 	if opts.hdr then hideHeader(opts.obj) end
@@ -538,7 +538,7 @@ local function __addSkinFrame(opts)
 	if opts.noBdr then opts.aso.bba = 0 end
 
 	-- skin the frame using supplied options
-	Skinner:applySkin(opts.aso)
+	aObj:applySkin(opts.aso)
 
 	-- adjust frame level
 	local success, err = pcall(LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
@@ -551,16 +551,16 @@ local function __addSkinFrame(opts)
 	if not opts.nb -- don't skin buttons
 	and not opts.noBdr -- this is a tab/unit frame
 	then
-		Skinner:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim}
+		aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim}
 	end
 
 	-- reparent skinFrame to avoid whiteout issues caused by animations
 	if opts.anim then
-		Skinner.skinFrame[opts.obj]:SetParent(UIParent)
+		aObj.skinFrame[opts.obj]:SetParent(UIParent)
 		-- hook Show and Hide methods
-		Skinner:SecureHook(opts.obj, "Show", function(this) Skinner.skinFrame[this]:Show() end)
-		Skinner:SecureHook(opts.obj, "Hide", function(this) Skinner.skinFrame[this]:Hide() end)
-		if not opts.obj:IsShown() then Skinner.skinFrame[opts.obj]:Hide() end
+		aObj:SecureHook(opts.obj, "Show", function(this) aObj.skinFrame[this]:Show() end)
+		aObj:SecureHook(opts.obj, "Hide", function(this) aObj.skinFrame[this]:Hide() end)
+		if not opts.obj:IsShown() then aObj.skinFrame[opts.obj]:Hide() end
 	end
 
 	-- remove inset textures
@@ -573,7 +573,7 @@ local function __addSkinFrame(opts)
 
 end
 
-function Skinner:addSkinFrame(...)
+function aObj:addSkinFrame(...)
 
 	opts = select(1, ...)
 
@@ -600,7 +600,7 @@ function Skinner:addSkinFrame(...)
 
 end
 
-function Skinner:applyGradient(obj, fh, invert, rotate)
+function aObj:applyGradient(obj, fh, invert, rotate)
 
 	-- don't apply a gradient if required
 	if not prdb.Gradient.char then
@@ -666,7 +666,7 @@ function Skinner:applyGradient(obj, fh, invert, rotate)
 
 end
 
-function Skinner:applyTexture(obj)
+function aObj:applyTexture(obj)
 
 	obj.tbg = obj:CreateTexture(nil, "BORDER")
 	obj.tbg:SetTexture(self.bgTex, true) -- have to use true for tiling to work
@@ -701,25 +701,25 @@ local function __applySkin(opts)
 
 	local hasIOT = assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
 	if hasIOT and not opts.obj:IsObjectType("Frame") then
-		if Skinner.db.profile.Errors then
-			Skinner:CustomPrint(1, 0, 0, "Error skinning", opts.obj.GetName and opts.obj:GetName() or opts.obj, "not a Frame or subclass of Frame: ", opts.obj:GetObjectType())
+		if aObj.db.profile.Errors then
+			aObj:CustomPrint(1, 0, 0, "Error skinning", opts.obj.GetName and opts.obj:GetName() or opts.obj, "not a Frame or subclass of Frame: ", opts.obj:GetObjectType())
 			return
 		end
 	end
 
 	-- store frame obj, if required
-	if opts.ft then Skinner:add2Table(Skinner.gradFrames[opts.ft], opts.obj) end
+	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
 
 	-- remove all textures, if required
-	if opts.kfs then Skinner:keepFontStrings(opts.obj) end
+	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
 	-- setup the backdrop
-	opts.obj:SetBackdrop(Skinner.Backdrop[opts.bd or 1])
+	opts.obj:SetBackdrop(aObj.Backdrop[opts.bd or 1])
 	if not opts.ebc then
 		-- colour the backdrop if required
-		local r, g, b, a = unpack(Skinner.bColour)
+		local r, g, b, a = unpack(aObj.bColour)
 		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
-		r, g, b, a = unpack(Skinner.bbColour)
+		r, g, b, a = unpack(aObj.bbColour)
 		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
 	else
 		opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
@@ -728,8 +728,8 @@ local function __applySkin(opts)
 
 	-- fix for backdrop textures not tiling vertically
 	-- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
-	if Skinner.db.profile.BgUseTex then
-		if not opts.obj.tbg then Skinner:applyTexture(opts.obj) end
+	if aObj.db.profile.BgUseTex then
+		if not opts.obj.tbg then aObj:applyTexture(opts.obj) end
 	elseif opts.obj.tbg then
 		opts.obj.tbg = nil -- remove background texture if it exists
 	end
@@ -737,14 +737,14 @@ local function __applySkin(opts)
 	-- handle header, if required
 	if opts.hdr then hideHeader(opts.obj) end
 
-	-- apply the 'Skinner' effect
+	-- apply the Gradient, if required
 	if not opts.ng then
-		Skinner:applyGradient(opts.obj, opts.fh, opts.invert or Skinner.db.profile.Gradient.invert, opts.rotate or Skinner.db.profile.Gradient.rotate)
+		aObj:applyGradient(opts.obj, opts.fh, opts.invert or aObj.db.profile.Gradient.invert, opts.rotate or aObj.db.profile.Gradient.rotate)
 	end
 
 end
 
-function Skinner:applySkin(...)
+function aObj:applySkin(...)
 
 	opts = select(1, ...)
 
@@ -789,7 +789,7 @@ local function __adjHeight(opts)
 
 end
 
-function Skinner:adjHeight(...)
+function aObj:adjHeight(...)
 
 	opts = select(1, ...)
 
@@ -830,7 +830,7 @@ local function __adjWidth(opts)
 
 end
 
-function Skinner:adjWidth(...)
+function aObj:adjWidth(...)
 
 	opts = select(1, ...)
 
@@ -851,7 +851,7 @@ function Skinner:adjWidth(...)
 
 end
 
-function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
+function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 --@alpha@
 	assert(statusBar and statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n"..debugstack())
 --@end-alpha@
@@ -897,7 +897,7 @@ function Skinner:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 
 end
 
-function Skinner:keepFontStrings(obj, hide)
+function aObj:keepFontStrings(obj, hide)
 --@alpha@
 	assert(obj, "Missing object kFS\n"..debugstack())
 --@end-alpha@
@@ -925,7 +925,7 @@ local function revTable(curTab)
 
 end
 
-function Skinner:keepRegions(obj, regions)
+function aObj:keepRegions(obj, regions)
 --@alpha@
 	assert(obj, "Missing object kR\n"..debugstack())
 --@end-alpha@
@@ -947,7 +947,7 @@ function Skinner:keepRegions(obj, regions)
 
 end
 
-function Skinner:makeMFRotatable(modelFrame)
+function aObj:makeMFRotatable(modelFrame)
 --@alpha@
 	assert(modelFrame and modelFrame:IsObjectType("PlayerModel"), "Not a PlayerModel\n"..debugstack())
 --@end-alpha@
@@ -1022,7 +1022,7 @@ local function __moveObject(opts)
 
 	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
 
---	Skinner:Debug("__mO: [%s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs)
+--	aObj:Debug("__mO: [%s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs)
 
 	-- handle no Point info
 	if not point then return end
@@ -1033,8 +1033,8 @@ local function __moveObject(opts)
 --@end-alpha@
 	-- Workaround for relativeTo crash
 	if not relTo then
-		if Skinner.db.profile.Warnings then
-			Skinner:CustomPrint(1, 0, 0, "moveObject (relativeTo) is nil: %s", opts.obj)
+		if aObj.db.profile.Warnings then
+			aObj:CustomPrint(1, 0, 0, "moveObject (relativeTo) is nil: %s", opts.obj)
 		end
 		return
 	end
@@ -1049,7 +1049,7 @@ local function __moveObject(opts)
 
 end
 
-function Skinner:moveObject(...)
+function aObj:moveObject(...)
 
 	opts = select(1, ...)
 
@@ -1074,7 +1074,7 @@ function Skinner:moveObject(...)
 
 end
 
-function Skinner:removeRegions(obj, regions)
+function aObj:removeRegions(obj, regions)
 --@alpha@
 	assert(obj, "Missing object rR\n"..debugstack())
 --@end-alpha@
@@ -1097,7 +1097,7 @@ function Skinner:removeRegions(obj, regions)
 
 end
 
-function Skinner:setActiveTab(tabSF)
+function aObj:setActiveTab(tabSF)
 --@alpha@
 	assert(tabSF, "Missing object sAT\n"..debugstack())
 --@end-alpha@
@@ -1122,7 +1122,7 @@ function Skinner:setActiveTab(tabSF)
 
 end
 
-function Skinner:setInactiveTab(tabSF)
+function aObj:setInactiveTab(tabSF)
 --@alpha@
 	assert(tabSF, "Missing object sIT\n"..debugstack())
 --@end-alpha@
@@ -1146,7 +1146,7 @@ function Skinner:setInactiveTab(tabSF)
 
 end
 
-function Skinner:setTTBBC()
+function aObj:setTTBBC()
 
 	if self.db.profile.Tooltips.border == 1 then
 		return unpack(self.tbColour)
@@ -1156,7 +1156,7 @@ function Skinner:setTTBBC()
 
 end
 
-function Skinner:shrinkBag(obj, bpMF)
+function aObj:shrinkBag(obj, bpMF)
 --@alpha@
 	assert(obj, "Missing object sB\n"..debugstack())
 --@end-alpha@
@@ -1221,9 +1221,9 @@ local function __skinDropDown(opts)
 	end
 
 	-- don't skin it twice
-	if Skinner.skinned[opts.obj] then return end
+	if aObj.skinned[opts.obj] then return end
 
-	if not Skinner.db.profile.TexturedDD or opts.noSkin then Skinner:keepFontStrings(opts.obj) return end
+	if not aObj.db.profile.TexturedDD or opts.noSkin then aObj:keepFontStrings(opts.obj) return end
 
 	local mTex, btn, txt
 	if opts.obj.leftTexture then
@@ -1239,22 +1239,22 @@ local function __skinDropDown(opts)
 		btn = _G[opts.obj:GetName().."Button"]
 		txt = _G[opts.obj:GetName().."Text"]
 	end
-	mTex:SetTexture(Skinner.itTex)
+	mTex:SetTexture(aObj.itTex)
 	mTex:SetHeight(19)
 
 	-- move Button Left and down, Text down
 	if not opts.noMove then
-		Skinner:moveObject{obj=btn, x=-6, y=-2}
-		Skinner:moveObject{obj=txt, y=-2}
+		aObj:moveObject{obj=btn, x=-6, y=-2}
+		aObj:moveObject{obj=txt, y=-2}
 	end
 
 	local mtx = opts.mtx or 0
 	local mty = opts.moveTex and 2 or (opts.mty or 0)
-	if mtx ~= 0 or mty ~= 0 then Skinner:moveObject{obj=mTex, x=mtx, y=mty} end
+	if mtx ~= 0 or mty ~= 0 then aObj:moveObject{obj=mTex, x=mtx, y=mty} end
 
 end
 
-function Skinner:skinDropDown(...)
+function aObj:skinDropDown(...)
 
 	opts = select(1, ...)
 
@@ -1295,18 +1295,18 @@ local function __skinEditBox(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if Skinner.skinned[opts.obj] then return end
+	if aObj.skinned[opts.obj] then return end
 
 	opts.x = opts.x or 0
 	opts.y = opts.y or 0
 
-	local kRegions = CopyTable(Skinner.ebRegions)
+	local kRegions = CopyTable(aObj.ebRegions)
 	if opts.regs then
 		for _, v in pairs(opts.regs) do
-			Skinner:add2Table(kRegions, v)
+			aObj:add2Table(kRegions, v)
 		end
 	end
-	Skinner:keepRegions(opts.obj, kRegions)
+	aObj:keepRegions(opts.obj, kRegions)
 
 	if not opts.noInsert then
 		-- adjust the left & right text inserts
@@ -1321,17 +1321,17 @@ local function __skinEditBox(opts)
 	if not opts.noWidth then opts.obj:SetWidth(opts.obj:GetWidth() + 5) end
 
 	-- apply the backdrop
-	if not opts.noSkin then Skinner:skinUsingBD{obj=opts.obj} end
+	if not opts.noSkin then aObj:skinUsingBD{obj=opts.obj} end
 
 	-- move to the left & up, if required
 	if opts.move then opts.x, opts.y = -2, 2 end
 
 	-- move left/right & up/down, if required
-	if opts.x ~= 0 or opts.y ~= 0 then Skinner:moveObject{obj=opts.obj, x=opts.x, y=opts.y} end
+	if opts.x ~= 0 or opts.y ~= 0 then aObj:moveObject{obj=opts.obj, x=opts.x, y=opts.y} end
 
 end
 
-function Skinner:skinEditBox(...)
+function aObj:skinEditBox(...)
 
 	opts = select(1, ...)
 
@@ -1356,7 +1356,7 @@ function Skinner:skinEditBox(...)
 
 end
 
-function Skinner:skinFFToggleTabs(tabName, tabCnt, noHeight)
+function aObj:skinFFToggleTabs(tabName, tabCnt, noHeight)
 
 	local togTab
 	for i = 1, tabCnt or 3 do
@@ -1371,7 +1371,7 @@ function Skinner:skinFFToggleTabs(tabName, tabCnt, noHeight)
 
 end
 
-function Skinner:skinFFColHeads(buttonName, noCols)
+function aObj:skinFFColHeads(buttonName, noCols)
 
 	noCols = noCols or 4
 	for i = 1, noCols do
@@ -1396,34 +1396,34 @@ local function __skinMoneyFrame(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if Skinner.skinned[opts.obj] then return end
+	if aObj.skinned[opts.obj] then return end
 
 	local cbMode = GetCVarBool("colorblindMode")
 
 	local obj
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
 		obj = _G[opts.obj:GetName()..v]
-		Skinner:skinEditBox{obj=obj, regs={9, 10}, noHeight=true, noWidth=true} -- N.B. region 9 is the icon, 10 is text
+		aObj:skinEditBox{obj=obj, regs={9, 10}, noHeight=true, noWidth=true} -- N.B. region 9 is the icon, 10 is text
 		-- move label to the right for colourblind mode
 		if k ~= 1 or opts.moveGIcon then
-			Skinner:moveObject{obj=obj.texture, x=10}
-			Skinner:moveObject{obj=obj.label, x=10}
---			Skinner:moveObject{obj=Skinner:getRegion(fName, 9), x=10}
+			aObj:moveObject{obj=obj.texture, x=10}
+			aObj:moveObject{obj=obj.label, x=10}
+--			aObj:moveObject{obj=aObj:getRegion(fName, 9), x=10}
 		end
 		if not opts.noWidth and k ~= 1 then
-			Skinner:adjWidth{obj=obj, adj=5}
+			aObj:adjWidth{obj=obj, adj=5}
 		end
 		if v == "Gold" and opts.moveGEB then
-			Skinner:moveObject{obj=obj, x=-8}
+			aObj:moveObject{obj=obj, x=-8}
 		end
 		if v == "Silver" and opts.moveSEB then
-			Skinner:moveObject{obj=obj, x=-10}
+			aObj:moveObject{obj=obj, x=-10}
 		end
 	end
 
 end
 
-function Skinner:skinMoneyFrame(...)
+function aObj:skinMoneyFrame(...)
 
 	opts = select(1, ...)
 
@@ -1461,20 +1461,20 @@ local function __skinScrollBar(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if Skinner.skinned[opts.obj] then return end
+	if aObj.skinned[opts.obj] then return end
 
 	-- remove all the object's regions except text ones, if required
-	if not opts.noRR then Skinner:keepFontStrings(opts.obj) end
+	if not opts.noRR then aObj:keepFontStrings(opts.obj) end
 
 	-- get the actual ScrollBar object
 	local sBar = opts.sbObj and opts.sbObj or _G[opts.obj:GetName()..(opts.sbPrefix or "").."ScrollBar"]
 
 	-- skin it
-	Skinner:skinUsingBD{obj=sBar, size=opts.size}
+	aObj:skinUsingBD{obj=sBar, size=opts.size}
 
 end
 
-function Skinner:skinScrollBar(...)
+function aObj:skinScrollBar(...)
 
 	opts = select(1, ...)
 
@@ -1508,17 +1508,17 @@ local function __skinSlider(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if Skinner.skinned[opts.obj] then return end
+	if aObj.skinned[opts.obj] then return end
 
-	Skinner:keepFontStrings(opts.obj)
+	aObj:keepFontStrings(opts.obj)
 	opts.obj:SetAlpha(1)
 	opts.obj:GetThumbTexture():SetAlpha(1)
 
-	Skinner:skinUsingBD{obj=opts.obj, size=opts.size}
+	aObj:skinUsingBD{obj=opts.obj, size=opts.size}
 
 end
 
-function Skinner:skinSlider(...)
+function aObj:skinSlider(...)
 
 	opts = select(1, ...)
 
@@ -1539,7 +1539,7 @@ function Skinner:skinSlider(...)
 
 end
 
-function Skinner:skinTooltip(obj)
+function aObj:skinTooltip(obj)
 	if not self.db.profile.Tooltips.skin then return end
 --@alpha@
 	assert(obj, "Missing object sT\n"..debugstack())
@@ -1611,13 +1611,13 @@ local function __skinUsingBD(opts)
 
 	opts.size = opts.size or 3 -- default to medium
 
-	opts.obj:SetBackdrop(Skinner.Backdrop[opts.size])
+	opts.obj:SetBackdrop(aObj.Backdrop[opts.size])
 	opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
 	opts.obj:SetBackdropColor(.1, .1, .1, 1)
 
 end
 
-function Skinner:skinUsingBD(...)
+function aObj:skinUsingBD(...)
 
 	opts = select(1, ...)
 
@@ -1638,7 +1638,7 @@ function Skinner:skinUsingBD(...)
 
 end
 
-function Skinner:skinUsingBD2(obj)
+function aObj:skinUsingBD2(obj)
 
 	self:skinUsingBD{obj=obj, size=2}
 

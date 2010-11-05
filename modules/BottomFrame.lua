@@ -1,5 +1,5 @@
-local _, Skinner = ...
-local module = Skinner:NewModule("BottomFrame")
+local _, aObj = ...
+local module = aObj:NewModule("BottomFrame")
 local ftype = "s"
 
 local db
@@ -20,15 +20,15 @@ local defaults = {
 
 function module:OnInitialize()
 
-	self.db = Skinner.db:RegisterNamespace("BottomFrame", defaults)
+	self.db = aObj.db:RegisterNamespace("BottomFrame", defaults)
 	db = self.db.profile
 
 	-- convert any old settings
-	if Skinner.db.profile.BottomFrame then
-		for k, v in pairs(Skinner.db.profile.BottomFrame) do
+	if aObj.db.profile.BottomFrame then
+		for k, v in pairs(aObj.db.profile.BottomFrame) do
 			db[k] = v
 		end
-		Skinner.db.profile.BottomFrame = nil
+		aObj.db.profile.BottomFrame = nil
 	end
 
 	if not db.shown then self:Disable() end -- disable ourself
@@ -62,12 +62,12 @@ function module:adjustBottomFrame(opt)
 		end
 		-- set the fade height
 		local fh = nil
-		if not Skinner.db.profile.FadeHeight.enable
+		if not aObj.db.profile.FadeHeight.enable
 		and db.fixedfh
 		then
 			fh = db.fheight <= ceil(btmframe:GetHeight()) and db.fheight or ceil(btmframe:GetHeight())
 		end
-		Skinner:applySkin{obj=btmframe, ft=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil}
+		aObj:applySkin{obj=btmframe, ft=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil}
 		btmframe:Show()
 	elseif btmframe then
 		btmframe:Hide()
@@ -80,8 +80,8 @@ function module:GetOptions()
 	local options = {
 		type = "group",
 		order = 4,
-		name = Skinner.L["Bottom Frame"],
-		desc = Skinner.L["Change the BottomFrame settings"],
+		name = aObj.L["Bottom Frame"],
+		desc = aObj.L["Change the BottomFrame settings"],
 		get = function(info) return module.db.profile[info[#info]] end,
 		set = function(info, value)
 			if not module:IsEnabled() then module:Enable() end
@@ -93,67 +93,67 @@ function module:GetOptions()
 			shown = {
 				type = "toggle",
 				order = 1,
-				name = Skinner.L["BottomFrame Show"],
-				desc = Skinner.L["Toggle the BottomFrame"],
+				name = aObj.L["BottomFrame Show"],
+				desc = aObj.L["Toggle the BottomFrame"],
 			},
 			height = {
 				type = "range",
 				order = 6,
-				name = Skinner.L["BF Height"],
-				desc = Skinner.L["Change Height of the BottomFrame"],
+				name = aObj.L["BF Height"],
+				desc = aObj.L["Change Height of the BottomFrame"],
 				min = 0, max = 500, step = 1,
 			},
 			width = {
 				type = "range",
 				order = 7,
-				name = Skinner.L["BF Width"],
-				desc = Skinner.L["Change Width of the BottomFrame"],
+				name = aObj.L["BF Width"],
+				desc = aObj.L["Change Width of the BottomFrame"],
 				min = 0, max = 2600, step = 1,
 			},
 			fheight = {
 				type = "range",
 				order = 9,
-				name = Skinner.L["BF Fade Height"],
-				desc = Skinner.L["Change the Height of the Fade Effect"],
+				name = aObj.L["BF Fade Height"],
+				desc = aObj.L["Change the Height of the Fade Effect"],
 				min = 0, max = 500, step = 1,
 			},
 			fixedfh = {
 				type = "toggle",
 				order = 10,
-				name = Skinner.L["Fixed Fade Height"],
-				desc = Skinner.L["Fix the Height of the Fade Effect"],
+				name = aObj.L["Fixed Fade Height"],
+				desc = aObj.L["Fix the Height of the Fade Effect"],
 			},
 			xyOff = {
 				type = "toggle",
 				order = 2,
 				width = "double",
-				name = Skinner.L["BF Move Origin offscreen"],
-				desc = Skinner.L["Hide Border on Left and Bottom"],
+				name = aObj.L["BF Move Origin offscreen"],
+				desc = aObj.L["Hide Border on Left and Bottom"],
 			},
 			borderOff = {
 				type = "toggle",
 				order = 3,
-				name = Skinner.L["BF Toggle Border"],
-				desc = Skinner.L["Toggle the Border"],
+				name = aObj.L["BF Toggle Border"],
+				desc = aObj.L["Toggle the Border"],
 			},
 			alpha = {
 				type = "range",
 				order = 8,
-				name = Skinner.L["BF Alpha"],
-				desc = Skinner.L["Change Alpha value of the BottomFrame"],
+				name = aObj.L["BF Alpha"],
+				desc = aObj.L["Change Alpha value of the BottomFrame"],
 				min = 0, max = 1, step = 0.1,
 			},
 			invert = {
 				type = "toggle",
 				order = 4,
-				name = Skinner.L["BF Invert Gradient"],
-				desc = Skinner.L["Toggle the Inversion of the Gradient"],
+				name = aObj.L["BF Invert Gradient"],
+				desc = aObj.L["Toggle the Inversion of the Gradient"],
 			},
 			rotate = {
 				type = "toggle",
 				order = 5,
-				name = Skinner.L["BF Rotate Gradient"],
-				desc = Skinner.L["Toggle the Rotation of the Gradient"],
+				name = aObj.L["BF Rotate Gradient"],
+				desc = aObj.L["Toggle the Rotation of the Gradient"],
 			},
 		},
 	}

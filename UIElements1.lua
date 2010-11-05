@@ -1,3 +1,4 @@
+local aName, aObj = ...
 local _G = _G
 local ftype = "u"
 local obj, objName, tex, texName, btn, btnName, tab, tabSF, asopts
@@ -5,30 +6,30 @@ local obj, objName, tex, texName, btn, btnName, tab, tabSF, asopts
 do
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
 	-- use strings as the objects may not exist when we start
-	Skinner.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "ItemRefShoppingTooltip3"}
+	aObj.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ShoppingTooltip3", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "ItemRefShoppingTooltip3"}
 	-- list of Tooltips used when the Tooltip style is 3
 	-- using a metatable to manage tooltips when they are added in different functions
-	Skinner.ttList = setmetatable({}, {__newindex = function(t, k, v)
-	--	  Skinner:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
+	aObj.ttList = setmetatable({}, {__newindex = function(t, k, v)
+	--	  aObj:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
 		rawset(t, k, v)
 		-- set the backdrop if required
-		if Skinner.db.profile.Tooltips.style == 3 then
-			_G[v]:SetBackdrop(Skinner.Backdrop[1])
+		if aObj.db.profile.Tooltips.style == 3 then
+			_G[v]:SetBackdrop(aObj.Backdrop[1])
 		end
 		-- hook the OnShow method
-		Skinner:HookScript(_G[v], "OnShow", function(this)
-			Skinner:skinTooltip(this)
-			if this == GameTooltip and Skinner.db.profile.Tooltips.glazesb then
-				Skinner:glazeStatusBar(GameTooltipStatusBar, 0)
+		aObj:HookScript(_G[v], "OnShow", function(this)
+			aObj:skinTooltip(this)
+			if this == GameTooltip and aObj.db.profile.Tooltips.glazesb then
+				aObj:glazeStatusBar(GameTooltipStatusBar, 0)
 			end
 		end)
-		Skinner:skinTooltip(_G[v]) -- skin here so tooltip initially skinnned when logged on
+		aObj:skinTooltip(_G[v]) -- skin here so tooltip initially skinnned when logged on
 	end})
 	-- Set the Tooltip Border
-	Skinner.ttBorder = true
+	aObj.ttBorder = true
 end
 
-function Skinner:Tooltips()
+function aObj:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
@@ -61,14 +62,14 @@ function Skinner:Tooltips()
 		counts = counts + 1
 
 		if cHeight ~= ceil(GameTooltip:GetHeight()) then
-			Skinner:skinTooltip(GameTooltip)
-			Skinner:CancelTimer(GTSBevt, true)
+			aObj:skinTooltip(GameTooltip)
+			aObj:CancelTimer(GTSBevt, true)
 			GTSBevt = nil
 			counts = 0
 		end
 
 		if counts == 10 or GameTooltipStatusBar:IsShown() then
-			Skinner:CancelTimer(GTSBevt, true)
+			aObj:CancelTimer(GTSBevt, true)
 			GTSBevt = nil
 			counts = 0
 		end
@@ -94,13 +95,13 @@ function Skinner:Tooltips()
 	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
 		if GameTooltipStatusBar1 then
 			self:removeRegions(GameTooltipStatusBar1, {2})
-			if Skinner.db.profile.Tooltips.glazesb then
+			if aObj.db.profile.Tooltips.glazesb then
 				self:glazeStatusBar(GameTooltipStatusBar1, 0)
 			end
 		end
 		if GameTooltipStatusBar2 then
 			self:removeRegions(GameTooltipStatusBar2, {2})
-			if Skinner.db.profile.Tooltips.glazesb then
+			if aObj.db.profile.Tooltips.glazesb then
 				self:glazeStatusBar(GameTooltipStatusBar2, 0)
 			end
 			self:Unhook("GameTooltip_ShowStatusBar")
@@ -109,7 +110,7 @@ function Skinner:Tooltips()
 
 end
 
-function Skinner:MirrorTimers()
+function aObj:MirrorTimers()
 	if not self.db.profile.MirrorTimers.skin or self.initialized.MirrorTimers then return end
 	self.initialized.MirrorTimers = true
 
@@ -133,7 +134,7 @@ function Skinner:MirrorTimers()
 
 end
 
-function Skinner:CastingBar()
+function aObj:CastingBar()
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
 
@@ -173,7 +174,7 @@ function Skinner:CastingBar()
 
 end
 
-function Skinner:StaticPopups()
+function aObj:StaticPopups()
 	if not self.db.profile.StaticPopups or self.initialized.StaticPopups then return end
 	self.initialized.StaticPopups = true
 
@@ -211,7 +212,7 @@ function Skinner:StaticPopups()
 
 end
 
-function Skinner:ChatMenus()
+function aObj:ChatMenus()
 	if not self.db.profile.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
@@ -225,7 +226,7 @@ function Skinner:ChatMenus()
 
 end
 
-function Skinner:ChatTabs()
+function aObj:ChatTabs()
 	if not self.db.profile.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true
 
@@ -257,7 +258,7 @@ function Skinner:ChatTabs()
 
 end
 
-function Skinner:ChatFrames()
+function aObj:ChatFrames()
 	if not self.db.profile.ChatFrames or self.initialized.ChatFrames then return end
 	self.initialized.ChatFrames = true
 
@@ -299,7 +300,7 @@ function Skinner:ChatFrames()
 
 end
 
-function Skinner:ChatConfig()
+function aObj:ChatConfig()
 	if not self.db.profile.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true
 
@@ -392,7 +393,7 @@ function Skinner:ChatConfig()
 
 end
 
-function Skinner:ChatEditBox()
+function aObj:ChatEditBox()
 	-- don't use an initialized value to allow for dynamic changes
 	if not self.db.profile.ChatEditBox.skin then return end
 
@@ -418,7 +419,7 @@ function Skinner:ChatEditBox()
 
 end
 
-function Skinner:LootFrame()
+function aObj:LootFrame()
 	if not self.db.profile.LootFrame or self.initialized.LootFrame then return end
 	self.initialized.LootFrame = true
 
@@ -436,7 +437,7 @@ function Skinner:LootFrame()
 
 end
 
-function Skinner:GroupLoot()
+function aObj:GroupLoot()
 	if not self.db.profile.GroupLoot.skin or self.initialized.GroupLoot then return end
 	self.initialized.GroupLoot = true
 
@@ -489,7 +490,7 @@ function Skinner:GroupLoot()
 
 end
 
-function Skinner:ContainerFrames()
+function aObj:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
@@ -510,7 +511,7 @@ function Skinner:ContainerFrames()
 
 end
 
-function Skinner:StackSplit()
+function aObj:StackSplit()
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
 
@@ -525,7 +526,7 @@ function Skinner:StackSplit()
 
 end
 
-function Skinner:ItemText()
+function aObj:ItemText()
 	if not self.db.profile.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
 
@@ -542,7 +543,7 @@ function Skinner:ItemText()
 
 end
 
-function Skinner:ColorPicker()
+function aObj:ColorPicker()
 	if not self.db.profile.Colours or self.initialized.Colours then return end
 	self.initialized.Colours = true
 
@@ -560,7 +561,7 @@ function Skinner:ColorPicker()
 
 end
 
-function Skinner:WorldMap()
+function aObj:WorldMap()
 	if not self.db.profile.WorldMap.skin or self.initialized.WorldMap then return end
 	self.initialized.WorldMap = true
 
@@ -640,7 +641,7 @@ function Skinner:WorldMap()
 
 end
 
-function Skinner:HelpFrame()
+function aObj:HelpFrame()
 	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
 	self.initialized.HelpFrame = true
 
@@ -699,7 +700,7 @@ function Skinner:HelpFrame()
 
 end
 
-function Skinner:Tutorial()
+function aObj:Tutorial()
 	if not self.db.profile.Tutorial or self.initialized.Tutorial then return end
 	self.initialized.Tutorial = true
 
@@ -750,7 +751,7 @@ function Skinner:Tutorial()
 
 end
 
-function Skinner:GMSurveyUI() -- LoD
+function aObj:GMSurveyUI() -- LoD
 	if not self.db.profile.GMSurveyUI or self.initialized.GMSurveyUI then return end
 	self.initialized.GMSurveyUI = true
 
@@ -772,7 +773,7 @@ function Skinner:GMSurveyUI() -- LoD
 
 end
 
-function Skinner:InspectUI() -- LoD
+function aObj:InspectUI() -- LoD
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
@@ -830,7 +831,7 @@ function Skinner:InspectUI() -- LoD
 
 end
 
-function Skinner:BattleScore() -- a.k.a. WorldStateScoreFrame
+function aObj:BattleScore() -- a.k.a. WorldStateScoreFrame
 	if not self.db.profile.BattleScore or self.initialized.BattleScore then return end
 	self.initialized.BattleScore = true
 
@@ -850,7 +851,7 @@ function Skinner:BattleScore() -- a.k.a. WorldStateScoreFrame
 
 end
 
-function Skinner:BattlefieldMinimap() -- LoD
+function aObj:BattlefieldMinimap() -- LoD
 	if not self.db.profile.BattlefieldMm or self.initialized.BattlefieldMm then return end
 	self.initialized.BattlefieldMm = true
 
@@ -885,7 +886,7 @@ function Skinner:BattlefieldMinimap() -- LoD
 
 end
 
-function Skinner:ScriptErrors()
+function aObj:ScriptErrors()
 	if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
 	self.initialized.ScriptErrors = true
 
@@ -896,7 +897,7 @@ function Skinner:ScriptErrors()
 
 end
 
-function Skinner:DropDowns()
+function aObj:DropDowns()
 	if not self.db.profile.DropDowns or self.initialized.DropDowns then return end
 	self.initialized.DropDowns = true
 
@@ -921,7 +922,7 @@ function Skinner:DropDowns()
 
 end
 
-function Skinner:Minimap()
+function aObj:Minimap()
 	if not self.db.profile.Minimap.skin or self.initialized.Minimap then return end
 	self.initialized.Minimap = true
 
@@ -976,7 +977,7 @@ function Skinner:Minimap()
 	self:moveObject{obj=BuffFrame, x=-10}
 end
 
-function Skinner:MinimapButtons()
+function aObj:MinimapButtons()
 	if not self.db.profile.MinimapButtons.skin or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
 
@@ -992,8 +993,8 @@ function Skinner:MinimapButtons()
 			objName = obj:GetName()
 			objType = obj:GetObjectType()
 --			print(objName, objType)
-			if not Skinner.sBut[obj]
-			and not Skinner.skinFrame[obj]
+			if not aObj.sBut[obj]
+			and not aObj.skinFrame[obj]
 --			and objName
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
@@ -1020,9 +1021,9 @@ function Skinner:MinimapButtons()
 							obj:SetHeight(32)
 							if not minBtn then
 								if objType == "Button" then
-									Skinner:addSkinButton{obj=obj, parent=obj, sap=true}
+									aObj:addSkinButton{obj=obj, parent=obj, sap=true}
 								else
-									Skinner:addSkinFrame{obj=obj, ft=ftype}
+									aObj:addSkinFrame{obj=obj, ft=ftype}
 								end
 							end
 						elseif (tex and tex:find("Background")) then
@@ -1131,8 +1132,8 @@ function Skinner:MinimapButtons()
 
 end
 
-if Skinner.isPTR then
-	function Skinner:FeedbackUI() -- LoD
+if aObj.isPTR then
+	function aObj:FeedbackUI() -- LoD
 		if not self.db.profile.Feedback or self.initialized.Feedback then return end
 		self.initialized.Feedback = true
 

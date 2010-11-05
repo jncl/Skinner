@@ -1,5 +1,5 @@
--- Many thanks to ananhaid for the translation
-local L = LibStub:GetLibrary("AceLocale-3.0",true):NewLocale("Skinner", "zhCN", false)
+local aName, aObj = ...
+local L = LibStub:GetLibrary("AceLocale-3.0",true):NewLocale(aName, "zhCN", false)
 
 if not L then return end
 

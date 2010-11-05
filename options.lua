@@ -1,6 +1,6 @@
-local aName, Skinner = ...
+local aName, aObj = ...
 
-function Skinner:Defaults()
+function aObj:Defaults()
 
 	local defaults = { profile = {
 	-->>-- General
@@ -12,7 +12,7 @@ function Skinner:Defaults()
 		TexturedTab		= false,
 		TexturedDD		= false,
 		TabDDFile		= "None",
-		TabDDTexture	= "Skinner Inactive Tab",
+		TabDDTexture	= aName.." Inactive Tab",
 		Delay			= {Init = 0.5, Addons = 0.5, LoDs = 0.5},
 		FadeHeight		= {enable = false, value = 500, force = false},
 		StatusBar		= {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
@@ -135,12 +135,12 @@ function Skinner:Defaults()
 
 	}}
 
-	self.db = LibStub("AceDB-3.0"):New("SkinnerDB", defaults, "Default")
+	self.db = LibStub("AceDB-3.0"):New(aName.."DB", defaults, "Default")
 
 end
 
 local DBIcon = LibStub("LibDBIcon-1.0")
-function Skinner:Options()
+function aObj:Options()
 
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
@@ -156,7 +156,7 @@ function Skinner:Options()
 				desc = {
 					type = "description",
 					order = 1,
-					name = self.L["UI Enhancement"] .." - "..GetAddOnMetadata(aName, "Version").. "\n",
+					name = self.L["UI Enhancement"] .." - "..(GetAddOnMetadata(aName, "X-Curse-Packaged-Version") or GetAddOnMetadata(aName, "Version") or "").."\n",
 				},
 				longdesc = {
 					type = "description",
@@ -1547,9 +1547,9 @@ function Skinner:Options()
 
 		if not input or input:trim() == "" then
 			-- Open general panel if there are no parameters
-			InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame)
+			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
 		elseif optCheck[input:lower()] then
-			InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame[optCheck[input:lower()]])
+			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 		else
 			LibStub("AceConfigCmd-3.0"):HandleCommand(aName, aName, input)
 		end
@@ -1563,7 +1563,7 @@ function Skinner:Options()
 	self.DBObj = LibStub("LibDataBroker-1.1"):NewDataObject(aName, {
 		type = "launcher",
 		icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
-		OnClick = function() InterfaceOptionsFrame_OpenToCategory(Skinner.optionsFrame) end,
+		OnClick = function() InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame) end,
 	})
 
 	-- register the data object to the Icon library

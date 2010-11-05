@@ -1,5 +1,5 @@
-local _, Skinner = ...
-local module = Skinner:NewModule("ViewPort")
+local _, aObj = ...
+local module = aObj:NewModule("ViewPort")
 
 local db
 local defaults = {
@@ -67,24 +67,24 @@ end
 function module:OnInitialize()
 
 	-- check to see if any other Viewport Addons are enabled
-	if Skinner:isAddonEnabled("Aperture")
-	or Skinner:isAddonEnabled("Btex")
-	or Skinner:isAddonEnabled("CT_Viewport")
-	or Skinner:isAddonEnabled("SunnArt")
+	if aObj:isAddonEnabled("Aperture")
+	or aObj:isAddonEnabled("Btex")
+	or aObj:isAddonEnabled("CT_Viewport")
+	or aObj:isAddonEnabled("SunnArt")
 	then
 		self:Disable() -- disable ourself
 		return
 	end
 
-	self.db = Skinner.db:RegisterNamespace("ViewPort", defaults)
+	self.db = aObj.db:RegisterNamespace("ViewPort", defaults)
 	db = self.db.profile
 
 	-- convert any old settings
-	if Skinner.db.profile.ViewPort then
-		for k, v in pairs(Skinner.db.profile.ViewPort) do
+	if aObj.db.profile.ViewPort then
+		for k, v in pairs(aObj.db.profile.ViewPort) do
 			db[k] = v
 		end
-		Skinner.db.profile.ViewPort = nil
+		aObj.db.profile.ViewPort = nil
 	end
 
 	if not db.shown then self:Disable() end -- disable ourself
@@ -136,8 +136,8 @@ function module:GetOptions()
 	local options = {
 		type = "group",
 		order = 1,
-		name = Skinner.L["View Port"],
-		desc = Skinner.L["Change the ViewPort settings"],
+		name = aObj.L["View Port"],
+		desc = aObj.L["Change the ViewPort settings"],
 		get = function(info) return module.db.profile[info[#info]] end,
 		set = function(info, value)
 			if not module:IsEnabled() then module:Enable() end
@@ -150,63 +150,63 @@ function module:GetOptions()
 				type = "toggle",
 				order = 1,
 				width = "full",
-				name = Skinner.L["ViewPort Show"],
-				desc = Skinner.L["Toggle the ViewPort"],
+				name = aObj.L["ViewPort Show"],
+				desc = aObj.L["Toggle the ViewPort"],
 			},
 			top = {
 				type = "range",
 				order = 4,
-				name = Skinner.L["VP Top"],
-				desc = Skinner.L["Change Height of the Top Band"],
+				name = aObj.L["VP Top"],
+				desc = aObj.L["Change Height of the Top Band"],
 				min = 0, max = 256, step = 1,
 			},
 			bottom = {
 				type = "range",
 				order = 5,
-				name = Skinner.L["VP Bottom"],
-				desc = Skinner.L["Change Height of the Bottom Band"],
+				name = aObj.L["VP Bottom"],
+				desc = aObj.L["Change Height of the Bottom Band"],
 				min = 0, max = 256, step = 1,
 			},
 			left = {
 				type = "range",
 				order = 6,
-				name = Skinner.L["VP Left"],
-				desc = Skinner.L["Change Width of the Left Band"],
+				name = aObj.L["VP Left"],
+				desc = aObj.L["Change Width of the Left Band"],
 				min = 0, max = 1800, step = 1,
 			},
 			right = {
 				type = "range",
 				order = 7,
-				name = Skinner.L["VP Right"],
-				desc = Skinner.L["Change Width of the Right Band"],
+				name = aObj.L["VP Right"],
+				desc = aObj.L["Change Width of the Right Band"],
 				min = 0, max = 1800, step = 1,
 			},
 			XRes = {
 				type = "range",
 				order = 8,
-				name = Skinner.L["VP XResolution"],
-				desc = Skinner.L["Change X Resolution"],
+				name = aObj.L["VP XResolution"],
+				desc = aObj.L["Change X Resolution"],
 				min = 0, max = 1600, step = 2,
 			},
 			YRes = {
 				type = "range",
 				order = 9,
-				name = Skinner.L["VP YResolution"],
-				desc = Skinner.L["Change Y Resolution"],
+				name = aObj.L["VP YResolution"],
+				desc = aObj.L["Change Y Resolution"],
 				min = 0, max = 2600, step = 2,
 			},
 			overlay = {
 				type = "toggle",
 				order = 2,
-				name = Skinner.L["ViewPort Overlay"],
-				desc = Skinner.L["Toggle the ViewPort Overlay"],
+				name = aObj.L["ViewPort Overlay"],
+				desc = aObj.L["Toggle the ViewPort Overlay"],
 			},
 			colour = {
 				type = "color",
 				order = 3,
 				width = "double",
-				name = Skinner.L["ViewPort Colors"],
-				desc = Skinner.L["Set ViewPort Colors"],
+				name = aObj.L["ViewPort Colors"],
+				desc = aObj.L["Set ViewPort Colors"],
 				hasAlpha = true,
 				get = function(info)
 					local c = module.db.profile[info[#info]]

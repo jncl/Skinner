@@ -1,5 +1,5 @@
-
-local L = LibStub:GetLibrary("AceLocale-3.0",true):NewLocale("Skinner", "frFR", false)
+local aName, aObj = ...
+local L = LibStub:GetLibrary("AceLocale-3.0",true):NewLocale(aName, "frFR", false)
 
 if not L then return end
 

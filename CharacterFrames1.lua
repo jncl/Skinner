@@ -1,8 +1,9 @@
+local aName, aObj = ...
 local _G = _G
 local ftype = "c"
 local obj, objName, tex, texName, btn, btnName, tab, tabSF
 
-function Skinner:CharacterFrames()
+function aObj:CharacterFrames()
 	if not self.db.profile.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
 
@@ -16,7 +17,7 @@ function Skinner:CharacterFrames()
 
 end
 
-function Skinner:CharacterFrame()
+function aObj:CharacterFrame()
 
 	CharacterFrameInsetRight:DisableDrawLayer("BACKGROUND")
 	CharacterFrameInsetRight:DisableDrawLayer("BORDER")
@@ -32,7 +33,7 @@ function Skinner:CharacterFrame()
 
 end
 
-function Skinner:PaperDollFrame()
+function aObj:PaperDollFrame()
 
 	self:keepFontStrings(PaperDollFrame)
 	self:skinDropDown{obj=PlayerTitleFrame}
@@ -72,7 +73,7 @@ function Skinner:PaperDollFrame()
 
 end
 
-function Skinner:PetPaperDollFrame()
+function aObj:PetPaperDollFrame()
 
 -->>-- Pet Frame
 	PetPaperDollPetModelBg:SetAlpha(0) -- changed in blizzard code
@@ -88,7 +89,7 @@ function Skinner:PetPaperDollFrame()
 
 end
 
-function Skinner:ReputationFrame()
+function aObj:ReputationFrame()
 
 	if self.modBtns then
 		-- hook to manage changes to button textures
@@ -116,7 +117,7 @@ function Skinner:ReputationFrame()
 
 end
 
-function Skinner:TokenFrame() -- a.k.a. Currency Frame
+function aObj:TokenFrame() -- a.k.a. Currency Frame
 
 	if self.db.profile.ContainerFrames.skin then
 		BACKPACK_TOKENFRAME_HEIGHT = BACKPACK_TOKENFRAME_HEIGHT - 6
@@ -139,7 +140,7 @@ function Skinner:TokenFrame() -- a.k.a. Currency Frame
 
 end
 
-function Skinner:PVPFrame()
+function aObj:PVPFrame()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
@@ -193,7 +194,7 @@ function Skinner:PVPFrame()
 
 end
 
-function Skinner:PetStableFrame()
+function aObj:PetStableFrame()
 	if not self.db.profile.PetStableFrame or self.initialized.PetStableFrame then return end
 	self.initialized.PetStableFrame = true
 
@@ -231,7 +232,7 @@ function Skinner:PetStableFrame()
 
 end
 
-function Skinner:SpellBookFrame()
+function aObj:SpellBookFrame()
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
 
@@ -345,7 +346,7 @@ function Skinner:SpellBookFrame()
 
 end
 
-function Skinner:GlyphUI() -- LoD
+function aObj:GlyphUI() -- LoD
 	if not self.db.profile.TalentUI or self.initialized.GlyphUI then return end
 	self.initialized.GlyphUI = true
 
@@ -379,7 +380,7 @@ function Skinner:GlyphUI() -- LoD
 
 end
 
-function Skinner:TalentUI() -- LoD
+function aObj:TalentUI() -- LoD
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
 
@@ -471,7 +472,7 @@ function Skinner:TalentUI() -- LoD
 
 end
 
-function Skinner:DressUpFrame()
+function aObj:DressUpFrame()
 	if not self.db.profile.DressUpFrame or self.initialized.DressUpFrame then return end
 	self.initialized.DressUpFrame = true
 
@@ -483,7 +484,7 @@ function Skinner:DressUpFrame()
 
 end
 
-function Skinner:AchievementUI() -- LoD
+function aObj:AchievementUI() -- LoD
 	if not self.db.profile.AchievementUI.skin or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
 
@@ -498,8 +499,8 @@ function Skinner:AchievementUI() -- LoD
 
 	local function skinSB(statusBar, type)
 
-		Skinner:moveObject{obj=_G[statusBar..type], y=-3}
-		Skinner:moveObject{obj=_G[statusBar.."Text"], y=-3}
+		aObj:moveObject{obj=_G[statusBar..type], y=-3}
+		aObj:moveObject{obj=_G[statusBar.."Text"], y=-3}
 		_G[statusBar.."Left"]:SetAlpha(0)
 		_G[statusBar.."Right"]:SetAlpha(0)
 		_G[statusBar.."Middle"]:SetAlpha(0)
@@ -520,11 +521,11 @@ function Skinner:AchievementUI() -- LoD
 	end
 	local function glazeProgressBar(pBar)
 
-		if not Skinner.sbGlazed[pBaro] then
+		if not aObj.sbGlazed[pBaro] then
 			_G[pBar.."BorderLeft"]:SetAlpha(0)
 			_G[pBar.."BorderRight"]:SetAlpha(0)
 			_G[pBar.."BorderCenter"]:SetAlpha(0)
-			Skinner:glazeStatusBar(_G[pBar], 0, _G[pBar.."BG"])
+			aObj:glazeStatusBar(_G[pBar], 0, _G[pBar.."BG"])
 		end
 
 	end
@@ -756,7 +757,7 @@ function Skinner:AchievementUI() -- LoD
 
 end
 
-function Skinner:AlertFrames()
+function aObj:AlertFrames()
 	if not self.db.profile.AlertFrames or self.initialized.AlertFrames then return end
 	self.initialized.AlertFrames = true
 
@@ -769,15 +770,15 @@ function Skinner:AlertFrames()
 		local obj, icon
 		for i = 1, MAX_ACHIEVEMENT_ALERTS do
 			obj = _G[aafName..i]
-			if obj and not Skinner.skinFrame[obj] then
+			if obj and not aObj.skinFrame[obj] then
 				_G[aafName..i.."Background"]:SetTexture(nil)
 				_G[aafName..i.."Background"].SetTexture = function() end
-				_G[aafName..i.."Unlocked"]:SetTextColor(Skinner.BTr, Skinner.BTg, Skinner.BTb)
+				_G[aafName..i.."Unlocked"]:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 				icon = _G[aafName..i.."Icon"]
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
-				Skinner:addButtonBorder{obj=icon, relTo=_G[aafName..i.."IconTexture"]}
-				Skinner:addSkinFrame{obj=obj, ft=ftype, anim=true, x1=5, y1=-10, x2=-5, y2=12}
+				aObj:addButtonBorder{obj=icon, relTo=_G[aafName..i.."IconTexture"]}
+				aObj:addSkinFrame{obj=obj, ft=ftype, anim=true, x1=5, y1=-10, x2=-5, y2=12}
 			end
 		end
 
@@ -807,8 +808,8 @@ function Skinner:AlertFrames()
  	 				if obj.guildDisplay then
 						y1, y2 = -8, 8
 					end
-					Skinner.skinFrame[obj]:SetPoint("TOPLEFT", obj, "TOPLEFT", 5, y1)
-					Skinner.skinFrame[obj]:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 5, y2)
+					self.skinFrame[obj]:SetPoint("TOPLEFT", obj, "TOPLEFT", 5, y1)
+					self.skinFrame[obj]:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 5, y2)
 				end
 			end
 		end)
