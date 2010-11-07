@@ -23,6 +23,12 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
+√	I	Visor2_GUI, reported by Kerecha, 6.11.10
+
+	I	AuctionProfitMaster, reported by dalai333, 6.11.10
+√		- InfoPanel needs skinning
+√		- Tradeskill queueframe needs skinning
+
 BETA changes
 ±±±±±±±±±±±±
 
