@@ -77,7 +77,7 @@ aObj.addonSkins = {
 	"SayGMOTD", "ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "SmoothQuest", "Spew", "Squeenix", "sRaidFrames",
 	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "Tukui", "TwinValkyr_shieldmonitor",
 	"UberQuest", "UrbanAchiever",
-	"vBagnon", "Vendorizer", "VendorSearch", "Violation", "Visor2GUI", "Volumizer",
+	"vBagnon", "Vendorizer", "VendorSearch", "Violation", "Visor2_GUI", "Volumizer",
 	"WebDKP", "WIM", "WoWEquip", "WowLua",
 	"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"zfpoison", "ZOMGBuffs"
