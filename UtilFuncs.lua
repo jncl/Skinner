@@ -217,8 +217,8 @@ function aObj:findFrame2(parent, objType, ...)
 				if select("#", ...) > 2 then
 					-- base checks on position
 					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
-					xOfs = ceil(xOfs)
-					yOfs = ceil(yOfs)
+					xOfs = xOfs and ceil(xOfs) or 0
+					yOfs = yOfs and ceil(yOfs) or 0
 					if	point		  == select(1, ...)
 					and relativeTo	  == select(2, ...)
 					and relativePoint == select(3, ...)
