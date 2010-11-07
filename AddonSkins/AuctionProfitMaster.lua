@@ -5,6 +5,12 @@ function Skinner:AuctionProfitMaster()
 	local APM = LibStub("AceAddon-3.0"):GetAddon("AuctionProfitMaster", true)
 	if not APM then return end
 
+-->>-- Info Panel
+	local frame = self:findFrame2(UIParent, "Frame", "CENTER", UIParent, "CENTER", 0, 100)
+	if frame then
+		self:addSkinFrame{obj=frame, kfs=true, y1=6}
+	end
+
 -->>-- Status Frame
 	self:SecureHook(APM, "CreateStatus", function(this)
 	self:skinScrollBar{obj=APM.statusFrame.scroll}
@@ -43,11 +49,22 @@ function Skinner:AuctionProfitMaster()
 	self:adjHeight{obj=APM.Post.post.skipButton, adj=6}
 	self:adjHeight{obj=APM.Post.post.cancelButton, adj=6}
 	self:addSkinFrame{obj=APM.Post.post}
-	
+
 -->>-- Cancel Frame
 	self:SecureHook(APM.Manage, "FinalCancel", function(this)
 		self:addSkinFrame{obj=self:getChild(AuctionFrame, AuctionFrame:GetNumChildren())} -- last child added
 		self:Unhook(APM.Manage, "FinalCancel")
+	end)
+
+-->>--	Tradeskill Queue Frame
+	self:SecureHook(APM.Tradeskill, "CreateFrame", function(this)
+		self:adjWidth{obj=this.button, adj=6}
+		self:adjWidth{obj=this.buy, adj=6}
+		self:skinButton{obj=this.button}
+		self:skinButton{obj=this.buy}
+		self:skinScrollBar{obj=this.frame.scroll}
+		self:addSkinFrame{obj=this.frame}
+		self:Unhook(APM.Tradeskill, "CreateFrame")
 	end)
 
 end
