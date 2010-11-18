@@ -30,9 +30,9 @@ local function __checkTex(opts)
 	local btn = opts.mp2 and opts.obj or aObj.sBut[opts.obj]
 	if not btn then return end -- allow for unskinned buttons
 
---	aObj:Debug("__checkTex: [%s, %s, %s]", opts.obj, nTex, opts.mp2)
+	-- aObj:Debug("__checkTex: [%s, %s, %s, %s, %s]", opts.obj, btn, nTex, opts.mp2, btn.skin)
 
-	if not opts.mp2 then btn:Show() end
+	if not opts.mp2 then btn:Show() end -- why done here and not within following test stanza ???
 
 	if nTex then
 		if btn.skin then btn:Show() end -- Waterfall/tomQuest2
@@ -118,7 +118,7 @@ function module:skinButton(opts)
 	if not opts.obj then return end
 
 	-- don't skin it twice
-	if aObj.sBut[opts.obj] then return end
+	if aObj.sBut[opts.obj] or opts.obj.tfade then return end
 
 	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... and derivatives]
 		opts.obj:GetNormalTexture():SetAlpha(0)
@@ -169,20 +169,17 @@ function module:skinButton(opts)
 		y1 = opts.y1 or 0
 		x2 = opts.x2 or 0
 		y2 = opts.y2 or 0
-		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
-		btn = aObj.sBut[opts.obj]
+		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		btn:SetNormalFontObject(module.fontX)
 		btn:SetText(module.mult)
 	elseif opts.cb3 then -- it's a small blue close button
 		aObj:adjWidth{obj=opts.obj, adj=-4}
 		aObj:adjHeight{obj=opts.obj, adj=-4}
-		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5, bba=0}, x1=2, y1=1, x2=2, y2=1}
-		btn = aObj.sBut[opts.obj]
+		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5, bba=0}, x1=2, y1=1, x2=2, y2=1}
 		btn:SetNormalFontObject(module.fontSBX)
 		btn:SetText(module.mult)
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
-		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}}
-		btn = aObj.sBut[opts.obj]
+		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}}
 		btn:SetAllPoints(opts.obj:GetNormalTexture())
 		btn:SetNormalFontObject(module.fontP)
 		btn:SetText(opts.plus and module.plus or module.minus)
