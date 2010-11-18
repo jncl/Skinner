@@ -872,10 +872,12 @@ function aObj:Options()
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				print("UIFrames", info[#info], info[#info - 1])
 				local uiOpt = info[#info]:match("UI" , -2)
 				if info[#info] == "Colours" then self:checkAndRun("ColorPicker")
-				elseif info[#info] == "Feedback" then self:checkAndRun("FeedbackUI")
+				elseif info[#info] == "Feedback" then
+					if IsAddOnLoaded("Blizzard_FeedbackUI") then
+						self:checkAndRun("FeedbackUI")
+					end
 				elseif info[#info] == "CombatLogQBF" then return
 				elseif info[#info] == "BattlefieldMm" then
 					if IsAddOnLoaded("Blizzard_BattlefieldMinimap") then

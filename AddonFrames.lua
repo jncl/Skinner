@@ -13,7 +13,7 @@ function aObj:BlizzardFrames()
 
 	-- optional frames
 	if IsMacClient() then self:checkAndRun("MovieProgress") end
-	if self.isPTR then self:add2Table(blizzFrames, "FeedbackUI") end -- uie1
+	-- if self.isPTR then self:add2Table(blizzFrames, "FeedbackUI") end -- uie1
 
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
@@ -42,6 +42,12 @@ local blizzLoDFrames = {
 	"GMSurveyUI", "InspectUI", "BattlefieldMinimap", -- uie1
 	"TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", --uie2
 }
+if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- uie1
+local blizzLoD = {}
+for _, v in pairs(blizzLoDFrames) do
+	blizzLoD["Blizzard_"..v] = v
+end
+blizzLoDFrames = nil
 --[=[
 	AuctionUI -- loaded when AUCTION_HOUSE_SHOW event is fired
 	TradeSkillUI -- loaded when TRADE_SKILL_SHOW event is fired
@@ -50,11 +56,6 @@ local blizzLoDFrames = {
 	CombatText -- nothing to skin
 	TokenUI -- loaded when CURRENCY_DISPLAY_UPDATE event is fired, actioned by MainMenuBar_OnEvent
 --]=]
-local blizzLoD = {}
-for _, v in pairs(blizzLoDFrames) do
-	blizzLoD["Blizzard_"..v] = v
-end
-blizzLoDFrames = nil
 
 aObj.addonSkins = {
 	"_NPCScan",
