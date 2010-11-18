@@ -484,15 +484,28 @@ function aObj:MainMenuBar()
 		end
 
 	end
-	self:keepFontStrings(BonusActionBarFrame)
 	if BonusActionBarFrame:IsShown() then toggleActionButtons(true) end
 	-- hook these to hide/show ActionButtons when shapeshifting (Druid/Rogue)
-	self:SecureHook("ShowBonusActionBar", function(this)
+	-- also handle Bar changes (Catalysm)
+	self:SecureHook("ShowBonusActionBar", function()
 		toggleActionButtons(true)
+		if self.isCata then
+			self:Debug("ShowBonusActionBar: [%s]", BonusActionBarFrame.currentType)
+		end
 	end)
-	self:SecureHook("HideBonusActionBar", function(this)
+	self:SecureHook("HideBonusActionBar", function()
 		toggleActionButtons()
 	end)
+	if self.isCata then
+		self:Debug("BonusActionBarFrame: [%s]", BonusActionBarFrame.currentType)
+		local x1, y1, x2, y2 = 0, 0, 0, 0
+		if BonusActionBarFrame.currentType ~= "default" then
+			x1, y1, x2, y2 = 31, -7, -31, -2
+		end
+		self:addSkinFrame{obj=BonusActionBarFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
+	else
+		self:keepFontStrings(BonusActionBarFrame)
+	end
 
 -->>-- MultiBar Buttons
 	for _, v in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
