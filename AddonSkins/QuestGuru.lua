@@ -108,8 +108,8 @@ function Skinner:QuestGuru()
 		for i = 1, QUESTGURU_QUESTS_DISPLAYED do
 			self:skinButton{obj=_G["QuestGuru_QuestHistoryTitle"..i], mp=true}
 		end
-		-- run the TabExpand function to make sure all buttons are displayed properly
-		QuestGuru_HistoryTabExpand()
+		-- run the TabExpand function to make sure all buttons are displayed properly if any exists
+		if #QGH_History > 0 then QuestGuru_HistoryTabExpand() end
 		self:skinScrollBar{obj=QuestGuru_QuestHistoryListScrollFrame}
 		self:skinScrollBar{obj=QuestGuru_QuestHistoryDetailScrollFrame}
 		self:addSkinFrame{obj=QuestGuru_TabPage2, kfs=true, x1=10, y1=-6, x2=-45, y2=16}
@@ -132,6 +132,8 @@ function Skinner:QuestGuru()
 	for i = 1, QUESTGURU_QUESTS_DISPLAYED do
 		self:skinButton{obj=_G["QuestGuru_QuestAbandonTitle"..i], mp=true}
 	end
+	-- run the TabExpand function to make sure all buttons are displayed properly if any exist
+	if #QuestGuru_Abandon then QuestGuru_AbandonTabExpand() end
 	self:skinScrollBar{obj=QuestGuru_QuestAbandonListScrollFrame}
 	self:skinScrollBar{obj=QuestGuru_QuestAbandonDetailScrollFrame}
 -->>-- Tab4

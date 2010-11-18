@@ -59,7 +59,6 @@ function Skinner:TukuiInit()
 			self.db.profile.BdEdgeFile = "None"
 			self.db.profile.BdTexture = "Tukui Background"
 			self.db.profile.BdBorderTexture = "Tukui Border"
-			self.db.profile.StatusBar.texture = "Tukui StatusBar"
 			self.db.profile.BdTileSize = 0
 			self.db.profile.BdEdgeSize = 1
 			self.db.profile.BdInset = -1
@@ -90,9 +89,10 @@ function Skinner:TukuiInit()
 		and (strfind(oName,'Tab(%d+)$') or strfind(oName,'TabButton(%d+)$'))
 		then
 			local xOfs1 = (opts.x1 or 0) + 4
-			local yOfs1 = (opts.y1 or 0) - 6
+			local yOfs1 = (opts.y1 or 0) - 3
 			local xOfs2 = (opts.x2 or 0) - 4
-			local yOfs2 = (opts.y2 or 0) + 6
+			local yOfs2 = (opts.y2 or 0) + 3
+			self.skinFrame[opts.obj]:ClearAllPoints()
 			self.skinFrame[opts.obj]:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
 			self.skinFrame[opts.obj]:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 		end
