@@ -219,6 +219,7 @@
 <script file="SkinMe\Quartz.lua"/>
 <script file="SkinMe\Quelevel.lua"/>
 <script file="SkinMe\QuestAgent.lua"/>
+<script file="SkinMe\QuestCompletist.lua"/>
 <script file="SkinMe\QuestGuru.lua"/>
 <script file="SkinMe\QuestHelper.lua"/>
 <script file="SkinMe\QuestHistory.lua"/>
@@ -238,6 +239,7 @@
 <script file="SkinMe\RicoMiniMap.lua"/>
 <script file="SkinMe\RockConfig.lua"/>
 <script file="SkinMe\SayGMOTD.lua"/>
+<script file="SkinMe\ScrollMaster.lua"/>
 <script file="SkinMe\ShadowDancer3.lua"/>
 <script file="SkinMe\sienasGemViewer.lua"/>
 <script file="SkinMe\Skada.lua"/>

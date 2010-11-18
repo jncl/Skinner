@@ -1,44 +1,78 @@
-if not Skinner:isAddonEnabled("PowerAuras") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("PowerAuras") then return end
 
-function Skinner:PowerAuras()
+function aObj:PowerAuras()
 
-	self:keepFontStrings(PowaOptionsFrame)
-	self:moveObject(PowaOptionsHeader, nil, nil, "-", 5)
-	self:moveObject(PowaOptionsFrameCloseButton, "+", 6, "+", 6)
-	self:applySkin(PowaOptionsPlayerListFrame, nil, nil, nil, 50)
-	self:applySkin(PowaOptionsGlobalListFrame, nil, nil, nil, 50)
-	self:applySkin(PowaOptionsSelectorFrame, nil, nil, nil, 20)
-	self:skinEditBox(PowaOptionsRenameEditBox, {9})
-	self:applySkin(PowaOptionsFrame)
+	self:moveObject{obj=PowaOptionsHeader, y=-9}
+	self:addSkinFrame{obj=PowaOptionsPlayerListFrame, nb=true}
+	self:skinButton{obj=PowaOptionsRename}
+	self:addSkinFrame{obj=PowaOptionsGlobalListFrame, nb=true, y1=2}
+	self:addSkinFrame{obj=PowaOptionsSelectorFrame, y2=-4}
+	self:skinEditBox{obj=PowaOptionsRenameEditBox, regs={9}}
+	self:addSkinFrame{obj=PowaOptionsFrame, kfs=true, bgen=0, ofs=-8}
 -->>-- Config Frame
-	self:keepFontStrings(PowaBarConfigFrame)
-	self:moveObject(PowaHeader, nil, nil, "-", 4)
-	self:moveObject(PowaCloseButton, "+", 6, "+", 6)
-	self:applySkin(PowaBarConfigFrame)
+	self:moveObject{obj=PowaCloseButton, x=5, y=5}
+	self:addSkinFrame{obj=PowaBarConfigFrame, kfs=true}
 	-- top Panel
-	self:skinEditBox(PowaBarAuraCoordXEdit, {9})
-	self:skinEditBox(PowaBarAuraCoordYEdit, {9})
-	self:applySkin(PowaBarConfigFrameEditor)
+	self:skinEditBox{obj=PowaBarAuraTextureEdit, regs={9}}
+	self:skinEditBox{obj=PowaBarAuraCoordXEdit, regs={9}}
+	self:skinEditBox{obj=PowaBarAuraCoordYEdit, regs={9}}
+	self:addSkinFrame{obj=PowaBarConfigFrameEditor, ofs=2}
 	-- Activation Panel
-	self:skinDropDown(PowaDropDownBuffType)
-	self:skinEditBox(PowaBarBuffStacks, {9})
-	self:moveObject(PowaBarBuffStacks, "-", 5, "-", 2)
-	self:skinEditBox(PowaBarBuffName, {9, 10})
-	self:moveObject(PowaExactButton, nil, nil, "+", 8)
-	self:skinEditBox(PowaBarMultiID, {9, 10})
-	self:moveObject(PowaBarMultiID, nil, nil, "+", 8)
-	self:applySkin(PowaBarConfigFrameEditor2)
+	self:skinDropDown{obj=PowaDropDownBuffType}
+	self:skinEditBox{obj=PowaBarBuffStacks, regs={9}}
+	self:skinEditBox{obj=PowaBarBuffName, regs={9, 10}}
+	self:skinEditBox{obj=PowaBarMultiID, regs={9, 10}, y=6}
+	self:skinEditBox{obj=PowaBarTooltipCheck, regs={9}, y=10}
+	self:moveObject{obj=PowaInverseButton, y=6}
+	self:addSkinFrame{obj=PowaBarConfigFrameEditor2, ofs=2}
 	-- Animation Panel
-	self:skinDropDown(PowaDropDownAnimBegin)
-	self:skinDropDown(PowaDropDownAnimEnd)
-	self:skinDropDown(PowaDropDownAnim1)
-	self:skinDropDown(PowaDropDownAnim2)
-	self:applySkin(PowaBarConfigFrameEditor3)
+	self:skinDropDown{obj=PowaDropDownAnimBegin}
+	self:skinDropDown{obj=PowaDropDownAnimEnd}
+	self:skinDropDown{obj=PowaDropDownAnim1}
+	self:skinDropDown{obj=PowaDropDownAnim2}
+	self:addSkinFrame{obj=PowaBarConfigFrameEditor3, ofs=2}
 	-- Sound Panel
-	self:skinDropDown(PowaDropDownSound)
-	self:skinEditBox(PowaBarCustomSound, {9, 10})
-	self:applySkin(PowaBarConfigFrameEditor5)
+	self:skinDropDown{obj=PowaDropDownSound}
+	self:skinDropDown{obj=PowaDropDownSound2}
+	self:skinEditBox{obj=PowaBarCustomSound, regs={9, 10}, x=-4}
+	self:skinDropDown{obj=PowaDropDownSoundEnd}
+	self:skinDropDown{obj=PowaDropDownSound2End}
+	self:skinEditBox{obj=PowaBarCustomSoundEnd, regs={9, 10}, x=-4}
+	self:addSkinFrame{obj=PowaBarConfigFrameEditor5, ofs=2}
 	-- Timer Panel
-	self:applySkin(PowaBarConfigFrameEditor4)
+	self:skinDropDown{obj=PowaDropDownTimerTexture}
+	self:skinDropDown{obj=PowaBuffTimerRelative}
+	self:addSkinFrame{obj=PowaBarConfigFrameEditor4, ofs=2}
+	-- Stacks Panel
+	self:skinDropDown{obj=PowaDropDownStacksTexture}
+	self:skinDropDown{obj=PowaBuffStacksRelative}
+	self:addSkinFrame{obj=PowaBarConfigFrameEditor6, ofs=2}
 	
+end
+
+function aObj:PowerAurasButtons_Config()
+
+	self:SecureHook(PowerAurasButtons_Config, "CreateOptionsFrame", function(this)
+		self:skinSlider{obj=PowerAurasButtons_SliderThrottle}--, size=3}
+		self:Unhook(PowerAurasButtons_Config, "CreateOptionsFrame")
+	end)
+	self:SecureHook(PowerAurasButtons_Config, "CreateActionSettingsFrame", function(this)
+		self:moveObject{obj=PowerAurasButtonsActionsFrame, x=6, y=2}
+		self:addSkinFrame{obj=PowerAurasButtonsActionsFrame, kfs=true, ofs=-2}
+		local AuraFrame = self:getChild(PowerAurasButtonsActionsFrame, 1)
+		self:addSkinFrame{obj=AuraFrame, kfs=true, ofs=2}
+		self:skinScrollBar{obj=AuraFrame.Scroll}
+		self:skinButton{obj=AuraFrameList.Items[1].newAction, mp2=true, as=true}
+		self:Unhook(PowerAurasButtons_Config, "CreateActionSettingsFrame")
+	end)
+	self:SecureHook(PowerAurasButtons_Config, "CreateAuraAction", function(this)
+		for i = 2, #AuraFrameList.Items do
+			local item = AuraFrameList.Items[i]
+			if not self.skinned[item] then
+				self:skinDropDown{obj=item.ActionType}
+				self:skinEditBox{obj=item.ActionID, regs={9}}
+			end
+		end
+	end)
 end
