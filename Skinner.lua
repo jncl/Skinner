@@ -24,12 +24,14 @@ do
 	-- player class
 	aObj.uCls = select(2, UnitClass("player"))
 
+	local portal = GetCVar("portal") or nil
 	--check to see if running on PTR
-	aObj.isPTR = FeedbackUI and true or false
-	--check to see if running on patch 0.3.5
-	--aObj.isPatch = BATTLENET_FRIEND and true or false
+	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Cataclysm Beta
-	aObj.isCata = ARCHAEOLOGY_RANK_TOOLTIP and true or false
+	aObj.isCata = portal == "public-beta" and true or false
+
+	-- print("portal", GetCVar("portal"), portal, aObj.isPTR, aObj.isCata)
+
 end
 
 function aObj:OnInitialize()
@@ -41,7 +43,6 @@ function aObj:OnInitialize()
 
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
-	if self.isPatch then self:Debug("Patch detected") end
 	if self.isCata then self:Debug("Cataclysm Beta detected") end
 --@end-alpha@
 
@@ -509,10 +510,10 @@ local function __addSkinFrame(opts)
 	if opts.kfs or opts.hat then aObj:keepFontStrings(opts.obj, opts.hat) end
 
 	-- setup offset values
-	local xOfs1 = opts.ofs and opts.ofs * -1 or opts.x1 or 0
-	local yOfs1 = opts.ofs or opts.y1 or 0
-	local xOfs2 = opts.ofs or opts.x2 or 0
-	local yOfs2 = opts.ofs and opts.ofs * -1 or opts.y2 or 0
+	local xOfs1 = opts.x1 or opts.ofs and opts.ofs * -1 or 0
+	local yOfs1 = opts.y1 or opts.ofs or 0
+	local xOfs2 = opts.x2 or opts.ofs or 0
+	local yOfs2 = opts.y2 or opts.ofs and opts.ofs * -1 or 0
 
 	-- add a frame around the current object
 	local skinFrame = CreateFrame("Frame", nil, opts.obj)
@@ -1501,7 +1502,7 @@ local function __skinSlider(opts)
 --[[
 	Calling parameters:
 		obj = object (Mandatory)
-		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
+		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow) [default is 3]
 --]]
 --@alpha@
 	assert(opts.obj and opts.obj:IsObjectType("Slider"), "Not a Slider\n"..debugstack())
