@@ -35,23 +35,20 @@ function aObj:Tooltips()
 
 	self:add2Table(self.uiKeys2, "Tooltips")
 
-	--	change the default Tooltip Border colour here
-	--[=[
-		TODO this currently causes taint in Beta ???
-	--]=]
-	local r, g, b, a = self:setTTBBC()
-	TOOLTIP_DEFAULT_COLOR = {r=r, g=g, b=b}
-
-	-- fix for TinyTip tooltip becoming 'fractured'
-	if self.db.profile.Tooltips.style == 3 then
-		--[=[
-			TODO this currently causes taint in Beta ???
-		--]=]
-		local c = self.db.profile.Backdrop
-		TOOLTIP_DEFAULT_BACKGROUND_COLOR = {r = c.r, g = c.g, b = c.b}
-		-- self:setTTBackdrop(true)
+	if not self.isCata then
+		--	change the default Tooltip Border colour here
+		local r, g, b, a = self:setTTBBC()
+		TOOLTIP_DEFAULT_COLOR = {r=r, g=g, b=b}
 	end
 
+	if not self.isCata then
+		-- fix for TinyTip tooltip becoming 'fractured'
+		if self.db.profile.Tooltips.style == 3 then
+			local c = self.db.profile.Backdrop
+			TOOLTIP_DEFAULT_BACKGROUND_COLOR = {r = c.r, g = c.g, b = c.b}
+			-- self:setTTBackdrop(true)
+		end
+	end
 	-- skin Item Ref Tooltip's close button
 	self:skinButton{obj=ItemRefCloseButton, cb=true}
 
