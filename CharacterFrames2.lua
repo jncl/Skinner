@@ -359,7 +359,7 @@ function aObj:VehicleMenuBar()
 	local xOfs1, xOfs2, yOfs1, yOfs2, sf
 	local function skinVehicleMenuBar(opts)
 
---		aObj:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
+		-- aObj:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
 
 		-- expand frame width if mechanical vehicle
 		if opts.sn == "Mechanical"
@@ -387,13 +387,12 @@ function aObj:VehicleMenuBar()
 		 -- make it appear above the skin frame
 		VehicleMenuBarPitchSlider:SetFrameStrata("MEDIUM")
 
-		sf = aObj.skinFrame[VehicleMenuBar]
-		if not sf then
-			self:addSkinFrame{obj=VehicleMenuBar, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-		else
+		if sf then
 			sf:ClearAllPoints()
 			sf:SetPoint("TOPLEFT", VehicleMenuBar, "TOPLEFT", xOfs1, yOfs1)
 			sf:SetPoint("BOTTOMRIGHT", VehicleMenuBar, "BOTTOMRIGHT", xOfs2, yOfs2)
+		else
+			sf = aObj:addSkinFrame{obj=VehicleMenuBar, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 		end
 
 	end
@@ -548,7 +547,7 @@ function aObj:CompactFrames()
 	for type, frame in ipairs(CompactRaidFrameContainer.frameUpdateList) do
 		if type == "group" then
 			skinGrp(frame)
-		else	
+		else
 			skinUnit(frame)
 		end
 	end
