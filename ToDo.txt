@@ -23,46 +23,37 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-√	I	Tabs in Tukui look off, reported by Orolin, 8.11.10
+?	S	Poisoner, requested by mkcorp, 18.11.10
 
-√	I	AtlasLoot, reported by Eatsbrains, 10.11.10
-		- Skinner-@project-version@\SkinMe\AtlasLoot.lua:6: attempt to index global 'AtlasLootDefaultFrame_LootBackground' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-@project-version@\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-@project-version@\UtilFuncs.lua:145: in function `checkAndRunAddOn'
-		Skinner-@project-version@\AddonFrames.lua:147: in function <Skinner\AddonFrames.lua:102>
-		(tail call): ?:
+√	I	DoTimer config, reported by RokrDK, 19.11.10
 
-√	I	BugSack, reported by Eatsbrains/Kerecha, 10.11.10
-		- Skinner-b4.13241.2\Skinner.lua:219: table index is nil
-		Skinner-b4.13241.2\Skinner.lua:1464: in function <Skinner\Skinner.lua:1450>
-		Skinner-b4.13241.2\Skinner.lua:1496: in function `skinScrollBar'
-		Skinner-b4.13241.2\SkinMe\BugSack.lua:8: in function <Skinner\SkinMe\BugSack.lua:7>
+?	I	QuestGuru, reported by chrisgriffith25, 20.11.10
+		- Questguru is no longer skinning...i'm not getting any errors, but its not applying skin
+
+√	I	TukUI, reported by Decabah, 20.11.01
+		- Skinner-b4.13287.1\modules\UIButtons.lua:173: attempt to index local 'btn' (a nil value)
+		Skinner-b4.13287.1\SkinMe\Tukui.lua:122: in function <Skinner\SkinMe\Tukui.lua:115>
+		(tail call): ?:
+		Skinner-b4.13287.1\UIElements2.lua:75: in function <Skinner\UIElements2.lua:51>
 		(tail call): ?:
 
-√	I	ARL reported by mkcorp, 10.11.10
-		- Skinner: Unsupported ARL version [2.0.5]
-
-√	S	Power Auras Classic: Buttons, requested by mkcorp, 12.11.10
-√	S	Quest Completist, requested by mkcorp, 12.11.10
-
-√	I	ScrollMaster, reported by dalai333, 14.11.10
-		- There are two components which do not take on the skin however: a rather large button on the AH window and a pop-up crafting window.
-
-√	I	QuestGuru_History, reported by chrisgriffith25, 16.11.10
-		- QuestGuru_History-2.1.1\QuestGuru_History.lua:1121: bad argument #1 to 'find' (string expected, got nil)
-		QuestGuru_History-2.1.1\QuestGuru_History.lua:1121: in function <...rface\AddOns\QuestGuru_History\QuestGuru_Histo ry.lua:1113>
-		<in C code>: in function `QuestLog_UpdateQuestHistoryDetails'
-		QuestGuru_History-2.1.1\QuestGuru_History.lua:1109: in function `QuestLog_SetHistorySelection'
-		QuestGuru_History-2.1.1\QuestGuru_History.lua:114: in function `QuestGuru_HistoryTabExpand'
-		Skinner-b4.13241.2\SkinMe\QuestGuru.lua:112: in function <Skinner\SkinMe\QuestGuru.lua:3>
+√	I	UIButtons, replaced by Decabah, 20.11.10
+		- Skinner-b4.13287.1\modules\UIButtons.lua:179: attempt to index local 'btn' (a nil value)
+		Skinner-b4.13287.1\modules\UIButtons.lua:312: in function <Skinner\modules\UIButtons.lua:285>
+		Skinner-b4.13287.1\modules\UIButtons.lua:337: in function `skinAllButtons'
+		Skinner-b4.13287.1\Skinner.lua:555: in function <Skinner\Skinner.lua:478>
+		(tail call): ?:
+		<in C code>: in function `addSkinFrame'
+		Skinner-b4.13287.1\UIElements2.lua:886: in function <Skinner\UIElements2.lua:865>
 		(tail call): ?:
 
-BETA changes
-±±±±±±±±±±±±
+√	I	Bagnon-Forever, reported by RokrDK, 20.11.10
+		- I placed the Bagnon.lua file located in the Addonskins folder to the skinme folder...did I miss something that is causing the Bagnon_forever error I listed?
 
-	- PlayerActionBarAlt has replaced VehicleMenuBar for certain types of display
+Cataclysm changes
+±±±±±±±±±±±±±±±±±
+
+	- PlayerActionBarAlt has replaced VehicleMenuBar for certain types of display ?
 
 	N	Cataclysm Beta
 √		- TOC Interface is 40000
