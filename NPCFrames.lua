@@ -458,6 +458,7 @@ function aObj:ReforgingUI() -- LoD
 	ReforgingFrame.bottomInset:DisableDrawLayer("BACKGROUND")
 	ReforgingFrame.bottomInset:DisableDrawLayer("BORDER")
 	ReforgingFrameItemButton:DisableDrawLayer("OVERLAY")
+	self:addButtonBorder{obj=ReforgingFrameItemButton}
 	ReforgingFrameTopInsetLableBg:Hide()
 	ReforgingFrameItemButton.missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ReforgingFrame.missingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
