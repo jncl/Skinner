@@ -23,7 +23,7 @@ function aObj:PowerAuras()
 	self:skinEditBox{obj=PowaBarBuffStacks, regs={9}}
 	self:skinEditBox{obj=PowaBarBuffName, regs={9, 10}}
 	self:skinEditBox{obj=PowaBarMultiID, regs={9, 10}, y=6}
-	self:skinEditBox{obj=PowaBarTooltipCheck, regs={9}, y=10}
+	self:skinEditBox{obj=PowaBarTooltipCheck, regs={9, 10}, y=10}
 	self:moveObject{obj=PowaInverseButton, y=6}
 	self:addSkinFrame{obj=PowaBarConfigFrameEditor2, ofs=2}
 	-- Animation Panel

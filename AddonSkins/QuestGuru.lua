@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("QuestGuru") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("QuestGuru") then return end
 
-function Skinner:QuestGuru()
+function aObj:QuestGuru()
 	if not self.db.profile.QuestLog then return end
 
 	-- LightHeaded support
@@ -14,7 +15,7 @@ function Skinner:QuestGuru()
 	end
 
 	local function colourText(type)
-	
+
 		local prefix = "QuestGuru_Quest"..type
 		-- headers
 		_G[prefix.."QuestTitle"]:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -88,6 +89,8 @@ function Skinner:QuestGuru()
 	QuestGuru_QuestLogFrameTab1.SetPoint = function() end -- stop it being moved again
 	QuestGuru_QuestLogDummyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=QuestGuru_QuestLogFrame, kfs=true, x1=6, y1=-6, x2=-45, y2=14}
+	self:addButtonBorder{obj=QuestGuruShowMapButton, relTo=QuestGuruShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
+
 -->>-- Empty QuestLog frame
 	QuestGuru_QuestLogNoQuestsText:SetTextColor(self.BTr, self.BTg, self.BTb)
 -->>-- Tab1 (Current)
@@ -133,7 +136,7 @@ function Skinner:QuestGuru()
 		self:skinButton{obj=_G["QuestGuru_QuestAbandonTitle"..i], mp=true}
 	end
 	-- run the TabExpand function to make sure all buttons are displayed properly if any exist
-	if #QuestGuru_Abandon then QuestGuru_AbandonTabExpand() end
+	if #QuestGuru_Abandon > 0 then QuestGuru_AbandonTabExpand() end
 	self:skinScrollBar{obj=QuestGuru_QuestAbandonListScrollFrame}
 	self:skinScrollBar{obj=QuestGuru_QuestAbandonDetailScrollFrame}
 -->>-- Tab4

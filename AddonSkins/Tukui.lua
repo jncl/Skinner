@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("Tukui") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Tukui") then return end
 
-function Skinner:Tukui()
+function aObj:Tukui()
 
 -->>-- Bags
 	if TukuiBags then
@@ -30,7 +31,7 @@ function Skinner:Tukui()
 end
 
 -- The following code handles the Initial setup of Skinner when the TukUI is loaded
-function Skinner:TukuiInit()
+function aObj:TukuiInit()
 
 	self:RawHook(self, "OnInitialize", function(this)
 		-- Do these before we run the function
@@ -86,7 +87,7 @@ function Skinner:TukuiInit()
 	self:SecureHook(self, "addSkinFrame", function(this, opts)
 		local oName = opts.obj.GetName and opts.obj:GetName()
 		if oName
-		and (strfind(oName,'Tab(%d+)$') or strfind(oName,'TabButton(%d+)$'))
+		and (oName:find('Tab(%d+)$') or oName:find('TabButton(%d+)$'))
 		then
 			local xOfs1 = (opts.x1 or 0) + 4
 			local yOfs1 = (opts.y1 or 0) - 3
@@ -101,11 +102,11 @@ function Skinner:TukuiInit()
 	self:RawHook(self, "addSkinButton", function(this, opts)
 		local oName = opts.obj.GetName and opts.obj:GetName()
 		if oName
-		and strfind(oName, 'ShapeshiftButton(%d)$')
+		and oName:find('ShapeshiftButton(%d)$')
 		then
 			return
 		end
-		self.hooks[this].addSkinButton(this, opts)
+		return self.hooks[this].addSkinButton(this, opts)
 	end)
 
 	if self:GetModule("UIButtons", true):IsEnabled() then
@@ -231,7 +232,7 @@ function Skinner:TukuiInit()
 end
 
 -- Load support for TukUI
-local success, err = Skinner:checkAndRun("TukuiInit", true)
+local success, err = aObj:checkAndRun("TukuiInit", true)
 if not success then
 	print("Error running", "Tukui", err)
 end

@@ -1,12 +1,14 @@
-if not Skinner:isAddonEnabled("Combuctor") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Combuctor") then return end
 
-function Skinner:Combuctor()
+function aObj:Combuctor()
 	if not self.db.profile.ContainerFrames.skin then return end
 
 	-- skin Inventory & Bank frames
 	for i = 1, #Combuctor.frames do
 		local frame = _G["CombuctorFrame"..i]
 		self:skinEditBox{obj=frame.nameFilter, regs={9}, noWidth=true, noMove=true}
+		_G["CombuctorFrame"..i.."BagToggleBorder"]:SetTexture(nil)
 		self:addSkinFrame{obj=frame, kfs=true, x1=10, y1=-11, x2=-32, y2=55}
 	end
 	
