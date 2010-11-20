@@ -385,10 +385,10 @@ local function __addButtonBorder(opts)
 	opts.obj.sknrBdr:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
 	-- position the frame
 	opts.ofs = opts.ofs or 2
-	local xOfs1 = opts.x1 or (opts.ofs * -1)
+	local xOfs1 = opts.x1 or opts.ofs * -1
 	local yOfs1 = opts.y1 or opts.ofs
 	local xOfs2 = opts.x2 or opts.ofs
-	local yOfs2 = opts.y2 or (opts.ofs * -1)
+	local yOfs2 = opts.y2 or opts.ofs * -1
 	-- Large Item Button templates have an IconTexture to position to
 	relTo = opts.relTo
 			or opts.libt and _G[btnName.."IconTexture"]
