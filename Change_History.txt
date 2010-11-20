@@ -1,3 +1,18 @@
+b4.13287.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Better checks for different versions
+	Handle skin size changes better
+	Cata checks for tooltip skinning
+	Updated BonusActionBar skinning code
+	Updated UIButton skinning code
+	Updated VehicleMenuBar skin
+	BugFix for FeedbackUI skin
+	Updated AckisRecipeList, AtlasLoot, BugSack, QuestGuru & Tukui skins
+	Skinned QuestCompletist, ScrollMaster & PowerAurasButtons
+	Updated PowerAuras skin
+
 b4.13241.2
 Jncl:
 	ToDo.txt
