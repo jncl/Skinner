@@ -510,10 +510,11 @@ local function __addSkinFrame(opts)
 	if opts.kfs or opts.hat then aObj:keepFontStrings(opts.obj, opts.hat) end
 
 	-- setup offset values
-	local xOfs1 = opts.x1 or opts.ofs and opts.ofs * -1 or 0
-	local yOfs1 = opts.y1 or opts.ofs or 0
-	local xOfs2 = opts.x2 or opts.ofs or 0
-	local yOfs2 = opts.y2 or opts.ofs and opts.ofs * -1 or 0
+	opts.ofs = opts.ofs or 0
+	local xOfs1 = opts.x1 or opts.ofs * -1
+	local yOfs1 = opts.y1 or opts.ofs
+	local xOfs2 = opts.x2 or opts.ofs
+	local yOfs2 = opts.y2 or opts.ofs * -1
 
 	-- add a frame around the current object
 	local skinFrame = CreateFrame("Frame", nil, opts.obj)
