@@ -5,7 +5,7 @@ function Skinner:BugSack()
 	-- handle new version
 	if BugSack and BugSack.OpenSack then
 		self:SecureHook(BugSack, "OpenSack", function(this)
-			self:skinScrollBar{obj=BugSackScroll}
+			self:skinScrollBar{obj=BugSackFrameScroll}
 			self:addSkinFrame{obj=BugSackFrame, kfs=true, y1=-2, x2=-1, y2=2}
 			-- tabs
 			local tabs = {BugSackTabAll, BugSackTabSession, BugSackTabLast}
