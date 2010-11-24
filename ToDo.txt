@@ -8,10 +8,6 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	O	Major overhaul of skinning code
-		-- need to add functionality to get LibSharedMedia callbacks and apply them to the relevant objects
-		-- need to apply any colour/backdrop/background/gradient changes selected by the user
-
 	O	Update WoWAce commands page
 
 	I	Usability issues, reported by TaliaMokani, 23.08.10
@@ -23,32 +19,17 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-?	S	Poisoner, requested by mkcorp, 18.11.10
-
-√	I	DoTimer config, reported by RokrDK, 19.11.10
-
-?	I	QuestGuru, reported by chrisgriffith25, 20.11.10
-		- Questguru is no longer skinning...i'm not getting any errors, but its not applying skin
-
-√	I	TukUI, reported by Decabah, 20.11.01
-		- Skinner-b4.13287.1\modules\UIButtons.lua:173: attempt to index local 'btn' (a nil value)
-		Skinner-b4.13287.1\SkinMe\Tukui.lua:122: in function <Skinner\SkinMe\Tukui.lua:115>
-		(tail call): ?:
-		Skinner-b4.13287.1\UIElements2.lua:75: in function <Skinner\UIElements2.lua:51>
-		(tail call): ?:
-
-√	I	UIButtons, replaced by Decabah, 20.11.10
-		- Skinner-b4.13287.1\modules\UIButtons.lua:179: attempt to index local 'btn' (a nil value)
-		Skinner-b4.13287.1\modules\UIButtons.lua:312: in function <Skinner\modules\UIButtons.lua:285>
-		Skinner-b4.13287.1\modules\UIButtons.lua:337: in function `skinAllButtons'
-		Skinner-b4.13287.1\Skinner.lua:555: in function <Skinner\Skinner.lua:478>
-		(tail call): ?:
-		<in C code>: in function `addSkinFrame'
-		Skinner-b4.13287.1\UIElements2.lua:886: in function <Skinner\UIElements2.lua:865>
-		(tail call): ?:
-
-√	I	Bagnon-Forever, reported by RokrDK, 20.11.10
-		- I placed the Bagnon.lua file located in the Addonskins folder to the skinme folder...did I miss something that is causing the Bagnon_forever error I listed?
+√	I	EnchantrixBarker, reported by Luckyjack_SL 22.11.10
+		- ..\AddOns\Skinner\Skinner.lua line 1117:
+		   attempt to perform arithmetic on local 'yOfs' (a nil value)
+		Debug:
+		   (tail call): ?
+		   (tail call): ?
+		   (tail call): ?
+		   Skinner\Skinner.lua:1117: setActiveTab()
+		   Skinner\SkinMe\EnchantrixBarker.lua:34:
+		      Skinner\SkinMe\EnchantrixBarker.lua:3
+		   (tail call): ?
 
 Cataclysm changes
 ±±±±±±±±±±±±±±±±±
