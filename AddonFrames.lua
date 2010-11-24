@@ -42,7 +42,7 @@ local blizzLoDFrames = {
 	"GMSurveyUI", "InspectUI", "BattlefieldMinimap", -- uie1
 	"TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", --uie2
 }
-if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- uie1
+if aObj.isPTR or aObj.isCata then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- uie1
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v

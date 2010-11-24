@@ -1421,7 +1421,9 @@ function aObj:Options()
 	end
 
 	-- optional options
-	if self.isPTR then
+	if self.isPTR
+	or self.isCata
+	then
 		optTables.UIFrames.args["Feedback"] = {
 			type = "toggle",
 			name = self.L["FeedbackUI"],

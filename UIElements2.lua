@@ -490,19 +490,25 @@ function aObj:MainMenuBar()
 	self:SecureHook("ShowBonusActionBar", function()
 		toggleActionButtons(true)
 		if self.isCata then
-			self:Debug("ShowBonusActionBar: [%s]", BonusActionBarFrame.currentType)
+			-- self:Debug("ShowBonusActionBar: [%s]", BonusActionBarFrame.currentType)
+			if BonusActionBarFrame.currentType ~= "default" then
+				self.skinFrame[BonusActionBarFrame]:Show()
+			else
+				self.skinFrame[BonusActionBarFrame]:Hide()
+			end
 		end
 	end)
 	self:SecureHook("HideBonusActionBar", function()
 		toggleActionButtons()
 	end)
 	if self.isCata then
-		self:Debug("BonusActionBarFrame: [%s]", BonusActionBarFrame.currentType)
+		-- self:Debug("BonusActionBarFrame: [%s]", BonusActionBarFrame.currentType)
 		local x1, y1, x2, y2 = 0, 0, 0, 0
 		if BonusActionBarFrame.currentType ~= "default" then
 			x1, y1, x2, y2 = 31, -7, -31, -2
 		end
-		self:addSkinFrame{obj=BonusActionBarFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
+		local frame = self:addSkinFrame{obj=BonusActionBarFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
+		if BonusActionBarFrame.currentType == "default" then frame:Hide() end
 	else
 		self:keepFontStrings(BonusActionBarFrame)
 	end
@@ -553,7 +559,7 @@ function aObj:MainMenuBar()
 		end
 	end
 -->>-- Vehicle Leave Button
-	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton, parent=MainMenuBarVehicleLeaveButton, hide=true}
+	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton, parent=MainMenuBarVehicleLeaveButton}
 	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
 		self:moveObject{obj=MainMenuBarVehicleLeaveButton, y=3}
 	end)

@@ -1129,7 +1129,9 @@ function aObj:MinimapButtons()
 
 end
 
-if aObj.isPTR then
+if aObj.isPTR
+or aObj.isCata
+then
 	function aObj:FeedbackUI() -- LoD
 		if not self.db.profile.Feedback or self.initialized.Feedback then return end
 		self.initialized.Feedback = true

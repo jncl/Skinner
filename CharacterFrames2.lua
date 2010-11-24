@@ -152,14 +152,14 @@ function aObj:TradeSkillUI() -- LoD
 	self:keepFontStrings(TradeSkillDetailScrollChildFrame)
 	self:addButtonBorder{obj=TradeSkillSkillIcon}
 	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
-	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-4}
+	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 	-- Magic Button textures
 	self:removeMagicBtnTex("TradeSkillCreateAllButton")
 	self:removeMagicBtnTex("TradeSkillCancelButton")
 	self:removeMagicBtnTex("TradeSkillCreateButton")
 	self:removeMagicBtnTex("TradeSkillViewGuildCraftersButton")
 	self:addSkinFrame{obj=TradeSkillGuildFrameContainer, ft=ftype}
-	self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, x1=7, y1=-7, x2=-7, y2=7}
+	self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, ofs=-7}
 
 	for i = 1, MAX_TRADE_SKILL_REAGENTS do
 		_G["TradeSkillReagent"..i.."NameFrame"]:SetTexture(nil)
