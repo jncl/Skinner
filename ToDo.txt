@@ -19,16 +19,18 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-√	I	EnchantrixBarker, reported by Luckyjack_SL 22.11.10
-		- ..\AddOns\Skinner\Skinner.lua line 1117:
-		   attempt to perform arithmetic on local 'yOfs' (a nil value)
+
+√	I	BugSack, reported by gamemaster128, 24.11.10
+		- need to check for different versions, release/alpha differ
+
+√	I	AtlasLoot, reported by Luckyjack_SL, 24.11.10
+		- .\AddOns\Skinner\SkinMe\AtlasLoot.lua line 6:
+		   attempt to index global 'AtlasLootDefaultFrame_LootBackground' (a nil value)
 		Debug:
 		   (tail call): ?
 		   (tail call): ?
-		   (tail call): ?
-		   Skinner\Skinner.lua:1117: setActiveTab()
-		   Skinner\SkinMe\EnchantrixBarker.lua:34:
-		      Skinner\SkinMe\EnchantrixBarker.lua:3
+		   Skinner\SkinMe\AtlasLoot.lua:6:
+		      Skinner\SkinMe\AtlasLoot.lua:3
 		   (tail call): ?
 
 Cataclysm changes
