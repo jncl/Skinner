@@ -489,29 +489,21 @@ function aObj:MainMenuBar()
 	-- also handle Bar changes (Catalysm)
 	self:SecureHook("ShowBonusActionBar", function()
 		toggleActionButtons(true)
-		if self.isCata then
-			-- self:Debug("ShowBonusActionBar: [%s]", BonusActionBarFrame.currentType)
-			if BonusActionBarFrame.currentType ~= "default" then
-				self.skinFrame[BonusActionBarFrame]:Show()
-			else
-				self.skinFrame[BonusActionBarFrame]:Hide()
-			end
+		if BonusActionBarFrame.currentType ~= "default" then
+			self.skinFrame[BonusActionBarFrame]:Show()
+		else
+			self.skinFrame[BonusActionBarFrame]:Hide()
 		end
 	end)
 	self:SecureHook("HideBonusActionBar", function()
 		toggleActionButtons()
 	end)
-	if self.isCata then
-		-- self:Debug("BonusActionBarFrame: [%s]", BonusActionBarFrame.currentType)
-		local x1, y1, x2, y2 = 0, 0, 0, 0
-		if BonusActionBarFrame.currentType ~= "default" then
-			x1, y1, x2, y2 = 31, -7, -31, -2
-		end
-		local frame = self:addSkinFrame{obj=BonusActionBarFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
-		if BonusActionBarFrame.currentType == "default" then frame:Hide() end
-	else
-		self:keepFontStrings(BonusActionBarFrame)
+	local x1, y1, x2, y2 = 0, 0, 0, 0
+	if BonusActionBarFrame.currentType ~= "default" then
+		x1, y1, x2, y2 = 31, -7, -31, -2
 	end
+	local frame = self:addSkinFrame{obj=BonusActionBarFrame, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
+	if BonusActionBarFrame.currentType == "default" then frame:Hide() end
 
 -->>-- MultiBar Buttons
 	for _, v in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
