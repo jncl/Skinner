@@ -692,7 +692,7 @@ function aObj:GuildUI() -- LoD
 		self:applySkin{obj=btn.header}
 		self:addButtonBorder{obj=btn, relTo=btn.icon, hide=true, es=12}
 	end
-	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, x1=6, y1=-6, x2=-6, y2=6}
+	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, ofs=-6}
 	-- News Panel
 	GuildNewsFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=GuildNewsContainerScrollBar, size=2}
@@ -700,8 +700,9 @@ function aObj:GuildUI() -- LoD
 		GuildNewsContainer.buttons[i].header:SetAlpha(0)
 	end
 	self:skinDropDown{obj=GuildNewsDropDown}
-	self:addSkinFrame{obj=GuildNewsFiltersFrame, ft=ftype, kfs=true, x1=7, y1=-7, x2=-7, y2=7}
-	self:addSkinFrame{obj=GuildNewsBossModel, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=GuildNewsFiltersFrame, ft=ftype, kfs=true, ofs=-7}
+	self:keepFontStrings(GuildNewsBossModelTextFrame)
+	self:addSkinFrame{obj=GuildNewsBossModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to QuestNPCModel
 	-- Rewards Panel
 	GuildRewardsFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=GuildRewardsContainerScrollBar, size=2}
@@ -720,11 +721,11 @@ function aObj:GuildUI() -- LoD
 	-- Guild Text Edit frame
 	self:skinSlider{obj=GuildTextEditScrollFrameScrollBar, size=2}
 	self:addSkinFrame{obj=GuildTextEditContainer, ft=ftype, nb=true}
-	self:addSkinFrame{obj=GuildTextEditFrame, ft=ftype, kfs=true, nb=true, x1=7, y1=-7, x2=-7, y2=7}
+	self:addSkinFrame{obj=GuildTextEditFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
 	-- Guild Log Frame
 	self:skinSlider{obj=GuildLogScrollFrameScrollBar, size=2}
 	self:addSkinFrame{obj=GuildLogContainer, ft=ftype, nb=true}
-	self:addSkinFrame{obj=GuildLogFrame, ft=ftype, kfs=true, nb=true, x1=7, y1=-7, x2=-7, y2=7}
+	self:addSkinFrame{obj=GuildLogFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
 
 -->>-- Tabs
 	for i = 1, GuildFrame.numTabs do

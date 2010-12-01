@@ -166,11 +166,9 @@ function aObj:QuestFrame()
 	end
 
 -->>-- QuestNPCModel
-	self:keepFontStrings(QuestNPCModel)
 	self:keepFontStrings(QuestNPCModelTextFrame)
 	self:skinScrollBar{obj=QuestNPCModelTextScrollFrame}
-	self:addSkinFrame{obj=QuestNPCModel, ft=ftype, x1=-4, y1=4, x2=4, y2=-81}
-
+	self:addSkinFrame{obj=QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
 	self:QuestInfo()
 
 end
