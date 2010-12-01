@@ -51,22 +51,24 @@ local function skinPlayerF()
 		aObj:moveObject{obj=PlayerFrameGroupIndicatorText, y=-1}
 		aObj:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso=aso, x1=37, y1=-7, y2=aObj.uCls == "PALADIN" and 3 or 6}
 
-		--	if the player class is a DeathKnight then skin the RuneFrame
+		--	skin the RuneFrame, if required
 		if aObj.uCls == "DEATHKNIGHT" then
 			for i = 1, 6 do
 				_G["RuneButtonIndividual"..i.."BorderTexture"]:SetTexture(nil)
 			end
 		end
-		--	if the player class is a Shaman/DeathKnight then skin the TotemFrame
+		--	skin the TotemFrame, if required
 		if aObj.uCls == "SHAMAN"
 		or aObj.uCls == "DEATHKNIGHT"
+		or aObj.uCls == "WARLOCK"
 		then
 			for i = 1, MAX_TOTEMS do
 				_G["TotemFrameTotem"..i.."Background"]:SetAlpha(0)
 				aObj:getRegion(aObj:getChild(_G["TotemFrameTotem"..i], 2), 1):SetAlpha(0) -- Totem Border texture
 			end
+			aObj:moveObject{obj=TotemFrameTotem1, y=lOfs} -- covers level text when active
 		end
-		--	if the player class is a Rogue/Druid then skin the ComboFrame
+		--	skin the ComboFrame, if required
 		if aObj.uCls == "ROGUE"
 		or aObj.uCls == "DRUID"
 		then
@@ -75,25 +77,24 @@ local function skinPlayerF()
 			end
 			aObj:moveObject{obj=ComboFrame, x=3, y=3}
 		end
-
-		-- if the player class is a Druid then skin the AlternateManaBar
+		-- skin the AlternateManaBar, if required
 		if aObj.uCls == "DRUID" then
 			PlayerFrameAlternateManaBarBorder:SetTexture(nil)
 			aObj:glazeStatusBar(PlayerFrameAlternateManaBar, 0)
 		end
-		-- if the player class is a Warlock then skin the ShardBar
+		-- skin the ShardBar, if required
 		if aObj.uCls == "WARLOCK" then
 			for i = 1, SHARD_BAR_NUM_SHARDS do
 				_G["ShardBarFrameShard"..i]:DisableDrawLayer("BORDER")
 				_G["ShardBarFrameShard"..i]:DisableDrawLayer("OVERLAY") -- Glow texture
 			end
 		end
-		-- if the player class is a Paladin then skin the PowerBar
+		-- skin the PowerBar, if required
 		if aObj.uCls == "PALADIN" then
 			PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 			PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 		end
-		-- if the player class is a Druid then skin the EclipseBarFrame
+		-- skin the EclipseBarFrame, if required
 		if aObj.uCls == "DRUID" then
 			EclipseBarFrameBar:Hide()
 			EclipseBarFrame.sunBar:Hide()
