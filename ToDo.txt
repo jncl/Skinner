@@ -19,24 +19,43 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
+√	S	SnapShot, requested by Bei21, 26.11.10
+√	S	Cosplay, requested by Tyraela, 26.11.10
+√	S	Vendomatic, requested by Tyraela, 26.11.10
 
-√	I	BugSack, reported by gamemaster128, 24.11.10
-		- need to check for different versions, release/alpha differ
+√	N	MrTrader, reported by x-buZZ, 26.11.10
 
-√	I	AtlasLoot, reported by Luckyjack_SL, 24.11.10
-		- .\AddOns\Skinner\SkinMe\AtlasLoot.lua line 6:
-		   attempt to index global 'AtlasLootDefaultFrame_LootBackground' (a nil value)
+√	I	Altoholic, reported by dalai333,29.11.10
+		- ..\AddOns\Skinner\Skinner.lua line 220:
+		   table index is nil
 		Debug:
 		   (tail call): ?
 		   (tail call): ?
-		   Skinner\SkinMe\AtlasLoot.lua:6:
-		      Skinner\SkinMe\AtlasLoot.lua:3
+		   Skinner\Skinner.lua:220:
+		      Skinner\Skinner.lua:220
+		   Skinner\Skinner.lua:1466:
+		      Skinner\Skinner.lua:1452
+		   Skinner\Skinner.lua:1498: skinScrollBar()
+		   Skinner\SkinMe\Altoholic.lua:128:
+		      Skinner\SkinMe\Altoholic.lua:107
 		   (tail call): ?
+
+≈	I	GuildNewsBossModel, reported by mkcorp, 29.11.01
+		- I believe the blizz UI regarding pictures of boss/mob that pop-up when mouseover some q's or achievs needs to be redone - it's half skinned atm
+
+√	I	BugSack, reported by Eatsbrains, 29.11.10
+		- Skinner-@project-version@\SkinMe\BugSack.lua:6: attempt to index a nil value
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-@project-version@\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
+		Skinner-@project-version@\UtilFuncs.lua:145: in function `checkAndRunAddOn'
+		Skinner-@project-version@\AddonFrames.lua:148: in function <Skinner\AddonFrames.lua:103>
+		(tail call): ?:
 
 Cataclysm changes
 ±±±±±±±±±±±±±±±±±
 
-	- PlayerActionBarAlt has replaced VehicleMenuBar for certain types of display ?
+	- BonusActionBar has replaced VehicleMenuBar for certain types of display ?
 
 	N	Cataclysm Beta
 √		- TOC Interface is 40000
