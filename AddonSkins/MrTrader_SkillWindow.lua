@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("MrTrader_SkillWindow") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("MrTrader_SkillWindow") then return end
 
-function Skinner:MrTrader_SkillWindow()
+function aObj:MrTrader_SkillWindow()
 
 	-- hide filter texture when filter is clicked
 	self:SecureHook("MRTUIUtils_FilterButton_SetType", function(btn, type, ...)
@@ -15,8 +16,8 @@ function Skinner:MrTrader_SkillWindow()
 		end
 	end)
 
-	self:skinDropDown{obj=MRTSkillItemDropDown}
-	self:skinEditBox{obj=MRTSkillFrameEditBox}
+	self:skinEditBox{obj=MRTSkillFrameSearchBox, regs={9}, noWidth=true}
+	self:skinDropDown{obj=MRTSkillFrameSortDropDown}
 	MRTSkillFilterButtons:DisableDrawLayer("OVERLAY") -- hide vertical bar
 	-- Filter buttons
 	for i = 1, 22 do
@@ -25,19 +26,19 @@ function Skinner:MrTrader_SkillWindow()
 		self:addSkinFrame{obj=btn}
 	end
 	self:skinScrollBar{obj=MRTSkillFilterScrollFrame}
-	self:skinScrollBar{obj=MRTSkillListScrollFrame}
-	self:glazeStatusBar(MRTSkillRankFrame, 0, MRTSkillRankFrameBackground)
-	self:skinEditBox{obj=MRTSkillInputBox, x=-6}
-	self:addSkinFrame{obj=MRTSkillFrame, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 	-- Reagents
 	for i = 1, 10 do
 		_G["MRTSkillButton"..i.."Border"]:SetBackdrop(nil)
 	end
+	self:skinScrollBar{obj=MRTSkillListScrollFrame}
+	self:glazeStatusBar(MRTSkillRankFrame, 0, MRTSkillRankFrameBackground)
 	-- Magic Button textures
 	self:removeMagicBtnTex("MRTSkillViewCraftersButton")
 	self:removeMagicBtnTex("MRTSkillCreateButton")
 	self:removeMagicBtnTex("MRTSkillCreateAllButton")
-
+	self:skinEditBox{obj=MRTSkillInputBox, x=-6}
+	self:addSkinFrame{obj=MRTSkillFrame, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+	
 -->>-- New Category frame
 	self:skinEditBox{obj=MRTNewCategoryFrameCategoryName, x=-3}
 	self:addSkinFrame{obj=MRTNewCategoryFrame, kfs=true, x1=5, y1=-6, x2=-5, y2=6}

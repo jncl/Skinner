@@ -3,10 +3,8 @@ if not aObj:isAddonEnabled("BugSack") then return end
 
 function aObj:BugSack()
 
-	local aVer = tonumber(GetAddOnMetadata("BugSack", "X-Curse-Packaged-Version"):sub(2))
-
 	self:SecureHook(BugSack, "OpenSack", function(this)
-		self:skinScrollBar{obj=aVer > 241 and BugSackScroll or BugSackFrameScroll}
+		self:skinScrollBar{obj=BugSackScroll or BugSackFrameScroll}
 		self:addSkinFrame{obj=BugSackFrame, kfs=true, y1=-2, x2=-1, y2=2}
 		-- tabs
 		local tabs = {BugSackTabAll, BugSackTabSession, BugSackTabLast}
