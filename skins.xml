@@ -75,6 +75,7 @@
 <script file="SkinMe\Configator.lua"/>
 <script file="SkinMe\Converse.lua"/>
 <script file="SkinMe\Cork.lua"/>
+<script file="SkinMe\Cosplay.lua"/>
 <script file="SkinMe\CowTip.lua"/>
 <script file="SkinMe\CT_MailMod.lua"/>
 <script file="SkinMe\CT_RaidTracker.lua"/>
@@ -246,6 +247,7 @@
 <script file="SkinMe\Skada.lua"/>
 <script file="SkinMe\Skillet.lua"/>
 <script file="SkinMe\SmoothQuest.lua"/>
+<script file="SkinMe\SnapShot.lua"/>
 <script file="SkinMe\Spew.lua"/>
 <script file="SkinMe\Squeenix.lua"/>
 <script file="SkinMe\sRaidFrames.lua"/>
@@ -276,6 +278,7 @@
 <script file="SkinMe\UrbanAchiever.lua"/>
 <script file="SkinMe\vBagnon.lua"/>
 <script file="SkinMe\Vendorizer.lua"/>
+<script file="SkinMe\Vendomatic.lua"/>
 <script file="SkinMe\VendorSearch.lua"/>
 <script file="SkinMe\Violation.lua"/>
 <script file="SkinMe\Visor2_GUI.lua"/>
