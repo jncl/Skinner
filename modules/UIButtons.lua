@@ -305,7 +305,7 @@ local function __skinAllButtons(opts, bgen)
 			end
 			bType = module:isButton(child)
 			if bType == "normal" then
-				module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim}
+				module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim, as=opts.as}
 			elseif bType == "close" then
 				module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
 			elseif bType == "toast" then
