@@ -1,7 +1,7 @@
 -- many thanks to acirac for the updated skin
 if not Skinner:isAddonEnabled("HealBot") then return end
 
-function Skinner:HealBot() -- version 4.0.1.2
+function Skinner:HealBot() -- version 4.0.3.4
 	if not self.db.profile.Tooltips.skin then return end
 
 -->>--	Tooltips
@@ -118,7 +118,14 @@ function Skinner:HealBot() -- version 4.0.1.2
 	self:applySkin(HealBot_Options_BuffsPanel, nil)	
 	self:keepFontStrings(HealBot_Options_ComboClassButton)
 	self:keepFontStrings(HealBot_Options_ActionBarsCombo)
-	self:keepFontStrings(HealBot_Options_MouseWheelModKey)
+	self:keepFontStrings(HealBot_Options_MouseWheelUp)
+	self:keepFontStrings(HealBot_Options_MouseWheelDown)	
+	self:keepFontStrings(HealBot_Options_MouseWheelShiftUp)
+	self:keepFontStrings(HealBot_Options_MouseWheelShiftDown)
+	self:keepFontStrings(HealBot_Options_MouseWheelCtrlUp)
+	self:keepFontStrings(HealBot_Options_MouseWheelCtrlDown)
+	self:keepFontStrings(HealBot_Options_MouseWheelAltUp)
+	self:keepFontStrings(HealBot_Options_MouseWheelAltDown)	
 	self:keepFontStrings(HealBot_Options_SkinPartyRaidDefault)
 	self:keepFontStrings(HealBot_Options_KeysFrame)
 	self:applySkin(HealBot_Options_KeysFrame, nil)
@@ -131,7 +138,9 @@ function Skinner:HealBot() -- version 4.0.1.2
 	self:keepFontStrings(HealBot_Options_HealRaidFrame)
 	self:applySkin(HealBot_Options_HealRaidFrame, nil)	
 	self:keepFontStrings(HealBot_Options_HealSortFrame)
-	self:applySkin(HealBot_Options_HealSortFrame, nil)	
+	self:applySkin(HealBot_Options_HealSortFrame, nil)
+	self:keepFontStrings(HealBot_Options_HealHideFrame)
+	self:applySkin(HealBot_Options_HealHideFrame, nil)	
 	self:keepFontStrings(HealBot_Options_AggroSkinsFrame)
 	self:applySkin(HealBot_Options_AggroSkinsFrame, nil)
 	self:keepFontStrings(HealBot_Options_IconTextSkinsFrame)
@@ -169,14 +178,17 @@ function Skinner:HealBot() -- version 4.0.1.2
 	self:keepFontStrings(HealBot_Options_ActionBarsAnchor)
 	self:keepFontStrings(HealBot_Options_GenFrame)
 	self:applySkin(HealBot_Options_GenFrame, nil)
-	self:keepFontStrings(HealBot_Options_BuffTimers)
-	self:applySkin(HealBot_Options_BuffTimers, nil)
 	self:keepFontStrings(HealBot_Options_ProtSkinsFrame)
 	self:applySkin(HealBot_Options_ProtSkinsFrame, nil)
 	self:keepFontStrings(HealBot_Options_CrashProtPanel)
 	self:applySkin(HealBot_Options_CrashProtPanel, nil)
 	self:keepFontStrings(HealBot_Options_CombatProtPanel)
 	self:applySkin(HealBot_Options_CombatProtPanel, nil)	
+	self:keepFontStrings(HealBot_Options_MouseWheelPanel)
+	self:applySkin(HealBot_Options_MouseWheelPanel, nil)	
+	self:keepFontStrings(HealBot_Options_TestButtonsPanel)
+	self:applySkin(HealBot_Options_TestButtonsPanel, nil)	
+	
 	
 	self:moveObject(HealBot_Options_ActionBarsCombo, nil, nil, "+", 5)
 	self:moveObject(HealBot_Options_CastButton, nil, nil, "+", 5)

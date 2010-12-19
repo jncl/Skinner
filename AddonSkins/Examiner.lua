@@ -39,7 +39,7 @@ function Skinner:Examiner()
 					self:Unhook(mod.page, "OnShow")
 				end)
 			elseif mod.token == "Cache" then
-				self:skinScrollBar{obj=ExaminerCacheScroll}
+			elseif mod.token == "Stats" then
 			elseif mod.token == "PvP" then
 				-- arena panels
 				for i = 2, 4 do
@@ -50,14 +50,13 @@ function Skinner:Examiner()
 					textureDD(self:getChild(this, 1)) -- dropdown
 					self:Unhook(mod.page, "OnShow")
 				end)
-				self:skinScrollBar{obj=ExaminerFeatsScroll}
-			elseif mod.token == "Stats" then
-				self:skinScrollBar{obj=ExaminerStatScroll}
-			elseif mod.token == "Talents" then
+			elseif mod.token == "Talent" then
 				self:skinFFToggleTabs("ExaminerTab", MAX_TALENT_TABS)
 				self:skinScrollBar{obj=ExaminerTalentsScrollChild}
+			elseif mod.token == "Gear" then
 			end
-			if mod.token ~= "Talents" then self:addSkinFrame{obj=mod.page} end
+			if mod.scroll then self:skinScrollBar{obj=mod.scroll} end
+			if mod.token ~= "Talents" then self:addSkinFrame{obj=mod.page, ofs=2} end
 		end
 	end
 
