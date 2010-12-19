@@ -372,7 +372,7 @@ local function __addButtonBorder(opts)
 	or opts.abt
 	or opts.pabt
 	then
-		opts.obj:GetNormalTexture():SetAlpha(0) -- vertex colour changed in blizzard code
+		opts.obj:GetNormalTexture():SetTexture(nil) -- vertex colour changed in blizzard code
 	end
 
 	-- create the border frame

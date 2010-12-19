@@ -463,8 +463,6 @@ function aObj:MainMenuBar()
 		btnName = "ActionButton"..i
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
-		-- stop grid being shown
-		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function() end, true)
 	end
 
 -->>-- Bonus Action Bar Buttons
@@ -474,8 +472,6 @@ function aObj:MainMenuBar()
 		btn.bg:SetAlpha(0) -- texture changed in the blizzard code
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
-		-- stop grid being shown
-		self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function() end, true)
 	end
 	local function toggleActionButtons(show)
 
@@ -512,8 +508,6 @@ function aObj:MainMenuBar()
 			btn = _G[btnName]
 			_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
 			self:addButtonBorder{obj=btn, abt=true, sec=true}
-			-- stop grid being shown
-			self:RawHook(_G[btnName.."NormalTexture"], "SetVertexColor", function() end, true)
 		end
 	end
 
