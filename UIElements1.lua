@@ -781,9 +781,11 @@ function aObj:InspectUI() -- LoD
 	self:makeMFRotatable(InspectModelFrame)
 	for _, child in ipairs{InspectPaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
-		-- add button borders
-		if child:IsObjectType("Button") and child:GetName():find("Slot") then
-			self:addButtonBorder{obj=child, ibt=true}
+		if self.modBtnBs then
+			-- add button borders
+			if child:IsObjectType("Button") and child:GetName():find("Slot") then
+				self:addButtonBorder{obj=child, ibt=true}
+			end
 		end
 	end
 	InspectModelFrame:DisableDrawLayer("BACKGROUND")
@@ -798,16 +800,17 @@ function aObj:InspectUI() -- LoD
 	end
 
 -->>--	Talent Frame
-	self:keepRegions(InspectTalentFrame, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 8 & 9 are the background picture, 10 is text
 	self:skinScrollBar{obj=InspectTalentFrameScrollFrame}
 	self:keepFontStrings(InspectTalentFramePointsBar)
 	self:skinFFToggleTabs("InspectTalentFrameTab")
 	self:moveObject{obj=InspectTalentFrameTab1, x=-30}
-	-- add button borders
-	for i = 1, MAX_NUM_TALENTS do
-		btnName = "InspectTalentFrameTalent"..i
-		_G[btnName.."Slot"]:SetAlpha(0)
-		self:addButtonBorder{obj=_G[btnName], tibt=true}
+	if self.modBtnBs then
+		-- add button borders
+		for i = 1, MAX_NUM_TALENTS do
+			btnName = "InspectTalentFrameTalent"..i
+			_G[btnName.."Slot"]:SetAlpha(0)
+			self:addButtonBorder{obj=_G[btnName], tibt=true}
+		end
 	end
 
 -->>-- Guild Frame
