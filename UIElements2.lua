@@ -221,6 +221,7 @@ function aObj:MenuFrames()
 	self:addSkinFrame{obj=AudioOptionsSoundPanel, ft=ftype}
 	self:addSkinFrame{obj=AudioOptionsSoundPanelPlayback, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsSoundPanelHardwareDropDown}
+	self:skinDropDown{obj=AudioOptionsSoundPanelSoundChannelsDropDown}
 	self:addSkinFrame{obj=AudioOptionsSoundPanelHardware, ft=ftype}
 	self:addSkinFrame{obj=AudioOptionsSoundPanelVolume, ft=ftype}
 	-- Voice Panel
@@ -233,7 +234,6 @@ function aObj:MenuFrames()
 	self:glazeStatusBar(LoopbackVUMeter) -- no background required
 	self:addSkinFrame{obj=AudioOptionsVoicePanelBinding, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsVoicePanelChatModeDropDown}
---	self:skinButton{obj=AudioOptionsVoicePanelChatMode1KeyBindingButton}
 	self:addSkinFrame{obj=AudioOptionsVoicePanelListening, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsVoicePanelOutputDeviceDropDown}
 	self:addSkinFrame{obj=VoiceChatTalkers, ft=ftype}
@@ -309,7 +309,7 @@ function aObj:MenuFrames()
 		if self.tekKonfig then self:checkAndRun("tekKonfig") end
 		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
-			self:ScheduleTimer("skinAllButtons", 0.1, panel) -- wait for 1/10th second for panel to be populated
+			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true}) -- wait for 1/10th second for panel to be populated, always use applySkin to ensure text appears above button texture
 			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 		end
 	end)
