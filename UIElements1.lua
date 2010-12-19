@@ -399,8 +399,8 @@ function aObj:ChatEditBox()
 	-- these addons replace the Chat Edit Box
 	if IsAddOnLoaded("NeonChat") or IsAddOnLoaded("Chatter") or IsAddOnLoaded("Prat-3.0") then return end
 
-	for i = 1, NUM_CHAT_WINDOWS do
-		obj = _G["ChatFrame"..i.."EditBox"]
+	local function skincfEB(obj)
+
 		if self.db.profile.ChatEditBox.style == 1 then -- Frame
 			local kRegions = CopyTable(self.ebRegions)
 			table.insert(kRegions, 12)
@@ -412,7 +412,19 @@ function aObj:ChatEditBox()
 			self:removeRegions(obj, {6, 7, 8})
 			self:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		end
+		self.skinned[obj] = true
+
 	end
+	for i = 1, NUM_CHAT_WINDOWS do
+		skincfEB(_G["ChatFrame"..i].editBox)
+	end
+
+	-- hook this to handle Tempoary windows (BN Conversations)
+	self:RawHook("FCF_OpenTemporaryWindow", function(...)
+		local obj = self.hooks.FCF_OpenTemporaryWindow(...)
+		if not self.skinned[obj.editBox] then skincfEB(obj.editBox) end
+		return obj
+	end, true)
 
 end
 
