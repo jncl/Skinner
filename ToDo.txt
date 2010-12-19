@@ -19,38 +19,74 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-√	S	SnapShot, requested by Bei21, 26.11.10
-√	S	Cosplay, requested by Tyraela, 26.11.10
-√	S	Vendomatic, requested by Tyraela, 26.11.10
+√	I	Outfitter, reported by Tyraela, 1.12.10
+		- As I saw, you skinned the slot specific equipment selector enabled by holding the ALT button from Blizzard. Outfitter has quite the same feature by clicking on the same slot in the character tab, but it isn't skinned.
 
-√	N	MrTrader, reported by x-buZZ, 26.11.10
+	I	Waterfall, reported by Decabah, 4.12.10
+		- Skinner-b4.13329.2\SkinMe\Waterfall.lua:36: attempt to index local 'btnText' (a nil value)
+		Skinner-b4.13329.2\SkinMe\Waterfall.lua:55: in function <Skinner\SkinMe\Waterfall.lua:41>
+		Skinner-b4.13329.2\SkinMe\Waterfall.lua:77: in function <Skinner\SkinMe\Waterfall.lua:76>
+		(tail call): ?:
 
-√	I	Altoholic, reported by dalai333,29.11.10
-		- ..\AddOns\Skinner\Skinner.lua line 220:
-		   table index is nil
+√	I	Action Button taint, reported by gamemaster128/Decabah, 5.12.10
+		- I'm getting quite a bit of ActionButton taint from Skinner while using AdiBags/Baggins.
+
+√	N	QuestGuru, reported by mkcorp/Bei21/Sleaker, 5.12.10/7.12.10
+		- ..\AddOns\Skinner\SkinMe\QuestGuru.lua line 59:
+		'for' limit must be a number
 		Debug:
-		   (tail call): ?
-		   (tail call): ?
-		   Skinner\Skinner.lua:220:
-		      Skinner\Skinner.lua:220
-		   Skinner\Skinner.lua:1466:
-		      Skinner\Skinner.lua:1452
-		   Skinner\Skinner.lua:1498: skinScrollBar()
-		   Skinner\SkinMe\Altoholic.lua:128:
-		      Skinner\SkinMe\Altoholic.lua:107
-		   (tail call): ?
+		[C]: ?
+		Skinner\SkinMe\QuestGuru.lua:59:
+		Skinner\SkinMe\QuestGuru.lua:58
+		(tail call): ?
+		- ..\AddOns\Skinner\SkinMe\QuestGuru.lua line 78:
+		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		Debug:
+		(tail call): ?
 
-≈	I	GuildNewsBossModel, reported by mkcorp, 29.11.01
-		- I believe the blizz UI regarding pictures of boss/mob that pop-up when mouseover some q's or achievs needs to be redone - it's half skinned atm
+√	N	Examiner, reported by burber/Gabriel/Suddendeath2000, 6.12.10/7.12.10
+		-  Interface\AddOns\Skinner\Skinner.lua:220: table index is nil
+		Time: 12/06/10 01:43:39
+		Count: 1
+		Stack: (tail call): ?
+		Interface\AddOns\Skinner\Skinner.lua:220: in function <Interface\AddOns\Skinner\Skinner.lua:220>
+		Interface\AddOns\Skinner\Skinner.lua:1466: in function <Interface\AddOns\Skinner\Skinner.lua:1452>
+		Interface\AddOns\Skinner\Skinner.lua:1498: in function `skinScrollBar'
+		Interface\AddOns\Skinner\SkinMe\Examiner.lua:55: in function <Interface\AddOns\Skinner\SkinMe\Examiner.lua:3>
+		(tail call): ?
 
-√	I	BugSack, reported by Eatsbrains, 29.11.10
-		- Skinner-@project-version@\SkinMe\BugSack.lua:6: attempt to index a nil value
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-@project-version@\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-@project-version@\UtilFuncs.lua:145: in function `checkAndRunAddOn'
-		Skinner-@project-version@\AddonFrames.lua:148: in function <Skinner\AddonFrames.lua:103>
-		(tail call): ?:
+√	N	HealBot, skin updated by acirac
+√	N	HandyNotes, skin updated by acirac
+√	N	UrbanAchiever, skin updated by T0mate
+
+√	S	FlightMapEnhanced, requested by Decabah, 6.12.10
+
+√	N	EnhancedFlightMap, reported by Gabriel, 7.12.10
+
+√	I	UnitFrames, reported by Ben, 14.12.10
+		Interface\AddOns\Skinner\modules\UnitFrames.lua:252: AceTimer-3.0: ScheduleRepeatingTimer(callback, delay, arg): 'callback' - function or method name expected.
+		Time: 12/14/10 14:45:28
+		Count: 30
+		Stack: [C]: ?
+		...rface\AddOns\Omen\Libs\AceTimer-3.0\AceTimer-3.0.lua:214: in function <...rface\AddOns\Omen\Libs\AceTimer-3.0\AceTimer-3.0.lua:211>
+		(tail call): ?
+		Interface\AddOns\Skinner\modules\UnitFrames.lua:252: in function <Interface\AddOns\Skinner\modules\UnitFrames.lua:250>
+		(tail call): ?
+		[C]: in function `PartyMemberFrame_ToVehicleArt'
+		Interface\FrameXML\PartyMemberFrame.lua:25: in function `PartyMemberFrame_UpdateArt'
+		Interface\FrameXML\PartyMemberFrame.lua:333: in function `PartyMemberFrame_OnEvent'
+		[string "*:OnEvent"]:1: in function `OnEvent'
+		Interface\FrameXML\UnitFrame.lua:416: in function <Interface\FrameXML\UnitFrame.lua:414>
+
+		Locals: (*temporary) = "AceTimer-3.0: ScheduleRepeatingTimer(callback, delay, arg): 'callback' - function or method name expected."
+
+√	I	Temporary ChatFrames, reported by Ben, 15.12.10 (BN conversations etc )
+		- Edit box needs skinning
+
+√	S	BossInfo, requested by mkcorp, 18.12.10
+
+	I	ViewPort, reported by wolfyette, 18.12.10
+		- VP top mirrors VP bottom even when top set to 0
 
 Cataclysm changes
 ±±±±±±±±±±±±±±±±±
