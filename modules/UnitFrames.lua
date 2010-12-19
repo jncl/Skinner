@@ -241,6 +241,22 @@ local function skinFocusF()
 	end
 
 end
+local function resetPosn(pF)
+
+	-- handle in combat
+	if InCombatLockdown() then return end
+
+	_G[pF.."Portrait"]:SetPoint("TOPLEFT", 7, -6)
+	_G[pF.."LeaderIcon"]:SetPoint("TOPLEFT")
+	_G[pF.."MasterIcon"]:SetPoint("TOPLEFT", 32, 0)
+	_G[pF.."PVPIcon"]:SetPoint("TOPLEFT", -9, -15)
+	_G[pF.."Disconnect"]:SetPoint("LEFT", -7, -1)
+
+	-- cancel repeating timer
+	module:CancelTimer(rpTmr[_G[pF]], true)
+	rpTmr[_G[pF]] = nil
+
+end
 local function skinPartyF()
 
 	local pF
@@ -331,22 +347,6 @@ local function skinArenaF()
 			aObj:Unhook("Arena_LoadUI")
 		end)
 	end
-
-end
-local function resetPosn(pF)
-
-	-- handle in combat
-	if InCombatLockdown() then return end
-
-	_G[pF.."Portrait"]:SetPoint("TOPLEFT", 7, -6)
-	_G[pF.."LeaderIcon"]:SetPoint("TOPLEFT")
-	_G[pF.."MasterIcon"]:SetPoint("TOPLEFT", 32, 0)
-	_G[pF.."PVPIcon"]:SetPoint("TOPLEFT", -9, -15)
-	_G[pF.."Disconnect"]:SetPoint("LEFT", -7, -1)
-
-	-- cancel repeating timer
-	module:CancelTimer(rpTmr[_G[pF]], true)
-	rpTmr[_G[pF]] = nil
 
 end
 local function changeUFOpacity()
