@@ -60,20 +60,20 @@ blizzLoDFrames = nil
 aObj.addonSkins = {
 	"_NPCScan",
 	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Altoholic_Characters", "Altoholic_Search", "Analyst", "AnnounceIt", "Ara_Broker_Guild_Friends", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
-	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
+	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossInfo", "BossNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
 	"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "Cosplay", "CowTip", "CT_MailMod", "CT_RaidTracker",
 	"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "Dominos", "DragonCore",
 	"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElitistGroup", "EnchantMe", "EngBags", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "EquipCompare", "EventEquip", "EveryQuest", "Examiner", "ExtendedRaidInfo",
-	"Factionizer", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "FlightMap", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
+	"Factionizer", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "FlightMap", "FlightMapEnhanced", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
 	"Gatherer", "GearScore", "GemHelper", "GemMe", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GupCharacter", "GupPet",
-	"Hack", "Hadar_FocusFrame", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
+	"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
 	"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
 	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Ludwig", "Luggage",
 	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MinimapButtonFrame", "Misdirectionhelper", "MobMap", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MuffinMOTD", "MyBags", "myClock",
 	"NeatFreak", "Necrosis", "NeonChat", "nQuestLog",
 	"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
 	"PallyPower", "Panda", "PartyBuilder", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons_Config", "Producer", "ProfessionsBook", "ProfessionTabs", "PvpMessages",
-	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru", "QuestHelper", "QuestHistory", "QuickMark",
+	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper", "QuestHistory", "QuickMark",
 	"RABuffs", "RaidAchievement", "RaidAchievement_AchieveReminder", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidTracker", "RaidyCheck", "RandomPet30", "Recap", "RecipeBook", "RecipeRadar", "Recount", "RicoMiniMap",
 	"SayGMOTD", "ScrollMaster", "ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "SmoothQuest", "SnapShot", "Spew", "Squeenix", "sRaidFrames",
 	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "Tukui", "TwinValkyr_shieldmonitor",
@@ -113,13 +113,9 @@ function aObj:AddonFrames()
 	-- skin tooltips here after checking whether the ttBorder setting needed changing
 	self:checkAndRun("Tooltips")
 
-	-- skin the QuestLog if EQL3 or QuestGuru aren't loaded
+	-- skin the QuestLog if EQL3 isn't loaded
 	-- N.B. Do it here as other Addons use the QuestLog size
-	if not IsAddOnLoaded("EQL3")
-	and not IsAddOnLoaded("QuestGuru")
-	then
-		self:checkAndRun("QuestLog")
-	end
+	if not IsAddOnLoaded("EQL3") then self:checkAndRun("QuestLog") end
 
 	-- skin the CastingBar if Quartz isn't loaded
 	if not IsAddOnLoaded("Quartz") then self:checkAndRun("CastingBar") end

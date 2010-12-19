@@ -1118,6 +1118,7 @@ function aObj:MinimapButtons()
 			["Perl_Config"] = PerlButton,
 			["WIM"] = WIM3MinimapButton,
 			["DBM-Core"] = DBMMinimapButton,
+			["FlightMapEnhanced"] = FlightMapEnhancedMinimapButton,
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then

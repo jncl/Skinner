@@ -14,6 +14,7 @@ function Skinner:HandyNotes()
 	self:skinScrollBar(HNEditFrame.descscrollframe)
 	self:skinDropDown(HNEditFrame.icondropdown, true, nil, true)
 	self:moveObject(_G[HNEditFrame.icondropdown:GetName().."Button"], nil, nil, "-", 2)
+	self:skinDropDown(HNEditFrame.leveldropdown, true, nil, true)
 	self:applySkin(HNEditFrame)
 
 end

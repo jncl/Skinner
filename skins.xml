@@ -50,6 +50,7 @@
 <script file="SkinMe\BetterInbox.lua"/>
 <script file="SkinMe\BindPad.lua"/>
 <script file="SkinMe\BlackList.lua"/>
+<script file="SkinMe\BossInfo.lua"/>
 <script file="SkinMe\BossNotes.lua"/>
 <script file="SkinMe\BriefQuestComplete.lua"/>
 <script file="SkinMe\Broker_Transport.lua"/>
@@ -112,6 +113,7 @@
 <script file="SkinMe\FeedMachine.lua"/>
 <script file="SkinMe\FishingBuddy.lua"/>
 <script file="SkinMe\FlightMap.lua"/>
+<script file="SkinMe\FlightMapEnhanced.lua"/>
 <script file="SkinMe\FPSideBar.lua"/>
 <script file="SkinMe\FramesResized.lua"/>
 <script file="SkinMe\FramesResized_TalentUI.lua"/>
@@ -138,6 +140,7 @@
 <script file="SkinMe\GupPet.lua"/>
 <script file="SkinMe\Hack.lua"/>
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
+<script file="SkinMe\HandyNotes.lua"/>
 <script file="SkinMe\HatTrick.lua"/>
 <script file="SkinMe\HeadCount.lua"/>
 <script file="SkinMe\HealBot.lua"/>
@@ -222,7 +225,7 @@
 <script file="SkinMe\Quelevel.lua"/>
 <script file="SkinMe\QuestAgent.lua"/>
 <script file="SkinMe\QuestCompletist.lua"/>
-<script file="SkinMe\QuestGuru.lua"/>
+<script file="SkinMe\QuestGuru_Tracker.lua"/>
 <script file="SkinMe\QuestHelper.lua"/>
 <script file="SkinMe\QuestHistory.lua"/>
 <script file="SkinMe\QuickMark.lua"/>
