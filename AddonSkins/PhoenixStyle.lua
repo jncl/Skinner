@@ -1,10 +1,9 @@
-if not Skinner:isAddonEnabled("PhoenixStyle") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("PhoenixStyle") then return end
 
 local x1, y1 = -2, -4
-function Skinner:PhoenixStyle()
+function aObj:PhoenixStyle()
 
-	-- shield monitor
-	self:addSkinFrame{obj=PScolishieldmini}
 	-- Main Panel buttons
 	self:skinAllButtons{obj=PSFmain1}
 	-- Menu (on LHS)
@@ -55,106 +54,51 @@ function Skinner:PhoenixStyle()
 		self:Unhook("openremovechat")
 	end)
 	self:addSkinFrame{obj=PSFmainchated, x1=x1, y1=y1}
-
-end
-
-function Skinner:PhoenixStyleMod_Coliseum()
-
-	self:skinDropDown{obj=DropDownMenuTwins}
-	self:skinDropDown{obj=DropDownMenujarax}
-	self:skinDropDown{obj=DropDownMenuzveri}
-	self:addSkinFrame{obj=PSFmain7, kfs=true, x1=x1, y1=y1}
-
-	-- hook this to skin the dropdown
-	self:SecureHook("PSF_colshieldinfoopen", function()
-		self:skinDropDown{obj=DropDownMenureportinfoshield}
-		self:Unhook("PSF_colshieldinfoopen")
+	-- Font change
+	self:addSkinFrame{obj=PSFmainfontchange, x1=x1, y1=y1}
+	-- Credits
+	self:addSkinFrame{obj=PSFthanks, x1=x1, y1=y1}
+	-- Raids
+	self:addSkinFrame{obj=PSFmainic1, x1=x1, y1=y1}
+	self:SecureHook("openbossic", function()
+		self:skinDropDown{obj=DropDownMenubossic}
+		self:Unhook("openbossic")
 	end)
-	self:addSkinFrame{obj=PSFmainshieldinfo, x1=x1, y1=y1}
-	-- TwinValkyrs options
-	self:skinEditBox{obj=PSTwinValmenu_width1}
-	PSTwinValmenu_width1:SetWidth(PSTwinValmenu_width1:GetWidth() + 3)
-	self:skinEditBox{obj=PSTwinValmenu_heigh1}
-	self:addSkinFrame{obj=PSTwinValmenu, y1=-4, y2=2}
-
-	-- Anub'arak frame
-	self:skinEditBox{obj=PSFmainanub_pala10}
-	self:skinEditBox{obj=PSFmainanub_pala20}
-	self:skinEditBox{obj=PSFmainanub_pala30}
-	self:skinEditBox{obj=PSFmainanub_pala40}
-	self:skinEditBox{obj=PSFmainanub_heal10}
-	self:skinEditBox{obj=PSFmainanub_heal20}
-	self:skinEditBox{obj=PSFmainanub_heal30}
-	self:skinEditBox{obj=PSFmainanub_heal40}
-	self:skinEditBox{obj=PSFmainanub_heal50}
-	self:skinEditBox{obj=PSFmainanub_heal60}
-	self:skinEditBox{obj=PSFmainanub_heal70}
-	self:skinEditBox{obj=PSFmainanub_heal80}
-	self:SecureHook("openmenuanub", function()
-		self:skinDropDown{obj=DropDownMenuAnub}
-		self:Unhook("openmenuanub")
+	self:SecureHook("openbossic2", function()
+		self:skinDropDown{obj=DropDownMenubossic2}
+		self:Unhook("openbossic2")
 	end)
-	self:SecureHook("openmenuanub2", function()
-		self:skinDropDown{obj=DropDownMenuAnub2}
-		self:Unhook("openmenuanub2")
+	self:SecureHook("openchatic", function()
+		self:skinDropDown{obj=DropDownchatic}
+		self:Unhook("openchatic")
 	end)
-	self:addSkinFrame{obj=PSFmainanub, x1=x1, y1=y1}
-
-end
-
-function Skinner:PhoenixStyleMod_Ulduar()
-
-	self:addSkinFrame{obj=PSFmain8, x1=x1, y1=y1}
-
-	self:skinDropDown{obj=DropDownMenuGeneral}
-	self:skinDropDown{obj=DropDownMenuMimiron}
-	self:skinDropDown{obj=DropDownMenuStal}
-	self:skinDropDown{obj=DropDownMenuHodir}
-	self:skinDropDown{obj=DropDownMenuAlg}
-	self:skinDropDown{obj=DropDownMenuxt}
-	self:skinDropDown{obj=DropDownMenutorim}
-	self:addSkinFrame{obj=PSFmain6, kfs=true, x1=x1, y1=y1}
-
-	self:skinEditBox{obj=PSFmain11_primyogg}
-	self:addSkinFrame{obj=PSFmain11, x1=x1, y1=y1}
-
-end
-
-function Skinner:PhoenixStyleMod_Icecrown()
-
-	self:skinDropDown{obj=DropDownMenubossic}
-	self:skinDropDown{obj=DropDownchatic}
-	self:skinDropDown{obj=DropDownchatic2}
-	self:addSkinFrame{obj=PSFmainic1, kfs=true, x1=x1, y1=y1}
-
-	-- Deathbringer Saurfang module
-	self:SecureHook("PSF_iccsaurfang", function()
-		self:skinEditBox{obj=psebs1}
-		self:skinEditBox{obj=psebs2}
-		self:skinEditBox{obj=psebs3}
-		self:skinEditBox{obj=psebs4}
-		self:skinEditBox{obj=psebs5}
-		self:skinEditBox{obj=psebs6}
-		self:skinEditBox{obj=psebs7}
-		self:skinEditBox{obj=psebs8}
-		self:Unhook("PSF_iccsaurfang")
+	self:SecureHook("openchatic2", function()
+		self:skinDropDown{obj=DropDownchatic2}
+		self:Unhook("openchatic2")
 	end)
-	self:SecureHook("openmenureporticcsaurf", function()
-		self:skinDropDown{obj=DropDownMenureporticcsaurf}
-		self:Unhook("openmenureporticcsaurf")
+	self:SecureHook("openchatic3", function()
+		self:skinDropDown{obj=DropDownchatic3}
+		self:Unhook("openchatic3")
 	end)
-	self:addSkinFrame{obj=PSFiccsaurf, x1=x1, y1=y1}
-
-	-- Blood Queen Lana'thel module
-	self:skinEditBox{obj=PSFicclana_edbox1}
-	self:skinEditBox{obj=PSFicclana_edbox2}
-	self:addSkinFrame{obj=PSFicclana, x1=x1, y1=y1}
-
-	-- Professor Putricide module
-	self:skinEditBox{obj=PSFiccprofframe_edbox1}
-	self:skinEditBox{obj=PSFiccprofframe_edbox2}
-	self:addSkinFrame{obj=PSFiccprofframe, x1=x1, y1=y1}
-
+	-- Saved Reports module
+	self:SecureHook("openiccbosschsv", function()
+		self:skinDropDown{obj=DropDowniccbosschsv}
+		self:Unhook("openiccbosschsv")
+	end)
+	self:SecureHook("openiccbosschsv2", function()
+		self:skinDropDown{obj=DropDowniccbosschsv2}
+		self:Unhook("openiccbosschsv2")
+	end)
+	self:SecureHook("psiccaftcombop", function()
+		self:skinScrollBar{obj=psiccinfscroll}
+		self:Unhook("psiccaftcombop")
+	end)
+	self:SecureHook("openicclogfailchat", function()
+		self:skinDropDown{obj=DropDownicclogfailchat}
+		self:Unhook("openicclogfailchat")
+	end)
+	self:skinEditBox{obj=PSFiccaftercombinfoframe_edbox2}
+	self:addSkinFrame{obj=PSFiccaftercombinfoframe, x1=x1, y1=y1}
 	-- Damage/Switch info module
 	self:SecureHook("openicccombarchoose", function()
 		self:skinDropDown{obj=DropDownicccombarchoose}
@@ -172,25 +116,9 @@ function Skinner:PhoenixStyleMod_Icecrown()
 		self:skinDropDown{obj=DropDownicclogchat}
 		self:Unhook("openicclogchat")
 	end)
+	self:skinEditBox{obj=PSFiccdamageinfo_edbox2}
 	self:addSkinFrame{obj=PSFiccdamageinfo, x1=x1, y1=y1}
-
-	-- Saved Reports module
-	self:SecureHook("psiccaftcombop", function()
-		self:skinScrollBar{obj=psiccinfscroll}
-		self:Unhook("psiccaftcombop")
-	end)
-	self:SecureHook("openiccbosschsv", function()
-		self:skinDropDown{obj=DropDowniccbosschsv}
-		self:Unhook("openiccbosschsv")
-	end)
-	self:SecureHook("openicclogfailchat", function()
-		self:skinDropDown{obj=DropDownicclogfailchat}
-		self:Unhook("openicclogfailchat")
-	end)
-	self:skinEditBox{obj=PSFiccaftercombinfoframe_edbox2}
-	self:addSkinFrame{obj=PSFiccaftercombinfoframe, x1=x1, y1=y1}
-
-	-- Sindragosa modules
-	self:addSkinFrame{obj=PSFiccaddonno, x1=x1, y1=y1}
+	-- Raid options module
+	self:addSkinFrame{obj=PSFraidopt, x1=x1, y1=y1}
 
 end
