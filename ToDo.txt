@@ -19,168 +19,53 @@ Legend:
 		- Getting some buggy ghost graphics from buttons
 ?			-the info popup about pallys holypower also generates them.
 
-√	I	Outfitter, reported by Tyraela, 1.12.10
-		- As I saw, you skinned the slot specific equipment selector enabled by holding the ALT button from Blizzard. Outfitter has quite the same feature by clicking on the same slot in the character tab, but it isn't skinned.
-
-	I	Waterfall, reported by Decabah, 4.12.10
+?	I	Waterfall, reported by Decabah, 4.12.10
 		- Skinner-b4.13329.2\SkinMe\Waterfall.lua:36: attempt to index local 'btnText' (a nil value)
 		Skinner-b4.13329.2\SkinMe\Waterfall.lua:55: in function <Skinner\SkinMe\Waterfall.lua:41>
 		Skinner-b4.13329.2\SkinMe\Waterfall.lua:77: in function <Skinner\SkinMe\Waterfall.lua:76>
 		(tail call): ?:
 
-√	I	Action Button taint, reported by gamemaster128/Decabah, 5.12.10
-		- I'm getting quite a bit of ActionButton taint from Skinner while using AdiBags/Baggins.
-
-√	N	QuestGuru, reported by mkcorp/Bei21/Sleaker, 5.12.10/7.12.10
-		- ..\AddOns\Skinner\SkinMe\QuestGuru.lua line 59:
-		'for' limit must be a number
-		Debug:
-		[C]: ?
-		Skinner\SkinMe\QuestGuru.lua:59:
-		Skinner\SkinMe\QuestGuru.lua:58
-		(tail call): ?
-		- ..\AddOns\Skinner\SkinMe\QuestGuru.lua line 78:
-		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		Debug:
-		(tail call): ?
-
-√	N	Examiner, reported by burber/Gabriel/Suddendeath2000, 6.12.10/7.12.10
-		-  Interface\AddOns\Skinner\Skinner.lua:220: table index is nil
-		Time: 12/06/10 01:43:39
-		Count: 1
-		Stack: (tail call): ?
-		Interface\AddOns\Skinner\Skinner.lua:220: in function <Interface\AddOns\Skinner\Skinner.lua:220>
-		Interface\AddOns\Skinner\Skinner.lua:1466: in function <Interface\AddOns\Skinner\Skinner.lua:1452>
-		Interface\AddOns\Skinner\Skinner.lua:1498: in function `skinScrollBar'
-		Interface\AddOns\Skinner\SkinMe\Examiner.lua:55: in function <Interface\AddOns\Skinner\SkinMe\Examiner.lua:3>
-		(tail call): ?
-
-√	N	HealBot, skin updated by acirac
-√	N	HandyNotes, skin updated by acirac
-√	N	UrbanAchiever, skin updated by T0mate
-
-√	S	FlightMapEnhanced, requested by Decabah, 6.12.10
-
-√	N	EnhancedFlightMap, reported by Gabriel, 7.12.10
-
-√	I	UnitFrames, reported by Ben, 14.12.10
-		Interface\AddOns\Skinner\modules\UnitFrames.lua:252: AceTimer-3.0: ScheduleRepeatingTimer(callback, delay, arg): 'callback' - function or method name expected.
-		Time: 12/14/10 14:45:28
-		Count: 30
-		Stack: [C]: ?
-		...rface\AddOns\Omen\Libs\AceTimer-3.0\AceTimer-3.0.lua:214: in function <...rface\AddOns\Omen\Libs\AceTimer-3.0\AceTimer-3.0.lua:211>
-		(tail call): ?
-		Interface\AddOns\Skinner\modules\UnitFrames.lua:252: in function <Interface\AddOns\Skinner\modules\UnitFrames.lua:250>
-		(tail call): ?
-		[C]: in function `PartyMemberFrame_ToVehicleArt'
-		Interface\FrameXML\PartyMemberFrame.lua:25: in function `PartyMemberFrame_UpdateArt'
-		Interface\FrameXML\PartyMemberFrame.lua:333: in function `PartyMemberFrame_OnEvent'
-		[string "*:OnEvent"]:1: in function `OnEvent'
-		Interface\FrameXML\UnitFrame.lua:416: in function <Interface\FrameXML\UnitFrame.lua:414>
-
-		Locals: (*temporary) = "AceTimer-3.0: ScheduleRepeatingTimer(callback, delay, arg): 'callback' - function or method name expected."
-
-√	I	Temporary ChatFrames, reported by Ben, 15.12.10 (BN conversations etc )
-		- Edit box needs skinning
-
-√	S	BossInfo, requested by mkcorp, 18.12.10
-
 	I	ViewPort, reported by wolfyette, 18.12.10
 		- VP top mirrors VP bottom even when top set to 0
 
-Cataclysm changes
-±±±±±±±±±±±±±±±±±
+√	I	GearScore/PlayerScore, reported by Elanie, 20.12.20
+		- Skinner-b4.13329.3\Skinner.lua:504: attempt to index field 'obj' (a nil value)
+		(tail call): ?:
+		Skinner-b4.13329.3\SkinMe\GearScore.lua:6: in function <Skinner\SkinMe\GearScore.lua:3>
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b4.13329.3\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
+		Skinner-b4.13329.3\UtilFuncs.lua:145: in function `checkAndRunAddOn'
+		Skinner-b4.13329.3\AddonFrames.lua:144: in function <Skinner\AddonFrames.lua:103>
+		(tail call): ?:
 
-	- BonusActionBar has replaced VehicleMenuBar for certain types of display ?
+√	S	MinimalArchaeology, requested by Decabah, 21,12,10
+	
+√	I	WatchFrame PopUps, reported by Luckyjack_SL, 21.12.10
+		- ..\AddOns\Skinner\Skinner.lua line 220:
+		   table index is nil
+		Debug:
+		   (tail call): ?
+		   (tail call): ?
+		   [C]: ?
+		   Skinner\Skinner.lua:220:
+		      Skinner\Skinner.lua:220
+		   Skinner\CharacterFrames2.lua:467:
+		      Skinner\CharacterFrames2.lua:462
+		   Skinner\CharacterFrames2.lua:479:
+		      Skinner\CharacterFrames2.lua:478
+		   (tail call): ?
 
-	N	Cataclysm Beta
-√		- TOC Interface is 40000
-√		- New Blizzard AddOns:
-√			- ArchaeologyUI
-√			- ReforgingUI (NPC)
-≈			- CompactRaidFrames (in UnitFrames.lua)
-?				- CompactRaidFrameContainer
-?				- CompactRaidFrameManager
-?					- RolePoll
-≈				- CompactRaidGroup
-≈					- CompactUnitFrame
-≈					- CompactPartyFrame
-√			- GuildUI
-√				- GuildLogFrameCloseButton too big
-√			- GuildControlUI
-√		- New Frames:
-√			- LevelUpDisplay
-√			- CinematicFrame (CloseDialog)
-√			- Spell fly-out UI feature for pet/portal classes
-√			- GuildInvite
-√			- PaladinPowerBar
-√			- ShardBar
-√			- EclipseBarFrame
-√			- GhostFrame
-√		- Removed Frames:
-√			- ClassTrainerFrameTemplates
-√			- PVPBattlegroundFrame
-√			- QuestTimerFrame
-√			- SkillFrame
-√		- Changed Frames:
-√			- Character (Width, Height)
-√				- PaperDoll
-√				- PetPaperDoll
-x				- Reputation
-√				- Currency
-√			- InspectFrame
-√				- PVP containers too large, reduce height by 3
-x			- DropDownMenu
-x			- Friends
-x			- Loot, now shows quest item texture
-√			- SpellBook
-√				- Spellbook
-√				- Professions
-√				- Mounts/Companions
-√			- PVP
-≈			- RaidUI
-?				- Auras
-√			- PetStable
-√			- Quest (Frame, Log, Info)
-√				- QuestNPCModel
-√				- QuestInfoSkillPointFrame
-√			- TalentUI
-√				- Talents
-√				- Pet Talents
-√				- Glyphs
-√			- TradeSkillUI
-√			- TrainerUI
-√			- PVP Banner Frame
-√			- Taxi
-x			- UIPanelTemplates
-√			- Unit
-√				- Player (ShardBar, PaladinPowerBar, EclipseBar)
-x				- PlayerPet
-√				- Target
-x				- TargetofTarget
-x				- Focus
-x				- Party
-x				- PartyPet
-√			- VehicleMenuBar, Exp Bar now shown
-√			- Watch
-√				- AutoPopup(s)
-√			- Shapeshift Buttons (regions changed)
-√			- MainMenu Bar
-√				- Exp bar rested tick shows
-√				- Bar not high enough
-√			- Options
-√				- Video
-√			- Tutorial
-√				- has animations now
-√			- Glow boxes
-√				- TalentMicroButtonAlert
-√				- PVPFrame
-√					- noTeams
-√					- invalidTeam
-√					- lowLevelFrame
-√			- Magic Button textures
-√			- Calendar
-√				- Close button texture (various frames)
-√			- MoneyFrame
-√				- coins now in Edit boxes
-?		- New layer option - textureSubLevel
+√	I	PhoenixStyle, reported by Decabah, 24.12.10
+		- Skinner-b4.13329.3\Skinner.lua:504: attempt to index field 'obj' (a nil value)
+		(tail call): ?:
+		<in C code>: in function `addSkinFrame'
+		Skinner-b4.13329.3\SkinMe\PhoenixStyle.lua:7: in function <Skinner\SkinMe\PhoenixStyle.lua:4>
+		(tail call): ?:
+
+?	I	FishingBuddy, reported Suddendeath2000, 27.12.10
+		- Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua:3 8: 'for' limit must be a number
+		Time: 12/26/10 18:46:49
+		Count: 1
+		Stack: Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua:3 8: in function <Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua: 3>
+		(tail call): ?
