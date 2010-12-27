@@ -1,3 +1,18 @@
+b4.13329.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated ChatEditBox skin code
+	Bugfix for taint caused by ButtonBorder skin code
+	Bugfix for PartyFrames skin code
+	Updated UIButton skin code
+	Updated InspectUI skin code
+	Updated IOF skin code
+	Updated EnhancedFlightMap, Examiner, HealBot, Outfitter & UrbanAchiever  (thanks to T0mate) skins
+	Skinned BossInfo, FlightMapEnhanced
+	Renamed QuestGuru skin to QuestGuru_Tracker
+	Unobsoleted HandyNotes (thanks to acirac)
+
 b4.13329.2
 Jncl:
 	ToDo.txt
