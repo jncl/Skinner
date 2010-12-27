@@ -463,8 +463,8 @@ function aObj:WatchFrame()
 
 			local obj
 			for i = 1, GetNumAutoQuestPopUps() do
-				obj = _G["WatchFrameAutoQuestPopUp"..i.."ScrollChild"]
-				if not aObj.skinned[obj] then
+				obj = _G["WatchFrameAutoQuestPopUp"..i].ScrollChild
+				if obj and not aObj.skinned[obj] then
 					for key, reg in ipairs{obj:GetRegions()} do
 						if key < 11 or key == 17 then reg:SetTexture(nil) end -- Animated textures
 					end
@@ -757,9 +757,7 @@ function aObj:GuildControlUI() -- LoD
 		local obj
 		for i = 1, MAX_GUILDRANKS do
 			obj = _G["GuildControlUIRankOrderFrameRank"..i]
-			if obj
-			and not aObj.skinned[obj]
-			then
+			if obj and not aObj.skinned[obj] then
 				aObj:skinEditBox{obj=obj.nameBox, regs={9}, x=-5}
 			end
 		end
