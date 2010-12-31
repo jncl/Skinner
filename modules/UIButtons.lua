@@ -124,6 +124,11 @@ function module:skinButton(opts)
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+		if opts.obj.GetCheckedTexture -- CheckButton (Archy)
+		and opts.obj:GetCheckedTexture()
+		then
+			opts.obj:GetCheckedTexture():SetAlpha(0)
+		end
 	elseif opts.obj.left then -- ARL & Collectinator
 		opts.obj.left:SetAlpha(0)
 		opts.obj.middle:SetAlpha(0)
@@ -221,15 +226,6 @@ function module:skinButton(opts)
 			aObj:applySkin{obj=opts.obj, bd=aso.bd}
 		end
 	end
-
---	-- centre text on button -- Why ????
---	if btn then
---		btn:GetFontString():SetAllPoints()
---	elseif opts.obj:GetFontString() then -- StaticPopup buttons don't have a FontString
---		opts.obj:GetFontString():SetAllPoints()
---		-- centre highlight as well
---		if opts.obj:GetHighlightTexture() then opts.obj:GetHighlightTexture():SetAllPoints() end
---	end
 
 	-- reparent skinButton to avoid whiteout issues caused by animations
 	if opts.anim and aObj.sBut[opts.obj] then
