@@ -1,3 +1,11 @@
+b4.13329.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	BugFix for WatchFrame Popups
+	Skinned MinimalArchaeology
+	Updated GearScore & PhoenixStyle skins
+
 b4.13329.3
 Jncl:
 	ToDo.txt
