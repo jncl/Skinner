@@ -633,7 +633,6 @@ function aObj:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
-	self:skinButton{obj=WorldMapFrameCloseButton, cb=true}
 	self:skinScrollBar{obj=WorldMapQuestScrollFrame}
 	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
 	self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
