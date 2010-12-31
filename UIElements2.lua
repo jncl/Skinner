@@ -461,8 +461,11 @@ function aObj:MainMenuBar()
 -->>-- Action Buttons
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		btnName = "ActionButton"..i
+		btn = _G[btnName]
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
-		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
+		-- _G[btnName.."Border"].Show = _G[btnName.."Border"].Hide
+		btn.SetNormalTexture = function() end
+		self:addButtonBorder{obj=btn, abt=true, sec=true}
 	end
 
 -->>-- Bonus Action Bar Buttons
@@ -471,6 +474,8 @@ function aObj:MainMenuBar()
 		btn = _G[btnName]
 		btn.bg:SetAlpha(0) -- texture changed in the blizzard code
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
+		-- _G[btnName.."Border"].Show = _G[btnName.."Border"].Hide
+		btn.SetNormalTexture = function() end
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 	end
 	local function toggleActionButtons(show)
@@ -507,6 +512,8 @@ function aObj:MainMenuBar()
 			btnName = "MultiBar"..v.."Button"..i
 			btn = _G[btnName]
 			_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
+			-- _G[btnName.."Border"].Show = _G[btnName.."Border"].Hide
+			btn.SetNormalTexture = function() end
 			self:addButtonBorder{obj=btn, abt=true, sec=true}
 		end
 	end
