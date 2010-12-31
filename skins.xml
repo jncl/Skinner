@@ -20,6 +20,7 @@
 <script file="SkinMe\Analyst.lua"/>
 <script file="SkinMe\AnnounceIt.lua"/>
 <script file="SkinMe\Ara_Broker_Guild_Friends.lua"/>
+<script file="SkinMe\Archy.lua"/>
 <script file="SkinMe\ArkDewdrop.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
 <script file="SkinMe\Armory.lua"/>
@@ -80,6 +81,7 @@
 <script file="SkinMe\CowTip.lua"/>
 <script file="SkinMe\CT_MailMod.lua"/>
 <script file="SkinMe\CT_RaidTracker.lua"/>
+<script file="SkinMe\CurseRaidTracker.lua"/>
 <script file="SkinMe\DaemonMailAssist.lua"/>
 <script file="SkinMe\DailiesQuestTracker.lua"/>
 <script file="SkinMe\DamageMeters.lua"/>
