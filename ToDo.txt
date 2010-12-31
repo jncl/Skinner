@@ -25,43 +25,9 @@ Legend:
 		Skinner-b4.13329.2\SkinMe\Waterfall.lua:77: in function <Skinner\SkinMe\Waterfall.lua:76>
 		(tail call): ?:
 
-	I	ViewPort, reported by wolfyette, 18.12.10
+x	I	ViewPort, reported by wolfyette, 18.12.10
 		- VP top mirrors VP bottom even when top set to 0
-
-√	I	GearScore/PlayerScore, reported by Elanie, 20.12.20
-		- Skinner-b4.13329.3\Skinner.lua:504: attempt to index field 'obj' (a nil value)
-		(tail call): ?:
-		Skinner-b4.13329.3\SkinMe\GearScore.lua:6: in function <Skinner\SkinMe\GearScore.lua:3>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.13329.3\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-b4.13329.3\UtilFuncs.lua:145: in function `checkAndRunAddOn'
-		Skinner-b4.13329.3\AddonFrames.lua:144: in function <Skinner\AddonFrames.lua:103>
-		(tail call): ?:
-
-√	S	MinimalArchaeology, requested by Decabah, 21,12,10
-	
-√	I	WatchFrame PopUps, reported by Luckyjack_SL, 21.12.10
-		- ..\AddOns\Skinner\Skinner.lua line 220:
-		   table index is nil
-		Debug:
-		   (tail call): ?
-		   (tail call): ?
-		   [C]: ?
-		   Skinner\Skinner.lua:220:
-		      Skinner\Skinner.lua:220
-		   Skinner\CharacterFrames2.lua:467:
-		      Skinner\CharacterFrames2.lua:462
-		   Skinner\CharacterFrames2.lua:479:
-		      Skinner\CharacterFrames2.lua:478
-		   (tail call): ?
-
-√	I	PhoenixStyle, reported by Decabah, 24.12.10
-		- Skinner-b4.13329.3\Skinner.lua:504: attempt to index field 'obj' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `addSkinFrame'
-		Skinner-b4.13329.3\SkinMe\PhoenixStyle.lua:7: in function <Skinner\SkinMe\PhoenixStyle.lua:4>
-		(tail call): ?:
+		- Blizzard bug on Mac OS
 
 ?	I	FishingBuddy, reported Suddendeath2000, 27.12.10
 		- Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua:3 8: 'for' limit must be a number
@@ -69,3 +35,9 @@ Legend:
 		Count: 1
 		Stack: Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua:3 8: in function <Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua: 3>
 		(tail call): ?
+
+√	I	MinimalArchaeology, reported by Kerecha, 27.12.10
+
+√	S	Curse Raid Tracker requested by TronDemon, 27.12.10
+
+√	S	Archy, requested by Decabah, 30.12.10
