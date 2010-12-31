@@ -590,8 +590,9 @@ function aObj:ArchaeologyUI() -- LoD
 	self.initialized.ArchaeologyUI = true
 
 	self:skinDropDown{obj=ArchaeologyFrame.raceFilterDropDown}
-	self:glazeStatusBar(ArchaeologyFrame.rankBar, 0,  ArchaeologyFrameRankBarBackground)
+	ArchaeologyFrameRankBarBackground:SetAllPoints(ArchaeologyFrame.rankBar)
 	ArchaeologyFrameRankBarBorder:Hide()
+	self:glazeStatusBar(ArchaeologyFrame.rankBar, 0,  ArchaeologyFrameRankBarBackground)
 	self:addSkinFrame{obj=ArchaeologyFrame, ft=ftype, kfs=true, ri=true, x1=30, y1=2, x2=1}
 -->>-- Summary Page
 	self:keepFontStrings(ArchaeologyFrame.summaryPage) -- remove title textures
@@ -618,6 +619,7 @@ function aObj:ArchaeologyUI() -- LoD
 	ArchaeologyFrame.artifactPage:DisableDrawLayer("BORDER")
 	ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	ArchaeologyFrame.artifactPage.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinScrollBar{obj=ArchaeologyFrame.artifactPage.historyScroll}
 	-- Solve Frame
 	ArchaeologyFrameArtifactPageSolveFrameStatusBarBarBG:Hide()
 	self:glazeStatusBar(ArchaeologyFrame.artifactPage.solveFrame.statusBar, 0, nil)
