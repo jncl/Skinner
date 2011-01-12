@@ -947,6 +947,10 @@ function aObj:Minimap()
 	MinimapZoneText:ClearAllPoints()
 	MinimapZoneText:SetPoint("CENTER")
 	self:addSkinButton{obj=MinimapZoneTextButton, parent=MinimapZoneTextButton}
+	-- World Map Button
+	MiniMapWorldMapButton:ClearAllPoints()
+	MiniMapWorldMapButton:SetPoint("LEFT", MinimapZoneTextButton, "RIGHT", -4, 0)
+	self:skinButton{obj=MiniMapWorldMapButton, ob="M"}
 
 -->>-- Minimap
 	Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
@@ -963,7 +967,6 @@ function aObj:Minimap()
 	MinimapCompassTexture:SetAlpha(0)
 
 -->>-- Buttons
-	MiniMapWorldMapButton:Hide()
 	-- on LHS
 	local xOfs, yOfs = 6, 4
 	for _, v in pairs{MiniMapTracking, MiniMapLFGFrame, MiniMapRecordingButton, MiniMapVoiceChatFrame} do
@@ -1004,7 +1007,7 @@ function aObj:MinimapButtons()
 			objName = obj:GetName()
 			objType = obj:GetObjectType()
 --			print(objName, objType)
-			if not aObj.sBut[obj]
+			if not aObj.sBtn[obj]
 			and not aObj.skinFrame[obj]
 --			and objName
 			and objType == "Button"
@@ -1076,7 +1079,7 @@ function aObj:MinimapButtons()
 		self:adjWidth{obj=obj, adj=-8}
 		self:adjHeight{obj=obj, adj=-8}
 		self:addSkinButton{obj=obj, parent=obj, aso=asopts}
-		btn = self.sBut[obj]
+		btn = self.sBtn[obj]
 		btn:SetAllPoints(obj:GetNormalTexture())
 		btn:SetNormalFontObject(self.modUIBtns.fontX)
 		btn:SetDisabledFontObject(self.modUIBtns.fontDX)

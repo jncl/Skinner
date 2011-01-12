@@ -581,7 +581,7 @@ function aObj:ItemSocketingUI() -- LoD
 
 		for i = 1, GetNumSockets() do
 			colour = GEM_TYPE_INFO[GetSocketTypes(i)]
-			self.sBut[_G["ItemSocketingSocket"..i]]:SetBackdropBorderColor(colour.r, colour.g, colour.b)
+			self.sBtn[_G["ItemSocketingSocket"..i]]:SetBackdropBorderColor(colour.r, colour.g, colour.b)
 		end
 
 	end

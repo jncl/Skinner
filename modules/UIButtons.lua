@@ -27,7 +27,7 @@ local function __checkTex(opts)
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
 
 	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
-	local btn = opts.mp2 and opts.obj or aObj.sBut[opts.obj]
+	local btn = opts.mp2 and opts.obj or aObj.sBtn[opts.obj]
 	if not btn then return end -- allow for unskinned buttons
 
 	-- aObj:Debug("__checkTex: [%s, %s, %s, %s, %s]", opts.obj, btn, nTex, opts.mp2, btn.skin)
@@ -93,6 +93,10 @@ do
 	module.fontSBX = CreateFont("fontSBX")
 	module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
 	module.fontSBX:SetTextColor(0.2, 0.6, 0.8)
+	-- create font to use for small Buttons (e.g. MinimalArchaeology)
+	module.fontSB = CreateFont("fontSB")
+	module.fontSB:SetFont([[Fonts\FRIZQT__.TTF]], 14)
+	module.fontSB:SetTextColor(1.0, 0.82, 0)
 	-- create font to use for Minus/Plus Buttons
 	module.fontP = CreateFont("fontP")
 	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
@@ -107,6 +111,7 @@ function module:skinButton(opts)
 	mp = minus/plus texture on a larger button
 	mp2 = minus/plus button
 	ob = other button, text supplied
+	ob2 = other button style 2, text supplied
 	plus = use plus sign
 	anim = reparent skinButton to avoid whiteout issues caused by animations
 	other options as per addSkinButton
@@ -118,7 +123,7 @@ function module:skinButton(opts)
 	if not opts.obj then return end
 
 	-- don't skin it twice
-	if aObj.sBut[opts.obj] or opts.obj.tfade then return end
+	if aObj.sBtn[opts.obj] or opts.obj.tfade then return end
 
 	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... and derivatives]
 		opts.obj:GetNormalTexture():SetAlpha(0)
@@ -214,6 +219,14 @@ function module:skinButton(opts)
 			y2 = opts.y2 or bW == 32 and 6 or 4
 			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
+	elseif opts.ob2 then -- it's another type of button, text supplied, style 2 (e.g. MinimalArchaeology)
+		opts.obj:SetNormalFontObject(module.fontSB)
+		opts.obj:SetText(opts.ob2)
+		opts.obj:SetPushedTextOffset(-1, -1)
+		opts.obj:SetHighlightTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
+		opts.obj:SetWidth(18)
+		opts.obj:SetHeight(18)
+		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, sap=true}
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		aso = {bd=bH > 18 and 5 or 6} -- use narrower backdrop if required
 		if not opts.as then
@@ -228,8 +241,8 @@ function module:skinButton(opts)
 	end
 
 	-- reparent skinButton to avoid whiteout issues caused by animations
-	if opts.anim and aObj.sBut[opts.obj] then
-		aObj.sBut[opts.obj]:SetParent(aObj.skinFrame[opts.obj:GetParent()])
+	if opts.anim and aObj.sBtn[opts.obj] then
+		aObj.sBtn[opts.obj]:SetParent(aObj.skinFrame[opts.obj:GetParent()])
 	end
 
 end

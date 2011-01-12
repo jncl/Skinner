@@ -264,6 +264,7 @@ function aObj:AuctionUI() -- LoD
 	self:makeMFRotatable(AuctionDressUpModel)
 	self:moveObject{obj=AuctionDressUpFrame, x=6}
 	self:addSkinFrame{obj=AuctionDressUpFrame, ft=ftype, x1=-6, y1=-3, x2=-2}
+
 -->>--	Tabs
 	for i = 1, AuctionFrame.numTabs do
 		tab = _G["AuctionFrameTab"..i]

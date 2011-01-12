@@ -3,42 +3,71 @@ if not aObj:isAddonEnabled("Archy") then return end
 
 function aObj:Archy()
 
-	-- DigSite Frame
-	self:skinButton{obj=ArchyDigSiteFrame.styleButton, mp2=true, as=true}
-	self:SecureHookScript(ArchyDigSiteFrame.styleButton, "OnClick", function(this)
-		if this:GetChecked() then this:SetText(self.modUIBtns.minus)
-		else this:SetText(self.modUIBtns.plus) end
-	end)
-	self:addSkinFrame{obj=ArchyDigSiteFrame}
+	local function skinFragment(obj)
 
-	-- Artifact Frame
-	self:skinButton{obj=ArchyArtifactFrame.styleButton, mp2=true, as=true, plus=true}
-	self:SecureHookScript(ArchyArtifactFrame.styleButton, "OnClick", function(this)
-		if this:GetChecked() then this:SetText(self.modUIBtns.minus)
-		else this:SetText(self.modUIBtns.plus) end
-	end)
+		obj.fragmentBar.barBackground:Hide()
+		obj.fragmentBar.barTexture:SetTexCoord(0, 1, 0, 1)
+		obj.fragmentBar.barTexture.SetTexCoord = function() end
+		self:glazeStatusBar(obj.fragmentBar, 0, nil)
+		-- don't skin button in "Compact" form
+		if not Archy.db.profile.artifact.style == "Compact" then self:skinButton{obj=v.solveButton} end
+
+	end
+-->>-- DigSite Frame
+	if self.modBtns then
+		self:skinButton{obj=ArchyDigSiteFrame.styleButton, mp2=true, as=true}
+		self:SecureHookScript(ArchyDigSiteFrame.styleButton, "OnClick", function(this)
+			if this:GetChecked() then this:SetText(self.modUIBtns.minus)
+			else this:SetText(self.modUIBtns.plus) end
+		end)
+	end
+	self:addSkinFrame{obj=ArchyDigSiteFrame, nb=true}
+	-- DistanceIndicator Frame
+	self:skinButton{obj=ArchyDistanceIndicatorFrameSurveyButton}
+
+-->>-- Artifact Frame
+	if self.modBtns then
+		self:skinButton{obj=ArchyArtifactFrame.styleButton, mp2=true, as=true, plus=true}
+		self:SecureHookScript(ArchyArtifactFrame.styleButton, "OnClick", function(this)
+			if this:GetChecked() then this:SetText(self.modUIBtns.minus)
+			else this:SetText(self.modUIBtns.plus) end
+		end)
+	end
 	ArchyArtifactFrame.skillBar.border:Hide()
 	self:glazeStatusBar(ArchyArtifactFrame.skillBar, 0,  nil)
 	for _, v in pairs(ArchyArtifactFrame.children) do
-		v.fragmentBar.barBackground:Hide()
-		v.fragmentBar.barTexture:SetTexCoord(0, 1, 0, 1)
-		v.fragmentBar.barTexture.SetTexCoord = function() end
-		self:glazeStatusBar(v.fragmentBar, 0, nil)
-		self:skinButton{obj=v.solveButton}
+		skinFragment(v)
 	end
-	self:SecureHook(getmetatable(ArchyArtifactFrame.children), "__index", function(this, t, k)
-		t[k].fragmentBar.barBackground:Hide()
-		t[k].fragmentBar.barTexture:SetTexCoord(0, 1, 0, 1)
-		t[k].fragmentBar.barTexture.SetTexCoord = function() end
-		self:glazeStatusBar(t[k].fragmentBar, 0, nil)
-		self:skinButton{obj=t[k].solveButton}
+	self:SecureHook(getmetatable(ArchyArtifactFrame.children), "__index", function(t, k)
+		skinFragment(t[k])
 	end)
-	self:addSkinFrame{obj=ArchyArtifactFrame}
+	self:addSkinFrame{obj=ArchyArtifactFrame, nb=true}
+	if self.modBtns then
+		self:SecureHook(Archy, "RefreshRacesDisplay", function(this)
+			for _, v in pairs(ArchyArtifactFrame.children) do
+				-- don't show button skin in "Compact" form if it exists
+				if this.db.profile.artifact.style == "Compact" then
+					if self.sBtn[v.solveButton] then self.sBtn[v.solveButton]:Hide() end
+				else
+					-- show button skin if it exists otherwise create it
+					if not self.sBtn[v.solveButton] then
+						self:skinButton{obj=v.solveButton}
+					else
+						self.sBtn[v.solveButton]:Show()
+					end
+				end
+			end
+		end)
+	end
 
-	-- Hook ldb object to skin status bars
+-->>-- Hook ldb object to skin status bars
 	self:SecureHook(LibStub("LibDataBroker-1.1"):GetDataObjectByName("Archy"), "OnEnter", function(this)
 		for i = 5, 15 do -- only 10 races
-			if this.tooltip.lines[i].cells[6]
+			if this.tooltip
+			and this.tooltip.lines
+			and this.tooltip.lines[i]
+			and this.tooltip.lines[i].cells
+			and this.tooltip.lines[i].cells[6]
 			and	this.tooltip.lines[i].cells[6].bar
 			and this.tooltip.lines[i].cells[6].bar:IsObjectType("Texture")
 			then

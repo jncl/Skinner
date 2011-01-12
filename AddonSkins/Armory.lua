@@ -1,18 +1,19 @@
-if not Skinner:isAddonEnabled("Armory") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Armory") then return end
 
-function Skinner:Armory()
+function aObj:Armory()
 
 	local tab, tabSF
 -->>--	Main Frame
+	ArmoryFramePortrait:SetAlpha(1) -- used to delete characters
 	-- move portrait down and right
 	self:moveObject{obj=ArmoryFramePortrait, x=6, y=-10}
 	self:moveObject{obj=ArmoryFramePortraitButton, x=6, y=-10}
 	-- move character selection button to top of portrait
 	self:moveObject{obj=ArmoryFrameLeftButton, x=-2, y=54}
 	self:moveObject{obj=ArmoryFrameRightButton, x=-2, y=54}
-	self:addSkinFrame{obj=ArmoryFrame, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
-	ArmoryFramePortrait:SetAlpha(1) -- used to delete characters
 	self:moveObject{obj=ArmoryBuffFrame, y=-2}
+	self:addSkinFrame{obj=ArmoryFrame, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
 
 -->>--	Frame Tabs
 	for i = 1, ArmoryFrame.numTabs do
@@ -208,7 +209,7 @@ function Skinner:Armory()
 			for i = 1, ARMORY_INVENTORY_LINES_DISPLAYED do
 				local btn = _G["ArmoryInventoryLine"..i]
 				self:checkTex(btn)
-				if not self.sBut[btn]:IsShown() then -- not a header line
+				if not self.sBtn[btn]:IsShown() then -- not a header line
 					btn:GetNormalTexture():SetAlpha(1) -- show item icon
 				end
 			end
@@ -227,7 +228,7 @@ function Skinner:Armory()
 				for i = 1, ARMORY_INVENTORY_LINES_DISPLAYED do
 					local btn = _G["ArmoryInventoryGuildBankLine"..i]
 					self:checkTex(btn)
-					if not self.sBut[btn]:IsShown() then -- not a header line
+					if not self.sBtn[btn]:IsShown() then -- not a header line
 						btn:GetNormalTexture():SetAlpha(1) -- show item icon
 					end
 				end
@@ -235,7 +236,7 @@ function Skinner:Armory()
 		end
 	end
 
--->>--	QuestLog
+-->>--	Quest Frame
 	self:SecureHook("ArmoryQuestInfo_Display", function(...)
 		-- headers
 		ArmoryQuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -265,11 +266,14 @@ function Skinner:Armory()
 			_G["ArmoryQuestInfoObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
 	end)
+	-- ArmoryQuestFrame:DisableDrawLayer("BACKGROUND")
 	ArmoryQuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ArmoryQuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinEditBox{obj=ArmoryQuestFrameEditBox, regs={9}}
+	self:skinEditBox{obj=ArmoryQuestFrameEditBox}
+	-- QuestLog frame
 	self:removeRegions(ArmoryQuestLogCollapseAllButton, {5, 6, 7})
 	self:skinButton{obj=ArmoryQuestLogCollapseAllButton, mp=true}
+	self:keepFontStrings(ArmoryQuestLogFrame)
 	self:keepFontStrings(ArmoryEmptyQuestLogFrame)
 	-- m/p buttons
 	for i = 1, ARMORY_QUESTS_DISPLAYED do
@@ -285,7 +289,7 @@ function Skinner:Armory()
 	end
 	self:skinScrollBar{obj=ArmoryQuestLogListScrollFrame}
 	self:skinScrollBar{obj=ArmoryQuestLogDetailScrollFrame}
-	self:addSkinFrame{obj=ArmoryQuestLogFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=52}
+	self:addSkinFrame{obj=ArmoryQuestFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=52}
 	for i = 1, ARMORY_MAX_NUM_ITEMS do
 		_G["ArmoryQuestInfoItem"..i.."NameFrame"]:SetTexture(nil)
 	end
@@ -432,7 +436,7 @@ function Skinner:Armory()
 
 end
 
-function Skinner:ArmoryGuildBank()
+function aObj:ArmoryGuildBank()
 
 	if AGB:GetConfigIntegrate() then return end
 

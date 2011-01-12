@@ -30,8 +30,6 @@ do
 	-- check to see if running on Cataclysm Beta
 	aObj.isCata = portal == "public-beta" and true or false
 
-	-- print("portal", GetCVar("portal"), portal, aObj.isPTR, aObj.isCata)
-
 end
 
 function aObj:OnInitialize()
@@ -223,7 +221,7 @@ function aObj:OnInitialize()
 	self.skinFrame = setmetatable({}, {__mode = "k"})
 
 --	-- table to hold buttons that have been added, with weak keys
-	self.sBut = setmetatable({}, {__mode = "k"})
+	self.sBtn = setmetatable({}, {__mode = "k"})
 
 	-- table to hold StatusBars that have been glazed, with weak keys
 	self.sbGlazed = setmetatable({}, {__mode = "k"})
@@ -380,14 +378,14 @@ local function __addSkinButton(opts)
 	-- lower frame level
 	LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
-	aObj.sBut[opts.hook] = btn
+	aObj.sBtn[opts.hook] = btn
 	-- hook Show/Hide/Enable/Disable methods
 	if not aObj:IsHooked(opts.hook, "Show") then
-		aObj:SecureHook(opts.hook, "Show", function(this) aObj.sBut[this]:Show() end)
-		aObj:SecureHook(opts.hook, "Hide", function(this) aObj.sBut[this]:Hide() end)
+		aObj:SecureHook(opts.hook, "Show", function(this) aObj.sBtn[this]:Show() end)
+		aObj:SecureHook(opts.hook, "Hide", function(this) aObj.sBtn[this]:Hide() end)
 		if opts.obj:IsObjectType("Button") then -- handle non button objects
-			aObj:SecureHook(opts.hook, "Enable", function(this) aObj.sBut[this]:Enable() end)
-			aObj:SecureHook(opts.hook, "Disable", function(this) aObj.sBut[this]:Disable() end)
+			aObj:SecureHook(opts.hook, "Enable", function(this) aObj.sBtn[this]:Enable() end)
+			aObj:SecureHook(opts.hook, "Disable", function(this) aObj.sBtn[this]:Disable() end)
 		end
 	end
 	-- position the button skin

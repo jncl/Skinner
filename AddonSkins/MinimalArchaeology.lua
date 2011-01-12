@@ -18,12 +18,30 @@ function aObj:MinimalArchaeology()
 		self:skinButton{obj=obj.solveButton}
 	end
 
-	self:addSkinFrame{obj=MinimalArchaeologyFrame, nb=true, x1=8, y1=4, x2=-8}
+	self:skinButton{obj=MinimalArchaeologyFrame.openHistButton, ob2="h"}
+	self:moveObject{obj=MinimalArchaeologyFrame.openHistButton, x=self.modBtns and 2 or 8}
+	self:skinButton{obj=MinimalArchaeologyFrame.openArchButton, ob2="a"}
+	self:moveObject{obj=MinimalArchaeologyFrame.openArchButton, x=self.modBtns and 2 or 8}
+	self:skinButton{obj=MinimalArchaeologyFrame.closeButton, ob2="x"}
+	self:moveObject{obj=MinimalArchaeologyFrame.closeButton, x=self.modBtns and 2 or 8}
+	self:addSkinFrame{obj=MinimalArchaeologyFrame, nb=true, y1=4}
 
-	-- option panels
+-->>-- option panels
 	self:addSkinFrame{obj=MinimalArchaeologyOptionPanel.hideArtifact}
 	self:addSkinFrame{obj=MinimalArchaeologyOptionPanel.useKeystones}
 	self:addSkinFrame{obj=MinimalArchaeologyOptionPanel.miscOptions}
 	self:addSkinFrame{obj=MinimalArchaeologyOptionPanel.frameScale}
+
+-->>-- History Frame
+	MinimalArchaeologyHistoryFrameGrad.bg:Hide()
+	self:skinButton{obj=MinimalArchaeologyHistoryFrame.closeButton, ob2="x"}
+	self:moveObject{obj=MinimalArchaeologyHistoryFrame.closeButton, x=self.modBtns and 2 or 8}
+	self:addSkinFrame{obj=MinimalArchaeologyHistoryFrame, nb=true, y1=4}
+	-- hook this to remove background textures
+	self:SecureHook(MinimalArchaeology, "CreateHistoryList", function(this, raceID)
+		MinArchScrollFrame.bg:Hide()
+		MinArchScrollBar.bg:Hide()
+		self:Unhook(MinimalArchaeology, "CreateHistoryList")
+	end)
 
 end

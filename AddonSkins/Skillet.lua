@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("Skillet") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Skillet") then return end
 
-function Skinner:Skillet()
+function aObj:Skillet()
 	if not self.db.profile.TradeSkillUI then return end
 
 	self:SecureHook(Skillet, "ShowTradeSkillWindow", function()
@@ -56,21 +57,23 @@ function Skinner:Skillet()
 	if self.modBtns then
 		-- skin queue buttons
 		SkilletQueueButton1:SetParent(SkilletQueueParent) -- reparent it
-		self.sBut[SkilletQueueButton1] = nil -- remove old skin button
+		self.sBtn[SkilletQueueButton1] = nil -- remove old skin button
 		self:SecureHook(Skillet, "UpdateQueueWindow", function()
 			for i = 1, floor(SkilletQueueList:GetHeight() / SKILLET_TRADE_SKILL_HEIGHT) do
 				local dBtn = _G["SkilletQueueButton"..i.."DeleteButton"]
-				if not self.sBut[dBtn] then self:skinButton{obj=dBtn, x1=-3, y1=-3, x2=3, y2=1} end
+				if not self.sBtn[dBtn] then self:skinButton{obj=dBtn, x1=-3, y1=-3, x2=3, y2=1} end
 			end
 		end)
     if Skillet.PluginButton_OnClick ~= nil then
       self:SecureHook(Skillet, "PluginButton_OnClick", function(this, button)
-        for i = 1, #SkilletFrame.added_buttons do
-          local btn = _G["SkilletPluginDropdown"..i]
-          if not self.sBut[btn] then
-            self:skinButton{obj=btn}
-          end
-        end
+		if SkilletFrame.added_buttons then
+	        for i = 1, #SkilletFrame.added_buttons do
+	          local btn = _G["SkilletPluginDropdown"..i]
+	          if not self.sBtn[btn] then
+	            self:skinButton{obj=btn}
+	          end
+	        end
+		end
       end)
     end
 		

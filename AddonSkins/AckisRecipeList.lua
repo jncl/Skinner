@@ -17,6 +17,7 @@ function Skinner:AckisRecipeList()
 		["v2.01"] = 7, -- release
 		["2.0.4"] = 8, -- release
 		["2.0.5"] = 9, -- release
+		["2.1.0"] = 10, -- release
 	}
 	local aVer = GetAddOnMetadata("AckisRecipeList", "Version")
 	local ver = vTab[aVer]
@@ -107,7 +108,7 @@ function Skinner:AckisRecipeList()
 			end
 			self.skinFrame[frame]:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", xOfs, yOfs)
 			-- Reset button
-			if not self.sBut[frame.filter_reset] then
+			if not self.sBtn[frame.filter_reset] then
 				self:skinButton{obj=frame.filter_reset}
 			end
 		end)
