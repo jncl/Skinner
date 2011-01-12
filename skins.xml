@@ -99,6 +99,7 @@
 <script file="SkinMe\EnchantMe.lua"/>
 <script file="SkinMe\Enchantrix.lua"/>
 <script file="SkinMe\EnchantrixBarker.lua"/>
+<script file="SkinMe\EnergyWatch.lua"/>
 <script file="SkinMe\EngBags.lua"/>
 <script file="SkinMe\EnhancedColourPicker.lua"/>
 <script file="SkinMe\EnhancedFlightMap.lua"/>
@@ -256,6 +257,7 @@
 <script file="SkinMe\SnapShot.lua"/>
 <script file="SkinMe\Spew.lua"/>
 <script file="SkinMe\Squeenix.lua"/>
+<script file="SkinMe\Squire2_Config.lua"/>
 <script file="SkinMe\sRaidFrames.lua"/>
 <script file="SkinMe\tabDB.lua"/>
 <script file="SkinMe\Tablet.lua"/>
