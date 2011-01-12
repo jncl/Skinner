@@ -10,6 +10,9 @@ Legend:
 
 	O	Update WoWAce commands page
 
+	O	WorldMap Sizing buttons
+	O	WatchFrame Sizing buttons
+
 	I	Usability issues, reported by TaliaMokani, 23.08.10
 ≈		- I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
 			- Update commands page for changes requiring a Reload
@@ -25,7 +28,7 @@ Legend:
 		Skinner-b4.13329.2\SkinMe\Waterfall.lua:77: in function <Skinner\SkinMe\Waterfall.lua:76>
 		(tail call): ?:
 
-x	I	ViewPort, reported by wolfyette, 18.12.10
+x	I	ViewPort, reported by wolfyette/Sariisa, 18.12.10/6.01.11
 		- VP top mirrors VP bottom even when top set to 0
 		- Blizzard bug on Mac OS
 
@@ -36,8 +39,45 @@ x	I	ViewPort, reported by wolfyette, 18.12.10
 		Stack: Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua:3 8: in function <Interface\AddOns\Skinner\SkinMe\FishingBuddy.lua: 3>
 		(tail call): ?
 
-√	I	MinimalArchaeology, reported by Kerecha, 27.12.10
+	I	MinimalArchaeology, reported by Kerecha, 1.01.11/10.01.11
+√		- buttons not skinned
+√		- new frame
 
-√	S	Curse Raid Tracker requested by TronDemon, 27.12.10
+	I	Archy, reported by Suddendeath2000, 4.01.11
+?		- Interface\AddOns\Skinner\SkinMe\Archy.lua:7: attempt to index global 'ArchyDigSiteFrame' (a nil value)
+		Time: 01/03/11 11:14:08
+		Count: 1
+		Stack: Interface\AddOns\Skinner\SkinMe\Archy.lua:7: in function <Interface\AddOns\Skinner\SkinMe\Archy.lua:4>
+		(tail call): ?
+		[C]: in function `xpcall'
+		Interface\AddOns\Skinner\UtilFuncs.lua:88: in function <Interface\AddOns\Skinner\UtilFuncs.lua:86>
+		Interface\AddOns\Skinner\UtilFuncs.lua:145: in function `checkAndRunAddOn'
+		Interface\AddOns\Skinner\AddonFrames.lua:144: in function <Interface\AddOns\Skinner\AddonFrames.lua:103>
+		(tail call): ?
+	I	Archy, reported by Decabah/chrisgriffith25, 8.01.11/12.01.11
+?		- Skinner-b4.13329.5\SkinMe\Archy.lua:30: attempt to index local 't' (a number value)
+		(tail call): ?:
+		<in C code>: ?
+		Archy-v1.7b7\Archy.lua:3228: in function `RefreshRacesDisplay'
+		Archy-v1.7b7\Archy.lua:3047: in function <Archy\Archy.lua:3011>
+		(tail call): ?:
 
-√	S	Archy, requested by Decabah, 30.12.10
+?	I	QuestGuru, reported by Suddendeath2000/mkcorp, 5.01.11/8.01.11
+		- Could you please skin QuestGuru's quest log panel? It replaces the standard Blizzard quest log panel. To clarify, I'm not talking about the tracker panel, but the quest log panel. Right now, when I open it, it's transparent.
+
+√	I	AckisRecipeList, reported by Suddendeath2000, 5.01.11
+
+	I	Gnomeworks, reported by Kerecha, 6.01.11
+?		- Skinner-b4.13329.5\SkinMe\GnomeWorks.lua:62: attempt to index a nil value
+		(tail call): ?:
+		GnomeWorks-102\Details.lua:481: in function `CreateReagentFrame'
+		GnomeWorks-102\MainWindow.lua:2160: in function `CreateMainWindow'
+		GnomeWorks-102\GnomeWorks.lua:562: in function `func'
+		GnomeWorks-102\Libs\LibStagedExecution.lua:36: in function <...erface\AddOns\GnomeWorks\Libs\LibStagedExecution.lua:13>
+√		- Updated version (110)
+√		- AH tab needs skinning
+
+?	I	Top/Bottom bars, reported by heatseekerbunge, 98.01.11
+		- Allow for wider screens/ resolutions ?
+
+√	N	EnergyWatch, the skin was supplied by DavidTheMachine, 10.01.11
