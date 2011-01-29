@@ -1,3 +1,13 @@
+b4.13329.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated AckisRecipeList, Archy, Armory, GnomeWorks, MinimalArchaeology, Panda, RicoMiniMap & Skillet skins
+	Renamed Button skin tablename
+	Skinned MinimapMapButton
+	Added new UIButton skin style
+	Skinned EnergyWatch (thanks to DavidTheMachine) & Squire2_Config
+
 b4.13329.5
 Jncl:
 	ToDo.txt
