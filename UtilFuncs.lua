@@ -284,7 +284,7 @@ end
 
 function aObj:isAddonEnabled(addonName)
 
-	return (select(4, GetAddOnInfo(addonName))) -- in brackets so only one value is returned
+	return (select(4, GetAddOnInfo(addonName))) or IsAddOnLoadOnDemand(addonName) -- handle LoD Addons (config mainly)
 
 end
 
