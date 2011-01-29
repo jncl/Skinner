@@ -31,6 +31,7 @@ function aObj:Defaults()
 		BgTexture		= "None",
 		BgTile			= false,
 	-->>-- Colours
+		ClassColours	= false,
 		TooltipBorder	= {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		BackdropBorder	= {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		Backdrop		= {r = 0, g = 0, b = 0, a = 0.9},
@@ -451,17 +452,48 @@ function aObj:Options()
 			type = "group",
 			name = self.L["Default Colours"],
 			get = function(info)
-				local c = db[info[#info]]
-				return c.r, c.g, c.b, c.a
+				print("get Colours", info[#info])
+				if info[#info] == "ClassColours" then return db[info[#info]]
+				else
+					local c = db[info[#info]]
+					return c.r, c.g, c.b, c.a
+				end
 			end,
 			set = function(info, r, g, b, a)
-				local c = db[info[#info]]
-				c.r, c.g, c.b, c.a = r, g, b, a
+				print("set Colours", info[#info], r, g, b, a)
+				if info[#info] == "ClassColours" then
+					db[info[#info]] = r
+					if r then
+						db.TooltipBorder.r = RAID_CLASS_COLORS[self.uCls].r
+						db.TooltipBorder.g = RAID_CLASS_COLORS[self.uCls].g
+						db.TooltipBorder.b = RAID_CLASS_COLORS[self.uCls].b
+						db.BackdropBorder.r = RAID_CLASS_COLORS[self.uCls].r
+						db.BackdropBorder.g = RAID_CLASS_COLORS[self.uCls].g
+						db.BackdropBorder.b = RAID_CLASS_COLORS[self.uCls].b
+					else
+						db.TooltipBorder.r = dflts.TooltipBorder.r
+						db.TooltipBorder.g = dflts.TooltipBorder.g
+						db.TooltipBorder.b = dflts.TooltipBorder.b
+						db.BackdropBorder.r = dflts.BackdropBorder.r
+						db.BackdropBorder.g = dflts.BackdropBorder.g
+						db.BackdropBorder.b = dflts.BackdropBorder.b
+					end
+				else
+					local c = db[info[#info]]
+					c.r, c.g, c.b, c.a = r, g, b, a
+				end
 			end,
 			args = {
+				ClassColours = {
+					type = "toggle",
+					order = 1,
+					width = "double",
+					name = self.L["Class Coloured Borders"],
+					desc = self.L["Use Class Colours for Borders"],
+				},
 				TooltipBorder = {
 					type = "color",
-					order = 1,
+					order = 2,
 					width = "double",
 					name = self.L["Tooltip Border Colors"],
 					desc = self.L["Set Tooltip Border Colors"],
@@ -469,7 +501,7 @@ function aObj:Options()
 				},
 				Backdrop = {
 					type = "color",
-					order = 2,
+					order = 4,
 					width = "double",
 					name = self.L["Backdrop Colors"],
 					desc = self.L["Set Backdrop Colors"],
@@ -485,21 +517,21 @@ function aObj:Options()
 				},
 				HeadText = {
 					type = "color",
-					order = 4,
+					order = 5,
 					width = "double",
 					name = self.L["Text Heading Colors"],
 					desc = self.L["Set Text Heading Colors"],
 				},
 				BodyText = {
 					type = "color",
-					order = 5,
+					order = 6,
 					width = "double",
 					name = self.L["Text Body Colors"],
 					desc = self.L["Set Text Body Colors"],
 				},
 				GradientMin = {
 					type = "color",
-					order = 6,
+					order = 7,
 					width = "double",
 					name = self.L["Gradient Minimum Colors"],
 					desc = self.L["Set Gradient Minimum Colors"],
@@ -507,7 +539,7 @@ function aObj:Options()
 				},
 				GradientMax = {
 					type = "color",
-					order = 7,
+					order = 8,
 					width = "double",
 					name = self.L["Gradient Maximum Colors"],
 					desc = self.L["Set Gradient Maximum Colors"],
@@ -1523,6 +1555,7 @@ function aObj:Options()
 		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
 	end
 	self.optionsFrame[self.L["Colours"]].default = function()
+		db.ClassColours = dflts.ClassColours
 		db.TooltipBorder = dflts.TooltipBorder
 		db.BackdropBorder = dflts.BackdropBorder
 		db.Backdrop = dflts.Backdrop
