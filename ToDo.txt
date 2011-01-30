@@ -17,26 +17,15 @@ Legend:
 ≈		- I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
 		- Change code to reduce the number of Reloads required if possible ?
 
-√	I	BaudBag, reported by JAcKyL69, 25.01.11
-		- ..\AddOns\Skinner\Skinner.lua line 502:
-		attempt to index field 'obj' (a nil value)
+√	I	Auctionator, reported by cseg, 30.01.11
+		- ..\AddOns\Skinner\SkinMe\Auctionator.lua line 7:
+		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 		Debug:
 		(tail call): ?
-		Skinner\Skinner.lua:502:
-		Skinner\Skinner.lua:476
+		[C]: ?
+		Ace3\AceHook-3.0\AceHook-3.0.lua:211:
+		Ace3\AceHook-3.0\AceHook-3.0.lua:118
+		Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
+		Skinner\SkinMe\Auctionator.lua:7:
+		Skinner\SkinMe\Auctionator.lua:3
 		(tail call): ?
-		Skinner\SkinMe\BaudBag.lua:18:
-		Skinner\SkinMe\BaudBag.lua:3
-		(tail call): ?
-
-√	I	QuestHistory, reported by JAcKyL69, 25.01.11
-		-  ..\AddOns\Skinner\Skinner.lua line 907:
-		attempt to index local 'obj' (a nil value)
-		Debug:
-		(tail call): ?
-		Skinner\Skinner.lua:907: keepFontStrings()
-		Skinner\SkinMe\QuestHistory.lua:9:
-		Skinner\SkinMe\QuestHistory.lua:3
-		(tail call): ?
-
-√	O	Add option to use Class Colour for the Border colour, requested by dclwoossa, 28.01.11
