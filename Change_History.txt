@@ -1,3 +1,11 @@
+b4.13561.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for LoD AddOns
+	Added option to use Class Colours for Border colour
+	Updated BaudBag & QuestHistory skins
+
 b4.13329.6
 Jncl:
 	ToDo.txt
