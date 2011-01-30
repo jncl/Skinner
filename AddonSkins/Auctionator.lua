@@ -1,20 +1,7 @@
-if not Skinner:isAddonEnabled("Auctionator") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Auctionator") then return end
 
-function Skinner:Auctionator()
-
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("Atr_ShowWhichRB",function(id)
-			for i = 1, Atr_ListTabs.numTabs do
-				local tabSF = self.skinFrame[_G["Atr_ListTabsTab"..i]]
-				if i == Atr_ListTabs.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
+function aObj:Auctionator()
 
 -->>-- AuctionUI panels
 	self:skinEditBox{obj=Atr_Search_Box, regs={9}}
@@ -23,18 +10,20 @@ function Skinner:Auctionator()
 	self:addSkinFrame{obj=Atr_HeadingsBar, kfs=true, y1=-19, y2=19}
 	-- scroll frame below heading bar
 	self:skinScrollBar{obj=AuctionatorScrollFrame}
+	local tabObj, tabSF
 	for i = 1, Atr_ListTabs.numTabs do
-		local tabObj = _G["Atr_ListTabsTab"..i]
+		tabObj = _G["Atr_ListTabsTab"..i]
 		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:moveObject{obj=self:getRegion(tabObj, 8), y=3}
-		self:addSkinFrame{obj=tabObj, noBdr=self.isTT, y1=-4, x2=4, y2=-4}
-		local tabSF = self.skinFrame[tabObj]
+		-- self:moveObject{obj=self:getRegion(tabObj, 8), y=3}
+		tabSF = self:addSkinFrame{obj=tabObj, noBdr=self.isTT, y1=-4, x2=4, y2=-4}
+		tabSF.up = true
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
 		end
 	end
+	self.tabFrames[Atr_ListTabs] = true
 
 	-- Buy
 	self:skinDropDown{obj=Atr_DropDownSL}
@@ -61,6 +50,15 @@ function Skinner:Auctionator()
 	self:addSkinFrame{obj=Atr_CheckActives_Frame, kfs=true}
 -->>-- FullScan Frame
 	self:addSkinFrame{obj=Atr_FullScanFrame, kfs=true, y1=4}
+-->>-- Search Dialog
+	self:skinEditBox{obj=Atr_AS_Searchtext, regs={9}}
+	self:skinDropDown{obj=Atr_ASDD_Class}
+	self:skinDropDown{obj=Atr_ASDD_Subclass}
+	self:skinEditBox{obj=Atr_AS_Minlevel, regs={9}}
+	self:skinEditBox{obj=Atr_AS_Maxlevel, regs={9}}
+	self:skinEditBox{obj=Atr_AS_MinItemlevel, regs={9}}
+	self:skinEditBox{obj=Atr_AS_MaxItemlevel, regs={9}}
+	self:addSkinFrame{obj=Atr_Adv_Search_Dialog, kfs=true, ofs=-10, y1=4}
 
 -->>-- Options Panels
 	-- Undercutting panel
@@ -73,12 +71,14 @@ function Skinner:Auctionator()
 	self:skinMoneyFrame{obj=UC_500_MoneyInput, noWidth=true, moveSEB=true, moveGEB=true}
 	-- Sell Stacking
 	self:addSkinFrame{obj=Atr_Stacking_List, kfs=true}
-	-- Memorize Stacking screen
+	-- Memorize Frame (popout)
 	self:skinEditBox{obj=Atr_Mem_EB_itemName, regs={9}}
 	self:skinDropDown{obj=Atr_Mem_DD_numStacks}
 	self:skinEditBox{obj=Atr_Mem_EB_stackSize, regs={9}}
 	self:addSkinFrame{obj=Atr_MemorizeFrame, kfs=true}
-	
+	-- Database
+	self:skinEditBox{obj=Atr_ScanOpts_MaxHistAge, regs={9}}
+
 	-- disable changes to InterfaceOptionsFrame(s) backdrop
 	Atr_MakeOptionsFrameOpaque = function() end
 
