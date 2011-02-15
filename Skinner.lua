@@ -107,31 +107,34 @@ function aObj:OnInitialize()
 	self.gradientTex = self.LSM:Fetch("background", prdb.Gradient.texture)
 
 	-- backdrop for Frames etc
-	local bdTex = self.LSM:Fetch("background", "Blizzard ChatFrame Background")
-	local bdbTex = self.LSM:Fetch("border", "Blizzard Tooltip")
+	self.bdTex = "Blizzard ChatFrame Background"
+	self.bdbTex = "Blizzard Tooltip"
 	if prdb.BdDefault then
 		self.backdrop = {
-			bgFile = bdTex, tile = true, tileSize = 16,
-			edgeFile = bdbTex, edgeSize = 16,
+			bgFile = self.LSM:Fetch("background", self.bdTex),
+			tile = true, tileSize = 16,
+			edgeFile = self.LSM:Fetch("border", self.bdbTex),
+			edgeSize = 16,
 			insets = {left = 4, right = 4, top = 4, bottom = 4},
 		}
 	else
 		if prdb.BdFile and prdb.BdFile ~= "None" then
-			bdTex = self.LSM:Fetch("background", aName.." User Backdrop")
+			self.bdTex = aName.." User Backdrop"
 		else
-			bdTex = self.LSM:Fetch("background", prdb.BdTexture)
+			self.bdTex = prdb.BdTexture
 		end
 		if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
-			bdbTex = self.LSM:Fetch("border",aName.." User Border")
+			self.bdbTex = aName.." User Border"
 		else
-			bdbTex = self.LSM:Fetch("border", prdb.BdBorderTexture)
+			self.bdbTex = prdb.BdBorderTexture
 		end
 		local bdi = prdb.BdInset
 		local bdt = prdb.BdTileSize > 0 and true or false
 		self.backdrop = {
-			bgFile = bdTex,
+			bgFile = self.LSM:Fetch("background", self.bdTex),
 			tile = bdt, tileSize = prdb.BdTileSize,
-			edgeFile = bdbTex, edgeSize = prdb.BdEdgeSize,
+			edgeFile = self.LSM:Fetch("border", self.bdbTex),
+			edgeSize = prdb.BdEdgeSize,
 			insets = {left = bdi, right = bdi, top = bdi, bottom = bdi},
 		}
 	end
@@ -164,9 +167,9 @@ function aObj:OnInitialize()
 	-- setup background texture
 	if prdb.BgUseTex then
 		if prdb.BgFile and prdb.BgFile ~= "None" then
-			self.bgTex = self.LSM:Fetch("background", aName.." User Background")
+			self.bgTex = aName.." User Background"
 		else
-			self.bgTex = self.LSM:Fetch("background", prdb.BgTexture)
+			self.bgTex = prdb.BgTexture
 		end
 	end
 
@@ -624,6 +627,9 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		end
 	end
 
+	invert = invert or aObj.db.profile.Gradient.invert
+	rotate = rotate or aObj.db.profile.Gradient.rotate
+
 	if not obj.tfade then obj.tfade = obj:CreateTexture(nil, "BORDER") end
 	obj.tfade:SetTexture(self.gradientTex)
 
@@ -669,7 +675,7 @@ end
 function aObj:applyTexture(obj)
 
 	obj.tbg = obj:CreateTexture(nil, "BORDER")
-	obj.tbg:SetTexture(self.bgTex, true) -- have to use true for tiling to work
+	obj.tbg:SetTexture(self.LSM:Fetch("background", self.bgTex), true) -- have to use true for tiling to work
 	obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
 	-- allow for border inset
 	local bdi = self.db.profile.BdInset
@@ -693,6 +699,8 @@ local function __applySkin(opts)
 		fh = Fade Height
 		bd = Backdrop table to use, default is 1
 		ng = No Gradient effect
+		invert = invert gradient
+		rotate = rotate gradient
 		ebc = Use EditBox Colours
 --]]
 --@alpha@
@@ -739,7 +747,7 @@ local function __applySkin(opts)
 
 	-- apply the Gradient, if required
 	if not opts.ng then
-		aObj:applyGradient(opts.obj, opts.fh, opts.invert or aObj.db.profile.Gradient.invert, opts.rotate or aObj.db.profile.Gradient.rotate)
+		aObj:applyGradient(opts.obj, opts.fh, opts.invert, opts.rotate)
 	end
 
 end
