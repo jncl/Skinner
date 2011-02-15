@@ -39,12 +39,13 @@ libs\LibBetterBlizzOptions-1.0\lib.xml
 #@end-no-lib-strip@
 #
 # Locale files
-locales\Locale_deDE.lua
+# enUS MUST be loaded first as default, this is due to changes in AceLocale, 26.01.2011
 locales\Locale_enUS.lua
+locales\Locale_deDE.lua
 locales\Locale_frFR.lua
+locales\Locale_koKR.lua
 locales\Locale_zhCN.lua
 locales\Locale_zhTW.lua
-locales\Locale_koKR.lua
 #
 # Main files
 Skinner.lua

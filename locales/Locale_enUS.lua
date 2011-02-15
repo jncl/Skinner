@@ -1,10 +1,10 @@
 local aName, aObj = ...
-local debug = false
+local silent = false
 --@debug@
-debug = true
+silent = true
 --@end-debug@
 
-local L = LibStub:GetLibrary("AceLocale-3.0",true):NewLocale(aName, "enUS", true, debug)
+local L = LibStub:GetLibrary("AceLocale-3.0", true):NewLocale(aName, "enUS", true, silent)
 
 if not L then return end
 
