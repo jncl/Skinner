@@ -28,7 +28,7 @@ do
 	--check to see if running on PTR
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Cataclysm Beta
-	aObj.isCata = portal == "public-beta" and true or false
+	-- aObj.isCata = portal == "public-beta" and true or false
 
 end
 
@@ -41,7 +41,7 @@ function aObj:OnInitialize()
 
 --@alpha@
 	if self.isPTR then self:Debug("PTR detected") end
-	if self.isCata then self:Debug("Cataclysm Beta detected") end
+	-- if self.isCata then self:Debug("Cataclysm Beta detected") end
 --@end-alpha@
 
 	-- setup the default DB values and register them

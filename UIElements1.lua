@@ -35,20 +35,6 @@ function aObj:Tooltips()
 
 	self:add2Table(self.uiKeys2, "Tooltips")
 
-	if not self.isCata then
-		--	change the default Tooltip Border colour here
-		local r, g, b, a = self:setTTBBC()
-		TOOLTIP_DEFAULT_COLOR = {r=r, g=g, b=b}
-	end
-
-	if not self.isCata then
-		-- fix for TinyTip tooltip becoming 'fractured'
-		if self.db.profile.Tooltips.style == 3 then
-			local c = self.db.profile.Backdrop
-			TOOLTIP_DEFAULT_BACKGROUND_COLOR = {r = c.r, g = c.g, b = c.b}
-			-- self:setTTBackdrop(true)
-		end
-	end
 	-- skin Item Ref Tooltip's close button
 	self:skinButton{obj=ItemRefCloseButton, cb=true}
 
@@ -1147,9 +1133,7 @@ function aObj:MinimapButtons()
 
 end
 
-if aObj.isPTR
-or aObj.isCata
-then
+if aObj.isPTR then
 	function aObj:FeedbackUI() -- LoD
 		if not self.db.profile.Feedback or self.initialized.Feedback then return end
 		self.initialized.Feedback = true

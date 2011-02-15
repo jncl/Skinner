@@ -798,22 +798,20 @@ function aObj:AlertFrames()
 	skinAlertFrames()
 
 	-- adjust frame size for guild achievements
-	if self.isCata then
-		self:SecureHook("AchievementAlertFrame_ShowAlert", function(...)
-			local obj, y1, y2
-			for i = 1, MAX_ACHIEVEMENT_ALERTS do
-				obj = _G[aafName..i]
-				if obj then
-					y1, y2 = -10, 12
- 	 				if obj.guildDisplay then
-						y1, y2 = -8, 8
-					end
-					self.skinFrame[obj]:SetPoint("TOPLEFT", obj, "TOPLEFT", 5, y1)
-					self.skinFrame[obj]:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 5, y2)
+	self:SecureHook("AchievementAlertFrame_ShowAlert", function(...)
+		local obj, y1, y2
+		for i = 1, MAX_ACHIEVEMENT_ALERTS do
+			obj = _G[aafName..i]
+			if obj then
+				y1, y2 = -10, 12
+	 				if obj.guildDisplay then
+					y1, y2 = -8, 8
 				end
+				self.skinFrame[obj]:SetPoint("TOPLEFT", obj, "TOPLEFT", 5, y1)
+				self.skinFrame[obj]:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 5, y2)
 			end
-		end)
-	end
+		end
+	end)
 
 	-- hook dungeon rewards function
 	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, ...)

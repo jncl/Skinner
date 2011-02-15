@@ -1448,14 +1448,12 @@ function aObj:Options()
 	-- module options
 	for _, mod in self:IterateModules() do
 		if mod.GetOptions then
-			optTables["Modules"].args[mod.name] = mod.GetOptions()
+			optTables["Modules"].args[mod.name] = mod:GetOptions()
 		end
 	end
 
 	-- optional options
-	if self.isPTR
-	or self.isCata
-	then
+	if self.isPTR then
 		optTables.UIFrames.args["Feedback"] = {
 			type = "toggle",
 			name = self.L["FeedbackUI"],

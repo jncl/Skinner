@@ -735,7 +735,7 @@ function aObj:GuildUI() -- LoD
 		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 		-- set textures here first time thru as it's LoD
-		if i == (self.isCata and 1 or 2) then
+		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
 			if self.isTT then self:setInactiveTab(tabSF) end
@@ -779,26 +779,19 @@ function aObj:GuildControlUI() -- LoD
 	self:skinDropDown{obj=GuildControlUI.bankTabFrame.dropdown}
 	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BACKGROUND")
 	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BORDER")
-	if self.isCata then
-		for i = 1, #GuildControlUI.bankTabFrame.scrollFrame.buttons do
-			btn = GuildControlUI.bankTabFrame.scrollFrame.buttons[i]
-			btn:DisableDrawLayer("BACKGROUND")
-			self:skinEditBox{obj=btn.owned.editBox, regs={9}}
-			self:skinButton{obj=btn.buy.button, as=true}
-		end
-	else
-		self:SecureHook("GuildControlUI_BankTabPermissions_Update", function()
-			local btn
-			for i = 1, MAX_BUY_GUILDBANK_TABS do
-				btn = _G["GuildControlBankTab"..i]
-				if btn and not self.skinned[btn] then
-					btn:DisableDrawLayer("BACKGROUND")
-					self:skinEditBox{obj=btn.owned.editBox, regs={9}}
-					self:addButtonBorder{obj=btn.owned, relTo=btn.owned.tabIcon, es=12}
-					self:skinButton{obj=btn.buy.button, as=true}
-				end
+	-- hook this as buttons are cretaed as required
+	self:SecureHook("GuildControlUI_BankTabPermissions_Update", function(this)
+		self:Debug("GuildControlUI_BankTabPermissions_Update: [%s]", this)
+		for i = 1, MAX_BUY_GUILDBANK_TABS do
+			btn = _G["GuildControlBankTab"..i]
+			if btn
+			and not self.skinned[btn]
+			then
+				btn:DisableDrawLayer("BACKGROUND")
+				self:skinEditBox{obj=btn.owned.editBox, regs={9}}
+				self:skinButton{obj=btn.buy.button, as=true}
 			end
-		end)
-	end
+		end
+	end)
 
 end
