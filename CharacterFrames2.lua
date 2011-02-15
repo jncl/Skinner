@@ -649,10 +649,11 @@ function aObj:GuildUI() -- LoD
 	GuildXPBarCap:SetTexture(self.sbTexture)
 	GuildXPBarCapMarker:SetAlpha(0)
 	-- Faction Bar
-	self:glazeStatusBar(GuildFactionBar, 0, GuildFactionBarBG)
-	GuildFactionBarLeft:SetAlpha(0)
-	GuildFactionBarRight:SetAlpha(0)
-	GuildFactionBarMiddle:SetAlpha(0)
+	GuildFactionBar:DisableDrawLayer("BORDER")
+	GuildFactionBarProgress:SetTexture(self.sbTexture)
+	GuildFactionBarShadow:SetAlpha(0)
+	GuildFactionBarCap:SetTexture(self.sbTexture)
+	GuildFactionBarCapMarker:SetAlpha(0)
 	-- Magic Button textures
 	self:removeMagicBtnTex("GuildAddMemberButton")
 	self:removeMagicBtnTex("GuildControlButton")
