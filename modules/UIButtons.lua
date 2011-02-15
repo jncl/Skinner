@@ -10,6 +10,37 @@ local defaults = {
 	}
 }
 
+do
+	-- characters used on buttons
+	module.mult = "×"
+	module.plus = "+"
+	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
+	-- create font to use for Close Buttons
+	module.fontX = CreateFont("fontX")
+	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
+	module.fontX:SetTextColor(1.0, 0.82, 0)
+	-- create font for disabled text
+	module.fontDX = CreateFont("fontDX")
+	module.fontDX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
+	module.fontDX:SetTextColor(0.35, 0.35, 0.35)
+	-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
+	module.fontSBX = CreateFont("fontSBX")
+	module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
+	module.fontSBX:SetTextColor(0.2, 0.6, 0.8)
+	-- create font to use for small Buttons (e.g. MinimalArchaeology)
+	module.fontSB = CreateFont("fontSB")
+	module.fontSB:SetFont([[Fonts\FRIZQT__.TTF]], 14)
+	module.fontSB:SetTextColor(1.0, 0.82, 0)
+	-- create font to use for Minus/Plus Buttons
+	module.fontP = CreateFont("fontP")
+	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
+	module.fontP:SetTextColor(1.0, 0.82, 0)
+	-- create font for disabled text
+	module.fontDP = CreateFont("fontDP")
+	module.fontDP:SetFont([[Fonts\ARIALN.TTF]], 16)
+	module.fontDP:SetTextColor(0.35, 0.35, 0.35)
+end
+local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture", "_LeftSeparator", "_RightSeparator"}
 local function __checkTex(opts)
 --[[
 	Calling parameters:
@@ -76,33 +107,6 @@ function module:checkTex(...)
 
 end
 
-do
-	-- characters used on buttons
-	module.mult = "×"
-	module.plus = "+"
-	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
-	-- create font to use for Close Buttons
-	module.fontX = CreateFont("fontX")
-	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
-	module.fontX:SetTextColor(1.0, 0.82, 0)
-	-- create font for disabled text
-	module.fontDX = CreateFont("fontDX")
-	module.fontDX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
-	module.fontDX:SetTextColor(0.35, 0.35, 0.35)
-	-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
-	module.fontSBX = CreateFont("fontSBX")
-	module.fontSBX:SetFont([[Fonts\FRIZQT__.TTF]], 14)
-	module.fontSBX:SetTextColor(0.2, 0.6, 0.8)
-	-- create font to use for small Buttons (e.g. MinimalArchaeology)
-	module.fontSB = CreateFont("fontSB")
-	module.fontSB:SetFont([[Fonts\FRIZQT__.TTF]], 14)
-	module.fontSB:SetTextColor(1.0, 0.82, 0)
-	-- create font to use for Minus/Plus Buttons
-	module.fontP = CreateFont("fontP")
-	module.fontP:SetFont([[Fonts\ARIALN.TTF]], 16)
-	module.fontP:SetTextColor(1.0, 0.82, 0)
-end
-local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture", "_LeftSeparator", "_RightSeparator"}
 function module:skinButton(opts)
 --[[
 	as = use applySkin rather than addSkinButton, used when text appears behind the gradient
