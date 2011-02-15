@@ -51,6 +51,8 @@ function aObj:PowerAuras()
 	
 end
 
+if not aObj:isAddonEnabled("PowerAurasButtons_Config") then return end
+
 function aObj:PowerAurasButtons_Config()
 
 	self:SecureHook(PowerAurasButtons_Config, "CreateOptionsFrame", function(this)

@@ -8,10 +8,10 @@ function aObj:Tukui()
 		self:SecureHook(Stuffing, "CreateBagFrame", function(this, bType)
 			self:skinButton{obj=_G["Stuffing_CloseButton"..bType], cb=true}
 		end)
-		self:skinEditBox{obj=StuffingFrameBags.editbox}
-		StuffingFrameBags.editbox:ClearAllPoints()
-		StuffingFrameBags.editbox:SetPoint("topleft", StuffingFrameBags, "topleft", 12, -9)
-		StuffingFrameBags.editbox:SetPoint("bottomright", StuffingFrameBags, "topright", -40, -28)
+		self:skinEditBox{obj=TukuiBags.editbox}
+		TukuiBags.editbox:ClearAllPoints()
+		TukuiBags.editbox:SetPoint("topleft", TukuiBags, "topleft", 12, -9)
+		TukuiBags.editbox:SetPoint("bottomright", TukuiBags, "topright", -40, -28)
 		self:skinButton{obj=Stuffing_CloseButtonBags, cb=true}
 	end
 
@@ -41,9 +41,9 @@ function aObj:TukuiInit()
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures
-		self.LSM:Register("background", "Tukui Background", [[Interface\AddOns\Tukui\media\textures\blank]])
-		self.LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\media\textures\blank]])
-		self.LSM:Register("statusbar", "Tukui StatusBar", [[Interface\AddOns\Tukui\media\textures\normTex]])
+		self.LSM:Register("background", "Tukui Background", [[Interface\AddOns\Tukui\medias\textures\blank]])
+		self.LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\medias\textures\blank]])
+		self.LSM:Register("statusbar", "Tukui StatusBar", [[Interface\AddOns\Tukui\medias\textures\normTex]])
 
 		-- create and use a new db profile called Tukui
 		local dbProfile = self.db:GetCurrentProfile()
@@ -125,108 +125,6 @@ function aObj:TukuiInit()
 			self.checkTex = function() end
 			self:Unhook(self, "OnEnable")
 		end)
-	end
-
-	-- create a ButtonFacade skin
-	local LBF = LibStub("LibButtonFacade", true)
-	if LBF then
-		local mediaPath = [[Interface\AddOns\Tukui\media\]]
-		local bw, bh = 30, 30
-		local scale = 0.835
-		LBF:AddSkin("Tukui", {
-			Backdrop = {
-				Hide = true,
-			},
-			Icon = {
-				Scale = scale,
-				Width = bw - 2,
-				Height = bh - 2,
-				TexCoords = {0.1, 0.9, 0.1, 0.9},
-			},
-			Flash = {
-				Scale = scale,
-				Width = bw,
-				Height = bh,
-				Color = {1, 1, 1, 1},
-				Texture = mediaPath.."flash",
-			},
-			Cooldown = {
-				Scale = scale,
-				Width = bw,
-				Height = bh,
-			},
-			AutoCast = {
-				Scale = scale,
-				Width = bw,
-				Height = bh,
-			},
-			Normal = {
-				Scale = scale,
-				Width = bw + 6,
-				Height = bh + 6,
-				Color = {0.6, 0.6, 0.6, 1},
-				Texture = mediaPath.."gloss",
-			},
-			Pushed = {
-				Scale = scale,
-				Width = bw,
-				Height = bh,
-				Color = {1, 1, 1, 1},
-				Texture = mediaPath.."pushed",
-			},
-			Border = {
-				Scale = scale,
-				Width = bw + 6,
-				Height = bh + 6,
-				Color = {1, 1, 1, 1},
-				Texture = mediaPath.."gloss",
-			},
-			Disabled = {
-				Scale = scale,
-				Width = bw,
-				Height = bh,
-				Color = {0.4, 0.4, 0.4, 1},
-				Texture = mediaPath.."gloss",
-			},
-			Checked = {
-				Scale = scale,
-				Width = bw,
-				Height = bh,
-				BlendMode = "ADD",
-				Color = {1, 1, 1, 1},
-				Texture = mediaPath.."checked",
-			},
-			AutoCastable = {
-				Scale = scale,
-				Width = bw,
-				Height = bh,
-				Texture = mediaPath.."gloss",
-			},
-			Highlight = {
-				Scale = scale,
-				Width = bw,
-				Height = bh,
-				BlendMode = "ADD",
-				Color = {1, 1, 1, 1},
-				Texture = mediaPath.."hover",
-			},
-			Gloss = {
-				Hide = true,
-			},
-			HotKey = {
-				Scale = scale,
-				Width = bw,
-				Height = 10,
-			},
-			Count = {
-				Scale = scale,
-				Width = bw,
-				Height = 10,
-			},
-			Name = {
-				Hide = true,
-			},
-		}, true)
 	end
 
 end
