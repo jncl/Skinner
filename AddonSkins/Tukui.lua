@@ -33,6 +33,16 @@ end
 -- The following code handles the Initial setup of Skinner when the TukUI is loaded
 function aObj:TukuiInit()
 
+	local borderr, borderg, borderb, backdropr, backdropg, backdropb
+    if IsAddOnLoaded("Tukui") then
+        local T, C, L = unpack(Tukui)
+        borderr, borderg, borderb = unpack(C["media"].bordercolor)
+        backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+    else
+        borderr, borderg, borderb = 0.6, 0.6, 0.6
+        backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
+    end
+
 	self:RawHook(self, "OnInitialize", function(this)
 		-- Do these before we run the function
 
@@ -52,9 +62,9 @@ function aObj:TukuiInit()
 			self.db:CopyProfile(dbProfile) -- use settings from previous profile
 
 			-- change settings
-			self.db.profile.TooltipBorder  = {r = 0.6, g = 0.6, b = 0.6, a = 1}
-			self.db.profile.BackdropBorder = {r = 0.6, g = 0.6, b = 0.6, a = 1}
-			self.db.profile.Backdrop       = {r = 0.1, g = 0.1, b = 0.1, a = 1}
+            self.db.profile.TooltipBorder  = {r = borderr, g = borderg, b = borderb, a = 1}
+            self.db.profile.BackdropBorder = {r = borderr, g = borderg, b = borderb, a = 1}
+            self.db.profile.Backdrop       = {r = backdropr, g = backdropg, b = backdropb, a = 1}
 			self.db.profile.BdDefault = false
 			self.db.profile.BdFile = "None"
 			self.db.profile.BdEdgeFile = "None"

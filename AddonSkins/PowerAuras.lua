@@ -48,33 +48,12 @@ function aObj:PowerAuras()
 	self:skinDropDown{obj=PowaDropDownStacksTexture}
 	self:skinDropDown{obj=PowaBuffStacksRelative}
 	self:addSkinFrame{obj=PowaBarConfigFrameEditor6, ofs=2}
-	
+
 end
 
-if not aObj:isAddonEnabled("PowerAurasButtons_Config") then return end
+function aObj:PowerAurasButtons()
 
-function aObj:PowerAurasButtons_Config()
+	-- skin Module Manager frame
+	self:addSkinFrame{obj=PowerAurasButtons_ModuleScrollFrame:GetParent()}
 
-	self:SecureHook(PowerAurasButtons_Config, "CreateOptionsFrame", function(this)
-		self:skinSlider{obj=PowerAurasButtons_SliderThrottle}--, size=3}
-		self:Unhook(PowerAurasButtons_Config, "CreateOptionsFrame")
-	end)
-	self:SecureHook(PowerAurasButtons_Config, "CreateActionSettingsFrame", function(this)
-		self:moveObject{obj=PowerAurasButtonsActionsFrame, x=6, y=2}
-		self:addSkinFrame{obj=PowerAurasButtonsActionsFrame, kfs=true, ofs=-2}
-		local AuraFrame = self:getChild(PowerAurasButtonsActionsFrame, 1)
-		self:addSkinFrame{obj=AuraFrame, kfs=true, ofs=2}
-		self:skinScrollBar{obj=AuraFrame.Scroll}
-		self:skinButton{obj=AuraFrameList.Items[1].newAction, mp2=true, as=true}
-		self:Unhook(PowerAurasButtons_Config, "CreateActionSettingsFrame")
-	end)
-	self:SecureHook(PowerAurasButtons_Config, "CreateAuraAction", function(this)
-		for i = 2, #AuraFrameList.Items do
-			local item = AuraFrameList.Items[i]
-			if not self.skinned[item] then
-				self:skinDropDown{obj=item.ActionType}
-				self:skinEditBox{obj=item.ActionID, regs={9}}
-			end
-		end
-	end)
 end

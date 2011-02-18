@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("Quartz") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Quartz") then return end
 
-function Skinner:Quartz() -- Quartz3
+function aObj:Quartz() -- Quartz3
 
 	local Quartz3 = LibStub("AceAddon-3.0"):GetAddon("Quartz3", true)
 	if not Quartz3 then return end
@@ -16,12 +17,12 @@ function Skinner:Quartz() -- Quartz3
 
 		for _, child in pairs{UIParent:GetChildren()} do
 			-- if this is a Quartz Mirror/Buff Bar then skin it
-			if child:IsObjectType('StatusBar')
+			if child:IsObjectType('Frame')
 			and child.__texture
 			then
-				if not Skinner.skinned[child] then
+				if not aObj.skinned[child] then
 					child:SetBackdrop(nil)
-					child.__texture:SetTexture(self.sbTexture)
+					child.__texture:SetTexture(aObj.sbTexture)
 				end
 			end
 		end
@@ -67,7 +68,6 @@ function Skinner:Quartz() -- Quartz3
 		self:SecureHook(mod, "ApplySettings", function()
 			skinSBs()
 		end)
-		skinSBs()
 	end
 -->>-- Buff Status Bars
 	mod = Quartz3:GetModule("Buff", true)
@@ -75,7 +75,8 @@ function Skinner:Quartz() -- Quartz3
 		self:SecureHook(mod, "ApplySettings", function()
 			skinSBs()
 		end)
-		skinSBs()
 	end
+	-- skin any existing StatusBars
+	skinSBs()
 
 end

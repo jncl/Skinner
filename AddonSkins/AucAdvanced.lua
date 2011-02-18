@@ -1,16 +1,17 @@
-if not Skinner:isAddonEnabled("Auc-Advanced") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Auc-Advanced") then return end
 
-function Skinner:AucAdvanced()
+function aObj:AucAdvanced()
 	if not self.db.profile.AuctionUI then return end
 
-	-- check version, if not a specified release or beta then don't skin it
+	-- check version, if not a specified release or beta then default the version to 9
 	local vTab = {
 		["5.8"] = 1,
 		["5.9"] = 2,
 		["5.10"] = 3,
 	}
 	local aVer = GetAddOnMetadata("Auc-Advanced", "Version")
-	local ver = vTab[aVer:match("(%d.%d+).%d+")] or 0
+	local ver = vTab[aVer:match("(%d.%d+).%d+")] or 9
 
 	-- progress bars
 	local lib = ver == 1 and AucAdvanced.Scan or AucAdvanced.API
@@ -98,7 +99,7 @@ function Skinner:AucAdvanced()
 			for i = 1, #gui.tabs do
 				local frame = gui.tabs[i].content
 				if frame.money and frame.money.isMoneyFrame then
-					Skinner:skinMoneyFrame{obj=frame.money, noWidth=true, moveSEB=true}
+					aObj:skinMoneyFrame{obj=frame.money, noWidth=true, moveSEB=true}
 				end
 			end
 			self:Unhook(mod, "MakeGuiConfig")
@@ -117,12 +118,11 @@ function Skinner:AucAdvanced()
 		if lib then
 			local function skinSnatch()
 
-				local self = Skinner
-				lib.Private.frame.slot:SetTexture(self.esTex)
-				self:skinEditBox{obj=lib.Private.frame.pctBox, regs={9}}
-				self:skinButton{obj=lib.Private.frame.additem, as=true} -- just skin it otherwise text is hidden
-				self:skinButton{obj=lib.Private.frame.removeitem, as=true} -- just skin it otherwise text is hidden
-				self:skinButton{obj=lib.Private.frame.resetList, as=true} -- just skin it otherwise text is hidden
+				lib.Private.frame.slot:SetTexture(aObj.esTex)
+				aObj:skinEditBox{obj=lib.Private.frame.pctBox, regs={9}}
+				aObj:skinButton{obj=lib.Private.frame.additem, as=true} -- just skin it otherwise text is hidden
+				aObj:skinButton{obj=lib.Private.frame.removeitem, as=true} -- just skin it otherwise text is hidden
+				aObj:skinButton{obj=lib.Private.frame.resetList, as=true} -- just skin it otherwise text is hidden
 
 			end
 			if lib.MakeGuiConfig then
@@ -151,38 +151,37 @@ function Skinner:AucAdvanced()
 	-- Appraiser
 	local mod = AucAdvanced.Modules.Util.Appraiser
 	if mod then
-		function skinFrames()
+		local function skinFrames()
 
-			local self = Skinner
 			local frame = mod.Private.frame
-			self:skinButton{obj=frame.toggleManifest}
-			self:skinButton{obj=frame.config}
-			self:moveObject{obj=frame.itembox.showAuctions, x=-10}
-			self:addSkinFrame{obj=frame.itembox}
-			self:skinSlider(frame.scroller)
-			self:skinButton{obj=frame.switchToStack, y1=1}
-			self:skinButton{obj=frame.switchToStack2, y1=1}
-			self:addSkinFrame{obj=frame.salebox}
-			frame.salebox.slot:SetTexture(self.esTex)
-			self:skinEditBox{obj=frame.salebox.stackentry, regs={9}, noWidth=true}
-			self:adjWidth{obj=frame.salebox.stackentry, adj=14}
-			self:skinEditBox{obj=frame.salebox.numberentry, regs={9}, noWidth=true}
-			self:adjWidth{obj=frame.salebox.numberentry, adj=14}
-			self:skinDropDown{obj=frame.salebox.model}
-			self:skinMoneyFrame{obj=frame.salebox.bid, noWidth=true, moveSEB=true, moveGEB=true}
-			self:skinMoneyFrame{obj=frame.salebox.buy, noWidth=true, moveSEB=true, moveGEB=true}
-			self:skinMoneyFrame{obj=frame.salebox.bid.stack, noWidth=true, moveSEB=true, moveGEB=true}
-			self:skinMoneyFrame{obj=frame.salebox.buy.stack, noWidth=true, moveSEB=true, moveGEB=true}
-			self:skinButton{obj=frame.manifest.close, cb=true, x1=3, y1=-3, x2=-3, y2=3}
-			self:addSkinFrame{obj=frame.manifest, bg=true} -- a.k.a. Sidebar, put behind AH frame
-			self:skinButton{obj=frame.imageview.purchase.buy, x1=-1}
-			self:skinButton{obj=frame.imageview.purchase.bid, x1=-1}
+			aObj:skinButton{obj=frame.toggleManifest}
+			aObj:skinButton{obj=frame.config}
+			aObj:moveObject{obj=frame.itembox.showAuctions, x=-10}
+			aObj:addSkinFrame{obj=frame.itembox}
+			aObj:skinSlider(frame.scroller)
+			aObj:skinButton{obj=frame.switchToStack, y1=1}
+			aObj:skinButton{obj=frame.switchToStack2, y1=1}
+			aObj:addSkinFrame{obj=frame.salebox}
+			frame.salebox.slot:SetTexture(aObj.esTex)
+			aObj:skinEditBox{obj=frame.salebox.stackentry, regs={9}, noWidth=true}
+			aObj:adjWidth{obj=frame.salebox.stackentry, adj=14}
+			aObj:skinEditBox{obj=frame.salebox.numberentry, regs={9}, noWidth=true}
+			aObj:adjWidth{obj=frame.salebox.numberentry, adj=14}
+			aObj:skinDropDown{obj=frame.salebox.model}
+			aObj:skinMoneyFrame{obj=frame.salebox.bid, noWidth=true, moveSEB=true, moveGEB=true}
+			aObj:skinMoneyFrame{obj=frame.salebox.buy, noWidth=true, moveSEB=true, moveGEB=true}
+			aObj:skinMoneyFrame{obj=frame.salebox.bid.stack, noWidth=true, moveSEB=true, moveGEB=true}
+			aObj:skinMoneyFrame{obj=frame.salebox.buy.stack, noWidth=true, moveSEB=true, moveGEB=true}
+			aObj:skinButton{obj=frame.manifest.close, cb=true, x1=3, y1=-3, x2=-3, y2=3}
+			aObj:addSkinFrame{obj=frame.manifest, bg=true} -- a.k.a. Sidebar, put behind AH frame
+			aObj:skinButton{obj=frame.imageview.purchase.buy, x1=-1}
+			aObj:skinButton{obj=frame.imageview.purchase.bid, x1=-1}
 			frame.imageview.purchase:SetBackdrop(nil)
 			frame.imageview.purchase:SetBackdropColor(0, 0, 0, 0)
-			self:skinButton{obj=frame.go}
-			self:skinButton{obj=frame.gobatch}
-			self:skinButton{obj=frame.refresh}
-			self:skinButton{obj=frame.cancel, x1=-2, y1=1, x2=2}
+			aObj:skinButton{obj=frame.go}
+			aObj:skinButton{obj=frame.gobatch}
+			aObj:skinButton{obj=frame.refresh}
+			aObj:skinButton{obj=frame.cancel, x1=-2, y1=1, x2=2}
 
 		end
 		if mod.Private.CreateFrames then
