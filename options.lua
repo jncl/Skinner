@@ -452,7 +452,6 @@ function aObj:Options()
 			type = "group",
 			name = self.L["Default Colours"],
 			get = function(info)
-				print("get Colours", info[#info])
 				if info[#info] == "ClassColours" then return db[info[#info]]
 				else
 					local c = db[info[#info]]
@@ -460,7 +459,6 @@ function aObj:Options()
 				end
 			end,
 			set = function(info, r, g, b, a)
-				print("set Colours", info[#info], r, g, b, a)
 				if info[#info] == "ClassColours" then
 					db[info[#info]] = r
 					if r then
