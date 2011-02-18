@@ -213,7 +213,7 @@ local lodFrames = {
 	"MSBTOptions",
 	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
 	"Perl_Config_Options",
-	"Squire2_Config",
+	"Scrap_Merchant", "Scrap_Options", "Squire2_Config",
 	"Talented_GlyphFrame", "TradeTabs", "TipTacOptions",
 	"WeakAurasOptions", "WIM_Options",
 	"XPerl_Options",

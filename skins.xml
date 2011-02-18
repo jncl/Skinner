@@ -250,6 +250,7 @@
 <script file="SkinMe\RicoMiniMap.lua"/>
 <script file="SkinMe\RockConfig.lua"/>
 <script file="SkinMe\SayGMOTD.lua"/>
+<script file="SkinMe\Scrap.lua"/>
 <script file="SkinMe\ScrollMaster.lua"/>
 <script file="SkinMe\ShadowDancer3.lua"/>
 <script file="SkinMe\sienasGemViewer.lua"/>
