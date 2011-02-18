@@ -17,25 +17,6 @@ Legend:
 ≈		- I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
 		- Change code to reduce the number of Reloads required if possible ?
 
-√	S	WeakAuras, requested by Greevir, 31.01.11
-
-√	S	DeathNote, requested by Kerecha, 31.01.11
-
-√	S	Fortress, requested by T0mate, 9.02.11
-
-√	I	GuildUI, reported by VQKatsuko/Decabah/burber/skyggesang/Jiminimonka/Talissa, 9.02.11/10.02.11/11.02.11/13.02.11
-		-  Skinner-b4.13561.1\Skinner.lua:861: attempt to call method 'SetStatusBarTexture' (a nil value)
-		Skinner-b4.13561.1\CharacterFrames2.lua:652: in function <Skinner\CharacterFrames2.lua:636>
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.13561.1\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		(tail call): ?:
-		Skinner-b4.13561.1\AddonFrames.lua:244: in function <Skinner\AddonFrames.lua:237>
-		(tail call): ?:
-		- Skinner-b4.13561.1\Skinner.lua:861: attempt to call method 'SetStatusBarTexture' (a nil value)
-		Skinner-b4.13561.1\CharacterFrames2.lua:652: in function <Skinner\CharacterFrames2.lua:636>
-		(tail call): ?:
-
 ?	I	Quartz, reported by Decabah, 9.02.11
 		- Skinner-b4.13561.1\SkinMe\Quartz.lua:62: attempt to index field 'lagbox' (a nil value)
 		(tail call): ?:
@@ -45,18 +26,17 @@ Legend:
 		Skinner-b4.13561.1\AddonFrames.lua:144: in function <Skinner\AddonFrames.lua:103>
 		(tail call): ?:
 
-√	I	TukUI v13, reported by T0mate, 9.02.11
-		- Skinner-b4.13561.1\SkinMe\Tukui.lua:11: attempt to index global 'StuffingFrameBags' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.13561.1\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-b4.13561.1\UtilFuncs.lua:145: in function `checkAndRunAddOn'
-		Skinner-b4.13561.1\AddonFrames.lua:144: in function <Skinner\AddonFrames.lua:103>
+√	I	AucAdvanced, reported by Jiminimonka, 15.02.11
+		- Skinner-b4.13561.1\SkinMe\AucAdvanced.lua:38: attempt to call method 'SetBackdrop' (a nil value)
 		(tail call): ?:
 
-√	I	PowerAuras, reported by burber, 10.02.11
-		- Skinner-b4.13561.1\SkinMe\PowerAuras.lua:56: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+√	S	Scrap, required by Decabah, 16.02.11
+
+√	I	PowerAurasButtons, reported by burber, 17.02.11
+		- Skinner-b4.13623.1\SkinMe\PowerAuras.lua:58: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
 		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b4.13561.1\SkinMe\PowerAuras.lua:56: in function <Skinner\SkinMe\PowerAuras.lua:54>
+		Skinner-b4.13623.1\SkinMe\PowerAuras.lua:58: in function <Skinner\SkinMe\PowerAuras.lua:56>
 		(tail call): ?:
+
+√	O	Tukui, requested by VQKatsuko, 17.02.11
