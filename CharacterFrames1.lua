@@ -150,8 +150,8 @@ function aObj:PVPFrame()
 	PVPFrameConquestBarBorder:Hide()
 	self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
 	-- Magic Button textures
-	self:removeMagicBtnTex("PVPFrameLeftButton")
-	self:removeMagicBtnTex("PVPFrameRightButton")
+	self:removeMagicBtnTex(PVPFrameLeftButton)
+	self:removeMagicBtnTex(PVPFrameRightButton)
 -->>-- Honor frame
 	self:keepFontStrings(PVPFrame.panel1)
 	self:skinScrollBar{obj=PVPFrame.panel1.bgTypeScrollFrame}
@@ -161,7 +161,7 @@ function aObj:PVPFrame()
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
 	-- Magic Button textures
-	self:removeMagicBtnTex("PVPHonorFrameWarGameButton")
+	self:removeMagicBtnTex(PVPHonorFrameWarGameButton)
 -->>-- Conquest frame
 	self:keepFontStrings(PVPFrame.panel2)
 	PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
@@ -421,9 +421,9 @@ function aObj:TalentUI() -- LoD
 		end
 	end
 	-- Magic Button textures
-	self:removeMagicBtnTex("PlayerTalentFrameResetButton")
-	self:removeMagicBtnTex("PlayerTalentFrameLearnButton")
-	self:removeMagicBtnTex("PlayerTalentFrameToggleSummariesButton")
+	self:removeMagicBtnTex(PlayerTalentFrameResetButton)
+	self:removeMagicBtnTex(PlayerTalentFrameLearnButton)
+	self:removeMagicBtnTex(PlayerTalentFrameToggleSummariesButton)
 -->>-- Pet Talents Panel
 	PlayerTalentFramePetPanel:DisableDrawLayer("BORDER")
 	PlayerTalentFramePetModelBg:Hide()

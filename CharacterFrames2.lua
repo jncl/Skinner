@@ -154,10 +154,11 @@ function aObj:TradeSkillUI() -- LoD
 	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
 	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 	-- Magic Button textures
-	self:removeMagicBtnTex("TradeSkillCreateAllButton")
-	self:removeMagicBtnTex("TradeSkillCancelButton")
-	self:removeMagicBtnTex("TradeSkillCreateButton")
-	self:removeMagicBtnTex("TradeSkillViewGuildCraftersButton")
+	self:removeMagicBtnTex(TradeSkillCreateAllButton)
+	self:removeMagicBtnTex(TradeSkillCancelButton)
+	self:removeMagicBtnTex(TradeSkillCreateButton)
+	self:removeMagicBtnTex(TradeSkillViewGuildCraftersButton)
+	-- Guild sub frame
 	self:addSkinFrame{obj=TradeSkillGuildFrameContainer, ft=ftype}
 	self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, ofs=-7}
 
@@ -224,7 +225,7 @@ function aObj:QuestLog()
 	self:addButtonBorder{obj=QuestLogFrameShowMapButton, relTo=QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
 	-- Magic Button textures
-	self:removeMagicBtnTex("QuestLogFrameCompleteButton")
+	self:removeMagicBtnTex(QuestLogFrameCompleteButton)
 
 -->>-- QuestLogDetail Frame
 	QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -589,6 +590,7 @@ function aObj:ArchaeologyUI() -- LoD
 	if not self.db.profile.ArchaeologyUI or self.initialized.ArchaeologyUI then return end
 	self.initialized.ArchaeologyUI = true
 
+	self:moveObject{obj=ArchaeologyFrame.infoButton, x=-25}
 	self:skinDropDown{obj=ArchaeologyFrame.raceFilterDropDown}
 	ArchaeologyFrameRankBarBackground:SetAllPoints(ArchaeologyFrame.rankBar)
 	ArchaeologyFrameRankBarBorder:Hide()
@@ -655,9 +657,9 @@ function aObj:GuildUI() -- LoD
 	GuildFactionBarCap:SetTexture(self.sbTexture)
 	GuildFactionBarCapMarker:SetAlpha(0)
 	-- Magic Button textures
-	self:removeMagicBtnTex("GuildAddMemberButton")
-	self:removeMagicBtnTex("GuildControlButton")
-	self:removeMagicBtnTex("GuildViewLogButton")
+	self:removeMagicBtnTex(GuildAddMemberButton)
+	self:removeMagicBtnTex(GuildControlButton)
+	self:removeMagicBtnTex(GuildViewLogButton)
 	-- GuildMain Frame
 	GuildPerksToggleButton:DisableDrawLayer("BACKGROUND")
 	GuildNewPerksFrame:DisableDrawLayer("BACKGROUND")
