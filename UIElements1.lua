@@ -867,7 +867,7 @@ function aObj:BattlefieldMinimap() -- LoD
 	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
 -->>--	Minimap
 	-- change the draw layer so that the map is visible
-	for i = 1, NUM_WORLDMAP_DETAIL_TILES do
+	for i = 1, self.isPTR and GetNumberOfDetailTiles() or NUM_WORLDMAP_DETAIL_TILES do
 		_G["BattlefieldMinimap"..i]:SetDrawLayer("ARTWORK")
 	end
 

@@ -36,11 +36,14 @@ end
 function aObj:PaperDollFrame()
 
 	self:keepFontStrings(PaperDollFrame)
-	self:skinDropDown{obj=PlayerTitleFrame}
-	self:moveObject{obj=PlayerTitleFrameButton, y=1}
-	self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
-	self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}
+	if not self.isPTR then
+		self:skinDropDown{obj=PlayerTitleFrame}
+		self:moveObject{obj=PlayerTitleFrameButton, y=1}
+		self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
+		self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}
+	end
 	self:makeMFRotatable(CharacterModelFrame)
+	-- skin slots
 	for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
 		if self.modBtnBs then
@@ -69,7 +72,35 @@ function aObj:PaperDollFrame()
 			end
 		end
 	end)
-	self:addButtonBorder{obj=GearManagerToggleButton, x1=1, x2=-1}
+	if not self.isPTR then
+		self:addButtonBorder{obj=GearManagerToggleButton, x1=1, x2=-1}
+	end
+	if self.isPTR then
+		self:skinDropDown{obj=PaperDollSideBarDropDown}
+		-- Titles
+		self:SecureHookScript(PaperDollTitlesPane, "OnShow", function(this)
+			for i = 1, #this.buttons do
+				local btn = this.buttons[i]
+				btn:DisableDrawLayer("BACKGROUND")
+			end
+			self:Unhook(PaperDollTitlesPane, "OnShow")
+		end)
+		self:skinSlider{obj=PaperDollTitlesPane.scrollBar}
+		-- Equipment Manager
+		self:SecureHookScript(PaperDollEquipmentManagerPane, "OnShow", function(this)
+			for i = 1, #this.buttons do
+				local btn = this.buttons[i]
+				btn:DisableDrawLayer("BACKGROUND")
+				self:addButtonBorder{obj=btn, relTo=btn.icon}
+			end
+			self:Unhook(PaperDollEquipmentManagerPane, "OnShow")
+		end)
+		self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar}
+	end
+	-- GearManagerDialog Popup Frame
+	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
+	self:skinEditBox{obj=GearManagerDialogPopupEditBox, regs={9}}
+	self:addSkinFrame{obj=GearManagerDialogPopup, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
 
 end
 

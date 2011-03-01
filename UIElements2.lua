@@ -960,3 +960,50 @@ function aObj:GhostFrame()
 	GhostFrame:SetFrameStrata("HIGH") -- make it appear above other frames (i.e. Corkboard)
 
 end
+
+if aObj.isPTR then
+	function aObj:LookingForGuildUI() -- LoD
+
+		self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=0}
+		-- Magic Button textures
+		self:removeMagicBtnTex("LookingForGuildRequestButton")
+		self:removeMagicBtnTex("LookingForGuildBrowseButton")
+		-- Start Frame
+		LookingForGuildPlaystyleFrameBg:SetAlpha(0)
+		LookingForGuildAvailabilityFrameBg:SetAlpha(0)
+		LookingForGuildRolesFrameBg:SetAlpha(0)
+		LookingForGuildCommentFrameBg:SetAlpha(0)
+		-- LookingForGuildCommentInputFrame:DisableDrawLayer("BACKGROUND")
+		self:skinScrollBar{obj=LookingForGuildCommentInputFrameScrollFrame}
+		self:addSkinFrame{obj=LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
+		-- Browse Frame
+		self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar}
+		self:SecureHookScript(LookingForGuildBrowseFrameContainer, "OnShow", function(this)
+			for i = 1, #this.buttons do
+				local btn = this.buttons[i]
+				self:applySkin{obj=btn}
+				--[=[
+					TODO rings and other textures
+				--]=]
+			end
+			self:Unhook(LookingForGuildBrowseFrameContainer, "OnShow")
+		end)
+		-- Tabs
+		for i = 1, LookingForGuildFrame.numTabs do
+			tab = _G["LookingForGuildFrameTab"..i]
+			self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			self:moveObject{obj=_G["LookingForGuildFrameTab"..i.."HighlightTexture"], x=-2, y=4}
+			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=2, y1=-2, x2=-2, y2=-2}
+			-- tabSF.ignore = true -- ignore size changes
+			tabSF.up = true -- tabs grow upwards
+			-- set textures here first time thru as it's LoD
+			if i == 1 then
+				if self.isTT then self:setActiveTab(tabSF) end
+			else
+				if self.isTT then self:setInactiveTab(tabSF) end
+			end
+		end
+		self.tabFrames[LookingForGuildFrame] = true
+	end
+
+end

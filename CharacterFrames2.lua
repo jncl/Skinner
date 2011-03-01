@@ -697,6 +697,9 @@ function aObj:GuildUI() -- LoD
 		self:applySkin{obj=btn.header}
 		self:addButtonBorder{obj=btn, relTo=btn.icon, hide=true, es=12}
 	end
+	if self.isPTR then
+		self:skinDropDown{obj=GuildMemberRankDropdown}
+	end
 	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, ofs=-6}
 	-- News Panel
 	GuildNewsFrame:DisableDrawLayer("BACKGROUND")
