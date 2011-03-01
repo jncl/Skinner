@@ -13,30 +13,19 @@ Legend:
 	O	WorldMap Sizing buttons
 	O	WatchFrame Sizing buttons
 
-	I	Usability issues, reported by TaliaMokani, 23.08.10
-≈		- I have to reload my UI to see every change I make with Skinner, not just the ones that state "require UI reload". This makes testing and tweaking a very long and painful process.
-		- Change code to reduce the number of Reloads required if possible ?
+	O	PTR, 4.1
+√		- PlayerTitle & GearManager replaced by PaperDoll panes
+≈		- LookingForGuildUI added
+≈		- Blizzard_GuildRoster, dropdown added (GuildMemberRankDropdown)
+√		- Blizzard_TrainerUI, statusbar added (ClassTrainerStatusBar)
+√		- InterfaceOptionsPanels, added dropdown (InterfaceOptionsActionBarsPanelPickupActionKeyDropDown)
 
-?	I	Quartz, reported by Decabah, 9.02.11
-		- Skinner-b4.13561.1\SkinMe\Quartz.lua:62: attempt to index field 'lagbox' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.13561.1\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-b4.13561.1\UtilFuncs.lua:145: in function `checkAndRunAddOn'
-		Skinner-b4.13561.1\AddonFrames.lua:144: in function <Skinner\AddonFrames.lua:103>
-		(tail call): ?:
+	I	FlightMapEnhanced
+√		- skin FlightTimers frame
 
-√	I	AucAdvanced, reported by Jiminimonka, 15.02.11
-		- Skinner-b4.13561.1\SkinMe\AucAdvanced.lua:38: attempt to call method 'SetBackdrop' (a nil value)
-		(tail call): ?:
+√	N	ARL, reported by dwarven, 19.02.11
 
-√	S	Scrap, required by Decabah, 16.02.11
+√	S	ElvUI, requested by xpronic, 32.02.11
 
-√	I	PowerAurasButtons, reported by burber, 17.02.11
-		- Skinner-b4.13623.1\SkinMe\PowerAuras.lua:58: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b4.13623.1\SkinMe\PowerAuras.lua:58: in function <Skinner\SkinMe\PowerAuras.lua:56>
-		(tail call): ?:
-
-√	O	Tukui, requested by VQKatsuko, 17.02.11
+≈	I	PTR errors, reported by Jiminimonka, 27.02.11
+	
