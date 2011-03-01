@@ -6,7 +6,7 @@ function Skinner:AckisRecipeList()
 	local ARL = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
 	if not ARL then return end
 
-	-- check version, if not a specified release or beta then don't skin it
+	-- check version, if not a specified release or beta then treat it as version 10
 	local vTab = {
 		["1.0 2817"] = 1, -- release
 		["1.0 @project-revision@"] = 2, -- beta
@@ -20,8 +20,7 @@ function Skinner:AckisRecipeList()
 		["2.1.0"] = 10, -- release
 	}
 	local aVer = GetAddOnMetadata("AckisRecipeList", "Version")
-	local ver = vTab[aVer]
-	if not ver then	self:CustomPrint(1, 0, 0, "%s [%s]", "Unsupported ARL version", aVer) return end
+	local ver = vTab[aVer] or 10
 
 	local function skinARL(frame)
 

@@ -142,5 +142,5 @@ end
 -- Load support for TukUI
 local success, err = aObj:checkAndRun("TukuiInit", true)
 if not success then
-	print("Error running", "Tukui", err)
+	print("Error running", "TukuiInit", err)
 end

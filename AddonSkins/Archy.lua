@@ -3,6 +3,8 @@ if not aObj:isAddonEnabled("Archy") then return end
 
 function aObj:Archy()
 
+	Archy.db.profile.artifact.fragmentBarTexture = self.db.profile.StatusBar.texture
+
 	local function skinFragment(obj)
 
 		obj.fragmentBar.barBackground:Hide()
@@ -10,7 +12,7 @@ function aObj:Archy()
 		obj.fragmentBar.barTexture.SetTexCoord = function() end
 		self:glazeStatusBar(obj.fragmentBar, 0, nil)
 		-- don't skin button in "Compact" form
-		if not Archy.db.profile.artifact.style == "Compact" then self:skinButton{obj=v.solveButton} end
+		if not Archy.db.profile.artifact.style == "Compact" then aObj:skinButton{obj=v.solveButton} end
 
 	end
 -->>-- DigSite Frame
@@ -22,6 +24,10 @@ function aObj:Archy()
 		end)
 	end
 	self:addSkinFrame{obj=ArchyDigSiteFrame, nb=true}
+	-- stop frame backdrop from being changed
+	ArchyDigSiteFrame.SetBackdrop = function() end
+	ArchyDigSiteFrame.SetBackdropColor = function() end
+	ArchyDigSiteFrame.SetBackdropBorderColor = function() end
 	-- DistanceIndicator Frame
 	self:skinButton{obj=ArchyDistanceIndicatorFrameSurveyButton}
 
@@ -42,6 +48,10 @@ function aObj:Archy()
 		skinFragment(t[k])
 	end)
 	self:addSkinFrame{obj=ArchyArtifactFrame, nb=true}
+	-- stop frame backdrop from being changed
+	ArchyArtifactFrame.SetBackdrop = function() end
+	ArchyArtifactFrame.SetBackdropColor = function() end
+	ArchyArtifactFrame.SetBackdropBorderColor = function() end
 	if self.modBtns then
 		self:SecureHook(Archy, "RefreshRacesDisplay", function(this)
 			for _, v in pairs(ArchyArtifactFrame.children) do

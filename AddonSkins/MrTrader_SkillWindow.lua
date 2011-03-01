@@ -32,12 +32,12 @@ function aObj:MrTrader_SkillWindow()
 	end
 	self:skinScrollBar{obj=MRTSkillListScrollFrame}
 	self:glazeStatusBar(MRTSkillRankFrame, 0, MRTSkillRankFrameBackground)
-	-- Magic Button textures
-	self:removeMagicBtnTex("MRTSkillViewCraftersButton")
-	self:removeMagicBtnTex("MRTSkillCreateButton")
-	self:removeMagicBtnTex("MRTSkillCreateAllButton")
 	self:skinEditBox{obj=MRTSkillInputBox, x=-6}
 	self:addSkinFrame{obj=MRTSkillFrame, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+	-- Magic Button textures
+	self:removeMagicBtnTex(MRTSkillViewCraftersButton)
+	self:removeMagicBtnTex(MRTSkillCreateButton)
+	self:removeMagicBtnTex(MRTSkillCreateAllButton)
 	
 -->>-- New Category frame
 	self:skinEditBox{obj=MRTNewCategoryFrameCategoryName, x=-3}
