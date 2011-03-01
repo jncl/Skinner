@@ -1,3 +1,11 @@
+b4.13623.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Removed debug print statements
+	Updated AucAdvanced, PowerAuras, Quartz & Tukui skins
+	Skinned Scrap
+
 b4.13623.1
 Jncl:
 	ToDo.txt
