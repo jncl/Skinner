@@ -7,6 +7,14 @@ function aObj:FlightMapEnhanced()
 	FlightMapEnhancedTaxiChoice:DisableDrawLayer("BACKGROUND")
 	FlightMapEnhancedTaxiChoice:DisableDrawLayer("BORDER")
 	self:addSkinFrame{obj=FlightMapEnhancedTaxiChoice, kfs=true, ofs=2}
+	-- remove textures from the destination buttons
+	self:SecureHookScript(FlightMapEnhancedTaxiChoice, "OnShow", function(this)
+		for i = 1, #FlightMapEnhancedTaxiChoiceContainer.buttons do
+			local btn = FlightMapEnhancedTaxiChoiceContainer.buttons[i]
+			self:keepRegions(btn, {2, 6, 7, 8}) -- N.B. region 2 & 7 are the text, 6 is the icon, 8 is the highlight
+		end
+		self:Unhook(FlightMapEnhancedTaxiChoice, "OnShow")
+	end)
 
 	-- Flight Timer frame
 	if FlightMapEnhanced_Config
@@ -20,7 +28,6 @@ function aObj:FlightMapEnhanced()
 				if child.GetBackdrop then
 					bd = child:GetBackdrop()
 					if bd and bd.bgFile and bd.bgFile:find("ftimes_frame") then
-						print("FlightMapEnhanced flight timer frame found")
 						self:addSkinFrame{obj=child, kfs=true, y1=3, y2=12}
 						break
 					end
