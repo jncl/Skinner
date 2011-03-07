@@ -965,7 +965,6 @@ if aObj.isPTR then
 	function aObj:LookingForGuildUI() -- LoD
 
 		self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=0}
-		-- Magic Button textures
 		self:removeMagicBtnTex("LookingForGuildRequestButton")
 		self:removeMagicBtnTex("LookingForGuildBrowseButton")
 		-- Start Frame
@@ -980,11 +979,11 @@ if aObj.isPTR then
 		self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar}
 		self:SecureHookScript(LookingForGuildBrowseFrameContainer, "OnShow", function(this)
 			for i = 1, #this.buttons do
-				local btn = this.buttons[i]
+				btn = this.buttons[i]
 				self:applySkin{obj=btn}
-				--[=[
-					TODO rings and other textures
-				--]=]
+				btn.selectedTex:SetAlpha(0)
+				btn.ring:SetAlpha(0)
+				btn.PointsSpentBgGold:SetAlpha(0)
 			end
 			self:Unhook(LookingForGuildBrowseFrameContainer, "OnShow")
 		end)

@@ -65,7 +65,6 @@ function aObj:PaperDollFrame()
 			btnFrame["bg" .. i]:SetAlpha(0)
 		end
 		if self.modBtnBs then
-			local btn
 			for i = 1, #PaperDollFrameItemFlyout.buttons do
 				btn = PaperDollFrameItemFlyout.buttons[i]
 				if not btn.sknrBdr then self:addButtonBorder{obj=btn, ibt=true} end
@@ -76,26 +75,47 @@ function aObj:PaperDollFrame()
 		self:addButtonBorder{obj=GearManagerToggleButton, x1=1, x2=-1}
 	end
 	if self.isPTR then
-		self:skinDropDown{obj=PaperDollSideBarDropDown}
+		-- Sidebar Tabs
+		PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
+		PaperDollSidebarTabs.DecorRight:SetAlpha(0)
+		for i = 1, #PAPERDOLL_SIDEBARS do
+			tab = _G["PaperDollSidebarTab"..i]
+			tab.TabBg:SetAlpha(0)
+			tab.Hider:SetAlpha(0)
+			-- use a button border to indicate the active tab
+			self:addButtonBorder{obj=tab, relTo=tab.Icon}
+			tab.sknrBdr:SetBackdropBorderColor(1, 0.6, 0, 1)
+		end
+		-- hook this to manage the active tab
+		self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
+			for i = 1, #PAPERDOLL_SIDEBARS do
+				local tab = _G["PaperDollSidebarTab"..i]
+				if (_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown()) then
+					tab.sknrBdr:Show()
+				else
+					tab.sknrBdr:Hide()
+				end
+			end
+		end)
 		-- Titles
 		self:SecureHookScript(PaperDollTitlesPane, "OnShow", function(this)
 			for i = 1, #this.buttons do
-				local btn = this.buttons[i]
+				btn = this.buttons[i]
 				btn:DisableDrawLayer("BACKGROUND")
 			end
 			self:Unhook(PaperDollTitlesPane, "OnShow")
 		end)
-		self:skinSlider{obj=PaperDollTitlesPane.scrollBar}
+		self:skinSlider{obj=PaperDollTitlesPane.scrollBar, size=3}
 		-- Equipment Manager
 		self:SecureHookScript(PaperDollEquipmentManagerPane, "OnShow", function(this)
 			for i = 1, #this.buttons do
-				local btn = this.buttons[i]
+				btn = this.buttons[i]
 				btn:DisableDrawLayer("BACKGROUND")
 				self:addButtonBorder{obj=btn, relTo=btn.icon}
 			end
 			self:Unhook(PaperDollEquipmentManagerPane, "OnShow")
 		end)
-		self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar}
+		self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar, size=3}
 	end
 	-- GearManagerDialog Popup Frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
@@ -180,7 +200,6 @@ function aObj:PVPFrame()
 	self:glazeStatusBar(PVPFrameConquestBar, 0,	 PVPFrameConquestBarBG)
 	PVPFrameConquestBarBorder:Hide()
 	self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
-	-- Magic Button textures
 	self:removeMagicBtnTex(PVPFrameLeftButton)
 	self:removeMagicBtnTex(PVPFrameRightButton)
 -->>-- Honor frame
@@ -191,7 +210,6 @@ function aObj:PVPFrame()
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
-	-- Magic Button textures
 	self:removeMagicBtnTex(PVPHonorFrameWarGameButton)
 -->>-- Conquest frame
 	self:keepFontStrings(PVPFrame.panel2)
@@ -451,7 +469,6 @@ function aObj:TalentUI() -- LoD
 			RaiseFrameLevel(obj.SelectTreeButton) -- so button can be clicked
 		end
 	end
-	-- Magic Button textures
 	self:removeMagicBtnTex(PlayerTalentFrameResetButton)
 	self:removeMagicBtnTex(PlayerTalentFrameLearnButton)
 	self:removeMagicBtnTex(PlayerTalentFrameToggleSummariesButton)

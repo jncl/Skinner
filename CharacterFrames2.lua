@@ -153,7 +153,6 @@ function aObj:TradeSkillUI() -- LoD
 	self:addButtonBorder{obj=TradeSkillSkillIcon}
 	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
 	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	-- Magic Button textures
 	self:removeMagicBtnTex(TradeSkillCreateAllButton)
 	self:removeMagicBtnTex(TradeSkillCancelButton)
 	self:removeMagicBtnTex(TradeSkillCreateButton)
@@ -224,7 +223,6 @@ function aObj:QuestLog()
 	self:skinAllButtons{obj=QuestLogControlPanel} -- Abandon/Push/Track
 	self:addButtonBorder{obj=QuestLogFrameShowMapButton, relTo=QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
-	-- Magic Button textures
 	self:removeMagicBtnTex(QuestLogFrameCompleteButton)
 
 -->>-- QuestLogDetail Frame
@@ -241,6 +239,7 @@ function aObj:RaidUI() -- LoD
 	self.initialized.RaidUI = true
 
 	local function skinPulloutFrames()
+
 		local obj, objName
 		for i = 1, NUM_RAID_PULLOUT_FRAMES	do
 			objName = "RaidPullout"..i
@@ -639,7 +638,7 @@ function aObj:GuildUI() -- LoD
 	if not self.db.profile.GuildUI or self.initialized.GuildUI then return end
 	self.initialized.GuildUI = true
 
-	-- Guild Panel
+-->>-- Guild Frame
 	GuildFrameBottomInset:DisableDrawLayer("BACKGROUND")
 	GuildFrameBottomInset:DisableDrawLayer("BORDER")
 	self:skinDropDown{obj=GuildDropDown}
@@ -656,10 +655,27 @@ function aObj:GuildUI() -- LoD
 	GuildFactionBarShadow:SetAlpha(0)
 	GuildFactionBarCap:SetTexture(self.sbTexture)
 	GuildFactionBarCapMarker:SetAlpha(0)
-	-- Magic Button textures
+	self:keepRegions(GuildFrame, {8, 19, 20, 18, 21, 22}) -- regions 8, 19, 20 are text, 18, 21 & 22 are tabard
+	self:moveObject{obj=GuildFrameTabardBackground, x=6, y=-10}
+	self:moveObject{obj=GuildFrameTabardEmblem, x=6, y=-10}
+	self:moveObject{obj=GuildFrameTabardBorder, x=6, y=-10}
+	self:addSkinFrame{obj=GuildFrame, ft=ftype, ri=true, x1=-5, y1=2, x2=1, y2=-6}
 	self:removeMagicBtnTex(GuildAddMemberButton)
 	self:removeMagicBtnTex(GuildControlButton)
 	self:removeMagicBtnTex(GuildViewLogButton)
+	-- Tabs
+	for i = 1, GuildFrame.numTabs do
+		tab = _G["GuildFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+	end
+	self.tabFrames[GuildFrame] = true
 	-- GuildMain Frame
 	GuildPerksToggleButton:DisableDrawLayer("BACKGROUND")
 	GuildNewPerksFrame:DisableDrawLayer("BACKGROUND")
@@ -678,12 +694,8 @@ function aObj:GuildUI() -- LoD
 		self:removeRegions(btn, {1, 2, 3, 4, 5, 6})
 		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
 	end
-	self:keepRegions(GuildFrame, {8, 19, 20, 18, 21, 22}) -- regions 8, 19, 20 are text, 18, 21 & 22 are tabard
-	self:moveObject{obj=GuildFrameTabardBackground, x=6, y=-10}
-	self:moveObject{obj=GuildFrameTabardEmblem, x=6, y=-10}
-	self:moveObject{obj=GuildFrameTabardBorder, x=6, y=-10}
-	self:addSkinFrame{obj=GuildFrame, ft=ftype, ri=true, x1=-5, y1=2, x2=1, y2=-6}
-	-- Roster Panel
+
+-->>-- GuildRoster Frame
 	self:skinDropDown{obj=GuildRosterViewDropdown}
 	self:skinFFColHeads("GuildRosterColumnButton", 5)
 	self:skinSlider{obj=GuildRosterContainerScrollBar, size=2}
@@ -701,7 +713,8 @@ function aObj:GuildUI() -- LoD
 		self:skinDropDown{obj=GuildMemberRankDropdown}
 	end
 	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, ofs=-6}
-	-- News Panel
+
+-->>-- GuildNews Frame
 	GuildNewsFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=GuildNewsContainerScrollBar, size=2}
 	for i = 1, #GuildNewsContainer.buttons do
@@ -721,11 +734,54 @@ function aObj:GuildUI() -- LoD
 		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
 	end
 	self:skinDropDown{obj=GuildRewardsDropDown}
-	-- Info Panel
+
+-->>-- GuildInfo Frame
 	self:removeRegions(GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
+	-- Tabs
+	for i = 1, GuildInfoFrame.numTabs do
+		tab = _G["GuildInfoFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+		tabSF.ignore = true -- ignore size changes
+		tabSF.up = true -- tabs grow upwards
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+	end
+	self.tabFrames[GuildInfoFrame] = true
+	-- GuildInfoFrameInfo Frame
 	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, size=2}
 	GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, size=2}
+	if self.isPTR then
+		-- GuildInfoFrameRecruitment Frame
+		GuildRecruitmentPlaystyleFrameBg:SetAlpha(0)
+		GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
+		GuildRecruitmentRolesFrameBg:SetAlpha(0)
+		GuildRecruitmentLevelFrameBg:SetAlpha(0)
+		GuildRecruitmentCommentFrameBg:SetAlpha(0)
+		self:skinScrollBar{obj=GuildRecruitmentCommentFrameScrollFrame}
+		self:addSkinFrame{obj=GuildRecruitmentCommentFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+		self:removeMagicBtnTex(GuildRecruitmentListGuildButton)
+		-- GuildInfoFrameApplicants Frame
+		self:SecureHookScript(GuildInfoFrameApplicants, "OnShow", function(this)
+			for i = 1, #GuildInfoFrameApplicantsContainer.buttons do
+				btn = GuildInfoFrameApplicantsContainer.buttons[i]
+				self:applySkin{obj=btn}
+				btn.selectedTex:SetAlpha(0)
+				btn.ring:SetAlpha(0)
+				btn.PointsSpentBgGold:SetAlpha(0)
+			end
+			self:Unhook(GuildInfoFrameApplicants, "OnShow")
+		end)
+		self:skinSlider{obj=GuildInfoFrameApplicantsContainerScrollBar}
+		self:removeMagicBtnTex(GuildRecruitmentInviteButton)
+		self:removeMagicBtnTex(GuildRecruitmentDeclineButton)
+		self:removeMagicBtnTex(GuildRecruitmentMessageButton)
+	end
 	-- Guild Text Edit frame
 	self:skinSlider{obj=GuildTextEditScrollFrameScrollBar, size=2}
 	self:addSkinFrame{obj=GuildTextEditContainer, ft=ftype, nb=true}
@@ -734,20 +790,6 @@ function aObj:GuildUI() -- LoD
 	self:skinSlider{obj=GuildLogScrollFrameScrollBar, size=2}
 	self:addSkinFrame{obj=GuildLogContainer, ft=ftype, nb=true}
 	self:addSkinFrame{obj=GuildLogFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
-
--->>-- Tabs
-	for i = 1, GuildFrame.numTabs do
-		tab = _G["GuildFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[GuildFrame] = true
 
 end
 
@@ -785,7 +827,7 @@ function aObj:GuildControlUI() -- LoD
 	self:skinDropDown{obj=GuildControlUI.bankTabFrame.dropdown}
 	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BACKGROUND")
 	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BORDER")
-	-- hook this as buttons are cretaed as required
+	-- hook this as buttons are created as required
 	self:SecureHook("GuildControlUI_BankTabPermissions_Update", function(this)
 		self:Debug("GuildControlUI_BankTabPermissions_Update: [%s]", this)
 		for i = 1, MAX_BUY_GUILDBANK_TABS do

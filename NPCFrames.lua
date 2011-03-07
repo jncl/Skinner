@@ -101,7 +101,6 @@ function aObj:TrainerUI() -- LoD
 		btn:GetNormalTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	-- Magic Button textures
 	self:removeMagicBtnTex(ClassTrainerTrainButton)
 	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
 
@@ -316,7 +315,6 @@ function aObj:ArenaRegistrar()
 	self:skinEditBox{obj=PVPBannerFrameEditBox, regs={9}}
 	self:keepRegions(PVPBannerFrame, {8, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 29 - 32 are the emblem, 33 - 35 are the text
 	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
-	-- Magic Button textures
 	self:removeMagicBtnTex(PVPBannerFrameCancelButton)
 	self:removeMagicBtnTex(PVPBannerFrameAcceptButton)
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
@@ -469,7 +467,6 @@ function aObj:ReforgingUI() -- LoD
 	self:skinDropDown{obj=ReforgingFrameFilterOldStat}
 	self:skinDropDown{obj=ReforgingFrameFilterNewStat}
 	self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
-	-- Magic Button textures
 	self:removeMagicBtnTex(ReforgingFrameReforgeButton)
 	self:removeMagicBtnTex(ReforgingFrameRestoreButton)
 
