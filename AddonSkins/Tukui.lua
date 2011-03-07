@@ -33,14 +33,18 @@ end
 -- The following code handles the Initial setup of Skinner when the TukUI is loaded
 function aObj:TukuiInit()
 
-	local borderr, borderg, borderb, backdropr, backdropg, backdropb
-    if IsAddOnLoaded("Tukui") then
-        local T, C, L = unpack(Tukui)
-        borderr, borderg, borderb = unpack(C["media"].bordercolor)
-        backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
-    else
-        borderr, borderg, borderb = 0.6, 0.6, 0.6
-        backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
+	-- handle version 12 & 13
+	local ver = tonumber(GetAddOnMetadata("Tukui", "Version"):sub(1, 2))
+	local mediapath = [[Interface\AddOns\Tukui\media\textures\]]
+    local borderr, borderg, borderb = 0.6, 0.6, 0.6
+    local backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
+	if ver == 13 then
+		mediapath = [[Interface\AddOns\Tukui\medias\textures\]]
+	    if IsAddOnLoaded("Tukui") then
+	        local T, C, L = unpack(Tukui)
+	        borderr, borderg, borderb = unpack(C["media"].bordercolor)
+	        backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+		end
     end
 
 	self:RawHook(self, "OnInitialize", function(this)
@@ -51,9 +55,9 @@ function aObj:TukuiInit()
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures
-		self.LSM:Register("background", "Tukui Background", [[Interface\AddOns\Tukui\medias\textures\blank]])
-		self.LSM:Register("border", "Tukui Border", [[Interface\AddOns\Tukui\medias\textures\blank]])
-		self.LSM:Register("statusbar", "Tukui StatusBar", [[Interface\AddOns\Tukui\medias\textures\normTex]])
+		self.LSM:Register("background", "Tukui Background", mediapath.."blank")
+		self.LSM:Register("border", "Tukui Border", mediapath.."blank")
+		self.LSM:Register("statusbar", "Tukui StatusBar", mediapath.."normTex")
 
 		-- create and use a new db profile called Tukui
 		local dbProfile = self.db:GetCurrentProfile()

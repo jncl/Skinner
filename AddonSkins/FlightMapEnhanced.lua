@@ -9,7 +9,10 @@ function aObj:FlightMapEnhanced()
 	self:addSkinFrame{obj=FlightMapEnhancedTaxiChoice, kfs=true, ofs=2}
 
 	-- Flight Timer frame
-	if FlightMapEnhanced_Config.vconf.modules["ft"] == 1 then
+	if FlightMapEnhanced_Config
+	and FlightMapEnhanced_Config.vconf
+	and FlightMapEnhanced_Config.vconf.modules
+	and FlightMapEnhanced_Config.vconf.modules["ft"] == 1 then
 		local bd
 		-- find the frame and skin it
 		for _, child in pairs{UIParent:GetChildren()} do
