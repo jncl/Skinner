@@ -737,21 +737,23 @@ function aObj:GuildUI() -- LoD
 
 -->>-- GuildInfo Frame
 	self:removeRegions(GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
-	-- Tabs
-	for i = 1, GuildInfoFrame.numTabs do
-		tab = _G["GuildInfoFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		tabSF.ignore = true -- ignore size changes
-		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
+	if self.isPTR then
+		-- Tabs
+		for i = 1, GuildInfoFrame.numTabs do
+			tab = _G["GuildInfoFrameTab"..i]
+			self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+			tabSF.ignore = true -- ignore size changes
+			tabSF.up = true -- tabs grow upwards
+			-- set textures here first time thru as it's LoD
+			if i == 1 then
+				if self.isTT then self:setActiveTab(tabSF) end
+			else
+				if self.isTT then self:setInactiveTab(tabSF) end
+			end
 		end
+		self.tabFrames[GuildInfoFrame] = true
 	end
-	self.tabFrames[GuildInfoFrame] = true
 	-- GuildInfoFrameInfo Frame
 	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, size=2}
 	GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
