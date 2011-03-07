@@ -14,18 +14,26 @@ Legend:
 	O	WatchFrame Sizing buttons
 
 	O	PTR, 4.1
-√		- PlayerTitle & GearManager replaced by PaperDoll panes
+√		- PlayerTitle & GearManager replaced by PaperDoll panes, now using tabs to access them
 ≈		- LookingForGuildUI added
 ≈		- Blizzard_GuildRoster, dropdown added (GuildMemberRankDropdown)
 √		- Blizzard_TrainerUI, statusbar added (ClassTrainerStatusBar)
-√		- InterfaceOptionsPanels, added dropdown (InterfaceOptionsActionBarsPanelPickupActionKeyDropDown)
+x		- InterfaceOptionsPanels, added dropdown (InterfaceOptionsActionBarsPanelPickupActionKeyDropDown)
+≈		- GuildInfoFrame, additions for LookingForGuildUI
+?		- IconIntroAnimation Frame
+?		- TimerTracker Frame
+x		- InspectUI (InspectHonorFrame removed)
+x		- QuestLogMapFrame removed
+√		- NUM_WORLDMAP_DETAIL_TILES replaced by GetNumberOfDetailTiles()
 
-	I	FlightMapEnhanced
-√		- skin FlightTimers frame
+√	I	FlightMapEnhanced, reported by Decabah, 01.03.11
+		- Skinner-b4.13682.1\SkinMe\FlightMapEnhanced.lua:12: attempt to index field 'modules' (a nil value)
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b4.13682.1\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
+		Skinner-b4.13682.1\UtilFuncs.lua:145: in function `checkAndRunAddOn'
+		Skinner-b4.13682.1\AddonFrames.lua:150: in function <Skinner\AddonFrames.lua:109>
+		(tail call): ?:
 
-√	N	ARL, reported by dwarven, 19.02.11
-
-√	S	ElvUI, requested by xpronic, 32.02.11
-
-≈	I	PTR errors, reported by Jiminimonka, 27.02.11
-	
+√	I	Tukui, reported by Decabah, 01.03.11
+		- cater for v12 as well as v13
