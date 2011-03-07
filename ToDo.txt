@@ -25,15 +25,3 @@ x		- InterfaceOptionsPanels, added dropdown (InterfaceOptionsActionBarsPanelPick
 x		- InspectUI (InspectHonorFrame removed)
 x		- QuestLogMapFrame removed
 √		- NUM_WORLDMAP_DETAIL_TILES replaced by GetNumberOfDetailTiles()
-
-√	I	FlightMapEnhanced, reported by Decabah, 01.03.11
-		- Skinner-b4.13682.1\SkinMe\FlightMapEnhanced.lua:12: attempt to index field 'modules' (a nil value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.13682.1\UtilFuncs.lua:88: in function <Skinner\UtilFuncs.lua:86>
-		Skinner-b4.13682.1\UtilFuncs.lua:145: in function `checkAndRunAddOn'
-		Skinner-b4.13682.1\AddonFrames.lua:150: in function <Skinner\AddonFrames.lua:109>
-		(tail call): ?:
-
-√	I	Tukui, reported by Decabah, 01.03.11
-		- cater for v12 as well as v13
