@@ -544,6 +544,14 @@ function aObj:Options()
 					desc = self.L["Set Gradient Maximum Colors"],
 					hasAlpha = true,
 				},
+				BagginsBBC = IsAddOnLoaded("Baggins") and self.Baggins and {
+					type = "color",
+					order = -1,
+					width = "double",
+					name = self.L["Baggins Bank Bags Colour"],
+					desc = self.L["Set Baggins Bank Bags Colour"],
+					hasAlpha = true,
+				} or nil,
 			},
 		},
 
@@ -1329,6 +1337,11 @@ function aObj:Options()
 					name = self.L["Menu Frames"],
 					desc = self.L["Toggle the skin of the Menu Frames"],
 				},
+				MovieProgress = IsMacClient() and {
+					type = "toggle",
+					name = self.L["Movie Progress"],
+					desc = self.L["Toggle the skinning of Movie Progress"],
+				} or nil,
 				MailFrame = {
 					type = "toggle",
 					name = self.L["Mail Frame"],
@@ -1455,37 +1468,6 @@ function aObj:Options()
 		if mod.GetOptions then
 			optTables["Modules"].args[mod.name] = mod:GetOptions()
 		end
-	end
-
-	-- optional options
-	if self.isPTR then
-		optTables.UIFrames.args["Feedback"] = {
-			type = "toggle",
-			name = self.L["FeedbackUI"],
-			desc = self.L["Toggle the skinning of FeedbackUI"],
-		}
-	end
-	if IsMacClient() then
-		optTables.UIFrames.args["MovieProgress"] = {
-			type = "toggle",
-			name = self.L["Movie Progress"],
-			desc = self.L["Toggle the skinning of Movie Progress"],
-		}
-	end
-
-	-- add these if Baggins & its skin are loaded
-	if IsAddOnLoaded("Baggins") and self.Baggins then
-		-- setup option to change the Bank Bags colour
-		local bbckey = {}
-		bbckey.type = "color"
-		bbckey.order = -1
-		bbckey.width = "double"
-		bbckey.name = self.L["Baggins Bank Bags Colour"]
-		bbckey.desc = self.L["Set Baggins Bank Bags Colour"]
-		bbckey.hasAlpha = true
-		-- add to the colour submenu
-		optTables.Colours.args["BagginsBBC"] = bbckey
-		bbckey = nil
 	end
 
 	-- add DisabledSkins options
