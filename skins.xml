@@ -108,6 +108,7 @@
 <script file="SkinMe\EnhancedStackSplit.lua"/>
 <script file="SkinMe\EnhancedTradeSkills.lua"/>
 <script file="SkinMe\epgp.lua"/>
+<script file="SkinMe\epgp_lootmaster.lua"/>
 <script file="SkinMe\EquipCompare.lua"/>
 <script file="SkinMe\EventEquip.lua"/>
 <script file="SkinMe\EveryQuest.lua"/>
