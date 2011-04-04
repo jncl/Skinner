@@ -136,7 +136,7 @@ function aObj:PetPaperDollFrame()
 	RaiseFrameLevel(PetPaperDollPetInfo)
 
 -->>-- Tabs
-	self:skinFFToggleTabs("PetPaperDollFrameTab")
+	-- self:skinFFToggleTabs("PetPaperDollFrameTab") -- no longer used ??
 
 end
 
@@ -219,9 +219,12 @@ function aObj:PVPFrame()
 	self:keepFontStrings(PVPFrame.panel3)
 	self:keepFontStrings(PVPTeamManagementFrameWeeklyDisplay)
 	self:skinUsingBD{obj=PVPTeamManagementFrameWeeklyDisplay}
-	PVPFrame.panel3.flag2.NormalHeader:SetAlpha(0)
-	PVPFrame.panel3.flag3.NormalHeader:SetAlpha(0)
-	PVPFrame.panel3.flag5.NormalHeader:SetAlpha(0)
+	PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
+	PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
+	PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
+	PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
+	PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
+	PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
 	self:skinFFColHeads("PVPTeamManagementFrameHeader", 4)
 	self:skinScrollBar{obj=PVPFrame.panel3.teamMemberScrollFrame}
 	self:skinDropDown{obj=PVPTeamManagementFrameTeamDropDown}
@@ -240,6 +243,21 @@ function aObj:PVPFrame()
 
 -->>-- Static Popup Special frame
 	self:addSkinFrame{obj=PVPFramePopup, ft=ftype, kfs=true, x1=9, y1=-9, x2=-7, y2=9}
+
+	-- Hook this to suppress the PVP Banner Header from being displayed when new team created
+	self:SecureHook("CreateArenaTeam", function(size, name, ...)
+		self:Debug("CreateArenaTeam: [%s, %s]", size,name)
+		if size == 2 then
+			PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
+			PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
+		elseif size == 3 then
+			PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
+			PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
+		elseif size == 5 then
+			PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
+			PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
+		end
+	end)
 
 end
 
