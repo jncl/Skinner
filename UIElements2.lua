@@ -211,7 +211,6 @@ function aObj:MenuFrames()
 			self:skinDropDown{obj=child}
 		end
 	end
-
 -->>-- Sound & Voice Options
 	self:addSkinFrame{obj=AudioOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	self:skinSlider(AudioOptionsFrameCategoryFrameListScrollBar)
@@ -330,7 +329,6 @@ function aObj:MacroUI() -- LoD
 	self.initialized.MacroUI = true
 
 -->>-- Macro Frame
-	self:skinFFToggleTabs("MacroFrameTab", 2)
 	self:skinScrollBar{obj=MacroButtonScrollFrame}
 	self:skinScrollBar{obj=MacroFrameScrollFrame}
 	self:skinEditBox{obj=MacroFrameText, noSkin=true}
@@ -347,6 +345,21 @@ function aObj:MacroUI() -- LoD
 			self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."Icon"], spbt=true}
 		end
 	end
+	-- Tabs
+	for i = 1, MacroFrame.numTabs do
+		tab = _G["MacroFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		self:moveObject{obj=_G["MacroFrameTab"..i.."HighlightTexture"], x=-2, y=4}
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, ofs=3, y1=-3, y2=-3}
+		tabSF.up = true -- tabs grow upwards
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+	end
+	self.tabFrames[MacroFrame] = true
 
 -->>-- Macro Popup Frame
 	self:skinEditBox{obj=MacroPopupEditBox}

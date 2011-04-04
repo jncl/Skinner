@@ -9,14 +9,29 @@ function aObj:FriendsFrame()
 
 	self:add2Table(self.charKeys1, "FriendsFrame")
 
--->>--	FriendsList Frame
+	-- FriendsTabHeader Frame
+	-- Tabs
+	for i = 1, FriendsTabHeader.numTabs do
+		tab = _G["FriendsTabHeaderTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		self:moveObject{obj=_G["FriendsTabHeaderTab"..i.."HighlightTexture"], x=-2, y=4}
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, y1=-3, y2=-3}
+		tabSF.up = true -- tabs grow upwards
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+	end
+	self.tabFrames[FriendsTabHeader] = true
+	--	FriendsList Frame
 	self:skinDropDown{obj=FriendsFrameStatusDropDown}
 	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
 	-- Add a skin frame to include the icon at the front
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
 	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=3, ng=true, ebc=true}, x1=-24}
-	self:skinFFToggleTabs("FriendsTabHeaderTab")
 	-- adjust width of FFFSF so it looks right (too thin by default)
 	FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
 	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar}
