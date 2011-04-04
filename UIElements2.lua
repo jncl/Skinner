@@ -792,14 +792,23 @@ function aObj:LFDFrame()
 	-- Search Status Frame
 	self:addSkinFrame{obj=LFDSearchStatus, ft=ftype}
 	-- LFD Parent Frame
-	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
+	if not self.isPTR then
+		self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
+	else
+		self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+		self:moveObject{obj=LFDParentFrameEyeFrame, x=10, y=-10}
+	end
 	LowerFrameLevel(self.skinFrame[LFDParentFrame]) -- hopefully allow Random cooldown frame to appear in front now
-	-- Portrait
-	LFDParentFramePortraitTexture:SetAlpha(0)
-	LFDParentFramePortraitIcon:SetAlpha(0)
+	if not self.isPTR then
+		-- Portrait
+		LFDParentFramePortraitTexture:SetAlpha(0)
+		LFDParentFramePortraitIcon:SetAlpha(0)
+	end
 	-- Queue Frame
 	LFDQueueFrameBackground:SetAlpha(0)
-	LFDQueueFrameLayout:SetAlpha(0)
+	if not self.isPTR then
+		LFDQueueFrameLayout:SetAlpha(0)
+	end
 	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
 	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
 	self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
@@ -963,37 +972,40 @@ end
 
 if aObj.isPTR then
 	function aObj:LookingForGuildUI() -- LoD
+		if not self.db.profile.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
+		self.initialized.LookingForGuildUI = true
 
-		self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, x1=0, y1=2, x2=1, y2=0}
+		self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
 		self:removeMagicBtnTex("LookingForGuildRequestButton")
 		self:removeMagicBtnTex("LookingForGuildBrowseButton")
-		-- Start Frame
-		LookingForGuildPlaystyleFrameBg:SetAlpha(0)
+		-- Start Frame (Settings)
+		LookingForGuildInterestFrameBg:SetAlpha(0)
 		LookingForGuildAvailabilityFrameBg:SetAlpha(0)
 		LookingForGuildRolesFrameBg:SetAlpha(0)
 		LookingForGuildCommentFrameBg:SetAlpha(0)
-		-- LookingForGuildCommentInputFrame:DisableDrawLayer("BACKGROUND")
 		self:skinScrollBar{obj=LookingForGuildCommentInputFrameScrollFrame}
 		self:addSkinFrame{obj=LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
 		-- Browse Frame
 		self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar}
-		self:SecureHookScript(LookingForGuildBrowseFrameContainer, "OnShow", function(this)
-			for i = 1, #this.buttons do
-				btn = this.buttons[i]
-				self:applySkin{obj=btn}
-				btn.selectedTex:SetAlpha(0)
-				btn.ring:SetAlpha(0)
-				btn.PointsSpentBgGold:SetAlpha(0)
-			end
-			self:Unhook(LookingForGuildBrowseFrameContainer, "OnShow")
-		end)
+		for i = 1, #LookingForGuildBrowseFrameContainer.buttons do
+			btn = LookingForGuildBrowseFrameContainer.buttons[i]
+			self:applySkin{obj=btn}
+			_G[btn:GetName().."Ring"]:SetAlpha(0)
+			btn.PointsSpentBgGold:SetAlpha(0)
+			self:moveObject{obj=btn.PointsSpentBgGold, x=3, y=-3}
+		end
+		-- Apps Frame (Requests)
+		self:skinSlider{obj=LookingForGuildAppsFrameContainerScrollBar}
+		for i = 1, #LookingForGuildAppsFrameContainer.buttons do
+			btn = LookingForGuildAppsFrameContainer.buttons[i]
+			self:applySkin{obj=btn}
+		end
 		-- Tabs
 		for i = 1, LookingForGuildFrame.numTabs do
 			tab = _G["LookingForGuildFrameTab"..i]
 			self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 			self:moveObject{obj=_G["LookingForGuildFrameTab"..i.."HighlightTexture"], x=-2, y=4}
-			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=2, y1=-2, x2=-2, y2=-2}
-			-- tabSF.ignore = true -- ignore size changes
+			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, ofs=-2, y2=-2}
 			tabSF.up = true -- tabs grow upwards
 			-- set textures here first time thru as it's LoD
 			if i == 1 then
@@ -1003,6 +1015,9 @@ if aObj.isPTR then
 			end
 		end
 		self.tabFrames[LookingForGuildFrame] = true
+		-- Request Membership Frame
+		self:addSkinFrame{obj=GuildFinderRequestMembershipFrameInputFrame, ft=ftype}
+		self:addSkinFrame{obj=GuildFinderRequestMembershipFrame, ft=ftype}
 	end
 
 end

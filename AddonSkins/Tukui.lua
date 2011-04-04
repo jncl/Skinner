@@ -1,5 +1,10 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Tukui") then return end
+-- check for ElvUI's Tukui DB converter
+if GetAddOnMetadata("Tukui", "Author") == "Elv22" then
+	aObj.Tukui = function() end
+	return
+end
 
 function aObj:Tukui()
 

@@ -179,6 +179,10 @@ function aObj:OnInitialize()
 	self.charKeys2 = {"AchievementUI"}
 	self.npcKeys = {"BarbershopUI", "TrainerUI", "ReforgingUI"} -- LoD frames
 	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager"} -- LoD frames
+	if self.isPTR then
+		self:add2Table(self.uiKeys1, "LookingForGuildUI")
+		self:add2Table(self.uiKeys1, "FeedbackUI")
+	end
 	self.uiKeys2 = {}
 
 	-- these are used to disable the gradient

@@ -766,19 +766,16 @@ function aObj:GuildUI() -- LoD
 		GuildRecruitmentLevelFrameBg:SetAlpha(0)
 		GuildRecruitmentCommentFrameBg:SetAlpha(0)
 		self:skinScrollBar{obj=GuildRecruitmentCommentFrameScrollFrame}
-		self:addSkinFrame{obj=GuildRecruitmentCommentFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+		self:addSkinFrame{obj=GuildRecruitmentCommentFrame, ft=ftype, kfs=true}
 		self:removeMagicBtnTex(GuildRecruitmentListGuildButton)
 		-- GuildInfoFrameApplicants Frame
-		self:SecureHookScript(GuildInfoFrameApplicants, "OnShow", function(this)
-			for i = 1, #GuildInfoFrameApplicantsContainer.buttons do
-				btn = GuildInfoFrameApplicantsContainer.buttons[i]
-				self:applySkin{obj=btn}
-				btn.selectedTex:SetAlpha(0)
-				btn.ring:SetAlpha(0)
-				btn.PointsSpentBgGold:SetAlpha(0)
-			end
-			self:Unhook(GuildInfoFrameApplicants, "OnShow")
-		end)
+		for i = 1, #GuildInfoFrameApplicantsContainer.buttons do
+			btn = GuildInfoFrameApplicantsContainer.buttons[i]
+			self:applySkin{obj=btn}
+			btn.ring:SetAlpha(0)
+			btn.PointsSpentBgGold:SetAlpha(0)
+			self:moveObject{obj=btn.PointsSpentBgGold, x=3, y=-3}
+		end
 		self:skinSlider{obj=GuildInfoFrameApplicantsContainerScrollBar}
 		self:removeMagicBtnTex(GuildRecruitmentInviteButton)
 		self:removeMagicBtnTex(GuildRecruitmentDeclineButton)

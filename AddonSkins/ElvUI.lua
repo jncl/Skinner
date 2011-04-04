@@ -41,8 +41,14 @@ function aObj:ElvUIInit()
 	local borderr, borderg, borderb, backdropr, backdropg, backdropb
     if IsAddOnLoaded("ElvUI") then
         E, C, L = unpack(ElvUI)
-        borderr, borderg, borderb = unpack(C["media"].bordercolor)
-        backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+		-- class colours
+		if C.general.classcolortheme then
+			local c = E.colors.class[E.myclass]
+			borderr, borderg, borderb = c[1], c[2], c[3]
+		else
+        	borderr, borderg, borderb = unpack(C.media.bordercolor)
+		end
+        backdropr, backdropg, backdropb = unpack(C.media.backdropcolor)
     else
         borderr, borderg, borderb = 0.6, 0.6, 0.6
         backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
@@ -90,6 +96,8 @@ function aObj:ElvUIInit()
 			self.db.profile.ChatEditBox = {skin = false, style = 1}
 			self.db.profile.StatusBar = {texture = "Elvui Norm", r = 0, g = 0.5, b = 0.5, a = 0.5}
 			self.db.profile.WorldMap = {skin = false, size = 1}
+			-- class colours
+			self.db.profile.ClassColours = C.general.classcolortheme
 		end
 
 		-- run the function

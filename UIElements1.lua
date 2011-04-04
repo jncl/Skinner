@@ -635,63 +635,115 @@ function aObj:WorldMap()
 
 end
 
-function aObj:HelpFrame()
-	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
-	self.initialized.HelpFrame = true
+if not aObj.isPTR then
+	function aObj:HelpFrame()
+		if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
+		self.initialized.HelpFrame = true
 
-	self:add2Table(self.uiKeys1, "HelpFrame")
+		self:add2Table(self.uiKeys1, "HelpFrame")
 
-	local hfTitle = self:getRegion(HelpFrame, 11)
-	local kbTitle = self:getRegion(KnowledgeBaseFrame, 2)
-	-- hook these to manage frame titles
-	self:SecureHook("HelpFrame_ShowFrame", function(key)
-		hfTitle:SetAlpha(0)
-		kbTitle:SetAlpha(0)
-		if key == "KBase" then
-			kbTitle:SetAlpha(1)
-		else
-			hfTitle:SetAlpha(1)
+		local hfTitle, kbTitle = self:getRegion(HelpFrame, 11)
+		if not self.isPTR then
+			kbTitle = self:getRegion(KnowledgeBaseFrame, 2)
 		end
-	end)
-	self:SecureHook("HelpFrame_PopFrame", function()
-		if HelpFrame.openFrame and HelpFrame.openFrame:GetName() == "KnowledgeBaseFrame" then
+		-- hook these to manage frame titles
+		self:SecureHook("HelpFrame_ShowFrame", function(key)
 			hfTitle:SetAlpha(0)
-			kbTitle:SetAlpha(1)
-		end
-	end)
+			kbTitle:SetAlpha(0)
+			if key == "KBase" then
+				kbTitle:SetAlpha(1)
+			else
+				hfTitle:SetAlpha(1)
+			end
+		end)
+		self:SecureHook("HelpFrame_PopFrame", function()
+			if HelpFrame.openFrame and HelpFrame.openFrame:GetName() == "KnowledgeBaseFrame" then
+				hfTitle:SetAlpha(0)
+				kbTitle:SetAlpha(1)
+			end
+		end)
 
--->>--	Ticket Status Frame
-	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
+	-->>--	Ticket Status Frame
+		self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
 
--->>--	Help Frame
-	self:moveObject{obj=hfTitle, y=-8}
-	 --> N.B. restrict button children traversal for KnowledgeBase button below
-	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, bgen=2, x1=6, y1=-6, x2=-45, y2=14}
+	-->>--	Help Frame
+		self:moveObject{obj=hfTitle, y=-8}
+		 --> N.B. restrict button children traversal for KnowledgeBase button below
+		self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, bgen=2, x1=6, y1=-6, x2=-45, y2=14}
 
--->>--	KnowledgeBase Frame
-	self:keepFontStrings(KnowledgeBaseFrame)
-	self:moveObject{obj=kbTitle, y=-8}
-	self:skinButton{obj=GMChatOpenLog}
-	self:skinEditBox{obj=KnowledgeBaseFrameEditBox}
-	self:skinDropDown{obj=KnowledgeBaseFrameCategoryDropDown}
-	self:skinDropDown{obj=KnowledgeBaseFrameSubCategoryDropDown}
-	KnowledgeBaseFrameDivider:Hide()
-	KnowledgeBaseFrameDivider2:Hide()
--->>-- Article Scroll Frame
-	self:skinScrollBar{obj=KnowledgeBaseArticleScrollFrame}
-	self:skinButton{obj=KnowledgeBaseArticleScrollChildFrameBackButton, as=true}
--->>-- Talk to a GM panel
--->>-- Report an Issue panel
--->>-- Character Stuck panel
-	self:addButtonBorder{obj=HelpFrameStuckHearthstone, es=20}
--->>--	Open Ticket SubFrame
-	HelpFrameOpenTicketDivider:Hide()
-	self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
--->>-- View Response SubFrame
-	self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
-	HelpFrameViewResponseDivider:Hide()
-	self:skinScrollBar{obj=HelpFrameViewResponseMessageScrollFrame}
+	-->>--	KnowledgeBase Frame
+		self:keepFontStrings(KnowledgeBaseFrame)
+		self:moveObject{obj=kbTitle, y=-8}
+		self:skinButton{obj=GMChatOpenLog}
+		self:skinEditBox{obj=KnowledgeBaseFrameEditBox}
+		self:skinDropDown{obj=KnowledgeBaseFrameCategoryDropDown}
+		self:skinDropDown{obj=KnowledgeBaseFrameSubCategoryDropDown}
+		KnowledgeBaseFrameDivider:Hide()
+		KnowledgeBaseFrameDivider2:Hide()
+	-->>-- Article Scroll Frame
+		self:skinScrollBar{obj=KnowledgeBaseArticleScrollFrame}
+		self:skinButton{obj=KnowledgeBaseArticleScrollChildFrameBackButton, as=true}
+	-->>-- Talk to a GM panel
+	-->>-- Report an Issue panel
+	-->>-- Character Stuck panel
+		self:addButtonBorder{obj=HelpFrameStuckHearthstone, es=20}
+	-->>--	Open Ticket SubFrame
+		HelpFrameOpenTicketDivider:Hide()
+		self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
+	-->>-- View Response SubFrame
+		self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
+		HelpFrameViewResponseDivider:Hide()
+		self:skinScrollBar{obj=HelpFrameViewResponseMessageScrollFrame}
 
+	end
+else
+	function aObj:HelpFrame()
+		if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
+		self.initialized.HelpFrame = true
+
+		self:add2Table(self.uiKeys1, "HelpFrame")
+
+		self:keepFontStrings(HelpFrame.header)
+		self:moveObject{obj=HelpFrame.header, y=-12}
+		HelpFrame.leftInset:DisableDrawLayer("BACKGROUND")
+		HelpFrame.leftInset:DisableDrawLayer("BORDER")
+		HelpFrame.mainInset:DisableDrawLayer("BACKGROUND")
+		HelpFrame.mainInset:DisableDrawLayer("BORDER")
+		self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, ofs=-10}
+		-->>-- Knowledgebase panel
+		self:keepFontStrings(HelpFrame.kbase)
+		self:moveObject{obj=HelpFrame.kbase.searchBox.icon, x=4}
+		self:skinEditBox{obj=HelpFrame.kbase.searchBox, regs={9}}
+		self:skinSlider{obj=HelpFrame.kbase.scrollFrame.ScrollBar}
+		self:skinSlider{obj=HelpFrame.kbase.scrollFrame2.ScrollBar}
+		-- Nav Bar
+		HelpFrame.kbase.navBar:DisableDrawLayer("BACKGROUND")
+		HelpFrame.kbase.navBar.overlay:DisableDrawLayer("OVERLAY")
+		HelpFrame.kbase.navBar.home:DisableDrawLayer("OVERLAY")
+		HelpFrame.kbase.navBar.home:GetNormalTexture():SetAlpha(0)
+		HelpFrame.kbase.navBar.home:GetPushedTexture():SetAlpha(0)
+		HelpFrame.kbase.navBar.home.text:SetPoint("RIGHT", -20, 0) -- allow text to be fully displayed
+		-->>-- Character Stuck panel
+		self:addButtonBorder{obj=HelpFrameCharacterStuckHearthstone, es=20}
+		-->>--	Ticket panel
+		self:skinSlider{obj=HelpFrameTicketScrollFrame.ScrollBar}
+		self:addSkinFrame{obj=self:getChild(HelpFrame.ticket, 4), ft=ftype}
+
+		-->>--	Ticket Status Frame
+		self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
+
+		-- hook this to handle navbar buttons
+		self:SecureHook("NavBar_AddButton", function(this, buttonData)
+			self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
+			for i = 1, #this.navList do
+				local btn = this.navList[i]
+				btn:DisableDrawLayer("OVERLAY")
+				btn:GetNormalTexture():SetAlpha(0)
+				btn:GetPushedTexture():SetAlpha(0)
+			end
+		end)
+
+	end
 end
 
 function aObj:Tutorial()
@@ -799,8 +851,8 @@ function aObj:InspectUI() -- LoD
 -->>--	Talent Frame
 	self:skinScrollBar{obj=InspectTalentFrameScrollFrame}
 	self:keepFontStrings(InspectTalentFramePointsBar)
-	self:skinFFToggleTabs("InspectTalentFrameTab")
-	self:moveObject{obj=InspectTalentFrameTab1, x=-30}
+	-- self:skinFFToggleTabs("InspectTalentFrameTab")
+	-- self:moveObject{obj=InspectTalentFrameTab1, x=-30}
 	if self.modBtnBs then
 		-- add button borders
 		for i = 1, MAX_NUM_TALENTS do
@@ -809,6 +861,21 @@ function aObj:InspectUI() -- LoD
 			self:addButtonBorder{obj=_G[btnName], tibt=true}
 		end
 	end
+	-- Tabs
+	for i = 1, InspectTalentFrame.numTabs do
+		tab = _G["InspectTalentFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		self:moveObject{obj=_G["InspectTalentFrameTab"..i.."HighlightTexture"], x=-2, y=4}
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, y1=-3, y2=-3}
+		tabSF.up = true -- tabs grow upwards
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+	end
+	self.tabFrames[InspectTalentFrame] = true
 
 -->>-- Guild Frame
 	InspectGuildFrameBG:SetAlpha(0)
@@ -1137,8 +1204,6 @@ if aObj.isPTR then
 	function aObj:FeedbackUI() -- LoD
 		if not self.db.profile.Feedback or self.initialized.Feedback then return end
 		self.initialized.Feedback = true
-
-		self:add2Table(self.uiKeys1, "FeedbackUI")
 
 		local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 

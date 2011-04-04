@@ -274,6 +274,7 @@ function module:isButton(obj, cb, blue)
 			if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
 			or oTex:find("UI-Panel-Button-Disabled", 1, true) -- UI Panel Button (Gray template)
 			or oTex:find("UI-DialogBox-Button-Up", 1, true) -- Static Popup Button
+			or oTex:find("HelpButtons") -- "new" Help Button
 			or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
 			then
@@ -287,6 +288,10 @@ function module:isButton(obj, cb, blue)
 			if oTex:find("UI-Toast-CloseButton", 1, true)
 			then
 				return "toast"
+			end
+			if oTex:find("KnowledgeBaseButtton") -- "new" KnowledgeBase Button
+			then
+				return "helpKB"
 			end
 		end
 	end
@@ -323,6 +328,9 @@ local function __skinAllButtons(opts, bgen)
 				module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
 			elseif bType == "toast" then
 				module:skinButton{obj=child, cb3=true, anim=opts.anim}
+			elseif bType == "helpKB" then
+				child:DisableDrawLayer("ARTWORK")
+				module:skinButton{obj=child, as=true}
 			end
 		elseif child:IsObjectType("Frame") and bgen > 0 then
 			opts.obj=child

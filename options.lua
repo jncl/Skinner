@@ -129,6 +129,7 @@ function aObj:Defaults()
 		SpellFlyout		= true,
 		GuildInvite		= true,
 		GhostFrame		= true,
+		LookingForGuildUI	= self.isPTR and true or nil,
 	-->>-- Disabled Skins
 		DisabledSkins	= {},
 	-->-- Profiles
@@ -1429,6 +1430,12 @@ function aObj:Options()
 					name = self.L["Ghost Frame"],
 					desc = self.L["Toggle the skin of the Ghost Frame"],
 				},
+				LookingForGuildUI = self.isPTR and {
+					type = "toggle",
+					width = "double",
+					name = self.L["Looking for Guild Frame"],
+					desc = self.L["Toggle the skin of the Looking for Guild Frame"],
+				} or nil,
 			},
 		},
 
