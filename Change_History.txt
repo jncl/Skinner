@@ -1,3 +1,10 @@
+b4.13707.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for PTR changes
+	Updated FlightMapEnhanced
+
 b4.13707.1
 Jncl:
 	ToDo.txt
