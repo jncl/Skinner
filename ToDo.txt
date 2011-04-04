@@ -14,14 +14,28 @@ Legend:
 	O	WatchFrame Sizing buttons
 
 	O	PTR, 4.1
+√		- Updated TOC
 √		- PlayerTitle & GearManager replaced by PaperDoll panes, now using tabs to access them
 ≈		- LookingForGuildUI added
 ≈		- Blizzard_GuildRoster, dropdown added (GuildMemberRankDropdown)
 √		- Blizzard_TrainerUI, statusbar added (ClassTrainerStatusBar)
 x		- InterfaceOptionsPanels, added dropdown (InterfaceOptionsActionBarsPanelPickupActionKeyDropDown)
 ≈		- GuildInfoFrame, additions for LookingForGuildUI
-?		- IconIntroAnimation Frame
-?		- TimerTracker Frame
+x		- IconIntroAnimation Frame
+x		- TimerTracker Frame
 x		- InspectUI (InspectHonorFrame removed)
 x		- QuestLogMapFrame removed
 √		- NUM_WORLDMAP_DETAIL_TILES replaced by GetNumberOfDetailTiles()
+?		- CompactRaidFrameManager (filterOptions)
+		- GameMenu (Graphics, Sound, Voice now in new System Menu in addition to Advanced & Network)
+?			- skin the horizontal sliders
+√		- GuildFinderRequestMembershipFrame
+?		- GuildChallengeAlertFrame
+√		- New HelpFrame Layout
+√		- LFD Frame
+
+≈	I	ElvUI, reported by Jiminimonka, 13.03.11/19.03.11
+		- support for ElvUI class colours setting
+		- handle Tukui DB Converter
+
+≈	S	EPGPLootMaster, requested by Jiminimonka, 15.03.11
