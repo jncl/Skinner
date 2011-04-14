@@ -63,13 +63,13 @@ function aObj:ElvUIInit()
 
 		-- Register Textures if required
 		if not C.media.blank then
-			self.LSM:Register("background","Elvui Blank", [[Interface\BUTTONS\WHITE8X8]])
+			self.LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
 		end
 		if not C.media.glowTex then
-			self.LSM:Register("border", "Elvui GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex.tga]])
+			self.LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex.tga]])
 		end
 		if not C.media.normTex then
-			self.LSM:Register("statusbar","Elvui Norm", [[Interface\AddOns\ElvUI\media\textures\normTex.tga]])
+			self.LSM:Register("statusbar","ElvUI Norm", [[Interface\AddOns\ElvUI\media\textures\normTex.tga]])
 		end
 
 		-- create and use a new db profile called ElvUI
@@ -85,16 +85,16 @@ function aObj:ElvUIInit()
 			self.db.profile.BdDefault = false
 			self.db.profile.BdFile = "None"
 			self.db.profile.BdEdgeFile = "None"
-			self.db.profile.BdTexture = "Elvui Blank"
-			self.db.profile.BdBorderTexture = "Elvui GlowBorder"
+			self.db.profile.BdTexture = "ElvUI Blank"
+			self.db.profile.BdBorderTexture = "ElvUI GlowBorder"
 			self.db.profile.BdTileSize = 0
 			self.db.profile.BdEdgeSize = 1
 			self.db.profile.BdInset = -1
-			self.db.profile.Gradient = {enable = false, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Elvui Blank"}
+			self.db.profile.Gradient = {enable = false, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "ElvUI Blank"}
 			self.db.profile.Buffs = false
 			self.db.profile.Nameplates = false
 			self.db.profile.ChatEditBox = {skin = false, style = 1}
-			self.db.profile.StatusBar = {texture = "Elvui Norm", r = 0, g = 0.5, b = 0.5, a = 0.5}
+			self.db.profile.StatusBar = {texture = "ElvUI Norm", r = 0, g = 0.5, b = 0.5, a = 0.5}
 			self.db.profile.WorldMap = {skin = false, size = 1}
 			-- class colours
 			self.db.profile.ClassColours = C.general.classcolortheme
