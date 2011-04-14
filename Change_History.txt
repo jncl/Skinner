@@ -1,3 +1,13 @@
+b4.13812.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Options changes
+	PVP Areana panel changes
+	Tab type changes
+	PTR changes
+	Skinned epgp_lootmaster
+
 b4.13707.2
 Jncl:
 	ToDo.txt
