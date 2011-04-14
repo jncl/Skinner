@@ -34,8 +34,12 @@ x		- QuestLogMapFrame removed
 √		- New HelpFrame Layout
 √		- LFD Frame
 
-≈	I	ElvUI, reported by Jiminimonka, 13.03.11/19.03.11
-		- support for ElvUI class colours setting
-		- handle Tukui DB Converter
+	I	ElvUI, reported by Jiminimonka, 15.03.11
+√		- missing textures
+		- solution identified by VQKatsuko, Elvui isn't the same as ElvUI
 
-≈	S	EPGPLootMaster, requested by Jiminimonka, 15.03.11
+	I	RaidWatch2, reported by Greevir, 27.03.11
+		- when loaded the following frames aren't skinned;  Talent Point, Achievement or Guild
+		- no skin for RaidWatch2, not sure why this is happening
+
+√	S	REFlex, requested by Decabah, 11.03.11
