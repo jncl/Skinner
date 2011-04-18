@@ -889,4 +889,11 @@ function aObj:AlertFrames()
 	_G["DungeonCompletionAlertFrame1Reward1"]:DisableDrawLayer("OVERLAY") -- border texture
 	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
 
+	-- GuildChallengeAlert Frame
+	if self.isPTR then
+		GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
+		GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
+		self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
+	end
+
 end

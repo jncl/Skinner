@@ -757,8 +757,7 @@ function aObj:GuildUI() -- LoD
 		for i = 1, GuildInfoFrame.numTabs do
 			tab = _G["GuildInfoFrameTab"..i]
 			self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-			tabSF.ignore = true -- ignore size changes
+			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=2, y1=-5, x2=2, y2=-5}
 			tabSF.up = true -- tabs grow upwards
 			-- set textures here first time thru as it's LoD
 			if i == 1 then
@@ -770,17 +769,20 @@ function aObj:GuildUI() -- LoD
 		self.tabFrames[GuildInfoFrame] = true
 	end
 	-- GuildInfoFrameInfo Frame
+	if self.isPTR then
+		self:keepFontStrings(GuildInfoFrameInfo)
+	end
 	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, size=2}
 	GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, size=2}
 	if self.isPTR then
 		-- GuildInfoFrameRecruitment Frame
-		GuildRecruitmentPlaystyleFrameBg:SetAlpha(0)
+		GuildRecruitmentInterestFrameBg:SetAlpha(0)
 		GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
 		GuildRecruitmentRolesFrameBg:SetAlpha(0)
 		GuildRecruitmentLevelFrameBg:SetAlpha(0)
 		GuildRecruitmentCommentFrameBg:SetAlpha(0)
-		self:skinScrollBar{obj=GuildRecruitmentCommentFrameScrollFrame}
+		self:skinScrollBar{obj=GuildRecruitmentCommentInputFrameScrollFrame}
 		self:addSkinFrame{obj=GuildRecruitmentCommentFrame, ft=ftype, kfs=true}
 		self:removeMagicBtnTex(GuildRecruitmentListGuildButton)
 		-- GuildInfoFrameApplicants Frame
