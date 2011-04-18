@@ -16,30 +16,26 @@ Legend:
 	O	PTR, 4.1
 √		- Updated TOC
 √		- PlayerTitle & GearManager replaced by PaperDoll panes, now using tabs to access them
-≈		- LookingForGuildUI added
-≈		- Blizzard_GuildRoster, dropdown added (GuildMemberRankDropdown)
+√		- LookingForGuildUI added
+x		- Blizzard_GuildRoster, dropdown added (GuildMemberRankDropdown)
 √		- Blizzard_TrainerUI, statusbar added (ClassTrainerStatusBar)
 x		- InterfaceOptionsPanels, added dropdown (InterfaceOptionsActionBarsPanelPickupActionKeyDropDown)
-≈		- GuildInfoFrame, additions for LookingForGuildUI
+√		- GuildInfoFrame, additions for LookingForGuildUI
 x		- IconIntroAnimation Frame
 x		- TimerTracker Frame
 x		- InspectUI (InspectHonorFrame removed)
 x		- QuestLogMapFrame removed
 √		- NUM_WORLDMAP_DETAIL_TILES replaced by GetNumberOfDetailTiles()
-?		- CompactRaidFrameManager (filterOptions)
-		- GameMenu (Graphics, Sound, Voice now in new System Menu in addition to Advanced & Network)
-?			- skin the horizontal sliders
+x		- CompactRaidFrameManager (filterOptions)
+x		- GameMenu (Graphics, Sound, Voice now in new System Menu in addition to Advanced & Network)
 √		- GuildFinderRequestMembershipFrame
-?		- GuildChallengeAlertFrame
+√		- GuildChallengeAlertFrame
 √		- New HelpFrame Layout
 √		- LFD Frame
 
-	I	ElvUI, reported by Jiminimonka, 15.03.11
-√		- missing textures
-		- solution identified by VQKatsuko, Elvui isn't the same as ElvUI
-
-	I	RaidWatch2, reported by Greevir, 27.03.11
+?	I	RaidWatch2, reported by Greevir, 27.03.11
 		- when loaded the following frames aren't skinned;  Talent Point, Achievement or Guild
 		- no skin for RaidWatch2, not sure why this is happening
 
-√	S	REFlex, requested by Decabah, 11.03.11
+√	I	ElvUI, reported by JJiminimonka, 15.04.11
+		- support class colours a la Tukui
