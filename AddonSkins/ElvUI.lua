@@ -43,8 +43,8 @@ function aObj:ElvUIInit()
         E, C, L = unpack(ElvUI)
 		-- class colours
 		if C.general.classcolortheme then
-			local c = E.colors.class[E.myclass]
-			borderr, borderg, borderb = c[1], c[2], c[3]
+			local cc = E.colors.class[E.myclass]
+			borderr, borderg, borderb = cc[1], cc[2], cc[3]
 		else
         	borderr, borderg, borderb = unpack(C.media.bordercolor)
 		end
