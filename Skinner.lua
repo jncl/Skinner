@@ -189,8 +189,8 @@ function aObj:OnInitialize()
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
 	-- TooltipBorder colours
-	c = prdb.TooltipBorder
-	self.tbColour = {c.r, c.g, c.b, c.a}
+	c = prdb.ClassColours and RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
+	self.tbColour = {c.r, c.g, c.b, c.a or 1}
 	-- StatusBar colours
 	c = prdb.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
@@ -198,10 +198,10 @@ function aObj:OnInitialize()
 	self.sbTexture = self.LSM:Fetch("statusbar", prdb.StatusBar.texture)
 	-- Backdrop colours
 	c = prdb.Backdrop
-	self.bColour = {c.r, c.g, c.b, c.a}
+	self.bColour = {c.r, c.g, c.b, c.a or 1}
 	-- BackdropBorder colours
-	c = prdb.BackdropBorder
-	self.bbColour = {c.r, c.g, c.b, c.a}
+	c = prdb.ClassColours and RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
+	self.bbColour = {c.r, c.g, c.b, c.a or 1}
 	-- Inactive Tab & DropDowns texture
 	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
 		self.itTex = self.LSM:Fetch("background", aName.." User TabDDTexture")

@@ -41,13 +41,7 @@ function aObj:ElvUIInit()
 	local borderr, borderg, borderb, backdropr, backdropg, backdropb
     if IsAddOnLoaded("ElvUI") then
         E, C, L = unpack(ElvUI)
-		-- class colours
-		if C.general.classcolortheme then
-			local cc = E.colors.class[E.myclass]
-			borderr, borderg, borderb = cc[1], cc[2], cc[3]
-		else
-        	borderr, borderg, borderb = unpack(C.media.bordercolor)
-		end
+       	borderr, borderg, borderb = unpack(C.media.bordercolor)
         backdropr, backdropg, backdropb = unpack(C.media.backdropcolor)
     else
         borderr, borderg, borderb = 0.6, 0.6, 0.6
@@ -79,9 +73,9 @@ function aObj:ElvUIInit()
 			self.db:CopyProfile(dbProfile) -- use settings from previous profile
 
 			-- change settings
-            self.db.profile.TooltipBorder  = {r = borderr, g = borderg, b = borderb, a = 1}
-            self.db.profile.BackdropBorder = {r = borderr, g = borderg, b = borderb, a = 1}
-            self.db.profile.Backdrop       = {r = backdropr, g = backdropg, b = backdropb, a = 1}
+            self.db.profile.TooltipBorder  = {r = borderr, g = borderg, b = borderb}
+            self.db.profile.BackdropBorder = {r = borderr, g = borderg, b = borderb}
+            self.db.profile.Backdrop       = {r = backdropr, g = backdropg, b = backdropb}
 			self.db.profile.BdDefault = false
 			self.db.profile.BdFile = "None"
 			self.db.profile.BdEdgeFile = "None"
@@ -96,9 +90,9 @@ function aObj:ElvUIInit()
 			self.db.profile.ChatEditBox = {skin = false, style = 1}
 			self.db.profile.StatusBar = {texture = "ElvUI Norm", r = 0, g = 0.5, b = 0.5, a = 0.5}
 			self.db.profile.WorldMap = {skin = false, size = 1}
-			-- class colours
-			self.db.profile.ClassColours = C.general.classcolortheme
 		end
+		-- class colours
+		self.db.profile.ClassColours = C.general.classcolortheme
 
 		-- run the function
 		self.hooks[this].OnInitialize(this)

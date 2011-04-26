@@ -24,26 +24,23 @@ function aObj:Ace3()
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
---        aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
+		-- aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
 		if obj and not aObj.skinned[obj] then
 			if objType == "BlizOptionsGroup" then
-				aObj:keepFontStrings(obj.frame)
-				aObj:applySkin(obj.frame)
+				aObj:applySkin{obj=obj.frame, kfs=true}
 			elseif objType == "Dropdown" then
 				aObj:skinDropDown{obj=obj.dropdown}
-				aObj:applySkin(obj.pullout.frame)
+				aObj:applySkin{obj=obj.pullout.frame}
 			elseif objType == "Dropdown-Pullout" then
-				aObj:applySkin(obj.frame)
+				aObj:applySkin{obj=obj.frame}
 			elseif objType == "DropdownGroup"
 			or objType == "InlineGroup"
 			or objType == "TabGroup"
 			then
 				if objVer < 20 then
-					aObj:keepFontStrings(obj.border)
-					aObj:applySkin(obj.border)
+					aObj:applySkin{obj=obj.border, kfs=true}
 				else
-					aObj:keepFontStrings(obj.content:GetParent())
-					aObj:applySkin(obj.content:GetParent())
+					aObj:applySkin{obj=obj.content:GetParent(), kfs=true}
 				end
 			elseif objType == "EditBox"
 			or objType == "NumberEditBox"
@@ -61,7 +58,7 @@ function aObj:Ace3()
 				aObj:skinButton{obj=obj.button, as=true}
 				if objVer < 20 then
 					aObj:skinScrollBar{obj=obj.scrollframe}
-					aObj:applySkin(obj.backdrop)
+					aObj:applySkin{obj=obj.backdrop}
 				else
 					aObj:skinScrollBar{obj=obj.scrollFrame}
 					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- backdrop frame
@@ -71,19 +68,17 @@ function aObj:Ace3()
 				obj.editbox:SetHeight(20)
 				obj.editbox:SetWidth(60)
 			elseif objType == "Frame" then
-				aObj:keepFontStrings(obj.frame)
-				aObj:applySkin(obj.frame)
+				aObj:applySkin{obj=obj.frame, kfs=true}
 				if objVer < 20 then
 					aObj:skinButton{obj=obj.closebutton, y1=1}
-					aObj:applySkin(obj.statusbg)
+					aObj:applySkin{obj=obj.statusbg}
 				else
 					aObj:skinButton{obj=aObj:getChild(obj.frame, 1), y1=1}
 					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- backdrop frame
 				end
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "Window" then
-				aObj:keepFontStrings(obj.frame)
-				aObj:applySkin(obj.frame)
+				aObj:applySkin{obj=obj.frame, kfs=true}
 				aObj:skinButton{obj=obj.closebutton, cb=true}
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "ScrollFrame" then
@@ -92,14 +87,14 @@ function aObj:Ace3()
 			elseif objType == "TreeGroup" then
 				aObj:keepRegions(obj.scrollbar, {1})
 				aObj:skinUsingBD{obj=obj.scrollbar}
-				aObj:applySkin(obj.border)
-				aObj:applySkin(obj.treeframe)
+				aObj:applySkin{obj=obj.border}
+				aObj:applySkin{obj=obj.treeframe}
 				if aObj.modBtns then
 					-- hook to manage changes to button textures
-					aObj:SecureHook(obj, "RefreshTree", function()
+					aObj:SecureHook(obj, "RefreshTree", function(this)
 						local btn
-						for i = 1, #obj.buttons do
-							btn = obj.buttons[i]
+						for i = 1, #this.buttons do
+							btn = this.buttons[i]
 							if not aObj.skinned[btn.toggle] then
 								aObj:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
 							end
@@ -171,7 +166,6 @@ function aObj:Ace3()
 				aObj:SecureHook(obj.expand, "SetNormalTexture", function(this, nTex)
 					aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
 				end)
-
 			elseif objType == "WeakAurasNewButton" then
 			elseif objType == "WeakAurasDisplayButton" then
 				aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
@@ -182,6 +176,9 @@ function aObj:Ace3()
 					aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
 				end)
 
+			-- DragDropTarget object (ReagentRestocker)
+			elseif objType == "DragDropTarget" then
+				
 			-- ignore these types for now
 			elseif objType == "CheckBox"
 			or objType == "Dropdown-Item-Execute"
