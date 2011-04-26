@@ -40,6 +40,11 @@ local function printIt(text, frame, r, g, b)
 	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
 
 end
+local function round2(num, ndp)
+
+  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
+
+end
 --@debug@
 function printTS(...)
 	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
@@ -73,6 +78,8 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
 	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl end end)
 	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, false) end)
+	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), true, false) end)
+	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), false, false) end)
 	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, true) end)
 	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end)
 	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
@@ -175,7 +182,7 @@ function aObj:findFrame(height, width, children)
 		if obj:IsObjectType("Frame") then
 			if obj:GetName() == nil then
 				if obj:GetParent() == nil then
-					if ceil(obj:GetHeight()) == height and ceil(obj:GetWidth()) == width then
+					if round2(obj:GetHeight(), 2) == height and round2(obj:GetWidth(), 2) == width then
 						kids = {}
 						for _, child in pairs{obj:GetChildren()} do
 							kids[#kids + 1] = child:GetObjectType()
@@ -217,8 +224,8 @@ function aObj:findFrame2(parent, objType, ...)
 				if select("#", ...) > 2 then
 					-- base checks on position
 					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
-					xOfs = xOfs and ceil(xOfs) or 0
-					yOfs = yOfs and ceil(yOfs) or 0
+					xOfs = xOfs and round2(xOfs, 2) or 0
+					yOfs = yOfs and round2(yOfs, 2) or 0
 					if	point		  == select(1, ...)
 					and relativeTo	  == select(2, ...)
 					and relativePoint == select(3, ...)
@@ -229,7 +236,7 @@ function aObj:findFrame2(parent, objType, ...)
 					end
 				else
 					-- base checks on size
-					height, width = ceil(child:GetHeight()), ceil(child:GetWidth())
+					height, width = round2(child:GetHeight(), 2), round2(child:GetWidth(), 2)
 					if	height == select(1, ...)
 					and width  == select(2, ...) then
 						frame = child
@@ -407,12 +414,6 @@ function aObj:RGBPercToHex(r, g, b)
 	b = b <= 1 and b >= 0 and b or 0
 
 	return ("%02x%02x%02x"):format(r*255, g*255, b*255)
-
-end
-
-local function round2(num, ndp)
-
-  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
 
 end
 
