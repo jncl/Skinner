@@ -33,25 +33,8 @@ x		- GameMenu (Graphics, Sound, Voice now in new System Menu in addition to Adva
 √		- New HelpFrame Layout
 √		- LFD Frame
 
-?	I	RaidWatch2, reported by Greevir, 27.03.11
-		- when loaded the following frames aren't skinned;  Talent Point, Achievement or Guild
-		- no skin for RaidWatch2, not sure why this is happening
+	I	Scrap, reported by Decabah, 26.04.11
+		- unskinned pane and tab in the vendor view
 
-√	N	BaudManifest, reported by Studdly1, 23.04.11
-
-√	I	Skinner, reported by Jiminimonka, 23.04.11
-		- class colours should be set during initialisation rather than being stored in the profile as the character class will change
-
-?	I	XLoot, reported by Gabriel, 23.04.11
-		- Skinner-b4.13875.1\SkinMe\XLoot10.lua:24: attempt to index upvalue "btn" (a nil value)
-		Skinner-b4.13875.1\SkinMe\XLoot10.lua:24: in function <Skinner\SkinMe\XLoot10.lua:12>
-		<string>:"safecall Dispatcher[2]":4: in function <string>:"safecall Dispatcher[2]":4
-		<in C code>
-		<string>:"safecall Dispatcher[2]":13: in function "?"
-		Ace3-r1022\CallbackHandler-1.0\CallbackHandler-1.0-6.lua:92: in function "Fire"
-		Ace3-r1022\AceEvent-3.0\AceEvent-3.0-3.lua:120: in function <Ace3\AceEvent-3.0\AceEvent-3.0.lua:119>
-
-√	S	Reagent Restocker, requested by Gabriel, 24.04.11
-		- Options Frame needs skinning
-
-√	N	Minimal Archaeology, reported by MegaManJuno, 24.04.11
+√	I	PTR patch now on live
+		- identify Patched version based upon build no.
