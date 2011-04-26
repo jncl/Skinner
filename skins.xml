@@ -45,6 +45,7 @@
 <script file="SkinMe\BankItems.lua"/>
 <script file="SkinMe\BasicChatMods.lua"/>
 <script file="SkinMe\BaudBag.lua"/>
+<script file="SkinMe\BaudManifest.lua"/>
 <script file="SkinMe\BeanCounter.lua"/>
 <script file="SkinMe\beql.lua"/>
 <script file="SkinMe\BetterBindingFrame.lua"/>
@@ -245,6 +246,7 @@
 <script file="SkinMe\RaidTracker.lua"/>
 <script file="SkinMe\RaidyCheck.lua"/>
 <script file="SkinMe\RandomPet30.lua"/>
+<script file="SkinMe\ReagentRestocker.lua"/>
 <script file="SkinMe\Recap.lua"/>
 <script file="SkinMe\RecipeBook.lua"/>
 <script file="SkinMe\RecipeRadar.lua"/>
