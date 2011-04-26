@@ -635,7 +635,7 @@ function aObj:WorldMap()
 
 end
 
-if not aObj.isPTR then
+if not aObj.isPatch then
 	function aObj:HelpFrame()
 		if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
 		self.initialized.HelpFrame = true
@@ -643,7 +643,7 @@ if not aObj.isPTR then
 		self:add2Table(self.uiKeys1, "HelpFrame")
 
 		local hfTitle, kbTitle = self:getRegion(HelpFrame, 11)
-		if not self.isPTR then
+		if not self.isPatch then
 			kbTitle = self:getRegion(KnowledgeBaseFrame, 2)
 		end
 		-- hook these to manage frame titles
@@ -934,7 +934,7 @@ function aObj:BattlefieldMinimap() -- LoD
 	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
 -->>--	Minimap
 	-- change the draw layer so that the map is visible
-	for i = 1, self.isPTR and GetNumberOfDetailTiles() or NUM_WORLDMAP_DETAIL_TILES do
+	for i = 1, self.isPatch and GetNumberOfDetailTiles() or NUM_WORLDMAP_DETAIL_TILES do
 		_G["BattlefieldMinimap"..i]:SetDrawLayer("ARTWORK")
 	end
 
@@ -1160,7 +1160,7 @@ function aObj:MinimapButtons()
 		self:addSkinFrame{obj=MiniMapTracking, ft=ftype}
 	end
 	-- FeedbackUI Minimap Button
-	if self.isPTR then
+	if self.isPatch then
 		for _, reg in ipairs{FeedbackUIButton:GetRegions()} do
 			reg:SetWidth(26)
 			reg:SetHeight(26)

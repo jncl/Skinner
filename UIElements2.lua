@@ -805,21 +805,21 @@ function aObj:LFDFrame()
 	-- Search Status Frame
 	self:addSkinFrame{obj=LFDSearchStatus, ft=ftype}
 	-- LFD Parent Frame
-	if not self.isPTR then
+	if not self.isPatch then
 		self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
 	else
 		self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
 		self:moveObject{obj=LFDParentFrameEyeFrame, x=10, y=-10}
 	end
 	LowerFrameLevel(self.skinFrame[LFDParentFrame]) -- hopefully allow Random cooldown frame to appear in front now
-	if not self.isPTR then
+	if not self.isPatch then
 		-- Portrait
 		LFDParentFramePortraitTexture:SetAlpha(0)
 		LFDParentFramePortraitIcon:SetAlpha(0)
 	end
 	-- Queue Frame
 	LFDQueueFrameBackground:SetAlpha(0)
-	if not self.isPTR then
+	if not self.isPatch then
 		LFDQueueFrameLayout:SetAlpha(0)
 	end
 	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
@@ -983,7 +983,7 @@ function aObj:GhostFrame()
 
 end
 
-if aObj.isPTR then
+if aObj.isPatch then
 	function aObj:LookingForGuildUI() -- LoD
 		if not self.db.profile.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
 		self.initialized.LookingForGuildUI = true

@@ -29,6 +29,9 @@ do
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
+	-- check build number, if > Live then it's a patch
+	local buildInfo = {GetBuildInfo()}
+	aObj.isPatch = tonumber(buildInfo[2]) > 13623 and true or false
 
 end
 
@@ -40,6 +43,7 @@ function aObj:OnInitialize()
 --@end-debug@
 
 --@alpha@
+	if self.isPatch then self:Debug("Patch detected") end
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isBeta then self:Debug("Beta detected") end
 --@end-alpha@
@@ -180,8 +184,10 @@ function aObj:OnInitialize()
 	self.npcKeys = {"BarbershopUI", "TrainerUI", "ReforgingUI"} -- LoD frames
 	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager"} -- LoD frames
 	if self.isPTR then
-		self:add2Table(self.uiKeys1, "LookingForGuildUI")
 		self:add2Table(self.uiKeys1, "FeedbackUI")
+	end
+	if self.isPatch then
+		self:add2Table(self.uiKeys1, "LookingForGuildUI")
 	end
 	self.uiKeys2 = {}
 

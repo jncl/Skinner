@@ -724,7 +724,7 @@ function aObj:GuildUI() -- LoD
 		self:applySkin{obj=btn.header}
 		self:addButtonBorder{obj=btn, relTo=btn.icon, hide=true, es=12}
 	end
-	if self.isPTR then
+	if self.isPatch then
 		self:skinDropDown{obj=GuildMemberRankDropdown}
 	end
 	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, ofs=-6}
@@ -752,7 +752,7 @@ function aObj:GuildUI() -- LoD
 
 -->>-- GuildInfo Frame
 	self:removeRegions(GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
-	if self.isPTR then
+	if self.isPatch then
 		-- Tabs
 		for i = 1, GuildInfoFrame.numTabs do
 			tab = _G["GuildInfoFrameTab"..i]
@@ -769,13 +769,13 @@ function aObj:GuildUI() -- LoD
 		self.tabFrames[GuildInfoFrame] = true
 	end
 	-- GuildInfoFrameInfo Frame
-	if self.isPTR then
+	if self.isPatch then
 		self:keepFontStrings(GuildInfoFrameInfo)
 	end
 	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, size=2}
 	GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, size=2}
-	if self.isPTR then
+	if self.isPatch then
 		-- GuildInfoFrameRecruitment Frame
 		GuildRecruitmentInterestFrameBg:SetAlpha(0)
 		GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)

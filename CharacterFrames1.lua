@@ -36,7 +36,7 @@ end
 function aObj:PaperDollFrame()
 
 	self:keepFontStrings(PaperDollFrame)
-	if not self.isPTR then
+	if not self.isPatch then
 		self:skinDropDown{obj=PlayerTitleFrame}
 		self:moveObject{obj=PlayerTitleFrameButton, y=1}
 		self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
@@ -71,10 +71,10 @@ function aObj:PaperDollFrame()
 			end
 		end
 	end)
-	if not self.isPTR then
+	if not self.isPatch then
 		self:addButtonBorder{obj=GearManagerToggleButton, x1=1, x2=-1}
 	end
-	if self.isPTR then
+	if self.isPatch then
 		-- Sidebar Tabs
 		PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
 		PaperDollSidebarTabs.DecorRight:SetAlpha(0)
@@ -400,7 +400,7 @@ function aObj:SpellBookFrame()
 	end
 -->>-- Tabs (bottom)
 	local x1, y1, x2, y2
-	if self.isPTR then
+	if self.isPatch then
 		x1, y1, x2, y2 = 8, 1, -8, 2
 	else
 		x1, y1, x2, y2 = 6, 1, -6, 2
@@ -890,7 +890,7 @@ function aObj:AlertFrames()
 	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
 
 	-- GuildChallengeAlert Frame
-	if self.isPTR then
+	if self.isPatch then
 		GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
 		GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
 		self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
