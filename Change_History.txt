@@ -1,3 +1,13 @@
+b4.13914.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Use rounding function to find frames instead of ceil
+	Updated Ace3, ElvUI & MinimalArchaeology skins
+	Bugfix for Class Colouring
+	Unobsoleted BaudManifest
+	Skinned ReagentRestocker
+
 b4.13875.1
 Jncl:
 	ToDo.txt
