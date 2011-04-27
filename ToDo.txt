@@ -34,7 +34,21 @@ x		- GameMenu (Graphics, Sound, Voice now in new System Menu in addition to Adva
 √		- LFD Frame
 
 	I	Scrap, reported by Decabah, 26.04.11
-		- unskinned pane and tab in the vendor view
+		- unskinned pane and tab in the vendor view (Visualizer)
 
-√	I	PaperDollSidebarTabs, reported by Decabah, 26.04.11
-		- use module function to force creation of a button border
+√	I	PaperDollFrame, reported by skyggesang, 27.04.11
+		- Skinner-b4.13914.3\CharacterFrames1.lua:87: attempt to index field "sknrBdr" (a nil value)
+		Skinner-b4.13914.3\CharacterFrames1.lua:87: in function <Skinner\CharacterFrames1.lua:36>
+		(tail call): ?
+		- previous bugfix seems to have not worked !
+
+√	I	FeedbackUI Minimap Button, reported by skyggesang, 27.04.11
+		- Skinner-b4.13914.3\UIElements1.lua:1164: attempt to index global "FeedbackUIButton" (a nil value)
+		Skinner-b4.13914.3\UIElements1.lua:1164: in function <Skinner\UIElements1.lua:1047>
+		(tail call): ?
+
+√	I	CompactParty/Raid Frames
+		- code has changed
+
+	I	Quartz, rep	 by Decabah, 27.04.11
+		- no Tujui border around cast bar icon
