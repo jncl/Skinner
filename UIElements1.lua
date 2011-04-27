@@ -1159,13 +1159,6 @@ function aObj:MinimapButtons()
 	if not minBtn then
 		self:addSkinFrame{obj=MiniMapTracking, ft=ftype}
 	end
-	-- FeedbackUI Minimap Button
-	if self.isPatch then
-		for _, reg in ipairs{FeedbackUIButton:GetRegions()} do
-			reg:SetWidth(26)
-			reg:SetHeight(26)
-		end
-	end
 	-- Instance Difficulty
 	MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.135, 0.5) -- remove top hanger texture
 	self:moveObject{obj=MiniMapInstanceDifficulty, y=-5}
@@ -1275,6 +1268,14 @@ if aObj.isPTR then
 
 		-- make the QuestLog Tip Label text visible
 		FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+
+		-- Minimap Button
+		if self.db.profile.MinimapButtons.skin then
+			for _, reg in ipairs{FeedbackUIButton:GetRegions()} do
+				reg:SetWidth(26)
+				reg:SetHeight(26)
+			end
+		end
 
 	end
 end

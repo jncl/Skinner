@@ -541,11 +541,10 @@ function aObj:CompactFrames()
 
 	end
 -->>-- Compact Party Frame
-	CompactPartyFrame.borderFrame:SetAlpha(0)
-	for i = 1, MEMBERS_PER_RAID_GROUP do
-		skinUnit(_G["CompactPartyFrameMember"..i])
-	end
-	self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
+	self:SecureHook("CompactPartyFrame_OnLoad", function()
+		self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
+		self:Unhook("CompactPartyFrame_OnLoad")
+	end)
 	-- hook this to skin any new CompactRaidGroup(s)
 	self:SecureHook("CompactRaidGroup_UpdateBorder", function(frame)
 		skinGrp(frame)
@@ -579,22 +578,22 @@ function aObj:CompactFrames()
 	end
 	-- Buttons
 	for _, v in pairs{"Tank", "Healer", "Damager"} do
-		skinButton(_G["CompactRaidFrameManagerDisplayFrameFilterRole"..v])
+		skinButton(CompactRaidFrameManager.displayFrame.filterOptions["filterRole"..v])
 	end
 	for i = 1, 8 do
-		skinButton(_G["CompactRaidFrameManagerDisplayFrameFilterGroup"..i])
+		skinButton(CompactRaidFrameManager.displayFrame.filterOptions["filterGroup"..i])
 	end
 	skinButton(CompactRaidFrameManagerDisplayFrameLockedModeToggle)
 	skinButton(CompactRaidFrameManagerDisplayFrameHiddenModeToggle)
 	-- Leader Options
 	skinButton(CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton)
 	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
-	skinButton(CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck)
-	skinButton(CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll)
+	skinButton(CompactRaidFrameManager.displayFrame.leaderOptions.readyCheckButton)
+	skinButton(CompactRaidFrameManager.displayFrame.leaderOptions.rolePollButton)
 	-- Display Frame
-	self:keepFontStrings(CompactRaidFrameManagerDisplayFrame)
+	self:keepFontStrings(CompactRaidFrameManager.displayFrame)
 	-- Resize Frame
-	self:addSkinFrame{obj=CompactRaidFrameManagerContainerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
+	self:addSkinFrame{obj=CompactRaidFrameManager.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
 	-- Raid Frame Manager Frame
 	self:addSkinFrame{obj=CompactRaidFrameManager, ft=ftype, kfs=true}
 
