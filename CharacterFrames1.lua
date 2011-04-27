@@ -83,7 +83,7 @@ function aObj:PaperDollFrame()
 			tab.TabBg:SetAlpha(0)
 			tab.Hider:SetAlpha(0)
 			-- use a button border to indicate the active tab
-			self:addButtonBorder{obj=tab, relTo=tab.Icon}
+			self.modUIBtns.addButtonBorder{obj=tab, relTo=tab.Icon} -- use module function here to force creation
 			tab.sknrBdr:SetBackdropBorderColor(1, 0.6, 0, 1)
 		end
 		-- hook this to manage the active tab
