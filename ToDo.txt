@@ -36,5 +36,5 @@ x		- GameMenu (Graphics, Sound, Voice now in new System Menu in addition to Adva
 	I	Scrap, reported by Decabah, 26.04.11
 		- unskinned pane and tab in the vendor view
 
-√	I	PTR patch now on live
-		- identify Patched version based upon build no.
+√	I	PaperDollSidebarTabs, reported by Decabah, 26.04.11
+		- use module function to force creation of a button border
