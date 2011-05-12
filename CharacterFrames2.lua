@@ -723,9 +723,10 @@ function aObj:GuildUI() -- LoD
 		self:applySkin{obj=btn.header}
 		self:addButtonBorder{obj=btn, relTo=btn.icon, hide=true, es=12}
 	end
-	if self.isPatch then
-		self:skinDropDown{obj=GuildMemberRankDropdown}
-	end
+	self:skinDropDown{obj=GuildMemberRankDropdown}
+	self:moveObject{obj=GuildMemberRankDropdown, x=-6, y=2}
+	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
+	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
 	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, ofs=-6}
 
 -->>-- GuildNews Frame
@@ -751,52 +752,46 @@ function aObj:GuildUI() -- LoD
 
 -->>-- GuildInfo Frame
 	self:removeRegions(GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
-	if self.isPatch then
-		-- Tabs
-		for i = 1, GuildInfoFrame.numTabs do
-			tab = _G["GuildInfoFrameTab"..i]
-			self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=2, y1=-5, x2=2, y2=-5}
-			tabSF.up = true -- tabs grow upwards
-			-- set textures here first time thru as it's LoD
-			if i == 1 then
-				if self.isTT then self:setActiveTab(tabSF) end
-			else
-				if self.isTT then self:setInactiveTab(tabSF) end
-			end
+	-- Tabs
+	for i = 1, GuildInfoFrame.numTabs do
+		tab = _G["GuildInfoFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=2, y1=-5, x2=2, y2=-5}
+		tabSF.up = true -- tabs grow upwards
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
 		end
-		self.tabFrames[GuildInfoFrame] = true
 	end
+	self.tabFrames[GuildInfoFrame] = true
 	-- GuildInfoFrameInfo Frame
-	if self.isPatch then
-		self:keepFontStrings(GuildInfoFrameInfo)
-	end
+	self:keepFontStrings(GuildInfoFrameInfo)
 	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, size=2}
 	GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, size=2}
-	if self.isPatch then
-		-- GuildInfoFrameRecruitment Frame
-		GuildRecruitmentInterestFrameBg:SetAlpha(0)
-		GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
-		GuildRecruitmentRolesFrameBg:SetAlpha(0)
-		GuildRecruitmentLevelFrameBg:SetAlpha(0)
-		GuildRecruitmentCommentFrameBg:SetAlpha(0)
-		self:skinScrollBar{obj=GuildRecruitmentCommentInputFrameScrollFrame}
-		self:addSkinFrame{obj=GuildRecruitmentCommentFrame, ft=ftype, kfs=true}
-		self:removeMagicBtnTex(GuildRecruitmentListGuildButton)
-		-- GuildInfoFrameApplicants Frame
-		for i = 1, #GuildInfoFrameApplicantsContainer.buttons do
-			btn = GuildInfoFrameApplicantsContainer.buttons[i]
-			self:applySkin{obj=btn}
-			btn.ring:SetAlpha(0)
-			btn.PointsSpentBgGold:SetAlpha(0)
-			self:moveObject{obj=btn.PointsSpentBgGold, x=3, y=-3}
-		end
-		self:skinSlider{obj=GuildInfoFrameApplicantsContainerScrollBar}
-		self:removeMagicBtnTex(GuildRecruitmentInviteButton)
-		self:removeMagicBtnTex(GuildRecruitmentDeclineButton)
-		self:removeMagicBtnTex(GuildRecruitmentMessageButton)
+	-- GuildInfoFrameRecruitment Frame
+	GuildRecruitmentInterestFrameBg:SetAlpha(0)
+	GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
+	GuildRecruitmentRolesFrameBg:SetAlpha(0)
+	GuildRecruitmentLevelFrameBg:SetAlpha(0)
+	GuildRecruitmentCommentFrameBg:SetAlpha(0)
+	self:skinScrollBar{obj=GuildRecruitmentCommentInputFrameScrollFrame}
+	self:addSkinFrame{obj=GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
+	self:removeMagicBtnTex(GuildRecruitmentListGuildButton)
+	-- GuildInfoFrameApplicants Frame
+	for i = 1, #GuildInfoFrameApplicantsContainer.buttons do
+		btn = GuildInfoFrameApplicantsContainer.buttons[i]
+		self:applySkin{obj=btn}
+		btn.ring:SetAlpha(0)
+		btn.PointsSpentBgGold:SetAlpha(0)
+		self:moveObject{obj=btn.PointsSpentBgGold, x=3, y=-3}
 	end
+	self:skinSlider{obj=GuildInfoFrameApplicantsContainerScrollBar}
+	self:removeMagicBtnTex(GuildRecruitmentInviteButton)
+	self:removeMagicBtnTex(GuildRecruitmentDeclineButton)
+	self:removeMagicBtnTex(GuildRecruitmentMessageButton)
 	-- Guild Text Edit frame
 	self:skinSlider{obj=GuildTextEditScrollFrameScrollBar, size=2}
 	self:addSkinFrame{obj=GuildTextEditContainer, ft=ftype, nb=true}

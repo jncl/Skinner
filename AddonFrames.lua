@@ -18,7 +18,6 @@ function aObj:BlizzardFrames()
 	then
 		self:add2Table(blizzFrames, "FeedbackUI")
 	end -- uie1
-	if not self.isPatch then self:add2Table(blizzFrames, "GearManager") end -- cf2
 
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
@@ -45,13 +44,10 @@ local blizzLoDFrames = {
 	"RaidUI", "ArchaeologyUI", "GuildUI", "GuildControlUI", -- cf2
 	"TrainerUI", "BarbershopUI", "ReforgingUI", -- npc
 	"GMSurveyUI", "InspectUI", "BattlefieldMinimap", -- uie1
-	"TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", --uie2
+	"TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", "LookingForGuildUI", --uie2
 }
 if aObj.isPTR then
 	aObj:add2Table(blizzLoDFrames, "FeedbackUI") -- uie1
-end
-if aObj.isPatch then
-	aObj:add2Table(blizzLoDFrames, "LookingForGuildUI")-- uie2
 end
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do

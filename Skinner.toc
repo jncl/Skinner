@@ -63,7 +63,7 @@ AddonFrames.lua
 CharacterFrames1.lua
 #
 # CharacterFrames2
-# inc. Social (inc. Friends, Who, Guild, Chat, Raid), TradeSkillUI, Trade, QuestLog, RaidUI, ReadyCheck, Buffs, VehicleMenuBar, Watch (Quests & Achievements), GearManager, CompactFrames, ArchaeologyUI, GuildUI, GuildControlUI
+# inc. Social (inc. Friends, Who, Chat, Raid), TradeSkillUI, Trade, QuestLog, RaidUI, ReadyCheck, Buffs, VehicleMenuBar, Watch (Quests & Achievements), GearManager, CompactFrames, ArchaeologyUI, GuildUI, GuildControlUI
 CharacterFrames2.lua
 #
 # NPCFrames

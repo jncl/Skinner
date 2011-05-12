@@ -36,12 +36,6 @@ end
 function aObj:PaperDollFrame()
 
 	self:keepFontStrings(PaperDollFrame)
-	if not self.isPatch then
-		self:skinDropDown{obj=PlayerTitleFrame}
-		self:moveObject{obj=PlayerTitleFrameButton, y=1}
-		self:skinScrollBar{obj=PlayerTitlePickerScrollFrame}
-		self:addSkinFrame{obj=PlayerTitlePickerFrame, kfs=true, ft=ftype}
-	end
 	self:makeMFRotatable(CharacterModelFrame)
 	-- skin slots
 	for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
@@ -71,52 +65,47 @@ function aObj:PaperDollFrame()
 			end
 		end
 	end)
-	if not self.isPatch then
-		self:addButtonBorder{obj=GearManagerToggleButton, x1=1, x2=-1}
+	-- Sidebar Tabs
+	PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
+	PaperDollSidebarTabs.DecorRight:SetAlpha(0)
+	for i = 1, #PAPERDOLL_SIDEBARS do
+		tab = _G["PaperDollSidebarTab"..i]
+		tab.TabBg:SetAlpha(0)
+		tab.Hider:SetAlpha(0)
+		-- use a button border to indicate the active tab
+		self.modUIBtns:addButtonBorder{obj=tab, relTo=tab.Icon} -- use module function here to force creation
+		tab.sknrBdr:SetBackdropBorderColor(1, 0.6, 0, 1)
 	end
-	if self.isPatch then
-		-- Sidebar Tabs
-		PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
-		PaperDollSidebarTabs.DecorRight:SetAlpha(0)
+	-- hook this to manage the active tab
+	self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 		for i = 1, #PAPERDOLL_SIDEBARS do
-			tab = _G["PaperDollSidebarTab"..i]
-			tab.TabBg:SetAlpha(0)
-			tab.Hider:SetAlpha(0)
-			-- use a button border to indicate the active tab
-			self.modUIBtns:addButtonBorder{obj=tab, relTo=tab.Icon} -- use module function here to force creation
-			tab.sknrBdr:SetBackdropBorderColor(1, 0.6, 0, 1)
+			local tab = _G["PaperDollSidebarTab"..i]
+			if (_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown()) then
+				tab.sknrBdr:Show()
+			else
+				tab.sknrBdr:Hide()
+			end
 		end
-		-- hook this to manage the active tab
-		self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
-			for i = 1, #PAPERDOLL_SIDEBARS do
-				local tab = _G["PaperDollSidebarTab"..i]
-				if (_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown()) then
-					tab.sknrBdr:Show()
-				else
-					tab.sknrBdr:Hide()
-				end
-			end
-		end)
-		-- Titles
-		self:SecureHookScript(PaperDollTitlesPane, "OnShow", function(this)
-			for i = 1, #this.buttons do
-				btn = this.buttons[i]
-				btn:DisableDrawLayer("BACKGROUND")
-			end
-			self:Unhook(PaperDollTitlesPane, "OnShow")
-		end)
-		self:skinSlider{obj=PaperDollTitlesPane.scrollBar, size=3}
-		-- Equipment Manager
-		self:SecureHookScript(PaperDollEquipmentManagerPane, "OnShow", function(this)
-			for i = 1, #this.buttons do
-				btn = this.buttons[i]
-				btn:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=btn, relTo=btn.icon}
-			end
-			self:Unhook(PaperDollEquipmentManagerPane, "OnShow")
-		end)
-		self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar, size=3}
-	end
+	end)
+	-- Titles
+	self:SecureHookScript(PaperDollTitlesPane, "OnShow", function(this)
+		for i = 1, #this.buttons do
+			btn = this.buttons[i]
+			btn:DisableDrawLayer("BACKGROUND")
+		end
+		self:Unhook(PaperDollTitlesPane, "OnShow")
+	end)
+	self:skinSlider{obj=PaperDollTitlesPane.scrollBar, size=3}
+	-- Equipment Manager
+	self:SecureHookScript(PaperDollEquipmentManagerPane, "OnShow", function(this)
+		for i = 1, #this.buttons do
+			btn = this.buttons[i]
+			btn:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=btn, relTo=btn.icon}
+		end
+		self:Unhook(PaperDollEquipmentManagerPane, "OnShow")
+	end)
+	self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar, size=3}
 	-- GearManagerDialog Popup Frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
 	self:skinEditBox{obj=GearManagerDialogPopupEditBox, regs={9}}
@@ -400,11 +389,7 @@ function aObj:SpellBookFrame()
 	end
 -->>-- Tabs (bottom)
 	local x1, y1, x2, y2
-	if self.isPatch then
-		x1, y1, x2, y2 = 8, 1, -8, 2
-	else
-		x1, y1, x2, y2 = 6, 1, -6, 2
-	end
+	x1, y1, x2, y2 = 8, 1, -8, 2
 	for i = 1, SpellBookFrame.numTabs do
 		tab = _G["SpellBookFrameTabButton"..i]
 		self:keepRegions(tab, {7, 8}) -- N.B. region 1 is the Text, 3 is the highlight
@@ -890,10 +875,8 @@ function aObj:AlertFrames()
 	self:addSkinFrame{obj=DungeonCompletionAlertFrame1, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
 
 	-- GuildChallengeAlert Frame
-	if self.isPatch then
-		GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
-		GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
-	end
+	GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
+	GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
+	self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
 
 end

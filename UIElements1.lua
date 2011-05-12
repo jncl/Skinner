@@ -635,115 +635,52 @@ function aObj:WorldMap()
 
 end
 
-if not aObj.isPatch then
-	function aObj:HelpFrame()
-		if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
-		self.initialized.HelpFrame = true
+function aObj:HelpFrame()
+	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
+	self.initialized.HelpFrame = true
 
-		self:add2Table(self.uiKeys1, "HelpFrame")
+	self:add2Table(self.uiKeys1, "HelpFrame")
 
-		local hfTitle, kbTitle = self:getRegion(HelpFrame, 11)
-		if not self.isPatch then
-			kbTitle = self:getRegion(KnowledgeBaseFrame, 2)
-		end
-		-- hook these to manage frame titles
-		self:SecureHook("HelpFrame_ShowFrame", function(key)
-			hfTitle:SetAlpha(0)
-			kbTitle:SetAlpha(0)
-			if key == "KBase" then
-				kbTitle:SetAlpha(1)
-			else
-				hfTitle:SetAlpha(1)
-			end
-		end)
-		self:SecureHook("HelpFrame_PopFrame", function()
-			if HelpFrame.openFrame and HelpFrame.openFrame:GetName() == "KnowledgeBaseFrame" then
-				hfTitle:SetAlpha(0)
-				kbTitle:SetAlpha(1)
-			end
-		end)
+	self:keepFontStrings(HelpFrame.header)
+	self:moveObject{obj=HelpFrame.header, y=-12}
+	HelpFrame.leftInset:DisableDrawLayer("BACKGROUND")
+	HelpFrame.leftInset:DisableDrawLayer("BORDER")
+	HelpFrame.mainInset:DisableDrawLayer("BACKGROUND")
+	HelpFrame.mainInset:DisableDrawLayer("BORDER")
+	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, ofs=-10}
+	-->>-- Knowledgebase panel
+	self:keepFontStrings(HelpFrame.kbase)
+	self:moveObject{obj=HelpFrame.kbase.searchBox.icon, x=4}
+	self:skinEditBox{obj=HelpFrame.kbase.searchBox, regs={9}}
+	self:skinSlider{obj=HelpFrame.kbase.scrollFrame.ScrollBar}
+	self:skinSlider{obj=HelpFrame.kbase.scrollFrame2.ScrollBar}
+	-- Nav Bar
+	HelpFrame.kbase.navBar:DisableDrawLayer("BACKGROUND")
+	HelpFrame.kbase.navBar.overlay:DisableDrawLayer("OVERLAY")
+	HelpFrame.kbase.navBar.home:DisableDrawLayer("OVERLAY")
+	HelpFrame.kbase.navBar.home:GetNormalTexture():SetAlpha(0)
+	HelpFrame.kbase.navBar.home:GetPushedTexture():SetAlpha(0)
+	HelpFrame.kbase.navBar.home.text:SetPoint("RIGHT", -20, 0) -- allow text to be fully displayed
+	-->>-- Character Stuck panel
+	self:addButtonBorder{obj=HelpFrameCharacterStuckHearthstone, es=20}
+	-->>--	Ticket panel
+	self:skinSlider{obj=HelpFrameTicketScrollFrame.ScrollBar}
+	self:addSkinFrame{obj=self:getChild(HelpFrame.ticket, 4), ft=ftype}
 
 	-->>--	Ticket Status Frame
-		self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
+	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
 
-	-->>--	Help Frame
-		self:moveObject{obj=hfTitle, y=-8}
-		 --> N.B. restrict button children traversal for KnowledgeBase button below
-		self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, bgen=2, x1=6, y1=-6, x2=-45, y2=14}
+	-- hook this to handle navbar buttons
+	self:SecureHook("NavBar_AddButton", function(this, buttonData)
+		self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
+		for i = 1, #this.navList do
+			local btn = this.navList[i]
+			btn:DisableDrawLayer("OVERLAY")
+			btn:GetNormalTexture():SetAlpha(0)
+			btn:GetPushedTexture():SetAlpha(0)
+		end
+	end)
 
-	-->>--	KnowledgeBase Frame
-		self:keepFontStrings(KnowledgeBaseFrame)
-		self:moveObject{obj=kbTitle, y=-8}
-		self:skinButton{obj=GMChatOpenLog}
-		self:skinEditBox{obj=KnowledgeBaseFrameEditBox}
-		self:skinDropDown{obj=KnowledgeBaseFrameCategoryDropDown}
-		self:skinDropDown{obj=KnowledgeBaseFrameSubCategoryDropDown}
-		KnowledgeBaseFrameDivider:Hide()
-		KnowledgeBaseFrameDivider2:Hide()
-	-->>-- Article Scroll Frame
-		self:skinScrollBar{obj=KnowledgeBaseArticleScrollFrame}
-		self:skinButton{obj=KnowledgeBaseArticleScrollChildFrameBackButton, as=true}
-	-->>-- Talk to a GM panel
-	-->>-- Report an Issue panel
-	-->>-- Character Stuck panel
-		self:addButtonBorder{obj=HelpFrameStuckHearthstone, es=20}
-	-->>--	Open Ticket SubFrame
-		HelpFrameOpenTicketDivider:Hide()
-		self:skinScrollBar{obj=HelpFrameOpenTicketScrollFrame}
-	-->>-- View Response SubFrame
-		self:skinScrollBar{obj=HelpFrameViewResponseIssueScrollFrame}
-		HelpFrameViewResponseDivider:Hide()
-		self:skinScrollBar{obj=HelpFrameViewResponseMessageScrollFrame}
-
-	end
-else
-	function aObj:HelpFrame()
-		if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
-		self.initialized.HelpFrame = true
-
-		self:add2Table(self.uiKeys1, "HelpFrame")
-
-		self:keepFontStrings(HelpFrame.header)
-		self:moveObject{obj=HelpFrame.header, y=-12}
-		HelpFrame.leftInset:DisableDrawLayer("BACKGROUND")
-		HelpFrame.leftInset:DisableDrawLayer("BORDER")
-		HelpFrame.mainInset:DisableDrawLayer("BACKGROUND")
-		HelpFrame.mainInset:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, ofs=-10}
-		-->>-- Knowledgebase panel
-		self:keepFontStrings(HelpFrame.kbase)
-		self:moveObject{obj=HelpFrame.kbase.searchBox.icon, x=4}
-		self:skinEditBox{obj=HelpFrame.kbase.searchBox, regs={9}}
-		self:skinSlider{obj=HelpFrame.kbase.scrollFrame.ScrollBar}
-		self:skinSlider{obj=HelpFrame.kbase.scrollFrame2.ScrollBar}
-		-- Nav Bar
-		HelpFrame.kbase.navBar:DisableDrawLayer("BACKGROUND")
-		HelpFrame.kbase.navBar.overlay:DisableDrawLayer("OVERLAY")
-		HelpFrame.kbase.navBar.home:DisableDrawLayer("OVERLAY")
-		HelpFrame.kbase.navBar.home:GetNormalTexture():SetAlpha(0)
-		HelpFrame.kbase.navBar.home:GetPushedTexture():SetAlpha(0)
-		HelpFrame.kbase.navBar.home.text:SetPoint("RIGHT", -20, 0) -- allow text to be fully displayed
-		-->>-- Character Stuck panel
-		self:addButtonBorder{obj=HelpFrameCharacterStuckHearthstone, es=20}
-		-->>--	Ticket panel
-		self:skinSlider{obj=HelpFrameTicketScrollFrame.ScrollBar}
-		self:addSkinFrame{obj=self:getChild(HelpFrame.ticket, 4), ft=ftype}
-
-		-->>--	Ticket Status Frame
-		self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
-
-		-- hook this to handle navbar buttons
-		self:SecureHook("NavBar_AddButton", function(this, buttonData)
-			self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
-			for i = 1, #this.navList do
-				local btn = this.navList[i]
-				btn:DisableDrawLayer("OVERLAY")
-				btn:GetNormalTexture():SetAlpha(0)
-				btn:GetPushedTexture():SetAlpha(0)
-			end
-		end)
-
-	end
 end
 
 function aObj:Tutorial()
@@ -934,7 +871,7 @@ function aObj:BattlefieldMinimap() -- LoD
 	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
 -->>--	Minimap
 	-- change the draw layer so that the map is visible
-	for i = 1, self.isPatch and GetNumberOfDetailTiles() or NUM_WORLDMAP_DETAIL_TILES do
+	for i = 1, GetNumberOfDetailTiles() do
 		_G["BattlefieldMinimap"..i]:SetDrawLayer("ARTWORK")
 	end
 

@@ -31,7 +31,7 @@ do
 	aObj.isBeta = portal == "public-beta" and true or false
 	-- check build number, if > Live then it's a patch
 	local buildInfo = {GetBuildInfo()}
-	aObj.isPatch = tonumber(buildInfo[2]) > 13623 and true or false
+	aObj.isPatch = tonumber(buildInfo[2]) > 14007 and true or false
 
 end
 
@@ -53,21 +53,6 @@ function aObj:OnInitialize()
 	prdb = self.db.profile
 
 	-- convert any old settings
-	if prdb.MinimapGloss then prdb.Minimap.gloss = prdb.MinimapGloss prdb.MinimapGloss = nil end
-	if prdb.MinimapButtons and type(prdb.MinimapButtons) == "boolean" then
-		local val = prdb.MinimapButtons
-		prdb.MinimapButtons = {}
-		prdb.MinimapButtons.skin = val
-	end
-	if prdb.MinimalMMBtns then prdb.MinimapButtons.style = prdb.MinimalMMBtns prdb.MinimalMMBtns = nil end
-	if prdb.Minimap.btns then prdb.MinimapButtons.skin = prdb.Minimap.btns prdb.Minimap.btns = nil end
-	if prdb.Minimap.style then prdb.MinimapButtons.style = prdb.Minimap.style prdb.Minimap.style = nil end
-	if prdb.WatchFrame and type(prdb.WatchFrame) == "boolean" then
-		local val = prdb.WatchFrame
-		prdb.WatchFrame = {}
-		prdb.WatchFrame.skin = val
-		prdb.WatchFrame.popups = true
-	end
 
 	-- setup the Addon's options
 	self:checkAndRun("Options")
@@ -186,9 +171,7 @@ function aObj:OnInitialize()
 	if self.isPTR then
 		self:add2Table(self.uiKeys1, "FeedbackUI")
 	end
-	if self.isPatch then
-		self:add2Table(self.uiKeys1, "LookingForGuildUI")
-	end
+	self:add2Table(self.uiKeys1, "LookingForGuildUI")
 	self.uiKeys2 = {}
 
 	-- these are used to disable the gradient
@@ -246,9 +229,9 @@ function aObj:OnInitialize()
 	self.tabFrames = {}
 	if self.isTT then
 		self:SecureHook("PanelTemplates_SetTab", function(obj, id)
---			self:Debug("PT_ST: [%s, %s, %s, %s]", obj, id, obj.numTabs or "nil", obj.selectedTab or "nil")
+			-- self:Debug("PT_ST: [%s, %s, %s, %s]", obj, id, obj.numTabs or "nil", obj.selectedTab or "nil")
 			if not self.tabFrames[obj] then return end -- ignore frame if not monitored
---			self:Debug("PT_ST#2")
+			-- self:Debug("PT_ST#2")
 			local tabSF
 			for i = 1, obj.numTabs do
 				tabSF = self.skinFrame[_G[obj:GetName().."Tab"..i]]
