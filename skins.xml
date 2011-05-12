@@ -121,6 +121,7 @@
 <script file="SkinMe\FishingBuddy.lua"/>
 <script file="SkinMe\FlightMap.lua"/>
 <script file="SkinMe\FlightMapEnhanced.lua"/>
+<script file="SkinMe\FlyoutButtonCustom.lua"/>
 <script file="SkinMe\Fortress.lua"/>
 <script file="SkinMe\FPSideBar.lua"/>
 <script file="SkinMe\FramesResized.lua"/>
@@ -287,6 +288,7 @@
 <script file="SkinMe\Toons.lua"/>
 <script file="SkinMe\TotemCaddy.lua"/>
 <script file="SkinMe\TourGuide.lua"/>
+<script file="SkinMe\TradeSkillMaster.lua"/>
 <script file="SkinMe\TradeTabs.lua"/>
 <script file="SkinMe\Tukui.lua"/>
 <script file="SkinMe\TwinValkyr_shieldmonitor.lua"/>
