@@ -680,23 +680,26 @@ function aObj:Nameplates()
 
 		local tex
 		for _, child in pairs{WorldFrame:GetChildren()} do
-			if child:GetNumChildren() == 2 and child:GetNumRegions() == 11 then -- Nameplate frame
---				aObj:ShowInfo(child, true)
+			if child:GetName():find("NamePlate") then -- Nameplate frame
+				-- aObj:ShowInfo(child, true)
 				for k, reg in ipairs{child:GetRegions()} do -- process in key order
 					-- region 1 is the flash texture, toggled using aggro warning option
 					if k == 2 -- border texture
-					or k == 3 -- border texture
-					or k == 6 -- glow effect
+					or k == 3-- glow effect
 					then reg:SetAlpha(0)
-					elseif k == 4 then tex = reg -- non-interruptible shield texture
-					elseif k == 5 then aObj:changeShield(tex, reg) -- spell icon
 					end
-					-- regions 7 & 8 are text, 9 & 10 are raid icons, 11 is the elite icon
+					-- regions 4 & 5 are text, 6 & 7 are raid icons, 8 is the elite icon
 				end
 				-- skin both status bars
-				for _, grandchild in pairs{child:GetChildren()} do
+				for k, grandchild in ipairs{child:GetChildren()} do
+					-- status bar 2 has a border and shield texture and another texture ?
+				-- 	elseif k == 4 then tex = reg -- non-interruptible shield texture
+				-- 	elseif k == 5 then aObj:changeShield(tex, reg) -- spell icon
+					if k == 2 then
+						self:getRegion(grandchild, 2):SetAlpha(0) -- border texture
+					end
 					if not aObj.sbGlazed[grandchild] then
---						aObj:ShowInfo(grandchild, true)
+						-- aObj:ShowInfo(grandchild, true)
 						aObj:glazeStatusBar(grandchild, 0)
 					end
 				end
