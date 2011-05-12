@@ -76,7 +76,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("rl", function(msg) ReloadUI() end)
 	self:RegisterChatCommand("lo", function(msg) Logout() end)
 	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
-	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata())) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"))) lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl end end)
+	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), round2(fName:GetWidth(), 2) or "nil", round2(fName:GetHeight(), 2) or "nil")) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), round2(fName:GetWidth(), 2) or "nil", round2(fName:GetHeight(), 2) or "nil")) lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl end end)
 	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, false) end)
 	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), true, false) end)
 	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), false, false) end)
@@ -433,11 +433,10 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 	end
 
-	local function getRegions(object, lvl)
+	local function getRegions(obj, lvl)
 
-		for i = 1, object:GetNumRegions() do
-			local v = select(i, object:GetRegions())
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v, v:GetObjectType() or "nil", v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", v:GetObjectType() == "Texture" and ("%s : %s"):format(v:GetTexture() or "nil", v:GetDrawLayer() or "nil") or "nil")
+		for k, reg in ipairs{obj:GetRegions()} do
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and round2(reg:GetWidth(), 2) or "nil", reg.GetHeight and round2(reg:GetHeight(), 2) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
@@ -447,18 +446,17 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 		if not showKids then return end
 		if type(lvl) == "string" and lvl:find("-") == 2 and noDepth then return end
 
-		for i = 1, frame:GetNumChildren() do
-			local v = select(i, frame:GetChildren())
-			local objType = v:GetObjectType()
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, i, v, v.GetWidth and round2(v:GetWidth(), 2) or "nil", v.GetHeight and round2(v:GetHeight(), 2) or "nil", v:GetFrameLevel() or "nil", v:GetFrameStrata() or "nil")
+		for k, child in ipairs{frame:GetChildren()} do
+			local objType = child:GetObjectType()
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and round2(child:GetWidth(), 2) or "nil", child.GetHeight and round2(child:GetHeight(), 2) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 			if objType == "Frame"
 			or objType == "Button"
 			or objType == "StatusBar"
 			or objType == "Slider"
 			or objType == "ScrollFrame"
 			then
-				getRegions(v, lvl.."-"..i)
-				getChildren(v, lvl.."-"..i)
+				getRegions(child, lvl.."-"..k)
+				getChildren(child, lvl.."-"..k)
 			end
 		end
 
