@@ -10,45 +10,30 @@ Legend:
 
 	O	Update WoWAce commands page
 
-	O	WorldMap Sizing buttons
-	O	WatchFrame Sizing buttons
+√	I	Remove Patch wrapper code
 
-	O	PTR, 4.1
-√		- Updated TOC
-√		- PlayerTitle & GearManager replaced by PaperDoll panes, now using tabs to access them
-√		- LookingForGuildUI added
-x		- Blizzard_GuildRoster, dropdown added (GuildMemberRankDropdown)
-√		- Blizzard_TrainerUI, statusbar added (ClassTrainerStatusBar)
-x		- InterfaceOptionsPanels, added dropdown (InterfaceOptionsActionBarsPanelPickupActionKeyDropDown)
-√		- GuildInfoFrame, additions for LookingForGuildUI
-x		- IconIntroAnimation Frame
-x		- TimerTracker Frame
-x		- InspectUI (InspectHonorFrame removed)
-x		- QuestLogMapFrame removed
-√		- NUM_WORLDMAP_DETAIL_TILES replaced by GetNumberOfDetailTiles()
-x		- CompactRaidFrameManager (filterOptions)
-x		- GameMenu (Graphics, Sound, Voice now in new System Menu in addition to Advanced & Network)
-√		- GuildFinderRequestMembershipFrame
-√		- GuildChallengeAlertFrame
-√		- New HelpFrame Layout
-√		- LFD Frame
-
-	I	Scrap, reported by Decabah, 26.04.11
+√	I	Scrap, reported by Decabah, 26.04.11
 		- unskinned pane and tab in the vendor view (Visualizer)
 
-√	I	PaperDollFrame, reported by skyggesang, 27.04.11
-		- Skinner-b4.13914.3\CharacterFrames1.lua:87: attempt to index field "sknrBdr" (a nil value)
-		Skinner-b4.13914.3\CharacterFrames1.lua:87: in function <Skinner\CharacterFrames1.lua:36>
-		(tail call): ?
-		- previous bugfix seems to have not worked !
+x	I	Quartz, reported by Decabah, 27.04.11
+		- no Tukui border around cast bar icon
 
-√	I	FeedbackUI Minimap Button, reported by skyggesang, 27.04.11
-		- Skinner-b4.13914.3\UIElements1.lua:1164: attempt to index global "FeedbackUIButton" (a nil value)
-		Skinner-b4.13914.3\UIElements1.lua:1164: in function <Skinner\UIElements1.lua:1047>
-		(tail call): ?
+√	I	GuildUI, reported by Luckyjack_SL, 27.04.11
+		- width of title selection dropdown
 
-√	I	CompactParty/Raid Frames
-		- code has changed
+x	I	LookingForDungeonUI, reported by Luckyjack_SL, 27.04.11
+		- button textures still appear
 
-	I	Quartz, rep	 by Decabah, 27.04.11
-		- no Tujui border around cast bar icon
+√	N	Altoholic, reported by Decabah/Gabriel/chrisgriffith25/lunamunasi, 1.05.11/3.05.11/4.05.11
+		- Skinner-b4.13914.4\Skinner.lua:954: attempt to index local 'obj' (a nil value)
+		Skinner-b4.13914.4\SkinMe\Altoholic.lua:9: in function <Skinner\SkinMe\Altoholic.lua:4>
+		Skinner-b4.13914.4\SkinMe\Altoholic.lua:59: in function <Skinner\SkinMe\Altoholic.lua:26>
+		(tail call): ?:
+
+√	S	TradeSkillMaster, requested by Gabriel, 2.05.11
+
+≈	I	Nameplates, reported by Mushito/paks2, 5.05.11/9.05.11
+
+√	S	FlyoutButtonCustom, requested by Decabah, 11.05.11
+
+x	I	Viewport Water duplication, reported by bigpete1982, 11.05.11
