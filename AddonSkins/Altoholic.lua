@@ -56,7 +56,7 @@ function aObj:Altoholic()
 	end
 
 -->>-- Summary tab
-	skinMenuItms("AltoholicTabSummaryMenuItem", 5)
+	skinMenuItms("AltoholicTabSummaryMenuItem", 4)
 	skinSortBtns("AltoholicTabSummary_Sort", 8)
 	self:skinButton{obj=AltoholicTabSummaryToggleView, mp2=true, plus=true}
 	self:skinDropDown{obj=AltoholicTabSummary_SelectLocation}
@@ -65,10 +65,10 @@ function aObj:Altoholic()
 	self:skinScrollBar{obj=AltoholicFrameSkillsScrollFrame}
 	self:skinScrollBar{obj=AltoholicFrameActivityScrollFrame}
 
+-->>-- Achievements tab, now a separate addon (r83)
 -->>-- Characters tab, now a separate addon (r92)
 -->>-- Search Tab, now a separate addon (r92)
 -->>-- Guild tab, now a separate addon (r97)
--->>-- Achievements tab, now a separate addon (r83)
 
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
@@ -105,7 +105,7 @@ function aObj:Altoholic()
 
 end
 
-function aObj:Altoholic_Characters()
+function aObj:Altoholic_Characters() -- LoD
 
  	-- Icons on LHS
  	-- Characters
@@ -121,7 +121,7 @@ function aObj:Altoholic_Characters()
 	self:skinScrollBar{obj=AltoholicFrameCurrenciesScrollFrame}
 	-- Companions/Mounts
 	self:skinScrollBar{obj=AltoholicFramePetsAllInOneScrollFrame}
-	
+
 	-- Icons at the Top in  Character View
 	-- Characters
 	-- Containers
@@ -169,10 +169,10 @@ function aObj:Altoholic_Characters()
 	-- Professions
 	self:skinButton{obj=AltoholicFrameRecipesInfo_ToggleAll, mp2=true}
 	self:skinScrollBar{obj=AltoholicFrameRecipesScrollFrame}
-	
+
 end
 
-function aObj:Altoholic_Search()
+function aObj:Altoholic_Search() --LoD
 
 	self:skinScrollBar{obj=AltoholicSearchMenuScrollFrame}
 	self:skinEditBox{obj=AltoholicTabSearch_MinLevel, regs={9}}
@@ -186,8 +186,17 @@ function aObj:Altoholic_Search()
 
 end
 
+function aObj:Altoholic_Guild() -- LoD
 
-function aObj:Altoholic_Achievements()
+	skinMenuItms("AltoholicTabGuildMenuItem", 2)
+	for i = 1, 14 do
+		self:skinButton{obj=_G["AltoholicFrameGuildMembersEntry"..i.."Collapse"], mp2=true}
+	end
+	skinSortBtns("AltoholicTabGuild_Sort", 5)
+
+end
+
+function aObj:Altoholic_Achievements() -- LoD
 
 	self:skinScrollBar{obj=AltoholicAchievementsMenuScrollFrame}
 	self:skinScrollBar{obj=AltoholicFrameAchievementsScrollFrame}
@@ -196,12 +205,8 @@ function aObj:Altoholic_Achievements()
 
 end
 
-function aObj:Altoholic_Guild()
+function aObj:Altoholic_Agenda() -- LoD
 
-	skinMenuItms("AltoholicTabGuildMenuItem", 2)
-	for i = 1, 14 do
-		self:skinButton{obj=_G["AltoholicFrameGuildMembersEntry"..i.."Collapse"], mp2=true}
-	end
-	skinSortBtns("AltoholicTabGuild_Sort", 5)
+	skinMenuItms("AltoholicTabAgendaMenuItem", 5)
 
 end

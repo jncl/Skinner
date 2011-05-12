@@ -69,7 +69,7 @@ blizzLoDFrames = nil
 
 aObj.addonSkins = {
 	"_NPCScan",
-	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Altoholic_Characters", "Altoholic_Search", "Analyst", "AnnounceIt", "Ara_Broker_Guild_Friends", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
+	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "Ara_Broker_Guild_Friends", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
 	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BaudManifest", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossInfo", "BossNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
 	"CalendarNotify", "CallToArms", "Capping", "Carbonite", "Cauldron", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "ConcessionStand", "Converse", "Cork", "Cosplay", "CowTip", "CT_MailMod", "CT_RaidTracker", "CurseRaidTracker",
 	"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "DeathNote", "Dominos", "DragonCore",
@@ -212,7 +212,7 @@ function aObj:AddonFrames()
 end
 
 local lodFrames = {
-	"Altoholic_Achievements", "Altoholic_Guild", "AzCastBarOptions",
+	"Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "AzCastBarOptions",
 	"Bagnon", "Bagnon_Options", "Banknon", "BetterBindingFrame",
 	"DockingStation_Config", "Dominos_Config", "DoTimer_Options",
 	"Enchantrix", "EnhTooltip",
@@ -223,7 +223,7 @@ local lodFrames = {
 	"MSBTOptions",
 	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
 	"Perl_Config_Options",
-	"Scrap_Merchant", "Scrap_Options", "Squire2_Config",
+	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer", "Squire2_Config",
 	"Talented_GlyphFrame", "TradeTabs", "TipTacOptions",
 	"WeakAurasOptions", "WIM_Options",
 	"XPerl_Options",

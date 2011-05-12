@@ -24,8 +24,10 @@ function aObj:Ace3()
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
-		-- aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
-		if obj and not aObj.skinned[obj] then
+		-- aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, rawget(aObj.skinned, obj), objType:find("TSM"), obj.sknrTSM)
+		if obj
+		and (not aObj.skinned[obj] or (objType:find("TSM") and not obj.sknrTSM)) -- check objType as TSM overlays existing objects
+		then
 			if objType == "BlizOptionsGroup" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 			elseif objType == "Dropdown" then
@@ -158,15 +160,11 @@ function aObj:Ace3()
     			end
 
 			-- WeakAuras objects
-			elseif objType == "WeakAurasTextureButton" then
-			elseif objType == "WeakAurasIconButton" then
-			elseif objType == "WeakAurasNewHeaderButton" then
 			elseif objType == "WeakAurasLoadedHeaderButton" then
 				aObj:skinButton{obj=obj.expand, mp2=true, as=true}
 				aObj:SecureHook(obj.expand, "SetNormalTexture", function(this, nTex)
 					aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
 				end)
-			elseif objType == "WeakAurasNewButton" then
 			elseif objType == "WeakAurasDisplayButton" then
 				aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
 				obj.renamebox:SetHeight(18)
@@ -176,9 +174,46 @@ function aObj:Ace3()
 					aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
 				end)
 
-			-- DragDropTarget object (ReagentRestocker)
-			elseif objType == "DragDropTarget" then
-				
+			-- TradeSkillManager (TSM) objects
+			elseif objType == "TSMMainFrame" then
+				aObj:applySkin{obj=obj.frame}
+				aObj:skinButton{obj=aObj:getChild(obj.frame, 1)} -- close button
+				aObj:getChild(obj.frame, 1):SetBackdrop(nil)
+				aObj:skinButton{obj=aObj:getChild(obj.frame, 2)} -- status button
+				aObj:getChild(obj.frame, 2):SetBackdrop(nil)
+				aObj:applySkin{obj=obj.title}
+				aObj:applySkin{obj=obj.optionsIconContainer}
+				aObj:applySkin{obj=obj.craftingIconContainer}
+				aObj:applySkin{obj=obj.moduleIconContainer}
+				obj.sknrTSM = true
+			elseif objType == "TSMInlineGroup" -- overlayed onto an existing Ace3 InlineGroup
+			or objType == "TSMInlineGroupNoTitle"
+			or objType == "TSMTabGroup"
+			then
+				aObj:applySkin{obj=obj.content:GetParent(), ng=true} -- already has a gradient
+				obj.sknrTSM = true
+			elseif objType == "TSMButton" then -- overlayed onto an existing Ace3 button
+				aObj.sBtn[obj.frame] = nil -- remove button skin entry so it can be skinned again
+				obj.frame.tfade = nil -- remove gradient so it can be skinned again
+				aObj:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+				obj.sknrTSM = true
+			elseif objType == "TSMTreeGroup" then
+				aObj:applySkin{obj=obj.border, ng=true}
+				aObj:applySkin{obj=obj.treeframe, ng=true}
+				obj.sknrTSM = true
+			elseif objType == "TSMSelectionList" then
+				self:applySkin{obj=obj.leftFrame}
+				self:skinScrollBar{obj=obj.leftScrollFrame}
+				self:applySkin{obj=obj.rightFrame}
+				self:skinScrollBar{obj=obj.rightScrollFrame}
+				obj.sknrTSM = true
+			elseif objType == "TSMMacroButton"
+			or objType == "TSMFastDestroyButton"
+			then
+				aObj:skinButton{obj=obj.frame}
+				obj.frame:SetBackdrop(nil)
+				obj.sknrTSM = true
+
 			-- ignore these types for now
 			elseif objType == "CheckBox"
 			or objType == "Dropdown-Item-Execute"
@@ -186,12 +221,34 @@ function aObj:Ace3()
 			or objType == "Label"
 			or objType == "Heading"
 			or objType == "ColorPicker"
+			or objType == "SimpleGroup"
+			or objType == "Icon"
+			or objType == "InteractiveLabel"
+			-- Snowflake objects
 			or objType == "SnowflakeButton"
 			or objType == "SnowflakeEscape"
 			or objType == "SnowflakePlain"
 			or objType == "SnowflakeTitle"
-			or objType == "SimpleGroup"
-			or objType == "Icon"
+			-- WeakAuras objects
+			or objType == "WeakAurasTextureButton"
+			or objType == "WeakAurasIconButton"
+			or objType == "WeakAurasNewHeaderButton"
+			or objType == "WeakAurasNewButton"
+			-- ReagentRestocker object
+			or objType == "DragDropTarget"
+			-- TradeSkillManager objects
+			or objType == "TSMSimpleGroup"
+			or objType == "TSMScrollFrame"
+			or objType == "TSMCheckBox"
+			or objType == "TSMOverrideCheckBox"
+			or objType == "TSMEditBox"
+			or objType == "TSMOverrideEditBox"
+			or objType == "TSMMultiLabel"
+			or objType == "TSMCheckBox"
+			or objType == "TSMDropdown"
+			or objType == "TSMOverrideDropdown"
+			or objType == "TSMSlider"
+			or objType == "TSMOverrideSlider"
 			then
 			-- any other types
 			else
