@@ -680,7 +680,10 @@ function aObj:Nameplates()
 
 		local tex
 		for _, child in pairs{WorldFrame:GetChildren()} do
-			if child:GetName():find("NamePlate") then -- Nameplate frame
+			if child.GetName
+			and child:GetName()
+			and child:GetName():find("NamePlate")
+			then
 				-- aObj:ShowInfo(child, true)
 				for k, reg in ipairs{child:GetRegions()} do -- process in key order
 					-- region 1 is the flash texture, toggled using aggro warning option
@@ -690,13 +693,12 @@ function aObj:Nameplates()
 					end
 					-- regions 4 & 5 are text, 6 & 7 are raid icons, 8 is the elite icon
 				end
-				-- skin both status bars
+				-- skin both status bars, including the Shield texture
 				for k, grandchild in ipairs{child:GetChildren()} do
-					-- status bar 2 has a border and shield texture and another texture ?
-				-- 	elseif k == 4 then tex = reg -- non-interruptible shield texture
-				-- 	elseif k == 5 then aObj:changeShield(tex, reg) -- spell icon
+					-- status bar 2 has a border, the shield texture and an icon
 					if k == 2 then
-						self:getRegion(grandchild, 2):SetAlpha(0) -- border texture
+						aObj:getRegion(grandchild, 2):SetAlpha(0) -- border texture
+						aObj:changeShield(self:getRegion(grandchild, 3), self:getRegion(grandchild, 4)) -- non-interruptible shield texture and icon
 					end
 					if not aObj.sbGlazed[grandchild] then
 						-- aObj:ShowInfo(grandchild, true)
