@@ -167,12 +167,11 @@ function aObj:OnInitialize()
 	self.charKeys1 = {"GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI", "ArchaeologyUI", "GuildUI", "GuildControlUI"} -- LoD frames
 	self.charKeys2 = {"AchievementUI"}
 	self.npcKeys = {"BarbershopUI", "TrainerUI", "ReforgingUI"} -- LoD frames
-	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager"} -- LoD frames
+	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager", "LookingForGuildUI"} -- LoD frames
+	self.uiKeys2 = {}
 	if self.isPTR then
 		self:add2Table(self.uiKeys1, "FeedbackUI")
 	end
-	self:add2Table(self.uiKeys1, "LookingForGuildUI")
-	self.uiKeys2 = {}
 
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
@@ -544,11 +543,7 @@ local function __addSkinFrame(opts)
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
 
 	-- skin the buttons unless not required
-	if not opts.nb -- don't skin buttons
-	and not opts.noBdr -- this is a tab/unit frame
-	then
-		aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim}
-	end
+	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim} end
 
 	-- reparent skinFrame to avoid whiteout issues caused by animations
 	if opts.anim then

@@ -625,7 +625,7 @@ function aObj:WorldMap()
 
 -->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin
-	and self.db.profile.Tooltips.style == 3
+	-- and self.db.profile.Tooltips.style == 3
 	then
 		self:add2Table(self.ttList, "WorldMapTooltip")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
