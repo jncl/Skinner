@@ -1,3 +1,13 @@
+b4.14007.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated some utility functions
+	Removed Patch checking code
+	Updated Nameplates skin
+	Updated Ace3, Altoholic & Scrap skins
+	Skinned FlyoutButtonCustom & TradeSkillMaster
+
 b4.13914.4
 Jncl:
 	ToDo.txt
