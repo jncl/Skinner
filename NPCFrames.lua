@@ -82,7 +82,9 @@ function aObj:TrainerUI() -- LoD
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
-	ClassTrainerStatusBar:DisableDrawLayer("ARTWORK")
+	ClassTrainerStatusBarLeft:SetAlpha(0)
+	ClassTrainerStatusBarRight:SetAlpha(0)
+	ClassTrainerStatusBarMiddle:SetAlpha(0)
 	ClassTrainerStatusBarSkillRank:SetDrawLayer("OVERLAY")
 	self:glazeStatusBar(ClassTrainerStatusBar, 0,  ClassTrainerStatusBarBackground)
 	btn = ClassTrainerFrame.skillStepButton
