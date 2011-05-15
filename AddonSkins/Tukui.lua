@@ -43,12 +43,14 @@ function aObj:TukuiInit()
 	local mediapath = [[Interface\AddOns\Tukui\media\textures\]]
     local borderr, borderg, borderb = 0.6, 0.6, 0.6
     local backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
+	local mult = 1
 	if ver == 13 then
 		mediapath = [[Interface\AddOns\Tukui\medias\textures\]]
 	    if IsAddOnLoaded("Tukui") then
 	        local T, C, L = unpack(Tukui)
 	        borderr, borderg, borderb = unpack(C["media"].bordercolor)
 	        backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+			mult = T.mult
 		end
     end
 
@@ -80,14 +82,15 @@ function aObj:TukuiInit()
 			self.db.profile.BdTexture = "Tukui Background"
 			self.db.profile.BdBorderTexture = "Tukui Border"
 			self.db.profile.BdTileSize = 0
-			self.db.profile.BdEdgeSize = 1
-			self.db.profile.BdInset = -1
+			self.db.profile.BdEdgeSize = mult
+			self.db.profile.BdInset = -mult
 			self.db.profile.Gradient = {enable = false, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Tukui Background"}
 			self.db.profile.Buffs = false
 			self.db.profile.Nameplates = false
 			self.db.profile.ChatEditBox = {skin = false, style = 1}
 			self.db.profile.StatusBar = {texture = "Tukui StatusBar", r = 0, g = 0.5, b = 0.5, a = 0.5}
 			self.db.profile.WorldMap = {skin = false, size = 1}
+			self.db.profile.Minimap = {skin = false, gloss = false}
 		end
 
 		-- run the function

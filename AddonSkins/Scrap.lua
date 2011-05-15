@@ -9,7 +9,7 @@ function aObj:Scrap_Merchant() -- LoD
 		self:getRegion(Scrap, 3):SetTexture(nil)
 		self:addButtonBorder{obj=Scrap, ofs=0}
 	end
-	
+
 	-- check to see if Visualizer addon is loaded
 	-- if so then skin the additional tab
 	if select(5, GetAddOnInfo("Scrap_Visualizer")) then
@@ -44,7 +44,9 @@ function aObj:Scrap_Visualizer() -- LoD
 
 	self:skinSlider{obj=ScrapVisualizerScrollBar, size=3}
 	self:addSkinFrame{obj=ScrapVisualizer, kfs=true, ri=true, noBdr=true}
+	self:removeMagicBtnTex(ScrapVisualizer.button)
 
+	-- Tabs
 	for i = 1, ScrapVisualizer.numTabs do
 		tab = _G["ScrapVisualizerTab"..i]
 		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
