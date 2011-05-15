@@ -10,30 +10,19 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	I	Remove Patch wrapper code
+	N	Patch 4.2
+√		- TOC 40200
+		- Blizzard_CompactRaidFrameManager
+		- CastingBarFrame, spark placement, Classic/UnitFrame layout, new template for smallcastingbar
+		- RaidFrameOptions removed from IOP ?
+		- PVPFrame new tab and panel for WarGames
+		- New Blizzard AddOn - MovePad ? "The Move Pad is a mouse click-able UI frame for movement and jump."
+		- IOP changes
+			- languages panel moved to video options
+			- Raid Frame changes
+			- Battle.net panel added ?
+		- EncounterJournal ?
+		- Currencies on Merchant Frame ?
+		- Cap Progress bar changes
 
-√	I	Scrap, reported by Decabah, 26.04.11
-		- unskinned pane and tab in the vendor view (Visualizer)
-
-x	I	Quartz, reported by Decabah, 27.04.11
-		- no Tukui border around cast bar icon
-
-√	I	GuildUI, reported by Luckyjack_SL, 27.04.11
-		- width of title selection dropdown
-
-x	I	LookingForDungeonUI, reported by Luckyjack_SL, 27.04.11
-		- button textures still appear
-
-√	N	Altoholic, reported by Decabah/Gabriel/chrisgriffith25/lunamunasi, 1.05.11/3.05.11/4.05.11
-		- Skinner-b4.13914.4\Skinner.lua:954: attempt to index local 'obj' (a nil value)
-		Skinner-b4.13914.4\SkinMe\Altoholic.lua:9: in function <Skinner\SkinMe\Altoholic.lua:4>
-		Skinner-b4.13914.4\SkinMe\Altoholic.lua:59: in function <Skinner\SkinMe\Altoholic.lua:26>
-		(tail call): ?:
-
-√	S	TradeSkillMaster, requested by Gabriel, 2.05.11
-
-≈	I	Nameplates, reported by Mushito/paks2, 5.05.11/9.05.11
-
-√	S	FlyoutButtonCustom, requested by Decabah, 11.05.11
-
-x	I	Viewport Water duplication, reported by bigpete1982, 11.05.11
+√	I	MagicButtonTexture Scrap_Visualizer frame
