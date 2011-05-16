@@ -678,11 +678,11 @@ function aObj:Nameplates()
 	local npEvt
 	local function skinNameplates()
 
-		local tex
+		local tex, sb
 		for _, child in pairs{WorldFrame:GetChildren()} do
 			if child.GetName
 			and child:GetName()
-			and child:GetName():find("NamePlate")
+			and child:GetName():find("^NamePlate%d+$")
 			then
 				-- aObj:ShowInfo(child, true)
 				for k, reg in ipairs{child:GetRegions()} do -- process in key order
@@ -693,18 +693,14 @@ function aObj:Nameplates()
 					end
 					-- regions 4 & 5 are text, 6 & 7 are raid icons, 8 is the elite icon
 				end
-				-- skin both status bars, including the Shield texture
-				for k, grandchild in ipairs{child:GetChildren()} do
-					-- status bar 2 has a border, the shield texture and an icon
-					if k == 2 then
-						aObj:getRegion(grandchild, 2):SetAlpha(0) -- border texture
-						aObj:changeShield(self:getRegion(grandchild, 3), self:getRegion(grandchild, 4)) -- non-interruptible shield texture and icon
-					end
-					if not aObj.sbGlazed[grandchild] then
-						-- aObj:ShowInfo(grandchild, true)
-						aObj:glazeStatusBar(grandchild, 0)
-					end
-				end
+				-- skin both status bars
+				sb = aObj:getChild(child, 1)
+				if not aObj.sbGlazed[sb] then aObj:glazeStatusBar(sb, 0) end
+				sb = aObj:getChild(child, 2)
+				if not aObj.sbGlazed[sb] then aObj:glazeStatusBar(sb, 0) end
+				-- skin the Shield texture
+				aObj:getRegion(sb, 2):SetAlpha(0) -- border texture
+				aObj:changeShield(self:getRegion(sb, 3), self:getRegion(sb, 4)) -- non-interruptible shield texture and icon
 			end
 		end
 
