@@ -25,4 +25,16 @@ Legend:
 		- Currencies on Merchant Frame ?
 		- Cap Progress bar changes
 
-√	I	MagicButtonTexture Scrap_Visualizer frame
+?	I	Scrap, reported by Decabah, 13.05.11
+		- Tab is bright white, skinned twice ?
+
+x	S	GuildMaster, requested by Gabriel, 15.05.11
+
+√	I	reported by Mirruan, 16.05.11
+		- Interface\AddOns\Skinner\Skinner.lua:857: attempt to call method 'SetStatusBarTexture' (a nil value)
+		Time: 05/16/11 12:02:20
+		Count: 668
+		Stack: (tail call): ?
+		Interface\AddOns\Skinner\Skinner.lua:857: in function `glazeStatusBar'
+		Interface\AddOns\Skinner\UIElements2.lua:705: in function <Interface\AddOns\Skinner\UIElements2.lua:679>
+		(tail call): ?
