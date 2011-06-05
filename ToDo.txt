@@ -12,29 +12,55 @@ Legend:
 
 	N	Patch 4.2
 √		- TOC 40200
-		- Blizzard_CompactRaidFrameManager
+?		- Blizzard_CompactRaidFrameManager ?
 		- CastingBarFrame, spark placement, Classic/UnitFrame layout, new template for smallcastingbar
 		- RaidFrameOptions removed from IOP ?
-		- PVPFrame new tab and panel for WarGames
-		- New Blizzard AddOn - MovePad ? "The Move Pad is a mouse click-able UI frame for movement and jump."
+?		- GuildInfoFrame changes ?
+?		- GuildRecruitmentFrame changes ?
+x		- MacroFrame changes ?
+√		- PVPFrame new tab and panel for WarGames
+?		- New Blizzard AddOn - MovePad ? "The Move Pad is a mouse click-able UI frame for movement and jump."
 		- IOP changes
-			- languages panel moved to video options
-			- Raid Frame changes
-			- Battle.net panel added ?
-		- EncounterJournal ?
-		- Currencies on Merchant Frame ?
-		- Cap Progress bar changes
+√			- languages panel added
+≈		- EncounterJournal
+x		- Currencies on Merchant Frame ?
+		- Cap Progress bar replaces existing Status Bar(s)
+√			- PVPFrame
+x		- FriendsFrame changes ?
+x		- HelpFrame NavBar changes ?
+√		- Additional Micro buttons
 
-?	I	Scrap, reported by Decabah, 13.05.11
-		- Tab is bright white, skinned twice ?
+√	I	Scrap, reported by Decabah, 13/17.05.11
+		- Tab button texture still white
 
-x	S	GuildMaster, requested by Gabriel, 15.05.11
+≈	S	GuildMaster, requested by Gabriel, 15.05.11
+		- this one: http://www.wowinterface.com/downloads/info18942-GuildMaster.html
 
-√	I	reported by Mirruan, 16.05.11
-		- Interface\AddOns\Skinner\Skinner.lua:857: attempt to call method 'SetStatusBarTexture' (a nil value)
-		Time: 05/16/11 12:02:20
-		Count: 668
-		Stack: (tail call): ?
-		Interface\AddOns\Skinner\Skinner.lua:857: in function `glazeStatusBar'
-		Interface\AddOns\Skinner\UIElements2.lua:705: in function <Interface\AddOns\Skinner\UIElements2.lua:679>
+√	S	GuildWarden, requested by Gabriel, 17.05.11
+
+√	I	ClassTrainerUI
+		- Rank Text moved ? This is a Blizzard bug, now reported
+
+√	I	LFD, reported by Luckyjack_SL, 22.05.11
+		- Magic textures still appearing if buttons not skinned
+
+√	N	Bindpad, reported by Olorin, 22.05.11
+		- Skinner-b4.14007.3\Skinner.lua:213: table index is nil
+		Skinner-b4.14007.3\Skinner.lua:1463: in function <Skinner\Skinner.lua:1449>
+		Skinner-b4.14007.3\Skinner.lua:1495: in function `skinScrollBar'
+		Skinner-b4.14007.3\SkinMe\BindPad.lua:23: in function <Skinner\SkinMe\BindPad.lua:3>
+		(tail call): ?:
+
+√	S	Arena/Battleground timer, requested by Khalen_EU, 27.05.11
+
+√	S	HelpOpenTicketButtonTutorial
+
+√	S	GMChatFrame & EditBox
+
+√	S	GMChat popup
+
+≈	I	WatchFrame, reported by Gabriel, 28.05.11
+		- Skinner-b4.13875.1\CharacterFrames2.lua:481: attempt to index field "?" (a nil value)
+		Skinner-b4.13875.1\CharacterFrames2.lua:481: in function <Skinner\CharacterFrames2.lua:477>
+		Skinner-b4.13875.1\CharacterFrames2.lua:494: in function <Skinner\CharacterFrames2.lua:493>
 		(tail call): ?
