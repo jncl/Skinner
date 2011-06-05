@@ -145,6 +145,7 @@
 <script file="SkinMe\GuildBankSearch.lua"/>
 <script file="SkinMe\GuildGreet.lua"/>
 <script file="SkinMe\GuildLaunchCT_RaidTracker.lua"/>
+<script file="SkinMe\GuildMaster.lua"/>
 <script file="SkinMe\GupCharacter.lua"/>
 <script file="SkinMe\GupPet.lua"/>
 <script file="SkinMe\Hack.lua"/>
@@ -301,6 +302,7 @@
 <script file="SkinMe\Violation.lua"/>
 <script file="SkinMe\Visor2_GUI.lua"/>
 <script file="SkinMe\Volumizer.lua"/>
+<script file="SkinMe\Warden.lua"/>
 <script file="SkinMe\Waterfall.lua"/>
 <script file="SkinMe\WeakAuras.lua"/>
 <script file="SkinMe\WebDKP.lua"/>
