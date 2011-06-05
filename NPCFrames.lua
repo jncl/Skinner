@@ -85,6 +85,7 @@ function aObj:TrainerUI() -- LoD
 	ClassTrainerStatusBarLeft:SetAlpha(0)
 	ClassTrainerStatusBarRight:SetAlpha(0)
 	ClassTrainerStatusBarMiddle:SetAlpha(0)
+	ClassTrainerStatusBarSkillRank:SetPoint("CENTER", ClassTrainerStatusBar) -- Blizzard bug
 	self:glazeStatusBar(ClassTrainerStatusBar, 0,  ClassTrainerStatusBarBackground)
 	btn = ClassTrainerFrame.skillStepButton
 	btn.disabledBG:SetAlpha(0)

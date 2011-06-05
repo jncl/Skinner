@@ -1,7 +1,7 @@
 local aName, aObj = ...
-local module = aObj:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 local _G = _G
 local ftype = "c"
+local module = aObj:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 local db, aso, plt
 local defaults = {

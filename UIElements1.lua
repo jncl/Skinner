@@ -387,18 +387,18 @@ function aObj:ChatEditBox()
 
 	local function skincfEB(obj)
 
-		if self.db.profile.ChatEditBox.style == 1 then -- Frame
-			local kRegions = CopyTable(self.ebRegions)
+		if aObj.db.profile.ChatEditBox.style == 1 then -- Frame
+			local kRegions = CopyTable(aObj.ebRegions)
 			table.insert(kRegions, 12)
-			self:keepRegions(obj, kRegions)
-			self:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
-		elseif self.db.profile.ChatEditBox.style == 2 then -- Editbox
-			self:skinEditBox{obj=obj, regs={12}, noHeight=true}
+			aObj:keepRegions(obj, kRegions)
+			aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
+		elseif aObj.db.profile.ChatEditBox.style == 2 then -- Editbox
+			aObj:skinEditBox{obj=obj, regs={12}, noHeight=true}
 		else -- Borderless
-			self:removeRegions(obj, {6, 7, 8})
-			self:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
+			aObj:removeRegions(obj, {6, 7, 8})
+			aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		end
-		self.skinned[obj] = true
+		aObj.skinned[obj] = true
 
 	end
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -619,8 +619,8 @@ function aObj:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
-	self:skinScrollBar{obj=WorldMapQuestScrollFrame}
-	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame}
+	self:skinScrollBar{obj=WorldMapQuestScrollFrame, size=4}
+	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame, size=2}
 	self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
 
 -->>-- Tooltip(s)
@@ -648,7 +648,8 @@ function aObj:HelpFrame()
 	HelpFrame.mainInset:DisableDrawLayer("BACKGROUND")
 	HelpFrame.mainInset:DisableDrawLayer("BORDER")
 	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, ofs=-10}
-	-->>-- Knowledgebase panel
+
+-->>-- Knowledgebase panel
 	self:keepFontStrings(HelpFrame.kbase)
 	self:moveObject{obj=HelpFrame.kbase.searchBox.icon, x=4}
 	self:skinEditBox{obj=HelpFrame.kbase.searchBox, regs={9}}
@@ -661,18 +662,24 @@ function aObj:HelpFrame()
 	HelpFrame.kbase.navBar.home:GetNormalTexture():SetAlpha(0)
 	HelpFrame.kbase.navBar.home:GetPushedTexture():SetAlpha(0)
 	HelpFrame.kbase.navBar.home.text:SetPoint("RIGHT", -20, 0) -- allow text to be fully displayed
-	-->>-- Character Stuck panel
+
+-->>-- Character Stuck panel
 	self:addButtonBorder{obj=HelpFrameCharacterStuckHearthstone, es=20}
-	-->>--	Ticket panel
+
+-->>--	Ticket panel
 	self:skinSlider{obj=HelpFrameTicketScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=self:getChild(HelpFrame.ticket, 4), ft=ftype}
 
-	-->>--	Ticket Status Frame
+-->>--	Ticket Status Frame
 	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
+
+-->>-- HelpOpenTicketButton
+	HelpOpenTicketButton.tutorial:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=HelpOpenTicketButton.tutorial, ft=ftype, y1=3, x2=3}
 
 	-- hook this to handle navbar buttons
 	self:SecureHook("NavBar_AddButton", function(this, buttonData)
-		self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
+		-- self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
 		for i = 1, #this.navList do
 			local btn = this.navList[i]
 			btn:DisableDrawLayer("OVERLAY")
@@ -1144,7 +1151,7 @@ if aObj.isPTR then
 		self:skinDropDown{obj=FeedbackUI_MouseButtonDropDown}
 		self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
 		self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
-		tinsert(UISpecialFrames, "FeedbackUI") -- make it closeable with Esc key
+		self:add2Table(UISpecialFrames, "FeedbackUI") -- make it closeable with Esc key
 
 	-->>-- Welcome Frame panels
 		FeedbackUIWelcomeFrameSurveys:DisableDrawLayer("BORDER")

@@ -567,7 +567,7 @@ function aObj:CompactFrames()
 	end
 
 -->>-- Compact RaidFrame Container
-	self:addSkinFrame{obj=CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-5, y2=4}
+	self:addSkinFrame{obj=CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, bg=true, y1=-1, x2=-5, y2=4}
 
 -->>-- Compact RaidFrame Manager
 	local function skinButton(btn)
@@ -786,7 +786,7 @@ function aObj:GuildUI() -- LoD
 		self:applySkin{obj=btn}
 		btn.ring:SetAlpha(0)
 		btn.PointsSpentBgGold:SetAlpha(0)
-		self:moveObject{obj=btn.PointsSpentBgGold, x=3, y=-3}
+		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
 	self:skinSlider{obj=GuildInfoFrameApplicantsContainerScrollBar}
 	self:removeMagicBtnTex(GuildRecruitmentInviteButton)
@@ -839,7 +839,7 @@ function aObj:GuildControlUI() -- LoD
 	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BORDER")
 	-- hook this as buttons are created as required
 	self:SecureHook("GuildControlUI_BankTabPermissions_Update", function(this)
-		self:Debug("GuildControlUI_BankTabPermissions_Update: [%s]", this)
+		-- self:Debug("GuildControlUI_BankTabPermissions_Update: [%s]", this)
 		for i = 1, MAX_BUY_GUILDBANK_TABS do
 			btn = _G["GuildControlBankTab"..i]
 			if btn

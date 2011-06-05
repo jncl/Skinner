@@ -746,13 +746,31 @@ function aObj:GMChatUI() -- LoD
 	self.initialized.GMChatUI = true
 
 -->>-- GM Chat Request frame
-	self:addSkinFrame{obj=self:getChild(GMChatStatusFrame, 2), ft=ftype}
+	GMChatStatusFrame:DisableDrawLayer("BORDER")
+	GMChatStatusFrame:DisableDrawLayer("OVERLAY")
+	self:addSkinFrame{obj=GMChatStatusFrame, ft=ftype, x1=30, y1=-12, x2=-30, y2=12}
 
 -->>-- GMChat Frame
 	if self.db.profile.ChatFrames then
 		self:addSkinFrame{obj=GMChatFrame, ft=ftype, x1=-4, y1=4, x2=4, y2=-8, nb=true}
 	end
 	self:skinButton{obj=GMChatFrameCloseButton, cb=true}
+	GMChatFrame:DisableDrawLayer("BORDER")
+
+-->>-- GMChatFrameEditBox
+	if self.db.profile.ChatEditBox.skin then
+		if self.db.profile.ChatEditBox.style == 1 then -- Frame
+			local kRegions = CopyTable(self.ebRegions)
+			table.insert(kRegions, 12)
+			self:keepRegions(GMChatFrame.editBox, kRegions)
+			self:addSkinFrame{obj=GMChatFrame.editBox, ft=ftype, x1=2, y1=-2, x2=-2}
+		elseif self.db.profile.ChatEditBox.style == 2 then -- Editbox
+			self:skinEditBox{obj=GMChatFrame.editBox, regs={12}, noHeight=true}
+		else -- Borderless
+			self:removeRegions(GMChatFrame.editBox, {6, 7, 8})
+			self:addSkinFrame{obj=GMChatFrame.editBox, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
+		end
+	end
 
 -->>-- GMChat Frame Tab
 	self:addSkinFrame{obj=GMChatTab, kfs=true, ft=ftype, noBdr=self.isTT, y2=-4}
@@ -820,16 +838,20 @@ function aObj:LFDFrame()
 	LFDQueueFrameBackground:SetAlpha(0)
 	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
 	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
-	self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
-		local btnName
-		for i = 1, 5 do
-			btnName = "LFDQueueFrameRandomScrollFrameChildFrameItem"..i
-			if _G[btnName] then
-				_G[btnName.."NameFrame"]:SetTexture(nil)
-				self:addButtonBorder{obj=_G[btnName], libt=true}
+	self:removeMagicBtnTex(LFDQueueFrameFindGroupButton)
+	self:removeMagicBtnTex(LFDQueueFrameCancelButton)
+	if self.modBtnBs then
+		self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
+			local btnName
+			for i = 1, 5 do
+				btnName = "LFDQueueFrameRandomScrollFrameChildFrameItem"..i
+				if _G[btnName] then
+					_G[btnName.."NameFrame"]:SetTexture(nil)
+					self:addButtonBorder{obj=_G[btnName], libt=true}
+				end
 			end
-		end
-	end)
+		end)
+	end
 	-- Specific List subFrame
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		btn = "LFDQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
@@ -1000,7 +1022,7 @@ function aObj:LookingForGuildUI() -- LoD
 		self:applySkin{obj=btn}
 		_G[btn:GetName().."Ring"]:SetAlpha(0)
 		btn.PointsSpentBgGold:SetAlpha(0)
-		self:moveObject{obj=btn.PointsSpentBgGold, x=3, y=-3}
+		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
 	-- Apps Frame (Requests)
 	self:skinSlider{obj=LookingForGuildAppsFrameContainerScrollBar}

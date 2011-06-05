@@ -493,9 +493,6 @@ local function __addSkinFrame(opts)
 	assert(opts.obj, "Missing object __aSF\n"..debugstack())
 --@end-alpha@
 
-	-- don't skin it twice (issue with Scrap Tab ?)
-	if aObj.skinFrame[opts.obj]--[=[ or opts.obj.tfade--]=] then return end
-
 	-- remove the object's Backdrop if it has one
 	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
 
@@ -1514,6 +1511,9 @@ local function __skinSlider(opts)
 	opts.obj:GetThumbTexture():SetAlpha(1)
 
 	aObj:skinUsingBD{obj=opts.obj, size=opts.size}
+
+	-- hide track background
+	if opts.obj.trackBG then opts.obj.trackBG:SetAlpha(0) end
 
 end
 

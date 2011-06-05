@@ -1,6 +1,6 @@
 local aName, aObj = ...
-local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 local _G = _G
+local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
 local db
 local defaults = {
@@ -157,7 +157,7 @@ function module:skinButton(opts)
 	end
 
 	local x1, x2, y1, y2, btn
-	local bW, bH = floor(opts.obj:GetWidth()), floor(opts.obj:GetHeight())
+	local bW, bH = floor(opts.obj:GetWidth() + 0.01), floor(opts.obj:GetHeight() + 0.01) -- add adj for 31.999 buttons
 	if bW <= 20 and opts.cb then -- ArkInventory/Recount close buttons
 		local adj = bW < 20 and bW + 1 or bW
 --		print(opts.obj:GetParent():GetName(), bW, adj)

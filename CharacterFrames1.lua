@@ -87,6 +87,14 @@ function aObj:PaperDollFrame()
 			end
 		end
 	end)
+	-- Stats
+	for i = 1, 7 do
+		local grp = _G["CharacterStatsPaneCategory"..i]
+		grp.BgTop:SetAlpha(0)
+		grp.BgBottom:SetAlpha(0)
+		grp.BgMiddle:SetAlpha(0)
+		grp.BgMinimized:SetAlpha(0)
+	end
 	-- Titles
 	self:SecureHookScript(PaperDollTitlesPane, "OnShow", function(this)
 		for i = 1, #this.buttons do
@@ -274,7 +282,7 @@ function aObj:PVPFrame()
 
 	-- Hook this to suppress the PVP Banner Header from being displayed when new team created
 	self:SecureHook("CreateArenaTeam", function(size, name, ...)
-		self:Debug("CreateArenaTeam: [%s, %s]", size,name)
+		-- self:Debug("CreateArenaTeam: [%s, %s]", size,name)
 		if size == 2 then
 			PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
 			PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
