@@ -16,7 +16,7 @@ function aObj:Scrap_Merchant() -- LoD
 		tab = _G["MerchantFrameTab"..MerchantFrame.numTabs]
 		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
 		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		self:setInactiveTab(tabSF)
+		if self.isTT then self:setInactiveTab(tabSF) end
 	end
 
 end

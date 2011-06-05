@@ -18,7 +18,7 @@ function Skinner:oRA3() -- last tested with r421
 			end
 			-- move tabs left if in raid group
 			local xOfs = select(4, oRA3FrameTab1:GetPoint())
---rl			self:Debug("oRA3_SelectPanel: [%s, %s, %s]", xOfs, oRA3.groupStatus, xOfs == 0 and oRA3.groupStatus and oRA3.groupStatus == oRA3.INRAID and -26 or 0)
+--			self:Debug("oRA3_SelectPanel: [%s, %s, %s]", xOfs, oRA3.groupStatus, xOfs == 0 and oRA3.groupStatus and oRA3.groupStatus == oRA3.INRAID and -26 or 0)
 			self:moveObject{obj=oRA3FrameTab1, x=xOfs == 0 and oRA3.groupStatus and oRA3.groupStatus == oRA3.INRAID and -26 or 0}
 		end)
 	end

@@ -13,7 +13,7 @@ function Skinner:Violation()
 			if not violationsSkinned[frame] then
 				frame.header:SetWidth(frame:GetWidth() - 48)
 				local yOfs = select(5, frame.header:GetPoint())
-				yOfs = math.floor(yOfs)
+				yOfs = floor(yOfs)
 --		 		Skinner:Debug("V_header_GP: [%s]", yOfs)
 				if yOfs == -14 then
 					Skinner:moveObject(frame.header, nil, nil, "+", 9, frame)

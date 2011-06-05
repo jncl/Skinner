@@ -91,6 +91,7 @@ function aObj:TukuiInit()
 			self.db.profile.StatusBar = {texture = "Tukui StatusBar", r = 0, g = 0.5, b = 0.5, a = 0.5}
 			self.db.profile.WorldMap = {skin = false, size = 1}
 			self.db.profile.Minimap = {skin = false, gloss = false}
+			self.db.profile.TexturedTab = false
 		end
 
 		-- run the function

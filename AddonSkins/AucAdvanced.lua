@@ -9,6 +9,7 @@ function aObj:AucAdvanced()
 		["5.8"] = 1,
 		["5.9"] = 2,
 		["5.10"] = 3,
+		["5.11"] = 4,
 	}
 	local aVer = GetAddOnMetadata("Auc-Advanced", "Version")
 	local ver = vTab[aVer:match("(%d.%d+).%d+")] or 9
@@ -16,7 +17,22 @@ function aObj:AucAdvanced()
 	-- progress bars
 	local lib = ver == 1 and AucAdvanced.Scan or AucAdvanced.API
 	self:SecureHook(lib , "ProgressBars", function(sbObj, ...)
-	    if ver > 1 then
+		if ver == 4 then
+			-- search all UIParent StatusBar objects 
+			for _, child in ipairs{UIParent:GetChildren()} do
+				if child:IsObjectType("StatusBar")
+				and child:GetName() == nil
+				and ceil(child:GetWidth()) == 300
+				and ceil(child:GetHeight()) == 18
+				and not self.sbGlazed[child]
+				then
+	      			child:SetBackdrop(nil)
+	       			self:glazeStatusBar(child, 0)
+				end
+			end
+	    elseif ver > 1
+		and ver < 4
+		then
 			i = 1
 			while lib["GenericProgressBar"..i] do
 	           local gpb = lib["GenericProgressBar"..i]
@@ -34,11 +50,11 @@ function aObj:AucAdvanced()
            			self:glazeStatusBar(gpb, 0)
            		end
 	        end
-	    elseif ver < 1 then
-    		if not self.sbGlazed[sbObj] then
-    			sbObj:SetBackdrop(nil)
-    			self:glazeStatusBar(sbObj, 0)
-    		end
+	    -- elseif ver < 1 then
+	    --     		if not self.sbGlazed[sbObj] then
+	    --     			sbObj:SetBackdrop(nil)
+	    --     			self:glazeStatusBar(sbObj, 0)
+	    --     		end
     	end
 	end)
 

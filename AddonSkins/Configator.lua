@@ -1,6 +1,7 @@
 -- This is a Library
+local aName, aObj = ...
 
-function Skinner:Configator()
+function aObj:Configator()
 	if self.initialized.Configator then return end
 	self.initialized.Configator = true
 
@@ -16,14 +17,14 @@ function Skinner:Configator()
 		end
 	end
 
-	local clib = LibStub("Configator", true)
+	local clib, ver = LibStub("Configator", true)
 	local function skinHelp()
 
-		self:moveObject{obj=clib.help.close, y=-2}
-		self:skinButton{obj=clib.help.close, cb=true}
-		self:skinUsingBD{obj=clib.help.scroll.hScroll}
-		self:skinUsingBD{obj=clib.help.scroll.vScroll}
-		self:addSkinFrame{obj=clib.help}
+		aObj:moveObject{obj=clib.help.close, y=-2}
+		aObj:skinButton{obj=clib.help.close, cb=true}
+		aObj:skinUsingBD{obj=clib.help.scroll.hScroll}
+		aObj:skinUsingBD{obj=clib.help.scroll.vScroll}
+		aObj:addSkinFrame{obj=clib.help}
 
 	end
 	-- hook this to skin Configator frames
@@ -39,9 +40,13 @@ function Skinner:Configator()
 			-- skin the Tooltip
 			if self.db.profile.Tooltips.skin then
 				if not self:IsHooked(clib.tooltip, "Show") then
-					if self.db.profile.Tooltips.style == 3 then clib.tooltip:SetBackdrop(self.Backdrop[1]) end
+					if self.db.profile.Tooltips.style == 3
+					or ver == 26
+					then
+						clib.tooltip:SetBackdrop(self.Backdrop[1])
+					end
 					self:SecureHook(clib.tooltip, "Show", function(this)
-						self:skinTooltip(clib.tooltip)
+						self:skinTooltip(this)
 					end)
 				end
 			end
@@ -131,9 +136,13 @@ function Skinner:Configator()
 	-- skin the Tooltip
 	if self.db.profile.Tooltips.skin then
 		if clib and not self:IsHooked(clib.tooltip, "Show") then
-			if self.db.profile.Tooltips.style == 3 then clib.tooltip:SetBackdrop(self.backdrop) end
+			if self.db.profile.Tooltips.style == 3
+			or ver == 26
+			then
+				clib.tooltip:SetBackdrop(self.Backdrop[1])
+			end
 			self:SecureHook(clib.tooltip, "Show", function(this)
-				self:skinTooltip(clib.tooltip)
+				self:skinTooltip(this)
 			end)
 		end
 	end

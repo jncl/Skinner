@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("BindPad") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("BindPad") then return end
 
-function Skinner:BindPad()
+function aObj:BindPad()
 
 -->>-- Main frame
 	self:skinFFToggleTabs("BindPadFrameTab", 4)
@@ -20,8 +21,8 @@ function Skinner:BindPad()
 	self:skinScrollBar{obj=BindPadMacroPopupScrollFrame}
 	self:addSkinFrame{obj=BindPadMacroPopupFrame, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
 -->>-- Macro Text frame
-	self:skinScrollBar{obj=BindPadMacroTextFrameScrollFrame}
-	BindPadMacroTextFrameTextBackground:SetAlpha(0)
-	self:addSkinFrame{obj=BindPadMacroTextFrame, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
+	self:skinScrollBar{obj=BindPadMacroFrameScrollFrame}
+	BindPadMacroFrameTextBackground:SetAlpha(0)
+	self:addSkinFrame{obj=BindPadMacroFrame, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 
 end
