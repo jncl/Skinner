@@ -853,3 +853,126 @@ function aObj:GuildControlUI() -- LoD
 	end)
 
 end
+
+function aObj:EncounterJournal()
+
+	self:addSkinFrame{obj=EncounterJournal, ft=ftype, kfs=true, y1=2, x2=1}
+-->>-- Search EditBox, dropdown and results frame
+	self:moveObject{obj=EncounterJournal.searchBox.searchIcon, x=3}
+	self:skinEditBox{obj=EncounterJournal.searchBox, regs={9}}
+	EncounterJournal.searchBox.sbutton1:DisableDrawLayer("OVERLAY")
+	self:addSkinFrame{obj=EncounterJournal.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
+	self:skinSlider{obj=EncounterJournal.searchResults.scrollFrame.scrollBar}
+	for i = 1, #EncounterJournal.searchResults.scrollFrame.buttons do
+		btn = EncounterJournal.searchResults.scrollFrame.buttons[i]
+		btn:DisableDrawLayer("OVERLAY")
+		self:addButtonBorder{obj=btn, relTo=btn.icon}
+	end
+-->>-- Nav Bar
+	EncounterJournal.navBar:DisableDrawLayer("BACKGROUND")
+	EncounterJournal.navBar:DisableDrawLayer("BORDER")
+	EncounterJournal.navBar.overlay:DisableDrawLayer("OVERLAY")
+	EncounterJournal.navBar.home:DisableDrawLayer("OVERLAY")
+	EncounterJournal.navBar.home:GetNormalTexture():SetAlpha(0)
+	EncounterJournal.navBar.home:GetPushedTexture():SetAlpha(0)
+	EncounterJournal.navBar.home.text:SetPoint("RIGHT", -20, 0)
+-->>-- inset frame
+	EncounterJournal.inset:DisableDrawLayer("BACKGROUND")
+	EncounterJournal.inset:DisableDrawLayer("BORDER")
+-->>-- InstanceSelect frame
+	EncounterJournal.instanceSelect.bg:SetAlpha(0)
+	self:skinDropDown{obj=EncounterJournal.instanceSelect.tierDropDown}
+	self:skinSlider{obj=EncounterJournal.instanceSelect.scroll.ScrollBar}
+	self:addSkinFrame{obj=EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
+	-- Instance buttons
+	if self.modBtnBs then
+		for i = 1, 30 do
+			btn = EncounterJournal.instanceSelect.scroll.child["instance"..i]
+			if btn then
+				self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
+			end
+		end
+	end
+	-- Tabs
+	EncounterJournal.instanceSelect.raidsTab:DisableDrawLayer("BACKGROUND")
+	EncounterJournal.instanceSelect.dungeonsTab:DisableDrawLayer("BACKGROUND")
+-->>-- Encounter frame
+	-- Instance frame
+	EncounterJournal.encounter.instance.loreBG:SetTexCoord(0.06, 0.70, 0.08, 0.58)
+	EncounterJournal.encounter.instance.loreBG:SetWidth(370)
+	EncounterJournal.encounter.instance.loreBG:SetHeight(315)
+	self:moveObject{obj=EncounterJournal.encounter.instance.title, y=40}
+	self:getRegion(EncounterJournal.encounter.instance, 2):SetAlpha(0) -- TitleBG
+	self:skinSlider{obj=EncounterJournal.encounter.instance.loreScroll.ScrollBar}
+	EncounterJournal.encounter.instance.loreScroll.child.lore:SetTextColor(self.BTr, self.BTg, self.BTb)
+	-- Model frame
+	self:makeMFRotatable(EncounterJournal.encounter.model)
+	self:getRegion(EncounterJournal.encounter.model, 1):SetAlpha(0) -- TitleBG
+	-- Boss/Creature buttons
+	self:SecureHook("EncounterJournal_DisplayInstance", function(instanceID, noButton)
+		for i = 1, 10 do
+			btn = _G["EncounterJournalBossButton"..i]
+			if btn then
+				btn:SetNormalTexture(nil)
+				btn:SetPushedTexture(nil)
+			end
+		end
+	end)
+	self:SecureHook("EncounterJournal_DisplayEncounter", function(encounterID, noButton)
+		for i = 1, 6 do
+			EncounterJournal.encounter["creatureButton"..i]:SetNormalTexture(nil)
+			local hTex = EncounterJournal.encounter["creatureButton"..i]:GetHighlightTexture()
+			hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
+			hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
+		end
+	end)
+	-- Info frame
+	self:getRegion(EncounterJournal.encounter.info, 1):SetAlpha(0) -- BG
+	EncounterJournal.encounter.info.dungeonBG:SetAlpha(0)
+	EncounterJournal.encounter.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:skinSlider{obj=EncounterJournal.encounter.info.detailsScroll.ScrollBar}
+	EncounterJournal.encounter.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+	-- Difficulty buttons
+	for _, v in pairs{"heroButton", "diff25man", "diff10man"} do
+		EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
+		EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
+	end
+	-- Hook this to skin headers
+	self:SecureHook("EncounterJournal_ToggleHeaders", function(this, doNotShift)
+		for i = 1, 25 do
+			obj = _G["EncounterJournalInfoHeader"..i]
+			if obj then
+				obj.button:DisableDrawLayer("BACKGROUND")
+				obj.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+				obj.descriptionBG:SetAlpha(0)
+				obj.descriptionBGBottom:SetAlpha(0)
+			end
+		end
+	end)
+	-- Loot
+	self:skinSlider{obj=EncounterJournal.encounter.info.lootScroll.scrollBar}
+	EncounterJournal.encounter.info.lootScroll.filter:DisableDrawLayer("BACKGROUND")
+	EncounterJournal.encounter.info.lootScroll.filter:SetNormalTexture(nil)
+	EncounterJournal.encounter.info.lootScroll.filter:SetPushedTexture(nil)
+	self:addSkinFrame{obj=EncounterJournal.encounter.info.lootScroll.classFilter, ft=ftype, kfs=true}
+	EncounterJournal.encounter.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
+	-- hook this to skin loot entries
+	self:SecureHook("EncounterJournal_LootUpdate", function()
+		for i = 1, #EncounterJournal.encounter.info.lootScroll.buttons do
+			btn = EncounterJournal.encounter.info.lootScroll.buttons[i]
+			btn:DisableDrawLayer("BORDER")
+			btn.slot:SetTextColor(self.BTr, self.BTg, self.BTb)
+			btn.armorType:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=btn, relTo=btn.icon}
+		end
+		
+	end)
+	-- Tabs
+	for _, v in pairs{"bossTab", "lootTab"} do
+		EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
+		EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
+		EncounterJournal.encounter.info[v]:SetDisabledTexture(nil)
+		self:addSkinFrame{obj=EncounterJournal.encounter.info[v], ft=ftype, bg=true, noBdr=true, ofs=-3}
+	end
+
+end

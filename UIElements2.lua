@@ -195,35 +195,36 @@ function aObj:MenuFrames()
 
 -->>-- Game Menu Frame
 	self:addSkinFrame{obj=GameMenuFrame, ft=ftype, kfs=true, hdr=true}
--->>-- Video Options
+
+-->>-- Options
 	self:addSkinFrame{obj=VideoOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	self:addSkinFrame{obj=VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true}
 	self:skinSlider(VideoOptionsFrameCategoryFrameListScrollBar)
 	self:addSkinFrame{obj=VideoOptionsFramePanelContainer, ft=ftype}
-	-- Resolution Panel
+	-- Graphics
 	for _, child in ipairs{Graphics_:GetChildren()} do
 		if child:GetName():find("DropDown") then
 			self:skinDropDown{obj=child}
 		end
 	end
+	-- Advanced
 	for _, child in ipairs{Advanced_:GetChildren()} do
 		if child:GetName():find("DropDown") then
 			self:skinDropDown{obj=child}
 		end
 	end
--->>-- Sound & Voice Options
-	self:addSkinFrame{obj=AudioOptionsFrame, ft=ftype, kfs=true, hdr=true}
-	self:skinSlider(AudioOptionsFrameCategoryFrameListScrollBar)
-	self:addSkinFrame{obj=AudioOptionsFrameCategoryFrame, ft=ftype, kfs=true}
-	self:addSkinFrame{obj=AudioOptionsFramePanelContainer, ft=ftype}
-	-- Sound Panel
+	-- Languages
+	if self.isPatch then
+		self:skinDropDown{obj=InterfaceOptionsLanguagesPanelLocaleDropDown}
+	end
+	-- Sound
 	self:addSkinFrame{obj=AudioOptionsSoundPanel, ft=ftype}
 	self:addSkinFrame{obj=AudioOptionsSoundPanelPlayback, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsSoundPanelHardwareDropDown}
 	self:skinDropDown{obj=AudioOptionsSoundPanelSoundChannelsDropDown}
 	self:addSkinFrame{obj=AudioOptionsSoundPanelHardware, ft=ftype}
 	self:addSkinFrame{obj=AudioOptionsSoundPanelVolume, ft=ftype}
-	-- Voice Panel
+	-- Voice
 	self:addSkinFrame{obj=AudioOptionsVoicePanel, ft=ftype}
 	self:addSkinFrame{obj=AudioOptionsVoicePanelTalking, ft=ftype}
 	self:skinDropDown{obj=AudioOptionsVoicePanelInputDeviceDropDown}
@@ -538,8 +539,14 @@ function aObj:MainMenuBar()
 			self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
 		end
 		self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
+		if self.isPatch then
+			self:addButtonBorder{obj=EJMicroButton, mb=true, ofs=0, y1=-21}
+			self:addButtonBorder{obj=RaidMicroButton, mb=true, ofs=0, y1=-21}
+		end
 		-- Keyring button
-		self:addButtonBorder{obj=KeyRingButton}
+		if not self.isPatch then
+			self:addButtonBorder{obj=KeyRingButton}
+		end
 		-- Bag buttons
 		self:addButtonBorder{obj=MainMenuBarBackpackButton}
 		self:addButtonBorder{obj=CharacterBag0Slot}

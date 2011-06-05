@@ -106,6 +106,9 @@ function aObj:PaperDollFrame()
 		self:Unhook(PaperDollEquipmentManagerPane, "OnShow")
 	end)
 	self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar, size=3}
+	if self.isPatch then
+		PaperDollEquipmentManagerPane.EquipSet.ButtonBackground:SetAlpha(0)
+	end
 	-- GearManagerDialog Popup Frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
 	self:skinEditBox{obj=GearManagerDialogPopupEditBox, regs={9}}
@@ -186,8 +189,17 @@ function aObj:PVPFrame()
 
 	PVPFrame.topInset:DisableDrawLayer("BACKGROUND")
 	PVPFrame.topInset:DisableDrawLayer("BORDER")
-	self:glazeStatusBar(PVPFrameConquestBar, 0,	 PVPFrameConquestBarBG)
-	PVPFrameConquestBarBorder:Hide()
+	local bar = PVPFrameConquestBar
+	if not self.isPatch then
+		self:glazeStatusBar(bar, 0, PVPFrameConquestBarBG)
+		PVPFrameConquestBarBorder:Hide()
+	else
+		bar.progress:SetTexture(self.sbTexture)
+		bar.cap1:SetTexture(self.sbTexture)
+		bar.cap2:SetTexture(self.sbTexture)
+		-- PVPFrameConquestBarBG:SetAlpha(0)
+		bar:DisableDrawLayer("BORDER")
+	end
 	self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
 	self:removeMagicBtnTex(PVPFrameLeftButton)
 	self:removeMagicBtnTex(PVPFrameRightButton)
@@ -199,12 +211,14 @@ function aObj:PVPFrame()
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
 	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
-	self:removeMagicBtnTex(PVPHonorFrameWarGameButton)
+	if not self.isPatch then
+		self:removeMagicBtnTex(PVPHonorFrameWarGameButton)
+	end
 -->>-- Conquest frame
 	self:keepFontStrings(PVPFrame.panel2)
 	PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
 	PVPFrame.panel2.infoButton:DisableDrawLayer("BORDER")
--->>-- Team Management frame
+-->>-- Team Management frame a.k.a. Arena
 	self:keepFontStrings(PVPFrame.panel3)
 	self:keepFontStrings(PVPTeamManagementFrameWeeklyDisplay)
 	self:skinUsingBD{obj=PVPTeamManagementFrameWeeklyDisplay}
@@ -221,6 +235,31 @@ function aObj:PVPFrame()
 	self:addSkinFrame{obj=PVPFrame.panel3.noTeams, ft=ftype, kfs=true}
 	self:addSkinFrame{obj=PVPFrame.panel3.invalidTeam, ft=ftype, kfs=true}
 	self:addSkinFrame{obj=PVPFrame.lowLevelFrame, ft=ftype, kfs=true}
+	if self.isPatch then
+	-->>-- WarGames frame
+		PVPFrame.panel4:DisableDrawLayer("ARTWORK")
+		self:skinSlider{obj=WarGamesFrameScrollFrameScrollBar}
+		self:skinScrollBar{obj=WarGamesFrameInfoScrollFrame}
+		WarGamesFrameBGTex:SetAlpha(0)
+		WarGamesFrameInfoScrollFrame.scrollBarArtTop:SetAlpha(0)
+		WarGamesFrameInfoScrollFrame.scrollBarArtBottom:SetAlpha(0)
+		WarGamesFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+		for i = 1, #WarGamesFrame.scrollFrame.buttons do
+			btn = WarGamesFrame.scrollFrame.buttons[i]
+			self:skinButton{obj=btn.header, mp=true, plus=true}
+			local btnName = btn.warGame:GetName()
+			_G[btnName.."Bg"]:SetAlpha(0)
+			_G[btnName.."Border"]:SetAlpha(0)
+			self:addButtonBorder{obj=btn.warGame, relTo=btn.warGame.icon}
+		end
+		self:SecureHook("WarGamesFrame_Update", function()
+			for i = 1, #WarGamesFrame.scrollFrame.buttons do
+				btn = WarGamesFrame.scrollFrame.buttons[i]
+				if btn then self:checkTex{obj=btn.header} end
+			end
+		end)
+		self:removeMagicBtnTex(WarGameStartButton)
+	end
 
 -->>-- Tabs
 	for i = 1, PVPFrame.numTabs do
