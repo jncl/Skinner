@@ -115,6 +115,30 @@ function aObj:MirrorTimers()
 		end
 	end
 
+	-- Battleground/Arena Start Timer (4.1)
+	local function skinTT(tT)
+
+		-- aObj:Debug("skinTT: [%s, %s]", tT, #tT.timerList)
+		for _, timer in pairs(tT.timerList) do
+			-- aObj:Debug("skinTT#2: [%s]", timer)
+			if not aObj.sbGlazed[timer.bar] then
+				local bg = aObj:getRegion(timer.bar, 1)
+				_G[timer.bar:GetName().."Border"]:SetTexture(nil) -- animations
+				aObj:glazeStatusBar(timer.bar, 0, bg)
+				aObj:moveObject{obj=bg, y=2} -- align bars
+			end
+		end
+
+	end
+	self:SecureHookScript(TimerTracker, "OnEvent", function(this, event, ...)
+		-- self:Debug("TT_OE: [%s, %s]", this, event)
+		if event == "START_TIMER" then
+			skinTT(this)
+		end
+	end)
+	-- skin existing timers
+	skinTT(TimerTracker)
+
 end
 
 function aObj:CastingBar()
