@@ -1148,7 +1148,6 @@ function aObj:MinimapButtons()
 			["Outfitter"] = OutfitterMinimapButton,
 			["Perl_Config"] = PerlButton,
 			["WIM"] = WIM3MinimapButton,
-			["DBM-Core"] = DBMMinimapButton,
 			["FlightMapEnhanced"] = FlightMapEnhancedMinimapButton,
 		}
 		for addon, obj in pairs(mmButs) do

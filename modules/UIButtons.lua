@@ -402,8 +402,7 @@ local function __addButtonBorder(opts)
 	-- setup and apply the backdrop
 	opts.obj.sknrBdr:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile,
 								  edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	local c = aObj.db.profile.BackdropBorder
-	opts.obj.sknrBdr:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
+	opts.obj.sknrBdr:SetBackdropBorderColor(unpack(aObj.bbColour))
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	local xOfs1 = opts.x1 or opts.ofs * -1

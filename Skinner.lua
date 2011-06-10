@@ -488,6 +488,7 @@ local function __addSkinFrame(opts)
 		bgen = generations of button children to traverse
 		anim = reparent skinFrame to avoid whiteout issues caused by animations
 		ri = Disable Inset DrawLayers
+		bas = use applySkin for buttons
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n"..debugstack())
@@ -543,7 +544,7 @@ local function __addSkinFrame(opts)
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
 
 	-- skin the buttons unless not required
-	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim} end
+	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas} end
 
 	-- reparent skinFrame to avoid whiteout issues caused by animations
 	if opts.anim then
