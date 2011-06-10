@@ -855,6 +855,8 @@ function aObj:GuildControlUI() -- LoD
 end
 
 function aObj:EncounterJournal()
+	if not self.db.profile.EncounterJournal or self.initialized.EncounterJournal then return end
+	self.initialized.EncounterJournal = true
 
 	self:addSkinFrame{obj=EncounterJournal, ft=ftype, kfs=true, y1=2, x2=1}
 -->>-- Search EditBox, dropdown and results frame
@@ -902,7 +904,8 @@ function aObj:EncounterJournal()
 	EncounterJournal.encounter.instance.loreBG:SetWidth(370)
 	EncounterJournal.encounter.instance.loreBG:SetHeight(315)
 	self:moveObject{obj=EncounterJournal.encounter.instance.title, y=40}
-	self:getRegion(EncounterJournal.encounter.instance, 2):SetAlpha(0) -- TitleBG
+	EncounterJournalEncounterFrameInstanceFrameTitleBG:SetAlpha(0)
+	self:moveObject{obj=EncounterJournal.encounter.instance.mapButton, x=-20, y=-20}
 	self:skinSlider{obj=EncounterJournal.encounter.instance.loreScroll.ScrollBar}
 	EncounterJournal.encounter.instance.loreScroll.child.lore:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- Model frame

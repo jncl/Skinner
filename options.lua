@@ -80,6 +80,7 @@ function aObj:Defaults()
 		ArchaeologyUI     = true,
 		GuildUI           = true,
 		GuildControlUI    = true,
+		EncounterJournal  = true,
 	-->>-- UI Frames
 		Tooltips          = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers      = {skin = true, glaze = true},
@@ -902,6 +903,11 @@ function aObj:Options()
 					name = self.L["GuildControlUI"],
 					desc = self.L["Toggle the skin of the GuildControlUI"],
 				},
+				EncounterJournal = {
+					type = "toggle",
+					name = self.L["EncounterJournal"],
+					desc = self.L["Toggle the skin of the EncounterJournal"],
+				},
 			},
 		},
 
@@ -1491,6 +1497,9 @@ function aObj:Options()
 		addDSOpt(addonName, true)
 	end
 	for _, addonName in pairs(self.lodAddons) do
+		addDSOpt(addonName)
+	end
+	for _, addonName in pairs(self.oddlyNamedLoDAddons) do
 		addDSOpt(addonName)
 	end
 
