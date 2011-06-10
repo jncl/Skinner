@@ -30,13 +30,5 @@ x		- FriendsFrame changes ?
 x		- HelpFrame NavBar changes ?
 √		- Additional Micro buttons
 
-√	S	CoolLine requested by matheney2k, 8.06.11
-
-√	I	DBM, reported by matheney2k, 8.06.11
-		- the bars still look default
-
-√	I	DockingStation, reported by matheney2k, 8.06.11
-		- the bars still look default
-
-√	I	Calendar Raid total button, reported by Decabah, 9.06.11
-		- is bright white
+√	I	DBM, reported by matheney2k, 9.06.11
+		- skin timer bars etc
