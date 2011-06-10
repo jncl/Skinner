@@ -156,7 +156,7 @@ function aObj:AddonFrames()
 
 	-- handle Addons with odd names here
 	for _, v in pairs(self.oddlyNamedAddons) do
-		v2, _ = v:gsub("[-_!'\.]", "")
+		v2, _ = v:gsub("[-!'\.]", "")
 		self:checkAndRunAddOn(v, nil, v2)
 	end
 	self.oddlyNamedAddons = nil
@@ -242,6 +242,7 @@ aObj.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 for _, v in pairs{"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids"} do
 	aObj.lodAddons["RaidAchievement_"..v] = "RaidAchievement_"..v
 end
+aObj.oddlyNamedLoDAddons = { "DBM-GUI" }
 local prev_addon
 function aObj:LoDFrames(addon)
 --	  self:Debug("LoDFrames: [%s]", addon)
@@ -255,9 +256,10 @@ function aObj:LoDFrames(addon)
 	-- used for User LoadOnDemand Addons
 	if self.lodAddons[addon] then self:checkAndRunAddOn(self.lodAddons[addon], true) end
 
-	-- handle renamed DBM-GUI addon
-	if addon == "DBM-GUI" then
-		self:checkAndRunAddOn(addon, true, "DBM_GUI")
+	-- handle Addons with odd names here
+	for _, v in pairs(self.oddlyNamedLoDAddons) do
+		v2, _ = v:gsub("[-!'\.]", "")
+		if addon == v then self:checkAndRunAddOn(v, true, v2) end
 	end
 
 	-- handle addons linked to the InspectUI

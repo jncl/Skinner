@@ -1,161 +1,140 @@
-if not Skinner:isAddonEnabled("DBM-Core") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("DBM-Core") then return end
 
-function Skinner:DBM_GUI()
-	
-	-- (BUGFIX for DBM): reparent the Huge Bar statusBar 
+function aObj:DBMGUI()
+
+	-- (BUGFIX for DBM): reparent the Huge Bar statusBar
 	for bar in DBM.Bars:GetBarIterator() do
--- 		self:Debug("Status Bar info: [%s, %s]", bar, bar.id)
 		if bar.id == "dummy3" then
 			local relTo = select(2, bar.frame:GetPoint())
 			bar.frame:SetParent(relTo)
 			break
-		end	
-	end
-	-- Bar Sub frames are not right, some cover their children etc
-	-- this is because of a bug in DBM_GUI, this is a workaround for it
-	-- (BUGFIX for DBM): reparent sliders
-	local barSetupSubPanel, barSetupSmallSubPanel = false, false
-	local function fixForBarSetup(subPanel)
-		local fName = _G[subPanel.framename.."Title"]:GetText()
-		-- check to see if this is the BarSetup or BarSetupSmall subPanel
-		if fName == DBM_GUI_Translations.AreaTitle_BarSetup then
-			barSetupSubPanel = subPanel.frame
-		elseif fName == DBM_GUI_Translations.AreaTitle_BarSetupSmall then
-			barSetupSmallSubPanel = subPanel.frame
-		end
--- 		Skinner:Debug("fixForBarSetup: [%s, %s]", barSetupSubPanel, barSetupSmallSubPanel)
-		if barSetupSubPanel and barSetupSmallSubPanel then
-			-- reparent the sliders
--- 			Skinner:Debug("fixForBarSetup#2: [%s]", barSetupSubPanel:GetNumChildren())
-			-- work backwards as the reparenting shortens the table
-			for i = barSetupSubPanel:GetNumChildren(), 1, -1 do
-				local child = select(i, barSetupSubPanel:GetChildren())
-				if child:IsObjectType("Slider") then
-					child:SetParent(barSetupSmallSubPanel)
-				end
-			end
-			fixForBarSetup = nil
 		end
 	end
-	local panelPrefix = "DBM_GUI_Option_"
-	local function skinPizzaEBs(subPanel)
--- 		Skinner:Debug("skinPizzaEBs")
-		-- check to see if this is the pizza timer option subPanel
-		local fName = subPanel.framename
-		if _G[fName.."Title"]:GetText() == DBM_GUI_Translations.PizzaTimer_Headline then
--- 			Skinner:Debug("Found Pizza Timer panel:[%s]", fName)
-			local si, ei, fNo = strfind(fName, panelPrefix.."(%d+)")
--- 			Skinner:Debug("find info:[%s, %s, %s]", si, ei, fNo)
-			-- next four option frames are editboxes
-			for i = fNo + 1, fNo + 4 do
-				self:skinEditBox(_G[panelPrefix..i], {9})
-			end
-			skinPizzaEBs = nil
-		end
-	end
+	local barSetup, modelDD
 	local function skinSubPanels(panel)
-	
+
 		for _, subPanel in pairs(panel.areas) do
-			if not Skinner.skinned[subPanel] then
--- 				Skinner:Debug("skinSubPanel:[%s, %s, %s]", panel, subPanel.frame, subPanel.framename)
-				Skinner:applySkin(subPanel.frame)
+			if not aObj.skinned[subPanel] then
+				aObj:applySkin(subPanel.frame)
 				-- check to see if any children are dropdowns
-				for i = 1, subPanel.frame:GetNumChildren() do
-					local child = select(i, subPanel.frame:GetChildren())
-					if Skinner:isDropDown(child) then
-						Skinner:skinDropDown(child)
+				for _, child in ipairs{subPanel.frame:GetChildren()} do
+					if aObj:isDropDown(child) then
+						aObj:skinDropDown(child)
+						-- check to see if this is the 3D model Dropdown
+						if child.titletext
+						and child.titletext:GetText() == DBM_GUI_Translations.ModelSoundOptions
+						then
+							modelDD = child
+						end
 					end
 				end
+				-- (BUGFIX) reparent sliders
+				if _G[subPanel.framename.."Title"]:GetText() == DBM_GUI_Translations.AreaTitle_BarSetup then
+					barSetup = subPanel.frame
+				elseif _G[subPanel.framename.."Title"]:GetText() == DBM_GUI_Translations.AreaTitle_BarSetupSmall then
+					if barSetup then
+						-- reparent the sliders
+						-- work backwards as the reparenting shortens the table
+						for i = barSetup:GetNumChildren(), 1, -1 do
+							local child = select(i, barSetup:GetChildren())
+							if child:IsObjectType("Slider") then
+								child:SetParent(subPanel.frame)
+							end
+						end
+					end
 				-- check to see if this is the pizza timer option subPanel
-				if skinPizzaEBs then skinPizzaEBs(subPanel) end
-				-- (BUGFIX for DBM): look for the Bar Setup panels
-				if fixForBarSetup then fixForBarSetup(subPanel) end
+				elseif _G[subPanel.framename.."Title"]:GetText() == DBM_GUI_Translations.PizzaTimer_Headline then
+					local si, ei, fNo = subPanel.framename:find("DBM_GUI_Option_(%d+)")
+					-- next four option frames are editboxes
+					for i = fNo + 1, fNo + 4 do
+						aObj:skinEditBox(_G["DBM_GUI_Option_"..i], {9})
+					end
+				-- (BUGFIX) reparent 3D Model DD
+				elseif _G[subPanel.framename.."Title"]:GetText() == DBM_GUI_Translations.ModelOptions then
+					modelDD:SetParent(subPanel.frame)
+				end
 			end
 		end
-		
+
 	end
-	
+
 -->>--	Options Frame
-	self:keepFontStrings(DBM_GUI_OptionsFrame)
-	self:moveObject(DBM_GUI_OptionsFrameHeaderText, nil, nil, "-", 6)
-	self:keepFontStrings(DBM_GUI_OptionsFrameBossModsList)
-	self:skinSlider(DBM_GUI_OptionsFrameBossModsListScrollBar, 3)
-	self:addSkinFrame{obj=DBM_GUI_OptionsFrameBossMods, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
-	self:addSkinFrame{obj=DBM_GUI_OptionsFrameDBMOptions, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
-	self:skinScrollBar{obj=DBM_GUI_OptionsFramePanelContainerFOV, size=3}
-	self:applySkin(DBM_GUI_OptionsFramePanelContainer)
-	self:applySkin(DBM_GUI_OptionsFrame)
+	self:skinSlider{obj=DBM_GUI_OptionsFrameBossModsListScrollBar}
+	self:addSkinFrame{obj=DBM_GUI_OptionsFrameBossMods, kfs=true}
+	self:addSkinFrame{obj=DBM_GUI_OptionsFrameDBMOptions, kfs=true}
+	self:skinScrollBar{obj=DBM_GUI_OptionsFramePanelContainerFOV}
+	self:addSkinFrame{obj=DBM_GUI_OptionsFramePanelContainer, bas=true} -- use apply skin so button text is visible
+	self:addSkinFrame{obj=DBM_GUI_OptionsFrame, kfs=true, hdr=true}
 	-- skin dropdown
 	self:addSkinFrame{obj=DBM_GUI_DropDown}
-	
+
 	-- hook this to skin sub panels
 	self:SecureHook(DBM_GUI, "CreateNewPanel", function(this, ...)
 		for _, panel in pairs(DBM_GUI.panels) do
--- 			self:Debug("CreateNewPanel:[%s, %s]", panel.frame, panel.framename)
 			if not panel.hooked then
 				self:SecureHook(panel, "CreateArea", function(this, ...)
--- 					self:Debug("New - CreateArea:[%s]", panel)
 					skinSubPanels(panel)
 				end)
 				panel.hooked = true
 			end
 		end
 	end)
-	
+
 	-- loop through all the existing panels
 	for _, panel in pairs(DBM_GUI.panels) do
--- 		self:Debug("Panels:[%s, %s]", panel.frame, panel.framename)
 		if panel.areas then
 			skinSubPanels(panel)
 		else
 			if not panel.hooked then
 				self:SecureHook(panel, "CreateArea", function(this, ...)
--- 					self:Debug("Existing - CreateArea:[%s]", panel)
 					skinSubPanels(panel)
 				end)
 				panel.hooked = true
 			end
 		end
 	end
-	
-	-- change StatusBar texture
-	DBM.Bars:SetOption("Texture", self.sbTexture)
-	
+
 	-- Options Frame Tabs
 	for i = 1, 2 do
-		local tabName = _G["DBM_GUI_OptionsFrameTab"..i]
-		local tnText = _G["DBM_GUI_OptionsFrameTab"..i.."Text"]
-		local tnHighlight = _G["DBM_GUI_OptionsFrameTab"..i.."HighlightTexture"]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is the Text, 8 is the highlight
+		tab = _G["DBM_GUI_OptionsFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=-2}
+		tabSF.ignore = true -- ignore size changes
+		tabSF.up = true -- tabs grow upwards
+		-- set textures here first time thru as it's LoD
 		if i == 1 then
-			self:moveObject(tabName, nil, nil, "-", 4)
+			if self.isTT then self:setActiveTab(tabSF) end
 		else
-			self:moveObject(tabName, "+", 13, nil, nil)
+			if self.isTT then self:setInactiveTab(tabSF) end
 		end
-		self:moveObject(tnText, nil, nil, "+", 3)
-		tnHighlight:SetWidth(tabName:GetWidth() - 10)
-		self:moveObject(tnHighlight, "-", 4, "+", 3)
-		tabName:SetFrameLevel(tabName:GetFrameLevel() + 5)
-		if self.db.profile.TexturedTab then
-			self:applySkin(tabName, nil, 0, 1)
-			if i == 1 then self:setActiveTab(tabName) else self:setInactiveTab(tabName) end
-			self:SecureHookScript(tabName, "OnClick", function(this)
---				self:Debug("DBM_GUI_OptionsFrameTab_OnClick: [%s, %s]", this:GetName(), this:GetID())
+		if self.isTT then
+			self:SecureHookScript(tab, "OnClick", function(this)
+				self:Debug("DBM_GUI_OptionsFrameTab_OnClick: [%s, %s]", this:GetName(), this:GetID())
 				for i = 1, 2 do
-					local tabName = _G["DBM_GUI_OptionsFrameTab"..i]
-					if i == this:GetID() then self:setActiveTab(tabName) else self:setInactiveTab(tabName) end
+					local tabSF = self.skinFrame[_G["DBM_GUI_OptionsFrameTab"..i]]
+					if i == this:GetID() then self:setActiveTab(tabSF) else self:setInactiveTab(tabSF) end
 				end
 			end, true)
-		else self:applySkin(tabName) end
+		end
 	end
-	
+
+	-- skin toggle buttons
+	local frame, btn
+	for _, v in pairs{"BossMods", "DBMOptions"} do
+		frame = _G["DBM_GUI_OptionsFrame"..v]
+		for i = 1, #frame.buttons do
+			btn = _G["DBM_GUI_OptionsFrame"..v.."Button"..i.."Toggle"]
+			self:skinButton{obj=btn, mp2=true, plus=i==1 and true or nil}
+		end
+	end
+
 end
 
-function Skinner:DBMCore()
+function aObj:DBMCore()
 
 	-- hook this to skin the RangeCheck frame (actually a tooltip)
 	self:SecureHook(DBM.RangeCheck, "Show", function(this, ...)
---		self:Debug("DBM.RC_Show")
 		if not self.skinned[DBMRangeCheck] then
 			self:skinDropDown{obj=DBMRangeCheckDropdown}
 		end
@@ -163,6 +142,19 @@ function Skinner:DBMCore()
 			if self.db.profile.Tooltips.style == 3 then DBMRangeCheck:SetBackdrop(self.Backdrop[1]) end
 			self:skinTooltip(DBMRangeCheck)
 		end
-	end)	
+	end)
+
+	-- set default Timer bar texture
+	DBT_SavedOptions.Texture = self.db.profile.StatusBar.texture
+	-- apply the change
+	DBM.Bars:SetOption("Texture", self.sbTexture)
+
+	if self.db.profile.MinimapButtons.skin then
+		DBMMinimapButton:GetNormalTexture():SetTexCoord(.3, .7, .3, .7)
+		DBMMinimapButton:GetPushedTexture():SetTexCoord(.3, .7, .3, .7)
+		DBMMinimapButton:SetWidth(22)
+		DBMMinimapButton:SetHeight(22)
+		self:addSkinButton{obj=DBMMinimapButton, parent=obj}
+	end
 
 end
