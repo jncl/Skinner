@@ -30,37 +30,13 @@ x		- FriendsFrame changes ?
 x		- HelpFrame NavBar changes ?
 √		- Additional Micro buttons
 
-√	I	Scrap, reported by Decabah, 13/17.05.11
-		- Tab button texture still white
+√	S	CoolLine requested by matheney2k, 8.06.11
 
-≈	S	GuildMaster, requested by Gabriel, 15.05.11
-		- this one: http://www.wowinterface.com/downloads/info18942-GuildMaster.html
+√	I	DBM, reported by matheney2k, 8.06.11
+		- the bars still look default
 
-√	S	GuildWarden, requested by Gabriel, 17.05.11
+√	I	DockingStation, reported by matheney2k, 8.06.11
+		- the bars still look default
 
-√	I	ClassTrainerUI
-		- Rank Text moved ? This is a Blizzard bug, now reported
-
-√	I	LFD, reported by Luckyjack_SL, 22.05.11
-		- Magic textures still appearing if buttons not skinned
-
-√	N	Bindpad, reported by Olorin, 22.05.11
-		- Skinner-b4.14007.3\Skinner.lua:213: table index is nil
-		Skinner-b4.14007.3\Skinner.lua:1463: in function <Skinner\Skinner.lua:1449>
-		Skinner-b4.14007.3\Skinner.lua:1495: in function `skinScrollBar'
-		Skinner-b4.14007.3\SkinMe\BindPad.lua:23: in function <Skinner\SkinMe\BindPad.lua:3>
-		(tail call): ?:
-
-√	S	Arena/Battleground timer, requested by Khalen_EU, 27.05.11
-
-√	S	HelpOpenTicketButtonTutorial
-
-√	S	GMChatFrame & EditBox
-
-√	S	GMChat popup
-
-≈	I	WatchFrame, reported by Gabriel, 28.05.11
-		- Skinner-b4.13875.1\CharacterFrames2.lua:481: attempt to index field "?" (a nil value)
-		Skinner-b4.13875.1\CharacterFrames2.lua:481: in function <Skinner\CharacterFrames2.lua:477>
-		Skinner-b4.13875.1\CharacterFrames2.lua:494: in function <Skinner\CharacterFrames2.lua:493>
-		(tail call): ?
+√	I	Calendar Raid total button, reported by Decabah, 9.06.11
+		- is bright white
