@@ -135,13 +135,39 @@ function aObj:DBMCore()
 
 	-- hook this to skin the RangeCheck frame (actually a tooltip)
 	self:SecureHook(DBM.RangeCheck, "Show", function(this, ...)
-		if not self.skinned[DBMRangeCheck] then
-			self:skinDropDown{obj=DBMRangeCheckDropdown}
+		self:addSkinFrame{obj=DBMRangeCheck}
+		self:Unhook(DBM.RangeCheck, "Show")
+	end)
+	-- hook this to skin the InfoFrame frame (actually a tooltip)
+	self:SecureHook(DBM.InfoFrame, "Show", function(this, ...)
+		self:addSkinFrame{obj=DBMInfoFrame}
+		self:Unhook(DBM.InfoFrame, "Show")
+	end)
+	-- hook these to skin the BossHealth Bars
+	local bhFrame
+	self:SecureHook(DBM.BossHealth, "Show", function(this, name)
+		bhFrame = DBMBossHealthDropdown:GetParent()
+		self:Unhook(DBM.BossHealth, "Show")
+	end)
+	self:SecureHook(DBM.BossHealth, "AddBoss", function(this, ...)
+		for _, child in ipairs{bhFrame:GetChildren()} do
+			local cName = child:GetName().."Bar"
+			if cName:find("DBM_BossHealth_Bar_")
+			and	not self.skinned[child]
+			then
+				_G[cName.."Border"]:SetAlpha(0) -- hide border
+				self:glazeStatusBar(_G[cName], 0, _G[cName.."Background"])
+			end
 		end
-		if self.db.profile.Tooltips.skin then
-			if self.db.profile.Tooltips.style == 3 then DBMRangeCheck:SetBackdrop(self.Backdrop[1]) end
-			self:skinTooltip(DBMRangeCheck)
+	end)
+	-- hook this to skin UpdateReminder frame
+	self:SecureHook(DBM, "ShowUpdateReminder", function(this, ...)
+		local frame = self:findFrame2(UIParent, "Frame", 155, 430)
+		if frame then
+			self:addSkinFrame{obj=frame}
+			self:skinEditBox{obj=self:getChild(frame, 1), regs={9}}
 		end
+		self:Unhook(DBM, "ShowUpdateReminder")
 	end)
 
 	-- set default Timer bar texture
@@ -149,6 +175,7 @@ function aObj:DBMCore()
 	-- apply the change
 	DBM.Bars:SetOption("Texture", self.sbTexture)
 
+	-- minimap button
 	if self.db.profile.MinimapButtons.skin then
 		DBMMinimapButton:GetNormalTexture():SetTexCoord(.3, .7, .3, .7)
 		DBMMinimapButton:GetPushedTexture():SetTexCoord(.3, .7, .3, .7)
@@ -156,5 +183,7 @@ function aObj:DBMCore()
 		DBMMinimapButton:SetHeight(22)
 		self:addSkinButton{obj=DBMMinimapButton, parent=obj}
 	end
+
+
 
 end
