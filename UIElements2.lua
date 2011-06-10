@@ -171,14 +171,11 @@ function aObj:Calendar() -- LoD
 		self:removeRegions(btn, {1})
 		self:addButtonBorder{obj=btn}
 	end
-	self:keepFontStrings(CalendarClassTotalsButton)
 	-- Class Totals button, texture & size changes
-	CalendarClassTotalsButtonBackgroundMiddle:SetTexture(self.itTex)
-	self:moveObject{obj=CalendarClassTotalsButtonBackgroundMiddle, x=2}
-	CalendarClassTotalsButtonBackgroundMiddle:SetWidth(20)
-	CalendarClassTotalsButtonBackgroundMiddle:SetHeight(20)
-	CalendarClassTotalsButtonBackgroundMiddle:SetAlpha(1)
-	self:addButtonBorder{obj=CalendarClassTotalsButton, relTo=CalendarClassTotalsButtonBackgroundMiddle}
+	self:moveObject{obj=CalendarClassTotalsButton, x=-2}
+	CalendarClassTotalsButton:SetWidth(25)
+	CalendarClassTotalsButton:SetHeight(25)
+	self:applySkin{obj=CalendarClassTotalsButton, ft=ftype, kfs=true, bba=self.modBtnBs and 1 or 0}
 
 -->>-- ContextMenus
 	self:addSkinFrame{obj=CalendarContextMenu}
