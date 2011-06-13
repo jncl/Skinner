@@ -249,6 +249,7 @@
 <script file="SkinMe\RaidTracker.lua"/>
 <script file="SkinMe\RaidyCheck.lua"/>
 <script file="SkinMe\RandomPet30.lua"/>
+<script file="SkinMe\ReagentMaker.lua"/>
 <script file="SkinMe\ReagentRestocker.lua"/>
 <script file="SkinMe\Recap.lua"/>
 <script file="SkinMe\RecipeBook.lua"/>

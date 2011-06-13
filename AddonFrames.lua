@@ -318,6 +318,7 @@ function aObj:TRADE_SKILL_SHOW()
 	self:checkAndRun("TradeSkillUI") -- cf2
 	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
 	self:checkAndRunAddOn("MrTrader_SkillWindow")
+	self:checkAndRunAddOn("ReagentMaker")
 
 	self:UnregisterEvent("TRADE_SKILL_SHOW")
 
