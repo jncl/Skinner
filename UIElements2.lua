@@ -292,7 +292,10 @@ function aObj:MenuFrames()
 				aObj:skinDropDown{obj=child}
 			elseif child:IsObjectType("EditBox") then
 				aObj:skinEditBox{obj=child, regs={9}}
-			elseif child:IsObjectType("ScrollFrame") and child:GetName() then -- named ScrollFrame(s)
+			elseif child:IsObjectType("ScrollFrame")
+			and child:GetName()
+			and child:GetName().."ScrollBar" -- handle unnamed ScrollBar's
+			then
 				aObj:skinScrollBar{obj=child}
 			else
 				checkKids(child)
