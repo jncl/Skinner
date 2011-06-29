@@ -975,7 +975,7 @@ function aObj:Minimap()
 
 -->>-- Minimap
 	Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
-	self.minimapskin = self:addSkinFrame{obj=Minimap, x1=-5, y1=5, x2=5, y2=-5}
+	self.minimapskin = self:addSkinFrame{obj=Minimap, ofs=5}
 	if self.db.profile.Minimap.gloss then
 		RaiseFrameLevel(self.minimapskin)
 	else
