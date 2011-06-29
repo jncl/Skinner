@@ -748,7 +748,7 @@ function aObj:GMChatUI() -- LoD
 -->>-- GM Chat Request frame
 	GMChatStatusFrame:DisableDrawLayer("BORDER")
 	GMChatStatusFrame:DisableDrawLayer("OVERLAY")
-	self:addSkinFrame{obj=GMChatStatusFrame, ft=ftype, x1=30, y1=-12, x2=-30, y2=12}
+	self:addSkinFrame{obj=GMChatStatusFrame, ft=ftype, anim=true, x1=30, y1=-12, x2=-30, y2=12}
 
 -->>-- GMChat Frame
 	if self.db.profile.ChatFrames then
