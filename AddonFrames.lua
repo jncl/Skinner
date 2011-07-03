@@ -5,15 +5,12 @@ function aObj:BlizzardFrames()
 
 	local blizzFrames = {
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
-		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "CompactFrames", --cf2
+		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "CompactFrames", "EncounterJournal", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "BankFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"Minimap", "MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "ScriptErrors", "DropDowns", -- uie1
 		"AutoComplete", "MenuFrames", "MailFrame", "CoinPickup", "PVPFrame", "RolePollPopup", "LFDFrame", "LFRFrame", "BNFrames", "CinematicFrame", "LevelUpDisplay", "SpellFlyout", "GuildInvite", "GhostFrame"-- uie2
 	}
 
-	if self.isPatch then
-		self:add2Table(blizzFrames, "EncounterJournal") -- cf2
-	end
 	-- optional frames
 	if IsMacClient() then self:checkAndRun("MovieProgress") end
 	if self.isPTR
@@ -77,7 +74,7 @@ aObj.addonSkins = {
 	"Gatherer", "GearScore", "GemHelper", "GemMe", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GuildMaster", "GupCharacter", "GupPet",
 	"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
 	"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
-	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Ludwig", "Luggage",
+	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Luggage",
 	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MinimalArchaeology", "MinimapButtonFrame", "Misdirectionhelper", "MobMap", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MuffinMOTD", "MyBags", "myClock",
 	"NeatFreak", "Necrosis", "NeonChat", "nQuestLog",
 	"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
@@ -218,7 +215,7 @@ local lodFrames = {
 	"FramesResized_TalentUI",
 	"GnomishAuctionShrinker", "GuildBankSearch",
 	"ItemRackOptions",
-	"LilSparkysWorkshop",
+	"LilSparkysWorkshop", "Ludwig_Window",
 	"MSBTOptions",
 	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
 	"Perl_Config_Options",

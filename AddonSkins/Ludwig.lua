@@ -1,20 +1,15 @@
-if not Skinner:isAddonEnabled("Ludwig") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Ludwig") then return end
 
-function Skinner:Ludwig()
+function aObj:Ludwig_Window()
 
-	self:keepFontStrings(LudwigFrame)
-	LudwigFrame:SetWidth(LudwigFrame:GetWidth() * self.FxMult + 20)
-	LudwigFrame:SetHeight(LudwigFrame:GetHeight() * self.FyMult)
-	self:moveObject(LudwigFrameCloseButton, "+", 28, "+", 8)
-	self:skinEditBox(LudwigFrameSearch, {9})
-	self:skinEditBox(LudwigFrameMinLevel, {9})
-	self:skinEditBox(LudwigFrameMaxLevel, {9})
-	self:keepFontStrings(LudwigFrameScroll)
-	self:skinScrollBar(LudwigFrameScroll)
-	self:keepFontStrings(LudwigFrameQuality)
-	self:moveObject(LudwigFrameQuality, nil, nil, "-", 70)
-	self:keepFontStrings(LudwigFrameType)
-	self:moveObject(LudwigFrameType, nil, nil, "-", 70)
-	self:applySkin(LudwigFrame)
+	self:moveObject{obj=LudwigFrame.search, x=-10}
+	self:skinEditBox{obj=LudwigFrame.search, regs={9}}
+	self:skinEditBox{obj=LudwigFrame.minLevel, regs={9}}
+	self:skinEditBox{obj=LudwigFrame.maxLevel, regs={9}}
+	self:skinScrollBar{obj=LudwigFrame.scrollFrame}
+	self:skinDropDown{obj=LudwigFrame.quality}
+	self:skinDropDown{obj=LudwigFrame.category}
+	self:addSkinFrame{obj=LudwigFrame, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 
 end
