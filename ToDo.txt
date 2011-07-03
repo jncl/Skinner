@@ -10,25 +10,37 @@ Legend:
 
 	O	Update WoWAce commands page
 
-	N	Patch 4.2
-√		- TOC 40200
-?		- Blizzard_CompactRaidFrameManager ?
-		- CastingBarFrame, spark placement, Classic/UnitFrame layout, new template for smallcastingbar
-		- RaidFrameOptions removed from IOP ?
-?		- GuildInfoFrame changes ?
-?		- GuildRecruitmentFrame changes ?
-x		- MacroFrame changes ?
-√		- PVPFrame new tab and panel for WarGames
-?		- New Blizzard AddOn - MovePad ? "The Move Pad is a mouse click-able UI frame for movement and jump."
-		- IOP changes
-√			- languages panel added
-≈		- EncounterJournal
-x		- Currencies on Merchant Frame ?
-		- Cap Progress bar replaces existing Status Bar(s)
-√			- PVPFrame
-x		- FriendsFrame changes ?
-x		- HelpFrame NavBar changes ?
-√		- Additional Micro buttons
+√	S	ReagentMaker, requested by skumclown, 12.06.11
 
-√	I	DBM, reported by matheney2k, 9.06.11
-		- skin timer bars etc
+≈	I	MenuFrames, reported by Gabriel, 12.06.11
+		- Skinner\Skinner-b4.13875.1.lua:1614: attempt to index field "obj" (a nil value)
+		Skinner\Skinner-b4.13875.1.lua:1614: in function <Skinner\Skinner.lua:1602>
+		Skinner\Skinner-b4.13875.1.lua:1637: in function "skinUsingBD"
+		Skinner\Skinner-b4.13875.1.lua:1470: in function <Skinner\Skinner.lua:1447>
+		Skinner\Skinner-b4.13875.1.lua:1493: in function "skinScrollBar"
+		Skinner-b4.13875.1\UIElements2.lua:296: in function <Skinner\UIElements2.lua:284>
+		Skinner-b4.13875.1\UIElements2.lua:298: in function <Skinner\UIElements2.lua:284>
+		(tail call): ?
+
+?	S	ImprovedStableFrame, requested by X-buZZ, 15.06.11
+
+√	S	VuhDo, requested by taheen74, 23.06.11
+
+≈	I	GM Chat frame whiteout due to animation...
+
+√	I	Ludwig, reported by Justice, 03.07.11
+		- ..\AddOns\Skinner\Skinner.lua line 904:
+		  attempt to index local 'obj' (a nil value)
+		Debug:
+		  (tail call): ?
+		  Skinner\Skinner.lua:904: keepFontStrings()
+		  Skinner\SkinMe\Ludwig.lua:5:
+		     Skinner\SkinMe\Ludwig.lua:3
+		  (tail call): ?
+		  [C]: xpcall()
+		  Skinner\UtilFuncs.lua:95:
+		     Skinner\UtilFuncs.lua:93
+		  Skinner\UtilFuncs.lua:152: checkAndRunAddOn()
+		  Skinner\AddonFrames.lua:153:
+		     Skinner\AddonFrames.lua:112
+		  (tail call): ?.
