@@ -150,7 +150,6 @@ function aObj:CastingBar()
 	local modUF = self:GetModule("UnitFrames", true):IsEnabled() and self:GetModule("UnitFrames", true)
 	-- hook this to move the spark down on the casting bar
 	self:SecureHook("CastingBarFrame_OnUpdate", function(this, ...)
-		local obj = _G[this:GetName().."Spark"]
 		local yOfs = -3
 		if this == CastingBarFrame then
 		elseif this == TargetFrameSpellBar
@@ -163,18 +162,18 @@ function aObj:CastingBar()
 		then
 		else yOfs = 0
 		end
-		self:moveObject{obj=obj, y=yOfs}
+		self:moveObject{obj=this.barSpark, y=yOfs}
 	end)
 
 	for _, prefix in pairs{"", "Pet"} do
 
-		objName = prefix.."CastingBarFrame"
-		_G[objName.."Border"]:SetAlpha(0)
-		self:changeShield(_G[objName.."BorderShield"], _G[objName.."Icon"])
-		_G[objName.."Flash"]:SetAllPoints()
-		self:moveObject{obj=_G[objName.."Text"], y=-3}
+		obj = _G[prefix.."CastingBarFrame"]
+		obj.border:SetAlpha(0)
+		self:changeShield(obj.borderShield, obj.icon)
+		obj.barFlash:SetAllPoints()
+		self:moveObject{obj=obj.text, y=-3}
 		if self.db.profile.CastingBar.glaze then
-			self:glazeStatusBar(_G[objName], 0, self:getRegion(_G[objName], 1), {_G[objName.."Flash"]})
+			self:glazeStatusBar(obj, 0, self:getRegion(obj, 1), {obj.barFlash})
 		end
 
 	end
