@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("FishingBuddy") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("FishingBuddy") then return end
 
-function Skinner:FishingBuddy()
+function aObj:FishingBuddy()
 
 	self:addSkinFrame{obj=FishingBuddyFrame, kfs=true, x1=10, y1=-13, x2=-31, y2=69}
 -->>--	Locations Frame
@@ -24,22 +25,39 @@ function Skinner:FishingBuddy()
 
 -->>--	Options Frame
 	self:keepFontStrings(FishingOptionsFrame)
-	self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
+	if not FishingBuddyOption_EasyCastKeys then
+		self:SecureHook(FishingBuddy, "Initialize", function(this)
+			self:Debug("FB_Initialize")
+			self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
+			self:Unhook(FishingBuddy, "Initialize")
+		end)
+	else
+		self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
+	end
 	self:skinDropDown{obj=FishingBuddyOption_OutfitMenu}
+	-- Pets
+	self:skinDropDown{obj=FishingPetFrame}
+	self:addSkinFrame{obj=FishingPetsMenu, kfs=true}
+
+	local tabObj, tabSF
+-->>-- FishingWatch Tab
+	self:keepRegions(FishingWatchTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
+	tabSF = self:addSkinFrame{obj=FishingWatchTab, noBdr=self.isTT, x1=2, y1=-4, x2=-2, y2=0}
+	if self.isTT then self:setActiveTab(tabSF) end
+
 -->>-- Tabs (side)
-	for i = 1, 5 do -- allow for 5 tabs (inc. Outfit & Tracking plugins)
-		local tab = _G["FishingBuddyOptionTab"..i]
-		if tab then
-			self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
+	for i = 1, 6 do -- allow for 5 tabs (inc. Outfit & Tracking plugins)
+		tabObj = _G["FishingBuddyOptionTab"..i]
+		if tabObj then
+			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
 		end
 	end
 
 -->>--	Tabs (bottom)
 	for i = 1, FishingBuddyFrame.numTabs do
-		local tabObj = _G["FishingBuddyFrameTab"..i]
+		tabObj = _G["FishingBuddyFrameTab"..i]
 		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		local tabSF = self.skinFrame[tabObj]
+		tabSF = self:addSkinFrame{obj=tabObj, noBdr=self.isTT, x1=6, y1=-2, x2=-6, y2=2}
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -50,9 +68,9 @@ function Skinner:FishingBuddy()
 
 end
 
-if not Skinner:isAddonEnabled("FB_OutfitDisplayFrame") then return end
+if not aObj:isAddonEnabled("FB_OutfitDisplayFrame") then return end
 
-function Skinner:FB_OutfitDisplayFrame()
+function aObj:FB_OutfitDisplayFrame()
 
 	self:keepFontStrings(FishingOutfitFrame)
 	self:skinButton{obj=FishingOutfitSwitchButton}
@@ -60,9 +78,9 @@ function Skinner:FB_OutfitDisplayFrame()
 
 end
 
-if not Skinner:isAddonEnabled("FB_TrackingFrame") then return end
+if not aObj:isAddonEnabled("FB_TrackingFrame") then return end
 
-function Skinner:FB_TrackingFrame()
+function aObj:FB_TrackingFrame()
 
 	self:keepFontStrings(FishingTrackingFrame)
 	self:skinScrollBar{obj=FishingTrackingScrollFrame}
