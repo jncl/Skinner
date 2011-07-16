@@ -1,3 +1,16 @@
+b4.14333.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Removed Patch checking code
+	Updated Ludwig skin
+	Tidyup Minimap skin code
+	Bugfix for GMChatUI skin
+	Bugfix for MenuFrames skin
+	Updated HealBot (thanks to acirac)
+	Skinned VuhDo
+	Skinned ReagentMaker
+
 b4.14265.2
 Jncl:
 	ToDo.txt
