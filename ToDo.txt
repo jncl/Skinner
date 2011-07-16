@@ -10,13 +10,6 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	I	FishingBuddy, reported by chrisgriffith25, 11.07.11
-		- Skinner-b4.14333.1\SkinMe\FishingBuddy-1.0.4a.lua:38: "for" limit must be a number
-		Skinner-b4.14333.1\SkinMe\FishingBuddy-1.0.4a.lua:38: in function <Skinner\SkinMe\FishingBuddy.lua:3>
-		(tail call): ?
+√	S	CombustionHelper, requested by Kerecha, 13.07.11
 
-≈	I	Taint, reported by gamemaster128, 11.07.11
-		- 7/11 12:04:14.392  An action was blocked in combat because of taint from Skinner - CompactRaidFrame1:Show()
-		7/11 12:04:14.392      Interface\FrameXML\CompactUnitFrame.lua:260 CompactUnitFrame_UpateVisible()
-		7/11 12:04:14.392      Interface\FrameXML\CompactUnitFrame.lua:220 CompactUnitFrame_UpdateAll()
-		7/11 12:04:14.392      Interface\FrameXML\CompactUnitFrame.lua:101
+	N	HealBot
