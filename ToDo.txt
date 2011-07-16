@@ -10,37 +10,13 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	S	ReagentMaker, requested by skumclown, 12.06.11
-
-≈	I	MenuFrames, reported by Gabriel, 12.06.11
-		- Skinner\Skinner-b4.13875.1.lua:1614: attempt to index field "obj" (a nil value)
-		Skinner\Skinner-b4.13875.1.lua:1614: in function <Skinner\Skinner.lua:1602>
-		Skinner\Skinner-b4.13875.1.lua:1637: in function "skinUsingBD"
-		Skinner\Skinner-b4.13875.1.lua:1470: in function <Skinner\Skinner.lua:1447>
-		Skinner\Skinner-b4.13875.1.lua:1493: in function "skinScrollBar"
-		Skinner-b4.13875.1\UIElements2.lua:296: in function <Skinner\UIElements2.lua:284>
-		Skinner-b4.13875.1\UIElements2.lua:298: in function <Skinner\UIElements2.lua:284>
+√	I	FishingBuddy, reported by chrisgriffith25, 11.07.11
+		- Skinner-b4.14333.1\SkinMe\FishingBuddy-1.0.4a.lua:38: "for" limit must be a number
+		Skinner-b4.14333.1\SkinMe\FishingBuddy-1.0.4a.lua:38: in function <Skinner\SkinMe\FishingBuddy.lua:3>
 		(tail call): ?
 
-?	S	ImprovedStableFrame, requested by X-buZZ, 15.06.11
-
-√	S	VuhDo, requested by taheen74, 23.06.11
-
-≈	I	GM Chat frame whiteout due to animation...
-
-√	I	Ludwig, reported by Justice, 03.07.11
-		- ..\AddOns\Skinner\Skinner.lua line 904:
-		  attempt to index local 'obj' (a nil value)
-		Debug:
-		  (tail call): ?
-		  Skinner\Skinner.lua:904: keepFontStrings()
-		  Skinner\SkinMe\Ludwig.lua:5:
-		     Skinner\SkinMe\Ludwig.lua:3
-		  (tail call): ?
-		  [C]: xpcall()
-		  Skinner\UtilFuncs.lua:95:
-		     Skinner\UtilFuncs.lua:93
-		  Skinner\UtilFuncs.lua:152: checkAndRunAddOn()
-		  Skinner\AddonFrames.lua:153:
-		     Skinner\AddonFrames.lua:112
-		  (tail call): ?.
+≈	I	Taint, reported by gamemaster128, 11.07.11
+		- 7/11 12:04:14.392  An action was blocked in combat because of taint from Skinner - CompactRaidFrame1:Show()
+		7/11 12:04:14.392      Interface\FrameXML\CompactUnitFrame.lua:260 CompactUnitFrame_UpateVisible()
+		7/11 12:04:14.392      Interface\FrameXML\CompactUnitFrame.lua:220 CompactUnitFrame_UpdateAll()
+		7/11 12:04:14.392      Interface\FrameXML\CompactUnitFrame.lua:101
