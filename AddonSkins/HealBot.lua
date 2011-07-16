@@ -1,7 +1,7 @@
 -- many thanks to acirac for the updated skin
 if not Skinner:isAddonEnabled("HealBot") then return end
 
-function Skinner:HealBot() -- version 4.1.0.1
+function Skinner:HealBot() -- version 4.2.0.1
 	if not self.db.profile.Tooltips.skin then return end
 
 -->>--	Tooltips
@@ -49,6 +49,7 @@ function Skinner:HealBot() -- version 4.1.0.1
 	
 	self:keepFontStrings(HealBot_Options_hbCommands)
 	self:keepFontStrings(HealBot_Options_EmergencyFilter)
+	self:keepFontStrings(HealBot_Options_ManaIndicator)
 	self:keepFontStrings(HealBot_Options_BarHealthNumFormatAggro)
 	self:keepFontStrings(HealBot_Options_AggroIndAlertLevel)	
 	self:keepFontStrings(HealBot_Options_AggroAlertLevel)	
