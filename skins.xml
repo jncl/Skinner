@@ -74,6 +74,7 @@
 <script file="SkinMe\CloseUp.lua"/>
 <script file="SkinMe\Collectinator.lua"/>
 <script file="SkinMe\Combuctor.lua"/>
+<script file="SkinMe\CombustionHelper.lua"/>
 <script file="SkinMe\ConcessionStand.lua"/>
 <script file="SkinMe\Configator.lua"/>
 <script file="SkinMe\Converse.lua"/>
