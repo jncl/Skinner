@@ -243,6 +243,15 @@ function aObj:OnInitialize()
 		end)
 	end
 
+	-- handle InCombat issues
+	self.oocTab = {}
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+		for _, v in pairs(self.oocTab) do
+			v[1](v[2])
+		end
+		wipe(self.oocTab)
+	end)
+
 end
 
 function aObj:OnEnable()

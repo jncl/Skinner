@@ -521,11 +521,18 @@ function aObj:GearManager() -- inc. in PaperDollFrame.xml
 
 end
 
+
 function aObj:CompactFrames()
 	if not self.db.profile.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
 	local function skinUnit(unit)
+
+		-- handle in combat
+		if InCombatLockdown() then
+			aObj:add2Table(aObj.oocTab, {skinUnit, unit})
+			return
+		end
 
 		unit:DisableDrawLayer("BACKGROUND")
 		unit:DisableDrawLayer("BORDER")
@@ -540,6 +547,7 @@ function aObj:CompactFrames()
 		end
 
 	end
+
 -->>-- Compact Party Frame
 	self:SecureHook("CompactPartyFrame_OnLoad", function()
 		self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
@@ -572,8 +580,8 @@ function aObj:CompactFrames()
 -->>-- Compact RaidFrame Manager
 	local function skinButton(btn)
 
-		self:removeRegions(btn, {1, 2, 3})
-		self:skinButton{obj=btn}
+		aObj:removeRegions(btn, {1, 2, 3})
+		aObj:skinButton{obj=btn}
 
 	end
 	-- Buttons
@@ -968,7 +976,7 @@ function aObj:EncounterJournal()
 			btn.armorType:SetTextColor(self.BTr, self.BTg, self.BTb)
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
-		
+
 	end)
 	-- Tabs
 	for _, v in pairs{"bossTab", "lootTab"} do
