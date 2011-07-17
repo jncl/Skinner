@@ -10,6 +10,6 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	S	CombustionHelper, requested by Kerecha, 13.07.11
+√	N	Combuctor, reported by Craxziz, 17.07.11
 
-	N	HealBot
+√	S	Glamour, requested by Craxziz, 17.07.11
