@@ -9,7 +9,7 @@ function aObj:Combuctor()
 		local frame = _G["CombuctorFrame"..i]
 		self:skinEditBox{obj=frame.nameFilter, regs={9}, noWidth=true, noMove=true}
 		_G["CombuctorFrame"..i.."BagToggleBorder"]:SetTexture(nil)
-		self:addSkinFrame{obj=frame, kfs=true, x1=10, y1=-11, x2=-32, y2=55}
+		self:addSkinFrame{obj=frame, kfs=true, ri=true, x1=-1, y1=3, x2=1, y2=-5}
 	end
 	
 	-- Tabs aka BottomFilter
