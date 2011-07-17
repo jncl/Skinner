@@ -133,6 +133,7 @@
 <script file="SkinMe\GearScore.lua"/>
 <script file="SkinMe\GemHelper.lua"/>
 <script file="SkinMe\GemMe.lua"/>
+<script file="SkinMe\Glamour.lua"/>
 <script file="SkinMe\GnomeWorks.lua"/>
 <script file="SkinMe\GnomishAuctionShrinker.lua"/>
 <script file="SkinMe\GnomishVendorShrinker.lua"/>
