@@ -10,6 +10,10 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	N	Combuctor, reported by Craxziz, 17.07.11
+√	I	CombustionHelper, reported by Kerecha, 17.07.11
+		- move frame with bars up a little so it isn't behind main frame
 
-√	S	Glamour, requested by Craxziz, 17.07.11
+√	I	Combuctor, reported by Craxziz, 17.07.11
+		- Skinner-b4.14333.4\SkinMe\Combuctor-4.2.2.lua:63: attempt to index global "CombuctorFrame1Icon" (a nil value)
+		Skinner-b4.14333.4\SkinMe\Combuctor-4.2.2.lua:63: in function <Skinner\SkinMe\Combuctor.lua:4>
+		(tail call): ?
