@@ -60,11 +60,9 @@ function aObj:Combuctor()
 
 	-- if Bagnon_Forever loaded
 	if BagnonDB then -- move & show the player icon, used to select player info
-		CombuctorFrame1Icon:SetAlpha(1)
-		CombuctorFrame1Icon:SetDrawLayer("ARTWORK")
+		CombuctorFrame1.portrait:SetAlpha(1)
 		self:moveObject{obj=CombuctorFrame1IconButton, x=10, y=-10}
-		CombuctorFrame2Icon:SetAlpha(1)
-		CombuctorFrame2Icon:SetDrawLayer("ARTWORK")
+		CombuctorFrame2.portrait:SetAlpha(1)
 		self:moveObject{obj=CombuctorFrame2IconButton, x=10, y=-10}
 	else
 		self:keepFontStrings(CombuctorFrame1IconButton)

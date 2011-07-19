@@ -35,6 +35,12 @@ do
 
 end
 
+function aObj.round2(num, ndp)
+
+  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
+
+end
+
 function aObj:OnInitialize()
 
 --@debug@

@@ -1,6 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 local obj, objName, tex, texName, btn, btnName, tab, tabSF
+local round2 = aObj.round2
 
 local function makeString(t)
 
@@ -38,11 +39,6 @@ end
 local function printIt(text, frame, r, g, b)
 
 	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
-
-end
-local function round2(num, ndp)
-
-  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
 
 end
 --@debug@
