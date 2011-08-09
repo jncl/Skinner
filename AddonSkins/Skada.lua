@@ -1,29 +1,40 @@
-if not Skinner:isAddonEnabled("Skada") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Skada") then return end
 
-function Skinner:Skada()
+function aObj:Skada()
+
+	local isBeta = GetAddOnMetadata("Skada", "Version"):find("^r%d+$") and true or nil
 
 	local function changeSettings(db)
 
-		db.barcolor = CopyTable(Skinner.db.profile.StatusBar)
+		db.barcolor = CopyTable(aObj.db.profile.StatusBar)
 		db.bartexture = db.bartexture == "Empty" and db.bartexture or db.barcolor.texture -- change if not "Empty" texture
 		db.barcolor.texture = nil -- remove texture element
 		-- background settings
-		db.background.texture = Skinner.db.profile.BdTexture
-		db.background.margin = Skinner.db.profile.BdInset
-		db.background.borderthickness = Skinner.db.profile.BdEdgeSize
-		db.background.bordertexture = Skinner.db.profile.BdBorderTexture
-		db.background.color = Skinner.db.profile.Backdrop
+		db.background.texture = aObj.db.profile.BdTexture
+		db.background.margin = aObj.db.profile.BdInset
+		db.background.borderthickness = aObj.db.profile.BdEdgeSize
+		db.background.bordertexture = aObj.db.profile.BdBorderTexture
+		db.background.color = aObj.db.profile.Backdrop
 
 	end
 	local function skinFrame(win)
 
-		-- skin windows if required
-		if win.db.enablebackground
-		and not Skinner.skinFrame[win.bargroup.bgframe]
-		then
-			Skinner:addSkinFrame{obj=win.bargroup.bgframe}
-			win.bargroup.bgframe:SetBackdrop(nil)
-			win.bargroup.bgframe.SetBackdrop = function() end
+		if not isBeta then -- release version 1.2-34
+			-- skin windows if required
+			if win.db.enablebackground
+			and not aObj.skinFrame[win.bargroup.bgframe]
+			then
+				aObj:addSkinFrame{obj=win.bargroup.bgframe}
+				win.bargroup.bgframe:SetBackdrop(nil)
+				win.bargroup.bgframe.SetBackdrop = function() end
+			end
+		else
+			if not aObj.skinFrame[win.bargroup]	then
+				aObj:addSkinFrame{obj=win.bargroup}
+				win.bargroup:SetBackdrop(nil)
+				win.bargroup.SetBackdrop = function() end
+			end
 		end
 
 	end
