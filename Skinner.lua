@@ -369,6 +369,7 @@ local function __addSkinButton(opts)
 		bg = set FrameStrata to "BACKGROUND"
 		kfs = Remove all textures, only keep font strings
 		aso = applySkin options
+		ofs = offset value to use
 		x1 = X offset for TOPLEFT
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
@@ -378,7 +379,7 @@ local function __addSkinButton(opts)
 	assert(opts.obj, "Missing object __aSB\n"..debugstack())
 --@end-alpha@
 
-	-- remove all textures, if required
+	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
 	opts.parent = opts.parent or opts.obj:GetParent()
@@ -389,11 +390,11 @@ local function __addSkinButton(opts)
 	LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
 	aObj.sBtn[opts.hook] = btn
-	-- hook Show/Hide/Enable/Disable methods
+	-- hook Show/Hide methods
 	if not aObj:IsHooked(opts.hook, "Show") then
 		aObj:SecureHook(opts.hook, "Show", function(this) aObj.sBtn[this]:Show() end)
 		aObj:SecureHook(opts.hook, "Hide", function(this) aObj.sBtn[this]:Hide() end)
-		if opts.obj:IsObjectType("Button") then -- handle non button objects
+		if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
 			aObj:SecureHook(opts.hook, "Enable", function(this) aObj.sBtn[this]:Enable() end)
 			aObj:SecureHook(opts.hook, "Disable", function(this) aObj.sBtn[this]:Disable() end)
 		end
@@ -403,10 +404,11 @@ local function __addSkinButton(opts)
 		btn:SetAllPoints(opts.obj)
 	else
 		-- setup offset values
-		local xOfs1 = opts.x1 or -4
-		local yOfs1 = opts.y1 or 4
-		local xOfs2 = opts.x2 or 4
-		local yOfs2 = opts.y2 or -4
+		opts.ofs = opts.ofs or 4
+		local xOfs1 = opts.x1 or opts.ofs * -1
+		local yOfs1 = opts.y1 or opts.ofs
+		local xOfs2 = opts.x2 or opts.ofs
+		local yOfs2 = opts.y2 or opts.ofs * -1
 		btn:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
 		btn:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 	end
@@ -504,6 +506,7 @@ local function __addSkinFrame(opts)
 		anim = reparent skinFrame to avoid whiteout issues caused by animations
 		ri = Disable Inset DrawLayers
 		bas = use applySkin for buttons
+		rt = remove Textures
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n"..debugstack())
@@ -515,8 +518,11 @@ local function __addSkinFrame(opts)
 	-- store frame obj, if required
 	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
 
-	-- remove all textures, if required
+	-- make all textures transparent, if required
 	if opts.kfs or opts.hat then aObj:keepFontStrings(opts.obj, opts.hat) end
+
+	-- remove all textures, if required
+	if opts.rt then aObj:removeTextures(opts.obj) end
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -722,7 +728,7 @@ local function __applySkin(opts)
 	-- store frame obj, if required
 	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
 
-	-- remove all textures, if required
+	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
 	-- setup the backdrop
@@ -1034,7 +1040,7 @@ local function __moveObject(opts)
 
 	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
 
---	aObj:Debug("__mO: [%s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs)
+	-- aObj:Debug("__mO: [%s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs)
 
 	-- handle no Point info
 	if not point then return end
@@ -1104,6 +1110,19 @@ function aObj:removeRegions(obj, regions)
 --@debug@
 			if reg:IsObjectType("FontString") then self:Debug("rr FS: [%s, %s]", obj:GetName() or "<Anon>", k) end
 --@end-debug@
+		end
+	end
+
+end
+
+function aObj:removeTextures(obj)
+--@alpha@
+	assert(obj, "Missing object rT\n"..debugstack())
+--@end-alpha@
+
+	for _, reg in pairs{obj:GetRegions()} do
+		if not reg:IsObjectType("FontString") then
+			reg:SetTexture(nil)
 		end
 	end
 
