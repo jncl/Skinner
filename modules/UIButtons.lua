@@ -262,14 +262,16 @@ local function getTexture(obj)
 	end
 
 end
+
 function module:isButton(obj, cb, blue)
 
+	local bType, oName, oTex
 	if obj.GetNormalTexture -- is it a true button
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then -- check textures are as expected
-		local oName = obj:GetName() or nil
-		local oTex = getTexture(obj:GetNormalTexture()) or getTexture(aObj:getRegion(obj, 1))
+		oName = obj:GetName() or nil
+		oTex = getTexture(obj:GetNormalTexture()) or getTexture(aObj:getRegion(obj, 1))
 		if oTex then
 			if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
 			or oTex:find("UI-Panel-Button-Disabled", 1, true) -- UI Panel Button (Gray template)
@@ -278,25 +280,32 @@ function module:isButton(obj, cb, blue)
 			or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
 			then
-				return "normal"
+				bType = "normal"
 			end
 			if oTex:find("UI-Panel-MinimizeButton", 1, true)
 			or oTex:find("UI-Panel-HideButton", 1, true) -- PVPFramePopup (Cataclysm)
 			then
-				return "close"
+				bType = "close"
 			end
 			if oTex:find("UI-Toast-CloseButton", 1, true)
 			then
-				return "toast"
+				bType = "toast"
 			end
 			if oTex:find("KnowledgeBaseButtton") -- "new" KnowledgeBase Button
 			then
-				return "helpKB"
+				bType = "helpKB"
+			end
+			if oTex:find("UI-PlusButton", 1, true) -- UI Plus button
+			or oTex:find("UI-MinusButton", 1, true) -- UI Minus Button
+			then
+				bType = "mp"
 			end
 		end
 	end
 
-	return
+	-- aObj:Debug("isButton: [%s, %s, %s]", obj, bType, oTex)
+
+	return bType, oTex
 
 end
 
@@ -321,7 +330,7 @@ local function __skinAllButtons(opts, bgen)
 				opts.obj=child
 				__skinAllButtons(opts, bgen - 1)
 			end
-			bType = module:isButton(child)
+			local bType = module:isButton(child)
 			if bType == "normal" then
 				module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim, as=opts.as}
 			elseif bType == "close" then
@@ -331,6 +340,7 @@ local function __skinAllButtons(opts, bgen)
 			elseif bType == "helpKB" then
 				child:DisableDrawLayer("ARTWORK")
 				module:skinButton{obj=child, as=true}
+			elseif bType == "mp" then -- ignore for now
 			end
 		elseif child:IsObjectType("Frame") and bgen > 0 then
 			opts.obj=child
