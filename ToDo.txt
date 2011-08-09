@@ -10,10 +10,36 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	I	CombustionHelper, reported by Kerecha, 17.07.11
-		- move frame with bars up a little so it isn't behind main frame
+√	I	XLoot, reported by chrisgriffith25, 19.07.11
+		- Skinner-b4.14333.1\SkinMe\XLoot10.lua:24: attempt to index upvalue "btn" (a nil value)
+		Skinner-b4.14333.1\SkinMe\XLoot10.lua:24: in function <Skinner\SkinMe\XLoot10.lua:12>
+		<string>:"safecall Dispatcher[2]":4: in function <string>:"safecall Dispatcher[2]":4
+		<in C code>
 
-√	I	Combuctor, reported by Craxziz, 17.07.11
-		- Skinner-b4.14333.4\SkinMe\Combuctor-4.2.2.lua:63: attempt to index global "CombuctorFrame1Icon" (a nil value)
-		Skinner-b4.14333.4\SkinMe\Combuctor-4.2.2.lua:63: in function <Skinner\SkinMe\Combuctor.lua:4>
+√	I	GuildUI, reported by Baiya, 22.07.11
+		- I have a minor problem with the skin of the guildroster. If you klick on a member, you get a small window where you have some info on that char and as (guildleader or officer) beneath "rank" a dropdown menu where you can promote or demote someone. The text in that line is there 2 times and overlapping.
+
+√	I	FlyoutButtonCustom, reported by Decabah, 03.08.11
+		- Skinner-b4.14333.5\Skinner.lua:513: attempt to index field 'obj' (a nil value)
+		(tail call): ?:
+		<in C code>: in function `addSkinFrame'
+		Skinner-b4.14333.5\SkinMe\FlyoutButtonCustom.lua:19: in function <...terface\AddOns\Skinner\SkinMe\FlyoutButtonCust om.lua:19>
+		(tail call): ?:
+
+√	I	Skada, reported by Kerecha, 04.08.11
+		- Skinner\Skinner-b4.14333.5.lua:513: attempt to index field "obj" (a nil value)
+		Skinner\Skinner-b4.14333.5.lua:513: in function <Skinner\Skinner.lua:486>
 		(tail call): ?
+		Skinner-b4.14333.5\SkinMe\Skada-r328.lua:24: in function "skinFrame"
+		Skinner-b4.14333.5\SkinMe\Skada-r328.lua:44: in function <Skinner\SkinMe\Skada.lua:3>
+		(tail call): ?
+
+√	I	 xMerchant Continued, reported by X-buZZ, 05.08.11
+		- Scrollbar
+
+√	N	QuestHelper2, requested by Mushito, 05.08.11
+
+?	I	IOP, reported by Mushito, 05.08.11
+		- I have been noticing some unusual things with the in game interface/ Add On screen.  I believe it is the combat and scrolling combat text tab.  The have the options continue outside of the skinned box vs. being inside of the box.
+
+√	N	ReforgeLite, requested by Greevir, 08.08.11
