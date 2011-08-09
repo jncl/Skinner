@@ -78,6 +78,8 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), false, false) end)
 	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, true) end)
 	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end)
+	self:RegisterChatCommand("gp", function(msg) print(GetMouseFocus():GetPoint()) end)
+	self:RegisterChatCommand("gpp", function(msg) print(GetMouseFocus():GetParent():GetPoint()) end)
 	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
 
 end
@@ -220,6 +222,7 @@ function aObj:findFrame2(parent, objType, ...)
 				if select("#", ...) > 2 then
 					-- base checks on position
 					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
+					-- self:Debug("ff2 GetPoint: [%s, %s, %s, %s, %s, %s]", child, point, relativeTo, relativePoint, xOfs, yOfs)
 					xOfs = xOfs and round2(xOfs, 2) or 0
 					yOfs = yOfs and round2(yOfs, 2) or 0
 					if	point		  == select(1, ...)
@@ -233,6 +236,7 @@ function aObj:findFrame2(parent, objType, ...)
 				else
 					-- base checks on size
 					height, width = round2(child:GetHeight(), 2), round2(child:GetWidth(), 2)
+					-- self:Debug("ff2 h/w: [%s, %s, %s]", child, height, width)
 					if	height == select(1, ...)
 					and width  == select(2, ...) then
 						frame = child
