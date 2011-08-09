@@ -732,7 +732,9 @@ function aObj:GuildUI() -- LoD
 		self:addButtonBorder{obj=btn, relTo=btn.icon, hide=true, es=12}
 	end
 	self:skinDropDown{obj=GuildMemberRankDropdown}
-	self:moveObject{obj=GuildMemberRankDropdown, x=-6, y=2}
+	-- adjust text position & font so it overlays correctly
+	self:moveObject{obj=GuildMemberRankDropdown, x=-9}
+	GuildMemberRankDropdownText:SetFontObject(GameFontHighlight)
 	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
 	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
 	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, ofs=-6}
