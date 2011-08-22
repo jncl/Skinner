@@ -16,7 +16,9 @@ function aObj:Archy()
 
 	end
 -->>-- DigSite Frame
-	if self.modBtns then
+	if self.modBtns
+	and Archy.db.profile.general.theme == "Graphical"
+	then
 		self:skinButton{obj=ArchyDigSiteFrame.styleButton, mp2=true, as=true}
 		self:SecureHookScript(ArchyDigSiteFrame.styleButton, "OnClick", function(this)
 			if this:GetChecked() then this:SetText(self.modUIBtns.minus)
@@ -32,27 +34,33 @@ function aObj:Archy()
 	self:skinButton{obj=ArchyDistanceIndicatorFrameSurveyButton}
 
 -->>-- Artifact Frame
-	if self.modBtns then
+	if self.modBtns
+	and Archy.db.profile.general.theme == "Graphical"
+	then
 		self:skinButton{obj=ArchyArtifactFrame.styleButton, mp2=true, as=true, plus=true}
 		self:SecureHookScript(ArchyArtifactFrame.styleButton, "OnClick", function(this)
 			if this:GetChecked() then this:SetText(self.modUIBtns.minus)
 			else this:SetText(self.modUIBtns.plus) end
 		end)
 	end
-	ArchyArtifactFrame.skillBar.border:Hide()
-	self:glazeStatusBar(ArchyArtifactFrame.skillBar, 0,  nil)
-	for _, v in pairs(ArchyArtifactFrame.children) do
-		skinFragment(v)
+	if Archy.db.profile.general.theme == "Graphical" then
+		ArchyArtifactFrame.skillBar.border:Hide()
+		self:glazeStatusBar(ArchyArtifactFrame.skillBar, 0,  nil)
+		for _, v in pairs(ArchyArtifactFrame.children) do
+			skinFragment(v)
+		end
+		self:SecureHook(getmetatable(ArchyArtifactFrame.children), "__index", function(t, k)
+			skinFragment(t[k])
+		end)
 	end
-	self:SecureHook(getmetatable(ArchyArtifactFrame.children), "__index", function(t, k)
-		skinFragment(t[k])
-	end)
 	self:addSkinFrame{obj=ArchyArtifactFrame, nb=true}
 	-- stop frame backdrop from being changed
 	ArchyArtifactFrame.SetBackdrop = function() end
 	ArchyArtifactFrame.SetBackdropColor = function() end
 	ArchyArtifactFrame.SetBackdropBorderColor = function() end
-	if self.modBtns then
+	if self.modBtns
+	and Archy.db.profile.general.theme == "Graphical"
+	then
 		self:SecureHook(Archy, "RefreshRacesDisplay", function(this)
 			for _, v in pairs(ArchyArtifactFrame.children) do
 				-- don't show button skin in "Compact" form if it exists

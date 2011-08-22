@@ -1,8 +1,9 @@
-if not Skinner:isAddonEnabled("AdiBags") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("AdiBags") then return end
 
-function Skinner:AdiBags()
+function aObj:AdiBags()
 
-	local aBag = LibStub("AceAddon-3.0"):GetAddon("AdiBags")
+	local aBag = LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
 	
 	-- hook this for bag panel creation
 	self:RawHook(aBag, "CreateBagSlotPanel", function(this, ...)
@@ -14,12 +15,11 @@ function Skinner:AdiBags()
 		return bPanel
 	end, true)
 	-- hook this for bag creation
-	aBag:HookBagFrameCreation(self, function(bag)
-		self:ScheduleTimer(function(bag) 
---			self:Debug("OnBagFrameCreated: [%s, %s]", bag, bag.bagName)
-			local frame = bag:GetFrame()
-			self:addSkinFrame{obj=frame}
-			if bag.bagName == "Backpack" then self:skinEditBox{obj=AdiBagsSearchFrame.editBox, regs={9}} end
+	aBag:HookBagFrameCreation(aObj, function(bag)
+		aObj:ScheduleTimer(function(bag) 
+			aObj:Debug("OnBagFrameCreated: [%s, %s]", bag, bag.bagName)
+			aObj:addSkinFrame{obj=bag:GetFrame()}
+			if bag.bagName == "Backpack" then aObj:skinEditBox{obj=AdiBagsSearchFrame, regs={9}} end
 		end, 0.2, bag) -- wait for 2/10th second for frame to be created fully
 	end)
 

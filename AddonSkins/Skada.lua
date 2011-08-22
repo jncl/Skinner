@@ -3,8 +3,6 @@ if not aObj:isAddonEnabled("Skada") then return end
 
 function aObj:Skada()
 
-	local isBeta = GetAddOnMetadata("Skada", "Version"):find("^r%d+$") and true or nil
-
 	local function changeSettings(db)
 
 		db.barcolor = CopyTable(aObj.db.profile.StatusBar)
@@ -20,21 +18,14 @@ function aObj:Skada()
 	end
 	local function skinFrame(win)
 
-		if not isBeta then -- release version 1.2-34
-			-- skin windows if required
-			if win.db.enablebackground
-			and not aObj.skinFrame[win.bargroup.bgframe]
-			then
-				aObj:addSkinFrame{obj=win.bargroup.bgframe}
-				win.bargroup.bgframe:SetBackdrop(nil)
-				win.bargroup.bgframe.SetBackdrop = function() end
-			end
-		else
-			if not aObj.skinFrame[win.bargroup]	then
-				aObj:addSkinFrame{obj=win.bargroup}
-				win.bargroup:SetBackdrop(nil)
-				win.bargroup.SetBackdrop = function() end
-			end
+		-- skin windows if required
+		if win.db.enablebackground
+		and not aObj.skinFrame[win.bargroup]
+		then
+			-- print(win.bargroup.bgframe, win.bargroup.button)
+			aObj:addSkinFrame{obj=win.bargroup}
+			win.bargroup:SetBackdrop(nil)
+			win.bargroup.SetBackdrop = function() end
 		end
 
 	end
