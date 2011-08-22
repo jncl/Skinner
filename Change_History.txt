@@ -1,3 +1,14 @@
+b4.14480.1/2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Added removeTexture function
+	Added more testing functions
+	Updated UIButton code
+	Bugfix for GuildRank dropdown position
+	Updated FlyoutButtonCustom, Skada, XLoot1.0 & xMerchant skins
+	Skinned QuestHelper2 & ReforgeLite
+
 b4.14333.5
 Jncl:
 	ToDo.txt
