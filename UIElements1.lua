@@ -171,7 +171,7 @@ function aObj:CastingBar()
 		obj.border:SetAlpha(0)
 		self:changeShield(obj.borderShield, obj.icon)
 		obj.barFlash:SetAllPoints()
-		self:moveObject{obj=obj.text, y=-3}
+		self:moveObject{obj=obj.text, y=-2}
 		if self.db.profile.CastingBar.glaze then
 			self:glazeStatusBar(obj, 0, self:getRegion(obj, 1), {obj.barFlash})
 		end
