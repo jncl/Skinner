@@ -10,20 +10,4 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	I	Archy, reported by dwarven, 10.08.11
-		- Skinner\SkinMe\Archy.lua line 42: attempt to index field 'skillBar' (a nil value)
-
-√	I	AdiBags, reported by Greevir, 16.08.11
-		- Interface\AddOns\Skinner\Skinner.lua:219: in function <Interface\AddOns\Skinner\Skinner.lua:219>
-		Interface\AddOns\Skinner\Skinner.lua:1329: in function <Interface\AddOns\Skinner\Skinner.lua:1311>
-		Interface\AddOns\Skinner\Skinner.lua:1386: in function `skinEditBox'
-		Interface\AddOns\Skinner\SkinMe\AdiBags.lua:22: in function <Interface\AddOns\Skinner\SkinMe\AdiBags.lua:18>
-		(tail call): ?
-
-√	N	Skada, reported by Kerecha, 21.08.11
-		- Skinner\Skinner-b4.14480.2.lua:516: attempt to index field "obj" (a nil value)
-		Skinner\Skinner-b4.14480.2.lua:516: in function <Skinner\Skinner.lua:488>
-		(tail call): ?
-		Skinner-b4.14480.2\SkinMe\Skada-1.3-6.lua:28: in function "skinFrame"
-		Skinner-b4.14480.2\SkinMe\Skada-1.3-6.lua:55: in function <Skinner\SkinMe\Skada.lua:4>
-		(tail call): ?
+≈	S	WTFLatencyMeter, requested by Mushito, 22.08.11
