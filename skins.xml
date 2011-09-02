@@ -317,6 +317,7 @@
 <script file="SkinMe\WoWEquip.lua"/>
 <script file="SkinMe\WowLua.lua"/>
 <script file="SkinMe\WoWPro.lua"/>
+<script file="SkinMe\WTFLatencyMeter.lua"/>
 <script file="SkinMe\xcalc.lua"/>
 <script file="SkinMe\XLoot.lua"/>
 <script file="SkinMe\XLoot10.lua"/>

@@ -85,7 +85,7 @@ aObj.addonSkins = {
 	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "TradeSkillMaster", "Tukui", "TwinValkyr_shieldmonitor",
 	"UberQuest", "UrbanAchiever",
 	"vBagnon", "Vendorizer", "Vendomatic", "VendorSearch", "Violation", "Visor2_GUI", "Volumizer", "VuhDo", "VuhDoOptions",
-	"Warden", "WeakAuras", "WebDKP", "WIM", "WoWEquip", "WowLua", "WoWPro",
+	"Warden", "WeakAuras", "WebDKP", "WIM", "WoWEquip", "WowLua", "WoWPro", "WTFLatencyMeter",
 	"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"zfpoison", "ZOMGBuffs"
 }
