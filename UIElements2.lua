@@ -211,9 +211,7 @@ function aObj:MenuFrames()
 		end
 	end
 	-- Languages
-	-- if self.isPatch then
 		self:skinDropDown{obj=InterfaceOptionsLanguagesPanelLocaleDropDown}
-	-- end
 	-- Sound
 	self:addSkinFrame{obj=AudioOptionsSoundPanel, ft=ftype}
 	self:addSkinFrame{obj=AudioOptionsSoundPanelPlayback, ft=ftype}
@@ -539,14 +537,8 @@ function aObj:MainMenuBar()
 			self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
 		end
 		self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
-		-- if self.isPatch then
-			self:addButtonBorder{obj=EJMicroButton, mb=true, ofs=0, y1=-21}
-			self:addButtonBorder{obj=RaidMicroButton, mb=true, ofs=0, y1=-21}
-		-- end
-		-- Keyring button
-		-- if not self.isPatch then
-		-- 	self:addButtonBorder{obj=KeyRingButton}
-		-- end
+		self:addButtonBorder{obj=EJMicroButton, mb=true, ofs=0, y1=-21}
+		self:addButtonBorder{obj=RaidMicroButton, mb=true, ofs=0, y1=-21}
 		-- Bag buttons
 		self:addButtonBorder{obj=MainMenuBarBackpackButton}
 		self:addButtonBorder{obj=CharacterBag0Slot}

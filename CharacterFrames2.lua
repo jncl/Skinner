@@ -716,6 +716,7 @@ function aObj:GuildUI() -- LoD
 		self:removeRegions(btn, {1, 2, 3, 4, 5, 6})
 		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
 	end
+	self:skinEditBox{obj=GuildNameChangeFrame.editBox, regs={9}}
 
 -->>-- GuildRoster Frame
 	self:skinDropDown{obj=GuildRosterViewDropdown}
