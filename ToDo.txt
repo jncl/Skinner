@@ -10,4 +10,4 @@ Legend:
 
 	O	Update WoWAce commands page
 
-≈	S	WTFLatencyMeter, requested by Mushito, 22.08.11
+√	S	Reforgenator, requested by cheburashka2, 02.09.11
