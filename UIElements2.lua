@@ -998,8 +998,6 @@ function aObj:LookingForGuildUI() -- LoD
 	self.initialized.LookingForGuildUI = true
 
 	self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
-	self:removeMagicBtnTex("LookingForGuildRequestButton")
-	self:removeMagicBtnTex("LookingForGuildBrowseButton")
 	-- Start Frame (Settings)
 	LookingForGuildInterestFrameBg:SetAlpha(0)
 	LookingForGuildAvailabilityFrameBg:SetAlpha(0)
@@ -1007,6 +1005,7 @@ function aObj:LookingForGuildUI() -- LoD
 	LookingForGuildCommentFrameBg:SetAlpha(0)
 	self:skinScrollBar{obj=LookingForGuildCommentInputFrameScrollFrame}
 	self:addSkinFrame{obj=LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
+	self:removeMagicBtnTex(LookingForGuildBrowseButton)
 	-- Browse Frame
 	self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar}
 	for i = 1, #LookingForGuildBrowseFrameContainer.buttons do
@@ -1016,6 +1015,7 @@ function aObj:LookingForGuildUI() -- LoD
 		btn.PointsSpentBgGold:SetAlpha(0)
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
+	self:removeMagicBtnTex(LookingForGuildRequestButton)
 	-- Apps Frame (Requests)
 	self:skinSlider{obj=LookingForGuildAppsFrameContainerScrollBar}
 	for i = 1, #LookingForGuildAppsFrameContainer.buttons do
