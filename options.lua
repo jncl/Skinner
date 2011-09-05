@@ -396,7 +396,7 @@ function aObj:Options()
 					order = 7,
 					name = self.L["Border Width"],
 					desc = self.L["Set Border Width"],
-					min = 0, max = 32, step = 2,
+					min = 0, max = 32, step = 1,
 				},
 				BdInset = {
 					type = "range",
