@@ -10,4 +10,5 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	S	Reforgenator, requested by cheburashka2, 02.09.11
+√	I	Borderwidth, reported by Dangergoppel, 04.09.11
+		- allow it to be set to 1
