@@ -7,7 +7,7 @@ function aObj:BlizzardFrames()
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
 		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "CompactFrames", "EncounterJournal", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "BankFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
-		"Minimap", "MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "ScriptErrors", "DropDowns", -- uie1
+		"Minimap", "MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "ChatTemporaryWindow", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "ScriptErrors", "DropDowns", -- uie1
 		"AutoComplete", "MenuFrames", "MailFrame", "CoinPickup", "PVPFrame", "RolePollPopup", "LFDFrame", "LFRFrame", "BNFrames", "CinematicFrame", "LevelUpDisplay", "SpellFlyout", "GuildInvite", "GhostFrame"-- uie2
 	}
 
@@ -239,7 +239,7 @@ aObj.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 for _, v in pairs{"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids"} do
 	aObj.lodAddons["RaidAchievement_"..v] = "RaidAchievement_"..v
 end
-aObj.oddlyNamedLoDAddons = { "DBM-GUI" }
+aObj.oddlyNamedLoDAddons = { "_DevPad.GUI", "DBM-GUI" }
 local prev_addon
 function aObj:LoDFrames(addon)
 --	  self:Debug("LoDFrames: [%s]", addon)

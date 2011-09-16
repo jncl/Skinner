@@ -3,6 +3,7 @@
 
 <!-- Addon skins are here, must be prefixed by SkinMe\ -->
 
+<script file="SkinMe\_DevPadGUI.lua"/>
 <script file="SkinMe\_NPCScan.lua"/>
 <script file="SkinMe\!Swatter.lua"/>
 <script file="SkinMe\Accomplishment.lua"/>
