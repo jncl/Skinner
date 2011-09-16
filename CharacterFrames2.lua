@@ -521,7 +521,6 @@ function aObj:GearManager() -- inc. in PaperDollFrame.xml
 
 end
 
-
 function aObj:CompactFrames()
 	if not self.db.profile.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
