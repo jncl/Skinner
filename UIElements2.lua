@@ -285,7 +285,7 @@ function aObj:MenuFrames()
 		if oName and (oName:find("AceConfig") or oName:find("AceGUI"))then return end  -- ignore AceConfig/AceGUI objects
 
 		for _, child in ipairs{obj:GetChildren()} do
---			aObj:Debug("checkKids: [%s, %s]", child:GetName(), child:GetObjectType())
+			-- aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
 			if aObj:isDropDown(child) then
 				aObj:skinDropDown{obj=child}
 			elseif child:IsObjectType("EditBox") then
@@ -297,6 +297,13 @@ function aObj:MenuFrames()
 				aObj:skinScrollBar{obj=child}
 			else
 				checkKids(child)
+			end
+			-- remove Ampere's container background
+			if child:GetParent().name
+			and child:GetParent().name == "Ampere"
+			and child:GetNumRegions() == 1
+			then
+				child:DisableDrawLayer("BACKGROUND")
 			end
 		end
 
