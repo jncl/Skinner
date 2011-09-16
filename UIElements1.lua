@@ -232,6 +232,24 @@ function aObj:ChatMenus()
 
 end
 
+local function skinChatTab(objName)
+
+	tab = _G[objName.."Tab"]
+	aObj:keepRegions(tab, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
+	tabSF = aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
+	tabSF:SetAlpha(tab:GetAlpha()) -- set alpha value to the parent tab's
+	-- hook this to fix tab gradient texture overlaying text & highlight
+	aObj:SecureHook(tab, "SetParent", function(this, parent)
+		local tabSF = aObj.skinFrame[this]
+		if parent == GeneralDockManager.scrollFrame.child then
+			tabSF:SetParent(GeneralDockManager)
+		else
+			tabSF:SetParent(this)
+			tabSF:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
+		end
+	end)
+
+end
 function aObj:ChatTabs()
 	if not self.db.profile.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true
@@ -240,26 +258,16 @@ function aObj:ChatTabs()
 
 	-- hook this to handle Tab alpha changes as they have been reparented
 	self:SecureHook("FCFTab_UpdateAlpha", function(this)
---		print("FCFTab_UpdateAlpha", this, this:GetName())
 		local tab = _G[this:GetName().."Tab"]
 		local tabSF = self.skinFrame[tab]
-		tabSF:SetAlpha(tab:GetAlpha())
+		-- printTS("FCFTab_UpdateAlpha", this, this:GetName(), tab, tabSF)
+		if tabSF then -- allow for tab skinFrame to not be created yet
+			tabSF:SetAlpha(tab:GetAlpha())
+		end
 	end)
 
 	for i = 1, NUM_CHAT_WINDOWS do
-		tab = _G["ChatFrame"..i.."Tab"]
-		self:keepRegions(tab, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, y1=-8, y2=-5}
-		-- hook this to fix tab gradient texture overlaying text & highlight
-		self:SecureHook(tab, "SetParent", function(this, parent)
-			local tabSF = self.skinFrame[this]
-			if parent == GeneralDockManager.scrollFrame.child then
-				tabSF:SetParent(GeneralDockManager)
-			else
-				tabSF:SetParent(this)
-				tabSF:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
-			end
-		end)
+		skinChatTab("ChatFrame"..i)
 	end
 
 end
@@ -399,6 +407,22 @@ function aObj:ChatConfig()
 
 end
 
+local function skinChatEB(obj)
+
+	if aObj.db.profile.ChatEditBox.style == 1 then -- Frame
+		local kRegions = CopyTable(aObj.ebRegions)
+		table.insert(kRegions, 12)
+		aObj:keepRegions(obj, kRegions)
+		aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
+	elseif aObj.db.profile.ChatEditBox.style == 2 then -- Editbox
+		aObj:skinEditBox{obj=obj, regs={12}, noHeight=true}
+	else -- Borderless
+		aObj:removeRegions(obj, {6, 7, 8})
+		aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
+	end
+	aObj.skinned[obj] = true
+
+end
 function aObj:ChatEditBox()
 	-- don't use an initialized value to allow for dynamic changes
 	if not self.db.profile.ChatEditBox.skin then return end
@@ -406,32 +430,44 @@ function aObj:ChatEditBox()
 	self:add2Table(self.uiKeys2, "ChatEditBox")
 
 	-- these addons replace the Chat Edit Box
-	if IsAddOnLoaded("NeonChat") or IsAddOnLoaded("Chatter") or IsAddOnLoaded("Prat-3.0") then return end
-
-	local function skincfEB(obj)
-
-		if aObj.db.profile.ChatEditBox.style == 1 then -- Frame
-			local kRegions = CopyTable(aObj.ebRegions)
-			table.insert(kRegions, 12)
-			aObj:keepRegions(obj, kRegions)
-			aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
-		elseif aObj.db.profile.ChatEditBox.style == 2 then -- Editbox
-			aObj:skinEditBox{obj=obj, regs={12}, noHeight=true}
-		else -- Borderless
-			aObj:removeRegions(obj, {6, 7, 8})
-			aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
-		end
-		aObj.skinned[obj] = true
-
+	if IsAddOnLoaded("NeonChat")
+	or IsAddOnLoaded("Chatter")
+	or IsAddOnLoaded("Prat-3.0")
+	then
+		return
 	end
+
 	for i = 1, NUM_CHAT_WINDOWS do
-		skincfEB(_G["ChatFrame"..i].editBox)
+		skinChatEB(_G["ChatFrame"..i].editBox)
 	end
 
-	-- hook this to handle Tempoary windows (BN Conversations)
+end
+
+function aObj:ChatTemporaryWindow()
+	if not self.db.profile.ChatTabs
+	and not self.db.profile.ChatFrames
+	and not self.db.profile.ChatEditBox.skin
+	then return end
+
+	-- hook this to handle Temporary windows (BN Conversations)
 	self:RawHook("FCF_OpenTemporaryWindow", function(...)
+		-- print("FCF_OpenTemporaryWindow, before", ChatFrame11)
 		local obj = self.hooks.FCF_OpenTemporaryWindow(...)
-		if not self.skinned[obj.editBox] then skincfEB(obj.editBox) end
+		-- print("FCF_OpenTemporaryWindow, after", obj:GetName())
+		if self.db.profile.ChatTabs
+		and not self.skinFrame[obj]
+		then
+			skinChatTab(obj:GetName())
+		end
+		if self.db.profile.ChatFrames
+		and not self.skinFrame[obj]
+		then
+			self:addSkinFrame{obj=obj, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
+		end
+		if self.db.profile.ChatEditBox.skin
+		and not self.skinned[obj.editBox]
+			then skinChatEB(obj.editBox)
+		end
 		return obj
 	end, true)
 
@@ -1008,7 +1044,8 @@ function aObj:Minimap()
 	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 10, 10)
 
 	-- move BuffFrame
-	self:moveObject{obj=BuffFrame, x=-10}
+	self:moveObject{obj=BuffFrame, x=-40}
+
 end
 
 function aObj:MinimapButtons()
