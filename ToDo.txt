@@ -17,20 +17,9 @@ Legend:
 		Interface\FrameXML\CompactUnitFrame.lua:220: in function `CompactUnitFrame_UpdateAll':
 		Interface\FrameXML\CompactUnitFrame.lua:139: in function <Interface\FrameXML\CompactUnitFrame.lua:139>:
 
-√	I	ChatTabs, reported by palthis, 15.09.11
-		- Message: Interface\AddOns\Skinner\UIElements1.lua:246: attempt to index local 'tabSF' (a nil value)
-		Time: 09/14/11 19:00:52
-		Count: 1
-		Stack: [C]: ?
-		Interface\AddOns\Skinner\UIElements1.lua:246: in function <Interface\AddOns\Skinner\UIElements1.lua:242>
-		(tail call): ?
-		[C]: in function `FCFTab_UpdateAlpha'
-		Interface\FrameXML\FloatingChatFrame.lua:1366: in function `FCF_StopAlertFlash'
-		[string "*:OnShow"]:6: in function <[string "*:OnShow"]:1>
-		[C]: in function `Show'
-		Interface\FrameXML\FloatingChatFrame.lua:776: in function `FCF_OpenTemporaryWindow'
-		Interface\AddOns\Skinner\UIElements1.lua:433: in function <Interface\AddOns\Skinner\UIElements1.lua:432>
-		(tail call): ?
-		Interface\FrameXML\FloatingChatFrame.lua:2578: in function <Interface\FrameXML\FloatingChatFrame.lua:2553>
-
-√	S	_DevPad
+√	I	Old option setting, reported by akademics, 17.09.11
+		- Skinner-b4.14545.3\UIElements1.lua:1015: attempt to index field 'MinimapButtons' (a boolean value)
+		(tail call): ?:
+		<in C code>: in function `xpcall'
+		Skinner-b4.14545.3\UtilFuncs.lua:93: in function <Skinner\UtilFuncs.lua:91>
+		(tail call): ?:
