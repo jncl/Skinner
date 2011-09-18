@@ -59,6 +59,9 @@ function aObj:OnInitialize()
 	prdb = self.db.profile
 
 	-- convert any old settings
+	if type(self.db.profile.MinimapButtons) == "boolean" then
+		self.db.profile.MinimapButtons = {skin = true, style = false}
+	end
 
 	-- setup the Addon's options
 	self:checkAndRun("Options")
