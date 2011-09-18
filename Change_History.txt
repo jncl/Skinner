@@ -1,3 +1,14 @@
+b4.14545.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Removed extraneous line
+	Added skin code for Ampere
+	Skin TemporaryChatFrame
+	Bugfix for ChatTabs
+	Updated AucAdvanced skin
+	Skinned _DevPadGUI
+
 b4.14545.3
 Jncl:
 	ToDo.txt
