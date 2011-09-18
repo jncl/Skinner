@@ -449,6 +449,8 @@ function aObj:ChatTemporaryWindow()
 	and not self.db.profile.ChatEditBox.skin
 	then return end
 
+	-- self:add2Table(self.uiKeys1, "ChatTemporaryWindow") -- N.B. no option for this, internal function only
+
 	-- hook this to handle Temporary windows (BN Conversations)
 	self:RawHook("FCF_OpenTemporaryWindow", function(...)
 		-- print("FCF_OpenTemporaryWindow, before", ChatFrame11)
@@ -1063,19 +1065,18 @@ function aObj:MinimapButtons()
 		for _, obj in ipairs{mmObj:GetChildren()} do
 			objName = obj:GetName()
 			objType = obj:GetObjectType()
---			print(objName, objType)
+			-- print(objName, objType)
 			if not aObj.sBtn[obj]
 			and not aObj.skinFrame[obj]
---			and objName
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
 			then
---				print("Checking Regions")
+				-- print("Checking Regions")
 				for _, reg in ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
 						texName = reg:GetName()
 						tex = reg:GetTexture()
---						print(texName, tex)
+						-- print(texName, tex)
 						-- change the DrawLayer to make the Icon show if required
 						if (texName and texName:find("[Ii]con"))
 						or (tex and tex:find("[Ii]con"))
