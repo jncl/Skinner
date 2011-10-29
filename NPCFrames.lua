@@ -92,8 +92,7 @@ function aObj:TrainerUI() -- LoD
 	btn:GetNormalTexture():SetAlpha(0)
 	self:addButtonBorder{obj=btn, relTo=btn.icon}
 	self:skinSlider{obj=ClassTrainerScrollFrameScrollBar}
-	ClassTrainerFrame.bottomInset:DisableDrawLayer("BACKGROUND")
-	ClassTrainerFrame.bottomInset:DisableDrawLayer("BORDER")
+	self:removeInset(ClassTrainerFrame.bottomInset)
 	self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 	for i = 1, #ClassTrainerFrame.scrollFrame.buttons do
 		btn = ClassTrainerFrame.scrollFrame.buttons[i]
@@ -289,7 +288,7 @@ function aObj:BankFrame()
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
-	self:add2Table(self.uiKeys1, "BankFrame")
+	self:add2Table(self.npcKeys, "BankFrame")
 
 	self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-25, y2=91}
 

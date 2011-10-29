@@ -173,10 +173,10 @@ function aObj:OnInitialize()
 
 	-- these are used to disable frames from being skinned, LoD frames are entered here
 	-- other frames are added when their code is loaded
-	self.charKeys1 = {"GlyphUI", "RaidUI", "TalentUI", "TradeSkillUI", "ArchaeologyUI", "GuildUI", "GuildControlUI"} -- LoD frames
+	self.charKeys1 = {"GlyphUI", "TalentUI", "TradeSkillUI", "RaidUI", "ArchaeologyUI", "GuildUI", "GuildControlUI"} -- LoD frames
 	self.charKeys2 = {"AchievementUI"}
-	self.npcKeys = {"BarbershopUI", "TrainerUI", "ReforgingUI"} -- LoD frames
-	self.uiKeys1 = {"AuctionUI", "BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "MacroUI", "TimeManager", "LookingForGuildUI"} -- LoD frames
+	self.npcKeys = {"TrainerUI", "AuctionUI", "BarbershopUI", "ReforgingUI"} -- LoD frames
+	self.uiKeys1 = {"GMSurveyUI", "InspectUI", "BattlefieldMm", "TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", "LookingForGuildUI"} -- LoD frames
 	self.uiKeys2 = {}
 	if self.isPTR then
 		self:add2Table(self.uiKeys1, "FeedbackUI")
@@ -382,6 +382,9 @@ local function __addSkinButton(opts)
 	assert(opts.obj, "Missing object __aSB\n"..debugstack())
 --@end-alpha@
 
+	-- remove the object's Backdrop if it has one
+	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
+
 	-- make all textures transparent, if required
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
@@ -580,10 +583,7 @@ local function __addSkinFrame(opts)
 	end
 
 	-- remove inset textures
-	if opts.ri then
-		opts.obj.Inset:DisableDrawLayer("BACKGROUND")
-		opts.obj.Inset:DisableDrawLayer("BORDER")
-	end
+	if opts.ri then aObj:removeInset(opts.obj.Inset) end
 
 	return skinFrame
 
@@ -1323,6 +1323,7 @@ local function __skinEditBox(opts)
 		move = move the edit box, left and up
 		x = move the edit box left/right
 		y = move the edit box up/down
+		mi = move icon to the right
 --]]
 --@alpha@
 	assert(opts.obj and opts.obj:IsObjectType("EditBox"), "Not an EditBox\n"..debugstack())
@@ -1362,6 +1363,18 @@ local function __skinEditBox(opts)
 
 	-- move left/right & up/down, if required
 	if opts.x ~= 0 or opts.y ~= 0 then aObj:moveObject{obj=opts.obj, x=opts.x, y=opts.y} end
+
+	-- move the search icon to the right, if required
+	if opts.mi then
+		if opts.obj.searchIcon then
+			aObj:moveObject{obj=opts.obj.searchIcon, x=3} -- e.g. BagItemSearchBox
+		elseif opts.obj.icon then
+			aObj:moveObject{obj=opts.obj.icon, x=3} -- e.g. FriendsFrameBroadcastInput
+		else
+			aObj:moveObject{obj=_G[opts.obj:GetName().."SearchIcon"], x=3} -- e.g. TradeSkillFrameSearchBox
+		end
+	end
+
 
 end
 

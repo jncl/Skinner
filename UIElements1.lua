@@ -171,12 +171,22 @@ function aObj:CastingBar()
 		obj.border:SetAlpha(0)
 		self:changeShield(obj.borderShield, obj.icon)
 		obj.barFlash:SetAllPoints()
-		self:moveObject{obj=obj.text, y=-2}
+		obj.barFlash:SetTexture([[Interface\Buttons\WHITE8X8]])
+		self:moveObject{obj=obj.text, y=obj.ignoreFramePositionManager and 0 or -2}
 		if self.db.profile.CastingBar.glaze then
-			self:glazeStatusBar(obj, 0, self:getRegion(obj, 1), {obj.barFlash})
+			self:glazeStatusBar(obj, 0, self:getRegion(obj, 1))
 		end
 
 	end
+	-- hook this to handle the CastingBar being attached to the Unitframe and then reset
+	self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
+		castBar.border:SetAlpha(0)
+		castBar.barFlash:SetAllPoints()
+		castBar.barFlash:SetTexture([[Interface\Buttons\WHITE8X8]])
+		if look == "CLASSIC" then
+			self:moveObject{obj=castBar.text, y=-2}
+		end
+	end)
 
 end
 
@@ -704,16 +714,13 @@ function aObj:HelpFrame()
 
 	self:keepFontStrings(HelpFrame.header)
 	self:moveObject{obj=HelpFrame.header, y=-12}
-	HelpFrame.leftInset:DisableDrawLayer("BACKGROUND")
-	HelpFrame.leftInset:DisableDrawLayer("BORDER")
-	HelpFrame.mainInset:DisableDrawLayer("BACKGROUND")
-	HelpFrame.mainInset:DisableDrawLayer("BORDER")
+	self:removeInset(HelpFrame.leftInset)
+	self:removeInset(HelpFrame.mainInset)
 	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, ofs=-10}
 
 -->>-- Knowledgebase panel
 	self:keepFontStrings(HelpFrame.kbase)
-	self:moveObject{obj=HelpFrame.kbase.searchBox.icon, x=4}
-	self:skinEditBox{obj=HelpFrame.kbase.searchBox, regs={9}}
+	self:skinEditBox{obj=HelpFrame.kbase.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:skinSlider{obj=HelpFrame.kbase.scrollFrame.ScrollBar}
 	self:skinSlider{obj=HelpFrame.kbase.scrollFrame2.ScrollBar}
 	-- Nav Bar

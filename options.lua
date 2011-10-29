@@ -905,8 +905,8 @@ function aObj:Options()
 				},
 				EncounterJournal = {
 					type = "toggle",
-					name = self.L["EncounterJournal"],
-					desc = self.L["Toggle the skin of the EncounterJournal"],
+					name = self.L["Dungeon Journal"],
+					desc = self.L["Toggle the skin of the Dungeon Journal"],
 				},
 			},
 		},
@@ -1403,6 +1403,11 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["GMChatUI Frame"],
 					desc = self.L["Toggle the skin of the GMChatUI Frame"],
+				},
+				AutoComplete = {
+					type = "toggle",
+					name = self.L["Auto Complete"],
+					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
 				RolePollPopup = {
 					type = "toggle",

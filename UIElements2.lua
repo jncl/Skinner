@@ -777,6 +777,9 @@ function aObj:GMChatUI() -- LoD
 end
 
 function aObj:AutoComplete()
+	if not self.db.profile.AutoComplete or self.initialized.AutoComplete then return end
+	self.initialized.AutoComplete = true
+
 
 	self:add2Table(self.uiKeys1, "AutoComplete")
 
@@ -809,6 +812,10 @@ function aObj:DebugTools() -- LoD
 end
 
 function aObj:RolePollPopup()
+	if not self.db.profile.RolePollPopup or self.initialized.RolePollPopup then return end
+	self.initialized.RolePollPopup = true
+
+	self:add2Table(self.uiKeys1, "RolePollPopup")
 
 	self:addSkinFrame{obj=RolePollPopup, ft=ftype, x1=5, y1=-5, x2=-5, y2=5}
 
@@ -1012,6 +1019,7 @@ function aObj:LookingForGuildUI() -- LoD
 	LookingForGuildCommentFrameBg:SetAlpha(0)
 	self:skinScrollBar{obj=LookingForGuildCommentInputFrameScrollFrame}
 	self:addSkinFrame{obj=LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
+	LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:removeMagicBtnTex(LookingForGuildBrowseButton)
 	-- Browse Frame
 	self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar}

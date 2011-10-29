@@ -19,8 +19,7 @@ end
 
 function aObj:CharacterFrame()
 
-	CharacterFrameInsetRight:DisableDrawLayer("BACKGROUND")
-	CharacterFrameInsetRight:DisableDrawLayer("BORDER")
+	self:removeInset(CharacterFrameInsetRight)
 	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, bgen=2, y1=2, x2=1, y2=-6}
 
 -->>-- Tabs
@@ -193,13 +192,13 @@ function aObj:PVPFrame()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
-	PVPFrame.topInset:DisableDrawLayer("BACKGROUND")
-	PVPFrame.topInset:DisableDrawLayer("BORDER")
+	self:add2Table(self.charKeys1, "PVPFrame")
+
+	self:removeInset(PVPFrame.topInset)
 	local bar = PVPFrameConquestBar
 	bar.progress:SetTexture(self.sbTexture)
 	bar.cap1:SetTexture(self.sbTexture)
 	bar.cap2:SetTexture(self.sbTexture)
-	-- PVPFrameConquestBarBG:SetAlpha(0)
 	bar:DisableDrawLayer("BORDER")
 	self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
 	self:removeMagicBtnTex(PVPFrameLeftButton)
@@ -444,10 +443,9 @@ function aObj:GlyphUI() -- LoD
 		_G["GlyphFrameGlyph"..i].ring:SetAlpha(0)
 	end
 --]=]
-	GlyphFrame.sideInset:DisableDrawLayer("BACKGROUND")
-	GlyphFrame.sideInset:DisableDrawLayer("BORDER")
-	self:skinEditBox{obj=GlyphFrameSearchBox, regs={9}}
-	self:moveObject{obj=GlyphFrameSearchBox.searchIcon, x=3}
+	self:removeInset(GlyphFrame.sideInset)
+
+	self:skinEditBox{obj=GlyphFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:skinDropDown{obj=GlyphFrameFilterDropDown}
 	-- Headers
 	for i = 1, #GLYPH_STRING do

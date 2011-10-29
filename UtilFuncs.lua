@@ -338,6 +338,13 @@ function aObj:isVersion(addonName, verNoReqd, actualVerNo)
 
 end
 
+function aObj:removeInset(frame)
+
+	frame:DisableDrawLayer("BACKGROUND")
+	frame:DisableDrawLayer("BORDER")
+
+end
+
 function aObj:removeMagicBtnTex(btn)
 
 	-- Magic Button textures

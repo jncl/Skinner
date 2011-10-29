@@ -10,6 +10,11 @@ function aObj:FriendsFrame()
 	self:add2Table(self.charKeys1, "FriendsFrame")
 
 	-- FriendsTabHeader Frame
+	self:skinDropDown{obj=FriendsFrameStatusDropDown}
+	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
+	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
+	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
+	FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- Tabs
 	for i = 1, FriendsTabHeader.numTabs do
 		tab = _G["FriendsTabHeaderTab"..i]
@@ -17,7 +22,6 @@ function aObj:FriendsFrame()
 		self:moveObject{obj=_G["FriendsTabHeaderTab"..i.."HighlightTexture"], x=-2, y=4}
 		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, y1=-3, y2=-3}
 		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
 		if i == 1 then
 			if self.isTT then self:setActiveTab(tabSF) end
 		else
@@ -25,16 +29,11 @@ function aObj:FriendsFrame()
 		end
 	end
 	self.tabFrames[FriendsTabHeader] = true
+
 	--	FriendsList Frame
-	self:skinDropDown{obj=FriendsFrameStatusDropDown}
-	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
-	-- Add a skin frame to include the icon at the front
-	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, noSkin=true} -- region 10 is icon
-	self:addSkinFrame{obj=FriendsFrameBroadcastInput, nb=true, aso={bd=3, ng=true, ebc=true}, x1=-24}
 	-- adjust width of FFFSF so it looks right (too thin by default)
 	FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
-	self:skinSlider{obj=FriendsFrameFriendsScrollFrameScrollBar}
+	self:skinScrollBar{obj=FriendsFrameFriendsScrollFrame}
 
 	for i = 1, FRIENDS_FRIENDS_TO_DISPLAY do
 		btn = _G["FriendsFrameFriendsScrollFrameButton"..i]
@@ -152,9 +151,7 @@ function aObj:TradeSkillUI() -- LoD
 	_G[objName.."Border"]:SetAlpha(0)
 	self:glazeStatusBar(obj, 0, _G[objName.."Background"])
 	self:moveObject{obj=obj, x=-2}
-	-- Add a skin frame to include the icon at the front
-	self:skinEditBox{obj=TradeSkillFrameSearchBox, regs={9}, noSkin=true} -- region 9 is icon
-	self:addSkinFrame{obj=TradeSkillFrameSearchBox, nb=true, aso={bd=3, ng=true, ebc=true}, x1=-6}
+	self:skinEditBox{obj=TradeSkillFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:skinButton{obj=TradeSkillFilterButton}
 	self:addButtonBorder{obj=TradeSkillLinkButton, x1=1, y1=-5, x2=-3, y2=2}
 	self:removeRegions(TradeSkillExpandButtonFrame)
@@ -339,6 +336,7 @@ function aObj:Buffs()
 				if btn and not btn.sknrBdr then
 					-- add button borders
 					aObj:addButtonBorder{obj=btn}
+					self:moveObject{obj=btn.duration, y=-1}
 				end
 			end
 
@@ -525,6 +523,8 @@ function aObj:CompactFrames()
 	if not self.db.profile.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
+	self:add2Table(self.charKeys1, "CompactFrames")
+
 	local function skinUnit(unit)
 
 		-- handle in combat
@@ -660,8 +660,7 @@ function aObj:GuildUI() -- LoD
 	self.initialized.GuildUI = true
 
 -->>-- Guild Frame
-	GuildFrameBottomInset:DisableDrawLayer("BACKGROUND")
-	GuildFrameBottomInset:DisableDrawLayer("BORDER")
+	self:removeInset(GuildFrameBottomInset)
 	self:skinDropDown{obj=GuildDropDown}
 	GuildLevelFrame:DisableDrawLayer("BACKGROUND")
 	-- XP Bar
@@ -870,8 +869,7 @@ function aObj:EncounterJournal()
 
 	self:addSkinFrame{obj=EncounterJournal, ft=ftype, kfs=true, y1=2, x2=1}
 -->>-- Search EditBox, dropdown and results frame
-	self:moveObject{obj=EncounterJournal.searchBox.searchIcon, x=3}
-	self:skinEditBox{obj=EncounterJournal.searchBox, regs={9}}
+	self:skinEditBox{obj=EncounterJournal.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	EncounterJournal.searchBox.sbutton1:DisableDrawLayer("OVERLAY")
 	self:addSkinFrame{obj=EncounterJournal.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
 	self:skinSlider{obj=EncounterJournal.searchResults.scrollFrame.scrollBar}
