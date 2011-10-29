@@ -1,3 +1,10 @@
+b4.14545.5
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Tidyup code
+	Bugfix for old option setting
+
 b4.14545.4
 Jncl:
 	ToDo.txt
