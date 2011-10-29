@@ -35,12 +35,15 @@ function aObj:MerchantFrames()
 		_G[btnName.."SlotTexture"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName.."ItemButton"], ibt=true}
 	end
-	--[=[
-		TODO remove surrounding border
-	--]=]
-	self:addButtonBorder{obj=MerchantRepairAllButton, ofs=3} -- ignore named region
-	self:addButtonBorder{obj=MerchantRepairItemButton, ofs=3} -- no named region
-	self:addButtonBorder{obj=MerchantGuildBankRepairButton, ofs=3} -- no named region
+	if self.modBtnBs then
+		-- remove surrounding border (diff=0.01375)
+		self:getRegion(MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
+		MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
+		MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
+		self:addButtonBorder{obj=MerchantRepairAllButton}
+		self:addButtonBorder{obj=MerchantRepairItemButton}
+		self:addButtonBorder{obj=MerchantGuildBankRepairButton}
+	end
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
 	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}

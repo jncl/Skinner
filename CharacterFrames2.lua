@@ -354,11 +354,13 @@ function aObj:Buffs()
 	-- Temp Enchants already have a coloured border
 
 -->>-- Consolidated Buffs
-	-- add button borders
-	--[=[
-		TODO remove surrounding border
-	--]=]
-	self:addButtonBorder{obj=ConsolidatedBuffs, ofs=4} -- cover button surround
+	if self.modBtnBs then
+		-- remove surrounding border & resize
+		ConsolidatedBuffsIcon:SetTexCoord(0.128, 0.37, 0.235, 0.7375)
+		ConsolidatedBuffsIcon:SetWidth(30)
+		ConsolidatedBuffsIcon:SetHeight(30)
+		self:addButtonBorder{obj=ConsolidatedBuffs}
+	end
 	self:addSkinFrame{obj=ConsolidatedBuffsTooltip, x1=4, y1=-3, x2=-5, y2=4}
 
 end
