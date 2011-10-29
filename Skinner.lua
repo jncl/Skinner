@@ -181,7 +181,12 @@ function aObj:OnInitialize()
 	if self.isPTR then
 		self:add2Table(self.uiKeys1, "FeedbackUI")
 	end
-
+	if self.isPatch then
+		self:add2Table(self.charKeys1, "EncounterJournal")
+		self:add2Table(self.npcKeys, "ItemAlterationUI")
+		self:add2Table(self.npcKeys, "VoidStorageUI")
+		self:add2Table(self.uiKeys1, "MovePad")
+	end
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 

@@ -35,7 +35,11 @@ end
 function aObj:PaperDollFrame()
 
 	self:keepFontStrings(PaperDollFrame)
-	self:makeMFRotatable(CharacterModelFrame)
+	if not self.isPatch then
+		self:makeMFRotatable(CharacterModelFrame)
+	else
+		CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+	end
 	-- skin slots
 	for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
@@ -50,20 +54,22 @@ function aObj:PaperDollFrame()
 	CharacterModelFrame:DisableDrawLayer("OVERLAY")
 	CharacterStatsPane:DisableDrawLayer("ARTWORK")
 	self:skinSlider{obj=CharacterStatsPaneScrollBar, size=3}
-	-- hide ItemFlyout background textures
-	local btnFrame = PaperDollFrameItemFlyout.buttonFrame
-	self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
-	self:SecureHook("PaperDollFrameItemFlyout_Show", function(...)
-		for i = 1, btnFrame["numBGs"] do
-			btnFrame["bg" .. i]:SetAlpha(0)
-		end
-		if self.modBtnBs then
-			for i = 1, #PaperDollFrameItemFlyout.buttons do
-				btn = PaperDollFrameItemFlyout.buttons[i]
-				if not btn.sknrBdr then self:addButtonBorder{obj=btn, ibt=true} end
+	if not self.isPatch then
+		-- hide ItemFlyout background textures
+		local btnFrame = PaperDollFrameItemFlyout.buttonFrame
+		self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
+		self:SecureHook("PaperDollFrameItemFlyout_Show", function(...)
+			for i = 1, btnFrame["numBGs"] do
+				btnFrame["bg" .. i]:SetAlpha(0)
 			end
-		end
-	end)
+			if self.modBtnBs then
+				for i = 1, #PaperDollFrameItemFlyout.buttons do
+					btn = PaperDollFrameItemFlyout.buttons[i]
+					if not btn.sknrBdr then self:addButtonBorder{obj=btn, ibt=true} end
+				end
+			end
+		end)
+	end
 	-- Sidebar Tabs
 	PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
 	PaperDollSidebarTabs.DecorRight:SetAlpha(0)
@@ -563,7 +569,11 @@ function aObj:DressUpFrame()
 	self:add2Table(self.charKeys1, "DressUpFrame")
 
 	self:removeRegions(DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
-	self:makeMFRotatable(DressUpModel)
+	if not self.isPatch then
+		self:makeMFRotatable(DressUpModel)
+	else
+		DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
+	end
 	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
 end
@@ -912,4 +922,42 @@ function aObj:AlertFrames()
 	GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
 	self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, anim=true, x1=5, y1=-13, x2=-5, y2=4}
 
+end
+
+if aObj.isPatch then
+	function aObj:EquipmentFlyout()
+		if not self.db.profile.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
+		self.initialized.EquipmentFlyout = true
+
+		self:add2Table(self.charKeys1, "EquipmentFlyout")
+
+		local btnFrame = EquipmentFlyoutFrame.buttonFrame
+		self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
+		self:SecureHook("EquipmentFlyout_Show", function(...)
+			for i = 1, btnFrame["numBGs"] do
+				btnFrame["bg" .. i]:SetAlpha(0)
+			end
+			if self.modBtnBs then
+				for i = 1, #EquipmentFlyoutFrame.buttons do
+					btn = EquipmentFlyoutFrame.buttons[i]
+					if not btn.sknrBdr then self:addButtonBorder{obj=btn, ibt=true} end
+				end
+			end
+		end)
+
+	end
+	function aObj:ScrollOfResurrection()
+		if not self.db.profile.ScrollOfResurrection or self.initialized.ScrollOfResurrection then return end
+		self.initialized.ScrollOfResurrection = true
+
+		self:add2Table(self.charKeys1, "ScrollOfResurrection")
+
+		self:skinEditBox{obj=ScrollOfResurrectionFrame.targetEditBox, regs={9}}
+		ScrollOfResurrectionFrame.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:addSkinFrame{obj=ScrollOfResurrectionFrame.noteFrame, ft=ftype, kfs=true}
+		self:skinScrollBar{obj=ScrollOfResurrectionFrame.noteFrame.scrollFrame}
+		ScrollOfResurrectionFrame.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:addSkinFrame{obj=ScrollOfResurrectionFrame, ft=ftype, kfs=true}
+
+	end
 end

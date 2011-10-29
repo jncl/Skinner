@@ -5,20 +5,23 @@ function aObj:BlizzardFrames()
 
 	local blizzFrames = {
 		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", -- cf1
-		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "CompactFrames", "EncounterJournal", --cf2
+		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "CompactFrames", --cf2
 		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "BankFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", -- npc
 		"Minimap", "MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "ChatTemporaryWindow", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "ScriptErrors", "DropDowns", -- uie1
-		"AutoComplete", "MenuFrames", "MailFrame", "CoinPickup", "PVPFrame", "RolePollPopup", "LFDFrame", "LFRFrame", "BNFrames", "CinematicFrame", "LevelUpDisplay", "SpellFlyout", "GuildInvite", "GhostFrame"-- uie2
+		"AutoComplete", "MenuFrames", "MailFrame", "CoinPickup", "PVPFrame", "RolePollPopup", "LFDFrame", "LFRFrame", "BNFrames", "CinematicFrame", "LevelUpDisplay", "SpellFlyout", "GuildInvite", "GhostFrame", -- uie2
 	}
 
 	-- optional frames
 	if IsMacClient() then self:checkAndRun("MovieProgress") end
-	if self.isPTR
-	and IsAddOnLoaded("Blizzard_FeedbackUI")
-	then
-		self:add2Table(blizzFrames, "FeedbackUI")
-	end -- uie1
-
+	if not self.isPatch then
+		self:add2Table(blizzFrames, "EncounterJournal") -- cf2
+	else
+		self:add2Table(blizzFrames, "EquipmentFlyout") -- cf1
+		self:add2Table(blizzFrames, "ScrollOfResurrection") -- cf1
+		self:add2Table(blizzFrames, "SideDressUpFrame") -- npc
+		self:add2Table(blizzFrames, "LFGFrame") -- uie2
+		self:add2Table(blizzFrames, "RaidFrame") -- uie2
+	end
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
 	end
@@ -46,9 +49,13 @@ local blizzLoDFrames = {
 	"GMSurveyUI", "InspectUI", "BattlefieldMinimap", -- uie1
 	"TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", "LookingForGuildUI", --uie2
 }
-if aObj.isPTR then
-	aObj:add2Table(blizzLoDFrames, "FeedbackUI") -- uie1
-end
+if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- uie1
+if aObj.isPatch then
+	aObj:add2Table(blizzLoDFrames, "EncounterJournal") -- cf2
+	aObj:add2Table(blizzLoDFrames, "MovePad") -- uie2
+	aObj:add2Table(blizzLoDFrames, "ItemAlterationUI") -- npc
+	aObj:add2Table(blizzLoDFrames, "VoidStorageUI") -- npc
+end -- uie2
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v

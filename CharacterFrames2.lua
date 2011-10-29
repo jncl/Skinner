@@ -9,6 +9,13 @@ function aObj:FriendsFrame()
 
 	self:add2Table(self.charKeys1, "FriendsFrame")
 
+	if not self.isPatch then
+		self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, bgen=2, x1=12, y1=-11, x2=-33, y2=71}
+
+	else
+		self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
+	end
+
 	-- FriendsTabHeader Frame
 	self:skinDropDown{obj=FriendsFrameStatusDropDown}
 	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
@@ -40,16 +47,20 @@ function aObj:FriendsFrame()
 		btn.background:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.gameIcon, hide=true, ofs=0}
 	end
-	self:moveObject{obj=FriendsFrameAddFriendButton, x=3}
-	-- Add Friend Frame
+	if not self.isPatch then
+		self:moveObject{obj=FriendsFrameAddFriendButton, x=3}
+	end
+
+	-- Friends Tooltip
+	self:addSkinFrame{obj=FriendsTooltip}
+
+-->>-- Add Friend Frame
 	self:addSkinFrame{obj=AddFriendFrame, kfs=true}
 	self:skinEditBox{obj=AddFriendNameEditBox, regs={9}}
 	self:addSkinFrame{obj=AddFriendNoteFrame, kfs=true}
 	self:skinScrollBar{obj=AddFriendNoteFrameScrollFrame}
-	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, bgen=2, x1=12, y1=-11, x2=-33, y2=71}
-	-- Friends Tooltip
-	self:addSkinFrame{obj=FriendsTooltip}
-	-- FriendsFriends frame
+
+-->>-- FriendsFriends Frame
 	self:skinDropDown{obj=FriendsFriendsFrameDropDown}
 	self:addSkinFrame{obj=FriendsFriendsList, ft=ftype}
 	self:skinScrollBar{obj=FriendsFriendsScrollFrame}
@@ -71,7 +82,11 @@ function aObj:FriendsFrame()
 		self:applySkin{obj=_G[btn.."DeclineButton"]}
 	end
 
--->>--	Who Frame
+-->>--	Who Tab Frame
+	if self.isPatch then
+		self:removeInset(WhoFrameListInset)
+		self:removeInset(WhoFrameEditBoxInset)
+	end
 	self:skinFFColHeads("WhoFrameColumnHeader")
 	self:skinDropDown{obj=WhoFrameDropDown, noSkin=true}
 	self:moveObject{obj=WhoFrameDropDownButton, x=5, y=1}
@@ -80,8 +95,12 @@ function aObj:FriendsFrame()
 	WhoFrameEditBox:SetWidth(WhoFrameEditBox:GetWidth() +  24)
 	self:moveObject{obj=WhoFrameEditBox, x=12}
 
--->>--	Channel Frame
+-->>--	Channel Tab Frame
 	self:keepFontStrings(ChannelFrame)
+	if self.isPatch then
+		self:removeInset(ChannelFrameLeftInset)
+		self:removeInset(ChannelFrameRightInset)
+	end
 	self:skinButton{obj=ChannelFrameNewButton}
 	-- hook this to skin channel buttons
 	self:SecureHook("ChannelList_Update", function()
@@ -89,7 +108,9 @@ function aObj:FriendsFrame()
 			_G["ChannelButton"..i.."NormalTexture"]:SetAlpha(0)
 		end
 	end)
-	ChannelFrameVerticalBar:Hide()
+	if not self.isPatch then
+		ChannelFrameVerticalBar:Hide()
+	end
 	self:skinScrollBar{obj=ChannelListScrollFrame}
 	self:skinScrollBar{obj=ChannelRosterScrollFrame}
 	-- Channel Pullout Tab & Frame
@@ -104,7 +125,7 @@ function aObj:FriendsFrame()
 	self:skinDropDown{obj=ChannelListDropDown}
 	self:skinDropDown{obj=ChannelRosterDropDown}
 
--->>--	Raid Frame
+-->>--	Raid Tab Frame
 	self:moveObject{obj=RaidFrameConvertToRaidButton, x=-50}
 	self:moveObject{obj=RaidFrameRaidInfoButton, x=50}
 
@@ -865,7 +886,7 @@ function aObj:GuildControlUI() -- LoD
 
 end
 
-function aObj:EncounterJournal()
+function aObj:EncounterJournal() -- LoD
 	if not self.db.profile.EncounterJournal or self.initialized.EncounterJournal then return end
 	self.initialized.EncounterJournal = true
 
@@ -945,10 +966,18 @@ function aObj:EncounterJournal()
 	EncounterJournal.encounter.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinSlider{obj=EncounterJournal.encounter.info.detailsScroll.ScrollBar}
 	EncounterJournal.encounter.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	-- Difficulty buttons
-	for _, v in pairs{"heroButton", "diff25man", "diff10man"} do
-		EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
-		EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
+	if not self.isPatch then
+		-- Difficulty buttons
+		for _, v in pairs{"heroButton", "diff25man", "diff10man"} do
+			EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
+			EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
+		end
+	else
+		EncounterJournalEncounterFrameInfoResetButton:SetNormalTexture(nil)
+		EncounterJournalEncounterFrameInfoResetButton:SetPushedTexture(nil)
+		EncounterJournal.encounter.info.difficulty:SetNormalTexture(nil)
+		EncounterJournal.encounter.info.difficulty:SetPushedTexture(nil)
+		EncounterJournal.encounter.info.difficulty:DisableDrawLayer("BACKGROUND")
 	end
 	-- Hook this to skin headers
 	self:SecureHook("EncounterJournal_ToggleHeaders", function(this, doNotShift)
