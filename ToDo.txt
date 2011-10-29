@@ -17,9 +17,51 @@ Legend:
 		Interface\FrameXML\CompactUnitFrame.lua:220: in function `CompactUnitFrame_UpdateAll':
 		Interface\FrameXML\CompactUnitFrame.lua:139: in function <Interface\FrameXML\CompactUnitFrame.lua:139>:
 
-√	I	Old option setting, reported by akademics, 17.09.11
-		- Skinner-b4.14545.3\UIElements1.lua:1015: attempt to index field 'MinimapButtons' (a boolean value)
-		(tail call): ?:
-		<in C code>: in function `xpcall'
-		Skinner-b4.14545.3\UtilFuncs.lua:93: in function <Skinner\UtilFuncs.lua:91>
-		(tail call): ?:
+	I	AtlasLoot, reported by X-buZZ, 14.10.11
+		- the compare window (looks similar to the auction house window) of AtlasLoot Enhanced is missing a skin
+
+?	I	UnitFrames, reported by Luckyjack_SL, 20.10.11
+		- Since EU server reboot appeared a new bug in the unitframes:
+		Skinner, vb4.14545.5
+		- ..\AddOns\Skinner\modules\UnitFrames.lua line 128:
+		  attempt to index field '?' (a nil value)
+		Debug:
+		  (tail call): ?
+		  (tail call): ?
+		  Skinner\modules\UnitFrames.lua:128:
+		     Skinner\modules\UnitFrames.lua:106
+		  Skinner\modules\UnitFrames.lua:420: adjustUnitFrames()
+		  Skinner\modules\UnitFrames.lua:412:
+		     Skinner\modules\UnitFrames.lua:410
+		  (tail call): ?
+
+?	I	Unskinned frames reported by Shocker74, 26.10.11
+		- Some of Blizzards windows aren't getting skinned, mainly the Achievements & Talents windows. Just noticed that the Guild window stopped getting skinned as well.
+
+O	Patch 4.3.0.14899
+√	- TOC now 40300
+√	- Blizzard_ItemAlterationUI (New)
+√	- MovePad (New)
+√	- Blizzard_VoidStorageUI (New)
+√	- SideDressUpFrame (New)
+√	- EquipmentFlyout (New)
+√	- ScrollOfResurrection (New)
+√	- LFGFrame (New)
+√	- RaidFinder (New)
+√	- AuctionUI (DressUp code now in SideDressUpFrame)
+√	- Bank (EditBox added)
+√	- ContainerFrame (EditBox added)
+√	- GuildBankUI (EditBox added)
+√	- ReforgingUI
+√	- DressUpFrame (addon renamed to ModelFrames)
+√	- EncounterJournal (now LoD)
+√	- FriendsFrame
+√	- LFDFrame (LFG code now in LFGFrame)
+√	- LFRFrame
+√	- PaperDollFrame (Flyout code now in EquipmentFlyout)
+√	- RaidFrame
+√	- WorldMapFrame (DropDown added)
+?	- CompactRaidFrameManager
+?	- MultiActionBars
+?	- ExtraActionBarFrame
+?	- VehicleMenuBar
