@@ -954,30 +954,23 @@ function aObj:BattlefieldMinimap() -- LoD
 	if not self.db.profile.BattlefieldMm or self.initialized.BattlefieldMm then return end
 	self.initialized.BattlefieldMm = true
 
-	-- change the skinFrame's opacity as required
-	self:SecureHook("BattlefieldMinimap_UpdateOpacity", function(opacity)
-		local alpha = 1.0 - BattlefieldMinimapOptions.opacity
-		alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
-		self.skinFrame[BattlefieldMinimap]:SetAlpha(alpha)
-		self.skinFrame[BattlefieldMinimap].tfade:SetAlpha(alpha)
-	end)
-
 -->>--	Minimap Tab
 	self:keepRegions(BattlefieldMinimapTab, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
 	asopts = self.isTT and {ba=1} or nil
 	self:addSkinFrame{obj=BattlefieldMinimapTab, ft=ftype, noBdr=self.isTT, aso=asopts, y1=-7, y2=-7}
 	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
--->>--	Minimap
-	-- change the draw layer so that the map is visible
-	for i = 1, GetNumberOfDetailTiles() do
-		_G["BattlefieldMinimap"..i]:SetDrawLayer("ARTWORK")
-	end
 
-	-- Create a frame to skin as using the BattlefieldMinimap one causes issues with Capping
-	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, bg=true, x1=-4, y1=4, x2=-2, y2=-1}
-	-- hide the textures as the alpha values are changed in game
-	BattlefieldMinimapCorner:Hide()
-	BattlefieldMinimapBackground:Hide()
+	-- use a backdrop with no Texture and no Gradient otherwise the map tiles are obscured
+	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, aso={bd=8, ng=true}, x1=-4, y1=3, x2=-2, y2=-1}
+	BattlefieldMinimapCorner:SetTexture(nil)
+	BattlefieldMinimapBackground:SetTexture(nil)
+
+	-- change the skinFrame's opacity as required
+	self:SecureHook("BattlefieldMinimap_UpdateOpacity", function(opacity)
+		local alpha = 1.0 - BattlefieldMinimapOptions.opacity
+		alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
+		self.skinFrame[BattlefieldMinimap]:SetAlpha(alpha)
+	end)
 
 	if IsAddOnLoaded("Capping") then
 		if type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
