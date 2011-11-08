@@ -1009,12 +1009,16 @@ function aObj:EncounterJournal() -- LoD
 		end
 
 	end)
-	-- Tabs
+	-- Tabs (side)
 	for _, v in pairs{"bossTab", "lootTab"} do
 		EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
 		EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
 		EncounterJournal.encounter.info[v]:SetDisabledTexture(nil)
-		self:addSkinFrame{obj=EncounterJournal.encounter.info[v], ft=ftype, bg=true, noBdr=true, ofs=-3}
+		self:addSkinFrame{obj=EncounterJournal.encounter.info[v], ft=ftype, noBdr=true, ofs=-3, aso={rotate=true}} -- gradient is right to left
 	end
+	self:moveObject{obj=EncounterJournal.encounter.info.bossTab, x=10}
+	-- hide/show the texture to realign it on the tab
+	EncounterJournal.encounter.info.bossTab.unselected:Hide()
+	EncounterJournal.encounter.info.bossTab.unselected:Show()
 
 end
