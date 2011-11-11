@@ -67,9 +67,13 @@ local function __checkTex(opts)
 
 	if nTex then
 		if btn.skin then btn:Show() end -- Waterfall/tomQuest2
-		if nTex:find("MinusButton") then
+		if nTex:find("MinusButton")
+		or nTex:find("ZoomOutButton") -- ARL
+		then
 			btn:SetText(module.minus)
-		elseif nTex:find("PlusButton") then
+		elseif nTex:find("PlusButton")
+		or nTex:find("ZoomInButton") -- ARL
+		then
 			btn:SetText(module.plus)
 		else -- not a header line
 			btn:SetText("")

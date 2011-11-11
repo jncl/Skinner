@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("AckisRecipeList") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("AckisRecipeList") then return end
 
-function Skinner:AckisRecipeList()
+function aObj:AckisRecipeList()
 	if not self.db.profile.TradeSkillUI then return end
 
 	local ARL = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
@@ -53,6 +54,7 @@ function Skinner:AckisRecipeList()
 		if ver == 1 then
 			self:skinScrollBar{obj=sF}
 		else
+			self:adjWidth{obj=sF.scroll_bar, adj=-6}
 			self:skinSlider{obj=sF.scroll_bar}
 			sF:SetBackdrop(nil)
 		end
