@@ -247,7 +247,7 @@ local function skinChatTab(objName)
 	tab = _G[objName.."Tab"]
 	aObj:keepRegions(tab, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
 	tabSF = aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
-	tabSF:SetAlpha(tab:GetAlpha()) -- set alpha value to the parent tab's
+	tabSF:SetAlpha(0.2)
 	-- hook this to fix tab gradient texture overlaying text & highlight
 	aObj:SecureHook(tab, "SetParent", function(this, parent)
 		local tabSF = aObj.skinFrame[this]
@@ -258,6 +258,10 @@ local function skinChatTab(objName)
 			tabSF:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
 		end
 	end)
+	-- hook this to manage alpha changes when chat frame fades in and out
+	aObj:SecureHook(tab, "SetAlpha", function(this, alpha)
+		aObj.skinFrame[this]:SetAlpha(alpha)
+	end)
 
 end
 function aObj:ChatTabs()
@@ -265,16 +269,6 @@ function aObj:ChatTabs()
 	self.initialized.ChatTabs = true
 
 	self:add2Table(self.uiKeys1, "ChatTabs")
-
-	-- hook this to handle Tab alpha changes as they have been reparented
-	self:SecureHook("FCFTab_UpdateAlpha", function(this)
-		local tab = _G[this:GetName().."Tab"]
-		local tabSF = self.skinFrame[tab]
-		-- printTS("FCFTab_UpdateAlpha", this, this:GetName(), tab, tabSF)
-		if tabSF then -- allow for tab skinFrame to not be created yet
-			tabSF:SetAlpha(tab:GetAlpha())
-		end
-	end)
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		skinChatTab("ChatFrame"..i)
@@ -424,13 +418,16 @@ local function skinChatEB(obj)
 		table.insert(kRegions, 12)
 		aObj:keepRegions(obj, kRegions)
 		aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
+		aObj.skinFrame[obj]:SetAlpha(obj:GetAlpha())
 	elseif aObj.db.profile.ChatEditBox.style == 2 then -- Editbox
 		aObj:skinEditBox{obj=obj, regs={12}, noHeight=true}
 	else -- Borderless
 		aObj:removeRegions(obj, {6, 7, 8})
 		aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
+		aObj.skinFrame[obj]:SetAlpha(obj:GetAlpha())
 	end
 	aObj.skinned[obj] = true
+
 
 end
 function aObj:ChatEditBox()
@@ -449,6 +446,15 @@ function aObj:ChatEditBox()
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		skinChatEB(_G["ChatFrame"..i].editBox)
+	end
+	-- if editBox has a skin frame then hook these to manage its Alpha setting
+	if self.db.profile.ChatEditBox.style ~= 2 then
+		self:SecureHook("ChatEdit_ActivateChat", function(editBox)
+			self.skinFrame[editBox]:SetAlpha(editBox:GetAlpha())
+		end)
+		self:SecureHook("ChatEdit_DeactivateChat", function(editBox)
+			self.skinFrame[editBox]:SetAlpha(editBox:GetAlpha())
+		end)
 	end
 
 end
@@ -887,8 +893,6 @@ function aObj:InspectUI() -- LoD
 -->>--	Talent Frame
 	self:skinScrollBar{obj=InspectTalentFrameScrollFrame}
 	self:keepFontStrings(InspectTalentFramePointsBar)
-	-- self:skinFFToggleTabs("InspectTalentFrameTab")
-	-- self:moveObject{obj=InspectTalentFrameTab1, x=-30}
 	if self.modBtnBs then
 		-- add button borders
 		for i = 1, MAX_NUM_TALENTS do
