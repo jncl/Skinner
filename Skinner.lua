@@ -1,6 +1,6 @@
 local aName, aObj = ...
 local _G = _G
-local obj, objName, tex, texName, btn, btnName, tab, tabSF, objHeight, prdb, c, opts
+local obj, objName, tex, texName, btn, btnName, tab, tabSF, tabName, objHeight, prdb, c, opts, kRegions
 
 do
 	-- check to see if required libraries are loaded
@@ -1345,7 +1345,7 @@ local function __skinEditBox(opts)
 	opts.x = opts.x or 0
 	opts.y = opts.y or 0
 
-	local kRegions = CopyTable(aObj.ebRegions)
+	kRegions = CopyTable(aObj.ebRegions)
 	if opts.regs then
 		for _, v in pairs(opts.regs) do
 			aObj:add2Table(kRegions, v)
@@ -1596,6 +1596,86 @@ function aObj:skinSlider(...)
 		opts.size = select(2, ...) and select(2, ...) or 2
 	end
 	__skinSlider(opts)
+
+end
+
+local function __skinTabs(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		suffix = tab name suffix
+		regs = regions to keep
+		ignore = ignore size changes
+		up = tabs grow upwards
+		lod = LoD, requires textures to be set 1st time through
+		x1 = X offset for TOPLEFT
+		y1 = Y offset for TOPLEFT
+		x2 = X offset for BOTTOMRIGHT
+		y2 = Y offset for BOTTOMRIGHT
+		hx - X offset for Highlight
+		hy - Y offset for Highlight
+
+--]]
+--@alpha@
+	assert(opts.obj and opts.obj:IsObjectType("Frame"), "Not a Frame\n"..debugstack())
+--@end-alpha@
+
+	-- don't skin it twice
+	if aObj.skinned[opts.obj] then return end
+
+	tabName = opts.obj:GetName().."Tab"..(opts.suffix or "")
+
+	kRegions = {7, 8} -- N.B. region 7 is text, 8 is highlight
+	if opts.regs then
+		for _, v in pairs(opts.regs) do
+			aObj:add2Table(kRegions, v)
+		end
+	end
+
+	local xOfs1 = opts.x1 or 6
+	local yOfs1 = opts.y1 or 0
+	local xOfs2 = opts.x2 or -6
+	local yOfs2 = opts.y2 or 2
+
+	for i = 1, opts.obj.numTabs do
+		tab = _G[tabName..i]
+		if opts.hx or opts.hy then -- if highlight texture needs to be moved (e.g. FriendsFrameTabHeader tabs)
+			tex = _G[tabName..i.."HighlightTexture"]
+			aObj:moveObject{obj=tex, x=opts.hx or 0, y=opts.hy or 0}
+		end
+		aObj:keepRegions(tab, kRegions)
+		tabSF = aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		tabSF.ignore = opts.ignore -- ignore size changes
+		tabSF.up = opts.up -- tabs grow upwards
+		if opts.lod then -- set textures here first time thru as it's LoD
+			if i == 1 then
+				if aObj.isTT then aObj:setActiveTab(tabSF) end
+			else
+				if aObj.isTT then aObj:setInactiveTab(tabSF) end
+			end
+		end
+	end
+	aObj.tabFrames[opts.obj] = true
+
+end
+
+function aObj:skinTabs(...)
+
+	opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Missing object sS\n"..debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+	end
+	__skinTabs(opts)
 
 end
 

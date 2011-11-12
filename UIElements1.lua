@@ -854,6 +854,7 @@ function aObj:InspectUI() -- LoD
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
+	self:skinTabs{obj=InspectFrame, lod=true}
 	self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 
 -->>-- Inspect PaperDoll frame
@@ -896,37 +897,10 @@ function aObj:InspectUI() -- LoD
 			self:addButtonBorder{obj=_G[btnName], tibt=true}
 		end
 	end
-	-- Tabs
-	for i = 1, InspectTalentFrame.numTabs do
-		tab = _G["InspectTalentFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:moveObject{obj=_G["InspectTalentFrameTab"..i.."HighlightTexture"], x=-2, y=4}
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, y1=-3, y2=-3}
-		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[InspectTalentFrame] = true
+	self:skinTabs{obj=InspectTalentFrame, up=true, lod=true, x1=0, y1=-3, x2=0, y2=-3, hx=-2, hy=3}
 
 -->>-- Guild Frame
 	InspectGuildFrameBG:SetAlpha(0)
--->>-- Tabs
-	for i = 1, InspectFrame.numTabs do
-		tab = _G["InspectFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[InspectFrame] = true
 
 end
 
@@ -938,15 +912,8 @@ function aObj:BattleScore() -- a.k.a. WorldStateScoreFrame
 
 	self:skinDropDown{obj=ScorePlayerDropDown}
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
+	self:skinTabs{obj=WorldStateScoreFrame}
 	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
-
--->>-- Tabs
-	for i = 1, WorldStateScoreFrame.numTabs do
-		tab = _G["WorldStateScoreFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-	end
-	self.tabFrames[WorldStateScoreFrame] = true
 
 end
 

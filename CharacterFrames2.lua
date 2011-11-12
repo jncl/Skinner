@@ -9,9 +9,9 @@ function aObj:FriendsFrame()
 
 	self:add2Table(self.charKeys1, "FriendsFrame")
 
+	self:skinTabs{obj=FriendsFrame, lod=true}
 	if not self.isPatch then
 		self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, bgen=2, x1=12, y1=-11, x2=-33, y2=71}
-
 	else
 		self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 	end
@@ -22,20 +22,7 @@ function aObj:FriendsFrame()
 	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
 	FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	-- Tabs
-	for i = 1, FriendsTabHeader.numTabs do
-		tab = _G["FriendsTabHeaderTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:moveObject{obj=_G["FriendsTabHeaderTab"..i.."HighlightTexture"], x=-2, y=4}
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, y1=-3, y2=-3}
-		tabSF.up = true -- tabs grow upwards
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[FriendsTabHeader] = true
+	self:skinTabs{obj=FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5, hx=-2, hy=3}
 
 	--	FriendsList Frame
 	-- adjust width of FFFSF so it looks right (too thin by default)
@@ -136,20 +123,6 @@ function aObj:FriendsFrame()
 	self:addSkinFrame{obj=RaidInfoIDLabel, kfs=true}
 	self:skinSlider{obj=RaidInfoScrollFrameScrollBar}
 	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
-
--->>-- Tabs
-	for i = 1, FriendsFrame.numTabs do
-		tab = _G["FriendsFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[FriendsFrame] = true
 
 end
 
@@ -702,23 +675,11 @@ function aObj:GuildUI() -- LoD
 	self:moveObject{obj=GuildFrameTabardBackground, x=6, y=-10}
 	self:moveObject{obj=GuildFrameTabardEmblem, x=6, y=-10}
 	self:moveObject{obj=GuildFrameTabardBorder, x=6, y=-10}
+	self:skinTabs{obj=GuildFrame, lod=true}
 	self:addSkinFrame{obj=GuildFrame, ft=ftype, ri=true, x1=-5, y1=2, x2=1, y2=-6}
 	self:removeMagicBtnTex(GuildAddMemberButton)
 	self:removeMagicBtnTex(GuildControlButton)
 	self:removeMagicBtnTex(GuildViewLogButton)
-	-- Tabs
-	for i = 1, GuildFrame.numTabs do
-		tab = _G["GuildFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[GuildFrame] = true
 	-- GuildMain Frame
 	GuildPerksToggleButton:DisableDrawLayer("BACKGROUND")
 	GuildNewPerksFrame:DisableDrawLayer("BACKGROUND")
@@ -784,20 +745,7 @@ function aObj:GuildUI() -- LoD
 
 -->>-- GuildInfo Frame
 	self:removeRegions(GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
-	-- Tabs
-	for i = 1, GuildInfoFrame.numTabs do
-		tab = _G["GuildInfoFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=2, y1=-5, x2=2, y2=-5}
-		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[GuildInfoFrame] = true
+	self:skinTabs{obj=GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5, hy=3}
 	-- GuildInfoFrameInfo Frame
 	self:keepFontStrings(GuildInfoFrameInfo)
 	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, size=2}

@@ -20,15 +20,8 @@ end
 function aObj:CharacterFrame()
 
 	self:removeInset(CharacterFrameInsetRight)
+	self:skinTabs{obj=CharacterFrame}
 	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, bgen=2, y1=2, x2=1, y2=-6}
-
--->>-- Tabs
-	for i = 1, CharacterFrame.numTabs do
-		tab = _G["CharacterFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-	end
-	self.tabFrames[CharacterFrame] = true
 
 end
 
@@ -206,6 +199,7 @@ function aObj:PVPFrame()
 	bar.cap1:SetTexture(self.sbTexture)
 	bar.cap2:SetTexture(self.sbTexture)
 	bar:DisableDrawLayer("BORDER")
+	self:skinTabs{obj=PVPFrame}
 	self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-8}
 	self:removeMagicBtnTex(PVPFrameLeftButton)
 	self:removeMagicBtnTex(PVPFrameRightButton)
@@ -261,14 +255,6 @@ function aObj:PVPFrame()
 		end
 	end)
 	self:removeMagicBtnTex(WarGameStartButton)
-
--->>-- Tabs
-	for i = 1, PVPFrame.numTabs do
-		tab = _G["PVPFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-	end
-	self.tabFrames[PVPFrame] = true
 
 -->>-- Static Popup Special frame
 	self:addSkinFrame{obj=PVPFramePopup, ft=ftype, kfs=true, x1=9, y1=-9, x2=-7, y2=9}
@@ -351,6 +337,7 @@ function aObj:SpellBookFrame()
 		end)
 	end
 
+	self:skinTabs{obj=SpellBookFrame, suffix="Button", x1=8, y1=1, x2=-8, y2=2}
 	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 -->>- Spellbook Panel
 	SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -427,14 +414,6 @@ function aObj:SpellBookFrame()
 		self:removeRegions(obj, {1}) -- N.B. other regions are icon and highlight
 		self:addButtonBorder{obj=obj}
 	end
--->>-- Tabs (bottom)
-	local x1, y1, x2, y2
-	x1, y1, x2, y2 = 8, 1, -8, 2
-	for i = 1, SpellBookFrame.numTabs do
-		tab = _G["SpellBookFrameTabButton"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 1 is the Text, 3 is the highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=x1, y1=y1, x2=x2, y2=y2}
-	end
 
 end
 
@@ -475,6 +454,7 @@ function aObj:TalentUI() -- LoD
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
 
+	self:skinTabs{obj=PlayerTalentFrame, lod=true}
 	self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 -->>-- Talents Frame
 	for i = 1, 3 do
@@ -546,19 +526,6 @@ function aObj:TalentUI() -- LoD
 		self:removeRegions(obj, {1}) -- N.B. other regions are icon and highlight
 		self:addButtonBorder{obj=obj}
 	end
--->>-- Tabs (bottom)
-	for i = 1, PlayerTalentFrame.numTabs do
-		tab = _G["PlayerTalentFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[PlayerTalentFrame] = true
 
 end
 
@@ -702,6 +669,7 @@ function aObj:AchievementUI() -- LoD
 		tex:SetHeight(19)
 		tex:SetPoint("RIGHT", AchievementFrameFilterDropDown, "RIGHT", -3, 4)
 	end
+	self:skinTabs{obj=AchievementFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-10}
 	self:addSkinFrame{obj=AchievementFrame, ft=ftype, kfs=true, y1=1, y2=-3}
 
 -->>-- move Header info
@@ -833,22 +801,7 @@ function aObj:AchievementUI() -- LoD
 		skinComparisonStats()
 	end)
 	if achievementFunctions == COMPARISON_STAT_FUNCTIONS then skinComparisonStats() end
-
--->>-- Tabs
-	for i = 1, AchievementFrame.numTabs do
-		tab = _G["AchievementFrameTab"..i]
-		self:keepRegions(tab, {7, 8, 9, 10}) -- N.B. region 10 is text, 7-9 are highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=9, y1=2, x2=-9, y2=-10}
-		tabSF.ignore = true -- ignore size changes
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[AchievementFrame] = true
-
+	
 end
 
 function aObj:AlertFrames()

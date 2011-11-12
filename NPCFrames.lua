@@ -46,15 +46,8 @@ function aObj:MerchantFrames()
 	end
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
+	self:skinTabs{obj=MerchantFrame}
 	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}
-
--->>-- Tabs
-	for i = 1, MerchantFrame.numTabs do
-		tab = _G["MerchantFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-	end
-	self.tabFrames[MerchantFrame] = true
 
 end
 
@@ -188,6 +181,7 @@ function aObj:AuctionUI() -- LoD
 		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
 	end)
 
+	self:skinTabs{obj=AuctionFrame, lod=true}
 	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=4}
 
 -->>--	Browse Frame
@@ -272,20 +266,6 @@ function aObj:AuctionUI() -- LoD
 		self:moveObject{obj=AuctionDressUpFrame, x=6}
 		self:addSkinFrame{obj=AuctionDressUpFrame, ft=ftype, x1=-6, y1=-3, x2=-2}
 	end
--->>--	Tabs
-	for i = 1, AuctionFrame.numTabs do
-		tab = _G["AuctionFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[AuctionFrame] = true
-
 end
 
 function aObj:BankFrame()

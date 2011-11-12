@@ -248,6 +248,7 @@ function aObj:MenuFrames()
 	end
 
 -->>-- Interface
+	self:skinTabs{obj=InterfaceOptionsFrame, up=true, lod=true, x1=6, y1=2, x2=-6, y2=-4, hx=-5, hy=1}
 	self:addSkinFrame{obj=InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
 	self:skinScrollBar{obj=InterfaceOptionsFrameCategoriesList, size=2}
@@ -263,21 +264,6 @@ function aObj:MenuFrames()
 
 -->>-- Rating Menu
 	self:addSkinFrame{obj=RatingMenuFrame, ft=ftype, hdr=true}
-
-	-- Tabs
-	for i = 1, InterfaceOptionsFrame.numTabs do
-		tab = _G["InterfaceOptionsFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=2, x2=-6, y2=-4}
-		tabSF.up = true -- grow upwards
-		-- set textures here first time thru
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[InterfaceOptionsFrame] = true
 
 	local function checkKids(obj)
 
@@ -339,6 +325,7 @@ function aObj:MacroUI() -- LoD
 	self:skinScrollBar{obj=MacroFrameScrollFrame}
 	self:skinEditBox{obj=MacroFrameText, noSkin=true}
 	self:addSkinFrame{obj=MacroFrameTextBackground, ft=ftype, y2=2}
+	self:skinTabs{obj=MacroFrame, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
 	self:addSkinFrame{obj=MacroFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, x2=-32, y2=71}
 	if self.modBtnBs then
 		-- add button borders
@@ -351,21 +338,6 @@ function aObj:MacroUI() -- LoD
 			self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."Icon"], spbt=true}
 		end
 	end
-	-- Tabs
-	for i = 1, MacroFrame.numTabs do
-		tab = _G["MacroFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:moveObject{obj=_G["MacroFrameTab"..i.."HighlightTexture"], x=-2, y=4}
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, ofs=3, y1=-3, y2=-3}
-		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[MacroFrame] = true
 
 -->>-- Macro Popup Frame
 	self:skinEditBox{obj=MacroPopupEditBox}
@@ -386,6 +358,7 @@ function aObj:MailFrame()
 
 	self:add2Table(self.uiKeys1, "MailFrame")
 
+	self:skinTabs{obj=MailFrame}
 	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, x1=16, y1=-12, x2=-32, y2=69}
 
 -->>--	Inbox Frame
@@ -433,14 +406,6 @@ function aObj:MailFrame()
 	for _, v in pairs{"ItemLabel", "Purchaser", "BuyMode", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"} do
 		_G["OpenMailInvoice"..v]:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-
--->>--	Tabs
-	for i = 1, MailFrame.numTabs do
-		tab = _G["MailFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-	end
-	self.tabFrames[MailFrame] = true
 
 end
 
@@ -642,6 +607,7 @@ function aObj:GuildBankUI() -- LoD
 	if self.isPatch then
 		self:skinEditBox{obj=GuildItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	end
+	self:skinTabs{obj=GuildBankFrame, lod=true}
 	self:addSkinFrame{obj=GuildBankFrame, ft=ftype, kfs=true, hdr=true, y1=-11, y2=1}
 
 -->>--	Log Frame
@@ -661,20 +627,6 @@ function aObj:GuildBankUI() -- LoD
 		_G[objName]:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=_G[objName.."Button"], relTo=_G[objName.."ButtonIconTexture"]}
 	end
-
--->>--	Tabs (bottom)
-	for i = 1, GuildBankFrame.numTabs do
-		tab = _G["GuildBankFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[GuildBankFrame] = true
 
 end
 
@@ -1034,6 +986,7 @@ function aObj:LookingForGuildUI() -- LoD
 	if not self.db.profile.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
 	self.initialized.LookingForGuildUI = true
 
+	self:skinTabs{obj=LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5, hx=-2, hy=3}
 	self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
 	-- Start Frame (Settings)
 	LookingForGuildInterestFrameBg:SetAlpha(0)
@@ -1060,21 +1013,6 @@ function aObj:LookingForGuildUI() -- LoD
 		btn = LookingForGuildAppsFrameContainer.buttons[i]
 		self:applySkin{obj=btn}
 	end
-	-- Tabs
-	for i = 1, LookingForGuildFrame.numTabs do
-		tab = _G["LookingForGuildFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		self:moveObject{obj=_G["LookingForGuildFrameTab"..i.."HighlightTexture"], x=-2, y=4}
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, ofs=-2, y2=-2}
-		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[LookingForGuildFrame] = true
 	-- Request Membership Frame
 	self:addSkinFrame{obj=GuildFinderRequestMembershipFrameInputFrame, ft=ftype}
 	self:addSkinFrame{obj=GuildFinderRequestMembershipFrame, ft=ftype}
@@ -1117,19 +1055,8 @@ if aObj.isPatch then
 
 		self:add2Table(self.uiKeys1, "RaidFrame")
 
+		self:skinTabs{obj=RaidParentFrame, lod=true}
 		self:addSkinFrame{obj=RaidParentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
-		-- Tabs
-		for i = 1, RaidParentFrame.numTabs do
-			tab = _G["RaidParentFrameTab"..i]
-			self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-			if i == 1 then
-				if self.isTT then self:setActiveTab(tabSF) end
-			else
-				if self.isTT then self:setInactiveTab(tabSF) end
-			end
-		end
-		self.tabFrames[RaidParentFrame] = true
 
 	-->>-- RaidFinder Frame
 		self:keepRegions(RaidFinderFrame, {})
