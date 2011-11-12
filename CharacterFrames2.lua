@@ -758,6 +758,7 @@ function aObj:GuildUI() -- LoD
 	GuildRecruitmentLevelFrameBg:SetAlpha(0)
 	GuildRecruitmentCommentFrameBg:SetAlpha(0)
 	self:skinSlider{obj=GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar}
+	GuildRecruitmentCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
 	self:removeMagicBtnTex(GuildRecruitmentListGuildButton)
 	-- GuildInfoFrameApplicants Frame
