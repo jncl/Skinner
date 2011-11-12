@@ -740,8 +740,8 @@ function aObj:HelpFrame()
 -->>-- Knowledgebase panel
 	self:keepFontStrings(HelpFrame.kbase)
 	self:skinEditBox{obj=HelpFrame.kbase.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	self:skinSlider{obj=HelpFrame.kbase.scrollFrame.ScrollBar}
-	self:skinSlider{obj=HelpFrame.kbase.scrollFrame2.ScrollBar}
+	self:skinSlider{obj=HelpFrame.kbase.scrollFrame.ScrollBar, adj=-4}
+	self:skinSlider{obj=HelpFrame.kbase.scrollFrame2.ScrollBar, adj=-6}
 	-- Nav Bar
 	HelpFrame.kbase.navBar:DisableDrawLayer("BACKGROUND")
 	HelpFrame.kbase.navBar.overlay:DisableDrawLayer("OVERLAY")

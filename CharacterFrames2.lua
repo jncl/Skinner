@@ -225,7 +225,7 @@ function aObj:QuestLog()
 			self:skinButton{obj=QuestLogScrollFrame.buttons[i], mp=true}
 		end
 	end
-	self:skinScrollBar{obj=QuestLogScrollFrame}
+	self:skinSlider{obj=QuestLogScrollFrame.scrollBar, adj=-4}
 	self:skinAllButtons{obj=QuestLogControlPanel} -- Abandon/Push/Track
 	self:addButtonBorder{obj=QuestLogFrameShowMapButton, relTo=QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
@@ -691,7 +691,7 @@ function aObj:GuildUI() -- LoD
 	GuildNextPerkButtonNameFrame:SetTexture(nil)
 	self:addButtonBorder{obj=GuildNextPerkButton, libt=true, reParent={GuildNextPerkButtonLockTexture}}
 	GuildAllPerksFrame:DisableDrawLayer("BACKGROUND")
-	self:skinSlider{obj=GuildPerksContainerScrollBar, size=2}
+	self:skinSlider{obj=GuildPerksContainer.ScrollBar, adj=-6}
 	for i = 1, #GuildPerksContainer.buttons do
 		-- can't use DisableDrawLayer as the update code uses it
 		btn = GuildPerksContainer.buttons[i]
@@ -703,7 +703,7 @@ function aObj:GuildUI() -- LoD
 -->>-- GuildRoster Frame
 	self:skinDropDown{obj=GuildRosterViewDropdown}
 	self:skinFFColHeads("GuildRosterColumnButton", 5)
-	self:skinSlider{obj=GuildRosterContainerScrollBar, size=2}
+	self:skinSlider{obj=GuildRosterContainerScrollBar, adj=-4}
 	for i = 1, #GuildRosterContainer.buttons do
 		btn = GuildRosterContainer.buttons[i]
 		btn:DisableDrawLayer("BACKGROUND")
@@ -734,7 +734,7 @@ function aObj:GuildUI() -- LoD
 	self:addSkinFrame{obj=GuildNewsBossModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to QuestNPCModel
 	-- Rewards Panel
 	GuildRewardsFrame:DisableDrawLayer("BACKGROUND")
-	self:skinSlider{obj=GuildRewardsContainerScrollBar, size=2}
+	self:skinSlider{obj=GuildRewardsContainerScrollBar, adj=-4}
 	for i = 1, #GuildRewardsContainer.buttons do
 		btn = GuildRewardsContainer.buttons[i]
 		btn:GetNormalTexture():SetAlpha(0)
@@ -748,16 +748,16 @@ function aObj:GuildUI() -- LoD
 	self:skinTabs{obj=GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5, hy=3}
 	-- GuildInfoFrameInfo Frame
 	self:keepFontStrings(GuildInfoFrameInfo)
-	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, size=2}
+	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, adj=-4}
 	GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, size=2}
+	self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, adj=-4}
 	-- GuildInfoFrameRecruitment Frame
 	GuildRecruitmentInterestFrameBg:SetAlpha(0)
 	GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
 	GuildRecruitmentRolesFrameBg:SetAlpha(0)
 	GuildRecruitmentLevelFrameBg:SetAlpha(0)
 	GuildRecruitmentCommentFrameBg:SetAlpha(0)
-	self:skinScrollBar{obj=GuildRecruitmentCommentInputFrameScrollFrame}
+	self:skinSlider{obj=GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
 	self:removeMagicBtnTex(GuildRecruitmentListGuildButton)
 	-- GuildInfoFrameApplicants Frame
@@ -768,16 +768,16 @@ function aObj:GuildUI() -- LoD
 		btn.PointsSpentBgGold:SetAlpha(0)
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
-	self:skinSlider{obj=GuildInfoFrameApplicantsContainerScrollBar}
+	self:skinSlider{obj=GuildInfoFrameApplicantsContainerScrollBar, adj=-4}
 	self:removeMagicBtnTex(GuildRecruitmentInviteButton)
 	self:removeMagicBtnTex(GuildRecruitmentDeclineButton)
 	self:removeMagicBtnTex(GuildRecruitmentMessageButton)
 	-- Guild Text Edit frame
-	self:skinSlider{obj=GuildTextEditScrollFrameScrollBar, size=2}
+	self:skinSlider{obj=GuildTextEditScrollFrameScrollBar, adj=-6}
 	self:addSkinFrame{obj=GuildTextEditContainer, ft=ftype, nb=true}
 	self:addSkinFrame{obj=GuildTextEditFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
 	-- Guild Log Frame
-	self:skinSlider{obj=GuildLogScrollFrameScrollBar, size=2}
+	self:skinSlider{obj=GuildLogScrollFrame.ScrollBar, adj=-6}
 	self:addSkinFrame{obj=GuildLogContainer, ft=ftype, nb=true}
 	self:addSkinFrame{obj=GuildLogFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
 
@@ -843,7 +843,7 @@ function aObj:EncounterJournal() -- LoD
 	self:skinEditBox{obj=EncounterJournal.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	EncounterJournal.searchBox.sbutton1:DisableDrawLayer("OVERLAY")
 	self:addSkinFrame{obj=EncounterJournal.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
-	self:skinSlider{obj=EncounterJournal.searchResults.scrollFrame.scrollBar}
+	self:skinSlider{obj=EncounterJournal.searchResults.scrollFrame.scrollBar, adj=-4}
 	for i = 1, #EncounterJournal.searchResults.scrollFrame.buttons do
 		btn = EncounterJournal.searchResults.scrollFrame.buttons[i]
 		btn:DisableDrawLayer("OVERLAY")
@@ -863,7 +863,7 @@ function aObj:EncounterJournal() -- LoD
 -->>-- InstanceSelect frame
 	EncounterJournal.instanceSelect.bg:SetAlpha(0)
 	self:skinDropDown{obj=EncounterJournal.instanceSelect.tierDropDown}
-	self:skinSlider{obj=EncounterJournal.instanceSelect.scroll.ScrollBar}
+	self:skinSlider{obj=EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
 	self:addSkinFrame{obj=EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
 	-- Instance buttons
 	if self.modBtnBs then
@@ -885,7 +885,7 @@ function aObj:EncounterJournal() -- LoD
 	self:moveObject{obj=EncounterJournal.encounter.instance.title, y=40}
 	EncounterJournalEncounterFrameInstanceFrameTitleBG:SetAlpha(0)
 	self:moveObject{obj=EncounterJournal.encounter.instance.mapButton, x=-20, y=-20}
-	self:skinSlider{obj=EncounterJournal.encounter.instance.loreScroll.ScrollBar}
+	self:skinSlider{obj=EncounterJournal.encounter.instance.loreScroll.ScrollBar, adj=-4}
 	EncounterJournal.encounter.instance.loreScroll.child.lore:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- Model frame
 	self:makeMFRotatable(EncounterJournal.encounter.model)
@@ -912,7 +912,7 @@ function aObj:EncounterJournal() -- LoD
 	self:getRegion(EncounterJournal.encounter.info, 1):SetAlpha(0) -- BG
 	EncounterJournal.encounter.info.dungeonBG:SetAlpha(0)
 	EncounterJournal.encounter.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinSlider{obj=EncounterJournal.encounter.info.detailsScroll.ScrollBar}
+	self:skinSlider{obj=EncounterJournal.encounter.info.detailsScroll.ScrollBar, adj=-4}
 	EncounterJournal.encounter.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
 	if not self.isPatch then
 		-- Difficulty buttons
@@ -940,7 +940,7 @@ function aObj:EncounterJournal() -- LoD
 		end
 	end)
 	-- Loot
-	self:skinSlider{obj=EncounterJournal.encounter.info.lootScroll.scrollBar}
+	self:skinSlider{obj=EncounterJournal.encounter.info.lootScroll.scrollBar, adj=-4}
 	EncounterJournal.encounter.info.lootScroll.filter:DisableDrawLayer("BACKGROUND")
 	EncounterJournal.encounter.info.lootScroll.filter:SetNormalTexture(nil)
 	EncounterJournal.encounter.info.lootScroll.filter:SetPushedTexture(nil)

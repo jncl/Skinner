@@ -101,7 +101,7 @@ function aObj:PaperDollFrame()
 		end
 		self:Unhook(PaperDollTitlesPane, "OnShow")
 	end)
-	self:skinSlider{obj=PaperDollTitlesPane.scrollBar, size=3}
+	self:skinSlider{obj=PaperDollTitlesPane.scrollBar, adj=-4}
 	-- Equipment Manager
 	self:SecureHookScript(PaperDollEquipmentManagerPane, "OnShow", function(this)
 		for i = 1, #this.buttons do
@@ -111,7 +111,7 @@ function aObj:PaperDollFrame()
 		end
 		self:Unhook(PaperDollEquipmentManagerPane, "OnShow")
 	end)
-	self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar, size=3}
+	self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar, adj=-4}
 	PaperDollEquipmentManagerPane.EquipSet.ButtonBackground:SetAlpha(0)
 	-- GearManagerDialog Popup Frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
@@ -234,7 +234,7 @@ function aObj:PVPFrame()
 	self:addSkinFrame{obj=PVPFrame.lowLevelFrame, ft=ftype, kfs=true}
 -->>-- WarGames frame
 	PVPFrame.panel4:DisableDrawLayer("ARTWORK")
-	self:skinSlider{obj=WarGamesFrameScrollFrameScrollBar}
+	self:skinSlider{obj=WarGamesFrameScrollFrameScrollBar, adj=-4}
 	self:skinScrollBar{obj=WarGamesFrameInfoScrollFrame}
 	WarGamesFrameBGTex:SetAlpha(0)
 	WarGamesFrameInfoScrollFrame.scrollBarArtTop:SetAlpha(0)
@@ -445,7 +445,7 @@ function aObj:GlyphUI() -- LoD
 		btn.disabledBG:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	self:skinSlider{obj=GlyphFrameScrollFrameScrollBar, size=2}
+	self:skinSlider{obj=GlyphFrameScrollFrameScrollBar, adj=-4}
 	self:addButtonBorder{obj=GlyphFrameClearInfoFrame}
 
 end
@@ -679,7 +679,7 @@ function aObj:AchievementUI() -- LoD
 	AchievementFrameHeaderShield:SetAlpha(1)
 
 -->>-- Categories Panel (on the Left)
-	self:skinSlider(AchievementFrameCategoriesContainerScrollBar)
+	self:skinSlider{obj=AchievementFrameCategoriesContainerScrollBar, adj=-4}
 	self:addSkinFrame{obj=AchievementFrameCategories, ft=ftype, y2=-2}
 	self:SecureHook("AchievementFrameCategories_Update", function()
 		skinCategories()
@@ -691,7 +691,7 @@ function aObj:AchievementUI() -- LoD
 -->>-- Achievements Panel (on the right)
 	self:keepFontStrings(AchievementFrameAchievements)
 	self:getChild(AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
-	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
+	self:skinSlider{obj=AchievementFrameAchievementsContainerScrollBar, adj=-4}
 	if prdbA.style == 2 then
 		-- remove textures etc from buttons
 		cleanButtons(AchievementFrameAchievementsContainer, "Achievements")
@@ -729,7 +729,7 @@ function aObj:AchievementUI() -- LoD
 
 -->>-- Stats
 	self:keepFontStrings(AchievementFrameStats)
-	self:skinSlider(AchievementFrameStatsContainerScrollBar)
+	self:skinSlider{obj=AchievementFrameStatsContainerScrollBar, adj=-4}
 	AchievementFrameStatsBG:SetAlpha(0)
 	self:getChild(AchievementFrameStats, 3):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	-- hook this to skin buttons
@@ -801,7 +801,7 @@ function aObj:AchievementUI() -- LoD
 		skinComparisonStats()
 	end)
 	if achievementFunctions == COMPARISON_STAT_FUNCTIONS then skinComparisonStats() end
-	
+
 end
 
 function aObj:AlertFrames()

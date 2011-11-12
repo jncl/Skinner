@@ -1559,6 +1559,7 @@ local function __skinSlider(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow) [default is 3]
+		adj = width reduction required
 --]]
 --@alpha@
 	assert(opts.obj and opts.obj:IsObjectType("Slider"), "Not a Slider\n"..debugstack())
@@ -1573,8 +1574,8 @@ local function __skinSlider(opts)
 
 	aObj:skinUsingBD{obj=opts.obj, size=opts.size}
 
-	-- hide track background
-	if opts.obj.trackBG then opts.obj.trackBG:SetAlpha(0) end
+	-- adjust width if required
+	if opts.adj then aObj:adjWidth{obj=opts.obj, adj=opts.adj} end
 
 end
 
