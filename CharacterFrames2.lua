@@ -846,7 +846,9 @@ function aObj:EncounterJournal() -- LoD
 	self:skinSlider{obj=EncounterJournal.searchResults.scrollFrame.scrollBar, adj=-4}
 	for i = 1, #EncounterJournal.searchResults.scrollFrame.buttons do
 		btn = EncounterJournal.searchResults.scrollFrame.buttons[i]
-		btn:DisableDrawLayer("OVERLAY")
+		self:removeRegions(btn, {1})
+		btn:GetNormalTexture():SetAlpha(0)
+		btn:GetPushedTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
 -->>-- Nav Bar
