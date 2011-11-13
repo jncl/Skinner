@@ -68,15 +68,6 @@ local function skinPlayerF()
 			end
 			aObj:moveObject{obj=TotemFrameTotem1, y=lOfs} -- covers level text when active
 		end
-		--	skin the ComboFrame, if required
-		if aObj.uCls == "ROGUE"
-		or aObj.uCls == "DRUID"
-		then
-			for i = 1, MAX_COMBO_POINTS do
-				aObj:getRegion(_G["ComboPoint"..i], 1):SetTexture(nil)
-			end
-			aObj:moveObject{obj=ComboFrame, x=3, y=3}
-		end
 		-- skin the AlternateManaBar, if required
 		if aObj.uCls == "DRUID" then
 			PlayerFrameAlternateManaBarBorder:SetTexture(nil)
@@ -192,6 +183,15 @@ local function skinTargetF()
 	then
 		skinUFrame("TargetFrame")
 
+		--	skin the ComboFrame, if required
+		if aObj.uCls == "ROGUE"
+		or aObj.uCls == "DRUID"
+		then
+			for i = 1, MAX_COMBO_POINTS do
+				aObj:getRegion(_G["ComboPoint"..i], 1):SetTexture(nil)
+			end
+		end
+
 		-- create a texture to show UnitClassification
 		local ucTex = TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
 		ucTex:SetWidth(80)
@@ -210,6 +210,18 @@ local function skinTargetF()
 			elseif uCls == "rare" then
 				ucTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareNameplateIcon]])
 			else ucTex:SetTexture(nil)
+			end
+			-- adjust ComboFrame position dependant upon Target classification, if required
+			-- as the threat indicator obscures them when boss/elite etc
+			if aObj.uCls == "ROGUE"
+			or aObj.uCls == "DRUID"
+			then
+				ComboFrame:ClearAllPoints()
+				if ucTex:GetTexture() then
+					ComboFrame:SetPoint("TOPRIGHT", TargetFrame, "TOPRIGHT", -32, -7)
+				else
+					ComboFrame:SetPoint("TOPRIGHT", TargetFrame, "TOPRIGHT", -42, -7)
+				end
 			end
 		end)
 
