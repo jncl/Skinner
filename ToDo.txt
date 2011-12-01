@@ -10,58 +10,49 @@ Legend:
 
 	O	Update WoWAce commands page
 
-?	I	reported by Lin37, 07.09.11
-		- 55x <event>ADDON_ACTION_BLOCKED:AddOn 'Skinner' tried to call the protected function 'CompactRaidFrame22:Show()'.
-		<in C code>: in function `Show'
-		Interface\FrameXML\CompactUnitFrame.lua:260: in function `CompactUnitFrame_UpateVisible':
-		Interface\FrameXML\CompactUnitFrame.lua:220: in function `CompactUnitFrame_UpdateAll':
-		Interface\FrameXML\CompactUnitFrame.lua:139: in function <Interface\FrameXML\CompactUnitFrame.lua:139>:
+	O	Patch 4.3.0.14899
+√    	- TOC now 40300
+√    	- Blizzard_ItemAlterationUI (New) a.k.a. Trasmogrify
+√    	- MovePad (New)
+√    	- Blizzard_VoidStorageUI (New)
+√    	- SideDressUpFrame (New)
+√    	- EquipmentFlyout (New)
+√    	- ScrollOfResurrection (New)
+√    	- LFGFrame (New)
+√    	- RaidFinder (New)
+√    	- AuctionUI (DressUp code now in SideDressUpFrame)
+√    	- Bank (EditBox added)
+√    	- ContainerFrame (EditBox added)
+√    	- GuildBankUI (EditBox added)
+√    	- ReforgingUI
+√    	- DressUpFrame (addon renamed to ModelFrames)
+√    	- EncounterJournal (now LoD)
+√    	- FriendsFrame
+√    	- LFDFrame (LFG code now in LFGFrame)
+√    	- LFRFrame
+√    	- PaperDollFrame (Flyout code now in EquipmentFlyout)
+√    	- RaidFrame
+√    	- WorldMapFrame (DropDown added)
+√    	- CompactRaidFrameManager
+?    	- MultiActionBars
+?    	- ExtraActionBarFrame
+?    	- VehicleMenuBar
 
-	I	AtlasLoot, reported by X-buZZ, 14.10.11
+√	O	Standardise Scroll Track sizes
+
+√	O	Turn Tab skinning code into a function
+
+√	I	AtlasLoot, reported by X-buZZ, 14.10.11
 		- the compare window (looks similar to the auction house window) of AtlasLoot Enhanced is missing a skin
 
-?	I	UnitFrames, reported by Luckyjack_SL, 20.10.11
-		- Since EU server reboot appeared a new bug in the unitframes:
-		Skinner, vb4.14545.5
-		- ..\AddOns\Skinner\modules\UnitFrames.lua line 128:
-		  attempt to index field '?' (a nil value)
-		Debug:
-		  (tail call): ?
-		  (tail call): ?
-		  Skinner\modules\UnitFrames.lua:128:
-		     Skinner\modules\UnitFrames.lua:106
-		  Skinner\modules\UnitFrames.lua:420: adjustUnitFrames()
-		  Skinner\modules\UnitFrames.lua:412:
-		     Skinner\modules\UnitFrames.lua:410
-		  (tail call): ?
+√	S	Mogit, requested by Craxziz, 01.11.11
 
-?	I	Unskinned frames reported by Shocker74, 26.10.11
-		- Some of Blizzards windows aren't getting skinned, mainly the Achievements & Talents windows. Just noticed that the Guild window stopped getting skinned as well.
+√	I	QuestCompletist, reported by chrisgriffith25, 10.11.11
+		- Skinner\Skinner-b4.14899.1.lua:527: attempt to index field "obj" (a nil value)
+		Skinner\Skinner-b4.14899.1.lua:527: in function <Skinner\Skinner.lua:499>
+		(tail call): ?
+		Skinner-b4.14899.1\SkinMe\QuestCompletist-99.2.lua:8: in function <Skinner\SkinMe\QuestCompletist.lua:4>
+		(tail call): ?
 
-O	Patch 4.3.0.14899
-√	- TOC now 40300
-√	- Blizzard_ItemAlterationUI (New)
-√	- MovePad (New)
-√	- Blizzard_VoidStorageUI (New)
-√	- SideDressUpFrame (New)
-√	- EquipmentFlyout (New)
-√	- ScrollOfResurrection (New)
-√	- LFGFrame (New)
-√	- RaidFinder (New)
-√	- AuctionUI (DressUp code now in SideDressUpFrame)
-√	- Bank (EditBox added)
-√	- ContainerFrame (EditBox added)
-√	- GuildBankUI (EditBox added)
-√	- ReforgingUI
-√	- DressUpFrame (addon renamed to ModelFrames)
-√	- EncounterJournal (now LoD)
-√	- FriendsFrame
-√	- LFDFrame (LFG code now in LFGFrame)
-√	- LFRFrame
-√	- PaperDollFrame (Flyout code now in EquipmentFlyout)
-√	- RaidFrame
-√	- WorldMapFrame (DropDown added)
-?	- CompactRaidFrameManager
-?	- MultiActionBars
-?	- ExtraActionBarFrame
-?	- VehicleMenuBar
+x	I	AckisRecipeList, reported by chrisgriffith25, 10.11.11
+		- Scan button not being skinned
