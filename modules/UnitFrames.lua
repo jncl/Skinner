@@ -50,23 +50,18 @@ local function skinPlayerF()
 		aObj:keepFontStrings(PlayerFrameGroupIndicator)
 		aObj:moveObject{obj=PlayerFrameGroupIndicatorText, y=-1}
 		aObj:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso=aso, x1=37, y1=-7, y2=aObj.uCls == "PALADIN" and 3 or 6}
+		--	skin the TotemFrame
+		for i = 1, MAX_TOTEMS do
+			_G["TotemFrameTotem"..i.."Background"]:SetAlpha(0)
+			aObj:getRegion(aObj:getChild(_G["TotemFrameTotem"..i], 2), 1):SetAlpha(0) -- Totem Border texture
+		end
+		aObj:moveObject{obj=TotemFrameTotem1, y=lOfs} -- covers level text when active
 
 		--	skin the RuneFrame, if required
 		if aObj.uCls == "DEATHKNIGHT" then
 			for i = 1, 6 do
 				_G["RuneButtonIndividual"..i.."BorderTexture"]:SetTexture(nil)
 			end
-		end
-		--	skin the TotemFrame, if required
-		if aObj.uCls == "SHAMAN"
-		or aObj.uCls == "DEATHKNIGHT"
-		or aObj.uCls == "WARLOCK"
-		then
-			for i = 1, MAX_TOTEMS do
-				_G["TotemFrameTotem"..i.."Background"]:SetAlpha(0)
-				aObj:getRegion(aObj:getChild(_G["TotemFrameTotem"..i], 2), 1):SetAlpha(0) -- Totem Border texture
-			end
-			aObj:moveObject{obj=TotemFrameTotem1, y=lOfs} -- covers level text when active
 		end
 		-- skin the AlternateManaBar, if required
 		if aObj.uCls == "DRUID" then
@@ -139,15 +134,15 @@ local function skinPetF()
 	end
 
 end
-local function skinToT(parent)
+local function skinToT(frame)
 
-	_G[parent.."Background"]:SetTexture(nil)
-	_G[parent.."TextureFrameTexture"]:SetTexture(nil)
+	_G[frame.."Background"]:SetTexture(nil)
+	_G[frame.."TextureFrameTexture"]:SetTexture(nil)
 	-- status bars
-	aObj:glazeStatusBar(_G[parent.."HealthBar"], 0)
-	aObj:glazeStatusBar(_G[parent.."ManaBar"], 0)
-	aObj:moveObject{obj=_G[parent.."ManaBar"], y=1} -- handle bug in <frame> XML & lua which places mana bar 8 pixels below the healthbar, when their heights are 7
-	aObj:moveObject{obj=_G[parent], y=totOfs}
+	aObj:glazeStatusBar(_G[frame.."HealthBar"], 0)
+	aObj:glazeStatusBar(_G[frame.."ManaBar"], 0)
+	aObj:moveObject{obj=_G[frame.."ManaBar"], y=1} -- handle bug in <frame> XML & lua which places mana bar 8 pixels below the healthbar, when their heights are 7
+	aObj:moveObject{obj=_G[frame], y=totOfs}
 
 end
 local function skinUFrame(frame)
@@ -170,7 +165,6 @@ local function skinUFrame(frame)
 	_G[cBar.."Border"]:SetAlpha(0) -- texture file is changed dependant upon spell type
 	aObj:changeShield(_G[cBar.."BorderShield"], _G[cBar.."Icon"])
 	aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar.."Flash"]})
-
 -->>-- TargetofTarget Frame
 	skinToT(frame.."ToT")
 	aObj:addSkinFrame{obj=_G[frame.."ToT"], ft=ftype, noBdr=true, aso=aso, x2=6, y2=-1}
@@ -193,23 +187,41 @@ local function skinTargetF()
 		end
 
 		-- create a texture to show UnitClassification
-		local ucTex = TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
-		ucTex:SetWidth(80)
-		ucTex:SetHeight(50)
-		ucTex:SetPoint("CENTER", 86, -22 + lOfs)
+		local ucTTex = TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
+		ucTTex:SetWidth(80)
+		ucTTex:SetHeight(50)
+		ucTTex:SetPoint("CENTER", 86, -22 + lOfs)
+		local ucFTex = FocusFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
+		ucFTex:SetWidth(80)
+		ucFTex:SetHeight(50)
+		ucFTex:SetPoint("CENTER", 86, -22 + lOfs)
 
 		-- hook this to show/hide the elite texture
-		module:SecureHook("TargetFrame_CheckClassification", function(this)
-			local uCls = UnitClassification("target")
-			if uCls == "worldboss"
-			or uCls == "elite"
-			then
-				ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
-			elseif uCls == "rareelite" then
-				ucTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareEliteNameplateIcon]])
-			elseif uCls == "rare" then
-				ucTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareNameplateIcon]])
-			else ucTex:SetTexture(nil)
+		module:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
+			if frame == TargetFrame then
+				local uCls = UnitClassification("target")
+				if uCls == "worldboss"
+				or uCls == "elite"
+				then
+					ucTTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
+				elseif uCls == "rareelite" then
+					ucTTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareEliteNameplateIcon]])
+				elseif uCls == "rare" then
+					ucTTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareNameplateIcon]])
+				else ucTTex:SetTexture(nil)
+				end
+			else -- FocusFrame
+				local uCls = UnitClassification("focus")
+				if uCls == "worldboss"
+				or uCls == "elite"
+				then
+					ucFTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
+				elseif uCls == "rareelite" then
+					ucFTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareEliteNameplateIcon]])
+				elseif uCls == "rare" then
+					ucFTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareNameplateIcon]])
+				else ucFTex:SetTexture(nil)
+				end
 			end
 			-- adjust ComboFrame position dependant upon Target classification, if required
 			-- as the threat indicator obscures them when boss/elite etc
@@ -217,7 +229,7 @@ local function skinTargetF()
 			or aObj.uCls == "DRUID"
 			then
 				ComboFrame:ClearAllPoints()
-				if ucTex:GetTexture() then
+				if ucTTex:GetTexture() then
 					ComboFrame:SetPoint("TOPRIGHT", TargetFrame, "TOPRIGHT", -32, -7)
 				else
 					ComboFrame:SetPoint("TOPRIGHT", TargetFrame, "TOPRIGHT", -42, -7)
