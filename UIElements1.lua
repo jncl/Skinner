@@ -940,7 +940,7 @@ function aObj:BattlefieldMinimap() -- LoD
 	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
 
 	-- use a backdrop with no Texture and no Gradient otherwise the map tiles are obscured
-	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, aso={bd=8, ng=true}, x1=-4, y1=3, x2=-2, y2=-1}
+	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, aso={bd=8, ng=true}, x1=-4, y1=4, x2=-1, y2=-1}
 	BattlefieldMinimapCorner:SetTexture(nil)
 	BattlefieldMinimapBackground:SetTexture(nil)
 
