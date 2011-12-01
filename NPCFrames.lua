@@ -430,7 +430,6 @@ function aObj:ReforgingUI() -- LoD
 	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
 	self.initialized.ReforgingUI = true
 
-	self:addButtonBorder{obj=ReforgingFrameItemButton}
 	self:SecureHook(ReforgingFrameItemButtonIconTexture, "SetTexture", function(this, tex)
 		if tex:find("UI-Slot-Background", 1, true) then
 			this:SetAlpha(0)
@@ -442,9 +441,11 @@ function aObj:ReforgingUI() -- LoD
 	ReforgingFrameItemButton:DisableDrawLayer("BACKGROUND")
 	self:keepRegions(ReforgingFrameButtonFrame, {})
 	self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, y1=2, x2=1, y2=-2}
+	self:addSkinButton{obj=ReforgingFrameItemButton, aso={ng=true}}
 	ReforgingFrameItemButton:DisableDrawLayer("OVERLAY")
 	ReforgingFrameItemButton.missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ReforgingFrame.missingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:moveObject{obj=ReforgingFrameRestoreButton, y=2}
 	self:removeMagicBtnTex(ReforgingFrameRestoreButton)
 	self:removeMagicBtnTex(ReforgingFrameReforgeButton)
 
