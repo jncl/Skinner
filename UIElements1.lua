@@ -450,10 +450,18 @@ function aObj:ChatEditBox()
 	-- if editBox has a skin frame then hook these to manage its Alpha setting
 	if self.db.profile.ChatEditBox.style ~= 2 then
 		self:SecureHook("ChatEdit_ActivateChat", function(editBox)
-			self.skinFrame[editBox]:SetAlpha(editBox:GetAlpha())
+			if editBox
+			and self.skinFrame[editBox]
+			then
+				self.skinFrame[editBox]:SetAlpha(editBox:GetAlpha())
+			end
 		end)
 		self:SecureHook("ChatEdit_DeactivateChat", function(editBox)
-			self.skinFrame[editBox]:SetAlpha(editBox:GetAlpha())
+			if editBox
+			and self.skinFrame[editBox]
+			then
+				self.skinFrame[editBox]:SetAlpha(editBox:GetAlpha())
+			end
 		end)
 	end
 
