@@ -588,9 +588,7 @@ function aObj:ContainerFrames()
 			self:addButtonBorder{obj=_G[objName.."Item"..j]}
 		end
 	end
-	if self.isPatch then
-		self:skinEditBox{obj=BagItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	end
+	self:skinEditBox{obj=BagItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 
 end
 
@@ -662,15 +660,7 @@ function aObj:WorldMap()
 		end
 		local function sizeDown()
 
-			if not self.isPatch then
-				if not WORLDMAP_SETTINGS.advanced then -- frame not moveable
-					x1, y1, x2, y2 = 12, -12, -20, -10
-				else -- frame moveable
-					x1, y1, x2, y2 = 0, 2, 0, 0
-				end
-			else
-				x1, y1, x2, y2 = 0, 2, 0, 0
-			end
+			x1, y1, x2, y2 = 0, 2, 0, 0
 			self.skinFrame[WorldMapFrame]:ClearAllPoints()
 			self.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", x1, y1)
 			self.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", x2, y2)
@@ -683,21 +673,12 @@ function aObj:WorldMap()
 		self:SecureHook("WorldMap_ToggleSizeDown", function()
 			sizeDown()
 		end)
-		if not self.isPatch then
-			self:SecureHook("WorldMapFrame_ToggleAdvanced", function()
+		self:SecureHook("WorldMapFrame_ToggleWindowSize", function()
 			if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
 			then
 				sizeDown()
 			end
-			end)
-		else
-			self:SecureHook("WorldMapFrame_ToggleWindowSize", function()
-			if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
-			then
-				sizeDown()
-			end
-			end)
-		end
+		end)
 		-- handle different map addons being loaded or fullscreen required
 		if self.db.profile.WorldMap.size == 2 then
 			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
@@ -723,9 +704,7 @@ function aObj:WorldMap()
 	self:skinScrollBar{obj=WorldMapQuestScrollFrame, size=4}
 	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame, size=2}
 	self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
-	if self.isPatch then
-		self:skinDropDown{obj=WorldMapShowDropDown}
-	end
+	self:skinDropDown{obj=WorldMapShowDropDown}
 
 -->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin
@@ -873,11 +852,7 @@ function aObj:InspectUI() -- LoD
 
 -->>-- Inspect PaperDoll frame
 	-- Inspect Model Frame
-	if not self.isPatch then
-		self:makeMFRotatable(InspectModelFrame)
-	else
-		InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-	end
+	InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
 	for _, child in ipairs{InspectPaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
 		if self.modBtnBs then

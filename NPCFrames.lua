@@ -258,14 +258,6 @@ function aObj:AuctionUI() -- LoD
 	self:skinMoneyFrame{obj=StartPrice, moveSEB=true}
 	self:skinMoneyFrame{obj=BuyoutPrice, moveSEB=true}
 
-	if not self.isPatch then
-		-->>--	Auction DressUp Frame
-		self:keepRegions(AuctionDressUpFrame, {3, 4}) --N.B. regions 3 & 4 are the background
-		self:keepRegions(AuctionDressUpFrameCloseButton, {1}) -- N.B. region 1 is the button artwork
-		self:makeMFRotatable(AuctionDressUpModel)
-		self:moveObject{obj=AuctionDressUpFrame, x=6}
-		self:addSkinFrame{obj=AuctionDressUpFrame, ft=ftype, x1=-6, y1=-3, x2=-2}
-	end
 end
 
 function aObj:BankFrame()
@@ -274,9 +266,7 @@ function aObj:BankFrame()
 
 	self:add2Table(self.npcKeys, "BankFrame")
 
-	if self.isPatch then
-		self:skinEditBox{obj=BankItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	end
+	self:skinEditBox{obj=BankItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-25, y2=91}
 
 	if self.modBtnBs then
@@ -440,27 +430,18 @@ function aObj:ReforgingUI() -- LoD
 	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
 	self.initialized.ReforgingUI = true
 
-	if not self.isPatch then
-		self:removeInset(ReforgingFrame.topInset)
-		self:removeInset(ReforgingFrame.bottomInset)
-		ReforgingFrameTopInsetLableBg:Hide()
-		self:skinDropDown{obj=ReforgingFrameFilterOldStat}
-		self:skinDropDown{obj=ReforgingFrameFilterNewStat}
-		self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
-	else
-		self:SecureHook(ReforgingFrameItemButtonIconTexture, "SetTexture", function(this, tex)
-			if tex:find("UI-Slot-Background", 1, true) then
-				this:SetAlpha(0)
-			else
-				this:SetAlpha(1)
-			end
-		end)
-		ReforgingFrameItemButtonIconTexture:SetAlpha(0)
-		ReforgingFrameItemButton:DisableDrawLayer("BACKGROUND")
-		self:keepRegions(ReforgingFrameButtonFrame, {})
-		self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, y1=2, x2=1, y2=-2}
-	end
 	self:addButtonBorder{obj=ReforgingFrameItemButton}
+	self:SecureHook(ReforgingFrameItemButtonIconTexture, "SetTexture", function(this, tex)
+		if tex:find("UI-Slot-Background", 1, true) then
+			this:SetAlpha(0)
+		else
+			this:SetAlpha(1)
+		end
+	end)
+	ReforgingFrameItemButtonIconTexture:SetAlpha(0)
+	ReforgingFrameItemButton:DisableDrawLayer("BACKGROUND")
+	self:keepRegions(ReforgingFrameButtonFrame, {})
+	self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, y1=2, x2=1, y2=-2}
 	ReforgingFrameItemButton:DisableDrawLayer("OVERLAY")
 	ReforgingFrameItemButton.missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ReforgingFrame.missingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -469,50 +450,50 @@ function aObj:ReforgingUI() -- LoD
 
 end
 
-if aObj.isPatch then
-	function aObj:SideDressUpFrame()
-		if not self.db.profile.SideDressUpFrame or self.initialized.SideDressUpFrame then return end
-		self.initialized.SideDressUpFrame = true
+function aObj:SideDressUpFrame()
+	if not self.db.profile.SideDressUpFrame or self.initialized.SideDressUpFrame then return end
+	self.initialized.SideDressUpFrame = true
 
-		self:add2Table(self.npcKeys, "SideDressUpFrame")
+	self:add2Table(self.npcKeys, "SideDressUpFrame")
 
-		SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
-		SideDressUpModelCloseButton:DisableDrawLayer("BACKGROUND")
-		SideDressUpFrame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=SideDressUpFrame, ft=ftype, bg=true, x1=-6, y1=-3, x2=-2}
+	SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
+	SideDressUpModelCloseButton:DisableDrawLayer("BACKGROUND")
+	SideDressUpFrame:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=SideDressUpFrame, ft=ftype, bg=true, x1=-6, y1=-3, x2=-2}
 
+end
+
+function aObj:ItemAlterationUI() -- LoD
+	if not self.db.profile.ItemAlterationUI or self.initialized.ItemAlterationUI then return end
+	self.initialized.ItemAlterationUI = true
+
+	for k, v in pairs{"Head", "Shoulder", "Back", "Chest", "Wrist", "Hands", "Waist", "Legs", "Feet", "MainHand", "SecondaryHand", TransmogrifyFrame.ranged and "Ranged" or nil} do
+		local bName = "TransmogrifyFrame"..v.."Slot"
+		_G[bName.."Grabber"]:SetAlpha(0)
+		_G[bName]:DisableDrawLayer("BORDER")
 	end
-	function aObj:ItemAlterationUI() -- LoD
-		if not self.db.profile.ItemAlterationUI or self.initialized.ItemAlterationUI then return end
-		self.initialized.ItemAlterationUI = true
+	TransmogrifyModelFrame:DisableDrawLayer("BACKGROUND")
+	TransmogrifyModelFrame:DisableDrawLayer("BORDER")
+	TransmogrifyModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+	self:keepRegions(TransmogrifyFrameButtonFrame, {})
+	self:removeMagicBtnTex(TransmogrifyApplyButton)
+	self:skinButton{obj=TransmogrifyApplyButton}
+	self:addSkinFrame{obj=TransmogrifyArtFrame, ft=ftype, kfs=true, bg=true, y1=2, x2=1, y2=-2}
 
-		for k, v in pairs{"Head", "Shoulder", "Back", "Chest", "Wrist", "Hands", "Waist", "Legs", "Feet", "MainHand", "SecondaryHand", TransmogrifyFrame.ranged and "Ranged" or nil} do
-			local bName = "TransmogrifyFrame"..v.."Slot"
-			_G[bName.."Grabber"]:SetAlpha(0)
-			_G[bName]:DisableDrawLayer("BORDER")
-		end
-		TransmogrifyModelFrame:DisableDrawLayer("BACKGROUND")
-		TransmogrifyModelFrame:DisableDrawLayer("BORDER")
-		TransmogrifyModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-		self:keepRegions(TransmogrifyFrameButtonFrame, {})
-		self:removeMagicBtnTex(TransmogrifyApplyButton)
-		self:skinButton{obj=TransmogrifyApplyButton}
-		self:addSkinFrame{obj=TransmogrifyArtFrame, ft=ftype, kfs=true, bg=true, y1=2, x2=1, y2=-2}
+end
 
+function aObj:VoidStorageUI() -- LoD
+	if not self.db.profile.VoidStorageUI or self.initialized.VoidStorageUI then return end
+	self.initialized.VoidStorageUI = true
+
+	self:addSkinFrame{obj=VoidStoragePurchaseFrame, ft=ftype, kfs=true}
+	self:keepRegions(VoidStorageBorderFrame, {})
+	for _, v in pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
+		local frame = _G["VoidStorage"..v.."Frame"]
+		frame:DisableDrawLayer("BACKGROUND")
+		frame:DisableDrawLayer("BORDER")
 	end
-	function aObj:VoidStorageUI() -- LoD
-		if not self.db.profile.VoidStorageUI or self.initialized.VoidStorageUI then return end
-		self.initialized.VoidStorageUI = true
+	self:addSkinFrame{obj=VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
+	self:skinEditBox{obj=VoidItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 
-		self:addSkinFrame{obj=VoidStoragePurchaseFrame, ft=ftype, kfs=true}
-		self:keepRegions(VoidStorageBorderFrame, {})
-		for _, v in pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
-			local frame = _G["VoidStorage"..v.."Frame"]
-			frame:DisableDrawLayer("BACKGROUND")
-			frame:DisableDrawLayer("BORDER")
-		end
-		self:addSkinFrame{obj=VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
-		self:skinEditBox{obj=VoidItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-
-	end
 end

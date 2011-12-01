@@ -57,9 +57,9 @@ function aObj:Defaults()
 		Tabard               = true,
 		BarbershopUI         = true,
 		ReforgingUI          = true,
-		SideDressUpFrame     = self.isPatch and true or nil,
-		ItemAlterationUI     = self.isPatch and true or nil,
-		VoidStorageUI        = self.isPatch and true or nil,
+		SideDressUpFrame     = true,
+		ItemAlterationUI     = true,
+		VoidStorageUI        = true,
 	-->>-- Player Frames
 		CharacterFrames      = true,
 		PVPFrame             = true,
@@ -84,8 +84,8 @@ function aObj:Defaults()
 		GuildUI              = true,
 		GuildControlUI       = true,
 		EncounterJournal     = true,
-		EquipmentFlyout      = self.isPatch and true or nil,
-		ScrollOfResurrection = self.isPatch and true or nil,
+		EquipmentFlyout      = true,
+		ScrollOfResurrection = true,
 	-->>-- UI Frames
 		Tooltips             = {skin = true, style = 1, glazesb = true, border = 1},
 		MirrorTimers         = {skin = true, glaze = true},
@@ -137,9 +137,9 @@ function aObj:Defaults()
 		GuildInvite          = true,
 		GhostFrame           = true,
 		LookingForGuildUI    = true,
-		LFGFrame             = self.isPatch and true or nil,
-		MovePad              = self.isPatch and true or nil,
-		RaidFrame            = self.isPatch and true or nil,
+		LFGFrame             = true,
+		MovePad              = true,
+		RaidFrame            = true,
 	-->>-- Disabled Skins
 		DisabledSkins        = {},
 	-->-- Profiles
@@ -737,21 +737,21 @@ function aObj:Options()
 					name = self.L["Reforging Frame"],
 					desc = self.L["Toggle the skin of the Reforging Frame"],
 				},
-				SideDressUpFrame = self.isPatch and {
+				SideDressUpFrame = {
 					type = "toggle",
 					name = self.L["Side DressUp Frame"],
 					desc = self.L["Toggle the skin of the Side DressUp Frame"],
-				} or nil,
-				ItemAlterationUI = self.isPatch and {
+				},
+				ItemAlterationUI = {
 					type = "toggle",
 					name = self.L["ItemAlterationUI"],
 					desc = self.L["Toggle the skin of the ItemAlterationUI"],
-				} or nil,
-				VoidStorageUI = self.isPatch and {
+				},
+				VoidStorageUI = {
 					type = "toggle",
 					name = self.L["VoidStorageUI"],
 					desc = self.L["Toggle the skin of the VoidStorageUI"],
-				} or nil,
+				},
 			},
 		},
 
@@ -932,16 +932,16 @@ function aObj:Options()
 					name = self.L["Dungeon Journal"],
 					desc = self.L["Toggle the skin of the Dungeon Journal"],
 				},
-				EquipmentFlyout = self.isPatch and {
+				EquipmentFlyout = {
 					type = "toggle",
 					name = self.L["Equipment Flyout"],
 					desc = self.L["Toggle the skin of the Equipment Flyout Frame"],
-				} or nil,
-				ScrollOfResurrection = self.isPatch and {
+				},
+				ScrollOfResurrection = {
 					type = "toggle",
 					name = self.L["Scroll Of Resurrection"],
 					desc = self.L["Toggle the skin of the Scroll Of Resurrection Frame"],
-				} or nil,
+				},
 			},
 		},
 
@@ -1494,21 +1494,21 @@ function aObj:Options()
 					name = self.L["Looking for Guild Frame"],
 					desc = self.L["Toggle the skin of the Looking for Guild Frame"],
 				},
-				LFGFrame = self.isPatch and {
+				LFGFrame = {
 					type = "toggle",
 					name = self.L["LFG Frame"],
 					desc = self.L["Toggle the skin of the LFG Frame"],
-				} or nil,
-				MovePad = self.isPatch and {
+				},
+				MovePad = {
 					type = "toggle",
 					name = self.L["MovePad"],
 					desc = self.L["Toggle the skin of the MovePad"],
-				} or nil,
-				RaidFrame = self.isPatch and {
+				},
+				RaidFrame = {
 					type = "toggle",
 					name = self.L["Raid Frame"],
 					desc = self.L["Toggle the skin of the Raid Frame"],
-				} or nil,
+				},
 			},
 		},
 

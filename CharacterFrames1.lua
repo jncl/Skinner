@@ -28,11 +28,7 @@ end
 function aObj:PaperDollFrame()
 
 	self:keepFontStrings(PaperDollFrame)
-	if not self.isPatch then
-		self:makeMFRotatable(CharacterModelFrame)
-	else
-		CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-	end
+	CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
 	-- skin slots
 	for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
@@ -47,22 +43,6 @@ function aObj:PaperDollFrame()
 	CharacterModelFrame:DisableDrawLayer("OVERLAY")
 	CharacterStatsPane:DisableDrawLayer("ARTWORK")
 	self:skinSlider{obj=CharacterStatsPaneScrollBar, size=3}
-	if not self.isPatch then
-		-- hide ItemFlyout background textures
-		local btnFrame = PaperDollFrameItemFlyout.buttonFrame
-		self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
-		self:SecureHook("PaperDollFrameItemFlyout_Show", function(...)
-			for i = 1, btnFrame["numBGs"] do
-				btnFrame["bg" .. i]:SetAlpha(0)
-			end
-			if self.modBtnBs then
-				for i = 1, #PaperDollFrameItemFlyout.buttons do
-					btn = PaperDollFrameItemFlyout.buttons[i]
-					if not btn.sknrBdr then self:addButtonBorder{obj=btn, ibt=true} end
-				end
-			end
-		end)
-	end
 	-- Sidebar Tabs
 	PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
 	PaperDollSidebarTabs.DecorRight:SetAlpha(0)
@@ -536,11 +516,7 @@ function aObj:DressUpFrame()
 	self:add2Table(self.charKeys1, "DressUpFrame")
 
 	self:removeRegions(DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
-	if not self.isPatch then
-		self:makeMFRotatable(DressUpModel)
-	else
-		DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
-	end
+	DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
 end
@@ -877,40 +853,39 @@ function aObj:AlertFrames()
 
 end
 
-if aObj.isPatch then
-	function aObj:EquipmentFlyout()
-		if not self.db.profile.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
-		self.initialized.EquipmentFlyout = true
+function aObj:EquipmentFlyout()
+	if not self.db.profile.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
+	self.initialized.EquipmentFlyout = true
 
-		self:add2Table(self.charKeys1, "EquipmentFlyout")
+	self:add2Table(self.charKeys1, "EquipmentFlyout")
 
-		local btnFrame = EquipmentFlyoutFrame.buttonFrame
-		self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
-		self:SecureHook("EquipmentFlyout_Show", function(...)
-			for i = 1, btnFrame["numBGs"] do
-				btnFrame["bg" .. i]:SetAlpha(0)
+	local btnFrame = EquipmentFlyoutFrame.buttonFrame
+	self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
+	self:SecureHook("EquipmentFlyout_Show", function(...)
+		for i = 1, btnFrame["numBGs"] do
+			btnFrame["bg" .. i]:SetAlpha(0)
+		end
+		if self.modBtnBs then
+			for i = 1, #EquipmentFlyoutFrame.buttons do
+				btn = EquipmentFlyoutFrame.buttons[i]
+				if not btn.sknrBdr then self:addButtonBorder{obj=btn, ibt=true} end
 			end
-			if self.modBtnBs then
-				for i = 1, #EquipmentFlyoutFrame.buttons do
-					btn = EquipmentFlyoutFrame.buttons[i]
-					if not btn.sknrBdr then self:addButtonBorder{obj=btn, ibt=true} end
-				end
-			end
-		end)
+		end
+	end)
 
-	end
-	function aObj:ScrollOfResurrection()
-		if not self.db.profile.ScrollOfResurrection or self.initialized.ScrollOfResurrection then return end
-		self.initialized.ScrollOfResurrection = true
+end
 
-		self:add2Table(self.charKeys1, "ScrollOfResurrection")
+function aObj:ScrollOfResurrection()
+	if not self.db.profile.ScrollOfResurrection or self.initialized.ScrollOfResurrection then return end
+	self.initialized.ScrollOfResurrection = true
 
-		self:skinEditBox{obj=ScrollOfResurrectionFrame.targetEditBox, regs={9}}
-		ScrollOfResurrectionFrame.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:addSkinFrame{obj=ScrollOfResurrectionFrame.noteFrame, ft=ftype, kfs=true}
-		self:skinScrollBar{obj=ScrollOfResurrectionFrame.noteFrame.scrollFrame}
-		ScrollOfResurrectionFrame.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:addSkinFrame{obj=ScrollOfResurrectionFrame, ft=ftype, kfs=true}
+	self:add2Table(self.charKeys1, "ScrollOfResurrection")
 
-	end
+	self:skinEditBox{obj=ScrollOfResurrectionFrame.targetEditBox, regs={9}}
+	ScrollOfResurrectionFrame.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=ScrollOfResurrectionFrame.noteFrame, ft=ftype, kfs=true}
+	self:skinScrollBar{obj=ScrollOfResurrectionFrame.noteFrame.scrollFrame}
+	ScrollOfResurrectionFrame.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=ScrollOfResurrectionFrame, ft=ftype, kfs=true}
+
 end

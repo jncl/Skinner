@@ -10,11 +10,7 @@ function aObj:FriendsFrame()
 	self:add2Table(self.charKeys1, "FriendsFrame")
 
 	self:skinTabs{obj=FriendsFrame, lod=true}
-	if not self.isPatch then
-		self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, bgen=2, x1=12, y1=-11, x2=-33, y2=71}
-	else
-		self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
-	end
+	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 
 	-- FriendsTabHeader Frame
 	self:skinDropDown{obj=FriendsFrameStatusDropDown}
@@ -33,9 +29,6 @@ function aObj:FriendsFrame()
 		btn = _G["FriendsFrameFriendsScrollFrameButton"..i]
 		btn.background:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.gameIcon, hide=true, ofs=0}
-	end
-	if not self.isPatch then
-		self:moveObject{obj=FriendsFrameAddFriendButton, x=3}
 	end
 
 	-- Friends Tooltip
@@ -70,10 +63,8 @@ function aObj:FriendsFrame()
 	end
 
 -->>--	Who Tab Frame
-	if self.isPatch then
-		self:removeInset(WhoFrameListInset)
-		self:removeInset(WhoFrameEditBoxInset)
-	end
+	self:removeInset(WhoFrameListInset)
+	self:removeInset(WhoFrameEditBoxInset)
 	self:skinFFColHeads("WhoFrameColumnHeader")
 	self:skinDropDown{obj=WhoFrameDropDown, noSkin=true}
 	self:moveObject{obj=WhoFrameDropDownButton, x=5, y=1}
@@ -84,10 +75,8 @@ function aObj:FriendsFrame()
 
 -->>--	Channel Tab Frame
 	self:keepFontStrings(ChannelFrame)
-	if self.isPatch then
-		self:removeInset(ChannelFrameLeftInset)
-		self:removeInset(ChannelFrameRightInset)
-	end
+	self:removeInset(ChannelFrameLeftInset)
+	self:removeInset(ChannelFrameRightInset)
 	self:skinButton{obj=ChannelFrameNewButton}
 	-- hook this to skin channel buttons
 	self:SecureHook("ChannelList_Update", function()
@@ -95,9 +84,6 @@ function aObj:FriendsFrame()
 			_G["ChannelButton"..i.."NormalTexture"]:SetAlpha(0)
 		end
 	end)
-	if not self.isPatch then
-		ChannelFrameVerticalBar:Hide()
-	end
 	self:skinScrollBar{obj=ChannelListScrollFrame}
 	self:skinScrollBar{obj=ChannelRosterScrollFrame}
 	-- Channel Pullout Tab & Frame
@@ -552,6 +538,13 @@ function aObj:CompactFrames()
 	self:SecureHook("CompactRaidGroup_UpdateBorder", function(frame)
 		skinGrp(frame)
 	end)
+
+end
+
+function aObj:CompactRaidFrameContainer()
+	if not self.db.profile.CompactFrames or self.initialized.CompactRaidFrameContainer then return end
+	self.initialized.CompactRaidFrameContainer = true
+
 	-- hook this to skin any new CompactRaidFrameContainer entries
 	self:SecureHook("FlowContainer_AddObject", function(container, object)
 		if container.frameUpdateList.group[object] then
@@ -917,19 +910,11 @@ function aObj:EncounterJournal() -- LoD
 	EncounterJournal.encounter.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinSlider{obj=EncounterJournal.encounter.info.detailsScroll.ScrollBar, adj=-4}
 	EncounterJournal.encounter.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	if not self.isPatch then
-		-- Difficulty buttons
-		for _, v in pairs{"heroButton", "diff25man", "diff10man"} do
-			EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
-			EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
-		end
-	else
-		EncounterJournalEncounterFrameInfoResetButton:SetNormalTexture(nil)
-		EncounterJournalEncounterFrameInfoResetButton:SetPushedTexture(nil)
-		EncounterJournal.encounter.info.difficulty:SetNormalTexture(nil)
-		EncounterJournal.encounter.info.difficulty:SetPushedTexture(nil)
-		EncounterJournal.encounter.info.difficulty:DisableDrawLayer("BACKGROUND")
-	end
+	EncounterJournalEncounterFrameInfoResetButton:SetNormalTexture(nil)
+	EncounterJournalEncounterFrameInfoResetButton:SetPushedTexture(nil)
+	EncounterJournal.encounter.info.difficulty:SetNormalTexture(nil)
+	EncounterJournal.encounter.info.difficulty:SetPushedTexture(nil)
+	EncounterJournal.encounter.info.difficulty:DisableDrawLayer("BACKGROUND")
 	-- Hook this to skin headers
 	self:SecureHook("EncounterJournal_ToggleHeaders", function(this, doNotShift)
 		for i = 1, 25 do

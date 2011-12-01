@@ -604,9 +604,7 @@ function aObj:GuildBankUI() -- LoD
 			self:addButtonBorder{obj=_G[objName.."Button"..j], ibt=true}
 		end
 	end
-	if self.isPatch then
-		self:skinEditBox{obj=GuildItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	end
+	self:skinEditBox{obj=GuildItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:skinTabs{obj=GuildBankFrame, lod=true}
 	self:addSkinFrame{obj=GuildBankFrame, ft=ftype, kfs=true, hdr=true, y1=-11, y2=1}
 
@@ -782,20 +780,11 @@ function aObj:LFDFrame()
 
 	self:add2Table(self.uiKeys1, "LFDFrame")
 
-	if not self.isPatch then
-			-- LFD DungeonReady Popup a.k.a. ReadyCheck
-		self:addSkinFrame{obj=LFDDungeonReadyStatus, kfs=true, ft=ftype}
-		self:addSkinFrame{obj=LFDDungeonReadyDialog, kfs=true, ft=ftype}
-		LFDDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
-		LFDDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
-		-- Search Status Frame
-		self:addSkinFrame{obj=LFDSearchStatus, ft=ftype}
-	end
 	-- LFD RoleCheck Popup
 	self:addSkinFrame{obj=LFDRoleCheckPopup, kfs=true, ft=ftype}
 	-- LFD Parent Frame
-	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
-	self:moveObject{obj=LFDParentFrameEyeFrame, x=10, y=-10}
+	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+	self:moveObject{obj=LFDParentFrameEyeFrame, x=10, y=-11}
 	LowerFrameLevel(self.skinFrame[LFDParentFrame]) -- hopefully allow Random cooldown frame to appear in front now
 	-- Queue Frame
 	LFDQueueFrameBackground:SetAlpha(0)
@@ -831,18 +820,11 @@ function aObj:LFRFrame()
 	self:add2Table(self.uiKeys1, "LFRFrame")
 
 -->>-- LFR Parent Frame
-	if not self.isPatch then
-		self:addSkinFrame{obj=LFRParentFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1}
-	end
 -->>-- LFR Queue Frame
-	if not self.isPatch then
-		LFRQueueFrameLayout:SetAlpha(0)
-	else
-		self:removeInset(LFRQueueFrameRoleInset)
-		self:removeInset(LFRQueueFrameCommentInset)
-		self:removeInset(LFRQueueFrameListInset)
-		LFRQueueFrameCommentExplanation:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
+	self:removeInset(LFRQueueFrameRoleInset)
+	self:removeInset(LFRQueueFrameCommentInset)
+	self:removeInset(LFRQueueFrameListInset)
+	LFRQueueFrameCommentExplanation:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- Specific List subFrame
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
 		btn = "LFRQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
@@ -857,27 +839,11 @@ function aObj:LFRFrame()
 	self:skinScrollBar{obj=LFRBrowseFrameListScrollFrame}
 	self:keepFontStrings(LFRBrowseFrame)
 
-	if not self.isPatch then
-		-->>-- Tabs
-		for i = 1, LFRParentFrame.numTabs do
-			tab = _G["LFRParentFrameTab"..i]
-			self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-			tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-			-- set textures here first time thru
-			if i == 1 then
-				if self.isTT then self:setActiveTab(tabSF) end
-			else
-				if self.isTT then self:setInactiveTab(tabSF) end
-			end
-		end
-		self.tabFrames[LFRParentFrame] = true
-	else
-		-->>-- Tabs (side)
-		for i = 1, 2 do
-			obj = _G["LFRParentFrameSideTab"..i]
-			obj:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=obj}
-		end
+	-->>-- Tabs (side)
+	for i = 1, 2 do
+		obj = _G["LFRParentFrameSideTab"..i]
+		obj:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=obj}
 	end
 
 end
@@ -1019,57 +985,57 @@ function aObj:LookingForGuildUI() -- LoD
 
 end
 
-if aObj.isPatch then
-	function aObj:LFGFrame()
-		if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
-		self.initialized.LFGFrame = true
+function aObj:LFGFrame()
+	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
+	self.initialized.LFGFrame = true
 
-		self:add2Table(self.uiKeys1, "LFGFrame")
+	self:add2Table(self.uiKeys1, "LFGFrame")
 
-		-- LFG DungeonReady Popup a.k.a. ReadyCheck
-		self:addSkinFrame{obj=LFGDungeonReadyStatus, kfs=true, ft=ftype}
-		self:addSkinFrame{obj=LFGDungeonReadyDialog, kfs=true, ft=ftype}
-		LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
-		LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
-		-- Search Status Frame
-		self:addSkinFrame{obj=LFGSearchStatus, ft=ftype}
+	-- LFG DungeonReady Popup a.k.a. ReadyCheck
+	self:addSkinFrame{obj=LFGDungeonReadyStatus, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=LFGDungeonReadyDialog, kfs=true, ft=ftype}
+	LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
+	LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
+	-- Search Status Frame
+	self:addSkinFrame{obj=LFGSearchStatus, ft=ftype}
 
-	end
-	function aObj:MovePad() -- LoD
-		if not self.db.profile.MovePad or self.initialized.MovePad then return end
-		self.initialized.MovePad = true
+end
 
-		self:skinButton{obj=MovePadForward}
-		self:skinButton{obj=MovePadJump}
-		self:skinButton{obj=MovePadBackward}
-		self:skinButton{obj=MovePadStrafeLeft}
-		self:skinButton{obj=MovePadStrafeRight}
-		-- MovePadLock:SetBackdrop(nil)
-		self:addSkinButton{obj=MovePadLock, as=true, ofs=-4}
-		self:addSkinFrame{obj=MovePadFrame, ft=ftype}
+function aObj:MovePad() -- LoD
+	if not self.db.profile.MovePad or self.initialized.MovePad then return end
+	self.initialized.MovePad = true
 
-	end
-	function aObj:RaidFrame()
-		if not self.db.profile.RaidFrame or self.initialized.RaidFrame then return end
-		self.initialized.RaidFrame = true
+	self:skinButton{obj=MovePadForward}
+	self:skinButton{obj=MovePadJump}
+	self:skinButton{obj=MovePadBackward}
+	self:skinButton{obj=MovePadStrafeLeft}
+	self:skinButton{obj=MovePadStrafeRight}
+	-- MovePadLock:SetBackdrop(nil)
+	self:addSkinButton{obj=MovePadLock, as=true, ofs=-4}
+	self:addSkinFrame{obj=MovePadFrame, ft=ftype}
 
-		self:add2Table(self.uiKeys1, "RaidFrame")
+end
 
-		self:skinTabs{obj=RaidParentFrame, lod=true}
-		self:addSkinFrame{obj=RaidParentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
+function aObj:RaidFrame()
+	if not self.db.profile.RaidFrame or self.initialized.RaidFrame then return end
+	self.initialized.RaidFrame = true
 
-	-->>-- RaidFinder Frame
-		self:keepRegions(RaidFinderFrame, {})
-		self:removeInset(RaidFinderFrameRoleInset)
-		self:keepRegions(RaidFinderQueueFrame, {})
-		self:skinDropDown{obj=RaidFinderQueueFrameSelectionDropDown}
-		self:skinScrollBar{obj=RaidFinderQueueFrameScrollFrame}
+	self:add2Table(self.uiKeys1, "RaidFrame")
 
-	-->>-- Raid Frame
-		self:skinButton{obj=RaidFrameConvertToRaidButton}
-		self:skinButton{obj=RaidFrameRaidInfoButton}
-		self:keepFontStrings(RaidInfoFrame)
-		self:skinSlider{obj=RaidInfoScrollFrame.scrollBar}
+	self:skinTabs{obj=RaidParentFrame, lod=true}
+	self:addSkinFrame{obj=RaidParentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 
-	end
+-->>-- RaidFinder Frame
+	self:keepRegions(RaidFinderFrame, {})
+	self:removeInset(RaidFinderFrameRoleInset)
+	self:keepRegions(RaidFinderQueueFrame, {})
+	self:skinDropDown{obj=RaidFinderQueueFrameSelectionDropDown}
+	self:skinScrollBar{obj=RaidFinderQueueFrameScrollFrame}
+
+-->>-- Raid Frame
+	self:skinButton{obj=RaidFrameConvertToRaidButton}
+	self:skinButton{obj=RaidFrameRaidInfoButton}
+	self:keepFontStrings(RaidInfoFrame)
+	self:skinSlider{obj=RaidInfoScrollFrame.scrollBar}
+
 end

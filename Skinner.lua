@@ -31,7 +31,7 @@ do
 	aObj.isBeta = portal == "public-beta" and true or false
 	-- check build number, if > Live then it's a patch
 	local buildInfo = {GetBuildInfo()}
-	aObj.isPatch = tonumber(buildInfo[2]) > 14545 and true or false
+	aObj.isPatch = tonumber(buildInfo[2]) > 15005 and true or false
 
 end
 
@@ -178,19 +178,13 @@ function aObj:OnInitialize()
 
 	-- these are used to disable frames from being skinned, LoD frames are entered here
 	-- other frames are added when their code is loaded
-	self.charKeys1 = {"GlyphUI", "TalentUI", "TradeSkillUI", "RaidUI", "ArchaeologyUI", "GuildUI", "GuildControlUI"} -- LoD frames
+	self.charKeys1 = {"GlyphUI", "TalentUI", "TradeSkillUI", "RaidUI", "ArchaeologyUI", "GuildUI", "GuildControlUI", "EncounterJournal"} -- LoD frames
 	self.charKeys2 = {"AchievementUI"}
-	self.npcKeys = {"TrainerUI", "AuctionUI", "BarbershopUI", "ReforgingUI"} -- LoD frames
-	self.uiKeys1 = {"GMSurveyUI", "InspectUI", "BattlefieldMm", "TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", "LookingForGuildUI"} -- LoD frames
+	self.npcKeys = {"TrainerUI", "AuctionUI", "BarbershopUI", "ReforgingUI", "ItemAlterationUI", "VoidStorageUI"} -- LoD frames
+	self.uiKeys1 = {"GMSurveyUI", "InspectUI", "BattlefieldMm", "TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", "LookingForGuildUI","MovePad"} -- LoD frames
 	self.uiKeys2 = {}
 	if self.isPTR then
 		self:add2Table(self.uiKeys1, "FeedbackUI")
-	end
-	if self.isPatch then
-		self:add2Table(self.charKeys1, "EncounterJournal")
-		self:add2Table(self.npcKeys, "ItemAlterationUI")
-		self:add2Table(self.npcKeys, "VoidStorageUI")
-		self:add2Table(self.uiKeys1, "MovePad")
 	end
 	-- these are used to disable the gradient
 	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
