@@ -245,7 +245,7 @@ end
 local function skinChatTab(objName)
 
 	tab = _G[objName.."Tab"]
-	aObj:keepRegions(tab, {7, 8, 9, 10, 11}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text
+	aObj:keepRegions(tab, {7, 8, 9, 10, 11, 12}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text, 12 is icon
 	tabSF = aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
 	tabSF:SetAlpha(0.2)
 	-- hook this to fix tab gradient texture overlaying text & highlight
@@ -416,11 +416,12 @@ local function skinChatEB(obj)
 	if aObj.db.profile.ChatEditBox.style == 1 then -- Frame
 		local kRegions = CopyTable(aObj.ebRegions)
 		table.insert(kRegions, 12)
+		table.insert(kRegions, 13)
 		aObj:keepRegions(obj, kRegions)
 		aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
 		aObj.skinFrame[obj]:SetAlpha(obj:GetAlpha())
 	elseif aObj.db.profile.ChatEditBox.style == 2 then -- Editbox
-		aObj:skinEditBox{obj=obj, regs={12}, noHeight=true}
+		aObj:skinEditBox{obj=obj, regs={12, 13}, noHeight=true}
 	else -- Borderless
 		aObj:removeRegions(obj, {6, 7, 8})
 		aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
