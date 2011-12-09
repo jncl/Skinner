@@ -10,49 +10,26 @@ Legend:
 
 	O	Update WoWAce commands page
 
-	O	Patch 4.3.0.14899
-√    	- TOC now 40300
-√    	- Blizzard_ItemAlterationUI (New) a.k.a. Trasmogrify
-√    	- MovePad (New)
-√    	- Blizzard_VoidStorageUI (New)
-√    	- SideDressUpFrame (New)
-√    	- EquipmentFlyout (New)
-√    	- ScrollOfResurrection (New)
-√    	- LFGFrame (New)
-√    	- RaidFinder (New)
-√    	- AuctionUI (DressUp code now in SideDressUpFrame)
-√    	- Bank (EditBox added)
-√    	- ContainerFrame (EditBox added)
-√    	- GuildBankUI (EditBox added)
-√    	- ReforgingUI
-√    	- DressUpFrame (addon renamed to ModelFrames)
-√    	- EncounterJournal (now LoD)
-√    	- FriendsFrame
-√    	- LFDFrame (LFG code now in LFGFrame)
-√    	- LFRFrame
-√    	- PaperDollFrame (Flyout code now in EquipmentFlyout)
-√    	- RaidFrame
-√    	- WorldMapFrame (DropDown added)
-√    	- CompactRaidFrameManager
-?    	- MultiActionBars
-?    	- ExtraActionBarFrame
-?    	- VehicleMenuBar
+√	I	Tukui, reported by Decabah, 01.12.11
+		- support v14
 
-√	O	Standardise Scroll Track sizes
+?	S	RatingBuster, requested by Nilerox, 02.12.11
 
-√	O	Turn Tab skinning code into a function
-
-√	I	AtlasLoot, reported by X-buZZ, 14.10.11
-		- the compare window (looks similar to the auction house window) of AtlasLoot Enhanced is missing a skin
-
-√	S	Mogit, requested by Craxziz, 01.11.11
-
-√	I	QuestCompletist, reported by chrisgriffith25, 10.11.11
-		- Skinner\Skinner-b4.14899.1.lua:527: attempt to index field "obj" (a nil value)
-		Skinner\Skinner-b4.14899.1.lua:527: in function <Skinner\Skinner.lua:499>
-		(tail call): ?
-		Skinner-b4.14899.1\SkinMe\QuestCompletist-99.2.lua:8: in function <Skinner\SkinMe\QuestCompletist.lua:4>
+√	I	RaidFrames, reported by Eatsbrains, 02.12.11
+		- Currently getting the following error only while in raid, have default raidframes hidden.
+		- Skinner\Skinner-@project-version@.lua:1043: Missing object __mO
+		Skinner\Skinner.lua:1043: in function <Skinner\Skinner.lua:1034>
+		Skinner\Skinner.lua:1098: in function "moveObject"
+		Skinner\CharacterFrames2.lua:269: in function <Skinner\CharacterFrames2.lua:229>
 		(tail call): ?
 
-x	I	AckisRecipeList, reported by chrisgriffith25, 10.11.11
-		- Scan button not being skinned
+√	I	GnomishVendorShrinker, reported by gamemaster128, 03.12.11
+		- Skinner\Skinner-b4.15005.1.lua:1352: attempt to call method "GetTextInsets" (a nil value)
+		Skinner\Skinner-b4.15005.1.lua:1352: in function <Skinner\Skinner.lua:1318>
+		Skinner\Skinner-b4.15005.1.lua:1406: in function "skinEditBox"
+		Skinner-b4.15005.1\SkinMe\GnomishVendorShrinker-Alpha.lua:7: in function <Skinner\SkinMe\GnomishVendorShrinker.lua:3>
+		(tail call): ?
+
+√	S	TrinketBar, requested by Palidor, 06.12.11
+
+√	S	G15 Buttons (continued), requested by Palidor, 07.12.11
