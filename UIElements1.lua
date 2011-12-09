@@ -448,7 +448,9 @@ function aObj:ChatEditBox()
 		skinChatEB(_G["ChatFrame"..i].editBox)
 	end
 	-- if editBox has a skin frame then hook these to manage its Alpha setting
-	if self.db.profile.ChatEditBox.style ~= 2 then
+	if self.db.profile.ChatEditBox.style ~= 2
+	and not self:IsHooked("ChatEdit_ActivateChat")
+	then
 		self:SecureHook("ChatEdit_ActivateChat", function(editBox)
 			if editBox
 			and self.skinFrame[editBox]
