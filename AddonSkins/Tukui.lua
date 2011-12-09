@@ -21,13 +21,14 @@ function aObj:Tukui()
 	end
 
 -->>-- Chat Copy frame
+	local bName = TukuiButtonCF1 and "TukuiButtonCF" or "ButtonCF"
 	if TukuiChat then
 		for i = 1, NUM_CHAT_WINDOWS do
-			self:SecureHookScript(_G["ButtonCF"..i], "OnClick", function(this)
+			self:SecureHookScript(_G[bName..i], "OnClick", function(this)
 				self:skinButton{obj=CopyCloseButton, cb=true}
 				self:skinScrollBar{obj=CopyScroll}
 				for i = 1, NUM_CHAT_WINDOWS do
-					self:Unhook(_G["ButtonCF"..i], "OnClick")
+					self:Unhook(_G[bName..i], "OnClick")
 				end
 			end)
 		end
@@ -38,13 +39,13 @@ end
 -- The following code handles the Initial setup of Skinner when the TukUI is loaded
 function aObj:TukuiInit()
 
-	-- handle version 12 & 13
+	-- handle version 12 and above
 	local ver = tonumber(GetAddOnMetadata("Tukui", "Version"):sub(1, 2))
 	local mediapath = [[Interface\AddOns\Tukui\media\textures\]]
     local borderr, borderg, borderb = 0.6, 0.6, 0.6
     local backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
 	local mult = 1
-	if ver == 13 then
+	if ver > 12 then
 		mediapath = [[Interface\AddOns\Tukui\medias\textures\]]
 	    if IsAddOnLoaded("Tukui") then
 	        local T, C, L = unpack(Tukui)

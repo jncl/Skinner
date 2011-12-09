@@ -280,6 +280,17 @@ function aObj:getChild(obj, childNo)
 
 end
 
+function aObj:getFirstChildOfType(obj, oType)
+--@alpha@
+	assert(obj, "Unknown object\n"..debugstack())
+--@end-alpha@
+
+	for _, child in ipairs{obj:GetChildren()} do
+		if child:IsObjectType(oType) then return child end
+	end
+
+end
+
 function aObj:getRegion(obj, regNo)
 --@alpha@
 	assert(obj, "Unknown object\n"..debugstack())
