@@ -703,9 +703,9 @@ function aObj:WorldMap()
 	self:skinDropDown{obj=WorldMapZoneDropDown}
 	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
 	self:skinDropDown{obj=WorldMapLevelDropDown}
-	self:skinScrollBar{obj=WorldMapQuestScrollFrame, size=4}
-	self:skinScrollBar{obj=WorldMapQuestDetailScrollFrame, size=2}
-	self:skinScrollBar{obj=WorldMapQuestRewardScrollFrame}
+	self:skinSlider{obj=WorldMapQuestScrollFrame.ScrollBar}
+	self:skinSlider{obj=WorldMapQuestDetailScrollFrame.ScrollBar, adj=-6}
+	self:skinSlider{obj=WorldMapQuestRewardScrollFrame.ScrollBar, adj=-6}
 	self:skinDropDown{obj=WorldMapShowDropDown}
 
 -->>-- Tooltip(s)
