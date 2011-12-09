@@ -130,6 +130,7 @@
 <script file="SkinMe\FramesResized.lua"/>
 <script file="SkinMe\FramesResized_TalentUI.lua"/>
 <script file="SkinMe\FreierGeist_InstanceTime.lua"/>
+<script file="SkinMe\G15Buttons.lua"/>
 <script file="SkinMe\Gatherer.lua"/>
 <script file="SkinMe\GearScore.lua"/>
 <script file="SkinMe\GemHelper.lua"/>
@@ -300,6 +301,7 @@
 <script file="SkinMe\TourGuide.lua"/>
 <script file="SkinMe\TradeSkillMaster.lua"/>
 <script file="SkinMe\TradeTabs.lua"/>
+<script file="SkinMe\TrinketBar.lua"/>
 <script file="SkinMe\Tukui.lua"/>
 <script file="SkinMe\TwinValkyr_shieldmonitor.lua"/>
 <script file="SkinMe\UberQuest.lua"/>
