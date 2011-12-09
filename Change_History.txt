@@ -1,3 +1,24 @@
+b4.15005.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for ReforgingUI
+	Removed Patch checking code
+	Skin Totem frame
+	Added classification icon to Focus frame
+	Move BattlefieldMinimap close button
+	Bugfix for ChatFrame editboxes
+	Adjust position of Combo Frame for elite/rare mobs
+	Make Chat Tabs less obtrusive when given a texture
+	Make Guild Recruitment Comment text more visible
+	Bugfix for missing Encounter Journal Search text & Icon
+	Standardised Slider Track widths
+	Updated & rationalised Tab skinning code
+	Updated AckisRecipeList, AtlasLoot & QuestCompletist skins
+	Update EncounterJournal side tab code
+	Update BattlefieldMinimap code
+	Skinned MogIt
+	
 b4.14899.1
 Jncl:
 	ToDo.txt
