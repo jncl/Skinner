@@ -172,6 +172,21 @@ local function skinUFrame(frame)
 end
 local function skinTargetF()
 
+	local function showEliteTex(uCls, tex)
+
+		if uCls == "worldboss"
+		or uCls == "elite"
+		then
+			tex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
+		elseif uCls == "rareelite" then
+			tex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareEliteNameplateIcon]])
+		elseif uCls == "rare" then
+			tex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareNameplateIcon]])
+		else tex:SetTexture(nil)
+		end
+
+	end
+
 	if db.target
 	and not isSkinned["Target"]
 	then
@@ -199,29 +214,9 @@ local function skinTargetF()
 		-- hook this to show/hide the elite texture
 		module:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
 			if frame == TargetFrame then
-				local uCls = UnitClassification("target")
-				if uCls == "worldboss"
-				or uCls == "elite"
-				then
-					ucTTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
-				elseif uCls == "rareelite" then
-					ucTTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareEliteNameplateIcon]])
-				elseif uCls == "rare" then
-					ucTTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareNameplateIcon]])
-				else ucTTex:SetTexture(nil)
-				end
-			else -- FocusFrame
-				local uCls = UnitClassification("focus")
-				if uCls == "worldboss"
-				or uCls == "elite"
-				then
-					ucFTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
-				elseif uCls == "rareelite" then
-					ucFTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareEliteNameplateIcon]])
-				elseif uCls == "rare" then
-					ucFTex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareNameplateIcon]])
-				else ucFTex:SetTexture(nil)
-				end
+				showEliteTex(UnitClassification("target"), ucTTex)
+			elseif frame == FocusFrame then
+				showEliteTex(UnitClassification("focus"), ucFTex)
 			end
 			-- adjust ComboFrame position dependant upon Target classification, if required
 			-- as the threat indicator obscures them when boss/elite etc
