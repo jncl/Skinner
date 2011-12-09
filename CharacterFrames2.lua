@@ -266,8 +266,6 @@ function aObj:RaidUI() -- LoD
 		end
 	end)
 
-	self:moveObject{obj=RaidFrameRaidBrowserButton, x=-30}
-	self:skinButton{obj=RaidFrameRaidBrowserButton}
 	self:skinButton{obj=RaidFrameReadyCheckButton}
 	self:moveObject{obj=RaidGroup1,x= 2}
 
