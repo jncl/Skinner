@@ -1,3 +1,16 @@
+b4.15050.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated patch checking code
+	Code tidyup
+	Show ChatTab icon
+	Adjust WorldMap slider width
+	Bugfix for ChatEditBox skin
+	Bugfix for RaidFames
+	Updated AutoBag, Cork, GnomishVendorShrinker & Tukui skins
+	Skinned G15Buttons & TrinketBar
+
 b4.15005.1
 Jncl:
 	ToDo.txt
@@ -18,7 +31,7 @@ Jncl:
 	Update EncounterJournal side tab code
 	Update BattlefieldMinimap code
 	Skinned MogIt
-	
+
 b4.14899.1
 Jncl:
 	ToDo.txt
