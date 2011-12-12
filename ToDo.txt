@@ -9,27 +9,3 @@ Legend:
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
 	O	Update WoWAce commands page
-
-√	I	Tukui, reported by Decabah, 01.12.11
-		- support v14
-
-?	S	RatingBuster, requested by Nilerox, 02.12.11
-
-√	I	RaidFrames, reported by Eatsbrains, 02.12.11
-		- Currently getting the following error only while in raid, have default raidframes hidden.
-		- Skinner\Skinner-@project-version@.lua:1043: Missing object __mO
-		Skinner\Skinner.lua:1043: in function <Skinner\Skinner.lua:1034>
-		Skinner\Skinner.lua:1098: in function "moveObject"
-		Skinner\CharacterFrames2.lua:269: in function <Skinner\CharacterFrames2.lua:229>
-		(tail call): ?
-
-√	I	GnomishVendorShrinker, reported by gamemaster128, 03.12.11
-		- Skinner\Skinner-b4.15005.1.lua:1352: attempt to call method "GetTextInsets" (a nil value)
-		Skinner\Skinner-b4.15005.1.lua:1352: in function <Skinner\Skinner.lua:1318>
-		Skinner\Skinner-b4.15005.1.lua:1406: in function "skinEditBox"
-		Skinner-b4.15005.1\SkinMe\GnomishVendorShrinker-Alpha.lua:7: in function <Skinner\SkinMe\GnomishVendorShrinker.lua:3>
-		(tail call): ?
-
-√	S	TrinketBar, requested by Palidor, 06.12.11
-
-√	S	G15 Buttons (continued), requested by Palidor, 07.12.11
