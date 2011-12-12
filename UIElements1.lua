@@ -147,24 +147,6 @@ function aObj:CastingBar()
 
 	self:add2Table(self.uiKeys2, "CastingBar")
 
-	local modUF = self:GetModule("UnitFrames", true):IsEnabled() and self:GetModule("UnitFrames", true)
-	-- hook this to move the spark down on the casting bar
-	self:SecureHook("CastingBarFrame_OnUpdate", function(this, ...)
-		local yOfs = -3
-		if this == CastingBarFrame then
-		elseif this == TargetFrameSpellBar
-		and modUF
-		and modUF.db.profile.target
-		then
-		elseif this == FocusFrameSpellBar
-		and modUF
-		and modUF.db.profile.focus
-		then
-		else yOfs = 0
-		end
-		self:moveObject{obj=this.barSpark, y=yOfs}
-	end)
-
 	for _, prefix in pairs{"", "Pet"} do
 
 		obj = _G[prefix.."CastingBarFrame"]
@@ -172,9 +154,14 @@ function aObj:CastingBar()
 		self:changeShield(obj.borderShield, obj.icon)
 		obj.barFlash:SetAllPoints()
 		obj.barFlash:SetTexture([[Interface\Buttons\WHITE8X8]])
-		self:moveObject{obj=obj.text, y=obj.ignoreFramePositionManager and 0 or -2}
 		if self.db.profile.CastingBar.glaze then
 			self:glazeStatusBar(obj, 0, self:getRegion(obj, 1))
+		end
+		-- adjust text and spark in Classic mode
+		if prefix == ""
+		and not obj.ignoreFramePositionManager then
+			obj.text:SetPoint("TOP", 0, 2)
+			obj.barSpark.offsetY = -1
 		end
 
 	end
@@ -184,7 +171,8 @@ function aObj:CastingBar()
 		castBar.barFlash:SetAllPoints()
 		castBar.barFlash:SetTexture([[Interface\Buttons\WHITE8X8]])
 		if look == "CLASSIC" then
-			self:moveObject{obj=castBar.text, y=-2}
+			castBar.text:SetPoint("TOP", 0, 2)
+			castBar.barSpark.offsetY = -1
 		end
 	end)
 
