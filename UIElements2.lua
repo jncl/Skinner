@@ -964,7 +964,7 @@ function aObj:LookingForGuildUI() -- LoD
 	LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:removeMagicBtnTex(LookingForGuildBrowseButton)
 	-- Browse Frame
-	self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar}
+	self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar, adj=-4}
 	for i = 1, #LookingForGuildBrowseFrameContainer.buttons do
 		btn = LookingForGuildBrowseFrameContainer.buttons[i]
 		self:applySkin{obj=btn}
@@ -980,6 +980,7 @@ function aObj:LookingForGuildUI() -- LoD
 		self:applySkin{obj=btn}
 	end
 	-- Request Membership Frame
+	GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=GuildFinderRequestMembershipFrameInputFrame, ft=ftype}
 	self:addSkinFrame{obj=GuildFinderRequestMembershipFrame, ft=ftype}
 
