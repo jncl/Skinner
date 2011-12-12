@@ -3,23 +3,21 @@ if not aObj:isAddonEnabled("_DevPad.GUI") then return end
 
 function aObj:_DevPadGUI()
 
-	local eFrame = _G["_DevPadGUIEditor"]
-	local lFrame = _G["_DevPadGUIList"]
-	
 	-- List frame
-	lFrame.Background:SetTexture(nil)
-	self:skinSlider{obj=lFrame.ScrollFrame.Bar, size=3}
-	self:skinEditBox{obj=lFrame.RenameEdit, regs={9}}
-	self:skinEditBox{obj=lFrame.SearchEdit, regs={9}}
-	self:getRegion(lFrame.Bottom, 1):SetTexture(nil)
-	self:addSkinFrame{obj=lFrame, ofs=1}
+	_DevPad.GUI.List.Background:SetTexture(nil)
+	self:skinSlider{obj=_DevPad.GUI.List.ScrollFrame.Bar, size=3}
+	self:skinEditBox{obj=_DevPad.GUI.List.RenameEdit, regs={9}}
+	self:skinEditBox{obj=_DevPad.GUI.List.Search, regs={9}}
+	self:getRegion(_DevPad.GUI.List.Bottom, 1):SetTexture(nil)
+	self:addSkinFrame{obj=_DevPad.GUI.List, ofs=1}
 	
 	-- Editor frame
-	self:getRegion(eFrame.Bottom, 1):SetTexture(nil)
-	eFrame.Background:SetTexture(nil)
-	self:skinSlider{obj=eFrame.ScrollFrame.Bar, size=3}
-	eFrame.Margin.Gutter:SetTexture(nil)
-	self:skinEditBox{obj=eFrame.Edit, regs={9}}
-	self:addSkinFrame{obj=eFrame, ofs=1}
+	self:moveObject{obj=_DevPad.GUI.Editor.Run, y=-2}
+	self:getRegion(_DevPad.GUI.Editor.Bottom, 1):SetTexture(nil)
+	_DevPad.GUI.Editor.Background:SetTexture(nil)
+	self:skinSlider{obj=_DevPad.GUI.Editor.ScrollFrame.Bar, size=3}
+	_DevPad.GUI.Editor.Margin.Gutter:SetTexture(nil)
+	self:skinEditBox{obj=_DevPad.GUI.Editor.Edit, regs={9}}
+	self:addSkinFrame{obj=_DevPad.GUI.Editor, ofs=1}
 
 end

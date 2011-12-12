@@ -17,7 +17,6 @@ function aObj:Cork()
 				g = format("%.1f", g)
 				b = format("%.1f", b)
 				a = format("%.1f", a)
-				print(child, r, g, b, a)
 				if r == "0.5" and g == "0.5" and b == "0.5" and a == "1.0" then
 					self:addSkinFrame{obj=child}
 					break
