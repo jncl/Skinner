@@ -42,8 +42,10 @@ local function skinPlayerF()
 		aObj:adjHeight{obj=PlayerFrameHealthBar , adj=-1} -- handle bug in PlayerFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 		aObj:glazeStatusBar(PlayerFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
-		-- move PvP timer, level & rest icon down, so they are more visible
-		aObj:moveObject{obj=PlayerPVPTimerText, y=lOfs}
+		-- move PVP Icon/Timer text up & right
+		aObj:moveObject{obj=PlayerPVPIcon, x=2, y=25}
+		aObj:moveObject{obj=PlayerPVPTimerText, x=34, y=2}
+		-- move level & rest icon down, so they are more visible
 		aObj:moveObject{obj=PlayerLevelText, y=lOfs}
 		aObj:moveObject{obj=PlayerRestIcon, y=lOfs} -- covers level text when resting
 		-- remove group indicator textures
@@ -63,10 +65,13 @@ local function skinPlayerF()
 				_G["RuneButtonIndividual"..i.."BorderTexture"]:SetTexture(nil)
 			end
 		end
-		-- skin the AlternateManaBar, if required
+		-- skin the AlternateManaBar & EclipseBarFrame, if required
 		if aObj.uCls == "DRUID" then
 			PlayerFrameAlternateManaBarBorder:SetTexture(nil)
 			aObj:glazeStatusBar(PlayerFrameAlternateManaBar, 0)
+			EclipseBarFrameBar:Hide()
+			EclipseBarFrame.sunBar:Hide()
+			EclipseBarFrame.moonBar:Hide()
 		end
 		-- skin the ShardBar, if required
 		if aObj.uCls == "WARLOCK" then
@@ -79,12 +84,6 @@ local function skinPlayerF()
 		if aObj.uCls == "PALADIN" then
 			PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 			PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
-		end
-		-- skin the EclipseBarFrame, if required
-		if aObj.uCls == "DRUID" then
-			EclipseBarFrameBar:Hide()
-			EclipseBarFrame.sunBar:Hide()
-			EclipseBarFrame.moonBar:Hide()
 		end
 	end
 
@@ -288,7 +287,6 @@ local function skinPartyF()
 				rpTmr[this] = module:ScheduleRepeatingTimer(resetPosn, tDelay, this:GetName())
 			end
 		end)
-
 
 		for i = 1, MAX_PARTY_MEMBERS do
 			pF = "PartyMemberFrame"..i
