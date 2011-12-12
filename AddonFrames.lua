@@ -35,7 +35,7 @@ end
 
 local blizzLoDFrames = {
 	"GlyphUI", "TalentUI", "AchievementUI", -- cf1
-	"RaidUI", "CompactRaidFrameContainer", "ArchaeologyUI", "GuildUI", "GuildControlUI", "EncounterJournal", -- cf2
+	"RaidUI", "ArchaeologyUI", "GuildUI", "GuildControlUI", "EncounterJournal", -- cf2
 	"TrainerUI", "BarbershopUI", "ReforgingUI", "ItemAlterationUI", "VoidStorageUI", -- npc
 	"GMSurveyUI", "InspectUI", "BattlefieldMinimap", -- uie1
 	"TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", "LookingForGuildUI", "MovePad", --uie2

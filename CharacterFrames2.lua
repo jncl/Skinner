@@ -537,15 +537,12 @@ function aObj:CompactFrames()
 		skinGrp(frame)
 	end)
 
-end
-
-function aObj:CompactRaidFrameContainer()
-	if not self.db.profile.CompactFrames or self.initialized.CompactRaidFrameContainer then return end
-	self.initialized.CompactRaidFrameContainer = true
-
+-->>-- Compact RaidFrame Container
 	-- hook this to skin any new CompactRaidFrameContainer entries
 	self:SecureHook("FlowContainer_AddObject", function(container, object)
-		if container.frameUpdateList.group[object] then
+		if container.frameUpdateList
+		and container.frameUpdateList.group
+		and container.frameUpdateList.group[object] then
 			skinGrp(object)
 		else
 			skinUnit(object)
@@ -560,7 +557,6 @@ function aObj:CompactRaidFrameContainer()
 		end
 	end
 
--->>-- Compact RaidFrame Container
 	self:addSkinFrame{obj=CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, bg=true, y1=-1, x2=-5, y2=4}
 
 -->>-- Compact RaidFrame Manager
@@ -577,6 +573,8 @@ function aObj:CompactRaidFrameContainer()
 	for i = 1, 8 do
 		skinButton(CompactRaidFrameManager.displayFrame.filterOptions["filterGroup"..i])
 	end
+	CompactRaidFrameManager.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
+	self:skinDropDown{obj=CompactRaidFrameManager.displayFrame.profileSelector}
 	skinButton(CompactRaidFrameManagerDisplayFrameLockedModeToggle)
 	skinButton(CompactRaidFrameManagerDisplayFrameHiddenModeToggle)
 	-- Leader Options
@@ -584,6 +582,7 @@ function aObj:CompactRaidFrameContainer()
 	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
 	skinButton(CompactRaidFrameManager.displayFrame.leaderOptions.readyCheckButton)
 	skinButton(CompactRaidFrameManager.displayFrame.leaderOptions.rolePollButton)
+	skinButton(CompactRaidFrameManager.displayFrame.convertToRaid)
 	-- Display Frame
 	self:keepFontStrings(CompactRaidFrameManager.displayFrame)
 	-- Resize Frame
