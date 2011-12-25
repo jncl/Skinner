@@ -118,6 +118,7 @@
 <script file="SkinMe\EveryQuest.lua"/>
 <script file="SkinMe\Examiner.lua"/>
 <script file="SkinMe\ExtendedRaidInfo.lua"/>
+<script file="SkinMe\ExtVendor.lua"/>
 <script file="SkinMe\Factionizer.lua"/>
 <script file="SkinMe\FBagOfHolding.lua"/>
 <script file="SkinMe\FeedMachine.lua"/>
