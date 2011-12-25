@@ -68,21 +68,21 @@ function aObj:FishingBuddy()
 
 end
 
-if not aObj:isAddonEnabled("FB_OutfitDisplayFrame") then return end
+if aObj:isAddonEnabled("FB_OutfitDisplayFrame") then
+	function aObj:FB_OutfitDisplayFrame()
 
-function aObj:FB_OutfitDisplayFrame()
+		self:keepFontStrings(FishingOutfitFrame)
+		self:skinButton{obj=FishingOutfitSwitchButton}
+		self:makeMFRotatable(FishingOutfitFrameModel)
 
-	self:keepFontStrings(FishingOutfitFrame)
-	self:skinButton{obj=FishingOutfitSwitchButton}
-	self:makeMFRotatable(FishingOutfitFrameModel)
-
+	end
 end
 
-if not aObj:isAddonEnabled("FB_TrackingFrame") then return end
+if aObj:isAddonEnabled("FB_TrackingFrame") then
+	function aObj:FB_TrackingFrame()
 
-function aObj:FB_TrackingFrame()
+		self:keepFontStrings(FishingTrackingFrame)
+		self:skinScrollBar{obj=FishingTrackingScrollFrame}
 
-	self:keepFontStrings(FishingTrackingFrame)
-	self:skinScrollBar{obj=FishingTrackingScrollFrame}
-
+	end
 end

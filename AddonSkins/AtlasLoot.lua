@@ -24,7 +24,7 @@ function aObj:AtlasLoot()
 	for i = 1, #AtlasLoot.ItemFrame.ItemButtons do
 		AtlasLoot.ItemFrame.ItemButtons[i].Frame.MenuIconBorder:SetTexture(nil)
 	end
-	AtlasLoot.ItemFrame.BackGround:SetTexture(nil)
+	-- AtlasLoot.ItemFrame.BackGround:SetTexture(nil) -- removing this makes it difficult to see the loot
 
 -->-- AtlasLootCompare Frame
 	local function skinCompareFrame(obj)
