@@ -17,7 +17,7 @@ function aObj:MerchantFrames()
 		end
 	end)
 	-- Items/Buyback Items
-	for i = 1, BUYBACK_ITEMS_PER_PAGE do
+	for i = 1, max(MERCHANT_ITEMS_PER_PAGE, BUYBACK_ITEMS_PER_PAGE) do
 		btnName = "MerchantItem"..i
 		_G[btnName.."NameFrame"]:SetTexture(nil)
 		if not self.modBtnBs then
@@ -29,13 +29,9 @@ function aObj:MerchantFrames()
 	end
 	btnName = "MerchantBuyBackItem"
 	_G[btnName.."NameFrame"]:SetTexture(nil)
-	if not self.modBtnBs then
-		_G[btnName.."SlotTexture"]:SetTexture(self.esTex)
-	else
+	if self.modBtnBs then
 		_G[btnName.."SlotTexture"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName.."ItemButton"], ibt=true}
-	end
-	if self.modBtnBs then
 		-- remove surrounding border (diff=0.01375)
 		self:getRegion(MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
 		MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
@@ -43,6 +39,8 @@ function aObj:MerchantFrames()
 		self:addButtonBorder{obj=MerchantRepairAllButton}
 		self:addButtonBorder{obj=MerchantRepairItemButton}
 		self:addButtonBorder{obj=MerchantGuildBankRepairButton}
+	else
+		_G[btnName.."SlotTexture"]:SetTexture(self.esTex)
 	end
 	self:removeRegions(MerchantPrevPageButton, {2})
 	self:removeRegions(MerchantNextPageButton, {2})
