@@ -1,6 +1,8 @@
-if not Skinner:isAddonEnabled("BetterInbox") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("BetterInbox") then return end
+local btn
 
-function Skinner:BetterInbox(LoD)
+function aObj:BetterInbox(LoD)
 	if not self.db.profile.MailFrame then return end
 
 	local bib = LibStub('AceAddon-3.0'):GetAddon('BetterInbox', true)
@@ -10,13 +12,19 @@ function Skinner:BetterInbox(LoD)
 
 		bib.scrollframe.t1:SetAlpha(0)
 		bib.scrollframe.t2:SetAlpha(0)
-		Skinner:skinScrollBar{obj=bib.scrollframe}
+		aObj:skinScrollBar{obj=bib.scrollframe}
 		for i = 1, #bib.scrollframe.entries do
-			self:removeRegions(bib.scrollframe.entries[i], {1, 2, 3})
+			aObj:removeRegions(bib.scrollframe.entries[i], {1, 2, 3})
+			self:moveObject{obj=bib.scrollframe.entries[i].bicheckbox, x=2, y=-1}
+			if self.modBtnBs then
+				btn = _G[bib.scrollframe.entries[i]:GetName().."Button"]
+				btn:DisableDrawLayer("BACKGROUND")
+				aObj:addButtonBorder{obj=btn}
+			end
 		end
 		-- skin the buttons
-		Skinner:skinButton{obj=BetterInboxOpenButton}
-		Skinner:skinButton{obj=BetterInboxCancelButton}
+		aObj:skinButton{obj=BetterInboxOpenButton}
+		aObj:skinButton{obj=BetterInboxCancelButton}
 
 	end
 

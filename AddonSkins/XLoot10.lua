@@ -7,7 +7,7 @@ function aObj:XLoot10()
 	local pKey = ('%s - %s'):format(UnitName('player'), GetRealmName())
 	local cKey = XLoot_Options.characters[pKey] or "default"
 	local qcl = XLoot_Options.profiles[cKey].quality_color_loot
-	local lc = XLoot_Options.profiles[cKey].colors.loot
+	local lc = XLoot_Options.profiles[cKey].loot_color_border
 
 	local lootCnt, btn, item
 	local function skinLootRow()
@@ -23,7 +23,7 @@ function aObj:XLoot10()
 			for i = 1, lootCnt do
 				btn = _G["XLootButton"..i]
 				if btn then -- handle missing button
-					item = btn.frame_item.overlay
+					item = btn.frame_item
 					if not btn.sf then
 						btn.sf = aObj:addSkinFrame{obj=btn, kfs=true}
 						item.sf = aObj:addSkinFrame{obj=item, kfs=true, ofs=1}
@@ -36,7 +36,7 @@ function aObj:XLoot10()
 							aObj:RawHook(btn, "SetBorderColor", function(this, r, g, b, a)
 								if not r then r, g, b = unpack(lc) end
 								this.sf:SetBackdropBorderColor(r, g, b, 1)
-								this.frame_item.overlay.sf:SetBackdropBorderColor(r, g, b, 1)
+								this.frame_item.sf:SetBackdropBorderColor(r, g, b, 1)
 							end, true)
 						end
 					end
