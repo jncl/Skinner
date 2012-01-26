@@ -10,17 +10,12 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	I	FishingBuddy, reported by Tinface,
-		- Skinner: FB_TrackingFrame loaded but skin not found in the SkinMe directory
+x	S	DockingStation, requested by Gabriel, 29.12.11
+		- Can you please skin the sidebar panel in Docking Station ... it's in the config section, I believe you have to skin the LibMenuAssist that is included in the config addon libs.
 
-√	I	AdiBags, reported by X-buZZ/Gabriel, 13.12.11/24.12.11
-		- Skinner-b4.15050.2\Skinner.lua:226: table index is nil
-		Skinner-b4.15050.2\Skinner.lua:1337: in function <Interface\AddOns\Skinner\Skinner.lua:1318>
-		Skinner-b4.15050.2\Skinner.lua:1406: in function `skinEditBox'
-		Skinner-b4.15050.2\SkinMe\AdiBags.lua:22: in function <Interface\AddOns\Skinner\SkinMe\AdiBags.lua:19>
+√	I	PhoenixStyle, reported by Decabah, 19.01.12
+		- Skinner-b4.15050.3\SkinMe\PhoenixStyle.lua:84: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		AceHook-3.0-5 (Ace3):211: in function <Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
+		Skinner-b4.15050.3\SkinMe\PhoenixStyle.lua:84: in function <Interface\AddOns\Skinner\SkinMe\PhoenixStyle.lua: 5>
 		(tail call): ?:
-
-√	S	ExtVendor, requested by Excitor0, 15.12.11
-
-≈	I	AtlasLoot, reported by Curace, 15.12.11
-		- Hello, it seems that atlasloot might have changed something on their side but since their last update the semi-transparent overlay that would show over the atlas map is completely transparent for me, it makes it hard to see the loot depending which dungeon bosses you are looking at.
