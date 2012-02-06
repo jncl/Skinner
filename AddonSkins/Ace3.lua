@@ -213,6 +213,11 @@ function aObj:Ace3()
 				aObj:skinButton{obj=obj.frame}
 				obj.frame:SetBackdrop(nil)
 				obj.sknrTSM = true
+			elseif objType == "TSMWindow" then
+				aObj:applySkin{obj=obj.frame, kfs=true}
+				aObj:skinButton{obj=obj.closebutton, cb=true}
+				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+				obj.sknrTSM = true
 
 			-- ignore these types for now
 			elseif objType == "CheckBox"
