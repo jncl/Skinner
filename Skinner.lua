@@ -167,6 +167,12 @@ function aObj:OnInitialize()
 	self.Backdrop[8].bgFile = nil
 	self.Backdrop[8].tile = false
 	self.Backdrop[8].tileSize = 0
+	-- this backdrop is for vertical sliders frame
+	self.Backdrop[9] = CopyTable(self.backdrop)
+	self.Backdrop[9].bgFile = nil
+	self.Backdrop[9].tile = false
+	self.Backdrop[9].tileSize = 0
+	self.Backdrop[9].edgeSize = 12
 	-- setup background texture
 	if prdb.BgUseTex then
 		if prdb.BgFile and prdb.BgFile ~= "None" then
