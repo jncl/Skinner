@@ -10,12 +10,6 @@ Legend:
 
 	O	Update WoWAce commands page
 
-x	S	DockingStation, requested by Gabriel, 29.12.11
-		- Can you please skin the sidebar panel in Docking Station ... it's in the config section, I believe you have to skin the LibMenuAssist that is included in the config addon libs.
+√	S	AphesLootBrowser, requested by Gabriel, 31.01.12
 
-√	I	PhoenixStyle, reported by Decabah, 19.01.12
-		- Skinner-b4.15050.3\SkinMe\PhoenixStyle.lua:84: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		AceHook-3.0-5 (Ace3):211: in function <Interface\AddOns\Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		AceHook-3.0-5 (Ace3):344: in function `SecureHook'
-		Skinner-b4.15050.3\SkinMe\PhoenixStyle.lua:84: in function <Interface\AddOns\Skinner\SkinMe\PhoenixStyle.lua: 5>
-		(tail call): ?:
+√	N	TradeSkillMaster, reported by Gabriel, 31.01.12
