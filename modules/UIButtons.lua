@@ -1,6 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
+local round2 = aObj.round2
 
 local db
 local defaults = {
@@ -133,7 +134,10 @@ function module:skinButton(opts)
 	-- don't skin it twice
 	if aObj.sBtn[opts.obj] or opts.obj.tfade then return end
 
-	if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then -- [UIPanelButtonTemplate/UIPanelCloseButton/... and derivatives]
+	-- remove textures
+	if opts.obj.GetNormalTexture
+	and opts.obj:GetNormalTexture()
+	then -- [UIPanelButtonTemplate/UIPanelCloseButton/... and derivatives]
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
@@ -160,8 +164,9 @@ function module:skinButton(opts)
 		end
 	end
 
+	-- setup button frame size adjustments
 	local x1, x2, y1, y2, btn
-	local bW, bH = floor(opts.obj:GetWidth() + 0.01), floor(opts.obj:GetHeight() + 0.01) -- add adj for 31.999 buttons
+	local bW, bH = round2(opts.obj:GetWidth()), round2(opts.obj:GetHeight())
 	if bW <= 20 and opts.cb then -- ArkInventory/Recount close buttons
 		local adj = bW < 20 and bW + 1 or bW
 --		print(opts.obj:GetParent():GetName(), bW, adj)
@@ -169,6 +174,8 @@ function module:skinButton(opts)
 		opts.cb = nil
 		opts.x1, opts.y1, opts.x2, opts.y2 = bW - adj, 0, adj - bW, 0
 	end
+
+	-- skin button dependant upon type
 	if opts.cb then -- it's a close button
 		opts.obj:SetNormalFontObject(module.fontX)
 		opts.obj:SetText(module.mult)
