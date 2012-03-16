@@ -1253,7 +1253,10 @@ local function __skinDropDown(opts)
 	assert(opts.obj, "Missing object __sDD\n"..debugstack())
 --@end-alpha@
 
-	if opts.obj and opts.obj.GetName and opts.obj:GetName() then -- if named object
+	if opts.obj
+	and opts.obj.GetName
+	and opts.obj:GetName()
+	then -- if named object
 		if opts.obj:GetName():find("tekKonfigDropdown") -- ignore tekKonfigDropdown
 		or not _G[opts.obj:GetName().."Left"] -- ignore Az DropDowns
 		and not opts.obj.leftTexture -- handle FeedbackUI ones
@@ -1267,7 +1270,13 @@ local function __skinDropDown(opts)
 	-- don't skin it twice
 	if aObj.skinned[opts.obj] then return end
 
-	if not aObj.db.profile.TexturedDD or opts.noSkin then aObj:keepFontStrings(opts.obj) return end
+	if not aObj.db.profile.TexturedDD
+	and not aObj.db.profile.DropDownButtons
+	or opts.noSkin
+	then
+		aObj:keepFontStrings(opts.obj)
+		return
+	end
 
 	local mTex, btn, txt
 	if opts.obj.leftTexture then
@@ -1283,18 +1292,28 @@ local function __skinDropDown(opts)
 		btn = _G[opts.obj:GetName().."Button"]
 		txt = _G[opts.obj:GetName().."Text"]
 	end
-	mTex:SetTexture(aObj.itTex)
+	-- add texture
+	mTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
 	mTex:SetHeight(19)
 
-	-- move Button Left and down, Text down
+	-- move Button left and down, Text down
 	if not opts.noMove then
 		aObj:moveObject{obj=btn, x=-6, y=-2}
 		aObj:moveObject{obj=txt, y=-2}
 	end
-
+	-- move texture
 	local mtx = opts.mtx or 0
 	local mty = opts.moveTex and 2 or (opts.mty or 0)
 	if mtx ~= 0 or mty ~= 0 then aObj:moveObject{obj=mTex, x=mtx, y=mty} end
+
+	local xOfs1 = opts.x1 or 18
+	local yOfs1 = opts.y1 or -2
+	local xOfs2 = opts.x2 or -20
+	local yOfs2 = opts.y2 or 4
+	-- skin the frame
+	if aObj.db.profile.DropDownButtons then
+		aObj:addSkinFrame{obj=opts.obj, ft=ftype, aso={ng=true}, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	end
 
 end
 

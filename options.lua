@@ -7,7 +7,8 @@ function aObj:Defaults()
 		Warnings             = true,
 		Errors               = true,
 		MinimapIcon          = {hide = false, minimapPos = 210, radius = 80},
-		DropDowns            = true,
+		DropDownPanels       = true,
+		DropDownButtons      = true,
 		-- Tab and DropDown Texture settings
 		TexturedTab          = false,
 		TexturedDD           = false,
@@ -199,11 +200,17 @@ function aObj:Options()
 					end,
 					hidden = function() return not DBIcon end,
 				},
-				DropDowns = {
+				DropDownButtons = {
 					type = "toggle",
 					order = 6,
-					name = self.L["DropDowns"],
-					desc = self.L["Toggle the skin of the DropDowns"],
+					name = self.L["DropDown Buttons"],
+					desc = self.L["Toggle the skin of the DropDown Buttons"],
+				},
+				DropDownPanels = {
+					type = "toggle",
+					order = 7,
+					name = self.L["DropDown Panels"],
+					desc = self.L["Toggle the skin of the DropDown Panels"],
 				},
 				TabDDTextures = {
 					type = "group",

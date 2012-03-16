@@ -934,9 +934,9 @@ function aObj:ScriptErrors()
 
 end
 
-function aObj:DropDowns()
-	if not self.db.profile.DropDowns or self.initialized.DropDowns then return end
-	self.initialized.DropDowns = true
+function aObj:DropDownPanels()
+	if not self.db.profile.DropDownPanels or self.initialized.DropDownPanels then return end
+	self.initialized.DropDownPanels = true
 
 	self:add2Table(self.uiKeys1, "DropDowns")
 

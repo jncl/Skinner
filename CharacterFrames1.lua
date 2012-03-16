@@ -637,7 +637,8 @@ function aObj:AchievementUI() -- LoD
 
 	end
 
-	self:moveObject{obj=AchievementFrameFilterDropDown, y=-10}
+	-- this is not a standard dropdown
+	self:moveObject{obj=AchievementFrameFilterDropDown, y=-7}
 	if self.db.profile.TexturedDD then
 		tex = AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
 		tex:SetTexture(self.itTex)
@@ -645,13 +646,18 @@ function aObj:AchievementUI() -- LoD
 		tex:SetHeight(19)
 		tex:SetPoint("RIGHT", AchievementFrameFilterDropDown, "RIGHT", -3, 4)
 	end
+	-- skin the frame
+	if self.db.profile.DropDownButtons then
+		self:addSkinFrame{obj=AchievementFrameFilterDropDown, ft=ftype, aso={ng=true}, x1=-8, y1=2, x2=2, y2=7}
+	end
 	self:skinTabs{obj=AchievementFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-10}
-	self:addSkinFrame{obj=AchievementFrame, ft=ftype, kfs=true, y1=1, y2=-3}
+	self:addSkinFrame{obj=AchievementFrame, ft=ftype, kfs=true, y1=8, y2=-3}
 
 -->>-- move Header info
 	self:keepFontStrings(AchievementFrameHeader)
-	self:moveObject{obj=AchievementFrameHeaderTitle, x=-60, y=-29}
-	self:moveObject{obj=AchievementFrameHeaderPoints, x=40, y=-9}
+	self:moveObject{obj=AchievementFrameHeaderTitle, x=-60, y=-25}
+	self:moveObject{obj=AchievementFrameHeaderPoints, x=40, y=-5}
+	self:moveObject{obj=AchievementFrameCloseButton, y=6}
 	AchievementFrameHeaderShield:SetAlpha(1)
 
 -->>-- Categories Panel (on the Left)

@@ -13,12 +13,15 @@ function aObj:FriendsFrame()
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 
 	-- FriendsTabHeader Frame
-	self:skinDropDown{obj=FriendsFrameStatusDropDown}
-	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
+	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
+	self:skinDropDown{obj=FriendsFrameStatusDropDown, x2=-16}
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
 	FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinTabs{obj=FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5, hx=-2, hy=3}
+	if self.modBtnBs then
+		self:addButtonBorder{obj=FriendsTabHeaderSoRButton}
+	end
 
 	--	FriendsList Frame
 	-- adjust width of FFFSF so it looks right (too thin by default)
@@ -706,7 +709,7 @@ function aObj:GuildUI() -- LoD
 	end
 	self:skinDropDown{obj=GuildMemberRankDropdown}
 	-- adjust text position & font so it overlays correctly
-	self:moveObject{obj=GuildMemberRankDropdown, x=-9}
+	self:moveObject{obj=GuildMemberRankDropdown, x=-6, y=2}
 	GuildMemberRankDropdownText:SetFontObject(GameFontHighlight)
 	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
 	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}

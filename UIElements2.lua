@@ -56,11 +56,11 @@ function aObj:TimeManager() -- LoD
 	TimeManagerFrameTicker:Hide()
 	self:keepFontStrings(TimeManagerStopwatchFrame)
 	self:addButtonBorder{obj=TimeManagerStopwatchCheck}
-	self:skinDropDown{obj=TimeManagerAlarmHourDropDown}
+	self:skinDropDown{obj=TimeManagerAlarmHourDropDown, x1=20, x2=-2}
 	TimeManagerAlarmHourDropDownMiddle:SetWidth(TimeManagerAlarmHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=TimeManagerAlarmMinuteDropDown}
+	self:skinDropDown{obj=TimeManagerAlarmMinuteDropDown, x1=20, x2=-2}
 	TimeManagerAlarmMinuteDropDownMiddle:SetWidth(TimeManagerAlarmMinuteDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown}
+	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown, x1=20, x2=-10}
 	self:skinEditBox{obj=TimeManagerAlarmMessageEditBox, regs={9}}
 	self:addSkinFrame{obj=TimeManagerFrame, ft=ftype, kfs=true, x1=14, y1=-11, x2=-49, y2=9}
 
@@ -82,8 +82,8 @@ function aObj:Calendar() -- LoD
 	self.initialized.Calendar = true
 
 -->>--	Calendar Frame
-	self:skinDropDown{obj=CalendarFilterFrame, noMove=true}
-	-- adjust non standard dropdown
+	-- this is not a standard dropdown
+	self:skinDropDown{obj=CalendarFilterFrame, noMove=true, x1=0, y1=2, x2=-2, y2=-2}
 	CalendarFilterFrameMiddle:SetHeight(16)
 	self:moveObject{obj=CalendarFilterButton, x=-8}
 	self:moveObject{obj=CalendarFilterFrameText, x=-8}
@@ -123,11 +123,11 @@ function aObj:Calendar() -- LoD
 	self:removeRegions(CalendarCreateEventCloseButton, {5})
 	self:skinEditBox{obj=CalendarCreateEventTitleEdit, regs={9}}
 	self:skinDropDown{obj=CalendarCreateEventTypeDropDown}
-	self:skinDropDown{obj=CalendarCreateEventHourDropDown}
+	self:skinDropDown{obj=CalendarCreateEventHourDropDown, x1=20, x2=-2}
 	CalendarCreateEventHourDropDownMiddle:SetWidth(CalendarCreateEventHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=CalendarCreateEventMinuteDropDown}
+	self:skinDropDown{obj=CalendarCreateEventMinuteDropDown, x1=20, x2=-2}
 	CalendarCreateEventMinuteDropDownMiddle:SetWidth(CalendarCreateEventMinuteDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=CalendarCreateEventAMPMDropDown}
+	self:skinDropDown{obj=CalendarCreateEventAMPMDropDown, x1=20, x2=-10}
 	self:skinDropDown{obj=CalendarCreateEventRepeatOptionDropDown}
 	self:addSkinFrame{obj=CalendarCreateEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=CalendarCreateEventDescriptionScrollFrame}
