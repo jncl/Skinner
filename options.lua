@@ -799,7 +799,10 @@ function aObj:Options()
 					inline = true,
 					name = self.L["AchievementUI"],
 					get = function(info) return db.AchievementUI[info[#info]] end,
-					set = function(info, value) db.AchievementUI[info[#info]] = value end,
+					set = function(info, value)
+						db.AchievementUI[info[#info]] = value
+						if IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI") end
+					end,
 					args = {
 						skin = {
 							type = "toggle",
