@@ -25,6 +25,10 @@ function aObj:BetterInbox(LoD)
 		-- skin the buttons
 		aObj:skinButton{obj=BetterInboxOpenButton}
 		aObj:skinButton{obj=BetterInboxCancelButton}
+		-- fix the dropdown
+		bib.scrollframe.dropdown.frame:ClearAllPoints()
+		bib.scrollframe.dropdown.frame:SetPoint("RIGHT", BetterInboxOpenButton, "LEFT", -2, -3)
+		bib.scrollframe.dropdown.frame:SetHeight(32)
 
 	end
 
