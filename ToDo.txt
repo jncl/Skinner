@@ -10,6 +10,10 @@ Legend:
 
 	O	Update WoWAce commands page
 
-√	S	AphesLootBrowser, requested by Gabriel, 31.01.12
+	I	Check to see if buff time is continually moved downwards in a loop
 
-√	N	TradeSkillMaster, reported by Gabriel, 31.01.12
+√	S	Megaphone. requested by corys2005, 13.03.12
+
+¶	O	Add border to dropdown buttons, requested by corys2005, 13.03.12
+?		- tekKonfig dropdowns
+?		- Az dropdowns
