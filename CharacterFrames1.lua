@@ -893,5 +893,10 @@ function aObj:ScrollOfResurrection()
 	self:skinScrollBar{obj=ScrollOfResurrectionFrame.noteFrame.scrollFrame}
 	ScrollOfResurrectionFrame.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=ScrollOfResurrectionFrame, ft=ftype, kfs=true}
+	-- Selection frame
+	self:skinEditBox{obj=ScrollOfResurrectionSelectionFrame.targetEditBox, regs={9}}
+	self:skinSlider{obj=ScrollOfResurrectionSelectionFrame.list.scrollFrame.scrollBar}
+	self:addSkinFrame{obj=ScrollOfResurrectionSelectionFrame.list, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=ScrollOfResurrectionSelectionFrame, ft=ftype, kfs=true}
 
 end
