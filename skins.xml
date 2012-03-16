@@ -191,6 +191,7 @@
 <script file="SkinMe\MailTo.lua"/>
 <script file="SkinMe\MakeRocketGoNow.lua"/>
 <script file="SkinMe\Mapster.lua"/>
+<script file="SkinMe\Megaphone.lua"/>
 <script file="SkinMe\MinimalArchaeology.lua"/>
 <script file="SkinMe\MinimapButtonFrame.lua"/>
 <script file="SkinMe\Misdirectionhelper.lua"/>
