@@ -8,7 +8,7 @@ function aObj:Defaults()
 		Errors               = true,
 		MinimapIcon          = {hide = false, minimapPos = 210, radius = 80},
 		DropDownPanels       = true,
-		DropDownButtons      = true,
+		DropDownButtons      = false,
 		-- Tab and DropDown Texture settings
 		TexturedTab          = false,
 		TexturedDD           = false,
