@@ -11,9 +11,3 @@ Legend:
 	O	Update WoWAce commands page
 
 	I	Check to see if buff time is continually moved downwards in a loop
-
-√	S	Megaphone. requested by corys2005, 13.03.12
-
-¶	O	Add border to dropdown buttons, requested by corys2005, 13.03.12
-?		- tekKonfig dropdowns
-?		- Az dropdowns
