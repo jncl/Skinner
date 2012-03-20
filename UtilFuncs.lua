@@ -66,16 +66,27 @@ function aObj:CustomPrint(r, g, b, a1, ...)
 
 end
 
+--@debug@
+local function print_family_tree(fName)
+	local lvl = "Parent"
+	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), round2(fName:GetWidth(), 2) or "nil", round2(fName:GetHeight(), 2) or "nil"))
+	while fName:GetParent() do
+		fName = fName:GetParent()
+		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), round2(fName:GetWidth(), 2) or "nil", round2(fName:GetHeight(), 2) or "nil"))
+		lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl
+	end
+end
 function aObj:SetupCmds()
 
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("rl", function(msg) ReloadUI() end)
 	self:RegisterChatCommand("lo", function(msg) Logout() end)
-	self:RegisterChatCommand("pl", function(msg) local itemLink = select(2, GetItemInfo(msg)) local pLink = gsub(itemLink, "|", "||") print(msg, "is", pLink) end)
-	self:RegisterChatCommand("ft", function(msg) local lvl, fName = "Parent", GetMouseFocus() print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), round2(fName:GetWidth(), 2) or "nil", round2(fName:GetHeight(), 2) or "nil")) while fName:GetParent() do fName = fName:GetParent() print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), round2(fName:GetWidth(), 2) or "nil", round2(fName:GetHeight(), 2) or "nil")) lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl end end)
+	self:RegisterChatCommand("pl", function(msg) print(msg, "is", gsub(select(2, GetItemInfo(msg)), "|", "||"))	end)
+	self:RegisterChatCommand("ft", function() print_family_tree(GetMouseFocus()) end)
+	self:RegisterChatCommand("ftp", function() print_family_tree(GetMouseFocus():GetParent()) end)
 	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, false) end)
-	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, true) end)
-	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end)
+	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, true) end) -- detailed
+	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end) -- brief
 	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), true, false) end)
 	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), false, false) end)
 	self:RegisterChatCommand("gp", function(msg) print(GetMouseFocus():GetPoint()) end)
@@ -83,6 +94,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
 
 end
+--@end-debug@
 
 local function errorhandler(err)
 	return geterrorhandler()(err)
