@@ -65,6 +65,12 @@ function aObj:Altoholic()
 	self:skinScrollBar{obj=AltoholicFrameSkillsScrollFrame}
 	self:skinScrollBar{obj=AltoholicFrameActivityScrollFrame}
 
+	if self.modBtnBs then
+		self:addButtonBorder{obj=AltoholicTabSummary_RequestSharing}
+		self:addButtonBorder{obj=AltoholicTabSummary_Options}
+		self:addButtonBorder{obj=AltoholicTabSummary_OptionsDataStore}
+	end
+
 -->>-- Achievements tab, now a separate addon (r83)
 -->>-- Characters tab, now a separate addon (r92)
 -->>-- Search Tab, now a separate addon (r92)
@@ -122,7 +128,17 @@ function aObj:Altoholic_Characters() -- LoD
 	-- Companions/Mounts
 	self:skinScrollBar{obj=AltoholicFramePetsAllInOneScrollFrame}
 
-	-- Icons at the Top in  Character View
+	-- Icons at the Top in Character View
+	if self.modBtnBs then
+		self:addButtonBorder{obj=AltoholicTabCharacters_CharactersIcon}
+		self:addButtonBorder{obj=AltoholicTabCharacters_BagsIcon}
+		self:addButtonBorder{obj=AltoholicTabCharacters_QuestsIcon}
+		self:addButtonBorder{obj=AltoholicTabCharacters_TalentsIcon}
+		self:addButtonBorder{obj=AltoholicTabCharacters_AuctionIcon}
+		self:addButtonBorder{obj=AltoholicTabCharacters_MailIcon}
+		self:addButtonBorder{obj=AltoholicTabCharacters_SpellbookIcon}
+		self:addButtonBorder{obj=AltoholicTabCharacters_ProfessionsIcon}
+	end
 	-- Characters
 	-- Containers
 	self:skinScrollBar{obj=AltoholicFrameContainersScrollFrame}
