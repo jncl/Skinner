@@ -19,9 +19,10 @@ function aObj:AckisRecipeList()
 		["2.0.4"] = 8, -- release
 		["2.0.5"] = 9, -- release
 		["2.1.0"] = 10, -- release
+		["2.2.8"] = 11, -- release
 	}
 	local aVer = GetAddOnMetadata("AckisRecipeList", "Version")
-	local ver = vTab[aVer] or 10
+	local ver = vTab[aVer] or 99
 
 	local function skinARL(frame)
 
@@ -159,7 +160,14 @@ function aObj:AckisRecipeList()
 	self:addSkinFrame{obj=ARLCopyFrame}
 
 	-- button on Tradeskill frame
-	self:skinButton{obj=ARL.scan_button}
+	if ver < 11 then
+		self:skinButton{obj=ARL.scan_button}
+	else
+		self:SecureHook(ARL, "CreateScanButton", function()
+			self:skinButton{obj=ARL.scan_button}
+			self:Unhook(ARL, "CreateScanButton")
+		end)
+	end
 
 -->>-- Tooltip
 	local tTip = ver > 5 and AckisRecipeList_SpellTooltip or arlSpellTooltip
