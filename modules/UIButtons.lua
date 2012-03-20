@@ -251,6 +251,7 @@ function module:skinButton(opts)
 			y2 = opts.y2 or -1
 			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
 		else
+			if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
 			aObj:applySkin{obj=opts.obj, bd=aso.bd}
 		end
 	end
@@ -287,7 +288,6 @@ function module:isButton(obj, cb, blue)
 			if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
 			or oTex:find("UI-Panel-Button-Disabled", 1, true) -- UI Panel Button (Gray template)
 			or oTex:find("UI-DialogBox-Button-Up", 1, true) -- Static Popup Button
-			or oTex:find("HelpButtons") -- "new" Help Button
 			or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
 			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
 			then
@@ -302,7 +302,11 @@ function module:isButton(obj, cb, blue)
 			then
 				bType = "toast"
 			end
-			if oTex:find("KnowledgeBaseButtton") -- "new" KnowledgeBase Button
+			if oTex:find("HelpButtons") -- "new" Help Button
+			then
+				bType = "help"
+			end
+			if oTex:find("KnowledgeBaseButtton") -- "new" KnowledgeBase Button (N.B. mispelled Button)
 			then
 				bType = "helpKB"
 			end
@@ -348,6 +352,8 @@ local function __skinAllButtons(opts, bgen)
 				module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
 			elseif bType == "toast" then
 				module:skinButton{obj=child, cb3=true, anim=opts.anim}
+			elseif bType == "help" then
+				module:skinButton{obj=child, x1=0, y1=0, x2=-3, y2=3}
 			elseif bType == "helpKB" then
 				child:DisableDrawLayer("ARTWORK")
 				module:skinButton{obj=child, as=true}
