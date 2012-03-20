@@ -18,7 +18,7 @@ function aObj:FriendsFrame()
 	self:skinDropDown{obj=FriendsFrameStatusDropDown, x2=-16}
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
 	FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinTabs{obj=FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5, hx=-2, hy=3}
+	self:skinTabs{obj=FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
 	if self.modBtnBs then
 		self:addButtonBorder{obj=FriendsTabHeaderSoRButton}
 	end
@@ -738,7 +738,7 @@ function aObj:GuildUI() -- LoD
 
 -->>-- GuildInfo Frame
 	self:removeRegions(GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
-	self:skinTabs{obj=GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5, hy=3}
+	self:skinTabs{obj=GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
 	-- GuildInfoFrameInfo Frame
 	self:keepFontStrings(GuildInfoFrameInfo)
 	self:skinSlider{obj=GuildInfoEventsContainerScrollBar, adj=-4}

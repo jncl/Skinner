@@ -1632,9 +1632,6 @@ local function __skinTabs(opts)
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
-		hx - X offset for Highlight
-		hy - Y offset for Highlight
-
 --]]
 --@alpha@
 	assert(opts.obj and opts.obj:IsObjectType("Frame"), "Not a Frame\n"..debugstack())
@@ -1659,10 +1656,6 @@ local function __skinTabs(opts)
 
 	for i = 1, opts.obj.numTabs do
 		tab = _G[tabName..i]
-		if opts.hx or opts.hy then -- if highlight texture needs to be moved (e.g. FriendsFrameTabHeader tabs)
-			tex = _G[tabName..i.."HighlightTexture"]
-			aObj:moveObject{obj=tex, x=opts.hx or 0, y=opts.hy or 0}
-		end
 		aObj:keepRegions(tab, kRegions)
 		tabSF = aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 		tabSF.ignore = opts.ignore -- ignore size changes

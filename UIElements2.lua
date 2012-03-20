@@ -248,7 +248,7 @@ function aObj:MenuFrames()
 	end
 
 -->>-- Interface
-	self:skinTabs{obj=InterfaceOptionsFrame, up=true, lod=true, x1=6, y1=2, x2=-6, y2=-4, hx=-5, hy=1}
+	self:skinTabs{obj=InterfaceOptionsFrame, up=true, lod=true, x1=6, y1=2, x2=-6, y2=-4}
 	self:addSkinFrame{obj=InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
 	self:skinScrollBar{obj=InterfaceOptionsFrameCategoriesList, size=2}
@@ -952,7 +952,7 @@ function aObj:LookingForGuildUI() -- LoD
 	if not self.db.profile.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
 	self.initialized.LookingForGuildUI = true
 
-	self:skinTabs{obj=LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5, hx=-2, hy=3}
+	self:skinTabs{obj=LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-55}
 	self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
 	-- Start Frame (Settings)
 	LookingForGuildInterestFrameBg:SetAlpha(0)

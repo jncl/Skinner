@@ -875,7 +875,7 @@ function aObj:InspectUI() -- LoD
 			self:addButtonBorder{obj=_G[btnName], tibt=true}
 		end
 	end
-	self:skinTabs{obj=InspectTalentFrame, up=true, lod=true, x1=0, y1=-3, x2=0, y2=-3, hx=-2, hy=3}
+	self:skinTabs{obj=InspectTalentFrame, up=true, lod=true, x1=0, y1=-3, x2=0, y2=-3}
 
 -->>-- Guild Frame
 	InspectGuildFrameBG:SetAlpha(0)
