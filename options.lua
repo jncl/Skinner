@@ -972,10 +972,6 @@ function aObj:Options()
 					if IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
 						self:checkAndRun("BattlefieldMinimap")
 					end
-				elseif info[#info] == "TimeManager" or info[#info] == "Calendar" then
-					if IsAddOnLoaded(info[#info]) then
-						self:checkAndRun(info[#info])
-					end
 				-- handle Blizzard UI LoD Addons
 				elseif uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
