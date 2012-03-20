@@ -726,7 +726,7 @@ function aObj:AchievementUI() -- LoD
 	AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
 	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
 	-- remove textures etc from buttons
-	if not AchievementFrameSummary:IsShown() and prdbA.style == 2 then
+	if not AchievementFrameSummary:IsVisible() and prdbA.style == 2 then
 		self:SecureHookScript(AchievementFrameSummary, "OnShow", function()
 			cleanButtons(AchievementFrameSummaryAchievements, "Summary")
 			self:Unhook(AchievementFrameSummary, "OnShow")
@@ -766,7 +766,7 @@ function aObj:AchievementUI() -- LoD
 		skinSB("AchievementFrameComparisonSummary"..type.."StatusBar", "Title")
 	end
 	-- remove textures etc from buttons
-	if not AchievementFrameComparison:IsShown() and prdbA.style == 2 then
+	if not AchievementFrameComparison:IsVisible() and prdbA.style == 2 then
 		self:SecureHookScript(AchievementFrameComparison, "OnShow", function()
 			cleanButtons(AchievementFrameComparisonContainer, "Comparison")
 			self:Unhook(AchievementFrameSummary, "OnShow")
