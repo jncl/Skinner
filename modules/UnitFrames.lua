@@ -159,7 +159,8 @@ local function skinUFrame(frame)
 	-- casting bar
 	local cBar = frame.."SpellBar"
 	aObj:adjHeight{obj=_G[cBar], adj=2}
-	aObj:moveObject{obj=_G[cBar.."Text"], y=-1}
+	_G[cBar.."Text"]:ClearAllPoints()
+	_G[cBar.."Text"]:SetPoint("TOP", 0, 3)
 	_G[cBar.."Flash"]:SetAllPoints()
 	_G[cBar.."Border"]:SetAlpha(0) -- texture file is changed dependant upon spell type
 	aObj:changeShield(_G[cBar.."BorderShield"], _G[cBar.."Icon"])
