@@ -31,7 +31,7 @@ do
 	aObj.isBeta = portal == "public-beta" and true or false
 	-- check build number, if > Live then it's a patch
 	local buildInfo = {GetBuildInfo()}
-	aObj.isPatch = tonumber(buildInfo[2]) > 15050 and true or false
+	aObj.isPatch = tonumber(buildInfo[2]) > 15354 and true or false
 
 end
 
