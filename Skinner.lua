@@ -24,14 +24,16 @@ do
 	-- player class
 	aObj.uCls = select(2, UnitClass("player"))
 
+	local buildInfo = {GetBuildInfo()}
+	-- check build number, if > Live then it's a patch
+	aObj.isPatch = tonumber(buildInfo[2]) > 15354 and true or false
+
 	local portal = GetCVar("portal") or nil
 	--check to see if running on PTR versionm
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	-- check build number, if > Live then it's a patch
-	local buildInfo = {GetBuildInfo()}
-	aObj.isPatch = tonumber(buildInfo[2]) > 15354 and true or false
+	aObj.isBeta = aObj.isBeta or tonumber(buildInfo[1]) > 5.0.0 and true or false
 
 end
 

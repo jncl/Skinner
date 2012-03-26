@@ -10,4 +10,70 @@ Legend:
 
 	O	Update WoWAce commands page
 
+	O	MoP Beta
+		NEW
+		- ActionBarController
+		- DestinyFrame
+		- ExtraActionBar
+		- FrameLocks
+		- MonkHarmonyBar
+		- OverrideActionBar
+		- PVEFrame (a.k.a. GroupFinderFrame)
+		- PetBattleStubs
+		- PossessActionBar
+		- PriestBar
+		- SharedPetBattleTemplates
+		- StanceBar
+		- VehicleSeatIndicator
+		- Blizzard_PetBattleUI
+		- Blizzard_PetJournal
+
+		UPD
+		- EncounterJournalUI
+		- GlyphUI
+		- TalentUI
+		- GuildBankUI
+		- GuildUI
+		- InspectUI
+		- ItemSocketingUI
+		- MacroUI
+		- ReforgingUI
+		- TimeManager
+		- AlternatePowerBar
+		- BankFrame (BG changes with Paladin Holy Power)
+		- Buffs
+		- GossipFrame
+		- GuildRegistrar
+		- ItemTextFrame
+		- LFDFrame
+		- LFRFrame
+		- LootFrame
+		- MailFrame
+		- MainMenuBar
+		- MerchantFrame
+		- PaladinPowerBar
+		- PaperDollFrame (ranged slot now hidden/shown depending upon player type)
+		- PetitionFrame
+		- QuestFrame
+		- QuestLogFrame
+		- RaidFinderFrame
+		- RaidFrame
+		- ShardBar
+		- TabardFrame
+		- UnitFrames (classifications)
+		- TradeFrame
+		- UIPanelTemplates
+			- (button left, middle & right textures now named)
+			- gold edge for money frames
+		- VideoOptionsPanel
+
+		- Numerous Button templates changed
+		- Class specific bar frames have been renamed
+
+		DEL
+		- BonusActionBarFrame
+		- GlobalStrings
+		- VehicleMenuBar
+		- ShapeshiftBarFrame
+
 	I	Check to see if buff time is continually moved downwards in a loop
