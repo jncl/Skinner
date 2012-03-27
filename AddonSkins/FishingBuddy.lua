@@ -37,7 +37,8 @@ function aObj:FishingBuddy()
 	self:skinDropDown{obj=FishingBuddyOption_OutfitMenu}
 	-- Pets
 	self:skinDropDown{obj=FishingPetFrame}
-	self:addSkinFrame{obj=FishingPetsMenu, kfs=true}
+	self:skinScrollBar{obj=FishingPetsMenu}
+	self:addSkinFrame{obj=FishingPetsMenuHolder, kfs=true}
 
 	local tabObj, tabSF
 -->>-- FishingWatch Tab

@@ -69,7 +69,7 @@ function aObj:Configator()
 				end
 				-- skin the DropDown
 				if cType == "Selectbox" then
-					self:skinDropDown{obj=control}
+					self:skinDropDown{obj=control, rp=true, y2=-4}
 					if not self.skinFrame[SelectBoxMenu.back] then
 						self:addSkinFrame{obj=SelectBoxMenu.back}
 					end

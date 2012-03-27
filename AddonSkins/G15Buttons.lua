@@ -11,7 +11,7 @@ function aObj:G15Buttons()
 				if btn
 				and not btn.sknrBdr
 				then
-					self:addButtonBorder{obj=btn, abt=true}
+					aObj:addButtonBorder{obj=btn, abt=true}
 				end
 			end
 
@@ -25,9 +25,9 @@ function aObj:G15Buttons()
 	end
 
 	-- Options frame
-	self:skinDropDown{obj=G15Buttons_OptionsForm_LBGroups}
-	self:skinEditBox{obj=G15Buttons_OptionsForm_edtSpacePerRow, regs={9}}
-	self:skinEditBox{obj=G15Buttons_OptionsForm_edtSpacePerColumn, regs={9}}
+	self:skinDropDown{obj=G15Buttons_OptionsForm_LBGroups, x2=110}
+	self:skinEditBox{obj=G15Buttons_OptionsForm_edtSpacePerRow, regs={9}, y=-8}
+	self:skinEditBox{obj=G15Buttons_OptionsForm_edtSpacePerColumn, regs={9}, y=-8}
 	self:addSkinFrame{obj=G15Buttons_OptionsForm, hdr=true}
 
 end

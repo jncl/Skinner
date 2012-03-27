@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("FreierGeist_InstanceTime") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("FreierGeist_InstanceTime") then return end
 
-function Skinner:FreierGeist_InstanceTime()
+function aObj:FreierGeist_InstanceTime()
 
 	self:addSkinFrame{obj=InstanceTimeFrame}
 	self:addSkinFrame{obj=InstanceTime_TimerFrameXP}
@@ -14,29 +15,39 @@ function Skinner:FreierGeist_InstanceTime()
 	self:addSkinFrame{obj=InstanceTime_LootFrame}
 	self:skinScrollBar{obj=InstanceTimeBossScrollBar}
 	self:addSkinFrame{obj=InstanceTime_BosskillFrame}
-	self:skinScrollBar{obj=InstanceTime_ScrollFrame}
-	self:addSkinFrame{obj=InstanceTime_ClipFrame}
+	self:addSkinFrame{obj=InstanceTime_MenuFrame}
+
+	-- RaidClip Frame
+	self:addSkinFrame{obj=InstanceTime_RaidClipFrame}
+	self:skinScrollBar{obj=InstanceTime_RaidScrollFrame}
+
 -->>--	Options Frame
-	self:skinEditBox(InstanceTimeOptionsFrameAnnouncement)
-	self:skinEditBox(InstanceTimeOptionsFrameLeaveChannels)
-	self:skinEditBox(InstanceTimeOptionsFrameContinueWithin)
-	self:skinEditBox(InstanceTimeOptionsFrameRepairUntil)
-	self:skinEditBox(InstanceTimeOptionsFrameDateFormat)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem1)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem2)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem3)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem4)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem5)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem6)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem7)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem8)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem9)
-	self:skinEditBox(InstanceTimeOptionsFrameExcludeItem10)
-	self:skinDropDown{obj=InstanceTimeOptionsFrameDropDownPostTo}
-	self:addSkinFrame{obj=InstanceTimeOptionsFrame}
+	self:skinTabs{obj=InstanceTimeOptionsFrame}
+	self:addSkinFrame{obj=InstanceTimeOptionsFrame, hdr=true, y2=-2}
+	-- Page 1
+	self:skinEditBox(optionsTabPage1LeaveChannels)
+	self:skinEditBox(optionsTabPage1ContinueWithin)
+	self:skinEditBox(optionsTabPage1RepairUntil)
+	-- Page 2
+	self:skinEditBox(optionsTabPage2Announcement)
+	self:skinDropDown{obj=optionsTabPage2DropDownPostTo}
+	-- Page 3
+	self:skinEditBox(optionsTabPage3ExcludeItem1)
+	self:skinEditBox(optionsTabPage3ExcludeItem2)
+	self:skinEditBox(optionsTabPage3ExcludeItem3)
+	self:skinEditBox(optionsTabPage3ExcludeItem4)
+	self:skinEditBox(optionsTabPage3ExcludeItem5)
+	self:skinEditBox(optionsTabPage3ExcludeItem6)
+	self:skinEditBox(optionsTabPage3ExcludeItem7)
+	self:skinEditBox(optionsTabPage3ExcludeItem8)
+	self:skinEditBox(optionsTabPage3ExcludeItem9)
+	self:skinEditBox(optionsTabPage3ExcludeItem10)
+	-- Page 5
+	self:skinEditBox(optionsTabPage5DateFormat)
+
 -->>--	Help Frame
 	self:skinFFToggleTabs("InstanceTime_HelpTab_", 6)
 	self:skinScrollBar{obj=InstanceTime_HelpScrollFrame}
-	self:addSkinFrame{obj=InstanceTime_Help}
+	self:addSkinFrame{obj=InstanceTime_Help, ofs=-7}
 
 end

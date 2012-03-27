@@ -1,43 +1,42 @@
-if not Skinner:isAddonEnabled("epgp") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("epgp") then return end
 
-function Skinner:epgp()
+function aObj:epgp()
 
 	local epgpUI = EPGP and EPGP:GetModule("ui", true)
 	if not epgpUI then return end
 
 	local function skinEPGPUI()
 	
-		Skinner:skinSlider(EPGPScrollFrameScrollBar)
+		aObj:skinSlider{obj=EPGPScrollFrameScrollBar, adj=2}
 		EPGPScrollFrameScrollBarBorder:SetAlpha(0)
 		
-		local sf = Skinner:getChild(EPGPFrame, 6) -- standings frame
-		local tf = Skinner:getChild(sf, 4) -- table frame
 		-- tabs
-		for _, v in pairs(tf.headers) do
-			Skinner:keepRegions(v, {5, 6}) -- N.B. regions 5 & 6 are highlight/text
-			Skinner:applySkin{obj=v}
+		for _, v in pairs(aObj:getChild(aObj:getChild(EPGPFrame, 6), 4).headers) do
+			aObj:keepRegions(v, {5, 6}) -- N.B. regions 5 & 6 are highlight/text
+			aObj:applySkin{obj=v}
 		end
-		Skinner:addSkinFrame{obj=EPGPFrame, kfs=true, x1=10, y1=-12, x2=-33, y2=71}
+		aObj:addSkinFrame{obj=EPGPFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
 		
 		-- Side Frame
-		Skinner:skinDropDown{obj=EPGPSideFrameGPControlDropDown}
-		Skinner:skinDropDown{obj=EPGPSideFrameEPControlDropDown}
-		Skinner:skinEditBox{obj=EPGPSideFrameGPControlEditBox, regs={9}}
-		Skinner:skinEditBox{obj=EPGPSideFrameEPControlOtherEditBox, regs={9}}
-		Skinner:skinEditBox{obj=EPGPSideFrameEPControlEditBox, regs={9}}
-		Skinner:moveObject{obj=self:getRegion(EPGPSideFrame, 2), y=-6}
-		Skinner:addSkinFrame{obj=EPGPSideFrame, kfs=true, x1=3, y1=-6, x2=-5, y2=6}
+		aObj:skinDropDown{obj=EPGPSideFrameGPControlDropDown}
+		aObj:skinDropDown{obj=EPGPSideFrameEPControlDropDown}
+		aObj:skinEditBox{obj=EPGPSideFrameGPControlEditBox, regs={9}}
+		aObj:skinEditBox{obj=EPGPSideFrameEPControlOtherEditBox, regs={9}}
+		aObj:skinEditBox{obj=EPGPSideFrameEPControlEditBox, regs={9}}
+		aObj:moveObject{obj=aObj:getRegion(EPGPSideFrame, 2), y=-6}
+		aObj:addSkinFrame{obj=EPGPSideFrame, kfs=true, x1=3, y1=-6, x2=-5, y2=6}
 		-- Side Frame2
-		Skinner:skinDropDown{obj=EPGPSideFrame2EPControlDropDown}
-		Skinner:skinEditBox{obj=EPGPSideFrame2EPControlOtherEditBox, regs={9}}
-		Skinner:skinEditBox{obj=EPGPSideFrame2EPControlEditBox, regs={9}}
-		Skinner:addSkinFrame{obj=EPGPSideFrame2, kfs=true, x1=3, y1=-6, x2=-5, y2=6}
+		aObj:skinDropDown{obj=EPGPSideFrame2EPControlDropDown}
+		aObj:skinEditBox{obj=EPGPSideFrame2EPControlOtherEditBox, regs={9}}
+		aObj:skinEditBox{obj=EPGPSideFrame2EPControlEditBox, regs={9}}
+		aObj:addSkinFrame{obj=EPGPSideFrame2, kfs=true, x1=3, y1=-6, x2=-5, y2=6}
 		-- Log Frame
-		Skinner:addSkinFrame{obj=EPGPLogRecordScrollFrame:GetParent()}
-		Skinner:addSkinFrame{obj=EPGPLogFrame, kfs=true, x1=3, y1=-6, x2=-5, y2=2}
+		aObj:addSkinFrame{obj=EPGPLogRecordScrollFrame:GetParent()}
+		aObj:addSkinFrame{obj=EPGPLogFrame, kfs=true, x1=3, y1=-6, x2=-5, y2=2}
 		-- ExportImport Frame
-		Skinner:skinScrollBar{obj=EPGPExportScrollFrame}
-		Skinner:addSkinFrame{obj=EPGPExportImportFrame, kfs=true}
+		aObj:skinScrollBar{obj=EPGPExportScrollFrame}
+		aObj:addSkinFrame{obj=EPGPExportImportFrame, kfs=true}
 		
 	end
 	

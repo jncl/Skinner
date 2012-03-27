@@ -1,10 +1,13 @@
-if not Skinner:isAddonEnabled("HoloFriends") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("HoloFriends") then return end
 
-function Skinner:HoloFriends()
+function aObj:HoloFriends()
 
 -->>--	HoloFriends Frame
-	self:skinDropDown{obj=HoloFriendsDropDown}
+	self:keepFontStrings(HoloFriendsFrame)
 	self:skinFFToggleTabs("HoloFriendsFrameToggleTab", 2)
+	self:skinDropDown{obj=HoloFriendsDropDown}
+	-- self:skinFFToggleTabs("HoloFriendsFrameToggleTab", 2)
 	self:skinScrollBar{obj=HoloFriendsScrollFrame}
 	-- m/p buttons
 	if self.modBtns then
@@ -21,6 +24,7 @@ function Skinner:HoloFriends()
 	end
 	
 -->>--	HoloIgnore Frame
+	self:keepFontStrings(HoloIgnoreFrame)
 	self:skinDropDown{obj=HoloIgnoreDropDown}
 	self:skinFFToggleTabs("HoloIgnoreFrameToggleTab")
 	self:skinScrollBar{obj=HoloIgnoreScrollFrame}

@@ -1,20 +1,17 @@
+local aName, aObj = ...
+if not aObj:isAddonEnabled("HandyNotes") then return end
 
-function Skinner:HandyNotes()
+function aObj:HandyNotes()
 
 	-- thanks to Xinhuan for the pointer in the code :-)
 	local HNEditFrame = LibStub("AceAddon-3.0"):GetAddon("HandyNotes"):GetModule("HandyNotes").HNEditFrame
 	
-	self:keepFontStrings(HNEditFrame)
-	self:moveObject(HNEditFrame.title, nil, nil, "-", 4, HNEditFrame)
 	HNEditFrame.titleinputframe:SetBackdrop(nil)
 	self:skinEditBox(HNEditFrame.titleinputbox, {})
-	self:moveObject(HNEditFrame.titleinputbox, "-", 5, nil, nil, HNEditFrame.titleinputframe)
-	self:applySkin(HNEditFrame.descframe)
-	self:removeRegions(HNEditFrame.descscrollframe)
-	self:skinScrollBar(HNEditFrame.descscrollframe)
-	self:skinDropDown(HNEditFrame.icondropdown, true, nil, true)
-	self:moveObject(_G[HNEditFrame.icondropdown:GetName().."Button"], nil, nil, "-", 2)
-	self:skinDropDown(HNEditFrame.leveldropdown, true, nil, true)
-	self:applySkin(HNEditFrame)
+	self:addSkinFrame{obj=HNEditFrame.descframe}
+	self:skinScrollBar{obj=HNEditFrame.descscrollframe}
+	self:skinDropDown{obj=HNEditFrame.icondropdown}
+	self:skinDropDown{obj=HNEditFrame.leveldropdown}
+	self:addSkinFrame{obj=HNEditFrame, kfs=true}
 
 end

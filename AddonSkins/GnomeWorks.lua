@@ -1,7 +1,7 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("GnomeWorks") then return end
 
-function aObj:GnomeWorks() --r110
+function aObj:GnomeWorks() --r161
 
 	local function hideBD(frame)
 
@@ -32,7 +32,7 @@ function aObj:GnomeWorks() --r110
 			gwEvt = nil
 		-->>-- GnomeWorks.MainWindow
 			aObj:keepFontStrings(GnomeWorks.MainWindow.title)
-			aObj:skinDropDown{obj=GnomeWorksGrouping}
+			aObj:skinDropDown{obj=GnomeWorksGrouping, x2=133}
 			hideBD(GnomeWorks.levelStatusBar.estimatedLevel)
 			aObj:glazeStatusBar(GnomeWorks.levelStatusBar, 0, nil)
 			hideBD(GnomeWorks.detailFrame.levelsBar.bg)
@@ -43,7 +43,7 @@ function aObj:GnomeWorks() --r110
 			for _, child in pairs{GnomeWorks.controlFrame.QueueButtons:GetChildren()} do
 				skinBtn(child)
 				if child:IsObjectType("EditBox") then
-					aObj:skinEditBox{obj=child, noHeight=true, noWidth=true	}
+					aObj:skinEditBox{obj=child, noHeight=true, noWidth=true}
 				end
 			end
 			for _, child in pairs{GnomeWorks.controlFrame.OptionButtons:GetChildren()} do

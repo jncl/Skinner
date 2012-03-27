@@ -11,49 +11,52 @@ function aObj:DBMGUI()
 			break
 		end
 	end
-	local barSetup, modelDD
+
+	local modelDD, titleText, barSetup
 	local function skinSubPanels(panel)
 
 		for _, subPanel in pairs(panel.areas) do
 			if not aObj.skinned[subPanel] then
 				aObj:applySkin(subPanel.frame)
-				-- check to see if any children are dropdowns
-				for _, child in ipairs{subPanel.frame:GetChildren()} do
-					if aObj:isDropDown(child) then
-						aObj:skinDropDown(child)
-						-- check to see if this is the 3D model Dropdown
-						if child.titletext
-						and child.titletext:GetText() == DBM_GUI_Translations.ModelSoundOptions
-						then
-							modelDD = child
+			end
+			-- check to see if any children are dropdowns
+			for _, child in ipairs{subPanel.frame:GetChildren()} do
+				if aObj:isDropDown(child) then
+					aObj:skinDropDown{obj=child, rp=true, x2=35}
+					-- check to see if this is the 3D model Dropdown
+					if child.titletext
+					and child.titletext:GetText() == DBM_GUI_Translations.ModelSoundOptions
+					then
+						modelDD = child
+					end
+				end
+			end
+			titleText = _G[subPanel.framename.."Title"]:GetText()
+			-- print("titleText", titleText)
+			-- (BUGFIX) reparent sliders
+			if titleText == DBM_GUI_Translations.AreaTitle_BarSetup then
+				barSetup = subPanel.frame
+			elseif titleText == DBM_GUI_Translations.AreaTitle_BarSetupSmall then
+				if barSetup then
+					-- reparent the sliders
+					-- work backwards as the reparenting shortens the table
+					for i = barSetup:GetNumChildren(), 1, -1 do
+						local child = select(i, barSetup:GetChildren())
+						if child:IsObjectType("Slider") then
+							child:SetParent(subPanel.frame)
 						end
 					end
 				end
-				-- (BUGFIX) reparent sliders
-				if _G[subPanel.framename.."Title"]:GetText() == DBM_GUI_Translations.AreaTitle_BarSetup then
-					barSetup = subPanel.frame
-				elseif _G[subPanel.framename.."Title"]:GetText() == DBM_GUI_Translations.AreaTitle_BarSetupSmall then
-					if barSetup then
-						-- reparent the sliders
-						-- work backwards as the reparenting shortens the table
-						for i = barSetup:GetNumChildren(), 1, -1 do
-							local child = select(i, barSetup:GetChildren())
-							if child:IsObjectType("Slider") then
-								child:SetParent(subPanel.frame)
-							end
-						end
-					end
-				-- check to see if this is the pizza timer option subPanel
-				elseif _G[subPanel.framename.."Title"]:GetText() == DBM_GUI_Translations.PizzaTimer_Headline then
-					local si, ei, fNo = subPanel.framename:find("DBM_GUI_Option_(%d+)")
-					-- next four option frames are editboxes
-					for i = fNo + 1, fNo + 4 do
-						aObj:skinEditBox(_G["DBM_GUI_Option_"..i], {9})
-					end
-				-- (BUGFIX) reparent 3D Model DD
-				elseif _G[subPanel.framename.."Title"]:GetText() == DBM_GUI_Translations.ModelOptions then
-					modelDD:SetParent(subPanel.frame)
+			-- check to see if this is the pizza timer option subPanel
+			elseif titleText == DBM_GUI_Translations.PizzaTimer_Headline then
+				local si, ei, fNo = subPanel.framename:find("DBM_GUI_Option_(%d+)")
+				-- next four option frames are editboxes
+				for i = fNo + 1, fNo + 4 do
+					aObj:skinEditBox(_G["DBM_GUI_Option_"..i], {9})
 				end
+			-- (BUGFIX) reparent 3D Model DD
+			elseif titleText == DBM_GUI_Translations.ModelOptions then
+				modelDD:SetParent(subPanel.frame)
 			end
 		end
 
@@ -80,6 +83,13 @@ function aObj:DBMGUI()
 			end
 		end
 	end)
+
+	-- hook this to skin dropdowns
+	self:RawHook(DBM_GUI, "CreateDropdown", function(this, ...)
+		local dd = self.hooks[DBM_GUI].CreateDropdown(this, ...)
+		self:skinDropDown{obj=dd, rp=true, x2=35}
+		return dd
+	end, true)
 
 	-- loop through all the existing panels
 	for _, panel in pairs(DBM_GUI.panels) do
@@ -110,7 +120,6 @@ function aObj:DBMGUI()
 		end
 		if self.isTT then
 			self:SecureHookScript(tab, "OnClick", function(this)
-				self:Debug("DBM_GUI_OptionsFrameTab_OnClick: [%s, %s]", this:GetName(), this:GetID())
 				for i = 1, 2 do
 					local tabSF = self.skinFrame[_G["DBM_GUI_OptionsFrameTab"..i]]
 					if i == this:GetID() then self:setActiveTab(tabSF) else self:setInactiveTab(tabSF) end
@@ -183,7 +192,5 @@ function aObj:DBMCore()
 		DBMMinimapButton:SetHeight(22)
 		self:addSkinButton{obj=DBMMinimapButton, parent=obj}
 	end
-
-
 
 end

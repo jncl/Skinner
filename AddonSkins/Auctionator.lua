@@ -3,6 +3,19 @@ if not aObj:isAddonEnabled("Auctionator") then return end
 
 function aObj:Auctionator()
 
+	if self.Auctionator_Config then
+		self:Auctionator_Config()
+	end
+
+	if IsAddOnLoaded("Blizzard_AuctionUI") then
+		self:Auctionator_AuctionUI()
+	end
+
+end
+
+
+function aObj:Auctionator_AuctionUI()
+
 -->>-- AuctionUI panels
 	self:skinEditBox{obj=Atr_Search_Box, regs={9}}
 	-- item drag & drop frame
@@ -37,7 +50,6 @@ function aObj:Auctionator()
 	self:skinEditBox{obj=Atr_Batch_Stacksize, regs={9}}
 	self:skinDropDown{obj=Atr_Duration}
 	-- More...
-	self:skinDropDown{obj=Atr_DropDown1}
 
 -->>-- Error Frame
 	self:addSkinFrame{obj=Atr_Error_Frame, kfs=true}
@@ -60,7 +72,15 @@ function aObj:Auctionator()
 	self:skinEditBox{obj=Atr_AS_MaxItemlevel, regs={9}}
 	self:addSkinFrame{obj=Atr_Adv_Search_Dialog, kfs=true, ofs=-10, y1=4}
 
--->>-- Options Panels
+end
+
+function aObj:Auctionator_Config()
+
+	-- Basic Options
+	self:skinDropDown{obj=AuctionatorOption_Deftab, x2=110}
+	-- Tooltips
+	self:skinDropDown{obj=Atr_tipsShiftDD, x2=110}
+	self:skinDropDown{obj=Atr_deDetailsDD, x2=30}
 	-- Undercutting panel
 	self:skinMoneyFrame{obj=UC_5000000_MoneyInput, noWidth=true, moveSEB=true, moveGEB=true}
 	self:skinMoneyFrame{obj=UC_1000000_MoneyInput, noWidth=true, moveSEB=true, moveGEB=true}
@@ -69,17 +89,26 @@ function aObj:Auctionator()
 	self:skinMoneyFrame{obj=UC_10000_MoneyInput, noWidth=true, moveSEB=true, moveGEB=true}
 	self:skinMoneyFrame{obj=UC_2000_MoneyInput, noWidth=true, moveSEB=true, moveGEB=true}
 	self:skinMoneyFrame{obj=UC_500_MoneyInput, noWidth=true, moveSEB=true, moveGEB=true}
-	-- Sell Stacking
+	-- Selling
 	self:addSkinFrame{obj=Atr_Stacking_List, kfs=true}
 	-- Memorize Frame (popout)
 	self:skinEditBox{obj=Atr_Mem_EB_itemName, regs={9}}
-	self:skinDropDown{obj=Atr_Mem_DD_numStacks}
+	self:skinDropDown{obj=Atr_Mem_DD_numStacks, x2=-15}
 	self:skinEditBox{obj=Atr_Mem_EB_stackSize, regs={9}}
 	self:addSkinFrame{obj=Atr_MemorizeFrame, kfs=true}
 	-- Database
+	self:skinDropDown{obj=Atr_scanLevelDD, x2=-70}
 	self:skinEditBox{obj=Atr_ScanOpts_MaxHistAge, regs={9}}
+	-- Clears
+	-- Shopping Lists
+	self:addSkinFrame{obj=Atr_ShpList_Frame}
+	-- Shopping List edit frame (popout)
+	self:skinScrollBar{obj=Atr_ShpList_Edit_FrameScrollFrame}
+	self:addSkinFrame{obj=Atr_ShpList_Edit_Frame, kfs=true}
 
 	-- disable changes to InterfaceOptionsFrame(s) backdrop
 	Atr_MakeOptionsFrameOpaque = function() end
+
+	self.Auctionator_Config = nil
 
 end
