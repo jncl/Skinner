@@ -63,11 +63,11 @@ aObj.addonSkins = {
 	"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "DeathNote", "DockingStation", "Dominos", "DragonCore",
 	"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElvUI", "EnchantMe", "EnergyWatch", "EngBags", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "epgp_lootmaster", "epgp_lootmaster_ml", "EquipCompare", "EventEquip", "Examiner", "ExtVendor",
 	"Factionizer", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "FlightMap", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
-	"G15Buttons", "Gatherer", "GearScore", "GemHelper", "GemMe", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GuildMaster", "GupCharacter", "GupPet",
-	"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
-	"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
-	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Luggage",
-	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "Misdirectionhelper", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MuffinMOTD", "MyBags", "myClock",
+	"G15Buttons", "Gatherer", "GemMe", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar5", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GuildMaster",  "GupPet",
+	"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", "HealBot", "Highlight", "HitsMode", "HoloFriends",
+	"InspectEquip", "IntricateChatMods", "IPopBar", "ItemRack", "ItemSync",
+	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinkWrangler", "Livestock",
+	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MuffinMOTD", "MyBags", "myClock",
 	"NeatFreak", "Necrosis", "NeonChat", "nQuestLog",
 	"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
 	"PallyPower", "Panda", "PartyBuilder", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "Producer", "ProfessionsBook", "ProfessionTabs", "PvpMessages",
@@ -90,7 +90,6 @@ aObj.libsToSkin = {
 	["Tablet-2.0"] = "Tablet",
 	["Waterfall-1.0"] = "Waterfall",
 	["AceGUI-3.0"] = "Ace3",
-	["LibSimpleOptions-1.0"] = "LibSimpleOptions",
 	["Configator"] = "Configator",
 	["LibExtraTip-1"] = "LibExtraTip",
 	["tektip-1.0"] = "tektip",
@@ -207,7 +206,7 @@ local lodFrames = {
 	"FramesResized_TalentUI",
 	"GnomishAuctionShrinker", "GuildBankSearch",
 	"ItemRackOptions",
-	"LilSparkysWorkshop", "Ludwig_Window",
+	"LilSparkysWorkshop",
 	"MSBTOptions",
 	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
 	"Perl_Config_Options",
@@ -306,7 +305,6 @@ function aObj:TRADE_SKILL_SHOW()
 
 	self:checkAndRun("TradeSkillUI") -- cf2
 	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
-	self:checkAndRunAddOn("MrTrader_SkillWindow")
 	self:checkAndRunAddOn("ReagentMaker")
 
 	self:UnregisterEvent("TRADE_SKILL_SHOW")
