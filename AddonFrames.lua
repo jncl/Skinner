@@ -96,6 +96,8 @@ aObj.libsToSkin = {
 	["LibQTip-1.0"] = "LibQTip",
 	["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
 	["ArkDewdrop-3.0"] = "ArkDewdrop",
+	["LibTradeSkillScan"] = "LibTradeSkillScan",
+	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
 }
 function aObj:AddonFrames()
 --	   self:Debug("AddonFrames")

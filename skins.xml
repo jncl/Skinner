@@ -13,6 +13,7 @@
 <script file="SkinMe\Acheron.lua"/>
 <script file="SkinMe\AckisRecipeList.lua"/>
 <script file="SkinMe\ACP.lua"/>
+<script file="SkinMe\AddonLoader.lua"/>
 <script file="SkinMe\AdiBags.lua"/>
 <script file="SkinMe\AdvancedTradeSkillWindow.lua"/>
 <script file="SkinMe\AISeller.lua"/>
@@ -164,6 +165,7 @@
 <script file="SkinMe\LibExtraTip.lua"/>
 <script file="SkinMe\LibQTip.lua"/>
 <script file="SkinMe\LibSimpleFrame.lua"/>
+<script file="SkinMe\LibTradeSkillScan.lua"/>
 <script file="SkinMe\LightHeaded.lua"/>
 <script file="SkinMe\LilSparkysWorkshop.lua"/>
 <script file="SkinMe\Links.lua"/>

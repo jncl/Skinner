@@ -299,6 +299,12 @@ function aObj:MenuFrames()
 		-- skin tekKonfig library objects here as well as in AddonFrames to handle late loading of libraries
 		if self.tekKonfig then self:checkAndRun("tekKonfig") end
 		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
+		-- run Addon Loader skin code here
+		if panel.name == "Addon Loader"
+		and self.AddonLoader
+		then
+			self:checkAndRun("AddonLoader")
+		end
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
 			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true}) -- wait for 1/10th second for panel to be populated, always use applySkin to ensure text appears above button texture
 			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
