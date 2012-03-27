@@ -13,9 +13,8 @@ function aObj:FriendsFrame()
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
 
 	-- FriendsTabHeader Frame
-	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
-	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-	self:skinDropDown{obj=FriendsFrameStatusDropDown, x2=-16}
+	self:skinDropDown{obj=FriendsFrameStatusDropDown}
+	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display Status icon
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
 	FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinTabs{obj=FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
@@ -317,7 +316,7 @@ function aObj:Buffs()
 				if btn and not btn.sknrBdr then
 					-- add button borders
 					aObj:addButtonBorder{obj=btn}
-					self:moveObject{obj=btn.duration, y=-1}
+					-- self:moveObject{obj=btn.duration, y=-1}
 				end
 			end
 

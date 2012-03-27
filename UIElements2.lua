@@ -56,11 +56,9 @@ function aObj:TimeManager() -- LoD
 	TimeManagerFrameTicker:Hide()
 	self:keepFontStrings(TimeManagerStopwatchFrame)
 	self:addButtonBorder{obj=TimeManagerStopwatchCheck}
-	self:skinDropDown{obj=TimeManagerAlarmHourDropDown, x1=20, x2=-2}
-	TimeManagerAlarmHourDropDownMiddle:SetWidth(TimeManagerAlarmHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=TimeManagerAlarmMinuteDropDown, x1=20, x2=-2}
-	TimeManagerAlarmMinuteDropDownMiddle:SetWidth(TimeManagerAlarmMinuteDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown, x1=20, x2=-10}
+	self:skinDropDown{obj=TimeManagerAlarmHourDropDown, x2=-5}
+	self:skinDropDown{obj=TimeManagerAlarmMinuteDropDown, x2=-5}
+	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown, x2=-5}
 	self:skinEditBox{obj=TimeManagerAlarmMessageEditBox, regs={9}}
 	self:addSkinFrame{obj=TimeManagerFrame, ft=ftype, kfs=true, x1=14, y1=-11, x2=-49, y2=9}
 
@@ -82,11 +80,7 @@ function aObj:Calendar() -- LoD
 	self.initialized.Calendar = true
 
 -->>--	Calendar Frame
-	-- this is not a standard dropdown
-	self:skinDropDown{obj=CalendarFilterFrame, noMove=true, x1=0, y1=2, x2=-2, y2=-2}
-	CalendarFilterFrameMiddle:SetHeight(16)
-	self:moveObject{obj=CalendarFilterButton, x=-8}
-	self:moveObject{obj=CalendarFilterFrameText, x=-8}
+	self:keepFontStrings(CalendarFilterFrame)
 	-- move close button
 	self:moveObject{obj=CalendarCloseButton, y=14}
 	self:adjHeight{obj=CalendarCloseButton, adj=-2}
@@ -123,11 +117,9 @@ function aObj:Calendar() -- LoD
 	self:removeRegions(CalendarCreateEventCloseButton, {5})
 	self:skinEditBox{obj=CalendarCreateEventTitleEdit, regs={9}}
 	self:skinDropDown{obj=CalendarCreateEventTypeDropDown}
-	self:skinDropDown{obj=CalendarCreateEventHourDropDown, x1=20, x2=-2}
-	CalendarCreateEventHourDropDownMiddle:SetWidth(CalendarCreateEventHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=CalendarCreateEventMinuteDropDown, x1=20, x2=-2}
-	CalendarCreateEventMinuteDropDownMiddle:SetWidth(CalendarCreateEventMinuteDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=CalendarCreateEventAMPMDropDown, x1=20, x2=-10}
+	self:skinDropDown{obj=CalendarCreateEventHourDropDown, x2=-5}
+	self:skinDropDown{obj=CalendarCreateEventMinuteDropDown, x2=-5}
+	self:skinDropDown{obj=CalendarCreateEventAMPMDropDown, x2=-5}
 	self:skinDropDown{obj=CalendarCreateEventRepeatOptionDropDown}
 	self:addSkinFrame{obj=CalendarCreateEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=CalendarCreateEventDescriptionScrollFrame}
@@ -268,46 +260,58 @@ function aObj:MenuFrames()
 	local function checkKids(obj)
 
 		local oName = obj.GetName and obj:GetName() or nil
-		if oName and (oName:find("AceConfig") or oName:find("AceGUI"))then return end  -- ignore AceConfig/AceGUI objects
+		  -- ignore AceConfig/AceGUI objects
+		if oName
+		and (oName:find("AceConfig")
+		or oName:find("AceGUI"))
+		then
+			return
+		end
 
 		for _, child in ipairs{obj:GetChildren()} do
 			-- aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
-			if aObj:isDropDown(child) then
-				aObj:skinDropDown{obj=child}
-			elseif child:IsObjectType("EditBox") then
-				aObj:skinEditBox{obj=child, regs={9}}
-			elseif child:IsObjectType("ScrollFrame")
-			and child:GetName()
-			and child:GetName().."ScrollBar" -- handle unnamed ScrollBar's
-			then
-				aObj:skinScrollBar{obj=child}
-			else
-				checkKids(child)
-			end
-			-- remove Ampere's container background
-			if child:GetParent().name
-			and child:GetParent().name == "Ampere"
-			and child:GetNumRegions() == 1
-			then
-				child:DisableDrawLayer("BACKGROUND")
+			if not self.skinFrame[child] then
+				if aObj:isDropDown(child) then
+					aObj:skinDropDown{obj=child}
+				elseif child:IsObjectType("EditBox") then
+					aObj:skinEditBox{obj=child, regs={9}}
+				elseif child:IsObjectType("ScrollFrame")
+				and child:GetName()
+				and child:GetName().."ScrollBar" -- handle unnamed ScrollBar's
+				then
+					aObj:skinScrollBar{obj=child}
+				else
+					checkKids(child)
+				end
+				-- remove Ampere's container background
+				if child:GetParent().name
+				and child:GetParent().name == "Ampere"
+				and child:GetNumRegions() == 1
+				then
+					child:DisableDrawLayer("BACKGROUND")
+				end
 			end
 		end
 
 	end
-	-- Hook these to skin any Interface Option panels and their elements
+	-- hook this to skin Interface Option panels and their elements
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 		-- skin tekKonfig library objects here as well as in AddonFrames to handle late loading of libraries
 		if self.tekKonfig then self:checkAndRun("tekKonfig") end
-		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
 		-- run Addon Loader skin code here
 		if panel.name == "Addon Loader"
 		and self.AddonLoader
 		then
 			self:checkAndRun("AddonLoader")
 		end
+		-- self:Debug("IOL_DP: [%s, %s, %s, %s]", panel, panel.name, panel:GetNumChildren(), self.skinFrame[panel])
+		if panel
+		and panel.GetNumChildren
+		and not self.skinFrame[panel]
+		then
+			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
 			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true}) -- wait for 1/10th second for panel to be populated, always use applySkin to ensure text appears above button texture
-			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 		end
 	end)
 
@@ -958,7 +962,7 @@ function aObj:LookingForGuildUI() -- LoD
 	if not self.db.profile.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
 	self.initialized.LookingForGuildUI = true
 
-	self:skinTabs{obj=LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-55}
+	self:skinTabs{obj=LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
 	self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
 	-- Start Frame (Settings)
 	LookingForGuildInterestFrameBg:SetAlpha(0)

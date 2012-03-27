@@ -188,7 +188,7 @@ function aObj:AuctionUI() -- LoD
 		self:skinEditBox{obj=obj, regs={9}}
 		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
 	end
-	self:skinDropDown{obj=BrowseDropDown}
+	self:skinDropDown{obj=BrowseDropDown, x2=110}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		obj = _G["Browse"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
