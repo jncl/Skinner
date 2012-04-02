@@ -1061,7 +1061,7 @@ function aObj:MinimapButtons()
 							obj:SetHeight(32)
 							if not minBtn then
 								if objType == "Button" then
-									aObj:addSkinButton{obj=obj, parent=obj, sap=true}
+									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==MiniMapLFGFrame and true or nil}
 								else
 									aObj:addSkinFrame{obj=obj, ft=ftype}
 								end

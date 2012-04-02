@@ -387,6 +387,7 @@ local function __addSkinButton(opts)
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
+		rp = re-parent, reverse the parent child relationship
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSB\n"..debugstack())
@@ -457,6 +458,16 @@ local function __addSkinButton(opts)
 		end
 	end
 
+	-- reverse parent child relationship
+	if opts.rp then
+		btn:SetParent(opts.obj:GetParent())
+		opts.obj:SetParent(btn)
+		opts.obj.SetParent_orig = opts.obj.SetParent
+		opts.obj.SetParent = function(this, parent)
+			aObj.sBtn[this]:SetParent(parent)
+			this:SetParent_orig(aObj.sBtn[this])
+		end
+	end
 	return btn
 
 end
@@ -602,7 +613,6 @@ local function __addSkinFrame(opts)
 		opts.obj:SetParent(skinFrame)
 		opts.obj.SetParent_orig = opts.obj.SetParent
 		opts.obj.SetParent = function(this, parent)
-			-- aObj:Debug("SetParent: [%s, %s]", this, parent)
 			aObj.skinFrame[this]:SetParent(parent)
 			this:SetParent_orig(aObj.skinFrame[this])
 		end
