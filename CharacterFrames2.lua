@@ -316,7 +316,7 @@ function aObj:Buffs()
 				if btn and not btn.sknrBdr then
 					-- add button borders
 					aObj:addButtonBorder{obj=btn}
-					-- self:moveObject{obj=btn.duration, y=-1}
+					aObj:moveObject{obj=btn.duration, y=-1}
 				end
 			end
 
