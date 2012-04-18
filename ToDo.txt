@@ -10,4 +10,25 @@ Legend:
 
 	O	Update WoWAce commands page
 
-	I	Check to see if buff time is continually moved downwards in a loop
+	I	DropDown buttons code changes
+		- GuildLaunchCT_RaidTracker needs to be checked, raid required
+		- upto M changed as required
+
+√	I	Xloot, reported by Luckyjack_SL, 17.03.12
+		- ..\AddOns\Skinner\SkinMe\XLoot.lua line 52: attempt to index field 'AA' (a nil value)
+		(tail call): ?
+		Skinner\SkinMe\XLoot.lua:52:
+		Skinner\SkinMe\XLoot.lua:50
+   	 	(tail call): ?
+   		- XLoot, v0.91.6
+	  	XLootGroup, vz1-beta
+	  	XLootMaster, v0.82
+	  	XLootMonitor, v0.72
+	  	- Error running XLootGroup
+
+√	S	Smoker, requested by Luckyjack_SL, 17.03.12
+
+	I	Nameplates, reported by corys2005, 17.04.12
+		- getting random dc's when raiding, think it has to do with nameplates
+		- using Plate Buffs & pNameplates
+		- using Windows 7
