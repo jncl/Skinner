@@ -49,7 +49,7 @@ end
 
 function Skinner:XLootGroup()
 
-	self:applySkin(XLootGroup.AA.stacks.roll.frame)
+	self:addSkinFrame{obj=XLootGroup.anchor, kfs=true, nb=true}
 
 end
 
