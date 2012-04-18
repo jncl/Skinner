@@ -506,6 +506,15 @@ function aObj:LootFrame()
 	end
 	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-47, x2=-68}
 
+	-- Missing Loot frame
+	self:addSkinFrame{obj=MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
+	for i = 1, MissingLootFrame.numShownItems do
+		_G["MissingLootFrameItem"..index.."NameFrame"]:SetAlpha(0)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G["MissingLootFrameItem"..index], ibt=true}
+		end
+	end
+
 end
 
 function aObj:GroupLoot()
