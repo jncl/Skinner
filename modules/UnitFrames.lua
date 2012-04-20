@@ -102,35 +102,35 @@ local function skinPetF()
 		-- casting bar handled in CastingBar function (UIE1)
 		aObj:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars (Hunter's only)
 		aObj:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-1, x2=1}
-	end
+		-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
+		if db.petlevel
+		and aObj.uCls == "HUNTER"
+		or aObj.uCls == "WARLOCK"
+		then
+			if not PetFrame.lvl then
+				PetFrame.lvl = aObj.skinFrame[PetFrame]:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
+				PetFrame.lvl:SetPoint("BOTTOMLEFT", 4, 4)
+				local function checkLevel(event, ...)
 
-	-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
-	if db.petlevel
-	and aObj.uCls == "HUNTER"
-	or aObj.uCls == "WARLOCK"
-	then
-		if not PetFrame.lvl then
-			PetFrame.lvl = aObj.skinFrame[PetFrame]:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-			PetFrame.lvl:SetPoint("BOTTOMLEFT", 4, 4)
-			local function checkLevel(event, ...)
+					PetFrame.lvl:SetText(UnitLevel(PetFrame.unit))
 
-				PetFrame.lvl:SetText(UnitLevel(PetFrame.unit))
-
+				end
+				module:SecureHook("PetFrame_Update", function(this, ...)
+					checkLevel("pfu")
+				end)
+				module:RegisterEvent("PET_BAR_UPDATE", checkLevel) -- for pet changes
+				module:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
+				module:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
+				checkLevel("init")
+				PetFrame.lvl:Show()
+			else
+				PetFrame.lvl:Show()
 			end
-			module:SecureHook("PetFrame_Update", function(this, ...)
-				checkLevel("pfu")
-			end)
-			module:RegisterEvent("PET_BAR_UPDATE", checkLevel) -- for pet changes
-			module:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
-			module:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
-			checkLevel("init")
-			PetFrame.lvl:Show()
-		else
-			PetFrame.lvl:Show()
+		elseif PetFrame.lvl then
+			PetFrame.lvl:Hide()
 		end
-	elseif PetFrame.lvl then
-		PetFrame.lvl:Hide()
 	end
+
 
 end
 local function skinToT(frame)
@@ -484,7 +484,7 @@ function module:GetOptions()
 				order = 2,
 				name = aObj.L["Pet"],
 				desc = aObj.L["Toggle the skin of the Pet UnitFrame"],
-				set = aObj.uCls == "HUNTER" and function(info, value)
+				set = aObj.uCls == "HUNTER" or "WARLOCK" and function(info, value)
 					module.db.profile[info[#info]] = value
 					if not value then module.db.profile.petlevel = false end -- disable petlevel when disabled
 					module:adjustUnitFrames(info[#info])
