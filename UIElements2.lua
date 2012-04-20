@@ -272,7 +272,7 @@ function aObj:MenuFrames()
 
 		for _, child in ipairs{obj:GetChildren()} do
 			-- aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
-			if not self.skinFrame[child] then
+			if not aObj.skinFrame[child] then
 				if aObj:isDropDown(child) then
 					aObj:skinDropDown{obj=child}
 				elseif child:IsObjectType("EditBox") then

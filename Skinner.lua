@@ -1,6 +1,6 @@
 local aName, aObj = ...
 local _G = _G
-local obj, objName, tex, texName, btn, btnName, tab, tabSF, tabName, objHeight, prdb, c, opts, kRegions
+local obj, objName, tex, texName, btn, btnName, tab, tabSF, tabName, objHeight, prdb, c, opts, kRegions, ddTex
 
 do
 	-- check to see if required libraries are loaded
@@ -1325,14 +1325,6 @@ local function __skinDropDown(opts)
 		return
 	end
 
-	local btn, txt, ddTex
-	if opts.obj.leftTexture then
-		btn = opts.obj.button
-		txt = opts.obj.label
-	else
-		btn = _G[opts.obj:GetName().."Button"]
-		txt = _G[opts.obj:GetName().."Text"]
-	end
 	-- add texture
 	ddTex = opts.obj:CreateTexture(nil, "ARTWORK")
 	ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
