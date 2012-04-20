@@ -257,12 +257,14 @@ function aObj:MenuFrames()
 -->>-- Rating Menu
 	self:addSkinFrame{obj=RatingMenuFrame, ft=ftype, hdr=true}
 
+	local oName
 	local function checkKids(obj)
 
-		local oName = obj.GetName and obj:GetName() or nil
-		  -- ignore AceConfig/AceGUI objects
+		oName = obj.GetName and obj:GetName() or nil
+		  -- ignore named/AceConfig/XConfig/AceGUI objects
 		if oName
 		and (oName:find("AceConfig")
+		or oName:find("XConfig")
 		or oName:find("AceGUI"))
 		then
 			return

@@ -166,6 +166,7 @@
 <script file="SkinMe\LibQTip.lua"/>
 <script file="SkinMe\LibSimpleFrame.lua"/>
 <script file="SkinMe\LibTradeSkillScan.lua"/>
+<script file="SkinMe\LibXUI.lua"/>
 <script file="SkinMe\LightHeaded.lua"/>
 <script file="SkinMe\LilSparkysWorkshop.lua"/>
 <script file="SkinMe\Links.lua"/>
@@ -220,6 +221,7 @@
 <script file="SkinMe\Postal.lua"/>
 <script file="SkinMe\PowerAuras.lua"/>
 <script file="SkinMe\Prat3.lua"/>
+<script file="SkinMe\PreformAVEnabler.lua"/>
 <script file="SkinMe\Producer.lua"/>
 <script file="SkinMe\ProfessionsBook.lua"/>
 <script file="SkinMe\ProfessionTabs.lua"/>
