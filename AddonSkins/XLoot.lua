@@ -1,11 +1,10 @@
-if not Skinner:isAddonEnabled("XLoot") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("XLoot") then return end
 
 local function skinXLoot(frame)
 
---	Skinner:Debug("skinXLoot [%s, %s]", frame:GetName(), rawget(Skinner.skinned, frame))
-
-	if not Skinner.skinned[frame] then
-		Skinner:applySkin(frame)
+	if not aObj.skinned[frame] then
+		aObj:applySkin(frame)
 		frame.SetBackdropBorderColor = function() end
 		if strfind(frame:GetName(), "Wrapper") then
 			LowerFrameLevel(frame)
@@ -23,19 +22,17 @@ local function skinXLoot(frame)
 
 end
 
-function Skinner:XLoot()
+function aObj:XLoot()
 
 	-- check to see if this is the dummy plugin version
 	if not XLoot.AddLootFrame then return end
 
 	-- Hook the XLoot copy of the original skinning function
 	self:RawHook(XLoot, "Skin", function(this, frame)
---		self:Debug("XL_Skin [%s, %s]", this, frame:GetName())
 		skinXLoot(frame)
 	end, true)
 
 	self:SecureHook(XLoot, "AddLootFrame", function(this, id)
---		self:Debug("XL_ALF [%s, %s]", this, id)
 		skinXLoot(XLoot.frames[id])
 		skinXLoot(XLoot.buttons[id].wrapper)
 	end)
@@ -47,13 +44,17 @@ function Skinner:XLoot()
 
 end
 
-function Skinner:XLootGroup()
+function aObj:XLootGroup()
 
-	self:addSkinFrame{obj=XLootGroup.anchor, kfs=true, nb=true}
+	if XLootGroup.AA then
+		self:applySkin(XLootGroup.AA.stacks.roll.frame)
+	else
+		self:addSkinFrame{obj=XLootGroup.anchor, kfs=true, nb=true}
+	end
 
 end
 
-function Skinner:XLootMonitor()
+function aObj:XLootMonitor()
 
 	self:applySkin(XLootMonitor.AA.stacks.loot.frame)
 
