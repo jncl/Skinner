@@ -14,21 +14,49 @@ Legend:
 		- GuildLaunchCT_RaidTracker needs to be checked, raid required
 		- upto M changed as required
 
-√	I	Xloot, reported by Luckyjack_SL, 17.03.12
-		- ..\AddOns\Skinner\SkinMe\XLoot.lua line 52: attempt to index field 'AA' (a nil value)
-		(tail call): ?
-		Skinner\SkinMe\XLoot.lua:52:
-		Skinner\SkinMe\XLoot.lua:50
-   	 	(tail call): ?
-   		- XLoot, v0.91.6
-	  	XLootGroup, vz1-beta
-	  	XLootMaster, v0.82
-	  	XLootMonitor, v0.72
-	  	- Error running XLootGroup
-
-√	S	Smoker, requested by Luckyjack_SL, 17.03.12
-
 	I	Nameplates, reported by corys2005, 17.04.12
 		- getting random dc's when raiding, think it has to do with nameplates
 		- using Plate Buffs & pNameplates
 		- using Windows 7
+
+√	I	ARL, reported by Luckyjack_SL, 18.04.12
+		- Skinner-b4.15595.1\SkinMe\AckisRecipeList-2.3.0.lua:166: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+<in C code>
+AdiBags-v1.4.7.1\libs\AceHook-3.0\AceHook-3.0-5.lua:211: in function <AdiBags\libs\AceHook-3.0\AceHook-3.0.lua:118>
+AdiBags-v1.4.7.1\libs\AceHook-3.0\AceHook-3.0-5.lua:344: in function "SecureHook"
+Skinner-b4.15595.1\SkinMe\AckisRecipeList-2.3.0.lua:166: in function <Skinner\SkinMe\AckisRecipeList.lua:4>
+(tail call): ?
+
+√	I	XLoot, reported by Luckyjack_SL, 18.04.12
+		- ..\AddOns\Skinner\Skinner.lua line 544:
+   attempt to index field 'obj' (a nil value)
+Debug:
+   (tail call): ?
+   Skinner\Skinner.lua:544:
+      Skinner\Skinner.lua:515
+   (tail call): ?
+   Skinner\SkinMe\XLoot.lua:52:
+      Skinner\SkinMe\XLoot.lua:50
+   (tail call): ?
+		-   XLoot, v <-- Helper for XLoot10 to use the 'old' modules
+			XLoot10, vz28e-release
+			XLootGroup, v0.62
+			XLootMaster, v0.82
+			XLootMonitor, v0.72
+		- When I update XLootGroup to vz6-beta, the error doesn't occur
+		- Needs to work with all versions, to support XLoot & XLoot10
+
+√	I	UnitFrames, reported by Luckyjack_SL, 18.04.12
+		- ..\AddOns\Skinner\modules\UnitFrames.lua line 113:
+   attempt to index field '?' (a nil value)
+Debug:
+   (tail call): ?
+   Skinner\modules\UnitFrames.lua:113:
+      Skinner\modules\UnitFrames.lua:91
+   Skinner\modules\UnitFrames.lua:438: adjustUnitFrames()
+   Skinner\modules\UnitFrames.lua:430:
+      Skinner\modules\UnitFrames.lua:428
+   (tail call): ?
+   		- When I login on my warlock (and only my warlock)
+
+√	S	PreformAVEnabler, requested by frostfever1, 19.04.12
