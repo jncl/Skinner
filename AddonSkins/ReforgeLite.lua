@@ -10,6 +10,11 @@ function aObj:ReforgeLite()
 			self:SetText(aObj.modUIBtns.plus)
 		end
 	end
+	local function skinDropDown(obj)
+		aObj:skinDropDown{obj=obj, rp=true, y1=7, y2=13}
+		obj.ddTex:SetHeight(16)
+		_G[obj:GetName().."Button"]:SetPoint ("TOPRIGHT", _G[obj:GetName().."Right"], "TOPRIGHT", -17, -12)
+	end
 
 	-- hook this to skin editboxes
 	self:RawHook(ReforgeLiteGUI, "CreateEditBox", function(this, ...)
@@ -20,20 +25,9 @@ function aObj:ReforgeLite()
 	-- hook this to skin dropdowns
 	self:RawHook(ReforgeLiteGUI, "CreateDropdown", function(this, ...)
 		local dd = self.hooks[this].CreateDropdown(this, ...)
-		self:skinDropDown{obj=dd}
+		skinDropDown(dd)
 		return dd
 	end, true)
-	-- hook this to skin plus/minus buttons
-	if self.modBtns then
-		self:RawHook(ReforgeLiteGUI, "CreateImageButton", function(this, ...)
-			local btn = self.hooks[this].CreateImageButton(this, ...)
-			self:skinButton{obj=btn, mp2=true, as=true}
-			if btn.UpdateTexture then
-				btn.UpdateTexture = checkTexture
-			end
-			return btn
-		end, true)
-	end
 
 	-- Main frame
 	self:skinSlider{obj=ReforgeLite.scrollBar}
@@ -47,7 +41,7 @@ function aObj:ReforgeLite()
 		
 		for _, child in ipairs{obj:GetChildren()} do
 			if self:isDropDown(child) then
-				self:skinDropDown{obj=child}
+				skinDropDown(child)
 			elseif child:IsObjectType("EditBox") then
 				self:skinEditBox{obj=child}
 			elseif child:IsObjectType("Button") then
@@ -65,6 +59,13 @@ function aObj:ReforgeLite()
 	end
 	skinChildren(ReforgeLite.content)
 	
+	-- Calculate Method subframe
+	self:SecureHook(ReforgeLite, "UpdateMethodCategory", function(this)
+		self:skinButton{obj=ReforgeLite.methodCategory.button, mp=true}
+		self:skinButton{obj=ReforgeLiteMethodShowButton}
+		self:skinButton{obj=ReforgeLiteMethodResetButton}
+		self:Unhook(ReforgeLite, "UpdateMethodCategory")
+	end)
 	-- Output Frame
 	self:SecureHook(ReforgeLite, "ShowMethodWindow", function(this)
 		self:addSkinFrame{obj=ReforgeLite.methodWindow, y1=-8}

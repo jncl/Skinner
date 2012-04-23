@@ -271,10 +271,16 @@ function aObj:MenuFrames()
 		end
 
 		for _, child in ipairs{obj:GetChildren()} do
-			-- aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
+			aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
 			if not aObj.skinFrame[child] then
 				if aObj:isDropDown(child) then
-					aObj:skinDropDown{obj=child}
+					local xOfs
+					if child:GetName():find("PowaDropDownDefaultTimer") then
+						xOfs = -90
+					elseif child:GetName():find("PowaDropDownDefaultStacks") then
+						xOfs = -110
+					end
+					aObj:skinDropDown{obj=child, x2=xOfs}
 				elseif child:IsObjectType("EditBox") then
 					aObj:skinEditBox{obj=child, regs={9}}
 				elseif child:IsObjectType("ScrollFrame")

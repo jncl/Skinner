@@ -1326,11 +1326,11 @@ local function __skinDropDown(opts)
 	end
 
 	-- add texture
-	ddTex = opts.obj:CreateTexture(nil, "ARTWORK")
-	ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
-	ddTex:SetPoint("LEFT", _G[opts.obj:GetName().."Left"], "RIGHT", -5, 2)
-	ddTex:SetPoint("RIGHT", _G[opts.obj:GetName().."Right"], "LEFT", 5, 2)
-	ddTex:SetHeight(18)
+	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK")
+	opts.obj.ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
+	opts.obj.ddTex:SetPoint("LEFT", _G[opts.obj:GetName().."Left"], "RIGHT", -5, 2)
+	opts.obj.ddTex:SetPoint("RIGHT", _G[opts.obj:GetName().."Right"], "LEFT", 5, 2)
+	opts.obj.ddTex:SetHeight(18)
 
 	local xOfs1 = opts.x1 or 15
 	local yOfs1 = opts.y1 or 0
@@ -1425,8 +1425,16 @@ local function __skinEditBox(opts)
 			aObj:moveObject{obj=opts.obj.searchIcon, x=3} -- e.g. BagItemSearchBox
 		elseif opts.obj.icon then
 			aObj:moveObject{obj=opts.obj.icon, x=3} -- e.g. FriendsFrameBroadcastInput
-		else
+		elseif _G[opts.obj:GetName().."SearchIcon"] then
 			aObj:moveObject{obj=_G[opts.obj:GetName().."SearchIcon"], x=3} -- e.g. TradeSkillFrameSearchBox
+		else -- e.g. WeakAurasFilterInput
+			for _, reg in pairs{opts.obj:GetRegions()} do
+				if reg:GetObjectType() == "Texture"
+				and reg:GetTexture():find("UI-Searchbox-Icon", 1, true)
+				then
+					aObj:moveObject{obj=reg, x=3}
+				end
+			end
 		end
 	end
 

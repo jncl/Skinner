@@ -7,8 +7,8 @@ function aObj:Skillet()
 	self:SecureHook(Skillet, "ShowTradeSkillWindow", function()
 		SkilletRankFrameBorder:Hide()
 		self:glazeStatusBar(SkilletRankFrame, 0, SkilletRankFrameBackground)
-		self:skinDropDown{obj=SkilletRecipeGroupDropdown}
-		self:skinDropDown{obj=SkilletSortDropdown}
+		self:skinDropDown{obj=SkilletRecipeGroupDropdown, x2=110}
+		self:skinDropDown{obj=SkilletSortDropdown, x2=110}
 		self:skinEditBox(SkilletFilterBox, {9})
 		self:skinScrollBar{obj=SkilletSkillList, size=3}
 		self:applySkin(SkilletSkillListParent)
