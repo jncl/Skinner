@@ -236,7 +236,7 @@ end
 aObj.oddlyNamedLoDAddons = { "_DevPad.GUI", "DBM-GUI" }
 local prev_addon
 function aObj:LoDFrames(addon)
---	  self:Debug("LoDFrames: [%s]", addon)
+	-- self:Debug("LoDFrames: [%s]", addon)
 
 	if addon == prev_addon then return end
 	prev_addon = addon

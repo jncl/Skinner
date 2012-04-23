@@ -1,6 +1,6 @@
 local aName, aObj = ...
 local _G = _G
-local obj, objName, tex, texName, btn, btnName, tab, tabSF
+local obj, objName, texName, btn, btnName, tab, tabSF
 local round2 = aObj.round2
 
 local function makeString(t)
@@ -89,6 +89,8 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end) -- brief
 	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), true, false) end)
 	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), false, false) end)
+	self:RegisterChatCommand("sigp", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent():GetParent(), true, false) end)
+	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent():GetParent(), false, false) end)
 	self:RegisterChatCommand("gp", function(msg) print(GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function(msg) print(GetMouseFocus():GetParent():GetPoint()) end)
 	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
@@ -323,6 +325,7 @@ function aObj:isDropDown(obj)
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
+	local tex
 	if obj:GetName() then tex = _G[obj:GetName().."Left"] end
 
 	if obj:IsObjectType("Frame")
