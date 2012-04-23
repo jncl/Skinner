@@ -1,3 +1,12 @@
+b4.15595.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Code Tidyup
+	Bugfix for Warlock Pet UnitFrame level
+	Updated ARL & XLoot
+	Skinned PreformAVEnabler & X-UI library
+
 b4.15595.1
 Jncl:
 	ToDo.txt
