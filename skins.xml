@@ -191,7 +191,6 @@
 <script file="SkinMe\MuffinMOTD.lua"/>
 <script file="SkinMe\MyBags.lua"/>
 <script file="SkinMe\myClock.lua"/>
-<script file="SkinMe\NeatFreak.lua"/>
 <script file="SkinMe\Necrosis.lua"/>
 <script file="SkinMe\NeonChat.lua"/>
 <script file="SkinMe\nQuestLog.lua"/>
@@ -205,7 +204,6 @@
 <script file="SkinMe\Overachiever.lua"/>
 <script file="SkinMe\PallyPower.lua"/>
 <script file="SkinMe\Panda.lua"/>
-<script file="SkinMe\PartyBuilder.lua"/>
 <script file="SkinMe\PassLoot.lua"/>
 <script file="SkinMe\Pawn.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
@@ -285,8 +283,6 @@
 <script file="SkinMe\tomQuest2.lua"/>
 <script file="SkinMe\TomTom.lua"/>
 <script file="SkinMe\TooManyAddons.lua"/>
-<script file="SkinMe\Toons.lua"/>
-<script file="SkinMe\TotemCaddy.lua"/>
 <script file="SkinMe\TourGuide.lua"/>
 <script file="SkinMe\TradeSkillMaster.lua"/>
 <script file="SkinMe\TradeTabs.lua"/>
