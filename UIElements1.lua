@@ -742,21 +742,6 @@ function aObj:HelpFrame()
 	HelpFrame.kbase.navBar.home:GetNormalTexture():SetAlpha(0)
 	HelpFrame.kbase.navBar.home:GetPushedTexture():SetAlpha(0)
 	HelpFrame.kbase.navBar.home.text:SetPoint("RIGHT", -20, 0) -- allow text to be fully displayed
-
--->>-- Character Stuck panel
-	self:addButtonBorder{obj=HelpFrameCharacterStuckHearthstone, es=20}
-
--->>--	Ticket panel
-	self:skinSlider{obj=HelpFrameTicketScrollFrame.ScrollBar}
-	self:addSkinFrame{obj=self:getChild(HelpFrame.ticket, 4), ft=ftype}
-
--->>--	Ticket Status Frame
-	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
-
--->>-- HelpOpenTicketButton
-	HelpOpenTicketButton.tutorial:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=HelpOpenTicketButton.tutorial, ft=ftype, y1=3, x2=3}
-
 	-- hook this to handle navbar buttons
 	self:SecureHook("NavBar_AddButton", function(this, buttonData)
 		-- self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
@@ -767,6 +752,38 @@ function aObj:HelpFrame()
 			btn:GetPushedTexture():SetAlpha(0)
 		end
 	end)
+
+-->>-- Character Stuck panel
+	self:addButtonBorder{obj=HelpFrameCharacterStuckHearthstone, es=20}
+
+-->-- Submit Bug panel
+	self:skinSlider{obj=HelpFrameReportBugScrollFrame.ScrollBar}
+	self:addSkinFrame{obj=self:getChild(HelpFrame.bug, 3), ft=ftype}
+
+-->-- Submit Suggestion panel
+	self:skinSlider{obj=HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
+	self:addSkinFrame{obj=self:getChild(HelpFrame.suggestion, 3), ft=ftype}
+
+-->>-- Ticket panel
+	self:skinSlider{obj=HelpFrameTicketScrollFrame.ScrollBar}
+	self:addSkinFrame{obj=self:getChild(HelpFrame.ticket, 4), ft=ftype}
+
+-->>-- HelpOpenTicketButton
+	HelpOpenTicketButton.tutorial:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=HelpOpenTicketButton.tutorial, ft=ftype, y1=3, x2=3}
+
+-->>-- Ticket Status Frame
+	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
+
+-->>-- Report Player Name Dialog
+	self:addSkinFrame{obj=ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+	ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=ReportPlayerNameDialog, ft=ftype}
+
+-->>-- Report Cheating Dialog
+	self:addSkinFrame{obj=ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+	ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=ReportCheatingDialog, ft=ftype}
 
 end
 
