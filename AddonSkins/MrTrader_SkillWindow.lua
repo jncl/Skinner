@@ -5,7 +5,6 @@ function aObj:MrTrader_SkillWindow()
 
 	-- hide filter texture when filter is clicked
 	self:SecureHook("MRTUIUtils_FilterButton_SetType", function(btn, type, ...)
---		self:Debug("MRTUIU_FB_ST: [%s, %s, %s, %s, %s, %s]", btn, type, ...)
 		btn:GetNormalTexture():SetAlpha(0)
 		if type == "checkbox"
 		or type == "command"
@@ -16,7 +15,7 @@ function aObj:MrTrader_SkillWindow()
 		end
 	end)
 
-	self:skinEditBox{obj=MRTSkillFrameSearchBox, regs={9}, noWidth=true}
+	self:skinEditBox{obj=MRTSkillFrameSearchBox, regs={9}, mi=true, noWidth=true}
 	self:skinDropDown{obj=MRTSkillFrameSortDropDown}
 	MRTSkillFilterButtons:DisableDrawLayer("OVERLAY") -- hide vertical bar
 	-- Filter buttons
@@ -29,6 +28,12 @@ function aObj:MrTrader_SkillWindow()
 	-- Reagents
 	for i = 1, 10 do
 		_G["MRTSkillButton"..i.."Border"]:SetBackdrop(nil)
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=_G["MRTSkillButton"..i.."Icon"], ofs=3}
+			 for j = 1, 4 do
+			 	self:addButtonBorder{obj=_G["MRTSkillButton"..i.."ReagentLrg"..j]}
+			 end
+		end
 	end
 	self:skinScrollBar{obj=MRTSkillListScrollFrame}
 	self:glazeStatusBar(MRTSkillRankFrame, 0, MRTSkillRankFrameBackground)
@@ -40,7 +45,7 @@ function aObj:MrTrader_SkillWindow()
 	self:removeMagicBtnTex(MRTSkillCreateAllButton)
 	
 -->>-- New Category frame
-	self:skinEditBox{obj=MRTNewCategoryFrameCategoryName, x=-3}
+	self:skinEditBox{obj=MRTNewCategoryFrameCategoryName, regs={9}, x=-3}
 	self:addSkinFrame{obj=MRTNewCategoryFrame, kfs=true, x1=5, y1=-6, x2=-5, y2=6}
 
 end

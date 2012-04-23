@@ -186,6 +186,7 @@
 <script file="SkinMe\MonkeyQuestLog.lua"/>
 <script file="SkinMe\Mountiful.lua"/>
 <script file="SkinMe\MoveAnything.lua"/>
+<script file="SkinMe\MrTrader_SkillWindow.lua"/>
 <script file="SkinMe\MSBTOptions.lua"/>
 <script file="SkinMe\MTLove.lua"/>
 <script file="SkinMe\MuffinMOTD.lua"/>
