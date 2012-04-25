@@ -12,7 +12,13 @@ Legend:
 
 	O	MoP Beta
 		NEW
+		- Blizzard_BlackMarketUI
+		- Blizzard_ChallengesUI
+		- Blizzard_PetBattleUI
+		- Blizzard_PetJournal
+
 		- ActionBarController
+		- BonusActionBarFrame
 		- DestinyFrame
 		- ExtraActionBar
 		- FrameLocks
@@ -22,50 +28,146 @@ Legend:
 		- PetBattleStubs
 		- PossessActionBar
 		- PriestBar
+		- ScenarioFinder
 		- SharedPetBattleTemplates
 		- StanceBar
+		- VehicleMenuBar
 		- VehicleSeatIndicator
-		- Blizzard_PetBattleUI
-		- Blizzard_PetJournal
 
 		UPD
-		- EncounterJournalUI
-		- GlyphUI
-		- TalentUI
-		- GuildBankUI
-		- GuildUI
-		- InspectUI
-		- ItemSocketingUI
-		- MacroUI
-		- ReforgingUI
-		- TimeManager
+		- Blizzard_AchievementUI
+		- Blizzard_ArchaeologyUI
+		- Blizzard_ArenaUI
+		- Blizzard_AuctionUI
+		- Blizzard_BattlefieldMinimap
+		- Blizzard_BindingUI
+		- Blizzard_CompactUnitFrameProfiles
+		- Blizzard_Calendar
+		- Blizzard_CombatLog
+		- Blizzard_CombatText
+		- Blizzard_CompactRaidFrameContainer
+		- Blizzard_CompactRaidFrameManager
+		- Blizzard_CompactRaidFrames
+		- Blizzard_EncounterJournal
+		- Blizzard_GlyphUI
+		- Blizzard_GuildBankUI
+		- Blizzard_GuildControlUI
+		- Blizzard_GuildInfo
+		- Blizzard_GuildNews
+		- Blizzard_GuildRoster
+		- Blizzard_GuildUI
+		- Blizzard_InspectUI
+		- Blizzard_ItemAlterationUI
+		- Blizzard_ItemSocketingUI
+		- Blizzard_LookingForGuildUI
+		- Blizzard_MacroUI
+		- Blizzard_RaidUI
+		- Blizzard_ReforgingUI
+		- Blizzard_TalentUI
+		- Blizzard_TimeManager
+		- Blizzard_TradeSkillUI
+		
+		- ActionButton
+		- AlertFrames 
 		- AlternatePowerBar
+		- BNet
 		- BankFrame (BG changes with Paladin Holy Power)
-		- Buffs
+		- Bindings
+		- BuffFrame
+		- CastingBarFrame
+		- ChannelFrame
+		- CharacterFrame
+		- ChatConfigFrame
+		- ChatFrame
+		- CombatFeedback
+		- CompactPartyFrame
+		- CompactRaidGroup
+		- CompactUnitFrame
+		- EclipseBarFrame
+		- FloatingChatFrame
+		- FlowContainer
+		- FocusFrame
+		- FriendsFrame
+		- GameMenuFrame
 		- GossipFrame
-		- GuildRegistrar
+		- GraphicsQualityLevels
+		- GuildInviteFrame
+		- GuildRegistrarFrame
+		- HelpFrame
+		- HybridScrollFrame
+		- IconIntroAnimation
+		- InterfaceOptionsFrame
+		- InterfaceOptionsPanels
+		- ItemButtonTemplate
+		- ItemRef
 		- ItemTextFrame
 		- LFDFrame
+		- LFGFrame
 		- LFRFrame
+		- LevelUpDisplay
 		- LootFrame
+		- MacOptionsFrame
 		- MailFrame
 		- MainMenuBar
+		- MainMenuBarMicroButtons
 		- MerchantFrame
+		- Minimap
+		- ModelFrames
+		- MoneyFrame
+		- MoneyInputFrame
+		- MultiActionBars
+		- PVPFrame
 		- PaladinPowerBar
 		- PaperDollFrame (ranged slot now hidden/shown depending upon player type)
+		- PartyFrameTemplates
+		- PartyMemberFrame
+		- PetActionBarFrame
+		- PetFrame
+		- PetPaperDollFrame
 		- PetitionFrame
+		- PlayerFrame
 		- QuestFrame
+		- QuestFrameTemplates
+		- QuestInfo
 		- QuestLogFrame
-		- RaidFinderFrame
+		- RaidFinder
 		- RaidFrame
+		- RaidWarning
+		- ReadyCheck
+		- ReputationFrame
+		- RestrictedEnvironment
+		- RolePoll
+		- RuneFrame
+		- ScrollOfResurrection
+		- SecureGroupHeaders
+		- SecureStateDriver
+		- SecureTemplates
 		- ShardBar
+		- SpellBookFrame
+		- SpellFlyout
+		- StaticPopup
 		- TabardFrame
-		- UnitFrames (classifications)
+		- TalentFrameBase
+		- TargetFrame
+		- TaxiFrame
+		- TextStatusBar
+		- Timer
+		- TotemFrame
 		- TradeFrame
+		- TutorialFrame
+		- UIDropDownMenu
 		- UIPanelTemplates
 			- (button left, middle & right textures now named)
 			- gold edge for money frames
+		- UIParent
+		- UnitFrame (classifications)
+		- UnitPopup
+		- UnitPowerBarAlt
 		- VideoOptionsPanel
+		- WatchFrame
+		- WorldMapFrame
+		- WorldMapFrameTemplates
+		- WorldStateFrame
 
 		- Numerous Button templates changed
 		- Class specific bar frames have been renamed
@@ -76,4 +178,9 @@ Legend:
 		- VehicleMenuBar
 		- ShapeshiftBarFrame
 
-	I	Check to see if buff time is continually moved downwards in a loop
+		UI
+		- Dungeon & Raid Finder consolidated into Group Finder, includes Scenario finder and Challenges Mode
+		- Spellbook now split into Active and Passive pages
+		- Vendor filter (dd) added to merchant frame
+		- Buff consolidation now permanent, new tooltip with buff info
+		- 
