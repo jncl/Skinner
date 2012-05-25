@@ -1,3 +1,15 @@
+b4.15595.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Skin ChatFrame buttons, SkillBook Next/Prev buttons & CharacterFrame Expand button
+	Comment out debug message
+	Add delay before skinning Minimap buttons to allow for those created by other Addons
+	Skin QuestInfoSpellObjectiveFrame
+	Load GlyphUI skin when TalentUI loaded
+	Bugfix for ChatTabs
+	Updated AutoBag, Baggins (as reported by Decabah), BetterInbox, Quartz & ReforgeLite (as reported by Gershuun) skins
+
 b4.15595.3
 Jncl:
 	ToDo.txt
