@@ -271,7 +271,7 @@ function aObj:MenuFrames()
 		end
 
 		for _, child in ipairs{obj:GetChildren()} do
-			aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
+			-- aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
 			if not aObj.skinFrame[child] then
 				if aObj:isDropDown(child) then
 					local xOfs
