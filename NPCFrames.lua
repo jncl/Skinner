@@ -416,10 +416,19 @@ function aObj:QuestInfo()
 	QuestInfoRewardSpellNameFrame:SetTexture(nil)
 	QuestInfoRewardSpellSpellBorder:SetTexture(nil)
 
+	-- Skill Point frame
 	btnName = "QuestInfoSkillPointFrame"
 	_G[btnName.."NameFrame"]:SetTexture(nil)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G[btnName], libt=true, reParent={_G[btnName.."SkillPointBg"], _G[btnName.."SkillPointBgGlow"], _G[btnName.."Points"]}}
+	end
+
+	-- Spell Objective frame
+	btnName = "QuestInfoSpellObjectiveFrame"
+	_G[btnName.."NameFrame"]:SetTexture(nil)
+	_G[btnName.."SpellBorder"]:SetTexture(nil)
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."IconTexture"]}
 	end
 
 end
