@@ -237,19 +237,23 @@ local function skinChatTab(objName)
 	tabSF = aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
 	tabSF:SetAlpha(0.2)
 	-- hook this to fix tab gradient texture overlaying text & highlight
-	aObj:SecureHook(tab, "SetParent", function(this, parent)
-		local tabSF = aObj.skinFrame[this]
-		if parent == GeneralDockManager.scrollFrame.child then
-			tabSF:SetParent(GeneralDockManager)
-		else
-			tabSF:SetParent(this)
-			tabSF:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
-		end
-	end)
+	if not aObj:IsHooked(tab, "SetParent") then
+		aObj:SecureHook(tab, "SetParent", function(this, parent)
+			local tabSF = aObj.skinFrame[this]
+			if parent == GeneralDockManager.scrollFrame.child then
+				tabSF:SetParent(GeneralDockManager)
+			else
+				tabSF:SetParent(this)
+				tabSF:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
+			end
+		end)
+	end
 	-- hook this to manage alpha changes when chat frame fades in and out
-	aObj:SecureHook(tab, "SetAlpha", function(this, alpha)
-		aObj.skinFrame[this]:SetAlpha(alpha)
-	end)
+	if not aObj:IsHooked(tab, "SetAlpha") then
+		aObj:SecureHook(tab, "SetAlpha", function(this, alpha)
+			aObj.skinFrame[this]:SetAlpha(alpha)
+		end)
+	end
 
 end
 function aObj:ChatTabs()
