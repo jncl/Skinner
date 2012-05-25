@@ -23,6 +23,10 @@ function aObj:CharacterFrame()
 	self:skinTabs{obj=CharacterFrame}
 	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, bgen=2, y1=2, x2=1, y2=-6}
 
+	if self.modBtnBs then
+		self:addButtonBorder{obj=CharacterFrameExpandButton, ofs=-2}
+	end
+
 end
 
 function aObj:PaperDollFrame()
@@ -319,6 +323,10 @@ function aObj:SpellBookFrame()
 
 	self:skinTabs{obj=SpellBookFrame, suffix="Button", x1=8, y1=1, x2=-8, y2=2}
 	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-6}
+	if self.modBtnBs then
+		self:addButtonBorder{obj=SpellBookPrevPageButton, ofs=-2}
+		self:addButtonBorder{obj=SpellBookNextPageButton, ofs=-2}
+	end
 -->>- Spellbook Panel
 	SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- hook this to change text colour as required
@@ -409,7 +417,6 @@ function aObj:GlyphUI() -- LoD
 	end
 --]=]
 	self:removeInset(GlyphFrame.sideInset)
-
 	self:skinEditBox{obj=GlyphFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:skinDropDown{obj=GlyphFrameFilterDropDown}
 	-- Headers

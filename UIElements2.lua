@@ -526,7 +526,6 @@ function aObj:MainMenuBar()
 		for _, v in pairs{"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "PVP", "LFD", "MainMenu", "Help", "Guild"} do
 			self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
 		end
-		self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
 		self:addButtonBorder{obj=EJMicroButton, mb=true, ofs=0, y1=-21}
 		self:addButtonBorder{obj=RaidMicroButton, mb=true, ofs=0, y1=-21}
 		-- Bag buttons

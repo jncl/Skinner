@@ -403,6 +403,24 @@ function aObj:ChatConfig()
 
 end
 
+-- currently no option for this function
+function aObj:ChatButtons()
+
+	if self.modBtnBs then
+		for i = 1, NUM_CHAT_WINDOWS do
+			obj = _G["ChatFrame"..i]
+			self:addButtonBorder{obj=obj.buttonFrame.bottomButton, ofs=-2}
+			self:addButtonBorder{obj=obj.buttonFrame.downButton, ofs=-2}
+			self:addButtonBorder{obj=obj.buttonFrame.upButton, ofs=-2}
+			self:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2}
+		end
+		-- Chatframe buttons on LHS
+		self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}
+		self:addButtonBorder{obj=ChatFrameMenuButton, ofs=-2}
+	end
+
+end
+
 local function skinChatEB(obj)
 
 	if aObj.db.profile.ChatEditBox.style == 1 then -- Frame
