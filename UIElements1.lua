@@ -1108,8 +1108,8 @@ function aObj:MinimapButtons()
 
 	end
 
-	-- skin Minimap children
-	mmKids(Minimap)
+	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
+	self:ScheduleTimer(mmKids, 0.5, Minimap)
 
 	-- skin other Blizzard buttons
 	asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
