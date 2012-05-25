@@ -55,7 +55,6 @@ function aObj:Quartz() -- Quartz3
 	end
 	mod = Quartz3:GetModule("Swing", true)
 	if mod and mod:IsEnabled() then
-		self:applySkin(_G["Quartz3SwingBar"])
 		self:getChild(_G["Quartz3SwingBar"], 1).__texture:SetTexture(self.sbTexture)
 	end
 	mod = Quartz3:GetModule("Latency", true)

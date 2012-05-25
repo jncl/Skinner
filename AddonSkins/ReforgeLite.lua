@@ -12,7 +12,7 @@ function aObj:ReforgeLite()
 	end
 	local function skinDropDown(obj)
 		aObj:skinDropDown{obj=obj, rp=true, y1=7, y2=13}
-		obj.ddTex:SetHeight(16)
+		if obj.ddTex then obj.ddTex:SetHeight(16) end
 		_G[obj:GetName().."Button"]:SetPoint ("TOPRIGHT", _G[obj:GetName().."Right"], "TOPRIGHT", -17, -12)
 	end
 

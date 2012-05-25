@@ -17,5 +17,8 @@ function aObj:AutoBag()
 	self:adjWidth{obj=AB_Options, adj=220}
 	self:adjHeight{obj=AB_Options, adj=150}
 	self:addSkinFrame{obj=AB_Options, kfs=true, hdr=true}
+	
+	-- options panel
+	self:skinDropDown{obj=AB_Groups_Dropdown, x2=60}
 
 end
