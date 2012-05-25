@@ -773,6 +773,9 @@ function aObj:Options()
 				if uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
 						self:checkAndRun(info[#info])
+						if info[#info] == "TalentUI" then
+							self:checkAndRun("GlyphUI")
+						end
 					end
 				else self:checkAndRun(info[#info]) end
 			end,
