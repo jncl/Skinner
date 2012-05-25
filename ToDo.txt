@@ -10,23 +10,7 @@ Legend:
 
 	O	Update WoWAce commands page
 
-	I	DropDown buttons code changes
-		- GuildLaunchCT_RaidTracker needs to be checked, raid required
-		- all skins changed as required
-
 ?	I	Nameplates, reported by corys2005, 17.04.12
 		- getting random dc's when raiding, think it has to do with nameplates
 		- using Plate Buffs & pNameplates
 		- using Windows 7
-
-√	N	Baggins, reported by Decabah, 04.05.12
-
-	N	HealBot
-
-√  	I 	ReforgeLite, reported by Gershuun, 05.05.12
-		- ..\AddOns\Skinner\SkinMe\ReforgeLite.lua line 15:
-  attempt to index field 'ddTex' (a nil value)
-Debug:
-  (tail call): ?
-
-√	I	Chatframe buttons, requested by Hammer2, 23.05.12
