@@ -14,22 +14,19 @@ Legend:
 		- GuildLaunchCT_RaidTracker needs to be checked, raid required
 		- all skins changed as required
 
-√	O	4.3.4 changes
-		- skin additional Help panels & Frames
-
 ?	I	Nameplates, reported by corys2005, 17.04.12
 		- getting random dc's when raiding, think it has to do with nameplates
 		- using Plate Buffs & pNameplates
 		- using Windows 7
 
-√	I	Reforgelite, reported by Decabah, 20.04.12
-		- dropdowns need fixing
+√	N	Baggins, reported by Decabah, 04.05.12
 
-√	I	MrTrader, reported by X-buZZ, 20.04.12
-		- still not being skinned
-		- skin was obsoleted, 27.03.12
+	N	HealBot
 
-√	S	Reforgerade, requested by X-buZZ, 20.04.12
+√  	I 	ReforgeLite, reported by Gershuun, 05.05.12
+		- ..\AddOns\Skinner\SkinMe\ReforgeLite.lua line 15:
+  attempt to index field 'ddTex' (a nil value)
+Debug:
+  (tail call): ?
 
-√	I	Skillet, reported by Luckyjack_SL, 21.04.12
-		- broken dropdown skinned boxes on Grouping and Sorting menu's (topleft of Skillet overview)
+√	I	Chatframe buttons, requested by Hammer2, 23.05.12
