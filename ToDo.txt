@@ -14,3 +14,12 @@ Legend:
 		- getting random dc's when raiding, think it has to do with nameplates
 		- using Plate Buffs & pNameplates
 		- using Windows 7
+
+√	I	Fizzle,reported by hammer2, 26.05.12
+		- its border colours are overriden if button borders are turned on
+
+√	I	AdiBags, reported by hammer2, 26.05.12
+		- not using button border code
+
+√	I	ButtonBorders, requested by hammer2, 27.05.12
+		- managed this by creating a skin for the oGlow addon that hides the sknrBdr object if the oGlowBorder is visible
