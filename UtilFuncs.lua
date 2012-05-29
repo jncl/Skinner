@@ -505,3 +505,34 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 	showIt("Finished Children")
 
 end
+
+-- Event Handling
+-- This will allow for multiple occurrences of the same event to be managed
+local eventFrame = CreateFrame("Frame")
+local eventsTable = setmetatable({}, {__index = function(t, k) rawset(t, k, {}) return rawget(t, k) end})
+eventFrame:SetScript("OnEvent", function(this, event, ...)
+	-- aObj:Debug("OnEvent: [%s, %s]", event, ... or nil)
+	for _, func in ipairs(eventsTable[event]) do
+		-- aObj:Debug("OnEvent#2: [%s]", func)
+		func(aObj, event, ...)
+	end
+end)
+function aObj:RegisterEvent(event, func)
+	eventsTable[event][#eventsTable[event]+1] = func or aObj[event]
+	if #eventsTable[event] == 1 then eventFrame:RegisterEvent(event) end
+	-- self:Debug("RegisterEvent: [%s, %s, %s]", event, func or aObj[event], #eventsTable[event])
+	return #eventsTable[event]
+end
+function aObj:UnregisterEvent(event, funcNum)
+	-- self:Debug("UnregisterEvent: [%s, %s]", event, funcNum)
+	if funcNum then
+		eventsTable[event][funcNum] = nil
+	else
+		for i, v in ipairs(eventsTable[event]) do
+			if v == aObj[event] then
+				v = nil
+				break
+			end
+		end
+	end
+end

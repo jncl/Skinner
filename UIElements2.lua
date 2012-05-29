@@ -279,6 +279,8 @@ function aObj:MenuFrames()
 						xOfs = -90
 					elseif child:GetName():find("PowaDropDownDefaultStacks") then
 						xOfs = -110
+					elseif child:GetName():find("oGlowOptFQualityThreshold") then
+						xOfs = 110
 					end
 					aObj:skinDropDown{obj=child, x2=xOfs}
 				elseif child:IsObjectType("EditBox") then

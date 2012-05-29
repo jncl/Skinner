@@ -62,14 +62,14 @@ aObj.addonSkins = {
 	"CalendarNotify", "CallToArms", "Capping", "Carbonite", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "CombustionHelper", "ConcessionStand", "Converse", "CoolLine", "Cork", "Cosplay", "CowTip", "CT_MailMod", "CT_RaidTracker",
 	"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "DeathNote", "DockingStation", "Dominos", "DragonCore",
 	"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElvUI", "EnchantMe", "EnergyWatch", "EngBags", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "epgp_lootmaster", "epgp_lootmaster_ml", "EquipCompare", "EventEquip", "Examiner", "ExtVendor",
-	"Factionizer", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "FlightMap", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
+	"Factionizer", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "Fizzle", "FlightMap", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Gatherer", "GemMe", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar5", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GuildMaster",  "GupPet",
 	"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", "HealBot", "Highlight", "HitsMode", "HoloFriends",
 	"InspectEquip", "IntricateChatMods", "IPopBar", "ItemRack", "ItemSync",
 	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinkWrangler", "Livestock",
 	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
 	"Necrosis", "NeonChat", "nQuestLog",
-	"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
+	"Odyssey", "oGlow", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
 	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "ProfessionTabs", "PvpMessages",
 	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper", "QuestHelper2", "QuestHistory", "QuickMark",
 	"RABuffs", "RaidAchievement", "RaidAchievement_AchieveReminder", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidTracker", "RaidyCheck", "RandomPet30", "ReagentRestocker", "Recap", "RecipeBook", "RecipeRadar", "Recount", "REFlex", "ReforgeLite", "Reforgenator", "Reforgerade", "RicoMiniMap",
@@ -284,7 +284,7 @@ function aObj:LoDFrames(addon)
 end
 
 function aObj:ADDON_LOADED(event, addon)
---	self:Debug("ADDON_LOADED: [%s]", addon)
+	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
 	self:ScheduleTimer("LoDFrames", self.db.profile.Delay.LoDs, addon)
 

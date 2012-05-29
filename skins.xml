@@ -120,6 +120,7 @@
 <script file="SkinMe\FBagOfHolding.lua"/>
 <script file="SkinMe\FeedMachine.lua"/>
 <script file="SkinMe\FishingBuddy.lua"/>
+<script file="SkinMe\Fizzle.lua"/>
 <script file="SkinMe\FlightMap.lua"/>
 <script file="SkinMe\FlightMapEnhanced.lua"/>
 <script file="SkinMe\FlyoutButtonCustom.lua"/>
@@ -196,6 +197,7 @@
 <script file="SkinMe\NeonChat.lua"/>
 <script file="SkinMe\nQuestLog.lua"/>
 <script file="SkinMe\Odyssey.lua"/>
+<script file="SkinMe\oGlow.lua"/>
 <script file="SkinMe\OgriLazy.lua"/>
 <script file="SkinMe\Omen.lua"/>
 <script file="SkinMe\OneBag3.lua"/>
