@@ -479,6 +479,9 @@ function aObj:ItemAlterationUI() -- LoD
 		local bName = "TransmogrifyFrame"..v.."Slot"
 		_G[bName.."Grabber"]:SetAlpha(0)
 		_G[bName]:DisableDrawLayer("BORDER")
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G[bName]}
+		end
 	end
 	TransmogrifyModelFrame:DisableDrawLayer("BACKGROUND")
 	TransmogrifyModelFrame:DisableDrawLayer("BORDER")
@@ -500,6 +503,15 @@ function aObj:VoidStorageUI() -- LoD
 		local frame = _G["VoidStorage"..v.."Frame"]
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
+	end
+	if self.modBtnBs then
+		for i = 1, 9 do
+			self:addButtonBorder{obj=_G["VoidStorageDepositButton"..i]}
+			self:addButtonBorder{obj=_G["VoidStorageWithdrawButton"..i]}
+		end
+		for i = 1, 80 do
+			self:addButtonBorder{obj=_G["VoidStorageStorageButton"..i]}
+		end
 	end
 	self:addSkinFrame{obj=VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
 	self:skinEditBox{obj=VoidItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
