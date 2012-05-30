@@ -9,33 +9,35 @@ function aObj:oGlow()
 	
 	-- skin the option panels ??
 	
+	local r, g, b, a = unpack(self.bbColour)
 	local function btnUpd(obj, oGB)
 		oGB = oGB or obj
 		if obj.sknrBdr then
 			if oGB.oGlowBorder
 			and oGB.oGlowBorder:IsVisible()
 			then
-				obj.sknrBdr:Hide()
+				obj.sknrBdr:SetBackdropBorderColor(oGB.oGlowBorder:GetVertexColor())
+				oGB.oGlowBorder:SetTexture()
 			else
-				obj.sknrBdr:Show()
+				obj.sknrBdr:SetBackdropBorderColor(r, g, b, a)
 			end
 		end
 	end
 	local function merchant(...) -- √
-		aObj:SecureHook("MerchantFrame_Update", function()
+		local function merchUpd()
 			for i = 1, max(MERCHANT_ITEMS_PER_PAGE, BUYBACK_ITEMS_PER_PAGE) do
 				btnUpd(_G["MerchantItem"..i.."ItemButton"])
 			end
-		end)
+		end
+		aObj:SecureHook("MerchantFrame_Update", function() aObj:ScheduleTimer(merchUpd, 0.1) end)
 	end
 	local function bags(...) -- √
-		aObj:SecureHook("ContainerFrame_Update", function()
-			for i = 1, NUM_CONTAINER_FRAMES do
-				for j = 1, MAX_CONTAINER_ITEMS do
-					btnUpd(_G["ContainerFrame"..i.."Item"..j])
-				end
+		local function bagUpd(bagId)
+			for j = 1, MAX_CONTAINER_ITEMS do
+				btnUpd(_G["ContainerFrame"..(bagId + 1).."Item"..j])
 			end
-		end)
+		end
+		aObj:SecureHook("ContainerFrame_Update", function(bag) aObj:ScheduleTimer(bagUpd, 0.1, bag:GetID()) end)
 	end
 	local function char(...) -- √
 		local function charUpd()
@@ -79,11 +81,10 @@ function aObj:oGlow()
 		aObj:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED", function() aObj:ScheduleTimer(gbankUpd, 0.1) end)
 	end
 	local function charflyout(...) -- √
-		aObj:SecureHook("EquipmentFlyout_DisplayButton", function()
-			for _, btn in ipairs(EquipmentFlyoutFrame.buttons) do
-				btnUpd(btn)
-			end
-		end)
+		local function charflyoutUpd(btn)
+			btnUpd(btn)
+		end
+		aObj:SecureHook("EquipmentFlyout_DisplayButton", function(btn, pDIS) aObj:ScheduleTimer(charflyoutUpd, 0.1, btn) end)
 	end
 	local function loot(...) --√
 		local function lootUpd()
@@ -111,7 +112,7 @@ function aObj:oGlow()
 		aObj:RegisterEvent("TRADE_UPDATE", function() aObj:ScheduleTimer(tradeUpd, 0.1) end)
 	end
 	local function mail(...) -- √
-		local function sendUpd()
+		local function mailUpd()
 			for i = 1, INBOXITEMS_TO_DISPLAY do
 				btnUpd(_G["MailItem"..i.."Button"])
 			end
@@ -122,11 +123,11 @@ function aObj:oGlow()
 				btnUpd(_G["OpenMailAttachmentButton"..i])
 			end
 		end
-		aObj:RegisterEvent("MAIL_SHOW", function() aObj:ScheduleTimer(sendUpd, 0.1) end)
-		aObj:SecureHook("InboxFrame_Update", function()	aObj:ScheduleTimer(sendUpd, 0.1) end)
-		aObj:SecureHook("OpenMail_Update", function() aObj:ScheduleTimer(sendUpd, 0.1) end)
-		aObj:RegisterEvent("MAIL_SEND_INFO_UPDATE", function() aObj:ScheduleTimer(sendUpd, 0.1) end)
-		aObj:RegisterEvent("MAIL_SEND_SUCCESS", function() aObj:ScheduleTimer(sendUpd, 0.1) end)
+		aObj:RegisterEvent("MAIL_SHOW", function() aObj:ScheduleTimer(mailUpd, 0.1) end)
+		aObj:SecureHook("InboxFrame_Update", function()	aObj:ScheduleTimer(mailUpd, 0.1) end)
+		aObj:SecureHook("OpenMail_Update", function() aObj:ScheduleTimer(mailUpd, 0.1) end)
+		aObj:RegisterEvent("MAIL_SEND_INFO_UPDATE", function() aObj:ScheduleTimer(mailUpd, 0.1) end)
+		aObj:RegisterEvent("MAIL_SEND_SUCCESS", function() aObj:ScheduleTimer(mailUpd, 0.1) end)
 	end
 	local function inspect(...) -- √
 		local function inspectUpd()

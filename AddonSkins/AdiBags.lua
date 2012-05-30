@@ -24,13 +24,16 @@ function aObj:AdiBags()
 			end
 			return bPanel
 		end, true)
-		-- don't conceal the quality border
+		local r, g, b, a = unpack(self.bbColour)
+		-- colour the button border 
 		local function updBtn(evt, btn)
 			if not btn.sknrBdr then aObj:addButtonBorder{obj=btn} end
 			if btn.IconQuestTexture:GetBlendMode() == "ADD" then
-				btn.sknrBdr:Hide()
+				btn.sknrBdr:SetBackdropBorderColor(btn.IconQuestTexture:GetVertexColor())
+				btn.IconQuestTexture:Hide()
 			else
-				btn.sknrBdr:Show()
+				btn.sknrBdr:SetBackdropBorderColor(r, g, b, a)
+				btn.IconQuestTexture:Show()
 			end
 		end
 		-- register for button updates

@@ -7,6 +7,7 @@ function aObj:Fizzle()
 		return
 	end
 
+	local r, g, b, a = unpack(self.bbColour)
 	local function charUpd()
 		for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
 			for _, reg in pairs{child:GetRegions()} do
@@ -14,11 +15,11 @@ function aObj:Fizzle()
 				and reg:GetName():find("FizzleB")
 				then
 					if child.sknrBdr then
-						if reg:IsVisible()
-							then
-							child.sknrBdr:Hide()
+						if reg:IsVisible() then
+							child.sknrBdr:SetBackdropBorderColor(reg:GetVertexColor())
+							reg:SetTexture()
 						else
-							child.sknrBdr:Show()
+							child.sknrBdr:SetBackdropBorderColor(r, g, b, a)
 						end
 					end
 					break
