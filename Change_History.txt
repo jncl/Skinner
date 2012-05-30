@@ -1,3 +1,11 @@
+b4.15595.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Added ButtonBorders to Transmogrify and VoidStorage frames
+	Updated AdiBags skin
+	Skinned Fizzle & oGlow
+
 b4.15595.5
 Jncl:
 	ToDo.txt
