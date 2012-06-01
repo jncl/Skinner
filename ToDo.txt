@@ -15,8 +15,5 @@ Legend:
 		- using Plate Buffs & pNameplates
 		- using Windows 7
 
-√	I	ButtonBorders, requested by hammer2, 29.05.12
-		- Colour the button borders to indicate quality when using the following addons:
-√			- AdiBags
-√			- Fizzle
-√			- oGlow
+√	I	ButtonBorders, reported by hammer2, 31.05.12
+		- difficult to see when using border textures with a low alpha
