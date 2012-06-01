@@ -484,7 +484,7 @@ function module:GetOptions()
 				order = 2,
 				name = aObj.L["Pet"],
 				desc = aObj.L["Toggle the skin of the Pet UnitFrame"],
-				set = aObj.uCls == "HUNTER" or "WARLOCK" and function(info, value)
+				set = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and function(info, value)
 					module.db.profile[info[#info]] = value
 					if not value then module.db.profile.petlevel = false end -- disable petlevel when disabled
 					module:adjustUnitFrames(info[#info])
