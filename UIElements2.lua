@@ -645,6 +645,9 @@ function aObj:GuildBankUI() -- LoD
 		self:addButtonBorder{obj=_G[objName.."Button"], relTo=_G[objName.."ButtonIconTexture"]}
 	end
 
+	-- send message when UI is skinned (used by oGlow skin)
+	self:SendMessage("GuildBankUI_Skinned", self)
+
 end
 
 function aObj:Nameplates()

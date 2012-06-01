@@ -16,9 +16,11 @@ function aObj:Fizzle()
 				then
 					if child.sknrBdr then
 						if reg:IsVisible() then
+							child.sknrBdr:SetBackdrop(aObj.modUIBtns.iqbDrop)
 							child.sknrBdr:SetBackdropBorderColor(reg:GetVertexColor())
 							reg:SetTexture()
 						else
+							child.sknrBdr:SetBackdrop(aObj.modUIBtns.bDrop)
 							child.sknrBdr:SetBackdropBorderColor(r, g, b, a)
 						end
 					end

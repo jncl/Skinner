@@ -29,9 +29,11 @@ function aObj:AdiBags()
 		local function updBtn(evt, btn)
 			if not btn.sknrBdr then aObj:addButtonBorder{obj=btn} end
 			if btn.IconQuestTexture:GetBlendMode() == "ADD" then
+				btn.sknrBdr:SetBackdrop(aObj.modUIBtns.iqbDrop)
 				btn.sknrBdr:SetBackdropBorderColor(btn.IconQuestTexture:GetVertexColor())
 				btn.IconQuestTexture:Hide()
 			else
+				btn.sknrBdr:SetBackdrop(aObj.modUIBtns.bDrop)
 				btn.sknrBdr:SetBackdropBorderColor(r, g, b, a)
 				btn.IconQuestTexture:Show()
 			end

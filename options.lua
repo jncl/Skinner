@@ -158,7 +158,7 @@ function aObj:Options()
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
 
-	local optTables = {
+	self.optTables = {
 
 		General = {
 			type = "group",
@@ -1535,14 +1535,14 @@ function aObj:Options()
 	-- module options
 	for _, mod in self:IterateModules() do
 		if mod.GetOptions then
-			optTables["Modules"].args[mod.name] = mod:GetOptions()
+			self.optTables["Modules"].args[mod.name] = mod:GetOptions()
 		end
 	end
 
 	-- add DisabledSkins options
 	local function addDSOpt(name, lib)
 
-		optTables["DisabledSkins"].args[name] = {
+		aObj.optTables["DisabledSkins"].args[name] = {
 			type = "toggle",
 			name = name..(lib and " (Lib)" or ""),
 			desc = self.L["Toggle the skinning of "]..name,
@@ -1567,26 +1567,26 @@ function aObj:Options()
 	end
 
 	-- add DB profile options
-	optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
 	-- option tables list
 	local optNames = {
 		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPCFrames", "PlayerFrames", "UIFrames", "DisabledSkins", "Profiles"
 	}
 	-- register the options tables and add them to the blizzard frame
-	local ACR = LibStub("AceConfigRegistry-3.0")
-	local ACD = LibStub("AceConfigDialog-3.0")
+	self.ACR = LibStub("AceConfigRegistry-3.0")
+	self.ACD = LibStub("AceConfigDialog-3.0")
 
-	LibStub("AceConfig-3.0"):RegisterOptionsTable(aName, optTables.General, {aName, "skin"})
-	self.optionsFrame = ACD:AddToBlizOptions(aName, aName)
+	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
+	self.optionsFrame = self.ACD:AddToBlizOptions(aName, aName)
 
 	-- register the options, add them to the Blizzard Options
 	-- build the table used by the chatCommand function
 	local optCheck = {}
 	for _, v in ipairs(optNames) do
 		local optTitle = (" "):join(aName, v)
-		ACR:RegisterOptionsTable(optTitle, optTables[v])
-		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
+		self.ACR:RegisterOptionsTable(optTitle, self.optTables[v])
+		self.optionsFrame[self.L[v]] = self.ACD:AddToBlizOptions(optTitle, self.L[v], aName)
 		optCheck[v:lower()] = v
 	end
 

@@ -928,6 +928,9 @@ function aObj:InspectUI() -- LoD
 -->>-- Guild Frame
 	InspectGuildFrameBG:SetAlpha(0)
 
+	-- send message when UI is skinned (used by oGlow skin)
+	self:SendMessage("InspectUI_Skinned", self)
+
 end
 
 function aObj:BattleScore() -- a.k.a. WorldStateScoreFrame
