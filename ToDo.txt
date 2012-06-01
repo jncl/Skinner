@@ -15,5 +15,17 @@ Legend:
 		- using Plate Buffs & pNameplates
 		- using Windows 7
 
-√	I	ButtonBorders, reported by hammer2, 31.05.12
-		- difficult to see when using border textures with a low alpha
+√	I	Options, reported by tordenflesk, 01.06.12
+		- AceConfigDialog-3.0\AceConfigDialog-3.0-57.lua:1803: 54AceConfigRegistry-3.0-14:ValidateOptionsTable(): Skinner Modules.args.Skinner_UnitFrames.args.pet.set: did not expect boolean value "true"
+<in C code>
+AceConfigRegistry-3.0\AceConfigRegistry-3.0-14.lua:50: in function <AceConfigRegistry-3.0\AceConfigRegistry-3.0.lua:45>
+AceConfigRegistry-3.0\AceConfigRegistry-3.0-14.lua:191: in function <AceConfigRegistry-3.0\AceConfigRegistry-3.0.lua:182>
+AceConfigRegistry-3.0\AceConfigRegistry-3.0-14.lua:221: in function <AceConfigRegistry-3.0\AceConfigRegistry-3.0.lua:196>
+AceConfigRegistry-3.0\AceConfigRegistry-3.0-14.lua:231: in function <AceConfigRegistry-3.0\AceConfigRegistry-3.0.lua:196>
+AceConfigRegistry-3.0\AceConfigRegistry-3.0-14.lua:231: in function <AceConfigRegistry-3.0\AceConfigRegistry-3.0.lua:196>
+AceConfigRegistry-3.0\AceConfigRegistry-3.0-14.lua:259: in function "ValidateOptionsTable"
+AceConfigRegistry-3.0\AceConfigRegistry-3.0-14.lua:300: in function "app"
+AceConfigDialog-3.0\AceConfigDialog-3.0-57.lua:1803: in function <AceConfigDialog-3.0\AceConfigDialog-3.0.lua:1791>
+<in C code>
+AceConfigDialog-3.0\AceConfigDialog-3.0-57.lua:1888: in function <AceConfigDialog-3.0\AceConfigDialog-3.0.lua:1886>
+(tail call): ?
