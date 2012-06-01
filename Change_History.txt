@@ -1,3 +1,9 @@
+b4.15595.7
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated AdiBags, Fizzle & oGlow skins
+
 b4.15595.6
 Jncl:
 	ToDo.txt
