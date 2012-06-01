@@ -1,3 +1,10 @@
+b4.15595.8
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Moved round2 function into UtilFuncs
+	Updated AdiBags, Fizzle & oGlow skins
+
 b4.15595.7
 Jncl:
 	ToDo.txt
