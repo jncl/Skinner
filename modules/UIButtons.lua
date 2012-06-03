@@ -548,6 +548,7 @@ function module:OnEnable()
 	if not IsAddOnLoaded("AdiBags")
 	and not IsAddOnLoaded("Fizzle")
 	and not IsAddOnLoaded("oGlow")
+	and not IsAddOnLoaded("XLoot")
 	then
 		-- remove options
 		aObj.optTables["Modules"].args["Skinner_UIButtons"].args["Quality"] = nil
@@ -566,6 +567,7 @@ function module:OnEnable()
 	self.iqbDrop = {
 		edgeSize = aObj.Backdrop[1].edgeSize
 	}
+	local bdbTex
 	if db.Quality.file and db.Quality.file ~= "None" then
 		bdbTex = aName.." Quality Border"
 	else

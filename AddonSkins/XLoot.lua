@@ -1,46 +1,63 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("XLoot") then return end
 
-local function skinXLoot(frame)
-
-	if not aObj.skinned[frame] then
-		aObj:applySkin(frame)
-		frame.SetBackdropBorderColor = function() end
-		if strfind(frame:GetName(), "Wrapper") then
-			LowerFrameLevel(frame)
-			frame.SetBackdrop = function() end
-			local button = frame:GetParent()
-			frame:SetWidth(button:GetWidth() + 9)
-			frame:SetHeight(button:GetHeight() + 9)
-			local xlr = strfind(frame:GetName(), "XLRow")
-			if xlr and button.border then
-				button.border:SetTexture(nil)
-				button.border.Show = function() end
-			end
-		end
-	end
-
-end
-
 function aObj:XLoot()
 
 	-- check to see if this is the dummy plugin version
 	if not XLoot.AddLootFrame then return end
 
-	-- Hook the XLoot copy of the original skinning function
-	self:RawHook(XLoot, "Skin", function(this, frame)
-		skinXLoot(frame)
-	end, true)
+	local btn, br, bg, bb, ba
+	local r, g, b, a = unpack(self.bbColour)
+	local function btnUpd()
+		for i = 1, GetNumLootItems() do
+			btn = XLoot.buttons[i]
+			if btn.border:IsVisible() then
+				btn.sknrBdr:SetBackdrop(aObj.modUIBtns.iqbDrop)
+				br, bg, bb, ba = btn.border:GetVertexColor()
+				btn.sknrBdr:SetBackdropBorderColor(br, bg, bb, 1)
+				btn.sknrBdr:SetAlpha(1)
+			else
+				btn.sknrBdr:SetBackdrop(aObj.modUIBtns.bDrop)
+				btn.sknrBdr:SetBackdropBorderColor(r, g, b, a)
+			end
+		end
+	end
+	local function skinXLoot(frame)
 
+		if frame:GetName():find("Wrapper") then -- button wrapper
+			frame:SetBackdrop({edgeSize=0}) -- remove unwanted elements
+			frame.SetBackdropColor = function() end
+			frame.SetBackdropBorderColor = function() end
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame:GetParent(), ibt=true}
+			end
+		else -- row frame
+			aObj:addSkinFrame{obj=frame}
+			frame.border:SetTexture(nil)
+		end
+
+	end
+	-- disable the original skinning function
+	XLoot.Skin = function() end
+
+	-- hook this to skin new objects
 	self:SecureHook(XLoot, "AddLootFrame", function(this, id)
-		skinXLoot(XLoot.frames[id])
 		skinXLoot(XLoot.buttons[id].wrapper)
+		skinXLoot(XLoot.frames[id])
 	end)
 
-	self:skinButton{obj=XLootCloseButton, cb=true}
-	skinXLoot(XLoot.frame)
-	skinXLoot(XLoot.frames[1])
+	self:addSkinFrame{obj=XLoot.frame}
+	-- skin existing objects
 	skinXLoot(XLoot.buttons[1].wrapper)
+	skinXLoot(XLoot.frames[1])
+
+	if self.modBtnBs then
+		 -- hook this to update buttons
+		 self:SecureHook(XLoot, "Update", function(this)
+		 	if this.swiftlooting then return end
+			btnUpd()
+		 end)
+	end
 
 end
 
