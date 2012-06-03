@@ -947,7 +947,7 @@ function aObj:BattleScore() -- a.k.a. WorldStateScoreFrame
 end
 
 function aObj:BattlefieldMinimap() -- LoD
-	if not self.db.profile.BattlefieldMm or self.initialized.BattlefieldMm then return end
+	if not self.db.profile.BattlefieldMm.skin or self.initialized.BattlefieldMm then return end
 	self.initialized.BattlefieldMm = true
 
 -->>--	Minimap Tab
@@ -956,8 +956,13 @@ function aObj:BattlefieldMinimap() -- LoD
 	self:addSkinFrame{obj=BattlefieldMinimapTab, ft=ftype, noBdr=self.isTT, aso=asopts, y1=-7, y2=-7}
 	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
 
-	-- use a backdrop with no Texture and no Gradient otherwise the map tiles are obscured
-	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, aso={bd=8, ng=true}, x1=-4, y1=4, x2=-1, y2=-1}
+	-- use a backdrop with no Texture otherwise the map tiles are obscured
+	self.bfminimapskin = self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, aso={bd=8}, x1=-4, y1=4, x2=-1, y2=-1}
+	if self.db.profile.BattlefieldMm.gloss then
+		RaiseFrameLevel(self.bfminimapskin)
+	else
+		LowerFrameLevel(self.bfminimapskin)
+	end
 	BattlefieldMinimapCorner:SetTexture(nil)
 	BattlefieldMinimapBackground:SetTexture(nil)
 
@@ -1031,7 +1036,8 @@ function aObj:Minimap()
 
 -->>-- Minimap
 	Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
-	self.minimapskin = self:addSkinFrame{obj=Minimap, ofs=5}
+	-- use a backdrop with no Texture otherwise the map tiles are obscured
+	self.minimapskin = self:addSkinFrame{obj=Minimap, ft=ftype, aso={bd=8}, ofs=5}
 	if self.db.profile.Minimap.gloss then
 		RaiseFrameLevel(self.minimapskin)
 	else

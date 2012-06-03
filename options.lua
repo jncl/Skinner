@@ -111,7 +111,7 @@ function aObj:Defaults()
 		Feedback             = self.isPTR and true or nil,
 		InspectUI            = true,
 		BattleScore          = true, -- a.k.a. WorldState
-		BattlefieldMm        = true,
+		BattlefieldMm        = {skin = true, gloss = false},
 		ScriptErrors         = true,
 		DebugTools           = true,
 		Minimap              = {skin = false, gloss = false},
@@ -971,10 +971,6 @@ function aObj:Options()
 						self:checkAndRun("FeedbackUI")
 					end
 				elseif info[#info] == "CombatLogQBF" then return
-				elseif info[#info] == "BattlefieldMm" then
-					if IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
-						self:checkAndRun("BattlefieldMinimap")
-					end
 				-- handle Blizzard UI LoD Addons
 				elseif uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
@@ -1039,7 +1035,7 @@ function aObj:Options()
 				MirrorTimers = {
 					type = "group",
 					inline = true,
-					order = -2,
+					order = -1,
 					name = self.L["Timer Frames"],
 					get = function(info) return db.MirrorTimers[info[#info]] end,
 					set = function(info, value)
@@ -1064,7 +1060,7 @@ function aObj:Options()
 				CastingBar = {
 					type = "group",
 					inline = true,
-					order = -10,
+					order = -1,
 					name = self.L["Casting Bar Frame"],
 					get = function(info) return db.CastingBar[info[#info]] end,
 					set = function(info, value)
@@ -1292,9 +1288,39 @@ function aObj:Options()
 					desc = self.L["Toggle the skin of the Battle Score Frame"],
 				},
 				BattlefieldMm = {
-					type = "toggle",
-					name = self.L["Battlefield Minimap Frame"],
-					desc = self.L["Toggle the skin of the Battlefield Minimap Frame"],
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Battlefield Minimap Options"],
+					get = function(info) return db.BattlefieldMm[info[#info]] end,
+					set = function(info, value)
+						db.BattlefieldMm[info[#info]] = value
+						if info[#info] == "skin" then
+							if IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
+								self:checkAndRun("BattlefieldMinimap")
+							end
+						elseif info[#info] == "gloss" and self.bfminimapskin then
+							if value then
+								RaiseFrameLevel(self.bfminimapskin)
+							else
+								LowerFrameLevel(self.bfminimapskin)
+							end
+						end
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							name = self.L["Skin Frame"],
+							desc = self.L["Toggle the skin of the Battlefield Minimap Frame"],
+							order = 1,
+						},
+						gloss = {
+							type = "toggle",
+							name = self.L["Gloss Effect"],
+							desc = self.L["Toggle the Gloss Effect for the Battlefield Minimap"],
+							order = 2,
+						},
+					},
 				},
 				ScriptErrors = {
 					type = "toggle",
@@ -1330,13 +1356,13 @@ function aObj:Options()
 					args = {
 						skin = {
 							type = "toggle",
-							name = self.L["Minimap"],
+							name = self.L["Skin Frame"],
 							desc = self.L["Toggle the skin of the Minimap"],
 							order = 1,
 						},
 						gloss = {
 							type = "toggle",
-							name = self.L["Minimap Gloss Effect"],
+							name = self.L["Gloss Effect"],
 							desc = self.L["Toggle the Gloss Effect for the Minimap"],
 							order = 2,
 						},
