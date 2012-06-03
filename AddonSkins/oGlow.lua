@@ -25,7 +25,7 @@ function aObj:oGlow()
 	end
 
 	local delays = {
-		-- ["inspect"]     = 0.2, -- LoD
+		["inspect"]     = 0.2, -- LoD
 		["gbank"]       = 0.5, -- LoD
 		["tradeskill"]  = 0.2, -- LoD
 	}
@@ -34,7 +34,8 @@ function aObj:oGlow()
 		aObj:ScheduleTimer(btnUpd, delays[pipe] or 0.1, frame)
 	end)
 
-	-- remove GuildBank delay when UI is skinned
+	-- remove delays when UI is skinned
+	self:RegisterMessage("InspectUI_Skinned", function() delays["inspect"] = nil end)
 	self:RegisterMessage("GuildBankUI_Skinned", function() delays["gbank"] = nil end)
 
 end
