@@ -202,7 +202,7 @@ function aObj:AddonFrames()
 end
 
 local lodFrames = {
-	"Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "AzCastBarOptions",
+	"Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "AzCastBarOptions",
 	"Bagnon", "Bagnon_Options", "Banknon", "BetterBindingFrame",
 	"DockingStation_Config", "Dominos_Config", "DoTimer_Options",
 	"Enchantrix", "EnhTooltip",
