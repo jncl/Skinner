@@ -53,8 +53,8 @@ function aObj:OnInitialize()
 	prdb = self.db.profile
 
 	-- convert any old settings
-	if type(self.db.profile.MinimapButtons) == "boolean" then
-		self.db.profile.MinimapButtons = {skin = true, style = false}
+	if type(prdb.MinimapButtons) == "boolean" then
+		prdb.MinimapButtons = {skin = true, style = false}
 	end
 
 	-- setup the Addon's options
@@ -196,7 +196,12 @@ function aObj:OnInitialize()
 	c = prdb.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
 	-- StatusBar texture
-	self.sbTexture = self.LSM:Fetch("statusbar", prdb.StatusBar.texture)
+	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
+	-- use this to handle textures supplied by other addons (e.g. XPerl)
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", function()
+		self:updateSBTexture()
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	end)
 	-- Backdrop colours
 	c = prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or 1}
