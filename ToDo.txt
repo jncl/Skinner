@@ -15,8 +15,29 @@ Legend:
 		- using Plate Buffs & pNameplates
 		- using Windows 7
 
-√	I	XLoot, reported by hammer2, 02.06.12
-		- Border around icon needs changing to reflect item quality
+√	I	Altoholic, reported by Pseudopath, 23.06.12
+		- ..\AddOns\Skinner\Skinner.lua line 226:
+  table index is nil
+Debug:
+  (tail call): ?
+  Skinner\Skinner.lua:226:
+     Skinner\Skinner.lua:226
+  Skinner\Skinner.lua:1567:
+     Skinner\Skinner.lua:1553
+  Skinner\Skinner.lua:1599: skinScrollBar()
+  Skinner\SkinMe\Altoholic.lua:121:
+     Skinner\SkinMe\Altoholic.lua:114
+  (tail call): ?
 
-√	I	BattlefieldMinimap, reported by hammer2, 02.06.12
-		- Could you add a gloss option for the zone minimap, the same way as for the minimap
+√	I	StatusBar textures, reported by Pseudopath, 23.06.12
+  		- BTW I asked some time ago about this and was sure that I fixed it but my StatusBar texture doesnt seam to 'stick' I have to reslect it each log on, any ideas/reminders how to fix?
+		- using X-Perl 3 texture, sourced from XPerl addon
+
+	I	GlyphUI,
+		- Texture overlays panel, making buttons unusable
+
+	I	ReforgingUI,
+		- Texture overlays panel, making buttons unusable
+
+	I	RaidUI,
+?		- error in Buggrabber, Ben to source the error text
