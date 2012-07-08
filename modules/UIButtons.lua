@@ -135,9 +135,14 @@ function module:skinButton(opts)
 	if aObj.sBtn[opts.obj] or opts.obj.tfade then return end
 
 	-- remove textures
-	if opts.obj.GetNormalTexture
+	if opts.obj.Left -- UIPanelButtonTemplate (MoP)
+	or opts.obj.leftArrow then -- UIMenuButtonStretchTemplate (MoP)
+		-- aObj:Debug("skinButton ß: [%s]", opts.obj)
+		opts.obj:DisableDrawLayer("BACKGROUND")
+	elseif opts.obj.GetNormalTexture
 	and opts.obj:GetNormalTexture()
 	then -- [UIPanelButtonTemplate/UIPanelCloseButton/... and derivatives]
+		-- aObj:Debug("skinButton å: [%s]", opts.obj)
 		opts.obj:GetNormalTexture():SetAlpha(0)
 		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
@@ -274,56 +279,85 @@ local function getTexture(obj)
 	end
 
 end
-
-function module:isButton(obj, cb, blue)
+function module:isButton(obj)
 
 	local bType, oName, oTex
 	if obj.GetNormalTexture -- is it a true button
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
-	then -- check textures are as expected
+	then
 		oName = obj:GetName() or nil
-		oTex = getTexture(obj:GetNormalTexture()) or getTexture(aObj:getRegion(obj, 1))
-		if oTex then
-			if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
-			or oTex:find("UI-Panel-Button-Disabled", 1, true) -- UI Panel Button (Gray template)
-			or oTex:find("UI-DialogBox-Button-Up", 1, true) -- Static Popup Button
-			or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
-			and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
-			then
-				bType = "normal"
+		 -- ignore AceConfig/AceGui buttons
+		if oName
+		and (oName:find("AceConfig") or oName:find("AceGUI"))
+		then
+			return
+		end
+		if not aObj.isBeta then
+			-- check textures are as expected
+			oTex = getTexture(obj:GetNormalTexture()) or getTexture(aObj:getRegion(obj, 1))
+			if oTex then
+				if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
+				or oTex:find("UI-Panel-Button-Disabled", 1, true) -- UI Panel Button (Gray template)
+				or oTex:find("UI-DialogBox-Button-Up", 1, true) -- Static Popup Button
+				or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
+				-- and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
+				then
+					bType = "normal"
+				end
+				if oTex:find("UI-Panel-MinimizeButton", 1, true)
+				or oTex:find("UI-Panel-HideButton", 1, true) -- PVPFramePopup (Cataclysm)
+				then
+					bType = "close"
+				end
+				if oTex:find("UI-Toast-CloseButton", 1, true)
+				then
+					bType = "toast"
+				end
+				if oTex:find("HelpButtons") -- "new" Help Button
+				then
+					bType = "help"
+				end
+				if oTex:find("KnowledgeBaseButtton") -- "new" KnowledgeBase Button (N.B. mispelled Button)
+				then
+					bType = "helpKB"
+				end
+				if oTex:find("UI-PlusButton", 1, true) -- UI Plus button
+				or oTex:find("UI-MinusButton", 1, true) -- UI Minus Button
+				then
+					bType = "mp"
+				end
 			end
-			if oTex:find("UI-Panel-MinimizeButton", 1, true)
-			or oTex:find("UI-Panel-HideButton", 1, true) -- PVPFramePopup (Cataclysm)
-			then
-				bType = "close"
-			end
-			if oTex:find("UI-Toast-CloseButton", 1, true)
+			aObj:Debug("isB: [%s, %s, %s]", obj, bType, oTex or "nil")
+		else
+			local oW, oH, nR = round2(obj:GetWidth()), round2(obj:GetHeight()), obj:GetNumRegions()
+			if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 			then
 				bType = "toast"
-			end
-			if oTex:find("HelpButtons") -- "new" Help Button
+			elseif ((oName and oName:find("Close")) or obj:GetParent().CloseButton)
+			and oW == oH -- square button
 			then
+				bType = "close"
+			elseif (oH >= 20 and oH <= 25) and (nR >= 5 and nR <= 8) -- std button
+			or (oH == 30 and oW == 160) -- HelpFrame
+			then
+				bType = "normal"
+			elseif oH == 54 then
 				bType = "help"
 			end
-			if oTex:find("KnowledgeBaseButtton") -- "new" KnowledgeBase Button (N.B. mispelled Button)
-			then
-				bType = "helpKB"
-			end
-			if oTex:find("UI-PlusButton", 1, true) -- UI Plus button
-			or oTex:find("UI-MinusButton", 1, true) -- UI Minus Button
-			then
-				bType = "mp"
-			end
+			-- if obj:GetParent().GetName
+			-- and obj:GetParent():GetName()
+			-- and	obj:GetParent():GetName():find("TransmogrifyFrame")
+			-- then
+			-- 	aObj:Debug("isB-ß: [%s, %s, %s, %s, %s]", obj, oW, oH, nR, bType)
+			-- 	-- if bType == "close" then aObj:ShowInfo(obj) end
+			-- end
 		end
 	end
 
-	-- aObj:Debug("isButton: [%s, %s, %s]", obj, bType, oTex)
-
-	return bType, oTex
+	return bType
 
 end
-
 local function __skinAllButtons(opts, bgen)
 --[[
 	Calling parameters:

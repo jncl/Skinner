@@ -328,6 +328,7 @@ function aObj:isDropDown(obj)
 	if obj:IsObjectType("Frame")
 	and tex
 	and tex.GetTexture
+	and tex:GetTexture()
 	and tex:GetTexture():find("CharacterCreate") then
 		return true
 	else

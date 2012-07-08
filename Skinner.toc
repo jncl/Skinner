@@ -1,4 +1,4 @@
-﻿## Interface: 40300
+﻿## Interface: 50001
 ## Title: Skinner
 ## Notes: Changes the look of the default UI
 ## Notes-esES: Cambia el aspecto del UI predeterminado
@@ -58,30 +58,25 @@ AddonFrames.lua
 #
 # These individual lua files skin the default frames as follows;
 #
-# CharacterFrames1
-# inc. Character (inc. Pet, Reputation, Token), PVP, PetStable, SpellBook, GlyphUI, TalentUI, DressUp, AchievementUI, AlertFrames, EquipmentFlyout, ScrollOfResurrection
-CharacterFrames1.lua
-#
-# CharacterFrames2
-# inc. Social (inc. Friends, Who, Chat, Raid), TradeSkillUI, Trade, QuestLog, RaidUI, ReadyCheck, Buffs, VehicleMenuBar, Watch (Quests & Achievements), GearManager, CompactFrames, ArchaeologyUI, GuildUI, GuildControlUI, EncounterJournal
-CharacterFrames2.lua
-#
 # NPCFrames
-# inc. Merchant, Gossip, TrainerUI, Taxi, Quest, AuctionUI, Bank, ArenaRegistrar, GuildRegistrar, Petition, Tabard, BarberShopUI, QuestInfo, ReforgingUI, SideDressUpFrame, ItemAlterationUI, VoidStorageUI
+# inc. ArenaRegistrar, AuctionUI, Bank, BarberShopUI, Gossip, GuildRegistrar, ItemAlterationUI, Merchant, Petition, PetStable, Quest, QuestInfo, ReforgingUI, SideDressUpFrame, Tabard, Taxi, TrainerUI, VoidStorageUI
+# MoP --> BlackMarketUI
 NPCFrames.lua
 #
-# UIElements1
-# inc. Tooltips, MirrorTimers, CastingBar, StaticPopups, ChatMenus, ChatTabs, ChatFrames, ChatConfig, ChatEditBox, Loot, GroupLoot, ContainerFrames, StackSplit, ItemText, ColorPicker, WorldMap, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), Tutorial, GMSurveyUI, InspectUI, WorldState (a.k.a. BattleScore), BattlefieldMinimap, ScriptErrors, DropDowns, Minimap, MinimapButtons, FeedbackUI
-UIElements1.lua
+# PlayerFrames
+# inc. AchievementUI, ArchaeologyUI, Buffs, CastingBar, Character (inc. Pet, Reputation, Token), CompactFrames, ContainerFrames, DressUp, EncounterJournal, EquipmentFlyout, Friends (inc. Who, Chat, Raid), GhostFrame, GlyphUI, GroupLoot, GuildControlUI, GuildUI, GuildInvite, InspectUI, ItemSocketingUI, LookingForGuildUI, Loot, MirrorTimers, PVP, QuestLog, RaidUI, ReadyCheck, RolePollPopup, ScrollOfResurrection, SpellBook, SpellFlyout, StackSplit, TalentUI, Trade, TradeSkillUI, VehicleMenuBar, Watch (Quests & Achievements)
+# MoP --> LootHistory, OverrideActionBar, PetJournal
+PlayerFrames.lua
 #
-# UIElements2
-# inc. ModelFrames, MovieProgress, TimeManager, Calendar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), BindingUI, MacroUI, Mail, MainMenuBar, CoinPickup, ItemSocketingUI, GuildBankUI, Nameplates, GMChatUI, DebugTools, RolePollPopup, LFDFrame, LFRFrame, BNFrames, CinematicFrame, LevelUpDisplay, SpellFlyout, GuildInvite, GhostFrame, LookingForGuildUI, LFGFrame, MovePad, RaidFrame
-UIElements2.lua
+# UIFrames
+# inc. AlertFrames, AutoComplete, BattlefieldMinimap, BindingUI, BNFrames, Calendar, ChatConfig, ChatEditBox, ChatFrames, ChatMenus, ChatTabs, ChatTemporaryWindow, CinematicFrame, CoinPickup, ColorPicker, DebugTools, DropDowns, FeedbackUI, GMChatUI, GMSurveyUI, GuildBankUI, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), ItemText, LevelUpDisplay, LFDFrame, LFGFrame, LFRFrame, MacroUI, Mail, MainMenuBar, Menu (inc. Video, Sound & Voice, Mac Options, Interface), Minimap, MinimapButtons, ModelFrames, MovePad, MovieProgress, Nameplates, RaidFrame, ScriptErrors, StaticPopups, TimeManager, Tooltips, Tutorial, WorldMap, WorldState
+# MoP --> ChallengesUI, DestinyFrame, ItemUpgradeUI, PetBattleUI, PVEFrame
+UIFrames.lua
 #
 # Modules
 #
 # UnitFrames
-# inc. PlayerFrame (inc. RuneFrame, TotemFrame, ComboFrame, ShardBar, PowerBar, EclipseBar), PetFrame, TargetFrame, TargetofTargetFrame, FocusFrame, TargetofFocusFrame, PartyFrames (inc. Party Members Pets), ArenaFrames, CompactFrames (inc. Party, Raid Unit, Raid Group)
+# inc. ArenaFrames, CompactFrames (inc. Party, Raid Unit, Raid Group), FocusFrame, PartyFrames (inc. Party Members Pets), PetFrame, PlayerFrame (inc. RuneFrame, TotemFrame, ComboFrame, ShardBar, PowerBar, EclipseBar), TargetFrame, TargetofFocusFrame, TargetofTargetFrame
 modules\UnitFrames.lua
 #
 # UIButtons

@@ -4,15 +4,40 @@ function aObj:BlizzardFrames()
 --	  self:Debug("BlizzardFrames")
 
 	local blizzFrames = {
-		"CharacterFrames", "PetStableFrame", "SpellBookFrame", "DressUpFrame", "AlertFrames", "EquipmentFlyout", "ScrollOfResurrection", -- cf1
-		"FriendsFrame", "TradeFrame", "ReadyCheck", "Buffs", "VehicleMenuBar", "WatchFrame", "CompactFrames", --cf2
-		"MerchantFrames", "GossipFrame", "TaxiFrame", "QuestFrame", "BankFrame", "ArenaRegistrar", "GuildRegistrar", "Petition", "Tabard", "SideDressUpFrame", -- npc
-		"Minimap", "MirrorTimers", "StaticPopups", "ChatMenus", "ChatTabs", "ChatFrames", "ChatEditBox", "ChatTemporaryWindow", "LootFrame", "GroupLoot", "ContainerFrames", "StackSplit", "ItemText", "ColorPicker", "WorldMap", "HelpFrame", "Tutorial", "BattleScore", "ScriptErrors", "DropDownPanels", -- uie1
-		"AutoComplete", "MenuFrames", "MailFrame", "CoinPickup", "PVPFrame", "RolePollPopup", "LFDFrame", "LFRFrame", "BNFrames", "CinematicFrame", "LevelUpDisplay", "SpellFlyout", "GuildInvite", "GhostFrame", "LFGFrame", "RaidFrame" -- uie2
+		-- player
+		"Buffs", "CharacterFrames", "CompactFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "PVPFrame", 
+		-- QuestLog, checked with EQL3 & QuestGuru below
+		"ReadyCheck", "ScrollOfResurrection", "SpellBookFrame", "TradeFrame", "WatchFrame", 
+	    -- npc
+		"ArenaRegistrar", "BankFrame", "GossipFrame", "GuildRegistrar", "MerchantFrames", "Petition", "PetStableFrame", "QuestFrame", "SideDressUpFrame", "Tabard", "TaxiFrame", 
+		-- ui
+		"AlertFrames", "AutoComplete", "BNFrames", 
+		-- CastingBar, checked with Quartz below
+		"ChatConfig", "ChatEditBox", "ChatFrames", "ChatMenus", "ChatTabs", "ChatTemporaryWindow", "CinematicFrame",  "CoinPickup", "ColorPicker", "ContainerFrames", "DropDownPanels", "GhostFrame", "GroupLoot", "GuildInvite", "HelpFrame", "ItemText", "LevelUpDisplay", "LFDFrame", "LFGFrame", "LFRFrame", "LootFrame", "MailFrame",
+		-- MainMenuBar, checked with Bongos below
+		"MenuFrames", "Minimap", 
+		-- MinimapButtons, done with timer
+		"MirrorTimers", 
+		-- ModelFrames, checked with CloseUp below
+		-- Nameplates, checked with Aloft below
+		"RaidFrame", "RolePollPopup", "ScriptErrors", "SpellFlyout", "StackSplit", "StaticPopups", 
+		-- Tooltips, checked below
+		"Tutorial", "WorldMap", "WorldState", 
 	}
 
 	-- optional frames
-	if IsMacClient() then self:checkAndRun("MovieProgress") end
+	if IsMacClient() then aObj:add2Table(blizzFrames, "MovieProgress") end -- ui
+	if not self.isBeta then
+		aObj:add2Table(blizzFrames, "VehicleMenuBar") -- player
+	else
+		aObj:add2Table(blizzFrames, "OverrideActionBar") -- player
+		aObj:add2Table(blizzFrames, "DestinyFrame") -- ui
+		aObj:add2Table(blizzFrames, "ItemUpgradeUI") -- ui
+		aObj:add2Table(blizzFrames, "LootHistory") -- ui
+		aObj:add2Table(blizzFrames, "PetBattleUI") -- ui
+		aObj:add2Table(blizzFrames, "PVEFrame") -- ui
+	end
+
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
 	end
@@ -20,39 +45,34 @@ function aObj:BlizzardFrames()
 
 	-- handle non standard ones here
 	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
-	self:checkAndRun("ChatConfig") -- done here even though it's LoD, as it is always loaded with Blizzard_CombatLog
-
---[=[
-	QuestLog -- checked with EQL3 & QuestGuru below
-	CastingBar -- checked with Quartz below
-	Tooltips -- checked below
-	MainMenuBar -- checked with Bongos below
-	Nameplates -- checked with Aloft below
-	ModelFrames -- checked with CloseUp below
---]=]
 
 end
 
 local blizzLoDFrames = {
-	"GlyphUI", "TalentUI", "AchievementUI", -- cf1
-	"RaidUI", "ArchaeologyUI", "GuildUI", "GuildControlUI", "EncounterJournal", -- cf2
-	"TrainerUI", "BarbershopUI", "ReforgingUI", "ItemAlterationUI", "VoidStorageUI", -- npc
-	"GMSurveyUI", "InspectUI", "BattlefieldMinimap", -- uie1
-	"TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", "LookingForGuildUI", "MovePad", --uie2
+	-- player
+	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "RaidUI", "TalentUI", 
+	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
+	-- npc
+ 	--AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
+	"BarbershopUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",
+	-- ui
+	"BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "MacroUI", "MovePad", "TimeManager", 
 }
-if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- uie1
+-- optional frames
+if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- ui
+if aObj.isBeta then
+	aObj:add2Table(blizzLoDFrames, "BlackMarketUI") -- npc
+	aObj:add2Table(blizzLoDFrames, "ChallengesUI") -- ui
+	aObj:add2Table(blizzLoDFrames, "ItemUpgradeUI") -- ui
+	aObj:add2Table(blizzLoDFrames, "PetJournal") -- ui
+end
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v
 end
 blizzLoDFrames = nil
 --[=[
-	AuctionUI -- loaded when AUCTION_HOUSE_SHOW event is fired
-	TradeSkillUI -- loaded when TRADE_SKILL_SHOW event is fired
 	ArenaUI -- unitframes skinned in UnitFrames.lua
-	CombatLog -- managed within ChatConfig skin
-	CombatText -- nothing to skin
-	TokenUI -- loaded when CURRENCY_DISPLAY_UPDATE event is fired, actioned by MainMenuBar_OnEvent
 --]=]
 
 aObj.addonSkins = {
@@ -234,7 +254,7 @@ end
 aObj.oddlyNamedLoDAddons = { "_DevPad.GUI", "DBM-GUI" }
 local prev_addon
 function aObj:LoDFrames(addon)
---	  self:Debug("LoDFrames: [%s]", addon)
+	  -- self:Debug("LoDFrames: [%s]", addon)
 
 	if addon == prev_addon then return end
 	prev_addon = addon
@@ -304,7 +324,7 @@ end
 function aObj:TRADE_SKILL_SHOW()
 --	self:Debug("TRADE_SKILL_SHOW")
 
-	self:checkAndRun("TradeSkillUI") -- cf2
+	self:checkAndRun("TradeSkillUI") -- player
 	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
 	self:checkAndRunAddOn("MrTrader_SkillWindow")
 	self:checkAndRunAddOn("ReagentMaker")

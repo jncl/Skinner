@@ -26,14 +26,14 @@ do
 
 	local buildInfo = {GetBuildInfo()}
 	-- check build number, if > Live then it's a patch
-	aObj.isPatch = tonumber(buildInfo[2]) > 15354 and true or false
+	aObj.isPatch = tonumber(buildInfo[2]) > 15595 and true or false
 
 	local portal = GetCVar("portal") or nil
 	--check to see if running on PTR versionm
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or tonumber(buildInfo[1]) > 5.0.0 and true or false
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.0.0" and true or false
 
 end
 
@@ -186,16 +186,25 @@ function aObj:OnInitialize()
 
 	-- these are used to disable frames from being skinned, LoD frames are entered here
 	-- other frames are added when their code is loaded
-	self.charKeys1 = {"GlyphUI", "TalentUI", "TradeSkillUI", "RaidUI", "ArchaeologyUI", "GuildUI", "GuildControlUI", "EncounterJournal"} -- LoD frames
-	self.charKeys2 = {"AchievementUI"}
-	self.npcKeys = {"TrainerUI", "AuctionUI", "BarbershopUI", "ReforgingUI", "ItemAlterationUI", "VoidStorageUI"} -- LoD frames
-	self.uiKeys1 = {"GMSurveyUI", "InspectUI", "BattlefieldMm", "TimeManager", "Calendar", "BindingUI", "MacroUI", "ItemSocketingUI", "GuildBankUI", "GMChatUI", "DebugTools", "LookingForGuildUI","MovePad"} -- LoD frames
-	self.uiKeys2 = {}
+	self.npcKeys = {"AuctionUI", "BarbershopUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",}
+	if self.isBeta then
+		self:add2Table(self.npcKeys, "BlackMarketUI")
+	end
+	self.pKeys1 = {"ArchaeologyUI", "EncounterJournal",	"GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "RaidUI", "TalentUI", "TradeSkillUI",}
+	if self.isBeta then
+		self:add2Table(self.pKeys1, "PetJournal")
+	end
+	self.pKeys2 = {"AchievementUI"}
+	self.uiKeys1 = {"BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "TimeManager",}
 	if self.isPTR then
 		self:add2Table(self.uiKeys1, "FeedbackUI")
 	end
+	if self.isBeta then
+		self:add2Table(self.uiKeys1, "ChallengesUI")
+	end
+	self.uiKeys2 = {}
 	-- these are used to disable the gradient
-	self.gradFrames = {["c"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
+	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
 	-- TooltipBorder colours
 	c = prdb.ClassColours and RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
@@ -268,7 +277,7 @@ function aObj:OnInitialize()
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
 		for _, v in pairs(self.oocTab) do
-			v[1](v[2])
+			v[1](unpack(v[2]))
 		end
 		wipe(self.oocTab)
 	end)
@@ -1000,6 +1009,12 @@ function aObj:makeMFRotatable(modelFrame)
 			child:Hide()
 		end
 	end
+	if self.isBeta then
+		if modelFrame.RotateLeftButton then
+			modelFrame.RotateLeftButton:Hide()
+			modelFrame.RotateRightButton:Hide()
+		end
+	end
 
 	if not self:IsHooked(modelFrame, "OnUpdate") then
 		self:SecureHookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
@@ -1656,6 +1671,8 @@ local function __skinTabs(opts)
 	local xOfs2 = opts.x2 or -6
 	local yOfs2 = opts.y2 or 2
 
+	local tabID = PanelTemplates_GetSelectedTab(opts.obj) or 1
+	-- aObj:Debug("__skinTabs, PanelTemplates_GetSelectedTab: [%s, %s, %s]", opts.obj, PanelTemplates_GetSelectedTab(opts.obj),tabID)
 	for i = 1, opts.obj.numTabs do
 		tab = _G[tabName..i]
 		aObj:keepRegions(tab, kRegions)
@@ -1663,7 +1680,7 @@ local function __skinTabs(opts)
 		tabSF.ignore = opts.ignore -- ignore size changes
 		tabSF.up = opts.up -- tabs grow upwards
 		if opts.lod then -- set textures here first time thru as it's LoD
-			if i == 1 then
+			if i == tabID then
 				if aObj.isTT then aObj:setActiveTab(tabSF) end
 			else
 				if aObj.isTT then aObj:setInactiveTab(tabSF) end
@@ -1671,6 +1688,7 @@ local function __skinTabs(opts)
 		end
 	end
 	aObj.tabFrames[opts.obj] = true
+	-- aObj:Debug("__skinTabs: [%s]", opts.obj)
 
 end
 

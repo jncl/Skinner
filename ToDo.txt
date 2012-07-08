@@ -8,179 +8,206 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	O	Update WoWAce commands page
+	-- Default Frame settings (, ri=true, x1=-3, y1=2, x2=1, y2=-2)
 
 	O	MoP Beta
+√		- TOC version now 50001
 		NEW
-		- Blizzard_BlackMarketUI
-		- Blizzard_ChallengesUI
+≈		- Blizzard_BlackMarketUI
+√		- Blizzard_ChallengesUI
+		- Blizzard_ItemUpgradeUI
 		- Blizzard_PetBattleUI
-		- Blizzard_PetJournal
-
-		- ActionBarController
-		- BonusActionBarFrame
-		- DestinyFrame
-		- ExtraActionBar
-		- FrameLocks
-		- MonkHarmonyBar
-		- OverrideActionBar
-		- PVEFrame (a.k.a. GroupFinderFrame)
-		- PetBattleStubs
-		- PossessActionBar
-		- PriestBar
-		- ScenarioFinder
-		- SharedPetBattleTemplates
-		- StanceBar
-		- VehicleMenuBar
+√		- Blizzard_PetJournal
+x		- ActionBarController
+√		- DestinyFrame
+√		- ExtraActionBar
+		- FloatingPetBattleTooltip
+x		- FontStyleOverrides
+x		- FrameLocks
+√		- LootHistory
+√		- MonkHarmonyBar
+≈		- OverrideActionBar
+√		- PVEFrame (a.k.a. GroupFinderFrame)
+x		- PetBattleStubs
+√		- PossessActionBar
+√		- PriestBar
+x		- QueueStatusFrame
+√		- ScenarioFinder
+x		- SharedPetBattleTemplates
+√		- StanceBar
 		- VehicleSeatIndicator
 
 		UPD
-		- Blizzard_AchievementUI
-		- Blizzard_ArchaeologyUI
-		- Blizzard_ArenaUI
-		- Blizzard_AuctionUI
-		- Blizzard_BattlefieldMinimap
-		- Blizzard_BindingUI
-		- Blizzard_CompactUnitFrameProfiles
-		- Blizzard_Calendar
-		- Blizzard_CombatLog
-		- Blizzard_CombatText
-		- Blizzard_CompactRaidFrameContainer
-		- Blizzard_CompactRaidFrameManager
-		- Blizzard_CompactRaidFrames
-		- Blizzard_EncounterJournal
-		- Blizzard_GlyphUI
-		- Blizzard_GuildBankUI
-		- Blizzard_GuildControlUI
-		- Blizzard_GuildInfo
-		- Blizzard_GuildNews
-		- Blizzard_GuildRoster
-		- Blizzard_GuildUI
-		- Blizzard_InspectUI
-		- Blizzard_ItemAlterationUI
-		- Blizzard_ItemSocketingUI
-		- Blizzard_LookingForGuildUI
-		- Blizzard_MacroUI
-		- Blizzard_RaidUI
-		- Blizzard_ReforgingUI
-		- Blizzard_TalentUI
-		- Blizzard_TimeManager
-		- Blizzard_TradeSkillUI
-		
-		- ActionButton
-		- AlertFrames 
-		- AlternatePowerBar
-		- BNet
-		- BankFrame (BG changes with Paladin Holy Power)
-		- Bindings
-		- BuffFrame
-		- CastingBarFrame
-		- ChannelFrame
-		- CharacterFrame
-		- ChatConfigFrame
-		- ChatFrame
-		- CombatFeedback
-		- CompactPartyFrame
-		- CompactRaidGroup
-		- CompactUnitFrame
-		- EclipseBarFrame
-		- FloatingChatFrame
-		- FlowContainer
-		- FocusFrame
-		- FriendsFrame
-		- GameMenuFrame
-		- GossipFrame
-		- GraphicsQualityLevels
-		- GuildInviteFrame
-		- GuildRegistrarFrame
-		- HelpFrame
-		- HybridScrollFrame
-		- IconIntroAnimation
-		- InterfaceOptionsFrame
-		- InterfaceOptionsPanels
-		- ItemButtonTemplate
-		- ItemRef
-		- ItemTextFrame
-		- LFDFrame
-		- LFGFrame
-		- LFRFrame
-		- LevelUpDisplay
-		- LootFrame
-		- MacOptionsFrame
-		- MailFrame
-		- MainMenuBar
-		- MainMenuBarMicroButtons
-		- MerchantFrame
-		- Minimap
-		- ModelFrames
-		- MoneyFrame
-		- MoneyInputFrame
-		- MultiActionBars
-		- PVPFrame
-		- PaladinPowerBar
-		- PaperDollFrame (ranged slot now hidden/shown depending upon player type)
-		- PartyFrameTemplates
-		- PartyMemberFrame
-		- PetActionBarFrame
-		- PetFrame
-		- PetPaperDollFrame
-		- PetitionFrame
-		- PlayerFrame
-		- QuestFrame
-		- QuestFrameTemplates
-		- QuestInfo
-		- QuestLogFrame
-		- RaidFinder
-		- RaidFrame
-		- RaidWarning
-		- ReadyCheck
-		- ReputationFrame
-		- RestrictedEnvironment
-		- RolePoll
-		- RuneFrame
-		- ScrollOfResurrection
-		- SecureGroupHeaders
-		- SecureStateDriver
-		- SecureTemplates
-		- ShardBar
-		- SpellBookFrame
-		- SpellFlyout
-		- StaticPopup
-		- TabardFrame
-		- TalentFrameBase
-		- TargetFrame
-		- TaxiFrame
-		- TextStatusBar
-		- Timer
-		- TotemFrame
-		- TradeFrame
-		- TutorialFrame
-		- UIDropDownMenu
-		- UIPanelTemplates
-			- (button left, middle & right textures now named)
-			- gold edge for money frames
-		- UIParent
-		- UnitFrame (classifications)
-		- UnitPopup
-		- UnitPowerBarAlt
-		- VideoOptionsPanel
-		- WatchFrame
-		- WorldMapFrame
-		- WorldMapFrameTemplates
-		- WorldStateFrame
+x		- Blizzard_AchievementUI
+x		- Blizzard_ArchaeologyUI
+x		- Blizzard_ArenaUI
+x		- Blizzard_AuctionUI
+x		- Blizzard_BarberShopUI
+x		- Blizzard_BattlefieldMinimap
+x		- Blizzard_BindingUI
+x		- Blizzard_CompactUnitFrameProfiles
+x		- Blizzard_Calendar
+x		- Blizzard_CombatLog
+x		- Blizzard_CombatText
+x		- Blizzard_CompactRaidFrameContainer
+x		- Blizzard_CompactRaidFrameManager
+x		- Blizzard_CompactRaidFrames
+√		- Blizzard_EncounterJournal
+√		- Blizzard_GlyphUI
+√		- Blizzard_GuildBankUI
+x		- Blizzard_GuildControlUI
+√		- Blizzard_GuildInfo
+x		- Blizzard_GuildNews
+x		- Blizzard_GuildRoster
+x		- Blizzard_GuildUI
+x		- Blizzard_InspectUI
+x			- InspectPaperDollFrame
+√			- InspectTalentFrame
+√		- Blizzard_ItemAlterationUI
+√		- Blizzard_ItemSocketingUI
+x		- Blizzard_LookingForGuildUI
+√		- Blizzard_MacroUI
+x		- Blizzard_RaidUI
+√		- Blizzard_ReforgingUI
+√		- Blizzard_TalentUI
+√		- Blizzard_TimeManager
+x		- Blizzard_TokenUI
+√		- Blizzard_TradeSkillUI
+x		- Blizzard_VoidStorageUI
 
-		- Numerous Button templates changed
-		- Class specific bar frames have been renamed
+x		- ActionButton
+≈		- AlertFrames
+√			- CriteriaAlertFrame
+√			- ChallengeModeAlertFrame
+√			- ScenarioAlertFrame
+√			- MoneyWonAlertFrame
+√			- LootWonAlertFrame
+x		- AlternatePowerBar
+x		- AnimationSystem
+√		- ArenaRegistrarFrame
+x		- AudioOptionsPanels
+x		- AutoComplete
+x		- BNet
+≈		- BankFrame (BG changes with Paladin Holy Power)
+x		- Bindings
+		- BuffFrame
+x		- CastingBarFrame
+x		- ChannelFrame
+√		- CharacterFrame
+√		- ChatConfigFrame
+√		- ChatFrame
+√		- CinematicFrame
+x		- CombatFeedback
+x		- CompactPartyFrame
+x		- CompactRaidGroup
+x		- CompactUnitFrame
+x		- Constants
+x		- EclipseBarFrame
+x		- EquipmentFlyout
+x		- FloatingChatFrame
+x		- FlowContainer
+x		- FocusFrame
+x		- FontStyles
+x		- Fonts
+√		- FriendsFrame
+x		- GameMenuFrame
+x		 -GlobalStrings
+√		- GossipFrame
+√			- NPCFriendshipStatusBar
+x		- GraphicsQualityLevels
+√		- GuildInviteFrame
+√		- GuildRegistrarFrame
+≈		- HelpFrame
+x		- HybridScrollFrame
+x		- IconIntroAnimation
+x		- InterfaceOptionsFrame
+x		- InterfaceOptionsPanels
+x		- ItemButtonTemplate
+x		- ItemRef
+√		- ItemTextFrame
+√		- LFDFrame
+√		- LFGFrame
+√		- LFRFrame
+x		- LevelUpDisplay
+√		- LootFrame
+x		- MacOptionsFrame
+√		- MailFrame
+x		- MainMenuBar
+≈		- MainMenuBarMicroButtons
+√		- MerchantFrame
+x		- Minimap
+√		- ModelFrames
+x		- MoneyFrame
+x		- MoneyInputFrame
+x		- MultiActionBars
+x		- PVPFrame
+x		- PaladinPowerBar
+√		- PaperDollFrame
+x		- PartyFrameTemplates
+x		- PartyMemberFrame
+x		- PetActionBarFrame
+x		- PetFrame
+x		- PetPaperDollFrame
+√		- PetitionFrame
+x		- PlayerFrame
+≈		- QuestFrame
+≈		- QuestFrameTemplates
+≈		- QuestInfo
+√		- QuestLogFrame
+√		- RaidFinder
+x		- RaidFrame
+x		- RaidWarning
+x		- ReadyCheck
+x		- ReputationFrame
+x		- RestrictedEnvironment
+x		- RolePoll
+x		- RuneFrame
+x		- ScrollOfResurrection
+x		- SecureGroupHeaders
+x		- SecureStateDriver
+x		- SecureTemplates
+x		- ShardBar
+√		- SpellBookFrame
+x		- SpellFlyout
+x		- StaticPopup
+√		- TabardFrame
+x		- TalentFrameBase
+x		- TargetFrame
+√		- TaxiFrame
+x		- TextStatusBar
+x		- Timer
+x		- TotemFrame
+√		- TradeFrame
+x		- TutorialFrame
+x		- UIDropDownMenu
+x		- UIPanelTemplates
+x		- UIParent
+x		- UnitFrame (classifications)
+x		- UnitPopup
+≈		- UnitPowerBarAlt
+≈			- PlayerPowerBarAlt
+			- ??
+x		- VideoOptionsPanel
+x		- WatchFrame
+x		- WorldMapFrame
+x		- WorldMapFrameTemplates
+x		- WorldStateFrame
+x		- ZoneText
 
 		DEL
-		- BonusActionBarFrame
-		- GlobalStrings
-		- VehicleMenuBar
-		- ShapeshiftBarFrame
+√		- BonusActionBarFrame
+√		- VehicleMenuBar
 
 		UI
-		- Dungeon & Raid Finder consolidated into Group Finder, includes Scenario finder and Challenges Mode
-		- Spellbook now split into Active and Passive pages
-		- Vendor filter (dd) added to merchant frame
+√		- Dungeon & Raid Finder consolidated into Group Finder, includes Scenario finder and Challenges Mode
+√		- Spellbook now split into Active and Passive pages
+√		- Vendor filter (dd) added to merchant frame
 		- Buff consolidation now permanent, new tooltip with buff info
-		- 
+
+≈	O	Rework the button detection code as Texture names can't be used, they're not available unless frame is open
+
+¶	O	Add new skin options
+
+¶	O	Remove GearManager references
+
+√	O	Reorganise code into PlayerFrames/UIFrames and alphabetise the functions

@@ -1,6 +1,6 @@
 local aName, aObj = ...
 local _G = _G
-local ftype = "c"
+local ftype = "p"
 local module = aObj:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 local db, aso, plt
@@ -84,6 +84,16 @@ local function skinPlayerF()
 		if aObj.uCls == "PALADIN" then
 			PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 			PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
+		end
+		if aObj.isBeta then
+			if aObj.uCls == "MONK" then
+				PlayerFrameAlternateManaBar:Hide()
+				aObj:removeRegions(MonkHarmonyBar, {1, 2})
+			end
+			if aObj.uCls == "PRIEST" then
+				PriestBarFrame:DisableDrawLayer("BACKGROUND")
+				aObj:moveObject{obj=PriestBarFrame.orb1, y=6}
+			end
 		end
 	end
 
