@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("Auctionsnatch") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Auctionsnatch") then return end
 
-function Skinner:Auctionsnatch()
+function aObj:Auctionsnatch()
 
 	AS.mainframe.closebutton:SetHeight(16)
 	AS.mainframe.closebutton:SetText("X")
@@ -8,11 +9,12 @@ function Skinner:Auctionsnatch()
 	AS.mainframe.headerframe.additembutton:SetWidth(80)
 	self:moveObject{obj=AS.mainframe.headerframe.additembutton, x=-4, y=7}
 	self:skinScrollBar{obj=AS.mainframe.listframe.scrollbarframe}
-	self:addSkinFrame{obj=ASmainframe, y1=2, x2=2}
+	self:addSkinFrame{obj=ASmainframe, y1=2, x2=2, y2=-10}
 	-- Option frame (appears on right click on an item in the list)
 	self:addSkinFrame{obj=AS.optionframe}
-	-- DropDown frame (below frame)
-	self:skinDropDown{obj=ASdropDownMenu}
+	-- move DropDown frame up into frame
+	self:keepFontStrings(ASdropDownMenu)
+	self:moveObject{obj=ASdropDownMenu, y=20}
 	-- Prompt frame
 	AS.prompt.icon:SetNormalTexture(self.esTex)
 	self:skinEditBox{obj=AS.prompt.priceoverride, regs={9}}

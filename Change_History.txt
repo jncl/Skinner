@@ -1,3 +1,126 @@
+b4.15595.10
+Jncl:
+	ToDO.txt
+	Updated Change_History.txt
+	Comment out EventHandling code as it is no longer required
+	Updated BattlefieldMinimap code to allow a gloss effect a la Minimap
+	Updated oGlow skin
+	Updated XLoot skin
+
+b4.15595.9
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for UnitFrames module
+
+b4.15595.8
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Moved round2 function into UtilFuncs
+	Updated AdiBags, Fizzle & oGlow skins
+
+b4.15595.7
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated AdiBags, Fizzle & oGlow skins
+
+b4.15595.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Added ButtonBorders to Transmogrify and VoidStorage frames
+	Updated AdiBags skin
+	Skinned Fizzle & oGlow
+
+b4.15595.5
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+
+b4.15595.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Skin ChatFrame buttons, SkillBook Next/Prev buttons & CharacterFrame Expand button
+	Comment out debug message
+	Add delay before skinning Minimap buttons to allow for those created by other Addons
+	Skin QuestInfoSpellObjectiveFrame
+	Load GlyphUI skin when TalentUI loaded
+	Bugfix for ChatTabs
+	Updated AutoBag, Baggins (as reported by Decabah), BetterInbox, Quartz & ReforgeLite (as reported by Gershuun) skins
+
+b4.15595.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Code Tidyup
+	Updated HelpFrame skin
+	Updated the following skins for DropDown changes:
+	Outfitter, Overachiever
+	Pawn, Possessions, PowerAuras
+	QuestCompletist, QuestHistory
+	REFlex, RaidAchievement, ReforgeLite
+	Skillet
+	TooManyAddons
+	WIM, WeakAuras
+	XPerl
+	Skinned Reforgerade
+	Unobsoleted & Updated MrTrader_SkillWindow skin
+	Obsoleted NeatFreak, PartyBuilder, Toons & TotemCaddy skins
+
+b4.15595.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Code Tidyup
+	Bugfix for Warlock Pet UnitFrame level
+	Updated ARL & XLoot
+	Skinned PreformAVEnabler & X-UI library
+
+b4.15595.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated for 15595
+	Updated Buff skin
+	Skinned the MissingLoot frame
+	Updated XLoot skin
+	Skinned Smoker
+	Bugfix for MiniMapLFGFrame
+	Updated LFG Dungeon skin
+	Updated skins for dropdown changes
+	Updated drop down code etc, in the following skins:
+	_NPCScan
+	ACP, Accountant, Ace3, Acheron, AphesLootBrowser, Auctionator, Auctionsnatch, AutoBag
+	BaudBag, BetterInbox, BlackList, BossNotes
+	CFM, CLique, Configator
+	DBM
+	epgp, epgp_lootmaster
+	FeedMachine, FishingBuddy, FrierGeist_InstanceTime
+	G15Buttons, GnomeWorks, GuildBankSearch, GuildLaunchCT_RaidTracker
+	HandyNotes, HoloFriends
+	MogIt
+	Skinned AddonLoader & LibTradeSkillScan/LibTradeLinks
+	Obsoleted GearScore, GemHelper, GroupCalendar, GuildAds, GupCharacter, HealOrganizer, InventoryOnPar, ItemDB, LibSimpleOptions, LinksList, Ludwig, Luggage, Misdirectionhelper & MrTrader_SkillWindow skins
+	Obsoleted Cauldron, CurseRaidTracker, ElitistGroup, EveryQuest & ExtendedRaidInfo skins
+	Updated patch version number check
+	Updated UIButton code, set minimum height, align Help buttons with their highlight texture
+	Updated helper commands and made them debug only
+	Updated options code to correctly skin Calendar & TimeManager frames when selected
+	Updated UnitFrames code to position SpellBar text
+	Updated SkinTabs code to remove highlight texture positioning
+	Updated AchievementUI skin to determine if visible instead of shown
+	Updated ARL for scan button change
+	Updated Altoholic skin to add button borders
+
+b4.15354.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Make DropDown Buttons option default false
+
 b4.15354.1
 Jncl:
 	ToDo.txt

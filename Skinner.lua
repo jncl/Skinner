@@ -1,6 +1,6 @@
 local aName, aObj = ...
 local _G = _G
-local obj, objName, tex, texName, btn, btnName, tab, tabSF, tabName, objHeight, prdb, c, opts, kRegions
+local obj, objName, tex, texName, btn, btnName, tab, tabSF, tabName, objHeight, prdb, c, opts, kRegions, ddTex
 
 do
 	-- check to see if required libraries are loaded
@@ -61,8 +61,8 @@ function aObj:OnInitialize()
 	prdb = self.db.profile
 
 	-- convert any old settings
-	if type(self.db.profile.MinimapButtons) == "boolean" then
-		self.db.profile.MinimapButtons = {skin = true, style = false}
+	if type(prdb.MinimapButtons) == "boolean" then
+		prdb.MinimapButtons = {skin = true, style = false}
 	end
 
 	-- setup the Addon's options
@@ -164,7 +164,7 @@ function aObj:OnInitialize()
 	self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	self.Backdrop[7] = CopyTable(self.backdrop)
 	self.Backdrop[7].edgeSize = 10
-	-- this backdrop is for the BattlefieldMinimap frame
+	-- this backdrop is for the BattlefieldMinimap & Minimap frames
 	self.Backdrop[8] = CopyTable(self.backdrop)
 	self.Backdrop[8].bgFile = nil
 	self.Backdrop[8].tile = false
@@ -195,14 +195,14 @@ function aObj:OnInitialize()
 		self:add2Table(self.pKeys1, "PetJournal")
 	end
 	self.pKeys2 = {"AchievementUI"}
-	self.uiKeys1 = {"BattlefieldMm", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "TimeManager",}
+	self.uiKeys1 = {"BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "TimeManager",}
 	if self.isPTR then
 		self:add2Table(self.uiKeys1, "FeedbackUI")
 	end
 	if self.isBeta then
 		self:add2Table(self.uiKeys1, "ChallengesUI")
 	end
-	self.uiKeys2 = {}
+	self.uiKeys2 = {"BattlefieldMm"}
 	-- these are used to disable the gradient
 	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
@@ -213,7 +213,12 @@ function aObj:OnInitialize()
 	c = prdb.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
 	-- StatusBar texture
-	self.sbTexture = self.LSM:Fetch("statusbar", prdb.StatusBar.texture)
+	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
+	-- use this to handle textures supplied by other addons (e.g. XPerl)
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", function()
+		self:updateSBTexture()
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	end)
 	-- Backdrop colours
 	c = prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or 1}
@@ -398,6 +403,7 @@ local function __addSkinButton(opts)
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
+		rp = re-parent, reverse the parent child relationship
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSB\n"..debugstack())
@@ -468,6 +474,16 @@ local function __addSkinButton(opts)
 		end
 	end
 
+	-- reverse parent child relationship
+	if opts.rp then
+		btn:SetParent(opts.obj:GetParent())
+		opts.obj:SetParent(btn)
+		opts.obj.SetParent_orig = opts.obj.SetParent
+		opts.obj.SetParent = function(this, parent)
+			aObj.sBtn[this]:SetParent(parent)
+			this:SetParent_orig(aObj.sBtn[this])
+		end
+	end
 	return btn
 
 end
@@ -534,6 +550,7 @@ local function __addSkinFrame(opts)
 		ri = Disable Inset DrawLayers
 		bas = use applySkin for buttons
 		rt = remove Textures
+		rp = re-parent, reverse the parent child relationship
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n"..debugstack())
@@ -596,15 +613,29 @@ local function __addSkinFrame(opts)
 
 	-- reparent skinFrame to avoid whiteout issues caused by animations
 	if opts.anim then
-		aObj.skinFrame[opts.obj]:SetParent(UIParent)
+		skinFrame:SetParent(UIParent)
 		-- hook Show and Hide methods
 		aObj:SecureHook(opts.obj, "Show", function(this) aObj.skinFrame[this]:Show() end)
 		aObj:SecureHook(opts.obj, "Hide", function(this) aObj.skinFrame[this]:Hide() end)
-		if not opts.obj:IsShown() then aObj.skinFrame[opts.obj]:Hide() end
+		if not opts.obj:IsShown() then skinFrame:Hide() end
 	end
 
 	-- remove inset textures
 	if opts.ri then aObj:removeInset(opts.obj.Inset) end
+
+	-- reverse parent child relationship
+	if opts.rp then
+		skinFrame:SetParent(opts.obj:GetParent())
+		opts.obj:SetParent(skinFrame)
+		opts.obj.SetParent_orig = opts.obj.SetParent
+		opts.obj.SetParent = function(this, parent)
+			aObj.skinFrame[this]:SetParent(parent)
+			this:SetParent_orig(aObj.skinFrame[this])
+		end
+		-- hook Show and Hide methods
+		aObj:SecureHook(opts.obj, "Show", function(this) aObj.skinFrame[this]:Show() end)
+		aObj:SecureHook(opts.obj, "Hide", function(this) aObj.skinFrame[this]:Hide() end)
+	end
 
 	return skinFrame
 
@@ -1068,6 +1099,13 @@ local function __moveObject(opts)
 
 	if not opts.obj then return end
 
+--@debug@
+	if opts.obj:GetNumPoints() > 1 then
+		aObj:CustomPrint(1, 0, 0, "moveObject: %s, GetNumPoints = %d", opts.obj, opts.obj:GetNumPoints())
+		return
+	end
+--@end-debug@
+
 	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
 
 	-- aObj:Debug("__mO: [%s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs)
@@ -1261,14 +1299,25 @@ local function __skinDropDown(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		noSkin = don't skin the DropDown
-		noMove = don't move button & Text
-		moveTex = move Texture up
-		mtx = move Texture left/right
-		mty = move Texture up/down
+		x1 = X offset for TOPLEFT
+		y1 = Y offset for TOPLEFT
+		x2 = X offset for BOTTOMRIGHT
+		y2 = Y offset for BOTTOMRIGHT
+		rp = re-parent, reverse the parent child relationship (addSkinFrame option)
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __sDD\n"..debugstack())
 --@end-alpha@
+
+--@debug@
+	if opts.noMove
+	or opts.moveTex
+	or opts.mtx
+	or opts.mty
+	then
+		aObj:CustomPrint(1, 0, 0, "skinDropDown: %s, deprecated option used", opts.obj)
+	end
+--@end-debug@
 
 	if opts.obj
 	and opts.obj.GetName
@@ -1287,49 +1336,31 @@ local function __skinDropDown(opts)
 	-- don't skin it twice
 	if aObj.skinned[opts.obj] then return end
 
+	-- hide textures
+	aObj:keepFontStrings(opts.obj)
+
+	-- return if not to be skinned
 	if not aObj.db.profile.TexturedDD
 	and not aObj.db.profile.DropDownButtons
 	or opts.noSkin
 	then
-		aObj:keepFontStrings(opts.obj)
 		return
 	end
 
-	local mTex, btn, txt
-	if opts.obj.leftTexture then
-		opts.obj.leftTexture:SetAlpha(0)
-		opts.obj.rightTexture:SetAlpha(0)
-		mTex = opts.obj.middleTexture
-		btn = opts.obj.button
-		txt = opts.obj.label
-	else
-		_G[opts.obj:GetName().."Left"]:SetAlpha(0)
-		_G[opts.obj:GetName().."Right"]:SetAlpha(0)
-		mTex = _G[opts.obj:GetName().."Middle"]
-		btn = _G[opts.obj:GetName().."Button"]
-		txt = _G[opts.obj:GetName().."Text"]
-	end
 	-- add texture
-	mTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
-	mTex:SetHeight(19)
+	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK")
+	opts.obj.ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
+	opts.obj.ddTex:SetPoint("LEFT", _G[opts.obj:GetName().."Left"], "RIGHT", -5, 2)
+	opts.obj.ddTex:SetPoint("RIGHT", _G[opts.obj:GetName().."Right"], "LEFT", 5, 2)
+	opts.obj.ddTex:SetHeight(18)
 
-	-- move Button left and down, Text down
-	if not opts.noMove then
-		aObj:moveObject{obj=btn, x=-6, y=-2}
-		aObj:moveObject{obj=txt, y=-2}
-	end
-	-- move texture
-	local mtx = opts.mtx or 0
-	local mty = opts.moveTex and 2 or (opts.mty or 0)
-	if mtx ~= 0 or mty ~= 0 then aObj:moveObject{obj=mTex, x=mtx, y=mty} end
-
-	local xOfs1 = opts.x1 or 18
-	local yOfs1 = opts.y1 or -2
-	local xOfs2 = opts.x2 or -20
-	local yOfs2 = opts.y2 or 4
+	local xOfs1 = opts.x1 or 15
+	local yOfs1 = opts.y1 or 0
+	local xOfs2 = opts.x2 or -15
+	local yOfs2 = opts.y2 or 6
 	-- skin the frame
 	if aObj.db.profile.DropDownButtons then
-		aObj:addSkinFrame{obj=opts.obj, ft=ftype, aso={ng=true}, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		aObj:addSkinFrame{obj=opts.obj, ft=ftype, aso={ng=true}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end
 
 end
@@ -1416,11 +1447,18 @@ local function __skinEditBox(opts)
 			aObj:moveObject{obj=opts.obj.searchIcon, x=3} -- e.g. BagItemSearchBox
 		elseif opts.obj.icon then
 			aObj:moveObject{obj=opts.obj.icon, x=3} -- e.g. FriendsFrameBroadcastInput
-		else
+		elseif _G[opts.obj:GetName().."SearchIcon"] then
 			aObj:moveObject{obj=_G[opts.obj:GetName().."SearchIcon"], x=3} -- e.g. TradeSkillFrameSearchBox
+		else -- e.g. WeakAurasFilterInput
+			for _, reg in pairs{opts.obj:GetRegions()} do
+				if reg:GetObjectType() == "Texture"
+				and reg:GetTexture():find("UI-Searchbox-Icon", 1, true)
+				then
+					aObj:moveObject{obj=reg, x=3}
+				end
+			end
 		end
 	end
-
 
 end
 

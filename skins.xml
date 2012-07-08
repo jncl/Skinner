@@ -13,6 +13,7 @@
 <script file="SkinMe\Acheron.lua"/>
 <script file="SkinMe\AckisRecipeList.lua"/>
 <script file="SkinMe\ACP.lua"/>
+<script file="SkinMe\AddonLoader.lua"/>
 <script file="SkinMe\AdiBags.lua"/>
 <script file="SkinMe\AdvancedTradeSkillWindow.lua"/>
 <script file="SkinMe\AISeller.lua"/>
@@ -119,6 +120,7 @@
 <script file="SkinMe\FBagOfHolding.lua"/>
 <script file="SkinMe\FeedMachine.lua"/>
 <script file="SkinMe\FishingBuddy.lua"/>
+<script file="SkinMe\Fizzle.lua"/>
 <script file="SkinMe\FlightMap.lua"/>
 <script file="SkinMe\FlightMapEnhanced.lua"/>
 <script file="SkinMe\FlyoutButtonCustom.lua"/>
@@ -164,6 +166,8 @@
 <script file="SkinMe\LibExtraTip.lua"/>
 <script file="SkinMe\LibQTip.lua"/>
 <script file="SkinMe\LibSimpleFrame.lua"/>
+<script file="SkinMe\LibTradeSkillScan.lua"/>
+<script file="SkinMe\LibXUI.lua"/>
 <script file="SkinMe\LightHeaded.lua"/>
 <script file="SkinMe\LilSparkysWorkshop.lua"/>
 <script file="SkinMe\Links.lua"/>
@@ -193,6 +197,7 @@
 <script file="SkinMe\NeonChat.lua"/>
 <script file="SkinMe\nQuestLog.lua"/>
 <script file="SkinMe\Odyssey.lua"/>
+<script file="SkinMe\oGlow.lua"/>
 <script file="SkinMe\OgriLazy.lua"/>
 <script file="SkinMe\Omen.lua"/>
 <script file="SkinMe\OneBag3.lua"/>
@@ -217,6 +222,7 @@
 <script file="SkinMe\Postal.lua"/>
 <script file="SkinMe\PowerAuras.lua"/>
 <script file="SkinMe\Prat3.lua"/>
+<script file="SkinMe\PreformAVEnabler.lua"/>
 <script file="SkinMe\Producer.lua"/>
 <script file="SkinMe\ProfessionsBook.lua"/>
 <script file="SkinMe\ProfessionTabs.lua"/>
@@ -246,6 +252,7 @@
 <script file="SkinMe\Recount.lua"/>
 <script file="SkinMe\REFlex.lua"/>
 <script file="SkinMe\ReforgeLite.lua"/>
+<script file="SkinMe\Reforgerade.lua"/>
 <script file="SkinMe\Reforgenator.lua"/>
 <script file="SkinMe\RicoMiniMap.lua"/>
 <script file="SkinMe\RockConfig.lua"/>
@@ -256,6 +263,7 @@
 <script file="SkinMe\sienasGemViewer.lua"/>
 <script file="SkinMe\Skada.lua"/>
 <script file="SkinMe\Skillet.lua"/>
+<script file="SkinMe\Smoker.lua"/>
 <script file="SkinMe\SmoothQuest.lua"/>
 <script file="SkinMe\SnapShot.lua"/>
 <script file="SkinMe\Spew.lua"/>

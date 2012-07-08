@@ -1,4 +1,5 @@
-if not Skinner:isAddonEnabled("XPerl") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("XPerl") then return end
 
 local function colourBD(...)
 
@@ -11,7 +12,7 @@ local function colourBD(...)
 
 end
 
-function Skinner:XPerl()
+function aObj:XPerl()
 
 	-- Frame and Border colours
 	local c = self.db.profile.Backdrop
@@ -35,7 +36,7 @@ function Skinner:XPerl()
 
 end
 
-function Skinner:XPerl_Player()
+function aObj:XPerl_Player()
 
 -->>--	Player
 	-- Put a border around the class icon
@@ -51,7 +52,7 @@ function Skinner:XPerl_Player()
 
 end
 
-function Skinner:XPerl_Target()
+function aObj:XPerl_Target()
 
 
 	local function skinClassIcon(frame)
@@ -73,7 +74,7 @@ function Skinner:XPerl_Target()
 
 end
 
-function Skinner:XPerl_Party()
+function aObj:XPerl_Party()
 
 	-- Put a border around the class icon
 	for i = 1, 4 do
@@ -88,13 +89,13 @@ function Skinner:XPerl_Party()
 
 end
 
-function Skinner:XPerl_RaidMonitor()
+function aObj:XPerl_RaidMonitor()
 
 	self:applySkin(XPerl_RaidMonitor_Frame)
 
 end
 
-function Skinner:XPerl_RaidAdmin()
+function aObj:XPerl_RaidAdmin()
 
 	-- hook this to change colours
 	if not self:IsHooked("XPerl_SetupFrameSimple") then
@@ -115,7 +116,7 @@ function Skinner:XPerl_RaidAdmin()
 
 end
 
-function Skinner:XPerl_RaidHelper()
+function aObj:XPerl_RaidHelper()
 
 	-- hook this to change colours
 	if not self:IsHooked("XPerl_SetupFrameSimple") then
@@ -135,7 +136,7 @@ function Skinner:XPerl_RaidHelper()
 
 end
 
-function Skinner:XPerl_Options()
+function aObj:XPerl_Options()
 
 	-- hook these to manage backdrops
 	for _, frm in pairs{"Options", "ColourPicker", "Options_TooltipConfig", "Options_TextureSelect", "OptionsQuestionDialog",  "Custom_Config"} do
@@ -158,7 +159,7 @@ function Skinner:XPerl_Options()
 	self:moveObject{obj=XPerl_Options_Player_BiggerGap, x=4}
 	self:skinEditBox{obj=XPerl_Options_Player_Gap, regs={9}}
 	-- party alignment
-	self:skinDropDown{obj=XPerl_Options_Party_Anchor}
+	self:skinDropDown{obj=XPerl_Party_Anchor}
 	self:moveObject{obj=XPerl_Options_Party_Gap, x=-6}
 	self:moveObject{obj=XPerl_Options_Party_BiggerGap, x=6}
 	self:skinEditBox{obj=XPerl_Options_Party_Gap, regs={9}}

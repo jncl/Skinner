@@ -1,21 +1,7 @@
-if not Skinner:isAddonEnabled("GuildLaunchCT_RaidTracker") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("GuildLaunchCT_RaidTracker") then return end
 
-function Skinner:GuildLaunchCT_RaidTracker()
-
-	-- Option Frame tabs
-	if self.isTT then
-		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook("CT_RaidTracker_OptionsFrame_TabClick",function(...)
-			for i = 1, 7 do
-				local tabSF = self.skinFrame[_G["CT_RaidTrackerOptionsFrameTab"..i]]
-				if i == CT_RaidTrackerOptionsFrame.selectedTab then
-					self:setActiveTab(tabSF)
-				else
-					self:setInactiveTab(tabSF)
-				end
-			end
-		end)
-	end
+function aObj:GuildLaunchCT_RaidTracker()
 
 -->>-- RaidTracker Frame
 	self:keepFontStrings(CT_EmptyRaidTrackerFrame)
@@ -49,8 +35,8 @@ function Skinner:GuildLaunchCT_RaidTracker()
 	self:keepFontStrings(CT_RaidTrackerPlayerRaidTab1)
 	self:keepFontStrings(CT_RaidTrackerPlayerRaidTabLooter)
 	if self.db.profile.TexturedTab then
-		self:applySkin(CT_RaidTrackerPlayerRaidTabLooter, nil, 0)
 		self:applySkin(CT_RaidTrackerPlayerRaidTab1, nil, 0)
+		self:applySkin(CT_RaidTrackerPlayerRaidTabLooter, nil, 0)
 	else
 		self:applySkin(CT_RaidTrackerPlayerRaidTab1)
 		self:applySkin(CT_RaidTrackerPlayerRaidTabLooter)
@@ -126,18 +112,9 @@ function Skinner:GuildLaunchCT_RaidTracker()
 -->>-- Options Frame
 	myFrameHeader:SetPoint("TOP", CT_RaidTrackerOptionsFrame, "TOP", 0, 7)
 	self:addSkinFrame{obj=CT_RaidTrackerOptionsFrame, kfs=true, y2=-2}
-	
 	-- Tabs
-	for i = 1, 7 do
-		local tabName = _G["CT_RaidTrackerOptionsFrameTab"..i]
-		self:keepRegions(tabName, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tabName, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
+	self:skinTabs{obj=CT_RaidTrackerOptionsFrame}
+	self:resizeTabs(CT_RaidTrackerOptionsFrame)
 	
 -->>-- ItemOptions Frame
 	self:skinScrollBar{obj=CT_RaidTracker_ItemOptions_ScrollBar}

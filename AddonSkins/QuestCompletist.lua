@@ -10,6 +10,7 @@ function aObj:QuestCompletist()
 	self:skinDropDown{obj=qcCategoryDropdownMenu}
 	self:adjWidth{obj=qcMenuSlider, adj=-12}
 	self:skinSlider{obj=qcMenuSlider}
+	self:skinEditBox{obj=qcSearchBox, regs={9}, mi=true}
 	self:addSkinFrame{obj=qcQuestCompletistUI, kfs=true, x1=10, y1=-12, x2=-32, y2=71}
 	-- Tooltips
 	if self.db.profile.Tooltips.skin then

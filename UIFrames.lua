@@ -188,7 +188,7 @@ function aObj:AutoComplete()
 end
 
 function aObj:BattlefieldMinimap() -- LoD
-	if not self.db.profile.BattlefieldMm or self.initialized.BattlefieldMm then return end
+	if not self.db.profile.BattlefieldMm.skin or self.initialized.BattlefieldMm then return end
 	self.initialized.BattlefieldMm = true
 
 -->>--	Minimap Tab
@@ -197,8 +197,13 @@ function aObj:BattlefieldMinimap() -- LoD
 	self:addSkinFrame{obj=BattlefieldMinimapTab, ft=ftype, noBdr=self.isTT, aso=asopts, y1=-7, y2=-7}
 	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
 
-	-- use a backdrop with no Texture and no Gradient otherwise the map tiles are obscured
-	self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, aso={bd=8, ng=true}, x1=-4, y1=4, x2=-1, y2=-1}
+	-- use a backdrop with no Texture otherwise the map tiles are obscured
+	self.bfminimapskin = self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, aso={bd=8}, x1=-4, y1=4, x2=-1, y2=-1}
+	if self.db.profile.BattlefieldMm.gloss then
+		RaiseFrameLevel(self.bfminimapskin)
+	else
+		LowerFrameLevel(self.bfminimapskin)
+	end
 	BattlefieldMinimapCorner:SetTexture(nil)
 	BattlefieldMinimapBackground:SetTexture(nil)
 
@@ -265,11 +270,7 @@ function aObj:Calendar() -- LoD
 	self.initialized.Calendar = true
 
 -->>--	Calendar Frame
-	-- this is not a standard dropdown
-	self:skinDropDown{obj=CalendarFilterFrame, noMove=true, x1=0, y1=2, x2=-2, y2=-2}
-	CalendarFilterFrameMiddle:SetHeight(16)
-	self:moveObject{obj=CalendarFilterButton, x=-8}
-	self:moveObject{obj=CalendarFilterFrameText, x=-8}
+	self:keepFontStrings(CalendarFilterFrame)
 	-- move close button
 	self:moveObject{obj=CalendarCloseButton, y=14}
 	self:adjHeight{obj=CalendarCloseButton, adj=-2}
@@ -306,11 +307,9 @@ function aObj:Calendar() -- LoD
 	self:removeRegions(CalendarCreateEventCloseButton, {5})
 	self:skinEditBox{obj=CalendarCreateEventTitleEdit, regs={9}}
 	self:skinDropDown{obj=CalendarCreateEventTypeDropDown}
-	self:skinDropDown{obj=CalendarCreateEventHourDropDown, x1=20, x2=-2}
-	CalendarCreateEventHourDropDownMiddle:SetWidth(CalendarCreateEventHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=CalendarCreateEventMinuteDropDown, x1=20, x2=-2}
-	CalendarCreateEventMinuteDropDownMiddle:SetWidth(CalendarCreateEventMinuteDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=CalendarCreateEventAMPMDropDown, x1=20, x2=-10}
+	self:skinDropDown{obj=CalendarCreateEventHourDropDown, x2=-5}
+	self:skinDropDown{obj=CalendarCreateEventMinuteDropDown, x2=-5}
+	self:skinDropDown{obj=CalendarCreateEventAMPMDropDown, x2=-5}
 	self:skinDropDown{obj=CalendarCreateEventRepeatOptionDropDown}
 	self:addSkinFrame{obj=CalendarCreateEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=CalendarCreateEventDescriptionScrollFrame}
@@ -321,7 +320,7 @@ function aObj:Calendar() -- LoD
 	CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
 	CalendarCreateEventCreateButtonBorder:SetAlpha(0)
 	self:addSkinFrame{obj=CalendarCreateEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
-	
+
 -->>-- Mass Invite Frame
 	self:keepFontStrings(CalendarMassInviteTitleFrame)
 	self:moveObject{obj=CalendarMassInviteTitleFrame, y=-6}
@@ -347,7 +346,7 @@ function aObj:Calendar() -- LoD
 	self:skinButton{obj=CalendarTexturePickerCancelButton}
 	CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
 	self:addSkinFrame{obj=CalendarTexturePickerFrame, ft=ftype, kfs=true, x1=5, y1=-3, x2=-3, y2=2}
-	
+
 -->>-- Class Button Container
 	for i = 1, MAX_CLASSES do -- allow for the total button
 		btn = _G["CalendarClassButton"..i]
@@ -611,19 +610,23 @@ local function skinChatTab(objName)
 	tabSF = aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
 	tabSF:SetAlpha(0.2)
 	-- hook this to fix tab gradient texture overlaying text & highlight
-	aObj:SecureHook(tab, "SetParent", function(this, parent)
-		local tabSF = aObj.skinFrame[this]
-		if parent == GeneralDockManager.scrollFrame.child then
-			tabSF:SetParent(GeneralDockManager)
-		else
-			tabSF:SetParent(this)
-			tabSF:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
-		end
-	end)
+	if not aObj:IsHooked(tab, "SetParent") then
+		aObj:SecureHook(tab, "SetParent", function(this, parent)
+			local tabSF = aObj.skinFrame[this]
+			if parent == GeneralDockManager.scrollFrame.child then
+				tabSF:SetParent(GeneralDockManager)
+			else
+				tabSF:SetParent(this)
+				tabSF:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
+			end
+		end)
+	end
 	-- hook this to manage alpha changes when chat frame fades in and out
-	aObj:SecureHook(tab, "SetAlpha", function(this, alpha)
-		aObj.skinFrame[this]:SetAlpha(alpha)
-	end)
+	if not aObj:IsHooked(tab, "SetAlpha") then
+		aObj:SecureHook(tab, "SetAlpha", function(this, alpha)
+			aObj.skinFrame[this]:SetAlpha(alpha)
+		end)
+	end
 
 end
 function aObj:ChatTabs()
@@ -975,6 +978,9 @@ function aObj:GuildBankUI() -- LoD
 		self:addButtonBorder{obj=_G[objName.."Button"], relTo=_G[objName.."ButtonIconTexture"]}
 	end
 
+	-- send message when UI is skinned (used by oGlow skin)
+	self:SendMessage("GuildBankUI_Skinned", self)
+
 end
 
 function aObj:HelpFrame()
@@ -1019,6 +1025,12 @@ function aObj:HelpFrame()
 	end)
 
 	-- Report Player panel
+	self:addSkinFrame{obj=ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+	ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=ReportPlayerNameDialog, ft=ftype}
+	self:addSkinFrame{obj=ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+	ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=ReportCheatingDialog, ft=ftype}
 	-- Account Security panel
 	-- Character Stuck! panel
 	self:addButtonBorder{obj=HelpFrameCharacterStuckHearthstone, es=20}
@@ -1135,6 +1147,7 @@ function aObj:LFGFrame()
 	-- LFG DungeonReady Popup a.k.a. ReadyCheck
 	self:addSkinFrame{obj=LFGDungeonReadyStatus, kfs=true, ft=ftype}
 	self:addSkinFrame{obj=LFGDungeonReadyDialog, kfs=true, ft=ftype}
+	LFGDungeonReadyDialog.SetBackdrop = function() end
 	LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
 	LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
 	-- Search Status Frame
@@ -1539,7 +1552,6 @@ function aObj:MenuFrames()
 		self:addSkinFrame{obj=MacOptionsCompressFrame, ft=ftype, kfs=true, hdr=true}
 		self:addSkinFrame{obj=MacOptionsCancelFrame, ft=ftype, kfs=true, hdr=true}
 		self:addSkinFrame{obj=FolderPicker, ft=ftype, kfs=true, hdr=true}
-
 	end
 
 -->>-- Interface
@@ -1552,7 +1564,6 @@ function aObj:MenuFrames()
 	self:skinScrollBar{obj=InterfaceOptionsFrameAddOnsList, size=2}
 	self:addSkinFrame{obj=InterfaceOptionsFrameAddOns, ft=ftype, kfs=true}
 	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ft=ftype}
-
 	-- skin toggle buttons
 	for i = 1, #InterfaceOptionsFrameAddOns.buttons do
 		self:skinButton{obj=InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true}
@@ -1561,43 +1572,71 @@ function aObj:MenuFrames()
 -->>-- Rating Menu
 	self:addSkinFrame{obj=RatingMenuFrame, ft=ftype, hdr=true}
 
+	local oName
 	local function checkKids(obj)
 
-		local oName = obj.GetName and obj:GetName() or nil
-		if oName and (oName:find("AceConfig") or oName:find("AceGUI"))then return end  -- ignore AceConfig/AceGUI objects
+		oName = obj.GetName and obj:GetName() or nil
+		  -- ignore named/AceConfig/XConfig/AceGUI objects
+		if oName
+		and (oName:find("AceConfig")
+		or oName:find("XConfig")
+		or oName:find("AceGUI"))
+		then
+			return
+		end
 
 		for _, child in ipairs{obj:GetChildren()} do
 			-- aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
-			if aObj:isDropDown(child) then
-				aObj:skinDropDown{obj=child}
-			elseif child:IsObjectType("EditBox") then
-				aObj:skinEditBox{obj=child, regs={9}}
-			elseif child:IsObjectType("ScrollFrame")
-			and child:GetName()
-			and child:GetName().."ScrollBar" -- handle unnamed ScrollBar's
-			then
-				aObj:skinScrollBar{obj=child}
-			else
-				checkKids(child)
-			end
-			-- remove Ampere's container background
-			if child:GetParent().name
-			and child:GetParent().name == "Ampere"
-			and child:GetNumRegions() == 1
-			then
-				child:DisableDrawLayer("BACKGROUND")
+			if not aObj.skinFrame[child] then
+				if aObj:isDropDown(child) then
+					local xOfs
+					if child:GetName():find("PowaDropDownDefaultTimer") then
+						xOfs = -90
+					elseif child:GetName():find("PowaDropDownDefaultStacks") then
+						xOfs = -110
+					elseif child:GetName():find("oGlowOptFQualityThreshold") then
+						xOfs = 110
+					end
+					aObj:skinDropDown{obj=child, x2=xOfs}
+				elseif child:IsObjectType("EditBox") then
+					aObj:skinEditBox{obj=child, regs={9}}
+				elseif child:IsObjectType("ScrollFrame")
+				and child:GetName()
+				and child:GetName().."ScrollBar" -- handle unnamed ScrollBar's
+				then
+					aObj:skinScrollBar{obj=child}
+				else
+					checkKids(child)
+				end
+				-- remove Ampere's container background
+				if child:GetParent().name
+				and child:GetParent().name == "Ampere"
+				and child:GetNumRegions() == 1
+				then
+					child:DisableDrawLayer("BACKGROUND")
+				end
 			end
 		end
 
 	end
-	-- Hook these to skin any Interface Option panels and their elements
+	-- hook this to skin Interface Option panels and their elements
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
 		-- skin tekKonfig library objects here as well as in AddonFrames to handle late loading of libraries
 		if self.tekKonfig then self:checkAndRun("tekKonfig") end
-		if panel and panel.GetNumChildren and not self.skinFrame[panel] then
+		-- run Addon Loader skin code here
+		if panel.name == "Addon Loader"
+		and self.AddonLoader
+		then
+			self:checkAndRun("AddonLoader")
+		end
+		-- self:Debug("IOL_DP: [%s, %s, %s, %s]", panel, panel.name, panel:GetNumChildren(), self.skinFrame[panel])
+		if panel
+		and panel.GetNumChildren
+		and not self.skinFrame[panel]
+		then
+			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
 			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true}) -- wait for 1/10th second for panel to be populated, always use applySkin to ensure text appears above button texture
-			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 		end
 	end)
 
@@ -1624,7 +1663,8 @@ function aObj:Minimap()
 
 -->>-- Minimap
 	Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
-	self.minimapskin = self:addSkinFrame{obj=Minimap, ofs=5}
+	-- use a backdrop with no Texture otherwise the map tiles are obscured
+	self.minimapskin = self:addSkinFrame{obj=Minimap, ft=ftype, aso={bd=8}, ofs=5}
 	if self.db.profile.Minimap.gloss then
 		RaiseFrameLevel(self.minimapskin)
 	else
@@ -1705,7 +1745,7 @@ function aObj:MinimapButtons()
 							obj:SetHeight(32)
 							if not minBtn then
 								if objType == "Button" then
-									aObj:addSkinButton{obj=obj, parent=obj, sap=true}
+									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==MiniMapLFGFrame and true or nil}
 								else
 									aObj:addSkinFrame{obj=obj, ft=ftype}
 								end
@@ -1722,8 +1762,8 @@ function aObj:MinimapButtons()
 
 	end
 
-	-- skin Minimap children
-	mmKids(Minimap)
+	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
+	self:ScheduleTimer(mmKids, 0.5, Minimap)
 
 	-- skin other Blizzard buttons
 	asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
@@ -1878,7 +1918,6 @@ function aObj:Nameplates()
 	local npEvt
 	local function skinNameplates()
 
-		-- aObj:Debug("skinNameplates")
 		local tex, sb
 		for _, child in pairs{WorldFrame:GetChildren()} do
 			if child.GetName
@@ -1899,7 +1938,7 @@ function aObj:Nameplates()
 				if not aObj.sbGlazed[sb] then aObj:glazeStatusBar(sb, 0) end
 				sb = aObj:getChild(child, 2)
 				if not aObj.sbGlazed[sb] then aObj:glazeStatusBar(sb, 0) end
-				-- -- skin the Shield texture
+				-- skin the Shield texture
 				aObj:getRegion(sb, 2):SetAlpha(0) -- border texture
 				aObj:changeShield(self:getRegion(sb, 3), self:getRegion(sb, 4)) -- non-interruptible shield texture and icon
 			end
@@ -2077,11 +2116,9 @@ function aObj:TimeManager() -- LoD
 	TimeManagerFrameTicker:Hide()
 	self:keepFontStrings(TimeManagerStopwatchFrame)
 	self:addButtonBorder{obj=TimeManagerStopwatchCheck}
-	self:skinDropDown{obj=TimeManagerAlarmHourDropDown, x1=20, x2=-2}
-	TimeManagerAlarmHourDropDownMiddle:SetWidth(TimeManagerAlarmHourDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=TimeManagerAlarmMinuteDropDown, x1=20, x2=-2}
-	TimeManagerAlarmMinuteDropDownMiddle:SetWidth(TimeManagerAlarmMinuteDropDownMiddle:GetWidth() + 8)
-	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown, x1=20, x2=-10}
+	self:skinDropDown{obj=TimeManagerAlarmHourDropDown, x2=-5}
+	self:skinDropDown{obj=TimeManagerAlarmMinuteDropDown, x2=-5}
+	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown, x2=-5}
 	self:skinEditBox{obj=TimeManagerAlarmMessageEditBox, regs={9}}
 	if not self.isBeta then
 		self:addSkinFrame{obj=TimeManagerFrame, ft=ftype, kfs=true, x1=14, y1=-11, x2=-49, y2=9}

@@ -44,12 +44,7 @@ function aObj:AuctionUI() -- LoD
 		obj = _G["Browse"..v]
 		self:skinEditBox{obj=obj, regs={9}}
 		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
-	end	
-	if not self.isBeta then
-		self:skinDropDown{obj=BrowseDropDown}
-	else
-		self:skinDropDown{obj=BrowseDropDown, x2=105}
-	end	
+	self:skinDropDown{obj=BrowseDropDown, x2=110}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		obj = _G["Browse"..v.."Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
@@ -494,10 +489,19 @@ function aObj:QuestInfo()
 	QuestInfoRewardSpellNameFrame:SetTexture(nil)
 	QuestInfoRewardSpellSpellBorder:SetTexture(nil)
 
+	-- Skill Point frame
 	btnName = "QuestInfoSkillPointFrame"
 	_G[btnName.."NameFrame"]:SetTexture(nil)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G[btnName], libt=true, reParent={_G[btnName.."SkillPointBg"], _G[btnName.."SkillPointBgGlow"], _G[btnName.."Points"]}}
+	end
+
+	-- Spell Objective frame
+	btnName = "QuestInfoSpellObjectiveFrame"
+	_G[btnName.."NameFrame"]:SetTexture(nil)
+	_G[btnName.."SpellBorder"]:SetTexture(nil)
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."IconTexture"]}
 	end
 
 end
@@ -563,12 +567,6 @@ function aObj:Tabard()
 
 	self:add2Table(self.npcKeys, "Tabard")
 
-	if not self.isBeta then
-		self:keepRegions(TabardFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is the background, 17 - 20 are the emblem, 21, 22 are the text
-	else
-		self:keepRegions(TabardFrame, {8, 33, 34}) -- N.B. region 8, 21, 22 are the text
-	end
-
 	self:makeMFRotatable(TabardModel)
 	TabardFrameCostFrame:SetBackdrop(nil)
 	self:keepFontStrings(TabardFrameCustomizationFrame)
@@ -577,11 +575,13 @@ function aObj:Tabard()
 	end
 
 	if not self.isBeta then
-		self:addSkinFrame{obj=TabardFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-32, y2=74}
+		self:keepRegions(TabardFrame, {8, 33, 34}) -- N.B. region 8, 21, 22 are the text
+		self:addSkinFrame{obj=TabardFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
 	else
+		self:keepRegions(TabardFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is 		the background, 17 - 20 are the emblem, 21, 22 are the text
 		self:removeInset(TabardFrameMoneyInset)
 		TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=TabardFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=TabardFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	end
 
 end
@@ -640,6 +640,15 @@ function aObj:VoidStorageUI() -- LoD
 		local frame = _G["VoidStorage"..v.."Frame"]
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
+	end
+	if self.modBtnBs then
+		for i = 1, 9 do
+			self:addButtonBorder{obj=_G["VoidStorageDepositButton"..i]}
+			self:addButtonBorder{obj=_G["VoidStorageWithdrawButton"..i]}
+		end
+		for i = 1, 80 do
+			self:addButtonBorder{obj=_G["VoidStorageStorageButton"..i]}
+		end
 	end
 	self:addSkinFrame{obj=VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
 	self:skinEditBox{obj=VoidItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}

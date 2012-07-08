@@ -338,7 +338,7 @@ function aObj:Buffs()
 				if btn and not btn.sknrBdr then
 					-- add button borders
 					aObj:addButtonBorder{obj=btn}
-					self:moveObject{obj=btn.duration, y=-1}
+					aObj:moveObject{obj=btn.duration, y=-1}
 				end
 			end
 
@@ -414,6 +414,7 @@ function aObj:CharacterFrames()
 	self:removeInset(CharacterFrameInsetRight)
 	self:skinTabs{obj=CharacterFrame}
 	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, bgen=2, x1=-3, y1=2, x2=1, y2=-5}
+	self:addButtonBorder{obj=CharacterFrameExpandButton, ofs=-2}
 
 	-- PaperDoll Frame
 	self:keepFontStrings(PaperDollFrame)
@@ -787,8 +788,7 @@ function aObj:EncounterJournal() -- LoD
 	if not self.isBeta then
 		self:addSkinFrame{obj=EncounterJournal.encounter.info.lootScroll.classFilter, ft=ftype, kfs=true}
 	else
-		self:skinDropDown{obj=EncounterJournal.encounter.info.lootScroll.lootFilter
-	}
+		self:skinDropDown{obj=EncounterJournal.encounter.info.lootScroll.lootFilter}
 	end
 	EncounterJournal.encounter.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 	-- hook this to skin loot entries
@@ -848,9 +848,8 @@ function aObj:FriendsFrame()
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-5}
 
 	-- FriendsTabHeader Frame
-	self:adjWidth{obj=_G["FriendsFrameStatusDropDownMiddle"], adj=4}
+	self:skinDropDown{obj=FriendsFrameStatusDropDown}
 	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-	self:skinDropDown{obj=FriendsFrameStatusDropDown, x2=-16}
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
 	FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinTabs{obj=FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
@@ -972,7 +971,6 @@ function aObj:GlyphUI() -- LoD
 		GlyphFrame.specRing:SetTexture(nil)
 	end
 	self:removeInset(GlyphFrame.sideInset)
-
 	self:skinEditBox{obj=GlyphFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:skinDropDown{obj=GlyphFrameFilterDropDown}
 	-- Headers
@@ -1322,6 +1320,9 @@ function aObj:InspectUI() -- LoD
 -->>-- Guild Frame
 	InspectGuildFrameBG:SetAlpha(0)
 
+	-- send message when UI is skinned (used by oGlow skin)
+	self:SendMessage("InspectUI_Skinned", self)
+
 end
 
 function aObj:ItemSocketingUI() -- LoD
@@ -1368,7 +1369,7 @@ function aObj:LookingForGuildUI() -- LoD
 
 	self:skinTabs{obj=LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
 	self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
-	
+
 	-- Start Frame (Settings)
 	LookingForGuildInterestFrameBg:SetAlpha(0)
 	LookingForGuildAvailabilityFrameBg:SetAlpha(0)
@@ -1378,7 +1379,7 @@ function aObj:LookingForGuildUI() -- LoD
 	self:addSkinFrame{obj=LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
 	LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:removeMagicBtnTex(LookingForGuildBrowseButton)
-	
+
 	-- Browse Frame
 	self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar, adj=-4}
 	for i = 1, #LookingForGuildBrowseFrameContainer.buttons do
@@ -1389,14 +1390,14 @@ function aObj:LookingForGuildUI() -- LoD
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
 	self:removeMagicBtnTex(LookingForGuildRequestButton)
-	
+
 	-- Apps Frame (Requests)
 	self:skinSlider{obj=LookingForGuildAppsFrameContainerScrollBar}
 	for i = 1, #LookingForGuildAppsFrameContainer.buttons do
 		btn = LookingForGuildAppsFrameContainer.buttons[i]
 		self:applySkin{obj=btn}
 	end
-	
+
 	-- Request Membership Frame
 	GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=GuildFinderRequestMembershipFrameInputFrame, ft=ftype}
@@ -1426,20 +1427,34 @@ function aObj:LootFrame()
 		self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	end
 
+	-- BonusRoll Frame
+	-- BonusRollLootWon Frame
+	-- BonusRollMoneyWon Frame
+	-- MissingLoot frame
+	self:addSkinFrame{obj=MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
+	for i = 1, MissingLootFrame.numShownItems do
+		_G["MissingLootFrameItem"..index.."NameFrame"]:SetAlpha(0)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G["MissingLootFrameItem"..index], ibt=true}
+		end
+	end
+
+	-- MasterLooter Frame
+
 end
 
 if aObj.isBeta then
 	function aObj:LootHistory()
 		if not self.db.profile.LootHistory or self.initialized.LootHistory then return end
 		self.initialized.LootHistory = true
-		
+
 		self:add2Table(self.pKeys1, "LootHistory")
-		
+
 		self:skinScrollBar{obj=LootHistoryFrame.ScrollFrame}
 		LootHistoryFrame.Divider:SetTexture(nil)
 		self:addSkinFrame{obj=LootHistoryFrame, ft=ftype}
 		self:skinDropDown{obj=LootHistoryDropDown}
-		
+
 	end
 end
 
@@ -1664,7 +1679,6 @@ function aObj:PVPFrame()
 	self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 	self:removeMagicBtnTex(PVPFrameLeftButton)
 	self:removeMagicBtnTex(PVPFrameRightButton)
-
 -->>-- Honor frame
 	self:keepFontStrings(PVPFrame.panel1)
 	self:skinScrollBar{obj=PVPFrame.panel1.bgTypeScrollFrame}
@@ -1932,15 +1946,14 @@ function aObj:SpellBookFrame()
 	end
 	self:skinTabs{obj=SpellBookFrame, suffix="Button", x1=8, y1=1, x2=-8, y2=2}
 	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:addButtonBorder{obj=SpellBookPrevPageButton, ofs=-2}
+	self:addButtonBorder{obj=SpellBookNextPageButton, ofs=-2}
 -->>- Spellbook Panel
 	SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- hook this to change text colour as required
 	self:SecureHook("SpellButton_UpdateButton", function(this)
 		if this.UnlearnedFrame and this.UnlearnedFrame:IsShown() then -- level too low
 			this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
-			if not self.isBeta then
-				this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
-			end
 		end
 		if self.isBeta then
 			this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -1967,14 +1980,14 @@ function aObj:SpellBookFrame()
 					obj.icon:SetDesaturated(nil) -- show in colour
 				end
 			else
-				obj.missingHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+				obj.missingHeader:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
 			end
-			obj.missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			obj.missingText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 			for i = 1, 2 do
 				btn = obj["button"..i]
 				btn:DisableDrawLayer("BACKGROUND")
-				btn.subSpellString:SetTextColor(self.BTr, self.BTg, self.BTb)
-				self:addButtonBorder{obj=btn, sec=true}
+				btn.subSpellString:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+				aObj:addButtonBorder{obj=btn, sec=true}
 			end
 			_G[objName.."StatusBar"]:DisableDrawLayer("BACKGROUND")
 		end

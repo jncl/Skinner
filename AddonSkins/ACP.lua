@@ -1,10 +1,11 @@
-if not Skinner:isAddonEnabled("ACP") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("ACP") then return end
 
-function Skinner:ACP()
+function aObj:ACP()
 
 	ACP_AddonList:SetScale(0.75) -- shrink frame
 
-	self:skinDropDown{obj=ACP_AddonListSortDropDown}
+	self:skinDropDown{obj=ACP_AddonListSortDropDown, x2=110}
 	self:skinScrollBar{obj=ACP_AddonList_ScrollFrame}
 	self:addSkinFrame{obj=ACP_AddonList, kfs=true, hdr=true, x1=12, x2=-40, y2=12}
 	-- skin the buttons

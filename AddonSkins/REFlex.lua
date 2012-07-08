@@ -4,7 +4,7 @@ if not aObj:isAddonEnabled("REFlex") then return end
 function aObj:REFlex()
 
 	self:SecureHook("REFlex_MainTabShow", function()
-		for i = 1, 8 do
+		for i = 1, 9 do
 			if REFlexNamespace["MainTable"..i] then
 				self:skinScrollBar{obj=REFlexNamespace["MainTable"..i].scrollframe}
 				self:addSkinFrame{obj=REFlexNamespace["MainTable"..i].frame}
@@ -13,20 +13,9 @@ function aObj:REFlex()
 		self:Unhook("REFlex_MainTabShow")
 	end)
 	
-	self:addSkinFrame{obj=REFlex_MainTab, hdr=true}
+	self:addSkinFrame{obj=REFlex_MainTab, hdr=true, y1=2}
 	-- MainTab Tabs
-	for i = 1, REFlex_MainTab.numTabs do
-		tab = _G["REFlex_MainTabTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[REFlex_MainTab] = true
+	self:skinTabs{obj=REFlex_MainTab, lod=true, x1=6, y1=0, x2=-6, y2=2}
 	-- Tab4 Frame
 	self:skinDropDown{obj=REFlex_MainTab_Tab4_DropDown}
 	self:addSkinFrame{obj=REFlex_MainTab_Tab4_ScoreHolderSpecial}
@@ -59,19 +48,15 @@ function aObj:REFlex()
 	self:addSkinFrame{obj=REFlex_MainTab_Tab6_ScoreHolder3}
 	self:addSkinFrame{obj=REFlex_MainTab_Tab6_ScoreHolder4}
 	self:addSkinFrame{obj=REFlex_MainTab_Tab6_ScoreHolder5}
+	-- Tab7 Frame
+	self:skinEditBox{obj=REFlex_MainTab_Tab7_SearchBoxDF, regs={9}}
+	self:skinEditBox{obj=REFlex_MainTab_Tab7_SearchBoxMF, regs={9}}
+	self:skinEditBox{obj=REFlex_MainTab_Tab7_SearchBoxYF, regs={9}}
+	self:skinEditBox{obj=REFlex_MainTab_Tab7_SearchBoxDT, regs={9}}
+	self:skinEditBox{obj=REFlex_MainTab_Tab7_SearchBoxMT, regs={9}}
+	self:skinEditBox{obj=REFlex_MainTab_Tab7_SearchBoxYT, regs={9}}
 	-- SpecHolder tabs
-	for i = 1, REFlex_MainTab_SpecHolder.numTabs do
-		tab = _G["REFlex_MainTab_SpecHolderTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
-		-- set textures here first time thru
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-	self.tabFrames[REFlex_MainTab_SpecHolder] = true
+	self:skinTabs{obj=REFlex_MainTab_SpecHolder, lod=true, x1=6, y1=0, x2=-6, y2=2}
 	
 -->>-- Export Tab frame
 	self:skinScrollBar{obj=REFlex_ExportTab_Panel}

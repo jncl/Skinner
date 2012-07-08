@@ -20,7 +20,7 @@ function aObj:Ace3()
 
 	local bCr, bCg, bCb, bCa = unpack(self.bColour)
 	local bbCr, bbCg, bbCb, bbCa = unpack(self.bbColour)
-
+--
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
@@ -31,7 +31,7 @@ function aObj:Ace3()
 			if objType == "BlizOptionsGroup" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 			elseif objType == "Dropdown" then
-				aObj:skinDropDown{obj=obj.dropdown}
+				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
 				aObj:applySkin{obj=obj.pullout.frame}
 			elseif objType == "Dropdown-Pullout" then
 				aObj:applySkin{obj=obj.frame}
@@ -146,17 +146,33 @@ function aObj:Ace3()
 			or objType == "LSM30_Sound"
 			or objType == "LSM30_Statusbar"
 			then
-			    if not aObj.db.profile.TexturedDD then
+			    if not aObj.db.profile.TexturedDD
+				and not aObj.db.profile.DropDownButtons
+				then
 			        aObj:keepFontStrings(obj.frame)
 			    else
     				obj.frame.DLeft:SetAlpha(0)
     				obj.frame.DRight:SetAlpha(0)
-    				obj.frame.DMiddle:SetHeight(20)
+    				obj.frame.DMiddle:SetHeight(19)
     				obj.frame.DMiddle:SetTexture(aObj.itTex)
     				obj.frame.DMiddle:SetTexCoord(0, 1, 0, 1)
     				obj.frame.DMiddle:ClearAllPoints()
-    				obj.frame.DMiddle:SetPoint("BOTTOMLEFT", obj.frame.DLeft, "RIGHT", -6, -8)
-    				obj.frame.DMiddle:SetPoint("BOTTOMRIGHT", obj.frame.DRight, "LEFT", 6, -8)
+    				obj.frame.DMiddle:SetPoint("LEFT", obj.frame, "RIGHT")
+    				obj.frame.DMiddle:SetPoint("RIGHT", obj.frame, "LEFT")
+					if aObj.db.profile.DropDownButtons then
+						local xOfs1, yOfs1, xOfs2, yOfs2
+						if objType == "LSM30_Background"
+						or objType == "LSM30_Border"
+						then
+							xOfs1, yOfs1, xOfs2, yOfs2 = 41, -17, 2, 1
+						elseif objType == "LSM30_Font"
+						or objType == "LSM30_Sound"
+						or objType == "LSM30_Statusbar"
+						then
+							xOfs1, yOfs1, xOfs2, yOfs2 = -3, -18, 2, 0
+						end
+						aObj:addSkinFrame{obj=obj.frame, aso={ng=true}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+					end
     			end
 
 			-- WeakAuras objects
@@ -222,6 +238,9 @@ function aObj:Ace3()
 			-- ignore these types for now
 			elseif objType == "CheckBox"
 			or objType == "Dropdown-Item-Execute"
+			or objType == "Dropdown-Item-Header"
+			or objType == "Dropdown-Item-Menu"
+			or objType == "Dropdown-Item-Separator"
 			or objType == "Dropdown-Item-Toggle"
 			or objType == "Label"
 			or objType == "Heading"

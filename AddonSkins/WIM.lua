@@ -1,12 +1,13 @@
-if not Skinner:isAddonEnabled("WIM") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("WIM") then return end
 
-function Skinner:WIM() -- WIM3
+function aObj:WIM() -- WIM3
 
 	local function skinWindow(msgFrame)
 
-		if Skinner.skinFrame[msgFrame] then return end
+		if aObj.skinFrame[msgFrame] then return end
 
-		Skinner:keepFontStrings(msgFrame.widgets.Backdrop)
+		aObj:keepFontStrings(msgFrame.widgets.Backdrop)
 		msgFrame.widgets.class_icon:SetAlpha(1)
 
 		local eBox = msgFrame.widgets.msg_box
@@ -15,29 +16,29 @@ function Skinner:WIM() -- WIM3
 		xOfs = floor(xOfs)
 		if xOfs == 4 then
 			eBox:SetHeight(eBox:GetHeight() - 5)
-			Skinner:skinEditBox(eBox, {9})
-			Skinner:moveObject(eBox, "-", 16, "-", 0)
-			Skinner:moveObject{obj=msgFrame.widgets.close, x=-2}
-			Skinner:moveObject{obj=msgFrame.widgets.class_icon, y=-2}
+			aObj:skinEditBox(eBox, {9})
+			aObj:moveObject(eBox, "-", 16, "-", 0)
+			aObj:moveObject{obj=msgFrame.widgets.close, x=-2}
+			aObj:moveObject{obj=msgFrame.widgets.class_icon, y=-2}
 		end
 
-		Skinner:addSkinFrame{obj=msgFrame, kfs=true}
+		aObj:addSkinFrame{obj=msgFrame, kfs=true}
 
 	end
 
 	local function checkKids(obj)
 
-		if Skinner.skinned[obj] then return end
-		Skinner:skinAllButtons{obj=obj}
+		if aObj.skinned[obj] then return end
+		aObj:skinAllButtons{obj=obj}
 
 		for _, child in pairs{obj:GetChildren()} do
-			if Skinner:isDropDown(child) then
-				Skinner:skinDropDown(child)
+			if aObj:isDropDown(child) then
+				aObj:skinDropDown{obj=child, x2= obj.mf and 110 or nil}
 			elseif child.backdrop then
-				Skinner:addSkinFrame{obj=child, kfs=true, x1=-3, y1=3, x2=3, y2=-3}
+				-- aObj:addSkinFrame{obj=child, kfs=true, x1=-3, y1=3, x2=3, y2=-3}
 				checkKids(child)
 			elseif child:IsObjectType("ScrollFrame") then
-				Skinner:skinScrollBar{obj=child}
+				aObj:skinScrollBar{obj=child}
 			else checkKids(child)
 			end
 		end
@@ -50,7 +51,7 @@ function Skinner:WIM() -- WIM3
 		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
 		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
 		optFrame.nav.bg:Hide()
-		self:addSkinFrame{obj=optFrame}
+		self:addSkinFrame{obj=optFrame, y2=12}
 		-- if frame is a function then hook it, otherwise check it
 		for _, cat in pairs(WIM.options.frame.nav.category) do
 			for _, subCat in pairs(cat.info.subCategories) do
@@ -66,6 +67,11 @@ function Skinner:WIM() -- WIM3
 			end
 		end
 		self:Unhook(WIM.options, "OnShow")
+	end)
+	-- hook this to skin the dropdown frame
+	self:SecureHook(WIM.options, "createDropDownFrame", function(this)
+		self:addSkinFrame{obj=WIM_DropDownFrame}
+		self:Unhook(WIM.options, "createDropDownFrame")
 	end)
 	-- hook these to skin the Message Frames
 	self:RawHook(WIM, "CreateWhisperWindow", function(playerName)

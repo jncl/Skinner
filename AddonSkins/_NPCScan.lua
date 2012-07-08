@@ -1,33 +1,35 @@
-if not Skinner:isAddonEnabled("_NPCScan") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("_NPCScan") then return end
 
-function Skinner:_NPCScan()
+function aObj:_NPCScan()
 
 -->>-- NPC Alert Button
 	self:getRegion(_NPCScanButton, 4):SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_NPCScanButton, kfs=true}
-	_NPCScanButton.SetBackdropBorderColor = nop
+	_NPCScanButton.SetBackdropBorderColor = function() end
 
 -->>-- Config settings
-	self:skinDropDown{obj=_NPCScanConfigSoundDropdown}
-	
+	self:skinDropDown{obj=_NPCScanConfigSoundDropdown, x2=-6}
+	self:addSkinFrame{obj=_NPCScanConfigAlert}
+
 -->>-- Search Frame
 	self:skinEditBox{obj=_NPCScanSearchNpcName, regs={9}}
 	self:skinEditBox{obj=_NPCScanSearchNpcID, regs={9}}
 	self:skinEditBox{obj=_NPCScanSearchNpcWorld, regs={9}}
-	
-	-- hook this to skin slider
+	self:addSkinFrame{obj=_NPCScan.Config.Search.TableContainer, ofs=4}
+
+	--hook this to skin slider
 	local function hookAndSkin()
 
 		local obj = _NPCScan.Config.Search.Table.View
-		if not self:getChild(obj, 2) then -- if not already created
-			self:SecureHookScript(obj, "OnScrollRangeChanged", function(this)
---				self:Debug("OnScrollRangeChanged: [%s, %s]", this, nil)
-				self:ShowInfo(this, true, true)
-				self:skinSlider(self:getChild(this, 2))
-				self:Unhook(obj, "OnScrollRangeChanged")
+		if not aObj:getChild(obj, 2) then -- if not already created
+			aObj:SecureHookScript(obj, "OnScrollRangeChanged", function(this)
+				aObj:ShowInfo(this, true, true)
+				aObj:skinSlider(aObj:getChild(this, 2))
+				aObj:Unhook(obj, "OnScrollRangeChanged")
 			end)
 		else
-			self:skinSlider(self:getChild(obj, 2))
+			aObj:skinSlider(aObj:getChild(obj, 2))
 		end
 
 	end

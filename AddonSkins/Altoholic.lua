@@ -71,11 +71,6 @@ function aObj:Altoholic()
 		self:addButtonBorder{obj=AltoholicTabSummary_OptionsDataStore}
 	end
 
--->>-- Achievements tab, now a separate addon (r83)
--->>-- Characters tab, now a separate addon (r92)
--->>-- Search Tab, now a separate addon (r92)
--->>-- Guild tab, now a separate addon (r97)
-
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then AltoTooltip:SetBackdrop(self.backdrop) end
@@ -117,16 +112,6 @@ function aObj:Altoholic_Characters() -- LoD
  	-- Characters
 	self:skinDropDown{obj=AltoholicTabCharacters_SelectRealm}
 	skinSortBtns("AltoholicTabCharacters_Sort", 4)
-	-- Equipment
-	self:skinScrollBar{obj=AltoholicFrameEquipmentScrollFrame}
-	-- Reputations
-	self:skinDropDown{obj=AltoholicFrameReputations_SelectFaction}
-	self:skinScrollBar{obj=AltoholicFrameReputationsScrollFrame}
-	-- Currency
-	self:skinDropDown{obj=AltoholicFrameCurrencies_SelectCurrencies}
-	self:skinScrollBar{obj=AltoholicFrameCurrenciesScrollFrame}
-	-- Companions/Mounts
-	self:skinScrollBar{obj=AltoholicFramePetsAllInOneScrollFrame}
 
 	-- Icons at the Top in Character View
 	if self.modBtnBs then
@@ -225,4 +210,14 @@ function aObj:Altoholic_Agenda() -- LoD
 
 	skinMenuItms("AltoholicTabAgendaMenuItem", 5)
 
+end
+
+function aObj:Altoholic_Grids() -- LoD
+
+	self:skinDropDown{obj=AltoholicFrameGridsRightClickMenu}
+	self:skinScrollBar{obj=AltoholicFrameGridsScrollFrame}
+	-- TabGrids
+	self:skinDropDown{obj=AltoholicTabGrids_SelectView}
+	self:skinDropDown{obj=AltoholicTabGrids_SelectRealm}
+	
 end

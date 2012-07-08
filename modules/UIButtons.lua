@@ -1,13 +1,13 @@
 local aName, aObj = ...
 local _G = _G
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
-local round2 = aObj.round2
 
 local db
 local defaults = {
 	profile = {
-		UIButtons = false,
+		UIButtons     = false,
 		ButtonBorders = false,
+		Quality		  = {file = "None", texture = "Blizzard Tooltip"},
 	}
 }
 
@@ -171,7 +171,7 @@ function module:skinButton(opts)
 
 	-- setup button frame size adjustments
 	local x1, x2, y1, y2, btn
-	local bW, bH = round2(opts.obj:GetWidth()), round2(opts.obj:GetHeight())
+	local bW, bH = aObj.round2(opts.obj:GetWidth()), aObj.round2(opts.obj:GetHeight())
 	if bW <= 20 and opts.cb then -- ArkInventory/Recount close buttons
 		local adj = bW < 20 and bW + 1 or bW
 --		print(opts.obj:GetParent():GetName(), bW, adj)
@@ -578,6 +578,37 @@ function module:OnEnable()
 		end)
 	end
 
+	-- bypass the Item Quality Border Texture changes if the specified addons aren't loaded
+	if not IsAddOnLoaded("AdiBags")
+	and not IsAddOnLoaded("Fizzle")
+	and not IsAddOnLoaded("oGlow")
+	and not IsAddOnLoaded("XLoot")
+	then
+		-- remove options
+		aObj.optTables["Modules"].args["Skinner_UIButtons"].args["Quality"] = nil
+		aObj.ACR:NotifyChange(aName)
+		return
+	end
+
+	if db.Quality.file and db.Quality.file ~= "None" then
+		aObj.LSM:Register("border", aName.." Quality Border", db.Quality.file)
+	end
+	-- setup default backdrop values
+	self.bDrop = {
+		edgeFile = aObj.Backdrop[1].edgeFile,
+		edgeSize = aObj.Backdrop[1].edgeSize
+	}
+	self.iqbDrop = {
+		edgeSize = aObj.Backdrop[1].edgeSize
+	}
+	local bdbTex
+	if db.Quality.file and db.Quality.file ~= "None" then
+		bdbTex = aName.." Quality Border"
+	else
+		bdbTex = db.Quality.texture
+	end
+	self.iqbDrop.edgeFile = aObj.LSM:Fetch("border", bdbTex)
+
 end
 
 function module:GetOptions()
@@ -594,13 +625,41 @@ function module:GetOptions()
 		args = {
 			UIButtons = {
 				type = "toggle",
+				order = 1,
 				name = aObj.L["UI Buttons"],
 				desc = aObj.L["Toggle the skinning of the UI Buttons, reload required"],
 			},
 			ButtonBorders = {
 				type = "toggle",
+				order = 2,
 				name = aObj.L["Button Borders"],
 				desc = aObj.L["Toggle the skinning of the Button Borders, reload required"],
+			},
+			Quality = {
+				type = "group",
+				order = 3,
+				inline = true,
+				name = aObj.L["Item Quality Border"],
+				get = function(info) return db.Quality[info[#info]] end,
+				set = function(info, value) db.Quality[info[#info]] = value end,
+				args = {
+					file = {
+						type = "input",
+						order = 1,
+						width = "full",
+						name = aObj.L["Border Texture File"],
+						desc = aObj.L["Set Border Texture Filename"],
+					},
+					texture = AceGUIWidgetLSMlists and {
+						type = "select",
+						order = 2,
+						width = "double",
+						name = aObj.L["Border Texture"],
+						desc = aObj.L["Choose the Texture for the Border"],
+						dialogControl = 'LSM30_Border',
+						values = AceGUIWidgetLSMlists.border,
+					} or nil,
+				},
 			},
 		},
 	}

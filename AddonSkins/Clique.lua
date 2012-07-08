@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("Clique") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Clique") then return end
 
-function Skinner:Clique()
+function aObj:Clique()
 	if not self.db.profile.SpellBookFrame then return end
 
 	-- Tab on SpellBook (side)
@@ -11,7 +12,6 @@ function Skinner:Clique()
 	self:addSkinFrame{obj=CliqueDialog, kfs=true, x1=-3, y1=2, x2=1, y2=-3}
 
 	-- Main frame
-	self:skinDropDown{obj=CliqueConfigDropdown}
 	self:addSkinFrame{obj=CliqueConfig, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-3}
 
 	-- Configuration List

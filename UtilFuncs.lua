@@ -1,7 +1,6 @@
 local aName, aObj = ...
 local _G = _G
-local obj, objName, tex, texName, btn, btnName, tab, tabSF
-local round2 = aObj.round2
+local obj, objName, texName, btn, btnName, tab, tabSF
 
 local function makeString(t)
 
@@ -69,10 +68,10 @@ end
 --@debug@
 local function print_family_tree(fName)
 	local lvl = "Parent"
-	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), round2(fName:GetWidth(), 2) or "nil", round2(fName:GetHeight(), 2) or "nil"))
+	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj.round2(fName:GetWidth(), 2) or "nil", aObj.round2(fName:GetHeight(), 2) or "nil"))
 	while fName:GetParent() do
 		fName = fName:GetParent()
-		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), round2(fName:GetWidth(), 2) or "nil", round2(fName:GetHeight(), 2) or "nil"))
+		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj.round2(fName:GetWidth(), 2) or "nil", aObj.round2(fName:GetHeight(), 2) or "nil"))
 		lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl
 	end
 end
@@ -89,6 +88,8 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end) -- brief
 	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), true, false) end)
 	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), false, false) end)
+	self:RegisterChatCommand("sigp", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent():GetParent(), true, false) end)
+	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent():GetParent(), false, false) end)
 	self:RegisterChatCommand("gp", function(msg) print(GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function(msg) print(GetMouseFocus():GetParent():GetPoint()) end)
 	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
@@ -192,7 +193,7 @@ function aObj:findFrame(height, width, children)
 		if obj:IsObjectType("Frame") then
 			if obj:GetName() == nil then
 				if obj:GetParent() == nil then
-					if round2(obj:GetHeight(), 2) == height and round2(obj:GetWidth(), 2) == width then
+					if self.round2(obj:GetHeight(), 2) == height and self.round2(obj:GetWidth(), 2) == width then
 						kids = {}
 						for _, child in pairs{obj:GetChildren()} do
 							kids[#kids + 1] = child:GetObjectType()
@@ -235,8 +236,8 @@ function aObj:findFrame2(parent, objType, ...)
 					-- base checks on position
 					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
 					-- self:Debug("ff2 GetPoint: [%s, %s, %s, %s, %s, %s]", child, point, relativeTo, relativePoint, xOfs, yOfs)
-					xOfs = xOfs and round2(xOfs, 2) or 0
-					yOfs = yOfs and round2(yOfs, 2) or 0
+					xOfs = xOfs and self.round2(xOfs, 2) or 0
+					yOfs = yOfs and self.round2(yOfs, 2) or 0
 					if	point		  == select(1, ...)
 					and relativeTo	  == select(2, ...)
 					and relativePoint == select(3, ...)
@@ -247,7 +248,7 @@ function aObj:findFrame2(parent, objType, ...)
 					end
 				else
 					-- base checks on size
-					height, width = round2(child:GetHeight(), 2), round2(child:GetWidth(), 2)
+					height, width = self.round2(child:GetHeight(), 2), self.round2(child:GetWidth(), 2)
 					-- self:Debug("ff2 h/w: [%s, %s, %s]", child, height, width)
 					if	height == select(1, ...)
 					and width  == select(2, ...) then
@@ -323,6 +324,7 @@ function aObj:isDropDown(obj)
 	assert(obj, "Unknown object\n"..debugstack())
 --@end-alpha@
 
+	local tex
 	if obj:GetName() then tex = _G[obj:GetName().."Left"] end
 
 	if obj:IsObjectType("Frame")
@@ -416,6 +418,12 @@ function aObj:resizeEmptyTexture(texture)
 
 end
 
+function aObj.round2(num, ndp)
+
+  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
+
+end
+
 function aObj:updateSBTexture()
 
 	-- get updated colour/texture
@@ -467,7 +475,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 	local function getRegions(obj, lvl)
 
 		for k, reg in ipairs{obj:GetRegions()} do
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and round2(reg:GetWidth(), 2) or "nil", reg.GetHeight and round2(reg:GetHeight(), 2) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self.round2(reg:GetWidth(), 2) or "nil", reg.GetHeight and self.round2(reg:GetHeight(), 2) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
@@ -479,7 +487,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 		for k, child in ipairs{frame:GetChildren()} do
 			local objType = child:GetObjectType()
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and round2(child:GetWidth(), 2) or "nil", child.GetHeight and round2(child:GetHeight(), 2) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and aObj.round2(child:GetWidth(), 2) or "nil", child.GetHeight and aObj.round2(child:GetHeight(), 2) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 			if objType == "Frame"
 			or objType == "Button"
 			or objType == "StatusBar"
@@ -493,7 +501,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 	end
 
-	showIt("%s : %s : %s : %s : %s", obj, round2(obj:GetWidth(), 2) or "nil", round2(obj:GetHeight(), 2) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
+	showIt("%s : %s : %s : %s : %s", obj, self.round2(obj:GetWidth(), 2) or "nil", self.round2(obj:GetHeight(), 2) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
 	showIt("Started Regions")
 	getRegions(obj, 0)
@@ -503,3 +511,34 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 	showIt("Finished Children")
 
 end
+
+-- -- Event Handling (added for oGlow, not longer required 1.6.12)
+-- -- This will allow for multiple occurrences of the same event to be managed
+-- local eventFrame = CreateFrame("Frame")
+-- local eventsTable = setmetatable({}, {__index = function(t, k) rawset(t, k, {}) return rawget(t, k) end})
+-- eventFrame:SetScript("OnEvent", function(this, event, ...)
+-- 	-- aObj:Debug("OnEvent: [%s, %s]", event, ... or nil)
+-- 	for _, func in ipairs(eventsTable[event]) do
+-- 		-- aObj:Debug("OnEvent#2: [%s]", func)
+-- 		func(aObj, event, ...)
+-- 	end
+-- end)
+-- function aObj:RegisterEvent(event, func)
+-- 	eventsTable[event][#eventsTable[event]+1] = func or aObj[event]
+-- 	if #eventsTable[event] == 1 then eventFrame:RegisterEvent(event) end
+-- 	-- self:Debug("RegisterEvent: [%s, %s, %s]", event, func or aObj[event], #eventsTable[event])
+-- 	return #eventsTable[event]
+-- end
+-- function aObj:UnregisterEvent(event, funcNum)
+-- 	-- self:Debug("UnregisterEvent: [%s, %s]", event, funcNum)
+-- 	if funcNum then
+-- 		eventsTable[event][funcNum] = nil
+-- 	else
+-- 		for i, v in ipairs(eventsTable[event]) do
+-- 			if v == aObj[event] then
+-- 				v = nil
+-- 				break
+-- 			end
+-- 		end
+-- 	end
+-- end

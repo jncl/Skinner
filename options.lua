@@ -105,7 +105,7 @@ function aObj:Defaults()
 	-->>-- UI Frames
 		AlertFrames          = true,
 		AutoComplete         = true,
-		BattlefieldMm        = true,
+		BattlefieldMm        = {skin = true, gloss = false},
 		BNFrames             = true,
 		Calendar             = true,
 		ChallengesUI		 = self.isBeta and true or nil,
@@ -165,7 +165,7 @@ function aObj:Options()
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
 
-	local optTables = {
+	self.optTables = {
 
 		General = {
 			type = "group",
@@ -790,6 +790,9 @@ function aObj:Options()
 				if uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
 						self:checkAndRun(info[#info])
+						if info[#info] == "TalentUI" then
+							self:checkAndRun("GlyphUI")
+						end
 					end
 				else self:checkAndRun(info[#info]) end
 			end,
@@ -1133,10 +1136,6 @@ function aObj:Options()
 						self:checkAndRun("FeedbackUI")
 					end
 				elseif info[#info] == "CombatLogQBF" then return
-				elseif info[#info] == "BattlefieldMm" then
-					if IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
-						self:checkAndRun("BattlefieldMinimap")
-					end
 				-- handle Blizzard UI LoD Addons
 				elseif uiOpt then
 					if IsAddOnLoaded("Blizzard_"..info[#info]) then
@@ -1171,11 +1170,6 @@ function aObj:Options()
 					name = self.L["Auto Complete"],
 					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
-				BattlefieldMm = {
-					type = "toggle",
-					name = self.L["Battlefield Minimap Frame"],
-					desc = self.L["Toggle the skin of the Battlefield Minimap Frame"],
-				},
 				BNFrames = {
 					type = "toggle",
 					name = self.L["BattleNet Frames"],
@@ -1185,6 +1179,98 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["Calendar"],
 					desc = self.L["Toggle the skin of the Calendar Frame"],
+				},
+				chatopts = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Tooltips"],
+					get = function(info) return db.Tooltips[info[#info]] end,
+					set = function(info, value) db.Tooltips[info[#info]] = value end,
+					args = {
+						skin = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Tooltip Skin"],
+							desc = self.L["Toggle the skin of the Tooltips"],
+						},
+						glazesb = {
+							type = "toggle",
+							order = 2,
+							width = "double",
+							name = self.L["Glaze Status Bar"],
+							desc = self.L["Toggle the glazing Status Bar"],
+						},
+						style = {
+							type = "range",
+							order = 3,
+							name = self.L["Tooltips Style"],
+							desc = self.L["Set the Tooltips style (Rounded, Flat, Custom)"],
+							min = 1, max = 3, step = 1,
+						},
+						border = {
+							type = "range",
+							order = 4,
+							name = self.L["Tooltips Border Colour"],
+							desc = self.L["Set the Tooltips Border colour (Default, Custom)"],
+							min = 1, max = 2, step = 1,
+						},
+					},
+				},
+				MirrorTimers = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Timer Frames"],
+					get = function(info) return db.MirrorTimers[info[#info]] end,
+					set = function(info, value)
+						db.MirrorTimers[info[#info]] = value
+						self:checkAndRun("MirrorTimers")
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Timer Skin"],
+							desc = self.L["Toggle the skin of the Timer"],
+						},
+						glaze = {
+							type = "toggle",
+							order = 2,
+							name = self.L["Glaze Timer"],
+							desc = self.L["Toggle the glazing Timer"],
+						},
+					},
+				},
+				CastingBar = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Casting Bar Frame"],
+					get = function(info) return db.CastingBar[info[#info]] end,
+					set = function(info, value)
+						db.CastingBar[info[#info]] = value
+						self:checkAndRun("CastingBar")
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Casting Bar Skin"],
+							desc = self.L["Toggle the skin of the Casting Bar"],
+						},
+						glaze = {
+							type = "toggle",
+							order = 2,
+							name = self.L["Glaze Casting Bar"],
+							desc = self.L["Toggle the glazing Casting Bar"],
+						},
+					},
+				},
+				StaticPopups = {
+					type = "toggle",
+					name = self.L["Static Popups"],
+					desc = self.L["Toggle the skin of Static Popups"],
 				},
 				chatopts = {
 					type = "group",
@@ -1333,10 +1419,40 @@ function aObj:Options()
 					name = self.L["LFD Frame"],
 					desc = self.L["Toggle the skin of the LFD Frame"],
 				},
-				LFGFrame = {
-					type = "toggle",
-					name = self.L["LFG Frame"],
-					desc = self.L["Toggle the skin of the LFG Frame"],
+				BattlefieldMm = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Battlefield Minimap Options"],
+					get = function(info) return db.BattlefieldMm[info[#info]] end,
+					set = function(info, value)
+						db.BattlefieldMm[info[#info]] = value
+						if info[#info] == "skin" then
+							if IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
+								self:checkAndRun("BattlefieldMinimap")
+							end
+						elseif info[#info] == "gloss" and self.bfminimapskin then
+							if value then
+								RaiseFrameLevel(self.bfminimapskin)
+							else
+								LowerFrameLevel(self.bfminimapskin)
+							end
+						end
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							name = self.L["Skin Frame"],
+							desc = self.L["Toggle the skin of the Battlefield Minimap Frame"],
+							order = 1,
+						},
+						gloss = {
+							type = "toggle",
+							name = self.L["Gloss Effect"],
+							desc = self.L["Toggle the Gloss Effect for the Battlefield Minimap"],
+							order = 2,
+						},
+					},
 				},
 				LFRFrame = {
 					type = "toggle",
@@ -1404,13 +1520,13 @@ function aObj:Options()
 					args = {
 						skin = {
 							type = "toggle",
-							name = self.L["Minimap"],
+							name = self.L["Skin Frame"],
 							desc = self.L["Toggle the skin of the Minimap"],
 							order = 1,
 						},
 						gloss = {
 							type = "toggle",
-							name = self.L["Minimap Gloss Effect"],
+							name = self.L["Gloss Effect"],
 							desc = self.L["Toggle the Gloss Effect for the Minimap"],
 							order = 2,
 						},
@@ -1580,14 +1696,14 @@ function aObj:Options()
 	-- module options
 	for _, mod in self:IterateModules() do
 		if mod.GetOptions then
-			optTables["Modules"].args[mod.name] = mod:GetOptions()
+			self.optTables["Modules"].args[mod.name] = mod:GetOptions()
 		end
 	end
 
 	-- add DisabledSkins options
 	local function addDSOpt(name, lib)
 
-		optTables["DisabledSkins"].args[name] = {
+		aObj.optTables["DisabledSkins"].args[name] = {
 			type = "toggle",
 			name = name..(lib and " (Lib)" or ""),
 			desc = self.L["Toggle the skinning of "]..name,
@@ -1612,26 +1728,26 @@ function aObj:Options()
 	end
 
 	-- add DB profile options
-	optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
 	-- option tables list
 	local optNames = {
 		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPCFrames", "PlayerFrames", "UIFrames", "DisabledSkins", "Profiles"
 	}
 	-- register the options tables and add them to the blizzard frame
-	local ACR = LibStub("AceConfigRegistry-3.0")
-	local ACD = LibStub("AceConfigDialog-3.0")
+	self.ACR = LibStub("AceConfigRegistry-3.0")
+	self.ACD = LibStub("AceConfigDialog-3.0")
 
-	LibStub("AceConfig-3.0"):RegisterOptionsTable(aName, optTables.General, {aName, "skin"})
-	self.optionsFrame = ACD:AddToBlizOptions(aName, aName)
+	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
+	self.optionsFrame = self.ACD:AddToBlizOptions(aName, aName)
 
 	-- register the options, add them to the Blizzard Options
 	-- build the table used by the chatCommand function
 	local optCheck = {}
 	for _, v in ipairs(optNames) do
 		local optTitle = (" "):join(aName, v)
-		ACR:RegisterOptionsTable(optTitle, optTables[v])
-		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
+		self.ACR:RegisterOptionsTable(optTitle, self.optTables[v])
+		self.optionsFrame[self.L[v]] = self.ACD:AddToBlizOptions(optTitle, self.L[v], aName)
 		optCheck[v:lower()] = v
 	end
 

@@ -8,17 +8,17 @@ function aObj:epgp_lootmaster()
 
 	if not EPGPLM.frame then
 		self:SecureHook(EPGPLM, "InitUI", function(this)
-			self:addSkinFrame{obj=this.frame}
 			self:addSkinFrame{obj=this.frame.titleFrame}
+			self:addSkinFrame{obj=this.frame, y1=-7}
 			self:Unhook(EPGPLM, "InitUI")
 		end)
 	end
 	if not EPGPLM.versioncheckframe then
 		self:SecureHook(EPGPLM, "ShowVersionCheckFrame", function(this)
-			self:addSkinFrame{obj=this.versioncheckframe}
 			self:addSkinFrame{obj=this.versioncheckframe.titleFrame}
-			self:addSkinFrame{obj=this.versioncheckframe.sstScroll.frame}
 			self:skinScrollBar{obj=self:getChild(this.versioncheckframe.sstScroll.frame, 1)}
+			self:addSkinFrame{obj=this.versioncheckframe.sstScroll.frame}
+			self:addSkinFrame{obj=this.versioncheckframe, y1=-7}
 			self:Unhook(EPGPLM, "ShowVersionCheckFrame")
 		end)
 	end
@@ -28,7 +28,6 @@ function aObj:epgp_lootmaster()
 			if frame
 			and not self.skinFrame[frame]
 			then
-				self:addSkinFrame{obj=frame}
 				frame.tbGPValueFrame:SetBackdrop(nil)
 				self:skinEditBox{obj=frame.tbGPValue, regs={9}}
 				self:glazeStatusBar(frame.progressBar, 0,  nil)
@@ -36,6 +35,7 @@ function aObj:epgp_lootmaster()
 				self:getChild(frame.timerFrame, 2):SetBackdrop(nil) -- timerBorderFrame
 				self:skinEditBox{obj=frame.tbNote, regs={9}}
 				self:getRegion(frame.btnNote, 3):SetTexture() -- remove overlay texture
+				self:addSkinFrame{obj=frame}
 				if self.modBtnBs then
 					self:addButtonBorder{obj=frame.itemIcon}
 				end
@@ -52,18 +52,30 @@ function aObj:epgp_lootmaster_ml()
 
 	if not LMML.mainframe then
 		self:SecureHook(LMML, "GetFrame", function(this)
-			self:addSkinFrame{obj=this.frame}
-			self:addSkinFrame{obj=this.frame.extralootframe}
 			self:addSkinFrame{obj=this.frame.titleFrame}
-			self:addSkinFrame{obj=this.frame.sstScroll.frame}
+			self:addSkinFrame{obj=this.frame.extralootframe}
 			self:skinScrollBar{obj=self:getChild(this.frame.sstScroll.frame, 1)}
+			self:addSkinFrame{obj=this.frame.sstScroll.frame}
 			this.frame.tbGPValueFrame:SetBackdrop(nil)
 			self:skinEditBox{obj=this.frame.tbGPValue, regs={9}}
-			self:skinDropDown{obj=this.CandidateDropDown}
+			-- self:skinDropDown{obj=this.CandidateDropDown}
+			self:addSkinFrame{obj=this.frame, y1=-7}
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.frame.itemIcon}
 			end
 			self:Unhook(LMML, "GetFrame")
+		end)
+	end
+	if not LMML.raidinfoframe then
+		self:SecureHook(LMML, "ShowRaidInfoLookup", function(this)
+			self:addSkinFrame{obj=this.raidinfoframe.titleFrame}
+			self:skinScrollBar{obj=self:getChild(this.raidinfoframe.sstScroll.frame, 1)}
+			self:addSkinFrame{obj=this.raidinfoframe.sstScroll.frame}
+			this.raidinfoframe.tbWhisperFrame:SetBackdrop(nil)
+			self:skinEditBox{obj=this.raidinfoframe.tbWhisperBox, regs={9}}
+			self:adjHeight{obj=self:getChild(this.raidinfoframe, 6), adj=-18} -- dropdown
+			self:addSkinFrame{obj=this.raidinfoframe, y1=-7}
+			self:Unhook(LMML, "ShowRaidInfoLookup")
 		end)
 	end
 	-- hook this to skin Vote buttons

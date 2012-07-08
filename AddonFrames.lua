@@ -77,24 +77,24 @@ blizzLoDFrames = nil
 
 aObj.addonSkins = {
 	"_NPCScan",
-	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "AphesLootBrowser", "Ara_Broker_Guild_Friends", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
-	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BaudManifest", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossInfo", "BossNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
+	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "AphesLootBrowser", "Ara_Broker_Guild_Friends", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "Auctionator", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
+	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BaudManifest", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
 	"CalendarNotify", "CallToArms", "Capping", "Carbonite", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "CombustionHelper", "ConcessionStand", "Converse", "CoolLine", "Cork", "Cosplay", "CowTip", "CT_MailMod", "CT_RaidTracker",
 	"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "DeathNote", "DockingStation", "Dominos", "DragonCore",
 	"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElvUI", "EnchantMe", "EnergyWatch", "EngBags", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "epgp_lootmaster", "epgp_lootmaster_ml", "EquipCompare", "EventEquip", "Examiner", "ExtVendor",
-	"Factionizer", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "FlightMap", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
-	"G15Buttons", "Gatherer", "GearScore", "GemHelper", "GemMe", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar", "GroupCalendar5", "GuildAds", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GuildMaster", "GupCharacter", "GupPet",
-	"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", "HealBot", "HealOrganizer", "Highlight", "HitsMode", "HoloFriends",
-	"InspectEquip", "IntricateChatMods", "InventoryOnPar", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
-	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinksList", "LinkWrangler", "Livestock", "Luggage",
-	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "Misdirectionhelper", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MTLove", "MuffinMOTD", "MyBags", "myClock",
-	"NeatFreak", "Necrosis", "NeonChat", "nQuestLog",
-	"Odyssey", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
-	"PallyPower", "Panda", "PartyBuilder", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "Producer", "ProfessionsBook", "ProfessionTabs", "PvpMessages",
+	"Factionizer", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "Fizzle", "FlightMap", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
+	"G15Buttons", "Gatherer", "GemMe", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar5", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GuildMaster",  "GupPet",
+	"Hack", "Hadar_FocusFrame", "HandyNotes", "HatTrick", "HeadCount", "HealBot", "Highlight", "HitsMode", "HoloFriends",
+	"InspectEquip", "IntricateChatMods", "IPopBar", "ItemRack", "ItemSync",
+	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinkWrangler", "Livestock",
+	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
+	"Necrosis", "NeonChat", "nQuestLog",
+	"Odyssey", "oGlow", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
+	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "ProfessionTabs", "PvpMessages",
 	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper", "QuestHelper2", "QuestHistory", "QuickMark",
-	"RABuffs", "RaidAchievement", "RaidAchievement_AchieveReminder", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidTracker", "RaidyCheck", "RandomPet30", "ReagentRestocker", "Recap", "RecipeBook", "RecipeRadar", "Recount", "REFlex", "ReforgeLite", "Reforgenator", "RicoMiniMap",
-	"SayGMOTD", "ScrollMaster", "ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "SmoothQuest", "SnapShot", "Spew", "Squeenix", "sRaidFrames",
-	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "Toons", "TotemCaddy", "TourGuide", "TradeSkillMaster", "TrinketBar", "Tukui", "TwinValkyr_shieldmonitor",
+	"RABuffs", "RaidAchievement", "RaidAchievement_AchieveReminder", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidTracker", "RaidyCheck", "RandomPet30", "ReagentRestocker", "Recap", "RecipeBook", "RecipeRadar", "Recount", "REFlex", "ReforgeLite", "Reforgenator", "Reforgerade", "RicoMiniMap",
+	"SayGMOTD", "ScrollMaster", "ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "Smoker", "SmoothQuest", "SnapShot", "Spew", "Squeenix", "sRaidFrames",
+	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "TourGuide", "TradeSkillMaster", "TrinketBar", "Tukui", "TwinValkyr_shieldmonitor",
 	"UberQuest", "UrbanAchiever",
 	"vBagnon", "Vendorizer", "Vendomatic", "VendorSearch", "Violation", "Visor2_GUI", "Volumizer", "VuhDo", "VuhDoOptions",
 	"Warden", "WeakAuras", "WebDKP", "WIM", "WoWEquip", "WowLua", "WoWPro", "WTFLatencyMeter",
@@ -110,13 +110,15 @@ aObj.libsToSkin = {
 	["Tablet-2.0"] = "Tablet",
 	["Waterfall-1.0"] = "Waterfall",
 	["AceGUI-3.0"] = "Ace3",
-	["LibSimpleOptions-1.0"] = "LibSimpleOptions",
 	["Configator"] = "Configator",
 	["LibExtraTip-1"] = "LibExtraTip",
 	["tektip-1.0"] = "tektip",
 	["LibQTip-1.0"] = "LibQTip",
 	["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
 	["ArkDewdrop-3.0"] = "ArkDewdrop",
+	["LibTradeSkillScan"] = "LibTradeSkillScan",
+	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
+	["X-UI"] = "LibXUI",
 }
 function aObj:AddonFrames()
 --	   self:Debug("AddonFrames")
@@ -220,14 +222,14 @@ function aObj:AddonFrames()
 end
 
 local lodFrames = {
-	"Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "AzCastBarOptions",
+	"Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "AzCastBarOptions",
 	"Bagnon", "Bagnon_Options", "Banknon", "BetterBindingFrame",
 	"DockingStation_Config", "Dominos_Config", "DoTimer_Options",
 	"Enchantrix", "EnhTooltip",
 	"FramesResized_TalentUI",
 	"GnomishAuctionShrinker", "GuildBankSearch",
 	"ItemRackOptions",
-	"LilSparkysWorkshop", "Ludwig_Window",
+	"LilSparkysWorkshop",
 	"MSBTOptions",
 	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
 	"Perl_Config_Options",
@@ -254,7 +256,7 @@ end
 aObj.oddlyNamedLoDAddons = { "_DevPad.GUI", "DBM-GUI" }
 local prev_addon
 function aObj:LoDFrames(addon)
-	  -- self:Debug("LoDFrames: [%s]", addon)
+	-- self:Debug("LoDFrames: [%s]", addon)
 
 	if addon == prev_addon then return end
 	prev_addon = addon
@@ -302,7 +304,7 @@ function aObj:LoDFrames(addon)
 end
 
 function aObj:ADDON_LOADED(event, addon)
---	self:Debug("ADDON_LOADED: [%s]", addon)
+	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
 	self:ScheduleTimer("LoDFrames", self.db.profile.Delay.LoDs, addon)
 
@@ -315,7 +317,6 @@ function aObj:AUCTION_HOUSE_SHOW()
 	-- trigger these when AH loads otherwise errors occur
 	self:checkAndRunAddOn("BtmScan")
 	self:checkAndRunAddOn("AuctionFilterPlus")
-	self:checkAndRunAddOn("Auctionator")
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
 
@@ -326,7 +327,6 @@ function aObj:TRADE_SKILL_SHOW()
 
 	self:checkAndRun("TradeSkillUI") -- player
 	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
-	self:checkAndRunAddOn("MrTrader_SkillWindow")
 	self:checkAndRunAddOn("ReagentMaker")
 
 	self:UnregisterEvent("TRADE_SKILL_SHOW")

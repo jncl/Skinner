@@ -23,12 +23,13 @@ function aObj:BetterInbox(LoD)
 			end
 		end
 		-- skin the buttons
-		aObj:skinButton{obj=BetterInboxOpenButton}
 		aObj:skinButton{obj=BetterInboxCancelButton}
-		-- fix the dropdown
-		bib.scrollframe.dropdown.frame:ClearAllPoints()
-		bib.scrollframe.dropdown.frame:SetPoint("RIGHT", BetterInboxOpenButton, "LEFT", -2, -3)
-		bib.scrollframe.dropdown.frame:SetHeight(32)
+		aObj:skinButton{obj=BetterInboxOpenButton}
+		-- fix the dropdown, as the sizes had been changed
+		self:moveObject{obj=bib.scrollframe.dropdown.button, x=0, y=-1}
+		bib.scrollframe.dropdown.frame:SetHeight(26)
+		bib.scrollframe.dropdown.frame:SetScale(.93)
+		self:moveObject{obj=bib.scrollframe.dropdown.frame, x=8, y=4}
 
 	end
 

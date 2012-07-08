@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("Acheron") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Acheron") then return end
 
-function Skinner:Acheron()
+function aObj:Acheron()
 
 	local obj = Acheron.frame
 	local AceGUI = LibStub("AceGUI-3.0", true)
@@ -29,7 +30,7 @@ function Skinner:Acheron()
 		self:applySkin(obj.content:GetParent())
 	end
 	obj = kids[1].children[1] -- Dropdown object
-	self:skinDropDown(obj.dropdown)
+	self:skinDropDown{obj=obj.dropdown, y2=0}
 	self:applySkin(obj.pullout.frame)
 
 	-- Report options
@@ -42,7 +43,7 @@ function Skinner:Acheron()
 		self:applySkin(obj.content:GetParent())
 	end
 	obj = kids[2].children[2] -- Dropdown object
-	self:skinDropDown(obj.dropdown)
+	self:skinDropDown{obj=obj.dropdown, y2=0}
 	self:applySkin(obj.pullout.frame)
 	obj = kids[2].children[3] -- EditBox object
 	self:skinEditBox(obj.editbox, {9}, nil, true)
@@ -51,10 +52,8 @@ function Skinner:Acheron()
 	end, true)
 
 	-- Buttons
-	obj = kids[3]
-	self:skinButton{obj=obj.frame, as=true}
-	obj = kids[4]
-	self:skinButton{obj=obj.frame, as=true}
+	self:skinButton{obj=kids[3].frame}
+	self:skinButton{obj=kids[4].frame}
 
 	-- Death Report panels
 	obj = kids[6] -- TreeGroup object

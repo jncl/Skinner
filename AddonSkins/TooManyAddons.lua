@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("TooManyAddons") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("TooManyAddons") then return end
 
-function Skinner:TooManyAddons()
+function aObj:TooManyAddons()
 
 	local TMAaddonframe = _G[TMA_ADDON_LIST_NAME.."frame"]
 	local TMAprofileframe = _G[TMA_PROFILE_LIST_NAME.."frame"]
@@ -21,7 +22,7 @@ function Skinner:TooManyAddons()
 	-- GameMenu Button
 	self:skinButton{obj=TMAgamemenubutton}
 	-- dropdowns
-	self:skinDropDown{obj=TMAimportmenu}
-	self:skinDropDown{obj=TMAsortMenu}
+	self:skinDropDown{obj=TMAimportmenu, x2=27}
+	self:skinDropDown{obj=TMAsortMenu, x2=27}
 
 end

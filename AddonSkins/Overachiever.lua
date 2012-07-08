@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("Overachiever") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Overachiever") then return end
 
-function Skinner:Overachiever()
+function aObj:Overachiever()
 	if not self.db.profile.AchievementUI then return end
 
 	local function findOptionsPanel(panel)
@@ -38,34 +39,38 @@ function Skinner:Overachiever()
 end
 
 
-function Skinner:Overachiever_Tabs()
+function aObj:Overachiever_Tabs()
 	if not self.db.profile.AchievementUI then return end
 
 	self:skinAllButtons{obj=Overachiever_LeftFrame}
 -->>-- Search Frame
 	self:keepFontStrings(Overachiever_SearchFrame)
-	self:skinDropDown(Overachiever_SearchFrameSortDrop)
+	self:skinDropDown{obj=Overachiever_SearchFrameSortDrop, x2=110}
 	self:skinEditBox(Overachiever_SearchFrameNameEdit, {9})
 	self:skinEditBox(Overachiever_SearchFrameDescEdit, {9})
 	self:skinEditBox(Overachiever_SearchFrameCriteriaEdit, {9})
 	self:skinEditBox(Overachiever_SearchFrameRewardEdit, {9})
 	self:skinEditBox(Overachiever_SearchFrameAnyEdit, {9})
+	self:skinDropDown{obj=Overachiever_SearchFrameTypeDrop, x2=110}
 	self:skinSlider(Overachiever_SearchFrameContainerScrollBar)
 	self:applySkin(self:getChild(Overachiever_SearchFrame, 1))
 	LowerFrameLevel(self:getChild(Overachiever_SearchFrame, 1))
 
 -->>-- Suggestions Frame
 	self:keepFontStrings(Overachiever_SuggestionsFrame)
-	self:skinDropDown(Overachiever_SuggestionsFrameSortDrop)
+	self:skinDropDown{obj=Overachiever_SuggestionsFrameSortDrop, x2=110}
 	self:skinEditBox{obj=Overachiever_SuggestionsFrameZoneOverrideEdit, regs={9}}
-	self:skinDropDown(Overachiever_SuggestionsFrameSubzoneDrop)
+	self:skinDropDown{obj=Overachiever_SuggestionsFrameSubzoneDrop, x2=27}
 	self:skinSlider(Overachiever_SuggestionsFrameContainerScrollBar)
 	self:applySkin(self:getChild(Overachiever_SuggestionsFrame, 1))
 	LowerFrameLevel(self:getChild(Overachiever_SuggestionsFrame, 1))
 
 -->>-- Watch Frame
 	self:keepFontStrings(Overachiever_WatchFrame)
-	self:skinDropDown(Overachiever_WatchFrameSortDrop)
+	self:skinDropDown{obj=Overachiever_WatchFrameSortDrop, x2=110}
+	self:skinDropDown{obj=Overachiever_WatchFrameListDrop, x2=27}
+	self:skinDropDown{obj=Overachiever_WatchFrameDefListDrop, x2=27}
+	self:skinDropDown{obj=Overachiever_WatchFrameDestinationListDrop, x2=27}
 	self:skinSlider(Overachiever_WatchFrameContainerScrollBar)
 	local wFrame = self:getChild(Overachiever_WatchFrame, 1)
 	self:applySkin(wFrame)

@@ -71,12 +71,19 @@ function aObj:AphesLootBrowser()
 
 	local function skinDropDown(obj)
 		obj:SetBackdrop(nil)
-		if not aObj.db.profile.TexturedDD then return end
+		if not aObj.db.profile.TexturedDD
+		and not aObj.db.profile.DropDownButtons
+		then
+			return
+		end
 		obj.tbg = obj:CreateTexture(nil, "BACKGROUND")
-		obj.tbg:SetTexture(aObj.itTex)
-		obj.tbg:SetPoint("LEFT", obj, "LEFT")
-		obj.tbg:SetWidth(obj:GetWidth() - 4)
-		obj.tbg:SetHeight(19)
+		obj.tbg:SetTexture(self.itTex)
+		obj.tbg:SetPoint("RIGHT", obj, "RIGHT", -4, 0)
+		obj.tbg:SetWidth(obj:GetWidth() - 12)
+		obj.tbg:SetHeight(18)
+		if self.db.profile.DropDownButtons then
+			self:addSkinFrame{obj=obj, aso={ng=true}, x1=4, y1=-3, x2=-1, y2=3}
+		end
 	end
 	local function skinSearchFrame()
 		self:skinEditBox{obj=ALBSearchName, regs={9}, noHeight=true, noWidth=true}
@@ -95,6 +102,9 @@ function aObj:AphesLootBrowser()
 			end
 		end
 		self:skinScrollBar{obj=ALBSearchScroll}
+		self:adjHeight{obj=ALBSearchCustom, adj=10}
+		self:adjWidth{obj=ALBSearchCustom, adj=4}
+		ALBSearchCustomButton:SetPoint("RIGHT", -2, 0)
 		skinDropDown(ALBSearchCustom)
 		self:addSkinFrame{obj=ALBSearch}
 	end

@@ -163,10 +163,14 @@ function aObj:AckisRecipeList()
 	if ver < 11 then
 		self:skinButton{obj=ARL.scan_button}
 	else
-		self:SecureHook(ARL, "CreateScanButton", function()
+		if ARL.CreateScanButton then
+			self:SecureHook(ARL, "CreateScanButton", function()
+				self:skinButton{obj=ARL.scan_button}
+				self:Unhook(ARL, "CreateScanButton")
+			end)
+		else
 			self:skinButton{obj=ARL.scan_button}
-			self:Unhook(ARL, "CreateScanButton")
-		end)
+		end
 	end
 
 -->>-- Tooltip

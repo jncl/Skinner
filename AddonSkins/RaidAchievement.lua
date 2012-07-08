@@ -1,14 +1,31 @@
-if not Skinner:isAddonEnabled("RaidAchievement") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("RaidAchievement") then return end
 
-local aVer = GetAddOnMetadata("RaidAchievement", "Version")
 local x1, y1 = -2, -4
-function Skinner:RaidAchievement()
+function aObj:RaidAchievement()
 	
 
 -->>-- Main Frames
-	self:skinAllButtons{obj=PSFeamain1}
+	-- self:skinAllButtons{obj=PSFeamain1}
+	self:addSkinFrame{obj=PSFeamain1, x1=x1, y1=y1}
 	self:addSkinFrame{obj=PSFeamain2, x1=x1, y1=y1}
 	self:addSkinFrame{obj=PSFeamainWotlk, x1=x1, y1=y1}
+	self:SecureHook("openrasound1", function()
+		self:skinDropDown{obj=DropDownrasound1}
+		self:Unhook("openrasound1")
+	end)
+	self:SecureHook("openrasound2", function()
+		self:skinDropDown{obj=DropDownrasound2}
+		self:Unhook("openrasound2")
+	end)
+	self:SecureHook("openmenureportchra11", function()
+		self:skinDropDown{obj=DropDownMenureportchra11}
+		self:Unhook("openmenureportchra11")
+	end)
+	self:SecureHook("openmenureportchra12", function()
+		self:skinDropDown{obj=DropDownMenureportchra12}
+		self:Unhook("openmenureportchra12")
+	end)
 	self:addSkinFrame{obj=PSFeamain3, x1=x1, y1=y1}
 	self:addSkinFrame{obj=PSFeamain12, x1=x1, y1=y1}
 	self:addSkinFrame{obj=PSFeamain10, x1=x1, y1=y1}
@@ -17,7 +34,7 @@ function Skinner:RaidAchievement()
 
 end
 
-function Skinner:RaidAchievement_AchieveReminder()
+function aObj:RaidAchievement_AchieveReminder()
 
 	self:addSkinFrame{obj=icralistach, x1=x1, y1=y1}
 	self:SecureHook("iclldrawtext2", function()
@@ -71,36 +88,10 @@ function Skinner:RaidAchievement_AchieveReminder()
 	else
 		self:skinDropDown{obj=DropDownMenullch3}
 	end
-	-- check for Beta version
-	if aVer == "1.052" then
-		self:SecureHook("iclldrawtext3", function()
-			self:skinEditBox{obj=rallpsebf3, regs={9}}
-			self:skinScrollBar{obj=rallinfscroll}
-			self:skinEditBox{obj=rallinfframe, regs={9}}
-			self:Unhook("iclldrawtext3")
-		end)
-		self:addSkinFrame{obj=icralistach3, x1=x1, y1=y1}
-		if not DropDownMenureportll3 then
-			self:SecureHook("openmenull3", function()
-				self:skinDropDown{obj=DropDownMenureportll3}
-				self:Unhook("openmenull3")
-			end)
-		else
-			self:skinDropDown{obj=DropDownMenureportll3}
-		end
-		if not DropDownMenullch34 then
-			self:SecureHook("openmenullch34", function()
-				self:skinDropDown{obj=DropDownMenullch34}
-				self:Unhook("openmenullch34")
-			end)
-		else
-			self:skinDropDown{obj=DropDownMenullch34}
-		end
-	end
 
 end
 
-function Skinner:RaidAchievement_Icecrown()
+function aObj:RaidAchievement_Icecrown()
 
 	self:addSkinFrame{obj=icramain6, x1=x1, y1=y1}
 	if not DropDownMenureporticra then
@@ -114,7 +105,7 @@ function Skinner:RaidAchievement_Icecrown()
 
 end
 
-function Skinner:RaidAchievement_Naxxramas()
+function aObj:RaidAchievement_Naxxramas()
 
 	self:addSkinFrame{obj=nxramain6, x1=x1, y1=y1}
 	if not DropDownMenureportnxra then
@@ -128,7 +119,7 @@ function Skinner:RaidAchievement_Naxxramas()
 
 end
 
-function Skinner:RaidAchievement_Ulduar()
+function aObj:RaidAchievement_Ulduar()
 
 	self:addSkinFrame{obj=PSFeamain7, x1=x1, y1=y1}
 	if not DropDownMenureportra then
@@ -142,7 +133,7 @@ function Skinner:RaidAchievement_Ulduar()
 
 end
 
-function Skinner:RaidAchievement_WotlkHeroics()
+function aObj:RaidAchievement_WotlkHeroics()
 
 	self:addSkinFrame{obj=whramain6, x1=x1, y1=y1}
 	if not DropDownMenureportwhra then
@@ -156,7 +147,7 @@ function Skinner:RaidAchievement_WotlkHeroics()
 
 end
 
-function Skinner:RaidAchievement_CataHeroics()
+function aObj:RaidAchievement_CataHeroics()
 
 	self:addSkinFrame{obj=chramain6, x1=x1, y1=y1}
 	if not DropDownMenureportchra then
@@ -170,7 +161,7 @@ function Skinner:RaidAchievement_CataHeroics()
 
 end
 
-function Skinner:RaidAchievement_CataRaids()
+function aObj:RaidAchievement_CataRaids()
 
 	self:addSkinFrame{obj=crramain6, x1=x1, y1=y1}
 	if not DropDownMenureportcrra then

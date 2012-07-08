@@ -1,6 +1,9 @@
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Accountant") then return end
 
-function Skinner:Accountant()
+function aObj:Accountant()
 
+	self:moveObject{obj=Accountant_CharDropDown, x=-4, y=-3}
 	self:skinDropDown{obj=Accountant_CharDropDown}
 	for i = 1, Accountant.MaxRows do
 		self:keepFontStrings(_G["AccountantFrameRow"..i])
