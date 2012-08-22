@@ -25,6 +25,7 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo = {GetBuildInfo()}
+	-- aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4])
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = tonumber(buildInfo[2]) > 15595 and true or false
 
@@ -33,13 +34,7 @@ do
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.0.0" and true or false
-
-end
-
-function aObj.round2(num, ndp)
-
-  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
+	aObj.isBeta = aObj.isBeta or buildInfo[4] > 50000 and true or false
 
 end
 
@@ -201,8 +196,9 @@ function aObj:OnInitialize()
 	end
 	if self.isBeta then
 		self:add2Table(self.uiKeys1, "ChallengesUI")
+		self:add2Table(self.uiKeys1, "ItemUpgradeUI")
 	end
-	self.uiKeys2 = {"BattlefieldMm"}
+	self.uiKeys2 = {"BattlefieldMm", }
 	-- these are used to disable the gradient
 	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 

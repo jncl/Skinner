@@ -13,20 +13,20 @@ Legend:
 	O	MoP Beta
 √		- TOC version now 50001
 		NEW
-≈		- Blizzard_BlackMarketUI
+√		- Blizzard_BlackMarketUI
 √		- Blizzard_ChallengesUI
-		- Blizzard_ItemUpgradeUI
-		- Blizzard_PetBattleUI
+?		- Blizzard_ItemUpgradeUI
+√		- Blizzard_PetBattleUI
 √		- Blizzard_PetJournal
 x		- ActionBarController
 √		- DestinyFrame
 √		- ExtraActionBar
-		- FloatingPetBattleTooltip
+√		- FloatingPetBattleTooltip
 x		- FontStyleOverrides
 x		- FrameLocks
 √		- LootHistory
 √		- MonkHarmonyBar
-≈		- OverrideActionBar
+√		- OverrideActionBar
 √		- PVEFrame (a.k.a. GroupFinderFrame)
 x		- PetBattleStubs
 √		- PossessActionBar
@@ -35,7 +35,7 @@ x		- QueueStatusFrame
 √		- ScenarioFinder
 x		- SharedPetBattleTemplates
 √		- StanceBar
-		- VehicleSeatIndicator
+?		- VehicleSeatIndicator
 
 		UPD
 x		- Blizzard_AchievementUI
@@ -76,7 +76,7 @@ x		- Blizzard_TokenUI
 x		- Blizzard_VoidStorageUI
 
 x		- ActionButton
-≈		- AlertFrames
+√		- AlertFrames
 √			- CriteriaAlertFrame
 √			- ChallengeModeAlertFrame
 √			- ScenarioAlertFrame
@@ -88,9 +88,9 @@ x		- AnimationSystem
 x		- AudioOptionsPanels
 x		- AutoComplete
 x		- BNet
-≈		- BankFrame (BG changes with Paladin Holy Power)
+√		- BankFrame (BG changes with Paladin Holy Power)
 x		- Bindings
-		- BuffFrame
+?		- BuffFrame
 x		- CastingBarFrame
 x		- ChannelFrame
 √		- CharacterFrame
@@ -117,7 +117,7 @@ x		 -GlobalStrings
 x		- GraphicsQualityLevels
 √		- GuildInviteFrame
 √		- GuildRegistrarFrame
-≈		- HelpFrame
+√		- HelpFrame
 x		- HybridScrollFrame
 x		- IconIntroAnimation
 x		- InterfaceOptionsFrame
@@ -130,10 +130,14 @@ x		- ItemRef
 √		- LFRFrame
 x		- LevelUpDisplay
 √		- LootFrame
+≈			- BonusRoll Frame
+√			- BonusRollLootWon Frame
+√			- BonusRollMoneyWon Frame
+≈			- MasterLooter Frame
 x		- MacOptionsFrame
 √		- MailFrame
 x		- MainMenuBar
-≈		- MainMenuBarMicroButtons
+√		- MainMenuBarMicroButtons
 √		- MerchantFrame
 x		- Minimap
 √		- ModelFrames
@@ -150,9 +154,9 @@ x		- PetFrame
 x		- PetPaperDollFrame
 √		- PetitionFrame
 x		- PlayerFrame
-≈		- QuestFrame
-≈		- QuestFrameTemplates
-≈		- QuestInfo
+√		- QuestFrame
+√		- QuestFrameTemplates
+√		- QuestInfo
 √		- QuestLogFrame
 √		- RaidFinder
 x		- RaidFrame
@@ -184,9 +188,8 @@ x		- UIPanelTemplates
 x		- UIParent
 x		- UnitFrame (classifications)
 x		- UnitPopup
-≈		- UnitPowerBarAlt
-≈			- PlayerPowerBarAlt
-			- ??
+√		- UnitPowerBarAlt
+√			- PlayerPowerBarAlt
 x		- VideoOptionsPanel
 x		- WatchFrame
 x		- WorldMapFrame
@@ -202,12 +205,22 @@ x		- ZoneText
 √		- Dungeon & Raid Finder consolidated into Group Finder, includes Scenario finder and Challenges Mode
 √		- Spellbook now split into Active and Passive pages
 √		- Vendor filter (dd) added to merchant frame
-		- Buff consolidation now permanent, new tooltip with buff info
+?		- Buff consolidation now permanent, new tooltip with buff info
 
 ≈	O	Rework the button detection code as Texture names can't be used, they're not available unless frame is open
+
+≈	I	Nameplates, rework the code
+
+	I 	Ace3 buttons on IOP, too many textures/gradients/skins ?
+
+√	O	Reorganise code into PlayerFrames/UIFrames and alphabetise the functions
+
+√	I	Add button borders to next/prev buttons
+
+√	I	Add button borders to other square buttons
 
 ¶	O	Add new skin options
 
 ¶	O	Remove GearManager references
 
-√	O	Reorganise code into PlayerFrames/UIFrames and alphabetise the functions
+¶	O	Review ALL options text

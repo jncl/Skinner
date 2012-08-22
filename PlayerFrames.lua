@@ -1,4 +1,5 @@
 local aName, aObj = ...
+
 local _G = _G
 local ftype = "p"
 local obj, objName, tex, texName, btn, btnName, tab, tabSF
@@ -297,6 +298,8 @@ function aObj:ArchaeologyUI() -- LoD
 		ArchaeologyFrame.completedPage["artifact"..i].border:Hide()
 		_G["ArchaeologyFrameCompletedPageArtifact"..i.."Bg"]:Hide()
 	end
+	self:addButtonBorder{obj=ArchaeologyFrame.completedPage.prevPageButon, ofs=0} -- N.B. spelling!
+	self:addButtonBorder{obj=ArchaeologyFrame.completedPage.nextPageButon, ofs=0} -- N.B. spelling!
 -->>-- Artifact Page
 	self:removeRegions(ArchaeologyFrame.artifactPage, {2, 3}) -- title textures
 	ArchaeologyFrame.artifactPage:DisableDrawLayer("BACKGROUND")
@@ -936,16 +939,14 @@ function aObj:FriendsFrame()
 	self:skinDropDown{obj=ChannelRosterDropDown}
 
 -->>--	Raid Tab Frame
-	if not self.isBeta then
-		self:moveObject{obj=RaidFrameConvertToRaidButton, x=-50}
-		self:moveObject{obj=RaidFrameRaidInfoButton, x=50}
-	end
+	self:skinButton{obj=RaidFrameConvertToRaidButton}
+	self:skinButton{obj=RaidFrameRaidInfoButton}
 	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
 -->>--	RaidInfo Frame
 	self:addSkinFrame{obj=RaidInfoInstanceLabel, kfs=true}
 	self:addSkinFrame{obj=RaidInfoIDLabel, kfs=true}
-	self:skinSlider{obj=RaidInfoScrollFrameScrollBar}
+	self:skinSlider{obj=RaidInfoScrollFrame.scrollBar}
 	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 
 end
@@ -991,70 +992,6 @@ function aObj:GlyphUI() -- LoD
 
 end
 
-function aObj:GroupLoot()
-	if not self.db.profile.GroupLoot.skin or self.initialized.GroupLoot then return end
-	self.initialized.GroupLoot = true
-
-	self:add2Table(self.pKeys2, "GroupLoot")
-
-	if not self.isBeta then
-		self:skinDropDown{obj=GroupLootDropDown}
-	end
-
-	for i = 1, NUM_GROUP_LOOT_FRAMES do
-
-		objName = "GroupLootFrame"..i
-		obj = _G[objName]
-		self:keepFontStrings(obj)
-		if not self.isBeta then
-			_G[objName.."SlotTexture"]:SetTexture(nil)
-			_G[objName.."NameFrame"]:SetTexture(nil)
-		end
-		if not self.isBeta then
-			self:addButtonBorder{obj=_G[objName.."IconFrame"]}
-		end
-		if self.isBeta then
-			obj.Timer.Background:SetAlpha(0)
-			self:glazeStatusBar(obj.Timer, 0,  nil)
-		else
-			self:removeRegions(_G[objName.."Timer"], {1})
-			self:glazeStatusBar(_G[objName.."Timer"], 0)
-		end
-		-- hook this to skin the group loot frame
-		self:SecureHook(obj, "Show", function(this)
-			this:SetBackdrop(nil)
-		end)
-
-		if self.db.profile.GroupLoot.size == 1 then
-
-			self:addSkinFrame{obj=obj, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
-
-		elseif self.db.profile.GroupLoot.size == 2 then
-
-			obj:SetScale(0.75)
-			self:addSkinFrame{obj=obj, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
-
-		elseif self.db.profile.GroupLoot.size == 3 then
-
-			obj:SetScale(0.75)
-			self:moveObject{obj=_G[objName.."SlotTexture"], x=95, y=4} -- Loot item icon
-			_G[objName.."Name"]:SetAlpha(0)
-			_G[objName.."RollButton"]:ClearAllPoints()
-			_G[objName.."RollButton"]:SetPoint("RIGHT", _G[objName.."PassButton"], "LEFT", 5, -5)
-			_G[objName.."GreedButton"]:ClearAllPoints()
-			_G[objName.."GreedButton"]:SetPoint("RIGHT", _G[objName.."RollButton"], "LEFT", 0, 0)
-			_G[objName.."DisenchantButton"]:ClearAllPoints()
-			_G[objName.."DisenchantButton"]:SetPoint("RIGHT", _G[objName.."GreedButton"], "LEFT", 0, 0)
-			self:adjWidth{obj=_G[objName.."Timer"], adj=-28}
-			self:moveObject{obj=_G[objName.."Timer"], x=-3}
-			self:addSkinFrame{obj=obj, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
-
-		end
-
-	end
-
-end
-
 function aObj:GuildControlUI() -- LoD
 	if not self.db.profile.GuildControlUI or self.initialized.GuildControlUI then return end
 	self.initialized.GuildControlUI = true
@@ -1071,6 +1008,9 @@ function aObj:GuildControlUI() -- LoD
 			obj = _G["GuildControlUIRankOrderFrameRank"..i]
 			if obj and not aObj.skinned[obj] then
 				aObj:skinEditBox{obj=obj.nameBox, regs={9}, x=-5}
+				self:addButtonBorder{obj=obj.downButton, ofs=0}
+				self:addButtonBorder{obj=obj.upButton, ofs=0}
+				self:addButtonBorder{obj=obj.deleteButton, ofs=0}
 			end
 		end
 
@@ -1094,12 +1034,11 @@ function aObj:GuildControlUI() -- LoD
 		-- self:Debug("GuildControlUI_BankTabPermissions_Update: [%s]", this)
 		for i = 1, MAX_BUY_GUILDBANK_TABS do
 			btn = _G["GuildControlBankTab"..i]
-			if btn
-			and not self.skinned[btn]
-			then
+			if btn and not self.skinned[btn] then
 				btn:DisableDrawLayer("BACKGROUND")
 				self:skinEditBox{obj=btn.owned.editBox, regs={9}}
 				self:skinButton{obj=btn.buy.button, as=true}
+				self:addButtonBorder{obj=btn.owned, relTo=btn.owned.tabIcon}
 			end
 		end
 	end)
@@ -1405,11 +1344,11 @@ function aObj:LookingForGuildUI() -- LoD
 
 end
 
-function aObj:LootFrame()
-	if not self.db.profile.LootFrame or self.initialized.LootFrame then return end
-	self.initialized.LootFrame = true
+function aObj:LootFrames()
+	if not self.db.profile.LootFrames.skin or self.initialized.LootFrames then return end
+	self.initialized.LootFrames = true
 
-	self:add2Table(self.pKeys1, "LootFrame")
+	self:add2Table(self.pKeys2, "LootFrames")
 
 	-- shrink the size of the LootFrame
 	-- move the title and close button and reduce the height of the skinFrame by 34
@@ -1426,11 +1365,35 @@ function aObj:LootFrame()
 	else
 		self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	end
+	self:addButtonBorder{obj=LootFrameDownButton, ofs=-2}
+	self:addButtonBorder{obj=LootFrameUpButton, ofs=-2}
+	
+	if self.isBeta then
+	-->>-- BonusRoll Frame
+		self:removeRegions(BonusRollFrame, {1, 2, 3, 4})
+		self:glazeStatusBar(BonusRollFrame.PromptFrame.Timer, 0,  nil)
+	-->>-- BonusRollLootWon Frame
+		BonusRollLootWonFrame.Background:SetTexture(nil)
+		BonusRollLootWonFrame.IconBorder:SetTexture(nil)
+		self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollLootWonFrame, relTo=BonusRollLootWonFrame.Icon}) -- wait for animation to finish
+		self:addSkinFrame{obj=BonusRollLootWonFrame, ft=ftype, anim=true, ofs=-10}
+	-->>-- BonusRollMoneyWon Frame
+		BonusRollMoneyWonFrame.Background:SetTexture(nil)
+		BonusRollMoneyWonFrame.IconBorder:SetTexture(nil)
+		self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollMoneyWonFrame, relTo=BonusRollMoneyWonFrame.Icon}) -- wait for animation to finish
+		self:addSkinFrame{obj=BonusRollMoneyWonFrame, ft=ftype, anim=true, ofs=-10}
+	-->>-- MasterLooter Frame
+		MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
+		MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
+		MasterLooterFrame.Item.NameBorderMid:SetTexture(nil)
+		MasterLooterFrame.Item.IconBorder:SetTexture(nil)
+		self:addButtonBorder{obj=MasterLooterFrame, relTo=MasterLooterFrame.Icon}
+		MasterLooterFrame.player1.Bg:SetTexture(nil)
+		self:addSkinFrame{obj=MasterLooterFrame, ft=ftype, kfs=true, nb=true}
+		self:skinButton{obj=self:getChild(MasterLooterFrame, 3), cb=true}
+	end
 
-	-- BonusRoll Frame
-	-- BonusRollLootWon Frame
-	-- BonusRollMoneyWon Frame
-	-- MissingLoot frame
+-->>-- MissingLoot frame
 	self:addSkinFrame{obj=MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
 	for i = 1, MissingLootFrame.numShownItems do
 		_G["MissingLootFrameItem"..index.."NameFrame"]:SetAlpha(0)
@@ -1439,7 +1402,62 @@ function aObj:LootFrame()
 		end
 	end
 
-	-- MasterLooter Frame
+-->>-- GroupLoot frames
+	if not self.isBeta then
+		self:skinDropDown{obj=GroupLootDropDown}
+	end
+
+	for i = 1, NUM_GROUP_LOOT_FRAMES do
+
+		objName = "GroupLootFrame"..i
+		obj = _G[objName]
+		self:keepFontStrings(obj)
+		if not self.isBeta then
+			_G[objName.."SlotTexture"]:SetTexture(nil)
+			_G[objName.."NameFrame"]:SetTexture(nil)
+		end
+		if not self.isBeta then
+			self:addButtonBorder{obj=_G[objName.."IconFrame"]}
+		end
+		if self.isBeta then
+			obj.Timer.Background:SetAlpha(0)
+			self:glazeStatusBar(obj.Timer, 0,  nil)
+		else
+			self:removeRegions(_G[objName.."Timer"], {1})
+			self:glazeStatusBar(_G[objName.."Timer"], 0)
+		end
+		-- hook this to skin the group loot frame
+		self:SecureHook(obj, "Show", function(this)
+			this:SetBackdrop(nil)
+		end)
+
+		if self.db.profile.LootFrames.size == 1 then
+
+			self:addSkinFrame{obj=obj, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
+
+		elseif self.db.profile.LootFrames.size == 2 then
+
+			obj:SetScale(0.75)
+			self:addSkinFrame{obj=obj, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
+
+		elseif self.db.profile.LootFrames.size == 3 then
+
+			obj:SetScale(0.75)
+			self:moveObject{obj=_G[objName.."SlotTexture"], x=95, y=4} -- Loot item icon
+			_G[objName.."Name"]:SetAlpha(0)
+			_G[objName.."RollButton"]:ClearAllPoints()
+			_G[objName.."RollButton"]:SetPoint("RIGHT", _G[objName.."PassButton"], "LEFT", 5, -5)
+			_G[objName.."GreedButton"]:ClearAllPoints()
+			_G[objName.."GreedButton"]:SetPoint("RIGHT", _G[objName.."RollButton"], "LEFT", 0, 0)
+			_G[objName.."DisenchantButton"]:ClearAllPoints()
+			_G[objName.."DisenchantButton"]:SetPoint("RIGHT", _G[objName.."GreedButton"], "LEFT", 0, 0)
+			self:adjWidth{obj=_G[objName.."Timer"], adj=-28}
+			self:moveObject{obj=_G[objName.."Timer"], x=-3}
+			self:addSkinFrame{obj=obj, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
+
+		end
+
+	end
 
 end
 
@@ -1584,6 +1602,8 @@ if aObj.isBeta then
 
 	end
 	function aObj:PetJournal() -- LoD
+		if not self.db.profile.PetJournal or self.initialized.PetJournal then return end
+		self.initialized.PetJournal = true
 
 		self:addSkinFrame{obj=PetJournalParent, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
 		self:skinTabs{obj=PetJournalParent, lod=true}
@@ -1620,43 +1640,57 @@ if aObj.isBeta then
 		self:skinDropDown{obj=PetJournal.petOptionsMenu}
 		for i = 1, #PetJournal.listScroll.buttons do
 			btn = PetJournal.listScroll.buttons[i]
-			self:addButtonBorder{obj=btn, relTo=btn.icon}
-			btn:DisableDrawLayer("BACKGROUND")
-			btn.levelBG:SetTexture(nil)
+			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level}}
+			self:removeRegions(btn, {1, 3})
+			self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
 		end
 		self:removeRegions(PetJournal.AchievementStatus, {1})
+		self:keepFontStrings(PetJournal.loadoutBorder)
+		self:moveObject{obj=PetJournal.loadoutBorder, y=8} -- battle pet slots title
+		-- Battle Pet Slots
 		for i = 1, 3 do
 			obj	= PetJournal.Loadout["Pet"..i]
 			self:removeRegions(obj, {1, 2, 5})
+			self:addButtonBorder{obj=obj, relTo=obj.icon, reParent={obj.levelBG, obj.level}}
+			obj.petTypeIcon:SetAlpha(0) -- N.B. texture is changed in code
+			self:changeTandC(obj.levelBG, self.lvlBG)
 			self:keepFontStrings(obj.helpFrame)
-			self:makeMFRotatable(obj.model)
-			self:glazeStatusBar(obj.healthBar, 0,  nil)
+			obj.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
+			self:glazeStatusBar(obj.healthFrame.healthBar, 0,  nil)
+			self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
 			self:glazeStatusBar(obj.xpBar, 0,  nil)
+			self:makeMFRotatable(obj.model)
+			self:addButtonBorder{obj=obj, ofs=1}
+			for i = 1, 3 do
+				btn = obj["spell"..i]
+				self:removeRegions(btn, {1, 3}) -- background, blackcover
+				self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.FlyoutArrow}}
+			end
 		end
-		-- PetCardList
-		obj = PetJournal.PetCardList.MainCard
-		self:addButtonBorder{obj=obj, relTo=obj.icon}
-		self:moveObject{obj=obj.levelBG, y=4}
-		self:removeRegions(obj.healthBar, {5, 6, 7, 8})
-		self:glazeStatusBar(obj.healthBar, 0,  nil)
-		self:removeRegions(obj.xpBar, {5, 6, 7, 8})
+		-- PetCard
+		self:removeInset(PetJournal.PetCardInset)
+		obj = PetJournal.PetCard
+		self:addButtonBorder{obj=obj.PetInfo, relTo=obj.PetInfo.icon, reParent={obj.PetInfo.levelBG, obj.PetInfo.level}}
+		self:changeTandC(obj.PetInfo.levelBG, self.lvlBG)
+		self:removeRegions(obj.HealthFrame.healthBar, {1, 2, 3})
+		self:glazeStatusBar(obj.HealthFrame.healthBar, 0,  nil)
+		self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
 		self:glazeStatusBar(obj.xpBar, 0,  nil)
 		self:makeMFRotatable(obj.model)
 		self:keepFontStrings(obj)
-		obj.icon:SetAlpha(1)
-		obj.isDead:SetAlpha(1)
-		self:addSkinFrame{obj=obj, ft=ftype, ofs=4}
+		self:addButtonBorder{obj=obj}
+		-- spell buttons
 		for i = 1, 6 do
 			btn = obj["spell"..i]
-			btn:DisableDrawLayer("BACKGROUND")
+			btn.BlackCover:SetAlpha(0) -- N.B. texture is changed in code
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
-			btn.petTypeIcon:SetAlpha(0) -- N.B. texture is changed in code
 		end
 		-- Tooltips
 		if self.db.profile.Tooltips.skin then
-			PetJournalPrimaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
+			PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
 			self:addSkinFrame{obj=PetJournalPrimaryAbilityTooltip, ft=ftype}
-			PetJournalSecondaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
+			PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
+			PetJournalSecondaryAbilityTooltip.Delimiter2:SetTexture(nil)
 			self:addSkinFrame{obj=PetJournalSecondaryAbilityTooltip, ft=ftype}
 		end
 
@@ -1704,10 +1738,8 @@ function aObj:PVPFrame()
 	self:skinFFColHeads("PVPTeamManagementFrameHeader", 4)
 	self:skinScrollBar{obj=PVPFrame.panel3.teamMemberScrollFrame}
 	self:skinDropDown{obj=PVPTeamManagementFrameTeamDropDown}
-	-- Glow boxes
-	self:addSkinFrame{obj=PVPFrame.panel3.noTeams, ft=ftype, kfs=true}
-	self:addSkinFrame{obj=PVPFrame.panel3.invalidTeam, ft=ftype, kfs=true}
-	self:addSkinFrame{obj=PVPFrame.lowLevelFrame, ft=ftype, kfs=true}
+	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleRight, ofs=-2}
+	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleLeft, ofs=-2}
 -->>-- WarGames frame
 	PVPFrame.panel4:DisableDrawLayer("ARTWORK")
 	self:skinSlider{obj=WarGamesFrameScrollFrameScrollBar, adj=-4}
@@ -1824,10 +1856,10 @@ function aObj:RaidUI() -- LoD
 		for i = 1, NUM_RAID_PULLOUT_FRAMES	do
 			objName = "RaidPullout"..i
 			obj = _G[objName]
-			if not self.skinFrame[obj] then
-				self:skinDropDown{obj=_G[objName.."DropDown"]}
+			if not aObj.skinFrame[obj] then
+				aObj:skinDropDown{obj=_G[objName.."DropDown"]}
 				_G[objName.."MenuBackdrop"]:SetBackdrop(nil)
-				self:addSkinFrame{obj=obj, ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
+				aObj:addSkinFrame{obj=obj, ft=ftype, kfs=true, x1=3, y1=-1, x2=-1, y2=1}
 			end
 		end
 
@@ -1855,7 +1887,7 @@ function aObj:RaidUI() -- LoD
 	end)
 
 	self:skinButton{obj=RaidFrameReadyCheckButton}
-	self:moveObject{obj=RaidGroup1,x= 2}
+	self:moveObject{obj=RaidGroup1, x=2}
 
 	-- Raid Groups
 	for i = 1, MAX_RAID_GROUPS do
@@ -2336,6 +2368,8 @@ function aObj:TradeSkillUI() -- LoD
 	self:removeMagicBtnTex(TradeSkillCancelButton)
 	self:removeMagicBtnTex(TradeSkillCreateButton)
 	self:removeMagicBtnTex(TradeSkillViewGuildCraftersButton)
+	self:addButtonBorder{obj=TradeSkillDecrementButton, ofs=-2}
+	self:addButtonBorder{obj=TradeSkillIncrementButton, ofs=-2}
 	-- Guild sub frame
 	self:addSkinFrame{obj=TradeSkillGuildFrameContainer, ft=ftype}
 	self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, ofs=-7}

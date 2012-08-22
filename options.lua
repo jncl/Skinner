@@ -53,7 +53,7 @@ function aObj:Defaults()
 		GossipFrame          = true,
 		GuildRegistrar       = true,
 		ItemAlterationUI     = true,
-		MerchantFrames       = true,
+		MerchantFrame        = true,
 		Petition             = true,
 		PetStableFrame       = true,
 		QuestFrame           = true,
@@ -76,14 +76,13 @@ function aObj:Defaults()
 		EquipmentFlyout      = true,
 		FriendsFrame         = true,
 		GhostFrame           = true,
-		GroupLoot            = {skin = true, size = 1},
 		GuildControlUI       = true,
 		GuildUI              = true,
 		GuildInvite          = true,
 		InspectUI            = true,
 		ItemSocketingUI      = true,
 		LookingForGuildUI    = true,
-		LootFrame            = true,
+		LootFrames           = {skin = true, size = 1},
 		LootHistory			 = self.isBeta and true or nil,
 		MirrorTimers         = {skin = true, glaze = true},
 		OverrideActionBar    = self.isBeta and true or nil,
@@ -109,6 +108,7 @@ function aObj:Defaults()
 		BNFrames             = true,
 		Calendar             = true,
 		ChallengesUI		 = self.isBeta and true or nil,
+		ChatButtons          = true,
 		ChatConfig           = true,
 		ChatEditBox          = {skin = true, style = 3},
 		ChatFrames           = false,
@@ -119,6 +119,7 @@ function aObj:Defaults()
 		Colours              = true,
 		CombatLogQBF         = false,
 		DebugTools           = true,
+		DestinyFrame         = self.isBeta and true or nil,
 		Feedback             = self.isPTR and true or nil,
 		GMChatUI             = true,
 		GMSurveyUI           = true,
@@ -708,6 +709,7 @@ function aObj:Options()
 				},
 				BlackMarketUI = self.isBeta and {
 					type = "toggle",
+					width = "double",
 					name = self.L["Black Market Auction Frame"],
 					desc = self.L["Toggle the skin of the Black Market Auction Frame"],
 				} or nil,
@@ -723,12 +725,12 @@ function aObj:Options()
 				},
 				ItemAlterationUI = {
 					type = "toggle",
-					name = self.L["ItemAlterationUI"],
-					desc = self.L["Toggle the skin of the ItemAlterationUI"],
+					name = self.L["Item Alteration Frame"],
+					desc = self.L["Toggle the skin of the Item Alteration Frame"],
 				},
-				MerchantFrames = {
+				MerchantFrame = {
 					type = "toggle",
-					name = self.L["Merchant Frames"],
+					name = self.L["Merchant Frame"],
 					desc = self.L["Toggle the skin of the Merchant Frame"],
 				},
 				Petition = {
@@ -767,14 +769,14 @@ function aObj:Options()
 					desc = self.L["Toggle the skin of the Taxi Frame"],
 				},
 				TrainerUI = {
-					name = self.L["Class Trainer Frame"],
-					desc = self.L["Toggle the skin of the Class Trainer Frame"],
+					name = self.L["Trainer Frame"],
+					desc = self.L["Toggle the skin of the Trainer Frame"],
 					type = "toggle",
 				},
 				VoidStorageUI = {
 					type = "toggle",
-					name = self.L["VoidStorageUI"],
-					desc = self.L["Toggle the skin of the VoidStorageUI"],
+					name = self.L["Void Storage Frame"],
+					desc = self.L["Toggle the skin of the Void Storage Frame"],
 				},
 			},
 		},
@@ -817,7 +819,7 @@ function aObj:Options()
 					type = "group",
 					order = -2,
 					inline = true,
-					name = self.L["AchievementUI"],
+					name = self.L["Achievement UI"],
 					get = function(info) return db.AchievementUI[info[#info]] end,
 					set = function(info, value)
 						db.AchievementUI[info[#info]] = value
@@ -826,8 +828,8 @@ function aObj:Options()
 					args = {
 						skin = {
 							type = "toggle",
-							name = self.L["AchievementUI Skin"],
-							desc = self.L["Toggle the skin of the AchievementUI"],
+							name = self.L["Achievement Skin"],
+							desc = self.L["Toggle the skin of the Achievement Frame"],
 						},
 						style = {
 							type = "range",
@@ -839,8 +841,8 @@ function aObj:Options()
 				},
 				ArchaeologyUI = {
 					type = "toggle",
-					name = self.L["ArchaeologyUI"],
-					desc = self.L["Toggle the skin of the ArchaeologyUI"],
+					name = self.L["Archaeology Frame"],
+					desc = self.L["Toggle the skin of the Archaeology Frame"],
 				},
 				Buffs = {
 					type = "toggle",
@@ -933,41 +935,15 @@ function aObj:Options()
 					name = self.L["Ghost Frame"],
 					desc = self.L["Toggle the skin of the Ghost Frame"],
 				},
-				GroupLoot = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Group Loot Frame"],
-					get = function(info) return db.GroupLoot[info[#info]] end,
-					set = function(info, value)
-						db.GroupLoot[info[#info]] = value
-						self:checkAndRun("GroupLoot")
-					end,
-					args = {
-						skin = {
-							type = "toggle",
-							order = 1,
-							name = self.L["GroupLoot Skin"],
-							desc = self.L["Toggle the skin of the GroupLoot Frame"],
-						},
-						size = {
-							type = "range",
-							order = 2,
-							name = self.L["GroupLoot Size"],
-							desc = self.L["Set the GroupLoot size (Normal, Small, Micro)"],
-							min = 1, max = 3, step = 1,
-						},
-					},
-				},
 				GuildControlUI = {
 					type = "toggle",
-					name = self.L["GuildControlUI"],
-					desc = self.L["Toggle the skin of the GuildControlUI"],
+					name = self.L["Guild Control Frame"],
+					desc = self.L["Toggle the skin of the Guild Control Frame"],
 				},
 				GuildUI = {
 					type = "toggle",
-					name = self.L["GuildUI"],
-					desc = self.L["Toggle the skin of the GuildUI"],
+					name = self.L["Guild Frame"],
+					desc = self.L["Toggle the skin of the Guild Frame"],
 				},
 				GuildInvite = {
 					type = "toggle",
@@ -981,8 +957,8 @@ function aObj:Options()
 				},
 				ItemSocketingUI = {
 					type = "toggle",
-					name = self.L["ItemSocketingUI Frame"],
-					desc = self.L["Toggle the skin of the ItemSocketingUI Frame"],
+					name = self.L["Item Socketing Frame"],
+					desc = self.L["Toggle the skin of the Item Socketing Frame"],
 				},
 				LookingForGuildUI = {
 					type = "toggle",
@@ -990,15 +966,36 @@ function aObj:Options()
 					name = self.L["Looking for Guild Frame"],
 					desc = self.L["Toggle the skin of the Looking for Guild Frame"],
 				},
-				LootFrame = {
-					type = "toggle",
-					name = self.L["Loot Frame"],
-					desc = self.L["Toggle the skin of the Loot Frame"],
+				LootFrames = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Loot Frames"],
+					get = function(info) return db.LootFrames[info[#info]] end,
+					set = function(info, value)
+						db.LootFrames[info[#info]] = value
+						self:checkAndRun("Loot")
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Loot Frames"],
+							desc = self.L["Toggle the skin of the Loot Frames"],
+						},
+						size = {
+							type = "range",
+							order = 2,
+							name = self.L["GroupLoot Size"],
+							desc = self.L["Set the GroupLoot size (Normal, Small, Micro)"],
+							min = 1, max = 3, step = 1,
+						},
+					},
 				},
 				LootHistory = self.isBeta and {
 					type = "toggle",
-					name = self.L["LootHistory Frame"],
-					desc = self.L["Toggle the skin of the LootHistory Frame"],
+					name = self.L["Loot History Frame"],
+					desc = self.L["Toggle the skin of the Loot History Frame"],
 				} or nil,
 				MirrorTimers = {
 					type = "group",
@@ -1032,8 +1029,13 @@ function aObj:Options()
 				} or nil,
 				PetJournal = self.isBeta and {
 					type = "toggle",
-					name = self.L["Pet Journal"],
-					desc = self.L["Toggle the skin of the Pet Journal"],
+					width = "double",
+					name = self.L["Mounts and Pets Frame"],
+					desc = self.L["Toggle the skin of the Mounts and Pets Frame"],
+					set = function(info, value)
+						db[info[#info]] = value
+						if IsAddOnLoaded("Blizzard_PetJournal") then self:checkAndRun("PetJournal") end
+					end,
 				} or nil,
 				PVPFrame = {
 					type = "toggle",
@@ -1047,8 +1049,8 @@ function aObj:Options()
 				},
 				RaidUI = {
 					type = "toggle",
-					name = self.L["RaidUI Frame"],
-					desc = self.L["Toggle the skin of the RaidUI Frame"],
+					name = self.L["Raid Frames"],
+					desc = self.L["Toggle the skin of the Raid Frames"],
 				},
 				ReadyCheck = {
 					type = "toggle",
@@ -1170,255 +1172,6 @@ function aObj:Options()
 					name = self.L["Auto Complete"],
 					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
-				BNFrames = {
-					type = "toggle",
-					name = self.L["BattleNet Frames"],
-					desc = self.L["Toggle the skin of the BattleNet Frames"],
-				},
-				Calendar = {
-					type = "toggle",
-					name = self.L["Calendar"],
-					desc = self.L["Toggle the skin of the Calendar Frame"],
-				},
-				chatopts = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Tooltips"],
-					get = function(info) return db.Tooltips[info[#info]] end,
-					set = function(info, value) db.Tooltips[info[#info]] = value end,
-					args = {
-						skin = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Tooltip Skin"],
-							desc = self.L["Toggle the skin of the Tooltips"],
-						},
-						glazesb = {
-							type = "toggle",
-							order = 2,
-							width = "double",
-							name = self.L["Glaze Status Bar"],
-							desc = self.L["Toggle the glazing Status Bar"],
-						},
-						style = {
-							type = "range",
-							order = 3,
-							name = self.L["Tooltips Style"],
-							desc = self.L["Set the Tooltips style (Rounded, Flat, Custom)"],
-							min = 1, max = 3, step = 1,
-						},
-						border = {
-							type = "range",
-							order = 4,
-							name = self.L["Tooltips Border Colour"],
-							desc = self.L["Set the Tooltips Border colour (Default, Custom)"],
-							min = 1, max = 2, step = 1,
-						},
-					},
-				},
-				MirrorTimers = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Timer Frames"],
-					get = function(info) return db.MirrorTimers[info[#info]] end,
-					set = function(info, value)
-						db.MirrorTimers[info[#info]] = value
-						self:checkAndRun("MirrorTimers")
-					end,
-					args = {
-						skin = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Timer Skin"],
-							desc = self.L["Toggle the skin of the Timer"],
-						},
-						glaze = {
-							type = "toggle",
-							order = 2,
-							name = self.L["Glaze Timer"],
-							desc = self.L["Toggle the glazing Timer"],
-						},
-					},
-				},
-				CastingBar = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Casting Bar Frame"],
-					get = function(info) return db.CastingBar[info[#info]] end,
-					set = function(info, value)
-						db.CastingBar[info[#info]] = value
-						self:checkAndRun("CastingBar")
-					end,
-					args = {
-						skin = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Casting Bar Skin"],
-							desc = self.L["Toggle the skin of the Casting Bar"],
-						},
-						glaze = {
-							type = "toggle",
-							order = 2,
-							name = self.L["Glaze Casting Bar"],
-							desc = self.L["Toggle the glazing Casting Bar"],
-						},
-					},
-				},
-				StaticPopups = {
-					type = "toggle",
-					name = self.L["Static Popups"],
-					desc = self.L["Toggle the skin of Static Popups"],
-				},
-				chatopts = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Chat Sub Frames"],
-					args = {
-						ChatMenus = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Chat Menus"],
-							desc = self.L["Toggle the skin of the Chat Menus"],
-						},
-						ChatConfig = {
-							type = "toggle",
-							order = 2,
-							name = self.L["Chat Config"],
-							desc = self.L["Toggle the skinning of the Chat Config Frame"],
-						},
-						ChatTabs = {
-							type = "toggle",
-							order = 3,
-							name = self.L["Chat Tabs"],
-							desc = self.L["Toggle the skin of the Chat Tabs"],
-						},
-						ChatFrames = {
-							type = "toggle",
-							order = 4,
-							name = self.L["Chat Frames"],
-							desc = self.L["Toggle the skin of the Chat Frames"],
-						},
-						CombatLogQBF = {
-							type = "toggle",
-							width = "double",
-							name = self.L["CombatLog Quick Button Frame"],
-							desc = self.L["Toggle the skin of the CombatLog Quick Button Frame"],
-						},
-					},
-				},
-				ChatEditBox = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Chat Edit Box"],
-					get = function(info) return db.ChatEditBox[info[#info]] end,
-					set = function(info, value)
-						db.ChatEditBox[info[#info]] = value
-						self:checkAndRun("ChatEditBox")
-					end,
-					args = {
-						skin = {
-							type = "toggle",
-							order = 1,
-							name = self.L["Chat Edit Box Skin"],
-							desc = self.L["Toggle the skin of the Chat Edit Box Frame"],
-						},
-						style = {
-							type = "range",
-							order = 2,
-							name = self.L["Chat Edit Box Style"],
-							desc = self.L["Set the Chat Edit Box style (Frame, EditBox, Borderless)"],
-							min = 1, max = 3, step = 1,
-						},
-					},
-				},
-				ChallengesUI = aObj.isBeta and {
-					type = "toggle",
-					name = self.L["ChallengesUI"],
-					desc = self.L["Toggle the skin of the ChallengesUI"],
-				} or nil,
-				CinematicFrame = {
-					type = "toggle",
-					name = self.L["Cinematic Frame"],
-					desc = self.L["Toggle the skin of the Cinematic Frame"],
-				},
-				CoinPickup = {
-					type = "toggle",
-					name = self.L["Coin Pickup Frame"],
-					desc = self.L["Toggle the skin of the Coin Pickup Frame"],
-				},
-				Colours = {
-					type = "toggle",
-					name = self.L["Color Picker Frame"],
-					desc = self.L["Toggle the skin of the Color Picker Frame"],
-				},
-				DebugTools = {
-					type = "toggle",
-					name = self.L["Debug Tools Frames"],
-					desc = self.L["Toggle the skin of the Debug Tools Frames"],
-				},
-				DestinyFrame = aObj.isBeta and {
-					type = "toggle",
-					name = self.L["Destiny Frame"],
-					desc = self.L["Toggle the skin of the Destiny Frame"],
-				} or nil,
-				GMChatUI = {
-					type = "toggle",
-					name = self.L["GMChatUI Frame"],
-					desc = self.L["Toggle the skin of the GMChatUI Frame"],
-				},
-				GuildBankUI = {
-					type = "toggle",
-					name = self.L["GuildBankUI Frame"],
-					desc = self.L["Toggle the skin of the GuildBankUI Frame"],
-				},
-				helpframes = {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Help Request Frames"],
-					args = {
-						HelpFrame = {
-							type = "toggle",
-							name = self.L["Help Frame"],
-							desc = self.L["Toggle the skin of the Help Frame"],
-						},
-						GMSurveyUI = {
-							type = "toggle",
-							name = self.L["GM Survey UI Frame"],
-							desc = self.L["Toggle the skin of the GM Survey UI Frame"],
-						},
-						Feedback = self.isPTR and {
-							type = "toggle",
-							name = self.L["Feedback"],
-							desc = self.L["Toggle the skin of the Feedback Frame"],
-						} or nil,
-					},
-				},
-				ItemText = {
-					type = "toggle",
-					name = self.L["Item Text Frame"],
-					desc = self.L["Toggle the skin of the Item Text Frame"],
-				},
-				ItemUpgradeUI = aObj.isBeta and {
-					type = "toggle",
-					name = self.L["ItemUpgradeUI"],
-					desc = self.L["Toggle the skin of the ItemUpgradeUI"],
-				} or nil,
-				LevelUpDisplay = {
-					type = "toggle",
-					name = self.L["LevelUp Display"],
-					desc = self.L["Toggle the skin of the LevelUp Display"],
-				},
-				LFDFrame = {
-					type = "toggle",
-					name = self.L["LFD Frame"],
-					desc = self.L["Toggle the skin of the LFD Frame"],
-				},
 				BattlefieldMm = {
 					type = "group",
 					inline = true,
@@ -1453,6 +1206,170 @@ function aObj:Options()
 							order = 2,
 						},
 					},
+				},
+				BNFrames = {
+					type = "toggle",
+					name = self.L["BattleNet Frames"],
+					desc = self.L["Toggle the skin of the BattleNet Frames"],
+				},
+				Calendar = {
+					type = "toggle",
+					name = self.L["Calendar"],
+					desc = self.L["Toggle the skin of the Calendar Frame"],
+				},
+				ChallengesUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Challenges Frame"],
+					desc = self.L["Toggle the skin of the Challenges Frame"],
+				} or nil,
+				chatopts = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Chat Sub Frames"],
+					args = {
+						ChatMenus = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Chat Menus"],
+							desc = self.L["Toggle the skin of the Chat Menus"],
+						},
+						ChatConfig = {
+							type = "toggle",
+							order = 2,
+							name = self.L["Chat Config"],
+							desc = self.L["Toggle the skinning of the Chat Config Frame"],
+						},
+						ChatTabs = {
+							type = "toggle",
+							order = 3,
+							name = self.L["Chat Tabs"],
+							desc = self.L["Toggle the skin of the Chat Tabs"],
+						},
+						ChatFrames = {
+							type = "toggle",
+							order = 4,
+							name = self.L["Chat Frames"],
+							desc = self.L["Toggle the skin of the Chat Frames"],
+						},
+						ChatButtons = {
+							type = "toggle",
+							order = 5,
+							name = self.L["Chat Buttons"],
+							desc = self.L["Toggle the skin of the Chat Buttons"],
+						},
+						CombatLogQBF = {
+							type = "toggle",
+							width = "double",
+							order = 6,
+							name = self.L["CombatLog Quick Button Frame"],
+							desc = self.L["Toggle the skin of the CombatLog Quick Button Frame"],
+						},
+					},
+				},
+				ChatEditBox = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Chat Edit Box"],
+					get = function(info) return db.ChatEditBox[info[#info]] end,
+					set = function(info, value)
+						db.ChatEditBox[info[#info]] = value
+						self:checkAndRun("ChatEditBox")
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							order = 1,
+							name = self.L["Chat Edit Box Skin"],
+							desc = self.L["Toggle the skin of the Chat Edit Box Frame"],
+						},
+						style = {
+							type = "range",
+							order = 2,
+							name = self.L["Chat Edit Box Style"],
+							desc = self.L["Set the Chat Edit Box style (Frame, EditBox, Borderless)"],
+							min = 1, max = 3, step = 1,
+						},
+					},
+				},
+				CinematicFrame = {
+					type = "toggle",
+					name = self.L["Cinematic Frame"],
+					desc = self.L["Toggle the skin of the Cinematic Frame"],
+				},
+				CoinPickup = {
+					type = "toggle",
+					name = self.L["Coin Pickup Frame"],
+					desc = self.L["Toggle the skin of the Coin Pickup Frame"],
+				},
+				Colours = {
+					type = "toggle",
+					name = self.L["Color Picker Frame"],
+					desc = self.L["Toggle the skin of the Color Picker Frame"],
+				},
+				DebugTools = {
+					type = "toggle",
+					name = self.L["Debug Tools Frames"],
+					desc = self.L["Toggle the skin of the Debug Tools Frames"],
+				},
+				DestinyFrame = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Destiny Frame"],
+					desc = self.L["Toggle the skin of the Destiny Frame"],
+				} or nil,
+				GMChatUI = {
+					type = "toggle",
+					name = self.L["GM Chat Frame"],
+					desc = self.L["Toggle the skin of the GM Chat Frame"],
+				},
+				GuildBankUI = {
+					type = "toggle",
+					name = self.L["Guild Bank Frame"],
+					desc = self.L["Toggle the skin of the Guild Bank Frame"],
+				},
+				helpframes = {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Help Frames"],
+					args = {
+						HelpFrame = {
+							type = "toggle",
+							name = self.L["Customer Support"],
+							desc = self.L["Toggle the skin of the Customer Support Frame"],
+						},
+						GMSurveyUI = {
+							type = "toggle",
+							name = self.L["GM Survey Frame"],
+							desc = self.L["Toggle the skin of the GM Survey Frame"],
+						},
+						Feedback = self.isPTR and {
+							type = "toggle",
+							name = self.L["Feedback"],
+							desc = self.L["Toggle the skin of the Feedback Frame"],
+						} or nil,
+					},
+				},
+				ItemText = {
+					type = "toggle",
+					name = self.L["Item Text Frame"],
+					desc = self.L["Toggle the skin of the Item Text Frame"],
+				},
+				ItemUpgradeUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Item Upgrade Frame"],
+					desc = self.L["Toggle the skin of the Item Upgrade Frame"],
+				} or nil,
+				LevelUpDisplay = {
+					type = "toggle",
+					name = self.L["Level Up Display"],
+					desc = self.L["Toggle the skin of the Level Up Display"],
+				},
+				LFDFrame = {
+					type = "toggle",
+					name = self.L["LFD Frame"],
+					desc = self.L["Toggle the skin of the LFD Frame"],
 				},
 				LFRFrame = {
 					type = "toggle",
@@ -1563,8 +1480,8 @@ function aObj:Options()
 				},
 				MovePad = {
 					type = "toggle",
-					name = self.L["MovePad"],
-					desc = self.L["Toggle the skin of the MovePad"],
+					name = self.L["Move Pad"],
+					desc = self.L["Toggle the skin of the Move Pad"],
 				},
 				MovieProgress = IsMacClient() and {
 					type = "toggle",
@@ -1578,8 +1495,8 @@ function aObj:Options()
 				},
 				PetBattleUI = self.isBeta and {
 					type = "toggle",
-					name = self.L["PetBattleUI"],
-					desc = self.L["Toggle the skin of the PetBattleUI"],
+					name = self.L["Pet Battle Frame"],
+					desc = self.L["Toggle the skin of the Pet Battle Frame"],
 				} or nil,
 				PVEFrame = self.isBeta and {
 					type = "toggle",
@@ -1711,21 +1628,21 @@ function aObj:Options()
 		}
 
 	end
-	for _, addonName in pairs(self.addonSkins) do
+	for addonName in pairs(self.stdAddons) do
 		addDSOpt(addonName)
 	end
-	for _, addonName in pairs(self.oddlyNamedAddons) do
-		addDSOpt(addonName)
-	end
+	-- for _, addonName in pairs(self.oddlyNamedAddons) do
+	-- 	addDSOpt(addonName)
+	-- end
 	for _, addonName in pairs(self.libsToSkin) do
 		addDSOpt(addonName, true)
 	end
-	for _, addonName in pairs(self.lodAddons) do
+	for addonName in pairs(self.lodAddons) do
 		addDSOpt(addonName)
 	end
-	for _, addonName in pairs(self.oddlyNamedLoDAddons) do
-		addDSOpt(addonName)
-	end
+	-- for _, addonName in pairs(self.oddlyNamedLoDAddons) do
+	-- 	addDSOpt(addonName)
+	-- end
 
 	-- add DB profile options
 	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)

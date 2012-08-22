@@ -64,7 +64,7 @@ AddonFrames.lua
 NPCFrames.lua
 #
 # PlayerFrames
-# inc. AchievementUI, ArchaeologyUI, Buffs, CastingBar, Character (inc. Pet, Reputation, Token), CompactFrames, ContainerFrames, DressUp, EncounterJournal, EquipmentFlyout, Friends (inc. Who, Chat, Raid), GhostFrame, GlyphUI, GroupLoot, GuildControlUI, GuildUI, GuildInvite, InspectUI, ItemSocketingUI, LookingForGuildUI, Loot, MirrorTimers, PVP, QuestLog, RaidUI, ReadyCheck, RolePollPopup, ScrollOfResurrection, SpellBook, SpellFlyout, StackSplit, TalentUI, Trade, TradeSkillUI, VehicleMenuBar, Watch (Quests & Achievements)
+# inc. AchievementUI, ArchaeologyUI, Buffs, CastingBar, Character (inc. Pet, Reputation, Token), CompactFrames, ContainerFrames, DressUp, EncounterJournal, EquipmentFlyout, Friends (inc. Who, Chat, Raid), GhostFrame, GlyphUI, GuildControlUI, GuildUI, GuildInvite, InspectUI, ItemSocketingUI, LookingForGuildUI, Loot (inc. MissingLoot, GroupLoot ...), MirrorTimers, PVP, QuestLog, RaidUI, ReadyCheck, RolePollPopup, ScrollOfResurrection, SpellBook, SpellFlyout, StackSplit, TalentUI, Trade, TradeSkillUI, VehicleMenuBar, Watch (Quests & Achievements)
 # MoP --> LootHistory, OverrideActionBar, PetJournal
 PlayerFrames.lua
 #

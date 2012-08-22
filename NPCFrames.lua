@@ -16,8 +16,11 @@ function aObj:ArenaRegistrar()
 	self:removeMagicBtnTex(PVPBannerFrameCancelButton)
 	self:removeMagicBtnTex(PVPBannerFrameAcceptButton)
 	self:removeRegions(PVPBannerFrameCustomizationFrame)
-	self:keepFontStrings(PVPBannerFrameCustomization1)
-	self:keepFontStrings(PVPBannerFrameCustomization2)
+	for i = 1, 2 do
+		self:keepFontStrings(_G["PVPBannerFrameCustomization"..i])
+		self:addButtonBorder{obj=_G["PVPBannerFrameCustomization"..i.."LeftButton"], ofs=-2}
+		self:addButtonBorder{obj=_G["PVPBannerFrameCustomization"..i.."RightButton"], ofs=-2}
+	end
 	if self.isBeta then
 		self:removeMagicBtnTex(self:getChild(PVPBannerFrame, 6)) -- duplicate named button
 	end
@@ -44,6 +47,7 @@ function aObj:AuctionUI() -- LoD
 		obj = _G["Browse"..v]
 		self:skinEditBox{obj=obj, regs={9}}
 		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
+	end
 	self:skinDropDown{obj=BrowseDropDown, x2=110}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		obj = _G["Browse"..v.."Sort"]
@@ -65,6 +69,8 @@ function aObj:AuctionUI() -- LoD
 		self:addButtonBorder{obj=_G[btnName.."Item"], ibt=true}
 	end
 	self:skinMoneyFrame{obj=BrowseBidPrice, moveSEB=true}
+	self:addButtonBorder{obj=BrowsePrevPageButton, ofs=-2}
+	self:addButtonBorder{obj=BrowseNextPageButton, ofs=-2}
 
 -->>--	Bid Frame
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
@@ -146,6 +152,12 @@ function aObj:BarbershopUI() -- LoD
 
 	self:keepFontStrings(BarberShopFrameMoneyFrame)
 	self:addSkinFrame{obj=BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
+	if self.modBtnBs then
+		 for i = 1, 4 do
+			 self:addButtonBorder{obj=_G["BarberShopFrameSelector"..i.."Prev"], ofs=-2}
+			 self:addButtonBorder{obj=_G["BarberShopFrameSelector"..i.."Next"], ofs=-2}
+		 end
+	end
 	-- Banner Frame
 	self:keepFontStrings(BarberShopBannerFrame)
 	BarberShopBannerFrameCaption:ClearAllPoints()
@@ -160,17 +172,34 @@ if aObj.isBeta then
 
 		self:add2Table(self.npcKeys, "BlackMarketUI")
 
+		-- move title text
+		self:moveObject{obj=self:getRegion(BlackMarketFrame, 22), y=-4}
 		-- HotDeal frame
-		self:keepFontStrings(BlackMarketUI.HotDeal)
+		self:keepFontStrings(BlackMarketFrame.HotDeal)
+		self:addButtonBorder{obj=BlackMarketFrame.HotDeal.Item, ibt=true, relTo=BlackMarketFrame.HotDeal.Item.IconTexture}
+		self:skinAllButtons{obj=BlackMarketFrame.HotDeal}
+		self:skinMoneyFrame{obj=BlackMarketHotItemBidPrice}
+		
 		-- column headings
 		for _, v in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
 			obj = BlackMarketFrame["Column"..v]
 			self:keepFontStrings(obj)
 			self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 		end
-		self:skinScrollBar{obj=BlackMarketScrollFrame}
-		MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-		self:skinMoneyFrame{obj=BlackMarketMoneyFrame}
+		self:SecureHook("BlackMarketScrollFrame_Update", function(this)
+			for i = 1, #BlackMarketScrollFrame.buttons do
+				btn = BlackMarketScrollFrame.buttons[i]
+				if btn and not self.skinned[btn] then
+					self:keepFontStrings(btn)
+					btn:GetHighlightTexture():SetAlpha(1)
+					self:addButtonBorder{obj=btn.Item, ibt=true, relTo=btn.Item.IconTexture}
+				end
+			end
+			self:Unhook("BlackMarketScrollFrame_Update")
+		end)
+		self:skinSlider{obj=BlackMarketScrollFrame.ScrollBar, adj=-4}
+		BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+		self:skinMoneyFrame{obj=BlackMarketBidPrice}
 		self:addSkinFrame{obj=BlackMarketFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 	end
@@ -256,11 +285,11 @@ function aObj:ItemAlterationUI() -- LoD
 
 end
 
-function aObj:MerchantFrames()
-	if not self.db.profile.MerchantFrames or self.initialized.MerchantFrames then return end
-	self.initialized.MerchantFrames = true
+function aObj:MerchantFrame()
+	if not self.db.profile.MerchantFrame or self.initialized.MerchantFrame then return end
+	self.initialized.MerchantFrame = true
 
-	self:add2Table(self.npcKeys, "MerchantFrames")
+	self:add2Table(self.npcKeys, "MerchantFrame")
 
 	-- display limited availability item's stock count even when zero
 	self:SecureHook("SetItemButtonStock", function(button, numInStock)
@@ -296,7 +325,9 @@ function aObj:MerchantFrames()
 		_G[btnName.."SlotTexture"]:SetTexture(self.esTex)
 	end
 	self:removeRegions(MerchantPrevPageButton, {2})
+	self:addButtonBorder{obj=MerchantPrevPageButton, ofs=-2}
 	self:removeRegions(MerchantNextPageButton, {2})
+	self:addButtonBorder{obj=MerchantNextPageButton, ofs=-2}
 	self:skinTabs{obj=MerchantFrame}
 	if not self.isBeta then
 		self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}
@@ -370,6 +401,8 @@ function aObj:PetStableFrame()
 	PetStableFrame.BottomInset:DisableDrawLayer("BORDER")
 	PetStableFrameStableBg:Hide()
 	self:addSkinFrame{obj=PetStableFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+	self:addButtonBorder{obj=PetStableNextPageButton, ofs=0}
+	self:addButtonBorder{obj=PetStablePrevPageButton, ofs=0}
 
 end
 
@@ -572,13 +605,15 @@ function aObj:Tabard()
 	self:keepFontStrings(TabardFrameCustomizationFrame)
 	for i = 1, 5 do
 		self:keepFontStrings(_G["TabardFrameCustomization"..i])
+		self:addButtonBorder{obj=_G["TabardFrameCustomization"..i.."LeftButton"], ofs=-2}
+		self:addButtonBorder{obj=_G["TabardFrameCustomization"..i.."RightButton"], ofs=-2}
 	end
 
 	if not self.isBeta then
-		self:keepRegions(TabardFrame, {8, 33, 34}) -- N.B. region 8, 21, 22 are the text
+		self:keepRegions(TabardFrame, {17, 18, 19, 20, 21, 22}) -- N.B. regions 21 & 22 are text, 17-20 are icon texture
 		self:addSkinFrame{obj=TabardFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
 	else
-		self:keepRegions(TabardFrame, {6, 17, 18, 19, 20, 21, 22}) -- N.B. region 6 is 		the background, 17 - 20 are the emblem, 21, 22 are the text
+		self:keepRegions(TabardFrame, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
 		self:removeInset(TabardFrameMoneyInset)
 		TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=TabardFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-2}

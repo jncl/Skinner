@@ -87,6 +87,7 @@ local function skinPlayerF()
 		end
 		if aObj.isBeta then
 			if aObj.uCls == "MONK" then
+				-- PlayerFrameMonkManaBar
 				PlayerFrameAlternateManaBar:Hide()
 				aObj:removeRegions(MonkHarmonyBar, {1, 2})
 			end

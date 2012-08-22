@@ -68,10 +68,10 @@ end
 --@debug@
 local function print_family_tree(fName)
 	local lvl = "Parent"
-	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj.round2(fName:GetWidth(), 2) or "nil", aObj.round2(fName:GetHeight(), 2) or "nil"))
+	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:round2(fName:GetWidth(), 2) or "nil", aObj:round2(fName:GetHeight(), 2) or "nil"))
 	while fName:GetParent() do
 		fName = fName:GetParent()
-		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj.round2(fName:GetWidth(), 2) or "nil", aObj.round2(fName:GetHeight(), 2) or "nil"))
+		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj:round2(fName:GetWidth(), 2) or "nil", aObj:round2(fName:GetHeight(), 2) or "nil"))
 		lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl
 	end
 end
@@ -97,20 +97,18 @@ function aObj:SetupCmds()
 end
 --@end-debug@
 
-local function errorhandler(err)
-	return geterrorhandler()(err)
-end
+local errorhandler = geterrorhandler()
 local success, err
 local function safecall(funcName, LoD, quiet)
 	-- handle errors from internal functions
 	success, err = xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
 	if quiet then
---		print(funcName, success, err)
+		-- print(funcName, success, err)
 		return success, err
 	end
 	if not success then
 		if aObj.db.profile.Errors then
-			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
+			aObj:CustomPrint(1, 0, 0, "Error running", funcName, err)
 		end
 	end
 end
@@ -170,9 +168,20 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 end
 
+if aObj.isBeta then
+	aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
+end
+function aObj:changeTandC(obj, tex)
+
+	obj:SetTexture(tex)
+	obj:SetTexCoord(0, 1, 0, 1)
+
+end
+
+aObj.shieldTex = [[Interface\CastingBar\UI-CastingBar-Arena-Shield]]
 function aObj:changeShield(shldReg, iconReg)
 
-	shldReg:SetTexture([[Interface\CastingBar\UI-CastingBar-Arena-Shield]])
+	shldReg:SetTexture(aObj.shieldTex)
 	shldReg:SetTexCoord(0, 1, 0, 1)
 	shldReg:SetWidth(46)
 	shldReg:SetHeight(46)
@@ -193,7 +202,7 @@ function aObj:findFrame(height, width, children)
 		if obj:IsObjectType("Frame") then
 			if obj:GetName() == nil then
 				if obj:GetParent() == nil then
-					if self.round2(obj:GetHeight(), 2) == height and self.round2(obj:GetWidth(), 2) == width then
+					if self:round2(obj:GetHeight(), 2) == height and self:round2(obj:GetWidth(), 2) == width then
 						kids = {}
 						for _, child in pairs{obj:GetChildren()} do
 							kids[#kids + 1] = child:GetObjectType()
@@ -236,8 +245,8 @@ function aObj:findFrame2(parent, objType, ...)
 					-- base checks on position
 					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
 					-- self:Debug("ff2 GetPoint: [%s, %s, %s, %s, %s, %s]", child, point, relativeTo, relativePoint, xOfs, yOfs)
-					xOfs = xOfs and self.round2(xOfs, 2) or 0
-					yOfs = yOfs and self.round2(yOfs, 2) or 0
+					xOfs = xOfs and self:round2(xOfs, 2) or 0
+					yOfs = yOfs and self:round2(yOfs, 2) or 0
 					if	point		  == select(1, ...)
 					and relativeTo	  == select(2, ...)
 					and relativePoint == select(3, ...)
@@ -248,7 +257,7 @@ function aObj:findFrame2(parent, objType, ...)
 					end
 				else
 					-- base checks on size
-					height, width = self.round2(child:GetHeight(), 2), self.round2(child:GetWidth(), 2)
+					height, width = self:round2(child:GetHeight(), 2), self:round2(child:GetWidth(), 2)
 					-- self:Debug("ff2 h/w: [%s, %s, %s]", child, height, width)
 					if	height == select(1, ...)
 					and width  == select(2, ...) then
@@ -418,9 +427,9 @@ function aObj:resizeEmptyTexture(texture)
 
 end
 
-function aObj.round2(num, ndp)
+function aObj:round2(num, ndp)
 
-  return tonumber(("%." .. (ndp or 0) .. "f"):format(num))
+  return tonumber(("%."..(ndp or 0).."f"):format(num))
 
 end
 
@@ -475,7 +484,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 	local function getRegions(obj, lvl)
 
 		for k, reg in ipairs{obj:GetRegions()} do
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self.round2(reg:GetWidth(), 2) or "nil", reg.GetHeight and self.round2(reg:GetHeight(), 2) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self:round2(reg:GetWidth(), 2) or "nil", reg.GetHeight and self:round2(reg:GetHeight(), 2) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
@@ -487,7 +496,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 		for k, child in ipairs{frame:GetChildren()} do
 			local objType = child:GetObjectType()
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and aObj.round2(child:GetWidth(), 2) or "nil", child.GetHeight and aObj.round2(child:GetHeight(), 2) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and aObj:round2(child:GetWidth(), 2) or "nil", child.GetHeight and aObj:round2(child:GetHeight(), 2) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 			if objType == "Frame"
 			or objType == "Button"
 			or objType == "StatusBar"
@@ -501,7 +510,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 	end
 
-	showIt("%s : %s : %s : %s : %s", obj, self.round2(obj:GetWidth(), 2) or "nil", self.round2(obj:GetHeight(), 2) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
+	showIt("%s : %s : %s : %s : %s", obj, self:round2(obj:GetWidth(), 2) or "nil", self:round2(obj:GetHeight(), 2) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
 	showIt("Started Regions")
 	getRegions(obj, 0)

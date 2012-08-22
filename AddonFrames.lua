@@ -1,62 +1,17 @@
 local aName, aObj = ...
 
-function aObj:BlizzardFrames()
---	  self:Debug("BlizzardFrames")
-
-	local blizzFrames = {
-		-- player
-		"Buffs", "CharacterFrames", "CompactFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "PVPFrame", 
-		-- QuestLog, checked with EQL3 & QuestGuru below
-		"ReadyCheck", "ScrollOfResurrection", "SpellBookFrame", "TradeFrame", "WatchFrame", 
-	    -- npc
-		"ArenaRegistrar", "BankFrame", "GossipFrame", "GuildRegistrar", "MerchantFrames", "Petition", "PetStableFrame", "QuestFrame", "SideDressUpFrame", "Tabard", "TaxiFrame", 
-		-- ui
-		"AlertFrames", "AutoComplete", "BNFrames", 
-		-- CastingBar, checked with Quartz below
-		"ChatConfig", "ChatEditBox", "ChatFrames", "ChatMenus", "ChatTabs", "ChatTemporaryWindow", "CinematicFrame",  "CoinPickup", "ColorPicker", "ContainerFrames", "DropDownPanels", "GhostFrame", "GroupLoot", "GuildInvite", "HelpFrame", "ItemText", "LevelUpDisplay", "LFDFrame", "LFGFrame", "LFRFrame", "LootFrame", "MailFrame",
-		-- MainMenuBar, checked with Bongos below
-		"MenuFrames", "Minimap", 
-		-- MinimapButtons, done with timer
-		"MirrorTimers", 
-		-- ModelFrames, checked with CloseUp below
-		-- Nameplates, checked with Aloft below
-		"RaidFrame", "RolePollPopup", "ScriptErrors", "SpellFlyout", "StackSplit", "StaticPopups", 
-		-- Tooltips, checked below
-		"Tutorial", "WorldMap", "WorldState", 
-	}
-
-	-- optional frames
-	if IsMacClient() then aObj:add2Table(blizzFrames, "MovieProgress") end -- ui
-	if not self.isBeta then
-		aObj:add2Table(blizzFrames, "VehicleMenuBar") -- player
-	else
-		aObj:add2Table(blizzFrames, "OverrideActionBar") -- player
-		aObj:add2Table(blizzFrames, "DestinyFrame") -- ui
-		aObj:add2Table(blizzFrames, "ItemUpgradeUI") -- ui
-		aObj:add2Table(blizzFrames, "LootHistory") -- ui
-		aObj:add2Table(blizzFrames, "PetBattleUI") -- ui
-		aObj:add2Table(blizzFrames, "PVEFrame") -- ui
-	end
-
-	for _, v in pairs(blizzFrames) do
-		self:checkAndRun(v)
-	end
-	blizzFrames = nil
-
-	-- handle non standard ones here
-	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
-
-end
-
 local blizzLoDFrames = {
 	-- player
-	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "RaidUI", "TalentUI", 
+	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "RaidUI", "TalentUI", 
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	--AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
 	"BarbershopUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "MacroUI", "MovePad", "TimeManager", 
+	"BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "TimeManager", 
+	--[=[
+		ArenaUI -- unitframes skinned in UnitFrames.lua
+	--]=]
 }
 -- optional frames
 if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- ui
@@ -71,11 +26,53 @@ for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v
 end
 blizzLoDFrames = nil
---[=[
-	ArenaUI -- unitframes skinned in UnitFrames.lua
---]=]
+function aObj:BlizzardFrames()
+--	  self:Debug("BlizzardFrames")
 
-aObj.addonSkins = {
+	local blizzFrames = {
+		-- player
+		"Buffs",
+		-- CastingBar, checked with Quartz below
+		"CharacterFrames", "CompactFrames", "ContainerFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "GhostFrame", "GuildInvite", "LootFrames", "MirrorTimers", "PVPFrame", 
+		-- QuestLog, checked with EQL3 & QuestGuru below
+		"ReadyCheck", "RolePollPopup", "ScrollOfResurrection", "SpellBookFrame", "SpellFlyout", "StackSplit", "TradeFrame", "WatchFrame", 
+	    -- npc
+		"ArenaRegistrar", "BankFrame", "GossipFrame", "GuildRegistrar", "MerchantFrame", "Petition", "PetStableFrame", "QuestFrame", "SideDressUpFrame", "Tabard", "TaxiFrame", 
+		-- ui
+		"AlertFrames", "AutoComplete", "BNFrames", "ChatButtons", "ChatConfig", "ChatEditBox", "ChatFrames", "ChatMenus", "ChatMinimizedFrames", "ChatTabs", "ChatTemporaryWindow", "CinematicFrame",  "CoinPickup", "ColorPicker", "DropDownPanels", "HelpFrame", "ItemText", "LevelUpDisplay", "LFDFrame", "LFGFrame", "LFRFrame", "MailFrame",
+		-- MainMenuBar, checked with Bongos below
+		"MenuFrames", "Minimap", 
+		-- MinimapButtons, done with timer
+		-- ModelFrames, checked with CloseUp below
+		-- Nameplates, checked with Aloft below
+		"RaidFrame", "ScriptErrors", "StaticPopups", 
+		-- Tooltips, checked below
+		"Tutorial", "WorldMap", "WorldState", 
+	}
+
+	-- optional frames
+	if IsMacClient() then aObj:add2Table(blizzFrames, "MovieProgress") end -- ui
+	if not self.isBeta then
+		aObj:add2Table(blizzFrames, "VehicleMenuBar") -- player
+	else
+		aObj:add2Table(blizzFrames, "LootHistory") -- player
+		aObj:add2Table(blizzFrames, "OverrideActionBar") -- player
+		aObj:add2Table(blizzFrames, "DestinyFrame") -- ui
+		aObj:add2Table(blizzFrames, "PetBattleUI") -- ui
+		aObj:add2Table(blizzFrames, "PVEFrame") -- ui
+	end
+
+	for _, v in pairs(blizzFrames) do
+		self:checkAndRun(v)
+	end
+	blizzFrames = nil
+
+	-- handle non standard ones here
+	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
+
+end
+
+local stdFrames = {
 	"_NPCScan",
 	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "AphesLootBrowser", "Ara_Broker_Guild_Friends", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "Auctionator", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
 	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BaudManifest", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "Butsu", "BuyEmAll",
@@ -101,9 +98,21 @@ aObj.addonSkins = {
 	"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"zfpoison", "ZOMGBuffs"
 }
-aObj.oddlyNamedAddons = {
-	"!Swatter", "Auc-Advanced", "Auto-Bag", "DBM-Core", "Enchantrix-Barker", "Ogri'Lazy", "Prat-3.0", "XLoot1.0"
-}
+aObj.stdAddons = {}
+for _, v in pairs(stdFrames) do
+	aObj.stdAddons[v] = v
+end
+stdFrames = nil
+-- oddly named addons
+aObj.stdAddons["!Swatter"] = "Swatter"
+aObj.stdAddons["Auc-Advanced"] = "AucAdvanced"
+aObj.stdAddons["Auto-Bag"] = "AutoBag"
+aObj.stdAddons["DBM-Core"] = "DBMCore"
+aObj.stdAddons["Enchantrix-Barker"] = "EnchantrixBarker"
+aObj.stdAddons["Ogri'Lazy"] = "OgriLazy"
+aObj.stdAddons["Prat-3.0"] = "Prat30"
+aObj.stdAddons["XLoot1.0"] = "XLoot10"
+-- libraries
 aObj.libsToSkin = {
 	["Dewdrop-2.0"] = "Dewdrop",
 	["AceAddon-2.0"] = "Ace2",
@@ -119,6 +128,7 @@ aObj.libsToSkin = {
 	["LibTradeSkillScan"] = "LibTradeSkillScan",
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
 	["X-UI"] = "LibXUI",
+
 }
 function aObj:AddonFrames()
 --	   self:Debug("AddonFrames")
@@ -160,17 +170,10 @@ function aObj:AddonFrames()
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
 	-- used for Addons that aren't LoadOnDemand
-	for _, v in pairs(self.addonSkins) do
+	for _, v in pairs(self.stdAddons) do
 		self:checkAndRunAddOn(v)
 	end
-	self.addonSkins = nil
-
-	-- handle Addons with odd names here
-	for _, v in pairs(self.oddlyNamedAddons) do
-		v2, _ = v:gsub("[-!'\.]", "")
-		self:checkAndRunAddOn(v, nil, v2)
-	end
-	self.oddlyNamedAddons = nil
+	self.stdAddons = nil
 
 	-- this addon has a relation
 	self:checkAndRunAddOn("EnhancedTradeSkills", nil, "EnhancedTradeCrafts")
@@ -253,11 +256,15 @@ aObj.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 for _, v in pairs{"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids"} do
 	aObj.lodAddons["RaidAchievement_"..v] = "RaidAchievement_"..v
 end
-aObj.oddlyNamedLoDAddons = { "_DevPad.GUI", "DBM-GUI" }
+-- oddly named LoD addons
+aObj.lodAddons["_DevPad.GUI"] = "_DevPadGUI"
+aObj.lodAddons["DBM-GUI"] = "DBMGUI"
+
 local prev_addon
 function aObj:LoDFrames(addon)
 	-- self:Debug("LoDFrames: [%s]", addon)
 
+	-- ignore multiple occurrences of the same addon
 	if addon == prev_addon then return end
 	prev_addon = addon
 
@@ -266,12 +273,6 @@ function aObj:LoDFrames(addon)
 
 	-- used for User LoadOnDemand Addons
 	if self.lodAddons[addon] then self:checkAndRunAddOn(self.lodAddons[addon], true) end
-
-	-- handle Addons with odd names here
-	for _, v in pairs(self.oddlyNamedLoDAddons) do
-		v2, _ = v:gsub("[-!'\.]", "")
-		if addon == v then self:checkAndRunAddOn(v, true, v2) end
-	end
 
 	-- handle addons linked to the InspectUI
 	if addon == "Blizzard_InspectUI" then

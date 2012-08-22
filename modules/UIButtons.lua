@@ -171,7 +171,7 @@ function module:skinButton(opts)
 
 	-- setup button frame size adjustments
 	local x1, x2, y1, y2, btn
-	local bW, bH = aObj.round2(opts.obj:GetWidth()), aObj.round2(opts.obj:GetHeight())
+	local bW, bH = aObj:round2(opts.obj:GetWidth()), aObj:round2(opts.obj:GetHeight())
 	if bW <= 20 and opts.cb then -- ArkInventory/Recount close buttons
 		local adj = bW < 20 and bW + 1 or bW
 --		print(opts.obj:GetParent():GetName(), bW, adj)
@@ -286,13 +286,15 @@ function module:isButton(obj)
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then
-		oName = obj:GetName() or nil
-		 -- ignore AceConfig/AceGui buttons
-		if oName
-		and (oName:find("AceConfig") or oName:find("AceGUI"))
-		then
-			return
-		end
+		oName = obj.GetName and obj:GetName() or nil
+		 -- ignore named/AceConfig/XConfig/AceGUI objects
+ 		if oName
+ 		and (oName:find("AceConfig")
+ 		or oName:find("XConfig")
+ 		or oName:find("AceGUI"))
+ 		then
+ 			return
+ 		end
 		if not aObj.isBeta then
 			-- check textures are as expected
 			oTex = getTexture(obj:GetNormalTexture()) or getTexture(aObj:getRegion(obj, 1))
@@ -328,9 +330,9 @@ function module:isButton(obj)
 					bType = "mp"
 				end
 			end
-			aObj:Debug("isB: [%s, %s, %s]", obj, bType, oTex or "nil")
+			-- aObj:Debug("isB: [%s, %s, %s]", obj, bType, oTex or "nil")
 		else
-			local oW, oH, nR = round2(obj:GetWidth()), round2(obj:GetHeight()), obj:GetNumRegions()
+			local oW, oH, nR = aObj:round2(obj:GetWidth()), aObj:round2(obj:GetHeight()), obj:GetNumRegions()
 			if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 			then
 				bType = "toast"
@@ -441,6 +443,7 @@ local function __addButtonBorder(opts)
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
+		disable = hook Enable/Disable scripts of object
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object__aBB\n"..debugstack())
@@ -454,7 +457,7 @@ local function __addButtonBorder(opts)
 	or opts.abt
 	or opts.pabt
 	then
-		opts.obj:GetNormalTexture():SetTexture(nil) -- vertex colour changed in blizzard code
+		if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetTexture(nil) end -- vertex colour changed in blizzard code
 	end
 
 	-- create the border frame
@@ -476,13 +479,28 @@ local function __addButtonBorder(opts)
 			or nil
 	opts.obj.sknrBdr:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
 	opts.obj.sknrBdr:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
-
+	
 	if opts.hide and opts.relTo then
 		-- hook Show and Hide methods of the relTo object
 		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sknrBdr:Show() end)
 		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sknrBdr:Hide() end)
 		-- hide border if required
 		if not opts.relTo:IsShown() then opts.obj.sknrBdr:Hide() end
+	end
+
+	if opts.disable then
+		module:SecureHook(opts.obj, "Enable", function(this)
+			self:Debug("Enable: [%s]", this)
+			-- this.sknrBdr:SetDesaturated(false)
+			-- this.sknrBdr:SetVertexColor(0.5, 0.5, 0.5)
+			this.sknrBdr:SetBackdropBorderColor(.5, .5, .5)
+		end)
+		module:SecureHook(opts.obj, "Disable", function(this)
+			self:Debug("Disable: [%s]", this)
+			-- this.sknrBdr:SetDesaturated(true)
+			-- this.sknrBdr:SetVertexColor(1, 1, 1)
+			this.sknrBdr:SetBackdropBorderColor(unpack(aObj.bbColour))
+		end)
 	end
 
 	-- reparent objects if required
@@ -493,8 +511,13 @@ local function __addButtonBorder(opts)
 	end
 	-- reparent these textures so they are displayed above the border
 	if opts.ibt then -- Item Buttons
-		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
-		_G[btnName.."Stock"]:SetParent(opts.obj.sknrBdr)
+		if btnName then
+			_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
+			_G[btnName.."Stock"]:SetParent(opts.obj.sknrBdr)
+		else
+			opts.obj.Count:SetParent(opts.obj.sknrBdr)
+			opts.obj.Stock:SetParent(opts.obj.sknrBdr)
+		end
 	elseif opts.abt then -- Action Buttons
 		_G[btnName.."HotKey"]:SetParent(opts.obj.sknrBdr)
 		-- reparent FlyoutArrow so it is displayed above the border
