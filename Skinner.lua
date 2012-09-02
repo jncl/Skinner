@@ -25,16 +25,17 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo = {GetBuildInfo()}
-	-- aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4])
-	-- check build number, if > Live then it's a patch
-	aObj.isPatch = tonumber(buildInfo[2]) > 15595 and true or false
-
 	local portal = GetCVar("portal") or nil
+--@alpha@
+	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
+--@end-alpha@
+	-- check build number, if > Live then it's a patch
+	aObj.isPatch = tonumber(buildInfo[2]) > 16016 and true or false
 	--check to see if running on PTR versionm
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[4] > 50000 and true or false
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.0.4"
 
 end
 
@@ -181,22 +182,12 @@ function aObj:OnInitialize()
 
 	-- these are used to disable frames from being skinned, LoD frames are entered here
 	-- other frames are added when their code is loaded
-	self.npcKeys = {"AuctionUI", "BarbershopUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",}
-	if self.isBeta then
-		self:add2Table(self.npcKeys, "BlackMarketUI")
-	end
-	self.pKeys1 = {"ArchaeologyUI", "EncounterJournal",	"GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "RaidUI", "TalentUI", "TradeSkillUI",}
-	if self.isBeta then
-		self:add2Table(self.pKeys1, "PetJournal")
-	end
+	self.npcKeys = {"AuctionUI", "BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",}
+	self.pKeys1 = {"ArchaeologyUI", "EncounterJournal",	"GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "PetJournal", "RaidUI", "TalentUI", "TradeSkillUI",}
 	self.pKeys2 = {"AchievementUI"}
-	self.uiKeys1 = {"BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "TimeManager",}
+	self.uiKeys1 = {"BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "TimeManager",}
 	if self.isPTR then
 		self:add2Table(self.uiKeys1, "FeedbackUI")
-	end
-	if self.isBeta then
-		self:add2Table(self.uiKeys1, "ChallengesUI")
-		self:add2Table(self.uiKeys1, "ItemUpgradeUI")
 	end
 	self.uiKeys2 = {"BattlefieldMm", }
 	-- these are used to disable the gradient
@@ -1036,11 +1027,9 @@ function aObj:makeMFRotatable(modelFrame)
 			child:Hide()
 		end
 	end
-	if self.isBeta then
-		if modelFrame.RotateLeftButton then
-			modelFrame.RotateLeftButton:Hide()
-			modelFrame.RotateRightButton:Hide()
-		end
+	if modelFrame.RotateLeftButton then
+		modelFrame.RotateLeftButton:Hide()
+		modelFrame.RotateRightButton:Hide()
 	end
 
 	if not self:IsHooked(modelFrame, "OnUpdate") then

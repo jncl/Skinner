@@ -295,66 +295,28 @@ function module:isButton(obj)
  		then
  			return
  		end
-		if not aObj.isBeta then
-			-- check textures are as expected
-			oTex = getTexture(obj:GetNormalTexture()) or getTexture(aObj:getRegion(obj, 1))
-			if oTex then
-				if oTex:find("UI-Panel-Button-Up", 1, true) -- UI Panel Button
-				or oTex:find("UI-Panel-Button-Disabled", 1, true) -- UI Panel Button (Gray template)
-				or oTex:find("UI-DialogBox-Button-Up", 1, true) -- Static Popup Button
-				or oTex:find("UI-Achievement", 1, true) and oName:find("AtlasLoot") -- AtlasLoot "new" style
-				-- and not (oName:find("AceConfig") or oName:find("AceGUI")) -- ignore AceConfig/AceGui buttons
-				then
-					bType = "normal"
-				end
-				if oTex:find("UI-Panel-MinimizeButton", 1, true)
-				or oTex:find("UI-Panel-HideButton", 1, true) -- PVPFramePopup (Cataclysm)
-				then
-					bType = "close"
-				end
-				if oTex:find("UI-Toast-CloseButton", 1, true)
-				then
-					bType = "toast"
-				end
-				if oTex:find("HelpButtons") -- "new" Help Button
-				then
-					bType = "help"
-				end
-				if oTex:find("KnowledgeBaseButtton") -- "new" KnowledgeBase Button (N.B. mispelled Button)
-				then
-					bType = "helpKB"
-				end
-				if oTex:find("UI-PlusButton", 1, true) -- UI Plus button
-				or oTex:find("UI-MinusButton", 1, true) -- UI Minus Button
-				then
-					bType = "mp"
-				end
-			end
-			-- aObj:Debug("isB: [%s, %s, %s]", obj, bType, oTex or "nil")
-		else
-			local oW, oH, nR = aObj:round2(obj:GetWidth()), aObj:round2(obj:GetHeight()), obj:GetNumRegions()
-			if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
-			then
-				bType = "toast"
-			elseif ((oName and oName:find("Close")) or obj:GetParent().CloseButton)
-			and oW == oH -- square button
-			then
-				bType = "close"
-			elseif (oH >= 20 and oH <= 25) and (nR >= 5 and nR <= 8) -- std button
-			or (oH == 30 and oW == 160) -- HelpFrame
-			then
-				bType = "normal"
-			elseif oH == 54 then
-				bType = "help"
-			end
-			-- if obj:GetParent().GetName
-			-- and obj:GetParent():GetName()
-			-- and	obj:GetParent():GetName():find("TransmogrifyFrame")
-			-- then
-			-- 	aObj:Debug("isB-ß: [%s, %s, %s, %s, %s]", obj, oW, oH, nR, bType)
-			-- 	-- if bType == "close" then aObj:ShowInfo(obj) end
-			-- end
+		local oW, oH, nR = aObj:round2(obj:GetWidth()), aObj:round2(obj:GetHeight()), obj:GetNumRegions()
+		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
+		then
+			bType = "toast"
+		elseif ((oName and oName:find("Close")) or obj:GetParent().CloseButton)
+		and oW == oH -- square button
+		then
+			bType = "close"
+		elseif (oH >= 20 and oH <= 25) and (nR >= 5 and nR <= 8) -- std button
+		or (oH == 30 and oW == 160) -- HelpFrame
+		then
+			bType = "normal"
+		elseif oH == 54 then
+			bType = "help"
 		end
+		-- if obj:GetParent().GetName
+		-- and obj:GetParent():GetName()
+		-- and	obj:GetParent():GetName():find("TransmogrifyFrame")
+		-- then
+		-- 	aObj:Debug("isB-ß: [%s, %s, %s, %s, %s]", obj, oW, oH, nR, bType)
+		-- 	-- if bType == "close" then aObj:ShowInfo(obj) end
+		-- end
 	end
 
 	return bType

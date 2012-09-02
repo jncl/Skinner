@@ -1,6 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 local obj, objName, texName, btn, btnName, tab, tabSF
+local find = strfind
 
 local function makeString(t)
 
@@ -18,14 +19,18 @@ local function makeText(a1, ...)
 	local tmpTab = {}
 	local output = ""
 
-	if a1:find("%%") and select('#', ...) >= 1 then
+	if a1
+	and a1.find
+	and a1:find("%%")
+	and select('#', ...) >= 1
+	then
 		for i = 1, select('#', ...) do
 			tmpTab[i] = makeString(select(i, ...))
 		end
 		output = output .. " " .. a1:format(unpack(tmpTab))
 	else
 		tmpTab[1] = output
-		tmpTab[2] = a1
+		tmpTab[2] = a1 and type(a1) == "table" and makeString(a1) or a1 or ""
 		for i = 1, select('#', ...) do
 			tmpTab[i+2] = makeString(select(i, ...))
 		end
@@ -168,9 +173,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 end
 
-if aObj.isBeta then
-	aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
-end
+aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
 function aObj:changeTandC(obj, tex)
 
 	obj:SetTexture(tex)

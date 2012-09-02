@@ -707,11 +707,7 @@ function aObj:EncounterJournal() -- LoD
 	EncounterJournal.navBar.home.text:SetPoint("RIGHT", -20, 0)
 -->>-- InstanceSelect frame
 	EncounterJournal.instanceSelect.bg:SetAlpha(0)
-	if not self.isBeta then
-		self:skinDropDown{obj=EncounterJournal.instanceSelect.tierDropDown}
-	else
-		self:skinDropDown{obj=EJTierDropDown}
-	end
+	self:skinDropDown{obj=EJTierDropDown}
 	self:skinSlider{obj=EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
 	self:addSkinFrame{obj=EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
 	-- Instance buttons
@@ -788,11 +784,7 @@ function aObj:EncounterJournal() -- LoD
 	EncounterJournal.encounter.info.lootScroll.filter:DisableDrawLayer("BACKGROUND")
 	EncounterJournal.encounter.info.lootScroll.filter:SetNormalTexture(nil)
 	EncounterJournal.encounter.info.lootScroll.filter:SetPushedTexture(nil)
-	if not self.isBeta then
-		self:addSkinFrame{obj=EncounterJournal.encounter.info.lootScroll.classFilter, ft=ftype, kfs=true}
-	else
-		self:skinDropDown{obj=EncounterJournal.encounter.info.lootScroll.lootFilter}
-	end
+	self:skinDropDown{obj=EncounterJournal.encounter.info.lootScroll.lootFilter}
 	EncounterJournal.encounter.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 	-- hook this to skin loot entries
 	self:SecureHook("EncounterJournal_LootUpdate", function()
@@ -968,9 +960,7 @@ function aObj:GlyphUI() -- LoD
 	self.initialized.GlyphUI = true
 
 	GlyphFrame:DisableDrawLayer("BACKGROUND")
-	if self.isBeta then
-		GlyphFrame.specRing:SetTexture(nil)
-	end
+	GlyphFrame.specRing:SetTexture(nil)
 	self:removeInset(GlyphFrame.sideInset)
 	self:skinEditBox{obj=GlyphFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:skinDropDown{obj=GlyphFrameFilterDropDown}
@@ -1142,10 +1132,6 @@ function aObj:GuildUI() -- LoD
 	self:skinTabs{obj=GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
 	-- GuildInfoFrameInfo Frame
 	self:keepFontStrings(GuildInfoFrameInfo)
-	if not self.isBeta then
-		self:skinSlider{obj=GuildInfoEventsContainerScrollBar, adj=-4}
-		GuildInfoNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
 	self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, adj=-4}
 	-- GuildInfoFrameRecruitment Frame
 	GuildRecruitmentInterestFrameBg:SetAlpha(0)
@@ -1226,34 +1212,20 @@ function aObj:InspectUI() -- LoD
 	end
 
 -->>--	Talent Frame
-	if not self.isBeta then
-		self:skinScrollBar{obj=InspectTalentFrameScrollFrame}
-		self:keepFontStrings(InspectTalentFramePointsBar)
-		if self.modBtnBs then
-			-- add button borders
-			for i = 1, MAX_NUM_TALENTS do
-				btnName = "InspectTalentFrameTalent"..i
-				_G[btnName.."Slot"]:SetAlpha(0)
-				self:addButtonBorder{obj=_G[btnName], tibt=true}
-			end
+	self:keepFontStrings(InspectTalentFrame)
+	-- Specialization
+	InspectTalentFrame.InspectSpec.ring:SetTexture(nil)
+	-- Talents
+	for i = 1, 6 do
+		for j = 1, 3 do
+			btn = InspectTalentFrame.InspectTalents["tier"..i]["talent"..j]
+			btn.border:SetTexture(nil)
+			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
-		self:skinTabs{obj=InspectTalentFrame, up=true, lod=true, x1=0, y1=-3, x2=0, y2=-3}
-	else
-		self:keepFontStrings(InspectTalentFrame)
-		-- Specialization
-		InspectTalentFrame.InspectSpec.ring:SetTexture(nil)
-		-- Talents
-		for i = 1, 6 do
-			for j = 1, 3 do
-				btn = InspectTalentFrame.InspectTalents["tier"..i]["talent"..j]
-				btn.border:SetTexture(nil)
-				self:addButtonBorder{obj=btn, relTo=btn.icon}
-			end
-		end
-		-- Glyphs
-		for i = 1, 6 do
-			InspectTalentFrame.InspectGlyphs["Glyph"..i].ring:SetTexture(nil)
-		end
+	end
+	-- Glyphs
+	for i = 1, 6 do
+		InspectTalentFrame.InspectGlyphs["Glyph"..i].ring:SetTexture(nil)
 	end
 
 -->>-- Guild Frame
@@ -1282,11 +1254,7 @@ function aObj:ItemSocketingUI() -- LoD
 		colourSockets()
 	end)
 
-	if not self.isBeta then
-		self:addSkinFrame{obj=ItemSocketingFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-4, y2=26}
-	else
-		self:addSkinFrame{obj=ItemSocketingFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:addSkinFrame{obj=ItemSocketingFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:skinScrollBar{obj=ItemSocketingScrollFrame}
 
 	for i = 1, MAX_NUM_SOCKETS do
@@ -1353,45 +1321,36 @@ function aObj:LootFrames()
 	-- shrink the size of the LootFrame
 	-- move the title and close button and reduce the height of the skinFrame by 34
 	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-34} -- title
-	if not self.isBeta then
-		self:moveObject{obj=LootCloseButton, y=-34}
-	end
 	for i = 1, LOOTFRAME_NUMBUTTONS do
 		_G["LootButton"..i.."NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G["LootButton"..i], ibt=true}
 	end
-	if not self.isBeta then
-		self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, x1=8, y1=-47, x2=-68}
-	else
-		self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:addButtonBorder{obj=LootFrameDownButton, ofs=-2}
 	self:addButtonBorder{obj=LootFrameUpButton, ofs=-2}
 	
-	if self.isBeta then
-	-->>-- BonusRoll Frame
-		self:removeRegions(BonusRollFrame, {1, 2, 3, 4})
-		self:glazeStatusBar(BonusRollFrame.PromptFrame.Timer, 0,  nil)
-	-->>-- BonusRollLootWon Frame
-		BonusRollLootWonFrame.Background:SetTexture(nil)
-		BonusRollLootWonFrame.IconBorder:SetTexture(nil)
-		self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollLootWonFrame, relTo=BonusRollLootWonFrame.Icon}) -- wait for animation to finish
-		self:addSkinFrame{obj=BonusRollLootWonFrame, ft=ftype, anim=true, ofs=-10}
-	-->>-- BonusRollMoneyWon Frame
-		BonusRollMoneyWonFrame.Background:SetTexture(nil)
-		BonusRollMoneyWonFrame.IconBorder:SetTexture(nil)
-		self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollMoneyWonFrame, relTo=BonusRollMoneyWonFrame.Icon}) -- wait for animation to finish
-		self:addSkinFrame{obj=BonusRollMoneyWonFrame, ft=ftype, anim=true, ofs=-10}
-	-->>-- MasterLooter Frame
-		MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
-		MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
-		MasterLooterFrame.Item.NameBorderMid:SetTexture(nil)
-		MasterLooterFrame.Item.IconBorder:SetTexture(nil)
-		self:addButtonBorder{obj=MasterLooterFrame, relTo=MasterLooterFrame.Icon}
-		MasterLooterFrame.player1.Bg:SetTexture(nil)
-		self:addSkinFrame{obj=MasterLooterFrame, ft=ftype, kfs=true, nb=true}
-		self:skinButton{obj=self:getChild(MasterLooterFrame, 3), cb=true}
-	end
+-->>-- BonusRoll Frame
+	self:removeRegions(BonusRollFrame, {1, 2, 3, 4})
+	self:glazeStatusBar(BonusRollFrame.PromptFrame.Timer, 0,  nil)
+-->>-- BonusRollLootWon Frame
+	BonusRollLootWonFrame.Background:SetTexture(nil)
+	BonusRollLootWonFrame.IconBorder:SetTexture(nil)
+	self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollLootWonFrame, relTo=BonusRollLootWonFrame.Icon}) -- wait for animation to finish
+	self:addSkinFrame{obj=BonusRollLootWonFrame, ft=ftype, anim=true, ofs=-10}
+-->>-- BonusRollMoneyWon Frame
+	BonusRollMoneyWonFrame.Background:SetTexture(nil)
+	BonusRollMoneyWonFrame.IconBorder:SetTexture(nil)
+	self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollMoneyWonFrame, relTo=BonusRollMoneyWonFrame.Icon}) -- wait for animation to finish
+	self:addSkinFrame{obj=BonusRollMoneyWonFrame, ft=ftype, anim=true, ofs=-10}
+-->>-- MasterLooter Frame
+	MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
+	MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
+	MasterLooterFrame.Item.NameBorderMid:SetTexture(nil)
+	MasterLooterFrame.Item.IconBorder:SetTexture(nil)
+	self:addButtonBorder{obj=MasterLooterFrame, relTo=MasterLooterFrame.Icon}
+	MasterLooterFrame.player1.Bg:SetTexture(nil)
+	self:addSkinFrame{obj=MasterLooterFrame, ft=ftype, kfs=true, nb=true}
+	self:skinButton{obj=self:getChild(MasterLooterFrame, 3), cb=true}
 
 -->>-- MissingLoot frame
 	self:addSkinFrame{obj=MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
@@ -1403,30 +1362,14 @@ function aObj:LootFrames()
 	end
 
 -->>-- GroupLoot frames
-	if not self.isBeta then
-		self:skinDropDown{obj=GroupLootDropDown}
-	end
-
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
 
 		objName = "GroupLootFrame"..i
 		obj = _G[objName]
 		self:keepFontStrings(obj)
-		if not self.isBeta then
-			_G[objName.."SlotTexture"]:SetTexture(nil)
-			_G[objName.."NameFrame"]:SetTexture(nil)
-		end
-		if not self.isBeta then
-			self:addButtonBorder{obj=_G[objName.."IconFrame"]}
-		end
-		if self.isBeta then
-			obj.Timer.Background:SetAlpha(0)
-			self:glazeStatusBar(obj.Timer, 0,  nil)
-		else
-			self:removeRegions(_G[objName.."Timer"], {1})
-			self:glazeStatusBar(_G[objName.."Timer"], 0)
-		end
-		-- hook this to skin the group loot frame
+		obj.Timer.Background:SetAlpha(0)
+		self:glazeStatusBar(obj.Timer, 0,  nil)
+			-- hook this to skin the group loot frame
 		self:SecureHook(obj, "Show", function(this)
 			this:SetBackdrop(nil)
 		end)
@@ -1461,19 +1404,17 @@ function aObj:LootFrames()
 
 end
 
-if aObj.isBeta then
-	function aObj:LootHistory()
-		if not self.db.profile.LootHistory or self.initialized.LootHistory then return end
-		self.initialized.LootHistory = true
+function aObj:LootHistory()
+	if not self.db.profile.LootHistory or self.initialized.LootHistory then return end
+	self.initialized.LootHistory = true
 
-		self:add2Table(self.pKeys1, "LootHistory")
+	self:add2Table(self.pKeys1, "LootHistory")
 
-		self:skinScrollBar{obj=LootHistoryFrame.ScrollFrame}
-		LootHistoryFrame.Divider:SetTexture(nil)
-		self:addSkinFrame{obj=LootHistoryFrame, ft=ftype}
-		self:skinDropDown{obj=LootHistoryDropDown}
+	self:skinScrollBar{obj=LootHistoryFrame.ScrollFrame}
+	LootHistoryFrame.Divider:SetTexture(nil)
+	self:addSkinFrame{obj=LootHistoryFrame, ft=ftype}
+	self:skinDropDown{obj=LootHistoryDropDown}
 
-	end
 end
 
 function aObj:MirrorTimers()
@@ -1524,177 +1465,176 @@ function aObj:MirrorTimers()
 
 end
 
-if aObj.isBeta then
-	function aObj:OverrideActionBar()
+function aObj:OverrideActionBar()
 
-		self:add2Table(self.pKeys1, "OverrideActionBar")
+	self:add2Table(self.pKeys1, "OverrideActionBar")
 
-		local xOfs1, xOfs2, yOfs1, yOfs2, sf, oabW
-		local function skinOverrideActionBar(opts)
+	local xOfs1, xOfs2, yOfs1, yOfs2, sf, oabW
+	local function skinOverrideActionBar(opts)
 
-			oabW = OverrideActionBar:GetWidth()
-			aObj:Debug("sOAB: [%s, %s, %s]", opts.src, opts.st or "nil", oabW)
+		oabW = OverrideActionBar:GetWidth()
+		aObj:Debug("sOAB: [%s, %s, %s]", opts.src, opts.st or "nil", oabW)
 
-			xOfs1 = 144
-			-- adjust skin width dependant upon frame width
-			if oabW == 860 then -- no exit or pitch buttons
-				-- xOfs1 = 144
-			elseif oabW == 930 then -- exit but no pitch buttons
-				-- xOfs1 = 144
-			elseif oabW == 945 then -- pitch but no exit button
-				-- xOfs1 = 144
-			elseif oabW == 1020 then -- exit & pitch buttons
-				-- xOfs1 = 98
-			end
-			yOfs1 = 6
-			yOfs2 = -2
-			xOfs2 = (xOfs1 * -1) + 2
-
-			-- remove all textures
-			OverrideActionBar:DisableDrawLayer("OVERLAY")
-			OverrideActionBar:DisableDrawLayer("BACKGROUND")
-			-- OverrideActionBar:DisableDrawLayer("BORDER")
-			OverrideActionBar:DisableDrawLayer("BOARDER") -- N.B. notice spelling !
-
-			-- PitchFrame
-			OverrideActionBar.pitchFrame.Divider1:SetTexture(nil)
-			OverrideActionBar.pitchFrame.PitchOverlay:SetTexture(nil)
-			OverrideActionBar.pitchFrame.PitchButtonBG:SetTexture(nil)
-
-			-- LeaveFrame
-			OverrideActionBar.leaveFrame.Divider3:SetTexture(nil)
-			OverrideActionBar.leaveFrame.ExitBG:SetTexture(nil)
-
-			-- ExpBar
-			OverrideActionBar.xpBar.XpMid:SetTexture(nil)
-			OverrideActionBar.xpBar.XpL:SetTexture(nil)
-			OverrideActionBar.xpBar.XpR:SetTexture(nil)
-			for i = 1, 19 do
-				OverrideActionBar.xpBar["XpDiv"..i]:SetTexture(nil)
-			end
-			aObj:glazeStatusBar(OverrideActionBar.xpBar, 0,  self:getRegion(OverrideActionBar.xpBar, 1))
-
-			if sf then
-				sf:ClearAllPoints()
-				sf:SetPoint("TOPLEFT", OverrideActionBar, "TOPLEFT", xOfs1, yOfs1)
-				sf:SetPoint("BOTTOMRIGHT", OverrideActionBar, "BOTTOMRIGHT", xOfs2, yOfs2)
-			else
-				sf = aObj:addSkinFrame{obj=OverrideActionBar, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-			end
-
+		xOfs1 = 144
+		-- adjust skin width dependant upon frame width
+		if oabW == 860 then -- no exit or pitch buttons
+			-- xOfs1 = 144
+		elseif oabW == 930 then -- exit but no pitch buttons
+			-- xOfs1 = 144
+		elseif oabW == 945 then -- pitch but no exit button
+			-- xOfs1 = 144
+		elseif oabW == 1020 then -- exit & pitch buttons
+			-- xOfs1 = 98
 		end
+		yOfs1 = 6
+		yOfs2 = -2
+		xOfs2 = (xOfs1 * -1) + 2
 
-		self:SecureHook(OverrideActionBar, "Show", function(this, ...)
-			skinOverrideActionBar{src=1}
-		end)
-		self:SecureHook("OverrideActionBar_SetSkin", function(skin)
-			skinOverrideActionBar{src=2, st=skin}
-		end)
+		-- remove all textures
+		OverrideActionBar:DisableDrawLayer("OVERLAY")
+		OverrideActionBar:DisableDrawLayer("BACKGROUND")
+		-- OverrideActionBar:DisableDrawLayer("BORDER")
+		OverrideActionBar:DisableDrawLayer("BOARDER") -- N.B. notice spelling !
 
-		if OverrideActionBar:IsShown() then skinOverrideActionBar{src=3} end
+		-- PitchFrame
+		OverrideActionBar.pitchFrame.Divider1:SetTexture(nil)
+		OverrideActionBar.pitchFrame.PitchOverlay:SetTexture(nil)
+		OverrideActionBar.pitchFrame.PitchButtonBG:SetTexture(nil)
 
-		if self.modBtnBs then
-			self:addButtonBorder{obj=OverrideActionBar.leaveFrame.LeaveButton}
-			for i = 1, 6 do
-				self:addButtonBorder{obj=OverrideActionBar["SpellButton"..i], abt=true, sec=true, es=20}
-			end
+		-- LeaveFrame
+		OverrideActionBar.leaveFrame.Divider3:SetTexture(nil)
+		OverrideActionBar.leaveFrame.ExitBG:SetTexture(nil)
+
+		-- ExpBar
+		OverrideActionBar.xpBar.XpMid:SetTexture(nil)
+		OverrideActionBar.xpBar.XpL:SetTexture(nil)
+		OverrideActionBar.xpBar.XpR:SetTexture(nil)
+		for i = 1, 19 do
+			OverrideActionBar.xpBar["XpDiv"..i]:SetTexture(nil)
+		end
+		aObj:glazeStatusBar(OverrideActionBar.xpBar, 0,  self:getRegion(OverrideActionBar.xpBar, 1))
+
+		if sf then
+			sf:ClearAllPoints()
+			sf:SetPoint("TOPLEFT", OverrideActionBar, "TOPLEFT", xOfs1, yOfs1)
+			sf:SetPoint("BOTTOMRIGHT", OverrideActionBar, "BOTTOMRIGHT", xOfs2, yOfs2)
+		else
+			sf = aObj:addSkinFrame{obj=OverrideActionBar, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 		end
 
 	end
-	function aObj:PetJournal() -- LoD
-		if not self.db.profile.PetJournal or self.initialized.PetJournal then return end
-		self.initialized.PetJournal = true
 
-		self:addSkinFrame{obj=PetJournalParent, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
-		self:skinTabs{obj=PetJournalParent, lod=true}
+	self:SecureHook(OverrideActionBar, "Show", function(this, ...)
+		skinOverrideActionBar{src=1}
+	end)
+	self:SecureHook("OverrideActionBar_SetSkin", function(skin)
+		skinOverrideActionBar{src=2, st=skin}
+	end)
 
-		-- MountJournal
-		self:removeInset(MountJournal.LeftInset)
-		self:removeInset(MountJournal.RightInset)
-		self:removeInset(MountJournal.MountCount)
-		self:keepFontStrings(MountJournal.MountDisplay)
-		self:keepFontStrings(MountJournal.MountDisplay.ShadowOverlay)
-		self:makeMFRotatable(MountJournal.MountDisplay.ModelFrame)
-		self:skinSlider{obj=MountJournal.ListScrollFrame.scrollBar, adj=-4}
-		self:removeMagicBtnTex(MountJournalMountButton)
-		for i = 1, #MountJournal.ListScrollFrame.buttons do
-			btn = MountJournal.ListScrollFrame.buttons[i]
-			self:addButtonBorder{obj=btn, relTo=btn.icon}
-			btn:DisableDrawLayer("BACKGROUND")
-		end
+	if OverrideActionBar:IsShown() then skinOverrideActionBar{src=3} end
 
-		-- PetJournal
-		self:removeInset(PetJournal.PetCount)
-		PetJournal.MainHelpButton.Ring:SetTexture(nil)
-		self:moveObject{obj=PetJournal.MainHelpButton, y=-4}
-		self:addButtonBorder{obj=PetJournal.HealPetButton, sec=true}
-		PetJournalHealPetButtonBorder:SetTexture(nil)
-		self:removeInset(PetJournal.LeftInset)
-		self:removeInset(PetJournal.RightInset)
-		self:skinEditBox{obj=PetJournal.searchBox, regs={9}, mi=true}
-		self:skinButton{obj=PetJournalFilterButton}
-		self:skinDropDown{obj=PetJournalFilterDropDown}
-		self:skinSlider{obj=PetJournal.listScroll.scrollBar, adj=-4}
-		self:removeMagicBtnTex(PetJournal.FindBattleButton)
-		self:removeMagicBtnTex(PetJournal.SummonButton)
-		self:skinDropDown{obj=PetJournal.petOptionsMenu}
-		for i = 1, #PetJournal.listScroll.buttons do
-			btn = PetJournal.listScroll.buttons[i]
-			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level}}
-			self:removeRegions(btn, {1, 3})
-			self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
+	if self.modBtnBs then
+		self:addButtonBorder{obj=OverrideActionBar.leaveFrame.LeaveButton}
+		for i = 1, 6 do
+			self:addButtonBorder{obj=OverrideActionBar["SpellButton"..i], abt=true, sec=true, es=20}
 		end
-		self:removeRegions(PetJournal.AchievementStatus, {1})
-		self:keepFontStrings(PetJournal.loadoutBorder)
-		self:moveObject{obj=PetJournal.loadoutBorder, y=8} -- battle pet slots title
-		-- Battle Pet Slots
-		for i = 1, 3 do
-			obj	= PetJournal.Loadout["Pet"..i]
-			self:removeRegions(obj, {1, 2, 5})
-			self:addButtonBorder{obj=obj, relTo=obj.icon, reParent={obj.levelBG, obj.level}}
-			obj.petTypeIcon:SetAlpha(0) -- N.B. texture is changed in code
-			self:changeTandC(obj.levelBG, self.lvlBG)
-			self:keepFontStrings(obj.helpFrame)
-			obj.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
-			self:glazeStatusBar(obj.healthFrame.healthBar, 0,  nil)
-			self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
-			self:glazeStatusBar(obj.xpBar, 0,  nil)
-			self:makeMFRotatable(obj.model)
-			self:addButtonBorder{obj=obj, ofs=1}
-			for i = 1, 3 do
-				btn = obj["spell"..i]
-				self:removeRegions(btn, {1, 3}) -- background, blackcover
-				self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.FlyoutArrow}}
-			end
-		end
-		-- PetCard
-		self:removeInset(PetJournal.PetCardInset)
-		obj = PetJournal.PetCard
-		self:addButtonBorder{obj=obj.PetInfo, relTo=obj.PetInfo.icon, reParent={obj.PetInfo.levelBG, obj.PetInfo.level}}
-		self:changeTandC(obj.PetInfo.levelBG, self.lvlBG)
-		self:removeRegions(obj.HealthFrame.healthBar, {1, 2, 3})
-		self:glazeStatusBar(obj.HealthFrame.healthBar, 0,  nil)
+	end
+
+end
+
+function aObj:PetJournal() -- LoD
+	if not self.db.profile.PetJournal or self.initialized.PetJournal then return end
+	self.initialized.PetJournal = true
+
+	self:addSkinFrame{obj=PetJournalParent, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:skinTabs{obj=PetJournalParent, lod=true}
+
+	-- MountJournal
+	self:removeInset(MountJournal.LeftInset)
+	self:removeInset(MountJournal.RightInset)
+	self:removeInset(MountJournal.MountCount)
+	self:keepFontStrings(MountJournal.MountDisplay)
+	self:keepFontStrings(MountJournal.MountDisplay.ShadowOverlay)
+	self:makeMFRotatable(MountJournal.MountDisplay.ModelFrame)
+	self:skinSlider{obj=MountJournal.ListScrollFrame.scrollBar, adj=-4}
+	self:removeMagicBtnTex(MountJournalMountButton)
+	for i = 1, #MountJournal.ListScrollFrame.buttons do
+		btn = MountJournal.ListScrollFrame.buttons[i]
+		self:addButtonBorder{obj=btn, relTo=btn.icon}
+		btn:DisableDrawLayer("BACKGROUND")
+	end
+
+	-- PetJournal
+	self:removeInset(PetJournal.PetCount)
+	PetJournal.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=PetJournal.MainHelpButton, y=-4}
+	self:addButtonBorder{obj=PetJournal.HealPetButton, sec=true}
+	PetJournalHealPetButtonBorder:SetTexture(nil)
+	self:removeInset(PetJournal.LeftInset)
+	self:removeInset(PetJournal.RightInset)
+	self:skinEditBox{obj=PetJournal.searchBox, regs={9}, mi=true}
+	self:skinButton{obj=PetJournalFilterButton}
+	self:skinDropDown{obj=PetJournalFilterDropDown}
+	self:skinSlider{obj=PetJournal.listScroll.scrollBar, adj=-4}
+	self:removeMagicBtnTex(PetJournal.FindBattleButton)
+	self:removeMagicBtnTex(PetJournal.SummonButton)
+	self:skinDropDown{obj=PetJournal.petOptionsMenu}
+	for i = 1, #PetJournal.listScroll.buttons do
+		btn = PetJournal.listScroll.buttons[i]
+		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level}}
+		self:removeRegions(btn, {1, 3})
+		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
+	end
+	self:removeRegions(PetJournal.AchievementStatus, {1})
+	self:keepFontStrings(PetJournal.loadoutBorder)
+	self:moveObject{obj=PetJournal.loadoutBorder, y=8} -- battle pet slots title
+	-- Battle Pet Slots
+	for i = 1, 3 do
+		obj	= PetJournal.Loadout["Pet"..i]
+		self:removeRegions(obj, {1, 2, 5})
+		self:addButtonBorder{obj=obj, relTo=obj.icon, reParent={obj.levelBG, obj.level}}
+		obj.petTypeIcon:SetAlpha(0) -- N.B. texture is changed in code
+		self:changeTandC(obj.levelBG, self.lvlBG)
+		self:keepFontStrings(obj.helpFrame)
+		obj.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
+		self:glazeStatusBar(obj.healthFrame.healthBar, 0,  nil)
 		self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
 		self:glazeStatusBar(obj.xpBar, 0,  nil)
 		self:makeMFRotatable(obj.model)
-		self:keepFontStrings(obj)
-		self:addButtonBorder{obj=obj}
-		-- spell buttons
-		for i = 1, 6 do
+		self:addButtonBorder{obj=obj, ofs=1}
+		for i = 1, 3 do
 			btn = obj["spell"..i]
-			btn.BlackCover:SetAlpha(0) -- N.B. texture is changed in code
-			self:addButtonBorder{obj=btn, relTo=btn.icon}
+			self:removeRegions(btn, {1, 3}) -- background, blackcover
+			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.FlyoutArrow}}
 		end
-		-- Tooltips
-		if self.db.profile.Tooltips.skin then
-			PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
-			self:addSkinFrame{obj=PetJournalPrimaryAbilityTooltip, ft=ftype}
-			PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
-			PetJournalSecondaryAbilityTooltip.Delimiter2:SetTexture(nil)
-			self:addSkinFrame{obj=PetJournalSecondaryAbilityTooltip, ft=ftype}
-		end
-
 	end
+	-- PetCard
+	self:removeInset(PetJournal.PetCardInset)
+	obj = PetJournal.PetCard
+	self:addButtonBorder{obj=obj.PetInfo, relTo=obj.PetInfo.icon, reParent={obj.PetInfo.levelBG, obj.PetInfo.level}}
+	self:changeTandC(obj.PetInfo.levelBG, self.lvlBG)
+	self:removeRegions(obj.HealthFrame.healthBar, {1, 2, 3})
+	self:glazeStatusBar(obj.HealthFrame.healthBar, 0,  nil)
+	self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
+	self:glazeStatusBar(obj.xpBar, 0,  nil)
+	self:makeMFRotatable(obj.model)
+	self:keepFontStrings(obj)
+	self:addButtonBorder{obj=obj}
+	-- spell buttons
+	for i = 1, 6 do
+		btn = obj["spell"..i]
+		btn.BlackCover:SetAlpha(0) -- N.B. texture is changed in code
+		self:addButtonBorder{obj=btn, relTo=btn.icon}
+	end
+	-- Tooltips
+	if self.db.profile.Tooltips.skin then
+		PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
+		self:addSkinFrame{obj=PetJournalPrimaryAbilityTooltip, ft=ftype}
+		PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
+		PetJournalSecondaryAbilityTooltip.Delimiter2:SetTexture(nil)
+		self:addSkinFrame{obj=PetJournalSecondaryAbilityTooltip, ft=ftype}
+	end
+
 end
 
 function aObj:PVPFrame()
@@ -1824,24 +1764,15 @@ function aObj:QuestLog()
 	end
 	self:skinSlider{obj=QuestLogScrollFrame.scrollBar, adj=-4}
 	self:addButtonBorder{obj=QuestLogFrameShowMapButton, relTo=QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
-	if not self.isBeta then
-		self:skinAllButtons{obj=QuestLogControlPanel} -- Abandon/Share/Track
-		self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-1, y2=8}
-	else
-		self:removeRegions(QuestLogScrollFrame, {1, 2, 3, 4})
-		self:skinAllButtons{obj=QuestLogControlPanel}
-		self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:removeRegions(QuestLogScrollFrame, {1, 2, 3, 4})
+	self:skinAllButtons{obj=QuestLogControlPanel}
+	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:removeMagicBtnTex(QuestLogFrameCompleteButton)
 
 -->>-- QuestLogDetail Frame
 	QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=QuestLogDetailScrollFrame}
-	if not self.isBeta then
-		self:addSkinFrame{obj=QuestLogDetailFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=1}
-	else
-		self:addSkinFrame{obj=QuestLogDetailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:addSkinFrame{obj=QuestLogDetailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:QuestInfo()
 
 end
@@ -1972,10 +1903,8 @@ function aObj:SpellBookFrame()
 		end)
 	end
 
-	if self.isBeta then
-		SpellBookFrame.MainHelpButton.Ring:SetTexture(nil)
-		self:moveObject{obj=SpellBookFrame.MainHelpButton, y=-4}
-	end
+	SpellBookFrame.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=SpellBookFrame.MainHelpButton, y=-4}
 	self:skinTabs{obj=SpellBookFrame, suffix="Button", x1=8, y1=1, x2=-8, y2=2}
 	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 	self:addButtonBorder{obj=SpellBookPrevPageButton, ofs=-2}
@@ -1987,9 +1916,7 @@ function aObj:SpellBookFrame()
 		if this.UnlearnedFrame and this.UnlearnedFrame:IsShown() then -- level too low
 			this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
 		end
-		if self.isBeta then
-			this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
+		this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
 		if this.TrainFrame and this.TrainFrame:IsShown() then -- see Trainer
 			this.SpellName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 			this.SpellSubName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
@@ -2029,52 +1956,38 @@ function aObj:SpellBookFrame()
 	skinProf("Primary", 2)
 	-- Secondary professions
 	skinProf("Secondary", 4)
-	if not self.isBeta then
-		-->>-- Companions/Mounts Panel
-		SpellBookCompanionsModelFrame:Hide()
-		SpellBookCompanionModelFrameShadowOverlay:Hide()
-		self:makeMFRotatable(SpellBookCompanionModelFrame)
-		for i = 1, NUM_COMPANIONS_PER_PAGE do
-			btn = _G["SpellBookCompanionButton"..i]
-			btn.Background:Hide()
-			btn.TextBackground:Hide()
-			btn.IconTextureBg:Hide()
-			self:addButtonBorder{obj=btn, sec=true}
+	-->>-- Core Abilities Panel
+	SpellBookCoreAbilitiesFrame.SpecName:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
+		for i = 1, #SpellBookCoreAbilitiesFrame.Abilities do
+			btn = SpellBookCoreAbilitiesFrame.Abilities[i]
+			btn.EmptySlot:SetAlpha(0)
+			btn.ActiveTexture:SetAlpha(0)
+			btn.FutureTexture:SetAlpha(0)
+			btn.Name:SetTextColor(self.HTr, self.HTg, self.HTb)
+			btn.InfoText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			btn.RequiredLevel:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=btn}
 		end
-	else
-		-->>-- Core Abilities Panel
-		SpellBookCoreAbilitiesFrame.SpecName:SetTextColor(self.HTr, self.HTg, self.HTb)
-		self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
-			for i = 1, #SpellBookCoreAbilitiesFrame.Abilities do
-				btn = SpellBookCoreAbilitiesFrame.Abilities[i]
-				btn.EmptySlot:SetAlpha(0)
-				btn.ActiveTexture:SetAlpha(0)
-				btn.FutureTexture:SetAlpha(0)
-				btn.Name:SetTextColor(self.HTr, self.HTg, self.HTb)
-				btn.InfoText:SetTextColor(self.BTr, self.BTg, self.BTb)
-				btn.RequiredLevel:SetTextColor(self.BTr, self.BTg, self.BTb)
-				self:addButtonBorder{obj=btn}
-			end
-			for i = 1, #SpellBookCoreAbilitiesFrame.SpecTabs do
-				tab = SpellBookCoreAbilitiesFrame.SpecTabs[i]
-				self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
-				self:addButtonBorder{obj=tab}
-			end
-			self:Unhook("SpellBook_UpdateCoreAbilitiesTab")
-		end)
-		-->>-- What has changed? panel
-		SpellBookWhatHasChanged.ClassName:SetTextColor(self.HTr, self.HTg, self.HTb)
-		self:SecureHook("SpellBook_UpdateWhatHasChangedTab", function()
-			for i = 1, #SpellBookWhatHasChanged.ChangedItems do
-				btn = SpellBookWhatHasChanged.ChangedItems[i]
-				btn.Ring:SetTexture(nil)
-				btn:DisableDrawLayer("BACKGROUND")
-				btn.Title:SetTextColor(self.HTr, self.HTg, self.HTb)
-				btn:SetTextColor(self.BTr, self.BTg, self.BTb)
-			end
-			self:Unhook("SpellBook_UpdateWhatHasChangedTab")
-		end)
-	end
+		for i = 1, #SpellBookCoreAbilitiesFrame.SpecTabs do
+			tab = SpellBookCoreAbilitiesFrame.SpecTabs[i]
+			self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
+			self:addButtonBorder{obj=tab}
+		end
+		self:Unhook("SpellBook_UpdateCoreAbilitiesTab")
+	end)
+	-->>-- What has changed? panel
+	SpellBookWhatHasChanged.ClassName:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:SecureHook("SpellBook_UpdateWhatHasChangedTab", function()
+		for i = 1, #SpellBookWhatHasChanged.ChangedItems do
+			btn = SpellBookWhatHasChanged.ChangedItems[i]
+			btn.Ring:SetTexture(nil)
+			btn:DisableDrawLayer("BACKGROUND")
+			btn.Title:SetTextColor(self.HTr, self.HTg, self.HTb)
+			btn:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
+		self:Unhook("SpellBook_UpdateWhatHasChangedTab")
+	end)
 
 	-- colour the spell name text
 	for i = 1, SPELLS_PER_PAGE do
@@ -2134,160 +2047,89 @@ function aObj:TalentUI() -- LoD
 
 	self:skinTabs{obj=PlayerTalentFrame, lod=true}
 	self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	if not self.isBeta then
-	-->>-- Talents Frame
-		for i = 1, NUM_TALENT_FRAME_TABS do
-			objName = "PlayerTalentFramePanel"..i
-			obj = _G[objName]
-			-- Summary panel(s)
-			obj.Summary.IconBorder:SetAlpha(0) -- so linked item is still positioned properly
-			local sAB1 = objName.."SummaryActiveBonus1"
-			_G[sAB1].IconBorder:Hide()
-			self:addButtonBorder{obj=_G[sAB1], relTo=_G[sAB1].Icon}
-			local sB
-			for j = 1, 5 do
-				sB = objName.."SummaryBonus"..j
-				_G[sB].IconBorder:Hide()
-				self:addButtonBorder{obj=_G[sB], es=12, relTo=_G[sB].Icon}
-			end
-			self:skinScrollBar{obj=obj.Summary.Description}
-			-- talent info panel(s)
-			obj:DisableDrawLayer("BORDER")
-			obj.HeaderBackground:SetAlpha(0)
-			obj.HeaderBorder:SetAlpha(0)
-			obj.HeaderIcon:DisableDrawLayer("ARTWORK")
-			obj.HeaderIcon.PointsSpentBgGold:SetAlpha(0)
-			obj.HeaderIcon.PointsSpentBgSilver:SetAlpha(0)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=obj.HeaderIcon, relTo=obj.HeaderIcon.Icon, reParent={obj.HeaderIcon.PointsSpent, obj.HeaderIcon.LockIcon}}
-				-- add button borders
-				for i = 1, MAX_NUM_TALENTS do
-					self:addButtonBorder{obj=_G[objName.."Talent"..i], tibt=true}
-				end
-				RaiseFrameLevel(_G[objName.."Arrow"]) -- so arrows appear above border
-				RaiseFrameLevel(obj.InactiveShadow) -- so arrows appear below the InactiveShadow
-				RaiseFrameLevel(obj.Summary) -- so summary panel appears above the InactiveShadow
-				RaiseFrameLevel(obj.SelectTreeButton) -- so button can be clicked
-			end
+	-- Tab1 (Specialization)
+	self:removeRegions(PlayerTalentFrameSpecialization, {1, 2, 3, 4, 5, 6})
+	PlayerTalentFrameSpecialization.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=PlayerTalentFrameSpecialization.MainHelpButton, y=-4}
+	self:removeMagicBtnTex(PlayerTalentFrameSpecialization.learnButton)
+	-- specs
+	for i = 1, 4 do
+		btn = PlayerTalentFrameSpecialization["specButton"..i]
+		btn.bg:SetTexture(nil)
+		btn.ring:SetTexture(nil)
+		btn.selectedTex:SetTexture([[Interface\HelpFrame\HelpButtons]])
+		btn.selectedTex:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
+		btn.learnedTex:SetTexture(nil)
+		tex = btn:GetHighlightTexture()
+		tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
+		tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
+	end
+	-- shadow frame (LHS)
+	self:keepFontStrings(self:getChild(PlayerTalentFrameSpecialization, 7))
+	-- spellsScroll (RHS)
+	self:skinSlider{obj=PlayerTalentFrameSpecialization.spellsScroll.ScrollBar}
+	local scrollChild = PlayerTalentFrameSpecialization.spellsScroll.child
+	self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
+	-- abilities
+	for i = 1, scrollChild:GetNumChildren() do
+		btn = scrollChild["abilityButton"..i]
+		if btn then btn.ring:SetTexture(nil) end
+	end
+	-- handle extra abilities (Player and Pet)
+	self:RawHook("PlayerTalentFrame_CreateSpecSpellButton", function(...)
+		local frame = self.hooks.PlayerTalentFrame_CreateSpecSpellButton(...)
+		frame.ring:SetTexture(nil)
+		return frame
+	end, true)
+	-- Tab2 (Talents)
+	self:removeRegions(PlayerTalentFrameTalents, {1, 2, 3, 4, 5, 6, 7})
+	PlayerTalentFrameTalents.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=PlayerTalentFrameTalents.MainHelpButton, y=-4}
+	self:removeMagicBtnTex(PlayerTalentFrameTalents.learnButton)
+	self:addButtonBorder{obj=PlayerTalentFrameTalents.clearInfo, relTo=PlayerTalentFrameTalents.clearInfo.icon}
+	-- Talent rows
+	for i = 1, 6 do
+		obj = PlayerTalentFrameTalents["tier"..i]
+		self:removeRegions(obj, {1, 2 ,3, 4, 5, 6})
+		for j = 1, 3 do
+			btn = obj["talent"..j]
+			btn.Slot:SetTexture(nil)
+			btn.knownSelection:SetTexture([[Interface\HelpFrame\HelpButtons]])
+			btn.knownSelection:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
+			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
-		self:removeMagicBtnTex(PlayerTalentFrameResetButton)
-		self:removeMagicBtnTex(PlayerTalentFrameLearnButton)
-		self:removeMagicBtnTex(PlayerTalentFrameToggleSummariesButton)
-	-->>-- Pet Talents Panel
-		PlayerTalentFramePetPanel:DisableDrawLayer("BORDER")
-		PlayerTalentFramePetModelBg:Hide()
-		PlayerTalentFramePetShadowOverlay:Hide()
-		self:makeMFRotatable(PlayerTalentFramePetModel)
-		PlayerTalentFramePetIconBorder:Hide()
-		PlayerTalentFramePetPanel.HeaderBackground:Hide()
-		PlayerTalentFramePetPanel.HeaderBorder:Hide()
-		PlayerTalentFramePetPanel.HeaderIcon.Border:Hide()
-		PlayerTalentFramePetPanel.HeaderIcon.PointsSpentBgGold:Hide()
-		self:moveObject{obj=PlayerTalentFramePetPanel.HeaderIcon.PointsSpent, x=8}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=PlayerTalentFramePetInfo, relTo=PlayerTalentFramePetIcon}
-			self:addButtonBorder{obj=PlayerTalentFramePetPanel.HeaderIcon}
-			for i = 1, 24 do
-				btnName = "PlayerTalentFramePetPanelTalent"..i
-				btn = _G[btnName]
-				self:addButtonBorder{obj=btn, tibt=true}
-			end
-		end
-	-->>-- Glyph Panel, skinned in GlyphUI
-	-->>-- Glow boxes
-		self:addSkinFrame{obj=PlayerTalentFrameHeaderHelpBox, ft=ftype, kfs=true}
-		self:addSkinFrame{obj=PlayerTalentFrameLearnButtonTutorial, ft=ftype, kfs=true, y1=3, x2=3}
-	-->>-- Tabs (side)
-		for i = 1, 2 do
-			obj = _G["PlayerSpecTab"..i]
-			self:removeRegions(obj, {1}) -- N.B. other regions are icon and highlight
-			self:addButtonBorder{obj=obj}
-		end
-	else
-		-- Tab1 (Specialization)
-		self:removeRegions(PlayerTalentFrameSpecialization, {1, 2, 3, 4, 5, 6})
-		PlayerTalentFrameSpecialization.MainHelpButton.Ring:SetTexture(nil)
-		self:moveObject{obj=PlayerTalentFrameSpecialization.MainHelpButton, y=-4}
-		self:removeMagicBtnTex(PlayerTalentFrameSpecialization.learnButton)
-		-- specs
-		for i = 1, 4 do
-			btn = PlayerTalentFrameSpecialization["specButton"..i]
-			btn.bg:SetTexture(nil)
-			btn.ring:SetTexture(nil)
-			btn.selectedTex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-			btn.selectedTex:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
-			btn.learnedTex:SetTexture(nil)
-			tex = btn:GetHighlightTexture()
-			tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-			tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
-		end
-		-- shadow frame (LHS)
-		self:keepFontStrings(self:getChild(PlayerTalentFrameSpecialization, 7))
-		-- spellsScroll (RHS)
-		self:skinSlider{obj=PlayerTalentFrameSpecialization.spellsScroll.ScrollBar}
-		local scrollChild = PlayerTalentFrameSpecialization.spellsScroll.child
-		self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
-		-- abilities
-		for i = 1, scrollChild:GetNumChildren() do
-			btn = scrollChild["abilityButton"..i]
-			if btn then btn.ring:SetTexture(nil) end
-		end
-		-- handle extra abilities (Player and Pet)
-		self:RawHook("PlayerTalentFrame_CreateSpecSpellButton", function(...)
-			local frame = self.hooks.PlayerTalentFrame_CreateSpecSpellButton(...)
-			frame.ring:SetTexture(nil)
-			return frame
-		end, true)
-		-- Tab2 (Talents)
-		self:removeRegions(PlayerTalentFrameTalents, {1, 2, 3, 4, 5, 6, 7})
-		PlayerTalentFrameTalents.MainHelpButton.Ring:SetTexture(nil)
-		self:moveObject{obj=PlayerTalentFrameTalents.MainHelpButton, y=-4}
-		self:removeMagicBtnTex(PlayerTalentFrameTalents.learnButton)
-		self:addButtonBorder{obj=PlayerTalentFrameTalents.clearInfo, relTo=PlayerTalentFrameTalents.clearInfo.icon}
-		-- Talent rows
-		for i = 1, 6 do
-			obj = PlayerTalentFrameTalents["tier"..i]
-			self:removeRegions(obj, {1, 2 ,3, 4, 5, 6})
-			for j = 1, 3 do
-				btn = obj["talent"..j]
-				btn.Slot:SetTexture(nil)
-				btn.knownSelection:SetTexture([[Interface\HelpFrame\HelpButtons]])
-				btn.knownSelection:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
-				self:addButtonBorder{obj=btn, relTo=btn.icon}
-			end
-		end
-		-- Tab3 (Glyphs), skinned in GlyphUI
-		-- Tab4 (Pet Specialization)
-		self:removeRegions(PlayerTalentFramePetSpecialization, {1, 2, 3, 4, 5, 6})
-		PlayerTalentFramePetSpecialization.MainHelpButton.Ring:SetTexture(nil)
-		self:moveObject{obj=PlayerTalentFramePetSpecialization.MainHelpButton, y=-4}
-		self:removeMagicBtnTex(PlayerTalentFramePetSpecialization.learnButton)
-		-- specs
-		for i = 1, 4 do
-			btn = PlayerTalentFramePetSpecialization["specButton"..i]
-			btn.bg:SetTexture(nil)
-			btn.ring:SetTexture(nil)
-			btn.selectedTex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-			btn.selectedTex:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
-			btn.learnedTex:SetTexture(nil)
-		end
-		-- shadow frame (LHS)
-		self:keepFontStrings(self:getChild(PlayerTalentFramePetSpecialization, 7))
-		-- spellsScroll (RHS)
-		self:skinSlider{obj=PlayerTalentFramePetSpecialization.spellsScroll.ScrollBar}
-		local scrollChild = PlayerTalentFramePetSpecialization.spellsScroll.child
-		self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
-		-- abilities
-		for i = 1, scrollChild:GetNumChildren() do
-			btn = scrollChild["abilityButton"..i]
-			if btn then btn.ring:SetTexture(nil) end
-		end
-		-- Spec Tabs (side)
-		for i = 1, 2 do
-			tab = _G["PlayerSpecTab"..i]
-			self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
-			self:addButtonBorder{obj=tab}
-		end
+	end
+	-- Tab3 (Glyphs), skinned in GlyphUI
+	-- Tab4 (Pet Specialization)
+	self:removeRegions(PlayerTalentFramePetSpecialization, {1, 2, 3, 4, 5, 6})
+	PlayerTalentFramePetSpecialization.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=PlayerTalentFramePetSpecialization.MainHelpButton, y=-4}
+	self:removeMagicBtnTex(PlayerTalentFramePetSpecialization.learnButton)
+	-- specs
+	for i = 1, 4 do
+		btn = PlayerTalentFramePetSpecialization["specButton"..i]
+		btn.bg:SetTexture(nil)
+		btn.ring:SetTexture(nil)
+		btn.selectedTex:SetTexture([[Interface\HelpFrame\HelpButtons]])
+		btn.selectedTex:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
+		btn.learnedTex:SetTexture(nil)
+	end
+	-- shadow frame (LHS)
+	self:keepFontStrings(self:getChild(PlayerTalentFramePetSpecialization, 7))
+	-- spellsScroll (RHS)
+	self:skinSlider{obj=PlayerTalentFramePetSpecialization.spellsScroll.ScrollBar}
+	local scrollChild = PlayerTalentFramePetSpecialization.spellsScroll.child
+	self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
+	-- abilities
+	for i = 1, scrollChild:GetNumChildren() do
+		btn = scrollChild["abilityButton"..i]
+		if btn then btn.ring:SetTexture(nil) end
+	end
+	-- Spec Tabs (side)
+	for i = 1, 2 do
+		tab = _G["PlayerSpecTab"..i]
+		self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
+		self:addButtonBorder{obj=tab}
 	end
 
 end
@@ -2309,18 +2151,14 @@ function aObj:TradeFrame()
 		end
 	end
 	self:skinMoneyFrame{obj=TradePlayerInputMoneyFrame}
-	if not self.isBeta then
-		self:addSkinFrame{obj=TradeFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-28, y2=48}
-	else
-		self:removeInset(TradeRecipientItemsInset)
-		self:removeInset(TradeRecipientEnchantInset)
-		self:removeInset(TradePlayerItemsInset)
-		self:removeInset(TradePlayerEnchantInset)
-		self:removeInset(TradePlayerInputMoneyInset)
-		self:removeInset(TradeRecipientItemsInset)
-		TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=TradeFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:removeInset(TradeRecipientItemsInset)
+	self:removeInset(TradeRecipientEnchantInset)
+	self:removeInset(TradePlayerItemsInset)
+	self:removeInset(TradePlayerEnchantInset)
+	self:removeInset(TradePlayerInputMoneyInset)
+	self:removeInset(TradeRecipientItemsInset)
+	TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=TradeFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -2351,12 +2189,10 @@ function aObj:TradeSkillUI() -- LoD
 	for i = 1, TRADE_SKILLS_DISPLAYED do
 		btn = _G["TradeSkillSkill"..i]
 		self:skinButton{obj=btn, mp=true}
-		if self.isBeta then
-			btn.SubSkillRankBar.BorderLeft:SetTexture(nil)
-			btn.SubSkillRankBar.BorderRight:SetTexture(nil)
-			btn.SubSkillRankBar.BorderMid:SetTexture(nil)
-			self:glazeStatusBar(btn.SubSkillRankBar, 0)
-		end
+		btn.SubSkillRankBar.BorderLeft:SetTexture(nil)
+		btn.SubSkillRankBar.BorderRight:SetTexture(nil)
+		btn.SubSkillRankBar.BorderMid:SetTexture(nil)
+		self:glazeStatusBar(btn.SubSkillRankBar, 0)
 	end
 	self:skinScrollBar{obj=TradeSkillListScrollFrame}
 	self:skinScrollBar{obj=TradeSkillDetailScrollFrame}
@@ -2381,75 +2217,6 @@ function aObj:TradeSkillUI() -- LoD
 
 	if self.modBtns then TradeSkillFrame_Update() end -- force update for button textures
 
-end
-
-if not aObj.isBeta then
-	function aObj:VehicleMenuBar()
-		if not self.db.profile.VehicleMenuBar or self.initialized.VehicleMenuBar then return end
-		self.initialized.VehicleMenuBar = true
-
-		self:add2Table(self.pKeys1, "VehicleMenuBar")
-
-		local xOfs1, xOfs2, yOfs1, yOfs2, sf
-		local function skinVehicleMenuBar(opts)
-
-			-- aObj:Debug("sVMB: [%s, %s, %s]", opts.src, opts.sn or "nil", opts.pv or "nil")
-
-			-- expand frame width if mechanical vehicle
-			if opts.sn == "Mechanical"
-			or VehicleMenuBar.currSkin == "Mechanical"
-			then
-				xOfs1 = 132
-				yOfs1 = 42
-				yOfs2 = -1
-			else
-				-- "Natural" settings
-				xOfs1 = 159
-				yOfs1 = 46
-				yOfs2 = -2
-			end
-			xOfs2 = xOfs1 * -1
-
-			-- remove all textures
-			VehicleMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
-			VehicleMenuBarArtFrame:DisableDrawLayer("BORDER")
-			VehicleMenuBarArtFrame:DisableDrawLayer("ARTWORK")
-			VehicleMenuBarArtFrame:DisableDrawLayer("OVERLAY")
-			-- Pitch Slider
-			self:moveObject{obj=VehicleMenuBarPitchSlider, y=2}
-			VehicleMenuBarPitchSlider:DisableDrawLayer("OVERLAY")
-			 -- make it appear above the skin frame
-			VehicleMenuBarPitchSlider:SetFrameStrata("MEDIUM")
-
-			if sf then
-				sf:ClearAllPoints()
-				sf:SetPoint("TOPLEFT", VehicleMenuBar, "TOPLEFT", xOfs1, yOfs1)
-				sf:SetPoint("BOTTOMRIGHT", VehicleMenuBar, "BOTTOMRIGHT", xOfs2, yOfs2)
-			else
-				sf = aObj:addSkinFrame{obj=VehicleMenuBar, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-			end
-
-		end
-
-		self:SecureHook(VehicleMenuBar, "Show", function(this, ...)
-			skinVehicleMenuBar{src=1}
-		end)
-
-		self:SecureHook("VehicleMenuBar_SetSkin", function(skinName, pitchVisible)
-			skinVehicleMenuBar{src=2, sn=skinName, pv=pitchVisible}
-		end)
-
-		if VehicleMenuBar:IsShown() then skinVehicleMenuBar{src=3} end
-
-		if self.modBtnBs then
-			self:addButtonBorder{obj=VehicleMenuBarLeaveButton}
-			for i = 1, VEHICLE_MAX_ACTIONBUTTONS do
-				btn = _G["VehicleMenuBarActionButton"..i]
-				self:addButtonBorder{obj=btn, abt=true, sec=true, es=20}
-			end
-		end
-
-	end
 end
 
 function aObj:WatchFrame()
@@ -2507,9 +2274,6 @@ function aObj:WatchFrame()
 				end
 			end
 
-		end
-		if not self.isBeta then
-			WatchFrameLines.AutoQuestShadow:SetTexture(nil) -- Animated texture
 		end
 		-- hook this to skin the AutoPopUps
 		self:SecureHook("WatchFrameAutoQuest_GetOrCreateFrame", function(parent, index)

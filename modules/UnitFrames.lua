@@ -85,16 +85,14 @@ local function skinPlayerF()
 			PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 			PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 		end
-		if aObj.isBeta then
-			if aObj.uCls == "MONK" then
-				-- PlayerFrameMonkManaBar
-				PlayerFrameAlternateManaBar:Hide()
-				aObj:removeRegions(MonkHarmonyBar, {1, 2})
-			end
-			if aObj.uCls == "PRIEST" then
-				PriestBarFrame:DisableDrawLayer("BACKGROUND")
-				aObj:moveObject{obj=PriestBarFrame.orb1, y=6}
-			end
+		if aObj.uCls == "MONK" then
+			-- PlayerFrameMonkManaBar
+			PlayerFrameAlternateManaBar:Hide()
+			aObj:removeRegions(MonkHarmonyBar, {1, 2})
+		end
+		if aObj.uCls == "PRIEST" then
+			PriestBarFrame:DisableDrawLayer("BACKGROUND")
+			aObj:moveObject{obj=PriestBarFrame.orb1, y=6}
 		end
 	end
 

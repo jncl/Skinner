@@ -21,9 +21,7 @@ function aObj:ArenaRegistrar()
 		self:addButtonBorder{obj=_G["PVPBannerFrameCustomization"..i.."LeftButton"], ofs=-2}
 		self:addButtonBorder{obj=_G["PVPBannerFrameCustomization"..i.."RightButton"], ofs=-2}
 	end
-	if self.isBeta then
-		self:removeMagicBtnTex(self:getChild(PVPBannerFrame, 6)) -- duplicate named button
-	end
+	self:removeMagicBtnTex(self:getChild(PVPBannerFrame, 6)) -- duplicate named button
 
 end
 
@@ -37,11 +35,7 @@ function aObj:AuctionUI() -- LoD
 	end)
 
 	self:skinTabs{obj=AuctionFrame, lod=true}
-	if not self.isBeta then
-		self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=4}
-	else
-		self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=5}
-	end
+	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=5}
 -->>--	Browse Frame
 	for k, v in pairs{"Name", "MinLevel", "MaxLevel"} do
 		obj = _G["Browse"..v]
@@ -127,13 +121,9 @@ function aObj:BankFrame()
 	self:add2Table(self.npcKeys, "BankFrame")
 
 	self:skinEditBox{obj=BankItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	if not self.isBeta then
-		self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-25, y2=91}
-	else
-		self:removeInset(BankFrameMoneyFrameInset)
-		BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:removeInset(BankFrameMoneyFrameInset)
+	BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
 	if self.modBtnBs then
 		-- add button borders
 		for i = 1, NUM_BANKGENERIC_SLOTS do
@@ -165,44 +155,42 @@ function aObj:BarbershopUI() -- LoD
 
 end
 
-if aObj.isBeta then
-	function aObj:BlackMarketUI() -- LoD
-		if not self.db.profile.BlackMarketUI or self.initialized.BlackMarketUI then return end
-		self.initialized.BlackMarketUI = true
+function aObj:BlackMarketUI() -- LoD
+	if not self.db.profile.BlackMarketUI or self.initialized.BlackMarketUI then return end
+	self.initialized.BlackMarketUI = true
 
-		self:add2Table(self.npcKeys, "BlackMarketUI")
+	self:add2Table(self.npcKeys, "BlackMarketUI")
 
-		-- move title text
-		self:moveObject{obj=self:getRegion(BlackMarketFrame, 22), y=-4}
-		-- HotDeal frame
-		self:keepFontStrings(BlackMarketFrame.HotDeal)
-		self:addButtonBorder{obj=BlackMarketFrame.HotDeal.Item, ibt=true, relTo=BlackMarketFrame.HotDeal.Item.IconTexture}
-		self:skinAllButtons{obj=BlackMarketFrame.HotDeal}
-		self:skinMoneyFrame{obj=BlackMarketHotItemBidPrice}
+	-- move title text
+	self:moveObject{obj=self:getRegion(BlackMarketFrame, 22), y=-4}
+	-- HotDeal frame
+	self:keepFontStrings(BlackMarketFrame.HotDeal)
+	self:addButtonBorder{obj=BlackMarketFrame.HotDeal.Item, ibt=true, relTo=BlackMarketFrame.HotDeal.Item.IconTexture}
+	self:skinAllButtons{obj=BlackMarketFrame.HotDeal}
+	self:skinMoneyFrame{obj=BlackMarketHotItemBidPrice}
 		
-		-- column headings
-		for _, v in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
-			obj = BlackMarketFrame["Column"..v]
-			self:keepFontStrings(obj)
-			self:addSkinFrame{obj=obj, ft=ftype, nb=true}
-		end
-		self:SecureHook("BlackMarketScrollFrame_Update", function(this)
-			for i = 1, #BlackMarketScrollFrame.buttons do
-				btn = BlackMarketScrollFrame.buttons[i]
-				if btn and not self.skinned[btn] then
-					self:keepFontStrings(btn)
-					btn:GetHighlightTexture():SetAlpha(1)
-					self:addButtonBorder{obj=btn.Item, ibt=true, relTo=btn.Item.IconTexture}
-				end
-			end
-			self:Unhook("BlackMarketScrollFrame_Update")
-		end)
-		self:skinSlider{obj=BlackMarketScrollFrame.ScrollBar, adj=-4}
-		BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-		self:skinMoneyFrame{obj=BlackMarketBidPrice}
-		self:addSkinFrame{obj=BlackMarketFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-
+	-- column headings
+	for _, v in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
+		obj = BlackMarketFrame["Column"..v]
+		self:keepFontStrings(obj)
+		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
+	self:SecureHook("BlackMarketScrollFrame_Update", function(this)
+		for i = 1, #BlackMarketScrollFrame.buttons do
+			btn = BlackMarketScrollFrame.buttons[i]
+			if btn and not self.skinned[btn] then
+				self:keepFontStrings(btn)
+				btn:GetHighlightTexture():SetAlpha(1)
+				self:addButtonBorder{obj=btn.Item, ibt=true, relTo=btn.Item.IconTexture}
+			end
+		end
+		self:Unhook("BlackMarketScrollFrame_Update")
+	end)
+	self:skinSlider{obj=BlackMarketScrollFrame.ScrollBar, adj=-4}
+	BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+	self:skinMoneyFrame{obj=BlackMarketBidPrice}
+	self:addSkinFrame{obj=BlackMarketFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+
 end
 
 function aObj:GossipFrame()
@@ -224,14 +212,10 @@ function aObj:GossipFrame()
 		obj:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 
-	if not self.isBeta then
-		self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
-	else
-		self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-		-- NPCFriendshipStatusBar
-		self:removeRegions(NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
-		self:glazeStatusBar(NPCFriendshipStatusBar, 0,  self:getRegion(NPCFriendshipStatusBar, 7))
-	end
+	self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	-- NPCFriendshipStatusBar
+	self:removeRegions(NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
+	self:glazeStatusBar(NPCFriendshipStatusBar, 0,  self:getRegion(NPCFriendshipStatusBar, 7))
 
 end
 
@@ -250,11 +234,7 @@ function aObj:GuildRegistrar()
 	end
 	self:skinEditBox{obj=GuildRegistrarFrameEditBox}
 
-	if not self.isBeta then
-		self:addSkinFrame{obj=GuildRegistrarFrame, ft=ftype, kfs=true, x1=12, y1=-17, x2=-29, y2=65}
-	else
-		self:addSkinFrame{obj=GuildRegistrarFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:addSkinFrame{obj=GuildRegistrarFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -263,11 +243,7 @@ function aObj:ItemAlterationUI() -- LoD
 	self.initialized.ItemAlterationUI = true
 
 	local slots = {"Head", "Shoulder", "Back", "Chest", "Wrist", "Hands", "Waist", "Legs", "Feet", "MainHand", "SecondaryHand"}
-	if not self.isBeta then
-		if TransmogrifyFrame.ranged then self:add2Table(slots, "Ranged") end
-	else
-		self:add2Table(slots, "Ranged")
-	end
+	self:add2Table(slots, "Ranged")
 	for _, v in pairs{slots} do
 		btnName = "TransmogrifyFrame"..v.."Slot"
 		_G[btnName.."Grabber"]:SetAlpha(0)
@@ -329,16 +305,12 @@ function aObj:MerchantFrame()
 	self:removeRegions(MerchantNextPageButton, {2})
 	self:addButtonBorder{obj=MerchantNextPageButton, ofs=-2}
 	self:skinTabs{obj=MerchantFrame}
-	if not self.isBeta then
-		self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=55}
-	else
-		self:skinDropDown{obj=MerchantFrameLootFilter}
-		self:removeInset(MerchantExtraCurrencyInset)
-		MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
-		self:removeInset(MerchantMoneyInset)
-		MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-6}
-	end
+	self:skinDropDown{obj=MerchantFrameLootFilter}
+	self:removeInset(MerchantExtraCurrencyInset)
+	MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
+	self:removeInset(MerchantMoneyInset)
+	MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-6}
 
 end
 
@@ -358,11 +330,7 @@ function aObj:Petition()
 	end
 	PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
 
-	if not self.isBeta then
-		self:addSkinFrame{obj=PetitionFrame, ft=ftype, kfs=true, x1=12, y1=-17, x2=-29, y2=65}
-	else
-		self:addSkinFrame{obj=PetitionFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:addSkinFrame{obj=PetitionFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -424,11 +392,7 @@ function aObj:QuestFrame()
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
 
-	if not self.isBeta then
-		self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, x1=12, y1=-18, x2=-29, y2=66}
-	else
-		self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 -->>--	Reward Panel
 	self:keepFontStrings(QuestFrameRewardPanel)
 	self:skinScrollBar{obj=QuestRewardScrollFrame}
@@ -503,12 +467,10 @@ function aObj:QuestInfo()
 			_G["QuestInfoObjective"..i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
 		QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
-		if self.isBeta then
-			-- QuestInfoSpecialObjectives Frame
-			QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
-			QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
-			self:addButtonBorder{obj=QuestInfoSpellObjectiveFrame, relTo=QuestInfoSpellObjectiveFrame.Icon}
-		end
+		-- QuestInfoSpecialObjectives Frame
+		QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
+		QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
+		self:addButtonBorder{obj=QuestInfoSpellObjectiveFrame, relTo=QuestInfoSpellObjectiveFrame.Icon}
 	end)
 
 	QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -543,37 +505,20 @@ function aObj:ReforgingUI() -- LoD
 	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
 	self.initialized.ReforgingUI = true
 
-	if not self.isBeta then
-		self:SecureHook(ReforgingFrameItemButtonIconTexture, "SetTexture", function(this, tex)
-			if tex:find("UI-Slot-Background", 1, true) then
-				this:SetAlpha(0)
-			else
-				this:SetAlpha(1)
-			end
-		end)
-		ReforgingFrameItemButtonIconTexture:SetAlpha(0)
-		ReforgingFrameItemButton:DisableDrawLayer("BACKGROUND")
-		ReforgingFrameItemButton:DisableDrawLayer("OVERLAY")
-		self:addSkinButton{obj=ReforgingFrameItemButton, aso={ng=true}}
-		ReforgingFrameItemButton.missingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:keepRegions(ReforgingFrameButtonFrame, {})
-		ReforgingFrame.missingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	else
-		self:SecureHook(ReforgingFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
-			if tex:find("UI-Slot-Background", 1, true) then
-				this:SetAlpha(0)
-			else
-				this:SetAlpha(1)
-			end
-		end)
-		ReforgingFrame.ItemButton.IconTexture:SetAlpha(0)
-		ReforgingFrame.ItemButton:DisableDrawLayer("BACKGROUND")
-		ReforgingFrame.ItemButton:DisableDrawLayer("OVERLAY")
-		self:addSkinButton{obj=ReforgingFrame.ItemButton, aso={ng=true}}
-		ReforgingFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:keepRegions(ReforgingFrame.ButtonFrame, {})
-		ReforgingFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
+	self:SecureHook(ReforgingFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
+		if tex:find("UI-Slot-Background", 1, true) then
+			this:SetAlpha(0)
+		else
+			this:SetAlpha(1)
+		end
+	end)
+	ReforgingFrame.ItemButton.IconTexture:SetAlpha(0)
+	ReforgingFrame.ItemButton:DisableDrawLayer("BACKGROUND")
+	ReforgingFrame.ItemButton:DisableDrawLayer("OVERLAY")
+	self:addSkinButton{obj=ReforgingFrame.ItemButton, aso={ng=true}}
+	ReforgingFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:keepRegions(ReforgingFrame.ButtonFrame, {})
+	ReforgingFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:moveObject{obj=ReforgingFrameRestoreButton, y=2}
 	self:removeMagicBtnTex(ReforgingFrameRestoreButton)
@@ -609,15 +554,10 @@ function aObj:Tabard()
 		self:addButtonBorder{obj=_G["TabardFrameCustomization"..i.."RightButton"], ofs=-2}
 	end
 
-	if not self.isBeta then
-		self:keepRegions(TabardFrame, {17, 18, 19, 20, 21, 22}) -- N.B. regions 21 & 22 are text, 17-20 are icon texture
-		self:addSkinFrame{obj=TabardFrame, ft=ftype, x1=10, y1=-12, x2=-32, y2=74}
-	else
-		self:keepRegions(TabardFrame, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
-		self:removeInset(TabardFrameMoneyInset)
-		TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=TabardFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	self:keepRegions(TabardFrame, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
+	self:removeInset(TabardFrameMoneyInset)
+	TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=TabardFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -627,14 +567,9 @@ function aObj:TaxiFrame()
 
 	self:add2Table(self.npcKeys, "TaxiFrame")
 
-	if not self.isBeta then
-		self:keepRegions(TaxiFrame, {6, 13})-- N.B. region 6 is Title, 13 is the Map background
-		self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
-	else
-		TaxiFrame:DisableDrawLayer("OVERLAY")
-		TaxiFrame:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
-	end
+	TaxiFrame:DisableDrawLayer("OVERLAY")
+	TaxiFrame:DisableDrawLayer("BORDER")
+	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 

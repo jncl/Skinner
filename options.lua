@@ -107,7 +107,7 @@ function aObj:Defaults()
 		BattlefieldMm        = {skin = true, gloss = false},
 		BNFrames             = true,
 		Calendar             = true,
-		ChallengesUI		 = self.isBeta and true or nil,
+		ChallengesUI		 = true or nil,
 		ChatButtons          = true,
 		ChatConfig           = true,
 		ChatEditBox          = {skin = true, style = 3},
@@ -119,14 +119,14 @@ function aObj:Defaults()
 		Colours              = true,
 		CombatLogQBF         = false,
 		DebugTools           = true,
-		DestinyFrame         = self.isBeta and true or nil,
+		DestinyFrame         = true,
 		Feedback             = self.isPTR and true or nil,
 		GMChatUI             = true,
 		GMSurveyUI           = true,
 		GuildBankUI          = true,
 		HelpFrame            = true,
 		ItemText             = true,
-		ItemUpgradeUI		 = self.isBeta and true or nil,
+		ItemUpgradeUI		 = true,
 		LevelUpDisplay       = true,
 		LFDFrame             = true,
 		LFGFrame             = true,
@@ -139,8 +139,8 @@ function aObj:Defaults()
 		MovePad              = true,
 		MovieProgress        = IsMacClient() and true or nil,
 		Nameplates           = true,
-		PetBattleUI			 = self.isBeta and true or nil,
-		PVEFrame			 = self.isBeta and true or nil,
+		PetBattleUI			 = true,
+		PVEFrame			 = true,
 		RaidFrame            = true,
 		ScriptErrors         = true,
 		StaticPopups         = true,
@@ -707,12 +707,12 @@ function aObj:Options()
 					name = self.L["Barbershop Frame"],
 					desc = self.L["Toggle the skin of the Barbershop Frame"],
 				},
-				BlackMarketUI = self.isBeta and {
+				BlackMarketUI = {
 					type = "toggle",
 					width = "double",
 					name = self.L["Black Market Auction Frame"],
 					desc = self.L["Toggle the skin of the Black Market Auction Frame"],
-				} or nil,
+				},
 				GossipFrame = {
 					type = "toggle",
 					name = self.L["Gossip Frame"],
@@ -992,11 +992,11 @@ function aObj:Options()
 						},
 					},
 				},
-				LootHistory = self.isBeta and {
+				LootHistory = {
 					type = "toggle",
 					name = self.L["Loot History Frame"],
 					desc = self.L["Toggle the skin of the Loot History Frame"],
-				} or nil,
+				},
 				MirrorTimers = {
 					type = "group",
 					inline = true,
@@ -1022,12 +1022,12 @@ function aObj:Options()
 						},
 					},
 				},
-				OverrideActionBar = self.isBeta and {
+				OverrideActionBar = {
 					type = "toggle",
 					name = self.L["Override Action Bar"],
 					desc = self.L["Toggle the skin of the Override Action Bar"],
-				} or nil,
-				PetJournal = self.isBeta and {
+				},
+				PetJournal = {
 					type = "toggle",
 					width = "double",
 					name = self.L["Mounts and Pets Frame"],
@@ -1036,7 +1036,7 @@ function aObj:Options()
 						db[info[#info]] = value
 						if IsAddOnLoaded("Blizzard_PetJournal") then self:checkAndRun("PetJournal") end
 					end,
-				} or nil,
+				},
 				PVPFrame = {
 					type = "toggle",
 					name = self.L["PVP Frame"],
@@ -1049,8 +1049,8 @@ function aObj:Options()
 				},
 				RaidUI = {
 					type = "toggle",
-					name = self.L["Raid Frames"],
-					desc = self.L["Toggle the skin of the Raid Frames"],
+					name = self.L["Raid UI Frames"],
+					desc = self.L["Toggle the skin of the Raid UI Frames"],
 				},
 				ReadyCheck = {
 					type = "toggle",
@@ -1097,11 +1097,6 @@ function aObj:Options()
 					name = self.L["Trade Skill Frame"],
 					desc = self.L["Toggle the skin of the Trade Skill Frame"],
 				},
-				VehicleMenuBar = not self.isBeta and {
-					type = "toggle",
-					name = self.L["Vehicle Menu Bar"],
-					desc = self.L["Toggle the skin of the Vehicle Menu Bar"],
-				} or nil,
 				WatchFrame = {
 					type = "group",
 					order = -1,
@@ -1217,11 +1212,11 @@ function aObj:Options()
 					name = self.L["Calendar"],
 					desc = self.L["Toggle the skin of the Calendar Frame"],
 				},
-				ChallengesUI = aObj.isBeta and {
+				ChallengesUI = {
 					type = "toggle",
 					name = self.L["Challenges Frame"],
 					desc = self.L["Toggle the skin of the Challenges Frame"],
-				} or nil,
+				},
 				chatopts = {
 					type = "group",
 					inline = true,
@@ -1313,11 +1308,11 @@ function aObj:Options()
 					name = self.L["Debug Tools Frames"],
 					desc = self.L["Toggle the skin of the Debug Tools Frames"],
 				},
-				DestinyFrame = aObj.isBeta and {
+				DestinyFrame = {
 					type = "toggle",
 					name = self.L["Destiny Frame"],
 					desc = self.L["Toggle the skin of the Destiny Frame"],
-				} or nil,
+				},
 				GMChatUI = {
 					type = "toggle",
 					name = self.L["GM Chat Frame"],
@@ -1356,11 +1351,11 @@ function aObj:Options()
 					name = self.L["Item Text Frame"],
 					desc = self.L["Toggle the skin of the Item Text Frame"],
 				},
-				ItemUpgradeUI = aObj.isBeta and {
+				ItemUpgradeUI = {
 					type = "toggle",
 					name = self.L["Item Upgrade Frame"],
 					desc = self.L["Toggle the skin of the Item Upgrade Frame"],
-				} or nil,
+				},
 				LevelUpDisplay = {
 					type = "toggle",
 					name = self.L["Level Up Display"],
@@ -1493,16 +1488,16 @@ function aObj:Options()
 					name = self.L["Nameplates"],
 					desc = self.L["Toggle the skin of the Nameplates"],
 				},
-				PetBattleUI = self.isBeta and {
+				PetBattleUI = {
 					type = "toggle",
 					name = self.L["Pet Battle Frame"],
 					desc = self.L["Toggle the skin of the Pet Battle Frame"],
-				} or nil,
-				PVEFrame = self.isBeta and {
+				},
+				PVEFrame = {
 					type = "toggle",
 					name = self.L["PVE Frame"],
 					desc = self.L["Toggle the skin of the PVE Frame"],
-				} or nil,
+				},
 				RaidFrame = {
 					type = "toggle",
 					name = self.L["Raid Frame"],

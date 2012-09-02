@@ -6,21 +6,15 @@ local blizzLoDFrames = {
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	--AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
-	"BarbershopUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",
+	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"BattlefieldMinimap", "BindingUI", "Calendar", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "TimeManager", 
+	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "PetJournal", "TimeManager", 
 	--[=[
 		ArenaUI -- unitframes skinned in UnitFrames.lua
 	--]=]
 }
 -- optional frames
 if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- ui
-if aObj.isBeta then
-	aObj:add2Table(blizzLoDFrames, "BlackMarketUI") -- npc
-	aObj:add2Table(blizzLoDFrames, "ChallengesUI") -- ui
-	aObj:add2Table(blizzLoDFrames, "ItemUpgradeUI") -- ui
-	aObj:add2Table(blizzLoDFrames, "PetJournal") -- ui
-end
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v
@@ -33,34 +27,25 @@ function aObj:BlizzardFrames()
 		-- player
 		"Buffs",
 		-- CastingBar, checked with Quartz below
-		"CharacterFrames", "CompactFrames", "ContainerFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "GhostFrame", "GuildInvite", "LootFrames", "MirrorTimers", "PVPFrame", 
+		"CharacterFrames", "CompactFrames", "ContainerFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "GhostFrame", "GuildInvite", "LootFrames", "LootHistory", "MirrorTimers", "OverrideActionBar", "PVPFrame", 
 		-- QuestLog, checked with EQL3 & QuestGuru below
 		"ReadyCheck", "RolePollPopup", "ScrollOfResurrection", "SpellBookFrame", "SpellFlyout", "StackSplit", "TradeFrame", "WatchFrame", 
 	    -- npc
 		"ArenaRegistrar", "BankFrame", "GossipFrame", "GuildRegistrar", "MerchantFrame", "Petition", "PetStableFrame", "QuestFrame", "SideDressUpFrame", "Tabard", "TaxiFrame", 
 		-- ui
-		"AlertFrames", "AutoComplete", "BNFrames", "ChatButtons", "ChatConfig", "ChatEditBox", "ChatFrames", "ChatMenus", "ChatMinimizedFrames", "ChatTabs", "ChatTemporaryWindow", "CinematicFrame",  "CoinPickup", "ColorPicker", "DropDownPanels", "HelpFrame", "ItemText", "LevelUpDisplay", "LFDFrame", "LFGFrame", "LFRFrame", "MailFrame",
+		"AlertFrames", "AutoComplete", "BNFrames", "ChatButtons", "ChatConfig", "ChatEditBox", "ChatFrames", "ChatMenus", "ChatMinimizedFrames", "ChatTabs", "ChatTemporaryWindow", "CinematicFrame",  "CoinPickup", "ColorPicker", "DestinyFrame", "DropDownPanels", "HelpFrame", "ItemText", "LevelUpDisplay", "LFDFrame", "LFGFrame", "LFRFrame", "MailFrame",
 		-- MainMenuBar, checked with Bongos below
 		"MenuFrames", "Minimap", 
 		-- MinimapButtons, done with timer
 		-- ModelFrames, checked with CloseUp below
 		-- Nameplates, checked with Aloft below
-		"RaidFrame", "ScriptErrors", "StaticPopups", 
+		"PetBattleUI", "PVEFrame", "RaidFrame", "ScriptErrors", "StaticPopups", 
 		-- Tooltips, checked below
 		"Tutorial", "WorldMap", "WorldState", 
 	}
 
 	-- optional frames
 	if IsMacClient() then aObj:add2Table(blizzFrames, "MovieProgress") end -- ui
-	if not self.isBeta then
-		aObj:add2Table(blizzFrames, "VehicleMenuBar") -- player
-	else
-		aObj:add2Table(blizzFrames, "LootHistory") -- player
-		aObj:add2Table(blizzFrames, "OverrideActionBar") -- player
-		aObj:add2Table(blizzFrames, "DestinyFrame") -- ui
-		aObj:add2Table(blizzFrames, "PetBattleUI") -- ui
-		aObj:add2Table(blizzFrames, "PVEFrame") -- ui
-	end
 
 	for _, v in pairs(blizzFrames) do
 		self:checkAndRun(v)
