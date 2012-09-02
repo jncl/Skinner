@@ -8,9 +8,8 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
+	MoP Beta changes
 	-- Default Frame settings (, ri=true, x1=-3, y1=2, x2=1, y2=-2)
-
-	O	MoP Beta
 √		- TOC version now 50001
 		NEW
 √		- Blizzard_BlackMarketUI
@@ -207,20 +206,22 @@ x		- ZoneText
 √		- Vendor filter (dd) added to merchant frame
 ?		- Buff consolidation now permanent, new tooltip with buff info
 
-≈	O	Rework the button detection code as Texture names can't be used, they're not available unless frame is open
+√	O	Rework the button detection code as Texture names can't be used, they're not available unless frame is open
 
-≈	I	Nameplates, rework the code
+x	I	Nameplates, rework the code
 
-	I 	Ace3 buttons on IOP, too many textures/gradients/skins ?
+?	I 	Ace3 buttons on IOP, too many textures/gradients/skins ?
 
+√	O	Add new skin options
+
+√	O	Remove GearManager references
+
+√	O	Review ALL options text
+
+==> Other changes
 √	O	Reorganise code into PlayerFrames/UIFrames and alphabetise the functions
 
 √	I	Add button borders to next/prev buttons
 
 √	I	Add button borders to other square buttons
 
-¶	O	Add new skin options
-
-¶	O	Remove GearManager references
-
-¶	O	Review ALL options text
