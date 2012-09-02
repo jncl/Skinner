@@ -1838,6 +1838,7 @@ if IsMacClient() then
 	end
 end
 
+-- disabled, changed in MoP and I can't get it to work properly yet (03.09.12)
 function aObj:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true

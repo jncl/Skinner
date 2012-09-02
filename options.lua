@@ -138,7 +138,7 @@ function aObj:Defaults()
 		MinimapButtons       = {skin = false, style = false},
 		MovePad              = true,
 		MovieProgress        = IsMacClient() and true or nil,
-		Nameplates           = true,
+		-- Nameplates           = true,
 		PetBattleUI			 = true,
 		PVEFrame			 = true,
 		RaidFrame            = true,
@@ -1483,11 +1483,11 @@ function aObj:Options()
 					name = self.L["Movie Progress"],
 					desc = self.L["Toggle the skinning of Movie Progress"],
 				} or nil,
-				Nameplates = {
-					type = "toggle",
-					name = self.L["Nameplates"],
-					desc = self.L["Toggle the skin of the Nameplates"],
-				},
+				-- Nameplates = {
+				-- 	type = "toggle",
+				-- 	name = self.L["Nameplates"],
+				-- 	desc = self.L["Toggle the skin of the Nameplates"],
+				-- },
 				PetBattleUI = {
 					type = "toggle",
 					name = self.L["Pet Battle Frame"],

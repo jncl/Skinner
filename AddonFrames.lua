@@ -148,7 +148,7 @@ function aObj:AddonFrames()
 	and not IsAddOnLoaded("TidyPlates")
 	and not IsAddOnLoaded("DocsUI_Nameplates")
 	then
-		self:checkAndRun("Nameplates")
+		-- self:checkAndRun("Nameplates") -- disabled (03.09.12)
 	end
 
 	--	don't make Model Frames Rotatable if CloseUp is loaded
