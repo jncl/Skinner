@@ -1128,15 +1128,16 @@ function aObj:LFDFrame()
 
 	-- LFD RoleCheck Popup
 	self:addSkinFrame{obj=LFDRoleCheckPopup, kfs=true, ft=ftype}
-	-- LFD Parent Frame
-	self:addSkinFrame{obj=LFDParentFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
-	LowerFrameLevel(self.skinFrame[LFDParentFrame]) -- hopefully allow Random cooldown frame to appear in front now
-	-- Queue Frame
+
+	-- LFD Parent Frame (now part of PVE Frame)
+	self:keepFontStrings(LFDParentFrame)
+	self:removeInset(LFDParentFrame.Inset)
+
+	-- LFD Queue Frame
 	LFDQueueFrameBackground:SetAlpha(0)
 	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
 	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
 	self:removeMagicBtnTex(LFDQueueFrameFindGroupButton)
-
 	if self.modBtnBs then
 		self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
 			local btnName
@@ -1149,6 +1150,7 @@ function aObj:LFDFrame()
 			end
 		end)
 	end
+
 	-- Specific List subFrame
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		btn = "LFDQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
@@ -1180,12 +1182,14 @@ function aObj:LFRFrame()
 	self:add2Table(self.uiKeys1, "LFRFrame")
 
 	self:addSkinFrame{obj=RaidBrowserFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
--->>-- LFR Parent Frame
--->>-- LFR Queue Frame
+
+	-- LFR Parent Frame
+	-- LFR Queue Frame
 	self:removeInset(LFRQueueFrameRoleInset)
 	self:removeInset(LFRQueueFrameCommentInset)
 	self:removeInset(LFRQueueFrameListInset)
 	LFRQueueFrameCommentExplanation:SetTextColor(self.BTr, self.BTg, self.BTb)
+
 	-- Specific List subFrame
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
 		btn = "LFRQueueFrameSpecificListButton"..i.."ExpandOrCollapseButton"
@@ -1194,14 +1198,14 @@ function aObj:LFRFrame()
 	end
 	self:skinScrollBar{obj=LFRQueueFrameSpecificListScrollFrame}
 
--->>-- LFR Browse Frame
+	-- LFR Browse Frame
 	self:removeInset(LFRBrowseFrameRoleInset)
 	self:skinDropDown{obj=LFRBrowseFrameRaidDropDown}
 	self:skinFFColHeads("LFRBrowseFrameColumnHeader", 7)
 	self:skinScrollBar{obj=LFRBrowseFrameListScrollFrame}
 	self:keepFontStrings(LFRBrowseFrame)
 
-	-->>-- Tabs (side)
+	-- Tabs (side)
 	for i = 1, 2 do
 		obj = _G["LFRParentFrameSideTab"..i]
 		obj:DisableDrawLayer("BACKGROUND")
@@ -2092,6 +2096,7 @@ function aObj:PVEFrame()
 	-- ScenarioFinder Frame
 	self:keepFontStrings(ScenarioFinderFrame)
 	self:removeInset(ScenarioFinderFrame.Inset)
+
 	-- ScenarioQueueFrame
 	ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
 	self:skinDropDown{obj=ScenarioQueueFrame.Dropdown}
