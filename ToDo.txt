@@ -8,220 +8,27 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	MoP Beta changes
-	-- Default Frame settings (, ri=true, x1=-3, y1=2, x2=1, y2=-2)
-√		- TOC version now 50001
-		NEW
-√		- Blizzard_BlackMarketUI
-√		- Blizzard_ChallengesUI
-?		- Blizzard_ItemUpgradeUI
-√		- Blizzard_PetBattleUI
-√		- Blizzard_PetJournal
-x		- ActionBarController
-√		- DestinyFrame
-√		- ExtraActionBar
-√		- FloatingPetBattleTooltip
-x		- FontStyleOverrides
-x		- FrameLocks
-√		- LootHistory
-√		- MonkHarmonyBar
-√		- OverrideActionBar
-√		- PVEFrame (a.k.a. GroupFinderFrame)
-x		- PetBattleStubs
-√		- PossessActionBar
-√		- PriestBar
-x		- QueueStatusFrame
-√		- ScenarioFinder
-x		- SharedPetBattleTemplates
-√		- StanceBar
-?		- VehicleSeatIndicator
-
-		UPD
-x		- Blizzard_AchievementUI
-x		- Blizzard_ArchaeologyUI
-x		- Blizzard_ArenaUI
-x		- Blizzard_AuctionUI
-x		- Blizzard_BarberShopUI
-x		- Blizzard_BattlefieldMinimap
-x		- Blizzard_BindingUI
-x		- Blizzard_CompactUnitFrameProfiles
-x		- Blizzard_Calendar
-x		- Blizzard_CombatLog
-x		- Blizzard_CombatText
-x		- Blizzard_CompactRaidFrameContainer
-x		- Blizzard_CompactRaidFrameManager
-x		- Blizzard_CompactRaidFrames
-√		- Blizzard_EncounterJournal
-√		- Blizzard_GlyphUI
-√		- Blizzard_GuildBankUI
-x		- Blizzard_GuildControlUI
-√		- Blizzard_GuildInfo
-x		- Blizzard_GuildNews
-x		- Blizzard_GuildRoster
-x		- Blizzard_GuildUI
-x		- Blizzard_InspectUI
-x			- InspectPaperDollFrame
-√			- InspectTalentFrame
-√		- Blizzard_ItemAlterationUI
-√		- Blizzard_ItemSocketingUI
-x		- Blizzard_LookingForGuildUI
-√		- Blizzard_MacroUI
-x		- Blizzard_RaidUI
-√		- Blizzard_ReforgingUI
-√		- Blizzard_TalentUI
-√		- Blizzard_TimeManager
-x		- Blizzard_TokenUI
-√		- Blizzard_TradeSkillUI
-x		- Blizzard_VoidStorageUI
-
-x		- ActionButton
-√		- AlertFrames
-√			- CriteriaAlertFrame
-√			- ChallengeModeAlertFrame
-√			- ScenarioAlertFrame
-√			- MoneyWonAlertFrame
-√			- LootWonAlertFrame
-x		- AlternatePowerBar
-x		- AnimationSystem
-√		- ArenaRegistrarFrame
-x		- AudioOptionsPanels
-x		- AutoComplete
-x		- BNet
-√		- BankFrame (BG changes with Paladin Holy Power)
-x		- Bindings
-?		- BuffFrame
-x		- CastingBarFrame
-x		- ChannelFrame
-√		- CharacterFrame
-√		- ChatConfigFrame
-√		- ChatFrame
-√		- CinematicFrame
-x		- CombatFeedback
-x		- CompactPartyFrame
-x		- CompactRaidGroup
-x		- CompactUnitFrame
-x		- Constants
-x		- EclipseBarFrame
-x		- EquipmentFlyout
-x		- FloatingChatFrame
-x		- FlowContainer
-x		- FocusFrame
-x		- FontStyles
-x		- Fonts
-√		- FriendsFrame
-x		- GameMenuFrame
-x		 -GlobalStrings
-√		- GossipFrame
-√			- NPCFriendshipStatusBar
-x		- GraphicsQualityLevels
-√		- GuildInviteFrame
-√		- GuildRegistrarFrame
-√		- HelpFrame
-x		- HybridScrollFrame
-x		- IconIntroAnimation
-x		- InterfaceOptionsFrame
-x		- InterfaceOptionsPanels
-x		- ItemButtonTemplate
-x		- ItemRef
-√		- ItemTextFrame
-√		- LFDFrame
-√		- LFGFrame
-√		- LFRFrame
-x		- LevelUpDisplay
-√		- LootFrame
-≈			- BonusRoll Frame
-√			- BonusRollLootWon Frame
-√			- BonusRollMoneyWon Frame
-≈			- MasterLooter Frame
-x		- MacOptionsFrame
-√		- MailFrame
-x		- MainMenuBar
-√		- MainMenuBarMicroButtons
-√		- MerchantFrame
-x		- Minimap
-√		- ModelFrames
-x		- MoneyFrame
-x		- MoneyInputFrame
-x		- MultiActionBars
-x		- PVPFrame
-x		- PaladinPowerBar
-√		- PaperDollFrame
-x		- PartyFrameTemplates
-x		- PartyMemberFrame
-x		- PetActionBarFrame
-x		- PetFrame
-x		- PetPaperDollFrame
-√		- PetitionFrame
-x		- PlayerFrame
-√		- QuestFrame
-√		- QuestFrameTemplates
-√		- QuestInfo
-√		- QuestLogFrame
-√		- RaidFinder
-x		- RaidFrame
-x		- RaidWarning
-x		- ReadyCheck
-x		- ReputationFrame
-x		- RestrictedEnvironment
-x		- RolePoll
-x		- RuneFrame
-x		- ScrollOfResurrection
-x		- SecureGroupHeaders
-x		- SecureStateDriver
-x		- SecureTemplates
-x		- ShardBar
-√		- SpellBookFrame
-x		- SpellFlyout
-x		- StaticPopup
-√		- TabardFrame
-x		- TalentFrameBase
-x		- TargetFrame
-√		- TaxiFrame
-x		- TextStatusBar
-x		- Timer
-x		- TotemFrame
-√		- TradeFrame
-x		- TutorialFrame
-x		- UIDropDownMenu
-x		- UIPanelTemplates
-x		- UIParent
-x		- UnitFrame (classifications)
-x		- UnitPopup
-√		- UnitPowerBarAlt
-√			- PlayerPowerBarAlt
-x		- VideoOptionsPanel
-x		- WatchFrame
-x		- WorldMapFrame
-x		- WorldMapFrameTemplates
-x		- WorldStateFrame
-x		- ZoneText
-
-		DEL
-√		- BonusActionBarFrame
-√		- VehicleMenuBar
-
-		UI
-√		- Dungeon & Raid Finder consolidated into Group Finder, includes Scenario finder and Challenges Mode
-√		- Spellbook now split into Active and Passive pages
-√		- Vendor filter (dd) added to merchant frame
-?		- Buff consolidation now permanent, new tooltip with buff info
-
-√	O	Rework the button detection code as Texture names can't be used, they're not available unless frame is open
-
-x	I	Nameplates, rework the code
-
-?	I 	Ace3 buttons on IOP, too many textures/gradients/skins ?
-
-√	O	Add new skin options
-
-√	O	Remove GearManager references
-
-√	O	Review ALL options text
-
-==> Other changes
-√	O	Reorganise code into PlayerFrames/UIFrames and alphabetise the functions
-
-√	I	Add button borders to next/prev buttons
-
-√	I	Add button borders to other square buttons
-
+	
+	I	XLootMonitor, reported by DarkLimpan, 02.07.12
+		- I'm having a weird issue between Skinner and XlootMonitor. With my normal Skinner-settings, the XlootMonitor loot list has a white background making it a bit hard to see. If I were to move my savedvariable-files for skinner out of the wtf-folder, then it's black and just fine. Except the rest of my UI just looks ugly.
+		
+	S	Bulk Mail, requested by frostalotz, 03.09.12
+	
+	S	Bulk Mail Inbox, requested by frostalotz, 03.09.12
+	
+√	I	Missing localisations, reported by corys2005, 04.09.10
+		- too zealous in updating them
+		
+	I	Altoholic, reported by gamemaster128, 04.09.12
+	
+?	I	ARL, reported by kaltoran, 04.09.12
+	
+√	I	Dungeon Browser/LFD frames overlap, reported by magicjohansen, 04.09.12
+	
+x	I	Command line access, reported by zaitezaite, 04.09.12
+		-  I can't type /skinner any more? Options have to be accessed through the interface/addons menu
+		
+	I	MiddleFrames, reported by zaitezaite, 04.09.12
+		-  the 2nd one doesn't appear unless I untick/retick to show it
+		
+	
