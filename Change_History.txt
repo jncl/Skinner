@@ -1,3 +1,17 @@
+b5.16016.1
+Jncl:
+	ToDo.txt
+	Beta changes
+	Disable Nameplates skinning
+	Updated embedded libraries
+	Applied all Beta changes as they are now live
+	MoP Beta changes for all new Frames and functions
+	Unchanged files that needed to be staged ??
+	Changes after "master" merge
+	Beta changes so far
+	ToDo.txt (15640)
+	Initial MoP Beta changes
+
 b4.15595.10
 Jncl:
 	ToDO.txt
