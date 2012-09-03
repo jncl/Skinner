@@ -659,7 +659,7 @@ function aObj:Options()
 			},
 		},
 
-		NPCFrames = {
+		["NPC Frames"] = {
 			type = "group",
 			name = self.L["NPC Frames"],
 			get = function(info) return db[info[#info]] end,
@@ -781,7 +781,7 @@ function aObj:Options()
 			},
 		},
 
-		PlayerFrames = {
+		["Player Frames"] = {
 			type = "group",
 			name = self.L["Player Frames"],
 			get = function(info) return db[info[#info]] end,
@@ -803,8 +803,8 @@ function aObj:Options()
 					type = "execute",
 					order = 1,
 					width = "full",
-					name = self.L["Disable all Character Frames"],
-					desc = self.L["Disable all the Character Frames from being skinned"],
+					name = self.L["Disable all Player Frames"],
+					desc = self.L["Disable all the Player Frames from being skinned"],
 					func = function()
 						local bVal = IsAltKeyDown() and true or false
 						for _, keyName in pairs(self.pKeys1) do
@@ -1120,7 +1120,7 @@ function aObj:Options()
 			},
 		},
 
-		UIFrames = {
+		["UI Frames"] = {
 			type = "group",
 			name = self.L["UI Frames"],
 			get = function(info) return db[info[#info]] end,
@@ -1594,7 +1594,7 @@ function aObj:Options()
 			},
 		},
 
-		DisabledSkins = {
+		["Disabled Skins"] = {
 			type = "group",
 			name = self.L["Disable Addon Skins"],
 			get = function(info) return db.DisabledSkins[info[#info]] end,
@@ -1615,7 +1615,7 @@ function aObj:Options()
 	-- add DisabledSkins options
 	local function addDSOpt(name, lib)
 
-		aObj.optTables["DisabledSkins"].args[name] = {
+		aObj.optTables["Disabled Skins"].args[name] = {
 			type = "toggle",
 			name = name..(lib and " (Lib)" or ""),
 			desc = self.L["Toggle the skinning of "]..name,
@@ -1626,25 +1626,19 @@ function aObj:Options()
 	for addonName in pairs(self.stdAddons) do
 		addDSOpt(addonName)
 	end
-	-- for _, addonName in pairs(self.oddlyNamedAddons) do
-	-- 	addDSOpt(addonName)
-	-- end
 	for _, addonName in pairs(self.libsToSkin) do
 		addDSOpt(addonName, true)
 	end
 	for addonName in pairs(self.lodAddons) do
 		addDSOpt(addonName)
 	end
-	-- for _, addonName in pairs(self.oddlyNamedLoDAddons) do
-	-- 	addDSOpt(addonName)
-	-- end
 
 	-- add DB profile options
 	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
 	-- option tables list
 	local optNames = {
-		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPCFrames", "PlayerFrames", "UIFrames", "DisabledSkins", "Profiles"
+		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"
 	}
 	-- register the options tables and add them to the blizzard frame
 	self.ACR = LibStub("AceConfigRegistry-3.0")
