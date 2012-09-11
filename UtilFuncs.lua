@@ -126,6 +126,15 @@ end
 
 function aObj:checkAndRun(funcName, quiet)
 
+	-- don't skin any Addons whose skins are flagged as disabled
+	if self.db
+	and self.db.profile.DisabledSkins[funcName] then
+		if self.db.profile.Warnings then
+			self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled")
+		end
+		return
+	end
+
 	if type(self[funcName]) == "function" then
 		return safecall(funcName, nil, quiet)
 	else
@@ -137,7 +146,7 @@ function aObj:checkAndRun(funcName, quiet)
 end
 
 function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
-
+	-- self:Debug("checkAndRunAddOn: [%s, %s, %s]", addonName, LoD, addonFunc)
 	if not addonFunc then addonFunc = addonName end
 
 	-- don't skin any Addons whose skins are flagged as disabled

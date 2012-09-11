@@ -2,13 +2,13 @@ local aName, aObj = ...
 
 local blizzLoDFrames = {
 	-- player
-	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "RaidUI", "TalentUI", 
+	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "RaidUI", "TalentUI",
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	--AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
 	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "PetJournal", "TimeManager", 
+	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "PetJournal", "TimeManager",
 	--[=[
 		ArenaUI -- unitframes skinned in UnitFrames.lua
 	--]=]
@@ -27,21 +27,21 @@ function aObj:BlizzardFrames()
 		-- player
 		"Buffs",
 		-- CastingBar, checked with Quartz below
-		"CharacterFrames", "CompactFrames", "ContainerFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "GhostFrame", "GuildInvite", "LootFrames", "LootHistory", "MirrorTimers", "OverrideActionBar", "PVPFrame", 
+		"CharacterFrames", "CompactFrames", "ContainerFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "GhostFrame", "GuildInvite", "LootFrames", "LootHistory", "MirrorTimers", "OverrideActionBar", "PVPFrame",
 		-- QuestLog, checked with EQL3 & QuestGuru below
-		"ReadyCheck", "RolePollPopup", "ScrollOfResurrection", "SpellBookFrame", "SpellFlyout", "StackSplit", "TradeFrame", "WatchFrame", 
+		"ReadyCheck", "RolePollPopup", "ScrollOfResurrection", "SpellBookFrame", "SpellFlyout", "StackSplit", "TradeFrame", "WatchFrame",
 	    -- npc
-		"ArenaRegistrar", "BankFrame", "GossipFrame", "GuildRegistrar", "MerchantFrame", "Petition", "PetStableFrame", "QuestFrame", "SideDressUpFrame", "Tabard", "TaxiFrame", 
+		"ArenaRegistrar", "BankFrame", "GossipFrame", "GuildRegistrar", "MerchantFrame", "Petition", "PetStableFrame", "QuestFrame", "SideDressUpFrame", "Tabard", "TaxiFrame",
 		-- ui
 		"AlertFrames", "AutoComplete", "BNFrames", "ChatButtons", "ChatConfig", "ChatEditBox", "ChatFrames", "ChatMenus", "ChatMinimizedFrames", "ChatTabs", "ChatTemporaryWindow", "CinematicFrame",  "CoinPickup", "ColorPicker", "DestinyFrame", "DropDownPanels", "HelpFrame", "ItemText", "LevelUpDisplay", "LFDFrame", "LFGFrame", "LFRFrame", "MailFrame",
 		-- MainMenuBar, checked with Bongos below
-		"MenuFrames", "Minimap", 
+		"MenuFrames", "Minimap",
 		-- MinimapButtons, done with timer
 		-- ModelFrames, checked with CloseUp below
 		-- Nameplates, checked with Aloft below
-		"PetBattleUI", "PVEFrame", "RaidFrame", "ScriptErrors", "StaticPopups", 
+		"PetBattleUI", "PVEFrame", "RaidFrame", "ScriptErrors", "StaticPopups",
 		-- Tooltips, checked below
-		"Tutorial", "WorldMap", "WorldState", 
+		"Tutorial", "WorldMap", "WorldState",
 	}
 
 	-- optional frames
@@ -156,8 +156,8 @@ function aObj:AddonFrames()
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
 	-- used for Addons that aren't LoadOnDemand
-	for _, v in pairs(self.stdAddons) do
-		self:checkAndRunAddOn(v)
+	for addon in pairs(self.stdAddons) do
+		self:checkAndRunAddOn(addon, nil, self.stdAddons[addon])
 	end
 	self.stdAddons = nil
 
@@ -165,8 +165,8 @@ function aObj:AddonFrames()
 	self:checkAndRunAddOn("EnhancedTradeSkills", nil, "EnhancedTradeCrafts")
 
 	-- skin the Blizzard LoD frames if they have already been loaded by other addons
-	for k, v in pairs(blizzLoD) do
-		if IsAddOnLoaded(k) then self:checkAndRun(v) end
+	for addon, skin in ipairs(blizzLoD) do
+		if IsAddOnLoaded(addon) then self:checkAndRun(skin) end
 	end
 
 	-- load MSBTOptions here if FuBar_MSBTFu is loaded
@@ -175,12 +175,12 @@ function aObj:AddonFrames()
 	end
 
 	-- skin library objects
-	for k, v in pairs(self.libsToSkin) do
-		if LibStub(k, true) then
-			if self[v] then self:checkAndRun(v) -- not an addon in its own right
+	for lib, skin in pairs(self.libsToSkin) do
+		if LibStub(lib, true) then
+			if self[skin] then self:checkAndRun(skin) -- not an addon in its own right
 			else
 				if self.db.profile.Warnings then
-					self:CustomPrint(1, 0, 0, v, "loaded but skin not found in SkinMe directory")
+					self:CustomPrint(1, 0, 0, skin, "loaded but skin not found in SkinMe directory")
 				end
 			end
 		end
@@ -248,7 +248,7 @@ aObj.lodAddons["DBM-GUI"] = "DBMGUI"
 
 local prev_addon
 function aObj:LoDFrames(addon)
-	-- self:Debug("LoDFrames: [%s]", addon)
+	-- self:Debug("LoDFrames: [%s][%s]", addon, self.lodAddons[addon])
 
 	-- ignore multiple occurrences of the same addon
 	if addon == prev_addon then return end
@@ -258,7 +258,7 @@ function aObj:LoDFrames(addon)
 	if blizzLoD[addon] then self:checkAndRun(blizzLoD[addon]) end
 
 	-- used for User LoadOnDemand Addons
-	if self.lodAddons[addon] then self:checkAndRunAddOn(self.lodAddons[addon], true) end
+	if self.lodAddons[addon] then self:checkAndRunAddOn(addon, true, self.lodAddons[addon]) end
 
 	-- handle addons linked to the InspectUI
 	if addon == "Blizzard_InspectUI" then
