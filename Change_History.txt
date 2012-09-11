@@ -1,3 +1,17 @@
+b5.16016.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Handle oddly named AddOns properly, code tidy up
+	Skin ChallengesFrame Leaderboard button
+	Bugfix for Gradient
+	Bugfix for SpellBook frame
+	Make MiddleFrames easier to see when first created
+	Bugfix to stop tab buttons being skinned twice
+	Updated skins:
+	Altoholic, CombustionHelper, DBM, LibQTip, MogIt, Outfitter, ProfessionTabs, Recount, Skada & UrbanAchiever
+	Skinned BulkMail2, FarmIt2 & LibDropdown
+
 b5.16016.2
 Jncl:
 	ToDo.txt
