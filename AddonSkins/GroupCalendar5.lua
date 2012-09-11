@@ -1,48 +1,34 @@
-if not Skinner:isAddonEnabled("GroupCalendar5") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("GroupCalendar5") then return end
 
-function Skinner:GroupCalendar5()
+function aObj:GroupCalendar5()
 
 	local function skinSEB(frame)
 		
 		-- Scrolling EditBox
-		self:addSkinFrame{obj=frame, x1=-6, y1=4, y2=-6}
+		aObj:addSkinFrame{obj=frame, x1=-6, y1=4, y2=-6}
 		frame.BackgroundTextures:Hide()
 		frame.ScrollbarTrench:Hide()
-		self:skinSlider(frame.Scrollbar)
+		self:skinSlider{obj=frame.Scrollbar, size=3}
 		
 	end
-
-
 	local function skinDD(frame)
 		
 		-- DropDown Menu
-		if not self.db.profile.TexturedDD then self:keepFontStrings(frame)
+		if not aObj.db.profile.TexturedDD then aObj:keepFontStrings(frame)
 		else
-			local leftTex, rightTex, midTex = frame:GetRegions()
-			leftTex:SetAlpha(0)
-			leftTex:SetHeight(18)
-			midTex:SetTexture(self.itTex)
-			midTex:SetTexCoord(0, 1, 0, 1)
-			rightTex:SetAlpha(0)
-			rightTex:SetHeight(18)
-			-- move the middle texture
-			midTex:ClearAllPoints()
-			midTex:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, -2)
-			midTex:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -3, 3)
-			
+			aObj:skinDropDown{obj=frame, x1=0, y1=1, x2=2, y2=-1}
 		end
 		
 	end
 	
 	local gcUI = GroupCalendar.UI
 	local gcW = gcUI.Window
-	local tV = gcW.TabbedView
 	
 	-- hook this to manage Tabs
 	if self.isTT then
 		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook(tV.Tabs, "SelectTab",function(this, ...)
---			self:Debug("Tabs: [%s, %s]", #this.Tabs, this.SelectedTab)
+		self:SecureHook(gcW.TabbedView.Tabs, "SelectTab",function(this, ...)
 			for _, vTab in ipairs(this.Tabs) do
 				local tabSF = self.skinFrame[vTab]
 				if vTab == this.SelectedTab then
@@ -61,56 +47,61 @@ function Skinner:GroupCalendar5()
 -->>-- Tabbed Views
 	-- Month View
 	-- Settings View
+	self:SecureHookScript(gcW.SettingsView, "OnShow", function(this)
+		skinDD(this.ThemeMenu)
+		skinDD(this.StartDayMenu)
+		self:Unhook(gcW.SettingsView, "OnShow")
+	end)
 	-- Partners View
-	local pV = gcW.PartnersView
-	self:skinEditBox{obj=pV.CharacterName, regs={9}}
-	self:glazeStatusBar(pV.ProgressBar, 0)
+	self:skinEditBox{obj=gcW.PartnersView.CharacterName, regs={9, 10}}
+	self:glazeStatusBar(gcW.PartnersView.ProgressBar, 0)
 	-- Export View
-	local eV = gcW.ExportView
-	skinSEB(eV.ExportData)
+	skinSEB(gcW.ExportView.ExportData)
 	-- About View
 
 -->>-- NewerVersion Frame
 	self:addSkinFrame{obj=gcW.NewerVersionFrame, kfs=true, y1=1, y2=-1}
 	
 -->>-- ClassLimits Dialog
-	local clD = gcUI.ClassLimitsDialog
-	skinDD(clD.PriorityMenu)
-	for _, class in pairs(self.classTable) do	
-		self:skinEditBox{obj=clD[strupper(class)].Min, regs={9}, noWidth=true}
-		self:skinEditBox{obj=clD[strupper(class)].Max, regs={9}, noWidth=true}
-	end
-	skinDD(clD.MaxPartySizeMenu)
-	self:addSkinFrame{obj=clD, kfs=true, y1=4, y2=4}
+	self:SecureHookScript(gcUI.ClassLimitsDialog, "OnShow", function(this)
+		skinDD(this.PriorityMenu)
+		for _, class in pairs(self.classTable) do	
+			self:skinEditBox{obj=this[strupper(class)].Min, regs={9}, noWidth=true}
+			self:skinEditBox{obj=this[strupper(class)].Max, regs={9}, noWidth=true}
+		end
+		skinDD(this.MaxPartySizeMenu)
+		self:Unhook(gcUI.ClassLimitsDialog, "OnShow")
+	end)
+	self:addSkinFrame{obj=gcUI.ClassLimitsDialog, kfs=true, y1=4, y2=4}
 	
 -->>-- RoleLimits Dialog
-	local rlD = gcUI.RoleLimitsDialog
-	skinDD(rlD.PriorityMenu)
-	for _, role in pairs({"H", "T", "R", "M"}) do
-		self:skinEditBox{obj=rlD[role].Min, regs={9}, noWidth=true}
-		self:skinEditBox{obj=rlD[role].Max, regs={9}, noWidth=true}
-		for _, class in pairs(self.classTable) do	
-			self:skinEditBox{obj=rlD[role][strupper(class)], regs={9}, noWidth=true}
+	self:SecureHookScript(gcUI.RoleLimitsDialog, "OnShow", function(this)
+		skinDD(this.PriorityMenu)
+		for _, role in pairs({"H", "T", "R", "M"}) do
+			self:skinEditBox{obj=this[role].Min, regs={9}, noWidth=true}
+			self:skinEditBox{obj=this[role].Max, regs={9}, noWidth=true}
+			for _, class in pairs(self.classTable) do	
+				self:skinEditBox{obj=this[role][strupper(class)], regs={9}, noWidth=true}
+			end
 		end
-	end
-	skinDD(rlD.MaxPartySizeMenu)
-	self:addSkinFrame{obj=rlD, kfs=true, y1=4, y2=4}
+		skinDD(this.MaxPartySizeMenu)
+		self:skinButton{obj=this.ToggleClassReservations}
+		self:Unhook(gcUI.RoleLimitsDialog, "OnShow")
+	end)
+	self:addSkinFrame{obj=gcUI.RoleLimitsDialog, kfs=true, y1=4, y2=4}
 
 -->>-- DaySidebar
-	local dSB = gcW.DaySidebar
-	dSB.Foreground:Hide()
-	dSB.ScrollingList.ScrollbarTrench:Hide()
-	self:skinScrollBar{obj=dSB.ScrollingList.ScrollFrame}
-	self:addSkinFrame{obj=dSB, kfs=true, bg=true, x1=-4, y1=2, x2=2, y2=-7}
+	gcW.DaySidebar.Foreground:Hide()
+	gcW.DaySidebar.ScrollingList.ScrollbarTrench:Hide()
+	self:skinScrollBar{obj=gcW.DaySidebar.ScrollingList.ScrollFrame}
+	self:addSkinFrame{obj=gcW.DaySidebar, kfs=true, bg=true, x1=-4, y1=2, x2=2, y2=-7}
 
 -->>-- EventSidebar
 	local eSB = gcW.EventSidebar
-	local etV = eSB.TabbedView
 	-- hook this to manage Tabs
 	if self.isTT then
 		-- hook this to change the texture for the Active and Inactive tabs
-		self:SecureHook(etV.Tabs, "SelectTab",function(this, ...)
---			self:Debug("Tabs: [%s, %s]", #this.Tabs, this.SelectedTab)
+		self:SecureHook(eSB.TabbedView.Tabs, "SelectTab",function(this, ...)
 			for _, vTab in ipairs(this.Tabs) do
 				local tabSF = self.skinFrame[vTab]
 				if vTab == this.SelectedTab then
@@ -124,45 +115,72 @@ function Skinner:GroupCalendar5()
 	eSB.Foreground:Hide()
 	self:addSkinFrame{obj=eSB, kfs=true, bg=true, x1=-4, y1=2, x2=2, y2=-7}
 -->>-- Tabbed Views
-	-- Event View
-	-- Edit View
-	local eeV = eSB.EventEditor
-	-- Date Picker
-	skinDD(eeV.DatePicker.MonthMenu)
-	skinDD(eeV.DatePicker.DayMenu)
-	skinDD(eeV.DatePicker.YearMenu)
-	skinDD(eeV.EventTypeMenu)
-	self:skinEditBox{obj=eeV.EventTitle, regs={9}}
-	skinDD(eeV.EventModeMenu)
-	self:skinEditBox{obj=eeV.LevelRangePicker.MinLevel, regs={9}, noWidth=true}
-	self:skinEditBox{obj=eeV.LevelRangePicker.MaxLevel, regs={9}, noWidth=true}
-	skinSEB(eeV.Description)
-	-- Time Picker
-	skinDD(eeV.TimePicker.HourMenu)
-	skinDD(eeV.TimePicker.MinuteMenu)
-	skinDD(eeV.TimePicker.AMPMMenu)
-	skinDD(eeV.DurationMenu)
-	skinDD(eeV.RepeatMenu)
-	skinDD(eeV.LockoutMenu)
-	-- Invite View
-	local eiV = eSB.EventInvite
-	self:skinEditBox{obj=eiV.CharacterName, regs={9}, x=-2}
-	eiV.ExpandAll.TabLeft:SetAlpha(0)
-	eiV.ExpandAll.TabMiddle:SetAlpha(0)
-	eiV.ExpandAll.TabRight:SetAlpha(0)
-	eiV.ScrollingList.ScrollbarTrench:Hide()
-	self:skinScrollBar{obj=eiV.ScrollingList.ScrollFrame}
-	self:keepFontStrings(eiV.StatusSection)
-	-- Group View
-	local egV = eSB.EventGroup
-	skinDD(egV.ViewMenu)
-	egV.ExpandAll.TabLeft:SetAlpha(0)
-	egV.ExpandAll.TabMiddle:SetAlpha(0)
-	egV.ExpandAll.TabRight:SetAlpha(0)
-	egV.ScrollingList.ScrollbarTrench:Hide()
-	self:skinScrollBar{obj=egV.ScrollingList.ScrollFrame}
-	self:keepFontStrings(egV.TotalsSection)
-	self:keepFontStrings(egV.StatusSection)
+ 	-- Event View
+ 	-- Edit View
+	self:SecureHookScript(eSB.EventEditor, "OnShow", function(this)
+		this.Background:SetAlpha(0)
+		skinDD(this.EventTypeMenu)
+		self:skinEditBox{obj=this.EventTitle, regs={9}}
+		skinDD(this.EventModeMenu)
+		self:skinEditBox{obj=this.LevelRangePicker.MinLevel, regs={9}, noWidth=true}
+		self:skinEditBox{obj=this.LevelRangePicker.MaxLevel, regs={9}, noWidth=true}
+		skinSEB(this.Description)
+		skinDD(this.DatePicker.MonthMenu)
+		skinDD(this.DatePicker.DayMenu)
+		skinDD(this.DatePicker.YearMenu)
+		skinDD(this.TimePicker.HourMenu)
+		skinDD(this.TimePicker.MinuteMenu)
+		skinDD(this.TimePicker.AMPMMenu)
+		skinDD(this.DurationMenu)
+		skinDD(this.RepeatMenu)
+		skinDD(this.LockoutMenu)
+		self:Unhook(eSB.EventEditor, "OnShow")
+	end)
+ 	-- Invite View
+	self:skinEditBox{obj=eSB.EventInvite.CharacterName, regs={9, 10}, x=-2}
+	self:keepFontStrings(eSB.EventInvite.StatusSection)
+	eSB.EventInvite.ScrollingList.ScrollbarTrench:Hide()
+	self:skinScrollBar{obj=eSB.EventInvite.ScrollingList.ScrollFrame}
+	eSB.EventInvite.ExpandAll.TabLeft:SetAlpha(0)
+	eSB.EventInvite.ExpandAll.TabMiddle:SetAlpha(0)
+	eSB.EventInvite.ExpandAll.TabRight:SetAlpha(0)
+	self:skinButton{obj=eSB.EventInvite.ExpandAll, mp2=true}
+	self:SecureHook(eSB.EventInvite, "Refresh", function(this)
+		for i = 1, #this.ScrollingList.ItemFrames do
+			if this.ScrollingList.ItemFrames[i].ExpandButton then
+				self:skinButton{obj=this.ScrollingList.ItemFrames[i].ExpandButton, mp2=true}
+			end
+		end
+		self:Unhook(eSB.EventInvite, "Refresh")
+	end)
+ 	-- Group View
+	self:SecureHookScript(eSB.EventGroup, "OnShow", function(this)
+		skinDD(this.ViewMenu)
+		self:keepFontStrings(this.TotalsSection)
+		self:keepFontStrings(this.StatusSection)
+		self:skinButton{obj=this.StartEventButton}
+		self:skinButton{obj=this.StopEventButton}
+		self:skinButton{obj=this.AutoSelectButton}
+		self:skinButton{obj=this.InviteSelectedButton}
+		this.ScrollingList.ScrollbarTrench:Hide()
+		self:skinScrollBar{obj=this.ScrollingList.ScrollFrame}
+		this.ExpandAll.TabLeft:SetAlpha(0)
+		this.ExpandAll.TabMiddle:SetAlpha(0)
+		this.ExpandAll.TabRight:SetAlpha(0)
+		self:skinButton{obj=this.ExpandAll, mp2=true}
+		self:Unhook(eSB.EventGroup, "OnShow")
+	end)
+	self:SecureHook(eSB.EventGroup, "Refresh", function(this)
+		for i = 1, #this.ScrollingList.ItemFrames do
+			if this.ScrollingList.ItemFrames[i].CheckButton then
+				self:skinButton{obj=this.ScrollingList.ItemFrames[i].CheckButton, mp2=true}
+			end
+			self:skinButton{obj=this.ScrollingList.ItemFrames[i].InviteButton}
+			self:skinButton{obj=this.ScrollingList.ItemFrames[i].ConfirmButton}
+			self:skinButton{obj=this.ScrollingList.ItemFrames[i].StandbyButton}
+		end
+		self:Unhook(eSB.EventGroup, "Refresh")
+	end)
 	
 -->>-- All Tabs
 	for i = 1, MC2UIElementsLib.TabNameIndex - 1 do

@@ -222,7 +222,7 @@ function aObj:OnInitialize()
 	self.esTex = [[Interface\Buttons\UI-Quickslot2]]
 
 	-- class table
-	self.classTable = {"Druid", "Priest", "Paladin", "Hunter", "Rogue", "Shaman", "Mage", "Warlock", "Warrior", "DeathKnight"}
+	self.classTable = {"DeathKnight", "Druid", "Hunter", "Mage", "Monk", "Paladin", "Priest", "Rogue", "Shaman", "Warlock", "Warrior",}
 
 	-- store Addons managed by LoadManagers
 	self.lmAddons = {}
@@ -992,7 +992,6 @@ function aObj:keepRegions(obj, regions)
 	assert(obj, "Missing object kR\n"..debugstack())
 --@end-alpha@
 
---	if not frame then return end
 	regions = revTable(regions)
 
 	for k, reg in pairs{obj:GetRegions()} do
@@ -1002,7 +1001,10 @@ function aObj:keepRegions(obj, regions)
 		then
 			reg:SetAlpha(0)
 --@debug@
-			if reg:IsObjectType("FontString") then self:Debug("kr FS: [%s, %s]", obj:GetName() or "<Anon>", k) end
+			if reg:IsObjectType("FontString") then
+				self:Debug("kr FS: [%s, %s]", obj:GetName() or "<Anon>", k)
+				print(debugstack(1, 5, 2))
+			end
 --@end-debug@
 		end
 	end
@@ -1163,7 +1165,10 @@ function aObj:removeRegions(obj, regions)
 		then
 			reg:SetAlpha(0)
 --@debug@
-			if reg:IsObjectType("FontString") then self:Debug("rr FS: [%s, %s]", obj:GetName() or "<Anon>", k) end
+			if reg:IsObjectType("FontString") then
+				self:Debug("rr FS: [%s, %s]", obj:GetName() or "<Anon>", k)
+				print(debugstack(1, 5, 2))
+			end
 --@end-debug@
 		end
 	end
@@ -1313,6 +1318,7 @@ local function __skinDropDown(opts)
 		if opts.obj:GetName():find("tekKonfigDropdown") -- ignore tekKonfigDropdown
 		or not _G[opts.obj:GetName().."Left"] -- ignore Az DropDowns
 		and not opts.obj.leftTexture -- handle FeedbackUI ones
+		and not opts.obj.LeftTexture -- handle MC2UIElementsLib ones (used by GroupCalendar5)
 		then
 			return
 		end
