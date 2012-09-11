@@ -661,7 +661,7 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 
 	-- don't apply a gradient if required
 	if not prdb.Gradient.char then
-		for _, v in pairs(self.gradFrames["c"]) do
+		for _, v in pairs(self.gradFrames["p"]) do
 			if v == obj then return end
 		end
 	end
