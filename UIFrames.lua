@@ -386,6 +386,8 @@ function aObj:ChallengesUI() -- LoD
 	-- ChallengesLeaderboard Frame
 	self:keepFontStrings(ChallengesLeaderboardFrameHbar)
 	self:addSkinFrame{obj=ChallengesLeaderboardFrame, ft=ftype, kfs=true, ofs=-10}
+	self:removeRegions(ChallengesFrameLeaderboard, {1})
+	self:skinButton{obj=ChallengesFrameLeaderboard}
 
 end
 
