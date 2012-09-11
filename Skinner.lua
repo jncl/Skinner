@@ -299,6 +299,8 @@ function aObj:OnEnable()
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 	-- track when Trade Skill is opened (used by MrTrader_SkillWindow)
 	self:RegisterEvent("TRADE_SKILL_SHOW")
+	-- track when trade frame is opened (used by ProfessionTabs)
+	self:RegisterEvent("TRADE_SHOW")
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
 	self:ScheduleTimer(function() self:RegisterEvent("ADDON_LOADED") end, self.db.profile.Delay.Init)
 	-- skin the Blizzard frames

@@ -1,6 +1,7 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("DBM-Core") then return end
 
+
 function aObj:DBMGUI()
 
 	-- (BUGFIX for DBM): reparent the Huge Bar statusBar
@@ -17,9 +18,9 @@ function aObj:DBMGUI()
 
 		for _, subPanel in pairs(panel.areas) do
 			if not aObj.skinned[subPanel] then
-				aObj:applySkin(subPanel.frame)
+				aObj:applySkin(subPanel.frame) -- use apply skin so panel contents are visible
 			end
-			-- check to see if any children are dropdowns
+			-- check to see if any children are dropdowns or buttons
 			for _, child in ipairs{subPanel.frame:GetChildren()} do
 				if aObj:isDropDown(child) then
 					aObj:skinDropDown{obj=child, rp=true, x2=35}
@@ -29,6 +30,10 @@ function aObj:DBMGUI()
 					then
 						modelDD = child
 					end
+				elseif child:IsObjectType("Button")
+				and not child.GetChecked
+				then
+					self:skinButton{obj=child, as=true} -- make sure text is above button skin
 				end
 			end
 			titleText = _G[subPanel.framename.."Title"]:GetText()
@@ -63,11 +68,44 @@ function aObj:DBMGUI()
 	end
 
 -->>--	Options Frame
+	-- the tabs skinning code is here so tab buttons don't get skinned twice
+	-- Options Frame Tabs
+	for i = 1, 2 do
+		tab = _G["DBM_GUI_OptionsFrameTab"..i]
+		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
+		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=-2}
+		tabSF.ignore = true -- ignore size changes
+		tabSF.up = true -- tabs grow upwards
+		-- set textures here first time thru as it's LoD
+		if i == 1 then
+			if self.isTT then self:setActiveTab(tabSF) end
+		else
+			if self.isTT then self:setInactiveTab(tabSF) end
+		end
+		if self.isTT then
+			self:SecureHookScript(tab, "OnClick", function(this)
+				for i = 1, 2 do
+					local tabSF = self.skinFrame[_G["DBM_GUI_OptionsFrameTab"..i]]
+					if i == this:GetID() then self:setActiveTab(tabSF) else self:setInactiveTab(tabSF) end
+				end
+			end, true)
+		end
+	end
+	-- skin toggle buttons
+	local frame, btn
+	for _, v in pairs{"BossMods", "DBMOptions"} do
+		frame = _G["DBM_GUI_OptionsFrame"..v]
+		for i = 1, #frame.buttons do
+			btn = _G["DBM_GUI_OptionsFrame"..v.."Button"..i.."Toggle"]
+			self:skinButton{obj=btn, mp2=true, plus=i==1 and true or nil}
+		end
+	end
+
 	self:skinSlider{obj=DBM_GUI_OptionsFrameBossModsListScrollBar}
 	self:addSkinFrame{obj=DBM_GUI_OptionsFrameBossMods, kfs=true}
 	self:addSkinFrame{obj=DBM_GUI_OptionsFrameDBMOptions, kfs=true}
 	self:skinScrollBar{obj=DBM_GUI_OptionsFramePanelContainerFOV}
-	self:addSkinFrame{obj=DBM_GUI_OptionsFramePanelContainer, bas=true} -- use apply skin so button text is visible
+	self:addSkinFrame{obj=DBM_GUI_OptionsFramePanelContainer, bas=true}
 	self:addSkinFrame{obj=DBM_GUI_OptionsFrame, kfs=true, hdr=true}
 	-- skin dropdown
 	self:addSkinFrame{obj=DBM_GUI_DropDown}
@@ -105,36 +143,10 @@ function aObj:DBMGUI()
 		end
 	end
 
-	-- Options Frame Tabs
-	for i = 1, 2 do
-		tab = _G["DBM_GUI_OptionsFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=-2}
-		tabSF.ignore = true -- ignore size changes
-		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-		if self.isTT then
-			self:SecureHookScript(tab, "OnClick", function(this)
-				for i = 1, 2 do
-					local tabSF = self.skinFrame[_G["DBM_GUI_OptionsFrameTab"..i]]
-					if i == this:GetID() then self:setActiveTab(tabSF) else self:setInactiveTab(tabSF) end
-				end
-			end, true)
-		end
-	end
-
-	-- skin toggle buttons
-	local frame, btn
-	for _, v in pairs{"BossMods", "DBMOptions"} do
-		frame = _G["DBM_GUI_OptionsFrame"..v]
-		for i = 1, #frame.buttons do
-			btn = _G["DBM_GUI_OptionsFrame"..v.."Button"..i.."Toggle"]
-			self:skinButton{obj=btn, mp2=true, plus=i==1 and true or nil}
+	-- skin the Bosses LoadAddOn buttons
+	for k,addon in ipairs(DBM.AddOns) do
+		if addon.panel.frame:GetNumChildren() == 1 then
+			self:skinButton{obj=self:getChild(addon.panel.frame, 1)}
 		end
 	end
 

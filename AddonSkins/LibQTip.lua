@@ -1,8 +1,9 @@
+local aName, aObj = ...
 -- This is a Library
 
-Skinner.ignoreLQTT = {}
+aObj.ignoreLQTT = {}
 
-function Skinner:LibQTip()
+function aObj:LibQTip()
 	if not self.db.profile.Tooltips.skin or self.initialized.LibQTip then return end
 	self.initialized.LibQTip = true
 
@@ -11,11 +12,11 @@ function Skinner:LibQTip()
 		local function skinLTTooltips(lib)
 	
 			for key, tooltip in lib:IterateTooltips() do
---	 			Skinner:Debug("%s:[%s, %s]", lib, key, tooltip)
+--	 			aObj:Debug("%s:[%s, %s]", lib, key, tooltip)
 				-- ignore tooltips if required
-				if not Skinner.ignoreLQTT[key] then
-					if not Skinner.skinned[tooltip] then
-						Skinner:applySkin{obj=tooltip}
+				if not aObj.ignoreLQTT[key] then
+					if not aObj.skinned[tooltip] then
+						aObj:applySkin{obj=tooltip}
 					end
 				end
 			end

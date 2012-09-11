@@ -72,7 +72,7 @@ local stdFrames = {
 	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
 	"Necrosis", "NeonChat", "nQuestLog",
 	"Odyssey", "oGlow", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
-	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "ProfessionTabs", "PvpMessages",
+	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "PvpMessages",
 	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper", "QuestHelper2", "QuestHistory", "QuickMark",
 	"RABuffs", "RaidAchievement", "RaidAchievement_AchieveReminder", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidTracker", "RaidyCheck", "RandomPet30", "ReagentRestocker", "Recap", "RecipeBook", "RecipeRadar", "Recount", "REFlex", "ReforgeLite", "Reforgenator", "Reforgerade", "RicoMiniMap",
 	"SayGMOTD", "ScrollMaster", "ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "Smoker", "SmoothQuest", "SnapShot", "Spew", "Squeenix", "sRaidFrames",
@@ -211,7 +211,7 @@ function aObj:AddonFrames()
 end
 
 local lodFrames = {
-	"Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "AzCastBarOptions",
+	"Altoholic_Summary", "Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "AzCastBarOptions",
 	"Bagnon", "Bagnon_Options", "Banknon", "BetterBindingFrame",
 	"DockingStation_Config", "Dominos_Config", "DoTimer_Options",
 	"Enchantrix", "EnhTooltip",
@@ -316,6 +316,19 @@ function aObj:TRADE_SKILL_SHOW()
 	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
 	self:checkAndRunAddOn("ReagentMaker")
 
+	-- trigger this to skin ProfessionTabs
+	self:checkAndRunAddOn("ProfessionTabs")
+
 	self:UnregisterEvent("TRADE_SKILL_SHOW")
+
+end
+
+function aObj:TRADE_SHOW()
+--	self:Debug("TRADEL_SHOW")
+
+	-- trigger this to skin ProfessionTabs
+	self:checkAndRunAddOn("ProfessionTabs")
+
+	self:UnregisterEvent("TRADE_SHOW")
 
 end

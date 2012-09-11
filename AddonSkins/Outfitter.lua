@@ -123,23 +123,25 @@ function aObj:Outfitter()
 	self:skinTabs{obj=OutfitterFrame, lod=true, x1=6, y1=0, x2=-6, y2=2}
 
 -->>--	New Outfit Panel
-	self:SecureHook(Outfitter.NameOutfitDialog, "Show", function(this)
-		self:skinEditBox{obj=this.Name, regs={9, 15, 16}}
-		self:moveObject{obj=this.Title, y=-6}
-		skinDropDown(this.ScriptMenu)
-		self:addSkinFrame{obj=this.InfoSection}
-		self:addSkinFrame{obj=this.BuildSection}
-		self:addSkinFrame{obj=this.StatsSection}
-		local msc = this.MultiStatConfig
+
+	self:SecureHook(Outfitter, "CreateNewOutfit", function(this)
+		local frame = this.NameOutfitDialog
+		self:skinEditBox{obj=frame.Name, regs={9, 15, 16}}
+		self:moveObject{obj=frame.Title, y=-6}
+		skinDropDown(frame.ScriptMenu)
+		self:addSkinFrame{obj=frame.InfoSection}
+		self:addSkinFrame{obj=frame.BuildSection}
+		self:addSkinFrame{obj=frame.StatsSection}
+		local msc = frame.MultiStatConfig
 		skinMultiStats(msc)
 		self:skinButton{obj=msc.AddStatButton}
 		self:SecureHook(msc, "SetNumConfigLines", function(this2, ...)
 			skinMultiStats(this2)
 		end)
-		self:skinButton{obj=this.CancelButton}
-		self:skinButton{obj=this.DoneButton}
-		self:addSkinFrame{obj=this, kfs=true, nb=true}
-		self:Unhook(Outfitter.NameOutfitDialog, "Show")
+		self:skinButton{obj=frame.CancelButton}
+		self:skinButton{obj=frame.DoneButton}
+		self:addSkinFrame{obj=frame, kfs=true, nb=true}
+		self:Unhook(Outfitter, "CreateNewOutfit")
 	end)
 	self:SecureHook(Outfitter, "BeginCombiProgress", function(this, ...)
 		local cpd = this.CombiProgressDialog
@@ -149,19 +151,20 @@ function aObj:Outfitter()
 		self:Unhook(Outfitter, "BeginCombiProgress")
 	end)
 -->>--	Rebuild Outfit Panel
-	self:SecureHook(Outfitter.RebuildOutfitDialog, "Show", function(this)
-		self:moveObject{obj=this.Title, y=-6}
-		self:addSkinFrame{obj=this.StatsSection}
-		local msc = this.MultiStatConfig
+	self:SecureHook(Outfitter, "OpenRebuildOutfitDialog", function(this, ...)
+		local frame = this.RebuildOutfitDialog
+		self:moveObject{obj=frame.Title, y=-6}
+		self:addSkinFrame{obj=frame.StatsSection}
+		local msc = frame.MultiStatConfig
 		skinMultiStats(msc)
 		self:skinButton{obj=msc.AddStatButton}
 		self:SecureHook(msc, "SetNumConfigLines", function(this2, ...)
 			skinMultiStats(this2)
 		end)
-		self:skinButton{obj=this.CancelButton}
-		self:skinButton{obj=this.DoneButton}
-		self:addSkinFrame{obj=this, kfs=true, nb=true}
-		self:Unhook(Outfitter.RebuildOutfitDialog, "Show")
+		self:skinButton{obj=frame.CancelButton}
+		self:skinButton{obj=frame.DoneButton}
+		self:addSkinFrame{obj=frame, kfs=true, nb=true}
+		self:Unhook(Outfitter, "OpenRebuildOutfitDialog")
 	end)
 
 -->>--	ChooseIcon Dialog

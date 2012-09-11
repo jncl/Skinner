@@ -44,33 +44,6 @@ function aObj:Altoholic()
 -->>-- Message Box
 	self:addSkinFrame{obj=AltoMsgBox, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
--->>--	Other Frames
-	if self.modBtns then
-		-- skin minus/plus buttons
-		for i = 1, 14 do
-			self:skinButton{obj=_G["AltoholicFrameSummaryEntry"..i.."Collapse"], mp2=true}
-			self:skinButton{obj=_G["AltoholicFrameBagUsageEntry"..i.."Collapse"], mp2=true}
-			self:skinButton{obj=_G["AltoholicFrameActivityEntry"..i.."Collapse"], mp2=true}
-			self:skinButton{obj=_G["AltoholicFrameSkillsEntry"..i.."Collapse"], mp2=true}
-		end
-	end
-
--->>-- Summary tab
-	skinMenuItms("AltoholicTabSummaryMenuItem", 4)
-	skinSortBtns("AltoholicTabSummary_Sort", 8)
-	self:skinButton{obj=AltoholicTabSummaryToggleView, mp2=true, plus=true}
-	self:skinDropDown{obj=AltoholicTabSummary_SelectLocation}
-	self:skinScrollBar{obj=AltoholicFrameSummaryScrollFrame}
-	self:skinScrollBar{obj=AltoholicFrameBagUsageScrollFrame}
-	self:skinScrollBar{obj=AltoholicFrameSkillsScrollFrame}
-	self:skinScrollBar{obj=AltoholicFrameActivityScrollFrame}
-
-	if self.modBtnBs then
-		self:addButtonBorder{obj=AltoholicTabSummary_RequestSharing}
-		self:addButtonBorder{obj=AltoholicTabSummary_Options}
-		self:addButtonBorder{obj=AltoholicTabSummary_OptionsDataStore}
-	end
-
 -->>--	Tooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then AltoTooltip:SetBackdrop(self.backdrop) end
@@ -103,6 +76,36 @@ function aObj:Altoholic()
 		self:skinButton{obj=_G["AltoholicFrameAvailableContentEntry"..i.."Collapse"], mp2=true}
 	end
 	self:addSkinFrame{obj=AltoAccountSharing}
+
+end
+
+function aObj:Altoholic_Summary() -- LoD
+
+	if self.modBtns then
+		-- skin minus/plus buttons
+		for i = 1, 14 do
+			self:skinButton{obj=_G["AltoholicFrameSummaryEntry"..i.."Collapse"], mp2=true}
+			self:skinButton{obj=_G["AltoholicFrameBagUsageEntry"..i.."Collapse"], mp2=true}
+			self:skinButton{obj=_G["AltoholicFrameActivityEntry"..i.."Collapse"], mp2=true}
+			self:skinButton{obj=_G["AltoholicFrameSkillsEntry"..i.."Collapse"], mp2=true}
+		end
+	end
+	
+-->>-- Summary tab
+	skinMenuItms("AltoholicTabSummaryMenuItem", 4)
+	skinSortBtns("AltoholicTabSummary_Sort", 8)
+	self:skinButton{obj=AltoholicTabSummaryToggleView, mp2=true, plus=true}
+	self:skinDropDown{obj=AltoholicTabSummary_SelectLocation}
+	self:skinScrollBar{obj=AltoholicFrameSummaryScrollFrame}
+	self:skinScrollBar{obj=AltoholicFrameBagUsageScrollFrame}
+	self:skinScrollBar{obj=AltoholicFrameSkillsScrollFrame}
+	self:skinScrollBar{obj=AltoholicFrameActivityScrollFrame}
+
+	if self.modBtnBs then
+		self:addButtonBorder{obj=AltoholicTabSummary_RequestSharing}
+		self:addButtonBorder{obj=AltoholicTabSummary_Options}
+		self:addButtonBorder{obj=AltoholicTabSummary_OptionsDataStore}
+	end
 
 end
 

@@ -19,8 +19,7 @@ function aObj:Skada()
 	local function skinFrame(win)
 
 		-- skin windows if required
-		if win.db.enablebackground
-		and not aObj.skinFrame[win.bargroup]
+		if not aObj.skinFrame[win.bargroup]
 		then
 			-- print(win.bargroup.bgframe, win.bargroup.button)
 			aObj:addSkinFrame{obj=win.bargroup}
@@ -41,7 +40,7 @@ function aObj:Skada()
 	changeSettings(Skada.windowdefaults)
 
 	-- change existing ones
-	for i, win in pairs(Skada:GetWindows()) do
+	for _, win in pairs(Skada:GetWindows()) do
 		changeSettings(win.db)
 		skinFrame(win)
 		-- apply these changes

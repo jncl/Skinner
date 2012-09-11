@@ -3,20 +3,12 @@ if not aObj:isAddonEnabled("MogIt") then return end
 
 function aObj:MogIt()
 
-	self:skinDropDown{obj=MogItDropdown}
-	self:skinDropDown{obj=MogItSorting}
-	self:skinSlider{obj=MogItScroll}
-	self:addSkinFrame{obj=MogItFrame, kfs=true, ri=true, y1=2, x2=1}
+	self:skinSlider{obj=MogIt.scroll, adj=-4}
+	self:addSkinFrame{obj=MogIt.frame, kfs=true, ri=true, y1=2, x2=1}
 	-- remove existing models' background
-	for _, v in pairs(MogIt.models) do
-		v.bg:SetTexture(nil)
+	for _, frame in pairs(MogIt.models) do
+		frame.bg:SetTexture(nil)
 	end
-	-- hook this to remove models' backgrounds
-	self:RawHook(MogIt, "addModel", function(view)
-		local btn = self.hooks[MogIt].addModel(view)
-		btn.bg:SetTexture(nil)
-		return btn
-	end, true)
 
 -->>-- Modules
 	-- Filters
@@ -28,21 +20,36 @@ function aObj:MogIt()
 	self:skinDropDown{obj=MogItFiltersClassDropdown, rp=true}
 	self:skinDropDown{obj=MogItFiltersSourceDropdown, rp=true}
 	self:skinDropDown{obj=MogItFiltersQualityDropdown, rp=true}
-	self:skinScrollBar{obj=MogItFiltersScroll}
-	MogItFiltersScroll.ScrollBar.top:SetTexture(nil)
-	MogItFiltersScroll.ScrollBar.middle:SetTexture(nil)
-	MogItFiltersScroll.ScrollBar.bottom:SetTexture(nil)
-	self:addSkinFrame{obj=MogItFilters, kfs=true, ri=true, x1=-2, y1=2, x2=1}
+	self:skinDropDown{obj=MogItFiltersBindDropdown, rp=true}
 	-- hook this to remove filters' background
 	self:SecureHook(MogIt, "FilterUpdate", function(this)
-		for k,v in ipairs(this.active.filters) do
-			this.filters[v].bg:SetTexture(nil)
+		for _, frame in ipairs(this.active.filters) do
+			this.filters[frame].bg:SetTexture(nil)
 		end
 	end)
-	-- Preview
-	MogItPreview.model.bg:SetTexture(nil)
-	self:addSkinFrame{obj=MogItPreview, kfs=true, ri=true, y1=2, x2=1}
-	-- Tooltip
+	-- Filters frame
+	self:skinScrollBar{obj=MogIt.filt.scroll}
+	MogIt.filt.scroll.ScrollBar.top:SetTexture(nil)
+	MogIt.filt.scroll.ScrollBar.middle:SetTexture(nil)
+	MogIt.filt.scroll.ScrollBar.bottom:SetTexture(nil)
+	self:addSkinFrame{obj=MogIt.filt, kfs=true, ri=true, x1=-2, y1=2, x2=1}
+	self:removeMagicBtnTex(MogIt.filt.defaults)
+
+-->>-- Preview frames
+	self:SecureHook(MogIt, "CreatePreview", function(this)
+		for _, frame in pairs(MogIt.previews) do
+			if not self.skinFrame[frame] then
+				frame.model.bg:SetTexture(nil)
+				self:removeMagicBtnTex(frame.activate)
+				for i = 1, 13 do
+					self:addButtonBorder{obj=frame.slots[MogIt:GetSlot(i)], ibt=true}
+				end
+				self:addSkinFrame{obj=frame, kfs=true, ri=true, y1=2, x2=1}
+			end
+		end
+	end)
+
+-->>-- Tooltip
 	self:addSkinFrame{obj=MogItTooltip}
 
 end

@@ -20,10 +20,11 @@ function aObj:Recount()
 		self:addSkinFrame{obj=window, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
 	end)
 
--->>-- Main Window
-	self:addSkinFrame{obj=Recount.MainWindow, kfs=true, x1=-2, y1=-8, x2=2}
+-->>-- Main Window, don't skin all buttons
+	self:addSkinFrame{obj=Recount.MainWindow, kfs=true, nb=true, x1=-2, y1=-8, x2=2}
+	self:skinButton{obj=self:getChild(Recount.MainWindow, 1), cb=true}
 -->>-- Detail Window
-	self:addSkinFrame{obj=Recount.DetailWindow, kfs=true, x1=-2, y1=-8, x2=3, y2=-2}
+	self:addSkinFrame{obj=Recount.DetailWindow, kfs=true, nb=true, x1=-2, y1=-8, x2=3, y2=-2}
 -->>-- Graph Window
 	self:addSkinFrame{obj=Recount.GraphWindow, kfs=true, hdr=true, x1=-2, y1=-8, x2=2, y2=-2}
 

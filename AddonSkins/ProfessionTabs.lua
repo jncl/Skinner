@@ -1,19 +1,29 @@
-if not Skinner:isAddonEnabled("ProfessionTabs") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("ProfessionTabs") then return end
 
-function Skinner:ProfessionTabs()
+function aObj:ProfessionTabs()
 
-	self:RawHook(ProfessionTabs, "CreateTab", function(this, ...)
-		local tab = self.hooks[this].CreateTab(this, ...)
-		self:removeRegions(tab, {1})
-		-- fix for misplacement of button on TradeSkillFrame
-		if tab:GetParent() == TradeSkillFrame
-		or tab:GetParent() == TradeFrame
-		and ceil(select(4, tab:GetPoint())) == -32
+	print("ProfessionTabs loaded")
+
+	-- skin TradeSkillFrame buttons
+	for _, child in ipairs{TradeSkillFrame:GetChildren()} do
+		if child:IsObjectType("CheckButton")
+		and child.name
+		and child.tooltip
 		then
-			self:moveObject{obj=tab, x=32}
+			self:removeRegions(child, {1})
+			self:addButtonBorder{obj=child, sec=true}
 		end
-		self:addButtonBorder{obj=tab, sec=true}
-		return tab
-	end, true)
+	end
+	-- skin TradeFrame buttons
+	for _, child in ipairs{TradeFrame:GetChildren()} do
+		if child:IsObjectType("CheckButton")
+		and child.name
+		and child.tooltip
+		then
+			self:removeRegions(child, {1})
+			self:addButtonBorder{obj=child, sec=true}
+		end
+	end
 
 end
