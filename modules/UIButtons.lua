@@ -132,7 +132,12 @@ function module:skinButton(opts)
 	if not opts.obj then return end
 
 	-- don't skin it twice
-	if aObj.sBtn[opts.obj] or opts.obj.tfade then return end
+	if aObj.sBtn[opts.obj]
+	or aObj.skinFrame[opts.obj] -- don't skin tab buttons
+	or opts.obj.tfade
+	then
+		return
+	end
 
 	-- remove textures
 	if opts.obj.Left -- UIPanelButtonTemplate (MoP)
@@ -248,6 +253,7 @@ function module:skinButton(opts)
 		opts.obj:SetHeight(18)
 		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, sap=true}
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
+		-- aObj:Debug("skinButton: [%s, %s, %s]", opts.obj, bW, bH)
 		aso = {bd=bH > 18 and 5 or 6} -- use narrower backdrop if required
 		if not opts.as then
 			x1 = opts.x1 or 1
