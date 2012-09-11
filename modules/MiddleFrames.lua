@@ -14,7 +14,7 @@ local defaults = {
 }
 local MAX_MIDDLEFRAMES = 9
 for i = 1, MAX_MIDDLEFRAMES do
-	defaults.profile["mf"..i] = {shown = false, height = 100, width = 100, xOfs = -300, yOfs = 300, flevel = 0, fstrata = "BACKGROUND"}
+	defaults.profile["mf"..i] = {shown = false, height = 100, width = 100, xOfs = -400, yOfs = 400, flevel = 0, fstrata = "BACKGROUND"}
 end
 
 local function OnMouseDown(self, mBtn)
