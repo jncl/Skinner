@@ -46,31 +46,6 @@ local function printIt(text, frame, r, g, b)
 
 end
 --@debug@
-function printTS(...)
-	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
-end
-local output
-function aObj:Debug(a1, ...)
-
-	output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
-
-	printIt(output.." "..makeText(a1, ...), self.debugFrame)
-
-end
---@end-debug@
---[===[@non-debug@
-function aObj:Debug() end
---@end-non-debug@]===]
-
-function aObj:CustomPrint(r, g, b, a1, ...)
-
-	output = ("|cffffff78"..aName..":|r")
-
-	printIt(output.." "..makeText(a1, ...), nil, r, g, b)
-
-end
-
---@debug@
 local function print_family_tree(fName)
 	local lvl = "Parent"
 	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:round2(fName:GetWidth(), 2) or "nil", aObj:round2(fName:GetHeight(), 2) or "nil"))
@@ -100,7 +75,29 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
 
 end
+function printTS(...)
+	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
+end
+local output
+function aObj:Debug(a1, ...)
+
+	output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
+
+	printIt(output.." "..makeText(a1, ...), self.debugFrame)
+
+end
 --@end-debug@
+--[===[@non-debug@
+function aObj:Debug() end
+--@end-non-debug@]===]
+
+function aObj:CustomPrint(r, g, b, a1, ...)
+
+	output = ("|cffffff78"..aName..":|r")
+
+	printIt(output.." "..makeText(a1, ...), nil, r, g, b)
+
+end
 
 local errorhandler = geterrorhandler()
 local success, err
