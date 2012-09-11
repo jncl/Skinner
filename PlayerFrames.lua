@@ -1916,7 +1916,7 @@ function aObj:SpellBookFrame()
 		if this.UnlearnedFrame and this.UnlearnedFrame:IsShown() then -- level too low
 			this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
 		end
-		this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
+		if this.RequiredLevelString then this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb) end
 		if this.TrainFrame and this.TrainFrame:IsShown() then -- see Trainer
 			this.SpellName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 			this.SpellSubName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
