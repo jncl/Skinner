@@ -61,6 +61,7 @@
 <script file="SkinMe\Broker_Transport.lua"/>
 <script file="SkinMe\Buffalo.lua"/>
 <script file="SkinMe\BugSack.lua"/>
+<script file="SkinMe\BulkMail2.lua"/>
 <script file="SkinMe\Butsu.lua"/>
 <script file="SkinMe\BuyEmAll.lua"/>
 <script file="SkinMe\CalendarNotify.lua"/>
@@ -117,6 +118,7 @@
 <script file="SkinMe\Examiner.lua"/>
 <script file="SkinMe\ExtVendor.lua"/>
 <script file="SkinMe\Factionizer.lua"/>
+<script file="SkinMe\FarmIt2.lua"/>
 <script file="SkinMe\FBagOfHolding.lua"/>
 <script file="SkinMe\FeedMachine.lua"/>
 <script file="SkinMe\FishingBuddy.lua"/>
@@ -163,6 +165,7 @@
 <script file="SkinMe\ItemSync.lua"/>
 <script file="SkinMe\LauncherMenu.lua"/>
 <script file="SkinMe\LazyAFK.lua"/>
+<script file="SkinMe\LibDropdown.lua"/>
 <script file="SkinMe\LibExtraTip.lua"/>
 <script file="SkinMe\LibQTip.lua"/>
 <script file="SkinMe\LibSimpleFrame.lua"/>
