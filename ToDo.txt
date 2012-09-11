@@ -8,27 +8,66 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	
+
 	I	XLootMonitor, reported by DarkLimpan, 02.07.12
 		- I'm having a weird issue between Skinner and XlootMonitor. With my normal Skinner-settings, the XlootMonitor loot list has a white background making it a bit hard to see. If I were to move my savedvariable-files for skinner out of the wtf-folder, then it's black and just fine. Except the rest of my UI just looks ugly.
-		
-	S	Bulk Mail, requested by frostalotz, 03.09.12
-	
-	S	Bulk Mail Inbox, requested by frostalotz, 03.09.12
-	
-√	I	Missing localisations, reported by corys2005, 04.09.10
-		- too zealous in updating them
-		
-	I	Altoholic, reported by gamemaster128, 04.09.12
-	
+
+≈	S	BulkMail2, requested by frostalotz, 03.09.12
+
+≈	S	BulkMail2Inbox, requested by frostalotz, 03.09.12
+
+√	I	Altoholic, reported by gamemaster128/Decabah/Lexgen54, 04.09.12
+		- Skinner\Skinner-b5.16016.2.lua:996: attempt to index local "obj" (a nil value)
+Skinner-b5.16016.2\SkinMe\Altoholic-r122.lua:9: in function <Skinner\SkinMe\Altoholic.lua:4>
+Skinner-b5.16016.2\SkinMe\Altoholic-r122.lua:59: in function <Skinner\SkinMe\Altoholic.lua:26>
+(tail call): ?
+
 ?	I	ARL, reported by kaltoran, 04.09.12
-	
-√	I	Dungeon Browser/LFD frames overlap, reported by magicjohansen, 04.09.12
-	
-x	I	Command line access, reported by zaitezaite, 04.09.12
-		-  I can't type /skinner any more? Options have to be accessed through the interface/addons menu
-		
-	I	MiddleFrames, reported by zaitezaite, 04.09.12
+
+≈	I	MiddleFrames, reported by zaitezaite, 04.09.12
 		-  the 2nd one doesn't appear unless I untick/retick to show it
-		
-	
+
+√	I	DBM, reported by Decabah, 04.09.12
+		- options window not skinned
+
+√	I	Challenges, reported by Decabah, 04.09.12
+		- Leaderboard button not skinned
+
+√	I	Skada, reported by curace, 04.09.12
+
+≈	I	Recount, reported by curace, 04.09.12
+		- button on color config panel not skinned
+
+√	I	TopFrame, reported by NeoZeus, 04.09.12
+		- Skinner\Skinner-b5.16016.2.lua:662: bad argument #1 to "pairs" (table expected, got nil)
+<in C code>
+Skinner\Skinner-b5.16016.2.lua:662: in function "applyGradient"
+Skinner\Skinner-b5.16016.2.lua:802: in function <Skinner\Skinner.lua:742>
+Skinner\Skinner-b5.16016.2.lua:828: in function "applySkin"
+Skinner-b5.16016.2\modules\TopFrame.lua:85: in function "adjustTopFrame"
+Skinner-b5.16016.2\modules\TopFrame.lua:55: in function <Skinner\modules\TopFrame.lua:53>
+(tail call): ?
+
+√	I	Spellbook Frame, reported by Decabah, 05.09.12
+		- Skinner-b5.16016.2\PlayerFrames.lua:1919: attempt to index field "RequiredLevelString" (a nil value)
+Skinner-b5.16016.2\PlayerFrames.lua:1919: in function <Skinner\PlayerFrames.lua:1915>
+(tail call): ?
+
+?	I	Loot Roll frame, reported by Decabah, 05.09.12
+		- has unskinned elements
+
+?	I	Pet/Mount frame unskinned, reported by Decabah, 05.09.12
+
+√	O	UrbanAchiever, reported by T0mate, 05.0.12
+		- has corrected this skin
+
+√	I	Outfitter, reported by Lexgen54, 05.09.12
+		- .\AddOns\Skinner\SkinMe\Outfitter.lua line 126: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+√	S	FarmIt2, requested by Lexgen54, 05.09.12
+
+√	I	CombustionHelper, reported by X-buZZ, 06.09.12
+
+√	I	Mogit, reported by X-buZZ, 06.09.12
+
+√	I	ProfessionTabs, reported by X-buZZ, 06.09.12
