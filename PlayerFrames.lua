@@ -1316,9 +1316,19 @@ function aObj:LootFrames()
 
 	self:add2Table(self.pKeys2, "LootFrames")
 
-	-- shrink the size of the LootFrame
-	-- move the title and close button and reduce the height of the skinFrame by 34
-	self:moveObject{obj=self:getRegion(LootFrame, 3), x=-12, y=-34} -- title
+	-- Add another loot button and move them all up to fit
+	local yOfs = -27
+	for i = 1, LOOTFRAME_NUMBUTTONS do
+		btn = _G["LootButton"..i]
+		btn:ClearAllPoints()
+		btn:SetPoint("TOPLEFT", 9, yOfs)
+		yOfs = yOfs - 41
+	end
+	CreateFrame("Button", "LootButton5", LootFrame, "LootButtonTemplate")
+	LootButton5:SetPoint("TOPLEFT", 9, yOfs)
+	LootButton5.id = 5
+	LOOTFRAME_NUMBUTTONS = LOOTFRAME_NUMBUTTONS + 1
+
 	for i = 1, LOOTFRAME_NUMBUTTONS do
 		_G["LootButton"..i.."NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G["LootButton"..i], ibt=true}
@@ -1326,7 +1336,7 @@ function aObj:LootFrames()
 	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:addButtonBorder{obj=LootFrameDownButton, ofs=-2}
 	self:addButtonBorder{obj=LootFrameUpButton, ofs=-2}
-	
+
 -->>-- BonusRoll Frame
 	self:removeRegions(BonusRollFrame, {1, 2, 3, 4})
 	self:glazeStatusBar(BonusRollFrame.PromptFrame.Timer, 0,  nil)
