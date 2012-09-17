@@ -710,6 +710,7 @@ function aObj:EncounterJournal() -- LoD
 	self:skinDropDown{obj=EJTierDropDown}
 	self:skinSlider{obj=EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
 	self:addSkinFrame{obj=EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
+	self:addButtonBorder{obj=EncounterJournalInstanceSelectScrollDownButton, ofs=-2}
 	-- Instance buttons
 	if self.modBtnBs then
 		for i = 1, 30 do
@@ -784,15 +785,15 @@ function aObj:EncounterJournal() -- LoD
 	EncounterJournal.encounter.info.lootScroll.filter:DisableDrawLayer("BACKGROUND")
 	EncounterJournal.encounter.info.lootScroll.filter:SetNormalTexture(nil)
 	EncounterJournal.encounter.info.lootScroll.filter:SetPushedTexture(nil)
-	self:skinDropDown{obj=EncounterJournal.encounter.info.lootScroll.lootFilter}
 	EncounterJournal.encounter.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 	-- hook this to skin loot entries
 	self:SecureHook("EncounterJournal_LootUpdate", function()
 		for i = 1, #EncounterJournal.encounter.info.lootScroll.buttons do
 			btn = EncounterJournal.encounter.info.lootScroll.buttons[i]
 			btn:DisableDrawLayer("BORDER")
-			btn.slot:SetTextColor(self.BTr, self.BTg, self.BTb)
 			btn.armorType:SetTextColor(self.BTr, self.BTg, self.BTb)
+			btn.slot:SetTextColor(self.BTr, self.BTg, self.BTb)
+			btn.boss:SetTextColor(self.BTr, self.BTg, self.BTb)
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
 
@@ -1942,6 +1943,7 @@ function aObj:SpellBookFrame()
 			this.SpellName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 			this.SpellSubName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 		end
+		if this.SeeTrainerString then this.SeeTrainerString:SetTextColor(self.BTr, self.BTg, self.BTb) end
 		if this.SpellName then
 			this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
 			this.SpellSubName:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -1982,20 +1984,23 @@ function aObj:SpellBookFrame()
 	self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
 		for i = 1, #SpellBookCoreAbilitiesFrame.Abilities do
 			btn = SpellBookCoreAbilitiesFrame.Abilities[i]
-			btn.EmptySlot:SetAlpha(0)
-			btn.ActiveTexture:SetAlpha(0)
-			btn.FutureTexture:SetAlpha(0)
-			btn.Name:SetTextColor(self.HTr, self.HTg, self.HTb)
-			btn.InfoText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			btn.RequiredLevel:SetTextColor(self.BTr, self.BTg, self.BTb)
-			self:addButtonBorder{obj=btn}
+			if not btn.sknrBdr then
+				btn.EmptySlot:SetAlpha(0)
+				btn.ActiveTexture:SetAlpha(0)
+				btn.FutureTexture:SetAlpha(0)
+				btn.Name:SetTextColor(self.HTr, self.HTg, self.HTb)
+				btn.InfoText:SetTextColor(self.BTr, self.BTg, self.BTb)
+				btn.RequiredLevel:SetTextColor(self.BTr, self.BTg, self.BTb)
+				self:addButtonBorder{obj=btn}
+			end
 		end
 		for i = 1, #SpellBookCoreAbilitiesFrame.SpecTabs do
 			tab = SpellBookCoreAbilitiesFrame.SpecTabs[i]
-			self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
-			self:addButtonBorder{obj=tab}
+			if not tab.sknrBdr then
+				self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
+				self:addButtonBorder{obj=tab}
+			end
 		end
-		self:Unhook("SpellBook_UpdateCoreAbilitiesTab")
 	end)
 	-->>-- What has changed? panel
 	SpellBookWhatHasChanged.ClassName:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -2289,13 +2294,14 @@ function aObj:WatchFrame()
 				obj = _G["WatchFrameAutoQuestPopUp"..i] and _G["WatchFrameAutoQuestPopUp"..i].ScrollChild
 				if obj and not aObj.skinned[obj] then
 					for key, reg in ipairs{obj:GetRegions()} do
-						if key < 11 or key == 17 then reg:SetTexture(nil) end -- Animated textures
+						if key < 11 or key > 16 then reg:SetTexture(nil) end -- Animated textures
 					end
 					aObj:applySkin{obj=obj}
 				end
 			end
 
 		end
+		WatchFrameLinesShadow:SetTexture(nil) -- shadow texture above popup
 		-- hook this to skin the AutoPopUps
 		self:SecureHook("WatchFrameAutoQuest_GetOrCreateFrame", function(parent, index)
 			skinAutoPopUps()
