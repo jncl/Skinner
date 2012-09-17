@@ -76,6 +76,7 @@
 <script file="SkinMe\Clique.lua"/>
 <script file="SkinMe\CloseUp.lua"/>
 <script file="SkinMe\Collectinator.lua"/>
+<script file="SkinMe\CollectMe.lua"/>
 <script file="SkinMe\Combuctor.lua"/>
 <script file="SkinMe\CombustionHelper.lua"/>
 <script file="SkinMe\ConcessionStand.lua"/>
@@ -198,6 +199,7 @@
 <script file="SkinMe\myClock.lua"/>
 <script file="SkinMe\Necrosis.lua"/>
 <script file="SkinMe\NeonChat.lua"/>
+<script file="SkinMe\Notes.lua"/>
 <script file="SkinMe\nQuestLog.lua"/>
 <script file="SkinMe\Odyssey.lua"/>
 <script file="SkinMe\oGlow.lua"/>

@@ -61,7 +61,7 @@ local stdFrames = {
 	"_NPCScan",
 	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "AphesLootBrowser", "Ara_Broker_Guild_Friends", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "Auctionator", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
 	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BaudBag", "BaudManifest", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "BulkMail2", "BulkMail2Inbox", "Butsu", "BuyEmAll",
-	"CalendarNotify", "CallToArms", "Capping", "Carbonite", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "Combuctor", "CombustionHelper", "ConcessionStand", "Converse", "CoolLine", "Cork", "Cosplay", "CowTip", "CT_MailMod", "CT_RaidTracker",
+	"CalendarNotify", "CallToArms", "Capping", "Carbonite", "CFM", "ChatBar", "Chatr", "Chatter", "Chinchilla", "Clique", "CloseUp", "Collectinator", "CollectMe", "Combuctor", "CombustionHelper", "ConcessionStand", "Converse", "CoolLine", "Cork", "Cosplay", "CowTip", "CT_MailMod", "CT_RaidTracker",
 	"DaemonMailAssist", "DailiesQuestTracker", "DamageMeters", "DeathNote", "DockingStation", "Dominos", "DragonCore",
 	"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElvUI", "EnchantMe", "EnergyWatch", "EngBags", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "epgp_lootmaster", "epgp_lootmaster_ml", "EquipCompare", "EventEquip", "Examiner", "ExtVendor",
 	"Factionizer", "FarmIt2", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "Fizzle", "FlightMap", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
@@ -70,7 +70,7 @@ local stdFrames = {
 	"InspectEquip", "IntricateChatMods", "IPopBar", "ItemRack", "ItemSync",
 	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinkWrangler", "Livestock",
 	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
-	"Necrosis", "NeonChat", "nQuestLog",
+	"Necrosis", "NeonChat", "Notes", "nQuestLog",
 	"Odyssey", "oGlow", "Omen", "OneBag3", "OneBank3", "oRA3", "Outfitter", "Overachiever",
 	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetListPlus", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "PvpMessages",
 	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper", "QuestHelper2", "QuestHistory", "QuickMark",
@@ -133,8 +133,12 @@ function aObj:AddonFrames()
 	-- N.B. Do it here as other Addons use the QuestLog size
 	if not IsAddOnLoaded("EQL3") then self:checkAndRun("QuestLog") end
 
-	-- skin the CastingBar if Quartz isn't loaded
-	if not IsAddOnLoaded("Quartz") then self:checkAndRun("CastingBar") end
+	-- skin the CastingBar if Quartz or Dominos_Cast isn't loaded
+	if not IsAddOnLoaded("Quartz")
+	and not IsAddOnLoaded("Dominos_Cast")
+	then
+		self:checkAndRun("CastingBar")
+	end
 
 	-- skin the MenuBar if Bongos isn't loaded
 	if not IsAddOnLoaded("Bongos")
@@ -163,11 +167,6 @@ function aObj:AddonFrames()
 
 	-- this addon has a relation
 	self:checkAndRunAddOn("EnhancedTradeSkills", nil, "EnhancedTradeCrafts")
-
-	-- skin the Blizzard LoD frames if they have already been loaded by other addons
-	for addon, skin in ipairs(blizzLoD) do
-		if IsAddOnLoaded(addon) then self:checkAndRun(skin) end
-	end
 
 	-- load MSBTOptions here if FuBar_MSBTFu is loaded
 	if IsAddOnLoaded("FuBar_MSBTFu") then
@@ -207,6 +206,13 @@ function aObj:AddonFrames()
 
 	-- skin tekKonfig library objects
 	if self.tekKonfig then self:checkAndRun("tekKonfig") end -- not an addon in its own right
+
+	-- skin the Blizzard LoD frames if they have already been loaded by other addons, wait for 0.2 secs to allow them to have been loaded
+	self:ScheduleTimer(function()
+		for addon, skin in pairs(blizzLoD) do
+			if IsAddOnLoaded(addon) then self:checkAndRun(skin) end
+		end
+	end, 0.2)
 
 end
 
@@ -248,7 +254,7 @@ aObj.lodAddons["DBM-GUI"] = "DBMGUI"
 
 local prev_addon
 function aObj:LoDFrames(addon)
-	-- self:Debug("LoDFrames: [%s][%s]", addon, self.lodAddons[addon])
+	-- self:Debug("LoDFrames: [%s, %s, %s]", addon, self.lodAddons[addon], blizzLoD[addon])
 
 	-- ignore multiple occurrences of the same addon
 	if addon == prev_addon then return end
@@ -304,13 +310,14 @@ function aObj:AUCTION_HOUSE_SHOW()
 	-- trigger these when AH loads otherwise errors occur
 	self:checkAndRunAddOn("BtmScan")
 	self:checkAndRunAddOn("AuctionFilterPlus")
+	self:checkAndRunAddOn("Auctionator")
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
 
 end
 
 function aObj:TRADE_SKILL_SHOW()
---	self:Debug("TRADE_SKILL_SHOW")
+	-- self:Debug("TRADE_SKILL_SHOW")
 
 	self:checkAndRun("TradeSkillUI") -- player
 	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
@@ -324,7 +331,7 @@ function aObj:TRADE_SKILL_SHOW()
 end
 
 function aObj:TRADE_SHOW()
---	self:Debug("TRADEL_SHOW")
+--	self:Debug("TRADE_SHOW")
 
 	-- trigger this to skin ProfessionTabs
 	self:checkAndRunAddOn("ProfessionTabs")
