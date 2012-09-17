@@ -73,11 +73,21 @@ local function skinPlayerF()
 			EclipseBarFrame.sunBar:Hide()
 			EclipseBarFrame.moonBar:Hide()
 		end
-		-- skin the ShardBar, if required
+		-- skin the ShardBarFrame/DemonicFuryBarFrame/BurningEmbersBarFrame, if required
 		if aObj.uCls == "WARLOCK" then
-			for i = 1, SHARD_BAR_NUM_SHARDS do
+			-- ShardBarFrame
+			ShardBarFrame:DisableDrawLayer("BACKGROUND")
+			for i = 1, ShardBarFrame.shardCount do
 				_G["ShardBarFrameShard"..i]:DisableDrawLayer("BORDER")
-				_G["ShardBarFrameShard"..i]:DisableDrawLayer("OVERLAY") -- Glow texture
+				_G["ShardBarFrameShard"..i]:DisableDrawLayer("OVERLAY") -- Glow textures
+			end
+			-- DemonicFuryBarFrame
+			DemonicFuryBarFrame:DisableDrawLayer("ARTWORK") -- frame border texture
+			-- BurningEmbersBarFrame
+			BurningEmbersBarFrame:DisableDrawLayer("BACKGROUND")
+			for i = 1, BurningEmbersBarFrame.emberCount do
+				_G["BurningEmbersBarFrameEmber"..i]:DisableDrawLayer("BORDER")
+				_G["BurningEmbersBarFrameEmber"..i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
 		end
 		-- skin the PowerBar, if required
@@ -85,11 +95,12 @@ local function skinPlayerF()
 			PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 			PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 		end
+		-- skin the ManaBar, if required
 		if aObj.uCls == "MONK" then
-			-- PlayerFrameMonkManaBar
 			PlayerFrameAlternateManaBar:Hide()
 			aObj:removeRegions(MonkHarmonyBar, {1, 2})
 		end
+		-- skin the bar, if required
 		if aObj.uCls == "PRIEST" then
 			PriestBarFrame:DisableDrawLayer("BACKGROUND")
 			aObj:moveObject{obj=PriestBarFrame.orb1, y=6}
@@ -109,7 +120,7 @@ local function skinPetF()
 		aObj:adjHeight{obj=PetFrameHealthBar, adj=-1} -- handle bug in PetFrame XML & lua which places mana bar 7 pixels below the healthbar, when their heights are 8
 		aObj:glazeStatusBar(PetFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
-		aObj:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars (Hunter's only)
+		aObj:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars
 		aObj:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-1, x2=1}
 		-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
 		if db.petlevel
