@@ -10,6 +10,7 @@ function aObj:AucAdvanced()
 		["5.9"] = 2,
 		["5.10"] = 3,
 		["5.11"] = 4,
+		["5.15"] = 5,
 	}
 	local aVer = GetAddOnMetadata("Auc-Advanced", "Version")
 	local ver = vTab[aVer:match("(%d.%d+).%d+")] or 9
@@ -22,8 +23,8 @@ function aObj:AucAdvanced()
 			for _, child in ipairs{UIParent:GetChildren()} do
 				if child:IsObjectType("StatusBar")
 				and child:GetName() == nil
-				and self.round2(child:GetWidth()) == 300
-				and self.round2(child:GetHeight()) == 18
+				and self:round2(child:GetWidth()) == 300
+				and self:round2(child:GetHeight()) == 18
 				and not self.sbGlazed[child]
 				then
 	      			child:SetBackdrop(nil)
@@ -77,14 +78,16 @@ function aObj:AucAdvanced()
 	-- SearchUI
 	local mod = AucAdvanced.Modules.Util.SearchUI
 	if mod then
-		self:SecureHook(mod, "CreateAuctionFrames", function()
-			local frame = mod.Private.gui.AuctionFrame
-			if frame then
-				frame.money:SetAlpha(0)
-				self:addSkinFrame{obj=frame.backing}
-			end
-			self:Unhook(mod, "CreateAuctionFrames")
-		end)
+		if ver <= 4 then
+			self:SecureHook(mod, "CreateAuctionFrames", function()
+				local frame = mod.Private.gui.AuctionFrame
+				if frame then
+					frame.money:SetAlpha(0)
+					self:addSkinFrame{obj=frame.backing}
+				end
+				self:Unhook(mod, "CreateAuctionFrames")
+			end)
+		end
 		self:SecureHook(mod, "MakeGuiConfig", function()
 			local gui = mod.Private.gui
 			gui.frame.progressbar:SetBackdrop(nil)
@@ -118,11 +121,23 @@ function aObj:AucAdvanced()
 		-- control button for the RealTimeSearch
 		local lib = mod.Searchers["RealTime"]
 		if lib then
-			self:SecureHook(lib, "HookAH", function()
-				local frame = self:getChild(AuctionFrameBrowse, AuctionFrameBrowse:GetNumChildren()) -- get last child
-				self:skinButton{obj=frame.control, x1=-2, y1=1, x2=2}
-				self:Unhook(lib, "HookAH")
-			end)
+			if ver <= 4 then
+				self:SecureHook(lib, "HookAH", function(this)
+					local frame = self:getChild(AuctionFrameBrowse, AuctionFrameBrowse:GetNumChildren()) -- get last child
+					self:skinButton{obj=frame.control, x1=-2, y1=1, x2=2}
+					self:Unhook(lib, "HookAH")
+				end)
+			else
+				self:RawHook(lib, "CreateRTSButton", function(...)
+					local btn = self.hooks[lib].CreateRTSButton(...)
+					-- self:Debug("CreateRTSButton: [%s, %s]", lib, btn.hasRight)
+					self:skinButton{obj=btn, y1=1}
+					if not btn.hasRight then
+						self:Unhook(lib, "CreateRTSButton") -- both are now skinnned
+					end
+					return btn
+				end, true)
+			end
 		end
 		-- controls for the SnatchSearcher
 		local lib = mod.Searchers["Snatch"]

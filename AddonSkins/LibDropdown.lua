@@ -13,19 +13,19 @@ function aObj:LibDropdown()
 				-- creation pass of the function
 				local frame = self.hooks[this].OpenAce3Menu(this, tab, parent)
 				-- self:Debug("OpenAce3Menu: [%s, %s, %s, %s, %s, %s, %s]", this, tab, parent, frame, frame:GetHeight(), frame:GetWidth(), frame:IsVisible())
-				if not self.skinned[frame] then self:applySkin{obj=frame} end
+				self:applySkin{obj=frame}
 				return frame
 			else
-				-- setup pass of the function
+				-- setup pass of the function, second and subsequent calls
 				self.hooks[this].OpenAce3Menu(this, tab, parent)
-				if not self.skinned[parent] then self:applySkin{obj=parent} end
+				self:applySkin{obj=parent}
 			end
 		end, true)
 		self:SecureHook(lDD, "Ace3InputShow", function(this, tab, parent)
 			-- self:Debug("Ace3InputShow: [%s, %s, %s, %s, %s, %s]", this, tab, parent, parent.data, parent.Showing, parent:GetParent().input)
 			self:skinEditBox{obj=parent:GetParent().input, regs={9}}
 			parent:GetParent().input.SetHeight = function() end -- stop height being reset
-			if not self.skinned[parent] then self:applySkin{obj=parent} end
+			self:applySkin{obj=parent}
 		end, true)
 	end
 	

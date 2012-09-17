@@ -20,5 +20,7 @@ function aObj:AutoBag()
 	
 	-- options panel
 	self:skinDropDown{obj=AB_Groups_Dropdown, x2=60}
+	self:skinScrollBar{obj=AB_Groups_ListBoxScrollFrame}
+	self:addSkinFrame{obj=AB_Groups_ListBox}
 
 end

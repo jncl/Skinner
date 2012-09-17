@@ -18,9 +18,9 @@ function aObj:Ace3()
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
 
-	local bCr, bCg, bCb, bCa = unpack(self.bColour)
-	local bbCr, bbCg, bbCb, bbCa = unpack(self.bbColour)
---
+	local bC = self.bColour
+	local bbCr = self.bbColour
+
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
@@ -116,8 +116,8 @@ function aObj:Ace3()
 				-- hook this for frame refresh
 				aObj:SecureHook(obj, "Refresh", function(this)
 					this.frame:SetBackdrop(aObj.Backdrop[1])
-					this.frame:SetBackdropColor(bCr, bCg, bCb, bCa)
-					this.frame:SetBackdropBorderColor(bbCr, bbCg, bbCb, bbCa)
+					this.frame:SetBackdropColor(bC.r, bC.g, bC.b, bC.a)
+					this.frame:SetBackdropBorderColor(bbC.r, bbC.g, bbC.b, bbC.a)
 				end)
 			elseif objType == "SnowflakeEditBox" then
 				aObj:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
@@ -273,6 +273,8 @@ function aObj:Ace3()
 			or objType == "TSMOverrideDropdown"
 			or objType == "TSMSlider"
 			or objType == "TSMOverrideSlider"
+			-- CollectMe objects
+			or objType == "CollectMeLabel"
 			then
 			-- any other types
 			else

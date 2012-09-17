@@ -9,8 +9,17 @@ function aObj:AdiBags()
 	aBag:HookBagFrameCreation(aObj, function(bag)
 		aObj:ScheduleTimer(function(bag)
 			local frame = bag:GetFrame()
-			aObj:addSkinFrame{obj=frame}
-			aObj:skinEditBox{obj=_G[frame:GetName().."SearchBox"], regs={9}, mi=true}
+			aObj:addSkinFrame{obj=frame, nb=true}
+			aObj:skinButton{obj=frame.CloseButton, cb=true}
+			self:addButtonBorder{obj=frame.HeaderLeftRegion.widgets[1].widget, ofs=3}
+			for i = 1, 3 do -- buttons on RHS of header
+				self:skinButton{obj=frame.HeaderRightRegion.widgets[i].widget}
+			end
+			if bag.bagName == "Backpack" then
+				aObj:skinEditBox{obj=AdiBagsSearchFrame, regs={9}, mi=true}
+			else
+				aObj:skinEditBox{obj=_G[frame:GetName().."SearchBox"], regs={9}, mi=true}
+			end
 		end, 0.2, bag) -- wait for 2/10th second for frame to be created fully
 	end)
 

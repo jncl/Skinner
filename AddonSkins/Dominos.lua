@@ -1,6 +1,7 @@
-if not Skinner:isAddonEnabled("Dominos") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Dominos") then return end
 
-function Skinner:Dominos()
+function aObj:Dominos()
 
 	-- hook to skin the configHelper panel
 	self:SecureHook(Dominos, "ShowConfigHelper", function()
@@ -10,7 +11,7 @@ function Skinner:Dominos()
 	end)
 	-- hook this to skin first menu displayed and its dropdown
 	self:RawHook(Dominos, "NewMenu", function(this, id)
---		self:Debug("Dominos_NewMenu: [%s, %s]", this, id)
+		self:Debug("Dominos_NewMenu: [%s, %s]", this, id)
 		local menu = self.hooks[this].NewMenu(this, id)
 		if not self.skinned[menu] then
 			self:addSkinFrame{obj=menu, x1=6, y1=-8, x2=-8, y2=6}
@@ -27,11 +28,11 @@ function Skinner:Dominos()
 	
 end
 
-function Skinner:Dominos_Config()
+function aObj:Dominos_Config()
 
 	-- hook the create menu function
 	self:SecureHook(Dominos.Menu, "New", function(this, name)
---		self:Debug("D.M.N:[%s, %s]", this, name)
+		self:Debug("D.M.N:[%s, %s]", this, name)
 		local panel = _G["DominosFrameMenu"..name]
 		if not self.skinned[panel] then
 			self:addSkinFrame{obj=panel, x1=6, y1=-8, x2=-8, y2=6}
@@ -39,7 +40,7 @@ function Skinner:Dominos_Config()
 	end)
 	-- hook the show panel function to skin dropdowns/editboxes & scrollbars
 	self:SecureHook(Dominos.Menu, "ShowPanel", function(this, name)
---		self:Debug("D.M.SP:[%s, %s]", this, name)
+		self:Debug("D.M.SP:[%s, %s]", this, name)
 		self:skinAllButtons{obj=_G[this:GetName()..name], x1=-1, x2=1}
 		if this.dropdown then
 			self:skinDropDown{obj=this.dropdown}

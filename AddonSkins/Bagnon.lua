@@ -1,4 +1,5 @@
-if not Skinner:isAddonEnabled("Bagnon") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Bagnon") then return end
 --This Skin is for the Original Bagnon/Banknon Addon found here: http://wowui.incgamers.com/ui.php?id=4060
 -- and here http://wow.curse.com/downloads/details/2090/
 -- and also for the Bagnon Addon formerly known as vBagnon, found here: http://wow-en.curse-gaming.com/files/details/2090/vbagnon/ or here http://wowui.incgamers.com/ui.php?id=3197
@@ -7,7 +8,7 @@ if not Skinner:isAddonEnabled("Bagnon") then return end
 -- vBagnon no longer is supported
 -- Now supports the newest version found on Curse
 
-function Skinner:Bagnon(LoD)
+function aObj:Bagnon(LoD)
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
@@ -22,11 +23,20 @@ function Skinner:Bagnon(LoD)
 		local Bagnon = LibStub('AceAddon-3.0'):GetAddon('Bagnon')
 		-- skin the bag frame
 		self:RawHook(Bagnon.Frame, "New", function(this, frameID)
---			self:Debug("Bagnon.Frame_New: [%s, %s]", this, frameID)
-			local frame = self.hooks[Bagnon.Frame].New(this, frameID)
-			self:applySkin(frame)
-			frame.SetBackdropColor = function() end
-			frame.SetBackdropBorderColor = function() end
+			-- self:Debug("Bagnon.Frame New: [%s, %s]", this, frameID)
+			local frame = self.hooks[this].New(this, frameID)
+			self:SecureHookScript(frame, "OnShow", function(this)
+				self:addSkinFrame{obj=this}
+				for i = 1, #this.menuButtons do
+					self:addButtonBorder{obj=this.menuButtons[i], ofs=3}
+				end
+				for i = 1, #this.bagFrame.bags do
+					self:addButtonBorder{obj=this.bagFrame.bags[i], ofs=3}
+				end
+				self:addButtonBorder{obj=this.optionsToggle, ofs=3}
+				self:addButtonBorder{obj=this.brokerDisplay, relTo=this.brokerDisplay.icon, ofs=3}
+				self:Unhook(frame, "OnShow")
+			end)
 			return frame
 		end)
 		-- skin the Search EditBox
@@ -40,7 +50,7 @@ function Skinner:Bagnon(LoD)
 
 end
 
-function Skinner:Banknon()
+function aObj:Banknon()
 	if not self.db.profile.ContainerFrames then return end
 
 	self:applySkin(Banknon)
@@ -49,7 +59,7 @@ function Skinner:Banknon()
 
 end
 
-function Skinner:Bagnon_Options()
+function aObj:Bagnon_Options()
 
 	self:applySkin(BagnonRightClickMenu)
 	self:skinDropDown(BagnonRightClickMenuPanelSelector)
