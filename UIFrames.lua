@@ -1203,7 +1203,6 @@ function aObj:LFRFrame()
 	-- LFR Browse Frame
 	self:removeInset(LFRBrowseFrameRoleInset)
 	self:skinDropDown{obj=LFRBrowseFrameRaidDropDown}
-	self:skinFFColHeads("LFRBrowseFrameColumnHeader", 7)
 	self:skinScrollBar{obj=LFRBrowseFrameListScrollFrame}
 	self:keepFontStrings(LFRBrowseFrame)
 

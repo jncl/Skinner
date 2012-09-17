@@ -897,7 +897,6 @@ function aObj:FriendsFrame()
 -->>--	Who Tab Frame
 	self:removeInset(WhoFrameListInset)
 	self:removeInset(WhoFrameEditBoxInset)
-	self:skinFFColHeads("WhoFrameColumnHeader")
 	self:skinDropDown{obj=WhoFrameDropDown, noSkin=true}
 	self:moveObject{obj=WhoFrameDropDownButton, x=5, y=1}
 	self:skinScrollBar{obj=WhoListScrollFrame}
@@ -1086,7 +1085,6 @@ function aObj:GuildUI() -- LoD
 
 -->>-- GuildRoster Frame
 	self:skinDropDown{obj=GuildRosterViewDropdown}
-	self:skinFFColHeads("GuildRosterColumnButton", 5)
 	self:skinSlider{obj=GuildRosterContainerScrollBar, adj=-4}
 	for i = 1, #GuildRosterContainer.buttons do
 		btn = GuildRosterContainer.buttons[i]
@@ -1675,7 +1673,6 @@ function aObj:PVPFrame()
 	PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
 	PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
 	PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
-	self:skinFFColHeads("PVPTeamManagementFrameHeader", 4)
 	self:skinScrollBar{obj=PVPFrame.panel3.teamMemberScrollFrame}
 	self:skinDropDown{obj=PVPTeamManagementFrameTeamDropDown}
 	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleRight, ofs=-2}
