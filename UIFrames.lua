@@ -1420,9 +1420,19 @@ function aObj:MainMenuBar()
 	self:addButtonBorder{obj=ExtraActionButton1, relTo=ExtraActionButton1.icon}
 	ExtraActionButton1.style:SetTexture(nil)
 	ExtraActionButton1.style.SetTexture = function() end
--->>-- UnitPowerBarAlt
--->>-- PlayerPowerBarAlt
-	PlayerPowerBarAlt.frame:SetTexture(nil)
+-->>-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
+	local function skinUnitPowerBarAlt(bar)
+		bar.frame:SetTexture(nil)
+		bar.frame:Hide()
+		-- Don't change the status bar texture as it changes dependant upon type of power type required
+	end
+	self:SecureHook("UnitPowerBarAlt_SetUp", function(this, barID)
+		skinUnitPowerBarAlt(this)
+	end)
+	-- skin PlayerPowerBarAlt if already shown
+	if PlayerPowerBarAlt:IsVisible() then
+		skinUnitPowerBarAlt(PlayerPowerBarAlt)
+	end
 
 end
 
