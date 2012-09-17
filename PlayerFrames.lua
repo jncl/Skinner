@@ -1374,12 +1374,12 @@ function aObj:LootFrames()
 
 		if self.db.profile.LootFrames.size == 1 then
 
-			self:addSkinFrame{obj=obj, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
+			self:addSkinFrame{obj=obj, ft=ftype}--, x1=4, y1=-5, x2=-4, y2=5}
 
 		elseif self.db.profile.LootFrames.size == 2 then
 
 			obj:SetScale(0.75)
-			self:addSkinFrame{obj=obj, ft=ftype, x1=4, y1=-5, x2=-4, y2=5}
+			self:addSkinFrame{obj=obj, ft=ftype}--, x1=4, y1=-5, x2=-4, y2=5}
 
 		elseif self.db.profile.LootFrames.size == 3 then
 
@@ -1409,8 +1409,22 @@ function aObj:LootHistory()
 	self:add2Table(self.pKeys1, "LootHistory")
 
 	self:skinScrollBar{obj=LootHistoryFrame.ScrollFrame}
+	LootHistoryFrame.ScrollFrame.ScrollBarBackground:SetTexture(nil)
 	LootHistoryFrame.Divider:SetTexture(nil)
-	self:addSkinFrame{obj=LootHistoryFrame, ft=ftype}
+	self:addSkinFrame{obj=LootHistoryFrame, ft=ftype, kfs=true}
+	-- hook this to skin loot history items
+	self:SecureHook("LootHistoryFrame_FullUpdate", function(this)
+		for i = 1, #this.itemFrames do
+			local item = this.itemFrames[i]
+			item.Divider:SetTexture(nil)
+			item.NameBorderLeft:SetTexture(nil)
+			item.NameBorderRight:SetTexture(nil)
+			item.NameBorderMid:SetTexture(nil)
+			self:skinButton{obj=item.ToggleButton, mp=true}
+		end
+	end)
+
+	-- LootHistoryDropDown
 	self:skinDropDown{obj=LootHistoryDropDown}
 
 end
