@@ -72,7 +72,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent():GetParent(), false, false) end)
 	self:RegisterChatCommand("gp", function(msg) print(GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function(msg) print(GetMouseFocus():GetParent():GetPoint()) end)
-	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg]) end)
+	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg] or GetMouseFocus()) end)
 
 end
 function printTS(...)
