@@ -131,31 +131,18 @@ function module:skinButton(opts)
 
 	if not opts.obj then return end
 
-	-- don't skin it twice
-	if aObj.sBtn[opts.obj]
+	if aObj.sBtn[opts.obj] -- don't skin it twice
 	or aObj.skinFrame[opts.obj] -- don't skin tab buttons
-	or opts.obj.tfade
 	then
 		return
 	end
 
 	-- remove textures
-	if opts.obj.Left -- UIPanelButtonTemplate (MoP)
-	or opts.obj.leftArrow then -- UIMenuButtonStretchTemplate (MoP)
+	if opts.obj.Left -- UIPanelButtonTemplate and derivatives (MoP)
+	or opts.obj.leftArrow -- UIMenuButtonStretchTemplate (MoP)
+	then
 		-- aObj:Debug("skinButton ß: [%s]", opts.obj)
 		opts.obj:DisableDrawLayer("BACKGROUND")
-	elseif opts.obj.GetNormalTexture
-	and opts.obj:GetNormalTexture()
-	then -- [UIPanelButtonTemplate/UIPanelCloseButton/... and derivatives]
-		-- aObj:Debug("skinButton å: [%s]", opts.obj)
-		opts.obj:GetNormalTexture():SetAlpha(0)
-		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
-		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
-		if opts.obj.GetCheckedTexture -- CheckButton (Archy)
-		and opts.obj:GetCheckedTexture()
-		then
-			opts.obj:GetCheckedTexture():SetAlpha(0)
-		end
 	elseif opts.obj.left then -- ARL & Collectinator
 		opts.obj.left:SetAlpha(0)
 		opts.obj.middle:SetAlpha(0)
@@ -171,6 +158,19 @@ function module:skinButton(opts)
 				local bTex = _G[objName..tName]
 				if bTex then bTex:SetAlpha(0) end
 			end
+		end
+	end
+	-- remove any 'old' type button textures (ArkInventory)
+	if opts.obj.GetNormalTexture
+	and opts.obj:GetNormalTexture()
+	then
+		opts.obj:GetNormalTexture():SetAlpha(0)
+		if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
+		if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
+		if opts.obj.GetCheckedTexture -- CheckButton (Archy)
+		and opts.obj:GetCheckedTexture()
+		then
+			opts.obj:GetCheckedTexture():SetAlpha(0)
 		end
 	end
 
@@ -286,26 +286,32 @@ local function getTexture(obj)
 
 end
 function module:isButton(obj)
+	-- aObj:Debug("module:isButton: [%s]", obj)
 
-	local bType, oName, oTex
-	if obj.GetNormalTexture -- is it a true button
+	local oName, nTex, bType
+
+	if (obj.Left or obj.leftArrow or obj.GetNormalTexture) -- is it a true button
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then
 		oName = obj.GetName and obj:GetName() or nil
-		 -- ignore named/AceConfig/XConfig/AceGUI objects
+		nTex = obj.GetNormalTexture and obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
+		aObj:Debug("module:isButton#2: [%s, %s]", oName, nTex)
+		 ignore named/AceConfig/XConfig/AceGUI objects
  		if oName
- 		and (oName:find("AceConfig")
- 		or oName:find("XConfig")
- 		or oName:find("AceGUI"))
+ 		and (oName:find("AceConfig") or oName:find("XConfig") or oName:find("AceGUI"))
  		then
  			return
  		end
 		local oW, oH, nR = aObj:round2(obj:GetWidth()), aObj:round2(obj:GetHeight()), obj:GetNumRegions()
+		-- aObj:Debug("module:isButton#3: [%s, %s, %s]", oW, oH, nR)
+		-- aObj:Debug("module:isButton#4: [%s, %s, %s, %s]", oName and oName:find("Close"), obj:GetParent().CloseButton, oH == 32 and oW == 32 and nR == 4 and nTex and nTex:find("UI-Panel-MinimizeButton-Up", 1, true), oW == oH)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
 			bType = "toast"
-		elseif ((oName and oName:find("Close")) or obj:GetParent().CloseButton)
+		elseif oName and oName:find("Close")
+		or obj:GetParent().CloseButton
+		or oH == 32 and oW == 32 and nR == 4 and nTex and nTex:find("UI-Panel-MinimizeButton-Up", 1, true) -- UIPanelCloseButton
 		and oW == oH -- square button
 		then
 			bType = "close"
@@ -316,15 +322,9 @@ function module:isButton(obj)
 		elseif oH == 54 then
 			bType = "help"
 		end
-		-- if obj:GetParent().GetName
-		-- and obj:GetParent():GetName()
-		-- and	obj:GetParent():GetName():find("TransmogrifyFrame")
-		-- then
-		-- 	aObj:Debug("isB-ß: [%s, %s, %s, %s, %s]", obj, oW, oH, nR, bType)
-		-- 	-- if bType == "close" then aObj:ShowInfo(obj) end
-		-- end
 	end
 
+	-- aObj:Debug("module:isButton#5: [%s]", bType)
 	return bType
 
 end
@@ -358,10 +358,6 @@ local function __skinAllButtons(opts, bgen)
 				module:skinButton{obj=child, cb3=true, anim=opts.anim}
 			elseif bType == "help" then
 				module:skinButton{obj=child, x1=0, y1=0, x2=-3, y2=3}
-			elseif bType == "helpKB" then
-				child:DisableDrawLayer("ARTWORK")
-				module:skinButton{obj=child, as=true}
-			elseif bType == "mp" then -- ignore for now
 			end
 		elseif child:IsObjectType("Frame") and bgen > 0 then
 			opts.obj=child
@@ -447,7 +443,7 @@ local function __addButtonBorder(opts)
 			or nil
 	opts.obj.sknrBdr:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
 	opts.obj.sknrBdr:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
-	
+
 	if opts.hide and opts.relTo then
 		-- hook Show and Hide methods of the relTo object
 		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sknrBdr:Show() end)
