@@ -8,26 +8,122 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
+	O	Nameplates
 
-?	I	XLootMonitor, reported by DarkLimpan, 02.07.12
-		- I'm having a weird issue between Skinner and XlootMonitor. With my normal Skinner-settings, the XlootMonitor loot list has a white background making it a bit hard to see. If I were to move my savedvariable-files for skinner out of the wtf-folder, then it's black and just fine. Except the rest of my UI just looks ugly.
+?	I	CrossRealmZoning
+		- causing issues with frames/panels needing to be reskinned
 
-?	I	CastingBar, reported by Luckyjack_SL, 09.09.12
-		- ..\AddOns\Skinner\UtilFuncs.lua line 193:
+	I	IOF Buttons
+		- are being skinned twice on some panels (AceGUI ones ?)
+
+√	I	AucAdvanced, reported by Luckyjack_SL, 11.09.12
+		- ..\AddOns\Skinner\SkinMe\AucAdvanced.lua line 80:
+   Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+Debug:
+   [C]: ?
+   Ace3\AceHook-3.0\AceHook-3.0.lua:211:
+      Ace3\AceHook-3.0\AceHook-3.0.lua:118
+   Ace3\AceHook-3.0\AceHook-3.0.lua:344: SecureHook()
+   Skinner\SkinMe\AucAdvanced.lua:80:
+      Skinner\SkinMe\AucAdvanced.lua:4
+   (tail call): ?
+
+√   I	AucAdvanced, reported by Luckyjack_SL, 11.09.12
+   		- pressing the Scan button on AH Browse page gives:
+	   		- ..\AddOns\Skinner\UtilFuncs.lua line 441:
+	   bad argument #1 to 'format' (number expected, got nil)
+	Debug:
+	   [C]: ?
+	   [C]: format()
+	   Skinner\UtilFuncs.lua:441: round2()
+	   Skinner\SkinMe\AucAdvanced.lua:25:
+	      Skinner\SkinMe\AucAdvanced.lua:19
+	   (tail call): ?
+
+√	S	Warlock ShardBarFrame/DemonicFuryBarFrame/BurningEmbersBarFrame
+
+√	S	UnitPowerBarAlt
+
+√	I	_DevPadGUI
+
+√	I	Livestock, reported by Curace, 13.09.12
+		- Skinner-b5.16016.4\SkinMe\Livestock-1.6.5.lua:9: attempt to concatenate field "?" (a nil value)
+Skinner-b5.16016.4\SkinMe\Livestock-1.6.5.lua:9: in function <Skinner\SkinMe\Livestock.lua:7>
+Skinner-b5.16016.4\SkinMe\Livestock-1.6.5.lua:16: in function <Skinner\SkinMe\Livestock.lua:14>
+(tail call): ?
+
+√	I 	Recount, reported by Excitor0, 14.09.12
+		- All buttons on recount are skinned as x buttons
+
+?	I	Options, reported by Decabah, 11.09.12
+	 	- Skinner-b5.16016.3\PlayerFrames.lua:604: attempt to index global "CompactRaidFrameContainer" (a nil value)
+(tail call): ?
+<in C code>
+Skinner-b5.16016.3\UtilFuncs.lua:109: in function <Skinner\UtilFuncs.lua:107>
+(tail call): ?
+Skinner-b5.16016.3\Options.lua:799: in function <Skinner\Options.lua:788>
+(tail call): ?
+
+?	I	GuildUI, reported by Decabah, 11.09.12
+		- Roster, Info, News, Rewards and Guild panes are all unskinned
+
+?	I	CastingBar, reported by Luckyjack_SL, 09.09.12/11.09.12
+		- ..\AddOns\Skinner\UtilFuncs.lua line 199:
    CastingBarFrameBorderShield:SetPoint(): CastingBarFrameIcon is dependent on this
 Debug:
    [C]: SetPoint()
-   Skinner\UtilFuncs.lua:193: changeShield()
+   Skinner\UtilFuncs.lua:199: changeShield()
    Skinner\PlayerFrames.lua:383:
-   Skinner\PlayerFrames.lua:373
-
-√	I	GroupCalendar5, reported by Luckyjack_SL, 09.09.12
-		- ..\AddOns\Skinner\SkinMe\GroupCalendar5.lua line 21:
-   attempt to index local 'frame' (a nil value)
-Debug:
-   Skinner\SkinMe\GroupCalendar5.lua:21: skinDD()
-   Skinner\SkinMe\GroupCalendar5.lua:78:
-      Skinner\SkinMe\GroupCalendar5.lua:3
+      Skinner\PlayerFrames.lua:373
    (tail call): ?
-	  
-	  
+   		- caused by Dominos_Cast (as identified by Luckyjack_SL)
+
+?	I	AchievementUI, reported by NeoZeus, 15.09.12
+		- my Achievement/Guild Achievement/Statistics window isn't skinned
+
+≈	I	Group Loot, reported by Decabah, , 5/13.09.12
+		-  skinned frame too small
+
+≈	I	Loot Rolls (a.k.a. Loot History), reported by Decabah, 5/13.09.12
+		- Item elements not skinned
+		- ScrollBar not skinned
+		- Frame not skinned
+
+√	I	Bagnon, reported by Excitor0, 14.09.12
+		- the x button in Bagnon is not skinned
+
+√	I	GuildUI, reported by Excitor0, 14.09.12
+		- The gradient in the guild roster on the "name", "rank", "note", "last online" seems off compared to for example "ignore", "friend", "pending" in your friends list.
+
+?	I	Toast frame, reported by Excitor0, 14.09.12
+		- The fading in the battle.net toast when skinned seems off.
+		- The gradient seems a bit too steep making it look a bit took round and 3d. I think a more flat gradiet for the battle.net toast would look a lot sleeker and better, maybe an option?
+
+?	I 	TradeWindow, reported by Excitor0, 15.09.12
+		- Trade window skinning is bugged
+
+√	I	Auctionator, reported by Excitor0, 15.09.12
+		- Auctionator addon buttons are not skinned.
+
+√	I	ProfessionTabs, reported by X-buZZ, 15.09.12
+		- is still not skinned for me, caused by Mr Trader (as identified by X-buZZ)
+
+√	I	AdiBags, reported by X-buZZ, 15.09.12
+		- Skinner\Skinner-b5.16016.4.lua:235: table index is nil
+		  Skinner\Skinner-b5.16016.4.lua:235: in function <Skinner\Skinner.lua:235>
+		  Skinner\Skinner-b5.16016.4.lua:1403: in function <Skinner\Skinner.lua:1384>
+		  Skinner\Skinner-b5.16016.4.lua:1479: in function "skinEditBox"
+		  Skinner-b5.16016.4\SkinMe\AdiBags-v1.5.lua:13: in function <Skinner\SkinMe\AdiBags.lua:10>
+		  (tail call): ?
+
+√	I	ArkInventory, reported by NeoZeus, 15.09.12
+		- the X to close the window in ArkInventory is not alligned
+
+?	I	Battlefield Minimap, reported by hammer2, 16.09.12
+		- need to be selected each time before it gets skinned
+
+√	N	PreformAVEnabler, reported by Excitor0, 14.09.12
+
+√	S	Notes, requested by X-buZZ, 15.09.12
+
+√	S	CollectMe, requested by Excitor0, 14.09.12
