@@ -605,7 +605,7 @@ function aObj:VoidStorageUI() -- LoD
 	self.initialized.VoidStorageUI = true
 
 	self:addSkinFrame{obj=VoidStoragePurchaseFrame, ft=ftype, kfs=true}
-	self:keepRegions(VoidStorageBorderFrame, {6})
+	self:keepFontStrings(VoidStorageBorderFrame)
 	for _, v in pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
 		local frame = _G["VoidStorage"..v.."Frame"]
 		frame:DisableDrawLayer("BACKGROUND")
