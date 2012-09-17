@@ -1081,7 +1081,6 @@ function aObj:ItemText()
 
 	self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
 		ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:Unhook(ItemTextFrame, "OnShow")
 	end)
 
 	self:skinScrollBar{obj=ItemTextScrollFrame}
@@ -1517,6 +1516,7 @@ function aObj:MenuFrames()
 		and (oName:find("AceConfig")
 		or oName:find("XConfig")
 		or oName:find("AceGUI"))
+		or aObj.ignoreIOF[obj] -- ignore object if required
 		then
 			return
 		end
@@ -1524,7 +1524,9 @@ function aObj:MenuFrames()
 		for _, child in ipairs{obj:GetChildren()} do
 			-- aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
 			if not aObj.skinFrame[child] then
-				if aObj:isDropDown(child) then
+				if aObj:isDropDown(child)
+				and not aObj.ignoreIOF[child]
+				then
 					local xOfs
 					if child:GetName():find("PowaDropDownDefaultTimer") then
 						xOfs = -90
@@ -1534,11 +1536,13 @@ function aObj:MenuFrames()
 						xOfs = 110
 					end
 					aObj:skinDropDown{obj=child, x2=xOfs}
-				elseif child:IsObjectType("EditBox") then
+				elseif child:IsObjectType("EditBox")
+				and not aObj.ignoreIOF[child]
+				then
 					aObj:skinEditBox{obj=child, regs={9}}
 				elseif child:IsObjectType("ScrollFrame")
 				and child:GetName()
-				and child:GetName().."ScrollBar" -- handle unnamed ScrollBar's
+				and child:GetName().."ScrollBar" -- handle named ScrollBar's
 				then
 					aObj:skinScrollBar{obj=child}
 				else

@@ -24,18 +24,17 @@ do
 	-- player class
 	aObj.uCls = select(2, UnitClass("player"))
 
-	local buildInfo = {GetBuildInfo()}
-	local portal = GetCVar("portal") or nil
+	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
 --@end-alpha@
 	-- check build number, if > Live then it's a patch
-	aObj.isPatch = tonumber(buildInfo[2]) > 16016 and true or false
+	aObj.isPatch = tonumber(buildInfo[2]) > 16057 and true or false
 	--check to see if running on PTR versionm
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.0.4"
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.0.5"
 
 end
 
@@ -273,6 +272,9 @@ function aObj:OnInitialize()
 		end
 		wipe(self.oocTab)
 	end)
+
+	-- ignore entries when skinning IOF elements
+	self.ignoreIOF = {}
 
 end
 
@@ -1296,6 +1298,7 @@ local function __skinDropDown(opts)
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
 		rp = re-parent, reverse the parent child relationship (addSkinFrame option)
+		ign = ignore this dropdown when skinning IOF panels
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __sDD\n"..debugstack())
@@ -1356,6 +1359,9 @@ local function __skinDropDown(opts)
 		aObj:addSkinFrame{obj=opts.obj, ft=ftype, aso={ng=true}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end
 
+	-- stop dropdowns being skinned when IOF panel opened
+	if opts.ign then aObj.ignoreIOF[opts.obj] = true end
+
 end
 
 function aObj:skinDropDown(...)
@@ -1394,9 +1400,11 @@ local function __skinEditBox(opts)
 		x = move the edit box left/right
 		y = move the edit box up/down
 		mi = move icon to the right
+		ign = ignore this editbox when skinning IOF panels
 --]]
 --@alpha@
-	assert(opts.obj and opts.obj:IsObjectType("EditBox"), "Not an EditBox\n"..debugstack())
+	assert(opts.obj, "Missing object __sEB\n"..debugstack())
+	assert(opts.obj:IsObjectType("EditBox"), "Not an EditBox\n"..debugstack())
 --@end-alpha@
 
 	-- don't skin it twice
@@ -1452,6 +1460,9 @@ local function __skinEditBox(opts)
 			end
 		end
 	end
+
+	-- stop editbox being skinned when IOF panel opened
+	if opts.ign then aObj.ignoreIOF[opts.obj] = true end
 
 end
 
@@ -1527,7 +1538,7 @@ local function __skinMoneyFrame(opts)
 	local obj
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
 		obj = _G[opts.obj:GetName()..v]
-		aObj:skinEditBox{obj=obj, regs={9, 10}, noHeight=true, noWidth=true} -- N.B. region 9 is the icon, 10 is text
+		aObj:skinEditBox{obj=obj, regs={9, 10}, noHeight=true, noWidth=true, ign=true} -- N.B. region 9 is the icon, 10 is text
 		-- move label to the right for colourblind mode
 		if k ~= 1 or opts.moveGIcon then
 			aObj:moveObject{obj=obj.texture, x=10}
