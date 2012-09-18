@@ -286,7 +286,7 @@ local function getTexture(obj)
 
 end
 function module:isButton(obj)
-	-- aObj:Debug("module:isButton: [%s]", obj)
+	-- aObj:Debug("module:isButton#1: [%s]", obj)
 
 	local oName, nTex, bType
 
@@ -296,8 +296,8 @@ function module:isButton(obj)
 	then
 		oName = obj.GetName and obj:GetName() or nil
 		nTex = obj.GetNormalTexture and obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
-		aObj:Debug("module:isButton#2: [%s, %s]", oName, nTex)
-		 ignore named/AceConfig/XConfig/AceGUI objects
+		-- aObj:Debug("module:isButton#2: [%s, %s]", oName, nTex)
+		-- ignore named/AceConfig/XConfig/AceGUI objects
  		if oName
  		and (oName:find("AceConfig") or oName:find("XConfig") or oName:find("AceGUI"))
  		then
