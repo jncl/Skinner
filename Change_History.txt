@@ -1,3 +1,30 @@
+b5.16057.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated TOC comments
+	Bugfix for debug helpers
+	Bugfixes for button skinning code
+	Skin UnitPowerBarAlt
+	Bugfix for Warlock UnitFrame skin
+	Bugfixes for ItemTextFrame, and IOF panels skins
+	Bugfixes for EncounterJournal, SpellBook and WatchFrame skins
+	Add another button to the loot frame as there is extra space
+	Bugfix for VoidStorage frame
+	Bugfix for some MoP frames not being skinned when loaded, defaults were wrong
+	Bugfix for GroupLoot and Loot History frames
+	Bugfix for column heading buttons
+	Fix for a complete mess of file attributes, now should be all ok, I hope
+	Updated skins
+	Ace3, AdiBags, ArkInventory, AucAdvanced, Auctionator, AutoBag
+	Bagnon
+	Dominos
+	LibDropdown, Livestock
+	PreformAVEnabler, ProfessionTabs
+	Recount
+	_DevPadGUI
+	Skinned CollectMe & Notes
+
 b5.16016.4
 Jncl:
 	ToDo.txt
