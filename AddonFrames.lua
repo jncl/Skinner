@@ -185,16 +185,6 @@ function aObj:AddonFrames()
 		end
 	end
 
-	-- skin Rock Config
-	if Rock and Rock:HasLibrary("LibRockConfig-1.0") then
-		if self.RockConfig then self:checkAndRun("RockConfig") -- not an addon in its own right
-		else
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, "RockConfig", "loaded but skin not found in SkinMe directory")
-			end
-		end
-	end
-
 	-- skin KeyboundDialog frame
 	if self.db.profile.MenuFrames then
 		if LibStub('LibKeyBound-1.0', true) then
