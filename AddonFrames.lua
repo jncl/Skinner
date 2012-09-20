@@ -26,19 +26,20 @@ function aObj:BlizzardFrames()
 	local blizzFrames = {
 		-- player
 		"Buffs",
-		-- CastingBar, checked with Quartz below
-		"CharacterFrames", "CompactFrames", "ContainerFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "GhostFrame", "GuildInvite", "LootFrames", "LootHistory", "MirrorTimers", "OverrideActionBar", "PVPFrame",
-		-- QuestLog, checked with EQL3 & QuestGuru below
+		-- CastingBar, checked below
+		-- CompactFrames, checked below
+		"CharacterFrames", "ContainerFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "GhostFrame", "GuildInvite", "LootFrames", "LootHistory", "MirrorTimers", "OverrideActionBar", "PVPFrame",
+		-- QuestLog, checked below
 		"ReadyCheck", "RolePollPopup", "ScrollOfResurrection", "SpellBookFrame", "SpellFlyout", "StackSplit", "TradeFrame", "WatchFrame",
 	    -- npc
 		"ArenaRegistrar", "BankFrame", "GossipFrame", "GuildRegistrar", "MerchantFrame", "Petition", "PetStableFrame", "QuestFrame", "SideDressUpFrame", "Tabard", "TaxiFrame",
 		-- ui
 		"AlertFrames", "AutoComplete", "BNFrames", "ChatButtons", "ChatConfig", "ChatEditBox", "ChatFrames", "ChatMenus", "ChatMinimizedFrames", "ChatTabs", "ChatTemporaryWindow", "CinematicFrame",  "CoinPickup", "ColorPicker", "DestinyFrame", "DropDownPanels", "HelpFrame", "ItemText", "LevelUpDisplay", "LFDFrame", "LFGFrame", "LFRFrame", "MailFrame",
-		-- MainMenuBar, checked with Bongos below
+		-- MainMenuBar, checked below
 		"MenuFrames", "Minimap",
 		-- MinimapButtons, done with timer
-		-- ModelFrames, checked with CloseUp below
-		-- Nameplates, checked with Aloft below
+		-- ModelFrames, checked below
+		-- Nameplates, checked below
 		"PetBattleUI", "PVEFrame", "RaidFrame", "ScriptErrors", "StaticPopups",
 		-- Tooltips, checked below
 		"Tutorial", "WorldMap", "WorldState",
@@ -133,16 +134,13 @@ function aObj:AddonFrames()
 	-- N.B. Do it here as other Addons use the QuestLog size
 	if not IsAddOnLoaded("EQL3") then self:checkAndRun("QuestLog") end
 
-	-- skin the CastingBar if Quartz or Dominos_Cast isn't loaded
+	-- skin the CastingBar if other castbar addons aren't loaded
 	if not IsAddOnLoaded("Quartz")
 	and not IsAddOnLoaded("Dominos_Cast")
 	then
 		self:checkAndRun("CastingBar")
 	end
 
-	-- skin the MenuBar if Bongos isn't loaded
-	if not IsAddOnLoaded("Bongos")
-	and not IsAddOnLoaded("Bongos2")
 	-- skin the CompactFrames if Tukui/ElvUI aren't loaded
 	if not IsAddOnLoaded("Tukui")
 	and not IsAddOnLoaded("ElvUI")
@@ -150,6 +148,9 @@ function aObj:AddonFrames()
 		self:checkAndRun("CompactFrames")
 	end
 
+	-- skin the MenuBar if other actionbar addons aren't loaded
+	if not IsAddOnLoaded("Bartender4")
+	and not IsAddOnLoaded("Dominos")
 	then
 		self:checkAndRun("MainMenuBar")
 	end
