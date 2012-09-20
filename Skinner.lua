@@ -917,7 +917,8 @@ end
 
 function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 --@alpha@
-	assert(statusBar and statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n"..debugstack())
+	assert(statusBar, "Missing object __gSB\n"..debugstack())
+	assert(statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n"..debugstack())
 --@end-alpha@
 
 --	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
@@ -965,8 +966,6 @@ function aObj:keepFontStrings(obj, hide)
 --@alpha@
 	assert(obj, "Missing object kFS\n"..debugstack())
 --@end-alpha@
-
---	if not frame then return end
 
 	for _, reg in pairs{obj:GetRegions()} do
 		if not reg:IsObjectType("FontString") then
@@ -1155,8 +1154,6 @@ function aObj:removeRegions(obj, regions)
 --@alpha@
 	assert(obj, "Missing object rR\n"..debugstack())
 --@end-alpha@
-
---	if not frame then return end
 
 	regions = revTable(regions)
 
