@@ -86,6 +86,12 @@ function aObj:Debug(a1, ...)
 	printIt(output.." "..makeText(a1, ...), self.debugFrame)
 
 end
+aObj.debug2 = false
+function aObj:Debug2(...)
+
+	if aObj.debug2 then self:Debug(...) end
+
+end
 --@end-debug@
 --[===[@non-debug@
 function aObj:Debug() end
