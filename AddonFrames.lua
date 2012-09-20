@@ -143,6 +143,13 @@ function aObj:AddonFrames()
 	-- skin the MenuBar if Bongos isn't loaded
 	if not IsAddOnLoaded("Bongos")
 	and not IsAddOnLoaded("Bongos2")
+	-- skin the CompactFrames if Tukui/ElvUI aren't loaded
+	if not IsAddOnLoaded("Tukui")
+	and not IsAddOnLoaded("ElvUI")
+	then
+		self:checkAndRun("CompactFrames")
+	end
+
 	then
 		self:checkAndRun("MainMenuBar")
 	end
