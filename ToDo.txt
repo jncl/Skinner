@@ -16,7 +16,7 @@ Legend:
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
-?	I	Options, reported by Decabah, 11.09.12
+≈	I	Options, reported by Decabah, 11.09.12
 	 	- Skinner-b5.16016.3\PlayerFrames.lua:604: attempt to index global "CompactRaidFrameContainer" (a nil value)
 (tail call): ?
 <in C code>
@@ -24,13 +24,17 @@ Skinner-b5.16016.3\UtilFuncs.lua:109: in function <Skinner\UtilFuncs.lua:107>
 (tail call): ?
 Skinner-b5.16016.3\Options.lua:799: in function <Skinner\Options.lua:788>
 (tail call): ?
+		- maybe related to Tukui
 
 ?	I	Toast frame, reported by Excitor0, 14.09.12
 		- The fading in the battle.net toast when skinned seems off.
 		- The gradient seems a bit too steep making it look a bit took round and 3d. I think a more flat gradiet for the battle.net toast would look a lot sleeker and better, maybe an option?
 
-?	I 	TradeWindow, reported by Excitor0, 15.09.12
-		- Trade window skinning is bugged
+√	I	Clique, reported by Connemara, 20.09.12
 
-?	I	Battlefield Minimap, reported by hammer2, 16.09.12
-		- need to be selected each time before it gets skinned
+√	I	PerlClassic, reported by Zaj, 20.09.12
+		- Interface\AddOns\Skinner\Skinner.lua:925: attempt to index local 'statusBar' (a nil value)
+Time: 09/20/12 17:10:47
+Count: 1
+Stack: Interface\AddOns\Skinner\SkinMe\PerlClassic.lua:34 6: in function <Interface\AddOns\Skinner\SkinMe\PerlClassic.lua:3 26>
+(tail call): ?
