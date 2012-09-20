@@ -608,7 +608,6 @@ function aObj:CompactFrames()
 			skinUnit(frame)
 		end
 	end
-
 	self:addSkinFrame{obj=CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, bg=true, y1=-1, x2=-5, y2=4}
 
 -->>-- Compact RaidFrame Manager
@@ -1516,8 +1515,7 @@ function aObj:OverrideActionBar()
 		-- remove all textures
 		OverrideActionBar:DisableDrawLayer("OVERLAY")
 		OverrideActionBar:DisableDrawLayer("BACKGROUND")
-		-- OverrideActionBar:DisableDrawLayer("BORDER")
-		OverrideActionBar:DisableDrawLayer("BOARDER") -- N.B. notice spelling !
+		OverrideActionBar:DisableDrawLayer("BORDER")
 
 		-- PitchFrame
 		OverrideActionBar.pitchFrame.Divider1:SetTexture(nil)
