@@ -443,6 +443,13 @@ function module:OnInitialize()
 	-- setup default applySkin options
 	aso = {ba=db.alpha, ng=true}
 
+	-- disable ourself if another unitframe addon is loaded
+	if IsAddOnLoaded("Perl_Config")
+	or IsAddOnLoaded("XPerl")
+	then
+		self:Disable()
+	end
+
 end
 
 function module:OnEnable()
