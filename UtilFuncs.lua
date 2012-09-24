@@ -95,6 +95,7 @@ end
 --@end-debug@
 --[===[@non-debug@
 function aObj:Debug() end
+function aObj:Debug2() end
 --@end-non-debug@]===]
 
 function aObj:CustomPrint(r, g, b, a1, ...)
