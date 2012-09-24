@@ -16,25 +16,11 @@ Legend:
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
-≈	I	Options, reported by Decabah, 11.09.12
-	 	- Skinner-b5.16016.3\PlayerFrames.lua:604: attempt to index global "CompactRaidFrameContainer" (a nil value)
+√	I	Missing function when not in debug mode, reported by chrisgriffith25, 23.09.12
+		- Skinner-b5.16057.3\modules\UIButtons.lua:289: attempt to call method "Debug2" (a nil value)
+Skinner-b5.16057.3\modules\UIButtons.lua:351: in function <Skinner\modules\UIButtons.lua:330>
+Skinner-b5.16057.3\modules\UIButtons.lua:384: in function "skinAllButtons"
+Skinner\Skinner-b5.16057.3.lua:603: in function <Skinner\Skinner.lua:522>
 (tail call): ?
-<in C code>
-Skinner-b5.16016.3\UtilFuncs.lua:109: in function <Skinner\UtilFuncs.lua:107>
-(tail call): ?
-Skinner-b5.16016.3\Options.lua:799: in function <Skinner\Options.lua:788>
-(tail call): ?
-		- maybe related to Tukui
 
-?	I	Toast frame, reported by Excitor0, 14.09.12
-		- The fading in the battle.net toast when skinned seems off.
-		- The gradient seems a bit too steep making it look a bit took round and 3d. I think a more flat gradiet for the battle.net toast would look a lot sleeker and better, maybe an option?
-
-√	I	Clique, reported by Connemara, 20.09.12
-
-√	I	PerlClassic, reported by Zaj, 20.09.12
-		- Interface\AddOns\Skinner\Skinner.lua:925: attempt to index local 'statusBar' (a nil value)
-Time: 09/20/12 17:10:47
-Count: 1
-Stack: Interface\AddOns\Skinner\SkinMe\PerlClassic.lua:34 6: in function <Interface\AddOns\Skinner\SkinMe\PerlClassic.lua:3 26>
-(tail call): ?
+√	S	oQueue, requested by Decabah, 23.09.12
