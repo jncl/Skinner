@@ -1,3 +1,17 @@
+b5.16057.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Clique, PerlClassic & Spew skins
+	Comment update in toc file
+	Don't skin MainMenuBar if other action bar addons are loaded
+	Bugfix for CompactFrames & Tukui issue
+	Tidyup debug code
+	Disable UnitFrames if other unitframe addons are loaded
+	Bugfixes for button skinning code
+	Bugfix for OverrideActionBar
+	Obsoleted RockConfig
+
 b5.16057.2
 Jncl:
 	ToDo.txt
