@@ -40,7 +40,7 @@ function aObj:BlizzardFrames()
 		-- MinimapButtons, done with timer
 		-- ModelFrames, checked below
 		-- Nameplates, checked below
-		"PetBattleUI", "PVEFrame", "RaidFrame", "ScriptErrors", "StaticPopups",
+		"PetBattleUI", "PVEFrame", "QueueStatusFrame", "RaidFrame", "ScriptErrors", "StaticPopups",
 		-- Tooltips, checked below
 		"Tutorial", "WorldMap", "WorldState",
 	}

@@ -672,7 +672,7 @@ function aObj:ChatTemporaryWindow()
 	-- self:add2Table(self.uiKeys1, "ChatTemporaryWindow") -- N.B. no option for this, internal function only
 
 	local function skinTempWindow(obj)
-		
+
 		if self.db.profile.ChatTabs
 		and not self.skinFrame[obj]
 		then
@@ -687,7 +687,7 @@ function aObj:ChatTemporaryWindow()
 		and not self.skinned[obj.editBox]
 			then skinChatEB(obj.editBox)
 		end
-		
+
 	end
 	-- hook this to handle Temporary windows (BN Conversations, Pet Battles etc)
 	self:RawHook("FCF_OpenTemporaryWindow", function(...)
@@ -1688,12 +1688,13 @@ function aObj:MinimapButtons()
 						elseif (texName and texName:find("Border"))
 						or (tex and tex:find("TrackingBorder"))
 						then
+							-- print("mm btn found", objName)
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)
 							if not minBtn then
 								if objType == "Button" then
-									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==MiniMapLFGFrame and true or nil}
+									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==QueueStatusMinimapButton and true or nil} -- reparent to ensure Eye is visible
 								else
 									aObj:addSkinFrame{obj=obj, ft=ftype}
 								end
@@ -1967,7 +1968,7 @@ function aObj:PetBattleUI()
 	self.initialized.PetBattleUI = true
 
 	self:add2Table(self.uiKeys1, "PetBattleUI")
-		
+
 	local dpt = [[Interface\PetBattles\DeadPetIcon]]
 
 	-- Top Frame
@@ -2047,7 +2048,7 @@ function aObj:PetBattleUI()
 	self:SecureHook("PetBattleActionButton_UpdateState", function(this)
 		self:Debug("PetBattleActionButton_UpdateState: [%s, %s, %s]", this, this.actionType, this.actionIndex)
 	end)
-		
+
 	-- Tooltip frames
 	if self.db.profile.Tooltips.skin then
 		obj = PetBattlePrimaryUnitTooltip
@@ -2123,6 +2124,13 @@ function aObj:PVEFrame()
 	self:removeMagicBtnTex(ScenarioQueueFrameFindGroupButton)
 
 end
+
+function aObj:QueueStatusFrame()
+
+	self:addSkinFrame{obj=QueueStatusFrame}
+
+end
+
 
 function aObj:RaidFrame()
 	if not self.db.profile.RaidFrame or self.initialized.RaidFrame then return end
