@@ -263,6 +263,7 @@ function module:skinButton(opts)
 			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
 		else
 			if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
+			if bW < 16 then opts.obj:SetWidth(16) end -- set minimum button width (oQueue remove buttons)
 			aObj:applySkin{obj=opts.obj, bd=aso.bd}
 		end
 	end
