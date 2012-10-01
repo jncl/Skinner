@@ -455,21 +455,6 @@ local function __addButtonBorder(opts)
 		if not opts.relTo:IsShown() then opts.obj.sknrBdr:Hide() end
 	end
 
-	if opts.disable then
-		module:SecureHook(opts.obj, "Enable", function(this)
-			self:Debug("Enable: [%s]", this)
-			-- this.sknrBdr:SetDesaturated(false)
-			-- this.sknrBdr:SetVertexColor(0.5, 0.5, 0.5)
-			this.sknrBdr:SetBackdropBorderColor(.5, .5, .5)
-		end)
-		module:SecureHook(opts.obj, "Disable", function(this)
-			self:Debug("Disable: [%s]", this)
-			-- this.sknrBdr:SetDesaturated(true)
-			-- this.sknrBdr:SetVertexColor(1, 1, 1)
-			this.sknrBdr:SetBackdropBorderColor(unpack(aObj.bbColour))
-		end)
-	end
-
 	-- reparent objects if required
 	if opts.reParent then
 		for _, obj in pairs(opts.reParent) do
