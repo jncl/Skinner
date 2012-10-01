@@ -540,8 +540,8 @@ local function __addSkinFrame(opts)
 		anim = reparent skinFrame to avoid whiteout issues caused by animations
 		ri = Disable Inset DrawLayers
 		bas = use applySkin for buttons
-		rt = remove Textures
 		rp = re-parent, reverse the parent child relationship
+		af = alertframe animation fix
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n"..debugstack())
@@ -626,6 +626,17 @@ local function __addSkinFrame(opts)
 		-- hook Show and Hide methods
 		aObj:SecureHook(opts.obj, "Show", function(this) aObj.skinFrame[this]:Show() end)
 		aObj:SecureHook(opts.obj, "Hide", function(this) aObj.skinFrame[this]:Hide() end)
+	end
+
+	-- handle AlertFrame style frames to prevent gradient whiteout
+	if opts.af then
+		opts.obj.sf = skinFrame
+		-- hook this script to ensure gradient texture is reparented correctly
+		aObj:SecureHookScript(opts.obj.animIn, "OnFinished", function(this)
+			local objP = this:GetParent()
+			objP.sf.tfade:SetParent(objP.sf)
+			if objP.cb then objP.cb.tfade:SetParent(objP.cb) end
+		end)
 	end
 
 	return skinFrame

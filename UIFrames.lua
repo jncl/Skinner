@@ -42,15 +42,23 @@ function aObj:AlertFrames()
 
 	local aafName = "AchievementAlertFrame"
 
+	-- hook this to stop gradient texture whiteout
+	self:RawHook("AlertFrame_AnimateIn", function(frame)
+		frame.sf.tfade:SetParent(MainMenuBar)
+		-- reset Gradient alpha
+		frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		self.hooks.AlertFrame_AnimateIn(frame)
+	end, true)
+
 	local function skinAlertFrames(fName)
 
 		local x1, x2, y1, y2, obj, icon = 5, -5, -10, 12
 		if fName == "CriteriaAlertFrame" then
-			x1, x2, y1, y2 = 16, -10, 4, 2
+			x1, x2, y1, y2 = 38, 10, 4, 2
 		end
 		for i = 1, MAX_ACHIEVEMENT_ALERTS do
 			obj = _G[fName..i]
-			if obj and not aObj.skinFrame[obj] then
+			if obj and not obj.sf then
 				_G[fName..i.."Background"]:SetTexture(nil)
 				_G[fName..i.."Background"].SetTexture = function() end
 				_G[fName..i.."Unlocked"]:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
@@ -59,12 +67,13 @@ function aObj:AlertFrames()
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
 				aObj:addButtonBorder{obj=icon, relTo=_G[fName..i.."IconTexture"]}
-				aObj:addSkinFrame{obj=obj, ft=ftype, anim=true, x1=x1, y1=y1, x2=x2, y2=y2}
+				aObj:addSkinFrame{obj=obj, ft=ftype, af=true, x1=x1, y1=y1, x2=x2, y2=y2}
 			end
 		end
 
 	end
-	-- check for both frames
+
+	-- Achievement Alert Frames
 	if not AchievementAlertFrame1 or AchievementAlertFrame2 then
 		self:RawHook("AchievementAlertFrame_GetAlertFrame", function(...)
 			local frame = self.hooks.AchievementAlertFrame_GetAlertFrame(...)
@@ -77,7 +86,6 @@ function aObj:AlertFrames()
 	end
 	-- skin any existing Achievement Alert Frames
 	skinAlertFrames("AchievementAlertFrame")
-
 	-- adjust frame size for guild achievements
 	self:SecureHook("AchievementAlertFrame_ShowAlert", function(...)
 		local obj, y1, y2
@@ -94,35 +102,6 @@ function aObj:AlertFrames()
 		end
 	end)
 
-	local function skinDCSAlertFrames(var, fPrefix)
-		for i = 1, var do
-			obj = _G[fPrefix.."AlertFrame"..i]
-			if obj and not aObj.skinFrame[obj] then
-				obj:DisableDrawLayer("BACKGROUND")
-				obj:DisableDrawLayer("BORDER")
-				obj:DisableDrawLayer("OVERLAY")
-				aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=obj, relTo=obj.dungeonTexture}) -- wait for animation to finish
-				aObj:addSkinFrame{obj=obj, ft=ftype, anim=true, ofs=-7}
-			end
-		end
-	end
-
-	-- DungeonCompletionAlert Frame
-	self:SecureHook("DungeonCompletionAlertFrame_ShowAlert", function()
-		skinDCSAlertFrames(DUNGEON_COMPLETION_MAX_REWARDS, "DungeonCompletion")
-	end)
-	skinDCSAlertFrames(DUNGEON_COMPLETION_MAX_REWARDS, "DungeonCompletion")
-	-- hook dungeon rewards function
-	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, ...)
-		frame:DisableDrawLayer("OVERLAY")
-	end)
-
-	-- GuildChallengeAlert Frame
-	GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
-	GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
-	aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=GuildChallengeAlertFrame, relTo=GuildChallengeAlertFrameEmblemIcon}) -- wait for animation to finish
-	self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, anim=true}--, x1=5, y1=-13, x2=-5, y2=4}
-
 	-- CriteriaAlert Frames
 	if not CriteriaAlertFrame1 or CriteriaAlertFrame2 then
 		self:RawHook("CriteriaAlertFrame_GetAlertFrame", function(...)
@@ -137,42 +116,65 @@ function aObj:AlertFrames()
 	-- skin any existing frames
 	skinAlertFrames("CriteriaAlertFrame")
 
-	-- ScenarioAlert Frame
+	local function skinDCSAlertFrame(opts)
+
+		if opts.obj and not opts.obj.sf then
+			aObj:removeRegions(opts.obj, opts.regs)
+			aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=opts.obj, relTo=opts.obj.dungeonTexture, reParent=opts.reParent}) -- wait for animation to finish
+			aObj:addSkinFrame{obj=opts.obj, ft=ftype, af=true, ofs=opts.ofs or -7, y1=opts.y1 or nil}
+		end
+
+	end
+
+	-- DungeonCompletionAlert Frame
+	skinDCSAlertFrame{obj=DungeonCompletionAlertFrame1, regs={2, 3, 4, 5, 6, 10}, ofs=0, y1=-7}
+	-- hook dungeon rewards function
+	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, ...)
+		frame:DisableDrawLayer("OVERLAY")
+	end)
+
 	-- ChallengeModeAlert Frame
-	self:SecureHook("ScenarioAlertFrame_ShowAlert", function()
-		skinDCSAlertFrames(SCENARIO_MAX_REWARDS, "Scenario")
-	end)
-	skinDCSAlertFrames(SCENARIO_MAX_REWARDS, "Scenario")
-	self:SecureHook("ChallengeModeAlertFrame_ShowAlert", function()
-		skinDCSAlertFrames(CHALLENGE_MODE_MAX_REWARDS, "ChallengeMode")
-	end)
-	skinDCSAlertFrames(CHALLENGE_MODE_MAX_REWARDS, "ChallengeMode")
+	skinDCSAlertFrame{obj=ChallengeModeAlertFrame1, regs={1, 3, 7}, reParent={ChallengeModeAlertFrame1.medalIcon}}
 	-- hook challenge mode rewards function
 	self:SecureHook("ChallengeModeAlertFrameReward_SetReward", function(frame, ...)
 		frame:DisableDrawLayer("OVERLAY")
 	end)
 
-	-- LootWonAlert Frame
-	-- MoneyWonAlert Frame
-	local function skinWonAlertFrames(tab)
-		for i = 1, #tab do
-			obj = tab[i]
-			if obj and not aObj.skinFrame[obj] then
-				obj.Background:SetTexture(nil)
-				obj.IconBorder:SetTexture(nil)
-				aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=obj, relTo=obj.Icon}) -- wait for animation to finish
-				aObj:addSkinFrame{obj=obj, ft=ftype, anim=true, ofs=-10}
-			end
+	-- ScenarioAlert Frame
+	skinDCSAlertFrame{obj=ScenarioAlertFrame1, regs={1, 3, 6}}
+
+	-- GuildChallengeAlert Frame
+	GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
+	GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
+	GuildChallengeAlertFrame:DisableDrawLayer("OVERLAY")
+	aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=GuildChallengeAlertFrame, relTo=GuildChallengeAlertFrameEmblemIcon}) -- wait for animation to finish
+	self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, af=true}
+
+	local function skinWonAlertFrames(obj)
+
+		if not obj.sf then
+			obj.Background:SetTexture(nil)
+			obj.IconBorder:SetTexture(nil)
+			aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=obj, relTo=obj.Icon}) -- wait for animation to finish
+			aObj:addSkinFrame{obj=obj, ft=ftype, af=true, ofs=-10}
 		end
+
 	end
-	self:SecureHook("LootWonAlertFrame_ShowAlert", function(...)
-		skinWonAlertFrames(LOOT_WON_ALERT_FRAMES)
+
+	-- LootWonAlert Frame
+	self:SecureHook("LootWonAlertFrame_SetUp", function(frame, ...)
+		skinWonAlertFrames(frame)
 	end)
-	skinWonAlertFrames(LOOT_WON_ALERT_FRAMES)
-	self:SecureHook("MoneyWonAlertFrame_ShowAlert", function(...)
-		skinWonAlertFrames(MONEY_WON_ALERT_FRAMES)
+	for _, frame in pairs(LOOT_WON_ALERT_FRAMES) do
+		skinWonAlertFrames(frame)
+	end
+	-- MoneyWonAlert Frame
+	self:SecureHook("MoneyWonAlertFrame_SetUp", function(frame, ...)
+		skinWonAlertFrames(frame)
 	end)
-	skinWonAlertFrames(MONEY_WON_ALERT_FRAMES)
+	for _, frame in pairs(MONEY_WON_ALERT_FRAMES) do
+		skinWonAlertFrames(frame)
+	end
 
 end
 
@@ -236,27 +238,32 @@ function aObj:BNFrames()
 	self:add2Table(self.uiKeys1, "BNFrames")
 
 -->>-- Toast frame
-	-- remove textures from close button
-	-- this involves using text instead of a texture
-	-- if not self.modBtns then
-	-- 	local btn = BNToastFrameCloseButton
-	-- 	-- create font to use
-	-- 	btn:GetNormalTexture():SetTexture(nil)
-	-- 	btn:GetPushedTexture():SetTexture(nil)
-	-- 	btn:SetText(self.modUIBtns.mult)
-	-- 	btn:SetNormalFontObject(self.modUIBtns.fontSBX)
-	-- 	self:adjWidth{obj=btn, adj=-2}
-	-- 	self:adjHeight{obj=btn, adj=-2}
-	-- 	btn:GetFontString():ClearAllPoints()
-	-- 	btn:GetFontString():SetPoint("TOPRIGHT", -1, 0)
-	-- end
-	self:addSkinFrame{obj=BNToastFrame, ft=ftype, anim=true}
+	-- hook this to stop gradient texture whiteout
+	self:RawHook("BNToastFrame_Show", function()
+		BNToastFrame.sf.tfade:SetParent(MainMenuBar)
+		BNToastFrame.cb.tfade:SetParent(MainMenuBar)
+		-- reset Gradient alpha
+		BNToastFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		BNToastFrame.cb.tfade:SetGradientAlpha(self:getGradientInfo())
+		self.hooks.BNToastFrame_Show()
+	end, true)
+	self:addSkinFrame{obj=BNToastFrame, ft=ftype, af=true}
 
 -->>-- Report frame
 	BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
 	self:skinScrollBar{obj=BNetReportFrameCommentScrollFrame}
 	self:skinEditBox{obj=BNetReportFrameCommentBox, regs={6}}
 	self:addSkinFrame{obj=BNetReportFrame, ft=ftype}
+
+-->>-- TimeAlert Frame
+	self:RawHook("TimeAlert_Start", function(time)
+		TimeAlertFrame.sf.tfade:SetParent(MainMenuBar)
+		-- reset Gradient alpha
+		TimeAlertFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		self.hooks.TimeAlert_Start(time)
+	end, true)
+	TimeAlertFrameBG:SetBackdrop(nil)
+	self:addSkinFrame{obj=TimeAlertFrame, ft=ftype, af=true}
 
 -->>-- ConversationInvite frame
 	self:addSkinFrame{obj=BNConversationInviteDialogList, ft=ftype}

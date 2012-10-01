@@ -207,12 +207,13 @@ function module:skinButton(opts)
 		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		btn:SetNormalFontObject(module.fontX)
 		btn:SetText(module.mult)
-	elseif opts.cb3 then -- it's a small blue close button
+	elseif opts.cb3 then -- it's a small blue close button (e.g. BNToastFrame)
 		aObj:adjWidth{obj=opts.obj, adj=-4}
 		aObj:adjHeight{obj=opts.obj, adj=-4}
 		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5, bba=0}, x1=2, y1=1, x2=2, y2=1}
 		btn:SetNormalFontObject(module.fontSBX)
 		btn:SetText(module.mult)
+		opts.obj:GetParent().cb = btn -- store button object in parent
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
 		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}}
 		btn:SetAllPoints(opts.obj:GetNormalTexture())
@@ -356,7 +357,7 @@ local function __skinAllButtons(opts, bgen)
 			elseif bType == "close" then
 				module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
 			elseif bType == "toast" then
-				module:skinButton{obj=child, cb3=true, anim=opts.anim}
+				module:skinButton{obj=child, cb3=true}
 			elseif bType == "help" then
 				module:skinButton{obj=child, x1=0, y1=0, x2=-3, y2=3}
 			end

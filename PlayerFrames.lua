@@ -1354,12 +1354,12 @@ function aObj:LootFrames()
 	BonusRollLootWonFrame.Background:SetTexture(nil)
 	BonusRollLootWonFrame.IconBorder:SetTexture(nil)
 	self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollLootWonFrame, relTo=BonusRollLootWonFrame.Icon}) -- wait for animation to finish
-	self:addSkinFrame{obj=BonusRollLootWonFrame, ft=ftype, anim=true, ofs=-10}
+	self:addSkinFrame{obj=BonusRollLootWonFrame, ft=ftype, af=true, ofs=-10}
 -->>-- BonusRollMoneyWon Frame
 	BonusRollMoneyWonFrame.Background:SetTexture(nil)
 	BonusRollMoneyWonFrame.IconBorder:SetTexture(nil)
 	self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollMoneyWonFrame, relTo=BonusRollMoneyWonFrame.Icon}) -- wait for animation to finish
-	self:addSkinFrame{obj=BonusRollMoneyWonFrame, ft=ftype, anim=true, ofs=-10}
+	self:addSkinFrame{obj=BonusRollMoneyWonFrame, ft=ftype, af=true, ofs=-10}
 -->>-- MasterLooter Frame
 	MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
 	MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
