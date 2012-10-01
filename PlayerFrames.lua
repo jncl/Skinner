@@ -592,12 +592,14 @@ function aObj:CompactFrames()
 -->>-- Compact RaidFrame Container
 	-- hook this to skin any new CompactRaidFrameContainer entries
 	self:SecureHook("FlowContainer_AddObject", function(container, object)
-		if container.frameUpdateList
-		and container.frameUpdateList.group
-		and container.frameUpdateList.group[object] then
-			skinGrp(object)
-		else
-			skinUnit(object)
+		if container == CompactRaidFrameContainer then -- only for compact raid frame objects
+			if container.frameUpdateList
+			and container.frameUpdateList.group
+			and container.frameUpdateList.group[object] then
+				skinGrp(object)
+			else
+				skinUnit(object)
+			end
 		end
 	end)
 	-- skin any existing unit(s) [group, mini, normal]
