@@ -844,15 +844,20 @@ function aObj:FriendsFrame()
 	self:skinTabs{obj=FriendsFrame, lod=true}
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-5}
 
+	self:skinDropDown{obj=FriendsDropDown}
+	self:skinDropDown{obj=TravelPassDropDown}
 	-- FriendsTabHeader Frame
+	FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
+	self:addButtonBorder{obj=FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
+	self:addSkinFrame{obj=FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, kfs=true, ofs=4}
+	self:addSkinFrame{obj=FriendsFrameBattlenetFrame.BroadcastFrame, ofs=-10}
+	self:addSkinFrame{obj=FriendsFrameBattlenetFrame.UnavailableInfoFrame}
 	self:skinDropDown{obj=FriendsFrameStatusDropDown}
 	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
 	FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinTabs{obj=FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
-	if self.modBtnBs then
-		self:addButtonBorder{obj=FriendsTabHeaderSoRButton}
-	end
+	self:addButtonBorder{obj=FriendsTabHeaderSoRButton}
 
 	--	FriendsList Frame
 	-- adjust width of FFFSF so it looks right (too thin by default)
@@ -941,6 +946,9 @@ function aObj:FriendsFrame()
 	self:addSkinFrame{obj=RaidInfoIDLabel, kfs=true}
 	self:skinSlider{obj=RaidInfoScrollFrame.scrollBar}
 	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
+
+-->>-- BattleTagInvite Frame
+	self:addSkinFrame{obj=BattleTagInviteFrame}
 
 end
 
