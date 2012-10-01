@@ -1659,6 +1659,7 @@ function aObj:PetJournal() -- LoD
 	end
 	-- Tooltips
 	if self.db.profile.Tooltips.skin then
+		PetJournalPrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
 		PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
 		self:addSkinFrame{obj=PetJournalPrimaryAbilityTooltip, ft=ftype}
 		PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
