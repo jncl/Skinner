@@ -47,6 +47,7 @@
 <script file="SkinMe\Bagnon_Forever.lua"/>
 <script file="SkinMe\BankItems.lua"/>
 <script file="SkinMe\BasicChatMods.lua"/>
+<script file="SkinMe\BattlePetCount.lua"/>
 <script file="SkinMe\BaudBag.lua"/>
 <script file="SkinMe\BaudManifest.lua"/>
 <script file="SkinMe\BeanCounter.lua"/>
@@ -154,6 +155,7 @@
 <script file="SkinMe\Hadar_FocusFrame.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>
 <script file="SkinMe\HatTrick.lua"/>
+<script file="SkinMe\HaveWeMet.lua"/>
 <script file="SkinMe\HeadCount.lua"/>
 <script file="SkinMe\HealBot.lua"/>
 <script file="SkinMe\Highlight.lua"/>
@@ -216,6 +218,7 @@
 <script file="SkinMe\PassLoot.lua"/>
 <script file="SkinMe\Pawn.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
+<script file="SkinMe\PetBattleTeams.lua"/>
 <script file="SkinMe\PetListPlus.lua"/>
 <script file="SkinMe\PetsPlus.lua"/>
 <script file="SkinMe\PhoenixStyle.lua"/>
