@@ -20,6 +20,7 @@ function aObj:AckisRecipeList()
 		["2.0.5"] = 9, -- release
 		["2.1.0"] = 10, -- release
 		["2.2.8"] = 11, -- release
+		["2.4.1"] = 12, -- release
 	}
 	local aVer = GetAddOnMetadata("AckisRecipeList", "Version")
 	local ver = vTab[aVer] or 99
@@ -31,13 +32,14 @@ function aObj:AckisRecipeList()
 		end
 		-- button in TLHC
 		self:moveObject{obj=ver > 4 and frame.prof_button or frame.mode_button, x=6, y=-9}
+		self:moveObject{obj=ver > 11 and frame.profession_texture, x=6, y=-9}
 		if ver < 3 then
 			self:skinDropDown{obj=ARL_DD_Sort}
 		end
 		if ver == 1 then
 			self:skinEditBox{obj=ARL_SearchText, regs={9}}
 		else
-			self:skinEditBox{obj=frame.search_editbox, regs={9}, noHeight=true}
+			self:skinEditBox{obj=frame.search_editbox, regs={9}, noHeight=true, mi=true}
 			frame.search_editbox:SetHeight(18)
 		end
 		if ver > 2 then
@@ -74,6 +76,10 @@ function aObj:AckisRecipeList()
 			x1, y1, x2, y2 = 10, -11, -33, 74
 		end
 		self:addSkinFrame{obj=frame, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
+		-- show profession texture
+		if ver == 12 then
+			frame.profession_texture:SetAlpha(1)
+		end
 
 -->>-- Tabs
 		if ver > 2 then
@@ -155,9 +161,11 @@ function aObj:AckisRecipeList()
 		end)
 	end
 
-	-- TextDump frame
-	self:skinScrollBar{obj=ARLCopyScroll}
-	self:addSkinFrame{obj=ARLCopyFrame}
+	if ver < 12 then
+		-- TextDump frame
+		self:skinScrollBar{obj=ARLCopyScroll}
+		self:addSkinFrame{obj=ARLCopyFrame}
+	end
 
 	-- button on Tradeskill frame
 	if ver < 11 then

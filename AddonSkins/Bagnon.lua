@@ -23,18 +23,23 @@ function aObj:Bagnon(LoD)
 		local Bagnon = LibStub('AceAddon-3.0'):GetAddon('Bagnon')
 		-- skin the bag frame
 		self:RawHook(Bagnon.Frame, "New", function(this, frameID)
-			-- self:Debug("Bagnon.Frame New: [%s, %s]", this, frameID)
 			local frame = self.hooks[this].New(this, frameID)
 			self:SecureHookScript(frame, "OnShow", function(this)
 				self:addSkinFrame{obj=this}
-				for i = 1, #this.menuButtons do
-					self:addButtonBorder{obj=this.menuButtons[i], ofs=3}
+				if self.modBtnBs then
+					for i = 1, #this.menuButtons do
+						self:addButtonBorder{obj=this.menuButtons[i], ofs=3}
+					end
+					for i = 1, #this.bagFrame.bags do
+						self:addButtonBorder{obj=this.bagFrame.bags[i], ofs=3}
+					end
+					if this:HasOptionsToggle() then
+						self:addButtonBorder{obj=this.optionsToggle, ofs=3}
+					end
+					if this:HasBrokerDisplay() then
+						self:addButtonBorder{obj=this.brokerDisplay, relTo=this.brokerDisplay.icon, ofs=3}
+					end
 				end
-				for i = 1, #this.bagFrame.bags do
-					self:addButtonBorder{obj=this.bagFrame.bags[i], ofs=3}
-				end
-				self:addButtonBorder{obj=this.optionsToggle, ofs=3}
-				self:addButtonBorder{obj=this.brokerDisplay, relTo=this.brokerDisplay.icon, ofs=3}
 				self:Unhook(frame, "OnShow")
 			end)
 			return frame

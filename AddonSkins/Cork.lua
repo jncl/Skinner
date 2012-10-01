@@ -7,8 +7,7 @@ function aObj:Cork()
 	for _, child in pairs{UIParent:GetChildren()} do
 		if child:IsObjectType("Button")
 		and child:GetName() == nil
-		and ceil(child:GetHeight()) == 24
-		and child.GetBackdropBorderColor
+		and floor(child:GetHeight()) == 24
 		and not self.skinFrame[child]
 		then
 			local r, g, b ,a = child:GetBackdropBorderColor()
