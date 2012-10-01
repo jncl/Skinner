@@ -1411,9 +1411,12 @@ function aObj:MainMenuBar()
 		for i = 1, NUM_MULTI_CAST_PAGES * NUM_MULTI_CAST_BUTTONS_PER_PAGE do
 			self:addButtonBorder{obj=_G["MultiCastActionButton"..i], abt=true, sec=true, ofs=5}
 		end
+		-- ActionBar buttons
+		self:addButtonBorder{obj=ActionBarUpButton, ofs=-5, x1=4}
+		self:addButtonBorder{obj=ActionBarDownButton, ofs=-5, x1=4}
 	end
 -->>-- Vehicle Leave Button
-	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton}--, ofs=1}--x1=2, y1=-1, x2=-1, y2=0}
+	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton}
 	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
 		self:moveObject{obj=MainMenuBarVehicleLeaveButton, y=3}
 	end)
