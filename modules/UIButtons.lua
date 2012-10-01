@@ -319,6 +319,7 @@ function module:isButton(obj)
 		elseif (oH >= 20 and oH <= 25) and (nR >= 5 and nR <= 8) -- std button
 		or (oH == 30 and oW == 160) -- HelpFrame
 		or (oH == 32 and oW == 128 and nR == 4) -- BasicScriptErrors Frame
+		or (oH == 22 and oW == 108 and nR == 4) -- Tutorial Frame
 		then
 			bType = "normal"
 		elseif oH == 54 then
