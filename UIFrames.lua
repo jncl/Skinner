@@ -698,9 +698,7 @@ function aObj:ChatTemporaryWindow()
 	end
 	-- hook this to handle Temporary windows (BN Conversations, Pet Battles etc)
 	self:RawHook("FCF_OpenTemporaryWindow", function(...)
-		-- print("FCF_OpenTemporaryWindow, before", ChatFrame11)
 		local obj = self.hooks.FCF_OpenTemporaryWindow(...)
-		-- print("FCF_OpenTemporaryWindow, after", obj:GetName())
 		skinTempWindow(obj)
 		return obj
 	end, true)
@@ -1675,18 +1673,15 @@ function aObj:MinimapButtons()
 		for _, obj in ipairs{mmObj:GetChildren()} do
 			objName = obj:GetName()
 			objType = obj:GetObjectType()
-			-- print(objName, objType)
 			if not aObj.sBtn[obj]
 			and not aObj.skinFrame[obj]
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
 			then
-				-- print("Checking Regions")
 				for _, reg in ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
 						texName = reg:GetName()
 						tex = reg:GetTexture()
-						-- print(texName, tex)
 						-- change the DrawLayer to make the Icon show if required
 						if (texName and texName:find("[Ii]con"))
 						or (tex and tex:find("[Ii]con"))
@@ -1698,7 +1693,6 @@ function aObj:MinimapButtons()
 						elseif (texName and texName:find("Border"))
 						or (tex and tex:find("TrackingBorder"))
 						then
-							-- print("mm btn found", objName)
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
 							obj:SetHeight(32)
@@ -2205,7 +2199,6 @@ function aObj:QueueStatusFrame()
 	self:addSkinFrame{obj=QueueStatusFrame}
 
 end
-
 
 function aObj:RaidFrame()
 	if not self.db.profile.RaidFrame or self.initialized.RaidFrame then return end
