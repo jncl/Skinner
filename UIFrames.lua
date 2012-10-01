@@ -1970,6 +1970,7 @@ function aObj:Nameplates()
 
 end
 
+aObj.pbtt = {}
 function aObj:PetBattleUI()
 	if not self.db.profile.PetBattleUI or self.initialized.PetBattleUI then return end
 	self.initialized.PetBattleUI = true
@@ -1999,13 +2000,17 @@ function aObj:PetBattleUI()
 		self:moveObject{obj=obj.ActualHealthBar, x= v == "Ally" and -5 or 5}
 		obj.HealthBarFrame:SetTexture(nil)
 		-- add a background frame
-		local f = CreateFrame("Frame", nil, PetBattleFrame)
-		self:applySkin{obj=f, bba=0}
-		if v == "Ally" then f:SetPoint("TOPLEFT", PetBattleFrame, "TOPLEFT", 390, 4)
-		else f:SetPoint("TOPRIGHT", PetBattleFrame, "TOPRIGHT", -390, 4) end
-		f:SetWidth(360)
-		f:SetHeight(94)
-		f:SetFrameStrata("BACKGROUND")
+		local sfn = v == "Ally" and "lsf" or "rsf"
+		PetBattleFrame[sfn] = CreateFrame("Frame", nil, PetBattleFrame)
+		self:applySkin{obj=PetBattleFrame[sfn], bba=0, fh=45}
+		if v == "Ally" then
+			PetBattleFrame.lsf:SetPoint("TOPLEFT", PetBattleFrame, "TOPLEFT", 380, 4)
+		else
+			PetBattleFrame.rsf:SetPoint("TOPRIGHT", PetBattleFrame, "TOPRIGHT", -380, 4)
+		end
+		PetBattleFrame[sfn]:SetWidth(360)
+		PetBattleFrame[sfn]:SetHeight(94)
+		PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
 		-- Ally2/3, Enemy2/3
 		for i = 2, 3 do
 			btn = PetBattleFrame[v..i]
@@ -2014,8 +2019,20 @@ function aObj:PetBattleUI()
 			btn.BorderAlive:SetTexture(nil)
 			self:changeTandC(btn.BorderDead, dpt)
 			btn.HealthDivider:SetTexture(nil)
+			if v == "Enemy" then
+				btn.healthBarWidth = 35
+				btn.ActualHealthBar:SetWidth(35)
+				self:moveObject{obj=btn.ActualHealthBar, x=1}
+			end
 		end
 	end
+	-- create a frame behind the VS text
+	PetBattleFrame.msf = CreateFrame("Frame", nil, PetBattleFrame)
+	self:applySkin{obj=PetBattleFrame.msf, bba=0}
+	PetBattleFrame.msf:SetPoint("TOPLEFT", PetBattleFrame.lsf, "TOPRIGHT", -8, 0)
+	PetBattleFrame.msf:SetPoint("TOPRIGHT", PetBattleFrame.rsf, "TOPLEFT", 8, 0)
+	PetBattleFrame.msf:SetHeight(45)
+	PetBattleFrame.msf:SetFrameStrata("BACKGROUND")
 
 	-- Bottom Frame
 	PetBattleFrame.BottomFrame.RightEndCap:SetTexture(nil)
@@ -2039,25 +2056,34 @@ function aObj:PetBattleUI()
 	PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:SetTexture(nil)
 	self:removeRegions(PetBattleFrame.BottomFrame.FlowFrame, {1, 2, 3})
 	self:getRegion(PetBattleFrame.BottomFrame.Delimiter, 1):SetTexture(nil)
-	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.SwitchPetButton, disable=true}
-	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.CatchButton, disable=true}
-	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.ForfeitButton, disable=true}
+	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.SwitchPetButton}
+	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.CatchButton}
+	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.ForfeitButton}
 	self:removeRegions(PetBattleFrame.BottomFrame.MicroButtonFrame, {1, 2, 3})
 	self:addSkinFrame{obj=PetBattleFrame.BottomFrame, ft=ftype, y1=8}
-	-- hook this for pet ability buttons
+	-- hook these for pet ability buttons
 	self:SecureHook("PetBattleFrame_UpdateActionBarLayout", function(this)
 		for i = 1, NUM_BATTLE_PET_ABILITIES do
 			btn = this.BottomFrame.abilityButtons[i]
-			self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}, disable=true}
+			self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}}
 		end
 		self:Unhook("PetBattleFrame_UpdateActionBarLayout")
 	end)
 	self:SecureHook("PetBattleActionButton_UpdateState", function(this)
-		self:Debug("PetBattleActionButton_UpdateState: [%s, %s, %s]", this, this.actionType, this.actionIndex)
+		if this.sknrBdr then
+			if this.Icon
+			and this.Icon:IsDesaturated()
+			then
+				this.sknrBdr:SetBackdropBorderColor(.5, .5, .5)
+			else
+				this.sknrBdr:SetBackdropBorderColor(unpack(self.bbColour))
+			end
+		end
 	end)
 
 	-- Tooltip frames
 	if self.db.profile.Tooltips.skin then
+		-- PetBattlePrimaryUnit Tooltip
 		obj = PetBattlePrimaryUnitTooltip
 		obj:DisableDrawLayer("BACKGROUND")
 		obj.ActualHealthBar:SetTexture(self.sbTexture)
@@ -2065,22 +2091,61 @@ function aObj:PetBattleUI()
 		obj.Delimiter:SetTexture(nil)
 		self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=2, reParent={obj.Level}}
 		obj.sf = self:addSkinFrame{obj=obj, ft=ftype}
+		self:add2Table(self.pbtt, PetBattlePrimaryUnitTooltip.sf)
+		-- hook these to stop tooltip gradient being whiteouted !!
+		-- N.B. Can't use RawHookScript as it has a bug preventing its use on AnimationGroup Scripts
+		-- (Needs to check for IsProtected as a function before calling it)
+		local pbfaasf = PetBattleFrame.ActiveAlly.SpeedFlash
+		-- self:RawHookScript(pbfaasf, "OnPlay", function(this)
+		local pbfaasfop = pbfaasf:HasScript("OnPlay") and pbfaasf:GetScript("OnPlay") or nil
+		pbfaasf:SetScript("OnPlay", function(this)
+			for _, tooltip in pairs(aObj.pbtt) do
+				tooltip.tfade:SetParent(MainMenuBar)
+			end
+			if pbfaasfop then pbfaasfop(this) end
+			-- self.hooks[this].OnPlay(this)
+		-- end, true)
+		end)
+		self:SecureHookScript(pbfaasf, "OnFinished", function(this)
+			for _, tooltip in pairs(aObj.pbtt) do
+				tooltip.tfade:SetParent(tooltip)
+			end
+		end)
+		local pbfaesf = PetBattleFrame.ActiveEnemy.SpeedFlash
+		-- self:RawHookScript(pbfaesf, "OnPlay", function(this)
+		local pbfaesfop = pbfaesf:HasScript("OnPlay") and pbfaesf:GetScript("OnPlay") or nil
+		pbfaesf:SetScript("OnPlay", function(this)
+			for _, tooltip in pairs(aObj.pbtt) do
+				tooltip.tfade:SetParent(MainMenuBar)
+			end
+			if pbfaesfop then pbfaesfop(this) end
+			-- self.hooks[this].OnPlay(this)
+		-- end, true)
+		end)
+		self:SecureHookScript(pbfaesf, "OnFinished", function(this)
+			for _, tooltip in pairs(aObj.pbtt) do
+				tooltip.tfade:SetParent(tooltip)
+			end
+		end)
+		-- hook these to ensure gradient texture is reparented correctly
+		self:SecureHookScript(PetBattleFrame, "OnShow", function(this)
+			for _, tooltip in pairs(aObj.pbtt) do
+				tooltip.tfade:SetParent(MainMenuBar)
+				-- reset Gradient alpha
+				tooltip.tfade:SetGradientAlpha(self:getGradientInfo())
+			end
+		end)
+		self:SecureHookScript(PetBattleFrame, "OnHide", function(this)
+			for _, tooltip in pairs(aObj.pbtt) do
+				tooltip.tfade:SetParent(tooltip)
+			end
+		end)
+		-- PetBattlePrimaryAbility Tooltip
 		PetBattlePrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
 		PetBattlePrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
 		self:addSkinFrame{obj=PetBattlePrimaryAbilityTooltip, ft=ftype}
-		-- hook these to stop tooltip gradient being whiteouted !!
-		PetBattleFrame.ActiveAlly.SpeedFlash:HookScript("OnPlay", function(this)
-			PetBattlePrimaryUnitTooltip.sf.tfade:SetParent(MainMenuBar)
-		end)
-		PetBattleFrame.ActiveAlly.SpeedFlash:HookScript("OnFinished", function(this)
-			PetBattlePrimaryUnitTooltip.sf.tfade:SetParent(PetBattlePrimaryUnitTooltip.sf)
-		end)
-		PetBattleFrame.ActiveEnemy.SpeedFlash:HookScript("OnPlay", function(this)
-			PetBattlePrimaryUnitTooltip.sf.tfade:SetParent(MainMenuBar)
-		end)
-		PetBattleFrame.ActiveEnemy.SpeedFlash:HookScript("OnFinished", function(this)
-			PetBattlePrimaryUnitTooltip.sf.tfade:SetParent(PetBattlePrimaryUnitTooltip.sf)
-		end)
+		-- FloatingBattlePet Tooltip
+		FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
 	end
 
 end
