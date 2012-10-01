@@ -5,13 +5,11 @@ local blizzLoDFrames = {
 	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "RaidUI", "TalentUI",
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
- 	--AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
+ 	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
 	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",
 	-- ui
 	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "PetJournal", "TimeManager",
-	--[=[
-		ArenaUI -- unitframes skinned in UnitFrames.lua
-	--]=]
+	--	ArenaUI the unitframes are skinned in UnitFrames.lua
 }
 -- optional frames
 if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- ui
@@ -21,40 +19,145 @@ for _, v in pairs(blizzLoDFrames) do
 end
 blizzLoDFrames = nil
 function aObj:BlizzardFrames()
---	  self:Debug("BlizzardFrames")
+	-- self:Debug("BlizzardFrames")
 
-	local blizzFrames = {
-		-- player
-		"Buffs",
-		-- CastingBar, checked below
-		-- CompactFrames, checked below
-		"CharacterFrames", "ContainerFrames", "DressUpFrame", "EquipmentFlyout", "FriendsFrame", "GhostFrame", "GuildInvite", "LootFrames", "LootHistory", "MirrorTimers", "OverrideActionBar", "PVPFrame",
-		-- QuestLog, checked below
-		"ReadyCheck", "RolePollPopup", "ScrollOfResurrection", "SpellBookFrame", "SpellFlyout", "StackSplit", "TradeFrame", "WatchFrame",
-	    -- npc
-		"ArenaRegistrar", "BankFrame", "GossipFrame", "GuildRegistrar", "MerchantFrame", "Petition", "PetStableFrame", "QuestFrame", "SideDressUpFrame", "Tabard", "TaxiFrame",
-		-- ui
-		"AlertFrames", "AutoComplete", "BNFrames", "ChatButtons", "ChatConfig", "ChatEditBox", "ChatFrames", "ChatMenus", "ChatMinimizedFrames", "ChatTabs", "ChatTemporaryWindow", "CinematicFrame",  "CoinPickup", "ColorPicker", "DestinyFrame", "DropDownPanels", "HelpFrame", "ItemText", "LevelUpDisplay", "LFDFrame", "LFGFrame", "LFRFrame", "MailFrame",
-		-- MainMenuBar, checked below
-		"MenuFrames", "Minimap",
-		-- MinimapButtons, done with timer
-		-- ModelFrames, checked below
-		-- Nameplates, checked below
-		"PetBattleUI", "PVEFrame", "QueueStatusFrame", "RaidFrame", "ScriptErrors", "StaticPopups",
-		-- Tooltips, checked below
-		"Tutorial", "WorldMap", "WorldState",
+	self.blizzFrames = {
+		player = {
+			["Buffs"] = true,
+			["CastingBar"] = false, -- checked below
+			["CompactFrames"] = false, -- checked below
+			["CharacterFrames"] = true,
+			["ContainerFrames"] = true,
+			["DressUpFrame"] = true,
+			["EquipmentFlyout"] = true,
+			["FriendsFrame"] = true,
+			["GhostFrame"] = true,
+			["GuildInvite"] = true,
+			["LootFrames"] = true,
+			["LootHistory"] = true,
+			["MirrorTimers"] = true,
+			["OverrideActionBar"] = true,
+			["PVPFrame"] = true,
+			["QuestLog"] = false, -- checked below
+			["ReadyCheck"] = true,
+			["RolePollPopup"] = true,
+			["ScrollOfResurrection"] = true,
+			["SpellBookFrame"] = true,
+			["SpellFlyout"] = true,
+			["StackSplit"] = true,
+			["TradeFrame"] = true,
+			["WatchFrame"] = true,
+			-- LoD frames
+			["AchievementUI"] = false,
+			["ArchaeologyUI"] = false,
+			["EncounterJournal"] = false,
+			["GlyphUI"] = false,
+			["GuildControlUI"] = false,
+			["GuildUI"] = false,
+			["InspectUI"] = false,
+			["ItemSocketingUI"] = false,
+			["LookingForGuildUI"] = false,
+			["RaidUI"] = false,
+			["TalentUI"] = false,
+			["TradeSkillUI"] = false,
+		},
+	    npc = {
+			["ArenaRegistrar"] = true,
+			["BankFrame"] = true,
+			["GossipFrame"] = true,
+			["GuildRegistrar"] = true,
+			["MerchantFrame"] = true,
+			["Petition"] = true,
+			["PetStableFrame"] = true,
+			["QuestFrame"] = true,
+			["SideDressUpFrame"] = true,
+			["Tabard"] = true,
+			["TaxiFrame"] = true,
+			-- LoD frames
+		 	["AuctionUI"] = false,
+			["BarbershopUI"] = false,
+			["BlackMarketUI"] = false,
+			["ItemAlterationUI"] = false,
+			["ReforgingUI"] = false,
+			["TrainerUI"] = false,
+			["VoidStorageUI"] = false,
+		},
+		ui = {
+			["AlertFrames"] = true,
+			["AutoComplete"] = true,
+			["BNFrames"] = true,
+			["ChatButtons"] = true,
+			["ChatConfig"] = true,
+			["ChatEditBox"] = true,
+			["ChatFrames"] = true,
+			["ChatMenus"] = true,
+			["ChatMinimizedFrames"] = true,
+			["ChatTabs"] = true,
+			["ChatTemporaryWindow"] = true,
+			["CinematicFrame"] = true,
+			["CoinPickup"] = true,
+			["ColorPicker"] = true,
+			["DestinyFrame"] = true,
+			["DropDownPanels"] = true,
+			["HelpFrame"] = true,
+			["ItemText"] = true,
+			["LevelUpDisplay"] = true,
+			["LFDFrame"] = true,
+			["LFGFrame"] = true,
+			["LFRFrame"] = true,
+			["MailFrame"] = true,
+			["MainMenuBar"] = false, -- checked below
+			["MenuFrames"] = true,
+			["Minimap"] = true,
+			["MinimapButtons"] = false, -- done with timer
+			["ModelFrames"] = false, -- checked below
+			["Nameplates"] = false, -- checked below
+			["PetBattleUI"] = true,
+			["PVEFrame"] = true,
+			["QueueStatusFrame"] = true,
+			["RaidFrame"] = true,
+			["ScriptErrors"] = true,
+			["StaticPopups"] = true,
+			["Tooltips"] = false, -- checked below
+			["Tutorial"] = true,
+			["WorldMap"] = true,
+			["WorldState"] = true,
+			-- LoD frames
+			["BattlefieldMinimap"] = false,
+			["BindingUI"] = false,
+			["Calendar"] = false,
+			["ChallengesUI"] = false,
+			["DebugTools"] = false,
+			["GMChatUI"] = false,
+			["GMSurveyUI"] = false,
+			["GuildBankUI"] = false,
+			["ItemUpgradeUI"] = false,
+			["MacroUI"] = false,
+			["MovePad"] = false,
+			["PetJournal"] = false,
+			["TimeManager"] = false,
+		},
 	}
 
 	-- optional frames
-	if IsMacClient() then aObj:add2Table(blizzFrames, "MovieProgress") end -- ui
+	if IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 
-	for _, v in pairs(blizzFrames) do
-		self:checkAndRun(v)
+	-- skin required frames now
+	for k, bF in pairs(self.blizzFrames) do
+		for frame, _ in pairs(bF) do
+			if bF[frame] then
+				self:checkAndRun(frame)
+			else
+				bF[frame] = true -- set so can be checked later in checkAndRun function
+			end
+		end
 	end
-	blizzFrames = nil
 
 	-- handle non standard ones here
 	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
+
+	-- Disable Nameplates skinning, as it doesn't work yet after MoP (03.09.12)
+	self.blizzFrames.ui["Nameplates"] = false
 
 end
 
@@ -118,7 +221,7 @@ aObj.libsToSkin = {
 
 }
 function aObj:AddonFrames()
---	   self:Debug("AddonFrames")
+	-- self:Debug("AddonFrames")
 
 	-- these addons colour the Tooltip Border
 	if IsAddOnLoaded("Chippu")
@@ -161,7 +264,7 @@ function aObj:AddonFrames()
 	and not IsAddOnLoaded("TidyPlates")
 	and not IsAddOnLoaded("DocsUI_Nameplates")
 	then
-		-- self:checkAndRun("Nameplates") -- disabled (03.09.12)
+		self:checkAndRun("Nameplates")
 	end
 
 	--	don't make Model Frames Rotatable if CloseUp is loaded
@@ -329,7 +432,7 @@ function aObj:TRADE_SKILL_SHOW()
 end
 
 function aObj:TRADE_SHOW()
---	self:Debug("TRADE_SHOW")
+	-- self:Debug("TRADE_SHOW")
 
 	-- trigger this to skin ProfessionTabs
 	self:checkAndRunAddOn("ProfessionTabs")

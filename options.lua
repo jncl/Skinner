@@ -45,6 +45,7 @@ function aObj:Defaults()
 	-->>-- Modules
 		-- populated below
 	-->>-- NPC Frames
+		DisableAllNPC        = false,
 		ArenaRegistrar       = true,
 		AuctionUI            = true,
 		BankFrame            = true,
@@ -64,6 +65,7 @@ function aObj:Defaults()
 		TrainerUI            = true,
 		VoidStorageUI        = true,
 	-->>-- Player Frames
+		DisableAllP          = false,
 		AchievementUI        = {skin = true, style = 2},
 		ArchaeologyUI        = true,
 		Buffs                = true,
@@ -102,6 +104,7 @@ function aObj:Defaults()
 		VehicleMenuBar       = true,
 		WatchFrame           = {skin = false, popups = true},
 	-->>-- UI Frames
+		DisableAllUI         = false,
 		AlertFrames          = true,
 		AutoComplete         = true,
 		BattlefieldMm        = {skin = true, gloss = false},
@@ -674,18 +677,25 @@ function aObj:Options()
 				else self:checkAndRun(info[#info]) end
 			end,
 			args = {
-				none = {
-					type = "execute",
+				head1 = {
 					order = 1,
+					type = "header",
+					name = self.L["Either"],
+				},
+				DisableAllNPC = {
+					order = 2,
 					width = "full",
+					type = "toggle",
 					name = self.L["Disable all NPC Frames"],
 					desc = self.L["Disable all the NPC Frames from being skinned"],
-					func = function()
-						local bVal = IsAltKeyDown() and true or false
-						for _, keyName in pairs(self.npcKeys) do
-							db[keyName] = bVal
-						end
+					set = function(info, value)
+						db[info[#info]] = value
 					end,
+				},
+				head2 = {
+					order = 3,
+					type = "header",
+					name = self.L["or choose which frames to skin"],
 				},
 				ArenaRegistrar = {
 					type = "toggle",
@@ -799,21 +809,25 @@ function aObj:Options()
 				else self:checkAndRun(info[#info]) end
 			end,
 			args = {
-				none = {
-					type = "execute",
+				head1 = {
 					order = 1,
+					type = "header",
+					name = self.L["Either"],
+				},
+				DisableAllP = {
+					order = 2,
 					width = "full",
+					type = "toggle",
 					name = self.L["Disable all Player Frames"],
 					desc = self.L["Disable all the Player Frames from being skinned"],
-					func = function()
-						local bVal = IsAltKeyDown() and true or false
-						for _, keyName in pairs(self.pKeys1) do
-							db[keyName] = bVal
-						end
-						for _, keyName in pairs(self.pKeys2) do
-							db[keyName].skin = bVal
-						end
+					set = function(info, value)
+						db[info[#info]] = value
 					end,
+				},
+				head2 = {
+					order = 3,
+					type = "header",
+					name = self.L["or choose which frames to skin"],
 				},
 				AchievementUI = {
 					type = "group",
@@ -1128,10 +1142,6 @@ function aObj:Options()
 				db[info[#info]] = value
 				local uiOpt = info[#info]:match("UI" , -2)
 				if info[#info] == "Colours" then self:checkAndRun("ColorPicker")
-				elseif info[#info] == "Feedback" then
-					if IsAddOnLoaded("Blizzard_FeedbackUI") then
-						self:checkAndRun("FeedbackUI")
-					end
 				elseif info[#info] == "CombatLogQBF" then return
 				-- handle Blizzard UI LoD Addons
 				elseif uiOpt then
@@ -1141,21 +1151,25 @@ function aObj:Options()
 				else self:checkAndRun(info[#info]) end
 			end,
 			args = {
-				none = {
-					type = "execute",
+				head1 = {
 					order = 1,
+					type = "header",
+					name = self.L["Either"],
+				},
+				DisableAllUI = {
+					order = 2,
 					width = "full",
+					type = "toggle",
 					name = self.L["Disable all UI Frames"],
 					desc = self.L["Disable all the UI Frames from being skinned"],
-					func = function()
-						local bVal = IsAltKeyDown() and true or false
-						for _, keyName in pairs(self.uiKeys1) do
-							db[keyName] = bVal
-						end
-						for _, keyName in pairs(self.uiKeys2) do
-							db[keyName].skin = bVal
-						end
+					set = function(info, value)
+						db[info[#info]] = value
 					end,
+				},
+				head2 = {
+					order = 3,
+					type = "header",
+					name = self.L["or choose which frames to skin"],
 				},
 				AlertFrames = {
 					type = "toggle",
@@ -1339,7 +1353,7 @@ function aObj:Options()
 							name = self.L["GM Survey Frame"],
 							desc = self.L["Toggle the skin of the GM Survey Frame"],
 						},
-						Feedback = self.isPTR and {
+						FeedbackUI = self.isPTR and {
 							type = "toggle",
 							name = self.L["Feedback"],
 							desc = self.L["Toggle the skin of the Feedback Frame"],
@@ -1483,11 +1497,11 @@ function aObj:Options()
 					name = self.L["Movie Progress"],
 					desc = self.L["Toggle the skinning of Movie Progress"],
 				} or nil,
-				-- Nameplates = {
-				-- 	type = "toggle",
-				-- 	name = self.L["Nameplates"],
-				-- 	desc = self.L["Toggle the skin of the Nameplates"],
-				-- },
+				Nameplates = {
+					type = "toggle",
+					name = self.L["Nameplates"],
+					desc = self.L["Toggle the skin of the Nameplates"],
+				},
 				PetBattleUI = {
 					type = "toggle",
 					name = self.L["Pet Battle Frame"],

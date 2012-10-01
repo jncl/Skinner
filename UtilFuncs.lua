@@ -129,6 +129,23 @@ function aObj:add2Table(table, value)
 end
 
 function aObj:checkAndRun(funcName, quiet)
+	-- self:Debug("checkAndRun: [%s, %s]", funcName, quiet)
+
+	-- handle in combat
+	if InCombatLockdown() then
+		self:add2Table(self.oocTab, {self.checkAndRun, {funcName, quiet}})
+		return
+	end
+
+	-- only skin blizzard frames if required
+	if self.blizzFrames then
+		if (self.blizzFrames.npc[funcName] and self.db.profile.DisableAllNPC)
+		or (self.blizzFrames.player[funcName] and self.db.profile.DisableAllP)
+		or (self.blizzFrames.ui[funcName] and self.db.profile.DisableAllUI)
+		then
+			return
+		end
+	end
 
 	-- don't skin any Addons whose skins are flagged as disabled
 	if self.db
@@ -151,6 +168,13 @@ end
 
 function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	-- self:Debug("checkAndRunAddOn: [%s, %s, %s]", addonName, LoD, addonFunc)
+
+	-- handle in combat
+	if InCombatLockdown() then
+		self:add2Table(self.oocTab, {self.checkAndRunAddOn, {addonName, LoD, addonFunc}})
+		return
+	end
+
 	if not addonFunc then addonFunc = addonName end
 
 	-- don't skin any Addons whose skins are flagged as disabled
