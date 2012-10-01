@@ -16,11 +16,60 @@ Legend:
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
-√	I	Missing function when not in debug mode, reported by chrisgriffith25, 23.09.12
-		- Skinner-b5.16057.3\modules\UIButtons.lua:289: attempt to call method "Debug2" (a nil value)
-Skinner-b5.16057.3\modules\UIButtons.lua:351: in function <Skinner\modules\UIButtons.lua:330>
-Skinner-b5.16057.3\modules\UIButtons.lua:384: in function "skinAllButtons"
-Skinner\Skinner-b5.16057.3.lua:603: in function <Skinner\Skinner.lua:522>
+√	I	TradeFrame, reported by Excitor0, 21.09.12
+
+?	I	Ace3, reported by Luakfelsfass, 24.09.12
+		- Skinner\Skinner-b5.16057.3.lua:766: attempt to index field "obj" (a nil value)
+Skinner\Skinner-b5.16057.3.lua:832: in function "applySkin"
+Skinner-b5.16057.3\SkinMe\Ace3.lua:200: in function "skinAceGUI"
+Skinner-b5.16057.3\SkinMe\Ace3.lua:299: in function <Skinner\SkinMe\Ace3.lua:17>
 (tail call): ?
 
-√	S	oQueue, requested by Decabah, 23.09.12
+√	I	ARL, reported by Zaj, 24.09.12
+		- Skinner\Skinner.lua:234:
+Skinner\Skinner.lua:234
+Skinner\Skinner.lua:1596:
+Skinner\Skinner.lua:1582
+Skinner\Skinner.lua:1628: skinScrollBar()
+Skinner\SkinMe\AckisRecipeList.lua:159:
+Skinner\SkinMe\AckisRecipeList.lua:4
+(tail call): ?
+
+√	I	UIButtons
+		- bug with petbattle action buttons enable/disable code
+
+√	I	PetBattleUI, reported by StormFX/user_935125 , 27.09.12
+		- missing action button icons, caused by CompactFrames skin code
+		- button borders not being displayed correctly
+
+√	S	PetBattleTeams, requested by essmene, 29.09.12
+
+√	S	BattlePetCount, requested by essmene, 29.09.12
+
+√	S	HaveWeMet, requested by Pseudopath, 28.09.12
+
+√	I	Bagnon, reported by Pseudopath, 28.09.12
+		-  ..\AddOns\Skinner\SkinMe\Bagnon.lua line 37:
+  attempt to index field 'brokerDisplay' (a nil value)
+Debug:
+  [C]: ?
+  Skinner\SkinMe\Bagnon.lua:37:
+     Skinner\SkinMe\Bagnon.lua:28
+  (tail call): ?
+
+√	O	Add DisableAll feature, requested by StormFX, 28.09.12
+		- add checkbox for NPC/Player/UI frames
+		- check to see if frame should be skinned using the new db entry
+
+√	I	oQueue, reported by Decabah, 29.09.12
+		- Skinner\Skinner-b5.16057.4.lua:234: table index is nil
+Skinner\Skinner-b5.16057.4.lua:1408: in function <Skinner\Skinner.lua:1387>
+Skinner\Skinner-b5.16057.4.lua:1487: in function "skinEditBox"
+Skinner-b5.16057.4\SkinMe\oQueue-0.9z.81.lua:85: in function <Skinner\SkinMe\oQueue.lua:4>
+(tail call): ?
+
+x	I	TradeWindow, reported by Decabah, 29.09.12
+		- still not skinned ?
+
+≈	O	Recode frame fadeout for AlertFrames/ToastFrame etc, requested by Excitor0, 23.09.12
+
