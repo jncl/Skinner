@@ -2174,24 +2174,23 @@ function aObj:TradeFrame()
 
 	self:add2Table(self.pKeys1, "TradeFrame")
 
-	if self.modBtnBs then
-		for i = 1, MAX_TRADE_ITEMS do
-			for _, v in pairs{"Player", "Recipient"} do
-				btnName = "Trade"..v.."Item"..i
-				_G[btnName.."SlotTexture"]:SetTexture(nil)
-				_G[btnName.."NameFrame"]:SetTexture(nil)
-				self:addButtonBorder{obj=_G[btnName.."ItemButton"], ibt=true}
-			end
+	for i = 1, MAX_TRADE_ITEMS do
+		for _, v in pairs{"Player", "Recipient"} do
+			btnName = "Trade"..v.."Item"..i
+			_G[btnName.."SlotTexture"]:SetTexture(nil)
+			_G[btnName.."NameFrame"]:SetTexture(nil)
+			self:addButtonBorder{obj=_G[btnName.."ItemButton"], ibt=true}
 		end
 	end
-	self:skinMoneyFrame{obj=TradePlayerInputMoneyFrame}
 	self:removeInset(TradeRecipientItemsInset)
 	self:removeInset(TradeRecipientEnchantInset)
 	self:removeInset(TradePlayerItemsInset)
 	self:removeInset(TradePlayerEnchantInset)
 	self:removeInset(TradePlayerInputMoneyInset)
-	self:removeInset(TradeRecipientItemsInset)
+	self:skinMoneyFrame{obj=TradePlayerInputMoneyFrame, moveSEB=true}
+	self:removeInset(TradeRecipientMoneyInset)
 	TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
+
 	self:addSkinFrame{obj=TradeFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
