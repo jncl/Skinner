@@ -1,3 +1,21 @@
+b5.16057.5
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Remove redundant button skinning code
+	Remove print statements
+	Updated MainMenuBar skin
+	Skin Tutorial buttons
+	Updated PetBattleUI skin
+	Updated PetJournal skin
+	Reworked handling of Fading Alert frames
+	Implemented DisableAll feature for Blizzard frames
+	Bugfix for TradeFrame skin
+	Updated FriendsFrame skin
+	Bugfix for PetBattle ActionButtons
+	Updated AckisRecipeList, Bagnon, Cork & oQueue skins
+	Skinned BattlePetCount, HaveWeMet & PetBattleTeams
+
 b5.16057.4
 Jncl:
 	ToDo.txt
