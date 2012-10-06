@@ -241,10 +241,10 @@ function aObj:BNFrames()
 	-- hook this to stop gradient texture whiteout
 	self:RawHook("BNToastFrame_Show", function()
 		BNToastFrame.sf.tfade:SetParent(MainMenuBar)
-		BNToastFrame.cb.tfade:SetParent(MainMenuBar)
+		if BNToastFrame.cb then BNToastFrame.cb.tfade:SetParent(MainMenuBar) end
 		-- reset Gradient alpha
 		BNToastFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-		BNToastFrame.cb.tfade:SetGradientAlpha(self:getGradientInfo())
+		if BNToastFrame.cb then BNToastFrame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
 		self.hooks.BNToastFrame_Show()
 	end, true)
 	self:addSkinFrame{obj=BNToastFrame, ft=ftype, af=true}
