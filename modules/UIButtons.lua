@@ -283,7 +283,7 @@ local function getTexture(obj)
 	then
 		return obj:GetTexture()
 	else
-		return
+		return nil
 	end
 
 end

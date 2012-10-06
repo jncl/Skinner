@@ -268,12 +268,13 @@ function aObj:OnInitialize()
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
 		for _, v in pairs(self.oocTab) do
+			-- print(v, v[1], v[2])
 			v[1](unpack(v[2]))
 		end
 		wipe(self.oocTab)
 	end)
 
-	-- ignore entries when skinning IOF elements
+	-- ignore objects when skinning IOF elements
 	self.ignoreIOF = {}
 
 end
@@ -525,6 +526,7 @@ local function __addSkinFrame(opts)
 		ft = Frame Type (Skinner classification)
 		kfs = Remove all textures, only keep font strings
 		hat = Hide all textures
+		rt = remove Textures
 		hdr = Header Texture to be hidden
 		bg = set FrameStrata to "BACKGROUND"
 		noBdr = no border

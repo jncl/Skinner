@@ -405,7 +405,7 @@ function aObj:ADDON_LOADED(event, addon)
 end
 
 function aObj:AUCTION_HOUSE_SHOW()
---	self:Debug("AUCTION_HOUSE_SHOW")
+	-- self:Debug("AUCTION_HOUSE_SHOW")
 
 	self:checkAndRun("AuctionUI") -- npc
 	-- trigger these when AH loads otherwise errors occur
