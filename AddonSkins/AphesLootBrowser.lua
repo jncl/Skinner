@@ -121,9 +121,9 @@ function aObj:AphesLootBrowser()
 			if self.modBtnBs then
 				self:addButtonBorder{obj=ALBDetailIcon, ofs=1}
 			end
-			ALBDetailIcon.sknrBdr:Hide()
+			ALBDetailIcon.sb:Hide()
 			self:SecureHook(ALBDetailIcon, "SetNormalTexture", function(this, tex)
-				ALBDetailIcon.sknrBdr:Show()
+				ALBDetailIcon.sb:Show()
 				self:Unhook(ALBDetailIcon, "SetNormalTexture")
 			end)
 			if self.db.profile.Tooltips.skin then

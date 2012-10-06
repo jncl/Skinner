@@ -338,7 +338,7 @@ function aObj:Buffs()
 			local btn
 			for i= 1, BUFF_MAX_DISPLAY do
 				btn = _G["BuffButton"..i]
-				if btn and not btn.sknrBdr then
+				if btn and not btn.sb then
 					-- add button borders
 					aObj:addButtonBorder{obj=btn}
 					aObj:moveObject{obj=btn.duration, y=-1}
@@ -425,10 +425,8 @@ function aObj:CharacterFrames()
 	-- skin slots
 	for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
-		if self.modBtnBs then
-			if child:IsObjectType("Button") and child:GetName():find("Slot") then
-				self:addButtonBorder{obj=child}
-			end
+		if child:IsObjectType("Button") and self:hasTextInName(child, "Slot") then
+			self:addButtonBorder{obj=child}
 		end
 	end
 	CharacterModelFrame:DisableDrawLayer("BACKGROUND")
@@ -445,16 +443,16 @@ function aObj:CharacterFrames()
 		tab.Hider:SetAlpha(0)
 		-- use a button border to indicate the active tab
 		self.modUIBtns:addButtonBorder{obj=tab, relTo=tab.Icon} -- use module function here to force creation
-		tab.sknrBdr:SetBackdropBorderColor(1, 0.6, 0, 1)
+		tab.sb:SetBackdropBorderColor(1, 0.6, 0, 1)
 	end
 	-- hook this to manage the active tab
 	self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
 			if (_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown()) then
-				tab.sknrBdr:Show()
+				tab.sb:Show()
 			else
-				tab.sknrBdr:Hide()
+				tab.sb:Hide()
 			end
 		end
 	end)
@@ -828,7 +826,7 @@ function aObj:EquipmentFlyout()
 		if self.modBtnBs then
 			for i = 1, #EquipmentFlyoutFrame.buttons do
 				btn = EquipmentFlyoutFrame.buttons[i]
-				if not btn.sknrBdr then self:addButtonBorder{obj=btn, ibt=true} end
+				if not btn.sb then self:addButtonBorder{obj=btn, ibt=true} end
 			end
 		end
 	end)
@@ -1205,11 +1203,9 @@ function aObj:InspectUI() -- LoD
 	InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
 	for _, child in ipairs{InspectPaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
-		if self.modBtnBs then
-			-- add button borders
-			if child:IsObjectType("Button") and child:GetName():find("Slot") then
-				self:addButtonBorder{obj=child, ibt=true}
-			end
+		-- add button borders
+		if child:IsObjectType("Button") and self:hasTextInName(child, "Slot") then
+			self:addButtonBorder{obj=child, ibt=true}
 		end
 	end
 	InspectModelFrame:DisableDrawLayer("BACKGROUND")
@@ -1616,8 +1612,7 @@ function aObj:PetJournal() -- LoD
 	self:skinDropDown{obj=PetJournal.petOptionsMenu}
 	for i = 1, #PetJournal.listScroll.buttons do
 		btn = PetJournal.listScroll.buttons[i]
-		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level}}
-		self:removeRegions(btn, {1, 3})
+		self:removeRegions(btn, {1, 3}) -- background & petTypeIcon
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
 		if not IsAddOnLoaded("PetJournalEnhanced") then
 			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
@@ -2000,7 +1995,7 @@ function aObj:SpellBookFrame()
 	self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
 		for i = 1, #SpellBookCoreAbilitiesFrame.Abilities do
 			btn = SpellBookCoreAbilitiesFrame.Abilities[i]
-			if not btn.sknrBdr then
+			if not btn.sb then
 				btn.EmptySlot:SetAlpha(0)
 				btn.ActiveTexture:SetAlpha(0)
 				btn.FutureTexture:SetAlpha(0)
@@ -2012,7 +2007,7 @@ function aObj:SpellBookFrame()
 		end
 		for i = 1, #SpellBookCoreAbilitiesFrame.SpecTabs do
 			tab = SpellBookCoreAbilitiesFrame.SpecTabs[i]
-			if not tab.sknrBdr then
+			if not tab.sb then
 				self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
 				self:addButtonBorder{obj=tab}
 			end
@@ -2245,8 +2240,8 @@ function aObj:TradeSkillUI() -- LoD
 	self:removeMagicBtnTex(TradeSkillCancelButton)
 	self:removeMagicBtnTex(TradeSkillCreateButton)
 	self:removeMagicBtnTex(TradeSkillViewGuildCraftersButton)
-	self:addButtonBorder{obj=TradeSkillDecrementButton, ofs=-2}
-	self:addButtonBorder{obj=TradeSkillIncrementButton, ofs=-2}
+	self:addButtonBorder{obj=TradeSkillDecrementButton, ofs=-2, es=10}
+	self:addButtonBorder{obj=TradeSkillIncrementButton, ofs=-2, es=10}
 	-- Guild sub frame
 	self:addSkinFrame{obj=TradeSkillGuildFrameContainer, ft=ftype}
 	self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, ofs=-7}
@@ -2277,7 +2272,7 @@ function aObj:WatchFrame()
 
 			for i = 1, WATCHFRAME_NUM_ITEMS do
 				btn = _G["WatchFrameItem"..i]
-				if not btn.sknrBdr then
+				if not btn.sb then
 					aObj:addButtonBorder{obj=btn, ibt=true}
 				end
 			end

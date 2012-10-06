@@ -14,14 +14,14 @@ function aObj:Fizzle()
 				if reg:GetName()
 				and reg:GetName():find("FizzleB")
 				then
-					if child.sknrBdr then
+					if child.sb then
 						if reg:IsVisible() then
-							child.sknrBdr:SetBackdrop(aObj.modUIBtns.iqbDrop)
-							child.sknrBdr:SetBackdropBorderColor(reg:GetVertexColor())
+							child.sb:SetBackdrop(aObj.modUIBtns.iqbDrop)
+							child.sb:SetBackdropBorderColor(reg:GetVertexColor())
 							reg:SetTexture()
 						else
-							child.sknrBdr:SetBackdrop(aObj.modUIBtns.bDrop)
-							child.sknrBdr:SetBackdropBorderColor(r, g, b, a)
+							child.sb:SetBackdrop(aObj.modUIBtns.bDrop)
+							child.sb:SetBackdropBorderColor(r, g, b, a)
 						end
 					end
 					break

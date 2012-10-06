@@ -2067,13 +2067,13 @@ function aObj:PetBattleUI()
 		self:Unhook("PetBattleFrame_UpdateActionBarLayout")
 	end)
 	self:SecureHook("PetBattleActionButton_UpdateState", function(this)
-		if this.sknrBdr then
+		if this.sb then
 			if this.Icon
 			and this.Icon:IsDesaturated()
 			then
-				this.sknrBdr:SetBackdropBorderColor(.5, .5, .5)
+				this.sb:SetBackdropBorderColor(.5, .5, .5)
 			else
-				this.sknrBdr:SetBackdropBorderColor(unpack(self.bbColour))
+				this.sb:SetBackdropBorderColor(unpack(self.bbColour))
 			end
 		end
 	end)

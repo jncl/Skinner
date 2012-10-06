@@ -9,7 +9,7 @@ function aObj:G15Buttons()
 			for i = 1, objG15.LastGiveId do
 				local btn = _G[objG15.UIObjectPrefix..objG15.UIButtonPrefix..i]
 				if btn
-				and not btn.sknrBdr
+				and not btn.sb
 				then
 					aObj:addButtonBorder{obj=btn, abt=true}
 				end

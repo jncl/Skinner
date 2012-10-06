@@ -428,12 +428,12 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the border frame
-	opts.obj.sknrBdr = CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+	opts.obj.sb = CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
-	opts.obj.sknrBdr:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile,
+	opts.obj.sb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile,
 								  edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	opts.obj.sknrBdr:SetBackdropBorderColor(unpack(aObj.bbColour))
+	opts.obj.sb:SetBackdropBorderColor(unpack(aObj.bbColour))
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	local xOfs1 = opts.x1 or opts.ofs * -1
@@ -444,54 +444,54 @@ local function __addButtonBorder(opts)
 	relTo = opts.relTo
 			or opts.libt and _G[btnName.."IconTexture"]
 			or nil
-	opts.obj.sknrBdr:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
-	opts.obj.sknrBdr:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+	opts.obj.sb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
+	opts.obj.sb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 
 	if opts.hide and opts.relTo then
 		-- hook Show and Hide methods of the relTo object
-		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sknrBdr:Show() end)
-		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sknrBdr:Hide() end)
+		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sb:Show() end)
+		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sb:Hide() end)
 		-- hide border if required
-		if not opts.relTo:IsShown() then opts.obj.sknrBdr:Hide() end
+		if not opts.relTo:IsShown() then opts.obj.sb:Hide() end
 	end
 
 	-- reparent objects if required
 	if opts.reParent then
 		for _, obj in pairs(opts.reParent) do
-			obj:SetParent(opts.obj.sknrBdr)
+			obj:SetParent(opts.obj.sb)
 		end
 	end
 	-- reparent these textures so they are displayed above the border
 	if opts.ibt then -- Item Buttons
 		if btnName then
-			_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
-			_G[btnName.."Stock"]:SetParent(opts.obj.sknrBdr)
+			_G[btnName.."Count"]:SetParent(opts.obj.sb)
+			_G[btnName.."Stock"]:SetParent(opts.obj.sb)
 		else
-			opts.obj.Count:SetParent(opts.obj.sknrBdr)
-			opts.obj.Stock:SetParent(opts.obj.sknrBdr)
+			opts.obj.Count:SetParent(opts.obj.sb)
+			opts.obj.Stock:SetParent(opts.obj.sb)
 		end
 	elseif opts.abt then -- Action Buttons
-		_G[btnName.."HotKey"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."HotKey"]:SetParent(opts.obj.sb)
 		-- reparent FlyoutArrow so it is displayed above the border
-		opts.obj.FlyoutArrow:SetParent(opts.obj.sknrBdr)
-		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
-		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
+		opts.obj.FlyoutArrow:SetParent(opts.obj.sb)
+		_G[btnName.."Name"]:SetParent(opts.obj.sb)
+		_G[btnName.."Count"]:SetParent(opts.obj.sb)
 	elseif opts.libt then -- Large Item Buttons
-		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
-		_G[btnName.."Count"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Name"]:SetParent(opts.obj.sb)
+		_G[btnName.."Count"]:SetParent(opts.obj.sb)
 	elseif opts.mb then -- Micro Buttons
-		opts.obj.Flash:SetParent(opts.obj.sknrBdr)
+		opts.obj.Flash:SetParent(opts.obj.sb)
 	elseif opts.pabt then -- Pet Action Buttons
-		_G[btnName.."AutoCastable"]:SetParent(opts.obj.sknrBdr)
-		_G[btnName.."Shine"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."AutoCastable"]:SetParent(opts.obj.sb)
+		_G[btnName.."Shine"]:SetParent(opts.obj.sb)
 	elseif opts.tibt then -- Talents
-		_G[btnName.."RankBorder"]:SetParent(opts.obj.sknrBdr)
-		_G[btnName.."Rank"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."RankBorder"]:SetParent(opts.obj.sb)
+		_G[btnName.."Rank"]:SetParent(opts.obj.sb)
 		if _G[btnName.."RankBorderGreen"] then
-			_G[btnName.."RankBorderGreen"]:SetParent(opts.obj.sknrBdr)
+			_G[btnName.."RankBorderGreen"]:SetParent(opts.obj.sb)
 		end
 	elseif opts.spbt then -- Simple Popup Buttons
-		_G[btnName.."Name"]:SetParent(opts.obj.sknrBdr)
+		_G[btnName.."Name"]:SetParent(opts.obj.sb)
 	end
 
 end
@@ -568,7 +568,7 @@ function module:OnEnable()
 	if db.Quality.file and db.Quality.file ~= "None" then
 		aObj.LSM:Register("border", aName.." Quality Border", db.Quality.file)
 	end
-	-- setup default backdrop values
+	-- setup default backdrop values (AdiBags, Fizzle, oGlow, XLoot)
 	self.bDrop = {
 		edgeFile = aObj.Backdrop[1].edgeFile,
 		edgeSize = aObj.Backdrop[1].edgeSize
