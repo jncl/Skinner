@@ -16,60 +16,45 @@ Legend:
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
-√	I	TradeFrame, reported by Excitor0, 21.09.12
-
-?	I	Ace3, reported by Luakfelsfass, 24.09.12
+≈	I	Ace3/TradeSkillMaster, reported by Luakfelsfass, 24.09.12
 		- Skinner\Skinner-b5.16057.3.lua:766: attempt to index field "obj" (a nil value)
 Skinner\Skinner-b5.16057.3.lua:832: in function "applySkin"
 Skinner-b5.16057.3\SkinMe\Ace3.lua:200: in function "skinAceGUI"
 Skinner-b5.16057.3\SkinMe\Ace3.lua:299: in function <Skinner\SkinMe\Ace3.lua:17>
 (tail call): ?
-
-√	I	ARL, reported by Zaj, 24.09.12
-		- Skinner\Skinner.lua:234:
-Skinner\Skinner.lua:234
-Skinner\Skinner.lua:1596:
-Skinner\Skinner.lua:1582
-Skinner\Skinner.lua:1628: skinScrollBar()
-Skinner\SkinMe\AckisRecipeList.lua:159:
-Skinner\SkinMe\AckisRecipeList.lua:4
+		-Skinner-b5.16057.5\SkinMe\TradeSkillMaster-v1.5.5.lua:18: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+Archy-1.8.31a\Libs\AceHook-3.0\AceHook-3.0-6.lua:211: in function <Archy\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+Archy-1.8.31a\Libs\AceHook-3.0\AceHook-3.0-6.lua:344: in function "SecureHook"
+Skinner-b5.16057.5\SkinMe\TradeSkillMaster-v1.5.5.lua:18: in function <Skinner\SkinMe\TradeSkillMaster.lua:4>
+(tail call): ?
+		- Skinner\Skinner-b5.16057.5.lua:777: attempt to index field "obj" (a nil value)
+Skinner\Skinner-b5.16057.5.lua:843: in function "applySkin"
+Skinner-b5.16057.5\SkinMe\Ace3.lua:200: in function "skinAceGUI"
+Skinner-b5.16057.5\SkinMe\Ace3.lua:299: in function <Skinner\SkinMe\Ace3.lua:17>
 (tail call): ?
 
-√	I	UIButtons
-		- bug with petbattle action buttons enable/disable code
+√	I	ArkInventory
+		- skin Info frame
 
-√	I	PetBattleUI, reported by StormFX/user_935125 , 27.09.12
-		- missing action button icons, caused by CompactFrames skin code
-		- button borders not being displayed correctly
+√	I	PetTeamBattles
 
-√	S	PetBattleTeams, requested by essmene, 29.09.12
-
-√	S	BattlePetCount, requested by essmene, 29.09.12
-
-√	S	HaveWeMet, requested by Pseudopath, 28.09.12
-
-√	I	Bagnon, reported by Pseudopath, 28.09.12
-		-  ..\AddOns\Skinner\SkinMe\Bagnon.lua line 37:
-  attempt to index field 'brokerDisplay' (a nil value)
-Debug:
-  [C]: ?
-  Skinner\SkinMe\Bagnon.lua:37:
-     Skinner\SkinMe\Bagnon.lua:28
-  (tail call): ?
-
-√	O	Add DisableAll feature, requested by StormFX, 28.09.12
-		- add checkbox for NPC/Player/UI frames
-		- check to see if frame should be skinned using the new db entry
-
-√	I	oQueue, reported by Decabah, 29.09.12
-		- Skinner\Skinner-b5.16057.4.lua:234: table index is nil
-Skinner\Skinner-b5.16057.4.lua:1408: in function <Skinner\Skinner.lua:1387>
-Skinner\Skinner-b5.16057.4.lua:1487: in function "skinEditBox"
-Skinner-b5.16057.4\SkinMe\oQueue-0.9z.81.lua:85: in function <Skinner\SkinMe\oQueue.lua:4>
+√	I	BNToastFrame, reported by ubergods, 01.10.12
+		- Skinner-b5.16057.5\UIFrames.lua:244: attempt to index field "cb" (a nil value)
+Skinner-b5.16057.5\UIFrames.lua:244: in function <Skinner\UIFrames.lua:242>
 (tail call): ?
 
-x	I	TradeWindow, reported by Decabah, 29.09.12
-		- still not skinned ?
+√	I	ItemAlterationUI, reported by Decabah, 01.10.12
+		- Skinner-b5.16057.5\NPCFrames.lua:248: attempt to concatenate local "v" (a table value)
+(tail call): ?
 
-≈	O	Recode frame fadeout for AlertFrames/ToastFrame etc, requested by Excitor0, 23.09.12
+√	S	PetJournalEnhanced
 
+√	I	AdiBags, reported by hammer2/Tarmac/Bobrot, 02/3.10.12
+		- Skinner\Skinner-@project-abbreviated-hash@.lua:1421: Missing object __sEB
+Skinner\Skinner.lua:1421: in function <Skinner\Skinner.lua:1405>
+Skinner\Skinner.lua:1505: in function "skinEditBox"
+Skinner\SkinMe\AdiBags-v1.5.2.lua:19: in function <Skinner\SkinMe\AdiBags.lua:10>
+(tail call): ?
+
+?	I	XLoot, reported by hammer2/Tarmac/Bobrot, 02/3.10.12
+	
