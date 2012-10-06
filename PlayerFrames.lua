@@ -926,8 +926,12 @@ function aObj:FriendsFrame()
 	self:skinScrollBar{obj=ChannelRosterScrollFrame}
 	-- Channel Pullout Tab & Frame
 	self:keepRegions(ChannelPulloutTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
-	self:addSkinFrame{obj=ChannelPulloutTab, ft=ftype}
-	self:addSkinFrame{obj=ChannelPullout, ft=ftype}
+	self:addSkinFrame{obj=ChannelPulloutTab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
+	self:addSkinFrame{obj=ChannelPulloutBackground, ft=ftype, nb=true}
+	self:skinButton{obj=ChannelPulloutCloseButton, cb=true}
+	RaiseFrameLevel(ChannelPulloutCloseButton) -- bring above Background frame
+	self:addButtonBorder{obj=ChannelPulloutRosterScrollUpBtn, ofs=-2}
+	self:addButtonBorder{obj=ChannelPulloutRosterScrollDownBtn, ofs=-2}
 -->>--	Daughter Frame
 	self:skinEditBox{obj=ChannelFrameDaughterFrameChannelName, regs={9}, noWidth=true}
 	self:skinEditBox{obj=ChannelFrameDaughterFrameChannelPassword, regs={9, 10}, noWidth=true}
