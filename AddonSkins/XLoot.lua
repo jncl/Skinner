@@ -6,31 +6,13 @@ function aObj:XLoot()
 	-- check to see if this is the dummy plugin version
 	if not XLoot.AddLootFrame then return end
 
-	local btn, br, bg, bb, ba
-	local r, g, b, a = unpack(self.bbColour)
-	local function btnUpd()
-		for i = 1, GetNumLootItems() do
-			btn = XLoot.buttons[i]
-			if btn.border:IsVisible() then
-				btn.sknrBdr:SetBackdrop(aObj.modUIBtns.iqbDrop)
-				br, bg, bb, ba = btn.border:GetVertexColor()
-				btn.sknrBdr:SetBackdropBorderColor(br, bg, bb, 1)
-				btn.sknrBdr:SetAlpha(1)
-			else
-				btn.sknrBdr:SetBackdrop(aObj.modUIBtns.bDrop)
-				btn.sknrBdr:SetBackdropBorderColor(r, g, b, a)
-			end
-		end
-	end
 	local function skinXLoot(frame)
 
-		if frame:GetName():find("Wrapper") then -- button wrapper
-			frame:SetBackdrop({edgeSize=0}) -- remove unwanted elements
-			frame.SetBackdropColor = function() end
-			frame.SetBackdropBorderColor = function() end
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame:GetParent(), ibt=true}
-			end
+		if frame.wrapper then
+			frame.wrapper:SetBackdrop({edgeSize=0}) -- remove unwanted elements
+			frame.wrapper.SetBackdropColor = function() end
+			frame.wrapper.SetBackdropBorderColor = function() end
+			aObj:addButtonBorder{obj=frame, ibt=true}
 		else -- row frame
 			aObj:addSkinFrame{obj=frame}
 			frame.border:SetTexture(nil)
@@ -42,20 +24,35 @@ function aObj:XLoot()
 
 	-- hook this to skin new objects
 	self:SecureHook(XLoot, "AddLootFrame", function(this, id)
-		skinXLoot(XLoot.buttons[id].wrapper)
+		skinXLoot(XLoot.buttons[id])
 		skinXLoot(XLoot.frames[id])
 	end)
 
-	self:addSkinFrame{obj=XLoot.frame}
+	-- skin the main frame
+	self:addSkinFrame{obj=XLoot.frame, nb=true}
+	self:skinButton{obj=XLoot.closebutton, cb=true}
 	-- skin existing objects
-	skinXLoot(XLoot.buttons[1].wrapper)
+	skinXLoot(XLoot.buttons[1])
 	skinXLoot(XLoot.frames[1])
 
 	if self.modBtnBs then
+		local btn, br, bg, bb, ba
+		local r, g, b, a = unpack(self.bbColour)
 		 -- hook this to update buttons
 		 self:SecureHook(XLoot, "Update", function(this)
 		 	if this.swiftlooting then return end
-			btnUpd()
+			for i = 1, GetNumLootItems() do
+				btn = XLoot.buttons[i]
+				if btn.border:IsVisible() then
+					btn.sb:SetBackdrop(aObj.modUIBtns.iqbDrop)
+					br, bg, bb, ba = btn.border:GetVertexColor()
+					btn.sb:SetBackdropBorderColor(br, bg, bb, 1)
+					btn.sb:SetAlpha(1)
+				else
+					btn.sb:SetBackdrop(aObj.modUIBtns.bDrop)
+					btn.sb:SetBackdropBorderColor(r, g, b, a)
+				end
+			end
 		 end)
 	end
 
