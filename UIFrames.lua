@@ -1992,13 +1992,13 @@ function aObj:PetBattleUI()
 		self:moveObject{obj=obj.ActualHealthBar, x= v == "Ally" and -5 or 5}
 		obj.HealthBarFrame:SetTexture(nil)
 		-- add a background frame
-		local sfn = v == "Ally" and "lsf" or "rsf"
+		local sfn = v == "Ally" and "sfl" or "sfr"
 		PetBattleFrame[sfn] = CreateFrame("Frame", nil, PetBattleFrame)
 		self:applySkin{obj=PetBattleFrame[sfn], bba=0, fh=45}
 		if v == "Ally" then
-			PetBattleFrame.lsf:SetPoint("TOPLEFT", PetBattleFrame, "TOPLEFT", 380, 4)
+			PetBattleFrame.sfl:SetPoint("TOPLEFT", PetBattleFrame, "TOPLEFT", 380, 4)
 		else
-			PetBattleFrame.rsf:SetPoint("TOPRIGHT", PetBattleFrame, "TOPRIGHT", -380, 4)
+			PetBattleFrame.sfr:SetPoint("TOPRIGHT", PetBattleFrame, "TOPRIGHT", -380, 4)
 		end
 		PetBattleFrame[sfn]:SetWidth(360)
 		PetBattleFrame[sfn]:SetHeight(94)
@@ -2007,24 +2007,21 @@ function aObj:PetBattleUI()
 		for i = 2, 3 do
 			btn = PetBattleFrame[v..i]
 			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar}}
+			btn.healthBarWidth = 34
+			btn.ActualHealthBar:SetWidth(34)
 			btn.ActualHealthBar:SetTexture(self.sbTexture)
 			btn.BorderAlive:SetTexture(nil)
 			self:changeTandC(btn.BorderDead, dpt)
 			btn.HealthDivider:SetTexture(nil)
-			if v == "Enemy" then
-				btn.healthBarWidth = 35
-				btn.ActualHealthBar:SetWidth(35)
-				self:moveObject{obj=btn.ActualHealthBar, x=1}
-			end
 		end
 	end
 	-- create a frame behind the VS text
-	PetBattleFrame.msf = CreateFrame("Frame", nil, PetBattleFrame)
-	self:applySkin{obj=PetBattleFrame.msf, bba=0}
-	PetBattleFrame.msf:SetPoint("TOPLEFT", PetBattleFrame.lsf, "TOPRIGHT", -8, 0)
-	PetBattleFrame.msf:SetPoint("TOPRIGHT", PetBattleFrame.rsf, "TOPLEFT", 8, 0)
-	PetBattleFrame.msf:SetHeight(45)
-	PetBattleFrame.msf:SetFrameStrata("BACKGROUND")
+	PetBattleFrame.sfm = CreateFrame("Frame", nil, PetBattleFrame)
+	self:applySkin{obj=PetBattleFrame.sfm, bba=0}
+	PetBattleFrame.sfm:SetPoint("TOPLEFT", PetBattleFrame.sfl, "TOPRIGHT", -8, 0)
+	PetBattleFrame.sfm:SetPoint("TOPRIGHT", PetBattleFrame.sfr, "TOPLEFT", 8, 0)
+	PetBattleFrame.sfm:SetHeight(45)
+	PetBattleFrame.sfm:SetFrameStrata("BACKGROUND")
 
 	-- Bottom Frame
 	PetBattleFrame.BottomFrame.RightEndCap:SetTexture(nil)
@@ -2085,51 +2082,54 @@ function aObj:PetBattleUI()
 		obj.sf = self:addSkinFrame{obj=obj, ft=ftype}
 		self:add2Table(self.pbtt, PetBattlePrimaryUnitTooltip.sf)
 		-- hook these to stop tooltip gradient being whiteouted !!
+		local function reParent(opts)
+			for _, tooltip in pairs(aObj.pbtt) do
+				tooltip.tfade:SetParent(opts.parent or tooltip)
+	 			if opts.reset then
+					-- reset Gradient alpha
+					tooltip.tfade:SetGradientAlpha(aObj:getGradientInfo())
+				end
+			end
+ 		end
 		-- N.B. Can't use RawHookScript as it has a bug preventing its use on AnimationGroup Scripts
 		-- (Needs to check for IsProtected as a function before calling it)
 		local pbfaasf = PetBattleFrame.ActiveAlly.SpeedFlash
 		-- self:RawHookScript(pbfaasf, "OnPlay", function(this)
 		local pbfaasfop = pbfaasf:HasScript("OnPlay") and pbfaasf:GetScript("OnPlay") or nil
 		pbfaasf:SetScript("OnPlay", function(this)
-			for _, tooltip in pairs(aObj.pbtt) do
-				tooltip.tfade:SetParent(MainMenuBar)
-			end
+			reParent{parent=MainMenuBar}
 			if pbfaasfop then pbfaasfop(this) end
 			-- self.hooks[this].OnPlay(this)
 		-- end, true)
 		end)
 		self:SecureHookScript(pbfaasf, "OnFinished", function(this)
-			for _, tooltip in pairs(aObj.pbtt) do
-				tooltip.tfade:SetParent(tooltip)
-			end
+			reParent{}
 		end)
 		local pbfaesf = PetBattleFrame.ActiveEnemy.SpeedFlash
 		-- self:RawHookScript(pbfaesf, "OnPlay", function(this)
 		local pbfaesfop = pbfaesf:HasScript("OnPlay") and pbfaesf:GetScript("OnPlay") or nil
 		pbfaesf:SetScript("OnPlay", function(this)
-			for _, tooltip in pairs(aObj.pbtt) do
-				tooltip.tfade:SetParent(MainMenuBar)
-			end
+			reParent{parent=MainMenuBar}
 			if pbfaesfop then pbfaesfop(this) end
 			-- self.hooks[this].OnPlay(this)
 		-- end, true)
 		end)
 		self:SecureHookScript(pbfaesf, "OnFinished", function(this)
-			for _, tooltip in pairs(aObj.pbtt) do
-				tooltip.tfade:SetParent(tooltip)
-			end
+			reParent{}
 		end)
 		-- hook these to ensure gradient texture is reparented correctly
 		self:SecureHookScript(PetBattleFrame, "OnShow", function(this)
-			for _, tooltip in pairs(aObj.pbtt) do
-				tooltip.tfade:SetParent(MainMenuBar)
-				-- reset Gradient alpha
-				tooltip.tfade:SetGradientAlpha(self:getGradientInfo())
-			end
+			reParent{parent=MainMenuBar, reset=true}
 		end)
 		self:SecureHookScript(PetBattleFrame, "OnHide", function(this)
-			for _, tooltip in pairs(aObj.pbtt) do
-				tooltip.tfade:SetParent(tooltip)
+			reParent{}
+		end)
+		-- hook this to reparent the gradient texture if pets have equal speed
+		self:SecureHook("PetBattleFrame_UpdateSpeedIndicators", function(this)
+			if not this.ActiveAlly.SpeedIcon:IsShown()
+			and not this.ActiveEnemy.SpeedIcon:IsShown()
+			then
+				reParent{}
 			end
 		end)
 		-- PetBattlePrimaryAbility Tooltip
@@ -2138,6 +2138,9 @@ function aObj:PetBattleUI()
 		self:addSkinFrame{obj=PetBattlePrimaryAbilityTooltip, ft=ftype}
 		-- FloatingBattlePet Tooltip
 		FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
+		self:addSkinFrame{obj=FloatingBattlePetTooltip, ft=ftype}
+		-- BattlePetTooltip (used for caged battle pets in inventory)
+		self:addSkinFrame{obj=BattlePetTooltip, ft=ftype}
 	end
 
 end
