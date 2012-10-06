@@ -24,7 +24,10 @@ function aObj:Ace3()
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
-		-- aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, rawget(aObj.skinned, obj), objType:find("TSM"), obj.sknrTSM)
+		-- if objType:find("TSM") then
+		-- 	aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, rawget(aObj.skinned, obj), objType:find("TSM"), obj.sknrTSM)
+		-- end
+
 		if obj
 		and (not aObj.skinned[obj] or (objType:find("TSM") and not obj.sknrTSM)) -- check objType as TSM overlays existing objects
 		then
@@ -104,6 +107,7 @@ function aObj:Ace3()
 					end)
 				end
 			elseif objType == "Button" then
+				-- print("Ace3 Button", obj.frame.GetName and obj.frame:GetName(), obj.frame:GetHeight())
 				aObj:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
 			elseif objType == "Keybinding" then
 				aObj:skinButton{obj=obj.button, as=true}
@@ -190,32 +194,34 @@ function aObj:Ace3()
 					aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
 				end)
 
-			-- TradeSkillManager (TSM) objects
+			-- TradeSkillMaster (TSM) objects
 			elseif objType == "TSMMainFrame" then
 				aObj:applySkin{obj=obj.frame}
-				aObj:skinButton{obj=aObj:getChild(obj.frame, 1)} -- close button
+				aObj:skinButton{obj=aObj:getChild(obj.frame, 1), x1=-2, y1=2, x2=2, y2=-2} -- close button
 				aObj:getChild(obj.frame, 1):SetBackdrop(nil)
-				aObj:skinButton{obj=aObj:getChild(obj.frame, 2)} -- status button
-				aObj:getChild(obj.frame, 2):SetBackdrop(nil)
-				aObj:applySkin{obj=obj.title}
-				aObj:applySkin{obj=obj.optionsIconContainer}
-				aObj:applySkin{obj=obj.craftingIconContainer}
-				aObj:applySkin{obj=obj.moduleIconContainer}
 				obj.sknrTSM = true
-			elseif objType == "TSMInlineGroup" -- overlayed onto an existing Ace3 InlineGroup
-			or objType == "TSMInlineGroupNoTitle"
-			or objType == "TSMTabGroup"
+			elseif objType == "TSMInlineGroup"
+			-- or objType == "TSMInlineGroupNoTitle"
 			then
-				aObj:applySkin{obj=obj.content:GetParent(), ng=true} -- already has a gradient
+				obj.HideBorder = function() end
+				obj.SetBackdrop = function() end
+				obj.border:Hide()
+				obj.titletext:ClearAllPoints()
+				obj.titletext:SetPoint("TOPLEFT", 10, -6)
+				obj.titletext:SetPoint("TOPRIGHT", -14, -6)
+				aObj:applySkin{obj=obj.frame}
 				obj.sknrTSM = true
-			elseif objType == "TSMButton" then -- overlayed onto an existing Ace3 button
-				aObj.sBtn[obj.frame] = nil -- remove button skin entry so it can be skinned again
-				obj.frame.tfade = nil -- remove gradient so it can be skinned again
-				aObj:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+			elseif objType == "TSMTabGroup"
+			then
+				aObj:applySkin{obj=obj.content:GetParent()}
 				obj.sknrTSM = true
 			elseif objType == "TSMTreeGroup" then
-				aObj:applySkin{obj=obj.border, ng=true}
-				aObj:applySkin{obj=obj.treeframe, ng=true}
+				aObj:applySkin{obj=obj.border}
+				aObj:applySkin{obj=obj.treeframe}
+				obj.sknrTSM = true
+			elseif objType == "TSMButton" then
+				aObj:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+				obj.btn:SetBackdrop(nil)
 				obj.sknrTSM = true
 			elseif objType == "TSMSelectionList" then
 				self:applySkin{obj=obj.leftFrame}
@@ -233,6 +239,9 @@ function aObj:Ace3()
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				aObj:skinButton{obj=obj.closebutton, cb=true}
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+				obj.sknrTSM = true
+			elseif objType == "TSMEditBox" then
+				aObj:skinButton{obj=obj.button, as=true}
 				obj.sknrTSM = true
 
 			-- ignore these types for now
@@ -260,19 +269,19 @@ function aObj:Ace3()
 			or objType == "WeakAurasNewButton"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"
-			-- TradeSkillManager objects
-			or objType == "TSMSimpleGroup"
-			or objType == "TSMScrollFrame"
+			-- TradeSkillMaster objects
 			or objType == "TSMCheckBox"
-			or objType == "TSMOverrideCheckBox"
-			or objType == "TSMEditBox"
-			or objType == "TSMOverrideEditBox"
-			or objType == "TSMMultiLabel"
-			or objType == "TSMCheckBox"
+			or objType == "TSMColorPicker"
 			or objType == "TSMDropdown"
-			or objType == "TSMOverrideDropdown"
+			or objType == "TSMDropdown-Item-Execute"
+			or objType == "TSMDropdown-Item-Toggle"
+			or objType == "TSMDropdown-Pullout"
+			or objType == "TSMImage"
+			or objType == "TSMLabel"
+			or objType == "TSMMultiLabel"
+			or objType == "TSMScrollFrame"
+			or objType == "TSMSimpleGroup"
 			or objType == "TSMSlider"
-			or objType == "TSMOverrideSlider"
 			-- CollectMe objects
 			or objType == "CollectMeLabel"
 			then
