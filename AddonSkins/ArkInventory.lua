@@ -58,6 +58,11 @@ function aObj:ArkInventory()
 
 -->>-- GuildBank Log Frame
 	self:applySkin{obj=ARKINV_Frame4Log}
+	self:addButtonBorder{obj=ARKINV_Frame4LogScrollUp, ofs=-2}
+	self:addButtonBorder{obj=ARKINV_Frame4LogScrollDown, ofs=-2}
+	self:skinScrollBar{obj=ARKINV_Frame4InfoScroll}
+	self:applySkin{obj=ARKINV_Frame4Info, nb=true}
+	self:skinButton{obj=ARKINV_Frame4InfoSave}
 
 end
 

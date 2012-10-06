@@ -13,7 +13,7 @@ function aObj:_DevPadGUI()
 	self:skinButton{obj=_DevPad.GUI.List.Close, cb=true}
 	
 	-- Editor frame
-	-- self:moveObject{obj=_DevPad.GUI.Editor.Run, y=-2}
+	self:moveObject{obj=_DevPad.GUI.Editor.Run, y=-1}
 	_DevPad.GUI.Editor.Background:SetTexture(nil)
 	self:skinSlider{obj=_DevPad.GUI.Editor.ScrollFrame.Bar, size=3}
 	_DevPad.GUI.Editor.LineNumbers.Gutter:SetTexture(nil)

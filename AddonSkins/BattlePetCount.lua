@@ -4,11 +4,9 @@ if not aObj:isAddonEnabled("BattlePetCount") then return end
 function aObj:BattlePetCount()
 
 	if self.db.profile.Tooltips.skin then
-		local function skinTooltip(bpc)
-			bpc.X_BPC.sf = aObj:addSkinFrame{obj=bpc.X_BPC}
-			aObj:add2Table(aObj.pbtt, bpc.X_BPC.sf)
-			aObj:Unhook("PetBattleUnitFrame_UpdateDisplay")
-			aObj:Unhook("PetBattleUnitTooltip_UpdateForUnit")
+		local function skinTooltip(tt)
+			tt.X_BPC.sf = aObj:addSkinFrame{obj=tt.X_BPC}
+			aObj:add2Table(aObj.pbtt, tt.X_BPC.sf)
 		end
 		-- hook these to skin the tooltip
 		self:SecureHook("BattlePetTooltipTemplate_SetBattlePet", function(this, ...)
@@ -17,6 +15,7 @@ function aObj:BattlePetCount()
 			else
 				self:ScheduleTimer(skinTooltip, 0.2, this)
 			end
+			aObj:Unhook("BattlePetTooltipTemplate_SetBattlePet")
 		end)
 		self:SecureHook("PetBattleUnitTooltip_UpdateForUnit", function(this, ...)
 			if this.X_BPC then
@@ -24,6 +23,7 @@ function aObj:BattlePetCount()
 			else
 				self:ScheduleTimer(skinTooltip, 0.2, this)
 			end
+			aObj:Unhook("PetBattleUnitTooltip_UpdateForUnit")
 		end)
 	end
 

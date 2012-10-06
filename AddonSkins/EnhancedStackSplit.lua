@@ -1,9 +1,12 @@
-if not Skinner:isAddonEnabled("EnhancedStackSplit") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("EnhancedStackSplit") then return end
 
-function Skinner:EnhancedStackSplit()
+function aObj:EnhancedStackSplit()
 	if not self.db.profile.StackSplit then return end
 
-	if not self.skinFrame[StackSplitFrame] then
+	local ssfsf = self.skinFrame[StackSplitFrame]
+
+	if not ssfsf then
 		self:ScheduleTimer("EnhancedStackSplit", 0.2) -- wait for 2/10th second for frame to be skinned
 		return
 	end
@@ -17,15 +20,15 @@ function Skinner:EnhancedStackSplit()
 	end)
 	-- hook this to handle XL mode
 	self:SecureHookScript(EnhancedStackSplitXLModeButton, "OnClick", function(this)
-		if floor(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
-			self.skinFrame[StackSplitFrame]:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
+		if self:round2(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
+			ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
 		else
-			self.skinFrame[StackSplitFrame]:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -24)
+			ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -24)
 		end
 	end)
 	-- resize skin frame if in XL mode
-	if floor(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
-		self.skinFrame[StackSplitFrame]:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
+	if self:round2(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
+		ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
 	end
 
 	self:keepFontStrings(EnhancedStackSplitTopTextureFrame)
@@ -34,11 +37,6 @@ function Skinner:EnhancedStackSplit()
 	self:keepFontStrings(EnhancedStackSplitAutoTextureFrame)
 
 	-- skin buttons
-	self:skinButton{obj=EnhancedStackSplitAuto1Button}
-	for i = 1, 16 do
-		self:skinButton{obj=_G["EnhancedStackSplitButton"..i]}
-	end
-	self:skinButton{obj=EnhancedStackSplitModeTXTButton}
-	self:skinButton{obj=EnhancedStackSplitAutoSplitButton}
+	self:skinAllButtons{obj=StackSplitFrame}
 
 end
