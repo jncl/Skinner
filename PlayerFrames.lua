@@ -1615,6 +1615,9 @@ function aObj:PetJournal() -- LoD
 		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level}}
 		self:removeRegions(btn, {1, 3})
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
+		if not IsAddOnLoaded("PetJournalEnhanced") then
+			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
+		end
 	end
 	self:removeRegions(PetJournal.AchievementStatus, {1})
 	self:keepFontStrings(PetJournal.loadoutBorder)

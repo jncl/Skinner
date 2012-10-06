@@ -219,6 +219,7 @@
 <script file="SkinMe\Pawn.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
 <script file="SkinMe\PetBattleTeams.lua"/>
+<script file="SkinMe\PetJournalEnhanced.lua"/>
 <script file="SkinMe\PetListPlus.lua"/>
 <script file="SkinMe\PetsPlus.lua"/>
 <script file="SkinMe\PhoenixStyle.lua"/>
