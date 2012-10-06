@@ -75,7 +75,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg] or GetMouseFocus()) end)
 
 end
-function printTS(...)
+function aObj:printTS(...)
 	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
 end
 local output
@@ -109,6 +109,10 @@ end
 local errorhandler = geterrorhandler()
 local success, err
 local function safecall(funcName, LoD, quiet)
+--@alpha@
+	assert(funcName, "Unknown object safecall\n"..debugstack())
+--@end-alpha@
+
 	-- handle errors from internal functions
 	success, err = xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
 	if quiet then
@@ -117,23 +121,30 @@ local function safecall(funcName, LoD, quiet)
 	end
 	if not success then
 		if aObj.db.profile.Errors then
-			aObj:CustomPrint(1, 0, 0, "Error running", funcName, err)
+			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
 		end
 	end
 end
 
 function aObj:add2Table(table, value)
+--@alpha@
+	assert(table, "Unknown object add2Table\n"..debugstack())
+	assert(value, "Unknown object add2Table\n"..debugstack())
+--@end-alpha@
 
 	table[#table + 1] = value
 
 end
 
 function aObj:checkAndRun(funcName, quiet)
+--@alpha@
+	assert(funcName, "Unknown object checkAndRun\n"..debugstack())
+--@end-alpha@
 	-- self:Debug("checkAndRun: [%s, %s]", funcName, quiet)
 
 	-- handle in combat
 	if InCombatLockdown() then
-		self:add2Table(self.oocTab, {self.checkAndRun, {funcName, quiet}})
+		self:add2Table(self.oocTab, {self.checkAndRun, {self, funcName, quiet}})
 		return
 	end
 
@@ -167,11 +178,14 @@ function aObj:checkAndRun(funcName, quiet)
 end
 
 function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
+--@alpha@
+	assert(addonName, "Unknown object checkAndRunAddOn\n"..debugstack())
+--@end-alpha@
 	-- self:Debug("checkAndRunAddOn: [%s, %s, %s]", addonName, LoD, addonFunc)
 
 	-- handle in combat
 	if InCombatLockdown() then
-		self:add2Table(self.oocTab, {self.checkAndRunAddOn, {addonName, LoD, addonFunc}})
+		self:add2Table(self.oocTab, {self.checkAndRunAddOn, {self, addonName, LoD, addonFunc}})
 		return
 	end
 
@@ -212,6 +226,9 @@ end
 
 aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
 function aObj:changeTandC(obj, tex)
+--@alpha@
+	assert(obj, "Unknown object changeTandC\n"..debugstack())
+--@end-alpha@
 
 	obj:SetTexture(tex)
 	obj:SetTexCoord(0, 1, 0, 1)
@@ -220,6 +237,10 @@ end
 
 aObj.shieldTex = [[Interface\CastingBar\UI-CastingBar-Arena-Shield]]
 function aObj:changeShield(shldReg, iconReg)
+--@alpha@
+	assert(shldReg, "Unknown object changeShield\n"..debugstack())
+	assert(iconReg, "Unknown object changeShield\n"..debugstack())
+--@end-alpha@
 
 	shldReg:SetTexture(aObj.shieldTex)
 	shldReg:SetTexCoord(0, 1, 0, 1)
@@ -271,7 +292,7 @@ end
 
 function aObj:findFrame2(parent, objType, ...)
 --@alpha@
-	assert(parent, "Unknown object\n"..debugstack())
+	assert(parent, "Unknown object findFrame2\n"..debugstack())
 --@end-alpha@
 
 	if not parent then return end
@@ -315,7 +336,8 @@ end
 
 function aObj:findFrame3(name, element)
 --@alpha@
-	assert(name, "Unknown object\n"..debugstack())
+	assert(name, "Unknown object findFrame3\n"..debugstack())
+	assert(element, "Unknown object findFrame3\n"..debugstack())
 --@end-alpha@
 
 	local frame
@@ -335,7 +357,7 @@ end
 
 function aObj:getChild(obj, childNo)
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object getChild\n"..debugstack())
 --@end-alpha@
 
 	if obj and childNo then return (select(childNo, obj:GetChildren())) end
@@ -344,7 +366,7 @@ end
 
 function aObj:getFirstChildOfType(obj, oType)
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object getFirstChildOfType\n"..debugstack())
 --@end-alpha@
 
 	for _, child in ipairs{obj:GetChildren()} do
@@ -355,14 +377,51 @@ end
 
 function aObj:getRegion(obj, regNo)
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object getRegion\n"..debugstack())
 --@end-alpha@
 
 	if obj and regNo then return (select(regNo, obj:GetRegions())) end
 
 end
 
+function aObj:hasTextInName(obj, text)
+--@alpha@
+	assert(text, "Missing text for hasTextInName\n"..debugstack())
+--@end-alpha@
+
+	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text, 1, true) and true
+
+end
+
+function aObj:hasAnyTextInName(obj, tab)
+--@alpha@
+	assert(tab, "Missing text for hasAnyTextInName\n"..debugstack())
+--@end-alpha@
+
+	if obj and obj.GetName and obj:GetName() then
+		local oName = obj:GetName()
+		for _, text in pairs(tab) do
+			if oName:find(text, 1, true) then return end
+		end
+	end
+
+	return false
+
+end
+
+function aObj:hasTextInTexture(obj, text)
+--@alpha@
+	assert(text, "Missing text for hasTextInTexture\n"..debugstack())
+--@end-alpha@
+
+	return obj and obj.GetTexture and obj:GetTexture() and obj:GetTexture():find(text, 1, true) and true
+
+end
+
 function aObj:isAddonEnabled(addonName)
+	--@alpha@
+		assert(addonName, "Unknown object isAddonEnabled\n"..debugstack())
+	--@end-alpha@
 
 	return (select(4, GetAddOnInfo(addonName))) or IsAddOnLoadOnDemand(addonName) -- handle LoD Addons (config mainly)
 
@@ -370,25 +429,25 @@ end
 
 function aObj:isDropDown(obj)
 --@alpha@
-	assert(obj, "Unknown object\n"..debugstack())
+	assert(obj, "Unknown object isDropDown\n"..debugstack())
 --@end-alpha@
 
-	local tex
-	if obj:GetName() then tex = _G[obj:GetName().."Left"] end
-
-	if obj:IsObjectType("Frame")
-	and tex
-	and tex.GetTexture
-	and tex:GetTexture()
-	and tex:GetTexture():find("CharacterCreate") then
-		return true
-	else
+	if not obj:IsObjectType("Frame")
+	or not obj:GetName()
+	then
 		return false
 	end
+
+	return self:hasTextInTexture(_G[obj:GetName().."Left"], "CharacterCreate")
 
 end
 
 function aObj:isVersion(addonName, verNoReqd, actualVerNo)
+--@alpha@
+		assert(addonName, "Unknown object isVersion\n"..debugstack())
+		assert(verNoReqd, "Unknown object isVersion\n"..debugstack())
+		assert(actualVerNo, "Unknown object isVersion\n"..debugstack())
+--@end-alpha@
 
 	local hasMatched = false
 
@@ -414,6 +473,9 @@ function aObj:isVersion(addonName, verNoReqd, actualVerNo)
 end
 
 function aObj:removeInset(frame)
+--@alpha@
+	assert(frame, "Unknown object removeInset\n"..debugstack())
+--@end-alpha@
 
 	frame:DisableDrawLayer("BACKGROUND")
 	frame:DisableDrawLayer("BORDER")
@@ -421,6 +483,9 @@ function aObj:removeInset(frame)
 end
 
 function aObj:removeMagicBtnTex(btn)
+--@alpha@
+	assert(btn, "Unknown object removeMagicBtnTex\n"..debugstack())
+--@end-alpha@
 
 	-- Magic Button textures
 	if btn.LeftSeparator then btn.LeftSeparator:SetAlpha(0) end
@@ -429,6 +494,9 @@ function aObj:removeMagicBtnTex(btn)
 end
 
 function aObj:resizeTabs(frame)
+--@alpha@
+	assert(frame, "Unknown object resizeTabs\n"..debugstack())
+--@end-alpha@
 
 	local fN = frame:GetName()
 	local tabName = fN.."Tab"
@@ -457,6 +525,9 @@ function aObj:resizeTabs(frame)
 end
 
 function aObj:resizeEmptyTexture(texture)
+--@alpha@
+	assert(texture, "Unknown object resizeEmptyTexture\n"..debugstack())
+--@end-alpha@
 
 	texture:SetTexture(self.esTex)
 	texture:SetWidth(64)
@@ -468,8 +539,11 @@ function aObj:resizeEmptyTexture(texture)
 end
 
 function aObj:round2(num, ndp)
+--@alpha@
+	assert(num, "Unknown object\n"..debugstack())
+--@end-alpha@
 
-  return tonumber(("%."..(ndp or 0).."f"):format(num))
+	return tonumber(("%."..(ndp or 0).."f"):format(num))
 
 end
 
@@ -493,6 +567,11 @@ end
 -- This function was copied from WoWWiki
 -- http://www.wowwiki.com/RGBPercToHex
 function aObj:RGBPercToHex(r, g, b)
+--@alpha@
+	assert(r, "Unknown object RGBPercToHex\n"..debugstack())
+	assert(g, "Unknown object RGBPercToHex\n"..debugstack())
+	assert(b, "Unknown object RGBPercToHex\n"..debugstack())
+--@end-alpha@
 
 --	Check to see if the passed values are strings, if so then use some default values
 	if type(r) == "string" then r, g, b = 0.8, 0.8, 0.0 end
@@ -506,7 +585,6 @@ function aObj:RGBPercToHex(r, g, b)
 end
 
 function aObj:ShowInfo(obj, showKids, noDepth)
-
 --@alpha@
 	assert(obj, "Unknown object ShowInfo\n"..debugstack())
 --@end-alpha@
