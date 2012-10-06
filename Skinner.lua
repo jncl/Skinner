@@ -453,12 +453,11 @@ local function __addSkinButton(opts)
 		for _, reg in pairs{opts.obj:GetRegions()} do
 			regOT = reg:GetObjectType()
 			if regOT == "Texture" or regOT == "FontString" then
-				regName = reg:GetName()
 				regDL = reg:GetDrawLayer()
 				regTex = regOT == "Texture" and reg:GetTexture() or nil
 				-- change the DrawLayer to make the Icon show if required
-				if (regName and (regName:find("[Ii]con") or regName:find("[Cc]ount")))
-				or (regTex and regTex:find("[Ii]con")) then
+				if aObj:hasAnyTextInName(reg, {"[Ii]con", "[Cc]ount"})
+				or aObj:hasTextInTexture(reg, "[Ii]con") then
 					if regDL == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 				end
 			end
@@ -1038,8 +1037,7 @@ function aObj:makeMFRotatable(modelFrame)
 
 	-- hide rotation buttons
 	for _, child in pairs{modelFrame:GetChildren()} do
-		objName = child:GetName()
-		if objName and objName:find("Rotate") then
+		if self:hasTextInName(child, "Rotate") then
 			child:Hide()
 		end
 	end
@@ -1322,18 +1320,10 @@ local function __skinDropDown(opts)
 	end
 --@end-debug@
 
-	if opts.obj
-	and opts.obj.GetName
-	and opts.obj:GetName()
-	then -- if named object
-		if opts.obj:GetName():find("tekKonfigDropdown") -- ignore tekKonfigDropdown
-		or not _G[opts.obj:GetName().."Left"] -- ignore Az DropDowns
-		and not opts.obj.leftTexture -- handle FeedbackUI ones
-		and not opts.obj.LeftTexture -- handle MC2UIElementsLib ones (used by GroupCalendar5)
-		then
-			return
-		end
-	else
+	if aObj:hasAnyTextInName(opts.obj, {"tekKonfigDropdown", "Left"}) -- ignore tekKonfigDropdown/Az DropDowns
+	and not opts.obj.leftTexture -- handle FeedbackUI ones
+	and not opts.obj.LeftTexture -- handle MC2UIElementsLib ones (used by GroupCalendar5)
+	then
 		return
 	end
 
@@ -1456,15 +1446,11 @@ local function __skinEditBox(opts)
 			aObj:moveObject{obj=opts.obj.searchIcon, x=3} -- e.g. BagItemSearchBox
 		elseif opts.obj.icon then
 			aObj:moveObject{obj=opts.obj.icon, x=3} -- e.g. FriendsFrameBroadcastInput
-		elseif _G[opts.obj:GetName().."SearchIcon"] then
+		elseif aObj:hasTextInName(opts.obj, "SearchIcon") then
 			aObj:moveObject{obj=_G[opts.obj:GetName().."SearchIcon"], x=3} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
 			for _, reg in pairs{opts.obj:GetRegions()} do
-				if reg:GetObjectType() == "Texture"
-				and reg:GetTexture():find("UI-Searchbox-Icon", 1, true)
-				then
-					aObj:moveObject{obj=reg, x=3}
-				end
+				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then aObj:moveObject{obj=reg, x=3} end
 			end
 		end
 	end

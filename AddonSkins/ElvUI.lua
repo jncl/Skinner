@@ -108,10 +108,7 @@ function aObj:ElvUIInit()
 
 	-- hook to change Tab size
 	self:SecureHook(self, "addSkinFrame", function(this, opts)
-		local oName = opts.obj.GetName and opts.obj:GetName()
-		if oName
-		and (oName:find('Tab(%d+)$') or oName:find('TabButton(%d+)$'))
-		then
+		if self:hasAnyTextInName(opts.obj, {"Tab(%d+)$", "TabButton(%d+)$"}) then
 			local xOfs1 = (opts.x1 or 0) + 4
 			local yOfs1 = (opts.y1 or 0) - 3
 			local xOfs2 = (opts.x2 or 0) - 4
@@ -123,12 +120,7 @@ function aObj:ElvUIInit()
 	end)
 	-- hook to ignore Shapeshift button skinning
 	self:RawHook(self, "addSkinButton", function(this, opts)
-		local oName = opts.obj.GetName and opts.obj:GetName()
-		if oName
-		and oName:find('ShapeshiftButton(%d)$')
-		then
-			return
-		end
+		if self:hasTextInName(opts.obj, "ShapeshiftButton(%d)$") then return end
 		return self.hooks[this].addSkinButton(this, opts)
 	end)
 

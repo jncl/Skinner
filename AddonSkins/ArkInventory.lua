@@ -39,7 +39,7 @@ function aObj:ArkInventory()
 	-- hook this to manage the frame borders
 	self:RawHook(ArkInventory, "Frame_Border_Paint", function(border, slot, file, size, offset, scale, r, g, b, a)
 		-- ignore Item frames
-		if not border:GetName():find("Item") then return end
+		if not self:hasTextInName(border, "Item") then return end
 		self.hooks[ArkInventory].Frame_Border_Paint(border, slot, file, size, offset, scale, r, g, b, a)
 	end, true)
 	-- hook this to skin the frames

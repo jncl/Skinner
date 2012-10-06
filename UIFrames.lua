@@ -1460,13 +1460,13 @@ function aObj:MenuFrames()
 	self:addSkinFrame{obj=VideoOptionsFramePanelContainer, ft=ftype}
 	-- Graphics
 	for _, child in ipairs{Graphics_:GetChildren()} do
-		if child:GetName():find("DropDown") then
+		if aObj:hasTextInName(child, "DropDown") then
 			self:skinDropDown{obj=child}
 		end
 	end
 	-- Advanced
 	for _, child in ipairs{Advanced_:GetChildren()} do
-		if child:GetName():find("DropDown") then
+		if aObj:hasTextInName(child, "DropDown") then
 			self:skinDropDown{obj=child}
 		end
 	end
@@ -1528,29 +1528,28 @@ function aObj:MenuFrames()
 	local oName
 	local function checkKids(obj)
 
-		oName = obj.GetName and obj:GetName() or nil
-		  -- ignore named/AceConfig/XConfig/AceGUI objects
-		if oName
-		and (oName:find("AceConfig")
-		or oName:find("XConfig")
-		or oName:find("AceGUI"))
+		-- ignore named/AceConfig/XConfig/AceGUI objects
+		if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"})
 		or aObj.ignoreIOF[obj] -- ignore object if required
 		then
 			return
 		end
 
 		for _, child in ipairs{obj:GetChildren()} do
-			-- aObj:Debug("checkKids: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
-			if not aObj.skinFrame[child] then
+			-- aObj:Debug("checkKids#1: [%s]", child.GetName and child:GetName() or nil)
+			if not aObj.skinFrame[child]
+			and not aObj:hasTextInName(child, "AceGUI")
+			then
+				-- aObj:Debug("checkKids#2: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
 				if aObj:isDropDown(child)
 				and not aObj.ignoreIOF[child]
 				then
 					local xOfs
-					if child:GetName():find("PowaDropDownDefaultTimer") then
+					if aObj:hasTextInName(child, "PowaDropDownDefaultTimer") then
 						xOfs = -90
-					elseif child:GetName():find("PowaDropDownDefaultStacks") then
+					elseif aObj:hasTextInName(child, "PowaDropDownDefaultStacks") then
 						xOfs = -110
-					elseif child:GetName():find("oGlowOptFQualityThreshold") then
+					elseif aObj:hasTextInName(child, "oGlowOptFQualityThreshold") then
 						xOfs = 110
 					end
 					aObj:skinDropDown{obj=child, x2=xOfs}
@@ -1680,18 +1679,16 @@ function aObj:MinimapButtons()
 			then
 				for _, reg in ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
-						texName = reg:GetName()
-						tex = reg:GetTexture()
 						-- change the DrawLayer to make the Icon show if required
-						if (texName and texName:find("[Ii]con"))
-						or (tex and tex:find("[Ii]con"))
+						if aObj:hasTextInName(reg, "[Ii]con")
+						or aObj:hasTextInTexture(reg, "[Ii]con")
 						then
 							if reg:GetDrawLayer() == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 							-- centre the icon
 							reg:ClearAllPoints()
 							reg:SetPoint("CENTER")
-						elseif (texName and texName:find("Border"))
-						or (tex and tex:find("TrackingBorder"))
+						elseif aObj:hasTextInName(reg, "Border")
+						or aObj:hasTextInTexture(reg, "TrackingBorder")
 						then
 							reg:SetTexture(nil)
 							obj:SetWidth(32)
@@ -1703,7 +1700,7 @@ function aObj:MinimapButtons()
 									aObj:addSkinFrame{obj=obj, ft=ftype}
 								end
 							end
-						elseif (tex and tex:find("Background")) then
+						elseif aObj:hasTextInTexture(reg, "Background") then
 							reg:SetTexture(nil)
 						end
 					end
@@ -1908,9 +1905,7 @@ function aObj:Nameplates()
 
 		-- rg2, rg3, rg4, sb1, sb2 = nil, nil, nil, nil, nil
 		for _, child in pairs{WorldFrame:GetChildren()} do
-			if child.GetName
-			and child:GetName()
-			and child:GetName():find("^NamePlate%d+$")
+			if aObj:hasTextInName(child, "^NamePlate%d+$")
 			then
 				-- handle in combat
 				-- if InCombatLockdown()
@@ -2245,13 +2240,10 @@ function aObj:StaticPopups()
 			local obj, tex
 			for i = 1, STATICPOPUP_NUMDIALOGS do
 				obj = _G["StaticPopup"..i.."CloseButton"]
-				tex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
-				if tex then
-					if tex:find("HideButton") then
-						obj:SetText(self.modUIBtns.minus)
-					elseif tex:find("MinimizeButton") then
-						obj:SetText(self.modUIBtns.mult)
-					end
+				if aObj:hasTextInTexture(obj:GetNormalTexture(), "HideButton") then
+					obj:SetText(self.modUIBtns.minus)
+				elseif aObj:hasTextInTexture(obj:GetNormalTexture(), "MinimizeButton") then
+					obj:SetText(self.modUIBtns.mult)
 				end
 			end
 		end)

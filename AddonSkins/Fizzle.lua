@@ -11,8 +11,7 @@ function aObj:Fizzle()
 	local function charUpd()
 		for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
 			for _, reg in pairs{child:GetRegions()} do
-				if reg:GetName()
-				and reg:GetName():find("FizzleB")
+				if aObj:hasTextInName(reg, "FizzleB")
 				then
 					if child.sb then
 						if reg:IsVisible() then
