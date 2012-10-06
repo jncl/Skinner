@@ -238,13 +238,12 @@ function aObj:GuildRegistrar()
 
 end
 
-function aObj:ItemAlterationUI() -- LoD
+function aObj:ItemAlterationUI() -- LoD (a.k.a TransmogrifyFrame)
 	if not self.db.profile.ItemAlterationUI or self.initialized.ItemAlterationUI then return end
 	self.initialized.ItemAlterationUI = true
 
 	local slots = {"Head", "Shoulder", "Back", "Chest", "Wrist", "Hands", "Waist", "Legs", "Feet", "MainHand", "SecondaryHand"}
-	self:add2Table(slots, "Ranged")
-	for _, v in pairs{slots} do
+	for _, v in pairs(slots) do
 		btnName = "TransmogrifyFrame"..v.."Slot"
 		_G[btnName.."Grabber"]:SetAlpha(0)
 		_G[btnName]:DisableDrawLayer("BORDER")
@@ -253,9 +252,10 @@ function aObj:ItemAlterationUI() -- LoD
 	TransmogrifyModelFrame:DisableDrawLayer("BACKGROUND")
 	TransmogrifyModelFrame:DisableDrawLayer("BORDER")
 	TransmogrifyModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-	self:keepRegions(TransmogrifyFrameButtonFrame, {})
 	self:addSkinFrame{obj=TransmogrifyArtFrame, ft=ftype, kfs=true, bg=true, y1=2, x2=1, y2=-2}
+	self:keepRegions(TransmogrifyFrameButtonFrame, {})
 	self:removeMagicBtnTex(TransmogrifyApplyButton)
+	self:skinButton{obj=TransmogrifyApplyButton}
 
 	slots = nil
 
