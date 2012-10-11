@@ -288,7 +288,10 @@ local function getTexture(obj)
 
 end
 function module:isButton(obj)
-	aObj:Debug2("module:isButton#1: [%s]", obj)
+	-- aObj:Debug2("module:isButton#1: [%s]", obj)
+
+	-- ignore named/AceConfig/XConfig/AceGUI objects
+	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
 
 	local oName, nTex, bType
 
@@ -296,17 +299,14 @@ function module:isButton(obj)
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then
-		-- ignore named/AceConfig/XConfig/AceGUI objects
- 		if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
 		local oW, oH, nR = aObj:round2(obj:GetWidth()), aObj:round2(obj:GetHeight()), obj:GetNumRegions()
-		aObj:Debug2("module:isButton#2: [%s, %s, %s, %s, %s, %s]", obj:GetParent().CloseButton == obj, aObj:hasTextInName(obj, "Close"), aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"), oW, oH, nR)
+		-- aObj:Debug2("module:isButton#2: [%s, %s, %s, %s, %s, %s]", obj:GetParent().CloseButton == obj, aObj:hasTextInName(obj, "Close"), aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"), oW, oH, nR)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
 			bType = "toast"
 		elseif obj:GetParent().CloseButton == obj
-		or (aObj:hasTextInName(obj, "Close") and oH == 32 and oW == 32 and nR == 4)
-		or (aObj:hasTextInName(obj, "Close") and oH == 24 and oW == 24 and nR == 4) -- Channel Pullout
-		or (aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up") and oH == 32 and oW == 32 and nR == 4) -- UIPanelCloseButton
+		or aObj:hasTextInName(obj, "Close") and oH == oW and nR == 4 and (oH == 32 or oH == 24) -- named closed / channel pullout
+		or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up") and oH == 32 and oW == 32 and nR == 4 -- UIPanelCloseButton
 		then
 			bType = "close"
 		elseif (oH >= 20 and oH <= 25) and (nR >= 5 and nR <= 8) -- std button
@@ -320,7 +320,7 @@ function module:isButton(obj)
 		end
 	end
 
-	aObj:Debug2("module:isButton#5: [%s]", bType)
+	-- aObj:Debug2("module:isButton#5: [%s]", bType)
 	return bType
 
 end
