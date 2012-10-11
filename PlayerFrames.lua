@@ -449,10 +449,12 @@ function aObj:CharacterFrames()
 	self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
-			if (_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown()) then
-				tab.sb:Show()
-			else
-				tab.sb:Hide()
+			if tab then
+				if (_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown()) then
+					tab.sb:Show()
+				else
+					tab.sb:Hide()
+				end
 			end
 		end
 	end)
