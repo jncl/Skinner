@@ -29,7 +29,7 @@ do
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
 --@end-alpha@
 	-- check build number, if > Live then it's a patch
-	aObj.isPatch = tonumber(buildInfo[2]) > 16057 and true or false
+	aObj.isPatch = tonumber(buildInfo[2]) > 16135 and true or false
 	--check to see if running on PTR versionm
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
