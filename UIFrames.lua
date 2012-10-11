@@ -44,6 +44,7 @@ function aObj:AlertFrames()
 
 	-- hook this to stop gradient texture whiteout
 	self:RawHook("AlertFrame_AnimateIn", function(frame)
+		-- print("AlertFrame_AnimateIn", frame:GetName())
 		frame.sf.tfade:SetParent(MainMenuBar)
 		-- reset Gradient alpha
 		frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
@@ -67,7 +68,7 @@ function aObj:AlertFrames()
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
 				aObj:addButtonBorder{obj=icon, relTo=_G[fName..i.."IconTexture"]}
-				aObj:addSkinFrame{obj=obj, ft=ftype, af=true, x1=x1, y1=y1, x2=x2, y2=y2}
+				aObj:addSkinFrame{obj=obj, ft=ftype, af=true, afas=true, x1=x1, y1=y1, x2=x2, y2=y2}
 			end
 		end
 
@@ -121,7 +122,7 @@ function aObj:AlertFrames()
 		if opts.obj and not opts.obj.sf then
 			aObj:removeRegions(opts.obj, opts.regs)
 			aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=opts.obj, relTo=opts.obj.dungeonTexture, reParent=opts.reParent}) -- wait for animation to finish
-			aObj:addSkinFrame{obj=opts.obj, ft=ftype, af=true, ofs=opts.ofs or -7, y1=opts.y1 or nil}
+			aObj:addSkinFrame{obj=opts.obj, ft=ftype, af=true, afas=true, ofs=opts.ofs or -7, y1=opts.y1 or nil}
 		end
 
 	end
@@ -148,7 +149,7 @@ function aObj:AlertFrames()
 	GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
 	GuildChallengeAlertFrame:DisableDrawLayer("OVERLAY")
 	aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=GuildChallengeAlertFrame, relTo=GuildChallengeAlertFrameEmblemIcon}) -- wait for animation to finish
-	self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, af=true}
+	self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, af=true, afas=true}
 
 	local function skinWonAlertFrames(obj)
 
@@ -156,7 +157,7 @@ function aObj:AlertFrames()
 			obj.Background:SetTexture(nil)
 			obj.IconBorder:SetTexture(nil)
 			aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=obj, relTo=obj.Icon}) -- wait for animation to finish
-			aObj:addSkinFrame{obj=obj, ft=ftype, af=true, ofs=-10}
+			aObj:addSkinFrame{obj=obj, ft=ftype, af=true, afas=true, ofs=-10}
 		end
 
 	end
@@ -238,7 +239,7 @@ function aObj:BNFrames()
 	self:add2Table(self.uiKeys1, "BNFrames")
 
 -->>-- Toast frame
-	-- hook this to stop gradient texture whiteout
+	-- hook these to stop gradient texture whiteout
 	self:RawHook("BNToastFrame_Show", function()
 		BNToastFrame.sf.tfade:SetParent(MainMenuBar)
 		if BNToastFrame.cb then BNToastFrame.cb.tfade:SetParent(MainMenuBar) end
@@ -246,6 +247,17 @@ function aObj:BNFrames()
 		BNToastFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 		if BNToastFrame.cb then BNToastFrame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
 		self.hooks.BNToastFrame_Show()
+	end, true)
+	self:SecureHook("AlertFrame_StopOutAnimation", function(frame)
+		-- print("AlertFrame_StopOutAnimation", frame:GetName())
+		frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		if frame.cb then frame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
+	end)
+	self:RawHook("AlertFrame_ResumeOutAnimation", function(frame)
+		-- print("AlertFrame_ResumeOutAnimation", frame:GetName())
+		frame.sf.tfade:SetAlpha(0)
+		if frame.cb then frame.cb.tfade:SetAlpha(0) end
+		self.hooks.AlertFrame_ResumeOutAnimation(frame)
 	end, true)
 	self:addSkinFrame{obj=BNToastFrame, ft=ftype, af=true}
 
@@ -263,7 +275,7 @@ function aObj:BNFrames()
 		self.hooks.TimeAlert_Start(time)
 	end, true)
 	TimeAlertFrameBG:SetBackdrop(nil)
-	self:addSkinFrame{obj=TimeAlertFrame, ft=ftype, af=true}
+	self:addSkinFrame{obj=TimeAlertFrame, ft=ftype, af=true, afas=true}
 
 -->>-- ConversationInvite frame
 	self:addSkinFrame{obj=BNConversationInviteDialogList, ft=ftype}
@@ -2072,22 +2084,13 @@ function aObj:PetBattleUI()
 
 	-- Tooltip frames
 	if self.db.profile.Tooltips.skin then
-		-- PetBattlePrimaryUnit Tooltip
-		obj = PetBattlePrimaryUnitTooltip
-		obj:DisableDrawLayer("BACKGROUND")
-		obj.ActualHealthBar:SetTexture(self.sbTexture)
-		obj.XPBar:SetTexture(self.sbTexture)
-		obj.Delimiter:SetTexture(nil)
-		self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=2, reParent={obj.Level}}
-		obj.sf = self:addSkinFrame{obj=obj, ft=ftype}
-		self:add2Table(self.pbtt, PetBattlePrimaryUnitTooltip.sf)
 		-- hook these to stop tooltip gradient being whiteouted !!
 		local function reParent(opts)
-			for _, tooltip in pairs(aObj.pbtt) do
-				tooltip.tfade:SetParent(opts.parent or tooltip)
+			for _, ttsf in pairs(aObj.pbtt) do
+				ttsf.tfade:SetParent(opts.parent or ttsf)
 	 			if opts.reset then
 					-- reset Gradient alpha
-					tooltip.tfade:SetGradientAlpha(aObj:getGradientInfo())
+					ttsf.tfade:SetGradientAlpha(aObj:getGradientInfo())
 				end
 			end
  		end
@@ -2103,7 +2106,7 @@ function aObj:PetBattleUI()
 		-- end, true)
 		end)
 		self:SecureHookScript(pbfaasf, "OnFinished", function(this)
-			reParent{}
+			reParent{reset=true}
 		end)
 		local pbfaesf = PetBattleFrame.ActiveEnemy.SpeedFlash
 		-- self:RawHookScript(pbfaesf, "OnPlay", function(this)
@@ -2115,7 +2118,7 @@ function aObj:PetBattleUI()
 		-- end, true)
 		end)
 		self:SecureHookScript(pbfaesf, "OnFinished", function(this)
-			reParent{}
+			reParent{reset=true}
 		end)
 		-- hook these to ensure gradient texture is reparented correctly
 		self:SecureHookScript(PetBattleFrame, "OnShow", function(this)

@@ -638,6 +638,19 @@ local function __addSkinFrame(opts)
 			objP.sf.tfade:SetParent(objP.sf)
 			if objP.cb then objP.cb.tfade:SetParent(objP.cb) end
 		end)
+		-- hook AlertFrame scripts for animation functions
+		if opts.afas then
+			aObj:SecureHookScript(opts.obj, "OnEnter", function(this)
+				-- print("AlertFrame_StopOutAnimation", this:GetName())
+				this.sf.tfade:SetGradientAlpha(aObj:getGradientInfo())
+			end)
+			opts.obj.ol = opts.obj:GetScript("OnLeave")
+			opts.obj:SetScript("OnLeave", function(this)
+				-- print("AlertFrame_ResumeOutAnimation", this:GetName())
+				this.sf.tfade:SetAlpha(0)
+				if opts.obj.ol then opts.obj.ol(this) end
+			end)
+		end
 	end
 
 	return skinFrame
