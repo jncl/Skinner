@@ -1909,7 +1909,7 @@ function aObj:ScrollOfResurrection()
 	self:addSkinFrame{obj=ScrollOfResurrectionFrame, ft=ftype, kfs=true}
 	-- Selection frame
 	self:skinEditBox{obj=ScrollOfResurrectionSelectionFrame.targetEditBox, regs={9}}
-	self:skinSlider{obj=ScrollOfResurrectionSelectionFrame.list.scrollFrame.scrollBar}
+	self:skinSlider{obj=ScrollOfResurrectionSelectionFrame.list.scrollFrame.scrollBar, size=4}
 	self:addSkinFrame{obj=ScrollOfResurrectionSelectionFrame.list, ft=ftype, kfs=true}
 	self:addSkinFrame{obj=ScrollOfResurrectionSelectionFrame, ft=ftype, kfs=true}
 
