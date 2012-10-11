@@ -1,3 +1,21 @@
+b5.16057.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated comments and explicitly return nil
+	Updated PetBattleUI skin
+	Bugfix for BNToast skin
+	Updated XLoot skin
+	Updated ArkInventory, BattlePetCount, EnhancedStackSplit, PetBattleTeams & _DevPadGUI skins
+	Refactored String Text checks
+	Bugfix for AdiBags
+	Refactored ButtonBorder code
+	Updated many utility functions with extra checks & Bugfixes
+	Updated ChannelPullout skin
+	Bugfix for Transmogrify skin
+	Bugfixes for Ace3 & TradeSkillMaster skins
+	Skinned PetJournalEnhanced
+
 b5.16057.5
 Jncl:
 	ToDo.txt
