@@ -1376,7 +1376,6 @@ function aObj:MainMenuBar()
 		btnName = "ActionButton"..i
 		btn = _G[btnName]
 		_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
-		-- _G[btnName.."Border"].Show = _G[btnName.."Border"].Hide
 		btn.SetNormalTexture = function() end
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 	end
@@ -1387,44 +1386,40 @@ function aObj:MainMenuBar()
 			btnName = "MultiBar"..v.."Button"..i
 			btn = _G[btnName]
 			_G[btnName.."Border"]:SetAlpha(0) -- texture changed in blizzard code
-			-- _G[btnName.."Border"].Show = _G[btnName.."Border"].Hide
 			btn.SetNormalTexture = function() end
 			self:addButtonBorder{obj=btn, abt=true, sec=true}
 		end
 	end
 
--->>-- add button borders if required
-	if self.modBtnBs then
-		-- Micro buttons
-		mBtns = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "PVP", "LFD", "EJ", "MainMenu", "Help"}
-		self:add2Table(mBtns, "Companions")
-		for _, v in pairs(mBtns) do
-			self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
-		end
-		self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
-		-- Bag buttons
-		self:addButtonBorder{obj=MainMenuBarBackpackButton}
-		self:addButtonBorder{obj=CharacterBag0Slot}
-		self:addButtonBorder{obj=CharacterBag1Slot}
-		self:addButtonBorder{obj=CharacterBag2Slot}
-		self:addButtonBorder{obj=CharacterBag3Slot}
-		for i = 1, NUM_POSSESS_SLOTS do
-			btn = _G["PossessButton"..i]
-			self:addButtonBorder{obj=btn, abt=true, sec=true}
-		end
-		for i = 1, NUM_STANCE_SLOTS do
-			btn = _G["StanceButton"..i]
-			self:addButtonBorder{obj=btn, abt=true, sec=true}
-		end
-		self:addButtonBorder{obj=MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
-		self:addButtonBorder{obj=MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
-		for i = 1, NUM_MULTI_CAST_PAGES * NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-			self:addButtonBorder{obj=_G["MultiCastActionButton"..i], abt=true, sec=true, ofs=5}
-		end
-		-- ActionBar buttons
-		self:addButtonBorder{obj=ActionBarUpButton, ofs=-5, x1=4}
-		self:addButtonBorder{obj=ActionBarDownButton, ofs=-5, x1=4}
+-->>-- add button borders
+	-- Micro buttons
+	for _, v in pairs{"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "PVP", "LFD", "Companions", "EJ", "MainMenu", "Help"} do
+		self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
 	end
+	self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
+	-- Bag buttons
+	self:addButtonBorder{obj=MainMenuBarBackpackButton}
+	self:addButtonBorder{obj=CharacterBag0Slot}
+	self:addButtonBorder{obj=CharacterBag1Slot}
+	self:addButtonBorder{obj=CharacterBag2Slot}
+	self:addButtonBorder{obj=CharacterBag3Slot}
+	for i = 1, NUM_POSSESS_SLOTS do
+		btn = _G["PossessButton"..i]
+		self:addButtonBorder{obj=btn, abt=true, sec=true}
+	end
+	for i = 1, NUM_STANCE_SLOTS do
+		btn = _G["StanceButton"..i]
+		self:addButtonBorder{obj=btn, abt=true, sec=true}
+	end
+	self:addButtonBorder{obj=MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
+	self:addButtonBorder{obj=MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
+	for i = 1, NUM_MULTI_CAST_PAGES * NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+		self:addButtonBorder{obj=_G["MultiCastActionButton"..i], abt=true, sec=true, ofs=5}
+	end
+	-- ActionBar buttons
+	self:addButtonBorder{obj=ActionBarUpButton, ofs=-5, x1=4}
+	self:addButtonBorder{obj=ActionBarDownButton, ofs=-5, x1=4}
+
 -->>-- Vehicle Leave Button
 	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton}
 	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
@@ -1807,7 +1802,6 @@ function aObj:MinimapButtons()
 		end
 		mmButs = nil
 	end
-
 end
 
 function aObj:ModelFrames()
@@ -2134,6 +2128,15 @@ function aObj:PetBattleUI()
 				reParent{}
 			end
 		end)
+		-- PetBattlePrimaryUnit Tooltip
+		obj = PetBattlePrimaryUnitTooltip
+		obj:DisableDrawLayer("BACKGROUND")
+		obj.ActualHealthBar:SetTexture(self.sbTexture)
+		obj.XPBar:SetTexture(self.sbTexture)
+		obj.Delimiter:SetTexture(nil)
+		self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=2, reParent={obj.Level}}
+		obj.sf = self:addSkinFrame{obj=obj, ft=ftype}
+		self:add2Table(self.pbtt, obj.sf)
 		-- PetBattlePrimaryAbility Tooltip
 		PetBattlePrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
 		PetBattlePrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
