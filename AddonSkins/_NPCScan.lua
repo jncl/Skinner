@@ -5,7 +5,8 @@ function aObj:_NPCScan()
 
 -->>-- NPC Alert Button
 	self:getRegion(_NPCScanButton, 4):SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=_NPCScanButton, kfs=true}
+	self:addSkinFrame{obj=_NPCScanButton, kfs=true, nb=true}
+	self:skinButton{obj=self:getChild(_NPCScanButton, 2), cb=true}
 	_NPCScanButton.SetBackdropBorderColor = function() end
 
 -->>-- Config settings

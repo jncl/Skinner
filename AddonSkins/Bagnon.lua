@@ -21,29 +21,36 @@ function aObj:Bagnon(LoD)
 	-- it's the newest version from Curse	
 	else
 		local Bagnon = LibStub('AceAddon-3.0'):GetAddon('Bagnon')
+		-- hide empty slot background
+		Bagnon.SavedSettings:GetDB().showEmptyItemSlotTexture = false
 		-- skin the bag frame
-		self:RawHook(Bagnon.Frame, "New", function(this, frameID)
-			local frame = self.hooks[this].New(this, frameID)
-			self:SecureHookScript(frame, "OnShow", function(this)
-				self:addSkinFrame{obj=this}
-				if self.modBtnBs then
-					for i = 1, #this.menuButtons do
-						self:addButtonBorder{obj=this.menuButtons[i], ofs=3}
-					end
-					for i = 1, #this.bagFrame.bags do
-						self:addButtonBorder{obj=this.bagFrame.bags[i], ofs=3}
-					end
-					if this:HasOptionsToggle() then
-						self:addButtonBorder{obj=this.optionsToggle, ofs=3}
-					end
-					if this:HasBrokerDisplay() then
-						self:addButtonBorder{obj=this.brokerDisplay, relTo=this.brokerDisplay.icon, ofs=3}
-					end
+		self:SecureHook(Bagnon.Frame, "New", function(this, frameID)
+			-- print("Bagnon.Frame New", this, frameID)
+			for _, frame in pairs(Bagnon.frames) do
+				if not frame.sf
+				and not self:IsHooked(frame, "OnShow")
+				then
+					self:SecureHookScript(frame, "OnShow", function(this)
+						this.sf = self:addSkinFrame{obj=this}
+						if self.modBtnBs then
+							for i = 1, #this.menuButtons do
+								self:addButtonBorder{obj=this.menuButtons[i], ofs=3}
+							end
+							for i = 1, #this.bagFrame.bags do
+								self:addButtonBorder{obj=this.bagFrame.bags[i], ofs=3}
+							end
+							if this:HasOptionsToggle() then
+								self:addButtonBorder{obj=this.optionsToggle, ofs=3}
+							end
+							if this:HasBrokerDisplay() then
+								self:addButtonBorder{obj=this.brokerDisplay, relTo=this.brokerDisplay.icon, ofs=3}
+							end
+						end
+						self:Unhook(frame, "OnShow")
+					end)
 				end
-				self:Unhook(frame, "OnShow")
+			end
 			end)
-			return frame
-		end)
 		-- skin the Search EditBox
 		self:RawHook(Bagnon.SearchFrame, "New", function(this, ...)
 			local eb = self.hooks[Bagnon.SearchFrame].New(this, ...)

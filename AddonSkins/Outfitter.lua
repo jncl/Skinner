@@ -203,18 +203,6 @@ function aObj:Outfitter()
 		end
 	end)
 
--->>-- QuickSlots frame
-	if not Outfitter.QuickSlots then
-		self:SecureHook(Outfitter, "InitializeQuickSlots", function()
-			self:Unhook(Outfitter, "InitializeQuickSlots")
-			self:addSkinFrame{obj=Outfitter.QuickSlots, kfs=true, x2=-3, y2=3}
-			Outfitter.QuickSlots.HideBackground = true
-		end)
-	else
-		self:addSkinFrame{obj=Outfitter.QuickSlots, kfs=true, x2=-3, y2=3}
-		Outfitter.QuickSlots.HideBackground = true
-	end
-
 -->>-- Outfit Bars
 	self:ScheduleTimer(skinOutfitBars, 1, Outfitter.OutfitBar) -- wait for a second before skinning the Outfit Bars
 

@@ -3,16 +3,16 @@ if not aObj:isAddonEnabled("FlightMapEnhanced") then return end
 
 function aObj:FlightMapEnhanced()
 
-	self:skinSlider{obj=FlightMapEnhancedTaxiChoiceContainerScrollBar}
-	FlightMapEnhancedTaxiChoice:DisableDrawLayer("BACKGROUND")
-	FlightMapEnhancedTaxiChoice:DisableDrawLayer("BORDER")
-	self:addSkinFrame{obj=FlightMapEnhancedTaxiChoice, kfs=true, ofs=2}
-	-- remove textures from the destination buttons
+	-- N.B. skin frame after buttons are created otherwise they aren't displayed
 	self:SecureHookScript(FlightMapEnhancedTaxiChoice, "OnShow", function(this)
 		for i = 1, #FlightMapEnhancedTaxiChoiceContainer.buttons do
 			local btn = FlightMapEnhancedTaxiChoiceContainer.buttons[i]
-			self:keepRegions(btn, {2, 6, 7, 8}) -- N.B. region 2 & 7 are the text, 6 is the icon, 8 is the highlight
+			self:keepRegions(btn, {2, 6, 7, 8}) -- N.B. regions 2 & 7 are the text, 6 is the icon, 8 is the highlight
 		end
+		self:skinSlider{obj=FlightMapEnhancedTaxiChoiceContainerScrollBar, adj=-4}
+		FlightMapEnhancedTaxiChoice:DisableDrawLayer("BACKGROUND")
+		FlightMapEnhancedTaxiChoice:DisableDrawLayer("BORDER")
+		self:addSkinFrame{obj=FlightMapEnhancedTaxiChoice, kfs=true, ofs=2}
 		self:Unhook(FlightMapEnhancedTaxiChoice, "OnShow")
 	end)
 
@@ -35,5 +35,10 @@ function aObj:FlightMapEnhanced()
 			end
 		end
 	end
+
+	-- Minimap button
+	self:getRegion(FlightMapEnhancedMinimapButton, 1):SetDrawLayer("ARTWORK") -- move Icon's drawlayer
+	self:removeRegions(FlightMapEnhancedMinimapButton, {2}) -- remove Border texture
+	self:addSkinFrame{obj=FlightMapEnhancedMinimapButton}
 
 end
