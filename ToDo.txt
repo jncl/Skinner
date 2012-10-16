@@ -16,61 +16,25 @@ Legend:
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
-√	I	NPCScan, reported by Excitor0, 06.10.12
-		- close button not skinned
+	I	MainMenuBar, reported by hammer2, 12.10.12
+√		- add button borders to micro buttons & social button even if Bartender4 is loaded
 
-	I	Bagnon, reported by Excitor0, 06.10.12
-?		- frames repeatedly skinned, becoming whiter
-√		- voidstorage causing error
-
-≈	I	Fading windows, reported by Excitor0, 06.10.12
-		- turn white when moused over (BNToast etc)
-
-√	I	Outfitter, reported by lexusnexus/chrisgriffith25, 07/08.10.12
-		- ..\AddOns\Skinner\Skinner.lua line 982: attempt to call method 'GetRegions' (a nil value)
-		Debug: Skinner\Skinner.lua:558 Skinner\Skinner.lua:522 (tail call):	?
-		Skinner\SkinMe\Outfitter.lua:214 Skinner\SkinMe\Outfitter.lua:4 (tail call): ?
-		[C]: xpcall()
-		Skinner\UtilFuncs.lua:117 Skinner\UtilFuncs.lua:111
-		Skinner\UtilFuncs.lua:217 Skinner\UtilFuncs.lua:180 (tail call): ? [C]: ?
-		- Skinner\Skinner-b5.16057.6.lua:982: attempt to call method "GetRegions" (a nil value)
-Skinner\Skinner-b5.16057.6.lua:558: in function <Skinner\Skinner.lua:522>
+?)	I	PaperDoll, reported by corys2005, 12.10.12
+		- Skinner-b5.16135.1\PlayerFrames.lua:456: attempt to index field "sb" (a nil value)
+Skinner-b5.16135.1\PlayerFrames.lua:456: in function <Skinner\PlayerFrames.lua:449>
 (tail call): ?
-Skinner-b5.16057.6\SkinMe\Outfitter-5.6.lua:214: in function <Skinner\SkinMe\Outfitter.lua:4>
+<in C code>
+FrameXML\CharacterFrame.lua:173: in function <FrameXML\CharacterFrame.lua:162>
+<in C code>
+FrameXML\PaperDollFrame.lua:2228: in function <FrameXML\PaperDollFrame.lua:2215>
+<in C code>
+FrameXML\CharacterFrame.lua:33: in function "CharacterFrame_ShowSubFrame"
+FrameXML\CharacterFrame.lua:15: in function "ToggleCharacter"
+<string>:"TOGGLECHARACTER0":1: in function <string>:"TOGGLECHARACTER0":1
+
+√	I	ReforgeLite, reported by X-buZZ, 12.10.12
+		- Skinner\Skinner-b5.16135.1.lua:234: table index is nil
+Skinner\Skinner-b5.16135.1.lua:1656: in function <Skinner\Skinner.lua:1644>
+Skinner\Skinner-b5.16135.1.lua:1686: in function "skinSlider"
+Skinner-b5.16135.1\SkinMe\ReforgeLite-v1.17.lua:33: in function <Skinner\SkinMe\ReforgeLite.lua:4>
 (tail call): ?
-
-≈	I	reported by corys2005/nhamilton07, 07/08.10.12
-		- Skinner-b5.16057.5\PlayerFrames.lua:457: attempt to index field "sknrBdr" (a nil value)
-Skinner-b5.16057.5\PlayerFrames.lua:457: in function <Skinner\PlayerFrames.lua:451>
-(tail call): ?
-		- ..\AddOns\Skinner\PlayerFrames.lua line 455: attempt to index field 'sb' (a nil value) Debug: [C]: ? Skinner\PlayerFrames.lua:455: Skinner\PlayerFrames.lua:449 (tail call): ?
-
-√	I	FarmIt2, reported by NLGill, 07.10.12
-		- Skinner-b5.16057.6\SkinMe\FarmIt2.lua:14: attempt to call global "FI_Group_Members" (a nil value)
-Skinner-b5.16057.6\SkinMe\FarmIt2.lua:23: in function <Skinner\SkinMe\FarmIt2.lua:4>
-(tail call): ?
-
-?	I	reported by hammer2, 07.10.12
-		- the chat socials button and main menu buttons are still unskinned. They become skinned only after uncheck/check in the addon, but after relog they're unskinned again.
-
-√	I	FlightMapEnhanced, reported by chrisgriffith25, 08.10.12
-
-√	I	Bagnon, reported by Pseudopath, 09.10.12
-		- ..\AddOns\Skinner\SkinMe\Bagnon.lua line 26:
-  attempt to index field '?' (a nil value)
-Debug:
-  (tail call): ?
-  Skinner\SkinMe\Bagnon.lua:26:
-     Skinner\SkinMe\Bagnon.lua:25
-  (tail call): ?
-  Bagnon_GuildBank\main.lua:11:
-     Bagnon_GuildBank\main.lua:10
-  (tail call): ?
-
-√	I	GroupCalendar5, reported by Luckyjack_SL, 10.10.12
-		-  ..\AddOns\Skinner\SkinMe\GroupCalendar5.lua line 44:
-  attempt to index field 'Clock' (a nil value)
-Debug:
-  Skinner\SkinMe\GroupCalendar5.lua:44:
-     Skinner\SkinMe\GroupCalendar5.lua:4
-  (tail call): ?
