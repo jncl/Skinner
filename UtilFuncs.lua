@@ -398,7 +398,7 @@ function aObj:hasAnyTextInName(obj, tab)
 	if obj and obj.GetName and obj:GetName() then
 		local oName = obj:GetName()
 		for _, text in pairs(tab) do
-			if oName:find(text, 1, true) then return end
+			if oName:find(text, 1, true) then return true end
 		end
 	end
 
