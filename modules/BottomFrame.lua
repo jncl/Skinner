@@ -44,8 +44,6 @@ end
 local btmframe
 function module:adjustBottomFrame(opt)
 
---	print("adjustBottomFrame", opt)
-
 	if db.shown then
 		btmframe = btmframe or CreateFrame("Frame", nil, UIParent)
 		btmframe:SetFrameStrata("BACKGROUND")

@@ -179,7 +179,6 @@ function module:skinButton(opts)
 	local bW, bH = aObj:round2(opts.obj:GetWidth()), aObj:round2(opts.obj:GetHeight())
 	if bW <= 20 and opts.cb then -- ArkInventory/Recount close buttons
 		local adj = bW < 20 and bW + 1 or bW
---		print(opts.obj:GetParent():GetName(), bW, adj)
 		opts.cb2 = opts.cb
 		opts.cb = nil
 		opts.x1, opts.y1, opts.x2, opts.y2 = bW - adj, 0, adj - bW, 0

@@ -19,8 +19,6 @@ local defaults = {
 local vpoF
 local function checkOverlay()
 
---	print("checkOverlay", db.shown, db.overlay, vpoF)
-
 	if db.shown then
 		if db.overlay then
 			local xScale = db.XRes / 1050
@@ -98,8 +96,6 @@ function module:OnEnable()
 end
 
 function module:adjustViewPort(opt)
-
---	print("adjustViewPort", opt)
 
 	local xScale = db.XRes / 1050
 	local yScale = 768 / db.YRes

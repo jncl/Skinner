@@ -258,7 +258,6 @@ function aObj:OnInitialize()
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
 		for _, v in pairs(self.oocTab) do
-			-- print(v, v[1], v[2])
 			v[1](unpack(v[2]))
 		end
 		wipe(self.oocTab)
@@ -282,10 +281,11 @@ function aObj:OnEnable()
 			self.modBtnBs = true
 		end
 	end
-	self.checkTex = self.modBtns and self.modUIBtns.checkTex or function() end
-	self.skinButton = self.modBtns and self.modUIBtns.skinButton or function() end
-	self.isButton = self.modBtns and self.modUIBtns.isButton or function() end
-	self.skinAllButtons = self.modBtns and self.modUIBtns.skinAllButtons or function() end
+
+	self.checkTex        = self.modBtns and self.modUIBtns.checkTex or function() end
+	self.skinButton      = self.modBtns and self.modUIBtns.skinButton or function() end
+	self.isButton        = self.modBtns and self.modUIBtns.isButton or function() end
+	self.skinAllButtons  = self.modBtns and self.modUIBtns.skinAllButtons or function() end
 	self.addButtonBorder = self.modBtnBs and self.modUIBtns.addButtonBorder or function() end
 
 	-- track when Auction House is opened
@@ -631,12 +631,10 @@ local function __addSkinFrame(opts)
 		-- hook AlertFrame scripts for animation functions
 		if opts.afas then
 			aObj:SecureHookScript(opts.obj, "OnEnter", function(this)
-				-- print("AlertFrame_StopOutAnimation", this:GetName())
 				this.sf.tfade:SetGradientAlpha(aObj:getGradientInfo())
 			end)
 			opts.obj.ol = opts.obj:GetScript("OnLeave")
 			opts.obj:SetScript("OnLeave", function(this)
-				-- print("AlertFrame_ResumeOutAnimation", this:GetName())
 				this.sf.tfade:SetAlpha(0)
 				if opts.obj.ol then opts.obj.ol(this) end
 			end)
@@ -1019,7 +1017,7 @@ function aObj:keepRegions(obj, regions)
 --@debug@
 			if reg:IsObjectType("FontString") then
 				self:Debug("kr FS: [%s, %s]", obj:GetName() or "<Anon>", k)
-				print(debugstack(1, 5, 2))
+				self:Print(debugstack(1, 5, 2))
 			end
 --@end-debug@
 		end
@@ -1180,7 +1178,7 @@ function aObj:removeRegions(obj, regions)
 --@debug@
 			if reg:IsObjectType("FontString") then
 				self:Debug("rr FS: [%s, %s]", obj:GetName() or "<Anon>", k)
-				print(debugstack(1, 5, 2))
+				self:Print(debugstack(1, 5, 2))
 			end
 --@end-debug@
 		end

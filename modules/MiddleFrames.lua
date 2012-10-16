@@ -75,8 +75,6 @@ end
 local frames, frame, fh = {}
 local function adjustFrame(key)
 
---	print("adjustFrame", key, db[key].shown, frames[key])
-
 	if db[key].shown then
 		frame = frames[key] or CreateFrame("Frame", db.name and aName.."MF"..key:sub(-1) or nil, UIParent)
 		frame.db = db
@@ -159,12 +157,9 @@ end
 
 function module:adjustMiddleFrames(opt, key)
 
---	print("adjustMiddleFrames", opt, key)
-
 	if not key then
 		for i = 1, MAX_MIDDLEFRAMES do
 			local key = "mf"..i
---			print("adjustMiddleFrames loop", key, db[key].shown)
 			adjustFrame(key)
 		end
 	else

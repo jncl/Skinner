@@ -59,8 +59,6 @@ end
 local topframe
 function module:adjustTopFrame(opt)
 
---	print("adjustTopFrame", opt)
-
 	if db.shown then
 		topframe = topframe or CreateFrame("Frame", nil, UIParent)
 		topframe:SetFrameStrata("BACKGROUND")
