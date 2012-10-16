@@ -1550,7 +1550,7 @@ function aObj:MenuFrames()
 		for _, child in ipairs{obj:GetChildren()} do
 			-- aObj:Debug("checkKids#1: [%s]", child.GetName and child:GetName() or nil)
 			if not aObj.skinFrame[child]
-			and not aObj:hasTextInName(child, "AceGUI")
+			and not aObj:hasAnyTextInName(child, {"AceConfig", "XConfig", "AceGUI"})
 			then
 				-- aObj:Debug("checkKids#2: [%s, %s, %s]", child:GetName(), child:GetObjectType(), child:GetNumRegions())
 				if aObj:isDropDown(child)
