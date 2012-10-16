@@ -179,16 +179,6 @@ function aObj:OnInitialize()
 		end
 	end
 
-	-- these are used to disable frames from being skinned, LoD frames are entered here
-	-- other frames are added when their code is loaded
-	self.npcKeys = {"AuctionUI", "BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",}
-	self.pKeys1 = {"ArchaeologyUI", "EncounterJournal",	"GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "PetJournal", "RaidUI", "TalentUI", "TradeSkillUI",}
-	self.pKeys2 = {"AchievementUI"}
-	self.uiKeys1 = {"BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "TimeManager",}
-	if self.isPTR then
-		self:add2Table(self.uiKeys1, "FeedbackUI")
-	end
-	self.uiKeys2 = {"BattlefieldMm", }
 	-- these are used to disable the gradient
 	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 

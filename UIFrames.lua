@@ -38,13 +38,10 @@ function aObj:AlertFrames()
 	if not self.db.profile.AlertFrames or self.initialized.AlertFrames then return end
 	self.initialized.AlertFrames = true
 
-	self:add2Table(self.uiKeys1, "AlertFrames")
-
 	local aafName = "AchievementAlertFrame"
 
 	-- hook this to stop gradient texture whiteout
 	self:RawHook("AlertFrame_AnimateIn", function(frame)
-		-- print("AlertFrame_AnimateIn", frame:GetName())
 		frame.sf.tfade:SetParent(MainMenuBar)
 		-- reset Gradient alpha
 		frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
@@ -183,9 +180,6 @@ function aObj:AutoComplete()
 	if not self.db.profile.AutoComplete or self.initialized.AutoComplete then return end
 	self.initialized.AutoComplete = true
 
-
-	self:add2Table(self.uiKeys1, "AutoComplete")
-
 	self:addSkinFrame{obj=AutoCompleteBox, kfs=true, ft=ftype}
 
 end
@@ -236,8 +230,6 @@ function aObj:BNFrames()
 	if not self.db.profile.BNFrames or self.initialized.BNFrames then return end
 	self.initialized.BNFrames = true
 
-	self:add2Table(self.uiKeys1, "BNFrames")
-
 -->>-- Toast frame
 	-- hook these to stop gradient texture whiteout
 	self:RawHook("BNToastFrame_Show", function()
@@ -249,12 +241,10 @@ function aObj:BNFrames()
 		self.hooks.BNToastFrame_Show()
 	end, true)
 	self:SecureHook("AlertFrame_StopOutAnimation", function(frame)
-		-- print("AlertFrame_StopOutAnimation", frame:GetName())
 		frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 		if frame.cb then frame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
 	end)
 	self:RawHook("AlertFrame_ResumeOutAnimation", function(frame)
-		-- print("AlertFrame_ResumeOutAnimation", frame:GetName())
 		frame.sf.tfade:SetAlpha(0)
 		if frame.cb then frame.cb.tfade:SetAlpha(0) end
 		self.hooks.AlertFrame_ResumeOutAnimation(frame)
@@ -391,8 +381,6 @@ function aObj:ChallengesUI() -- LoD
 	if not self.db.profile.ChallengesUI or self.initialized.ChallengesUI then return end
 	self.initialized.ChallengesUI = true
 
-	self:add2Table(self.uiKeys1, "ChallengesUI")
-
 	self:removeInset(ChallengesFrameInset)
 	self:keepFontStrings(ChallengesFrame.details)
 	for i = 1, 3 do
@@ -414,8 +402,6 @@ function aObj:ChatButtons()
 	if not self.db.profile.ChatButtons or self.initialized.ChatButtons then return end
 	self.initialized.ChatButtons = true
 
-	self:add2Table(self.uiKeys1, "ChatButtons")
-
 	if self.modBtnBs then
 		for i = 1, NUM_CHAT_WINDOWS do
 			obj = _G["ChatFrame"..i].buttonFrame
@@ -432,8 +418,6 @@ end
 function aObj:ChatConfig()
 	if not self.db.profile.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true
-
-	self:add2Table(self.uiKeys1, "ChatConfig")
 
 	self:addSkinFrame{obj=ChatConfigFrame, ft=ftype, kfs=true, hdr=true}
 	self:addSkinFrame{obj=ChatConfigCategoryFrame, ft=ftype}
@@ -540,13 +524,10 @@ local function skinChatEB(obj)
 	end
 	aObj.skinned[obj] = true
 
-
 end
 function aObj:ChatEditBox()
 	-- don't use an initialized value to allow for dynamic changes
 	if not self.db.profile.ChatEditBox.skin then return end
-
-	self:add2Table(self.uiKeys2, "ChatEditBox")
 
 	-- these addons replace the Chat Edit Box
 	if IsAddOnLoaded("NeonChat")
@@ -585,8 +566,6 @@ function aObj:ChatFrames()
 	if not self.db.profile.ChatFrames or self.initialized.ChatFrames then return end
 	self.initialized.ChatFrames = true
 
-	self:add2Table(self.uiKeys1, "ChatFrames")
-
 	local clqbf = "CombatLogQuickButtonFrame"
 	local clqbf_c = clqbf.."_Custom"
 	local yOfs1 = 4
@@ -620,8 +599,6 @@ function aObj:ChatMenus()
 	if not self.db.profile.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
-	self:add2Table(self.uiKeys1, "ChatMenus")
-
 	self:addSkinFrame{obj=ChatMenu, ft=ftype}
 	self:addSkinFrame{obj=EmoteMenu, ft=ftype}
 	self:addSkinFrame{obj=LanguageMenu, ft=ftype}
@@ -631,8 +608,7 @@ function aObj:ChatMenus()
 end
 
 function aObj:ChatMinimizedFrames()
-
-	-- self:add2Table(self.uiKeys1, "ChatMinimizedFrames") -- N.B. no option for this, internal function only
+	if not self.db.profile.ChatFrames then return end
 
 	-- minimized chat frames
 	self:SecureHook("FCF_CreateMinimizedFrame", function(chatFrame)
@@ -674,8 +650,6 @@ function aObj:ChatTabs()
 	if not self.db.profile.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true
 
-	self:add2Table(self.uiKeys1, "ChatTabs")
-
 	for i = 1, NUM_CHAT_WINDOWS do
 		skinChatTab("ChatFrame"..i)
 	end
@@ -687,8 +661,6 @@ function aObj:ChatTemporaryWindow()
 	and not self.db.profile.ChatFrames
 	and not self.db.profile.ChatEditBox.skin
 	then return end
-
-	-- self:add2Table(self.uiKeys1, "ChatTemporaryWindow") -- N.B. no option for this, internal function only
 
 	local function skinTempWindow(obj)
 
@@ -725,8 +697,6 @@ function aObj:CinematicFrame()
 	if not self.db.profile.CinematicFrame or self.initialized.CinematicFrame then return end
 	self.initialized.CinematicFrame = true
 
-	self:add2Table(self.uiKeys1, "CinematicFrame")
-
 	self:addSkinFrame{obj=CinematicFrame.closeDialog, ft=ftype}
 
 end
@@ -735,8 +705,6 @@ function aObj:CoinPickup()
 	if not self.db.profile.CoinPickup or self.initialized.CoinPickup then return end
 	self.initialized.CoinPickup = true
 
-	self:add2Table(self.uiKeys1, "CoinPickup")
-
 	self:addSkinFrame{obj=CoinPickupFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
 
 end
@@ -744,8 +712,6 @@ end
 function aObj:ColorPicker()
 	if not self.db.profile.Colours or self.initialized.Colours then return end
 	self.initialized.Colours = true
-
-	self:add2Table(self.uiKeys1, "Colours")
 
 	ColorPickerFrame:SetBackdrop(nil)
 	ColorPickerFrameHeader:SetAlpha(0)
@@ -785,8 +751,6 @@ function aObj:DestinyFrame()
 	if not self.db.profile.DestinyFrame or self.initialized.DestinyFrame then return end
 	self.initialized.DestinyFrame = true
 
-	self:add2Table(self.uiKeys1, "DestinyFrame")
-
 	-- buttons
 	for _, v in pairs{"alliance", "horde"} do
 		btn = DestinyFrame[v.."Button"]
@@ -816,8 +780,6 @@ end
 function aObj:DropDownPanels()
 	if not self.db.profile.DropDownPanels or self.initialized.DropDownPanels then return end
 	self.initialized.DropDownPanels = true
-
-	self:add2Table(self.uiKeys1, "DropDowns")
 
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(...)
 		local obj, objName
@@ -1027,8 +989,6 @@ function aObj:HelpFrame()
 	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
 	self.initialized.HelpFrame = true
 
-	self:add2Table(self.uiKeys1, "HelpFrame")
-
 	self:keepFontStrings(HelpFrame.header)
 	self:moveObject{obj=HelpFrame.header, y=-12}
 	self:removeInset(HelpFrame.leftInset)
@@ -1094,8 +1054,6 @@ function aObj:ItemText()
 	if not self.db.profile.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
 
-	self:add2Table(self.uiKeys1, "ItemText")
-
 	self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
 		ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end)
@@ -1132,8 +1090,6 @@ function aObj:LevelUpDisplay()
 	if not self.db.profile.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
 	self.initialized.LevelUpDisplay = true
 
-	self:add2Table(self.uiKeys1, "LevelUpDisplay")
-
 	LevelUpDisplay:DisableDrawLayer("BACKGROUND")
 
 end
@@ -1141,8 +1097,6 @@ end
 function aObj:LFDFrame()
 	if not self.db.profile.LFDFrame or self.initialized.LFDFrame then return end
 	self.initialized.LFDFrame = true
-
-	self:add2Table(self.uiKeys1, "LFDFrame")
 
 	-- LFD RoleCheck Popup
 	self:addSkinFrame{obj=LFDRoleCheckPopup, kfs=true, ft=ftype}
@@ -1182,8 +1136,6 @@ function aObj:LFGFrame()
 	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
 	self.initialized.LFGFrame = true
 
-	self:add2Table(self.uiKeys1, "LFGFrame")
-
 	-- LFG DungeonReady Popup a.k.a. ReadyCheck
 	self:addSkinFrame{obj=LFGDungeonReadyStatus, kfs=true, ft=ftype}
 	self:addSkinFrame{obj=LFGDungeonReadyDialog, kfs=true, ft=ftype}
@@ -1196,8 +1148,6 @@ end
 function aObj:LFRFrame()
 	if not self.db.profile.LFRFrame or self.initialized.LFRFrame then return end
 	self.initialized.LFRFrame = true
-
-	self:add2Table(self.uiKeys1, "LFRFrame")
 
 	self:addSkinFrame{obj=RaidBrowserFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
 
@@ -1271,8 +1221,6 @@ function aObj:MailFrame()
 	if not self.db.profile.MailFrame or self.initialized.MailFrame then return end
 	self.initialized.MailFrame = true
 
-	self:add2Table(self.uiKeys1, "MailFrame")
-
 	self:skinTabs{obj=MailFrame}
 	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
@@ -1332,7 +1280,6 @@ function aObj:MainMenuBar()
 	if not self.db.profile.MainMenuBar.skin or self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
 
-	self:add2Table(self.uiKeys2, "MainMenuBar")
 	-- Micro buttons, skinned before checks for a consistent look, 12.10.12
 	for _, v in pairs{"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "PVP", "LFD", "Companions", "EJ", "MainMenu", "Help"} do
 		self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
@@ -1459,8 +1406,6 @@ end
 function aObj:MenuFrames()
 	if not self.db.profile.MenuFrames or self.initialized.MenuFrames then return end
 	self.initialized.MenuFrames = true
-
-	self:add2Table(self.uiKeys1, "MenuFrames")
 
 -->>-- Game Menu Frame
 	self:addSkinFrame{obj=GameMenuFrame, ft=ftype, kfs=true, hdr=true}
@@ -1615,8 +1560,6 @@ function aObj:Minimap()
 	if not self.db.profile.Minimap.skin or self.initialized.Minimap then return end
 	self.initialized.Minimap = true
 
-	self:add2Table(self.uiKeys2, "Minimap")
-
 -->>-- Cluster Frame
 	MinimapBorderTop:Hide()
 	MinimapZoneTextButton:ClearAllPoints()
@@ -1672,8 +1615,6 @@ end
 function aObj:MinimapButtons()
 	if not self.db.profile.MinimapButtons.skin or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
-
-	self:add2Table(self.uiKeys2, "MinimapButtons")
 
 	local minBtn = self.db.profile.MinimapButtons.style
 	local objName, objType, tex, texName
@@ -1819,7 +1760,6 @@ function aObj:ModelFrames()
 This does the trick, but it might be worth stealing chester's code from SuperInspect
 
 ]]
-	self:add2Table(self.uiKeys1, "ModelFrames")
 
 	-- these are hooked to suppress the sound the normal functions use
 	self:SecureHook("Model_RotateLeft", function(model, rotationIncrement)
@@ -1859,8 +1799,6 @@ if IsMacClient() then
 		if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
 		self.initialized.MovieProgress = true
 
-		self:add2Table(self.uiKeys1, "MovieProgress")
-
 		self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
 		self:removeRegions(MovieProgressFrame)
 		self:glazeStatusBar(MovieProgressBar, 0, self:getRegion(MovieProgressBar, 1))
@@ -1873,8 +1811,6 @@ end
 function aObj:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
-
-	self:add2Table(self.uiKeys1, "Nameplates")
 
 	local pairs, select = pairs, select
 	local GetCVarBool, UnitName, InCombatLockdown = GetCVarBool, UnitName, InCombatLockdown
@@ -1976,8 +1912,6 @@ aObj.pbtt = {}
 function aObj:PetBattleUI()
 	if not self.db.profile.PetBattleUI or self.initialized.PetBattleUI then return end
 	self.initialized.PetBattleUI = true
-
-	self:add2Table(self.uiKeys1, "PetBattleUI")
 
 	local dpt = [[Interface\PetBattles\DeadPetIcon]]
 
@@ -2104,7 +2038,7 @@ function aObj:PetBattleUI()
 		-- end, true)
 		end)
 		self:SecureHookScript(pbfaasf, "OnFinished", function(this)
-			reParent{reset=true}
+			reParent{}
 		end)
 		local pbfaesf = PetBattleFrame.ActiveEnemy.SpeedFlash
 		-- self:RawHookScript(pbfaesf, "OnPlay", function(this)
@@ -2116,7 +2050,7 @@ function aObj:PetBattleUI()
 		-- end, true)
 		end)
 		self:SecureHookScript(pbfaesf, "OnFinished", function(this)
-			reParent{reset=true}
+			reParent{}
 		end)
 		-- hook these to ensure gradient texture is reparented correctly
 		self:SecureHookScript(PetBattleFrame, "OnShow", function(this)
@@ -2158,8 +2092,6 @@ end
 function aObj:PVEFrame()
 	if not self.db.profile.PVEFrame or self.initialized.PVEFrame then return end
 	self.initialized.PVEFrame = true
-
-	self:add2Table(self.uiKeys1, "PVEFrame")
 
 	self:keepFontStrings(PVEFrame.shadows)
 	self:addSkinFrame{obj=PVEFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
@@ -2203,6 +2135,12 @@ function aObj:PVEFrame()
 end
 
 function aObj:QueueStatusFrame()
+	if not self.db.profile.LFGFrame
+	and not self.db.profile.PVPFrame
+	and not self.db.profile.PetBattleUI
+	then
+		return
+	end
 
 	self:addSkinFrame{obj=QueueStatusFrame}
 
@@ -2211,8 +2149,6 @@ end
 function aObj:RaidFrame()
 	if not self.db.profile.RaidFrame or self.initialized.RaidFrame then return end
 	self.initialized.RaidFrame = true
-
-	self:add2Table(self.uiKeys1, "RaidFrame")
 
 	self:skinTabs{obj=RaidParentFrame, lod=true}
 	self:addSkinFrame{obj=RaidParentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
@@ -2234,8 +2170,6 @@ function aObj:ScriptErrors()
 	if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
 	self.initialized.ScriptErrors = true
 
-	self:add2Table(self.uiKeys1, "ScriptErrors")
-
 	-- skin Basic Script Errors Frame (BasicControls.xml)
 	self:addSkinFrame{obj=BasicScriptErrors, kfs=true, ft=ftype}
 
@@ -2244,8 +2178,6 @@ end
 function aObj:StaticPopups()
 	if not self.db.profile.StaticPopups or self.initialized.StaticPopups then return end
 	self.initialized.StaticPopups = true
-
-	self:add2Table(self.uiKeys1, "StaticPopups")
 
 	if self.modBtns then
 		-- hook this to handle close button texture changes
@@ -2308,8 +2240,6 @@ function aObj:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
-	self:add2Table(self.uiKeys2, "Tooltips")
-
 	-- skin Item Ref Tooltip's close button
 	self:skinButton{obj=ItemRefCloseButton, cb=true}
 
@@ -2351,8 +2281,6 @@ end
 function aObj:Tutorial()
 	if not self.db.profile.Tutorial or self.initialized.Tutorial then return end
 	self.initialized.Tutorial = true
-
-	self:add2Table(self.uiKeys1, "Tutorial")
 
 	local function resetSF()
 
@@ -2404,8 +2332,6 @@ end
 function aObj:WorldMap()
 	if not self.db.profile.WorldMap.skin or self.initialized.WorldMap then return end
 	self.initialized.WorldMap = true
-
-	self:add2Table(self.uiKeys2, "WorldMap")
 
 	if not IsAddOnLoaded("Mapster")
 	and not IsAddOnLoaded("AlleyMap")
@@ -2478,8 +2404,6 @@ end
 function aObj:WorldState()
 	if not self.db.profile.WorldState or self.initialized.WorldState then return end
 	self.initialized.WorldState = true
-
-	self:add2Table(self.uiKeys1, "WorldState")
 
 	self:skinDropDown{obj=ScorePlayerDropDown}
 	self:skinScrollBar{obj=WorldStateScoreScrollFrame}

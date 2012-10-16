@@ -324,8 +324,6 @@ function aObj:Buffs()
 	if not self.db.profile.Buffs or self.initialized.Buffs then return end
 	self.initialized.Buffs = true
 
-	self:add2Table(self.pKeys1, "Buffs")
-
 	if self.modBtnBs then
 		local function skinBuffs()
 
@@ -374,8 +372,6 @@ function aObj:CastingBar()
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
 
-	self:add2Table(self.pKeys2, "CastingBar")
-
 	for _, prefix in pairs{"", "Pet"} do
 
 		obj = _G[prefix.."CastingBarFrame"]
@@ -410,8 +406,6 @@ end
 function aObj:CharacterFrames()
 	if not self.db.profile.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
-
-	self:add2Table(self.pKeys1, "CharacterFrames")
 
 	-- Character Frame
 	self:removeInset(CharacterFrameInsetRight)
@@ -449,7 +443,7 @@ function aObj:CharacterFrames()
 	self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
-			if tab then
+			if tab and tab.sf then
 				if (_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown()) then
 					tab.sb:Show()
 				else
@@ -555,8 +549,6 @@ function aObj:CompactFrames()
 	if not self.db.profile.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
-	self:add2Table(self.pKeys1, "CompactFrames")
-
 	local function skinUnit(unit)
 
 		-- handle in combat
@@ -649,8 +641,6 @@ function aObj:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	self:add2Table(self.pKeys2, "ContainerFrames")
-
 	for i = 1, NUM_CONTAINER_FRAMES do
 		objName = "ContainerFrame"..i
 		self:addSkinFrame{obj=_G[objName], ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
@@ -670,8 +660,6 @@ end
 function aObj:DressUpFrame()
 	if not self.db.profile.DressUpFrame or self.initialized.DressUpFrame then return end
 	self.initialized.DressUpFrame = true
-
-	self:add2Table(self.pKeys1, "DressUpFrame")
 
 	self:removeRegions(DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
 	DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
@@ -817,8 +805,6 @@ function aObj:EquipmentFlyout()
 	if not self.db.profile.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
 	self.initialized.EquipmentFlyout = true
 
-	self:add2Table(self.pKeys1, "EquipmentFlyout")
-
 	local btnFrame = EquipmentFlyoutFrame.buttonFrame
 	self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
 	self:SecureHook("EquipmentFlyout_Show", function(...)
@@ -838,8 +824,6 @@ end
 function aObj:FriendsFrame()
 	if not self.db.profile.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
-
-	self:add2Table(self.pKeys1, "FriendsFrame")
 
 	self:skinTabs{obj=FriendsFrame, lod=true}
 	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-5}
@@ -959,8 +943,6 @@ end
 function aObj:GhostFrame()
 	if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
 	self.initialized.GhostFrame = true
-
-	self:add2Table(self.pKeys1, "GhostFrame")
 
 	self:addButtonBorder{obj=GhostFrameContentsFrame, relTo=GhostFrameContentsFrameIcon}
 	self:addSkinButton{obj=GhostFrame, parent=GhostFrame, kfs=true, sap=true, hide=true}
@@ -1182,8 +1164,6 @@ function aObj:GuildInvite()
 	if not self.db.profile.GuildInvite or self.initialized.GuildInvite then return end
 	self.initialized.GuildInvite = true
 
-	self:add2Table(self.pKeys1, "GuildInvite")
-
 	self:keepFontStrings(GuildInviteFrameLevel)
 	GuildInviteFrame:DisableDrawLayer("BACKGROUND")
 	GuildInviteFrame:DisableDrawLayer("BORDER")
@@ -1326,8 +1306,6 @@ function aObj:LootFrames()
 	if not self.db.profile.LootFrames.skin or self.initialized.LootFrames then return end
 	self.initialized.LootFrames = true
 
-	self:add2Table(self.pKeys2, "LootFrames")
-
 	-- Add another loot button and move them all up to fit
 	local yOfs = -27
 	for i = 1, LOOTFRAME_NUMBUTTONS do
@@ -1428,8 +1406,6 @@ function aObj:LootHistory()
 	if not self.db.profile.LootHistory or self.initialized.LootHistory then return end
 	self.initialized.LootHistory = true
 
-	self:add2Table(self.pKeys1, "LootHistory")
-
 	self:skinScrollBar{obj=LootHistoryFrame.ScrollFrame}
 	LootHistoryFrame.ScrollFrame.ScrollBarBackground:SetTexture(nil)
 	LootHistoryFrame.Divider:SetTexture(nil)
@@ -1454,8 +1430,6 @@ end
 function aObj:MirrorTimers()
 	if not self.db.profile.MirrorTimers.skin or self.initialized.MirrorTimers then return end
 	self.initialized.MirrorTimers = true
-
-	self:add2Table(self.pKeys2, "MirrorTimers")
 
 	local objBG, objSB
 	for i = 1, MIRRORTIMER_NUMTIMERS do
@@ -1500,8 +1474,8 @@ function aObj:MirrorTimers()
 end
 
 function aObj:OverrideActionBar()
-
-	self:add2Table(self.pKeys1, "OverrideActionBar")
+	if not self.db.profile.OverrideActionBar  or self.initialized.OverrideActionBar then return end
+	self.initialized.OverrideActionBar = true
 
 	local xOfs1, xOfs2, yOfs1, yOfs2, sf, oabW
 	local function skinOverrideActionBar(opts)
@@ -1677,8 +1651,6 @@ function aObj:PVPFrame()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
-	self:add2Table(self.pKeys1, "PVPFrame")
-
 	self:removeInset(PVPFrame.topInset)
 	local bar = PVPFrameConquestBar
 	bar.progress:SetTexture(self.sbTexture)
@@ -1764,8 +1736,6 @@ end
 function aObj:QuestLog()
 	if not self.db.profile.QuestLog or self.initialized.QuestLog then return end
 	self.initialized.QuestLog = true
-
-	self:add2Table(self.pKeys1, "QuestLog")
 
 	self:keepFontStrings(QuestLogCount)
 	self:keepFontStrings(EmptyQuestLogFrame)
@@ -1879,8 +1849,6 @@ function aObj:ReadyCheck()
 	if not self.db.profile.ReadyCheck or self.initialized.ReadyCheck then return end
 	self.initialized.ReadyCheck = true
 
-	self:add2Table(self.pKeys1, "ReadyCheck")
-
 	self:addSkinFrame{obj=ReadyCheckListenerFrame, ft=ftype, kfs=true}
 
 end
@@ -1889,8 +1857,6 @@ function aObj:RolePollPopup()
 	if not self.db.profile.RolePollPopup or self.initialized.RolePollPopup then return end
 	self.initialized.RolePollPopup = true
 
-	self:add2Table(self.pKeys1, "RolePollPopup")
-
 	self:addSkinFrame{obj=RolePollPopup, ft=ftype, x1=5, y1=-5, x2=-5, y2=5}
 
 end
@@ -1898,8 +1864,6 @@ end
 function aObj:ScrollOfResurrection()
 	if not self.db.profile.ScrollOfResurrection or self.initialized.ScrollOfResurrection then return end
 	self.initialized.ScrollOfResurrection = true
-
-	self:add2Table(self.pKeys1, "ScrollOfResurrection")
 
 	self:skinEditBox{obj=ScrollOfResurrectionFrame.targetEditBox, regs={9}}
 	ScrollOfResurrectionFrame.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -1918,8 +1882,6 @@ end
 function aObj:SpellBookFrame()
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
-
-	self:add2Table(self.pKeys1, "SpellBookFrame")
 
 	SpellBookFrame.numTabs = 5
 	if self.isTT then
@@ -2052,8 +2014,6 @@ function aObj:SpellFlyout()
 	if not self.db.profile.SpellFlyout or self.initialized.SpellFlyout then return end
 	self.initialized.SpellFlyout = true
 
-	self:add2Table(self.pKeys1, "SpellFlyout")
-
 	self:SecureHook("ActionButton_UpdateFlyout", function(this)
 		if this.FlyoutBorder
 		and not self.skinned[this]
@@ -2068,8 +2028,6 @@ end
 function aObj:StackSplit()
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
-
-	self:add2Table(self.pKeys1, "StackSplit")
 
 	-- handle different addons being loaded
 	if IsAddOnLoaded("EnhancedStackSplit") then
@@ -2177,8 +2135,6 @@ function aObj:TradeFrame()
 	if not self.db.profile.TradeFrame or self.initialized.TradeFrame then return end
 	self.initialized.TradeFrame = true
 
-	self:add2Table(self.pKeys1, "TradeFrame")
-
 	for i = 1, MAX_TRADE_ITEMS do
 		for _, v in pairs{"Player", "Recipient"} do
 			btnName = "Trade"..v.."Item"..i
@@ -2265,8 +2221,6 @@ function aObj:WatchFrame()
 		return
 	end
 	self.initialized.WatchFrame = true
-
-	self:add2Table(self.pKeys2, "WatchFrame")
 
 	if self.modBtnBs then
 		local btn

@@ -7,8 +7,6 @@ function aObj:ArenaRegistrar()
 	if not self.db.profile.ArenaRegistrar or self.initialized.ArenaRegistrar then return end
 	self.initialized.ArenaRegistrar = true
 
-	self:add2Table(self.npcKeys, "ArenaRegistrar")
-
 	--	PVP Banner Frame
 	self:skinEditBox{obj=PVPBannerFrameEditBox, regs={9}}
 	self:keepRegions(PVPBannerFrame, {8, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 29 - 32 are the emblem, 33 - 35 are the text
@@ -118,8 +116,6 @@ function aObj:BankFrame()
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
-	self:add2Table(self.npcKeys, "BankFrame")
-
 	self:skinEditBox{obj=BankItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:removeInset(BankFrameMoneyFrameInset)
 	BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
@@ -159,8 +155,6 @@ function aObj:BlackMarketUI() -- LoD
 	if not self.db.profile.BlackMarketUI or self.initialized.BlackMarketUI then return end
 	self.initialized.BlackMarketUI = true
 
-	self:add2Table(self.npcKeys, "BlackMarketUI")
-
 	-- move title text
 	self:moveObject{obj=self:getRegion(BlackMarketFrame, 22), y=-4}
 	-- HotDeal frame
@@ -197,8 +191,6 @@ function aObj:GossipFrame()
 	if not self.db.profile.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
-	self:add2Table(self.npcKeys, "GossipFrame")
-
 	-- setup Quest display colours here
 	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
 	NORMAL_QUEST_DISPLAY = "|cff"..QTHex.."%s|r"
@@ -222,8 +214,6 @@ end
 function aObj:GuildRegistrar()
 	if not self.db.profile.GuildRegistrar or self.initialized.GuildRegistrar then return end
 	self.initialized.GuildRegistrar = true
-
-	self:add2Table(self.npcKeys, "GuildRegistrar")
 
 	self:keepFontStrings(GuildRegistrarGreetingFrame)
 	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -264,8 +254,6 @@ end
 function aObj:MerchantFrame()
 	if not self.db.profile.MerchantFrame or self.initialized.MerchantFrame then return end
 	self.initialized.MerchantFrame = true
-
-	self:add2Table(self.npcKeys, "MerchantFrame")
 
 	-- display limited availability item's stock count even when zero
 	self:SecureHook("SetItemButtonStock", function(button, numInStock)
@@ -318,8 +306,6 @@ function aObj:Petition()
 	if not self.db.profile.Petition or self.initialized.Petition then return end
 	self.initialized.Petition = true
 
-	self:add2Table(self.npcKeys, "Petition")
-
 	PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	PetitionFrameMasterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -337,8 +323,6 @@ end
 function aObj:PetStableFrame()
 	if not self.db.profile.PetStableFrame or self.initialized.PetStableFrame then return end
 	self.initialized.PetStableFrame = true
-
-	self:add2Table(self.npcKeys, "PetStableFrame")
 
 	self:makeMFRotatable(PetStableModel)
 
@@ -377,8 +361,6 @@ end
 function aObj:QuestFrame()
 	if not self.db.profile.QuestFrame or self.initialized.QuestFrame then return end
 	self.initialized.QuestFrame = true
-
-	self:add2Table(self.npcKeys, "QuestFrame")
 
 	-- setup Quest display colours here
 	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
@@ -434,8 +416,6 @@ end
 function aObj:QuestInfo()
 	if not self.db.profile.QuestFrame or self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
-
-	self:add2Table(self.npcKeys, "QuestInfo")
 
 	local r, g, b
 	self:SecureHook("QuestInfo_Display", function(...)
@@ -530,8 +510,6 @@ function aObj:SideDressUpFrame()
 	if not self.db.profile.SideDressUpFrame or self.initialized.SideDressUpFrame then return end
 	self.initialized.SideDressUpFrame = true
 
-	self:add2Table(self.npcKeys, "SideDressUpFrame")
-
 	SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
 	SideDressUpModelCloseButton:DisableDrawLayer("BACKGROUND")
 	SideDressUpFrame:DisableDrawLayer("BACKGROUND")
@@ -542,8 +520,6 @@ end
 function aObj:Tabard()
 	if not self.db.profile.Tabard or self.initialized.Tabard then return end
 	self.initialized.Tabard = true
-
-	self:add2Table(self.npcKeys, "Tabard")
 
 	self:makeMFRotatable(TabardModel)
 	TabardFrameCostFrame:SetBackdrop(nil)
@@ -564,8 +540,6 @@ end
 function aObj:TaxiFrame()
 	if not self.db.profile.TaxiFrame or self.initialized.TaxiFrame then return end
 	self.initialized.TaxiFrame = true
-
-	self:add2Table(self.npcKeys, "TaxiFrame")
 
 	TaxiFrame:DisableDrawLayer("OVERLAY")
 	TaxiFrame:DisableDrawLayer("BORDER")
