@@ -1,3 +1,16 @@
+b5.16135.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated isPatch check
+	Updates to MainMenuBar button border skin code, skinned PetBattlePrimaryUnitTooltip (again?)
+	FLightMapEnhanced skin update
+	UIButton skinning updates
+	Bugfix for Animation fadeout
+	Updated Scroll of Resurrection skin
+	Bugfix for Paperdoll Sidebars
+	Updated Bagnon, FarmIt2, FlightMapEnhanced, GroupCalendar5, Outfitter & _NPCScan skins
+	
 b5.16057.6
 Jncl:
 	ToDo.txt
