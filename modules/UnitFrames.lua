@@ -25,6 +25,26 @@ local unitFrames = {
 	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground"
 }
 
+-- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
+local oPnt
+local function adjustHealthBarPosn(frame)
+
+	local hBar = _G[frame.."HealthBar"]
+	if hBar.TextString then
+		oPnt = {hBar.TextString:GetPoint()}
+		hBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + 2)
+	end
+	if frame == "PlayerFrame" then
+		aObj:RawHook(hBar, "SetPoint", function(this, posn, xOfs, yOfs)
+			aObj.hooks[this].SetPoint(this, posn, xOfs, yOfs + 1)
+		end, true)
+	else
+		oPnt = {hBar:GetPoint()}
+		hBar:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + 1)
+	end
+
+end
+
 local function skinPlayerF()
 
 	if db.player
@@ -38,8 +58,8 @@ local function skinPlayerF()
 		PlayerRestGlow:SetTexture(nil)
 		PlayerAttackGlow:SetTexture(nil)
 		-- status bars
+		adjustHealthBarPosn("PlayerFrame")
 		aObj:glazeStatusBar(PlayerFrameHealthBar, 0)
-		aObj:adjHeight{obj=PlayerFrameHealthBar , adj=-1} -- handle bug in PlayerFrame XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 		aObj:glazeStatusBar(PlayerFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
 		-- move PVP Icon/Timer text up & right
@@ -116,8 +136,8 @@ local function skinPetF()
 		PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		PetAttackModeTexture:SetTexture(nil)
 		-- status bars
+		adjustHealthBarPosn("PetFrame")
 		aObj:glazeStatusBar(PetFrameHealthBar, 0)
-		aObj:adjHeight{obj=PetFrameHealthBar, adj=-1} -- handle bug in PetFrame XML & lua which places mana bar 7 pixels below the healthbar, when their heights are 8
 		aObj:glazeStatusBar(PetFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
 		aObj:moveObject{obj=PetFrame, x=20, y=1} -- align under Player Health/Mana bars
@@ -151,33 +171,33 @@ local function skinPetF()
 		end
 	end
 
-
 end
 local function skinToT(frame)
 
 	_G[frame.."Background"]:SetTexture(nil)
 	_G[frame.."TextureFrameTexture"]:SetTexture(nil)
 	-- status bars
+	adjustHealthBarPosn(frame)
 	aObj:glazeStatusBar(_G[frame.."HealthBar"], 0)
 	aObj:glazeStatusBar(_G[frame.."ManaBar"], 0)
-	aObj:moveObject{obj=_G[frame.."ManaBar"], y=1} -- handle bug in <frame> XML & lua which places mana bar 8 pixels below the healthbar, when their heights are 7
 	aObj:moveObject{obj=_G[frame], y=totOfs}
 
 end
+local cBar
 local function skinUFrame(frame)
 
 	aObj:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso=aso, y1=-7, x2=-37, y2=6}
 	_G[frame.."Background"]:SetTexture(nil)
 	_G[frame.."TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
 	-- status bars
+	adjustHealthBarPosn(frame)
 	aObj:glazeStatusBar(_G[frame.."HealthBar"], 0)
-	aObj:adjHeight{obj=_G[frame.."HealthBar"] , adj=-1} -- handle bug in <frame> XML & lua which places mana bar 11 pixels below the healthbar, when their heights are 12
 	aObj:glazeStatusBar(_G[frame.."ManaBar"], 0)
 	aObj:removeRegions(_G[frame.."NumericalThreat"], {3}) -- threat border
 	-- move level & highlevel down, so they are more visible
 	aObj:moveObject{obj=_G[frame.."TextureFrameLevelText"], x=2, y=lOfs}
 	-- casting bar
-	local cBar = frame.."SpellBar"
+	cBar = frame.."SpellBar"
 	aObj:adjHeight{obj=_G[cBar], adj=2}
 	_G[cBar.."Text"]:ClearAllPoints()
 	_G[cBar.."Text"]:SetPoint("TOP", 0, 3)
@@ -190,6 +210,7 @@ local function skinUFrame(frame)
 	aObj:addSkinFrame{obj=_G[frame.."ToT"], ft=ftype, noBdr=true, aso=aso, x2=6, y2=-1}
 
 end
+local ucTTex, ucFTex
 local function skinTargetF()
 
 	local function showEliteTex(uCls, tex)
@@ -222,11 +243,11 @@ local function skinTargetF()
 		end
 
 		-- create a texture to show UnitClassification
-		local ucTTex = TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
+		ucTTex = TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
 		ucTTex:SetWidth(80)
 		ucTTex:SetHeight(50)
 		ucTTex:SetPoint("CENTER", 86, -22 + lOfs)
-		local ucFTex = FocusFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
+		ucFTex = FocusFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
 		ucFTex:SetWidth(80)
 		ucFTex:SetHeight(50)
 		ucFTex:SetPoint("CENTER", 86, -22 + lOfs)
@@ -440,15 +461,15 @@ function module:OnInitialize()
 		self:Disable()
 	end
 
-	-- setup default applySkin options
-	aso = {ba=db.alpha, ng=true}
-
 	-- disable ourself if another unitframe addon is loaded
 	if IsAddOnLoaded("Perl_Config")
 	or IsAddOnLoaded("XPerl")
 	then
 		self:Disable()
 	end
+
+	-- setup default applySkin options
+	aso = {ba=db.alpha, ng=true}
 
 end
 
