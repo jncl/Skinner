@@ -1,6 +1,5 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("BetterInbox") then return end
-local btn
 
 function aObj:BetterInbox(LoD)
 	if not self.db.profile.MailFrame then return end
@@ -8,6 +7,7 @@ function aObj:BetterInbox(LoD)
 	local bib = LibStub('AceAddon-3.0'):GetAddon('BetterInbox', true)
 	if not bib then return end
 	
+	local btn
 	local function skinBIb()
 
 		bib.scrollframe.t1:SetAlpha(0)

@@ -3,11 +3,11 @@ if not aObj:isAddonEnabled("ReforgeLite") then return end
 
 function aObj:ReforgeLite()
 
-	local function checkTexture(self)
-		if self:GetParent().expanded then
-			self:SetText(aObj.modUIBtns.minus)
+	local function checkTexture(this)
+		if this:GetParent().expanded then
+			aObj.sBtn[this]:SetText(aObj.modUIBtns.minus)
 		else
-			self:SetText(aObj.modUIBtns.plus)
+			aObj.sBtn[this]:SetText(aObj.modUIBtns.plus)
 		end
 	end
 	local function skinDropDown(obj)
@@ -15,6 +15,7 @@ function aObj:ReforgeLite()
 		if obj.ddTex then obj.ddTex:SetHeight(16) end
 		_G[obj:GetName().."Button"]:SetPoint ("TOPRIGHT", _G[obj:GetName().."Right"], "TOPRIGHT", -17, -12)
 	end
+	local bType, oTex
 
 	-- hook this to skin editboxes
 	self:RawHook(ReforgeLiteGUI, "CreateEditBox", function(this, ...)
@@ -29,41 +30,30 @@ function aObj:ReforgeLite()
 		return dd
 	end, true)
 
-	-- Main frame
-	self:skinSlider{obj=ReforgeLite.scrollBar}
-	ReforgeLite.scrollBg:SetTexture(nil)
-	ReforgeLite.scrollFrame:SetPoint ("BOTTOMRIGHT", ReforgeLite, "BOTTOMRIGHT", -26, 15)
-	self:addSkinFrame{obj=ReforgeLite, bas=true, y1=-8}
-	-- Content Frame
-	self:skinAllButtons{obj=ReforgeLite.content, as=true}
-	local bType, oTex
-	local function skinChildren(obj)
-		
-		for _, child in ipairs{obj:GetChildren()} do
-			if self:isDropDown(child) then
-				skinDropDown(child)
-			elseif child:IsObjectType("EditBox") then
-				self:skinEditBox{obj=child}
-			elseif child:IsObjectType("Button") then
-				bType, oTex = self:isButton(child)
-				if bType == "mp" then
-					self:skinButton{obj=child, mp2=true, as=true, plus=oTex:find("Plus") and true or nil}
-					if child.UpdateTexture then
-						child.UpdateTexture = checkTexture
-					end
-				end
-			elseif child:IsObjectType("Frame") then
-				skinChildren(child)
-			end
-		end
-	end
-	skinChildren(ReforgeLite.content)
-	
+	self:SecureHook(ReforgeLite, "Show", function(this)
+		-- Main frame
+		self:skinSlider{obj=ReforgeLite.scrollBar}
+		ReforgeLite.scrollBg:SetTexture(nil)
+		ReforgeLite.scrollFrame:SetPoint ("BOTTOMRIGHT", ReforgeLite, "BOTTOMRIGHT", -26, 15)
+		self:addSkinFrame{obj=ReforgeLite, nb=true, y1=-8}
+		self:skinButton{obj=ReforgeLite.close, cb=true}
+		-- Content Frame
+		self:skinAllButtons{obj=ReforgeLite.content, as=true}
+		self:skinButton{obj=ReforgeLite.statWeightsCategory.button, mp=true}
+		ReforgeLite.statWeightsCategory.button.UpdateTexture = checkTexture
+		self:skinButton{obj=ReforgeLite.settingsCategory.button, mp=true, plus=true}
+		ReforgeLite.settingsCategory.button.UpdateTexture = checkTexture
+		self:skinButton{obj=ReforgeLite.task.caps[1].add, mp2=true, as=true, plus=true}
+		self:skinButton{obj=ReforgeLite.task.caps[2].add, mp2=true, as=true, plus=true}
+		self:Unhook(ReforgeLite, "Show")
+	end)
+
 	-- Calculate Method subframe
 	self:SecureHook(ReforgeLite, "UpdateMethodCategory", function(this)
 		self:skinButton{obj=ReforgeLite.methodCategory.button, mp=true}
-		self:skinButton{obj=ReforgeLiteMethodShowButton}
-		self:skinButton{obj=ReforgeLiteMethodResetButton}
+		ReforgeLite.methodCategory.button.UpdateTexture = checkTexture
+		self:skinButton{obj=ReforgeLiteMethodShowButton, as=true}
+		self:skinButton{obj=ReforgeLiteMethodResetButton, as=true}
 		self:Unhook(ReforgeLite, "UpdateMethodCategory")
 	end)
 	-- Output Frame
@@ -71,5 +61,9 @@ function aObj:ReforgeLite()
 		self:addSkinFrame{obj=ReforgeLite.methodWindow, y1=-8}
 		self:Unhook(ReforgeLite, "ShowMethodWindow")
 	end)
-	
+
+	-- Debug frame
+	self:skinSlider{obj=ReforgeLiteErrorFrameScroll.ScrollBar, size=3}
+	self:addSkinFrame{obj=ReforgeLiteErrorFrame}
+
 end

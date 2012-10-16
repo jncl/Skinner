@@ -185,11 +185,8 @@ function aObj:Outfitter()
 	end
 	-- hook to skin script generated objects
 	self:SecureHook(OutfitterEditScriptDialog, "ConstructSettingsFields", function(this, pSettings)
-		self:Debug("O_ESD.CSF")
 		for k, v in pairs(this.FrameCache) do
-			print(k, v)
 			for l, w in pairs(v) do
-				print(l, w)
 				if k == "ScrollableEditBox" then
 					-- self:skinScrollBar{obj=v}
 					-- self:addSkinFrame{obj=self:getChild(v, 1)}
