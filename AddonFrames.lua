@@ -106,7 +106,7 @@ function aObj:BlizzardFrames()
 			["LFGFrame"] = true,
 			["LFRFrame"] = true,
 			["MailFrame"] = true,
-			["MainMenuBar"] = false, -- checked below
+			["MainMenuBar"] = true, -- N.B. conflicting addons checked within function - 12.10.12
 			["MenuFrames"] = true,
 			["Minimap"] = true,
 			["MinimapButtons"] = false, -- done with timer
@@ -249,13 +249,6 @@ function aObj:AddonFrames()
 	and not IsAddOnLoaded("ElvUI")
 	then
 		self:checkAndRun("CompactFrames")
-	end
-
-	-- skin the MenuBar if other actionbar addons aren't loaded
-	if not IsAddOnLoaded("Bartender4")
-	and not IsAddOnLoaded("Dominos")
-	then
-		self:checkAndRun("MainMenuBar")
 	end
 
 	-- skin the Nameplates if other nameplate addons aren't loaded

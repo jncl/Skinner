@@ -1333,14 +1333,24 @@ function aObj:MainMenuBar()
 	self.initialized.MainMenuBar = true
 
 	self:add2Table(self.uiKeys2, "MainMenuBar")
+	-- Micro buttons, skinned before checks for a consistent look, 12.10.12
+	for _, v in pairs{"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "PVP", "LFD", "Companions", "EJ", "MainMenu", "Help"} do
+		self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
+	end
+	self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
+
+	-- check for the bar addons, leave if they are loaded
+	if IsAddOnLoaded("Bartender4")
+	or IsAddOnLoaded("Dominos")
+	then
+		return
+	end
 
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 5), {ExhaustionLevelFillBar})
 		ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
 		self:glazeStatusBar(ReputationWatchStatusBar, 0, ReputationWatchStatusBarBackground)
 	end
-
-	if IsAddOnLoaded("Dominos") then return end
 
 	ExhaustionTick:SetAlpha(0)
 	self:adjHeight{obj=MainMenuExpBar, adj=-2} -- shrink it so it moves up
@@ -1392,11 +1402,6 @@ function aObj:MainMenuBar()
 	end
 
 -->>-- add button borders
-	-- Micro buttons
-	for _, v in pairs{"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "PVP", "LFD", "Companions", "EJ", "MainMenu", "Help"} do
-		self:addButtonBorder{obj=_G[v.."MicroButton"], mb=true, ofs=0, y1=-21}
-	end
-	self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1}-- on ChatFrame
 	-- Bag buttons
 	self:addButtonBorder{obj=MainMenuBarBackpackButton}
 	self:addButtonBorder{obj=CharacterBag0Slot}
