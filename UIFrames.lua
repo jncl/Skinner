@@ -1047,6 +1047,11 @@ function aObj:HelpFrame()
 	-- HelpOpenTicketButton
 	HelpOpenTicketButton.tutorial:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=HelpOpenTicketButton.tutorial, ft=ftype, y1=3, x2=3}
+	-- GM_Response
+	self:skinScrollBar{obj=HelpFrameGM_ResponseScrollFrame1}
+	self:skinScrollBar{obj=HelpFrameGM_ResponseScrollFrame2}
+	self:addSkinFrame{obj=self:getChild(HelpFrameGM_Response, 5), ft=ftype}
+	self:addSkinFrame{obj=self:getChild(HelpFrameGM_Response, 6), ft=ftype}
 
 end
 
