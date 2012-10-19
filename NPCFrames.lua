@@ -455,28 +455,26 @@ function aObj:QuestInfo()
 	QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
 
+	-- InfoRewards frame
+	QuestInfoRewardSpellNameFrame:SetTexture(nil)
+	self:addButtonBorder{obj=QuestInfoRewardSpell, relTo=QuestInfoRewardSpell.Icon}
+	QuestInfoRewardSpellSpellBorder:SetTexture(nil)
 	for i = 1, MAX_NUM_ITEMS do
 		btnName = "QuestInfoItem"..i
 		_G[btnName.."NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName], libt=true}
 	end
-	QuestInfoRewardSpellNameFrame:SetTexture(nil)
-	QuestInfoRewardSpellSpellBorder:SetTexture(nil)
 
 	-- Skill Point frame
 	btnName = "QuestInfoSkillPointFrame"
 	_G[btnName.."NameFrame"]:SetTexture(nil)
-	if self.modBtnBs then
-		self:addButtonBorder{obj=_G[btnName], libt=true, reParent={_G[btnName.."SkillPointBg"], _G[btnName.."SkillPointBgGlow"], _G[btnName.."Points"]}}
-	end
+	self:addButtonBorder{obj=_G[btnName], libt=true, reParent={_G[btnName.."SkillPointBg"], _G[btnName.."SkillPointBgGlow"], _G[btnName.."Points"]}}
 
 	-- Spell Objective frame
 	btnName = "QuestInfoSpellObjectiveFrame"
 	_G[btnName.."NameFrame"]:SetTexture(nil)
 	_G[btnName.."SpellBorder"]:SetTexture(nil)
-	if self.modBtnBs then
-		self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."IconTexture"]}
-	end
+	self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName.."IconTexture"]}
 
 end
 
