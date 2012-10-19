@@ -444,7 +444,7 @@ local function __addButtonBorder(opts)
 		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sb:Show() end)
 		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sb:Hide() end)
 		-- hide border if required
-		if not opts.relTo:IsShown() then opts.obj.sb:Hide() end
+		opts.obj.sb:SetShown(opts.relTo:IsShown())
 	end
 
 	-- reparent objects if required

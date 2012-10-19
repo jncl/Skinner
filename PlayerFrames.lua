@@ -444,11 +444,7 @@ function aObj:CharacterFrames()
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
 			if tab and tab.sf then
-				if (_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown()) then
-					tab.sb:Show()
-				else
-					tab.sb:Hide()
-				end
+				tab.sb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 			end
 		end
 	end)
@@ -2245,11 +2241,7 @@ function aObj:WatchFrame()
 		self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-30, y1=4, x2=10}
 		-- hook this to handle displaying of the WatchFrameLines skin frame
 		self:SecureHook("WatchFrame_Update", function(this)
-			if not WatchFrameHeader:IsShown() then
-				self.skinFrame[WatchFrameLines]:Hide()
-			else
-				self.skinFrame[WatchFrameLines]:Show()
-			end
+			self.skinFrame[WatchFrameLines]:SetShown(WatchFrameHeader:IsShown())
 		end)
 	end
 	if self.db.profile.WatchFrame.popups then

@@ -2310,11 +2310,7 @@ function aObj:Tutorial()
 	-- hook this to hide the skin frame if required (e.g. arrow keys tutorial)
 	self:SecureHook("TutorialFrame_Update", function(...)
 		resetSF()
-		if TutorialFrameTop:IsShown() then
-			self.skinFrame[TutorialFrame]:Show()
-		else
-			self.skinFrame[TutorialFrame]:Hide()
-		end
+		self.skinFrame[TutorialFrame]:SetShown(TutorialFrameTop:IsShown())
 	end)
 	self:addButtonBorder{obj=TutorialFramePrevButton, ofs=-2}
 	self:addButtonBorder{obj=TutorialFrameNextButton, ofs=-2}

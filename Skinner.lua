@@ -433,7 +433,7 @@ local function __addSkinButton(opts)
 	aObj:applySkin(opts.aso)
 
 	-- hide button skin, if required or not shown
-	if opts.hide or not opts.obj:IsShown() then btn:Hide() end
+	btn:SetShown(opts.obj:IsShown() and not opts.hide)
 
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then btn:SetFrameStrata("BACKGROUND") end
@@ -599,7 +599,7 @@ local function __addSkinFrame(opts)
 		-- hook Show and Hide methods
 		aObj:SecureHook(opts.obj, "Show", function(this) aObj.skinFrame[this]:Show() end)
 		aObj:SecureHook(opts.obj, "Hide", function(this) aObj.skinFrame[this]:Hide() end)
-		if not opts.obj:IsShown() then skinFrame:Hide() end
+		skinFrame:SetShown(opts.obj:IsShown())
 	end
 
 	-- remove inset textures
