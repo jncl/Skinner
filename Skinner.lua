@@ -159,7 +159,7 @@ function aObj:OnInitialize()
 	self.Backdrop[6].insets = {left = 3, right = 3, top = 3, bottom = 3}
 	self.Backdrop[7] = CopyTable(self.backdrop)
 	self.Backdrop[7].edgeSize = 10
-	-- this backdrop is for the BattlefieldMinimap & Minimap frames
+	-- this backdrop is for the BattlefieldMinimap/Minimap/Pet LoadOut frames
 	self.Backdrop[8] = CopyTable(self.backdrop)
 	self.Backdrop[8].bgFile = nil
 	self.Backdrop[8].tile = false

@@ -436,14 +436,15 @@ function aObj:CharacterFrames()
 		tab.TabBg:SetAlpha(0)
 		tab.Hider:SetAlpha(0)
 		-- use a button border to indicate the active tab
-		self.modUIBtns:addButtonBorder{obj=tab, relTo=tab.Icon} -- use module function here to force creation
+		self.modUIBtns:addButtonBorder{obj=tab, relTo=tab.Icon, ofs=i==1 and 3 or 1} -- use module function here to force creation
 		tab.sb:SetBackdropBorderColor(1, 0.6, 0, 1)
+		tab.sb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 	end
 	-- hook this to manage the active tab
 	self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
-			if tab and tab.sf then
+			if tab and tab.sb then
 				tab.sb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 			end
 		end
@@ -1593,7 +1594,7 @@ function aObj:PetJournal() -- LoD
 	self:removeRegions(PetJournal.AchievementStatus, {1})
 	self:keepFontStrings(PetJournal.loadoutBorder)
 	self:moveObject{obj=PetJournal.loadoutBorder, y=8} -- battle pet slots title
-	-- Battle Pet Slots
+	-- Pet LoadOut Plates
 	for i = 1, 3 do
 		obj	= PetJournal.Loadout["Pet"..i]
 		self:removeRegions(obj, {1, 2, 5})
@@ -1606,7 +1607,7 @@ function aObj:PetJournal() -- LoD
 		self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
 		self:glazeStatusBar(obj.xpBar, 0,  nil)
 		self:makeMFRotatable(obj.model)
-		self:addButtonBorder{obj=obj, ofs=1}
+		self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, ofs=1} -- use asf here as button already has a border
 		for i = 1, 3 do
 			btn = obj["spell"..i]
 			self:removeRegions(btn, {1, 3}) -- background, blackcover
