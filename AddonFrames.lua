@@ -111,7 +111,7 @@ function aObj:BlizzardFrames()
 			["Minimap"] = true,
 			["MinimapButtons"] = false, -- done with timer
 			["ModelFrames"] = false, -- checked below
-			["Nameplates"] = false, -- checked below
+			["Nameplates"] = true,
 			["PetBattleUI"] = true,
 			["PVEFrame"] = true,
 			["QueueStatusFrame"] = true,
@@ -155,9 +155,6 @@ function aObj:BlizzardFrames()
 
 	-- handle non standard ones here
 	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
-
-	-- Disable Nameplates skinning, as it doesn't work yet after MoP (03.09.12)
-	self.blizzFrames.ui["Nameplates"] = false
 
 end
 

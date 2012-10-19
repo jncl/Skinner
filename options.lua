@@ -141,7 +141,7 @@ function aObj:Defaults()
 		MinimapButtons       = {skin = false, style = false},
 		MovePad              = true,
 		MovieProgress        = IsMacClient() and true or nil,
-		-- Nameplates        = true,
+		Nameplates           = true,
 		PetBattleUI          = true,
 		PVEFrame             = true,
 		RaidFrame            = true,

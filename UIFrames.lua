@@ -1812,74 +1812,55 @@ if IsMacClient() then
 	end
 end
 
--- disabled, changed in MoP and I can't get it to work properly yet (03.09.12)
 function aObj:Nameplates()
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
-	local pairs, select = pairs, select
-	local GetCVarBool, UnitName, InCombatLockdown = GetCVarBool, UnitName, InCombatLockdown
-	local cs = aObj.changeShield
+	print ("Nameplates loaded")
 
 	local sb1, sb2, rg2 ,rg3, rg4
 	local r, g, b, a = unpack(self.sbColour)
+	local sbTex, shTex = self.sbTexture, self.shieldTex
 	local function skinPlate(obj)
 
-		rg2, rg3 = select(2, obj:GetRegions()) -- border & highlight
+		print(aObj.isPTR and obj:GetParent():GetName() or obj:GetName())
+
+		_, rg2, rg3 = obj:GetRegions() -- border & highlight
 		rg2:SetTexture(nil)
 		rg3:SetTexture(nil)
-		-- skin both status bars
-		sb1, sb2 = select(1, obj:GetChildren())
 
-		sb1:SetStatusBarTexture(aObj.sbTexture)
-		sb1.bg = sb1.bg or sb1:CreateTexture(nil, "BACKGROUND")
-		sb1.bg:SetTexture(aObj.sbTexture)
-		sb1.bg:SetVertexColor(r, g, b, a)
-		sb2.bg = sb2.bg or sb2:CreateTexture(nil, "BACKGROUND")
-		sb2.bg:SetTexture(aObj.sbTexture)
-		sb2.bg:SetVertexColor(r, g, b, a)
+		-- skin both status bars (health & cast)
+		obj.sb1, obj.sb2 = obj:GetChildren()
+		obj.sb1:SetStatusBarTexture(sbTex)
+		obj.sb1.bg = obj.sb1:CreateTexture(nil, "BACKGROUND")
+		obj.sb1.bg:SetTexture(sbTex)
+		obj.sb1.bg:SetVertexColor(r, g, b, a)
+		obj.sb2:SetStatusBarTexture(sbTex)
+		obj.sb2.bg = obj.sb2:CreateTexture(nil, "BACKGROUND")
+		obj.sb2.bg:SetTexture(sbTex)
+		obj.sb2.bg:SetVertexColor(r, g, b, a)
 
-		-- Casting bar
-		rg2 ,rg3, rg4 = select(2, sb2:GetRegions()) -- border, shield, icon
+		-- Cast bar uninterruptible shield texture
+		_, rg2 ,obj.sb2.rg3, obj.sb2.rg4 = obj.sb2:GetRegions() -- border, shield, icon
 		rg2:SetTexture(nil)
-		rg3:SetTexture(aObj.shieldTex)
-		rg3:SetTexCoord(0, 1, 0, 1)
-		rg3:SetWidth(46)
-		rg3:SetHeight(46)
-		-- move it behind the icon
-		rg3:ClearAllPoints()
-		rg3:SetPoint("CENTER", rg4, "CENTER", 9, -1)
+		aObj:changeShield(obj.sb2.rg3, obj.sb2.rg4)
 
 	end
 	local npEvt
 	local function skinNameplates()
 
-		-- rg2, rg3, rg4, sb1, sb2 = nil, nil, nil, nil, nil
 		for _, child in pairs{WorldFrame:GetChildren()} do
-			if aObj:hasTextInName(child, "^NamePlate%d+$")
+			if aObj:hasTextInName(child, "NamePlate")
 			then
-				-- handle in combat
-				-- if InCombatLockdown()
-				-- and select(4, child:GetRegions()) == UnitName("target")
-				-- then
-				-- 	aObj.oocTab[#aObj.oocTab + 1] = {skinPlate, {child}}
-				-- else
-					skinPlate(child)
-				-- end
---[=[
-				rg2, rg3 = select(2, child:GetRegions()) -- border & highlight
-				rg2:SetTexture(nil)
-				rg3:SetTexture(nil)
-				-- skin both status bars
-				sb1, sb2 = select(1, child:GetChildren())
-				if not aObj.sbGlazed[sb1] then gsb(aObj, sb1, 0) end
-				if not aObj.sbGlazed[sb2] then gsb(aObj, sb2, 0) end
-				-- Casting bar
-				rg2 ,rg3, rg4 = select(2, sb2:GetRegions()) -- border, shield, icon
-				rg2:SetTexture(nil)
-				rg3:SetTexture(nil)
-				-- cs(aObj, rg3, rg4)
---]=]
+				if not child.sknd then
+					skinPlate(aObj.isPTR and child:GetChildren() or child) -- has a child frame (PTR)
+					child.sknd = true
+				else
+					 -- reset shield texture width & position
+					child.sb2.rg3:SetWidth(46)
+					child.sb2.rg3:SetPoint("CENTER", child.sb2.rg4, "CENTER", 9, -1)
+
+				end
 			end
 		end
 
