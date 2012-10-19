@@ -232,12 +232,11 @@ function aObj:ItemAlterationUI() -- LoD (a.k.a TransmogrifyFrame)
 	if not self.db.profile.ItemAlterationUI or self.initialized.ItemAlterationUI then return end
 	self.initialized.ItemAlterationUI = true
 
-	local slots = {"Head", "Shoulder", "Back", "Chest", "Wrist", "Hands", "Waist", "Legs", "Feet", "MainHand", "SecondaryHand"}
-	for _, v in pairs(slots) do
+	for _, v in pairs{"Head", "Shoulder", "Back", "Chest", "Wrist", "Hands", "Waist", "Legs", "Feet", "MainHand", "SecondaryHand"} do
 		btnName = "TransmogrifyFrame"..v.."Slot"
 		_G[btnName.."Grabber"]:SetAlpha(0)
 		_G[btnName]:DisableDrawLayer("BORDER")
-		self:addButtonBorder{obj=_G[btnName]}
+		self:addButtonBorder{obj=_G[btnName], reParent={_G[btnName].altTexture ,_G[btnName].undoIcon}}
 	end
 	TransmogrifyModelFrame:DisableDrawLayer("BACKGROUND")
 	TransmogrifyModelFrame:DisableDrawLayer("BORDER")
