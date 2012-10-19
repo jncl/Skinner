@@ -1334,7 +1334,7 @@ local function __skinDropDown(opts)
 	if aObj.skinned[opts.obj] then return end
 
 	-- hide textures
-	aObj:keepFontStrings(opts.obj)
+	aObj:removeRegions(opts.obj, {1, 2, 3})
 
 	-- return if not to be skinned
 	if not aObj.db.profile.TexturedDD
