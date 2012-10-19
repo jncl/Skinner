@@ -48,8 +48,10 @@ end
 --@debug@
 local function print_family_tree(fName)
 	local lvl = "Parent"
+	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:round2(fName:GetWidth(), 2) or "nil", aObj:round2(fName:GetHeight(), 2) or "nil"))
 	while fName:GetParent() do
 		fName = fName:GetParent()
+		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj:round2(fName:GetWidth(), 2) or "nil", aObj:round2(fName:GetHeight(), 2) or "nil"))
 		lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl
 	end
 end
