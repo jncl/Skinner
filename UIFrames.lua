@@ -1433,7 +1433,7 @@ function aObj:MenuFrames()
 		end
 	end
 	-- Languages
-		self:skinDropDown{obj=InterfaceOptionsLanguagesPanelLocaleDropDown}
+	self:skinDropDown{obj=InterfaceOptionsLanguagesPanelLocaleDropDown}
 	-- Sound
 	self:addSkinFrame{obj=AudioOptionsSoundPanel, ft=ftype}
 	self:addSkinFrame{obj=AudioOptionsSoundPanelPlayback, ft=ftype}
@@ -1459,7 +1459,7 @@ function aObj:MenuFrames()
 	if IsMacClient() then
 		self:addSkinFrame{obj=MacOptionsFrame, ft=ftype, kfs=true, hdr=true}
 		self:addSkinFrame{obj=MacOptionsFrameMovieRecording, ft=ftype, y1=-2}
-		self:skinDropDown{obj=MacOptionsFrameResolutionDropDown}
+		self:skinDropDown{obj=MacOptionsFrameResolutionDropDown, x2=110}
 		self:skinDropDown{obj=MacOptionsFrameFramerateDropDown}
 		self:skinDropDown{obj=MacOptionsFrameCodecDropDown}
 		-- popup frames
