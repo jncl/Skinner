@@ -34,7 +34,7 @@ function aObj:Ace3()
 			if objType == "BlizOptionsGroup" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 			elseif objType == "Dropdown" then
-				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
+				aObj:skinDropDown{obj=obj.dropdown, rp=true, noBB=true, y2=0}
 				aObj:applySkin{obj=obj.pullout.frame}
 			elseif objType == "Dropdown-Pullout" then
 				aObj:applySkin{obj=obj.frame}

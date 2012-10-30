@@ -20,14 +20,14 @@ function aObj:EnhancedStackSplit()
 	end)
 	-- hook this to handle XL mode
 	self:SecureHookScript(EnhancedStackSplitXLModeButton, "OnClick", function(this)
-		if self:round2(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
+		if self:getInt(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
 			ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
 		else
 			ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -24)
 		end
 	end)
 	-- resize skin frame if in XL mode
-	if self:round2(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
+	if self:getInt(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
 		ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
 	end
 

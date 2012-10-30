@@ -202,7 +202,7 @@ function aObj:DBMCore()
 		DBMMinimapButton:GetPushedTexture():SetTexCoord(.3, .7, .3, .7)
 		DBMMinimapButton:SetWidth(22)
 		DBMMinimapButton:SetHeight(22)
-		self:addSkinButton{obj=DBMMinimapButton, parent=obj}
+		self:addSkinButton{obj=DBMMinimapButton, parent=DBMMinimapButton}
 	end
 
 end

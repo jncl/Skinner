@@ -2,7 +2,6 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Outfitter") then return end
 
 function aObj:Outfitter()
-	if not self.db.profile.CharacterFrames then return end
 
 	-- disable Frame Level & Strata being changed
 	Outfitter.SetFrameLevel = function() end

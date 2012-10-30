@@ -170,7 +170,7 @@ local stdFrames = {
 	"Hack", "Hadar_FocusFrame", "HandyNotes", "HaveWeMet", "HatTrick", "HeadCount", "HealBot", "Highlight", "HitsMode", "HoloFriends",
 	"InspectEquip", "IntricateChatMods", "IPopBar", "ItemRack", "ItemSync",
 	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinkWrangler", "Livestock",
-	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
+	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MapsterEnhanced", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
 	"Necrosis", "NeonChat", "Notes", "nQuestLog",
 	"Odyssey", "oGlow", "Omen", "OneBag3", "OneBank3", "oQueue", "oRA3", "Outfitter", "Overachiever",
 	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetBattleTeams", "PetListPlus", "PetJournalEnhanced", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "PvpMessages",

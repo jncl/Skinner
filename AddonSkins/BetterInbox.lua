@@ -10,6 +10,12 @@ function aObj:BetterInbox(LoD)
 	local btn
 	local function skinBIb()
 
+		-- move the text lines up
+		self:moveObject{obj=bib.summary.numitems, y=10}
+		self:moveObject{obj=bib.summary.numitemsText, y=10}
+		self:moveObject{obj=bib.summary.moneyText, y=10}
+		self:moveObject{obj=bib.summary.money, y=10}
+		-- skin scrollframe
 		bib.scrollframe.t1:SetAlpha(0)
 		bib.scrollframe.t2:SetAlpha(0)
 		aObj:skinScrollBar{obj=bib.scrollframe}

@@ -21,7 +21,11 @@ function aObj:FishingBuddy()
 	for i = 1, 21 do
 		self:skinButton{obj=_G["FishingLocations"..i], mp=true}
 	end
-	self:skinButton{obj=FishingLocationsCollapseAllButton, mp=true}
+	-- mp button is already skinned
+	local btn = self.sBtn[FishingLocationsCollapseAllButton]
+	btn:SetAllPoints(FishingLocationsCollapseAllButton:GetNormalTexture())
+	btn:SetNormalFontObject(self.modUIBtns.fontP)
+	btn:SetText(self.modUIBtns.minus)
 
 -->>--	Options Frame
 	self:keepFontStrings(FishingOptionsFrame)
@@ -34,7 +38,7 @@ function aObj:FishingBuddy()
 	else
 		self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
 	end
-	self:skinDropDown{obj=FishingBuddyOption_OutfitMenu}
+	self:skinDropDown{obj=FBOutfitManagerMenu}
 	-- Pets
 	self:skinDropDown{obj=FishingPetFrame}
 	self:skinScrollBar{obj=FishingPetsMenu}

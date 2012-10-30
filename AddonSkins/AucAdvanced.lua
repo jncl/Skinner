@@ -23,8 +23,8 @@ function aObj:AucAdvanced()
 			for _, child in ipairs{UIParent:GetChildren()} do
 				if child:IsObjectType("StatusBar")
 				and child:GetName() == nil
-				and self:round2(child:GetWidth()) == 300
-				and self:round2(child:GetHeight()) == 18
+				and self:getInt(child:GetWidth()) == 300
+				and self:getInt(child:GetHeight()) == 18
 				and not self.sbGlazed[child]
 				then
 	      			child:SetBackdrop(nil)

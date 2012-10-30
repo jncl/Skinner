@@ -3,9 +3,11 @@ if not aObj:isAddonEnabled("PetJournalEnhanced") then return end
 
 function aObj:PetJournalEnhanced()
 
-	if PetJournalEnhancedOptions.showUniquePetCount then
+	-- hook this to remove unique count inset
+	self:SecureHook(PetJournalEnhanced, "InitPetJournal", function(this)
 		self:removeInset(PetJournalEnhanced:GetModule("UniquePets").frame)
-	end
+		self:Unhook(PetJournalEnhanced, "InitPetJournal")
+	end)
 	
 	-- hook this to change textures behind pet highStat
 	self:SecureHook("PetJournal_UpdatePetList", function()

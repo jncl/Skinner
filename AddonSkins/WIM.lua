@@ -3,6 +3,22 @@ if not aObj:isAddonEnabled("WIM") then return end
 
 function aObj:WIM() -- WIM3
 
+	local function findFrame3(name, element)
+
+		local frame
+
+		for _, child in pairs{UIParent:GetChildren()} do
+			if child:GetName() == name then
+				if child[element] then
+					frame = child
+					break
+				end
+			end
+		end
+
+		return frame
+
+	end
 	local function skinWindow(msgFrame)
 
 		if aObj.skinFrame[msgFrame] then return end
@@ -25,7 +41,6 @@ function aObj:WIM() -- WIM3
 		aObj:addSkinFrame{obj=msgFrame, kfs=true}
 
 	end
-
 	local function checkKids(obj)
 
 		if aObj.skinned[obj] then return end
@@ -94,7 +109,7 @@ function aObj:WIM() -- WIM3
 	and WIM.modules["Filters"].enabled
 	then
 		self:SecureHook(WIM, "ShowFilterFrame", function(this, ...)
-			local fFrame = self:findFrame3("WIM3_FilterFrame", "nameText")
+			local fFrame = findFrame3("WIM3_FilterFrame", "nameText")
 			fFrame.title:SetPoint("TOPLEFT", 50 , -7);
 			fFrame.close:SetPoint("TOPRIGHT", -4, -4);
 			self:skinDropDown(fFrame.by)

@@ -1,14 +1,14 @@
+local aName, aObj = ...
 -- This is a Framework
 
-local allHooked, tKDd, tKG, tKS, tKAP, tkB, ver
-
-function Skinner:tekKonfig()
+local allHooked
+function aObj:tekKonfig()
 	if not self.db.profile.MenuFrames then return end
 
 	if allHooked then return end
 
-	if LibStub("tekKonfig-Dropdown", true) and not tKDd then
-		tKDd, ver = LibStub("tekKonfig-Dropdown")
+	local tKDd, ver = tKDd, ver or LibStub("tekKonfig-Dropdown", true)
+	if tKDd and not self:IsHooked(tKDd, "new") then
 		self:RawHook(tKDd, "new", function(parent, label, ...)
 --			self:Debug("tKDd:[%s, %s]", parent, label)
 			local frame, text, container = self.hooks[tKDd].new(parent, label, ...)
@@ -30,8 +30,8 @@ function Skinner:tekKonfig()
 		end, true)
 	end
 
-	if LibStub("tekKonfig-Group", true) and not tKG then
-		tKG = LibStub("tekKonfig-Group")
+	local tKG = tKG or LibStub("tekKonfig-Group", true)
+	if tKG and not self:IsHooked(tKG, "new") then
 		self:RawHook(tKG, "new", function(parent, label, ...)
 --			self:Debug("tKG:[%s, %s]", parent, label)
 			local box = self.hooks[tKG].new(parent, label, ...)
@@ -40,8 +40,8 @@ function Skinner:tekKonfig()
 		end, true)
 	end
 
-	if LibStub("tekKonfig-Scroll", true) and not tKS then
-		tKS = LibStub("tekKonfig-Scroll")
+	local tKS = tKS or LibStub("tekKonfig-Scroll", true)
+	if tKS and not self:IsHooked(tKS, "new") then
 		self:RawHook(tKS, "new", function(parent, offset, step)
 --			self:Debug("tKS:[%s, %s, %s]", parent, offset, step)
 			local frame, up, down, border = self.hooks[tKS].new(parent, offset, step)
@@ -51,8 +51,8 @@ function Skinner:tekKonfig()
 		end, true)
 	end
 
-	if LibStub("tekKonfig-AboutPanel", true) and not tKAP then
-		tKAP = LibStub("tekKonfig-AboutPanel")
+	local tKAP = tKAP or LibStub("tekKonfig-AboutPanel", true)
+	if tKAP and not self:IsHooked(tKAP, "OpenEditbox") then
 		self:SecureHook(tKAP, "OpenEditbox", function(this)
 --			self:Debug("tKAP:[%s, %s]", this, tKAP.editbox)
 			if not self.skinned[tKAP.editbox] then
@@ -66,12 +66,12 @@ function Skinner:tekKonfig()
 		end)
 	end
 
-	if LibStub("tekKonfig-Button", true) and not tkB then
-		tkB = LibStub("tekKonfig-Button")
+	local tkB = tkB or LibStub("tekKonfig-Button", true)
+	if tkB and not self:IsHooked(tkB, "new") then
 		self:RawHook(tkB, "new", function(...)
-		local btn = self.hooks[tkB].new(...)
-		self:skinButton{obj=btn}
-		return btn
+			local btn = self.hooks[tkB].new(...)
+			self:skinButton{obj=btn}
+			return btn
 		end)
 	end
 
