@@ -32,14 +32,14 @@ function aObj:AdiBags()
 		local r, g, b, a = unpack(self.bbColour)
 		-- colour the button border 
 		local function updBtn(evt, btn)
-			if not btn.sb then aObj:addButtonBorder{obj=btn} end
+			if not btn.sbb then aObj:addButtonBorder{obj=btn} end
 			if btn.IconQuestTexture:GetBlendMode() == "ADD" then
-				btn.sb:SetBackdrop(aObj.modUIBtns.iqbDrop)
-				btn.sb:SetBackdropBorderColor(btn.IconQuestTexture:GetVertexColor())
+				btn.sbb:SetBackdrop(aObj.modUIBtns.iqbDrop)
+				btn.sbb:SetBackdropBorderColor(btn.IconQuestTexture:GetVertexColor())
 				btn.IconQuestTexture:Hide()
 			else
-				btn.sb:SetBackdrop(aObj.modUIBtns.bDrop)
-				btn.sb:SetBackdropBorderColor(r, g, b, a)
+				btn.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
+				btn.sbb:SetBackdropBorderColor(r, g, b, a)
 				btn.IconQuestTexture:Show()
 			end
 		end

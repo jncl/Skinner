@@ -44,13 +44,13 @@ function aObj:XLoot()
 			for i = 1, GetNumLootItems() do
 				btn = XLoot.buttons[i]
 				if btn.border:IsVisible() then
-					btn.sb:SetBackdrop(aObj.modUIBtns.iqbDrop)
+					btn.sbb:SetBackdrop(aObj.modUIBtns.iqbDrop)
 					br, bg, bb, ba = btn.border:GetVertexColor()
-					btn.sb:SetBackdropBorderColor(br, bg, bb, 1)
-					btn.sb:SetAlpha(1)
+					btn.sbb:SetBackdropBorderColor(br, bg, bb, 1)
+					btn.sbb:SetAlpha(1)
 				else
-					btn.sb:SetBackdrop(aObj.modUIBtns.bDrop)
-					btn.sb:SetBackdropBorderColor(r, g, b, a)
+					btn.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
+					btn.sbb:SetBackdropBorderColor(r, g, b, a)
 				end
 			end
 		 end)

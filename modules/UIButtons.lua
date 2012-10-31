@@ -420,12 +420,12 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the border frame
-	opts.obj.sb = CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+	opts.obj.sbb = CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
-	opts.obj.sb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile,
+	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile,
 								  edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	opts.obj.sb:SetBackdropBorderColor(unpack(aObj.bbColour))
+	opts.obj.sbb:SetBackdropBorderColor(unpack(aObj.bbColour))
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	local xOfs1 = opts.x1 or opts.ofs * -1
@@ -436,54 +436,54 @@ local function __addButtonBorder(opts)
 	relTo = opts.relTo
 			or opts.libt and _G[btnName.."IconTexture"]
 			or nil
-	opts.obj.sb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
-	opts.obj.sb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
+	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 
 	if opts.hide and opts.relTo then
 		-- hook Show and Hide methods of the relTo object
-		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sb:Show() end)
-		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sb:Hide() end)
+		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sbb:Show() end)
+		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sbb:Hide() end)
 		-- hide border if required
-		opts.obj.sb:SetShown(opts.relTo:IsShown())
+		opts.obj.sbb:SetShown(opts.relTo:IsShown())
 	end
 
 	-- reparent objects if required
 	if opts.reParent then
 		for _, obj in pairs(opts.reParent) do
-			obj:SetParent(opts.obj.sb)
+			obj:SetParent(opts.obj.sbb)
 		end
 	end
 	-- reparent these textures so they are displayed above the border
 	if opts.ibt then -- Item Buttons
 		if btnName then
-			_G[btnName.."Count"]:SetParent(opts.obj.sb)
-			_G[btnName.."Stock"]:SetParent(opts.obj.sb)
+			_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
+			_G[btnName .. "Stock"]:SetParent(opts.obj.sbb)
 		else
-			opts.obj.Count:SetParent(opts.obj.sb)
-			opts.obj.Stock:SetParent(opts.obj.sb)
+			opts.obj.Count:SetParent(opts.obj.sbb)
+			opts.obj.Stock:SetParent(opts.obj.sbb)
 		end
 	elseif opts.abt then -- Action Buttons
-		_G[btnName.."HotKey"]:SetParent(opts.obj.sb)
+		_G[btnName .. "HotKey"]:SetParent(opts.obj.sbb)
 		-- reparent FlyoutArrow so it is displayed above the border
-		opts.obj.FlyoutArrow:SetParent(opts.obj.sb)
-		_G[btnName.."Name"]:SetParent(opts.obj.sb)
-		_G[btnName.."Count"]:SetParent(opts.obj.sb)
+		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
+		_G[btnName .. "Name"]:SetParent(opts.obj.sbb)
+		_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
 	elseif opts.libt then -- Large Item Buttons
-		_G[btnName.."Name"]:SetParent(opts.obj.sb)
-		_G[btnName.."Count"]:SetParent(opts.obj.sb)
+		_G[btnName .. "Name"]:SetParent(opts.obj.sbb)
+		_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
 	elseif opts.mb then -- Micro Buttons
-		opts.obj.Flash:SetParent(opts.obj.sb)
+		opts.obj.Flash:SetParent(opts.obj.sbb)
 	elseif opts.pabt then -- Pet Action Buttons
-		_G[btnName.."AutoCastable"]:SetParent(opts.obj.sb)
-		_G[btnName.."Shine"]:SetParent(opts.obj.sb)
+		_G[btnName .. "AutoCastable"]:SetParent(opts.obj.sbb)
+		_G[btnName .. "Shine"]:SetParent(opts.obj.sbb)
 	elseif opts.tibt then -- Talents
-		_G[btnName.."RankBorder"]:SetParent(opts.obj.sb)
-		_G[btnName.."Rank"]:SetParent(opts.obj.sb)
-		if _G[btnName.."RankBorderGreen"] then
-			_G[btnName.."RankBorderGreen"]:SetParent(opts.obj.sb)
+		_G[btnName .. "RankBorder"]:SetParent(opts.obj.sbb)
+		_G[btnName .. "Rank"]:SetParent(opts.obj.sbb)
+		if _G[btnName .. "RankBorderGreen"] then
+			_G[btnName .. "RankBorderGreen"]:SetParent(opts.obj.sbb)
 		end
 	elseif opts.spbt then -- Simple Popup Buttons
-		_G[btnName.."Name"]:SetParent(opts.obj.sb)
+		_G[btnName .. "Name"]:SetParent(opts.obj.sbb)
 	end
 
 end

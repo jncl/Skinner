@@ -10,16 +10,16 @@ function aObj:oGlow()
 	local r, g, b, a = unpack(self.bbColour)
 	local function btnUpd(obj, oGB)
 		oGB = oGB or obj
-		if obj.sb then
+		if obj.sbb then
 			if oGB.oGlowBorder
 			and oGB.oGlowBorder:IsVisible()
 			then
-				obj.sb:SetBackdrop(aObj.modUIBtns.iqbDrop)
-				obj.sb:SetBackdropBorderColor(oGB.oGlowBorder:GetVertexColor())
+				obj.sbb:SetBackdrop(aObj.modUIBtns.iqbDrop)
+				obj.sbb:SetBackdropBorderColor(oGB.oGlowBorder:GetVertexColor())
 				oGB.oGlowBorder:SetTexture()
 			else
-				obj.sb:SetBackdrop(aObj.modUIBtns.bDrop)
-				obj.sb:SetBackdropBorderColor(r, g, b, a)
+				obj.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
+				obj.sbb:SetBackdropBorderColor(r, g, b, a)
 			end
 		end
 	end

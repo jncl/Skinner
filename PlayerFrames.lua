@@ -333,10 +333,9 @@ function aObj:Buffs()
 				return
 			end
 
-			local btn
 			for i= 1, BUFF_MAX_DISPLAY do
-				btn = _G["BuffButton"..i]
-				if btn and not btn.sb then
+				local btn = _G["BuffButton" .. i]
+				if btn and not btn.sbb then
 					-- add button borders
 					aObj:addButtonBorder{obj=btn}
 					aObj:moveObject{obj=btn.duration, y=-1}
@@ -432,26 +431,26 @@ function aObj:CharacterFrames()
 	PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
 	PaperDollSidebarTabs.DecorRight:SetAlpha(0)
 	for i = 1, #PAPERDOLL_SIDEBARS do
-		tab = _G["PaperDollSidebarTab"..i]
+		local tab = _G["PaperDollSidebarTab" .. i]
 		tab.TabBg:SetAlpha(0)
 		tab.Hider:SetAlpha(0)
 		-- use a button border to indicate the active tab
 		self.modUIBtns:addButtonBorder{obj=tab, relTo=tab.Icon, ofs=i==1 and 3 or 1} -- use module function here to force creation
-		tab.sb:SetBackdropBorderColor(1, 0.6, 0, 1)
-		tab.sb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
+		tab.sbb:SetBackdropBorderColor(1, 0.6, 0, 1)
+		tab.sbb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 	end
 	-- hook this to manage the active tab
 	self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 		for i = 1, #PAPERDOLL_SIDEBARS do
-			local tab = _G["PaperDollSidebarTab"..i]
-			if tab and tab.sb then
-				tab.sb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
+			local tab = _G["PaperDollSidebarTab" .. i]
+			if tab and tab.sbb then
+				tab.sbb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 			end
 		end
 	end)
 	-- Stats
 	for i = 1, 7 do
-		local grp = _G["CharacterStatsPaneCategory"..i]
+		local grp = _G["CharacterStatsPaneCategory" .. i]
 		grp.BgTop:SetAlpha(0)
 		grp.BgBottom:SetAlpha(0)
 		grp.BgMiddle:SetAlpha(0)

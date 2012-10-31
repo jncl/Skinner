@@ -11,7 +11,7 @@ function aObj:TrinketBar()
 			for i = 1, 20 do
 				local btn = _G["TrinketBarPopupButton"..i]
 				if btn
-				and not btn.sb
+				and not btn.sbb
 				then
 					aObj:addButtonBorder{obj=btn, abt=true}
 				end

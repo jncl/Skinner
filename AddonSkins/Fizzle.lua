@@ -13,14 +13,14 @@ function aObj:Fizzle()
 			for _, reg in pairs{child:GetRegions()} do
 				if aObj:hasTextInName(reg, "FizzleB")
 				then
-					if child.sb then
+					if child.sbb then
 						if reg:IsVisible() then
-							child.sb:SetBackdrop(aObj.modUIBtns.iqbDrop)
-							child.sb:SetBackdropBorderColor(reg:GetVertexColor())
+							child.sbb:SetBackdrop(aObj.modUIBtns.iqbDrop)
+							child.sbb:SetBackdropBorderColor(reg:GetVertexColor())
 							reg:SetTexture()
 						else
-							child.sb:SetBackdrop(aObj.modUIBtns.bDrop)
-							child.sb:SetBackdropBorderColor(r, g, b, a)
+							child.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
+							child.sbb:SetBackdropBorderColor(r, g, b, a)
 						end
 					end
 					break
