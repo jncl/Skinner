@@ -13,7 +13,7 @@ function aObj:Defaults()
 		TexturedTab          = false,
 		TexturedDD           = false,
 		TabDDFile            = "None",
-		TabDDTexture         = aName.." Inactive Tab",
+		TabDDTexture         = aName .. " Inactive Tab",
 		Delay                = {Init = 0.5, Addons = 0.5, LoDs = 0.5},
 		FadeHeight           = {enable = false, value = 500, force = false},
 		StatusBar            = {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
@@ -159,7 +159,7 @@ function aObj:Defaults()
 
 	}}
 
-	self.db = LibStub("AceDB-3.0"):New(aName.."DB", defaults, "Default")
+	self.db = LibStub("AceDB-3.0"):New(aName .. "DB", defaults, "Default")
 
 end
 
@@ -180,7 +180,7 @@ function aObj:Options()
 				desc = {
 					type = "description",
 					order = 1,
-					name = self.L["UI Enhancement"] .." - "..(GetAddOnMetadata(aName, "X-Curse-Packaged-Version") or GetAddOnMetadata(aName, "Version") or "").."\n",
+					name = self.L["UI Enhancement"]  .. " - "..(GetAddOnMetadata(aName, "X-Curse-Packaged-Version") or GetAddOnMetadata(aName, "Version") or "") .. "\n",
 				},
 				longdesc = {
 					type = "description",
@@ -671,7 +671,7 @@ function aObj:Options()
 				local uiOpt = info[#info]:match("UI" , -2)
 				-- handle Blizzard UI LoD Addons
 				if uiOpt then
-					if IsAddOnLoaded("Blizzard_"..info[#info]) then
+					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info])
 					end
 				else self:checkAndRun(info[#info]) end
@@ -800,7 +800,7 @@ function aObj:Options()
 				-- handle Blizzard UI LoD Addons
 				local uiOpt = info[#info]:match("UI" , -2)
 				if uiOpt then
-					if IsAddOnLoaded("Blizzard_"..info[#info]) then
+					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info])
 						if info[#info] == "TalentUI" then
 							self:checkAndRun("GlyphUI")
@@ -1145,7 +1145,7 @@ function aObj:Options()
 				elseif info[#info] == "CombatLogQBF" then return
 				-- handle Blizzard UI LoD Addons
 				elseif uiOpt then
-					if IsAddOnLoaded("Blizzard_"..info[#info]) then
+					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info])
 					end
 				else self:checkAndRun(info[#info]) end
@@ -1637,7 +1637,7 @@ function aObj:Options()
 		}
 
 	end
-	for addonName in pairs(self.stdAddons) do
+	for addonName in pairs(self.addonsToSkin) do
 		addDSOpt(addonName)
 	end
 	for _, addonName in pairs(self.libsToSkin) do

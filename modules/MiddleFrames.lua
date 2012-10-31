@@ -14,7 +14,7 @@ local defaults = {
 }
 local MAX_MIDDLEFRAMES = 9
 for i = 1, MAX_MIDDLEFRAMES do
-	defaults.profile["mf"..i] = {shown = false, height = 100, width = 100, xOfs = -400, yOfs = 400, flevel = 0, fstrata = "BACKGROUND"}
+	defaults.profile["mf" .. i] = {shown = false, height = 100, width = 100, xOfs = -400, yOfs = 400, flevel = 0, fstrata = "BACKGROUND"}
 end
 
 local function OnMouseDown(self, mBtn)
@@ -43,8 +43,8 @@ local function OnMouseUp(self, mBtn)
 			local px, py = self:GetParent():GetCenter()
 			self.db[self.key].xOfs = x - px
 			self.db[self.key].yOfs = y - py
-			self.db[self.key].width = floor(self:GetWidth())
-			self.db[self.key].height = floor(self:GetHeight())
+			self.db[self.key].width = aObj:getInt(self:GetWidth())
+			self.db[self.key].height = aObj:getInt(self:GetHeight())
 			aObj:applyGradient(self)
 		end
 	end
@@ -72,14 +72,15 @@ local function OnLeave(self)
 	GameTooltip:Hide()
 
 end
-local frames, frame, fh = {}
 local function adjustFrame(key)
 
+	local frames = {}
+
 	if db[key].shown then
-		frame = frames[key] or CreateFrame("Frame", db.name and aName.."MF"..key:sub(-1) or nil, UIParent)
+		local frame = frames[key] or CreateFrame("Frame", db.name and aName .. "MF" .. key:sub(-1) or nil, UIParent)
 		frame.db = db
 		frame.key = key
-		frame.name = db.name and aName.."MF"..key:sub(-1) or "Middle Frame"..key:sub(-1)
+		frame.name = db.name and aName .. "MF" .. key:sub(-1) or "Middle Frame" .. key:sub(-1)
 		frame:SetFrameStrata(db[key].fstrata)
 		frame:SetFrameLevel(db[key].flevel)
 		frame:SetMovable(true)
@@ -105,7 +106,7 @@ local function adjustFrame(key)
 		if not aObj.db.profile.FadeHeight.enable
 		and db.fixedfh
 		then
-			fh = db.fheight <= ceil(frame:GetHeight()) and db.fheight or ceil(frame:GetHeight())
+			fh = db.fheight <= aObj:getInt(frame:GetHeight()) and db.fheight or aObj:getInt(frame:GetHeight())
 		end
 		aObj:applySkin{obj=frame, ftype=ftype, bba=db.borderOff and 0 or 1, fh=fh}
 		frame:SetBackdropColor(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
@@ -130,17 +131,17 @@ function module:OnInitialize()
 		aObj.db.profile.MiddleFrame = nil
 	end
 	for i = 1, MAX_MIDDLEFRAMES do
-		if aObj.db.profile["MiddleFrame"..i] then
-			for k, v in pairs(aObj.db.profile["MiddleFrame"..i]) do
-				db["mf"..i][k] = v
+		if aObj.db.profile["MiddleFrame" .. i] then
+			for k, v in pairs(aObj.db.profile["MiddleFrame" .. i]) do
+				db["mf" .. i][k] = v
 			end
-			aObj.db.profile["MiddleFrame"..i] = nil
+			aObj.db.profile["MiddleFrame" .. i] = nil
 		end
 	end
 
 	local enable
 	for i = 1, MAX_MIDDLEFRAMES do
-		if db["mf"..i].shown then
+		if db["mf" .. i].shown then
 			enable = true
 			break
 		end
@@ -159,7 +160,7 @@ function module:adjustMiddleFrames(opt, key)
 
 	if not key then
 		for i = 1, MAX_MIDDLEFRAMES do
-			local key = "mf"..i
+			local key = "mf" .. i
 			adjustFrame(key)
 		end
 	else
@@ -240,13 +241,12 @@ function module:GetOptions()
 	}
 
 	-- setup middleframe(s) options
-	local mfkey
 	for i = 1, MAX_MIDDLEFRAMES do
-		mfkey = {}
+		local mfkey = {}
 		mfkey.type = "group"
 		mfkey.inline = true
-		mfkey.name = aObj.L["Middle Frame"..i]
-		mfkey.desc = aObj.L["Change MiddleFrame"..i.." settings"]
+		mfkey.name = aObj.L["Middle Frame" .. i]
+		mfkey.desc = aObj.L["Change MiddleFrame" .. i .. " settings"]
 		mfkey.get = function(info)
 			return module.db.profile[info[#info - 1]][info[#info]]
 		end
@@ -260,23 +260,22 @@ function module:GetOptions()
 		mfkey.args.shown = {}
 		mfkey.args.shown.type = "toggle"
 		mfkey.args.shown.order = 1
-		mfkey.args.shown.name = aObj.L["MiddleFrame"..i.." Show"]
-		mfkey.args.shown.desc = aObj.L["Toggle the MiddleFrame"..i]
+		mfkey.args.shown.name = aObj.L["MiddleFrame" .. i .. " Show"]
+		mfkey.args.shown.desc = aObj.L["Toggle the MiddleFrame" .. i]
 		mfkey.args.flevel = {}
 		mfkey.args.flevel.type = "range"
-		mfkey.args.flevel.name = aObj.L["MF"..i.." Frame Level"]
-		mfkey.args.flevel.desc = aObj.L["Change the MF"..i.." Frame Level"]
+		mfkey.args.flevel.name = aObj.L["MF" .. i .. " Frame Level"]
+		mfkey.args.flevel.desc = aObj.L["Change the MF" .. i .. " Frame Level"]
 		mfkey.args.flevel.min = 0
 		mfkey.args.flevel.max = 20
 		mfkey.args.flevel.step = 1
 		mfkey.args.fstrata = {}
 		mfkey.args.fstrata.type = "select"
-		mfkey.args.fstrata.name = aObj.L["MF"..i.." Frame Strata"]
-		mfkey.args.fstrata.desc = aObj.L["Change the MF"..i.." Frame Strata"]
+		mfkey.args.fstrata.name = aObj.L["MF" .. i .. " Frame Strata"]
+		mfkey.args.fstrata.desc = aObj.L["Change the MF" .. i .. " Frame Strata"]
 		mfkey.args.fstrata.values = FrameStrata
-		options.args["mf"..i] = mfkey
+		options.args["mf" .. i] = mfkey
 	end
-	mfkey = nil
 
 	return options
 

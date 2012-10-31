@@ -41,8 +41,9 @@ function module:OnEnable()
 
 end
 
-local btmframe
 function module:adjustBottomFrame(opt)
+
+	local btmframe
 
 	if db.shown then
 		btmframe = btmframe or CreateFrame("Frame", nil, UIParent)
@@ -63,7 +64,7 @@ function module:adjustBottomFrame(opt)
 		if not aObj.db.profile.FadeHeight.enable
 		and db.fixedfh
 		then
-			fh = db.fheight <= ceil(btmframe:GetHeight()) and db.fheight or ceil(btmframe:GetHeight())
+			fh = db.fheight <= aObj:getInt(btmframe:GetHeight()) and db.fheight or aObj:getInt(btmframe:GetHeight())
 		end
 		aObj:applySkin{obj=btmframe, ft=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil}
 		btmframe:Show()

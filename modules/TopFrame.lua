@@ -56,8 +56,9 @@ function module:OnEnable()
 
 end
 
-local topframe
 function module:adjustTopFrame(opt)
+
+	local topframe
 
 	if db.shown then
 		topframe = topframe or CreateFrame("Frame", nil, UIParent)
@@ -78,7 +79,7 @@ function module:adjustTopFrame(opt)
 		if not aObj.db.profile.FadeHeight.enable
 		and db.fixedfh
 		then
-			fh = db.fheight <= ceil(topframe:GetHeight()) and db.fheight or ceil(topframe:GetHeight())
+			fh = db.fheight <= aObj:getInt(topframe:GetHeight()) and db.fheight or aObj:getInt(topframe:GetHeight())
 		end
 		aObj:applySkin{obj=topframe, ft=ftype, bba=db.borderOff and 0 or 1, ba=db.alpha, fh=fh, invert=db.invert or nil, rotate=db.rotate or nil}
 		-- adjust the TopFrame offset

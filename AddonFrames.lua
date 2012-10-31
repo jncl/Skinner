@@ -1,4 +1,5 @@
 local aName, aObj = ...
+local _G = _G
 
 local blizzLoDFrames = {
 	-- player
@@ -57,6 +58,7 @@ function aObj:BlizzardFrames()
 			["InspectUI"] = false,
 			["ItemSocketingUI"] = false,
 			["LookingForGuildUI"] = false,
+			["PetJournal"] = false,
 			["RaidUI"] = false,
 			["TalentUI"] = false,
 			["TradeSkillUI"] = false,
@@ -74,7 +76,7 @@ function aObj:BlizzardFrames()
 			["Tabard"] = true,
 			["TaxiFrame"] = true,
 			-- LoD frames
-		 	["AuctionUI"] = false,
+			["AuctionUI"] = false,
 			["BarbershopUI"] = false,
 			["BlackMarketUI"] = false,
 			["ItemAlterationUI"] = false,
@@ -106,7 +108,7 @@ function aObj:BlizzardFrames()
 			["LFGFrame"] = true,
 			["LFRFrame"] = true,
 			["MailFrame"] = true,
-			["MainMenuBar"] = true, -- N.B. conflicting addons checked within function - 12.10.12
+			["MainMenuBar"] = false, -- checked below
 			["MenuFrames"] = true,
 			["Minimap"] = true,
 			["MinimapButtons"] = false, -- done with timer
@@ -134,7 +136,6 @@ function aObj:BlizzardFrames()
 			["ItemUpgradeUI"] = false,
 			["MacroUI"] = false,
 			["MovePad"] = false,
-			["PetJournal"] = false,
 			["TimeManager"] = false,
 		},
 	}
@@ -142,23 +143,23 @@ function aObj:BlizzardFrames()
 	-- optional frames
 	if IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 
+	-- handle non standard ones here
+	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
+
 	-- skin required frames now
-	for k, bF in pairs(self.blizzFrames) do
-		for frame, _ in pairs(bF) do
-			if bF[frame] then
-				self:checkAndRun(frame)
+	for _, bfType in pairs(self.blizzFrames) do
+		for skin, runNow in pairs(bfType) do
+			if runNow then
+				self:checkAndRun(skin)
 			else
-				bF[frame] = true -- set so can be checked later in checkAndRun function
+				bfType[skin] = true -- set so can be checked later in checkAndRun function
 			end
 		end
 	end
 
-	-- handle non standard ones here
-	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
-
 end
 
-local stdFrames = {
+local addonSkins = {
 	"_NPCScan",
 	"Accomplishment", "Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Altoholic", "Analyst", "AnnounceIt", "AphesLootBrowser", "Ara_Broker_Guild_Friends", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "AtlasQuest", "Auctionator", "AuctionLite", "AuctionProfitMaster", "Auctionsnatch", "AutoDecline", "AutoPartyButtons", "AutoProfit",
 	"Badapples", "Baggins", "Bagnon", "Bagnon_Forever", "BankItems", "BasicChatMods", "BattlePetCount", "BaudBag", "BaudManifest", "BeanCounter", "beql", "BetterInbox", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "BriefQuestComplete", "Broker_Transport", "Buffalo", "BugSack", "BulkMail2", "BulkMail2Inbox", "Butsu", "BuyEmAll",
@@ -184,20 +185,20 @@ local stdFrames = {
 	"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"zfpoison", "ZOMGBuffs"
 }
-aObj.stdAddons = {}
-for _, v in pairs(stdFrames) do
-	aObj.stdAddons[v] = v
+aObj.addonsToSkin = {}
+for _, v in pairs(addonSkins) do
+	aObj.addonsToSkin[v] = v
 end
-stdFrames = nil
+addonSkins = nil
 -- oddly named addons
-aObj.stdAddons["!Swatter"] = "Swatter"
-aObj.stdAddons["Auc-Advanced"] = "AucAdvanced"
-aObj.stdAddons["Auto-Bag"] = "AutoBag"
-aObj.stdAddons["DBM-Core"] = "DBMCore"
-aObj.stdAddons["Enchantrix-Barker"] = "EnchantrixBarker"
-aObj.stdAddons["Ogri'Lazy"] = "OgriLazy"
-aObj.stdAddons["Prat-3.0"] = "Prat30"
-aObj.stdAddons["XLoot1.0"] = "XLoot10"
+aObj.addonsToSkin["!Swatter"] = "Swatter"
+aObj.addonsToSkin["Auc-Advanced"] = "AucAdvanced"
+aObj.addonsToSkin["Auto-Bag"] = "AutoBag"
+aObj.addonsToSkin["DBM-Core"] = "DBMCore"
+aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
+aObj.addonsToSkin["Ogri'Lazy"] = "OgriLazy"
+aObj.addonsToSkin["Prat-3.0"] = "Prat30"
+aObj.addonsToSkin["XLoot1.0"] = "XLoot10"
 -- libraries
 aObj.libsToSkin = {
 	["Dewdrop-2.0"] = "Dewdrop",
@@ -248,6 +249,9 @@ function aObj:AddonFrames()
 		self:checkAndRun("CompactFrames")
 	end
 
+	-- skin the MainMenuBar if Dominos isn't loaded
+	if not IsAddOnLoaded("Dominos") then self:checkAndRun("MainMenuBar") end
+
 	-- skin the Nameplates if other nameplate addons aren't loaded
 	if not IsAddOnLoaded("Aloft")
 	and not IsAddOnLoaded("nerNameplates")
@@ -261,10 +265,10 @@ function aObj:AddonFrames()
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
 	-- used for Addons that aren't LoadOnDemand
-	for addon in pairs(self.stdAddons) do
-		self:checkAndRunAddOn(addon, nil, self.stdAddons[addon])
+	for addon, skinFunc in pairs(self.addonsToSkin) do
+		self:checkAndRunAddOn(addon, nil, skinFunc)
 	end
-	self.stdAddons = nil
+	self.addonsToSkin = nil
 
 	-- this addon has a relation
 	self:checkAndRunAddOn("EnhancedTradeSkills", nil, "EnhancedTradeCrafts")
@@ -332,12 +336,12 @@ end
 lodFrames = nil
 -- MobMap Databases
 for i = 1, 8 do
-	aObj.lodAddons["MobMapDatabaseStub"..i] = "MobMapDatabaseStub"..i
+	aObj.lodAddons["MobMapDatabaseStub" .. i] = "MobMapDatabaseStub" .. i
 end
 aObj.lodAddons["MobMapDatabaseStub6"] = nil -- ignore stub6
 -- RaidAchievement modules
 for _, v in pairs{"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids"} do
-	aObj.lodAddons["RaidAchievement_"..v] = "RaidAchievement_"..v
+	aObj.lodAddons["RaidAchievement_" .. v] = "RaidAchievement_" .. v
 end
 -- oddly named LoD addons
 aObj.lodAddons["_DevPad.GUI"] = "_DevPadGUI"
@@ -345,7 +349,7 @@ aObj.lodAddons["DBM-GUI"] = "DBMGUI"
 
 local prev_addon
 function aObj:LoDFrames(addon)
-	-- self:Debug("LoDFrames: [%s, %s, %s]", addon, self.lodAddons[addon], blizzLoD[addon])
+	self:Debug("LoDFrames: [%s, %s, %s]", addon, self.lodAddons[addon], blizzLoD[addon])
 
 	-- ignore multiple occurrences of the same addon
 	if addon == prev_addon then return end
@@ -388,7 +392,7 @@ function aObj:LoDFrames(addon)
 end
 
 function aObj:ADDON_LOADED(event, addon)
-	-- self:Debug("ADDON_LOADED: [%s]", addon)
+	self:Debug("ADDON_LOADED: [%s]", addon)
 
 	self:ScheduleTimer("LoDFrames", self.db.profile.Delay.LoDs, addon)
 

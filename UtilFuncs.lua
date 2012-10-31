@@ -1,7 +1,5 @@
 local aName, aObj = ...
 local _G = _G
-local obj, objName, texName, btn, btnName, tab, tabSF
-local find = strfind
 
 local function makeString(t)
 
@@ -47,13 +45,15 @@ local function printIt(text, frame, r, g, b)
 end
 --@debug@
 local function print_family_tree(fName)
+
 	local lvl = "Parent"
-	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:round2(fName:GetWidth(), 2) or "nil", aObj:round2(fName:GetHeight(), 2) or "nil"))
+	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
 	while fName:GetParent() do
 		fName = fName:GetParent()
-		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj:round2(fName:GetWidth(), 2) or "nil", aObj:round2(fName:GetHeight(), 2) or "nil"))
-		lvl = (lvl:find("Grand") and "Great" or "Grand")..lvl
+		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
+		lvl = (lvl:find("Grand") and "Great" or "Grand") .. lvl
 	end
+
 end
 function aObj:SetupCmds()
 
@@ -76,14 +76,15 @@ function aObj:SetupCmds()
 
 end
 function aObj:printTS(...)
+
 	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
+
 end
-local output
 function aObj:Debug(a1, ...)
 
-	output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
+	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
 
-	printIt(output.." "..makeText(a1, ...), self.debugFrame)
+	printIt(output .. " " .. makeText(a1, ...), self.debugFrame)
 
 end
 aObj.debug2 = false
@@ -100,21 +101,18 @@ function aObj:Debug2() end
 
 function aObj:CustomPrint(r, g, b, a1, ...)
 
-	output = ("|cffffff78"..aName..":|r")
-
-	printIt(output.." "..makeText(a1, ...), nil, r, g, b)
+	printIt("|cffffff78" .. aName .. ":|r" .. " " .. makeText(a1, ...), nil, r, g, b)
 
 end
 
 local errorhandler = geterrorhandler()
-local success, err
 local function safecall(funcName, LoD, quiet)
 --@alpha@
-	assert(funcName, "Unknown object safecall\n"..debugstack())
+	assert(funcName, "Unknown object safecall\n" .. debugstack())
 --@end-alpha@
 
 	-- handle errors from internal functions
-	success, err = xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
+	local success, err = xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
 	if quiet then
 		return success, err
 	end
@@ -127,8 +125,8 @@ end
 
 function aObj:add2Table(table, value)
 --@alpha@
-	assert(table, "Unknown object add2Table\n"..debugstack())
-	assert(value, "Unknown object add2Table\n"..debugstack())
+	assert(table, "Unknown object add2Table\n" .. debugstack())
+	assert(value, "Unknown object add2Table\n" .. debugstack())
 --@end-alpha@
 
 	table[#table + 1] = value
@@ -137,7 +135,7 @@ end
 
 function aObj:checkAndRun(funcName, quiet)
 --@alpha@
-	assert(funcName, "Unknown object checkAndRun\n"..debugstack())
+	assert(funcName, "Unknown object checkAndRun\n" .. debugstack())
 --@end-alpha@
 	-- self:Debug("checkAndRun: [%s, %s]", funcName, quiet)
 
@@ -170,7 +168,7 @@ function aObj:checkAndRun(funcName, quiet)
 		return safecall(funcName, nil, quiet)
 	else
 		if not quiet and self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, "function ["..funcName.."] not found in "..aName)
+			self:CustomPrint(1, 0, 0, "function [" .. funcName .. "] not found in " .. aName)
 		end
 	end
 
@@ -178,7 +176,7 @@ end
 
 function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 --@alpha@
-	assert(addonName, "Unknown object checkAndRunAddOn\n"..debugstack())
+	assert(addonName, "Unknown object checkAndRunAddOn\n" .. debugstack())
 --@end-alpha@
 	-- self:Debug("checkAndRunAddOn: [%s, %s, %s]", addonName, LoD, addonFunc)
 
@@ -216,7 +214,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 			safecall(addonFunc, LoD)
 		else
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, "function ["..addonFunc.."] not found in "..aName)
+				self:CustomPrint(1, 0, 0, "function [" .. addonFunc .. "] not found in " .. aName)
 			end
 		end
 	end
@@ -226,7 +224,7 @@ end
 aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
 function aObj:changeTandC(obj, tex)
 --@alpha@
-	assert(obj, "Unknown object changeTandC\n"..debugstack())
+	assert(obj, "Unknown object changeTandC\n" .. debugstack())
 --@end-alpha@
 
 	obj:SetTexture(tex)
@@ -237,14 +235,14 @@ end
 aObj.shieldTex = [[Interface\CastingBar\UI-CastingBar-Arena-Shield]]
 function aObj:changeShield(shldReg, iconReg)
 --@alpha@
-	assert(shldReg, "Unknown object changeShield\n"..debugstack())
-	assert(iconReg, "Unknown object changeShield\n"..debugstack())
+	assert(shldReg, "Unknown object changeShield\n" .. debugstack())
+	assert(iconReg, "Unknown object changeShield\n" .. debugstack())
 --@end-alpha@
 
-	shldReg:SetTexture(aObj.shieldTex)
-	shldReg:SetTexCoord(0, 1, 0, 1)
-	shldReg:SetWidth(46)
-	shldReg:SetHeight(46)
+	-- shldReg:SetTexture(self.shieldTex)
+	-- shldReg:SetTexCoord(0, 1, 0, 1)
+	self:changeTandC(shldReg, self.shieldTex)
+	shldReg:SetSize(46, 46)
 	-- move it behind the icon
 	shldReg:ClearAllPoints()
 	shldReg:SetPoint("CENTER", iconReg, "CENTER", 9, -1)
@@ -254,20 +252,22 @@ end
 function aObj:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
-	local kids, frame, matched = {}
-	obj = EnumerateFrames()
+	local frame
+	local obj = EnumerateFrames()
 
 	while obj do
 
 		if obj:IsObjectType("Frame") then
 			if obj:GetName() == nil then
 				if obj:GetParent() == nil then
-					if self:round2(obj:GetHeight(), 2) == height and self:round2(obj:GetWidth(), 2) == width then
-						kids = {}
+					if self:getInt(obj:GetHeight()) == height
+					and self:getInt(obj:GetWidth()) == width
+					then
+						local kids = {}
 						for _, child in pairs{obj:GetChildren()} do
 							kids[#kids + 1] = child:GetObjectType()
 						end
-						matched = 0
+						local matched = 0
 						for _, c in pairs(children) do
 							for _, k in pairs(kids) do
 								if c == k then matched = matched + 1 end
@@ -291,22 +291,22 @@ end
 
 function aObj:findFrame2(parent, objType, ...)
 --@alpha@
-	assert(parent, "Unknown object findFrame2\n"..debugstack())
+	assert(parent, "Unknown object findFrame2\n" .. debugstack())
 --@end-alpha@
 
 	if not parent then return end
 
-	local frame, point, relativeTo, relativePoint, xOfs, yOfs, height, width
+	local frame
 
 	for _, child in pairs{parent:GetChildren()} do
 		if child:GetName() == nil then
 			if child:IsObjectType(objType) then
 				if select("#", ...) > 2 then
 					-- base checks on position
-					point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
+					local point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
 					-- self:Debug("ff2 GetPoint: [%s, %s, %s, %s, %s, %s]", child, point, relativeTo, relativePoint, xOfs, yOfs)
-					xOfs = xOfs and self:round2(xOfs, 2) or 0
-					yOfs = yOfs and self:round2(yOfs, 2) or 0
+					xOfs = xOfs and self:getInt(xOfs) or 0
+					yOfs = yOfs and self:getInt(yOfs) or 0
 					if	point		  == select(1, ...)
 					and relativeTo	  == select(2, ...)
 					and relativePoint == select(3, ...)
@@ -317,7 +317,7 @@ function aObj:findFrame2(parent, objType, ...)
 					end
 				else
 					-- base checks on size
-					height, width = self:round2(child:GetHeight(), 2), self:round2(child:GetWidth(), 2)
+					local height, width = self:getInt(child:GetHeight()), self:getInt(child:GetWidth())
 					-- self:Debug("ff2 h/w: [%s, %s, %s]", child, height, width)
 					if	height == select(1, ...)
 					and width  == select(2, ...) then
@@ -333,50 +333,28 @@ function aObj:findFrame2(parent, objType, ...)
 
 end
 
-function aObj:findFrame3(name, element)
---@alpha@
-	assert(name, "Unknown object findFrame3\n"..debugstack())
-	assert(element, "Unknown object findFrame3\n"..debugstack())
---@end-alpha@
-
-	local frame
-
-	for _, child in pairs{UIParent:GetChildren()} do
-		if child:GetName() == name then
-			if child[element] then
-				frame = child
-				break
-			end
-		end
-	end
-
-	return frame
-
-end
-
 function aObj:getChild(obj, childNo)
 --@alpha@
-	assert(obj, "Unknown object getChild\n"..debugstack())
+	assert(obj, "Unknown object getChild\n" .. debugstack())
 --@end-alpha@
 
 	if obj and childNo then return (select(childNo, obj:GetChildren())) end
 
 end
 
-function aObj:getFirstChildOfType(obj, oType)
+function aObj:getInt(num)
 --@alpha@
-	assert(obj, "Unknown object getFirstChildOfType\n"..debugstack())
+	assert(num, "Missing number\n" .. debugstack())
 --@end-alpha@
 
-	for _, child in ipairs{obj:GetChildren()} do
-		if child:IsObjectType(oType) then return child end
-	end
+	return math.floor(num + 0.5)
 
 end
 
 function aObj:getRegion(obj, regNo)
 --@alpha@
-	assert(obj, "Unknown object getRegion\n"..debugstack())
+	assert(obj, "Unknown object getRegion\n" .. debugstack())
+	assert(regNo, "Missing value getRegion\n" .. debugstack())
 --@end-alpha@
 
 	if obj and regNo then return (select(regNo, obj:GetRegions())) end
@@ -385,7 +363,8 @@ end
 
 function aObj:hasTextInName(obj, text)
 --@alpha@
-	assert(text, "Missing text for hasTextInName\n"..debugstack())
+	assert(obj, "Unknown object hasTextInName\n" .. debugstack())
+	assert(text, "Missing value hasTextInName\n" .. debugstack())
 --@end-alpha@
 
 	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text, 1, true) and true
@@ -394,10 +373,14 @@ end
 
 function aObj:hasAnyTextInName(obj, tab)
 --@alpha@
-	assert(tab, "Missing text for hasAnyTextInName\n"..debugstack())
+	assert(obj, "Unknown object hasAnyTextInName\n" .. debugstack())
+	assert(tab, "Missing value hasAnyTextInName\n" .. debugstack())
 --@end-alpha@
 
-	if obj and obj.GetName and obj:GetName() then
+	if obj
+	and obj.GetName
+	and obj:GetName()
+	then
 		local oName = obj:GetName()
 		for _, text in pairs(tab) do
 			if oName:find(text, 1, true) then return true end
@@ -410,7 +393,8 @@ end
 
 function aObj:hasTextInTexture(obj, text)
 --@alpha@
-	assert(text, "Missing text for hasTextInTexture\n"..debugstack())
+	-- assert(obj, "Unknown object hasTextInTexture\n" .. debugstack()) -- N.B. allow for missing texture object
+	assert(text, "Missing value hasTextInTexture\n" .. debugstack())
 --@end-alpha@
 
 	return obj and obj.GetTexture and obj:GetTexture() and obj:GetTexture():find(text, 1, true) and true
@@ -418,9 +402,9 @@ function aObj:hasTextInTexture(obj, text)
 end
 
 function aObj:isAddonEnabled(addonName)
-	--@alpha@
-		assert(addonName, "Unknown object isAddonEnabled\n"..debugstack())
-	--@end-alpha@
+--@alpha@
+	assert(addonName, "Unknown object isAddonEnabled\n" .. debugstack())
+--@end-alpha@
 
 	return (select(4, GetAddOnInfo(addonName))) or IsAddOnLoadOnDemand(addonName) -- handle LoD Addons (config mainly)
 
@@ -428,52 +412,20 @@ end
 
 function aObj:isDropDown(obj)
 --@alpha@
-	assert(obj, "Unknown object isDropDown\n"..debugstack())
+	assert(obj, "Unknown object isDropDown\n" .. debugstack())
 --@end-alpha@
 
-	if not obj:IsObjectType("Frame")
-	or not obj:GetName()
+	if obj:IsObjectType("Frame")
+	and obj:GetName()
 	then
-		return false
+		return self:hasTextInTexture(_G[obj:GetName() .. "Left"], "CharacterCreate")
 	end
-
-	return self:hasTextInTexture(_G[obj:GetName().."Left"], "CharacterCreate")
-
-end
-
-function aObj:isVersion(addonName, verNoReqd, actualVerNo)
---@alpha@
-		assert(addonName, "Unknown object isVersion\n"..debugstack())
-		assert(verNoReqd, "Unknown object isVersion\n"..debugstack())
-		assert(actualVerNo, "Unknown object isVersion\n"..debugstack())
---@end-alpha@
-
-	local hasMatched = false
-
-	if type(verNoReqd) == "table" then
-		for _, v in ipairs(verNoReqd) do
-			if v == actualVerNo then
-				hasMatched = true
-				break
-			end
-		end
-	else
-		if verNoReqd == actualVerNo then hasMatched = true end
-	end
-
-	if not hasMatched and self.db.profile.Warnings then
-		local addText = ""
-		if type(verNoReqd) ~= "table" then addText = "Version "..verNoReqd.." is required" end
-		self:CustomPrint(1, 0.25, 0.25, "Version", actualVerNo, "of", addonName, "is unsupported.", addText)
-	end
-
-	return hasMatched
 
 end
 
 function aObj:removeInset(frame)
 --@alpha@
-	assert(frame, "Unknown object removeInset\n"..debugstack())
+	assert(frame, "Unknown object removeInset\n" .. debugstack())
 --@end-alpha@
 
 	frame:DisableDrawLayer("BACKGROUND")
@@ -483,7 +435,7 @@ end
 
 function aObj:removeMagicBtnTex(btn)
 --@alpha@
-	assert(btn, "Unknown object removeMagicBtnTex\n"..debugstack())
+	assert(btn, "Unknown object removeMagicBtnTex\n" .. debugstack())
 --@end-alpha@
 
 	-- Magic Button textures
@@ -494,21 +446,19 @@ end
 
 function aObj:resizeTabs(frame)
 --@alpha@
-	assert(frame, "Unknown object resizeTabs\n"..debugstack())
+	assert(frame, "Unknown object resizeTabs\n" .. debugstack())
 --@end-alpha@
 
-	local fN = frame:GetName()
-	local tabName = fN.."Tab"
-	local nT
+	local tabName = frame:GetName() .. "Tab"
 	-- get the number of tabs
-	nT = ((frame == CharacterFrame and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
+	local nT = ((frame == CharacterFrame and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
 	-- accumulate the tab text widths
 	local tTW = 0
 	for i = 1, nT do
-		tTW = tTW + _G[tabName..i.."Text"]:GetWidth()
+		tTW = tTW + _G[tabName .. i .. "Text"]:GetWidth()
 	end
 	-- add the tab side widths
-	local tTW = tTW + (40 * nT)
+	tTW = tTW + (40 * nT)
 	-- get the frame width
 	local fW = frame:GetWidth()
 	-- calculate the Tab left width
@@ -517,32 +467,22 @@ function aObj:resizeTabs(frame)
 	tlw = ("%.2f"):format(tlw >= 6 and tlw or 5.5)
 	-- update each tab
 	for i = 1, nT do
-		_G[tabName..i.."Left"]:SetWidth(tlw)
-		PanelTemplates_TabResize(_G[tabName..i], 0)
+		_G[tabName .. i .. "Left"]:SetWidth(tlw)
+		PanelTemplates_TabResize(_G[tabName .. i], 0)
 	end
 
 end
 
 function aObj:resizeEmptyTexture(texture)
 --@alpha@
-	assert(texture, "Unknown object resizeEmptyTexture\n"..debugstack())
+	assert(texture, "Unknown object resizeEmptyTexture\n" .. debugstack())
 --@end-alpha@
 
 	texture:SetTexture(self.esTex)
-	texture:SetWidth(64)
-	texture:SetHeight(64)
+	texture:SetSize(64, 64)
 	texture:SetTexCoord(0, 1, 0, 1)
 	texture:ClearAllPoints()
 	texture:SetPoint("CENTER", texture:GetParent())
-
-end
-
-function aObj:round2(num, ndp)
---@alpha@
-	assert(num, "Unknown object\n"..debugstack())
---@end-alpha@
-
-	return tonumber(("%."..(ndp or 0).."f"):format(num))
 
 end
 
@@ -567,9 +507,9 @@ end
 -- http://www.wowwiki.com/RGBPercToHex
 function aObj:RGBPercToHex(r, g, b)
 --@alpha@
-	assert(r, "Unknown object RGBPercToHex\n"..debugstack())
-	assert(g, "Unknown object RGBPercToHex\n"..debugstack())
-	assert(b, "Unknown object RGBPercToHex\n"..debugstack())
+	assert(r, "Missing value (red) - RGBPercToHex\n" .. debugstack())
+	assert(g, "Missing value (green) - RGBPercToHex\n" .. debugstack())
+	assert(b, "Missing value (blue) - RGBPercToHex\n" .. debugstack())
 --@end-alpha@
 
 --	Check to see if the passed values are strings, if so then use some default values
@@ -585,23 +525,21 @@ end
 
 function aObj:ShowInfo(obj, showKids, noDepth)
 --@alpha@
-	assert(obj, "Unknown object ShowInfo\n"..debugstack())
+	assert(obj, "Unknown object ShowInfo\n" .. debugstack())
 --@end-alpha@
 
-	if not obj then return end
-
-	local showKids = showKids or false
+	showKids = showKids or false
 
 	local function showIt(fmsg, ...)
 
-		printIt("dbg:"..makeText(fmsg, ...), aObj.debugFrame)
+		printIt("dbg:" .. makeText(fmsg, ...), aObj.debugFrame)
 
 	end
 
 	local function getRegions(obj, lvl)
 
 		for k, reg in ipairs{obj:GetRegions()} do
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self:round2(reg:GetWidth(), 2) or "nil", reg.GetHeight and self:round2(reg:GetHeight(), 2) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self:getInt(reg:GetWidth()) or "nil", reg.GetHeight and self:getInt(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
@@ -613,21 +551,21 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 		for k, child in ipairs{frame:GetChildren()} do
 			local objType = child:GetObjectType()
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and aObj:round2(child:GetWidth(), 2) or "nil", child.GetHeight and aObj:round2(child:GetHeight(), 2) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
+			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and aObj:getInt(child:GetWidth()) or "nil", child.GetHeight and aObj:getInt(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 			if objType == "Frame"
 			or objType == "Button"
 			or objType == "StatusBar"
 			or objType == "Slider"
 			or objType == "ScrollFrame"
 			then
-				getRegions(child, lvl.."-"..k)
-				getChildren(child, lvl.."-"..k)
+				getRegions(child, lvl .. "-" .. k)
+				getChildren(child, lvl .. "-" .. k)
 			end
 		end
 
 	end
 
-	showIt("%s : %s : %s : %s : %s", obj, self:round2(obj:GetWidth(), 2) or "nil", self:round2(obj:GetHeight(), 2) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
+	showIt("%s : %s : %s : %s : %s", obj, self:getInt(obj:GetWidth()) or "nil", self:getInt(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
 
 	showIt("Started Regions")
 	getRegions(obj, 0)
@@ -637,34 +575,3 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 	showIt("Finished Children")
 
 end
-
--- -- Event Handling (added for oGlow, not longer required 1.6.12)
--- -- This will allow for multiple occurrences of the same event to be managed
--- local eventFrame = CreateFrame("Frame")
--- local eventsTable = setmetatable({}, {__index = function(t, k) rawset(t, k, {}) return rawget(t, k) end})
--- eventFrame:SetScript("OnEvent", function(this, event, ...)
--- 	-- aObj:Debug("OnEvent: [%s, %s]", event, ... or nil)
--- 	for _, func in ipairs(eventsTable[event]) do
--- 		-- aObj:Debug("OnEvent#2: [%s]", func)
--- 		func(aObj, event, ...)
--- 	end
--- end)
--- function aObj:RegisterEvent(event, func)
--- 	eventsTable[event][#eventsTable[event]+1] = func or aObj[event]
--- 	if #eventsTable[event] == 1 then eventFrame:RegisterEvent(event) end
--- 	-- self:Debug("RegisterEvent: [%s, %s, %s]", event, func or aObj[event], #eventsTable[event])
--- 	return #eventsTable[event]
--- end
--- function aObj:UnregisterEvent(event, funcNum)
--- 	-- self:Debug("UnregisterEvent: [%s, %s]", event, funcNum)
--- 	if funcNum then
--- 		eventsTable[event][funcNum] = nil
--- 	else
--- 		for i, v in ipairs(eventsTable[event]) do
--- 			if v == aObj[event] then
--- 				v = nil
--- 				break
--- 			end
--- 		end
--- 	end
--- end

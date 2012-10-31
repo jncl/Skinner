@@ -18,11 +18,13 @@ do
 	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
 	-- create font to use for Close Buttons
 	module.fontX = CreateFont("fontX")
-	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
+	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
 	module.fontX:SetTextColor(1.0, 0.82, 0)
+	-- module.fontX:SetJustifyV("BOTTOM")
+	-- print("module.fontX justifyH&V", module.fontX:GetJustifyH(), module.fontX:GetJustifyV())
 	-- create font for disabled text
 	module.fontDX = CreateFont("fontDX")
-	module.fontDX:SetFont([[Fonts\FRIZQT__.TTF]], 22)
+	module.fontDX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
 	module.fontDX:SetTextColor(0.35, 0.35, 0.35)
 	-- create font to use for small blue Close Buttons (e.g. BNToastFrame)
 	module.fontSBX = CreateFont("fontSBX")
@@ -50,7 +52,7 @@ local function __checkTex(opts)
 		mp2 = minus/plus type 2
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __cT\n"..debugstack())
+	assert(opts.obj, "Missing object __cT\n" .. debugstack())
 --@end-alpha@
 
 	-- hide existing textures if they exist (GupCharacter requires this)
@@ -95,7 +97,7 @@ function module:checkTex(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object cT\n"..debugstack())
+	assert(opts, "Missing object cT\n" .. debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -126,13 +128,13 @@ function module:skinButton(opts)
 	other options as per addSkinButton
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object skinButton\n"..debugstack())
+	assert(opts.obj, "Missing object skinButton\n" .. debugstack())
 --@end-alpha@
 
 	if not opts.obj then return end
 
 	if aObj.sBtn[opts.obj] -- don't skin it twice
-	or aObj.skinFrame[opts.obj] -- don't skin tab buttons
+	or opts.obj.sf -- don't skin tab buttons
 	then
 		return
 	end
@@ -155,7 +157,7 @@ function module:skinButton(opts)
 		local objName = opts.obj:GetName()
 		if objName then -- handle unnamed objects (e.g. Waterfall MP buttons)
 			for _, tName in pairs(btnTexNames) do
-				local bTex = _G[objName..tName]
+				local bTex = _G[objName .. tName]
 				if bTex then bTex:SetAlpha(0) end
 			end
 		end
@@ -175,8 +177,7 @@ function module:skinButton(opts)
 	end
 
 	-- setup button frame size adjustments
-	local x1, x2, y1, y2, btn
-	local bW, bH = aObj:round2(opts.obj:GetWidth()), aObj:round2(opts.obj:GetHeight())
+	local bW, bH = aObj:getInt(opts.obj:GetWidth()), aObj:getInt(opts.obj:GetHeight())
 	if bW <= 20 and opts.cb then -- ArkInventory/Recount close buttons
 		local adj = bW < 20 and bW + 1 or bW
 		opts.cb2 = opts.cb
@@ -192,29 +193,29 @@ function module:skinButton(opts)
 		if opts.sap then
 			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
-			x1 = opts.x1 or bW == 32 and 6 or 4
-			y1 = opts.y1 or bW == 32 and -6 or -4
-			x2 = opts.x2 or bW == 32 and -6 or -4
-			y2 = opts.y2 or bW == 32 and 6 or 4
+			local x1 = opts.x1 or bW == 32 and 6 or 4
+			local y1 = opts.y1 or bW == 32 and -6 or -4
+			local x2 = opts.x2 or bW == 32 and -6 or -4
+			local y2 = opts.y2 or bW == 32 and 6 or 4
 			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	elseif opts.cb2 then -- it's pretending to be a close button (e.g. ArkInventory/Recount/Outfitter)
-		x1 = opts.x1 or 0
-		y1 = opts.y1 or 0
-		x2 = opts.x2 or 0
-		y2 = opts.y2 or 0
-		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
+		local x1 = opts.x1 or 0
+		local y1 = opts.y1 or 0
+		local x2 = opts.x2 or 0
+		local y2 = opts.y2 or 0
+		local btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		btn:SetNormalFontObject(module.fontX)
 		btn:SetText(module.mult)
 	elseif opts.cb3 then -- it's a small blue close button (e.g. BNToastFrame)
 		aObj:adjWidth{obj=opts.obj, adj=-4}
 		aObj:adjHeight{obj=opts.obj, adj=-4}
-		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5, bba=0}, x1=2, y1=1, x2=2, y2=1}
+		local btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5, bba=0}, x1=2, y1=1, x2=2, y2=1}
 		btn:SetNormalFontObject(module.fontSBX)
 		btn:SetText(module.mult)
 		opts.obj:GetParent().cb = btn -- store button object in parent
 	elseif opts.mp then -- it's a minus/plus texture on a larger button
-		btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}}
+		local btn = aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=6}}
 		btn:SetAllPoints(opts.obj:GetNormalTexture())
 		btn:SetNormalFontObject(module.fontP)
 		btn:SetText(opts.plus and module.plus or module.minus)
@@ -238,10 +239,10 @@ function module:skinButton(opts)
 		if opts.sap then
 			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, sap=true}
 		else
-			x1 = opts.x1 or bW == 32 and 6 or 4
-			y1 = opts.y1 or bW == 32 and -6 or -4
-			x2 = opts.x2 or bW == 32 and -6 or -4
-			y2 = opts.y2 or bW == 32 and 6 or 4
+			local x1 = opts.x1 or bW == 32 and 6 or 4
+			local y1 = opts.y1 or bW == 32 and -6 or -4
+			local x2 = opts.x2 or bW == 32 and -6 or -4
+			local y2 = opts.y2 or bW == 32 and 6 or 4
 			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 	elseif opts.ob2 then -- it's another type of button, text supplied, style 2 (e.g. MinimalArchaeology)
@@ -254,12 +255,12 @@ function module:skinButton(opts)
 		aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso={bd=5}, sap=true}
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		-- aObj:Debug("skinButton: [%s, %s, %s]", opts.obj, bW, bH)
-		aso = {bd=bH > 18 and 5 or 6} -- use narrower backdrop if required
+		local aso = {bd=bH > 18 and 5 or 6} -- use narrower backdrop if required
 		if not opts.as then
-			x1 = opts.x1 or 1
-			y1 = opts.y1 or -1
-			x2 = opts.x2 or -1
-			y2 = opts.y2 or -1
+			local x1 = opts.x1 or 1
+			local y1 = opts.y1 or -1
+			local x2 = opts.x2 or -1
+			local y2 = opts.y2 or -1
 			aObj:addSkinButton{obj=opts.obj, parent=opts.obj, aso=aso, bg=opts.bg, x1=x1, y1=y1, x2=x2, y2=y2}
 		else
 			if bH < 16 then opts.obj:SetHeight(16) end -- set minimum button height (DBM option buttons)
@@ -270,7 +271,7 @@ function module:skinButton(opts)
 
 	-- reparent skinButton to avoid whiteout issues caused by animations
 	if opts.anim and aObj.sBtn[opts.obj] then
-		aObj.sBtn[opts.obj]:SetParent(aObj.skinFrame[opts.obj:GetParent()])
+		aObj.sBtn[opts.obj]:SetParent(opts.obj:GetParent().sf)
 	end
 
 end
@@ -281,31 +282,32 @@ local function getTexture(obj)
 	and obj:IsObjectType("Texture")
 	then
 		return obj:GetTexture()
-	else
-		return nil
 	end
 
 end
 function module:isButton(obj)
-	-- aObj:Debug2("module:isButton#1: [%s]", obj)
+	aObj:Debug2("module:isButton#1: [%s]", obj)
 
 	-- ignore named/AceConfig/XConfig/AceGUI objects
 	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
 
-	local oName, nTex, bType
+	local bType
 
 	if (obj.Left or obj.leftArrow or obj.GetNormalTexture) -- is it a true button
 	and not obj.GetChecked -- and not a checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then
-		local oW, oH, nR = aObj:round2(obj:GetWidth()), aObj:round2(obj:GetHeight()), obj:GetNumRegions()
-		-- aObj:Debug2("module:isButton#2: [%s, %s, %s, %s, %s, %s]", obj:GetParent().CloseButton == obj, aObj:hasTextInName(obj, "Close"), aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"), oW, oH, nR)
+		local oW, oH, nR = aObj:getInt(obj:GetWidth()), aObj:getInt(obj:GetHeight()), obj:GetNumRegions()
+		aObj:Debug2("module:isButton#2: [%s, %s, %s, %s, %s, %s]", obj:GetParent().CloseButton == obj, aObj:hasTextInName(obj, "Close"), aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"), oW, oH, nR)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
 			bType = "toast"
+		-- standard close button is 32x32 and had 4 regions
+		-- RolePollPopup has 3 regions
+		-- Channel Pullout is 24 high
 		elseif obj:GetParent().CloseButton == obj
-		or aObj:hasTextInName(obj, "Close") and oH == oW and nR == 4 and (oH == 32 or oH == 24) -- named closed / channel pullout
-		or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up") and oH == 32 and oW == 32 and nR == 4 -- UIPanelCloseButton
+		or oH == oW and (nR == 3 or nR == 4) and (oH == 32 or oH == 24)
+		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"))
 		then
 			bType = "close"
 		elseif (oH >= 20 and oH <= 25) and (nR >= 5 and nR <= 8) -- std button
@@ -319,7 +321,7 @@ function module:isButton(obj)
 		end
 	end
 
-	-- aObj:Debug2("module:isButton#5: [%s]", bType)
+	aObj:Debug2("module:isButton#5: [%s]", bType)
 	return bType
 
 end
@@ -331,7 +333,7 @@ local function __skinAllButtons(opts, bgen)
 		other options as per skinButton
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object__sAB\n"..debugstack())
+	assert(opts.obj, "Missing object__sAB\n" .. debugstack())
 --@end-alpha@
 	if not opts.obj then return end
 
@@ -366,7 +368,7 @@ function module:skinAllButtons(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sAB\n"..debugstack())
+	assert(opts, "Missing object sAB\n" .. debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -405,7 +407,7 @@ local function __addButtonBorder(opts)
 		disable = hook Enable/Disable scripts of object
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object__aBB\n"..debugstack())
+	assert(opts.obj, "Missing object__aBB\n" .. debugstack())
 --@end-alpha@
 	if not opts.obj then return end
 
@@ -433,8 +435,8 @@ local function __addButtonBorder(opts)
 	local xOfs2 = opts.x2 or opts.ofs
 	local yOfs2 = opts.y2 or opts.ofs * -1
 	-- Large Item Button templates have an IconTexture to position to
-	relTo = opts.relTo
-			or opts.libt and _G[btnName.."IconTexture"]
+	local relTo = opts.relTo
+			or opts.libt and _G[btnName .. "IconTexture"]
 			or nil
 	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
 	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
@@ -498,7 +500,7 @@ function module:addButtonBorder(...)
 	end
 
 --@alpha@
-	assert(opts, "Missing object sAB\n"..debugstack())
+	assert(opts, "Missing object sAB\n" .. debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -558,7 +560,7 @@ function module:OnEnable()
 	end
 
 	if db.Quality.file and db.Quality.file ~= "None" then
-		aObj.LSM:Register("border", aName.." Quality Border", db.Quality.file)
+		aObj.LSM:Register("border", aName .. " Quality Border", db.Quality.file)
 	end
 	-- setup default backdrop values (AdiBags, Fizzle, oGlow, XLoot)
 	self.bDrop = {
@@ -570,7 +572,7 @@ function module:OnEnable()
 	}
 	local bdbTex
 	if db.Quality.file and db.Quality.file ~= "None" then
-		bdbTex = aName.." Quality Border"
+		bdbTex = aName .. " Quality Border"
 	else
 		bdbTex = db.Quality.texture
 	end

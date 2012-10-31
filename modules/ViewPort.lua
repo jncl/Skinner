@@ -16,8 +16,9 @@ local defaults = {
 	}
 }
 
-local vpoF
 local function checkOverlay()
+
+	local vpoF
 
 	if db.shown then
 		if db.overlay then
