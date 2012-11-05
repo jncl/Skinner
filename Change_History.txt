@@ -1,3 +1,16 @@
+b5.16135.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated TOC to use project version (i.e. Tag)
+	Bugfix for text finding function
+	Tidy up UnitFrames skinning code
+	Remove redundant print statements
+	Remove redundant skin disabling code
+	Don't skin IOP objects managed by other skins
+	Bugfix for MicroButton button borders not being applied if Bartender4 is loaded
+	Updated BetterInbox, Outfitter & ReforgeLite skins
+
 b5.16135.1
 Jncl:
 	ToDo.txt
@@ -10,7 +23,7 @@ Jncl:
 	Updated Scroll of Resurrection skin
 	Bugfix for Paperdoll Sidebars
 	Updated Bagnon, FarmIt2, FlightMapEnhanced, GroupCalendar5, Outfitter & _NPCScan skins
-	
+
 b5.16057.6
 Jncl:
 	ToDo.txt
