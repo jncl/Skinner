@@ -3,50 +3,47 @@ if not aObj:isAddonEnabled("PetBattleTeams") then return end
 
 function aObj:PetBattleTeams()
 
-	local function skinPBT()
+	local function skinTeamFrame(frame)
 
-		-- mainFrame
-		aObj:skinScrollBar{obj=PetBattleTeamsUI.scrollBar}
-		aObj:addSkinFrame{obj=PetBattleTeamsUI.mainFrame, x1=3, y1=-2, y2=-1}
-		PetBattleTeamsUI.mainFrame.menu.overlay:SetTexture(nil)
-		PetBattleTeamsUI.mainFrame.menu:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
-		aObj:addButtonBorder{obj=PetBattleTeamsUI.mainFrame.menu, relTo=PetBattleTeamsUI.mainFrame.menu.icon}
-		aObj:addButtonBorder{obj=PetBattleTeamsUI.mainFrame.addTeamButton}
-		aObj:addButtonBorder{obj=PetBattleTeamsUI.mainFrame.revivePetsButton, sec=true}
-		-- Pet buttons
-		for i = 1, 24 do
-			for j = 1, 3 do
-				local btn = PetBattleTeamsUI.mainFrame.petUnitFrames[i][j]
-				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar, btn.selected}}
-				btn.ActualHealthBar:SetTexture(self.sbTexture)
-				btn.BorderAlive:SetTexture(nil)
-				aObj:changeTandC(btn.BorderDead, [[Interface\PetBattles\DeadPetIcon]])
-				btn.HealthDivider:SetTexture(nil)
-			end
+		for i = 1, 3 do
+			local btn = frame.unitFrames[i]
+			aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar, frame.selectedTexture, frame.lockedTexture}}
+			btn.healthBarWidth = 34
+			btn.ActualHealthBar:SetWidth(34)
+			btn.ActualHealthBar:SetTexture(aObj.sbTexture)
+			btn.BorderAlive:SetTexture(nil)
+			aObj:changeTandC(btn.BorderDead, [[Interface\PetBattles\DeadPetIcon]])
+			btn.HealthDivider:SetTexture(nil)
 		end
 
 	end
+
 	-- skin frame if it exists
-	if PetBattleTeamsUI.mainFrame then
-		skinPBT()
-	else
-		self:SecureHook(PetBattleTeamsUI, "CreateUI", function(this)
-			if PetBattleTeamsUI.mainFrame then
-				skinPBT()
-				self:Unhook(PetBattleTeamsUI, "CreateUI")
-			end
-		end)
+	local GUI = PetBattleTeams:GetModule("GUI")
+	self:skinScrollBar{obj=GUI.mainFrame.rosterFrame.scrollFrame}
+	self:addSkinFrame{obj=GUI.mainFrame, y1=2, y2=-5}
+	skinTeamFrame(GUI.mainFrame.selectedTeam)
+	self:addButtonBorder{obj=GUI.mainFrame.addTeamButton}
+	-- Team Roster buttons
+	for i = 1, #GUI.mainFrame.rosterFrame.scrollChild.teamFrames do
+		skinTeamFrame(GUI.mainFrame.rosterFrame.scrollChild.teamFrames[i])
 	end
+	-- hook this to skin new teams
+	self:RawHook(PetBattleTeamsFrame, "New", function(this)
+		local frame = self.hooks[this].New(this)
+		skinTeamFrame(frame)
+		return frame
+	end, true)
 
 	-- tooltip
 	if self.db.profile.Tooltips.skin then
-		local obj = PetBattleTeamsUI.tooltip
-		obj:DisableDrawLayer("BACKGROUND")
-		obj.ActualHealthBar:SetTexture(self.sbTexture)
-		obj.XPBar:SetTexture(self.sbTexture)
-		obj.Delimiter:SetTexture(nil)
-		self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=2, reParent={obj.Level}}
-		self:addSkinFrame{obj=obj}
+		local tt = PetBattleTeams:GetModule("Tooltip")
+		tt.tooltip:DisableDrawLayer("BACKGROUND")
+		tt.tooltip.ActualHealthBar:SetTexture(self.sbTexture)
+		tt.tooltip.XPBar:SetTexture(self.sbTexture)
+		tt.tooltip.Delimiter:SetTexture(nil)
+		self:addButtonBorder{obj=tt.tooltip, relTo=tt.tooltip.Icon, ofs=2, reParent={tt.tooltip.Level}}
+		self:addSkinFrame{obj=tt.tooltip}
 	end
 
 end

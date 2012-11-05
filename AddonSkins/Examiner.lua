@@ -1,19 +1,25 @@
-if not Skinner:isAddonEnabled("Examiner") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Examiner") then return end
 
-function Skinner:Examiner()
+function aObj:Examiner()
 	if not self.db.profile.InspectUI then return end
 
 	-- this is used to add a texture to the dropdown
 	local function textureDD(dd)
 
-		self:keepFontStrings(dd)
-		if self.db.profile.TexturedDD then
+		aObj:keepFontStrings(dd)
+		if aObj.db.profile.TexturedDD then
 			dd.ddTex = dd:CreateTexture(nil, "BORDER")
-			dd.ddTex:SetTexture(Skinner.itTex)
+			dd.ddTex:SetTexture(aObj.itTex)
 			dd.ddTex:ClearAllPoints()
 			dd.ddTex:SetPoint("TOPLEFT", dd, "TOPLEFT", 0, -2)
 			dd.ddTex:SetPoint("BOTTOMRIGHT", dd, "BOTTOMRIGHT", -3, 3)
 		end
+		if aObj.db.profile.DropDownButtons then
+			aObj:addSkinFrame{obj=dd, aso={ng=true}, ofs=1, x1=-2}
+		end
+		-- add a button border around the dd button
+		aObj:addButtonBorder{obj=dd.button, es=12, ofs=-2}
 
 	end
 
@@ -28,6 +34,7 @@ function Skinner:Examiner()
 
 	self:removeRegions(Examiner, {1, 5, 6, 7, 8}) -- N.B. other regions are text or background
 	self:addSkinFrame{obj=Examiner, x1=10, y1=-11, x2=-33}
+	self:skinButton{obj=self:getChild(Examiner, 1), cb=true}
 
 	-- skin sub frames
 	for k, mod in pairs(Examiner.modules) do
@@ -51,12 +58,11 @@ function Skinner:Examiner()
 					self:Unhook(mod.page, "OnShow")
 				end)
 			elseif mod.token == "Talent" then
-				self:skinFFToggleTabs("ExaminerTab", MAX_TALENT_TABS)
-				self:skinScrollBar{obj=ExaminerTalentsScrollChild}
 			elseif mod.token == "Gear" then
+			elseif mod.token == "Guild" then
 			end
 			if mod.scroll then self:skinScrollBar{obj=mod.scroll} end
-			if mod.token ~= "Talents" then self:addSkinFrame{obj=mod.page, ofs=2} end
+			if mod.token ~= "Talents" then self:addSkinFrame{obj=mod.page} end
 		end
 	end
 
