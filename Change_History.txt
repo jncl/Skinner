@@ -1,3 +1,9 @@
+b5.16231.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for ChatTabs skin
+
 b5.16231.1
 Jncl:
 	ToDo.txt
