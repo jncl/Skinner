@@ -8,7 +8,36 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	O	Nameplates
+≈	O	Reduce footprint
+√		- localise variables when used
+√		- store skin frame, button & button border objects within their parents not in tables
+
+	O	PTR 5.1.0
+√		- TOC Interface: 50100
+		- ArenaUI
+			- removed Flash texture
+√		- TransmogrifyConfirmationPopup (New)
+x		- ItemUpgradeFrame inherits from EtherealFrameTemplate now & has had additional textures added
+		- PetBattlesUI
+			- PetBattlePetSelectionButtonTemplate
+√				- added rarity border
+?				- added Delimiter2
+x				- added Debuffs frame
+		- PetJournal
+√			- added quality border to loadout
+x			- added favourite texture to loadout
+		- MountJournal
+√			- added search editbox
+?		- StaticPopupSpecial
+?		- LossOfControlFrame (IOF panel)
+		- LFDFrame/LFGFrame/RaidFinder/ScenarioFinder changes, BackFill removed, CooldownCover added
+?		- ItemAnimation for BagSlots
+√		- PetPaperDollFRame, ExpBar removed
+√		- PVPFrame, Arena panel changes
+
+√	O	Nameplates
+
+≈	O	ChatTabs
 
 ?	I	CrossRealmZoning
 		- causing issues with frames/panels needing to be reskinned
@@ -16,25 +45,52 @@ Legend:
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
-	I	MainMenuBar, reported by hammer2, 12.10.12
-√		- add button borders to micro buttons & social button even if Bartender4 is loaded
-
-?)	I	PaperDoll, reported by corys2005, 12.10.12
+√	I	PaperDoll, reported by corys2005, 12.10.12
 		- Skinner-b5.16135.1\PlayerFrames.lua:456: attempt to index field "sb" (a nil value)
-Skinner-b5.16135.1\PlayerFrames.lua:456: in function <Skinner\PlayerFrames.lua:449>
-(tail call): ?
-<in C code>
-FrameXML\CharacterFrame.lua:173: in function <FrameXML\CharacterFrame.lua:162>
-<in C code>
-FrameXML\PaperDollFrame.lua:2228: in function <FrameXML\PaperDollFrame.lua:2215>
-<in C code>
-FrameXML\CharacterFrame.lua:33: in function "CharacterFrame_ShowSubFrame"
-FrameXML\CharacterFrame.lua:15: in function "ToggleCharacter"
-<string>:"TOGGLECHARACTER0":1: in function <string>:"TOGGLECHARACTER0":1
+		  Skinner-b5.16135.1\PlayerFrames.lua:456: in function <Skinner\PlayerFrames.lua:449>
 
-√	I	ReforgeLite, reported by X-buZZ, 12.10.12
-		- Skinner\Skinner-b5.16135.1.lua:234: table index is nil
-Skinner\Skinner-b5.16135.1.lua:1656: in function <Skinner\Skinner.lua:1644>
-Skinner\Skinner-b5.16135.1.lua:1686: in function "skinSlider"
-Skinner-b5.16135.1\SkinMe\ReforgeLite-v1.17.lua:33: in function <Skinner\SkinMe\ReforgeLite.lua:4>
-(tail call): ?
+	I	reported by Excitor0, 15.10.12
+		- Gradient doesn't completely fill frames/tabs etc
+
+√	I	reported by hammer2, 17.10.12
+		- ActionButtonBorders when Bartender4 is loaded
+			(Revert change which added check for Bartender4 and moved Dominos check)
+
+?	I	reported by Zaerwen, 17.10.12
+		- Interface\AddOns\Skinner\UIFrames.lua:1977: attempt to index local 'btn' (a nil value)
+
+√	I	reported by tordenflesk, 18.10.12
+		- The Outfitter skin appears to be dependent on the skinning of the character-frame. Is this really necessary? I use Aurora to skin the default frames, so I've disabled skinners skinning of default frames.
+
+x	O	PetJournal, requested by essmene, 19.10.12
+		- I would like to keep the pet family icon in the background of the vanity pets.
+
+√	I	PetJournalEnhanced, reported by essmene/Zaerwen, 19/22.10.12
+		-  ...terface\AddOns\Skinner\SkinMe\PetJournalEnhanced.lua:6: attempt to index global 'PetJournalEnhancedOptions' (a nil value)
+
+√	S	MapsterEnhanced, requested by Galgani/JAcKyL69, 27/28.10.12
+
+√	I	DBM, reported by pgriff91, 28.10.12
+		- CreateFrame: Couldn't find 'this' in parent object
+			Skinner\Skinner.lua:403:
+			Skinner\Skinner.lua:372
+			(tail call): ?
+			Skinner\SkinMe\DBM.lua:205:
+			Skinner\SkinMe\DBM.lua:155
+
+√	I	Calendar, reported by finalflame01, 28.10.12
+		- Maybe I'm going crazy, but prior to 5.0 I thought Skinner was fully skinning the in-game calender.  Now it only skins part of it, leaving each day looking like the default blizzard skin.  Is this a bug or intended, and is there a way to skin each day?
+
+√	N	FishingBuddy, reported by lexusnexus/TonDef/essmene, 30/31.10.12
+
+√	I	Carbonite, reported by TonDef, 31.10.12
+		- Skinner-b5.16135.2\SkinMe\Carbonite-5.05.05.lua:31: attempt to index field "Ski1" (a nil value)
+
+√	I	PetBattleTeams, reported by essmene, 01.11.12
+		- Skinner-b5.16135.2\SkinMe\PetBattleTeams-r6 Alpha (3.0.0).lua:30: attempt to index global "PetBattleTeamsUI" (a nil value)
+
+√	I	Examiner, reported by Acanthe,03.10.12
+		- Skinner\Skinner-b5.16135.2.lua:224: table index is nil
+		  Skinner\Skinner-b5.16135.2.lua:1596: in function <Skinner\Skinner.lua:1582>
+		  Skinner\Skinner-b5.16135.2.lua:1628: in function "skinScrollBar"
+		  Skinner-b5.16135.2\SkinMe\Examiner-12.10.30.lua:55: in function <Skinner\SkinMe\Examiner.lua:3>
