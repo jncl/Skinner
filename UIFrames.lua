@@ -648,10 +648,9 @@ function aObj:ChatTabs()
 		end)
 	end
 
-	-- hook this to change background colours
+	-- hook this to hide/show the skin frame
 	aObj:SecureHook("FCFTab_UpdateColors", function(this, selected)
 		this.sf:SetShown(selected)
-		this.sf:SetBackgroundColor(this.glow:GetVertexColor())
 	end)
 
 end
