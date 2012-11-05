@@ -1977,25 +1977,27 @@ function aObj:PetBattleUI()
 	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.ForfeitButton}
 	self:removeRegions(PetBattleFrame.BottomFrame.MicroButtonFrame, {1, 2, 3})
 	self:addSkinFrame{obj=PetBattleFrame.BottomFrame, ft=ftype, y1=8}
-	-- hook these for pet ability buttons
-	self:SecureHook("PetBattleFrame_UpdateActionBarLayout", function(this)
-		for i = 1, NUM_BATTLE_PET_ABILITIES do
-			local btn = this.BottomFrame.abilityButtons[i]
-			self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}}
-		end
-		self:Unhook("PetBattleFrame_UpdateActionBarLayout")
-	end)
-	self:SecureHook("PetBattleActionButton_UpdateState", function(this)
-		if this.sbb then
-			if this.Icon
-			and this.Icon:IsDesaturated()
-			then
-				this.sbb:SetBackdropBorderColor(.5, .5, .5)
-			else
-				this.sbb:SetBackdropBorderColor(unpack(self.bbColour))
+	if self.modBtnBs then
+		-- hook these for pet ability buttons
+		self:SecureHook("PetBattleFrame_UpdateActionBarLayout", function(this)
+			for i = 1, NUM_BATTLE_PET_ABILITIES do
+				local btn = this.BottomFrame.abilityButtons[i]
+				self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}}
 			end
-		end
-	end)
+			self:Unhook("PetBattleFrame_UpdateActionBarLayout")
+		end)
+		self:SecureHook("PetBattleActionButton_UpdateState", function(this)
+			if this.sbb then
+				if this.Icon
+				and this.Icon:IsDesaturated()
+				then
+					this.sbb:SetBackdropBorderColor(.5, .5, .5)
+				else
+					this.sbb:SetBackdropBorderColor(unpack(self.bbColour))
+				end
+			end
+		end)
+	end
 
 	-- Tooltip frames
 	if self.db.profile.Tooltips.skin then
