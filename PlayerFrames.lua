@@ -943,7 +943,7 @@ function aObj:GhostFrame()
 	self.initialized.GhostFrame = true
 
 	self:addButtonBorder{obj=GhostFrameContentsFrame, relTo=GhostFrameContentsFrameIcon}
-	self:addSkinButton{obj=GhostFrame, parent=GhostFrame, kfs=true, sap=true, hide=true}
+	self:addSkinButton{obj=GhostFrame, parent=GhostFrame, kfs=true, sap=true, hide=true, ft=ftype}
 	GhostFrame:SetFrameStrata("HIGH") -- make it appear above other frames (i.e. Corkboard)
 
 end
@@ -1233,7 +1233,7 @@ function aObj:ItemSocketingUI() -- LoD
 
 		for i = 1, GetNumSockets() do
 			local c = GEM_TYPE_INFO[GetSocketTypes(i)]
-			self.sBtn[_G["ItemSocketingSocket" .. i]]:SetBackdropBorderColor(c.r, c.g, c.b)
+			_G["ItemSocketingSocket" .. i].sb:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
 	end
@@ -1251,7 +1251,7 @@ function aObj:ItemSocketingUI() -- LoD
 		_G[objName .. "Right"]:SetAlpha(0)
 		local obj = _G[objName]
 		self:getRegion(obj, 3):SetAlpha(0) -- button texture
-		self:addSkinButton{obj=obj}
+		self:addSkinButton{obj=obj, ft=ftype}
 	end
 	-- now colour the sockets
 	colourSockets()
@@ -1776,7 +1776,7 @@ function aObj:QuestLog()
 	self:skinSlider{obj=QuestLogScrollFrame.scrollBar, adj=-4}
 	self:addButtonBorder{obj=QuestLogFrameShowMapButton, relTo=QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:removeRegions(QuestLogScrollFrame, {1, 2, 3, 4})
-	self:skinAllButtons{obj=QuestLogControlPanel}
+	self:skinAllButtons{obj=QuestLogControlPanel, ft=ftype}
 	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:removeMagicBtnTex(QuestLogFrameCompleteButton)
 

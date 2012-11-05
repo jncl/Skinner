@@ -155,7 +155,7 @@ function aObj:BlackMarketUI() -- LoD
 	-- HotDeal frame
 	self:keepFontStrings(BlackMarketFrame.HotDeal)
 	self:addButtonBorder{obj=BlackMarketFrame.HotDeal.Item, ibt=true, relTo=BlackMarketFrame.HotDeal.Item.IconTexture}
-	self:skinAllButtons{obj=BlackMarketFrame.HotDeal}
+	self:skinAllButtons{obj=BlackMarketFrame.HotDeal, ft=ftype}
 	self:skinMoneyFrame{obj=BlackMarketHotItemBidPrice}
 
 	-- column headings
@@ -493,7 +493,7 @@ function aObj:ReforgingUI() -- LoD
 	ReforgingFrame.ItemButton.IconTexture:SetAlpha(0)
 	ReforgingFrame.ItemButton:DisableDrawLayer("BACKGROUND")
 	ReforgingFrame.ItemButton:DisableDrawLayer("OVERLAY")
-	self:addSkinButton{obj=ReforgingFrame.ItemButton, aso={ng=true}}
+	self:addSkinButton{obj=ReforgingFrame.ItemButton, aso={ng=true}, ft=ftype}
 	ReforgingFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:keepRegions(ReforgingFrame.ButtonFrame, {})
 	ReforgingFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)

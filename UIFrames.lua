@@ -1353,7 +1353,7 @@ function aObj:MainMenuBar()
 	self:addButtonBorder{obj=ActionBarDownButton, es=12, ofs=-5, x2=-6, y2=7}
 
 -->>-- Vehicle Leave Button
-	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton}
+	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton, ft=ftype}
 	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
 		self:moveObject{obj=MainMenuBarVehicleLeaveButton, y=3}
 	end)
@@ -1541,7 +1541,7 @@ function aObj:MenuFrames()
 		then
 			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
-			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true}) -- wait for 1/10th second for panel to be populated, always use applySkin to ensure text appears above button texture
+			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true, ft=ftype}) -- wait for 1/10th second for panel to be populated, always use applySkin to ensure text appears above button texture
 		end
 	end)
 
@@ -1558,7 +1558,7 @@ function aObj:Minimap()
 	MinimapZoneTextButton:SetPoint("BOTTOMRIGHT", Minimap, "TOPRIGHT", 0, 5)
 	MinimapZoneText:ClearAllPoints()
 	MinimapZoneText:SetPoint("CENTER")
-	self:addSkinButton{obj=MinimapZoneTextButton, parent=MinimapZoneTextButton}
+	self:addSkinButton{obj=MinimapZoneTextButton, parent=MinimapZoneTextButton, ft=ftype}
 	-- World Map Button
 	MiniMapWorldMapButton:ClearAllPoints()
 	MiniMapWorldMapButton:SetPoint("LEFT", MinimapZoneTextButton, "RIGHT", -4, 0)
@@ -1615,7 +1615,7 @@ function aObj:MinimapButtons()
 		for _, obj in ipairs{mmObj:GetChildren()} do
 			local objName = obj:GetName()
 			local objType = obj:GetObjectType()
-			if not aObj.sBtn[obj]
+			if not obj.sb
 			and not obj.sf
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
@@ -1638,7 +1638,7 @@ function aObj:MinimapButtons()
 							obj:SetHeight(32)
 							if not minBtn then
 								if objType == "Button" then
-									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==QueueStatusMinimapButton and true or nil} -- reparent to ensure Eye is visible
+									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==QueueStatusMinimapButton and true or nil, ft=ftype} -- reparent to ensure Eye is visible
 								else
 									aObj:addSkinFrame{obj=obj, ft=ftype}
 								end
@@ -1681,14 +1681,13 @@ function aObj:MinimapButtons()
 		end
 		self:adjWidth{obj=obj, adj=-8}
 		self:adjHeight{obj=obj, adj=-8}
-		self:addSkinButton{obj=obj, parent=obj, aso=asopts}
-		local btn = self.sBtn[obj]
-		btn:SetAllPoints(obj:GetNormalTexture())
-		btn:SetNormalFontObject(self.modUIBtns.fontX)
-		btn:SetDisabledFontObject(self.modUIBtns.fontDX)
-		btn:SetPushedTextOffset(1, 1)
-		btn:SetText(k == 1 and self.modUIBtns.plus or self.modUIBtns.minus)
-		if not obj:IsEnabled() then btn:Disable() end
+		self:addSkinButton{obj=obj, parent=obj, aso=asopts, ft=ftype}
+		obj.sb:SetAllPoints(obj:GetNormalTexture())
+		obj.sb:SetNormalFontObject(self.modUIBtns.fontX)
+		obj.sb:SetDisabledFontObject(self.modUIBtns.fontDX)
+		obj.sb:SetPushedTextOffset(1, 1)
+		obj.sb:SetText(k == 1 and self.modUIBtns.plus or self.modUIBtns.minus)
+		if not obj:IsEnabled() then obj.sb:Disable() end
 	end
 	-- change Mail icon
 	MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
@@ -1733,7 +1732,7 @@ function aObj:MinimapButtons()
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then
-				self:addSkinButton{obj=obj, parent=obj, sap=true}
+				self:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype}
 			end
 		end
 		mmButs = nil
@@ -1778,7 +1777,7 @@ function aObj:MovePad() -- LoD
 	self:skinButton{obj=MovePadBackward}
 	self:skinButton{obj=MovePadStrafeLeft}
 	self:skinButton{obj=MovePadStrafeRight}
-	self:addSkinButton{obj=MovePadLock, as=true, ofs=-4}
+	self:addSkinButton{obj=MovePadLock, as=true, ft=ftype, ofs=-4}
 	self:addSkinFrame{obj=MovePadFrame, ft=ftype}
 	self:addButtonBorder{obj=MovePadJump, ofs=0}
 
@@ -2292,7 +2291,7 @@ function aObj:Tutorial()
 	btn:SetNormalFontObject("ZoneTextFont")
 	btn:SetText("?")
 	self:moveObject{obj=btn:GetFontString(), x=4}
-	self:addSkinButton{obj=btn, parent=btn, x1=30, y1=-1, x2=-25, y2=10}
+	self:addSkinButton{obj=btn, parent=btn, ft=ftype, x1=30, y1=-1, x2=-25, y2=10}
 
 end
 

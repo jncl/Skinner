@@ -395,18 +395,18 @@ local function __addSkinButton(opts)
 	opts.parent = opts.parent or opts.obj:GetParent()
 	opts.hook = opts.hook or opts.obj
 
-	local btn = CreateFrame("Button", nil, opts.parent)
-	-- lower frame level
+	-- store button object within original button
+	opts.obj.sb = CreateFrame("Button", nil, opts.parent)
+	local btn = opts.obj.sb
 	LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
-	aObj.sBtn[opts.hook] = btn
 	-- hook Show/Hide methods
 	if not aObj:IsHooked(opts.hook, "Show") then
-		aObj:SecureHook(opts.hook, "Show", function(this) aObj.sBtn[this]:Show() end)
-		aObj:SecureHook(opts.hook, "Hide", function(this) aObj.sBtn[this]:Hide() end)
+		aObj:SecureHook(opts.hook, "Show", function(this) this.sb:Show() end)
+		aObj:SecureHook(opts.hook, "Hide", function(this) this.sb:Hide() end)
 		if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
-			aObj:SecureHook(opts.hook, "Enable", function(this) aObj.sBtn[this]:Enable() end)
-			aObj:SecureHook(opts.hook, "Disable", function(this) aObj.sBtn[this]:Disable() end)
+			aObj:SecureHook(opts.hook, "Enable", function(this) this.sb:Enable() end)
+			aObj:SecureHook(opts.hook, "Disable", function(this) this.sb:Disable() end)
 		end
 	end
 	-- position the button skin
@@ -457,6 +457,10 @@ local function __addSkinButton(opts)
 			this:SetParent_orig(aObj.sBtn[this])
 		end
 	end
+
+	-- store reference to the button (used by addons, until they are all updated)
+	if not opts.ft then aObj.sBtn[opts.hook] = btn end
+
 	return btn
 
 end
@@ -561,9 +565,6 @@ local function __addSkinFrame(opts)
 	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
 	skinFrame:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 
-	-- store reference to the frame (used by addons, until they are all updated)
-	aObj.skinFrame[opts.obj] = skinFrame
-
 	-- handle header, if required
 	if opts.hdr then hideHeader(opts.obj) end
 
@@ -585,7 +586,7 @@ local function __addSkinFrame(opts)
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
 
 	-- skin the buttons unless not required
-	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas} end
+	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft} end
 
 	-- reparent skinFrame to avoid whiteout issues caused by animations
 	if opts.anim then
@@ -633,6 +634,9 @@ local function __addSkinFrame(opts)
 			end)
 		end
 	end
+
+	-- store reference to the frame (used by addons, until they are all updated)
+	if not opts.ft then aObj.skinFrame[opts.obj] = skinFrame end
 
 	return skinFrame
 
@@ -1523,8 +1527,9 @@ function aObj:skinFFColHeads(buttonName, noCols)
 
 	noCols = noCols or 4
 	for i = 1, noCols do
-		self:removeRegions(_G[buttonName .. i], {1, 2, 3})
-		self:addSkinFrame{obj=_G[buttonName .. i]}
+		local btn = _G[buttonName .. i]
+		self:removeRegions(btn, {1, 2, 3})
+		self:addSkinFrame{obj=btn}
 	end
 
 end
