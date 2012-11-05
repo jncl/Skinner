@@ -650,7 +650,7 @@ function aObj:ChatTabs()
 
 	-- hook this to hide/show the skin frame
 	aObj:SecureHook("FCFTab_UpdateColors", function(this, selected)
-		this.sf:SetShown(selected)
+		if this.sf then this.sf:SetShown(selected) end
 	end)
 
 end
@@ -666,7 +666,7 @@ function aObj:ChatTemporaryWindow()
 		if self.db.profile.ChatTabs
 		and not obj.sf
 		then
-			skinChatTab(obj:GetName())
+			skinChatTab(_G[obj:GetName() .. "Tab"])
 		end
 		if self.db.profile.ChatFrames
 		and not obj.sf
