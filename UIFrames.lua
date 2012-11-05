@@ -2017,39 +2017,46 @@ function aObj:PetBattleUI()
 		-- self:RawHookScript(pbfaasf, "OnPlay", function(this)
 		local pbfaasfop = pbfaasf:HasScript("OnPlay") and pbfaasf:GetScript("OnPlay") or nil
 		pbfaasf:SetScript("OnPlay", function(this)
+			-- print("pbfaasf OnPlay")
 			reParent{parent=MainMenuBar}
 			if pbfaasfop then pbfaasfop(this) end
 			-- self.hooks[this].OnPlay(this)
 		-- end, true)
 		end)
 		self:SecureHookScript(pbfaasf, "OnFinished", function(this)
-			reParent{}
+			-- print("pbfaasf OnFinished")
+			reParent{reset=true}
 		end)
 		local pbfaesf = PetBattleFrame.ActiveEnemy.SpeedFlash
 		-- self:RawHookScript(pbfaesf, "OnPlay", function(this)
 		local pbfaesfop = pbfaesf:HasScript("OnPlay") and pbfaesf:GetScript("OnPlay") or nil
 		pbfaesf:SetScript("OnPlay", function(this)
+			-- print("pbfaesf OnPlay")
 			reParent{parent=MainMenuBar}
 			if pbfaesfop then pbfaesfop(this) end
 			-- self.hooks[this].OnPlay(this)
 		-- end, true)
 		end)
 		self:SecureHookScript(pbfaesf, "OnFinished", function(this)
-			reParent{}
+			-- print("pbfaesf OnFinished")
+			reParent{reset=true}
 		end)
 		-- hook these to ensure gradient texture is reparented correctly
 		self:SecureHookScript(PetBattleFrame, "OnShow", function(this)
+			-- print("PetBattleFrame OnShow")
 			reParent{parent=MainMenuBar, reset=true}
 		end)
 		self:SecureHookScript(PetBattleFrame, "OnHide", function(this)
+			-- print("PetBattleFrame OnHide")
 			reParent{}
 		end)
 		-- hook this to reparent the gradient texture if pets have equal speed
 		self:SecureHook("PetBattleFrame_UpdateSpeedIndicators", function(this)
+			-- print("PetBattleFrame_UpdateSpeedIndicators")
 			if not this.ActiveAlly.SpeedIcon:IsShown()
 			and not this.ActiveEnemy.SpeedIcon:IsShown()
 			then
-				reParent{}
+				reParent{reset=true}
 			end
 		end)
 		-- PetBattlePrimaryUnit Tooltip
