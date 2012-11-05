@@ -850,6 +850,7 @@ function aObj:FriendsFrame()
 		local btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
 		btn.background:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.gameIcon, hide=true, ofs=0}
+		self:addButtonBorder{obj=btn.travelPassButton, hide=true, ofs=0, y1=3, y2=-2}
 	end
 
 	-- Friends Tooltip
@@ -982,6 +983,7 @@ function aObj:GuildControlUI() -- LoD
 	GuildControlUI:DisableDrawLayer("BACKGROUND")
 	GuildControlUIHbar:SetAlpha(0)
 	self:skinDropDown{obj=GuildControlUI.dropdown}
+	UIDropDownMenu_SetButtonWidth(GuildControlUI.dropdown, 24)
 	self:addSkinFrame{obj=GuildControlUI, ft=ftype, kfs=true, x1=10, y1=-10, x2=-10, y2=10}
 	-- Guild Ranks Panel
 	local function skinROFrames()
@@ -1005,11 +1007,13 @@ function aObj:GuildControlUI() -- LoD
 	-- Rank Permissions Panel
 	GuildControlUI.rankPermFrame:DisableDrawLayer("BACKGROUND")
 	self:skinDropDown{obj=GuildControlUI.rankPermFrame.dropdown}
+	UIDropDownMenu_SetButtonWidth(GuildControlUI.rankPermFrame.dropdown, 24)
 	self:skinEditBox{obj=GuildControlUI.rankPermFrame.goldBox, regs={9}}
 	-- Bank Tab Permissions panel
 	self:keepFontStrings(GuildControlUI.bankTabFrame.scrollFrame)
 	self:skinSlider{obj=GuildControlUIRankBankFrameInsetScrollFrameScrollBar}
 	self:skinDropDown{obj=GuildControlUI.bankTabFrame.dropdown}
+	UIDropDownMenu_SetButtonWidth(GuildControlUI.bankTabFrame.dropdown, 24)
 	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BACKGROUND")
 	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BORDER")
 	-- hook this as buttons are created as required
