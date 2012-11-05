@@ -349,7 +349,7 @@ aObj.lodAddons["DBM-GUI"] = "DBMGUI"
 
 local prev_addon
 function aObj:LoDFrames(addon)
-	self:Debug("LoDFrames: [%s, %s, %s]", addon, self.lodAddons[addon], blizzLoD[addon])
+	-- self:Debug("LoDFrames: [%s, %s, %s]", addon, self.lodAddons[addon], blizzLoD[addon])
 
 	-- ignore multiple occurrences of the same addon
 	if addon == prev_addon then return end
@@ -392,7 +392,7 @@ function aObj:LoDFrames(addon)
 end
 
 function aObj:ADDON_LOADED(event, addon)
-	self:Debug("ADDON_LOADED: [%s]", addon)
+	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
 	self:ScheduleTimer("LoDFrames", self.db.profile.Delay.LoDs, addon)
 
