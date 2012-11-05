@@ -612,36 +612,18 @@ function aObj:ChatMinimizedFrames()
 	-- minimized chat frames
 	self:SecureHook("FCF_CreateMinimizedFrame", function(chatFrame)
 		local obj = _G[chatFrame:GetName() .. "Minimized"]
-		self:removeRegions(obj, {1, 2, 3})
+		self:rmRegionsTex(obj, {1, 2, 3})
 		self:addSkinFrame{obj=obj, ft=ftype, x1=1, y1=-2, x2=-1, y2=2}
 		self:addButtonBorder{obj=_G[chatFrame:GetName() .. "MinimizedMaximizeButton"], ofs=-1}
 	end)
 
 end
 
-local function skinChatTab(objName)
+local function skinChatTab(tab)
 
-	local tab = _G[objName .. "Tab"]
-	aObj:keepRegions(tab, {7, 8, 9, 10, 11, 12}) --N.B. region 7 is glow, 8-10 are highlight, 11 is text, 12 is icon
-	aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
-	tab.sf:SetAlpha(0.2)
-	-- hook this to fix tab gradient texture overlaying text & highlight
-	if not aObj:IsHooked(tab, "SetParent") then
-		aObj:SecureHook(tab, "SetParent", function(this, parent)
-			if parent == GeneralDockManager.scrollFrame.child then
-				this.sf:SetParent(GeneralDockManager)
-			else
-				this.sf:SetParent(this)
-				this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
-			end
-		end)
-	end
-	-- hook this to manage alpha changes when chat frame fades in and out
-	if not aObj:IsHooked(tab, "SetAlpha") then
-		aObj:SecureHook(tab, "SetAlpha", function(this, alpha)
-			this.sf:SetAlpha(alpha)
-		end)
-	end
+	aObj:rmRegionsTex(tab, {1, 2, 3, 4, 5, 6})
+	aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=2, y1=-9, x2=-2, y2=-4}
+	tab.sf:SetAlpha(tab:GetAlpha())
 
 end
 function aObj:ChatTabs()
@@ -649,8 +631,28 @@ function aObj:ChatTabs()
 	self.initialized.ChatTabs = true
 
 	for i = 1, NUM_CHAT_WINDOWS do
-		skinChatTab("ChatFrame" .. i)
+		local tab = _G["ChatFrame" .. i .. "Tab"]
+		skinChatTab(tab)
+		-- hook this to fix tab gradient texture overlaying text & highlight
+		self:SecureHook(tab, "SetParent", function(this, parent)
+			if parent == GeneralDockManager.scrollFrame.child then
+				this.sf:SetParent(GeneralDockManager)
+			else
+				this.sf:SetParent(this)
+				this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
+			end
+		end)
+		-- hook this to manage alpha changes when chat frame fades in and out
+		self:SecureHook(tab, "SetAlpha", function(this, alpha)
+			this.sf:SetAlpha(alpha)
+		end)
 	end
+
+	-- hook this to change background colours
+	aObj:SecureHook("FCFTab_UpdateColors", function(this, selected)
+		this.sf:SetShown(selected)
+		this.sf:SetBackgroundColor(this.glow:GetVertexColor())
+	end)
 
 end
 
