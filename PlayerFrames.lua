@@ -485,8 +485,10 @@ function aObj:CharacterFrames()
 	-- PetPaperDoll Frame
 	PetPaperDollPetModelBg:SetAlpha(0) -- changed in blizzard code
 	PetModelFrameShadowOverlay:Hide()
-	self:removeRegions(PetPaperDollFrameExpBar, {1, 2})
-	self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
+	if not self.isPTR then
+		self:removeRegions(PetPaperDollFrameExpBar, {1, 2})
+		self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
+	end
 	self:makeMFRotatable(PetModelFrame)
 	-- up the Frame level otherwise the tooltip doesn't work
 	RaiseFrameLevel(PetPaperDollPetInfo)
@@ -1589,7 +1591,7 @@ function aObj:PetJournal() -- LoD
 		self:removeRegions(btn, {1, 3}) -- background & petTypeIcon
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
 		if not IsAddOnLoaded("PetJournalEnhanced")
-		or not self.isPTR
+		and not self.isPTR
 		then
 			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
 		end
@@ -1686,18 +1688,24 @@ function aObj:PVPFrame()
 	PVPFrame.panel2.infoButton:DisableDrawLayer("BORDER")
 -->>-- Team Management frame a.k.a. Arena
 	self:keepFontStrings(PVPFrame.panel3)
+	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleRight, ofs=-2}
 	self:keepFontStrings(PVPTeamManagementFrameWeeklyDisplay)
 	self:skinUsingBD{obj=PVPTeamManagementFrameWeeklyDisplay}
+	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleLeft, ofs=-2}
 	PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
 	PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
 	PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
 	PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
 	PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
 	PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
+	if self.isPTR then
+		self:skinFFColHeads("PVPTeamManagementFrameHeader")
+		for i = 1, 4 do
+			_G["PVPTeamManagementFrameHeader" .. i]:SetHeight(20)
+		end
+	end
 	self:skinScrollBar{obj=PVPFrame.panel3.teamMemberScrollFrame}
 	self:skinDropDown{obj=PVPTeamManagementFrameTeamDropDown}
-	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleRight, ofs=-2}
-	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleLeft, ofs=-2}
 -->>-- WarGames frame
 	PVPFrame.panel4:DisableDrawLayer("ARTWORK")
 	self:skinSlider{obj=WarGamesFrameScrollFrameScrollBar, adj=-4}

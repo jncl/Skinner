@@ -1887,10 +1887,16 @@ function aObj:PetBattleUI()
 	-- Active Allies/Enemies
 	for _, v in pairs{"Ally", "Enemy"} do
 		local obj = PetBattleFrame["Active" .. v]
-		if not self.isPTR then
-			self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=1, reParent={obj.LevelUnderlay, obj.Level, obj.SpeedUnderlay, obj.SpeedIcon}}
-			obj.Border:SetTexture(nil)
-			obj.Border2:SetTexture(nil)
+		self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=1, reParent={obj.LevelUnderlay, obj.Level, obj.SpeedUnderlay, obj.SpeedIcon}}
+		obj.Border:SetTexture(nil)
+		obj.Border2:SetTexture(nil)
+		if self.isPTR then
+			if self.modBtnBs then
+				obj.sbb:SetBackdropBorderColor(obj.Border:GetVertexColor())
+				self:SecureHook(obj.Border, "SetVertexColor", function(this, ...)
+					this:GetParent().sbb:SetBackdropBorderColor(...)
+				end)
+			end
 		end
 		self:changeTandC(obj.LevelUnderlay, self.lvlBG)
 		self:changeTandC(obj.SpeedUnderlay, self.lvlBG)
@@ -1917,14 +1923,20 @@ function aObj:PetBattleUI()
 		-- Ally2/3, Enemy2/3
 		for i = 2, 3 do
 			local btn = PetBattleFrame[v .. i]
-			if not self.isPTR then
-				self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar}}
+			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar}}
+			btn.BorderAlive:SetTexture(nil)
+			self:changeTandC(btn.BorderDead, [[Interface\PetBattles\DeadPetIcon]])
+			if self.isPTR then
+				if self.modBtnBs then
+					btn.sbb:SetBackdropBorderColor(btn.BorderAlive:GetVertexColor())
+					self:SecureHook(btn.BorderAlive, "SetVertexColor", function(this, ...)
+						this:GetParent().sbb:SetBackdropBorderColor(...)
+					end)
+				end
 			end
 			btn.healthBarWidth = 34
 			btn.ActualHealthBar:SetWidth(34)
 			btn.ActualHealthBar:SetTexture(self.sbTexture)
-			btn.BorderAlive:SetTexture(nil)
-			self:changeTandC(btn.BorderDead, [[Interface\PetBattles\DeadPetIcon]])
 			btn.HealthDivider:SetTexture(nil)
 		end
 	end
