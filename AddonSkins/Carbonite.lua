@@ -27,7 +27,6 @@ function aObj:Carbonite()
 		["BdCol"] = P_23(BdBC.r, BdBC.g, BdBC.b, BdBC.a),
 		["BgCol"] = P_23(BdC.r, BdC.g, BdC.b, BdC.a),
 	}
-	Spew("Nx.Skins", Nx.Skins)
 
 	-- add entry to options
 	for i, v in pairs(Nx.OptsData) do

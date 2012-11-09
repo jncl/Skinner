@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("GnomishVendorShrinker") then return end
 
 function aObj:GnomishVendorShrinker()
 
-	local function getFirstChildOfType(obj)
+	local function getFirstChildOfType(obj, oType)
 		for _, child in ipairs{obj:GetChildren()} do
 			if child:IsObjectType(oType) then return child end
 		end

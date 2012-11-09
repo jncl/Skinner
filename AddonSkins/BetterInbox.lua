@@ -6,8 +6,7 @@ function aObj:BetterInbox(LoD)
 
 	local bib = LibStub('AceAddon-3.0'):GetAddon('BetterInbox', true)
 	if not bib then return end
-	
-	local btn
+
 	local function skinBIb()
 
 		-- move the text lines up
@@ -23,7 +22,7 @@ function aObj:BetterInbox(LoD)
 			aObj:removeRegions(bib.scrollframe.entries[i], {1, 2, 3})
 			self:moveObject{obj=bib.scrollframe.entries[i].bicheckbox, x=2, y=-1}
 			if self.modBtnBs then
-				btn = _G[bib.scrollframe.entries[i]:GetName().."Button"]
+				local btn = _G[bib.scrollframe.entries[i]:GetName().."Button"]
 				btn:DisableDrawLayer("BACKGROUND")
 				aObj:addButtonBorder{obj=btn}
 			end
@@ -32,10 +31,16 @@ function aObj:BetterInbox(LoD)
 		aObj:skinButton{obj=BetterInboxCancelButton}
 		aObj:skinButton{obj=BetterInboxOpenButton}
 		-- fix the dropdown, as the sizes had been changed
-		self:moveObject{obj=bib.scrollframe.dropdown.button, x=0, y=-1}
 		bib.scrollframe.dropdown.frame:SetHeight(26)
 		bib.scrollframe.dropdown.frame:SetScale(.93)
 		self:moveObject{obj=bib.scrollframe.dropdown.frame, x=8, y=4}
+		local btn = bib.scrollframe.dropdown.button
+		self:moveObject{obj=btn, y=-1}
+		if btn.sbb then
+			-- btn.sbb:ClearAllPoints()
+			btn.sbb:SetPoint("TOPLEFT", btn, "TOPLEFT", 0, -1)
+			btn.sbb:SetPoint("BOTTOMRIGHT", btn, "BOTTOMRIGHT", -2, 1)
+		end
 
 	end
 

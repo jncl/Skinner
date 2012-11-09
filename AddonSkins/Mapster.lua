@@ -8,16 +8,16 @@ function aObj:Mapster()
 
 	local function sizeDown()
 
-		aObj.skinFrame[WorldMapFrame]:ClearAllPoints()
-		aObj.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 12, -12)
-		aObj.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -20, -15)
+		WorldMapFrame.sf:ClearAllPoints()
+		WorldMapFrame.sf:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 12, -12)
+		WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -20, -15)
 
 	end
 	local function sizeUp()
 
-		aObj.skinFrame[WorldMapFrame]:ClearAllPoints()
-		aObj.skinFrame[WorldMapFrame]:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 0, 1)
-		aObj.skinFrame[WorldMapFrame]:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 1, 0)
+		WorldMapFrame.sf:ClearAllPoints()
+		WorldMapFrame.sf:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 0, 1)
+		WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 1, 0)
 
 	end
 	-- hook these to handle map size changes
