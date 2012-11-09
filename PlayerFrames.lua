@@ -1334,16 +1334,10 @@ function aObj:LootFrames()
 -->>-- BonusRoll Frame
 	self:removeRegions(BonusRollFrame, {1, 2, 3, 4})
 	self:glazeStatusBar(BonusRollFrame.PromptFrame.Timer, 0,  nil)
--->>-- BonusRollLootWon Frame
-	BonusRollLootWonFrame.Background:SetTexture(nil)
-	BonusRollLootWonFrame.IconBorder:SetTexture(nil)
-	self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollLootWonFrame, relTo=BonusRollLootWonFrame.Icon}) -- wait for animation to finish
-	self:addSkinFrame{obj=BonusRollLootWonFrame, ft=ftype, af=true, ofs=-10}
--->>-- BonusRollMoneyWon Frame
-	BonusRollMoneyWonFrame.Background:SetTexture(nil)
-	BonusRollMoneyWonFrame.IconBorder:SetTexture(nil)
-	self:ScheduleTimer("addButtonBorder", 0.2, {obj=BonusRollMoneyWonFrame, relTo=BonusRollMoneyWonFrame.Icon}) -- wait for animation to finish
-	self:addSkinFrame{obj=BonusRollMoneyWonFrame, ft=ftype, af=true, ofs=-10}
+	self:addSkinFrame{obj=BonusRollFrame, ft=ftype}
+	self:addButtonBorder{obj=BonusRollFrame.PromptFrame, relTo=BonusRollFrame.PromptFrame.Icon}
+
+	-- N.B. BonusRollLootWon/BonusRollMoneyWon frames are now managed as part of the Alert Frames skin
 -->>-- MasterLooter Frame
 	MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
 	MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
@@ -1357,46 +1351,50 @@ function aObj:LootFrames()
 -->>-- MissingLoot frame
 	self:addSkinFrame{obj=MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
 	for i = 1, MissingLootFrame.numShownItems do
-		_G["MissingLootFrameItem" .. index .. "NameFrame"]:SetAlpha(0)
-		self:addButtonBorder{obj=_G["MissingLootFrameItem" .. index], ibt=true}
+		_G["MissingLootFrameItem" .. i .. "NameFrame"]:SetAlpha(0)
+		self:addButtonBorder{obj=_G["MissingLootFrameItem" .. i], ibt=true}
 	end
 
 -->>-- GroupLoot frames
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
 
-		local objName = "GroupLootFrame" .. i
-		local obj = _G[objName]
+		local obj = _G["GroupLootFrame" .. i]
 		self:keepFontStrings(obj)
 		obj.Timer.Background:SetAlpha(0)
 		self:glazeStatusBar(obj.Timer, 0,  nil)
-			-- hook this to skin the group loot frame
+		-- hook this to show the Timer
 		self:SecureHook(obj, "Show", function(this)
-			this:SetBackdrop(nil)
+			this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
 		end)
 
 		if self.db.profile.LootFrames.size == 1 then
 
-			self:addSkinFrame{obj=obj, ft=ftype}--, x1=4, y1=-5, x2=-4, y2=5}
+			obj.IconFrame.Border:SetAlpha(0)
+			self:addSkinFrame{obj=obj, ft=ftype, x1=-3, y2=-3} -- adjust for Timer
 
 		elseif self.db.profile.LootFrames.size == 2 then
 
+			obj.IconFrame.Border:SetAlpha(0)
 			obj:SetScale(0.75)
-			self:addSkinFrame{obj=obj, ft=ftype}--, x1=4, y1=-5, x2=-4, y2=5}
+			self:addSkinFrame{obj=obj, ft=ftype, x1=-3, y2=-3} -- adjust for Timer
 
 		elseif self.db.profile.LootFrames.size == 3 then
 
 			obj:SetScale(0.75)
-			self:moveObject{obj=_G[objName .. "SlotTexture"], x=95, y=4} -- Loot item icon
-			_G[objName .. "Name"]:SetAlpha(0)
-			_G[objName .. "RollButton"]:ClearAllPoints()
-			_G[objName .. "RollButton"]:SetPoint("RIGHT", _G[objName .. "PassButton"], "LEFT", 5, -5)
-			_G[objName .. "GreedButton"]:ClearAllPoints()
-			_G[objName .. "GreedButton"]:SetPoint("RIGHT", _G[objName .. "RollButton"], "LEFT", 0, 0)
-			_G[objName .. "DisenchantButton"]:ClearAllPoints()
-			_G[objName .. "DisenchantButton"]:SetPoint("RIGHT", _G[objName .. "GreedButton"], "LEFT", 0, 0)
-			self:adjWidth{obj=_G[objName .. "Timer"], adj=-28}
-			self:moveObject{obj=_G[objName .. "Timer"], x=-3}
-			self:addSkinFrame{obj=obj, ft=ftype, x1=102, y1=-5, x2=-4, y2=16}
+			self:moveObject{obj=obj.IconFrame, x=95, y=5}
+			obj.Name:SetAlpha(0)
+			obj.NeedButton:ClearAllPoints()
+			obj.NeedButton:SetPoint("TOPRIGHT", "$parent", "TOPRIGHT", -34, -4)
+			obj.PassButton:ClearAllPoints()
+			obj.PassButton:SetPoint("LEFT", obj.NeedButton, "RIGHT", 0, 2)
+			obj.GreedButton:ClearAllPoints()
+			obj.GreedButton:SetPoint("RIGHT", obj.NeedButton, "LEFT")
+			obj.DisenchantButton:ClearAllPoints()
+			obj.DisenchantButton:SetPoint("RIGHT", obj.GreedButton, "LEFT", 2, 0)
+			self:adjWidth{obj=obj.Timer, adj=-30}
+			obj.Timer:ClearAllPoints()
+			obj.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
+			self:addSkinFrame{obj=obj, ft=ftype--[=[, bg=true--]=], x1=97, y2=8}
 
 		end
 
@@ -1408,21 +1406,34 @@ function aObj:LootHistory()
 	if not self.db.profile.LootHistory or self.initialized.LootHistory then return end
 	self.initialized.LootHistory = true
 
+	local function skinItemFrames(obj)
+
+		for i = 1, #obj.itemFrames do
+			local item = obj.itemFrames[i]
+			if not item.ToggleButton.sb then
+				item.Divider:SetTexture(nil)
+				item.NameBorderLeft:SetTexture(nil)
+				item.NameBorderRight:SetTexture(nil)
+				item.NameBorderMid:SetTexture(nil)
+				item.ActiveHighlight:SetTexture(nil)
+				aObj:skinButton{obj=item.ToggleButton, ft=ftype, mp=true, plus=true}
+				aObj:SecureHook(item.ToggleButton, "SetNormalTexture", function(this, nTex)
+					aObj.modUIBtns:checkTex{obj=this, nTex=nTex}
+				end)
+			end
+		end
+
+	end
 	self:skinScrollBar{obj=LootHistoryFrame.ScrollFrame}
 	LootHistoryFrame.ScrollFrame.ScrollBarBackground:SetTexture(nil)
 	LootHistoryFrame.Divider:SetTexture(nil)
 	self:addSkinFrame{obj=LootHistoryFrame, ft=ftype, kfs=true}
 	-- hook this to skin loot history items
 	self:SecureHook("LootHistoryFrame_FullUpdate", function(this)
-		for i = 1, #this.itemFrames do
-			local item = this.itemFrames[i]
-			item.Divider:SetTexture(nil)
-			item.NameBorderLeft:SetTexture(nil)
-			item.NameBorderRight:SetTexture(nil)
-			item.NameBorderMid:SetTexture(nil)
-			self:skinButton{obj=item.ToggleButton, mp=true}
-		end
+		skinItemFrames(this)
 	end)
+	-- skin existing itemFrames
+	skinItemFrames(LootHistoryFrame)
 
 	-- LootHistoryDropDown
 	self:skinDropDown{obj=LootHistoryDropDown}
@@ -1588,7 +1599,7 @@ function aObj:PetJournal() -- LoD
 	self:skinDropDown{obj=PetJournal.petOptionsMenu}
 	for i = 1, #PetJournal.listScroll.buttons do
 		local btn = PetJournal.listScroll.buttons[i]
-		self:removeRegions(btn, {1, 3}) -- background & petTypeIcon
+		self:removeRegions(btn, {1--[=[, 3--]=]}) -- background & petTypeIcon
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
 		if not IsAddOnLoaded("PetJournalEnhanced")
 		and not self.isPTR
