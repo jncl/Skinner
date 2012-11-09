@@ -37,5 +37,34 @@ x		- LFDFrame/LFGFrame/RaidFinder/ScenarioFinder changes, BackFill removed, Cool
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-x	O	PetJournal, requested by essmene, 19.10.12
+?	O	PetJournal, requested by essmene, 19.10.12
 		- I would like to keep the pet family icon in the background of the vanity pets.
+
+√	I	PetBattleUI
+		- L,M,R skin frames now mis-aligned
+
+≈	S	ProfessionsVault, requested by frostalotz, 05.11.12
+
+√	I	Mapster, reported by JAcKyL69, 05.11.12
+		- ..\AddOns\Skinner\SkinMe\Mapster.lua line 18: attempt to index field '?' (a nil value)
+		Debug:
+		Skinner\SkinMe\Mapster.lua:18: sizeUp()
+		Skinner\SkinMe\Mapster.lua:41:
+		Skinner\SkinMe\Mapster.lua:4
+		- Mapster, v1.5.1-5-g60cea56
+		  MapsterEnhanced, v1.5.6
+
+√	I	GnomishVendorShrinker, reported by Acanthe, 06.11.12
+		- Skinner-b5.16231.1\SkinMe\GnomishVendorShrinker-5.0.1.15-Release.lua:8: Usage: <unnamed>:IsObjectType("type")
+		  Skinner-b5.16231.1\SkinMe\GnomishVendorShrinker-5.0.1.15-Release.lua:8: in function "getFirstChildOfType"
+		  Skinner-b5.16231.1\SkinMe\GnomishVendorShrinker-5.0.1.15-Release.lua:14: in function <Skinner\SkinMe\GnomishVendorShrinker.lua:4>
+
+√	I	Bonus Loot Box isn't skinned / is totally transparent, reported by Decabah, 06.11.12
+
+√	O	Bugfix for Nameplate skin loading.
+
+√	I	LootHistory
+		- mp buttons not changing plus/minus
+
+	O	GroupLoot frames
+√		- update skinning code
