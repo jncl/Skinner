@@ -20,8 +20,6 @@ do
 	module.fontX = CreateFont("fontX")
 	module.fontX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
 	module.fontX:SetTextColor(1.0, 0.82, 0)
-	-- module.fontX:SetJustifyV("BOTTOM")
-	-- print("module.fontX justifyH&V", module.fontX:GetJustifyH(), module.fontX:GetJustifyV())
 	-- create font for disabled text
 	module.fontDX = CreateFont("fontDX")
 	module.fontDX:SetFont([[Fonts\FRIZQT__.TTF]], 20)
