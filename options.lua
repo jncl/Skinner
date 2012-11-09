@@ -988,7 +988,7 @@ function aObj:Options()
 					get = function(info) return db.LootFrames[info[#info]] end,
 					set = function(info, value)
 						db.LootFrames[info[#info]] = value
-						self:checkAndRun("Loot")
+						self:checkAndRun("LootFrames")
 					end,
 					args = {
 						skin = {

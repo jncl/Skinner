@@ -113,7 +113,7 @@ function aObj:BlizzardFrames()
 			["Minimap"] = true,
 			["MinimapButtons"] = false, -- done with timer
 			["ModelFrames"] = false, -- checked below
-			["Nameplates"] = true,
+			["Nameplates"] = false, -- checked below
 			["PetBattleUI"] = true,
 			["PVEFrame"] = true,
 			["QueueStatusFrame"] = true,

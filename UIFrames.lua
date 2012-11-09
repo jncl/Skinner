@@ -1912,12 +1912,11 @@ function aObj:PetBattleUI()
 		PetBattleFrame[sfn] = CreateFrame("Frame", nil, PetBattleFrame)
 		self:applySkin{obj=PetBattleFrame[sfn], bba=0, fh=45}
 		if v == "Ally" then
-			PetBattleFrame.sfl:SetPoint("TOPLEFT", PetBattleFrame, "TOPLEFT", 380, 4)
+			PetBattleFrame.sfl:SetPoint("TOPLEFT", PetBattleFrame, "TOPLEFT", 420, 4)
 		else
-			PetBattleFrame.sfr:SetPoint("TOPRIGHT", PetBattleFrame, "TOPRIGHT", -380, 4)
+			PetBattleFrame.sfr:SetPoint("TOPRIGHT", PetBattleFrame, "TOPRIGHT", -420, 4)
 		end
-		PetBattleFrame[sfn]:SetWidth(360)
-		PetBattleFrame[sfn]:SetHeight(94)
+		PetBattleFrame[sfn]:SetSize(350, 94)
 		PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
 		-- Ally2/3, Enemy2/3
 		for i = 2, 3 do
