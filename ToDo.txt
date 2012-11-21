@@ -37,34 +37,51 @@ x		- LFDFrame/LFGFrame/RaidFinder/ScenarioFinder changes, BackFill removed, Cool
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-?	O	PetJournal, requested by essmene, 19.10.12
-		- I would like to keep the pet family icon in the background of the vanity pets.
+√	I	FishingBuddy, reported by NeoZeus/Tinface, 09/21.11.12
+		- Skinner-b5.16231.4\SkinMe\FishingBuddy-1.2b.lua:26: attempt to index local "btn" (a nil value)
 
-√	I	PetBattleUI
-		- L,M,R skin frames now mis-aligned
+≈	I	LootFrames, reported by Eatsbrains, 11.11.12
+		- using revision b5.16231.4, receiving the following error only while in party and inside of dungeons:
 
-≈	S	ProfessionsVault, requested by frostalotz, 05.11.12
+		Ace3\AceHook-3.0\AceHook-3.0-6.lua:180: Attempting to rehook already active hook SetNormalTexture.
+		<in C code>
+		Ace3\AceHook-3.0\AceHook-3.0-6.lua:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		Ace3\AceHook-3.0\AceHook-3.0-6.lua:344: in function "SecureHook"
+		Skinner-@project-version@\PlayerFrames.lua:1420: in function <Skinner\PlayerFrames.lua:1409>
+		Skinner-@project-version@\PlayerFrames.lua:1433: in function <Skinner\PlayerFrames.lua:1432>
 
-√	I	Mapster, reported by JAcKyL69, 05.11.12
-		- ..\AddOns\Skinner\SkinMe\Mapster.lua line 18: attempt to index field '?' (a nil value)
-		Debug:
-		Skinner\SkinMe\Mapster.lua:18: sizeUp()
-		Skinner\SkinMe\Mapster.lua:41:
-		Skinner\SkinMe\Mapster.lua:4
-		- Mapster, v1.5.1-5-g60cea56
-		  MapsterEnhanced, v1.5.6
+√	I	Pawn, reported by lexusnexus, 13.12.12
+		- Error in Pawn when using reforge V-b5.16231.4
+		-  ..\AddOns\Skinner\SkinMe\Pawn.lua line 61: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
+		Debug: [C]: ? ...\ArkInventory\Externals\Ace3-AceHook\AceHook-3.0.lua:143
+		...\ArkInventory\Externals\Ace3-AceHook\AceHook-3.0.lua:118
+		...\ArkInventory\Externals\Ace3-AceHook\AceHook-3.0.lua:414 SecureHookScript()
+		Skinner\SkinMe\Pawn.lua:61 Skinner\SkinMe\Pawn.lua:59
 
-√	I	GnomishVendorShrinker, reported by Acanthe, 06.11.12
-		- Skinner-b5.16231.1\SkinMe\GnomishVendorShrinker-5.0.1.15-Release.lua:8: Usage: <unnamed>:IsObjectType("type")
-		  Skinner-b5.16231.1\SkinMe\GnomishVendorShrinker-5.0.1.15-Release.lua:8: in function "getFirstChildOfType"
-		  Skinner-b5.16231.1\SkinMe\GnomishVendorShrinker-5.0.1.15-Release.lua:14: in function <Skinner\SkinMe\GnomishVendorShrinker.lua:4>
+≈	I	reported by corys2005, 14.11.12
+		- Skinner-b5.16231.4\PlayerFrames.lua:958: attempt to index global "GlyphFrame" (a nil value)
 
-√	I	Bonus Loot Box isn't skinned / is totally transparent, reported by Decabah, 06.11.12
+≈	I	ProfessionTabs, reported by X-buZZ, 16.11.12
+		- Skinner-b5.16231.4\SkinMe\ProfessionTabs-1.2.lua:8: attempt to index local "owner" (a nil value)
 
-√	O	Bugfix for Nameplate skin loading.
+?	I	AdiBags reported by X-buZZ, 16.11.12
+		- Skinner-b5.16231.4\SkinMe\AdiBags-v1.5.6.lua:37: attempt to index field "sbb" (a nil value)
+		  Skinner-b5.16231.4\SkinMe\AdiBags-v1.5.6.lua:37: in function <Skinner\SkinMe\AdiBags.lua:34>
 
-√	I	LootHistory
-		- mp buttons not changing plus/minus
+√	I	HatTrick, reported by Luckyjack_SL, 16.11.12
+		-  ..\AddOns\Skinner\Skinner.lua line 1146:
+			  attempt to index local 'opts' (a nil value)
+			Debug:
+			  Skinner\Skinner.lua:1146: moveObject()
+			  Skinner\SkinMe\HatTrick.lua:5:
+		     Skinner\SkinMe\HatTrick.lua:3
 
-	O	GroupLoot frames
-√		- update skinning code
+√	S	AuctionMaster, requested by gizmo1972, 17.11.12
+
+√	S	Elkano's ItemDB, requested by NeoZeus, 19.11.12
+
+?	I	Talent Frame, reported by essmene, 19.11.12
+		- When I try to retalent I get a pop-up with Action blocked <disable> <ignore>
+		  The action has been blocked...
+
+		  This happens if I want to change a talent and need to spent some tome for it
