@@ -2091,16 +2091,27 @@ function aObj:TalentUI() -- LoD
 	local scrollChild = PlayerTalentFrameSpecialization.spellsScroll.child
 	self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
 	-- abilities
-	for i = 1, scrollChild:GetNumChildren() do
-		local btn = scrollChild["abilityButton" .. i]
-		if btn then btn.ring:SetTexture(nil) end
+	local function skinAbilities(tab)
+		local i = 1
+		local frame = tab["abilityButton" .. i]
+		while frame do
+			frame.ring:SetTexture(nil)
+			if not frame.disabled then
+				frame.subText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			end
+			i = i + 1
+			frame = tab["abilityButton" .. i]
+		end
 	end
+	skinAbilities(scrollChild)
 	-- handle extra abilities (Player and Pet)
-	self:RawHook("PlayerTalentFrame_CreateSpecSpellButton", function(...)
-		local frame = self.hooks.PlayerTalentFrame_CreateSpecSpellButton(...)
-		frame.ring:SetTexture(nil)
-		return frame
-	end, true)
+	self:SecureHook("PlayerTalentFrame_CreateSpecSpellButton", function(this, index)
+		this.spellsScroll.child[index].ring:SetTexture(nil)
+	end)
+	-- hook this as subText text colour is changed
+	self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(this, spec)
+		skinAbilities(this.spellsScroll.child)
+	end)
 	-- Tab2 (Talents)
 	self:removeRegions(PlayerTalentFrameTalents, {1, 2, 3, 4, 5, 6, 7})
 	PlayerTalentFrameTalents.MainHelpButton.Ring:SetTexture(nil)
