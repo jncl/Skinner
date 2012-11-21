@@ -663,19 +663,27 @@ function aObj:ChatTemporaryWindow()
 
 	local function skinTempWindow(obj)
 
-		if self.db.profile.ChatTabs
+		if aObj.db.profile.ChatTabs
 		and not obj.sf
 		then
 			skinChatTab(_G[obj:GetName() .. "Tab"])
 		end
-		if self.db.profile.ChatFrames
+		if aObj.db.profile.ChatFrames
 		and not obj.sf
 		then
-			self:addSkinFrame{obj=obj, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
+			aObj:addSkinFrame{obj=obj, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
 		end
-		if self.db.profile.ChatEditBox.skin
-		and not self.skinned[obj.editBox]
+		if aObj.db.profile.ChatEditBox.skin
+		and not aObj.skinned[obj.editBox]
 			then skinChatEB(obj.editBox)
+		end
+		if aObj.db.profile.ChatButtons
+		and not obj.minimizeButton.sbb
+		then
+			aObj:addButtonBorder{obj=obj.minimizeButton, ofs=-2}
+			aObj:addButtonBorder{obj=obj.downButton, ofs=-2}
+			aObj:addButtonBorder{obj=obj.upButton, ofs=-2}
+			aObj:addButtonBorder{obj=obj.bottomButton, ofs=-2, reParent={aObj:getRegion(obj.bottomButton, 1)}}
 		end
 
 	end
