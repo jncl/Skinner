@@ -296,9 +296,9 @@ function aObj:findFrame2(parent, objType, ...)
 
 	if not parent then return end
 
-	local frame
+	local frame, cKey
 
-	for _, child in pairs{parent:GetChildren()} do
+	for key, child in pairs{parent:GetChildren()} do
 		if child:GetName() == nil then
 			if child:IsObjectType(objType) then
 				if select("#", ...) > 2 then
@@ -312,7 +312,7 @@ function aObj:findFrame2(parent, objType, ...)
 					and relativePoint == select(3, ...)
 					and xOfs		  == select(4, ...)
 					and yOfs		  == select(5, ...) then
-						frame = child
+						frame, cKey = child, key
 						break
 					end
 				else
@@ -321,7 +321,7 @@ function aObj:findFrame2(parent, objType, ...)
 					-- self:Debug("ff2 h/w: [%s, %s, %s]", child, height, width)
 					if	height == select(1, ...)
 					and width  == select(2, ...) then
-						frame = child
+						frame, cKey = child, key
 						break
 					end
 				end
@@ -329,7 +329,7 @@ function aObj:findFrame2(parent, objType, ...)
 		end
 	end
 
-	return frame
+	return frame, cKey
 
 end
 
