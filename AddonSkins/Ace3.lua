@@ -244,6 +244,10 @@ function aObj:Ace3()
 				aObj:skinButton{obj=obj.button, as=true}
 				obj.sknrTSM = true
 
+			-- AuctionMaster object
+			elseif objType == "ScrollableSimpleHTML" then
+				self:skinScrollBar{obj=obj.scrollFrame}
+
 			-- ignore these types for now
 			elseif objType == "CheckBox"
 			or objType == "Dropdown-Item-Execute"

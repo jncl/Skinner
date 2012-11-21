@@ -34,6 +34,7 @@
 <script file="SkinMe\Auctionator.lua"/>
 <script file="SkinMe\AuctionFilterPlus.lua"/>
 <script file="SkinMe\AuctionLite.lua"/>
+<script file="SkinMe\AuctionMaster.lua"/>
 <script file="SkinMe\AuctionProfitMaster.lua"/>
 <script file="SkinMe\Auctionsnatch.lua"/>
 <script file="SkinMe\AutoBag.lua"/>
@@ -164,6 +165,7 @@
 <script file="SkinMe\InspectEquip.lua"/>
 <script file="SkinMe\IntricateChatMods.lua"/>
 <script file="SkinMe\IPopBar.lua"/>
+<script file="SkinMe\ItemDB.lua"/>
 <script file="SkinMe\ItemRack.lua"/>
 <script file="SkinMe\ItemSync.lua"/>
 <script file="SkinMe\LauncherMenu.lua"/>
