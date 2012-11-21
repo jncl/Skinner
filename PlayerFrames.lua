@@ -404,7 +404,8 @@ function aObj:CharacterFrames()
 	-- Character Frame
 	self:removeInset(CharacterFrameInsetRight)
 	self:skinTabs{obj=CharacterFrame}
-	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, bgen=2, x1=-3, y1=2, x2=1, y2=-5}
+	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5} -- don't skin buttons here
+	self:skinButton{obj=CharacterFrameCloseButton, cb=true}
 	self:addButtonBorder{obj=CharacterFrameExpandButton, ofs=-2}
 
 	-- PaperDoll Frame
@@ -470,7 +471,9 @@ function aObj:CharacterFrames()
 		self:Unhook(PaperDollEquipmentManagerPane, "OnShow")
 	end)
 	self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar, adj=-4}
+	self:skinButton{obj=PaperDollEquipmentManagerPane.EquipSet}
 	PaperDollEquipmentManagerPane.EquipSet.ButtonBackground:SetAlpha(0)
+	self:skinButton{obj=PaperDollEquipmentManagerPane.SaveSet}
 
 	-- GearManagerDialog Popup Frame
 	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
@@ -527,9 +530,9 @@ function aObj:CharacterFrames()
 	self:skinScrollBar{obj=TokenFrameContainer}
 
 	self:SecureHookScript(TokenFrame, "OnShow", function(this)
-		-- remove header textures
+		-- remove background & header textures
 		for i = 1, #TokenFrameContainer.buttons do
-			self:removeRegions(TokenFrameContainer.buttons[i], {6, 7, 8})
+			self:removeRegions(TokenFrameContainer.buttons[i], {1, 6, 7, 8})
 		end
 		self:Unhook(TokenFrame, "OnShow")
 	end)
