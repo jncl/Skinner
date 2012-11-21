@@ -1143,7 +1143,7 @@ function aObj:moveObject(...)
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
-	if not opts.obj then return end
+	if not opts then return end
 
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 		-- old style call
