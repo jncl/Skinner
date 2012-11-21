@@ -300,7 +300,7 @@ function module:isButton(obj)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
 			bType = "toast"
-		-- standard close button is 32x32 and had 4 regions
+		-- standard close button is 32x32 and has 4 regions
 		-- RolePollPopup has 3 regions
 		-- Channel Pullout is 24 high
 		elseif obj:GetParent().CloseButton == obj
@@ -308,7 +308,7 @@ function module:isButton(obj)
 		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"))
 		then
 			bType = "close"
-		elseif (oH >= 20 and oH <= 25) and (nR >= 5 and nR <= 8) -- std button
+		elseif (oH >= 20 and oH <= 25 and nR >= 5 and nR <= 8) -- std button
 		or (oH == 30 and oW == 160) -- HelpFrame
 		or (oH == 32 and oW == 128 and nR == 4) -- BasicScriptErrors Frame
 		or (oH == 22 and oW == 108 and nR == 4) -- Tutorial Frame
@@ -346,13 +346,13 @@ local function __skinAllButtons(opts, bgen)
 			end
 			local bType = module:isButton(child)
 			if bType == "normal" then
-				module:skinButton{obj=child, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim, as=opts.as}
+				module:skinButton{obj=child, ft=opts.ft, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim, as=opts.as}
 			elseif bType == "close" then
-				module:skinButton{obj=child, cb=true, sap=opts.sap, anim=opts.anim}
+				module:skinButton{obj=child, ft=opts.ft, cb=true, sap=opts.sap, anim=opts.anim}
 			elseif bType == "toast" then
-				module:skinButton{obj=child, cb3=true}
+				module:skinButton{obj=child, ft=opts.ft, cb3=true}
 			elseif bType == "help" then
-				module:skinButton{obj=child, x1=0, y1=0, x2=-3, y2=3}
+				module:skinButton{obj=child, ft=opts.ft, x1=0, y1=0, x2=-3, y2=3}
 			end
 		elseif child:IsObjectType("Frame") and bgen > 0 then
 			opts.obj=child
@@ -423,8 +423,7 @@ local function __addButtonBorder(opts)
 	opts.obj.sbb = CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
-	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile,
-								  edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
+	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
 	opts.obj.sbb:SetBackdropBorderColor(unpack(aObj.bbColour))
 	-- position the frame
 	opts.ofs = opts.ofs or 2
@@ -433,9 +432,7 @@ local function __addButtonBorder(opts)
 	local xOfs2 = opts.x2 or opts.ofs
 	local yOfs2 = opts.y2 or opts.ofs * -1
 	-- Large Item Button templates have an IconTexture to position to
-	local relTo = opts.relTo
-			or opts.libt and _G[btnName .. "IconTexture"]
-			or nil
+	local relTo = opts.relTo or opts.libt and _G[btnName .. "IconTexture"] or nil
 	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
 	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 
