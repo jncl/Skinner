@@ -419,7 +419,7 @@ function aObj:TRADE_SKILL_SHOW()
 	self:checkAndRunAddOn("ReagentMaker")
 
 	-- trigger this to skin ProfessionTabs
-	self:checkAndRunAddOn("ProfessionTabs")
+	self:checkAndRunAddOn("ProfessionTabs_TSF")
 
 	self:UnregisterEvent("TRADE_SKILL_SHOW")
 
@@ -429,7 +429,7 @@ function aObj:TRADE_SHOW()
 	-- self:Debug("TRADE_SHOW")
 
 	-- trigger this to skin ProfessionTabs
-	self:checkAndRunAddOn("ProfessionTabs")
+	self:checkAndRunAddOn("ProfessionTabs_TF")
 
 	self:UnregisterEvent("TRADE_SHOW")
 

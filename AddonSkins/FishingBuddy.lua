@@ -3,7 +3,8 @@ if not aObj:isAddonEnabled("FishingBuddy") then return end
 
 function aObj:FishingBuddy()
 
-	self:addSkinFrame{obj=FishingBuddyFrame, kfs=true, x1=10, y1=-13, x2=-31, y2=69}
+	self:addSkinFrame{obj=FishingBuddyFrame, kfs=true, bgen=1, x1=10, y1=-13, x2=-31, y2=72} -- N.B. bgen=1 so locations frame mp buttons aren't skinned here
+
 -->>--	Locations Frame
 	self:keepFontStrings(FishingLocationsFrame)
 	self:keepFontStrings(FishingLocationExpandButtonFrame)
@@ -17,15 +18,13 @@ function aObj:FishingBuddy()
 			end
 			self:checkTex(FishingLocationsCollapseAllButton)
 		end)
+		-- skin location mp buttons
+		for i = 1, 21 do
+			self:skinButton{obj=_G["FishingLocations"..i], mp=true}
+		end
+		-- CollapseAll button
+		self:skinButton{obj=FishingLocationsCollapseAllButton, mp=true}
 	end
-	for i = 1, 21 do
-		self:skinButton{obj=_G["FishingLocations"..i], mp=true}
-	end
-	-- mp button is already skinned
-	local btn = self.sBtn[FishingLocationsCollapseAllButton]
-	btn:SetAllPoints(FishingLocationsCollapseAllButton:GetNormalTexture())
-	btn:SetNormalFontObject(self.modUIBtns.fontP)
-	btn:SetText(self.modUIBtns.minus)
 
 -->>--	Options Frame
 	self:keepFontStrings(FishingOptionsFrame)
@@ -51,25 +50,15 @@ function aObj:FishingBuddy()
 	if self.isTT then self:setActiveTab(tabSF) end
 
 -->>-- Tabs (side)
-	for i = 1, 6 do -- allow for 5 tabs (inc. Outfit & Tracking plugins)
+	for i = 1, 6 do -- allow for 6 tabs (inc. Outfit & Tracking plugins)
 		tabObj = _G["FishingBuddyOptionTab"..i]
 		if tabObj then
 			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
 		end
 	end
 
--->>--	Tabs (bottom)
-	for i = 1, FishingBuddyFrame.numTabs do
-		tabObj = _G["FishingBuddyFrameTab"..i]
-		self:keepRegions(tabObj, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tabObj, noBdr=self.isTT, x1=6, y1=-2, x2=-6, y2=2}
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-	end
-    self.tabFrames[FishingBuddyFrame] = true
+-->>-- Tabs (bottom)
+	self:skinTabs{obj=FishingBuddyFrame}
 
 end
 

@@ -50,18 +50,16 @@ function aObj:Pawn()
 	PawnCommon.ColorTooltipBorder = false -- disable tooltip border color change
 	if self.db.profile.Tooltips.skin then
 		self:SecureHook("PawnUI_OnSocketUpdate", function()
-			if self.db.profile.Tooltips.style == 3 then PawnSocketingTooltip:SetBackdrop(self.Backdrop[1]) end
-			self:SecureHookScript(PawnSocketingTooltip, "OnShow", function(this)
-				self:skinTooltip(this)
-			end)
-			self:Unhook("PawnUI_OnSocketUpdate")
+			if PawnSocketingTooltip then
+				self:add2Table(self.ttList, "PawnSocketingTooltip")
+				self:Unhook("PawnUI_OnSocketUpdate")
+			end
 		end)
 		self:SecureHook("PawnUI_OnReforgingUpdate", function()
-			if self.db.profile.Tooltips.style == 3 then PawnReforgingTooltip:SetBackdrop(self.Backdrop[1]) end
-			self:SecureHookScript(PawnReforgingTooltip, "OnShow", function(this)
-				self:skinTooltip(this)
-			end)
-			self:Unhook("PawnUI_OnReforgingUpdate")
+			if PawnReforgingTooltip then
+				self:add2Table(self.ttList, "PawnReforgingTooltip")
+				self:Unhook("PawnUI_OnReforgingUpdate")
+			end
 		end)
 	end
 
