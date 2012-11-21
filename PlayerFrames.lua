@@ -1410,16 +1410,18 @@ function aObj:LootHistory()
 
 		for i = 1, #obj.itemFrames do
 			local item = obj.itemFrames[i]
-			if not item.ToggleButton.sb then
-				item.Divider:SetTexture(nil)
-				item.NameBorderLeft:SetTexture(nil)
-				item.NameBorderRight:SetTexture(nil)
-				item.NameBorderMid:SetTexture(nil)
-				item.ActiveHighlight:SetTexture(nil)
-				aObj:skinButton{obj=item.ToggleButton, ft=ftype, mp=true, plus=true}
-				aObj:SecureHook(item.ToggleButton, "SetNormalTexture", function(this, nTex)
-					aObj.modUIBtns:checkTex{obj=this, nTex=nTex}
-				end)
+			item.Divider:SetTexture(nil)
+			item.NameBorderLeft:SetTexture(nil)
+			item.NameBorderRight:SetTexture(nil)
+			item.NameBorderMid:SetTexture(nil)
+			item.ActiveHighlight:SetTexture(nil)
+			if aObj.modBtns then
+				if not item.ToggleButton.sb then
+					aObj:skinButton{obj=item.ToggleButton, ft=ftype, mp=true, plus=true}
+					aObj:SecureHook(item.ToggleButton, "SetNormalTexture", function(this, nTex)
+						aObj.modUIBtns:checkTex{obj=this, nTex=nTex}
+					end)
+				end
 			end
 		end
 
