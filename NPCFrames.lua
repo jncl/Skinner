@@ -519,6 +519,7 @@ function aObj:SideDressUpFrame()
 	SideDressUpModelCloseButton:DisableDrawLayer("BACKGROUND")
 	SideDressUpFrame:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=SideDressUpFrame, ft=ftype, bg=true, x1=-6, y1=-3, x2=-2}
+	self:skinButton{obj=SideDressUpModelCloseButton, cb=true}
 
 end
 
