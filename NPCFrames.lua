@@ -483,17 +483,10 @@ function aObj:ReforgingUI() -- LoD
 	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
 	self.initialized.ReforgingUI = true
 
-	self:SecureHook(ReforgingFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
-		if tex:find("UI-Slot-Background", 1, true) then
-			this:SetAlpha(0)
-		else
-			this:SetAlpha(1)
-		end
-	end)
 	ReforgingFrame.ItemButton.IconTexture:SetAlpha(0)
 	ReforgingFrame.ItemButton:DisableDrawLayer("BACKGROUND")
 	ReforgingFrame.ItemButton:DisableDrawLayer("OVERLAY")
-	self:addSkinButton{obj=ReforgingFrame.ItemButton, aso={ng=true}, ft=ftype}
+	self:addButtonBorder{obj=ReforgingFrame.ItemButton, ibt=true, ofs=1}
 	ReforgingFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:keepRegions(ReforgingFrame.ButtonFrame, {})
 	ReforgingFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -501,6 +494,20 @@ function aObj:ReforgingUI() -- LoD
 	self:moveObject{obj=ReforgingFrameRestoreButton, y=2}
 	self:removeMagicBtnTex(ReforgingFrameRestoreButton)
 	self:removeMagicBtnTex(ReforgingFrameReforgeButton)
+
+	-- hook this to hide the ItemButton texture if empty
+	self:SecureHook(ReforgingFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
+		if tex:find("UI-Slot-Background", 1, true) then
+			this:SetAlpha(0)
+		else
+			this:SetAlpha(1)
+		end
+	end)
+	-- hook this to remove background texture from stat lines
+	self:SecureHook("ReforgingFrame_GetStatRow", function(index, tryAdd)
+		if ReforgingFrame.LeftStat[index] then ReforgingFrame.LeftStat[index].BG:SetTexture(nil) end
+		if ReforgingFrame.RightStat[index] then ReforgingFrame.RightStat[index].BG:SetTexture(nil) end
+	end)
 
 end
 
