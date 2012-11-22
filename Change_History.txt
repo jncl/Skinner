@@ -1,3 +1,21 @@
+b5.16309.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Added code to help identify objects for skinning
+	Updated Button skinning code
+	Updated ChatTemporaryWindow skin
+	Updated CharacterFrames skin
+	Updated LootHistory skin
+	Updated TalentUI skin
+	Updated SideDressUpFrame skin
+	Updated ReforgingUI skin
+	Bugfix for AuctionUI
+	Bugfix for moveObject function
+	Bugfix for TalentUI/GlyphUI
+	Updated FishingBuddy, Pawn & ProfessionTabs skins
+	Skinned AuctionMaster & ItemDB
+
 b5.16231.4
 Jncl:
 	ToDo.txt
