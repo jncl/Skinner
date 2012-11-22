@@ -37,51 +37,15 @@ x		- LFDFrame/LFGFrame/RaidFinder/ScenarioFinder changes, BackFill removed, Cool
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I	FishingBuddy, reported by NeoZeus/Tinface, 09/21.11.12
-		- Skinner-b5.16231.4\SkinMe\FishingBuddy-1.2b.lua:26: attempt to index local "btn" (a nil value)
-
-≈	I	LootFrames, reported by Eatsbrains, 11.11.12
-		- using revision b5.16231.4, receiving the following error only while in party and inside of dungeons:
-
-		Ace3\AceHook-3.0\AceHook-3.0-6.lua:180: Attempting to rehook already active hook SetNormalTexture.
-		<in C code>
-		Ace3\AceHook-3.0\AceHook-3.0-6.lua:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		Ace3\AceHook-3.0\AceHook-3.0-6.lua:344: in function "SecureHook"
-		Skinner-@project-version@\PlayerFrames.lua:1420: in function <Skinner\PlayerFrames.lua:1409>
-		Skinner-@project-version@\PlayerFrames.lua:1433: in function <Skinner\PlayerFrames.lua:1432>
-
-√	I	Pawn, reported by lexusnexus, 13.12.12
-		- Error in Pawn when using reforge V-b5.16231.4
-		-  ..\AddOns\Skinner\SkinMe\Pawn.lua line 61: Usage: SecureHookScript(object, method, [handler]): You can only hook a script on a frame object
-		Debug: [C]: ? ...\ArkInventory\Externals\Ace3-AceHook\AceHook-3.0.lua:143
-		...\ArkInventory\Externals\Ace3-AceHook\AceHook-3.0.lua:118
-		...\ArkInventory\Externals\Ace3-AceHook\AceHook-3.0.lua:414 SecureHookScript()
-		Skinner\SkinMe\Pawn.lua:61 Skinner\SkinMe\Pawn.lua:59
-
-≈	I	reported by corys2005, 14.11.12
-		- Skinner-b5.16231.4\PlayerFrames.lua:958: attempt to index global "GlyphFrame" (a nil value)
-
-≈	I	ProfessionTabs, reported by X-buZZ, 16.11.12
-		- Skinner-b5.16231.4\SkinMe\ProfessionTabs-1.2.lua:8: attempt to index local "owner" (a nil value)
-
 ?	I	AdiBags reported by X-buZZ, 16.11.12
 		- Skinner-b5.16231.4\SkinMe\AdiBags-v1.5.6.lua:37: attempt to index field "sbb" (a nil value)
 		  Skinner-b5.16231.4\SkinMe\AdiBags-v1.5.6.lua:37: in function <Skinner\SkinMe\AdiBags.lua:34>
-
-√	I	HatTrick, reported by Luckyjack_SL, 16.11.12
-		-  ..\AddOns\Skinner\Skinner.lua line 1146:
-			  attempt to index local 'opts' (a nil value)
-			Debug:
-			  Skinner\Skinner.lua:1146: moveObject()
-			  Skinner\SkinMe\HatTrick.lua:5:
-		     Skinner\SkinMe\HatTrick.lua:3
-
-√	S	AuctionMaster, requested by gizmo1972, 17.11.12
-
-√	S	Elkano's ItemDB, requested by NeoZeus, 19.11.12
 
 ?	I	Talent Frame, reported by essmene, 19.11.12
 		- When I try to retalent I get a pop-up with Action blocked <disable> <ignore>
 		  The action has been blocked...
 
 		  This happens if I want to change a talent and need to spent some tome for it
+
+√	I	PetBattleUI, reported by essmene, 22.11.12
+		- all buttons in my pet battle menu are gone / there is just a black line
