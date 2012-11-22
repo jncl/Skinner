@@ -678,12 +678,12 @@ function aObj:ChatTemporaryWindow()
 			then skinChatEB(obj.editBox)
 		end
 		if aObj.db.profile.ChatButtons
-		and not obj.minimizeButton.sbb
+		and not obj.buttonFrame.minimizeButton.sbb
 		then
-			aObj:addButtonBorder{obj=obj.minimizeButton, ofs=-2}
-			aObj:addButtonBorder{obj=obj.downButton, ofs=-2}
-			aObj:addButtonBorder{obj=obj.upButton, ofs=-2}
-			aObj:addButtonBorder{obj=obj.bottomButton, ofs=-2, reParent={aObj:getRegion(obj.bottomButton, 1)}}
+			aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2}
+			aObj:addButtonBorder{obj=obj.buttonFrame.downButton, ofs=-2}
+			aObj:addButtonBorder{obj=obj.buttonFrame.upButton, ofs=-2}
+			aObj:addButtonBorder{obj=obj.buttonFrame.bottomButton, ofs=-2, reParent={aObj:getRegion(obj.buttonFrame.bottomButton, 1)}}
 		end
 
 	end
@@ -694,8 +694,9 @@ function aObj:ChatTemporaryWindow()
 		return obj
 	end, true)
 	-- skin any existing temporary windows
-	for i = NUM_CHAT_WINDOWS + 1, NUM_CHAT_WINDOWS + 10 do
-		if _G["ChatFrame" .. i] then skinTempWindow(_G["ChatFrame" .. i]) end
+	for _, chatFrameName in pairs(CHAT_FRAMES) do
+		local frame = _G[chatFrameName]
+		if frame.isTemporary then skinTempWindow(frame) end
 	end
 
 end
