@@ -2111,7 +2111,7 @@ function aObj:TalentUI() -- LoD
 	skinAbilities(scrollChild)
 	-- handle extra abilities (Player and Pet)
 	self:SecureHook("PlayerTalentFrame_CreateSpecSpellButton", function(this, index)
-		this.spellsScroll.child[index].ring:SetTexture(nil)
+		this.spellsScroll.child["abilityButton" .. index].ring:SetTexture(nil)
 	end)
 	-- hook this as subText text colour is changed
 	self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(this, spec)
