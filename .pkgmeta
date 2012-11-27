@@ -1,6 +1,8 @@
 package-as: Skinner
 
-tools-used: findglobals
+tools-used:
+
+	- findglobals
 
 externals:
 
