@@ -1,4 +1,5 @@
 local aName, aObj = ...
+local _G = _G
 local module = aObj:NewModule("MiddleFrames")
 local ftype = "s"
 
@@ -19,13 +20,13 @@ end
 
 local function OnMouseDown(self, mBtn)
 
-	if mBtn == "LeftButton" and IsAltKeyDown() then
+	if mBtn == "LeftButton" and _G.IsAltKeyDown() then
 		self.isMoving = true
 		self:StartMoving()
 		self:Raise()
 	end
 
-	if mBtn == "LeftButton" and IsControlKeyDown() then
+	if mBtn == "LeftButton" and _G.IsControlKeyDown() then
 		self.isMoving = true
 		self:StartSizing("BOTTOMRIGHT")
 		self:Raise()
@@ -60,23 +61,23 @@ local function OnHide(self)
 end
 local function OnEnter(self)
 
-	GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
-	GameTooltip:AddLine(aObj.L[self.name])
-	GameTooltip:AddLine(aObj.L["Alt-Drag to move"], 1, 1, 1)
-	GameTooltip:AddLine(aObj.L["Ctrl-Drag to resize"], 1, 1, 1)
-	GameTooltip:Show()
+	_G.GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+	_G.GameTooltip:AddLine(aObj.L[self.name])
+	_G.GameTooltip:AddLine(aObj.L["Alt-Drag to move"], 1, 1, 1)
+	_G.GameTooltip:AddLine(aObj.L["Ctrl-Drag to resize"], 1, 1, 1)
+	_G.GameTooltip:Show()
 
 end
 local function OnLeave(self)
 
-	GameTooltip:Hide()
+	_G.GameTooltip:Hide()
 
 end
 local frames = {}
 local function adjustFrame(key)
 
 	if db[key].shown then
-		local frame = frames[key] or CreateFrame("Frame", db.name and aName .. "MF" .. key:sub(-1) or nil, UIParent)
+		local frame = frames[key] or _G.CreateFrame("Frame", db.name and aName .. "MF" .. key:sub(-1) or nil, _G.UIParent)
 		frame.db = db
 		frame.key = key
 		frame.name = db.name and aName .. "MF" .. key:sub(-1) or "Middle Frame" .. key:sub(-1)
@@ -86,7 +87,7 @@ local function adjustFrame(key)
 		frame:SetResizable(true)
 		frame:SetWidth(db[key].width)
 		frame:SetHeight(db[key].height)
-		frame:SetPoint("CENTER", UIParent, "CENTER", db[key].xOfs, db[key].yOfs)
+		frame:SetPoint("CENTER", _G.UIParent, "CENTER", db[key].xOfs, db[key].yOfs)
 		frame:RegisterForDrag("LeftButtonUp")
 		 -- set scripts here as IsMouseEnabled is set to true by them (patch 4.0.1)
 		frame:SetScript("OnMouseUp", OnMouseUp)
@@ -101,7 +102,7 @@ local function adjustFrame(key)
 			frame:EnableMouse(true)
 		end
 		-- set the fade height
-		fh = nil
+		local fh = nil
 		if not aObj.db.profile.FadeHeight.enable
 		and db.fixedfh
 		then
@@ -124,14 +125,14 @@ function module:OnInitialize()
 
 	-- convert any old settings
 	if aObj.db.profile.MiddleFrame then
-		for k, v in pairs(aObj.db.profile.MiddleFrame) do
+		for k, v in _G.pairs(aObj.db.profile.MiddleFrame) do
 			db[k] = v
 		end
 		aObj.db.profile.MiddleFrame = nil
 	end
 	for i = 1, MAX_MIDDLEFRAMES do
 		if aObj.db.profile["MiddleFrame" .. i] then
-			for k, v in pairs(aObj.db.profile["MiddleFrame" .. i]) do
+			for k, v in _G.pairs(aObj.db.profile["MiddleFrame" .. i]) do
 				db["mf" .. i][k] = v
 			end
 			aObj.db.profile["MiddleFrame" .. i] = nil

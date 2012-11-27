@@ -2,23 +2,26 @@ local aName, aObj = ...
 local _G = _G
 local ftype = "n"
 
+-- Add locals to see if it speeds things up
+local pairs = _G.pairs
+
 function aObj:ArenaRegistrar()
 	if not self.db.profile.ArenaRegistrar or self.initialized.ArenaRegistrar then return end
 	self.initialized.ArenaRegistrar = true
 
 	--	PVP Banner Frame
-	self:skinEditBox{obj=PVPBannerFrameEditBox, regs={9}}
-	self:keepRegions(PVPBannerFrame, {8, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 29 - 32 are the emblem, 33 - 35 are the text
-	self:addSkinFrame{obj=PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
-	self:removeMagicBtnTex(PVPBannerFrameCancelButton)
-	self:removeMagicBtnTex(PVPBannerFrameAcceptButton)
-	self:removeRegions(PVPBannerFrameCustomizationFrame)
+	self:skinEditBox{obj=_G.PVPBannerFrameEditBox, regs={9}}
+	self:keepRegions(_G.PVPBannerFrame, {8, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 29 - 32 are the emblem, 33 - 35 are the text
+	self:addSkinFrame{obj=_G.PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
+	self:removeMagicBtnTex(_G.PVPBannerFrameCancelButton)
+	self:removeMagicBtnTex(_G.PVPBannerFrameAcceptButton)
+	self:removeRegions(_G.PVPBannerFrameCustomizationFrame)
 	for i = 1, 2 do
 		self:keepFontStrings(_G["PVPBannerFrameCustomization" .. i])
 		self:addButtonBorder{obj=_G["PVPBannerFrameCustomization" .. i .. "LeftButton"], ofs=-2}
 		self:addButtonBorder{obj=_G["PVPBannerFrameCustomization" .. i .. "RightButton"], ofs=-2}
 	end
-	self:removeMagicBtnTex(self:getChild(PVPBannerFrame, 6)) -- duplicate named button
+	self:removeMagicBtnTex(self:getChild(_G.PVPBannerFrame, 6)) -- duplicate named button
 
 end
 
@@ -31,27 +34,27 @@ function aObj:AuctionUI() -- LoD
 		_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
 	end)
 
-	self:skinTabs{obj=AuctionFrame, lod=true}
-	self:addSkinFrame{obj=AuctionFrame, ft=ftype, kfs=true, hdr=true, bgen=1, x1=10, y1=-11, y2=5} -- N.B. bgen=1 to prevent other addons buttons being skinned
+	self:skinTabs{obj=_G.AuctionFrame, lod=true}
+	self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, bgen=1, x1=10, y1=-11, y2=5} -- N.B. bgen=1 to prevent other addons buttons being skinned
 -->>--	Browse Frame
 	for k, v in pairs{"Name", "MinLevel", "MaxLevel"} do
 		local obj = _G["Browse" .. v]
 		self:skinEditBox{obj=obj, regs={9}}
 		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
 	end
-	self:skinDropDown{obj=BrowseDropDown, x2=110}
+	self:skinDropDown{obj=_G.BrowseDropDown, x2=110}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		local obj = _G["Browse" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
-	self:skinScrollBar{obj=BrowseFilterScrollFrame}
-	for i = 1, NUM_FILTERS_TO_DISPLAY do
+	self:skinScrollBar{obj=_G.BrowseFilterScrollFrame}
+	for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
 		self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true}
 	end
-	self:skinScrollBar{obj=BrowseScrollFrame}
-	for i = 1, NUM_BROWSE_TO_DISPLAY do
+	self:skinScrollBar{obj=_G.BrowseScrollFrame}
+	for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
 		local btnName = "BrowseButton" .. i
 		if _G[btnName].Orig then break end -- Auctioneer CompactUI loaded
 		self:keepFontStrings(_G[btnName])
@@ -59,9 +62,9 @@ function aObj:AuctionUI() -- LoD
 		_G[btnName .. "ItemCount"]:SetDrawLayer("ARTWORK") -- fix for 3.3.3 bug
 		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
 	end
-	self:skinMoneyFrame{obj=BrowseBidPrice, moveSEB=true}
-	self:addButtonBorder{obj=BrowsePrevPageButton, ofs=-2}
-	self:addButtonBorder{obj=BrowseNextPageButton, ofs=-2}
+	self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
+	self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2}
 
 -->>--	Bid Frame
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
@@ -69,45 +72,45 @@ function aObj:AuctionUI() -- LoD
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
-	for i = 1, NUM_BIDS_TO_DISPLAY do
+	for i = 1, _G.NUM_BIDS_TO_DISPLAY do
 		local btnName = "BidButton" .. i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
 	end
-	self:skinScrollBar{obj=BidScrollFrame}
-	self:skinMoneyFrame{obj=BidBidPrice, moveSEB=true}
+	self:skinScrollBar{obj=_G.BidScrollFrame}
+	self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
 
 -->>--	Auctions Frame
 	if not self.modBtnBs then
-		self:resizeEmptyTexture(self:getRegion(AuctionsItemButton, 2))
+		self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
 	else
-		self:getRegion(AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
-		self:addButtonBorder{obj=AuctionsItemButton}
+		self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
+		self:addButtonBorder{obj=_G.AuctionsItemButton}
 	end
 	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 		local obj = _G["Auctions" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
-	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
+	for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
 		local btnName = "AuctionsButton" .. i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
 	end
-	self:skinScrollBar{obj=AuctionsScrollFrame}
-	self:skinEditBox{obj=AuctionsStackSizeEntry, regs={9}, noWidth=true}
-	self:skinEditBox{obj=AuctionsNumStacksEntry, regs={9}, noWidth=true}
-	self:skinDropDown{obj=PriceDropDown}
-	self:skinDropDown{obj=DurationDropDown}
-	AuctionProgressFrame:DisableDrawLayer("BACKGROUND")
-	AuctionProgressFrame:DisableDrawLayer("ARTWORK")
-	self:keepFontStrings(AuctionProgressBar)
+	self:skinScrollBar{obj=_G.AuctionsScrollFrame}
+	self:skinEditBox{obj=_G.AuctionsStackSizeEntry, regs={9}, noWidth=true}
+	self:skinEditBox{obj=_G.AuctionsNumStacksEntry, regs={9}, noWidth=true}
+	self:skinDropDown{obj=_G.PriceDropDown}
+	self:skinDropDown{obj=_G.DurationDropDown}
+	_G.AuctionProgressFrame:DisableDrawLayer("BACKGROUND")
+	_G.AuctionProgressFrame:DisableDrawLayer("ARTWORK")
+	self:keepFontStrings(_G.AuctionProgressBar)
 	self:moveObject{obj=_G["AuctionProgressBar" .. "Text"], y=-2}
-	self:glazeStatusBar(AuctionProgressBar, 0)
-	self:skinMoneyFrame{obj=StartPrice, moveSEB=true}
-	self:skinMoneyFrame{obj=BuyoutPrice, moveSEB=true}
+	self:glazeStatusBar(_G.AuctionProgressBar, 0)
+	self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
+	self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
 
 end
 
@@ -115,15 +118,15 @@ function aObj:BankFrame()
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
-	self:skinEditBox{obj=BankItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	self:removeInset(BankFrameMoneyFrameInset)
-	BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:skinEditBox{obj=_G.BankItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:removeInset(_G.BankFrameMoneyFrameInset)
+	_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
 	-- add button borders
-	for i = 1, NUM_BANKGENERIC_SLOTS do
+	for i = 1, _G.NUM_BANKGENERIC_SLOTS do
 		self:addButtonBorder{obj=_G["BankFrameItem" .. i], ibt=true}
 	end
-	for i = 1, NUM_BANKBAGSLOTS do
+	for i = 1, _G.NUM_BANKBAGSLOTS do
 		self:addButtonBorder{obj=_G["BankFrameBag" .. i], ibt=true}
 	end
 
@@ -133,16 +136,16 @@ function aObj:BarbershopUI() -- LoD
 	if not self.db.profile.BarbershopUI or self.initialized.Barbershop then return end
 	self.initialized.Barbershop = true
 
-	self:keepFontStrings(BarberShopFrameMoneyFrame)
-	self:addSkinFrame{obj=BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
+	self:keepFontStrings(_G.BarberShopFrameMoneyFrame)
+	self:addSkinFrame{obj=_G.BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
 	 for i = 1, 4 do
 		 self:addButtonBorder{obj=_G["BarberShopFrameSelector" .. i .. "Prev"], ofs=-2}
 		 self:addButtonBorder{obj=_G["BarberShopFrameSelector" .. i .. "Next"], ofs=-2}
 	 end
 	-- Banner Frame
-	self:keepFontStrings(BarberShopBannerFrame)
-	BarberShopBannerFrameCaption:ClearAllPoints()
-	BarberShopBannerFrameCaption:SetPoint("CENTER", BarberShopFrame, "TOP", 0, -46)
+	self:keepFontStrings(_G.BarberShopBannerFrame)
+	_G.BarberShopBannerFrameCaption:ClearAllPoints()
+	_G.BarberShopBannerFrameCaption:SetPoint("CENTER", _G.BarberShopFrame, "TOP", 0, -46)
 
 end
 
@@ -151,22 +154,22 @@ function aObj:BlackMarketUI() -- LoD
 	self.initialized.BlackMarketUI = true
 
 	-- move title text
-	self:moveObject{obj=self:getRegion(BlackMarketFrame, 22), y=-4}
+	self:moveObject{obj=self:getRegion(_G.BlackMarketFrame, 22), y=-4}
 	-- HotDeal frame
-	self:keepFontStrings(BlackMarketFrame.HotDeal)
-	self:addButtonBorder{obj=BlackMarketFrame.HotDeal.Item, ibt=true, relTo=BlackMarketFrame.HotDeal.Item.IconTexture}
-	self:skinAllButtons{obj=BlackMarketFrame.HotDeal, ft=ftype}
-	self:skinMoneyFrame{obj=BlackMarketHotItemBidPrice}
+	self:keepFontStrings(_G.BlackMarketFrame.HotDeal)
+	self:addButtonBorder{obj=_G.BlackMarketFrame.HotDeal.Item, ibt=true, relTo=_G.BlackMarketFrame.HotDeal.Item.IconTexture}
+	self:skinAllButtons{obj=_G.BlackMarketFrame.HotDeal, ft=ftype}
+	self:skinMoneyFrame{obj=_G.BlackMarketHotItemBidPrice}
 
 	-- column headings
 	for _, v in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
-		local obj = BlackMarketFrame["Column" .. v]
+		local obj = _G.BlackMarketFrame["Column" .. v]
 		self:keepFontStrings(obj)
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
 	self:SecureHook("BlackMarketScrollFrame_Update", function(this)
-		for i = 1, #BlackMarketScrollFrame.buttons do
-			local btn = BlackMarketScrollFrame.buttons[i]
+		for i = 1, #_G.BlackMarketScrollFrame.buttons do
+			local btn = _G.BlackMarketScrollFrame.buttons[i]
 			if btn and not self.skinned[btn] then
 				self:keepFontStrings(btn)
 				btn:GetHighlightTexture():SetAlpha(1)
@@ -175,10 +178,10 @@ function aObj:BlackMarketUI() -- LoD
 		end
 		self:Unhook("BlackMarketScrollFrame_Update")
 	end)
-	self:skinSlider{obj=BlackMarketScrollFrame.ScrollBar, adj=-4}
-	BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-	self:skinMoneyFrame{obj=BlackMarketBidPrice}
-	self:addSkinFrame{obj=BlackMarketFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:skinSlider{obj=_G.BlackMarketScrollFrame.ScrollBar, adj=-4}
+	_G.BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
+	self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
+	self:addSkinFrame{obj=_G.BlackMarketFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -188,21 +191,21 @@ function aObj:GossipFrame()
 
 	-- setup Quest display colours here
 	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
-	NORMAL_QUEST_DISPLAY = "|cff"..QTHex .. "%s|r"
-	TRIVIAL_QUEST_DISPLAY = "|cff"..QTHex .. "%s (low level)|r"
+	_G.NORMAL_QUEST_DISPLAY = "|cff"..QTHex .. "%s|r"
+	_G.TRIVIAL_QUEST_DISPLAY = "|cff"..QTHex .. "%s (low level)|r"
 
-	self:keepFontStrings(GossipFrameGreetingPanel)
-	GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinScrollBar{obj=GossipGreetingScrollFrame}
-	for i = 1, NUMGOSSIPBUTTONS do
+	self:keepFontStrings(_G.GossipFrameGreetingPanel)
+	_G.GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:skinScrollBar{obj=_G.GossipGreetingScrollFrame}
+	for i = 1, _G.NUMGOSSIPBUTTONS do
 		local obj = self:getRegion(_G["GossipTitleButton" .. i], 3)
 		obj:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 
-	self:addSkinFrame{obj=GossipFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.GossipFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	-- NPCFriendshipStatusBar
-	self:removeRegions(NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
-	self:glazeStatusBar(NPCFriendshipStatusBar, 0,  self:getRegion(NPCFriendshipStatusBar, 7))
+	self:removeRegions(_G.NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
+	self:glazeStatusBar(_G.NPCFriendshipStatusBar, 0,  self:getRegion(_G.NPCFriendshipStatusBar, 7))
 
 end
 
@@ -210,16 +213,16 @@ function aObj:GuildRegistrar()
 	if not self.db.profile.GuildRegistrar or self.initialized.GuildRegistrar then return end
 	self.initialized.GuildRegistrar = true
 
-	self:keepFontStrings(GuildRegistrarGreetingFrame)
-	AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:keepFontStrings(_G.GuildRegistrarGreetingFrame)
+	_G.AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	for i = 1, 2 do
 		local obj = self:getRegion(_G["GuildRegistrarButton" .. i], 3)
 		obj:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	self:skinEditBox{obj=GuildRegistrarFrameEditBox}
+	self:skinEditBox{obj=_G.GuildRegistrarFrameEditBox}
 
-	self:addSkinFrame{obj=GuildRegistrarFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.GuildRegistrarFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -233,21 +236,21 @@ function aObj:ItemAlterationUI() -- LoD (a.k.a TransmogrifyFrame)
 		_G[btnName]:DisableDrawLayer("BORDER")
 		self:addButtonBorder{obj=_G[btnName], reParent={_G[btnName].altTexture ,_G[btnName].undoIcon}}
 	end
-	TransmogrifyModelFrame:DisableDrawLayer("BACKGROUND")
-	TransmogrifyModelFrame:DisableDrawLayer("BORDER")
-	TransmogrifyModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=TransmogrifyArtFrame, ft=ftype, kfs=true, bg=true, y1=2, x2=1, y2=-2}
-	self:keepRegions(TransmogrifyFrameButtonFrame, {})
-	self:removeMagicBtnTex(TransmogrifyApplyButton)
-	self:skinButton{obj=TransmogrifyApplyButton}
+	_G.TransmogrifyModelFrame:DisableDrawLayer("BACKGROUND")
+	_G.TransmogrifyModelFrame:DisableDrawLayer("BORDER")
+	_G.TransmogrifyModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.TransmogrifyArtFrame, ft=ftype, kfs=true, bg=true, y1=2, x2=1, y2=-2}
+	self:keepRegions(_G.TransmogrifyFrameButtonFrame, {})
+	self:removeMagicBtnTex(_G.TransmogrifyApplyButton)
+	self:skinButton{obj=_G.TransmogrifyApplyButton}
 
 	-- TransmogrifyConfirmation Popup used when items will be bound if altered
 	if self.isPTR then
-		self:removeRegions(TransmogrifyConfirmationPopup.ItemFrame1, {8}) -- Name Frame texture
-		self:addButtonBorder{obj=TransmogrifyConfirmationPopup.ItemFrame1, ibt=true}
-		self:removeRegions(TransmogrifyConfirmationPopup.ItemFrame2, {8}) -- Name Frame texture
-		self:addButtonBorder{obj=TransmogrifyConfirmationPopup.ItemFrame2, ibt=true}
-		self:addSkinFrame{obj=TransmogrifyConfirmationPopup, ft=ftype}
+		self:removeRegions(_G.TransmogrifyConfirmationPopup.ItemFrame1, {8}) -- Name Frame texture
+		self:addButtonBorder{obj=_G.TransmogrifyConfirmationPopup.ItemFrame1, ibt=true}
+		self:removeRegions(_G.TransmogrifyConfirmationPopup.ItemFrame2, {8}) -- Name Frame texture
+		self:addButtonBorder{obj=_G.TransmogrifyConfirmationPopup.ItemFrame2, ibt=true}
+		self:addSkinFrame{obj=_G.TransmogrifyConfirmationPopup, ft=ftype}
 	end
 
 end
@@ -258,13 +261,13 @@ function aObj:MerchantFrame()
 
 	-- display limited availability item's stock count even when zero
 	self:SecureHook("SetItemButtonStock", function(button, numInStock)
-		if numInStock == 0 and not button == MerchantBuyBackItemItemButton then
-			_G[button:GetName() .. "Stock"]:SetFormattedText(MERCHANT_STOCK, numInStock)
+		if numInStock == 0 and not button == _G.MerchantBuyBackItemItemButton then
+			_G[button:GetName() .. "Stock"]:SetFormattedText(_G.MERCHANT_STOCK, numInStock)
 			_G[button:GetName() .. "Stock"]:Show()
 		end
 	end)
 	-- Items/Buyback Items
-	for i = 1, max(MERCHANT_ITEMS_PER_PAGE, BUYBACK_ITEMS_PER_PAGE) do
+	for i = 1, _G.math.max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE) do
 		local btnName = "MerchantItem" .. i
 		_G[btnName .. "NameFrame"]:SetTexture(nil)
 		if not self.modBtnBs then
@@ -280,26 +283,26 @@ function aObj:MerchantFrame()
 		_G[btnName .. "SlotTexture"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName .. "ItemButton"], ibt=true}
 		-- remove surrounding border (diff=0.01375)
-		self:getRegion(MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
-		MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
-		MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
-		self:addButtonBorder{obj=MerchantRepairAllButton}
-		self:addButtonBorder{obj=MerchantRepairItemButton}
-		self:addButtonBorder{obj=MerchantGuildBankRepairButton}
+		self:getRegion(_G.MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
+		_G.MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
+		_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
+		self:addButtonBorder{obj=_G.MerchantRepairAllButton}
+		self:addButtonBorder{obj=_G.MerchantRepairItemButton}
+		self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton}
 	else
 		_G[btnName .. "SlotTexture"]:SetTexture(self.esTex)
 	end
-	self:removeRegions(MerchantPrevPageButton, {2})
-	self:addButtonBorder{obj=MerchantPrevPageButton, ofs=-2}
-	self:removeRegions(MerchantNextPageButton, {2})
-	self:addButtonBorder{obj=MerchantNextPageButton, ofs=-2}
-	self:skinTabs{obj=MerchantFrame}
-	self:skinDropDown{obj=MerchantFrameLootFilter}
-	self:removeInset(MerchantExtraCurrencyInset)
-	MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
-	self:removeInset(MerchantMoneyInset)
-	MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=MerchantFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-6}
+	self:removeRegions(_G.MerchantPrevPageButton, {2})
+	self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2}
+	self:removeRegions(_G.MerchantNextPageButton, {2})
+	self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2}
+	self:skinTabs{obj=_G.MerchantFrame}
+	self:skinDropDown{obj=_G.MerchantFrameLootFilter}
+	self:removeInset(_G.MerchantExtraCurrencyInset)
+	_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
+	self:removeInset(_G.MerchantMoneyInset)
+	_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.MerchantFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-6}
 
 end
 
@@ -307,17 +310,17 @@ function aObj:Petition()
 	if not self.db.profile.Petition or self.initialized.Petition then return end
 	self.initialized.Petition = true
 
-	PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
-	PetitionFrameMasterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	PetitionFrameMasterName:SetTextColor(self.BTr, self.BTg, self.BTb)
-	PetitionFrameMemberTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.PetitionFrameMasterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.PetitionFrameMasterName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.PetitionFrameMemberTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	for i = 1, 9 do
 		_G["PetitionFrameMemberName" .. i]:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
 
-	self:addSkinFrame{obj=PetitionFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.PetitionFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -325,14 +328,14 @@ function aObj:PetStableFrame()
 	if not self.db.profile.PetStableFrame or self.initialized.PetStableFrame then return end
 	self.initialized.PetStableFrame = true
 
-	self:makeMFRotatable(PetStableModel)
+	self:makeMFRotatable(_G.PetStableModel)
 
-	PetStableFrameModelBg:Hide()
-	PetStableModelShadow:Hide()
-	PetStableFrame.LeftInset:DisableDrawLayer("BORDER")
-	PetStableActiveBg:Hide()
-	self:addButtonBorder{obj=PetStablePetInfo, relTo=PetStableSelectedPetIcon}
-	for i = 1, NUM_PET_ACTIVE_SLOTS do
+	_G.PetStableFrameModelBg:Hide()
+	_G.PetStableModelShadow:Hide()
+	_G.PetStableFrame.LeftInset:DisableDrawLayer("BORDER")
+	_G.PetStableActiveBg:Hide()
+	self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon}
+	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
 		local btn = _G["PetStableActivePet" .. i]
 		btn.Border:Hide()
 		if not self.modBtnBs then
@@ -342,7 +345,7 @@ function aObj:PetStableFrame()
 			self:addButtonBorder{obj=btn}
 		end
 	end
-	for i = 1, NUM_PET_STABLE_SLOTS do
+	for i = 1, _G.NUM_PET_STABLE_SLOTS do
 		local btn = _G["PetStableStabledPet" .. i]
 		if not self.modBtnBs then
 			self:resizeEmptyTexture(btn.Background)
@@ -351,11 +354,11 @@ function aObj:PetStableFrame()
 			self:addButtonBorder{obj=btn}
 		end
 	end
-	PetStableFrame.BottomInset:DisableDrawLayer("BORDER")
-	PetStableFrameStableBg:Hide()
-	self:addSkinFrame{obj=PetStableFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
-	self:addButtonBorder{obj=PetStableNextPageButton, ofs=0}
-	self:addButtonBorder{obj=PetStablePrevPageButton, ofs=0}
+	_G.PetStableFrame.BottomInset:DisableDrawLayer("BORDER")
+	_G.PetStableFrameStableBg:Hide()
+	self:addSkinFrame{obj=_G.PetStableFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+	self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0}
+	self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0}
 
 end
 
@@ -365,8 +368,8 @@ function aObj:QuestFrame()
 
 	-- setup Quest display colours here
 	local QTHex = self:RGBPercToHex(self.HTr, self.HTg, self.HTb)
-	NORMAL_QUEST_DISPLAY = "|cff"..QTHex .. "%s|r"
-	TRIVIAL_QUEST_DISPLAY = "|cff"..QTHex .. "%s (low level)|r"
+	_G.NORMAL_QUEST_DISPLAY = "|cff"..QTHex .. "%s|r"
+	_G.TRIVIAL_QUEST_DISPLAY = "|cff"..QTHex .. "%s (low level)|r"
 
 	self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, ...)
 		fontString:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -375,41 +378,41 @@ function aObj:QuestFrame()
 		fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end, true)
 
-	self:addSkinFrame{obj=QuestFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.QuestFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 -->>--	Reward Panel
-	self:keepFontStrings(QuestFrameRewardPanel)
-	self:skinScrollBar{obj=QuestRewardScrollFrame}
+	self:keepFontStrings(_G.QuestFrameRewardPanel)
+	self:skinScrollBar{obj=_G.QuestRewardScrollFrame}
 -->>--	Progress Panel
-	self:keepFontStrings(QuestFrameProgressPanel)
-	QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinScrollBar{obj=QuestProgressScrollFrame}
-	for i = 1, MAX_REQUIRED_ITEMS do
+	self:keepFontStrings(_G.QuestFrameProgressPanel)
+	_G.QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:skinScrollBar{obj=_G.QuestProgressScrollFrame}
+	for i = 1, _G.MAX_REQUIRED_ITEMS do
 		local btnName = "QuestProgressItem" .. i
 		_G[btnName .. "NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName], libt=true}
 	end
 
 -->>--	Detail Panel
-	self:keepFontStrings(QuestFrameDetailPanel)
-	self:skinScrollBar{obj=QuestDetailScrollFrame}
+	self:keepFontStrings(_G.QuestFrameDetailPanel)
+	self:skinScrollBar{obj=_G.QuestDetailScrollFrame}
 
 -->>--	Greeting Panel
-	self:keepFontStrings(QuestFrameGreetingPanel)
-	self:keepFontStrings(QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
-	self:skinScrollBar{obj=QuestGreetingScrollFrame}
-	if QuestFrameGreetingPanel:IsShown() then
-		GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		CurrentQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		AvailableQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:keepFontStrings(_G.QuestFrameGreetingPanel)
+	self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
+	self:skinScrollBar{obj=_G.QuestGreetingScrollFrame}
+	if _G.QuestFrameGreetingPanel:IsShown() then
+		_G.GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.CurrentQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.AvailableQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	end
 
 -->>-- QuestNPCModel
-	self:keepFontStrings(QuestNPCModelTextFrame)
-	self:skinScrollBar{obj=QuestNPCModelTextScrollFrame}
-	self:addSkinFrame{obj=QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
+	self:keepFontStrings(_G.QuestNPCModelTextFrame)
+	self:skinScrollBar{obj=_G.QuestNPCModelTextScrollFrame}
+	self:addSkinFrame{obj=_G.QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
 	self:QuestInfo()
 
 end
@@ -420,47 +423,47 @@ function aObj:QuestInfo()
 
 	self:SecureHook("QuestInfo_Display", function(...)
 		-- headers
-		QuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestInfoDescriptionHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestInfoObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		QuestInfoRewardsHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestInfoDescriptionHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestInfoObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestInfoRewardsHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 		-- other text
-		QuestInfoDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoGroupSize:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoRewardText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoGroupSize:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoRewardText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- reward frame text
-		QuestInfoItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		QuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- reputation rewards
-		for i = 1, MAX_REPUTATIONS do
+		for i = 1, _G.MAX_REPUTATIONS do
 			_G["QuestInfoReputation" .. i .. "Faction"]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
-		local r, g, b = QuestInfoRequiredMoneyText:GetTextColor()
-		QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		local r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
+		_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		-- Objectives
-		for i = 1, MAX_OBJECTIVES do
+		for i = 1, _G.MAX_OBJECTIVES do
 			local r, g, b = _G["QuestInfoObjective" .. i]:GetTextColor()
 			_G["QuestInfoObjective" .. i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
-		QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- QuestInfoSpecialObjectives Frame
-		QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
-		QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
-		self:addButtonBorder{obj=QuestInfoSpellObjectiveFrame, relTo=QuestInfoSpellObjectiveFrame.Icon}
+		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
+		_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
+		self:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
 	end)
 
-	QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 	-- InfoRewards frame
-	QuestInfoRewardSpellNameFrame:SetTexture(nil)
-	self:addButtonBorder{obj=QuestInfoRewardSpell, relTo=QuestInfoRewardSpell.Icon}
-	QuestInfoRewardSpellSpellBorder:SetTexture(nil)
-	for i = 1, MAX_NUM_ITEMS do
+	_G.QuestInfoRewardSpellNameFrame:SetTexture(nil)
+	self:addButtonBorder{obj=_G.QuestInfoRewardSpell, relTo=_G.QuestInfoRewardSpell.Icon}
+	_G.QuestInfoRewardSpellSpellBorder:SetTexture(nil)
+	for i = 1, _G.MAX_NUM_ITEMS do
 		local btnName = "QuestInfoItem" .. i
 		_G[btnName .. "NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName], libt=true}
@@ -483,20 +486,20 @@ function aObj:ReforgingUI() -- LoD
 	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
 	self.initialized.ReforgingUI = true
 
-	ReforgingFrame.ItemButton.IconTexture:SetAlpha(0)
-	ReforgingFrame.ItemButton:DisableDrawLayer("BACKGROUND")
-	ReforgingFrame.ItemButton:DisableDrawLayer("OVERLAY")
-	self:addButtonBorder{obj=ReforgingFrame.ItemButton, ibt=true, ofs=1}
-	ReforgingFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:keepRegions(ReforgingFrame.ButtonFrame, {})
-	ReforgingFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=ReforgingFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
-	self:moveObject{obj=ReforgingFrameRestoreButton, y=2}
-	self:removeMagicBtnTex(ReforgingFrameRestoreButton)
-	self:removeMagicBtnTex(ReforgingFrameReforgeButton)
+	_G.ReforgingFrame.ItemButton.IconTexture:SetAlpha(0)
+	_G.ReforgingFrame.ItemButton:DisableDrawLayer("BACKGROUND")
+	_G.ReforgingFrame.ItemButton:DisableDrawLayer("OVERLAY")
+	self:addButtonBorder{obj=_G.ReforgingFrame.ItemButton, ibt=true, ofs=1}
+	_G.ReforgingFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:keepRegions(_G.ReforgingFrame.ButtonFrame, {})
+	_G.ReforgingFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.ReforgingFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:moveObject{obj=_G.ReforgingFrameRestoreButton, y=2}
+	self:removeMagicBtnTex(_G.ReforgingFrameRestoreButton)
+	self:removeMagicBtnTex(_G.ReforgingFrameReforgeButton)
 
 	-- hook this to hide the ItemButton texture if empty
-	self:SecureHook(ReforgingFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
+	self:SecureHook(_G.ReforgingFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
 		if tex:find("UI-Slot-Background", 1, true) then
 			this:SetAlpha(0)
 		else
@@ -505,8 +508,8 @@ function aObj:ReforgingUI() -- LoD
 	end)
 	-- hook this to remove background texture from stat lines
 	self:SecureHook("ReforgingFrame_GetStatRow", function(index, tryAdd)
-		if ReforgingFrame.LeftStat[index] then ReforgingFrame.LeftStat[index].BG:SetTexture(nil) end
-		if ReforgingFrame.RightStat[index] then ReforgingFrame.RightStat[index].BG:SetTexture(nil) end
+		if _G.ReforgingFrame.LeftStat[index] then _G.ReforgingFrame.LeftStat[index].BG:SetTexture(nil) end
+		if _G.ReforgingFrame.RightStat[index] then _G.ReforgingFrame.RightStat[index].BG:SetTexture(nil) end
 	end)
 
 end
@@ -515,11 +518,11 @@ function aObj:SideDressUpFrame()
 	if not self.db.profile.SideDressUpFrame or self.initialized.SideDressUpFrame then return end
 	self.initialized.SideDressUpFrame = true
 
-	SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
-	SideDressUpModelCloseButton:DisableDrawLayer("BACKGROUND")
-	SideDressUpFrame:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=SideDressUpFrame, ft=ftype, bg=true, x1=-6, y1=-3, x2=-2}
-	self:skinButton{obj=SideDressUpModelCloseButton, cb=true}
+	_G.SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
+	_G.SideDressUpModelCloseButton:DisableDrawLayer("BACKGROUND")
+	_G.SideDressUpFrame:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.SideDressUpFrame, ft=ftype, bg=true, x1=-6, y1=-3, x2=-2}
+	self:skinButton{obj=_G.SideDressUpModelCloseButton, cb=true}
 
 end
 
@@ -527,19 +530,19 @@ function aObj:Tabard()
 	if not self.db.profile.Tabard or self.initialized.Tabard then return end
 	self.initialized.Tabard = true
 
-	self:makeMFRotatable(TabardModel)
-	TabardFrameCostFrame:SetBackdrop(nil)
-	self:keepFontStrings(TabardFrameCustomizationFrame)
+	self:makeMFRotatable(_G.TabardModel)
+	_G.TabardFrameCostFrame:SetBackdrop(nil)
+	self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 	for i = 1, 5 do
 		self:keepFontStrings(_G["TabardFrameCustomization" .. i])
 		self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "LeftButton"], ofs=-2}
 		self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-2}
 	end
 
-	self:keepRegions(TabardFrame, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
-	self:removeInset(TabardFrameMoneyInset)
-	TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=TabardFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:keepRegions(_G.TabardFrame, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
+	self:removeInset(_G.TabardFrameMoneyInset)
+	_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.TabardFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -547,9 +550,9 @@ function aObj:TaxiFrame()
 	if not self.db.profile.TaxiFrame or self.initialized.TaxiFrame then return end
 	self.initialized.TaxiFrame = true
 
-	TaxiFrame:DisableDrawLayer("OVERLAY")
-	TaxiFrame:DisableDrawLayer("BORDER")
-	self:addSkinFrame{obj=TaxiFrame, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
+	_G.TaxiFrame:DisableDrawLayer("OVERLAY")
+	_G.TaxiFrame:DisableDrawLayer("BORDER")
+	self:addSkinFrame{obj=_G.TaxiFrame, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -557,26 +560,26 @@ function aObj:TrainerUI() -- LoD
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
-	self:skinDropDown{obj=ClassTrainerFrameFilterDropDown}
-	ClassTrainerStatusBarLeft:SetAlpha(0)
-	ClassTrainerStatusBarRight:SetAlpha(0)
-	ClassTrainerStatusBarMiddle:SetAlpha(0)
-	ClassTrainerStatusBarSkillRank:SetPoint("CENTER", ClassTrainerStatusBar) -- Blizzard bug
-	self:glazeStatusBar(ClassTrainerStatusBar, 0,  ClassTrainerStatusBarBackground)
-	local btn = ClassTrainerFrame.skillStepButton
+	self:skinDropDown{obj=_G.ClassTrainerFrameFilterDropDown}
+	_G.ClassTrainerStatusBarLeft:SetAlpha(0)
+	_G.ClassTrainerStatusBarRight:SetAlpha(0)
+	_G.ClassTrainerStatusBarMiddle:SetAlpha(0)
+	_G.ClassTrainerStatusBarSkillRank:SetPoint("CENTER", _G.ClassTrainerStatusBar) -- Blizzard bug
+	self:glazeStatusBar(_G.ClassTrainerStatusBar, 0,  _G.ClassTrainerStatusBarBackground)
+	local btn = _G.ClassTrainerFrame.skillStepButton
 	btn.disabledBG:SetAlpha(0)
 	btn:GetNormalTexture():SetAlpha(0)
 	self:addButtonBorder{obj=btn, relTo=btn.icon}
-	self:skinSlider{obj=ClassTrainerScrollFrameScrollBar}
-	self:removeInset(ClassTrainerFrame.bottomInset)
-	for i = 1, #ClassTrainerFrame.scrollFrame.buttons do
-		local btn = ClassTrainerFrame.scrollFrame.buttons[i]
+	self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar}
+	self:removeInset(_G.ClassTrainerFrame.bottomInset)
+	for i = 1, #_G.ClassTrainerFrame.scrollFrame.buttons do
+		local btn = _G.ClassTrainerFrame.scrollFrame.buttons[i]
 		btn.disabledBG:SetAlpha(0)
 		btn:GetNormalTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	self:removeMagicBtnTex(ClassTrainerTrainButton)
-	self:addSkinFrame{obj=ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+	self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
+	self:addSkinFrame{obj=_G.ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 
 end
 
@@ -584,8 +587,8 @@ function aObj:VoidStorageUI() -- LoD
 	if not self.db.profile.VoidStorageUI or self.initialized.VoidStorageUI then return end
 	self.initialized.VoidStorageUI = true
 
-	self:addSkinFrame{obj=VoidStoragePurchaseFrame, ft=ftype, kfs=true}
-	self:keepFontStrings(VoidStorageBorderFrame)
+	self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
+	self:keepFontStrings(_G.VoidStorageBorderFrame)
 	for _, v in pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
 		local frame = _G["VoidStorage" .. v .. "Frame"]
 		frame:DisableDrawLayer("BACKGROUND")
@@ -600,7 +603,7 @@ function aObj:VoidStorageUI() -- LoD
 			self:addButtonBorder{obj=_G["VoidStorageStorageButton" .. i]}
 		end
 	end
-	self:addSkinFrame{obj=VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
-	self:skinEditBox{obj=VoidItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:addSkinFrame{obj=_G.VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
+	self:skinEditBox{obj=_G.VoidItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 
 end

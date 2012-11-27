@@ -2,6 +2,9 @@ local aName, aObj = ...
 local _G = _G
 local ftype = "u"
 
+-- Add locals to see if it speeds things up
+local ipairs, IsAddOnLoaded, pairs, unpack = _G.ipairs, _G.IsAddOnLoaded, _G.pairs, _G.unpack
+
 do
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
 	-- use strings as the objects may not exist when we start
@@ -10,7 +13,7 @@ do
 	-- using a metatable to manage tooltips when they are added in different functions
 	aObj.ttList = setmetatable({}, {__newindex = function(t, k, v)
 	--	  aObj:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
-		rawset(t, k, v)
+		_G.rawset(t, k, v)
 		-- set the backdrop if required
 		if aObj.db.profile.Tooltips.style == 3 then
 			_G[v]:SetBackdrop(aObj.Backdrop[1])
@@ -18,13 +21,13 @@ do
 		-- hook the OnShow method
 		aObj:HookScript(_G[v], "OnShow", function(this)
 			aObj:skinTooltip(this)
-			if this == GameTooltip and aObj.db.profile.Tooltips.glazesb then
+			if this == _G.GameTooltip and aObj.db.profile.Tooltips.glazesb then
 				-- handle in combat
-				if InCombatLockdown() then
-					aObj:add2Table(aObj.oocTab, {aObj.glazeStatusBar, {aObj, GameTooltipStatusBar, 0}})
+				if _G.InCombatLockdown() then
+					aObj:add2Table(aObj.oocTab, {aObj.glazeStatusBar, {aObj, _G.GameTooltipStatusBar, 0}})
 					return
 				end
-				aObj:glazeStatusBar(GameTooltipStatusBar, 0)
+				aObj:glazeStatusBar(_G.GameTooltipStatusBar, 0)
 			end
 		end)
 		aObj:skinTooltip(_G[v]) -- skin here so tooltip initially skinnned when logged on
@@ -41,7 +44,7 @@ function aObj:AlertFrames()
 
 	-- hook this to stop gradient texture whiteout
 	self:RawHook("AlertFrame_AnimateIn", function(frame)
-		frame.sf.tfade:SetParent(MainMenuBar)
+		frame.sf.tfade:SetParent(_G.MainMenuBar)
 		-- reset Gradient alpha
 		frame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 		self.hooks.AlertFrame_AnimateIn(frame)
@@ -53,7 +56,7 @@ function aObj:AlertFrames()
 		if fName == "CriteriaAlertFrame" then
 			x1, x2, y1, y2 = 38, 10, 4, 2
 		end
-		for i = 1, MAX_ACHIEVEMENT_ALERTS do
+		for i = 1, _G.MAX_ACHIEVEMENT_ALERTS do
 			local obj = _G[fName .. i]
 			if obj and not obj.sf then
 				_G[fName .. i .. "Background"]:SetTexture(nil)
@@ -71,11 +74,11 @@ function aObj:AlertFrames()
 	end
 
 	-- Achievement Alert Frames
-	if not AchievementAlertFrame1 or AchievementAlertFrame2 then
+	if not _G.AchievementAlertFrame1 or _G.AchievementAlertFrame2 then
 		self:RawHook("AchievementAlertFrame_GetAlertFrame", function(...)
 			local frame = self.hooks.AchievementAlertFrame_GetAlertFrame(...)
 			skinAlertFrames("AchievementAlertFrame")
-			if AchievementAlertFrame2 then
+			if _G.AchievementAlertFrame2 then
 				self:Unhook("AchievementAlertFrame_GetAlertFrame")
 			end
 			return frame
@@ -85,7 +88,7 @@ function aObj:AlertFrames()
 	skinAlertFrames("AchievementAlertFrame")
 	-- adjust frame size for guild achievements
 	self:SecureHook("AchievementAlertFrame_ShowAlert", function(...)
-		for i = 1, MAX_ACHIEVEMENT_ALERTS do
+		for i = 1, _G.MAX_ACHIEVEMENT_ALERTS do
 			local obj = _G["AchievementAlertFrame" .. i]
 			if obj then
 				local y1, y2 = -10, 12
@@ -99,11 +102,11 @@ function aObj:AlertFrames()
 	end)
 
 	-- CriteriaAlert Frames
-	if not CriteriaAlertFrame1 or CriteriaAlertFrame2 then
+	if not _G.CriteriaAlertFrame1 or _G.CriteriaAlertFrame2 then
 		self:RawHook("CriteriaAlertFrame_GetAlertFrame", function(...)
 			local frame = self.hooks.CriteriaAlertFrame_GetAlertFrame(...)
 			skinAlertFrames("CriteriaAlertFrame")
-			if CriteriaAlertFrame2 then
+			if _G.CriteriaAlertFrame2 then
 				self:Unhook("CriteriaAlertFrame_GetAlertFrame")
 			end
 			return frame
@@ -123,28 +126,28 @@ function aObj:AlertFrames()
 	end
 
 	-- DungeonCompletionAlert Frame
-	skinDCSAlertFrame{obj=DungeonCompletionAlertFrame1, regs={2, 3, 4, 5, 6, 10}, ofs=0, y1=-7}
+	skinDCSAlertFrame{obj=_G.DungeonCompletionAlertFrame1, regs={2, 3, 4, 5, 6, 10}, ofs=0, y1=-7}
 	-- hook dungeon rewards function
 	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, ...)
 		frame:DisableDrawLayer("OVERLAY")
 	end)
 
 	-- ChallengeModeAlert Frame
-	skinDCSAlertFrame{obj=ChallengeModeAlertFrame1, regs={1, 3, 7}, reParent={ChallengeModeAlertFrame1.medalIcon}}
+	skinDCSAlertFrame{obj=_G.ChallengeModeAlertFrame1, regs={1, 3, 7}, reParent={_G.ChallengeModeAlertFrame1.medalIcon}}
 	-- hook challenge mode rewards function
 	self:SecureHook("ChallengeModeAlertFrameReward_SetReward", function(frame, ...)
 		frame:DisableDrawLayer("OVERLAY")
 	end)
 
 	-- ScenarioAlert Frame
-	skinDCSAlertFrame{obj=ScenarioAlertFrame1, regs={1, 3, 6}}
+	skinDCSAlertFrame{obj=_G.ScenarioAlertFrame1, regs={1, 3, 6}}
 
 	-- GuildChallengeAlert Frame
-	GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
-	GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
-	GuildChallengeAlertFrame:DisableDrawLayer("OVERLAY")
-	aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=GuildChallengeAlertFrame, relTo=GuildChallengeAlertFrameEmblemIcon}) -- wait for animation to finish
-	self:addSkinFrame{obj=GuildChallengeAlertFrame, ft=ftype, af=true, afas=true}
+	_G.GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
+	_G.GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
+	_G.GuildChallengeAlertFrame:DisableDrawLayer("OVERLAY")
+	aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=_G.GuildChallengeAlertFrame, relTo=_G.GuildChallengeAlertFrameEmblemIcon}) -- wait for animation to finish
+	self:addSkinFrame{obj=_G.GuildChallengeAlertFrame, ft=ftype, af=true, afas=true}
 
 	local function skinWonAlertFrames(obj)
 
@@ -161,14 +164,14 @@ function aObj:AlertFrames()
 	self:SecureHook("LootWonAlertFrame_SetUp", function(frame, ...)
 		skinWonAlertFrames(frame)
 	end)
-	for _, frame in pairs(LOOT_WON_ALERT_FRAMES) do
+	for _, frame in pairs(_G.LOOT_WON_ALERT_FRAMES) do
 		skinWonAlertFrames(frame)
 	end
 	-- MoneyWonAlert Frame
 	self:SecureHook("MoneyWonAlertFrame_SetUp", function(frame, ...)
 		skinWonAlertFrames(frame)
 	end)
-	for _, frame in pairs(MONEY_WON_ALERT_FRAMES) do
+	for _, frame in pairs(_G.MONEY_WON_ALERT_FRAMES) do
 		skinWonAlertFrames(frame)
 	end
 
@@ -178,7 +181,7 @@ function aObj:AutoComplete()
 	if not self.db.profile.AutoComplete or self.initialized.AutoComplete then return end
 	self.initialized.AutoComplete = true
 
-	self:addSkinFrame{obj=AutoCompleteBox, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=_G.AutoCompleteBox, kfs=true, ft=ftype}
 
 end
 
@@ -187,30 +190,30 @@ function aObj:BattlefieldMinimap() -- LoD
 	self.initialized.BattlefieldMm = true
 
 -->>--	Minimap Tab
-	self:keepRegions(BattlefieldMinimapTab, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
+	self:keepRegions(_G.BattlefieldMinimapTab, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
 	local asopts = self.isTT and {ba=1} or nil
-	self:addSkinFrame{obj=BattlefieldMinimapTab, ft=ftype, noBdr=self.isTT, aso=asopts, y1=-7, y2=-7}
-	self:moveObject{obj=BattlefieldMinimapTabText, y=-1} -- move text down
+	self:addSkinFrame{obj=_G.BattlefieldMinimapTab, ft=ftype, noBdr=self.isTT, aso=asopts, y1=-7, y2=-7}
+	self:moveObject{obj=_G.BattlefieldMinimapTabText, y=-1} -- move text down
 
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
-	self.bfminimapskin = self:addSkinFrame{obj=BattlefieldMinimap, ft=ftype, aso={bd=8}, x1=-4, y1=4, x2=-1, y2=-1}
+	self.bfminimapskin = self:addSkinFrame{obj=_G.BattlefieldMinimap, ft=ftype, aso={bd=8}, x1=-4, y1=4, x2=-1, y2=-1}
 	if self.db.profile.BattlefieldMm.gloss then
-		RaiseFrameLevel(self.bfminimapskin)
+		_G.RaiseFrameLevel(self.bfminimapskin)
 	else
-		LowerFrameLevel(self.bfminimapskin)
+		_G.LowerFrameLevel(self.bfminimapskin)
 	end
-	BattlefieldMinimapCorner:SetTexture(nil)
-	BattlefieldMinimapBackground:SetTexture(nil)
+	_G.BattlefieldMinimapCorner:SetTexture(nil)
+	_G.BattlefieldMinimapBackground:SetTexture(nil)
 
 	-- change the skinFrame's opacity as required
 	self:SecureHook("BattlefieldMinimap_UpdateOpacity", function(opacity)
-		local alpha = 1.0 - BattlefieldMinimapOptions.opacity
+		local alpha = 1.0 - _G.BattlefieldMinimapOptions.opacity
 		alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
-		BattlefieldMinimap.sf:SetAlpha(alpha)
+		_G.BattlefieldMinimap.sf:SetAlpha(alpha)
 	end)
 
 	if IsAddOnLoaded("Capping") then
-		if type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
+		if _G.type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
 	end
 
 end
@@ -219,8 +222,8 @@ function aObj:BindingUI() -- LoD
 	if not self.db.profile.MenuFrames or self.initialized.BindingUI then return end
 	self.initialized.BindingUI = true
 
-	self:skinScrollBar{obj=KeyBindingFrameScrollFrame}
-	self:addSkinFrame{obj=KeyBindingFrame, ft=ftype, kfs=true, hdr=true, x2=-42, y2=10}
+	self:skinScrollBar{obj=_G.KeyBindingFrameScrollFrame}
+	self:addSkinFrame{obj=_G.KeyBindingFrame, ft=ftype, kfs=true, hdr=true, x2=-42, y2=10}
 
 end
 
@@ -231,11 +234,11 @@ function aObj:BNFrames()
 -->>-- Toast frame
 	-- hook these to stop gradient texture whiteout
 	self:RawHook("BNToastFrame_Show", function()
-		BNToastFrame.sf.tfade:SetParent(MainMenuBar)
-		if BNToastFrame.cb then BNToastFrame.cb.tfade:SetParent(MainMenuBar) end
+		_G.BNToastFrame.sf.tfade:SetParent(_G.MainMenuBar)
+		if _G.BNToastFrame.cb then _G.BNToastFrame.cb.tfade:SetParent(_G.MainMenuBar) end
 		-- reset Gradient alpha
-		BNToastFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-		if BNToastFrame.cb then BNToastFrame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
+		_G.BNToastFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		if _G.BNToastFrame.cb then _G.BNToastFrame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
 		self.hooks.BNToastFrame_Show()
 	end, true)
 	self:SecureHook("AlertFrame_StopOutAnimation", function(frame)
@@ -247,28 +250,28 @@ function aObj:BNFrames()
 		if frame.cb then frame.cb.tfade:SetAlpha(0) end
 		self.hooks.AlertFrame_ResumeOutAnimation(frame)
 	end, true)
-	self:addSkinFrame{obj=BNToastFrame, ft=ftype, af=true}
+	self:addSkinFrame{obj=_G.BNToastFrame, ft=ftype, af=true}
 
 -->>-- Report frame
-	BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
-	self:skinScrollBar{obj=BNetReportFrameCommentScrollFrame}
-	self:skinEditBox{obj=BNetReportFrameCommentBox, regs={6}}
-	self:addSkinFrame{obj=BNetReportFrame, ft=ftype}
+	_G.BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
+	self:skinScrollBar{obj=_G.BNetReportFrameCommentScrollFrame}
+	self:skinEditBox{obj=_G.BNetReportFrameCommentBox, regs={6}}
+	self:addSkinFrame{obj=_G.BNetReportFrame, ft=ftype}
 
 -->>-- TimeAlert Frame
 	self:RawHook("TimeAlert_Start", function(time)
-		TimeAlertFrame.sf.tfade:SetParent(MainMenuBar)
+		_G.TimeAlertFrame.sf.tfade:SetParent(_G.MainMenuBar)
 		-- reset Gradient alpha
-		TimeAlertFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		_G.TimeAlertFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 		self.hooks.TimeAlert_Start(time)
 	end, true)
-	TimeAlertFrameBG:SetBackdrop(nil)
-	self:addSkinFrame{obj=TimeAlertFrame, ft=ftype, af=true, afas=true}
+	_G._G.TimeAlertFrameBG:SetBackdrop(nil)
+	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype, af=true, afas=true}
 
 -->>-- ConversationInvite frame
-	self:addSkinFrame{obj=BNConversationInviteDialogList, ft=ftype}
-	self:skinScrollBar{obj=BNConversationInviteDialogListScrollFrame}
-	self:addSkinFrame{obj=BNConversationInviteDialog, kfs=true, ft=ftype, hdr=true}
+	self:addSkinFrame{obj=_G.BNConversationInviteDialogList, ft=ftype}
+	self:skinScrollBar{obj=_G.BNConversationInviteDialogListScrollFrame}
+	self:addSkinFrame{obj=_G.BNConversationInviteDialog, kfs=true, ft=ftype, hdr=true}
 
 end
 
@@ -277,105 +280,105 @@ function aObj:Calendar() -- LoD
 	self.initialized.Calendar = true
 
 -->>--	Calendar Frame
-	self:keepFontStrings(CalendarFilterFrame)
+	self:keepFontStrings(_G.CalendarFilterFrame)
 	-- move close button
-	self:moveObject{obj=CalendarCloseButton, y=14}
-	self:adjHeight{obj=CalendarCloseButton, adj=-2}
-	self:addButtonBorder{obj=CalendarPrevMonthButton, ofs=-2}
-	self:addButtonBorder{obj=CalendarNextMonthButton, ofs=-2}
-	self:addSkinFrame{obj=CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=2, y2=-7}
+	self:moveObject{obj=_G.CalendarCloseButton, y=14}
+	self:adjHeight{obj=_G.CalendarCloseButton, adj=-2}
+	self:addButtonBorder{obj=_G.CalendarPrevMonthButton, ofs=-2}
+	self:addButtonBorder{obj=_G.CalendarNextMonthButton, ofs=-2}
+	self:addSkinFrame{obj=_G.CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=2, y2=-7}
 	-- remove texture from day buttons
 	for i = 1, 7 * 6 do
 		_G["CalendarDayButton" .. i]:GetNormalTexture():SetTexture(nil)
 	end
 
 -->>-- View Holiday Frame
-	self:keepFontStrings(CalendarViewHolidayTitleFrame)
-	self:moveObject{obj=CalendarViewHolidayTitleFrame, y=-6}
-	self:removeRegions(CalendarViewHolidayCloseButton, {5})
-	self:skinScrollBar{obj=CalendarViewHolidayScrollFrame}
-	self:addSkinFrame{obj=CalendarViewHolidayFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=-2}
+	self:keepFontStrings(_G.CalendarViewHolidayTitleFrame)
+	self:moveObject{obj=_G.CalendarViewHolidayTitleFrame, y=-6}
+	self:removeRegions(_G.CalendarViewHolidayCloseButton, {5})
+	self:skinScrollBar{obj=_G.CalendarViewHolidayScrollFrame}
+	self:addSkinFrame{obj=_G.CalendarViewHolidayFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=-2}
 
 -->>-- View Raid Frame
-	self:keepFontStrings(CalendarViewRaidTitleFrame)
-	self:moveObject{obj=CalendarViewRaidTitleFrame, y=-6}
-	self:removeRegions(CalendarViewRaidCloseButton, {5})
-	self:skinScrollBar{obj=CalendarViewRaidScrollFrame}
-	self:addSkinFrame{obj=CalendarViewRaidFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
+	self:keepFontStrings(_G.CalendarViewRaidTitleFrame)
+	self:moveObject{obj=_G.CalendarViewRaidTitleFrame, y=-6}
+	self:removeRegions(_G.CalendarViewRaidCloseButton, {5})
+	self:skinScrollBar{obj=_G.CalendarViewRaidScrollFrame}
+	self:addSkinFrame{obj=_G.CalendarViewRaidFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- View Event Frame
-	self:keepFontStrings(CalendarViewEventTitleFrame)
-	self:moveObject{obj=CalendarViewEventTitleFrame, y=-6}
-	self:removeRegions(CalendarViewEventCloseButton, {5})
-	self:addSkinFrame{obj=CalendarViewEventDescriptionContainer, ft=ftype}
-	self:skinScrollBar{obj=CalendarViewEventDescriptionScrollFrame}
-	self:keepFontStrings(CalendarViewEventInviteListSection)
-	self:addSkinFrame{obj=CalendarViewEventInviteList, ft=ftype}
-	self:addSkinFrame{obj=CalendarViewEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
+	self:keepFontStrings(_G.CalendarViewEventTitleFrame)
+	self:moveObject{obj=_G.CalendarViewEventTitleFrame, y=-6}
+	self:removeRegions(_G.CalendarViewEventCloseButton, {5})
+	self:addSkinFrame{obj=_G.CalendarViewEventDescriptionContainer, ft=ftype}
+	self:skinScrollBar{obj=_G.CalendarViewEventDescriptionScrollFrame}
+	self:keepFontStrings(_G.CalendarViewEventInviteListSection)
+	self:addSkinFrame{obj=_G.CalendarViewEventInviteList, ft=ftype}
+	self:addSkinFrame{obj=_G.CalendarViewEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Create Event Frame
-	CalendarCreateEventIcon:SetAlpha(1) -- show event icon
-	self:keepFontStrings(CalendarCreateEventTitleFrame)
-	self:moveObject{obj=CalendarCreateEventTitleFrame, y=-6}
-	self:removeRegions(CalendarCreateEventCloseButton, {5})
-	self:skinEditBox{obj=CalendarCreateEventTitleEdit, regs={9}}
-	self:skinDropDown{obj=CalendarCreateEventTypeDropDown}
-	self:skinDropDown{obj=CalendarCreateEventHourDropDown, x2=-5}
-	self:skinDropDown{obj=CalendarCreateEventMinuteDropDown, x2=-5}
-	self:skinDropDown{obj=CalendarCreateEventAMPMDropDown, x2=-5}
-	self:skinDropDown{obj=CalendarCreateEventRepeatOptionDropDown}
-	self:addSkinFrame{obj=CalendarCreateEventDescriptionContainer, ft=ftype}
-	self:skinScrollBar{obj=CalendarCreateEventDescriptionScrollFrame}
-	self:keepFontStrings(CalendarCreateEventInviteListSection)
-	self:addSkinFrame{obj=CalendarCreateEventInviteList, ft=ftype}
-	self:skinEditBox{obj=CalendarCreateEventInviteEdit, regs={9}}
-	CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
-	CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
-	CalendarCreateEventCreateButtonBorder:SetAlpha(0)
-	self:addSkinFrame{obj=CalendarCreateEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
+	_G.CalendarCreateEventIcon:SetAlpha(1) -- show event icon
+	self:keepFontStrings(_G.CalendarCreateEventTitleFrame)
+	self:moveObject{obj=_G.CalendarCreateEventTitleFrame, y=-6}
+	self:removeRegions(_G.CalendarCreateEventCloseButton, {5})
+	self:skinEditBox{obj=_G.CalendarCreateEventTitleEdit, regs={9}}
+	self:skinDropDown{obj=_G.CalendarCreateEventTypeDropDown}
+	self:skinDropDown{obj=_G.CalendarCreateEventHourDropDown, x2=-5}
+	self:skinDropDown{obj=_G.CalendarCreateEventMinuteDropDown, x2=-5}
+	self:skinDropDown{obj=_G.CalendarCreateEventAMPMDropDown, x2=-5}
+	self:skinDropDown{obj=_G.CalendarCreateEventRepeatOptionDropDown}
+	self:addSkinFrame{obj=_G.CalendarCreateEventDescriptionContainer, ft=ftype}
+	self:skinScrollBar{obj=_G.CalendarCreateEventDescriptionScrollFrame}
+	self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
+	self:addSkinFrame{obj=_G.CalendarCreateEventInviteList, ft=ftype}
+	self:skinEditBox{obj=_G.CalendarCreateEventInviteEdit, regs={9}}
+	_G.CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
+	_G.CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
+	_G.CalendarCreateEventCreateButtonBorder:SetAlpha(0)
+	self:addSkinFrame{obj=_G.CalendarCreateEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Mass Invite Frame
-	self:keepFontStrings(CalendarMassInviteTitleFrame)
-	self:moveObject{obj=CalendarMassInviteTitleFrame, y=-6}
-	self:removeRegions(CalendarMassInviteCloseButton, {5})
-	self:skinEditBox{obj=CalendarMassInviteGuildMinLevelEdit, regs={9}}
-	self:skinEditBox{obj=CalendarMassInviteGuildMaxLevelEdit, regs={9}}
-	self:skinDropDown{obj=CalendarMassInviteGuildRankMenu}
-	self:addSkinFrame{obj=CalendarMassInviteFrame, ft=ftype, kfs=true, x1=4, y1=-3, x2=-3, y2=26}
+	self:keepFontStrings(_G.CalendarMassInviteTitleFrame)
+	self:moveObject{obj=_G.CalendarMassInviteTitleFrame, y=-6}
+	self:removeRegions(_G.CalendarMassInviteCloseButton, {5})
+	self:skinEditBox{obj=_G.CalendarMassInviteGuildMinLevelEdit, regs={9}}
+	self:skinEditBox{obj=_G.CalendarMassInviteGuildMaxLevelEdit, regs={9}}
+	self:skinDropDown{obj=_G.CalendarMassInviteGuildRankMenu}
+	self:addSkinFrame{obj=_G.CalendarMassInviteFrame, ft=ftype, kfs=true, x1=4, y1=-3, x2=-3, y2=26}
 
 -->>-- Event Picker Frame
-	self:keepFontStrings(CalendarEventPickerTitleFrame)
-	self:moveObject{obj=CalendarEventPickerTitleFrame, y=-6}
-	self:keepFontStrings(CalendarEventPickerFrame)
-	self:skinSlider(CalendarEventPickerScrollBar)
-	self:removeRegions(CalendarEventPickerCloseButton, {7})
-	self:addSkinFrame{obj=CalendarEventPickerFrame, ft=ftype, x1=2, y1=-3, x2=-3, y2=2}
+	self:keepFontStrings(_G.CalendarEventPickerTitleFrame)
+	self:moveObject{obj=_G.CalendarEventPickerTitleFrame, y=-6}
+	self:keepFontStrings(_G.CalendarEventPickerFrame)
+	self:skinSlider(_G.CalendarEventPickerScrollBar)
+	self:removeRegions(_G.CalendarEventPickerCloseButton, {7})
+	self:addSkinFrame{obj=_G.CalendarEventPickerFrame, ft=ftype, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Texture Picker Frame
-	self:keepFontStrings(CalendarTexturePickerTitleFrame)
-	self:moveObject{obj=CalendarTexturePickerTitleFrame, y=-6}
-	self:skinSlider(CalendarTexturePickerScrollBar)
-	CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
-	self:skinButton{obj=CalendarTexturePickerCancelButton}
-	CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
-	self:addSkinFrame{obj=CalendarTexturePickerFrame, ft=ftype, kfs=true, x1=5, y1=-3, x2=-3, y2=2}
+	self:keepFontStrings(_G.CalendarTexturePickerTitleFrame)
+	self:moveObject{obj=_G.CalendarTexturePickerTitleFrame, y=-6}
+	self:skinSlider(_G.CalendarTexturePickerScrollBar)
+	_G.CalendarTexturePickerCancelButtonBorder:SetAlpha(0)
+	self:skinButton{obj=_G.CalendarTexturePickerCancelButton}
+	_G.CalendarTexturePickerAcceptButtonBorder:SetAlpha(0)
+	self:addSkinFrame{obj=_G.CalendarTexturePickerFrame, ft=ftype, kfs=true, x1=5, y1=-3, x2=-3, y2=2}
 
 -->>-- Class Button Container
-	for i = 1, MAX_CLASSES do -- allow for the total button
+	for i = 1, _G.MAX_CLASSES do -- allow for the total button
 		local btn = _G["CalendarClassButton" .. i]
 		self:removeRegions(btn, {1})
 		self:addButtonBorder{obj=btn}
 	end
 	-- Class Totals button, texture & size changes
-	self:moveObject{obj=CalendarClassTotalsButton, x=-2}
-	CalendarClassTotalsButton:SetWidth(25)
-	CalendarClassTotalsButton:SetHeight(25)
-	self:applySkin{obj=CalendarClassTotalsButton, ft=ftype, kfs=true, bba=self.modBtnBs and 1 or 0}
+	self:moveObject{obj=_G.CalendarClassTotalsButton, x=-2}
+	_G.CalendarClassTotalsButton:SetWidth(25)
+	_G.CalendarClassTotalsButton:SetHeight(25)
+	self:applySkin{obj=_G.CalendarClassTotalsButton, ft=ftype, kfs=true, bba=self.modBtnBs and 1 or 0}
 
 -->>-- ContextMenus
-	self:addSkinFrame{obj=CalendarContextMenu}
-	self:addSkinFrame{obj=CalendarArenaTeamContextMenu}
-	self:addSkinFrame{obj=CalendarInviteStatusContextMenu}
+	self:addSkinFrame{obj=_G.CalendarContextMenu}
+	self:addSkinFrame{obj=_G.CalendarArenaTeamContextMenu}
+	self:addSkinFrame{obj=_G.CalendarInviteStatusContextMenu}
 
 end
 
@@ -383,20 +386,20 @@ function aObj:ChallengesUI() -- LoD
 	if not self.db.profile.ChallengesUI or self.initialized.ChallengesUI then return end
 	self.initialized.ChallengesUI = true
 
-	self:removeInset(ChallengesFrameInset)
-	self:keepFontStrings(ChallengesFrame.details)
+	self:removeInset(_G.ChallengesFrameInset)
+	self:keepFontStrings(_G.ChallengesFrame.details)
 	for i = 1, 3 do
-		local row = ChallengesFrame["RewardRow" .. i]
+		local row = _G.ChallengesFrame["RewardRow" .. i]
 		self:getRegion(row, 1):SetAlpha(0) -- N.B. texture changed in code
 		self:addButtonBorder{obj=row.Reward2, relTo=row.Reward2.Icon}
 		self:addButtonBorder{obj=row.Reward1, relTo=row.Reward1.Icon}
 	end
 
 	-- ChallengesLeaderboard Frame
-	self:keepFontStrings(ChallengesLeaderboardFrameHbar)
-	self:addSkinFrame{obj=ChallengesLeaderboardFrame, ft=ftype, kfs=true, ofs=-10}
-	self:removeRegions(ChallengesFrameLeaderboard, {1})
-	self:skinButton{obj=ChallengesFrameLeaderboard}
+	self:keepFontStrings(_G.ChallengesLeaderboardFrameHbar)
+	self:addSkinFrame{obj=_G.ChallengesLeaderboardFrame, ft=ftype, kfs=true, ofs=-10}
+	self:removeRegions(_G.ChallengesFrameLeaderboard, {1})
+	self:skinButton{obj=_G.ChallengesFrameLeaderboard}
 
 end
 
@@ -405,14 +408,14 @@ function aObj:ChatButtons()
 	self.initialized.ChatButtons = true
 
 	if self.modBtnBs then
-		for i = 1, NUM_CHAT_WINDOWS do
+		for i = 1, _G.NUM_CHAT_WINDOWS do
 			local obj = _G["ChatFrame" .. i].buttonFrame
 			self:addButtonBorder{obj=obj.minimizeButton, ofs=-2}
 			self:addButtonBorder{obj=obj.downButton, ofs=-2}
 			self:addButtonBorder{obj=obj.upButton, ofs=-2}
 			self:addButtonBorder{obj=obj.bottomButton, ofs=-2, reParent={self:getRegion(obj.bottomButton, 1)}}
 		end
-		self:addButtonBorder{obj=ChatFrameMenuButton, ofs=-2}
+		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2}
 	end
 
 end
@@ -421,83 +424,83 @@ function aObj:ChatConfig()
 	if not self.db.profile.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true
 
-	self:addSkinFrame{obj=ChatConfigFrame, ft=ftype, kfs=true, hdr=true}
-	self:addSkinFrame{obj=ChatConfigCategoryFrame, ft=ftype}
-	self:addSkinFrame{obj=ChatConfigBackgroundFrame, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigFrame, ft=ftype, kfs=true, hdr=true}
+	self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype}
 
 -->>--	Chat Settings
-	for i = 1, #CHAT_CONFIG_CHAT_LEFT do
+	for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
 		_G["ChatConfigChatSettingsLeftCheckBox" .. i]:SetBackdrop(nil)
 	end
-	self:addSkinFrame{obj=ChatConfigChatSettingsLeft, ft=ftype}
+	self:addSkinFrame{obj=_G._G.ChatConfigChatSettingsLeft, ft=ftype}
 
-	self:addSkinFrame{obj=ChatConfigChatSettingsClassColorLegend, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigChatSettingsClassColorLegend, ft=ftype}
 
 -->>--	Channel Settings
-	self:SecureHook(ChatConfigChannelSettings, "Show", function(this, ...)
-		for i = 1, #ChatConfigChannelSettingsLeft.checkBoxTable do
+	self:SecureHook(_G.ChatConfigChannelSettings, "Show", function(this, ...)
+		for i = 1, #_G.ChatConfigChannelSettingsLeft.checkBoxTable do
 			_G["ChatConfigChannelSettingsLeftCheckBox" .. i]:SetBackdrop(nil)
 		end
 	end)
-	self:addSkinFrame{obj=ChatConfigChannelSettingsLeft, ft=ftype}
-	self:addSkinFrame{obj=ChatConfigChannelSettingsClassColorLegend, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigChannelSettingsClassColorLegend, ft=ftype}
 
 -->>--	Other Settings
-	for i = 1, #CHAT_CONFIG_OTHER_COMBAT do
+	for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
 		_G["ChatConfigOtherSettingsCombatCheckBox" .. i]:SetBackdrop(nil)
 	end
-	self:addSkinFrame{obj=ChatConfigOtherSettingsCombat, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigOtherSettingsCombat, ft=ftype}
 
-	for i = 1, #CHAT_CONFIG_OTHER_PVP do
+	for i = 1, #_G.CHAT_CONFIG_OTHER_PVP do
 		_G["ChatConfigOtherSettingsPVPCheckBox" .. i]:SetBackdrop(nil)
 	end
-	self:addSkinFrame{obj=ChatConfigOtherSettingsPVP, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigOtherSettingsPVP, ft=ftype}
 
-	for i = 1, #CHAT_CONFIG_OTHER_SYSTEM do
+	for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
 		_G["ChatConfigOtherSettingsSystemCheckBox" .. i]:SetBackdrop(nil)
 	end
-	self:addSkinFrame{obj=ChatConfigOtherSettingsSystem, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigOtherSettingsSystem, ft=ftype}
 
-	for i = 1, #CHAT_CONFIG_CHAT_CREATURE_LEFT do
+	for i = 1, #_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
 		_G["ChatConfigOtherSettingsCreatureCheckBox" .. i]:SetBackdrop(nil)
 	end
-	self:addSkinFrame{obj=ChatConfigOtherSettingsCreature, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatConfigOtherSettingsCreature, ft=ftype}
 
 -->>--	Combat Settings
 	-- Filters
-	ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
-	self:skinScrollBar{obj=ChatConfigCombatSettingsFiltersScrollFrame} --, noRR=true}
-	self:addSkinFrame{obj=ChatConfigCombatSettingsFilters, ft=ftype}
+	_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
+	self:skinScrollBar{obj=_G.ChatConfigCombatSettingsFiltersScrollFrame} --, noRR=true}
+	self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype}
 
 	-- Message Sources
-	if COMBAT_CONFIG_MESSAGESOURCES_BY then
-		for i = 1, #COMBAT_CONFIG_MESSAGESOURCES_BY do
+	if _G.COMBAT_CONFIG_MESSAGESOURCES_BY then
+		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
 			_G["CombatConfigMessageSourcesDoneByCheckBox" .. i]:SetBackdrop(nil)
 		end
-		self:addSkinFrame{obj=CombatConfigMessageSourcesDoneBy, ft=ftype}
+		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneBy, ft=ftype}
 	end
-	if COMBAT_CONFIG_MESSAGESOURCES_TO then
-		for i = 1, #COMBAT_CONFIG_MESSAGESOURCES_TO do
+	if _G.COMBAT_CONFIG_MESSAGESOURCES_TO then
+		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_TO do
 			_G["CombatConfigMessageSourcesDoneToCheckBox" .. i]:SetBackdrop(nil)
 		end
-		self:addSkinFrame{obj=CombatConfigMessageSourcesDoneTo, ft=ftype}
+		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneTo, ft=ftype}
 	end
 
 	-- Colors
-	for i = 1, #COMBAT_CONFIG_UNIT_COLORS do
+	for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
 		_G["CombatConfigColorsUnitColorsSwatch" .. i]:SetBackdrop(nil)
 	end
-	self:addSkinFrame{obj=CombatConfigColorsUnitColors, ft=ftype}
+	self:addSkinFrame{obj=_G.CombatConfigColorsUnitColors, ft=ftype}
 
 	for i, v in ipairs{"Highlighting", "UnitName", "SpellNames", "DamageNumber", "DamageSchool", "EntireLine"} do
 		local clrize = i > 1 and "Colorize" or ""
 	end
 
 	-- Settings
-	self:skinEditBox{obj=CombatConfigSettingsNameEditBox , regs={9}}
+	self:skinEditBox{obj=_G.CombatConfigSettingsNameEditBox , regs={9}}
 
 	-- Tabs
-	for i = 1, #COMBAT_CONFIG_TABS do
+	for i = 1, #_G.COMBAT_CONFIG_TABS do
 		local obj = _G["CombatConfigTab" .. i]
 		self:keepRegions(obj, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, y1=-8, y2=-4}
@@ -508,7 +511,7 @@ end
 local function skinChatEB(obj)
 
 	if aObj.db.profile.ChatEditBox.style == 1 then -- Frame
-		local kRegions = CopyTable(aObj.ebRgns)
+		local kRegions = _G.CopyTable(aObj.ebRgns)
 		aObj:add2Table(kRegions, 12)
 		aObj:add2Table(kRegions, 13)
 		aObj:keepRegions(obj, kRegions)
@@ -536,7 +539,7 @@ function aObj:ChatEditBox()
 		return
 	end
 
-	for i = 1, NUM_CHAT_WINDOWS do
+	for i = 1, _G.NUM_CHAT_WINDOWS do
 		skinChatEB(_G["ChatFrame" .. i].editBox)
 	end
 	-- if editBox has a skin frame then hook these to manage its Alpha setting
@@ -568,9 +571,9 @@ function aObj:ChatFrames()
 	local clqbf = "CombatLogQuickButtonFrame"
 	local clqbf_c = clqbf .. "_Custom"
 	local yOfs1 = 4
-	for i = 1, NUM_CHAT_WINDOWS do
+	for i = 1, _G.NUM_CHAT_WINDOWS do
 		local obj = _G["ChatFrame" .. i]
-		if obj == COMBATLOG
+		if obj == _G.COMBATLOG
 		and _G[clqbf_c]:IsShown()
 		then
 			yOfs1 = 31
@@ -598,11 +601,11 @@ function aObj:ChatMenus()
 	if not self.db.profile.ChatMenus or self.initialized.ChatMenus then return end
 	self.initialized.ChatMenus = true
 
-	self:addSkinFrame{obj=ChatMenu, ft=ftype}
-	self:addSkinFrame{obj=EmoteMenu, ft=ftype}
-	self:addSkinFrame{obj=LanguageMenu, ft=ftype}
-	self:addSkinFrame{obj=VoiceMacroMenu, ft=ftype}
-	self:addSkinFrame{obj=GeneralDockManagerOverflowButtonList, ft=ftype}
+	self:addSkinFrame{obj=_G.ChatMenu, ft=ftype}
+	self:addSkinFrame{obj=_G.EmoteMenu, ft=ftype}
+	self:addSkinFrame{obj=_G.LanguageMenu, ft=ftype}
+	self:addSkinFrame{obj=_G.VoiceMacroMenu, ft=ftype}
+	self:addSkinFrame{obj=_G.GeneralDockManagerOverflowButtonList, ft=ftype}
 
 end
 
@@ -630,13 +633,13 @@ function aObj:ChatTabs()
 	if not self.db.profile.ChatTabs or self.initialized.ChatTabs then return end
 	self.initialized.ChatTabs = true
 
-	for i = 1, NUM_CHAT_WINDOWS do
+	for i = 1, _G.NUM_CHAT_WINDOWS do
 		local tab = _G["ChatFrame" .. i .. "Tab"]
 		skinChatTab(tab)
 		-- hook this to fix tab gradient texture overlaying text & highlight
 		self:SecureHook(tab, "SetParent", function(this, parent)
-			if parent == GeneralDockManager.scrollFrame.child then
-				this.sf:SetParent(GeneralDockManager)
+			if parent == _G.GeneralDockManager.scrollFrame.child then
+				this.sf:SetParent(_G.GeneralDockManager)
 			else
 				this.sf:SetParent(this)
 				this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
@@ -694,7 +697,7 @@ function aObj:ChatTemporaryWindow()
 		return obj
 	end, true)
 	-- skin any existing temporary windows
-	for _, chatFrameName in pairs(CHAT_FRAMES) do
+	for _, chatFrameName in pairs(_G.CHAT_FRAMES) do
 		local frame = _G[chatFrameName]
 		if frame.isTemporary then skinTempWindow(frame) end
 	end
@@ -705,7 +708,7 @@ function aObj:CinematicFrame()
 	if not self.db.profile.CinematicFrame or self.initialized.CinematicFrame then return end
 	self.initialized.CinematicFrame = true
 
-	self:addSkinFrame{obj=CinematicFrame.closeDialog, ft=ftype}
+	self:addSkinFrame{obj=_G.CinematicFrame.closeDialog, ft=ftype}
 
 end
 
@@ -713,7 +716,7 @@ function aObj:CoinPickup()
 	if not self.db.profile.CoinPickup or self.initialized.CoinPickup then return end
 	self.initialized.CoinPickup = true
 
-	self:addSkinFrame{obj=CoinPickupFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
+	self:addSkinFrame{obj=_G.CoinPickupFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
 
 end
 
@@ -721,15 +724,15 @@ function aObj:ColorPicker()
 	if not self.db.profile.Colours or self.initialized.Colours then return end
 	self.initialized.Colours = true
 
-	ColorPickerFrame:SetBackdrop(nil)
-	ColorPickerFrameHeader:SetAlpha(0)
-	self:skinSlider(OpacitySliderFrame, 4)
-	self:addSkinFrame{obj=ColorPickerFrame, ft=ftype, y1=6}
+	_G.ColorPickerFrame:SetBackdrop(nil)
+	_G.ColorPickerFrameHeader:SetAlpha(0)
+	self:skinSlider(_G.OpacitySliderFrame, 4)
+	self:addSkinFrame{obj=_G.ColorPickerFrame, ft=ftype, y1=6}
 
 -->>-- Opacity Frame, used by BattlefieldMinimap amongst others
-	OpacityFrame:SetBackdrop(nil)
-	self:skinSlider{obj=OpacityFrameSlider, size=3}
-	self:addSkinFrame{obj=OpacityFrame, ft=ftype}
+	_G.OpacityFrame:SetBackdrop(nil)
+	self:skinSlider{obj=_G.OpacityFrameSlider, size=3}
+	self:addSkinFrame{obj=_G.OpacityFrame, ft=ftype}
 
 end
 
@@ -737,18 +740,18 @@ function aObj:DebugTools() -- LoD
 	if not self.db.profile.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
-	self:skinSlider{obj=EventTraceFrameScroll, size=3}
-	self:addSkinFrame{obj=EventTraceFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
-	self:skinScrollBar{obj=ScriptErrorsFrameScrollFrame}
-	self:addSkinFrame{obj=ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+	self:skinSlider{obj=_G.EventTraceFrameScroll, size=3}
+	self:addSkinFrame{obj=_G.EventTraceFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+	self:skinScrollBar{obj=_G.ScriptErrorsFrameScrollFrame}
+	self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
 
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, "FrameStackTooltip")
 		self:add2Table(self.ttList, "EventTraceTooltip")
-		self:HookScript(FrameStackTooltip, "OnUpdate", function(this)
+		self:HookScript(_G.FrameStackTooltip, "OnUpdate", function(this)
 			self:skinTooltip(this)
 		end)
-		self:HookScript(EventTraceTooltip, "OnUpdate", function(this)
+		self:HookScript(_G.EventTraceTooltip, "OnUpdate", function(this)
 			self:skinTooltip(this)
 		end)
 	end
@@ -761,7 +764,7 @@ function aObj:DestinyFrame()
 
 	-- buttons
 	for _, v in pairs{"alliance", "horde"} do
-		local btn = DestinyFrame[v .. "Button"]
+		local btn = _G.DestinyFrame[v .. "Button"]
 		self:removeRegions(btn, {1})
 		local tex = btn:GetHighlightTexture()
 		tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
@@ -771,17 +774,17 @@ function aObj:DestinyFrame()
 		self:skinButton{obj=btn, x1=0, y1=0, x2=-1, y2=3}
 	end
 
-	DestinyFrame.alphaLayer:SetTexture(0, 0, 0, 0.70)
-	DestinyFrame.background:SetTexture(nil)
-	DestinyFrame.frameHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-	DestinyFrameAllianceLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
-	DestinyFrameHordeLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
-	DestinyFrameLeftOrnament:SetTexture(nil)
-	DestinyFrameRightOrnament:SetTexture(nil)
-	DestinyFrame.allianceText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	DestinyFrame.hordeText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	DestinyFrameAllianceFinalText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	DestinyFrameHordeFinalText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.DestinyFrame.alphaLayer:SetTexture(0, 0, 0, 0.70)
+	_G.DestinyFrame.background:SetTexture(nil)
+	_G.DestinyFrame.frameHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.DestinyFrameAllianceLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.DestinyFrameHordeLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.DestinyFrameLeftOrnament:SetTexture(nil)
+	_G.DestinyFrameRightOrnament:SetTexture(nil)
+	_G.DestinyFrame.allianceText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.DestinyFrame.hordeText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.DestinyFrameAllianceFinalText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.DestinyFrameHordeFinalText:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 end
 
@@ -790,7 +793,7 @@ function aObj:DropDownPanels()
 	self.initialized.DropDownPanels = true
 
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(...)
-		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
+		for i = 1,_G. UIDROPDOWNMENU_MAXLEVELS do
 			local objName = "DropDownList" .. i
 			local obj = _G[objName]
 			if not self:IsHooked(obj, "Show") then
@@ -814,42 +817,42 @@ if aObj.isPTR then
 
 		local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
-		self:keepFontStrings(FeedbackUITitleFrm)
-		FeedbackUIWelcomeFrame:SetBackdrop(nil)
-		self:skinDropDown{obj=FeedbackUI_ModifierKeyDropDown}
-		self:addSkinFrame{obj=FeedbackUI_ModifierKeyDropDownList, ft=ftype}
-		self:skinDropDown{obj=FeedbackUI_MouseButtonDropDown}
-		self:addSkinFrame{obj=FeedbackUI_MouseButtonDropDownList, ft=ftype}
-		self:addSkinFrame{obj=FeedbackUI, ft=ftype, kfs=true}
-		self:add2Table(UISpecialFrames, "FeedbackUI") -- make it closeable with Esc key
+		self:keepFontStrings(_G.FeedbackUITitleFrm)
+		_G.FeedbackUIWelcomeFrame:SetBackdrop(nil)
+		self:skinDropDown{obj=_G.FeedbackUI_ModifierKeyDropDown}
+		self:addSkinFrame{obj=_G.FeedbackUI_ModifierKeyDropDownList, ft=ftype}
+		self:skinDropDown{obj=_G.FeedbackUI_MouseButtonDropDown}
+		self:addSkinFrame{obj=_G.FeedbackUI_MouseButtonDropDownList, ft=ftype}
+		self:addSkinFrame{obj=_G.FeedbackUI, ft=ftype, kfs=true}
+		self:add2Table(_G.UISpecialFrames, "FeedbackUI") -- make it closeable with Esc key
 
 	-->>-- Welcome Frame panels
-		FeedbackUIWelcomeFrameSurveys:DisableDrawLayer("BORDER")
-		self:addButtonBorder{obj=FeedbackUIWelcomeFrameSurveys, relTo=FeedbackUIWelcomeFrameSurveysIcon}
-		FeedbackUIWelcomeFrameSuggestions:DisableDrawLayer("BORDER")
-		self:addButtonBorder{obj=FeedbackUIWelcomeFrameSuggestions, relTo=FeedbackUIWelcomeFrameSuggestionsIcon}
-		FeedbackUIWelcomeFrameBugs:DisableDrawLayer("BORDER")
-		self:addButtonBorder{obj=FeedbackUIWelcomeFrameBugs, relTo=FeedbackUIWelcomeFrameBugsIcon}
+		_G.FeedbackUIWelcomeFrameSurveys:DisableDrawLayer("BORDER")
+		self:addButtonBorder{obj=_G.FeedbackUIWelcomeFrameSurveys, relTo=_G.FeedbackUIWelcomeFrameSurveysIcon}
+		_G.FeedbackUIWelcomeFrameSuggestions:DisableDrawLayer("BORDER")
+		self:addButtonBorder{obj=_G.FeedbackUIWelcomeFrameSuggestions, relTo=_G.FeedbackUIWelcomeFrameSuggestionsIcon}
+		_G.FeedbackUIWelcomeFrameBugs:DisableDrawLayer("BORDER")
+		self:addButtonBorder{obj=_G.FeedbackUIWelcomeFrameBugs, relTo=_G.FeedbackUIWelcomeFrameBugsIcon}
 
 	-->-- Survey Frame
-		FeedbackUISurveyFrame:SetBackdrop(nil)
-		self:skinDropDown{obj=FeedbackUISurveyFrameSurveysPanelDdlCategory}
-		self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlCategoryList, ft=ftype}
-		self:skinDropDown{obj=FeedbackUISurveyFrameSurveysPanelDdlStatus}
-		self:addSkinFrame{obj=FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
-		FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
+		_G.FeedbackUISurveyFrame:SetBackdrop(nil)
+		self:skinDropDown{obj=_G.FeedbackUISurveyFrameSurveysPanelDdlCategory}
+		self:addSkinFrame{obj=_G.FeedbackUISurveyFrameSurveysPanelDdlCategoryList, ft=ftype}
+		self:skinDropDown{obj=_G.FeedbackUISurveyFrameSurveysPanelDdlStatus}
+		self:addSkinFrame{obj=_G.FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
+		_G.FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
 		for i = 1, 8 do
 			self:skinButton{obj=_G["FeedbackUISurveyFrameSurveysPanelScrollButtonsOption" .. i .. "Btn"], mp2=true}
 		end
-		self:skinUsingBD{obj=FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
-		FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
-		FeedbackUISurveyFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
-		self:addSkinFrame{obj=FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
-		self:skinScrollBar{obj=FeedbackUISurveyFrameStepThroughPanelEditInput}
-		self:skinUsingBD{obj=FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
+		self:skinUsingBD{obj=_G.FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
+		_G.FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		_G.FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		_G.FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
+		_G.FeedbackUISurveyFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		self:addSkinFrame{obj=_G.FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
+		self:addSkinFrame{obj=_G.FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
+		self:skinScrollBar{obj=_G.FeedbackUISurveyFrameStepThroughPanelEditInput}
+		self:skinUsingBD{obj=_G.FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
 		if self.modBtnBs then
 			-- skin the alert buttons
 			for i = 1, 10 do
@@ -859,33 +862,33 @@ if aObj.isPTR then
 		end
 
 	-->>-- Suggestion Frame
-		FeedbackUISuggestFrame:SetBackdrop(nil)
-		FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		FeedbackUISuggestFrameStatusPanelLine:SetAlpha(0)
-		FeedbackUISuggestFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
-		self:addSkinFrame{obj=FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
-		self:skinScrollBar{obj=FeedbackUISuggestFrameStepThroughPanelEditInput}
-		self:skinUsingBD{obj=FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
+		_G.FeedbackUISuggestFrame:SetBackdrop(nil)
+		_G.FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		_G.FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		_G.FeedbackUISuggestFrameStatusPanelLine:SetAlpha(0)
+		_G.FeedbackUISuggestFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		self:addSkinFrame{obj=_G.FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
+		self:addSkinFrame{obj=_G.FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
+		self:skinScrollBar{obj=_G.FeedbackUISuggestFrameStepThroughPanelEditInput}
+		self:skinUsingBD{obj=_G.FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
 
 	-->>-- Bug Frame
-		FeedbackUIBugFrame:SetBackdrop(nil)
-		FeedbackUIBugFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		FeedbackUIBugFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		FeedbackUIBugFrameStatusPanelLine:SetAlpha(0)
-		FeedbackUIBugFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
-		self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
-		self:addSkinFrame{obj=FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
-		self:skinScrollBar{obj=FeedbackUIBugFrameStepThroughPanelEditInput}
-		self:skinUsingBD{obj=FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
+		_G.FeedbackUIBugFrame:SetBackdrop(nil)
+		_G.FeedbackUIBugFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		_G.FeedbackUIBugFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		_G.FeedbackUIBugFrameStatusPanelLine:SetAlpha(0)
+		_G.FeedbackUIBugFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
+		self:addSkinFrame{obj=_G.FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
+		self:addSkinFrame{obj=_G.FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
+		self:skinScrollBar{obj=_G.FeedbackUIBugFrameStepThroughPanelEditInput}
+		self:skinUsingBD{obj=_G.FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
 
 		-- make the QuestLog Tip Label text visible
-		FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 		-- Minimap Button
 		if self.db.profile.MinimapButtons.skin then
-			for _, reg in ipairs{FeedbackUIButton:GetRegions()} do
+			for _, reg in ipairs{_G.FeedbackUIButton:GetRegions()} do
 				reg:SetWidth(26)
 				reg:SetHeight(26)
 			end
@@ -899,34 +902,34 @@ function aObj:GMChatUI() -- LoD
 	self.initialized.GMChatUI = true
 
 -->>-- GM Chat Request frame
-	GMChatStatusFrame:DisableDrawLayer("BORDER")
-	GMChatStatusFrame:DisableDrawLayer("OVERLAY")
-	self:addSkinFrame{obj=GMChatStatusFrame, ft=ftype, anim=true, x1=30, y1=-12, x2=-30, y2=12}
+	_G.GMChatStatusFrame:DisableDrawLayer("BORDER")
+	_G.GMChatStatusFrame:DisableDrawLayer("OVERLAY")
+	self:addSkinFrame{obj=_G.GMChatStatusFrame, ft=ftype, anim=true, x1=30, y1=-12, x2=-30, y2=12}
 
 -->>-- GMChat Frame
 	if self.db.profile.ChatFrames then
-		self:addSkinFrame{obj=GMChatFrame, ft=ftype, x1=-4, y1=4, x2=4, y2=-8, nb=true}
+		self:addSkinFrame{obj=_G.GMChatFrame, ft=ftype, x1=-4, y1=4, x2=4, y2=-8, nb=true}
 	end
-	self:skinButton{obj=GMChatFrameCloseButton, cb=true}
-	GMChatFrame:DisableDrawLayer("BORDER")
+	self:skinButton{obj=_G.GMChatFrameCloseButton, cb=true}
+	_G.GMChatFrame:DisableDrawLayer("BORDER")
 
 -->>-- GMChatFrameEditBox
 	if self.db.profile.ChatEditBox.skin then
 		if self.db.profile.ChatEditBox.style == 1 then -- Frame
-			local kRegions = CopyTable(self.ebRgns)
+			local kRegions = _G.CopyTable(self.ebRgns)
 			aObj:add2Table(kRegions, 12)
-			self:keepRegions(GMChatFrame.editBox, kRegions)
-			self:addSkinFrame{obj=GMChatFrame.editBox, ft=ftype, x1=2, y1=-2, x2=-2}
+			self:keepRegions(_G.GMChatFrame.editBox, kRegions)
+			self:addSkinFrame{obj=_G.GMChatFrame.editBox, ft=ftype, x1=2, y1=-2, x2=-2}
 		elseif self.db.profile.ChatEditBox.style == 2 then -- Editbox
-			self:skinEditBox{obj=GMChatFrame.editBox, regs={12}, noHeight=true}
+			self:skinEditBox{obj=_G.GMChatFrame.editBox, regs={12}, noHeight=true}
 		else -- Borderless
-			self:removeRegions(GMChatFrame.editBox, {6, 7, 8})
-			self:addSkinFrame{obj=GMChatFrame.editBox, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
+			self:removeRegions(_G.GMChatFrame.editBox, {6, 7, 8})
+			self:addSkinFrame{obj=_G.GMChatFrame.editBox, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		end
 	end
 
 -->>-- GMChat Frame Tab
-	self:addSkinFrame{obj=GMChatTab, kfs=true, ft=ftype, noBdr=self.isTT, y2=-4}
+	self:addSkinFrame{obj=_G.GMChatTab, kfs=true, ft=ftype, noBdr=self.isTT, y2=-4}
 
 end
 
@@ -934,21 +937,21 @@ function aObj:GMSurveyUI() -- LoD
 	if not self.db.profile.GMSurveyUI or self.initialized.GMSurveyUI then return end
 	self.initialized.GMSurveyUI = true
 
-	self:keepFontStrings(GMSurveyHeader)
-	self:moveObject{obj=GMSurveyHeaderText, y=-8}
-	self:addSkinFrame{obj=GMSurveyFrame, ft=ftype, kfs=true, y1=-6, x2=-45}
+	self:keepFontStrings(_G.GMSurveyHeader)
+	self:moveObject{obj=_G.GMSurveyHeaderText, y=-8}
+	self:addSkinFrame{obj=_G.GMSurveyFrame, ft=ftype, kfs=true, y1=-6, x2=-45}
 
-	self:skinScrollBar{obj=GMSurveyScrollFrame}
+	self:skinScrollBar{obj=_G.GMSurveyScrollFrame}
 
-	for i = 1, MAX_SURVEY_QUESTIONS do
+	for i = 1, _G.MAX_SURVEY_QUESTIONS do
 		local obj = _G["GMSurveyQuestion" .. i]
 		self:applySkin{obj=obj, ft=ftype} -- must use applySkin otherwise text is behind gradient
 		obj.SetBackdropColor = function() end
 		obj.SetBackdropBorderColor = function() end
 	end
 
-	self:skinScrollBar{obj=GMSurveyCommentScrollFrame}
-	self:applySkin{obj=GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
+	self:skinScrollBar{obj=_G.GMSurveyCommentScrollFrame}
+	self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
 
 end
 
@@ -957,31 +960,31 @@ function aObj:GuildBankUI() -- LoD
 	self.initialized.GuildBankUI = true
 
 -->>--	Main Frame
-	GuildBankEmblemFrame:Hide()
-	for i = 1, NUM_GUILDBANK_COLUMNS do
+	_G.GuildBankEmblemFrame:Hide()
+	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
 		local objName = "GuildBankColumn" .. i
 		_G[objName .. "Background"]:SetAlpha(0)
-		for j = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
+		for j = 1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
 			self:addButtonBorder{obj=_G[objName .. "Button" .. j], ibt=true}
 		end
 	end
-	self:skinEditBox{obj=GuildItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	self:skinTabs{obj=GuildBankFrame, lod=true}
-	GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=GuildBankFrame, ft=ftype, kfs=true, hdr=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:skinEditBox{obj=_G.GuildItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinTabs{obj=_G.GuildBankFrame, lod=true}
+	_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.GuildBankFrame, ft=ftype, kfs=true, hdr=true, x1=-3, y1=2, x2=1, y2=-5}
 -->>--	Log Frame
-	self:skinScrollBar{obj=GuildBankTransactionsScrollFrame}
+	self:skinScrollBar{obj=_G.GuildBankTransactionsScrollFrame}
 
 -->>--	Info Frame
-	self:skinScrollBar{obj=GuildBankInfoScrollFrame}
+	self:skinScrollBar{obj=_G.GuildBankInfoScrollFrame}
 
 -->>--	GuildBank Popup Frame
-	self:skinEditBox{obj=GuildBankPopupEditBox, regs={9}}
-	self:skinScrollBar{obj=GuildBankPopupScrollFrame}
-	self:addSkinFrame{obj=GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
+	self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={9}}
+	self:skinScrollBar{obj=_G.GuildBankPopupScrollFrame}
+	self:addSkinFrame{obj=_G.GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
 
 -->>--	Tabs (side)
-	for i = 1, MAX_GUILDBANK_TABS do
+	for i = 1, _G.MAX_GUILDBANK_TABS do
 		local objName = "GuildBankTab" .. i
 		_G[objName]:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=_G[objName .. "Button"], relTo=_G[objName .. "ButtonIconTexture"]}
@@ -996,28 +999,28 @@ function aObj:HelpFrame()
 	if not self.db.profile.HelpFrame or self.initialized.HelpFrame then return end
 	self.initialized.HelpFrame = true
 
-	self:keepFontStrings(HelpFrame.header)
-	self:moveObject{obj=HelpFrame.header, y=-12}
-	self:removeInset(HelpFrame.leftInset)
-	self:removeInset(HelpFrame.mainInset)
-	self:addSkinFrame{obj=HelpFrame, ft=ftype, kfs=true, ofs=-10}
+	self:keepFontStrings(_G.HelpFrame.header)
+	self:moveObject{obj=_G.HelpFrame.header, y=-12}
+	self:removeInset(_G.HelpFrame.leftInset)
+	self:removeInset(_G.HelpFrame.mainInset)
+	self:addSkinFrame{obj=_G.HelpFrame, ft=ftype, kfs=true, ofs=-10}
 	-- Knowledge Base panel
-	self:keepFontStrings(HelpFrame.kbase)
-	self:skinEditBox{obj=HelpFrame.kbase.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	self:skinSlider{obj=HelpFrame.kbase.scrollFrame.ScrollBar, adj=-4}
-	self:skinSlider{obj=HelpFrame.kbase.scrollFrame2.ScrollBar, adj=-6}
-	for i = 1, #HelpFrame.kbase.scrollFrame.buttons do
-		local btn = HelpFrame.kbase.scrollFrame.buttons[i]
+	self:keepFontStrings(_G.HelpFrame.kbase)
+	self:skinEditBox{obj=_G.HelpFrame.kbase.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinSlider{obj=_G.HelpFrame.kbase.scrollFrame.ScrollBar, adj=-4}
+	self:skinSlider{obj=_G.HelpFrame.kbase.scrollFrame2.ScrollBar, adj=-6}
+	for i = 1, #_G.HelpFrame.kbase.scrollFrame.buttons do
+		local btn = _G.HelpFrame.kbase.scrollFrame.buttons[i]
 		btn:DisableDrawLayer("ARTWORK")
 		self:skinButton{obj=btn, as=true}
 	end
 	-- Nav Bar
-	HelpFrame.kbase.navBar:DisableDrawLayer("BACKGROUND")
-	HelpFrame.kbase.navBar.overlay:DisableDrawLayer("OVERLAY")
-	HelpFrame.kbase.navBar.home:DisableDrawLayer("OVERLAY")
-	HelpFrame.kbase.navBar.home:GetNormalTexture():SetAlpha(0)
-	HelpFrame.kbase.navBar.home:GetPushedTexture():SetAlpha(0)
-	HelpFrame.kbase.navBar.home.text:SetPoint("RIGHT", -20, 0) -- allow text to be fully displayed
+	_G.HelpFrame.kbase.navBar:DisableDrawLayer("BACKGROUND")
+	_G.HelpFrame.kbase.navBar.overlay:DisableDrawLayer("OVERLAY")
+	_G.HelpFrame.kbase.navBar.home:DisableDrawLayer("OVERLAY")
+	_G.HelpFrame.kbase.navBar.home:GetNormalTexture():SetAlpha(0)
+	_G.HelpFrame.kbase.navBar.home:GetPushedTexture():SetAlpha(0)
+	_G.HelpFrame.kbase.navBar.home.text:SetPoint("RIGHT", -20, 0) -- allow text to be fully displayed
 	-- hook this to handle navbar buttons
 	self:SecureHook("NavBar_AddButton", function(this, buttonData)
 		-- self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
@@ -1030,35 +1033,35 @@ function aObj:HelpFrame()
 	end)
 
 	-- Report Player panel
-	self:addSkinFrame{obj=ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
-	ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=ReportPlayerNameDialog, ft=ftype}
-	self:addSkinFrame{obj=ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
-	ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=ReportCheatingDialog, ft=ftype}
+	self:addSkinFrame{obj=_G.ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+	_G.ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.ReportPlayerNameDialog, ft=ftype}
+	self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+	_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
 	-- Account Security panel
 	-- Character Stuck! panel
-	self:addButtonBorder{obj=HelpFrameCharacterStuckHearthstone, es=20}
+	self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
 	-- Submit Bug panel
-	self:skinSlider{obj=HelpFrameReportBugScrollFrame.ScrollBar, size=3}
-	self:addSkinFrame{obj=self:getChild(HelpFrame.bug, 3), ft=ftype}
+	self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar, size=3}
+	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.bug, 3), ft=ftype}
 	-- Submit Suggestion panel
-	self:skinSlider{obj=HelpFrameSubmitSuggestionScrollFrame.ScrollBar, size=3}
-	self:addSkinFrame{obj=self:getChild(HelpFrame.suggestion, 3), ft=ftype}
+	self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar, size=3}
+	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.suggestion, 3), ft=ftype}
 	-- Open a Ticket panel
 	--	Ticket panel
-	self:skinSlider{obj=HelpFrameTicketScrollFrame.ScrollBar}
-	self:addSkinFrame{obj=self:getChild(HelpFrame.ticket, 4), ft=ftype}
+	self:skinSlider{obj=_G.HelpFrameTicketScrollFrame.ScrollBar}
+	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.ticket, 4), ft=ftype}
 	--	Ticket Status Frame
-	self:addSkinFrame{obj=TicketStatusFrameButton, ft=ftype}
+	self:addSkinFrame{obj=_G.TicketStatusFrameButton, ft=ftype}
 	-- HelpOpenTicketButton
-	HelpOpenTicketButton.tutorial:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=HelpOpenTicketButton.tutorial, ft=ftype, y1=3, x2=3}
+	_G.HelpOpenTicketButton.tutorial:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.HelpOpenTicketButton.tutorial, ft=ftype, y1=3, x2=3}
 	-- GM_Response
-	self:skinScrollBar{obj=HelpFrameGM_ResponseScrollFrame1}
-	self:skinScrollBar{obj=HelpFrameGM_ResponseScrollFrame2}
-	self:addSkinFrame{obj=self:getChild(HelpFrameGM_Response, 5), ft=ftype}
-	self:addSkinFrame{obj=self:getChild(HelpFrameGM_Response, 6), ft=ftype}
+	self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame1}
+	self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame2}
+	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 5), ft=ftype}
+	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
 
 end
 
@@ -1066,16 +1069,16 @@ function aObj:ItemText()
 	if not self.db.profile.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
 
-	self:SecureHookScript(ItemTextFrame, "OnShow", function(this)
-		ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:SecureHookScript(_G.ItemTextFrame, "OnShow", function(this)
+		_G.ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end)
 
-	self:skinScrollBar{obj=ItemTextScrollFrame}
-	self:glazeStatusBar(ItemTextStatusBar, 0)
-	self:moveObject{obj=ItemTextPrevPageButton, x=-55} -- move prev button left
-	self:addButtonBorder{obj=ItemTextPrevPageButton, ofs=-2}
-	self:addButtonBorder{obj=ItemTextNextPageButton, ofs=-2}
-	self:addSkinFrame{obj=ItemTextFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:skinScrollBar{obj=_G.ItemTextScrollFrame}
+	self:glazeStatusBar(_G.ItemTextStatusBar, 0)
+	self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
+	self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2}
+	self:addSkinFrame{obj=_G.ItemTextFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -1083,18 +1086,18 @@ function aObj:ItemUpgradeUI() -- LoD
 	if not self.db.profile.ItemUpgradeUI or self.initialized.ItemUpgradeUI then return end
 	self.initialized.ItemUpgradeUI = true
 
-	ItemUpgradeFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ItemUpgradeFrame.NoMoreUpgrades:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ItemUpgradeFrame.TitleTextLeft:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ItemUpgradeFrame.TitleTextRight:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ItemUpgradeFrameShadows:DisableDrawLayer("OVERLAY")
-	self:addButtonBorder{obj=ItemUpgradeFrame.ItemButton, relTo=ItemUpgradeFrame.ItemButton.IconTexture}
-	ItemUpgradeFrame.ItemButton.ItemFrame:SetTexture(nil)
-	ItemUpgradeFrame.ItemButton.ItemName:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ItemUpgradeFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
-	self:removeMagicBtnTex(ItemUpgradeFrameUpgradeButton)
-	self:addSkinFrame{obj=ItemUpgradeFrame, ft=ftype, kfs=true}
+	_G.ItemUpgradeFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrame.NoMoreUpgrades:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrame.TitleTextLeft:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrame.TitleTextRight:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrameShadows:DisableDrawLayer("OVERLAY")
+	self:addButtonBorder{obj=_G.ItemUpgradeFrame.ItemButton, relTo=_G.ItemUpgradeFrame.ItemButton.IconTexture}
+	_G.ItemUpgradeFrame.ItemButton.ItemFrame:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.ItemName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
+	self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
+	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true}
 
 end
 
@@ -1102,7 +1105,7 @@ function aObj:LevelUpDisplay()
 	if not self.db.profile.LevelUpDisplay or self.initialized.LevelUpDisplay then return end
 	self.initialized.LevelUpDisplay = true
 
-	LevelUpDisplay:DisableDrawLayer("BACKGROUND")
+	_G.LevelUpDisplay:DisableDrawLayer("BACKGROUND")
 
 end
 
@@ -1111,17 +1114,17 @@ function aObj:LFDFrame()
 	self.initialized.LFDFrame = true
 
 	-- LFD RoleCheck Popup
-	self:addSkinFrame{obj=LFDRoleCheckPopup, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=_G.LFDRoleCheckPopup, kfs=true, ft=ftype}
 
 	-- LFD Parent Frame (now part of PVE Frame)
-	self:keepFontStrings(LFDParentFrame)
-	self:removeInset(LFDParentFrame.Inset)
+	self:keepFontStrings(_G.LFDParentFrame)
+	self:removeInset(_G.LFDParentFrame.Inset)
 
 	-- LFD Queue Frame
-	LFDQueueFrameBackground:SetAlpha(0)
-	self:skinDropDown{obj=LFDQueueFrameTypeDropDown}
-	self:skinScrollBar{obj=LFDQueueFrameRandomScrollFrame}
-	self:removeMagicBtnTex(LFDQueueFrameFindGroupButton)
+	_G.LFDQueueFrameBackground:SetAlpha(0)
+	self:skinDropDown{obj=_G.LFDQueueFrameTypeDropDown}
+	self:skinScrollBar{obj=_G.LFDQueueFrameRandomScrollFrame}
+	self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
 	if self.modBtnBs then
 		self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
 			for i = 1, 5 do
@@ -1135,11 +1138,11 @@ function aObj:LFDFrame()
 	end
 
 	-- Specific List subFrame
-	for i = 1, NUM_LFD_CHOICE_BUTTONS do
+	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
 		local btn = "LFDQueueFrameSpecificListButton" .. i .. "ExpandOrCollapseButton"
 		self:skinButton{obj=_G[btn], mp2=true}
 	end
-	self:skinScrollBar{obj=LFDQueueFrameSpecificListScrollFrame}
+	self:skinScrollBar{obj=_G.LFDQueueFrameSpecificListScrollFrame}
 
 end
 
@@ -1148,11 +1151,11 @@ function aObj:LFGFrame()
 	self.initialized.LFGFrame = true
 
 	-- LFG DungeonReady Popup a.k.a. ReadyCheck
-	self:addSkinFrame{obj=LFGDungeonReadyStatus, kfs=true, ft=ftype}
-	self:addSkinFrame{obj=LFGDungeonReadyDialog, kfs=true, ft=ftype}
-	LFGDungeonReadyDialog.SetBackdrop = function() end
-	LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
-	LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
+	self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, kfs=true, ft=ftype}
+	_G.LFGDungeonReadyDialog.SetBackdrop = function() end
+	_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
+	_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
 
 end
 
@@ -1160,28 +1163,28 @@ function aObj:LFRFrame()
 	if not self.db.profile.LFRFrame or self.initialized.LFRFrame then return end
 	self.initialized.LFRFrame = true
 
-	self:addSkinFrame{obj=RaidBrowserFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.RaidBrowserFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
 
 	-- LFR Parent Frame
 	-- LFR Queue Frame
-	self:removeInset(LFRQueueFrameRoleInset)
-	self:removeInset(LFRQueueFrameCommentInset)
-	self:removeInset(LFRQueueFrameListInset)
-	LFRQueueFrameCommentExplanation:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:removeInset(_G.LFRQueueFrameRoleInset)
+	self:removeInset(_G.LFRQueueFrameCommentInset)
+	self:removeInset(_G.LFRQueueFrameListInset)
+	_G.LFRQueueFrameCommentExplanation:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 	-- Specific List subFrame
-	for i = 1, NUM_LFR_CHOICE_BUTTONS do
+	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
 		local btn = "LFRQueueFrameSpecificListButton" .. i .. "ExpandOrCollapseButton"
 		self:skinButton{obj=_G[btn], mp2=true}
 		self:moveObject{obj=_G[btn .. "Highlight"], x=-3} -- move highlight to the left
 	end
-	self:skinScrollBar{obj=LFRQueueFrameSpecificListScrollFrame}
+	self:skinScrollBar{obj=_G.LFRQueueFrameSpecificListScrollFrame}
 
 	-- LFR Browse Frame
-	self:removeInset(LFRBrowseFrameRoleInset)
-	self:skinDropDown{obj=LFRBrowseFrameRaidDropDown}
-	self:skinScrollBar{obj=LFRBrowseFrameListScrollFrame}
-	self:keepFontStrings(LFRBrowseFrame)
+	self:removeInset(_G.LFRBrowseFrameRoleInset)
+	self:skinDropDown{obj=_G.LFRBrowseFrameRaidDropDown}
+	self:skinScrollBar{obj=_G.LFRBrowseFrameListScrollFrame}
+	self:keepFontStrings(_G.LFRBrowseFrame)
 
 	-- Tabs (side)
 	for i = 1, 2 do
@@ -1197,28 +1200,28 @@ function aObj:MacroUI() -- LoD
 	self.initialized.MacroUI = true
 
 -->>-- Macro Frame
-	self:skinScrollBar{obj=MacroButtonScrollFrame}
-	self:skinScrollBar{obj=MacroFrameScrollFrame}
-	self:skinEditBox{obj=MacroFrameText, noSkin=true}
-	self:addSkinFrame{obj=MacroFrameTextBackground, ft=ftype, x2=1}
-	self:skinTabs{obj=MacroFrame, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
-	self:addSkinFrame{obj=MacroFrame, ft=ftype, kfs=true, hdr=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:skinScrollBar{obj=_G.MacroButtonScrollFrame}
+	self:skinScrollBar{obj=_G.MacroFrameScrollFrame}
+	self:skinEditBox{obj=_G.MacroFrameText, noSkin=true}
+	self:addSkinFrame{obj=_G.MacroFrameTextBackground, ft=ftype, x2=1}
+	self:skinTabs{obj=_G.MacroFrame, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
+	self:addSkinFrame{obj=_G.MacroFrame, ft=ftype, kfs=true, hdr=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	-- add button borders
 	local btn = _G["MacroFrameSelectedMacroButton"]
 	btn:DisableDrawLayer("BACKGROUND")
 	self:addButtonBorder{obj=btn, relTo=_G["MacroFrameSelectedMacroButtonIcon"]}
-	for i = 1, MAX_ACCOUNT_MACROS do
+	for i = 1, _G.MAX_ACCOUNT_MACROS do
 		local btn = _G["MacroButton" .. i]
 		btn:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=btn, relTo=_G["MacroButton" .. i .. "Icon"], spbt=true}
 	end
 
 -->>-- Macro Popup Frame
-	self:skinEditBox{obj=MacroPopupEditBox}
-	self:skinScrollBar{obj=MacroPopupScrollFrame}
-	self:addSkinFrame{obj=MacroPopupFrame, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
+	self:skinEditBox{obj=_G.MacroPopupEditBox}
+	self:skinScrollBar{obj=_G.MacroPopupScrollFrame}
+	self:addSkinFrame{obj=_G.MacroPopupFrame, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
 	-- add button borders
-	for i = 1, NUM_MACRO_ICONS_SHOWN do
+	for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
 		local btn = _G["MacroPopupButton" .. i]
 		btn:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=btn, relTo=_G["MacroPopupButton" .. i .. "Icon"], spbt=true}
@@ -1230,11 +1233,11 @@ function aObj:MailFrame()
 	if not self.db.profile.MailFrame or self.initialized.MailFrame then return end
 	self.initialized.MailFrame = true
 
-	self:skinTabs{obj=MailFrame}
-	self:addSkinFrame{obj=MailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:skinTabs{obj=_G.MailFrame}
+	self:addSkinFrame{obj=_G.MailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
 -->>--	Inbox Frame
-	for i = 1, INBOXITEMS_TO_DISPLAY do
+	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 		self:keepFontStrings(_G["MailItem" .. i])
 		local btn = _G["MailItem" .. i .. "Button"]
 		if self.modBtnBs then
@@ -1242,15 +1245,15 @@ function aObj:MailFrame()
 			self:addButtonBorder{obj=btn}
 		end
 	end
-	self:moveObject{obj=InboxTooMuchMail, y=-24} -- move icon down
-	self:removeRegions(InboxFrame, {1}) -- background texture
-	self:addButtonBorder{obj=InboxPrevPageButton, ofs=-2}
-	self:addButtonBorder{obj=InboxNextPageButton, ofs=-2}
+	self:moveObject{obj=_G.InboxTooMuchMail, y=-24} -- move icon down
+	self:removeRegions(_G.InboxFrame, {1}) -- background texture
+	self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2}
 
 -->>--	Send Mail Frame
-	self:keepFontStrings(SendMailFrame)
-	self:skinScrollBar{obj=SendMailScrollFrame}
-	for i = 1, ATTACHMENTS_MAX_SEND do
+	self:keepFontStrings(_G.SendMailFrame)
+	self:skinScrollBar{obj=_G.SendMailScrollFrame}
+	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		local btn = _G["SendMailAttachment" .. i]
 		if not self.modBtnBs then
 			self:resizeEmptyTexture(self:getRegion(btn, 1))
@@ -1259,22 +1262,22 @@ function aObj:MailFrame()
 			self:addButtonBorder{obj=btn}
 		end
 	end
-	self:skinEditBox{obj=SendMailNameEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
-	self:skinEditBox{obj=SendMailSubjectEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
-	self:skinEditBox{obj=SendMailBodyEditBox, noSkin=true}
+	self:skinEditBox{obj=_G.SendMailNameEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
+	self:skinEditBox{obj=_G.SendMailSubjectEditBox, regs={6}, noWidth=true} -- N.B. region 6 is text
+	self:skinEditBox{obj=_G.SendMailBodyEditBox, noSkin=true}
 	local c = self.db.profile.BodyText
-	SendMailBodyEditBox:SetTextColor(c.r, c.g, c.b)
-	self:skinMoneyFrame{obj=SendMailMoney, moveSEB=true, moveGEB=true, noWidth=true}
-	self:removeInset(SendMailMoneyInset)
-	SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
+	_G.SendMailBodyEditBox:SetTextColor(c.r, c.g, c.b)
+	self:skinMoneyFrame{obj=_G.SendMailMoney, moveSEB=true, moveGEB=true, noWidth=true}
+	self:removeInset(_G.SendMailMoneyInset)
+	_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
 
 -->>--	Open Mail Frame
-	self:skinScrollBar{obj=OpenMailScrollFrame}
-	OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=OpenMailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	self:addButtonBorder{obj=OpenMailLetterButton, ibt=true}
-	self:addButtonBorder{obj=OpenMailMoneyButton, ibt=true}
-	for i = 1, ATTACHMENTS_MAX_RECEIVE do
+	self:skinScrollBar{obj=_G.OpenMailScrollFrame}
+	_G.OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
+	self:addButtonBorder{obj=_G.OpenMailMoneyButton, ibt=true}
+	for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
 		local btn = _G["OpenMailAttachmentButton" .. i]
 		self:addButtonBorder{obj=btn, ibt=true}
 	end
@@ -1289,42 +1292,42 @@ function aObj:MainMenuBar()
 	if not self.db.profile.MainMenuBar.skin or self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
 
-	ExhaustionTick:SetAlpha(0)
-	self:adjHeight{obj=MainMenuExpBar, adj=-2} -- shrink it so it moves up
-	self:adjHeight{obj=ExhaustionLevelFillBar, adj=-1} -- mirror the XP bar
+	_G.ExhaustionTick:SetAlpha(0)
+	self:adjHeight{obj=_G.MainMenuExpBar, adj=-2} -- shrink it so it moves up
+	self:adjHeight{obj=_G.ExhaustionLevelFillBar, adj=-1} -- mirror the XP bar
 	local yOfs = IsAddOnLoaded("DragonCore") and -47 or -4
-	self:keepRegions(MainMenuExpBar, {1, 5, 6}) -- N.B. region 1 is rested XP, 5 is background, 6 is the normal XP
-	self:addSkinFrame{obj=MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=yOfs}
-	self:keepFontStrings(MainMenuBarMaxLevelBar)
-	self:keepFontStrings(MainMenuBarArtFrame)
-	self:keepRegions(ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
+	self:keepRegions(_G.MainMenuExpBar, {1, 5, 6}) -- N.B. region 1 is rested XP, 5 is background, 6 is the normal XP
+	self:addSkinFrame{obj=_G.MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=yOfs}
+	self:keepFontStrings(_G.MainMenuBarMaxLevelBar)
+	self:keepFontStrings(_G.MainMenuBarArtFrame)
+	self:keepRegions(_G.ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
 	if self.db.profile.MainMenuBar.glazesb then
-		self:glazeStatusBar(MainMenuExpBar, 0, self:getRegion(MainMenuExpBar, 5), {ExhaustionLevelFillBar})
-		ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
-		self:glazeStatusBar(ReputationWatchStatusBar, 0, ReputationWatchStatusBarBackground)
+		self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 5), {_G.ExhaustionLevelFillBar})
+		_G.ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
+		self:glazeStatusBar(_G.ReputationWatchStatusBar, 0, _G.ReputationWatchStatusBarBackground)
 	end
 
 	-- StanceBar Frame
-	self:keepFontStrings(StanceBarFrame)
-	for i = 1, NUM_STANCE_SLOTS do
+	self:keepFontStrings(_G.StanceBarFrame)
+	for i = 1, _G.NUM_STANCE_SLOTS do
 		self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
 	end
 	-- Possess Bar Frame
-	self:keepFontStrings(PossessBarFrame)
-	for i = 1, NUM_POSSESS_SLOTS do
+	self:keepFontStrings(_G.PossessBarFrame)
+	for i = 1, _G.NUM_POSSESS_SLOTS do
 		self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
 	end
 	-- Pet Action Bar Frame
-	self:keepFontStrings(PetActionBarFrame)
-	for i = 1, NUM_PET_ACTION_SLOTS do
+	self:keepFontStrings(_G.PetActionBarFrame)
+	for i = 1, _G.NUM_PET_ACTION_SLOTS do
 		local btnName = "PetActionButton" .. i
 		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true, reParent={_G[btnName .. "AutoCastable"]}, ofs=3}
 	end
 	-- Shaman's Totem Frame
-	self:keepFontStrings(MultiCastFlyoutFrame)
+	self:keepFontStrings(_G.MultiCastFlyoutFrame)
 
 -->>-- Action Buttons
-	for i = 1, NUM_ACTIONBAR_BUTTONS do
+	for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 		local btnName = "ActionButton" .. i
 		_G[btnName .. "Border"]:SetAlpha(0) -- texture changed in blizzard code
 		local btn = _G[btnName]
@@ -1336,47 +1339,47 @@ function aObj:MainMenuBar()
 	for _, v in pairs{"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "PVP", "LFD", "Companions", "EJ", "MainMenu", "Help"} do
 		self:addButtonBorder{obj=_G[v .. "MicroButton"], mb=true, ofs=0, y1=-21}
 	end
-	self:addButtonBorder{obj=FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
+	self:addButtonBorder{obj=_G.FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
 
 -->>-- add button borders
 	-- Bag buttons
-	self:addButtonBorder{obj=MainMenuBarBackpackButton}
-	self:addButtonBorder{obj=CharacterBag0Slot}
-	self:addButtonBorder{obj=CharacterBag1Slot}
-	self:addButtonBorder{obj=CharacterBag2Slot}
-	self:addButtonBorder{obj=CharacterBag3Slot}
-	for i = 1, NUM_POSSESS_SLOTS do
+	self:addButtonBorder{obj=_G.MainMenuBarBackpackButton}
+	self:addButtonBorder{obj=_G.CharacterBag0Slot}
+	self:addButtonBorder{obj=_G.CharacterBag1Slot}
+	self:addButtonBorder{obj=_G.CharacterBag2Slot}
+	self:addButtonBorder{obj=_G.CharacterBag3Slot}
+	for i = 1, _G.NUM_POSSESS_SLOTS do
 		local btn = _G["PossessButton" .. i]
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 	end
-	for i = 1, NUM_STANCE_SLOTS do
+	for i = 1, _G.NUM_STANCE_SLOTS do
 		local btn = _G["StanceButton" .. i]
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 	end
-	self:addButtonBorder{obj=MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
-	self:addButtonBorder{obj=MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
-	for i = 1, NUM_MULTI_CAST_PAGES * NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+	self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
+	self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
+	for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
 		self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sec=true, ofs=5}
 	end
 	-- ActionBar buttons
-	self:addButtonBorder{obj=ActionBarUpButton, es=12, ofs=-5, x2=-6, y2=7}
-	self:addButtonBorder{obj=ActionBarDownButton, es=12, ofs=-5, x2=-6, y2=7}
+	self:addButtonBorder{obj=_G.ActionBarUpButton, es=12, ofs=-5, x2=-6, y2=7}
+	self:addButtonBorder{obj=_G.ActionBarDownButton, es=12, ofs=-5, x2=-6, y2=7}
 
 -->>-- Vehicle Leave Button
-	self:addSkinButton{obj=MainMenuBarVehicleLeaveButton, ft=ftype}
+	self:addSkinButton{obj=_G.MainMenuBarVehicleLeaveButton, ft=ftype}
 	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
-		self:moveObject{obj=MainMenuBarVehicleLeaveButton, y=3}
+		self:moveObject{obj=_G.MainMenuBarVehicleLeaveButton, y=3}
 	end)
 
 -->>-- TalentMicroButtonAlert frame
-	self:skinButton{obj=TalentMicroButtonAlert.CloseButton, cb=true}
+	self:skinButton{obj=_G.TalentMicroButtonAlert.CloseButton, cb=true}
 -->>-- CompanionsMicroButtonAlert frame
-	self:skinButton{obj=CompanionsMicroButtonAlert.CloseButton, cb=true}
+	self:skinButton{obj=_G.CompanionsMicroButtonAlert.CloseButton, cb=true}
 
 -->>-- Extra Action Button
-	self:addButtonBorder{obj=ExtraActionButton1, relTo=ExtraActionButton1.icon}
-	ExtraActionButton1.style:SetTexture(nil)
-	ExtraActionButton1.style.SetTexture = function() end
+	self:addButtonBorder{obj=_G.ExtraActionButton1, relTo=_G.ExtraActionButton1.icon}
+	_G.ExtraActionButton1.style:SetTexture(nil)
+	_G.ExtraActionButton1.style.SetTexture = function() end
 -->>-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 	local function skinUnitPowerBarAlt(bar)
 		bar.frame:SetTexture(nil)
@@ -1387,13 +1390,13 @@ function aObj:MainMenuBar()
 		skinUnitPowerBarAlt(this)
 	end)
 	-- skin PlayerPowerBarAlt if already shown
-	if PlayerPowerBarAlt:IsVisible() then
-		skinUnitPowerBarAlt(PlayerPowerBarAlt)
+	if _G.PlayerPowerBarAlt:IsVisible() then
+		skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
 	end
 
 -->>-- MultiBar Buttons
 	for _, v in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
-		for i = 1, NUM_MULTIBAR_BUTTONS do
+		for i = 1, _G.NUM_MULTIBAR_BUTTONS do
 			local btnName = "MultiBar" .. v .. "Button" .. i
 			_G[btnName .. "FloatingBG"]:SetAlpha(0)
 			_G[btnName .. "Border"]:SetAlpha(0) -- texture changed in blizzard code
@@ -1410,79 +1413,79 @@ function aObj:MenuFrames()
 	self.initialized.MenuFrames = true
 
 -->>-- Game Menu Frame
-	self:addSkinFrame{obj=GameMenuFrame, ft=ftype, kfs=true, hdr=true}
+	self:addSkinFrame{obj=_G.GameMenuFrame, ft=ftype, kfs=true, hdr=true}
 
 -->>-- Options
-	self:addSkinFrame{obj=VideoOptionsFrame, ft=ftype, kfs=true, hdr=true}
-	self:addSkinFrame{obj=VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true}
-	self:skinSlider(VideoOptionsFrameCategoryFrameListScrollBar)
-	self:addSkinFrame{obj=VideoOptionsFramePanelContainer, ft=ftype}
+	self:addSkinFrame{obj=_G.VideoOptionsFrame, ft=ftype, kfs=true, hdr=true}
+	self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true}
+	self:skinSlider(_G.VideoOptionsFrameCategoryFrameListScrollBar)
+	self:addSkinFrame{obj=_G.VideoOptionsFramePanelContainer, ft=ftype}
 	-- Graphics
-	for _, child in ipairs{Graphics_:GetChildren()} do
+	for _, child in ipairs{_G.Graphics_:GetChildren()} do
 		if aObj:hasTextInName(child, "DropDown") then
 			self:skinDropDown{obj=child}
 		end
 	end
 	-- Advanced
-	for _, child in ipairs{Advanced_:GetChildren()} do
+	for _, child in ipairs{_G.Advanced_:GetChildren()} do
 		if aObj:hasTextInName(child, "DropDown") then
 			self:skinDropDown{obj=child}
 		end
 	end
 	-- Languages
-	self:skinDropDown{obj=InterfaceOptionsLanguagesPanelLocaleDropDown}
+	self:skinDropDown{obj=_G.InterfaceOptionsLanguagesPanelLocaleDropDown}
 	-- Sound
-	self:addSkinFrame{obj=AudioOptionsSoundPanel, ft=ftype}
-	self:addSkinFrame{obj=AudioOptionsSoundPanelPlayback, ft=ftype}
-	self:skinDropDown{obj=AudioOptionsSoundPanelHardwareDropDown}
-	self:skinDropDown{obj=AudioOptionsSoundPanelSoundChannelsDropDown}
-	self:addSkinFrame{obj=AudioOptionsSoundPanelHardware, ft=ftype}
-	self:addSkinFrame{obj=AudioOptionsSoundPanelVolume, ft=ftype}
+	self:addSkinFrame{obj=_G.AudioOptionsSoundPanel, ft=ftype}
+	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelPlayback, ft=ftype}
+	self:skinDropDown{obj=_G.AudioOptionsSoundPanelHardwareDropDown}
+	self:skinDropDown{obj=_G.AudioOptionsSoundPanelSoundChannelsDropDown}
+	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelHardware, ft=ftype}
+	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelVolume, ft=ftype}
 	-- Voice
-	self:addSkinFrame{obj=AudioOptionsVoicePanel, ft=ftype}
-	self:addSkinFrame{obj=AudioOptionsVoicePanelTalking, ft=ftype}
-	self:skinDropDown{obj=AudioOptionsVoicePanelInputDeviceDropDown}
-	self:skinButton{obj=RecordLoopbackSoundButton, x1=-2, x2=2}
-	self:skinButton{obj=PlayLoopbackSoundButton, x1=-2, x2=2}
-	self:addSkinFrame{obj=LoopbackVUMeter:GetParent(), ft=ftype, aso={ng=true}, nb=true}
-	self:glazeStatusBar(LoopbackVUMeter) -- no background required
-	self:addSkinFrame{obj=AudioOptionsVoicePanelBinding, ft=ftype}
-	self:skinDropDown{obj=AudioOptionsVoicePanelChatModeDropDown}
-	self:addSkinFrame{obj=AudioOptionsVoicePanelListening, ft=ftype}
-	self:skinDropDown{obj=AudioOptionsVoicePanelOutputDeviceDropDown}
-	self:addSkinFrame{obj=VoiceChatTalkers, ft=ftype}
+	self:addSkinFrame{obj=_G.AudioOptionsVoicePanel, ft=ftype}
+	self:addSkinFrame{obj=_G.AudioOptionsVoicePanelTalking, ft=ftype}
+	self:skinDropDown{obj=_G.AudioOptionsVoicePanelInputDeviceDropDown}
+	self:skinButton{obj=_G.RecordLoopbackSoundButton, x1=-2, x2=2}
+	self:skinButton{obj=_G.PlayLoopbackSoundButton, x1=-2, x2=2}
+	self:addSkinFrame{obj=_G.LoopbackVUMeter:GetParent(), ft=ftype, aso={ng=true}, nb=true}
+	self:glazeStatusBar(_G.LoopbackVUMeter) -- no background required
+	self:addSkinFrame{obj=_G.AudioOptionsVoicePanelBinding, ft=ftype}
+	self:skinDropDown{obj=_G.AudioOptionsVoicePanelChatModeDropDown}
+	self:addSkinFrame{obj=_G.AudioOptionsVoicePanelListening, ft=ftype}
+	self:skinDropDown{obj=_G.AudioOptionsVoicePanelOutputDeviceDropDown}
+	self:addSkinFrame{obj=_G.VoiceChatTalkers, ft=ftype}
 
 -->>-- Mac Options
-	if IsMacClient() then
-		self:addSkinFrame{obj=MacOptionsFrame, ft=ftype, kfs=true, hdr=true}
-		self:addSkinFrame{obj=MacOptionsFrameMovieRecording, ft=ftype, y1=-2}
-		self:skinDropDown{obj=MacOptionsFrameResolutionDropDown, x2=110}
-		self:skinDropDown{obj=MacOptionsFrameFramerateDropDown}
-		self:skinDropDown{obj=MacOptionsFrameCodecDropDown}
+	if _G.IsMacClient() then
+		self:addSkinFrame{obj=_G.MacOptionsFrame, ft=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=_G.MacOptionsFrameMovieRecording, ft=ftype, y1=-2}
+		self:skinDropDown{obj=_G.MacOptionsFrameResolutionDropDown, x2=110}
+		self:skinDropDown{obj=_G.MacOptionsFrameFramerateDropDown}
+		self:skinDropDown{obj=_G.MacOptionsFrameCodecDropDown}
 		-- popup frames
-		self:addSkinFrame{obj=MacOptionsITunesRemote, ft=ftype, y1=-2}
-		self:addSkinFrame{obj=MacOptionsCompressFrame, ft=ftype, kfs=true, hdr=true}
-		self:addSkinFrame{obj=MacOptionsCancelFrame, ft=ftype, kfs=true, hdr=true}
-		self:addSkinFrame{obj=FolderPicker, ft=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=_G.MacOptionsITunesRemote, ft=ftype, y1=-2}
+		self:addSkinFrame{obj=_G.MacOptionsCompressFrame, ft=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=_G.MacOptionsCancelFrame, ft=ftype, kfs=true, hdr=true}
+		self:addSkinFrame{obj=_G.FolderPicker, ft=ftype, kfs=true, hdr=true}
 	end
 
 -->>-- Interface
-	self:skinTabs{obj=InterfaceOptionsFrame, up=true, lod=true, x1=6, y1=2, x2=-6, y2=-4}
-	self:addSkinFrame{obj=InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
-	InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
-	self:skinScrollBar{obj=InterfaceOptionsFrameCategoriesList, size=2}
-	self:addSkinFrame{obj=InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
-	InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)
-	self:skinScrollBar{obj=InterfaceOptionsFrameAddOnsList, size=2}
-	self:addSkinFrame{obj=InterfaceOptionsFrameAddOns, ft=ftype, kfs=true, bgen=1}
-	self:addSkinFrame{obj=InterfaceOptionsFramePanelContainer, ft=ftype, bgen=1}
+	self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, x1=6, y1=2, x2=-6, y2=-4}
+	self:addSkinFrame{obj=_G.InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
+	_G.InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
+	self:skinScrollBar{obj=_G.InterfaceOptionsFrameCategoriesList, size=2}
+	self:addSkinFrame{obj=_G.InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
+	_G.InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)
+	self:skinScrollBar{obj=_G.InterfaceOptionsFrameAddOnsList, size=2}
+	self:addSkinFrame{obj=_G.InterfaceOptionsFrameAddOns, ft=ftype, kfs=true, bgen=1}
+	self:addSkinFrame{obj=_G.InterfaceOptionsFramePanelContainer, ft=ftype, bgen=1}
 	-- skin toggle buttons
-	for i = 1, #InterfaceOptionsFrameAddOns.buttons do
-		self:skinButton{obj=InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true}
+	for i = 1, #_G.InterfaceOptionsFrameAddOns.buttons do
+		self:skinButton{obj=_G.InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true}
 	end
 
 -->>-- Rating Menu
-	self:addSkinFrame{obj=RatingMenuFrame, ft=ftype, hdr=true}
+	self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
 
 	local function checkKids(obj)
 
@@ -1544,10 +1547,11 @@ function aObj:MenuFrames()
 		then
 			self:checkAndRun("AddonLoader")
 		end
-		-- self:Debug("IOL_DP: [%s, %s, %s, %s]", panel, panel.name, panel:GetNumChildren(), panel.sf)
+		self:Debug("IOL_DP: [%s, %s, %s, %s, %s]", panel, panel.name, panel:GetNumChildren(), panel.sf, self.ignoreIOF[panel])
 		if panel
 		and panel.GetNumChildren
 		and not panel.sf
+		and not self.ignoreIOF[panel]
 		then
 			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
@@ -1562,55 +1566,55 @@ function aObj:Minimap()
 	self.initialized.Minimap = true
 
 -->>-- Cluster Frame
-	MinimapBorderTop:Hide()
-	MinimapZoneTextButton:ClearAllPoints()
-	MinimapZoneTextButton:SetPoint("BOTTOMLEFT", Minimap, "TOPLEFT", 0, 5)
-	MinimapZoneTextButton:SetPoint("BOTTOMRIGHT", Minimap, "TOPRIGHT", 0, 5)
-	MinimapZoneText:ClearAllPoints()
-	MinimapZoneText:SetPoint("CENTER")
-	self:addSkinButton{obj=MinimapZoneTextButton, parent=MinimapZoneTextButton, ft=ftype}
+	_G.MinimapBorderTop:Hide()
+	_G.MinimapZoneTextButton:ClearAllPoints()
+	_G.MinimapZoneTextButton:SetPoint("BOTTOMLEFT", _G.Minimap, "TOPLEFT", 0, 5)
+	_G.MinimapZoneTextButton:SetPoint("BOTTOMRIGHT", _G.Minimap, "TOPRIGHT", 0, 5)
+	_G.MinimapZoneText:ClearAllPoints()
+	_G.MinimapZoneText:SetPoint("CENTER")
+	self:addSkinButton{obj=_G.MinimapZoneTextButton, parent=_G.MinimapZoneTextButton, ft=ftype}
 	-- World Map Button
-	MiniMapWorldMapButton:ClearAllPoints()
-	MiniMapWorldMapButton:SetPoint("LEFT", MinimapZoneTextButton, "RIGHT", -4, 0)
-	self:skinButton{obj=MiniMapWorldMapButton, ob="M"}
+	_G.MiniMapWorldMapButton:ClearAllPoints()
+	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
+	self:skinButton{obj=_G.MiniMapWorldMapButton, ob="M"}
 
 -->>-- Minimap
-	Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
+	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
-	self.minimapskin = self:addSkinFrame{obj=Minimap, ft=ftype, aso={bd=8}, ofs=5}
+	self.minimapskin = self:addSkinFrame{obj=_G.Minimap, ft=ftype, aso={bd=8}, ofs=5}
 	if self.db.profile.Minimap.gloss then
-		RaiseFrameLevel(self.minimapskin)
+		_G.RaiseFrameLevel(self.minimapskin)
 	else
-		LowerFrameLevel(self.minimapskin)
+		_G.LowerFrameLevel(self.minimapskin)
 	end
 
 -->>-- Minimap Backdrop Frame
-	MinimapBorder:SetAlpha(0)
-	MinimapNorthTag:SetAlpha(0)
-	MinimapCompassTexture:SetAlpha(0)
+	_G.MinimapBorder:SetAlpha(0)
+	_G.MinimapNorthTag:SetAlpha(0)
+	_G.MinimapCompassTexture:SetAlpha(0)
 
 -->>-- Buttons
 	-- on LHS
 	local xOfs, yOfs = 6, 4
-	for _, v in pairs{MiniMapTracking, MiniMapLFGFrame, MiniMapRecordingButton, MiniMapVoiceChatFrame} do
+	for _, v in pairs{_G.MiniMapTracking, _G.MiniMapLFGFrame, _G.MiniMapRecordingButton, _G.MiniMapVoiceChatFrame} do
 		v:ClearAllPoints()
-		v:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", xOfs, yOfs)
+		v:SetPoint("TOPRIGHT", _G.Minimap, "TOPLEFT", xOfs, yOfs)
 		yOfs = yOfs - v:GetHeight() + 3
 	end
 	-- Difficulty indicators
-	self:moveObject{obj=MiniMapInstanceDifficulty, x=10, y=9}
-	self:moveObject{obj=GuildInstanceDifficulty, x=12, y=40}
-	self:moveObject{obj=MiniMapChallengeMode, x=11, y=4}
+	self:moveObject{obj=_G.MiniMapInstanceDifficulty, x=10, y=9}
+	self:moveObject{obj=_G.GuildInstanceDifficulty, x=12, y=40}
+	self:moveObject{obj=_G.MiniMapChallengeMode, x=11, y=4}
 	-- on RHS
-	MiniMapMailFrame:ClearAllPoints()
-	MiniMapMailFrame:SetPoint("LEFT", Minimap, "RIGHT", -10, 28)
-	MinimapZoomIn:ClearAllPoints()
-	MinimapZoomIn:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMRIGHT", -4, -3)
-	MinimapZoomOut:ClearAllPoints()
-	MinimapZoomOut:SetPoint("TOPRIGHT", Minimap, "BOTTOMRIGHT", 3, 4)
+	_G.MiniMapMailFrame:ClearAllPoints()
+	_G.MiniMapMailFrame:SetPoint("LEFT", _G.Minimap, "RIGHT", -10, 28)
+	_G.MinimapZoomIn:ClearAllPoints()
+	_G.MinimapZoomIn:SetPoint("BOTTOMLEFT", _G.Minimap, "BOTTOMRIGHT", -4, -3)
+	_G.MinimapZoomOut:ClearAllPoints()
+	_G.MinimapZoomOut:SetPoint("TOPRIGHT", _G.Minimap, "BOTTOMRIGHT", 3, 4)
 
 	-- move BuffFrame
-	self:moveObject{obj=BuffFrame, x=-40}
+	self:moveObject{obj=_G.BuffFrame, x=-40}
 
 end
 
@@ -1648,7 +1652,7 @@ function aObj:MinimapButtons()
 							obj:SetHeight(32)
 							if not minBtn then
 								if objType == "Button" then
-									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==QueueStatusMinimapButton and true or nil, ft=ftype} -- reparent to ensure Eye is visible
+									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==_G.QueueStatusMinimapButton and true or nil, ft=ftype} -- reparent to ensure Eye is visible
 								else
 									aObj:addSkinFrame{obj=obj, ft=ftype}
 								end
@@ -1666,22 +1670,22 @@ function aObj:MinimapButtons()
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
-	self:ScheduleTimer(mmKids, 0.5, Minimap)
+	self:ScheduleTimer(mmKids, 0.5, _G.Minimap)
 
 	-- skin other Blizzard buttons
 	local asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
 	-- Calendar button
-	local obj = GameTimeFrame
+	local obj = _G.GameTimeFrame
 	obj:SetWidth(26)
 	obj:SetHeight(26)
 	obj:GetNormalTexture():SetTexCoord(0.1, 0.31, 0.16, 0.6)
 	obj:GetPushedTexture():SetTexCoord(0.6, 0.81, 0.16, 0.6)
 	self:addSkinFrame{obj=obj, aso=asopts, x1=-4, y1=4, x2=4, y2=-4}
 	-- make sure textures appear above skinFrame
-	LowerFrameLevel(obj.sf)
+	_G.LowerFrameLevel(obj.sf)
 
 	-- MinimapZoomIn/Out buttons
-	for k, obj in pairs{MinimapZoomIn, MinimapZoomOut} do
+	for k, obj in pairs{_G.MinimapZoomIn, _G.MinimapZoomOut} do
 		obj:GetNormalTexture():SetTexture(nil)
 		obj:GetPushedTexture():SetTexture(nil)
 		if minBtn then
@@ -1700,45 +1704,45 @@ function aObj:MinimapButtons()
 		if not obj:IsEnabled() then obj.sb:Disable() end
 	end
 	-- change Mail icon
-	MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
+	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	-- resize other buttons
-	MiniMapMailFrame:SetWidth(28)
-	MiniMapMailFrame:SetHeight(28)
-	MiniMapVoiceChatFrame:SetWidth(32)
-	MiniMapVoiceChatFrame:SetHeight(32)
-	MiniMapVoiceChatFrameIcon:ClearAllPoints()
-	MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
+	_G.MiniMapMailFrame:SetWidth(28)
+	_G.MiniMapMailFrame:SetHeight(28)
+	_G.MiniMapVoiceChatFrame:SetWidth(32)
+	_G.MiniMapVoiceChatFrame:SetHeight(32)
+	_G.MiniMapVoiceChatFrameIcon:ClearAllPoints()
+	_G.MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
 	-- MiniMap Tracking
-	MiniMapTrackingBackground:SetTexture(nil)
-	MiniMapTrackingIcon:SetParent(MiniMapTrackingButton)
-	MiniMapTrackingIcon:ClearAllPoints()
-	MiniMapTrackingIcon:SetPoint("CENTER", MiniMapTrackingButton)
+	_G.MiniMapTrackingBackground:SetTexture(nil)
+	_G.MiniMapTrackingIcon:SetParent(_G.MiniMapTrackingButton)
+	_G.MiniMapTrackingIcon:ClearAllPoints()
+	_G.MiniMapTrackingIcon:SetPoint("CENTER", _G.MiniMapTrackingButton)
 	-- change this to stop the icon being moved
-	MiniMapTrackingIcon.SetPoint = function() end
+	_G.MiniMapTrackingIcon.SetPoint = function() end
 	if not minBtn then
-		self:addSkinFrame{obj=MiniMapTracking, ft=ftype}
+		self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype}
 	end
 	-- Instance Difficulty
-	MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.135, 0.5) -- remove top hanger texture
-	self:moveObject{obj=MiniMapInstanceDifficulty, y=-5}
+	_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.135, 0.5) -- remove top hanger texture
+	self:moveObject{obj=_G.MiniMapInstanceDifficulty, y=-5}
 	-- Guild Instance Difficulty
-	GuildInstanceDifficultyHanger:SetAlpha(0)
+	_G.GuildInstanceDifficultyHanger:SetAlpha(0)
 
 	-- skin any moved Minimap buttons if required
-	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(MinimapButtonFrame) end
+	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
 
 	-- show the Bongos minimap icon if required
-	if IsAddOnLoaded("Bongos") then Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
+	if IsAddOnLoaded("Bongos") then _G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
 
 	-- skin other minimap buttons as required
 	if not minBtn then
 		local mmButs = {
-			["SmartBuff"] = SmartBuff_MiniMapButton,
-			["WebDKP"] = WebDKP_MinimapButton,
-			["GuildAds"] = GuildAdsMinimapButton,
-			["Outfitter"] = OutfitterMinimapButton,
-			["Perl_Config"] = PerlButton,
-			["WIM"] = WIM3MinimapButton,
+			["SmartBuff"] = _G.SmartBuff_MiniMapButton,
+			["WebDKP"] = _G.WebDKP_MinimapButton,
+			["GuildAds"] = _G.GuildAdsMinimapButton,
+			["Outfitter"] = _G.OutfitterMinimapButton,
+			["Perl_Config"] = _G.PerlButton,
+			["WIM"] = _G.WIM3MinimapButton,
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then
@@ -1782,14 +1786,14 @@ function aObj:MovePad() -- LoD
 	if not self.db.profile.MovePad or self.initialized.MovePad then return end
 	self.initialized.MovePad = true
 
-	self:skinButton{obj=MovePadForward}
-	self:skinButton{obj=MovePadJump}
-	self:skinButton{obj=MovePadBackward}
-	self:skinButton{obj=MovePadStrafeLeft}
-	self:skinButton{obj=MovePadStrafeRight}
-	self:addSkinButton{obj=MovePadLock, as=true, ft=ftype, ofs=-4}
-	self:addSkinFrame{obj=MovePadFrame, ft=ftype}
-	self:addButtonBorder{obj=MovePadJump, ofs=0}
+	self:skinButton{obj=_G.MovePadForward}
+	self:skinButton{obj=_G.MovePadJump}
+	self:skinButton{obj=_G.MovePadBackward}
+	self:skinButton{obj=_G.MovePadStrafeLeft}
+	self:skinButton{obj=_G.MovePadStrafeRight}
+	self:addSkinButton{obj=_G.MovePadLock, as=true, ft=ftype, ofs=-4}
+	self:addSkinFrame{obj=_G.MovePadFrame, ft=ftype}
+	self:addButtonBorder{obj=_G.MovePadJump, ofs=0}
 
 end
 
@@ -1798,10 +1802,10 @@ if IsMacClient() then
 		if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
 		self.initialized.MovieProgress = true
 
-		self:getChild(MovieProgressBar, 1):SetBackdrop(nil)
-		self:removeRegions(MovieProgressFrame)
-		self:glazeStatusBar(MovieProgressBar, 0, self:getRegion(MovieProgressBar, 1))
-		self:addSkinFrame{obj=MovieProgressFrame, ft=ftype, x1=-6, y1=6, x2=6, y2=-6}
+		self:getChild(_G.MovieProgressBar, 1):SetBackdrop(nil)
+		self:removeRegions(_G.MovieProgressFrame)
+		self:glazeStatusBar(_G.MovieProgressBar, 0, self:getRegion(_G.MovieProgressBar, 1))
+		self:addSkinFrame{obj=_G.MovieProgressFrame, ft=ftype, x1=-6, y1=6, x2=6, y2=-6}
 
 	end
 end
@@ -1838,7 +1842,7 @@ function aObj:Nameplates()
 	local npEvt
 	local function skinNameplates()
 
-		for _, child in pairs{WorldFrame:GetChildren()} do
+		for _, child in pairs{_G.WorldFrame:GetChildren()} do
 			if aObj:hasTextInName(child, "NamePlate")
 			then
 				if not child.sknd then
@@ -1854,8 +1858,8 @@ function aObj:Nameplates()
 		end
 
 		-- if the nameplates are off then disable the skinning code
-		if not GetCVarBool("nameplateShowEnemies")
-		and not GetCVarBool("nameplateShowFriends")
+		if not _G.GetCVarBool("nameplateShowEnemies")
+		and not _G.GetCVarBool("nameplateShowFriends")
 		then
 			aObj:CancelTimer(npEvt, true)
 			npEvt = nil
@@ -1875,8 +1879,8 @@ function aObj:Nameplates()
 		if varName:find("nameplateShow") and varValue == 1 then showFunc() end
 	end)
 
-	if GetCVarBool("nameplateShowEnemies")
-	or GetCVarBool("nameplateShowFriends")
+	if _G.GetCVarBool("nameplateShowEnemies")
+	or _G.GetCVarBool("nameplateShowFriends")
 	then
 		showFunc()
 	end
@@ -1889,12 +1893,12 @@ function aObj:PetBattleUI()
 	self.initialized.PetBattleUI = true
 
 	-- Top Frame
-	PetBattleFrame.TopArtLeft:SetTexture(nil)
-	PetBattleFrame.TopArtRight:SetTexture(nil)
-	PetBattleFrame.TopVersus:SetTexture(nil)
+	_G.PetBattleFrame.TopArtLeft:SetTexture(nil)
+	_G.PetBattleFrame.TopArtRight:SetTexture(nil)
+	_G.PetBattleFrame.TopVersus:SetTexture(nil)
 	-- Active Allies/Enemies
 	for _, v in pairs{"Ally", "Enemy"} do
-		local obj = PetBattleFrame["Active" .. v]
+		local obj = _G.PetBattleFrame["Active" .. v]
 		self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=1, reParent={obj.LevelUnderlay, obj.Level, obj.SpeedUnderlay, obj.SpeedIcon}}
 		obj.Border:SetTexture(nil)
 		obj.Border2:SetTexture(nil)
@@ -1918,18 +1922,18 @@ function aObj:PetBattleUI()
 		obj.HealthBarFrame:SetTexture(nil)
 		-- add a background frame
 		local sfn = v == "Ally" and "sfl" or "sfr"
-		PetBattleFrame[sfn] = CreateFrame("Frame", nil, PetBattleFrame)
-		self:applySkin{obj=PetBattleFrame[sfn], bba=0, fh=45}
+		_G.PetBattleFrame[sfn] = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
+		self:applySkin{obj=_G.PetBattleFrame[sfn], bba=0, fh=45}
 		if v == "Ally" then
-			PetBattleFrame.sfl:SetPoint("TOPLEFT", PetBattleFrame, "TOPLEFT", 420, 4)
+			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", 420, 4)
 		else
-			PetBattleFrame.sfr:SetPoint("TOPRIGHT", PetBattleFrame, "TOPRIGHT", -420, 4)
+			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", -420, 4)
 		end
-		PetBattleFrame[sfn]:SetSize(350, 94)
-		PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
+		_G.PetBattleFrame[sfn]:SetSize(350, 94)
+		_G.PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
 		-- Ally2/3, Enemy2/3
 		for i = 2, 3 do
-			local btn = PetBattleFrame[v .. i]
+			local btn = _G.PetBattleFrame[v .. i]
 			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar}}
 			btn.BorderAlive:SetTexture(nil)
 			self:changeTandC(btn.BorderDead, [[Interface\PetBattles\DeadPetIcon]])
@@ -1948,20 +1952,20 @@ function aObj:PetBattleUI()
 		end
 	end
 	-- create a frame behind the VS text
-	PetBattleFrame.sfm = CreateFrame("Frame", nil, PetBattleFrame)
-	self:applySkin{obj=PetBattleFrame.sfm, bba=0}
-	PetBattleFrame.sfm:SetPoint("TOPLEFT", PetBattleFrame.sfl, "TOPRIGHT", -8, 0)
-	PetBattleFrame.sfm:SetPoint("TOPRIGHT", PetBattleFrame.sfr, "TOPLEFT", 8, 0)
-	PetBattleFrame.sfm:SetHeight(45)
-	PetBattleFrame.sfm:SetFrameStrata("BACKGROUND")
+	_G.PetBattleFrame.sfm = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
+	self:applySkin{obj=_G.PetBattleFrame.sfm, bba=0}
+	_G.PetBattleFrame.sfm:SetPoint("TOPLEFT", _G.PetBattleFrame.sfl, "TOPRIGHT", -8, 0)
+	_G.PetBattleFrame.sfm:SetPoint("TOPRIGHT", _G.PetBattleFrame.sfr, "TOPLEFT", 8, 0)
+	_G.PetBattleFrame.sfm:SetHeight(45)
+	_G.PetBattleFrame.sfm:SetFrameStrata("BACKGROUND")
 
 	-- Bottom Frame
-	PetBattleFrame.BottomFrame.RightEndCap:SetTexture(nil)
-	PetBattleFrame.BottomFrame.LeftEndCap:SetTexture(nil)
-	PetBattleFrame.BottomFrame.Background:SetTexture(nil)
+	_G.PetBattleFrame.BottomFrame.RightEndCap:SetTexture(nil)
+	_G.PetBattleFrame.BottomFrame.LeftEndCap:SetTexture(nil)
+	_G.PetBattleFrame.BottomFrame.Background:SetTexture(nil)
 	-- Pet Selection
-	for i = 1, NUM_BATTLE_PETS_IN_BATTLE do
-		local btn = PetBattleFrame.BottomFrame.PetSelectionFrame["Pet" .. i]
+	for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
+		local btn = _G.PetBattleFrame.BottomFrame.PetSelectionFrame["Pet" .. i]
 		btn.Framing:SetTexture(nil)
 		if not self.isPTR then
 			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Level}}
@@ -1971,23 +1975,23 @@ function aObj:PetBattleUI()
 		btn.ActualHealthBar:SetTexture(self.sbTexture)
 		btn.HealthDivider:SetTexture(nil)
 	end
-	self:keepRegions(PetBattleFrame.BottomFrame.xpBar, {1, 5, 6, 13}) -- text and statusbar textures
-	self:glazeStatusBar(PetBattleFrame.BottomFrame.xpBar, 0,  nil)
-	PetBattleFrame.BottomFrame.TurnTimer.TimerBG:SetTexture(nil)
-	PetBattleFrame.BottomFrame.TurnTimer.Bar:SetTexture(self.sbTexture)
-	PetBattleFrame.BottomFrame.TurnTimer.ArtFrame:SetTexture(nil)
-	PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:SetTexture(nil)
-	self:removeRegions(PetBattleFrame.BottomFrame.FlowFrame, {1, 2, 3})
-	self:getRegion(PetBattleFrame.BottomFrame.Delimiter, 1):SetTexture(nil)
-	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.SwitchPetButton}
-	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.CatchButton}
-	self:addButtonBorder{obj=PetBattleFrame.BottomFrame.ForfeitButton}
-	self:removeRegions(PetBattleFrame.BottomFrame.MicroButtonFrame, {1, 2, 3})
-	self:addSkinFrame{obj=PetBattleFrame.BottomFrame, ft=ftype, y1=8}
+	self:keepRegions(_G.PetBattleFrame.BottomFrame.xpBar, {1, 5, 6, 13}) -- text and statusbar textures
+	self:glazeStatusBar(_G.PetBattleFrame.BottomFrame.xpBar, 0,  nil)
+	_G.PetBattleFrame.BottomFrame.TurnTimer.TimerBG:SetTexture(nil)
+	_G.PetBattleFrame.BottomFrame.TurnTimer.Bar:SetTexture(self.sbTexture)
+	_G.PetBattleFrame.BottomFrame.TurnTimer.ArtFrame:SetTexture(nil)
+	_G.PetBattleFrame.BottomFrame.TurnTimer.ArtFrame2:SetTexture(nil)
+	self:removeRegions(_G.PetBattleFrame.BottomFrame.FlowFrame, {1, 2, 3})
+	self:getRegion(_G.PetBattleFrame.BottomFrame.Delimiter, 1):SetTexture(nil)
+	self:addButtonBorder{obj=_G.PetBattleFrame.BottomFrame.SwitchPetButton}
+	self:addButtonBorder{obj=_G.PetBattleFrame.BottomFrame.CatchButton}
+	self:addButtonBorder{obj=_G.PetBattleFrame.BottomFrame.ForfeitButton}
+	self:removeRegions(_G.PetBattleFrame.BottomFrame.MicroButtonFrame, {1, 2, 3})
+	self:addSkinFrame{obj=_G.PetBattleFrame.BottomFrame, ft=ftype, y1=8}
 	if self.modBtnBs then
 		-- hook these for pet ability buttons
 		self:SecureHook("PetBattleFrame_UpdateActionBarLayout", function(this)
-			for i = 1, NUM_BATTLE_PET_ABILITIES do
+			for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
 				local btn = this.BottomFrame.abilityButtons[i]
 				self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}}
 			end
@@ -2020,12 +2024,12 @@ function aObj:PetBattleUI()
  		end
 		-- N.B. Can't use RawHookScript as it has a bug preventing its use on AnimationGroup Scripts
 		-- (Needs to check for IsProtected as a function before calling it)
-		local pbfaasf = PetBattleFrame.ActiveAlly.SpeedFlash
+		local pbfaasf = _G.PetBattleFrame.ActiveAlly.SpeedFlash
 		-- self:RawHookScript(pbfaasf, "OnPlay", function(this)
 		local pbfaasfop = pbfaasf:HasScript("OnPlay") and pbfaasf:GetScript("OnPlay") or nil
 		pbfaasf:SetScript("OnPlay", function(this)
 			-- print("pbfaasf OnPlay")
-			reParent{parent=MainMenuBar}
+			reParent{parent=_G.MainMenuBar}
 			if pbfaasfop then pbfaasfop(this) end
 			-- self.hooks[this].OnPlay(this)
 		-- end, true)
@@ -2034,12 +2038,12 @@ function aObj:PetBattleUI()
 			-- print("pbfaasf OnFinished")
 			reParent{reset=true}
 		end)
-		local pbfaesf = PetBattleFrame.ActiveEnemy.SpeedFlash
+		local pbfaesf = _G.PetBattleFrame.ActiveEnemy.SpeedFlash
 		-- self:RawHookScript(pbfaesf, "OnPlay", function(this)
 		local pbfaesfop = pbfaesf:HasScript("OnPlay") and pbfaesf:GetScript("OnPlay") or nil
 		pbfaesf:SetScript("OnPlay", function(this)
 			-- print("pbfaesf OnPlay")
-			reParent{parent=MainMenuBar}
+			reParent{parent=_G.MainMenuBar}
 			if pbfaesfop then pbfaesfop(this) end
 			-- self.hooks[this].OnPlay(this)
 		-- end, true)
@@ -2049,11 +2053,11 @@ function aObj:PetBattleUI()
 			reParent{reset=true}
 		end)
 		-- hook these to ensure gradient texture is reparented correctly
-		self:SecureHookScript(PetBattleFrame, "OnShow", function(this)
+		self:SecureHookScript(_G.PetBattleFrame, "OnShow", function(this)
 			-- print("PetBattleFrame OnShow")
-			reParent{parent=MainMenuBar, reset=true}
+			reParent{parent=_G.MainMenuBar, reset=true}
 		end)
-		self:SecureHookScript(PetBattleFrame, "OnHide", function(this)
+		self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(this)
 			-- print("PetBattleFrame OnHide")
 			reParent{}
 		end)
@@ -2067,7 +2071,7 @@ function aObj:PetBattleUI()
 			end
 		end)
 		-- PetBattlePrimaryUnit Tooltip
-		local obj = PetBattlePrimaryUnitTooltip
+		local obj = _G.PetBattlePrimaryUnitTooltip
 		obj:DisableDrawLayer("BACKGROUND")
 		obj.ActualHealthBar:SetTexture(self.sbTexture)
 		obj.XPBar:SetTexture(self.sbTexture)
@@ -2078,14 +2082,14 @@ function aObj:PetBattleUI()
 		obj.sf = self:addSkinFrame{obj=obj, ft=ftype}
 		self:add2Table(self.pbtt, obj.sf)
 		-- PetBattlePrimaryAbility Tooltip
-		PetBattlePrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
-		PetBattlePrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
-		self:addSkinFrame{obj=PetBattlePrimaryAbilityTooltip, ft=ftype}
+		_G.PetBattlePrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
+		_G.PetBattlePrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
+		self:addSkinFrame{obj=_G.PetBattlePrimaryAbilityTooltip, ft=ftype}
 		-- FloatingBattlePet Tooltip
-		FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
-		self:addSkinFrame{obj=FloatingBattlePetTooltip, ft=ftype}
+		_G.FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
+		self:addSkinFrame{obj=_G.FloatingBattlePetTooltip, ft=ftype}
 		-- BattlePetTooltip (used for caged battle pets in inventory)
-		self:addSkinFrame{obj=BattlePetTooltip, ft=ftype}
+		self:addSkinFrame{obj=_G.BattlePetTooltip, ft=ftype}
 	end
 
 end
@@ -2094,13 +2098,13 @@ function aObj:PVEFrame()
 	if not self.db.profile.PVEFrame or self.initialized.PVEFrame then return end
 	self.initialized.PVEFrame = true
 
-	self:keepFontStrings(PVEFrame.shadows)
-	self:addSkinFrame{obj=PVEFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:skinTabs{obj=PVEFrame}
+	self:keepFontStrings(_G.PVEFrame.shadows)
+	self:addSkinFrame{obj=_G.PVEFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:skinTabs{obj=_G.PVEFrame}
 
 	-- GroupFinder Frame
 	for i = 1, 3 do
-		local btn = GroupFinderFrame["groupButton" .. i]
+		local btn = _G.GroupFinderFrame["groupButton" .. i]
 		btn.bg:SetTexture(nil)
 		btn.ring:SetTexture(nil)
 		local tex = btn:GetHighlightTexture()
@@ -2110,7 +2114,7 @@ function aObj:PVEFrame()
 	-- hook this to change selected texture
 	self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
 		for i = 1, 3 do
-			local btn = GroupFinderFrame["groupButton" .. i]
+			local btn = _G.GroupFinderFrame["groupButton" .. i]
 			if i == index then
 				btn.bg:SetTexture([[Interface\HelpFrame\HelpButtons]])
 				btn.bg:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
@@ -2120,18 +2124,18 @@ function aObj:PVEFrame()
 		end
 	end)
 	-- ScenarioFinder Frame
-	self:keepFontStrings(ScenarioFinderFrame)
-	self:removeInset(ScenarioFinderFrame.Inset)
+	self:keepFontStrings(_G.ScenarioFinderFrame)
+	self:removeInset(_G.ScenarioFinderFrame.Inset)
 
 	-- ScenarioQueueFrame
-	ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
-	self:skinDropDown{obj=ScenarioQueueFrame.Dropdown}
-	self:skinScrollBar{obj=ScenarioQueueFrame.Random.ScrollFrame}
-	self:skinButton{obj=ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
-	self:moveObject{obj=ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
-	self:skinScrollBar{obj=ScenarioQueueFrame.Specific.ScrollFrame}
-	self:keepFontStrings(ScenarioQueueFramePartyBackfill)
-	self:removeMagicBtnTex(ScenarioQueueFrameFindGroupButton)
+	_G.ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
+	self:skinDropDown{obj=_G.ScenarioQueueFrame.Dropdown}
+	self:skinScrollBar{obj=_G.ScenarioQueueFrame.Random.ScrollFrame}
+	self:skinButton{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
+	self:moveObject{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
+	self:skinScrollBar{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame}
+	self:keepFontStrings(_G.ScenarioQueueFramePartyBackfill)
+	self:removeMagicBtnTex(_G.ScenarioQueueFrameFindGroupButton)
 
 end
 
@@ -2143,7 +2147,7 @@ function aObj:QueueStatusFrame()
 		return
 	end
 
-	self:addSkinFrame{obj=QueueStatusFrame}
+	self:addSkinFrame{obj=_G.QueueStatusFrame}
 
 end
 
@@ -2151,19 +2155,19 @@ function aObj:RaidFrame()
 	if not self.db.profile.RaidFrame or self.initialized.RaidFrame then return end
 	self.initialized.RaidFrame = true
 
-	self:skinTabs{obj=RaidParentFrame, lod=true}
-	self:addSkinFrame{obj=RaidParentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:skinTabs{obj=_G.RaidParentFrame, lod=true}
+	self:addSkinFrame{obj=_G.RaidParentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
 -->>-- RaidFinder Frame
-	self:keepRegions(RaidFinderFrame, {})
-	self:removeInset(RaidFinderFrameRoleInset)
-	self:removeInset(RaidFinderFrameBottomInset)
-	self:addButtonBorder{obj=RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}
-	RaidFinderQueueFrameScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
-	self:removeMagicBtnTex(RaidFinderFrameFindRaidButton)
-	self:keepRegions(RaidFinderQueueFrame, {})
-	self:skinDropDown{obj=RaidFinderQueueFrameSelectionDropDown}
-	self:skinScrollBar{obj=RaidFinderQueueFrameScrollFrame}
+	self:keepRegions(_G.RaidFinderFrame, {})
+	self:removeInset(_G.RaidFinderFrameRoleInset)
+	self:removeInset(_G.RaidFinderFrameBottomInset)
+	self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}
+	_G.RaidFinderQueueFrameScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
+	self:removeMagicBtnTex(_G.RaidFinderFrameFindRaidButton)
+	self:keepRegions(_G.RaidFinderQueueFrame, {})
+	self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}
+	self:skinScrollBar{obj=_G.RaidFinderQueueFrameScrollFrame}
 
 end
 
@@ -2172,7 +2176,7 @@ function aObj:ScriptErrors()
 	self.initialized.ScriptErrors = true
 
 	-- skin Basic Script Errors Frame (BasicControls.xml)
-	self:addSkinFrame{obj=BasicScriptErrors, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=_G.BasicScriptErrors, kfs=true, ft=ftype}
 
 end
 
@@ -2183,7 +2187,7 @@ function aObj:StaticPopups()
 	if self.modBtns then
 		-- hook this to handle close button texture changes
 		self:SecureHook("StaticPopup_Show", function(...)
-			for i = 1, STATICPOPUP_NUMDIALOGS do
+			for i = 1, _G.STATICPOPUP_NUMDIALOGS do
 				local obj = _G["StaticPopup" .. i .. "CloseButton"]
 				if aObj:hasTextInTexture(obj:GetNormalTexture(), "HideButton") then
 					obj:SetText(self.modUIBtns.minus)
@@ -2194,7 +2198,7 @@ function aObj:StaticPopups()
 		end)
 	end
 
-	for i = 1, STATICPOPUP_NUMDIALOGS do
+	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
 		local objName = "StaticPopup" .. i
 		local obj = _G[objName]
 		self:skinEditBox{obj=_G[objName .. "EditBox"]}
@@ -2213,26 +2217,26 @@ function aObj:TimeManager() -- LoD
 	self.initialized.TimeManager = true
 
 -->>--	Time Manager Frame
-	TimeManagerFrameTicker:Hide()
-	self:keepFontStrings(TimeManagerStopwatchFrame)
-	self:addButtonBorder{obj=TimeManagerStopwatchCheck}
-	self:skinDropDown{obj=TimeManagerAlarmHourDropDown, x2=-5}
-	self:skinDropDown{obj=TimeManagerAlarmMinuteDropDown, x2=-5}
-	self:skinDropDown{obj=TimeManagerAlarmAMPMDropDown, x2=-5}
-	self:skinEditBox{obj=TimeManagerAlarmMessageEditBox, regs={9}}
-	self:removeRegions(TimeManagerAlarmEnabledButton, {6, 7})
-	self:addSkinFrame{obj=TimeManagerFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	_G.TimeManagerFrameTicker:Hide()
+	self:keepFontStrings(_G.TimeManagerStopwatchFrame)
+	self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck}
+	self:skinDropDown{obj=_G.TimeManagerAlarmHourDropDown, x2=-5}
+	self:skinDropDown{obj=_G.TimeManagerAlarmMinuteDropDown, x2=-5}
+	self:skinDropDown{obj=_G.TimeManagerAlarmAMPMDropDown, x2=-5}
+	self:skinEditBox{obj=_G.TimeManagerAlarmMessageEditBox, regs={9}}
+	self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
+	self:addSkinFrame{obj=_G.TimeManagerFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 -->>--	Time Manager Clock Button
-	self:removeRegions(TimeManagerClockButton, {1})
+	self:removeRegions(_G.TimeManagerClockButton, {1})
 	if not self.db.profile.Minimap.style then
-		self:addSkinFrame{obj=TimeManagerClockButton, ft=ftype, x1=10, y1=-3, x2=-5, y2=5}
+		self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, x1=10, y1=-3, x2=-5, y2=5}
 	end
 
 -->>--	Stopwatch Frame
-	self:keepFontStrings(StopwatchTabFrame)
-	self:skinButton{obj=StopwatchCloseButton, cb=true, sap=true}
-	self:addSkinFrame{obj=StopwatchFrame, ft=ftype, kfs=true, y1=-16, y2=2, nb=true}
+	self:keepFontStrings(_G.StopwatchTabFrame)
+	self:skinButton{obj=_G.StopwatchCloseButton, cb=true, sap=true}
+	self:addSkinFrame{obj=_G.StopwatchFrame, ft=ftype, kfs=true, y1=-16, y2=2, nb=true}
 
 end
 
@@ -2241,12 +2245,12 @@ function aObj:Tooltips()
 	self.initialized.Tooltips = true
 
 	-- skin Item Ref Tooltip's close button
-	self:skinButton{obj=ItemRefCloseButton, cb=true}
+	self:skinButton{obj=_G.ItemRefCloseButton, cb=true}
 
 	if self.db.profile.Tooltips.style == 3 then
 		-- Hook this to deal with GameTooltip FadeHeight issues
-		self:SecureHookScript(GameTooltipStatusBar, "OnHide", function(this)
-			self:ScheduleTimer("skinTooltip", 0.1, GameTooltip)
+		self:SecureHookScript(_G.GameTooltipStatusBar, "OnHide", function(this)
+			self:ScheduleTimer("skinTooltip", 0.1, _G.GameTooltip)
 		end)
 	end
 
@@ -2258,23 +2262,23 @@ function aObj:Tooltips()
 
 	-- Hook this to skin the GameTooltip StatusBars
 	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
-		if GameTooltipStatusBar1 then
-			self:removeRegions(GameTooltipStatusBar1, {2})
+		if _G.GameTooltipStatusBar1 then
+			self:removeRegions(_G.GameTooltipStatusBar1, {2})
 			if aObj.db.profile.Tooltips.glazesb then
-				self:glazeStatusBar(GameTooltipStatusBar1, 0)
+				self:glazeStatusBar(_G.GameTooltipStatusBar1, 0)
 			end
 		end
-		if GameTooltipStatusBar2 then
-			self:removeRegions(GameTooltipStatusBar2, {2})
+		if _G.GameTooltipStatusBar2 then
+			self:removeRegions(_G.GameTooltipStatusBar2, {2})
 			if aObj.db.profile.Tooltips.glazesb then
-				self:glazeStatusBar(GameTooltipStatusBar2, 0)
+				self:glazeStatusBar(_G.GameTooltipStatusBar2, 0)
 			end
 			self:Unhook("GameTooltip_ShowStatusBar")
 		end
 	end)
 
-	FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
-	self:addSkinFrame{obj=FloatingBattlePetTooltip, ft=ftype}
+	_G.FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
+	self:addSkinFrame{obj=_G.FloatingBattlePetTooltip, ft=ftype}
 
 end
 
@@ -2285,38 +2289,38 @@ function aObj:Tutorial()
 	local function resetSF()
 
 		-- use the same frame level & strata as TutorialFrame so it appears above other frames
-		TutorialFrame.sf:SetFrameLevel(TutorialFrame:GetFrameLevel())
-		TutorialFrame.sf:SetFrameStrata(TutorialFrame:GetFrameStrata())
+		_G.TutorialFrame.sf:SetFrameLevel(_G.TutorialFrame:GetFrameLevel())
+		_G.TutorialFrame.sf:SetFrameStrata(_G.TutorialFrame:GetFrameStrata())
 
 	end
-	TutorialFrame:DisableDrawLayer("BACKGROUND")
-	TutorialFrameTop:SetTexture(nil)
-	TutorialFrameBottom:SetTexture(nil)
+	_G.TutorialFrame:DisableDrawLayer("BACKGROUND")
+	_G.TutorialFrameTop:SetTexture(nil)
+	_G.TutorialFrameBottom:SetTexture(nil)
 	for i = 1, 30 do
 		_G["TutorialFrameLeft" .. i]:SetTexture(nil)
 		_G["TutorialFrameRight" .. i]:SetTexture(nil)
 	end
-	TutorialTextBorder:SetAlpha(0)
-	self:skinScrollBar{obj=TutorialFrameTextScrollFrame}
+	_G.TutorialTextBorder:SetAlpha(0)
+	self:skinScrollBar{obj=_G.TutorialFrameTextScrollFrame}
 	-- stop animation before skinning, otherwise textures reappear
-	AnimateMouse:Stop()
-	AnimateCallout:Stop()
-	self:addSkinFrame{obj=TutorialFrame, ft=ftype, anim=true, x1=10, y1=-11, x2=1}
+	_G.AnimateMouse:Stop()
+	_G.AnimateCallout:Stop()
+	self:addSkinFrame{obj=_G.TutorialFrame, ft=ftype, anim=true, x1=10, y1=-11, x2=1}
 	resetSF()
 	-- hook this as the TutorialFrame frame level keeps changing
-	self:SecureHookScript(TutorialFrame.sf, "OnShow", function(this)
+	self:SecureHookScript(_G.TutorialFrame.sf, "OnShow", function(this)
 		resetSF()
 	end)
 	-- hook this to hide the skin frame if required (e.g. arrow keys tutorial)
 	self:SecureHook("TutorialFrame_Update", function(...)
 		resetSF()
-		TutorialFrame.sf:SetShown(TutorialFrameTop:IsShown())
+		_G.TutorialFrame.sf:SetShown(_G.TutorialFrameTop:IsShown())
 	end)
-	self:addButtonBorder{obj=TutorialFramePrevButton, ofs=-2}
-	self:addButtonBorder{obj=TutorialFrameNextButton, ofs=-2}
+	self:addButtonBorder{obj=_G.TutorialFramePrevButton, ofs=-2}
+	self:addButtonBorder{obj=_G.TutorialFrameNextButton, ofs=-2}
 
 -->>-- Alert button
-	local btn = TutorialFrameAlertButton
+	local btn =_G. TutorialFrameAlertButton
 	btn:GetNormalTexture():SetAlpha(0)
 	btn:SetNormalFontObject("ZoneTextFont")
 	btn:SetText("?")
@@ -2334,17 +2338,17 @@ function aObj:WorldMap()
 	then
 		local function sizeUp()
 
-			WorldMapFrame.sf:ClearAllPoints()
-			WorldMapFrame.sf:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", 102, 1)
-			WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", -102, 1)
+			_G.WorldMapFrame.sf:ClearAllPoints()
+			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 102, 1)
+			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", -102, 1)
 
 		end
 		local function sizeDown()
 
 			local x1, y1, x2, y2 = 0, 2, 0, 0
-			WorldMapFrame.sf:ClearAllPoints()
-			WorldMapFrame.sf:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", x1, y1)
-			WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", x2, y2)
+			_G.WorldMapFrame.sf:ClearAllPoints()
+			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", x1, y1)
+			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", x2, y2)
 
 		end
 		-- handle size change
@@ -2355,17 +2359,17 @@ function aObj:WorldMap()
 			sizeDown()
 		end)
 		self:SecureHook("WorldMapFrame_ToggleWindowSize", function()
-			if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE -- Patch
 			then
 				sizeDown()
 			end
 		end)
 		-- handle different map addons being loaded or fullscreen required
 		if self.db.profile.WorldMap.size == 2 then
-			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
+			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
 		elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
-			self:addSkinFrame{obj=WorldMapFrame, ft=ftype, kfs=true}
-			if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE -- Patch
+			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true}
+			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE -- Patch
 			then
 				sizeDown()
 			else
@@ -2375,17 +2379,17 @@ function aObj:WorldMap()
 	end
 
 	-- textures removed as they are shown and alphas are changed
-	WorldMapFrameMiniBorderLeft:SetTexture(nil)
-	WorldMapFrameMiniBorderRight:SetTexture(nil)
+	_G.WorldMapFrameMiniBorderLeft:SetTexture(nil)
+	_G.WorldMapFrameMiniBorderRight:SetTexture(nil)
 
-	self:skinDropDown{obj=WorldMapContinentDropDown}
-	self:skinDropDown{obj=WorldMapZoneDropDown}
-	self:skinDropDown{obj=WorldMapZoneMinimapDropDown}
-	self:skinDropDown{obj=WorldMapLevelDropDown}
-	self:skinSlider{obj=WorldMapQuestScrollFrame.ScrollBar}
-	self:skinSlider{obj=WorldMapQuestDetailScrollFrame.ScrollBar, adj=-6}
-	self:skinSlider{obj=WorldMapQuestRewardScrollFrame.ScrollBar, adj=-6}
-	self:skinDropDown{obj=WorldMapShowDropDown}
+	self:skinDropDown{obj=_G.WorldMapContinentDropDown}
+	self:skinDropDown{obj=_G.WorldMapZoneDropDown}
+	self:skinDropDown{obj=_G.WorldMapZoneMinimapDropDown}
+	self:skinDropDown{obj=_G.WorldMapLevelDropDown}
+	self:skinSlider{obj=_G.WorldMapQuestScrollFrame.ScrollBar}
+	self:skinSlider{obj=_G.WorldMapQuestDetailScrollFrame.ScrollBar, adj=-6}
+	self:skinSlider{obj=_G.WorldMapQuestRewardScrollFrame.ScrollBar, adj=-6}
+	self:skinDropDown{obj=_G.WorldMapShowDropDown}
 
 -->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
@@ -2401,9 +2405,9 @@ function aObj:WorldState()
 	if not self.db.profile.WorldState or self.initialized.WorldState then return end
 	self.initialized.WorldState = true
 
-	self:skinDropDown{obj=ScorePlayerDropDown}
-	self:skinScrollBar{obj=WorldStateScoreScrollFrame}
-	self:skinTabs{obj=WorldStateScoreFrame}
-	self:addSkinFrame{obj=WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:skinDropDown{obj=_G.ScorePlayerDropDown}
+	self:skinScrollBar{obj=_G.WorldStateScoreScrollFrame}
+	self:skinTabs{obj=_G.WorldStateScoreFrame}
+	self:addSkinFrame{obj=_G.WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
 end

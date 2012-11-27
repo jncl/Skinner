@@ -1,4 +1,8 @@
 local aName, aObj = ...
+local _G = _G
+
+-- Add locals to see if it speeds things up
+local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, IsAddOnLoaded, LibStub, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.IsAddOnLoaded, _G.LibStub, _G.pairs
 
 function aObj:Defaults()
 
@@ -140,7 +144,7 @@ function aObj:Defaults()
 		Minimap              = {skin = false, gloss = false},
 		MinimapButtons       = {skin = false, style = false},
 		MovePad              = true,
-		MovieProgress        = IsMacClient() and true or nil,
+		MovieProgress        = _G.IsMacClient() and true or nil,
 		Nameplates           = true,
 		PetBattleUI          = true,
 		PVEFrame             = true,
@@ -180,7 +184,7 @@ function aObj:Options()
 				desc = {
 					type = "description",
 					order = 1,
-					name = self.L["UI Enhancement"]  .. " - "..(GetAddOnMetadata(aName, "X-Curse-Packaged-Version") or GetAddOnMetadata(aName, "Version") or "") .. "\n",
+					name = self.L["UI Enhancement"]  .. " - "..(_G.GetAddOnMetadata(aName, "X-Curse-Packaged-Version") or _G.GetAddOnMetadata(aName, "Version") or "") .. "\n",
 				},
 				longdesc = {
 					type = "description",
@@ -491,12 +495,12 @@ function aObj:Options()
 				if info[#info] == "ClassColours" then
 					db[info[#info]] = r
 					if r then
-						db.TooltipBorder.r = RAID_CLASS_COLORS[self.uCls].r
-						db.TooltipBorder.g = RAID_CLASS_COLORS[self.uCls].g
-						db.TooltipBorder.b = RAID_CLASS_COLORS[self.uCls].b
-						db.BackdropBorder.r = RAID_CLASS_COLORS[self.uCls].r
-						db.BackdropBorder.g = RAID_CLASS_COLORS[self.uCls].g
-						db.BackdropBorder.b = RAID_CLASS_COLORS[self.uCls].b
+						db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
+						db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
+						db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						db.BackdropBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
+						db.BackdropBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
+						db.BackdropBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
 					else
 						db.TooltipBorder.r = dflts.TooltipBorder.r
 						db.TooltipBorder.g = dflts.TooltipBorder.g
@@ -1187,14 +1191,14 @@ function aObj:Options()
 					set = function(info, value)
 						db.BattlefieldMm[info[#info]] = value
 						if info[#info] == "skin" then
-							if IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
+							if _G.IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
 								self:checkAndRun("BattlefieldMinimap")
 							end
 						elseif info[#info] == "gloss" and self.bfminimapskin then
 							if value then
-								RaiseFrameLevel(self.bfminimapskin)
+								_G.RaiseFrameLevel(self.bfminimapskin)
 							else
-								LowerFrameLevel(self.bfminimapskin)
+								_G.LowerFrameLevel(self.bfminimapskin)
 							end
 						end
 					end,
@@ -1430,9 +1434,9 @@ function aObj:Options()
 						if info[#info] == "skin" then self:checkAndRun("Minimap")
 						elseif info[#info] == "gloss" and self.minimapskin then
 							if value then
-								RaiseFrameLevel(self.minimapskin)
+								_G.RaiseFrameLevel(self.minimapskin)
 							else
-								LowerFrameLevel(self.minimapskin)
+								_G.LowerFrameLevel(self.minimapskin)
 							end
 						elseif info[#info] == "btns" then self:checkAndRun("MinimapButtons")
 						elseif info[#info] == "style" then
@@ -1489,7 +1493,7 @@ function aObj:Options()
 					name = self.L["Move Pad"],
 					desc = self.L["Toggle the skin of the Move Pad"],
 				},
-				MovieProgress = IsMacClient() and {
+				MovieProgress = _G.IsMacClient() and {
 					type = "toggle",
 					name = self.L["Movie Progress"],
 					desc = self.L["Toggle the skinning of Movie Progress"],
@@ -1661,7 +1665,7 @@ function aObj:Options()
 	-- register the options, add them to the Blizzard Options
 	-- build the table used by the chatCommand function
 	local optCheck = {}
-	for _, v in ipairs(optNames) do
+	for _, v in _G.ipairs(optNames) do
 		local optTitle = (" "):join(aName, v)
 		self.ACR:RegisterOptionsTable(optTitle, self.optTables[v])
 		self.optionsFrame[self.L[v]] = self.ACD:AddToBlizOptions(optTitle, self.L[v], aName)

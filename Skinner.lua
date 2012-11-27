@@ -1,6 +1,9 @@
 local aName, aObj = ...
 local _G = _G
 
+-- Add locals to see if it speeds things up
+local assert, CopyTable, debugstack, pairs, rawget, select, type, unpack = _G.assert, _G.CopyTable, _G.debugstack, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack
+
 do
 	-- check to see if required libraries are loaded
 	assert(LibStub, aName .. " requires LibStub")
@@ -180,7 +183,7 @@ function aObj:OnInitialize()
 	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
 	-- TooltipBorder colours
-	c = prdb.ClassColours and RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
+	c = prdb.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
 	self.tbColour = {c.r, c.g, c.b, c.a or 1}
 	-- StatusBar colours
 	c = prdb.StatusBar
@@ -196,7 +199,7 @@ function aObj:OnInitialize()
 	c = prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or 1}
 	-- BackdropBorder colours
-	c = prdb.ClassColours and RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
+	c = prdb.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
 	self.bbColour = {c.r, c.g, c.b, c.a or 1}
 	-- Inactive Tab & DropDowns texture
 	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
@@ -218,16 +221,16 @@ function aObj:OnInitialize()
 
 	-- table to hold objects which have been skinned
 	-- with a metatable having weak keys and automatically adding an entry if it doesn't exist
-	self.skinned = setmetatable({}, {__mode = "k", __index = function(t, k) t[k] = true end})
+	self.skinned = _G.setmetatable({}, {__mode = "k", __index = function(t, k) t[k] = true end})
 
 	-- table to hold frames that have been added, with weak keys
-	self.skinFrame = setmetatable({}, {__mode = "k"})
+	self.skinFrame = _G.setmetatable({}, {__mode = "k"})
 
 	-- table to hold buttons that have been added, with weak keys
-	self.sBtn = setmetatable({}, {__mode = "k"})
+	self.sBtn = _G.setmetatable({}, {__mode = "k"})
 
 	-- table to hold StatusBars that have been glazed, with weak keys
-	self.sbGlazed = setmetatable({}, {__mode = "k"})
+	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 
 	-- shorthand for the TexturedTab profile setting
 	self.isTT = prdb.TexturedTab and true or false
@@ -255,7 +258,7 @@ function aObj:OnInitialize()
 		for _, v in pairs(self.oocTab) do
 			v[1](unpack(v[2]))
 		end
-		wipe(self.oocTab)
+		_G.wipe(self.oocTab)
 	end)
 
 	-- ignore objects when skinning IOF elements
@@ -325,7 +328,7 @@ do
 		button1 = OKAY,
 		button2 = CANCEL,
 		OnAccept = function()
-			ReloadUI()
+			_G.ReloadUI()
 		end,
 		OnCancel = function(this, data, reason)
 			if reason == "timeout" or reason == "clicked" then
@@ -340,7 +343,7 @@ do
 end
 function aObj:ReloadAddon(callback)
 
-	StaticPopup_Show(aName .. "_Reload_UI")
+	_G.StaticPopup_Show(aName .. "_Reload_UI")
 
 end
 
@@ -396,9 +399,9 @@ local function __addSkinButton(opts)
 	opts.hook = opts.hook or opts.obj
 
 	-- store button object within original button
-	opts.obj.sb = CreateFrame("Button", nil, opts.parent)
+	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent)
 	local btn = opts.obj.sb
-	LowerFrameLevel(btn)
+	_G.LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
 	-- hook Show/Hide methods
 	if not aObj:IsHooked(opts.hook, "Show") then
@@ -559,7 +562,7 @@ local function __addSkinFrame(opts)
 	local yOfs2 = opts.y2 or opts.ofs * -1
 
 	-- add a frame around the current object
-	opts.obj.sf = CreateFrame("Frame", nil, opts.obj)
+	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj)
 	local skinFrame = opts.obj.sf
 	skinFrame:ClearAllPoints()
 	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
@@ -579,8 +582,8 @@ local function __addSkinFrame(opts)
 	aObj:applySkin(opts.aso)
 
 	-- adjust frame level
-	local success, err = pcall(LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
-	if not success then RaiseFrameLevel(opts.obj) end -- raise parent's Frame Level if 0
+	local success, err = _G.pcall(_G.LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
+	if not success then _G.RaiseFrameLevel(opts.obj) end -- raise parent's Frame Level if 0
 
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
@@ -590,7 +593,7 @@ local function __addSkinFrame(opts)
 
 	-- reparent skinFrame to avoid whiteout issues caused by animations
 	if opts.anim then
-		skinFrame:SetParent(UIParent)
+		skinFrame:SetParent(_G.UIParent)
 		-- hook Show and Hide methods
 		aObj:SecureHook(opts.obj, "Show", function(this) this.sf:Show() end)
 		aObj:SecureHook(opts.obj, "Hide", function(this) this.sf:Hide() end)
@@ -855,7 +858,7 @@ local function __adjHeight(opts)
 --@end-alpha@
 	if opts.adj == 0 then return end
 
-	if not strfind(tostring(opts.adj), "+") then -- if not negative value
+	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
 		opts.obj:SetHeight(opts.obj:GetHeight() + opts.adj)
 	else
 		opts.adj = opts.adj * -1 -- make it positive
@@ -896,7 +899,7 @@ local function __adjWidth(opts)
 --@end-alpha@
 	if opts.adj == 0 then return end
 
-	if not strfind(tostring(opts.adj), "+") then -- if not negative value
+	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
 		opts.obj:SetWidth(opts.obj:GetWidth() + opts.adj)
 	else
 		opts.adj = opts.adj * -1 -- make it positive
@@ -1028,7 +1031,7 @@ function aObj:makeMFRotatable(modelFrame)
 --@end-alpha@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
-	if IsAddOnLoaded("CloseUp") then return end
+	if _G.IsAddOnLoaded("CloseUp") then return end
 
 	--frame:EnableMouseWheel(true)
 	modelFrame:EnableMouse(true)
@@ -1049,19 +1052,19 @@ function aObj:makeMFRotatable(modelFrame)
 	if not self:IsHooked(modelFrame, "OnUpdate") then
 		self:SecureHookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
 			if this.dragging then
-				local x, y = GetCursorPosition()
+				local x, y = _G.GetCursorPosition()
 				if this.cursorPosition.x > x then
-					Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
+					_G.Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
 				elseif this.cursorPosition.x < x then
-					Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
+					_G.Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
 				end
-				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
+				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
 			end
 		end)
 		self:SecureHookScript(modelFrame, "OnMouseDown", function(this, button)
 			if button == "LeftButton" then
 				this.dragging = true
-				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
+				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
 			end
 		end)
 		self:SecureHookScript(modelFrame, "OnMouseUp", function(this, button)
@@ -1374,7 +1377,7 @@ local function __skinDropDown(opts)
 	local yOfs2 = opts.y2 or 6
 	-- skin the frame
 	if aObj.db.profile.DropDownButtons then
-		aObj:addSkinFrame{obj=opts.obj, ft=ftype, aso={ng=true}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype, aso={ng=true}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
@@ -1551,7 +1554,7 @@ local function __skinMoneyFrame(opts)
 	-- don't skin it twice
 	if aObj.skinned[opts.obj] then return end
 
-	local cbMode = GetCVarBool("colorblindMode")
+	local cbMode = _G.GetCVarBool("colorblindMode")
 
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
 		local obj = _G[opts.obj:GetName()..v]
@@ -1730,12 +1733,12 @@ local function __skinTabs(opts)
 	local xOfs2 = opts.x2 or -6
 	local yOfs2 = opts.y2 or 2
 
-	local tabID = PanelTemplates_GetSelectedTab(opts.obj) or 1
+	local tabID = _G.PanelTemplates_GetSelectedTab(opts.obj) or 1
 	-- aObj:Debug("__skinTabs, PanelTemplates_GetSelectedTab: [%s, %s, %s]", opts.obj, PanelTemplates_GetSelectedTab(opts.obj),tabID)
 	for i = 1, opts.obj.numTabs do
 		local tab = _G[tabName .. i]
 		aObj:keepRegions(tab, kRegions)
-		aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		aObj:addSkinFrame{obj=tab, ft=opts.ftype, noBdr=aObj.isTT, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 		tab.sf.ignore = opts.ignore -- ignore size changes
 		tab.sf.up = opts.up -- tabs grow upwards
 		if opts.lod then -- set textures here first time thru as it's LoD

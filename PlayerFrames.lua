@@ -2,6 +2,9 @@ local aName, aObj = ...
 local _G = _G
 local ftype = "p"
 
+-- Add locals to see if it speeds things up
+local ipairs, pairs, unpack = _G.ipairs, _G.pairs, _G.unpack
+
 function aObj:AchievementUI() -- LoD
 	if not self.db.profile.AchievementUI.skin or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
@@ -9,10 +12,10 @@ function aObj:AchievementUI() -- LoD
 	local prdbA = self.db.profile.AchievementUI
 
 	if prdbA.style == 2 then
-		ACHIEVEMENTUI_REDBORDER_R = self.bbColour[1]
-		ACHIEVEMENTUI_REDBORDER_G = self.bbColour[2]
-		ACHIEVEMENTUI_REDBORDER_B = self.bbColour[3]
-		ACHIEVEMENTUI_REDBORDER_A = self.bbColour[4]
+		_G.ACHIEVEMENTUI_REDBORDER_R = self.bbColour[1]
+		_G.ACHIEVEMENTUI_REDBORDER_G = self.bbColour[2]
+		_G.ACHIEVEMENTUI_REDBORDER_B = self.bbColour[3]
+		_G.ACHIEVEMENTUI_REDBORDER_A = self.bbColour[4]
 	end
 
 	local function skinSB(statusBar, type)
@@ -27,7 +30,7 @@ function aObj:AchievementUI() -- LoD
 	end
 	local function skinStats()
 
-		for i = 1, #AchievementFrameStatsContainer.buttons do
+		for i = 1, #_G.AchievementFrameStatsContainer.buttons do
 			local btn = _G["AchievementFrameStatsContainerButton" .. i]
 			btn.background:SetTexture(nil)
 			btn.left:SetAlpha(0)
@@ -38,7 +41,7 @@ function aObj:AchievementUI() -- LoD
 	end
 	local function glazeProgressBar(pBar)
 
-		if not aObj.sbGlazed[pBaro] then
+		if not aObj.sbGlazed[pBar] then
 			_G[pBar .. "BorderLeft"]:SetAlpha(0)
 			_G[pBar .. "BorderRight"]:SetAlpha(0)
 			_G[pBar .. "BorderCenter"]:SetAlpha(0)
@@ -48,14 +51,14 @@ function aObj:AchievementUI() -- LoD
 	end
 	local function skinCategories()
 
-		for i = 1, #AchievementFrameCategoriesContainer.buttons do
+		for i = 1, #_G.AchievementFrameCategoriesContainer.buttons do
 			_G["AchievementFrameCategoriesContainerButton" .. i .. "Background"]:SetAlpha(0)
 		end
 
 	end
 	local function skinComparisonStats()
 
-		for i = 1, #AchievementFrameComparisonStatsContainer.buttons do
+		for i = 1, #_G.AchievementFrameComparisonStatsContainer.buttons do
 			local btnName = "AchievementFrameComparisonStatsContainerButton" .. i
 			if _G[btnName].isHeader then _G[btnName .. "BG"]:SetAlpha(0) end
 			_G[btnName .. "HeaderLeft"]:SetAlpha(0)
@@ -116,31 +119,31 @@ function aObj:AchievementUI() -- LoD
 	end
 
 	-- this is not a standard dropdown
-	self:moveObject{obj=AchievementFrameFilterDropDown, y=-7}
+	self:moveObject{obj=_G.AchievementFrameFilterDropDown, y=-7}
 	if self.db.profile.TexturedDD then
-		local tex = AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
+		local tex = _G.AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
 		tex:SetTexture(self.itTex)
 		tex:SetWidth(110)
 		tex:SetHeight(19)
-		tex:SetPoint("RIGHT", AchievementFrameFilterDropDown, "RIGHT", -3, 4)
+		tex:SetPoint("RIGHT", _G.AchievementFrameFilterDropDown, "RIGHT", -3, 4)
 	end
 	-- skin the frame
 	if self.db.profile.DropDownButtons then
-		self:addSkinFrame{obj=AchievementFrameFilterDropDown, ft=ftype, aso={ng=true}, x1=-8, y1=2, x2=2, y2=7}
+		self:addSkinFrame{obj=_G.AchievementFrameFilterDropDown, ft=ftype, aso={ng=true}, x1=-8, y1=2, x2=2, y2=7}
 	end
-	self:skinTabs{obj=AchievementFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-10}
-	self:addSkinFrame{obj=AchievementFrame, ft=ftype, kfs=true, bgen=1, y1=8, y2=-3}
+	self:skinTabs{obj=_G.AchievementFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-10}
+	self:addSkinFrame{obj=_G.AchievementFrame, ft=ftype, kfs=true, bgen=1, y1=8, y2=-3}
 
 -->>-- move Header info
-	self:keepFontStrings(AchievementFrameHeader)
-	self:moveObject{obj=AchievementFrameHeaderTitle, x=-60, y=-25}
-	self:moveObject{obj=AchievementFrameHeaderPoints, x=40, y=-5}
-	self:moveObject{obj=AchievementFrameCloseButton, y=6}
-	AchievementFrameHeaderShield:SetAlpha(1)
+	self:keepFontStrings(_G.AchievementFrameHeader)
+	self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-60, y=-25}
+	self:moveObject{obj=_G.AchievementFrameHeaderPoints, x=40, y=-5}
+	self:moveObject{obj=_G.AchievementFrameCloseButton, y=6}
+	_G.AchievementFrameHeaderShield:SetAlpha(1)
 
 -->>-- Categories Panel (on the Left)
-	self:skinSlider{obj=AchievementFrameCategoriesContainerScrollBar, adj=-4}
-	self:addSkinFrame{obj=AchievementFrameCategories, ft=ftype, y2=-2}
+	self:skinSlider{obj=_G.AchievementFrameCategoriesContainerScrollBar, adj=-4}
+	self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y2=-2}
 	self:SecureHook("AchievementFrameCategories_Update", function()
 		skinCategories()
 	end)
@@ -149,14 +152,14 @@ function aObj:AchievementUI() -- LoD
 	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
 
 -->>-- Achievements Panel (on the right)
-	self:keepFontStrings(AchievementFrameAchievements)
-	self:getChild(AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
-	self:skinSlider{obj=AchievementFrameAchievementsContainerScrollBar, adj=-4}
+	self:keepFontStrings(_G.AchievementFrameAchievements)
+	self:getChild(_G.AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, adj=-4}
 	if prdbA.style == 2 then
 		-- remove textures etc from buttons
-		cleanButtons(AchievementFrameAchievementsContainer, "Achievements")
+		cleanButtons(_G.AchievementFrameAchievementsContainer, "Achievements")
 		-- hook this to handle objectives text colour changes
-		self:SecureHookScript(AchievementFrameAchievementsObjectives, "OnShow", function(this)
+		self:SecureHookScript(_G.AchievementFrameAchievementsObjectives, "OnShow", function(this)
 			if this.completed then
 				for _, child in ipairs{this:GetChildren()} do
 					for _, reg in ipairs{child:GetRegions()} do
@@ -188,10 +191,10 @@ function aObj:AchievementUI() -- LoD
 	end, true)
 
 -->>-- Stats
-	self:keepFontStrings(AchievementFrameStats)
-	self:skinSlider{obj=AchievementFrameStatsContainerScrollBar, adj=-4}
-	AchievementFrameStatsBG:SetAlpha(0)
-	self:getChild(AchievementFrameStats, 3):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	self:keepFontStrings(_G.AchievementFrameStats)
+	self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, adj=-4}
+	_G.AchievementFrameStatsBG:SetAlpha(0)
+	self:getChild(_G.AchievementFrameStats, 3):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	-- hook this to skin buttons
 	self:SecureHook("AchievementFrameStats_Update", function()
 		skinStats()
@@ -199,68 +202,68 @@ function aObj:AchievementUI() -- LoD
 	skinStats()
 
 -->>-- Summary Panel
-	self:keepFontStrings(AchievementFrameSummary)
-	AchievementFrameSummaryBackground:SetAlpha(0)
-	AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
-	self:skinSlider(AchievementFrameAchievementsContainerScrollBar)
+	self:keepFontStrings(_G.AchievementFrameSummary)
+	_G.AchievementFrameSummaryBackground:SetAlpha(0)
+	_G.AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
+	self:skinSlider(_G.AchievementFrameAchievementsContainerScrollBar)
 	-- remove textures etc from buttons
-	if not AchievementFrameSummary:IsVisible() and prdbA.style == 2 then
-		self:SecureHookScript(AchievementFrameSummary, "OnShow", function()
-			cleanButtons(AchievementFrameSummaryAchievements, "Summary")
-			self:Unhook(AchievementFrameSummary, "OnShow")
+	if not _G.AchievementFrameSummary:IsVisible() and prdbA.style == 2 then
+		self:SecureHookScript(_G.AchievementFrameSummary, "OnShow", function()
+			cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
+			self:Unhook(_G.AchievementFrameSummary, "OnShow")
 		end)
 	else
-		cleanButtons(AchievementFrameSummaryAchievements, "Summary")
+		cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
 	end
 	-- Categories SubPanel
-	self:keepFontStrings(AchievementFrameSummaryCategoriesHeader)
-	for i = 1, #ACHIEVEMENTUI_SUMMARYCATEGORIES do
+	self:keepFontStrings(_G.AchievementFrameSummaryCategoriesHeader)
+	for i = 1, #_G.ACHIEVEMENTUI_SUMMARYCATEGORIES do
 		skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 	end
-	self:getChild(AchievementFrameSummary, 1):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	self:getChild(_G.AchievementFrameSummary, 1):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
 -->>-- Comparison Panel
-	AchievementFrameComparisonBackground:SetAlpha(0)
-	AchievementFrameComparisonDark:SetAlpha(0)
-	AchievementFrameComparisonWatermark:SetAlpha(0)
+	_G.AchievementFrameComparisonBackground:SetAlpha(0)
+	_G.AchievementFrameComparisonDark:SetAlpha(0)
+	_G.AchievementFrameComparisonWatermark:SetAlpha(0)
 	-- Header
-	self:keepFontStrings(AchievementFrameComparisonHeader)
-	AchievementFrameComparisonHeaderShield:SetAlpha(1)
+	self:keepFontStrings(_G.AchievementFrameComparisonHeader)
+	_G.AchievementFrameComparisonHeaderShield:SetAlpha(1)
 	-- move header info
-	AchievementFrameComparisonHeaderShield:ClearAllPoints()
-	AchievementFrameComparisonHeaderShield:SetPoint("RIGHT", AchievementFrameCloseButton, "LEFT", -10, -1)
-	AchievementFrameComparisonHeaderPoints:ClearAllPoints()
-	AchievementFrameComparisonHeaderPoints:SetPoint("RIGHT", AchievementFrameComparisonHeaderShield, "LEFT", -10, 1)
-	AchievementFrameComparisonHeaderName:ClearAllPoints()
-	AchievementFrameComparisonHeaderName:SetPoint("RIGHT", AchievementFrameComparisonHeaderPoints, "LEFT", -10, 0)
+	_G.AchievementFrameComparisonHeaderShield:ClearAllPoints()
+	_G.AchievementFrameComparisonHeaderShield:SetPoint("RIGHT", _G.AchievementFrameCloseButton, "LEFT", -10, -1)
+	_G.AchievementFrameComparisonHeaderPoints:ClearAllPoints()
+	_G.AchievementFrameComparisonHeaderPoints:SetPoint("RIGHT", _G.AchievementFrameComparisonHeaderShield, "LEFT", -10, 1)
+	_G.AchievementFrameComparisonHeaderName:ClearAllPoints()
+	_G.AchievementFrameComparisonHeaderName:SetPoint("RIGHT", _G.AchievementFrameComparisonHeaderPoints, "LEFT", -10, 0)
 	-- Container
-	self:skinSlider(AchievementFrameComparisonContainerScrollBar)
+	self:skinSlider(_G.AchievementFrameComparisonContainerScrollBar)
 	-- Summary Panel
-	self:getChild(AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	self:getChild(_G.AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
 	for _, type in pairs{"Player", "Friend"} do
 		_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
 		_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
 		skinSB("AchievementFrameComparisonSummary" .. type .. "StatusBar", "Title")
 	end
 	-- remove textures etc from buttons
-	if not AchievementFrameComparison:IsVisible() and prdbA.style == 2 then
-		self:SecureHookScript(AchievementFrameComparison, "OnShow", function()
-			cleanButtons(AchievementFrameComparisonContainer, "Comparison")
-			self:Unhook(AchievementFrameSummary, "OnShow")
+	if not _G.AchievementFrameComparison:IsVisible() and prdbA.style == 2 then
+		self:SecureHookScript(_G.AchievementFrameComparison, "OnShow", function()
+			cleanButtons(_G.AchievementFrameComparisonContainer, "Comparison")
+			self:Unhook(_G.AchievementFrameSummary, "OnShow")
 		end)
 	else
-		cleanButtons(AchievementFrameComparisonContainer, "Comparison")
+		cleanButtons(_G.AchievementFrameComparisonContainer, "Comparison")
 	end
 	-- Stats Panel
-	self:skinSlider(AchievementFrameComparisonStatsContainerScrollBar)
+	self:skinSlider(_G.AchievementFrameComparisonStatsContainerScrollBar)
 	self:SecureHook("AchievementFrameComparison_UpdateStats", function()
 		skinComparisonStats()
 	end)
-	self:SecureHook(AchievementFrameComparisonStatsContainer, "Show", function()
+	self:SecureHook(_G.AchievementFrameComparisonStatsContainer, "Show", function()
 		skinComparisonStats()
 	end)
-	if achievementFunctions == COMPARISON_STAT_FUNCTIONS then skinComparisonStats() end
+	-- if achievementFunctions == _G.COMPARISON_STAT_FUNCTIONS then skinComparisonStats() end
 
 end
 
@@ -268,50 +271,50 @@ function aObj:ArchaeologyUI() -- LoD
 	if not self.db.profile.ArchaeologyUI or self.initialized.ArchaeologyUI then return end
 	self.initialized.ArchaeologyUI = true
 
-	self:moveObject{obj=ArchaeologyFrame.infoButton, x=-25}
-	self:skinDropDown{obj=ArchaeologyFrame.raceFilterDropDown}
-	ArchaeologyFrameRankBarBackground:SetAllPoints(ArchaeologyFrame.rankBar)
-	ArchaeologyFrameRankBarBorder:Hide()
-	self:glazeStatusBar(ArchaeologyFrame.rankBar, 0,  ArchaeologyFrameRankBarBackground)
-	self:addSkinFrame{obj=ArchaeologyFrame, ft=ftype, kfs=true, ri=true, x1=30, y1=2, x2=1}
+	self:moveObject{obj=_G.ArchaeologyFrame.infoButton, x=-25}
+	self:skinDropDown{obj=_G.ArchaeologyFrame.raceFilterDropDown}
+	_G.ArchaeologyFrameRankBarBackground:SetAllPoints(_G.ArchaeologyFrame.rankBar)
+	_G.ArchaeologyFrameRankBarBorder:Hide()
+	self:glazeStatusBar(_G.ArchaeologyFrame.rankBar, 0,  _G.ArchaeologyFrameRankBarBackground)
+	self:addSkinFrame{obj=_G.ArchaeologyFrame, ft=ftype, kfs=true, ri=true, x1=30, y1=2, x2=1}
 -->>-- Summary Page
-	self:keepFontStrings(ArchaeologyFrame.summaryPage) -- remove title textures
-	ArchaeologyFrameSummaryPageTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	for i = 1, ARCHAEOLOGY_MAX_RACES do
-		ArchaeologyFrame.summaryPage["race" .. i].raceName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:keepFontStrings(_G.ArchaeologyFrame.summaryPage) -- remove title textures
+	_G.ArchaeologyFrameSummaryPageTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	for i = 1, _G.ARCHAEOLOGY_MAX_RACES do
+		_G.ArchaeologyFrame.summaryPage["race" .. i].raceName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 -->>-- Completed Page
-	self:keepFontStrings(ArchaeologyFrame.completedPage) -- remove title textures
-	ArchaeologyFrame.completedPage.infoText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ArchaeologyFrame.completedPage.titleBig:SetTextColor(self.HTr, self.HTg, self.HTb)
-	ArchaeologyFrame.completedPage.titleTop:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ArchaeologyFrame.completedPage.titleMid:SetTextColor(self.BTr, self.BTg, self.BTb)
-	ArchaeologyFrame.completedPage.pageText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	for i = 1, ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
-		ArchaeologyFrame.completedPage["artifact" .. i].artifactName:SetTextColor(self.HTr, self.HTg, self.HTb)
-		ArchaeologyFrame.completedPage["artifact" .. i].artifactSubText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		ArchaeologyFrame.completedPage["artifact" .. i].border:Hide()
+	self:keepFontStrings(_G.ArchaeologyFrame.completedPage) -- remove title textures
+	_G.ArchaeologyFrame.completedPage.infoText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ArchaeologyFrame.completedPage.titleBig:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.ArchaeologyFrame.completedPage.titleTop:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ArchaeologyFrame.completedPage.titleMid:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ArchaeologyFrame.completedPage.pageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	for i = 1, _G.ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
+		_G.ArchaeologyFrame.completedPage["artifact" .. i].artifactName:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.ArchaeologyFrame.completedPage["artifact" .. i].artifactSubText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.ArchaeologyFrame.completedPage["artifact" .. i].border:Hide()
 		_G["ArchaeologyFrameCompletedPageArtifact" .. i .. "Bg"]:Hide()
 	end
-	self:addButtonBorder{obj=ArchaeologyFrame.completedPage.prevPageButon, ofs=0} -- N.B. spelling!
-	self:addButtonBorder{obj=ArchaeologyFrame.completedPage.nextPageButon, ofs=0} -- N.B. spelling!
+	self:addButtonBorder{obj=_G.ArchaeologyFrame.completedPage.prevPageButon, ofs=0} -- N.B. spelling!
+	self:addButtonBorder{obj=_G.ArchaeologyFrame.completedPage.nextPageButon, ofs=0} -- N.B. spelling!
 -->>-- Artifact Page
-	self:removeRegions(ArchaeologyFrame.artifactPage, {2, 3}) -- title textures
-	ArchaeologyFrame.artifactPage:DisableDrawLayer("BACKGROUND")
-	ArchaeologyFrame.artifactPage:DisableDrawLayer("BORDER")
-	ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	ArchaeologyFrame.artifactPage.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinScrollBar{obj=ArchaeologyFrame.artifactPage.historyScroll}
+	self:removeRegions(_G.ArchaeologyFrame.artifactPage, {2, 3}) -- title textures
+	_G.ArchaeologyFrame.artifactPage:DisableDrawLayer("BACKGROUND")
+	_G.ArchaeologyFrame.artifactPage:DisableDrawLayer("BORDER")
+	_G.ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.ArchaeologyFrame.artifactPage.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinScrollBar{obj=_G.ArchaeologyFrame.artifactPage.historyScroll}
 	-- Solve Frame
-	ArchaeologyFrameArtifactPageSolveFrameStatusBarBarBG:Hide()
-	self:glazeStatusBar(ArchaeologyFrame.artifactPage.solveFrame.statusBar, 0, nil)
-	ArchaeologyFrame.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
+	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBarBarBG:Hide()
+	self:glazeStatusBar(_G.ArchaeologyFrame.artifactPage.solveFrame.statusBar, 0, nil)
+	_G.ArchaeologyFrame.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
 -->>-- Help Page
-	self:removeRegions(ArchaeologyFrame.helpPage, {2, 3}) -- title textures
-	ArchaeologyFrame.helpPage.titleText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	ArchaeologyFrameHelpPageDigTex:SetTexCoord(0.05, 0.885, 0.055, 0.9) -- remove texture surrounds
-	ArchaeologyFrameHelpPageDigTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:removeRegions(_G.ArchaeologyFrame.helpPage, {2, 3}) -- title textures
+	_G.ArchaeologyFrame.helpPage.titleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.ArchaeologyFrameHelpPageDigTex:SetTexCoord(0.05, 0.885, 0.055, 0.9) -- remove texture surrounds
+	_G.ArchaeologyFrameHelpPageDigTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 end
 
@@ -323,12 +326,12 @@ function aObj:Buffs()
 		local function skinBuffs()
 
 			-- handle in combat
-			if InCombatLockdown() then
+			if _G.InCombatLockdown() then
 				aObj:add2Table(aObj.oocTab, {skinBuffs, {nil}})
 				return
 			end
 
-			for i= 1, BUFF_MAX_DISPLAY do
+			for i= 1, _G.BUFF_MAX_DISPLAY do
 				local btn = _G["BuffButton" .. i]
 				if btn and not btn.sbb then
 					-- add button borders
@@ -353,12 +356,12 @@ function aObj:Buffs()
 -->>-- Consolidated Buffs
 	if self.modBtnBs then
 		-- remove surrounding border & resize
-		ConsolidatedBuffsIcon:SetTexCoord(0.128, 0.37, 0.235, 0.7375)
-		ConsolidatedBuffsIcon:SetWidth(30)
-		ConsolidatedBuffsIcon:SetHeight(30)
-		self:addButtonBorder{obj=ConsolidatedBuffs}
+		_G.ConsolidatedBuffsIcon:SetTexCoord(0.128, 0.37, 0.235, 0.7375)
+		_G.ConsolidatedBuffsIcon:SetWidth(30)
+		_G.ConsolidatedBuffsIcon:SetHeight(30)
+		self:addButtonBorder{obj=_G.ConsolidatedBuffs}
 	end
-	self:addSkinFrame{obj=ConsolidatedBuffsTooltip}
+	self:addSkinFrame{obj=_G.ConsolidatedBuffsTooltip}
 
 end
 
@@ -402,45 +405,45 @@ function aObj:CharacterFrames()
 	self.initialized.CharacterFrames = true
 
 	-- Character Frame
-	self:removeInset(CharacterFrameInsetRight)
-	self:skinTabs{obj=CharacterFrame}
-	self:addSkinFrame{obj=CharacterFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5} -- don't skin buttons here
-	self:skinButton{obj=CharacterFrameCloseButton, cb=true}
-	self:addButtonBorder{obj=CharacterFrameExpandButton, ofs=-2}
+	self:removeInset(_G.CharacterFrameInsetRight)
+	self:skinTabs{obj=_G.CharacterFrame}
+	self:addSkinFrame{obj=_G.CharacterFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5} -- don't skin buttons here
+	self:skinButton{obj=_G.CharacterFrameCloseButton, cb=true}
+	self:addButtonBorder{obj=_G.CharacterFrameExpandButton, ofs=-2}
 
 	-- PaperDoll Frame
-	self:keepFontStrings(PaperDollFrame)
-	CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+	self:keepFontStrings(_G.PaperDollFrame)
+	_G.CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
 	-- skin slots
-	for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
+	for _, child in ipairs{_G.PaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
 		if child:IsObjectType("Button") and self:hasTextInName(child, "Slot") then
 			self:addButtonBorder{obj=child}
 		end
 	end
-	CharacterModelFrame:DisableDrawLayer("BACKGROUND")
-	CharacterModelFrame:DisableDrawLayer("BORDER")
-	CharacterModelFrame:DisableDrawLayer("OVERLAY")
-	CharacterStatsPane:DisableDrawLayer("ARTWORK")
-	self:skinSlider{obj=CharacterStatsPaneScrollBar, size=3}
+	_G.CharacterModelFrame:DisableDrawLayer("BACKGROUND")
+	_G.CharacterModelFrame:DisableDrawLayer("BORDER")
+	_G.CharacterModelFrame:DisableDrawLayer("OVERLAY")
+	_G.CharacterStatsPane:DisableDrawLayer("ARTWORK")
+	self:skinSlider{obj=_G.CharacterStatsPaneScrollBar, size=3}
 	-- Sidebar Tabs
-	PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
-	PaperDollSidebarTabs.DecorRight:SetAlpha(0)
-	for i = 1, #PAPERDOLL_SIDEBARS do
+	_G.PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
+	_G.PaperDollSidebarTabs.DecorRight:SetAlpha(0)
+	for i = 1, #_G.PAPERDOLL_SIDEBARS do
 		local tab = _G["PaperDollSidebarTab" .. i]
 		tab.TabBg:SetAlpha(0)
 		tab.Hider:SetAlpha(0)
 		-- use a button border to indicate the active tab
 		self.modUIBtns:addButtonBorder{obj=tab, relTo=tab.Icon, ofs=i==1 and 3 or 1} -- use module function here to force creation
 		tab.sbb:SetBackdropBorderColor(1, 0.6, 0, 1)
-		tab.sbb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
+		tab.sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 	end
 	-- hook this to manage the active tab
 	self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
-		for i = 1, #PAPERDOLL_SIDEBARS do
+		for i = 1, #_G.PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab" .. i]
 			if tab and tab.sbb then
-				tab.sbb:SetShown(_G[PAPERDOLL_SIDEBARS[i].frame]:IsShown())
+				tab.sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 			end
 		end
 	end)
@@ -453,63 +456,63 @@ function aObj:CharacterFrames()
 		grp.BgMinimized:SetAlpha(0)
 	end
 	-- Titles
-	self:SecureHookScript(PaperDollTitlesPane, "OnShow", function(this)
+	self:SecureHookScript(_G.PaperDollTitlesPane, "OnShow", function(this)
 		for i = 1, #this.buttons do
 			local btn = this.buttons[i]
 			btn:DisableDrawLayer("BACKGROUND")
 		end
-		self:Unhook(PaperDollTitlesPane, "OnShow")
+		self:Unhook(_G.PaperDollTitlesPane, "OnShow")
 	end)
-	self:skinSlider{obj=PaperDollTitlesPane.scrollBar, adj=-4}
+	self:skinSlider{obj=_G.PaperDollTitlesPane.scrollBar, adj=-4}
 	-- Equipment Manager
-	self:SecureHookScript(PaperDollEquipmentManagerPane, "OnShow", function(this)
+	self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(this)
 		for i = 1, #this.buttons do
 			local btn = this.buttons[i]
 			btn:DisableDrawLayer("BACKGROUND")
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
-		self:Unhook(PaperDollEquipmentManagerPane, "OnShow")
+		self:Unhook(_G.PaperDollEquipmentManagerPane, "OnShow")
 	end)
-	self:skinSlider{obj=PaperDollEquipmentManagerPane.scrollBar, adj=-4}
-	self:skinButton{obj=PaperDollEquipmentManagerPane.EquipSet}
-	PaperDollEquipmentManagerPane.EquipSet.ButtonBackground:SetAlpha(0)
-	self:skinButton{obj=PaperDollEquipmentManagerPane.SaveSet}
+	self:skinSlider{obj=_G.PaperDollEquipmentManagerPane.scrollBar, adj=-4}
+	self:skinButton{obj=_G.PaperDollEquipmentManagerPane.EquipSet}
+	_G.PaperDollEquipmentManagerPane.EquipSet.ButtonBackground:SetAlpha(0)
+	self:skinButton{obj=_G.PaperDollEquipmentManagerPane.SaveSet}
 
 	-- GearManagerDialog Popup Frame
-	self:skinScrollBar{obj=GearManagerDialogPopupScrollFrame}
-	self:skinEditBox{obj=GearManagerDialogPopupEditBox, regs={9}}
-	for i = 1, NUM_GEARSET_ICONS_SHOWN do
+	self:skinScrollBar{obj=_G.GearManagerDialogPopupScrollFrame}
+	self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={9}}
+	for i = 1, _G.NUM_GEARSET_ICONS_SHOWN do
 		local btn = _G["GearManagerDialogPopupButton" .. i]
 		btn:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=btn}
 	end
-	self:addSkinFrame{obj=GearManagerDialogPopup, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
+	self:addSkinFrame{obj=_G.GearManagerDialogPopup, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
 
 	-- PetPaperDoll Frame
-	PetPaperDollPetModelBg:SetAlpha(0) -- changed in blizzard code
-	PetModelFrameShadowOverlay:Hide()
+	_G.PetPaperDollPetModelBg:SetAlpha(0) -- changed in blizzard code
+	_G.PetModelFrameShadowOverlay:Hide()
 	if not self.isPTR then
-		self:removeRegions(PetPaperDollFrameExpBar, {1, 2})
-		self:glazeStatusBar(PetPaperDollFrameExpBar, 0)
+		self:removeRegions(_G.PetPaperDollFrameExpBar, {1, 2})
+		self:glazeStatusBar(_G.PetPaperDollFrameExpBar, 0)
 	end
-	self:makeMFRotatable(PetModelFrame)
+	self:makeMFRotatable(_G.PetModelFrame)
 	-- up the Frame level otherwise the tooltip doesn't work
-	RaiseFrameLevel(PetPaperDollPetInfo)
+	_G.RaiseFrameLevel(_G.PetPaperDollPetInfo)
 
 	-- Reputation Frame
 	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("ReputationFrame_Update", function()
-			for i = 1, NUM_FACTIONS_DISPLAYED do
+			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 				self:checkTex(_G["ReputationBar" .. i .. "ExpandOrCollapseButton"])
 			end
 		end)
 	end
 
-	self:keepFontStrings(ReputationFrame)
-	self:skinScrollBar{obj=ReputationListScrollFrame}
+	self:keepFontStrings(_G.ReputationFrame)
+	self:skinScrollBar{obj=_G.ReputationListScrollFrame}
 
-	for i = 1, NUM_FACTIONS_DISPLAYED do
+	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 		local obj = "ReputationBar" .. i
 		self:skinButton{obj=_G[obj .. "ExpandOrCollapseButton"], mp=true} -- treat as just a texture
 		_G[obj .. "Background"]:SetAlpha(0)
@@ -518,26 +521,26 @@ function aObj:CharacterFrames()
 		self:glazeStatusBar(_G[obj .. "ReputationBar"], 0)
 	end
 
-	self:addSkinFrame{obj=ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
+	self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
 	-- TokenFrame
 	if self.db.profile.ContainerFrames.skin then
-		BACKPACK_TOKENFRAME_HEIGHT = BACKPACK_TOKENFRAME_HEIGHT - 6
-		BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
+		_G.BACKPACK_TOKENFRAME_HEIGHT = _G.BACKPACK_TOKENFRAME_HEIGHT - 6
+		_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
 	end
 
-	self:keepFontStrings(TokenFrame)
-	self:skinScrollBar{obj=TokenFrameContainer}
+	self:keepFontStrings(_G.TokenFrame)
+	self:skinScrollBar{obj=_G.TokenFrameContainer}
 
-	self:SecureHookScript(TokenFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 		-- remove background & header textures
-		for i = 1, #TokenFrameContainer.buttons do
-			self:removeRegions(TokenFrameContainer.buttons[i], {1, 6, 7, 8})
+		for i = 1, #_G.TokenFrameContainer.buttons do
+			self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
 		end
-		self:Unhook(TokenFrame, "OnShow")
+		self:Unhook(_G.TokenFrame, "OnShow")
 	end)
 
-	self:addSkinFrame{obj=TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
+	self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
 
 end
 
@@ -548,7 +551,7 @@ function aObj:CompactFrames()
 	local function skinUnit(unit)
 
 		-- handle in combat
-		if InCombatLockdown() then
+		if _G.InCombatLockdown() then
 			aObj:add2Table(aObj.oocTab, {skinUnit, {unit}})
 			return
 		end
@@ -561,7 +564,7 @@ function aObj:CompactFrames()
 
 		grp.borderFrame:SetAlpha(0)
 		local grpName = grp:GetName()
-		for i = 1, MEMBERS_PER_RAID_GROUP do
+		for i = 1, _G.MEMBERS_PER_RAID_GROUP do
 			skinUnit(_G[grpName .. "Member" .. i])
 		end
 
@@ -569,7 +572,7 @@ function aObj:CompactFrames()
 
 -->>-- Compact Party Frame
 	self:SecureHook("CompactPartyFrame_OnLoad", function()
-		self:addSkinFrame{obj=CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
+		self:addSkinFrame{obj=_G.CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
 		self:Unhook("CompactPartyFrame_OnLoad")
 	end)
 	-- hook this to skin any new CompactRaidGroup(s)
@@ -580,7 +583,7 @@ function aObj:CompactFrames()
 -->>-- Compact RaidFrame Container
 	-- hook this to skin any new CompactRaidFrameContainer entries
 	self:SecureHook("FlowContainer_AddObject", function(container, object)
-		if container == CompactRaidFrameContainer then -- only for compact raid frame objects
+		if container == _G.CompactRaidFrameContainer then -- only for compact raid frame objects
 			if container.frameUpdateList
 			and container.frameUpdateList.group
 			and container.frameUpdateList.group[object] then
@@ -591,14 +594,14 @@ function aObj:CompactFrames()
 		end
 	end)
 	-- skin any existing unit(s) [group, mini, normal]
-	for type, frame in ipairs(CompactRaidFrameContainer.frameUpdateList) do
+	for type, frame in ipairs(_G.CompactRaidFrameContainer.frameUpdateList) do
 		if type == "group" then
 			skinGrp(frame)
 		else
 			skinUnit(frame)
 		end
 	end
-	self:addSkinFrame{obj=CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, bg=true, y1=-1, x2=-5, y2=4}
+	self:addSkinFrame{obj=_G.CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, bg=true, y1=-1, x2=-5, y2=4}
 
 -->>-- Compact RaidFrame Manager
 	local function skinButton(btn)
@@ -609,34 +612,34 @@ function aObj:CompactFrames()
 	end
 	-- Buttons
 	for _, v in pairs{"Tank", "Healer", "Damager"} do
-		skinButton(CompactRaidFrameManager.displayFrame.filterOptions["filterRole" .. v])
+		skinButton(_G.CompactRaidFrameManager.displayFrame.filterOptions["filterRole" .. v])
 	end
 	for i = 1, 8 do
-		skinButton(CompactRaidFrameManager.displayFrame.filterOptions["filterGroup" .. i])
+		skinButton(_G.CompactRaidFrameManager.displayFrame.filterOptions["filterGroup" .. i])
 	end
-	CompactRaidFrameManager.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
-	self:skinDropDown{obj=CompactRaidFrameManager.displayFrame.profileSelector}
-	skinButton(CompactRaidFrameManagerDisplayFrameLockedModeToggle)
-	skinButton(CompactRaidFrameManagerDisplayFrameHiddenModeToggle)
+	_G.CompactRaidFrameManager.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
+	self:skinDropDown{obj=_G.CompactRaidFrameManager.displayFrame.profileSelector}
+	skinButton(_G.CompactRaidFrameManagerDisplayFrameLockedModeToggle)
+	skinButton(_G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle)
 	-- Leader Options
-	skinButton(CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton)
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
-	skinButton(CompactRaidFrameManager.displayFrame.leaderOptions.readyCheckButton)
-	skinButton(CompactRaidFrameManager.displayFrame.leaderOptions.rolePollButton)
-	skinButton(CompactRaidFrameManager.displayFrame.convertToRaid)
+	skinButton(_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton)
+	_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
+	skinButton(_G.CompactRaidFrameManager.displayFrame.leaderOptions.readyCheckButton)
+	skinButton(_G.CompactRaidFrameManager.displayFrame.leaderOptions.rolePollButton)
+	skinButton(_G.CompactRaidFrameManager.displayFrame.convertToRaid)
 	-- Display Frame
-	self:keepFontStrings(CompactRaidFrameManager.displayFrame)
+	self:keepFontStrings(_G.CompactRaidFrameManager.displayFrame)
 	-- Resize Frame
-	self:addSkinFrame{obj=CompactRaidFrameManager.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
+	self:addSkinFrame{obj=_G.CompactRaidFrameManager.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
 	-- Raid Frame Manager Frame
-	self:addSkinFrame{obj=CompactRaidFrameManager, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=_G.CompactRaidFrameManager, ft=ftype, kfs=true}
 	-- Toggle button
-	self:moveObject{obj=CompactRaidFrameManager.toggleButton, x=5}
-	CompactRaidFrameManager.toggleButton:SetSize(12, 32)
-	CompactRaidFrameManager.toggleButton.nt = CompactRaidFrameManager.toggleButton:GetNormalTexture()
-	CompactRaidFrameManager.toggleButton.nt:SetTexCoord(0.22, 0.5, 0.33, 0.67)
+	self:moveObject{obj=_G.CompactRaidFrameManager.toggleButton, x=5}
+	_G.CompactRaidFrameManager.toggleButton:SetSize(12, 32)
+	_G.CompactRaidFrameManager.toggleButton.nt = _G.CompactRaidFrameManager.toggleButton:GetNormalTexture()
+	_G.CompactRaidFrameManager.toggleButton.nt:SetTexCoord(0.22, 0.5, 0.33, 0.67)
 	-- hook this to trim the texture
-	self:RawHook(CompactRaidFrameManager.toggleButton.nt, "SetTexCoord", function(this, x1, x2, y1, y2)
+	self:RawHook(_G.CompactRaidFrameManager.toggleButton.nt, "SetTexCoord", function(this, x1, x2, y1, y2)
 		self.hooks[this].SetTexCoord(this, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
 	end, true)
 
@@ -646,7 +649,7 @@ function aObj:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	for i = 1, NUM_CONTAINER_FRAMES do
+	for i = 1, _G.NUM_CONTAINER_FRAMES do
 		local objName = "ContainerFrame" .. i
 		self:addSkinFrame{obj=_G[objName], ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 		-- resize and move the bag name to make it more readable
@@ -654,11 +657,11 @@ function aObj:ContainerFrames()
 		obj:SetWidth(145)
 		self:moveObject{obj=obj, x=-30}
 		-- add button borders
-		for j = 1, MAX_CONTAINER_ITEMS do
+		for j = 1, _G.MAX_CONTAINER_ITEMS do
 			self:addButtonBorder{obj=_G[objName .. "Item" .. j]}
 		end
 	end
-	self:skinEditBox{obj=BagItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinEditBox{obj=_G.BagItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 
 end
 
@@ -666,9 +669,9 @@ function aObj:DressUpFrame()
 	if not self.db.profile.DressUpFrame or self.initialized.DressUpFrame then return end
 	self.initialized.DressUpFrame = true
 
-	self:removeRegions(DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
-	DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
+	self:removeRegions(_G.DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
+	_G.DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
 end
 
@@ -676,60 +679,60 @@ function aObj:EncounterJournal() -- LoD
 	if not self.db.profile.EncounterJournal or self.initialized.EncounterJournal then return end
 	self.initialized.EncounterJournal = true
 
-	self:removeInset(EncounterJournal.inset)
-	self:addSkinFrame{obj=EncounterJournal, ft=ftype, kfs=true, y1=2, x2=1}
+	self:removeInset(_G.EncounterJournal.inset)
+	self:addSkinFrame{obj=_G.EncounterJournal, ft=ftype, kfs=true, y1=2, x2=1}
 
 -->>-- Search EditBox, dropdown and results frame
-	self:skinEditBox{obj=EncounterJournal.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	EncounterJournal.searchBox.sbutton1:DisableDrawLayer("OVERLAY")
-	self:addSkinFrame{obj=EncounterJournal.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
-	self:skinSlider{obj=EncounterJournal.searchResults.scrollFrame.scrollBar, adj=-4}
-	for i = 1, #EncounterJournal.searchResults.scrollFrame.buttons do
-		local btn = EncounterJournal.searchResults.scrollFrame.buttons[i]
+	self:skinEditBox{obj=_G.EncounterJournal.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	_G.EncounterJournal.searchBox.sbutton1:DisableDrawLayer("OVERLAY")
+	self:addSkinFrame{obj=_G.EncounterJournal.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
+	self:skinSlider{obj=_G.EncounterJournal.searchResults.scrollFrame.scrollBar, adj=-4}
+	for i = 1, #_G.EncounterJournal.searchResults.scrollFrame.buttons do
+		local btn = _G.EncounterJournal.searchResults.scrollFrame.buttons[i]
 		self:removeRegions(btn, {1})
 		btn:GetNormalTexture():SetAlpha(0)
 		btn:GetPushedTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
 -->>-- Nav Bar
-	EncounterJournal.navBar:DisableDrawLayer("BACKGROUND")
-	EncounterJournal.navBar:DisableDrawLayer("BORDER")
-	EncounterJournal.navBar.overlay:DisableDrawLayer("OVERLAY")
-	EncounterJournal.navBar.home:DisableDrawLayer("OVERLAY")
-	EncounterJournal.navBar.home:GetNormalTexture():SetAlpha(0)
-	EncounterJournal.navBar.home:GetPushedTexture():SetAlpha(0)
-	EncounterJournal.navBar.home.text:SetPoint("RIGHT", -20, 0)
+	_G.EncounterJournal.navBar:DisableDrawLayer("BACKGROUND")
+	_G.EncounterJournal.navBar:DisableDrawLayer("BORDER")
+	_G.EncounterJournal.navBar.overlay:DisableDrawLayer("OVERLAY")
+	_G.EncounterJournal.navBar.home:DisableDrawLayer("OVERLAY")
+	_G.EncounterJournal.navBar.home:GetNormalTexture():SetAlpha(0)
+	_G.EncounterJournal.navBar.home:GetPushedTexture():SetAlpha(0)
+	_G.EncounterJournal.navBar.home.text:SetPoint("RIGHT", -20, 0)
 -->>-- InstanceSelect frame
-	EncounterJournal.instanceSelect.bg:SetAlpha(0)
-	self:skinDropDown{obj=EJTierDropDown}
-	self:skinSlider{obj=EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
-	self:addSkinFrame{obj=EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
-	self:addButtonBorder{obj=EncounterJournalInstanceSelectScrollDownButton, ofs=-2}
+	_G.EncounterJournal.instanceSelect.bg:SetAlpha(0)
+	self:skinDropDown{obj=_G.EJTierDropDown}
+	self:skinSlider{obj=_G.EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
+	self:addSkinFrame{obj=_G.EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
+	self:addButtonBorder{obj=_G.EncounterJournalInstanceSelectScrollDownButton, ofs=-2}
 	-- Instance buttons
 	for i = 1, 30 do
-		local btn = EncounterJournal.instanceSelect.scroll.child["instance" .. i]
+		local btn = _G.EncounterJournal.instanceSelect.scroll.child["instance" .. i]
 		if btn then
 			self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
 		end
 	end
 	-- Tabs
-	EncounterJournal.instanceSelect.raidsTab:DisableDrawLayer("BACKGROUND")
-	EncounterJournal.instanceSelect.dungeonsTab:DisableDrawLayer("BACKGROUND")
+	_G.EncounterJournal.instanceSelect.raidsTab:DisableDrawLayer("BACKGROUND")
+	_G.EncounterJournal.instanceSelect.dungeonsTab:DisableDrawLayer("BACKGROUND")
 -->>-- Encounter frame
 	-- Instance frame
-	local obj = EncounterJournal.encounter.instance
+	local obj = _G.EncounterJournal.encounter.instance
 	obj.loreBG:SetTexCoord(0.06, 0.70, 0.08, 0.58)
 	obj.loreBG:SetWidth(370)
 	obj.loreBG:SetHeight(315)
 	self:moveObject{obj=obj.title, y=40}
-	EncounterJournalEncounterFrameInstanceFrameTitleBG:SetAlpha(0)
+	_G.EncounterJournalEncounterFrameInstanceFrameTitleBG:SetAlpha(0)
 	self:moveObject{obj=obj.mapButton, x=-20, y=-20}
 	self:addButtonBorder{obj=obj.mapButton, relTo=obj.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:skinSlider{obj=obj.loreScroll.ScrollBar, adj=-4}
 	obj.loreScroll.child.lore:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- Model frame
-	self:makeMFRotatable(EncounterJournal.encounter.model)
-	self:getRegion(EncounterJournal.encounter.model, 1):SetAlpha(0) -- TitleBG
+	self:makeMFRotatable(_G.EncounterJournal.encounter.model)
+	self:getRegion(_G.EncounterJournal.encounter.model, 1):SetAlpha(0) -- TitleBG
 	-- Boss/Creature buttons
 	self:SecureHook("EncounterJournal_DisplayInstance", function(instanceID, noButton)
 		for i = 1, 10 do
@@ -742,23 +745,23 @@ function aObj:EncounterJournal() -- LoD
 	end)
 	self:SecureHook("EncounterJournal_DisplayEncounter", function(encounterID, noButton)
 		for i = 1, 6 do
-			EncounterJournal.encounter["creatureButton" .. i]:SetNormalTexture(nil)
-			local hTex = EncounterJournal.encounter["creatureButton" .. i]:GetHighlightTexture()
+			_G.EncounterJournal.encounter["creatureButton" .. i]:SetNormalTexture(nil)
+			local hTex = _G.EncounterJournal.encounter["creatureButton" .. i]:GetHighlightTexture()
 			hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 			hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
 		end
 	end)
 	-- Info frame
-	self:getRegion(EncounterJournal.encounter.info, 1):SetAlpha(0) -- BG
-	EncounterJournal.encounter.info.dungeonBG:SetAlpha(0)
-	EncounterJournal.encounter.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinSlider{obj=EncounterJournal.encounter.info.detailsScroll.ScrollBar, adj=-4}
-	EncounterJournal.encounter.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	EncounterJournalEncounterFrameInfoResetButton:SetNormalTexture(nil)
-	EncounterJournalEncounterFrameInfoResetButton:SetPushedTexture(nil)
-	EncounterJournal.encounter.info.difficulty:SetNormalTexture(nil)
-	EncounterJournal.encounter.info.difficulty:SetPushedTexture(nil)
-	EncounterJournal.encounter.info.difficulty:DisableDrawLayer("BACKGROUND")
+	self:getRegion(_G.EncounterJournal.encounter.info, 1):SetAlpha(0) -- BG
+	_G.EncounterJournal.encounter.info.dungeonBG:SetAlpha(0)
+	_G.EncounterJournal.encounter.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:skinSlider{obj=_G.EncounterJournal.encounter.info.detailsScroll.ScrollBar, adj=-4}
+	_G.EncounterJournal.encounter.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.EncounterJournalEncounterFrameInfoResetButton:SetNormalTexture(nil)
+	_G.EncounterJournalEncounterFrameInfoResetButton:SetPushedTexture(nil)
+	_G.EncounterJournal.encounter.info.difficulty:SetNormalTexture(nil)
+	_G.EncounterJournal.encounter.info.difficulty:SetPushedTexture(nil)
+	_G.EncounterJournal.encounter.info.difficulty:DisableDrawLayer("BACKGROUND")
 	-- Hook this to skin headers
 	self:SecureHook("EncounterJournal_ToggleHeaders", function(this, doNotShift)
 		for i = 1, 25 do
@@ -773,15 +776,15 @@ function aObj:EncounterJournal() -- LoD
 		end
 	end)
 	-- Loot
-	self:skinSlider{obj=EncounterJournal.encounter.info.lootScroll.scrollBar, adj=-4}
-	EncounterJournal.encounter.info.lootScroll.filter:DisableDrawLayer("BACKGROUND")
-	EncounterJournal.encounter.info.lootScroll.filter:SetNormalTexture(nil)
-	EncounterJournal.encounter.info.lootScroll.filter:SetPushedTexture(nil)
-	EncounterJournal.encounter.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.EncounterJournal.encounter.info.lootScroll.scrollBar, adj=-4}
+	_G.EncounterJournal.encounter.info.lootScroll.filter:DisableDrawLayer("BACKGROUND")
+	_G.EncounterJournal.encounter.info.lootScroll.filter:SetNormalTexture(nil)
+	_G.EncounterJournal.encounter.info.lootScroll.filter:SetPushedTexture(nil)
+	_G.EncounterJournal.encounter.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 	-- hook this to skin loot entries
 	self:SecureHook("EncounterJournal_LootUpdate", function()
-		for i = 1, #EncounterJournal.encounter.info.lootScroll.buttons do
-			local btn = EncounterJournal.encounter.info.lootScroll.buttons[i]
+		for i = 1, #_G.EncounterJournal.encounter.info.lootScroll.buttons do
+			local btn = _G.EncounterJournal.encounter.info.lootScroll.buttons[i]
 			btn:DisableDrawLayer("BORDER")
 			btn.armorType:SetTextColor(self.BTr, self.BTg, self.BTb)
 			btn.slot:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -792,15 +795,15 @@ function aObj:EncounterJournal() -- LoD
 	end)
 	-- Tabs (side)
 	for _, v in pairs{"bossTab", "lootTab"} do
-		EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
-		EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
-		EncounterJournal.encounter.info[v]:SetDisabledTexture(nil)
-		self:addSkinFrame{obj=EncounterJournal.encounter.info[v], ft=ftype, noBdr=true, ofs=-3, aso={rotate=true}} -- gradient is right to left
+		_G.EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
+		_G.EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
+		_G.EncounterJournal.encounter.info[v]:SetDisabledTexture(nil)
+		self:addSkinFrame{obj=_G.EncounterJournal.encounter.info[v], ft=ftype, noBdr=true, ofs=-3, aso={rotate=true}} -- gradient is right to left
 	end
-	self:moveObject{obj=EncounterJournal.encounter.info.bossTab, x=10}
+	self:moveObject{obj=_G.EncounterJournal.encounter.info.bossTab, x=10}
 	-- hide/show the texture to realign it on the tab
-	EncounterJournal.encounter.info.bossTab.unselected:Hide()
-	EncounterJournal.encounter.info.bossTab.unselected:Show()
+	_G.EncounterJournal.encounter.info.bossTab.unselected:Hide()
+	_G.EncounterJournal.encounter.info.bossTab.unselected:Show()
 
 end
 
@@ -808,15 +811,15 @@ function aObj:EquipmentFlyout()
 	if not self.db.profile.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
 	self.initialized.EquipmentFlyout = true
 
-	local btnFrame = EquipmentFlyoutFrame.buttonFrame
+	local btnFrame = _G.EquipmentFlyoutFrame.buttonFrame
 	self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
 	self:SecureHook("EquipmentFlyout_Show", function(...)
 		for i = 1, btnFrame["numBGs"] do
 			btnFrame["bg" .. i]:SetAlpha(0)
 		end
 		if self.modBtnBs then
-			for i = 1, #EquipmentFlyoutFrame.buttons do
-				local btn = EquipmentFlyoutFrame.buttons[i]
+			for i = 1, #_G.EquipmentFlyoutFrame.buttons do
+				local btn = _G.EquipmentFlyoutFrame.buttons[i]
 				if not btn.sbb then self:addButtonBorder{obj=btn, ibt=true} end
 			end
 		end
@@ -828,30 +831,30 @@ function aObj:FriendsFrame()
 	if not self.db.profile.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
-	self:skinTabs{obj=FriendsFrame, lod=true}
-	self:addSkinFrame{obj=FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-5}
+	self:skinTabs{obj=_G.FriendsFrame, lod=true}
+	self:addSkinFrame{obj=_G.FriendsFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-5}
 
-	self:skinDropDown{obj=FriendsDropDown}
-	self:skinDropDown{obj=TravelPassDropDown}
+	self:skinDropDown{obj=_G.FriendsDropDown}
+	self:skinDropDown{obj=_G.TravelPassDropDown}
 	-- FriendsTabHeader Frame
-	FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
-	self:addButtonBorder{obj=FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
-	self:addSkinFrame{obj=FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, kfs=true, ofs=4}
-	self:addSkinFrame{obj=FriendsFrameBattlenetFrame.BroadcastFrame, ofs=-10}
-	self:addSkinFrame{obj=FriendsFrameBattlenetFrame.UnavailableInfoFrame}
-	self:skinDropDown{obj=FriendsFrameStatusDropDown}
-	FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-	self:skinEditBox{obj=FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
-	FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinTabs{obj=FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
-	self:addButtonBorder{obj=FriendsTabHeaderSoRButton}
+	_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
+	self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
+	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, kfs=true, ofs=4}
+	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ofs=-10}
+	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame}
+	self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
+	_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
+	self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
+	_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinTabs{obj=_G.FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
+	self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
 
 	--	FriendsList Frame
 	-- adjust width of FFFSF so it looks right (too thin by default)
-	FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
-	self:skinScrollBar{obj=FriendsFrameFriendsScrollFrame}
+	_G.FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", _G.FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
+	self:skinScrollBar{obj=_G.FriendsFrameFriendsScrollFrame}
 
-	for i = 1, FRIENDS_FRIENDS_TO_DISPLAY do
+	for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
 		local btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
 		btn.background:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.gameIcon, hide=true, ofs=0}
@@ -859,30 +862,30 @@ function aObj:FriendsFrame()
 	end
 
 	-- Friends Tooltip
-	self:addSkinFrame{obj=FriendsTooltip}
+	self:addSkinFrame{obj=_G.FriendsTooltip}
 
 -->>-- Add Friend Frame
-	self:addSkinFrame{obj=AddFriendFrame, kfs=true}
-	self:skinEditBox{obj=AddFriendNameEditBox, regs={9}}
-	self:addSkinFrame{obj=AddFriendNoteFrame, kfs=true}
-	self:skinScrollBar{obj=AddFriendNoteFrameScrollFrame}
+	self:addSkinFrame{obj=_G.AddFriendFrame, kfs=true}
+	self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={9}}
+	self:addSkinFrame{obj=_G.AddFriendNoteFrame, kfs=true}
+	self:skinScrollBar{obj=_G.AddFriendNoteFrameScrollFrame}
 
 -->>-- FriendsFriends Frame
-	self:skinDropDown{obj=FriendsFriendsFrameDropDown}
-	self:addSkinFrame{obj=FriendsFriendsList, ft=ftype}
-	self:skinScrollBar{obj=FriendsFriendsScrollFrame}
-	self:addSkinFrame{obj=FriendsFriendsNoteFrame, kfs=true, ft=ftype}
-	self:addSkinFrame{obj=FriendsFriendsFrame, ft=ftype}
+	self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
+	self:addSkinFrame{obj=_G.FriendsFriendsList, ft=ftype}
+	self:skinScrollBar{obj=_G.FriendsFriendsScrollFrame}
+	self:addSkinFrame{obj=_G.FriendsFriendsNoteFrame, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=_G.FriendsFriendsFrame, ft=ftype}
 
 -->>--	IgnoreList Frame
-	self:keepFontStrings(IgnoreListFrame)
-	self:skinScrollBar{obj=FriendsFrameIgnoreScrollFrame}
+	self:keepFontStrings(_G.IgnoreListFrame)
+	self:skinScrollBar{obj=_G.FriendsFrameIgnoreScrollFrame}
 
 -->>--	PendingList Frame
-	self:keepFontStrings(PendingListFrame)
-	self:skinDropDown{obj=PendingListFrameDropDown}
-	self:skinSlider{obj=FriendsFramePendingScrollFrame.scrollBar}
-	for i = 1, PENDING_INVITES_TO_DISPLAY do
+	self:keepFontStrings(_G.PendingListFrame)
+	self:skinDropDown{obj=_G.PendingListFrameDropDown}
+	self:skinSlider{obj=_G.FriendsFramePendingScrollFrame.scrollBar}
+	for i = 1, _G.PENDING_INVITES_TO_DISPLAY do
 		local btn = "FriendsFramePendingButton" .. i
 		self:applySkin{obj=_G[btn]}
 		self:applySkin{obj=_G[btn .. "AcceptButton"]}
@@ -890,57 +893,57 @@ function aObj:FriendsFrame()
 	end
 
 -->>--	Who Tab Frame
-	self:removeInset(WhoFrameListInset)
-	self:removeInset(WhoFrameEditBoxInset)
-	self:skinDropDown{obj=WhoFrameDropDown, noSkin=true}
-	self:moveObject{obj=WhoFrameDropDownButton, x=5, y=1}
-	self:skinScrollBar{obj=WhoListScrollFrame}
-	self:skinEditBox{obj=WhoFrameEditBox, move=true}
-	WhoFrameEditBox:SetWidth(WhoFrameEditBox:GetWidth() +  24)
-	self:moveObject{obj=WhoFrameEditBox, x=12}
+	self:removeInset(_G.WhoFrameListInset)
+	self:removeInset(_G.WhoFrameEditBoxInset)
+	self:skinDropDown{obj=_G.WhoFrameDropDown, noSkin=true}
+	self:moveObject{obj=_G.WhoFrameDropDownButton, x=5, y=1}
+	self:skinScrollBar{obj=_G.WhoListScrollFrame}
+	self:skinEditBox{obj=_G.WhoFrameEditBox, move=true}
+	_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() +  24)
+	self:moveObject{obj=_G.WhoFrameEditBox, x=12}
 
 -->>--	Channel Tab Frame
-	self:keepFontStrings(ChannelFrame)
-	self:removeInset(ChannelFrameLeftInset)
-	self:removeInset(ChannelFrameRightInset)
-	self:skinButton{obj=ChannelFrameNewButton}
+	self:keepFontStrings(_G.ChannelFrame)
+	self:removeInset(_G.ChannelFrameLeftInset)
+	self:removeInset(_G.ChannelFrameRightInset)
+	self:skinButton{obj=_G.ChannelFrameNewButton}
 	-- hook this to skin channel buttons
 	self:SecureHook("ChannelList_Update", function()
-		for i = 1, MAX_CHANNEL_BUTTONS do
+		for i = 1, _G.MAX_CHANNEL_BUTTONS do
 			_G["ChannelButton" .. i .. "NormalTexture"]:SetAlpha(0)
 		end
 	end)
-	self:skinScrollBar{obj=ChannelListScrollFrame}
-	self:skinScrollBar{obj=ChannelRosterScrollFrame}
+	self:skinScrollBar{obj=_G.ChannelListScrollFrame}
+	self:skinScrollBar{obj=_G.ChannelRosterScrollFrame}
 	-- Channel Pullout Tab & Frame
-	self:keepRegions(ChannelPulloutTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
-	self:addSkinFrame{obj=ChannelPulloutTab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
-	self:addSkinFrame{obj=ChannelPulloutBackground, ft=ftype, nb=true}
-	self:skinButton{obj=ChannelPulloutCloseButton, cb=true}
-	RaiseFrameLevel(ChannelPulloutCloseButton) -- bring above Background frame
-	self:addButtonBorder{obj=ChannelPulloutRosterScrollUpBtn, ofs=-2}
-	self:addButtonBorder{obj=ChannelPulloutRosterScrollDownBtn, ofs=-2}
+	self:keepRegions(_G.ChannelPulloutTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
+	self:addSkinFrame{obj=_G.ChannelPulloutTab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
+	self:addSkinFrame{obj=_G.ChannelPulloutBackground, ft=ftype, nb=true}
+	self:skinButton{obj=_G.ChannelPulloutCloseButton, cb=true}
+	_G.RaiseFrameLevel(_G.ChannelPulloutCloseButton) -- bring above Background frame
+	self:addButtonBorder{obj=_G.ChannelPulloutRosterScrollUpBtn, ofs=-2}
+	self:addButtonBorder{obj=_G.ChannelPulloutRosterScrollDownBtn, ofs=-2}
 -->>--	Daughter Frame
-	self:skinEditBox{obj=ChannelFrameDaughterFrameChannelName, regs={9}, noWidth=true}
-	self:skinEditBox{obj=ChannelFrameDaughterFrameChannelPassword, regs={9, 10}, noWidth=true}
-	self:moveObject{obj=ChannelFrameDaughterFrameOkayButton, x=-2}
-	self:addSkinFrame{obj=ChannelFrameDaughterFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-5}
-	self:skinDropDown{obj=ChannelListDropDown}
-	self:skinDropDown{obj=ChannelRosterDropDown}
+	self:skinEditBox{obj=_G.ChannelFrameDaughterFrameChannelName, regs={9}, noWidth=true}
+	self:skinEditBox{obj=_G.ChannelFrameDaughterFrameChannelPassword, regs={9, 10}, noWidth=true}
+	self:moveObject{obj=_G.ChannelFrameDaughterFrameOkayButton, x=-2}
+	self:addSkinFrame{obj=_G.ChannelFrameDaughterFrame, ft=ftype, kfs=true, x1=2, y1=-6, x2=-5}
+	self:skinDropDown{obj=_G.ChannelListDropDown}
+	self:skinDropDown{obj=_G.ChannelRosterDropDown}
 
 -->>--	Raid Tab Frame
-	self:skinButton{obj=RaidFrameConvertToRaidButton}
-	self:skinButton{obj=RaidFrameRaidInfoButton}
-	if IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
+	self:skinButton{obj=_G.RaidFrameConvertToRaidButton}
+	self:skinButton{obj=_G.RaidFrameRaidInfoButton}
+	if _G.IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 
 -->>--	RaidInfo Frame
-	self:addSkinFrame{obj=RaidInfoInstanceLabel, kfs=true}
-	self:addSkinFrame{obj=RaidInfoIDLabel, kfs=true}
-	self:skinSlider{obj=RaidInfoScrollFrame.scrollBar}
-	self:addSkinFrame{obj=RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
+	self:addSkinFrame{obj=_G.RaidInfoInstanceLabel, kfs=true}
+	self:addSkinFrame{obj=_G.RaidInfoIDLabel, kfs=true}
+	self:skinSlider{obj=_G.RaidInfoScrollFrame.scrollBar}
+	self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 
 -->>-- BattleTagInvite Frame
-	self:addSkinFrame{obj=BattleTagInviteFrame}
+	self:addSkinFrame{obj=_G.BattleTagInviteFrame}
 
 end
 
@@ -948,9 +951,9 @@ function aObj:GhostFrame()
 	if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
 	self.initialized.GhostFrame = true
 
-	self:addButtonBorder{obj=GhostFrameContentsFrame, relTo=GhostFrameContentsFrameIcon}
-	self:addSkinButton{obj=GhostFrame, parent=GhostFrame, kfs=true, sap=true, hide=true, ft=ftype}
-	GhostFrame:SetFrameStrata("HIGH") -- make it appear above other frames (i.e. Corkboard)
+	self:addButtonBorder{obj=_G.GhostFrameContentsFrame, relTo=_G.GhostFrameContentsFrameIcon}
+	self:addSkinButton{obj=_G.GhostFrame, parent=_G.GhostFrame, kfs=true, sap=true, hide=true, ft=ftype}
+	_G.GhostFrame:SetFrameStrata("HIGH") -- make it appear above other frames (i.e. Corkboard)
 
 end
 
@@ -958,26 +961,26 @@ function aObj:GlyphUI() -- LoD
 	if not self.db.profile.TalentUI or self.initialized.GlyphUI then return end
 	self.initialized.GlyphUI = true
 
-	GlyphFrame:DisableDrawLayer("BACKGROUND")
-	GlyphFrame.specRing:SetTexture(nil)
-	self:removeInset(GlyphFrame.sideInset)
-	self:skinEditBox{obj=GlyphFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	self:skinDropDown{obj=GlyphFrameFilterDropDown}
+	_G.GlyphFrame:DisableDrawLayer("BACKGROUND")
+	_G.GlyphFrame.specRing:SetTexture(nil)
+	self:removeInset(_G.GlyphFrame.sideInset)
+	self:skinEditBox{obj=_G.GlyphFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinDropDown{obj=_G.GlyphFrameFilterDropDown}
 	-- Headers
-	for i = 1, #GLYPH_STRING do
+	for i = 1, #_G.GLYPH_STRING do
 		self:removeRegions(_G["GlyphFrameHeader" .. i], {1, 2, 3})
 		self:applySkin{obj=_G["GlyphFrameHeader" .. i], ft=ftype, nb=true} -- use applySkin so text is seen
 	end
 	-- remove Glyph item textures
-	for i = 1, #GlyphFrame.scrollFrame.buttons do
-		local btn = GlyphFrame.scrollFrame.buttons[i]
+	for i = 1, #_G.GlyphFrame.scrollFrame.buttons do
+		local btn = _G.GlyphFrame.scrollFrame.buttons[i]
 		btn:GetNormalTexture():SetAlpha(0)
 		btn.selectedTex:SetAlpha(0)
 		btn.disabledBG:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	self:skinSlider{obj=GlyphFrameScrollFrameScrollBar, adj=-4}
-	self:addButtonBorder{obj=GlyphFrameClearInfoFrame}
+	self:skinSlider{obj=_G.GlyphFrameScrollFrameScrollBar, adj=-4}
+	self:addButtonBorder{obj=_G.GlyphFrameClearInfoFrame}
 
 end
 
@@ -985,16 +988,16 @@ function aObj:GuildControlUI() -- LoD
 	if not self.db.profile.GuildControlUI or self.initialized.GuildControlUI then return end
 	self.initialized.GuildControlUI = true
 
-	GuildControlUI:DisableDrawLayer("BACKGROUND")
-	GuildControlUIHbar:SetAlpha(0)
-	self:skinDropDown{obj=GuildControlUI.dropdown}
-	UIDropDownMenu_SetButtonWidth(GuildControlUI.dropdown, 24)
-	self:addSkinFrame{obj=GuildControlUI, ft=ftype, kfs=true, x1=10, y1=-10, x2=-10, y2=10}
+	_G.GuildControlUI:DisableDrawLayer("BACKGROUND")
+	_G.GuildControlUIHbar:SetAlpha(0)
+	self:skinDropDown{obj=_G.GuildControlUI.dropdown}
+	_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlUI.dropdown, 24)
+	self:addSkinFrame{obj=_G.GuildControlUI, ft=ftype, kfs=true, x1=10, y1=-10, x2=-10, y2=10}
 	-- Guild Ranks Panel
 	local function skinROFrames()
 
 		local obj
-		for i = 1, MAX_GUILDRANKS do
+		for i = 1, _G.MAX_GUILDRANKS do
 			local obj = _G["GuildControlUIRankOrderFrameRank" .. i]
 			if obj and not aObj.skinned[obj] then
 				aObj:skinEditBox{obj=obj.nameBox, regs={9}, x=-5}
@@ -1010,21 +1013,21 @@ function aObj:GuildControlUI() -- LoD
 	end)
 	skinROFrames()
 	-- Rank Permissions Panel
-	GuildControlUI.rankPermFrame:DisableDrawLayer("BACKGROUND")
-	self:skinDropDown{obj=GuildControlUI.rankPermFrame.dropdown}
-	UIDropDownMenu_SetButtonWidth(GuildControlUI.rankPermFrame.dropdown, 24)
-	self:skinEditBox{obj=GuildControlUI.rankPermFrame.goldBox, regs={9}}
+	_G.GuildControlUI.rankPermFrame:DisableDrawLayer("BACKGROUND")
+	self:skinDropDown{obj=_G.GuildControlUI.rankPermFrame.dropdown}
+	_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlUI.rankPermFrame.dropdown, 24)
+	self:skinEditBox{obj=_G.GuildControlUI.rankPermFrame.goldBox, regs={9}}
 	-- Bank Tab Permissions panel
-	self:keepFontStrings(GuildControlUI.bankTabFrame.scrollFrame)
-	self:skinSlider{obj=GuildControlUIRankBankFrameInsetScrollFrameScrollBar}
-	self:skinDropDown{obj=GuildControlUI.bankTabFrame.dropdown}
-	UIDropDownMenu_SetButtonWidth(GuildControlUI.bankTabFrame.dropdown, 24)
-	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BACKGROUND")
-	GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BORDER")
+	self:keepFontStrings(_G.GuildControlUI.bankTabFrame.scrollFrame)
+	self:skinSlider{obj=_G.GuildControlUIRankBankFrameInsetScrollFrameScrollBar}
+	self:skinDropDown{obj=_G.GuildControlUI.bankTabFrame.dropdown}
+	_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlUI.bankTabFrame.dropdown, 24)
+	_G.GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BACKGROUND")
+	_G.GuildControlUI.bankTabFrame.inset:DisableDrawLayer("BORDER")
 	-- hook this as buttons are created as required
 	self:SecureHook("GuildControlUI_BankTabPermissions_Update", function(this)
 		-- self:Debug("GuildControlUI_BankTabPermissions_Update: [%s]", this)
-		for i = 1, MAX_BUY_GUILDBANK_TABS do
+		for i = 1, _G.MAX_BUY_GUILDBANK_TABS do
 			local btn = _G["GuildControlBankTab" .. i]
 			if btn and not self.skinned[btn] then
 				btn:DisableDrawLayer("BACKGROUND")
@@ -1042,55 +1045,55 @@ function aObj:GuildUI() -- LoD
 	self.initialized.GuildUI = true
 
 -->>-- Guild Frame
-	self:removeInset(GuildFrameBottomInset)
-	self:skinDropDown{obj=GuildDropDown}
-	GuildLevelFrame:DisableDrawLayer("BACKGROUND")
+	self:removeInset(_G.GuildFrameBottomInset)
+	self:skinDropDown{obj=_G.GuildDropDown}
+	_G.GuildLevelFrame:DisableDrawLayer("BACKGROUND")
 	-- XP Bar
-	GuildXPBar:DisableDrawLayer("BORDER")
-	GuildXPBarProgress:SetTexture(self.sbTexture)
-	GuildXPBarShadow:SetAlpha(0)
-	GuildXPBarCap:SetTexture(self.sbTexture)
-	GuildXPBarCapMarker:SetAlpha(0)
+	_G.GuildXPBar:DisableDrawLayer("BORDER")
+	_G.GuildXPBarProgress:SetTexture(self.sbTexture)
+	_G.GuildXPBarShadow:SetAlpha(0)
+	_G.GuildXPBarCap:SetTexture(self.sbTexture)
+	_G.GuildXPBarCapMarker:SetAlpha(0)
 	-- Faction Bar
-	GuildFactionBar:DisableDrawLayer("BORDER")
-	GuildFactionBarProgress:SetTexture(self.sbTexture)
-	GuildFactionBarShadow:SetAlpha(0)
-	GuildFactionBarCap:SetTexture(self.sbTexture)
-	GuildFactionBarCapMarker:SetAlpha(0)
-	self:keepRegions(GuildFrame, {8, 19, 20, 18, 21, 22}) -- regions 8, 19, 20 are text, 18, 21 & 22 are tabard
-	self:moveObject{obj=GuildFrameTabardBackground, x=8, y=-11}
-	self:moveObject{obj=GuildFrameTabardEmblem, x=9, y=-12}
-	self:moveObject{obj=GuildFrameTabardBorder, x=7, y=-10}
-	self:skinTabs{obj=GuildFrame, lod=true}
-	self:addSkinFrame{obj=GuildFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:removeMagicBtnTex(GuildAddMemberButton)
-	self:removeMagicBtnTex(GuildControlButton)
-	self:removeMagicBtnTex(GuildViewLogButton)
+	_G.GuildFactionBar:DisableDrawLayer("BORDER")
+	_G.GuildFactionBarProgress:SetTexture(self.sbTexture)
+	_G.GuildFactionBarShadow:SetAlpha(0)
+	_G.GuildFactionBarCap:SetTexture(self.sbTexture)
+	_G.GuildFactionBarCapMarker:SetAlpha(0)
+	self:keepRegions(_G.GuildFrame, {8, 19, 20, 18, 21, 22}) -- regions 8, 19, 20 are text, 18, 21 & 22 are tabard
+	self:moveObject{obj=_G.GuildFrameTabardBackground, x=8, y=-11}
+	self:moveObject{obj=_G.GuildFrameTabardEmblem, x=9, y=-12}
+	self:moveObject{obj=_G.GuildFrameTabardBorder, x=7, y=-10}
+	self:skinTabs{obj=_G.GuildFrame, lod=true}
+	self:addSkinFrame{obj=_G.GuildFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:removeMagicBtnTex(_G.GuildAddMemberButton)
+	self:removeMagicBtnTex(_G.GuildControlButton)
+	self:removeMagicBtnTex(_G.GuildViewLogButton)
 	-- GuildMain Frame
-	GuildPerksToggleButton:DisableDrawLayer("BACKGROUND")
-	GuildNewPerksFrame:DisableDrawLayer("BACKGROUND")
-	GuildUpdatesNoNews:SetTextColor(self.BTr, self.BTg, self.BTb)
-	GuildUpdatesDivider:SetAlpha(0)
-	GuildUpdatesNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:removeRegions(GuildLatestPerkButton, {2, 5, 6}) -- region 2 is NameFrame, 5-6 are borders
-	self:addButtonBorder{obj=GuildLatestPerkButton, libt=true}
-	GuildNextPerkButtonNameFrame:SetTexture(nil)
-	self:addButtonBorder{obj=GuildNextPerkButton, libt=true, reParent={GuildNextPerkButtonLockTexture}}
-	GuildAllPerksFrame:DisableDrawLayer("BACKGROUND")
-	self:skinSlider{obj=GuildPerksContainer.ScrollBar, adj=-6}
-	for i = 1, #GuildPerksContainer.buttons do
+	_G.GuildPerksToggleButton:DisableDrawLayer("BACKGROUND")
+	_G.GuildNewPerksFrame:DisableDrawLayer("BACKGROUND")
+	_G.GuildUpdatesNoNews:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.GuildUpdatesDivider:SetAlpha(0)
+	_G.GuildUpdatesNoEvents:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:removeRegions(_G.GuildLatestPerkButton, {2, 5, 6}) -- region 2 is NameFrame, 5-6 are borders
+	self:addButtonBorder{obj=_G.GuildLatestPerkButton, libt=true}
+	_G.GuildNextPerkButtonNameFrame:SetTexture(nil)
+	self:addButtonBorder{obj=_G.GuildNextPerkButton, libt=true, reParent={_G.GuildNextPerkButtonLockTexture}}
+	_G.GuildAllPerksFrame:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.GuildPerksContainer.ScrollBar, adj=-6}
+	for i = 1, #_G.GuildPerksContainer.buttons do
 		-- can't use DisableDrawLayer as the update code uses it
-		local btn = GuildPerksContainer.buttons[i]
+		local btn = _G.GuildPerksContainer.buttons[i]
 		self:removeRegions(btn, {1, 2, 3, 4, 5, 6})
 		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
 	end
-	self:skinEditBox{obj=GuildNameChangeFrame.editBox, regs={9}}
+	self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={9}}
 
 -->>-- GuildRoster Frame
-	self:skinDropDown{obj=GuildRosterViewDropdown}
-	self:skinSlider{obj=GuildRosterContainerScrollBar, adj=-4}
-	for i = 1, #GuildRosterContainer.buttons do
-		local btn = GuildRosterContainer.buttons[i]
+	self:skinDropDown{obj=_G.GuildRosterViewDropdown}
+	self:skinSlider{obj=_G.GuildRosterContainerScrollBar, adj=-4}
+	for i = 1, #_G.GuildRosterContainer.buttons do
+		local btn = _G.GuildRosterContainer.buttons[i]
 		btn:DisableDrawLayer("BACKGROUND")
 		btn.barTexture:SetTexture(self.sbTexture)
 		btn.header.leftEdge:SetAlpha(0)
@@ -1099,71 +1102,71 @@ function aObj:GuildUI() -- LoD
 		self:applySkin{obj=btn.header}
 		self:addButtonBorder{obj=btn, relTo=btn.icon, hide=true, es=12}
 	end
-	self:skinDropDown{obj=GuildMemberRankDropdown}
+	self:skinDropDown{obj=_G.GuildMemberRankDropdown}
 	-- adjust text position & font so it overlays correctly
-	self:moveObject{obj=GuildMemberRankDropdown, x=-6, y=2}
-	GuildMemberRankDropdownText:SetFontObject(GameFontHighlight)
-	self:addSkinFrame{obj=GuildMemberNoteBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildMemberOfficerNoteBackground, ft=ftype}
-	self:addSkinFrame{obj=GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, ofs=-6}
+	self:moveObject{obj=_G.GuildMemberRankDropdown, x=-6, y=2}
+	_G.GuildMemberRankDropdownText:SetFontObject(_G.GameFontHighlight)
+	self:addSkinFrame{obj=_G.GuildMemberNoteBackground, ft=ftype}
+	self:addSkinFrame{obj=_G.GuildMemberOfficerNoteBackground, ft=ftype}
+	self:addSkinFrame{obj=_G.GuildMemberDetailFrame, ft=ftype, kfs=true, nb=true, ofs=-6}
 
 -->>-- GuildNews Frame
-	GuildNewsFrame:DisableDrawLayer("BACKGROUND")
-	self:skinSlider{obj=GuildNewsContainerScrollBar, adj=-6}
-	for i = 1, #GuildNewsContainer.buttons do
-		GuildNewsContainer.buttons[i].header:SetAlpha(0)
+	_G.GuildNewsFrame:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.GuildNewsContainerScrollBar, adj=-6}
+	for i = 1, #_G.GuildNewsContainer.buttons do
+		_G.GuildNewsContainer.buttons[i].header:SetAlpha(0)
 	end
-	self:skinDropDown{obj=GuildNewsDropDown}
-	self:addSkinFrame{obj=GuildNewsFiltersFrame, ft=ftype, kfs=true, ofs=-7}
-	self:keepFontStrings(GuildNewsBossModelTextFrame)
-	self:addSkinFrame{obj=GuildNewsBossModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to QuestNPCModel
+	self:skinDropDown{obj=_G.GuildNewsDropDown}
+	self:addSkinFrame{obj=_G.GuildNewsFiltersFrame, ft=ftype, kfs=true, ofs=-7}
+	self:keepFontStrings(_G.GuildNewsBossModelTextFrame)
+	self:addSkinFrame{obj=_G.GuildNewsBossModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to QuestNPCModel
 	-- Rewards Panel
-	GuildRewardsFrame:DisableDrawLayer("BACKGROUND")
-	self:skinSlider{obj=GuildRewardsContainerScrollBar, adj=-4}
-	for i = 1, #GuildRewardsContainer.buttons do
-		local btn = GuildRewardsContainer.buttons[i]
+	_G.GuildRewardsFrame:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.GuildRewardsContainerScrollBar, adj=-4}
+	for i = 1, #_G.GuildRewardsContainer.buttons do
+		local btn = _G.GuildRewardsContainer.buttons[i]
 		btn:GetNormalTexture():SetAlpha(0)
 		btn.disabledBG:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.lock}}
 	end
-	self:skinDropDown{obj=GuildRewardsDropDown}
+	self:skinDropDown{obj=_G.GuildRewardsDropDown}
 
 -->>-- GuildInfo Frame
-	self:removeRegions(GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
-	self:skinTabs{obj=GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
+	self:removeRegions(_G.GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
+	self:skinTabs{obj=_G.GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
 	-- GuildInfoFrameInfo Frame
-	self:keepFontStrings(GuildInfoFrameInfo)
-	self:skinSlider{obj=GuildInfoDetailsFrameScrollBar, adj=-4}
+	self:keepFontStrings(_G.GuildInfoFrameInfo)
+	self:skinSlider{obj=_G.GuildInfoDetailsFrameScrollBar, adj=-4}
 	-- GuildInfoFrameRecruitment Frame
-	GuildRecruitmentInterestFrameBg:SetAlpha(0)
-	GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
-	GuildRecruitmentRolesFrameBg:SetAlpha(0)
-	GuildRecruitmentLevelFrameBg:SetAlpha(0)
-	GuildRecruitmentCommentFrameBg:SetAlpha(0)
-	self:skinSlider{obj=GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar}
-	GuildRecruitmentCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
-	self:removeMagicBtnTex(GuildRecruitmentListGuildButton)
+	_G.GuildRecruitmentInterestFrameBg:SetAlpha(0)
+	_G.GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
+	_G.GuildRecruitmentRolesFrameBg:SetAlpha(0)
+	_G.GuildRecruitmentLevelFrameBg:SetAlpha(0)
+	_G.GuildRecruitmentCommentFrameBg:SetAlpha(0)
+	self:skinSlider{obj=_G.GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar}
+	_G.GuildRecruitmentCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
+	self:removeMagicBtnTex(_G.GuildRecruitmentListGuildButton)
 	-- GuildInfoFrameApplicants Frame
-	for i = 1, #GuildInfoFrameApplicantsContainer.buttons do
-		local btn = GuildInfoFrameApplicantsContainer.buttons[i]
+	for i = 1, #_G.GuildInfoFrameApplicantsContainer.buttons do
+		local btn = _G.GuildInfoFrameApplicantsContainer.buttons[i]
 		self:applySkin{obj=btn}
 		btn.ring:SetAlpha(0)
 		btn.PointsSpentBgGold:SetAlpha(0)
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
-	self:skinSlider{obj=GuildInfoFrameApplicantsContainerScrollBar, adj=-4}
-	self:removeMagicBtnTex(GuildRecruitmentInviteButton)
-	self:removeMagicBtnTex(GuildRecruitmentDeclineButton)
-	self:removeMagicBtnTex(GuildRecruitmentMessageButton)
+	self:skinSlider{obj=_G.GuildInfoFrameApplicantsContainerScrollBar, adj=-4}
+	self:removeMagicBtnTex(_G.GuildRecruitmentInviteButton)
+	self:removeMagicBtnTex(_G.GuildRecruitmentDeclineButton)
+	self:removeMagicBtnTex(_G.GuildRecruitmentMessageButton)
 	-- Guild Text Edit frame
-	self:skinSlider{obj=GuildTextEditScrollFrameScrollBar, adj=-6}
-	self:addSkinFrame{obj=GuildTextEditContainer, ft=ftype, nb=true}
-	self:addSkinFrame{obj=GuildTextEditFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
+	self:skinSlider{obj=_G.GuildTextEditScrollFrameScrollBar, adj=-6}
+	self:addSkinFrame{obj=_G.GuildTextEditContainer, ft=ftype, nb=true}
+	self:addSkinFrame{obj=_G.GuildTextEditFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
 	-- Guild Log Frame
-	self:skinSlider{obj=GuildLogScrollFrame.ScrollBar, adj=-6}
-	self:addSkinFrame{obj=GuildLogContainer, ft=ftype, nb=true}
-	self:addSkinFrame{obj=GuildLogFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
+	self:skinSlider{obj=_G.GuildLogScrollFrame.ScrollBar, adj=-6}
+	self:addSkinFrame{obj=_G.GuildLogContainer, ft=ftype, nb=true}
+	self:addSkinFrame{obj=_G.GuildLogFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
 
 end
 
@@ -1171,12 +1174,12 @@ function aObj:GuildInvite()
 	if not self.db.profile.GuildInvite or self.initialized.GuildInvite then return end
 	self.initialized.GuildInvite = true
 
-	self:keepFontStrings(GuildInviteFrameLevel)
-	GuildInviteFrame:DisableDrawLayer("BACKGROUND")
-	GuildInviteFrame:DisableDrawLayer("BORDER")
-	GuildInviteFrameTabardBorder:SetTexture(nil)
-	GuildInviteFrame:DisableDrawLayer("OVERLAY")
-	self:addSkinFrame{obj=GuildInviteFrame, ft=ftype}
+	self:keepFontStrings(_G.GuildInviteFrameLevel)
+	_G.GuildInviteFrame:DisableDrawLayer("BACKGROUND")
+	_G.GuildInviteFrame:DisableDrawLayer("BORDER")
+	_G.GuildInviteFrameTabardBorder:SetTexture(nil)
+	_G.GuildInviteFrame:DisableDrawLayer("OVERLAY")
+	self:addSkinFrame{obj=_G.GuildInviteFrame, ft=ftype}
 
 end
 
@@ -1184,49 +1187,49 @@ function aObj:InspectUI() -- LoD
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
-	self:skinTabs{obj=InspectFrame, lod=true}
-	self:addSkinFrame{obj=InspectFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-5}
+	self:skinTabs{obj=_G.InspectFrame, lod=true}
+	self:addSkinFrame{obj=_G.InspectFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-5}
 
 -->>-- Inspect PaperDoll frame
 	-- Inspect Model Frame
-	InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-	for _, child in ipairs{InspectPaperDollItemsFrame:GetChildren()} do
+	_G.InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+	for _, child in ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
 		-- add button borders
 		if child:IsObjectType("Button") and self:hasTextInName(child, "Slot") then
 			self:addButtonBorder{obj=child, ibt=true}
 		end
 	end
-	InspectModelFrame:DisableDrawLayer("BACKGROUND")
-	InspectModelFrame:DisableDrawLayer("BORDER")
-	InspectModelFrame:DisableDrawLayer("OVERLAY")
+	_G.InspectModelFrame:DisableDrawLayer("BACKGROUND")
+	_G.InspectModelFrame:DisableDrawLayer("BORDER")
+	_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
 
 -->>--	PVP Frame
-	self:keepFontStrings(InspectPVPFrame)
-	for i = 1, MAX_ARENA_TEAMS do
+	self:keepFontStrings(_G.InspectPVPFrame)
+	for i = 1, _G.MAX_ARENA_TEAMS do
 		_G["InspectPVPTeam" .. i .. "StandardBar"]:Hide()
 		self:addSkinFrame{obj=_G["InspectPVPTeam" .. i], hat=true, x1=-40, y1=4, x2=-20}
 	end
 
 -->>--	Talent Frame
-	self:keepFontStrings(InspectTalentFrame)
+	self:keepFontStrings(_G.InspectTalentFrame)
 	-- Specialization
-	InspectTalentFrame.InspectSpec.ring:SetTexture(nil)
+	_G.InspectTalentFrame.InspectSpec.ring:SetTexture(nil)
 	-- Talents
 	for i = 1, 6 do
 		for j = 1, 3 do
-			local btn = InspectTalentFrame.InspectTalents["tier" .. i]["talent" .. j]
+			local btn = _G.InspectTalentFrame.InspectTalents["tier" .. i]["talent" .. j]
 			btn.border:SetTexture(nil)
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
 	end
 	-- Glyphs
 	for i = 1, 6 do
-		InspectTalentFrame.InspectGlyphs["Glyph" .. i].ring:SetTexture(nil)
+		_G.InspectTalentFrame.InspectGlyphs["Glyph" .. i].ring:SetTexture(nil)
 	end
 
 -->>-- Guild Frame
-	InspectGuildFrameBG:SetAlpha(0)
+	_G.InspectGuildFrameBG:SetAlpha(0)
 
 	-- send message when UI is skinned (used by oGlow skin)
 	self:SendMessage("InspectUI_Skinned", self)
@@ -1240,8 +1243,8 @@ function aObj:ItemSocketingUI() -- LoD
 	local colour
 	local function colourSockets()
 
-		for i = 1, GetNumSockets() do
-			local c = GEM_TYPE_INFO[GetSocketTypes(i)]
+		for i = 1, _G.GetNumSockets() do
+			local c = _G.GEM_TYPE_INFO[_G.GetSocketTypes(i)]
 			_G["ItemSocketingSocket" .. i].sb:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
@@ -1251,10 +1254,10 @@ function aObj:ItemSocketingUI() -- LoD
 		colourSockets()
 	end)
 
-	self:addSkinFrame{obj=ItemSocketingFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	self:skinScrollBar{obj=ItemSocketingScrollFrame}
+	self:addSkinFrame{obj=_G.ItemSocketingFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:skinScrollBar{obj=_G.ItemSocketingScrollFrame}
 
-	for i = 1, MAX_NUM_SOCKETS do
+	for i = 1, _G.MAX_NUM_SOCKETS do
 		local objName = "ItemSocketingSocket" .. i
 		_G[objName .. "Left"]:SetAlpha(0)
 		_G[objName .. "Right"]:SetAlpha(0)
@@ -1271,41 +1274,41 @@ function aObj:LookingForGuildUI() -- LoD
 	if not self.db.profile.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
 	self.initialized.LookingForGuildUI = true
 
-	self:skinTabs{obj=LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
-	self:addSkinFrame{obj=LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+	self:skinTabs{obj=_G.LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
+	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
 
 	-- Start Frame (Settings)
-	LookingForGuildInterestFrameBg:SetAlpha(0)
-	LookingForGuildAvailabilityFrameBg:SetAlpha(0)
-	LookingForGuildRolesFrameBg:SetAlpha(0)
-	LookingForGuildCommentFrameBg:SetAlpha(0)
-	self:skinScrollBar{obj=LookingForGuildCommentInputFrameScrollFrame}
-	self:addSkinFrame{obj=LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
-	LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:removeMagicBtnTex(LookingForGuildBrowseButton)
+	_G.LookingForGuildInterestFrameBg:SetAlpha(0)
+	_G.LookingForGuildAvailabilityFrameBg:SetAlpha(0)
+	_G.LookingForGuildRolesFrameBg:SetAlpha(0)
+	_G.LookingForGuildCommentFrameBg:SetAlpha(0)
+	self:skinScrollBar{obj=_G.LookingForGuildCommentInputFrameScrollFrame}
+	self:addSkinFrame{obj=_G.LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
+	_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:removeMagicBtnTex(_G.LookingForGuildBrowseButton)
 
 	-- Browse Frame
-	self:skinSlider{obj=LookingForGuildBrowseFrameContainerScrollBar, adj=-4}
-	for i = 1, #LookingForGuildBrowseFrameContainer.buttons do
-		local btn = LookingForGuildBrowseFrameContainer.buttons[i]
+	self:skinSlider{obj=_G.LookingForGuildBrowseFrameContainerScrollBar, adj=-4}
+	for i = 1, #_G.LookingForGuildBrowseFrameContainer.buttons do
+		local btn = _G.LookingForGuildBrowseFrameContainer.buttons[i]
 		self:applySkin{obj=btn}
 		_G[btn:GetName() .. "Ring"]:SetAlpha(0)
 		btn.PointsSpentBgGold:SetAlpha(0)
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
-	self:removeMagicBtnTex(LookingForGuildRequestButton)
+	self:removeMagicBtnTex(_G.LookingForGuildRequestButton)
 
 	-- Apps Frame (Requests)
-	self:skinSlider{obj=LookingForGuildAppsFrameContainerScrollBar}
-	for i = 1, #LookingForGuildAppsFrameContainer.buttons do
-		local btn = LookingForGuildAppsFrameContainer.buttons[i]
+	self:skinSlider{obj=_G.LookingForGuildAppsFrameContainerScrollBar}
+	for i = 1, #_G.LookingForGuildAppsFrameContainer.buttons do
+		local btn = _G.LookingForGuildAppsFrameContainer.buttons[i]
 		self:applySkin{obj=btn}
 	end
 
 	-- Request Membership Frame
-	GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=GuildFinderRequestMembershipFrameInputFrame, ft=ftype}
-	self:addSkinFrame{obj=GuildFinderRequestMembershipFrame, ft=ftype}
+	_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrameInputFrame, ft=ftype}
+	self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrame, ft=ftype}
 
 end
 
@@ -1327,45 +1330,41 @@ function aObj:LootFrames()
 		_G.LootButton5.id = 5
 		_G.LOOTFRAME_NUMBUTTONS = _G.LOOTFRAME_NUMBUTTONS + 1
 	end
-	CreateFrame("Button", "LootButton5", LootFrame, "LootButtonTemplate")
-	LootButton5:SetPoint("TOPLEFT", 9, yOfs)
-	LootButton5.id = 5
-	LOOTFRAME_NUMBUTTONS = LOOTFRAME_NUMBUTTONS + 1
 
-	for i = 1, LOOTFRAME_NUMBUTTONS do
+	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 		_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G["LootButton" .. i], ibt=true}
 	end
-	self:addSkinFrame{obj=LootFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	self:addButtonBorder{obj=LootFrameDownButton, ofs=-2}
-	self:addButtonBorder{obj=LootFrameUpButton, ofs=-2}
+	self:addSkinFrame{obj=_G.LootFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2}
+	self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2}
 
 -->>-- BonusRoll Frame
-	self:removeRegions(BonusRollFrame, {1, 2, 3, 4})
-	self:glazeStatusBar(BonusRollFrame.PromptFrame.Timer, 0,  nil)
-	self:addSkinFrame{obj=BonusRollFrame, ft=ftype}
-	self:addButtonBorder{obj=BonusRollFrame.PromptFrame, relTo=BonusRollFrame.PromptFrame.Icon}
+	self:removeRegions(_G.BonusRollFrame, {1, 2, 3, 4})
+	self:glazeStatusBar(_G.BonusRollFrame.PromptFrame.Timer, 0,  nil)
+	self:addSkinFrame{obj=_G.BonusRollFrame, ft=ftype}
+	self:addButtonBorder{obj=_G.BonusRollFrame.PromptFrame, relTo=_G.BonusRollFrame.PromptFrame.Icon}
 
 	-- N.B. BonusRollLootWon/BonusRollMoneyWon frames are now managed as part of the Alert Frames skin
 -->>-- MasterLooter Frame
-	MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
-	MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
-	MasterLooterFrame.Item.NameBorderMid:SetTexture(nil)
-	MasterLooterFrame.Item.IconBorder:SetTexture(nil)
-	self:addButtonBorder{obj=MasterLooterFrame, relTo=MasterLooterFrame.Icon}
-	MasterLooterFrame.player1.Bg:SetTexture(nil)
-	self:addSkinFrame{obj=MasterLooterFrame, ft=ftype, kfs=true, nb=true}
-	self:skinButton{obj=self:getChild(MasterLooterFrame, 3), cb=true}
+	_G.MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
+	_G.MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
+	_G.MasterLooterFrame.Item.NameBorderMid:SetTexture(nil)
+	_G.MasterLooterFrame.Item.IconBorder:SetTexture(nil)
+	self:addButtonBorder{obj=_G.MasterLooterFrame, relTo=_G.MasterLooterFrame.Icon}
+	_G.MasterLooterFrame.player1.Bg:SetTexture(nil)
+	self:addSkinFrame{obj=_G.MasterLooterFrame, ft=ftype, kfs=true, nb=true}
+	self:skinButton{obj=self:getChild(_G.MasterLooterFrame, 3), cb=true}
 
 -->>-- MissingLoot frame
-	self:addSkinFrame{obj=MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
-	for i = 1, MissingLootFrame.numShownItems do
+	self:addSkinFrame{obj=_G.MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
+	for i = 1, _G.MissingLootFrame.numShownItems do
 		_G["MissingLootFrameItem" .. i .. "NameFrame"]:SetAlpha(0)
 		self:addButtonBorder{obj=_G["MissingLootFrameItem" .. i], ibt=true}
 	end
 
 -->>-- GroupLoot frames
-	for i = 1, NUM_GROUP_LOOT_FRAMES do
+	for i = 1, _G.NUM_GROUP_LOOT_FRAMES do
 
 		local obj = _G["GroupLootFrame" .. i]
 		self:keepFontStrings(obj)
@@ -1435,19 +1434,19 @@ function aObj:LootHistory()
 		end
 
 	end
-	self:skinScrollBar{obj=LootHistoryFrame.ScrollFrame}
-	LootHistoryFrame.ScrollFrame.ScrollBarBackground:SetTexture(nil)
-	LootHistoryFrame.Divider:SetTexture(nil)
-	self:addSkinFrame{obj=LootHistoryFrame, ft=ftype, kfs=true}
+	self:skinScrollBar{obj=_G.LootHistoryFrame.ScrollFrame}
+	_G.LootHistoryFrame.ScrollFrame.ScrollBarBackground:SetTexture(nil)
+	_G.LootHistoryFrame.Divider:SetTexture(nil)
+	self:addSkinFrame{obj=_G.LootHistoryFrame, ft=ftype, kfs=true}
 	-- hook this to skin loot history items
 	self:SecureHook("LootHistoryFrame_FullUpdate", function(this)
 		skinItemFrames(this)
 	end)
 	-- skin existing itemFrames
-	skinItemFrames(LootHistoryFrame)
+	skinItemFrames(_G.LootHistoryFrame)
 
 	-- LootHistoryDropDown
-	self:skinDropDown{obj=LootHistoryDropDown}
+	self:skinDropDown{obj=_G.LootHistoryDropDown}
 
 end
 
@@ -1455,7 +1454,7 @@ function aObj:MirrorTimers()
 	if not self.db.profile.MirrorTimers.skin or self.initialized.MirrorTimers then return end
 	self.initialized.MirrorTimers = true
 
-	for i = 1, MIRRORTIMER_NUMTIMERS do
+	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 		local objName = "MirrorTimer" .. i
 		local obj = _G[objName]
 		local objBG = self:getRegion(obj, 1)
@@ -1485,14 +1484,14 @@ function aObj:MirrorTimers()
 		end
 
 	end
-	self:SecureHookScript(TimerTracker, "OnEvent", function(this, event, ...)
+	self:SecureHookScript(_G.TimerTracker, "OnEvent", function(this, event, ...)
 		-- self:Debug("TT_OE: [%s, %s]", this, event)
 		if event == "START_TIMER" then
 			skinTT(this)
 		end
 	end)
 	-- skin existing timers
-	skinTT(TimerTracker)
+	skinTT(_G.TimerTracker)
 
 end
 
@@ -1503,7 +1502,7 @@ function aObj:OverrideActionBar()
 	local sf
 	local function skinOverrideActionBar(opts)
 
-		local oabW = OverrideActionBar:GetWidth()
+		local oabW = _G.OverrideActionBar:GetWidth()
 		-- aObj:Debug("sOAB: [%s, %s, %s]", opts.src, opts.st or "nil", oabW)
 
 		local xOfs1 = 144
@@ -1522,47 +1521,47 @@ function aObj:OverrideActionBar()
 		local xOfs2 = (xOfs1 * -1) + 2
 
 		-- remove all textures
-		OverrideActionBar:DisableDrawLayer("OVERLAY")
-		OverrideActionBar:DisableDrawLayer("BACKGROUND")
-		OverrideActionBar:DisableDrawLayer("BORDER")
+		_G.OverrideActionBar:DisableDrawLayer("OVERLAY")
+		_G.OverrideActionBar:DisableDrawLayer("BACKGROUND")
+		_G.OverrideActionBar:DisableDrawLayer("BORDER")
 
 		-- PitchFrame
-		OverrideActionBar.pitchFrame.Divider1:SetTexture(nil)
-		OverrideActionBar.pitchFrame.PitchOverlay:SetTexture(nil)
-		OverrideActionBar.pitchFrame.PitchButtonBG:SetTexture(nil)
+		_G.OverrideActionBar.pitchFrame.Divider1:SetTexture(nil)
+		_G.OverrideActionBar.pitchFrame.PitchOverlay:SetTexture(nil)
+		_G.OverrideActionBar.pitchFrame.PitchButtonBG:SetTexture(nil)
 
 		-- LeaveFrame
-		OverrideActionBar.leaveFrame.Divider3:SetTexture(nil)
-		OverrideActionBar.leaveFrame.ExitBG:SetTexture(nil)
+		_G.OverrideActionBar.leaveFrame.Divider3:SetTexture(nil)
+		_G.OverrideActionBar.leaveFrame.ExitBG:SetTexture(nil)
 
 		-- ExpBar
-		OverrideActionBar.xpBar.XpMid:SetTexture(nil)
-		OverrideActionBar.xpBar.XpL:SetTexture(nil)
-		OverrideActionBar.xpBar.XpR:SetTexture(nil)
+		_G.OverrideActionBar.xpBar.XpMid:SetTexture(nil)
+		_G.OverrideActionBar.xpBar.XpL:SetTexture(nil)
+		_G.OverrideActionBar.xpBar.XpR:SetTexture(nil)
 		for i = 1, 19 do
-			OverrideActionBar.xpBar["XpDiv" .. i]:SetTexture(nil)
+			_G.OverrideActionBar.xpBar["XpDiv" .. i]:SetTexture(nil)
 		end
-		aObj:glazeStatusBar(OverrideActionBar.xpBar, 0,  self:getRegion(OverrideActionBar.xpBar, 1))
+		aObj:glazeStatusBar(_G.OverrideActionBar.xpBar, 0,  self:getRegion(_G.OverrideActionBar.xpBar, 1))
 
-		sf = sf or aObj:addSkinFrame{obj=OverrideActionBar, ft=ftype}
+		sf = sf or aObj:addSkinFrame{obj=_G.OverrideActionBar, ft=ftype}
 		sf:ClearAllPoints()
-		sf:SetPoint("TOPLEFT", OverrideActionBar, "TOPLEFT", xOfs1, yOfs1)
-		sf:SetPoint("BOTTOMRIGHT", OverrideActionBar, "BOTTOMRIGHT", xOfs2, yOfs2)
+		sf:SetPoint("TOPLEFT", _G.OverrideActionBar, "TOPLEFT", xOfs1, yOfs1)
+		sf:SetPoint("BOTTOMRIGHT", _G.OverrideActionBar, "BOTTOMRIGHT", xOfs2, yOfs2)
 
 	end
 
-	self:SecureHook(OverrideActionBar, "Show", function(this, ...)
+	self:SecureHook(_G.OverrideActionBar, "Show", function(this, ...)
 		skinOverrideActionBar{src=1}
 	end)
 	self:SecureHook("OverrideActionBar_SetSkin", function(skin)
 		skinOverrideActionBar{src=2, st=skin}
 	end)
 
-	if OverrideActionBar:IsShown() then skinOverrideActionBar{src=3} end
+	if _G.OverrideActionBar:IsShown() then skinOverrideActionBar{src=3} end
 
-	self:addButtonBorder{obj=OverrideActionBar.leaveFrame.LeaveButton}
+	self:addButtonBorder{obj=_G.OverrideActionBar.leaveFrame.LeaveButton}
 	for i = 1, 6 do
-		self:addButtonBorder{obj=OverrideActionBar["SpellButton" .. i], abt=true, sec=true, es=20}
+		self:addButtonBorder{obj=_G.OverrideActionBar["SpellButton" .. i], abt=true, sec=true, es=20}
 	end
 
 end
@@ -1571,59 +1570,59 @@ function aObj:PetJournal() -- LoD
 	if not self.db.profile.PetJournal or self.initialized.PetJournal then return end
 	self.initialized.PetJournal = true
 
-	self:addSkinFrame{obj=PetJournalParent, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:skinTabs{obj=PetJournalParent, lod=true}
+	self:addSkinFrame{obj=_G.PetJournalParent, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:skinTabs{obj=_G.PetJournalParent, lod=true}
 
 	-- MountJournal
-	self:removeInset(MountJournal.LeftInset)
-	self:removeInset(MountJournal.RightInset)
-	self:removeInset(MountJournal.MountCount)
+	self:removeInset(_G.MountJournal.LeftInset)
+	self:removeInset(_G.MountJournal.RightInset)
+	self:removeInset(_G.MountJournal.MountCount)
 	if self.isPTR then
-		self:skinEditBox{obj=MountJournal.searchBox, regs={9}, mi=true}
+		self:skinEditBox{obj=_G.MountJournal.searchBox, regs={9}, mi=true}
 	end
-	self:keepFontStrings(MountJournal.MountDisplay)
-	self:keepFontStrings(MountJournal.MountDisplay.ShadowOverlay)
-	self:makeMFRotatable(MountJournal.MountDisplay.ModelFrame)
-	self:skinSlider{obj=MountJournal.ListScrollFrame.scrollBar, adj=-4}
-	self:removeMagicBtnTex(MountJournalMountButton)
-	for i = 1, #MountJournal.ListScrollFrame.buttons do
-		local btn = MountJournal.ListScrollFrame.buttons[i]
+	self:keepFontStrings(_G.MountJournal.MountDisplay)
+	self:keepFontStrings(_G.MountJournal.MountDisplay.ShadowOverlay)
+	self:makeMFRotatable(_G.MountJournal.MountDisplay.ModelFrame)
+	self:skinSlider{obj=_G.MountJournal.ListScrollFrame.scrollBar, adj=-4}
+	self:removeMagicBtnTex(_G.MountJournalMountButton)
+	for i = 1, #_G.MountJournal.ListScrollFrame.buttons do
+		local btn = _G.MountJournal.ListScrollFrame.buttons[i]
 		if not self.isPTR then
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
 		btn:DisableDrawLayer("BACKGROUND")
 	end
 	-- PetJournal
-	self:removeInset(PetJournal.PetCount)
-	PetJournal.MainHelpButton.Ring:SetTexture(nil)
-	self:moveObject{obj=PetJournal.MainHelpButton, y=-4}
-	self:addButtonBorder{obj=PetJournal.HealPetButton, sec=true}
-	PetJournalHealPetButtonBorder:SetTexture(nil)
-	self:removeInset(PetJournal.LeftInset)
-	self:removeInset(PetJournal.RightInset)
-	self:skinEditBox{obj=PetJournal.searchBox, regs={9}, mi=true}
-	self:skinButton{obj=PetJournalFilterButton}
-	self:skinDropDown{obj=PetJournalFilterDropDown}
-	self:skinSlider{obj=PetJournal.listScroll.scrollBar, adj=-4}
-	self:removeMagicBtnTex(PetJournal.FindBattleButton)
-	self:removeMagicBtnTex(PetJournal.SummonButton)
-	self:skinDropDown{obj=PetJournal.petOptionsMenu}
-	for i = 1, #PetJournal.listScroll.buttons do
-		local btn = PetJournal.listScroll.buttons[i]
+	self:removeInset(_G.PetJournal.PetCount)
+	_G.PetJournal.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=_G.PetJournal.MainHelpButton, y=-4}
+	self:addButtonBorder{obj=_G.PetJournal.HealPetButton, sec=true}
+	_G.PetJournalHealPetButtonBorder:SetTexture(nil)
+	self:removeInset(_G.PetJournal.LeftInset)
+	self:removeInset(_G.PetJournal.RightInset)
+	self:skinEditBox{obj=_G.PetJournal.searchBox, regs={9}, mi=true}
+	self:skinButton{obj=_G.PetJournalFilterButton}
+	self:skinDropDown{obj=_G.PetJournalFilterDropDown}
+	self:skinSlider{obj=_G.PetJournal.listScroll.scrollBar, adj=-4}
+	self:removeMagicBtnTex(_G.PetJournal.FindBattleButton)
+	self:removeMagicBtnTex(_G.PetJournal.SummonButton)
+	self:skinDropDown{obj=_G.PetJournal.petOptionsMenu}
+	for i = 1, #_G.PetJournal.listScroll.buttons do
+		local btn = _G.PetJournal.listScroll.buttons[i]
 		self:removeRegions(btn, {1--[=[, 3--]=]}) -- background & petTypeIcon
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
-		if not IsAddOnLoaded("PetJournalEnhanced")
+		if not _G.IsAddOnLoaded("PetJournalEnhanced")
 		and not self.isPTR
 		then
 			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
 		end
 	end
-	self:removeRegions(PetJournal.AchievementStatus, {1})
-	self:keepFontStrings(PetJournal.loadoutBorder)
-	self:moveObject{obj=PetJournal.loadoutBorder, y=8} -- battle pet slots title
+	self:removeRegions(_G.PetJournal.AchievementStatus, {1})
+	self:keepFontStrings(_G.PetJournal.loadoutBorder)
+	self:moveObject{obj=_G.PetJournal.loadoutBorder, y=8} -- battle pet slots title
 	-- Pet LoadOut Plates
 	for i = 1, 3 do
-		local obj = PetJournal.Loadout["Pet" .. i]
+		local obj = _G.PetJournal.Loadout["Pet" .. i]
 		self:removeRegions(obj, {1, 2, 5})
 		self:addButtonBorder{obj=obj, relTo=obj.icon, reParent={obj.levelBG, obj.level}}
 		obj.petTypeIcon:SetAlpha(0) -- N.B. texture is changed in code
@@ -1645,14 +1644,14 @@ function aObj:PetJournal() -- LoD
 		-- only show button border if layoutPlate is available but empty
 		self:SecureHook("PetJournal_UpdatePetLoadOut", function()
 			for i = 1, 3 do
-				local obj = PetJournal.Loadout["Pet" .. i]
+				local obj = _G.PetJournal.Loadout["Pet" .. i]
 				obj.sbb:SetShown(obj.emptyslot:IsShown())
 			end
 		end)
 	end
 	-- PetCard
-	self:removeInset(PetJournal.PetCardInset)
-	local obj = PetJournal.PetCard
+	self:removeInset(_G.PetJournal.PetCardInset)
+	local obj = _G.PetJournal.PetCard
 	if not self.isPTR then
 		self:addButtonBorder{obj=obj.PetInfo, relTo=obj.PetInfo.icon, reParent={obj.PetInfo.levelBG, obj.PetInfo.level}}
 	end
@@ -1672,12 +1671,12 @@ function aObj:PetJournal() -- LoD
 	end
 	-- Tooltips
 	if self.db.profile.Tooltips.skin then
-		PetJournalPrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
-		PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
-		self:addSkinFrame{obj=PetJournalPrimaryAbilityTooltip, ft=ftype}
-		PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
-		PetJournalSecondaryAbilityTooltip.Delimiter2:SetTexture(nil)
-		self:addSkinFrame{obj=PetJournalSecondaryAbilityTooltip, ft=ftype}
+		_G.PetJournalPrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
+		_G.PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
+		self:addSkinFrame{obj=_G.PetJournalPrimaryAbilityTooltip, ft=ftype}
+		_G.PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
+		_G.PetJournalSecondaryAbilityTooltip.Delimiter2:SetTexture(nil)
+		self:addSkinFrame{obj=_G.PetJournalSecondaryAbilityTooltip, ft=ftype}
 	end
 
 end
@@ -1686,58 +1685,58 @@ function aObj:PVPFrame()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
-	self:removeInset(PVPFrame.topInset)
-	local bar = PVPFrameConquestBar
+	self:removeInset(_G.PVPFrame.topInset)
+	local bar = _G.PVPFrameConquestBar
 	bar.progress:SetTexture(self.sbTexture)
 	bar.cap1:SetTexture(self.sbTexture)
 	bar.cap2:SetTexture(self.sbTexture)
 	bar:DisableDrawLayer("BORDER")
-	self:skinTabs{obj=PVPFrame}
-	self:addSkinFrame{obj=PVPFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:removeMagicBtnTex(PVPFrameLeftButton)
-	self:removeMagicBtnTex(PVPFrameRightButton)
+	self:skinTabs{obj=_G.PVPFrame}
+	self:addSkinFrame{obj=_G.PVPFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:removeMagicBtnTex(_G.PVPFrameLeftButton)
+	self:removeMagicBtnTex(_G.PVPFrameRightButton)
 -->>-- Honor frame
-	self:keepFontStrings(PVPFrame.panel1)
-	self:skinScrollBar{obj=PVPFrame.panel1.bgTypeScrollFrame}
-	self:skinSlider{obj=PVPHonorFrameInfoScrollFrameScrollBar}
-	PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
-	PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
+	self:keepFontStrings(_G.PVPFrame.panel1)
+	self:skinScrollBar{obj=_G.PVPFrame.panel1.bgTypeScrollFrame}
+	self:skinSlider{obj=_G.PVPHonorFrameInfoScrollFrameScrollBar}
+	_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
+	_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
 -->>-- Conquest frame
-	self:keepFontStrings(PVPFrame.panel2)
-	PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
-	PVPFrame.panel2.infoButton:DisableDrawLayer("BORDER")
+	self:keepFontStrings(_G.PVPFrame.panel2)
+	_G.PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
+	_G.PVPFrame.panel2.infoButton:DisableDrawLayer("BORDER")
 -->>-- Team Management frame a.k.a. Arena
-	self:keepFontStrings(PVPFrame.panel3)
-	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleRight, ofs=-2}
-	self:keepFontStrings(PVPTeamManagementFrameWeeklyDisplay)
-	self:skinUsingBD{obj=PVPTeamManagementFrameWeeklyDisplay}
-	self:addButtonBorder{obj=PVPTeamManagementFrame.weeklyToggleLeft, ofs=-2}
-	PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
-	PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
-	PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
-	PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
-	PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
-	PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
+	self:keepFontStrings(_G.PVPFrame.panel3)
+	self:addButtonBorder{obj=_G.PVPTeamManagementFrame.weeklyToggleRight, ofs=-2}
+	self:keepFontStrings(_G.PVPTeamManagementFrameWeeklyDisplay)
+	self:skinUsingBD{obj=_G.PVPTeamManagementFrameWeeklyDisplay}
+	self:addButtonBorder{obj=_G.PVPTeamManagementFrame.weeklyToggleLeft, ofs=-2}
+	_G.PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
+	_G.PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
+	_G.PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
+	_G.PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
+	_G.PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
+	_G.PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
 	if self.isPTR then
 		self:skinFFColHeads("PVPTeamManagementFrameHeader")
 		for i = 1, 4 do
 			_G["PVPTeamManagementFrameHeader" .. i]:SetHeight(20)
 		end
 	end
-	self:skinScrollBar{obj=PVPFrame.panel3.teamMemberScrollFrame}
-	self:skinDropDown{obj=PVPTeamManagementFrameTeamDropDown}
+	self:skinScrollBar{obj=_G.PVPFrame.panel3.teamMemberScrollFrame}
+	self:skinDropDown{obj=_G.PVPTeamManagementFrameTeamDropDown}
 -->>-- WarGames frame
-	PVPFrame.panel4:DisableDrawLayer("ARTWORK")
-	self:skinSlider{obj=WarGamesFrameScrollFrameScrollBar, adj=-4}
-	self:skinScrollBar{obj=WarGamesFrameInfoScrollFrame}
-	WarGamesFrameBGTex:SetAlpha(0)
-	WarGamesFrameInfoScrollFrame.scrollBarArtTop:SetAlpha(0)
-	WarGamesFrameInfoScrollFrame.scrollBarArtBottom:SetAlpha(0)
-	WarGamesFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	for i = 1, #WarGamesFrame.scrollFrame.buttons do
-		local btn = WarGamesFrame.scrollFrame.buttons[i]
+	_G.PVPFrame.panel4:DisableDrawLayer("ARTWORK")
+	self:skinSlider{obj=_G.WarGamesFrameScrollFrameScrollBar, adj=-4}
+	self:skinScrollBar{obj=_G.WarGamesFrameInfoScrollFrame}
+	_G.WarGamesFrameBGTex:SetAlpha(0)
+	_G.WarGamesFrameInfoScrollFrame.scrollBarArtTop:SetAlpha(0)
+	_G.WarGamesFrameInfoScrollFrame.scrollBarArtBottom:SetAlpha(0)
+	_G.WarGamesFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	for i = 1, #_G.WarGamesFrame.scrollFrame.buttons do
+		local btn = _G.WarGamesFrame.scrollFrame.buttons[i]
 		self:skinButton{obj=btn.header, mp=true, plus=true}
 		local btnName = btn.warGame:GetName()
 		_G[btnName .. "Bg"]:SetAlpha(0)
@@ -1745,27 +1744,27 @@ function aObj:PVPFrame()
 		self:addButtonBorder{obj=btn.warGame, relTo=btn.warGame.icon}
 	end
 	self:SecureHook("WarGamesFrame_Update", function()
-		for i = 1, #WarGamesFrame.scrollFrame.buttons do
-			if WarGamesFrame.scrollFrame.buttons[i] then self:checkTex{obj=WarGamesFrame.scrollFrame.buttons[i].header} end
+		for i = 1, #_G.WarGamesFrame.scrollFrame.buttons do
+			if _G.WarGamesFrame.scrollFrame.buttons[i] then self:checkTex{obj=_G.WarGamesFrame.scrollFrame.buttons[i].header} end
 		end
 	end)
-	self:removeMagicBtnTex(WarGameStartButton)
+	self:removeMagicBtnTex(_G.WarGameStartButton)
 
 -->>-- Static Popup Special frame
-	self:addSkinFrame{obj=PVPFramePopup, ft=ftype, kfs=true, x1=9, y1=-9, x2=-7, y2=9}
+	self:addSkinFrame{obj=_G.PVPFramePopup, ft=ftype, kfs=true, x1=9, y1=-9, x2=-7, y2=9}
 
 	-- Hook this to suppress the PVP Banner Header from being displayed when new team created
 	self:SecureHook("CreateArenaTeam", function(size, name, ...)
 		-- self:Debug("CreateArenaTeam: [%s, %s]", size,name)
 		if size == 2 then
-			PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
-			PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
+			_G.PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
+			_G.PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
 		elseif size == 3 then
-			PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
-			PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
+			_G.PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
+			_G.PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
 		elseif size == 5 then
-			PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
-			PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
+			_G.PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
+			_G.PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
 		end
 	end)
 
@@ -1777,20 +1776,20 @@ function aObj:QuestLog()
 	if not self.db.profile.QuestLog or self.initialized.QuestLog then return end
 	self.initialized.QuestLog = true
 
-	self:keepFontStrings(QuestLogCount)
-	self:keepFontStrings(EmptyQuestLogFrame)
+	self:keepFontStrings(_G.QuestLogCount)
+	self:keepFontStrings(_G.EmptyQuestLogFrame)
 
 	if self.modBtns then
 		local function qlUpd()
 
 			-- handle in combat
-			if InCombatLockdown() then
+			if _G.InCombatLockdown() then
 				aObj:add2Table(aObj.oocTab, {qlUpd, {nil}})
 				return
 			end
 
-			for i = 1, #QuestLogScrollFrame.buttons do
-				aObj:checkTex(QuestLogScrollFrame.buttons[i])
+			for i = 1, #_G.QuestLogScrollFrame.buttons do
+				aObj:checkTex(_G.QuestLogScrollFrame.buttons[i])
 			end
 
 		end
@@ -1799,25 +1798,25 @@ function aObj:QuestLog()
 			qlUpd()
 		end)
 		-- hook this as well as it's a copy of QuestLog_Update
-		self:SecureHook(QuestLogScrollFrame, "update", function()
+		self:SecureHook(_G.QuestLogScrollFrame, "update", function()
 			qlUpd()
 		end)
 		-- skin minus/plus buttons
-		for i = 1, #QuestLogScrollFrame.buttons do
-			self:skinButton{obj=QuestLogScrollFrame.buttons[i], mp=true}
+		for i = 1, #_G.QuestLogScrollFrame.buttons do
+			self:skinButton{obj=_G.QuestLogScrollFrame.buttons[i], mp=true}
 		end
 	end
-	self:skinSlider{obj=QuestLogScrollFrame.scrollBar, adj=-4}
-	self:addButtonBorder{obj=QuestLogFrameShowMapButton, relTo=QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
-	self:removeRegions(QuestLogScrollFrame, {1, 2, 3, 4})
-	self:skinAllButtons{obj=QuestLogControlPanel, ft=ftype}
-	self:addSkinFrame{obj=QuestLogFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	self:removeMagicBtnTex(QuestLogFrameCompleteButton)
+	self:skinSlider{obj=_G.QuestLogScrollFrame.scrollBar, adj=-4}
+	self:addButtonBorder{obj=_G.QuestLogFrameShowMapButton, relTo=_G.QuestLogFrameShowMapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
+	self:removeRegions(_G.QuestLogScrollFrame, {1, 2, 3, 4})
+	self:skinAllButtons{obj=_G.QuestLogControlPanel, ft=ftype}
+	self:addSkinFrame{obj=_G.QuestLogFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:removeMagicBtnTex(_G.QuestLogFrameCompleteButton)
 
 -->>-- QuestLogDetail Frame
-	QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinScrollBar{obj=QuestLogDetailScrollFrame}
-	self:addSkinFrame{obj=QuestLogDetailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	_G.QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:skinScrollBar{obj=_G.QuestLogDetailScrollFrame}
+	self:addSkinFrame{obj=_G.QuestLogDetailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:QuestInfo()
 
 end
@@ -1828,7 +1827,7 @@ function aObj:RaidUI() -- LoD
 
 	local function skinPulloutFrames()
 
-		for i = 1, NUM_RAID_PULLOUT_FRAMES	do
+		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES	do
 			local objName = "RaidPullout" .. i
 			if not _G[objName].sf then
 				aObj:skinDropDown{obj=_G[objName .. "DropDown"]}
@@ -1859,21 +1858,20 @@ function aObj:RaidUI() -- LoD
 		end
 	end)
 
-	-- self:skinButton{obj=RaidFrameReadyCheckButton}
-	self:moveObject{obj=RaidGroup1, x=2}
+	self:moveObject{obj=_G.RaidGroup1, x=2}
 
 	-- Raid Groups
-	for i = 1, MAX_RAID_GROUPS do
+	for i = 1, _G.MAX_RAID_GROUPS do
 		self:addSkinFrame{obj=_G["RaidGroup" .. i], ft=ftype, kfs=true, x1=-2, y1=2, x2=1, y2=-1}
 	end
 	-- Raid Group Buttons
-	for i = 1, MAX_RAID_GROUPS * 5 do
+	for i = 1, _G.MAX_RAID_GROUPS * 5 do
 		local btn = _G["RaidGroupButton" .. i]
 		self:removeRegions(btn, {4})
 		self:addSkinFrame{obj=btn, ft=ftype, aso={bd=5}, x1=-2, y1=2, x2=1, y2=-1}
 	end
 	-- Raid Class Tabs (side)
-	for i = 1, MAX_RAID_CLASS_BUTTONS do
+	for i = 1, _G.MAX_RAID_CLASS_BUTTONS do
 		self:removeRegions(_G["RaidClassButton" .. i], {1}) -- N.B. region 2 is the icon, 3 is the text
 	end
 
@@ -1886,7 +1884,7 @@ function aObj:ReadyCheck()
 	if not self.db.profile.ReadyCheck or self.initialized.ReadyCheck then return end
 	self.initialized.ReadyCheck = true
 
-	self:addSkinFrame{obj=ReadyCheckListenerFrame, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=_G.ReadyCheckListenerFrame, ft=ftype, kfs=true}
 
 end
 
@@ -1894,7 +1892,7 @@ function aObj:RolePollPopup()
 	if not self.db.profile.RolePollPopup or self.initialized.RolePollPopup then return end
 	self.initialized.RolePollPopup = true
 
-	self:addSkinFrame{obj=RolePollPopup, ft=ftype, x1=5, y1=-5, x2=-5, y2=5}
+	self:addSkinFrame{obj=_G.RolePollPopup, ft=ftype, x1=5, y1=-5, x2=-5, y2=5}
 
 end
 
@@ -1902,17 +1900,17 @@ function aObj:ScrollOfResurrection()
 	if not self.db.profile.ScrollOfResurrection or self.initialized.ScrollOfResurrection then return end
 	self.initialized.ScrollOfResurrection = true
 
-	self:skinEditBox{obj=ScrollOfResurrectionFrame.targetEditBox, regs={9}}
-	ScrollOfResurrectionFrame.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=ScrollOfResurrectionFrame.noteFrame, ft=ftype, kfs=true}
-	self:skinScrollBar{obj=ScrollOfResurrectionFrame.noteFrame.scrollFrame}
-	ScrollOfResurrectionFrame.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=ScrollOfResurrectionFrame, ft=ftype, kfs=true}
+	self:skinEditBox{obj=_G.ScrollOfResurrectionFrame.targetEditBox, regs={9}}
+	_G.ScrollOfResurrectionFrame.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.ScrollOfResurrectionFrame.noteFrame, ft=ftype, kfs=true}
+	self:skinScrollBar{obj=_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame}
+	_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.ScrollOfResurrectionFrame, ft=ftype, kfs=true}
 	-- Selection frame
-	self:skinEditBox{obj=ScrollOfResurrectionSelectionFrame.targetEditBox, regs={9}}
-	self:skinSlider{obj=ScrollOfResurrectionSelectionFrame.list.scrollFrame.scrollBar, size=4}
-	self:addSkinFrame{obj=ScrollOfResurrectionSelectionFrame.list, ft=ftype, kfs=true}
-	self:addSkinFrame{obj=ScrollOfResurrectionSelectionFrame, ft=ftype, kfs=true}
+	self:skinEditBox{obj=_G.ScrollOfResurrectionSelectionFrame.targetEditBox, regs={9}}
+	self:skinSlider{obj=_G.ScrollOfResurrectionSelectionFrame.list.scrollFrame.scrollBar, size=4}
+	self:addSkinFrame{obj=_G.ScrollOfResurrectionSelectionFrame.list, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=_G.ScrollOfResurrectionSelectionFrame, ft=ftype, kfs=true}
 
 end
 
@@ -1920,11 +1918,11 @@ function aObj:SpellBookFrame()
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
 
-	SpellBookFrame.numTabs = 5
+	_G.SpellBookFrame.numTabs = 5
 	if self.isTT then
 		-- hook to handle tabs
 		self:SecureHook("ToggleSpellBook", function(bookType)
-			for i = 1, SpellBookFrame.numTabs do
+			for i = 1, _G.SpellBookFrame.numTabs do
 				local tab = _G["SpellBookFrameTabButton" .. i]
 				if tab.bookType == bookType then
 					self:setActiveTab(tab.sf)
@@ -1935,14 +1933,14 @@ function aObj:SpellBookFrame()
 		end)
 	end
 
-	SpellBookFrame.MainHelpButton.Ring:SetTexture(nil)
-	self:moveObject{obj=SpellBookFrame.MainHelpButton, y=-4}
-	self:skinTabs{obj=SpellBookFrame, suffix="Button", x1=8, y1=1, x2=-8, y2=2}
-	self:addSkinFrame{obj=SpellBookFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:addButtonBorder{obj=SpellBookPrevPageButton, ofs=-2}
-	self:addButtonBorder{obj=SpellBookNextPageButton, ofs=-2}
+	_G.SpellBookFrame.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=_G.SpellBookFrame.MainHelpButton, y=-4}
+	self:skinTabs{obj=_G.SpellBookFrame, suffix="Button", x1=8, y1=1, x2=-8, y2=2}
+	self:addSkinFrame{obj=_G.SpellBookFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2}
 -->>- Spellbook Panel
-	SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- hook this to change text colour as required
 	self:SecureHook("SpellButton_UpdateButton", function(this)
 		if this.UnlearnedFrame and this.UnlearnedFrame:IsShown() then -- level too low
@@ -1950,8 +1948,8 @@ function aObj:SpellBookFrame()
 		end
 		if this.RequiredLevelString then this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb) end
 		if this.TrainFrame and this.TrainFrame:IsShown() then -- see Trainer
-			this.SpellName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
-			this.SpellSubName:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+			this.SpellName:SetTextColor(_G.HIGHLIGHT_FONT_COLOR.r, _G.HIGHLIGHT_FONT_COLOR.g, _G.HIGHLIGHT_FONT_COLOR.b)
+			this.SpellSubName:SetTextColor(_G.HIGHLIGHT_FONT_COLOR.r, _G.HIGHLIGHT_FONT_COLOR.g, _G.HIGHLIGHT_FONT_COLOR.b)
 		end
 		if this.SeeTrainerString then this.SeeTrainerString:SetTextColor(self.BTr, self.BTg, self.BTb) end
 		if this.SpellName then
@@ -1989,10 +1987,10 @@ function aObj:SpellBookFrame()
 	-- Secondary professions
 	skinProf("Secondary", 4)
 	-->>-- Core Abilities Panel
-	SpellBookCoreAbilitiesFrame.SpecName:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.SpellBookCoreAbilitiesFrame.SpecName:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
-		for i = 1, #SpellBookCoreAbilitiesFrame.Abilities do
-			local btn = SpellBookCoreAbilitiesFrame.Abilities[i]
+		for i = 1, #_G.SpellBookCoreAbilitiesFrame.Abilities do
+			local btn = _G.SpellBookCoreAbilitiesFrame.Abilities[i]
 			if not btn.sbb then
 				btn.EmptySlot:SetAlpha(0)
 				btn.ActiveTexture:SetAlpha(0)
@@ -2003,8 +2001,8 @@ function aObj:SpellBookFrame()
 				self:addButtonBorder{obj=btn}
 			end
 		end
-		for i = 1, #SpellBookCoreAbilitiesFrame.SpecTabs do
-			local tab = SpellBookCoreAbilitiesFrame.SpecTabs[i]
+		for i = 1, #_G.SpellBookCoreAbilitiesFrame.SpecTabs do
+			local tab = _G.SpellBookCoreAbilitiesFrame.SpecTabs[i]
 			if not tab.sbb then
 				self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
 				self:addButtonBorder{obj=tab}
@@ -2012,10 +2010,10 @@ function aObj:SpellBookFrame()
 		end
 	end)
 	-->>-- What has changed? panel
-	SpellBookWhatHasChanged.ClassName:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.SpellBookWhatHasChanged.ClassName:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:SecureHook("SpellBook_UpdateWhatHasChangedTab", function()
-		for i = 1, #SpellBookWhatHasChanged.ChangedItems do
-			local btn = SpellBookWhatHasChanged.ChangedItems[i]
+		for i = 1, #_G.SpellBookWhatHasChanged.ChangedItems do
+			local btn = _G.SpellBookWhatHasChanged.ChangedItems[i]
 			btn.Ring:SetTexture(nil)
 			btn:DisableDrawLayer("BACKGROUND")
 			btn.Title:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -2025,7 +2023,7 @@ function aObj:SpellBookFrame()
 	end)
 
 	-- colour the spell name text
-	for i = 1, SPELLS_PER_PAGE do
+	for i = 1, _G.SPELLS_PER_PAGE do
 		local btnName = "SpellButton" .. i
 		local btn = _G[btnName]
 		btn:DisableDrawLayer("BACKGROUND")
@@ -2036,7 +2034,7 @@ function aObj:SpellBookFrame()
 		self:addButtonBorder{obj=_G[btnName], sec=true}
 	end
 -->>-- Tabs (side)
-	for i = 1, MAX_SKILLLINE_TABS do
+	for i = 1, _G.MAX_SKILLLINE_TABS do
 		local obj = _G["SpellBookSkillLineTab" .. i]
 		self:removeRegions(obj, {1}) -- N.B. other regions are icon and highlight
 		self:addButtonBorder{obj=obj}
@@ -2064,10 +2062,10 @@ function aObj:StackSplit()
 	self.initialized.StackSplit = true
 
 	-- handle different addons being loaded
-	if IsAddOnLoaded("EnhancedStackSplit") then
-		self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, y2=-24}
+	if _G.IsAddOnLoaded("EnhancedStackSplit") then
+		self:addSkinFrame{obj=_G.StackSplitFrame, ft=ftype, kfs=true, y2=-24}
 	else
-		self:addSkinFrame{obj=StackSplitFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
+		self:addSkinFrame{obj=_G.StackSplitFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
 	end
 
 end
@@ -2076,16 +2074,16 @@ function aObj:TalentUI() -- LoD
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
 
-	self:skinTabs{obj=PlayerTalentFrame, lod=true}
-	self:addSkinFrame{obj=PlayerTalentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:skinTabs{obj=_G.PlayerTalentFrame, lod=true}
+	self:addSkinFrame{obj=_G.PlayerTalentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 	-- Tab1 (Specialization)
-	self:removeRegions(PlayerTalentFrameSpecialization, {1, 2, 3, 4, 5, 6})
-	PlayerTalentFrameSpecialization.MainHelpButton.Ring:SetTexture(nil)
-	self:moveObject{obj=PlayerTalentFrameSpecialization.MainHelpButton, y=-4}
-	self:removeMagicBtnTex(PlayerTalentFrameSpecialization.learnButton)
+	self:removeRegions(_G.PlayerTalentFrameSpecialization, {1, 2, 3, 4, 5, 6})
+	_G.PlayerTalentFrameSpecialization.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=_G.PlayerTalentFrameSpecialization.MainHelpButton, y=-4}
+	self:removeMagicBtnTex(_G.PlayerTalentFrameSpecialization.learnButton)
 	-- specs
 	for i = 1, 4 do
-		local btn = PlayerTalentFrameSpecialization["specButton" .. i]
+		local btn = _G.PlayerTalentFrameSpecialization["specButton" .. i]
 		btn.bg:SetTexture(nil)
 		btn.ring:SetTexture(nil)
 		btn.selectedTex:SetTexture([[Interface\HelpFrame\HelpButtons]])
@@ -2096,10 +2094,10 @@ function aObj:TalentUI() -- LoD
 		tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
 	end
 	-- shadow frame (LHS)
-	self:keepFontStrings(self:getChild(PlayerTalentFrameSpecialization, 7))
+	self:keepFontStrings(self:getChild(_G.PlayerTalentFrameSpecialization, 7))
 	-- spellsScroll (RHS)
-	self:skinSlider{obj=PlayerTalentFrameSpecialization.spellsScroll.ScrollBar}
-	local scrollChild = PlayerTalentFrameSpecialization.spellsScroll.child
+	self:skinSlider{obj=_G.PlayerTalentFrameSpecialization.spellsScroll.ScrollBar}
+	local scrollChild = _G.PlayerTalentFrameSpecialization.spellsScroll.child
 	self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
 	-- abilities
 	local function skinAbilities(tab)
@@ -2124,14 +2122,14 @@ function aObj:TalentUI() -- LoD
 		skinAbilities(this.spellsScroll.child)
 	end)
 	-- Tab2 (Talents)
-	self:removeRegions(PlayerTalentFrameTalents, {1, 2, 3, 4, 5, 6, 7})
-	PlayerTalentFrameTalents.MainHelpButton.Ring:SetTexture(nil)
-	self:moveObject{obj=PlayerTalentFrameTalents.MainHelpButton, y=-4}
-	self:removeMagicBtnTex(PlayerTalentFrameTalents.learnButton)
-	self:addButtonBorder{obj=PlayerTalentFrameTalents.clearInfo, relTo=PlayerTalentFrameTalents.clearInfo.icon}
+	self:removeRegions(_G.PlayerTalentFrameTalents, {1, 2, 3, 4, 5, 6, 7})
+	_G.PlayerTalentFrameTalents.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=_G.PlayerTalentFrameTalents.MainHelpButton, y=-4}
+	self:removeMagicBtnTex(_G.PlayerTalentFrameTalents.learnButton)
+	self:addButtonBorder{obj=_G.PlayerTalentFrameTalents.clearInfo, relTo=_G.PlayerTalentFrameTalents.clearInfo.icon}
 	-- Talent rows
 	for i = 1, 6 do
-		local obj = PlayerTalentFrameTalents["tier" .. i]
+		local obj = _G.PlayerTalentFrameTalents["tier" .. i]
 		self:removeRegions(obj, {1, 2 ,3, 4, 5, 6})
 		for j = 1, 3 do
 			local btn = obj["talent" .. j]
@@ -2143,13 +2141,13 @@ function aObj:TalentUI() -- LoD
 	end
 	-- Tab3 (Glyphs), skinned in GlyphUI
 	-- Tab4 (Pet Specialization)
-	self:removeRegions(PlayerTalentFramePetSpecialization, {1, 2, 3, 4, 5, 6})
-	PlayerTalentFramePetSpecialization.MainHelpButton.Ring:SetTexture(nil)
-	self:moveObject{obj=PlayerTalentFramePetSpecialization.MainHelpButton, y=-4}
-	self:removeMagicBtnTex(PlayerTalentFramePetSpecialization.learnButton)
+	self:removeRegions(_G.PlayerTalentFramePetSpecialization, {1, 2, 3, 4, 5, 6})
+	_G.PlayerTalentFramePetSpecialization.MainHelpButton.Ring:SetTexture(nil)
+	self:moveObject{obj=_G.PlayerTalentFramePetSpecialization.MainHelpButton, y=-4}
+	self:removeMagicBtnTex(_G.PlayerTalentFramePetSpecialization.learnButton)
 	-- specs
 	for i = 1, 4 do
-		local btn = PlayerTalentFramePetSpecialization["specButton" .. i]
+		local btn = _G.PlayerTalentFramePetSpecialization["specButton" .. i]
 		btn.bg:SetTexture(nil)
 		btn.ring:SetTexture(nil)
 		btn.selectedTex:SetTexture([[Interface\HelpFrame\HelpButtons]])
@@ -2157,10 +2155,10 @@ function aObj:TalentUI() -- LoD
 		btn.learnedTex:SetTexture(nil)
 	end
 	-- shadow frame (LHS)
-	self:keepFontStrings(self:getChild(PlayerTalentFramePetSpecialization, 7))
+	self:keepFontStrings(self:getChild(_G.PlayerTalentFramePetSpecialization, 7))
 	-- spellsScroll (RHS)
-	self:skinSlider{obj=PlayerTalentFramePetSpecialization.spellsScroll.ScrollBar}
-	local scrollChild = PlayerTalentFramePetSpecialization.spellsScroll.child
+	self:skinSlider{obj=_G.PlayerTalentFramePetSpecialization.spellsScroll.ScrollBar}
+	local scrollChild = _G.PlayerTalentFramePetSpecialization.spellsScroll.child
 	self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
 	-- abilities
 	for i = 1, scrollChild:GetNumChildren() do
@@ -2180,7 +2178,7 @@ function aObj:TradeFrame()
 	if not self.db.profile.TradeFrame or self.initialized.TradeFrame then return end
 	self.initialized.TradeFrame = true
 
-	for i = 1, MAX_TRADE_ITEMS do
+	for i = 1, _G.MAX_TRADE_ITEMS do
 		for _, v in pairs{"Player", "Recipient"} do
 			local btnName = "Trade" .. v .. "Item" .. i
 			_G[btnName .. "SlotTexture"]:SetTexture(nil)
@@ -2188,16 +2186,16 @@ function aObj:TradeFrame()
 			self:addButtonBorder{obj=_G[btnName .. "ItemButton"], ibt=true}
 		end
 	end
-	self:removeInset(TradeRecipientItemsInset)
-	self:removeInset(TradeRecipientEnchantInset)
-	self:removeInset(TradePlayerItemsInset)
-	self:removeInset(TradePlayerEnchantInset)
-	self:removeInset(TradePlayerInputMoneyInset)
-	self:skinMoneyFrame{obj=TradePlayerInputMoneyFrame, moveSEB=true}
-	self:removeInset(TradeRecipientMoneyInset)
-	TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
+	self:removeInset(_G.TradeRecipientItemsInset)
+	self:removeInset(_G.TradeRecipientEnchantInset)
+	self:removeInset(_G.TradePlayerItemsInset)
+	self:removeInset(_G.TradePlayerEnchantInset)
+	self:removeInset(_G.TradePlayerInputMoneyInset)
+	self:skinMoneyFrame{obj=_G.TradePlayerInputMoneyFrame, moveSEB=true}
+	self:removeInset(_G.TradeRecipientMoneyInset)
+	_G.TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
 
-	self:addSkinFrame{obj=TradeFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.TradeFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
 
@@ -2208,10 +2206,10 @@ function aObj:TradeSkillUI() -- LoD
 	if self.modBtns then
 		-- hook to manage changes to button textures
 		self:SecureHook("TradeSkillFrame_Update", function()
-			for i = 1, TRADE_SKILLS_DISPLAYED do
+			for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 				self:checkTex(_G["TradeSkillSkill" .. i])
 			end
-			self:checkTex(TradeSkillCollapseAllButton)
+			self:checkTex(_G.TradeSkillCollapseAllButton)
 		end)
 	end
 
@@ -2220,12 +2218,12 @@ function aObj:TradeSkillUI() -- LoD
 	_G[objName .. "Border"]:SetAlpha(0)
 	self:glazeStatusBar(obj, 0, _G[objName .. "Background"])
 	self:moveObject{obj=obj, x=-2}
-	self:skinEditBox{obj=TradeSkillFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-	self:skinButton{obj=TradeSkillFilterButton}
-	self:addButtonBorder{obj=TradeSkillLinkButton, x1=1, y1=-5, x2=-3, y2=2}
-	self:removeRegions(TradeSkillExpandButtonFrame)
-	self:skinButton{obj=TradeSkillCollapseAllButton, mp=true}
-	for i = 1, TRADE_SKILLS_DISPLAYED do
+	self:skinEditBox{obj=_G.TradeSkillFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinButton{obj=_G.TradeSkillFilterButton}
+	self:addButtonBorder{obj=_G.TradeSkillLinkButton, x1=1, y1=-5, x2=-3, y2=2}
+	self:removeRegions(_G.TradeSkillExpandButtonFrame)
+	self:skinButton{obj=_G.TradeSkillCollapseAllButton, mp=true}
+	for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 		local btn = _G["TradeSkillSkill" .. i]
 		self:skinButton{obj=btn, mp=true}
 		btn.SubSkillRankBar.BorderLeft:SetTexture(nil)
@@ -2233,28 +2231,28 @@ function aObj:TradeSkillUI() -- LoD
 		btn.SubSkillRankBar.BorderMid:SetTexture(nil)
 		self:glazeStatusBar(btn.SubSkillRankBar, 0)
 	end
-	self:skinScrollBar{obj=TradeSkillListScrollFrame}
-	self:skinScrollBar{obj=TradeSkillDetailScrollFrame}
-	self:keepFontStrings(TradeSkillDetailScrollChildFrame)
-	self:addButtonBorder{obj=TradeSkillSkillIcon}
-	self:skinEditBox{obj=TradeSkillInputBox, noHeight=true, x=-5}
-	self:addSkinFrame{obj=TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:removeMagicBtnTex(TradeSkillCreateAllButton)
-	self:removeMagicBtnTex(TradeSkillCancelButton)
-	self:removeMagicBtnTex(TradeSkillCreateButton)
-	self:removeMagicBtnTex(TradeSkillViewGuildCraftersButton)
-	self:addButtonBorder{obj=TradeSkillDecrementButton, ofs=-2, es=10}
-	self:addButtonBorder{obj=TradeSkillIncrementButton, ofs=-2, es=10}
+	self:skinScrollBar{obj=_G.TradeSkillListScrollFrame}
+	self:skinScrollBar{obj=_G.TradeSkillDetailScrollFrame}
+	self:keepFontStrings(_G.TradeSkillDetailScrollChildFrame)
+	self:addButtonBorder{obj=_G.TradeSkillSkillIcon}
+	self:skinEditBox{obj=_G.TradeSkillInputBox, noHeight=true, x=-5}
+	self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:removeMagicBtnTex(_G.TradeSkillCreateAllButton)
+	self:removeMagicBtnTex(_G.TradeSkillCancelButton)
+	self:removeMagicBtnTex(_G.TradeSkillCreateButton)
+	self:removeMagicBtnTex(_G.TradeSkillViewGuildCraftersButton)
+	self:addButtonBorder{obj=_G.TradeSkillDecrementButton, ofs=-2, es=10}
+	self:addButtonBorder{obj=_G.TradeSkillIncrementButton, ofs=-2, es=10}
 	-- Guild sub frame
-	self:addSkinFrame{obj=TradeSkillGuildFrameContainer, ft=ftype}
-	self:addSkinFrame{obj=TradeSkillGuildFrame, ft=ftype, kfs=true, ofs=-7}
+	self:addSkinFrame{obj=_G.TradeSkillGuildFrameContainer, ft=ftype}
+	self:addSkinFrame{obj=_G.TradeSkillGuildFrame, ft=ftype, kfs=true, ofs=-7}
 
-	for i = 1, MAX_TRADE_SKILL_REAGENTS do
+	for i = 1, _G.MAX_TRADE_SKILL_REAGENTS do
 		_G["TradeSkillReagent" .. i .. "NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G["TradeSkillReagent" .. i], libt=true}
 	end
 
-	if self.modBtns then TradeSkillFrame_Update() end -- force update for button textures
+	if self.modBtns then _G.TradeSkillFrame_Update() end -- force update for button textures
 
 end
 
@@ -2270,7 +2268,7 @@ function aObj:WatchFrame()
 	if self.modBtnBs then
 		local function skinWFBtns()
 
-			for i = 1, WATCHFRAME_NUM_ITEMS do
+			for i = 1, _G.WATCHFRAME_NUM_ITEMS do
 				local btn = _G["WatchFrameItem" .. i]
 				if not btn.sbb then
 					aObj:addButtonBorder{obj=btn, ibt=true}
@@ -2279,23 +2277,23 @@ function aObj:WatchFrame()
 
 		end
 		-- use hooksecurefunc as it may be hooked again if skinned
-		hooksecurefunc("WatchFrame_Update", function(this)
+		_G.hooksecurefunc("WatchFrame_Update", function(this)
 			skinWFBtns()
 		end)
 		skinWFBtns() -- skin any existing buttons
 	end
 
 	if self.db.profile.WatchFrame.skin then
-		self:addSkinFrame{obj=WatchFrameLines, ft=ftype, x1=-30, y1=4, x2=10}
+		self:addSkinFrame{obj=_G.WatchFrameLines, ft=ftype, x1=-30, y1=4, x2=10}
 		-- hook this to handle displaying of the WatchFrameLines skin frame
 		self:SecureHook("WatchFrame_Update", function(this)
-			WatchFrameLines.sf:SetShown(WatchFrameHeader:IsShown())
+			_G.WatchFrameLines.sf:SetShown(_G.WatchFrameHeader:IsShown())
 		end)
 	end
 	if self.db.profile.WatchFrame.popups then
 		local function skinAutoPopUps()
 
-			for i = 1, GetNumAutoQuestPopUps() do
+			for i = 1, _G.GetNumAutoQuestPopUps() do
 				local obj = _G["WatchFrameAutoQuestPopUp" .. i] and _G["WatchFrameAutoQuestPopUp" .. i].ScrollChild
 				if obj and not aObj.skinned[obj] then
 					for k, reg in ipairs{obj:GetRegions()} do
@@ -2306,7 +2304,7 @@ function aObj:WatchFrame()
 			end
 
 		end
-		WatchFrameLinesShadow:SetTexture(nil) -- shadow texture above popup
+		_G.WatchFrameLinesShadow:SetTexture(nil) -- shadow texture above popup
 		-- hook this to skin the AutoPopUps
 		self:SecureHook("WatchFrameAutoQuest_GetOrCreateFrame", function(parent, index)
 			skinAutoPopUps()

@@ -1,6 +1,9 @@
 local aName, aObj = ...
 local _G = _G
 
+-- Add locals to see if it speeds things up
+local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
+
 local blizzLoDFrames = {
 	-- player
 	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "RaidUI", "TalentUI",
@@ -141,7 +144,7 @@ function aObj:BlizzardFrames()
 	}
 
 	-- optional frames
-	if IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
+	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 
 	-- handle non standard ones here
 	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
@@ -280,7 +283,7 @@ function aObj:AddonFrames()
 
 	-- skin library objects
 	for lib, skin in pairs(self.libsToSkin) do
-		if LibStub(lib, true) then
+		if _G.LibStub(lib, true) then
 			if self[skin] then self:checkAndRun(skin) -- not an addon in its own right
 			else
 				if self.db.profile.Warnings then
@@ -292,10 +295,10 @@ function aObj:AddonFrames()
 
 	-- skin KeyboundDialog frame
 	if self.db.profile.MenuFrames then
-		if LibStub('LibKeyBound-1.0', true) then
-			self:skinButton{obj=KeyboundDialogOkay} -- this is a CheckButton object
-			self:skinButton{obj=KeyboundDialogCancel} -- this is a CheckButton object
-			self:addSkinFrame{obj=KeyboundDialog, kfs=true, y1=4, y2=6}
+		if _G.LibStub('LibKeyBound-1.0', true) then
+			self:skinButton{obj=_G.KeyboundDialogOkay} -- this is a CheckButton object
+			self:skinButton{obj=_G.KeyboundDialogCancel} -- this is a CheckButton object
+			self:addSkinFrame{obj=_G.KeyboundDialog, kfs=true, y1=4, y2=6}
 		end
 	end
 
@@ -384,7 +387,7 @@ function aObj:LoDFrames(addon)
 	-- load library skins here as well, they may only get loaded by a LoD AddOn
 	-- e.g. Dewdrop by ArkInventory when an AddonLoader is used
 	for k, v in pairs(self.libsToSkin) do
-		if LibStub(k, true) then
+		if _G.LibStub(k, true) then
 			if self[v] then self:checkAndRun(v) end
 		end
 	end

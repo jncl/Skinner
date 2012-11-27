@@ -1,15 +1,18 @@
 local aName, aObj = ...
 local _G = _G
 
+-- Add locals to see if it speeds things up
+local assert, debugstack, ipairs, pairs, select, type = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.select, _G.type
+
 local function makeString(t)
 
 	if type(t) == "table" then
-		if type(rawget(t, 0)) == "userdata" and type(t.GetObjectType) == "function" then
-			return ("<%s:%s:%s>"):format(tostring(t), t:GetObjectType(), t:GetName() or "(Anon)")
+		if type(_G.rawget(t, 0)) == "userdata" and type(t.GetObjectType) == "function" then
+			return ("<%s:%s:%s>"):format(_G.tostring(t), t:GetObjectType(), t:GetName() or "(Anon)")
 		end
 	end
 
-	return tostring(t)
+	return _G.tostring(t)
 
 end
 local function makeText(a1, ...)
@@ -25,14 +28,14 @@ local function makeText(a1, ...)
 		for i = 1, select('#', ...) do
 			tmpTab[i] = makeString(select(i, ...))
 		end
-		output = output .. " " .. a1:format(unpack(tmpTab))
+		output = output .. " " .. a1:format(_G.unpack(tmpTab))
 	else
 		tmpTab[1] = output
 		tmpTab[2] = a1 and type(a1) == "table" and makeString(a1) or a1 or ""
 		for i = 1, select('#', ...) do
 			tmpTab[i+2] = makeString(select(i, ...))
 		end
-		output = table.concat(tmpTab, " ")
+		output = _G.table.concat(tmpTab, " ")
 	end
 
 	return output
@@ -40,17 +43,17 @@ local function makeText(a1, ...)
 end
 local function printIt(text, frame, r, g, b)
 
-	(frame or DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
+	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
 
 end
 --@debug@
 local function print_family_tree(fName)
 
 	local lvl = "Parent"
-	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
+	_G.print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
 	while fName:GetParent() do
 		fName = fName:GetParent()
-		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
+		_G.print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
 		lvl = (lvl:find("Grand") and "Great" or "Grand") .. lvl
 	end
 
@@ -58,31 +61,31 @@ end
 function aObj:SetupCmds()
 
 	-- define some helpful slash commands (ex Baddiel)
-	self:RegisterChatCommand("rl", function(msg) ReloadUI() end)
-	self:RegisterChatCommand("lo", function(msg) Logout() end)
-	self:RegisterChatCommand("pl", function(msg) print(msg, "is", gsub(select(2, GetItemInfo(msg)), "|", "||"))	end)
-	self:RegisterChatCommand("ft", function() print_family_tree(GetMouseFocus()) end)
-	self:RegisterChatCommand("ftp", function() print_family_tree(GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, false) end)
-	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), true, true) end) -- detailed
-	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus(), false, false) end) -- brief
-	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), true, false) end)
-	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent(), false, false) end)
-	self:RegisterChatCommand("sigp", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent():GetParent(), true, false) end)
-	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(_G[msg] or GetMouseFocus():GetParent():GetParent(), false, false) end)
-	self:RegisterChatCommand("gp", function(msg) print(GetMouseFocus():GetPoint()) end)
-	self:RegisterChatCommand("gpp", function(msg) print(GetMouseFocus():GetParent():GetPoint()) end)
-	self:RegisterChatCommand("sp", function(msg) return Spew and Spew("xyz", _G[msg] or GetMouseFocus()) end)
+	self:RegisterChatCommand("rl", function(msg) _G.ReloadUI() end)
+	self:RegisterChatCommand("lo", function(msg) _G.Logout() end)
+	self:RegisterChatCommand("pl", function(msg) _G.print(msg, "is", _G.gsub(select(2, _G.GetItemInfo(msg)), "|", "||"))	end)
+	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
+	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
+	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus(), true, false) end)
+	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus(), true, true) end) -- detailed
+	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus(), false, false) end) -- brief
+	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent(), true, false) end)
+	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent(), false, false) end)
+	self:RegisterChatCommand("sigp", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent():GetParent(), true, false) end)
+	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent():GetParent(), false, false) end)
+	self:RegisterChatCommand("gp", function(msg) _G.print(_G.GetMouseFocus():GetPoint()) end)
+	self:RegisterChatCommand("gpp", function(msg) _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
+	self:RegisterChatCommand("sp", function(msg) return _G.Spew and _G.Spew("xyz", _G[msg] or _G.GetMouseFocus()) end)
 
 end
 function aObj:printTS(...)
 
-	print(("[%s.%03d]"):format(date("%H:%M:%S"), (GetTime() % 1) * 1000), ...)
+	_G.print(("[%s.%03d]"):format(_G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000), ...)
 
 end
 function aObj:Debug(a1, ...)
 
-	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, date("%H:%M:%S"), (GetTime() % 1) * 1000)
+	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
 
 	printIt(output .. " " .. makeText(a1, ...), self.debugFrame)
 
@@ -112,7 +115,7 @@ local function safecall(funcName, LoD, quiet)
 --@end-alpha@
 
 	-- handle errors from internal functions
-	local success, err = xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
+	local success, err = _G.xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
 	if quiet then
 		return success, err
 	end
@@ -140,7 +143,7 @@ function aObj:checkAndRun(funcName, quiet)
 	-- self:Debug("checkAndRun: [%s, %s]", funcName, quiet)
 
 	-- handle in combat
-	if InCombatLockdown() then
+	if _G.InCombatLockdown() then
 		self:add2Table(self.oocTab, {self.checkAndRun, {self, funcName, quiet}})
 		return
 	end
@@ -181,7 +184,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	-- self:Debug("checkAndRunAddOn: [%s, %s, %s]", addonName, LoD, addonFunc)
 
 	-- handle in combat
-	if InCombatLockdown() then
+	if _G.InCombatLockdown() then
 		self:add2Table(self.oocTab, {self.checkAndRunAddOn, {self, addonName, LoD, addonFunc}})
 		return
 	end
@@ -196,9 +199,9 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 		return
 	end
 
-	if not IsAddOnLoaded(addonName) then
+	if not _G.IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
-		if IsAddOnLoadOnDemand(addonName) and not LoD then
+		if _G.IsAddOnLoadOnDemand(addonName) and not LoD then
 			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
 		-- Nil out loaded Skins for Addons that aren't loaded
 		elseif self[addonFunc] then
@@ -253,7 +256,7 @@ function aObj:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
 	local frame
-	local obj = EnumerateFrames()
+	local obj = _G.EnumerateFrames()
 
 	while obj do
 
@@ -282,7 +285,7 @@ function aObj:findFrame(height, width, children)
 			end
 		end
 
-		obj = EnumerateFrames(obj)
+		obj = _G.EnumerateFrames(obj)
 	end
 
 	return frame
@@ -347,7 +350,7 @@ function aObj:getInt(num)
 	assert(num, "Missing number\n" .. debugstack())
 --@end-alpha@
 
-	return math.floor(num + 0.5)
+	return _G.math.floor(num + 0.5)
 
 end
 
@@ -406,7 +409,7 @@ function aObj:isAddonEnabled(addonName)
 	assert(addonName, "Unknown object isAddonEnabled\n" .. debugstack())
 --@end-alpha@
 
-	return (select(4, GetAddOnInfo(addonName))) or IsAddOnLoadOnDemand(addonName) -- handle LoD Addons (config mainly)
+	return (select(4, _G.GetAddOnInfo(addonName))) or _G.IsAddOnLoadOnDemand(addonName) -- handle LoD Addons (config mainly)
 
 end
 
@@ -451,7 +454,7 @@ function aObj:resizeTabs(frame)
 
 	local tabName = frame:GetName() .. "Tab"
 	-- get the number of tabs
-	local nT = ((frame == CharacterFrame and not CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
+	local nT = ((frame == _G.CharacterFrame and not _G.CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
 	-- accumulate the tab text widths
 	local tTW = 0
 	for i = 1, nT do
@@ -468,7 +471,7 @@ function aObj:resizeTabs(frame)
 	-- update each tab
 	for i = 1, nT do
 		_G[tabName .. i .. "Left"]:SetWidth(tlw)
-		PanelTemplates_TabResize(_G[tabName .. i], 0)
+		_G.PanelTemplates_TabResize(_G[tabName .. i], 0)
 	end
 
 end
@@ -497,7 +500,7 @@ function aObj:updateSBTexture()
 		statusBar:SetStatusBarTexture(self.sbTexture)
 		for k, tex in pairs(tab) do
 			tex:SetTexture(self.sbTexture)
-			if k == bg then tex:SetVertexColor(sb.r, sb.g, sb.b, sb.a) end
+			if k == "bg" then tex:SetVertexColor(sb.r, sb.g, sb.b, sb.a) end
 		end
 	end
 

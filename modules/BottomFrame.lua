@@ -1,4 +1,5 @@
-local _, aObj = ...
+local aName, aObj = ...
+local _G = _G
 local module = aObj:NewModule("BottomFrame")
 local ftype = "s"
 
@@ -25,7 +26,7 @@ function module:OnInitialize()
 
 	-- convert any old settings
 	if aObj.db.profile.BottomFrame then
-		for k, v in pairs(aObj.db.profile.BottomFrame) do
+		for k, v in _G.pairs(aObj.db.profile.BottomFrame) do
 			db[k] = v
 		end
 		aObj.db.profile.BottomFrame = nil
@@ -45,7 +46,7 @@ local btmframe
 function module:adjustBottomFrame(opt)
 
 	if db.shown then
-		btmframe = btmframe or CreateFrame("Frame", nil, UIParent)
+		btmframe = btmframe or _G.CreateFrame("Frame", nil, _G.UIParent)
 		btmframe:SetFrameStrata("BACKGROUND")
 		btmframe:SetFrameLevel(0)
 		btmframe:EnableMouse(false)
@@ -54,9 +55,9 @@ function module:adjustBottomFrame(opt)
 		btmframe:SetHeight(db.height)
 		btmframe:ClearAllPoints()
 		if db.xyOff or db.borderOff then
-			btmframe:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -6, -6)
+			btmframe:SetPoint("BOTTOMLEFT", _G.UIParent, "BOTTOMLEFT", -6, -6)
 		else
-			btmframe:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -3, -3)
+			btmframe:SetPoint("BOTTOMLEFT", _G.UIParent, "BOTTOMLEFT", -3, -3)
 		end
 		-- set the fade height
 		local fh = nil

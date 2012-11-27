@@ -1,4 +1,5 @@
-local _, aObj = ...
+local aName, aObj = ...
+local _G = _G
 local module = aObj:NewModule("TopFrame")
 local ftype = "s"
 
@@ -25,9 +26,9 @@ local function adjustTFOffset(db, reset)
 		local topOfs = -db.height
 		local UIPtopOfs = -104
 		if topOfs < UIPtopOfs and not reset then
-			UIParent:SetAttribute("TOP_OFFSET", topOfs)
-		elseif UIParent:GetAttribute("TOP_OFFSET") < UIPtopOfs then
-			UIParent:SetAttribute("TOP_OFFSET", UIPtopOfs)
+			_G.UIParent:SetAttribute("TOP_OFFSET", topOfs)
+		elseif _G.UIParent:GetAttribute("TOP_OFFSET") < UIPtopOfs then
+			_G.UIParent:SetAttribute("TOP_OFFSET", UIPtopOfs)
 		end
 	end
 
@@ -40,7 +41,7 @@ function module:OnInitialize()
 
 	-- convert any old settings
 	if aObj.db.profile.TopFrame then
-		for k, v in pairs(aObj.db.profile.TopFrame) do
+		for k, v in _G.pairs(aObj.db.profile.TopFrame) do
 			db[k] = v
 		end
 		aObj.db.profile.TopFrame = nil
@@ -60,7 +61,7 @@ local topframe
 function module:adjustTopFrame(opt)
 
 	if db.shown then
-		topframe = topframe or CreateFrame("Frame", nil, UIParent)
+		topframe = topframe or _G.CreateFrame("Frame", nil, _G.UIParent)
 		topframe:SetFrameStrata("BACKGROUND")
 		topframe:SetFrameLevel(0)
 		topframe:EnableMouse(false)
@@ -69,9 +70,9 @@ function module:adjustTopFrame(opt)
 		topframe:SetHeight(db.height)
 		topframe:ClearAllPoints()
 		if db.xyOff or db.borderOff then
-			topframe:SetPoint("TOPLEFT", UIParent, "TOPLEFT", -6, 6)
+			topframe:SetPoint("TOPLEFT", _G.UIParent, "TOPLEFT", -6, 6)
 		else
-			topframe:SetPoint("TOPLEFT", UIParent, "TOPLEFT", -3, 3)
+			topframe:SetPoint("TOPLEFT", _G.UIParent, "TOPLEFT", -3, 3)
 		end
 		-- set the fade height
 		local fh = nil

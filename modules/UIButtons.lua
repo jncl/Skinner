@@ -2,6 +2,8 @@ local aName, aObj = ...
 local _G = _G
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
+local assert, debugstack, rawget, select, type = _G.assert, _G.debugstack, _G.rawget, _G.select, _G.type
+
 local db
 local defaults = {
 	profile = {
@@ -154,7 +156,7 @@ function module:skinButton(opts)
 	else -- [UIPanelButtonTemplate2/... and derivatives]
 		local objName = opts.obj:GetName()
 		if objName then -- handle unnamed objects (e.g. Waterfall MP buttons)
-			for _, tName in pairs(btnTexNames) do
+			for _, tName in _G.pairs(btnTexNames) do
 				local bTex = _G[objName .. tName]
 				if bTex then bTex:SetAlpha(0) end
 			end
@@ -338,7 +340,7 @@ local function __skinAllButtons(opts, bgen)
 	-- maximum number of button generations to traverse
 	bgen = bgen or opts.bgen or 3
 
-	for _, child in ipairs{opts.obj:GetChildren()} do
+	for _, child in _G.ipairs{opts.obj:GetChildren()} do
 		if child:IsObjectType("Button") then
 			if child:GetNumChildren() > 0 and bgen > 0 then
 				opts.obj=child
@@ -420,11 +422,11 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the border frame
-	opts.obj.sbb = CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+	opts.obj.sbb = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	opts.obj.sbb:SetBackdropBorderColor(unpack(aObj.bbColour))
+	opts.obj.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	local xOfs1 = opts.x1 or opts.ofs * -1
@@ -446,7 +448,7 @@ local function __addButtonBorder(opts)
 
 	-- reparent objects if required
 	if opts.reParent then
-		for _, obj in pairs(opts.reParent) do
+		for _, obj in _G.pairs(opts.reParent) do
 			obj:SetParent(opts.obj.sbb)
 		end
 	end
@@ -489,7 +491,7 @@ function module:addButtonBorder(...)
 	local opts = select(1, ...)
 
 	-- handle in combat
-	if InCombatLockdown() then
+	if _G.InCombatLockdown() then
 		aObj:add2Table(module.btnTab, opts)
 		return
 	end
@@ -535,18 +537,18 @@ function module:OnEnable()
 	if module.db.profile.ButtonBorders then
 		module.btnTab = {}
 		module:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-			for _, v in pairs(module.btnTab) do
+			for _, v in _G.pairs(module.btnTab) do
 				module:addButtonBorder(v)
 			end
-			wipe(module.btnTab)
+			_G.wipe(module.btnTab)
 		end)
 	end
 
 	-- bypass the Item Quality Border Texture changes if the specified addons aren't loaded
-	if not IsAddOnLoaded("AdiBags")
-	and not IsAddOnLoaded("Fizzle")
-	and not IsAddOnLoaded("oGlow")
-	and not IsAddOnLoaded("XLoot")
+	if not _G.IsAddOnLoaded("AdiBags")
+	and not _G.IsAddOnLoaded("Fizzle")
+	and not _G.IsAddOnLoaded("oGlow")
+	and not _G.IsAddOnLoaded("XLoot")
 	then
 		-- remove options
 		aObj.optTables["Modules"].args["Skinner_UIButtons"].args["Quality"] = nil
@@ -614,14 +616,14 @@ function module:GetOptions()
 						name = aObj.L["Border Texture File"],
 						desc = aObj.L["Set Border Texture Filename"],
 					},
-					texture = AceGUIWidgetLSMlists and {
+					texture = _G.AceGUIWidgetLSMlists and {
 						type = "select",
 						order = 2,
 						width = "double",
 						name = aObj.L["Border Texture"],
 						desc = aObj.L["Choose the Texture for the Border"],
 						dialogControl = 'LSM30_Border',
-						values = AceGUIWidgetLSMlists.border,
+						values = _G.AceGUIWidgetLSMlists.border,
 					} or nil,
 				},
 			},

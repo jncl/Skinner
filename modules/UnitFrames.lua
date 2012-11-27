@@ -19,7 +19,7 @@ local defaults = {
 local lOfs = -10 -- level text offset
 local totOfs = -12 -- TargetofTarget frame offset
 local tDelay = 0.2 -- repeating timer delay
-local isSkinned = setmetatable({}, {__index = function(t, k) t[k] = true end})
+local isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 local rpTmr = {}
 local unitFrames = {
 	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground"
@@ -33,7 +33,7 @@ local function adjustStatusBarPosn(sBar, yAdj)
 		local oPnt = {sBar.TextString:GetPoint()}
 		sBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj + 1)
 	end
-	if sBar == PlayerFrameHealthBar then
+	if sBar == _G.PlayerFrameHealthBar then
 		aObj:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
 			aObj.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
 		end, true)
@@ -49,34 +49,34 @@ local function skinPlayerF()
 	if db.player
 	and not isSkinned["Player"]
 	then
-		PlayerFrameBackground:SetTexture(nil)
-		PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-		PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-		PlayerStatusTexture:SetTexture(nil)
-		PlayerAttackBackground:SetTexture(nil)
-		PlayerRestGlow:SetTexture(nil)
-		PlayerAttackGlow:SetTexture(nil)
+		_G.PlayerFrameBackground:SetTexture(nil)
+		_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+		_G.PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+		_G.PlayerStatusTexture:SetTexture(nil)
+		_G.PlayerAttackBackground:SetTexture(nil)
+		_G.PlayerRestGlow:SetTexture(nil)
+		_G.PlayerAttackGlow:SetTexture(nil)
 		-- status bars
-		adjustStatusBarPosn(PlayerFrameHealthBar)
-		aObj:glazeStatusBar(PlayerFrameHealthBar, 0)
-		aObj:glazeStatusBar(PlayerFrameManaBar, 0)
+		adjustStatusBarPosn(_G.PlayerFrameHealthBar)
+		aObj:glazeStatusBar(_G.PlayerFrameHealthBar, 0)
+		aObj:glazeStatusBar(_G.PlayerFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
 		-- move PVP Icon/Timer text up & right
-		aObj:moveObject{obj=PlayerPVPIcon, x=2, y=25}
-		aObj:moveObject{obj=PlayerPVPTimerText, x=34, y=2}
+		aObj:moveObject{obj=_G.PlayerPVPIcon, x=2, y=25}
+		aObj:moveObject{obj=_G.PlayerPVPTimerText, x=34, y=2}
 		-- move level & rest icon down, so they are more visible
-		aObj:moveObject{obj=PlayerLevelText, y=lOfs}
-		aObj:moveObject{obj=PlayerRestIcon, y=lOfs} -- covers level text when resting
+		aObj:moveObject{obj=_G.PlayerLevelText, y=lOfs}
+		aObj:moveObject{obj=_G.PlayerRestIcon, y=lOfs} -- covers level text when resting
 		-- remove group indicator textures
-		aObj:keepFontStrings(PlayerFrameGroupIndicator)
-		aObj:moveObject{obj=PlayerFrameGroupIndicatorText, y=-1}
-		aObj:addSkinFrame{obj=PlayerFrame, ft=ftype, noBdr=true, aso=aso, x1=37, y1=-7, y2=aObj.uCls == "PALADIN" and 3 or 6}
+		aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
+		aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
+		aObj:addSkinFrame{obj=_G.PlayerFrame, ft=ftype, noBdr=true, aso=aso, x1=37, y1=-7, y2=aObj.uCls == "PALADIN" and 3 or 6}
 		--	skin the TotemFrame
-		for i = 1, MAX_TOTEMS do
+		for i = 1, _G.MAX_TOTEMS do
 			_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0)
 			aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
 		end
-		aObj:moveObject{obj=TotemFrameTotem1, y=lOfs} -- covers level text when active
+		aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
 
 		--	skin the RuneFrame, if required
 		if aObj.uCls == "DEATHKNIGHT" then
@@ -86,43 +86,43 @@ local function skinPlayerF()
 		end
 		-- skin the AlternateManaBar & EclipseBarFrame, if required
 		if aObj.uCls == "DRUID" then
-			PlayerFrameAlternateManaBarBorder:SetTexture(nil)
-			aObj:glazeStatusBar(PlayerFrameAlternateManaBar, 0)
-			EclipseBarFrameBar:Hide()
-			EclipseBarFrame.sunBar:Hide()
-			EclipseBarFrame.moonBar:Hide()
+			_G.PlayerFrameAlternateManaBarBorder:SetTexture(nil)
+			aObj:glazeStatusBar(_G.PlayerFrameAlternateManaBar, 0)
+			_G.EclipseBarFrameBar:Hide()
+			_G.EclipseBarFrame.sunBar:Hide()
+			_G.EclipseBarFrame.moonBar:Hide()
 		end
 		-- skin the ShardBarFrame/DemonicFuryBarFrame/BurningEmbersBarFrame, if required
 		if aObj.uCls == "WARLOCK" then
 			-- ShardBarFrame
-			ShardBarFrame:DisableDrawLayer("BACKGROUND")
-			for i = 1, ShardBarFrame.shardCount do
+			_G.ShardBarFrame:DisableDrawLayer("BACKGROUND")
+			for i = 1, _G.ShardBarFrame.shardCount do
 				_G["ShardBarFrameShard" .. i]:DisableDrawLayer("BORDER")
 				_G["ShardBarFrameShard" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
 			-- DemonicFuryBarFrame
-			DemonicFuryBarFrame:DisableDrawLayer("ARTWORK") -- frame border texture
+			_G.DemonicFuryBarFrame:DisableDrawLayer("ARTWORK") -- frame border texture
 			-- BurningEmbersBarFrame
-			BurningEmbersBarFrame:DisableDrawLayer("BACKGROUND")
-			for i = 1, BurningEmbersBarFrame.emberCount do
+			_G.BurningEmbersBarFrame:DisableDrawLayer("BACKGROUND")
+			for i = 1, _G.BurningEmbersBarFrame.emberCount do
 				_G["BurningEmbersBarFrameEmber" .. i]:DisableDrawLayer("BORDER")
 				_G["BurningEmbersBarFrameEmber" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
 		end
 		-- skin the PowerBar, if required
 		if aObj.uCls == "PALADIN" then
-			PaladinPowerBar:DisableDrawLayer("BACKGROUND")
-			PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
+			_G.PaladinPowerBar:DisableDrawLayer("BACKGROUND")
+			_G.PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 		end
 		-- skin the ManaBar, if required
 		if aObj.uCls == "MONK" then
-			PlayerFrameAlternateManaBar:Hide()
-			aObj:removeRegions(MonkHarmonyBar, {1, 2})
+			_G.PlayerFrameAlternateManaBar:Hide()
+			aObj:removeRegions(_G.MonkHarmonyBar, {1, 2})
 		end
 		-- skin the bar, if required
 		if aObj.uCls == "PRIEST" then
-			PriestBarFrame:DisableDrawLayer("BACKGROUND")
-			aObj:moveObject{obj=PriestBarFrame.orb1, y=6}
+			_G.PriestBarFrame:DisableDrawLayer("BACKGROUND")
+			aObj:moveObject{obj=_G.PriestBarFrame.orb1, y=6}
 		end
 	end
 
@@ -132,27 +132,27 @@ local function skinPetF()
 	if db.pet
 	and not isSkinned["Pet"]
 	then
-		PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
-		PetAttackModeTexture:SetTexture(nil)
+		_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
+		_G.PetAttackModeTexture:SetTexture(nil)
 		-- status bars
-		adjustStatusBarPosn(PetFrameHealthBar, 0)
-		aObj:glazeStatusBar(PetFrameHealthBar, 0)
-		adjustStatusBarPosn(PetFrameManaBar, -1)
-		aObj:glazeStatusBar(PetFrameManaBar, 0)
+		adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
+		aObj:glazeStatusBar(_G.PetFrameHealthBar, 0)
+		adjustStatusBarPosn(_G.PetFrameManaBar, -1)
+		aObj:glazeStatusBar(_G.PetFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
-		aObj:moveObject{obj=PetFrame, x=28, y=-3} -- align under Player Health/Mana bars
-		aObj:addSkinFrame{obj=PetFrame, ft=ftype, noBdr=true, aso=aso, x1=-6, y1=3, x2=-4, y2=2}
+		aObj:moveObject{obj=_G.PetFrame, x=28, y=-3} -- align under Player Health/Mana bars
+		aObj:addSkinFrame{obj=_G.PetFrame, ft=ftype, noBdr=true, aso=aso, x1=-6, y1=3, x2=-4, y2=2}
 		-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
 		if db.petlevel
 		and aObj.uCls == "HUNTER"
 		or aObj.uCls == "WARLOCK"
 		then
-			if not PetFrame.lvl then
-				PetFrame.lvl = PetFrame.sf:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-				PetFrame.lvl:SetPoint("BOTTOMLEFT", 4, 4)
+			if not _G.PetFrame.lvl then
+				_G.PetFrame.lvl = _G.PetFrame.sf:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
+				_G.PetFrame.lvl:SetPoint("BOTTOMLEFT", 4, 4)
 				local function checkLevel(event, ...)
 
-					PetFrame.lvl:SetText(UnitLevel(PetFrame.unit))
+					_G.PetFrame.lvl:SetText(_G.UnitLevel(_G.PetFrame.unit))
 
 				end
 				module:SecureHook("PetFrame_Update", function(this, ...)
@@ -162,12 +162,12 @@ local function skinPetF()
 				module:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
 				module:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
 				checkLevel("init")
-				PetFrame.lvl:Show()
+				_G.PetFrame.lvl:Show()
 			else
-				PetFrame.lvl:Show()
+				_G.PetFrame.lvl:Show()
 			end
-		elseif PetFrame.lvl then
-			PetFrame.lvl:Hide()
+		elseif _G.PetFrame.lvl then
+			_G.PetFrame.lvl:Hide()
 		end
 	end
 
@@ -235,44 +235,44 @@ local function skinTargetF()
 		if aObj.uCls == "ROGUE"
 		or aObj.uCls == "DRUID"
 		then
-			for i = 1, MAX_COMBO_POINTS do
+			for i = 1, _G.MAX_COMBO_POINTS do
 				aObj:getRegion(_G["ComboPoint" .. i], 1):SetTexture(nil)
 			end
 		end
 
 		-- create a texture to show UnitClassification
-		local ucTTex = TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
+		local ucTTex = _G.TargetFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
 		ucTTex:SetWidth(80)
 		ucTTex:SetHeight(50)
 		ucTTex:SetPoint("CENTER", 86, -22 + lOfs)
-		local ucFTex = FocusFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
+		local ucFTex = _G.FocusFrame:CreateTexture(nil, "ARTWORK") -- make it appear above the portrait
 		ucFTex:SetWidth(80)
 		ucFTex:SetHeight(50)
 		ucFTex:SetPoint("CENTER", 86, -22 + lOfs)
 
 		-- hook this to show/hide the elite texture
 		module:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
-			if frame == TargetFrame then
-				showEliteTex(UnitClassification("target"), ucTTex)
-			elseif frame == FocusFrame then
-				showEliteTex(UnitClassification("focus"), ucFTex)
+			if frame == _G.TargetFrame then
+				showEliteTex(_G.UnitClassification("target"), ucTTex)
+			elseif frame == _G.FocusFrame then
+				showEliteTex(_G.UnitClassification("focus"), ucFTex)
 			end
 			-- adjust ComboFrame position dependant upon Target classification, if required
 			-- as the threat indicator obscures them when boss/elite etc
 			if aObj.uCls == "ROGUE"
 			or aObj.uCls == "DRUID"
 			then
-				ComboFrame:ClearAllPoints()
+				_G.ComboFrame:ClearAllPoints()
 				if ucTTex:GetTexture() then
-					ComboFrame:SetPoint("TOPRIGHT", TargetFrame, "TOPRIGHT", -32, -7)
+					_G.ComboFrame:SetPoint("TOPRIGHT", _G.TargetFrame, "TOPRIGHT", -32, -7)
 				else
-					ComboFrame:SetPoint("TOPRIGHT", TargetFrame, "TOPRIGHT", -42, -7)
+					_G.ComboFrame:SetPoint("TOPRIGHT", _G.TargetFrame, "TOPRIGHT", -42, -7)
 				end
 			end
 		end)
 
 	-->>--Boss Target Frames
-		for i = 1, MAX_BOSS_FRAMES do
+		for i = 1, _G.MAX_BOSS_FRAMES do
 			local frame = "Boss" .. i .. "TargetFrame"
 			_G[frame .. "Background"]:SetTexture(nil)
 			_G[frame .. "TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
@@ -302,7 +302,7 @@ end
 local function resetPosn(pF)
 
 	-- handle in combat
-	if InCombatLockdown() then return end
+	if _G.InCombatLockdown() then return end
 
 	_G[pF .. "Portrait"]:SetPoint("TOPLEFT", 7, -6)
 	_G[pF .. "LeaderIcon"]:SetPoint("TOPLEFT")
@@ -327,7 +327,7 @@ local function skinPartyF()
 			end
 		end)
 
-		for i = 1, MAX_PARTY_MEMBERS do
+		for i = 1, _G.MAX_PARTY_MEMBERS do
 			local pF = "PartyMemberFrame" .. i
 			aObj:moveObject{obj=_G[pF .. "Portrait"], y=6}
 			--[=[
@@ -357,9 +357,9 @@ local function skinPartyF()
 
 		end
 		-- PartyMember Buff Tooltip
-		aObj:addSkinFrame{obj=PartyMemberBuffTooltip, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-2, x2=-2, y2=2}
+		aObj:addSkinFrame{obj=_G.PartyMemberBuffTooltip, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-2, x2=-2, y2=2}
 		-- PartyMemberBackground
-		aObj:addSkinFrame{obj=PartyMemberBackground, ft=ftype, x1=4, y1=2, x2=1, y2=2}
+		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, x1=4, y1=2, x2=1, y2=2}
 	end
 
 end
@@ -369,7 +369,7 @@ local function skinArenaF()
 	and not isSkinned["Arena"]
 	then
 		aObj:SecureHook("Arena_LoadUI", function()
-			for i = 1, MAX_ARENA_ENEMIES do
+			for i = 1, _G.MAX_ARENA_ENEMIES do
 				local aF = "ArenaEnemyFrame" .. i
 				_G[aF .. "Background"]:SetTexture(nil)
 				_G[aF .. "Texture"]:SetTexture(nil)
@@ -398,7 +398,7 @@ local function skinArenaF()
 				aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar .. "Flash"]})
 			end
 			-- ArenaEnemyBackground
-			aObj:addSkinFrame{obj=ArenaEnemyBackground, ft=ftype}
+			aObj:addSkinFrame{obj=_G.ArenaEnemyBackground, ft=ftype}
 			aObj:Unhook("Arena_LoadUI")
 		end)
 	end
@@ -406,25 +406,25 @@ local function skinArenaF()
 end
 local function changeUFOpacity()
 
-	local r, g, b = unpack(aObj.bColour)
+	local r, g, b = _G.unpack(aObj.bColour)
 
-	for _, uFrame in pairs(unitFrames) do
+	for _, uFrame in _G.pairs(unitFrames) do
 		if _G[uFrame].sf then
 			_G[uFrame].sf:SetBackdropColor(r, g, b, db.alpha)
 		end
 	end
-	for i = 1, MAX_PARTY_MEMBERS do
+	for i = 1, _G.MAX_PARTY_MEMBERS do
 		if _G["PartyMemberFrame" .. i].sf then
 			_G["PartyMemberFrame" .. i].sf:SetBackdropColor(r, g, b, db.alpha)
 			_G["PartyMemberFrame" .. i .. "PetFrame"].sf:SetBackdropColor(r, g, b, db.alpha)
 		end
 	end
-	for i = 1, MAX_BOSS_FRAMES do
+	for i = 1, _G.MAX_BOSS_FRAMES do
 		if _G["Boss" .. i .. "TargetFrame"].sf then
 			_G["Boss" .. i .. "TargetFrame"].sf:SetBackdropColor(r, g, b, db.alpha)
 		end
 	end
-	for i = 1, MAX_ARENA_ENEMIES do
+	for i = 1, _G.MAX_ARENA_ENEMIES do
 		if _G["ArenaEnemyFrame" .. i].sf then
 			_G["ArenaEnemyFrame" .. i].sf:SetBackdropColor(r, g, b, db.alpha)
 			_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetBackdropColor(r, g, b, db.alpha)
@@ -440,7 +440,7 @@ function module:OnInitialize()
 
 	-- convert any old settings
 	if aObj.db.profile.UnitFrames then
-		for k, v in pairs(aObj.db.profile.UnitFrames) do
+		for k, v in _G.pairs(aObj.db.profile.UnitFrames) do
 			db[k] = v
 		end
 		aObj.db.profile.UnitFrames = nil
@@ -458,8 +458,8 @@ function module:OnInitialize()
 	end
 
 	-- disable ourself if another unitframe addon is loaded
-	if IsAddOnLoaded("Perl_Config")
-	or IsAddOnLoaded("XPerl")
+	if _G.IsAddOnLoaded("Perl_Config")
+	or _G.IsAddOnLoaded("XPerl")
 	then
 		self:Disable()
 	end

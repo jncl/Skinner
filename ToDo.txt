@@ -41,13 +41,29 @@ x		- LFDFrame/LFGFrame/RaidFinder/ScenarioFinder changes, BackFill removed, Cool
 		- Skinner-b5.16231.4\SkinMe\AdiBags-v1.5.6.lua:37: attempt to index field "sbb" (a nil value)
 		  Skinner-b5.16231.4\SkinMe\AdiBags-v1.5.6.lua:37: in function <Skinner\SkinMe\AdiBags.lua:34>
 
-√	I	Talent Frame, reported by essmene, 19.11.12
-		- When I try to retalent I get a pop-up with Action blocked <disable> <ignore>
-		  The action has been blocked...
+√	I	Pawn, reported by NeoZeus/lexusnexus, 24.11.12
+		- Skinner\Skinner-b5.16309.3.lua:221: table index is nil
+		  Skinner\Skinner-b5.16309.3.lua:1351: in function <Skinner\Skinner.lua:1316>
+		  Skinner\Skinner-b5.16309.3.lua:1408: in function "skinDropDown"
+		  Skinner-b5.16309.3\SkinMe\Pawn-1.7 beta 1.lua:36: in function <Skinner\SkinMe\Pawn.lua:4>
 
-		  This happens if I want to change a talent and need to spent some tome for it
+√	I	BottomFrame, reported by Linaeri, 24.11.12
+		- adjusting BottomFrame size using sliders causes whiteout
+		- frame reverts to original size on reload
 
-√	I	SpellBook, reported by Luckyjack_SL, 22.11.12
-		- ..\AddOns\Skinner\PlayerFrames.lua line 2114:
-   attempt to index field '?' (a nil value)
-   
+√	I	LootFrame, reported by SmuvMoney, 25.11.12
+		- Interface\AddOns\Skinner\PlayerFrames.lua:1330: attempt to index field '?' (a nil value)
+
+√	I	FramesResized, reported by SmuvMoney, 25.11.12
+		- Interface\AddOns\Skinner\SkinMe\FramesResized.lua: 18: attempt to call global 'GetNumRaidMembers' (a nil value)
+
+√	I	Armory, reported by SmuvMoney, 25.11.12
+		- 	Interface\AddOns\Skinner\Skinner.lua:221: table index is nil
+			Stack: Interface\AddOns\Skinner\Skinner.lua:1351: in function <Interface\AddOns\Skinner\Skinner.lua:1316>
+			Interface\AddOns\Skinner\Skinner.lua:1408: in function `skinDropDown'
+			Interface\AddOns\Skinner\SkinMe\Armory.lua:78: in function <Interface\AddOns\Skinner\SkinMe\Armory.lua:4>
+
+√	S	Wholly, requested by gizmo1972, 25.11.12
+
+?	I	Mapster, reported by Linaeri, 25.11.12
+		- Yellow on white is really difficult to read. Any chance this can be looked into? I tried disabling Skinner from Mapster and MapsterEnhanced but it is still affecting the text so I'm not sure what's going on.

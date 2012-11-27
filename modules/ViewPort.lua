@@ -1,4 +1,5 @@
-local _, aObj = ...
+local aName, aObj = ...
+local _G = _G
 local module = aObj:NewModule("ViewPort")
 
 local db
@@ -25,8 +26,8 @@ local function checkOverlay()
 			local xScale = db.XRes / 1050
 			local yScale = 768 / db.YRes
 			if not vpoF then
-				vpoF = CreateFrame("Frame", nil)
-				vpoF:SetAllPoints(UIParent)
+				vpoF = _G.CreateFrame("Frame", nil)
+				vpoF:SetAllPoints(_G.UIParent)
 				vpoF:SetFrameLevel(0)
 				vpoF:SetFrameStrata("BACKGROUND")
 				vpoF:EnableMouse(false)
@@ -80,7 +81,7 @@ function module:OnInitialize()
 
 	-- convert any old settings
 	if aObj.db.profile.ViewPort then
-		for k, v in pairs(aObj.db.profile.ViewPort) do
+		for k, v in _G.pairs(aObj.db.profile.ViewPort) do
 			db[k] = v
 		end
 		aObj.db.profile.ViewPort = nil
@@ -110,9 +111,9 @@ function module:adjustViewPort(opt)
 	or (opt == "XRes" and db.shown)
 	or (opt == "YRes" and db.shown)
 	then
-		WorldFrame:ClearAllPoints()
-		WorldFrame:SetPoint("TOPLEFT", (db.left * xScale), -(db.top * yScale))
-		WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * xScale), (db.bottom * yScale))
+		_G.WorldFrame:ClearAllPoints()
+		_G.WorldFrame:SetPoint("TOPLEFT", (db.left * xScale), -(db.top * yScale))
+		_G.WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * xScale), (db.bottom * yScale))
 		checkOverlay()
 	elseif opt == "overlay"
 	or opt == "colour"
@@ -120,9 +121,9 @@ function module:adjustViewPort(opt)
 		checkOverlay()
 	elseif opt == "shown" and not db.shown
 	then
-		WorldFrame:ClearAllPoints()
-		WorldFrame:SetPoint("TOPLEFT")
-		WorldFrame:SetPoint("BOTTOMRIGHT")
+		_G.WorldFrame:ClearAllPoints()
+		_G.WorldFrame:SetPoint("TOPLEFT")
+		_G.WorldFrame:SetPoint("BOTTOMRIGHT")
 		checkOverlay()
 	end
 
