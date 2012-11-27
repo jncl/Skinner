@@ -1313,13 +1313,19 @@ function aObj:LootFrames()
 	if not self.db.profile.LootFrames.skin or self.initialized.LootFrames then return end
 	self.initialized.LootFrames = true
 
-	-- Add another loot button and move them all up to fit
-	local yOfs = -27
-	for i = 1, LOOTFRAME_NUMBUTTONS do
-		local btn = _G["LootButton" .. i]
-		btn:ClearAllPoints()
-		btn:SetPoint("TOPLEFT", 9, yOfs)
-		yOfs = yOfs - 41
+	-- Add another loot button and move them all up to fit if FramesResized isn't loaded
+	if not _G.IsAddOnLoaded("FramesResized") then
+		local yOfs = -27
+		for i = 1, _G.LOOTFRAME_NUMBUTTONS do
+			local btn = _G["LootButton" .. i]
+			btn:ClearAllPoints()
+			btn:SetPoint("TOPLEFT", 9, yOfs)
+			yOfs = yOfs - 41
+		end
+		_G.CreateFrame("Button", "LootButton5", _G.LootFrame, "LootButtonTemplate")
+		_G.LootButton5:SetPoint("TOPLEFT", 9, yOfs)
+		_G.LootButton5.id = 5
+		_G.LOOTFRAME_NUMBUTTONS = _G.LOOTFRAME_NUMBUTTONS + 1
 	end
 	CreateFrame("Button", "LootButton5", LootFrame, "LootButtonTemplate")
 	LootButton5:SetPoint("TOPLEFT", 9, yOfs)
