@@ -3,11 +3,16 @@ if not aObj:isAddonEnabled("Pawn") then return end
 
 function aObj:Pawn()
 
-	self:addSkinFrame{obj=PawnUIFrame}
+	local aVer = GetAddOnMetadata("Pawn", "Version")
 
-	if self.modBtnBs then
-		self:addButtonBorder{obj=PawnUI_InventoryPawnButton, es=12, ofs=0, y1=2}
-	end
+	-- don't skin IOF Pawn button
+	self.ignoreIOF[PawnInterfaceOptionsFrame] = true
+	-- remove button textures from behind buttons
+	PawnUI_InventoryPawnButton:DisableDrawLayer("BACKGROUND")
+	PawnInterfaceOptionsFrame_PawnButton:DisableDrawLayer("BACKGROUND")
+
+	-- skin the UI
+	self:addSkinFrame{obj=PawnUIFrame}
 
 -->>-- Scale Selector Frame
 	self:keepFontStrings(PawnUIScaleSelector)
@@ -33,8 +38,12 @@ function aObj:Pawn()
 	self:skinScrollBar{obj=PawnUICompareScrollFrame}
 -->>-- Gems Tab
 	self:keepFontStrings(PawnUIGemsTabPage)
-	self:skinDropDown{obj=PawnUIFrame_GemQualityDropDown}
-	self:skinDropDown{obj=PawnUIFrame_MetaGemQualityDropDown}
+	if not aVer:find("1.7") then
+		self:skinDropDown{obj=PawnUIFrame_GemQualityDropDown}
+		self:skinDropDown{obj=PawnUIFrame_MetaGemQualityDropDown}
+	else
+		self:skinEditBox{obj=PawnUIFrame_GemQualityLevelBox, regs={9}}
+	end
 	self:skinScrollBar{obj=PawnUIGemScrollFrame}
 -->>-- Options Tab
 	self:skinEditBox(PawnUIFrame_DigitsBox, {9})
