@@ -72,9 +72,8 @@ local function OnLeave(self)
 	GameTooltip:Hide()
 
 end
+local frames = {}
 local function adjustFrame(key)
-
-	local frames = {}
 
 	if db[key].shown then
 		local frame = frames[key] or CreateFrame("Frame", db.name and aName .. "MF" .. key:sub(-1) or nil, UIParent)

@@ -41,9 +41,8 @@ function module:OnEnable()
 
 end
 
+local btmframe
 function module:adjustBottomFrame(opt)
-
-	local btmframe
 
 	if db.shown then
 		btmframe = btmframe or CreateFrame("Frame", nil, UIParent)

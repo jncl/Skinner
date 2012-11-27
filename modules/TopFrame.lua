@@ -56,9 +56,8 @@ function module:OnEnable()
 
 end
 
+local topframe
 function module:adjustTopFrame(opt)
-
-	local topframe
 
 	if db.shown then
 		topframe = topframe or CreateFrame("Frame", nil, UIParent)
