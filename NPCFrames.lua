@@ -245,13 +245,11 @@ function aObj:ItemAlterationUI() -- LoD (a.k.a TransmogrifyFrame)
 	self:skinButton{obj=_G.TransmogrifyApplyButton}
 
 	-- TransmogrifyConfirmation Popup used when items will be bound if altered
-	if self.isPTR then
-		self:removeRegions(_G.TransmogrifyConfirmationPopup.ItemFrame1, {8}) -- Name Frame texture
-		self:addButtonBorder{obj=_G.TransmogrifyConfirmationPopup.ItemFrame1, ibt=true}
-		self:removeRegions(_G.TransmogrifyConfirmationPopup.ItemFrame2, {8}) -- Name Frame texture
-		self:addButtonBorder{obj=_G.TransmogrifyConfirmationPopup.ItemFrame2, ibt=true}
-		self:addSkinFrame{obj=_G.TransmogrifyConfirmationPopup, ft=ftype}
-	end
+	self:removeRegions(_G.TransmogrifyConfirmationPopup.ItemFrame1, {8}) -- Name Frame texture
+	self:addButtonBorder{obj=_G.TransmogrifyConfirmationPopup.ItemFrame1, ibt=true}
+	self:removeRegions(_G.TransmogrifyConfirmationPopup.ItemFrame2, {8}) -- Name Frame texture
+	self:addButtonBorder{obj=_G.TransmogrifyConfirmationPopup.ItemFrame2, ibt=true}
+	self:addSkinFrame{obj=_G.TransmogrifyConfirmationPopup, ft=ftype}
 
 end
 

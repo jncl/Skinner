@@ -1902,13 +1902,11 @@ function aObj:PetBattleUI()
 		self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=1, reParent={obj.LevelUnderlay, obj.Level, obj.SpeedUnderlay, obj.SpeedIcon}}
 		obj.Border:SetTexture(nil)
 		obj.Border2:SetTexture(nil)
-		if self.isPTR then
-			if self.modBtnBs then
-				obj.sbb:SetBackdropBorderColor(obj.Border:GetVertexColor())
-				self:SecureHook(obj.Border, "SetVertexColor", function(this, ...)
-					this:GetParent().sbb:SetBackdropBorderColor(...)
-				end)
-			end
+		if self.modBtnBs then
+			obj.sbb:SetBackdropBorderColor(obj.Border:GetVertexColor())
+			self:SecureHook(obj.Border, "SetVertexColor", function(this, ...)
+				this:GetParent().sbb:SetBackdropBorderColor(...)
+			end)
 		end
 		self:changeTandC(obj.LevelUnderlay, self.lvlBG)
 		self:changeTandC(obj.SpeedUnderlay, self.lvlBG)
@@ -1937,13 +1935,11 @@ function aObj:PetBattleUI()
 			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar}}
 			btn.BorderAlive:SetTexture(nil)
 			self:changeTandC(btn.BorderDead, [[Interface\PetBattles\DeadPetIcon]])
-			if self.isPTR then
-				if self.modBtnBs then
-					btn.sbb:SetBackdropBorderColor(btn.BorderAlive:GetVertexColor())
-					self:SecureHook(btn.BorderAlive, "SetVertexColor", function(this, ...)
-						this:GetParent().sbb:SetBackdropBorderColor(...)
-					end)
-				end
+			if self.modBtnBs then
+				btn.sbb:SetBackdropBorderColor(btn.BorderAlive:GetVertexColor())
+				self:SecureHook(btn.BorderAlive, "SetVertexColor", function(this, ...)
+					this:GetParent().sbb:SetBackdropBorderColor(...)
+				end)
 			end
 			btn.healthBarWidth = 34
 			btn.ActualHealthBar:SetWidth(34)
@@ -1967,9 +1963,6 @@ function aObj:PetBattleUI()
 	for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
 		local btn = _G.PetBattleFrame.BottomFrame.PetSelectionFrame["Pet" .. i]
 		btn.Framing:SetTexture(nil)
-		if not self.isPTR then
-			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Level}}
-		end
 		btn.HealthBarBG:SetTexture(self.sbTexture)
 		btn.HealthBarBG:SetVertexColor(0.2, 0.2, 0.2, 0.8) -- dark grey
 		btn.ActualHealthBar:SetTexture(self.sbTexture)
@@ -2076,9 +2069,6 @@ function aObj:PetBattleUI()
 		obj.ActualHealthBar:SetTexture(self.sbTexture)
 		obj.XPBar:SetTexture(self.sbTexture)
 		obj.Delimiter:SetTexture(nil)
-		if not self.isPTR then
-			self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=2, reParent={obj.Level}}
-		end
 		obj.sf = self:addSkinFrame{obj=obj, ft=ftype}
 		self:add2Table(self.pbtt, obj.sf)
 		-- PetBattlePrimaryAbility Tooltip

@@ -491,10 +491,6 @@ function aObj:CharacterFrames()
 	-- PetPaperDoll Frame
 	_G.PetPaperDollPetModelBg:SetAlpha(0) -- changed in blizzard code
 	_G.PetModelFrameShadowOverlay:Hide()
-	if not self.isPTR then
-		self:removeRegions(_G.PetPaperDollFrameExpBar, {1, 2})
-		self:glazeStatusBar(_G.PetPaperDollFrameExpBar, 0)
-	end
 	self:makeMFRotatable(_G.PetModelFrame)
 	-- up the Frame level otherwise the tooltip doesn't work
 	_G.RaiseFrameLevel(_G.PetPaperDollPetInfo)
@@ -1577,9 +1573,7 @@ function aObj:PetJournal() -- LoD
 	self:removeInset(_G.MountJournal.LeftInset)
 	self:removeInset(_G.MountJournal.RightInset)
 	self:removeInset(_G.MountJournal.MountCount)
-	if self.isPTR then
-		self:skinEditBox{obj=_G.MountJournal.searchBox, regs={9}, mi=true}
-	end
+	self:skinEditBox{obj=_G.MountJournal.searchBox, regs={9}, mi=true}
 	self:keepFontStrings(_G.MountJournal.MountDisplay)
 	self:keepFontStrings(_G.MountJournal.MountDisplay.ShadowOverlay)
 	self:makeMFRotatable(_G.MountJournal.MountDisplay.ModelFrame)
@@ -1587,9 +1581,6 @@ function aObj:PetJournal() -- LoD
 	self:removeMagicBtnTex(_G.MountJournalMountButton)
 	for i = 1, #_G.MountJournal.ListScrollFrame.buttons do
 		local btn = _G.MountJournal.ListScrollFrame.buttons[i]
-		if not self.isPTR then
-			self:addButtonBorder{obj=btn, relTo=btn.icon}
-		end
 		btn:DisableDrawLayer("BACKGROUND")
 	end
 	-- PetJournal
@@ -1611,11 +1602,6 @@ function aObj:PetJournal() -- LoD
 		local btn = _G.PetJournal.listScroll.buttons[i]
 		self:removeRegions(btn, {1--[=[, 3--]=]}) -- background & petTypeIcon
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
-		if not _G.IsAddOnLoaded("PetJournalEnhanced")
-		and not self.isPTR
-		then
-			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
-		end
 	end
 	self:removeRegions(_G.PetJournal.AchievementStatus, {1})
 	self:keepFontStrings(_G.PetJournal.loadoutBorder)
@@ -1640,21 +1626,16 @@ function aObj:PetJournal() -- LoD
 			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.FlyoutArrow}}
 		end
 	end
-	if self.isPTR then
-		-- only show button border if layoutPlate is available but empty
-		self:SecureHook("PetJournal_UpdatePetLoadOut", function()
-			for i = 1, 3 do
-				local obj = _G.PetJournal.Loadout["Pet" .. i]
-				obj.sbb:SetShown(obj.emptyslot:IsShown())
-			end
-		end)
-	end
+	-- only show button border if layoutPlate is available but empty
+	self:SecureHook("PetJournal_UpdatePetLoadOut", function()
+		for i = 1, 3 do
+			local obj = _G.PetJournal.Loadout["Pet" .. i]
+			obj.sbb:SetShown(obj.emptyslot:IsShown())
+		end
+	end)
 	-- PetCard
 	self:removeInset(_G.PetJournal.PetCardInset)
 	local obj = _G.PetJournal.PetCard
-	if not self.isPTR then
-		self:addButtonBorder{obj=obj.PetInfo, relTo=obj.PetInfo.icon, reParent={obj.PetInfo.levelBG, obj.PetInfo.level}}
-	end
 	self:changeTandC(obj.PetInfo.levelBG, self.lvlBG)
 	self:removeRegions(obj.HealthFrame.healthBar, {1, 2, 3})
 	self:glazeStatusBar(obj.HealthFrame.healthBar, 0,  nil)
@@ -1719,11 +1700,9 @@ function aObj:PVPFrame()
 	_G.PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
 	_G.PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
 	_G.PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
-	if self.isPTR then
-		self:skinFFColHeads("PVPTeamManagementFrameHeader")
-		for i = 1, 4 do
-			_G["PVPTeamManagementFrameHeader" .. i]:SetHeight(20)
-		end
+	self:skinFFColHeads("PVPTeamManagementFrameHeader")
+	for i = 1, 4 do
+		_G["PVPTeamManagementFrameHeader" .. i]:SetHeight(20)
 	end
 	self:skinScrollBar{obj=_G.PVPFrame.panel3.teamMemberScrollFrame}
 	self:skinDropDown{obj=_G.PVPTeamManagementFrameTeamDropDown}
