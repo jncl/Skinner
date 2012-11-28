@@ -1,3 +1,13 @@
+b5.16309.4
+Jncl:
+	Updated .pkgmeta to correctly define findglobals
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for LootFrame
+	Bugfix for Bottom/Middle/Top frames
+	Updated Armory, FramesResized & Pawn skins
+	Skinned Wholly
+
 b5.16309.3
 Jncl:
 	ToDo.txt
