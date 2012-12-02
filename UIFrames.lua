@@ -1843,15 +1843,15 @@ function aObj:Nameplates()
 	local function skinNameplates()
 
 		for _, child in pairs{_G.WorldFrame:GetChildren()} do
-			if aObj:hasTextInName(child, "NamePlate")
-			then
-				if not child.sknd then
-					skinPlate(aObj.isPTR and child:GetChildren() or child) -- has a child frame (PTR)
-					child.sknd = true
+			if aObj:hasTextInName(child, "NamePlate") then
+				local npObj = aObj:getChild(child, 1) -- use first child frame (5.1)
+				if not npObj.sknd then
+					skinPlate(npObj)
+					npObj.sknd = true
 				else
 					 -- reset shield texture width & position
-					child.sb2.rg3:SetWidth(46)
-					child.sb2.rg3:SetPoint("CENTER", child.sb2.rg4, "CENTER", 9, -1)
+					npObj.sb2.rg3:SetWidth(46)
+					npObj.sb2.rg3:SetPoint("CENTER", npObj.sb2.rg4, "CENTER", 9, -1)
 
 				end
 			end
