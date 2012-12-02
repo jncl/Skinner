@@ -8,31 +8,30 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	O	PTR 5.1.0
-√		- TOC Interface: 50100
-		- ArenaUI
-x			- removed Flash texture
-√		- TransmogrifyConfirmationPopup (New)
-x		- ItemUpgradeFrame inherits from EtherealFrameTemplate now & has had additional textures added
-		- PetBattlesUI
-			- PetBattlePetSelectionButtonTemplate
-√				- added rarity border
-?				- added Delimiter2
-x				- added Debuffs frame
-		- PetJournal
-√			- added quality border to loadout
-x			- added favourite texture to loadout
-		- MountJournal
-√			- added search editbox
-?		- StaticPopupSpecial
-?		- LossOfControlFrame (IOF panel)
-x		- LFDFrame/LFGFrame/RaidFinder/ScenarioFinder changes, BackFill removed, CooldownCover added
-?		- ItemAnimation for BagSlots
-√		- PetPaperDollFRame, ExpBar removed
-√		- PVPFrame, Arena panel changes
-
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
+
+√	I	PetBattleTeams, reported by Decabah, 29.11.12
+		- Skinner-b5.16309.5\SkinMe\PetBattleTeams-2.4.12.lua:22: attempt to call method "GetModule" (a nil value)
+
+√	I	PetJournal, reported by Decabah/sdolphin30/Luckyjack_SL, 29.11.12/01.12.12
+		- Skinner-b5.16309.5\PlayerFrames.lua:1633: attempt to index field "sbb" (a nil value)
+Skinner-b5.16309.5\PlayerFrames.lua:1633: in function <Skinner\PlayerFrames.lua:1630>
+
+√	I	Nameplates, reported by Immary/Zaerwen, 29/30.11.12
+		- Interface\AddOns\Skinner\UIFrames.lua:1822: attempt to call method 'SetTexture' (a nil value)
+		- Interface\AddOns\Skinner\UIFrames.lua:1822: attempt to index local 'rg2' (a nil value)
+
+√	I	reported by by sdolphin30, 01.12.12
+		- Skinner-b5.16309.5\UIFrames.lua:1550: attempt to call method "GetNumChildren" (a nil value)
+Skinner-b5.16309.5\UIFrames.lua:1550: in function <Skinner\UIFrames.lua:1541>
+
+x	I	PetJournalEnhanced, reported by NLGill, 01.12.12
+		- Skinner-b5.16309.5\SkinMe\PetJournalEnhanced-2.5.2.lua:6: attempt to index global "PetJournalEnhancedOptions" (a nil value)
+
+√	I	ChatTemporaryFrame
+		- Text needs to be in front of the tab texture, if it has one
+
