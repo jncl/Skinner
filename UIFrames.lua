@@ -1547,7 +1547,7 @@ function aObj:MenuFrames()
 		then
 			self:checkAndRun("AddonLoader")
 		end
-		self:Debug("IOL_DP: [%s, %s, %s, %s, %s]", panel, panel.name, panel:GetNumChildren(), panel.sf, self.ignoreIOF[panel])
+		-- self:Debug("IOL_DP: [%s, %s, %s, %s, %s]", panel, panel.name, panel.GetNumChildren and panel:GetNumChildren() or "nil", panel.sf, self.ignoreIOF[panel])
 		if panel
 		and panel.GetNumChildren
 		and not panel.sf
