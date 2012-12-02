@@ -32,7 +32,7 @@ do
 --@end-alpha@
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = tonumber(buildInfo[2]) > 16135 and true or false
-	--check to see if running on PTR versionm
+	--check to see if running on PTR version
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
