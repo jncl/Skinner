@@ -6,7 +6,7 @@ function aObj:PetBattleTeams()
 	local function skinTeamFrame(frame)
 
 		for i = 1, 3 do
-			local btn = frame.unitFrames[i]
+			local btn = frame[i]
 			aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar, frame.selectedTexture, frame.lockedTexture}}
 			btn.healthBarWidth = 34
 			btn.ActualHealthBar:SetWidth(34)
@@ -18,32 +18,26 @@ function aObj:PetBattleTeams()
 
 	end
 
-	-- skin frame if it exists
-	local GUI = PetBattleTeams:GetModule("GUI")
-	self:skinScrollBar{obj=GUI.mainFrame.rosterFrame.scrollFrame}
-	self:addSkinFrame{obj=GUI.mainFrame, y1=2, y2=-5}
-	skinTeamFrame(GUI.mainFrame.selectedTeam)
-	self:addButtonBorder{obj=GUI.mainFrame.addTeamButton}
+	-- skin frame
+	self:skinScrollBar{obj=PetBattleTeamsUI.scrollBar}
+	PetBattleTeamsUI.mainFrame.menu.overlay:SetTexture(nil)
+	self:addButtonBorder{obj=PetBattleTeamsUI.mainFrame.menu, ofs=-2, x1=3}
+	self:addButtonBorder{obj=PetBattleTeamsUI.mainFrame.addTeamButton}
+	self:addSkinFrame{obj=PetBattleTeamsUI.mainFrame, ofs=-3, y1=-2, y2=-1}
 	-- Team Roster buttons
-	for i = 1, #GUI.mainFrame.rosterFrame.scrollChild.teamFrames do
-		skinTeamFrame(GUI.mainFrame.rosterFrame.scrollChild.teamFrames[i])
+	for i = 1, #PetBattleTeamsUI.mainFrame.petUnitFrames do
+		skinTeamFrame(PetBattleTeamsUI.mainFrame.petUnitFrames[i])
 	end
-	-- hook this to skin new teams
-	self:RawHook(PetBattleTeamsFrame, "New", function(this)
-		local frame = self.hooks[this].New(this)
-		skinTeamFrame(frame)
-		return frame
-	end, true)
 
 	-- tooltip
 	if self.db.profile.Tooltips.skin then
-		local tt = PetBattleTeams:GetModule("Tooltip")
-		tt.tooltip:DisableDrawLayer("BACKGROUND")
-		tt.tooltip.ActualHealthBar:SetTexture(self.sbTexture)
-		tt.tooltip.XPBar:SetTexture(self.sbTexture)
-		tt.tooltip.Delimiter:SetTexture(nil)
-		self:addButtonBorder{obj=tt.tooltip, relTo=tt.tooltip.Icon, ofs=2, reParent={tt.tooltip.Level}}
-		self:addSkinFrame{obj=tt.tooltip}
+		local tt = PetBattleTeamsUI.tooltip
+		tt:DisableDrawLayer("BACKGROUND")
+		tt.ActualHealthBar:SetTexture(self.sbTexture)
+		tt.XPBar:SetTexture(self.sbTexture)
+		tt.Delimiter:SetTexture(nil)
+		self:addButtonBorder{obj=tt, relTo=tt.Icon, ofs=2, reParent={tt.Level}}
+		self:addSkinFrame{obj=tt}
 	end
 
 end
