@@ -388,7 +388,7 @@ local function __addButtonBorder(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		relTo = object to position relative to
-		hide = hook Hide/Show scripts of relTo object
+		hide = hook Hide/Show methods of relTo object
 		ofs = global offset
 		abt = Action Button template
 		pabt = Pet Action Button template
@@ -404,7 +404,7 @@ local function __addButtonBorder(opts)
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
-		disable = hook Enable/Disable scripts of object
+		disable = hook Enable/Disable methods of object
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object__aBB\n" .. debugstack())
@@ -444,6 +444,12 @@ local function __addButtonBorder(opts)
 		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sbb:Hide() end)
 		-- hide border if required
 		opts.obj.sbb:SetShown(opts.relTo:IsShown())
+	end
+	if opts.disable then
+		-- hook Enable & Disable methods
+		module:SecureHook(opts.obj, "Enable", function(this) this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour)) end)
+		module:SecureHook(opts.obj, "Disable", function(this) this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end)
+		if not opts.obj:IsEnabled() then opts.obj.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
 	end
 
 	-- reparent objects if required
