@@ -854,7 +854,7 @@ function aObj:FriendsFrame()
 		local btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
 		btn.background:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.gameIcon, hide=true, ofs=0}
-		self:addButtonBorder{obj=btn.travelPassButton, hide=true, ofs=0, y1=3, y2=-2}
+		self:addButtonBorder{obj=btn.travelPassButton, hide=true, disable=true, ofs=0, y1=3, y2=-2}
 	end
 
 	-- Friends Tooltip
@@ -1610,7 +1610,7 @@ function aObj:PetJournal() -- LoD
 	for i = 1, 3 do
 		local obj = _G.PetJournal.Loadout["Pet" .. i]
 		self:removeRegions(obj, {1, 2, 5})
-		self:addButtonBorder{obj=obj, relTo=obj.icon, reParent={obj.levelBG, obj.level}}
+		self.modUIBtns:addButtonBorder{obj=obj, relTo=obj.icon, reParent={obj.levelBG, obj.level}} -- use module function here to force creation
 		obj.petTypeIcon:SetAlpha(0) -- N.B. texture is changed in code
 		self:changeTandC(obj.levelBG, self.lvlBG)
 		self:keepFontStrings(obj.helpFrame)
