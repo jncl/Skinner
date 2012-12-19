@@ -1,3 +1,15 @@
+b5.16309.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Correct comment
+	BugFix for ChatTemporaryWindow tabs
+	Enable/Disable button borders
+	Bugfix for debug message
+	Bugfix for NamePlates
+	Bugfix for PetJournal
+	Updated PetBattleTeams skin
+
 b5.16309.5
 Jncl:
 	ToDo.txt
