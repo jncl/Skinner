@@ -416,7 +416,7 @@ function aObj:QuestFrame()
 end
 
 function aObj:QuestInfo()
-	if not self.db.profile.QuestFrame or self.initialized.QuestInfo then return end
+	if self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
 
 	self:SecureHook("QuestInfo_Display", function(...)
