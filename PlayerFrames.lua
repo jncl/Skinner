@@ -892,7 +892,8 @@ function aObj:FriendsFrame()
 	self:removeInset(_G.WhoFrameListInset)
 	self:removeInset(_G.WhoFrameEditBoxInset)
 	self:skinDropDown{obj=_G.WhoFrameDropDown, noSkin=true}
-	self:moveObject{obj=_G.WhoFrameDropDownButton, x=5, y=1}
+	self:addButtonBorder{obj=WhoFrameDropDownButton, es=12, ofs=-1}
+	self:moveObject{obj=_G.WhoFrameDropDownButton, x=5}
 	self:skinScrollBar{obj=_G.WhoListScrollFrame}
 	self:skinEditBox{obj=_G.WhoFrameEditBox, move=true}
 	_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() +  24)
