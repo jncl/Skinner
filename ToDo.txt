@@ -14,8 +14,17 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I	Healbot, reported by NLGill, 03.12.12
-		- Skinner-b5.16309.6\UtilFuncs.lua:460: "for" limit must be a number
-Skinner-b5.16309.6\SkinMe\HealBot-5.1.0.1.lua:16: in function <Skinner\SkinMe\HealBot.lua:4>
+?	I	Minimap, 15.12.12
+		- make sure TitanPanel, FuBar, DockingStation et al can move it when required, i.e. don't fix/move its position when skinned
 
-√	N	PetBattleTeams, reported by lexusnexus, 15.12.12
+≈  	I	ItemUpgradeUI, reported by NLGill/Luckyjack_SL, 20/22.12.12
+		- ..\AddOns\Skinner\UIFrames.lua line 1093:
+  attempt to index field 'ItemUpgradeFrameShadows' (a nil value)
+
+√	I	Collectinator. reported by Luckyjack_SL, 22.12.12
+		- ..\AddOns\Skinner\SkinMe\Collectinator.lua line 6:
+  Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+x	I	Mapster skin
+		- what needs turning off so that quest text is black on world map if mapster isn't skinned ?
+			- Quest Log Frame (player) & Quest Frame (npc)
