@@ -1086,18 +1086,23 @@ function aObj:ItemUpgradeUI() -- LoD
 	if not self.db.profile.ItemUpgradeUI or self.initialized.ItemUpgradeUI then return end
 	self.initialized.ItemUpgradeUI = true
 
+	_G.ItemUpgradeFrame.HorzBar:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.Grabber:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.TextFrame:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.TextGrabber:SetTexture(nil)
 	_G.ItemUpgradeFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrame.NoMoreUpgrades:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrame.TitleTextLeft:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrame.TitleTextRight:SetTextColor(self.BTr, self.BTg, self.BTb)
-	_G.ItemUpgradeFrameShadows:DisableDrawLayer("OVERLAY")
 	self:addButtonBorder{obj=_G.ItemUpgradeFrame.ItemButton, relTo=_G.ItemUpgradeFrame.ItemButton.IconTexture}
-	_G.ItemUpgradeFrame.ItemButton.ItemFrame:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.Frame:SetTexture(nil)
 	_G.ItemUpgradeFrame.ItemButton.ItemName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
 	self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
-	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true}
+	_G.ItemUpgradeFrame.ButtonFrame.ButtonBorder:SetTexture(nil)
+	_G.ItemUpgradeFrame.ButtonFrame.ButtonBottomBorder:SetTexture(nil)
+	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true, ofs=2, x2=1}
 
 end
 
