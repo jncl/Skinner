@@ -14,17 +14,44 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-?	I	Minimap, 15.12.12
-		- make sure TitanPanel, FuBar, DockingStation et al can move it when required, i.e. don't fix/move its position when skinned
+√	I	BankItems, reported by dwarven, 26.12.12
+		- ..\AddOns\Skinner\Skinner.lua line 540: attempt to index field 'obj' (a nil value)
+			Debug:
+			Skinner\Skinner.lua:540:
+			Skinner\Skinner.lua:509
+			   (tail call): ?
+			Skinner\SkinMe\BankItems.lua:17:
+			Skinner\SkinMe\BankItems.lua:6
+			   (tail call): ?
 
-≈  	I	ItemUpgradeUI, reported by NLGill/Luckyjack_SL, 20/22.12.12
-		- ..\AddOns\Skinner\UIFrames.lua line 1093:
-  attempt to index field 'ItemUpgradeFrameShadows' (a nil value)
+≈	S	ZygorGuidesViewer, requested by tordenflesk, 27.12.12
 
-√	I	Collectinator. reported by Luckyjack_SL, 22.12.12
-		- ..\AddOns\Skinner\SkinMe\Collectinator.lua line 6:
-  Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+√	I	XPerl, reported by AnekM, 27.12.12
+		- It leaves behind a black box kinda the size of a pet frame after you close the xperl config.
+		- ..\AddOns\Skinner\Skinner.lua line 409: attempt to index field 'sb' (a nil value)
+			Debug:
+			Skinner\Skinner.lua:409:
+			Skinner\Skinner.lua:409
+			(tail call): ?
+			[C]: Hide()
+			XPerl_Party\XPerl_Party.lua:1378: XPerl_Party_Set_Bits1()
+			XPerl_Party\XPerl_Party.lua:1605:
+			XPerl_Party\XPerl_Party.lua:1591
+			[C]: pcall()
+			XPerl\XPerl_Init.lua:153: XPerl_pcall()
+			XPerl\XPerl_Init.lua:690: XPerl_OptionActions()
+			XPerl\XPerl.lua:877: XPerl_LockFrames()
 
-x	I	Mapster skin
-		- what needs turning off so that quest text is black on world map if mapster isn't skinned ?
-			- Quest Log Frame (player) & Quest Frame (npc)
+√	I	Pawn, reported by lexusnexus, 28.12.12
+		- \AddOns\Skinner\Skinner.lua line 224: table index is nil
+			Debug: Skinner\Skinner.lua:1354
+			Skinner\Skinner.lua:1319
+			Skinner\Skinner.lua:1411 skinDropDown()
+			Skinner\SkinMe\Pawn.lua:42
+			Skinner\SkinMe\Pawn.lua:4
+
+√	S	RAQ, requested by frostalotz, 03.01.13
+
+√	S	Prospect Bar, requested by frostalotz, 03.01.13
+
+√	S	Inbox Mailbag, requested by frostalotz, 03.01.13
