@@ -405,11 +405,11 @@ local function __addSkinButton(opts)
 	btn:EnableMouse(false) -- allow clickthrough
 	-- hook Show/Hide methods
 	if not aObj:IsHooked(opts.hook, "Show") then
-		aObj:SecureHook(opts.hook, "Show", function(this) this.sb:Show() end)
-		aObj:SecureHook(opts.hook, "Hide", function(this) this.sb:Hide() end)
+		aObj:SecureHook(opts.hook, "Show", function(this) opts.obj.sb:Show() end)
+		aObj:SecureHook(opts.hook, "Hide", function(this) opts.obj.sb:Hide() end)
 		if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
-			aObj:SecureHook(opts.hook, "Enable", function(this) this.sb:Enable() end)
-			aObj:SecureHook(opts.hook, "Disable", function(this) this.sb:Disable() end)
+			aObj:SecureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
+			aObj:SecureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
 		end
 	end
 	-- position the button skin
@@ -1377,7 +1377,7 @@ local function __skinDropDown(opts)
 	local yOfs2 = opts.y2 or 6
 	-- skin the frame
 	if aObj.db.profile.DropDownButtons then
-		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype, aso={ng=true}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype, aso={ng=true}, rp=opts.rp, nb=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
