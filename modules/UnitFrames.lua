@@ -70,7 +70,7 @@ local function skinPlayerF()
 		-- remove group indicator textures
 		aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
 		aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
-		aObj:addSkinFrame{obj=_G.PlayerFrame, ft=ftype, noBdr=true, aso=aso, x1=37, y1=-7, y2=aObj.uCls == "PALADIN" and 3 or 6}
+		aObj:addSkinFrame{obj=_G.PlayerFrame, ft=ftype, noBdr=true, nb=true, aso=aso, x1=37, y1=-7, y2=aObj.uCls == "PALADIN" and 3 or 6}
 		--	skin the TotemFrame
 		for i = 1, _G.MAX_TOTEMS do
 			_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0)
@@ -141,7 +141,7 @@ local function skinPetF()
 		aObj:glazeStatusBar(_G.PetFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
 		aObj:moveObject{obj=_G.PetFrame, x=28, y=-3} -- align under Player Health/Mana bars
-		aObj:addSkinFrame{obj=_G.PetFrame, ft=ftype, noBdr=true, aso=aso, x1=-6, y1=3, x2=-4, y2=2}
+		aObj:addSkinFrame{obj=_G.PetFrame, ft=ftype, noBdr=true, nb=true, aso=aso, x1=-6, y1=3, x2=-4, y2=2}
 		-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
 		if db.petlevel
 		and aObj.uCls == "HUNTER"
@@ -185,7 +185,7 @@ local function skinToT(frame)
 end
 local function skinUFrame(frame)
 
-	aObj:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso=aso, y1=-7, x2=-37, y2=6}
+	aObj:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, nb=true, aso=aso, y1=-7, x2=-37, y2=6}
 	_G[frame .. "Background"]:SetTexture(nil)
 	_G[frame .. "TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
 	-- status bars
@@ -345,7 +345,7 @@ local function skinPartyF()
 			-- status bars
 			aObj:glazeStatusBar(_G[pF .. "HealthBar"], 0)
 			aObj:glazeStatusBar(_G[pF .. "ManaBar"], 0)
-			aObj:addSkinFrame{obj=_G[pF], ft=ftype, noBdr=true, aso=aso, x1=2, y1=5, x2=-1}
+			aObj:addSkinFrame{obj=_G[pF], ft=ftype, noBdr=true, nb=true, aso=aso, x1=2, y1=5, x2=-1}
 
 			-- pet frame
 			local pPF = pF .. "PetFrame"
@@ -353,13 +353,13 @@ local function skinPartyF()
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:glazeStatusBar(_G[pPF .. "HealthBar"], 0)
-			aObj:addSkinFrame{obj=_G[pPF], ft=ftype, noBdr=true, aso=aso, x1=-2, y1=1, y2=1}
+			aObj:addSkinFrame{obj=_G[pPF], ft=ftype, noBdr=true, nb=true, aso=aso, x1=-2, y1=1, y2=1}
 
 		end
 		-- PartyMember Buff Tooltip
-		aObj:addSkinFrame{obj=_G.PartyMemberBuffTooltip, ft=ftype, noBdr=true, aso=aso, x1=2, y1=-2, x2=-2, y2=2}
+		aObj:addSkinFrame{obj=_G.PartyMemberBuffTooltip, ft=ftype, noBdr=true, nb=true, aso=aso, x1=2, y1=-2, x2=-2, y2=2}
 		-- PartyMemberBackground
-		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, x1=4, y1=2, x2=1, y2=2}
+		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y1=2, x2=1, y2=2}
 	end
 
 end
@@ -378,7 +378,7 @@ local function skinArenaF()
 				-- status bars
 				aObj:glazeStatusBar(_G[aF .. "HealthBar"], 0)
 				aObj:glazeStatusBar(_G[aF .. "ManaBar"], 0)
-				aObj:addSkinFrame{obj=_G[aF], ft=ftype, noBdr=true, aso=aso, x1=-3, x2=3, y2=-6}
+				aObj:addSkinFrame{obj=_G[aF], ft=ftype, noBdr=true, nb=true, aso=aso, x1=-3, x2=3, y2=-6}
 
 				-- pet frame
 				local aPF = aF .. "PetFrame"
@@ -386,7 +386,7 @@ local function skinArenaF()
 				_G[aPF .. "Texture"]:SetTexture(nil)
 				-- status bar
 				aObj:glazeStatusBar(_G[aPF .. "HealthBar"], 0)
-				aObj:addSkinFrame{obj=_G[aPF], ft=ftype, noBdr=true, aso=aso, y1=1, x2=1, y2=2}
+				aObj:addSkinFrame{obj=_G[aPF], ft=ftype, noBdr=true, nb=true, aso=aso, y1=1, x2=1, y2=2}
 				-- move pet frame
 				aObj:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
 
@@ -398,7 +398,7 @@ local function skinArenaF()
 				aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar .. "Flash"]})
 			end
 			-- ArenaEnemyBackground
-			aObj:addSkinFrame{obj=_G.ArenaEnemyBackground, ft=ftype}
+			aObj:addSkinFrame{obj=_G.ArenaEnemyBackground, ft=ftype, nb=true}
 			aObj:Unhook("Arena_LoadUI")
 		end)
 	end
