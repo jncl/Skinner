@@ -162,6 +162,7 @@
 <script file="SkinMe\Highlight.lua"/>
 <script file="SkinMe\HitsMode.lua"/>
 <script file="SkinMe\HoloFriends.lua"/>
+<script file="SkinMe\InboxMailBag.lua"/>
 <script file="SkinMe\InspectEquip.lua"/>
 <script file="SkinMe\IntricateChatMods.lua"/>
 <script file="SkinMe\IPopBar.lua"/>
@@ -239,6 +240,7 @@
 <script file="SkinMe\ProfessionsBook.lua"/>
 <script file="SkinMe\ProfessionTabs.lua"/>
 <script file="SkinMe\ProfessionsVault.lua"/>
+<script file="SkinMe\ProspectBar.lua"/>
 <script file="SkinMe\PvpMessages.lua"/>
 <script file="SkinMe\Quartz.lua"/>
 <script file="SkinMe\Quelevel.lua"/>
@@ -257,6 +259,7 @@
 <script file="SkinMe\RaidTracker.lua"/>
 <script file="SkinMe\RaidyCheck.lua"/>
 <script file="SkinMe\RandomPet30.lua"/>
+<script file="SkinMe\RAQ.lua"/>
 <script file="SkinMe\ReagentMaker.lua"/>
 <script file="SkinMe\ReagentRestocker.lua"/>
 <script file="SkinMe\Recap.lua"/>
@@ -332,5 +335,6 @@
 <script file="SkinMe\XPerl.lua"/>
 <script file="SkinMe\zfpoison.lua"/>
 <script file="SkinMe\ZOMGBuffs.lua"/>
+<script file="SkinMe\ZygorGuidesViewer.lua"/>
 
 </Ui>

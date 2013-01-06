@@ -172,21 +172,21 @@ local addonSkins = {
 	"Factionizer", "FarmIt2", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "Fizzle", "FlightMap", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Gatherer", "GemMe", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar5", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GuildMaster",  "GupPet",
 	"Hack", "Hadar_FocusFrame", "HandyNotes", "HaveWeMet", "HatTrick", "HeadCount", "HealBot", "Highlight", "HitsMode", "HoloFriends",
-	"InspectEquip", "IntricateChatMods", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
+	"InboxMailBag", "InspectEquip", "IntricateChatMods", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
 	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinkWrangler", "Livestock",
 	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MapsterEnhanced", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
 	"Necrosis", "NeonChat", "Notes", "nQuestLog",
 	"Odyssey", "oGlow", "Omen", "OneBag3", "OneBank3", "oQueue", "oRA3", "Outfitter", "Overachiever",
-	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetBattleTeams", "PetListPlus", "PetJournalEnhanced", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "ProfessionsVault", "PvpMessages",
+	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetBattleTeams", "PetListPlus", "PetJournalEnhanced", "PetsPlus", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "ProfessionsVault", "ProspectBar", "PvpMessages",
 	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper", "QuestHelper2", "QuestHistory", "QuickMark",
-	"RABuffs", "RaidAchievement", "RaidAchievement_AchieveReminder", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidTracker", "RaidyCheck", "RandomPet30", "ReagentRestocker", "Recap", "RecipeBook", "RecipeRadar", "Recount", "REFlex", "ReforgeLite", "Reforgenator", "Reforgerade", "RicoMiniMap",
+	"RABuffs", "RaidAchievement", "RaidAchievement_AchieveReminder", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidTracker", "RaidyCheck", "RandomPet30", "RAQ", "ReagentRestocker", "Recap", "RecipeBook", "RecipeRadar", "Recount", "REFlex", "ReforgeLite", "Reforgenator", "Reforgerade", "RicoMiniMap",
 	"SayGMOTD", "ScrollMaster", "ShadowDancer3", "sienasGemViewer", "Skada", "Skillet", "Smoker", "SmoothQuest", "SnapShot", "Spew", "Squeenix", "sRaidFrames",
 	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "TourGuide", "TradeSkillMaster", "TrinketBar", "Tukui", "TwinValkyr_shieldmonitor",
 	"UberQuest", "UrbanAchiever",
 	"vBagnon", "Vendorizer", "Vendomatic", "VendorSearch", "Violation", "Visor2_GUI", "Volumizer", "VuhDo", "VuhDoOptions",
 	"Warden", "WeakAuras", "WebDKP", "Wholly", "WIM", "WoWEquip", "WowLua", "WoWPro", "WTFLatencyMeter",
 	"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
-	"zfpoison", "ZOMGBuffs"
+	"zfpoison", "ZOMGBuffs", "ZygorGuidesViewer",
 }
 aObj.addonsToSkin = {}
 for _, v in pairs(addonSkins) do
