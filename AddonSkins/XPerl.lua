@@ -15,10 +15,8 @@ end
 function aObj:XPerl()
 
 	-- Frame and Border colours
-	local c = self.db.profile.Backdrop
-	XPerlDB.colour.frame = {r = c.r, g = c.g, b = c.b, a = c.a}
-	local c = self.db.profile.BackdropBorder
-	XPerlDB.colour.border = {r = c.r, g = c.g, b = c.b, a = c.a}
+	XPerlDB.colour.frame = {r = self.bColour[1], g = self.bColour[2], b = self.bColour[3], a = self.bColour[4]}
+	XPerlDB.colour.border = {r = self.bbColour[1], g = self.bbColour[2], b = self.bbColour[3], a = self.bbColour[4]}
 	-- Gradient colours
 	local c = self.db.profile.GradientMin
 	XPerlDB.colour.gradient.e = {r = c.r, g = c.g, b = c.b, a = c.a}
@@ -53,7 +51,6 @@ function aObj:XPerl_Player()
 end
 
 function aObj:XPerl_Target()
-
 
 	local function skinClassIcon(frame)
 
@@ -129,9 +126,9 @@ function aObj:XPerl_RaidHelper()
 
 	self:moveObject{obj=XPerl_Target_AssistFrame, y=1}
 
+	-- tooltip
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then XPerl_BottomTip:SetBackdrop(self.Backdrop[1]) end
-		self:skinTooltip(XPerl_BottomTip)
+		self:add2Table(self.ttList, "XPerl_BottomTip")
 	end
 
 end
@@ -159,7 +156,7 @@ function aObj:XPerl_Options()
 	self:moveObject{obj=XPerl_Options_Player_BiggerGap, x=4}
 	self:skinEditBox{obj=XPerl_Options_Player_Gap, regs={9}}
 	-- party alignment
-	self:skinDropDown{obj=XPerl_Party_Anchor}
+	self:skinDropDown{obj=XPerl_Options_Party_Anchor}
 	self:moveObject{obj=XPerl_Options_Party_Gap, x=-6}
 	self:moveObject{obj=XPerl_Options_Party_BiggerGap, x=6}
 	self:skinEditBox{obj=XPerl_Options_Party_Gap, regs={9}}
@@ -194,13 +191,12 @@ function aObj:XPerl_Options()
 		end
 	end
 	self:addSkinFrame{obj=XPerl_Options_Raid_Options_Custom, x1=-2, y1=2, x2=2}
--->>-- Custom Raid Highlights Config
+-->>-- Custom Raid Highlights Config (appears when Configure button is pressed)
 	self:skinEditBox{obj=XPerl_Custom_ConfigNew_Zone, regs={9}}
 	self:skinEditBox{obj=XPerl_Custom_ConfigNew_Search, regs={9}}
 	self:addSkinFrame{obj=XPerl_Custom_ConfigzoneList, y1=2, y2=-3}
 	self:skinScrollBar{obj=XPerl_Custom_ConfigdebuffsscrollBar}
 	self:addSkinFrame{obj=XPerl_Custom_Configdebuffs, y1=2, y2=-3}
---	self:glazeStatusBar(XPerl_Custom_ConfigiconCollect)
 	self:addSkinFrame{obj=XPerl_Custom_Config, y1=-1}
 -->>-- All Options subpanel
 	self:addSkinFrame{obj=XPerl_Options_All_Options_AddOns, x1=-2, y1=2, x2=2}
@@ -221,7 +217,16 @@ function aObj:XPerl_Options()
 	self:addSkinFrame{obj=XPerl_OptionsQuestionDialog}
 -->>-- Tooltip Config
 	self:addSkinFrame{obj=XPerl_Options_TooltipConfig}
-	-- skin buttons
-	self:skinAllButtons{obj=XPerl_Options}
+
+-->>-- skin buttons
+	if self.modBtns then
+		self:skinButton{obj=XPerl_Options_CloseButton, cb=true}
+		self:skinButton{obj=XPerl_Options_Global_Options_Reset}
+		self:skinButton{obj=XPerl_Options_Layout_Save}
+		self:skinButton{obj=XPerl_Options_Layout_Load}
+		self:skinButton{obj=XPerl_Options_Player_AlignTop}
+		self:skinButton{obj=XPerl_Options_Raid_AlignTop}
+		self:skinButton{obj=XPerl_Options_Raid_AlignLeft}
+	end
 
 end

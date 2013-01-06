@@ -38,12 +38,7 @@ function aObj:Pawn()
 	self:skinScrollBar{obj=PawnUICompareScrollFrame}
 -->>-- Gems Tab
 	self:keepFontStrings(PawnUIGemsTabPage)
-	if not aVer:find("1.7") then
-		self:skinDropDown{obj=PawnUIFrame_GemQualityDropDown}
-		self:skinDropDown{obj=PawnUIFrame_MetaGemQualityDropDown}
-	else
-		self:skinEditBox{obj=PawnUIFrame_GemQualityLevelBox, regs={9}}
-	end
+	self:skinEditBox{obj=PawnUIFrame_GemQualityLevelBox, regs={9}}
 	self:skinScrollBar{obj=PawnUIGemScrollFrame}
 -->>-- Options Tab
 	self:skinEditBox(PawnUIFrame_DigitsBox, {9})
