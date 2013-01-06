@@ -1,3 +1,13 @@
+b5.16357.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Collectinator skin
+	Updated ItemUpgradeUI skin
+	Updated Patch check
+	Updated QuestInfo skin
+	Updated WhoFrame skin
+
 b5.16309.7
 Jncl:
 	ToDo.txt
