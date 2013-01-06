@@ -1194,11 +1194,11 @@ function aObj:Options()
 							if _G.IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
 								self:checkAndRun("BattlefieldMinimap")
 							end
-						elseif info[#info] == "gloss" and self.bfminimapskin then
+						elseif info[#info] == "gloss" and _G.BattlefieldMinimap.sf then
 							if value then
-								_G.RaiseFrameLevel(self.bfminimapskin)
+								_G.RaiseFrameLevel(_G.BattlefieldMinimap.sf)
 							else
-								_G.LowerFrameLevel(self.bfminimapskin)
+								_G.LowerFrameLevel(_G.BattlefieldMinimap.sf)
 							end
 						end
 					end,
@@ -1432,11 +1432,11 @@ function aObj:Options()
 					set = function(info, value)
 						db.Minimap[info[#info]] = value
 						if info[#info] == "skin" then self:checkAndRun("Minimap")
-						elseif info[#info] == "gloss" and self.minimapskin then
+						elseif info[#info] == "gloss" and _G.Minimap.sf then
 							if value then
-								_G.RaiseFrameLevel(self.minimapskin)
+								_G.RaiseFrameLevel(_G.Minimap.sf)
 							else
-								_G.LowerFrameLevel(self.minimapskin)
+								_G.LowerFrameLevel(_G.Minimap.sf)
 							end
 						elseif info[#info] == "btns" then self:checkAndRun("MinimapButtons")
 						elseif info[#info] == "style" then

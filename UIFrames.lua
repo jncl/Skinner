@@ -196,11 +196,11 @@ function aObj:BattlefieldMinimap() -- LoD
 	self:moveObject{obj=_G.BattlefieldMinimapTabText, y=-1} -- move text down
 
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
-	self.bfminimapskin = self:addSkinFrame{obj=_G.BattlefieldMinimap, ft=ftype, aso={bd=8}, x1=-4, y1=4, x2=-1, y2=-1}
+	self:addSkinFrame{obj=_G.BattlefieldMinimap, ft=ftype, aso={bd=8}, x1=-4, y1=4, x2=-1, y2=-1}
 	if self.db.profile.BattlefieldMm.gloss then
-		_G.RaiseFrameLevel(self.bfminimapskin)
+		_G.RaiseFrameLevel(_G.BattlefieldMinimap.sf)
 	else
-		_G.LowerFrameLevel(self.bfminimapskin)
+		_G.LowerFrameLevel(_G.BattlefieldMinimap.sf)
 	end
 	_G.BattlefieldMinimapCorner:SetTexture(nil)
 	_G.BattlefieldMinimapBackground:SetTexture(nil)
@@ -1586,11 +1586,11 @@ function aObj:Minimap()
 -->>-- Minimap
 	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
-	self.minimapskin = self:addSkinFrame{obj=_G.Minimap, ft=ftype, aso={bd=8}, ofs=5}
+	self:addSkinFrame{obj=_G.Minimap, ft=ftype, nb=true, aso={bd=8}, ofs=5}
 	if self.db.profile.Minimap.gloss then
-		_G.RaiseFrameLevel(self.minimapskin)
+		_G.RaiseFrameLevel(_G.Minimap.sf)
 	else
-		_G.LowerFrameLevel(self.minimapskin)
+		_G.LowerFrameLevel(_G.Minimap.sf)
 	end
 
 -->>-- Minimap Backdrop Frame
@@ -1653,8 +1653,7 @@ function aObj:MinimapButtons()
 						or aObj:hasTextInTexture(reg, "TrackingBorder")
 						then
 							reg:SetTexture(nil)
-							obj:SetWidth(32)
-							obj:SetHeight(32)
+							obj:SetSize(32, 32)
 							if not minBtn then
 								if objType == "Button" then
 									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==_G.QueueStatusMinimapButton and true or nil, ft=ftype} -- reparent to ensure Eye is visible
@@ -1681,8 +1680,7 @@ function aObj:MinimapButtons()
 	local asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
 	-- Calendar button
 	local obj = _G.GameTimeFrame
-	obj:SetWidth(26)
-	obj:SetHeight(26)
+	obj:SetSize(26, 26)
 	obj:GetNormalTexture():SetTexCoord(0.1, 0.31, 0.16, 0.6)
 	obj:GetPushedTexture():SetTexCoord(0.6, 0.81, 0.16, 0.6)
 	self:addSkinFrame{obj=obj, aso=asopts, x1=-4, y1=4, x2=4, y2=-4}
@@ -1711,10 +1709,8 @@ function aObj:MinimapButtons()
 	-- change Mail icon
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	-- resize other buttons
-	_G.MiniMapMailFrame:SetWidth(28)
-	_G.MiniMapMailFrame:SetHeight(28)
-	_G.MiniMapVoiceChatFrame:SetWidth(32)
-	_G.MiniMapVoiceChatFrame:SetHeight(32)
+	_G.MiniMapMailFrame:SetSize(28, 28)
+	_G.MiniMapVoiceChatFrame:SetSize(32, 32)
 	_G.MiniMapVoiceChatFrameIcon:ClearAllPoints()
 	_G.MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
 	-- MiniMap Tracking
@@ -2083,6 +2079,10 @@ function aObj:PetBattleUI()
 		-- FloatingBattlePet Tooltip
 		_G.FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
 		self:addSkinFrame{obj=_G.FloatingBattlePetTooltip, ft=ftype}
+		-- FloatingPetBattleAbility Tooltip
+		_G.FloatingPetBattleAbilityTooltip.Delimiter1:SetTexture(nil)
+		_G.FloatingPetBattleAbilityTooltip.Delimiter2:SetTexture(nil)
+		self:addSkinFrame{obj=_G.FloatingPetBattleAbilityTooltip, ft=ftype}
 		-- BattlePetTooltip (used for caged battle pets in inventory)
 		self:addSkinFrame{obj=_G.BattlePetTooltip, ft=ftype}
 	end
