@@ -14,44 +14,11 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I	BankItems, reported by dwarven, 26.12.12
-		- ..\AddOns\Skinner\Skinner.lua line 540: attempt to index field 'obj' (a nil value)
-			Debug:
-			Skinner\Skinner.lua:540:
-			Skinner\Skinner.lua:509
-			   (tail call): ?
-			Skinner\SkinMe\BankItems.lua:17:
-			Skinner\SkinMe\BankItems.lua:6
-			   (tail call): ?
+	I	ChatTabs, reported by hammer2, 07.01.13
+		- add option so tabs don't fade
 
-≈	S	ZygorGuidesViewer, requested by tordenflesk, 27.12.12
+√	I	ZygorGuidesViewer, reported by tordenflesk, 10.01.13
+		- frame remains when controls are hidden
 
-√	I	XPerl, reported by AnekM, 27.12.12
-		- It leaves behind a black box kinda the size of a pet frame after you close the xperl config.
-		- ..\AddOns\Skinner\Skinner.lua line 409: attempt to index field 'sb' (a nil value)
-			Debug:
-			Skinner\Skinner.lua:409:
-			Skinner\Skinner.lua:409
-			(tail call): ?
-			[C]: Hide()
-			XPerl_Party\XPerl_Party.lua:1378: XPerl_Party_Set_Bits1()
-			XPerl_Party\XPerl_Party.lua:1605:
-			XPerl_Party\XPerl_Party.lua:1591
-			[C]: pcall()
-			XPerl\XPerl_Init.lua:153: XPerl_pcall()
-			XPerl\XPerl_Init.lua:690: XPerl_OptionActions()
-			XPerl\XPerl.lua:877: XPerl_LockFrames()
-
-√	I	Pawn, reported by lexusnexus, 28.12.12
-		- \AddOns\Skinner\Skinner.lua line 224: table index is nil
-			Debug: Skinner\Skinner.lua:1354
-			Skinner\Skinner.lua:1319
-			Skinner\Skinner.lua:1411 skinDropDown()
-			Skinner\SkinMe\Pawn.lua:42
-			Skinner\SkinMe\Pawn.lua:4
-
-√	S	RAQ, requested by frostalotz, 03.01.13
-
-√	S	Prospect Bar, requested by frostalotz, 03.01.13
-
-√	S	Inbox Mailbag, requested by frostalotz, 03.01.13
+√	I	Chatter, reported by NeoZeus, 10.01.13
+		- Skinner-b5.16357.2\SkinMe\Chatter-v1.4.1.lua:5: attempt to index global "Chatter" (a nil value)
