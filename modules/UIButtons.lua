@@ -116,16 +116,17 @@ end
 
 function module:skinButton(opts)
 --[[
-	as = use applySkin rather than addSkinButton, used when text appears behind the gradient
-	cb = close button
-	cb2 = close button style 2 (based upon OptionsButtonTemplate)
-	mp = minus/plus texture on a larger button
-	mp2 = minus/plus button
-	ob = other button, text supplied
-	ob2 = other button style 2, text supplied
-	plus = use plus sign
-	anim = reparent skinButton to avoid whiteout issues caused by animations
-	other options as per addSkinButton
+	Calling parameters:
+		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
+		cb = close button
+		cb2 = close button style 2 (based upon OptionsButtonTemplate)
+		mp = minus/plus texture on a larger button
+		mp2 = minus/plus button
+		ob = other button, text supplied
+		ob2 = other button style 2, text supplied
+		plus = use plus sign
+		anim = reparent skinButton to avoid whiteout issues caused by animations
+		other options as per addSkinButton
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object skinButton\n" .. debugstack())
