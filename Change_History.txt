@@ -1,3 +1,13 @@
+b5.16357.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated button & drop down skins
+	Updated UnitFrames skin
+	Updated Minimap & MinimapButtons skins, options
+	Updated BankItems, BattlePetCount, Pawn & XPerl skins
+	Skinned InboxMailBag, ProspectBar, RAQ & ZygorGuidesViewer
+
 b5.16357.1
 Jncl:
 	ToDo.txt
