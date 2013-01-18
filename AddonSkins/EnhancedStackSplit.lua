@@ -4,9 +4,7 @@ if not aObj:isAddonEnabled("EnhancedStackSplit") then return end
 function aObj:EnhancedStackSplit()
 	if not self.db.profile.StackSplit then return end
 
-	local ssfsf = self.skinFrame[StackSplitFrame]
-
-	if not ssfsf then
+	if not StackSplitFrame.sf then
 		self:ScheduleTimer("EnhancedStackSplit", 0.2) -- wait for 2/10th second for frame to be skinned
 		return
 	end
@@ -21,20 +19,20 @@ function aObj:EnhancedStackSplit()
 	-- hook this to handle XL mode
 	self:SecureHookScript(EnhancedStackSplitXLModeButton, "OnClick", function(this)
 		if self:getInt(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
-			ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
+			StackSplitFrame.sf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
 		else
-			ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -24)
+			StackSplitFrame.sf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -24)
 		end
 	end)
 	-- resize skin frame if in XL mode
 	if self:getInt(EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
-		ssfsf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
+		StackSplitFrame.sf:SetPoint("BOTTOMRIGHT", StackSplitFrame, "BOTTOMRIGHT", 0, -45)
 	end
 
 	self:keepFontStrings(EnhancedStackSplitTopTextureFrame)
-	self:keepFontStrings(EnhancedStackSplitBottomTextureFrame)
-	self:keepFontStrings(EnhancedStackSplitBottom2TextureFrame)
-	self:keepFontStrings(EnhancedStackSplitAutoTextureFrame)
+	self:keepRegions(EnhancedStackSplitBottomTextureFrame, {})
+	self:keepRegions(EnhancedStackSplitBottom2TextureFrame, {})
+	self:keepRegions(EnhancedStackSplitAutoTextureFrame, {})
 
 	-- skin buttons
 	self:skinAllButtons{obj=StackSplitFrame}

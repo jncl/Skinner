@@ -6,8 +6,7 @@ function aObj:ZygorGuidesViewer()
 	local ZGV = ZygorGuidesViewer
 
 	-- Viewer frame
-	self:addSkinFrame{obj=ZGV.Frame, nb=true, anim=true, ofs=4}
-	ZGV.Frame.Border:SetBackdrop(nil)
+	self:addSkinFrame{obj=ZGV.Frame.Border, nb=true, anim=true, ofs=4}
 
 	-- hook this to skin the menu frame
 	self:SecureHook(ZGV.Menu, "CreateFrame", function(this)
@@ -59,5 +58,25 @@ function aObj:ZygorGuidesViewer()
 	self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Main, kfs=true}
 	self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Enemy, kfs=true}
 	self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Ally, kfs=true}
+
+	-- Sell Greys button
+	if self.modBtns then
+		self:SecureHookScript(ZGV.Loot.Events, "OnEvent", function(this, event)
+			if event == "MERCHANT_SHOW" then
+				if ZGV.db.profile.showgreysellbutton then
+					self:skinButton{obj=ZGV.Loot.greysell}
+				end
+				self:Unhook(ZGV.Loot.Events, "OnEvent")
+			end
+		end)
+	end
+
+	-- AutoEquip Popup
+	self:SecureHook(ZGV.ItemScore.AutoEquip, "CreatePopup", function(this)
+		self:addSkinFrame{obj=this.Popup, nb=true, ofs=4}
+		self:skinButton{obj=this.Popup.acceptbutton}
+		self:skinButton{obj=this.Popup.declinebutton}
+		self:Unhook(ZGV.ItemScore.AutoEquip, "CreatePopup")
+	end)
 
 end

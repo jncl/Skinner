@@ -1,11 +1,13 @@
-if not Skinner:isAddonEnabled("Chatter") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Chatter") then return end
 
-function Skinner:Chatter()
+function aObj:Chatter()
+
+	local Chatter = LibStub("AceAddon-3.0"):GetAddon("Chatter")
 
 	if Chatter:GetModule("Chat Copy") then
-		self:removeRegions(ChatterCopyScroll)
 		self:skinScrollBar(ChatterCopyScroll)
-		self:applySkin(ChatterCopyFrame)
+		self:addSkinFrame{obj=ChatterCopyFrame}
 	end
 
 	-- disable Chatter module if enabled
