@@ -1663,93 +1663,191 @@ function aObj:PetJournal() -- LoD
 
 end
 
-function aObj:PVPFrame()
-	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
-	self.initialized.PVPFrame = true
+if not aObj.isPTR then
+	function aObj:PVPFrame()
+		if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
+		self.initialized.PVPFrame = true
 
-	self:removeInset(_G.PVPFrame.topInset)
-	local bar = _G.PVPFrameConquestBar
-	bar.progress:SetTexture(self.sbTexture)
-	bar.cap1:SetTexture(self.sbTexture)
-	bar.cap2:SetTexture(self.sbTexture)
-	bar:DisableDrawLayer("BORDER")
-	self:skinTabs{obj=_G.PVPFrame}
-	self:addSkinFrame{obj=_G.PVPFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:removeMagicBtnTex(_G.PVPFrameLeftButton)
-	self:removeMagicBtnTex(_G.PVPFrameRightButton)
--->>-- Honor frame
-	self:keepFontStrings(_G.PVPFrame.panel1)
-	self:skinScrollBar{obj=_G.PVPFrame.panel1.bgTypeScrollFrame}
-	self:skinSlider{obj=_G.PVPHonorFrameInfoScrollFrameScrollBar}
-	_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
-	_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
--->>-- Conquest frame
-	self:keepFontStrings(_G.PVPFrame.panel2)
-	_G.PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
-	_G.PVPFrame.panel2.infoButton:DisableDrawLayer("BORDER")
--->>-- Team Management frame a.k.a. Arena
-	self:keepFontStrings(_G.PVPFrame.panel3)
-	self:addButtonBorder{obj=_G.PVPTeamManagementFrame.weeklyToggleRight, ofs=-2}
-	self:keepFontStrings(_G.PVPTeamManagementFrameWeeklyDisplay)
-	self:skinUsingBD{obj=_G.PVPTeamManagementFrameWeeklyDisplay}
-	self:addButtonBorder{obj=_G.PVPTeamManagementFrame.weeklyToggleLeft, ofs=-2}
-	_G.PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
-	_G.PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
-	_G.PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
-	_G.PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
-	_G.PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
-	_G.PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
-	self:skinFFColHeads("PVPTeamManagementFrameHeader")
-	for i = 1, 4 do
-		_G["PVPTeamManagementFrameHeader" .. i]:SetHeight(20)
-	end
-	self:skinScrollBar{obj=_G.PVPFrame.panel3.teamMemberScrollFrame}
-	self:skinDropDown{obj=_G.PVPTeamManagementFrameTeamDropDown}
--->>-- WarGames frame
-	_G.PVPFrame.panel4:DisableDrawLayer("ARTWORK")
-	self:skinSlider{obj=_G.WarGamesFrameScrollFrameScrollBar, adj=-4}
-	self:skinScrollBar{obj=_G.WarGamesFrameInfoScrollFrame}
-	_G.WarGamesFrameBGTex:SetAlpha(0)
-	_G.WarGamesFrameInfoScrollFrame.scrollBarArtTop:SetAlpha(0)
-	_G.WarGamesFrameInfoScrollFrame.scrollBarArtBottom:SetAlpha(0)
-	_G.WarGamesFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	for i = 1, #_G.WarGamesFrame.scrollFrame.buttons do
-		local btn = _G.WarGamesFrame.scrollFrame.buttons[i]
-		self:skinButton{obj=btn.header, mp=true, plus=true}
-		local btnName = btn.warGame:GetName()
-		_G[btnName .. "Bg"]:SetAlpha(0)
-		_G[btnName .. "Border"]:SetAlpha(0)
-		self:addButtonBorder{obj=btn.warGame, relTo=btn.warGame.icon}
-	end
-	self:SecureHook("WarGamesFrame_Update", function()
+		self:removeInset(_G.PVPFrame.topInset)
+		local bar = _G.PVPFrameConquestBar
+		bar.progress:SetTexture(self.sbTexture)
+		bar.cap1:SetTexture(self.sbTexture)
+		bar.cap2:SetTexture(self.sbTexture)
+		bar:DisableDrawLayer("BORDER")
+		self:skinTabs{obj=_G.PVPFrame}
+		self:addSkinFrame{obj=_G.PVPFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:removeMagicBtnTex(_G.PVPFrameLeftButton)
+		self:removeMagicBtnTex(_G.PVPFrameRightButton)
+	-->>-- Honor frame
+		self:keepFontStrings(_G.PVPFrame.panel1)
+		self:skinScrollBar{obj=_G.PVPFrame.panel1.bgTypeScrollFrame}
+		self:skinSlider{obj=_G.PVPHonorFrameInfoScrollFrameScrollBar}
+		_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.winReward:DisableDrawLayer("BACKGROUND")
+		_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.lossReward:DisableDrawLayer("BACKGROUND")
+	-->>-- Conquest frame
+		self:keepFontStrings(_G.PVPFrame.panel2)
+		_G.PVPFrame.panel2.winReward:DisableDrawLayer("BACKGROUND")
+		_G.PVPFrame.panel2.infoButton:DisableDrawLayer("BORDER")
+	-->>-- Team Management frame a.k.a. Arena
+		self:keepFontStrings(_G.PVPFrame.panel3)
+		self:addButtonBorder{obj=_G.PVPTeamManagementFrame.weeklyToggleRight, ofs=-2}
+		self:keepFontStrings(_G.PVPTeamManagementFrameWeeklyDisplay)
+		self:skinUsingBD{obj=_G.PVPTeamManagementFrameWeeklyDisplay}
+		self:addButtonBorder{obj=_G.PVPTeamManagementFrame.weeklyToggleLeft, ofs=-2}
+		_G.PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
+		_G.PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
+		_G.PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
+		_G.PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
+		_G.PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
+		_G.PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
+		self:skinFFColHeads("PVPTeamManagementFrameHeader")
+		for i = 1, 4 do
+			_G["PVPTeamManagementFrameHeader" .. i]:SetHeight(20)
+		end
+		self:skinScrollBar{obj=_G.PVPFrame.panel3.teamMemberScrollFrame}
+		self:skinDropDown{obj=_G.PVPTeamManagementFrameTeamDropDown}
+	-->>-- WarGames frame
+		_G.PVPFrame.panel4:DisableDrawLayer("ARTWORK")
+		self:skinSlider{obj=_G.WarGamesFrameScrollFrameScrollBar, adj=-4}
+		self:skinScrollBar{obj=_G.WarGamesFrameInfoScrollFrame}
+		_G.WarGamesFrameBGTex:SetAlpha(0)
+		_G.WarGamesFrameInfoScrollFrame.scrollBarArtTop:SetAlpha(0)
+		_G.WarGamesFrameInfoScrollFrame.scrollBarArtBottom:SetAlpha(0)
+		_G.WarGamesFrameDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 		for i = 1, #_G.WarGamesFrame.scrollFrame.buttons do
-			if _G.WarGamesFrame.scrollFrame.buttons[i] then self:checkTex{obj=_G.WarGamesFrame.scrollFrame.buttons[i].header} end
+			local btn = _G.WarGamesFrame.scrollFrame.buttons[i]
+			self:skinButton{obj=btn.header, mp=true, plus=true}
+			local btnName = btn.warGame:GetName()
+			_G[btnName .. "Bg"]:SetAlpha(0)
+			_G[btnName .. "Border"]:SetAlpha(0)
+			self:addButtonBorder{obj=btn.warGame, relTo=btn.warGame.icon}
 		end
-	end)
-	self:removeMagicBtnTex(_G.WarGameStartButton)
+		self:SecureHook("WarGamesFrame_Update", function()
+			for i = 1, #_G.WarGamesFrame.scrollFrame.buttons do
+				if _G.WarGamesFrame.scrollFrame.buttons[i] then self:checkTex{obj=_G.WarGamesFrame.scrollFrame.buttons[i].header} end
+			end
+		end)
+		self:removeMagicBtnTex(_G.WarGameStartButton)
 
--->>-- Static Popup Special frame
-	self:addSkinFrame{obj=_G.PVPFramePopup, ft=ftype, kfs=true, x1=9, y1=-9, x2=-7, y2=9}
+	-->>-- Static Popup Special frame
+		self:addSkinFrame{obj=_G.PVPFramePopup, ft=ftype, kfs=true, x1=9, y1=-9, x2=-7, y2=9}
 
-	-- Hook this to suppress the PVP Banner Header from being displayed when new team created
-	self:SecureHook("CreateArenaTeam", function(size, name, ...)
-		-- self:Debug("CreateArenaTeam: [%s, %s]", size,name)
-		if size == 2 then
-			_G.PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
-			_G.PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
-		elseif size == 3 then
-			_G.PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
-			_G.PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
-		elseif size == 5 then
-			_G.PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
-			_G.PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
+		-- Hook this to suppress the PVP Banner Header from being displayed when new team created
+		self:SecureHook("CreateArenaTeam", function(size, name, ...)
+			-- self:Debug("CreateArenaTeam: [%s, %s]", size,name)
+			if size == 2 then
+				_G.PVPFrame.panel3.flag2.NormalHeader:SetTexture(nil)
+				_G.PVPFrame.panel3.flag2.GlowHeader:SetTexture(nil)
+			elseif size == 3 then
+				_G.PVPFrame.panel3.flag3.NormalHeader:SetTexture(nil)
+				_G.PVPFrame.panel3.flag3.GlowHeader:SetTexture(nil)
+			elseif size == 5 then
+				_G.PVPFrame.panel3.flag5.NormalHeader:SetTexture(nil)
+				_G.PVPFrame.panel3.flag5.GlowHeader:SetTexture(nil)
+			end
+		end)
+
+		-- N.B. PVPBanner frame a.k.a. ArenaRegistrar
+
+	end
+else
+	function aObj:PVPUI()
+		if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
+		self.initialized.PVPFrame = true
+
+		self:removeInset(_G.PVPUIFrame.LeftInset)
+		self:skinTabs{obj=_G.PVPUIFrame, lod=true}
+		self:addSkinFrame{obj=_G.PVPUIFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
+		for i = 1, 3 do
+			local btn = _G.PVPQueueFrame["CategoryButton" .. i]
+			btn.Background:SetTexture(nil)
+			btn.Ring:SetTexture(nil)
+			local tex = btn:GetHighlightTexture()
+			tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
+			tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
 		end
-	end)
+		-- hook this to change selected texture
+		self:SecureHook("PVPQueueFrame_SelectButton", function(index)
+			for i = 1, 3 do
+				local btn = _G.PVPQueueFrame["CategoryButton" .. i]
+				if i == index then
+					btn.Background:SetTexture([[Interface\HelpFrame\HelpButtons]])
+					btn.Background:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
+				else
+					btn.Background:SetTexture(nil)
+				end
+			end
+		end)
+		_G.PVPQueueFrame_SelectButton(1) -- select Honor button
+		_G.PVPUIFrame.Shadows:DisableDrawLayer("OVERLAY")
+		-- Honor Frame
+		self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
+		self:removeInset(_G.HonorFrame.Inset)
+		self:skinSlider{obj=_G.HonorFrameSpecificFrameScrollBar, adj=-4}
+		for i = 1, #_G.HonorFrame.SpecificFrame.buttons do
+			local btn = _G.HonorFrame.SpecificFrame.buttons[i]
+			btn.Bg:SetTexture(nil)
+			btn.Border:SetTexture(nil)
+		end
+		_G.HonorFrame.BonusFrame.RandomBGButton.NormalTexture:SetTexture(nil)
+		_G.HonorFrame.BonusFrame.CallToArmsButton.NormalTexture:SetTexture(nil)
+		_G.HonorFrame.BonusFrame.WorldPVP1Button.NormalTexture:SetTexture(nil)
+		_G.HonorFrame.BonusFrame.WorldPVP2Button.NormalTexture:SetTexture(nil)
+		_G.HonorFrame.BonusFrame:DisableDrawLayer("BACKGROUND")
+		_G.HonorFrame.BonusFrame:DisableDrawLayer("BORDER")
+		_G.HonorFrame.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
+		self:removeMagicBtnTex(_G.HonorFrame.SoloQueueButton)
+		self:removeMagicBtnTex(_G.HonorFrame.GroupQueueButton)
+		-- Conquest Frame
+		_G.ConquestFrame:DisableDrawLayer("BACKGROUND")
+		_G.ConquestFrame:DisableDrawLayer("BORDER")
+		_G.ConquestFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
+		local bar = _G.ConquestFrame.ConquestBar
+		bar:DisableDrawLayer("BORDER")
+		bar.progress:SetTexture(self.sbTexture)
+		bar.cap1:SetTexture(self.sbTexture)
+		bar.cap2:SetTexture(self.sbTexture)
+		self:removeInset(_G.ConquestFrame.Inset)
+		_G.ConquestFrame.Arena2v2.NormalTexture:SetTexture(nil)
+		_G.ConquestFrame.Arena3v3.NormalTexture:SetTexture(nil)
+		_G.ConquestFrame.Arena5v5.NormalTexture:SetTexture(nil)
+		_G.ConquestFrame.RatedBG.NormalTexture:SetTexture(nil)
+		self:removeMagicBtnTex(_G.ConquestFrame.JoinButton)
+		self:skinDropDown{obj=_G.ConquestFrame.ArenaInviteMenu}
+		-- War Games Frame
+		self:removeInset(_G.WarGamesFrame.RightInset)
+		self:skinSlider{obj=_G.WarGamesFrameScrollFrameScrollBar, adj=-4}
+		for i = 1, #_G.WarGamesFrame.scrollFrame.buttons do
+			local btn = _G.WarGamesFrame.scrollFrame.buttons[i]
+			self:skinButton{obj=btn.Header, mp=true}
+			btn.Entry.Bg:SetTexture(nil)
+			btn.Entry.Border:SetTexture(nil)
+		end
+		self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar, adj=-4}
+		_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
+		self:removeMagicBtnTex(_G.WarGameStartButton)
+		-- Arena Team Frame
+		for i = 1, 3 do
+			local btn = _G.PVPArenaTeamsFrame["Team" .. i]
+			btn.Background:SetTexture(nil)
+			btn.Flag.FlagGrabber:SetTexture(nil)
+			local tex = btn:GetHighlightTexture()
+			tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
+			tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
+		end
+		_G.ArenaTeamFrame:DisableDrawLayer("BACKGROUND")
+		_G.ArenaTeamFrame:DisableDrawLayer("BORDER")
+		self:removeInset(_G.ArenaTeamFrame.TopInset)
+		_G.ArenaTeamFrame.TopShadowOverlay:DisableDrawLayer("OVERLAY")
+		self:removeInset(_G.ArenaTeamFrame.WeeklyDisplay)
+		self:skinFFColHeads("ArenaTeamFrameHeader")
+		self:removeInset(_G.ArenaTeamFrame.BottomInset)
+		self:skinDropDown{obj=_G.ArenaTeamMemberDropDown}
+		self:removeMagicBtnTex(_G.ArenaTeamFrame.AddMemberButton)
 
-	-- N.B. PVPBanner frame a.k.a. ArenaRegistrar
-
+	end
 end
 
 function aObj:QuestLog()
@@ -1797,6 +1895,8 @@ function aObj:QuestLog()
 	_G.QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=_G.QuestLogDetailScrollFrame}
 	self:addSkinFrame{obj=_G.QuestLogDetailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+
+-->>-- QuestInfo
 	self:QuestInfo()
 
 end
@@ -2011,7 +2111,7 @@ function aObj:SpellBookFrame()
 		_G[btnName .. "SlotFrame"]:SetAlpha(0)
 		btn.UnlearnedFrame:SetAlpha(0)
 		btn.TrainFrame:SetAlpha(0)
-		self:addButtonBorder{obj=_G[btnName], sec=true}
+		self:addButtonBorder{obj=_G[btnName], sec=true, reParent={btn.FlyoutArrow, _G[btnName .. "AutoCastable"]}}
 	end
 -->>-- Tabs (side)
 	for i = 1, _G.MAX_SKILLLINE_TABS do
@@ -2055,7 +2155,17 @@ function aObj:TalentUI() -- LoD
 	self.initialized.TalentUI = true
 
 	self:skinTabs{obj=_G.PlayerTalentFrame, lod=true}
-	self:addSkinFrame{obj=_G.PlayerTalentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	if not self.isPTR then
+		self:addSkinFrame{obj=_G.PlayerTalentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	else
+		self:addSkinFrame{obj=_G.PlayerTalentFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:skinButton{obj=_G.PlayerTalentFrameCloseButton, cb=true}
+		self:skinButton{obj=PlayerTalentFrameActivateButton}
+		self:skinButton{obj=_G.PlayerTalentFrameSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFrameSpecialization}
+		self:skinButton{obj=_G.PlayerTalentFrameTalents.learnButton, anim=true, parent=_G.PlayerTalentFrameTalents}
+		self:skinButton{obj=_G.PlayerTalentFramePetSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFramePetSpecialization}
+	end
+
 	-- Tab1 (Specialization)
 	self:removeRegions(_G.PlayerTalentFrameSpecialization, {1, 2, 3, 4, 5, 6})
 	_G.PlayerTalentFrameSpecialization.MainHelpButton.Ring:SetTexture(nil)

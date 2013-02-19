@@ -36,7 +36,7 @@ do
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.0.5"
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.2.0"
 
 end
 

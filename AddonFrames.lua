@@ -15,6 +15,8 @@ local blizzLoDFrames = {
 	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "PetJournal", "TimeManager",
 	--	ArenaUI the unitframes are skinned in UnitFrames.lua
 }
+if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "PVPUI") end -- player
+if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "QuestChoice") end -- npc
 -- optional frames
 if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- ui
 local blizzLoD = {}
@@ -41,7 +43,6 @@ function aObj:BlizzardFrames()
 			["LootHistory"] = true,
 			["MirrorTimers"] = true,
 			["OverrideActionBar"] = true,
-			["PVPFrame"] = true,
 			["QuestLog"] = false, -- checked below
 			["ReadyCheck"] = true,
 			["RolePollPopup"] = true,
@@ -143,7 +144,11 @@ function aObj:BlizzardFrames()
 		},
 	}
 
+	if not self.isPTR then self.blizzFrames.player["PVPFrame"] = true end
+	if self.isPTR then self.blizzFrames.player["PVPUI"] = false end -- LoD
+	if self.isPTR then self.blizzFrames.npc["QuestChoice"] = false end -- LoD
 	-- optional frames
+	if aObj.isPTR then self.blizzFrames.ui["FeedbackUI"] = false end
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 
 	-- handle non standard ones here

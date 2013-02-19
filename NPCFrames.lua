@@ -159,7 +159,9 @@ function aObj:BlackMarketUI() -- LoD
 	self:keepFontStrings(_G.BlackMarketFrame.HotDeal)
 	self:addButtonBorder{obj=_G.BlackMarketFrame.HotDeal.Item, ibt=true, relTo=_G.BlackMarketFrame.HotDeal.Item.IconTexture}
 	self:skinAllButtons{obj=_G.BlackMarketFrame.HotDeal, ft=ftype}
-	self:skinMoneyFrame{obj=_G.BlackMarketHotItemBidPrice}
+	if not self.isPTR then
+		self:skinMoneyFrame{obj=_G.BlackMarketHotItemBidPrice}
+	end
 
 	-- column headings
 	for _, v in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
@@ -359,6 +361,16 @@ function aObj:PetStableFrame()
 	self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0}
 
 end
+
+if aObj.isPTR then
+	function aObj:QuestChoice() -- LoD
+
+		-- N.B. skin option frames
+		self:addSkinFrame{obj=QuestChoiceFrame, ft=ftype, kfs=true, ofs=-130}
+
+	end
+end
+
 
 function aObj:QuestFrame()
 	if not self.db.profile.QuestFrame or self.initialized.QuestFrame then return end

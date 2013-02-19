@@ -1128,7 +1128,12 @@ function aObj:LFDFrame()
 	-- LFD Queue Frame
 	_G.LFDQueueFrameBackground:SetAlpha(0)
 	self:skinDropDown{obj=_G.LFDQueueFrameTypeDropDown}
-	self:skinScrollBar{obj=_G.LFDQueueFrameRandomScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.LFDQueueFrameRandomScrollFrame}
+	else
+		self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrameScrollBar, adj=-4}
+	end
+
 	self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
 	if self.modBtnBs then
 		self:SecureHook("LFDQueueFrameRandom_UpdateFrame", function()
@@ -1161,6 +1166,17 @@ function aObj:LFGFrame()
 	_G.LFGDungeonReadyDialog.SetBackdrop = function() end
 	_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
 	_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
+
+	-- hook new button creation
+	if self.isPTR then
+		self:RawHook("LFGRewardsFrame_SetItemButton", function(...)
+			local frame = self.hooks.LFGRewardsFrame_SetItemButton(...)
+			_G[frame:GetName() .. "NameFrame"]:SetTexture(nil)
+			self:addButtonBorder{obj=frame, libt=true}
+			return frame
+		end, true)
+	end
+
 
 end
 
@@ -1923,10 +1939,16 @@ function aObj:PetBattleUI()
 		local sfn = v == "Ally" and "sfl" or "sfr"
 		_G.PetBattleFrame[sfn] = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
 		self:applySkin{obj=_G.PetBattleFrame[sfn], bba=0, fh=45}
-		if v == "Ally" then
-			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", 420, 4)
+		if not self.isPTR then
+			xOfs = 420
 		else
-			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", -420, 4)
+			xOfs = 395
+		end
+
+		if v == "Ally" then
+			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", xOfs, 4)
+		else
+			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", xOfs * -1, 4)
 		end
 		_G.PetBattleFrame[sfn]:SetSize(350, 94)
 		_G.PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
@@ -2126,6 +2148,16 @@ function aObj:PVEFrame()
 	_G.ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
 	self:skinDropDown{obj=_G.ScenarioQueueFrame.Dropdown}
 	self:skinScrollBar{obj=_G.ScenarioQueueFrame.Random.ScrollFrame}
+	if self.isPTR then
+		for i = 1, ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
+			local btnName = "ScenarioQueueFrameRandomScrollFrameChildFrameItem" .. i
+			if _G[btnName] then
+				_G[btnName .. "NameFrame"]:SetTexture(nil)
+				self:addButtonBorder{obj=_G[btnName], libt=true}
+			end
+		end
+	end
+
 	self:skinButton{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
 	self:moveObject{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
 	self:skinScrollBar{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame}
@@ -2392,6 +2424,11 @@ function aObj:WorldMap()
 		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip3")
+	end
+
+	if self.isPTR then
+		self:removeRegions(MapBarFrame, {1, 2, 3})
+		self:glazeStatusBar(MapBarFrame, 0, MapBarFrame.FillBG)
 	end
 
 end

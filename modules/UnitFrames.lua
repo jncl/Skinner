@@ -114,10 +114,15 @@ local function skinPlayerF()
 			_G.PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 			_G.PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 		end
-		-- skin the ManaBar, if required
+		-- skin the AlternateManaBar, MonkHarmonyBar & MonkStaggerBar, if required
 		if aObj.uCls == "MONK" then
-			_G.PlayerFrameAlternateManaBar:Hide()
+			_G.PlayerFrameAlternateManaBarBorder:SetTexture(nil)
+			aObj:glazeStatusBar(_G.PlayerFrameAlternateManaBar, 0)
 			aObj:removeRegions(_G.MonkHarmonyBar, {1, 2})
+			if aObj.isPTR then
+				aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6})
+				aObj:glazeStatusBar(_G.MonkStaggerBar, 0)
+			end
 		end
 		-- skin the bar, if required
 		if aObj.uCls == "PRIEST" then
