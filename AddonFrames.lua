@@ -190,7 +190,7 @@ local addonSkins = {
 	"UberQuest", "UrbanAchiever",
 	"vBagnon", "Vendorizer", "Vendomatic", "VendorSearch", "Violation", "Visor2_GUI", "Volumizer", "VuhDo", "VuhDoOptions",
 	"Warden", "WeakAuras", "WebDKP", "Wholly", "WIM", "WoWEquip", "WowLua", "WoWPro", "WTFLatencyMeter",
-	"xcalc", "XLoot", "XLootGroup", "XLootMonitor", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
+	"xcalc", "XLoot", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"zfpoison", "ZOMGBuffs", "ZygorGuidesViewer",
 }
 aObj.addonsToSkin = {}

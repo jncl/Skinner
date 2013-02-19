@@ -171,6 +171,7 @@ function aObj:DBMCore()
 		self:Unhook(DBM.BossHealth, "Show")
 	end)
 	self:SecureHook(DBM.BossHealth, "AddBoss", function(this, ...)
+		if not bhFrame then return end
 		for _, child in ipairs{bhFrame:GetChildren()} do
 			local cName = child:GetName().."Bar"
 			if cName:find("DBM_BossHealth_Bar_")
