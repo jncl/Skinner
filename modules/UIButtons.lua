@@ -272,7 +272,7 @@ function module:skinButton(opts)
 
 	-- reparent skinButton to avoid whiteout issues caused by animations
 	if opts.anim and opts.obj.sb then
-		opts.obj.sb:SetParent(opts.obj:GetParent().sf)
+		opts.obj.sb:SetParent(opts.parent or opts.obj:GetParent().sf)
 	end
 
 end
