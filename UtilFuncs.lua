@@ -442,8 +442,8 @@ function aObj:removeMagicBtnTex(btn)
 --@end-alpha@
 
 	-- Magic Button textures
-	if btn.LeftSeparator then btn.LeftSeparator:SetAlpha(0) end
-	if btn.RightSeparator then btn.RightSeparator:SetAlpha(0) end
+	if btn.LeftSeparator then btn.LeftSeparator:SetTexture(nil) end
+	if btn.RightSeparator then btn.RightSeparator:SetTexture(nil) end
 
 end
 
