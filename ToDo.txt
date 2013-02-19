@@ -8,6 +8,38 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
+	N	PTR 5.2
+√		- TOC change
+x		- ArenaUI
+x		- BattlefieldMinimap
+√		- BlackMarketUI
+x		- InspectPVPFrame
+x		- ItemUpgradeUI
+√		- PetBattleUI
+x		- PetJournal
+√		- TalentUI
+x		- TradeSkillUI
+√		- PVPUI (New)
+≈		- QuestChoice (New) LoD
+x		- CompactUnitFrame
+√		- LFGFrame
+x		- MovieFrame
+x		- PartyFrameTemplates
+x		- PetFrame
+x		- PlayerFrame
+x		- ReputationFrame
+x		- TargetFrame
+x		- UIPanelTemplates
+x		- UnitFrame
+x		- FocusFrame (Removed)
+√		- MapBar (New)
+x		- MinigameFrame (Removed)
+√		- MonkStaggerBar (New)
+x		- PVPFrame (Removed)
+x		- PVPFrameTemplates (Removed)
+x		- PVPHelper (New)
+x		- TicTacToeFrame (Removed)
+
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
@@ -17,8 +49,21 @@ Legend:
 	I	ChatTabs, reported by hammer2, 07.01.13
 		- add option so tabs don't fade
 
-√	I	ZygorGuidesViewer, reported by tordenflesk, 10.01.13
-		- frame remains when controls are hidden
+√9	I	DBM, reported by dwarven, 21.01.13
+		-  ..\AddOns\Skinner\SkinMe\DBM.lua line 174:
+			attempt to index upvalue 'bhFrame' (a nil value)
+			Debug:
+			  Skinner\SkinMe\DBM.lua:174:
+			  Skinner\SkinMe\DBM.lua:173
+			  (tail call): ?
+			  [C]: AddBoss()
+			  DBM-Karazhan\TerestianIllhoof.lua:65: ?()
+			  DBM-Core\DBM-Core.lua:367:
+			  DBM-Core\DBM-Core.lua:360
+			  (tail call): ?
+			  DBM-Core\DBM-Core.lua:367:
+			  DBM-Core\DBM-Core.lua:360
 
-√	I	Chatter, reported by NeoZeus, 10.01.13
-		- Skinner-b5.16357.2\SkinMe\Chatter-v1.4.1.lua:5: attempt to index global "Chatter" (a nil value)
+√	N	XLoot, reported by Luckyjack_SL, 06.02.13
+		-	..\AddOns\Skinner\SkinMe\XLoot.lua line 73:
+  	  		attempt to index global 'XLootMonitor' (a nil value)
