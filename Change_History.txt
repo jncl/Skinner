@@ -1,3 +1,12 @@
+b5.16591.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated DBM & XLoot skins
+	Updated SkinButton code
+	Updated MagicButton skin code
+	PTR 5.2 Changes
+
 b5.16357.3
 Jncl:
 	ToDo.txt
