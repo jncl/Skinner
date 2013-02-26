@@ -1611,8 +1611,6 @@ function aObj:PetJournal() -- LoD
 	for i = 1, 3 do
 		local obj = _G.PetJournal.Loadout["Pet" .. i]
 		self:removeRegions(obj, {1, 2, 5})
-		self.modUIBtns:addButtonBorder{obj=obj, relTo=obj.icon, reParent={obj.levelBG, obj.level}} -- use module function here to force creation
-		obj.petTypeIcon:SetAlpha(0) -- N.B. texture is changed in code
 		self:changeTandC(obj.levelBG, self.lvlBG)
 		self:keepFontStrings(obj.helpFrame)
 		obj.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
@@ -1620,7 +1618,7 @@ function aObj:PetJournal() -- LoD
 		self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
 		self:glazeStatusBar(obj.xpBar, 0,  nil)
 		self:makeMFRotatable(obj.model)
-		self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, ofs=1} -- use asf here as button already has a border
+		self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, x1=-4, y2=-4} -- use asf here as button already has a border
 		for i = 1, 3 do
 			local btn = obj["spell" .. i]
 			self:removeRegions(btn, {1, 3}) -- background, blackcover
