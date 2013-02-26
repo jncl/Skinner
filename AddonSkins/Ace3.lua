@@ -24,8 +24,11 @@ function aObj:Ace3()
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
+		-- if not objType:find("CollectMe") then
+		-- 	aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
+		-- end
 		-- if objType:find("TSM") then
-		-- 	aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, rawget(aObj.skinned, obj), objType:find("TSM"), obj.sknrTSM)
+			-- aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, rawget(aObj.skinned, obj), objType:find("TSM"), obj.sknrTSM)
 		-- end
 
 		if obj

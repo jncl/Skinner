@@ -6,7 +6,7 @@ function aObj:ZygorGuidesViewer()
 	local ZGV = ZygorGuidesViewer
 
 	-- Viewer frame
-	self:addSkinFrame{obj=ZGV.Frame.Border, nb=true, anim=true, ofs=4}
+	self:addSkinFrame{obj=ZGV.Frame, nb=true, anim=true, ofs=4}
 
 	-- hook this to skin the menu frame
 	self:SecureHook(ZGV.Menu, "CreateFrame", function(this)
@@ -54,10 +54,14 @@ function aObj:ZygorGuidesViewer()
 	self:addSkinFrame{obj=ZygorTalentAdvisorPopout, kfs=true}
 
 	-- Pet Battles frame(s)
-	self:skinAllButtons{obj=ZGV.PetBattle.BattleFrame}
-	self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Main, kfs=true}
-	self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Enemy, kfs=true}
-	self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Ally, kfs=true}
+	if ZGV.PetBattle
+	and ZGV.PetBattle.BattleFrame
+	then
+		self:skinAllButtons{obj=ZGV.PetBattle.BattleFrame}
+		self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Main, kfs=true}
+		self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Enemy, kfs=true}
+		self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Ally, kfs=true}
+	end
 
 	-- Sell Greys button
 	if self.modBtns then
