@@ -1611,6 +1611,8 @@ function aObj:PetJournal() -- LoD
 	for i = 1, 3 do
 		local obj = _G.PetJournal.Loadout["Pet" .. i]
 		self:removeRegions(obj, {1, 2, 5})
+		-- add button border for empty slots
+        self.modUIBtns:addButtonBorder{obj=obj, relTo=obj.icon} -- use module function here to force creation
 		self:changeTandC(obj.levelBG, self.lvlBG)
 		self:keepFontStrings(obj.helpFrame)
 		obj.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
@@ -1642,7 +1644,7 @@ function aObj:PetJournal() -- LoD
 	self:glazeStatusBar(obj.xpBar, 0,  nil)
 	self:makeMFRotatable(obj.model)
 	self:keepFontStrings(obj)
-	self:addButtonBorder{obj=obj}
+	self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, ofs=4}
 	-- spell buttons
 	for i = 1, 6 do
 		local btn = obj["spell" .. i]
