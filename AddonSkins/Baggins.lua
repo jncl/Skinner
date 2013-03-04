@@ -19,8 +19,12 @@ function aObj:Baggins()
 		end
 		frame.SetBackdropColor = function() end
 		if a3Ver then
-			frame.icon:SetTexture(nil)
-			frame.portrait:SetTexture(nil)
+			if a3Ver.db.profile.skin == "blizzard" then
+				frame.icon:SetTexture(nil)
+				frame.portrait:SetTexture(nil)
+			elseif a3Ver.db.profile.skin == "oSkin" then
+				frame.tfade:SetTexture(nil)
+			end
 		end
 	end
 
