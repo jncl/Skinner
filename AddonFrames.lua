@@ -6,17 +6,15 @@ local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
 
 local blizzLoDFrames = {
 	-- player
-	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "RaidUI", "TalentUI",
+	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "PVPUI", "RaidUI", "TalentUI",
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
-	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ReforgingUI", "TrainerUI", "VoidStorageUI",
+	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "QuestChoice", "ReforgingUI", "TrainerUI", "VoidStorageUI",
 	-- ui
 	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "PetJournal", "TimeManager",
 	--	ArenaUI the unitframes are skinned in UnitFrames.lua
 }
-if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "PVPUI") end -- player
-if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "QuestChoice") end -- npc
 -- optional frames
 if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- ui
 local blizzLoD = {}
@@ -63,6 +61,7 @@ function aObj:BlizzardFrames()
 			["ItemSocketingUI"] = false,
 			["LookingForGuildUI"] = false,
 			["PetJournal"] = false,
+			["PVPUI"] = false,
 			["RaidUI"] = false,
 			["TalentUI"] = false,
 			["TradeSkillUI"] = false,
@@ -84,6 +83,7 @@ function aObj:BlizzardFrames()
 			["BarbershopUI"] = false,
 			["BlackMarketUI"] = false,
 			["ItemAlterationUI"] = false,
+			["QuestChoice"] = false,
 			["ReforgingUI"] = false,
 			["TrainerUI"] = false,
 			["VoidStorageUI"] = false,
@@ -144,9 +144,6 @@ function aObj:BlizzardFrames()
 		},
 	}
 
-	if not self.isPTR then self.blizzFrames.player["PVPFrame"] = true end
-	if self.isPTR then self.blizzFrames.player["PVPUI"] = false end -- LoD
-	if self.isPTR then self.blizzFrames.npc["QuestChoice"] = false end -- LoD
 	-- optional frames
 	if aObj.isPTR then self.blizzFrames.ui["FeedbackUI"] = false end
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end

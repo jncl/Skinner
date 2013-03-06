@@ -96,11 +96,7 @@ local function skinPlayerF()
 		if aObj.uCls == "WARLOCK" then
 			-- ShardBarFrame
 			_G.ShardBarFrame:DisableDrawLayer("BACKGROUND")
-			local maxShards = _G.ShardBarFrame.shardCount
-			if aObj.isPTR then
-				maxShards = UnitPowerMax(WarlockPowerFrame:GetParent().unit, SPELL_POWER_SOUL_SHARDS)
-			end
-			for i = 1, maxShards do
+			for i = 1, UnitPowerMax(WarlockPowerFrame:GetParent().unit, SPELL_POWER_SOUL_SHARDS) do
 				_G["ShardBarFrameShard" .. i]:DisableDrawLayer("BORDER")
 				_G["ShardBarFrameShard" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
@@ -108,11 +104,7 @@ local function skinPlayerF()
 			_G.DemonicFuryBarFrame:DisableDrawLayer("ARTWORK") -- frame border texture
 			-- BurningEmbersBarFrame
 			_G.BurningEmbersBarFrame:DisableDrawLayer("BACKGROUND")
-			local numEmbers = _G.BurningEmbersBarFrame.emberCount
-			if aObj.isPTR then
-				numEmbers = _G.math.floor(UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true) / MAX_POWER_PER_EMBER)
-			end
-			for i = 1, numEmbers do
+			for i = 1, _G.math.floor(UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true) / MAX_POWER_PER_EMBER) do
 				_G["BurningEmbersBarFrameEmber" .. i]:DisableDrawLayer("BORDER")
 				_G["BurningEmbersBarFrameEmber" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
@@ -127,10 +119,8 @@ local function skinPlayerF()
 			_G.PlayerFrameAlternateManaBarBorder:SetTexture(nil)
 			aObj:glazeStatusBar(_G.PlayerFrameAlternateManaBar, 0)
 			aObj:removeRegions(_G.MonkHarmonyBar, {1, 2})
-			if aObj.isPTR then
-				aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6})
-				aObj:glazeStatusBar(_G.MonkStaggerBar, 0)
-			end
+			aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6})
+			aObj:glazeStatusBar(_G.MonkStaggerBar, 0)
 		end
 		-- skin the bar, if required
 		if aObj.uCls == "PRIEST" then

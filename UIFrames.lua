@@ -1128,12 +1128,8 @@ function aObj:LFDFrame()
 	-- LFD Queue Frame
 	_G.LFDQueueFrameBackground:SetAlpha(0)
 	self:skinDropDown{obj=_G.LFDQueueFrameTypeDropDown}
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.LFDQueueFrameRandomScrollFrame}
-	else
-		self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrameScrollBar, adj=-4}
-		_G.LFDQueueFrameRandomScrollFrameChildFrame.BonusValor.Border:SetTexture(nil)
-	end
+	self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrameScrollBar, adj=-4}
+	_G.LFDQueueFrameRandomScrollFrameChildFrame.BonusValor.Border:SetTexture(nil)
 
 	self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
 	if self.modBtnBs then
@@ -1169,15 +1165,12 @@ function aObj:LFGFrame()
 	_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
 
 	-- hook new button creation
-	if self.isPTR then
-		self:RawHook("LFGRewardsFrame_SetItemButton", function(...)
-			local frame = self.hooks.LFGRewardsFrame_SetItemButton(...)
-			_G[frame:GetName() .. "NameFrame"]:SetTexture(nil)
-			self:addButtonBorder{obj=frame, libt=true}
-			return frame
-		end, true)
-	end
-
+	self:RawHook("LFGRewardsFrame_SetItemButton", function(...)
+		local frame = self.hooks.LFGRewardsFrame_SetItemButton(...)
+		_G[frame:GetName() .. "NameFrame"]:SetTexture(nil)
+		self:addButtonBorder{obj=frame, libt=true}
+		return frame
+	end, true)
 
 end
 
@@ -1940,16 +1933,10 @@ function aObj:PetBattleUI()
 		local sfn = v == "Ally" and "sfl" or "sfr"
 		_G.PetBattleFrame[sfn] = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
 		self:applySkin{obj=_G.PetBattleFrame[sfn], bba=0, fh=45}
-		if not self.isPTR then
-			xOfs = 420
-		else
-			xOfs = 395
-		end
-
 		if v == "Ally" then
-			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", xOfs, 4)
+			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", 395, 4)
 		else
-			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", xOfs * -1, 4)
+			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", 395 * -1, 4)
 		end
 		_G.PetBattleFrame[sfn]:SetSize(350, 94)
 		_G.PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
@@ -2149,19 +2136,14 @@ function aObj:PVEFrame()
 	_G.ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
 	self:skinDropDown{obj=_G.ScenarioQueueFrame.Dropdown}
 	self:skinScrollBar{obj=_G.ScenarioQueueFrame.Random.ScrollFrame}
-	if self.isPTR then
-		for i = 1, _G.ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
-			local btnName = "ScenarioQueueFrameRandomScrollFrameChildFrameItem" .. i
-			if _G[btnName] then
-				_G[btnName .. "NameFrame"]:SetTexture(nil)
-				self:addButtonBorder{obj=_G[btnName], libt=true}
-			end
+	for i = 1, _G.ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
+		local btnName = "ScenarioQueueFrameRandomScrollFrameChildFrameItem" .. i
+		if _G[btnName] then
+			_G[btnName .. "NameFrame"]:SetTexture(nil)
+			self:addButtonBorder{obj=_G[btnName], libt=true}
 		end
 	end
-	if self.isPTR then
-		_G.ScenarioQueueFrame.Random.ScrollFrame.Child.BonusValor.Border:SetTexture(nil)
-	end
-
+	_G.ScenarioQueueFrame.Random.ScrollFrame.Child.BonusValor.Border:SetTexture(nil)
 
 	self:skinButton{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
 	self:moveObject{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
@@ -2196,9 +2178,7 @@ function aObj:RaidFrame()
 	self:removeInset(_G.RaidFinderFrameBottomInset)
 	self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}
 	_G.RaidFinderQueueFrameScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
-	if self.isPTR then
-		_G.RaidFinderQueueFrameScrollFrameChildFrame.BonusValor.Border:SetTexture(nil)
-	end
+	_G.RaidFinderQueueFrameScrollFrameChildFrame.BonusValor.Border:SetTexture(nil)
 
 	self:removeMagicBtnTex(_G.RaidFinderFrameFindRaidButton)
 	self:keepRegions(_G.RaidFinderQueueFrame, {})
@@ -2435,10 +2415,8 @@ function aObj:WorldMap()
 		self:add2Table(self.ttList, "WorldMapCompareTooltip3")
 	end
 
-	if self.isPTR then
-		self:removeRegions(MapBarFrame, {1, 2, 3})
-		self:glazeStatusBar(MapBarFrame, 0, MapBarFrame.FillBG)
-	end
+	self:removeRegions(MapBarFrame, {1, 2, 3})
+	self:glazeStatusBar(MapBarFrame, 0, MapBarFrame.FillBG)
 
 end
 
