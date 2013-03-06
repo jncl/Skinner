@@ -8,45 +8,6 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	N	PTR 5.2
-√		- TOC change
-		- ArenaUI - additional status bars ?
-x		- BattlefieldMinimap
-√		- BlackMarketUI
-x		- InspectPVPFrame
-x		- ItemUpgradeUI
-√		- PetBattleUI
-x		- PetJournal
-√		- TalentUI
-x		- TradeSkillUI
-√		- PVPUI (New)
-≈		- QuestChoice (New) LoD
-		- CompactUnitFrame = additional status bars ?
-		- LFDFrame
-√			- BonusValor
-		- LFGFrame
-√			- BonusValor
-		- PVEFrame
-√			- BonusValor
-?		- MovieFrame
-			- CloseDialog frame
-x		- PartyFrameTemplates
-x		- PetFrame
-x		- PlayerFrame
-x		- ReputationFrame
-x		- TargetFrame
-x		- UIPanelTemplates
-x		- UnitFrame
-x		- FocusFrame (Removed)
-√		- MapBar (New)
-x		- MinigameFrame (Removed)
-√		- MonkStaggerBar (New)
-x		- PVPFrame (Removed)
-x		- PVPFrameTemplates (Removed)
-x		- PVPHelper (New)
-≈		- ShardBar
-x		- TicTacToeFrame (Removed)
-
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
@@ -56,11 +17,12 @@ x		- TicTacToeFrame (Removed)
 	I	ChatTabs, reported by hammer2, 07.01.13
 		- add option so tabs don't fade
 
-√	I	reported by lexusnexus, 06.03.13
-		- ..\AddOns\Skinner\modules\UnitFrames.lua line 99: 'for' limit must be a number
-		Debug: Skinner\modules\UnitFrames.lua:99
-				Skinner\modules\UnitFrames.lua:47
-				Skinner\modules\UnitFrames.lua:486 adjustUnitFrames()
-				Skinner\modules\UnitFrames.lua:479
-				Skinner\modules\UnitFrames.lua:477
-		
+√	S	FlaresThatWork, requested by Remota, 06.03.13
+
+x	I	WIM, reported by Decabah, 06.03.13
+
+√	I	reported by dwarven, 06.03.13
+		- ..\AddOns\Skinner\PlayerFrames.lua line 1671:
+attempt to index field 'PVPFrame' (a nil value)
+
+√	I	Remove PTR checks as patch is now live.
