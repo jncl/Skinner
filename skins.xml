@@ -126,6 +126,7 @@
 <script file="SkinMe\FeedMachine.lua"/>
 <script file="SkinMe\FishingBuddy.lua"/>
 <script file="SkinMe\Fizzle.lua"/>
+<script file="SkinMe\FlaresThatWork.lua"/>
 <script file="SkinMe\FlightMap.lua"/>
 <script file="SkinMe\FlightMapEnhanced.lua"/>
 <script file="SkinMe\FlyoutButtonCustom.lua"/>
