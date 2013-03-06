@@ -1817,6 +1817,7 @@ else
 		self:removeMagicBtnTex(_G.ConquestFrame.JoinButton)
 		self:skinDropDown{obj=_G.ConquestFrame.ArenaInviteMenu}
 		-- War Games Frame
+		_G.WarGamesFrame.InfoBG:SetTexture(nil)
 		self:removeInset(_G.WarGamesFrame.RightInset)
 		self:skinSlider{obj=_G.WarGamesFrameScrollFrameScrollBar, adj=-4}
 		for i = 1, #_G.WarGamesFrame.scrollFrame.buttons do

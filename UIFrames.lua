@@ -1132,6 +1132,7 @@ function aObj:LFDFrame()
 		self:skinScrollBar{obj=_G.LFDQueueFrameRandomScrollFrame}
 	else
 		self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrameScrollBar, adj=-4}
+		_G.LFDQueueFrameRandomScrollFrameChildFrame.BonusValor.Border:SetTexture(nil)
 	end
 
 	self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
@@ -2149,7 +2150,7 @@ function aObj:PVEFrame()
 	self:skinDropDown{obj=_G.ScenarioQueueFrame.Dropdown}
 	self:skinScrollBar{obj=_G.ScenarioQueueFrame.Random.ScrollFrame}
 	if self.isPTR then
-		for i = 1, ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
+		for i = 1, _G.ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
 			local btnName = "ScenarioQueueFrameRandomScrollFrameChildFrameItem" .. i
 			if _G[btnName] then
 				_G[btnName .. "NameFrame"]:SetTexture(nil)
@@ -2157,6 +2158,10 @@ function aObj:PVEFrame()
 			end
 		end
 	end
+	if self.isPTR then
+		_G.ScenarioQueueFrame.Random.ScrollFrame.Child.BonusValor.Border:SetTexture(nil)
+	end
+
 
 	self:skinButton{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
 	self:moveObject{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
@@ -2191,6 +2196,10 @@ function aObj:RaidFrame()
 	self:removeInset(_G.RaidFinderFrameBottomInset)
 	self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}
 	_G.RaidFinderQueueFrameScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
+	if self.isPTR then
+		_G.RaidFinderQueueFrameScrollFrameChildFrame.BonusValor.Border:SetTexture(nil)
+	end
+
 	self:removeMagicBtnTex(_G.RaidFinderFrameFindRaidButton)
 	self:keepRegions(_G.RaidFinderQueueFrame, {})
 	self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}

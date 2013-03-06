@@ -96,7 +96,11 @@ local function skinPlayerF()
 		if aObj.uCls == "WARLOCK" then
 			-- ShardBarFrame
 			_G.ShardBarFrame:DisableDrawLayer("BACKGROUND")
-			for i = 1, _G.ShardBarFrame.shardCount do
+			local maxShards = _G.ShardBarFrame.shardCount
+			if aObj.isPTR then
+				maxShards = UnitPowerMax(WarlockPowerFrame:GetParent().unit, SPELL_POWER_SOUL_SHARDS)
+			end
+			for i = 1, maxShards do
 				_G["ShardBarFrameShard" .. i]:DisableDrawLayer("BORDER")
 				_G["ShardBarFrameShard" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
@@ -104,7 +108,11 @@ local function skinPlayerF()
 			_G.DemonicFuryBarFrame:DisableDrawLayer("ARTWORK") -- frame border texture
 			-- BurningEmbersBarFrame
 			_G.BurningEmbersBarFrame:DisableDrawLayer("BACKGROUND")
-			for i = 1, _G.BurningEmbersBarFrame.emberCount do
+			local numEmbers = _G.BurningEmbersBarFrame.emberCount
+			if aObj.isPTR then
+				numEmbers = _G.math.floor(UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true) / MAX_POWER_PER_EMBER)
+			end
+			for i = 1, numEmbers do
 				_G["BurningEmbersBarFrameEmber" .. i]:DisableDrawLayer("BORDER")
 				_G["BurningEmbersBarFrameEmber" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
