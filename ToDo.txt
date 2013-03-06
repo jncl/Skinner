@@ -22,8 +22,14 @@ x		- TradeSkillUI
 √		- PVPUI (New)
 ≈		- QuestChoice (New) LoD
 		- CompactUnitFrame = additional status bars ?
-√		- LFGFrame
-x		- MovieFrame
+		- LFDFrame
+√			- BonusValor
+		- LFGFrame
+√			- BonusValor
+		- PVEFrame
+√			- BonusValor
+?		- MovieFrame
+			- CloseDialog frame
 x		- PartyFrameTemplates
 x		- PetFrame
 x		- PlayerFrame
@@ -38,6 +44,7 @@ x		- MinigameFrame (Removed)
 x		- PVPFrame (Removed)
 x		- PVPFrameTemplates (Removed)
 x		- PVPHelper (New)
+≈		- ShardBar
 x		- TicTacToeFrame (Removed)
 
 	I	IOF Buttons
@@ -49,13 +56,11 @@ x		- TicTacToeFrame (Removed)
 	I	ChatTabs, reported by hammer2, 07.01.13
 		- add option so tabs don't fade
 
-?	I	TipTac, requested by McLabia, 26.02.13
-		- Is there a way to integrate the addon http://www.curse.com/addons/wow/tip-tac into the approved list or what not? It causes some fonts, due to me changing them in tiptac, to not retain their sizes. The only way to fix that is the go into the tiptac options and then skinner pops up saying theres no module for it. Forgive me if this is the wrong place for this comment. Maybe its something I need to post on the tiptac addons page, but this is where Im starting.
-
-√	I	PetJournal, reported by Tinface, 27.02.13
-		- Skinner-b5.16621.1\PlayerFrames.lua:1632: attempt to index field "sbb" (a nil value)
-		  Skinner-b5.16621.1\PlayerFrames.lua:1632: in function <Skinner\PlayerFrames.lua:1629>
-
-√	I	Baggins, reported by Tinface, 27.02.13
-		- Skinner-b5.16621.1\SkinMe\Baggins-r584.lua:22: attempt to index field "icon" (a nil value)
-		  Skinner-b5.16621.1\SkinMe\Baggins-r584.lua:34: in function <Skinner\SkinMe\Baggins.lua:4>
+√	I	reported by lexusnexus, 06.03.13
+		- ..\AddOns\Skinner\modules\UnitFrames.lua line 99: 'for' limit must be a number
+		Debug: Skinner\modules\UnitFrames.lua:99
+				Skinner\modules\UnitFrames.lua:47
+				Skinner\modules\UnitFrames.lua:486 adjustUnitFrames()
+				Skinner\modules\UnitFrames.lua:479
+				Skinner\modules\UnitFrames.lua:477
+		
