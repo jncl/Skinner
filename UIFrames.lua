@@ -687,6 +687,9 @@ function aObj:ChatTemporaryWindow()
 			aObj:addButtonBorder{obj=obj.buttonFrame.downButton, ofs=-2}
 			aObj:addButtonBorder{obj=obj.buttonFrame.upButton, ofs=-2}
 			aObj:addButtonBorder{obj=obj.buttonFrame.bottomButton, ofs=-2, reParent={aObj:getRegion(obj.buttonFrame.bottomButton, 1)}}
+			if obj.conversationButton then
+				aObj:addButtonBorder{obj=obj.conversationButton, ofs=-2}
+			end
 		end
 
 	end

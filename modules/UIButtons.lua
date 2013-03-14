@@ -134,8 +134,10 @@ function module:skinButton(opts)
 
 	if not opts.obj then return end
 
-	if opts.obj.sb -- don't skin it twice
-	or opts.obj.sf -- don't skin tab buttons
+	-- check to see if object is already skinned
+	if opts.obj.sb
+	or opts.obj.sf
+	or opts.obj.tfade
 	then
 		return
 	end
