@@ -17,12 +17,8 @@ Legend:
 	I	ChatTabs, reported by hammer2, 07.01.13
 		- add option so tabs don't fade
 
-√	S	FlaresThatWork, requested by Remota, 06.03.13
+x	I	BetterInbox, reported by Luckyjack_SL, 10.03.12
 
-x	I	WIM, reported by Decabah, 06.03.13
+√	S	CensusPlus, requested by Luckyjack_SL, 10.03.13
 
-√	I	reported by dwarven, 06.03.13
-		- ..\AddOns\Skinner\PlayerFrames.lua line 1671:
-attempt to index field 'PVPFrame' (a nil value)
-
-√	I	Remove PTR checks as patch is now live.
+≈	I	oQueue, reported by Luckyjack_SL, 10.03.13
