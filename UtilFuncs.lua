@@ -370,7 +370,7 @@ function aObj:hasTextInName(obj, text)
 	assert(text, "Missing value hasTextInName\n" .. debugstack())
 --@end-alpha@
 
-	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text, 1, true) and true
+	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text) and true
 
 end
 
@@ -386,7 +386,7 @@ function aObj:hasAnyTextInName(obj, tab)
 	then
 		local oName = obj:GetName()
 		for _, text in pairs(tab) do
-			if oName:find(text, 1, true) then return true end
+			if oName:find(text) then return true end
 		end
 	end
 
@@ -394,13 +394,13 @@ function aObj:hasAnyTextInName(obj, tab)
 
 end
 
-function aObj:hasTextInTexture(obj, text)
+function aObj:hasTextInTexture(obj, text, plain)
 --@alpha@
 	-- assert(obj, "Unknown object hasTextInTexture\n" .. debugstack()) -- N.B. allow for missing texture object
 	assert(text, "Missing value hasTextInTexture\n" .. debugstack())
 --@end-alpha@
 
-	return obj and obj.GetTexture and obj:GetTexture() and obj:GetTexture():find(text, 1, true) and true
+	return obj and obj.GetTexture and obj:GetTexture() and obj:GetTexture():find(text, 1, plain) and true
 
 end
 

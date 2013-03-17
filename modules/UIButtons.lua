@@ -301,7 +301,7 @@ function module:isButton(obj)
 	and not obj.SetSlot -- and not a lootbutton
 	then
 		local oW, oH, nR = aObj:getInt(obj:GetWidth()), aObj:getInt(obj:GetHeight()), obj:GetNumRegions()
-		aObj:Debug2("module:isButton#2: [%s, %s, %s, %s, %s, %s]", obj:GetParent().CloseButton == obj, aObj:hasTextInName(obj, "Close"), aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"), oW, oH, nR)
+		aObj:Debug2("module:isButton#2: [%s, %s, %s, %s, %s, %s]", obj:GetParent().CloseButton == obj, aObj:hasTextInName(obj, "Close"), aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true), oW, oH, nR)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
 			bType = "toast"
@@ -310,7 +310,7 @@ function module:isButton(obj)
 		-- Channel Pullout is 24 high
 		elseif obj:GetParent().CloseButton == obj
 		or oH == oW and (nR == 3 or nR == 4) and (oH == 32 or oH == 24)
-		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up"))
+		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true))
 		then
 			bType = "close"
 		elseif (oH >= 20 and oH <= 25 and nR >= 5 and nR <= 8) -- std button
