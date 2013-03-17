@@ -17,8 +17,15 @@ Legend:
 	I	ChatTabs, reported by hammer2, 07.01.13
 		- add option so tabs don't fade
 
-x	I	BetterInbox, reported by Luckyjack_SL, 10.03.12
+√	I	oQueue, reported by Luckyjack_SL, 10.03.13
+√		- oQueue minimap button has a ring around it
 
-√	S	CensusPlus, requested by Luckyjack_SL, 10.03.13
+	I	SpellAlert, reported by karvec, 14.03.13
+		- When using BottomFrame, spell alert doesn't move upwards
 
-≈	I	oQueue, reported by Luckyjack_SL, 10.03.13
+x	I	CensusPlus, reported by Luckyjack_SL, 14.03.13
+		- minimap button is round when moving freely, not attached to minimap
+
+√	I	reported by Luckyjack_SL/Decabah, 14/15.03.13
+		- There's an issue with the skin for the daily start on Isle of the Thunderking.
+Where you select PvE or PvP questline has now lost it's outer frame and background with your latest release (see picture).
