@@ -2308,4 +2308,9 @@ function aObj:WatchFrame()
 		skinAutoPopUps()
 	end
 
+	-- skin the Scenario Frame
+	_G.WatchFrameScenarioFrame:SetSize(200, 73)
+	self:keepFontStrings(_G.WatchFrameScenarioFrame)
+	self:applySkin{obj=_G.WatchFrameScenarioFrame, ft=ftype}
+
 end
