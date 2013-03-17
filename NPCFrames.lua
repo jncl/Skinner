@@ -361,8 +361,9 @@ end
 
 function aObj:QuestChoice() -- LoD
 
-	-- N.B. skin option frames
-	self:addSkinFrame{obj=QuestChoiceFrame, ft=ftype, kfs=true, ofs=-130}
+	_G.QuestChoiceFrame.Option1.OptionText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.QuestChoiceFrame.Option2.OptionText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	self:addSkinFrame{obj=_G.QuestChoiceFrame, ft=ftype, kfs=true, ofs=-13}
 
 end
 
