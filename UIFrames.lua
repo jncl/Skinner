@@ -1146,6 +1146,7 @@ function aObj:LFDFrame()
 			end
 		end)
 	end
+	self:skinButton{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.bonusRepFrame.ChooseButton, as=true}
 
 	-- Specific List subFrame
 	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
