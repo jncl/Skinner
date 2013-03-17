@@ -730,15 +730,20 @@ function aObj:EncounterJournal() -- LoD
 	self:makeMFRotatable(_G.EncounterJournal.encounter.model)
 	self:getRegion(_G.EncounterJournal.encounter.model, 1):SetAlpha(0) -- TitleBG
 	-- Boss/Creature buttons
-	self:SecureHook("EncounterJournal_DisplayInstance", function(instanceID, noButton)
-		for i = 1, 10 do
+	local function skinBossBtns()
+		for i = 1, 30 do
 			local btn = _G["EncounterJournalBossButton" .. i]
 			if btn then
 				btn:SetNormalTexture(nil)
 				btn:SetPushedTexture(nil)
 			end
 		end
+	end
+	self:SecureHook("EncounterJournal_DisplayInstance", function(instanceID, noButton)
+		skinBossBtns()
 	end)
+	-- skin any existing Boss Buttons
+	skinBossBtns()
 	self:SecureHook("EncounterJournal_DisplayEncounter", function(encounterID, noButton)
 		for i = 1, 6 do
 			_G.EncounterJournal.encounter["creatureButton" .. i]:SetNormalTexture(nil)
@@ -2295,7 +2300,7 @@ function aObj:WatchFrame()
 					for k, reg in ipairs{obj:GetRegions()} do
 						if k < 11 or k > 16 then reg:SetTexture(nil) end -- Animated textures
 					end
-					aObj:applySkin{obj=obj}
+					aObj:applySkin{obj=obj, ft=ftype}
 				end
 			end
 
