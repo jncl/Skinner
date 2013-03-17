@@ -15,13 +15,13 @@ function aObj:CensusPlus()
 	end
 	self:skinScrollBar{obj=CensusPlusGuildScrollFrame}
 	self:addSkinFrame{obj=CensusPlus, kfs=true, ofs=-3, y1=-2}
-	
+
 	-- Options frame
 	self:moveObject{obj=CP_OptionCloseButton, x=2, y=2}
 	CensusOptionsFrameHeader:SetTexture(nil)
 	self:moveObject{obj=CensusOptionsFrameHeader, y=-8}
 	self:addSkinFrame{obj=CP_OptionsWindow, ofs=-6}
-	
+
 	-- Player List
 	self:moveObject{obj=CP_PlayerListCloseButton, x=2, y=2}
 	CensusPlayerListFrameHeader:SetTexture(nil)
@@ -30,5 +30,8 @@ function aObj:CensusPlus()
 	self:addSkinFrame{obj=CP_PlayerListWindow, ofs=-6}
 
 	-- Minimap button
-	self:skinButton{obj=CensusButton, ob="C", sap=true}
+	if self.db.profile.MinimapButtons.skin then
+		self:skinButton{obj=CensusButton, ob="C", sap=true}
+	end
+
 end
