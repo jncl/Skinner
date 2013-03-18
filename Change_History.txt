@@ -1,3 +1,14 @@
+b5.16709.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated LFD skin
+	Bugfix for EncounterJournal skin
+	Skin WatchFrameScenarioFrame
+	Bugfix for QuestChoiceFrame
+	Bugfix for text searches
+	Updated CensusPlus & oQueue skins
+
 b5.16685.1
 Jncl:
 	ToDo.txt
