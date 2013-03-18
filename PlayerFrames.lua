@@ -897,7 +897,7 @@ function aObj:FriendsFrame()
 	self:removeInset(_G.WhoFrameListInset)
 	self:removeInset(_G.WhoFrameEditBoxInset)
 	self:skinDropDown{obj=_G.WhoFrameDropDown, noSkin=true}
-	self:addButtonBorder{obj=WhoFrameDropDownButton, es=12, ofs=-1}
+	self:addButtonBorder{obj=_G.WhoFrameDropDownButton, es=12, ofs=-1}
 	self:moveObject{obj=_G.WhoFrameDropDownButton, x=5}
 	self:skinScrollBar{obj=_G.WhoListScrollFrame}
 	self:skinEditBox{obj=_G.WhoFrameEditBox, move=true}
@@ -2072,7 +2072,7 @@ function aObj:TalentUI() -- LoD
 	self:skinTabs{obj=_G.PlayerTalentFrame, lod=true}
 	self:addSkinFrame{obj=_G.PlayerTalentFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5}
 	self:skinButton{obj=_G.PlayerTalentFrameCloseButton, cb=true}
-	self:skinButton{obj=PlayerTalentFrameActivateButton}
+	self:skinButton{obj=_G.PlayerTalentFrameActivateButton}
 	self:skinButton{obj=_G.PlayerTalentFrameSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFrameSpecialization}
 	self:skinButton{obj=_G.PlayerTalentFrameTalents.learnButton, anim=true, parent=_G.PlayerTalentFrameTalents}
 	self:skinButton{obj=_G.PlayerTalentFramePetSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFramePetSpecialization}

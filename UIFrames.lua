@@ -2419,8 +2419,8 @@ function aObj:WorldMap()
 		self:add2Table(self.ttList, "WorldMapCompareTooltip3")
 	end
 
-	self:removeRegions(MapBarFrame, {1, 2, 3})
-	self:glazeStatusBar(MapBarFrame, 0, MapBarFrame.FillBG)
+	self:removeRegions(_G.MapBarFrame, {1, 2, 3})
+	self:glazeStatusBar(_G.MapBarFrame, 0, _G.MapBarFrame.FillBG)
 
 end
 
