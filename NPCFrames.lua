@@ -361,8 +361,12 @@ end
 
 function aObj:QuestChoice() -- LoD
 
-	_G.QuestChoiceFrame.Option1.OptionText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	_G.QuestChoiceFrame.Option2.OptionText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.QuestChoiceFrame.DummyString:SetTextColor(self.BTr, self.BTg, self.BTb)
+	for i = 1, _G.MAX_NUM_OPTIONS do
+		_G.QuestChoiceFrame["Option" .. i].OptionText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestChoiceFrame["Option" .. i].Rewards.Item.Name:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestChoiceFrame["Option" .. i].Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
 	self:addSkinFrame{obj=_G.QuestChoiceFrame, ft=ftype, kfs=true, ofs=-13}
 
 end
