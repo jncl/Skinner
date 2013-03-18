@@ -109,15 +109,14 @@ function aObj:TukuiInit()
 
 	-- hook to change Tab size
 	self:SecureHook(self, "addSkinFrame", function(this, opts)
-		local oName = opts.obj.GetName and opts.obj:GetName()
 		if self:hasAnyTextInName(opts.obj, {"Tab(%d+)$", "TabButton(%d+)$"}) then
 			local xOfs1 = (opts.x1 or 0) + 4
 			local yOfs1 = (opts.y1 or 0) - 3
 			local xOfs2 = (opts.x2 or 0) - 4
 			local yOfs2 = (opts.y2 or 0) + 3
-			self.skinFrame[opts.obj]:ClearAllPoints()
-			self.skinFrame[opts.obj]:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
-			self.skinFrame[opts.obj]:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+			opts.obj.sf:ClearAllPoints()
+			opts.obj.sf:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
+			opts.obj.sf:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 		end
 	end)
 	-- hook to ignore Shapeshift button skinning
