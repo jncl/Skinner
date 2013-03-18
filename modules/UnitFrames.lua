@@ -94,19 +94,20 @@ local function skinPlayerF()
 		end
 		-- skin the ShardBarFrame/DemonicFuryBarFrame/BurningEmbersBarFrame, if required
 		if aObj.uCls == "WARLOCK" then
-			-- ShardBarFrame
+			-- ShardBarFrame (Affliction)
 			_G.ShardBarFrame:DisableDrawLayer("BACKGROUND")
-			for i = 1, UnitPowerMax(WarlockPowerFrame:GetParent().unit, SPELL_POWER_SOUL_SHARDS) do
-				_G["ShardBarFrameShard" .. i]:DisableDrawLayer("BORDER")
-				_G["ShardBarFrameShard" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
+			for i = 1, _G.UnitPowerMax(_G.WarlockPowerFrame:GetParent().unit, _G.SPELL_POWER_SOUL_SHARDS) do
+				_G.ShardBarFrame["shard" .. i]:DisableDrawLayer("BORDER")
+				_G.ShardBarFrame["shard" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
-			-- DemonicFuryBarFrame
-			_G.DemonicFuryBarFrame:DisableDrawLayer("ARTWORK") -- frame border texture
-			-- BurningEmbersBarFrame
+			-- DemonicFuryBarFrame (Demonology)
+			aObj:moveObject{obj=_G.DemonicFuryBarFrame, x=-4, y=1}
+			_G.DemonicFuryBarFrame.bar:SetTexture(nil) -- frame border texture
+			-- BurningEmbersBarFrame (Destruction)
 			_G.BurningEmbersBarFrame:DisableDrawLayer("BACKGROUND")
-			for i = 1, _G.math.floor(UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true) / MAX_POWER_PER_EMBER) do
-				_G["BurningEmbersBarFrameEmber" .. i]:DisableDrawLayer("BORDER")
-				_G["BurningEmbersBarFrameEmber" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
+			for i = 1, _G.math.floor(_G.UnitPowerMax("player", _G.SPELL_POWER_BURNING_EMBERS, true) / _G.MAX_POWER_PER_EMBER) do
+				_G.BurningEmbersBarFrame["ember" .. i]:DisableDrawLayer("BORDER")
+				_G.BurningEmbersBarFrame["ember" .. i]:DisableDrawLayer("OVERLAY") -- Glow textures
 			end
 		end
 		-- skin the PowerBar, if required
@@ -122,10 +123,13 @@ local function skinPlayerF()
 			aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6})
 			aObj:glazeStatusBar(_G.MonkStaggerBar, 0)
 		end
-		-- skin the bar, if required
+		-- skin the BarFrame, if required
 		if aObj.uCls == "PRIEST" then
 			_G.PriestBarFrame:DisableDrawLayer("BACKGROUND")
 			aObj:moveObject{obj=_G.PriestBarFrame.orb1, y=6}
+			for i = 1, 3 do
+				_G.PriestBarFrame["orb" .. i].highlight:SetTexture(nil) -- remove capping texture
+			end
 		end
 	end
 
