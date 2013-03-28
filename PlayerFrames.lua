@@ -892,6 +892,7 @@ function aObj:FriendsFrame()
 
 -->>--	Who Tab Frame
 	self:removeInset(_G.WhoFrameListInset)
+	self:skinFFColHeads("WhoFrameColumnHeader")
 	self:removeInset(_G.WhoFrameEditBoxInset)
 	self:skinDropDown{obj=_G.WhoFrameDropDown, noSkin=true}
 	self:addButtonBorder{obj=_G.WhoFrameDropDownButton, es=12, ofs=-1}
@@ -1090,6 +1091,7 @@ function aObj:GuildUI() -- LoD
 
 -->>-- GuildRoster Frame
 	self:skinDropDown{obj=_G.GuildRosterViewDropdown}
+	self:skinFFColHeads("GuildRosterColumnButton", 5)
 	self:skinSlider{obj=_G.GuildRosterContainerScrollBar, adj=-4}
 	for i = 1, #_G.GuildRosterContainer.buttons do
 		local btn = _G.GuildRosterContainer.buttons[i]

@@ -1531,8 +1531,10 @@ function aObj:skinFFColHeads(buttonName, noCols)
 	noCols = noCols or 4
 	for i = 1, noCols do
 		local btn = _G[buttonName .. i]
-		self:removeRegions(btn, {1, 2, 3})
-		self:addSkinFrame{obj=btn}
+		if not btn.sb then -- only do if not already skinned
+			self:removeRegions(btn, {1, 2, 3})
+			self:addSkinFrame{obj=btn}
+		end
 	end
 
 end
