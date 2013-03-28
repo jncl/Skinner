@@ -8,6 +8,17 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
+	N	PTR 5.3.0
+√		- TOC version now 50300
+≈		- EncounterJournal
+		- ItemAlterationUI
+		- AlertFrames
+		- EquipmentFlyout
+x		- InterfaceOptionPanels
+x		- LevelUpDisplay
+x		- ReputationFrame
+≈		- WatchFrame
+
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
@@ -17,12 +28,9 @@ Legend:
 	I	ChatTabs, reported by hammer2, 07.01.13
 		- add option so tabs don't fade
 
-x	I	SpellAlert, reported by karvec, 14.03.13
-		- When using BottomFrame, spell alert doesn't move upwards
+√	S	LUI, requested by paintpauller2,
+		- provide a theme for it, http://lui.maydia.org, in a similar manner to Tukui
 
-√	I	QuestChoiceFrame, reported by Decabah, 17.03.13
-		- text is black
-
-√	I	TukUI, reported by Decabah, 17.03.13
-		- Skinner-b5.16709.1\SkinMe\Tukui-15.53.lua:118: attempt to index field "?" (a nil value)
-		  Skinner-b5.16709.1\SkinMe\Tukui-15.53.lua:118: in function <Skinner\SkinMe\Tukui.lua:111>
+√	I	QuickMark, reported by Flappers, 27.03.13
+		- Skinner\Skinner-b5.16709.2.lua:540: attempt to index field "obj" (a nil value)
+		- Skinner-b5.16709.2\SkinMe\QuickMark-3.141592653589793.lua:6: in function <Skinner\SkinMe\QuickMark.lua:3>
