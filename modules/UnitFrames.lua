@@ -60,7 +60,7 @@ local function skinPlayerF()
 		adjustStatusBarPosn(_G.PlayerFrameHealthBar)
 		aObj:glazeStatusBar(_G.PlayerFrameHealthBar, 0)
 		aObj:glazeStatusBar(_G.PlayerFrameManaBar, 0)
-		-- casting bar handled in CastingBar function (UIE1)
+		-- casting bar handled in CastingBar function (UIF)
 		-- move PVP Icon/Timer text up & right
 		aObj:moveObject{obj=_G.PlayerPVPIcon, x=2, y=25}
 		aObj:moveObject{obj=_G.PlayerPVPTimerText, x=34, y=2}
@@ -70,14 +70,13 @@ local function skinPlayerF()
 		-- remove group indicator textures
 		aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
 		aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
-		aObj:addSkinFrame{obj=_G.PlayerFrame, ft=ftype, noBdr=true, nb=true, aso=aso, x1=37, y1=-7, y2=aObj.uCls == "PALADIN" and 3 or 6}
 		--	skin the TotemFrame
 		for i = 1, _G.MAX_TOTEMS do
 			_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0)
 			aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
 		end
 		aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
-
+		local y2Ofs = 6
 		--	skin the RuneFrame, if required
 		if aObj.uCls == "DEATHKNIGHT" then
 			for i = 1, 6 do
@@ -112,6 +111,7 @@ local function skinPlayerF()
 		end
 		-- skin the PowerBar, if required
 		if aObj.uCls == "PALADIN" then
+			y2Ofs = 3
 			_G.PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 			_G.PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 		end
@@ -122,6 +122,10 @@ local function skinPlayerF()
 			aObj:removeRegions(_G.MonkHarmonyBar, {1, 2})
 			aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6})
 			aObj:glazeStatusBar(_G.MonkStaggerBar, 0)
+			-- extend frame if Brewmaster specialization
+			if _G.MonkStaggerBar.class == aObj.uCls and _G.MonkStaggerBar.specRestriction == _G.GetSpecialization() then
+				y2Ofs = 0
+			end
 		end
 		-- skin the BarFrame, if required
 		if aObj.uCls == "PRIEST" then
@@ -131,6 +135,8 @@ local function skinPlayerF()
 				_G.PriestBarFrame["orb" .. i].highlight:SetTexture(nil) -- remove capping texture
 			end
 		end
+		-- skin the PlayerFrame
+		aObj:addSkinFrame{obj=_G.PlayerFrame, ft=ftype, noBdr=true, nb=true, aso=aso, x1=37, y1=-7, y2=y2Ofs}
 	end
 
 end
