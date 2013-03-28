@@ -1,10 +1,22 @@
-if not Skinner:isAddonEnabled("QuickMark") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("QuickMark") then return end
 
-function Skinner:QuickMark()
+function aObj:QuickMark()
 
-	self:skinAllButtons{obj=QuickMarkVerticalForm, sap=true}
-	self:addSkinFrame{obj=QuickMarkVerticalForm, kfs=true, x1=6, y1=-8, x2=-3, y2=3, nb=true}
-	self:skinAllButtons{obj=QuickMarkHorizontalForm, sap=true}
-	self:addSkinFrame{obj=QuickMarkHorizontalForm, kfs=true, x1=10, y1=-6, x2=-6, y2=3, nb=true}
+	local QuickMark = LibStub("AceAddon-3.0"):GetAddon("QuickMark", true)
+
+	-- disable border & background color functions
+	QuickMark.Border = function() end
+	QuickMark.BackgroundColor = function() end
+
+	-- find the QuickMark frame
+	local qmFrame = self:findFrame2(UIParent, "Frame", 48, 195) -- horizontal
+	if not qmFrame then
+		qmFrame = self:findFrame2(UIParent, "Frame", 260, 45) -- vertical
+	end
+
+	if qmFrame then
+		self:addSkinFrame{obj=qmFrame}
+	end
 
 end
