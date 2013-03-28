@@ -1114,6 +1114,13 @@ function aObj:LevelUpDisplay()
 	self.initialized.LevelUpDisplay = true
 
 	_G.LevelUpDisplay:DisableDrawLayer("BACKGROUND")
+	-- sub frames
+	_G.LevelUpDisplay.scenarioBits:DisableDrawLayer("BACKGROUND")
+	_G.LevelUpDisplay.scenarioBits:DisableDrawLayer("BORDER")
+	_G.LevelUpDisplay.scenarioFiligree:DisableDrawLayer("OVERLAY")
+	_G.LevelUpDisplay.challengeModeBits:DisableDrawLayer("BORDER")
+	_G.LevelUpDisplay.challengeModeBits.BottomFiligree:SetTexture(nil)
+
 
 end
 
