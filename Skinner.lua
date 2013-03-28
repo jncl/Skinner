@@ -1,7 +1,6 @@
 local aName, aObj = ...
 local _G = _G
 
--- Add locals to see if it speeds things up
 local assert, CopyTable, debugstack, pairs, rawget, select, type, unpack = _G.assert, _G.CopyTable, _G.debugstack, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack
 
 do
