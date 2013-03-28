@@ -31,7 +31,7 @@ function aObj:AchievementUI() -- LoD
 	local function skinStats()
 
 		for i = 1, #_G.AchievementFrameStatsContainer.buttons do
-			local btn = _G["AchievementFrameStatsContainerButton" .. i]
+			local btn = _G.AchievementFrameStatsContainer.buttons[i]
 			btn.background:SetTexture(nil)
 			btn.left:SetAlpha(0)
 			btn.middle:SetAlpha(0)
@@ -52,21 +52,21 @@ function aObj:AchievementUI() -- LoD
 	local function skinCategories()
 
 		for i = 1, #_G.AchievementFrameCategoriesContainer.buttons do
-			_G["AchievementFrameCategoriesContainerButton" .. i .. "Background"]:SetAlpha(0)
+			_G.AchievementFrameCategoriesContainer.buttons[i].background:SetAlpha(0)
 		end
 
 	end
 	local function skinComparisonStats()
 
 		for i = 1, #_G.AchievementFrameComparisonStatsContainer.buttons do
-			local btnName = "AchievementFrameComparisonStatsContainerButton" .. i
-			if _G[btnName].isHeader then _G[btnName .. "BG"]:SetAlpha(0) end
-			_G[btnName .. "HeaderLeft"]:SetAlpha(0)
-			_G[btnName .. "HeaderLeft2"]:SetAlpha(0)
-			_G[btnName .. "HeaderMiddle"]:SetAlpha(0)
-			_G[btnName .. "HeaderMiddle2"]:SetAlpha(0)
-			_G[btnName .. "HeaderRight"]:SetAlpha(0)
-			_G[btnName .. "HeaderRight2"]:SetAlpha(0)
+			local btn = _G.AchievementFrameComparisonStatsContainer.buttons[i]
+			if btn.isHeader then btn.background:SetAlpha(0) end
+			btn.left:SetAlpha(0)
+			btn.left2:SetAlpha(0)
+			btn.middle:SetAlpha(0)
+			btn.middle2:SetAlpha(0)
+			btn.right:SetAlpha(0)
+			btn.right2:SetAlpha(0)
 		end
 
 	end
@@ -76,7 +76,7 @@ function aObj:AchievementUI() -- LoD
 
 		-- remove textures etc from buttons
 		for i = 1, #frame.buttons do
-			local btnName = frame.buttons[i]:GetName()..(type == "Comparison" and "Player" or "")
+			local btnName = frame.buttons[i]:GetName() .. (type == "Comparison" and "Player" or "")
 			local btn = _G[btnName]
 			btn:DisableDrawLayer("BACKGROUND")
 			-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
@@ -149,11 +149,9 @@ function aObj:AchievementUI() -- LoD
 	end)
 	skinCategories()
 
-	local bbR, bbG, bbB, bbA = unpack(self.bbColour)
-
 -->>-- Achievements Panel (on the right)
 	self:keepFontStrings(_G.AchievementFrameAchievements)
-	self:getChild(_G.AchievementFrameAchievements, 2):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameAchievements, 2), ft=ftype, aso={ba=0, ng=true}}
 	self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, adj=-4}
 	if prdbA.style == 2 then
 		-- remove textures etc from buttons
@@ -194,7 +192,7 @@ function aObj:AchievementUI() -- LoD
 	self:keepFontStrings(_G.AchievementFrameStats)
 	self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, adj=-4}
 	_G.AchievementFrameStatsBG:SetAlpha(0)
-	self:getChild(_G.AchievementFrameStats, 3):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}}
 	-- hook this to skin buttons
 	self:SecureHook("AchievementFrameStats_Update", function()
 		skinStats()
@@ -220,7 +218,7 @@ function aObj:AchievementUI() -- LoD
 	for i = 1, #_G.ACHIEVEMENTUI_SUMMARYCATEGORIES do
 		skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 	end
-	self:getChild(_G.AchievementFrameSummary, 1):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={ba=0, ng=true}}
 	skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
 -->>-- Comparison Panel
@@ -240,7 +238,7 @@ function aObj:AchievementUI() -- LoD
 	-- Container
 	self:skinSlider(_G.AchievementFrameComparisonContainerScrollBar)
 	-- Summary Panel
-	self:getChild(_G.AchievementFrameComparison, 5):SetBackdropBorderColor(bbR, bbG, bbB, bbA) -- frame border
+	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameComparison, 5), ft=ftype, aso={ba=0, ng=true}}
 	for _, type in pairs{"Player", "Friend"} do
 		_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
 		_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
@@ -263,7 +261,6 @@ function aObj:AchievementUI() -- LoD
 	self:SecureHook(_G.AchievementFrameComparisonStatsContainer, "Show", function()
 		skinComparisonStats()
 	end)
-	-- if achievementFunctions == _G.COMPARISON_STAT_FUNCTIONS then skinComparisonStats() end
 
 end
 
