@@ -36,7 +36,12 @@ do
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.2.0"
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.3.0"
+
+	-- bugfix for 5.3.0 ptr bug in WorldStateFrame line 222
+	if aObj.isPTR then
+		_G.GetAreaID = function() return end
+	end
 
 end
 

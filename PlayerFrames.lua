@@ -723,9 +723,13 @@ function aObj:EncounterJournal() -- LoD
 	self:addButtonBorder{obj=obj.mapButton, relTo=obj.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:skinSlider{obj=obj.loreScroll.ScrollBar, adj=-4}
 	obj.loreScroll.child.lore:SetTextColor(self.BTr, self.BTg, self.BTb)
-	-- Model frame
-	self:makeMFRotatable(_G.EncounterJournal.encounter.model)
-	self:getRegion(_G.EncounterJournal.encounter.model, 1):SetAlpha(0) -- TitleBG
+	if not self.isPTR then
+		-- Model frame
+		self:makeMFRotatable(_G.EncounterJournal.encounter.model)
+		self:getRegion(_G.EncounterJournal.encounter.model, 1):SetAlpha(0) -- TitleBG
+	else
+		self:skinSlider{obj=_G.EncounterJournal.encounter.info.bossesScroll.ScrollBar, adj=-4}
+	end
 	-- Boss/Creature buttons
 	local function skinBossBtns()
 		for i = 1, 30 do
@@ -742,16 +746,22 @@ function aObj:EncounterJournal() -- LoD
 	-- skin any existing Boss Buttons
 	skinBossBtns()
 	self:SecureHook("EncounterJournal_DisplayEncounter", function(encounterID, noButton)
-		for i = 1, 6 do
-			_G.EncounterJournal.encounter["creatureButton" .. i]:SetNormalTexture(nil)
-			local hTex = _G.EncounterJournal.encounter["creatureButton" .. i]:GetHighlightTexture()
-			hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
-			hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
+		if not self.isPTR then
+			for i = 1, 6 do
+				_G.EncounterJournal.encounter["creatureButton" .. i]:SetNormalTexture(nil)
+				local hTex = _G.EncounterJournal.encounter["creatureButton" .. i]:GetHighlightTexture()
+				hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
+				hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
+			end
+		else
+			skinBossBtns()
 		end
 	end)
 	-- Info frame
 	self:getRegion(_G.EncounterJournal.encounter.info, 1):SetAlpha(0) -- BG
-	_G.EncounterJournal.encounter.info.dungeonBG:SetAlpha(0)
+	if not self.isPTR then
+		_G.EncounterJournal.encounter.info.dungeonBG:SetAlpha(0)
+	end
 	_G.EncounterJournal.encounter.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinSlider{obj=_G.EncounterJournal.encounter.info.detailsScroll.ScrollBar, adj=-4}
 	_G.EncounterJournal.encounter.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -2312,9 +2322,15 @@ function aObj:WatchFrame()
 		skinAutoPopUps()
 	end
 
-	-- skin the Scenario Frame
-	_G.WatchFrameScenarioFrame:SetSize(200, 73)
-	self:keepFontStrings(_G.WatchFrameScenarioFrame)
-	self:applySkin{obj=_G.WatchFrameScenarioFrame, ft=ftype}
+	-- skin the Scenario Frame(s)
+	if not self.isPTR then
+		_G.WatchFrameScenarioFrame:SetSize(201,77)
+		self:applySkin{obj=_G.WatchFrameScenarioFrame, ft=ftype, kfs=true}
+	else
+		_G.WatchFrameScenarioFrame.ScrollChild.BlockHeader:SetSize(201, 77)
+		self:applySkin{obj=_G.WatchFrameScenarioFrame.ScrollChild.BlockHeader, ft=ftype, kfs=true}
+		_G.WatchFrameScenarioBonusHeader.Background:SetTexture(nil)
+		self:applySkin{obj=_G.WatchFrameScenarioBonusHeader, ft=ftype}
+	end
 
 end
