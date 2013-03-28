@@ -1,3 +1,13 @@
+b5.16709.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version number checked
+	Use global names
+	Bugfix for PlayerFrame class bars
+	Bugfix for QuestChoiceFrame skin
+	Updated Tukui skin
+
 b5.16709.1
 Jncl:
 	ToDo.txt
