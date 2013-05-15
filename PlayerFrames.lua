@@ -1719,15 +1719,15 @@ function aObj:PVPUI()
 	end
 	-- hook this to change selected texture
 	self:SecureHook("PVPQueueFrame_SelectButton", function(index)
-	for i = 1, 3 do
-		local btn = _G.PVPQueueFrame["CategoryButton" .. i]
-		if i == index then
-			btn.Background:SetTexture([[Interface\HelpFrame\HelpButtons]])
-			btn.Background:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
-		else
-			btn.Background:SetTexture(nil)
+		for i = 1, 3 do
+			local btn = _G.PVPQueueFrame["CategoryButton" .. i]
+			if i == index then
+				btn.Background:SetTexture([[Interface\HelpFrame\HelpButtons]])
+				btn.Background:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
+			else
+				btn.Background:SetTexture(nil)
+			end
 		end
-	end
 	end)
 	_G.PVPQueueFrame_SelectButton(1) -- select Honor button
 	_G.PVPUIFrame.Shadows:DisableDrawLayer("OVERLAY")
