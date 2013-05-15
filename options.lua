@@ -140,7 +140,7 @@ function aObj:Defaults()
 		LFGFrame             = true,
 		LFRFrame             = true,
 		MailFrame            = true,
-		MainMenuBar          = {skin = true, glazesb = true},
+		MainMenuBar          = {skin = true, glazesb = true, extraab=true},
 		MenuFrames           = true, -- inc. MacroUI & BindingUI
 		Minimap              = {skin = false, gloss = false},
 		MinimapButtons       = {skin = false, style = false},
@@ -1421,6 +1421,13 @@ function aObj:Options()
 							width = "double",
 							name = self.L["Glaze Main Menu Bar Status Bar"],
 							desc = self.L["Toggle the glazing Main Menu Bar Status Bar"],
+						},
+						extraab = {
+							type = "toggle",
+							order = 3,
+							width = "double",
+							name = self.L["Skin Extra Action Button"],
+							desc = self.L["Toggle the skin of the Extra Action Button"],
 						},
 					},
 				},

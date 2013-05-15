@@ -1420,9 +1420,12 @@ function aObj:MainMenuBar()
 	self:skinButton{obj=_G.CompanionsMicroButtonAlert.CloseButton, cb=true}
 
 -->>-- Extra Action Button
-	self:addButtonBorder{obj=_G.ExtraActionButton1, relTo=_G.ExtraActionButton1.icon}
-	_G.ExtraActionButton1.style:SetTexture(nil)
-	_G.ExtraActionButton1.style.SetTexture = function() end
+	if self.db.profile.MainMenuBar.extraab then
+		self:addButtonBorder{obj=_G.ExtraActionButton1, relTo=_G.ExtraActionButton1.icon}
+		_G.ExtraActionButton1.style:SetTexture(nil)
+		_G.ExtraActionButton1.style.SetTexture = function() end
+	end
+
 -->>-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 	local function skinUnitPowerBarAlt(bar)
 		bar.frame:SetTexture(nil)
