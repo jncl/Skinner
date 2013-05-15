@@ -173,7 +173,7 @@ local addonSkins = {
 	"EasyUnlock", "EavesDrop", "EditingUI", "EggTimer", "ElvUI", "EnchantMe", "EnergyWatch", "EngBags", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "EnhancedTradeSkills", "epgp", "epgp_lootmaster", "epgp_lootmaster_ml", "EquipCompare", "EventEquip", "Examiner", "ExtVendor",
 	"Factionizer", "FarmIt2", "FBagOfHolding", "FB_OutfitDisplayFrame", "FB_TrackingFrame", "FeedMachine", "FishingBuddy", "Fizzle", "FlaresThatWork", "FlightMap", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FPSideBar", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Gatherer", "GemMe", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "Gobling", "Gossipmonger", "Grid", "GrimReaper", "GroupCalendar5", "GuildBankAccount", "GuildGreet", "GuildLaunchCT_RaidTracker", "GuildMaster",  "GupPet",
-	"Hack", "Hadar_FocusFrame", "HandyNotes", "HaveWeMet", "HatTrick", "HeadCount", "HealBot", "Highlight", "HitsMode", "HoloFriends",
+	"HabeebIt", "Hack", "Hadar_FocusFrame", "HandyNotes", "HaveWeMet", "HatTrick", "HeadCount", "HealBot", "Highlight", "HitsMode", "HoloFriends",
 	"InboxMailBag", "InspectEquip", "IntricateChatMods", "IPopBar", "ItemDB", "ItemRack", "ItemSync",
 	"LauncherMenu", "LazyAFK", "LightHeaded", "Links", "LinkWrangler", "Livestock", "LUI",
 	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MapsterEnhanced", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
