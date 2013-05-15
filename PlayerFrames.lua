@@ -406,7 +406,7 @@ function aObj:CharacterFrames()
 	self:skinTabs{obj=_G.CharacterFrame}
 	self:addSkinFrame{obj=_G.CharacterFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5} -- don't skin buttons here
 	self:skinButton{obj=_G.CharacterFrameCloseButton, cb=true}
-	self:addButtonBorder{obj=_G.CharacterFrameExpandButton, ofs=-2}
+	self:addButtonBorder{obj=_G.CharacterFrameExpandButton, ofs=-2, y1=-3, x2=-3}
 
 	-- PaperDoll Frame
 	self:keepFontStrings(_G.PaperDollFrame)
@@ -1969,8 +1969,8 @@ function aObj:SpellBookFrame()
 	self:moveObject{obj=_G.SpellBookFrame.MainHelpButton, y=-4}
 	self:skinTabs{obj=_G.SpellBookFrame, suffix="Button", x1=8, y1=1, x2=-8, y2=2}
 	self:addSkinFrame{obj=_G.SpellBookFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2}
-	self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
 -->>- Spellbook Panel
 	_G.SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- hook this to change text colour as required

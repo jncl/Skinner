@@ -1094,8 +1094,8 @@ function aObj:ItemText()
 	self:skinScrollBar{obj=_G.ItemTextScrollFrame}
 	self:glazeStatusBar(_G.ItemTextStatusBar, 0)
 	self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
-	self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2}
-	self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addSkinFrame{obj=_G.ItemTextFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
 end
@@ -1288,8 +1288,8 @@ function aObj:MailFrame()
 	end
 	self:moveObject{obj=_G.InboxTooMuchMail, y=-24} -- move icon down
 	self:removeRegions(_G.InboxFrame, {1}) -- background texture
-	self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2}
-	self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2, y1=-3, x2=-3}
 
 -->>--	Send Mail Frame
 	self:keepFontStrings(_G.SendMailFrame)

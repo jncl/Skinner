@@ -63,8 +63,8 @@ function aObj:AuctionUI() -- LoD
 		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
 	end
 	self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
-	self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2}
-	self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
 
 -->>--	Bid Frame
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
@@ -290,9 +290,9 @@ function aObj:MerchantFrame()
 		_G[btnName .. "SlotTexture"]:SetTexture(self.esTex)
 	end
 	self:removeRegions(_G.MerchantPrevPageButton, {2})
-	self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:removeRegions(_G.MerchantNextPageButton, {2})
-	self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2}
+	self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2, y1=-3, x2=-3}
 	self:skinTabs{obj=_G.MerchantFrame}
 	self:skinDropDown{obj=_G.MerchantFrameLootFilter}
 	self:removeInset(_G.MerchantExtraCurrencyInset)
