@@ -10,14 +10,21 @@ Legend:
 
 	N	PTR 5.3.0
 √		- TOC version now 50300
-≈		- EncounterJournal
-		- ItemAlterationUI
-		- AlertFrames
-		- EquipmentFlyout
+x		- ItemAlterationUI
+x		- AlertFrames
+x		- EquipmentFlyout
 x		- InterfaceOptionPanels
 x		- LevelUpDisplay
 x		- ReputationFrame
 ≈		- WatchFrame
+√		- PVP frame, Honor subframe, inset around role selection
+√		- EncounterJournal, new side tab & frame (Model)
+√		- EncounterJournal, navbar & heading textures
+≈		- Help Frame changes, using new embedded web browser
+√		- Mac Options, resolution dropdown width
+≈		- Watch Frame, AutoQuest Popup, don't remove texture behind exclamation mark
+
+√	O	Button Borders for Hide/Show, Prev/Next buttons on all frames, too big
 
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
@@ -25,12 +32,18 @@ x		- ReputationFrame
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-	I	ChatTabs, reported by hammer2, 07.01.13
+≈	I	ChatTabs, reported by hammer2, 07.01.13
 		- add option so tabs don't fade
 
-√	S	LUI, requested by paintpauller2,
-		- provide a theme for it, http://lui.maydia.org, in a similar manner to Tukui
+√	S	HabeebIt, requested by Gershuun, 01.04.13
 
-√	I	QuickMark, reported by Flappers, 27.03.13
-		- Skinner\Skinner-b5.16709.2.lua:540: attempt to index field "obj" (a nil value)
-		- Skinner-b5.16709.2\SkinMe\QuickMark-3.141592653589793.lua:6: in function <Skinner\SkinMe\QuickMark.lua:3>
+√	N	requested by chrisgriffith25, 30.04.12
+		- Would it be possible to add an option to NOT skin the extra action button?  I want all other buttons to be skinned but that one.
+
+√	N	Bagnon, reported by Excitor0, 03.05.13
+
+?	I	RaidFinder, reported by 03.05.13
+		- So I for some reason can't figure out which skinner is making my raid finder tab this white color? I've managed to be able to turn everything the normal color but this tab.
+
+√	N	PetJournalEnhanced
+		- ...terface\AddOns\Skinner\SkinMe\PetJournalEnhanced.lua line 7: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
