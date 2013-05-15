@@ -718,15 +718,27 @@ function aObj:EncounterJournal() -- LoD
 	obj.loreBG:SetWidth(370)
 	obj.loreBG:SetHeight(315)
 	self:moveObject{obj=obj.title, y=40}
-	_G.EncounterJournalEncounterFrameInstanceFrameTitleBG:SetAlpha(0)
+	if not self.isPTR then
+		_G.EncounterJournalEncounterFrameInstanceFrameTitleBG:SetAlpha(0)
+	else
+		_G.EncounterJournal.encounter.instance:DisableDrawLayer("ARTWORK")
+	end
 	self:moveObject{obj=obj.mapButton, x=-20, y=-20}
 	self:addButtonBorder{obj=obj.mapButton, relTo=obj.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:skinSlider{obj=obj.loreScroll.ScrollBar, adj=-4}
 	obj.loreScroll.child.lore:SetTextColor(self.BTr, self.BTg, self.BTb)
 	if not self.isPTR then
-		-- Model frame
+		-- Model subframe
 		self:makeMFRotatable(_G.EncounterJournal.encounter.model)
 		self:getRegion(_G.EncounterJournal.encounter.model, 1):SetAlpha(0) -- TitleBG
+		self:SecureHook("EncounterJournal_DisplayEncounter", function(encounterID, noButton)
+			for i = 1, 6 do
+				_G.EncounterJournal.encounter["creatureButton" .. i]:SetNormalTexture(nil)
+				local hTex = _G.EncounterJournal.encounter["creatureButton" .. i]:GetHighlightTexture()
+				hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
+				hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
+			end
+		end)
 	else
 		self:skinSlider{obj=_G.EncounterJournal.encounter.info.bossesScroll.ScrollBar, adj=-4}
 	end
@@ -745,22 +757,12 @@ function aObj:EncounterJournal() -- LoD
 	end)
 	-- skin any existing Boss Buttons
 	skinBossBtns()
-	self:SecureHook("EncounterJournal_DisplayEncounter", function(encounterID, noButton)
-		if not self.isPTR then
-			for i = 1, 6 do
-				_G.EncounterJournal.encounter["creatureButton" .. i]:SetNormalTexture(nil)
-				local hTex = _G.EncounterJournal.encounter["creatureButton" .. i]:GetHighlightTexture()
-				hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
-				hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
-			end
-		else
-			skinBossBtns()
-		end
-	end)
 	-- Info frame
-	self:getRegion(_G.EncounterJournal.encounter.info, 1):SetAlpha(0) -- BG
 	if not self.isPTR then
+		self:getRegion(_G.EncounterJournal.encounter.info, 1):SetAlpha(0) -- BG
 		_G.EncounterJournal.encounter.info.dungeonBG:SetAlpha(0)
+	else
+		_G.EncounterJournal.encounter.info:DisableDrawLayer("BACKGROUND")
 	end
 	_G.EncounterJournal.encounter.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinSlider{obj=_G.EncounterJournal.encounter.info.detailsScroll.ScrollBar, adj=-4}
@@ -801,12 +803,35 @@ function aObj:EncounterJournal() -- LoD
 		end
 
 	end)
+	if self.isPTR then
+		-- Model Frame
+		_G.EncounterJournal.encounter.info.model:DisableDrawLayer("BACKGROUND")
+		self:getRegion(_G.EncounterJournal.encounter.info.model, 2):SetTexture(nil) -- Shadow
+		self:getRegion(_G.EncounterJournal.encounter.info.model, 3):SetTexture(nil) -- TitleBG
+		for i = 1, 6 do
+			local btn = _G.EncounterJournal.encounter.info["creatureButton" .. i]
+			btn:SetNormalTexture(nil)
+			local hTex = btn:GetHighlightTexture()
+			hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
+			hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
+		end
+	end
+
 	-- Tabs (side)
-	for _, v in pairs{"bossTab", "lootTab"} do
-		_G.EncounterJournal.encounter.info[v]:SetNormalTexture(nil)
-		_G.EncounterJournal.encounter.info[v]:SetPushedTexture(nil)
-		_G.EncounterJournal.encounter.info[v]:SetDisabledTexture(nil)
-		self:addSkinFrame{obj=_G.EncounterJournal.encounter.info[v], ft=ftype, noBdr=true, ofs=-3, aso={rotate=true}} -- gradient is right to left
+	local tabs = {"bossTab", "lootTab"}
+	if self.isPTR then
+		self:add2Table(tabs, "modelTab")
+	end
+	for _, v in pairs(tabs) do
+		local obj = _G.EncounterJournal.encounter.info[v]
+		obj:SetNormalTexture(nil)
+		obj:SetPushedTexture(nil)
+		if v ~= "modelTab" then
+			obj:SetDisabledTexture(nil)
+		else
+			obj:GetDisabledTexture():SetAlpha(0) -- model tab texture is modified
+		end
+		self:addSkinFrame{obj=obj, ft=ftype, noBdr=true, ofs=-3, aso={rotate=true}} -- gradient is right to left
 	end
 	self:moveObject{obj=_G.EncounterJournal.encounter.info.bossTab, x=10}
 	-- hide/show the texture to realign it on the tab
@@ -1708,6 +1733,9 @@ function aObj:PVPUI()
 	_G.PVPUIFrame.Shadows:DisableDrawLayer("OVERLAY")
 	-- Honor Frame
 	self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
+	if self.isPTR then
+		self:removeInset(_G.HonorFrame.RoleInset)
+	end
 	self:removeInset(_G.HonorFrame.Inset)
 	self:skinSlider{obj=_G.HonorFrameSpecificFrameScrollBar, adj=-4}
 	for i = 1, #_G.HonorFrame.SpecificFrame.buttons do

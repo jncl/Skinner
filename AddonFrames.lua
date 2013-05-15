@@ -145,6 +145,7 @@ function aObj:BlizzardFrames()
 	}
 
 	-- optional frames
+	if aObj.isPTR then self.blizzFrames.ui["NavigationBar"] = true end
 	if aObj.isPTR then self.blizzFrames.ui["FeedbackUI"] = false end
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 
