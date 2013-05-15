@@ -651,10 +651,12 @@ function aObj:ChatTabs()
 		skinChatTab(tab)
 	end
 
-	-- hook this to hide/show the skin frame
-	aObj:SecureHook("FCFTab_UpdateColors", function(this, selected)
-		if this.sf then this.sf:SetShown(selected) end
-	end)
+	if self.db.profile.ChatTabsFade then
+		-- hook this to hide/show the skin frame
+		aObj:SecureHook("FCFTab_UpdateColors", function(this, selected)
+			if this.sf then this.sf:SetShown(selected) end
+		end)
+	end
 
 end
 
