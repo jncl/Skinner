@@ -2335,7 +2335,7 @@ function aObj:WatchFrame()
 				local obj = _G["WatchFrameAutoQuestPopUp" .. i] and _G["WatchFrameAutoQuestPopUp" .. i].ScrollChild
 				if obj and not aObj.skinned[obj] then
 					for k, reg in ipairs{obj:GetRegions()} do
-						if k < 11 or k > 16 then reg:SetTexture(nil) end -- Animated textures
+						if k < 10 or k > 16 then reg:SetTexture(nil) end -- Animated textures
 					end
 					aObj:applySkin{obj=obj, ft=ftype}
 				end
