@@ -24,26 +24,17 @@ x		- ReputationFrame
 √		- Mac Options, resolution dropdown width
 ≈		- Watch Frame, AutoQuest Popup, don't remove texture behind exclamation mark
 
-√	O	Button Borders for Hide/Show, Prev/Next buttons on all frames, too big
-
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-≈	I	ChatTabs, reported by hammer2, 07.01.13
-		- add option so tabs don't fade
+?	S	Dominos, requested by paintpauller2, 18.05.13
+		- DominosFramealt power - alt power bar
+		- DominosFrameencounter - encounter bar
+		- DominosFrameextra - extra action button
 
-√	S	HabeebIt, requested by Gershuun, 01.04.13
-
-√	N	requested by chrisgriffith25, 30.04.12
-		- Would it be possible to add an option to NOT skin the extra action button?  I want all other buttons to be skinned but that one.
-
-√	N	Bagnon, reported by Excitor0, 03.05.13
-
-?	I	RaidFinder, reported by 03.05.13
-		- So I for some reason can't figure out which skinner is making my raid finder tab this white color? I've managed to be able to turn everything the normal color but this tab.
-
-√	N	PetJournalEnhanced
-		- ...terface\AddOns\Skinner\SkinMe\PetJournalEnhanced.lua line 7: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+√	N	oRA3, reported by Pseudopath, 18.05.13
+		- ..\AddOns\Skinner\SkinMe\oRA3.lua line 30:
+attempt to index global 'oRA3ListFrame' (a nil value)
