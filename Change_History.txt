@@ -1,3 +1,17 @@
+b5.16946.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version number check
+	Added option to not skin the ExtraActionBar
+	Added option to disable ChatTab fading
+	Align code
+	Display WatchFrame AutoQuest Popup icon background
+	Adjust button borders
+	PTR updates
+	Updated Bagnon & PetJournalEnhanced skins
+	Skinned Habeebit
+
 b5.16769.1
 Jncl:
 	ToDo.txt
