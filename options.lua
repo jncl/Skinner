@@ -37,6 +37,7 @@ function aObj:Defaults()
 		BgTile               = false,
 	-->>-- Colours
 		ClassColours         = false,
+		ClassClrsBg          = false,
 		TooltipBorder        = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		BackdropBorder       = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		Backdrop             = {r = 0, g = 0, b = 0, a = 0.9},
@@ -486,7 +487,10 @@ function aObj:Options()
 			type = "group",
 			name = self.L["Default Colours"],
 			get = function(info)
-				if info[#info] == "ClassColours" then return db[info[#info]]
+				if info[#info] == "ClassColours"
+				or info[#info] == "ClassClrsBg"
+				then
+					return db[info[#info]]
 				else
 					local c = db[info[#info]]
 					return c.r, c.g, c.b, c.a
@@ -510,6 +514,17 @@ function aObj:Options()
 						db.BackdropBorder.g = dflts.BackdropBorder.g
 						db.BackdropBorder.b = dflts.BackdropBorder.b
 					end
+				elseif info[#info] == "ClassClrsBg" then
+					db[info[#info]] = r
+					if r then
+						db.Backdrop.r = _G.RAID_CLASS_COLORS[self.uCls].r
+						db.Backdrop.g = _G.RAID_CLASS_COLORS[self.uCls].g
+						db.Backdrop.b = _G.RAID_CLASS_COLORS[self.uCls].b
+					else
+						db.Backdrop.r = dflts.Backdrop.r
+						db.Backdrop.g = dflts.Backdrop.g
+						db.Backdrop.b = dflts.Backdrop.b
+					end
 				else
 					local c = db[info[#info]]
 					c.r, c.g, c.b, c.a = r, g, b, a
@@ -523,9 +538,16 @@ function aObj:Options()
 					name = self.L["Class Coloured Borders"],
 					desc = self.L["Use Class Colours for Borders"],
 				},
+				ClassClrsBg = {
+					type = "toggle",
+					order = 2,
+					width = "double",
+					name = self.L["Class Coloured Background"],
+					desc = self.L["Use Class Colours for Background"],
+				},
 				TooltipBorder = {
 					type = "color",
-					order = 2,
+					order = 3,
 					width = "double",
 					name = self.L["Tooltip Border Colors"],
 					desc = self.L["Set Tooltip Border Colors"],
@@ -533,7 +555,7 @@ function aObj:Options()
 				},
 				Backdrop = {
 					type = "color",
-					order = 4,
+					order = 5,
 					width = "double",
 					name = self.L["Backdrop Colors"],
 					desc = self.L["Set Backdrop Colors"],
@@ -541,7 +563,7 @@ function aObj:Options()
 				},
 				BackdropBorder = {
 					type = "color",
-					order = 3,
+					order = 4,
 					width = "double",
 					name = self.L["Border Colors"],
 					desc = self.L["Set Backdrop Border Colors"],

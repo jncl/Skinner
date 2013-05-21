@@ -200,7 +200,7 @@ function aObj:OnInitialize()
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	end)
 	-- Backdrop colours
-	c = prdb.Backdrop
+	c = prdb.ClassClrsBg and _G.RAID_CLASS_COLORS[self.uCls] or prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or 1}
 	-- BackdropBorder colours
 	c = prdb.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
