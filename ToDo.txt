@@ -30,11 +30,14 @@ x		- ReputationFrame
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-?	S	Dominos, requested by paintpauller2, 18.05.13
+≈	S	Dominos, requested by paintpauller2, 18.05.13
 		- DominosFramealt power - alt power bar
 		- DominosFrameencounter - encounter bar
 		- DominosFrameextra - extra action button
 
-√	N	oRA3, reported by Pseudopath, 18.05.13
-		- ..\AddOns\Skinner\SkinMe\oRA3.lua line 30:
-attempt to index global 'oRA3ListFrame' (a nil value)
+		-- the three frames/buttons that i mentioned are vanilla skinned, the only thing that dominos allows you to do is resize them and move them around. thus the extra action button has its huge artwork around the button and the other 2 have huge artwork around them as well along with the bar inside being the normal colors and not changeable. thus it would be awesome if skinner removed the artwork (replacing it with a simple border or whatever you choose to do) and converted the bar to the gradient and color set in skinner, and possibly the text font too. hope that all made some since =D
+
+√	O	requested by blkopler, 18.05.13
+		- add option to make backdrop background class coloured
+
+√	N	PetJournalEnhanced,	reported by krzysiek_7_5, 20.05.12
