@@ -1,17 +1,17 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Dominos") then return end
+local _G = _G
 
 function aObj:Dominos()
 
 	-- hook to skin the configHelper panel
-	self:SecureHook(Dominos, "ShowConfigHelper", function()
-		self:skinButton{obj=DominosConfigHelperDialogExitConfig} -- this is a CheckButton object
-		self:addSkinFrame{obj=DominosConfigHelperDialog, kfs=true, y1=4, y2=4, nb=true}
-		self:Unhook(Dominos, "ShowConfigHelper")
+	self:SecureHook(_G.Dominos, "ShowConfigHelper", function()
+		self:skinButton{obj=_G.DominosConfigHelperDialogExitConfig} -- this is a CheckButton object
+		self:addSkinFrame{obj=_G.DominosConfigHelperDialog, kfs=true, y1=4, y2=4, nb=true}
+		self:Unhook(_G.Dominos, "ShowConfigHelper")
 	end)
 	-- hook this to skin first menu displayed and its dropdown
-	self:RawHook(Dominos, "NewMenu", function(this, id)
-		self:Debug("Dominos_NewMenu: [%s, %s]", this, id)
+	self:RawHook(_G.Dominos, "NewMenu", function(this, id)
 		local menu = self.hooks[this].NewMenu(this, id)
 		if not self.skinned[menu] then
 			self:addSkinFrame{obj=menu, x1=6, y1=-8, x2=-8, y2=6}
@@ -22,30 +22,39 @@ function aObj:Dominos()
 				self:Unhook(menu, "OnShow")
 			end)
 		end
-		self:Unhook(Dominos, "NewMenu")
+		self:Unhook(_G.Dominos, "NewMenu")
 		return menu
 	end, true)
+	
+	-- PlayerPowerBarAlt
+	local bar = _G.Dominos:GetModule('PlayerPowerBarAlt').frame.buttons[1]
+	bar.frame:SetTexture(nil)
+	-- EncounterBar
+	local bar = _G.Dominos:GetModule('encounter').frame.PlayerPowerBarAlt
+	bar.frame:SetTexture(nil)
+	-- ExtraBar
+	local eb = _G.Dominos.Frame:Get('extra')
+	eb.buttons[1].style:SetTexture(nil)
+	eb.buttons[1].style.SetTexture = function() end
 	
 end
 
 function aObj:Dominos_Config()
 
 	-- hook the create menu function
-	self:SecureHook(Dominos.Menu, "New", function(this, name)
-		self:Debug("D.M.N:[%s, %s]", this, name)
-		local panel = _G["DominosFrameMenu"..name]
+	self:SecureHook(_G.Dominos.Menu, "New", function(this, name)
+		local panel = _G["DominosFrameMenu" .. name]
 		if not self.skinned[panel] then
 			self:addSkinFrame{obj=panel, x1=6, y1=-8, x2=-8, y2=6}
 		end
 	end)
 	-- hook the show panel function to skin dropdowns/editboxes & scrollbars
-	self:SecureHook(Dominos.Menu, "ShowPanel", function(this, name)
-		self:Debug("D.M.SP:[%s, %s]", this, name)
-		self:skinAllButtons{obj=_G[this:GetName()..name], x1=-1, x2=1}
+	self:SecureHook(_G.Dominos.Menu, "ShowPanel", function(this, name)
+		self:skinAllButtons{obj=_G[this:GetName() .. name], x1=-1, x2=1}
 		if this.dropdown then
 			self:skinDropDown{obj=this.dropdown}
 		end
-		local stEB = _G[this:GetName()..name.."StateText"]
+		local stEB = _G[this:GetName() .. name .. "StateText"]
 		if stEB then
 			self:skinEditBox{obj=stEB, regs={9}, y=10}
 		end
