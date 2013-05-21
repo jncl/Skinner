@@ -1640,7 +1640,7 @@ function aObj:PetJournal() -- LoD
 	self:skinDropDown{obj=_G.PetJournal.petOptionsMenu}
 	for i = 1, #_G.PetJournal.listScroll.buttons do
 		local btn = _G.PetJournal.listScroll.buttons[i]
-		self:removeRegions(btn, {1--[=[, 3--]=]}) -- background & petTypeIcon
+		self:removeRegions(btn, {1}) -- background
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
 	end
 	self:removeRegions(_G.PetJournal.AchievementStatus, {1})
