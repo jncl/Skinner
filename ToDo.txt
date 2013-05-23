@@ -8,36 +8,23 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	N	PTR 5.3.0
-√		- TOC version now 50300
-x		- ItemAlterationUI
-x		- AlertFrames
-x		- EquipmentFlyout
-x		- InterfaceOptionPanels
-x		- LevelUpDisplay
-x		- ReputationFrame
-≈		- WatchFrame
-√		- PVP frame, Honor subframe, inset around role selection
-√		- EncounterJournal, new side tab & frame (Model)
-√		- EncounterJournal, navbar & heading textures
-≈		- Help Frame changes, using new embedded web browser
-√		- Mac Options, resolution dropdown width
-≈		- Watch Frame, AutoQuest Popup, don't remove texture behind exclamation mark
-
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-≈	S	Dominos, requested by paintpauller2, 18.05.13
-		- DominosFramealt power - alt power bar
-		- DominosFrameencounter - encounter bar
-		- DominosFrameextra - extra action button
+√	S	PetBattleMaster, requested by frostalotz, 21.05.13
 
-		-- the three frames/buttons that i mentioned are vanilla skinned, the only thing that dominos allows you to do is resize them and move them around. thus the extra action button has its huge artwork around the button and the other 2 have huge artwork around them as well along with the bar inside being the normal colors and not changeable. thus it would be awesome if skinner removed the artwork (replacing it with a simple border or whatever you choose to do) and converted the bar to the gradient and color set in skinner, and possibly the text font too. hope that all made some since =D
+√	S	SorhaQuestLog, requested by frostalotz, 21.05.13
 
-√	O	requested by blkopler, 18.05.13
-		- add option to make backdrop background class coloured
+√	N	Mapster, reported by lexusnexus, 22.05.13
+		- ..\AddOns\Skinner\Skinner.lua line 228: table index is nil
+			Debug: Skinner\Skinner.lua:1358
+			Skinner\Skinner.lua:1323
+			Skinner\Skinner.lua:1415 skinDropDown()
+			Skinner\SkinMe\Mapster.lua:45
+			Skinner\SkinMe\Mapster.lua:4
 
-√	N	PetJournalEnhanced,	reported by krzysiek_7_5, 20.05.12
+x	N	LUI, reported by paintpuller2, 23.05.13
+		- WorldMap is misaligned
