@@ -1,3 +1,11 @@
+b5.16965.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated PetJournal code
+	Added option to use ClassColours for Backdrop background
+	Updated Dominos & PetJournalEnhanced skins
+
 b5.16946.2
 Jncl:
 	ToDo.txt
