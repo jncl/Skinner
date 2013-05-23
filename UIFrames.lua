@@ -1009,47 +1009,15 @@ function aObj:HelpFrame()
 	self:removeInset(_G.HelpFrame.leftInset)
 	self:removeInset(_G.HelpFrame.mainInset)
 	self:addSkinFrame{obj=_G.HelpFrame, ft=ftype, kfs=true, ofs=-10}
-	if not self.isPTR then
-		-- Knowledge Base panel
-		self:keepFontStrings(_G.HelpFrame.kbase)
-		self:skinEditBox{obj=_G.HelpFrame.kbase.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
-		self:skinSlider{obj=_G.HelpFrame.kbase.scrollFrame.ScrollBar, adj=-4}
-		self:skinSlider{obj=_G.HelpFrame.kbase.scrollFrame2.ScrollBar, adj=-6}
-		for i = 1, #_G.HelpFrame.kbase.scrollFrame.buttons do
-			local btn = _G.HelpFrame.kbase.scrollFrame.buttons[i]
-			btn:DisableDrawLayer("ARTWORK")
-			self:skinButton{obj=btn, as=true}
-		end
-		-- Nav Bar
-		_G.HelpFrame.kbase.navBar:DisableDrawLayer("BACKGROUND")
-		_G.HelpFrame.kbase.navBar.overlay:DisableDrawLayer("OVERLAY")
-		_G.HelpFrame.kbase.navBar.home:DisableDrawLayer("OVERLAY")
-		_G.HelpFrame.kbase.navBar.home:GetNormalTexture():SetAlpha(0)
-		_G.HelpFrame.kbase.navBar.home:GetPushedTexture():SetAlpha(0)
-		_G.HelpFrame.kbase.navBar.home.text:SetPoint("RIGHT", -20, 0) -- allow text to be fully displayed
-		if not self.isPTR then
-			-- hook this to handle navbar buttons
-			self:SecureHook("NavBar_AddButton", function(this, buttonData)
-				-- self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
-				for i = 1, #this.navList do
-					local btn = this.navList[i]
-					btn:DisableDrawLayer("OVERLAY")
-					btn:GetNormalTexture():SetAlpha(0)
-					btn:GetPushedTexture():SetAlpha(0)
-				end
-			end)
-		end
-	else
-		-- Help Browser
-		self:removeInset(_G.HelpBrowser.BrowserInset)
-		self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2}
-		self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
-	end
+	-- Help Browser
+	self:removeInset(_G.HelpBrowser.BrowserInset)
+	self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2}
+	self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2}
+	self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2}
+	self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2}
+	self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2}
+	self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2}
+	self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
 	-- Report Player panel
 	self:addSkinFrame{obj=_G.ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
 	_G.ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -1066,17 +1034,6 @@ function aObj:HelpFrame()
 	-- Submit Suggestion panel
 	self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar, size=3}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.suggestion, 3), ft=ftype}
-	if not self.isPTR then
-		-- Open a Ticket panel
-		--	Ticket panel
-		self:skinSlider{obj=_G.HelpFrameTicketScrollFrame.ScrollBar}
-		self:addSkinFrame{obj=self:getChild(_G.HelpFrame.ticket, 4), ft=ftype}
-		--	Ticket Status Frame
-		self:addSkinFrame{obj=_G.TicketStatusFrameButton, ft=ftype}
-		-- HelpOpenTicketButton
-		_G.HelpOpenTicketButton.tutorial:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.HelpOpenTicketButton.tutorial, ft=ftype, y1=3, x2=3}
-	end
 	-- GM_Response
 	self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame1}
 	self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame2}
@@ -1505,11 +1462,7 @@ function aObj:MenuFrames()
 	if _G.IsMacClient() then
 		self:addSkinFrame{obj=_G.MacOptionsFrame, ft=ftype, kfs=true, hdr=true}
 		self:addSkinFrame{obj=_G.MacOptionsFrameMovieRecording, ft=ftype, y1=-2}
-		if not self.isPTR then
-			self:skinDropDown{obj=_G.MacOptionsFrameResolutionDropDown, x2=110}
-		else
-			self:skinDropDown{obj=_G.MacOptionsFrameResolutionDropDown}
-		end
+		self:skinDropDown{obj=_G.MacOptionsFrameResolutionDropDown}
 		self:skinDropDown{obj=_G.MacOptionsFrameFramerateDropDown}
 		self:skinDropDown{obj=_G.MacOptionsFrameCodecDropDown}
 		-- popup frames
@@ -1933,21 +1886,19 @@ function aObj:Nameplates()
 
 end
 
-if aObj.isPTR then
-	function aObj:NavigationBar()
+function aObj:NavigationBar()
 
-		-- hook this to handle navbar buttons
-		self:SecureHook("NavBar_AddButton", function(this, buttonData)
-			self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
-			for i = 1, #this.navList do
-				local btn = this.navList[i]
-				btn:DisableDrawLayer("OVERLAY")
-				btn:GetNormalTexture():SetAlpha(0)
-				btn:GetPushedTexture():SetAlpha(0)
-			end
-		end)
+	-- hook this to handle navbar buttons
+	self:SecureHook("NavBar_AddButton", function(this, buttonData)
+		self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
+		for i = 1, #this.navList do
+			local btn = this.navList[i]
+			btn:DisableDrawLayer("OVERLAY")
+			btn:GetNormalTexture():SetAlpha(0)
+			btn:GetPushedTexture():SetAlpha(0)
+		end
+	end)
 
-	end
 end
 
 aObj.pbtt = {}

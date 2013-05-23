@@ -118,6 +118,7 @@ function aObj:BlizzardFrames()
 			["MinimapButtons"] = false, -- done with timer
 			["ModelFrames"] = false, -- checked below
 			["Nameplates"] = false, -- checked below
+			["NavigationBar"] = true,
 			["PetBattleUI"] = true,
 			["PVEFrame"] = true,
 			["QueueStatusFrame"] = true,
@@ -145,7 +146,6 @@ function aObj:BlizzardFrames()
 	}
 
 	-- optional frames
-	if aObj.isPTR then self.blizzFrames.ui["NavigationBar"] = true end
 	if aObj.isPTR then self.blizzFrames.ui["FeedbackUI"] = false end
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 

@@ -26,21 +26,24 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
+	local liveVer = 16983
 --@alpha@
-	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
+	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
 --@end-alpha@
 	-- check build number, if > Live then it's a patch
-	aObj.isPatch = tonumber(buildInfo[2]) > 16826 and true or false
+	aObj.isPatch = tonumber(buildInfo[2]) > liveVer and true or false
 	--check to see if running on PTR version
 	aObj.isPTR = portal == "public-test" and true or false
+	-- allow for PTR changes in Live
+	aObj.isPTR = aObj.isPTR or tonumber(buildInfo[2]) > liveVer
+--@alpha@
+	if aObj.isPTR and portal ~= "public-test" then
+		_G.DEFAULT_CHAT_FRAME:AddMessage("Remove PTR checks as now running in Live", 1, 0, 0, nil, true)
+	end
+--@end-alpha@
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
 	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.3.0"
-
-	-- bugfix for 5.3.0 ptr bug in WorldStateFrame line 222
-	if aObj.isPTR then
-		_G.GetAreaID = function() return end
-	end
 
 end
 
