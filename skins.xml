@@ -225,6 +225,7 @@
 <script file="SkinMe\PassLoot.lua"/>
 <script file="SkinMe\Pawn.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
+<script file="SkinMe\PetBattleMaster.lua"/>
 <script file="SkinMe\PetBattleTeams.lua"/>
 <script file="SkinMe\PetJournalEnhanced.lua"/>
 <script file="SkinMe\PetListPlus.lua"/>
@@ -285,6 +286,7 @@
 <script file="SkinMe\Smoker.lua"/>
 <script file="SkinMe\SmoothQuest.lua"/>
 <script file="SkinMe\SnapShot.lua"/>
+<script file="SkinMe\SorhaQuestLog.lua"/>
 <script file="SkinMe\Spew.lua"/>
 <script file="SkinMe\Squeenix.lua"/>
 <script file="SkinMe\Squire2_Config.lua"/>

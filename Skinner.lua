@@ -535,6 +535,7 @@ local function __addSkinFrame(opts)
 		rp = re-parent, reverse the parent child relationship
 		af = alertframe animation fix
 		afas = hook alertframe animation scripts
+		sec = use the "SecureFrameTemplate"
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n" .. debugstack())
@@ -566,7 +567,7 @@ local function __addSkinFrame(opts)
 	local yOfs2 = opts.y2 or opts.ofs * -1
 
 	-- add a frame around the current object
-	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj)
+	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
 	local skinFrame = opts.obj.sf
 	skinFrame:ClearAllPoints()
 	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
