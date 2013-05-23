@@ -12,7 +12,7 @@ do
 	-- list of Tooltips used when the Tooltip style is 3
 	-- using a metatable to manage tooltips when they are added in different functions
 	aObj.ttList = setmetatable({}, {__newindex = function(t, k, v)
-	--	  aObj:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
+		-- aObj:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
 		_G.rawset(t, k, v)
 		-- set the backdrop if required
 		if aObj.db.profile.Tooltips.style == 3 then
@@ -2382,8 +2382,7 @@ function aObj:WorldMap()
 			sizeDown()
 		end)
 		self:SecureHook("WorldMapFrame_ToggleWindowSize", function()
-			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE -- Patch
-			then
+			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
 				sizeDown()
 			end
 		end)
@@ -2392,8 +2391,7 @@ function aObj:WorldMap()
 			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
 		elseif not IsAddOnLoaded("MetaMap") and not IsAddOnLoaded("Cartographer_LookNFeel") then
 			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true}
-			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE -- Patch
-			then
+			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
 				sizeDown()
 			else
 				sizeUp()

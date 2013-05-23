@@ -43,7 +43,7 @@ local function makeText(a1, ...)
 end
 local function printIt(text, frame, r, g, b)
 
-	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b, 1, 5)
+	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
 
 end
 --@debug@
