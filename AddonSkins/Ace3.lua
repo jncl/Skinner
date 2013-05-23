@@ -179,6 +179,8 @@ function aObj:Ace3()
 							xOfs1, yOfs1, xOfs2, yOfs2 = -3, -18, 2, 0
 						end
 						aObj:addSkinFrame{obj=obj.frame, aso={ng=true}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+						-- add a button border around the dd button
+						aObj:addButtonBorder{obj=obj.frame.dropButton, es=12, ofs=-2}
 					end
     			end
 
