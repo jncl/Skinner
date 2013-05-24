@@ -14,17 +14,8 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	S	PetBattleMaster, requested by frostalotz, 21.05.13
-
-√	S	SorhaQuestLog, requested by frostalotz, 21.05.13
-
-√	N	Mapster, reported by lexusnexus, 22.05.13
-		- ..\AddOns\Skinner\Skinner.lua line 228: table index is nil
-			Debug: Skinner\Skinner.lua:1358
-			Skinner\Skinner.lua:1323
-			Skinner\Skinner.lua:1415 skinDropDown()
-			Skinner\SkinMe\Mapster.lua:45
-			Skinner\SkinMe\Mapster.lua:4
-
-x	N	LUI, reported by paintpuller2, 23.05.13
-		- WorldMap is misaligned
+√	I	SorhaQuestLog, reported by lexusnexus, 24.05.13
+		-  ..\AddOns\Skinner\Skinner.lua line 548: attempt to index field 'obj' (a nil value)
+		 Debug: (tail call): ? 
+		 Skinner\SkinMe\SorhaQuestLog.lua:9 
+		 Skinner\SkinMe\SorhaQuestLog.lua:5
