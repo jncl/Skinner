@@ -26,7 +26,7 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
-	local liveVer = 16983
+	local liveVer = 16992
 --@alpha@
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
 --@end-alpha@
@@ -38,7 +38,7 @@ do
 	aObj.isPTR = aObj.isPTR or tonumber(buildInfo[2]) > liveVer
 --@alpha@
 	if aObj.isPTR and portal ~= "public-test" then
-		_G.DEFAULT_CHAT_FRAME:AddMessage("Remove PTR checks as now running in Live", 1, 0, 0, nil, true)
+		_G.DEFAULT_CHAT_FRAME:AddMessage("Remove any PTR checks as now running in Live", 1, 0, 0, nil, true)
 	end
 --@end-alpha@
 	-- check to see if running on Beta version
