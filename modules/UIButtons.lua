@@ -313,7 +313,8 @@ function module:isButton(obj)
 		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true))
 		then
 			bType = "close"
-		elseif (oH >= 20 and oH <= 25 and nR >= 5 and nR <= 8) -- std button
+		elseif (obj.Left and obj.Right and obj.Middle and nR == 5) -- based upon UIPanelButtonTemplate
+		or (oH >= 20 and oH <= 25 and nR >= 5 and nR <= 8) -- std button
 		or (oH == 30 and oW == 160) -- HelpFrame
 		or (oH == 32 and oW == 128 and nR == 4) -- BasicScriptErrors Frame
 		or (oH == 22 and oW == 108 and nR == 4) -- Tutorial Frame
@@ -343,7 +344,7 @@ local function __skinAllButtons(opts, bgen)
 	-- maximum number of button generations to traverse
 	bgen = bgen or opts.bgen or 3
 
-	for _, child in _G.ipairs{opts.obj:GetChildren()} do
+	for _, child in _G.pairs{opts.obj:GetChildren()} do
 		if child:IsObjectType("Button") then
 			if child:GetNumChildren() > 0 and bgen > 0 then
 				opts.obj=child
