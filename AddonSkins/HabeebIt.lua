@@ -4,25 +4,38 @@ local _G = _G
 
 function aObj:HabeebIt()
 
-	-- Handle
+	-- HabeebItContainer
+	self:addSkinFrame{obj=_G.HabeebItContainer}
+
+	-- HabeebItHandle
 	_G.HabeebItHandle:DisableDrawLayer("BACKGROUND")
 	_G.HabeebItHandle:DisableDrawLayer("BORDER")
-	self:addSkinFrame{obj=_G.HabeebItHandle, bg=true, x1=-9, y1=4, x2=2, y2=-4}
 	-- need to adjust normal texture as per CompactRaidFrameManager
-	_G.HabeebItHandle:SetSize(14, 56)
 	_G.HabeebItHandle.nt = _G.HabeebItHandle:GetNormalTexture()
-	_G.HabeebItHandle.nt:SetTexCoord(0.22, 0.5, 0.33, 0.67)
-	_G.HabeebItHandle:SetPoint("BOTTOMRIGHT", _G.BonusRollFrame, 12, 8)
-	self:RawHook(_G.HabeebItHandle, "SetPoint", function(this, posn, obj, x, y)
-		self.hooks[this].SetPoint(this, posn, obj, x - 4, y + 4)
+	if _G.HabeebItDB.position == "BOTTOM" then
+		_G.HabeebItHandle.nt:SetTexCoord(1, 0.3, 0.8, 0.3 ,1, 0.7, 0.8, 0.7) -- point down
+	else
+		_G.HabeebItHandle.nt:SetTexCoord(0.8, 0.7, 1, 0.7 ,0.8, 0.3, 1, 0.3) -- point up
+	end
+	self:RawHook(_G.HabeebItHandle.nt, "SetTexCoord", function(this, ULx,ULy,LLx,LLy,URx,URy,LRx,LRy)
+		if (_G.HabeebItContainer:IsShown() -- currently shown, will be hidden
+		and not _G.HabeebItDB.position == "BOTTOM")
+		or (not _G.HabeebItContainer:IsShown() -- currently hidden, will be shown
+		and _G.HabeebItDB.position == "BOTTOM")
+		then
+			self.hooks[this].SetTexCoord(this, 0.8, 0.7, 1, 0.7 ,0.8, 0.3, 1, 0.3) -- point up
+		else
+			self.hooks[this].SetTexCoord(this, 1, 0.3, 0.8, 0.3 ,1, 0.7, 0.8, 0.7) -- point down
+		end
 	end, true)
-	self:RawHook(_G.HabeebItHandle.nt, "SetTexCoord", function(this, x1, x2, y1, y2)
-		self.hooks[this].SetTexCoord(this, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
-	end, true)
-	
-	-- Frame
-	self:addSkinFrame{obj=_G.HabeebItFrame}
-	-- Items in list
-	-- Specialization Tabs
+
+	-- Hotspot
+	-- HabeebItSpecButtons
+	self:SecureHookScript(_G.HabeebItSpecButtons, "OnShow", function(this)
+		for _, child in pairs{_G.HabeebItSpecButtons:GetChildren()} do
+			self:removeRegions(child, {2}) -- icon ring
+		end
+		self:Unhook(_G.HabeebItSpecButtons, "OnShow")
+	end)
 
 end

@@ -26,16 +26,23 @@ function aObj:Dominos()
 		return menu
 	end, true)
 	
+	local mod
 	-- PlayerPowerBarAlt
-	local bar = _G.Dominos:GetModule('PlayerPowerBarAlt').frame.buttons[1]
-	bar.frame:SetTexture(nil)
+	mod = _G.Dominos:GetModule("PlayerPowerBarAlt", true)
+	if mod then
+		mod.frame.buttons[1].frame:SetTexture(nil)
+	end
 	-- EncounterBar
-	local bar = _G.Dominos:GetModule('encounter').frame.PlayerPowerBarAlt
-	bar.frame:SetTexture(nil)
+	mod = _G.Dominos:GetModule("encounter", true)
+	if mod then
+		mod.frame.PlayerPowerBarAlt.frame:SetTexture(nil)
+	end
 	-- ExtraBar
-	local eb = _G.Dominos.Frame:Get('extra')
-	eb.buttons[1].style:SetTexture(nil)
-	eb.buttons[1].style.SetTexture = function() end
+	mod = _G.Dominos.Frame:Get("extra", true)
+	if mod then
+		mod.buttons[1].style:SetTexture(nil)
+		mod.buttons[1].style.SetTexture = function() end
+	end
 	
 end
 
