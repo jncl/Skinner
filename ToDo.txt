@@ -14,8 +14,11 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I	SorhaQuestLog, reported by lexusnexus, 24.05.13
-		-  ..\AddOns\Skinner\Skinner.lua line 548: attempt to index field 'obj' (a nil value)
-		 Debug: (tail call): ? 
-		 Skinner\SkinMe\SorhaQuestLog.lua:9 
-		 Skinner\SkinMe\SorhaQuestLog.lua:5
+√	N	HabeebIt, reported by gamemaster128, 25.05.13
+
+√	N	RaidAchievement, reported by paintpauller2, 26.05.13
+		- Skinner\Skinner-b5.16983.1.lua:548: attempt to index field "obj" (a nil value)
+		  Skinner-b5.16983.1\SkinMe\RaidAchievement-1.125.lua:39: in function <Skinner\SkinMe\RaidAchievement.lua:37>
+
+√	I	Dominos, reported by paintpauller2, 26.05.13
+		- Skinner-b5.16983.1\SkinMe\Dominos-5.3.1.lua:30: Usage: GetModule(name, silent): "name" - Cannot find module "PlayerPowerBarAlt".
