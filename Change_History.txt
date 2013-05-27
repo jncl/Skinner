@@ -1,3 +1,10 @@
+b5.16992.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version number check
+	Updated SorhaQuestLog skin
+
 b5.16983.1
 Jncl:
 	ToDo.txt
