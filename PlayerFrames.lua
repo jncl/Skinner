@@ -1347,10 +1347,10 @@ function aObj:LootFrames()
 	self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2}
 
 -->>-- BonusRoll Frame
-	self:removeRegions(_G.BonusRollFrame, {1, 2, 3, 4})
+	self:removeRegions(_G.BonusRollFrame, {1, 2, 3, 5})
 	self:glazeStatusBar(_G.BonusRollFrame.PromptFrame.Timer, 0,  nil)
-	self:addSkinFrame{obj=_G.BonusRollFrame, ft=ftype}
-	self:addButtonBorder{obj=_G.BonusRollFrame.PromptFrame, relTo=_G.BonusRollFrame.PromptFrame.Icon}
+	self:addSkinFrame{obj=_G.BonusRollFrame, ft=ftype, bg=true}
+	self:addButtonBorder{obj=_G.BonusRollFrame.PromptFrame, relTo=_G.BonusRollFrame.PromptFrame.Icon, reParent={_G.BonusRollFrame.SpecIcon}}
 
 	-- N.B. BonusRollLootWon/BonusRollMoneyWon frames are now managed as part of the Alert Frames skin
 -->>-- MasterLooter Frame
