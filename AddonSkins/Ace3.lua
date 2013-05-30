@@ -1,10 +1,11 @@
 -- This is a Framework
 local aName, aObj = ...
+local _G = _G
 
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
 local objectsToSkin = {}
-local AceGUI = LibStub("AceGUI-3.0", true)
+local AceGUI = _G.LibStub("AceGUI-3.0", true)
 
 if AceGUI then
 	aObj:RawHook(AceGUI, "Create", function(this, objType)
@@ -19,7 +20,7 @@ function aObj:Ace3()
 	self.initialized.Ace3 = true
 
 	local bC = self.bColour
-	local bbCr = self.bbColour
+	local bbC = self.bbColour
 
 	local function skinAceGUI(obj, objType)
 
@@ -110,7 +111,7 @@ function aObj:Ace3()
 					end)
 				end
 			elseif objType == "Button" then
-				-- print("Ace3 Button", obj.frame.GetName and obj.frame:GetName(), obj.frame:GetHeight())
+				-- _G.print("Ace3 Button", obj.frame.GetName and obj.frame:GetName(), aObj:getInt(obj.frame:GetHeight()))
 				aObj:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
 			elseif objType == "Keybinding" then
 				aObj:skinButton{obj=obj.button, as=true}
@@ -137,7 +138,7 @@ function aObj:Ace3()
 
 			-- ListBox object (AuctionLite)
 			elseif objType == "ListBox" then
-				for _, child in pairs{obj.box:GetChildren()} do -- find scroll bar
+				for _, child in _G.pairs{obj.box:GetChildren()} do -- find scroll bar
 					if child:IsObjectType("ScrollFrame") then
 						child:SetBackdrop(nil)
 						aObj:skinScrollBar{obj=child}
@@ -313,20 +314,20 @@ function aObj:Ace3()
 	end, true)
 
 	-- skin any objects created earlier
-	for obj in pairs(objectsToSkin) do
+	for obj in _G.pairs(objectsToSkin) do
 		skinAceGUI(obj, objectsToSkin[obj])
 	end
-	wipe(objectsToSkin)
+	_G.wipe(objectsToSkin)
 
 	-- hook this to skin AGSMW dropdown frame(s)
-	local AGSMW = LibStub("AceGUISharedMediaWidgets-1.0", true)
+	local AGSMW = _G.LibStub("AceGUISharedMediaWidgets-1.0", true)
 	if AGSMW then
 		self:RawHook(AGSMW, "GetDropDownFrame", function(this)
 			local frame = self.hooks[this].GetDropDownFrame(this)
 			local bdrop = frame:GetBackdrop()
 			if bdrop.edgeFile:find("UI-DialogBox-Border", 1, true) then -- if default backdrop
 				frame:SetBackdrop(nil)
-				if not self.skinFrame[frame] then
+				if not frame.sf then
 					self:skinSlider{obj=frame.slider, size=4}
 					self:addSkinFrame{obj=frame, x1=6, y1=-5, x2=-6, y2=5}
 				end
