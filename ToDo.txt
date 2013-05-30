@@ -10,15 +10,16 @@ Legend:
 
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
+		- issue is with buttons that have been 'flowed'
 
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	N	HabeebIt, reported by gamemaster128, 25.05.13
+≈	I	Enter Arena popup not skinned, reported by Excitor0, 27.05.13
 
-√	N	RaidAchievement, reported by paintpauller2, 26.05.13
-		- Skinner\Skinner-b5.16983.1.lua:548: attempt to index field "obj" (a nil value)
-		  Skinner-b5.16983.1\SkinMe\RaidAchievement-1.125.lua:39: in function <Skinner\SkinMe\RaidAchievement.lua:37>
-
-√	I	Dominos, reported by paintpauller2, 26.05.13
-		- Skinner-b5.16983.1\SkinMe\Dominos-5.3.1.lua:30: Usage: GetModule(name, silent): "name" - Cannot find module "PlayerPowerBarAlt".
+√	I	oRA3, reported by Tinface/Curace, 28.05.13
+		- Skinner\Skinner-b5.16992.2.lua:231: table index is nil
+		  Skinner\Skinner-b5.16992.2.lua:1629: in function <Skinner\Skinner.lua:1615>
+		  Skinner\Skinner-b5.16992.2.lua:1661: in function "skinScrollBar"
+		  Skinner-b5.16992.2\SkinMe\oRA3-r623-release.lua:25: in function "skinFrame"
+		  Skinner-b5.16992.2\SkinMe\oRA3-r623-release.lua:44: in function <Skinner\SkinMe\oRA3.lua:5>
