@@ -382,34 +382,41 @@ local function skinArenaF()
 	and not isSkinned["Arena"]
 	then
 		aObj:SecureHook("Arena_LoadUI", function()
-			for i = 1, _G.MAX_ARENA_ENEMIES do
-				local aF = "ArenaEnemyFrame" .. i
-				_G[aF .. "Background"]:SetTexture(nil)
-				_G[aF .. "Texture"]:SetTexture(nil)
-				_G[aF .. "Status"]:SetTexture(nil)
+			local function skinFrame(fName)
+				_G[fName .. "Background"]:SetTexture(nil)
+				_G[fName .. "Texture"]:SetTexture(nil)
+				_G[fName .. "Status"]:SetTexture(nil)
+				_G[fName .. "SpecBorder"]:SetTexture(nil)
 
 				-- status bars
-				aObj:glazeStatusBar(_G[aF .. "HealthBar"], 0)
-				aObj:glazeStatusBar(_G[aF .. "ManaBar"], 0)
-				aObj:addSkinFrame{obj=_G[aF], ft=ftype, noBdr=true, nb=true, aso=aso, x1=-3, x2=3, y2=-6}
-
-				-- pet frame
-				local aPF = aF .. "PetFrame"
-				_G[aPF .. "Flash"]:SetTexture(nil)
-				_G[aPF .. "Texture"]:SetTexture(nil)
-				-- status bar
-				aObj:glazeStatusBar(_G[aPF .. "HealthBar"], 0)
-				aObj:addSkinFrame{obj=_G[aPF], ft=ftype, noBdr=true, nb=true, aso=aso, y1=1, x2=1, y2=2}
-				-- move pet frame
-				aObj:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
-
+				aObj:glazeStatusBar(_G[fName .. "HealthBar"], 0)
+				aObj:glazeStatusBar(_G[fName .. "ManaBar"], 0)
+				aObj:addSkinFrame{obj=_G[fName], ft=ftype, noBdr=true, nb=true, aso=aso, x1=-3, x2=3, y2=-6}
 				-- casting bar
-				local cBar = aF .. "CastingBar"
+				local cBar = fName .. "CastingBar"
 				aObj:adjHeight{obj=_G[cBar], adj=2}
 				aObj:moveObject{obj=_G[cBar .. "Text"], y=-1}
 				_G[cBar .. "Flash"]:SetAllPoints()
 				aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar .. "Flash"]})
 			end
+			for i = 1, _G.MAX_ARENA_ENEMIES do
+				skinFrame("ArenaPrepFrame" .. i)
+				skinFrame("ArenaEnemyFrame" .. i)
+
+				-- pet frame
+				local aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
+				_G[aPF .. "Flash"]:SetTexture(nil)
+				_G[aPF .. "Texture"]:SetTexture(nil)
+				-- status bar
+				aObj:glazeStatusBar(_G[aPF .. "HealthBar"], 0)
+				aObj:glazeStatusBar(_G[aPF .. "ManaBar"], 0)
+				aObj:addSkinFrame{obj=_G[aPF], ft=ftype, noBdr=true, nb=true, aso=aso, y1=1, x2=1, y2=2}
+				-- move pet frame
+				aObj:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
+
+			end
+			-- ArenaPrepBackground
+			aObj:addSkinFrame{obj=_G.ArenaPrepBackground, ft=ftype, nb=true}
 			-- ArenaEnemyBackground
 			aObj:addSkinFrame{obj=_G.ArenaEnemyBackground, ft=ftype, nb=true}
 			aObj:Unhook("Arena_LoadUI")
