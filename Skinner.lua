@@ -711,8 +711,8 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 	if not obj.tfade then obj.tfade = obj:CreateTexture(nil, "BORDER") end
 	obj.tfade:SetTexture(self.gradientTex)
 
-	local objHeight = self:getInt(obj:GetHeight())
 	if prdb.FadeHeight.enable and (prdb.FadeHeight.force or not fh) then
+		local objHeight = self:getInt(obj:GetHeight())
 		-- set the Fade Height if not already passed to this function or 'forced'
 		-- making sure that it isn't greater than the frame height
 		fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
