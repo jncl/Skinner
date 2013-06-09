@@ -230,6 +230,7 @@
 <script file="SkinMe\PetJournalEnhanced.lua"/>
 <script file="SkinMe\PetListPlus.lua"/>
 <script file="SkinMe\PetsPlus.lua"/>
+<script file="SkinMe\PetTracker.lua"/>
 <script file="SkinMe\PhoenixStyle.lua"/>
 <script file="SkinMe\Planner.lua"/>
 <script file="SkinMe\PlayerExpBar.lua"/>
