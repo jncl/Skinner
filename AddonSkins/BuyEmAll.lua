@@ -1,8 +1,9 @@
-if not Skinner:isAddonEnabled("BuyEmAll") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("BuyEmAll") then return end
+local _G = _G
 
-function Skinner:BuyEmAll()
+function aObj:BuyEmAll()
 
-	self:keepRegions(BuyEmAllFrame, {5})
-	self:applySkin(BuyEmAllFrame, nil)
+	self:addSkinFrame{obj=_G.BuyEmAllFrame, kfs=true, ofs=-6}
 
 end
