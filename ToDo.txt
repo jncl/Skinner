@@ -15,11 +15,14 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-≈	I	Enter Arena popup not skinned, reported by Excitor0, 27.05.13
+√	N	PetTracker, requested by Decabah, 31.05.13
 
-√	I	oRA3, reported by Tinface/Curace, 28.05.13
-		- Skinner\Skinner-b5.16992.2.lua:231: table index is nil
-		  Skinner\Skinner-b5.16992.2.lua:1629: in function <Skinner\Skinner.lua:1615>
-		  Skinner\Skinner-b5.16992.2.lua:1661: in function "skinScrollBar"
-		  Skinner-b5.16992.2\SkinMe\oRA3-r623-release.lua:25: in function "skinFrame"
-		  Skinner-b5.16992.2\SkinMe\oRA3-r623-release.lua:44: in function <Skinner\SkinMe\oRA3.lua:5>
+x	I	PJE, reported by Decabah, 31.05.13
+		- Pet Buttons on LHS not skinned
+
+x	I	LFD/LFR frame, reported by seanmcgpa/Grom2256, 04.06.13
+		- Anyone have idea why the back of my LFD / LFR button fame is all white?
+		- another addon is animating the frame
+
+√	I	BuyEmAll, reported by Excitor0, 07.06.13
+		- buttons are not skinned
