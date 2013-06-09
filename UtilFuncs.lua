@@ -75,9 +75,9 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent():GetParent(), false, false) end)
 	self:RegisterChatCommand("gp", function(msg) _G.print(_G.GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function(msg) _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
-	self:RegisterChatCommand("sp", function(msg) return _G.Spew and _G.Spew("xyz", _G[msg] or _G.GetMouseFocus()) end)
-	self:RegisterChatCommand("spp", function(msg) return _G.Spew and _G.Spew("xyz", _G[msg] or _G.GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("spgp", function(msg) return _G.Spew and _G.Spew("xyz", _G[msg] or _G.GetMouseFocus():GetParent():GetParent()) end)
+	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, _G[msg] or _G.GetMouseFocus()) end)
+	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, _G[msg] or _G.GetMouseFocus():GetParent()) end)
+	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, _G[msg] or _G.GetMouseFocus():GetParent():GetParent()) end)
 
 end
 function aObj:printTS(...)
