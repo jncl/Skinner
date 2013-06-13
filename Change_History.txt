@@ -1,3 +1,11 @@
+b5.16992.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Renamed some debug helper commands
+	Updated BuyEmAll skin
+	Skinned PetTracker
+
 b5.16992.3
 Jncl:
 	ToDo.txt
