@@ -1,33 +1,34 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Tukui") then return end
 -- check for ElvUI's Tukui DB converter
-if GetAddOnMetadata("Tukui", "Author") == "Elv22" then
+if _G.GetAddOnMetadata("Tukui", "Author") == "Elv22" then
 	aObj.Tukui = function() end
 	return
 end
+local _G = _G
 
 function aObj:Tukui()
 
 -->>-- Bags
-	if TukuiBags then
-		self:SecureHook(Stuffing, "CreateBagFrame", function(this, bType)
+	if _G.TukuiBags then
+		self:SecureHook(_G.Stuffing, "CreateBagFrame", function(this, bType)
 			self:skinButton{obj=_G["Stuffing_CloseButton"..bType], cb=true}
 		end)
-		self:skinEditBox{obj=TukuiBags.editbox}
-		TukuiBags.editbox:ClearAllPoints()
-		TukuiBags.editbox:SetPoint("topleft", TukuiBags, "topleft", 12, -9)
-		TukuiBags.editbox:SetPoint("bottomright", TukuiBags, "topright", -40, -28)
-		self:skinButton{obj=Stuffing_CloseButtonBags, cb=true}
+		self:skinEditBox{obj=_G.TukuiBags.editbox}
+		_G.TukuiBags.editbox:ClearAllPoints()
+		_G.TukuiBags.editbox:SetPoint("topleft", _G.TukuiBags, "topleft", 12, -9)
+		_G.TukuiBags.editbox:SetPoint("bottomright", _G.TukuiBags, "topright", -40, -28)
+		self:skinButton{obj=_G.Stuffing_CloseButtonBags, cb=true}
 	end
 
 -->>-- Chat Copy frame
-	local bName = TukuiButtonCF1 and "TukuiButtonCF" or "ButtonCF"
-	if TukuiChat then
-		for i = 1, NUM_CHAT_WINDOWS do
+	local bName = _G.TukuiButtonCF1 and "TukuiButtonCF" or "ButtonCF"
+	if _G.TukuiChat then
+		for i = 1, _G.NUM_CHAT_WINDOWS do
 			self:SecureHookScript(_G[bName..i], "OnClick", function(this)
-				self:skinButton{obj=CopyCloseButton, cb=true}
-				self:skinScrollBar{obj=CopyScroll}
-				for i = 1, NUM_CHAT_WINDOWS do
+				self:skinButton{obj=_G.CopyCloseButton, cb=true}
+				self:skinScrollBar{obj=_G.TukuiChatCopyScroll}
+				for i = 1, _G.NUM_CHAT_WINDOWS do
 					self:Unhook(_G[bName..i], "OnClick")
 				end
 			end)
@@ -40,17 +41,17 @@ end
 function aObj:TukuiInit()
 
 	-- handle version 12 and above
-	local ver = tonumber(GetAddOnMetadata("Tukui", "Version"):sub(1, 2))
+	local ver = _G.tonumber(_G.GetAddOnMetadata("Tukui", "Version"):sub(1, 2))
 	local mediapath = [[Interface\AddOns\Tukui\media\textures\]]
     local borderr, borderg, borderb = 0.6, 0.6, 0.6
     local backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
 	local mult = 1
 	if ver > 12 then
 		mediapath = [[Interface\AddOns\Tukui\medias\textures\]]
-	    if IsAddOnLoaded("Tukui") then
-	        local T, C, L = unpack(Tukui)
-	        borderr, borderg, borderb = unpack(C["media"].bordercolor)
-	        backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+	    if _G.IsAddOnLoaded("Tukui") then
+	        local T, C, L = _G.unpack(_G.Tukui)
+	        borderr, borderg, borderb = _G.unpack(C["media"].bordercolor)
+	        backdropr, backdropg, backdropb = _G.unpack(C["media"].backdropcolor)
 			mult = T.mult
 		end
     end
@@ -100,7 +101,7 @@ function aObj:TukuiInit()
 
 		-- Now do this after we have run the function
 		-- setup backdrop(s)
-		for i, _ in ipairs(self.Backdrop) do
+		for i, _ in _G.ipairs(self.Backdrop) do
 			self.Backdrop[i] = self.backdrop
 		end
 
@@ -148,5 +149,5 @@ end
 -- Load support for TukUI
 local success, err = aObj:checkAndRun("TukuiInit", true)
 if not success then
-	print("Error running", "TukuiInit", err)
+	_G.print("Error running", "TukuiInit", err)
 end
