@@ -315,6 +315,13 @@ function aObj:AddonFrames()
 		end
 	end, 0.2)
 
+	-- skin the any LoD Addons that have already been loaded by other addons, wait for 0.2 secs to allow them to have been loaded (Tukui does this for the PetJournal, other addons do it as well)
+	self:ScheduleTimer(function()
+		for addon, skin in pairs(self.lodAddons) do
+			if IsAddOnLoaded(addon) then self:checkAndRun(skin) end
+		end
+	end, 0.2)
+
 end
 
 local lodFrames = {
