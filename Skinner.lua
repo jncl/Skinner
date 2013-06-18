@@ -1432,7 +1432,7 @@ local function __skinEditBox(opts)
 		move = move the edit box, left and up
 		x = move the edit box left/right
 		y = move the edit box up/down
-		mi = move icon to the right
+		mi = move search icon to the right
 		ign = ignore this editbox when skinning IOF panels
 --]]
 --@alpha@
@@ -1476,16 +1476,17 @@ local function __skinEditBox(opts)
 	if opts.x ~= 0 or opts.y ~= 0 then aObj:moveObject{obj=opts.obj, x=opts.x, y=opts.y} end
 
 	-- move the search icon to the right, if required
+	local xOfs = 3
 	if opts.mi then
 		if opts.obj.searchIcon then
-			aObj:moveObject{obj=opts.obj.searchIcon, x=3} -- e.g. BagItemSearchBox
+			aObj:moveObject{obj=opts.obj.searchIcon, x=xOfs} -- e.g. BagItemSearchBox
 		elseif opts.obj.icon then
-			aObj:moveObject{obj=opts.obj.icon, x=3} -- e.g. FriendsFrameBroadcastInput
-		elseif aObj:hasTextInName(opts.obj, "SearchIcon") then
-			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=3} -- e.g. TradeSkillFrameSearchBox
+			aObj:moveObject{obj=opts.obj.icon, x=xOfs} -- e.g. FriendsFrameBroadcastInput
+		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
+			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=xOfs} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
 			for _, reg in pairs{opts.obj:GetRegions()} do
-				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then aObj:moveObject{obj=reg, x=3} end
+				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then aObj:moveObject{obj=reg, x=xOfs} end
 			end
 		end
 	end
