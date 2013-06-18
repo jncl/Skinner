@@ -15,10 +15,6 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I	PJE, reported by Decabah, 11.06.13
-		- The buttons don't look skinned at all to me. They look like they do with Skinner turned off even when it's enabled (I ran PJE and TukUI alongside Skinner with no other mods to check if there was conflict). No error message, just no skinning of the buttons. It's reminiscent of the skinning issue that the mount panel had, if you remember that.
-
-√	I	Livestock, reported by Decabah, 11.06.13
-		- Skinner-b5.16992.4\SkinMe\Livestock-1.9.5.lua:10: attempt to concatenate field "?" (a nil value)
-		  Skinner-b5.16992.4\SkinMe\Livestock-1.9.5.lua:10: in function <Skinner\SkinMe\Livestock.lua:8>
-		  Skinner-b5.16992.4\SkinMe\Livestock-1.9.5.lua:17: in function <Skinner\SkinMe\Livestock.lua:15>
+	I	LilSparkysWorkshop, reported by lexusnexus/Pseudopath, 14/15.06.13
+		- ...terface\AddOns\Skinner\SkinMe\LilSparkysWorkshop.lua line 10:
+   attempt to index field 'parentFrame' (a nil value)
