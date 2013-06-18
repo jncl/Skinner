@@ -1,25 +1,26 @@
-if not Skinner:isAddonEnabled("LilSparkysWorkshop") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("LilSparkysWorkshop") then return end
+local _G = _G
 
-function Skinner:LilSparkysWorkshop()
+function aObj:LilSparkysWorkshop()
 
-	local lswEvt
+	-- look for menuInputBox
+	local mIB = self:findFrame2(_G.UIParent, "Frame", 40, 150)
+	self:skinEditBox{obj=mIB.editBox, regs={9}}
+	self:addSkinFrame{obj=mIB}
 	
-	local function skinpb()
-	
-		-- search through LSW.parentFrame backwards looking for the progressBar
-		for i = LSW.parentFrame:GetNumChildren(), 1, -1 do
-			local child = select(i, LSW.parentFrame:GetChildren())
-			if child:GetWidth() == 310 and child:GetHeight() == 30 then
-				Skinner:CancelTimer(lswEvt, true)
-				Skinner:applySkin(child)
-				lswEvt = nil
+	-- hook this to skin the progressBar
+	self:SecureHook(_G.LSW, "Initialize", function(this)
+		for _, child in pairs{this.parentFrame:GetChildren()} do
+			if type(child) == "Frame"
+			and self.getInt(child:GetWidth()) == 310
+			and self.getInt(child:GetHeight()) == 30
+			then
+				self:addSkinFrame{obj=child}
 				break
 			end
 		end
-		
-	end
-	
-	-- start a timer to skin the progressBar
-	lswEvt = Skinner:ScheduleRepeatingTimer(skinpb, 0.1)
+		self:Unhook(_G.LSW, "Initialize")
+	end)
 	
 end
