@@ -225,6 +225,7 @@
 <script file="SkinMe\PassLoot.lua"/>
 <script file="SkinMe\Pawn.lua"/>
 <script file="SkinMe\PerlClassic.lua"/>
+<script file="SkinMe\PetBattleHUD.lua"/>
 <script file="SkinMe\PetBattleMaster.lua"/>
 <script file="SkinMe\PetBattleTeams.lua"/>
 <script file="SkinMe\PetJournalEnhanced.lua"/>
