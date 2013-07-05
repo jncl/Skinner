@@ -1,3 +1,10 @@
+b5.17055.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated EditBox skinning code
+	Updated LilSparky's Workshop skin
+
 b5.17055.1
 Jncl:
 	ToDo.txt
