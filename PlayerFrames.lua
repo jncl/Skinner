@@ -786,10 +786,12 @@ function aObj:EncounterJournal() -- LoD
 	self:getRegion(_G.EncounterJournal.encounter.info.model, 3):SetTexture(nil) -- TitleBG
 	for i = 1, 6 do
 		local btn = _G.EncounterJournal.encounter.info["creatureButton" .. i]
-		btn:SetNormalTexture(nil)
-		local hTex = btn:GetHighlightTexture()
-		hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
-		hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
+		if btn then
+			btn:SetNormalTexture(nil)
+			local hTex = btn:GetHighlightTexture()
+			hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
+			hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
+		end
 	end
 
 	-- Tabs (side)
