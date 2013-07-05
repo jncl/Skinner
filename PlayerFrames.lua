@@ -1348,30 +1348,6 @@ function aObj:LootFrames()
 	self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2}
 	self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2}
 
--->>-- BonusRoll Frame
-	self:removeRegions(_G.BonusRollFrame, {1, 2, 3, 5})
-	self:glazeStatusBar(_G.BonusRollFrame.PromptFrame.Timer, 0,  nil)
-	self:addSkinFrame{obj=_G.BonusRollFrame, ft=ftype, bg=true}
-	self:addButtonBorder{obj=_G.BonusRollFrame.PromptFrame, relTo=_G.BonusRollFrame.PromptFrame.Icon, reParent={_G.BonusRollFrame.SpecIcon}}
-
-	-- N.B. BonusRollLootWon/BonusRollMoneyWon frames are now managed as part of the Alert Frames skin
--->>-- MasterLooter Frame
-	_G.MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
-	_G.MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
-	_G.MasterLooterFrame.Item.NameBorderMid:SetTexture(nil)
-	_G.MasterLooterFrame.Item.IconBorder:SetTexture(nil)
-	self:addButtonBorder{obj=_G.MasterLooterFrame, relTo=_G.MasterLooterFrame.Icon}
-	_G.MasterLooterFrame.player1.Bg:SetTexture(nil)
-	self:addSkinFrame{obj=_G.MasterLooterFrame, ft=ftype, kfs=true, nb=true}
-	self:skinButton{obj=self:getChild(_G.MasterLooterFrame, 3), cb=true}
-
--->>-- MissingLoot frame
-	self:addSkinFrame{obj=_G.MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
-	for i = 1, _G.MissingLootFrame.numShownItems do
-		_G["MissingLootFrameItem" .. i .. "NameFrame"]:SetAlpha(0)
-		self:addButtonBorder{obj=_G["MissingLootFrameItem" .. i], ibt=true}
-	end
-
 -->>-- GroupLoot frames
 	for i = 1, _G.NUM_GROUP_LOOT_FRAMES do
 
@@ -1416,6 +1392,32 @@ function aObj:LootFrames()
 		end
 
 	end
+
+-->>-- BonusRoll Frame
+	self:removeRegions(_G.BonusRollFrame, {1, 2, 3, 5})
+	self:glazeStatusBar(_G.BonusRollFrame.PromptFrame.Timer, 0,  nil)
+	self:addSkinFrame{obj=_G.BonusRollFrame, ft=ftype, bg=true}
+	self:addButtonBorder{obj=_G.BonusRollFrame.PromptFrame, relTo=_G.BonusRollFrame.PromptFrame.Icon, reParent={_G.BonusRollFrame.SpecIcon}}
+
+	-- N.B. BonusRollLootWonFrame & BonusRollMoneyWonFrame are managed as part of the Alert Frames skin
+
+-->>-- MissingLoot frame
+	self:addSkinFrame{obj=_G.MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
+	for i = 1, _G.MissingLootFrame.numShownItems do
+		_G["MissingLootFrameItem" .. i .. "NameFrame"]:SetAlpha(0)
+		self:addButtonBorder{obj=_G["MissingLootFrameItem" .. i], ibt=true}
+	end
+
+-->>-- MasterLooter Frame
+	_G.MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
+	_G.MasterLooterFrame.Item.NameBorderRight:SetTexture(nil)
+	_G.MasterLooterFrame.Item.NameBorderMid:SetTexture(nil)
+	_G.MasterLooterFrame.Item.IconBorder:SetTexture(nil)
+	self:addButtonBorder{obj=_G.MasterLooterFrame, relTo=_G.MasterLooterFrame.Icon}
+	_G.MasterLooterFrame.player1.Bg:SetTexture(nil)
+	_G.MasterLooterFrame:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.MasterLooterFrame, ft=ftype, kfs=true, nb=true}
+	self:skinButton{obj=self:getChild(_G.MasterLooterFrame, 3), cb=true}
 
 end
 
