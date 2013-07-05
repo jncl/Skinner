@@ -1941,9 +1941,9 @@ function aObj:PetBattleUI()
 		_G.PetBattleFrame[sfn] = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
 		self:applySkin{obj=_G.PetBattleFrame[sfn], bba=0, fh=45}
 		if v == "Ally" then
-			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", 365, 4)
+			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", 390, 4)
 		else
-			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", 365 * -1, 4)
+			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", 390 * -1, 4)
 		end
 		_G.PetBattleFrame[sfn]:SetSize(340, 94)
 		_G.PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
