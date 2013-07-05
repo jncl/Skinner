@@ -2172,7 +2172,22 @@ function aObj:QueueStatusFrame()
 		return
 	end
 
-	self:addSkinFrame{obj=_G.QueueStatusFrame}
+	_G.QueueStatusFrame:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.QueueStatusFrame, anim=IsAddOnLoaded("SexyMap") and true or nil}
+	-- handle SexyMap's use of AnimationGroups to show and hide frames
+	if IsAddOnLoaded("SexyMap") then
+		local rtEvt
+		local function checkForAnimGrp()
+			if _G.QueueStatusMinimapButton.smAlphaAnim then
+				aObj:CancelTimer(rtEvt, true)
+				rtEvt = nil
+				aObj:SecureHookScript(_G.QueueStatusMinimapButton.smAnimGroup, "OnFinished", function(this)
+					_G.QueueStatusFrame.sf:Hide()
+				end)
+			end
+		end
+		rtEvt = self:ScheduleRepeatingTimer(checkForAnimGrp, 0.2)
+	end
 
 end
 
