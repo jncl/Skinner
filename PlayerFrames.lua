@@ -1763,6 +1763,19 @@ function aObj:PVPUI()
 		local tex = btn:GetHighlightTexture()
 		tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
 		tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
+
+	-- PVPFramePopup
+	_G.PVPFramePopup:DisableDrawLayer("BORDER")
+	_G.PVPFramePopupRing:SetTexture(nil)
+	self:addSkinFrame{obj=_G.PVPFramePopup, ft=ftype}
+	-- PVPRoleCheckPopup
+	self:addSkinFrame{obj=_G.PVPRoleCheckPopup, ft=ftype}
+	-- PVPReadyDialog
+	_G.PVPReadyDialog.background:SetAlpha(0)
+	_G.PVPReadyDialog.filigree:SetAlpha(0)
+	_G.PVPReadyDialog.bottomArt:SetAlpha(0)
+	_G.PVPReadyDialog.instanceInfo.underline:SetAlpha(0)
+	self:addSkinFrame{obj=_G.PVPReadyDialog, ft=ftype}
 	end
 	_G.ArenaTeamFrame:DisableDrawLayer("BACKGROUND")
 	_G.ArenaTeamFrame:DisableDrawLayer("BORDER")
