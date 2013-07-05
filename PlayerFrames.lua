@@ -313,6 +313,13 @@ function aObj:ArchaeologyUI() -- LoD
 	_G.ArchaeologyFrameHelpPageDigTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BTr, self.BTg, self.BTb)
 
+	if self.isPTR then
+		-- ArcheologyDigsiteProgressBar
+		self:removeRegions(_G.ArcheologyDigsiteProgressBar, {1, 2, 3})
+		self:glazeStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, 0)
+		-- N.B. DigsiteCompleteToastFrame is managed as part of the Alert Frames skin
+	end
+
 end
 
 function aObj:Buffs()
@@ -1213,14 +1220,16 @@ function aObj:InspectUI() -- LoD
 	_G.InspectModelFrame:DisableDrawLayer("BORDER")
 	_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
 
--->>--	PVP Frame
+-->>-- PVP Frame
 	self:keepFontStrings(_G.InspectPVPFrame)
-	for i = 1, _G.MAX_ARENA_TEAMS do
-		_G["InspectPVPTeam" .. i .. "StandardBar"]:Hide()
-		self:addSkinFrame{obj=_G["InspectPVPTeam" .. i], hat=true, x1=-40, y1=4, x2=-20}
+	if not self.isPTR then
+		for i = 1, _G.MAX_ARENA_TEAMS do
+			_G["InspectPVPTeam" .. i .. "StandardBar"]:Hide()
+			self:addSkinFrame{obj=_G["InspectPVPTeam" .. i], hat=true, x1=-40, y1=4, x2=-20}
+		end
 	end
 
--->>--	Talent Frame
+-->>-- Talent Frame
 	self:keepFontStrings(_G.InspectTalentFrame)
 	-- Specialization
 	_G.InspectTalentFrame.InspectSpec.ring:SetTexture(nil)
@@ -1685,7 +1694,9 @@ function aObj:PVPUI()
 	self.initialized.PVPFrame = true
 
 	self:removeInset(_G.PVPUIFrame.LeftInset)
-	self:skinTabs{obj=_G.PVPUIFrame, lod=true}
+	if not self.isPTR then
+		self:skinTabs{obj=_G.PVPUIFrame, lod=true}
+	end
 	self:addSkinFrame{obj=_G.PVPUIFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
 	for i = 1, 3 do
 		local btn = _G.PVPQueueFrame["CategoryButton" .. i]
@@ -1757,14 +1768,6 @@ function aObj:PVPUI()
 	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar, adj=-4}
 	_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
 	self:removeMagicBtnTex(_G.WarGameStartButton)
-	-- Arena Team Frame
-	for i = 1, 3 do
-		local btn = _G.PVPArenaTeamsFrame["Team" .. i]
-		btn.Background:SetTexture(nil)
-		btn.Flag.FlagGrabber:SetTexture(nil)
-		local tex = btn:GetHighlightTexture()
-		tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-		tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
 
 	-- PVPFramePopup
 	_G.PVPFramePopup:DisableDrawLayer("BORDER")
@@ -1778,16 +1781,27 @@ function aObj:PVPUI()
 	_G.PVPReadyDialog.bottomArt:SetAlpha(0)
 	_G.PVPReadyDialog.instanceInfo.underline:SetAlpha(0)
 	self:addSkinFrame{obj=_G.PVPReadyDialog, ft=ftype}
+
+	if not self.isPTR then
+		-- Arena Team Frame
+		for i = 1, 3 do
+			local btn = _G.PVPArenaTeamsFrame["Team" .. i]
+			btn.Background:SetTexture(nil)
+			btn.Flag.FlagGrabber:SetTexture(nil)
+			local tex = btn:GetHighlightTexture()
+			tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
+			tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
+		end
+		_G.ArenaTeamFrame:DisableDrawLayer("BACKGROUND")
+		_G.ArenaTeamFrame:DisableDrawLayer("BORDER")
+		self:removeInset(_G.ArenaTeamFrame.TopInset)
+		_G.ArenaTeamFrame.TopShadowOverlay:DisableDrawLayer("OVERLAY")
+		self:removeInset(_G.ArenaTeamFrame.WeeklyDisplay)
+		self:skinFFColHeads("ArenaTeamFrameHeader")
+		self:removeInset(_G.ArenaTeamFrame.BottomInset)
+		self:skinDropDown{obj=_G.ArenaTeamMemberDropDown}
+		self:removeMagicBtnTex(_G.ArenaTeamFrame.AddMemberButton)
 	end
-	_G.ArenaTeamFrame:DisableDrawLayer("BACKGROUND")
-	_G.ArenaTeamFrame:DisableDrawLayer("BORDER")
-	self:removeInset(_G.ArenaTeamFrame.TopInset)
-	_G.ArenaTeamFrame.TopShadowOverlay:DisableDrawLayer("OVERLAY")
-	self:removeInset(_G.ArenaTeamFrame.WeeklyDisplay)
-	self:skinFFColHeads("ArenaTeamFrameHeader")
-	self:removeInset(_G.ArenaTeamFrame.BottomInset)
-	self:skinDropDown{obj=_G.ArenaTeamMemberDropDown}
-	self:removeMagicBtnTex(_G.ArenaTeamFrame.AddMemberButton)
 
 end
 

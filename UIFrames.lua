@@ -175,6 +175,12 @@ function aObj:AlertFrames()
 		skinWonAlertFrames(frame)
 	end
 
+	if self.isPTR then
+		-- DigsiteCompleteToastFrame
+		_G.DigsiteCompleteToastFrame:DisableDrawLayer("BACKGROUND")
+		aObj:addSkinFrame{obj=_G.DigsiteCompleteToastFrame, ft=ftype, af=true, afas=true, ofs=-10}
+	end
+
 end
 
 function aObj:AutoComplete()
@@ -2119,7 +2125,7 @@ function aObj:PVEFrame()
 	self:skinTabs{obj=_G.PVEFrame}
 
 	-- GroupFinder Frame
-	for i = 1, 3 do
+	for i = 1, self.isPTR and 4 or 3 do
 		local btn = _G.GroupFinderFrame["groupButton" .. i]
 		btn.bg:SetTexture(nil)
 		btn.ring:SetTexture(nil)
@@ -2129,7 +2135,7 @@ function aObj:PVEFrame()
 	end
 	-- hook this to change selected texture
 	self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
-		for i = 1, 3 do
+		for i = 1, self.isPTR and 4 or 3 do
 			local btn = _G.GroupFinderFrame["groupButton" .. i]
 			if i == index then
 				btn.bg:SetTexture([[Interface\HelpFrame\HelpButtons]])
@@ -2139,6 +2145,15 @@ function aObj:PVEFrame()
 			end
 		end
 	end)
+
+	if self.isPTR then
+		-- FlexRaidFrame
+		self:removeInset(_G.FlexRaidFrameBottomInset)
+		self:skinDropDown{obj=_G.FlexRaidFrameSelectionDropDown}
+		self:skinScrollBar{obj=_G.FlexRaidFrame.ScrollFrame}
+		self:removeMagicBtnTex(_G.FlexRaidFrame.StartButton)
+	end
+
 	-- ScenarioFinder Frame
 	self:keepFontStrings(_G.ScenarioFinderFrame)
 	self:removeInset(_G.ScenarioFinderFrame.Inset)

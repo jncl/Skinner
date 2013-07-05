@@ -43,7 +43,7 @@ do
 --@end-alpha@
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.3.0"
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.4.0"
 
 end
 
