@@ -8,6 +8,56 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
+	O	PTR 5.4.0
+		==> Addons_Changes
+x		- AchievementUI
+√		- ArchaeologyUI (ArcheologyDigsiteProgressBar)
+x		- AuctionUI
+x		- AuctionUITemplates
+x		- ClientSavedVariables
+x		- CombatText
+√		- EncounterJournal
+x		- GuildUI
+x		- InspectUI
+√		- InspectPVPFrame
+x		- ItemSocketingUI
+√		- PVPUI
+x		- PetJournal
+		==> FrameXML_Changes
+√		- AlertFrames (DigsiteCompleteToastFrame)
+x		- AudioOptionPanels
+x		- AutoComplete
+x		- Bindings
+x		- BuffFrame
+x		- ChannelFrame
+x		- ChatFrame
+x		- Constants
+√		- FlexRaidFrame (New)
+x		- FrameXML
+x		- FriendsFrame
+x		- GlobalStrings
+x		- HybridScrollFrame
+x		- InterfaceOptionsPanels
+x		- LFGFrame
+x		- LevelUpDisplay
+x		- MailFrame
+x		- Minimap
+√		- PVEFrame
+x		- QuestLogFrame
+x		- RaidFinder
+x		- RaidFrame
+x		- StaticPopup
+x		- TradeFrame
+x		- UIPanelTemplates
+x		- UIParent
+x		- UnitFrame
+x		- UnitPopup
+x		- UnitPowerBarAlt
+x		- VehicleSeatIndicator
+x		- VideoOptionsPanels
+x		- WatchFrame
+x		- WorldMapFrame
+
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 		- issue is with buttons that have been 'flowed'
@@ -15,6 +65,23 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-	I	LilSparkysWorkshop, reported by lexusnexus/Pseudopath, 14/15.06.13
-		- ...terface\AddOns\Skinner\SkinMe\LilSparkysWorkshop.lua line 10:
-   attempt to index field 'parentFrame' (a nil value)
+?	I	Bagnon, reported by Luckyjack_SL, 18.06.13
+		- ..\AddOns\Skinner\SkinMe\Bagnon.lua line 73: script ran too long
+
+√	I	VuhDo, reported by seanmcgpa, 18.06.13
+		- ..\AddOns\Skinner\Skinner.lua line 711: attempt to index local 'obj' (a nil value)
+	Debug:
+	  Skinner\Skinner.lua:711: applyGradient()
+	  Skinner\SkinMe\VuhDo.lua:34:
+	     Skinner\SkinMe\VuhDo.lua:4
+
+√	S	Tukui ElvUI PetBattleHUD, requested by frostalotz, 19.06.13
+
+√	I	LFD/LFR, reported by seanmcgpa, 19.06.13
+		- white background issue caused by SexyMap, can it be fixed ??
+		- it's the QueueStatusFrame that has the problem
+
+√	S	PVPReadyDialog (was SafeQueue), reported by Excitor0, 03.07.13
+
+?	I	BonusLoot, reported by Excitor0, 03.07.13
+		- The window that asks you to use a coin for bonus loot is not skinned
