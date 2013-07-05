@@ -1446,6 +1446,7 @@ function aObj:LootHistory()
 	self:skinScrollBar{obj=_G.LootHistoryFrame.ScrollFrame}
 	_G.LootHistoryFrame.ScrollFrame.ScrollBarBackground:SetTexture(nil)
 	_G.LootHistoryFrame.Divider:SetTexture(nil)
+	_G.LootHistoryFrame:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.LootHistoryFrame, ft=ftype, kfs=true}
 	-- hook this to skin loot history items
 	self:SecureHook("LootHistoryFrame_FullUpdate", function(this)
@@ -1667,9 +1668,11 @@ function aObj:PetJournal() -- LoD
 	if self.db.profile.Tooltips.skin then
 		_G.PetJournalPrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
 		_G.PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
+		_G.PetJournalPrimaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=_G.PetJournalPrimaryAbilityTooltip, ft=ftype}
 		_G.PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
 		_G.PetJournalSecondaryAbilityTooltip.Delimiter2:SetTexture(nil)
+		_G.PetJournalSecondaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=_G.PetJournalSecondaryAbilityTooltip, ft=ftype}
 	end
 

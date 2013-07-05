@@ -1021,6 +1021,7 @@ function aObj:HelpFrame()
 	self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2}
 	self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2}
 	self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2}
+	_G.BrowserSettingsTooltip:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
 	-- Report Player panel
 	self:addSkinFrame{obj=_G.ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
@@ -2092,13 +2093,16 @@ function aObj:PetBattleUI()
 		-- PetBattlePrimaryAbility Tooltip
 		_G.PetBattlePrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
 		_G.PetBattlePrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
+		_G.PetBattlePrimaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=_G.PetBattlePrimaryAbilityTooltip, ft=ftype}
 		-- FloatingBattlePet Tooltip
 		_G.FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
+		_G.FloatingBattlePetTooltip:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=_G.FloatingBattlePetTooltip, ft=ftype}
 		-- FloatingPetBattleAbility Tooltip
 		_G.FloatingPetBattleAbilityTooltip.Delimiter1:SetTexture(nil)
 		_G.FloatingPetBattleAbilityTooltip.Delimiter2:SetTexture(nil)
+		_G.FloatingPetBattleAbilityTooltip:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=_G.FloatingPetBattleAbilityTooltip, ft=ftype}
 		-- BattlePetTooltip (used for caged battle pets in inventory)
 		self:addSkinFrame{obj=_G.BattlePetTooltip, ft=ftype}
