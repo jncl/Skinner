@@ -1,18 +1,19 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("WIM") then return end
+local _G = _G
 
 function aObj:WIM() -- WIM3
 
-	local function findFrame3(name, element)
+	local function findFrame(name, element)
 
 		local frame
 
-		for _, child in pairs{UIParent:GetChildren()} do
-			if child:GetName() == name then
-				if child[element] then
-					frame = child
-					break
-				end
+		for _, child in _G.pairs{_G.UIParent:GetChildren()} do
+			if child:GetName() == name
+			and child[element]
+			then
+				frame = child
+				break
 			end
 		end
 
@@ -28,12 +29,12 @@ function aObj:WIM() -- WIM3
 
 		local eBox = msgFrame.widgets.msg_box
 		eBox:SetWidth(msgFrame:GetWidth() - 20)
-		local xOfs = select(4, msgFrame.widgets.close:GetPoint())
-		xOfs = floor(xOfs)
+		local xOfs = _G.select(4, msgFrame.widgets.close:GetPoint())
+		xOfs = _G.floor(xOfs)
 		if xOfs == 4 then
 			eBox:SetHeight(eBox:GetHeight() - 5)
 			aObj:skinEditBox(eBox, {9})
-			aObj:moveObject(eBox, "-", 16, "-", 0)
+			eBox:SetPoint("TOPLEFT", msgFrame, "BOTTOMLEFT", 10, 30)
 			aObj:moveObject{obj=msgFrame.widgets.close, x=-2}
 			aObj:moveObject{obj=msgFrame.widgets.class_icon, y=-2}
 		end
@@ -46,11 +47,10 @@ function aObj:WIM() -- WIM3
 		if aObj.skinned[obj] then return end
 		aObj:skinAllButtons{obj=obj}
 
-		for _, child in pairs{obj:GetChildren()} do
+		for _, child in _G.pairs{obj:GetChildren()} do
 			if aObj:isDropDown(child) then
 				aObj:skinDropDown{obj=child, x2= obj.mf and 110 or nil}
 			elseif child.backdrop then
-				-- aObj:addSkinFrame{obj=child, kfs=true, x1=-3, y1=3, x2=3, y2=-3}
 				checkKids(child)
 			elseif child:IsObjectType("ScrollFrame") then
 				aObj:skinScrollBar{obj=child}
@@ -61,16 +61,16 @@ function aObj:WIM() -- WIM3
 	end
 
 	-- hook this to skin the options frame
-	self:SecureHook(WIM.options, "OnShow", function(this)
-		local optFrame = WIM.options.frame
+	self:SecureHook(_G.WIM.options, "OnShow", function(this)
+		local optFrame = _G.WIM.options.frame
 		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
 		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
 		optFrame.nav.bg:Hide()
-		self:addSkinFrame{obj=optFrame, y2=12}
+		self:addSkinFrame{obj=optFrame, nb=true, y2=12}
 		-- if frame is a function then hook it, otherwise check it
-		for _, cat in pairs(WIM.options.frame.nav.category) do
-			for _, subCat in pairs(cat.info.subCategories) do
-				if type(subCat["frame"]) == "function" then -- if the frame hasn't been created yet
+		for _, cat in _G.pairs(_G.WIM.options.frame.nav.category) do
+			for _, subCat in _G.pairs(cat.info.subCategories) do
+				if _G.type(subCat["frame"]) == "function" then -- if the frame hasn't been created yet
 					self:RawHook(subCat, "frame", function()
 						local catFrame = self.hooks[subCat].frame()
 						checkKids(catFrame)
@@ -81,35 +81,35 @@ function aObj:WIM() -- WIM3
 				end
 			end
 		end
-		self:Unhook(WIM.options, "OnShow")
+		self:Unhook(_G.WIM.options, "OnShow")
 	end)
 	-- hook this to skin the dropdown frame
-	self:SecureHook(WIM.options, "createDropDownFrame", function(this)
-		self:addSkinFrame{obj=WIM_DropDownFrame}
-		self:Unhook(WIM.options, "createDropDownFrame")
+	self:SecureHook(_G.WIM.options, "createDropDownFrame", function(this)
+		self:addSkinFrame{obj=_G.WIM_DropDownFrame}
+		self:Unhook(_G.WIM.options, "createDropDownFrame")
 	end)
 	-- hook these to skin the Message Frames
-	self:RawHook(WIM, "CreateWhisperWindow", function(playerName)
-		local msgFrame = self.hooks[WIM].CreateWhisperWindow(playerName)
+	self:RawHook(_G.WIM, "CreateWhisperWindow", function(playerName)
+		local msgFrame = self.hooks[_G.WIM].CreateWhisperWindow(playerName)
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
-	self:RawHook(WIM, "CreateChatWindow", function(chatName)
-		local msgFrame = self.hooks[WIM].CreateChatWindow(chatName)
+	self:RawHook(_G.WIM, "CreateChatWindow", function(chatName)
+		local msgFrame = self.hooks[_G.WIM].CreateChatWindow(chatName)
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
-	self:RawHook(WIM, "CreateW2WWindow", function(w2wname)
-		local msgFrame = self.hooks[WIM].CreateW2WWindow(w2wname)
+	self:RawHook(_G.WIM, "CreateW2WWindow", function(w2wname)
+		local msgFrame = self.hooks[_G.WIM].CreateW2WWindow(w2wname)
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
 	-- hook this to skin the filter frame
-	if WIM.modules["Filters"]
-	and WIM.modules["Filters"].enabled
+	if _G.WIM.modules["Filters"]
+	and _G.WIM.modules["Filters"].enabled
 	then
-		self:SecureHook(WIM, "ShowFilterFrame", function(this, ...)
-			local fFrame = findFrame3("WIM3_FilterFrame", "nameText")
+		self:SecureHook(_G.WIM, "ShowFilterFrame", function(this, ...)
+			local fFrame = findFrame("WIM3_FilterFrame", "nameText")
 			fFrame.title:SetPoint("TOPLEFT", 50 , -7);
 			fFrame.close:SetPoint("TOPRIGHT", -4, -4);
 			self:skinDropDown(fFrame.by)
@@ -121,15 +121,15 @@ function aObj:WIM() -- WIM3
 			self:skinDropDown(fFrame.action)
 			fFrame.border:Hide()
 			self:addSkinFrame{obj=fFrame}
-			self:Unhook(WIM, "ShowFilterFrame")
+			self:Unhook(_G.WIM, "ShowFilterFrame")
 		end)
 	end
 	-- skin the history viewer
-	if WIM.modules["History"]
-	and WIM.modules["History"].enabled
+	if _G.WIM.modules["History"]
+	and _G.WIM.modules["History"].enabled
 	then
-		self:SecureHook(WIM, "ShowHistoryViewer", function(this, ...)
-			local hvFrame = WIM3_HistoryFrame
+		self:SecureHook(_G.WIM, "ShowHistoryViewer", function(this, ...)
+			local hvFrame = _G.WIM3_HistoryFrame
 			hvFrame.title:SetPoint("TOPLEFT", 50 , -7)
 			hvFrame.close:SetPoint("TOPRIGHT", -4, -4)
 		    hvFrame.resize:SetPoint("BOTTOMRIGHT", 0, 0)
@@ -154,27 +154,27 @@ function aObj:WIM() -- WIM3
 			-- progress viewer
 			self:keepFontStrings(hvFrame.progressBar)
 			self:applySkin(hvFrame.progressBar)
-			self:Unhook(WIM, "ShowHistoryViewer")
+			self:Unhook(_G.WIM, "ShowHistoryViewer")
 		end)
 	end
 	-- skin the Menu (Minimap/LDB)
-	if WIM.modules["Menu"]
-	and WIM.modules["Menu"].enabled
+	if _G.WIM.modules["Menu"]
+	and _G.WIM.modules["Menu"].enabled
 	then
-		self:SecureHook(WIM.Menu, "Show", function(this, ...)
-			for _, group in pairs(WIM.Menu.groups) do
+		self:SecureHook(_G.WIM.Menu, "Show", function(this, ...)
+			for _, group in _G.pairs(_G.WIM.Menu.groups) do
 				group:SetBackdrop(nil)
 				group.title:SetPoint("TOPLEFT", 10, -8)
 				group.title:SetPoint("TOPRIGHT", -10, -8);
 			end
-			self:SecureHook(WIM.Menu, "Refresh", function(this)
+			self:SecureHook(_G.WIM.Menu, "Refresh", function(this)
 				self:adjWidth{obj=this, adj=-30}
 				self:adjHeight{obj=this, adj=-20}
 			end)
-			self:adjWidth{obj=WIM.Menu, adj=-30}
-			self:adjHeight{obj=WIM.Menu, adj=-20}
-			self:applySkin(WIM.Menu)
-			self:Unhook(WIM.Menu, "Show")
+			self:adjWidth{obj=_G.WIM.Menu, adj=-30}
+			self:adjHeight{obj=_G.WIM.Menu, adj=-20}
+			self:applySkin(_G.WIM.Menu)
+			self:Unhook(_G.WIM.Menu, "Show")
 		end)
 	end
 
