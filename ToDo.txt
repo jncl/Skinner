@@ -61,6 +61,7 @@ x		- WorldMapFrame
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 		- issue is with buttons that have been 'flowed'
+		- reused AceGUI buttons sometimes still have a frame when they become check buttons
 
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
@@ -68,20 +69,13 @@ x		- WorldMapFrame
 ?	I	Bagnon, reported by Luckyjack_SL, 18.06.13
 		- ..\AddOns\Skinner\SkinMe\Bagnon.lua line 73: script ran too long
 
-√	I	VuhDo, reported by seanmcgpa, 18.06.13
-		- ..\AddOns\Skinner\Skinner.lua line 711: attempt to index local 'obj' (a nil value)
-	Debug:
-	  Skinner\Skinner.lua:711: applyGradient()
-	  Skinner\SkinMe\VuhDo.lua:34:
-	     Skinner\SkinMe\VuhDo.lua:4
-
-√	S	Tukui ElvUI PetBattleHUD, requested by frostalotz, 19.06.13
-
-√	I	LFD/LFR, reported by seanmcgpa, 19.06.13
-		- white background issue caused by SexyMap, can it be fixed ??
-		- it's the QueueStatusFrame that has the problem
-
-√	S	PVPReadyDialog (was SafeQueue), reported by Excitor0, 03.07.13
-
 ?	I	BonusLoot, reported by Excitor0, 03.07.13
 		- The window that asks you to use a coin for bonus loot is not skinned
+
+√	I	Prat3, reported by DarkLimpan, 07.06.13
+		- prat3's editbox ("Skinner User Background") skinning isn't skinned, and it forgets everytime I log out. However, when I change it to "Skinner User Backdrop" (on line 17), it works fine.
+		Do you know if this is just me being dumb somehow? Or is it something that haven't been reported before now?
+
+?	I	WIM, reported by NeoZeus, 07.06.13
+		- I'm guessing the bugfix for Sexymap is for the white background. It worked, but now for some reason the background is transparent.
+		Btw, I am having the same the white background problem with the window that pops up when you get a message in WIM.
