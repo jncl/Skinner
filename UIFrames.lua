@@ -2273,7 +2273,7 @@ function aObj:TimeManager() -- LoD
 	if not self.db.profile.TimeManager or self.initialized.TimeManager then return end
 	self.initialized.TimeManager = true
 
--->>--	Time Manager Frame
+	-- Time Manager Frame
 	_G.TimeManagerFrameTicker:Hide()
 	self:keepFontStrings(_G.TimeManagerStopwatchFrame)
 	self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck}
@@ -2284,13 +2284,15 @@ function aObj:TimeManager() -- LoD
 	self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
 	self:addSkinFrame{obj=_G.TimeManagerFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 
--->>--	Time Manager Clock Button
-	self:removeRegions(_G.TimeManagerClockButton, {1})
-	if not self.db.profile.Minimap.style then
-		self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, x1=10, y1=-3, x2=-5, y2=5}
+	if not IsAddOnLoaded("SexyMap") then
+		-- Time Manager Clock Button
+		self:removeRegions(_G.TimeManagerClockButton, {1})
+		if not self.db.profile.Minimap.style then
+			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, x1=10, y1=-3, x2=-5, y2=5}
+		end
 	end
 
--->>--	Stopwatch Frame
+	-- Stopwatch Frame
 	self:keepFontStrings(_G.StopwatchTabFrame)
 	self:skinButton{obj=_G.StopwatchCloseButton, cb=true, sap=true}
 	self:addSkinFrame{obj=_G.StopwatchFrame, ft=ftype, kfs=true, y1=-16, y2=2, nb=true}

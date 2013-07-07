@@ -114,7 +114,7 @@ function aObj:BlizzardFrames()
 			["MailFrame"] = true,
 			["MainMenuBar"] = false, -- checked below
 			["MenuFrames"] = true,
-			["Minimap"] = true,
+			["Minimap"] = false, -- checked below
 			["MinimapButtons"] = false, -- done with timer
 			["ModelFrames"] = false, -- checked below
 			["Nameplates"] = false, -- checked below
@@ -150,7 +150,10 @@ function aObj:BlizzardFrames()
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 
 	-- handle non standard ones here
-	self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
+	-- skin the MinimapButtons if SexyMap isn't loaded
+	if not IsAddOnLoaded("SexyMap") then
+		self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
+	end
 
 	-- skin required frames now
 	for _, bfType in pairs(self.blizzFrames) do
@@ -257,6 +260,9 @@ function aObj:AddonFrames()
 
 	-- skin the MainMenuBar if Dominos isn't loaded
 	if not IsAddOnLoaded("Dominos") then self:checkAndRun("MainMenuBar") end
+
+	-- skin the Minimap if SexyMap isn't loaded
+	if not IsAddOnLoaded("SexyMap") then self:checkAndRun("Minimap") end
 
 	-- skin the Nameplates if other nameplate addons aren't loaded
 	if not IsAddOnLoaded("Aloft")
