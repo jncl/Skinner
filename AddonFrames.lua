@@ -16,7 +16,7 @@ local blizzLoDFrames = {
 	--	ArenaUI the unitframes are skinned in UnitFrames.lua
 }
 -- optional frames
-if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- ui
+-- if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "FeedbackUI") end -- ui
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
 	blizzLoD["Blizzard_"..v] = v
@@ -67,7 +67,6 @@ function aObj:BlizzardFrames()
 			["TradeSkillUI"] = false,
 		},
 	    npc = {
-			["ArenaRegistrar"] = true,
 			["BankFrame"] = true,
 			["GossipFrame"] = true,
 			["GuildRegistrar"] = true,
@@ -145,8 +144,9 @@ function aObj:BlizzardFrames()
 		},
 	}
 
+	if not aObj.isPTR then self.blizzFrames.npc["ArenaRegistrar"] = true end
 	-- optional frames
-	if aObj.isPTR then self.blizzFrames.ui["FeedbackUI"] = false end
+	-- if aObj.isPTR then self.blizzFrames.ui["FeedbackUI"] = false end
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 
 	-- handle non standard ones here

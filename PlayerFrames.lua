@@ -1152,7 +1152,7 @@ function aObj:GuildUI() -- LoD
 	self:skinTabs{obj=_G.GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
 	-- GuildInfoFrameInfo Frame
 	self:keepFontStrings(_G.GuildInfoFrameInfo)
-	self:skinSlider{obj=_G.GuildInfoDetailsFrameScrollBar, adj=-4}
+	self:skinSlider{obj=_G.GuildInfoDetailsFrameScrollBar, adj=not aObj.isPTR and -4 or nil}
 	-- GuildInfoFrameRecruitment Frame
 	_G.GuildRecruitmentInterestFrameBg:SetAlpha(0)
 	_G.GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
@@ -1765,7 +1765,7 @@ function aObj:PVPUI()
 		btn.Entry.Bg:SetTexture(nil)
 		btn.Entry.Border:SetTexture(nil)
 	end
-	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar, adj=-4}
+	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar, adj=not aObj.isPTR and -4 or nil}
 	_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
 	self:removeMagicBtnTex(_G.WarGameStartButton)
 

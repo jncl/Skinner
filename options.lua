@@ -51,7 +51,7 @@ function aObj:Defaults()
 		-- populated below
 	-->>-- NPC Frames
 		DisableAllNPC        = false,
-		ArenaRegistrar       = true,
+		ArenaRegistrar       = not self.isPTR and true or nil,
 		AuctionUI            = true,
 		BankFrame            = true,
 		BarbershopUI         = true,
@@ -724,11 +724,11 @@ function aObj:Options()
 					type = "header",
 					name = self.L["or choose which frames to skin"],
 				},
-				ArenaRegistrar = {
+				ArenaRegistrar = not self.isPtr and {
 					type = "toggle",
 					name = self.L["Arena Registrar Frame"],
 					desc = self.L["Toggle the skin of the Arena Registrar Frame"],
-				},
+				} or nil,
 				AuctionUI = {
 					type = "toggle",
 					name = self.L["Auction Frame"],
@@ -1383,11 +1383,11 @@ function aObj:Options()
 							name = self.L["GM Survey Frame"],
 							desc = self.L["Toggle the skin of the GM Survey Frame"],
 						},
-						FeedbackUI = self.isPTR and {
-							type = "toggle",
-							name = self.L["Feedback"],
-							desc = self.L["Toggle the skin of the Feedback Frame"],
-						} or nil,
+						-- FeedbackUI = self.isPTR and {
+						-- 	type = "toggle",
+						-- 	name = self.L["Feedback"],
+						-- 	desc = self.L["Toggle the skin of the Feedback Frame"],
+						-- } or nil,
 					},
 				},
 				ItemText = {
