@@ -1325,7 +1325,8 @@ function aObj:LookingForGuildUI() -- LoD
 
 	-- Request Membership Frame
 	_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrameInputFrame, ft=ftype}
+	self:skinScrollBar{obj=_G._G.GuildFinderRequestMembershipFrameInputFrameScrollFrame}
+	self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrameInputFrame, ft=ftype, x1=-2, x2=2, y2=-2}
 	self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrame, ft=ftype}
 
 end

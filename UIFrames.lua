@@ -781,9 +781,7 @@ function aObj:DestinyFrame()
 	for _, v in pairs{"alliance", "horde"} do
 		local btn = _G.DestinyFrame[v .. "Button"]
 		self:removeRegions(btn, {1})
-		local tex = btn:GetHighlightTexture()
-		tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-		tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
+		self:changeRecTex(btn:GetHighlightTexture())
 		self:adjWidth{obj=btn, adj=-60}
 		self:adjHeight{obj=btn, adj=-60}
 		self:skinButton{obj=btn, x1=0, y1=0, x2=-1, y2=3}
@@ -997,6 +995,11 @@ function aObj:GuildBankUI() -- LoD
 	self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={9}}
 	self:skinScrollBar{obj=_G.GuildBankPopupScrollFrame}
 	self:addSkinFrame{obj=_G.GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
+	for i = 1, 16 do
+		local btn = _G["GuildBankPopupButton" .. i]
+		btn:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=btn}
+	end
 
 -->>--	Tabs (side)
 	for i = 1, _G.MAX_GUILDBANK_TABS do
@@ -1018,7 +1021,7 @@ function aObj:HelpFrame()
 	self:moveObject{obj=_G.HelpFrame.header, y=-12}
 	self:removeInset(_G.HelpFrame.leftInset)
 	self:removeInset(_G.HelpFrame.mainInset)
-	self:addSkinFrame{obj=_G.HelpFrame, ft=ftype, kfs=true, ofs=-10}
+	self:addSkinFrame{obj=_G.HelpFrame, ft=ftype, kfs=true, ofs=-10, y2=7}
 	-- Help Browser
 	self:removeInset(_G.HelpBrowser.BrowserInset)
 	self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2}
@@ -1036,6 +1039,9 @@ function aObj:HelpFrame()
 	self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
 	_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
+	-- -- Knowledgebase
+	-- self:keepFontStrings(_G.HelpFrame.kbase)
+	-- self:addSkinFrame{obj=_G.HelpFrameKnowledgebaseErrorFrame, ft=ftype, kfs=true, ofs=-10}
 	-- Account Security panel
 	-- Character Stuck! panel
 	self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
@@ -1123,7 +1129,7 @@ function aObj:LFDFrame()
 	-- LFD Queue Frame
 	_G.LFDQueueFrameBackground:SetAlpha(0)
 	self:skinDropDown{obj=_G.LFDQueueFrameTypeDropDown}
-	self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrameScrollBar, adj=-4}
+	self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrame.ScrollBar, adj=not aObj.isPTR and -4 or nil}
 	_G.LFDQueueFrameRandomScrollFrameChildFrame.BonusValor.Border:SetTexture(nil)
 
 	self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
@@ -1389,7 +1395,7 @@ function aObj:MainMenuBar()
 
 -->>-- Extra Action Button
 	if self.db.profile.MainMenuBar.extraab then
-		self:addButtonBorder{obj=_G.ExtraActionButton1, relTo=_G.ExtraActionButton1.icon}
+		self:addButtonBorder{obj=_G.ExtraActionButton1, relTo=_G.ExtraActionButton1.icon, ofs=1}
 		_G.ExtraActionButton1.style:SetTexture(nil)
 		_G.ExtraActionButton1.style.SetTexture = function() end
 	end
@@ -1641,15 +1647,17 @@ function aObj:MinimapButtons()
 	local function mmKids(mmObj)
 
 		for _, obj in ipairs{mmObj:GetChildren()} do
-			local objName = obj:GetName()
-			local objType = obj:GetObjectType()
+			local objName, objType = obj:GetName(), obj:GetObjectType()
 			if not obj.sb
 			and not obj.sf
+			and not objName == "OQ_MinimapButton" -- ignore oQueue's minimap button
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
 			then
+				-- aObj:Debug("mmKids: [%s, %s]", objName, objType)
 				for _, reg in ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
+						-- aObj:Debug("mmKids Texture: [%s, %s]", reg:GetName(), reg:GetTexture())
 						-- change the DrawLayer to make the Icon show if required
 						if aObj:hasTextInName(reg, "[Ii]con")
 						or aObj:hasTextInTexture(reg, "[Ii]con")
@@ -1661,6 +1669,7 @@ function aObj:MinimapButtons()
 						elseif aObj:hasTextInName(reg, "Border")
 						or aObj:hasTextInTexture(reg, "TrackingBorder")
 						then
+							-- aObj:Debug("mmKids found Border texture")
 							reg:SetTexture(nil)
 							obj:SetSize(32, 32)
 							if not minBtn then
@@ -1675,7 +1684,10 @@ function aObj:MinimapButtons()
 						end
 					end
 				end
-			elseif objName and objType == "Frame" then
+			elseif objType == "Frame"
+			and (objName
+			and not objName == "MiniMapTrackingButton") -- handled below
+			then
 				mmKids(obj)
 			end
 		end
@@ -1724,6 +1736,7 @@ function aObj:MinimapButtons()
 	_G.MiniMapVoiceChatFrameIcon:SetPoint("CENTER")
 	-- MiniMap Tracking
 	_G.MiniMapTrackingBackground:SetTexture(nil)
+	_G.MiniMapTrackingButtonBorder:SetTexture(nil)
 	_G.MiniMapTrackingIcon:SetParent(_G.MiniMapTrackingButton)
 	_G.MiniMapTrackingIcon:ClearAllPoints()
 	_G.MiniMapTrackingIcon:SetPoint("CENTER", _G.MiniMapTrackingButton)
@@ -1826,26 +1839,26 @@ function aObj:Nameplates()
 
 	local r, g, b, a = unpack(self.sbColour)
 	local sbTex, shTex = self.sbTexture, self.shieldTex
+	local _, rg2, rg3, rg6
 	local function skinPlate(obj)
 
-		local _, rg2, rg3 = obj:GetRegions() -- border & highlight
+		_, rg2, rg3 = obj:GetRegions() -- border & highlight
 		rg2:SetTexture(nil)
 		rg3:SetTexture(nil)
 
 		-- skin both status bars (health & cast)
 		obj.sb1, obj.sb2 = obj:GetChildren()
-		obj.sb1:SetStatusBarTexture(sbTex)
-		obj.sb1.bg = obj.sb1:CreateTexture(nil, "BACKGROUND")
-		obj.sb1.bg:SetTexture(sbTex)
-		obj.sb1.bg:SetVertexColor(r, g, b, a)
-		obj.sb2:SetStatusBarTexture(sbTex)
-		obj.sb2.bg = obj.sb2:CreateTexture(nil, "BACKGROUND")
-		obj.sb2.bg:SetTexture(sbTex)
-		obj.sb2.bg:SetVertexColor(r, g, b, a)
+		for i = 1, 2 do
+			obj["sb" .. i]:SetStatusBarTexture(sbTex)
+			obj["sb" .. i].bg = obj.sb1:CreateTexture(nil, "BACKGROUND")
+			obj["sb" .. i].bg:SetTexture(sbTex)
+			obj["sb" .. i].bg:SetVertexColor(r, g, b, a)
+		end
 
 		-- Cast bar uninterruptible shield texture
-		_, rg2 ,obj.sb2.rg3, obj.sb2.rg4 = obj.sb2:GetRegions() -- border, shield, icon
+		_, rg2 ,obj.sb2.rg3, obj.sb2.rg4, _, rg6 = obj.sb2:GetRegions() -- border, shield, icon, spellname shadow
 		rg2:SetTexture(nil)
+		rg6:SetTexture(nil)
 		aObj:changeShield(obj.sb2.rg3, obj.sb2.rg4)
 
 	end
@@ -2129,17 +2142,14 @@ function aObj:PVEFrame()
 		local btn = _G.GroupFinderFrame["groupButton" .. i]
 		btn.bg:SetTexture(nil)
 		btn.ring:SetTexture(nil)
-		local tex = btn:GetHighlightTexture()
-		tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-		tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
+		self:changeRecTex(btn:GetHighlightTexture())
 	end
 	-- hook this to change selected texture
 	self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
 		for i = 1, self.isPTR and 4 or 3 do
 			local btn = _G.GroupFinderFrame["groupButton" .. i]
 			if i == index then
-				btn.bg:SetTexture([[Interface\HelpFrame\HelpButtons]])
-				btn.bg:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
+				self:changeRecTex(btn.bg, true)
 			else
 				btn.bg:SetTexture(nil)
 			end
@@ -2335,9 +2345,6 @@ function aObj:Tooltips()
 			self:Unhook("GameTooltip_ShowStatusBar")
 		end
 	end)
-
-	_G.FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
-	self:addSkinFrame{obj=_G.FloatingBattlePetTooltip, ft=ftype}
 
 end
 

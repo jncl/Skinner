@@ -254,6 +254,18 @@ function aObj:changeShield(shldReg, iconReg)
 
 end
 
+aObj.RecTex = [[Interface\HelpFrame\HelpButtons]]
+function aObj:changeRecTex(obj, isYellow, isUnitFrame)
+
+	obj:SetTexture(self.RecTex)
+	if isYellow then
+		obj:SetTexCoord(isUnitFrame and 0.015 or 0.0038, isUnitFrame and 0.66 or 0.7, 0.67, 0.855) -- yellow
+	else
+		obj:SetTexCoord(0.0038, 0.7, 0.004, 0.205) -- blue
+	end
+
+end
+
 function aObj:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
