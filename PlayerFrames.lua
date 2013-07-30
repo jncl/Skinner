@@ -1702,17 +1702,14 @@ function aObj:PVPUI()
 		local btn = _G.PVPQueueFrame["CategoryButton" .. i]
 		btn.Background:SetTexture(nil)
 		btn.Ring:SetTexture(nil)
-		local tex = btn:GetHighlightTexture()
-		tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-		tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
+		self:changeRecTex(btn:GetHighlightTexture())
 	end
 	-- hook this to change selected texture
 	self:SecureHook("PVPQueueFrame_SelectButton", function(index)
 		for i = 1, 3 do
 			local btn = _G.PVPQueueFrame["CategoryButton" .. i]
 			if i == index then
-				btn.Background:SetTexture([[Interface\HelpFrame\HelpButtons]])
-				btn.Background:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
+				self:changeRecTex(btn.Background, true)
 			else
 				btn.Background:SetTexture(nil)
 			end
@@ -1788,9 +1785,7 @@ function aObj:PVPUI()
 			local btn = _G.PVPArenaTeamsFrame["Team" .. i]
 			btn.Background:SetTexture(nil)
 			btn.Flag.FlagGrabber:SetTexture(nil)
-			local tex = btn:GetHighlightTexture()
-			tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-			tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
+			self:changeRecTex(btn:GetHighlightTexture())
 		end
 		_G.ArenaTeamFrame:DisableDrawLayer("BACKGROUND")
 		_G.ArenaTeamFrame:DisableDrawLayer("BORDER")
@@ -2117,43 +2112,41 @@ function aObj:TalentUI() -- LoD
 	self:skinButton{obj=_G.PlayerTalentFrameTalents.learnButton, anim=true, parent=_G.PlayerTalentFrameTalents}
 	self:skinButton{obj=_G.PlayerTalentFramePetSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFramePetSpecialization}
 
-	-- Tab1 (Specialization)
-	self:removeRegions(_G.PlayerTalentFrameSpecialization, {1, 2, 3, 4, 5, 6})
-	_G.PlayerTalentFrameSpecialization.MainHelpButton.Ring:SetTexture(nil)
-	self:moveObject{obj=_G.PlayerTalentFrameSpecialization.MainHelpButton, y=-4}
-	self:removeMagicBtnTex(_G.PlayerTalentFrameSpecialization.learnButton)
-	-- specs
-	for i = 1, 4 do
-		local btn = _G.PlayerTalentFrameSpecialization["specButton" .. i]
-		btn.bg:SetTexture(nil)
-		btn.ring:SetTexture(nil)
-		btn.selectedTex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-		btn.selectedTex:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
-		btn.learnedTex:SetTexture(nil)
-		local tex = btn:GetHighlightTexture()
-		tex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-		tex:SetTexCoord(0.00390625, 0.78125000, 0.00390625, 0.21484375)
-	end
-	-- shadow frame (LHS)
-	self:keepFontStrings(self:getChild(_G.PlayerTalentFrameSpecialization, 7))
-	-- spellsScroll (RHS)
-	self:skinSlider{obj=_G.PlayerTalentFrameSpecialization.spellsScroll.ScrollBar}
-	local scrollChild = _G.PlayerTalentFrameSpecialization.spellsScroll.child
-	self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
-	-- abilities
-	local function skinAbilities(tab)
-		local i = 1
-		local frame = tab["abilityButton" .. i]
-		while frame do
-			frame.ring:SetTexture(nil)
-			if not frame.disabled then
-				frame.subText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	local function skinAbilities(obj)
+		for i = 1, obj:GetNumChildren() do
+			local btn = obj["abilityButton" .. i]
+			btn.ring:SetTexture(nil)
+			if btn.subText
+			and not btn.disabled
+			then
+				btn.subText:SetTextColor(self.BTr, self.BTg, self.BTb)
 			end
-			i = i + 1
-			frame = tab["abilityButton" .. i]
 		end
 	end
-	skinAbilities(scrollChild)
+	local function skinSpec(frame)
+		aObj:removeRegions(frame, {1, 2, 3, 4, 5, 6})
+		frame.MainHelpButton.Ring:SetTexture(nil)
+		aObj:moveObject{obj=frame.MainHelpButton, y=-4}
+		aObj:removeMagicBtnTex(frame.learnButton)
+		for i = 1, 4 do
+			local btn = frame["specButton" .. i]
+			btn.bg:SetTexture(nil)
+			btn.ring:SetTexture(nil)
+			aObj:changeRecTex(btn.selectedTex, true)
+			btn.learnedTex:SetTexture(nil)
+			aObj:changeRecTex(btn:GetHighlightTexture())
+		end
+		-- shadow frame (LHS)
+		aObj:keepFontStrings(self:getChild(frame, 7))
+		-- spellsScroll (RHS)
+		aObj:skinSlider{obj=frame.spellsScroll.ScrollBar}
+		local scrollChild = frame.spellsScroll.child
+		aObj:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
+		-- abilities
+		skinAbilities(scrollChild)
+	end
+	-- Tab1 (Specialization)
+	skinSpec(_G.PlayerTalentFrameSpecialization)
 	-- handle extra abilities (Player and Pet)
 	self:SecureHook("PlayerTalentFrame_CreateSpecSpellButton", function(this, index)
 		this.spellsScroll.child["abilityButton" .. index].ring:SetTexture(nil)
@@ -2175,38 +2168,15 @@ function aObj:TalentUI() -- LoD
 		for j = 1, 3 do
 			local btn = obj["talent" .. j]
 			btn.Slot:SetTexture(nil)
-			btn.knownSelection:SetTexture([[Interface\HelpFrame\HelpButtons]])
-			btn.knownSelection:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
+			btn.knownSelection:SetTexCoord(0.00390625, 0.78515625, 0.25000000, 0.36914063)
+			btn.knownSelection:SetVertexColor(0, 1, 0, 1)
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
 	end
 	-- Tab3 (Glyphs), skinned in GlyphUI
 	-- Tab4 (Pet Specialization)
-	self:removeRegions(_G.PlayerTalentFramePetSpecialization, {1, 2, 3, 4, 5, 6})
-	_G.PlayerTalentFramePetSpecialization.MainHelpButton.Ring:SetTexture(nil)
-	self:moveObject{obj=_G.PlayerTalentFramePetSpecialization.MainHelpButton, y=-4}
-	self:removeMagicBtnTex(_G.PlayerTalentFramePetSpecialization.learnButton)
-	-- specs
-	for i = 1, 4 do
-		local btn = _G.PlayerTalentFramePetSpecialization["specButton" .. i]
-		btn.bg:SetTexture(nil)
-		btn.ring:SetTexture(nil)
-		btn.selectedTex:SetTexture([[Interface\HelpFrame\HelpButtons]])
-		btn.selectedTex:SetTexCoord(0.00390625, 0.78125000, 0.66015625, 0.87109375)
-		btn.learnedTex:SetTexture(nil)
-	end
-	-- shadow frame (LHS)
-	self:keepFontStrings(self:getChild(_G.PlayerTalentFramePetSpecialization, 7))
-	-- spellsScroll (RHS)
-	self:skinSlider{obj=_G.PlayerTalentFramePetSpecialization.spellsScroll.ScrollBar}
-	local scrollChild = _G.PlayerTalentFramePetSpecialization.spellsScroll.child
-	self:removeRegions(scrollChild, {1, 2, 3, 4, 5, 6, 12})
-	-- abilities
-	for i = 1, scrollChild:GetNumChildren() do
-		local btn = scrollChild["abilityButton" .. i]
-		if btn then btn.ring:SetTexture(nil) end
-	end
-	-- Spec Tabs (side)
+	skinSpec(_G.PlayerTalentFramePetSpecialization)
+	-- Dual Spec Tabs
 	for i = 1, 2 do
 		local tab = _G["PlayerSpecTab" .. i]
 		self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
@@ -2339,8 +2309,10 @@ function aObj:WatchFrame()
 				if obj and not aObj.skinned[obj] then
 					for k, reg in ipairs{obj:GetRegions()} do
 						if k < 11 or k > 16 then reg:SetTexture(nil) end -- Animated textures
-						if k == 11 or k == 12 then self:moveObject{obj=reg, x=30} end -- move Quest Icon right
+						 -- move Quest Icons right
+						if k == 11 or k == 12 then self:moveObject{obj=reg, x=16} end
 					end
+					obj.Flash:DisableDrawLayer("OVERLAY") -- hide IconBg flash texture
 					aObj:applySkin{obj=obj, ft=ftype}
 				end
 			end
