@@ -26,7 +26,7 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
-	local liveVer = 17128
+	local liveVer = 17205
 --@alpha@
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
 --@end-alpha@
@@ -393,6 +393,8 @@ local function __addSkinButton(opts)
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
 		rp = re-parent, reverse the parent child relationship
+		sec = use the "SecureUnitButtonTemplate"
+		nohooks = don't hook methods
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSB\n" .. debugstack())
@@ -405,22 +407,28 @@ local function __addSkinButton(opts)
 	if opts.kfs then aObj:keepFontStrings(opts.obj) end
 
 	opts.parent = opts.parent or opts.obj:GetParent()
-	opts.hook = opts.hook or opts.obj
 
 	-- store button object within original button
-	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent)
+	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent, opts.sec and "SecureUnitButtonTemplate" or nil)
 	local btn = opts.obj.sb
 	_G.LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
-	-- hook Show/Hide methods
-	if not aObj:IsHooked(opts.hook, "Show") then
-		aObj:SecureHook(opts.hook, "Show", function(this) opts.obj.sb:Show() end)
-		aObj:SecureHook(opts.hook, "Hide", function(this) opts.obj.sb:Hide() end)
-		if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
-			aObj:SecureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
-			aObj:SecureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
+
+	if not opts.nohooks then
+		opts.hook = opts.hook or opts.obj
+		-- hook Show/Hide methods
+		if not aObj:IsHooked(opts.hook, "Show") then
+			aObj:SecureHook(opts.hook, "Show", function(this) opts.obj.sb:Show() end)
+			aObj:SecureHook(opts.hook, "Hide", function(this) opts.obj.sb:Hide() end)
+			if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
+				aObj:SecureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
+				aObj:SecureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
+			end
 		end
+		-- store reference to the button (used by addons, until they are all updated)
+		if not opts.ft then aObj.sBtn[opts.hook] = btn end
 	end
+
 	-- position the button skin
 	if opts.sap then
 		btn:SetAllPoints(opts.obj)
@@ -469,9 +477,6 @@ local function __addSkinButton(opts)
 			this:SetParent_orig(aObj.sBtn[this])
 		end
 	end
-
-	-- store reference to the button (used by addons, until they are all updated)
-	if not opts.ft then aObj.sBtn[opts.hook] = btn end
 
 	return btn
 
@@ -577,6 +582,8 @@ local function __addSkinFrame(opts)
 	skinFrame:ClearAllPoints()
 	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
 	skinFrame:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+
+	skinFrame:EnableMouse(false) -- allow clickthrough
 
 	-- handle header, if required
 	if opts.hdr then hideHeader(opts.obj) end
