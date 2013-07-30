@@ -1758,9 +1758,11 @@ function aObj:Options()
 	local function chatCommand(input)
 
 		if not input or input:trim() == "" then
-			-- Open general panel if there are no parameters
+			-- Open general panel if there are no parameters, do twice to overcome Blizzard bug
+			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
 			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
 		elseif optCheck[input:lower()] then
+			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 		else
 			LibStub("AceConfigCmd-3.0"):HandleCommand(aName, aName, input)
@@ -1775,7 +1777,11 @@ function aObj:Options()
 	self.DBObj = LibStub("LibDataBroker-1.1"):NewDataObject(aName, {
 		type = "launcher",
 		icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
-		OnClick = function() InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame) end,
+		OnClick = function()
+			-- do twice to overcome Blizzard bug
+			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
+			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame)
+		end,
 	})
 
 	-- register the data object to the Icon library
