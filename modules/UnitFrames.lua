@@ -17,7 +17,6 @@ local defaults = {
 	}
 }
 local lOfs = -10 -- level text offset
-local totOfs = -12 -- TargetofTarget frame offset
 local tDelay = 0.2 -- repeating timer delay
 local isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 local rpTmr = {}
@@ -43,12 +42,51 @@ local function adjustStatusBarPosn(sBar, yAdj)
 	end
 
 end
+local function addBackground(opts)
+
+	-- create background texture
+	opts.obj.sbg = opts.obj:CreateTexture(nil, "BORDER")
+	local r, g, b = _G.unpack(aObj.bColour)
+	opts.obj.sbg:SetTexture(r, g, b, db.alpha)
+
+	-- setup offset values
+	opts.ofs = opts.ofs or 0
+	local xOfs1 = opts.x1 or opts.ofs * -1
+	local yOfs1 = opts.y1 or opts.ofs
+	local xOfs2 = opts.x2 or opts.ofs
+	local yOfs2 = opts.y2 or opts.ofs * -1
+
+	-- position texture
+	opts.obj.sbg:ClearAllPoints()
+	opts.obj.sbg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
+	opts.obj.sbg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+
+end
+local function addThreat(parent, unit, fbUnit)
+
+	-- add a flash texture
+	parent.flash = parent:CreateTexture(nil, "BORDER")
+	parent.flash:SetAllPoints(parent.sbg)
+	aObj:changeRecTex(parent.flash, true, true)
+	 -- stop these being changed (e.g. TargetFrame)
+	parent.flash.SetTexture = function() end
+	parent.flash.SetTexCoord = function() end
+	parent.flash.SetWidth = function() end
+	parent.flash.SetHeight = function() end
+	parent.flash.SetPoint = function() end
+	-- link unit and feedback unit info for threat updates
+	parent.flash.unit = unit
+	parent.flash.feedbackUnit = fbUnit or unit
+	parent.threatIndicator = parent.flash
+
+end
 
 local function skinPlayerF()
 
 	if db.player
 	and not isSkinned["Player"]
 	then
+		_G.PlayerFrameFlash:SetAlpha(0) -- hide existing flash texture
 		_G.PlayerFrameBackground:SetTexture(nil)
 		_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -60,10 +98,9 @@ local function skinPlayerF()
 		adjustStatusBarPosn(_G.PlayerFrameHealthBar)
 		aObj:glazeStatusBar(_G.PlayerFrameHealthBar, 0)
 		aObj:glazeStatusBar(_G.PlayerFrameManaBar, 0)
-		-- casting bar handled in CastingBar function (UIF)
-		-- move PVP Icon/Timer text up & right
-		aObj:moveObject{obj=_G.PlayerPVPIcon, x=2, y=25}
-		aObj:moveObject{obj=_G.PlayerPVPTimerText, x=34, y=2}
+		-- casting bar handled in CastingBar function (PF)
+		-- move PvP Timer text down
+		aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 		-- move level & rest icon down, so they are more visible
 		aObj:moveObject{obj=_G.PlayerLevelText, y=lOfs}
 		aObj:moveObject{obj=_G.PlayerRestIcon, y=lOfs} -- covers level text when resting
@@ -76,7 +113,7 @@ local function skinPlayerF()
 			aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
 		end
 		aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
-		local y2Ofs = 6
+		local y2Ofs = 9
 		--	skin the RuneFrame, if required
 		if aObj.uCls == "DEATHKNIGHT" then
 			for i = 1, 6 do
@@ -111,7 +148,7 @@ local function skinPlayerF()
 		end
 		-- skin the PowerBar, if required
 		if aObj.uCls == "PALADIN" then
-			y2Ofs = 3
+			y2Ofs = 6
 			_G.PaladinPowerBar:DisableDrawLayer("BACKGROUND")
 			_G.PaladinPowerBar.glow:DisableDrawLayer("BACKGROUND")
 		end
@@ -124,7 +161,7 @@ local function skinPlayerF()
 			aObj:glazeStatusBar(_G.MonkStaggerBar, 0)
 			-- extend frame if Brewmaster specialization
 			if _G.MonkStaggerBar.class == aObj.uCls and _G.MonkStaggerBar.specRestriction == _G.GetSpecialization() then
-				y2Ofs = 0
+				y2Ofs = 3
 			end
 		end
 		-- skin the BarFrame, if required
@@ -135,8 +172,11 @@ local function skinPlayerF()
 				_G.PriestBarFrame["orb" .. i].highlight:SetTexture(nil) -- remove capping texture
 			end
 		end
+
 		-- skin the PlayerFrame
-		aObj:addSkinFrame{obj=_G.PlayerFrame, ft=ftype, noBdr=true, nb=true, aso=aso, x1=37, y1=-7, y2=y2Ofs}
+		addBackground{obj=_G.PlayerFrame, x1=40, y1=-10, y2=y2Ofs}
+		addThreat(_G.PlayerFrame, "player")
+
 	end
 
 end
@@ -145,6 +185,7 @@ local function skinPetF()
 	if db.pet
 	and not isSkinned["Pet"]
 	then
+		_G.PetFrameFlash:SetAlpha(0) -- hide existing flash texture
 		_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PetAttackModeTexture:SetTexture(nil)
 		-- status bars
@@ -154,57 +195,52 @@ local function skinPetF()
 		aObj:glazeStatusBar(_G.PetFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
 		aObj:moveObject{obj=_G.PetFrame, x=28, y=-3} -- align under Player Health/Mana bars
-		aObj:addSkinFrame{obj=_G.PetFrame, ft=ftype, noBdr=true, nb=true, aso=aso, x1=-6, y1=3, x2=-4, y2=2}
-		-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
-		if db.petlevel
-		and aObj.uCls == "HUNTER"
-		or aObj.uCls == "WARLOCK"
-		then
-			if not _G.PetFrame.lvl then
-				_G.PetFrame.lvl = _G.PetFrame.sf:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-				_G.PetFrame.lvl:SetPoint("BOTTOMLEFT", 4, 4)
-				local function checkLevel(event, ...)
 
-					_G.PetFrame.lvl:SetText(_G.UnitLevel(_G.PetFrame.unit))
-
-				end
-				module:SecureHook("PetFrame_Update", function(this, ...)
-					checkLevel("pfu")
-				end)
-				module:RegisterEvent("PET_BAR_UPDATE", checkLevel) -- for pet changes
-				module:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
-				module:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
-				checkLevel("init")
-				_G.PetFrame.lvl:Show()
-			else
-				_G.PetFrame.lvl:Show()
-			end
-		elseif _G.PetFrame.lvl then
-			_G.PetFrame.lvl:Hide()
+		-- skin the PetFrame
+		addBackground{obj=_G.PetFrame, y1=-1, x2=-4}
+		addThreat(_G.PetFrame, "pet")
+		-- remove debuff border
+		for i = 1, 4 do
+			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
 		end
+	end
+	-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
+	if db.petlevel
+	and aObj.uCls == "HUNTER"
+	or aObj.uCls == "WARLOCK"
+	then
+		if not _G.PetFrame.lvl then
+			_G.PetFrame.lvl = _G.PetFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
+			_G.PetFrame.lvl:SetPoint("BOTTOMLEFT", 4, 4)
+			local function checkLevel(event, ...) _G.PetFrame.lvl:SetText(_G.UnitLevel(_G.PetFrame.unit)) end
+			module:SecureHook("PetFrame_Update", function(this, ...) checkLevel("pfu") end)
+			module:RegisterEvent("PET_BAR_UPDATE", checkLevel) -- for pet changes
+			module:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
+			module:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
+			checkLevel("init")
+			_G.PetFrame.lvl:Show()
+		else
+			_G.PetFrame.lvl:Show()
+		end
+	elseif _G.PetFrame.lvl then
+		_G.PetFrame.lvl:Hide()
 	end
 
 end
-local function skinToT(frame)
-
-	_G[frame .. "Background"]:SetTexture(nil)
-	_G[frame .. "TextureFrameTexture"]:SetTexture(nil)
-	-- status bars
-	adjustStatusBarPosn(_G[frame .. "HealthBar"])
-	aObj:glazeStatusBar(_G[frame .. "HealthBar"], 0)
-	aObj:glazeStatusBar(_G[frame .. "ManaBar"], 0)
-	aObj:moveObject{obj=_G[frame], y=totOfs}
-
-end
-local function skinUFrame(frame)
-
-	aObj:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, nb=true, aso=aso, y1=-7, x2=-37, y2=6}
+local function skinCommon(frame, adjSB)
 	_G[frame .. "Background"]:SetTexture(nil)
 	_G[frame .. "TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
 	-- status bars
-	adjustStatusBarPosn(_G[frame .. "HealthBar"])
 	aObj:glazeStatusBar(_G[frame .. "HealthBar"], 0)
 	aObj:glazeStatusBar(_G[frame .. "ManaBar"], 0)
+	if adjSB then
+		adjustStatusBarPosn(_G[frame .. "HealthBar"])
+	end
+end
+local function skinUFrame(frame)
+
+	addBackground{obj=_G[frame], y1=-10, x2=-40, y2=6}
+	skinCommon(frame, true)
 	aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
 	-- move level & highlevel down, so they are more visible
 	aObj:moveObject{obj=_G[frame .. "TextureFrameLevelText"], x=2, y=lOfs}
@@ -218,8 +254,9 @@ local function skinUFrame(frame)
 	aObj:changeShield(_G[cBar .. "BorderShield"], _G[cBar .. "Icon"])
 	aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar .. "Flash"]})
 -->>-- TargetofTarget Frame
-	skinToT(frame .. "ToT")
-	aObj:addSkinFrame{obj=_G[frame .. "ToT"], ft=ftype, noBdr=true, aso=aso, x2=6, y2=-1}
+	addBackground{obj=_G[frame .. "ToT"]}
+	skinCommon(frame .. "ToT", true)
+	aObj:moveObject{obj=_G[frame .. "ToT"], x=-104, y=1} -- move to LHS of Target/Focus frame
 
 end
 local function skinTargetF()
@@ -243,6 +280,8 @@ local function skinTargetF()
 	and not isSkinned["Target"]
 	then
 		skinUFrame("TargetFrame")
+		addThreat(_G.TargetFrame, "target", "player")
+		_G.TargetFrameFlash:SetAlpha(0) -- hide existing flash texture
 
 		--	skin the ComboFrame, if required
 		if aObj.uCls == "ROGUE"
@@ -287,12 +326,9 @@ local function skinTargetF()
 	-->>--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
 			local frame = "Boss" .. i .. "TargetFrame"
-			_G[frame .. "Background"]:SetTexture(nil)
-			_G[frame .. "TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
-			aObj:glazeStatusBar(_G[frame .. "HealthBar"], 0)
-			aObj:glazeStatusBar(_G[frame .. "ManaBar"], 0)
+			addBackground{obj=_G[frame], x1=-1, y1=-14, x2=-72, y2=5}
+			skinCommon(frame)
 			aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
-			aObj:addSkinFrame{obj=_G[frame], ft=ftype, noBdr=true, aso=aso, x1=-1,  y1=-14, x2=-72, y2=5}
 			-- create a texture to show Elite dragon
 			local bcTex = _G[frame .. "TextureFrame"]:CreateTexture(nil, "BACKGROUND")
 			bcTex:SetWidth(80)
@@ -342,10 +378,12 @@ local function skinPartyF()
 
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			local pF = "PartyMemberFrame" .. i
+			addBackground{obj=_G[pF], x1=2, y1=5, x2=-1}
+			addThreat(_G[pF], "party" .. i)
+			_G[pF .. "Flash"]:SetAlpha(0) -- hide existing flash texture
+
 			aObj:moveObject{obj=_G[pF .. "Portrait"], y=6}
-			--[=[
-				TODO stop portrait being moved
-			--]=]
+			-- TODO stop portrait being moved
 			_G[pF .. "Background"]:SetTexture(nil)
 			_G[pF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G[pF .. "VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -358,19 +396,22 @@ local function skinPartyF()
 			-- status bars
 			aObj:glazeStatusBar(_G[pF .. "HealthBar"], 0)
 			aObj:glazeStatusBar(_G[pF .. "ManaBar"], 0)
-			aObj:addSkinFrame{obj=_G[pF], ft=ftype, noBdr=true, nb=true, aso=aso, x1=2, y1=5, x2=-1}
 
 			-- pet frame
 			local pPF = pF .. "PetFrame"
-			_G[pPF .. "Flash"]:SetTexture(nil)
+			addBackground{obj=_G[pPF], x1=-2, y1=1, y2=1}
+			addThreat(_G[pPF], "partypet" .. i)
+			_G[pPF .. "Flash"]:SetAlpha(0) -- hide existing flash texture
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:glazeStatusBar(_G[pPF .. "HealthBar"], 0)
-			aObj:addSkinFrame{obj=_G[pPF], ft=ftype, noBdr=true, nb=true, aso=aso, x1=-2, y1=1, y2=1}
 
 		end
+
 		-- PartyMember Buff Tooltip
-		aObj:addSkinFrame{obj=_G.PartyMemberBuffTooltip, ft=ftype, noBdr=true, nb=true, aso=aso, x1=2, y1=-2, x2=-2, y2=2}
+		_G.PartyMemberBuffTooltip:SetBackdrop(nil)
+		addBackground{obj=_G.PartyMemberBuffTooltip}
+
 		-- PartyMemberBackground
 		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y1=2, x2=1, y2=2}
 	end
@@ -383,15 +424,14 @@ local function skinArenaF()
 	then
 		aObj:SecureHook("Arena_LoadUI", function()
 			local function skinFrame(fName)
+				addBackground{obj=_G[fName], x1=-3, x2=3, y2=-6}
 				_G[fName .. "Background"]:SetTexture(nil)
 				_G[fName .. "Texture"]:SetTexture(nil)
 				_G[fName .. "Status"]:SetTexture(nil)
 				_G[fName .. "SpecBorder"]:SetTexture(nil)
-
 				-- status bars
 				aObj:glazeStatusBar(_G[fName .. "HealthBar"], 0)
 				aObj:glazeStatusBar(_G[fName .. "ManaBar"], 0)
-				aObj:addSkinFrame{obj=_G[fName], ft=ftype, noBdr=true, nb=true, aso=aso, x1=-3, x2=3, y2=-6}
 				-- casting bar
 				local cBar = fName .. "CastingBar"
 				aObj:adjHeight{obj=_G[cBar], adj=2}
@@ -405,15 +445,14 @@ local function skinArenaF()
 
 				-- pet frame
 				local aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
+				addBackground{obj=_G[aPF], y1=1, x2=1, y2=2}
 				_G[aPF .. "Flash"]:SetTexture(nil)
 				_G[aPF .. "Texture"]:SetTexture(nil)
 				-- status bar
 				aObj:glazeStatusBar(_G[aPF .. "HealthBar"], 0)
 				aObj:glazeStatusBar(_G[aPF .. "ManaBar"], 0)
-				aObj:addSkinFrame{obj=_G[aPF], ft=ftype, noBdr=true, nb=true, aso=aso, y1=1, x2=1, y2=2}
 				-- move pet frame
 				aObj:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
-
 			end
 			-- ArenaPrepBackground
 			aObj:addSkinFrame{obj=_G.ArenaPrepBackground, ft=ftype, nb=true}
@@ -429,25 +468,25 @@ local function changeUFOpacity()
 	local r, g, b = _G.unpack(aObj.bColour)
 
 	for _, uFrame in _G.pairs(unitFrames) do
-		if _G[uFrame].sf then
-			_G[uFrame].sf:SetBackdropColor(r, g, b, db.alpha)
+		if _G[uFrame].sbg then
+			_G[uFrame].sbg:SetTexture(r, g, b, db.alpha)
 		end
 	end
 	for i = 1, _G.MAX_PARTY_MEMBERS do
-		if _G["PartyMemberFrame" .. i].sf then
-			_G["PartyMemberFrame" .. i].sf:SetBackdropColor(r, g, b, db.alpha)
-			_G["PartyMemberFrame" .. i .. "PetFrame"].sf:SetBackdropColor(r, g, b, db.alpha)
+		if _G["PartyMemberFrame" .. i].sbg then
+			_G["PartyMemberFrame" .. i].sbg:SetTexture(r, g, b, db.alpha)
+			_G["PartyMemberFrame" .. i .. "PetFrame"].sbg:SetTexture(r, g, b, db.alpha)
 		end
 	end
 	for i = 1, _G.MAX_BOSS_FRAMES do
-		if _G["Boss" .. i .. "TargetFrame"].sf then
-			_G["Boss" .. i .. "TargetFrame"].sf:SetBackdropColor(r, g, b, db.alpha)
+		if _G["Boss" .. i .. "TargetFrame"].sbg then
+			_G["Boss" .. i .. "TargetFrame"].sbg:SetTexture(r, g, b, db.alpha)
 		end
 	end
 	for i = 1, _G.MAX_ARENA_ENEMIES do
-		if _G["ArenaEnemyFrame" .. i].sf then
-			_G["ArenaEnemyFrame" .. i].sf:SetBackdropColor(r, g, b, db.alpha)
-			_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetBackdropColor(r, g, b, db.alpha)
+		if _G["ArenaEnemyFrame" .. i].sbg then
+			_G["ArenaEnemyFrame" .. i].sbg:SetTexture(r, g, b, db.alpha)
+			_G["ArenaEnemyFrame" .. i .. "PetFrame"].sbg:SetTexture(r, g, b, db.alpha)
 		end
 	end
 
@@ -485,7 +524,7 @@ function module:OnInitialize()
 	end
 
 	-- setup default applySkin options
-	aso = {ba=db.alpha, ng=true}
+	aso = {ba=db.alpha, bba=0, ng=true}
 
 end
 
