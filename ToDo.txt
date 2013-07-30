@@ -12,41 +12,62 @@ Legend:
 		==> Addons_Changes
 x		- AchievementUI
 √		- ArchaeologyUI (ArcheologyDigsiteProgressBar)
+		- ArenaUI
 x		- AuctionUI
 x		- AuctionUITemplates
+x		- BattlefieldMinimap
 x		- ClientSavedVariables
+x		- CombatLog
 x		- CombatText
 √		- EncounterJournal
+√		- FeedBackUI (REMOVED)
 x		- GuildUI
 x		- InspectUI
 √		- InspectPVPFrame
+		- ItemAlterationUI
 x		- ItemSocketingUI
+		- ItemUpgradeUI
 √		- PVPUI
 x		- PetJournal
+		- ShopUI (New)
 		==> FrameXML_Changes
 √		- AlertFrames (DigsiteCompleteToastFrame)
+√		- ArenaRegistrar (REMOVED)
 x		- AudioOptionPanels
 x		- AutoComplete
 x		- Bindings
 x		- BuffFrame
 x		- ChannelFrame
 x		- ChatFrame
+x		- CompactUnitFrame
 x		- Constants
 √		- FlexRaidFrame (New)
+x		- FontStyles
 x		- FrameXML
 x		- FriendsFrame
 x		- GlobalStrings
 x		- HybridScrollFrame
 x		- InterfaceOptionsPanels
+		- ItemRef
+√		- LFDFrame
 x		- LFGFrame
 x		- LevelUpDisplay
 x		- MailFrame
+		- MainMenuBarMicroButtons
+		- MerchantFrame
 x		- Minimap
 √		- PVEFrame
+		- PaperDollFrame
+		- PartyFrameTemplates
+		- PetFrame
+x		- PlayerFrame
 x		- QuestLogFrame
+		- QueueStatusFrame
 x		- RaidFinder
 x		- RaidFrame
 x		- StaticPopup
+		- SecureCapsule (New)
+x		- TargetFrame
 x		- TradeFrame
 x		- UIPanelTemplates
 x		- UIParent
@@ -57,6 +78,10 @@ x		- VehicleSeatIndicator
 x		- VideoOptionsPanels
 x		- WatchFrame
 x		- WorldMapFrame
+		- WorldStateFrame (WorldStateProvingGroundsFrame)
+
+	O	UnitFrames
+√		- replace red shaped highlight with rectangular one for Player, Pet, Target...
 
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
@@ -72,10 +97,10 @@ x		- WorldMapFrame
 ?	I	BonusLoot, reported by Excitor0, 03.07.13
 		- The window that asks you to use a coin for bonus loot is not skinned
 
-√	I	Prat3, reported by DarkLimpan, 07.06.13
-		- prat3's editbox ("Skinner User Background") skinning isn't skinned, and it forgets everytime I log out. However, when I change it to "Skinner User Backdrop" (on line 17), it works fine.
-		Do you know if this is just me being dumb somehow? Or is it something that haven't been reported before now?
+√	I	oQueue, reported by Luckyjack_SL, 15.07.13
+		-  ..\AddOns\Skinner\Skinner.lua line 550: attempt to index field 'obj' (a nil value)
+		   Debug: (tail call): ?
+		   Skinner\SkinMe\oQueue.lua:231:
+		   Skinner\SkinMe\oQueue.lua:4
 
-?	I	WIM, reported by NeoZeus, 07.06.13
-		- I'm guessing the bugfix for Sexymap is for the white background. It worked, but now for some reason the background is transparent.
-		Btw, I am having the same the white background problem with the window that pops up when you get a message in WIM.
+√	N	Carbonite2?, requested by Serra44, 21.07.12
