@@ -320,7 +320,7 @@ function module:isButton(obj)
 		-- RolePollPopup has 3 regions
 		-- Channel Pullout is 24 high
 		elseif obj:GetParent().CloseButton == obj
-		or oH == oW and (nR == 3 or nR == 4) and (oH == 32 or oH == 24)
+		or oH == oW and (nR >= 3 or nR <= 5) and (oH == 32 or oH == 24)
 		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true))
 		then
 			bType = "close"
