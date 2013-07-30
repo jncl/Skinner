@@ -1,3 +1,10 @@
+b5.17128.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Added checks for SexyMap to prevent Minimap skinning
+	Updated Prat3 & WIM skins
+
 b5.17128.1
 Jncl:
 	ToDo.txt
