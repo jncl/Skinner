@@ -1244,9 +1244,7 @@ function aObj:MainMenuBar()
 	for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 		local btnName = "ActionButton" .. i
 		_G[btnName .. "Border"]:SetAlpha(0) -- texture changed in blizzard code
-		local btn = _G[btnName]
-		btn.SetNormalTexture = function() end
-		self:addButtonBorder{obj=btn, abt=true, sec=true}
+		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
 	end
 
 	-- Micro buttons, skinned before checks for a consistent look, 12.10.12
@@ -1265,14 +1263,6 @@ function aObj:MainMenuBar()
 	self:addButtonBorder{obj=_G.CharacterBag1Slot}
 	self:addButtonBorder{obj=_G.CharacterBag2Slot}
 	self:addButtonBorder{obj=_G.CharacterBag3Slot}
-	for i = 1, _G.NUM_POSSESS_SLOTS do
-		local btn = _G["PossessButton" .. i]
-		self:addButtonBorder{obj=btn, abt=true, sec=true}
-	end
-	for i = 1, _G.NUM_STANCE_SLOTS do
-		local btn = _G["StanceButton" .. i]
-		self:addButtonBorder{obj=btn, abt=true, sec=true}
-	end
 	self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
 	self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
 	for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
@@ -1320,11 +1310,16 @@ function aObj:MainMenuBar()
 			local btnName = "MultiBar" .. v .. "Button" .. i
 			_G[btnName .. "FloatingBG"]:SetAlpha(0)
 			_G[btnName .. "Border"]:SetAlpha(0) -- texture changed in blizzard code
-			local btn = _G[btnName]
-			btn.SetNormalTexture = function() end
-			self:addButtonBorder{obj=btn, abt=true, sec=true}
+			self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
 		end
 	end
+
+	-- hook this to hide button grid after it has been shown
+	self:SecureHook("ActionButton_HideGrid", function(btn)
+		if ( _G[btn:GetName() .. "NormalTexture"] ) then
+			_G[btn:GetName() .. "NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0)
+		end
+	end)
 
 end
 
