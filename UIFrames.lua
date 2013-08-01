@@ -975,6 +975,9 @@ function aObj:HelpFrame()
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 5), ft=ftype}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
 
+	-- TicketStatusFrame
+	self:addSkinFrame{obj=TicketStatusFrameButton}
+
 end
 
 function aObj:ItemText()
