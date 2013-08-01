@@ -1361,7 +1361,6 @@ local function __skinDropDown(opts)
 --@end-debug@
 
 	if aObj:hasAnyTextInName(opts.obj, {"tekKonfigDropdown", "Left"}) -- ignore tekKonfigDropdown/Az DropDowns
-	-- and not opts.obj.leftTexture -- handle FeedbackUI ones
 	and not opts.obj.LeftTexture -- handle MC2UIElementsLib ones (used by GroupCalendar5)
 	then
 		return

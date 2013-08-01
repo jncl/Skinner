@@ -179,6 +179,9 @@ function aObj:AlertFrames()
 		-- DigsiteCompleteToastFrame
 		_G.DigsiteCompleteToastFrame:DisableDrawLayer("BACKGROUND")
 		aObj:addSkinFrame{obj=_G.DigsiteCompleteToastFrame, ft=ftype, af=true, afas=true, ofs=-10}
+		-- StorePurchaseAlertFrame
+		_G.StorePurchaseAlertFrame:DisableDrawLayer("BACKGROUND")
+		aObj:addSkinFrame{obj=_G.StorePurchaseAlertFrame, ft=ftype, af=true, afas=true, ofs=-10}
 	end
 
 end
@@ -383,7 +386,9 @@ function aObj:Calendar() -- LoD
 
 -->>-- ContextMenus
 	self:addSkinFrame{obj=_G.CalendarContextMenu}
-	self:addSkinFrame{obj=_G.CalendarArenaTeamContextMenu}
+	if not self.isPTR then
+		self:addSkinFrame{obj=_G.CalendarArenaTeamContextMenu}
+	end
 	self:addSkinFrame{obj=_G.CalendarInviteStatusContextMenu}
 
 end
@@ -822,93 +827,6 @@ function aObj:DropDownPanels()
 	end)
 
 end
-
--- if aObj.isPTR then
--- 	function aObj:FeedbackUI() -- LoD
--- 		if not self.db.profile.Feedback or self.initialized.Feedback then return end
--- 		self.initialized.Feedback = true
---
--- 		local bbR, bbG, bbB, bbA = unpack(self.bbColour)
---
--- 		self:keepFontStrings(_G.FeedbackUITitleFrm)
--- 		_G.FeedbackUIWelcomeFrame:SetBackdrop(nil)
--- 		self:skinDropDown{obj=_G.FeedbackUI_ModifierKeyDropDown}
--- 		self:addSkinFrame{obj=_G.FeedbackUI_ModifierKeyDropDownList, ft=ftype}
--- 		self:skinDropDown{obj=_G.FeedbackUI_MouseButtonDropDown}
--- 		self:addSkinFrame{obj=_G.FeedbackUI_MouseButtonDropDownList, ft=ftype}
--- 		self:addSkinFrame{obj=_G.FeedbackUI, ft=ftype, kfs=true}
--- 		self:add2Table(_G.UISpecialFrames, "FeedbackUI") -- make it closeable with Esc key
---
--- 	-->>-- Welcome Frame panels
--- 		_G.FeedbackUIWelcomeFrameSurveys:DisableDrawLayer("BORDER")
--- 		self:addButtonBorder{obj=_G.FeedbackUIWelcomeFrameSurveys, relTo=_G.FeedbackUIWelcomeFrameSurveysIcon}
--- 		_G.FeedbackUIWelcomeFrameSuggestions:DisableDrawLayer("BORDER")
--- 		self:addButtonBorder{obj=_G.FeedbackUIWelcomeFrameSuggestions, relTo=_G.FeedbackUIWelcomeFrameSuggestionsIcon}
--- 		_G.FeedbackUIWelcomeFrameBugs:DisableDrawLayer("BORDER")
--- 		self:addButtonBorder{obj=_G.FeedbackUIWelcomeFrameBugs, relTo=_G.FeedbackUIWelcomeFrameBugsIcon}
---
--- 	-->-- Survey Frame
--- 		_G.FeedbackUISurveyFrame:SetBackdrop(nil)
--- 		self:skinDropDown{obj=_G.FeedbackUISurveyFrameSurveysPanelDdlCategory}
--- 		self:addSkinFrame{obj=_G.FeedbackUISurveyFrameSurveysPanelDdlCategoryList, ft=ftype}
--- 		self:skinDropDown{obj=_G.FeedbackUISurveyFrameSurveysPanelDdlStatus}
--- 		self:addSkinFrame{obj=_G.FeedbackUISurveyFrameSurveysPanelDdlStatusList, ft=ftype}
--- 		_G.FeedbackUISurveyFrameSurveysPanelHeadersColumnUnderline:SetAlpha(0)
--- 		for i = 1, 8 do
--- 			self:skinButton{obj=_G["FeedbackUISurveyFrameSurveysPanelScrollButtonsOption" .. i .. "Btn"], mp2=true}
--- 		end
--- 		self:skinUsingBD{obj=_G.FeedbackUISurveyFrameSurveysPanelScrollScrollControls, size=3}
--- 		_G.FeedbackUISurveyFrameSurveysPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		_G.FeedbackUISurveyFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		_G.FeedbackUISurveyFrameStatusPanelLine:SetAlpha(0)
--- 		_G.FeedbackUISurveyFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		self:addSkinFrame{obj=_G.FeedbackUISurveyFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
--- 		self:addSkinFrame{obj=_G.FeedbackUISurveyFrameStepThroughPanelEdit, ft=ftype}
--- 		self:skinScrollBar{obj=_G.FeedbackUISurveyFrameStepThroughPanelEditInput}
--- 		self:skinUsingBD{obj=_G.FeedbackUISurveyFrameStepThroughPanelScrollScrollControls, size=3}
--- 		if self.modBtnBs then
--- 			-- skin the alert buttons
--- 			for i = 1, 10 do
--- 				local obj = _G["FeedbackUISurveyFrameSurveysPanelAlertFrameButton" .. i]
--- 				self:addButtonBorder{obj=obj, ofs=0, x2=-2, y2=3}
--- 			end
--- 		end
---
--- 	-->>-- Suggestion Frame
--- 		_G.FeedbackUISuggestFrame:SetBackdrop(nil)
--- 		_G.FeedbackUISuggestFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		_G.FeedbackUISuggestFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		_G.FeedbackUISuggestFrameStatusPanelLine:SetAlpha(0)
--- 		_G.FeedbackUISuggestFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		self:addSkinFrame{obj=_G.FeedbackUISuggestFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
--- 		self:addSkinFrame{obj=_G.FeedbackUISuggestFrameStepThroughPanelEdit, ft=ftype}
--- 		self:skinScrollBar{obj=_G.FeedbackUISuggestFrameStepThroughPanelEditInput}
--- 		self:skinUsingBD{obj=_G.FeedbackUISuggestFrameStepThroughPanelScrollScrollControls, size=3}
---
--- 	-->>-- Bug Frame
--- 		_G.FeedbackUIBugFrame:SetBackdrop(nil)
--- 		_G.FeedbackUIBugFrameInfoPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		_G.FeedbackUIBugFrameStatusPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		_G.FeedbackUIBugFrameStatusPanelLine:SetAlpha(0)
--- 		_G.FeedbackUIBugFrameStepThroughPanelBorder:SetBackdropBorderColor(bbR, bbG, bbB, bbA)
--- 		self:addSkinFrame{obj=_G.FeedbackUIBugFrameStepThroughPanelHeader, ft=ftype, x1=1, y1=-1, x2=-1, y2=1}
--- 		self:addSkinFrame{obj=_G.FeedbackUIBugFrameStepThroughPanelEdit, ft=ftype}
--- 		self:skinScrollBar{obj=_G.FeedbackUIBugFrameStepThroughPanelEditInput}
--- 		self:skinUsingBD{obj=_G.FeedbackUIBugFrameStepThroughPanelScrollScrollControls, size=3}
---
--- 		-- make the QuestLog Tip Label text visible
--- 		_G.FeedbackUIQuestLogTipLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
---
--- 		-- Minimap Button
--- 		if self.db.profile.MinimapButtons.skin then
--- 			for _, reg in ipairs{_G.FeedbackUIButton:GetRegions()} do
--- 				reg:SetWidth(26)
--- 				reg:SetHeight(26)
--- 			end
--- 		end
---
--- 	end
--- end
 
 function aObj:GMChatUI() -- LoD
 	if not self.db.profile.GMChatUI or self.initialized.GMChatUI then return end
@@ -1357,6 +1275,9 @@ function aObj:MainMenuBar()
 		self:addButtonBorder{obj=_G[v .. "MicroButton"], mb=true, ofs=0, y1=-21}
 	end
 	self:addButtonBorder{obj=_G.FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
+	if self.isPTR then
+		self:addButtonBorder{obj=_G["StoreMicroButton"], mb=true, ofs=0, y1=-21}
+	end
 
 -->>-- add button borders
 	-- Bag buttons
@@ -2476,5 +2397,13 @@ function aObj:WorldState()
 	self:skinScrollBar{obj=_G.WorldStateScoreScrollFrame}
 	self:skinTabs{obj=_G.WorldStateScoreFrame}
 	self:addSkinFrame{obj=_G.WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+
+	-- WorldStateProvingGroundsFrame
+	if self.isPTR then
+		self:rmRegionsTex(_G.WorldStateProvingGroundsFrame, {1, 2, 8, 9}) -- N.B. Texture 3 is Medal, 4-7 are text, 10 is glow (remove textures as they are animated)
+		self:removeRegions(_G.WorldStateProvingGroundsFrame.statusBar, {1})
+		self:glazeStatusBar(_G.WorldStateProvingGroundsFrame.statusBar, 0,  nil)
+		self:addSkinFrame{obj=_G.WorldStateProvingGroundsFrame, ft=ftype, nb=true, rp=true} -- N.B. use rp to overcome animation whiteout
+	end
 
 end

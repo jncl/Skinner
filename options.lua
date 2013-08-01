@@ -65,6 +65,7 @@ function aObj:Defaults()
 		QuestFrame           = true,
 		ReforgingUI          = true,
 		SideDressUpFrame     = true,
+		StoreUI				 = self.isPTR and true or nil,
 		Tabard               = true,
 		TaxiFrame            = true,
 		TrainerUI            = true,
@@ -129,7 +130,6 @@ function aObj:Defaults()
 		CombatLogQBF         = false,
 		DebugTools           = true,
 		DestinyFrame         = true,
-		Feedback             = self.isPTR and true or nil,
 		GMChatUI             = true,
 		GMSurveyUI           = true,
 		GuildBankUI          = true,
@@ -795,6 +795,11 @@ function aObj:Options()
 					name = self.L["Side DressUp Frame"],
 					desc = self.L["Toggle the skin of the Side DressUp Frame"],
 				},
+				StoreUI = self.isPtr and {
+					type = "toggle",
+					name = self.L["Store Frame"],
+					desc = self.L["Toggle the skin of the Store Frame"],
+				} or nil,
 				Tabard = {
 					type = "toggle",
 					name = self.L["Tabard Frame"],
@@ -1383,11 +1388,6 @@ function aObj:Options()
 							name = self.L["GM Survey Frame"],
 							desc = self.L["Toggle the skin of the GM Survey Frame"],
 						},
-						-- FeedbackUI = self.isPTR and {
-						-- 	type = "toggle",
-						-- 	name = self.L["Feedback"],
-						-- 	desc = self.L["Toggle the skin of the Feedback Frame"],
-						-- } or nil,
 					},
 				},
 				ItemText = {

@@ -538,6 +538,21 @@ function aObj:SideDressUpFrame()
 
 end
 
+if aObj.isPTR then
+	function aObj:StoreUI() -- LoD
+		if not self.db.profile.StoreUI or self.initialized.StoreUI then return end
+		self.initialized.StoreUI = true
+
+		-- Cover
+		-- ErrorFrame
+		-- Notice
+		-- Browse
+		self:addSkinFrame{obj=_G.StoreFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+		self:addSkinFrame{obj=_G.StoreConfirmationFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+
+	end
+end
+
 function aObj:Tabard()
 	if not self.db.profile.Tabard or self.initialized.Tabard then return end
 	self.initialized.Tabard = true
