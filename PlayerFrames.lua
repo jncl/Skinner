@@ -837,10 +837,11 @@ function aObj:EquipmentFlyout()
 		for i = 1, btnFrame["numBGs"] do
 			btnFrame["bg" .. i]:SetAlpha(0)
 		end
-		if self.modBtnBs then
-			for i = 1, #_G.EquipmentFlyoutFrame.buttons do
-				local btn = _G.EquipmentFlyoutFrame.buttons[i]
-				if not btn.sbb then self:addButtonBorder{obj=btn, ibt=true} end
+		for i = 1, #_G.EquipmentFlyoutFrame.buttons do
+			local btn = _G.EquipmentFlyoutFrame.buttons[i]
+			if not btn.sbb then
+				self:addButtonBorder{obj=btn, ibt=true}
+				_G.RaiseFrameLevelByTwo(btn) -- make it appear above frame
 			end
 		end
 	end)
@@ -1853,9 +1854,10 @@ function aObj:QuestLog()
 	_G.QuestLogDetailTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinScrollBar{obj=_G.QuestLogDetailScrollFrame}
 	self:addSkinFrame{obj=_G.QuestLogDetailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	_G.RaiseFrameLevelByTwo(_G.QuestLogDetailScrollFrame) -- make Quest text appear above frame
 
 -->>-- QuestInfo
-	self:QuestInfo()
+	self:QuestInfo() -- NPC Frames
 
 end
 
