@@ -1,3 +1,18 @@
+b5.17227.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated UnitFrames to use a rectangular threat texture
+	Updated Button checking code
+	Updated Button skin code to use SecureButtonTemplate as required
+	Overcome Blizzard bug to show options panel correctly
+	Updated DestinyFrame, GuildBankPopup, HelpFrame, LFDQueueFrame, ExtraActionButton, MinimapButtons, Nameplates & GroupFinder skins
+	Updated GuildFinderRequestMembershipFrame skin
+	Updated PVPQueue & TalentFrame textures code
+	Updated AutoBag, Carbonite & oQueue skins
+	PTR changes
+	Skinned SilverDragon
+
 b5.17128.2
 Jncl:
 	ToDo.txt
