@@ -428,8 +428,6 @@ function aObj:CharacterFrames()
 	_G.CharacterModelFrame:DisableDrawLayer("BACKGROUND")
 	_G.CharacterModelFrame:DisableDrawLayer("BORDER")
 	_G.CharacterModelFrame:DisableDrawLayer("OVERLAY")
-	_G.CharacterStatsPane:DisableDrawLayer("ARTWORK")
-	self:skinSlider{obj=_G.CharacterStatsPaneScrollBar, size=3}
 	-- Sidebar Tabs
 	_G.PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
 	_G.PaperDollSidebarTabs.DecorRight:SetAlpha(0)
@@ -452,6 +450,8 @@ function aObj:CharacterFrames()
 		end
 	end)
 	-- Stats
+	_G.CharacterStatsPane:DisableDrawLayer("ARTWORK")
+	self:skinSlider{obj=_G.CharacterStatsPaneScrollBar, size=3}
 	for i = 1, 7 do
 		local grp = _G["CharacterStatsPaneCategory" .. i]
 		grp.BgTop:SetAlpha(0)
@@ -459,6 +459,13 @@ function aObj:CharacterFrames()
 		grp.BgMiddle:SetAlpha(0)
 		grp.BgMinimized:SetAlpha(0)
 	end
+	-- hook this to remove background texture from stat lines
+	self:SecureHook("PaperDollFrame_UpdateStatCategory", function(catFrame)
+		for i = 1, 12 do -- based upon PAPERDOLL_STATCATEGORIES #stats
+			local statFrame = _G[catFrame:GetName() .. "Stat" .. i]
+			if statFrame and statFrame.Bg then statFrame.Bg:SetAlpha(0) end
+		end
+	end)
 	-- Titles
 	self:SecureHookScript(_G.PaperDollTitlesPane, "OnShow", function(this)
 		for i = 1, #this.buttons do
@@ -523,7 +530,7 @@ function aObj:CharacterFrames()
 
 	self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
-	-- TokenFrame
+	-- TokenFrame (a.k.a Currency Tab)
 	if self.db.profile.ContainerFrames.skin then
 		_G.BACKPACK_TOKENFRAME_HEIGHT = _G.BACKPACK_TOKENFRAME_HEIGHT - 6
 		_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
