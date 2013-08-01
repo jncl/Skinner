@@ -426,28 +426,32 @@ local function __addButtonBorder(opts)
 --@end-alpha@
 	if not opts.obj then return end
 
-	local btnName = opts.obj:GetName()
-
-	-- remove Normal texture if required
+	-- remove Normal texture if required (vertex colour changed in blizzard code)
 	if opts.ibt
 	or opts.abt
 	or opts.pabt
 	then
-		if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetTexture(nil) end -- vertex colour changed in blizzard code
+		if opts.obj:GetNormalTexture() then
+			opts.obj:GetNormalTexture():SetTexture(nil)
+		end
 	end
 
 	-- create the border frame
 	opts.obj.sbb = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
 	opts.obj.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+
 	-- position the frame
 	opts.ofs = opts.ofs or 2
 	local xOfs1 = opts.x1 or opts.ofs * -1
 	local yOfs1 = opts.y1 or opts.ofs
 	local xOfs2 = opts.x2 or opts.ofs
 	local yOfs2 = opts.y2 or opts.ofs * -1
+
+	local btnName = opts.obj:GetName()
 	-- Large Item Button templates have an IconTexture to position to
 	local relTo = opts.relTo or opts.libt and _G[btnName .. "IconTexture"] or nil
 	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
@@ -460,6 +464,7 @@ local function __addButtonBorder(opts)
 		-- hide border if required
 		opts.obj.sbb:SetShown(opts.relTo:IsShown())
 	end
+
 	if opts.disable then
 		-- hook Enable & Disable methods
 		module:SecureHook(opts.obj, "Enable", function(this) this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour)) end)
