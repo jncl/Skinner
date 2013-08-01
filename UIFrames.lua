@@ -1531,6 +1531,14 @@ function aObj:Minimap()
 	-- move BuffFrame
 	self:moveObject{obj=_G.BuffFrame, x=-40}
 
+	-- hook this to handle Jostle Library
+	if _G.LibStub:GetLibrary("LibJostle-3.0", true) then
+		self:RawHook(MinimapCluster, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
+			-- self:Debug("MinimapCluster SetPoint: [%s, %s, %s, %s, %s, %s]", this, point, relTo, relPoint, xOfs, yOfs)
+			self.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, yOfs - 18)
+		end, true)
+	end
+
 end
 
 function aObj:MinimapButtons()
