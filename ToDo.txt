@@ -11,27 +11,34 @@ Legend:
 	O	PTR 5.4.0
 		==> Addons_Changes
 x		- AchievementUI
-√		- ArchaeologyUI (ArcheologyDigsiteProgressBar)
-		- ArenaUI
+√		- ArchaeologyProgressBar (NEW)
+?		- ArenaUI
 x		- AuctionUI
 x		- AuctionUITemplates
 x		- BattlefieldMinimap
+√		- Calendar (REMOVED CalendarArenaTeamContextMenu, CalendarMassInviteArenaButton(s))
 x		- ClientSavedVariables
 x		- CombatLog
 x		- CombatText
 √		- EncounterJournal
 √		- FeedBackUI (REMOVED)
+x		- GlyphUI
+x		- GuildInfo
+x		- GuildRoster
 x		- GuildUI
 x		- InspectUI
 √		- InspectPVPFrame
-		- ItemAlterationUI
+x		- ItemAlterationUI
 x		- ItemSocketingUI
-		- ItemUpgradeUI
-√		- PVPUI
+x		- ItemUpgradeUI
+x		- LookingForGuildUI
+? 		- PVPUI (NEW Conquest Tooltip, REMOVED PVPArenaTeam references)
 x		- PetJournal
-		- ShopUI (New)
+≈		- StoreUI (NEW)
+x		- TalentUI
+x		- TrainerUI
 		==> FrameXML_Changes
-√		- AlertFrames (DigsiteCompleteToastFrame)
+≈		- AlertFrames (NEW DigsiteCompleteToastFrame, StorePurchaseAlertFrame)
 √		- ArenaRegistrar (REMOVED)
 x		- AudioOptionPanels
 x		- AutoComplete
@@ -39,49 +46,53 @@ x		- Bindings
 x		- BuffFrame
 x		- ChannelFrame
 x		- ChatFrame
-x		- CompactUnitFrame
+?		- CompactUnitFrame (NEW HealPrediction & HealAbsorb bars)
 x		- Constants
-√		- FlexRaidFrame (New)
+?		- ContainerFrame (NEW $parentNewItemTexture)
+√		- FlexRaidFrame (NEW)
+x		- FontStyleOverrides
 x		- FontStyles
 x		- FrameXML
 x		- FriendsFrame
 x		- GlobalStrings
+x		- GraphicsQualityLevels
+x		- GuildInviteFrame
+x		- HelpFrame (REMOVED $parentArenaTeamNameCheckButton)
 x		- HybridScrollFrame
 x		- InterfaceOptionsPanels
-		- ItemRef
+x		- ItemRef
 √		- LFDFrame
 x		- LFGFrame
 x		- LevelUpDisplay
 x		- MailFrame
-		- MainMenuBarMicroButtons
-		- MerchantFrame
+√		- MainMenuBarMicroButtons (NEW StoreMicroButton)
+x		- MerchantFrame
 x		- Minimap
 √		- PVEFrame
-		- PaperDollFrame
-		- PartyFrameTemplates
-		- PetFrame
-x		- PlayerFrame
+x		- PaperDollFrame
+?		- PartyFrameTemplates (NEW HealPrediction & HealAbsorb bars)
+?		- PetFrame (NEW HealPrediction & HealAbsorb bars)
+x		- PetitionFrame
+?		- PlayerFrame (NEW HealPrediction & HealAbsorb bars)
 x		- QuestLogFrame
-		- QueueStatusFrame
+x		- QueueStatusFrame
 x		- RaidFinder
 x		- RaidFrame
+x		- SecureCapsule (NEW)
+x		- SecureTemplates
 x		- StaticPopup
-		- SecureCapsule (New)
-x		- TargetFrame
+?		- TargetFrame (NEW HealPrediction & HealAbsorb bars)
 x		- TradeFrame
 x		- UIPanelTemplates
 x		- UIParent
-x		- UnitFrame
+?		- UnitFrame (NEW HealPrediction & HealAbsorb bars)
 x		- UnitPopup
 x		- UnitPowerBarAlt
 x		- VehicleSeatIndicator
 x		- VideoOptionsPanels
 x		- WatchFrame
 x		- WorldMapFrame
-		- WorldStateFrame (WorldStateProvingGroundsFrame)
-
-	O	UnitFrames
-√		- replace red shaped highlight with rectangular one for Player, Pet, Target...
+√		- WorldStateFrame (NEW WorldStateProvingGroundsFrame)
 
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
@@ -97,10 +108,7 @@ x		- WorldMapFrame
 ?	I	BonusLoot, reported by Excitor0, 03.07.13
 		- The window that asks you to use a coin for bonus loot is not skinned
 
-√	I	oQueue, reported by Luckyjack_SL, 15.07.13
-		-  ..\AddOns\Skinner\Skinner.lua line 550: attempt to index field 'obj' (a nil value)
-		   Debug: (tail call): ?
-		   Skinner\SkinMe\oQueue.lua:231:
-		   Skinner\SkinMe\oQueue.lua:4
+√	O	Fix for Jostle library and minimap movement/re-parenting
 
-√	N	Carbonite2?, requested by Serra44, 21.07.12
+≈	O	Hide Button NormalTexture a.k.a. border (Quickslot2 texture)
+?	O	Change Texture Coords to hide button border (micro buttons)
