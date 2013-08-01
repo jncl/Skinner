@@ -175,6 +175,7 @@ local function skinPlayerF()
 
 		-- skin the PlayerFrame
 		addBackground{obj=_G.PlayerFrame, x1=40, y1=-10, y2=y2Ofs}
+		-- add threat texture
 		addThreat(_G.PlayerFrame, "player")
 
 	end
@@ -198,6 +199,7 @@ local function skinPetF()
 
 		-- skin the PetFrame
 		addBackground{obj=_G.PetFrame, y1=-1, x2=-4}
+		-- add threat texture
 		addThreat(_G.PetFrame, "pet")
 		-- remove debuff border
 		for i = 1, 4 do
@@ -228,6 +230,7 @@ local function skinPetF()
 
 end
 local function skinCommon(frame, adjSB)
+
 	_G[frame .. "Background"]:SetTexture(nil)
 	_G[frame .. "TextureFrameTexture"]:SetAlpha(0) -- texture file is changed dependant upon mob type
 	-- status bars
@@ -236,6 +239,7 @@ local function skinCommon(frame, adjSB)
 	if adjSB then
 		adjustStatusBarPosn(_G[frame .. "HealthBar"])
 	end
+
 end
 local function skinUFrame(frame)
 
@@ -256,7 +260,6 @@ local function skinUFrame(frame)
 -->>-- TargetofTarget Frame
 	addBackground{obj=_G[frame .. "ToT"]}
 	skinCommon(frame .. "ToT", true)
-	aObj:moveObject{obj=_G[frame .. "ToT"], x=-104, y=1} -- move to LHS of Target/Focus frame
 
 end
 local function skinTargetF()
@@ -280,6 +283,7 @@ local function skinTargetF()
 	and not isSkinned["Target"]
 	then
 		skinUFrame("TargetFrame")
+		-- add threat texture
 		addThreat(_G.TargetFrame, "target", "player")
 		_G.TargetFrameFlash:SetAlpha(0) -- hide existing flash texture
 
@@ -379,6 +383,7 @@ local function skinPartyF()
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			local pF = "PartyMemberFrame" .. i
 			addBackground{obj=_G[pF], x1=2, y1=5, x2=-1}
+			-- add threat texture
 			addThreat(_G[pF], "party" .. i)
 			_G[pF .. "Flash"]:SetAlpha(0) -- hide existing flash texture
 
@@ -442,7 +447,6 @@ local function skinArenaF()
 			for i = 1, _G.MAX_ARENA_ENEMIES do
 				skinFrame("ArenaPrepFrame" .. i)
 				skinFrame("ArenaEnemyFrame" .. i)
-
 				-- pet frame
 				local aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
 				addBackground{obj=_G[aPF], y1=1, x2=1, y2=2}
