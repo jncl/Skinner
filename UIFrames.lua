@@ -1553,6 +1553,7 @@ function aObj:MinimapButtons()
 			local objName, objType = obj:GetName(), obj:GetObjectType()
 			if not obj.sb
 			and not obj.sf
+			and not objName == "QueueStatusMinimapButton" -- ignore QueueStatusMinimapButton
 			and not objName == "OQ_MinimapButton" -- ignore oQueue's minimap button
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
@@ -1577,7 +1578,7 @@ function aObj:MinimapButtons()
 							obj:SetSize(32, 32)
 							if not minBtn then
 								if objType == "Button" then
-									aObj:addSkinButton{obj=obj, parent=obj, sap=true, rp=obj==_G.QueueStatusMinimapButton and true or nil, ft=ftype} -- reparent to ensure Eye is visible
+									aObj:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype}
 								else
 									aObj:addSkinFrame{obj=obj, ft=ftype}
 								end
@@ -1653,6 +1654,9 @@ function aObj:MinimapButtons()
 	self:moveObject{obj=_G.MiniMapInstanceDifficulty, y=-5}
 	-- Guild Instance Difficulty
 	_G.GuildInstanceDifficultyHanger:SetAlpha(0)
+	-- QueueStatusMinimapButton (reparent to ensure Eye is visible)
+	_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
+	aObj:addSkinButton{obj=_G.QueueStatusMinimapButton, parent=_G.QueueStatusMinimapButton, sap=true, rp=true, ft=ftype}
 
 	-- skin any moved Minimap buttons if required
 	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
@@ -1669,9 +1673,19 @@ function aObj:MinimapButtons()
 			["Outfitter"] = _G.OutfitterMinimapButton,
 			["Perl_Config"] = _G.PerlButton,
 			["WIM"] = _G.WIM3MinimapButton,
+			["BugSack"] = _G.LibStub("LibDBIcon-1.0", true):GetMinimapButton("BugSack"),
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then
+				for _, reg in ipairs{obj:GetRegions()} do
+					if reg:GetObjectType() == "Texture" then
+						if self:hasTextInName(reg, "Border")
+						or self:hasTextInTexture(reg, "TrackingBorder")
+						then
+							reg:SetTexture(nil)
+						end
+					end
+				end
 				self:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype}
 			end
 		end
