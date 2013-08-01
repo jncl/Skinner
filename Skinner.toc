@@ -59,7 +59,7 @@ AddonFrames.lua
 # These individual lua files skin the default frames as follows;
 #
 # NPCFrames
-# inc. ArenaRegistrar, AuctionUI, Bank, BarberShopUI, BlackMarketUI, Gossip, GuildRegistrar, ItemAlterationUI, Merchant, Petition, PetStable, Quest, QuestInfo, ReforgingUI, SideDressUpFrame, Tabard, Taxi, TrainerUI, VoidStorageUI
+# inc. ArenaRegistrar, AuctionUI, Bank, BarberShopUI, BlackMarketUI, Gossip, GuildRegistrar, ItemAlterationUI,  ItemUpgradeUI, Merchant, Petition, PetStable, Quest, QuestInfo, ReforgingUI, SideDressUpFrame, Tabard, Taxi, TrainerUI, VoidStorageUI
 NPCFrames.lua
 #
 # PlayerFrames
@@ -67,7 +67,7 @@ NPCFrames.lua
 PlayerFrames.lua
 #
 # UIFrames
-# inc. AlertFrames, AutoComplete, BattlefieldMinimap, BindingUI, BNFrames, Calendar, ChallengesUI, ChatConfig, ChatEditBox, ChatFrames, ChatMenus, ChatTabs, ChatTemporaryWindow, CinematicFrame, CoinPickup, ColorPicker, DebugTools, DestinyFrame, DropDowns, FeedbackUI, GMChatUI, GMSurveyUI, GuildBankUI, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), ItemText, ItemUpgradeUI, LevelUpDisplay, LFDFrame, LFGFrame, LFRFrame, MacroUI, Mail, MainMenuBar (inc. StanceBar, PossessBar, PetActionBar, ShamanTotems, ActionButtons, MultiBarButtons, VehicleLeaveButton, ExtraActionButton, PlayerPowerBarAlt), Menu (inc. Video, Sound & Voice, Mac Options, Interface), Minimap, MinimapButtons, ModelFrames, MovePad, MovieProgress, Nameplates, PetBattleUI, PVEFrame, RaidFrame, ScriptErrors, StaticPopups, TimeManager, Tooltips, Tutorial, WorldMap, WorldState
+# inc. AlertFrames, AutoComplete, BattlefieldMinimap, BindingUI, BNFrames, Calendar, ChallengesUI, ChatConfig, ChatEditBox, ChatFrames, ChatMenus, ChatTabs, ChatTemporaryWindow, CinematicFrame, CoinPickup, ColorPicker, DebugTools, DestinyFrame, DropDowns, GMChatUI, GMSurveyUI, GuildBankUI, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), ItemText, LevelUpDisplay, LFDFrame, LFGFrame, LFRFrame, MacroUI, Mail, MainMenuBar (inc. StanceBar, PossessBar, PetActionBar, ShamanTotems, ActionButtons, MultiBarButtons, VehicleLeaveButton, ExtraActionButton, PlayerPowerBarAlt), Menu (inc. Video, Sound & Voice, Mac Options, Interface), Minimap, MinimapButtons, ModelFrames, MovePad, MovieProgress, Nameplates, PetBattleUI, PVEFrame, RaidFrame, ScriptErrors, StaticPopups, TimeManager, Tooltips, Tutorial, WorldMap, WorldState
 UIFrames.lua
 #
 # Modules
@@ -76,7 +76,7 @@ UIFrames.lua
 # inc. ArenaFrames, CompactFrames (inc. Party, Raid Unit, Raid Group), FocusFrame, PartyFrames (inc. Party Members Pets), PetFrame, PlayerFrame (inc. RuneFrame, TotemFrame, ComboFrame, ShardBar, PowerBar, EclipseBar), TargetFrame, TargetofFocusFrame, TargetofTargetFrame
 modules\UnitFrames.lua
 #
-# UIButtons
+# UIButtons & ButtonBorders
 modules\UIButtons.lua
 #
 # these modules add additional features

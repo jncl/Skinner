@@ -10,9 +10,9 @@ local blizzLoDFrames = {
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
-	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "QuestChoice", "ReforgingUI", "TrainerUI", "VoidStorageUI",
+	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ItemUpgradeUI", "QuestChoice", "ReforgingUI", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "ItemUpgradeUI", "MacroUI", "MovePad", "PetJournal", "TimeManager",
+	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "PetJournal", "TimeManager",
 	--	ArenaUI the unitframes are skinned in UnitFrames.lua
 }
 if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "StoreUI") end
@@ -82,6 +82,7 @@ function aObj:BlizzardFrames()
 			["BarbershopUI"] = false,
 			["BlackMarketUI"] = false,
 			["ItemAlterationUI"] = false,
+			["ItemUpgradeUI"] = false,
 			["QuestChoice"] = false,
 			["ReforgingUI"] = false,
 			["TrainerUI"] = false,
@@ -137,7 +138,6 @@ function aObj:BlizzardFrames()
 			["GMChatUI"] = false,
 			["GMSurveyUI"] = false,
 			["GuildBankUI"] = false,
-			["ItemUpgradeUI"] = false,
 			["MacroUI"] = false,
 			["MovePad"] = false,
 			["TimeManager"] = false,

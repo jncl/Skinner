@@ -254,6 +254,45 @@ function aObj:ItemAlterationUI() -- LoD (a.k.a TransmogrifyFrame)
 
 end
 
+function aObj:ItemUpgradeUI() -- LoD
+	if not self.db.profile.ItemUpgradeUI or self.initialized.ItemUpgradeUI then return end
+	self.initialized.ItemUpgradeUI = true
+
+	_G.ItemUpgradeFrame.HorzBar:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
+	_G.ItemUpgradeFrame.ItemButton.Grabber:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.TextFrame:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.TextGrabber:SetTexture(nil)
+	_G.ItemUpgradeFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrame.NoMoreUpgrades:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrame.TitleTextLeft:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrame.TitleTextRight:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addButtonBorder{obj=_G.ItemUpgradeFrame.ItemButton, relTo=_G.ItemUpgradeFrame.ItemButton.IconTexture}
+	_G.ItemUpgradeFrame.ItemButton.Frame:SetTexture(nil)
+	_G.ItemUpgradeFrame.ItemButton.ItemName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
+	self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
+	_G.ItemUpgradeFrame.ButtonFrame.ButtonBorder:SetTexture(nil)
+	_G.ItemUpgradeFrame.ButtonFrame.ButtonBottomBorder:SetTexture(nil)
+	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true, ofs=2, x2=1}
+
+	-- hook this to hide the ItemButton texture if empty
+	self:SecureHook(_G.ItemUpgradeFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
+		if tex:find("UI-Slot-Background", 1, true) then
+			this:SetAlpha(0)
+		else
+			this:SetAlpha(1)
+		end
+	end)
+	-- hook this to remove background texture from stat lines
+	self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, tryAdd)
+		if _G.ItemUpgradeFrame.LeftStat[index] then _G.ItemUpgradeFrame.LeftStat[index].BG:SetTexture(nil) end
+		if _G.ItemUpgradeFrame.RightStat[index] then _G.ItemUpgradeFrame.RightStat[index].BG:SetTexture(nil) end
+	end)
+
+end
+
 function aObj:MerchantFrame()
 	if not self.db.profile.MerchantFrame or self.initialized.MerchantFrame then return end
 	self.initialized.MerchantFrame = true
