@@ -1202,13 +1202,15 @@ function aObj:MainMenuBar()
 
 	_G.ExhaustionTick:SetAlpha(0)
 	self:adjHeight{obj=_G.MainMenuExpBar, adj=-2} -- shrink it so it moves up
+	self:keepRegions(_G.MainMenuExpBar, {1, 5, 6}) -- N.B. region 1 is rested XP, 5 is background, 6 is the normal XP
 	self:adjHeight{obj=_G.ExhaustionLevelFillBar, adj=-1} -- mirror the XP bar
 	local yOfs = IsAddOnLoaded("DragonCore") and -47 or -4
-	self:keepRegions(_G.MainMenuExpBar, {1, 5, 6}) -- N.B. region 1 is rested XP, 5 is background, 6 is the normal XP
 	self:addSkinFrame{obj=_G.MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=yOfs}
 	self:keepFontStrings(_G.MainMenuBarMaxLevelBar)
 	self:keepFontStrings(_G.MainMenuBarArtFrame)
+	self:moveObject{obj=_G.ReputationWatchBar, y=3} -- move it above MainMenuBar
 	self:keepRegions(_G.ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
+	self:adjHeight{obj=_G.ReputationWatchStatusBar, adj=-1} -- shrink to fit below Action Buttons
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 5), {_G.ExhaustionLevelFillBar})
 		_G.ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
