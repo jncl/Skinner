@@ -1683,24 +1683,38 @@ function aObj:MinimapButtons()
 			["Outfitter"] = _G.OutfitterMinimapButton,
 			["Perl_Config"] = _G.PerlButton,
 			["WIM"] = _G.WIM3MinimapButton,
-			["BugSack"] = _G.LibStub("LibDBIcon-1.0", true):GetMinimapButton("BugSack"),
 		}
-		for addon, obj in pairs(mmButs) do
-			if IsAddOnLoaded(addon) then
-				for _, reg in ipairs{obj:GetRegions()} do
-					if reg:GetObjectType() == "Texture" then
-						if self:hasTextInName(reg, "Border")
-						or self:hasTextInTexture(reg, "TrackingBorder")
-						then
-							reg:SetTexture(nil)
-						end
+		local function skinMMBtn(btn, name)
+
+			-- print("skinMMBtn", btn, name or nil)
+
+			for _, reg in ipairs{btn:GetRegions()} do
+				if reg:GetObjectType() == "Texture" then
+					if self:hasTextInName(reg, "Border")
+					or self:hasTextInTexture(reg, "TrackingBorder")
+					then
+						reg:SetTexture(nil)
 					end
 				end
-				self:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype}
+			end
+
+			self:addSkinButton{obj=btn, parent=btn, sap=true, ft=ftype}
+
+		end
+		for addon, obj in pairs(mmButs) do
+			if IsAddOnLoaded(addon) then
+				skinMMBtn(obj)
 			end
 		end
 		mmButs = nil
+		-- skin LibDBIcon Minimap Buttons
+		_G.LibStub("LibDBIcon-1.0").RegisterCallback(aObj, "LibDBIcon_IconCreated", skinMMBtn)
+		-- skin existing buttons
+		for name, button in pairs(_G.LibStub("LibDBIcon-1.0").objects) do
+			skinMMBtn(button, name)
+		end
 	end
+
 end
 
 function aObj:ModelFrames()
