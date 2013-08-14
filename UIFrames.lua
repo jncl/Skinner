@@ -535,12 +535,11 @@ local function skinChatEB(obj)
 		aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		obj.sf:SetAlpha(obj:GetAlpha())
 	end
-	aObj.skinned[obj] = true
 
 end
 function aObj:ChatEditBox()
-	-- don't use an initialized value to allow for dynamic changes
-	if not self.db.profile.ChatEditBox.skin then return end
+	if not self.db.profile.ChatEditBox.skin or self.initialized.ChatEditBox then return end
+	self.initialized.ChatEditBox = true
 
 	-- these addons replace the Chat Edit Box
 	if IsAddOnLoaded("NeonChat")
@@ -557,19 +556,14 @@ function aObj:ChatEditBox()
 	if self.db.profile.ChatEditBox.style ~= 2
 	and not self:IsHooked("ChatEdit_ActivateChat")
 	then
+		local function setAlpha(eBox)
+			if eBox and eBox.sf then eBox.sf:SetAlpha(eBox:GetAlpha()) end
+		end
 		self:SecureHook("ChatEdit_ActivateChat", function(editBox)
-			if editBox
-			and editBox.sf
-			then
-				editBox.sf:SetAlpha(editBox:GetAlpha())
-			end
+			setAlpha(editBox)
 		end)
 		self:SecureHook("ChatEdit_DeactivateChat", function(editBox)
-			if editBox
-			and editBox.sf
-			then
-				editBox.sf:SetAlpha(editBox:GetAlpha())
-			end
+			setAlpha(editBox)
 		end)
 	end
 
