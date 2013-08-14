@@ -26,7 +26,7 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
-	local liveVer = 17252
+	local liveVer = 17271
 --@alpha@
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
 --@end-alpha@
