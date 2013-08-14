@@ -102,13 +102,36 @@ x		- WorldMapFrame
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-?	I	Bagnon, reported by Luckyjack_SL, 18.06.13
-		- ..\AddOns\Skinner\SkinMe\Bagnon.lua line 73: script ran too long
+√	I	ReputationWatchBar
+		- Overlaps MainMenuBar
 
-?	I	BonusLoot, reported by Excitor0, 03.07.13
-		- The window that asks you to use a coin for bonus loot is not skinned
+√	I	Recount
+		- config window not skinned ?
 
-√	O	Fix for Jostle library and minimap movement/re-parenting
+√	I	ChatFrame
+		- move top of frame to match dockframe
 
-≈	O	Hide Button NormalTexture a.k.a. border (Quickslot2 texture)
-?	O	Change Texture Coords to hide button border (micro buttons)
+	I	ChatFrameEditBox
+√		- make option changes actionable after reload only
+x		- width should match chatframes
+
+√	I	Minimap
+		- Instance Difficulty icon too high
+		- align Tracking button TLHC flush with frame, issue with GM Ticket button if so ?
+
+?	I	PartyFrames
+		- sometimes not skinned after relog
+		- look bad with frames around them, either don't skin them or fix frame size
+
+?	I	ArenaFrames
+		- as per PartyFrame ?
+
+√	I	PlayerFrame
+		- Druid manabar textures showing
+
+?	I	RealID Toast frame
+		- whiteout issues
+
+√	S	LibToast-1.0
+
+√	S	LibDialog-1.0
