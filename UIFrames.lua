@@ -1051,7 +1051,7 @@ function aObj:LFGFrame()
 	self.initialized.LFGFrame = true
 
 	-- LFG DungeonReady Popup a.k.a. ReadyCheck
-	self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, kfs=true, ft=ftype, ofs=-5}
 	self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, kfs=true, ft=ftype, ofs=-5}
 	_G.LFGDungeonReadyDialog.SetBackdrop = function() end
 	_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
