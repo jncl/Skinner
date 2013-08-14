@@ -288,17 +288,18 @@ function aObj:ArchaeologyUI() -- LoD
 	_G.ArchaeologyFrame.completedPage.titleMid:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ArchaeologyFrame.completedPage.pageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	for i = 1, _G.ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
-		_G.ArchaeologyFrame.completedPage["artifact" .. i].artifactName:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.ArchaeologyFrame.completedPage["artifact" .. i].artifactSubText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.ArchaeologyFrame.completedPage["artifact" .. i].border:Hide()
+		local btn = _G.ArchaeologyFrame.completedPage["artifact" .. i]
+		btn.artifactName:SetTextColor(self.HTr, self.HTg, self.HTb)
+		btn.artifactSubText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		btn.border:Hide()
 		_G["ArchaeologyFrameCompletedPageArtifact" .. i .. "Bg"]:Hide()
+		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
 	self:addButtonBorder{obj=_G.ArchaeologyFrame.completedPage.prevPageButon, ofs=0} -- N.B. spelling!
 	self:addButtonBorder{obj=_G.ArchaeologyFrame.completedPage.nextPageButon, ofs=0} -- N.B. spelling!
 -->>-- Artifact Page
-	self:removeRegions(_G.ArchaeologyFrame.artifactPage, {2, 3}) -- title textures
-	_G.ArchaeologyFrame.artifactPage:DisableDrawLayer("BACKGROUND")
-	_G.ArchaeologyFrame.artifactPage:DisableDrawLayer("BORDER")
+	self:removeRegions(_G.ArchaeologyFrame.artifactPage, {2, 3, 7, 9}) -- title textures, backgrounds
+	self:addButtonBorder{obj=_G.ArchaeologyFrame.artifactPage, relTo=_G.ArchaeologyFrame.artifactPage.icon, ofs=0}
 	_G.ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.ArchaeologyFrame.artifactPage.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinScrollBar{obj=_G.ArchaeologyFrame.artifactPage.historyScroll}
