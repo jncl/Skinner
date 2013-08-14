@@ -122,7 +122,9 @@ local function skinPlayerF()
 		end
 		-- skin the AlternateManaBar & EclipseBarFrame, if required
 		if aObj.uCls == "DRUID" then
-			_G.PlayerFrameAlternateManaBarBorder:SetTexture(nil)
+			_G.PlayerFrameAlternateManaBar.DefaultBorder:SetTexture(nil)
+			_G.PlayerFrameAlternateManaBar.DefaultBorderLeft:SetTexture(nil)
+			_G.PlayerFrameAlternateManaBar.DefaultBorderRight:SetTexture(nil)
 			aObj:glazeStatusBar(_G.PlayerFrameAlternateManaBar, 0)
 			_G.EclipseBarFrameBar:Hide()
 			_G.EclipseBarFrame.sunBar:Hide()
@@ -154,7 +156,7 @@ local function skinPlayerF()
 		end
 		-- skin the AlternateManaBar, MonkHarmonyBar & MonkStaggerBar, if required
 		if aObj.uCls == "MONK" then
-			_G.PlayerFrameAlternateManaBarBorder:SetTexture(nil)
+			_G.PlayerFrameAlternateManaBar.MonkBorder:SetTexture(nil)
 			aObj:glazeStatusBar(_G.PlayerFrameAlternateManaBar, 0)
 			aObj:removeRegions(_G.MonkHarmonyBar, {1, 2})
 			aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6})
@@ -258,8 +260,12 @@ local function skinUFrame(frame)
 	aObj:changeShield(_G[cBar .. "BorderShield"], _G[cBar .. "Icon"])
 	aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar .. "Flash"]})
 -->>-- TargetofTarget Frame
-	addBackground{obj=_G[frame .. "ToT"]}
+	addBackground{obj=_G[frame].totFrame, x1=3, y1=-16, x2=0, y2=-8}
 	skinCommon(frame .. "ToT", true)
+	-- can't move frame because of taint, so will move textures instead
+	aObj:moveObject{obj=_G[frame .. "ToTPortrait"], x=-1, y=-12, relTo=_G[frame].totFrame}
+	aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], x=-5, y=-14, relTo=_G[frame].totFrame}
+	aObj:moveObject{obj=_G[frame .. "ToTManaBar"], x=-5, y=-12, relTo=_G[frame].totFrame}
 
 end
 local function skinTargetF()
@@ -313,6 +319,8 @@ local function skinTargetF()
 			elseif frame == _G.FocusFrame then
 				showEliteTex(_G.UnitClassification("focus"), ucFTex)
 			end
+			-- handle in combat
+			if _G.InCombatLockdown() then return end
 			-- adjust ComboFrame position dependant upon Target classification, if required
 			-- as the threat indicator obscures them when boss/elite etc
 			if aObj.uCls == "ROGUE"
@@ -327,7 +335,7 @@ local function skinTargetF()
 			end
 		end)
 
-	-->>--Boss Target Frames
+		--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
 			local frame = "Boss" .. i .. "TargetFrame"
 			addBackground{obj=_G[frame], x1=-1, y1=-14, x2=-72, y2=5}
@@ -415,7 +423,7 @@ local function skinPartyF()
 
 		-- PartyMember Buff Tooltip
 		_G.PartyMemberBuffTooltip:SetBackdrop(nil)
-		addBackground{obj=_G.PartyMemberBuffTooltip}
+		addBackground{obj=_G.PartyMemberBuffTooltip, ofs=-4}
 
 		-- PartyMemberBackground
 		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y1=2, x2=1, y2=2}
