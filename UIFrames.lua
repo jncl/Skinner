@@ -1506,16 +1506,12 @@ function aObj:Minimap()
 
 -->>-- Buttons
 	-- on LHS
-	local xOfs, yOfs = 6, 4
+	local yOfs = -18 -- allow for GM Ticket button
 	for _, v in pairs{_G.MiniMapTracking, _G.MiniMapLFGFrame, _G.MiniMapRecordingButton, _G.MiniMapVoiceChatFrame} do
 		v:ClearAllPoints()
-		v:SetPoint("TOPRIGHT", _G.Minimap, "TOPLEFT", xOfs, yOfs)
+		v:SetPoint("TOPRIGHT", _G.Minimap, "TOPLEFT", 0, yOfs)
 		yOfs = yOfs - v:GetHeight() + 3
 	end
-	-- Difficulty indicators
-	self:moveObject{obj=_G.MiniMapInstanceDifficulty, x=10, y=9}
-	self:moveObject{obj=_G.GuildInstanceDifficulty, x=12, y=40}
-	self:moveObject{obj=_G.MiniMapChallengeMode, x=11, y=4}
 	-- on RHS
 	_G.MiniMapMailFrame:ClearAllPoints()
 	_G.MiniMapMailFrame:SetPoint("LEFT", _G.Minimap, "RIGHT", -10, 28)
@@ -1524,14 +1520,37 @@ function aObj:Minimap()
 	_G.MinimapZoomOut:ClearAllPoints()
 	_G.MinimapZoomOut:SetPoint("TOPRIGHT", _G.Minimap, "BOTTOMRIGHT", 3, 4)
 
+	-- Difficulty indicators
+	-- hook this to mamage MiniMapInstanceDifficulty texture
+	self:SecureHook("MiniMapInstanceDifficulty_Update", function()
+		local _, _, difficulty, _, maxPlayers, _, _ = GetInstanceInfo()
+		local _, _, isHeroic, _ = GetDifficultyInfo(difficulty)
+		local xOffset = 0
+		if ( maxPlayers >= 10 and maxPlayers <= 19 ) then
+			xOffset = -1
+		end
+		if isHeroic then
+			_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.125, 0.5) -- remove top hanger texture
+			_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, -1)
+		else
+			_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.625, 1) -- remove top hanger texture
+			_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, 5)
+		end
+	end)
+	self:moveObject{obj=_G.MiniMapInstanceDifficulty, x=6, y=-4}
+	_G.GuildInstanceDifficultyHanger:SetAlpha(0)
+	self:moveObject{obj=_G.GuildInstanceDifficulty, x=7}
+	self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
+	self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
+
 	-- move BuffFrame
 	self:moveObject{obj=_G.BuffFrame, x=-40}
 
 	-- hook this to handle Jostle Library
 	if _G.LibStub:GetLibrary("LibJostle-3.0", true) then
-		self:RawHook(MinimapCluster, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
+		self:RawHook(_G.MinimapCluster, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
 			-- self:Debug("MinimapCluster SetPoint: [%s, %s, %s, %s, %s, %s]", this, point, relTo, relPoint, xOfs, yOfs)
-			self.hooks[this].SetPoint(this, point, relTo, relPoint, xOfs, yOfs - 18)
+			self.hooks[this].SetPoint(this, point, relTo, relPoint, -6, -18)
 		end, true)
 	end
 
@@ -1645,11 +1664,6 @@ function aObj:MinimapButtons()
 	if not minBtn then
 		self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype}
 	end
-	-- Instance Difficulty
-	_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.135, 0.5) -- remove top hanger texture
-	self:moveObject{obj=_G.MiniMapInstanceDifficulty, y=-5}
-	-- Guild Instance Difficulty
-	_G.GuildInstanceDifficultyHanger:SetAlpha(0)
 	-- QueueStatusMinimapButton (reparent to ensure Eye is visible)
 	_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
 	aObj:addSkinButton{obj=_G.QueueStatusMinimapButton, parent=_G.QueueStatusMinimapButton, sap=true, rp=true, ft=ftype}
