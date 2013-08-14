@@ -225,7 +225,8 @@ aObj.libsToSkin = {
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
 	["X-UI"] = "LibXUI",
 	["LibDropdown-1.0"] = "LibDropdown",
-
+	["LibToast-1.0"] = "LibToast",
+	["LibDialog-1.0"] = "LibDialog",
 }
 function aObj:AddonFrames()
 	-- self:Debug("AddonFrames")

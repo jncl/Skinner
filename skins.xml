@@ -174,10 +174,12 @@
 <script file="SkinMe\ItemSync.lua"/>
 <script file="SkinMe\LauncherMenu.lua"/>
 <script file="SkinMe\LazyAFK.lua"/>
+<script file="SkinMe\LibDialog.lua"/>
 <script file="SkinMe\LibDropdown.lua"/>
 <script file="SkinMe\LibExtraTip.lua"/>
 <script file="SkinMe\LibQTip.lua"/>
 <script file="SkinMe\LibSimpleFrame.lua"/>
+<script file="SkinMe\LibToast.lua"/>
 <script file="SkinMe\LibTradeSkillScan.lua"/>
 <script file="SkinMe\LibXUI.lua"/>
 <script file="SkinMe\LightHeaded.lua"/>
