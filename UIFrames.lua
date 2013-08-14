@@ -970,7 +970,7 @@ function aObj:HelpFrame()
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
 
 	-- TicketStatusFrame
-	self:addSkinFrame{obj=TicketStatusFrameButton}
+	self:addSkinFrame{obj=_G.TicketStatusFrameButton}
 
 end
 
