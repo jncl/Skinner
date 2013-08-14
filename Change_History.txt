@@ -1,3 +1,20 @@
+b5.17252.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated PTR version
+	Revert ToT frame move
+	UIButtons code tidy
+	Update LFD popup skin
+	Minimap Button skin updates
+	Bugfix for Jostle library and Minimap
+	Button skin updates
+	Skin GM Ticket button
+	Bugfix for text & icons appearing behind skin
+	Updates to CharacterFrame skin
+	ItemUpgradeUI skinning code moved from UIFrames to NPCFrames
+	PTR Changes
+
 b5.17227.1
 Jncl:
 	ToDo.txt
