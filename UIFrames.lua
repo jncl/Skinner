@@ -575,7 +575,7 @@ function aObj:ChatFrames()
 
 	local clqbf = "CombatLogQuickButtonFrame"
 	local clqbf_c = clqbf .. "_Custom"
-	local yOfs1 = 4
+	local yOfs1 = 6
 	for i = 1, _G.NUM_CHAT_WINDOWS do
 		local obj = _G["ChatFrame" .. i]
 		if obj == _G.COMBATLOG
@@ -583,9 +583,9 @@ function aObj:ChatFrames()
 		then
 			yOfs1 = 31
 		else
-			yOfs1 = 4
+			yOfs1 = 6
 		end
-		self:addSkinFrame{obj=obj, ft=ftype, x1=-4, y1=yOfs1, x2=4, y2=-8}
+		self:addSkinFrame{obj=obj, ft=ftype, ofs=6, y1=yOfs1, y2=-8}
 	end
 
 	-- CombatLog Quick Button Frame & Progress Bar
