@@ -6,22 +6,22 @@ local module = aObj:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0", "AceT
 local db, aso
 local defaults = {
 	profile = {
-		player = false,
-		target = false,
+		alpha = 0.25,
+		arena = false,
 		focus = false,
 		party = false,
 		pet = false,
 		petlevel = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and false or nil,
-		alpha = 0.25,
-		arena = false,
+		player = false,
+		target = false,
 	}
 }
-local lOfs = -10 -- level text offset
+local lOfs = -9 -- level text offset
 local tDelay = 0.2 -- repeating timer delay
 local isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 local rpTmr = {}
 local unitFrames = {
-	"PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT", "FocusFrame", "FocusFrameToT", "PartyMemberBuffTooltip", "PartyMemberBackground", "ArenaEnemyBackground"
+	"ArenaEnemyBackground", "FocusFrame", "FocusFrameToT", "PartyMemberBackground", "PartyMemberBuffTooltip",  "PlayerFrame", "PetFrame", "TargetFrame", "TargetFrameToT"
 }
 
 -- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
@@ -44,8 +44,13 @@ local function adjustStatusBarPosn(sBar, yAdj)
 end
 local function addBackground(opts)
 
+	opts.obj.sb = _G.CreateFrame("Button", nil, opts.obj, "SecureFrameTemplate")
+	opts.obj.sb:SetAllPoints(opts.obj)
+	-- adjust frame levels so skin button is behind
+	RaiseFrameLevelByTwo(opts.obj)
+	opts.obj.sb:SetFrameLevel(opts.obj:GetFrameLevel() - 1)
 	-- create background texture
-	opts.obj.sbg = opts.obj:CreateTexture(nil, "BORDER")
+	opts.obj.sbg = opts.obj.sb:CreateTexture(nil, "BACKGROUND")
 	local r, g, b = _G.unpack(aObj.bColour)
 	opts.obj.sbg:SetTexture(r, g, b, db.alpha)
 
@@ -58,35 +63,29 @@ local function addBackground(opts)
 
 	-- position texture
 	opts.obj.sbg:ClearAllPoints()
-	opts.obj.sbg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
-	opts.obj.sbg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+	opts.obj.sbg:SetPoint("TOPLEFT", opts.obj.sb, "TOPLEFT", xOfs1, yOfs1)
+	opts.obj.sbg:SetPoint("BOTTOMRIGHT", opts.obj.sb, "BOTTOMRIGHT", xOfs2, yOfs2)
 
 end
-local function addThreat(parent, unit, fbUnit)
+local function fixThreat(tex, xOfs, yOfs)
 
-	-- add a flash texture
-	parent.flash = parent:CreateTexture(nil, "BORDER")
-	parent.flash:SetAllPoints(parent.sbg)
-	aObj:changeRecTex(parent.flash, true, true)
-	 -- stop these being changed (e.g. TargetFrame)
-	parent.flash.SetTexture = function() end
-	parent.flash.SetTexCoord = function() end
-	parent.flash.SetWidth = function() end
-	parent.flash.SetHeight = function() end
-	parent.flash.SetPoint = function() end
-	-- link unit and feedback unit info for threat updates
-	parent.flash.unit = unit
-	parent.flash.feedbackUnit = fbUnit or unit
-	parent.threatIndicator = parent.flash
+	tex:ClearAllPoints()
+	tex:SetAllPoints(tex:GetParent().sbg)
+	tex:SetSize(xOfs, yOfs)
+	aObj:changeRecTex(tex, true, true)
+	-- stop changes to texture
+	tex.SetTexture = function() end
+	tex.SetTexCoord = function() end
+	tex.SetWidth = function() end
+	tex.SetHeight = function() end
+	tex.SetPoint = function() end
 
 end
-
 local function skinPlayerF()
 
 	if db.player
 	and not isSkinned["Player"]
 	then
-		_G.PlayerFrameFlash:SetAlpha(0) -- hide existing flash texture
 		_G.PlayerFrameBackground:SetTexture(nil)
 		_G.PlayerFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PlayerFrameVehicleTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -102,7 +101,7 @@ local function skinPlayerF()
 		-- move PvP Timer text down
 		aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 		-- move level & rest icon down, so they are more visible
-		aObj:moveObject{obj=_G.PlayerLevelText, y=lOfs}
+		aObj:moveObject{obj=_G.PlayerLevelText, y=lOfs - 1}
 		aObj:moveObject{obj=_G.PlayerRestIcon, y=lOfs} -- covers level text when resting
 		-- remove group indicator textures
 		aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
@@ -177,8 +176,7 @@ local function skinPlayerF()
 
 		-- skin the PlayerFrame
 		addBackground{obj=_G.PlayerFrame, x1=40, y1=-10, y2=y2Ofs}
-		-- add threat texture
-		addThreat(_G.PlayerFrame, "player")
+		fixThreat(_G.PlayerFrameFlash, 232, 100)
 
 	end
 
@@ -188,7 +186,6 @@ local function skinPetF()
 	if db.pet
 	and not isSkinned["Pet"]
 	then
-		_G.PetFrameFlash:SetAlpha(0) -- hide existing flash texture
 		_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PetAttackModeTexture:SetTexture(nil)
 		-- status bars
@@ -201,8 +198,7 @@ local function skinPetF()
 
 		-- skin the PetFrame
 		addBackground{obj=_G.PetFrame, y1=-1, x2=-4}
-		-- add threat texture
-		addThreat(_G.PetFrame, "pet")
+		fixThreat(_G.PetFrameFlash, 128, 53)
 		-- remove debuff border
 		for i = 1, 4 do
 			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
@@ -245,7 +241,7 @@ local function skinCommon(frame, adjSB)
 end
 local function skinUFrame(frame)
 
-	addBackground{obj=_G[frame], y1=-10, x2=-40, y2=6}
+	addBackground{obj=_G[frame], y1=-10, x2=-41, y2=9}
 	skinCommon(frame, true)
 	aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
 	-- move level & highlevel down, so they are more visible
@@ -260,12 +256,9 @@ local function skinUFrame(frame)
 	aObj:changeShield(_G[cBar .. "BorderShield"], _G[cBar .. "Icon"])
 	aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar .. "Flash"]})
 -->>-- TargetofTarget Frame
-	addBackground{obj=_G[frame].totFrame, x1=3, y1=-16, x2=0, y2=-8}
+	addBackground{obj=_G[frame].totFrame}
 	skinCommon(frame .. "ToT", true)
-	-- can't move frame because of taint, so will move textures instead
-	aObj:moveObject{obj=_G[frame .. "ToTPortrait"], x=-1, y=-12, relTo=_G[frame].totFrame}
-	aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], x=-5, y=-14, relTo=_G[frame].totFrame}
-	aObj:moveObject{obj=_G[frame .. "ToTManaBar"], x=-5, y=-12, relTo=_G[frame].totFrame}
+	aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 
 end
 local function skinTargetF()
@@ -289,9 +282,7 @@ local function skinTargetF()
 	and not isSkinned["Target"]
 	then
 		skinUFrame("TargetFrame")
-		-- add threat texture
-		addThreat(_G.TargetFrame, "target", "player")
-		_G.TargetFrameFlash:SetAlpha(0) -- hide existing flash texture
+		fixThreat(_G.TargetFrameFlash, 232, 100)
 
 		--	skin the ComboFrame, if required
 		if aObj.uCls == "ROGUE"
@@ -318,20 +309,6 @@ local function skinTargetF()
 				showEliteTex(_G.UnitClassification("target"), ucTTex)
 			elseif frame == _G.FocusFrame then
 				showEliteTex(_G.UnitClassification("focus"), ucFTex)
-			end
-			-- handle in combat
-			if _G.InCombatLockdown() then return end
-			-- adjust ComboFrame position dependant upon Target classification, if required
-			-- as the threat indicator obscures them when boss/elite etc
-			if aObj.uCls == "ROGUE"
-			or aObj.uCls == "DRUID"
-			then
-				_G.ComboFrame:ClearAllPoints()
-				if ucTTex:GetTexture() then
-					_G.ComboFrame:SetPoint("TOPRIGHT", _G.TargetFrame, "TOPRIGHT", -32, -7)
-				else
-					_G.ComboFrame:SetPoint("TOPRIGHT", _G.TargetFrame, "TOPRIGHT", -42, -7)
-				end
 			end
 		end)
 
@@ -360,40 +337,16 @@ local function skinFocusF()
 	end
 
 end
-local function resetPosn(pF)
-
-	-- handle in combat
-	if _G.InCombatLockdown() then return end
-
-	_G[pF .. "Portrait"]:SetPoint("TOPLEFT", 7, -6)
-	_G[pF .. "LeaderIcon"]:SetPoint("TOPLEFT")
-	_G[pF .. "MasterIcon"]:SetPoint("TOPLEFT", 32, 0)
-	_G[pF .. "PVPIcon"]:SetPoint("TOPLEFT", -9, -15)
-	_G[pF .. "Disconnect"]:SetPoint("LEFT", -7, -1)
-
-	-- cancel repeating timer
-	module:CancelTimer(rpTmr[_G[pF]], true)
-	rpTmr[_G[pF]] = nil
-
-end
 local function skinPartyF()
 
 	if db.party
 	and not isSkinned["Party"]
 	then
-		-- hook this to change positions
-		module:SecureHook("PartyMemberFrame_ToVehicleArt", function(this, ...)
-			if not rpTmr[this] then
-				rpTmr[this] = module:ScheduleRepeatingTimer(resetPosn, tDelay, this:GetName())
-			end
-		end)
 
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			local pF = "PartyMemberFrame" .. i
 			addBackground{obj=_G[pF], x1=2, y1=5, x2=-1}
-			-- add threat texture
-			addThreat(_G[pF], "party" .. i)
-			_G[pF .. "Flash"]:SetAlpha(0) -- hide existing flash texture
+			fixThreat(_G[pF .. "Flash"], 128, 53)
 
 			aObj:moveObject{obj=_G[pF .. "Portrait"], y=6}
 			-- TODO stop portrait being moved
@@ -402,10 +355,6 @@ local function skinPartyF()
 			_G[pF .. "VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G[pF .. "Status"]:SetTexture(nil)
 
-			-- reset positions if required
-			if _G[pF].state == "vehicle" then
-				rpTmr[_G[pF]] = module:ScheduleRepeatingTimer(resetPosn, tDelay, pF)
-			end
 			-- status bars
 			aObj:glazeStatusBar(_G[pF .. "HealthBar"], 0)
 			aObj:glazeStatusBar(_G[pF .. "ManaBar"], 0)
@@ -413,8 +362,7 @@ local function skinPartyF()
 			-- pet frame
 			local pPF = pF .. "PetFrame"
 			addBackground{obj=_G[pPF], x1=-2, y1=1, y2=1}
-			addThreat(_G[pPF], "partypet" .. i)
-			_G[pPF .. "Flash"]:SetAlpha(0) -- hide existing flash texture
+			fixThreat(_G[pPF .. "Flash"], 64, 26)
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:glazeStatusBar(_G[pPF .. "HealthBar"], 0)
