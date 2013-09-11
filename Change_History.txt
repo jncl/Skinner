@@ -1,3 +1,22 @@
+b5.17271.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated PTR version number
+	Handle reskinning the same frame
+	Updated PVP skin
+	Updated ArchaeologyUI skin
+	Updated UnitFrames skins
+	Updated MiniMapButtons skin
+	Updated MiniMap skin
+	Bugfix for ReputationWatchBar position
+	Updated LFD skin
+	Updated HelpFrame skin
+	Updated CombatLogFrame skin
+	Updated ChatEditBox skin
+	Updated Recount skin
+	Skinned LibDialog & LibToast
+
 b5.17252.1
 Jncl:
 	ToDo.txt
