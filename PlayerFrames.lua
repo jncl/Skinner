@@ -314,12 +314,10 @@ function aObj:ArchaeologyUI() -- LoD
 	_G.ArchaeologyFrameHelpPageDigTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BTr, self.BTg, self.BTb)
 
-	if self.isPTR then
-		-- ArcheologyDigsiteProgressBar
-		self:removeRegions(_G.ArcheologyDigsiteProgressBar, {1, 2, 3})
-		self:glazeStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, 0)
-		-- N.B. DigsiteCompleteToastFrame is managed as part of the Alert Frames skin
-	end
+	-- ArcheologyDigsiteProgressBar
+	self:removeRegions(_G.ArcheologyDigsiteProgressBar, {1, 2, 3})
+	self:glazeStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, 0)
+	-- N.B. DigsiteCompleteToastFrame is managed as part of the Alert Frames skin
 
 end
 
@@ -796,18 +794,27 @@ function aObj:EncounterJournal() -- LoD
 
 	end)
 	-- Model Frame
-	_G.EncounterJournal.encounter.info.model:DisableDrawLayer("BACKGROUND")
-	self:getRegion(_G.EncounterJournal.encounter.info.model, 2):SetTexture(nil) -- Shadow
-	self:getRegion(_G.EncounterJournal.encounter.info.model, 3):SetTexture(nil) -- TitleBG
-	for i = 1, 6 do
-		local btn = _G.EncounterJournal.encounter.info["creatureButton" .. i]
-		if btn then
+	_G.EncounterJournal.encounter.info.model:DisableDrawLayer("BACKGROUND") -- dungeonBG (updated with dungeon type change)
+	self:rmRegionsTex(_G.EncounterJournal.encounter.info.model, {2, 3}) -- Shadow, TitleBG
+	local function skinCreatureBtn(idx)
+		local btn = _G.EncounterJournal.encounter.info.creatureButtons[idx]
+		if btn
+		and not aObj.skinned[btn]
+		then
 			btn:SetNormalTexture(nil)
 			local hTex = btn:GetHighlightTexture()
 			hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 			hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
 		end
 	end
+	for i = 1, #_G.EncounterJournal.encounter.info.creatureButtons do
+		skinCreatureBtn(i)
+	end
+	-- hook this to skin additional buttons
+	self:SecureHook("EncounterJournal_GetCreatureButton", function(index)
+		if index > 9 then return end -- MAX_CREATURES_PER_ENCOUNTER
+		skinCreatureBtn(index)
+	end)
 
 	-- Tabs (side)
 	for _, v in pairs{"bossTab", "lootTab", "modelTab"} do
@@ -1161,7 +1168,7 @@ function aObj:GuildUI() -- LoD
 	self:skinTabs{obj=_G.GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
 	-- GuildInfoFrameInfo Frame
 	self:keepFontStrings(_G.GuildInfoFrameInfo)
-	self:skinSlider{obj=_G.GuildInfoDetailsFrameScrollBar, adj=not aObj.isPTR and -4 or nil}
+	self:skinSlider{obj=_G.GuildInfoDetailsFrameScrollBar, adj=-4}
 	-- GuildInfoFrameRecruitment Frame
 	_G.GuildRecruitmentInterestFrameBg:SetAlpha(0)
 	_G.GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
@@ -1231,12 +1238,6 @@ function aObj:InspectUI() -- LoD
 
 -->>-- PVP Frame
 	self:keepFontStrings(_G.InspectPVPFrame)
-	if not self.isPTR then
-		for i = 1, _G.MAX_ARENA_TEAMS do
-			_G["InspectPVPTeam" .. i .. "StandardBar"]:Hide()
-			self:addSkinFrame{obj=_G["InspectPVPTeam" .. i], hat=true, x1=-40, y1=4, x2=-20}
-		end
-	end
 
 -->>-- Talent Frame
 	self:keepFontStrings(_G.InspectTalentFrame)
@@ -1356,7 +1357,7 @@ function aObj:LootFrames()
 		_G.CreateFrame("Button", "LootButton5", _G.LootFrame, "LootButtonTemplate")
 		_G.LootButton5:SetPoint("TOPLEFT", 9, yOfs)
 		_G.LootButton5.id = 5
-		_G.LOOTFRAME_NUMBUTTONS = _G.LOOTFRAME_NUMBUTTONS + 1
+		_G.LOOTFRAME_NUMBUTTONS = 5
 	end
 
 	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
@@ -1704,9 +1705,6 @@ function aObj:PVPUI()
 	self.initialized.PVPFrame = true
 
 	self:removeInset(_G.PVPUIFrame.LeftInset)
-	if not self.isPTR then
-		self:skinTabs{obj=_G.PVPUIFrame, lod=true}
-	end
 	self:addSkinFrame{obj=_G.PVPUIFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
 	for i = 1, 3 do
 		local btn = _G.PVPQueueFrame["CategoryButton" .. i]
@@ -1772,7 +1770,7 @@ function aObj:PVPUI()
 		btn.Entry.Bg:SetTexture(nil)
 		btn.Entry.Border:SetTexture(nil)
 	end
-	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar, adj=not aObj.isPTR and -4 or nil}
+	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar}
 	_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
 	self:removeMagicBtnTex(_G.WarGameStartButton)
 
@@ -1788,25 +1786,6 @@ function aObj:PVPUI()
 	-- _G.PVPReadyDialog.bottomArt:SetAlpha(0)
 	-- _G.PVPReadyDialog.instanceInfo.underline:SetAlpha(0)
 	self:addSkinFrame{obj=_G.PVPReadyDialog, ft=ftype, kfs=true}
-
-	if not self.isPTR then
-		-- Arena Team Frame
-		for i = 1, 3 do
-			local btn = _G.PVPArenaTeamsFrame["Team" .. i]
-			btn.Background:SetTexture(nil)
-			btn.Flag.FlagGrabber:SetTexture(nil)
-			self:changeRecTex(btn:GetHighlightTexture())
-		end
-		_G.ArenaTeamFrame:DisableDrawLayer("BACKGROUND")
-		_G.ArenaTeamFrame:DisableDrawLayer("BORDER")
-		self:removeInset(_G.ArenaTeamFrame.TopInset)
-		_G.ArenaTeamFrame.TopShadowOverlay:DisableDrawLayer("OVERLAY")
-		self:removeInset(_G.ArenaTeamFrame.WeeklyDisplay)
-		self:skinFFColHeads("ArenaTeamFrameHeader")
-		self:removeInset(_G.ArenaTeamFrame.BottomInset)
-		self:skinDropDown{obj=_G.ArenaTeamMemberDropDown}
-		self:removeMagicBtnTex(_G.ArenaTeamFrame.AddMemberButton)
-	end
 
 end
 

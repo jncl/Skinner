@@ -175,14 +175,12 @@ function aObj:AlertFrames()
 		skinWonAlertFrames(frame)
 	end
 
-	if self.isPTR then
-		-- DigsiteCompleteToastFrame
-		_G.DigsiteCompleteToastFrame:DisableDrawLayer("BACKGROUND")
-		aObj:addSkinFrame{obj=_G.DigsiteCompleteToastFrame, ft=ftype, af=true, afas=true, ofs=-10}
-		-- StorePurchaseAlertFrame
-		_G.StorePurchaseAlertFrame:DisableDrawLayer("BACKGROUND")
-		aObj:addSkinFrame{obj=_G.StorePurchaseAlertFrame, ft=ftype, af=true, afas=true, ofs=-10}
-	end
+	-- DigsiteCompleteToastFrame
+	_G.DigsiteCompleteToastFrame:DisableDrawLayer("BACKGROUND")
+	aObj:addSkinFrame{obj=_G.DigsiteCompleteToastFrame, ft=ftype, af=true, afas=true, ofs=-10}
+	-- StorePurchaseAlertFrame
+	_G.StorePurchaseAlertFrame:DisableDrawLayer("BACKGROUND")
+	aObj:addSkinFrame{obj=_G.StorePurchaseAlertFrame, ft=ftype, af=true, afas=true, ofs=-10}
 
 end
 
@@ -322,6 +320,7 @@ function aObj:Calendar() -- LoD
 	self:addSkinFrame{obj=_G.CalendarViewEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=_G.CalendarViewEventDescriptionScrollFrame}
 	self:keepFontStrings(_G.CalendarViewEventInviteListSection)
+	self:skinSlider{obj=_G.CalendarViewEventInviteListScrollFrameScrollBar}
 	self:addSkinFrame{obj=_G.CalendarViewEventInviteList, ft=ftype}
 	self:addSkinFrame{obj=_G.CalendarViewEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
@@ -339,6 +338,7 @@ function aObj:Calendar() -- LoD
 	self:addSkinFrame{obj=_G.CalendarCreateEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=_G.CalendarCreateEventDescriptionScrollFrame}
 	self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
+	self:skinSlider{obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar}
 	self:addSkinFrame{obj=_G.CalendarCreateEventInviteList, ft=ftype}
 	self:skinEditBox{obj=_G.CalendarCreateEventInviteEdit, regs={9}}
 	_G.CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
@@ -386,9 +386,6 @@ function aObj:Calendar() -- LoD
 
 -->>-- ContextMenus
 	self:addSkinFrame{obj=_G.CalendarContextMenu}
-	if not self.isPTR then
-		self:addSkinFrame{obj=_G.CalendarArenaTeamContextMenu}
-	end
 	self:addSkinFrame{obj=_G.CalendarInviteStatusContextMenu}
 
 end
@@ -1020,7 +1017,7 @@ function aObj:LFDFrame()
 	-- LFD Queue Frame
 	_G.LFDQueueFrameBackground:SetAlpha(0)
 	self:skinDropDown{obj=_G.LFDQueueFrameTypeDropDown}
-	self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrame.ScrollBar, adj=not aObj.isPTR and -4 or nil}
+	self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrame.ScrollBar}
 	_G.LFDQueueFrameRandomScrollFrameChildFrame.BonusValor.Border:SetTexture(nil)
 
 	self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
@@ -1248,9 +1245,7 @@ function aObj:MainMenuBar()
 		self:addButtonBorder{obj=_G[v .. "MicroButton"], mb=true, ofs=0, y1=-21}
 	end
 	self:addButtonBorder{obj=_G.FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
-	if self.isPTR then
-		self:addButtonBorder{obj=_G["StoreMicroButton"], mb=true, ofs=0, y1=-21}
-	end
+	self:addButtonBorder{obj=_G["StoreMicroButton"], mb=true, ofs=0, y1=-21}
 
 -->>-- add button borders
 	-- Bag buttons
@@ -1708,7 +1703,7 @@ function aObj:MinimapButtons()
 		end
 		mmButs = nil
 		-- skin LibDBIcon Minimap Buttons
-		_G.LibStub("LibDBIcon-1.0").RegisterCallback(aObj, "LibDBIcon_IconCreated", skinMMBtn)
+		_G.LibStub("LibDataBroker-1.1").RegisterCallback(aObj, "LibDBIcon_IconCreated", skinMMBtn)
 		-- skin existing buttons
 		for name, button in pairs(_G.LibStub("LibDBIcon-1.0").objects) do
 			skinMMBtn(button, name)
@@ -2079,7 +2074,7 @@ function aObj:PVEFrame()
 	self:skinTabs{obj=_G.PVEFrame}
 
 	-- GroupFinder Frame
-	for i = 1, self.isPTR and 4 or 3 do
+	for i = 1, 4 do
 		local btn = _G.GroupFinderFrame["groupButton" .. i]
 		btn.bg:SetTexture(nil)
 		btn.ring:SetTexture(nil)
@@ -2087,7 +2082,7 @@ function aObj:PVEFrame()
 	end
 	-- hook this to change selected texture
 	self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
-		for i = 1, self.isPTR and 4 or 3 do
+		for i = 1, 4 do
 			local btn = _G.GroupFinderFrame["groupButton" .. i]
 			if i == index then
 				self:changeRecTex(btn.bg, true)
@@ -2097,13 +2092,11 @@ function aObj:PVEFrame()
 		end
 	end)
 
-	if self.isPTR then
-		-- FlexRaidFrame
-		self:removeInset(_G.FlexRaidFrameBottomInset)
-		self:skinDropDown{obj=_G.FlexRaidFrameSelectionDropDown}
-		self:skinScrollBar{obj=_G.FlexRaidFrame.ScrollFrame}
-		self:removeMagicBtnTex(_G.FlexRaidFrame.StartButton)
-	end
+	-- FlexRaidFrame
+	self:removeInset(_G.FlexRaidFrameBottomInset)
+	self:skinDropDown{obj=_G.FlexRaidFrameSelectionDropDown}
+	self:skinScrollBar{obj=_G.FlexRaidFrame.ScrollFrame}
+	self:removeMagicBtnTex(_G.FlexRaidFrame.StartButton)
 
 	-- ScenarioFinder Frame
 	self:keepFontStrings(_G.ScenarioFinderFrame)
@@ -2217,6 +2210,23 @@ function aObj:StaticPopups()
 		-- prevent FrameLevel from being changed (LibRock does this)
 		obj.sf.SetFrameLevel = function() end
 	end
+
+end
+
+function aObj:StoreUI() -- LoD
+	if not self.db.profile.StoreUI or self.initialized.StoreUI then return end
+	self.initialized.StoreUI = true
+
+	-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
+
+	-- Cover
+	-- ErrorFrame
+	-- Notice
+	-- Browse
+
+	-- _G.StoreFrame:DisableDrawLayer("BACKGROUND")
+	-- self:addSkinFrame{obj=_G.StoreFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+	-- self:addSkinFrame{obj=_G.StoreConfirmationFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
 
 end
 
@@ -2419,11 +2429,9 @@ function aObj:WorldState()
 	self:addSkinFrame{obj=_G.WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
 	-- WorldStateProvingGroundsFrame
-	if self.isPTR then
-		self:rmRegionsTex(_G.WorldStateProvingGroundsFrame, {1, 2, 8, 9}) -- N.B. Texture 3 is Medal, 4-7 are text, 10 is glow (remove textures as they are animated)
-		self:removeRegions(_G.WorldStateProvingGroundsFrame.statusBar, {1})
-		self:glazeStatusBar(_G.WorldStateProvingGroundsFrame.statusBar, 0,  nil)
-		self:addSkinFrame{obj=_G.WorldStateProvingGroundsFrame, ft=ftype, nb=true, rp=true} -- N.B. use rp to overcome animation whiteout
-	end
+	self:rmRegionsTex(_G.WorldStateProvingGroundsFrame, {1, 2, 8, 9}) -- N.B. Texture 3 is Medal, 4-7 are text, 10 is glow (remove textures as they are animated)
+	self:removeRegions(_G.WorldStateProvingGroundsFrame.statusBar, {1})
+	self:glazeStatusBar(_G.WorldStateProvingGroundsFrame.statusBar, 0,  nil)
+	self:addSkinFrame{obj=_G.WorldStateProvingGroundsFrame, ft=ftype, nb=true, rp=true} -- N.B. use rp to overcome animation whiteout
 
 end

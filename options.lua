@@ -51,7 +51,6 @@ function aObj:Defaults()
 		-- populated below
 	-->>-- NPC Frames
 		DisableAllNPC        = false,
-		ArenaRegistrar       = not self.isPTR and true or nil,
 		AuctionUI            = true,
 		BankFrame            = true,
 		BarbershopUI         = true,
@@ -65,7 +64,6 @@ function aObj:Defaults()
 		QuestFrame           = true,
 		ReforgingUI          = true,
 		SideDressUpFrame     = true,
-		StoreUI				 = self.isPTR and true or nil,
 		Tabard               = true,
 		TaxiFrame            = true,
 		TrainerUI            = true,
@@ -153,6 +151,7 @@ function aObj:Defaults()
 		RaidFrame            = true,
 		ScriptErrors         = true,
 		StaticPopups         = true,
+		StoreUI				 = false, -- cannot be skinned
 		TimeManager          = true,
 		Tooltips             = {skin = true, style = 1, glazesb = true, border = 1},
 		Tutorial             = true,
@@ -724,11 +723,6 @@ function aObj:Options()
 					type = "header",
 					name = self.L["or choose which frames to skin"],
 				},
-				ArenaRegistrar = not self.isPtr and {
-					type = "toggle",
-					name = self.L["Arena Registrar Frame"],
-					desc = self.L["Toggle the skin of the Arena Registrar Frame"],
-				} or nil,
 				AuctionUI = {
 					type = "toggle",
 					name = self.L["Auction Frame"],
@@ -795,11 +789,6 @@ function aObj:Options()
 					name = self.L["Side DressUp Frame"],
 					desc = self.L["Toggle the skin of the Side DressUp Frame"],
 				},
-				StoreUI = self.isPtr and {
-					type = "toggle",
-					name = self.L["Store Frame"],
-					desc = self.L["Toggle the skin of the Store Frame"],
-				} or nil,
 				Tabard = {
 					type = "toggle",
 					name = self.L["Tabard Frame"],
@@ -1563,6 +1552,11 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["Static Popups"],
 					desc = self.L["Toggle the skin of Static Popups"],
+				},
+				StoreUI = {
+					type = "toggle",
+					name = self.L["Store Frame"],
+					desc = self.L["Toggle the skin of the Store Frame"],
 				},
 				TimeManager = {
 					type = "toggle",

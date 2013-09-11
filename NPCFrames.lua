@@ -5,28 +5,6 @@ local ftype = "n"
 -- Add locals to see if it speeds things up
 local pairs = _G.pairs
 
-if not aObj.isPTR then
-	function aObj:ArenaRegistrar()
-		if not self.db.profile.ArenaRegistrar or self.initialized.ArenaRegistrar then return end
-		self.initialized.ArenaRegistrar = true
-
-		--	PVP Banner Frame
-		self:skinEditBox{obj=_G.PVPBannerFrameEditBox, regs={9}}
-		self:keepRegions(_G.PVPBannerFrame, {8, 29, 30, 31, 32, 33, 34, 35}) -- N.B. region 8 is the title, 29 - 32 are the emblem, 33 - 35 are the text
-		self:addSkinFrame{obj=_G.PVPBannerFrame, ft=ftype, ri=true, y1=2, x2=1, y2=-4}
-		self:removeMagicBtnTex(_G.PVPBannerFrameCancelButton)
-		self:removeMagicBtnTex(_G.PVPBannerFrameAcceptButton)
-		self:removeRegions(_G.PVPBannerFrameCustomizationFrame)
-		for i = 1, 2 do
-			self:keepFontStrings(_G["PVPBannerFrameCustomization" .. i])
-			self:addButtonBorder{obj=_G["PVPBannerFrameCustomization" .. i .. "LeftButton"], ofs=-2}
-			self:addButtonBorder{obj=_G["PVPBannerFrameCustomization" .. i .. "RightButton"], ofs=-2}
-		end
-		self:removeMagicBtnTex(self:getChild(_G.PVPBannerFrame, 6)) -- duplicate named button
-
-	end
-end
-
 function aObj:AuctionUI() -- LoD
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
@@ -575,21 +553,6 @@ function aObj:SideDressUpFrame()
 	self:addSkinFrame{obj=_G.SideDressUpFrame, ft=ftype, bg=true, x1=-6, y1=-3, x2=-2}
 	self:skinButton{obj=_G.SideDressUpModelCloseButton, cb=true}
 
-end
-
-if aObj.isPTR then
-	function aObj:StoreUI() -- LoD
-		if not self.db.profile.StoreUI or self.initialized.StoreUI then return end
-		self.initialized.StoreUI = true
-
-		-- Cover
-		-- ErrorFrame
-		-- Notice
-		-- Browse
-		self:addSkinFrame{obj=_G.StoreFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
-		self:addSkinFrame{obj=_G.StoreConfirmationFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
-
-	end
 end
 
 function aObj:Tabard()

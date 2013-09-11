@@ -26,14 +26,17 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
-	local liveVer = 17271
+	local liveVer = 17359
 --@alpha@
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
 --@end-alpha@
+	-- check to see if running on Beta version
+	aObj.isBeta = portal == "public-beta" and true or false
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.4.0"
+	--check to see if running on PTR servers
+	aObj.isPTR = portal == "public-test" and true or false
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = tonumber(buildInfo[2]) > liveVer and true or false
-	--check to see if running on PTR version
-	aObj.isPTR = portal == "public-test" and true or false
 --@alpha@
 	if aObj.isPatch then
 		if aObj.isPTR then
@@ -43,9 +46,8 @@ do
 		end
 	end
 --@end-alpha@
-	-- check to see if running on Beta version
-	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.4.0"
+	-- if patch detected then enable PTR code changes, handles PTR changes going Live
+	if aObj.isPatch then aObj.isPTR = true end
 
 end
 

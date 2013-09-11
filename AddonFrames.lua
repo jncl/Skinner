@@ -12,10 +12,9 @@ local blizzLoDFrames = {
  	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
 	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ItemUpgradeUI", "QuestChoice", "ReforgingUI", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "PetJournal", "TimeManager",
+	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "PetJournal", "StoreUI", "TimeManager",
 	--	ArenaUI the unitframes are skinned in UnitFrames.lua
 }
-if aObj.isPTR then aObj:add2Table(blizzLoDFrames, "StoreUI") end
 -- optional frames
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
@@ -125,6 +124,7 @@ function aObj:BlizzardFrames()
 			["RaidFrame"] = true,
 			["ScriptErrors"] = true,
 			["StaticPopups"] = true,
+			["StoreUI"] = false, -- cannot be skinned :(
 			["Tooltips"] = false, -- checked below
 			["Tutorial"] = true,
 			["WorldMap"] = true,
@@ -144,8 +144,6 @@ function aObj:BlizzardFrames()
 		},
 	}
 
-	if not aObj.isPTR then self.blizzFrames.npc["ArenaRegistrar"] = true end
-	if aObj.isPTR then self.blizzFrames.ui["StoreUI"] = false end
 	-- optional frames
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 
