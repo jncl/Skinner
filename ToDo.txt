@@ -33,20 +33,23 @@ x		- ItemSocketingUI
 x		- ItemUpgradeUI
 x		- LookingForGuildUI
 ? 		- PVPUI (NEW Conquest Tooltip, REMOVED PVPArenaTeam references)
+x		- PetBattleUI
 x		- PetJournal
 ≈		- StoreUI (NEW)
 x		- TalentUI
+x		- TimeManager
 x		- TrainerUI
 		==> FrameXML_Changes
 ≈		- AlertFrames (NEW DigsiteCompleteToastFrame, StorePurchaseAlertFrame)
 √		- ArenaRegistrar (REMOVED)
 x		- AudioOptionPanels
 x		- AutoComplete
+x		- BNConversations
 x		- Bindings
 x		- BuffFrame
 x		- ChannelFrame
 x		- ChatFrame
-?		- CompactUnitFrame (NEW HealPrediction & HealAbsorb bars)
+x		- CompactUnitFrame (NEW HealPrediction & HealAbsorb bars)
 x		- Constants
 ?		- ContainerFrame (NEW $parentNewItemTexture)
 √		- FlexRaidFrame (NEW)
@@ -54,6 +57,7 @@ x		- FontStyleOverrides
 x		- FontStyles
 x		- FrameXML
 x		- FriendsFrame
+x		- GameMenuFrame
 x		- GlobalStrings
 x		- GraphicsQualityLevels
 x		- GuildInviteFrame
@@ -64,16 +68,17 @@ x		- ItemRef
 √		- LFDFrame
 x		- LFGFrame
 x		- LevelUpDisplay
+x		- LootFrame
 x		- MailFrame
 √		- MainMenuBarMicroButtons (NEW StoreMicroButton)
 x		- MerchantFrame
 x		- Minimap
 √		- PVEFrame
 x		- PaperDollFrame
-?		- PartyFrameTemplates (NEW HealPrediction & HealAbsorb bars)
-?		- PetFrame (NEW HealPrediction & HealAbsorb bars)
+x		- PartyFrameTemplates (NEW HealPrediction & HealAbsorb bars)
+x		- PetFrame (NEW HealPrediction & HealAbsorb bars)
 x		- PetitionFrame
-?		- PlayerFrame (NEW HealPrediction & HealAbsorb bars)
+x		- PlayerFrame (NEW HealPrediction & HealAbsorb bars)
 x		- QuestLogFrame
 x		- QueueStatusFrame
 x		- RaidFinder
@@ -81,11 +86,11 @@ x		- RaidFrame
 x		- SecureCapsule (NEW)
 x		- SecureTemplates
 x		- StaticPopup
-?		- TargetFrame (NEW HealPrediction & HealAbsorb bars)
+x		- TargetFrame (NEW HealPrediction & HealAbsorb bars)
 x		- TradeFrame
 x		- UIPanelTemplates
 x		- UIParent
-?		- UnitFrame (NEW HealPrediction & HealAbsorb bars)
+x		- UnitFrame (NEW HealPrediction & HealAbsorb bars)
 x		- UnitPopup
 x		- UnitPowerBarAlt
 x		- VehicleSeatIndicator
@@ -102,23 +107,6 @@ x		- WorldMapFrame
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I	ReputationWatchBar
-		- Overlaps MainMenuBar
-
-√	I	Recount
-		- config window not skinned ?
-
-√	I	ChatFrame
-		- move top of frame to match dockframe
-
-	I	ChatFrameEditBox
-√		- make option changes actionable after reload only
-x		- width should match chatframes
-
-√	I	Minimap
-		- Instance Difficulty icon too high
-		- align Tracking button TLHC flush with frame, issue with GM Ticket button if so ?
-
 ?	I	PartyFrames
 		- sometimes not skinned after relog
 		- look bad with frames around them, either don't skin them or fix frame size
@@ -126,12 +114,22 @@ x		- width should match chatframes
 ?	I	ArenaFrames
 		- as per PartyFrame ?
 
-√	I	PlayerFrame
-		- Druid manabar textures showing
-
 ?	I	RealID Toast frame
 		- whiteout issues
 
-√	S	LibToast-1.0
+≈	I	UnitFrames
+		- still getting taint for TargetFrameTot & PartyFrame/PartyFramePet (either child texture or moves ?)
+		- getting taint on Player/Pet frames when exiting a vehicle (in combat?)
 
-√	S	LibDialog-1.0
+	I	HealBot, reported by dwarven, 23.08.13
+		- ..\AddOns\Skinner\Skinner.lua line 555: attempt to index field 'obj' (a nil value)
+			Skinner\SkinMe\HealBot.lua:52:
+			Skinner\SkinMe\HealBot.lua:5
+
+	I	TradeSkillMaster, reported by chrisgriffith25, 26.08.13
+		- TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:312: attempt to index field "content" (a nil value)
+		  TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:312: in function "ClearFilters"
+		  TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:114: in function "?"
+
+	I	WIM, reported by X-buZZ/NeoZeus, 08.09.13
+		- whisper windows all white
