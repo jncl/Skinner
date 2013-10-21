@@ -1678,6 +1678,7 @@ function aObj:MinimapButtons()
 			["Outfitter"] = _G.OutfitterMinimapButton,
 			["Perl_Config"] = _G.PerlButton,
 			["WIM"] = _G.WIM3MinimapButton,
+			["HealBot"] = _G.HealBot_MMButton,
 		}
 		local function skinMMBtn(btn, name)
 
