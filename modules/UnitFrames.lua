@@ -47,7 +47,7 @@ local function addBackground(opts)
 	opts.obj.sb = _G.CreateFrame("Button", nil, opts.obj, "SecureFrameTemplate")
 	opts.obj.sb:SetAllPoints(opts.obj)
 	-- adjust frame levels so skin button is behind
-	RaiseFrameLevelByTwo(opts.obj)
+	_G.RaiseFrameLevelByTwo(opts.obj)
 	opts.obj.sb:SetFrameLevel(opts.obj:GetFrameLevel() - 1)
 	-- create background texture
 	opts.obj.sbg = opts.obj.sb:CreateTexture(nil, "BACKGROUND")

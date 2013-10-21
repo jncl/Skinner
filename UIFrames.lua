@@ -1518,8 +1518,8 @@ function aObj:Minimap()
 	-- Difficulty indicators
 	-- hook this to mamage MiniMapInstanceDifficulty texture
 	self:SecureHook("MiniMapInstanceDifficulty_Update", function()
-		local _, _, difficulty, _, maxPlayers, _, _ = GetInstanceInfo()
-		local _, _, isHeroic, _ = GetDifficultyInfo(difficulty)
+		local _, _, difficulty, _, maxPlayers, _, _ = _G.GetInstanceInfo()
+		local _, _, isHeroic, _ = _G.GetDifficultyInfo(difficulty)
 		local xOffset = 0
 		if ( maxPlayers >= 10 and maxPlayers <= 19 ) then
 			xOffset = -1
