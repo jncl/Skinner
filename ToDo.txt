@@ -8,97 +8,6 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	O	PTR 5.4.0
-		==> Addons_Changes
-x		- AchievementUI
-√		- ArchaeologyProgressBar (NEW)
-?		- ArenaUI
-x		- AuctionUI
-x		- AuctionUITemplates
-x		- BattlefieldMinimap
-√		- Calendar (REMOVED CalendarArenaTeamContextMenu, CalendarMassInviteArenaButton(s))
-x		- ClientSavedVariables
-x		- CombatLog
-x		- CombatText
-√		- EncounterJournal
-√		- FeedBackUI (REMOVED)
-x		- GlyphUI
-x		- GuildInfo
-x		- GuildRoster
-x		- GuildUI
-x		- InspectUI
-√		- InspectPVPFrame
-x		- ItemAlterationUI
-x		- ItemSocketingUI
-x		- ItemUpgradeUI
-x		- LookingForGuildUI
-? 		- PVPUI (NEW Conquest Tooltip, REMOVED PVPArenaTeam references)
-x		- PetBattleUI
-x		- PetJournal
-≈		- StoreUI (NEW)
-x		- TalentUI
-x		- TimeManager
-x		- TrainerUI
-		==> FrameXML_Changes
-≈		- AlertFrames (NEW DigsiteCompleteToastFrame, StorePurchaseAlertFrame)
-√		- ArenaRegistrar (REMOVED)
-x		- AudioOptionPanels
-x		- AutoComplete
-x		- BNConversations
-x		- Bindings
-x		- BuffFrame
-x		- ChannelFrame
-x		- ChatFrame
-x		- CompactUnitFrame (NEW HealPrediction & HealAbsorb bars)
-x		- Constants
-?		- ContainerFrame (NEW $parentNewItemTexture)
-√		- FlexRaidFrame (NEW)
-x		- FontStyleOverrides
-x		- FontStyles
-x		- FrameXML
-x		- FriendsFrame
-x		- GameMenuFrame
-x		- GlobalStrings
-x		- GraphicsQualityLevels
-x		- GuildInviteFrame
-x		- HelpFrame (REMOVED $parentArenaTeamNameCheckButton)
-x		- HybridScrollFrame
-x		- InterfaceOptionsPanels
-x		- ItemRef
-√		- LFDFrame
-x		- LFGFrame
-x		- LevelUpDisplay
-x		- LootFrame
-x		- MailFrame
-√		- MainMenuBarMicroButtons (NEW StoreMicroButton)
-x		- MerchantFrame
-x		- Minimap
-√		- PVEFrame
-x		- PaperDollFrame
-x		- PartyFrameTemplates (NEW HealPrediction & HealAbsorb bars)
-x		- PetFrame (NEW HealPrediction & HealAbsorb bars)
-x		- PetitionFrame
-x		- PlayerFrame (NEW HealPrediction & HealAbsorb bars)
-x		- QuestLogFrame
-x		- QueueStatusFrame
-x		- RaidFinder
-x		- RaidFrame
-x		- SecureCapsule (NEW)
-x		- SecureTemplates
-x		- StaticPopup
-x		- TargetFrame (NEW HealPrediction & HealAbsorb bars)
-x		- TradeFrame
-x		- UIPanelTemplates
-x		- UIParent
-x		- UnitFrame (NEW HealPrediction & HealAbsorb bars)
-x		- UnitPopup
-x		- UnitPowerBarAlt
-x		- VehicleSeatIndicator
-x		- VideoOptionsPanels
-x		- WatchFrame
-x		- WorldMapFrame
-√		- WorldStateFrame (NEW WorldStateProvingGroundsFrame)
-
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 		- issue is with buttons that have been 'flowed'
@@ -107,29 +16,17 @@ x		- WorldMapFrame
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-?	I	PartyFrames
-		- sometimes not skinned after relog
-		- look bad with frames around them, either don't skin them or fix frame size
-
-?	I	ArenaFrames
-		- as per PartyFrame ?
-
-?	I	RealID Toast frame
-		- whiteout issues
-
-≈	I	UnitFrames
-		- still getting taint for TargetFrameTot & PartyFrame/PartyFramePet (either child texture or moves ?)
-		- getting taint on Player/Pet frames when exiting a vehicle (in combat?)
-
-	I	HealBot, reported by dwarven, 23.08.13
-		- ..\AddOns\Skinner\Skinner.lua line 555: attempt to index field 'obj' (a nil value)
-			Skinner\SkinMe\HealBot.lua:52:
-			Skinner\SkinMe\HealBot.lua:5
-
-	I	TradeSkillMaster, reported by chrisgriffith25, 26.08.13
+√	I   TradeSkillMaster, reported by chrisgriffith25, 26-08-13
 		- TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:312: attempt to index field "content" (a nil value)
 		  TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:312: in function "ClearFilters"
 		  TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:114: in function "?"
 
-	I	WIM, reported by X-buZZ/NeoZeus, 08.09.13
-		- whisper windows all white
+√	I	tektip, Cork, Recount, reported by Tinface, 25.09.13
+		- Skinner-b5.17539.1\SkinMe\tektip.lua:28: UIParent:GetChildren(): Stack overflow
+		- Skinner-b5.17539.1\SkinMe\Cork-5.2.0.52-Beta.lua:7: UIParent:GetChildren(): Stack overflow
+		- Skinner-b5.17539.1\SkinMe\Recount-v5.4.0 release.lua:48: UIParent:GetChildren(): Stack overflow
+
+√	I	HealBot,  reported by Luckyjack_SL, 12.10.13
+		- ..\AddOns\Skinner\Skinner.lua line 557: attempt to index field 'obj' (a nil value)
+		  Skinner\SkinMe\HealBot.lua:52:
+		  Skinner\SkinMe\HealBot.lua:5
