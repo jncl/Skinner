@@ -26,7 +26,7 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
-	local liveVer = 17359
+	local liveVer = 17399
 --@alpha@
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
 --@end-alpha@
@@ -1232,7 +1232,7 @@ end
 
 function aObj:setActiveTab(tabSF)
 --@alpha@
-	assert(tabSF, "Missing object sAT\n" .. debugstack())
+	-- assert(tabSF, "Missing object sAT\n" .. debugstack())
 --@end-alpha@
 
 	if not tabSF then return end
