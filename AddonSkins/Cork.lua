@@ -1,21 +1,23 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Cork") then return end
+local _G = _G
 
 function aObj:Cork()
 
 	-- skin the anchor button
-	for _, child in pairs{UIParent:GetChildren()} do
+	local kids = {_G.UIParent:GetChildren()}
+	for _, child in _G.ipairs(kids) do
 		if child:IsObjectType("Button")
 		and child:GetName() == nil
-		and floor(child:GetHeight()) == 24
-		and not self.skinFrame[child]
+		and _G.floor(child:GetHeight()) == 24
+		and not child.sf
 		then
 			local r, g, b ,a = child:GetBackdropBorderColor()
 			if r and r > 0 then
-				r = format("%.1f", r)
-				g = format("%.1f", g)
-				b = format("%.1f", b)
-				a = format("%.1f", a)
+				r = _G.format("%.1f", r)
+				g = _G.format("%.1f", g)
+				b = _G.format("%.1f", b)
+				a = _G.format("%.1f", a)
 				if r == "0.5" and g == "0.5" and b == "0.5" and a == "1.0" then
 					self:addSkinFrame{obj=child}
 					break
@@ -23,10 +25,12 @@ function aObj:Cork()
 			end
 		end
 	end
+	kids = _G.null
+
 	-- skin the Corkboard (tooltip)
-	self:SecureHook(Corkboard, "Show", function(this, ...)
-		self:applySkin(Corkboard)
+	self:SecureHook(_G.Corkboard, "Show", function(this, ...)
+		self:applySkin(_G.Corkboard)
 	end)
-	self:applySkin(Corkboard)
+	self:applySkin(_G.Corkboard)
 
 end

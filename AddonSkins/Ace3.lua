@@ -200,55 +200,55 @@ function aObj:Ace3()
 					aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
 				end)
 
-			-- TradeSkillMaster (TSM) objects
-			elseif objType == "TSMMainFrame" then
-				aObj:applySkin{obj=obj.frame}
-				aObj:skinButton{obj=aObj:getChild(obj.frame, 1), x1=-2, y1=2, x2=2, y2=-2} -- close button
-				aObj:getChild(obj.frame, 1):SetBackdrop(nil)
-				obj.sknrTSM = true
-			elseif objType == "TSMInlineGroup"
-			-- or objType == "TSMInlineGroupNoTitle"
-			then
-				obj.HideBorder = function() end
-				obj.SetBackdrop = function() end
-				obj.border:Hide()
-				obj.titletext:ClearAllPoints()
-				obj.titletext:SetPoint("TOPLEFT", 10, -6)
-				obj.titletext:SetPoint("TOPRIGHT", -14, -6)
-				aObj:applySkin{obj=obj.frame}
-				obj.sknrTSM = true
-			elseif objType == "TSMTabGroup"
-			then
-				aObj:applySkin{obj=obj.content:GetParent()}
-				obj.sknrTSM = true
-			elseif objType == "TSMTreeGroup" then
-				aObj:applySkin{obj=obj.border}
-				aObj:applySkin{obj=obj.treeframe}
-				obj.sknrTSM = true
-			elseif objType == "TSMButton" then
-				aObj:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
-				obj.btn:SetBackdrop(nil)
-				obj.sknrTSM = true
-			elseif objType == "TSMSelectionList" then
-				self:applySkin{obj=obj.leftFrame}
-				self:skinScrollBar{obj=obj.leftScrollFrame}
-				self:applySkin{obj=obj.rightFrame}
-				self:skinScrollBar{obj=obj.rightScrollFrame}
-				obj.sknrTSM = true
-			elseif objType == "TSMMacroButton"
-			or objType == "TSMFastDestroyButton"
-			then
-				aObj:skinButton{obj=obj.frame}
-				obj.frame:SetBackdrop(nil)
-				obj.sknrTSM = true
-			elseif objType == "TSMWindow" then
-				aObj:applySkin{obj=obj.frame, kfs=true}
-				aObj:skinButton{obj=obj.closebutton, cb=true}
-				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
-				obj.sknrTSM = true
-			elseif objType == "TSMEditBox" then
-				aObj:skinButton{obj=obj.button, as=true}
-				obj.sknrTSM = true
+            -- TradeSkillMaster (TSM) objects
+            elseif objType == "TSMMainFrame" then
+                aObj:applySkin{obj=obj.frame}
+                aObj:skinButton{obj=aObj:getChild(obj.frame, 1), x1=-2, y1=2, x2=2, y2=-2} -- close button
+                aObj:getChild(obj.frame, 1):SetBackdrop(nil)
+                obj.sknrTSM = true
+            elseif objType == "TSMInlineGroup"
+            -- or objType == "TSMInlineGroupNoTitle"
+            then
+                obj.HideBorder = function() end
+                obj.SetBackdrop = function() end
+                obj.border:Hide()
+                obj.titletext:ClearAllPoints()
+                obj.titletext:SetPoint("TOPLEFT", 10, -6)
+                obj.titletext:SetPoint("TOPRIGHT", -14, -6)
+                aObj:applySkin{obj=obj.frame}
+                obj.sknrTSM = true
+            elseif objType == "TSMTabGroup"
+            then
+                aObj:applySkin{obj=obj.content:GetParent()}
+                obj.sknrTSM = true
+            elseif objType == "TSMTreeGroup" then
+                aObj:applySkin{obj=obj.border}
+                aObj:applySkin{obj=obj.treeframe}
+                obj.sknrTSM = true
+            elseif objType == "TSMButton" then
+                aObj:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+                obj.btn:SetBackdrop(nil)
+                obj.sknrTSM = true
+            elseif objType == "TSMSelectionList" then
+                self:applySkin{obj=obj.leftFrame}
+                self:skinScrollBar{obj=obj.leftScrollFrame}
+                self:applySkin{obj=obj.rightFrame}
+                self:skinScrollBar{obj=obj.rightScrollFrame}
+                obj.sknrTSM = true
+            elseif objType == "TSMMacroButton"
+            or objType == "TSMFastDestroyButton"
+            then
+                aObj:skinButton{obj=obj.frame}
+                obj.frame:SetBackdrop(nil)
+                obj.sknrTSM = true
+            elseif objType == "TSMWindow" then
+                aObj:applySkin{obj=obj.frame, kfs=true}
+                aObj:skinButton{obj=obj.closebutton, cb=true}
+                obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
+                obj.sknrTSM = true
+            elseif objType == "TSMEditBox" then
+                aObj:skinButton{obj=obj.button, as=true}
+                obj.sknrTSM = true
 
 			-- AuctionMaster object
 			elseif objType == "ScrollableSimpleHTML" then
@@ -292,6 +292,8 @@ function aObj:Ace3()
 			or objType == "TSMScrollFrame"
 			or objType == "TSMSimpleGroup"
 			or objType == "TSMSlider"
+			or objType == "TSMGroupBox"
+			or objType == "TSMInteractiveLabel"
 			-- CollectMe objects
 			or objType == "CollectMeLabel"
 			then

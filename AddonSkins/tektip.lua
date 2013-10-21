@@ -1,20 +1,19 @@
 -- This is a Library
+local aName, aObj = ...
+local _G = _G
 
-function Skinner:tektip()
+function aObj:tektip()
 	if self.initialized.tektip then return end
 	self.initialized.tektip = true
 
-	local lib = LibStub("tektip-1.0")
-	
+	local lib = _G.LibStub("tektip-1.0")
+
 	local function skinTT(ttip)
-	
-		if Skinner.db.profile.Tooltips.skin then
-			if Skinner.db.profile.Tooltips.style == 3 then ttip:SetBackdrop(Skinner.Backdrop[1]) end
-			Skinner:SecureHookScript(ttip, "OnShow", function(this)
-				Skinner:skinTooltip(this)
-			end)
+
+		if aObj.db.profile.Tooltips.skin then
+			aObj:add2Table(aObj.ttList, "ttip")
 		end
-		
+
 	end
 
 	-- hook this to skin new tooltips
@@ -23,9 +22,10 @@ function Skinner:tektip()
 		skinTT(ttip)
 		return ttip
 	end, true)
-	
+
 	-- skin existing tooltips
-	for _, child in pairs{UIParent:GetChildren()} do
+	local kids = {_G.UIParent:GetChildren()}
+	for _, child in _G.ipairs(kids) do
 		if child:GetFrameStrata() == "TOOLTIP"
 		and child.AddLine
 		and child.Clear
@@ -33,5 +33,6 @@ function Skinner:tektip()
 			skinTT(child)
 		end
 	end
+	kids = _G.null
 
 end
