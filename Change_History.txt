@@ -1,3 +1,10 @@
+b5.17539.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated UnitFrame alert textures code to prevent taint
+	Applied PTR changes to code
+
 b5.17271.1
 Jncl:
 	ToDo.txt
