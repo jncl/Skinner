@@ -3,36 +3,28 @@ local aName, aObj = ...
 local _G = _G
 
 function aObj:tektip()
-	if self.initialized.tektip then return end
+	if not self.db.profile.Tooltips.skin or self.initialized.tektip then return end
 	self.initialized.tektip = true
 
+	print("tektip skin loaded")
+
 	local lib = _G.LibStub("tektip-1.0")
-
-	local function skinTT(ttip)
-
-		if aObj.db.profile.Tooltips.skin then
-			aObj:add2Table(aObj.ttList, "ttip")
-		end
-
-	end
 
 	-- hook this to skin new tooltips
 	self:RawHook(lib, "new", function(...)
 		local ttip = self.hooks[lib].new(...)
-		skinTT(ttip)
+		self:add2Table(self.ttList, ttip)
 		return ttip
 	end, true)
 
 	-- skin existing tooltips
-	local kids = {_G.UIParent:GetChildren()}
-	for _, child in _G.ipairs(kids) do
+	self.RegisterCallback("tektip", "UIParent_GetChildren", function(this, child)
 		if child:GetFrameStrata() == "TOOLTIP"
 		and child.AddLine
 		and child.Clear
 		then
-			skinTT(child)
+			self:add2Table(self.ttList, child)
 		end
-	end
-	kids = _G.null
+	end)
 
 end

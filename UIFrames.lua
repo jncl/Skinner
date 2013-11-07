@@ -14,12 +14,14 @@ do
 	aObj.ttList = setmetatable({}, {__newindex = function(t, k, v)
 		-- aObj:Debug("ttList newindex: [%s, %s, %s]", t, k, v)
 		_G.rawset(t, k, v)
+		-- get object reference for tooltip, handle either strings or objects being passed
+		local tt = _G.type(v) == "string" and _G[v] or v
 		-- set the backdrop if required
 		if aObj.db.profile.Tooltips.style == 3 then
-			_G[v]:SetBackdrop(aObj.Backdrop[1])
+			tt:SetBackdrop(aObj.Backdrop[1])
 		end
 		-- hook the OnShow method
-		aObj:HookScript(_G[v], "OnShow", function(this)
+		aObj:HookScript(tt, "OnShow", function(this)
 			aObj:skinTooltip(this)
 			if this == _G.GameTooltip and aObj.db.profile.Tooltips.glazesb then
 				-- handle in combat
@@ -30,7 +32,7 @@ do
 				aObj:glazeStatusBar(_G.GameTooltipStatusBar, 0)
 			end
 		end)
-		aObj:skinTooltip(_G[v]) -- skin here so tooltip initially skinnned when logged on
+		aObj:skinTooltip(tt) -- skin here so tooltip initially skinnned when logged on
 	end})
 	-- Set the Tooltip Border
 	aObj.ttBorder = true

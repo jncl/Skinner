@@ -2,6 +2,37 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("TradeSkillMaster") then return end
 local _G = _G
 
+local function adjustSkinFrame(adjust)
+
+	-- handle Skin Frame not existing yet
+	if not _G.AuctionFrame.sf then
+		aObj:ScheduleTimer(adjustSkinFrame, 0.2, adjust)
+		return
+	end
+	_G.AuctionFrame.sf:ClearAllPoints()
+	if adjust then
+		-- increase size of AuctionFrame skin frame
+		_G.AuctionFrame.sf:SetPoint("TOPLEFT", _G.AuctionFrame, "TOPLEFT", -4, 4)
+		_G.AuctionFrame.sf:SetPoint("BOTTOMRIGHT", _G.AuctionFrame, "BOTTOMRIGHT", 4, -6)
+	else
+		-- revert size of AuctionFrame skin frame
+		_G.AuctionFrame.sf:SetPoint("TOPLEFT", _G.AuctionFrame, "TOPLEFT", 10, -11)
+		_G.AuctionFrame.sf:SetPoint("BOTTOMRIGHT", _G.AuctionFrame, "BOTTOMRIGHT", 0, 5)
+	end
+
+end
+function aObj:TSM_AuctionFrameHook()
+
+	self:SecureHook("AuctionFrameTab_OnClick", function(this, button, down, index)
+		if this:GetID() < 4 then
+			adjustSkinFrame()
+		else
+			adjustSkinFrame(true)
+		end
+	end)
+
+end
+
 function aObj:TradeSkillMaster()
 
 	local bbc ={}
@@ -39,14 +70,25 @@ function aObj:TradeSkillMaster()
     end, true)
 
     _G.TSMAPI.Design.SetFrameBackdropColor = function() end
-    _G.TSMAPI.Design.SetFrameColor = function() end
+	-- handle Sidebar panels
+    _G.TSMAPI.Design.SetFrameColor = function(this, frame)
+		-- look for parent with width 300
+		local obj = frame:GetParent()
+		while (self:getInt(obj:GetWidth()) < 300 and self:getInt(obj:GetHeight()) < 447) do
+			obj = obj:GetParent()
+		end
+		if self:getInt(obj:GetWidth()) == 300
+		and self:getInt(obj:GetHeight()) == 447
+		and not obj.sf then
+			self:addSkinFrame{obj=obj}
+		end
+	end
     _G.TSMAPI.Design.SetContentColor = function() end
 
-    -- local eBox
 	-- skin modules
 	for _, module in _G.pairs{"Accounting", "AuctionDB", "Auctioning", "Crafting", "Destroying", "ItemTracker", "Mailing", "Shopping", "Warehousing", "WoWAuction"} do
-		if _G.IsAddOnLoaded("TradeSkillMaster_"..module) then
-			self:checkAndRunAddOn("TradeSkillMaster_"..module)
+		if _G.IsAddOnLoaded("TradeSkillMaster_" .. module) then
+			self:checkAndRunAddOn("TradeSkillMaster_" .. module)
 		end
 	end
 
@@ -57,11 +99,28 @@ function aObj:TradeSkillMaster_Accounting()
 end
 
 function aObj:TradeSkillMaster_AuctionDB()
-	-- body
+
+	local TSM_Adb = _G.LibStub("AceAddon-3.0"):GetAddon("TSM_AuctionDB", true)
+    local GUI = TSM_Adb:GetModule("GUI", true)
+	if GUI then
+		self:SecureHook(GUI, "Show", function(this, frame)
+			adjustSkinFrame(true)
+			self:Unhook(GUI, "Show")
+		end)
+	end
 end
 
 function aObj:TradeSkillMaster_Auctioning()
-	-- body
+
+	local TSM_A = _G.LibStub("AceAddon-3.0"):GetAddon("TSM_Auctioning", true)
+    local GUI = TSM_A:GetModule("GUI", true)
+	if GUI then
+		self:SecureHook(GUI, "ShowSelectionFrame", function(this, frame)
+			adjustSkinFrame(true)
+			self:Unhook(GUI, "ShowSelectionFrame")
+		end)
+	end
+
 end
 
 function aObj:TradeSkillMaster_Crafting()
@@ -107,7 +166,16 @@ function aObj:TradeSkillMaster_Mailing()
 end
 
 function aObj:TradeSkillMaster_Shopping()
-	-- body
+
+	local TSM_S = _G.LibStub("AceAddon-3.0"):GetAddon("TSM_Shopping", true)
+    local Search = TSM_S:GetModule("Search", true)
+	if Search then
+		self:SecureHook(Search, "Show", function(this, frame)
+			adjustSkinFrame(true)
+			self:Unhook(Search, "Show")
+		end)
+	end
+
 end
 
 function aObj:TradeSkillMaster_Warehousing()

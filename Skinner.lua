@@ -13,6 +13,9 @@ do
 	-- create the addon
 	_G[aName] = LibStub("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
+	-- add callbacks
+	aObj.callbacks = LibStub("CallbackHandler-1.0"):New(aObj)
+
 	-- specify where debug messages go
 	aObj.debugFrame = ChatFrame10
 
@@ -330,6 +333,9 @@ function aObj:OnEnable()
 --@debug@
 	self:SetupCmds()
 --@end-debug@
+
+	-- schedule scan of UIParent's Children
+	self:ScheduleTimer("scanUIParentsChildren", 0.2)
 
 end
 

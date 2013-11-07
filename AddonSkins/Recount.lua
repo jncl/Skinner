@@ -45,8 +45,7 @@ function aObj:Recount()
 	end
 
 	-- skin Realtime frames already created
-	local kids = {_G.UIParent:GetChildren()}
-	for _, child in _G.ipairs(kids) do
+	self.RegisterCallback("Recount", "UIParent_GetChildren", function(this, child)
 		if child:IsObjectType("Frame")
 		and child:GetName() == nil
 		and child.Graph
@@ -55,7 +54,6 @@ function aObj:Recount()
 			self:skinButton{obj=child.CloseButton, cb=true}
 			self:moveObject{obj=child.CloseButton, x=5}
 		end
-	end
-	kids = _G.null
+	end)
 
 end

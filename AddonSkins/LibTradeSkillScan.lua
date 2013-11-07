@@ -8,7 +8,9 @@ function aObj:LibTradeSkillScan()
 	local ltss = LibStub("LibTradeSkillScan", true)
 	local ltl = LibStub("LibTradeLinks-1.0", true)
 
-	if ltss then
+	if ltss
+	and ltss.Scan
+	then
 		self:SecureHook(ltss, "Scan", function(this, ...)
 			self:addSkinFrame{obj=self:findFrame2(UIParent, "Frame", 30, 310)}
 			self:Unhook(ltss, "Scan")

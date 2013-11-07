@@ -425,6 +425,14 @@ function aObj:AUCTION_HOUSE_SHOW()
 	self:checkAndRunAddOn("AuctionFilterPlus")
 	self:checkAndRunAddOn("Auctionator")
 
+	-- handle TradeSkillMaster_Auctioning frame size changes
+	if IsAddOnLoaded("TradeSkillMaster_Auctioning")
+	or IsAddOnLoaded("TradeSkillMaster_AuctionDB")
+	or IsAddOnLoaded("TradeSkillMaster_Shopping")
+	then
+		self:checkAndRun("TSM_AuctionFrameHook")
+	end
+
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
 
 end
