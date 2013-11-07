@@ -29,13 +29,13 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
-	local liveVer = 17399
+	local liveVer = 17538
 --@alpha@
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
 --@end-alpha@
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.4.0"
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.4.1"
 	--check to see if running on PTR servers
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check build number, if > Live then it's a patch
