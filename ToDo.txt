@@ -16,17 +16,54 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I   TradeSkillMaster, reported by chrisgriffith25, 26-08-13
-		- TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:312: attempt to index field "content" (a nil value)
-		  TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:312: in function "ClearFilters"
-		  TradeSkillMaster_Crafting-v2.1.1\Modules\CraftingGUI.lua:114: in function "?"
+≈	I	LibTradeSkillScan, reported by lexusnexus/Tinface, 22.10.13
+		- ...nterface\AddOns\Skinner\SkinMe\LibTradeSkillScan.lua line 12:
+   Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 
-√	I	tektip, Cork, Recount, reported by Tinface, 25.09.13
-		- Skinner-b5.17539.1\SkinMe\tektip.lua:28: UIParent:GetChildren(): Stack overflow
-		- Skinner-b5.17539.1\SkinMe\Cork-5.2.0.52-Beta.lua:7: UIParent:GetChildren(): Stack overflow
-		- Skinner-b5.17539.1\SkinMe\Recount-v5.4.0 release.lua:48: UIParent:GetChildren(): Stack overflow
+√	I	TradeSkillManager, reported by tordenflesk, 22.10.13
+		- size of Auction panel is too small
+		- missing panel behind Gathering info
+		- the confimation boxes for buying auctions is only text
 
-√	I	HealBot,  reported by Luckyjack_SL, 12.10.13
-		- ..\AddOns\Skinner\Skinner.lua line 557: attempt to index field 'obj' (a nil value)
-		  Skinner\SkinMe\HealBot.lua:52:
-		  Skinner\SkinMe\HealBot.lua:5
+√	I	_NPCScan, reported by lexusnexus/gamemaster128, 23.10.13
+		-  ..\AddOns\Skinner\Skinner.lua line 235: table index is nil
+			Skinner\Skinner.lua:1454
+			Skinner\Skinner.lua:1433
+			Skinner\Skinner.lua:1530 skinEditBox()
+			Skinner\SkinMe\_NPCScan.lua:17
+			Skinner\SkinMe\_NPCScan.lua:4
+
+√	I	tektip, reported by Tinface, 23.10.13
+		- Skinner-b5.17399.1\UIFrames.lua:22: Usage: HookScript(object, method, [handler]): You can only hook a script on a frame object
+			Bartender4-4.5.13\libs\AceHook-3.0\AceHook-3.0-7.lua:143: in function <Bartender4\libs\AceHook-3.0\AceHook-3.0.lua:118>
+			Bartender4-4.5.13\libs\AceHook-3.0\AceHook-3.0-7.lua:370: in function "HookScript"
+			Skinner-b5.17399.1\UIFrames.lua:22: in function <Skinner\UIFrames.lua:14>
+			Skinner-b5.17399.1\UtilFuncs.lua:137: in function "add2Table"
+			Skinner-b5.17399.1\SkinMe\tektip.lua:14: in function "skinTT"
+			Skinner-b5.17399.1\SkinMe\tektip.lua:33: in function <Skinner\SkinMe\tektip.lua:5>
+
+√	I	tektip, reported by Tinface, 06.11.13
+		- Skinner-b5.17399.1\SkinMe\tektip.lua:27: UIParent:GetChildren(): Stack overflow
+Skinner-b5.17399.1\SkinMe\tektip.lua:27: in function <Skinner\SkinMe\tektip.lua:5>
+
+√	I	XLoot, reported by DarkLimpan, 04.11.13
+		- Skinner-b5.17399.1\SkinMe\XLoot-z14c-release-1-g4a89047.lua:7: UIParent:GetChildren(): Stack overflow
+		  Skinner-b5.17399.1\SkinMe\XLoot-z14c-release-1-g4a89047.lua:7: in function <Skinner\SkinMe\XLoot.lua:4>
+
+√	I	Recount, reported by DarkLimpan/Tinface, 04.11.13/06.11.13
+		- Skinner-b5.17399.1\SkinMe\Recount-v5.4.0a release.lua:48: UIParent:GetChildren(): Stack overflow
+		  Skinner-b5.17399.1\SkinMe\Recount-v5.4.0a release.lua:48: in function <Skinner\SkinMe\Recount.lua:5>
+
+x	I	BonusRollFrame, reported by DarkLimpan, 04.11.13
+		- Also, I too are getting the white bonus roll frames shown by bobyboucher. Any fix coming down the line for this?
+
+√	I	_NPCScan, reported by NeoZeus, 06.11.13
+		- Skinner-b5.17399.1\SkinMe\_NPCScan-5.4.1.3.lua:6: attempt to call method "SetTextColor" (a nil value)
+
+√	I	oQueue, reported by NeoZeus, 06.11.13
+		- Skinner\Skinner-b5.17399.1.lua:1191: attempt to index local "obj" (a nil value)
+Skinner-b5.17399.1\SkinMe\oQueue-1.6.1.lua:79: in function <Skinner\SkinMe\oQueue.lua:6>
+
+√	I	Cork, reported by Tinface ,06.11.13
+		- Skinner-b5.17399.1\SkinMe\Cork-5.2.0.52-Beta.lua:8: UIParent:GetChildren(): Stack overflow
+Skinner-b5.17399.1\SkinMe\Cork-5.2.0.52-Beta.lua:8: in function <Skinner\SkinMe\Cork.lua:5>
