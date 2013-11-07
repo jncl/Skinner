@@ -1,3 +1,12 @@
+b5.17399.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version no
+	Add global indicator
+	Skin HealBot Minimap Button
+	Updated Ace3, Cork, HealBot, Recount, TradeSkillMaster & tektip skins
+
 b5.17539.1
 Jncl:
 	ToDo.txt
