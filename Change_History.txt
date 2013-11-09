@@ -1,3 +1,12 @@
+b5.17538.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version number checks
+	Updated Cork, LibTradeSkillScan, Recount, TradeSkillMaster, XLoot, _NPCScan, oQueue & tektip skins
+
+	Added Callback processing for UIParent's Children
+
 b5.17399.1
 Jncl:
 	ToDo.txt
