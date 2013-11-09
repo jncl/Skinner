@@ -481,8 +481,8 @@ local function __addSkinButton(opts)
 		opts.obj:SetParent(btn)
 		opts.obj.SetParent_orig = opts.obj.SetParent
 		opts.obj.SetParent = function(this, parent)
-			aObj.sBtn[this]:SetParent(parent)
-			this:SetParent_orig(aObj.sBtn[this])
+			this.sb:SetParent(parent)
+			this:SetParent_orig(this.sb)
 		end
 	end
 
