@@ -69,7 +69,11 @@ function aObj:TradeSkillMaster()
         return barTex
     end, true)
 
-    _G.TSMAPI.Design.SetFrameBackdropColor = function() end
+	-- handle frame skinning
+    _G.TSMAPI.Design.SetFrameBackdropColor = function(this, frame)
+		-- print("TSMAPI.D.SFBC", frame)
+		self:addSkinFrame{obj=frame, ofs=2}
+	end
 	-- handle Sidebar panels
     _G.TSMAPI.Design.SetFrameColor = function(this, frame)
 		-- look for parent with width 300
@@ -126,19 +130,15 @@ end
 function aObj:TradeSkillMaster_Crafting()
 
 	local TSM_C = _G.LibStub("AceAddon-3.0"):GetAddon("TSM_Crafting", true)
-
     local GUI = TSM_C:GetModule("CraftingGUI", true)
     if GUI then
-        local function skinButton(btn)
-            aObj:skinButton{obj=btn}
-            btn:SetBackdrop(nil)
-        end
-        self:SecureHook(GUI, "CreateGUI", function()
-            self:addSkinFrame{obj=GUI.frame.content.professionsTab.craftInfoFrame, ofs=2}
-            self:addSkinFrame{obj=GUI.frame.queue, ofs=2}
-            self:addSkinFrame{obj=GUI.frame, ofs=2}
-            self:Unhook(GUI, "CreateGUI")
-        end)
+		self:addSkinFrame{obj=GUI.gatheringFrame.needST, ofs=2}
+		self:addSkinFrame{obj=GUI.gatheringFrame.sourcesST, ofs=2}
+		self:addSkinFrame{obj=GUI.gatheringFrame.availableST, ofs=2}
+		self:getChild(GUI.gatheringFrame, 2):SetBackdrop(nil)
+		self:skinButton{obj=self:getChild(GUI.gatheringFrame, 3), x1=-2, y1=2, x2=2, y2=-2}
+		self:skinButton{obj=GUI.gatheringFrame.gatherButton, x1=-2, y1=2, x2=2, y2=-2}
+		self:addSkinFrame{obj=GUI.gatheringFrame, ofs=2}
     end
 
 end
@@ -155,8 +155,16 @@ function aObj:TradeSkillMaster_Mailing()
 
 	self:RegisterEvent("MAIL_SHOW", function(...)
 		self:ScheduleTimer(function()
-			local frame = self:getChild(MailFrame, MailFrame:GetNumChildren() - 1) -- get penultimate child
+			local frame = self:getChild(_G.MailFrame, _G.MailFrame:GetNumChildren() - 1) -- get penultimate child
 			self:addSkinFrame{obj=frame, ofs=2, y2=-5}
+			_G.MailFrame.sf:Hide() -- hide to start with as mailframe opens to TSM frame initiially
+			self:SecureHook(frame, "Show", function(this)
+				_G.MailFrame.sf:Hide()
+			end)
+			self:SecureHook(frame, "Hide", function(this)
+				_G.MailFrame.sf:Show()
+			end)
+			-- Tab
 			self:keepRegions(_G.MailFrameTab3, {7, 8})
 			self:addSkinFrame{obj=_G.MailFrameTab3, noBdr=self.isTT, x1=6, y1=0, x2=06, y2=2}
 		end, 0.2, ...)
