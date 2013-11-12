@@ -5,7 +5,7 @@ local _G = _G
 function aObj:Carbonite()
 
 	local aVer = _G.GetAddOnMetadata("Carbonite", "Version")
-	if aVer:sub(1, 3) == "5.3" then
+	if aVer:sub(1, 3) == "5.4" then
 		self:Carbonite2()
 		return
 	end
@@ -100,8 +100,6 @@ end
 
 function aObj:Carbonite2()
 
-	self:Debug("Carbonite2 loaded")
-
 	local Nx = _G.LibStub("AceAddon-3.0"):GetAddon("Carbonite", true)
 	if not Nx then return end
 
@@ -121,17 +119,17 @@ function aObj:Carbonite2()
 	}
 
 	-- add entry to options dropdown
-	_G.table.insert(Nx.Opts.Skins, 6, "Skinner")
+	self:add2Table(Nx.Opts.Skins, "Skinner")
 
 	-- skin Title frame
 	self:addSkinFrame{obj=Nx.Title.Frm, kfs=true}
 
 	local function addGradient(frame)
 
-		self:applyGradient(frame)
+		aObj:applyGradient(frame)
 		frame.tfade:Hide() -- hide the Gradient
 		-- hook this to fade the frames' Gradient
-		self:HookScript(frame, "OnUpdate", function(this, ...)
+		aObj:HookScript(frame, "OnUpdate", function(this, ...)
 			local alpha, max = this.NxWin.BackgndFade, this.NxWin.BackgndFadeIn
 			-- self:Debug("win_OnU: [%s, %s, %s]", this, alpha, max)
 			if alpha >= max then this.tfade:Show()
