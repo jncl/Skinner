@@ -16,8 +16,5 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-x	I	Carbonite, reported by SerraAngel44, 07.11.13
-		- Interface\AddOns\Skinner\SkinMe\Carbonite.lua:39: bad argument #1 to 'pairs' (table expected, got nil)
-
-√	I	TradeSkillMaster, reported by tordenflesk
-		- I see no difference
+√	I	Carbonite, reported by SerraAngel44, 11.11.13
+		- using Carbonite 5.4.0 alpha 2 from wowinterface
