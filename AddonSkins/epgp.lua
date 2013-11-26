@@ -1,57 +1,72 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("epgp") then return end
+local _G = _G
 
 function aObj:epgp()
 
-	local epgpUI = EPGP and EPGP:GetModule("ui", true)
+	local epgpUI = _G.EPGP and _G.EPGP:GetModule("ui", true)
 	if not epgpUI then return end
 
 	local function skinEPGPUI()
-	
-		aObj:skinSlider{obj=EPGPScrollFrameScrollBar, adj=2}
-		EPGPScrollFrameScrollBarBorder:SetAlpha(0)
-		
+
+		aObj:skinSlider{obj=_G.EPGPScrollFrameScrollBar, adj=2}
+		_G.EPGPScrollFrameScrollBarBorder:SetAlpha(0)
+
 		-- tabs
-		for _, v in pairs(aObj:getChild(aObj:getChild(EPGPFrame, 6), 4).headers) do
+		for _, v in _G.pairs(aObj:getChild(aObj:getChild(_G.EPGPFrame, 6), 4).headers) do
 			aObj:keepRegions(v, {5, 6}) -- N.B. regions 5 & 6 are highlight/text
 			aObj:applySkin{obj=v}
 		end
-		aObj:addSkinFrame{obj=EPGPFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
-		
-		-- Side Frame
-		aObj:skinDropDown{obj=EPGPSideFrameGPControlDropDown}
-		aObj:skinDropDown{obj=EPGPSideFrameEPControlDropDown}
-		aObj:skinEditBox{obj=EPGPSideFrameGPControlEditBox, regs={9}}
-		aObj:skinEditBox{obj=EPGPSideFrameEPControlOtherEditBox, regs={9}}
-		aObj:skinEditBox{obj=EPGPSideFrameEPControlEditBox, regs={9}}
-		aObj:moveObject{obj=aObj:getRegion(EPGPSideFrame, 2), y=-6}
-		aObj:addSkinFrame{obj=EPGPSideFrame, kfs=true, x1=3, y1=-6, x2=-5, y2=6}
-		-- Side Frame2
-		aObj:skinDropDown{obj=EPGPSideFrame2EPControlDropDown}
-		aObj:skinEditBox{obj=EPGPSideFrame2EPControlOtherEditBox, regs={9}}
-		aObj:skinEditBox{obj=EPGPSideFrame2EPControlEditBox, regs={9}}
-		aObj:addSkinFrame{obj=EPGPSideFrame2, kfs=true, x1=3, y1=-6, x2=-5, y2=6}
-		-- Log Frame
-		aObj:addSkinFrame{obj=EPGPLogRecordScrollFrame:GetParent()}
-		aObj:addSkinFrame{obj=EPGPLogFrame, kfs=true, x1=3, y1=-6, x2=-5, y2=2}
+		aObj:addSkinFrame{obj=_G.EPGPFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
+
 		-- ExportImport Frame
-		aObj:skinScrollBar{obj=EPGPExportScrollFrame}
-		aObj:addSkinFrame{obj=EPGPExportImportFrame, kfs=true}
-		
+		aObj:skinScrollBar{obj=_G.EPGPExportScrollFrame}
+		aObj:addSkinFrame{obj=_G.EPGPExportImportFrame, kfs=true}
+		-- Log Frame
+		aObj:addSkinFrame{obj=_G.EPGPLogRecordScrollFrame:GetParent()}
+		aObj:addSkinFrame{obj=_G.EPGPLogFrame, kfs=true, x1=3, y1=-6, x2=-5, y2=2}
+
+		-- Side Frame
+		local frame
+		aObj:SecureHookScript(_G.EPGPSideFrame, "OnShow", function(this)
+			aObj:moveObject{obj=aObj:getRegion(this, 2), y=-7} -- header
+			aObj:addSkinFrame{obj=this, kfs=true, x1=3, y1=-6, x2=-5, y2=6}
+			-- GP Controls
+			frame = aObj:getChild(this, 2)
+			aObj:skinDropDown{obj=frame.dropDown}
+			aObj:skinEditBox{obj=frame.editBox, regs={9}}
+			-- EP Controls
+			frame = aObj:getChild(this, 3)
+			aObj:skinDropDown{obj=frame.dropDown}
+			aObj:skinEditBox{obj=frame.otherEditBox, regs={9}}
+			aObj:skinEditBox{obj=frame.editBox, regs={9}}
+			aObj:Unhook(_G.EPGPSideFrame, "OnShow")
+		end)
+		-- Side Frame2
+		aObj:SecureHookScript(_G.EPGPSideFrame2, "OnShow", function(this)
+			aObj:addSkinFrame{obj=this, kfs=true, x1=3, y1=-6, x2=-5, y2=6}
+			-- EP Controls
+			frame = aObj:getChild(this, 2)
+			aObj:skinDropDown{obj=frame.dropDown}
+			aObj:skinEditBox{obj=frame.otherEditBox, regs={9}}
+			aObj:skinEditBox{obj=frame.editBox, regs={9}}
+			aObj:Unhook(_G.EPGPSideFrame2, "OnShow")
+		end)
+
 	end
-	
-	if not EPGPFrame then
+
+	if not _G.EPGPFrame then
 		self:SecureHook(epgpUI, "OnEnable", function()
 --			self:Debug("EPGP_UI_OnEnable")
 			skinEPGPUI()
-			self:Unhook(EPGPFrame, "Show")
+			self:Unhook(_G.EPGPFrame, "Show")
 		end)
 	else
-		self:SecureHook(EPGPFrame, "Show", function(this)
+		self:SecureHook(_G.EPGPFrame, "Show", function(this)
 --			self:Debug("EPGPFrame_Show")
 			skinEPGPUI()
-			self:Unhook(EPGPFrame, "Show")
+			self:Unhook(_G.EPGPFrame, "Show")
 		end)
 	end
-		
+
 end
