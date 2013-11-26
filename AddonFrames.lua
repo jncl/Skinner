@@ -89,6 +89,7 @@ function aObj:BlizzardFrames()
 		},
 		ui = {
 			["AlertFrames"] = true,
+			["AuthChallengeUI"] = false, -- N.B. cannot be skinned
 			["AutoComplete"] = true,
 			["BNFrames"] = true,
 			["ChatButtons"] = true,
@@ -115,6 +116,7 @@ function aObj:BlizzardFrames()
 			["MenuFrames"] = true,
 			["Minimap"] = false, -- checked below
 			["MinimapButtons"] = false, -- done with timer
+			["MovieFrame"] = true,
 			["ModelFrames"] = false, -- checked below
 			["Nameplates"] = false, -- checked below
 			["NavigationBar"] = true,
@@ -124,7 +126,6 @@ function aObj:BlizzardFrames()
 			["RaidFrame"] = true,
 			["ScriptErrors"] = true,
 			["StaticPopups"] = true,
-			["StoreUI"] = false, -- cannot be skinned :(
 			["Tooltips"] = false, -- checked below
 			["Tutorial"] = true,
 			["WorldMap"] = true,
@@ -140,6 +141,7 @@ function aObj:BlizzardFrames()
 			["GuildBankUI"] = false,
 			["MacroUI"] = false,
 			["MovePad"] = false,
+			["StoreUI"] = false, -- N.B. cannot be skinned
 			["TimeManager"] = false,
 		},
 	}
@@ -409,6 +411,7 @@ function aObj:LoDFrames(addon)
 
 end
 
+-- Event processing here
 function aObj:ADDON_LOADED(event, addon)
 	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
@@ -434,6 +437,16 @@ function aObj:AUCTION_HOUSE_SHOW()
 	end
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
+
+end
+
+function aObj:PLAYER_ENTERING_WORLD()
+	-- self:Debug("PLAYER_ENTERING_WORLD")
+
+	-- use this to handle textures supplied by other addons (e.g. XPerl)
+	self:updateSBTexture()
+
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
 end
 

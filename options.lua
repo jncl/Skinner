@@ -110,6 +110,7 @@ function aObj:Defaults()
 	-->>-- UI Frames
 		DisableAllUI         = false,
 		AlertFrames          = true,
+		AuthChallengeUI		 = false, -- N.B. cannot be skinned
 		AutoComplete         = true,
 		BattlefieldMm        = {skin = true, gloss = false},
 		BNFrames             = true,
@@ -144,6 +145,7 @@ function aObj:Defaults()
 		Minimap              = {skin = false, gloss = false},
 		MinimapButtons       = {skin = false, style = false},
 		MovePad              = true,
+		MovieFrame           = true,
 		MovieProgress        = _G.IsMacClient() and true or nil,
 		Nameplates           = true,
 		PetBattleUI          = true,
@@ -151,7 +153,7 @@ function aObj:Defaults()
 		RaidFrame            = true,
 		ScriptErrors         = true,
 		StaticPopups         = true,
-		StoreUI				 = false, -- cannot be skinned
+		StoreUI				 = false, -- N.B. cannot be skinned
 		TimeManager          = true,
 		Tooltips             = {skin = true, style = 1, glazesb = true, border = 1},
 		Tutorial             = true,
@@ -1194,6 +1196,11 @@ function aObj:Options()
 					name = self.L["Alert Frames"],
 					desc = self.L["Toggle the skin of the Alert Frames"],
 				},
+				AuthChallengeUI = {
+					type = "toggle",
+					name = self.L["AuthChallenge Frame"],
+					desc = self.L["Toggle the skin of the AuthChallenge Frame"],
+				},
 				AutoComplete = {
 					type = "toggle",
 					name = self.L["Auto Complete"],
@@ -1517,6 +1524,11 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["Move Pad"],
 					desc = self.L["Toggle the skin of the Move Pad"],
+				},
+				MovieFrame = {
+					type = "toggle",
+					name = self.L["Movie Frame"],
+					desc = self.L["Toggle the skin of the Movie Frame"],
 				},
 				MovieProgress = _G.IsMacClient() and {
 					type = "toggle",

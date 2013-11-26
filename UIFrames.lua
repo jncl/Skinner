@@ -186,6 +186,26 @@ function aObj:AlertFrames()
 
 end
 
+function aObj:AuthChallengeUI()
+	if not self.db.profile.AuthChallengeUI or self.initialized.AuthChallengeUI then return end
+	self.initialized.AuthChallengeUI = true
+
+	-- disable skinning of this frame
+	self.db.profile.AuthChallengeUI = false
+
+	-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying fullLockdown="true"
+
+	-- self:addSkinFrame{obj=_G.AuthChallengeFrame.WaitFrame, ft=ftype}
+	-- self:addSkinFrame{obj=_G.AuthChallengeFrame.InputFrame, ft=ftype}
+	-- self:skinEditBox{obj=_G.AuthChallengeFrame.Input1, regs={9}}
+	-- self:skinEditBox{obj=_G.AuthChallengeFrame.Input2, regs={9}}
+	-- self:skinEditBox{obj=_G.AuthChallengeFrame.Input3, regs={9}}
+	-- self:skinEditBox{obj=_G.AuthChallengeFrame.Input4, regs={9}}
+	-- _G.AuthChallengeFrame:DisableDrawLayer("BACKGROUND")
+	-- self:addSkinFrame{obj=_G.AuthChallengeFrame, ft=ftype}
+
+end
+
 function aObj:AutoComplete()
 	if not self.db.profile.AutoComplete or self.initialized.AutoComplete then return end
 	self.initialized.AutoComplete = true
@@ -1759,6 +1779,14 @@ function aObj:MovePad() -- LoD
 
 end
 
+function aObj:MovieFrame()
+	if not self.db.profile.MovieFrame or self.initialized.MovieFrame then return end
+	self.initialized.MovieFrame = true
+
+	self:addSkinFrame{obj=G.MovieFrame.CloseDialog, ft=ftype}
+
+end
+
 if IsMacClient() then
 	function aObj:MovieProgress()
 		if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
@@ -2220,16 +2248,18 @@ function aObj:StoreUI() -- LoD
 	if not self.db.profile.StoreUI or self.initialized.StoreUI then return end
 	self.initialized.StoreUI = true
 
+	-- disable skinning of this frame
+	self.db.profile.StoreUI = false
+
 	-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
 
-	-- Cover
-	-- ErrorFrame
-	-- Notice
-	-- Browse
-
-	-- _G.StoreFrame:DisableDrawLayer("BACKGROUND")
-	-- self:addSkinFrame{obj=_G.StoreFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
-	-- self:addSkinFrame{obj=_G.StoreConfirmationFrame, ft=ftype, kfs=true}--, x1=10, y1=-12, x2=-32, y2=71}
+	-- StoreFrame
+		-- Cover
+		-- Notice
+		-- Error Frame
+	-- StoreConfirmationFrame
+		-- NoticeFrame
+	-- StoreTooltip
 
 end
 
