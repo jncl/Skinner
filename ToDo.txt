@@ -36,6 +36,3 @@ Legend:
 
 ?	S	Bartender4, reported by SerraAngel44, 18.11.13
 		- Action Bar Buttons skin ?
-
-√	I	MovieFrame
-		- not skinned
