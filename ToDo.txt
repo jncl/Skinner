@@ -8,6 +8,9 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
+	O	PTR
+		- Blizzard_AuthChallenge_UI added, uses ScopedModifier, cannot be skinned
+
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 		- issue is with buttons that have been 'flowed'
@@ -16,5 +19,23 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I	Carbonite, reported by SerraAngel44, 11.11.13
-		- using Carbonite 5.4.0 alpha 2 from wowinterface
+√	I	epgp, reported by Litvan, 14.11.13
+		- ..\AddOns\Skinner\Skinner.lua line 238: table index is nil
+		  Debug:
+			Skinner\Skinner.lua:238:
+		    Skinner\Skinner.lua:238
+			Skinner\Skinner.lua:1378:
+			Skinner\Skinner.lua:1344
+			Skinner\Skinner.lua:1435: skinDropDown()
+			Skinner\SkinMe\epgp.lua:22:
+			Skinner\SkinMe\epgp.lua:9
+			Skinner\SkinMe\epgp.lua:46:
+			Skinner\SkinMe\epgp.lua:44
+
+≈	I	UIParent:GetChildren(): Stack overflow, reported by Tinface, 14.11.13
+
+?	S	Bartender4, reported by SerraAngel44, 18.11.13
+		- Action Bar Buttons skin ?
+
+√	I	MovieFrame
+		- not skinned
