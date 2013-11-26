@@ -1,3 +1,13 @@
+b5.17614.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Version No & Release No checks & moved scan of UIParent's children
+	Added skins
+	- MovieFrame
+	- AuthChallengeUI (cannot be skinned)
+	Added Missing button borders
+
 b5.17538.3
 Jncl:
 	ToDo.txt
