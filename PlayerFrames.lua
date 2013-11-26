@@ -876,9 +876,10 @@ function aObj:FriendsFrame()
 	self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
 	_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:skinTabs{obj=_G.FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
+	self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
 	self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
 
-	--	FriendsList Frame
+	-- FriendsList Frame
 	-- adjust width of FFFSF so it looks right (too thin by default)
 	_G.FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", _G.FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
 	self:skinScrollBar{obj=_G.FriendsFrameFriendsScrollFrame}
@@ -888,6 +889,7 @@ function aObj:FriendsFrame()
 		btn.background:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.gameIcon, hide=true, ofs=0}
 		self:addButtonBorder{obj=btn.travelPassButton, hide=true, disable=true, ofs=0, y1=3, y2=-2}
+		self:addButtonBorder{obj=btn.summonButton, hide=true, disable=true}
 	end
 
 	-- Friends Tooltip
