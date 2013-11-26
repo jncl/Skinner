@@ -504,6 +504,7 @@ function aObj:resizeEmptyTexture(texture)
 end
 
 function aObj:scanUIParentsChildren()
+	-- self:Debug("scanUIParentsChildren")
 
 	-- scan through all UIParent's children, firing events for each one
 	-- this allows skins to check the children as required

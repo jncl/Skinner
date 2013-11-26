@@ -29,13 +29,13 @@ do
 	aObj.uCls = select(2, UnitClass("player"))
 
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
-	local liveVer = 17538
+	local liveVer = 17614
 --@alpha@
 	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
 --@end-alpha@
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.4.1"
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.4.2"
 	--check to see if running on PTR servers
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check build number, if > Live then it's a patch
@@ -204,11 +204,6 @@ function aObj:OnInitialize()
 	self.sbColour = {c.r, c.g, c.b, c.a}
 	-- StatusBar texture
 	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
-	-- use this to handle textures supplied by other addons (e.g. XPerl)
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", function()
-		self:updateSBTexture()
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-	end)
 	-- Backdrop colours
 	c = prdb.ClassClrsBg and _G.RAID_CLASS_COLORS[self.uCls] or prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or 1}
@@ -302,6 +297,8 @@ function aObj:OnEnable()
 
 	-- track when Auction House is opened
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
+	-- track when Player enters World (used for texture updates and UIParent child processing)
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	-- track when Trade Skill is opened (used by MrTrader_SkillWindow)
 	self:RegisterEvent("TRADE_SKILL_SHOW")
 	-- track when trade frame is opened (used by ProfessionTabs)
@@ -312,6 +309,8 @@ function aObj:OnEnable()
 	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
 	-- skin the loaded AddOns frames
 	self:ScheduleTimer("AddonFrames", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1)
+	-- schedule scan of UIParent's Children after all AddOns have been loaded
+	self:ScheduleTimer("scanUIParentsChildren", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 10)
 
 	-- handle profile changes
 	self.db.RegisterCallback(self, "OnProfileChanged", "ReloadAddon")
@@ -333,9 +332,6 @@ function aObj:OnEnable()
 --@debug@
 	self:SetupCmds()
 --@end-debug@
-
-	-- schedule scan of UIParent's Children
-	self:ScheduleTimer("scanUIParentsChildren", 0.2)
 
 end
 
