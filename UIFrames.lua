@@ -1783,7 +1783,7 @@ function aObj:MovieFrame()
 	if not self.db.profile.MovieFrame or self.initialized.MovieFrame then return end
 	self.initialized.MovieFrame = true
 
-	self:addSkinFrame{obj=G.MovieFrame.CloseDialog, ft=ftype}
+	self:addSkinFrame{obj=_G.MovieFrame.CloseDialog, ft=ftype}
 
 end
 
