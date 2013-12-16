@@ -1001,11 +1001,13 @@ function aObj:keepFontStrings(obj, hide)
 	assert(obj, "Missing object kFS\n" .. debugstack())
 --@end-alpha@
 
-	for _, reg in pairs{obj:GetRegions()} do
+	local regs = {obj:GetRegions()}
+	for _, reg in _G.ipairs(regs) do
 		if not reg:IsObjectType("FontString") then
 			if not hide then reg:SetAlpha(0) else reg:Hide() end
 		end
 	end
+	regs = _G.null
 
 end
 
@@ -1029,7 +1031,8 @@ function aObj:keepRegions(obj, regions)
 
 	regions = revTable(regions)
 
-	for k, reg in pairs{obj:GetRegions()} do
+	local regs = {obj:GetRegions()}
+	for k, reg in _G.ipairs(regs) do
 		-- if we have a list, hide the regions not in that list
 		if regions
 		and not regions[k]
@@ -1043,6 +1046,7 @@ function aObj:keepRegions(obj, regions)
 --@end-debug@
 		end
 	end
+	regs = _G.null
 
 end
 
@@ -1190,7 +1194,8 @@ function aObj:removeRegions(obj, regions)
 
 	regions = revTable(regions)
 
-	for k, reg in pairs{obj:GetRegions()} do
+	local regs = {obj:GetRegions()}
+	for k, reg in _G.ipairs(regs) do
 		if not regions
 		or regions
 		and regions[k]
@@ -1204,6 +1209,7 @@ function aObj:removeRegions(obj, regions)
 --@end-debug@
 		end
 	end
+	regs = _G.null
 
 end
 
@@ -1214,7 +1220,8 @@ function aObj:rmRegionsTex(obj, regions)
 
 	regions = revTable(regions)
 
-	for k, reg in pairs{obj:GetRegions()} do
+	local regs = {obj:GetRegions()}
+	for k, reg in _G.ipairs(regs) do
 		if not regions
 		or regions
 		and regions[k]
@@ -1229,6 +1236,7 @@ function aObj:rmRegionsTex(obj, regions)
 			end
 		end
 	end
+	regs = _G.null
 
 end
 
