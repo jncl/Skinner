@@ -1,9 +1,10 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Quartz") then return end
+local _G = _G
 
 function aObj:Quartz() -- Quartz3
 
-	local Quartz3 = LibStub("AceAddon-3.0"):GetAddon("Quartz3", true)
+	local Quartz3 = _G.LibStub("AceAddon-3.0"):GetAddon("Quartz3", true)
 	if not Quartz3 then return end
 
 	-- hook this to skin Unlock dialog frame
@@ -12,22 +13,6 @@ function aObj:Quartz() -- Quartz3
 		self:addSkinFrame{obj=this.unlock_dialog, kfs=true, nb=true, y1=6}
 		self:Unhook(Quartz3, "ShowUnlockDialog")
 	end)
-
-	local function skinSBs()
-
-		for _, child in pairs{UIParent:GetChildren()} do
-			-- if this is a Quartz Mirror/Buff Bar then skin it
-			if child:IsObjectType('Frame')
-			and child.__texture
-			then
-				if not aObj.skinned[child] then
-					child:SetBackdrop(nil)
-					child.__texture:SetTexture(aObj.sbTexture)
-				end
-			end
-		end
-
-	end
 
 	-- set border colours
 	local c = self.db.profile.Backdrop
@@ -38,12 +23,12 @@ function aObj:Quartz() -- Quartz3
 	Quartz3.db.profile.borderalpha = c.a
 
 	local mod
-	for _, modName in pairs{"Player", "Target", "Focus", "Pet"} do
+	for _, modName in _G.pairs{"Player", "Target", "Focus", "Pet"} do
 		mod = Quartz3:GetModule(modName, true)
 		if mod and mod:IsEnabled() then
 			self:applySkin{obj=mod.Bar}
 			mod.Bar.Bar.__texture:SetTexture(self.sbTexture)
-			mod.Bar.backdrop = CopyTable(self.backdrop) -- make backdrop mirror Skinner's
+			mod.Bar.backdrop = _G.CopyTable(self.backdrop) -- make backdrop mirror Skinner's
 			mod.db.profile.texture = self.db.profile.StatusBar.texture
 			-- handle changes for interrupt toggle code in Quartz
 			if not modName == "Player" then
@@ -64,18 +49,20 @@ function aObj:Quartz() -- Quartz3
 -->>-- Mirror Status Bars
 	mod = Quartz3:GetModule("Mirror", true)
 	if mod and mod:IsEnabled() then
-		self:SecureHook(mod, "ApplySettings", function()
-			skinSBs()
-		end)
+		mod.db.profile.mirrortexture = self.db.profile.StatusBar.texture
+		mod:ApplySettings()
 	end
 -->>-- Buff Status Bars
 	mod = Quartz3:GetModule("Buff", true)
 	if mod and mod:IsEnabled() then
-		self:SecureHook(mod, "ApplySettings", function()
-			skinSBs()
-		end)
+		mod.db.profile.bufftexture = self.db.profile.StatusBar.texture
+		mod:ApplySettings()
 	end
-	-- skin any existing StatusBars
-	skinSBs()
+-->>-- Enemy Cast Bars
+	mod = Quartz3:GetModule("EnemyCasts", true)
+	if mod and mod:IsEnabled() then
+		mod.db.profile.texture = self.db.profile.StatusBar.texture
+		mod:ApplySettings()
+	end
 
 end
