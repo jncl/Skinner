@@ -28,18 +28,19 @@ do
 	-- player class
 	aObj.uCls = select(2, UnitClass("player"))
 
+	local liveBuildVer = "5.4.2"
+	local liveBuildNo = 17658
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
-	local liveVer = 17614
 --@alpha@
-	aObj:Debug(buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal, liveVer)
+	aObj:Debug(liveBuildVer, liveBuildNo, buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
 --@end-alpha@
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > "5.4.2"
+	aObj.isBeta = aObj.isBeta or buildInfo[1] > liveBuildVer and true or false
 	--check to see if running on PTR servers
 	aObj.isPTR = portal == "public-test" and true or false
 	-- check build number, if > Live then it's a patch
-	aObj.isPatch = tonumber(buildInfo[2]) > liveVer and true or false
+	aObj.isPatch = tonumber(buildInfo[2]) > liveBuildNo and true or false
 --@alpha@
 	if aObj.isPatch then
 		if aObj.isPTR then
@@ -61,9 +62,9 @@ function aObj:OnInitialize()
 --@end-debug@
 
 --@alpha@
-	if self.isPatch then self:Debug("Patch detected") end
-	if self.isPTR then self:Debug("PTR detected") end
 	if self.isBeta then self:Debug("Beta detected") end
+	if self.isPTR then self:Debug("PTR detected") end
+	if self.isPatch then self:Debug("Patch detected") end
 --@end-alpha@
 
 	-- setup the default DB values and register them
