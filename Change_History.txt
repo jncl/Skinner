@@ -1,3 +1,13 @@
+b5.17658.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Build & Version number checks
+	Updated Region processing code
+	Bugfix for MovieFrame skin
+	Updated Quartz skin
+	Skinned Bartender4, RaidRoll
+
 b5.17614.2
 Jncl:
 	ToDo.txt
