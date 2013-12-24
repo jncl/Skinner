@@ -19,16 +19,17 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	S	Bartender4, reported by SerraAngel44, 18.11.13
-		- Action Bar Buttons skin ?
-		- Doesn't have a button skinning function, need to use Masque/Other to skin buttons
+√	I	RepBar
+		- centre the text
 
-√	S	RaidRoll, requested by Litvan, 18.11.13
+	I	ScrollArrow textures
+		- replace scroll up & down arrows with action bar change arrows (enabled & disabled versions)
 
-√	I	MovieFrame, reported by several people since last update.
-		- Missing underscore before G.
+	I	Test UI with default scale
 
-√	I	Quartz, reported by Flappers, 12.04.13
-		- Skinner-b5.17614.2\SkinMe\Quartz-3.1.4.lua:18: UIParent:GetChildren(): Stack overflow
-		  Skinner-b5.17614.2\SkinMe\Quartz-3.1.4.lua:18: in function "skinSBs"
-		  Skinner-b5.17614.2\SkinMe\Quartz-3.1.4.lua:79: in function <Skinner\SkinMe\Quartz.lua:4>
+√	I	ACP
+		- review size of Game Menu height
+
+√	I	BugSack
+		- IOP dropdown is incorrect width
+
