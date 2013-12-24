@@ -1229,7 +1229,8 @@ function aObj:MainMenuBar()
 	self:keepFontStrings(_G.MainMenuBarArtFrame)
 	self:moveObject{obj=_G.ReputationWatchBar, y=3} -- move it above MainMenuBar
 	self:keepRegions(_G.ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
-	self:adjHeight{obj=_G.ReputationWatchStatusBar, adj=-1} -- shrink to fit below Action Buttons
+	self:adjHeight{obj=_G.ReputationWatchStatusBar, adj=1}
+	self:moveObject{obj=ReputationWatchStatusBarText, y=-1} -- centre text on bar
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 5), {_G.ExhaustionLevelFillBar})
 		_G.ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
