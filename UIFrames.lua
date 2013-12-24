@@ -1438,7 +1438,10 @@ function aObj:MenuFrames()
 						xOfs = -90
 					elseif aObj:hasTextInName(child, "PowaDropDownDefaultStacks") then
 						xOfs = -110
-					elseif aObj:hasTextInName(child, "oGlowOptFQualityThreshold") then
+					elseif aObj:hasTextInName(child, "oGlowOptFQualityThreshold")
+					or aObj:hasTextInName(child, "BugSackFontSize")
+					or aObj:hasTextInName(child, "BugSackSoundDropdown")
+					then
 						xOfs = 110
 					end
 					aObj:skinDropDown{obj=child, x2=xOfs}
