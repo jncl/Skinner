@@ -274,7 +274,9 @@ function aObj:findFrame(height, width, children)
 
 	while obj do
 
-		if obj:IsObjectType("Frame") then
+		if obj.IsObjectType -- handle object not being a frame !?
+		and obj:IsObjectType("Frame")
+		then
 			if obj:GetName() == nil then
 				if obj:GetParent() == nil then
 					if self:getInt(obj:GetHeight()) == height
