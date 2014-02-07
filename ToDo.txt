@@ -19,17 +19,12 @@ Legend:
 	I	reported by Excitor0, 15.10.12
 		- Gradient doesn't completely fill frames/tabs etc
 
-√	I	RepBar
-		- centre the text
-
 	I	ScrollArrow textures
 		- replace scroll up & down arrows with action bar change arrows (enabled & disabled versions)
 
 	I	Test UI with default scale
 
-√	I	ACP
-		- review size of Game Menu height
-
-√	I	BugSack
-		- IOP dropdown is incorrect width
-
+√	I	ArkDewdrop, reported by lexusnexus, 07.02.14
+		- ..\AddOns\Skinner\UtilFuncs.lua line 277: attempt to call method 'IsObjectType' (a nil value)
+		Debug: Skinner\SkinMe\ArkDewdrop.lua:43: skinArkDewdrop()
+		Skinner\SkinMe\ArkDewdrop.lua:68: Skinner\SkinMe\ArkDewdrop.lua:4
