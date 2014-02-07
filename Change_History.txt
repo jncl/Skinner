@@ -1,3 +1,12 @@
+b5.17688.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update BuildNo
+	Update ReputationBar positioning
+	Bugfix for Bugsack option drop downs
+	Updated ACP skin
+
 b5.17658.1
 Jncl:
 	ToDo.txt
