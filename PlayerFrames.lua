@@ -918,9 +918,12 @@ function aObj:FriendsFrame()
 	self:skinSlider{obj=_G.FriendsFramePendingScrollFrame.scrollBar}
 	for i = 1, _G.PENDING_INVITES_TO_DISPLAY do
 		local btn = "FriendsFramePendingButton" .. i
-		self:applySkin{obj=_G[btn]}
+		-- use ApplySkin otherwise panel & buttons are hidden
+		self:removeRegions(_G[btn .. "AcceptButton"], {1, 2, 3})
 		self:applySkin{obj=_G[btn .. "AcceptButton"]}
+		self:removeRegions(_G[btn .. "DeclineButton"], {1, 2, 3})
 		self:applySkin{obj=_G[btn .. "DeclineButton"]}
+		self:applySkin{obj=_G[btn]}
 	end
 
 -->>--	Who Tab Frame
