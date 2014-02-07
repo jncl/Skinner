@@ -1,18 +1,19 @@
 local aName, aObj = ...
 -- This is a Library
+local _G = _G
 
 function aObj:ArkDewdrop()
 	if self.initialized.ArkDewdrop then return end
 	self.initialized.ArkDewdrop = true
 
-	local frame, sf, eb
+	local frame, sf, eb, i
 
 	local function skinArkDewdrop()
 
-		local i = 1
-		while _G["ArkDewdrop30Level"..i] do
-			-- aObj:Debug("ArkDewdrop30Level"..i)
-			frame = _G["ArkDewdrop30Level"..i]
+		i = 1
+		while _G["ArkDewdrop30Level" .. i] do
+			-- aObj:Debug("ArkDewdrop30Level" .. i)
+			frame = _G["ArkDewdrop30Level" .. i]
 			if not aObj.skinned[frame] then
 				aObj:applySkin(frame)
 				-- change these to stop the Backdrop colours from being changed
@@ -24,10 +25,10 @@ function aObj:ArkDewdrop()
 			i = i + 1
 		end
 		-- hook the OnEnter script for the buttons and use that to skin from
-		local i = 1
-		while _G["ArkDewdrop30Button"..i] do
-			if not aObj:IsHooked(_G["ArkDewdrop30Button"..i], "OnEnter") then
-				aObj:HookScript(_G["ArkDewdrop30Button"..i], "OnEnter", function(this)
+		i = 1
+		while _G["ArkDewdrop30Button" .. i] do
+			if not aObj:IsHooked(_G["ArkDewdrop30Button" .. i], "OnEnter") then
+				aObj:HookScript(_G["ArkDewdrop30Button" .. i], "OnEnter", function(this)
 					aObj.hooks[this].OnEnter(this)
 					if not this.disabled and this.hasArrow then
 						skinArkDewdrop()
@@ -61,7 +62,7 @@ function aObj:ArkDewdrop()
 	end
 
 	-- Hook this to skin new ArkDewdrop components
-	self:SecureHook(LibStub("ArkDewdrop-3.0", true), "Open", function(parent)
+	self:SecureHook(_G.LibStub("ArkDewdrop-3.0", true), "Open", function(parent)
 		skinArkDewdrop()
 	end)
 
