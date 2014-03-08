@@ -156,6 +156,7 @@ function aObj:AlertFrames()
 		if not obj.sf then
 			obj.Background:SetTexture(nil)
 			obj.IconBorder:SetTexture(nil)
+			if obj.SpecRing then obj.SpecRing:SetTexture(nil) end -- Loot Won Alert Frame(s)
 			aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=obj, relTo=obj.Icon}) -- wait for animation to finish
 			aObj:addSkinFrame{obj=obj, ft=ftype, af=true, afas=true, ofs=-10}
 		end
@@ -1230,7 +1231,7 @@ function aObj:MainMenuBar()
 	self:moveObject{obj=_G.ReputationWatchBar, y=3} -- move it above MainMenuBar
 	self:keepRegions(_G.ReputationWatchStatusBar, {9, 10}) -- 9 is background, 10 is the normal texture
 	self:adjHeight{obj=_G.ReputationWatchStatusBar, adj=1}
-	self:moveObject{obj=ReputationWatchStatusBarText, y=-1} -- centre text on bar
+	self:moveObject{obj=_G.ReputationWatchStatusBarText, y=-1} -- centre text on bar
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 5), {_G.ExhaustionLevelFillBar})
 		_G.ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
@@ -1885,7 +1886,7 @@ function aObj:NavigationBar()
 
 	-- hook this to handle navbar buttons
 	self:SecureHook("NavBar_AddButton", function(this, buttonData)
-		self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
+		-- self:Debug("NavBar_AddButton: [%s, %s]", this, buttonData)
 		for i = 1, #this.navList do
 			local btn = this.navList[i]
 			btn:DisableDrawLayer("OVERLAY")
