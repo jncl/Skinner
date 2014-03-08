@@ -47,7 +47,7 @@ function aObj:oQueue()
 					end)
 				end
 			elseif child:IsObjectType("Button")
-			and aObj:hasTextInName(child, strlower(pName .. "Close"))
+			and aObj:hasTextInName(child, "oqclose")
 			then
 				aObj:skinButton{obj=child, cb=true}
 			elseif child:IsObjectType("Button")
@@ -55,6 +55,9 @@ function aObj:oQueue()
 			then
 				-- skin the begbox
 				aObj:SecureHookScript(child, "OnClick", function(this)
+					-- v1.8.1 following entry might be Uppercase again
+					_G.begbox = _G.BegBox and _G.BegBox or _G.begbox
+
 					if not _G.begbox.sf then
 						skinKids(_G.begbox)
 						aObj:addSkinFrame{obj=_G.begbox}
@@ -83,23 +86,38 @@ function aObj:oQueue()
 			and aObj:isDropDown(child)
 			then
 				aObj:skinDropDown{obj=child, x2=35}
+				elseif child:IsObjectType("Button")
+			and aObj:hasTextInName(child, "oqbutton")
+			then
+				self:skinButton{obj=child}
 			end
 		end
 
+	end
+	local function skinTooltip(from)
+		for _, child in _G.pairs{_G.UIParent:GetChildren()} do
+			if not child.sf
+			and (child.left and child.right)
+			or child.html
+			then
+				aObj:addSkinFrame{obj=child}
+				child.SetBackdrop = function() end
+				if child.emphasis_texture then child.emphasis_texture:SetTexture(nil) end
+				if child.splat then child.splat:SetTexture(nil) end
+			end
+		end
 	end
 
 	-- OQMarquee
 	self:addSkinFrame{obj=_G.OQMarquee}
 	-- OQMain Frame
 	self:SecureHook(_G.OQMainFrame, "Show", function(this)
-
 		self:moveObject{obj=_G.OQFrameHeader, y=-6}
 		skinKids(_G.OQMainFrame)
 		self:skinButton{obj=_G.OQMainFrame.closepb, cb=true}
 		self:addSkinFrame{obj=_G.OQMainFrame, kfs=true, nb=true, y2=-2}
 		-- Tabs
 		self:skinTabs{obj=_G.OQMainFrame}
-
 		self:Unhook(_G.OQMainFrame, "Show")
 	end)
 	-- KarmaShield
@@ -107,12 +125,10 @@ function aObj:oQueue()
 	_G.OQKarmaShield.shield:SetAlpha(0)
 	self:skinButton{obj=_G.OQKarmaShield}
 	self:SecureHookScript(_G.OQKarmaShield, "OnEnter", function(this)
-		self:addSkinFrame{obj=_G[strlower("OQTooltip")]}
-		_G[strlower("OQTooltip")].SetBackdrop = function() end
+		skinTooltip("ks")
 		self:Unhook(_G.OQKarmaShield, "OnEnter")
 	end)
 	-- BountyBoard
-	-- self:addButtonBorder{obj=_G.OQ_TexturedButton3, y1=-18}
 	_G.OQBountyBoard._poster:SetTextColor('h1', self.HTr, self.HTg, self.HTb)
 	_G.OQBountyBoard._poster:SetTextColor('h3', self.BTr, self.BTg, self.BTb)
 	_G.OQBountyBoard._reward_l:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -120,7 +136,8 @@ function aObj:oQueue()
 	_G.OQBountyBoard._remaining_l:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.OQBountyBoard._remaining:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.OQBountyBoard._page:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=_G.OQBountyBoard, kfs=true, ofs=-40, y1=-120}
+	self:skinButton{obj=self:getChild(_G.OQBountyBoard, 1), cb=true}
+	self:addSkinFrame{obj=_G.OQBountyBoard, kfs=true, nb=true, ofs=-20, y1=-80}
 	-- OQLogBoard
 	_G.OQLogBoard.top_texture:SetTexture(nil)
 	_G.OQLogBoard.middle_texture:SetTexture(nil)
@@ -145,13 +162,8 @@ function aObj:oQueue()
 				and not aObj:IsHooked(child, "OnEnter")
 				then
 					aObj:SecureHookScript(child, "OnEnter", function(this)
-						if _G[strlower("OQTooltip")]
-						and not _G[strlower("OQTooltip")].sf
-						then
-							aObj:addSkinFrame{obj=_G[strlower("OQTooltip")]}
-							_G[strlower("OQTooltip")].SetBackdrop = function() end
-							OQtt = true
-						end
+						skinTooltip("cp")
+						OQtt = true
 						aObj:Unhook(child, "OnEnter")
 					end)
 				end
@@ -198,12 +210,8 @@ function aObj:oQueue()
 				and not aObj:IsHooked(child, "OnEnter")
 				then
 					aObj:SecureHookScript(child, "OnEnter", function(this)
-						if _G[strlower("OQPMTooltip")]
-						and not _G[strlower("OQPMTooltip")].sf
-						then
-							aObj:addSkinFrame{obj=_G[strlower("OQPMTooltip")]}
-							OQPMtt = true
-						end
+						skinTooltip("cl-pm")
+						OQPMtt = true
 						aObj:Unhook(child, "OnEnter")
 					end)
 				end
@@ -211,12 +219,8 @@ function aObj:oQueue()
 				and not aObj:IsHooked(child.unlist_but, "OnEnter")
 				then
 					aObj:SecureHookScript(child.unlist_but, "OnEnter", function(this)
-						if _G[strlower("OQGenTooltip")]
-						and not _G[strlower("OQGenTooltip")].sf
-						then
-							aObj:addSkinFrame{obj=_G[strlower("OQGenTooltip")]}
-							OQGENtt = true
-						end
+						skinTooltip("cl-gen")
+						OQGENtt = true
 						aObj:Unhook(child.unlist_but, "OnEnter")
 					end)
 				end
