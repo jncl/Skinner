@@ -1,3 +1,11 @@
+b5.17688.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for FriendsFramePendingButton skin
+	Bugfix when Enumerating frames
+	Updated ArkDewdrop & EnhancedColourPicker skins
+
 b5.17688.1
 Jncl:
 	ToDo.txt
