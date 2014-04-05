@@ -1,13 +1,15 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("DBM-Core") then return end
-
+local _G = _G
+local pairs, ipairs = _G.pairs, _G.ipairs
+local DBM, DBM_GUI, DBM_GUI_Translations = _G.DBM, _G.DBM_GUI, _G.DBM_GUI_Translations
 
 function aObj:DBMGUI()
 
 	-- (BUGFIX for DBM): reparent the Huge Bar statusBar
 	for bar in DBM.Bars:GetBarIterator() do
 		if bar.id == "dummy3" then
-			local relTo = select(2, bar.frame:GetPoint())
+			local relTo = _G.select(2, bar.frame:GetPoint())
 			bar.frame:SetParent(relTo)
 			break
 		end
@@ -46,7 +48,7 @@ function aObj:DBMGUI()
 					-- reparent the sliders
 					-- work backwards as the reparenting shortens the table
 					for i = barSetup:GetNumChildren(), 1, -1 do
-						local child = select(i, barSetup:GetChildren())
+						local child = _G.select(i, barSetup:GetChildren())
 						if child:IsObjectType("Slider") then
 							child:SetParent(subPanel.frame)
 						end
@@ -71,9 +73,9 @@ function aObj:DBMGUI()
 	-- the tabs skinning code is here so tab buttons don't get skinned twice
 	-- Options Frame Tabs
 	for i = 1, 2 do
-		tab = _G["DBM_GUI_OptionsFrameTab"..i]
+		local tab = _G["DBM_GUI_OptionsFrameTab"..i]
 		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		tabSF = self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=-2}
+		local tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=-2}
 		tabSF.ignore = true -- ignore size changes
 		tabSF.up = true -- tabs grow upwards
 		-- set textures here first time thru as it's LoD
@@ -101,14 +103,14 @@ function aObj:DBMGUI()
 		end
 	end
 
-	self:skinSlider{obj=DBM_GUI_OptionsFrameBossModsListScrollBar}
-	self:addSkinFrame{obj=DBM_GUI_OptionsFrameBossMods, kfs=true}
-	self:addSkinFrame{obj=DBM_GUI_OptionsFrameDBMOptions, kfs=true}
-	self:skinScrollBar{obj=DBM_GUI_OptionsFramePanelContainerFOV}
-	self:addSkinFrame{obj=DBM_GUI_OptionsFramePanelContainer, bas=true}
-	self:addSkinFrame{obj=DBM_GUI_OptionsFrame, kfs=true, hdr=true}
+	self:skinSlider{obj=_G.DBM_GUI_OptionsFrameBossModsListScrollBar}
+	self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrameBossMods, kfs=true}
+	self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrameDBMOptions, kfs=true}
+	self:skinScrollBar{obj=_G.DBM_GUI_OptionsFramePanelContainerFOV}
+	self:addSkinFrame{obj=_G.DBM_GUI_OptionsFramePanelContainer, bas=true}
+	self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrame, kfs=true, hdr=true}
 	-- skin dropdown
-	self:addSkinFrame{obj=DBM_GUI_DropDown}
+	self:addSkinFrame{obj=_G.DBM_GUI_DropDown}
 
 	-- hook this to skin sub panels
 	self:SecureHook(DBM_GUI, "CreateNewPanel", function(this, ...)
@@ -120,6 +122,11 @@ function aObj:DBMGUI()
 				panel.hooked = true
 			end
 		end
+	end)
+
+	-- hook this to skin BossMod sub panels button in TRHC
+	self:SecureHook(DBM_GUI, "CreateBossModPanel", function(this, mod)
+		self:skinButton{obj=self:getChild(mod.panel.frame, 1), as=true}
 	end)
 
 	-- hook this to skin dropdowns
@@ -156,18 +163,18 @@ function aObj:DBMCore()
 
 	-- hook this to skin the RangeCheck frame (actually a tooltip)
 	self:SecureHook(DBM.RangeCheck, "Show", function(this, ...)
-		self:addSkinFrame{obj=DBMRangeCheck}
+		self:addSkinFrame{obj=_G.DBMRangeCheck}
 		self:Unhook(DBM.RangeCheck, "Show")
 	end)
 	-- hook this to skin the InfoFrame frame (actually a tooltip)
 	self:SecureHook(DBM.InfoFrame, "Show", function(this, ...)
-		self:addSkinFrame{obj=DBMInfoFrame}
+		self:addSkinFrame{obj=_G.DBMInfoFrame}
 		self:Unhook(DBM.InfoFrame, "Show")
 	end)
 	-- hook these to skin the BossHealth Bars
 	local bhFrame
 	self:SecureHook(DBM.BossHealth, "Show", function(this, name)
-		bhFrame = DBMBossHealthDropdown:GetParent()
+		bhFrame = _G.DBMBossHealthDropdown:GetParent()
 		self:Unhook(DBM.BossHealth, "Show")
 	end)
 	self:SecureHook(DBM.BossHealth, "AddBoss", function(this, ...)
@@ -184,26 +191,27 @@ function aObj:DBMCore()
 	end)
 	-- hook this to skin UpdateReminder frame
 	self:SecureHook(DBM, "ShowUpdateReminder", function(this, ...)
-		local frame = self:findFrame2(UIParent, "Frame", 155, 430)
+		local frame = self:findFrame2(_G.UIParent, "Frame", 140, 430)
 		if frame then
-			self:addSkinFrame{obj=frame}
 			self:skinEditBox{obj=self:getChild(frame, 1), regs={9}}
+			self:skinButton{obj=self:getChild(frame, 2)}
+			self:addSkinFrame{obj=frame, nb=true}
 		end
 		self:Unhook(DBM, "ShowUpdateReminder")
 	end)
 
 	-- set default Timer bar texture
-	DBT_SavedOptions.Texture = self.db.profile.StatusBar.texture
+	_G.DBT_SavedOptions.Texture = self.db.profile.StatusBar.texture
 	-- apply the change
-	DBM.Bars:SetOption("Texture", self.sbTexture)
+	_G.DBM.Bars:SetOption("Texture", self.sbTexture)
 
 	-- minimap button
 	if self.db.profile.MinimapButtons.skin then
-		DBMMinimapButton:GetNormalTexture():SetTexCoord(.3, .7, .3, .7)
-		DBMMinimapButton:GetPushedTexture():SetTexCoord(.3, .7, .3, .7)
-		DBMMinimapButton:SetWidth(22)
-		DBMMinimapButton:SetHeight(22)
-		self:addSkinButton{obj=DBMMinimapButton, parent=DBMMinimapButton}
+		_G.DBMMinimapButton:GetNormalTexture():SetTexCoord(.3, .7, .3, .7)
+		_G.DBMMinimapButton:GetPushedTexture():SetTexCoord(.3, .7, .3, .7)
+		_G.DBMMinimapButton:SetWidth(22)
+		_G.DBMMinimapButton:SetHeight(22)
+		self:addSkinButton{obj=_G.DBMMinimapButton, parent=_G.DBMMinimapButton}
 	end
 
 end

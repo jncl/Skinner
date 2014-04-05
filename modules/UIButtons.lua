@@ -426,6 +426,9 @@ local function __addButtonBorder(opts)
 --@end-alpha@
 	if not opts.obj then return end
 
+	-- check to see if object is already skinned
+	if opts.obj.sbb then return end
+
 	-- remove Normal texture if required (vertex colour changed in blizzard code)
 	if opts.ibt
 	or opts.abt

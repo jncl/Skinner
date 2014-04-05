@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("oQueue") then return end
 local _G =_G
 local ipairs, strlower = _G.ipairs, _G.strlower
 
-function aObj:oQueue()
+function aObj:oQueue() -- v 1.8.6
 
 	-- bugfix for version 1.6.1 (names are now lowercase)
 	_G.OQBRBDialog = _G.oqbrbdialog
@@ -15,10 +15,22 @@ function aObj:oQueue()
 	_G.OQTabPage5List =_G.oqtabpage5list
 	_G.OQTabPage6List =_G.oqtabpage6list
 	_G.OQTabPage7List =_G.oqtabpage7list
-	_G.OQTabPage3ShadeNotice = _G.oqtabpage3shadenotice
-	_G.OQTabPage3ShadeTimeVariance =_G.oqtabpage3shadetimevariance
 
-	local function skinKids(parent)
+	local skinKids -- required to prevent reference error in the following local function
+	local function skinShadeChild(frame)
+		skinKids(frame)
+		aObj:addSkinFrame{obj=frame}
+		local shade = frame:GetParent()
+		if not aObj:IsHooked(shade, "Show") then
+			aObj:SecureHook(shade, "Show", function(this)
+				if not this._child.sf then
+					skinKids(this._child)
+					aObj:addSkinFrame{obj=this._child}
+				end
+			end)
+		end
+	end
+	function skinKids(parent)
 
 		local pName = parent:GetName()
 		for _, child in ipairs{parent:GetChildren()} do
@@ -59,8 +71,7 @@ function aObj:oQueue()
 					_G.begbox = _G.BegBox and _G.BegBox or _G.begbox
 
 					if not _G.begbox.sf then
-						skinKids(_G.begbox)
-						aObj:addSkinFrame{obj=_G.begbox}
+						skinShadeChild(_G.begbox)
 					end
 					aObj:Unhook(child, "OnClick")
 				end)
@@ -70,8 +81,7 @@ function aObj:oQueue()
 				-- skin the helperbox
 				aObj:SecureHookScript(child, "OnClick", function(this)
 					if not _G.helperbox.sf then
-						skinKids(_G.helperbox)
-						aObj:addSkinFrame{obj=_G.helperbox}
+						skinShadeChild(_G.helperbox)
 					end
 					aObj:Unhook(child, "OnClick")
 				end)
@@ -86,10 +96,12 @@ function aObj:oQueue()
 			and aObj:isDropDown(child)
 			then
 				aObj:skinDropDown{obj=child, x2=35}
-				elseif child:IsObjectType("Button")
+			elseif child:IsObjectType("Button")
 			and aObj:hasTextInName(child, "oqbutton")
 			then
 				self:skinButton{obj=child}
+			-- elseif child:IsObjectType("Frame") then
+			-- 	aObj:Debug("oQueue child frame found: [%s, %s]", child, child:GetName())
 			end
 		end
 
@@ -111,15 +123,16 @@ function aObj:oQueue()
 	-- OQMarquee
 	self:addSkinFrame{obj=_G.OQMarquee}
 	-- OQMain Frame
-	self:SecureHook(_G.OQMainFrame, "Show", function(this)
-		self:moveObject{obj=_G.OQFrameHeader, y=-6}
-		skinKids(_G.OQMainFrame)
-		self:skinButton{obj=_G.OQMainFrame.closepb, cb=true}
-		self:addSkinFrame{obj=_G.OQMainFrame, kfs=true, nb=true, y2=-2}
-		-- Tabs
-		self:skinTabs{obj=_G.OQMainFrame}
-		self:Unhook(_G.OQMainFrame, "Show")
-	end)
+	self:moveObject{obj=_G.OQFrameHeader, y=-6}
+	skinKids(_G.OQMainFrame)
+	self:skinButton{obj=_G.OQMainFrame.closepb, cb=true}
+	self:addSkinFrame{obj=_G.OQMainFrame, kfs=true, nb=true, y2=-2}
+	-- find and skin the shade frame child if it's being displayed
+	self:ScheduleTimer(function()
+		if _G.shade then skinShadeChild(_G.shade._child) end
+	end, 1)
+	-- Tabs
+	self:skinTabs{obj=_G.OQMainFrame}
 	-- KarmaShield
 	self:removeRegions(_G.OQKarmaShield, {1}) -- border ring
 	_G.OQKarmaShield.shield:SetAlpha(0)
@@ -145,7 +158,6 @@ function aObj:oQueue()
 	_G.OQLogBoard.backdrop_texture:SetTexture(nil)
 	self:skinButton{obj=self:getChild(_G.OQLogBoard, 1), cb=true}
 	self:addSkinFrame{obj=_G.OQLogBoard}
-
 	-- TabPage1 (Premade)
 	self:SecureHook(_G.OQTabPage1, "Show", function(this)
 		skinKids(this)
@@ -195,11 +207,6 @@ function aObj:oQueue()
 		end
 	end)
 	-- TabPage2 (Find Premade)
-	self:SecureHook(_G.OQTabPage2, "Show", function(this)
-		skinKids(this)
-		self:Unhook(_G.OQTabPage2, "Show")
-	end)
-	local OQPMtt, OQGENtt
 	local function checkList()
 
 		for _, child in ipairs{_G.OQTabPage2List:GetChildren()} do
@@ -225,7 +232,7 @@ function aObj:oQueue()
 					end)
 				end
 				aObj:skinButton{obj=child.req_but, as=true}
-				aObj:skinButton{obj=child.unlist_but, as=true}
+				-- aObj:skinButton{obj=child.unlist_but, as=true}
 			end
 		end
 
@@ -243,17 +250,22 @@ function aObj:oQueue()
 			tp2Tmr = nil
 		end
 	end)
+	if _G.OQTabPage2:IsShown() then
+		skinKids(_G.OQTabPage2)
+		tp2Tmr = self:ScheduleRepeatingTimer(checkList, 0.2)
+	else
+		self:SecureHook(_G.OQTabPage2, "Show", function(this)
+			skinKids(this)
+			self:Unhook(_G.OQTabPage2, "Show")
+		end)
+	end
+	local OQPMtt, OQGENtt
 
 	-- TabPage3 (Create Premade)
 	self:SecureHook(_G.OQTabPage3, "Show", function(this)
 		skinKids(this)
-		if _G.OQTabPage3ShadeNotice then
-			self:addSkinFrame{obj=_G.OQTabPage3ShadeNotice}
-			self:skinButton{obj=self:getChild(_G.OQTabPage3ShadeNotice, 1), cb=true}
-		end
-		if _G.OQTabPage3ShadeTimeVariance then
-			self:addSkinFrame{obj=_G.OQTabPage3ShadeTimeVariance}
-			self:skinButton{obj=self:getChild(_G.OQTabPage3ShadeTimeVariance, 1), cb=true}
+		if _G.notice then
+			self:addSkinFrame{obj=_G.notice}
 		end
 		self:Unhook(_G.OQTabPage3, "Show")
 	end)
@@ -264,8 +276,7 @@ function aObj:oQueue()
 
 		for _, child in ipairs{tab:GetChildren()} do
 			if aObj:hasTextInName(child, strlower(name)) then
-				child.texture:SetTexture(nil)
-				aObj:skinButton{obj=child.remove_but, as=true} -- use applySkin so text appears in the FG
+				-- aObj:skinButton{obj=child.remove_but, as=true} -- use applySkin so text appears in the FG
 			end
 		end
 
@@ -311,7 +322,7 @@ function aObj:oQueue()
 	local function checkWaitList()
 
 		for _, child in ipairs{_G.OQTabPage7List:GetChildren()} do
-			aObj:skinButton{obj=child.remove_but, as=true}
+			-- aObj:skinButton{obj=child.remove_but, as=true}
 			aObj:skinButton{obj=child.invite_but, as=true}
 			if child.ginvite_but then aObj:skinButton{obj=child.ginvite_but, as=true} end
 		end
