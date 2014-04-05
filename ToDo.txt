@@ -8,9 +8,6 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	O	PTR
-		- Blizzard_AuthChallenge_UI added, uses ScopedModifier, cannot be skinned
-
 	I	IOF Buttons
 		- are being skinned twice on some panels (AceGUI ones ?)
 		- issue is with buttons that have been 'flowed'
@@ -24,22 +21,8 @@ Legend:
 
 	I	Test UI with default scale
 
-√	I	PetTracker, reported by Gershuun, 25.02.14
-		- ..\AddOns\Skinner\SkinMe\PetTracker.lua line 48: attempt to index field 'Abilities' (a nil value)
-		Debug:
-			Skinner\SkinMe\PetTracker.lua:48:
-			Skinner\SkinMe\PetTracker.lua:40
-		- skin new LoD module for Tamers
+√	N	oQueue
 
-√	I	PowerAuras, reported by Gershuun, 25.02.14
-		-  ..\AddOns\Skinner\Skinner.lua line 234: table index is nil
-		Debug:
-			Skinner\Skinner.lua:1465:
-			Skinner\Skinner.lua:1444
-			Skinner\Skinner.lua:1541: skinEditBox()
-			Skinner\SkinMe\PowerAuras.lua:17:
-			Skinner\SkinMe\PowerAuras.lua:4
+√	N	DBM
 
-√	I	oQueue, reported by Flappers, 03.02.14
-		- 3x Skinner-b5.17688.2\SkinMe\oQueue-1.8.0.lua:58: attempt to index field "begbox" (a nil value)
-		Skinner-b5.17688.2\SkinMe\oQueue-1.8.0.lua:58: in function <Skinner\SkinMe\oQueue.lua:57>
+√	S	MarkingBar
