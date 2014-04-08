@@ -1,3 +1,11 @@
+b5.18019.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated build number
+	Updated DBM & oQueue skins
+	Added MarkingBar Skin
+
 b5.17956.1
 Jncl:
 	ToDo.txt
