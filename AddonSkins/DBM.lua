@@ -201,7 +201,7 @@ function aObj:DBMCore()
 	end)
 
 	-- set default Timer bar texture
-	_G.DBT_SavedOptions.Texture = self.db.profile.StatusBar.texture
+	_G.DBT_PersistentOptions.Texture = self.db.profile.StatusBar.texture
 	-- apply the change
 	_G.DBM.Bars:SetOption("Texture", self.sbTexture)
 
