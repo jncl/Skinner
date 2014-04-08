@@ -21,8 +21,8 @@ Legend:
 
 	I	Test UI with default scale
 
-√	N	oQueue
+	I	DBM
+√		- DBT_SavedOptions are now DBT_PersistentOptions
 
-√	N	DBM
-
-√	S	MarkingBar
+	I	TitanPanel
+√		- Minimap adjustment ?
