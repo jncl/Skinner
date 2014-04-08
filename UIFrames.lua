@@ -1498,6 +1498,9 @@ function aObj:Minimap()
 	if not self.db.profile.Minimap.skin or self.initialized.Minimap then return end
 	self.initialized.Minimap = true
 
+	-- fix for Titan Panel moving MinimapCluster
+	if IsAddOnLoaded("Titan") then _G.TitanMovable_AddonAdjust("MinimapCluster", true) end
+
 -->>-- Cluster Frame
 	_G.MinimapBorderTop:Hide()
 	_G.MinimapZoneTextButton:ClearAllPoints()
