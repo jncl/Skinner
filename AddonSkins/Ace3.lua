@@ -26,7 +26,7 @@ function aObj:Ace3()
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
 		-- if not objType:find("CollectMe") then
-		-- 	aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
+			-- aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
 		-- end
 		-- if objType:find("TSM") then
 			-- aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, rawget(aObj.skinned, obj), objType:find("TSM"), obj.sknrTSM)
@@ -230,10 +230,10 @@ function aObj:Ace3()
                 obj.btn:SetBackdrop(nil)
                 obj.sknrTSM = true
             elseif objType == "TSMSelectionList" then
-                self:applySkin{obj=obj.leftFrame}
-                self:skinScrollBar{obj=obj.leftScrollFrame}
-                self:applySkin{obj=obj.rightFrame}
-                self:skinScrollBar{obj=obj.rightScrollFrame}
+                aObj:applySkin{obj=obj.leftFrame}
+                aObj:skinScrollBar{obj=obj.leftScrollFrame}
+                aObj:applySkin{obj=obj.rightFrame}
+                aObj:skinScrollBar{obj=obj.rightScrollFrame}
                 obj.sknrTSM = true
             elseif objType == "TSMMacroButton"
             or objType == "TSMFastDestroyButton"
@@ -250,9 +250,11 @@ function aObj:Ace3()
                 aObj:skinButton{obj=obj.button, as=true}
                 obj.sknrTSM = true
 
-			-- AuctionMaster object
+			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
-				self:skinScrollBar{obj=obj.scrollFrame}
+				aObj:skinScrollBar{obj=obj.scrollFrame}
+			elseif objType == "EditDropdown" then
+				aObj:addButtonBorder{obj=obj.button, es=12, ofs=-2}
 
 			-- ignore these types for now
 			elseif objType == "CheckBox"

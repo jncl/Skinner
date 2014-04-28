@@ -10,7 +10,7 @@ local _G = _G
 -- vBagnon no longer is supported
 -- Now supports the newest version found on Curse
 
-function aObj:Bagnon(LoD)
+function aObj:Bagnon(LoD) -- 5.4.15
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
@@ -19,55 +19,53 @@ function aObj:Bagnon(LoD)
 		self:applySkin(_G.Bagnon)
 		_G.Bagnon.SetBackdropColor = function() end
 		_G.Bagnon.SetBackdropBorderColor = function() end
-		
-	-- it's the newest version from Curse	
+
+	-- it's the newest version from Curse
 	else
-		local Bagnon = _G.LibStub("AceAddon-3.0"):GetAddon("Bagnon")
+		local Bagnon = _G.Bagnon
 		-- hide empty slot background
 		Bagnon.SavedSettings:GetDB().showEmptyItemSlotTexture = false
 		-- skin the bag frames
-		self:RawHook(Bagnon["Frame"], "New", function(this, ...)
-			local frame = self.hooks[Bagnon["Frame"]].New(this, ...)
-			self:addSkinFrame{obj=frame}
+		local function skinFrame(frame)
+			aObj:addSkinFrame{obj=frame}
 			frame.SetBackdropColor = function() end
 			frame.SetBackdropBorderColor = function() end
-			if not self:IsHooked(frame, "OnShow") then
-				self:SecureHookScript(frame, "OnShow", function(this)
-					if self.modBtnBs then
+			if not aObj:IsHooked(frame, "OnShow") then
+				aObj:SecureHookScript(frame, "OnShow", function(this)
+					if aObj.modBtnBs then
 						for i = 1, #this.menuButtons do
-							self:addButtonBorder{obj=this.menuButtons[i], ofs=3}
+							aObj:addButtonBorder{obj=this.menuButtons[i], ofs=3}
 						end
 						-- bag/tab buttons
 						if this.bagFrame then
 							for i = 1, #this.bagFrame.bags do
-								self:addButtonBorder{obj=this.bagFrame.bags[i], ofs=3}
+								aObj:addButtonBorder{obj=this.bagFrame.bags[i], ofs=3}
 							end
 						end
 						-- item slots
 						if this.itemFrame then
 							for i = 1, #this.itemFrame.itemSlots do
-								self:addButtonBorder{obj=this.itemFrame.itemSlots[i], ofs=3}
+								aObj:addButtonBorder{obj=this.itemFrame.itemSlots[i], ofs=3}
 							end
 						end
 						if this:HasOptionsToggle() then
-							self:addButtonBorder{obj=this.optionsToggle, ofs=3}
+							aObj:addButtonBorder{obj=this.optionsToggle, ofs=3}
 						end
 						if this:HasBrokerDisplay() then
-							self:addButtonBorder{obj=this.brokerDisplay, relTo=this.brokerDisplay.icon, ofs=3}
+							aObj:addButtonBorder{obj=this.brokerDisplay, relTo=this.brokerDisplay.icon, ofs=3}
 						end
 						-- VoidStorage Transfer button
 						if this:HasMoneyFrame()
 						and this.moneyFrame.icon
 						then
-							self:addButtonBorder{obj=this.moneyFrame.icon:GetParent(), relTo=this.moneyFrame.icon, ofs=3}
+							aObj:addButtonBorder{obj=this.moneyFrame.icon:GetParent(), relTo=this.moneyFrame.icon, ofs=3}
 						end
 					end
 					if this.closeButton then self:skinButton{obj=this.closeButton, cb=true} end
-					self:Unhook(frame, "OnShow")
+					aObj:Unhook(frame, "OnShow")
 				end)
 			end
-			return frame
-		end)
+		end
 		-- prevent gradient whiteout
 		self:RawHook(Bagnon["Frame"], "FadeInFrame", function(this, frame, alpha)
 			frame:Show()
@@ -77,6 +75,13 @@ function aObj:Bagnon(LoD)
 			local eb = self.hooks[Bagnon["SearchFrame"]].New(this, ...)
 			self:skinEditBox{obj=eb, regs={9}}
 			return eb
+		end)
+		-- skin frames
+		skinFrame(Bagnon.frames["inventory"])
+		self:RawHook(Bagnon["Frame"], "New", function(this, id)
+			local frame = self.hooks[Bagnon["Frame"]].New(this, id)
+			skinFrame(frame)
+			return frame
 		end)
 	end
 
