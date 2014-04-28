@@ -1,3 +1,10 @@
+b5.18019.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for TitanPanel
+	Updated DBM skin
+
 b5.18019.1
 Jncl:
 	ToDo.txt
