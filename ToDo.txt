@@ -21,8 +21,11 @@ Legend:
 
 	I	Test UI with default scale
 
-	I	DBM
-√		- DBT_SavedOptions are now DBT_PersistentOptions
+√	N	Bagnon, reported by CobaltDarkBlue/Excitor0, 11.04.14/13.04.14
 
-	I	TitanPanel
-√		- Minimap adjustment ?
+≈	S	StaggerMeter, requested by CobaltDarkBlue, 11.04.14
+
+√	N	AuctionMaster, reported by CobaltDarkBlue, 11.04.14
+		- 27x Skinner-b5.18019.2\SkinMe\AuctionMaster-5.7.0.lua:81: attempt to index global "scanSpeed" (a nil value)
+
+√	N Ludwig, reported by NeoZeus, 27.04.14
