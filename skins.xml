@@ -188,6 +188,7 @@
 <script file="SkinMe\Links.lua"/>
 <script file="SkinMe\LinkWrangler.lua"/>
 <script file="SkinMe\Livestock.lua"/>
+<script file="SkinMe\Ludwig.lua"/>
 <script file="SkinMe\LUI.lua"/>
 <script file="SkinMe\MacroBank.lua"/>
 <script file="SkinMe\MacroBrokerGUI.lua"/>

@@ -339,7 +339,7 @@ local lodFrames = {
 	"FramesResized_TalentUI",
 	"GnomishAuctionShrinker", "GuildBankSearch",
 	"ItemRackOptions",
-	"LilSparkysWorkshop",
+	"LilSparkysWorkshop", "Ludwig_Window",
 	"MSBTOptions",
 	"oRA2_Leader", "oRA2_Participant", "Overachiever_Tabs",
 	"PetJournalEnhanced", "Perl_Config_Options",
