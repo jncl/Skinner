@@ -28,8 +28,8 @@ do
 	-- player class
 	aObj.uCls = select(2, UnitClass("player"))
 
-	local liveBuildVer = "5.4.7"
-	local liveBuildNo = 18019
+	local liveBuildVer = "5.4.8"
+	local liveBuildNo = 18414
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveBuildVer, liveBuildNo, buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
