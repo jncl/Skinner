@@ -803,7 +803,7 @@ function aObj:DestinyFrame()
 		self:changeRecTex(btn:GetHighlightTexture())
 		self:adjWidth{obj=btn, adj=-60}
 		self:adjHeight{obj=btn, adj=-60}
-		self:skinButton{obj=btn, x1=0, y1=0, x2=-1, y2=3}
+		self:skinButton{obj=btn, x1=-2, y1=2, x2=-3, y2=-1}
 	end
 
 	_G.DestinyFrame.alphaLayer:SetTexture(0, 0, 0, 0.70)
@@ -1709,6 +1709,7 @@ function aObj:MinimapButtons()
 			["Perl_Config"] = _G.PerlButton,
 			["WIM"] = _G.WIM3MinimapButton,
 			["HealBot"] = _G.HealBot_MMButton,
+			["Altoholic"] = _G.AltoholicMinimapButton,
 		}
 		local function skinMMBtn(btn, name)
 
