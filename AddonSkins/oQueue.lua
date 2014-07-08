@@ -158,6 +158,13 @@ function aObj:oQueue() -- v 1.8.6
 	_G.OQLogBoard.backdrop_texture:SetTexture(nil)
 	self:skinButton{obj=self:getChild(_G.OQLogBoard, 1), cb=true}
 	self:addSkinFrame{obj=_G.OQLogBoard}
+    -- LootContract frame
+    self:skinButton{obj=_G.LootContract.closepb, cb=true}
+    self:skinButton{obj=_G.LootContract.accept_but}
+    self:skinButton{obj=_G.LootContract.donot_but}
+    self:skinButton{obj=_G.LootContract.reject_but}
+    self:addSkinFrame{obj=_G.LootContract, kfs=true, nb=true}
+    
 	-- TabPage1 (Premade)
 	self:SecureHook(_G.OQTabPage1, "Show", function(this)
 		skinKids(this)
