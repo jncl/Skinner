@@ -21,11 +21,30 @@ Legend:
 
 	I	Test UI with default scale
 
-√	N	Bagnon, reported by CobaltDarkBlue/Excitor0, 11.04.14/13.04.14
+≈   N   oQueue, 08.07.14
+        - new feature that will popup a warning when you enter an instance or when loot rules are changed
 
-≈	S	StaggerMeter, requested by CobaltDarkBlue, 11.04.14
-
-√	N	AuctionMaster, reported by CobaltDarkBlue, 11.04.14
-		- 27x Skinner-b5.18019.2\SkinMe\AuctionMaster-5.7.0.lua:81: attempt to index global "scanSpeed" (a nil value)
-
-√	N Ludwig, reported by NeoZeus, 27.04.14
+    O   WoD Beta (27.06.14) V6.0.1 18
+        - NEW frames
+            - What's New Panel when entering world for the first time & button on Game Menu
+            - GarrisonUI
+            - Quest Choice ?
+            - TokenUI ?
+            - Adventure Guide
+            -
+        - UPD frames
+            - Map & Quests frame
+            - Premade Groups in Dungeon & Raid Finder
+            - Containers (Bags)
+                - settings gearwheel & menu
+                - Clean Up Bags button
+            - Key Bindings now are split into categories
+            - Bank now has a Reagent Bank Tab
+            - Collections (was Pet Journal)
+                - Mounts (NEW Summon Random Favourite Mount Button)
+                - Pet Journal (NEW Battle Pet Achievement total and shield at top of panel)
+                - Toy Box (inc Heirlooms)
+            -
+        - DEL
+            - Reforging
+            -
