@@ -21,9 +21,6 @@ Legend:
 
 	I	Test UI with default scale
 
-≈   N   oQueue, 08.07.14
-        - new feature that will popup a warning when you enter an instance or when loot rules are changed
-
     O   WoD Beta (27.06.14) V6.0.1 18
         - NEW frames
             - What's New Panel when entering world for the first time & button on Game Menu
@@ -48,3 +45,11 @@ Legend:
         - DEL
             - Reforging
             -
+
+√   I   PetTracker, reported by dwarven, 09.07.14
+        - ..\AddOns\Skinner\UtilFuncs.lua line 450:  attempt to index local 'frame' (a nil value)
+            Skinner\SkinMe\PetTracker.lua:91:
+            Skinner\SkinMe\PetTracker.lua:88
+
+√    I   MinimalArchaeology, reported by MegaManJuno
+        - supplied fix for skinning all objects on the Artifact Bar
