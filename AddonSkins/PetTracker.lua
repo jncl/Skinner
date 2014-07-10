@@ -59,10 +59,6 @@ local function skinSlot(slot, isBattle)
 		aObj:glazeStatusBar(slot.Xp, 0,  nil)
 	end
 	aObj:addSkinFrame{obj=slot, ofs=2}
-	slot.Highlight:ClearAllPoints()
-	-- resize Highlight
-	slot.Highlight:SetPoint("TOPLEFT", -4, 4)
-	slot.Highlight:SetPoint("BOTTOMRIGHT", 4, -5)
 
 	-- IsEmpty frame, covers slot, don't skin it
 	-- IsDead frame
@@ -88,15 +84,13 @@ end
 function aObj:PetTracker_Journal()
 
 	self:removeInset(_G.PetTrackerTamerJournal.Count)
-	self:removeInset(_G.PetTrackerTamerJournal.LeftInset)
-	self:removeInset(_G.PetTrackerTamerJournal.RightInset)
+	self:removeInset(_G.PetTrackerTamerJournal.ListInset)
 	self:skinEditBox{obj=_G.PetTrackerTamerJournal.SearchBox, regs={9}}
 	self:skinSlider{obj=_G.PetTrackerTamerJournal.List.scrollBar, size=3}
 	self:SecureHookScript(_G.PetTrackerTamerJournal, "OnShow", function(this)
 		for i = 1, #_G.PetTrackerTamerJournal.List.buttons do
 			local btn = _G.PetTrackerTamerJournal.List.buttons[i]
 			self:removeRegions(btn, {1}) -- background
-			self:changeTandC(btn.model.levelBG, self.lvlBG)
 		end
 		-- Tamer Pet cards (RHS)
 		for _, slot in _G.ipairs(_G.PetTrackerTamerJournal.Slots) do
@@ -106,7 +100,11 @@ function aObj:PetTracker_Journal()
 	end)
 
 	self:removeInset(_G.PetTrackerTamerJournal.Card)
-	self:addSkinFrame{obj=_G.PetTrackerTamerJournal.Card, aso={bd=8, ng=true}}--, ofs=4}
-	self:keepRegions(_G.PetTrackerTamerJournal.TeamBorder, {})
+	self:addSkinFrame{obj=_G.PetTrackerTamerJournal.Card, aso={bd=8, ng=true}}
+	self:removeInset(_G.PetTrackerTamerJournal.Team)
+    self:keepRegions(_G.PetTrackerTamerJournal.Team.Border, {11})
+    self:moveObject{obj=self:getRegion(_G.PetTrackerTamerJournal.Team.Border, 11), y=8}
+    self:removeInset(_G.PetTrackerTamerJournalMapBorder)
+	self:removeInset(_G.PetTrackerTamerJournal.History)
 
 end
