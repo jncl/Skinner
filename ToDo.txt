@@ -21,35 +21,33 @@ Legend:
 
 	I	Test UI with default scale
 
-    O   WoD Beta (27.06.14) V6.0.1 18
-        - NEW frames
-            - What's New Panel when entering world for the first time & button on Game Menu
-            - GarrisonUI
-            - Quest Choice ?
-            - TokenUI ?
-            - Adventure Guide
-            -
-        - UPD frames
-            - Map & Quests frame
-            - Premade Groups in Dungeon & Raid Finder
-            - Containers (Bags)
-                - settings gearwheel & menu
-                - Clean Up Bags button
-            - Key Bindings now are split into categories
-            - Bank now has a Reagent Bank Tab
-            - Collections (was Pet Journal)
-                - Mounts (NEW Summon Random Favourite Mount Button)
-                - Pet Journal (NEW Battle Pet Achievement total and shield at top of panel)
-                - Toy Box (inc Heirlooms)
-            -
-        - DEL
-            - Reforging
-            -
+	O   WoD Beta (27.06.14) V6.0.1 18
+		- NEW frames
+			- What's New Panel when entering world for the first time & button on Game Menu
+			- GarrisonUI
+			- Quest Choice ?
+			- TokenUI ?
+			- Adventure Guide
+			-
+		- UPD frames
+			- Player Frame, slots now have a quality border
+			- Map & Quests frame, inc Help overlays
+			- Premade Groups in Dungeon & Raid Finder
+			- Containers (Bags)
+				- settings gearwheel & menu
+				- Clean Up Bags button
+			- Key Bindings now are split into categories
+			- Bank now has a Reagent Bank Tab
+			- Collections (was Pet Journal)
+				- Mounts (NEW Summon Random Favourite Mount Button)
+				- Pet Journal (NEW Battle Pet Achievement total and shield at top of panel)
+				- Toy Box (inc Heirlooms)
+			-
+		- DEL
+			- Reforging
+			-
 
-√   I   PetTracker, reported by dwarven, 09.07.14
-        - ..\AddOns\Skinner\UtilFuncs.lua line 450:  attempt to index local 'frame' (a nil value)
-            Skinner\SkinMe\PetTracker.lua:91:
-            Skinner\SkinMe\PetTracker.lua:88
-
-√    I   MinimalArchaeology, reported by MegaManJuno
-        - supplied fix for skinning all objects on the Artifact Bar
+	I   oQueue, reported by chrisgriffith25, 13.07.14
+√		- LootContract frame, add timer to allow for screen to appear
+√		- new tooltip for karma button
+√		- new raffle panel
