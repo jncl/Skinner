@@ -75,16 +75,36 @@ function aObj:oQueue() -- v 1.8.6
 					end
 					aObj:Unhook(child, "OnClick")
 				end)
-			elseif child:IsObjectType("Button")
-			and aObj:hasTextInTexture(self:getRegion(child, 1), strlower("help-i"), true)
-			then
-				-- skin the helperbox
-				aObj:SecureHookScript(child, "OnClick", function(this)
-					if not _G.helperbox.sf then
-						skinShadeChild(_G.helperbox)
-					end
-					aObj:Unhook(child, "OnClick")
-				end)
+            elseif child:IsObjectType("Button")
+            and aObj:hasTextInTexture(self:getRegion(child, 1), strlower("help-i"), true)
+            then
+                -- skin the helperbox
+                aObj:SecureHookScript(child, "OnClick", function(this)
+                    if not _G.helperbox.sf then
+                        skinShadeChild(_G.helperbox)
+                    end
+                    aObj:Unhook(child, "OnClick")
+                end)
+            elseif child:IsObjectType("Button")
+            and aObj:hasTextInName(child, "OQKarmaButton")
+            then
+                -- skin the karma dropdown
+                aObj:SecureHookScript(child, "OnClick", function(this)
+                    if not _G.oqmenu.sf then
+                        self:addSkinFrame{obj=_G.oqmenu}
+                    end
+                    aObj:Unhook(child, "OnClick")
+                end)
+            elseif child:IsObjectType("Button")
+            and aObj:hasTextInName(child, "OQRaffleButton")
+            then
+                -- skin the raffle frame
+                aObj:SecureHookScript(child, "OnClick", function(this)
+                    if not _G.rafflebox.sf then
+                        skinShadeChild(_G.rafflebox)
+                    end
+                    aObj:Unhook(child, "OnClick")
+                end)
 			elseif child:IsObjectType("EditBox") then
 				aObj:skinEditBox{obj=child, regs={9}}
 			elseif child:IsObjectType("ScrollFrame")
@@ -100,8 +120,6 @@ function aObj:oQueue() -- v 1.8.6
 			and aObj:hasTextInName(child, "oqbutton")
 			then
 				self:skinButton{obj=child}
-			-- elseif child:IsObjectType("Frame") then
-			-- 	aObj:Debug("oQueue child frame found: [%s, %s]", child, child:GetName())
 			end
 		end
 
@@ -111,6 +129,7 @@ function aObj:oQueue() -- v 1.8.6
 			if not child.sf
 			and (child.left and child.right)
 			or child.html
+			or child.note -- OQPMTooltipExtra
 			then
 				aObj:addSkinFrame{obj=child}
 				child.SetBackdrop = function() end
@@ -159,12 +178,16 @@ function aObj:oQueue() -- v 1.8.6
 	self:skinButton{obj=self:getChild(_G.OQLogBoard, 1), cb=true}
 	self:addSkinFrame{obj=_G.OQLogBoard}
     -- LootContract frame
-    self:skinButton{obj=_G.LootContract.closepb, cb=true}
-    self:skinButton{obj=_G.LootContract.accept_but}
-    self:skinButton{obj=_G.LootContract.donot_but}
-    self:skinButton{obj=_G.LootContract.reject_but}
-    self:addSkinFrame{obj=_G.LootContract, kfs=true, nb=true}
-    
+    self:RegisterEvent("UPDATE_BATTLEFIELD_STATUS", function(...)
+        self:ScheduleTimer(function()
+            self:skinButton{obj=_G.LootContract.closepb, cb=true}
+            self:skinButton{obj=_G.LootContract.accept_but}
+            self:skinButton{obj=_G.LootContract.donot_but}
+            self:skinButton{obj=_G.LootContract.reject_but}
+            self:addSkinFrame{obj=_G.LootContract, kfs=true, nb=true}
+        end, 0.5)
+        self:UnregisterEvent("UPDATE_BATTLEFIELD_STATUS")
+    end)
 	-- TabPage1 (Premade)
 	self:SecureHook(_G.OQTabPage1, "Show", function(this)
 		skinKids(this)
@@ -239,7 +262,6 @@ function aObj:oQueue() -- v 1.8.6
 					end)
 				end
 				aObj:skinButton{obj=child.req_but, as=true}
-				-- aObj:skinButton{obj=child.unlist_but, as=true}
 			end
 		end
 
@@ -281,11 +303,11 @@ function aObj:oQueue() -- v 1.8.6
 	-- TabPage5 (Setup)
 	local function skinLists(tab, name)
 
-		for _, child in ipairs{tab:GetChildren()} do
-			if aObj:hasTextInName(child, strlower(name)) then
-				-- aObj:skinButton{obj=child.remove_but, as=true} -- use applySkin so text appears in the FG
-			end
-		end
+        -- for _, child in ipairs{tab:GetChildren()} do
+        --     if aObj:hasTextInName(child, strlower(name)) then
+        --         -- aObj:skinButton{obj=child.remove_but, as=true} -- use applySkin so text appears in the FG
+        --     end
+        -- end
 
 	end
 	self:SecureHook(_G.OQTabPage5, "Show", function(this)
@@ -329,7 +351,6 @@ function aObj:oQueue() -- v 1.8.6
 	local function checkWaitList()
 
 		for _, child in ipairs{_G.OQTabPage7List:GetChildren()} do
-			-- aObj:skinButton{obj=child.remove_but, as=true}
 			aObj:skinButton{obj=child.invite_but, as=true}
 			if child.ginvite_but then aObj:skinButton{obj=child.ginvite_but, as=true} end
 		end
