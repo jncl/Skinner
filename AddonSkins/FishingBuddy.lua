@@ -1,52 +1,46 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("FishingBuddy") then return end
+local _G = _G
 
 function aObj:FishingBuddy()
 
-	self:addSkinFrame{obj=FishingBuddyFrame, kfs=true, bgen=1, x1=10, y1=-13, x2=-31, y2=72} -- N.B. bgen=1 so locations frame mp buttons aren't skinned here
+	self:addSkinFrame{obj=_G.FishingBuddyFrame, kfs=true, ri=true, bgen=1, ofs=2, y2=-4} -- N.B. bgen=1 so locations frame mp buttons aren't skinned here
 
 -->>--	Locations Frame
-	self:keepFontStrings(FishingLocationsFrame)
-	self:keepFontStrings(FishingLocationExpandButtonFrame)
-	self:skinScrollBar{obj=FishingLocsScrollFrame}
+	self:keepFontStrings(_G.FishingLocationsFrame)
+	self:keepFontStrings(_G.FishingLocationExpandButtonFrame)
+	self:skinScrollBar{obj=_G.FishingLocsScrollFrame}
 	-- m/p buttons
 	if self.modBtns then
 		-- hook to manage changes to button textures
-		self:SecureHook(FishingBuddy.Locations, "Update", function(...)
+		self:SecureHook(_G.FishingBuddy.Locations, "Update", function(...)
 			for i = 1, 21 do
 				self:checkTex(_G["FishingLocations"..i])
 			end
-			self:checkTex(FishingLocationsCollapseAllButton)
+			self:checkTex(_G.FishingLocationsCollapseAllButton)
 		end)
 		-- skin location mp buttons
 		for i = 1, 21 do
 			self:skinButton{obj=_G["FishingLocations"..i], mp=true}
 		end
 		-- CollapseAll button
-		self:skinButton{obj=FishingLocationsCollapseAllButton, mp=true}
+		self:skinButton{obj=_G.FishingLocationsCollapseAllButton, mp=true}
 	end
 
 -->>--	Options Frame
-	self:keepFontStrings(FishingOptionsFrame)
-	if not FishingBuddyOption_EasyCastKeys then
-		self:SecureHook(FishingBuddy, "Initialize", function(this)
-			self:Debug("FB_Initialize")
-			self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
-			self:Unhook(FishingBuddy, "Initialize")
-		end)
-	else
-		self:skinDropDown{obj=FishingBuddyOption_EasyCastKeys}
-	end
-	self:skinDropDown{obj=FBOutfitManagerMenu}
+	self:keepFontStrings(_G.FishingOptionsFrame)
+	self:skinDropDown{obj=_G.FBOutfitManagerMenu}
+	self:skinDropDown{obj=_G.FBMouseEventMenu}
+	self:skinDropDown{obj=_G.FBEasyKeysMenu}
 	-- Pets
-	self:skinDropDown{obj=FishingPetFrame}
-	self:skinScrollBar{obj=FishingPetsMenu}
-	self:addSkinFrame{obj=FishingPetsMenuHolder, kfs=true}
+	self:skinDropDown{obj=_G.FishingPetFrame}
+	self:skinSlider{obj=_G.FishingPetsMenu.ScrollBar}
+	self:addSkinFrame{obj=_G.FishingPetsMenuHolder, kfs=true}
 
 	local tabObj, tabSF
 -->>-- FishingWatch Tab
-	self:keepRegions(FishingWatchTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
-	tabSF = self:addSkinFrame{obj=FishingWatchTab, noBdr=self.isTT, x1=2, y1=-4, x2=-2, y2=0}
+	self:keepRegions(_G.FishingWatchTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
+	tabSF = self:addSkinFrame{obj=_G.FishingWatchTab, noBdr=self.isTT, x1=2, y1=-4, x2=-2, y2=0}
 	if self.isTT then self:setActiveTab(tabSF) end
 
 -->>-- Tabs (side)
@@ -58,16 +52,16 @@ function aObj:FishingBuddy()
 	end
 
 -->>-- Tabs (bottom)
-	self:skinTabs{obj=FishingBuddyFrame}
+	self:skinTabs{obj=_G.FishingBuddyFrame}
 
 end
 
 if aObj:isAddonEnabled("FB_OutfitDisplayFrame") then
 	function aObj:FB_OutfitDisplayFrame()
 
-		self:keepFontStrings(FishingOutfitFrame)
-		self:skinButton{obj=FishingOutfitSwitchButton}
-		self:makeMFRotatable(FishingOutfitFrameModel)
+		self:keepFontStrings(_G.FishingOutfitFrame)
+		self:skinButton{obj=_G.FishingOutfitSwitchButton}
+		self:makeMFRotatable(_G.FishingOutfitFrameModel)
 
 	end
 end
@@ -75,8 +69,8 @@ end
 if aObj:isAddonEnabled("FB_TrackingFrame") then
 	function aObj:FB_TrackingFrame()
 
-		self:keepFontStrings(FishingTrackingFrame)
-		self:skinScrollBar{obj=FishingTrackingScrollFrame}
+		self:keepFontStrings(_G.FishingTrackingFrame)
+		self:skinScrollBar{obj=_G.FishingTrackingScrollFrame}
 
 	end
 end
