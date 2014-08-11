@@ -3,18 +3,23 @@ if not aObj:isAddonEnabled("oQueue") then return end
 local _G =_G
 local ipairs, strlower = _G.ipairs, _G.strlower
 
-function aObj:oQueue() -- v 1.8.6
+function aObj:oQueue() -- v 1.9.7
 
 	-- bugfix for version 1.6.1 (names are now lowercase)
-	_G.OQBRBDialog = _G.oqbrbdialog
-	_G.OQMarquee = _G.oqmarquee
-	_G.OQKarmaShield = _G.oqkarmashield
-	_G.OQBountyBoard = _G.oqbountyboard
-	_G.OQLogBoard = _G.oqlogboard
-	_G.OQTabPage2List =_G.oqtabpage2list
-	_G.OQTabPage5List =_G.oqtabpage5list
-	_G.OQTabPage6List =_G.oqtabpage6list
-	_G.OQTabPage7List =_G.oqtabpage7list
+	_G.OQBRBDialog      = _G.oqbrbdialog
+	_G.OQMarquee        = _G.oqmarquee
+	_G.OQKarmaShield    = _G.oqkarmashield
+	_G.OQBountyBoard    = _G.oqbountyboard
+	_G.OQLogBoard       = _G.oqlogboard
+	_G.OQTabPage2List   = _G.oqtabpage2list
+	_G.OQTabPage5List   = _G.oqtabpage5list
+	_G.OQTabPage6List   = _G.oqtabpage6list
+	_G.OQTabPage7List   = _G.oqtabpage7list
+	_G.Shade            = _G.shade
+	_G.OQLongTooltip    = _G.oqlongtooltip
+	_G.OQGenTooltip     = _G.oqgentooltip
+	_G.OQPMTooltip      = _G.oqpmtooltip
+	_G.OQPMTooltipExtra = _G.oqpmtooltipextra
 
 	local skinKids -- required to prevent reference error in the following local function
 	local function skinShadeChild(frame)
@@ -124,19 +129,13 @@ function aObj:oQueue() -- v 1.8.6
 		end
 
 	end
-	local function skinTooltip(from)
-		for _, child in _G.pairs{_G.UIParent:GetChildren()} do
-			if not child.sf
-			and (child.left and child.right)
-			or child.html
-			or child.note -- OQPMTooltipExtra
-			then
-				aObj:addSkinFrame{obj=child}
-				child.SetBackdrop = function() end
-				if child.emphasis_texture then child.emphasis_texture:SetTexture(nil) end
-				if child.splat then child.splat:SetTexture(nil) end
-			end
-		end
+	local function skinTooltip(ttip)
+
+		aObj:addSkinFrame{obj=ttip}
+		ttip.SetBackdrop = function() end
+		if ttip.emphasis_texture then ttip.emphasis_texture:SetTexture(nil) end
+		if ttip.splat then ttip.splat:SetTexture(nil) end
+
 	end
 
 	-- OQMarquee
@@ -148,8 +147,8 @@ function aObj:oQueue() -- v 1.8.6
 	self:addSkinFrame{obj=_G.OQMainFrame, kfs=true, nb=true, y2=-2}
 	-- find and skin the shade frame child if it's being displayed
 	self:ScheduleTimer(function()
-		if _G.shade then skinShadeChild(_G.shade._child) end
-	end, 1)
+		if _G.Shade then skinShadeChild(_G.Shade._child) end
+	end, 1.5)
 	-- Tabs
 	self:skinTabs{obj=_G.OQMainFrame}
 	-- KarmaShield
@@ -157,7 +156,7 @@ function aObj:oQueue() -- v 1.8.6
 	_G.OQKarmaShield.shield:SetAlpha(0)
 	self:skinButton{obj=_G.OQKarmaShield}
 	self:SecureHookScript(_G.OQKarmaShield, "OnEnter", function(this)
-		skinTooltip("ks")
+		skinTooltip(_G.OQLongTooltip)
 		self:Unhook(_G.OQKarmaShield, "OnEnter")
 	end)
 	-- BountyBoard
@@ -178,7 +177,7 @@ function aObj:oQueue() -- v 1.8.6
 	self:skinButton{obj=self:getChild(_G.OQLogBoard, 1), cb=true}
 	self:addSkinFrame{obj=_G.OQLogBoard}
     -- LootContract frame
-    self:RegisterEvent("UPDATE_BATTLEFIELD_STATUS", function(...)
+    self:RegisterEvent("PARTY_LOOT_METHOD_CHANGED", function(...)
         self:ScheduleTimer(function()
             self:skinButton{obj=_G.LootContract.closepb, cb=true}
             self:skinButton{obj=_G.LootContract.accept_but}
@@ -186,7 +185,7 @@ function aObj:oQueue() -- v 1.8.6
             self:skinButton{obj=_G.LootContract.reject_but}
             self:addSkinFrame{obj=_G.LootContract, kfs=true, nb=true}
         end, 0.5)
-        self:UnregisterEvent("UPDATE_BATTLEFIELD_STATUS")
+        self:UnregisterEvent("PARTY_LOOT_METHOD_CHANGED")
     end)
 	-- TabPage1 (Premade)
 	self:SecureHook(_G.OQTabPage1, "Show", function(this)
@@ -204,7 +203,7 @@ function aObj:oQueue() -- v 1.8.6
 				and not aObj:IsHooked(child, "OnEnter")
 				then
 					aObj:SecureHookScript(child, "OnEnter", function(this)
-						skinTooltip("cp")
+						skinTooltip(_G.OQPMTooltip)
 						OQtt = true
 						aObj:Unhook(child, "OnEnter")
 					end)
@@ -237,6 +236,7 @@ function aObj:oQueue() -- v 1.8.6
 		end
 	end)
 	-- TabPage2 (Find Premade)
+	local OQPMtt, OQGENtt
 	local function checkList()
 
 		for _, child in ipairs{_G.OQTabPage2List:GetChildren()} do
@@ -247,7 +247,7 @@ function aObj:oQueue() -- v 1.8.6
 				and not aObj:IsHooked(child, "OnEnter")
 				then
 					aObj:SecureHookScript(child, "OnEnter", function(this)
-						skinTooltip("cl-pm")
+						skinTooltip(_G.OQPMTooltipExtra)
 						OQPMtt = true
 						aObj:Unhook(child, "OnEnter")
 					end)
@@ -256,7 +256,7 @@ function aObj:oQueue() -- v 1.8.6
 				and not aObj:IsHooked(child.unlist_but, "OnEnter")
 				then
 					aObj:SecureHookScript(child.unlist_but, "OnEnter", function(this)
-						skinTooltip("cl-gen")
+						skinTooltip(_G.OQGenTooltip)
 						OQGENtt = true
 						aObj:Unhook(child.unlist_but, "OnEnter")
 					end)
@@ -288,8 +288,6 @@ function aObj:oQueue() -- v 1.8.6
 			self:Unhook(_G.OQTabPage2, "Show")
 		end)
 	end
-	local OQPMtt, OQGENtt
-
 	-- TabPage3 (Create Premade)
 	self:SecureHook(_G.OQTabPage3, "Show", function(this)
 		skinKids(this)
