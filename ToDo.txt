@@ -8,46 +8,5 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	I	IOF Buttons
-		- are being skinned twice on some panels (AceGUI ones ?)
-		- issue is with buttons that have been 'flowed'
-		- reused AceGUI buttons sometimes still have a frame when they become check buttons
-
-	I	reported by Excitor0, 15.10.12
-		- Gradient doesn't completely fill frames/tabs etc
-
-?	I	ScrollArrow textures
-		- replace scroll up & down arrows with action bar change arrows (enabled & disabled versions)
-
-	I	Test UI with default scale
-
-	O   WoD Beta (27.06.14) V6.0.1 18
-		- NEW frames
-			- What's New Panel when entering world for the first time & button on Game Menu
-			- GarrisonUI
-			- Quest Choice ?
-			- TokenUI ?
-			- Adventure Guide
-			-
-		- UPD frames
-			- Player Frame, slots now have a quality border
-			- Map & Quests frame, inc Help overlays
-			- Premade Groups in Dungeon & Raid Finder
-			- Containers (Bags)
-				- settings gearwheel & menu
-				- Clean Up Bags button
-			- Key Bindings now are split into categories
-			- Bank now has a Reagent Bank Tab
-			- Collections (was Pet Journal)
-				- Mounts (NEW Summon Random Favourite Mount Button)
-				- Pet Journal (NEW Battle Pet Achievement total and shield at top of panel)
-				- Toy Box (inc Heirlooms)
-			-
-		- DEL
-			- Reforging
-			-
-
-	I   oQueue, reported by chrisgriffith25, 13.07.14
-√		- LootContract frame, add timer to allow for screen to appear
-√		- new tooltip for karma button
-√		- new raffle panel
+	I   oQueue
+√		- LootContract frame, changed to trigger on event
