@@ -1,37 +1,10 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("ElvUI") then return end
-local E, C, L
+local E, L, V, P, G
 
-function aObj:ElvUI()
+function aObj:ElvUI() -- 6.99995
 
-    E, C, L = unpack(ElvUI)
--->>-- Bags
-	if C["others"].enablebag == true then
-		self:SecureHook(Stuffing, "CreateBagFrame", function(this, bType)
-			self:skinButton{obj=_G["Stuffing_CloseButton"..bType], cb=true}
-		end)
-		self:skinEditBox{obj=StuffingFrameBags.editbox}
-		StuffingFrameBags.editbox:ClearAllPoints()
-		StuffingFrameBags.editbox:SetPoint("topleft", StuffingFrameBags, "topleft", 12, -9)
-		StuffingFrameBags.editbox:SetPoint("bottomright", StuffingFrameBags, "topright", -40, -28)
-		self:skinButton{obj=StuffingFrameBags.b_close, cb=true}
-	end
-
--->>-- Chat Copy frame
-	if C["chat"].enable then
-		for i = 1, NUM_CHAT_WINDOWS do
-			self:SecureHookScript(_G["ButtonCF"..i], "OnClick", function(this)
-				 -- stop animations otherwise the text doesn't show
-				CopyFrame.anim:Stop()
-				CopyFrame.anim_o:Stop()
-				self:skinButton{obj=CopyCloseButton, cb=true}
-				self:skinScrollBar{obj=CopyScroll}
-				for i = 1, NUM_CHAT_WINDOWS do
-					self:Unhook(_G["ButtonCF"..i], "OnClick")
-				end
-			end)
-		end
-	end
+	-- E, L, V, P, G = unpack(_G.ElvUI)
 
 end
 
@@ -40,9 +13,9 @@ function aObj:ElvUIInit()
 
 	local borderr, borderg, borderb, backdropr, backdropg, backdropb
     if IsAddOnLoaded("ElvUI") then
-        E, C, L = unpack(ElvUI)
-       	borderr, borderg, borderb = unpack(C.media.bordercolor)
-        backdropr, backdropg, backdropb = unpack(C.media.backdropcolor)
+		E, L, V, P, G = unpack(_G.ElvUI)
+       	borderr, borderg, borderb = unpack(E.media.bordercolor)
+        backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
     else
         borderr, borderg, borderb = 0.6, 0.6, 0.6
         backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
@@ -56,13 +29,13 @@ function aObj:ElvUIInit()
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures if required
-		if not C.media.blank then
+		if not E.media.blank then
 			self.LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
 		end
-		if not C.media.glowTex then
+		if not E.media.glowTex then
 			self.LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex.tga]])
 		end
-		if not C.media.normTex then
+		if not E.media.normTex then
 			self.LSM:Register("statusbar","ElvUI Norm", [[Interface\AddOns\ElvUI\media\textures\normTex.tga]])
 		end
 
@@ -92,8 +65,11 @@ function aObj:ElvUIInit()
 			self.db.profile.WorldMap = {skin = false, size = 1}
 		end
 		-- class colours
-		self.db.profile.ClassColours = C.general.classcolortheme
+		self.db.profile.ClassColours = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
 
+		-- replace removeRegions function by rmRegionsTex function as several frames have had Textures removed/Fontstrings added
+		self.removeRegions = self.rmRegionsTex
+		
 		-- run the function
 		self.hooks[this].OnInitialize(this)
 
@@ -113,9 +89,9 @@ function aObj:ElvUIInit()
 			local yOfs1 = (opts.y1 or 0) - 3
 			local xOfs2 = (opts.x2 or 0) - 4
 			local yOfs2 = (opts.y2 or 0) + 3
-			self.skinFrame[opts.obj]:ClearAllPoints()
-			self.skinFrame[opts.obj]:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
-			self.skinFrame[opts.obj]:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+			opts.obj.sf:ClearAllPoints()
+			opts.obj.sf:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
+			opts.obj.sf:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 		end
 	end)
 	-- hook to ignore Shapeshift button skinning

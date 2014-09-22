@@ -3,23 +3,31 @@ if not aObj:isAddonEnabled("oQueue") then return end
 local _G =_G
 local ipairs, strlower = _G.ipairs, _G.strlower
 
-function aObj:oQueue() -- v 1.9.7
+function aObj:oQueue() -- v 2.0.1
 
 	-- bugfix for version 1.6.1 (names are now lowercase)
-	_G.OQBRBDialog      = _G.oqbrbdialog
-	_G.OQMarquee        = _G.oqmarquee
-	_G.OQKarmaShield    = _G.oqkarmashield
-	_G.OQBountyBoard    = _G.oqbountyboard
-	_G.OQLogBoard       = _G.oqlogboard
-	_G.OQTabPage2List   = _G.oqtabpage2list
-	_G.OQTabPage5List   = _G.oqtabpage5list
-	_G.OQTabPage6List   = _G.oqtabpage6list
-	_G.OQTabPage7List   = _G.oqtabpage7list
-	_G.Shade            = _G.shade
-	_G.OQLongTooltip    = _G.oqlongtooltip
-	_G.OQGenTooltip     = _G.oqgentooltip
-	_G.OQPMTooltip      = _G.oqpmtooltip
+	_G.OQBRBDialog		= _G.oqbrbdialog
+	_G.OQMarquee		= _G.oqmarquee
+	_G.OQKarmaShield	= _G.oqkarmashield
+	_G.OQBountyBoard	= _G.oqbountyboard
+	_G.OQLogBoard		= _G.oqlogboard
+	_G.OQTabPage2List	= _G.oqtabpage2list
+	_G.OQTabPage5List	= _G.oqtabpage5list
+	_G.OQTabPage6List	= _G.oqtabpage6list
+	_G.OQTabPage7List	= _G.oqtabpage7list
+
+	_G.OQLongTooltip	= _G.oqlongtooltip
+	_G.OQGenTooltip		= _G.oqgentooltip
+	_G.OQPMTooltip		= _G.oqpmtooltip
 	_G.OQPMTooltipExtra = _G.oqpmtooltipextra
+
+	-- Shade children
+	-- _badtag
+	-- _banned
+	-- _beg
+	-- _bnetdown
+	-- _help
+	-- _hint
 
 	local skinKids -- required to prevent reference error in the following local function
 	local function skinShadeChild(frame)
@@ -43,14 +51,6 @@ function aObj:oQueue() -- v 1.9.7
 			and aObj:hasTextInName(child, strlower(pName .. "Button"))
 			then
 				aObj:skinButton{obj=child}
-				aObj:SecureHookScript(child, "OnEnter", function(this)
-					if _G[strlower("OQGenTooltip")]
-					and not _G[strlower("OQGenTooltip")].sf
-					then
-						aObj:addSkinFrame{obj=_G[strlower("OQGenTooltip")]}
-					end
-					aObj:Unhook(child, "OnEnter")
-				end)
 				-- check for BRB button
 				if parent == _G.OQTabPage1
 				and aObj:getInt(child:GetWidth()) == 100
@@ -80,36 +80,36 @@ function aObj:oQueue() -- v 1.9.7
 					end
 					aObj:Unhook(child, "OnClick")
 				end)
-            elseif child:IsObjectType("Button")
-            and aObj:hasTextInTexture(self:getRegion(child, 1), strlower("help-i"), true)
-            then
-                -- skin the helperbox
-                aObj:SecureHookScript(child, "OnClick", function(this)
-                    if not _G.helperbox.sf then
-                        skinShadeChild(_G.helperbox)
-                    end
-                    aObj:Unhook(child, "OnClick")
-                end)
-            elseif child:IsObjectType("Button")
-            and aObj:hasTextInName(child, "OQKarmaButton")
-            then
-                -- skin the karma dropdown
-                aObj:SecureHookScript(child, "OnClick", function(this)
-                    if not _G.oqmenu.sf then
-                        self:addSkinFrame{obj=_G.oqmenu}
-                    end
-                    aObj:Unhook(child, "OnClick")
-                end)
-            elseif child:IsObjectType("Button")
-            and aObj:hasTextInName(child, "OQRaffleButton")
-            then
-                -- skin the raffle frame
-                aObj:SecureHookScript(child, "OnClick", function(this)
-                    if not _G.rafflebox.sf then
-                        skinShadeChild(_G.rafflebox)
-                    end
-                    aObj:Unhook(child, "OnClick")
-                end)
+			elseif child:IsObjectType("Button")
+			and aObj:hasTextInTexture(self:getRegion(child, 1), strlower("help-i"), true)
+			then
+				-- skin the helperbox
+				aObj:SecureHookScript(child, "OnClick", function(this)
+					if not _G.helperbox.sf then
+						skinShadeChild(_G.helperbox)
+					end
+					aObj:Unhook(child, "OnClick")
+				end)
+			elseif child:IsObjectType("Button")
+			and aObj:hasTextInName(child, "OQKarmaButton")
+			then
+				-- skin the karma dropdown
+				aObj:SecureHookScript(child, "OnClick", function(this)
+					if not _G.oqmenu.sf then
+						self:addSkinFrame{obj=_G.oqmenu}
+					end
+					aObj:Unhook(child, "OnClick")
+				end)
+			elseif child:IsObjectType("Button")
+			and aObj:hasTextInName(child, "OQRaffleButton")
+			then
+				-- skin the raffle frame
+				aObj:SecureHookScript(child, "OnClick", function(this)
+					if not _G.rafflebox.sf then
+						skinShadeChild(_G.rafflebox)
+					end
+					aObj:Unhook(child, "OnClick")
+				end)
 			elseif child:IsObjectType("EditBox") then
 				aObj:skinEditBox{obj=child, regs={9}}
 			elseif child:IsObjectType("ScrollFrame")
@@ -147,8 +147,8 @@ function aObj:oQueue() -- v 1.9.7
 	self:addSkinFrame{obj=_G.OQMainFrame, kfs=true, nb=true, y2=-2}
 	-- find and skin the shade frame child if it's being displayed
 	self:ScheduleTimer(function()
-		if _G.Shade then skinShadeChild(_G.Shade._child) end
-	end, 1.5)
+		if _G.shade then skinShadeChild(_G.shade._child) end
+	end, 2)
 	-- Tabs
 	self:skinTabs{obj=_G.OQMainFrame}
 	-- KarmaShield
@@ -176,17 +176,17 @@ function aObj:oQueue() -- v 1.9.7
 	_G.OQLogBoard.backdrop_texture:SetTexture(nil)
 	self:skinButton{obj=self:getChild(_G.OQLogBoard, 1), cb=true}
 	self:addSkinFrame{obj=_G.OQLogBoard}
-    -- LootContract frame
-    self:RegisterEvent("PARTY_LOOT_METHOD_CHANGED", function(...)
-        self:ScheduleTimer(function()
-            self:skinButton{obj=_G.LootContract.closepb, cb=true}
-            self:skinButton{obj=_G.LootContract.accept_but}
-            self:skinButton{obj=_G.LootContract.donot_but}
-            self:skinButton{obj=_G.LootContract.reject_but}
-            self:addSkinFrame{obj=_G.LootContract, kfs=true, nb=true}
-        end, 0.5)
-        self:UnregisterEvent("PARTY_LOOT_METHOD_CHANGED")
-    end)
+	-- LootContract frame
+	self:RegisterEvent("PARTY_LOOT_METHOD_CHANGED", function(...)
+		self:ScheduleTimer(function()
+			self:skinButton{obj=_G.LootContract.closepb, cb=true}
+			self:skinButton{obj=_G.LootContract.accept_but}
+			self:skinButton{obj=_G.LootContract.donot_but}
+			self:skinButton{obj=_G.LootContract.reject_but}
+			self:addSkinFrame{obj=_G.LootContract, kfs=true, nb=true}
+		end, 0.5)
+		self:UnregisterEvent("PARTY_LOOT_METHOD_CHANGED")
+	end)
 	-- TabPage1 (Premade)
 	self:SecureHook(_G.OQTabPage1, "Show", function(this)
 		skinKids(this)
@@ -301,11 +301,11 @@ function aObj:oQueue() -- v 1.9.7
 	-- TabPage5 (Setup)
 	local function skinLists(tab, name)
 
-        -- for _, child in ipairs{tab:GetChildren()} do
-        --     if aObj:hasTextInName(child, strlower(name)) then
-        --         -- aObj:skinButton{obj=child.remove_but, as=true} -- use applySkin so text appears in the FG
-        --     end
-        -- end
+		-- for _, child in ipairs{tab:GetChildren()} do
+		--	   if aObj:hasTextInName(child, strlower(name)) then
+		--		   -- aObj:skinButton{obj=child.remove_but, as=true} -- use applySkin so text appears in the FG
+		--	   end
+		-- end
 
 	end
 	self:SecureHook(_G.OQTabPage5, "Show", function(this)
