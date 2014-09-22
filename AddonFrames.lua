@@ -92,6 +92,7 @@ function aObj:BlizzardFrames()
 			["AuthChallengeUI"] = false, -- N.B. cannot be skinned
 			["AutoComplete"] = true,
 			["BNFrames"] = true,
+			["ChatBubbles"] = true,
 			["ChatButtons"] = true,
 			["ChatConfig"] = true,
 			["ChatEditBox"] = true,

@@ -434,6 +434,31 @@ function aObj:ChallengesUI() -- LoD
 
 end
 
+function aObj:ChatBubbles()
+	if not self.db.profile.ChatBubbles or self.initialized.ChatBubbles then return end
+	self.initialized.ChatBubbles = true
+
+	local cbTmr
+	local function skinChatBubbles()
+
+		local kids = {_G.WorldFrame:GetChildren()}
+		for _, child in _G.ipairs(kids) do
+			if aObj:hasTextInTexture(aObj:getRegion(child, 1), "ChatBubble-Background", true) then
+				aObj:applySkin{obj=child, ft=ftype, kfs=true} -- use apply skin otherwise text is behind
+				aObj:CancelTimer(cbTmr, true)
+				cbTmr = nil
+			end
+		end
+		kids = _G.null
+
+	end
+
+	cbTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.2)
+
+end
+
+
+
 function aObj:ChatButtons()
 	if not self.db.profile.ChatButtons or self.initialized.ChatButtons then return end
 	self.initialized.ChatButtons = true
