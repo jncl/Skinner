@@ -305,6 +305,7 @@
 <script file="SkinMe\Tablet.lua"/>
 <script file="SkinMe\Talented.lua"/>
 <script file="SkinMe\TargetAnnounce.lua"/>
+<script file="SkinMe\TargetCharms.lua"/>
 <script file="SkinMe\tekBlocks.lua"/>
 <script file="SkinMe\tekDebug.lua"/>
 <script file="SkinMe\tekErr.lua"/>

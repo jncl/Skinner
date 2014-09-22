@@ -187,7 +187,7 @@ local addonSkins = {
 	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper", "QuestHelper2", "QuestHistory", "QuickMark",
 	"RABuffs", "RaidAchievement", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidRoll", "RaidRoll_LootTracker", "RaidTracker", "RaidyCheck", "RandomPet30", "RAQ", "ReagentRestocker", "Recap", "RecipeBook", "RecipeRadar", "Recount", "REFlex", "ReforgeLite", "Reforgenator", "Reforgerade", "RicoMiniMap",
 	"SayGMOTD", "ScrollMaster", "ShadowDancer3", "sienasGemViewer", "SilverDragon", "Skada", "Skillet", "Smoker", "SmoothQuest", "SnapShot", "SorhaQuestLog", "Spew", "Squeenix", "sRaidFrames", "StaggerMeter",
-	"tabDB", "Talented", "TargetAnnounce", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "TourGuide", "TradeSkillMaster", "TrinketBar", "Tukui", "TwinValkyr_shieldmonitor",
+	"tabDB", "Talented", "TargetAnnounce", "TargetCharms", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "TourGuide", "TradeSkillMaster", "TrinketBar", "Tukui", "TwinValkyr_shieldmonitor",
 	"UberQuest", "UrbanAchiever",
 	"vBagnon", "Vendorizer", "Vendomatic", "VendorSearch", "Violation", "Visor2_GUI", "Volumizer", "VuhDo", "VuhDoOptions",
 	"Warden", "WeakAuras", "WebDKP", "Wholly", "WIM", "WoWEquip", "WowLua", "WoWPro", "WTFLatencyMeter",
