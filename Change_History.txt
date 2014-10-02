@@ -1,3 +1,11 @@
+b5.18414.6
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated ElvUI & oQueue skins
+	Skinned ChatBubbles
+	Skinned TargetCharms
+
 b5.18414.5
 Jncl:
 	ToDo.txt
