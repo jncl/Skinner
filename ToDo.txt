@@ -9,9 +9,5 @@ Legend:
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
 
-x	N	oQueue, reported by chrisgriffith25, 12.09.14
-
-√	S	TargetCharms, requested by Alcotraz, 12.09.14
-
-√	S	Chat Bubble skinning, requested by Alcotraz, 12.09.14
-		- ElvUI can do this
+≈	I	oQueue, reported by gamemaster128, 01.10.14
+		- Skinner\SkinMe\oQueue-2.0.1.lua:182: attempt to index field 'LootContract' (a nil value)
