@@ -178,12 +178,16 @@ function aObj:oQueue() -- v 2.0.1
 	self:addSkinFrame{obj=_G.OQLogBoard}
 	-- LootContract frame
 	self:RegisterEvent("PARTY_LOOT_METHOD_CHANGED", function(...)
-		self:ScheduleTimer(function()
-			self:skinButton{obj=_G.LootContract.closepb, cb=true}
-			self:skinButton{obj=_G.LootContract.accept_but}
-			self:skinButton{obj=_G.LootContract.donot_but}
-			self:skinButton{obj=_G.LootContract.reject_but}
-			self:addSkinFrame{obj=_G.LootContract, kfs=true, nb=true}
+		local lcTmr = self:ScheduleRepeatingTimer(function()
+			if _G.LootContract then
+				self:skinButton{obj=_G.LootContract.closepb, cb=true}
+				self:skinButton{obj=_G.LootContract.accept_but}
+				self:skinButton{obj=_G.LootContract.donot_but}
+				self:skinButton{obj=_G.LootContract.reject_but}
+				self:addSkinFrame{obj=_G.LootContract, kfs=true, nb=true}
+				self:CancelTimer(lcTmr, true)
+				lcTmr = nil
+			end
 		end, 0.5)
 		self:UnregisterEvent("PARTY_LOOT_METHOD_CHANGED")
 	end)
