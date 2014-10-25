@@ -8,6 +8,162 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-
-≈	I	oQueue, reported by gamemaster128, 01.10.14
-		- Skinner\SkinMe\oQueue-2.0.1.lua:182: attempt to index field 'LootContract' (a nil value)
+	O   WoD Beta (21.10.14) V6.0.3 19057
+√		- TOC now 60000
+		- NEW frames
+x			- TokenUI ?
+√			- Bonus Objectives Rewards Frame
+≈			- Loot Upgrade Alert Frames
+			- GarrisonUI (LoD)
+√				- GarrisonBuildingUI
+√				- GarrisonMissionUI
+√				- GarrisonLandingPage
+√				- GarrisonCapacitiveDisplay
+√				- GarrisonMonumentUI
+					- Monuments alert frame ?
+√				- GarrisonRecruiterUI
+√			- FloatingGarrisonFollowerTooltip
+√			- GarrisonFollowerTooltip
+√			- GarrisonFollower/GarrisonBuilding/GarrisonMission alert frames
+			- ObjectiveTrackerFrame replacing WatchFrame
+				- ScenarioBlocks
+√					- ScenarioObjectiveBlock
+√					- ScenarioStageBlock
+					- ScenarioChallengeModeBlock
+√					- ScenarioProvingGroundsBlock
+			- DraenorZoneAbility
+√				- DraenorZoneAbilityButtonAlert
+√			- SplashFrame a.k.a. What's New'
+√			- AddonList
+		- UPD frames
+√			- PlayerPowerBarAlt
+			- Player Frame
+√				- items have a quality border
+			- Map & Quests frame
+√				- inc Help overlays
+			- Dungeon & Raid Finder
+√				- Premade Groups
+			- Containers (Bags)
+x				- settings dropdown
+√				- Clean Up Bags button
+√				- items have a quality border
+x				- bags higher
+√				- BagHelpBox
+√				- add gearwheel icon to indicate settings
+			- Key Bindings
+√				 - split into categories
+			- Bank
+√				 - has 2 tabs, BankSlotsFrame & ReagentBankFrame
+√				 - items have a quality border
+√				 - has auto sort function
+			- Loot Alert frame
+√				 - new texture (PvPBackground)
+			- Alternate Power Bar
+x				 - two new font strings
+			- AudioOptionsFrame
+x				- UIPanelButtonTemplate replaced by GlueButtonSmallTemplateBlue
+			- AudioOptionsPanels
+x				- UIDropDownMenu_* replaced by GlueDropDownMenu_*
+x				- lots of functions removed
+x				- GameTooltip:* replaced by GlueTooltip:*
+x				- GameFontNormalSmall replaced by OptionsFontSmall
+x				- lots of objects removed
+			- AuctionUI
+√				- items have a quality border
+x				- new BrowseResetButton
+√			- EclipseBarFrame
+			- EquipmentFlyout
+√				- items have a quality border
+			- EquipmentManager
+√				- items have a quality border
+x			- FriendsFrame
+			- GameMenuFrame
+x				- Added WhatsNew button
+			- GameTooltip
+√				- removed ShoppingTooltip3
+x			- GuildInviteFrame
+x			- HelpFrame
+?			- InterfaceOptionsPanels
+			- ItemButtonTemplate
+√				- added IconBorder
+x				- added SmallItemButtonTemplate
+			- ItemRef
+√				- removed ItemRefShoppingTooltip3
+√			- LFDFrame
+√			- LFGFrame
+√			- LFRFrame
+			- LevelUpDisplay
+x				- added SpellBucketFrame
+√				- added DraenorTalentFrame
+			- Loot frames
+√				- items have a quality border
+x				- BonusRollLootWonFrame now a button instead of a frame
+x			- LossOfControlFrame
+			- MailFrame
+√				- items have a quality border
+x			- MainMenuBar
+√			- MainMenuBarBagButtons
+√			- MainMenuBarMicroButtons
+x			- MapBar
+x			- Minimap
+x			- MonkHarmonyBar
+x			- MovieFrame
+x			- MultiActionBars
+x			- NavigationBar
+x			- OptionsFrameTemplates
+x			- OptionsPanelTemplates
+√			- PVEFrame
+x			- PVPHelper
+√			- PaperDollFrame
+x			- PartyFrameTemplates
+x			- PetFrame
+√			- PlayerFrame
+√			- PriestBar
+x			- QuestFrameTemplates
+√			- QuestInfo
+x			- QuestPOI
+x			- QueueStatusFrame
+√			- RaidFinder
+x			- RaidFrame
+x			- ReputationFrame
+x			- SpellBookFrame
+x			- StanceBar
+√			- TargetFrame
+x			- UIDropDownMenuTemplates
+x			- UIPanelTemplates
+x			- VideoOptionsFrame
+√			- VideoOptionsPanels
+√			- WorldMapFrame
+x			- WorldMapFrameTemplates
+x			- WorldStateFrame
+√			- System --> Graphics Options
+√			- Encounter Journal
+			- GlyphUI
+				- remove rings ?
+			- GuildBankUI
+√				- items have a quality border
+x			- GuildNews
+√			- GuildUI
+√			- InspectGuildFrame
+√			- InspectTalentFrame
+			- TalentUI
+√				- extra talent row (100)
+√			- Blizzard_LookingForGuildUI
+			- Blizzard_PetJournal
+√				- Mounts (NEW Summon Random Favourite Mount Button)
+√				- Pet Journal (NEW Battle Pet Achievement total and shield at top of panel)
+√				- Toy Box (inc Heirlooms)
+√			- Blizzard_PVPUI
+?			- Blizzard_QuestChoice
+√			- Blizzard_TalentUI
+			- Blizzard_TradeSkillUI
+x				- lock icon added
+			- Blizzard_VoidStorageUI
+√				- items have a quality border
+√				- 2 tabs
+		- DEL
+?			- AnimTimerFrame
+√			- QuestLogFrame replaced by QuestMapFrame
+√			- Reforging
+√			- FlexRaidFrame replaced by LFGList
+√			- WatchFrame replaced by ObjectiveTrackerFrame
