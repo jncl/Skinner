@@ -66,18 +66,20 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("pl", function(msg) _G.print(msg, "is", _G.gsub(select(2, _G.GetItemInfo(msg)), "|", "||"))	end)
 	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
 	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("si", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus(), true, false) end)
-	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus(), true, true) end) -- detailed
-	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus(), false, false) end) -- brief
-	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent(), true, false) end)
-	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent(), false, false) end)
-	self:RegisterChatCommand("sigp", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent():GetParent(), true, false) end)
-	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(_G[msg] or _G.GetMouseFocus():GetParent():GetParent(), false, false) end)
-	self:RegisterChatCommand("gp", function(msg) _G.print(_G.GetMouseFocus():GetPoint()) end)
-	self:RegisterChatCommand("gpp", function(msg) _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
-	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, _G[msg] or _G.GetMouseFocus()) end)
-	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, _G[msg] or _G.GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, _G[msg] or _G.GetMouseFocus():GetParent():GetParent()) end)
+	self:RegisterChatCommand("si", function(msg) self:ShowInfo(msg or _G.GetMouseFocus(), true, false) end)
+	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(msg or _G.GetMouseFocus(), true, true) end) -- detailed
+	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(msg or _G.GetMouseFocus(), false, false) end) -- brief
+	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(msg or _G.GetMouseFocus():GetParent(), true, false) end)
+	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(msg or _G.GetMouseFocus():GetParent(), false, false) end)
+	self:RegisterChatCommand("sigp", function(msg) self:ShowInfo(msg or _G.GetMouseFocus():GetParent():GetParent(), true, false) end)
+	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(msg or _G.GetMouseFocus():GetParent():GetParent(), false, false) end)
+	self:RegisterChatCommand("gp", function() _G.print(_G.GetMouseFocus():GetPoint()) end)
+	self:RegisterChatCommand("gpp", function() _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
+	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, msg or _G.GetMouseFocus()) end)
+	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, msg or _G.GetMouseFocus():GetParent()) end)
+	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, msg or _G.GetMouseFocus():GetParent():GetParent()) end)
+
+	self:RegisterChatCommand("wai", function() SetMapToCurrentZone() local x,y=GetPlayerMapPosition("player") DEFAULT_CHAT_FRAME:AddMessage(format("%s, %s: %.1f, %.1f",GetZoneText(),GetSubZoneText(),x*100,y*100)) return end)
 
 end
 function aObj:printTS(...)
@@ -420,12 +422,21 @@ function aObj:hasTextInTexture(obj, text, plain)
 
 end
 
+addonInfo, character = {}, UnitName("player")
 function aObj:isAddonEnabled(addonName)
 --@alpha@
 	assert(addonName, "Unknown object isAddonEnabled\n" .. debugstack())
 --@end-alpha@
 
-	return (select(4, _G.GetAddOnInfo(addonName))) or _G.IsAddOnLoadOnDemand(addonName) -- handle LoD Addons (config mainly)
+	-- populate addon Info table first time through
+	if #addonInfo == 0 then
+		for i = 1, _G.GetNumAddOns() do
+			addonInfo[(select(1, _G.GetAddOnInfo(i)))] = i
+		end
+	end
+	if addonInfo[addonName] then
+		return (_G.GetAddOnEnableState(character, addonInfo[addonName]) > 0) or _G.IsAddOnLoadOnDemand(addonName)
+	end
 
 end
 
@@ -506,7 +517,6 @@ function aObj:resizeEmptyTexture(texture)
 end
 
 function aObj:scanUIParentsChildren()
-	-- self:Debug("scanUIParentsChildren")
 
 	-- scan through all UIParent's children, firing events for each one
 	-- this allows skins to check the children as required
@@ -574,7 +584,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 	local function getRegions(obj, lvl)
 
 		for k, reg in ipairs{obj:GetRegions()} do
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self:getInt(reg:GetWidth()) or "nil", reg.GetHeight and self:getInt(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
+			showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self:getInt(reg:GetWidth()) or "nil", reg.GetHeight and self:getInt(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
@@ -582,19 +592,19 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 	local function getChildren(frame, lvl)
 
 		if not showKids then return end
-		if type(lvl) == "string" and lvl:find("-") == 2 and noDepth then return end
+		if type(lvl) == "string" and lvl:find("c") == 2 and noDepth then return end
 
 		for k, child in ipairs{frame:GetChildren()} do
 			local objType = child:GetObjectType()
-			showIt("[lvl%s-%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and aObj:getInt(child:GetWidth()) or "nil", child.GetHeight and aObj:getInt(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
+			showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and aObj:getInt(child:GetWidth()) or "nil", child.GetHeight and aObj:getInt(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 			if objType == "Frame"
 			or objType == "Button"
 			or objType == "StatusBar"
 			or objType == "Slider"
 			or objType == "ScrollFrame"
 			then
-				getRegions(child, lvl .. "-" .. k)
-				getChildren(child, lvl .. "-" .. k)
+				getRegions(child, lvl .. "c" .. k)
+				getChildren(child, lvl .. "c" .. k)
 			end
 		end
 

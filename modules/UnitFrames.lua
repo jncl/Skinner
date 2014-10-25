@@ -12,6 +12,7 @@ local defaults = {
 		party = false,
 		pet = false,
 		petlevel = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and false or nil,
+		petspec = (aObj.uCls == "HUNTER") and true or nil,
 		player = false,
 		target = false,
 	}
@@ -101,11 +102,14 @@ local function skinPlayerF()
 		-- move PvP Timer text down
 		aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 		-- move level & rest icon down, so they are more visible
-		aObj:moveObject{obj=_G.PlayerLevelText, y=lOfs - 1}
-		aObj:moveObject{obj=_G.PlayerRestIcon, y=lOfs} -- covers level text when resting
+		aObj:RawHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
+			_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -17 + lOfs)
+		end, true)
+		_G.PlayerRestIcon:SetPoint("TOPLEFT", 39, -60)
 		-- remove group indicator textures
 		aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
 		aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
+
 		--	skin the TotemFrame
 		for i = 1, _G.MAX_TOTEMS do
 			_G["TotemFrameTotem" .. i .. "Background"]:SetAlpha(0)
@@ -126,8 +130,7 @@ local function skinPlayerF()
 			_G.PlayerFrameAlternateManaBar.DefaultBorderRight:SetTexture(nil)
 			aObj:glazeStatusBar(_G.PlayerFrameAlternateManaBar, 0)
 			_G.EclipseBarFrameBar:Hide()
-			_G.EclipseBarFrame.sunBar:Hide()
-			_G.EclipseBarFrame.moonBar:Hide()
+			_G.EclipseBarFrame:DisableDrawLayer("ARTWORK") -- Sun/Moon from Balance spec.
 		end
 		-- skin the ShardBarFrame/DemonicFuryBarFrame/BurningEmbersBarFrame, if required
 		if aObj.uCls == "WARLOCK" then
@@ -168,9 +171,11 @@ local function skinPlayerF()
 		-- skin the BarFrame, if required
 		if aObj.uCls == "PRIEST" then
 			_G.PriestBarFrame:DisableDrawLayer("BACKGROUND")
-			aObj:moveObject{obj=_G.PriestBarFrame.orb1, y=6}
-			for i = 1, 3 do
-				_G.PriestBarFrame["orb" .. i].highlight:SetTexture(nil) -- remove capping texture
+			for i = 1, #_G.PriestBarFrame.LargeOrbs do
+				_G.PriestBarFrame.LargeOrbs[i].Highlight:SetTexture(nil)
+			end
+			for i = 1, #_G.PriestBarFrame.SmallOrbs do
+				_G.PriestBarFrame.SmallOrbs[i].Highlight:SetTexture(nil)
 			end
 		end
 
@@ -194,37 +199,33 @@ local function skinPetF()
 		adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 		aObj:glazeStatusBar(_G.PetFrameManaBar, 0)
 		-- casting bar handled in CastingBar function (UIE1)
-		aObj:moveObject{obj=_G.PetFrame, x=28, y=-3} -- align under Player Health/Mana bars
+		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
 		-- skin the PetFrame
-		addBackground{obj=_G.PetFrame, y1=-1, x2=-4}
+		addBackground{obj=_G.PetFrame, x1=5, y1=-2, x2=-4, y2=6}
 		fixThreat(_G.PetFrameFlash, 128, 53)
 		-- remove debuff border
 		for i = 1, 4 do
 			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
 		end
 	end
-	-- Add Pet's Level to frame if required (only for Hunter/Warlock pets)
-	if db.petlevel
+	if db.petspec
 	and aObj.uCls == "HUNTER"
-	or aObj.uCls == "WARLOCK"
 	then
-		if not _G.PetFrame.lvl then
-			_G.PetFrame.lvl = _G.PetFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-			_G.PetFrame.lvl:SetPoint("BOTTOMLEFT", 4, 4)
-			local function checkLevel(event, ...) _G.PetFrame.lvl:SetText(_G.UnitLevel(_G.PetFrame.unit)) end
-			module:SecureHook("PetFrame_Update", function(this, ...) checkLevel("pfu") end)
-			module:RegisterEvent("PET_BAR_UPDATE", checkLevel) -- for pet changes
-			module:RegisterEvent("UNIT_PET", checkLevel) -- for pet changes
-			module:RegisterEvent("UNIT_PET_EXPERIENCE", checkLevel) -- for levelling
-			checkLevel("init")
-			_G.PetFrame.lvl:Show()
-		else
-			_G.PetFrame.lvl:Show()
-		end
-	elseif _G.PetFrame.lvl then
-		_G.PetFrame.lvl:Hide()
+		-- Add pet spec icon to pet frame, if required
+		_G.PetFrame.roleIcon = _G.PetFrame:CreateTexture(nil, "artwork")
+		_G.PetFrame.roleIcon:SetSize(24, 24)
+		_G.PetFrame.roleIcon:SetPoint("left", -10, 0)
+		_G.PetFrame.roleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
+		module:RegisterEvent("PET_SPECIALIZATION_CHANGED", function()
+			local curSpec = GetSpecialization(nil, true)
+			if curSpec then -- if pet is out
+				local role = select(6, GetSpecializationInfo(curSpec, nil, true))
+				_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(role))
+			end
+		end)
 	end
+
 
 end
 local function skinCommon(frame, adjSB)
@@ -303,6 +304,10 @@ local function skinTargetF()
 		ucFTex:SetHeight(50)
 		ucFTex:SetPoint("CENTER", 86, -22 + lOfs)
 
+		-- move level text down, so it is more visible
+		aObj:RawHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
+			this.levelText:SetPoint("Center", targetLevel == 100 and 61 or 62, -17 + lOfs)
+		end, true)
 		-- hook this to show/hide the elite texture
 		module:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
 			if frame == _G.TargetFrame then
@@ -506,7 +511,7 @@ function module:adjustUnitFrames(opt)
 	elseif opt == "player" then
 		skinPlayerF()
 	elseif opt == "pet"
-	or opt == "petlevel"
+	or opt == "petspec"
 	then
 		skinPetF()
 	elseif opt == "target" then
@@ -553,11 +558,11 @@ function module:GetOptions()
 					module:adjustUnitFrames(info[#info])
 				end or nil,
 			},
-			petlevel = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and {
+			petspec = (aObj.uCls == "HUNTER") and {
 				type = "toggle",
 				order = 3,
-				name = aObj.L["Pet Level"],
-				desc = aObj.L["Toggle the Pet Level on the Pet Frame"],
+				name = aObj.L["Pet Spec"],
+				desc = aObj.L["Toggle the Pet Spec on the Pet Frame"],
 				set = function(info, value)
 					module.db.profile[info[#info]] = value
 					if value then module.db.profile.pet = true end -- enable pet frame when enabled

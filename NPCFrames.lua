@@ -40,7 +40,6 @@ function aObj:AuctionUI() -- LoD
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		_G[btnName .. "ItemCount"]:SetDrawLayer("ARTWORK") -- fix for 3.3.3 bug
-		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
 	end
 	self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
 	self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -101,14 +100,18 @@ function aObj:BankFrame()
 	self:skinEditBox{obj=_G.BankItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
 	self:removeInset(_G.BankFrameMoneyFrameInset)
 	_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=_G.BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-4}
 	-- add button borders
-	for i = 1, _G.NUM_BANKGENERIC_SLOTS do
-		self:addButtonBorder{obj=_G["BankFrameItem" .. i], ibt=true}
-	end
 	for i = 1, _G.NUM_BANKBAGSLOTS do
-		self:addButtonBorder{obj=_G["BankFrameBag" .. i], ibt=true}
+		self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
 	end
+	self:skinTabs{obj=_G.BankFrame, x1=6, y1=0, x2=-6, y2=2}
+	self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
+	self:keepFontStrings(_G.BankSlotsFrame)
+	-- ReagentBankFrame
+	self:addSkinFrame{obj=_G.ReagentBankFrame.UnlockInfo, ft=ftype, kfs=true, ofs=-4}
+	_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND")
+	_G.ReagentBankFrame:DisableDrawLayer("ARTWORK")
 
 end
 
@@ -423,6 +426,13 @@ function aObj:QuestFrame()
 		_G[btnName .. "NameFrame"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G[btnName], libt=true}
 	end
+	self:SecureHook("QuestFrameProgressItems_Update", function()
+		local r, g ,b = _G.QuestProgressRequiredMoneyText:GetTextColor()
+		-- if red colour is less than 0.2 then it needs to be coloured
+		if r < 0.2 then
+			_G.QuestProgressRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		end
+	end)
 
 -->>--	Detail Panel
 	self:keepFontStrings(_G.QuestFrameDetailPanel)
@@ -442,6 +452,7 @@ function aObj:QuestFrame()
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
 	self:skinScrollBar{obj=_G.QuestNPCModelTextScrollFrame}
 	self:addSkinFrame{obj=_G.QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
+
 	self:QuestInfo()
 
 end
@@ -450,96 +461,100 @@ function aObj:QuestInfo()
 	if self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
 
-	self:SecureHook("QuestInfo_Display", function(...)
+	local function updateQIDisplay()
 		-- headers
 		_G.QuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 		_G.QuestInfoDescriptionHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 		_G.QuestInfoObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.QuestInfoRewardsHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestInfoRewardsFrame.Header:SetTextColor(self.HTr, self.HTg, self.HTb)
 		-- other text
 		_G.QuestInfoDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoGroupSize:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoRewardText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- reward frame text
-		_G.QuestInfoItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestInfoItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestInfoReputationText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		-- reputation rewards
-		for i = 1, _G.MAX_REPUTATIONS do
-			_G["QuestInfoReputation" .. i .. "Faction"]:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
+		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		local r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
 		_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		-- Objectives
-		for i = 1, _G.MAX_OBJECTIVES do
-			local r, g, b = _G["QuestInfoObjective" .. i]:GetTextColor()
-			_G["QuestInfoObjective" .. i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		for i = 1, #_G.QuestInfoObjectivesFrame.Objectives do
+			local objective = _G.QuestInfoObjectivesFrame.Objectives[i]
+			local r, g ,b = objective:GetTextColor()
+			-- if red colour is less than 0.2 then it needs to be coloured
+			if r < 0.2 then
+				objective:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+			end
 		end
-		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- QuestInfoSpecialObjectives Frame
+		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
 		_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
 		self:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
+	end
+	self:SecureHook("QuestInfo_Display", function(...)
+		updateQIDisplay()
 	end)
-
+	-- update any Quest Info that may be already displayed
+	updateQIDisplay()
+	
 	_G.QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
+	-- QuestInfoRequiredMoneyFrame
+	self:SecureHook("QuestInfo_ShowRequiredMoney", function()
+		local r, g ,b = _G.QuestInfoRequiredMoneyText:GetTextColor()
+		-- if red colour is less than 0.2 then it needs to be coloured
+		if r < 0.2 then
+			_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		end
+	end)
 
-	-- InfoRewards frame
+	-- QuestInfoRewardsFrame
 	_G.QuestInfoRewardSpellNameFrame:SetTexture(nil)
 	self:addButtonBorder{obj=_G.QuestInfoRewardSpell, relTo=_G.QuestInfoRewardSpell.Icon}
 	_G.QuestInfoRewardSpellSpellBorder:SetTexture(nil)
-	for i = 1, _G.MAX_NUM_ITEMS do
-		local btnName = "QuestInfoItem" .. i
-		_G[btnName .. "NameFrame"]:SetTexture(nil)
-		self:addButtonBorder{obj=_G[btnName], libt=true}
-	end
-
-	-- Skill Point frame
-	local btnName = "QuestInfoSkillPointFrame"
-	_G[btnName .. "NameFrame"]:SetTexture(nil)
-	self:addButtonBorder{obj=_G[btnName], libt=true, reParent={_G[btnName .. "SkillPointBg"], _G[btnName .. "SkillPointBgGlow"], _G[btnName .. "Points"]}}
-
-	-- Spell Objective frame
-	btnName = "QuestInfoSpellObjectiveFrame"
-	_G[btnName .. "NameFrame"]:SetTexture(nil)
-	_G[btnName .. "SpellBorder"]:SetTexture(nil)
-	self:addButtonBorder{obj=_G[btnName], relTo=_G[btnName .. "IconTexture"]}
-
-end
-
-function aObj:ReforgingUI() -- LoD
-	if not self.db.profile.ReforgingUI or self.initialized.ReforgingUI then return end
-	self.initialized.ReforgingUI = true
-
-	_G.ReforgingFrame.ItemButton.IconTexture:SetAlpha(0)
-	_G.ReforgingFrame.ItemButton:DisableDrawLayer("BACKGROUND")
-	_G.ReforgingFrame.ItemButton:DisableDrawLayer("OVERLAY")
-	self:addButtonBorder{obj=_G.ReforgingFrame.ItemButton, ibt=true, ofs=1}
-	_G.ReforgingFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:keepRegions(_G.ReforgingFrame.ButtonFrame, {})
-	_G.ReforgingFrame.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=_G.ReforgingFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
-	self:moveObject{obj=_G.ReforgingFrameRestoreButton, y=2}
-	self:removeMagicBtnTex(_G.ReforgingFrameRestoreButton)
-	self:removeMagicBtnTex(_G.ReforgingFrameReforgeButton)
-
-	-- hook this to hide the ItemButton texture if empty
-	self:SecureHook(_G.ReforgingFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
-		if tex:find("UI-Slot-Background", 1, true) then
-			this:SetAlpha(0)
-		else
-			this:SetAlpha(1)
+	local frame = _G.QuestInfoRewardsFrame
+	frame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	frame.ItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	frame.SpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	frame.PlayerTitleText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	local function skinQIRB(rewardsFrame, index)
+		-- N.B. The MapQuestInfoRewardsFrame uses SmallItemButtonTemplate (libt works atm)
+		if rewardsFrame
+		and not rewardsFrame.RewardButtons[index].sbb then
+			rewardsFrame.RewardButtons[index].NameFrame:SetTexture(nil)
+			self:addButtonBorder{obj=rewardsFrame.RewardButtons[index], libt=true}
 		end
+	end
+	self:SecureHook("QuestInfo_GetRewardButton", function(...)
+		skinQIRB(...)
 	end)
-	-- hook this to remove background texture from stat lines
-	self:SecureHook("ReforgingFrame_GetStatRow", function(index, tryAdd)
-		if _G.ReforgingFrame.LeftStat[index] then _G.ReforgingFrame.LeftStat[index].BG:SetTexture(nil) end
-		if _G.ReforgingFrame.RightStat[index] then _G.ReforgingFrame.RightStat[index].BG:SetTexture(nil) end
-	end)
+	-- skin any existing Reward button
+	skinQIRB()
+	
+	-- FollowerFrame
+	frame.FollowerFrame.BG:SetTexture(nil)
+	local ffpf = frame.FollowerFrame.PortraitFrame
+	ffpf.PortraitRing:SetTexture(nil)
+	ffpf.LevelBorder:SetAlpha(0) -- texture changed
+	if ffpf.PortraitRingCover then ffpf.PortraitRingCover:SetTexture(nil) end
+	-- SkillPointFrame
+	frame.SkillPointFrame.NameFrame:SetTexture(nil)
+	self:addButtonBorder{obj=frame.SkillPointFrame, relTo=frame.SkillPointFrame.Icon}
+	-- MapQuestInfoRewards Frame
+	local frame = _G.MapQuestInfoRewardsFrame
+	frame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	frame.ItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	frame.SpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	frame.PlayerTitleText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	for _, v in pairs{"SpellFrame", "XPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"} do
+		frame[v].NameFrame:SetTexture(nil)
+		self:addButtonBorder{obj=frame[v], relTo=frame[v].Icon}
+	end
 
 end
 
@@ -623,16 +638,11 @@ function aObj:VoidStorageUI() -- LoD
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 	end
-	if self.modBtnBs then
-		for i = 1, 9 do
-			self:addButtonBorder{obj=_G["VoidStorageDepositButton" .. i]}
-			self:addButtonBorder{obj=_G["VoidStorageWithdrawButton" .. i]}
-		end
-		for i = 1, 80 do
-			self:addButtonBorder{obj=_G["VoidStorageStorageButton" .. i]}
-		end
-	end
 	self:addSkinFrame{obj=_G.VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
 	self:skinEditBox{obj=_G.VoidItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	for i = 1, 2 do
+		_G.VoidStorageFrame["Page" .. i]:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=_G.VoidStorageFrame["Page" .. i]}
+	end
 
 end

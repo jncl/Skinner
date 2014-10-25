@@ -28,8 +28,8 @@ do
 	-- player class
 	aObj.uCls = select(2, UnitClass("player"))
 
-	local liveBuildVer = "5.4.8"
-	local liveBuildNo = 18414
+	local liveBuildVer = "6.0.2"
+	local liveBuildNo = 19034
 	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveBuildVer, liveBuildNo, buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
@@ -37,21 +37,26 @@ do
 	-- check to see if running on Beta version
 	aObj.isBeta = portal == "public-beta" and true or false
 	aObj.isBeta = aObj.isBeta or buildInfo[1] > liveBuildVer and true or false
-	--check to see if running on PTR servers
-	aObj.isPTR = portal == "public-test" and true or false
-	-- check build number, if > Live then it's a patch
-	aObj.isPatch = tonumber(buildInfo[2]) > liveBuildNo and true or false
+	if not aObj.isBeta then
+		--check to see if running on PTR servers
+		aObj.isPTR = portal == "public-test" and true or false
+		-- check build number, if > Live then it's a patch
+		aObj.isPatch = tonumber(buildInfo[2]) > liveBuildNo and true or false
 --@alpha@
-	if aObj.isPatch then
-		if aObj.isPTR then
-			_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
-		else
-			_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any Patch changes to be applied?", 1, 0, 0, nil, true)
+		if aObj.isPatch then
+			if aObj.isPTR then
+				_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
+			else
+				_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any Patch changes to be applied?", 1, 0, 0, nil, true)
+			end
 		end
 	end
 --@end-alpha@
-	-- if patch detected then enable PTR code changes, handles PTR changes going Live
-	if aObj.isPatch then aObj.isPTR = true end
+	-- if patch detected then enable PTR/Beta code changes, handles PTR/Beta changes going Live
+	if aObj.isPatch then
+		aObj.isPTR = true
+		aObj.isBeta = true
+	end
 
 end
 
@@ -185,6 +190,9 @@ function aObj:OnInitialize()
 	self.Backdrop[9].tile = false
 	self.Backdrop[9].tileSize = 0
 	self.Backdrop[9].edgeSize = 12
+	-- this backdrop has no background
+	self.Backdrop[10] = CopyTable(self.backdrop)
+	self.Backdrop[10].bgFile = nil
 	-- setup background texture
 	if prdb.BgUseTex then
 		if prdb.BgFile and prdb.BgFile ~= "None" then
@@ -249,9 +257,7 @@ function aObj:OnInitialize()
 	self.tabFrames = {}
 	if self.isTT then
 		self:SecureHook("PanelTemplates_SetTab", function(obj, id)
-			-- self:Debug("PT_ST: [%s, %s, %s, %s]", obj, id, obj.numTabs or "nil", obj.selectedTab or "nil")
 			if not self.tabFrames[obj] then return end -- ignore frame if not monitored
-			-- self:Debug("PT_ST#2")
 			for i = 1, obj.numTabs do
 				if i == id then
 					self:setActiveTab(_G[obj:GetName() .. "Tab" .. i].sf)
@@ -522,6 +528,11 @@ local function hideHeader(obj)
 			break
 		end
 	end
+	if obj.header then
+		obj.header:DisableDrawLayer("BACKGROUND")
+		obj.header:DisableDrawLayer("BORDER")
+		aObj:moveObject{obj=obj.header.text, x=0, y=-6}
+	end
 
 end
 
@@ -644,8 +655,11 @@ local function __addSkinFrame(opts)
 		-- hook this script to ensure gradient texture is reparented correctly
 		aObj:SecureHookScript(opts.obj.animIn, "OnFinished", function(this)
 			local objP = this:GetParent()
-			objP.sf.tfade:SetParent(objP.sf)
-			if objP.cb then objP.cb.tfade:SetParent(objP.cb) end
+			_G.print("animIn OnFinished", objP)
+			aObj:ScheduleTimer(function(frame)
+				frame.sf.tfade:SetParent(frame.sf)
+				if frame.cb then frame.cb.tfade:SetParent(frame.cb) end
+			end, 0.2, objP)
 		end)
 		-- hook AlertFrame scripts for animation functions
 		if opts.afas then
@@ -1136,8 +1150,6 @@ local function __moveObject(opts)
 
 	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
 
-	-- aObj:Debug("__mO: [%s, %s, %s, %s, %s]", point, relTo, relPoint, xOfs, yOfs)
-
 	-- handle no Point info
 	if not point then return end
 
@@ -1453,7 +1465,7 @@ local function __skinEditBox(opts)
 		move = move the edit box, left and up
 		x = move the edit box left/right
 		y = move the edit box up/down
-		mi = move search icon to the right
+		mi = move search icon/instructions to the right
 		ign = ignore this editbox when skinning IOF panels
 --]]
 --@alpha@
@@ -1501,6 +1513,9 @@ local function __skinEditBox(opts)
 	if opts.mi then
 		if opts.obj.searchIcon then
 			aObj:moveObject{obj=opts.obj.searchIcon, x=xOfs} -- e.g. BagItemSearchBox
+		elseif opts.obj.Instructions then -- e.g. InputBoxInstructionsTemplate (WoD)
+			opts.obj.Instructions:ClearAllPoints()
+			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", 5, 0)
 		elseif opts.obj.icon then
 			aObj:moveObject{obj=opts.obj.icon, x=xOfs} -- e.g. FriendsFrameBroadcastInput
 		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
@@ -1766,7 +1781,6 @@ local function __skinTabs(opts)
 	local yOfs2 = opts.y2 or 2
 
 	local tabID = _G.PanelTemplates_GetSelectedTab(opts.obj) or 1
-	-- aObj:Debug("__skinTabs, PanelTemplates_GetSelectedTab: [%s, %s, %s]", opts.obj, PanelTemplates_GetSelectedTab(opts.obj),tabID)
 	for i = 1, opts.obj.numTabs do
 		local tab = _G[tabName .. i]
 		aObj:keepRegions(tab, kRegions)
@@ -1782,7 +1796,6 @@ local function __skinTabs(opts)
 		end
 	end
 	aObj.tabFrames[opts.obj] = true
-	-- aObj:Debug("__skinTabs: [%s]", opts.obj)
 
 end
 

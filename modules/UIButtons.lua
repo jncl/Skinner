@@ -64,8 +64,6 @@ local function __checkTex(opts)
 	local btn = opts.mp2 and opts.obj or opts.obj.sb
 	if not btn then return end -- allow for unskinned buttons
 
-	-- aObj:Debug("__checkTex: [%s, %s, %s, %s, %s]", opts.obj, btn, nTex, opts.mp2, btn.skin)
-
 	if not opts.mp2 then btn:Show() end -- why done here and not within following test stanza ???
 
 	if nTex then
@@ -146,7 +144,6 @@ function module:skinButton(opts)
 	if opts.obj.Left -- UIPanelButtonTemplate and derivatives (MoP)
 	or opts.obj.leftArrow -- UIMenuButtonStretchTemplate (MoP)
 	then
-		-- aObj:Debug("skinButton ß: [%s]", opts.obj)
 		opts.obj:DisableDrawLayer("BACKGROUND")
 	elseif opts.obj.left then -- ARL & Collectinator
 		opts.obj.left:SetAlpha(0)
@@ -267,7 +264,6 @@ function module:skinButton(opts)
 		opts.obj:SetHeight(18)
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
-		-- aObj:Debug("skinButton: [%s, %s, %s]", opts.obj, bW, bH)
 		aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 		if not opts.as then
 			local x1 = opts.x1 or 1
@@ -300,7 +296,6 @@ local function getTexture(obj)
 
 end
 function module:isButton(obj)
-	aObj:Debug2("module:isButton#1: [%s]", obj)
 
 	-- ignore named/AceConfig/XConfig/AceGUI objects
 	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
@@ -312,7 +307,6 @@ function module:isButton(obj)
 	and not obj.SetSlot -- and not a lootbutton
 	then
 		local oW, oH, nR = aObj:getInt(obj:GetWidth()), aObj:getInt(obj:GetHeight()), obj:GetNumRegions()
-		aObj:Debug2("module:isButton#2: [%s, %s, %s, %s, %s, %s]", obj:GetParent().CloseButton == obj, aObj:hasTextInName(obj, "Close"), aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true), oW, oH, nR)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
 			bType = "toast"
@@ -336,7 +330,6 @@ function module:isButton(obj)
 		end
 	end
 
-	aObj:Debug2("module:isButton#5: [%s]", bType)
 	return bType
 
 end
@@ -488,7 +481,7 @@ local function __addButtonBorder(opts)
 			_G[btnName .. "Stock"]:SetParent(opts.obj.sbb)
 		else
 			opts.obj.Count:SetParent(opts.obj.sbb)
-			opts.obj.Stock:SetParent(opts.obj.sbb)
+			aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		end
 	elseif opts.abt then -- Action Buttons
 		_G[btnName .. "HotKey"]:SetParent(opts.obj.sbb)
@@ -497,8 +490,11 @@ local function __addButtonBorder(opts)
 		_G[btnName .. "Name"]:SetParent(opts.obj.sbb)
 		_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
 	elseif opts.libt then -- Large Item Buttons
-		_G[btnName .. "Name"]:SetParent(opts.obj.sbb)
-		_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
+		opts.obj.Name:SetParent(opts.obj.sbb)
+		opts.obj.Count:SetParent(opts.obj.sbb)
+	elseif opts.sibt then -- Small Item Buttons
+		opts.obj.Name:SetParent(opts.obj.sbb)
+		opts.obj.Count:SetParent(opts.obj.sbb)
 	elseif opts.mb then -- Micro Buttons
 		opts.obj.Flash:SetParent(opts.obj.sbb)
 	elseif opts.pabt then -- Pet Action Buttons

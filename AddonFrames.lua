@@ -10,7 +10,7 @@ local blizzLoDFrames = {
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
-	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ItemUpgradeUI", "QuestChoice", "ReforgingUI", "TrainerUI", "VoidStorageUI",
+	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ItemUpgradeUI", "GarrisonUI", "QuestChoice", "TrainerUI", "VoidStorageUI",
 	-- ui
 	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "PetJournal", "StoreUI", "TimeManager",
 	--	ArenaUI the unitframes are skinned in UnitFrames.lua
@@ -39,8 +39,8 @@ function aObj:BlizzardFrames()
 			["LootFrames"] = true,
 			["LootHistory"] = true,
 			["MirrorTimers"] = true,
+			["ObjectiveTracker"] = true,
 			["OverrideActionBar"] = true,
-			["QuestLog"] = false, -- checked below
 			["ReadyCheck"] = true,
 			["RolePollPopup"] = true,
 			["ScrollOfResurrection"] = true,
@@ -48,7 +48,6 @@ function aObj:BlizzardFrames()
 			["SpellFlyout"] = true,
 			["StackSplit"] = true,
 			["TradeFrame"] = true,
-			["WatchFrame"] = true,
 			-- LoD frames
 			["AchievementUI"] = false,
 			["ArchaeologyUI"] = false,
@@ -88,6 +87,7 @@ function aObj:BlizzardFrames()
 			["VoidStorageUI"] = false,
 		},
 		ui = {
+			["AddonList"] = true,
 			["AlertFrames"] = true,
 			["AuthChallengeUI"] = false, -- N.B. cannot be skinned
 			["AutoComplete"] = true,
@@ -105,7 +105,9 @@ function aObj:BlizzardFrames()
 			["CoinPickup"] = true,
 			["ColorPicker"] = true,
 			["DestinyFrame"] = true,
+			["DraenorZoneAbility"] = true,
 			["DropDownPanels"] = true,
+			["GarrisonFollowerTooltips"] = true,
 			["HelpFrame"] = true,
 			["ItemText"] = true,
 			["LevelUpDisplay"] = true,
@@ -123,9 +125,11 @@ function aObj:BlizzardFrames()
 			["NavigationBar"] = true,
 			["PetBattleUI"] = true,
 			["PVEFrame"] = true,
+			["QuestMap"] = false, -- checked below
 			["QueueStatusFrame"] = true,
 			["RaidFrame"] = true,
 			["ScriptErrors"] = true,
+			["SplashFrame"] = true,
 			["StaticPopups"] = true,
 			["Tooltips"] = false, -- checked below
 			["Tutorial"] = true,
@@ -149,7 +153,6 @@ function aObj:BlizzardFrames()
 
 	-- optional frames
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
-
 	-- handle non standard ones here
 	-- skin the MinimapButtons if SexyMap isn't loaded
 	if not IsAddOnLoaded("SexyMap") then
@@ -242,9 +245,9 @@ function aObj:AddonFrames()
 	-- skin tooltips here after checking whether the ttBorder setting needed changing
 	self:checkAndRun("Tooltips")
 
-	-- skin the QuestLog if EQL3 isn't loaded
+	-- skin the QuestMap if EQL3 isn't loaded
 	-- N.B. Do it here as other Addons use the QuestLog size
-	if not IsAddOnLoaded("EQL3") then self:checkAndRun("QuestLog") end
+	if not IsAddOnLoaded("EQL3") then self:checkAndRun("QuestMap") end
 
 	-- skin the CastingBar if other castbar addons aren't loaded
 	if not IsAddOnLoaded("Quartz")
