@@ -1780,7 +1780,7 @@ local function __skinTabs(opts)
 	local xOfs2 = opts.x2 or -6
 	local yOfs2 = opts.y2 or 2
 
-	local tabID = _G.PanelTemplates_GetSelectedTab(opts.obj) or 1
+	local tabID = opts.obj.selectedTab or 1
 	for i = 1, opts.obj.numTabs do
 		local tab = _G[tabName .. i]
 		aObj:keepRegions(tab, kRegions)
