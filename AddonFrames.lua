@@ -319,7 +319,7 @@ function aObj:AddonFrames()
 		end
 	end
 
-	-- skin tekKonfig library objects
+	-- skin tekKonfig library objects (N.B. not a LibStub library)
 	if self.tekKonfig then self:checkAndRun("tekKonfig") end -- not an addon in its own right
 
 	-- skin the Blizzard LoD frames if they have already been loaded by other addons, wait for 0.2 secs to allow them to have been loaded
