@@ -50,8 +50,8 @@ do
 				_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any Patch changes to be applied?", 1, 0, 0, nil, true)
 			end
 		end
-	end
 --@end-alpha@
+	end
 	-- if patch detected then enable PTR/Beta code changes, handles PTR/Beta changes going Live
 	if aObj.isPatch then
 		aObj.isPTR = true
