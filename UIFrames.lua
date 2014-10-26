@@ -1776,8 +1776,11 @@ function aObj:MainMenuBar()
 -->>-- Extra Action Button
 	if self.db.profile.MainMenuBar.extraab then
 		self:addButtonBorder{obj=_G.ExtraActionButton1, relTo=_G.ExtraActionButton1.icon, ofs=1}
-		_G.ExtraActionButton1.style:SetTexture(nil)
-		_G.ExtraActionButton1.style.SetTexture = function() end
+		-- handle bug when Tukui is loaded
+		if not aObj:isAddonEnabled("Tukui") then
+			_G.ExtraActionButton1.style:SetTexture(nil)
+			_G.ExtraActionButton1.style.SetTexture = function() end
+		end
 	end
 
 -->>-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
