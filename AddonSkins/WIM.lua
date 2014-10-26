@@ -42,52 +42,6 @@ function aObj:WIM() -- WIM3
 		aObj:addSkinFrame{obj=msgFrame, kfs=true}
 
 	end
-	local function checkKids(obj)
-
-		if aObj.skinned[obj] then return end
-		aObj:skinAllButtons{obj=obj}
-
-		for _, child in _G.pairs{obj:GetChildren()} do
-			if aObj:isDropDown(child) then
-				aObj:skinDropDown{obj=child, x2= obj.mf and 110 or nil}
-			elseif child.backdrop then
-				checkKids(child)
-			elseif child:IsObjectType("ScrollFrame") then
-				aObj:skinScrollBar{obj=child}
-			else checkKids(child)
-			end
-		end
-
-	end
-
-	-- hook this to skin the options frame
-	self:SecureHook(_G.WIM.options, "OnShow", function(this)
-		local optFrame = _G.WIM.options.frame
-		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
-		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
-		optFrame.nav.bg:Hide()
-		self:addSkinFrame{obj=optFrame, nb=true, y2=12}
-		-- if frame is a function then hook it, otherwise check it
-		for _, cat in _G.pairs(_G.WIM.options.frame.nav.category) do
-			for _, subCat in _G.pairs(cat.info.subCategories) do
-				if _G.type(subCat["frame"]) == "function" then -- if the frame hasn't been created yet
-					self:RawHook(subCat, "frame", function()
-						local catFrame = self.hooks[subCat].frame()
-						checkKids(catFrame)
-						self:Unhook(subCat, "frame")
-						return catFrame
-					end, true)
-				elseif subCat.frame then checkKids(subCat.frame) -- it is a frame
-				end
-			end
-		end
-		self:Unhook(_G.WIM.options, "OnShow")
-	end)
-	-- hook this to skin the dropdown frame
-	self:SecureHook(_G.WIM.options, "createDropDownFrame", function(this)
-		self:addSkinFrame{obj=_G.WIM_DropDownFrame}
-		self:Unhook(_G.WIM.options, "createDropDownFrame")
-	end)
 	-- hook these to skin the Message Frames
 	self:RawHook(_G.WIM, "CreateWhisperWindow", function(playerName)
 		local msgFrame = self.hooks[_G.WIM].CreateWhisperWindow(playerName)
@@ -183,5 +137,55 @@ function aObj:WIM() -- WIM3
 		local mFrame = _G["WIM3_msgFrame"..i]
 		if mFrame then skinWindow(mFrame) end
 	end
+
+end
+
+function aObj:WIM_Options()
+
+	local function checkKids(obj)
+
+		if aObj.skinned[obj] then return end
+		aObj:skinAllButtons{obj=obj}
+
+		for _, child in _G.pairs{obj:GetChildren()} do
+			if aObj:isDropDown(child) then
+				aObj:skinDropDown{obj=child, x2= obj.mf and 110 or nil}
+			elseif child.backdrop then
+				checkKids(child)
+			elseif child:IsObjectType("ScrollFrame") then
+				aObj:skinScrollBar{obj=child}
+			else checkKids(child)
+			end
+		end
+
+	end
+	-- hook this to skin the options frame
+	self:SecureHook(_G.WIM.options, "OnShow", function(this)
+		local optFrame = _G.WIM.options.frame
+		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
+		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
+		optFrame.nav.bg:Hide()
+		self:addSkinFrame{obj=optFrame, nb=true, y2=12}
+		-- if frame is a function then hook it, otherwise check it
+		for _, cat in _G.pairs(_G.WIM.options.frame.nav.category) do
+			for _, subCat in _G.pairs(cat.info.subCategories) do
+				if _G.type(subCat["frame"]) == "function" then -- if the frame hasn't been created yet
+					self:RawHook(subCat, "frame", function()
+						local catFrame = self.hooks[subCat].frame()
+						checkKids(catFrame)
+						self:Unhook(subCat, "frame")
+						return catFrame
+					end, true)
+				elseif subCat.frame then checkKids(subCat.frame) -- it is a frame
+				end
+			end
+		end
+		self:Unhook(_G.WIM.options, "OnShow")
+	end)
+	-- hook this to skin the dropdown frame
+	self:SecureHook(_G.WIM.options, "createDropDownFrame", function(this)
+		self:addSkinFrame{obj=_G.WIM_DropDownFrame}
+		self:Unhook(_G.WIM.options, "createDropDownFrame")
+	end)
 
 end

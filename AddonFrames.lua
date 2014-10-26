@@ -281,6 +281,9 @@ function aObj:AddonFrames()
 	--	don't make Model Frames Rotatable if CloseUp is loaded
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
 
+	-- special case for dummy addon entry WIM_Options
+	if self.WIM_Options then self:checkAndRun("WIM_Options") end -- not an addon in its own right
+
 	-- used for Addons that aren't LoadOnDemand
 	for addon, skinFunc in pairs(self.addonsToSkin) do
 		self:checkAndRunAddOn(addon, nil, skinFunc)
@@ -349,7 +352,7 @@ local lodFrames = {
 	"PetJournalEnhanced", "Perl_Config_Options",
 	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer", "Squire2_Config",
 	"Talented_GlyphFrame", "TradeTabs", "TipTacOptions",
-	"WeakAurasOptions", "WIM_Options",
+	"WeakAurasOptions",
 	"XPerl_Options",
 	"ZOMGBuffs_BlessingsManager",
 }
