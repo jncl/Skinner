@@ -36,7 +36,7 @@ function aObj:Ace3()
 		and (not aObj.skinned[obj] or (objType:find("TSM") and not obj.sknrTSM)) -- check objType as TSM overlays existing objects
 		then
 			if objType == "BlizOptionsGroup" then
-				aObj:applySkin{obj=obj.frame, kfs=true}
+				-- aObj:applySkin{obj=obj.frame, kfs=true}
 			elseif objType == "Dropdown" then
 				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
 				aObj:applySkin{obj=obj.pullout.frame}
