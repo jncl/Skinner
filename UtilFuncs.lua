@@ -200,6 +200,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 		if self.db.profile.Warnings then
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled")
 		end
+		self[addonFunc] = nil
 		return
 	end
 
@@ -422,20 +423,24 @@ function aObj:hasTextInTexture(obj, text, plain)
 
 end
 
-addonInfo, character = {}, UnitName("player")
+-- populate addon Index table first time through
+local addonIdx, uName = {}, UnitName("player")
+local name, title, notes, loadable, reason, security, newVersion
+do
+	for i = 1, _G.GetNumAddOns() do
+		name, title, notes, loadable, reason, security, newVersion = _G.GetAddOnInfo(i)
+		addonIdx[name] = i
+	end
+	-- handle special case
+	addonIdx["Spew"] = addonIdx["spew"]
+end
 function aObj:isAddonEnabled(addonName)
 --@alpha@
 	assert(addonName, "Unknown object isAddonEnabled\n" .. debugstack())
 --@end-alpha@
 
-	-- populate addon Info table first time through
-	if #addonInfo == 0 then
-		for i = 1, _G.GetNumAddOns() do
-			addonInfo[(select(1, _G.GetAddOnInfo(i)))] = i
-		end
-	end
-	if addonInfo[addonName] then
-		return (_G.GetAddOnEnableState(character, addonInfo[addonName]) > 0) or _G.IsAddOnLoadOnDemand(addonName)
+	if addonIdx[addonName] then
+		return (_G.GetAddOnEnableState(uName, addonIdx[addonName]) > 0) or _G.IsAddOnLoadOnDemand(addonName)
 	end
 
 end
