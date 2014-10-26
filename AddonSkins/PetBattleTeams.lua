@@ -1,5 +1,6 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("PetBattleTeams") then return end
+local _G = _G
 
 function aObj:PetBattleTeams()
 
@@ -19,24 +20,26 @@ function aObj:PetBattleTeams()
 	end
 
 	-- skin frame
-	local pbtuimf = PetBattleTeams:GetModule("GUI").mainFrame
-	self:skinScrollBar{obj=pbtuimf.rosterFrame.scrollFrame}
-	self:addButtonBorder{obj=pbtuimf.addTeamButton}
-	self:addButtonBorder{obj=pbtuimf.reviveButton}
-	self:addButtonBorder{obj=pbtuimf.bandageButton}
-	self:addSkinFrame{obj=pbtuimf, y1=2, y2=-5}
+	local pbtui = _G.PetBattleTeams:GetModule("GUI")
+	self:skinScrollBar{obj=pbtui.mainFrame.rosterFrame.scrollFrame}
+	self:addButtonBorder{obj=pbtui.mainFrame.addTeamButton}
+	self:addButtonBorder{obj=pbtui.mainFrame.reviveButton}
+	self:addButtonBorder{obj=pbtui.mainFrame.bandageButton}
+	pbtui.menuButton.overlay:SetTexture(nil)
+	self:addSkinButton{obj=pbtui.menuButton, parent=pbtui.menuButton, sap=true}
+	self:addSkinFrame{obj=pbtui.mainFrame, y1=2, y2=-5}
 	-- Selected Team
-	skinTeamFrame(pbtuimf.selectedTeam)
+	skinTeamFrame(pbtui.mainFrame.selectedTeam)
 	-- Team Roster, wait for them to be created
 	self:ScheduleTimer(function()
-		for i = 1, #pbtuimf.rosterFrame.scrollChild.teamFrames do
-			skinTeamFrame(pbtuimf.rosterFrame.scrollChild.teamFrames[i])
+		for i = 1, #pbtui.mainFrame.rosterFrame.scrollChild.teamFrames do
+			skinTeamFrame(pbtui.mainFrame.rosterFrame.scrollChild.teamFrames[i])
 		end
 	end, 0.2)
 
 	-- tooltip
 	if self.db.profile.Tooltips.skin then
-		local tt = PetBattleTeams:GetModule("Tooltip").tooltip
+		local tt = _G.PetBattleTeams:GetModule("Tooltip").tooltip
 		tt:DisableDrawLayer("BACKGROUND")
 		tt.ActualHealthBar:SetTexture(self.sbTexture)
 		tt.XPBar:SetTexture(self.sbTexture)

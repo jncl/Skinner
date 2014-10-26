@@ -187,14 +187,14 @@ local addonSkins = {
 	"MacroBank", "MacroBrokerGUI", "MailTo", "MakeRocketGoNow", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobMap", "MogIt", "MonkeyQuest", "MonkeyQuestLog", "Mountiful", "MoveAnything", "MrTrader_SkillWindow", "MTLove", "MuffinMOTD", "MyBags", "myClock",
 	"Necrosis", "NeonChat", "Notes", "nQuestLog",
 	"Odyssey", "oGlow", "Omen", "OneBag3", "OneBank3", "oQueue", "oRA3", "Outfitter", "Overachiever",
-	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetBattleHUD", "PetBattleMaster", "PetBattleTeams", "PetListPlus", "PetsPlus", "PetTracker", "PetTracker_Switcher", "PetTracker_Journal", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "ProfessionsVault", "ProspectBar", "PvpMessages",
+	"PallyPower", "Panda", "PassLoot", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetBattleHUD", "PetBattleMaster", "PetListPlus", "PetsPlus", "PetTracker", "PetTracker_Switcher", "PetTracker_Journal", "PhoenixStyle", "Planner", "PlayerExpBar", "PlusOneTable", "POMAssist", "PoMTracker", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "Producer", "ProfessionsBook", "ProfessionsVault", "ProspectBar", "PvpMessages",
 	"Quartz", "Quelevel", "QuestAgent", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper", "QuestHelper2", "QuestHistory", "QuickMark",
 	"RABuffs", "RaidAchievement", "RaidBuffStatus", "RaidChecklist", "RaidComp", "RaidRoll", "RaidRoll_LootTracker", "RaidTracker", "RaidyCheck", "RandomPet30", "RAQ", "ReagentRestocker", "Recap", "RecipeBook", "RecipeRadar", "Recount", "REFlex", "ReforgeLite", "Reforgenator", "Reforgerade", "RicoMiniMap",
 	"SayGMOTD", "ScrollMaster", "ShadowDancer3", "sienasGemViewer", "SilverDragon", "Skada", "Skillet", "Smoker", "SmoothQuest", "SnapShot", "SorhaQuestLog", "Spew", "Squeenix", "sRaidFrames", "StaggerMeter",
 	"tabDB", "Talented", "TargetAnnounce", "TargetCharms", "tekBlocks", "tekDebug", "tekErr", "tekPad", "TheCollector", "TinyDPS", "TinyPad", "TipTac", "tomQuest2", "TomTom", "TooManyAddons", "TourGuide", "TradeSkillMaster", "TrinketBar", "Tukui", "TwinValkyr_shieldmonitor",
 	"UberQuest", "UrbanAchiever",
 	"vBagnon", "Vendorizer", "Vendomatic", "VendorSearch", "Violation", "Visor2_GUI", "Volumizer", "VuhDo", "VuhDoOptions",
-	"Warden", "WeakAuras", "WebDKP", "Wholly", "WIM", "WoWEquip", "WowLua", "WoWPro", "WTFLatencyMeter",
+	"Warden", "WeakAuras", "WebDKP", "Wholly", "WIM", "WIM_Options", "WoWEquip", "WowLua", "WoWPro", "WTFLatencyMeter",
 	"xcalc", "XLoot", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"zfpoison", "ZOMGBuffs", "ZygorGuidesViewer",
 }
@@ -389,6 +389,12 @@ function aObj:LoDFrames(addon)
 	if addon == "Blizzard_InspectUI" then
 		--	This addon is dependent upon the Inspect Frame
 		self:checkAndRunAddOn("Spyglass")
+	end
+
+	-- handle addons linked to the PetJournal
+	if addon == "Blizzard_PetJournal" then
+		--	This addon is dependent upon the PetJournal
+		self:checkAndRunAddOn("PetBattleTeams")
 	end
 
 	-- deal with Addons under the control of an LoadManager
