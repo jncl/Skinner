@@ -1,3 +1,9 @@
+b6.19034.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Version 6.0.2 changes
+
 b5.18414.7
 Jncl:
 	ToDo.txt
