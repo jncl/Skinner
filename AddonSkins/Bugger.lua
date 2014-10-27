@@ -3,6 +3,7 @@ if not aObj:isAddonEnabled("Bugger") then return end
 local _G = _G
 
 function aObj:Bugger()
+	if not aObj.db.profile.DebugTools then return end
 
 	local function chgTabTex(tab)
 		for i = 1, _G.ScriptErrorsFrame.numTabs do
@@ -26,6 +27,7 @@ function aObj:Bugger()
 				end)
 			end
 		end
+		_G.ScriptErrorsFrame:SetScale(1.25)
 		self:Unhook(_G.Bugger, "SetupFrame")
 	end)
 

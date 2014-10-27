@@ -9,32 +9,6 @@ local _G = _G
 
 function aObj:Tukui()
 
--->>-- Bags
-	if _G.TukuiBags then
-		self:SecureHook(_G.Stuffing, "CreateBagFrame", function(this, bType)
-			self:skinButton{obj=_G["Stuffing_CloseButton"..bType], cb=true}
-		end)
-		self:skinEditBox{obj=_G.TukuiBags.editbox}
-		_G.TukuiBags.editbox:ClearAllPoints()
-		_G.TukuiBags.editbox:SetPoint("topleft", _G.TukuiBags, "topleft", 12, -9)
-		_G.TukuiBags.editbox:SetPoint("bottomright", _G.TukuiBags, "topright", -40, -28)
-		self:skinButton{obj=_G.Stuffing_CloseButtonBags, cb=true}
-	end
-
--->>-- Chat Copy frame
-	local bName = _G.TukuiButtonCF1 and "TukuiButtonCF" or "ButtonCF"
-	if _G.TukuiChat then
-		for i = 1, _G.NUM_CHAT_WINDOWS do
-			self:SecureHookScript(_G[bName..i], "OnClick", function(this)
-				self:skinButton{obj=_G.CopyCloseButton, cb=true}
-				self:skinScrollBar{obj=_G.TukuiChatCopyScroll}
-				for i = 1, _G.NUM_CHAT_WINDOWS do
-					self:Unhook(_G[bName..i], "OnClick")
-				end
-			end)
-		end
-	end
-
 end
 
 -- The following code handles the Initial setup of Skinner when the TukUI is loaded
@@ -42,17 +16,17 @@ function aObj:TukuiInit()
 
 	-- handle version 12 and above
 	local ver = _G.tonumber(_G.GetAddOnMetadata("Tukui", "Version"):sub(1, 2))
-	local mediapath = [[Interface\AddOns\Tukui\media\textures\]]
+	local mediapath = [[Interface\AddOns\Tukui\Medias\Textures\]]
     local borderr, borderg, borderb = 0.6, 0.6, 0.6
     local backdropr, backdropg, backdropb =  0.1, 0.1, 0.1
 	local mult = 1
 	if ver > 12 then
-		mediapath = [[Interface\AddOns\Tukui\medias\textures\]]
+		mediapath = [[Interface\AddOns\Tukui\Medias\Textures\]]
 	    if _G.IsAddOnLoaded("Tukui") then
 	        local T, C, L = _G.unpack(_G.Tukui)
-	        borderr, borderg, borderb = _G.unpack(C["media"].bordercolor)
-	        backdropr, backdropg, backdropb = _G.unpack(C["media"].backdropcolor)
-			mult = T.mult
+	        borderr, borderg, borderb = _G.unpack(C.General.BorderColor)
+	        backdropr, backdropg, backdropb = _G.unpack(C.General.BackdropColor)
+			mult = T.Mult
 		end
     end
 
