@@ -8,22 +8,22 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-√	S	Bugger, requested by tordenflesk, 19.10.14
-	
-√	I	Skinner, reported by Bobrot/MegaManJuno/Decabah/Shizzaster, 26.10.14
-		- Interface\AddOns\Skinner\Skinner.lua:1928: 'end' expected (to close 'do' at line 6) near '<eof>'
-			- need to swap positions of lines 53 & 54
+	I	Bugger, reported by tordenflesk, 26.10.14
+?		- gets scaled down
 
-√	N	PetBattleTeams, reported by Decabah, 26.10.14
-		- Skinner\SkinMe\PetBattleTeams-3.2.7.lua:23: attempt to index local 'pbtuimf' (a nil value)
+	I	Tukui, reported by Decebah, 26.10.14
+√		- References to media directory wrong
+√		- Remove Bag & ChatCopy code as it is no longer required
 		
-	I	UIFrames, reported by Decabah, 26.10.14
-?		- Skinner\UIFrames.lua:1911: attempt to index field 'CompactUnitFrameProfiles' (a nil value)
-		
-	N	Tukui, reported by Decabah, 26.10.14
-?		- Skinner\SkinMe\Tukui-16.09.lua:53: attempt to index field 'media' (a nil value)
-			- try deleting old Skinner profile for Tukui
-√		- Tukui\Modules\ActionBars\Extra.lua:9: bad argument #1 to 'sub' (string expected, got nil)
+	I	UnitFrames, reported by Xarov, 26.10.14
+√		- Missing Localisations for PetSpec
+√		- Remove PetLevel localisations
+	
+√	I	_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.sb reported by Xarov, 26.10.14
+		- ..\FrameXML\UIParent.lua line 2723: attempt to index local 'frame' (a nil value)
+			Debug:
+			Skinner\UIFrames.lua:3053:
+			Skinner\UIFrames.lua:2998
 			
-√	N	WIM, reported by ToxicGhoul, 26.10.14
-		-  The new update works great. I am, however, having an issue with skinner and WIM. I disabled the skin for WIM but left WIM_Options unchecked, because I do want to skin the options. Unfortunately, this removes the skin for the options even though I told it not to. I modified the lua file to skin the options but NOT the chat windows, and it works.
+	I	various, reported by Radnurag/ToxicGhoul, 26.10.14
+√		- debug print statements need commenting out
