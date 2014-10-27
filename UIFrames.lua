@@ -3050,7 +3050,9 @@ function aObj:WorldMap()
 	self:skinDropDown{obj=_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.DropDown}
 	_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.Border:SetTexture(nil)
 	self:skinButton{obj=_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button}
-	_G.LowerFrameLevel(_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.sb)
+	if _G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.sb then
+		_G.LowerFrameLevel(_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.sb)
+	end
 	self:addButtonBorder{obj=_G.WorldMapFrame.UIElementsFrame.OpenQuestPanelButton}
 	self:addButtonBorder{obj=_G.WorldMapFrame.UIElementsFrame.CloseQuestPanelButton}
 	-->>-- Nav Bar
