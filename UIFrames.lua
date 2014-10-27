@@ -1791,7 +1791,7 @@ function aObj:MainMenuBar()
 		upba.counterBar:DisableDrawLayer("ARTWORK")
 	end
 	self:SecureHook("UnitPowerBarAlt_SetUp", function(this, barID)
-		_G.print("UnitPowerBarAlt_SetUp:", this)
+		-- _G.print("UnitPowerBarAlt_SetUp:", this)
 		skinUnitPowerBarAlt(this)
 	end)
 	-- skin PlayerPowerBarAlt if already shown
@@ -2346,7 +2346,7 @@ function aObj:Nameplates()
 	local npEvt
 	local function skinNameplates()
 
-		_G.print("skinNameplates")
+		-- _G.print("skinNameplates")
 
 		local kids = {_G.WorldFrame:GetChildren()}
 		for _, child in _G.ipairs(kids) do
@@ -2376,7 +2376,7 @@ function aObj:Nameplates()
 
 	local function showFunc()
 
-		_G.print("showFunc")
+		-- _G.print("showFunc")
 		if not npEvt then
 			npEvt = aObj:ScheduleRepeatingTimer(skinNameplates, 0.2)
 		end
@@ -2384,7 +2384,7 @@ function aObj:Nameplates()
 	end
 
 	self:SecureHook("SetCVar", function(varName, varValue, ...)
-		_G.print("SetCVar", varName, varValue, ...)
+		-- _G.print("SetCVar", varName, varValue, ...)
 		if varName:find("nameplateShow") and varValue == 1 then showFunc() end
 	end)
 

@@ -655,7 +655,7 @@ local function __addSkinFrame(opts)
 		-- hook this script to ensure gradient texture is reparented correctly
 		aObj:SecureHookScript(opts.obj.animIn, "OnFinished", function(this)
 			local objP = this:GetParent()
-			_G.print("animIn OnFinished", objP)
+			-- _G.print("animIn OnFinished", objP)
 			aObj:ScheduleTimer(function(frame)
 				frame.sf.tfade:SetParent(frame.sf)
 				if frame.cb then frame.cb.tfade:SetParent(frame.cb) end
