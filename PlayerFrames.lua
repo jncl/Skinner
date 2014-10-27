@@ -653,27 +653,25 @@ function aObj:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	local function addGear(cfpb)
-	end
 	for i = 1, _G.NUM_CONTAINER_FRAMES do
 		local objName = "ContainerFrame" .. i
 		local obj = _G[objName]
 		self:addSkinFrame{obj=obj, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 		-- resize and move the bag name to make it more readable
 		_G[objName .. "Name"]:SetWidth(145)
-		self:moveObject{obj=_G[objName .. "Name"], x=-30}
+		self:moveObject{obj=_G[objName .. "Name"], x=-25}
 		-- Add gear texture to portrait button for settings
 		local cfpb = obj.PortraitButton
 		cfpb.gear = cfpb:CreateTexture(nil, "artwork")
 		cfpb.gear:SetAllPoints()
 		cfpb.gear:SetTexture([[Interface\AddOns\]] .. aName .. [[\textures\gear]])
-		cfpb:SetSize(20, 20)
+		cfpb:SetSize(18, 18)
 		cfpb.Highlight:ClearAllPoints()
 		cfpb.Highlight:SetPoint("center")
-		cfpb.Highlight:SetSize(24, 24)
+		cfpb.Highlight:SetSize(22, 22)
 		aObj:moveObject{obj=cfpb, x=6, y=-5}
 	end
-	self:skinEditBox{obj=_G.BagItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinEditBox{obj=_G.BagItemSearchBox, regs={9}, noInsert=true}
 	-- Hook this to hide/show the gear button
 	self:SecureHook("ContainerFrame_GenerateFrame", function(frame, size, id)
 		-- if it's a profession bag
