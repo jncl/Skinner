@@ -1515,7 +1515,7 @@ local function __skinEditBox(opts)
 			aObj:moveObject{obj=opts.obj.searchIcon, x=xOfs} -- e.g. BagItemSearchBox
 		elseif opts.obj.Instructions then -- e.g. InputBoxInstructionsTemplate (WoD)
 			opts.obj.Instructions:ClearAllPoints()
-			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", 5, 0)
+			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", xOfs, 0)
 		elseif opts.obj.icon then
 			aObj:moveObject{obj=opts.obj.icon, x=xOfs} -- e.g. FriendsFrameBroadcastInput
 		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
