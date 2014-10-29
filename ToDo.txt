@@ -8,22 +8,14 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-	I	Bugger, reported by tordenflesk, 26.10.14
-?		- gets scaled down
+√	N	Pawn, reported by MetalHeadSpike, 27.10.14
 
-	I	Tukui, reported by Decebah, 26.10.14
-√		- References to media directory wrong
-√		- Remove Bag & ChatCopy code as it is no longer required
-		
-	I	UnitFrames, reported by Xarov, 26.10.14
-√		- Missing Localisations for PetSpec
-√		- Remove PetLevel localisations
-	
-√	I	_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.sb reported by Xarov, 26.10.14
-		- ..\FrameXML\UIParent.lua line 2723: attempt to index local 'frame' (a nil value)
-			Debug:
-			Skinner\UIFrames.lua:3053:
-			Skinner\UIFrames.lua:2998
-			
-	I	various, reported by Radnurag/ToxicGhoul, 26.10.14
-√		- debug print statements need commenting out
+	I	PetJournal, reported by MetalHeadSpike, 27.10.14
+√		- Interface\AddOns\Skinner\PlayerFrames.lua:1846: attempt to index field 'sbb' (a nil value)
+
+√	S	Legacy Quest, requted by Decabah, 27.10.14
+
+√	N	Mapster, reported by Decabah, 27.10.14
+
+	I	TalentUI, reported by gamemmaster128, 27.10.14
+√		- Skinner\PlayerFrames.lua:2252: PlayerTalentFrameTalentsClearInfoFrameCount:SetParent(): Cannot set a 'nil' parent for fonts or textures
