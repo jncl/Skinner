@@ -176,6 +176,7 @@
 <script file="SkinMe\ItemSync.lua"/>
 <script file="SkinMe\LauncherMenu.lua"/>
 <script file="SkinMe\LazyAFK.lua"/>
+<script file="SkinMe\LegacyQuest.lua"/>
 <script file="SkinMe\LibDialog.lua"/>
 <script file="SkinMe\LibDropdown.lua"/>
 <script file="SkinMe\LibExtraTip.lua"/>
