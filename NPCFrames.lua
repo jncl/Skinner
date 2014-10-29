@@ -525,9 +525,11 @@ function aObj:QuestInfo()
 	local function skinQIRB(rewardsFrame, index)
 		-- N.B. The MapQuestInfoRewardsFrame uses SmallItemButtonTemplate (libt works atm)
 		if rewardsFrame
-		and not rewardsFrame.RewardButtons[index].sbb then
+		and not rewardsFrame.RewardButtons[index].sknd
+		then
 			rewardsFrame.RewardButtons[index].NameFrame:SetTexture(nil)
 			self:addButtonBorder{obj=rewardsFrame.RewardButtons[index], libt=true}
+			rewardsFrame.RewardButtons[index].sknd = true
 		end
 	end
 	self:SecureHook("QuestInfo_GetRewardButton", function(...)

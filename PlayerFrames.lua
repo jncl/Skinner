@@ -1840,22 +1840,24 @@ function aObj:PetJournal() -- LoD
 		_G["ToySpellButton" .. i .. "SlotFrameCollected"]:SetTexture(nil)
 		_G["ToySpellButton" .. i .. "SlotFrameUncollected"]:SetTexture(nil)
 		self:addButtonBorder{obj=_G["ToySpellButton" .. i], sec=true}
-		if _G["ToySpellButton" .. i .. "SlotFrameUncollected"]:IsShown() then
-			_G["ToySpellButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
-		else
-			_G["ToySpellButton" .. i].sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+		if self.modBtnBs then
+			if _G["ToySpellButton" .. i .. "SlotFrameUncollected"]:IsShown() then
+				_G["ToySpellButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+			else
+				_G["ToySpellButton" .. i].sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+			end
 		end
 	end
-	self:SecureHook("ToySpellButton_UpdateButton", function(this)
-		local name = this:GetName()
-		local slotFrameUncollected = _G[name.."SlotFrameUncollected"]
-
-		if slotFrameUncollected:IsShown() then
-			this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
-		else
-			this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
-		end
-	end)
+	if self.modBtnBs then
+		self:SecureHook("ToySpellButton_UpdateButton", function(this)
+			local slotFrameUncollected = _G[this:GetName() .. "SlotFrameUncollected"]
+			if slotFrameUncollected:IsShown() then
+				this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+			else
+				this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+			end
+		end)
+	end
 	self:addButtonBorder{obj=_G.ToyBoxPrevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=_G.ToyBoxNextPageButton, ofs=-2, y1=-3, x2=-3}
 
@@ -2120,7 +2122,7 @@ function aObj:SpellBookFrame()
 	self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
 		for i = 1, #_G.SpellBookCoreAbilitiesFrame.Abilities do
 			local btn = _G.SpellBookCoreAbilitiesFrame.Abilities[i]
-			if not btn.sbb then
+			if not btn.sknd then
 				btn.EmptySlot:SetAlpha(0)
 				btn.ActiveTexture:SetAlpha(0)
 				btn.FutureTexture:SetAlpha(0)
@@ -2128,13 +2130,15 @@ function aObj:SpellBookFrame()
 				btn.InfoText:SetTextColor(self.BTr, self.BTg, self.BTb)
 				btn.RequiredLevel:SetTextColor(self.BTr, self.BTg, self.BTb)
 				self:addButtonBorder{obj=btn}
+				btn.sknd = true
 			end
 		end
 		for i = 1, #_G.SpellBookCoreAbilitiesFrame.SpecTabs do
 			local tab = _G.SpellBookCoreAbilitiesFrame.SpecTabs[i]
-			if not tab.sbb then
+			if not tab.sknd then
 				self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
 				self:addButtonBorder{obj=tab}
+				tab.sknd = true
 			end
 		end
 	end)
@@ -2249,7 +2253,9 @@ function aObj:TalentUI() -- LoD
 	self:moveObject{obj=_G.PlayerTalentFrameTalents.MainHelpButton, y=-4}
 	self:removeMagicBtnTex(_G.PlayerTalentFrameTalents.learnButton)
 	self:addButtonBorder{obj=_G.PlayerTalentFrameTalents.clearInfo, relTo=_G.PlayerTalentFrameTalents.clearInfo.icon}
-	_G.PlayerTalentFrameTalents.clearInfo.count:SetParent(_G.PlayerTalentFrameTalents.clearInfo.sbb)
+	if self.modBtnBs then
+		_G.PlayerTalentFrameTalents.clearInfo.count:SetParent(_G.PlayerTalentFrameTalents.clearInfo.sbb)
+	end
 	-- Talent rows
 	for i = 1, _G.MAX_TALENT_TIERS do
 		local obj = _G.PlayerTalentFrameTalents["tier" .. i]

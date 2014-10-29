@@ -777,7 +777,7 @@ function aObj:ChatTemporaryWindow()
 			then skinChatEB(obj.editBox)
 		end
 		if aObj.db.profile.ChatButtons
-		and not obj.buttonFrame.minimizeButton.sbb
+		and not obj.buttonFrame.sknd
 		then
 			aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2}
 			aObj:addButtonBorder{obj=obj.buttonFrame.downButton, ofs=-2}
@@ -786,6 +786,7 @@ function aObj:ChatTemporaryWindow()
 			if obj.conversationButton then
 				aObj:addButtonBorder{obj=obj.conversationButton, ofs=-2}
 			end
+			obj.buttonFrame.sknd = true
 		end
 
 	end
@@ -1013,9 +1014,10 @@ function aObj:GarrisonUI() -- LoD
 			-- handle buttons
 			for i = 1, #_G.GarrisonBuildingFrame.BuildingList.Buttons do
 				local btn = _G.GarrisonBuildingFrame.BuildingList.Buttons[i]
-				if not btn.sbb then
+				if not btn.sknd then
 					btn.BG:SetTexture(nil)
 					aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
+					btn.sknd = true
 				end
 			end
 		end)
