@@ -8,14 +8,4 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-√	N	Pawn, reported by MetalHeadSpike, 27.10.14
-
-	I	PetJournal, reported by MetalHeadSpike, 27.10.14
-√		- Interface\AddOns\Skinner\PlayerFrames.lua:1846: attempt to index field 'sbb' (a nil value)
-
-√	S	Legacy Quest, requted by Decabah, 27.10.14
-
-√	N	Mapster, reported by Decabah, 27.10.14
-
-	I	TalentUI, reported by gamemmaster128, 27.10.14
-√		- Skinner\PlayerFrames.lua:2252: PlayerTalentFrameTalentsClearInfoFrameCount:SetParent(): Cannot set a 'nil' parent for fonts or textures
+√	I	Non-interruptible shield is stretched, reported by Radnurag, 30.10.14
