@@ -1,7 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 
-local assert, CopyTable, debugstack, pairs, rawget, select, type, unpack = _G.assert, _G.CopyTable, _G.debugstack, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack
+local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, null = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.null
 
 do
 	-- check to see if required libraries are loaded
@@ -1017,12 +1017,12 @@ function aObj:keepFontStrings(obj, hide)
 --@end-alpha@
 
 	local regs = {obj:GetRegions()}
-	for _, reg in _G.ipairs(regs) do
+	for _, reg in ipairs(regs) do
 		if not reg:IsObjectType("FontString") then
 			if not hide then reg:SetAlpha(0) else reg:Hide() end
 		end
 	end
-	regs = _G.null
+	regs = null
 
 end
 
@@ -1047,7 +1047,7 @@ function aObj:keepRegions(obj, regions)
 	regions = revTable(regions)
 
 	local regs = {obj:GetRegions()}
-	for k, reg in _G.ipairs(regs) do
+	for k, reg in ipairs(regs) do
 		-- if we have a list, hide the regions not in that list
 		if regions
 		and not regions[k]
@@ -1061,7 +1061,7 @@ function aObj:keepRegions(obj, regions)
 --@end-debug@
 		end
 	end
-	regs = _G.null
+	regs = null
 
 end
 
@@ -1208,7 +1208,7 @@ function aObj:removeRegions(obj, regions)
 	regions = revTable(regions)
 
 	local regs = {obj:GetRegions()}
-	for k, reg in _G.ipairs(regs) do
+	for k, reg in ipairs(regs) do
 		if not regions
 		or regions
 		and regions[k]
@@ -1222,7 +1222,7 @@ function aObj:removeRegions(obj, regions)
 --@end-debug@
 		end
 	end
-	regs = _G.null
+	regs = null
 
 end
 
@@ -1234,7 +1234,7 @@ function aObj:rmRegionsTex(obj, regions)
 	regions = revTable(regions)
 
 	local regs = {obj:GetRegions()}
-	for k, reg in _G.ipairs(regs) do
+	for k, reg in ipairs(regs) do
 		if not regions
 		or regions
 		and regions[k]
@@ -1249,7 +1249,7 @@ function aObj:rmRegionsTex(obj, regions)
 			end
 		end
 	end
-	regs = _G.null
+	regs = null
 
 end
 
