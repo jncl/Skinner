@@ -2331,10 +2331,7 @@ function aObj:Nameplates()
 		-- skin both status bars (health & cast)
 		obj.sb1, obj.sb2 = obj:GetChildren()
 		for i = 1, 2 do
-			obj["sb" .. i]:SetStatusBarTexture(sbTex)
-			obj["sb" .. i].bg = obj.sb1:CreateTexture(nil, "BACKGROUND")
-			obj["sb" .. i].bg:SetTexture(sbTex)
-			obj["sb" .. i].bg:SetVertexColor(r, g, b, a)
+			aObj:glazeStatusBar(obj["sb" .. i], 0,  nil)
 		end
 
 		-- Cast bar uninterruptible shield texture
@@ -2342,13 +2339,12 @@ function aObj:Nameplates()
 		rg2:SetTexture(nil)
 		rg6:SetTexture(nil)
 		aObj:changeShield(obj.sb2.rg3, obj.sb2.rg4)
-		obj.sb2.rg3.SetWidth = function() end -- prevent change of width
+		obj.sb2.rg3.sw = obj.sb2.rg3.SetWidth -- store original function
+		obj.sb2.rg3.SetWidth = function() end
 
 	end
 	local npEvt
 	local function skinNameplates()
-
-		-- _G.print("skinNameplates")
 
 		local kids = {_G.WorldFrame:GetChildren()}
 		for _, child in _G.ipairs(kids) do
@@ -2359,7 +2355,7 @@ function aObj:Nameplates()
 					npObj.sknd = true
 				else
 					 -- reset shield texture's width & position
-					npObj.sb2.rg3:SetWidth(46)
+					npObj.sb2.rg3:sw(46)
 					npObj.sb2.rg3:SetPoint("CENTER", npObj.sb2.rg4, "CENTER", 9, -1)
 				end
 			end
@@ -2378,16 +2374,24 @@ function aObj:Nameplates()
 
 	local function showFunc()
 
-		-- _G.print("showFunc")
 		if not npEvt then
 			npEvt = aObj:ScheduleRepeatingTimer(skinNameplates, 0.2)
 		end
 
 	end
 
+	-- track changes to Saved Variables to enable Nameplate skinning
 	self:SecureHook("SetCVar", function(varName, varValue, ...)
-		-- _G.print("SetCVar", varName, varValue, ...)
 		if varName:find("nameplateShow") and varValue == 1 then showFunc() end
+	end)
+
+	-- track in combat to enable Nameplate skinning, if required
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", function()
+		if _G.GetCVarBool("nameplateShowEnemies")
+		or _G.GetCVarBool("nameplateShowFriends")
+		then
+			showFunc()
+		end
 	end)
 
 	if _G.GetCVarBool("nameplateShowEnemies")
