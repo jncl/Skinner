@@ -1,3 +1,10 @@
+b6.19103.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Make more global functions local
+	Updated Nameplates skin
+
 b6.19034.4
 Jncl:
 	ToDo.txt
