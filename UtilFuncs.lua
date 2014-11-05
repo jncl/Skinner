@@ -430,9 +430,13 @@ do
 	for i = 1, _G.GetNumAddOns() do
 		name, title, notes, loadable, reason, security, newVersion = _G.GetAddOnInfo(i)
 		addonIdx[name] = i
+		-- _G.print(i, name, title, notes, loadable, reason, security, newVersion)
+		-- handle special case (Beta vs Live)
+		if name == "spew" then
+			addonIdx["Spew"] = addonIdx["spew"]
+			addonIdx["spew"] = nil
+		end
 	end
-	-- handle special case
-	addonIdx["Spew"] = addonIdx["spew"]
 end
 function aObj:isAddonEnabled(addonName)
 --@alpha@
