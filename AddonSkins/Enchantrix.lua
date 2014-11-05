@@ -1,17 +1,34 @@
-if not Skinner:isAddonEnabled("Enchantrix") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Enchantrix") then return end
+local _G = _G
 
-function Skinner:Enchantrix()
+function aObj:Enchantrix()
 
--->>-- Manifest frame
+	-- N.B. this code will be called when the corresponding module is loaded by Stubby
+
+	-- Manifest frame
 	self:SecureHook(Enchantrix_Manifest, "ShowMessage", function(this, msg)
 		self:addSkinFrame{obj=Enchantrix_Manifest.messageFrame, kfs=true}
 		self:Unhook(Enchantrix_Manifest, "ShowMessage")
 	end)
 
--->>-- AutoDisenchant prompt
-	local eVer = tonumber(GetAddOnMetadata("Enchantrix", "Version"):match("%d\.%d\.(%d%d%d%d)"))
-	local height = eVer == 4293 and 130 or 170
-	local auto_de_prompt = self:findFrame2(UIParent, "Frame", height, 400)
-	if auto_de_prompt then self:addSkinFrame{obj=auto_de_prompt, kfs=true} end
+	-- AutoDisenchant prompt
+	local need2call = false
+	-- if callback events have been cleared, set flag
+	if #self.callbacks.events["UIParent_GetChildren"] == 0 then
+		need2call = true
+	end
+	-- skin auto_de_prompt frame
+	self.RegisterCallback("Enchantrix", "UIParent_GetChildren", function(this, child)
+		if child.Drag
+		and child.Item
+		and child.Lines
+		then
+			self:addSkinFrame{obj=child, kfs=true}
+			self:UnregisterCallback("Enchantrix", "UIParent_GetChildren")
+		end
+	end)
+	-- call scan function if required
+	if need2call then self:scanUIParentsChildren() end
 
 end

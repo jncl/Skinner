@@ -4,7 +4,7 @@ local _G = _G
 
 function aObj:Recount()
 
-	-- dafaults for RealTime frames
+	-- defaults for RealTime frames
 	local x1, y1, x2, y2 = -4, -8, 4, -4
 	-- Hook this to get window objects and skin them
 	self:SecureHook(_G.Recount, "AddWindow", function(this, window)
@@ -46,8 +46,8 @@ function aObj:Recount()
 
 	-- skin Realtime frames already created
 	self.RegisterCallback("Recount", "UIParent_GetChildren", function(this, child)
-		if child:IsObjectType("Frame")
-		and child:GetName() == nil
+		if child.TitleText
+		and child.DragBottomRight
 		and child.Graph
 		then
 			self:addSkinFrame{obj=child, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
