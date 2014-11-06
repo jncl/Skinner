@@ -8,10 +8,6 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-√	N	ArkInventory, reported by lexuxnexus, 02.11.14
-		- ..\AddOns\Skinner\Skinner.lua line 571: attempt to index field 'obj' (a nil value)
-		Debug: Skinner\Skinner.lua:571: Skinner\Skinner.lua:539
-
-√	N	Enchantrix, reported by MetalHeadSpike, 04.11.14
-
-√	N	Recount, reported by MetalHeadSpike, 04.11.14
+√	N	FlightMapEnhanced, reported by tordenflesk, 05.11.14
+		- Skinner\SkinMe\FlightMapEnhanced-v1.5.40.lua:27: Attempt to access forbidden object from code tainted by an AddOn
+		Skinner\SkinMe\FlightMapEnhanced-v1.5.40.lua:27: in function <Skinner\SkinMe\FlightMapEnhanced.lua:4>
