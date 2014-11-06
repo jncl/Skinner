@@ -25,7 +25,7 @@ function aObj:Enchantrix()
 		and child.Lines
 		then
 			self:addSkinFrame{obj=child, kfs=true}
-			self:UnregisterCallback("Enchantrix", "UIParent_GetChildren")
+			self.UnregisterCallback("Enchantrix", "UIParent_GetChildren")
 		end
 	end)
 	-- call scan function if required
