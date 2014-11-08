@@ -152,7 +152,9 @@ function aObj:BlackMarketUI() -- LoD
 	self:SecureHook("BlackMarketScrollFrame_Update", function(this)
 		for i = 1, #_G.BlackMarketScrollFrame.buttons do
 			local btn = _G.BlackMarketScrollFrame.buttons[i]
-			if btn and not self.skinned[btn] then
+			if btn and not btn.sknd then
+				aObj:add2Table(aObj.skinned, btn) -- TODO: deprecate when all skins changed
+				btn.sknd = true
 				self:keepFontStrings(btn)
 				btn:GetHighlightTexture():SetAlpha(1)
 				self:addButtonBorder{obj=btn.Item, ibt=true, relTo=btn.Item.IconTexture}

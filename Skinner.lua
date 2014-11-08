@@ -1,7 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 
-local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, null = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.null
+local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, null, setmetatable, RAID_CLASS_COLORS = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.null, _G.setmetatable, _G.RAID_CLASS_COLORS
 
 do
 	-- check to see if required libraries are loaded
@@ -206,7 +206,7 @@ function aObj:OnInitialize()
 	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
 	-- TooltipBorder colours
-	c = prdb.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
+	c = prdb.ClassColours and RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
 	self.tbColour = {c.r, c.g, c.b, c.a or 1}
 	-- StatusBar colours
 	c = prdb.StatusBar
@@ -214,10 +214,10 @@ function aObj:OnInitialize()
 	-- StatusBar texture
 	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
 	-- Backdrop colours
-	c = prdb.ClassClrsBg and _G.RAID_CLASS_COLORS[self.uCls] or prdb.Backdrop
+	c = prdb.ClassClrsBg and RAID_CLASS_COLORS[self.uCls] or prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or 1}
 	-- BackdropBorder colours
-	c = prdb.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
+	c = prdb.ClassColours and RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
 	self.bbColour = {c.r, c.g, c.b, c.a or 1}
 	-- Inactive Tab & DropDowns texture
 	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
@@ -239,16 +239,18 @@ function aObj:OnInitialize()
 
 	-- table to hold objects which have been skinned
 	-- with a metatable having weak keys and automatically adding an entry if it doesn't exist
-	self.skinned = _G.setmetatable({}, {__mode = "k", __index = function(t, k) t[k] = true end})
+	-- TODO: deprecate when all skins changed
+	self.skinned = setmetatable({}, {__mode = "k", __index = function(t, k) t[k] = true end})
 
 	-- table to hold frames that have been added, with weak keys
-	self.skinFrame = _G.setmetatable({}, {__mode = "k"})
+	-- TODO: deprecate when all skins changed
+	self.skinFrame = setmetatable({}, {__mode = "k"})
 
 	-- table to hold buttons that have been added, with weak keys
-	self.sBtn = _G.setmetatable({}, {__mode = "k"})
+	self.sBtn = setmetatable({}, {__mode = "k"})
 
 	-- table to hold StatusBars that have been glazed, with weak keys
-	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
+	self.sbGlazed = setmetatable({}, {__mode = "k"})
 
 	-- shorthand for the TexturedTab profile setting
 	self.isTT = prdb.TexturedTab and true or false
@@ -674,7 +676,8 @@ local function __addSkinFrame(opts)
 		end
 	end
 
-	-- store reference to the frame (used by addons, until they are all updated)
+	-- store reference to the frame
+	-- TODO: deprecate when all skins changed
 	if not opts.ft then aObj.skinFrame[opts.obj] = skinFrame end
 
 	return skinFrame
@@ -1392,7 +1395,12 @@ local function __skinDropDown(opts)
 	end
 
 	-- don't skin it twice
-	if aObj.skinned[opts.obj] then return end
+	if opts.obj.sknd then
+		return
+	else
+		opts.obj.sknd = true
+	end
+	aObj:add2Table(aObj.skinned, opts.obj) -- TODO: deprecate when all skins changed
 
 	-- hide textures
 	aObj:removeRegions(opts.obj, {1, 2, 3})
@@ -1474,7 +1482,12 @@ local function __skinEditBox(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if aObj.skinned[opts.obj] then return end
+	if opts.obj.sknd then
+		return
+	else
+		opts.obj.sknd = true
+	end
+	aObj:add2Table(aObj.skinned, opts.obj) -- TODO: deprecate when all skins changed
 
 	opts.x = opts.x or 0
 	opts.y = opts.y or 0
@@ -1562,7 +1575,9 @@ function aObj:skinFFToggleTabs(tabName, tabCnt, noHeight)
 	for i = 1, tabCnt or 3 do
 		local togTab = _G[tabName .. i]
 		if not togTab then break end -- handle missing Tabs (e.g. Muted)
-		if not self.skinned[togTab] then -- don't skin it twice
+		if not togTab.sknd then -- don't skin it twice
+			aObj:add2Table(aObj.skinned, togTab) -- TODO: deprecate when all skins changed
+			togTab.sknd = true
 			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text & highlight
 			if not noHeight then self:adjHeight{obj=togTab, adj=-5}	end
 			self:addSkinFrame{obj=togTab, y1=-2, x2=2, y2=-2}
@@ -1599,7 +1614,12 @@ local function __skinMoneyFrame(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if aObj.skinned[opts.obj] then return end
+	if opts.obj.sknd then
+		return
+	else
+		opts.obj.sknd = true
+	end
+	aObj:add2Table(aObj.skinned, opts.obj) -- TODO: deprecate when all skins changed
 
 	local cbMode = _G.GetCVarBool("colorblindMode")
 
@@ -1663,7 +1683,12 @@ local function __skinScrollBar(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if aObj.skinned[opts.obj] then return end
+	if opts.obj.sknd then
+		return
+	else
+		opts.obj.sknd = true
+	end
+	aObj:add2Table(aObj.skinned, opts.obj) -- TODO: deprecate when all skins changed
 
 	-- remove all the object's regions except text ones, if required
 	if not opts.noRR then aObj:keepFontStrings(opts.obj) end
@@ -1711,7 +1736,12 @@ local function __skinSlider(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if aObj.skinned[opts.obj] then return end
+	if opts.obj.sknd then
+		return
+	else
+		opts.obj.sknd = true
+	end
+	aObj:add2Table(aObj.skinned, opts.obj) -- TODO: deprecate when all skins changed
 
 	aObj:keepFontStrings(opts.obj)
 	opts.obj:SetAlpha(1)
@@ -1764,7 +1794,12 @@ local function __skinTabs(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if aObj.skinned[opts.obj] then return end
+	if opts.obj.sknd then
+		return
+	else
+		opts.obj.sknd = true
+	end
+	aObj:add2Table(aObj.skinned, opts.obj) -- TODO: deprecate when all skins changed
 
 	local tabName = opts.obj:GetName() .. "Tab" .. (opts.suffix or "")
 

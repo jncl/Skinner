@@ -773,8 +773,11 @@ function aObj:ChatTemporaryWindow()
 			aObj:addSkinFrame{obj=obj, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
 		end
 		if aObj.db.profile.ChatEditBox.skin
-		and not aObj.skinned[obj.editBox]
-			then skinChatEB(obj.editBox)
+		and not obj.editBox.sknd
+		then
+			aObj:add2Table(aObj.skinned, obj.editBox) -- TODO: deprecate when all skins changed
+			obj.editBox.sknd = true
+			skinChatEB(obj.editBox)
 		end
 		if aObj.db.profile.ChatButtons
 		and not obj.buttonFrame.sknd

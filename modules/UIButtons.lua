@@ -133,12 +133,12 @@ function module:skinButton(opts)
 	if not opts.obj then return end
 
 	-- check to see if object is already skinned
-	if opts.obj.sb
-	or opts.obj.sf
-	or opts.obj.tfade
-	then
+	if opts.obj.sknd then
 		return
+	else
+		opts.obj.sknd = true
 	end
+	aObj:add2Table(aObj.skinned, opts.obj) -- TODO: deprecate when all skins changed
 
 	-- remove textures
 	if opts.obj.Left -- UIPanelButtonTemplate and derivatives (MoP)
@@ -420,7 +420,12 @@ local function __addButtonBorder(opts)
 	if not opts.obj then return end
 
 	-- check to see if object is already skinned
-	if opts.obj.sbb then return end
+	if opts.obj.sknd then
+		return
+	else
+		opts.obj.sknd = true
+	end
+	aObj:add2Table(aObj.skinned, opts.obj) -- TODO: deprecate when all skins changed
 
 	-- remove Normal texture if required (vertex colour changed in blizzard code)
 	if opts.ibt

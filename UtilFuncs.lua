@@ -132,8 +132,8 @@ end
 
 function aObj:add2Table(table, value)
 --@alpha@
-	assert(table, "Unknown object add2Table\n" .. debugstack())
-	assert(value, "Unknown object add2Table\n" .. debugstack())
+	assert(table, "Unknown table add2Table\n" .. debugstack())
+	assert(value, "Missing value add2Table\n" .. debugstack())
 --@end-alpha@
 
 	table[#table + 1] = value
@@ -311,6 +311,7 @@ function aObj:findFrame(height, width, children)
 
 end
 
+-- TODO: deprecate when all skins changed
 function aObj:findFrame2(parent, objType, ...)
 --@alpha@
 	assert(parent, "Unknown object findFrame2\n" .. debugstack())

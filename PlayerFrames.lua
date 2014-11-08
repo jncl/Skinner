@@ -836,9 +836,9 @@ function aObj:EncounterJournal() -- LoD
 	self:rmRegionsTex(eje.info.model, {2, 3}) -- Shadow, TitleBG
 	local function skinCreatureBtn(idx)
 		local btn = eje.info.creatureButtons[idx]
-		if btn
-		and not aObj.skinned[btn]
-		then
+		if btn and not btn.sknd then
+			aObj:add2Table(aObj.skinned, btn) -- TODO: deprecate when all skins changed
+			btn.sknd = true
 			btn:SetNormalTexture(nil)
 			local hTex = btn:GetHighlightTexture()
 			hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
@@ -1067,7 +1067,9 @@ function aObj:GuildControlUI() -- LoD
 		local obj
 		for i = 1, _G.MAX_GUILDRANKS do
 			local obj = _G["GuildControlUIRankOrderFrameRank" .. i]
-			if obj and not aObj.skinned[obj] then
+			if obj and not obj.sknd then
+				aObj:add2Table(aObj.skinned, obj) -- TODO: deprecate when all skins changed
+				obj.sknd = true
 				aObj:skinEditBox{obj=obj.nameBox, regs={9}, x=-5}
 				self:addButtonBorder{obj=obj.downButton, ofs=0}
 				self:addButtonBorder{obj=obj.upButton, ofs=0}
@@ -1096,7 +1098,9 @@ function aObj:GuildControlUI() -- LoD
 	self:SecureHook("GuildControlUI_BankTabPermissions_Update", function(this)
 		for i = 1, _G.MAX_BUY_GUILDBANK_TABS do
 			local btn = _G["GuildControlBankTab" .. i]
-			if btn and not self.skinned[btn] then
+			if btn and not btn.sknd then
+				aObj:add2Table(aObj.skinned, btn) -- TODO: deprecate when all skins changed
+				btn.sknd = true
 				btn:DisableDrawLayer("BACKGROUND")
 				self:skinEditBox{obj=btn.owned.editBox, regs={9}}
 				self:skinButton{obj=btn.buy.button, as=true}
@@ -1617,7 +1621,9 @@ function aObj:ObjectiveTracker()
 				if ( questTitle and questTitle ~= "" ) then
 					local block = AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(questID)
 					local obj = block.ScrollChild
-					if obj and not aObj.skinned[obj] then
+					if obj and not obj.sknd then
+						aObj:add2Table(aObj.skinned, obj) -- TODO: deprecate when all skins changed
+						obj.sknd = true
 						for k, reg in ipairs{obj:GetRegions()} do
 							if k < 11 or k > 16 then reg:SetTexture(nil) end -- Animated textures
 						end
@@ -2168,9 +2174,9 @@ function aObj:SpellFlyout()
 	self.initialized.SpellFlyout = true
 
 	self:SecureHook("ActionButton_UpdateFlyout", function(this)
-		if this.FlyoutBorder
-		and not self.skinned[this]
-		then
+		if this.FlyoutBorder and not this.sknd then
+			aObj:add2Table(aObj.skinned, this) -- TODO: deprecate when all skins changed
+			this.sknd = true
 			this.FlyoutBorder:SetAlpha(0)
 			this.FlyoutBorderShadow:SetAlpha(0)
 		end
