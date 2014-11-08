@@ -1,15 +1,18 @@
-if not Skinner:isAddonEnabled("Squeenix") then return end
+local aName, aObj = ...
+if not aObj:isAddonEnabled("Squeenix") then return end
+local _G = _G
 
-function Skinner:Squeenix()
+function aObj:Squeenix()
 
 	-- Find & Skin the Squeenix border & direction indicators
-	for _, child in pairs{Minimap:GetChildren()} do
+	local kids = {_G.Minimap:GetChildren()}
+	for _, child in _G.ipairs(kids) do
 		if child:IsObjectType("Button")
 		and child:GetName() == nil
 		then
 			child:Hide()
-			self.minimapskin = self:addSkinButton{obj=Minimap, parent=Minimap}
-			if not self.db.profile.Minimap.gloss then LowerFrameLevel(self.minimapskin) end
+			self:addSkinButton{obj=_G.Minimap, parent=_G.Minimap}
+			if not self.db.profile.Minimap.gloss then _G.LowerFrameLevel(_G.Minimap.sb) end
 		end
 		-- Move the compass points text
 		if child:IsObjectType("Frame")
@@ -19,7 +22,8 @@ function Skinner:Squeenix()
 		and ceil(child:GetHeight()) == 140
 		then
 --			self:Debug("Squeenix, found Compass Frame")
-			for _, reg in ipairs{child:GetRegions()} do
+			local regs = {child:GetRegions()}
+			for _, reg in _G.ipairs(regs) do
 				if reg:IsObjectType("FontString") then
 --					self:Debug("Squeenix found direction text")
 					if reg:GetText() == "E" then self:moveObject{obj=reg, x=1}
@@ -27,8 +31,11 @@ function Skinner:Squeenix()
 					end
 				end
 			end
+			regs = _G.null
 		end
 	end
-	self:moveObject{obj=MinimapNorthTag, y=4}
+	kids = _G.null
+
+	self:moveObject{obj=_G.MinimapNorthTag, y=4}
 
 end

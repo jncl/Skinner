@@ -226,7 +226,7 @@
 <script file="SkinMe\oRA3.lua"/>
 <!-- <script file="SkinMe\OgriLazy.lua"/> -->
 <script file="SkinMe\Omen.lua"/>
-<!-- <script file="SkinMe\OneBag3.lua"/> -->
+<script file="SkinMe\OneBag3.lua"/>
 <script file="SkinMe\Outfitter.lua"/>
 <script file="SkinMe\Overachiever.lua"/>
 <!-- <script file="SkinMe\PallyPower.lua"/> -->
@@ -301,7 +301,7 @@
 <script file="SkinMe\SnapShot.lua"/>
 <script file="SkinMe\SorhaQuestLog.lua"/>
 <script file="SkinMe\Spew.lua"/>
-<!-- <script file="SkinMe\Squeenix.lua"/> -->
+<script file="SkinMe\Squeenix.lua"/>
 <script file="SkinMe\Squire2_Config.lua"/>
 <!-- <script file="SkinMe\sRaidFrames.lua"/> -->
 <script file="SkinMe\StaggerMeter.lua"/>
