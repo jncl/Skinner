@@ -60,24 +60,46 @@ local function print_family_tree(fName)
 end
 function aObj:SetupCmds()
 
+	local function getObj(input)
+		if not input or input:trim() == "" then
+			return _G.GetMouseFocus()
+		else
+			return input
+		end
+	end
+	local function getObjP(input)
+		if not input or input:trim() == "" then
+			return _G.GetMouseFocus():GetParent()
+		else
+			return input
+		end
+	end
+	local function getObjGP(input)
+		if not input or input:trim() == "" then
+			return _G.GetMouseFocus():GetParent():GetParent()
+		else
+			return input
+		end
+	end
 	-- define some helpful slash commands (ex Baddiel)
-	self:RegisterChatCommand("rl", function(msg) _G.ReloadUI() end)
-	self:RegisterChatCommand("lo", function(msg) _G.Logout() end)
+	self:RegisterChatCommand("rl", function() _G.ReloadUI() end)
+	self:RegisterChatCommand("lo", function() _G.Logout() end)
 	self:RegisterChatCommand("pl", function(msg) _G.print(msg, "is", _G.gsub(select(2, _G.GetItemInfo(msg)), "|", "||"))	end)
 	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
 	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("si", function(msg) self:ShowInfo(msg or _G.GetMouseFocus(), true, false) end)
-	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(msg or _G.GetMouseFocus(), true, true) end) -- detailed
-	self:RegisterChatCommand("sib", function(msg) self:ShowInfo(msg or _G.GetMouseFocus(), false, false) end) -- brief
-	self:RegisterChatCommand("sip", function(msg) self:ShowInfo(msg or _G.GetMouseFocus():GetParent(), true, false) end)
-	self:RegisterChatCommand("sipb", function(msg) self:ShowInfo(msg or _G.GetMouseFocus():GetParent(), false, false) end)
-	self:RegisterChatCommand("sigp", function(msg) self:ShowInfo(msg or _G.GetMouseFocus():GetParent():GetParent(), true, false) end)
-	self:RegisterChatCommand("sigpb", function(msg) self:ShowInfo(msg or _G.GetMouseFocus():GetParent():GetParent(), false, false) end)
+	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(getObj(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("si1", function(msg) self:ShowInfo(getObj(msg), true, true) end) -- 1 level only
+	self:RegisterChatCommand("sir", function(msg) self:ShowInfo(getObj(msg), false, false) end) -- regions only
+	self:RegisterChatCommand("sidp", function(msg) self:ShowInfo(getObjP(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("si1p", function(msg) self:ShowInfo(getObjP(msg), true, true) end) -- 1 level only
+	self:RegisterChatCommand("sirp", function(msg) self:ShowInfo(getObjP(msg), false, false) end) -- regions only
+	self:RegisterChatCommand("sidgp", function(msg) self:ShowInfo(getObjGP(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("sirgp", function(msg) self:ShowInfo(getObjGP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("gp", function() _G.print(_G.GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function() _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
-	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, msg or _G.GetMouseFocus()) end)
-	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, msg or _G.GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, msg or _G.GetMouseFocus():GetParent():GetParent()) end)
+	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, getObj(msg)) end)
+	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
+	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
 
 	self:RegisterChatCommand("wai", function() SetMapToCurrentZone() local x,y=GetPlayerMapPosition("player") DEFAULT_CHAT_FRAME:AddMessage(format("%s, %s: %.1f, %.1f",GetZoneText(),GetSubZoneText(),x*100,y*100)) return end)
 
