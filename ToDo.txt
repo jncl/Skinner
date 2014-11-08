@@ -8,6 +8,17 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
 
-√	N	FlightMapEnhanced, reported by tordenflesk, 05.11.14
-		- Skinner\SkinMe\FlightMapEnhanced-v1.5.40.lua:27: Attempt to access forbidden object from code tainted by an AddOn
-		Skinner\SkinMe\FlightMapEnhanced-v1.5.40.lua:27: in function <Skinner\SkinMe\FlightMapEnhanced.lua:4>
+≈	S	CompactMissions, requested by Decabah, 05.11.14
+
+≈	S	MyGarrisons, requested by Decabah, 05.11.14
+
+√	N	LUI, reported by paintpauller2, 06.11.14
+		- Skinner\Skinner-b6.19116.2.lua:242: table index is nil
+		Skinner\Skinner-b6.19116.2.lua:1395: in function <Skinner\Skinner.lua:1361>
+		Skinner\Skinner-b6.19116.2.lua:1452: in function `skinDropDown'
+		Skinner\SkinMe\LUI-r694.lua:20: in function <Skinner\SkinMe\LUI.lua:4>
+
+√	O	Deprecate all skins not changed since 2012
+
+√	N	XLoot, reported by lexusnexus, 08.11.14
+		- ..\AddOns\Skinner\SkinMe\XLoot.lua line 9: Attempt to access forbidden object from code tainted by an AddOn Debug: [C]: IsObjectType() Skinner\SkinMe\XLoot.lua:9: Skinner\SkinMe\XLoot.lua:8 [string "safecall Dispatcher[2]"]:4: [string "safecall Dispatcher[2]"]:4 [C]: ? [string "safecall Dispatcher[2]"]:13: ?() ...ore\libs\CallbackHandler-1.0\CallbackHandler-1.0.lua:90: Fire() Skinner\UtilFuncs.lua:534:...
