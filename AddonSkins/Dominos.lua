@@ -4,29 +4,34 @@ local _G = _G
 
 function aObj:Dominos()
 
-	-- hook to skin the configHelper panel
-	self:SecureHook(_G.Dominos, "ShowConfigHelper", function()
-		self:skinButton{obj=_G.DominosConfigHelperDialogExitConfig} -- this is a CheckButton object
-		self:addSkinFrame{obj=_G.DominosConfigHelperDialog, kfs=true, y1=4, y2=4, nb=true}
-		self:Unhook(_G.Dominos, "ShowConfigHelper")
-	end)
 	-- hook this to skin first menu displayed and its dropdown
 	self:RawHook(_G.Dominos, "NewMenu", function(this, id)
 		local menu = self.hooks[this].NewMenu(this, id)
-		if not self.skinned[menu] then
+		if not menu.sknd then
 			self:addSkinFrame{obj=menu, x1=6, y1=-8, x2=-8, y2=6}
 			self:SecureHookScript(menu, "OnShow", function(this)
 				if this.dropdown then
 					self:skinDropDown{obj=this.dropdown}
 				end
-				self:Unhook(menu, "OnShow")
+				self:Unhook(this, "OnShow")
 			end)
 		end
-		self:Unhook(_G.Dominos, "NewMenu")
+		self:Unhook(this, "NewMenu")
 		return menu
 	end, true)
-	
+
 	local mod
+	-- ConfigOverlay
+	mod = _G.Dominos:GetModule('ConfigOverlay', true)
+	if mod then
+		-- hook to skin the configHelper panel
+		self:SecureHook(mod, "Show", function(this)
+			self:rmRegionsTex(this.helpDialog, {10}) -- header texture, N.B. created after other textures
+			self:skinButton{obj=self:getChild(this.helpDialog, 1)} -- this is a CheckButton object
+			self:addSkinFrame{obj=this.helpDialog, y1=4, y2=4, nb=true}
+			self:Unhook(this, "Show")
+		end)
+	end
 	-- PlayerPowerBarAlt
 	mod = _G.Dominos:GetModule("PlayerPowerBarAlt", true)
 	if mod then
@@ -43,7 +48,13 @@ function aObj:Dominos()
 		mod.buttons[1].style:SetTexture(nil)
 		mod.buttons[1].style.SetTexture = function() end
 	end
-	
+	-- CastingBar
+	mod = _G.Dominos:GetModule("CastingBar", true)
+	if mod then
+		mod.frame.border:SetTexture(nil)
+		mod.frame.border.SetTexture = function() end
+	end
+
 end
 
 function aObj:Dominos_Config()
@@ -51,7 +62,7 @@ function aObj:Dominos_Config()
 	-- hook the create menu function
 	self:SecureHook(_G.Dominos.Menu, "New", function(this, name)
 		local panel = _G["DominosFrameMenu" .. name]
-		if not self.skinned[panel] then
+		if not panel.sknd then
 			self:addSkinFrame{obj=panel, x1=6, y1=-8, x2=-8, y2=6}
 		end
 	end)
@@ -68,6 +79,6 @@ function aObj:Dominos_Config()
 		if this.panels[2].scroll then
 			self:skinScrollBar{obj=this.panels[2].scroll}
 		end
-	end)	
+	end)
 
 end
