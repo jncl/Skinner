@@ -12,13 +12,8 @@ Legend:
 
 ≈	S	MyGarrisons, requested by Decabah, 05.11.14
 
-√	N	LUI, reported by paintpauller2, 06.11.14
-		- Skinner\Skinner-b6.19116.2.lua:242: table index is nil
-		Skinner\Skinner-b6.19116.2.lua:1395: in function <Skinner\Skinner.lua:1361>
-		Skinner\Skinner-b6.19116.2.lua:1452: in function `skinDropDown'
-		Skinner\SkinMe\LUI-r694.lua:20: in function <Skinner\SkinMe\LUI.lua:4>
-
-√	O	Deprecate all skins not changed since 2012
-
-√	N	XLoot, reported by lexusnexus, 08.11.14
-		- ..\AddOns\Skinner\SkinMe\XLoot.lua line 9: Attempt to access forbidden object from code tainted by an AddOn Debug: [C]: IsObjectType() Skinner\SkinMe\XLoot.lua:9: Skinner\SkinMe\XLoot.lua:8 [string "safecall Dispatcher[2]"]:4: [string "safecall Dispatcher[2]"]:4 [C]: ? [string "safecall Dispatcher[2]"]:13: ?() ...ore\libs\CallbackHandler-1.0\CallbackHandler-1.0.lua:90: Fire() Skinner\UtilFuncs.lua:534:...
+√	N	Dominos, reported by paintpauller2, 06.11.14
+		- Skinner\SkinMe\Dominos-6.0.9.lua:8: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		Ace3\AceHook-3.0\AceHook-3.0-8.lua:211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		Ace3\AceHook-3.0\AceHook-3.0-8.lua:341: in function `SecureHook'
+		Skinner\SkinMe\Dominos-6.0.9.lua:8: in function <Skinner\SkinMe\Dominos.lua:5>
