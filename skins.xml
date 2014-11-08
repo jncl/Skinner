@@ -38,7 +38,7 @@
 <!-- <script file="SkinMe\AuctionProfitMaster.lua"/> -->
 <script file="SkinMe\Auctionsnatch.lua"/>
 <script file="SkinMe\AutoBag.lua"/>
-<!-- <script file="SkinMe\AutoDecline.lua"/> -->
+<script file="SkinMe\AutoDecline.lua"/>
 <!-- <script file="SkinMe\AutoPartyButtons.lua"/> -->
 <!-- <script file="SkinMe\AutoProfit.lua"/> -->
 <!-- <script file="SkinMe\AzCastBarOptions.lua"/> -->
@@ -225,7 +225,7 @@
 <!-- <script file="SkinMe\oRA2.lua"/> -->
 <script file="SkinMe\oRA3.lua"/>
 <!-- <script file="SkinMe\OgriLazy.lua"/> -->
-<!-- <script file="SkinMe\Omen.lua"/> -->
+<script file="SkinMe\Omen.lua"/>
 <!-- <script file="SkinMe\OneBag3.lua"/> -->
 <script file="SkinMe\Outfitter.lua"/>
 <script file="SkinMe\Overachiever.lua"/>
