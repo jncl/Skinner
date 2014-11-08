@@ -829,7 +829,7 @@ function aObj:ColorPicker()
 
 	_G.ColorPickerFrame:SetBackdrop(nil)
 	_G.ColorPickerFrameHeader:SetAlpha(0)
-	self:skinSlider(_G.OpacitySliderFrame, 4)
+	self:skinSlider{obj=_G.OpacitySliderFrame, size=4}
 	self:addSkinFrame{obj=_G.ColorPickerFrame, ft=ftype, y1=6}
 
 -->>-- Opacity Frame, used by BattlefieldMinimap amongst others
