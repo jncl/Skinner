@@ -3019,10 +3019,10 @@ function aObj:WorldMap()
 
 		end
 		local function sizeDown()
-			local x1, y1, x2, y2 = 0, 2, 2, -2
+
 			_G.WorldMapFrame.sf:ClearAllPoints()
-			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", x1, y1)
-			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", x2, y2)
+			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 0, 2)
+			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -2)
 
 		end
 		-- handle size change
