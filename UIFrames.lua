@@ -1127,8 +1127,10 @@ function aObj:GarrisonUI() -- LoD
 		mp:DisableDrawLayer("BORDER")
 		mp.ButtonFrame:SetTexture(nil)
 		aObj:addSkinFrame{obj=mp, ft=ftype, x1=-320, y1=0, x2=-2, y2=-20}
-		-- TODO handle animation of StartMissionButton
-		mp.StartMissionButton.sb.tfade:SetParent(mp.sf)
+		-- handle animation of StartMissionButton
+		if self.modBtns then
+			 mp.StartMissionButton.sb.tfade:SetParent(mp.sf)
+		end
 		aObj:removeRegions(mp.Stage, stageRegs)
 		for i = 1, #mp.Followers do
 			self:removeRegions(mp.Followers[i], {1})
