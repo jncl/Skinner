@@ -1,8 +1,9 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("LUI") then return end
+local _G = _G
 
 function aObj:LUI()
-	
+
 	-- World Map changes
 	if self:IsHooked("WorldMap_ToggleSizeUp") then self:Unhook("WorldMap_ToggleSizeUp") end
 	if self:IsHooked("WorldMap_ToggleSizeDown") then self:Unhook("WorldMap_ToggleSizeDown") end
@@ -11,14 +12,18 @@ function aObj:LUI()
 	end)
 	self:SecureHook("WorldMap_ToggleSizeDown", function()
 		_G.WorldMapFrame.sf:ClearAllPoints()
-		_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 0, 2)
-		_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", -30, 0)
+		_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", -1, 1)
+		_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -98)
 	end)
-	-- resize if minimap
-	if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then WorldMap_ToggleSizeDown() end
+	-- resize
+	if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
+		WorldMap_ToggleSizeDown()
+	else
+		WorldMap_ToggleSizeUp()
+	end
 	-- skin the Quest Objectives dropdown
 	self:skinDropDown{obj=LUI_WorldMap_QuestObjectivesDropDown}
-	
+
 	-- skin the Chat CopyFrame
 	self:skinScrollBar{obj=LUI_Chat_CopyScrollFrame}
 	self:addSkinFrame{obj=LUI_Chat_CopyFrame, y1=-3, x2=-3}
@@ -42,7 +47,6 @@ function aObj:LUIInit()
 			self.db:CopyProfile(dbProfile) -- use settings from previous profile
 
 			-- change settings
-			self.db.profile.ClassColours = false
             self.db.profile.TooltipBorder  = {r = 0.3, g = 0.3, b = 0.3, a = 1}
             self.db.profile.BackdropBorder = {r = 0.2, g = 0.2, b = 0.2, a = 1}
             self.db.profile.Backdrop       = {r = 0.18, g = 0.18, b = 0.18, a = 1}
@@ -59,9 +63,9 @@ function aObj:LUIInit()
 			self.db.profile.Nameplates = false
 			self.db.profile.ChatEditBox = {skin = false, style = 1}
 			self.db.profile.StatusBar = {texture = "LUI_Minimalist", r = 0, g = 0.5, b = 0.5, a = 0.5}
+			self.db.profile.WorldMap = {skin = false, size = 1}
 			self.db.profile.Minimap = {skin = false, gloss = false}
 			self.db.profile.TexturedTab = false
-			-- self.db.profile.WorldMap.skin = false
 		end
 
 		-- run the function
@@ -69,7 +73,7 @@ function aObj:LUIInit()
 
 		-- Now do this after we have run the function
 		-- setup backdrop(s)
-		for i, _ in ipairs(self.Backdrop) do
+		for i, _ in _G.ipairs(self.Backdrop) do
 			self.Backdrop[i] = self.backdrop
 		end
 

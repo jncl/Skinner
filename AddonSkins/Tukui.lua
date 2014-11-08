@@ -111,7 +111,7 @@ function aObj:TukuiInit()
 				then
 					return
 				end
-				self.hooks[this].skinButton(this, opts)
+				return self.hooks[this].skinButton(this, opts)
 			end)
 			self.checkTex = function() end
 			self:Unhook(self, "OnEnable")

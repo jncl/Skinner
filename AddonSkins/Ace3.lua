@@ -29,15 +29,13 @@ function aObj:Ace3()
 			-- aObj:Debug("skinAceGUI: [%s, %s, %s]", obj, objType, objVer)
 		-- end
 		-- if objType:find("TSM") then
-			-- aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, rawget(aObj.skinned, obj), objType:find("TSM"), obj.sknrTSM)
+			-- aObj:Debug("skinAceGUI: [%s, %s, %s, %s, %s, %s]", obj, objType, objVer, obj.sknd, objType:find("TSM"), obj.sknrTSM)
 		-- end
 
 		if obj
-		and (not aObj.skinned[obj] or (objType:find("TSM") and not obj.sknrTSM)) -- check objType as TSM overlays existing objects
+		and (not obj.sknd or (objType:find("TSM") and not obj.sknrTSM)) -- check objType as TSM overlays existing objects
 		then
-			if objType == "BlizOptionsGroup" then
-				-- aObj:applySkin{obj=obj.frame, kfs=true}
-			elseif objType == "Dropdown" then
+			if objType == "Dropdown" then
 				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
 				aObj:applySkin{obj=obj.pullout.frame}
 			elseif objType == "Dropdown-Pullout" then
@@ -55,9 +53,11 @@ function aObj:Ace3()
 			or objType == "NumberEditBox"
 			then
 				aObj:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
-				aObj:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
-					return left + 6, right, top, bottom
-				end, true)
+				if not aObj:IsHooked(obj.editbox, "SetTextInsets") then
+					aObj:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
+						return left + 6, right, top, bottom
+					end, true)
+				end
 				aObj:skinButton{obj=obj.button, as=true}
 				if objType == "NumberEditBox" then
 					aObj:skinButton{obj=obj.minus, as=true}
@@ -83,7 +83,7 @@ function aObj:Ace3()
 					aObj:applySkin{obj=obj.statusbg}
 				else
 					aObj:skinButton{obj=aObj:getChild(obj.frame, 1), y1=1}
-					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- backdrop frame
+					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- status frame
 				end
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "Window" then
@@ -99,16 +99,19 @@ function aObj:Ace3()
 				aObj:applySkin{obj=obj.border}
 				aObj:applySkin{obj=obj.treeframe}
 				if aObj.modBtns then
-					-- hook to manage changes to button textures
-					aObj:SecureHook(obj, "RefreshTree", function(this)
-						local btn
-						for i = 1, #this.buttons do
-							btn = this.buttons[i]
-							if not aObj.skinned[btn.toggle] then
-								aObj:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
+					if not aObj:IsHooked(obj, "RefreshTree") then
+						-- hook to manage changes to button textures
+						aObj:SecureHook(obj, "RefreshTree", function(this)
+							local btn
+							for i = 1, #this.buttons do
+								btn = this.buttons[i]
+								if not btn.toggle.sknd then
+									btn.toggle.sknd = true
+									aObj:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
+								end
 							end
-						end
-					end)
+						end)
+					end
 				end
 			elseif objType == "Button" then
 				-- _G.print("Ace3 Button", obj.frame.GetName and obj.frame:GetName(), aObj:getInt(obj.frame:GetHeight()))
@@ -121,12 +124,14 @@ function aObj:Ace3()
 			elseif objType == "SnowflakeGroup" then
 				aObj:applySkin{obj=obj.frame}
 				aObj:skinSlider{obj=obj.slider, size=2}
-				-- hook this for frame refresh
-				aObj:SecureHook(obj, "Refresh", function(this)
-					this.frame:SetBackdrop(aObj.Backdrop[1])
-					this.frame:SetBackdropColor(bC.r, bC.g, bC.b, bC.a)
-					this.frame:SetBackdropBorderColor(bbC.r, bbC.g, bbC.b, bbC.a)
-				end)
+				if not aObj:IsHooked(obj, "Refresh") then
+					-- hook this for frame refresh
+					aObj:SecureHook(obj, "Refresh", function(this)
+						this.frame:SetBackdrop(aObj.Backdrop[1])
+						this.frame:SetBackdropColor(bC.r, bC.g, bC.b, bC.a)
+						this.frame:SetBackdropBorderColor(bbC.r, bbC.g, bbC.b, bbC.a)
+					end)
+				end
 			elseif objType == "SnowflakeEditBox" then
 				aObj:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
 
@@ -187,19 +192,27 @@ function aObj:Ace3()
 
 			-- WeakAuras objects
 			elseif objType == "WeakAurasLoadedHeaderButton" then
-				aObj:skinButton{obj=obj.expand, mp2=true, as=true}
-				aObj:SecureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-					aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
-				end)
+				if aObj.modBtns then
+					aObj:skinButton{obj=obj.expand, mp2=true, as=true}
+					if not aObj:IsHooked(obj.expand, "SetNormalTexture") then
+						aObj:SecureHook(obj.expand, "SetNormalTexture", function(this, nTex)
+							aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
+						end)
+					end
+				end
 			elseif objType == "WeakAurasDisplayButton" then
 				aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
 				obj.renamebox:SetHeight(18)
-				aObj:skinButton{obj=obj.expand, mp2=true, plus=true, as=true}
-				obj.expand:SetDisabledFontObject(aObj.modUIBtns.fontDP)
-				aObj:SecureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-					aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
-				end)
-
+				if aObj.modBtns then
+					aObj:skinButton{obj=obj.expand, mp2=true, plus=true, as=true}
+					obj.expand:SetDisabledFontObject(aObj.modUIBtns.fontDP)
+					if not aObj:IsHooked(obj.expand, "SetNormalTexture") then
+						aObj:SecureHook(obj.expand, "SetNormalTexture", function(this, nTex)
+							aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
+						end)
+					end
+				end
+				
             -- TradeSkillMaster (TSM) objects
             elseif objType == "TSMMainFrame" then
                 aObj:applySkin{obj=obj.frame}
@@ -256,8 +269,15 @@ function aObj:Ace3()
 			elseif objType == "EditDropdown" then
 				aObj:addButtonBorder{obj=obj.button, es=12, ofs=-2}
 
+			-- CompactMissions objects
+			elseif objType == "Follower" then
+			elseif objType == "Mission" then
+				aObj:applySkin{obj=obj.frame, kfs=true}
+				-- obj.startbutton
+
 			-- ignore these types for now
-			elseif objType == "CheckBox"
+			elseif objType == "BlizOptionsGroup"
+			or objType == "CheckBox"
 			or objType == "Dropdown-Item-Execute"
 			or objType == "Dropdown-Item-Header"
 			or objType == "Dropdown-Item-Menu"

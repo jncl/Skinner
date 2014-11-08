@@ -6,16 +6,10 @@ function aObj:XLoot()
 
 	-- skin anchors
 	self.RegisterCallback("Xloot", "UIParent_GetChildren", function(this, child)
-		if child:IsObjectType("Button")
-		and child:GetName() == nil
-		and self:getInt(child:GetWidth()) == 175
-		and self:getInt(child:GetHeight()) == 20
-		and child.close
-		and child.close.parent == child
+		if child.hide
+		and child.label
 		then
-			self:addSkinFrame{obj=child, nb=true, x2=3}
-			child.close:SetSize(16, 18)
-			self:skinButton{obj=child.close, cb=true}
+			self:addSkinFrame{obj=child, nb=true}
 		end
 	end)
 
