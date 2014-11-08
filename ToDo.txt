@@ -6,14 +6,16 @@ Legend:
 	≈ is Alt+x	- indicates partially completed or dry-coded
 	x			- indicates nothing to change
 	¶ is Alt+7	- indicates localisation changes required
-	S/B/b/N/I/O	- Skin request/Button(s) Skin request/Button border request/New Version/Issue(Bug)/Other change
+	S/N/I/O/U	- Skin request/New Version/Issue(Bug)/Other change/Unobsolete skin
 
 ≈	S	CompactMissions, requested by Decabah, 05.11.14
 
 ≈	S	MyGarrisons, requested by Decabah, 05.11.14
 
-√	N	Dominos, reported by paintpauller2, 06.11.14
-		- Skinner\SkinMe\Dominos-6.0.9.lua:8: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		Ace3\AceHook-3.0\AceHook-3.0-8.lua:211: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		Ace3\AceHook-3.0\AceHook-3.0-8.lua:341: in function `SecureHook'
-		Skinner\SkinMe\Dominos-6.0.9.lua:8: in function <Skinner\SkinMe\Dominos.lua:5>
+√	U	OneBag3, requested by mog71, 08.11.14
+√	U	Squeenix, requested by DavidTheMachine, 08.11.14
+
+√	N	Outfitter, requested by chrisgriffiths, 08.11.14
+
+√	I	Garrison Mission frame, reported by MetalHeadSpike, 08.11.14
+		- Interface\AddOns\Skinner\UIFrames.lua:1131: attempt to index field 'sb' (a nil value)
