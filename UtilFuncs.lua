@@ -552,9 +552,18 @@ function aObj:scanUIParentsChildren()
 
 	-- scan through all UIParent's children, firing events for each one
 	-- this allows skins to check the children as required
+	local retOK, ret1
 	local kids = {_G.UIParent:GetChildren()}
 	for _, child in _G.ipairs(kids) do
-		self.callbacks:Fire("UIParent_GetChildren", child)
+		-- check for forbidden objects (StoreUI components)
+		retOK, ret1 = pcall(function() return child:IsObjectType("Table") end)
+		if retOK then
+			self.callbacks:Fire("UIParent_GetChildren", child)
+--@alpha@
+		else
+			_G.print("ignoring forbidden object", child)
+--@end-alpha@
+		end
 	end
 	kids = _G.null
 
