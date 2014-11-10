@@ -12,10 +12,17 @@ Legend:
 
 ≈	S	MyGarrisons, requested by Decabah, 05.11.14
 
-√	U	OneBag3, requested by mog71, 08.11.14
-√	U	Squeenix, requested by DavidTheMachine, 08.11.14
+√	O	Don't hide Search Icons in Edit Boxes
 
-√	N	Outfitter, requested by chrisgriffiths, 08.11.14
+√	O	Handle forbidden objects when checking UIParent's children
 
-√	I	Garrison Mission frame, reported by MetalHeadSpike, 08.11.14
-		- Interface\AddOns\Skinner\UIFrames.lua:1131: attempt to index field 'sb' (a nil value)
+√	I	Bagnon, reported by bbarnett444, 09.11.14
+		- Skinner\SkinMe\Bagnon-6.0.14.lua:47: attempt to get length of field 'itemSlots' (a nil value)
+		Skinner\SkinMe\Bagnon-6.0.14.lua:47: in function <Skinner\SkinMe\Bagnon.lua:34>
+
+√	I	Examiner, reported by bbarnett444, 09.11.14
+		- Skinner\Skinner-b6.19116.5.lua:573: attempt to index field 'obj' (a nil value)
+		Skinner\SkinMe\Examiner-14.10.16.lua:53: in function <Skinner\SkinMe\Examiner.lua:4>
+
+x	I	reported by chrisgriffith25, 09.11.14
+		- The equipment slots on the character frame are still the standard Blizz border
