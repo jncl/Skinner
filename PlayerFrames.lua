@@ -671,7 +671,7 @@ function aObj:ContainerFrames()
 		cfpb.Highlight:SetSize(22, 22)
 		aObj:moveObject{obj=cfpb, x=6, y=-5}
 	end
-	self:skinEditBox{obj=_G.BagItemSearchBox, regs={9}, noInsert=true}
+	self:skinEditBox{obj=_G.BagItemSearchBox, regs={9, 10}, mi=true, noInsert=true}
 	-- Hook this to hide/show the gear button
 	self:SecureHook("ContainerFrame_GenerateFrame", function(frame, size, id)
 		-- if it's a profession bag
@@ -712,7 +712,7 @@ function aObj:EncounterJournal() -- LoD
 	self:addSkinFrame{obj=_G.EncounterJournal, ft=ftype, kfs=true, y1=2, x2=1}
 
 -->>-- Search EditBox, dropdown and results frame
-	self:skinEditBox{obj=_G.EncounterJournal.searchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinEditBox{obj=_G.EncounterJournal.searchBox, regs={9, 10}, mi=true, noHeight=true, noMove=true}
 	_G.EncounterJournal.searchBox.sbutton1:DisableDrawLayer("OVERLAY")
 	self:addSkinFrame{obj=_G.EncounterJournal.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
 	self:skinSlider{obj=_G.EncounterJournal.searchResults.scrollFrame.scrollBar, adj=-4}
@@ -1741,7 +1741,7 @@ function aObj:PetJournal() -- LoD
 	self:removeInset(mj.LeftInset)
 	self:removeInset(mj.RightInset)
 	self:removeInset(mj.MountCount)
-	self:skinEditBox{obj=mj.searchBox, regs={9}, noWidth=true, noInsert=true}
+	self:skinEditBox{obj=mj.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
 	self:keepFontStrings(mj.MountDisplay)
 	self:keepFontStrings(mj.MountDisplay.ShadowOverlay)
 	self:makeMFRotatable(mj.MountDisplay.ModelFrame)
@@ -1762,7 +1762,7 @@ function aObj:PetJournal() -- LoD
 	_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 	self:removeInset(_G.PetJournal.LeftInset)
 	self:removeInset(_G.PetJournal.RightInset)
-	self:skinEditBox{obj=_G.PetJournal.searchBox, regs={9}, noWidth=true, noInsert=true}
+	self:skinEditBox{obj=_G.PetJournal.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
 	self:skinButton{obj=_G.PetJournalFilterButton}
 	self:skinDropDown{obj=_G.PetJournalFilterDropDown}
 	self:skinSlider{obj=_G.PetJournal.listScroll.scrollBar, adj=-4}
@@ -1835,7 +1835,7 @@ function aObj:PetJournal() -- LoD
 	-- Toy Box
 	self:glazeStatusBar(_G.ToyBox.progressBar, 0,  nil)
 	self:removeRegions(_G.ToyBox.progressBar, {2, 3})
-	self:skinEditBox{obj=_G.ToyBox.searchBox, regs={9}, noWidth=true, noInsert=true}
+	self:skinEditBox{obj=_G.ToyBox.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
 	self:skinButton{obj=_G.ToyBoxFilterButton}
 	self:removeInset(_G.ToyBoxIconsFrame)
 	_G.ToyBoxIconsFrame:DisableDrawLayer("OVERLAY")

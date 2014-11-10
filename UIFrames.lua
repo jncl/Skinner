@@ -937,7 +937,7 @@ function aObj:GarrisonUI() -- LoD
 	end
 	local function skinFollowerList(opts)
 		if not opts.noEB then
-			aObj:skinEditBox{obj=opts.obj.SearchBox, regs={9}, mi=true}
+			aObj:skinEditBox{obj=opts.obj.SearchBox, regs={9, 10}, mi=true}
 		end
 		aObj:skinSlider{obj=opts.obj.listScroll.scrollBar, adj=-4}
 		for i = 1, #opts.obj.listScroll.buttons do
@@ -1395,7 +1395,7 @@ function aObj:GuildBankUI() -- LoD
 		local objName = "GuildBankColumn" .. i
 		_G[objName .. "Background"]:SetAlpha(0)
 	end
-	self:skinEditBox{obj=_G.GuildItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinEditBox{obj=_G.GuildItemSearchBox, regs={9, 10}, mi=true, noHeight=true, noMove=true}
 	self:skinTabs{obj=_G.GuildBankFrame, lod=true}
 	_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.GuildBankFrame, ft=ftype, kfs=true, hdr=true, x1=-3, y1=2, x2=1, y2=-5}
@@ -2661,7 +2661,7 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	self:removeMagicBtnTex(cs.StartGroupButton)
 	-- SearchPanel
 	local sp = _G.LFGListFrame.SearchPanel
-	self:skinEditBox{obj=sp.SearchBox, regs={9}, mi=true}
+	self:skinEditBox{obj=sp.SearchBox, regs={9, 10}, mi=true}
 	self:addSkinFrame{obj=sp.AutoCompleteFrame, ft=ftype, kfs=true, nb=true, x1=4, y1=4, y2=4}
 	self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
 	self:removeInset(sp.ResultsInset)

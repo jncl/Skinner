@@ -97,7 +97,7 @@ function aObj:BankFrame()
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
-	self:skinEditBox{obj=_G.BankItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinEditBox{obj=_G.BankItemSearchBox, regs={9, 10}, mi=true, noHeight=true, noMove=true}
 	self:removeInset(_G.BankFrameMoneyFrameInset)
 	_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-4}
@@ -503,7 +503,7 @@ function aObj:QuestInfo()
 	end)
 	-- update any Quest Info that may be already displayed
 	updateQIDisplay()
-	
+
 	_G.QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- QuestInfoRequiredMoneyFrame
@@ -539,7 +539,7 @@ function aObj:QuestInfo()
 	end)
 	-- skin any existing Reward button
 	skinQIRB()
-	
+
 	-- FollowerFrame
 	frame.FollowerFrame.BG:SetTexture(nil)
 	local ffpf = frame.FollowerFrame.PortraitFrame
@@ -643,7 +643,7 @@ function aObj:VoidStorageUI() -- LoD
 		frame:DisableDrawLayer("BORDER")
 	end
 	self:addSkinFrame{obj=_G.VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
-	self:skinEditBox{obj=_G.VoidItemSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	self:skinEditBox{obj=_G.VoidItemSearchBox, regs={9, 10}, mi=true, noHeight=true, noMove=true}
 	for i = 1, 2 do
 		_G.VoidStorageFrame["Page" .. i]:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=_G.VoidStorageFrame["Page" .. i]}
