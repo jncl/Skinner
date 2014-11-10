@@ -8,7 +8,7 @@ local _G = _G
 
 -- Updated 26.06.09
 -- vBagnon no longer is supported
--- Now supports the newest version found on Curse
+-- Now supports the newest version found on Curse - http://www.curse.com/addons/wow/bagnon
 
 function aObj:Bagnon(LoD) -- 5.4.15
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
@@ -42,12 +42,6 @@ function aObj:Bagnon(LoD) -- 5.4.15
 								aObj:addButtonBorder{obj=this.bagFrame.bags[i], ofs=3}
 							end
 						end
-						-- item slots
-						if this.itemFrame then
-							for i = 1, #this.itemFrame.itemSlots do
-								aObj:addButtonBorder{obj=this.itemFrame.itemSlots[i], ofs=3}
-							end
-						end
 						if this:HasOptionsToggle() then
 							aObj:addButtonBorder{obj=this.optionsToggle, ofs=3}
 						end
@@ -61,7 +55,7 @@ function aObj:Bagnon(LoD) -- 5.4.15
 							aObj:addButtonBorder{obj=this.moneyFrame.icon:GetParent(), relTo=this.moneyFrame.icon, ofs=3}
 						end
 					end
-					if this.closeButton then self:skinButton{obj=this.closeButton, cb=true} end
+					if this.closeButton then aObj:skinButton{obj=this.closeButton, cb=true} end
 					aObj:Unhook(frame, "OnShow")
 				end)
 			end

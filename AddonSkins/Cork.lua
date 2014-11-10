@@ -4,6 +4,16 @@ local _G = _G
 
 function aObj:Cork()
 
+	-- skin the anchor
+	self.RegisterCallback("Cork", "UIParent_GetChildren", function(this, child)
+		if child:IsObjectType("Button")
+		and self:getInt(child:GetHeight()) == 24
+		then
+			self:addSkinFrame{obj=child, kfs=true, x1=-2}
+			self.UnregisterCallback("Cork", "UIParent_GetChildren")
+		end
+	end)
+
 	-- tooltip
 	-- this is required for WoD, not sure why it has changed but skinned tooltip no longer gets hidden automatically
 	local rtTmr

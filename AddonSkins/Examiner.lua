@@ -1,5 +1,6 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Examiner") then return end
+local _G = _G
 
 function aObj:Examiner()
 	if not self.db.profile.InspectUI then return end
@@ -24,45 +25,52 @@ function aObj:Examiner()
 	end
 
 	-- hook this to skin the dropdown menu (also used by TipTac skin)
-	if not self:IsHooked(AzDropDown, "ToggleMenu") then
-		self:SecureHook(AzDropDown, "ToggleMenu", function(...)
-			self:skinScrollBar{obj=_G["AzDropDownScroll"..AzDropDown.vers]}
-			self:addSkinFrame{obj=_G["AzDropDownScroll"..AzDropDown.vers]:GetParent()}
-			self:Unhook(AzDropDown, "ToggleMenu")
+	if not self:IsHooked(_G.AzDropDown, "ToggleMenu") then
+		self:SecureHook(_G.AzDropDown, "ToggleMenu", function(this, ...)
+			self:skinScrollBar{obj=_G["AzDropDownScroll" .. this.vers]}
+			self:addSkinFrame{obj=_G["AzDropDownScroll" .. this.vers]:GetParent()}
+			self:Unhook(_G.AzDropDown, "ToggleMenu")
 		end)
 	end
 
-	self:removeRegions(Examiner, {1, 5, 6, 7, 8}) -- N.B. other regions are text or background
-	self:addSkinFrame{obj=Examiner, x1=10, y1=-11, x2=-33}
-	self:skinButton{obj=self:getChild(Examiner, 1), cb=true}
+	self:removeRegions(_G.Examiner, {1, 5, 6, 7, 8}) -- N.B. other regions are text or background
+	self:addSkinFrame{obj=_G.Examiner, x1=10, y1=-11, x2=-33}
+	self:skinButton{obj=self:getChild(_G.Examiner, 1), cb=true}
 
 	-- skin sub frames
-	for k, mod in pairs(Examiner.modules) do
---		self:Debug("Examiner.modules: [%d, %s, %s]", k, mod.token, mod.page or "nil")
+	for k, mod in pairs(_G.Examiner.modules) do
+		-- self:Debug("Examiner.modules: [%d, %s, %s]", k, mod.token, mod.page or "nil")
 		if mod.page then
-			if mod.token == "Config" then
+			if     mod.token == "More" then
+			elseif mod.token == "ItemSlots" then
+			elseif mod.token == "Config" then
 				self:SecureHookScript(mod.page, "OnShow", function(this)
-					textureDD(self:getChild(this, 1)) -- dropdown
+					textureDD(self:getChild(this, 1))
 					self:Unhook(mod.page, "OnShow")
 				end)
 			elseif mod.token == "Cache" then
 			elseif mod.token == "Stats" then
+				self:SecureHookScript(mod.page, "OnShow", function(this)
+					for i = 1, 5 do
+						local resist = self:getChild(this, i)
+						resist:SetSize(32, 32)
+						self:addButtonBorder{obj=resist, ofs=1, x1=1}
+					end
+					self:Unhook(mod.page, "OnShow")
+				end)
 			elseif mod.token == "PvP" then
-				-- arena panels
-				for i = 2, 4 do
-					self:addSkinFrame{obj=self:getChild(mod.page, i)}
-				end
 			elseif mod.token == "Feats" then
 				self:SecureHookScript(mod.page, "OnShow", function(this)
-					textureDD(self:getChild(this, 1)) -- dropdown
+					textureDD(self:getChild(this, 1))
 					self:Unhook(mod.page, "OnShow")
 				end)
 			elseif mod.token == "Talent" then
 			elseif mod.token == "Gear" then
+			elseif mod.token == "Items" then
 			elseif mod.token == "Guild" then
 			end
 			if mod.scroll then self:skinScrollBar{obj=mod.scroll} end
-			if mod.token ~= "Talents" then self:addSkinFrame{obj=mod.page} end
+			if mod.token ~= "Talent" or mod.token ~= "Stats" then self:addSkinFrame{obj=mod.page} end
 		end
 	end
 
