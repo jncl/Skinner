@@ -1,22 +1,26 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("QuickMark") then return end
+local _G = _G
 
 function aObj:QuickMark()
 
-	local QuickMark = LibStub("AceAddon-3.0"):GetAddon("QuickMark", true)
+	local QM = _G.LibStub("AceAddon-3.0"):GetAddon("QuickMark", true)
+
+	if not QM then return end
 
 	-- disable border & background color functions
-	QuickMark.Border = function() end
-	QuickMark.BackgroundColor = function() end
+	QM.Border = function() end
+	QM.BackgroundColor = function() end
 
 	-- find the QuickMark frame
-	local qmFrame = self:findFrame2(UIParent, "Frame", 48, 195) -- horizontal
-	if not qmFrame then
-		qmFrame = self:findFrame2(UIParent, "Frame", 260, 45) -- vertical
-	end
-
-	if qmFrame then
-		self:addSkinFrame{obj=qmFrame}
-	end
+	self.RegisterCallback("QuickMark", "UIParent_GetChildren", function(this, child)
+		local ch, cw = self:getInt(child:GetHeight()), self:getInt(child:GetWidth())
+		if (ch == 48 and cw == 195) -- horizontal
+		or (ch == 260 and cw == 45) -- vertical
+		then
+			self:addSkinFrame{obj=child, kfs=true}
+			self.UnregisterCallback("QuickMark", "UIParent_GetChildren")
+		end
+	end)
 
 end

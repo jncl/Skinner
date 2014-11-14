@@ -1,5 +1,6 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Auc-Advanced") then return end
+local _G = _G
 
 function aObj:AucAdvanced()
 	if not self.db.profile.AuctionUI then return end
@@ -12,15 +13,14 @@ function aObj:AucAdvanced()
 		["5.11"] = 4,
 		["5.15"] = 5,
 	}
-	local aVer = GetAddOnMetadata("Auc-Advanced", "Version")
+	local aVer = _G.GetAddOnMetadata("Auc-Advanced", "Version")
 	local ver = vTab[aVer:match("(%d.%d+).%d+")] or 9
 
 	-- progress bars
-	local lib = ver == 1 and AucAdvanced.Scan or AucAdvanced.API
+	local lib = ver == 1 and _G.AucAdvanced.Scan or _G.AucAdvanced.API
 	self:SecureHook(lib , "ProgressBars", function(sbObj, ...)
 		if ver >= 4 then
-			-- search all UIParent StatusBar objects 
-			for _, child in ipairs{UIParent:GetChildren()} do
+			self.RegisterCallback("AucAdvanced", "UIParent_GetChildren", function(this, child)
 				if child:IsObjectType("StatusBar")
 				and child:GetName() == nil
 				and self:getInt(child:GetWidth()) == 300
@@ -30,11 +30,12 @@ function aObj:AucAdvanced()
 	      			child:SetBackdrop(nil)
 	       			self:glazeStatusBar(child, 0)
 				end
-			end
+			end)
+			self:scanUIParentsChildren()
 	    elseif ver > 1
 		and ver < 4
 		then
-			i = 1
+			local i = 1
 			while lib["GenericProgressBar"..i] do
 	           local gpb = lib["GenericProgressBar"..i]
            		if gpb and not self.sbGlazed[gpb] then
@@ -55,7 +56,7 @@ function aObj:AucAdvanced()
 	end)
 
 	-- Simple Auction (tab labelled Post)
-	local mod = AucAdvanced.Modules.Util.SimpleAuction
+	local mod = _G.AucAdvanced.Modules.Util.SimpleAuction
 	if mod then
 		self:SecureHook(mod.Private, "CreateFrames", function()
 			local frame = mod.Private.frame
@@ -76,7 +77,7 @@ function aObj:AucAdvanced()
 	end
 
 	-- SearchUI
-	local mod = AucAdvanced.Modules.Util.SearchUI
+	local mod = _G.AucAdvanced.Modules.Util.SearchUI
 	if mod then
 		if ver <= 4 then
 			self:SecureHook(mod, "CreateAuctionFrames", function()
@@ -123,7 +124,7 @@ function aObj:AucAdvanced()
 		if lib then
 			if ver <= 4 then
 				self:SecureHook(lib, "HookAH", function(this)
-					local frame = self:getChild(AuctionFrameBrowse, AuctionFrameBrowse:GetNumChildren()) -- get last child
+					local frame = self:getChild(_G.AuctionFrameBrowse, _G.AuctionFrameBrowse:GetNumChildren()) -- get last child
 					self:skinButton{obj=frame.control, x1=-2, y1=1, x2=2}
 					self:Unhook(lib, "HookAH")
 				end)
@@ -175,7 +176,7 @@ function aObj:AucAdvanced()
 	end
 
 	-- Appraiser
-	local mod = AucAdvanced.Modules.Util.Appraiser
+	local mod = _G.AucAdvanced.Modules.Util.Appraiser
 	if mod then
 		local function skinFrames()
 
@@ -221,7 +222,7 @@ function aObj:AucAdvanced()
 	end
 
 	-- ScanButtons
-	local mod = AucAdvanced.Modules.Util.ScanButton
+	local mod = _G.AucAdvanced.Modules.Util.ScanButton
 	if mod then
 		self:SecureHook(mod.Private, "HookAH", function(this)
 			local obj = mod.Private
@@ -236,23 +237,23 @@ function aObj:AucAdvanced()
 	end
 
 	--	AutoSell
-	if autosellframe then
-		self:skinButton{obj=autosellframe.closeButton}
-		self:skinButton{obj=autosellframe.additem}
-		self:skinButton{obj=autosellframe.removeitem}
-		self:skinUsingBD{obj=autosellframe.resultlist.sheet.panel.hScroll}
-		self:skinUsingBD{obj=autosellframe.resultlist.sheet.panel.vScroll}
-		self:applySkin{obj=autosellframe.resultlist}
-		self:skinUsingBD{obj=autosellframe.baglist.sheet.panel.hScroll}
-		self:skinUsingBD{obj=autosellframe.baglist.sheet.panel.vScroll}
-		self:applySkin{obj=autosellframe.baglist}
-		self:skinButton{obj=autosellframe.bagList}
-		self:addSkinFrame{obj=autosellframe, kfs=true}
-		self:getRegion(autosellframe, 2):SetAlpha(1) -- make slot texture visible
+	if _G.autosellframe then
+		self:skinButton{obj=_G.autosellframe.closeButton}
+		self:skinButton{obj=_G.autosellframe.additem}
+		self:skinButton{obj=_G.autosellframe.removeitem}
+		self:skinUsingBD{obj=_G.autosellframe.resultlist.sheet.panel.hScroll}
+		self:skinUsingBD{obj=_G.autosellframe.resultlist.sheet.panel.vScroll}
+		self:applySkin{obj=_G.autosellframe.resultlist}
+		self:skinUsingBD{obj=_G.autosellframe.baglist.sheet.panel.hScroll}
+		self:skinUsingBD{obj=_G.autosellframe.baglist.sheet.panel.vScroll}
+		self:applySkin{obj=_G.autosellframe.baglist}
+		self:skinButton{obj=_G.autosellframe.bagList}
+		self:addSkinFrame{obj=_G.autosellframe, kfs=true}
+		self:getRegion(_G.autosellframe, 2):SetAlpha(1) -- make slot texture visible
 	end
 
     -- Glypher
-    local mod = AucAdvanced.Modules.Util.Glypher
+    local mod = _G.AucAdvanced.Modules.Util.Glypher
     if mod then
         self:SecureHook(mod.Private, "SetupConfigGui", function(this, gui)
             local frame = mod.Private.frame
@@ -264,7 +265,7 @@ function aObj:AucAdvanced()
     end
 
     -- GlypherPost
-    local mod = AucAdvanced.Modules.Util.GlypherPost
+    local mod = _G.AucAdvanced.Modules.Util.GlypherPost
     if mod then
         self:SecureHook(mod.Private, "SetupConfigGui", function(this, gui)
             local frame = mod.Private.frame
@@ -275,7 +276,7 @@ function aObj:AucAdvanced()
 
 	--	CompactUI module
 	--	configure button on AH frame
-	local mod = AucAdvanced.Modules.Util.CompactUI
+	local mod = _G.AucAdvanced.Modules.Util.CompactUI
 	if mod then
 		self:skinButton{obj=mod.Private.switchUI, y1=2, y2=-3}
 	end
@@ -283,17 +284,17 @@ function aObj:AucAdvanced()
 --	Settings frames(s) ??
 
 	-- Buy prompt
-	if AucAdvanced.Buy then
-		self:skinEditBox{obj=AucAdvanced.Buy.Private.Prompt.Reason, regs={9}}
-		self:skinButton{obj=AucAdvanced.Buy.Private.Prompt.Yes}
-		self:skinButton{obj=AucAdvanced.Buy.Private.Prompt.No}
-		self:addSkinFrame{obj=AucAdvanced.Buy.Private.Prompt.Frame, nb=true}
+	if _G.AucAdvanced.Buy then
+		self:skinEditBox{obj=_G.AucAdvanced.Buy.Private.Prompt.Reason, regs={9}}
+		self:skinButton{obj=_G.AucAdvanced.Buy.Private.Prompt.Yes}
+		self:skinButton{obj=_G.AucAdvanced.Buy.Private.Prompt.No}
+		self:addSkinFrame{obj=_G.AucAdvanced.Buy.Private.Prompt.Frame, nb=true}
 	end
 
 	-- Post prompt
-	if AucAdvanced.Post then
-		self:skinButton{obj=AucAdvanced.Post.Private.Prompt.Yes}
-		self:skinButton{obj=AucAdvanced.Post.Private.Prompt.No}
-		self:addSkinFrame{obj=AucAdvanced.Post.Private.Prompt.Frame, nb=true}
+	if _G.AucAdvanced.Post then
+		self:skinButton{obj=_G.AucAdvanced.Post.Private.Prompt.Yes}
+		self:skinButton{obj=_G.AucAdvanced.Post.Private.Prompt.No}
+		self:addSkinFrame{obj=_G.AucAdvanced.Post.Private.Prompt.Frame, nb=true}
 	end
 end

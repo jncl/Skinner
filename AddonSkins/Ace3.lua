@@ -212,7 +212,7 @@ function aObj:Ace3()
 						end)
 					end
 				end
-				
+
             -- TradeSkillMaster (TSM) objects
             elseif objType == "TSMMainFrame" then
                 aObj:applySkin{obj=obj.frame}
@@ -272,6 +272,7 @@ function aObj:Ace3()
 			-- CompactMissions objects
 			elseif objType == "Follower" then
 			elseif objType == "Mission" then
+				aObj:skinButton{obj=obj.startbutton, as=true}
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				-- obj.startbutton
 
