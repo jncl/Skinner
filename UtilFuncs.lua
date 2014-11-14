@@ -134,7 +134,7 @@ function aObj:CustomPrint(r, g, b, a1, ...)
 
 end
 
-local errorhandler = geterrorhandler()
+local errorhandler = _G.geterrorhandler()
 local function safecall(funcName, LoD, quiet)
 --@alpha@
 	assert(funcName, "Unknown object safecall\n" .. debugstack())
@@ -447,7 +447,7 @@ function aObj:hasTextInTexture(obj, text, plain)
 end
 
 -- populate addon Index table first time through
-local addonIdx, uName = {}, UnitName("player")
+local addonIdx, uName = {}, _G.UnitName("player")
 local name, title, notes, loadable, reason, security, newVersion
 do
 	for i = 1, _G.GetNumAddOns() do
@@ -556,7 +556,7 @@ function aObj:scanUIParentsChildren()
 	local kids = {_G.UIParent:GetChildren()}
 	for _, child in _G.ipairs(kids) do
 		-- check for forbidden objects (StoreUI components)
-		retOK, ret1 = pcall(function() return child:IsObjectType("Table") end)
+		retOK, ret1 = _G.pcall(function() return child:IsObjectType("Table") end)
 		if retOK then
 			self.callbacks:Fire("UIParent_GetChildren", child)
 --@alpha@

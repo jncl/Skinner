@@ -11,7 +11,7 @@ do
 	aObj.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2"}
 	-- list of Tooltips used when the Tooltip style is 3
 	-- using a metatable to manage tooltips when they are added in different functions
-	aObj.ttList = setmetatable({}, {__newindex = function(t, k, v)
+	aObj.ttList = _G.setmetatable({}, {__newindex = function(t, k, v)
 		_G.rawset(t, k, v)
 		-- get object reference for tooltip, handle either strings or objects being passed
 		local tt = _G.type(v) == "string" and _G[v] or v
@@ -2307,7 +2307,7 @@ function aObj:MovieFrame()
 
 end
 
-if IsMacClient() then
+if _G.IsMacClient() then
 	function aObj:MovieProgress()
 		if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
 		self.initialized.MovieProgress = true

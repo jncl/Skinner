@@ -2,7 +2,7 @@ local aName, aObj = ...
 local _G = _G
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
-local assert, debugstack, rawget, select, type = _G.assert, _G.debugstack, _G.rawget, _G.select, _G.type
+local assert, debugstack, rawget, select, type, CreateFont = _G.assert, _G.debugstack, _G.rawget, _G.select, _G.type, _G.CreateFont
 
 local db
 local defaults = {

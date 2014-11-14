@@ -218,9 +218,9 @@ local function skinPetF()
 		_G.PetFrame.roleIcon:SetPoint("left", -10, 0)
 		_G.PetFrame.roleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
 		module:RegisterEvent("PET_SPECIALIZATION_CHANGED", function()
-			local curSpec = GetSpecialization(nil, true)
+			local curSpec = _G.GetSpecialization(nil, true)
 			if curSpec then -- if pet is out
-				local role = select(6, GetSpecializationInfo(curSpec, nil, true))
+				local role = _G.select(6, _G.GetSpecializationInfo(curSpec, nil, true))
 				_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(role))
 			end
 		end)

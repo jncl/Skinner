@@ -1616,10 +1616,10 @@ function aObj:ObjectiveTracker()
 		local function skinAutoPopUps()
 
 			for i = 1, _G.GetNumAutoQuestPopUps() do
-				local questID, popUpType = GetAutoQuestPopUp(i)
-				local questTitle = GetQuestLogTitle(GetQuestLogIndexByID(questID))
+				local questID, popUpType = _G.GetAutoQuestPopUp(i)
+				local questTitle = _G.GetQuestLogTitle(_G.GetQuestLogIndexByID(questID))
 				if ( questTitle and questTitle ~= "" ) then
-					local block = AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(questID)
+					local block = _G.AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(questID)
 					local obj = block.ScrollChild
 					if obj and not obj.sknd then
 						aObj:add2Table(aObj.skinned, obj) -- TODO: deprecate when all skins changed

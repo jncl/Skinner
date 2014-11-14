@@ -2,6 +2,7 @@ local aName, aObj = ...
 local _G = _G
 
 local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, null, setmetatable, RAID_CLASS_COLORS = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.null, _G.setmetatable, _G.RAID_CLASS_COLORS
+local LibStub = _G.LibStub
 
 do
 	-- check to see if required libraries are loaded
@@ -17,7 +18,7 @@ do
 	aObj.callbacks = LibStub("CallbackHandler-1.0"):New(aObj)
 
 	-- specify where debug messages go
-	aObj.debugFrame = ChatFrame10
+	aObj.debugFrame = _G.ChatFrame10
 
 	-- Get Locale
 	aObj.L = LibStub("AceLocale-3.0"):GetLocale(aName)
@@ -26,11 +27,11 @@ do
 	aObj.LSM = LibStub("LibSharedMedia-3.0")
 
 	-- player class
-	aObj.uCls = select(2, UnitClass("player"))
+	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	local liveBuildVer = "6.0.3"
 	local liveBuildNo = 19116
-	local buildInfo, portal = {GetBuildInfo()}, GetCVar("portal") or nil
+	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveBuildVer, liveBuildNo, buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
 --@end-alpha@
@@ -41,7 +42,7 @@ do
 		--check to see if running on PTR servers
 		aObj.isPTR = portal == "public-test" and true or false
 		-- check build number, if > Live then it's a patch
-		aObj.isPatch = tonumber(buildInfo[2]) > liveBuildNo and true or false
+		aObj.isPatch = _G.tonumber(buildInfo[2]) > liveBuildNo and true or false
 --@alpha@
 		if aObj.isPatch then
 			if aObj.isPTR then
@@ -345,10 +346,10 @@ function aObj:OnEnable()
 end
 
 do
-	StaticPopupDialogs[aName .. "_Reload_UI"] = {
+	_G.StaticPopupDialogs[aName .. "_Reload_UI"] = {
 		text = aObj.L["Confirm reload of UI to activate profile changes"],
-		button1 = OKAY,
-		button2 = CANCEL,
+		button1 = _G.OKAY,
+		button2 = _G.CANCEL,
 		OnAccept = function()
 			_G.ReloadUI()
 		end,
