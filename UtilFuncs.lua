@@ -61,24 +61,27 @@ end
 function aObj:SetupCmds()
 
 	local function getObj(input)
+		_G.print("getObj", input, _G[input])
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus()
 		else
-			return input
+			return _G[input]
 		end
 	end
 	local function getObjP(input)
+		_G.print("getObjP", input, _G[input])
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus():GetParent()
 		else
-			return input
+			return _G[input]
 		end
 	end
 	local function getObjGP(input)
+		_G.print("getObjGP", input, _G[input])
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus():GetParent():GetParent()
 		else
-			return input
+			return _G[input]
 		end
 	end
 	-- define some helpful slash commands (ex Baddiel)
@@ -94,6 +97,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("si1p", function(msg) self:ShowInfo(getObjP(msg), true, true) end) -- 1 level only
 	self:RegisterChatCommand("sirp", function(msg) self:ShowInfo(getObjP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("sidgp", function(msg) self:ShowInfo(getObjGP(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("si1gp", function(msg) self:ShowInfo(getObjGP(msg), true, false) end) -- 1 level only
 	self:RegisterChatCommand("sirgp", function(msg) self:ShowInfo(getObjGP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("gp", function() _G.print(_G.GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function() _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
@@ -101,7 +105,7 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
 
-	self:RegisterChatCommand("wai", function() SetMapToCurrentZone() local x,y=GetPlayerMapPosition("player") DEFAULT_CHAT_FRAME:AddMessage(format("%s, %s: %.1f, %.1f",GetZoneText(),GetSubZoneText(),x*100,y*100)) return end)
+	self:RegisterChatCommand("wai", function() _G.SetMapToCurrentZone() local x,y=_G.GetPlayerMapPosition("player") _G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f",_G.GetZoneText(),_G.GetSubZoneText(),x*100,y*100)) return end)
 
 end
 function aObj:printTS(...)
