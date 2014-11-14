@@ -27,7 +27,7 @@
 <script file="SkinMe\ArkDewdrop.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
 <script file="SkinMe\Armory.lua"/>
-<!-- <script file="SkinMe\Atlas.lua"/> -->
+<script file="SkinMe\Atlas.lua"/>
 <script file="SkinMe\AtlasLoot.lua"/>
 <!-- <script file="SkinMe\AtlasQuest.lua"/> -->
 <script file="SkinMe\AucAdvanced.lua"/>
@@ -262,6 +262,7 @@
 <!-- <script file="SkinMe\Quelevel.lua"/> -->
 <!-- <script file="SkinMe\QuestAgent.lua"/> -->
 <script file="SkinMe\QuestCompletist.lua"/>
+<script file="SkinMe\QuestGuru.lua"/>
 <script file="SkinMe\QuestGuru_Tracker.lua"/>
 <!-- <script file="SkinMe\QuestHelper.lua"/> -->
 <script file="SkinMe\QuestHelper2.lua"/>
