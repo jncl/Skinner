@@ -2388,13 +2388,9 @@ function aObj:Nameplates()
 		if varName:find("nameplateShow") and varValue == 1 then showFunc() end
 	end)
 
-	-- track in combat to enable Nameplate skinning, if required
+	-- track combat starting to enable Nameplate skinning
 	self:RegisterEvent("PLAYER_REGEN_DISABLED", function()
-		if _G.GetCVarBool("nameplateShowEnemies")
-		or _G.GetCVarBool("nameplateShowFriends")
-		then
-			showFunc()
-		end
+		showFunc()
 	end)
 
 	if _G.GetCVarBool("nameplateShowEnemies")
