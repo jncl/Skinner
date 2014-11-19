@@ -82,7 +82,7 @@ function aObj:MyGarrisons() -- WIP
 				if tb then
 					for j = 1, 10 do
 						local mtt = _G["MissionTimerTemplate" .. charname .. j]
-						if mtt and not self:sbGlazed(mtt.timebar) then
+						if mtt and not self.sbGlazed[mtt.timebar] then
 							mtt:DisableDrawLayer("BACKGROUND")
 							self:glazeStatusBar(mtt.timebar, 0, nil)
 						end
