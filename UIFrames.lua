@@ -207,7 +207,7 @@ function aObj:AlertFrames()
 		if not frame.sf then
 			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-10}
-			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.2, frame)
+			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.5, frame)
 		end
 	end
 	self:SecureHook("LootUpgradeFrame_SetUp", function(frame, ...)
