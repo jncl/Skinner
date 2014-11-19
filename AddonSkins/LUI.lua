@@ -4,25 +4,29 @@ local _G = _G
 
 function aObj:LUI()
 
-	-- World Map changes
-	if self:IsHooked("WorldMap_ToggleSizeUp") then self:Unhook("WorldMap_ToggleSizeUp") end
-	if self:IsHooked("WorldMap_ToggleSizeDown") then self:Unhook("WorldMap_ToggleSizeDown") end
-	self:SecureHook("WorldMap_ToggleSizeUp", function()
-		_G.WorldMapFrame.sf:SetAllPoints(_G.WorldMapFrame)
-	end)
-	self:SecureHook("WorldMap_ToggleSizeDown", function()
-		_G.WorldMapFrame.sf:ClearAllPoints()
-		_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", -1, 1)
-		_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -98)
-	end)
-	-- resize
-	if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
-		WorldMap_ToggleSizeDown()
-	else
-		WorldMap_ToggleSizeUp()
+	if self.db.profile.WorldMap.skin then
+		-- World Map changes
+		if self:IsHooked("WorldMap_ToggleSizeUp") then self:Unhook("WorldMap_ToggleSizeUp") end
+		if self:IsHooked("WorldMap_ToggleSizeDown") then self:Unhook("WorldMap_ToggleSizeDown") end
+		self:SecureHook("WorldMap_ToggleSizeUp", function()
+			_G.WorldMapFrame.sf:SetAllPoints(_G.WorldMapFrame)
+		end)
+		self:SecureHook("WorldMap_ToggleSizeDown", function()
+			_G.WorldMapFrame.sf:ClearAllPoints()
+			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", -1, 1)
+			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -98)
+		end)
+		-- resize
+		if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
+			WorldMap_ToggleSizeDown()
+		else
+			WorldMap_ToggleSizeUp()
+		end
+		-- skin the Quest Objectives dropdown
+		if LUI_WorldMap_QuestObjectivesDropDown then
+			self:skinDropDown{obj=LUI_WorldMap_QuestObjectivesDropDown}
+		end
 	end
-	-- skin the Quest Objectives dropdown
-	self:skinDropDown{obj=LUI_WorldMap_QuestObjectivesDropDown}
 
 	-- skin the Chat CopyFrame
 	self:skinScrollBar{obj=LUI_Chat_CopyScrollFrame}
