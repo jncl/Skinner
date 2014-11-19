@@ -60,6 +60,16 @@ function aObj:tekKonfig()
 	end
 
 	-- tekKonfig-FadeIn
+	-- tekKonfig-Group
+	local tKG = tKG or _G.LibStub:GetLibrary("tekKonfig-Group", true)
+	if tKG and not self:IsHooked(tKG, "new") then
+		self:RawHook(tKG, "new", function(parent, label, ...)
+		local box = self.hooks[tKG].new(parent, label, ...)
+		self:addSkinFrame{obj=box}
+		return box
+		end, true)
+	end
+
 	-- tekKonfig-Heading
 
 	local tKS = tKS or _G.LibStub:GetLibrary("tekKonfig-Slider", true)
@@ -72,6 +82,6 @@ function aObj:tekKonfig()
 		end, true)
 	end
 
-	if tKAP and tKB and tKDd and tKS then allHooked = true end
+	if tKAP and tKB and tKDd and tKG and tKS then allHooked = true end
 
 end
