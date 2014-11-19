@@ -481,15 +481,14 @@ function aObj:ChatBubbles()
 	local cbTmr
 	local function skinChatBubbles()
 
-		local kids = {_G.WorldFrame:GetChildren()}
-		for _, child in _G.ipairs(kids) do
+		self.RegisterCallback("skinChatBubbles", "WorldFrame_GetChildren", function(this, child)
 			if aObj:hasTextInTexture(aObj:getRegion(child, 1), "ChatBubble-Background", true) then
 				aObj:applySkin{obj=child, ft=ftype, kfs=true} -- use apply skin otherwise text is behind
-				aObj:CancelTimer(cbTmr, true)
-				cbTmr = nil
 			end
-		end
-		kids = _G.null
+		end)
+		self:scanWorldFrameChildren()
+		aObj:CancelTimer(cbTmr, true)
+		cbTmr = nil
 
 	end
 
@@ -2351,28 +2350,27 @@ function aObj:Nameplates()
 	local npEvt
 	local function skinNameplates()
 
-		local kids = {_G.WorldFrame:GetChildren()}
-		for _, child in _G.ipairs(kids) do
-			if aObj:hasTextInName(child, "NamePlate") then
-				local npObj = aObj:getChild(child, 1) -- use first child frame (5.1)
-				if not npObj.sknd then
-					skinPlate(npObj)
-					npObj.sknd = true
-				else
-					 -- reset shield texture's width & position
-					npObj.sb2.rg3:sw(46)
-					npObj.sb2.rg3:SetPoint("CENTER", npObj.sb2.rg4, "CENTER", 9, -1)
-				end
-			end
-		end
-		kids = _G.null
-
 		-- if the nameplates are off then disable the skinning code
 		if not _G.GetCVarBool("nameplateShowEnemies")
 		and not _G.GetCVarBool("nameplateShowFriends")
 		then
 			aObj:CancelTimer(npEvt, true)
 			npEvt = nil
+		else
+			aObj.RegisterCallback("skinNameplates", "WorldFrame_GetChildren", function(this, child)
+				if aObj:hasTextInName(child, "NamePlate") then
+					local npObj = aObj:getChild(child, 1) -- use first child frame (5.1)
+					if not npObj.sknd then
+						skinPlate(npObj)
+						npObj.sknd = true
+					else
+						 -- reset shield texture's width & position
+						npObj.sb2.rg3:sw(46)
+						npObj.sb2.rg3:SetPoint("CENTER", npObj.sb2.rg4, "CENTER", 9, -1)
+					end
+				end
+			end)
+			aObj:scanWorldFrameChildren()
 		end
 
 	end

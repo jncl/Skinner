@@ -576,6 +576,21 @@ function aObj:scanUIParentsChildren()
 
 end
 
+function aObj:scanWorldFrameChildren()
+
+	-- scan through all UIParent's children, firing events for each one
+	-- this allows skins to check the children as required
+	local kids = {_G.WorldFrame:GetChildren()}
+	for _, child in _G.ipairs(kids) do
+		self.callbacks:Fire("WorldFrame_GetChildren", child)
+	end
+	kids = _G.null
+
+	-- remove all callbacks for this event
+	self.callbacks.events["WorldFrame_GetChildren"] = nil
+
+end
+
 function aObj:updateSBTexture()
 
 	-- get updated colour/texture
