@@ -78,6 +78,7 @@
 <!-- <script file="SkinMe\Chatr.lua"/> -->
 <script file="SkinMe\Chatter.lua"/>
 <!-- <script file="SkinMe\Chinchilla.lua"/> -->
+<script file="SkinMe\ClassicQuestLog.lua"/>
 <script file="SkinMe\Clique.lua"/>
 <!-- <script file="SkinMe\CloseUp.lua"/> -->
 <script file="SkinMe\Collectinator.lua"/>

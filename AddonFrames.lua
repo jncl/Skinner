@@ -207,6 +207,7 @@ addonSkins = nil
 -- aObj.addonsToSkin["!Swatter"] = "Swatter"
 aObj.addonsToSkin["Auc-Advanced"] = "AucAdvanced"
 aObj.addonsToSkin["Auto-Bag"] = "AutoBag"
+aObj.addonsToSkin["Classic Quest Log"] = "ClassicQuestLog"
 aObj.addonsToSkin["DBM-Core"] = "DBMCore"
 aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
 -- aObj.addonsToSkin["Ogri'Lazy"] = "OgriLazy"
