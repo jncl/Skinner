@@ -1,3 +1,13 @@
+b6.19116.7
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Other changes
+	Made global defintions local
+	Updated Ace3, AucAdvanced & QuickMark skins
+	Unobsoleted Atlas
+	Skinned CompactMissions, MyGarrisons & QuestGuru
+
 b6.19116.6
 Jncl:
 	ToDo.txt
