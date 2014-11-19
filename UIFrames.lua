@@ -26,9 +26,9 @@ do
 				-- handle in combat
 				if _G.InCombatLockdown() then
 					aObj:add2Table(aObj.oocTab, {aObj.glazeStatusBar, {aObj, _G.GameTooltipStatusBar, 0}})
-					return
+				else
+					aObj:glazeStatusBar(_G.GameTooltipStatusBar, 0)
 				end
-				aObj:glazeStatusBar(_G.GameTooltipStatusBar, 0)
 			end
 		end)
 		aObj:skinTooltip(tt) -- skin here so tooltip initially skinnned when logged on
