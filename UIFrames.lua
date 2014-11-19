@@ -1141,7 +1141,7 @@ function aObj:GarrisonUI() -- LoD
 		for i = 1, #mp.RewardsFrame.Rewards do
 			local frame = mp.RewardsFrame.Rewards[i]
 			frame.BG:SetTexture(nil)
-			aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+			aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
 		end
 		for i = 1, #mp.Enemies do
 			local frame = mp.Enemies[i]
@@ -1178,7 +1178,7 @@ function aObj:GarrisonUI() -- LoD
 			for i = 1, #this.Rewards do
 				local frame = this.Rewards[i]
 				frame.BG:SetTexture(nil)
-				aObj:addButtonBorder{obj=frame, relTo=frame.Icon}
+				aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
 			end
 		end)
 		mc.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
