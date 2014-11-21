@@ -384,6 +384,8 @@ function aObj:PetStableFrame()
 end
 
 function aObj:QuestChoice() -- LoD
+	if not self.db.profile.QuestChoice or self.initialized.QuestChoice then return end
+	self.initialized.QuestChoice = true
 
 	_G.QuestChoiceFrame.DummyString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	for i = 1, _G.MAX_NUM_OPTIONS do
