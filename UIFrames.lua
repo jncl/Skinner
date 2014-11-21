@@ -1118,7 +1118,7 @@ function aObj:GarrisonUI() -- LoD
 			btn:DisableDrawLayer("BACKGROUND")
 			aObj:removeRegions(btn, {7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26})
 			for i = 1, #btn.Rewards do
-				aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon}
+				aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
 				btn.Overlay.Overlay:SetTexture(nil)
 			end
 		end
@@ -1319,7 +1319,11 @@ function aObj:GarrisonUI() -- LoD
 	skinGarrisonRecruiterUI()
 	skinGarrisonTooltips()
 
+	-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
+
 end
+
+-- N.B. The following function has been separated from the GarrisonUI skin code as it is used by several Quest Frames
 function aObj:GarrisonFollowerTooltips()
 	if not self.db.profile.GarrisonUI then return end
 
@@ -2256,7 +2260,7 @@ function aObj:MinimapButtons()
 		end
 	end
 
-	-- GarrisonLandingPage button
+	-- Garrison Landing Page Minimap button
 	local obj = _G.GarrisonLandingPageMinimapButton
 	obj:SetSize(26, 26)
 	local x1, y1, x2, y2 = 0.25, 0.76, 0.32, 0.685
@@ -2417,6 +2421,7 @@ function aObj:Nameplates()
 end
 
 function aObj:NavigationBar()
+	-- Helper function, used by several frames
 
 	-- hook this to handle navbar buttons
 	self:SecureHook("NavBar_AddButton", function(this, buttonData)
