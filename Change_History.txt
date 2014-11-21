@@ -1,3 +1,18 @@
+b6.19116.8
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Changed Skin Nameplates check to fire on combat start
+	Only skin GameTooltip statusbar if not in combat ortherwise wait
+	Make Quantity text appear above button borders on GarrisonMissionUI buttons
+	Make WorldFrame children scanning a callback function
+	Bugfix for Epic Loot Upgrade skin
+	Updated tekKonfig skin
+	Bugfix for MyGarrisons skin
+	Bugfix for LUI skin
+	Bugfix for Altoholic skin not being loaded
+	Skinned Classic Quest Log
+
 b6.19116.7
 Jncl:
 	ToDo.txt
