@@ -478,21 +478,32 @@ function aObj:ChatBubbles()
 	if not self.db.profile.ChatBubbles or self.initialized.ChatBubbles then return end
 	self.initialized.ChatBubbles = true
 
-	local cbTmr
 	local function skinChatBubbles()
 
-		self.RegisterCallback("skinChatBubbles", "WorldFrame_GetChildren", function(this, child)
+		-- _G.print("skinChatBubbles")
+		aObj.RegisterCallback("skinChatBubbles", "WorldFrame_GetChildren", function(this, child)
 			if aObj:hasTextInTexture(aObj:getRegion(child, 1), "ChatBubble-Background", true) then
 				aObj:applySkin{obj=child, ft=ftype, kfs=true} -- use apply skin otherwise text is behind
+				-- _G.print("ChatBubble skinned", child)
 			end
 		end)
-		self:scanWorldFrameChildren()
-		aObj:CancelTimer(cbTmr, true)
-		cbTmr = nil
+		aObj:scanWorldFrameChildren()
 
 	end
+	-- skin any existing ones
+	skinChatBubbles()
 
-	cbTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.2)
+	local cbTmr
+	-- hook these to skin ChatBubbles
+	self:RegisterEvent("CINEMATIC_START", function()
+		-- _G.print("CINEMATIC_START")
+		cbTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.5)
+	end)
+	self:RegisterEvent("CINEMATIC_STOP", function()
+		-- _G.print("CINEMATIC_STOP")
+		self:CancelTimer(cbTmr, true)
+		cbTmr = nil
+	end)
 
 end
 
