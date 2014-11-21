@@ -2,9 +2,11 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("DBM-Core") then return end
 local _G = _G
 local pairs, ipairs = _G.pairs, _G.ipairs
-local DBM, DBM_GUI, DBM_GUI_Translations = _G.DBM, _G.DBM_GUI, _G.DBM_GUI_Translations
+local DBM = _G.DBM
 
-function aObj:DBMGUI()
+function aObj:DBMGUI() -- LoD
+
+	local DBM_GUI, DBM_GUI_Translations = _G.DBM_GUI, _G.DBM_GUI_Translations
 
 	-- (BUGFIX for DBM): reparent the Huge Bar statusBar
 	for bar in DBM.Bars:GetBarIterator() do
@@ -19,11 +21,12 @@ function aObj:DBMGUI()
 	local function skinSubPanels(panel)
 
 		for _, subPanel in pairs(panel.areas) do
-			if not aObj.skinned[subPanel] then
+			if not subPanel.sknd then
 				aObj:applySkin(subPanel.frame) -- use apply skin so panel contents are visible
 			end
 			-- check to see if any children are dropdowns or buttons
-			for _, child in ipairs{subPanel.frame:GetChildren()} do
+			local kids = {subPanel.frame:GetChildren()}
+			for _, child in _G.ipairs(kids) do
 				if aObj:isDropDown(child) then
 					aObj:skinDropDown{obj=child, rp=true, x2=35}
 					-- check to see if this is the 3D model Dropdown
@@ -35,11 +38,11 @@ function aObj:DBMGUI()
 				elseif child:IsObjectType("Button")
 				and not child.GetChecked
 				then
-					self:skinButton{obj=child, as=true} -- make sure text is above button skin
+					aObj:skinButton{obj=child, as=true} -- make sure text is above button skin
 				end
 			end
-			titleText = _G[subPanel.framename.."Title"]:GetText()
-			-- print("titleText", titleText)
+			kids = _G.null
+			titleText = _G[subPanel.framename .. "Title"]:GetText()
 			-- (BUGFIX) reparent sliders
 			if titleText == DBM_GUI_Translations.AreaTitle_BarSetup then
 				barSetup = subPanel.frame
@@ -59,7 +62,7 @@ function aObj:DBMGUI()
 				local si, ei, fNo = subPanel.framename:find("DBM_GUI_Option_(%d+)")
 				-- next four option frames are editboxes
 				for i = fNo + 1, fNo + 4 do
-					aObj:skinEditBox(_G["DBM_GUI_Option_"..i], {9})
+					aObj:skinEditBox(_G["DBM_GUI_Option_" .. i], {9})
 				end
 			-- (BUGFIX) reparent 3D Model DD
 			elseif titleText == DBM_GUI_Translations.ModelOptions then
@@ -70,35 +73,12 @@ function aObj:DBMGUI()
 	end
 
 -->>--	Options Frame
-	-- the tabs skinning code is here so tab buttons don't get skinned twice
-	-- Options Frame Tabs
-	for i = 1, 2 do
-		local tab = _G["DBM_GUI_OptionsFrameTab"..i]
-		self:keepRegions(tab, {7, 8}) -- N.B. region 7 is text, 8 is highlight
-		local tabSF = self:addSkinFrame{obj=tab, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=-2}
-		tabSF.ignore = true -- ignore size changes
-		tabSF.up = true -- tabs grow upwards
-		-- set textures here first time thru as it's LoD
-		if i == 1 then
-			if self.isTT then self:setActiveTab(tabSF) end
-		else
-			if self.isTT then self:setInactiveTab(tabSF) end
-		end
-		if self.isTT then
-			self:SecureHookScript(tab, "OnClick", function(this)
-				for i = 1, 2 do
-					local tabSF = self.skinFrame[_G["DBM_GUI_OptionsFrameTab"..i]]
-					if i == this:GetID() then self:setActiveTab(tabSF) else self:setInactiveTab(tabSF) end
-				end
-			end, true)
-		end
-	end
 	-- skin toggle buttons
 	local frame, btn
 	for _, v in pairs{"BossMods", "DBMOptions"} do
-		frame = _G["DBM_GUI_OptionsFrame"..v]
+		frame = _G["DBM_GUI_OptionsFrame" .. v]
 		for i = 1, #frame.buttons do
-			btn = _G["DBM_GUI_OptionsFrame"..v.."Button"..i.."Toggle"]
+			btn = _G["DBM_GUI_OptionsFrame" .. v .. "Button" .. i .. "Toggle"]
 			self:skinButton{obj=btn, mp2=true, plus=i==1 and true or nil}
 		end
 	end
@@ -108,7 +88,17 @@ function aObj:DBMGUI()
 	self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrameDBMOptions, kfs=true}
 	self:skinScrollBar{obj=_G.DBM_GUI_OptionsFramePanelContainerFOV}
 	self:addSkinFrame{obj=_G.DBM_GUI_OptionsFramePanelContainer, bas=true}
-	self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrame, kfs=true, hdr=true}
+	-- don't skin buttons as this also skins tab buttons
+	self:addSkinFrame{obj=_G.DBM_GUI_OptionsFrame, kfs=true, hdr=true, nb=true}
+	self:skinButton{obj=_G.DBM_GUI_OptionsFrameOkay}
+	self:skinButton{obj=_G.DBM_GUI_OptionsFrameWebsiteButton}
+	-- Tabs
+	_G.DBM_GUI_OptionsFrame.numTabs = 2
+	self:skinTabs{obj=_G.DBM_GUI_OptionsFrame, ignore=true, up=true, lod=true, y2=-3}
+	-- hook this to manage tabs
+	self:SecureHook(_G.DBM_GUI_OptionsFrame, "ShowTab", function(this, tab)
+		_G.PanelTemplates_SetTab(this, tab)
+	end)
 	-- skin dropdown
 	self:addSkinFrame{obj=_G.DBM_GUI_DropDown}
 
@@ -173,30 +163,38 @@ function aObj:DBMCore()
 	end)
 	-- hook these to skin the BossHealth Bars
 	local bhFrame
-	self:SecureHook(DBM.BossHealth, "Show", function(this, name)
+	self:SecureHook(DBM.BossHealth, "Show", function(this, ...)
 		bhFrame = _G.DBMBossHealthDropdown:GetParent()
 		self:Unhook(DBM.BossHealth, "Show")
 	end)
 	self:SecureHook(DBM.BossHealth, "AddBoss", function(this, ...)
 		if not bhFrame then return end
-		for _, child in ipairs{bhFrame:GetChildren()} do
+		local kids = {bhFrame:GetChildren()}
+		for _, child in _G.ipairs(kids) do
 			local cName = child:GetName().."Bar"
 			if cName:find("DBM_BossHealth_Bar_")
-			and	not self.skinned[child]
+			and	not self.sbGlazed[_G[cName]]
 			then
-				_G[cName.."Border"]:SetAlpha(0) -- hide border
-				self:glazeStatusBar(_G[cName], 0, _G[cName.."Background"])
+				_G[cName .. "Border"]:SetAlpha(0) -- hide border
+				self:glazeStatusBar(_G[cName], 0, _G[cName .. "Background"])
 			end
 		end
+		kids = _G.null
 	end)
 	-- hook this to skin UpdateReminder frame
 	self:SecureHook(DBM, "ShowUpdateReminder", function(this, ...)
-		local frame = self:findFrame2(_G.UIParent, "Frame", 140, 430)
-		if frame then
-			self:skinEditBox{obj=self:getChild(frame, 1), regs={9}}
-			self:skinButton{obj=self:getChild(frame, 2)}
-			self:addSkinFrame{obj=frame, nb=true}
-		end
+		self.RegisterCallback("DBM-ShowUpdateReminder", "UIParent_GetChildren", function(this, child)
+			local height, width = self:getInt(child:GetHeight()), self:getInt(child:GetWidth())
+			if height == 140
+			and width == 430
+			then
+				self:skinEditBox{obj=self:getChild(child, 1), regs={9}}
+				self:skinButton{obj=self:getChild(child, 2)}
+				self:addSkinFrame{obj=child, nb=true}
+				self.UnregisterCallback("DBM-ShowUpdateReminder", "UIParent_GetChildren")
+			end
+		end)
+		self:scanUIParentsChildren()
 		self:Unhook(DBM, "ShowUpdateReminder")
 	end)
 

@@ -1,88 +1,103 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("AtlasLoot") then return end
+local _G = _G
 
 function aObj:AtlasLoot()
 
--->>-- Default Frame
-	local df  = AtlasLoot:GetModule("DefaultFrame")
-	df.Frame.VersionNumber:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinScrollBar{obj=df.Frame.ScrollFrame}
-	self:skinDropDown{obj=df.Frame.ModuleSelect}
-	self:skinDropDown{obj=df.Frame.InstanceSelect}
-	self:addSkinFrame{obj=df.Frame, kfs=true, y1=-10, x2=2}
+	_G.print("AtlasLoot skin loaded")
 
--->>-- AtlasLootPanel Frame
-	self:skinEditBox{obj=AtlasLoot.SearchBox, regs={9}, y=-6}
-	self:addSkinFrame{obj=AtlasLoot.AtlasLootPanel, kfs=true, ofs=-6, y2=-6}
-
--->>-- AtlasLootInfo2 Frame
-	AtlasLoot.AtlasInfoFrame.Version:SetWidth(180)
-	AtlasLoot.AtlasInfoFrame.Info:SetWidth(180)
-	self:skinButton{obj=AtlasLoot.AtlasInfoFrame.Button}
-
--->>-- AtlasLootItems Frame
-	for i = 1, #AtlasLoot.ItemFrame.ItemButtons do
-		AtlasLoot.ItemFrame.ItemButtons[i].Frame.MenuIconBorder:SetTexture(nil)
-	end
-	-- AtlasLoot.ItemFrame.BackGround:SetTexture(nil) -- removing this makes it difficult to see the loot
-
--->-- AtlasLootCompare Frame
-	local function skinCompareFrame(obj)
-
-		local frame = obj.CompareFrame
-		self:skinScrollBar{obj=frame.ScrollFrameMainFilter}
-		-- filters
-		for i = 1, 15 do
-			self:keepRegions(frame.MainFilterButtons[i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-			self:addSkinFrame{obj=frame.MainFilterButtons[i], ft=ftype, nb=true}
-			frame.MainFilterButtons[i]:GetNormalTexture().SetAlpha = function() end -- stop textures from being shown
+	local function skinDropDown(obj)
+		obj.frame:SetBackdrop(nil)
+		if aObj.db.profile.TexturedDD then
+			-- add texture
+			obj.frame.ddTex = obj.frame:CreateTexture(nil, "ARTWORK")
+			obj.frame.ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
+			obj.frame.ddTex:SetPoint("LEFT", obj.frame, "RIGHT", -5, 2)
+			obj.frame.ddTex:SetPoint("RIGHT", obj.frame, "LEFT", 5, 2)
+			obj.frame.ddTex:SetHeight(18)
 		end
-		-- Sort buttons
-		for i = 1, #frame.SortButtons do
-			self:keepRegions(frame.SortButtons[i], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-			self:addSkinFrame{obj=frame.SortButtons[i], ft=ftype, nb=true}
+		if aObj.db.profile.DropDownButtons then
+			aObj:addSkinFrame{obj=obj.frame, aso={ng=true}, nb=true}
 		end
-		-- hook this to skin extra sort buttons
-		self:SecureHook(AtlasLoot, "CompareFrame_SetStatsSortList", function(this, sortList)
-			for k,v in ipairs(sortList) do
-				if not self.skinFrame[this.CompareFrame.SortButtons[k+2]] then
-					self:keepRegions(this.CompareFrame.SortButtons[k+2], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-					self:addSkinFrame{obj=this.CompareFrame.SortButtons[k+2], ft=ftype, nb=true}
+		aObj:addButtonBorder{obj=obj.frame.button, es=12, ofs=-2}
+		-- hook this to skin dropdown frame(s)
+		aObj:SecureHookScript(obj.frame.button, "OnClick", function(this)
+			local kids = {this.par.frame:GetChildren()}
+			for _, child in _G.ipairs(kids) do
+				if child.label
+				and child.buttons
+				and child.type == "frame"
+				then
+					aObj:addSkinFrame{obj=child}
 				end
 			end
-			self:Unhook(AtlasLoot, "CompareFrame_SetStatsSortList")
+			kids = _G.null
+			aObj:Unhook(obj.frame.button, "OnClick")
 		end)
-		self:skinEditBox{obj=frame.SearchFrame.SearchBox, regs={9}}
-		self:skinDropDown{obj=frame.StatsListSelect}
-		self:skinScrollBar{obj=frame.ScrollFrameItemFrame}
-		-- item buttons
-		for i = 1, #frame.ItemButtons do
-			frame.ItemButtons[i].Frame.MenuIconBorder:SetTexture(nil)
-			self:removeRegions(frame.ItemButtons[i].Frame, {6, 7, 8})
-		end
-		
-		-- remove frame textures
-		for _, v in pairs(frame.Layers) do
-			v:SetTexture(nil)
-		end
-		self:addSkinFrame{obj=frame, x1=6, y1=-8, y2=6}
-
 	end
-	if not AtlasLoot.CompareFrame then
-		self:SecureHook(AtlasLoot, "CompareFrame_Create", function(this)
-			skinCompareFrame(this)
-			self:Unhook(AtlasLoot, "CompareFrame_Create")
-			end)
-	else
-		skinCompareFrame(AtlasLoot)
+	local function skinSelect(obj)
+		aObj:addSkinFrame{obj=obj.frame}
+		aObj:skinSlider{obj=obj.frame.scrollbar}--, adj=-4, size=3}
 	end
+-->>-- GUI
+	local GUI = _G.AtlasLoot.GUI
+	local frame = GUI.frame
+	frame.titleFrame:SetBackdrop(nil)
+	skinDropDown(frame.moduleSelect)
+	skinDropDown(frame.subCatSelect)
+	skinSelect(frame.difficulty)
+	skinSelect(frame.boss)
+	skinSelect(frame.extra)
+	self:addSkinFrame{obj=frame}
 
--->>-- Tooltip
+	-- ItemFrame
+	local iF = frame.contentFrame
+	iF:DisableDrawLayer("BACKGROUND")
+	self:addButtonBorder{obj=iF.nextPageButton, ofs=-2, x1=1, y2=1}
+	self:addButtonBorder{obj=iF.mapButton, ofs=-1, x1=2, x2=-2}
+	self:addButtonBorder{obj=iF.prevPageButton, ofs=-2, x1=1, y2=1}
+	self:addButtonBorder{obj=iF.clasFilterButton}
+
+
+
+-->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then AtlasLootTooltipTEMP:SetBackdrop(self.backdrop) end
-		self:SecureHookScript(AtlasLootTooltipTEMP, "OnShow", function(this)
+		if self.db.profile.Tooltips.style == 3 then _G.AtlasLootTooltip:SetBackdrop(self.backdrop) end
+		self:SecureHookScript(_G.AtlasLootTooltip, "OnShow", function(this)
 			self:skinTooltip(this)
 		end)
+		-- skin Mount tooltip
+		local mTT = _G.AtlasLoot.Button:GetType("Mount")
+		if mTT then
+			self:SecureHook(mTT, "ShowToolTipFrame", function(...)
+				self:addSkinFrame{obj=mTT.tooltipFrame}
+				self:Unhook(mTT, "ShowToolTipFrame")
+			end)
+		end
+		-- skin Pet tooltip
+		local pTT = _G.AtlasLoot.Button:GetType("Pet")
+		if mTT then
+			self:SecureHook(pTT, "ShowToolTipFrame", function(...)
+				self:addSkinFrame{obj=pTT.tooltipFrame}
+				self:Unhook(pTT, "ShowToolTipFrame")
+			end)
+		end
+		-- skin Faction tooltip
+		local fTT = _G.AtlasLoot.Button:GetType("Faction")
+		if fTT then
+			self:SecureHook(fTT, "ShowToolTipFrame", function(...)
+				fTT.tooltipFrame.standing:SetBackdrop(nil)
+				self:glazeStatusBar(fTT.tooltipFrame.standing.bar, 0,  nil)
+				self:addSkinFrame{obj=fTT.tooltipFrame}
+				self:Unhook(fTT, "ShowToolTipFrame")
+			end)
+		end
+	end
+
+	-->>-- Minimap Button
+	if _G.AtlasLoot.MiniMapButton.frame then
+		self:removeRegions(_G.AtlasLoot.MiniMapButton.frame, {2, 3}) -- Border & Background
+		self:addSkinButton{obj=_G.AtlasLoot.MiniMapButton.frame, parent=_G.AtlasLoot.MiniMapButton.frame, sap=true}
 	end
 
 end

@@ -18,7 +18,7 @@ function aObj:MinimalArchaeology()
 	_G.MinArchMainSkillBarBackground:SetAllPoints(_G.MinArchMain.skillBar)
 	self:glazeStatusBar(_G.MinArchMain.skillBar, 0, _G.MinArchMainSkillBarBackground)
 	-- Artifact Bars
-	for i = 1, 12 do
+	for i = 1, 15 do
 		local objName = "MinArchMainArtifactBar"..i
 		local obj = _G[objName]
 		_G[objName.."BarBG"]:Hide()
@@ -55,6 +55,8 @@ function aObj:MinimalArchaeology()
 	self:addButtonBorder{obj=_G.MinArchDigsites.easternButton}
 	self:addButtonBorder{obj=_G.MinArchDigsites.outlandsButton}
 	self:addButtonBorder{obj=_G.MinArchDigsites.northrendButton}
+	self:addButtonBorder{obj=_G.MinArchDigsites.pandariaButton}
+	self:addButtonBorder{obj=_G.MinArchDigsites.draenorButton}
 	self:skinButton{obj=_G.MinArchDigsites.buttonClose, ob2="x"}
 	self:moveObject{obj=_G.MinArchDigsites.buttonClose, x=self.modBtns and 2 or 8}
 	self:addSkinFrame{obj=_G.MinArchDigsites, nb=true, y1=4}
