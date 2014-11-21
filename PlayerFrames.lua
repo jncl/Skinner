@@ -302,7 +302,7 @@ function aObj:ArchaeologyUI() -- LoD
 	self:addButtonBorder{obj=_G.ArchaeologyFrame.artifactPage, relTo=_G.ArchaeologyFrame.artifactPage.icon, ofs=0}
 	_G.ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.ArchaeologyFrame.artifactPage.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinScrollBar{obj=_G.ArchaeologyFrame.artifactPage.historyScroll}
+	self:skinSlider{obj=_G.ArchaeologyFrame.artifactPage.historyScroll.ScrollBar, adj=-4}
 	-- Solve Frame
 	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBarBarBG:Hide()
 	self:glazeStatusBar(_G.ArchaeologyFrame.artifactPage.solveFrame.statusBar, 0, nil)
@@ -315,7 +315,7 @@ function aObj:ArchaeologyUI() -- LoD
 	_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 	-- ArcheologyDigsiteProgressBar
-	self:removeRegions(_G.ArcheologyDigsiteProgressBar, {1, 2, 3})
+	self:rmRegionsTex(_G.ArcheologyDigsiteProgressBar, {1, 2, 3})
 	self:glazeStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, 0)
 	-- N.B. DigsiteCompleteToastFrame is managed as part of the Alert Frames skin
 
