@@ -61,7 +61,7 @@ end
 function aObj:SetupCmds()
 
 	local function getObj(input)
-		_G.print("getObj", input, _G[input])
+		-- _G.print("getObj", input, _G[input], _G.GetMouseFocus())
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus()
 		else
@@ -69,7 +69,7 @@ function aObj:SetupCmds()
 		end
 	end
 	local function getObjP(input)
-		_G.print("getObjP", input, _G[input])
+		-- _G.print("getObjP", input, _G[input], _G.GetMouseFocus():GetParent())
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus():GetParent()
 		else
@@ -77,7 +77,7 @@ function aObj:SetupCmds()
 		end
 	end
 	local function getObjGP(input)
-		_G.print("getObjGP", input, _G[input])
+		-- _G.print("getObjGP", input, _G[input], _G.GetMouseFocus():GetParent():GetParent())
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus():GetParent():GetParent()
 		else
