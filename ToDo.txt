@@ -11,16 +11,15 @@ Legend:
 	I	Tooltip
 		- Correct Gradient Height, noticeable on Fishing Bobber tooltip amongst others
 
-√	S	Classic Quest Log, requested by paintpauller2, 18.11.14
+√	N	DBM, reported bymog71, 19.11.14
+		-  Interface\AddOns\Skinner\SkinMe\DBM.lua:116: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 
-√	I	Altoholic, reported by aenima111, 18.11.14
-		- not being skinned
+√	U	Minimap Button Frame, requested by MegaManJuno, 19.11.14
 
-√	N	LUI, reported by paintpauller2, 18.11.14
-		- Skinner\SkinMe\LUI-r699.lua:14: attempt to index field 'sf' (a nil value)
-		  Skinner\SkinMe\LUI-r699.lua:14: in function <Skinner\SkinMe\LUI.lua:13>
-		  [C]: in function `WorldMap_ToggleSizeDown'
-		  Skinner\SkinMe\LUI-r699.lua:20: in function <Skinner\SkinMe\LUI.lua:5>
-		- Skinner\Skinner-b6.19116.7.lua:1399: attempt to index field 'obj' (a nil value)
-		  Skinner\Skinner-b6.19116.7.lua:1461: in function `skinDropDown'
-		  Skinner\SkinMe\LUI-r699.lua:25: in function <Skinner\SkinMe\LUI.lua:5>
+√	N	Minimal Archaeology, reported by MegaManJuno, 19.11.14
+
+√	I	AtlasLoot, reported by chrisgriffith25, 20.11.14
+		- Skinner\SkinMe\AtlasLoot-v8.00.00beta3.lua:7: attempt to call method 'GetModule' (a nil value)
+
+√	Q	Question from Heanthor, 20.11.14
+		- How can I turn off skinning of the special Draenor UI that displays choices between outpost perks when in a new zone, and the Garrison daily quests? I can't find the option for it anywhere.
