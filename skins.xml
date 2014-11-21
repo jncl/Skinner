@@ -202,7 +202,7 @@
 <script file="SkinMe\MarkingBar.lua"/>
 <script file="SkinMe\Megaphone.lua"/>
 <script file="SkinMe\MinimalArchaeology.lua"/>
-<!-- <script file="SkinMe\MinimapButtonFrame.lua"/> -->
+<script file="SkinMe\MinimapButtonFrame.lua"/>
 <!-- <script file="SkinMe\MobMap.lua"/> -->
 <script file="SkinMe\MogIt.lua"/>
 <!-- <script file="SkinMe\MonkeyQuest.lua"/> -->
