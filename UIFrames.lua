@@ -1742,9 +1742,11 @@ function aObj:MainMenuBar()
 
 -->>-- Action Buttons
 	for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-		local btnName = "ActionButton" .. i
-		_G[btnName .. "Border"]:SetAlpha(0) -- texture changed in blizzard code
-		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
+		local btn = _G["ActionButton" .. i]
+		btn.FlyoutBorder:SetTexture(nil)
+		btn.FlyoutBorderShadow:SetTexture(nil)
+		btn.Border:SetAlpha(0) -- texture changed in blizzard code
+		self:addButtonBorder{obj=btn, abt=true, sec=true}
 	end
 
 	-- Micro buttons, skinned before checks for a consistent look, 12.10.12
@@ -1808,10 +1810,12 @@ function aObj:MainMenuBar()
 -->>-- MultiBar Buttons
 	for _, v in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
 		for i = 1, _G.NUM_MULTIBAR_BUTTONS do
-			local btnName = "MultiBar" .. v .. "Button" .. i
-			_G[btnName .. "FloatingBG"]:SetAlpha(0)
-			_G[btnName .. "Border"]:SetAlpha(0) -- texture changed in blizzard code
-			self:addButtonBorder{obj=_G[btnName], abt=true, sec=true}
+			local btn = _G["MultiBar" .. v .. "Button" .. i]
+			btn.FlyoutBorder:SetTexture(nil)
+			btn.FlyoutBorderShadow:SetTexture(nil)
+			btn.Border:SetAlpha(0) -- texture changed in blizzard code
+			_G["MultiBar" .. v .. "Button" .. i .. "FloatingBG"]:SetAlpha(0)
+			self:addButtonBorder{obj=btn, abt=true, sec=true}
 		end
 	end
 

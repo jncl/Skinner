@@ -2169,21 +2169,6 @@ function aObj:SpellBookFrame()
 
 end
 
-function aObj:SpellFlyout()
-	if not self.db.profile.SpellFlyout or self.initialized.SpellFlyout then return end
-	self.initialized.SpellFlyout = true
-
-	self:SecureHook("ActionButton_UpdateFlyout", function(this)
-		if this.FlyoutBorder and not this.sknd then
-			aObj:add2Table(aObj.skinned, this) -- TODO: deprecate when all skins changed
-			this.sknd = true
-			this.FlyoutBorder:SetAlpha(0)
-			this.FlyoutBorderShadow:SetAlpha(0)
-		end
-	end)
-
-end
-
 function aObj:StackSplit()
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
