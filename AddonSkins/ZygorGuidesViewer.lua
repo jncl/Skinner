@@ -1,12 +1,30 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("ZygorGuidesViewer") then return end
+local _G = _G
 
 function aObj:ZygorGuidesViewer()
 
-	local ZGV = ZygorGuidesViewer
+	local ZGV = _G.ZygorGuidesViewer
+
+	-- Maintenance Frame
+	self:addSkinFrame{obj=_G.ZygorGuidesViewerMaintenanceFrame}
 
 	-- Viewer frame
-	self:addSkinFrame{obj=ZGV.Frame, nb=true, anim=true, ofs=4}
+	_G.ZygorGuidesViewerFrame:SetBackdrop(nil)
+	_G.ZygorGuidesViewerFrame_Border:SetBackdrop(nil)
+	self:addSkinFrame{obj=_G.ZygorGuidesViewerFrame, nb=true, ofs=4}
+
+	-- Config Frame
+	self:SecureHook(ZGV.Config, "CreateFrame", function(this)
+		this.Base:SetBackdrop(nil)
+		this.Frame1:SetBackdrop(nil)
+		this.Frame2:SetBackdrop(nil)
+		this.Frame3:SetBackdrop(nil)
+		this.Frame4:SetBackdrop(nil)
+		this.Frame5:SetBackdrop(nil)
+		self:addSkinFrame{obj=this.Base, ofs=4}
+		self:Unhook(ZGV.Config, "CreateFrame")
+	end)
 
 	-- hook this to skin the menu frame
 	self:SecureHook(ZGV.Menu, "CreateFrame", function(this)
@@ -21,7 +39,25 @@ function aObj:ZygorGuidesViewer()
 	end)
 
 	-- Creature Viewer
-	self:addSkinFrame{obj=ZGV.CreatureViewer.Frame, ofs=4}
+	self:SecureHook(ZGV.CreatureViewer, "CreateFrame", function(this)
+		self:addSkinFrame{obj=this.Frame, ofs=4}
+		self:Unhook(ZGV.CreatureViewer, "CreateFrame")
+	end)
+
+	-- Loot Grey Frame
+	self:SecureHook(ZGV.Loot, "CreateFrame", function(this)
+		self:addSkinFrame{obj=this.GreyFrame, ofs=4}
+		self:Unhook(ZGV.Loot, "CreateFrame")
+	end)
+
+	-- Pet Battles frame(s)
+	self:SecureHook(ZGV.PetBattle, "CreateFrame", function(this)
+		self:skinAllButtons{obj=this.BattleFrame}
+		self:addSkinFrame{obj=this.BattleFrame.Main, kfs=true}
+		self:addSkinFrame{obj=this.BattleFrame.Enemy, kfs=true}
+		self:addSkinFrame{obj=this.BattleFrame.Ally, kfs=true}
+		self:Unhook(ZGV.PetBattle, "CreateFrame")
+	end)
 
 	-- Gear Finder
 	self:SecureHookScript(CharacterFrame, "OnShow", function(this)
@@ -53,27 +89,6 @@ function aObj:ZygorGuidesViewer()
 	ZygorTalentAdvisorPopout.accept:DisableDrawLayer("OVERLAY")
 	self:addSkinFrame{obj=ZygorTalentAdvisorPopout, kfs=true}
 
-	-- Pet Battles frame(s)
-	if ZGV.PetBattle
-	and ZGV.PetBattle.BattleFrame
-	then
-		self:skinAllButtons{obj=ZGV.PetBattle.BattleFrame}
-		self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Main, kfs=true}
-		self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Enemy, kfs=true}
-		self:addSkinFrame{obj=ZGV.PetBattle.BattleFrame.Ally, kfs=true}
-	end
-
-	-- Sell Greys button
-	if self.modBtns then
-		self:SecureHookScript(ZGV.Loot.Events, "OnEvent", function(this, event)
-			if event == "MERCHANT_SHOW" then
-				if ZGV.db.profile.showgreysellbutton then
-					self:skinButton{obj=ZGV.Loot.greysell}
-				end
-				self:Unhook(ZGV.Loot.Events, "OnEvent")
-			end
-		end)
-	end
 
 	-- AutoEquip Popup
 	self:SecureHook(ZGV.ItemScore.AutoEquip, "CreatePopup", function(this)

@@ -2228,6 +2228,8 @@ function aObj:MinimapButtons()
 			["WIM"] = _G.WIM3MinimapButton,
 			["HealBot"] = _G.HealBot_MMButton,
 			["Altoholic"] = _G.AltoholicMinimapButton,
+			["Armory"] = _G.ArmoryMinimapButton,
+			["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon,
 		}
 		local function skinMMBtn(btn, name)
 
