@@ -259,13 +259,15 @@ function aObj:OnInitialize()
 	-- hook to handle textured tabs on Blizzard & other Frames
 	self.tabFrames = {}
 	if self.isTT then
-		self:SecureHook("PanelTemplates_SetTab", function(obj, id)
-			if not self.tabFrames[obj] then return end -- ignore frame if not monitored
-			for i = 1, obj.numTabs do
-				if i == id then
-					self:setActiveTab(_G[obj:GetName() .. "Tab" .. i].sf)
-				else
-					self:setInactiveTab(_G[obj:GetName() .. "Tab" .. i].sf)
+		self:SecureHook("PanelTemplates_UpdateTabs", function(frame)
+			if not self.tabFrames[frame] then return end -- ignore frame if not monitored
+			if frame.selectedTab then
+				for i = 1, frame.numTabs do
+					if i == frame.selectedTab then
+						self:setActiveTab(_G[frame:GetName() .. "Tab" .. i].sf)
+					else
+						self:setInactiveTab(_G[frame:GetName() .. "Tab" .. i].sf)
+					end
 				end
 			end
 		end)
