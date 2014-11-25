@@ -1,3 +1,17 @@
+b6.19116.9
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Toc to add/remove function names per file
+	Commented out print statements
+	Reparented Garrison Rewards buttons quantity text
+	Updated ChatBubbles skin
+	Updated ArchaeolgyUI skin
+	Replaced SpellFlyout skin with Action/Multibar button code changes
+	Added option to enable/disable skinning of QuestChoice frame
+	Updated AtlasLoot, DBM & MinimalArchaeology skins
+	Unobsoleted MinimapButtonFrame
+
 b6.19116.8
 Jncl:
 	ToDo.txt
