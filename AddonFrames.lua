@@ -198,7 +198,6 @@ local addonSkins = {
 	"ZygorGuidesViewer",
 }
 --[[
-local obsoletedSkins = {
 	"Accomplishment", "AchievementsReminder", "AdvancedTradeSkillWindow", "AISeller", "AlleyMap", "Analyst", "AnnounceIt", "Ara_Broker_Guild_Friends", "AtlasQuest", "AuctionLite", "AuctionProfitMaster", "AutoPartyButtons", "AutoProfit",
 	"Badapples", "BasicChatMods", "BeanCounter", "beql", "BriefQuestComplete", "Broker_Transport", "Buffalo", "Butsu",
 	"CalendarNotify", "CallToArms", "Capping", "ChatBar", "Chatr", "Chinchilla", "CloseUp", "ConcessionStand", "Converse", "CowTip", "CT_MailMod", "CT_RaidTracker",
@@ -222,7 +221,6 @@ local obsoletedSkins = {
 	"WebDKP", "WoWEquip", "WowLua",
 	"xcalc",
 	"zfpoison", "ZOMGBuffs"
-}
 ]]
 aObj.addonsToSkin = {}
 for _, v in pairs(addonSkins) do
@@ -230,27 +228,19 @@ for _, v in pairs(addonSkins) do
 end
 addonSkins = nil
 -- oddly named addons
--- aObj.addonsToSkin["!Swatter"] = "Swatter"
 aObj.addonsToSkin["Auc-Advanced"] = "AucAdvanced"
 aObj.addonsToSkin["Auto-Bag"] = "AutoBag"
 aObj.addonsToSkin["Classic Quest Log"] = "ClassicQuestLog"
 aObj.addonsToSkin["DBM-Core"] = "DBMCore"
 aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
--- aObj.addonsToSkin["Ogri'Lazy"] = "OgriLazy"
 aObj.addonsToSkin["Prat-3.0"] = "Prat30"
 aObj.addonsToSkin["XLoot1.0"] = "XLoot10"
 -- libraries
 aObj.libsToSkin = {
-	-- ["Dewdrop-2.0"] = "Dewdrop",
-	-- ["AceAddon-2.0"] = "Ace2",
-	-- ["Tablet-2.0"] = "Tablet",
-	-- ["Waterfall-1.0"] = "Waterfall",
 	["AceGUI-3.0"] = "Ace3",
 	["Configator"] = "Configator",
-	-- ["LibExtraTip-1"] = "LibExtraTip",
 	["tektip-1.0"] = "tektip",
 	["LibQTip-1.0"] = "LibQTip",
-	-- ["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
 	["ArkDewdrop-3.0"] = "ArkDewdrop",
 	["LibTradeSkillScan"] = "LibTradeSkillScan",
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
@@ -259,6 +249,16 @@ aObj.libsToSkin = {
 	["LibToast-1.0"] = "LibToast",
 	["LibDialog-1.0"] = "LibDialog",
 }
+--[[
+-- aObj.addonsToSkin["!Swatter"] = "Swatter"
+-- aObj.addonsToSkin["Ogri'Lazy"] = "OgriLazy"
+	-- ["Dewdrop-2.0"] = "Dewdrop",
+	-- ["AceAddon-2.0"] = "Ace2",
+	-- ["Tablet-2.0"] = "Tablet",
+	-- ["Waterfall-1.0"] = "Waterfall",
+	-- ["LibExtraTip-1"] = "LibExtraTip",
+	-- ["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
+]]
 function aObj:AddonFrames()
 	-- self:Debug("AddonFrames")
 
@@ -317,6 +317,7 @@ function aObj:AddonFrames()
 	end
 	self.addonsToSkin = nil
 
+--[[
 	-- this addon has a relation
 	-- self:checkAndRunAddOn("EnhancedTradeSkills", nil, "EnhancedTradeCrafts")
 
@@ -325,6 +326,7 @@ function aObj:AddonFrames()
 	-- 	self:checkAndRunAddOn("MSBTOptions", true) -- use true so it isn't treated as a LoadManaged Addon
 	-- end
 
+]]
 	-- skin library objects
 	for lib, skin in pairs(self.libsToSkin) do
 		if _G.LibStub(lib, true) then
@@ -367,22 +369,29 @@ end
 
 local lodFrames = {
 	"Altoholic_Summary", "Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "AzCastBarOptions",
-	"Bagnon", "Bagnon_Options", "Bagnon_GuildBank", "Banknon",--[[ "BetterBindingFrame",]]
+	"Bagnon", "Bagnon_Options", "Bagnon_GuildBank", "Banknon",
 	"DockingStation_Config", "Dominos_Config", "DoTimer_Options",
-	"Enchantrix",--[[ "EnhTooltip",]]
-	--[["FramesResized_TalentUI",]]
-	--[["GnomishAuctionShrinker", ]]"GuildBankSearch",
-	--[["ItemRackOptions",]]
+	"Enchantrix",
+	"GarrisonMissionManager", "GuildBankSearch",
 	"LilSparkysWorkshop", "Ludwig_Window",
-	--[["MSBTOptions",]]
-	--[["oRA2_Leader", "oRA2_Participant", ]]"Overachiever_Tabs",
+	"MasterPlan",
+	"Overachiever_Tabs",
 	"PetJournalEnhanced", "Perl_Config_Options",
 	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer", "Squire2_Config",
-	--[["Talented_GlyphFrame", "TradeTabs", "TipTacOptions",]]
 	"WeakAurasOptions",
 	"XPerl_Options",
-	--[["ZOMGBuffs_BlessingsManager",]]
 }
+--[[
+	-- "BetterBindingFrame",
+	-- "EnhTooltip",
+	--"FramesResized_TalentUI",
+	--"GnomishAuctionShrinker",
+	--"ItemRackOptions",
+	--"MSBTOptions",
+	--"oRA2_Leader", "oRA2_Participant",
+	--"Talented_GlyphFrame", "TradeTabs", "TipTacOptions",
+	--"ZOMGBuffs_BlessingsManager",
+]]
 aObj.lodAddons = {}
 for _, v in pairs(lodFrames) do
 	aObj.lodAddons[v] = v
@@ -415,12 +424,14 @@ function aObj:LoDFrames(addon)
 	-- used for User LoadOnDemand Addons
 	if self.lodAddons[addon] then self:checkAndRunAddOn(addon, true, self.lodAddons[addon]) end
 
+--[[
 	-- handle addons linked to the InspectUI
 	-- if addon == "Blizzard_InspectUI" then
 	-- 	--	This addon is dependent upon the Inspect Frame
 	-- 	self:checkAndRunAddOn("Spyglass")
 	-- end
 
+]]
 	-- handle addons linked to the PetJournal
 	if addon == "Blizzard_PetJournal" then
 		--	This addon is dependent upon the PetJournal
@@ -464,8 +475,10 @@ function aObj:AUCTION_HOUSE_SHOW()
 
 	self:checkAndRun("AuctionUI") -- npc
 	-- trigger these when AH loads otherwise errors occur
+--[[
 	-- self:checkAndRunAddOn("BtmScan")
 	-- self:checkAndRunAddOn("AuctionFilterPlus")
+]]
 	self:checkAndRunAddOn("Auctionator")
 
 	-- handle TradeSkillMaster_Auctioning frame size changes
