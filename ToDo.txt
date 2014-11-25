@@ -11,15 +11,17 @@ Legend:
 	I	Tooltip
 		- Correct Gradient Height, noticeable on Fishing Bobber tooltip amongst others
 
-√	N	DBM, reported bymog71, 19.11.14
-		-  Interface\AddOns\Skinner\SkinMe\DBM.lua:116: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+√	N	Armory, reported by bbarnett444, 21.11.14
+		- Skinner\SkinMe\Armory-v12.1.2.lua:109: attempt to index global 'ArmoryPVPTeam1TeamType' (a nil value)
 
-√	U	Minimap Button Frame, requested by MegaManJuno, 19.11.14
+√	N	Notes, reported by bbarnett444, 21.11.14
+		- Skinner\SkinMe\Notes-6.5.lua:6: attempt to index global 'Notes' (a nil value)
 
-√	N	Minimal Archaeology, reported by MegaManJuno, 19.11.14
+√	N	ZygorGuidesViewer, reported by paintpauller2, 21.11.14
+		- Skinner\Skinner-b6.19116.9.lua:574: attempt to index field 'obj' (a nil value)
+		  (tail call): ?
+		  [C]: in function `addSkinFrame'
+		  Skinner\SkinMe\ZygorGuidesViewer-5.0.lua:24: in function <Skinner\SkinMe\ZygorGuidesViewer.lua:4>
 
-√	I	AtlasLoot, reported by chrisgriffith25, 20.11.14
-		- Skinner\SkinMe\AtlasLoot-v8.00.00beta3.lua:7: attempt to call method 'GetModule' (a nil value)
-
-√	Q	Question from Heanthor, 20.11.14
-		- How can I turn off skinning of the special Draenor UI that displays choices between outpost perks when in a new zone, and the Garrison daily quests? I can't find the option for it anywhere.
+√	S	MasterPlan, requested by Decabah, 24.11.14
+√	S	GarrisonMissionManager, requested by Decabah, 24.11.14
