@@ -47,7 +47,7 @@ function aObj:AddonList()
 	self:removeMagicBtnTex(_G.AddonList.OkayButton)
 	self:removeMagicBtnTex(_G.AddonList.EnableAllButton)
 	self:removeMagicBtnTex(_G.AddonList.DisableAllButton)
-	self:addSkinFrame{obj=_G.AddonList, ft=ftype, kfs=true, ri=true}
+	self:addSkinFrame{obj=_G.AddonList, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
 
 end
 
