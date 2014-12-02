@@ -280,6 +280,8 @@ function aObj:ArchaeologyUI() -- LoD
 	for i = 1, _G.ARCHAEOLOGY_MAX_RACES do
 		_G.ArchaeologyFrame.summaryPage["race" .. i].raceName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
+	self:addButtonBorder{obj=_G.ArchaeologyFrame.summaryPage.prevPageButon, ofs=0} -- N.B. spelling!
+	self:addButtonBorder{obj=_G.ArchaeologyFrame.summaryPage.nextPageButon, ofs=0} -- N.B. spelling!
 -->>-- Completed Page
 	self:keepFontStrings(_G.ArchaeologyFrame.completedPage) -- remove title textures
 	_G.ArchaeologyFrame.completedPage.infoText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -1742,6 +1744,7 @@ function aObj:PetJournal() -- LoD
 	self:removeInset(mj.RightInset)
 	self:removeInset(mj.MountCount)
 	self:skinEditBox{obj=mj.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
+	self:skinButton{obj=_G.MountJournalFilterButton}
 	self:keepFontStrings(mj.MountDisplay)
 	self:keepFontStrings(mj.MountDisplay.ShadowOverlay)
 	self:makeMFRotatable(mj.MountDisplay.ModelFrame)
