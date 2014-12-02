@@ -91,7 +91,6 @@
 <script file="SkinMe\GuildBankSearch.lua"/>
 <script file="SkinMe\GuildLaunchCT_RaidTracker.lua"/>
 <script file="SkinMe\GuildMaster.lua"/>
-<script file="SkinMe\HabeebIt.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>
 <script file="SkinMe\HaveWeMet.lua"/>
 <script file="SkinMe\HealBot.lua"/>
@@ -167,7 +166,6 @@
 <script file="SkinMe\SorhaQuestLog.lua"/>
 <script file="SkinMe\Spew.lua"/>
 <script file="SkinMe\Squeenix.lua"/>
-<script file="SkinMe\Squire2_Config.lua"/>
 <script file="SkinMe\StaggerMeter.lua"/>
 <script file="SkinMe\TargetCharms.lua"/>
 <script file="SkinMe\tekKonfig.lua"/>
@@ -261,6 +259,7 @@
 <!-- <script file="SkinMe\GuildBankAccount.lua"/> -->
 <!-- <script file="SkinMe\GuildGreet.lua"/> -->
 <!-- <script file="SkinMe\GupPet.lua"/> -->
+<!-- <script file="SkinMe\HabeebIt.lua"/> -->
 <!-- <script file="SkinMe\Hack.lua"/> -->
 <!-- <script file="SkinMe\Hadar_FocusFrame.lua"/> -->
 <!-- <script file="SkinMe\HatTrick.lua"/> -->
@@ -332,6 +331,7 @@
 <!-- <script file="SkinMe\ShadowDancer3.lua"/> -->
 <!-- <script file="SkinMe\sienasGemViewer.lua"/> -->
 <!-- <script file="SkinMe\SmoothQuest.lua"/> -->
+<!-- <script file="SkinMe\Squire2_Config.lua"/> -->
 <!-- <script file="SkinMe\sRaidFrames.lua"/> -->
 <!-- <script file="SkinMe\tabDB.lua"/> -->
 <!-- <script file="SkinMe\Tablet.lua"/> -->
