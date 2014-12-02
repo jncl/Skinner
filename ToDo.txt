@@ -8,20 +8,21 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
-	I	Tooltip
+?	I	Tooltip
 		- Correct Gradient Height, noticeable on Fishing Bobber tooltip amongst others
+		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	N	Armory, reported by bbarnett444, 21.11.14
-		- Skinner\SkinMe\Armory-v12.1.2.lua:109: attempt to index global 'ArmoryPVPTeam1TeamType' (a nil value)
+?	I	LootWonFrame - GarrisonResources from Garrison Cache - missing texture
 
-√	N	Notes, reported by bbarnett444, 21.11.14
-		- Skinner\SkinMe\Notes-6.5.lua:6: attempt to index global 'Notes' (a nil value)
+√	S	QuestMapWithDetails, requsted by txamethyst, 25.1.14
 
-√	N	ZygorGuidesViewer, reported by paintpauller2, 21.11.14
-		- Skinner\Skinner-b6.19116.9.lua:574: attempt to index field 'obj' (a nil value)
-		  (tail call): ?
-		  [C]: in function `addSkinFrame'
-		  Skinner\SkinMe\ZygorGuidesViewer-5.0.lua:24: in function <Skinner\SkinMe\ZygorGuidesViewer.lua:4>
+≈	I	Dominos, reported by txamethyst, 25.11.14
+		- Skinner\SkinMe\Dominos-6.0.9.lua:8: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		  ..faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:211: in function <...faceAdiBags\libs\AceHook-3.0\AceHook-3.0.lua:118>
+		  ..faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:341: in function `SecureHook'
+		  Skinner\SkinMe\Dominos-6.0.9.lua:8: in function <Skinner\SkinMe\Dominos.lua:5>
 
-√	S	MasterPlan, requested by Decabah, 24.11.14
-√	S	GarrisonMissionManager, requested by Decabah, 24.11.14
+≈	O	Habeebit renamed to BonusRollPreview, reported by gamemaster128, 25.11.14
+x	O	Squire2 superceeded by Squire3, reported by gamemaster128, 25.11.14
+
+√	I	GarrisonMissionUI, reported by Fireleaf, 30.11.14
