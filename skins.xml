@@ -35,6 +35,7 @@
 <script file="SkinMe\BetterInbox.lua"/>
 <script file="SkinMe\BindPad.lua"/>
 <script file="SkinMe\BlackList.lua"/>
+<script file="SkinMe\BonusRollPreview.lua"/>
 <script file="SkinMe\BossInfo.lua"/>
 <script file="SkinMe\BossNotes.lua"/>
 <script file="SkinMe\Bugger.lua"/>
@@ -147,6 +148,7 @@
 <script file="SkinMe\QuestGuru_Tracker.lua"/>
 <script file="SkinMe\QuestHelper2.lua"/>
 <script file="SkinMe\QuestHistory.lua"/>
+<script file="SkinMe\QuestMapWithDetails.lua"/>
 <script file="SkinMe\QuickMark.lua"/>
 <script file="SkinMe\RaidAchievement.lua"/>
 <script file="SkinMe\RaidRoll.lua"/>
