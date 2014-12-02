@@ -4,8 +4,11 @@ local _G = _G
 
 function aObj:Dominos()
 
+	local Dominos = _G.LibStub("AceAddon-3.0"):GetAddon("Dominos", true)
+	if not Dominos then return end
+
 	-- hook this to skin first menu displayed and its dropdown
-	self:RawHook(_G.Dominos, "NewMenu", function(this, id)
+	self:RawHook(Dominos, "NewMenu", function(this, id)
 		local menu = self.hooks[this].NewMenu(this, id)
 		if not menu.sknd then
 			self:addSkinFrame{obj=menu, x1=6, y1=-8, x2=-8, y2=6}
@@ -22,7 +25,7 @@ function aObj:Dominos()
 
 	local mod
 	-- ConfigOverlay
-	mod = _G.Dominos:GetModule('ConfigOverlay', true)
+	mod = Dominos:GetModule('ConfigOverlay', true)
 	if mod then
 		-- hook to skin the configHelper panel
 		self:SecureHook(mod, "Show", function(this)
@@ -33,23 +36,23 @@ function aObj:Dominos()
 		end)
 	end
 	-- PlayerPowerBarAlt
-	mod = _G.Dominos:GetModule("PlayerPowerBarAlt", true)
+	mod = Dominos:GetModule("PlayerPowerBarAlt", true)
 	if mod then
 		mod.frame.buttons[1].frame:SetTexture(nil)
 	end
 	-- EncounterBar
-	mod = _G.Dominos:GetModule("encounter", true)
+	mod = Dominos:GetModule("encounter", true)
 	if mod then
 		mod.frame.PlayerPowerBarAlt.frame:SetTexture(nil)
 	end
 	-- ExtraBar
-	mod = _G.Dominos.Frame:Get("extra", true)
+	mod = Dominos.Frame:Get("extra", true)
 	if mod then
 		mod.buttons[1].style:SetTexture(nil)
 		mod.buttons[1].style.SetTexture = function() end
 	end
 	-- CastingBar
-	mod = _G.Dominos:GetModule("CastingBar", true)
+	mod = Dominos:GetModule("CastingBar", true)
 	if mod then
 		mod.frame.border:SetTexture(nil)
 		mod.frame.border.SetTexture = function() end
@@ -59,15 +62,17 @@ end
 
 function aObj:Dominos_Config()
 
+	local Dominos = _G.LibStub("AceAddon-3.0"):GetAddon("Dominos", true)
+
 	-- hook the create menu function
-	self:SecureHook(_G.Dominos.Menu, "New", function(this, name)
+	self:SecureHook(Dominos.Menu, "New", function(this, name)
 		local panel = _G["DominosFrameMenu" .. name]
 		if not panel.sknd then
 			self:addSkinFrame{obj=panel, x1=6, y1=-8, x2=-8, y2=6}
 		end
 	end)
 	-- hook the show panel function to skin dropdowns/editboxes & scrollbars
-	self:SecureHook(_G.Dominos.Menu, "ShowPanel", function(this, name)
+	self:SecureHook(Dominos.Menu, "ShowPanel", function(this, name)
 		self:skinAllButtons{obj=_G[this:GetName() .. name], x1=-1, x2=1}
 		if this.dropdown then
 			self:skinDropDown{obj=this.dropdown}
