@@ -35,6 +35,7 @@ do
 	end})
 	-- Set the Tooltip Border
 	aObj.ttBorder = true
+
 end
 
 function aObj:AddonList()
@@ -195,10 +196,7 @@ function aObj:AlertFrames()
 		skinWonAlertFrames(frame)
 	end
 
-	local frames = {"DigsiteCompleteToastFrame", "StorePurchaseAlertFrame"}
-	self:add2Table(frames, "GarrisonBuildingAlertFrame")
-	self:add2Table(frames, "GarrisonMissionAlertFrame")
-	self:add2Table(frames, "GarrisonFollowerAlertFrame")
+	local frames = {"DigsiteCompleteToastFrame", "StorePurchaseAlertFrame", "GarrisonBuildingAlertFrame", "GarrisonMissionAlertFrame", "GarrisonFollowerAlertFrame"}
 	for _, frame in pairs(frames) do
 		self:getRegion(_G[frame], 1):SetTexture(nil) -- Background toast texture
 		_G[frame]:DisableDrawLayer("BORDER") -- icon background texture
@@ -219,8 +217,6 @@ function aObj:AlertFrames()
 	for _, frame in pairs(_G.LOOT_UPGRADE_ALERT_FRAMES) do
 		skinLootUpgradeAlertFrame(frame)
 	end
-
-	-- N.B. Epic Upgrade Alert frame acts differently, animOnFinished sometimes fires ok or fires to soon, the tfade texture remains attached to UIParent when it fades out or not as it seems fit !!!
 
 	-- GarrisonFollowerAlert Frame
 	_G.GarrisonFollowerAlertFrame:DisableDrawLayer("BORDER")
