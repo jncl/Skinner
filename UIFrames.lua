@@ -937,8 +937,15 @@ function aObj:GarrisonUI() -- LoD
 	local function skinPortrait(frame)
 		frame.PortraitRing:SetTexture(nil)
 		frame.LevelBorder:SetAlpha(0) -- texture changed
-		if frame.Empty then frame.Empty:SetTexture(nil) end
 		if frame.PortraitRingCover then frame.PortraitRingCover:SetTexture(nil) end
+		if frame.Empty then
+			frame.Empty:SetTexture(nil)
+			self:SecureHook(frame.Empty, "Show", function(this)
+				local fp = this:GetParent()
+				fp.Portrait:SetTexture(nil)
+				fp.PortraitRingQuality:SetVertexColor(1, 1, 1, 1)
+			end)
+		end
 	end
 	local function skinFollower(frame)
 		frame.BG:SetTexture(nil)
@@ -1210,7 +1217,7 @@ function aObj:GarrisonUI() -- LoD
 		_G.GarrisonLandingPage:DisableDrawLayer("BACKGROUND")
 		_G.GarrisonLandingPage.HeaderBar:SetTexture(nil)
 		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, x1=5, y1=-8, x2=-4, y2=-3}
-		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6}
+		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-12, x2=-12}
 
 		-- ReportTab
 		local rp = _G.GarrisonLandingPage.Report
