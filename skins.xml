@@ -151,6 +151,7 @@
 <script file="SkinMe\QuestMapWithDetails.lua"/>
 <script file="SkinMe\QuickMark.lua"/>
 <script file="SkinMe\RaidAchievement.lua"/>
+<script file="SkinMe\RaidBuffStatus.lua"/>
 <script file="SkinMe\RaidRoll.lua"/>
 <script file="SkinMe\RAQ.lua"/>
 <script file="SkinMe\ReagentMaker.lua"/>

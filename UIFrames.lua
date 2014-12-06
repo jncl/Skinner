@@ -2236,6 +2236,7 @@ function aObj:MinimapButtons()
 			["Altoholic"] = _G.AltoholicMinimapButton,
 			["Armory"] = _G.ArmoryMinimapButton,
 			["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon,
+			["RaidBuffStatus"] = _G.RBSMinimapButton,
 		}
 		local function skinMMBtn(btn, name)
 
