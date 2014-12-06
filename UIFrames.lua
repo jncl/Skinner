@@ -1164,6 +1164,7 @@ function aObj:GarrisonUI() -- LoD
 			local frame = mp.Enemies[i]
 			frame.PortraitFrame.PortraitRing:SetTexture(nil)
 		end
+		self:moveObject{obj=mp.FollowerModel, x=-6, y=0}
 
 		-- FollowerTab
 		_G.GarrisonMissionFrame.FollowerTab:DisableDrawLayer("BORDER")
