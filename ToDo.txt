@@ -9,20 +9,16 @@ Legend:
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
 ?	I	Tooltip
-		- Correct Gradient Height, noticeable on Fishing Bobber tooltip amongst others
+		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-?	I	LootWonFrame - GarrisonResources from Garrison Cache - missing texture
+√	I 	Baggins, reported by Nobody101, 04.12.14
+		- Bankbag not recolouring with Custom colour supplied
 
-√	S	QuestMapWithDetails, requsted by txamethyst, 25.1.14
+?	I	DBM, reported by Litvan, 04.12.14
+		- ..\AddOns\Skinner\SkinMe\DBM.lua line 155: attempt to index upvalue 'DBM' (a nil value)
 
-≈	I	Dominos, reported by txamethyst, 25.11.14
-		- Skinner\SkinMe\Dominos-6.0.9.lua:8: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-		  ..faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:211: in function <...faceAdiBags\libs\AceHook-3.0\AceHook-3.0.lua:118>
-		  ..faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:341: in function `SecureHook'
-		  Skinner\SkinMe\Dominos-6.0.9.lua:8: in function <Skinner\SkinMe\Dominos.lua:5>
+√	S	RaidBuffStatus
 
-≈	O	Habeebit renamed to BonusRollPreview, reported by gamemaster128, 25.11.14
-x	O	Squire2 superceeded by Squire3, reported by gamemaster128, 25.11.14
-
-√	I	GarrisonMissionUI, reported by Fireleaf, 30.11.14
+	N	Enchantrix
+√		- tooltip not skinned, need to unobsolete LibExtraTip
