@@ -167,11 +167,11 @@ function aObj:AlertFrames()
 
 	local function skinWonAlertFrames(obj)
 
+		-- move Icon draw layer (Garrison Cache icon)
+		if obj.Icon:GetDrawLayer() == "BACKGROUND" then
+			obj.Icon:SetDrawLayer("BORDER")
+		end
 		if not obj.sf then
-			-- move Icon draw layer (Garrison Cache icon)
-			if obj.Icon:GetDrawLayer() == "BACKGROUND" then
-				obj.Icon:SetDrawLayer("BORDER")
-			end
 			obj:DisableDrawLayer("BACKGROUND")
 			obj.IconBorder:SetTexture(nil)
 			if obj.SpecRing then obj.SpecRing:SetTexture(nil) end -- Loot Won Alert Frame(s)
