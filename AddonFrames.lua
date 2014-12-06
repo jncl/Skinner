@@ -248,6 +248,7 @@ aObj.libsToSkin = {
 	["LibDropdown-1.0"] = "LibDropdown",
 	["LibToast-1.0"] = "LibToast",
 	["LibDialog-1.0"] = "LibDialog",
+	["LibExtraTip-1"] = "LibExtraTip",
 }
 --[[
 -- aObj.addonsToSkin["!Swatter"] = "Swatter"
@@ -256,7 +257,6 @@ aObj.libsToSkin = {
 	-- ["AceAddon-2.0"] = "Ace2",
 	-- ["Tablet-2.0"] = "Tablet",
 	-- ["Waterfall-1.0"] = "Waterfall",
-	-- ["LibExtraTip-1"] = "LibExtraTip",
 	-- ["LibSimpleFrame-Mod-1.0"] = "LibSimpleFrame",
 ]]
 function aObj:AddonFrames()

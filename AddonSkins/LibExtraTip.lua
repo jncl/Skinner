@@ -1,11 +1,12 @@
+local aName, aObj = ...
 -- This is a Library
 
-function Skinner:LibExtraTip()
+function aObj:LibExtraTip()
 	if not self.db.profile.Tooltips.skin or self.initialized.LibExtraTip then return end
 	self.initialized.LibExtraTip = true
-	
-	local lib = LibStub("LibExtraTip-1")
-	
+
+	local lib = _G.LibStub("LibExtraTip-1")
+
 	-- hook this to skin extra tooltips
 	self:RawHook(lib, "GetFreeExtraTipObject", function(this)
 		local ttip = self.hooks[lib].GetFreeExtraTipObject(this)
@@ -18,5 +19,5 @@ function Skinner:LibExtraTip()
 		end
 		return ttip
 	end, true)
-	
+
 end
