@@ -20,7 +20,6 @@ function aObj:BonusRollPreview()
 		_G.BonusRollPreviewHandle.Arrow:SetTexCoord(1, 0.3, 0.8, 0.3 ,1, 0.7, 0.8, 0.7) -- point down
 	end
 	self:SecureHook(_G.BonusRollPreviewHandle, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
-		_G.print("BRPH SetPoint", this, point, relTo, relPoint, xOfs, yOfs)
 		if (relTo == _G.BonusRollFrame and point == "BOTTOM")
 		or (relTo == _G.BonusRollPreviewContainer and point == "TOP")
 		then
