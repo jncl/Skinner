@@ -12,13 +12,8 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	I 	Baggins, reported by Nobody101, 04.12.14
-		- Bankbag not recolouring with Custom colour supplied
+x	I	Baggins, reported by Nobody101, 07.12.14
+		- Bag backgrounds still not coloured properly
 
-?	I	DBM, reported by Litvan, 04.12.14
-		- ..\AddOns\Skinner\SkinMe\DBM.lua line 155: attempt to index upvalue 'DBM' (a nil value)
-
-√	S	RaidBuffStatus
-
-	N	Enchantrix
-√		- tooltip not skinned, need to unobsolete LibExtraTip
+√	I	BonusRollPreview, reported by tordenflesk, 07.12.14
+		- debug print statements need to be removed
