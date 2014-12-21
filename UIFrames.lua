@@ -1072,6 +1072,15 @@ function aObj:GarrisonUI() -- LoD
 	-->>-- GarrisonMissionUI
 	local function skinGarrisonMissionUI()
 
+		-- hook this to skin extra reward buttons
+		self:SecureHook("GarrisonMissionButton_SetRewards", function(this, rewards, numRewards)
+			if numRewards > 0 then
+				for i = 1, #this.Rewards do
+					aObj:addButtonBorder{obj=this.Rewards[i], relTo=this.Rewards[i].Icon, reParent={this.Rewards[i].Quantity}}
+				end
+			end
+		end)
+
 		-- 12 is MissionType
 		local stageRegs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 19, 20, 21}
 
