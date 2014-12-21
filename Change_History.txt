@@ -1,3 +1,9 @@
+b6.19243.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated BonusRollPreview skin
+
 b6.19243.1
 Jncl:
 	ToDo.txt
