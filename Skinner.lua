@@ -642,7 +642,9 @@ local function __addSkinFrame(opts)
 	if opts.ri then aObj:removeInset(opts.obj.Inset) end
 
 	-- reverse parent child relationship
-	if opts.rp then
+	if opts.rp
+	and not opts.obj.SetParent_orig
+	then
 		skinFrame:SetParent(opts.obj:GetParent())
 		opts.obj:SetParent(skinFrame)
 		opts.obj.SetParent_orig = opts.obj.SetParent
