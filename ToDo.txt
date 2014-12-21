@@ -15,5 +15,16 @@ Legend:
 x	I	Baggins, reported by Nobody101, 07.12.14
 		- Bag backgrounds still not coloured properly
 
-√	I	BonusRollPreview, reported by tordenflesk, 07.12.14
-		- debug print statements need to be removed
+√	N	MasterPlan, reported by Decabah, 14.12.14
+
+≈	I	Nameplates, reported by Dezar, 17.12.14
+		- Skinner\Skinner-b6.19243.2.lua:982: attempt to index local 'statusBar' (a nil value)
+		  Skinner\Skinner-b6.19243.2.lua:982: in function `glazeStatusBar'
+		  Skinner\UIFrames.lua:2367: in function <Skinner\UIFrames.lua:2358>
+		  Skinner\UIFrames.lua:2393: in function <Skinner\UIFrames.lua:2389>
+
+√	I	AuctionMaster, reported by mog71, 19.12.14
+x		- Interface\AddOns\Skinner\SkinMe\AuctionMaster.lua:106: attempt to index field 'cols' (a nil value)
+
+√	I	selecting "Background" in the Skinner options, reported by mog71
+		- Interface\AddOns\Skinner\Skinner.lua:646: <unnamed>:SetParent(): Would create a loop parenting to <unnamed>
