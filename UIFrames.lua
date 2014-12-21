@@ -208,7 +208,7 @@ function aObj:AlertFrames()
 		if not frame.sf then
 			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-10}
-			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.5, frame)
+			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.4, frame) -- longer wait for Epic upgrades required
 		end
 	end
 	self:SecureHook("LootUpgradeFrame_SetUp", function(frame, ...)
@@ -1127,11 +1127,11 @@ function aObj:GarrisonUI() -- LoD
 			end
 
 		end)
-		aObj:skinSlider{obj=ml.listScroll.scrollBar, size=3}
+		aObj:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
 		for i = 1, #ml.listScroll.buttons do
 			local btn = ml.listScroll.buttons[i]
 			btn:DisableDrawLayer("BACKGROUND")
-			aObj:removeRegions(btn, {7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26})
+			aObj:removeRegions(btn, {7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26}) -- 23-26 are highlight corners
 			for i = 1, #btn.Rewards do
 				aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
 				btn.Overlay.Overlay:SetTexture(nil)
