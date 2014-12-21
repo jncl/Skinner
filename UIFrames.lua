@@ -2364,7 +2364,9 @@ function aObj:Nameplates()
 		-- skin both status bars (health & cast)
 		obj.sb1, obj.sb2 = obj:GetChildren()
 		for i = 1, 2 do
-			aObj:glazeStatusBar(obj["sb" .. i], 0,  nil)
+			if obj["sb" .. i] then
+				aObj:glazeStatusBar(obj["sb" .. i], 0,  nil)
+			end
 		end
 
 		-- Cast bar uninterruptible shield texture
