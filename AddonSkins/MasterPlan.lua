@@ -20,20 +20,38 @@ function aObj:MasterPlan() -- LoD
 
 	-- Garrison Missions Frame - Active Missions Tab
 	local activeUI = self:getChild(_G.GarrisonMissionFrameMissions, 4)
-	local sf = self:getChild(_G.GarrisonMissionFrameMissions, 5) -- scroll frame
-	self:skinSlider{obj=self:getChild(sf, 1), adj=-4}
+	local availUI = self:getChild(_G.GarrisonMissionFrameMissions, 5)
+	local sf = self:getChild(_G.GarrisonMissionFrameMissions, 6) -- scroll frame
 	local sc = sf:GetScrollChild()
+	local bar = self:getChild(sf, 1)
+	self:skinSlider{obj=bar, adj=-4}
 
 	local function skinMissionButtons()
 		local kids = {sc:GetChildren()}
 		for _, child in _G.ipairs(kids) do
 			if child:IsObjectType("Button") then
 				child:DisableDrawLayer("BACKGROUND")
-				child:DisableDrawLayer("OVERLAY") -- shadow background
 				child:DisableDrawLayer("BORDER")
-				self:removeRegions(child, {16, 17, 18, 19}) -- highlight corners
-				for i = 1, 3 do
-					child.followers[i].ring:SetTexture(nil)
+				-- self:getChild(child, 1):DisableDrawLayer("OVERLAY") -- shadow background, don't remove this
+				-- re-align the top & bottom highlight
+				local t = self:getRegion(child, 12)
+				t:ClearAllPoints()
+				t:SetPoint("topleft", 0, 4)
+				t:SetPoint("topright", 0, 4)
+				t = self:getRegion(child, 13)
+				t:ClearAllPoints()
+				t:SetPoint("bottomleft", 0, -4)
+				t:SetPoint("bottomright", 0, -4)
+				self:removeRegions(child, {14, 15, 16, 17, 23}) -- highlight corners & rare indicator
+				if child.followers then -- Active mission button has these
+					for i = 1, #child.followers do
+						child.followers[i].ring:SetTexture(nil)
+					end
+				end
+				if child.groups then -- Available mission button has these
+					for i = 1, #child.groups do
+						child.groups[i]:DisableDrawLayer("BACKGROUND")
+					end
 				end
 				for i = 1, #child.rewards do
 					self:addButtonBorder{obj=child.rewards[i], reParent={child.rewards[i].quantity}}
@@ -42,11 +60,9 @@ function aObj:MasterPlan() -- LoD
 		end
 		kids = _G.null
 	end
-	-- hook activeUI SetShown to skin buttons
-	self:SecureHook(activeUI, "SetShown", function(this, action)
-		if action then
-			self:ScheduleTimer(skinMissionButtons, 0.2, nil) -- wait for buttons to be created
-		end
+	-- hook this to skin new buttons
+	self:SecureHookScript(bar, "OnValueChanged", function(this, ...)
+		skinMissionButtons()
 	end)
 	-- skin any existing buttons, first time displayed
 	skinMissionButtons()
@@ -73,9 +89,9 @@ function aObj:MasterPlan() -- LoD
 	end)
 
 	-- Garrison Missions Frame - Available Missions Tab
-	local sortIndicator = self:getChild(_G.GarrisonMissionFrameMissions, 6)
+	local sortIndicator = self:getChild(availUI, 1)
 	self:removeRegions(sortIndicator, {1}) -- background
-	local roamingParty = self:getChild(_G.GarrisonMissionFrameMissions, 7)
+	local roamingParty = self:getChild(availUI, 2)
 	for i = 1, 3 do
 		local btn = self:getChild(roamingParty, i)
 		self:removeRegions(btn, {2}) -- portrait ring
