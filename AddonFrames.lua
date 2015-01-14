@@ -39,6 +39,7 @@ function aObj:BlizzardFrames()
 			["LootFrames"] = true,
 			["LootHistory"] = true,
 			["MirrorTimers"] = true,
+			["ModelFrames"] = false, -- checked below
 			["ObjectiveTracker"] = true,
 			["OverrideActionBar"] = true,
 			["ReadyCheck"] = true,
@@ -119,7 +120,6 @@ function aObj:BlizzardFrames()
 			["Minimap"] = false, -- checked below
 			["MinimapButtons"] = false, -- done with timer
 			["MovieFrame"] = true,
-			["ModelFrames"] = false, -- checked below
 			["Nameplates"] = false, -- checked below
 			["NavigationBar"] = true,
 			["PetBattleUI"] = true,
@@ -140,6 +140,7 @@ function aObj:BlizzardFrames()
 			["Calendar"] = false,
 			["ChallengesUI"] = false,
 			["DebugTools"] = false,
+			["GarrisonUI"] = false,
 			["GMChatUI"] = false,
 			["GMSurveyUI"] = false,
 			["GuildBankUI"] = false,

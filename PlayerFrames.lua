@@ -1550,6 +1550,35 @@ function aObj:MirrorTimers()
 
 end
 
+function aObj:ModelFrames()
+	if not self.db.profile.CharacterFrames then return end
+--[[
+[12:55:21] <dreyruugr> http://ace.pastey.net/551
+[12:55:42] <dreyruugr> That should do framerate independant rotation of the model, based on how much the mouse moves
+[13:12:43] <dreyruugr> Gngsk: http://ace.pastey.net/552 - This doesn't work quite right, but if you work on it you'll be able to zoom in on the character's face using the y offset of the mouse
+
+This does the trick, but it might be worth stealing chester's code from SuperInspect
+
+]]
+
+	-- these are hooked to suppress the sound the normal functions use
+	self:SecureHook("Model_RotateLeft", function(model, rotationIncrement)
+		if not rotationIncrement then
+			rotationIncrement = 0.03
+		end
+		model.rotation = model.rotation - rotationIncrement
+		model:SetRotation(model.rotation)
+	end)
+	self:SecureHook("Model_RotateRight", function(model, rotationIncrement)
+		if not rotationIncrement then
+			rotationIncrement = 0.03
+		end
+		model.rotation = model.rotation + rotationIncrement
+		model:SetRotation(model.rotation)
+	end)
+
+end
+
 function aObj:ObjectiveTracker()
 	if not self.db.profile.ObjectiveTracker.skin
 	and not self.db.profile.ObjectiveTracker.popups
