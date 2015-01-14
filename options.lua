@@ -58,6 +58,7 @@ function aObj:Defaults()
 		GossipFrame          = true,
 		GuildRegistrar       = true,
 		ItemAlterationUI     = true,
+		ItemUpgradeUI        = true,
 		MerchantFrame        = true,
 		Petition             = true,
 		PetStableFrame       = true,
@@ -120,9 +121,9 @@ function aObj:Defaults()
 		ChatButtons          = true,
 		ChatConfig           = true,
 		ChatEditBox          = {skin = true, style = 3},
-		ChatFrames           = false,
+		ChatFrames           = false, -- (inc ChatMinimizedFrames)
 		ChatMenus            = true,
-		ChatTabs             = false,
+		ChatTabs             = false, -- (inc. ChatTemporaryWindow)
 		ChatTabsFade         = true,
 		CinematicFrame       = true,
 		CoinPickup           = true,
@@ -137,14 +138,13 @@ function aObj:Defaults()
 		GuildBankUI          = true,
 		HelpFrame            = true,
 		ItemText             = true,
-		ItemUpgradeUI        = true,
 		LevelUpDisplay       = true,
 		LFDFrame             = true,
 		LFGFrame             = true,
 		LFRFrame             = true,
 		MailFrame            = true,
 		MainMenuBar          = {skin = true, glazesb = true, extraab=true},
-		MenuFrames           = true, -- inc. MacroUI & BindingUI
+		MenuFrames           = true, -- (inc. MacroUI & BindingUI)
 		Minimap              = {skin = false, gloss = false},
 		MinimapButtons       = {skin = false, style = false},
 		MovePad              = true,
@@ -153,6 +153,8 @@ function aObj:Defaults()
 		Nameplates           = true,
 		PetBattleUI          = true,
 		PVEFrame             = true,
+		QuestMap			 = true,
+		QueueStatusFrame	 = true,
 		RaidFrame            = true,
 		ScriptErrors         = true,
 		SplashFrame          = true,
@@ -164,6 +166,7 @@ function aObj:Defaults()
 		WorldMap             = {skin = true, size = 1},
 		WorldState           = true,
 	-->>-- Disabled Skins
+		DisableAllAS		 = false,
 		DisabledSkins        = {},
 	-->-- Profiles
 		-- populated below
@@ -720,9 +723,7 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["Disable all NPC Frames"],
 					desc = self.L["Disable all the NPC Frames from being skinned"],
-					set = function(info, value)
-						db[info[#info]] = value
-					end,
+					set = function(info, value) db[info[#info]] = value end,
 				},
 				head2 = {
 					order = 3,
@@ -844,9 +845,7 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["Disable all Player Frames"],
 					desc = self.L["Disable all the Player Frames from being skinned"],
-					set = function(info, value)
-						db[info[#info]] = value
-					end,
+					set = function(info, value) db[info[#info]] = value end,
 				},
 				head2 = {
 					order = 3,
@@ -1181,9 +1180,7 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["Disable all UI Frames"],
 					desc = self.L["Disable all the UI Frames from being skinned"],
-					set = function(info, value)
-						db[info[#info]] = value
-					end,
+					set = function(info, value) db[info[#info]] = value end,
 				},
 				head2 = {
 					order = 3,
@@ -1571,6 +1568,16 @@ function aObj:Options()
 					name = self.L["PVE Frame"],
 					desc = self.L["Toggle the skin of the PVE Frame"],
 				},
+				QuestMap = {
+					type = "toggle",
+					name = self.L["Quest Map"],
+					desc = self.L["Toggle the skin of the Quest Map"],
+				},
+				QueueStatusFrame = {
+					type = "toggle",
+					name = self.L["Queue Status Frame"],
+					desc = self.L["Toggle the skin of the Queue Status Frame"],
+				},
 				RaidFrame = {
 					type = "toggle",
 					name = self.L["Raid Frame"],
@@ -1684,6 +1691,25 @@ function aObj:Options()
 			get = function(info) return db.DisabledSkins[info[#info]] end,
 			set = function(info, value) db.DisabledSkins[info[#info]] = value end,
 			args = {
+				head1 = {
+					order = 1,
+					type = "header",
+					name = self.L["Either"],
+				},
+				DisableAllAS = {
+					order = 2,
+					width = "full",
+					type = "toggle",
+					name = self.L["Disable all Addon Skins"],
+					desc = self.L["Disable all the Addon skins"],
+					get = function(info) return db[info[#info]] end,
+					set = function(info, value) db[info[#info]] = value end,
+				},
+				head2 = {
+					order = 3,
+					type = "header",
+					name = self.L["or choose which Addon skins to disable"],
+				},
 			},
 		},
 

@@ -2806,13 +2806,9 @@ function aObj:QuestMap()
 
 end
 
-function aObj:QueueStatusFrame()
-	if not self.db.profile.LFGFrame
-	and not self.db.profile.PVPFrame
-	and not self.db.profile.PetBattleUI
-	then
-		return
-	end
+function aObj:QueueStatusFrame() -- shown on mouseover of QueueStatusMinimapButton
+	if not self.db.profile.QueueStatusFrame or self.initialized.QueueStatusFrame then return end
+	self.initialized.QueueStatusFrame = true
 
 	_G.QueueStatusFrame:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.QueueStatusFrame, anim=IsAddOnLoaded("SexyMap") and true or nil}
