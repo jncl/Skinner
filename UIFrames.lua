@@ -208,7 +208,7 @@ function aObj:AlertFrames()
 		if not frame.sf then
 			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-10}
-			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.4, frame) -- longer wait for Epic upgrades required
+			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.35, frame) -- longer wait required
 		end
 	end
 	self:SecureHook("LootUpgradeFrame_SetUp", function(frame, ...)
@@ -505,8 +505,6 @@ function aObj:ChatBubbles()
 	end)
 
 end
-
-
 
 function aObj:ChatButtons()
 	if not self.db.profile.ChatButtons or self.initialized.ChatButtons then return end
@@ -907,7 +905,7 @@ function aObj:DraenorZoneAbility()
 
 end
 
-function aObj:DropDownPanels()
+function aObj:DropDownPanels() -- option under General settings
 	if not self.db.profile.DropDownPanels or self.initialized.DropDownPanels then return end
 	self.initialized.DropDownPanels = true
 
@@ -1585,6 +1583,8 @@ end
 function aObj:LFGFrame()
 	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
 	self.initialized.LFGFrame = true
+
+	-- TODO - LFGInvitePopup ?
 
 	-- LFG DungeonReady Popup a.k.a. ReadyCheck
 	self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, kfs=true, ft=ftype, ofs=-5}

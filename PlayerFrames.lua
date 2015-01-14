@@ -1638,7 +1638,6 @@ function aObj:ObjectiveTracker()
 			local btn = _G.ObjectiveTrackerBonusRewardsFrame.Rewards[i]
 			self:addButtonBorder{obj=btn, relTo=btn.ItemIcon}
 			btn.ItemBorder:SetTexture(nil)
-
 		end
 	end)
 
