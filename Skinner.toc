@@ -12,46 +12,46 @@
 ## SavedVariables: SkinnerDB
 #
 # LibStub & Callback Handler
-libs\LibStub\LibStub.lua
-libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 #
 # LDB Libraries
-libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
-libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 #
 #@no-lib-strip@
 #Ace3 Libraries
-libs\AceAddon-3.0\AceAddon-3.0.xml
-libs\AceConsole-3.0\AceConsole-3.0.xml
-libs\AceEvent-3.0\AceEvent-3.0.xml
-libs\AceHook-3.0\AceHook-3.0.xml
-libs\AceTimer-3.0\AceTimer-3.0.xml
-libs\AceDB-3.0\AceDB-3.0.xml
-libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
-libs\AceLocale-3.0\AceLocale-3.0.xml
-libs\AceGUI-3.0\AceGUI-3.0.xml
-libs\AceConfig-3.0\AceConfig-3.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceHook-3.0\AceHook-3.0.xml
+Libs\AceTimer-3.0\AceTimer-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+Libs\AceLocale-3.0\AceLocale-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
 #Other Libraries
 # LSM must be loaded before SMW
-libs\LibSharedMedia-3.0\lib.xml
-libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
-libs\LibBetterBlizzOptions-1.0\lib.xml
+Libs\LibSharedMedia-3.0\lib.xml
+Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+Libs\LibBetterBlizzOptions-1.0\lib.xml
 #@end-no-lib-strip@
 #
 # Locale files
 # enUS MUST be loaded first as default, this is due to changes in AceLocale, 26.01.2011
-locales\Locale_enUS.lua
-locales\Locale_deDE.lua
-locales\Locale_frFR.lua
-locales\Locale_koKR.lua
-locales\Locale_zhCN.lua
-locales\Locale_zhTW.lua
+Locales\Locale_enUS.lua
+Locales\Locale_deDE.lua
+Locales\Locale_frFR.lua
+Locales\Locale_koKR.lua
+Locales\Locale_zhCN.lua
+Locales\Locale_zhTW.lua
 # added additional files, 11.11.13
-locales\Locale_esES.lua
-locales\Locale_esMX.lua
-locales\Locale_itIT.lua
-locales\Locale_ptBR.lua
-locales\Locale_ruRU.lua
+Locales\Locale_esES.lua
+Locales\Locale_esMX.lua
+Locales\Locale_itIT.lua
+Locales\Locale_ptBR.lua
+Locales\Locale_ruRU.lua
 #
 # Main files
 UtilFuncs.lua
@@ -69,27 +69,27 @@ AddonFrames.lua
 NPCFrames.lua
 #
 # PlayerFrames
-# inc. AchievementUI, ArchaeologyUI, Buffs, CastingBar, Character (inc. Pet, Reputation, Token), CompactFrames, ContainerFrames, DressUp, EncounterJournal, EquipmentFlyout, Friends (inc. Who, Chat, Raid), GhostFrame, GlyphUI, GuildControlUI, GuildUI, GuildInvite, InspectUI, ItemSocketingUI, LookingForGuildUI, Loot (inc. MissingLoot, GroupLoot ...), LootHistory, MirrorTimers, ObjectivesTracker, OverrideActionBar, PetJournal, PVP, RaidUI, ReadyCheck, RolePollPopup, ScrollOfResurrection, SpellBook, StackSplit, TalentUI, Trade, TradeSkillUI
+# inc. AchievementUI, ArchaeologyUI, Buffs, CastingBar, Character (inc. Pet, Reputation, Token), CompactFrames, ContainerFrames, DressUp, EncounterJournal, EquipmentFlyout, Friends (inc. Who, Chat, Raid), GhostFrame, GlyphUI, GuildControlUI, GuildUI, GuildInvite, InspectUI, ItemSocketingUI, LookingForGuildUI, Loot (inc. MissingLoot, GroupLoot ...), LootHistory, MirrorTimers, ModelFrames, ObjectivesTracker, OverrideActionBar, PetJournal, PVP, RaidUI, ReadyCheck, RolePollPopup, ScrollOfResurrection, SpellBook, StackSplit, TalentUI, Trade, TradeSkillUI
 PlayerFrames.lua
 #
 # UIFrames
-# inc. AddonList, AlertFrames, AuthChallengeUI, AutoComplete, BattlefieldMinimap, BindingUI, BNFrames, Calendar, ChallengesUI, ChatBubbles, ChatButtons, ChatConfig, ChatEditBox, ChatFrames, ChatMenus, ChatTabs, ChatTemporaryWindow, CinematicFrame, CoinPickup, ColorPicker, DebugTools, DestinyFrame, DraenorZoneAbility, DropDowns, GarrisonUI, GarrisonFollowerTooltips, GMChatUI, GMSurveyUI, GuildBankUI, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), ItemText, LevelUpDisplay, LFDFrame, LFGFrame, LFRFrame, MacroUI, Mail, MainMenuBar (inc. StanceBar, PossessBar, PetActionBar, ShamanTotems, ActionButtons, MultiBarButtons, VehicleLeaveButton, ExtraActionButton, PlayerPowerBarAlt), Menu (inc. Video, Sound & Voice, Mac Options, Interface), Minimap, MinimapButtons, ModelFrames, MovePad, MovieFrame, MovieProgress, Nameplates, NavigationBar, PetBattleUI, PVEFrame, QuestMap, QueueStatusFrame, RaidFrame, ScriptErrors, SplashFrame, StaticPopups, StoreUI, TimeManager, Tooltips, Tutorial, WorldMap, WorldState
+# inc. AddonList, AlertFrames, AuthChallengeUI, AutoComplete, BattlefieldMinimap, BindingUI, BNFrames, Calendar, ChallengesUI, ChatBubbles, ChatButtons, ChatConfig, ChatEditBox, ChatFrames, ChatMenus, ChatTabs, ChatTemporaryWindow, CinematicFrame, CoinPickup, ColorPicker, DebugTools, DestinyFrame, DraenorZoneAbility, DropDowns, GarrisonUI, GarrisonFollowerTooltips, GMChatUI, GMSurveyUI, GuildBankUI, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), ItemText, LevelUpDisplay, LFDFrame, LFGFrame, LFRFrame, MacroUI, Mail, MainMenuBar (inc. StanceBar, PossessBar, PetActionBar, ShamanTotems, ActionButtons, MultiBarButtons, VehicleLeaveButton, ExtraActionButton, PlayerPowerBarAlt), Menu (inc. Video, Sound & Voice, Mac Options, Interface), Minimap, MinimapButtons, MovePad, MovieFrame, MovieProgress, Nameplates, NavigationBar, PetBattleUI, PVEFrame, QuestMap, QueueStatusFrame, RaidFrame, ScriptErrors, SplashFrame, StaticPopups, StoreUI, TimeManager, Tooltips, Tutorial, WorldMap, WorldState
 UIFrames.lua
 #
 # Modules
 #
 # UnitFrames
 # inc. ArenaFrames, CompactFrames (inc. Party, Raid Unit, Raid Group), FocusFrame, PartyFrames (inc. Party Members Pets), PetFrame, PlayerFrame (inc. RuneFrame, TotemFrame, ComboFrame, ShardBar, PowerBar, EclipseBar), TargetFrame, TargetofFocusFrame, TargetofTargetFrame
-modules\UnitFrames.lua
+Modules\UnitFrames.lua
 #
 # UIButtons & ButtonBorders
-modules\UIButtons.lua
+Modules\UIButtons.lua
 #
 # these modules add additional features
-modules\ViewPort.lua
-modules\TopFrame.lua
-modules\MiddleFrames.lua
-modules\BottomFrame.lua
+Modules\ViewPort.lua
+Modules\TopFrame.lua
+Modules\MiddleFrames.lua
+Modules\BottomFrame.lua
 #
 # Addon skins
-skins.xml
+Skins.xml

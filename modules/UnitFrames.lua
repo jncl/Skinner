@@ -271,9 +271,9 @@ local function skinTargetF()
 		then
 			tex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		elseif uCls == "rareelite" then
-			tex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareEliteNameplateIcon]])
+			tex:SetTexture([[Interface\AddOns\]]..aName..[[\Textures\RareEliteNameplateIcon]])
 		elseif uCls == "rare" then
-			tex:SetTexture([[Interface\AddOns\]]..aName..[[\textures\RareNameplateIcon]])
+			tex:SetTexture([[Interface\AddOns\]]..aName..[[\Textures\RareNameplateIcon]])
 		else tex:SetTexture(nil)
 		end
 

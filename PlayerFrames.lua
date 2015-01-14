@@ -666,7 +666,7 @@ function aObj:ContainerFrames()
 		local cfpb = obj.PortraitButton
 		cfpb.gear = cfpb:CreateTexture(nil, "artwork")
 		cfpb.gear:SetAllPoints()
-		cfpb.gear:SetTexture([[Interface\AddOns\]] .. aName .. [[\textures\gear]])
+		cfpb.gear:SetTexture([[Interface\AddOns\]] .. aName .. [[\Textures\gear]])
 		cfpb:SetSize(18, 18)
 		cfpb.Highlight:ClearAllPoints()
 		cfpb.Highlight:SetPoint("center")
