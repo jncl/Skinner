@@ -514,6 +514,8 @@ function aObj:TRADE_SKILL_SHOW()
 	-- trigger this to skin ProfessionTabs
 	self:checkAndRunAddOn("ProfessionTabs_TSF")
 
+	self:checkAndRunAddOn("TradeSkillDW")
+
 	self:UnregisterEvent("TRADE_SKILL_SHOW")
 
 end
