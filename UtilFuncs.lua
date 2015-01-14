@@ -179,22 +179,33 @@ function aObj:checkAndRun(funcName, quiet)
 	end
 
 	-- only skin blizzard frames if required
-	if self.blizzFrames then
+	if self.blizzFrames
+	and self.db
+	then
 		if (self.blizzFrames.npc[funcName] and self.db.profile.DisableAllNPC)
 		or (self.blizzFrames.player[funcName] and self.db.profile.DisableAllP)
 		or (self.blizzFrames.ui[funcName] and self.db.profile.DisableAllUI)
 		then
+			self[funcName] = nil
 			return
 		end
 	end
 
 	-- don't skin any Addons whose skins are flagged as disabled
-	if self.db
-	and self.db.profile.DisabledSkins[funcName] then
-		if self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled")
+	if self.blizzFrames
+	and self.db
+	then
+		if not self.blizzFrames.npc[funcName]
+		and not self.blizzFrames.player[funcName]
+		and not self.blizzFrames.ui[funcName]
+		and (self.db.profile.DisabledSkins[funcName] or self.db.profile.DisableAllAS)
+		then
+			if self.db.profile.Warnings then
+				self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled (C&R)")
+			end
+			self[funcName] = nil
+			return
 		end
-		return
 	end
 
 	if type(self[funcName]) == "function" then
@@ -222,9 +233,11 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	if not addonFunc then addonFunc = addonName end
 
 	-- don't skin any Addons whose skins are flagged as disabled
-	if self.db.profile.DisabledSkins[addonName] then
+	if self.db.profile.DisabledSkins[addonFunc]
+	or self.db.profile.DisableAllAS
+	then
 		if self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled")
+			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled (C&RA)")
 		end
 		self[addonFunc] = nil
 		return
@@ -273,8 +286,6 @@ function aObj:changeShield(shldReg, iconReg)
 	assert(iconReg, "Unknown object changeShield\n" .. debugstack())
 --@end-alpha@
 
-	-- shldReg:SetTexture(self.shieldTex)
-	-- shldReg:SetTexCoord(0, 1, 0, 1)
 	self:changeTandC(shldReg, self.shieldTex)
 	shldReg:SetSize(46, 46)
 	-- move it behind the icon
