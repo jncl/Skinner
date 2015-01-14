@@ -12,4 +12,13 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	N	MasterPlan, reported by gamemaster128, 27.12.14
+√	N	MasterPlan, reported by gamemaster128, 31.12.14
+
+	I	QueueStatusFrame, reported by Smithers475, 31.12.14
+		- Gradient overlays frame on 1 character.
+√		- Missing option to disable skinning of the frame
+
+√	N	Altoholic, reported by gamemaster128/lexusnexus, 11.01.15
+		- ..\AddOns\Skinner\SkinMe\Altoholic.lua line 58: attempt to index field 'AltoholicAccountSharingOptionsIconNever' (a nil value)
+
+√	N	TradeSkillDW, reported by Excitor0, 12.0.14
