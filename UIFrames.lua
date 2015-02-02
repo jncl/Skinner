@@ -208,7 +208,7 @@ function aObj:AlertFrames()
 		if not frame.sf then
 			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-10}
-			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.35, frame) -- longer wait required
+			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.2, frame)
 		end
 	end
 	self:SecureHook("LootUpgradeFrame_SetUp", function(frame, ...)
@@ -1584,8 +1584,6 @@ function aObj:LFGFrame()
 	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
 	self.initialized.LFGFrame = true
 
-	-- TODO - LFGInvitePopup ?
-
 	-- LFG DungeonReady Popup a.k.a. ReadyCheck
 	self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, kfs=true, ft=ftype, ofs=-5}
 	self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, kfs=true, ft=ftype, ofs=-5}
@@ -1600,6 +1598,9 @@ function aObj:LFGFrame()
 		self:addButtonBorder{obj=frame, libt=true}
 		return frame
 	end, true)
+
+	-- LFGInvitePopup (Premade Groups?)
+	self:addSkinFrame{obj=LFGInvitePopup, ft=ftype}
 
 end
 

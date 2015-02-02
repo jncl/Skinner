@@ -140,7 +140,7 @@ function aObj:BlackMarketUI() -- LoD
 	self:moveObject{obj=self:getRegion(_G.BlackMarketFrame, 22), y=-4}
 	-- HotDeal frame
 	self:keepFontStrings(_G.BlackMarketFrame.HotDeal)
-	self:addButtonBorder{obj=_G.BlackMarketFrame.HotDeal.Item, ibt=true, relTo=_G.BlackMarketFrame.HotDeal.Item.IconTexture}
+	self:addButtonBorder{obj=_G.BlackMarketFrame.HotDeal.Item, relTo=_G.BlackMarketFrame.HotDeal.Item.IconTexture}
 	self:skinAllButtons{obj=_G.BlackMarketFrame.HotDeal, ft=ftype}
 
 	-- column headings
