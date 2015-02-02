@@ -12,4 +12,8 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	I	Missing Localisations, reported by rovin60/Tarmac, 14.01.15
+
+√	N	reported by Excitor0, 16.01.15
+		- Missing skin for joining premade groups, the choose role and accept group windows.
+
+√	I	BlackMarketUI
