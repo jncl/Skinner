@@ -1600,7 +1600,7 @@ function aObj:LFGFrame()
 	end, true)
 
 	-- LFGInvitePopup (Premade Groups?)
-	self:addSkinFrame{obj=LFGInvitePopup, ft=ftype}
+	self:addSkinFrame{obj=_G.LFGInvitePopup, ft=ftype}
 
 end
 
