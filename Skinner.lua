@@ -29,30 +29,30 @@ do
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
-	local liveBuildVer = "6.0.3"
-	local liveBuildNo = 19342
+	local liveInfo = {"6.0.3", 19342}
+	local ptrInfo = {"6.1.0", 19622}
+	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
-	aObj:Debug(liveBuildVer, liveBuildNo, buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
+	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
 --@end-alpha@
-	-- check to see if running on Beta version
+	-- check to see if running on Beta servers
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] > liveBuildVer and true or false
-	if not aObj.isBeta then
-		--check to see if running on PTR servers
-		aObj.isPTR = portal == "public-test" and true or false
-		-- check build number, if > Live then it's a patch
-		aObj.isPatch = _G.tonumber(buildInfo[2]) > liveBuildNo and true or false
+	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and true or false
+	--check to see if running on PTR servers
+	aObj.isPTR = portal == "public-test" and true or false
+	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and true or false
+	-- check build number, if > Live then it's a patch
+	aObj.isPatch = _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
 --@alpha@
-		if aObj.isPatch then
-			if aObj.isPTR then
-				_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
-			else
-				_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any Patch changes to be applied?", 1, 0, 0, nil, true)
-			end
+	if aObj.isPatch then
+		if aObj.isPTR then
+			_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
+		else
+			_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any Patch changes to be applied?", 1, 0, 0, nil, true)
 		end
---@end-alpha@
 	end
+--@end-alpha@
 	-- if patch detected then enable PTR/Beta code changes, handles PTR/Beta changes going Live
 	if aObj.isPatch then
 		aObj.isPTR = true
