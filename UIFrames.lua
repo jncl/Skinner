@@ -1310,7 +1310,7 @@ function aObj:GarrisonUI() -- LoD
 			btn.PortraitFrame.LevelBorder:SetTexture(nil)
 			btn.PortraitFrame.PortraitRingQuality:SetVertexColor(btn.PortraitFrame.LevelBorder:GetVertexColor())
 		end
-		aObj:addSkinFrame{obj=_G.GarrisonRecruitSelectFrame, ft=ftype, kfs=true}
+		aObj:addSkinFrame{obj=_G.GarrisonRecruitSelectFrame, ft=ftype, kfs=true, ofs=2}
 
 	end
 
