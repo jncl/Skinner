@@ -671,7 +671,7 @@ function aObj:ContainerFrames()
 		cfpb.Highlight:ClearAllPoints()
 		cfpb.Highlight:SetPoint("center")
 		cfpb.Highlight:SetSize(22, 22)
-		aObj:moveObject{obj=cfpb, x=6, y=-5}
+		aObj:moveObject{obj=cfpb, x=6, y=-3}
 	end
 	self:skinEditBox{obj=_G.BagItemSearchBox, regs={9, 10}, mi=true, noInsert=true}
 	-- Hook this to hide/show the gear button
