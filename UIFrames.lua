@@ -479,11 +479,9 @@ function aObj:ChatBubbles()
 
 	local function skinChatBubbles()
 
-		-- _G.print("skinChatBubbles")
 		aObj.RegisterCallback("skinChatBubbles", "WorldFrame_GetChildren", function(this, child)
 			if aObj:hasTextInTexture(aObj:getRegion(child, 1), "ChatBubble-Background", true) then
 				aObj:applySkin{obj=child, ft=ftype, kfs=true} -- use apply skin otherwise text is behind
-				-- _G.print("ChatBubble skinned", child)
 			end
 		end)
 		aObj:scanWorldFrameChildren()
@@ -495,11 +493,9 @@ function aObj:ChatBubbles()
 	local cbTmr
 	-- hook these to skin ChatBubbles
 	self:RegisterEvent("CINEMATIC_START", function()
-		-- _G.print("CINEMATIC_START")
 		cbTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.5)
 	end)
 	self:RegisterEvent("CINEMATIC_STOP", function()
-		-- _G.print("CINEMATIC_STOP")
 		self:CancelTimer(cbTmr, true)
 		cbTmr = nil
 	end)
@@ -1825,7 +1821,6 @@ function aObj:MainMenuBar()
 		upba.counterBar:DisableDrawLayer("ARTWORK")
 	end
 	self:SecureHook("UnitPowerBarAlt_SetUp", function(this, barID)
-		-- _G.print("UnitPowerBarAlt_SetUp:", this)
 		skinUnitPowerBarAlt(this)
 	end)
 	-- skin PlayerPowerBarAlt if already shown
