@@ -1250,10 +1250,10 @@ function aObj:GarrisonUI() -- LoD
 
 	end
 
-	-->>-- GarrisonCapacitiveDisplay
+	-->>-- GarrisonCapacitiveDisplay (i.e. Work Order Frame)
 	local function skinGarrisonCapacitiveDisplay()
 
-		self:addSkinFrame{obj=_G.GarrisonCapacitiveDisplayFrame, ft=ftype, kfs=true, ri=true, ofs=2}
+		aObj:addSkinFrame{obj=_G.GarrisonCapacitiveDisplayFrame, ft=ftype, kfs=true, ri=true, ofs=2}
 		local cd = _G.GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
 		cd.IconBG:SetTexture(nil)
 		aObj:addButtonBorder{obj=cd.ShipmentIconFrame, relTo=cd.ShipmentIconFrame.Icon}
