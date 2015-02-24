@@ -30,7 +30,7 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	local liveInfo = {"6.0.3", 19342}
-	local ptrInfo = {"6.1.0", 19622}
+	local ptrInfo = {"6.1.0", 19678}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -53,11 +53,6 @@ do
 		end
 	end
 --@end-alpha@
-	-- if patch detected then enable PTR/Beta code changes, handles PTR/Beta changes going Live
-	if aObj.isPatch then
-		aObj.isPTR = true
-		aObj.isBeta = true
-	end
 
 end
 
@@ -72,6 +67,11 @@ function aObj:OnInitialize()
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end
 --@end-alpha@
+	-- if patch detected then enable PTR/Beta code changes, handles PTR/Beta changes going Live
+	if self.isPatch then
+		self.isPTR = true
+		self.isBeta = true
+	end
 
 	-- setup the default DB values and register them
 	self:checkAndRun("Defaults", true)

@@ -19,8 +19,12 @@ function aObj:AuctionUI() -- LoD
 -->>--	Browse Frame
 	for _, v in pairs{"Name", "MinLevel", "MaxLevel"} do
 		local obj = _G["Browse" .. v]
-		self:skinEditBox{obj=obj, regs={9}}
-		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
+		if not self.isPTR then
+			self:skinEditBox{obj=obj, regs={9}}
+		else
+			self:skinEditBox{obj=obj, regs={9, v == "Name" and 10 or nil}, mi=true}
+		end
+		self:moveObject{obj=obj, x=v == "MaxLevel" and -6 or -4, y=v ~= "MaxLevel" and 3 or 0}
 	end
 	self:skinDropDown{obj=_G.BrowseDropDown, x2=110}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do

@@ -280,8 +280,13 @@ function aObj:ArchaeologyUI() -- LoD
 	for i = 1, _G.ARCHAEOLOGY_MAX_RACES do
 		_G.ArchaeologyFrame.summaryPage["race" .. i].raceName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	self:addButtonBorder{obj=_G.ArchaeologyFrame.summaryPage.prevPageButon, ofs=0} -- N.B. spelling!
-	self:addButtonBorder{obj=_G.ArchaeologyFrame.summaryPage.nextPageButon, ofs=0} -- N.B. spelling!
+	if not self.isPTR then
+		self:addButtonBorder{obj=_G.ArchaeologyFrame.summaryPage.prevPageButon, ofs=0} -- N.B. spelling!
+		self:addButtonBorder{obj=_G.ArchaeologyFrame.summaryPage.nextPageButon, ofs=0} -- N.B. spelling!
+	else
+		self:addButtonBorder{obj=_G.ArchaeologyFrame.summaryPage.prevPageButton, ofs=0}
+		self:addButtonBorder{obj=_G.ArchaeologyFrame.summaryPage.nextPageButton, ofs=0}
+	end
 -->>-- Completed Page
 	self:keepFontStrings(_G.ArchaeologyFrame.completedPage) -- remove title textures
 	_G.ArchaeologyFrame.completedPage.infoText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -547,6 +552,200 @@ function aObj:CharacterFrames()
 	end)
 
 	self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
+
+end
+
+if aObj.isPTR then
+	function aObj:Collections() -- LoD
+		if not self.db.profile.Collections or self.initialized.Collections then return end
+		self.initialized.Collections = true
+
+		self:addSkinFrame{obj=_G.CollectionsJournal, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:skinTabs{obj=_G.CollectionsJournal, lod=true}
+
+		-- Mounts
+		local mj = _G.MountJournal
+		self:addButtonBorder{obj=mj.SummonRandomFavoriteButton, ofs=3}
+		self:removeInset(mj.LeftInset)
+		self:removeInset(mj.RightInset)
+		self:skinEditBox{obj=mj.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
+		self:skinButton{obj=_G.MountJournalFilterButton}
+		self:skinDropDown{obj=_G.MountJournalFilterDropDown}
+		self:removeInset(mj.MountCount)
+		self:keepFontStrings(mj.MountDisplay)
+		self:keepFontStrings(mj.MountDisplay.ShadowOverlay)
+		self:addButtonBorder{obj=mj.MountDisplay.InfoButton, relTo=mj.MountDisplay.InfoButton.Icon}
+		self:makeMFRotatable(mj.MountDisplay.ModelFrame)
+		self:skinSlider{obj=mj.ListScrollFrame.scrollBar, adj=-4}
+		self:removeMagicBtnTex(mj.MountButton)
+		for i = 1, #mj.ListScrollFrame.buttons do
+			local btn = mj.ListScrollFrame.buttons[i]
+			btn:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.favorite}}
+		end
+
+		-- Pet Journal
+		local pj = _G.PetJournal
+		self:removeInset(pj.PetCount)
+		pj.MainHelpButton.Ring:SetTexture(nil)
+		self:moveObject{obj=pj.MainHelpButton, y=-4}
+		self:addButtonBorder{obj=pj.HealPetButton, sec=true}
+		_G.PetJournalHealPetButtonBorder:SetTexture(nil)
+		self:removeInset(pj.LeftInset)
+		self:removeInset(pj.PetCardInset)
+		self:removeInset(pj.RightInset)
+		self:skinEditBox{obj=pj.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
+		self:skinButton{obj=_G.PetJournalFilterButton}
+		self:skinDropDown{obj=_G.PetJournalFilterDropDown}
+		self:skinSlider{obj=pj.listScroll.scrollBar, adj=-4}
+		for i = 1, #pj.listScroll.buttons do
+			local btn = pj.listScroll.buttons[i]
+			self:removeRegions(btn, {1}) -- background
+			self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
+		end
+		self:keepFontStrings(pj.loadoutBorder)
+		self:moveObject{obj=pj.loadoutBorder, y=8} -- battle pet slots title
+		-- Pet LoadOut Plates
+		for i = 1, 3 do
+			local obj = pj.Loadout["Pet" .. i]
+			self:removeRegions(obj, {1, 2, 5})
+			-- add button border for empty slots
+	        self.modUIBtns:addButtonBorder{obj=obj, relTo=obj.icon} -- use module function here to force creation
+			self:changeTandC(obj.levelBG, self.lvlBG)
+			self:keepFontStrings(obj.helpFrame)
+			obj.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
+			self:glazeStatusBar(obj.healthFrame.healthBar, 0,  nil)
+			self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
+			self:glazeStatusBar(obj.xpBar, 0,  nil)
+			self:makeMFRotatable(obj.model)
+			self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, x1=-4, y2=-4} -- use asf here as button already has a border
+			for i = 1, 3 do
+				local btn = obj["spell" .. i]
+				self:removeRegions(btn, {1, 3}) -- background, blackcover
+				self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.FlyoutArrow}}
+			end
+		end
+		-- only show button border if layoutPlate is available but empty
+		self:SecureHook("PetJournal_UpdatePetLoadOut", function()
+			for i = 1, 3 do
+				local obj = pj.Loadout["Pet" .. i]
+				obj.sbb:SetShown(obj.emptyslot:IsShown())
+			end
+		end)
+		-- PetCard
+		local obj = pj.PetCard
+		self:changeTandC(obj.PetInfo.levelBG, self.lvlBG)
+		self:removeRegions(obj.HealthFrame.healthBar, {1, 2, 3})
+		self:glazeStatusBar(obj.HealthFrame.healthBar, 0,  nil)
+		self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
+		self:glazeStatusBar(obj.xpBar, 0,  nil)
+		self:makeMFRotatable(obj.model)
+		self:keepFontStrings(obj)
+		self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, ofs=4}
+		for i = 1, 6 do
+			local btn = obj["spell" .. i]
+			btn.BlackCover:SetAlpha(0) -- N.B. texture is changed in code
+			self:addButtonBorder{obj=btn, relTo=btn.icon}
+		end
+		self:removeMagicBtnTex(pj.FindBattleButton)
+		self:removeMagicBtnTex(pj.SummonButton)
+		self:removeRegions(pj.AchievementStatus, {1, 2})
+		self:skinDropDown{obj=pj.petOptionsMenu}
+		-- pj.SpellSelect ?
+
+		-- Tooltips
+		if self.db.profile.Tooltips.skin then
+			for _, v in pairs{"Primary", "Secondary"} do
+				local tt = _G["PetJournal" .. v .. "AbilityTooltip"]
+				tt.Delimiter1:SetTexture(nil)
+				tt.Delimiter2:SetTexture(nil)
+				tt:DisableDrawLayer("BACKGROUND")
+				self:addSkinFrame{obj=tt, ft=ftype}
+			end
+		end
+
+		-- Toy Box
+		local tb = _G.ToyBox
+		self:glazeStatusBar(tb.progressBar, 0,  nil)
+		self:removeRegions(tb.progressBar, {2, 3})
+		self:skinEditBox{obj=tb.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
+		self:skinButton{obj=_G.ToyBoxFilterButton}
+		self:skinDropDown{obj=_G.ToyBoxFilterDropDown}
+		self:removeInset(tb.iconsFrame)
+		tb.iconsFrame:DisableDrawLayer("OVERLAY")
+		tb.iconsFrame:DisableDrawLayer("ARTWORK")
+		tb.iconsFrame:DisableDrawLayer("BORDER")
+		tb.iconsFrame:DisableDrawLayer("BACKGROUND")
+		for i = 1, 18 do
+			local btn = tb.iconsFrame["spellButton" .. i]
+			btn.slotFrameCollected:SetTexture(nil)
+			btn.slotFrameUncollected:SetTexture(nil)
+			self:addButtonBorder{obj=btn, sec=true}
+			if self.modBtnBs then
+				if btn.slotFrameUncollected:IsShown() then
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+				else
+					btn.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+				end
+			end
+		end
+		if self.modBtnBs then
+			self:SecureHook("ToySpellButton_UpdateButton", function(this)
+				if this.slotFrameUncollected:IsShown() then
+					this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+				else
+					this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+				end
+			end)
+		end
+		self:addButtonBorder{obj=tb.navigationFrame.prevPageButton, ofs=-2, y1=-3, x2=-3}
+		self:addButtonBorder{obj=tb.navigationFrame.nextPageButton, ofs=-2, y1=-3, x2=-3}
+		self:skinDropDown{obj=tb.toyOptionsMenu}
+
+		-- Heirlooms
+		local hj = _G.HeirloomsJournal
+		self:glazeStatusBar(hj.progressBar, 0,  nil)
+		self:removeRegions(hj.progressBar, {2, 3})
+		self:skinEditBox{obj=hj.SearchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
+		self:skinButton{obj=_G.HeirloomsJournalFilterButton}
+		self:skinDropDown{obj=_G.HeirloomsJournalFilterDropDown}
+		self:skinDropDown{obj=_G.HeirloomsJournalClassDropDown}
+		self:removeInset(hj.iconsFrame)
+		hj.iconsFrame:DisableDrawLayer("OVERLAY")
+		hj.iconsFrame:DisableDrawLayer("ARTWORK")
+		hj.iconsFrame:DisableDrawLayer("BORDER")
+		hj.iconsFrame:DisableDrawLayer("BACKGROUND")
+		-- 18 icons per page ?
+		self:SecureHook(_G.HeirloomsMixin, "LayoutCurrentPage", function(this)
+			for i = 1, #this.heirloomEntryFrames do
+				local btn = this.heirloomEntryFrames[i]
+				if not btn.sbb then
+					btn.slotFrameCollected:SetTexture(nil)
+					btn.slotFrameUncollected:SetTexture(nil)
+					self:addButtonBorder{obj=btn, sec=true}
+					if self.modBtnBs then
+						if btn.slotFrameUncollected:IsShown() then
+							btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+						else
+							btn.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+						end
+					end
+				end
+			end
+		end)
+		if self.modBtnBs then
+			self:SecureHook(_G.HeirloomsMixin, "UpdateButton", function(this)
+				if this.slotFrameUncollected:IsShown() then
+					this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+				else
+					this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+				end
+			end)
+		end
+		self:addButtonBorder{obj=hj.navigationFrame.prevPageButton, ofs=-2, y1=-3, x2=-3}
+		self:addButtonBorder{obj=hj.navigationFrame.nextPageButton, ofs=-2, y1=-3, x2=-3}
+
+	end
 
 end
 
@@ -1034,7 +1233,11 @@ function aObj:GlyphUI() -- LoD
 	_G.GlyphFrame:DisableDrawLayer("BACKGROUND")
 	_G.GlyphFrame.specRing:SetTexture(nil)
 	self:removeInset(_G.GlyphFrame.sideInset)
-	self:skinEditBox{obj=_G.GlyphFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	if not self.isPTR then
+		self:skinEditBox{obj=_G.GlyphFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	else
+		self:skinEditBox{obj=_G.GlyphFrameSearchBox, regs={9, 10}, mi=true, noHeight=true, noMove=true}
+	end
 	self:skinDropDown{obj=_G.GlyphFrameFilterDropDown}
 	-- Headers
 	for i = 1, #_G.GLYPH_STRING do
@@ -1759,145 +1962,147 @@ function aObj:OverrideActionBar() -- a.k.a. VehicleUI
 
 end
 
-function aObj:PetJournal() -- LoD
-	if not self.db.profile.PetJournal or self.initialized.PetJournal then return end
-	self.initialized.PetJournal = true
+if not aObj.isPTR then
+	function aObj:PetJournal() -- LoD
+		if not self.db.profile.PetJournal or self.initialized.PetJournal then return end
+		self.initialized.PetJournal = true
 
-	self:addSkinFrame{obj=_G.PetJournalParent, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:skinTabs{obj=_G.PetJournalParent, lod=true}
+		self:addSkinFrame{obj=_G.PetJournalParent, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:skinTabs{obj=_G.PetJournalParent, lod=true}
 
-	-- MountJournal
-	local mj = _G.MountJournal
-	self:removeInset(mj.LeftInset)
-	self:removeInset(mj.RightInset)
-	self:removeInset(mj.MountCount)
-	self:skinEditBox{obj=mj.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
-	self:skinButton{obj=_G.MountJournalFilterButton}
-	self:keepFontStrings(mj.MountDisplay)
-	self:keepFontStrings(mj.MountDisplay.ShadowOverlay)
-	self:makeMFRotatable(mj.MountDisplay.ModelFrame)
-	self:skinSlider{obj=mj.ListScrollFrame.scrollBar, adj=-4}
-	self:removeMagicBtnTex(mj.MountButton)
-	for i = 1, #mj.ListScrollFrame.buttons do
-		local btn = mj.ListScrollFrame.buttons[i]
-		btn:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.favorite}}
-	end
-	self:addButtonBorder{obj=mj.SummonRandomFavoriteButton, ofs=3}
-	self:addButtonBorder{obj=mj.MountDisplay.InfoButton, relTo=mj.MountDisplay.InfoButton.Icon}
-	-- PetJournal
-	self:removeInset(_G.PetJournal.PetCount)
-	_G.PetJournal.MainHelpButton.Ring:SetTexture(nil)
-	self:moveObject{obj=_G.PetJournal.MainHelpButton, y=-4}
-	self:addButtonBorder{obj=_G.PetJournal.HealPetButton, sec=true}
-	_G.PetJournalHealPetButtonBorder:SetTexture(nil)
-	self:removeInset(_G.PetJournal.LeftInset)
-	self:removeInset(_G.PetJournal.RightInset)
-	self:skinEditBox{obj=_G.PetJournal.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
-	self:skinButton{obj=_G.PetJournalFilterButton}
-	self:skinDropDown{obj=_G.PetJournalFilterDropDown}
-	self:skinSlider{obj=_G.PetJournal.listScroll.scrollBar, adj=-4}
-	self:removeMagicBtnTex(_G.PetJournal.FindBattleButton)
-	self:removeMagicBtnTex(_G.PetJournal.SummonButton)
-	self:skinDropDown{obj=_G.PetJournal.petOptionsMenu}
-	for i = 1, #_G.PetJournal.listScroll.buttons do
-		local btn = _G.PetJournal.listScroll.buttons[i]
-		self:removeRegions(btn, {1}) -- background
-		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
-	end
-	self:removeRegions(_G.PetJournal.AchievementStatus, {1, 2})
-	self:keepFontStrings(_G.PetJournal.loadoutBorder)
-	self:moveObject{obj=_G.PetJournal.loadoutBorder, y=8} -- battle pet slots title
-	-- Pet LoadOut Plates
-	for i = 1, 3 do
-		local obj = _G.PetJournal.Loadout["Pet" .. i]
-		self:removeRegions(obj, {1, 2, 5})
-		-- add button border for empty slots
-        self.modUIBtns:addButtonBorder{obj=obj, relTo=obj.icon} -- use module function here to force creation
-		self:changeTandC(obj.levelBG, self.lvlBG)
-		self:keepFontStrings(obj.helpFrame)
-		obj.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
-		self:glazeStatusBar(obj.healthFrame.healthBar, 0,  nil)
+		-- MountJournal
+		local mj = _G.MountJournal
+		self:removeInset(mj.LeftInset)
+		self:removeInset(mj.RightInset)
+		self:removeInset(mj.MountCount)
+		self:skinEditBox{obj=mj.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
+		self:skinButton{obj=_G.MountJournalFilterButton}
+		self:keepFontStrings(mj.MountDisplay)
+		self:keepFontStrings(mj.MountDisplay.ShadowOverlay)
+		self:makeMFRotatable(mj.MountDisplay.ModelFrame)
+		self:skinSlider{obj=mj.ListScrollFrame.scrollBar, adj=-4}
+		self:removeMagicBtnTex(mj.MountButton)
+		for i = 1, #mj.ListScrollFrame.buttons do
+			local btn = mj.ListScrollFrame.buttons[i]
+			btn:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.favorite}}
+		end
+		self:addButtonBorder{obj=mj.SummonRandomFavoriteButton, ofs=3}
+		self:addButtonBorder{obj=mj.MountDisplay.InfoButton, relTo=mj.MountDisplay.InfoButton.Icon}
+		-- PetJournal
+		self:removeInset(_G.PetJournal.PetCount)
+		_G.PetJournal.MainHelpButton.Ring:SetTexture(nil)
+		self:moveObject{obj=_G.PetJournal.MainHelpButton, y=-4}
+		self:addButtonBorder{obj=_G.PetJournal.HealPetButton, sec=true}
+		_G.PetJournalHealPetButtonBorder:SetTexture(nil)
+		self:removeInset(_G.PetJournal.LeftInset)
+		self:removeInset(_G.PetJournal.RightInset)
+		self:skinEditBox{obj=_G.PetJournal.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
+		self:skinButton{obj=_G.PetJournalFilterButton}
+		self:skinDropDown{obj=_G.PetJournalFilterDropDown}
+		self:skinSlider{obj=_G.PetJournal.listScroll.scrollBar, adj=-4}
+		self:removeMagicBtnTex(_G.PetJournal.FindBattleButton)
+		self:removeMagicBtnTex(_G.PetJournal.SummonButton)
+		self:skinDropDown{obj=_G.PetJournal.petOptionsMenu}
+		for i = 1, #_G.PetJournal.listScroll.buttons do
+			local btn = _G.PetJournal.listScroll.buttons[i]
+			self:removeRegions(btn, {1}) -- background
+			self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
+		end
+		self:removeRegions(_G.PetJournal.AchievementStatus, {1, 2})
+		self:keepFontStrings(_G.PetJournal.loadoutBorder)
+		self:moveObject{obj=_G.PetJournal.loadoutBorder, y=8} -- battle pet slots title
+		-- Pet LoadOut Plates
+		for i = 1, 3 do
+			local obj = _G.PetJournal.Loadout["Pet" .. i]
+			self:removeRegions(obj, {1, 2, 5})
+			-- add button border for empty slots
+	        self.modUIBtns:addButtonBorder{obj=obj, relTo=obj.icon} -- use module function here to force creation
+			self:changeTandC(obj.levelBG, self.lvlBG)
+			self:keepFontStrings(obj.helpFrame)
+			obj.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
+			self:glazeStatusBar(obj.healthFrame.healthBar, 0,  nil)
+			self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
+			self:glazeStatusBar(obj.xpBar, 0,  nil)
+			self:makeMFRotatable(obj.model)
+			self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, x1=-4, y2=-4} -- use asf here as button already has a border
+			for i = 1, 3 do
+				local btn = obj["spell" .. i]
+				self:removeRegions(btn, {1, 3}) -- background, blackcover
+				self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.FlyoutArrow}}
+			end
+		end
+		-- only show button border if layoutPlate is available but empty
+		self:SecureHook("PetJournal_UpdatePetLoadOut", function()
+			for i = 1, 3 do
+				local obj = _G.PetJournal.Loadout["Pet" .. i]
+				obj.sbb:SetShown(obj.emptyslot:IsShown())
+			end
+		end)
+		-- PetCard
+		self:removeInset(_G.PetJournal.PetCardInset)
+		local obj = _G.PetJournal.PetCard
+		self:changeTandC(obj.PetInfo.levelBG, self.lvlBG)
+		self:removeRegions(obj.HealthFrame.healthBar, {1, 2, 3})
+		self:glazeStatusBar(obj.HealthFrame.healthBar, 0,  nil)
 		self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
 		self:glazeStatusBar(obj.xpBar, 0,  nil)
 		self:makeMFRotatable(obj.model)
-		self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, x1=-4, y2=-4} -- use asf here as button already has a border
-		for i = 1, 3 do
+		self:keepFontStrings(obj)
+		self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, ofs=4}
+		-- spell buttons
+		for i = 1, 6 do
 			local btn = obj["spell" .. i]
-			self:removeRegions(btn, {1, 3}) -- background, blackcover
-			self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.FlyoutArrow}}
+			btn.BlackCover:SetAlpha(0) -- N.B. texture is changed in code
+			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
-	end
-	-- only show button border if layoutPlate is available but empty
-	self:SecureHook("PetJournal_UpdatePetLoadOut", function()
-		for i = 1, 3 do
-			local obj = _G.PetJournal.Loadout["Pet" .. i]
-			obj.sbb:SetShown(obj.emptyslot:IsShown())
+		-- Tooltips
+		if self.db.profile.Tooltips.skin then
+			_G.PetJournalPrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
+			_G.PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
+			_G.PetJournalPrimaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=_G.PetJournalPrimaryAbilityTooltip, ft=ftype}
+			_G.PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
+			_G.PetJournalSecondaryAbilityTooltip.Delimiter2:SetTexture(nil)
+			_G.PetJournalSecondaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=_G.PetJournalSecondaryAbilityTooltip, ft=ftype}
 		end
-	end)
-	-- PetCard
-	self:removeInset(_G.PetJournal.PetCardInset)
-	local obj = _G.PetJournal.PetCard
-	self:changeTandC(obj.PetInfo.levelBG, self.lvlBG)
-	self:removeRegions(obj.HealthFrame.healthBar, {1, 2, 3})
-	self:glazeStatusBar(obj.HealthFrame.healthBar, 0,  nil)
-	self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
-	self:glazeStatusBar(obj.xpBar, 0,  nil)
-	self:makeMFRotatable(obj.model)
-	self:keepFontStrings(obj)
-	self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, ofs=4}
-	-- spell buttons
-	for i = 1, 6 do
-		local btn = obj["spell" .. i]
-		btn.BlackCover:SetAlpha(0) -- N.B. texture is changed in code
-		self:addButtonBorder{obj=btn, relTo=btn.icon}
-	end
-	-- Tooltips
-	if self.db.profile.Tooltips.skin then
-		_G.PetJournalPrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
-		_G.PetJournalPrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
-		_G.PetJournalPrimaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.PetJournalPrimaryAbilityTooltip, ft=ftype}
-		_G.PetJournalSecondaryAbilityTooltip.Delimiter1:SetTexture(nil)
-		_G.PetJournalSecondaryAbilityTooltip.Delimiter2:SetTexture(nil)
-		_G.PetJournalSecondaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.PetJournalSecondaryAbilityTooltip, ft=ftype}
-	end
-	-- Toy Box
-	self:glazeStatusBar(_G.ToyBox.progressBar, 0,  nil)
-	self:removeRegions(_G.ToyBox.progressBar, {2, 3})
-	self:skinEditBox{obj=_G.ToyBox.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
-	self:skinButton{obj=_G.ToyBoxFilterButton}
-	self:removeInset(_G.ToyBoxIconsFrame)
-	_G.ToyBoxIconsFrame:DisableDrawLayer("OVERLAY")
-	_G.ToyBoxIconsFrame:DisableDrawLayer("ARTWORK")
-	_G.ToyBoxIconsFrame:DisableDrawLayer("BORDER")
-	_G.ToyBoxIconsFrame:DisableDrawLayer("BACKGROUND")
-	for i = 1, 18 do
-		_G["ToySpellButton" .. i .. "SlotFrameCollected"]:SetTexture(nil)
-		_G["ToySpellButton" .. i .. "SlotFrameUncollected"]:SetTexture(nil)
-		self:addButtonBorder{obj=_G["ToySpellButton" .. i], sec=true}
+		-- Toy Box
+		self:glazeStatusBar(_G.ToyBox.progressBar, 0,  nil)
+		self:removeRegions(_G.ToyBox.progressBar, {2, 3})
+		self:skinEditBox{obj=_G.ToyBox.searchBox, regs={9, 10}, mi=true, noWidth=true, noInsert=true}
+		self:skinButton{obj=_G.ToyBoxFilterButton}
+		self:removeInset(_G.ToyBoxIconsFrame)
+		_G.ToyBoxIconsFrame:DisableDrawLayer("OVERLAY")
+		_G.ToyBoxIconsFrame:DisableDrawLayer("ARTWORK")
+		_G.ToyBoxIconsFrame:DisableDrawLayer("BORDER")
+		_G.ToyBoxIconsFrame:DisableDrawLayer("BACKGROUND")
+		for i = 1, 18 do
+			_G["ToySpellButton" .. i .. "SlotFrameCollected"]:SetTexture(nil)
+			_G["ToySpellButton" .. i .. "SlotFrameUncollected"]:SetTexture(nil)
+			self:addButtonBorder{obj=_G["ToySpellButton" .. i], sec=true}
+			if self.modBtnBs then
+				if _G["ToySpellButton" .. i .. "SlotFrameUncollected"]:IsShown() then
+					_G["ToySpellButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+				else
+					_G["ToySpellButton" .. i].sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+				end
+			end
+		end
 		if self.modBtnBs then
-			if _G["ToySpellButton" .. i .. "SlotFrameUncollected"]:IsShown() then
-				_G["ToySpellButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
-			else
-				_G["ToySpellButton" .. i].sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
-			end
+			self:SecureHook("ToySpellButton_UpdateButton", function(this)
+				local slotFrameUncollected = _G[this:GetName() .. "SlotFrameUncollected"]
+				if slotFrameUncollected:IsShown() then
+					this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+				else
+					this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+				end
+			end)
 		end
-	end
-	if self.modBtnBs then
-		self:SecureHook("ToySpellButton_UpdateButton", function(this)
-			local slotFrameUncollected = _G[this:GetName() .. "SlotFrameUncollected"]
-			if slotFrameUncollected:IsShown() then
-				this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
-			else
-				this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
-			end
-		end)
-	end
-	self:addButtonBorder{obj=_G.ToyBoxPrevPageButton, ofs=-2, y1=-3, x2=-3}
-	self:addButtonBorder{obj=_G.ToyBoxNextPageButton, ofs=-2, y1=-3, x2=-3}
+		self:addButtonBorder{obj=_G.ToyBoxPrevPageButton, ofs=-2, y1=-3, x2=-3}
+		self:addButtonBorder{obj=_G.ToyBoxNextPageButton, ofs=-2, y1=-3, x2=-3}
 
+	end
 end
 
 function aObj:PVPUI()
@@ -2346,7 +2551,11 @@ function aObj:TradeSkillUI() -- LoD
 	_G[objName .. "Border"]:SetAlpha(0)
 	self:glazeStatusBar(obj, 0, _G[objName .. "Background"])
 	self:moveObject{obj=obj, x=-2}
-	self:skinEditBox{obj=_G.TradeSkillFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	if not self.isPTR then
+		self:skinEditBox{obj=_G.TradeSkillFrameSearchBox, regs={9}, mi=true, noHeight=true, noMove=true}
+	else
+		self:skinEditBox{obj=_G.TradeSkillFrameSearchBox, regs={9, 10}, mi=true, noHeight=true, noMove=true}
+	end
 	self:skinButton{obj=_G.TradeSkillFilterButton}
 	self:addButtonBorder{obj=_G.TradeSkillLinkButton, x1=1, y1=-5, x2=-3, y2=2}
 	self:removeRegions(_G.TradeSkillExpandButtonFrame)
