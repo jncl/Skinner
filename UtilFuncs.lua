@@ -602,6 +602,26 @@ function aObj:scanWorldFrameChildren()
 
 end
 
+function aObj:toggleTabDisplay(tab, active)
+
+	if active then
+		if self.isTT then
+			self:setActiveTab(tab.sf)
+		else
+			-- HIGHLIGHT_FONT_COLOR is white
+			tab.Text:SetVertexColor(_G.HIGHLIGHT_FONT_COLOR.r, _G.HIGHLIGHT_FONT_COLOR.g, _G.HIGHLIGHT_FONT_COLOR.b)
+		end
+	else
+		if self.isTT then
+			self:setInactiveTab(tab.sf)
+		else
+			-- NORMAL_FONT_COLOR is yellow
+			tab.Text:SetVertexColor(_G.NORMAL_FONT_COLOR.r, _G.NORMAL_FONT_COLOR.g, _G.NORMAL_FONT_COLOR.b)
+		end
+	end
+
+end
+
 function aObj:updateSBTexture()
 
 	-- get updated colour/texture

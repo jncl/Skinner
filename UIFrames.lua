@@ -995,17 +995,15 @@ function aObj:GarrisonUI() -- LoD
 		aObj:addSkinFrame{obj=_G.GarrisonBuildingFrame, ft=ftype, kfs=true, ofs=2}
 
 		-- tabs
-		for i = 1, 3 do
+		for i = 1, _G.GARRISON_NUM_BUILDING_SIZES do
 			local tab = _G.GarrisonBuildingFrame.BuildingList["Tab" .. i]
-			tab:GetNormalTexture():SetAtlas(nil)
+			tab:GetNormalTexture():SetAlpha(0) -- texture is changed in code
 			aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=3, y1=0, x2=-3, y2=2}
 			tab.sf.ignore = true -- don't change tab size
-			if aObj.isTT then
-				if i == 1 then
-					aObj:setActiveTab(tab.sf)
-				else
-					aObj:setInactiveTab(tab.sf)
-				end
+			if i == 1 then
+				self:toggleTabDisplay(tab, true)
+			else
+				self:toggleTabDisplay(tab, false)
 			end
 		end
 
@@ -1017,15 +1015,11 @@ function aObj:GarrisonUI() -- LoD
 		end
 		aObj:SecureHook("GarrisonBuildingList_SelectTab", function(tab)
 			-- handle tab textures
-			if aObj.isTT then
-				for i = 1, 3 do
-					if i == tab:GetID() then
-						tab:GetNormalTexture():SetAtlas(nil)
-						aObj:setActiveTab(tab.sf)
-					else
-						_G.GarrisonBuildingFrame.BuildingList["Tab" .. i]:GetNormalTexture():SetAtlas(nil)
-						aObj:setInactiveTab(_G.GarrisonBuildingFrame.BuildingList["Tab" .. i].sf)
-					end
+			for i = 1, _G.GARRISON_NUM_BUILDING_SIZES do
+				if i == tab:GetID() then
+					self:toggleTabDisplay(tab, true)
+				else
+					self:toggleTabDisplay(_G.GarrisonBuildingFrame.BuildingList["Tab" .. i], false)
 				end
 			end
 			-- handle buttons
