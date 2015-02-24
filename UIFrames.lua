@@ -1808,9 +1808,9 @@ function aObj:MainMenuBar()
 -->>-- MicroButtonAlert frames
 	self:skinButton{obj=_G.TalentMicroButtonAlert.CloseButton, cb=true}
 	self:skinButton{obj=_G.CompanionsMicroButtonAlert.CloseButton, cb=true}
-	self:skinButton{obj=_G.LFDMicroButtonAlert.CloseButton, cb=true}
 	self:skinButton{obj=_G.CollectionsMicroButtonAlert.CloseButton, cb=true}
 	self:skinButton{obj=_G.ToyBoxMicroButtonAlert.CloseButton, cb=true}
+	self:skinButton{obj=_G.LFDMicroButtonAlert.CloseButton, cb=true}
 
 -->>-- Extra Action Button
 	if self.db.profile.MainMenuBar.extraab then
@@ -1865,7 +1865,7 @@ function aObj:MenuFrames()
 -->>-- Game Menu Frame
 	self:addSkinFrame{obj=_G.GameMenuFrame, ft=ftype, kfs=true, hdr=true}
 
--->>-- Options
+-->>-- System
 	self:addSkinFrame{obj=_G.VideoOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true}
 	self:skinSlider(_G.VideoOptionsFrameCategoryFrameListScrollBar)
@@ -1896,7 +1896,11 @@ function aObj:MenuFrames()
 		end
 	end
 	-- Languages
-	self:skinDropDown{obj=_G.InterfaceOptionsLanguagesPanelLocaleDropDown}
+	for _, child in ipairs{_G.InterfaceOptionsLanguagesPanel:GetChildren()} do
+		if aObj:hasTextInName(child, "DropDown") then
+			self:skinDropDown{obj=child}
+		end
+	end
 	-- Sound
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanel, ft=ftype}
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelPlayback, ft=ftype}
