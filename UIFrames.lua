@@ -199,7 +199,11 @@ function aObj:AlertFrames()
 	local frames = {"DigsiteCompleteToastFrame", "StorePurchaseAlertFrame", "GarrisonBuildingAlertFrame", "GarrisonMissionAlertFrame", "GarrisonFollowerAlertFrame"}
 	for _, frame in pairs(frames) do
 		self:getRegion(_G[frame], 1):SetTexture(nil) -- Background toast texture
-		_G[frame]:DisableDrawLayer("BORDER") -- icon background texture
+		if _G[frame].IconBG then
+			_G[frame].IconBG:SetTexture(nil)
+		else
+			_G[frame]:DisableDrawLayer("BORDER") -- icon background texture
+		end
 		self:addSkinFrame{obj=_G[frame], ft=ftype, af=true, afas=true, ofs=-10, y1=frame == "GarrisonFollowerAlertFrame" and -8 or nil, bg=true}
 	end
 
