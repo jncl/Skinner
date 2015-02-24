@@ -17,7 +17,7 @@ function aObj:AuctionUI() -- LoD
 	self:skinTabs{obj=_G.AuctionFrame, lod=true}
 	self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, bgen=1, x1=10, y1=-11, y2=5} -- N.B. bgen=1 to prevent other addons buttons being skinned
 -->>--	Browse Frame
-	for k, v in pairs{"Name", "MinLevel", "MaxLevel"} do
+	for _, v in pairs{"Name", "MinLevel", "MaxLevel"} do
 		local obj = _G["Browse" .. v]
 		self:skinEditBox{obj=obj, regs={9}}
 		self:moveObject{obj=obj, x=v=="MaxLevel" and -6 or -4, y=v~="MaxLevel" and 3 or 0}
