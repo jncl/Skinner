@@ -1,3 +1,11 @@
+b6.19342.5
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Skin LFGInvite Popup
+	Bugfix for BlackMarketAuctionUI
+	Reduce wait for Epic Loot upgrade Alert
+
 b6.19342.4
 Jncl:
 	ToDo.txt
