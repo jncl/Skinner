@@ -109,7 +109,7 @@ function aObj:Defaults()
 		VehicleMenuBar       = true,
 	-->>-- UI Frames
 		DisableAllUI         = false,
-		AddonList		  	 = true,
+		AddonList            = true,
 		AlertFrames          = true,
 		AuthChallengeUI      = false, -- N.B. cannot be skinned
 		AutoComplete         = true,
@@ -153,8 +153,8 @@ function aObj:Defaults()
 		Nameplates           = true,
 		PetBattleUI          = true,
 		PVEFrame             = true,
-		QuestMap			 = true,
-		QueueStatusFrame	 = true,
+		QuestMap             = true,
+		QueueStatusFrame     = true,
 		RaidFrame            = true,
 		ScriptErrors         = true,
 		SplashFrame          = true,
@@ -166,7 +166,7 @@ function aObj:Defaults()
 		WorldMap             = {skin = true, size = 1},
 		WorldState           = true,
 	-->>-- Disabled Skins
-		DisableAllAS		 = false,
+		DisableAllAS         = false,
 		DisabledSkins        = {},
 	-->-- Profiles
 		-- populated below
