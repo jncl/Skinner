@@ -2889,14 +2889,6 @@ function aObj:StoreUI() -- LoD
 
 	-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
 
-	-- StoreFrame
-		-- Cover
-		-- Notice
-		-- Error Frame
-	-- StoreConfirmationFrame
-		-- NoticeFrame
-	-- StoreTooltip
-
 end
 
 function aObj:TimeManager() -- LoD
