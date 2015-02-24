@@ -1453,7 +1453,24 @@ function aObj:HelpFrame()
 	self:moveObject{obj=_G.HelpFrame.header, y=-12}
 	self:removeInset(_G.HelpFrame.leftInset)
 	self:removeInset(_G.HelpFrame.mainInset)
+	for i = 1, 6 do
+		local btn = _G.HelpFrame["button" .. i]
+		btn:GetNormalTexture():SetTexture(nil)
+		btn:GetPushedTexture():SetTexture(nil)
+	end
+	_G.HelpFrame.button16:GetNormalTexture():SetTexture(nil)
 	self:addSkinFrame{obj=_G.HelpFrame, ft=ftype, kfs=true, ofs=-10, y2=7}
+	-- Account Security panel
+	_G.HelpFrame.asec.ticketButton:GetNormalTexture():SetTexture(nil)
+	_G.HelpFrame.asec.ticketButton:GetPushedTexture():SetTexture(nil)
+	-- Character Stuck! panel
+	self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
+	-- Report Bug panel
+	self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar, size=3}
+	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.bug, 3), ft=ftype}
+	-- Submit Suggestion panel
+	self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar, size=3}
+	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.suggestion, 3), ft=ftype}
 	-- Help Browser
 	self:removeInset(_G.HelpBrowser.BrowserInset)
 	self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2}
@@ -1462,35 +1479,27 @@ function aObj:HelpFrame()
 	self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2}
 	self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2}
 	self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2}
-	_G.BrowserSettingsTooltip:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
-	-- Report Player panel
-	self:addSkinFrame{obj=_G.ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
-	_G.ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=_G.ReportPlayerNameDialog, ft=ftype}
-	self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
-	_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
-	-- -- Knowledgebase
-	-- self:keepFontStrings(_G.HelpFrame.kbase)
-	-- self:addSkinFrame{obj=_G.HelpFrameKnowledgebaseErrorFrame, ft=ftype, kfs=true, ofs=-10}
-	-- Account Security panel
-	-- Character Stuck! panel
-	self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
-	-- Submit Bug panel
-	self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar, size=3}
-	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.bug, 3), ft=ftype}
-	-- Submit Suggestion panel
-	self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar, size=3}
-	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.suggestion, 3), ft=ftype}
+	-- Knowledgebase (uses Browser frame)
 	-- GM_Response
 	self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame1}
 	self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame2}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 5), ft=ftype}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
 
-	-- TicketStatusFrame
+	-- BrowserSettings Tooltip
+	_G.BrowserSettingsTooltip:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
+
+	-- TicketStatus Frame
 	self:addSkinFrame{obj=_G.TicketStatusFrameButton}
+	-- ReportPlayerName Dialog
+	self:addSkinFrame{obj=_G.ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+	_G.ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.ReportPlayerNameDialog, ft=ftype}
+	-- ReportCheating Dialog
+	self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+	_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
 
 end
 
