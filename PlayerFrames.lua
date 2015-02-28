@@ -536,7 +536,7 @@ function aObj:CharacterFrames()
 	end
 
 	self:keepFontStrings(_G.TokenFrame)
-	self:skinScrollBar{obj=_G.TokenFrameContainer}
+	self:skinSlider{obj=_G.TokenFrameContainerScrollBar, adj=-4}
 
 	self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 		-- remove background & header textures
