@@ -1,3 +1,26 @@
+b6.19342.7
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	PTR 6.1 changes
+	Remove unnecessary comments
+	Update AlertFrames skin
+	Changed IOP skin
+	Updated HelpFrame skin
+	Removed unrequired variable
+	Updated GarrisonCapacitiveDisplay skin
+	Aligned options
+	Removed print statements
+	Updated GarrisonBuildingUI skin
+
+b6.19342.6
+Jncl:
+	Updated Skada skin
+	Updated version type checking code
+	Use local global name
+	Update GarrisonRecruitUI skin
+	Update Containers skin
+
 b6.19342.5
 Jncl:
 	ToDo.txt
