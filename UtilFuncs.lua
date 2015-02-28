@@ -87,7 +87,7 @@ function aObj:SetupCmds()
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("rl", function() _G.ReloadUI() end)
 	self:RegisterChatCommand("lo", function() _G.Logout() end)
-	self:RegisterChatCommand("pl", function(msg) _G.print(msg, "is", _G.gsub(select(2, _G.GetItemInfo(msg)), "|", "||"))	end)
+	self:RegisterChatCommand("pl", function(msg) _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
 	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
 	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
 	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(getObj(msg), true, false) end) -- detailed
