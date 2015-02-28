@@ -1263,6 +1263,37 @@ function aObj:GarrisonUI() -- LoD
 		-- minimap
 		aObj:skinButton{obj=_G.GarrisonLandingPageTutorialBox.CloseButton, cb=true}
 
+		local obj=_G.GarrisonLandingPageMinimapButton
+		-- prevent AlertBG & SideToastGlow from being shown (this is a pita)
+		obj.MinimapAlertAnim = nil
+		obj.MinimapAlertAnim = obj:CreateAnimationGroup()
+		obj.MinimapAlertAnim.AlertText1= obj.MinimapAlertAnim:CreateAnimation("Alpha")
+		obj.MinimapAlertAnim.AlertText1:SetChildKey("AlertText")
+		obj.MinimapAlertAnim.AlertText1:SetDuration(0.25)
+		obj.MinimapAlertAnim.AlertText1:SetFromAlpha(0)
+		obj.MinimapAlertAnim.AlertText1:SetToAlpha(1)
+		obj.MinimapAlertAnim.AlertText1:SetOrder(1)
+		obj.MinimapAlertAnim.AlertText2= obj.MinimapAlertAnim:CreateAnimation("Alpha")
+		obj.MinimapAlertAnim.AlertText2:SetChildKey("AlertText")
+		obj.MinimapAlertAnim.AlertText2:SetStartDelay(5)
+		obj.MinimapAlertAnim.AlertText2:SetDuration(0.25)
+		obj.MinimapAlertAnim.AlertText2:SetFromAlpha(1)
+		obj.MinimapAlertAnim.AlertText2:SetToAlpha(0)
+		obj.MinimapAlertAnim.AlertText2:SetOrder(2)
+		-- based on original the scripts
+		obj.MinimapAlertAnim:SetScript("OnPlay", function(this)
+			this:GetParent().AlertText:Show()
+			this:GetParent().MinimapPulseAnim:Play()
+		end)
+		obj.MinimapAlertAnim:SetScript("OnStop", function(this)
+			this:GetParent().AlertText:Hide()
+			this:GetParent().MinimapPulseAnim:Stop()
+		end)
+		obj.MinimapAlertAnim:SetScript("OnFinished", function(this)
+			this:GetParent().AlertText:Hide()
+			this:GetParent().MinimapPulseAnim:Stop()
+		end)
+
 	end
 
 	-->>-- GarrisonCapacitiveDisplay (i.e. Work Order Frame)
