@@ -196,10 +196,7 @@ function aObj:AlertFrames()
 		skinWonAlertFrames(frame)
 	end
 
-	local frames = {"DigsiteCompleteToastFrame", "StorePurchaseAlertFrame", "GarrisonBuildingAlertFrame", "GarrisonMissionAlertFrame", "GarrisonFollowerAlertFrame"}
-	if self.isPTR then
-		aObj:add2Table(frames, "GarrisonRandomMissionAlertFrame")
-	end
+	local frames = {"DigsiteCompleteToastFrame", "StorePurchaseAlertFrame", "GarrisonBuildingAlertFrame", "GarrisonRandomMissionAlertFrame", "GarrisonMissionAlertFrame", "GarrisonFollowerAlertFrame"}
 	for _, frame in pairs(frames) do
 		self:getRegion(_G[frame], 1):SetTexture(nil) -- Background toast texture
 		if _G[frame].IconBG then
@@ -849,18 +846,14 @@ function aObj:ColorPicker()
 
 end
 
-if aObj.isPTR then
-	function aObj:DeathRecap() -- LoD
-		if not self.db.profile.DeathRecap or self.initialized.DeathRecap then return end
-		self.initialized.DeathRecap = true
+function aObj:DeathRecap() -- LoD
+	if not self.db.profile.DeathRecap or self.initialized.DeathRecap then return end
+	self.initialized.DeathRecap = true
 
-		_G.DeathRecapFrame:DisableDrawLayer("BORDER")
-		_G.DeathRecapFrame.Background:SetTexture(nil)
-		self:addSkinFrame{obj=_G.DeathRecapFrame, ft=ftype, kfs=true, ofs=-1}
-	end
-
+	_G.DeathRecapFrame:DisableDrawLayer("BORDER")
+	_G.DeathRecapFrame.Background:SetTexture(nil)
+	self:addSkinFrame{obj=_G.DeathRecapFrame, ft=ftype, kfs=true, ofs=-1}
 end
-
 
 function aObj:DebugTools() -- LoD
 	if not self.db.profile.DebugTools or self.initialized.DebugTools then return end
@@ -1159,18 +1152,14 @@ function aObj:GarrisonUI() -- LoD
 		mp:DisableDrawLayer("BACKGROUND")
 		mp:DisableDrawLayer("BORDER")
 		mp.ButtonFrame:SetTexture(nil)
-		if self.isPTR then
-			mp.CloseButton:SetSize(30, 30)
-		end
-		aObj:addSkinFrame{obj=mp, ft=ftype, x1=-320, y1=self.isPTR and 5 or 0, x2=self.isPTR and 3 or -2, y2=-20}
+		mp.CloseButton:SetSize(30, 30)
+		aObj:addSkinFrame{obj=mp, ft=ftype, x1=-320, y1=5, x2=3, y2=-20}
 		-- handle animation of StartMissionButton
 		if self.modBtns then
 			 mp.StartMissionButton.sb.tfade:SetParent(mp.sf)
 		end
 		aObj:removeRegions(mp.Stage, stageRegs)
-		if self.isPTR then
-			mp.Stage.IconBG:SetTexture(nil)
-		end
+		mp.Stage.IconBG:SetTexture(nil)
 		for i = 1, #mp.Followers do
 			self:removeRegions(mp.Followers[i], {1})
 			skinPortrait(mp.Followers[i].PortraitFrame)
@@ -1198,12 +1187,7 @@ function aObj:GarrisonUI() -- LoD
 		local mc = _G.GarrisonMissionFrame.MissionComplete
 		mc:DisableDrawLayer("BACKGROUND")
 		mc:DisableDrawLayer("BORDER")
-		if self.isPTR then
-			mc:DisableDrawLayer("ARTWORK")
-		end
-		if not self.isPTR then
-			mc.ButtonFrame:SetTexture(nil)
-		end
+		mc:DisableDrawLayer("ARTWORK")
 		aObj:removeRegions(mc.Stage, stageRegs)
 		for i = 1, #mc.Stage.EncountersFrame.Encounters do
 			local frame = mc.Stage.EncountersFrame.Encounters[i]
@@ -1294,13 +1278,10 @@ function aObj:GarrisonUI() -- LoD
 			btn.NameFrame:SetTexture(nil)
 		end
 		aObj:removeMagicBtnTex(_G.GarrisonCapacitiveDisplayFrame.StartWorkOrderButton)
-		if aObj.isPTR then
-			aObj:removeMagicBtnTex(_G.GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton)
-			aObj:addButtonBorder{obj=_G.GarrisonCapacitiveDisplayFrame.DecrementButton, ofs=-2, es=10}
-			aObj:skinEditBox{obj=_G.GarrisonCapacitiveDisplayFrame.Count, regs={9}}
-			aObj:addButtonBorder{obj=_G.GarrisonCapacitiveDisplayFrame.IncrementButton, ofs=-2, es=10}
-
-		end
+		aObj:removeMagicBtnTex(_G.GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton)
+		aObj:addButtonBorder{obj=_G.GarrisonCapacitiveDisplayFrame.DecrementButton, ofs=-2, es=10}
+		aObj:skinEditBox{obj=_G.GarrisonCapacitiveDisplayFrame.Count, regs={9}}
+		aObj:addButtonBorder{obj=_G.GarrisonCapacitiveDisplayFrame.IncrementButton, ofs=-2, es=10}
 
 	end
 
@@ -1819,12 +1800,7 @@ function aObj:MainMenuBar()
 	end
 
 	-- Micro buttons, skinned before checks for a consistent look, 12.10.12
-	local mbs = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "LFD", "EJ", "Store"}
-	if not self.isPTR then
-		aObj:add2Table(mbs, "Companions")
-	else
-		aObj:add2Table(mbs, "Collections")
-	end
+	local mbs = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "LFD", "Collections", "EJ", "Store"}
 	for _, v in pairs(mbs) do
 		self:addButtonBorder{obj=_G[v .. "MicroButton"], mb=true, ofs=0, y1=-21}
 	end
@@ -1851,10 +1827,6 @@ function aObj:MainMenuBar()
 
 -->>-- MicroButtonAlert frames
 	self:skinButton{obj=_G.TalentMicroButtonAlert.CloseButton, cb=true}
-	if not self.isPTR then
-		self:skinButton{obj=_G.CompanionsMicroButtonAlert.CloseButton, cb=true}
-		self:skinButton{obj=_G.ToyBoxMicroButtonAlert.CloseButton, cb=true}
-	end
 	self:skinButton{obj=_G.CollectionsMicroButtonAlert.CloseButton, cb=true}
 	self:skinButton{obj=_G.LFDMicroButtonAlert.CloseButton, cb=true}
 
@@ -1941,9 +1913,7 @@ function aObj:MenuFrames()
 			self:skinDropDown{obj=child}
 		end
 	end
-	if self.isPTR then
-		self:skinDropDown{obj=_G.Advanced_MultisampleAlphaTest}
-	end
+	self:skinDropDown{obj=_G.Advanced_MultisampleAlphaTest}
 	-- Network
 	-- Languages
 	for _, child in ipairs{_G.InterfaceOptionsLanguagesPanel:GetChildren()} do
@@ -1953,27 +1923,14 @@ function aObj:MenuFrames()
 	end
 -->>-- Mac Options
 	if _G.IsMacClient() then
-		if not self.isPTR then
-			self:addSkinFrame{obj=_G.MacOptionsFrame, ft=ftype, kfs=true, hdr=true}
-			self:addSkinFrame{obj=_G.MacOptionsFrameMovieRecording, ft=ftype, y1=-2}
-			self:skinDropDown{obj=_G.MacOptionsFrameResolutionDropDown}
-			self:skinDropDown{obj=_G.MacOptionsFrameFramerateDropDown}
-			self:skinDropDown{obj=_G.MacOptionsFrameCodecDropDown}
-			-- popup frames
-			self:addSkinFrame{obj=_G.MacOptionsITunesRemote, ft=ftype, y1=-2}
-			self:addSkinFrame{obj=_G.MacOptionsCompressFrame, ft=ftype, kfs=true, hdr=true}
-			self:addSkinFrame{obj=_G.MacOptionsCancelFrame, ft=ftype, kfs=true, hdr=true}
-			self:addSkinFrame{obj=_G.FolderPicker, ft=ftype, kfs=true, hdr=true}
-		else
-			-- Movie Recording
-			for _, child in ipairs{_G.MovieRecordingOptionsPanel:GetChildren()} do
-				if aObj:hasTextInName(child, "DropDown") then
-					self:skinDropDown{obj=child}
-				end
+		-- Movie Recording
+		for _, child in ipairs{_G.MovieRecordingOptionsPanel:GetChildren()} do
+			if aObj:hasTextInName(child, "DropDown") then
+				self:skinDropDown{obj=child}
 			end
-			-- iTunes Remote
-			-- Keyboard Options
 		end
+		-- iTunes Remote
+		-- Keyboard Options
 	end
 
 	-- Sound
@@ -2011,10 +1968,8 @@ function aObj:MenuFrames()
 	for i = 1, #_G.InterfaceOptionsFrameAddOns.buttons do
 		self:skinButton{obj=_G.InterfaceOptionsFrameAddOns.buttons[i].toggle, mp2=true}
 	end
-	if self.isPTR then
-		-- Social Browser Frame (Twitter integration)
-		self:addSkinFrame{obj=_G.SocialBrowserFrame, ft=ftype, kfs=true, ofs=2, x2=0}
-	end
+	-- Social Browser Frame (Twitter integration)
+	self:addSkinFrame{obj=_G.SocialBrowserFrame, ft=ftype, kfs=true, ofs=2, x2=0}
 
 -->>-- Rating Menu
 	self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
@@ -2941,17 +2896,14 @@ function aObj:StaticPopups()
 
 end
 
-if aObj.isPTR then
-	function aObj:SocialUI() -- LoD
-		if not self.db.profile.SocialUI or self.initialized.SocialUI then return end
-		self.initialized.SocialUI = true
+function aObj:SocialUI() -- LoD
+	if not self.db.profile.SocialUI or self.initialized.SocialUI then return end
+	self.initialized.SocialUI = true
 
-		-- disable skinning of this frame
-		self.db.profile.SocialUI = false
+	-- disable skinning of this frame
+	self.db.profile.SocialUI = false
 
-		-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
-
-	end
+	-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
 
 end
 

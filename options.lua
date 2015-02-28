@@ -76,7 +76,7 @@ function aObj:Defaults()
 		Buffs                = true,
 		CastingBar           = {skin = true, glaze = true},
 		CharacterFrames      = true,
-		Collections          = self.isPTR and true or nil, -- (Mounts, Pets, Toys & Heirlooms)
+		Collections          = true, -- (Mounts, Pets, Toys & Heirlooms)
 		CompactFrames        = true,
 		ContainerFrames      = {skin = true, fheight = 100},
 		DressUpFrame         = true,
@@ -95,7 +95,6 @@ function aObj:Defaults()
 		MirrorTimers         = {skin = true, glaze = true},
 		ObjectiveTracker     = {skin = false, popups = true},
 		OverrideActionBar    = true, -- a.k.a. VehicleUI
-		PetJournal           = self.isPTR and nil or true,
 		PVPFrame             = true,
 		QuestMap             = true,
 		RaidUI               = true,
@@ -130,7 +129,7 @@ function aObj:Defaults()
 		CoinPickup           = true,
 		Colours              = true,
 		CombatLogQBF         = false,
-		DeathRecap           = self.isPTR and true or nil,
+		DeathRecap           = true,
 		DebugTools           = true,
 		DestinyFrame         = true,
 		DraenorZoneAbility   = true,
@@ -159,7 +158,7 @@ function aObj:Defaults()
 		QueueStatusFrame     = true,
 		RaidFrame            = true,
 		ScriptErrors         = true,
-		SocialUI             = self.isPTR and false or nil, -- N.B. cannot be skinned
+		SocialUI             = false, -- N.B. cannot be skinned
 		SplashFrame          = true,
 		StaticPopups         = true,
 		StoreUI              = false, -- N.B. cannot be skinned
@@ -919,12 +918,12 @@ function aObj:Options()
 					name = self.L["Character Frames"],
 					desc = self.L["Toggle the skin of the Character Frames"],
 				},
-				Collections = self.isPTR and {
+				Collections = {
 					-- (Mounts, Pets, Toys & Heirlooms)
 					type = "toggle",
 					name = self.L["Collections Journal"],
 					desc = self.L["Toggle the skin of the Collections Journal"],
-				} or nil,
+				},
 				CompactFrames = {
 					type = "toggle",
 					name = self.L["Compact Frames"],
@@ -1093,16 +1092,6 @@ function aObj:Options()
 					name = self.L["VehicleUI"],
 					desc = self.L["Toggle the skin of the VehicleUI"],
 				},
-				PetJournal = not self.isPTR and {
-					type = "toggle",
-					width = "double",
-					name = self.L["Mounts and Pets Frame"],
-					desc = self.L["Toggle the skin of the Mounts and Pets Frame"],
-					set = function(info, value)
-						db[info[#info]] = value
-						if IsAddOnLoaded("Blizzard_PetJournal") then self:checkAndRun("PetJournal") end
-					end,
-				} or nil,
 				PVPFrame = {
 					type = "toggle",
 					name = self.L["PVP Frame"],
@@ -1365,11 +1354,11 @@ function aObj:Options()
 					name = self.L["Color Picker Frame"],
 					desc = self.L["Toggle the skin of the Color Picker Frame"],
 				},
-				DeathRecap = self.isPTR and {
+				DeathRecap = {
 					type = "toggle",
 					name = self.L["Death Recap Frame"],
 					desc = self.L["Toggle the skin of the Death Recap Frame"],
-				} or nil,
+				},
 				DebugTools = {
 					type = "toggle",
 					name = self.L["Debug Tools Frames"],
@@ -1602,11 +1591,11 @@ function aObj:Options()
 					name = self.L["Script Errors Frame"],
 					desc = self.L["Toggle the skin of the Script Errors Frame"],
 				},
-				SocialUI = self.isPTR and {
+				SocialUI = {
 					type = "toggle",
 					name = self.L["Social Frame"],
 					desc = self.L["Toggle the skin of the Social Frame"],
-				} or nil,
+				},
 				SplashFrame = {
 					type = "toggle",
 					name = self.L["What's New Frame"],

@@ -6,23 +6,15 @@ local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
 
 local blizzLoDFrames = {
 	-- player
-	"AchievementUI", "ArchaeologyUI", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "PVPUI", "RaidUI", "TalentUI",
+	"AchievementUI", "ArchaeologyUI", "Collections", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "PVPUI", "RaidUI", "TalentUI",
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
 	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ItemUpgradeUI", "GarrisonUI", "QuestChoice", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "PetJournal", "StoreUI", "TimeManager",
+	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "StoreUI", "TimeManager",
 	--	ArenaUI the unitframes are skinned in UnitFrames.lua
 }
--- optional frames
-if not aObj.isPTR then
-	aObj:add2Table(blizzLoDFrames, "PetJournal") -- player
-else
-	aObj:add2Table(blizzLoDFrames, "Collections") -- player
-	aObj:add2Table(blizzLoDFrames, "DeathRecap") -- ui
-	aObj:add2Table(blizzLoDFrames, "StoreUI") -- ui
-end
 
 local blizzLoD = {}
 for _, v in pairs(blizzLoDFrames) do
@@ -377,16 +369,9 @@ function aObj:LoDFrames(addon)
 	if self.lodAddons[addon] then self:checkAndRunAddOn(addon, true, self.lodAddons[addon]) end
 
 	-- handle addons linked to the PetJournal
-	if not self.isPTR then
-		if addon == "Blizzard_PetJournal" then
-			--	This addon is dependent upon the PetJournal
-			self:checkAndRunAddOn("PetBattleTeams")
-		end
-	else
-		if addon == "Blizzard_Collections" then
-			--	This addon is dependent upon the PetJournal
-			self:checkAndRunAddOn("PetBattleTeams")
-		end
+	if addon == "Blizzard_Collections" then
+		--	This addon is dependent upon the PetJournal
+		self:checkAndRunAddOn("PetBattleTeams")
 	end
 
 	-- deal with Addons under the control of an LoadManager
