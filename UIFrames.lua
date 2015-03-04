@@ -2751,6 +2751,8 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	self:removeMagicBtnTex(cs.FindGroupButton)
 	self:skinButton{obj=cs.StartGroupButton}
 	self:removeMagicBtnTex(cs.StartGroupButton)
+	-- NothingAvailable
+	self:removeInset(_G.LFGListFrame.NothingAvailable.Inset)
 	-- SearchPanel
 	local sp = _G.LFGListFrame.SearchPanel
 	self:skinEditBox{obj=sp.SearchBox, regs={9, 10}, mi=true}
@@ -2802,6 +2804,14 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	self:removeMagicBtnTex(ec.ListGroupButton)
 	self:skinButton{obj=ec.CancelButton}
 	self:removeMagicBtnTex(ec.CancelButton)
+
+	-- LFGListApplication Dialog
+	self:skinSlider{obj=_G.LFGListApplicationDialog.Description.ScrollBar, adj=-4}
+	self:addSkinFrame{obj=_G.LFGListApplicationDialog.Description, ft=ftype, kfs=true, ofs=6}
+	_G.LFGListApplicationDialog.Description.EditBox.Instructions:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.LFGListApplicationDialog, ft=ftype, kfs=true}
+	-- LFGListInvite Dialog
+	self:addSkinFrame{obj=_G.LFGListInviteDialog, ft=ftype}
 
 	-- ScenarioFinder Frame
 	self:keepFontStrings(_G.ScenarioFinderFrame)
