@@ -1,7 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 
-local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, null, setmetatable, RAID_CLASS_COLORS = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.null, _G.setmetatable, _G.RAID_CLASS_COLORS
+local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, setmetatable, RAID_CLASS_COLORS = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.setmetatable, _G.RAID_CLASS_COLORS
 local LibStub = _G.LibStub
 
 do
@@ -1030,7 +1030,7 @@ function aObj:keepFontStrings(obj, hide)
 			if not hide then reg:SetAlpha(0) else reg:Hide() end
 		end
 	end
-	regs = null
+	regs = nil
 
 end
 
@@ -1063,13 +1063,13 @@ function aObj:keepRegions(obj, regions)
 			reg:SetAlpha(0)
 --@debug@
 			if reg:IsObjectType("FontString") then
-				self:Debug("kr FS: [%s, %s]", obj:GetName() or "<Anon>", k)
+				self:Debug("kr FS: [%s, %s]", obj, k)
 				self:Print(debugstack(1, 5, 2))
 			end
 --@end-debug@
 		end
 	end
-	regs = null
+	regs = nil
 
 end
 
@@ -1224,13 +1224,13 @@ function aObj:removeRegions(obj, regions)
 			reg:SetAlpha(0)
 --@debug@
 			if reg:IsObjectType("FontString") then
-				self:Debug("rr FS: [%s, %s]", obj:GetName() or "<Anon>", k)
+				self:Debug("rr FS: [%s, %s]", obj, k)
 				self:Print(debugstack(1, 5, 2))
 			end
 --@end-debug@
 		end
 	end
-	regs = null
+	regs = nil
 
 end
 
@@ -1257,7 +1257,7 @@ function aObj:rmRegionsTex(obj, regions)
 			end
 		end
 	end
-	regs = null
+	regs = nil
 
 end
 

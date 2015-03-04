@@ -1796,7 +1796,7 @@ function aObj:ObjectiveTracker()
 			child.Background:SetTexture(nil)
 		end
 	end
-	kids = _G.null
+	kids = nil
 
 	-- skin timerBar(s) & progressBar(s)
 	local function skinBar(bar)

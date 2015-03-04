@@ -580,7 +580,7 @@ function aObj:scanUIParentsChildren()
 --@end-alpha@
 		end
 	end
-	kids = _G.null
+	kids = nil
 
 	-- remove all callbacks for this event
 	self.callbacks.events["UIParent_GetChildren"] = nil
@@ -595,7 +595,7 @@ function aObj:scanWorldFrameChildren()
 	for _, child in _G.ipairs(kids) do
 		self.callbacks:Fire("WorldFrame_GetChildren", child)
 	end
-	kids = _G.null
+	kids = nil
 
 	-- remove all callbacks for this event
 	self.callbacks.events["WorldFrame_GetChildren"] = nil
