@@ -12,6 +12,22 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	O	PTR - Apply all changes and remove previous version of code
+√	N	Altoholic, reported by bbarnett444, 01.03.15
+		- Skinner\Skinner-b6.19702.1.lua:1936: attempt to index field 'obj' (a nil value)
+		Skinner\Skinner-b6.19702.1.lua:1959: in function `skinUsingBD'
+		Skinner\Skinner-b6.19702.1.lua:1705: in function <Skinner\Skinner.lua:1677>
+		Skinner\Skinner-b6.19702.1.lua:1728: in function `skinScrollBar'
+		Skinner\SkinMe\Altoholic-r155.lua:52: in function <Skinner\SkinMe\Altoholic.lua:27>
 
-√	I	GarrisonLandingPageMinimapButton AlertBG
+√	N	Archy, reported by bbarnett444, 01.03.15
+		- Skinner\SkinMe\Archy-6.1.0.6.lua:64: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		..ns\TradeSkillMaster\Libs\AceHook-3.0\AceHook-3.0-8.lua:211: in function <...ns\TradeSkillMaster\Libs\AceHook-3.0\AceHook-3.0.lua:118>
+		..ns\TradeSkillMaster\Libs\AceHook-3.0\AceHook-3.0-8.lua:341: in function `SecureHook'
+Skinner\SkinMe\Archy-6.1.0.6.lua:64: in function <Skinner\SkinMe\Archy.lua:4>
+
+√	N	Bagnon, reported by Fireleaf/Excitor0,02.03.15
+		-  Interface\AddOns\Skinner\SkinMe\Bagnon.lua:27: attempt to index field 'SavedSettings' (a nil value)
+
+√	I	Frame(s) not being skinned, reported by Excitor0, 16.01.15
+		- LFGListApplicationDialog
+		- LFGListInviteDialog
