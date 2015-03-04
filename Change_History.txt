@@ -1,3 +1,13 @@
+b6.19702.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers for checks
+	Updated TokenFrame skin
+	Prevent GarrisonLandingPageMinimapButton AlertBG texture from being displayed
+	Use function to get item ID
+	Applied all PTR changes
+
 b6.19342.7
 Jncl:
 	ToDo.txt
