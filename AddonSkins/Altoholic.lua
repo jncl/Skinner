@@ -24,6 +24,12 @@ local function skinSortBtns(btnName, cnt)
 	end
 
 end
+local function skinScrollBar(scrollFrame)
+
+	scrollFrame:DisableDrawLayer("ARTWORK")
+	aObj:skinSlider{obj=scrollFrame.ScrollBar}
+
+end
 function aObj:Altoholic()
 
 -->>-- Main Frame
@@ -49,9 +55,9 @@ function aObj:Altoholic()
 	_G.AltoholicAccountSharingOptions.IconAsk:SetDrawLayer("OVERLAY")
 	_G.AltoholicAccountSharingOptions.IconAuto:SetDrawLayer("OVERLAY")
 
-	self:skinScrollBar{obj=_G.AltoholicFrameSharingClientsScrollFrame}
+	skinScrollBar(_G.AltoholicFrameSharingClients.ScrollFrame)
 	self:addSkinFrame{obj=_G.AltoholicFrameSharingClients}
-	self:skinScrollBar{obj=_G.AltoholicFrameSharedContentScrollFrame}
+	skinScrollBar(_G.AltoholicFrameSharedContent.ScrollFrame)
 -->>-- SharedContent option menu panel
 	self:skinButton{obj=_G.AltoholicSharedContent_ToggleAll, mp2=true}
 	self:addSkinFrame{obj=_G.AltoholicFrameSharedContent}
@@ -63,7 +69,7 @@ function aObj:Altoholic()
 	self:skinEditBox{obj=_G.AltoAccountSharing_AccNameEditBox, regs={9}}
 	self:skinButton{obj=_G.AltoAccountSharing_ToggleAll, mp2=true}
 	self:skinEditBox{obj=_G.AltoAccountSharing_AccTargetEditBox, regs={9}}
-	self:skinScrollBar{obj=_G.AltoholicFrameAvailableContentScrollFrame}
+	skinScrollBar(_G.AltoholicFrameAvailableContent.ScrollFrame)
 	for i = 1, 10 do
 		self:skinButton{obj=_G["AltoholicFrameAvailableContentEntry" .. i .. "Collapse"], mp2=true}
 	end
@@ -74,34 +80,33 @@ end
 
 function aObj:Altoholic_Summary() -- LoD
 
-	if self.modBtns then
-		-- skin minus/plus buttons
-		for i = 1, 14 do
-			self:skinButton{obj=_G["AltoholicFrameSummaryEntry" .. i .. "Collapse"], mp2=true}
-			self:skinButton{obj=_G["AltoholicFrameBagUsageEntry" .. i .. "Collapse"], mp2=true}
-			self:skinButton{obj=_G["AltoholicFrameActivityEntry" .. i .. "Collapse"], mp2=true}
-			self:skinButton{obj=_G["AltoholicFrameSkillsEntry" .. i .. "Collapse"], mp2=true}
-		end
-	end
-	self:skinScrollBar{obj=_G.AltoholicFrameSummaryScrollFrame}
-
--->>-- Summary tab
 	skinMenuItms(_G.AltoholicTabSummary, 6)
 	skinSortBtns("AltoholicTabSummary_Sort", 9)
 	self:skinButton{obj=_G.AltoholicTabSummaryToggleView, mp2=true, plus=true}
 	self:skinDropDown{obj=_G.AltoholicTabSummary_SelectLocation}
 	_G.UIDropDownMenu_SetButtonWidth(_G.AltoholicTabSummary_SelectLocation, 24)
 
+	skinScrollBar(_G.AltoholicFrameSummary.ScrollFrame)
+	skinScrollBar(_G.AltoholicFrameBagUsage.ScrollFrame)
+	skinScrollBar(_G.AltoholicFrameSkills.ScrollFrame)
+	skinScrollBar(_G.AltoholicFrameActivity.ScrollFrame)
+	skinScrollBar(_G.AltoholicFrameCurrencies.ScrollFrame)
+	skinScrollBar(_G.AltoholicFrameGarrisonFollowers.ScrollFrame)
+
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.AltoholicTabSummary_OptionsDataStore}
 		self:addButtonBorder{obj=_G.AltoholicTabSummary_Options}
 		self:addButtonBorder{obj=_G.AltoholicTabSummary_RequestSharing}
+		-- skin minus/plus buttons
+		for i = 1, 14 do
+			self:skinButton{obj=_G["AltoholicFrameSummaryEntry" .. i .. "Collapse"], mp2=true}
+			self:skinButton{obj=_G["AltoholicFrameBagUsageEntry" .. i .. "Collapse"], mp2=true}
+			self:skinButton{obj=_G["AltoholicFrameSkillsEntry" .. i .. "Collapse"], mp2=true}
+			self:skinButton{obj=_G["AltoholicFrameActivityEntry" .. i .. "Collapse"], mp2=true}
+			self:skinButton{obj=_G["AltoholicFrameCurrenciesEntry" .. i .. "Collapse"], mp2=true}
+			self:skinButton{obj=_G["AltoholicFrameGarrisonFollowersEntry" .. i .. "Collapse"], mp2=true}
+		end
 	end
-
-	self:skinScrollBar{obj=_G.AltoholicFrameBagUsageScrollFrame}
-	self:skinScrollBar{obj=_G.AltoholicFrameSkillsScrollFrame}
-	self:skinScrollBar{obj=_G.AltoholicFrameActivityScrollFrame}
-	self:skinScrollBar{obj=_G.AltoholicFrameCurrenciesScrollFrame}
 
 end
 
@@ -115,29 +120,24 @@ function aObj:Altoholic_Characters() -- LoD
 
 	-- Icons at the Top in Character View
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons.CharactersIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons.BagsIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons.QuestsIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons.TalentsIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons.AuctionIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons.MailIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons.SpellbookIcon}
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons.ProfessionsIcon}
+		for _, v in pairs{"Characters", "Bags", "Quests", "Talents", "Auction", "Mail", "Spellbook", "Professions", "Garrison"} do
+			self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons[v .."Icon"]}
+		end
 	end
 	-- Characters
 	-- Containers
-	self:skinScrollBar{obj=_G.AltoholicFrameContainersScrollFrame}
+	skinScrollBar(_G.AltoholicFrameContainers.ScrollFrame)
 	-- Quests
-	self:skinScrollBar{obj=_G.AltoholicFrameQuestsScrollFrame}
+	skinScrollBar(_G.AltoholicFrameQuestsScrollFrame)
 	for i = 1, 14 do
 		self:skinButton{obj=_G["AltoholicFrameQuestsEntry" .. i .. "Collapse"], mp2=true}
 	end
 	-- Talents/Glyphs
 	self:skinDropDown{obj=_G.AltoholicFrameTalents_SelectMember}
 	-- AuctionsHouse
-	self:skinScrollBar{obj=_G.AltoholicFrameAuctionsScrollFrame}
+	skinScrollBar(_G.AltoholicFrameAuctionsScrollFrame)
 	-- Mailbox
-	self:skinScrollBar{obj=_G.AltoholicFrameMailScrollFrame}
+	skinScrollBar(_G.AltoholicFrameMail.ScrollFrame)
 	-- SpellBook/Mounts/Companions/Glyphs
 	local btn, btnName
 	for i = 1, 12 do
@@ -153,7 +153,7 @@ function aObj:Altoholic_Characters() -- LoD
 	end
 	local function clrTxt()
 		for i = 1, 12 do
-			btn = "AltoholicFrameSpellbook_SpellIcon" .. i
+			btn = _G["AltoholicFrameSpellbook_SpellIcon" .. i]
 			btn.SpellName:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
 			btn.SpellSubName:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		end
@@ -172,14 +172,20 @@ function aObj:Altoholic_Characters() -- LoD
 	for i = 1, 14 do
 		self:skinButton{obj=_G["AltoholicFrameRecipesEntry" .. i .. "Collapse"], mp2=true}
 	end
-	self:skinScrollBar{obj=_G.AltoholicFrameRecipesScrollFrame}
+	skinScrollBar(_G.AltoholicFrameRecipesScrollFrame)
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.AltoholicFrameSpellbookPrevPage, ofs=-2}
+		self:addButtonBorder{obj=_G.AltoholicFrameSpellbookNextPage, ofs=-2}
+		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalPrevPage, ofs=-2}
+		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalNextPage, ofs=-2}
+	end
 
 end
 
 function aObj:Altoholic_Search() --LoD
 
 	skinMenuItms(_G.AltoholicTabSearch, 15)
-	self:skinScrollBar{obj=_G.AltoholicSearchMenuScrollFrame}
+	skinScrollBar(_G.AltoholicTabSearch.ScrollFrame)
 	self:skinEditBox{obj=_G.AltoholicTabSearch.MinLevel, regs={9}}
 	self:skinEditBox{obj=_G.AltoholicTabSearch.MaxLevel, regs={9}}
 	self:skinDropDown{obj=_G.AltoholicTabSearch.SelectRarity}
@@ -188,7 +194,7 @@ function aObj:Altoholic_Search() --LoD
 	_G.UIDropDownMenu_SetButtonWidth(_G.AltoholicTabSearch.SelectSlot, 24)
 	self:skinDropDown{obj=_G.AltoholicTabSearch.SelectLocation}
 	_G.UIDropDownMenu_SetButtonWidth(_G.AltoholicTabSearch.SelectLocation, 24)
-	self:skinScrollBar{obj=_G.AltoholicFrameSearchScrollFrame}
+	skinScrollBar(_G.AltoholicFrameSearch.ScrollFrame)
 	skinSortBtns("AltoholicTabSearch_Sort", 8)
 
 end
@@ -197,6 +203,7 @@ function aObj:Altoholic_Guild() -- LoD
 
 	skinMenuItms(_G.AltoholicTabGuild, 2)
 	skinSortBtns("AltoholicTabGuild_Sort", 5)
+	skinScrollBar(_G.AltoholicTabGuild.Members.ScrollFrame)
 	for i = 1, 14 do
 		self:skinButton{obj=_G.AltoholicTabGuild.Members["Entry" .. i].Collapse, mp2=true}
 	end
@@ -208,6 +215,7 @@ function aObj:Altoholic_Guild() -- LoD
 		self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.RarityIcon}
 	end
 
+
 end
 
 function aObj:Altoholic_Achievements() -- LoD
@@ -215,8 +223,8 @@ function aObj:Altoholic_Achievements() -- LoD
 	self:skinDropDown{obj=_G.AltoholicTabAchievements.SelectRealm}
 	_G.UIDropDownMenu_SetButtonWidth(_G.AltoholicTabAchievements.SelectRealm, 24)
 	skinMenuItms(_G.AltoholicTabAchievements, 15)
-	self:skinScrollBar{obj=_G.AltoholicTabAchievements.ScrollFrame}
-	self:skinScrollBar{obj=_G.AltoholicFrameAchievementsScrollFrame}
+	skinScrollBar(_G.AltoholicTabAchievements.ScrollFrame)
+	skinScrollBar(_G.AltoholicFrameAchievements.ScrollFrame)
 
 end
 
@@ -229,7 +237,7 @@ end
 function aObj:Altoholic_Grids() -- LoD
 
 	self:skinDropDown{obj=_G.AltoholicFrameGridsRightClickMenu}
-	self:skinScrollBar{obj=_G.AltoholicFrameGridsScrollFrame}
+	skinScrollBar(_G.AltoholicFrameGrids.ScrollFrame)
 	-- TabGrids
 	self:skinDropDown{obj=_G.AltoholicTabGrids.SelectRealm}
 	_G.UIDropDownMenu_SetButtonWidth(_G.AltoholicTabGrids.SelectRealm, 24)

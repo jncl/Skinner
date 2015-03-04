@@ -2017,10 +2017,12 @@ function aObj:MenuFrames()
 			return
 		end
 
-		for _, child in ipairs{obj:GetChildren()} do
+		local kids = {obj:GetChildren()}
+		for _, child in _G.ipairs(kids) do
 			if not child.sf
 			and not aObj:hasAnyTextInName(child, {"AceConfig", "XConfig", "AceGUI"})
 			then
+				-- aObj:Debug("checkKids: [%s]", child)
 				if aObj:isDropDown(child)
 				and not aObj.ignoreIOF[child]
 				then
@@ -2035,11 +2037,40 @@ function aObj:MenuFrames()
 					then
 						xOfs = 110
 					end
+					-- handle SushiDropdown (used by Bagnon)
+					if aObj:hasTextInName(child, "SushiDropdown") then
+						if not aObj:IsHooked(_G.SushiDropFrame, "OnCreate") then
+							aObj:SecureHook(_G.SushiDropFrame, "OnCreate", function()
+								-- Spew("SushiDropdown", SushiDropFrame)
+								for _, frame in pairs(_G.SushiDropFrame.usedFrames) do
+									if not frame.bg.sf then
+										aObj:addSkinFrame{obj=frame.bg, kfs=true}
+										frame.bg.SetBackdrop = function() end
+									end
+								end
+							end)
+							aObj:SecureHook(_G.SushiDropFrame, "OnAcquire", function(this)
+								-- need to raise frame level so it's above other text
+								_G.RaiseFrameLevelByTwo(this)
+							end)
+						end
+					end
 					aObj:skinDropDown{obj=child, x2=xOfs}
 				elseif child:IsObjectType("EditBox")
 				and not aObj.ignoreIOF[child]
 				then
-					aObj:skinEditBox{obj=child, regs={9}}
+					-- handle SushiSlider Editboxes (used by Bagnon)
+					if child:GetParent():GetName():find("SushiSlider") then
+						aObj:skinEditBox{obj=child, regs={6, 7}}
+						local slider = child:GetParent()
+						-- stop width & backdrop being changed
+						slider.UpdateEditWidth = function() end
+						slider.EditBG:SetBackdrop(nil)
+						-- move % character to the right
+						slider.Suffix:SetPoint('RIGHT', slider.EditBG, 7, -3)
+					else
+						aObj:skinEditBox{obj=child, regs={9}}
+					end
 				elseif child:IsObjectType("ScrollFrame")
 				and child:GetName()
 				and child:GetName() .. "ScrollBar" -- handle named ScrollBar's
@@ -2057,6 +2088,7 @@ function aObj:MenuFrames()
 				end
 			end
 		end
+		kids = nil
 
 	end
 	-- hook this to skin Interface Option panels and their elements
