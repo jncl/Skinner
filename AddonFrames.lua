@@ -51,7 +51,7 @@ function aObj:BlizzardFrames()
 			-- LoD frames
 			["AchievementUI"] = false,
 			["ArchaeologyUI"] = false,
-			["Collections"] = self.PTR and false or nil, -- (Mounts, Pets, Toys & Heirlooms)
+			["Collections"] = false, -- (Mounts, Pets, Toys & Heirlooms)
 			["EncounterJournal"] = false,
 			["GlyphUI"] = false,
 			["GuildControlUI"] = false,
@@ -59,7 +59,6 @@ function aObj:BlizzardFrames()
 			["InspectUI"] = false,
 			["ItemSocketingUI"] = false,
 			["LookingForGuildUI"] = false,
-			["PetJournal"] = self.PTR and nil or false,
 			["PVPUI"] = false,
 			["RaidUI"] = false,
 			["TalentUI"] = false,
@@ -140,7 +139,7 @@ function aObj:BlizzardFrames()
 			["BindingUI"] = false,
 			["Calendar"] = false,
 			["ChallengesUI"] = false,
-			["DeathRecap"] = self.PTR and false or nil,
+			["DeathRecap"] = false,
 			["DebugTools"] = false,
 			["GarrisonUI"] = false,
 			["GMChatUI"] = false,
@@ -148,7 +147,7 @@ function aObj:BlizzardFrames()
 			["GuildBankUI"] = false,
 			["MacroUI"] = false,
 			["MovePad"] = false,
-			["SocialUI"] = self.PTR and false or nil, -- N.B. cannot be skinned
+			["SocialUI"] = false, -- N.B. cannot be skinned
 			["StoreUI"] = false, -- N.B. cannot be skinned
 			["TimeManager"] = false,
 		},
