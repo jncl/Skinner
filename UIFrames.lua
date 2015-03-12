@@ -1986,7 +1986,7 @@ function aObj:MenuFrames()
 	self:addSkinFrame{obj=_G.VoiceChatTalkers, ft=ftype}
 
 -->>-- Interface
-	self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, x1=6, y1=2, x2=-6, y2=-4}
+	self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, ignht=true, x1=6, y1=2, x2=-6, y2=-4}
 	self:addSkinFrame{obj=_G.InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	_G.InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
 	self:skinScrollBar{obj=_G.InterfaceOptionsFrameCategoriesList, size=2}

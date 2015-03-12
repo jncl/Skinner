@@ -1793,6 +1793,7 @@ local function __skinTabs(opts)
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
+		ignht = don't change Highlight texture (AchievementUI)
 --]]
 --@alpha@
 	assert(opts.obj and opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. debugstack())
@@ -1832,6 +1833,21 @@ local function __skinTabs(opts)
 				if aObj.isTT then aObj:setActiveTab(tab.sf) end
 			else
 				if aObj.isTT then aObj:setInactiveTab(tab.sf) end
+			end
+		end
+		if not opts.ignht then
+			-- change highlight texture
+			local ht = tab:GetHighlightTexture()
+			if ht then -- handle other AddOns using tabs without a highlight texture
+				ht:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
+				ht:ClearAllPoints()
+				if opts.up then -- (GuildInfoFrame, LookingForGuild, MacroFrame, FriendsTabHeader)
+					ht:SetPoint("TOPLEFT", 1, -5)
+					ht:SetPoint("BOTTOMRIGHT", -1, -5)
+				else
+					ht:SetPoint("TOPLEFT", 8, 2)
+					ht:SetPoint("BOTTOMRIGHT", -8, 0)
+				end
 			end
 		end
 	end
