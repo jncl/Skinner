@@ -2060,7 +2060,9 @@ function aObj:MenuFrames()
 				and not aObj.ignoreIOF[child]
 				then
 					-- handle SushiSlider Editboxes (used by Bagnon)
-					if child:GetParent():GetName():find("SushiSlider") then
+					if child:GetParent():GetName()
+					and child:GetParent():GetName():find("SushiSlider")
+					then
 						aObj:skinEditBox{obj=child, regs={6, 7}}
 						local slider = child:GetParent()
 						-- stop width & backdrop being changed
