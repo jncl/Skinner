@@ -15,25 +15,31 @@ function aObj:AuctionUI() -- LoD
 	end)
 
 	self:skinTabs{obj=_G.AuctionFrame, lod=true}
-	self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, bgen=1, x1=10, y1=-11, y2=5} -- N.B. bgen=1 to prevent other addons buttons being skinned
+	self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, bgen=1, x1=10, y1=-11, y2=5} -- N.B. bgen=1 to prevent other AddOns buttons being skinned
 -->>--	Browse Frame
-	for _, v in pairs{"Name", "MinLevel", "MaxLevel"} do
-		local obj = _G["Browse" .. v]
-		self:skinEditBox{obj=obj, regs={9, v == "Name" and 10 or nil}, mi=true}
-		self:moveObject{obj=obj, x=v == "MaxLevel" and -6 or -4, y=v ~= "MaxLevel" and 3 or 0}
+	for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
+		self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+		self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true}
 	end
-	self:skinDropDown{obj=_G.BrowseDropDown, x2=110}
+	self:skinScrollBar{obj=_G.BrowseFilterScrollFrame}
+	self:skinScrollBar{obj=_G.BrowseScrollFrame}
+	if self.isPTR then
+		-- BrowseWowTokenResults
+		_G.BrowseWowTokenResults.Token:DisableDrawLayer("BACKGROUND")
+		self:skinButton{obj=_G.BrowseWowTokenResults.Buyout}
+		-- WowTokenGameTimeTutorial
+		_G.WowTokenGameTimeTutorial.LeftDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.WowTokenGameTimeTutorial.LeftDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
+		_G.WowTokenGameTimeTutorial.RightDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
+		self:skinButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
+		self:addSkinFrame{obj=_G.WowTokenGameTimeTutorial, ft=ftype, kfs=true, ri=true, ofs=2, y2=220}
+	end
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		local obj = _G["Browse" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
-	self:skinScrollBar{obj=_G.BrowseFilterScrollFrame}
-	for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
-		self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true}
-	end
-	self:skinScrollBar{obj=_G.BrowseScrollFrame}
 	for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
 		local btnName = "BrowseButton" .. i
 		if _G[btnName].Orig then break end -- Auctioneer CompactUI loaded
@@ -41,9 +47,20 @@ function aObj:AuctionUI() -- LoD
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		_G[btnName .. "ItemCount"]:SetDrawLayer("ARTWORK") -- fix for 3.3.3 bug
 	end
-	self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
+	for _, v in pairs{"Name", "MinLevel", "MaxLevel"} do
+		local obj = _G["Browse" .. v]
+		self:skinEditBox{obj=obj, regs={9, v == "Name" and 10 or nil}, mi=true}
+		self:moveObject{obj=obj, x=v == "MaxLevel" and -6 or -4, y=v ~= "MaxLevel" and 3 or 0}
+	end
+	self:skinDropDown{obj=_G.BrowseDropDown, x2=110}
 	self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
+	self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
+	if self.isPTR then
+		_G.BrowseCloseButton:DisableDrawLayer("BORDER")
+		_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
+		_G.BrowseBidButton:DisableDrawLayer("BORDER")
+	end
 
 -->>--	Bid Frame
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
@@ -59,37 +76,44 @@ function aObj:AuctionUI() -- LoD
 	end
 	self:skinScrollBar{obj=_G.BidScrollFrame}
 	self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
+	if self.isPTR then
+		_G.BidCloseButton:DisableDrawLayer("BORDER")
+		_G.BidBuyoutButton:DisableDrawLayer("BORDER")
+		_G.BidBidButton:DisableDrawLayer("BORDER")
+	end
 
 -->>--	Auctions Frame
-	if not self.modBtnBs then
-		self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
-	else
-		self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
-		self:addButtonBorder{obj=_G.AuctionsItemButton}
-	end
 	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 		local obj = _G["Auctions" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
+	self:skinScrollBar{obj=_G.AuctionsScrollFrame}
 	for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
 		local btnName = "AuctionsButton" .. i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
 	end
-	self:skinScrollBar{obj=_G.AuctionsScrollFrame}
+	if not self.modBtnBs then
+		self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
+	else
+		self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
+		self:addButtonBorder{obj=_G.AuctionsItemButton}
+	end
 	self:skinEditBox{obj=_G.AuctionsStackSizeEntry, regs={9}, noWidth=true}
 	self:skinEditBox{obj=_G.AuctionsNumStacksEntry, regs={9}, noWidth=true}
 	self:skinDropDown{obj=_G.PriceDropDown}
+	self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
+	self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
 	self:skinDropDown{obj=_G.DurationDropDown}
+
+-->>-- AuctionProgress Frame
 	_G.AuctionProgressFrame:DisableDrawLayer("BACKGROUND")
 	_G.AuctionProgressFrame:DisableDrawLayer("ARTWORK")
 	self:keepFontStrings(_G.AuctionProgressBar)
 	self:moveObject{obj=_G["AuctionProgressBar" .. "Text"], y=-2}
 	self:glazeStatusBar(_G.AuctionProgressBar, 0)
-	self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
-	self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
 
 end
 

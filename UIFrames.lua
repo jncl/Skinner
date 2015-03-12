@@ -2867,6 +2867,9 @@ function aObj:QuestMap()
 	self:keepFontStrings(_G.QuestMapFrame.DetailsFrame.RewardsFrame)
 	self:getRegion(_G.QuestMapFrame.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinSlider{obj=_G.QuestMapFrame.DetailsFrame.ScrollFrame.ScrollBar, adj=-4}
+	if self.isPTR then
+		_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")
+	end
 	self:moveObject{obj=_G.QuestMapFrame.DetailsFrame.AbandonButton, y=2}
 	self:removeRegions(_G.QuestMapFrame.DetailsFrame.ShareButton, {6, 7}) -- divider textures
 
@@ -3203,4 +3206,17 @@ function aObj:WorldState()
 	self:skinTabs{obj=_G.WorldStateScoreFrame}
 	self:addSkinFrame{obj=_G.WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
+end
+
+if aObj.isPTR then
+	function aObj:WowTokenUI()
+		if not self.db.profile.WowTokenUI or self.initialized.WowTokenUI then return end
+		self.initialized.WowTokenUI = true
+
+		-- disable skinning of this frame
+		self.db.profile.WowTokenUI = false
+
+		-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
+
+	end
 end

@@ -134,6 +134,7 @@ function aObj:BlizzardFrames()
 			["Tutorial"] = true,
 			["WorldMap"] = true,
 			["WorldState"] = true,
+			["WowTokenUI"] = self.PTR and false or nil, -- N.B. cannot be skinned
 			-- LoD frames
 			["BattlefieldMinimap"] = false,
 			["BindingUI"] = false,
