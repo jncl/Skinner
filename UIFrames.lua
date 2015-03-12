@@ -3157,6 +3157,8 @@ function aObj:WorldMap()
 
 	self:keepFontStrings(_G.WorldMapFrame.BorderFrame)
 	self:removeInset(_G.WorldMapFrame.BorderFrame.Inset)
+	self:skinButton{obj=_G.WorldMapFrameSizeDownButton, ob3="↕"} -- up-down arrow
+	self:skinButton{obj=_G.WorldMapFrameSizeUpButton, ob3="↕"} -- up-down arrow
 	_G.WorldMapFrame.MainHelpButton.Ring:SetTexture(nil)
 	self:skinDropDown{obj=_G.WorldMapTitleDropDown}
 	self:skinDropDown{obj=_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.DropDown}

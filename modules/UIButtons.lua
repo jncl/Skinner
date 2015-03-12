@@ -42,6 +42,10 @@ do
 	module.fontDP = CreateFont("fontDP")
 	module.fontDP:SetFont([[Fonts\ARIALN.TTF]], 16)
 	module.fontDP:SetTextColor(0.35, 0.35, 0.35)
+	-- create font to use for WorldMap SizeUp/Down buttons
+	module.fontS = CreateFont("fontA")
+	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 14)
+	module.fontS:SetTextColor(1.0, 0.82, 0)
 end
 local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture", "_LeftSeparator", "_RightSeparator"}
 local function __checkTex(opts)
@@ -175,7 +179,6 @@ function module:skinButton(opts)
 			opts.obj:GetCheckedTexture():SetAlpha(0)
 		end
 	end
-
 	-- setup button frame size adjustments
 	local bW, bH = aObj:getInt(opts.obj:GetWidth()), aObj:getInt(opts.obj:GetHeight())
 	if bW <= 20 and opts.cb then -- ArkInventory/Recount close buttons
@@ -263,6 +266,20 @@ function module:skinButton(opts)
 		opts.obj:SetWidth(18)
 		opts.obj:SetHeight(18)
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
+	elseif opts.ob3 then -- it's another type of button, text supplied, style 3 (e.g. worldmapsizeup/down button)
+		opts.obj:SetNormalFontObject(module.fontS)
+		opts.obj:SetText(opts.ob3)
+		opts.obj:SetPushedTextOffset(-1, -1)
+		if opts.sap then
+			aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
+		else
+			aso.bd = 5
+			local x1 = opts.x1 or bW == 32 and 6 or 4
+			local y1 = opts.y1 or bW == 32 and -6 or -4
+			local x2 = opts.x2 or bW == 32 and -6 or -4
+			local y2 = opts.y2 or bW == 32 and 6 or 4
+			aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=x1, y1=y1, x2=x2, y2=y2}
+		end
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 		if not opts.as then
