@@ -71,7 +71,7 @@ function aObj:MasterPlan() -- LoD
 				end
 			end
 		end
-		kids = _G.null
+		kids = nil
 	end
 	-- hook this to skin new buttons
 	self:SecureHookScript(bar, "OnValueChanged", function(this, ...)
@@ -103,12 +103,14 @@ function aObj:MasterPlan() -- LoD
 	end)
 
 	-- Garrison Missions Frame - Available Missions Tab
-	self:removeRegions(self:getChild(availUI, 1), {1}) -- sort indicator background
-	local roamingParty = self:getChild(availUI, 2)
-	for i = 1, 3 do
-		local btn = self:getChild(roamingParty, i)
-		self:removeRegions(btn, {2}) -- portrait ring
-	end
+	self:removeRegions(self:getChild(availUI, 1), {1, 2, 3}) -- ctlContainer background
+	-- local roamingParty = self:getChild(availUI, 2)
+	-- for i = 1, 3 do
+	-- 	local btn = self:getChild(roamingParty, i)
+	-- 	self:removeRegions(btn, {2}) -- portrait ring
+	-- end
+	self:removeRegions(self:getChild(self:getChild(availUI, 2), 1), {2}) -- follower focus portrait ring
+
 
 	-- Garrison Missions Frame - Available Missions Tab - Mission Page
 	-- Get Suggested Groups button
