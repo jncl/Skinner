@@ -1,3 +1,14 @@
+b6.19702.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	PTR 6.1.2.19750 changes
+	Remove previous PTR code changes
+	Changed Tabs highlight texture
+	Bug fix for Interface Option panels
+	Skinned WorldMap Sizeup/Down buttons
+	Reinstate the workaround to open Skinner's Options panel
+
 b6.19702.2
 Jncl:
 	ToDo.txt
