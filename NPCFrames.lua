@@ -23,18 +23,16 @@ function aObj:AuctionUI() -- LoD
 	end
 	self:skinScrollBar{obj=_G.BrowseFilterScrollFrame}
 	self:skinScrollBar{obj=_G.BrowseScrollFrame}
-	if self.isPTR then
-		-- BrowseWowTokenResults
-		_G.BrowseWowTokenResults.Token:DisableDrawLayer("BACKGROUND")
-		self:skinButton{obj=_G.BrowseWowTokenResults.Buyout}
-		-- WowTokenGameTimeTutorial
-		_G.WowTokenGameTimeTutorial.LeftDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.WowTokenGameTimeTutorial.LeftDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
-		_G.WowTokenGameTimeTutorial.RightDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
-		self:skinButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
-		self:addSkinFrame{obj=_G.WowTokenGameTimeTutorial, ft=ftype, kfs=true, ri=true, ofs=2, y2=220}
-	end
+	-- BrowseWowTokenResults
+	_G.BrowseWowTokenResults.Token:DisableDrawLayer("BACKGROUND")
+	self:skinButton{obj=_G.BrowseWowTokenResults.Buyout}
+	-- WowTokenGameTimeTutorial
+	_G.WowTokenGameTimeTutorial.LeftDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.WowTokenGameTimeTutorial.LeftDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
+	_G.WowTokenGameTimeTutorial.RightDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
+	self:skinButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
+	self:addSkinFrame{obj=_G.WowTokenGameTimeTutorial, ft=ftype, kfs=true, ri=true, ofs=2, y2=220}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		local obj = _G["Browse" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
@@ -56,11 +54,9 @@ function aObj:AuctionUI() -- LoD
 	self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
 	self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
-	if self.isPTR then
-		_G.BrowseCloseButton:DisableDrawLayer("BORDER")
-		_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
-		_G.BrowseBidButton:DisableDrawLayer("BORDER")
-	end
+	_G.BrowseCloseButton:DisableDrawLayer("BORDER")
+	_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
+	_G.BrowseBidButton:DisableDrawLayer("BORDER")
 
 -->>--	Bid Frame
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
@@ -76,11 +72,9 @@ function aObj:AuctionUI() -- LoD
 	end
 	self:skinScrollBar{obj=_G.BidScrollFrame}
 	self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
-	if self.isPTR then
-		_G.BidCloseButton:DisableDrawLayer("BORDER")
-		_G.BidBuyoutButton:DisableDrawLayer("BORDER")
-		_G.BidBidButton:DisableDrawLayer("BORDER")
-	end
+	_G.BidCloseButton:DisableDrawLayer("BORDER")
+	_G.BidBuyoutButton:DisableDrawLayer("BORDER")
+	_G.BidBidButton:DisableDrawLayer("BORDER")
 
 -->>--	Auctions Frame
 	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do

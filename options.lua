@@ -167,7 +167,7 @@ function aObj:Defaults()
 		Tutorial             = true,
 		WorldMap             = {skin = true, size = 1},
 		WorldState           = true,
-		WowTokenUI			 = self.isPTR and false or nil, -- N.B. cannot be skinned
+		WowTokenUI			 = false, -- N.B. cannot be skinned
 	-->>-- Disabled Skins
 		DisableAllAS         = false,
 		DisabledSkins        = {},
@@ -1691,11 +1691,11 @@ function aObj:Options()
 					name = self.L["Battle Score Frame"],
 					desc = self.L["Toggle the skin of the Battle Score Frame"],
 				},
-				WowTokenUI = self.isPTR and {
+				WowTokenUI = {
 					type = "toggle",
 					name = self.L["WoW Token UI Frame"],
 					desc = self.L["Toggle the skin of the WoW Token UI Frame"],
-				} or nil,
+				},
 			},
 		},
 
