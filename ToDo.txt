@@ -12,13 +12,4 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	I	Tab highlight, requested by Sojiro84, 05.03.15
-		- Change highlight texture and re-anchor it as required
-
-	O	PTR [6.1.2.19750]
-		- NEW
-			- AuctionUI
-√				- BrowseWowTokenResults
-√				- Button textures similar to MagicButton textures
-x				- AuctionsWowTokenAuctionFrame
-√			- Blizzard WoW Token UI (can't be skinned)
+	N	MasterPlan, reported by mog71, 02.04.15
