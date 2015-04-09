@@ -11,5 +11,3 @@ Legend:
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
-
-	N	MasterPlan, reported by mog71, 02.04.15
