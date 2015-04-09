@@ -104,18 +104,29 @@ function aObj:MasterPlan() -- LoD
 
 	-- Garrison Missions Frame - Available Missions Tab
 	self:removeRegions(self:getChild(availUI, 1), {1, 2, 3}) -- ctlContainer background
-	-- local roamingParty = self:getChild(availUI, 2)
-	-- for i = 1, 3 do
-	-- 	local btn = self:getChild(roamingParty, i)
-	-- 	self:removeRegions(btn, {2}) -- portrait ring
-	-- end
 	self:removeRegions(self:getChild(self:getChild(availUI, 2), 1), {2}) -- follower focus portrait ring
-
 
 	-- Garrison Missions Frame - Available Missions Tab - Mission Page
 	-- Get Suggested Groups button
 	self:removeRegions(self:getChild(_G.GarrisonMissionFrame.MissionTab.MissionPage.Stage, 2), {2}) -- ring texture
 	-- minimize button
 	self:skinButton{obj=_G.GarrisonMissionFrame.MissionTab.MissionPage.MinimizeButton, ob="-"}
+
+	-- SpecAffinityFrame (on FollowerTab frames)
+	self:SecureHook("GarrisonMissionFrame_SetFollowerPortrait", function(pf, ...)
+		if not pf == _G.GarrisonMissionFrame.FollowerTab.PortraitFrame
+		and not pf == _G.GarrisonLandingPage.FollowerTab.PortraitFrame
+		then
+			return
+		end
+		local obj = pf:GetParent()
+		local frame = self:getChild(obj, obj:GetNumChildren())
+		if frame:GetNumChildren() == 2 then
+			self:addButtonBorder{obj=frame.Affinity}
+			self:addButtonBorder{obj=frame.ClassSpec}
+			self:Unhook("GarrisonMissionFrame_SetFollowerPortrait")
+		end
+		local obj, frame = nil, nil
+	end)
 
 end
