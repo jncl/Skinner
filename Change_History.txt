@@ -1,3 +1,11 @@
+b6.19831.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated live version
+	Applied PTR changes to main code
+	Updated MasterPlan skin
+
 b6.19702.3
 Jncl:
 	ToDo.txt
