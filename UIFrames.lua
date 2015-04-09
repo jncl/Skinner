@@ -1086,7 +1086,7 @@ function aObj:GarrisonUI() -- LoD
 		local stageRegs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 19, 20, 21}
 
 		-- Mission Frame
-		aObj:addSkinFrame{obj=_G.GarrisonMissionFrame, ft=ftype, kfs=true, ofs=2, y2=-4}
+		aObj:addSkinFrame{obj=_G.GarrisonMissionFrame, ft=ftype, kfs=true, ofs=2, x2=1, y2=-4}
 		-- tabs
 		aObj:skinTabs{obj=_G.GarrisonMissionFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=0}
 
