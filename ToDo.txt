@@ -11,3 +11,35 @@ Legend:
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
+
+	O	PTR, 6.2.0
+√		- TOC Interface 60200
+		- Updates
+			- GarrisonUI
+				- GarrisonLandingPage
+√					- Traits & Abilities don't have a button border
+√				- StageFrameTemplate
+√				- Mission Complete frame, texture behind level number and icon is visible
+√				- Mission Reward Name texture is visible
+√				- Mission Frame textures visible
+		- Additions
+			- AuctionUI
+x				- BrowseWowTokenResults
+x				- Buttons now have border textures
+x				- AuctionsWowTokenAuctionFrame
+			- EncounterJournal
+√				- AdventureJournal_SecondaryTemplate
+√				- $parentSuggestFrame
+√				- EncounterJournalTooltip
+x			- Blizzard_WowTokenUI
+√			- Blizzard_GarrisonMissionTemplates
+ 	 		- Blizzard_GarrisonShipyardUI
+≈				- GarrisonShipyardFrame
+√				- FloatingGarrisonShipyardFollowerTooltip
+?			- ActionButton ChargeCooldown frame(s)
+?			- BossBannerLootFrameTemplate
+√			- GarrisonShipAlertFrame
+
+√	N	MasterPLan, reported by Decabah/NeoZeus, 29.04.15/13.05.15
+		- Skinner\SkinMe\MasterPlan-0.43.lua:87: attempt to get length of field 'items' (a nil value)
+		  Skinner\SkinMe\MasterPlan-0.43.lua:99: in function <Skinner\SkinMe\MasterPlan.lua:5>
