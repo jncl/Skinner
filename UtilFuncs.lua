@@ -49,6 +49,8 @@ end
 --@debug@
 local function print_family_tree(fName)
 
+	if fName:IsForbidden() then print("Frame access is forbidden") return end
+
 	local lvl = "Parent"
 	_G.print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
 	while fName:GetParent() do
@@ -65,7 +67,7 @@ function aObj:SetupCmds()
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus()
 		else
-			return _G[input]
+			return input
 		end
 	end
 	local function getObjP(input)
@@ -73,7 +75,7 @@ function aObj:SetupCmds()
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus():GetParent()
 		else
-			return _G[input]
+			return input
 		end
 	end
 	local function getObjGP(input)
@@ -81,7 +83,7 @@ function aObj:SetupCmds()
 		if not input or input:trim() == "" then
 			return _G.GetMouseFocus():GetParent():GetParent()
 		else
-			return _G[input]
+			return input
 		end
 	end
 	-- define some helpful slash commands (ex Baddiel)
@@ -571,8 +573,7 @@ function aObj:scanUIParentsChildren()
 	local kids = {_G.UIParent:GetChildren()}
 	for _, child in _G.ipairs(kids) do
 		-- check for forbidden objects (StoreUI components)
-		retOK, ret1 = _G.pcall(function() return child:IsObjectType("Table") end)
-		if retOK then
+		if not child:IsForbidden() then
 			self.callbacks:Fire("UIParent_GetChildren", child)
 --@alpha@
 		else
