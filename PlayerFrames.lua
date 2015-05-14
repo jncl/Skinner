@@ -929,7 +929,6 @@ function aObj:EncounterJournal() -- LoD
 	self:skinDropDown{obj=_G.EJTierDropDown}
 	self:skinSlider{obj=_G.EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
 	self:addSkinFrame{obj=_G.EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
-	self:addButtonBorder{obj=_G.EncounterJournalInstanceSelectScrollDownButton, ofs=-2}
 	-- Instance buttons
 	for i = 1, 30 do
 		local btn = _G.EncounterJournal.instanceSelect.scroll.child["instance" .. i]
@@ -940,6 +939,7 @@ function aObj:EncounterJournal() -- LoD
 	-- Tabs
 	_G.EncounterJournal.instanceSelect.raidsTab:DisableDrawLayer("BACKGROUND")
 	_G.EncounterJournal.instanceSelect.dungeonsTab:DisableDrawLayer("BACKGROUND")
+	_G.EncounterJournal.instanceSelect.raidsTab:DisableDrawLayer("BACKGROUND")
 -->>-- Encounter frame
 	local eje = _G.EncounterJournal.encounter
 	-- Instance frame
@@ -1046,7 +1046,6 @@ function aObj:EncounterJournal() -- LoD
 		if index > 9 then return end -- MAX_CREATURES_PER_ENCOUNTER
 		skinCreatureBtn(index)
 	end)
-
 	-- Tabs (side)
 	local ejeTabs
 	ejeTabs = {"overviewTab", "lootTab", "bossTab", "modelTab"}
@@ -1800,11 +1799,19 @@ function aObj:ObjectiveTracker()
 
 	-- skin timerBar(s) & progressBar(s)
 	local function skinBar(bar)
-		if not self.sbGlazed[bar.Bar] then
-			bar.Bar.BorderLeft:SetTexture(nil)
-			bar.Bar.BorderRight:SetTexture(nil)
-			bar.Bar.BorderMid:SetTexture(nil)
-			self:glazeStatusBar(bar.Bar, 0,  nil)
+		if not aObj.sbGlazed[bar.Bar] then
+			if bar.Bar.BorderLeft then
+				bar.Bar.BorderLeft:SetTexture(nil)
+				bar.Bar.BorderRight:SetTexture(nil)
+				bar.Bar.BorderMid:SetTexture(nil)
+				aObj:glazeStatusBar(bar.Bar, 0,  nil)
+			else
+				bar.Bar.BarFrame:SetTexture(nil)
+				bar.Bar.IconBG:SetTexture(nil)
+				bar.Bar.BarFrame2:SetTexture(nil)
+				bar.Bar.BarFrame3:SetTexture(nil)
+				aObj:glazeStatusBar(bar.Bar, 0,  bar.BarBG)
+			end
 		end
 	end
 	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
@@ -1812,13 +1819,23 @@ function aObj:ObjectiveTracker()
 		skinBar(bar)
 	end)
 	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-		local bar = this.usedProgressBars[block] and this.usedProgressBars[block][line];
-		skinBar(bar)
-		end)
-	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-		local bar = this.usedProgressBars[block] and this.usedProgressBars[block][line];
+		local bar = this.usedProgressBars[block] and this.usedProgressBars[block][line]
 		skinBar(bar)
 	end)
+	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+		local bar = this.usedProgressBars[block] and this.usedProgressBars[block][line]
+		skinBar(bar)
+	end)
+	-- skin existing bars
+	local function skinBars(table)
+		for k1, v1 in pairs(table) do
+			for k2, v2 in pairs(v1) do
+				skinBar(v2)
+			end
+		end
+	end
+	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedTimerBars)
+	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
 
 	-- BonusRewardsFrame Rewards
 	-- N.B. Leave RewardHeader & RewardBottom as they are, looks better that way
