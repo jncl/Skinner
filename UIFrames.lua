@@ -207,6 +207,11 @@ function aObj:AlertFrames()
 		self:addSkinFrame{obj=_G[frame], ft=ftype, af=true, afas=true, ofs=-10, y1=frame == "GarrisonFollowerAlertFrame" and -8 or nil, bg=true}
 	end
 
+	-- GarrisonFollowerAlert Frame
+	_G.GarrisonFollowerAlertFrame:DisableDrawLayer("BORDER")
+	_G.GarrisonFollowerAlertFrame.PortraitFrame.PortraitRing:SetTexture(nil)
+	_G.GarrisonFollowerAlertFrame.PortraitFrame.LevelBorder:SetTexture(nil)
+
 	-- LootUpgrade Frame
 	local function skinLootUpgradeAlertFrame(frame)
 		if not frame.sf then
@@ -221,11 +226,6 @@ function aObj:AlertFrames()
 	for _, frame in pairs(_G.LOOT_UPGRADE_ALERT_FRAMES) do
 		skinLootUpgradeAlertFrame(frame)
 	end
-
-	-- GarrisonFollowerAlert Frame
-	_G.GarrisonFollowerAlertFrame:DisableDrawLayer("BORDER")
-	_G.GarrisonFollowerAlertFrame.PortraitFrame.PortraitRing:SetTexture(nil)
-	_G.GarrisonFollowerAlertFrame.PortraitFrame.LevelBorder:SetTexture(nil)
 
 end
 
@@ -941,24 +941,29 @@ function aObj:GarrisonUI() -- LoD
 	self.initialized.GarrisonUI = true
 
 	local function skinPortrait(frame)
+
 		frame.PortraitRing:SetTexture(nil)
 		frame.LevelBorder:SetAlpha(0) -- texture changed
 		if frame.PortraitRingCover then frame.PortraitRingCover:SetTexture(nil) end
 		if frame.Empty then
 			frame.Empty:SetTexture(nil)
-			self:SecureHook(frame.Empty, "Show", function(this)
+			aObj:SecureHook(frame.Empty, "Show", function(this)
 				local fp = this:GetParent()
 				fp.Portrait:SetTexture(nil)
 				fp.PortraitRingQuality:SetVertexColor(1, 1, 1, 1)
 			end)
 		end
+
 	end
 	local function skinFollower(frame)
+
 		frame.BG:SetTexture(nil)
 		if frame.AbilitiesBG then frame.AbilitiesBG:SetTexture(nil) end -- Mission Follower
 		skinPortrait(frame.PortraitFrame)
+
 	end
 	local function skinFollowerList(opts)
+
 		if not opts.noEB then
 			aObj:skinEditBox{obj=opts.obj.SearchBox, regs={9, 10}, mi=true}
 		end
@@ -969,6 +974,7 @@ function aObj:GarrisonUI() -- LoD
 
 	end
 	local function skinFollowerPage(frame)
+
 		skinPortrait(frame.PortraitFrame)
 		aObj:glazeStatusBar(frame.XPBar, 0,  nil)
 		frame.XPBar:DisableDrawLayer("OVERLAY")
@@ -976,22 +982,21 @@ function aObj:GarrisonUI() -- LoD
 		frame.ItemWeapon.Border:SetTexture(nil)
 		aObj:addButtonBorder{obj=frame.ItemArmor, relTo=frame.ItemArmor.Icon}
 		frame.ItemArmor.Border:SetTexture(nil)
+
 	end
+	local function skinFollowerAbilitiesAndCounters(frame, id)
 
-	-->>-- GarrisonSharedTemplates
-	local function skinGarrisonSharedTemplates()
+		local this = frame:GetParent().FollowerTab
+		for i = 1, #this.AbilitiesFrame.Abilities do
+			-- Ability buttons
+			aObj:addButtonBorder{obj=this.AbilitiesFrame.Abilities[i].IconButton}
+		end
+		for i = 1, #this.AbilitiesFrame.Counters do
+			-- Counters buttons
+			this.AbilitiesFrame.Counters[i].Border:SetTexture(nil)
+			aObj:addButtonBorder{obj=this.AbilitiesFrame.Counters[i], relTo=this.AbilitiesFrame.Counters[i].Icon}
+		end
 
-		aObj:SecureHook("GarrisonFollowerPage_ShowFollower", function(this, followerID)
-			for i = 1, #this.AbilitiesFrame.Abilities do
-				-- Ability buttons
-				self:addButtonBorder{obj=this.AbilitiesFrame.Abilities[i].IconButton}
-			end
-			for i = 1, #this.AbilitiesFrame.Counters do
-				-- Counters buttons
-				this.AbilitiesFrame.Counters[i].Border:SetTexture(nil)
-				self:addButtonBorder{obj=this.AbilitiesFrame.Counters[i], relTo=this.AbilitiesFrame.Counters[i].Icon}
-			end
-		end)
 	end
 
 	-->>-- GarrisonBuildingUI
@@ -1010,9 +1015,9 @@ function aObj:GarrisonUI() -- LoD
 			aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=3, y1=0, x2=-3, y2=2}
 			tab.sf.ignore = true -- don't change tab size
 			if i == 1 then
-				self:toggleTabDisplay(tab, true)
+				aObj:toggleTabDisplay(tab, true)
 			else
-				self:toggleTabDisplay(tab, false)
+				aObj:toggleTabDisplay(tab, false)
 			end
 		end
 
@@ -1026,19 +1031,16 @@ function aObj:GarrisonUI() -- LoD
 			-- handle tab textures
 			for i = 1, _G.GARRISON_NUM_BUILDING_SIZES do
 				if i == tab:GetID() then
-					self:toggleTabDisplay(tab, true)
+					aObj:toggleTabDisplay(tab, true)
 				else
-					self:toggleTabDisplay(_G.GarrisonBuildingFrame.BuildingList["Tab" .. i], false)
+					aObj:toggleTabDisplay(_G.GarrisonBuildingFrame.BuildingList["Tab" .. i], false)
 				end
 			end
 			-- handle buttons
 			for i = 1, #_G.GarrisonBuildingFrame.BuildingList.Buttons do
 				local btn = _G.GarrisonBuildingFrame.BuildingList.Buttons[i]
-				if not btn.sknd then
-					btn.BG:SetTexture(nil)
-					aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
-					btn.sknd = true
-				end
+				btn.BG:SetTexture(nil)
+				aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
 			end
 		end)
 		_G.GarrisonBuildingFrame.BuildingList.MaterialFrame:DisableDrawLayer("BACKGROUND")
@@ -1070,11 +1072,109 @@ function aObj:GarrisonUI() -- LoD
 
 	end
 
+	-->>-- GarrisonCapacitiveDisplay (i.e. Work Order Frame)
+	local function skinGarrisonCapacitiveDisplay()
+
+		aObj:addSkinFrame{obj=_G.GarrisonCapacitiveDisplayFrame, ft=ftype, kfs=true, ri=true, ofs=2}
+		local cd = _G.GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
+		cd.IconBG:SetTexture(nil)
+		aObj:addButtonBorder{obj=cd.ShipmentIconFrame, relTo=cd.ShipmentIconFrame.Icon}
+		for i = 1, #cd.Reagents do
+			local btn = cd.Reagents[i]
+			aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
+			btn.NameFrame:SetTexture(nil)
+		end
+		aObj:removeMagicBtnTex(_G.GarrisonCapacitiveDisplayFrame.StartWorkOrderButton)
+		aObj:removeMagicBtnTex(_G.GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton)
+		aObj:addButtonBorder{obj=_G.GarrisonCapacitiveDisplayFrame.DecrementButton, ofs=-2, es=10}
+		aObj:skinEditBox{obj=_G.GarrisonCapacitiveDisplayFrame.Count, regs={9}}
+		aObj:addButtonBorder{obj=_G.GarrisonCapacitiveDisplayFrame.IncrementButton, ofs=-2, es=10}
+
+	end
+
+	-->>-- GarrisonLandingPage
+	local function skinGarrisonLandingPage()
+
+		_G.GarrisonLandingPage:DisableDrawLayer("BACKGROUND")
+		_G.GarrisonLandingPage.HeaderBar:SetTexture(nil)
+		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, x1=5, y1=-8, x2=-4, y2=-3}
+		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-12, x2=-12}
+
+		-- ReportTab
+		local rp = _G.GarrisonLandingPage.Report
+		rp.List:DisableDrawLayer("BACKGROUND")
+		aObj:skinSlider{obj=rp.List.listScroll.scrollBar, adj=-4}
+		for i = 1, #rp.List.listScroll.buttons do
+			local btn = rp.List.listScroll.buttons[i]
+			btn:DisableDrawLayer("BACKGROUND")
+			btn:DisableDrawLayer("BORDER")
+			for j = 1, #btn.Rewards do
+				btn.Rewards[j]:DisableDrawLayer("BACKGROUND")
+				aObj:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon, reParent={btn.Rewards[j].Quantity}}
+			end
+		end
+		for i = 1, #rp.Shipments do
+			local frame = rp.Shipments[i]
+			aObj:removeRegions(frame, {1, 3, 4})
+		end
+		-- tabs at top
+		rp.InProgress:GetNormalTexture():SetAlpha(0)
+		rp.Available:GetNormalTexture():SetAlpha(0)
+
+		-- FollowerList
+		local fl = _G.GarrisonLandingPage.FollowerList
+		aObj:removeRegions(fl, {2, 3})
+		skinFollowerList{obj=fl}
+		if aObj.isPTR then
+			aObj:SecureHook(fl, "ShowFollower", function(this, id)
+				skinFollowerAbilitiesAndCounters(this, id)
+			end)
+		end
+
+		-- FollowerTab
+		skinFollowerPage(_G.GarrisonLandingPage.FollowerTab)
+
+		-- minimap
+		aObj:skinButton{obj=_G.GarrisonLandingPageTutorialBox.CloseButton, cb=true}
+
+		local obj=_G.GarrisonLandingPageMinimapButton
+		-- prevent AlertBG & SideToastGlow from being shown (this is a pita)
+		obj.MinimapAlertAnim = nil
+		obj.MinimapAlertAnim = obj:CreateAnimationGroup()
+		obj.MinimapAlertAnim.AlertText1= obj.MinimapAlertAnim:CreateAnimation("Alpha")
+		obj.MinimapAlertAnim.AlertText1:SetChildKey("AlertText")
+		obj.MinimapAlertAnim.AlertText1:SetDuration(0.25)
+		obj.MinimapAlertAnim.AlertText1:SetFromAlpha(0)
+		obj.MinimapAlertAnim.AlertText1:SetToAlpha(1)
+		obj.MinimapAlertAnim.AlertText1:SetOrder(1)
+		obj.MinimapAlertAnim.AlertText2= obj.MinimapAlertAnim:CreateAnimation("Alpha")
+		obj.MinimapAlertAnim.AlertText2:SetChildKey("AlertText")
+		obj.MinimapAlertAnim.AlertText2:SetStartDelay(5)
+		obj.MinimapAlertAnim.AlertText2:SetDuration(0.25)
+		obj.MinimapAlertAnim.AlertText2:SetFromAlpha(1)
+		obj.MinimapAlertAnim.AlertText2:SetToAlpha(0)
+		obj.MinimapAlertAnim.AlertText2:SetOrder(2)
+		-- based on the original scripts
+		obj.MinimapAlertAnim:SetScript("OnPlay", function(this)
+			this:GetParent().AlertText:Show()
+			this:GetParent().MinimapPulseAnim:Play()
+		end)
+		obj.MinimapAlertAnim:SetScript("OnStop", function(this)
+			this:GetParent().AlertText:Hide()
+			this:GetParent().MinimapPulseAnim:Stop()
+		end)
+		obj.MinimapAlertAnim:SetScript("OnFinished", function(this)
+			this:GetParent().AlertText:Hide()
+			this:GetParent().MinimapPulseAnim:Stop()
+		end)
+
+	end
+
 	-->>-- GarrisonMissionUI
 	local function skinGarrisonMissionUI()
 
 		-- hook this to skin extra reward buttons
-		self:SecureHook("GarrisonMissionButton_SetRewards", function(this, rewards, numRewards)
+		aObj:SecureHook("GarrisonMissionButton_SetRewards", function(this, rewards, numRewards)
 			if numRewards > 0 then
 				for i = 1, #this.Rewards do
 					aObj:addButtonBorder{obj=this.Rewards[i], relTo=this.Rewards[i].Icon, reParent={this.Rewards[i].Quantity}}
@@ -1132,10 +1232,10 @@ function aObj:GarrisonUI() -- LoD
 		for i = 1, #ml.listScroll.buttons do
 			local btn = ml.listScroll.buttons[i]
 			btn:DisableDrawLayer("BACKGROUND")
+			btn.Overlay.Overlay:SetTexture(nil)
 			aObj:removeRegions(btn, {7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26}) -- 23-26 are highlight corners
 			for i = 1, #btn.Rewards do
 				aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
-				btn.Overlay.Overlay:SetTexture(nil)
 			end
 		end
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
@@ -1155,13 +1255,13 @@ function aObj:GarrisonUI() -- LoD
 		mp.CloseButton:SetSize(30, 30)
 		aObj:addSkinFrame{obj=mp, ft=ftype, x1=-320, y1=5, x2=3, y2=-20}
 		-- handle animation of StartMissionButton
-		if self.modBtns then
+		if aObj.modBtns then
 			 mp.StartMissionButton.sb.tfade:SetParent(mp.sf)
 		end
 		aObj:removeRegions(mp.Stage, stageRegs)
 		mp.Stage.IconBG:SetTexture(nil)
 		for i = 1, #mp.Followers do
-			self:removeRegions(mp.Followers[i], {1})
+			aObj:removeRegions(mp.Followers[i], {1})
 			skinPortrait(mp.Followers[i].PortraitFrame)
 		end
 		mp.BuffsFrame.BuffsBG:SetTexture(nil)
@@ -1176,7 +1276,7 @@ function aObj:GarrisonUI() -- LoD
 			local frame = mp.Enemies[i]
 			frame.PortraitFrame.PortraitRing:SetTexture(nil)
 		end
-		self:moveObject{obj=mp.FollowerModel, x=-6, y=0}
+		aObj:moveObject{obj=mp.FollowerModel, x=-6, y=0}
 
 		-- FollowerTab
 		_G.GarrisonMissionFrame.FollowerTab:DisableDrawLayer("BORDER")
@@ -1196,7 +1296,7 @@ function aObj:GarrisonUI() -- LoD
 		aObj:removeRegions(mc.Stage.MissionInfo, {1, 2, 3, 4 ,5, 11, 12, 13})
 		for i = 1, #mc.Stage.FollowersFrame.Followers do
 			local frame = mc.Stage.FollowersFrame.Followers[i]
-			self:removeRegions(frame, {1})
+			aObj:removeRegions(frame, {1})
 			skinPortrait(frame.PortraitFrame)
 			aObj:glazeStatusBar(frame.XP, 0,  nil)
 			frame.XP:DisableDrawLayer("OVERLAY")
@@ -1204,12 +1304,9 @@ function aObj:GarrisonUI() -- LoD
 		mc.BonusRewards:DisableDrawLayer("BACKGROUND")
 		mc.BonusRewards:DisableDrawLayer("BORDER")
 		aObj:getRegion(mc.BonusRewards, 11):SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
-		self:SecureHook("GarrisonMissionComplete_ShowRewards", function(this)
-			for i = 1, #this.Rewards do
-				local frame = this.Rewards[i]
-				frame.BG:SetTexture(nil)
-				aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
-			end
+		aObj:SecureHook("GarrisonMissionPage_SetReward", function(frame, reward)
+			frame.BG:SetTexture(nil)
+			aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
 		end)
 		mc.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 		mc.BonusRewards.Saturated:DisableDrawLayer("BORDER")
@@ -1220,99 +1317,6 @@ function aObj:GarrisonUI() -- LoD
 
 		-- MissionFrame HelpBox
 		aObj:skinButton{obj=_G.GarrisonMissionFrameHelpBox.Button}
-
-	end
-
-	-->>-- GarrisonLandingPage
-	local function skinGarrisonLandingPage()
-
-		_G.GarrisonLandingPage:DisableDrawLayer("BACKGROUND")
-		_G.GarrisonLandingPage.HeaderBar:SetTexture(nil)
-		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, x1=5, y1=-8, x2=-4, y2=-3}
-		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-12, x2=-12}
-
-		-- ReportTab
-		local rp = _G.GarrisonLandingPage.Report
-		rp.List:DisableDrawLayer("BACKGROUND")
-		aObj:skinSlider{obj=rp.List.listScroll.scrollBar, adj=-4}
-		for i = 1, #rp.List.listScroll.buttons do
-			local btn = rp.List.listScroll.buttons[i]
-			btn:DisableDrawLayer("BACKGROUND")
-			btn:DisableDrawLayer("BORDER")
-			for j = 1, #btn.Rewards do
-				btn.Rewards[j]:DisableDrawLayer("BACKGROUND")
-				aObj:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon, reParent={btn.Rewards[j].Quantity}}
-			end
-		end
-		for i = 1, #rp.Shipments do
-			local frame = rp.Shipments[i]
-			aObj:removeRegions(frame, {1, 3, 4})
-		end
-		-- tabs at top
-		rp.InProgress:GetNormalTexture():SetAlpha(0)
-		rp.Available:GetNormalTexture():SetAlpha(0)
-
-		-- FollowerList
-		local fl = _G.GarrisonLandingPage.FollowerList
-		aObj:removeRegions(fl, {2, 3})
-		skinFollowerList{obj=fl}
-
-		-- FollowerTab
-		skinFollowerPage(_G.GarrisonLandingPage.FollowerTab)
-
-		-- minimap
-		aObj:skinButton{obj=_G.GarrisonLandingPageTutorialBox.CloseButton, cb=true}
-
-		local obj=_G.GarrisonLandingPageMinimapButton
-		-- prevent AlertBG & SideToastGlow from being shown (this is a pita)
-		obj.MinimapAlertAnim = nil
-		obj.MinimapAlertAnim = obj:CreateAnimationGroup()
-		obj.MinimapAlertAnim.AlertText1= obj.MinimapAlertAnim:CreateAnimation("Alpha")
-		obj.MinimapAlertAnim.AlertText1:SetChildKey("AlertText")
-		obj.MinimapAlertAnim.AlertText1:SetDuration(0.25)
-		obj.MinimapAlertAnim.AlertText1:SetFromAlpha(0)
-		obj.MinimapAlertAnim.AlertText1:SetToAlpha(1)
-		obj.MinimapAlertAnim.AlertText1:SetOrder(1)
-		obj.MinimapAlertAnim.AlertText2= obj.MinimapAlertAnim:CreateAnimation("Alpha")
-		obj.MinimapAlertAnim.AlertText2:SetChildKey("AlertText")
-		obj.MinimapAlertAnim.AlertText2:SetStartDelay(5)
-		obj.MinimapAlertAnim.AlertText2:SetDuration(0.25)
-		obj.MinimapAlertAnim.AlertText2:SetFromAlpha(1)
-		obj.MinimapAlertAnim.AlertText2:SetToAlpha(0)
-		obj.MinimapAlertAnim.AlertText2:SetOrder(2)
-		-- based on original the scripts
-		obj.MinimapAlertAnim:SetScript("OnPlay", function(this)
-			this:GetParent().AlertText:Show()
-			this:GetParent().MinimapPulseAnim:Play()
-		end)
-		obj.MinimapAlertAnim:SetScript("OnStop", function(this)
-			this:GetParent().AlertText:Hide()
-			this:GetParent().MinimapPulseAnim:Stop()
-		end)
-		obj.MinimapAlertAnim:SetScript("OnFinished", function(this)
-			this:GetParent().AlertText:Hide()
-			this:GetParent().MinimapPulseAnim:Stop()
-		end)
-
-	end
-
-	-->>-- GarrisonCapacitiveDisplay (i.e. Work Order Frame)
-	local function skinGarrisonCapacitiveDisplay()
-
-		aObj:addSkinFrame{obj=_G.GarrisonCapacitiveDisplayFrame, ft=ftype, kfs=true, ri=true, ofs=2}
-		local cd = _G.GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
-		cd.IconBG:SetTexture(nil)
-		aObj:addButtonBorder{obj=cd.ShipmentIconFrame, relTo=cd.ShipmentIconFrame.Icon}
-		for i = 1, #cd.Reagents do
-			local btn = cd.Reagents[i]
-			aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
-			btn.NameFrame:SetTexture(nil)
-		end
-		aObj:removeMagicBtnTex(_G.GarrisonCapacitiveDisplayFrame.StartWorkOrderButton)
-		aObj:removeMagicBtnTex(_G.GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton)
-		aObj:addButtonBorder{obj=_G.GarrisonCapacitiveDisplayFrame.DecrementButton, ofs=-2, es=10}
-		aObj:skinEditBox{obj=_G.GarrisonCapacitiveDisplayFrame.Count, regs={9}}
-		aObj:addButtonBorder{obj=_G.GarrisonCapacitiveDisplayFrame.IncrementButton, ofs=-2, es=10}
 
 	end
 
@@ -1331,7 +1335,7 @@ function aObj:GarrisonUI() -- LoD
 
 		_G.GarrisonRecruiterFrame.Pick.Line1:SetTexture(nil)
 		_G.GarrisonRecruiterFrame.Pick.Line2:SetTexture(nil)
-		self:skinDropDown{obj=_G.GarrisonRecruiterFrame.Pick.ThreatDropDown}
+		aObj:skinDropDown{obj=_G.GarrisonRecruiterFrame.Pick.ThreatDropDown}
 		aObj:addSkinFrame{obj=_G.GarrisonRecruiterFrame, ft=ftype, kfs=true, ri=true, ofs=1, y1=2}
 
 		-- GarrisonRecruitSelect Frame
@@ -1364,11 +1368,10 @@ function aObj:GarrisonUI() -- LoD
 
 	end
 
-	skinGarrisonSharedTemplates()
 	skinGarrisonBuildingUI()
-	skinGarrisonMissionUI()
-	skinGarrisonLandingPage()
 	skinGarrisonCapacitiveDisplay()
+	skinGarrisonLandingPage()
+	skinGarrisonMissionUI()
 	skinGarrisonMonumentUI()
 	skinGarrisonRecruiterUI()
 	skinGarrisonTooltips()
