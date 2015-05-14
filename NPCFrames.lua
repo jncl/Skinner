@@ -32,7 +32,7 @@ function aObj:AuctionUI() -- LoD
 	_G.WowTokenGameTimeTutorial.RightDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
 	self:skinButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
-	self:addSkinFrame{obj=_G.WowTokenGameTimeTutorial, ft=ftype, kfs=true, ri=true, ofs=2, y2=220}
+	self:addSkinFrame{obj=_G.WowTokenGameTimeTutorial, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		local obj = _G["Browse" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
@@ -412,7 +412,7 @@ function aObj:QuestChoice() -- LoD
 		_G.QuestChoiceFrame["Option" .. i].Rewards.Item.Name:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestChoiceFrame["Option" .. i].Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	self:addSkinFrame{obj=_G.QuestChoiceFrame, ft=ftype, kfs=true, ofs=-13}
+	self:addSkinFrame{obj=_G.QuestChoiceFrame, ft=ftype, kfs=true, ofs=-13, y1=-12}
 
 end
 
@@ -494,15 +494,14 @@ function aObj:QuestInfo()
 		_G.QuestInfoObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoGroupSize:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoRewardText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		local r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
+		_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		-- reward frame text
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		local r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
-		_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		-- Objectives
 		for i = 1, #_G.QuestInfoObjectivesFrame.Objectives do
 			local objective = _G.QuestInfoObjectivesFrame.Objectives[i]
@@ -529,7 +528,7 @@ function aObj:QuestInfo()
 	-- QuestInfoRequiredMoneyFrame
 	self:SecureHook("QuestInfo_ShowRequiredMoney", function()
 		local r, g ,b = _G.QuestInfoRequiredMoneyText:GetTextColor()
-		-- if red colour is less than 0.2 then it needs to be coloured
+		-- if red value is less than 0.2 then it needs to be coloured
 		if r < 0.2 then
 			_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
