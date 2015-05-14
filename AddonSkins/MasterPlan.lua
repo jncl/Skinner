@@ -29,6 +29,19 @@ function aObj:MasterPlan() -- LoD
 	local bar = self:getChild(sf, 1)
 	self:skinButton{obj=activeUI.CompleteAll}
 	self:skinSlider{obj=bar, adj=-4}
+	-- options frame in TLHC
+	self:removeRegions(missionList.ctlContainer, {1, 2, 3})
+	-- skin waste popup frame
+	self.RegisterCallback("MasterPlan", "UIParent_GetChildren", function(this, child)
+		if child:IsObjectType("Frame")
+		and child:GetName() == nil
+		and self:getInt(child:GetWidth()) == 260
+		and self:getInt(child:GetHeight()) == 68
+		then
+			self:addSkinFrame{obj=child}
+		end
+	end)
+	self:scanUIParentsChildren()
 
 	local function skinMissionButtons()
 		local kids = {sc:GetChildren()}
@@ -36,7 +49,7 @@ function aObj:MasterPlan() -- LoD
 			if child:IsObjectType("Button") then
 				child:DisableDrawLayer("BACKGROUND")
 				child:DisableDrawLayer("BORDER")
-				-- aObj:getChild(child, 1):DisableDrawLayer("OVERLAY") -- shadow background, don't remove this as it identifies missions that are unable to be slected
+				-- aObj:getChild(child, 1):DisableDrawLayer("OVERLAY") -- shadow background, don't remove this as it identifies missions that are unable to be selected
 				-- re-align the top & bottom highlight
 				local t = aObj:getRegion(child, 12)
 				t:ClearAllPoints()
@@ -82,7 +95,7 @@ function aObj:MasterPlan() -- LoD
 
 	-- ActiveUI lootframe
 	self:addSkinFrame{obj=activeUI.lootFrame, kfs=true}
-	local lootContainer = self:getChild(activeUI.lootFrame, 2)
+	local lootContainer = self:getChild(activeUI.lootFrame, 3)
 	local function skinLootContainer()
 		for i = 1, #lootContainer.items do
 			lootContainer.items[i].Border:SetTexture(nil)
@@ -103,8 +116,7 @@ function aObj:MasterPlan() -- LoD
 	end)
 
 	-- Garrison Missions Frame - Available Missions Tab
-	self:removeRegions(self:getChild(availUI, 1), {1, 2, 3}) -- ctlContainer background
-	self:removeRegions(self:getChild(self:getChild(availUI, 2), 1), {2}) -- follower focus portrait ring
+	self:removeRegions(self:getChild(self:getChild(availUI, 1), 1), {2}) -- follower focus portrait ring
 
 	-- Garrison Missions Frame - Available Missions Tab - Mission Page
 	-- Get Suggested Groups button
