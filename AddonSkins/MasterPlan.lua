@@ -23,10 +23,11 @@ function aObj:MasterPlan() -- LoD
 	local mlc = missionList:GetNumChildren()
 	local activeUI = self:getChild(missionList, mlc - 3)
 	local availUI = self:getChild(missionList, mlc - 2)
-	local interestUI = self:getChild(missionList, mlc - 1)
+	-- local interestUI = self:getChild(missionList, mlc - 1)
 	local sf = self:getChild(missionList, mlc) -- scroll frame
 	local sc = sf:GetScrollChild()
 	local bar = self:getChild(sf, 1)
+
 	self:skinButton{obj=activeUI.CompleteAll}
 	self:skinSlider{obj=bar, adj=-4}
 	-- options frame in TLHC
@@ -79,9 +80,10 @@ function aObj:MasterPlan() -- LoD
 				and grandchild:GetNumChildren() == 21
 				then
 					for i = 1, grandchild:GetNumChildren() do
-						grandchild[i].ring:SetTexture(nil)
+						aObj:getChild(grandchild, i).ring:SetTexture(nil)
 					end
 				end
+				grandchild = nil
 			end
 		end
 		kids = nil
@@ -95,8 +97,7 @@ function aObj:MasterPlan() -- LoD
 
 	-- ActiveUI lootframe
 	self:addSkinFrame{obj=activeUI.lootFrame, kfs=true}
-	local lootContainer = self:getChild(activeUI.lootFrame, 3)
-	local function skinLootContainer()
+	local function skinLootContainer(lootContainer)
 		for i = 1, #lootContainer.items do
 			lootContainer.items[i].Border:SetTexture(nil)
 			aObj:addButtonBorder{obj=lootContainer.items[i], relTo=lootContainer.items[i].Icon, ofs=3}
@@ -104,15 +105,14 @@ function aObj:MasterPlan() -- LoD
 		for i = 1, #lootContainer.followers do
 			lootContainer.followers[i].PortraitRing:SetTexture(nil)
 			lootContainer.followers[i].LevelBorder:SetTexture(nil)
-			-- lootContainer.followers[i].LevelBorder:SetAlpha(0) -- texture changed
 			lootContainer.followers[i].PortraitRingCover:SetTexture(nil)
 		end
 	end
 	-- skin any existing followers & items
-	skinLootContainer()
+	skinLootContainer(self:getChild(activeUI.lootFrame, 3))
 	-- hook this to skin new followers & items
 	self:SecureHook(activeUI.lootFrame, "Show", function(this)
-		skinLootContainer()
+		skinLootContainer(self:getChild(this, 3))
 	end)
 
 	-- Garrison Missions Frame - Available Missions Tab
@@ -138,7 +138,7 @@ function aObj:MasterPlan() -- LoD
 			self:addButtonBorder{obj=frame.ClassSpec}
 			self:Unhook("GarrisonMissionFrame_SetFollowerPortrait")
 		end
-		local obj, frame = nil, nil
+		obj, frame = nil, nil
 	end)
 
 end
