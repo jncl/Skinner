@@ -40,6 +40,5 @@ x			- Blizzard_WowTokenUI
 ?			- BossBannerLootFrameTemplate
 √			- GarrisonShipAlertFrame
 
-√	N	MasterPLan, reported by Decabah/NeoZeus, 29.04.15/13.05.15
-		- Skinner\SkinMe\MasterPlan-0.43.lua:87: attempt to get length of field 'items' (a nil value)
-		  Skinner\SkinMe\MasterPlan-0.43.lua:99: in function <Skinner\SkinMe\MasterPlan.lua:5>
+√	I	MasterPlan, reported by Decabah, 14.05.15
+		- Interface\\AddOns\\Skinner\\SkinMe\\MasterPlan-0.45.lua:82: attempt to index field '?' (a nil value)
