@@ -40,5 +40,9 @@ x			- Blizzard_WowTokenUI
 ?			- BossBannerLootFrameTemplate
 √			- GarrisonShipAlertFrame
 
-√	I	MasterPlan, reported by Decabah, 14.05.15
-		- Interface\\AddOns\\Skinner\\SkinMe\\MasterPlan-0.45.lua:82: attempt to index field '?' (a nil value)
+√	I	PTR changes causing error
+		- ..\AddOns\Skinner\UIFrames.lua line 1129: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+		Debug: ...ory\Externals\curse\svn\Ace3-AceHook\AceHook-3.0.lua:211: 				...ory\Externals\curse\svn\Ace3-AceHook\AceHook-3.0.lua:118
+				...ory\Externals\curse\svn\Ace3-AceHook\AceHook-3.0.lua:341:
+				SecureHook() Skinner\UIFrames.lua:1129: skinGarrisonLandingPage()
+				Skinner\UIFrames.lua:1373:...
