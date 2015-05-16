@@ -926,7 +926,12 @@ function aObj:EncounterJournal() -- LoD
 	_G.EncounterJournal.navBar.home.text:SetPoint("RIGHT", -20, 0)
 -->>-- InstanceSelect frame
 	_G.EncounterJournal.instanceSelect.bg:SetAlpha(0)
-	self:skinDropDown{obj=_G.EJTierDropDown}
+	if not self.isPTR then
+		self:skinDropDown{obj=_G.EJTierDropDown}
+		self:addButtonBorder{obj=_G.EncounterJournalInstanceSelectScrollDownButton, ofs=-2}
+	else
+		self:skinDropDown{obj=_G.EncounterJournal.instanceSelect.tierDropDown}
+	end
 	self:skinSlider{obj=_G.EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
 	self:addSkinFrame{obj=_G.EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
 	-- Instance buttons
@@ -937,7 +942,9 @@ function aObj:EncounterJournal() -- LoD
 		end
 	end
 	-- Tabs
-	_G.EncounterJournal.instanceSelect.raidsTab:DisableDrawLayer("BACKGROUND")
+	if self.isPTR then
+		_G.EncounterJournal.instanceSelect.suggestTab:DisableDrawLayer("BACKGROUND")
+	end
 	_G.EncounterJournal.instanceSelect.dungeonsTab:DisableDrawLayer("BACKGROUND")
 	_G.EncounterJournal.instanceSelect.raidsTab:DisableDrawLayer("BACKGROUND")
 -->>-- Encounter frame
@@ -1062,6 +1069,31 @@ function aObj:EncounterJournal() -- LoD
 			obj:GetDisabledTexture():SetAlpha(0) -- tab texture is modified
 		end
 		self:addSkinFrame{obj=obj, ft=ftype, noBdr=true, ofs=-3, aso={rotate=true}} -- gradient is right to left
+	end
+
+	if self.isPTR then
+		-- EncounterJournalTooltip
+		self:addSkinFrame{obj=_G.EncounterJournalTooltip, ft=ftype}
+	-->>-- Suggest frame
+		local ejsf = _G.EncounterJournal.suggestFrame
+		-- Suggestion1 panel
+		ejsf.Suggestion1.bg:SetTexture(nil)
+		ejsf.Suggestion1.iconRing:SetTexture(nil)
+		ejsf.Suggestion1.centerDisplay.title:SetTextColor(self.HTr, self.HTg, self.HTb)
+		ejsf.Suggestion1.centerDisplay.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ejsf.Suggestion1.reward.iconRing:SetTexture(nil)
+		-- Suggestion2 panel
+		ejsf.Suggestion2.bg:SetTexture(nil)
+		ejsf.Suggestion2.iconRing:SetTexture(nil)
+		ejsf.Suggestion2.centerDisplay.title.text:SetTextColor(self.HTr, self.HTg, self.HTb)
+		ejsf.Suggestion2.centerDisplay.description.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ejsf.Suggestion2.reward.iconRing:SetTexture(nil)
+		-- Suggestion3 panel
+		ejsf.Suggestion3.bg:SetTexture(nil)
+		ejsf.Suggestion3.iconRing:SetTexture(nil)
+		ejsf.Suggestion3.centerDisplay.title.text:SetTextColor(self.HTr, self.HTg, self.HTb)
+		ejsf.Suggestion3.centerDisplay.description.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ejsf.Suggestion3.reward.iconRing:SetTexture(nil)
 	end
 
 end
