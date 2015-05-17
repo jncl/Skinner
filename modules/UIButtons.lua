@@ -331,8 +331,9 @@ function module:isButton(obj)
 		-- standard close button is 32x32 and has 4 regions
 		-- RolePollPopup has 3 regions
 		-- Channel Pullout is 24 high
+		-- MasterPlan LootFrame is 28 high
 		elseif obj:GetParent().CloseButton == obj
-		or oH == oW and (nR >= 3 or nR <= 5) and (oH == 32 or oH == 24)
+		or oH == oW and (nR >= 3 or nR <= 5) and (oH == 32 or oH == 24 or oH == 28)
 		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true))
 		then
 			bType = "close"
