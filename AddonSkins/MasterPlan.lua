@@ -96,7 +96,7 @@ function aObj:MasterPlan() -- LoD
 	skinMissionButtons()
 
 	-- ActiveUI lootframe
-	self:addSkinFrame{obj=activeUI.lootFrame, kfs=true}
+	self:addSkinFrame{obj=activeUI.lootFrame, kfs=true, y1=-3, x2=-1}
 	local function skinLootContainer(lootContainer)
 		for i = 1, #lootContainer.items do
 			lootContainer.items[i].Border:SetTexture(nil)
