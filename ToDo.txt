@@ -40,7 +40,7 @@ x			- Blizzard_WowTokenUI
 ?			- BossBannerLootFrameTemplate
 √			- GarrisonShipAlertFrame
 
-√	I	PTR changes causing error
+√	I	PTR changes causing error, reported by lexusnexus/NeoZeus/Decabah/next96
 		- ..\AddOns\Skinner\UIFrames.lua line 1129: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 		Debug: ...ory\Externals\curse\svn\Ace3-AceHook\AceHook-3.0.lua:211: 				...ory\Externals\curse\svn\Ace3-AceHook\AceHook-3.0.lua:118
 				...ory\Externals\curse\svn\Ace3-AceHook\AceHook-3.0.lua:341:
