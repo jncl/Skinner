@@ -107,7 +107,7 @@ function aObj:BlizzardFrames()
 			["DestinyFrame"] = true,
 			["DraenorZoneAbility"] = true,
 			["DropDownPanels"] = true,
-			["GarrisonFollowerTooltips"] = true,
+			["GarrisonTooltips"] = true,
 			["HelpFrame"] = true,
 			["ItemText"] = true,
 			["LevelUpDisplay"] = true,

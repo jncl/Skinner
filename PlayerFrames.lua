@@ -1081,6 +1081,7 @@ function aObj:EncounterJournal() -- LoD
 		ejsf.Suggestion1.iconRing:SetTexture(nil)
 		ejsf.Suggestion1.centerDisplay.title:SetTextColor(self.HTr, self.HTg, self.HTb)
 		ejsf.Suggestion1.centerDisplay.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ejsf.Suggestion1.reward.text:SetTextColor(self.BTr, self.BTg, self.BTb)
 		ejsf.Suggestion1.reward.iconRing:SetTexture(nil)
 		-- Suggestion2 panel
 		ejsf.Suggestion2.bg:SetTexture(nil)
@@ -1880,6 +1881,12 @@ function aObj:ObjectiveTracker()
 			btn.ItemBorder:SetTexture(nil)
 		end
 	end)
+
+	-- ObjectiveTrackerBonusBanner Frame
+	if self.isPTR then
+		ObjectiveTrackerBonusBannerFrame.BG1:SetTexture(nil)
+		ObjectiveTrackerBonusBannerFrame.BG2:SetTexture(nil)
+	end
 
 	-- AutoPopup frames
 	if self.db.profile.ObjectiveTracker.popups then

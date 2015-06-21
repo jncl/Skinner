@@ -49,7 +49,10 @@ end
 --@debug@
 local function print_family_tree(fName)
 
-	if fName:IsForbidden() then print("Frame access is forbidden") return end
+	if fName:IsForbidden() then
+		_G.print("Frame access is forbidden")
+		return
+	end
 
 	local lvl = "Parent"
 	_G.print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
@@ -129,6 +132,7 @@ function aObj:Debug2(...)
 
 end
 --@end-debug@
+
 --[===[@non-debug@
 function aObj:Debug() end
 function aObj:Debug2() end
@@ -172,6 +176,7 @@ function aObj:checkAndRun(funcName, quiet)
 --@alpha@
 	assert(funcName, "Unknown object checkAndRun\n" .. debugstack())
 --@end-alpha@
+
 	-- self:Debug("checkAndRun: [%s, %s]", funcName, quiet)
 
 	-- handle in combat
@@ -224,6 +229,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 --@alpha@
 	assert(addonName, "Unknown object checkAndRunAddOn\n" .. debugstack())
 --@end-alpha@
+
 	-- self:Debug("checkAndRunAddOn: [%s, %s, %s]", addonName, LoD, addonFunc)
 
 	-- handle in combat
