@@ -916,6 +916,7 @@ function aObj:EncounterJournal() -- LoD
 		btn:GetPushedTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
+
 -->>-- Nav Bar
 	_G.EncounterJournal.navBar:DisableDrawLayer("BACKGROUND")
 	_G.EncounterJournal.navBar:DisableDrawLayer("BORDER")
@@ -1808,7 +1809,7 @@ function aObj:ObjectiveTracker()
 	self.initialized.ObjectiveTracker = true
 
 	if self.db.profile.ObjectiveTracker.skin then
-		self:addSkinFrame{obj=_G.ObjectiveTrackerFrame.BlocksFrame, ft=ftype, nb=true, x1=-30, x2=4}
+		self:addSkinFrame{obj=_G.ObjectiveTrackerFrame.BlocksFrame, ft=ftype, kfs=true, nb=true, x1=-30, x2=4}
 		-- hook this to handle displaying of the ObjectiveTrackerFrame BlocksFrame skin frame
 		self:SecureHook("ObjectiveTracker_Update", function(reason)
 			_G.ObjectiveTrackerFrame.BlocksFrame.sf:SetShown(_G.ObjectiveTrackerFrame.HeaderMenu:IsShown())
@@ -1868,13 +1869,12 @@ function aObj:ObjectiveTracker()
 	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
 
 	-- BonusRewardsFrame Rewards
-	-- N.B. Leave RewardHeader & RewardBottom as they are, looks better that way
-	_G.ObjectiveTrackerBonusRewardsFrame.HeaderTop:SetTexture(nil)
+	_G.ObjectiveTrackerBonusRewardsFrame:DisableDrawLayer("ARTWORK")
 	_G.ObjectiveTrackerBonusRewardsFrame.RewardsShadow:SetTexture(nil)
 	self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
 		for i = 1, #_G.ObjectiveTrackerBonusRewardsFrame.Rewards do
 			local btn = _G.ObjectiveTrackerBonusRewardsFrame.Rewards[i]
-			self:addButtonBorder{obj=btn, relTo=btn.ItemIcon}
+			self:addButtonBorder{obj=btn, relTo=btn.ItemIcon, reParent={btn.Count}}
 			btn.ItemBorder:SetTexture(nil)
 		end
 	end)
