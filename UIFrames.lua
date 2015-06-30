@@ -2525,6 +2525,8 @@ function aObj:MinimapButtons()
 	self:addSkinFrame{obj=obj, aso=asopts, x1=-4, y1=4, x2=4, y2=-4}
 	-- make sure textures appear above skinFrame
 	_G.LowerFrameLevel(obj.sf)
+	-- alter the HitRectInsets to make it easier to activate
+	obj:SetHitRectInsets(-5, -5, -5, -5)
 
 end
 
