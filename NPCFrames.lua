@@ -128,8 +128,9 @@ function aObj:BankFrame()
 	self:keepFontStrings(_G.BankSlotsFrame)
 	-- ReagentBankFrame
 	self:addSkinFrame{obj=_G.ReagentBankFrame.UnlockInfo, ft=ftype, kfs=true, ofs=-4}
-	_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND")
 	_G.ReagentBankFrame:DisableDrawLayer("ARTWORK")
+	_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND")
+	_G.ReagentBankFrame:DisableDrawLayer("BORDER")
 
 end
 
