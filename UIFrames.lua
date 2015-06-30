@@ -198,24 +198,18 @@ function aObj:AlertFrames()
 	end
 
 	local frames = {"DigsiteCompleteToastFrame", "StorePurchaseAlertFrame", "GarrisonBuildingAlertFrame", "GarrisonRandomMissionAlertFrame", "GarrisonMissionAlertFrame", "GarrisonFollowerAlertFrame"}
-	if self.isPTR then
-		self:add2Table(frames, "GarrisonShipFollowerAlertFrame")
-		self:add2Table(frames, "GarrisonShipMissionAlertFrame")
-	end
+	self:add2Table(frames, "GarrisonShipFollowerAlertFrame")
+	self:add2Table(frames, "GarrisonShipMissionAlertFrame")
 	for _, frame in pairs(frames) do
 		if _G[frame].Icon
 		and _G[frame].Icon:GetDrawLayer() == "BACKGROUND"
 		then
 			_G[frame].Icon:SetDrawLayer("ARTWORK")
 		end
-		if not self.isPTR then
-			self:getRegion(_G[frame], 1):SetTexture(nil) -- Background toast texture
+		if _G[frame].Background then
+			_G[frame].Background:SetTexture(nil)
 		else
-			if _G[frame].Background then
-				_G[frame].Background:SetTexture(nil)
-			else
-				_G[frame]:DisableDrawLayer("BACKGROUND") -- Background toast texture
-			end
+			_G[frame]:DisableDrawLayer("BACKGROUND") -- Background toast texture
 		end
 		if _G[frame].IconBG then
 			_G[frame].IconBG:SetTexture(nil)
@@ -959,13 +953,7 @@ function aObj:GarrisonUI() -- LoD
 	if not self.db.profile.GarrisonUI or self.initialized.GarrisonUI then return end
 	self.initialized.GarrisonUI = true
 
-	local stageRegs
-	if not self.isPTR then
-		-- 12 is MissionType
-		stageRegs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 19, 20, 21}
-	else
-		stageRegs = {1, 2, 3, 4, 5}
-	end
+	local stageRegs = {1, 2, 3, 4, 5}
 	local cdStageRegs = {1, 2, 3, 4, 5, 6}
 
 	local function skinPortrait(frame)
@@ -992,13 +980,12 @@ function aObj:GarrisonUI() -- LoD
 	end
 	local function skinFollowerList(obj)
 
-		if not aObj.isPTR then
-			aObj:removeRegions(obj, {2, 3})
-		else
-			aObj:removeRegions(obj, {1, 2})
-		end
+		local extraReg = obj:GetParent() ~= _G.GarrisonLandingPage and 3 or nil
+		aObj:removeRegions(obj, {1, 2, extraReg})
 		if obj.SearchBox then
 			aObj:skinEditBox{obj=obj.SearchBox, regs={9, 10}, mi=true}
+			-- need to do this as background isn't visible on Shipyard Mission page
+			_G.RaiseFrameLevel(obj.SearchBox)
 		end
 		aObj:skinSlider{obj=obj.listScroll.scrollBar, adj=-4}
 		for i = 1, #obj.listScroll.buttons do
@@ -1053,9 +1040,7 @@ function aObj:GarrisonUI() -- LoD
 		aObj:getRegion(obj.CompleteDialog, 1):SetTexture(0, 0, 0, 1) -- make background opaque
 		obj.CompleteDialog.BorderFrame:DisableDrawLayer("BACKGROUND")
 		obj.CompleteDialog.BorderFrame:DisableDrawLayer("BORDER")
-		if aObj.isPTR then
-			obj.CompleteDialog.BorderFrame:DisableDrawLayer("OVERLAY")
-		end
+		obj.CompleteDialog.BorderFrame:DisableDrawLayer("OVERLAY")
 		aObj:removeRegions(obj.CompleteDialog.BorderFrame.Stage, cdStageRegs)
 		aObj:skinButton{obj=obj.CompleteDialog.BorderFrame.ViewButton}
 
@@ -1064,22 +1049,18 @@ function aObj:GarrisonUI() -- LoD
 
 		obj:DisableDrawLayer("BACKGROUND")
 		obj:DisableDrawLayer("BORDER")
-		if aObj.isPTR then
-			obj:DisableDrawLayer("OVERLAY")
-		end
+		obj:DisableDrawLayer("OVERLAY")
 		obj.ButtonFrame:SetTexture(nil)
-		obj.CloseButton:SetSize(30, 30)
+		local btnSize = obj:GetParent():GetParent() ~= _G.GarrisonShipyardFrame and 32 or 28
+		obj.CloseButton:SetSize(btnSize, btnSize)
 		aObj:removeRegions(obj.Stage, stageRegs)
+		-- don't skin ShipyardUI Mission Frame
 		aObj:addSkinFrame{obj=obj, ft=ftype, x1=-320, y1=5, x2=3, y2=-20}
 		-- handle animation of StartMissionButton
 		if aObj.modBtns then
 			 obj.StartMissionButton.sb.tfade:SetParent(obj.sf)
 		end
-		if not aObj.isPTR then
-			obj.Stage.IconBG:SetTexture(nil)
-		else
-			obj.Stage.MissionEnvIcon.Texture:SetTexture(nil)
-		end
+		obj.Stage.MissionEnvIcon.Texture:SetTexture(nil)
 		obj.BuffsFrame.BuffsBG:SetTexture(nil)
 		obj.RewardsFrame:DisableDrawLayer("BACKGROUND")
 		obj.RewardsFrame:DisableDrawLayer("BORDER")
@@ -1219,9 +1200,7 @@ function aObj:GarrisonUI() -- LoD
 
 		_G.GarrisonLandingPage:DisableDrawLayer("BACKGROUND")
 		_G.GarrisonLandingPage.HeaderBar:SetTexture(nil)
-		if aObj.isPTR then
-			_G.GarrisonLandingPage.numTabs = 3
-		end
+		_G.GarrisonLandingPage.numTabs = 3
 		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, x1=5, y1=-8, x2=-4, y2=-3}
 		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-12, x2=-12}
 
@@ -1249,22 +1228,18 @@ function aObj:GarrisonUI() -- LoD
 		-- FollowerList
 		local fl = _G.GarrisonLandingPage.FollowerList
 		skinFollowerList(fl)
-		if aObj.isPTR then
-			aObj:SecureHook(fl, "ShowFollower", function(this, id)
-				skinFollowerAbilitiesAndCounters(this, id)
-			end)
-		end
+		aObj:SecureHook(fl, "ShowFollower", function(this, id)
+			skinFollowerAbilitiesAndCounters(this, id)
+		end)
 
 		-- FollowerTab
 		skinFollowerPage(_G.GarrisonLandingPage.FollowerTab)
 
-		if aObj.isPTR then
-			-- FleetTab
-			-- ShipFollowerList
-			skinFollowerList(_G.GarrisonLandingPage.ShipFollowerList)
-			-- ShipFollowerTab
-			skinFollowerTraitsAndEquipment(_G.GarrisonLandingPage.ShipFollowerTab)
-		end
+		-- FleetTab
+		-- ShipFollowerList
+		skinFollowerList(_G.GarrisonLandingPage.ShipFollowerList)
+		-- ShipFollowerTab
+		skinFollowerTraitsAndEquipment(_G.GarrisonLandingPage.ShipFollowerTab)
 
 		-- minimap
 		aObj:skinButton{obj=_G.GarrisonLandingPageTutorialBox.CloseButton, cb=true}
@@ -1324,11 +1299,9 @@ function aObj:GarrisonUI() -- LoD
 		fl:DisableDrawLayer("BORDER")
 		fl.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		skinFollowerList(fl)
-		if aObj.isPTR then
-			aObj:SecureHook(fl, "ShowFollower", function(this, id)
-				skinFollowerAbilitiesAndCounters(this, id)
-			end)
-		end
+		aObj:SecureHook(fl, "ShowFollower", function(this, id)
+			skinFollowerAbilitiesAndCounters(this, id)
+		end)
 
 	-->>-- MissionTab
 		-- Mission List
@@ -1458,9 +1431,6 @@ function aObj:GarrisonUI() -- LoD
 	-->>-- GarrisonShipyardUI
 	local function skinGarrisonShipyardUI()
 
-		-- GarrisonBonusAreaTooltip
-		-- GarrisonShipyardMapMissionTooltip
-
 		-- wooden frame around dialog
 		aObj:keepFontStrings(_G.GarrisonShipyardFrame.BorderFrame)
 		aObj:moveObject{obj=_G.GarrisonShipyardFrame.BorderFrame.TitleText, y=3}
@@ -1525,26 +1495,18 @@ function aObj:GarrisonUI() -- LoD
 		aObj:addSkinFrame{obj=_G.GarrisonMissionMechanicTooltip, ft=ftype}
 		aObj:addSkinFrame{obj=_G.GarrisonMissionMechanicFollowerCounterTooltip, ft=ftype}
 
-		if self.isPTR then
-			aObj:addSkinFrame{obj=_G.GarrisonShipyardMapMissionTooltip, ft=ftype}
-		end
+		aObj:addSkinFrame{obj=_G.GarrisonBonusAreaTooltip, ft=ftype}
+		aObj:addSkinFrame{obj=_G.GarrisonShipyardMapMissionTooltip, ft=ftype}
 
 	end
 
-	if not self.isPTR then
-		self:SecureHook("GarrisonFollowerPage_ShowFollower", function(this, followerID)
-			skinFollowerAbilitiesAndCounters(this)
-		end)
-	end
 	skinGarrisonBuildingUI()
 	skinGarrisonCapacitiveDisplay()
 	skinGarrisonLandingPage()
 	skinGarrisonMissionUI()
 	skinGarrisonMonumentUI()
 	skinGarrisonRecruiterUI()
-	if self.isPTR then
-		skinGarrisonShipyardUI()
-	end
+	skinGarrisonShipyardUI()
 	skinGarrisonTooltips()
 
 	-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
@@ -1562,17 +1524,13 @@ function aObj:GarrisonTooltips()
 	_G.GarrisonFollowerAbilityTooltip.CounterIconBorder:SetTexture(nil)
 	aObj:addSkinFrame{obj=_G.GarrisonFollowerAbilityTooltip, ft=ftype}
 
-	if self.isPTR then
-		self:addSkinFrame{obj=_G.GarrisonShipyardFollowerTooltip, ft=ftype}
-	end
+	self:addSkinFrame{obj=_G.GarrisonShipyardFollowerTooltip, ft=ftype}
 
 	_G.FloatingGarrisonFollowerTooltip.Portrait.PortraitRing:SetTexture(nil)
 	_G.FloatingGarrisonFollowerTooltip.Portrait.LevelBorder:SetAlpha(0)
 	aObj:addSkinFrame{obj=_G.FloatingGarrisonFollowerTooltip, ft=ftype}
 
-	if self.isPTR then
-		self:addSkinFrame{obj=_G.FloatingGarrisonShipyardFollowerTooltip, ft=ftype}
-	end
+	self:addSkinFrame{obj=_G.FloatingGarrisonShipyardFollowerTooltip, ft=ftype}
 
 	_G.FloatingGarrisonFollowerAbilityTooltip.CounterIconBorder:SetTexture(nil)
 	aObj:addSkinFrame{obj=_G.FloatingGarrisonFollowerAbilityTooltip, ft=ftype}
@@ -3378,6 +3336,8 @@ function aObj:WorldMap()
 
 	self:removeRegions(_G.MapBarFrame, {1, 2, 3})
 	self:glazeStatusBar(_G.MapBarFrame, 0, _G.MapBarFrame.FillBG)
+
+	self:glazeStatusBar(_G.WorldMapTaskTooltipStatusBar.Bar, 0, self:getRegion(_G.WorldMapTaskTooltipStatusBar.Bar, 7))
 
 end
 

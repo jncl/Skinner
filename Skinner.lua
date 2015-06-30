@@ -29,8 +29,8 @@ do
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
-	local liveInfo = {"6.1.2", 19865}
-	local ptrInfo = {"6.2.0", 20157}
+	local liveInfo = {"6.2.0", 20182}
+	local ptrInfo = {"6.3.0", 29999}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
