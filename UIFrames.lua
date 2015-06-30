@@ -413,7 +413,7 @@ function aObj:Calendar() -- LoD
 	self:skinDropDown{obj=_G.CalendarCreateEventHourDropDown, x2=-5}
 	self:skinDropDown{obj=_G.CalendarCreateEventMinuteDropDown, x2=-5}
 	self:skinDropDown{obj=_G.CalendarCreateEventAMPMDropDown, x2=-5}
-	self:skinDropDown{obj=_G.CalendarCreateEventRepeatOptionDropDown}
+	self:skinDropDown{obj=_G.CalendarCreateEventDifficultyOptionDropDown, x2=-5}
 	self:addSkinFrame{obj=_G.CalendarCreateEventDescriptionContainer, ft=ftype}
 	self:skinScrollBar{obj=_G.CalendarCreateEventDescriptionScrollFrame}
 	self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
