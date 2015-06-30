@@ -92,7 +92,9 @@ function aObj:SetupCmds()
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("rl", function() _G.ReloadUI() end)
 	self:RegisterChatCommand("lo", function() _G.Logout() end)
-	self:RegisterChatCommand("pl", function(msg) _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
+	self:RegisterChatCommand("pin", function(msg) _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
+	self:RegisterChatCommand("pii", function(msg) _G.print(_G.GetItemInfo(msg)) end)
+	self:RegisterChatCommand("pil", function(msg) _G.print(_G.gsub(msg, "\124", "\124\124")) end)
 	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
 	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
 	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(getObj(msg), true, false) end) -- detailed
@@ -583,7 +585,8 @@ function aObj:scanUIParentsChildren()
 			self.callbacks:Fire("UIParent_GetChildren", child)
 --@alpha@
 		else
-			_G.print("ignoring forbidden object", child)
+			-- N.B. use print as Debug function causes taint
+			_G.print("ignoring forbidden object [%s]", child)
 --@end-alpha@
 		end
 	end
