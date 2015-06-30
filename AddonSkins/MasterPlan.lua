@@ -4,6 +4,19 @@ local _G = _G
 
 function aObj:MasterPlan() -- LoD
 
+	-- find frames
+	self.RegisterCallback("MasterPlan", "UIParent_GetChildren", function(this, child)
+			-- activeUI waste popup frame
+		if child:IsObjectType("Frame")
+		and child:GetName() == nil
+		and self:getInt(child:GetWidth()) == 260
+		and self:getInt(child:GetHeight()) == 68
+		then
+			self:addSkinFrame{obj=child}
+		end
+	end)
+	self:scanUIParentsChildren()
+
 	local function skinTab(tab, id)
 		aObj:rmRegionsTex(tab, {1, 2, 3 ,4 ,5 ,6})
 		aObj:addSkinFrame{obj=tab, noBdr=self.isTT, x1=9, y1=2, x2=-9, y2=0}
@@ -32,17 +45,6 @@ function aObj:MasterPlan() -- LoD
 	self:skinSlider{obj=bar, adj=-4}
 	-- options frame in TLHC
 	self:removeRegions(missionList.ctlContainer, {1, 2, 3})
-	-- skin waste popup frame
-	self.RegisterCallback("MasterPlan", "UIParent_GetChildren", function(this, child)
-		if child:IsObjectType("Frame")
-		and child:GetName() == nil
-		and self:getInt(child:GetWidth()) == 260
-		and self:getInt(child:GetHeight()) == 68
-		then
-			self:addSkinFrame{obj=child}
-		end
-	end)
-	self:scanUIParentsChildren()
 
 	local function skinMissionButtons()
 		local kids = {sc:GetChildren()}
@@ -117,6 +119,11 @@ function aObj:MasterPlan() -- LoD
 
 	-- Garrison Missions Frame - Available Missions Tab
 	self:removeRegions(self:getChild(self:getChild(availUI, 1), 1), {2}) -- follower focus portrait ring
+	-- Clear Tentative Parties button, has to be done this way otherwise button skin isn't shown
+	self:SecureHook(availUI.SendTentative, "SetShown", function(this)
+		self:skinButton{obj=this}
+		self:Unhook(availUI.SendTentative, "SetShown")
+	end)
 
 	-- Garrison Missions Frame - Available Missions Tab - Mission Page
 	-- Get Suggested Groups button
@@ -140,5 +147,17 @@ function aObj:MasterPlan() -- LoD
 		end
 		obj, frame = nil, nil
 	end)
+
+	-- Follower Items Container
+	self:addButtonBorder{obj=_G.MPFollowerItemContainer.weapon, es=12, x1=36}
+	self:addButtonBorder{obj=_G.MPFollowerItemContainer.armor, es=12, x2=-36}
+
+	-- Follower Summary
+	_G.GarrisonMissionFrame.SummaryTab:DisableDrawLayer("BORDER")
+	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.matrix}
+	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.affin}
+	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.stats}
+
+	-- Can't access UpgradesFrame to remove item name texture, as it is local to the Addon and can't be accessed externally
 
 end
