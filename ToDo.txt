@@ -12,41 +12,10 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-	O	PTR, 6.2.0
-√		- TOC Interface 60200
-		- Updates
-			- Blizzard_GarrisonUI
-x				- GarrisonLandingPage
-√					- Traits & Abilities don't have a button border
-√				- StageFrameTemplate
-√				- Mission Complete frame, texture behind level number and icon is visible
-√				- Mission Reward Name texture is visible
-√				- Mission Frame textures visible
-		- Additions
-			- Blizzard_AuctionUI
-x				- BrowseWowTokenResults
-x				- Buttons now have border textures
-x				- AuctionsWowTokenAuctionFrame
-			- Blizzard_Calendar
-?				- Event Textures
-			- Blizzard_EncounterJournal
-√				- AdventureJournal_SecondaryTemplate
-√				- $parentSuggestFrame
-√				- EncounterJournalTooltip
-√			- Blizzard_GarrisonMissionTemplates
- 	 		- Blizzard_GarrisonShipyardUI
-√				- GarrisonShipyardFrame
-√				- FloatingGarrisonShipyardFollowerTooltip
-			- Blizzard_ObjectiveTracker
-√				- ObjectiveTrackerBonusBannerFrame
-x			- Blizzard_WowTokenUI
-?			- ActionButton ChargeCooldown frame(s)
-			- LevelUpDisplay
-?				- BossBannerLootFrameTemplate
-√			- GarrisonShipFollowerAlertFrame
-√			- GarrisonShipMissionAlertFrame
-√			- GarrisonShipyardFollowerTooltip
-			- SpellBook
-?				- SpellLockedTooltip
-			- WorldMapFrame
-?				- WorldMapTaskTooltipStatusBar
+√	I	Calendar Event, reported byrovin60, 25.06.15
+		-  ..\AddOns\Skinner\Skinner.lua line 1403:
+  	  		attempt to index field 'obj' (a nil value)
+			Debug:
+  		  	Skinner\Skinner.lua:1465: skinDropDown()
+  		  	Skinner\UIFrames.lua:422:
+     	    Skinner\UIFrames.lua:370
