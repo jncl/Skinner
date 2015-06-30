@@ -865,7 +865,11 @@ function aObj:DeathRecap() -- LoD
 
 	_G.DeathRecapFrame:DisableDrawLayer("BORDER")
 	_G.DeathRecapFrame.Background:SetTexture(nil)
-	self:addSkinFrame{obj=_G.DeathRecapFrame, ft=ftype, kfs=true, ofs=-1}
+	-- manage buttons here, as names have changed from normal
+	self:skinButton{obj=_G.DeathRecapFrame.CloseButton}
+	self:skinButton{obj=_G.DeathRecapFrame.CloseXButton, cb=true}
+	self:addSkinFrame{obj=_G.DeathRecapFrame, ft=ftype, kfs=true, nb=true, ofs=-1}
+
 end
 
 function aObj:DebugTools() -- LoD
