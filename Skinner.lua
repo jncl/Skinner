@@ -666,7 +666,11 @@ local function __addSkinFrame(opts)
 			aObj:ScheduleTimer(function(frame)
 				frame.sf.tfade:SetParent(frame.sf)
 				if frame.cb then frame.cb.tfade:SetParent(frame.cb) end
-			end, 0.2, objP)
+			end, 0.15, objP)
+		end)
+		-- handle issue where tfade isn't reparented in time
+		aObj:SecureHookScript(opts.obj, "OnHide", function(this)
+			this.sf.tfade:SetParent(this.sf)
 		end)
 		-- hook AlertFrame scripts for animation functions
 		if opts.afas then
