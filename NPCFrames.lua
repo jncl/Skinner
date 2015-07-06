@@ -569,6 +569,7 @@ function aObj:QuestInfo()
 	-- SkillPointFrame
 	frame.SkillPointFrame.NameFrame:SetTexture(nil)
 	self:addButtonBorder{obj=frame.SkillPointFrame, relTo=frame.SkillPointFrame.Icon}
+	self:addButtonBorder{obj=fspf, relTo=fspf.Icon, reParent={fspf.CircleBackground, fspf.CircleBackgroundGlow, fspf.ValueText}}
 	-- MapQuestInfoRewards Frame
 	local frame = _G.MapQuestInfoRewardsFrame
 	frame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -578,6 +579,11 @@ function aObj:QuestInfo()
 	for _, v in pairs{"SpellFrame", "XPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"} do
 		frame[v].NameFrame:SetTexture(nil)
 		self:addButtonBorder{obj=frame[v], relTo=frame[v].Icon}
+		if not v == "SkillPointFrame" then
+			self:addButtonBorder{obj=frame[v], relTo=frame[v].Icon}
+		else
+			self:addButtonBorder{obj=frame[v], relTo=frame[v].Icon, reParent={frame[v].CircleBackground, frame[v].CircleBackgroundGlow, frame[v].ValueText}}
+		end
 	end
 
 end
