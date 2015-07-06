@@ -1760,10 +1760,6 @@ function aObj:Options()
 	-- add DB profile options
 	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
-	-- option tables list
-	local optNames = {
-		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"
-	}
 	-- register the options tables and add them to the blizzard frame
 	self.ACR = LibStub("AceConfigRegistry-3.0")
 	self.ACD = LibStub("AceConfigDialog-3.0")
@@ -1773,6 +1769,10 @@ function aObj:Options()
 
 	-- register the options, add them to the Blizzard Options
 	-- build the table used by the chatCommand function
+	-- option tables list
+	local optNames = {
+		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"
+	}
 	local optCheck = {}
 	for _, v in _G.ipairs(optNames) do
 		local optTitle = (" "):join(aName, v)
@@ -1780,6 +1780,7 @@ function aObj:Options()
 		self.optionsFrame[self.L[v]] = self.ACD:AddToBlizOptions(optTitle, self.L[v], aName)
 		optCheck[v:lower()] = v
 	end
+	optNames = nil
 
 	-- runs when the player clicks "Defaults"
 	self.optionsFrame[self.L["Backdrop"]].default = function()

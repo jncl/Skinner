@@ -1,8 +1,8 @@
 local aName, aObj = ...
 local _G = _G
 
--- Add locals to see if it speeds things up
-local assert, debugstack, ipairs, pairs, select, type = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.select, _G.type
+local assert, debugstack, ipairs, pairs, select, type, print = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.select, _G.type, _G.print
+local GetMouseFocus = _G.GetMouseFocus
 
 local function makeString(t)
 
@@ -33,11 +33,12 @@ local function makeText(a1, ...)
 		tmpTab[1] = output
 		tmpTab[2] = a1 and type(a1) == "table" and makeString(a1) or a1 or ""
 		for i = 1, select('#', ...) do
-			tmpTab[i+2] = makeString(select(i, ...))
+			tmpTab[i + 2] = makeString(select(i, ...))
 		end
 		output = _G.table.concat(tmpTab, " ")
 	end
 
+	tmpTab = nil
 	return output
 
 end
@@ -50,25 +51,27 @@ end
 local function print_family_tree(fName)
 
 	if fName:IsForbidden() then
-		_G.print("Frame access is forbidden")
+		print("Frame access is forbidden")
 		return
 	end
 
 	local lvl = "Parent"
-	_G.print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
+	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
 	while fName:GetParent() do
 		fName = fName:GetParent()
-		_G.print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
+		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), aObj:getInt(fName:GetWidth()) or "nil", aObj:getInt(fName:GetHeight()) or "nil"))
 		lvl = (lvl:find("Grand") and "Great" or "Grand") .. lvl
 	end
+	lvl = nil
 
 end
+
 function aObj:SetupCmds()
 
 	local function getObj(input)
 		-- _G.print("getObj", input, _G[input], _G.GetMouseFocus())
 		if not input or input:trim() == "" then
-			return _G.GetMouseFocus()
+			return GetMouseFocus()
 		else
 			return input
 		end
@@ -76,7 +79,7 @@ function aObj:SetupCmds()
 	local function getObjP(input)
 		-- _G.print("getObjP", input, _G[input], _G.GetMouseFocus():GetParent())
 		if not input or input:trim() == "" then
-			return _G.GetMouseFocus():GetParent()
+			return GetMouseFocus():GetParent()
 		else
 			return input
 		end
@@ -84,7 +87,7 @@ function aObj:SetupCmds()
 	local function getObjGP(input)
 		-- _G.print("getObjGP", input, _G[input], _G.GetMouseFocus():GetParent():GetParent())
 		if not input or input:trim() == "" then
-			return _G.GetMouseFocus():GetParent():GetParent()
+			return GetMouseFocus():GetParent():GetParent()
 		else
 			return input
 		end
@@ -92,11 +95,11 @@ function aObj:SetupCmds()
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("rl", function() _G.ReloadUI() end)
 	self:RegisterChatCommand("lo", function() _G.Logout() end)
-	self:RegisterChatCommand("pin", function(msg) _G.print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
-	self:RegisterChatCommand("pii", function(msg) _G.print(_G.GetItemInfo(msg)) end)
-	self:RegisterChatCommand("pil", function(msg) _G.print(_G.gsub(msg, "\124", "\124\124")) end)
-	self:RegisterChatCommand("ft", function() print_family_tree(_G.GetMouseFocus()) end)
-	self:RegisterChatCommand("ftp", function() print_family_tree(_G.GetMouseFocus():GetParent()) end)
+	self:RegisterChatCommand("pin", function(msg) print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
+	self:RegisterChatCommand("pii", function(msg) print(_G.GetItemInfo(msg)) end)
+	self:RegisterChatCommand("pil", function(msg) print(_G.gsub(msg, "\124", "\124\124")) end)
+	self:RegisterChatCommand("ft", function() print_family_tree(GetMouseFocus()) end)
+	self:RegisterChatCommand("ftp", function() print_family_tree(GetMouseFocus():GetParent()) end)
 	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(getObj(msg), true, false) end) -- detailed
 	self:RegisterChatCommand("si1", function(msg) self:ShowInfo(getObj(msg), true, true) end) -- 1 level only
 	self:RegisterChatCommand("sir", function(msg) self:ShowInfo(getObj(msg), false, false) end) -- regions only
@@ -106,8 +109,8 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sidgp", function(msg) self:ShowInfo(getObjGP(msg), true, false) end) -- detailed
 	self:RegisterChatCommand("si1gp", function(msg) self:ShowInfo(getObjGP(msg), true, false) end) -- 1 level only
 	self:RegisterChatCommand("sirgp", function(msg) self:ShowInfo(getObjGP(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("gp", function() _G.print(_G.GetMouseFocus():GetPoint()) end)
-	self:RegisterChatCommand("gpp", function() _G.print(_G.GetMouseFocus():GetParent():GetPoint()) end)
+	self:RegisterChatCommand("gp", function() print(GetMouseFocus():GetPoint()) end)
+	self:RegisterChatCommand("gpp", function() print(GetMouseFocus():GetParent():GetPoint()) end)
 	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, getObj(msg)) end)
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
@@ -115,18 +118,23 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("wai", function() _G.SetMapToCurrentZone() local x,y=_G.GetPlayerMapPosition("player") _G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f",_G.GetZoneText(),_G.GetSubZoneText(),x*100,y*100)) return end)
 
 end
+
 function aObj:printTS(...)
 
-	_G.print(("[%s.%03d]"):format(_G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000), ...)
+	print(("[%s.%03d]"):format(_G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000), ...)
 
 end
+
+-- specify where debug messages go
+aObj.debugFrame = _G.ChatFrame10
 function aObj:Debug(a1, ...)
 
 	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
-
 	printIt(output .. " " .. makeText(a1, ...), self.debugFrame)
+	output = nil
 
 end
+
 aObj.debug2 = false
 function aObj:Debug2(...)
 
@@ -136,6 +144,7 @@ end
 --@end-debug@
 
 --[===[@non-debug@
+aObj.debugFrame = nil
 function aObj:Debug() end
 function aObj:Debug2() end
 --@end-non-debug@]===]
@@ -358,7 +367,6 @@ function aObj:findFrame(height, width, children)
 
 end
 
--- TODO: deprecate when all skins changed
 function aObj:findFrame2(parent, objType, ...)
 --@alpha@
 	assert(parent, "Unknown object findFrame2\n" .. debugstack())
@@ -368,7 +376,8 @@ function aObj:findFrame2(parent, objType, ...)
 
 	local frame, cKey
 
-	for key, child in pairs{parent:GetChildren()} do
+	local kids = {parent:GetChildren()}
+	for key, child in ipairs(kids) do
 		if child:GetName() == nil then
 			if child:IsObjectType(objType) then
 				if select("#", ...) > 2 then
@@ -398,6 +407,7 @@ function aObj:findFrame2(parent, objType, ...)
 			end
 		end
 	end
+	kids = nil
 
 	return frame, cKey
 
@@ -486,6 +496,7 @@ do
 		end
 	end
 end
+
 function aObj:isAddonEnabled(addonName)
 --@alpha@
 	assert(addonName, "Unknown object isAddonEnabled\n" .. debugstack())
@@ -579,14 +590,14 @@ function aObj:scanUIParentsChildren()
 	-- this allows skins to check the children as required
 	local retOK, ret1
 	local kids = {_G.UIParent:GetChildren()}
-	for _, child in _G.ipairs(kids) do
+	for _, child in ipairs(kids) do
 		-- check for forbidden objects (StoreUI components)
 		if not child:IsForbidden() then
 			self.callbacks:Fire("UIParent_GetChildren", child)
 --@alpha@
 		else
 			-- N.B. use print as Debug function causes taint
-			_G.print("ignoring forbidden object [%s]", child)
+			print("ignoring forbidden object [%s]", child)
 --@end-alpha@
 		end
 	end
@@ -602,7 +613,7 @@ function aObj:scanWorldFrameChildren()
 	-- scan through all UIParent's children, firing events for each one
 	-- this allows skins to check the children as required
 	local kids = {_G.WorldFrame:GetChildren()}
-	for _, child in _G.ipairs(kids) do
+	for _, child in ipairs(kids) do
 		self.callbacks:Fire("WorldFrame_GetChildren", child)
 	end
 	kids = nil
@@ -611,7 +622,6 @@ function aObj:scanWorldFrameChildren()
 	self.callbacks.events["WorldFrame_GetChildren"] = nil
 
 end
-
 function aObj:toggleTabDisplay(tab, active)
 
 	if active then
