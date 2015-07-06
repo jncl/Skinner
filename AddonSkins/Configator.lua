@@ -1,12 +1,13 @@
 -- This is a Library
 local aName, aObj = ...
+local _G = _G
 
 function aObj:Configator()
 	if self.initialized.Configator then return end
 	self.initialized.Configator = true
 
 	-- hook this to skin Slide bars
-	local sblib = LibStub("SlideBar", true)
+	local sblib = _G.LibStub("SlideBar", true)
 	if sblib and sblib.frame then
 		self:applySkin(sblib.frame)
 		if self.db.profile.Tooltips.skin then
@@ -17,7 +18,7 @@ function aObj:Configator()
 		end
 	end
 
-	local clib, ver = LibStub("Configator", true)
+	local clib, ver = _G.LibStub("Configator", true)
 	local function skinHelp()
 
 		aObj:moveObject{obj=clib.help.close, y=-2}
@@ -32,7 +33,7 @@ function aObj:Configator()
 		self:RawHook(clib, "Create", function(this, ...)
 			local frame = self.hooks[clib].Create(this, ...)
 --			self:Debug("Configator_Create: [%s]", frame:GetName())
-			if not self.skinFrame[frame.Backdrop] then
+			if not frame.Backdrop.sknd then
 				self:skinButton{obj=frame.Done}
 				self:addSkinFrame{obj=frame.Backdrop}
 			end
@@ -52,26 +53,27 @@ function aObj:Configator()
 			end
 
 			-- skin the Help frame
-			if not self.skinFrame[clib.help] then skinHelp() end
+			if not clib.help.sknd then skinHelp() end
 
 			-- hook this to skin various controls
 			self:RawHook(frame, "AddControl", function(this, id, cType, column, ...)
 				local control = self.hooks[frame].AddControl(this, id, cType, column, ...)
 --	 			self:Debug("Configator_Create_AddControl: [%s, %s, %s, %s, %s]", control, id, cType, column, ...)
 				-- skin the sub-frame if required
-				if not self.skinFrame[this.tabs[id].frame] then
+				if not this.tabs[id].frame.sknd then
 					self:addSkinFrame{obj=this.tabs[id].frame}
 				end
 				-- skin the scroll bars
-				if this.tabs[id].scroll and not self.skinned[this.tabs[id].scroll] then
+				if this.tabs[id].scroll and not this.tabs[id].scroll.sknd then
+					this.tabs[id].scroll.sknd = true
 					self:skinUsingBD{obj=this.tabs[id].scroll.hScroll}
 					self:skinUsingBD{obj=this.tabs[id].scroll.vScroll}
 				end
 				-- skin the DropDown
 				if cType == "Selectbox" then
 					self:skinDropDown{obj=control, rp=true, y2=-4}
-					if not self.skinFrame[SelectBoxMenu.back] then
-						self:addSkinFrame{obj=SelectBoxMenu.back}
+					if not _G.SelectBoxMenu.back.sknd then
+						self:addSkinFrame{obj=_G.SelectBoxMenu.back}
 					end
 				elseif cType == "Text" or cType == "TinyNumber" or cType == "NumberBox" then
 					self:skinEditBox{obj=control, regs={9}}
@@ -124,9 +126,9 @@ function aObj:Configator()
 						end
 					end
 					if tab.scroll then
+						tab.scroll.sknd = true
 						self:skinUsingBD{obj=tab.scroll.hScroll}
 						self:skinUsingBD{obj=tab.scroll.vScroll}
-						self.skinned[tab.scroll] = true
 					end
 				end
 			end
@@ -150,10 +152,10 @@ function aObj:Configator()
 	-- skin the Help frame
 	if clib and clib.help then skinHelp() end
 	-- skin DropDown menu
-	if SelectBoxMenu then self:addSkinFrame{obj=SelectBoxMenu.back}	end
+	if _G.SelectBoxMenu then self:addSkinFrame{obj=_G.SelectBoxMenu.back}	end
 
 	-- skin ScrollSheets
-	local sslib = LibStub("ScrollSheet", true)
+	local sslib = _G.LibStub("ScrollSheet", true)
 	if sslib then
 		self:RawHook(sslib, "Create", function(this, parent, ...)
 			local sheet = self.hooks[sslib].Create(this, parent, ...)

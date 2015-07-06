@@ -106,8 +106,9 @@ function aObj:Outfitter()
 		for i = 1, #this.Tooltips do
 			if self.db.profile.Tooltips.skin then
 				if self.db.profile.Tooltips.style == 3
-				and not self.skinned[this.Tooltips[i]]
+				and not this.Tooltips[i].sknd
 				then
+					this.Tooltips[i].sknd = true
 					this.Tooltips[i]:SetBackdrop(self.Backdrop[1])
 				end
 				self:skinTooltip(this.Tooltips[i])

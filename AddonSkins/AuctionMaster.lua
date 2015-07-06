@@ -31,7 +31,7 @@ function aObj:AuctionMaster() -- version 6.0.0
 				self:removeRegions(child, {1})
 			end
 		end
-		kids = _G.null
+		kids = nil
 	end
 
 	-- logo

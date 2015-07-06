@@ -14,7 +14,8 @@ function aObj:ArkDewdrop()
 		while _G["ArkDewdrop30Level" .. i] do
 			-- aObj:Debug("ArkDewdrop30Level" .. i)
 			frame = _G["ArkDewdrop30Level" .. i]
-			if not aObj.skinned[frame] then
+			if not frame.sknd then
+				frame.sknd = true
 				aObj:applySkin(frame)
 				-- change these to stop the Backdrop colours from being changed
 				frame.SetBackdropColor = function() end
@@ -42,7 +43,8 @@ function aObj:ArkDewdrop()
 		-- if they have then skin them
 		if not sf then
 			sf = aObj:findFrame(170, 100, {"Slider", "EditBox"})
-			if sf and not aObj.skinned[sf] then
+			if sf and not sf.sknd then
+				sf.sknd = true
 				aObj:skinEditBox(sf.currentText, {9})
 				-- Make it wider to display 4 digits
 				sf.currentText:ClearAllPoints()
@@ -53,7 +55,8 @@ function aObj:ArkDewdrop()
 		end
 		if not eb then
 			eb = aObj:findFrame(40, 200, {"EditBox"})
-			if eb and not aObj.skinned[eb] then
+			if eb and not eb.sknd then
+				eb.sknd = true
 				aObj:skinEditBox(eb.editBox, {9})
 				eb.editBox:SetWidth(180)
 				aObj:applySkin(eb)

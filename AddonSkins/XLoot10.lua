@@ -1,20 +1,21 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("XLoot1.0") then return end
+local _G = _G
 
 function aObj:XLoot10()
 
 	-- determine current XLoot profile
 	local pKey = ('%s - %s'):format(UnitName('player'), GetRealmName())
-	local cKey = XLoot_Options.characters[pKey] or "default"
-	local qcl = XLoot_Options.profiles[cKey].quality_color_loot
-	local lc = XLoot_Options.profiles[cKey].loot_color_border
+	local cKey = _G.XLoot_Options.characters[pKey] or "default"
+	local qcl = _G.XLoot_Options.profiles[cKey].quality_color_loot
+	local lc = _G.XLoot_Options.profiles[cKey].loot_color_border
 
 	local lootCnt, btn, item
 	local function skinLootRow()
 
 		-- skin first time thru
-		if not aObj.skinFrame[XLootFrame] then
-			aObj:addSkinFrame{obj=XLootFrame, kfs=true}
+		if not _G.XLootFrame.sknd then
+			aObj:addSkinFrame{obj=_G.XLootFrame, kfs=true}
 		end
 
 		lootCnt = GetNumLootItems()
@@ -45,6 +46,7 @@ function aObj:XLoot10()
 		end
 
 	end
+
 	-- monitor Loot open event to skin the loot rows
 	self:RegisterEvent("LOOT_OPENED", skinLootRow)
 

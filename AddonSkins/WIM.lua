@@ -22,7 +22,7 @@ function aObj:WIM() -- WIM3
 	end
 	local function skinWindow(msgFrame)
 
-		if aObj.skinFrame[msgFrame] then return end
+		if msgFrame.sknd then return end
 
 		aObj:keepFontStrings(msgFrame.widgets.Backdrop)
 		msgFrame.widgets.class_icon:SetAlpha(1)
@@ -144,7 +144,8 @@ function aObj:WIM_Options()
 
 	local function checkKids(obj)
 
-		if aObj.skinned[obj] then return end
+		if obj.sknd then return end
+		obj.sknd = true
 		aObj:skinAllButtons{obj=obj}
 
 		for _, child in _G.pairs{obj:GetChildren()} do

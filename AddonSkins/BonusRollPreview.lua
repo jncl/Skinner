@@ -36,7 +36,7 @@ function aObj:BonusRollPreview()
 		for _, child in _G.ipairs(kids) do
 			self:removeRegions(child, {3}) -- icon ring
 		end
-		kids = _G.null
+		kids = nil
 		end)
 
 end

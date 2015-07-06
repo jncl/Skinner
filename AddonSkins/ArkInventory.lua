@@ -7,8 +7,8 @@ function aObj:ArkInventory()
 
 	local function skinAIFrames(frame)
 		local frameName = frame:GetName()
-		local fID = tonumber(frameName:match("%d+$"))
-		if not aObj.skinned[frame] then
+		local fID = _G.tonumber(frameName:match("%d+$"))
+		if not frame.sknd then
 			for _, v in _G.pairs{"Title", "Search", "ScrollContainer", "Changer", "Status"} do
 				aObj:addSkinFrame{obj=_G[frameName .. v], kfs=v~= "Status" and true or nil, y1=v == "Container" and -1 or 0, nb=true}
 				if v == "Changer" then
@@ -39,7 +39,7 @@ function aObj:ArkInventory()
 	end)
 
 -->>--	Search Frame
-	_G.ArkInventory.db.profile.option.ui.search.border.colour = CopyTable(self.db.profile.BackdropBorder)
+	_G.ArkInventory.db.profile.option.ui.search.border.colour = _G.CopyTable(self.db.profile.BackdropBorder)
 	self:skinButton{obj=_G.ARKINV_SearchTitleClose, cb2=true}
 	self:addSkinFrame{obj=_G.ARKINV_SearchTitle, nb=true}
 	self:addSkinFrame{obj=_G.ARKINV_SearchFrameViewSearch, nb=true}
@@ -59,7 +59,7 @@ end
 function aObj:ArkInventoryRules()
 
 -->>--	Rules Frame
-	_G.ArkInventory.db.profile.option.ui.rules.border.colour = CopyTable(self.db.profile.BackdropBorder)
+	_G.ArkInventory.db.profile.option.ui.rules.border.colour = _G.CopyTable(self.db.profile.BackdropBorder)
 	self:skinButton{obj=_G.ARKINV_RulesTitleClose, cb2=true}
 	self:addSkinFrame{obj=_G.ARKINV_RulesTitle, nb=true}
 	self:addSkinFrame{obj=_G.ARKINV_RulesFrame, nb=true}

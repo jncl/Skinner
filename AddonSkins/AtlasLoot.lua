@@ -4,8 +4,6 @@ local _G = _G
 
 function aObj:AtlasLoot()
 
-	_G.print("AtlasLoot skin loaded")
-
 	local function skinDropDown(obj)
 		obj.frame:SetBackdrop(nil)
 		if aObj.db.profile.TexturedDD then
@@ -31,7 +29,7 @@ function aObj:AtlasLoot()
 					aObj:addSkinFrame{obj=child}
 				end
 			end
-			kids = _G.null
+			kids = nil
 			aObj:Unhook(obj.frame.button, "OnClick")
 		end)
 	end
@@ -49,6 +47,7 @@ function aObj:AtlasLoot()
 	skinSelect(frame.boss)
 	skinSelect(frame.extra)
 	self:addSkinFrame{obj=frame}
+	GUI, frame = nil, nil
 
 	-- ItemFrame
 	local iF = frame.contentFrame
@@ -57,38 +56,39 @@ function aObj:AtlasLoot()
 	self:addButtonBorder{obj=iF.mapButton, ofs=-1, x1=2, x2=-2}
 	self:addButtonBorder{obj=iF.prevPageButton, ofs=-2, x1=1, y2=1}
 	self:addButtonBorder{obj=iF.clasFilterButton}
-
-
+	iF = nil
 
 -->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then _G.AtlasLootTooltip:SetBackdrop(self.backdrop) end
+		if self.db.profile.Tooltips.style == 3 then
+			_G.AtlasLootTooltip:SetBackdrop(self.backdrop)
+		end
 		self:SecureHookScript(_G.AtlasLootTooltip, "OnShow", function(this)
 			self:skinTooltip(this)
 		end)
 		-- skin Mount tooltip
 		local mTT = _G.AtlasLoot.Button:GetType("Mount")
 		if mTT then
-			self:SecureHook(mTT, "ShowToolTipFrame", function(...)
-				self:addSkinFrame{obj=mTT.tooltipFrame}
+			self:SecureHook(mTT, "ShowToolTipFrame", function(this, ...)
+				self:addSkinFrame{obj=this.tooltipFrame}
 				self:Unhook(mTT, "ShowToolTipFrame")
 			end)
 		end
 		-- skin Pet tooltip
 		local pTT = _G.AtlasLoot.Button:GetType("Pet")
-		if mTT then
-			self:SecureHook(pTT, "ShowToolTipFrame", function(...)
-				self:addSkinFrame{obj=pTT.tooltipFrame}
+		if pTT then
+			self:SecureHook(pTT, "ShowToolTipFrame", function(this, ...)
+				self:addSkinFrame{obj=this.tooltipFrame}
 				self:Unhook(pTT, "ShowToolTipFrame")
 			end)
 		end
 		-- skin Faction tooltip
 		local fTT = _G.AtlasLoot.Button:GetType("Faction")
 		if fTT then
-			self:SecureHook(fTT, "ShowToolTipFrame", function(...)
-				fTT.tooltipFrame.standing:SetBackdrop(nil)
-				self:glazeStatusBar(fTT.tooltipFrame.standing.bar, 0,  nil)
-				self:addSkinFrame{obj=fTT.tooltipFrame}
+			self:SecureHook(fTT, "ShowToolTipFrame", function(this, ...)
+				this.tooltipFrame.standing:SetBackdrop(nil)
+				self:glazeStatusBar(this.tooltipFrame.standing.bar, 0,  nil)
+				self:addSkinFrame{obj=this.tooltipFrame}
 				self:Unhook(fTT, "ShowToolTipFrame")
 			end)
 		end

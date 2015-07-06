@@ -1,10 +1,11 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Acheron") then return end
+local _G = _G
 
 function aObj:Acheron()
 
-	local obj = Acheron.frame
-	local AceGUI = LibStub("AceGUI-3.0", true)
+	local obj = _G.Acheron.frame
+	local AceGUI = _G.LibStub("AceGUI-3.0", true)
 	local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion("Frame") or 0
 
 	self:keepFontStrings(obj.frame)
@@ -67,7 +68,7 @@ function aObj:Acheron()
 			local btn
 			for i = 1, #obj.buttons do
 				btn = obj.buttons[i]
-				if not self.skinned[btn.toggle] then
+				if not btn.toggle.sknd then
 					self:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
 				end
 			end

@@ -30,11 +30,10 @@ local function skinGroupCalendar5()
 		-- hook this to change the texture for the Active and Inactive tabs
 		aObj:SecureHook(gcW.TabbedView.Tabs, "SelectTab",function(this, ...)
 			for _, vTab in ipairs(this.Tabs) do
-				local tabSF = aObj.skinFrame[vTab]
 				if vTab == this.SelectedTab then
-					aObj:setActiveTab(tabSF)
+					aObj:setActiveTab(vTab.sf)
 				else
-					aObj:setInactiveTab(tabSF)
+					aObj:setInactiveTab(vTab.sf)
 				end
 			end
 		end)
@@ -104,11 +103,10 @@ local function skinGroupCalendar5()
 		-- hook this to change the texture for the Active and Inactive tabs
 		aObj:SecureHook(eSB.TabbedView.Tabs, "SelectTab",function(this, ...)
 			for _, vTab in ipairs(this.Tabs) do
-				local tabSF = aObj.skinFrame[vTab]
 				if vTab == this.SelectedTab then
-					aObj:setActiveTab(tabSF)
+					aObj:setActiveTab(vTab.sf)
 				else
-					aObj:setInactiveTab(tabSF)
+					aObj:setInactiveTab(vTab.sf)
 				end
 			end
 		end)

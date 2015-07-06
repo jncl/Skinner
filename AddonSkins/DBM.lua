@@ -41,7 +41,7 @@ function aObj:DBMGUI() -- LoD
 					aObj:skinButton{obj=child, as=true} -- make sure text is above button skin
 				end
 			end
-			kids = _G.null
+			kids = nil
 			titleText = _G[subPanel.framename .. "Title"]:GetText()
 			-- (BUGFIX) reparent sliders
 			if titleText == DBM_GUI_Translations.AreaTitle_BarSetup then
@@ -179,7 +179,7 @@ function aObj:DBMCore()
 				self:glazeStatusBar(_G[cName], 0, _G[cName .. "Background"])
 			end
 		end
-		kids = _G.null
+		kids = nil
 	end)
 	-- hook this to skin UpdateReminder frame
 	self:SecureHook(DBM, "ShowUpdateReminder", function(this, ...)

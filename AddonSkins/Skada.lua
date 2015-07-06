@@ -20,11 +20,9 @@ function aObj:Skada()
 	local function skinFrame(win)
 
 		-- skin windows if required
-		if not aObj.skinFrame[win.bargroup]
-		then
+		if not win.bargroup.sknd then
 			-- print(win.bargroup.bgframe, win.bargroup.button)
 			aObj:addSkinFrame{obj=win.bargroup, x1=-4, y1=18, x2=3, y2=-3}
-			win.bargroup:SetBackdrop(nil)
 			win.bargroup.SetBackdrop = function() end
 		end
 

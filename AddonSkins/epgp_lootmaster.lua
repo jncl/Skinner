@@ -1,9 +1,10 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("epgp_lootmaster") then return end
+local _G = _G
 
 function aObj:epgp_lootmaster()
 
-	local EPGPLM = LibStub("AceAddon-3.0"):GetAddon("EPGPLootMaster", true)
+	local EPGPLM = _G.LibStub("AceAddon-3.0"):GetAddon("EPGPLootMaster", true)
 	if not EPGPLM then return end
 
 	if not EPGPLM.frame then
@@ -26,7 +27,7 @@ function aObj:epgp_lootmaster()
 		for i = 1, #this.lootSelectFrames do
 			local frame = this.lootSelectFrames[i]
 			if frame
-			and not self.skinFrame[frame]
+			and not frame.sknd
 			then
 				frame.tbGPValueFrame:SetBackdrop(nil)
 				self:skinEditBox{obj=frame.tbGPValue, regs={9}}
@@ -47,7 +48,7 @@ end
 
 function aObj:epgp_lootmaster_ml()
 
-	local LMML = LibStub("AceAddon-3.0"):GetAddon("LootMasterML", true)
+	local LMML = _G.LibStub("AceAddon-3.0"):GetAddon("LootMasterML", true)
 	if not LMML then return end
 
 	if not LMML.mainframe then

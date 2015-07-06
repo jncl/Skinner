@@ -18,8 +18,8 @@ function aObj:Squeenix()
 		if child:IsObjectType("Frame")
 		and child:GetName() == nil
 		and child:GetFrameStrata() == "BACKGROUND"
-		and ceil(child:GetWidth()) == 140
-		and ceil(child:GetHeight()) == 140
+		and _G.ceil(child:GetWidth()) == 140
+		and _G.ceil(child:GetHeight()) == 140
 		then
 --			self:Debug("Squeenix, found Compass Frame")
 			local regs = {child:GetRegions()}
@@ -31,10 +31,10 @@ function aObj:Squeenix()
 					end
 				end
 			end
-			regs = _G.null
+			regs = nil
 		end
 	end
-	kids = _G.null
+	kids = nil
 
 	self:moveObject{obj=_G.MinimapNorthTag, y=4}
 

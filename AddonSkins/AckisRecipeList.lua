@@ -1,10 +1,12 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("AckisRecipeList") then return end
+local _G = _G
+local pairs, ipairs = _G.pairs, _G.ipairs
 
 function aObj:AckisRecipeList()
 	if not self.db.profile.TradeSkillUI then return end
 
-	local ARL = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
+	local ARL = _G.LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
 	if not ARL then return end
 
 	-- check version, if not a specified release or beta then treat it as version 10
@@ -22,7 +24,7 @@ function aObj:AckisRecipeList()
 		["2.2.8"] = 11, -- release
 		["2.4.1"] = 12, -- release
 	}
-	local aVer = GetAddOnMetadata("AckisRecipeList", "Version")
+	local aVer = _G.GetAddOnMetadata("AckisRecipeList", "Version")
 	local ver = vTab[aVer] or 99
 
 	local function skinARL(frame)
@@ -34,10 +36,10 @@ function aObj:AckisRecipeList()
 		self:moveObject{obj=ver > 4 and frame.prof_button or frame.mode_button, x=6, y=-9}
 		self:moveObject{obj=ver > 11 and frame.profession_texture, x=6, y=-9}
 		if ver < 3 then
-			self:skinDropDown{obj=ARL_DD_Sort}
+			self:skinDropDown{obj=_G.ARL_DD_Sort}
 		end
 		if ver == 1 then
-			self:skinEditBox{obj=ARL_SearchText, regs={9}}
+			self:skinEditBox{obj=_G.ARL_SearchText, regs={9}}
 		else
 			self:skinEditBox{obj=frame.search_editbox, regs={9}, noHeight=true, mi=true}
 			frame.search_editbox:SetHeight(18)
@@ -86,7 +88,7 @@ function aObj:AckisRecipeList()
 			for i = 1, #frame.tabs do
 				local tabObj = frame.tabs[i]
 				self:keepRegions(tabObj, {4, 5}) -- N.B. region 4 is highlight, 5 is text
-				local tabSF = self:addSkinFrame{obj=tabObj, ft=ftype, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
+				local tabSF = self:addSkinFrame{obj=tabObj, noBdr=self.isTT, x1=6, y1=0, x2=-6, y2=2}
 				if i == 3 then
 					if self.isTT then self:setActiveTab(tabSF) end
 				else
@@ -95,9 +97,8 @@ function aObj:AckisRecipeList()
 				if self.isTT then
 					self:SecureHookScript(tabObj, "OnClick", function(this)
 						for i, tab in ipairs(frame.tabs) do
-							local tabSF = self.skinFrame[tab]
-							if tab == this then self:setActiveTab(tabSF)
-							else self:setInactiveTab(tabSF) end
+							if tab == this then self:setActiveTab(tab.sf)
+							else self:setInactiveTab(tab.sf) end
 						end
 					end)
 				end
@@ -114,7 +115,7 @@ function aObj:AckisRecipeList()
 				if this.is_expanded then xOfs = -87
 				else xOfs = -33 end
 			end
-			self.skinFrame[frame]:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", xOfs, yOfs)
+			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", xOfs, yOfs)
 			-- Reset button
 			if not self.sBtn[frame.filter_reset] then
 				self:skinButton{obj=frame.filter_reset}
@@ -149,9 +150,9 @@ function aObj:AckisRecipeList()
 	end
 
 	if ver > 2 and ver < 6 then
-		self:SecureHookScript(ARL_MainPanel, "OnShow", function(this)
+		self:SecureHookScript(_G.ARL_MainPanel, "OnShow", function(this)
 			skinARL(this)
-			self:Unhook(ARL_MainPanel, "OnShow")
+			self:Unhook(_G.ARL_MainPanel, "OnShow")
 		end)
 	else
 		local hookFunc = ARL.Scan and "Scan" or ARL.DisplayFrame and "DisplayFrame" or "CreateFrame"
@@ -163,8 +164,8 @@ function aObj:AckisRecipeList()
 
 	if ver < 12 then
 		-- TextDump frame
-		self:skinScrollBar{obj=ARLCopyScroll}
-		self:addSkinFrame{obj=ARLCopyFrame}
+		self:skinScrollBar{obj=_G.ARLCopyScroll}
+		self:addSkinFrame{obj=_G.ARLCopyFrame}
 	end
 
 	-- button on Tradeskill frame
@@ -182,7 +183,7 @@ function aObj:AckisRecipeList()
 	end
 
 -->>-- Tooltip
-	local tTip = ver > 5 and AckisRecipeList_SpellTooltip or arlSpellTooltip
+	local tTip = ver > 5 and _G.AckisRecipeList_SpellTooltip or _G.arlSpellTooltip
 	if self.db.profile.Tooltips.skin then
 		if self.db.profile.Tooltips.style == 3 then tTip:SetBackdrop(self.Backdrop[1]) end
 		self:SecureHookScript(tTip, "OnShow", function(this)
