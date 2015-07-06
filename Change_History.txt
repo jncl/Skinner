@@ -1,3 +1,23 @@
+b6.20201.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated main modules to use more Globals, clear locals and remove deprecated tables
+	Make sure UnitPowerBarAlt counter can be seen, make sure GarrisonBuilding Follower has correct Quality shown
+	Updated SkillPointFrame buttonBorder code to correctly reparent Skill circle textures
+	Updated many skins to remove deprecated functions/tables & add Globals
+
+	Acheron, AckisRecipeList, ArkDewdrop, ArkInventory, AtlasLoot, AuctionMaster
+	BaudBag, BonusRollPreview, BugSack
+	Combuctor, Configator
+	DBM, DeathNote
+	Glamour, GroupCalendar5
+	LibExtraTip, LibQTip
+	Mogit, Outfitter, ReagentRestocker
+	Skada, Squeenix
+	WIM, XLoot10, epgp_lootmaster
+	Obsoleted AphesLootBrowser, Fortress, GuildMaster & MrTrader_SkillWindow skins
+
 b6.20182.1
 Jncl:
 	ToDo.txt
