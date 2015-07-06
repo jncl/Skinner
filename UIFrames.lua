@@ -1159,6 +1159,12 @@ function aObj:GarrisonUI() -- LoD
 		ib.AddFollowerButton.EmptyPortrait:SetTexture(nil)
 		skinPortrait(ib.FollowerPortrait)
 		ib.FollowerPortrait.PortraitRingQuality:SetVertexColor(ib.FollowerPortrait.PortraitRing:GetVertexColor())
+		aObj:SecureHook("GarrisonBuildingInfoBox_ShowFollowerPortrait", function(...)
+			local obj = _G.GarrisonBuildingFrame.InfoBox.FollowerPortrait
+			-- make sure ring quality is updated to level border colour
+			obj.PortraitRingQuality:SetVertexColor(obj.PortraitRing:GetVertexColor())
+			obj = nil
+		end)
 
 		-- TownHallBox
 		_G.GarrisonBuildingFrame.TownHallBox:DisableDrawLayer("BORDER")
@@ -2023,7 +2029,11 @@ function aObj:MainMenuBar()
 	local function skinUnitPowerBarAlt(upba)
 		-- Don't change the status bar texture as it changes dependant upon type of power type required
 		upba.frame:SetAlpha(0)
-		upba.counterBar:DisableDrawLayer("BACKGROUND")
+		-- adjust height and TextCoord so background appears, this enables the numbers to become easier to see
+		upba.counterBar:SetHeight(26)
+		upba.counterBar.BG:SetTexCoord(0.0, 1.0, 0.35, 0.40)
+		upba.counterBar.BGL:SetAlpha(0)
+		upba.counterBar.BGR:SetAlpha(0)
 		upba.counterBar:DisableDrawLayer("ARTWORK")
 	end
 	self:SecureHook("UnitPowerBarAlt_SetUp", function(this, barID)
@@ -2032,6 +2042,12 @@ function aObj:MainMenuBar()
 	-- skin PlayerPowerBarAlt if already shown
 	if _G.PlayerPowerBarAlt:IsVisible() then
 		skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
+	end
+	-- skin BuffTimers
+	for i = 1, 10 do
+		if _G["BuffTimer" .. i] then
+			skinUnitPowerBarAlt(_G["BuffTimer" .. i])
+		end
 	end
 
 -->>-- MultiBar Buttons
