@@ -1,3 +1,17 @@
+b6.20182.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for CalendarEvent issue
+	Make LandingPage minimap button easier to activate
+	Update DeathRecap skin
+	Fix alert frame fade texture still visible after frame disappears
+	Update Objectives tracker skin
+	Update ReagentBank skin
+	Apply all PTR code changes
+	Updated UtilFuncs
+	Updated MasterPlan skin
+
 b6.20157.1
 Jncl:
 	ToDo.txt
