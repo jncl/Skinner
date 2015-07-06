@@ -8,7 +8,7 @@ function aObj:AuctionUI() -- LoD
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
-	local obj, btnName
+	local btnName
 
 	-- hide filter texture when filter is clicked
 	self:SecureHook("FilterButton_SetType", function(button, type, text, isLast)
@@ -34,6 +34,7 @@ function aObj:AuctionUI() -- LoD
 	_G.WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
 	self:skinButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
 	self:addSkinFrame{obj=_G.WowTokenGameTimeTutorial, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
+	local obj
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		obj = _G["Browse" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
@@ -110,7 +111,7 @@ function aObj:AuctionUI() -- LoD
 	self:moveObject{obj=_G["AuctionProgressBar" .. "Text"], y=-2}
 	self:glazeStatusBar(_G.AuctionProgressBar, 0)
 
-	obj, btnName = nil, nil
+	btnName = nil
 
 end
 
@@ -172,19 +173,16 @@ function aObj:BlackMarketUI() -- LoD
 		self:keepFontStrings(obj)
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
 	end
-	obj = nil
 	self:SecureHook("BlackMarketScrollFrame_Update", function(this)
 		local btn
 		for i = 1, #_G.BlackMarketScrollFrame.buttons do
 			btn = _G.BlackMarketScrollFrame.buttons[i]
 			if btn and not btn.sknd then
-				btn.sknd = true
 				self:keepFontStrings(btn)
 				btn:GetHighlightTexture():SetAlpha(1)
 				self:addButtonBorder{obj=btn.Item, ibt=true, relTo=btn.Item.IconTexture}
 			end
 		end
-		btn = nil
 		self:Unhook("BlackMarketScrollFrame_Update")
 	end)
 	self:skinSlider{obj=_G.BlackMarketScrollFrame.ScrollBar, adj=-4}
@@ -403,7 +401,6 @@ function aObj:PetStableFrame()
 			self:addButtonBorder{obj=btn}
 		end
 	end
-	btn = nil
 	_G.PetStableFrame.BottomInset:DisableDrawLayer("BORDER")
 	_G.PetStableFrameStableBg:Hide()
 	self:addSkinFrame{obj=_G.PetStableFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
@@ -516,16 +513,16 @@ function aObj:QuestInfo()
 		_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		-- Objectives
-		local objective, r, g, b
+		local obj, r, g, b
 		for i = 1, #_G.QuestInfoObjectivesFrame.Objectives do
-			objective = _G.QuestInfoObjectivesFrame.Objectives[i]
-			r, g ,b = objective:GetTextColor()
+			obj = _G.QuestInfoObjectivesFrame.Objectives[i]
+			r, g ,b = obj:GetTextColor()
 			-- if red colour is less than 0.2 then it needs to be coloured
 			if r < 0.2 then
-				objective:SetTextColor(aObj.BTr - r, aObj.BTg - g, aObj.BTb - b)
+				obj:SetTextColor(aObj.BTr - r, aObj.BTg - g, aObj.BTb - b)
 			end
 		end
-		objective, r, g, b = nil, nil, nil, nil
+		r, g, b = nil, nil, nil
 		-- QuestInfoSpecialObjectives Frame
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
@@ -565,8 +562,7 @@ function aObj:QuestInfo()
 		and not rewardsFrame.RewardButtons[index].sknd
 		then
 			rewardsFrame.RewardButtons[index].NameFrame:SetTexture(nil)
-			self:addButtonBorder{obj=rewardsFrame.RewardButtons[index], libt=true}
-			rewardsFrame.RewardButtons[index].sknd = true
+			aObj:addButtonBorder{obj=rewardsFrame.RewardButtons[index], libt=true}
 		end
 	end
 	self:SecureHook("QuestInfo_GetRewardButton", function(...)
@@ -577,16 +573,14 @@ function aObj:QuestInfo()
 
 	-- FollowerFrame
 	frame.FollowerFrame.BG:SetTexture(nil)
-	local ffpf = frame.FollowerFrame.PortraitFrame
-	ffpf.PortraitRing:SetTexture(nil)
-	ffpf.LevelBorder:SetAlpha(0) -- texture changed
-	if ffpf.PortraitRingCover then ffpf.PortraitRingCover:SetTexture(nil) end
-	ffpf = nil
+	local obj = frame.FollowerFrame.PortraitFrame
+	obj.PortraitRing:SetTexture(nil)
+	obj.LevelBorder:SetAlpha(0) -- texture changed
+	if obj.PortraitRingCover then obj.PortraitRingCover:SetTexture(nil) end
 	-- SkillPointFrame
-	local fspf = frame.SkillPointFrame
-	fspf.NameFrame:SetTexture(nil)
-	self:addButtonBorder{obj=fspf, relTo=fspf.Icon, reParent={fspf.CircleBackground, fspf.CircleBackgroundGlow, fspf.ValueText}}
-	fspf = nil
+	obj = frame.SkillPointFrame
+	obj.NameFrame:SetTexture(nil)
+	self:addButtonBorder{obj=obj, relTo=obj.Icon, reParent={obj.CircleBackground, obj.CircleBackgroundGlow, obj.ValueText}}
 	-- MapQuestInfoRewards Frame
 	frame = _G.MapQuestInfoRewardsFrame
 	frame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -601,7 +595,6 @@ function aObj:QuestInfo()
 			self:addButtonBorder{obj=frame[v], relTo=frame[v].Icon, reParent={frame[v].CircleBackground, frame[v].CircleBackgroundGlow, frame[v].ValueText}}
 		end
 	end
-	frame = nil
 
 end
 
@@ -669,7 +662,6 @@ function aObj:TrainerUI() -- LoD
 		btn:GetNormalTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	btn = nil
 	self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 	self:addSkinFrame{obj=_G.ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 
@@ -687,7 +679,6 @@ function aObj:VoidStorageUI() -- LoD
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 	end
-	frame = nil
 	self:addSkinFrame{obj=_G.VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
 	self:skinEditBox{obj=_G.VoidItemSearchBox, regs={9, 10}, mi=true, noHeight=true, noMove=true}
 	for i = 1, 2 do

@@ -93,8 +93,6 @@ local function __checkTex(opts)
 		end
 	end
 
-	nTex, btn = nil, nil
-
 end
 function module:checkTex(...)
 

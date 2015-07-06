@@ -32,7 +32,6 @@ do
 			end
 		end)
 		aObj:skinTooltip(tt) -- skin here so tooltip initially skinnned when logged on
-		tt = nil
 	end})
 	-- Set the Tooltip Border
 	aObj.ttBorder = true
@@ -86,7 +85,7 @@ function aObj:AlertFrames()
 				aObj:addSkinFrame{obj=obj, ft=ftype, af=true, afas=true, x1=x1, y1=y1, x2=x2, y2=y2}
 			end
 		end
-		x1, x2, y1, y2, obj, icon = nil, nil ,nil ,nil, nil, nil
+		x1, x2, y1, y2 = nil, nil ,nil ,nil
 
 	end
 
@@ -117,7 +116,7 @@ function aObj:AlertFrames()
 				obj.sf:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", 5, y2)
 			end
 		end
-		obj, y1, y2 = nil
+		y1, y2 = nil, nil
 	end)
 
 	-- CriteriaAlert Frames
@@ -464,7 +463,6 @@ function aObj:Calendar() -- LoD
 		self:removeRegions(btn, {1})
 		self:addButtonBorder{obj=btn}
 	end
-	btn = nil
 	-- Class Totals button, texture & size changes
 	self:moveObject{obj=_G.CalendarClassTotalsButton, x=-2}
 	_G.CalendarClassTotalsButton:SetWidth(25)
@@ -483,14 +481,13 @@ function aObj:ChallengesUI() -- LoD
 
 	self:removeInset(_G.ChallengesFrameInset)
 	self:keepFontStrings(_G.ChallengesFrame.details)
-	local row
+	local obj
 	for i = 1, 3 do
-		row = _G.ChallengesFrame["RewardRow" .. i]
-		self:getRegion(row, 1):SetAlpha(0) -- N.B. texture changed in code
-		self:addButtonBorder{obj=row.Reward2, relTo=row.Reward2.Icon}
-		self:addButtonBorder{obj=row.Reward1, relTo=row.Reward1.Icon}
+		obj = _G.ChallengesFrame["RewardRow" .. i]
+		self:getRegion(obj, 1):SetAlpha(0) -- N.B. texture changed in code
+		self:addButtonBorder{obj=obj.Reward2, relTo=obj.Reward2.Icon}
+		self:addButtonBorder{obj=obj.Reward1, relTo=obj.Reward1.Icon}
 	end
-	row = nil
 
 	-- ChallengesLeaderboard Frame
 	self:keepFontStrings(_G.ChallengesLeaderboardFrameHbar)
@@ -542,7 +539,6 @@ function aObj:ChatButtons()
 			self:addButtonBorder{obj=obj.upButton, ofs=-2}
 			self:addButtonBorder{obj=obj.bottomButton, ofs=-2, reParent={self:getRegion(obj.bottomButton, 1)}}
 		end
-		obj = nil
 		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2}
 	end
 
@@ -628,13 +624,12 @@ function aObj:ChatConfig()
 	self:skinEditBox{obj=_G.CombatConfigSettingsNameEditBox , regs={9}}
 
 	-- Tabs
-	local obj
+	local tab
 	for i = 1, #_G.COMBAT_CONFIG_TABS do
-		obj = _G["CombatConfigTab" .. i]
-		self:keepRegions(obj, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
-		self:addSkinFrame{obj=obj, ft=ftype, y1=-8, y2=-4}
+		tab = _G["CombatConfigTab" .. i]
+		self:keepRegions(tab, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
+		self:addSkinFrame{obj=tab, ft=ftype, y1=-8, y2=-4}
 	end
-	obj = nil
 
 end
 
@@ -709,7 +704,7 @@ function aObj:ChatFrames()
 		end
 		self:addSkinFrame{obj=obj, ft=ftype, ofs=6, y1=yOfs1, y2=-8}
 	end
-	yOfs1, obj = nil, nil
+	yOfs1 = nil
 	-- CombatLog Quick Button Frame & Progress Bar
 	if self.db.profile.CombatLogQBF then
 		if _G[clqbf_c] then
@@ -746,7 +741,6 @@ function aObj:ChatMinimizedFrames()
 		self:rmRegionsTex(obj, {1, 2, 3})
 		self:addSkinFrame{obj=obj, ft=ftype, x1=1, y1=-2, x2=-1, y2=2}
 		self:addButtonBorder{obj=_G[chatFrame:GetName() .. "MinimizedMaximizeButton"], ofs=-1}
-		obj = nil
 	end)
 
 end
@@ -784,7 +778,6 @@ function aObj:ChatTabs()
 		tab = _G["ChatFrame" .. i .. "Tab"]
 		skinChatTab(tab)
 	end
-	tab = nil
 
 	if self.db.profile.ChatTabsFade then
 		-- hook this to hide/show the skin frame
@@ -927,7 +920,6 @@ function aObj:DestinyFrame()
 		self:adjHeight{obj=btn, adj=-60}
 		self:skinButton{obj=btn, x1=-2, y1=2, x2=-3, y2=-1}
 	end
-	btn = nil
 
 	_G.DestinyFrame.alphaLayer:SetTexture(0, 0, 0, 0.70)
 	_G.DestinyFrame.background:SetTexture(nil)
@@ -971,7 +963,7 @@ function aObj:DropDownPanels() -- option under General settings
 				end)
 			end
 		end
-		objName, obj = nil, nil
+		objName = nil
 	end)
 
 end
@@ -994,7 +986,6 @@ function aObj:GarrisonUI() -- LoD
 				local fp = this:GetParent()
 				fp.Portrait:SetTexture(nil)
 				fp.PortraitRingQuality:SetVertexColor(1, 1, 1, 1)
-				fp = nil
 			end)
 		end
 
@@ -1045,7 +1036,6 @@ function aObj:GarrisonUI() -- LoD
 			ft.AbilitiesFrame.Counters[i].Border:SetTexture(nil)
 			aObj:addButtonBorder{obj=ft.AbilitiesFrame.Counters[i], relTo=ft.AbilitiesFrame.Counters[i].Icon}
 		end
-		ft = nil
 
 	end
 	local function skinFollowerTraitsAndEquipment(obj)
@@ -1064,7 +1054,6 @@ function aObj:GarrisonUI() -- LoD
 			btn.Border:SetTexture(nil)
 			aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
 		end
-		btn = nil
 
 	end
 	local function skinCompleteDialog(obj)
@@ -1105,7 +1094,6 @@ function aObj:GarrisonUI() -- LoD
 			frame.BG:SetTexture(nil)
 			aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
 		end
-		frame = nil
 
 	end
 	local function skinMissionComplete(obj)
@@ -1123,7 +1111,6 @@ function aObj:GarrisonUI() -- LoD
 			aObj:glazeStatusBar(frame.XP, 0,  nil)
 			frame.XP:DisableDrawLayer("OVERLAY")
 		end
-		frame = nil
 		obj.BonusRewards:DisableDrawLayer("BACKGROUND")
 		obj.BonusRewards:DisableDrawLayer("BORDER")
 		aObj:getRegion(obj.BonusRewards, 11):SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb) -- Heading
@@ -1156,7 +1143,6 @@ function aObj:GarrisonUI() -- LoD
 				aObj:toggleTabDisplay(tab, false)
 			end
 		end
-		tab = nil
 
 		local btn
 		for i = 1, #bl.Buttons do
@@ -1164,7 +1150,6 @@ function aObj:GarrisonUI() -- LoD
 			btn.BG:SetTexture(nil)
 			aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
 		end
-		btn = nil
 		aObj:SecureHook("GarrisonBuildingList_SelectTab", function(tab)
 			local bl = tab:GetParent()
 			-- handle tab textures
@@ -1182,11 +1167,8 @@ function aObj:GarrisonUI() -- LoD
 				btn.BG:SetTexture(nil)
 				aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
 			end
-			btn = nil
-			bl = nil
 		end)
 		bl.MaterialFrame:DisableDrawLayer("BACKGROUND")
-		bl = nil
 
 		-- BuildingLevelTooltip
 		aObj:addSkinFrame{obj=_G.GarrisonBuildingFrame.BuildingLevelTooltip, ft=ftype}
@@ -1196,7 +1178,6 @@ function aObj:GarrisonUI() -- LoD
 		fl:DisableDrawLayer("BACKGROUND")
 		fl:DisableDrawLayer("BORDER")
 		skinFollowerList(fl)
-		fl = nil
 
 		-- InfoBox
 		local ib = _G.GarrisonBuildingFrame.InfoBox
@@ -1210,9 +1191,7 @@ function aObj:GarrisonUI() -- LoD
 			local obj = _G.GarrisonBuildingFrame.InfoBox.FollowerPortrait
 			-- make sure ring quality is updated to level border colour
 			obj.PortraitRingQuality:SetVertexColor(obj.PortraitRing:GetVertexColor())
-			obj = nil
 		end)
-		ib = nil
 
 		-- TownHallBox
 		_G.GarrisonBuildingFrame.TownHallBox:DisableDrawLayer("BORDER")
@@ -1245,9 +1224,7 @@ function aObj:GarrisonUI() -- LoD
 				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
 				btn.NameFrame:SetTexture(nil)
 			end
-			btn = nil
 		end)
-		cdf = nil
 
 	end
 
@@ -1274,14 +1251,12 @@ function aObj:GarrisonUI() -- LoD
 				aObj:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon, reParent={btn.Rewards[j].Quantity}}
 			end
 		end
-		btn = nil
 		for i = 1, #rp.Shipments do
 			aObj:removeRegions(rp.Shipments[i], {1, 3, 4})
 		end
 		-- tabs at top
 		rp.InProgress:GetNormalTexture():SetAlpha(0)
 		rp.Available:GetNormalTexture():SetAlpha(0)
-		rp = nil
 
 		-- FollowerList
 		local fl = _G.GarrisonLandingPage.FollowerList
@@ -1289,7 +1264,6 @@ function aObj:GarrisonUI() -- LoD
 		aObj:SecureHook(fl, "ShowFollower", function(this, id)
 			skinFollowerAbilitiesAndCounters(this, id)
 		end)
-		fl = nil
 
 		-- FollowerTab
 		skinFollowerPage(_G.GarrisonLandingPage.FollowerTab)
@@ -1333,7 +1307,6 @@ function aObj:GarrisonUI() -- LoD
 			this:GetParent().AlertText:Hide()
 			this:GetParent().MinimapPulseAnim:Stop()
 		end)
-		obj = nil
 
 	end
 
@@ -1362,7 +1335,6 @@ function aObj:GarrisonUI() -- LoD
 		aObj:SecureHook(fl, "ShowFollower", function(this, id)
 			skinFollowerAbilitiesAndCounters(this, id)
 		end)
-		fl = nil
 
 	-->>-- MissionTab
 		-- Mission List
@@ -1385,7 +1357,6 @@ function aObj:GarrisonUI() -- LoD
 				end
 			end
 		end
-		tab = nil
 		aObj:SecureHook("GarrisonMissionList_SetTab", function(tab)
 			-- handle tab textures
 			if aObj.isTT then
@@ -1410,11 +1381,9 @@ function aObj:GarrisonUI() -- LoD
 				aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
 			end
 		end
-		btn = nil
 
 		-- CompleteDialog
 		skinCompleteDialog(ml)
-		ml = nil
 
 		-- MissionPage
 		local mp = _G.GarrisonMissionFrame.MissionTab.MissionPage
@@ -1427,7 +1396,6 @@ function aObj:GarrisonUI() -- LoD
 			mp.Enemies[i].PortraitFrame.PortraitRing:SetTexture(nil)
 		end
 		aObj:moveObject{obj=mp.FollowerModel, x=-6, y=0}
-		mp = nil
 
 	-->>-- FollowerTab
 		_G.GarrisonMissionFrame.FollowerTab:DisableDrawLayer("BORDER")
@@ -1440,7 +1408,6 @@ function aObj:GarrisonUI() -- LoD
 			mc.Stage.EncountersFrame.Encounters[i].Ring:SetTexture(nil)
 		end
 		aObj:keepRegions(mc.Stage.MissionInfo, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 9, 10 are text, 8 is MissionType
-		mc = nil
 
 		-- N.B. IconBG texture seems to appear when the mission is Rare
 		aObj:SecureHook("GarrisonMissionPage_SetReward", function(frame, reward)
@@ -1480,7 +1447,6 @@ function aObj:GarrisonUI() -- LoD
 		local fl = _G.GarrisonRecruitSelectFrame.FollowerList
 		fl:DisableDrawLayer("BORDER")
 		skinFollowerList(fl)
-		fl = nil
 
 		-- Follower Selection
 		local fs = _G.GarrisonRecruitSelectFrame.FollowerSelection
@@ -1494,7 +1460,6 @@ function aObj:GarrisonUI() -- LoD
 			btn.LevelBorder:SetTexture(nil)
 			btn.PortraitRingQuality:SetVertexColor(btn.LevelBorder:GetVertexColor())
 		end
-		fs, btn = nil, nil
 		aObj:addSkinFrame{obj=_G.GarrisonRecruitSelectFrame, ft=ftype, kfs=true, ofs=2}
 
 	end
@@ -1516,7 +1481,6 @@ function aObj:GarrisonUI() -- LoD
 		fl:DisableDrawLayer("BORDER")
 		fl.MaterialFrame:DisableDrawLayer("BACKGROUND")
 		skinFollowerList(fl)
-		fl = nil
 
 	-->>-- Naval Map Tab (MissionTab)
 		-- Mission List
@@ -1527,7 +1491,6 @@ function aObj:GarrisonUI() -- LoD
 
 		-- CompleteDialog
 		skinCompleteDialog(ml)
-		ml = nil
 
 		-- MissionPage
 		local mp = _G.GarrisonShipyardFrame.MissionTab.MissionPage
@@ -1544,14 +1507,12 @@ function aObj:GarrisonUI() -- LoD
 				aObj:addButtonBorder{obj=frame.Counters[i], relTo=frame.Counters[i].Icon}
 			end
 		end
-		mp, frame = nil, nil
 
 	-->>-- Fleet Tab (FollowerTab)
 		-- FollowerTab
 		local ft = _G.GarrisonShipyardFrame.FollowerTab
 		ft:DisableDrawLayer("BORDER")
 		skinFollowerTraitsAndEquipment(ft)
-		ft = nil
 
 		-- MissionComplete
 		local mc = _G.GarrisonShipyardFrame.MissionComplete
@@ -1560,7 +1521,6 @@ function aObj:GarrisonUI() -- LoD
 			mc.Stage.EncountersFrame.Encounters[i].PortraitRing:SetTexture(nil)
 		end
 		aObj:keepRegions(mc.Stage.MissionInfo, {6, 7}) -- N.B. 6 & 7 are MissionType & Title
-		mc = nil
 
 	end
 
@@ -1668,7 +1628,6 @@ function aObj:GMSurveyUI() -- LoD
 		obj.SetBackdropColor = function() end
 		obj.SetBackdropBorderColor = function() end
 	end
-	obj = nil
 
 	self:skinScrollBar{obj=_G.GMSurveyCommentScrollFrame}
 	self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
@@ -1704,7 +1663,6 @@ function aObj:GuildBankUI() -- LoD
 		btn:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=btn}
 	end
-	btn = nil
 
 -->>--	Tabs (side)
 	local objName
@@ -1734,7 +1692,6 @@ function aObj:HelpFrame()
 		btn:GetNormalTexture():SetTexture(nil)
 		btn:GetPushedTexture():SetTexture(nil)
 	end
-	btn = nil
 	_G.HelpFrame.button16:GetNormalTexture():SetTexture(nil)
 	self:addSkinFrame{obj=_G.HelpFrame, ft=ftype, kfs=true, ofs=-10, y2=7}
 	-- Account Security panel
@@ -1813,7 +1770,6 @@ function aObj:LevelUpDisplay()
 	-- dtf.descriptionshadow:SetTexture(nil)
 	-- self:addButtonBorder{obj=dtf, relTo=dtf.Icon}
 	self:addButtonBorder{obj=dtf, relTo=dtf.Icon2} -- starts on RHS as Icon, finishes on LHS
-	dtf = nil
 
 end
 
@@ -1856,7 +1812,6 @@ function aObj:LFDFrame()
 		btn = "LFDQueueFrameSpecificListButton" .. i .. "ExpandOrCollapseButton"
 		self:skinButton{obj=_G[btn], mp2=true}
 	end
-	btn = nil
 	self:skinScrollBar{obj=_G.LFDQueueFrameSpecificListScrollFrame}
 
 end
@@ -1905,7 +1860,6 @@ function aObj:LFRFrame()
 		self:skinButton{obj=_G[btn], mp2=true}
 		self:moveObject{obj=_G[btn .. "Highlight"], x=-3} -- move highlight to the left
 	end
-	btn = nil
 	self:skinScrollBar{obj=_G.LFRQueueFrameSpecificListScrollFrame}
 
 	-- LFR Browse Frame
@@ -1915,13 +1869,12 @@ function aObj:LFRFrame()
 	self:keepFontStrings(_G.LFRBrowseFrame)
 
 	-- Tabs (side)
-	local obj
+	local tab
 	for i = 1, 2 do
-		obj = _G["LFRParentFrameSideTab" .. i]
-		obj:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=obj}
+		tab = _G["LFRParentFrameSideTab" .. i]
+		tab:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=tab}
 	end
-	obj = nil
 
 end
 
@@ -1956,7 +1909,6 @@ function aObj:MacroUI() -- LoD
 		btn:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=btn, relTo=_G["MacroPopupButton" .. i .. "Icon"], spbt=true}
 	end
-	btn = nil
 
 end
 
@@ -1997,7 +1949,6 @@ function aObj:MailFrame()
 	self:skinEditBox{obj=_G.SendMailBodyEditBox, noSkin=true}
 	local c = self.db.profile.BodyText
 	_G.SendMailBodyEditBox:SetTextColor(c.r, c.g, c.b)
-	c = nil
 	self:skinMoneyFrame{obj=_G.SendMailMoney, moveSEB=true, moveGEB=true, noWidth=true}
 	self:removeInset(_G.SendMailMoneyInset)
 	_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
@@ -2012,7 +1963,6 @@ function aObj:MailFrame()
 		btn = _G["OpenMailAttachmentButton" .. i]
 		self:addButtonBorder{obj=btn, ibt=true, ofs=3}
 	end
-	btn = nil
 -->>-- Invoice Frame Text fields
 	for _, v in pairs{"ItemLabel", "Purchaser", "BuyMode", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"} do
 		_G["OpenMailInvoice" .. v]:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -2065,7 +2015,7 @@ function aObj:MainMenuBar()
 	self:keepFontStrings(_G.MultiCastFlyoutFrame)
 
 -->>-- Action Buttons
-	local btn
+local btn
 	for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 		btn = _G["ActionButton" .. i]
 		btn.FlyoutBorder:SetTexture(nil)
@@ -2073,7 +2023,6 @@ function aObj:MainMenuBar()
 		btn.Border:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 	end
-	btn = nil
 
 	-- Micro buttons, skinned before checks for a consistent look, 12.10.12
 	local mbs = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "LFD", "Collections", "EJ", "Store"}
@@ -2154,7 +2103,6 @@ function aObj:MainMenuBar()
 			_G["MultiBar" .. v .. "Button" .. i .. "FloatingBG"]:SetAlpha(0)
 			self:addButtonBorder{obj=btn, abt=true, sec=true}
 		end
-		btn = nil
 	end
 
 	-- hook this to hide button grid after it has been shown
@@ -2473,6 +2421,8 @@ function aObj:MinimapButtons()
 	self.initialized.MinimapButtons = true
 
 	local minBtn = self.db.profile.MinimapButtons.style
+	-- skin other Blizzard buttons
+	local asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
 
 	local function mmKids(mmObj)
 
@@ -2541,8 +2491,6 @@ function aObj:MinimapButtons()
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
 	self:ScheduleTimer(mmKids, 0.5, _G.Minimap)
 
-	-- skin other Blizzard buttons
-	local asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
 
 	-- Calendar button
 	makeSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
@@ -2566,7 +2514,6 @@ function aObj:MinimapButtons()
 		obj.sb:SetText(k == 1 and self.modUIBtns.plus or self.modUIBtns.minus)
 		if not obj:IsEnabled() then obj.sb:Disable() end
 	end
-	asopts = nil
 
 	-- change Mail icon
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
@@ -2734,7 +2681,6 @@ function aObj:Nameplates()
 						npObj.sb2.rg3:sw(46)
 						npObj.sb2.rg3:SetPoint("CENTER", npObj.sb2.rg4, "CENTER", 9, -1)
 					end
-					npObj = nil
 				end
 			end)
 			aObj:scanWorldFrameChildren()
@@ -2780,7 +2726,6 @@ function aObj:NavigationBar()
 			btn:GetNormalTexture():SetAlpha(0)
 			btn:GetPushedTexture():SetAlpha(0)
 		end
-		btn = nil
 	end)
 
 end
@@ -2832,7 +2777,7 @@ function aObj:PetBattleUI()
 		-- Ally2/3, Enemy2/3
 		local btn
 		for i = 2, 3 do
-			 btn = _G.PetBattleFrame[v .. i]
+			btn = _G.PetBattleFrame[v .. i]
 			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.ActualHealthBar}}
 			btn.BorderAlive:SetTexture(nil)
 			self:changeTandC(btn.BorderDead, [[Interface\PetBattles\DeadPetIcon]])
@@ -2847,9 +2792,8 @@ function aObj:PetBattleUI()
 			btn.ActualHealthBar:SetTexture(self.sbTexture)
 			btn.HealthDivider:SetTexture(nil)
 		end
-		btn = nil
 	end
-	obj, sfn, xOfs, yOfs = nil, nil, nil, nil
+	sfn, xOfs, yOfs = nil, nil, nil
 
 	-- create a frame behind the VS text
 	_G.PetBattleFrame.sfm = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
@@ -2873,7 +2817,6 @@ function aObj:PetBattleUI()
 		btn.ActualHealthBar:SetTexture(self.sbTexture)
 		btn.HealthDivider:SetTexture(nil)
 	end
-	btn = nil
 	self:keepRegions(_G.PetBattleFrame.BottomFrame.xpBar, {1, 5, 6, 13}) -- text and statusbar textures
 	self:glazeStatusBar(_G.PetBattleFrame.BottomFrame.xpBar, 0,  nil)
 	_G.PetBattleFrame.BottomFrame.TurnTimer.TimerBG:SetTexture(nil)
@@ -2895,7 +2838,6 @@ function aObj:PetBattleUI()
 				btn = this.BottomFrame.abilityButtons[i]
 				self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}}
 			end
-			btn = nil
 			self:Unhook("PetBattleFrame_UpdateActionBarLayout")
 		end)
 		self:SecureHook("PetBattleActionButton_UpdateState", function(this)
@@ -2965,14 +2907,13 @@ function aObj:PetBattleUI()
 			end
 		end)
 		-- PetBattlePrimaryUnit Tooltip
-		local obj = _G.PetBattlePrimaryUnitTooltip
+		obj = _G.PetBattlePrimaryUnitTooltip
 		obj:DisableDrawLayer("BACKGROUND")
 		obj.ActualHealthBar:SetTexture(self.sbTexture)
 		obj.XPBar:SetTexture(self.sbTexture)
 		obj.Delimiter:SetTexture(nil)
 		obj.sf = self:addSkinFrame{obj=obj, ft=ftype}
 		self:add2Table(self.pbtt, obj.sf)
-		obj = nil
 		-- PetBattlePrimaryAbility Tooltip
 		_G.PetBattlePrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
 		_G.PetBattlePrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
@@ -3021,7 +2962,6 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 				btn.bg:SetTexture(nil)
 			end
 		end
-		btn = nil
 	end)
 	-- Premade Groups LFGListPVEStub (LFGList)
 	-- CategorySelection
@@ -3036,7 +2976,6 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	self:removeMagicBtnTex(cs.FindGroupButton)
 	self:skinButton{obj=cs.StartGroupButton}
 	self:removeMagicBtnTex(cs.StartGroupButton)
-	cs = nil
 	-- NothingAvailable
 	self:removeInset(_G.LFGListFrame.NothingAvailable.Inset)
 	-- SearchPanel
@@ -3051,7 +2990,6 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	self:removeMagicBtnTex(sp.BackButton)
 	self:skinButton{obj=sp.SignUpButton}
 	self:removeMagicBtnTex(sp.SignUpButton)
-	sp = nil
 	-- ApplicationViewer
 	local av = _G.LFGListFrame.ApplicationViewer
 	av:DisableDrawLayer("BACKGROUND")
@@ -3068,12 +3006,10 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 		self:skinButton{obj=btn.DeclineButton}
 		self:skinButton{obj=btn.InviteButton}
 	end
-	btn = nil
 	self:skinButton{obj=av.RemoveEntryButton}
 	self:removeMagicBtnTex(av.RemoveEntryButton)
 	self:skinButton{obj=av.EditButton}
 	self:removeMagicBtnTex(av.EditButton)
-	av = nil
 	-- EntryCreation
 	local ec = _G.LFGListFrame.EntryCreation
 	self:removeInset(ec.Inset)
@@ -3093,7 +3029,6 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	self:removeMagicBtnTex(ec.ListGroupButton)
 	self:skinButton{obj=ec.CancelButton}
 	self:removeMagicBtnTex(ec.CancelButton)
-	ec, ecafd = nil, nil
 
 	-- LFGListApplication Dialog
 	self:skinSlider{obj=_G.LFGListApplicationDialog.Description.ScrollBar, adj=-4}
@@ -3142,7 +3077,6 @@ function aObj:QuestMap()
 	self:skinScrollBar{obj=qlpdf.ScrollFrame}
 	self:addButtonBorder{obj=qlpdf.ShowMapButton, relTo=qlpdf.ShowMapButton.Texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=qlpdf, ft=ftype, kfs=true, ri=true, ofs=2}
-	qlpdf = nil
 
 -->>-- Quest Map Frame
 	_G.QuestMapFrame.VerticalSeparator:SetTexture(nil)
@@ -3247,7 +3181,6 @@ function aObj:StaticPopups()
 					obj:SetText(self.modUIBtns.mult)
 				end
 			end
-			obj = nil
 		end)
 	end
 
@@ -3263,7 +3196,7 @@ function aObj:StaticPopups()
 		-- prevent FrameLevel from being changed (LibRock does this)
 		obj.sf.SetFrameLevel = function() end
 	end
-	objName, obj = nil, nil
+	objName = nil
 
 end
 
@@ -3402,7 +3335,6 @@ function aObj:Tutorial()
 	btn:SetText("?")
 	self:moveObject{obj=btn:GetFontString(), x=4}
 	self:addSkinButton{obj=btn, parent=btn, ft=ftype, x1=30, y1=-1, x2=-25, y2=10}
-	btn = nil
 
 end
 

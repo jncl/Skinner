@@ -38,7 +38,6 @@ function aObj:AchievementUI() -- LoD
 			btn.middle:SetAlpha(0)
 			btn.right:SetAlpha(0)
 		end
-		btn = nil
 
 	end
 	local function glazeProgressBar(pBar)
@@ -71,7 +70,6 @@ function aObj:AchievementUI() -- LoD
 			btn.right:SetAlpha(0)
 			btn.right2:SetAlpha(0)
 		end
-		btn = nil
 
 	end
 	local function cleanButtons(frame, type)
@@ -120,7 +118,7 @@ function aObj:AchievementUI() -- LoD
 				if btn.completed then btn:Saturate() end
 			end
 		end
-		btnName, btn = nil, nil
+		btnName = nil
 
 	end
 
@@ -132,7 +130,6 @@ function aObj:AchievementUI() -- LoD
 		tex:SetWidth(110)
 		tex:SetHeight(19)
 		tex:SetPoint("RIGHT", _G.AchievementFrameFilterDropDown, "RIGHT", -3, 4)
-		tex = nil
 	end
 	-- skin the frame
 	if self.db.profile.DropDownButtons then
@@ -307,7 +304,6 @@ function aObj:ArchaeologyUI() -- LoD
 		_G["ArchaeologyFrameCompletedPageArtifact" .. i .. "Bg"]:Hide()
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	btn = nil
 	self:addButtonBorder{obj=_G.ArchaeologyFrame.completedPage.prevPageButton, ofs=0}
 	self:addButtonBorder{obj=_G.ArchaeologyFrame.completedPage.nextPageButton, ofs=0}
 -->>-- Artifact Page
@@ -356,7 +352,6 @@ function aObj:Buffs()
 					aObj:moveObject{obj=btn.duration, y=-1}
 				end
 			end
-			btn = nil
 
 		end
 		-- hook this to skin new Buffs
@@ -402,7 +397,6 @@ function aObj:CastingBar()
 			obj.barSpark.offsetY = -1
 		end
 	end
-	obj = nil
 	-- hook this to handle the CastingBar being attached to the Unitframe and then reset
 	self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
 		castBar.border:SetAlpha(0)
@@ -450,7 +444,6 @@ function aObj:CharacterFrames()
 		tab.sbb:SetBackdropBorderColor(1, 0.6, 0, 1)
 		tab.sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 	end
-	tab = nil
 	-- hook this to manage the active tab
 	self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 		local tab
@@ -460,20 +453,18 @@ function aObj:CharacterFrames()
 				tab.sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 			end
 		end
-		tab = nil
 	end)
 	-- Stats
 	_G.CharacterStatsPane:DisableDrawLayer("ARTWORK")
 	self:skinSlider{obj=_G.CharacterStatsPaneScrollBar, size=3}
-	local grp
+	local obj
 	for i = 1, 7 do
-		grp = _G["CharacterStatsPaneCategory" .. i]
-		grp.BgTop:SetAlpha(0)
-		grp.BgBottom:SetAlpha(0)
-		grp.BgMiddle:SetAlpha(0)
-		grp.BgMinimized:SetAlpha(0)
+		obj = _G["CharacterStatsPaneCategory" .. i]
+		obj.BgTop:SetAlpha(0)
+		obj.BgBottom:SetAlpha(0)
+		obj.BgMiddle:SetAlpha(0)
+		obj.BgMinimized:SetAlpha(0)
 	end
-	grp = nil
 	-- hook this to remove background texture from stat lines
 	self:SecureHook("PaperDollFrame_UpdateStatCategory", function(catFrame)
 		local statFrame
@@ -481,7 +472,6 @@ function aObj:CharacterFrames()
 			statFrame = _G[catFrame:GetName() .. "Stat" .. i]
 			if statFrame and statFrame.Bg then statFrame.Bg:SetAlpha(0) end
 		end
-		statFrame = nil
 	end)
 	-- Titles
 	self:SecureHookScript(_G.PaperDollTitlesPane, "OnShow", function(this)
@@ -499,7 +489,6 @@ function aObj:CharacterFrames()
 			btn:DisableDrawLayer("BACKGROUND")
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
-		btn = nil
 		self:Unhook(_G.PaperDollEquipmentManagerPane, "OnShow")
 	end)
 	self:skinSlider{obj=_G.PaperDollEquipmentManagerPane.scrollBar, adj=-4}
@@ -535,7 +524,6 @@ function aObj:CharacterFrames()
 	self:keepFontStrings(_G.ReputationFrame)
 	self:skinScrollBar{obj=_G.ReputationListScrollFrame}
 
-	local obj
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 		obj = "ReputationBar" .. i
 		self:skinButton{obj=_G[obj .. "ExpandOrCollapseButton"], mp=true} -- treat as just a texture
@@ -546,7 +534,6 @@ function aObj:CharacterFrames()
 		-- N.B. Issue with faction standing text, after rep line 3 the text moves down with respect to the status bar
 		-- self:moveObject{obj=_G[obj .. "ReputationBarFactionStanding"], y=2}
 	end
-	obj = nil
 
 	self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
@@ -599,7 +586,6 @@ function aObj:Collections() -- LoD
 		btn:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=btn, relTo=btn.icon, reParent={btn.favorite}}
 	end
-	mj, btn = nil, nil
 
 	-- Pet Journal
 	local pj = _G.PetJournal
@@ -615,7 +601,6 @@ function aObj:Collections() -- LoD
 	self:skinButton{obj=_G.PetJournalFilterButton}
 	self:skinDropDown{obj=_G.PetJournalFilterDropDown}
 	self:skinSlider{obj=pj.listScroll.scrollBar, adj=-4}
-	local btn
 	for i = 1, #pj.listScroll.buttons do
 		btn = pj.listScroll.buttons[i]
 		self:removeRegions(btn, {1}) -- background
@@ -669,7 +654,6 @@ function aObj:Collections() -- LoD
 	self:removeRegions(pj.AchievementStatus, {1, 2})
 	self:skinDropDown{obj=pj.petOptionsMenu}
 	-- pj.SpellSelect ?
-	pj, obj = nil, nil
 
 	-- Tooltips
 	if self.db.profile.Tooltips.skin then
@@ -681,7 +665,6 @@ function aObj:Collections() -- LoD
 			tt:DisableDrawLayer("BACKGROUND")
 			self:addSkinFrame{obj=tt, ft=ftype}
 		end
-		tt = nil
 	end
 
 	-- Toy Box
@@ -709,7 +692,6 @@ function aObj:Collections() -- LoD
 			end
 		end
 	end
-	btn = nil
 	if self.modBtnBs then
 		self:SecureHook("ToySpellButton_UpdateButton", function(this)
 			if this.slotFrameUncollected:IsShown() then
@@ -722,7 +704,6 @@ function aObj:Collections() -- LoD
 	self:addButtonBorder{obj=tb.navigationFrame.prevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=tb.navigationFrame.nextPageButton, ofs=-2, y1=-3, x2=-3}
 	self:skinDropDown{obj=tb.toyOptionsMenu}
-	tb = nil
 
 	-- Heirlooms
 	local hj = _G.HeirloomsJournal
@@ -755,7 +736,6 @@ function aObj:Collections() -- LoD
 				end
 			end
 		end
-		btn = nil
 	end)
 	if self.modBtnBs then
 		self:SecureHook(_G.HeirloomsMixin, "UpdateButton", function(this)
@@ -768,7 +748,6 @@ function aObj:Collections() -- LoD
 	end
 	self:addButtonBorder{obj=hj.navigationFrame.prevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=hj.navigationFrame.nextPageButton, ofs=-2, y1=-3, x2=-3}
-	hj = nil
 
 end
 
@@ -878,7 +857,7 @@ function aObj:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	local objName, obj
+	local objName, obj, cfpb
 	for i = 1, _G.NUM_CONTAINER_FRAMES do
 		objName = "ContainerFrame" .. i
 		obj = _G[objName]
@@ -887,7 +866,7 @@ function aObj:ContainerFrames()
 		_G[objName .. "Name"]:SetWidth(145)
 		self:moveObject{obj=_G[objName .. "Name"], x=-25}
 		-- Add gear texture to portrait button for settings
-		local cfpb = obj.PortraitButton
+		cfpb = obj.PortraitButton
 		cfpb.gear = cfpb:CreateTexture(nil, "artwork")
 		cfpb.gear:SetAllPoints()
 		cfpb.gear:SetTexture([[Interface\AddOns\]] .. aName .. [[\Textures\gear]])
@@ -895,10 +874,9 @@ function aObj:ContainerFrames()
 		cfpb.Highlight:ClearAllPoints()
 		cfpb.Highlight:SetPoint("center")
 		cfpb.Highlight:SetSize(22, 22)
-		aObj:moveObject{obj=cfpb, x=6, y=-3}
-		cfpb = nil
+		self:moveObject{obj=cfpb, x=6, y=-3}
 	end
-	objName, obj = nil, nil
+	objName = nil
 	self:skinEditBox{obj=_G.BagItemSearchBox, regs={9, 10}, mi=true, noInsert=true}
 	-- Hook this to hide/show the gear button
 	self:SecureHook("ContainerFrame_GenerateFrame", function(frame, size, id)
@@ -974,7 +952,6 @@ function aObj:EncounterJournal() -- LoD
 			self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
 		end
 	end
-	btn = nil
 	-- Tabs
 	_G.EncounterJournal.instanceSelect.suggestTab:DisableDrawLayer("BACKGROUND")
 	_G.EncounterJournal.instanceSelect.dungeonsTab:DisableDrawLayer("BACKGROUND")
@@ -1002,7 +979,6 @@ function aObj:EncounterJournal() -- LoD
 				btn:SetPushedTexture(nil)
 			end
 		end
-		btn = nil
 	end
 	self:SecureHook("EncounterJournal_DisplayInstance", function(instanceID, noButton)
 		skinBossBtns()
@@ -1066,7 +1042,6 @@ function aObj:EncounterJournal() -- LoD
 			btn.boss:SetTextColor(self.BTr, self.BTg, self.BTb)
 			self:addButtonBorder{obj=btn, relTo=btn.icon, x1=0}
 		end
-		btn = nil
 	end)
 	-- Model Frame
 	eje.info.model:DisableDrawLayer("BACKGROUND") -- dungeonBG (updated with dungeon type change)
@@ -1079,9 +1054,7 @@ function aObj:EncounterJournal() -- LoD
 			local hTex = btn:GetHighlightTexture()
 			hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 			hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
-			hTex = nil
 		end
-		btn = nil
 	end
 	for i = 1, #eje.info.creatureButtons do
 		skinCreatureBtn(i)
@@ -1092,8 +1065,7 @@ function aObj:EncounterJournal() -- LoD
 		skinCreatureBtn(index)
 	end)
 	-- Tabs (side)
-	local ejeTabs
-	ejeTabs = {"overviewTab", "lootTab", "bossTab", "modelTab"}
+	local ejeTabs = {"overviewTab", "lootTab", "bossTab", "modelTab"}
 	self:moveObject{obj=eje.info.overviewTab, x=10}
 	local obj
 	for _, v in pairs(ejeTabs) do
@@ -1109,7 +1081,6 @@ function aObj:EncounterJournal() -- LoD
 		end
 		self:addSkinFrame{obj=obj, ft=ftype, noBdr=true, ofs=-3, aso={rotate=true}} -- gradient is right to left
 	end
-	eje, ejeTabs, obj = nil, nil, nil
 
 	-- EncounterJournalTooltip
 	self:addSkinFrame{obj=_G.EncounterJournalTooltip, ft=ftype}
@@ -1137,8 +1108,6 @@ function aObj:EncounterJournal() -- LoD
 	ejsf.Suggestion3.centerDisplay.title.text:SetTextColor(self.HTr, self.HTg, self.HTb)
 	ejsf.Suggestion3.centerDisplay.description.text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ejsf.Suggestion3.reward.iconRing:SetTexture(nil)
-	-- self:addSkinFrame{obj=ejsf, ft=ftype, aso={fh=100}, ofs=6, x2=5, y2=-3}
-	ejsf = nil
 
 end
 
@@ -1146,14 +1115,12 @@ function aObj:EquipmentFlyout()
 	if not self.db.profile.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
 	self.initialized.EquipmentFlyout = true
 
-	local btnFrame = _G.EquipmentFlyoutFrame.buttonFrame
-	self:addSkinFrame{obj=btnFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
+	self:addSkinFrame{obj=_G.EquipmentFlyoutFrame.buttonFrame, ft=ftype, x1=-3, y1=2, x2=5, y2=-3}
 	self:SecureHook("EquipmentFlyout_Show", function(...)
 		for i = 1, _G.EquipmentFlyoutFrame.buttonFrame["numBGs"] do
 			_G.EquipmentFlyoutFrame.buttonFrame["bg" .. i]:SetAlpha(0)
 		end
 	end)
-	btnFrame = nil
 
 end
 
@@ -1193,7 +1160,6 @@ function aObj:FriendsFrame()
 		self:addButtonBorder{obj=btn.travelPassButton, hide=true, disable=true, ofs=0, y1=3, y2=-2}
 		self:addButtonBorder{obj=btn.summonButton, hide=true, disable=true}
 	end
-	btn = nil
 
 	-- Friends Tooltip
 	self:addSkinFrame{obj=_G.FriendsTooltip}
@@ -1219,7 +1185,6 @@ function aObj:FriendsFrame()
 	self:keepFontStrings(_G.PendingListFrame)
 	self:skinDropDown{obj=_G.PendingListFrameDropDown}
 	self:skinSlider{obj=_G.FriendsFramePendingScrollFrame.scrollBar}
-	local btn
 	for i = 1, _G.PENDING_INVITES_TO_DISPLAY do
 		btn = "FriendsFramePendingButton" .. i
 		-- use ApplySkin otherwise panel & buttons are hidden
@@ -1229,7 +1194,6 @@ function aObj:FriendsFrame()
 		self:applySkin{obj=_G[btn .. "DeclineButton"]}
 		self:applySkin{obj=_G[btn]}
 	end
-	btn = nil
 
 -->>--	Who Tab Frame
 	self:removeInset(_G.WhoFrameListInset)
@@ -1321,7 +1285,6 @@ function aObj:GlyphUI() -- LoD
 		btn.disabledBG:SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	btn = nil
 	self:skinSlider{obj=_G.GlyphFrameScrollFrameScrollBar, adj=-4}
 	self:addButtonBorder{obj=_G.GlyphFrameClearInfoFrame}
 
@@ -1350,7 +1313,6 @@ function aObj:GuildControlUI() -- LoD
 				aObj:addButtonBorder{obj=obj.deleteButton, ofs=0}
 			end
 		end
-		obj = nil
 
 	end
 	self:SecureHook("GuildControlUI_RankOrder_Update", function(...)
@@ -1382,7 +1344,6 @@ function aObj:GuildControlUI() -- LoD
 				self:addButtonBorder{obj=btn.owned, relTo=btn.owned.tabIcon, es=10}
 			end
 		end
-		btn = nil
 	end)
 
 end
@@ -1495,7 +1456,6 @@ function aObj:GuildUI() -- LoD
 		btn.PointsSpentBgGold:SetAlpha(0)
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
-	btn = nil
 	self:skinSlider{obj=_G.GuildInfoFrameApplicantsContainerScrollBar, adj=-4}
 	self:removeMagicBtnTex(_G.GuildRecruitmentInviteButton)
 	self:removeMagicBtnTex(_G.GuildRecruitmentDeclineButton)
@@ -1556,7 +1516,6 @@ function aObj:InspectUI() -- LoD
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
 	end
-	btn = nil
 	-- Glyphs
 	for i = 1, 6 do
 		_G.InspectTalentFrame.InspectGlyphs["Glyph" .. i].ring:SetTexture(nil)
@@ -1582,7 +1541,6 @@ function aObj:ItemSocketingUI() -- LoD
 			c = _G.GEM_TYPE_INFO[_G.GetSocketTypes(i)]
 			_G["ItemSocketingSocket" .. i].sb:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
-		c = nil
 
 	end
 	-- hook this to colour the button border
@@ -1641,7 +1599,6 @@ function aObj:LookingForGuildUI() -- LoD
 		btn = _G.LookingForGuildAppsFrameContainer.buttons[i]
 		self:applySkin{obj=btn}
 	end
-	btn = nil
 
 	-- Request Membership Frame
 	_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -1668,7 +1625,7 @@ function aObj:LootFrames()
 		_G.LootButton5:SetPoint("TOPLEFT", 9, yOfs)
 		_G.LootButton5.id = 5
 		_G.LOOTFRAME_NUMBUTTONS = 5
-		yOfs, btn = nil, nil
+		yOfs = nil
 	end
 
 	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
@@ -1723,7 +1680,6 @@ function aObj:LootFrames()
 		end
 
 	end
-	obj = nil
 
 -->>-- BonusRoll Frame
 	self:removeRegions(_G.BonusRollFrame, {1, 2, 3, 5})
@@ -1776,7 +1732,6 @@ function aObj:LootHistory()
 				end
 			end
 		end
-		item = nil
 
 	end
 	self:skinScrollBar{obj=_G.LootHistoryFrame.ScrollFrame}
@@ -1815,7 +1770,7 @@ function aObj:MirrorTimers()
 			self:glazeStatusBar(objSB, 0, objBG)
 		end
 	end
-	objName, obj, objBG, objSB = nil, nil, nil, nil
+	objName = nil
 
 	-- Battleground/Arena Start Timer (4.1)
 	local function skinTT(tT)
@@ -1829,7 +1784,6 @@ function aObj:MirrorTimers()
 				aObj:moveObject{obj=bg, y=2} -- align bars
 			end
 		end
-		bg = nil
 
 	end
 	self:SecureHookScript(_G.TimerTracker, "OnEvent", function(this, event, ...)
@@ -1946,7 +1900,6 @@ function aObj:ObjectiveTracker()
 			self:addButtonBorder{obj=btn, relTo=btn.ItemIcon, reParent={btn.Count}}
 			btn.ItemBorder:SetTexture(nil)
 		end
-		btn = nil
 	end)
 
 	-- ObjectiveTrackerBonusBanner Frame
@@ -1975,7 +1928,6 @@ function aObj:ObjectiveTracker()
 					end
 				end
 			end
-			questID, popUpType, questTitle, block, obj = nil, nil, nil, nil, nil
 
 		end
 
@@ -2099,7 +2051,6 @@ function aObj:PVPUI()
 				btn.Background:SetTexture(nil)
 			end
 		end
-		btn = nil
 	end)
 	_G.PVPQueueFrame_SelectButton(1) -- select Honor button
 	-- Honor Frame a.k.a Casual
@@ -2118,7 +2069,6 @@ function aObj:PVPUI()
 	hfbf.Arena1Button.NormalTexture:SetTexture(nil)
 	self:addButtonBorder{obj=hfbf.BattlegroundReward1, relTo= hfbf.BattlegroundReward1.Icon}
 	self:addButtonBorder{obj=hfbf.BattlegroundReward2, relTo= hfbf.BattlegroundReward2.Icon}
-	hfbf = nil
 	_G.HonorFrame.BonusFrame:DisableDrawLayer("BACKGROUND")
 	_G.HonorFrame.BonusFrame:DisableDrawLayer("BORDER")
 	_G.HonorFrame.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
@@ -2128,12 +2078,11 @@ function aObj:PVPUI()
 	_G.ConquestFrame:DisableDrawLayer("BACKGROUND")
 	_G.ConquestFrame:DisableDrawLayer("BORDER")
 	_G.ConquestFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
-	local bar = _G.ConquestFrame.ConquestBar
-	bar:DisableDrawLayer("BORDER")
-	bar.progress:SetTexture(self.sbTexture)
-	bar.cap1:SetTexture(self.sbTexture)
-	bar.cap2:SetTexture(self.sbTexture)
-	bar = nil
+	local obj = _G.ConquestFrame.ConquestBar
+	obj:DisableDrawLayer("BORDER")
+	obj.progress:SetTexture(self.sbTexture)
+	obj.cap1:SetTexture(self.sbTexture)
+	obj.cap2:SetTexture(self.sbTexture)
 	self:removeInset(_G.ConquestFrame.Inset)
 	_G.ConquestFrame.Arena2v2.NormalTexture:SetTexture(nil)
 	_G.ConquestFrame.Arena3v3.NormalTexture:SetTexture(nil)
@@ -2151,7 +2100,6 @@ function aObj:PVPUI()
 		btn.Entry.Bg:SetTexture(nil)
 		btn.Entry.Border:SetTexture(nil)
 	end
-	btn = nil
 	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar}
 	_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
 	self:removeMagicBtnTex(_G.WarGameStartButton)
@@ -2224,7 +2172,6 @@ function aObj:RaidUI() -- LoD
 		self:removeRegions(btn, {4})
 		self:addSkinFrame{obj=btn, ft=ftype, aso={bd=5}, x1=-2, y1=2, x2=1, y2=-1}
 	end
-	btn = nil
 	-- Raid Class Tabs (side)
 	for i = 1, _G.MAX_RAID_CLASS_BUTTONS do
 		self:removeRegions(_G["RaidClassButton" .. i], {1}) -- N.B. region 2 is the icon, 3 is the text
@@ -2286,7 +2233,6 @@ function aObj:SpellBookFrame()
 					self:setInactiveTab(tab.sf)
 				end
 			end
-			tab = nil
 		end)
 	end
 
@@ -2338,7 +2284,7 @@ function aObj:SpellBookFrame()
 			end
 			_G[objName .. "StatusBar"]:DisableDrawLayer("BACKGROUND")
 		end
-		objName, obj = nil, nil
+		objName = nil
 
 	end
 	-- Primary professions
@@ -2362,7 +2308,6 @@ function aObj:SpellBookFrame()
 				self:addButtonBorder{obj=btn}
 			end
 		end
-		btn = nil
 		local tab
 		for i = 1, #_G.SpellBookCoreAbilitiesFrame.SpecTabs do
 			tab = _G.SpellBookCoreAbilitiesFrame.SpecTabs[i]
@@ -2372,7 +2317,6 @@ function aObj:SpellBookFrame()
 				self:addButtonBorder{obj=tab}
 			end
 		end
-		tab = nil
 	end)
 
 	-- colour the spell name text
@@ -2387,15 +2331,14 @@ function aObj:SpellBookFrame()
 		btn.TrainFrame:SetAlpha(0)
 		self:addButtonBorder{obj=_G[btnName], sec=true, reParent={btn.FlyoutArrow, _G[btnName .. "AutoCastable"]}}
 	end
-	btnName, btn = nil, nil
+	btnName = nil
 -->>-- Tabs (side)
-	local obj
+	local tab
 	for i = 1, _G.MAX_SKILLLINE_TABS do
-		obj = _G["SpellBookSkillLineTab" .. i]
-		self:removeRegions(obj, {1}) -- N.B. other regions are icon and highlight
-		self:addButtonBorder{obj=obj}
+		tab = _G["SpellBookSkillLineTab" .. i]
+		self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
+		self:addButtonBorder{obj=tab}
 	end
-	obj = nil
 
 end
 
@@ -2435,7 +2378,6 @@ function aObj:TalentUI() -- LoD
 				btn.subText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 			end
 		end
-		btn = nil
 	end
 	local function skinSpec(frame)
 		aObj:removeRegions(frame, {1, 2, 3, 4, 5, 6})
@@ -2451,7 +2393,6 @@ function aObj:TalentUI() -- LoD
 			btn.learnedTex:SetTexture(nil)
 			aObj:changeRecTex(btn:GetHighlightTexture())
 		end
-		btn = nil
 		-- shadow frame (LHS)
 		aObj:keepFontStrings(aObj:getChild(frame, 7))
 		-- spellsScroll (RHS)
@@ -2461,7 +2402,6 @@ function aObj:TalentUI() -- LoD
 		aObj:removeRegions(scrollChild, {2, 3, 4, 5, 6, 13})
 		-- abilities
 		skinAbilities(scrollChild)
-		scrollChild = nil
 	end
 	-- Tab1 (Specialization)
 	skinSpec(_G.PlayerTalentFrameSpecialization)
@@ -2495,7 +2435,6 @@ function aObj:TalentUI() -- LoD
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
 	end
-	obj, btn = nil, nil
 	-- Tab3 (Glyphs), skinned in GlyphUI
 	-- Tab4 (Pet Specialization)
 	skinSpec(_G.PlayerTalentFramePetSpecialization)
@@ -2506,7 +2445,6 @@ function aObj:TalentUI() -- LoD
 		self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
 		self:addButtonBorder{obj=tab}
 	end
-	tab = nil
 
 end
 
@@ -2556,7 +2494,7 @@ function aObj:TradeSkillUI() -- LoD
 	_G[objName .. "Border"]:SetAlpha(0)
 	self:glazeStatusBar(obj, 0, _G[objName .. "Background"])
 	self:moveObject{obj=obj, x=-2}
-	objName, obj = nil, nil
+	objName = nil
 	self:skinEditBox{obj=_G.TradeSkillFrameSearchBox, regs={9, 10}, mi=true, noHeight=true, noMove=true}
 	self:skinButton{obj=_G.TradeSkillFilterButton}
 	self:addButtonBorder{obj=_G.TradeSkillLinkButton, x1=1, y1=-5, x2=-3, y2=2}
@@ -2571,7 +2509,6 @@ function aObj:TradeSkillUI() -- LoD
 		btn.SubSkillRankBar.BorderMid:SetTexture(nil)
 		self:glazeStatusBar(btn.SubSkillRankBar, 0)
 	end
-	btn= nil
 	self:skinScrollBar{obj=_G.TradeSkillListScrollFrame}
 	self:skinScrollBar{obj=_G.TradeSkillDetailScrollFrame}
 	self:keepFontStrings(_G.TradeSkillDetailScrollChildFrame)

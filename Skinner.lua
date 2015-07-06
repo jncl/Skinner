@@ -112,7 +112,6 @@ function aObj:OnInitialize()
 	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
 	c = prdb.BodyText
 	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
-	c = nil
 
 	-- Frame multipliers (still used in older skins)
 	self.FxMult, self.FyMult = 0.9, 0.87
@@ -276,8 +275,6 @@ function aObj:OnInitialize()
 	-- ignore objects when skinning IOF elements
 	self.ignoreIOF = {}
 
-	prdb, dflts = nil, nil
-
 end
 
 function aObj:OnEnable()
@@ -293,7 +290,6 @@ function aObj:OnEnable()
 			self.modBtnBs = true
 		end
 	end
-	btnModDB = nil
 
 	self.checkTex        = self.modBtns and self.modUIBtns.checkTex or function() end
 	self.skinButton      = self.modBtns and self.modUIBtns.skinButton or function() end
@@ -382,7 +378,8 @@ function aObj:getGradientInfo(invert, rotate)
 	else
 		return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
 	end
-	c, MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA = nil, nil, nil, nil, nil, nil, nil, nil, nil
+	MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA = nil, nil, nil, nil, nil, nil, nil, nil
+
 end
 
 -- Skinning functions
@@ -530,7 +527,6 @@ local function hideHeader(obj)
 			break
 		end
 	end
-	hdr = nil
 	if obj.header then
 		obj.header:DisableDrawLayer("BACKGROUND")
 		obj.header:DisableDrawLayer("BORDER")
@@ -667,7 +663,6 @@ local function __addSkinFrame(opts)
 				frame.sf.tfade:SetParent(frame.sf)
 				if frame.cb then frame.cb.tfade:SetParent(frame.cb) end
 			end, 0.15, objP)
-			objP = nil
 		end)
 		-- handle issue where tfade isn't reparented in time
 		aObj:SecureHookScript(opts.obj, "OnHide", function(this)
@@ -785,8 +780,6 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 	obj.tfade:SetBlendMode("ADD")
 	obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
 
-	prdb, invert, rotate = nil, nil, nil
-
 end
 
 function aObj:applyTexture(obj)
@@ -798,7 +791,6 @@ function aObj:applyTexture(obj)
 	local bdi = self.db.profile.BdInset
 	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", bdi, -bdi)
 	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -bdi, bdi)
-	bdi = nil
 	-- the texture will be stretched if the following tiling methods are set to false
 	obj.tbg:SetHorizTile(self.db.profile.BgTile)
 	obj.tbg:SetVertTile(self.db.profile.BgTile)
@@ -1003,7 +995,6 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 	-- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
 	sbTex:SetHorizTile(false)
 	sbTex:SetVertTile(false)
-	sbTex = nil
 
 	if fi then
 		if not sbG.bg then
@@ -1026,7 +1017,6 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 			sbG[#sbG + 1] = tex
 		end
 	end
-	sbG = nil
 
 end
 
@@ -1384,7 +1374,7 @@ function aObj:shrinkBag(obj, bpMF)
 
 	if fh and obj.tfade then obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -fh) end
 
-	prdb, objName, bgTop, bgtHgt, objHeight, fh = nil, nil, nil, nil, nil, nil
+	objName, bgtHgt, objHeight, fh = nil, nil, nil, nil
 
 end
 
@@ -1611,13 +1601,11 @@ function aObj:skinFFToggleTabs(tabName, tabCnt, noHeight)
 		togTab = _G[tabName .. i]
 		if not togTab then break end -- handle missing Tabs (e.g. Muted)
 		if not togTab.sknd then -- don't skin it twice
-			togTab.sknd = true
 			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text & highlight
 			if not noHeight then self:adjHeight{obj=togTab, adj=-5}	end
 			self:addSkinFrame{obj=togTab, y1=-2, x2=2, y2=-2}
 		end
 	end
-	togTab = nil
 
 end
 
@@ -1632,7 +1620,6 @@ function aObj:skinFFColHeads(buttonName, noCols)
 			self:addSkinFrame{obj=btn}
 		end
 	end
-	btn = nil
 
 end
 
@@ -1677,7 +1664,6 @@ local function __skinMoneyFrame(opts)
 			aObj:moveObject{obj=obj, x=-10}
 		end
 	end
-	obj = nil
 
 end
 
@@ -1735,7 +1721,6 @@ local function __skinScrollBar(opts)
 
 	-- skin it
 	aObj:skinUsingBD{obj=sBar, size=opts.size}
-	sBar = nil
 
 end
 
@@ -1889,7 +1874,7 @@ local function __skinTabs(opts)
 	end
 	aObj.tabFrames[opts.obj] = true
 
-	tabName, kRegions, xOfs1, yOfs1, xOfs2, yOfs2, tabID, tab = nil, nil, nil, nil, nil, nil, nil, nil
+	tabName, kRegions, xOfs1, yOfs1, xOfs2, yOfs2, tabID = nil, nil, nil, nil, nil, nil, nil
 
 end
 
@@ -1978,7 +1963,7 @@ function aObj:skinTooltip(obj)
 
 	obj:SetBackdropBorderColor(self:setTTBBC())
 
-	prdb, objHeight = nil, nil
+	objHeight = nil
 
 end
 
