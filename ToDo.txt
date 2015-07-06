@@ -12,10 +12,6 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	I	Calendar Event, reported byrovin60, 25.06.15
-		-  ..\AddOns\Skinner\Skinner.lua line 1403:
-  	  		attempt to index field 'obj' (a nil value)
-			Debug:
-  		  	Skinner\Skinner.lua:1465: skinDropDown()
-  		  	Skinner\UIFrames.lua:422:
-     	    Skinner\UIFrames.lua:370
+√	I	UnitPowerBarAlt reported by Alfador, 05.07.15
+		- Unable to see counter clearly
+		
