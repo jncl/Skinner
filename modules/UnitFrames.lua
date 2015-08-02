@@ -497,6 +497,18 @@ function module:OnEnable()
 
 	self:adjustUnitFrames("init")
 
+	-- hook this to track when casting bar is repositioned if detached (Bugfix for Blizzard code)
+	self:SecureHook("PlayerFrame_AdjustAttachments", function()
+		if not _G.PLAYER_FRAME_CASTBARS_SHOWN then return end
+
+		-- if Pet is visible then move CastingBar below it
+		if _G.PetFrame.unit == "pet"
+		and _G.UnitIsVisible(_G.PetFrame.unit)
+		then
+			_G.CastingBarFrame:SetPoint("TOP", _G.PetFrame, "BOTTOM", 0, -4)
+		end
+	end)
+
 end
 
 function module:adjustUnitFrames(opt)
