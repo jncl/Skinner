@@ -169,7 +169,7 @@ function aObj:AlertFrames()
 
 	local function skinWonAlertFrames(obj)
 
-		-- move Icon draw layer (Garrison Cache icon)
+		-- move Icon draw layer, so it is visible (Garrison Cache icon)
 		if obj.Icon
 		and obj.Icon:GetDrawLayer() == "BACKGROUND"
 		then
@@ -1073,10 +1073,6 @@ function aObj:GarrisonUI() -- LoD
 		obj:DisableDrawLayer("OVERLAY")
 		obj.ButtonFrame:SetTexture(nil)
 
-		local btnSize = obj:GetParent():GetParent() ~= _G.GarrisonShipyardFrame and 32 or 28
-		obj.CloseButton:SetSize(btnSize, btnSize)
-		btnSize = nil
-
 		aObj:removeRegions(obj.Stage, stageRegs)
 		-- don't skin ShipyardUI Mission Frame
 		aObj:addSkinFrame{obj=obj, ft=ftype, x1=-320, y1=5, x2=3, y2=-20}
@@ -1092,7 +1088,13 @@ function aObj:GarrisonUI() -- LoD
 		for i = 1, #obj.RewardsFrame.Rewards do
 			frame = obj.RewardsFrame.Rewards[i]
 			frame.BG:SetTexture(nil)
-			aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
+			aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}, hide=true}
+			-- move Icon draw layer, so it is visible
+			if frame.Icon
+			and frame.Icon:GetDrawLayer() == "BACKGROUND"
+			then
+				frame.Icon:SetDrawLayer("ARTWORK")
+			end
 		end
 
 	end
@@ -1488,6 +1490,20 @@ function aObj:GarrisonUI() -- LoD
 		ml.MapTexture:SetDrawLayer("BORDER", -2) -- make sure it appears above skinFrame but below other textures
 
 		-- Fog overlays
+		local function showCurrentMissions()
+			local fffl = ml.FogFrames[1]:GetFrameLevel()
+			for i = 1, #ml.missions do
+				if ml.missions[i].inProgress then
+					ml.missionFrames[i]:SetFrameLevel(fffl + 1)
+				end
+			end
+		end
+		-- make sure current missions are above the fog (Bugfix for Blizzard code)
+		showCurrentMissions()
+		-- hook this to ensure they are when map reshown/updated
+		self:SecureHook("GarrisonShipyardMap_UpdateMissions", function()
+			showCurrentMissions()
+		end)
 
 		-- CompleteDialog
 		skinCompleteDialog(ml)
