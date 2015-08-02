@@ -2084,6 +2084,7 @@ local btn
 
 -->>-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 	local function skinUnitPowerBarAlt(upba)
+		upba:DisableDrawLayer("BACKGROUND")
 		-- Don't change the status bar texture as it changes dependant upon type of power type required
 		upba.frame:SetAlpha(0)
 		-- adjust height and TextCoord so background appears, this enables the numbers to become easier to see
@@ -2437,7 +2438,6 @@ function aObj:MinimapButtons()
 	self.initialized.MinimapButtons = true
 
 	local minBtn = self.db.profile.MinimapButtons.style
-	-- skin other Blizzard buttons
 	local asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
 
 	local function mmKids(mmObj)
@@ -2489,7 +2489,6 @@ function aObj:MinimapButtons()
 		objName, objType = nil, nil
 
 	end
-
 	local function makeSquare(obj, x1, y1, x2, y2)
 
 		obj:SetSize(26, 26)
@@ -2506,7 +2505,6 @@ function aObj:MinimapButtons()
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
 	self:ScheduleTimer(mmKids, 0.5, _G.Minimap)
-
 
 	-- Calendar button
 	makeSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
@@ -2561,6 +2559,21 @@ function aObj:MinimapButtons()
 
 	-- skin other minimap buttons as required
 	if not minBtn then
+		local function skinMMBtn(cb, btn, name)
+
+			for _, reg in ipairs{btn:GetRegions()} do
+				if reg:GetObjectType() == "Texture" then
+					if aObj:hasTextInName(reg, "Border")
+					or aObj:hasTextInTexture(reg, "TrackingBorder")
+					then
+						reg:SetTexture(nil)
+					end
+				end
+			end
+
+			aObj:addSkinButton{obj=btn, ft=ftype, parent=btn, sap=true}
+
+		end
 		local mmButs = {
 			["SmartBuff"] = _G.SmartBuff_MiniMapButton,
 			["WebDKP"] = _G.WebDKP_MinimapButton,
@@ -2574,35 +2587,19 @@ function aObj:MinimapButtons()
 			["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon,
 			["RaidBuffStatus"] = _G.RBSMinimapButton,
 		}
-		local function skinMMBtn(btn, name)
-
-			-- _G.print("skinMMBtn", btn, name or nil)
-
-			for _, reg in ipairs{btn:GetRegions()} do
-				if reg:GetObjectType() == "Texture" then
-					if self:hasTextInName(reg, "Border")
-					or self:hasTextInTexture(reg, "TrackingBorder")
-					then
-						reg:SetTexture(nil)
-					end
-				end
-			end
-
-			aObj:addSkinButton{obj=btn, parent=btn, sap=true, ft=ftype}
-
-		end
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then
-				skinMMBtn(obj)
+				skinMMBtn("Loaded Addons btns", obj)
 			end
 		end
 		mmButs = nil
-		-- skin LibDBIcon Minimap Buttons
-		_G.LibStub("LibDataBroker-1.1").RegisterCallback(aObj, "LibDBIcon_IconCreated", skinMMBtn)
-		-- skin existing buttons
+
+		-- skin existing LibDBIcon buttons
 		for name, button in pairs(_G.LibStub("LibDBIcon-1.0").objects) do
-			skinMMBtn(button, name)
+			skinMMBtn("Existing LibDBIcon btns", button, name)
 		end
+		-- skin LibDBIcon Minimap Buttons when created
+		_G.LibStub("LibDBIcon-1.0").RegisterCallback(aObj, "LibDBIcon_IconCreated", skinMMBtn)
 	end
 
 	-- Garrison Landing Page Minimap button
