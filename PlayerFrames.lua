@@ -1963,6 +1963,12 @@ function aObj:OverrideActionBar() -- a.k.a. VehicleUI
 
 	local function skinOverrideActionBar()
 
+		-- handle in combat
+		if _G.InCombatLockdown() then
+			aObj:add2Table(aObj.oocTab, {skinOverrideActionBar, {nil}})
+			return
+		end
+
 		local oabW = _G.OverrideActionBar:GetWidth()
 
 		local xOfs1 = 144
