@@ -2,9 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("ReagentRestocker") then return end
 local _G = _G
 
-function aObj:ReagentRestocker()
+function aObj:ReagentRestocker() -- 10.2
 
--->>-- Options Frame (created in UI.lua)
+	-- Options Frame (created in UI.lua)
 	local ui = self:findFrame2(_G.UIParent, "Frame", 500, 700)
 	if ui then
 		ui.obj.titletext:SetPoint("TOP", ui.obj.frame, "TOP", 0, -6)
@@ -28,21 +28,14 @@ function aObj:ReagentRestocker()
 							self:skinButton{obj=btn.toggle, mp2=true, plus=true, as=true}
 						end
 					end
-					btn = nil
 				end)
 			end
 		end
-		tg = nil
 	end
-	ui = nil
 
-
--->>-- basicFrame
-	local bF = self:findFrame2(_G.UIParent, "Frame", 128, 512)
-	if bF then self:addSkinFrame{obj=bF} end
-	bF = nil
-
--->>-- stockAmount Frame
-	self:addSkinFrame{obj=_G.showRR:GetParent()}
+	-- Merchant frame
+	self:addSkinFrame{obj=_G.RRMerchantClose:GetParent(), ofs=2} -- N.B. RRMerchant name is used by several frames
+	_G.RRMerchantTitle:SetBackdrop(nil)
+	self:moveObject{obj=_G.RRMerchantTitle, x=0, y=-26}
 
 end

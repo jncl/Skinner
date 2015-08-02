@@ -119,10 +119,9 @@ function aObj:MasterPlan() -- LoD
 
 	-- Garrison Missions Frame - Available Missions Tab
 	self:removeRegions(self:getChild(self:getChild(availUI, 1), 1), {2}) -- follower focus portrait ring
-	-- Clear Tentative Parties button, has to be done this way otherwise button skin isn't shown
+	-- Clear/Send Tentative Parties button, has to be done this way otherwise button skin isn't shown
 	self:SecureHook(availUI.SendTentative, "SetShown", function(this)
 		self:skinButton{obj=this}
-		self:Unhook(availUI.SendTentative, "SetShown")
 	end)
 
 	-- Garrison Missions Frame - Available Missions Tab - Mission Page
@@ -159,5 +158,26 @@ function aObj:MasterPlan() -- LoD
 	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.stats}
 
 	-- Can't access UpgradesFrame to remove item name texture, as it is local to the Addon and can't be accessed externally
+
+	-- GarrisonShipyard
+	self:SecureHook(_G.GarrisonShipyardFrame, "ShowMission", function(this, ...)
+		local mpc = this.MissionTab.MissionPage:GetNumChildren() -- should be 17
+		local groups = self:getChild(this.MissionTab.MissionPage, mpc - 3)
+		for i = 1, #groups.buttons do
+			for j = 1, #groups.buttons[i].tex do
+				groups.buttons[i].tex[j]:SetTexture(nil)
+			end
+			self:skinButton{obj=groups.buttons[i]}
+		end
+		-- minimize button
+		self:skinButton{obj=self:getChild(this.MissionTab.MissionPage, mpc - 2), ob="-"}
+
+		-- hook this to skin refit frame
+		self:SecureHookScript(self:getChild(this.MissionTab.MissionPage, mpc - 1), "OnClick", function(this)
+			self:addSkinFrame{obj=self:getChild(this:GetParent(), this:GetParent():GetNumChildren())}
+			self:Unhook(this, "OnClick")
+		end)
+		self:Unhook(_G.GarrisonShipyardFrame, "ShowMission")
+	end)
 
 end

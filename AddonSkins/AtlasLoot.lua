@@ -47,7 +47,6 @@ function aObj:AtlasLoot()
 	skinSelect(frame.boss)
 	skinSelect(frame.extra)
 	self:addSkinFrame{obj=frame}
-	GUI, frame = nil, nil
 
 	-- ItemFrame
 	local iF = frame.contentFrame
@@ -56,7 +55,6 @@ function aObj:AtlasLoot()
 	self:addButtonBorder{obj=iF.mapButton, ofs=-1, x1=2, x2=-2}
 	self:addButtonBorder{obj=iF.prevPageButton, ofs=-2, x1=1, y2=1}
 	self:addButtonBorder{obj=iF.clasFilterButton}
-	iF = nil
 
 -->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
@@ -69,26 +67,26 @@ function aObj:AtlasLoot()
 		-- skin Mount tooltip
 		local mTT = _G.AtlasLoot.Button:GetType("Mount")
 		if mTT then
-			self:SecureHook(mTT, "ShowToolTipFrame", function(this, ...)
-				self:addSkinFrame{obj=this.tooltipFrame}
+			self:SecureHook(mTT, "ShowToolTipFrame", function(button)
+				self:addSkinFrame{obj=mTT.tooltipFrame}
 				self:Unhook(mTT, "ShowToolTipFrame")
 			end)
 		end
 		-- skin Pet tooltip
 		local pTT = _G.AtlasLoot.Button:GetType("Pet")
 		if pTT then
-			self:SecureHook(pTT, "ShowToolTipFrame", function(this, ...)
-				self:addSkinFrame{obj=this.tooltipFrame}
+			self:SecureHook(pTT, "ShowToolTipFrame", function(button)
+				self:addSkinFrame{obj=pTT.tooltipFrame}
 				self:Unhook(pTT, "ShowToolTipFrame")
 			end)
 		end
 		-- skin Faction tooltip
 		local fTT = _G.AtlasLoot.Button:GetType("Faction")
 		if fTT then
-			self:SecureHook(fTT, "ShowToolTipFrame", function(this, ...)
-				this.tooltipFrame.standing:SetBackdrop(nil)
-				self:glazeStatusBar(this.tooltipFrame.standing.bar, 0,  nil)
-				self:addSkinFrame{obj=this.tooltipFrame}
+			self:SecureHook(fTT, "ShowToolTipFrame", function(button)
+				fTT.tooltipFrame.standing:SetBackdrop(nil)
+				self:glazeStatusBar(fTT.tooltipFrame.standing.bar, 0,  nil)
+				self:addSkinFrame{obj=fTT.tooltipFrame}
 				self:Unhook(fTT, "ShowToolTipFrame")
 			end)
 		end
