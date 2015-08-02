@@ -1,3 +1,8 @@
+b6.20201.2
+Jncl:
+	Updated Change_History.txt
+	To keen to clear too many locals, caused frames to keep closing as there references were cleaned ;-)
+
 b6.20201.1
 Jncl:
 	ToDo.txt
