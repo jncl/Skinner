@@ -2865,29 +2865,19 @@ function aObj:PetBattleUI()
 				end
 			end
  		end
-		-- N.B. Can't use RawHookScript as it has a bug preventing its use on AnimationGroup Scripts
-		-- (Needs to check for IsProtected as a function before calling it)
 		local pbfaasf = _G.PetBattleFrame.ActiveAlly.SpeedFlash
-		-- self:RawHookScript(pbfaasf, "OnPlay", function(this)
-		local pbfaasfop = pbfaasf:HasScript("OnPlay") and pbfaasf:GetScript("OnPlay") or nil
-		pbfaasf:SetScript("OnPlay", function(this)
+		self:RawHookScript(pbfaasf, "OnPlay", function(this)
 			reParent{parent=_G.MainMenuBar}
-			if pbfaasfop then pbfaasfop(this) end
-			-- self.hooks[this].OnPlay(this)
-		-- end, true)
-		end)
+			self.hooks[this].OnPlay(this)
+		end, true)
 		self:SecureHookScript(pbfaasf, "OnFinished", function(this)
 			reParent{reset=true}
 		end)
 		local pbfaesf = _G.PetBattleFrame.ActiveEnemy.SpeedFlash
-		-- self:RawHookScript(pbfaesf, "OnPlay", function(this)
-		local pbfaesfop = pbfaesf:HasScript("OnPlay") and pbfaesf:GetScript("OnPlay") or nil
-		pbfaesf:SetScript("OnPlay", function(this)
+		self:RawHookScript(pbfaesf, "OnPlay", function(this)
 			reParent{parent=_G.MainMenuBar}
-			if pbfaesfop then pbfaesfop(this) end
-			-- self.hooks[this].OnPlay(this)
-		-- end, true)
-		end)
+			self.hooks[this].OnPlay(this)
+		end, true)
 		self:SecureHookScript(pbfaesf, "OnFinished", function(this)
 			reParent{reset=true}
 		end)
