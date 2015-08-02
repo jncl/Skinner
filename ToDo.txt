@@ -12,6 +12,12 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	I	UnitPowerBarAlt reported by Alfador, 05.07.15
-		- Unable to see counter clearly
-		
+≈	N	AtlasLoot, reported by tordenflesk, 25.07.15
+√		- Skinner\SkinMe\AtlasLoot-v8.00.40.lua:53: attempt to index local 'frame' (a nil value)
+√		- Faction tooltip
+√		- Mount Tooltip when hovering over secondary button
+
+√	I	ReagentRestocker, reported by tordenflesk, 25.07.15
+		- Skinner\UtilFuncs.lua:381: Attempt to access forbidden object from code tainted by an AddOn
+		  Skinner\UtilFuncs.lua:381: in function `findFrame2'
+		  Skinner\SkinMe\ReagentRestocker-v10.2.lua:8: in function <Skinner\SkinMe\ReagentRestocker.lua:5>
