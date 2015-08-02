@@ -377,31 +377,34 @@ function aObj:findFrame2(parent, objType, ...)
 	local frame, cKey
 
 	local kids = {parent:GetChildren()}
-	for key, child in ipairs(kids) do
-		if child:GetName() == nil then
-			if child:IsObjectType(objType) then
-				if select("#", ...) > 2 then
-					-- base checks on position
-					local point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
-					-- self:Debug("ff2 GetPoint: [%s, %s, %s, %s, %s, %s]", child, point, relativeTo, relativePoint, xOfs, yOfs)
-					xOfs = xOfs and self:getInt(xOfs) or 0
-					yOfs = yOfs and self:getInt(yOfs) or 0
-					if	point		  == select(1, ...)
-					and relativeTo	  == select(2, ...)
-					and relativePoint == select(3, ...)
-					and xOfs		  == select(4, ...)
-					and yOfs		  == select(5, ...) then
-						frame, cKey = child, key
-						break
-					end
-				else
-					-- base checks on size
-					local height, width = self:getInt(child:GetHeight()), self:getInt(child:GetWidth())
-					-- self:Debug("ff2 h/w: [%s, %s, %s]", child, height, width)
-					if	height == select(1, ...)
-					and width  == select(2, ...) then
-						frame, cKey = child, key
-						break
+	for key, child in pairs(kids) do
+		-- check for forbidden objects (StoreUI components)
+		if not child:IsForbidden() then
+			if child:GetName() == nil then
+				if child:IsObjectType(objType) then
+					if select("#", ...) > 2 then
+						-- base checks on position
+						local point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
+						-- self:Debug("ff2 GetPoint: [%s, %s, %s, %s, %s, %s]", child, point, relativeTo, relativePoint, xOfs, yOfs)
+						xOfs = xOfs and self:getInt(xOfs) or 0
+						yOfs = yOfs and self:getInt(yOfs) or 0
+						if	point		  == select(1, ...)
+						and relativeTo	  == select(2, ...)
+						and relativePoint == select(3, ...)
+						and xOfs		  == select(4, ...)
+						and yOfs		  == select(5, ...) then
+							frame, cKey = child, key
+							break
+						end
+					else
+						-- base checks on size
+						local height, width = self:getInt(child:GetHeight()), self:getInt(child:GetWidth())
+						-- self:Debug("ff2 h/w: [%s, %s, %s]", child, height, width)
+						if	height == select(1, ...)
+						and width  == select(2, ...) then
+							frame, cKey = child, key
+							break
+						end
 					end
 				end
 			end
