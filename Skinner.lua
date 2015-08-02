@@ -1,8 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 
-local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, setmetatable, CreateFrame, LowerFrameLevel, RaiseFrameLevel, wipe, pcall, strfind, tostring, UIParent = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.setmetatable, _G.CreateFrame, _G.LowerFrameLevel, _G.RaiseFrameLevel, _G.wipe, _G.pcall, _G.strfind, _G.tostring, _G.UIParent
-local IsAddOnLoaded, GetCursorPosition, Model_RotateLeft, Model_RotateRight = _G.IsAddOnLoaded, _G.GetCursorPosition, _G.Model_RotateLeft, _G.Model_RotateRight
+local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack
 local LibStub = _G.LibStub
 
 do
@@ -27,8 +26,8 @@ do
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
-	local liveInfo = {"6.2.0", 20201}
-	local ptrInfo = {"6.2.0", 29999}
+	local liveInfo = {"6.2.0", 20338}
+	local ptrInfo = {"6.2.1", 20328}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -238,10 +237,10 @@ function aObj:OnInitialize()
 	self.initialized = {}
 
 	-- table to hold buttons that have been added, with weak keys
-	self.sBtn = setmetatable({}, {__mode = "k"})
+	self.sBtn = _G.setmetatable({}, {__mode = "k"})
 
 	-- table to hold StatusBars that have been glazed, with weak keys
-	self.sbGlazed = setmetatable({}, {__mode = "k"})
+	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 
 	-- shorthand for the TexturedTab profile setting
 	self.isTT = prdb.TexturedTab and true or false
@@ -269,7 +268,7 @@ function aObj:OnInitialize()
 		for _, v in pairs(self.oocTab) do
 			v[1](unpack(v[2]))
 		end
-		wipe(self.oocTab)
+		_G.wipe(self.oocTab)
 	end)
 
 	-- ignore objects when skinning IOF elements
@@ -416,9 +415,9 @@ local function __addSkinButton(opts)
 	opts.parent = opts.parent or opts.obj:GetParent()
 
 	-- store button object within original button
-	opts.obj.sb = CreateFrame("Button", nil, opts.parent, opts.sec and "SecureUnitButtonTemplate" or nil)
+	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent, opts.sec and "SecureUnitButtonTemplate" or nil)
 	local btn = opts.obj.sb
-	LowerFrameLevel(btn)
+	_G.LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
 
 	if not opts.nohooks then
@@ -592,7 +591,7 @@ local function __addSkinFrame(opts)
 	local yOfs2 = opts.y2 or opts.ofs * -1
 
 	-- add a frame around the current object
-	opts.obj.sf = opts.obj.sf or CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+	opts.obj.sf = opts.obj.sf or _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
 	local skinFrame = opts.obj.sf
 	skinFrame:ClearAllPoints()
 	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
@@ -615,8 +614,8 @@ local function __addSkinFrame(opts)
 	aObj:applySkin(opts.aso)
 
 	-- adjust frame level
-	local success, err = pcall(LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
-	if not success then RaiseFrameLevel(opts.obj) end -- raise parent's Frame Level if 0
+	local success, err = _G.pcall(_G.LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
+	if not success then _G.RaiseFrameLevel(opts.obj) end -- raise parent's Frame Level if 0
 	success, err = nil, nil
 
 	 -- make sure it's lower than its parent's Frame Strata
@@ -627,7 +626,7 @@ local function __addSkinFrame(opts)
 
 	-- reparent skinFrame to avoid whiteout issues caused by animations
 	if opts.anim then
-		skinFrame:SetParent(UIParent)
+		skinFrame:SetParent(_G.UIParent)
 		-- hook Show and Hide methods
 		aObj:SecureHook(opts.obj, "Show", function(this) this.sf:Show() end)
 		aObj:SecureHook(opts.obj, "Hide", function(this) this.sf:Hide() end)
@@ -901,7 +900,7 @@ local function __adjHeight(opts)
 --@end-alpha@
 	if opts.adj == 0 then return end
 
-	if not strfind(tostring(opts.adj), "+") then -- if not negative value
+	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
 		opts.obj:SetHeight(opts.obj:GetHeight() + opts.adj)
 	else
 		opts.adj = opts.adj * -1 -- make it positive
@@ -943,7 +942,7 @@ local function __adjWidth(opts)
 --@end-alpha@
 	if opts.adj == 0 then return end
 
-	if not strfind(tostring(opts.adj), "+") then -- if not negative value
+	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
 		opts.obj:SetWidth(opts.obj:GetWidth() + opts.adj)
 	else
 		opts.adj = opts.adj * -1 -- make it positive
@@ -980,8 +979,6 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 	assert(statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack())
 --@end-alpha@
 
---	if not statusBar or not statusBar:IsObjectType("StatusBar") then return end
-
 	statusBar:SetStatusBarTexture(self.sbTexture)
 
 	if not self.sbGlazed[statusBar] then
@@ -989,16 +986,15 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 	end
 	local sbG = self.sbGlazed[statusBar]
 
-	-- change StatusBar Texture's draw layer if required
 	local sbTex = statusBar:GetStatusBarTexture()
-	if sbTex:GetDrawLayer() == "BACKGROUND" then sbTex:SetDrawLayer("BORDER") end
 	-- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
 	sbTex:SetHorizTile(false)
 	sbTex:SetVertTile(false)
 
 	if fi then
 		if not sbG.bg then
-			sbG.bg = bgTex or statusBar:CreateTexture(nil, "BACKGROUND")
+			-- create background texture on a lower sublevel
+			sbG.bg = bgTex or statusBar:CreateTexture(nil, "BACKGROUND", nil, -1)
 			sbG.bg:SetTexture(self.sbTexture)
 			sbG.bg:SetVertexColor(unpack(self.sbColour))
 			if not bgTex then
@@ -1079,7 +1075,7 @@ function aObj:makeMFRotatable(modelFrame)
 --@end-alpha@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
-	if IsAddOnLoaded("CloseUp") then return end
+	if _G.IsAddOnLoaded("CloseUp") then return end
 
 	--frame:EnableMouseWheel(true)
 	modelFrame:EnableMouse(true)
@@ -1100,20 +1096,20 @@ function aObj:makeMFRotatable(modelFrame)
 	if not self:IsHooked(modelFrame, "OnUpdate") then
 		self:SecureHookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
 			if this.dragging then
-				local x, y = GetCursorPosition()
+				local x, y = _G.GetCursorPosition()
 				if this.cursorPosition.x > x then
-					Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
+					_G.Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
 				elseif this.cursorPosition.x < x then
-					Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
+					_G.Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
 				end
-				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
+				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
 				x, y = nil, nil
 			end
 		end)
 		self:SecureHookScript(modelFrame, "OnMouseDown", function(this, button)
 			if button == "LeftButton" then
 				this.dragging = true
-				this.cursorPosition.x, this.cursorPosition.y = GetCursorPosition()
+				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
 			end
 		end)
 		self:SecureHookScript(modelFrame, "OnMouseUp", function(this, button)
@@ -1920,8 +1916,6 @@ function aObj:skinTooltip(obj)
 		end
 	end
 
-	local objHeight = self:getInt(obj:GetHeight())
-
 	if not obj.tfade then obj.tfade = obj:CreateTexture(nil, "BORDER") end
 	obj.tfade:SetTexture(self.gradientTex)
 
@@ -1934,7 +1928,9 @@ function aObj:skinTooltip(obj)
 	else
 		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
 		-- set the Fade Height making sure that it isn't greater than the frame height
+		local objHeight = self:getInt(obj:GetHeight())
 		local fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
+		objHeight = nil
 		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -(fh - 4))
 		obj:SetBackdropColor(unpack(self.bColour))
 		fh = nil
@@ -1958,12 +1954,9 @@ function aObj:skinTooltip(obj)
 				end
 			end
 		end
-		r, g, b, a = nil, nil, nil, nil
 	end
 
 	obj:SetBackdropBorderColor(self:setTTBBC())
-
-	objHeight = nil
 
 end
 
