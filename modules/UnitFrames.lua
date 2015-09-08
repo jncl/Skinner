@@ -383,51 +383,6 @@ local function skinPartyF()
 	end
 
 end
-local function skinArenaF()
-
-	if db.arena
-	and not isSkinned["Arena"]
-	then
-		aObj:SecureHook("Arena_LoadUI", function()
-			local function skinFrame(fName)
-				addBackground{obj=_G[fName], x1=-3, x2=3, y2=-6}
-				_G[fName .. "Background"]:SetTexture(nil)
-				_G[fName .. "Texture"]:SetTexture(nil)
-				_G[fName .. "Status"]:SetTexture(nil)
-				_G[fName .. "SpecBorder"]:SetTexture(nil)
-				-- status bars
-				aObj:glazeStatusBar(_G[fName .. "HealthBar"], 0)
-				aObj:glazeStatusBar(_G[fName .. "ManaBar"], 0)
-				-- casting bar
-				local cBar = fName .. "CastingBar"
-				aObj:adjHeight{obj=_G[cBar], adj=2}
-				aObj:moveObject{obj=_G[cBar .. "Text"], y=-1}
-				_G[cBar .. "Flash"]:SetAllPoints()
-				aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar .. "Flash"]})
-			end
-			for i = 1, _G.MAX_ARENA_ENEMIES do
-				skinFrame("ArenaPrepFrame" .. i)
-				skinFrame("ArenaEnemyFrame" .. i)
-				-- pet frame
-				local aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
-				addBackground{obj=_G[aPF], y1=1, x2=1, y2=2}
-				_G[aPF .. "Flash"]:SetTexture(nil)
-				_G[aPF .. "Texture"]:SetTexture(nil)
-				-- status bar
-				aObj:glazeStatusBar(_G[aPF .. "HealthBar"], 0)
-				aObj:glazeStatusBar(_G[aPF .. "ManaBar"], 0)
-				-- move pet frame
-				aObj:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
-			end
-			-- ArenaPrepBackground
-			aObj:addSkinFrame{obj=_G.ArenaPrepBackground, ft=ftype, nb=true}
-			-- ArenaEnemyBackground
-			aObj:addSkinFrame{obj=_G.ArenaEnemyBackground, ft=ftype, nb=true}
-			aObj:Unhook("Arena_LoadUI")
-		end)
-	end
-
-end
 local function changeUFOpacity()
 
 	local r, g, b = _G.unpack(aObj.bColour)
@@ -519,7 +474,6 @@ function module:adjustUnitFrames(opt)
 		skinTargetF()
 		skinFocusF()
 		skinPartyF()
-		skinArenaF()
 	elseif opt == "player" then
 		skinPlayerF()
 	elseif opt == "pet"
@@ -532,8 +486,6 @@ function module:adjustUnitFrames(opt)
 		skinFocusF()
 	elseif opt == "party" then
 		skinPartyF()
-	elseif opt == "arena" then
-		skinArenaF()
 	elseif opt == "alpha" then
 		changeUFOpacity()
 	end
@@ -616,5 +568,47 @@ function module:GetOptions()
 		},
 	}
 	return options
+
+end
+
+-- this stub is used to trigger Arena frames skinning
+function aObj:ArenaUI()
+
+	if db.arena then
+		local function skinFrame(fName)
+			addBackground{obj=_G[fName], x1=-3, x2=3, y2=-6}
+			_G[fName .. "Background"]:SetTexture(nil)
+			_G[fName .. "Texture"]:SetTexture(nil)
+			_G[fName .. "Status"]:SetTexture(nil)
+			_G[fName .. "SpecBorder"]:SetTexture(nil)
+			-- status bars
+			aObj:glazeStatusBar(_G[fName .. "HealthBar"], 0)
+			aObj:glazeStatusBar(_G[fName .. "ManaBar"], 0)
+			-- casting bar
+			local cBar = fName .. "CastingBar"
+			aObj:adjHeight{obj=_G[cBar], adj=2}
+			aObj:moveObject{obj=_G[cBar .. "Text"], y=-1}
+			_G[cBar .. "Flash"]:SetAllPoints()
+			aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar .. "Flash"]})
+		end
+		for i = 1, _G.MAX_ARENA_ENEMIES do
+			skinFrame("ArenaPrepFrame" .. i)
+			skinFrame("ArenaEnemyFrame" .. i)
+			-- pet frame
+			local aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
+			addBackground{obj=_G[aPF], y1=1, x2=1, y2=2}
+			_G[aPF .. "Flash"]:SetTexture(nil)
+			_G[aPF .. "Texture"]:SetTexture(nil)
+			-- status bar
+			aObj:glazeStatusBar(_G[aPF .. "HealthBar"], 0)
+			aObj:glazeStatusBar(_G[aPF .. "ManaBar"], 0)
+			-- move pet frame
+			aObj:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
+		end
+		-- ArenaPrepBackground
+		aObj:addSkinFrame{obj=_G.ArenaPrepBackground, ft=ftype, nb=true}
+		-- ArenaEnemyBackground
+		aObj:addSkinFrame{obj=_G.ArenaEnemyBackground, ft=ftype, nb=true}
+	end
 
 end
