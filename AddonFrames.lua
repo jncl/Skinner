@@ -13,7 +13,8 @@ local blizzLoDFrames = {
 	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ItemUpgradeUI", "GarrisonUI", "QuestChoice", "TrainerUI", "VoidStorageUI",
 	-- ui
 	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "StoreUI", "TimeManager",
-	--	ArenaUI the unitframes are skinned in UnitFrames.lua
+	--	unitframes
+	"ArenaUI",
 }
 
 local blizzLoD = {}
@@ -124,6 +125,7 @@ function aObj:BlizzardFrames()
 			["NavigationBar"] = true,
 			["PetBattleUI"] = true,
 			["PVEFrame"] = true,
+			["PVPHelper"] = true,
 			["QuestMap"] = false, -- checked below
 			["QueueStatusFrame"] = true,
 			["RaidFrame"] = true,

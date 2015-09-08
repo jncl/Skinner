@@ -2038,7 +2038,8 @@ function aObj:PVPUI()
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
-	self:addSkinFrame{obj=_G.PVPUIFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
+	-- N.B. Frame already skinned as it is now part of GroupFinder/PVE
+	-- self:addSkinFrame{obj=_G.PVPUIFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
 	local btn
 	for i = 1, 4 do
 		btn = _G.PVPQueueFrame["CategoryButton" .. i]
@@ -2079,7 +2080,9 @@ function aObj:PVPUI()
 	_G.HonorFrame.BonusFrame:DisableDrawLayer("BORDER")
 	_G.HonorFrame.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
 	self:removeMagicBtnTex(_G.HonorFrame.SoloQueueButton)
+	self:skinButton{obj=_G.HonorFrame.SoloQueueButton}
 	self:removeMagicBtnTex(_G.HonorFrame.GroupQueueButton)
+	self:skinButton{obj=_G.HonorFrame.GroupQueueButton}
 	-- Conquest Frame
 	_G.ConquestFrame:DisableDrawLayer("BACKGROUND")
 	_G.ConquestFrame:DisableDrawLayer("BORDER")
@@ -2095,6 +2098,7 @@ function aObj:PVPUI()
 	_G.ConquestFrame.Arena5v5.NormalTexture:SetTexture(nil)
 	_G.ConquestFrame.RatedBG.NormalTexture:SetTexture(nil)
 	self:removeMagicBtnTex(_G.ConquestFrame.JoinButton)
+	self:skinButton{obj=_G.ConquestFrame.JoinButton}
 	self:skinDropDown{obj=_G.ConquestFrame.ArenaInviteMenu}
 	-- War Games Frame
 	_G.WarGamesFrame.InfoBG:SetTexture(nil)
@@ -2109,19 +2113,7 @@ function aObj:PVPUI()
 	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar}
 	_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
 	self:removeMagicBtnTex(_G.WarGameStartButton)
-
-	-- PVPFramePopup
-	_G.PVPFramePopup:DisableDrawLayer("BORDER")
-	_G.PVPFramePopupRing:SetTexture(nil)
-	self:addSkinFrame{obj=_G.PVPFramePopup, ft=ftype}
-	-- PVPRoleCheckPopup
-	self:addSkinFrame{obj=_G.PVPRoleCheckPopup, ft=ftype}
-	-- PVPReadyDialog
-	-- _G.PVPReadyDialog.background:SetAlpha(0)
-	-- _G.PVPReadyDialog.filigree:SetAlpha(0)
-	-- _G.PVPReadyDialog.bottomArt:SetAlpha(0)
-	-- _G.PVPReadyDialog.instanceInfo.underline:SetAlpha(0)
-	self:addSkinFrame{obj=_G.PVPReadyDialog, ft=ftype, kfs=true}
+	self:skinButton{obj=_G.WarGameStartButton}
 
 end
 

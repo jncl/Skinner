@@ -3065,6 +3065,23 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 
 end
 
+function aObj:PVPHelper() -- previously part of PVPUI function
+
+	-- PVPFramePopup
+	_G.PVPFramePopup:DisableDrawLayer("BORDER")
+	_G.PVPFramePopupRing:SetTexture(nil)
+	self:addSkinFrame{obj=_G.PVPFramePopup, ft=ftype}
+	-- PVPRoleCheckPopup
+	self:addSkinFrame{obj=_G.PVPRoleCheckPopup, ft=ftype}
+	-- PVPReadyDialog
+	-- _G.PVPReadyDialog.background:SetAlpha(0)
+	-- _G.PVPReadyDialog.filigree:SetAlpha(0)
+	-- _G.PVPReadyDialog.bottomArt:SetAlpha(0)
+	_G.PVPReadyDialog.instanceInfo.underline:SetAlpha(0)
+	self:addSkinFrame{obj=_G.PVPReadyDialog, ft=ftype, kfs=true}
+
+end
+
 function aObj:QuestMap()
 	if not self.db.profile.QuestMap or self.initialized.QuestMap then return end
 	self.initialized.QuestMap = true
