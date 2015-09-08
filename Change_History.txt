@@ -1,3 +1,16 @@
+b6.20338.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated globals usage
+	Handle inCombat when updating OverrideBars
+	Other UI changes
+	GarrisonUI updates, show certain MissionFrame icons when Fog displayed
+	Update code to reflect library changes
+	Bugfix check for forbidden frames
+	Bugfix for Player CastingBar positioning
+	Updated AtlasLoot, MasterPlan & ReagentRestocker skins
+
 b6.20201.2
 Jncl:
 	Updated Change_History.txt
