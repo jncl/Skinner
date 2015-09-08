@@ -306,7 +306,7 @@ function aObj:changeShield(shldReg, iconReg)
 --@end-alpha@
 
 	self:changeTandC(shldReg, self.shieldTex)
-	shldReg:SetSize(46, 46)
+	shldReg:SetSize(44, 44)
 	-- move it behind the icon
 	shldReg:ClearAllPoints()
 	shldReg:SetPoint("CENTER", iconReg, "CENTER", 9, -1)

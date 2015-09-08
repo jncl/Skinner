@@ -2649,28 +2649,23 @@ function aObj:Nameplates()
 
 	local r, g, b, a = unpack(self.sbColour)
 	local sbTex, shTex = self.sbTexture, self.shieldTex
-	local _, rg2, rg3, rg6
+	local _, npac, cb, rg2, rg6
 	local function skinPlate(obj)
 
-		_, rg2, rg3 = obj:GetRegions() -- border & highlight
-		rg2:SetTexture(nil)
-		rg3:SetTexture(nil)
+		-- aObj:ShowInfo(obj, true, true)
 
-		-- skin both status bars (health & cast)
-		obj.sb1, obj.sb2 = obj:GetChildren()
-		for i = 1, 2 do
-			if obj["sb" .. i] then
-				aObj:glazeStatusBar(obj["sb" .. i], 0,  nil)
-			end
-		end
-
-		-- Cast bar uninterruptible shield texture
-		_, rg2 ,obj.sb2.rg3, obj.sb2.rg4, _, rg6 = obj.sb2:GetRegions() -- ?, border, shield, icon, spellname, shadow
+		npac = obj.ArtContainer
+		-- Nameplate border
+		npac.Border:SetTexture(nil)
+		-- obj.ArtContainer.NameBar
+		cb = npac.CastBar
+		-- aObj:ShowInfo(cb, false, false)
+		_, rg2, cb.sTex, cb.icon, _, rg6 = cb:GetRegions() -- fill, border, shield, icon, name, name shadow
 		rg2:SetTexture(nil)
 		rg6:SetTexture(nil)
-		aObj:changeShield(obj.sb2.rg3, obj.sb2.rg4)
-		obj.sb2.rg3.sw = obj.sb2.rg3.SetWidth -- store original function
-		obj.sb2.rg3.SetWidth = function() end
+		aObj:changeShield(cb.sTex, cb.icon)
+		cb.sTex.sw, cb.sTex.sp = cb.sTex.SetWidth, cb.sTex.SetPoint -- store original functions
+		cb.sTex.SetWidth, cb.sTex.SetPoint = function() end, function() end
 
 	end
 	local npEvt
@@ -2685,14 +2680,14 @@ function aObj:Nameplates()
 		else
 			aObj.RegisterCallback("skinNameplates", "WorldFrame_GetChildren", function(this, child)
 				if aObj:hasTextInName(child, "NamePlate") then
-					local npObj = aObj:getChild(child, 1) -- use first child frame (5.1)
-					if not npObj.sknd then
-						npObj.sknd = true
-						skinPlate(npObj)
+					-- aObj:ShowInfo(child, true, true)
+					if not child.sknd then
+						child.sknd = true
+						skinPlate(child)
 					else
-						 -- reset shield texture's width & position
-						npObj.sb2.rg3:sw(46)
-						npObj.sb2.rg3:SetPoint("CENTER", npObj.sb2.rg4, "CENTER", 9, -1)
+						-- resize shield texture & reposition it
+						child.ArtContainer.CastBar.sTex:sw(44)
+						child.ArtContainer.CastBar.sTex:sp("CENTER", child.ArtContainer.CastBar.icon, "CENTER", 9, -1)
 					end
 				end
 			end)
