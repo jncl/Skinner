@@ -252,7 +252,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	if not addonFunc then addonFunc = addonName end
 
 	-- don't skin any Addons whose skins are flagged as disabled
-	if self.db.profile.DisabledSkins[addonFunc]
+	if self.db.profile.DisabledSkins[addonName]
 	or self.db.profile.DisableAllAS
 	then
 		if self.db.profile.Warnings then
