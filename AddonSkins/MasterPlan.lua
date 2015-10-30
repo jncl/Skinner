@@ -180,4 +180,36 @@ function aObj:MasterPlan() -- LoD
 		self:Unhook(_G.GarrisonShipyardFrame, "ShowMission")
 	end)
 
+    -- MPStatContainer
+    _G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer:DisableDrawLayer("BACKGROUND")
+    self:addSkinFrame{obj=_G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer, ofs=-5}
+
+    -- Missions of Interest Tab
+	skinTab(_G.GarrisonShipyardFrameTab3, 3)
+	_G.PanelTemplates_SetNumTabs(_G.GarrisonShipyardFrame, 3)
+
+    _G.GarrisonShipyardFrame.InterestTab:DisableDrawLayer("BACKGROUND")
+    _G.GarrisonShipyardFrame.InterestTab:DisableDrawLayer("BORDER")
+	local sf2 = self:getChild(_G.GarrisonShipyardFrame.InterestTab, 1) -- scroll frame
+	local sc2 = sf2:GetScrollChild()
+	local bar2 = self:getChild(sf2, 1)
+	self:skinSlider{obj=bar2, adj=-4}
+
+	local function skinMissionButtons2()
+		local kids = {sc2:GetChildren()}
+		for _, child in _G.ipairs(kids) do
+			if child:IsObjectType("Button") then
+				child:DisableDrawLayer("BACKGROUND")
+				child:DisableDrawLayer("BORDER")
+			end
+		end
+		kids = nil
+	end
+	-- hook this to skin new buttons
+	self:SecureHookScript(bar2, "OnValueChanged", function(this, ...)
+        skinMissionButtons2()
+	end)
+	-- skin any existing buttons, first time displayed
+    skinMissionButtons2()
+
 end
