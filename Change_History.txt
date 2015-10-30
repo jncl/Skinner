@@ -1,3 +1,12 @@
+b6.20444.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated PvP frames skinning
+	Updated Nameplates skinning
+	Update ArenaFrame skinning
+
 b6.20338.1
 Jncl:
 	ToDo.txt
