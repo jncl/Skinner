@@ -11,3 +11,22 @@ Legend:
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
+
+	I	reported by rovin60, 15.10.15
+?		- ..\AddOns\Skinner\UtilFuncs.lua line 433:
+  attempt to perform arithmetic on local 'num' (a nil value)
+Debug:
+		  Skinner\Skinner.lua:1948: skinTooltip()
+		  Skinner\UIFrames.lua:34:
+		  Skinner\UIFrames.lua:14
+		  Skinner\UtilFuncs.lua:182: add2Table()
+		  Skinner\UIFrames.lua:3286:
+		  Skinner\UIFrames.lua:3270
+
+√	N	DBM, reported by transitbus, 18.10.15
+?		- Skinner\SkinMe\DBM-6.2.13 alpha.14606.lua:15: Wrong object type for function
+		  Skinner\SkinMe\DBM-6.2.13 alpha.14606.lua:15: in function <Skinner\SkinMe\DBM.lua:7>
+
+√	N	MasterPlan, reported by Flappers, 19.10.15
+?		- Skinner\SkinMe\MasterPlan-0.73.lua:166: attempt to get length of field 'buttons' (a nil value)
+		  Skinner\SkinMe\MasterPlan-0.73.lua:166: in function <Skinner\SkinMe\MasterPlan.lua:163>
