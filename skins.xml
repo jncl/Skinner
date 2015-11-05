@@ -161,6 +161,7 @@
 <script file="SkinMe\ReagentRestocker.lua"/>
 <script file="SkinMe\Recount.lua"/>
 <script file="SkinMe\REFlex.lua"/>
+<script file="SkinMe\Rematch.lua"/>
 <script file="SkinMe\RicoMiniMap.lua"/>
 <script file="SkinMe\Scrap.lua"/>
 <script file="SkinMe\ScrollMaster.lua"/>
