@@ -1370,10 +1370,7 @@ function aObj:GuildUI() -- LoD
 	self:moveObject{obj=_G.GuildFrameTabardEmblem, x=9, y=-12}
 	self:moveObject{obj=_G.GuildFrameTabardBorder, x=7, y=-10}
 	self:skinTabs{obj=_G.GuildFrame, lod=true}
-	self:addSkinFrame{obj=_G.GuildFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:removeMagicBtnTex(_G.GuildAddMemberButton)
-	self:removeMagicBtnTex(_G.GuildControlButton)
-	self:removeMagicBtnTex(_G.GuildViewLogButton)
+	self:addSkinFrame{obj=_G.GuildFrame, ft=ftype, ri=true, rmbt=true, x1=-3, y1=2, x2=1, y2=-5}
 	-- GuildNameChange Frame
 	self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={9}}
 
@@ -1447,7 +1444,6 @@ function aObj:GuildUI() -- LoD
 	self:skinSlider{obj=_G.GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar}
 	_G.GuildRecruitmentCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
-	self:removeMagicBtnTex(_G.GuildRecruitmentListGuildButton)
 	-- GuildInfoFrameApplicants Frame
 	for i = 1, #_G.GuildInfoFrameApplicantsContainer.buttons do
 		btn = _G.GuildInfoFrameApplicantsContainer.buttons[i]
@@ -1457,9 +1453,6 @@ function aObj:GuildUI() -- LoD
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
 	self:skinSlider{obj=_G.GuildInfoFrameApplicantsContainerScrollBar, adj=-4}
-	self:removeMagicBtnTex(_G.GuildRecruitmentInviteButton)
-	self:removeMagicBtnTex(_G.GuildRecruitmentDeclineButton)
-	self:removeMagicBtnTex(_G.GuildRecruitmentMessageButton)
 	-- Guild Text Edit frame
 	self:skinSlider{obj=_G.GuildTextEditScrollFrameScrollBar, adj=-6}
 	self:addSkinFrame{obj=_G.GuildTextEditContainer, ft=ftype, nb=true}
@@ -1571,7 +1564,7 @@ function aObj:LookingForGuildUI() -- LoD
 	self.initialized.LookingForGuildUI = true
 
 	self:skinTabs{obj=_G.LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
-	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, rmbt=true, y1=2, x2=1}
 
 	-- Start Frame (Settings)
 	_G.LookingForGuildInterestFrameBg:SetAlpha(0)
@@ -1581,7 +1574,6 @@ function aObj:LookingForGuildUI() -- LoD
 	self:skinScrollBar{obj=_G.LookingForGuildCommentInputFrameScrollFrame}
 	self:addSkinFrame{obj=_G.LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
 	_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:removeMagicBtnTex(_G.LookingForGuildBrowseButton)
 
 	-- Browse Frame
 	self:skinSlider{obj=_G.LookingForGuildBrowseFrameContainerScrollBar, adj=-4}
@@ -1591,7 +1583,6 @@ function aObj:LookingForGuildUI() -- LoD
 		self:applySkin{obj=btn}
 		_G[btn:GetName() .. "Ring"]:SetAlpha(0)
 	end
-	self:removeMagicBtnTex(_G.LookingForGuildRequestButton)
 
 	-- Apps Frame (Requests)
 	self:skinSlider{obj=_G.LookingForGuildAppsFrameContainerScrollBar}
@@ -2079,10 +2070,8 @@ function aObj:PVPUI()
 	_G.HonorFrame.BonusFrame:DisableDrawLayer("BACKGROUND")
 	_G.HonorFrame.BonusFrame:DisableDrawLayer("BORDER")
 	_G.HonorFrame.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
-	self:removeMagicBtnTex(_G.HonorFrame.SoloQueueButton)
-	self:skinButton{obj=_G.HonorFrame.SoloQueueButton}
-	self:removeMagicBtnTex(_G.HonorFrame.GroupQueueButton)
-	self:skinButton{obj=_G.HonorFrame.GroupQueueButton}
+	self:skinButton{obj=_G.HonorFrame.SoloQueueButton, rmbt=true}
+	self:skinButton{obj=_G.HonorFrame.GroupQueueButton, rmbt=true}
 	-- Conquest Frame
 	_G.ConquestFrame:DisableDrawLayer("BACKGROUND")
 	_G.ConquestFrame:DisableDrawLayer("BORDER")
@@ -2097,8 +2086,7 @@ function aObj:PVPUI()
 	_G.ConquestFrame.Arena3v3.NormalTexture:SetTexture(nil)
 	_G.ConquestFrame.Arena5v5.NormalTexture:SetTexture(nil)
 	_G.ConquestFrame.RatedBG.NormalTexture:SetTexture(nil)
-	self:removeMagicBtnTex(_G.ConquestFrame.JoinButton)
-	self:skinButton{obj=_G.ConquestFrame.JoinButton}
+	self:skinButton{obj=_G.ConquestFrame.JoinButton, rmbt=true}
 	self:skinDropDown{obj=_G.ConquestFrame.ArenaInviteMenu}
 	-- War Games Frame
 	_G.WarGamesFrame.InfoBG:SetTexture(nil)
@@ -2112,8 +2100,7 @@ function aObj:PVPUI()
 	end
 	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar}
 	_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
-	self:removeMagicBtnTex(_G.WarGameStartButton)
-	self:skinButton{obj=_G.WarGameStartButton}
+	self:skinButton{obj=_G.WarGameStartButton, rmbt=true}
 
 end
 
@@ -2381,7 +2368,7 @@ function aObj:TalentUI() -- LoD
 		aObj:removeRegions(frame, {1, 2, 3, 4, 5, 6})
 		frame.MainHelpButton.Ring:SetTexture(nil)
 		aObj:moveObject{obj=frame.MainHelpButton, y=-4}
-		aObj:removeMagicBtnTex(frame.learnButton)
+        aObj:removeMagicBtnTex(frame.learnButton)
 		local btn
 		for i = 1, _G.MAX_TALENT_TABS do
 			btn = frame["specButton" .. i]
@@ -2512,11 +2499,7 @@ function aObj:TradeSkillUI() -- LoD
 	self:keepFontStrings(_G.TradeSkillDetailScrollChildFrame)
 	self:addButtonBorder{obj=_G.TradeSkillSkillIcon}
 	self:skinEditBox{obj=_G.TradeSkillInputBox, noHeight=true, x=-5}
-	self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-	self:removeMagicBtnTex(_G.TradeSkillCreateAllButton)
-	self:removeMagicBtnTex(_G.TradeSkillCancelButton)
-	self:removeMagicBtnTex(_G.TradeSkillCreateButton)
-	self:removeMagicBtnTex(_G.TradeSkillViewGuildCraftersButton)
+	self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, ri=true, rmbt=true, x1=-3, y1=2, x2=1, y2=-5}
 	self:addButtonBorder{obj=_G.TradeSkillDecrementButton, ofs=-2, es=10}
 	self:addButtonBorder{obj=_G.TradeSkillIncrementButton, ofs=-2, es=10}
 	-- Guild sub frame

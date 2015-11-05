@@ -246,10 +246,9 @@ function aObj:ItemAlterationUI() -- LoD (a.k.a TransmogrifyFrame)
 	_G.TransmogrifyModelFrame:DisableDrawLayer("BACKGROUND")
 	_G.TransmogrifyModelFrame:DisableDrawLayer("BORDER")
 	_G.TransmogrifyModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=_G.TransmogrifyArtFrame, ft=ftype, kfs=true, bg=true, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.TransmogrifyArtFrame, ft=ftype, kfs=true, bg=true, rmbt=true, y1=2, x2=1, y2=-2}
 	self:keepRegions(_G.TransmogrifyFrameButtonFrame, {})
-	self:removeMagicBtnTex(_G.TransmogrifyApplyButton)
-	self:skinButton{obj=_G.TransmogrifyApplyButton}
+	self:skinButton{obj=_G.TransmogrifyApplyButton, rmbt=true}
 
 	-- TransmogrifyConfirmation Popup used when items will be bound if altered
 	self:removeRegions(_G.TransmogrifyConfirmationPopup.ItemFrame1, {8}) -- Name Frame texture
@@ -278,10 +277,9 @@ function aObj:ItemUpgradeUI() -- LoD
 	_G.ItemUpgradeFrame.ItemButton.ItemName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
-	self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
 	_G.ItemUpgradeFrame.ButtonFrame.ButtonBorder:SetTexture(nil)
 	_G.ItemUpgradeFrame.ButtonFrame.ButtonBottomBorder:SetTexture(nil)
-	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true, ofs=2, x2=1}
+	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true, rmbt=true, ofs=2, x2=1}
 
 	-- hook this to hide the ItemButton texture if empty
 	self:SecureHook(_G.ItemUpgradeFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
@@ -662,8 +660,7 @@ function aObj:TrainerUI() -- LoD
 		btn:GetNormalTexture():SetAlpha(0)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
-	self:addSkinFrame{obj=_G.ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+	self:addSkinFrame{obj=_G.ClassTrainerFrame, ft=ftype, kfs=true, ri=true, rmbt=true, y1=2, x2=1, y2=-2}
 
 end
 

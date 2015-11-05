@@ -560,6 +560,7 @@ local function __addSkinFrame(opts)
 		af = alertframe animation fix
 		afas = hook alertframe animation scripts
 		sec = use the "SecureFrameTemplate"
+        rmbt = remove magic button texture(s)
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n" .. debugstack())
@@ -622,7 +623,7 @@ local function __addSkinFrame(opts)
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
 
 	-- skin the buttons unless not required
-	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft} end
+	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft, rmbt=opts.rmbt} end
 
 	-- reparent skinFrame to avoid whiteout issues caused by animations
 	if opts.anim then
