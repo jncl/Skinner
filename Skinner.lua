@@ -27,7 +27,7 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	local liveInfo = {"6.2.2", 20574}
-	local ptrInfo = {"6.2.3", 20601}
+	local ptrInfo = {"6.2.3", 20691}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -1874,7 +1874,7 @@ local function __skinTabs(opts)
 	end
 	aObj.tabFrames[opts.obj] = true
 
-	tabName, kRegions, xOfs1, yOfs1, xOfs2, yOfs2, tabID = nil, nil, nil, nil, nil, nil, nil
+	tabName, kRegions, xOfs1, yOfs1, xOfs2, yOfs2, tabID, tab = nil, nil, nil, nil, nil, nil, nil, nil
 
 end
 
