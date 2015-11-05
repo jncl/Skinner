@@ -2970,6 +2970,7 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	-- SearchPanel
 	local sp = _G.LFGListFrame.SearchPanel
 	self:skinEditBox{obj=sp.SearchBox, regs={9, 10}, mi=true}
+    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
 	self:addSkinFrame{obj=sp.AutoCompleteFrame, ft=ftype, kfs=true, nb=true, x1=4, y1=4, y2=4}
 	self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
 	self:removeInset(sp.ResultsInset)
