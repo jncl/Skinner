@@ -66,31 +66,46 @@ local function print_family_tree(fName)
 
 end
 
+local function getObjFromString(input)
+    -- first split the string on "."
+    local words = {}
+    for w in string.gmatch(input, "%a+") do
+        words[#words + 1] = w
+    end
+    -- then build string in the form _G["str1"]["str2"]...["strn"]
+    local objString = "_G"
+    for i = 1, #words do
+        objString = objString .. '["' .. words[i] .. '"]'
+    end
+    -- finally use loadstring to get the object from the command
+    -- print("getObjFromString", input, objString)
+    return assert(loadstring("return " .. objString)())
+end
 function aObj:SetupCmds()
 
 	local function getObj(input)
-		-- _G.print("getObj", input, _G[input], _G.GetMouseFocus())
+        -- print("getObj", input, _G[input], GetMouseFocus())
 		if not input or input:trim() == "" then
 			return GetMouseFocus()
 		else
-			return input
-		end
+            return getObjFromString(input)
+        end
 	end
 	local function getObjP(input)
-		-- _G.print("getObjP", input, _G[input], _G.GetMouseFocus():GetParent())
+		-- print("getObjP", input, _G[input], GetMouseFocus():GetParent())
 		if not input or input:trim() == "" then
 			return GetMouseFocus():GetParent()
 		else
-			return input
-		end
+            return getObjFromString(input)
+        end
 	end
 	local function getObjGP(input)
-		-- _G.print("getObjGP", input, _G[input], _G.GetMouseFocus():GetParent():GetParent())
+		-- print("getObjGP", input, _G[input], GetMouseFocus():GetParent():GetParent())
 		if not input or input:trim() == "" then
 			return GetMouseFocus():GetParent():GetParent()
 		else
-			return input
-		end
+            return getObjFromString(input)
+        end
 	end
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("rl", function() _G.ReloadUI() end)
@@ -683,6 +698,9 @@ function aObj:RGBPercToHex(r, g, b)
 end
 
 function aObj:ShowInfo(obj, showKids, noDepth)
+
+    -- print("ShowInfo:", obj, showKids, noDepth)
+
 --@alpha@
 	assert(obj, "Unknown object ShowInfo\n" .. debugstack())
 --@end-alpha@
@@ -697,9 +715,11 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 	local function getRegions(obj, lvl)
 
-		for k, reg in ipairs{obj:GetRegions()} do
+        local regs = {obj:GetRegions()}
+        for k, reg in ipairs(regs) do
 			showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self:getInt(reg:GetWidth()) or "nil", reg.GetHeight and self:getInt(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
-		end
+        end
+        regs = nil
 
 	end
 
@@ -708,7 +728,8 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 		if not showKids then return end
 		if type(lvl) == "string" and lvl:find("c") == 2 and noDepth then return end
 
-		for k, child in ipairs{frame:GetChildren()} do
+        local kids = {frame:GetChildren()}
+        for k, child in ipairs(kids) do
 			local objType = child:GetObjectType()
 			showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and aObj:getInt(child:GetWidth()) or "nil", child.GetHeight and aObj:getInt(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 			if objType == "Frame"
@@ -720,11 +741,12 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 				getRegions(child, lvl .. "c" .. k)
 				getChildren(child, lvl .. "c" .. k)
 			end
-		end
+        end
+        kids = nil
 
 	end
 
-	showIt("%s : %s : %s : %s : %s", obj, self:getInt(obj:GetWidth()) or "nil", self:getInt(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil")
+	showIt("%s : %s : %s : %s : %s : %s : %s", obj, self:getInt(obj:GetWidth()) or "nil", self:getInt(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil", obj:GetNumRegions(), obj:GetNumChildren())
 
 	showIt("Started Regions")
 	getRegions(obj, 0)
