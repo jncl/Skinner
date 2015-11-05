@@ -1,3 +1,11 @@
+b6.20574.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bug fix for running Addon skins
+	Updated DBM & MasterPlan skins
+
 b6.20444.1
 Jncl:
 	ToDo.txt
