@@ -612,11 +612,11 @@ function aObj:scanUIParentsChildren()
 		-- check for forbidden objects (StoreUI components)
 		if not child:IsForbidden() then
 			self.callbacks:Fire("UIParent_GetChildren", child)
---@alpha@
-		else
-			-- N.B. use print as Debug function causes taint
-			print("ignoring forbidden object [%s]", child)
---@end-alpha@
+-- --@alpha@
+--         else
+--             -- N.B. use print as Debug function causes taint
+--             print("ignoring forbidden object [%s]", child)
+-- --@end-alpha@
 		end
 	end
 	kids = nil
