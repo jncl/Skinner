@@ -47,22 +47,36 @@ function aObj:MasterPlan() -- LoD
 	self:removeRegions(missionList.ctlContainer, {1, 2, 3})
 
 	local function skinMissionButtons()
+        local t, grandchild
 		local kids = {sc:GetChildren()}
 		for _, child in _G.ipairs(kids) do
 			if child:IsObjectType("Button") then
-				child:DisableDrawLayer("BACKGROUND")
-				child:DisableDrawLayer("BORDER")
+                child:DisableDrawLayer("BACKGROUND")
+                child:DisableDrawLayer("BORDER")
 				-- aObj:getChild(child, 1):DisableDrawLayer("OVERLAY") -- shadow background, don't remove this as it identifies missions that are unable to be selected
-				-- re-align the top & bottom highlight
-				local t = aObj:getRegion(child, 12)
+				-- extend the top & bottom highlight texture
+				t = aObj:getRegion(child, 12)
 				t:ClearAllPoints()
-				t:SetPoint("topleft", 0, 4)
-				t:SetPoint("topright", 0, 4)
-				t = aObj:getRegion(child, 13)
-				t:ClearAllPoints()
-				t:SetPoint("bottomleft", 0, -4)
-				t:SetPoint("bottomright", 0, -4)
+				t:SetPoint("TOPLEFT", 0, 4)
+				t:SetPoint("TOPRIGHT", 0, 4)
+                t = aObj:getRegion(child, 13)
+                t:ClearAllPoints()
+                t:SetPoint("BOTTOMLEFT", 0, -4)
+                t:SetPoint("BOTTOMRIGHT", 0, -4)
 				aObj:removeRegions(child, {14, 15, 16, 17, 23}) -- highlight corners & rare indicator
+                -- add textures to identify individual missions
+                if not child.lineTex then
+                    child.lineTex = child:CreateTexture(nil, "OVERLAY", nil, -2)
+            		child.lineTex:SetAllPoints(child)
+                    child.lineTex:SetTexture (0.6, 0.6, 0.6)
+            		child.lineTex:SetBlendMode("ADD")
+            		child.lineTex:SetGradient("VERTICAL", 0.1, 0.3, 0.3, 0.1, 0.1, 0.1)
+                end
+                if child:GetID()/2%1 == 0.5 then -- choose odd numbered lines
+                    child.lineTex:Show()
+                else
+                    child.lineTex:Hide()
+                end
 				if child.followers then -- Active mission button has these
 					for i = 1, #child.followers do
 						child.followers[i].ring:SetTexture(nil)
@@ -77,7 +91,7 @@ function aObj:MasterPlan() -- LoD
 					aObj:addButtonBorder{obj=child.rewards[i], reParent={child.rewards[i].quantity}}
 				end
 				 -- Missions of interest have these unused follower buttons
-				local grandchild = aObj:getChild(child, child:GetNumChildren())
+				grandchild = aObj:getChild(child, child:GetNumChildren())
 				if grandchild:IsObjectType("Button")
 				and grandchild:GetNumChildren() == 21
 				then
@@ -85,10 +99,9 @@ function aObj:MasterPlan() -- LoD
 						aObj:getChild(grandchild, i).ring:SetTexture(nil)
 					end
 				end
-				grandchild = nil
 			end
 		end
-		kids = nil
+		t, grandchild, kids = nil, nil, nil
 	end
 	-- hook this to skin new buttons
 	self:SecureHookScript(bar, "OnValueChanged", function(this, ...)
