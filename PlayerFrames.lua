@@ -131,10 +131,12 @@ function aObj:AchievementUI() -- LoD
 		tex:SetHeight(19)
 		tex:SetPoint("RIGHT", _G.AchievementFrameFilterDropDown, "RIGHT", -3, 4)
 	end
+    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, ofs=0}
 	-- skin the frame
 	if self.db.profile.DropDownButtons then
 		self:addSkinFrame{obj=_G.AchievementFrameFilterDropDown, ft=ftype, aso={ng=true}, x1=-8, y1=2, x2=2, y2=7}
 	end
+
 	self:skinTabs{obj=_G.AchievementFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-10}
 	self:addSkinFrame{obj=_G.AchievementFrame, ft=ftype, kfs=true, bgen=1, y1=8, y2=-3}
 
@@ -863,8 +865,8 @@ function aObj:ContainerFrames()
 		obj = _G[objName]
 		self:addSkinFrame{obj=obj, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 		-- resize and move the bag name to make it more readable
-		_G[objName .. "Name"]:SetWidth(145)
-		self:moveObject{obj=_G[objName .. "Name"], x=-25}
+		_G[objName .. "Name"]:SetWidth(137)
+		self:moveObject{obj=_G[objName .. "Name"], x=-17}
 		-- Add gear texture to portrait button for settings
 		cfpb = obj.PortraitButton
 		cfpb.gear = cfpb:CreateTexture(nil, "artwork")
@@ -874,7 +876,7 @@ function aObj:ContainerFrames()
 		cfpb.Highlight:ClearAllPoints()
 		cfpb.Highlight:SetPoint("center")
 		cfpb.Highlight:SetSize(22, 22)
-		self:moveObject{obj=cfpb, x=6, y=-3}
+		self:moveObject{obj=cfpb, x=5, y=-3}
 	end
 	objName = nil
 	self:skinEditBox{obj=_G.BagItemSearchBox, regs={9, 10}, mi=true, noInsert=true}
