@@ -20,7 +20,7 @@ function aObj:AuctionUI() -- LoD
 -->>--	Browse Frame
 	for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
 		self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-		self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true}
+		self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true, aso={bd=5}}
 	end
 	self:skinScrollBar{obj=_G.BrowseFilterScrollFrame}
 	self:skinScrollBar{obj=_G.BrowseScrollFrame}
@@ -38,7 +38,7 @@ function aObj:AuctionUI() -- LoD
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		obj = _G["Browse" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
+		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
 	for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
 		btnName = "BrowseButton" .. i
@@ -64,7 +64,7 @@ function aObj:AuctionUI() -- LoD
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
 		obj = _G["Bid" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
+		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
 	for i = 1, _G.NUM_BIDS_TO_DISPLAY do
 		btnName = "BidButton" .. i
@@ -82,7 +82,7 @@ function aObj:AuctionUI() -- LoD
 	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 		obj = _G["Auctions" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
+		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
 	self:skinScrollBar{obj=_G.AuctionsScrollFrame}
 	for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
@@ -171,7 +171,7 @@ function aObj:BlackMarketUI() -- LoD
 	for _, v in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
 		obj = _G.BlackMarketFrame["Column" .. v]
 		self:keepFontStrings(obj)
-		self:addSkinFrame{obj=obj, ft=ftype, nb=true}
+		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
 	self:SecureHook("BlackMarketScrollFrame_Update", function(this)
 		local btn
