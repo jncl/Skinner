@@ -969,6 +969,8 @@ function aObj:GarrisonUI() -- LoD
 	self.initialized.GarrisonUI = true
 
 	local stageRegs = {1, 2, 3, 4, 5}
+	local navalStageRegs = {1, 2, 3, 4}
+    -- local navalStageRegs = {4}
 	local cdStageRegs = {1, 2, 3, 4, 5, 6}
 
 	local function skinPortrait(frame)
@@ -1054,12 +1056,15 @@ function aObj:GarrisonUI() -- LoD
 	end
 	local function skinCompleteDialog(obj)
 
-		aObj:getRegion(obj.CompleteDialog, 1):SetTexture(0, 0, 0, 1) -- make background opaque
+		aObj:getRegion(obj.CompleteDialog, 1):SetTexture(0, 0, 0, 0.9) -- make background nearly opaque
+        obj.CompleteDialog:SetSize(957, 657)
+        obj.CompleteDialog:SetPoint("topleft", obj:GetParent(), "topleft", 2, -3)
 		obj.CompleteDialog.BorderFrame:DisableDrawLayer("BACKGROUND")
 		obj.CompleteDialog.BorderFrame:DisableDrawLayer("BORDER")
 		obj.CompleteDialog.BorderFrame:DisableDrawLayer("OVERLAY")
 		aObj:removeRegions(obj.CompleteDialog.BorderFrame.Stage, cdStageRegs)
 		aObj:skinButton{obj=obj.CompleteDialog.BorderFrame.ViewButton}
+        aObj:addSkinFrame{obj=obj.CompleteDialog.BorderFrame, ft=ftype, y2=-2}
 
 	end
 	local function skinMissionPage(obj)
@@ -1070,7 +1075,6 @@ function aObj:GarrisonUI() -- LoD
 		obj.ButtonFrame:SetTexture(nil)
 
 		aObj:removeRegions(obj.Stage, stageRegs)
-		-- don't skin ShipyardUI Mission Frame
 		aObj:addSkinFrame{obj=obj, ft=ftype, x1=-320, y1=5, x2=3, y2=-20}
 		-- handle animation of StartMissionButton
 		if aObj.modBtns then
@@ -1094,26 +1098,33 @@ function aObj:GarrisonUI() -- LoD
 		end
 
 	end
-	local function skinMissionComplete(obj)
+	local function skinMissionComplete(obj, naval)
 
-		aObj:getRegion(obj:GetParent().MissionCompleteBackground, 1):SetTexture(0, 0, 0, 1) -- make background opaque
-		obj:DisableDrawLayer("BACKGROUND")
+        aObj:getRegion(obj:GetParent().MissionCompleteBackground, 1):SetTexture(0, 0, 0, 0.9) -- make background opaque
+        obj:GetParent().MissionCompleteBackground:SetSize(957, 657)
+        obj:GetParent().MissionCompleteBackground:SetPoint("topleft", obj:GetParent(), "topleft", 2, -3)
+        obj:DisableDrawLayer("BACKGROUND")
 		obj:DisableDrawLayer("BORDER")
 		obj:DisableDrawLayer("ARTWORK")
-		aObj:removeRegions(obj.Stage, stageRegs)
+		aObj:removeRegions(obj.Stage, naval and navalStageRegs or stageRegs) -- top half only
 		local frame
 		for i = 1, #obj.Stage.FollowersFrame.Followers do
 			frame = obj.Stage.FollowersFrame.Followers[i]
-			aObj:removeRegions(frame, {1})
+            if naval then
+                frame.NameBG:SetTexture(nil)
+            else
+                aObj:removeRegions(frame, {1})
+            end
 			if frame.PortraitFrame then skinPortrait(frame.PortraitFrame) end
 			aObj:glazeStatusBar(frame.XP, 0,  nil)
 			frame.XP:DisableDrawLayer("OVERLAY")
 		end
-		obj.BonusRewards:DisableDrawLayer("BACKGROUND")
+        obj.BonusRewards:DisableDrawLayer("BACKGROUND")
 		obj.BonusRewards:DisableDrawLayer("BORDER")
 		aObj:getRegion(obj.BonusRewards, 11):SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb) -- Heading
-		obj.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
+        obj.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 		obj.BonusRewards.Saturated:DisableDrawLayer("BORDER")
+        aObj:addSkinFrame{obj=obj, ft=ftype, y1=6, y2=-16}
 
 	end
 	-->>-- GarrisonBuildingUI
@@ -1371,8 +1382,23 @@ function aObj:GarrisonUI() -- LoD
 		for i = 1, #ml.listScroll.buttons do
 			btn = ml.listScroll.buttons[i]
 			btn:DisableDrawLayer("BACKGROUND")
-			btn.Overlay.Overlay:SetTexture(nil)
-			aObj:removeRegions(btn, {7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26}) -- 23-26 are highlight corners
+			btn:DisableDrawLayer("BORDER")
+			-- extend the top & bottom highlight texture
+			btn.HighlightT:ClearAllPoints()
+			btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
+			btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
+            btn.HighlightB:ClearAllPoints()
+            btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
+            btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
+			aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
+            -- add textures to identify individual missions
+            if i/2%1 == 0.5 then -- choose odd numbered lines
+                btn.lineTex = btn:CreateTexture(nil, "OVERLAY", nil, -2)
+        		btn.lineTex:SetAllPoints(btn)
+        		btn.lineTex:SetTexture(0.6, 0.6, 0.6)
+        		btn.lineTex:SetBlendMode("ADD")
+        		btn.lineTex:SetGradient("VERTICAL", 0.1, 0.3, 0.3, 0.1, 0.1, 0.1)
+            end
 			for i = 1, #btn.Rewards do
 				aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
 			end
@@ -1403,13 +1429,12 @@ function aObj:GarrisonUI() -- LoD
 		for i = 1, #mc.Stage.EncountersFrame.Encounters do
 			mc.Stage.EncountersFrame.Encounters[i].Ring:SetTexture(nil)
 		end
-		aObj:keepRegions(mc.Stage.MissionInfo, {6, 7, 8, 9, 10}) -- N.B. 6, 7, 9, 10 are text, 8 is MissionType
+        aObj:rmRegionsTex(mc.Stage.MissionInfo, {1, 2, 3, 4, 5, 11, 12, 13})
 
-		-- N.B. IconBG texture seems to appear when the mission is Rare
-		aObj:SecureHook("GarrisonMissionPage_SetReward", function(frame, reward)
-			frame.BG:SetTexture(nil)
-			aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
-		end)
+        aObj:SecureHook("GarrisonMissionPage_SetReward", function(frame, reward)
+            frame.BG:SetTexture(nil)
+            aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
+        end)
 
 		-- GarrisonFollowerPlacer
 		_G.GarrisonFollowerPlacer.PortraitRing:SetTexture(nil)
@@ -1481,7 +1506,9 @@ function aObj:GarrisonUI() -- LoD
 	-->>-- Naval Map Tab (MissionTab)
 		-- Mission List
 		local ml = _G.GarrisonShipyardFrame.MissionTab.MissionList
+        ml:SetScale(1.025) -- make larger to fit frame
 		ml.MapTexture:SetDrawLayer("BORDER", -2) -- make sure it appears above skinFrame but below other textures
+        ml.MapTexture:SetPoint("center", ml, "center", 0, -7)
 
 		-- Fog overlays
 		local function showCurrentMissions()
@@ -1526,11 +1553,11 @@ function aObj:GarrisonUI() -- LoD
 
 		-- MissionComplete
 		local mc = _G.GarrisonShipyardFrame.MissionComplete
-		skinMissionComplete(mc)
+		skinMissionComplete(mc, true)
 		for i = 1, #mc.Stage.EncountersFrame.Encounters do
 			mc.Stage.EncountersFrame.Encounters[i].PortraitRing:SetTexture(nil)
 		end
-		aObj:keepRegions(mc.Stage.MissionInfo, {6, 7}) -- N.B. 6 & 7 are MissionType & Title
+        self:rmRegionsTex(mc.Stage.MissionInfo, {1, 2, 3, 4, 5, 8, 9, 10}) -- N.B. 6 & 7 are MissionType & Title
 
 	end
 
@@ -3428,6 +3455,32 @@ function aObj:WorldState()
 	if not self.db.profile.WorldState or self.initialized.WorldState then return end
 	self.initialized.WorldState = true
 
+-->>-- CaptureBar(s)
+    local bar
+    local function skinCaptureBar(id)
+        bar = _G["WorldStateCaptureBar" .. id]
+        aObj:removeRegions(bar, {4})
+        -- create textures for Alliance/Horde icons
+        for _, tex in pairs{"texA", "texH"} do
+            bar[tex] = bar:CreateTexture(nil, "artwork")
+            bar[tex]:SetTexture[[Interface\WorldStateFrame\WorldState-CaptureBar]]
+            bar[tex]:SetSize(27, 27)
+        end
+        bar.texA:SetTexCoord(0, 0.091, 0, 0.4)
+        bar.texH:SetTexCoord(0.584, 0.675, 0, 0.4)
+        bar.texA:SetPoint("RIGHT", bar, "LEFT", 26, 0)
+        bar.texH:SetPoint("LEFT", bar, "RIGHT", -26, 0)
+    end
+    self:SecureHook(_G.ExtendedUI["CAPTUREPOINT"], "create", function(id)
+        print("CAPTUREPOINT create", id)
+        skinCaptureBar(id)
+    end)
+    -- skin any existing frames
+    for i = 1, _G.NUM_EXTENDED_UI_FRAMES do
+        skinCaptureBar(i)
+    end
+
+-->>-- WorldStateScore frame
 	self:skinDropDown{obj=_G.ScorePlayerDropDown}
 	self:skinScrollBar{obj=_G.WorldStateScoreScrollFrame}
 	self:skinTabs{obj=_G.WorldStateScoreFrame}
