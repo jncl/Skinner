@@ -11,9 +11,3 @@ Legend:
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
-
-	I	Garrison, reported by transitbus, 05.11.15
-√		- Improve Completed Missions skins
-
-	I	MasterPlan, reported by transitbus
-√		- make individual [completed] missions more identifiable
