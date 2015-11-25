@@ -17,18 +17,19 @@ function aObj:MasterPlan() -- LoD
 	end)
 	self:scanUIParentsChildren()
 
-	local function skinTab(tab, id)
+	local function skinTab(tab, id, frame, x1, y1, x2 ,y2)
+		local x1, y1, x2, y2  = x1 or 9, y1 or 2, x2 or -9, y2 or 0
 		aObj:rmRegionsTex(tab, {1, 2, 3 ,4 ,5 ,6})
-		aObj:addSkinFrame{obj=tab, noBdr=self.isTT, x1=9, y1=2, x2=-9, y2=0}
-		if _G.GarrisonMissionFrame.selectedTab == id then
+		aObj:addSkinFrame{obj=tab, noBdr=self.isTT, x1=x1, y1=y1, x2=x2, y2=y2}
+		if frame.selectedTab == id then
 			aObj:setActiveTab(tab.sf)
 		else
 			aObj:setInactiveTab(tab.sf)
 		end
 	end
 	-- skin extra tabs
-	skinTab(_G.GarrisonMissionFrameTab3, 3)
-	skinTab(_G.GarrisonMissionFrameTab4, 4)
+	skinTab(_G.GarrisonMissionFrameTab3, 3, _G.GarrisonMissionFrame)
+	skinTab(_G.GarrisonMissionFrameTab4, 4, _G.GarrisonMissionFrame)
 	_G.PanelTemplates_SetNumTabs(_G.GarrisonMissionFrame, 4)
 
 	-- Garrison Missions Frame - Active Missions Tab
@@ -46,69 +47,72 @@ function aObj:MasterPlan() -- LoD
 	-- options frame in TLHC
 	self:removeRegions(missionList.ctlContainer, {1, 2, 3})
 
-	local function skinMissionButtons()
-        local t, grandchild
-		local kids = {sc:GetChildren()}
+	local function skinMissionButtons(scrollChild, objType, isML)
+		local kids = {scrollChild:GetChildren()}
 		for _, child in _G.ipairs(kids) do
-			if child:IsObjectType("Button") then
-                child:DisableDrawLayer("BACKGROUND")
-                child:DisableDrawLayer("BORDER")
-				-- aObj:getChild(child, 1):DisableDrawLayer("OVERLAY") -- shadow background, don't remove this as it identifies missions that are unable to be selected
-				-- extend the top & bottom highlight texture
-				t = aObj:getRegion(child, 12)
-				t:ClearAllPoints()
-				t:SetPoint("TOPLEFT", 0, 4)
-				t:SetPoint("TOPRIGHT", 0, 4)
-                t = aObj:getRegion(child, 13)
-                t:ClearAllPoints()
-                t:SetPoint("BOTTOMLEFT", 0, -4)
-                t:SetPoint("BOTTOMRIGHT", 0, -4)
-				aObj:removeRegions(child, {14, 15, 16, 17, 23}) -- highlight corners & rare indicator
-                -- add textures to identify individual missions
-                if not child.lineTex then
-                    child.lineTex = child:CreateTexture(nil, "OVERLAY", nil, -2)
-            		child.lineTex:SetAllPoints(child)
-                    child.lineTex:SetTexture (0.6, 0.6, 0.6)
-            		child.lineTex:SetBlendMode("ADD")
-            		child.lineTex:SetGradient("VERTICAL", 0.1, 0.3, 0.3, 0.1, 0.1, 0.1)
-                end
-                if child:GetID()/2%1 == 0.5 then -- choose odd numbered lines
-                    child.lineTex:Show()
-                else
-                    child.lineTex:Hide()
-                end
-				if child.followers then -- Active mission button has these
-					for i = 1, #child.followers do
-						child.followers[i].ring:SetTexture(nil)
-					end
+			if child:IsObjectType(objType) then
+				child:DisableDrawLayer("BACKGROUND")
+				child:DisableDrawLayer("BORDER")
+				-- add texture to identify individual missions
+				if not child.lineTex then
+					child.lineTex = child:CreateTexture(nil, "OVERLAY", nil, -2)
+					child.lineTex:SetAllPoints(child)
+					child.lineTex:SetTexture (0.6, 0.6, 0.6)
+					child.lineTex:SetBlendMode("ADD")
+					child.lineTex:SetGradient("VERTICAL", 0.1, 0.3, 0.3, 0.1, 0.1, 0.1)
 				end
-				if child.groups then -- Available mission button has these
-					for i = 1, #child.groups do
-						child.groups[i]:DisableDrawLayer("BACKGROUND")
-					end
+				if child:GetID()/2%1 == 0.5 then -- choose odd numbered lines
+					child.lineTex:Show()
+				else
+					child.lineTex:Hide()
 				end
-				for i = 1, #child.rewards do
-					aObj:addButtonBorder{obj=child.rewards[i], reParent={child.rewards[i].quantity}}
-				end
-				 -- Missions of interest have these unused follower buttons
-				grandchild = aObj:getChild(child, child:GetNumChildren())
-				if grandchild:IsObjectType("Button")
-				and grandchild:GetNumChildren() == 21
-				then
-					for i = 1, grandchild:GetNumChildren() do
-						aObj:getChild(grandchild, i).ring:SetTexture(nil)
+				if isML then
+					local t, grandchild
+					-- aObj:getChild(child, 1):DisableDrawLayer("OVERLAY") -- shadow background, don't remove this as it identifies missions that are unable to be selected
+					-- extend the top & bottom highlight texture
+					t = aObj:getRegion(child, 12)
+					t:ClearAllPoints()
+					t:SetPoint("TOPLEFT", 0, 4)
+					t:SetPoint("TOPRIGHT", 0, 4)
+					t = aObj:getRegion(child, 13)
+					t:ClearAllPoints()
+					t:SetPoint("BOTTOMLEFT", 0, -4)
+					t:SetPoint("BOTTOMRIGHT", 0, -4)
+					aObj:removeRegions(child, {14, 15, 16, 17, 23}) -- highlight corners & rare indicator
+					if child.followers then -- Active mission button has these
+						for i = 1, #child.followers do
+							child.followers[i].ring:SetTexture(nil)
+						end
 					end
+					if child.groups then -- Available mission button has these
+						for i = 1, #child.groups do
+							child.groups[i]:DisableDrawLayer("BACKGROUND")
+						end
+					end
+					for i = 1, #child.rewards do
+						aObj:addButtonBorder{obj=child.rewards[i], reParent={child.rewards[i].quantity}}
+					end
+					 -- Missions of interest have these unused follower buttons
+					grandchild = aObj:getChild(child, child:GetNumChildren())
+					if grandchild:IsObjectType("Button")
+					and grandchild:GetNumChildren() == 21
+					then
+						for i = 1, grandchild:GetNumChildren() do
+							aObj:getChild(grandchild, i).ring:SetTexture(nil)
+						end
+					end
+					t, grandchild = nil, nil
 				end
 			end
 		end
-		t, grandchild, kids = nil, nil, nil
+		kids = nil
 	end
 	-- hook this to skin new buttons
 	self:SecureHookScript(bar, "OnValueChanged", function(this, ...)
-		skinMissionButtons()
+		skinMissionButtons(sc, "Button", true)
 	end)
 	-- skin any existing buttons, first time displayed
-	skinMissionButtons()
+	skinMissionButtons(sc, "Button", true)
 
 	-- ActiveUI lootframe
 	self:addSkinFrame{obj=activeUI.lootFrame, kfs=true, y1=-3, x2=-1}
@@ -193,36 +197,51 @@ function aObj:MasterPlan() -- LoD
 		self:Unhook(_G.GarrisonShipyardFrame, "ShowMission")
 	end)
 
-    -- MPStatContainer
-    _G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer:DisableDrawLayer("BACKGROUND")
-    self:addSkinFrame{obj=_G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer, ofs=-5}
+	-- MPStatContainer
+	_G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer, ofs=-5}
 
-    -- Missions of Interest Tab
-	skinTab(_G.GarrisonShipyardFrameTab3, 3)
+	-- Missions of Interest Tab
+	skinTab(_G.GarrisonShipyardFrameTab3, 3, _G.GarrisonShipyardFrame)
 	_G.PanelTemplates_SetNumTabs(_G.GarrisonShipyardFrame, 3)
 
-    _G.GarrisonShipyardFrame.InterestTab:DisableDrawLayer("BACKGROUND")
-    _G.GarrisonShipyardFrame.InterestTab:DisableDrawLayer("BORDER")
+	_G.GarrisonShipyardFrame.InterestTab:DisableDrawLayer("BACKGROUND")
+	_G.GarrisonShipyardFrame.InterestTab:DisableDrawLayer("BORDER")
 	local sf2 = self:getChild(_G.GarrisonShipyardFrame.InterestTab, 1) -- scroll frame
 	local sc2 = sf2:GetScrollChild()
 	local bar2 = self:getChild(sf2, 1)
 	self:skinSlider{obj=bar2, adj=-4}
 
-	local function skinMissionButtons2()
-		local kids = {sc2:GetChildren()}
-		for _, child in _G.ipairs(kids) do
-			if child:IsObjectType("Button") then
-				child:DisableDrawLayer("BACKGROUND")
-				child:DisableDrawLayer("BORDER")
-			end
-		end
-		kids = nil
-	end
 	-- hook this to skin new buttons
 	self:SecureHookScript(bar2, "OnValueChanged", function(this, ...)
-        skinMissionButtons2()
+		skinMissionButtons(sc2, "Button", false)
 	end)
 	-- skin any existing buttons, first time displayed
-    skinMissionButtons2()
+	skinMissionButtons(sc2, "Button", false)
+
+	-- MPLandingPageAlts
+	local lpa = _G.MPLandingPageAlts
+	-- Tab
+	skinTab(lpa.Tab, 4, _G.GarrisonLandingPage, 5, -8, -4, -3)
+	_G.PanelTemplates_SetNumTabs(_G.GarrisonLandingPage, 4)
+	-- self:rmRegionsTex(lpa.Tab, {1, 2, 3 ,4 ,5 ,6})
+	-- self:addSkinFrame{obj=lpa.Tab, noBdr=self.isTT, x1=5, y1=-8, x2=-4, y2=-3}
+	lpa.Tab.sf.ignore = true -- ignore size changes
+	-- if _G.GarrisonLandingPage.selectedTab == id then
+	-- 	self:setActiveTab(lpa.Tab.sf)
+	-- else
+	-- 	self:setInactiveTab(lpa.Tab.sf)
+	-- end
+
+	local sc3 = lpa.List:GetScrollChild()
+	local bar3 = self:getChild(lpa.List, 1)
+	self:skinSlider{obj=bar3, adj=-4}
+
+	-- hook this to skin new buttons
+	self:SecureHookScript(bar3, "OnValueChanged", function(this, ...)
+		skinMissionButtons(sc3, "Frame", false)
+	end)
+	-- skin any existing buttons, first time displayed
+	skinMissionButtons(sc3, "Frame", false)
 
 end
