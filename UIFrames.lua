@@ -1127,6 +1127,16 @@ function aObj:GarrisonUI() -- LoD
         aObj:addSkinFrame{obj=obj, ft=ftype, y1=6, y2=-16}
 
 	end
+	local function addLineTex(btn, idx)
+        -- add textures to identify individual missions
+        if idx/2%1 == 0.5 then -- choose odd numbered lines
+            btn.lineTex = btn:CreateTexture(nil, "OVERLAY", nil, -2)
+    		btn.lineTex:SetAllPoints(btn)
+    		btn.lineTex:SetTexture(0.6, 0.6, 0.6)
+    		btn.lineTex:SetBlendMode("ADD")
+    		btn.lineTex:SetGradient("VERTICAL", 0.1, 0.3, 0.3, 0.1, 0.1, 0.1)
+        end
+	end
 	-->>-- GarrisonBuildingUI
 	local function skinGarrisonBuildingUI()
 
@@ -1257,6 +1267,7 @@ function aObj:GarrisonUI() -- LoD
 				btn.Rewards[j]:DisableDrawLayer("BACKGROUND")
 				aObj:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon, reParent={btn.Rewards[j].Quantity}}
 			end
+			addLineTex(btn, i)
 		end
 		for i = 1, #rp.Shipments do
 			aObj:removeRegions(rp.Shipments[i], {1, 3, 4})
@@ -1391,14 +1402,7 @@ function aObj:GarrisonUI() -- LoD
             btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
             btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
 			aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
-            -- add textures to identify individual missions
-            if i/2%1 == 0.5 then -- choose odd numbered lines
-                btn.lineTex = btn:CreateTexture(nil, "OVERLAY", nil, -2)
-        		btn.lineTex:SetAllPoints(btn)
-        		btn.lineTex:SetTexture(0.6, 0.6, 0.6)
-        		btn.lineTex:SetBlendMode("ADD")
-        		btn.lineTex:SetGradient("VERTICAL", 0.1, 0.3, 0.3, 0.1, 0.1, 0.1)
-            end
+			addLineTex(btn, i)
 			for i = 1, #btn.Rewards do
 				aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
 			end
