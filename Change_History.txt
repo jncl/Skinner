@@ -1,3 +1,14 @@
+b6.20574.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated PTR build info
+	Comment debug output
+	Updated GarrisonUI & WorldState skins
+	Updated AchievementUI & ContainerFrames skins
+	Updated AuctionUI skin
+	Updated MasterPlan skin
+
 b6.20574.2
 Jncl:
 	ToDo.txt
