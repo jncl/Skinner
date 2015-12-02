@@ -219,12 +219,10 @@ function aObj:Rematch()
     self:removeInset(_G.RematchQueuePanel.Top)
     self:addButtonBorder{obj=_G.RematchQueuePanel.Top.QueueButton, ofs=0}
     self:addButtonBorder{obj=_G.RematchQueuePanel.Top.Toggle, ofs=0}
-    -- TODO skin Preferences button
     self:removeRegions(_G.RematchQueuePanel.Top.LevelingSlot, {18}) -- line
     _G.RematchQueuePanel.Top.LevelingSlot:SetBackdrop(nil)
     _G.RematchQueuePanel.Top.LevelingSlot:DisableDrawLayer("BACKGROUND")
     self:removeInset(_G.RematchQueuePanel.Status)
-    self:removeInset(_G.RematchQueuePanel.Preferences)
     self:removeInset(_G.RematchQueuePanel.List)
     self:skinSlider{obj=_G.RematchQueueListScrollBar, adj=-4}
     for i = 1, #_G.RematchQueuePanel.List.ScrollFrame.buttons do
@@ -237,7 +235,6 @@ function aObj:Rematch()
     self:removeInset(_G.RematchOptionPanel)
     self:removeInset(_G.RematchOptionPanel.List)
     self:skinSlider{obj=_G.RematchOptionListScrollBar, adj=-4}
-    -- TODO remove option header texture
     for i = 1, #_G.RematchOptionPanel.List.ScrollFrame.buttons do
         btn = _G.RematchOptionPanel.List.ScrollFrame.buttons[i]
         btn.Header:DisableDrawLayer("BACKGROUND")
@@ -278,7 +275,6 @@ function aObj:Rematch()
     self:removeRegions(_G.RematchPetCard.Front.Middle, {11}) -- line
     _G.RematchPetCard.Front.Middle.XP:DisableDrawLayer("OVERLAY")
     self:glazeStatusBar(_G.RematchPetCard.Front.Middle.XP, 0, self:getRegion(_G.RematchPetCard.Front.Middle.XP, 11))
-    -- TODO skin BreedTable
     _G.RematchPetCard.Front.Middle.BreedTable:SetBackdrop(nil)
     _G.RematchPetCard.Back:SetBackdrop(nil)
     _G.RematchPetCard.Back.Source:DisableDrawLayer("BACKGROUND")
