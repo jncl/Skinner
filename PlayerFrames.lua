@@ -947,13 +947,16 @@ function aObj:EncounterJournal() -- LoD
 	self:skinDropDown{obj=_G.EncounterJournal.instanceSelect.tierDropDown}
 	self:skinSlider{obj=_G.EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
 	self:addSkinFrame{obj=_G.EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
-	-- Instance buttons
-	for i = 1, 30 do
-		btn = _G.EncounterJournal.instanceSelect.scroll.child["instance" .. i]
-		if btn then
-			self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
+	-- Hook this to skin the Instance buttons
+	self:SecureHook("EncounterJournal_ListInstances", function()
+		for i = 1, 30 do
+			btn = _G.EncounterJournal.instanceSelect.scroll.child["instance" .. i]
+			if btn then
+				self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
+			end
 		end
-	end
+		self:Unhook("EncounterJournal_ListInstances")
+	end)
 	-- Tabs
 	_G.EncounterJournal.instanceSelect.suggestTab:DisableDrawLayer("BACKGROUND")
 	_G.EncounterJournal.instanceSelect.dungeonsTab:DisableDrawLayer("BACKGROUND")
