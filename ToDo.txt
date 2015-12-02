@@ -11,3 +11,18 @@ Legend:
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
+
+√	N	Rematch, requeted by lexusnexus, 26.11.15
+		- ..\AddOns\Skinner\UtilFuncs.lua line 547: attempt to index local 'frame' (a nil value)
+		  Skinner\SkinMe\Rematch.lua:227:
+		  Skinner\SkinMe\Rematch.lua:5 (tail call)
+
+	I	WorldMap Quest List
+?		- Some buttons have a border
+
+	I	Quest Objectives list
+?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
+
+	O	Check Buttons border
+√		- AuctionUI
+
