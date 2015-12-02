@@ -743,8 +743,12 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 	local invert = invert or prdb.Gradient.invert
 	local rotate = rotate or prdb.Gradient.rotate
 
-	if not obj.tfade then obj.tfade = obj:CreateTexture(nil, "BORDER") end
-	obj.tfade:SetTexture(self.gradientTex)
+	if not obj.tfade then
+		obj.tfade = obj:CreateTexture(nil, "BORDER", -1)
+		obj.tfade:SetTexture(self.gradientTex)
+		obj.tfade:SetBlendMode("ADD")
+		obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
+	end
 
 	if prdb.FadeHeight.enable and (prdb.FadeHeight.force or not fh) then
 		local objHeight = self:getInt(obj:GetHeight())
