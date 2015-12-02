@@ -780,9 +780,6 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		else obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4) end
 	end
 
-	obj.tfade:SetBlendMode("ADD")
-	obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
-
 end
 
 function aObj:applyTexture(obj)

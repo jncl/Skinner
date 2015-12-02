@@ -3090,9 +3090,6 @@ function aObj:PVPHelper() -- previously part of PVPUI function
 	-- PVPRoleCheckPopup
 	self:addSkinFrame{obj=_G.PVPRoleCheckPopup, ft=ftype}
 	-- PVPReadyDialog
-	-- _G.PVPReadyDialog.background:SetAlpha(0)
-	-- _G.PVPReadyDialog.filigree:SetAlpha(0)
-	-- _G.PVPReadyDialog.bottomArt:SetAlpha(0)
 	_G.PVPReadyDialog.instanceInfo.underline:SetAlpha(0)
 	self:addSkinFrame{obj=_G.PVPReadyDialog, ft=ftype, kfs=true}
 
