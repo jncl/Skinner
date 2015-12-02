@@ -53,12 +53,15 @@ function aObj:AuctionUI() -- LoD
 		self:moveObject{obj=obj, x=v == "MaxLevel" and -6 or -4, y=v ~= "MaxLevel" and 3 or 0}
 	end
 	self:skinDropDown{obj=_G.BrowseDropDown, x2=110}
+	self:addButtonBorder{obj=IsUsableCheckButton, es=14, ofs=-2}
+	self:addButtonBorder{obj=ShowOnPlayerCheckButton, es=14, ofs=-2}
 	self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
 	self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
 	_G.BrowseCloseButton:DisableDrawLayer("BORDER")
 	_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
 	_G.BrowseBidButton:DisableDrawLayer("BORDER")
+	self:addButtonBorder{obj=ExactMatchCheckButton, es=14, ofs=-2}
 
 -->>--	Bid Frame
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
