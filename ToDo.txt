@@ -12,17 +12,15 @@ Legend:
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
 
-√	N	Rematch, requeted by lexusnexus, 26.11.15
-		- ..\AddOns\Skinner\UtilFuncs.lua line 547: attempt to index local 'frame' (a nil value)
-		  Skinner\SkinMe\Rematch.lua:227:
-		  Skinner\SkinMe\Rematch.lua:5 (tail call)
-
 	I	WorldMap Quest List
 ?		- Some buttons have a border
 
 	I	Quest Objectives list
 ?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
 
-	O	Check Buttons border
-√		- AuctionUI
+√	I	Rematch, reported by NeoZeus/Thrassivoulos, 30.01.16/31.0.16
+		- Skinner\SkinMe\Rematch-4.1.9.lua:45: attempt to index field 'NarrowModeButton' (a nil value)
 
+√	I	MasterPlan
+		- tabs have no gradient when not textured
+		- Garrison Landing Page Tab4 has no texture at all
