@@ -1910,17 +1910,16 @@ function aObj:ObjectiveTracker()
 			for i = 1, _G.GetNumAutoQuestPopUps() do
 				questID, popUpType = _G.GetAutoQuestPopUp(i)
 				questTitle = _G.GetQuestLogTitle(_G.GetQuestLogIndexByID(questID))
-				if ( questTitle and questTitle ~= "" ) then
+				if questTitle and questTitle ~= "" then
 					block = _G.AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(questID)
 					obj = block.ScrollChild
 					if obj and not obj.sknd then
-						obj.sknd = true
 						for k, reg in ipairs{obj:GetRegions()} do
 							if k < 11 or k > 17 then reg:SetTexture(nil) end -- Animated textures
 						end
-						aObj:applySkin{obj=obj, ft=ftype}
-						-- make flash cover whole area
+						aObj:addSkinFrame{obj=obj, ft=ftype, x1=32}
 						obj.FlashFrame:DisableDrawLayer("OVERLAY") -- hide IconBg flash texture
+                        -- TODO prevent Background being changed, causes border art to appear broken ?
 					end
 				end
 			end
