@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("MasterPlan") then return end
 local _G = _G
 
-function aObj:MasterPlan() -- LoD
+function aObj:MasterPlan() -- LoD (v 0.80)
 
 	-- find frames
 	self.RegisterCallback("MasterPlan", "UIParent_GetChildren", function(this, child)
@@ -20,12 +20,13 @@ function aObj:MasterPlan() -- LoD
 	local function skinTab(tab, id, frame, x1, y1, x2 ,y2)
 		local x1, y1, x2, y2  = x1 or 9, y1 or 2, x2 or -9, y2 or 0
 		aObj:rmRegionsTex(tab, {1, 2, 3 ,4 ,5 ,6})
-		aObj:addSkinFrame{obj=tab, noBdr=self.isTT, x1=x1, y1=y1, x2=x2, y2=y2}
+		aObj:addSkinFrame{obj=tab, noBdr=aObj.isTT, x1=x1, y1=y1, x2=x2, y2=y2}
 		if frame.selectedTab == id then
 			aObj:setActiveTab(tab.sf)
 		else
 			aObj:setInactiveTab(tab.sf)
 		end
+		aObj.tabFrames[tab] = true
 	end
 	-- skin extra tabs
 	skinTab(_G.GarrisonMissionFrameTab3, 3, _G.GarrisonMissionFrame)
@@ -223,15 +224,8 @@ function aObj:MasterPlan() -- LoD
 	local lpa = _G.MPLandingPageAlts
 	-- Tab
 	skinTab(lpa.Tab, 4, _G.GarrisonLandingPage, 5, -8, -4, -3)
-	_G.PanelTemplates_SetNumTabs(_G.GarrisonLandingPage, 4)
-	-- self:rmRegionsTex(lpa.Tab, {1, 2, 3 ,4 ,5 ,6})
-	-- self:addSkinFrame{obj=lpa.Tab, noBdr=self.isTT, x1=5, y1=-8, x2=-4, y2=-3}
 	lpa.Tab.sf.ignore = true -- ignore size changes
-	-- if _G.GarrisonLandingPage.selectedTab == id then
-	-- 	self:setActiveTab(lpa.Tab.sf)
-	-- else
-	-- 	self:setInactiveTab(lpa.Tab.sf)
-	-- end
+	_G.PanelTemplates_SetNumTabs(_G.GarrisonLandingPage, 4)
 
 	local sc3 = lpa.List:GetScrollChild()
 	local bar3 = self:getChild(lpa.List, 1)

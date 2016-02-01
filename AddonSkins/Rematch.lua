@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Rematch") then return end
 local _G = _G
 
-function aObj:Rematch()
+function aObj:Rematch() -- v 4.1.9
 
     local tab, btn, pet
 
@@ -32,7 +32,7 @@ function aObj:Rematch()
             end
         end
     end)
-    self:addSkinFrame{obj=_G.RematchJournal, kfs=true, aso={ba=1}, y1=2, x2=1, y2=-5}
+    self:addSkinFrame{obj=_G.RematchJournal, kfs=true, aso={ba=1}, x1=-4, y1=2, x2=1, y2=-5}
 
     -- Frame (used when standalone)
     _G.RematchFrame:DisableDrawLayer("BACKGROUND")
@@ -42,8 +42,8 @@ function aObj:Rematch()
     _G.RematchFrame.TitleBar.LockButton:DisableDrawLayer("OVERLAY")
     self:skinButton{obj=_G.RematchFrame.TitleBar.MinimizeButton, ob="–"} -- Alt+hyphen
     _G.RematchFrame.TitleBar.MinimizeButton:DisableDrawLayer("OVERLAY")
-    _G.RematchFrame.TitleBar.NarrowModeButton:SetBackdrop(nil)
-    _G.RematchFrame.TitleBar.NarrowModeButton:DisableDrawLayer("OVERLAY")
+    _G.RematchFrame.TitleBar.SinglePanelButton:SetBackdrop(nil)
+    _G.RematchFrame.TitleBar.SinglePanelButton:DisableDrawLayer("OVERLAY")
     -- tabs
     for i = 1, #_G.RematchFrame.PanelTabs.Tabs do
         tab = _G.RematchFrame.PanelTabs.Tabs[i]
@@ -84,18 +84,19 @@ function aObj:Rematch()
         resizeFrame(true)
     end)
 
-    -- TopPanel
-    self:removeInset(_G.RematchTopPanel.PetCount)
-    self:removeRegions(_G.RematchTopPanel.AchievementStatus, {4, 5})
-
     -- Toolbar
-    self:addButtonBorder{obj=_G.RematchToolbar.HealButton}
-    self:addButtonBorder{obj=_G.RematchToolbar.BandageButton}
-    self:addButtonBorder{obj=_G.RematchToolbar.PetTreatButton}
-    self:addButtonBorder{obj=_G.RematchToolbar.LesserTreatButton}
-    self:addButtonBorder{obj=_G.RematchToolbar.SafariButton}
-    self:addButtonBorder{obj=_G.RematchToolbar.SummonButton}
-    self:addButtonBorder{obj=_G.RematchToolbar.FindBattleButton}
+    self:removeInset(_G.RematchToolbar.PetCount)
+    self:removeRegions(_G.RematchToolbar.Achievement, {4, 5})
+    self:addButtonBorder{obj=_G.RematchHealButton}
+    self:addButtonBorder{obj=_G.RematchBandageButton}
+    self:addButtonBorder{obj=_G.RematchToolbar.PetTreat}
+    self:addButtonBorder{obj=_G.RematchToolbar.LesserPetTreat}
+    self:addButtonBorder{obj=_G.RematchToolbar.SafariHat}
+    self:addButtonBorder{obj=_G.RematchToolbar.SummonRandom}
+	-- N.B. these buttons are only shown when the toolbar is at the bottom
+    self:addButtonBorder{obj=_G.RematchToolbar.FindBattle}
+    self:addButtonBorder{obj=_G.RematchToolbar.Save}
+    self:addButtonBorder{obj=_G.RematchToolbar.SaveAs}
     -- N.B. have to hook this as it changes the GameTooltip border colour
     self:SecureHook(_G.RematchToolbar, "ButtonOnEnter", function(this, once)
         if not this.tooltipTitle then
@@ -111,14 +112,10 @@ function aObj:Rematch()
         pet.XP:DisableDrawLayer("OVERLAY")
         self:glazeStatusBar(pet.XP, 0, self:getRegion(pet.XP, 4))
     end
-    self:removeInset(_G.RematchMiniPanel)
+    self:removeInset(_G.RematchMiniPanel.Background)
     self:addSkinFrame{obj=_G.RematchMiniPanel.Flyout}
     self:removeInset(_G.RematchMiniPanel.Target)
     self:addButtonBorder{obj=_G.RematchMiniPanel.Target.ModelBorder}
-
-    -- NarrowPanel
-    self:addButtonBorder{obj=_G.RematchNarrowPanel.SaveAsButton}
-    self:addButtonBorder{obj=_G.RematchNarrowPanel.SaveButton}
 
     -- Menu (replaces dropdowns)
     self:RawHook(_G.Rematch, "GetMenuFrame", function(this, level, parent)
