@@ -1205,7 +1205,7 @@ function aObj:GarrisonUI() -- LoD
 		-- ib.RankBadge:SetAlpha(0)
 		ib.AddFollowerButton.EmptyPortrait:SetTexture(nil)
 		skinPortrait(ib.FollowerPortrait)
-		-- ib.FollowerPortrait.PortraitRingQuality:SetVertexColor(ib.FollowerPortrait.PortraitRing:GetVertexColor())
+		-- FollowerPortrait RingQuality changes colour so track this change
 		aObj:SecureHook("GarrisonBuildingInfoBox_ShowFollowerPortrait", function(...)
 			local obj = _G.GarrisonBuildingFrame.InfoBox.FollowerPortrait
 			-- make sure ring quality is updated to level border colour
@@ -1341,7 +1341,7 @@ function aObj:GarrisonUI() -- LoD
 		end)
 
 		-- Mission Frame
-		aObj:addSkinFrame{obj=_G.GarrisonMissionFrame, ft=ftype, kfs=true, ofs=2, x2=1, y2=-4}
+		aObj:addSkinFrame{obj=_G.GarrisonMissionFrame, ft=ftype, kfs=true, x1=2, y1=3, x2=1, y2=-4}
 		-- tabs
 		aObj:skinTabs{obj=_G.GarrisonMissionFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=0}
 
@@ -1497,7 +1497,7 @@ function aObj:GarrisonUI() -- LoD
 		aObj:moveObject{obj=_G.GarrisonShipyardFrame.BorderFrame.TitleText, y=3}
 
 		-- Shipyard Frame
-		aObj:addSkinFrame{obj=_G.GarrisonShipyardFrame, ft=ftype, kfs=true, ofs=2, x2=1, y2=-4}
+		aObj:addSkinFrame{obj=_G.GarrisonShipyardFrame, ft=ftype, kfs=true, x1=2, y1=3, x2=1, y2=-4}
 		-- tabs
 		aObj:skinTabs{obj=_G.GarrisonShipyardFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=0}
 
@@ -1510,9 +1510,9 @@ function aObj:GarrisonUI() -- LoD
 	-->>-- Naval Map Tab (MissionTab)
 		-- Mission List
 		local ml = _G.GarrisonShipyardFrame.MissionTab.MissionList
-        ml:SetScale(1.025) -- make larger to fit frame
+        ml:SetScale(1.019) -- make larger to fit frame
 		ml.MapTexture:SetDrawLayer("BORDER", -2) -- make sure it appears above skinFrame but below other textures
-        ml.MapTexture:SetPoint("center", ml, "center", 0, -7)
+        ml.MapTexture:SetPoint("CENTER", ml, "CENTER", 1, -10)
 
 		-- Fog overlays
 		local function showCurrentMissions()
