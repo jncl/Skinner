@@ -1,3 +1,11 @@
+b6.20886.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated MasterPlan & Rematch skins
+	Updated version number strings
+	Updated ObjectiveTracker code
+
 b6.20726.2
 Jncl:
 	ToDo.txt
