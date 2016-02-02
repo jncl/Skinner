@@ -18,9 +18,6 @@ Legend:
 	I	Quest Objectives list
 ?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
 
-√	I	Rematch, reported by NeoZeus/Thrassivoulos, 30.01.16/31.0.16
-		- Skinner\SkinMe\Rematch-4.1.9.lua:45: attempt to index field 'NarrowModeButton' (a nil value)
-
-√	I	MasterPlan
-		- tabs have no gradient when not textured
-		- Garrison Landing Page Tab4 has no texture at all
+	I	GarrisonUI, reported by transitbus, 01.02.16
+√		- adjust skinFrame to ensure close button is positioned correctly, Mission & Shipyard
+√		- Adjust size of Naval Map to move below close button as there is a texture layering issue as is
