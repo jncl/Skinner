@@ -245,32 +245,6 @@ function aObj:OnInitialize()
 	-- shorthand for the TexturedTab profile setting
 	self.isTT = prdb.TexturedTab and true or false
 
-	-- hook to handle textured tabs on Blizzard & other Frames
-	self.tabFrames = {}
-	if self.isTT then
-		self:SecureHook("PanelTemplates_UpdateTabs", function(frame)
-			if not self.tabFrames[frame] then return end -- ignore frame if not monitored
-			if frame.selectedTab then
-				for i = 1, frame.numTabs do
-					if i == frame.selectedTab then
-						self:setActiveTab(_G[frame:GetName() .. "Tab" .. i].sf)
-					else
-						self:setInactiveTab(_G[frame:GetName() .. "Tab" .. i].sf)
-					end
-				end
-			end
-		end)
-	end
-
-	-- handle InCombat issues
-	self.oocTab = {}
-	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-		for _, v in pairs(self.oocTab) do
-			v[1](unpack(v[2]))
-		end
-		_G.wipe(self.oocTab)
-	end)
-
 	-- ignore objects when skinning IOF elements
 	self.ignoreIOF = {}
 
@@ -328,6 +302,33 @@ function aObj:OnEnable()
 		elseif mtype == "border" then
 			self.db.profile.BdBorderTexture = override
 		end
+	end)
+
+	-- hook to handle textured tabs on Blizzard & other Frames
+	self.tabFrames = {}
+	if self.isTT then
+		self:SecureHook("PanelTemplates_UpdateTabs", function(frame)
+			-- aObj:Debug("PanelTemplates_UpdateTabs: [%s, %s, %s]", frame, frame.selectedTab, frame.numTabs)
+			if not self.tabFrames[frame] then return end -- ignore frame if not monitored
+			if frame.selectedTab then
+				for i = 1, frame.numTabs do
+					if i == frame.selectedTab then
+						self:setActiveTab(_G[frame:GetName() .. "Tab" .. i].sf)
+					else
+						self:setInactiveTab(_G[frame:GetName() .. "Tab" .. i].sf)
+					end
+				end
+			end
+		end)
+	end
+
+	-- handle InCombat issues
+	self.oocTab = {}
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+		for _, v in pairs(self.oocTab) do
+			v[1](unpack(v[2]))
+		end
+		_G.wipe(self.oocTab)
 	end)
 
 --@debug@
