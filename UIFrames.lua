@@ -31,7 +31,8 @@ do
 				end
 			end
 		end)
-		aObj:skinTooltip(tt) -- skin here so tooltip initially skinnned when logged on
+		-- skin here so tooltip initially skinnned when logged on
+		aObj:skinTooltip(tt)
 	end})
 	-- Set the Tooltip Border
 	aObj.ttBorder = true

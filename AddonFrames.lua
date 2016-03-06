@@ -156,9 +156,10 @@ function aObj:BlizzardFrames()
 		},
 	}
 
-	-- optional frames
+	-- add optional frames
 	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
 	-- handle non standard ones here
+
 	-- skin the MinimapButtons if SexyMap isn't loaded
 	if not IsAddOnLoaded("SexyMap") then
 		self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
