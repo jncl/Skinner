@@ -4,18 +4,14 @@ local _G = _G
 
 function aObj:MasterPlan() -- LoD (v 0.80)
 
-	-- find frames
-	self.RegisterCallback("MasterPlan", "UIParent_GetChildren", function(this, child)
-			-- activeUI waste popup frame
-		if child:IsObjectType("Frame")
-		and child:GetName() == nil
-		and self:getInt(child:GetWidth()) == 260
-		and self:getInt(child:GetHeight()) == 68
-		then
-			self:addSkinFrame{obj=child}
+	-- have to hook this otherwise tab textures don't work on Landing Page
+	self:RawHook("PanelTemplates_SetNumTabs", function(frame, numTabs)
+		-- aObj:Debug("PanelTemplates_SetNumTabs: [%s, %s]", frame, numTabs)
+		if frame == _G.GarrisonLandingPage then
+			numTabs = 4
 		end
-	end)
-	self:scanUIParentsChildren()
+		return self.hooks["PanelTemplates_SetNumTabs"](frame, numTabs)
+	end, true)
 
 	local function skinTab(tab, id, frame, x1, y1, x2 ,y2)
 		local x1, y1, x2, y2  = x1 or 9, y1 or 2, x2 or -9, y2 or 0
@@ -173,7 +169,7 @@ function aObj:MasterPlan() -- LoD (v 0.80)
 	_G.GarrisonMissionFrame.SummaryTab:DisableDrawLayer("BORDER")
 	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.matrix}
 	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.affin}
-	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.stats}
+	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.stats, nb=true}
 
 	-- Can't access UpgradesFrame to remove item name texture, as it is local to the Addon and can't be accessed externally
 
@@ -237,5 +233,17 @@ function aObj:MasterPlan() -- LoD (v 0.80)
 	end)
 	-- skin any existing buttons, first time displayed
 	skinMissionButtons(sc3, "Frame", false)
+
+	-- find activeUI waste popup frame
+	self.RegisterCallback("MasterPlan", "UIParent_GetChildren", function(this, child)
+		if child:IsObjectType("Frame")
+		and child:GetName() == nil
+		and self:getInt(child:GetWidth()) == 260
+		and self:getInt(child:GetHeight()) == 68
+		then
+			self:addSkinFrame{obj=child}
+		end
+	end)
+	self:scanUIParentsChildren()
 
 end

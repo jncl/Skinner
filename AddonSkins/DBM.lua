@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("DBM-Core") then return end
 local _G = _G
 local pairs, ipairs = _G.pairs, _G.ipairs
 
-function aObj:DBMGUI() -- LoD
+function aObj:DBMGUI() -- LoD (ver. 6.2.18)
 
 	local function skinSubPanels(panel)
 
@@ -114,14 +114,10 @@ end
 
 function aObj:DBMCore()
 
-	-- hook this to skin the RangeCheck frame (actually a tooltip)
-	self:SecureHook(_G.DBM.RangeCheck, "Show", function(this, ...)
-		self:addSkinFrame{obj=this}
-		self:Unhook(_G.DBM.RangeCheck, "Show")
-	end)
 	-- hook this to skin the InfoFrame frame (actually a tooltip)
-	self:SecureHook(_G.DBM.InfoFrame, "Show", function(this, ...)
-		self:addSkinFrame{obj=this}
+	self:SecureHook(_G.DBM.InfoFrame, "Show", function(this, _, event, ...)
+		if _G.DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
+		self:addSkinFrame{obj=_G.DBMInfoFrame}
 		self:Unhook(_G.DBM.InfoFrame, "Show")
 	end)
 	-- hook these to skin the BossHealth Bars
