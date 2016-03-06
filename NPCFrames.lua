@@ -166,7 +166,6 @@ function aObj:BlackMarketUI() -- LoD
 	self:moveObject{obj=self:getRegion(_G.BlackMarketFrame, 22), y=-4}
 	-- HotDeal frame
 	self:keepFontStrings(_G.BlackMarketFrame.HotDeal)
-	self:addButtonBorder{obj=_G.BlackMarketFrame.HotDeal.Item, relTo=_G.BlackMarketFrame.HotDeal.Item.IconTexture}
 	self:skinAllButtons{obj=_G.BlackMarketFrame.HotDeal, ft=ftype}
 
 	-- column headings
@@ -176,22 +175,22 @@ function aObj:BlackMarketUI() -- LoD
 		self:keepFontStrings(obj)
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
-	self:SecureHook("BlackMarketScrollFrame_Update", function(this)
-		local btn
-		for i = 1, #_G.BlackMarketScrollFrame.buttons do
-			btn = _G.BlackMarketScrollFrame.buttons[i]
-			if btn and not btn.sknd then
-				self:keepFontStrings(btn)
-				btn:GetHighlightTexture():SetAlpha(1)
-				self:addButtonBorder{obj=btn.Item, ibt=true, relTo=btn.Item.IconTexture}
-			end
-		end
-		self:Unhook("BlackMarketScrollFrame_Update")
-	end)
 	self:skinSlider{obj=_G.BlackMarketScrollFrame.ScrollBar, adj=-4}
 	_G.BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 	self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
 	self:addSkinFrame{obj=_G.BlackMarketFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+	local function skinSFButtons(scrollFrame)
+		local btn
+		for i = 1, #scrollFrame.buttons do
+			btn = scrollFrame.buttons[i]
+			self:keepFontStrings(btn)
+		end
+	end
+	self:SecureHook(_G.BlackMarketScrollFrame, "update", function(this)
+		skinSFButtons(this)
+	end)
+	-- skin existing buttons
+	skinSFButtons(_G.BlackMarketScrollFrame)
 
 end
 
