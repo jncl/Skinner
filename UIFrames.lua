@@ -77,7 +77,7 @@ function aObj:AlertFrames()
 				icon = _G[fName .. i .. "Icon"]
 				icon:DisableDrawLayer("BORDER")
 				icon:DisableDrawLayer("OVERLAY")
-				aObj:addButtonBorder{obj=icon, relTo=_G[fName .. i .. "IconTexture"]}
+				-- aObj:addButtonBorder{obj=icon, relTo=_G[fName .. i .. "IconTexture"]}
 				aObj:addSkinFrame{obj=obj, ft=ftype, af=true, afas=true, x1=x1, y1=y1, x2=x2, y2=y2}
 			end
 		end
@@ -173,9 +173,9 @@ function aObj:AlertFrames()
 		end
 		if not obj.sf then
 			obj:DisableDrawLayer("BACKGROUND")
-			obj.IconBorder:SetTexture(nil)
+			-- obj.IconBorder:SetTexture(nil)
 			if obj.SpecRing then obj.SpecRing:SetTexture(nil) end -- Loot Won Alert Frame(s)
-			aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=obj, relTo=obj.Icon}) -- wait for animation to finish
+			-- aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=obj, relTo=obj.Icon}) -- wait for animation to finish
 			aObj:addSkinFrame{obj=obj, ft=ftype, af=true, afas=true, ofs=-10}
 		end
 
@@ -230,7 +230,7 @@ function aObj:AlertFrames()
 		if not frame.sf then
 			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-10}
-			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.15, frame)
+			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.125, frame)
 		end
 	end
 	self:SecureHook("LootUpgradeFrame_SetUp", function(frame, ...)
