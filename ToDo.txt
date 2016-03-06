@@ -18,6 +18,16 @@ Legend:
 	I	Quest Objectives list
 ?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
 
-	I	GarrisonUI, reported by transitbus, 01.02.16
-√		- adjust skinFrame to ensure close button is positioned correctly, Mission & Shipyard
-√		- Adjust size of Naval Map to move below close button as there is a texture layering issue as is
+?	I	reported by Thrassivoulos, 02.02.16
+		- I open skinners options and I check 'skin minimap buttons'. Buttons are skinned but when I log out and in again they are not. I open options again , uncheck and checking again 'skin minimap buttons' , and buttons are skinned again until I relog and so on. This happens mostly with default buttons as calendar, missions table etc , some addons buttons are skinned all the time.
+
+	I	DBM, reported by transitbus, 02.02.16
+√		- 5x Attempt to find 'this' in non-framescript object
+		  [C]: ?
+		  [C]: in function `CreateFrame'
+		  Skinner\Skinner-b6.20886.2.lua:598: in function <Skinner\Skinner.lua:540>
+		  (tail call): ?
+		  Skinner\SkinMe\DBM-6.2.18 alpha.14768.lua:119: in function <Skinner\SkinMe\DBM.lua:118>
+
+	I	Minimap buttons, reported by leprecaun13, 27.02.15
+		- For the option to skin minimap buttons, while enabled the LFG green "eye" will be hidden until after a /reload
