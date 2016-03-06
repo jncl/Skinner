@@ -2029,7 +2029,7 @@ function aObj:MainMenuBar()
 	self:moveObject{obj=_G.ReputationWatchStatusBarText, y=-1} -- centre text on bar
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 5), {_G.ExhaustionLevelFillBar})
-		_G.ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
+		-- _G.ExhaustionLevelFillBar:SetAlpha(0.75) -- increase alpha value to make it more visible
 		self:glazeStatusBar(_G.ReputationWatchStatusBar, 0, _G.ReputationWatchStatusBarBackground)
 	end
 
