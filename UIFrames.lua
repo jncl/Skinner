@@ -3283,8 +3283,9 @@ function aObj:Tooltips()
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
-	-- skin Item Ref Tooltip's close button
+	-- skin Item Ref Tooltip's close button and move it
 	self:skinButton{obj=_G.ItemRefCloseButton, cb=true}
+	self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=2}
 
 	if self.db.profile.Tooltips.style == 3 then
 		-- Hook this to deal with GameTooltip FadeHeight issues
