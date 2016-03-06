@@ -1875,6 +1875,9 @@ function aObj:ObjectiveTracker()
 	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
+	-- self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddObjective", function(this, block, objectiveKey, text, lineType, useFullHeight, hideDash, colorStyle)
+	-- 	aObj:Debug("DOTM AddObjective: [%s, %s, %s, %s, %s, %s, %s, %s]", this, block, objectiveKey, text, lineType, useFullHeight, hideDash, colorStyle)
+	-- end)
 	-- skin existing bars
 	local function skinBars(table)
 		for _, v1 in pairs(table) do
