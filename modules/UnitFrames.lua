@@ -45,7 +45,7 @@ local function adjustStatusBarPosn(sBar, yAdj)
 end
 local function addBackground(opts)
 
-	opts.obj.sb = _G.CreateFrame("Button", nil, opts.obj, "SecureFrameTemplate")
+	opts.obj.sb = _G.CreateFrame("Button", nil, opts.obj, "SecureUnitButtonTemplate")
 	opts.obj.sb:SetAllPoints(opts.obj)
 	-- adjust frame levels so skin button is behind
 	_G.RaiseFrameLevelByTwo(opts.obj)
