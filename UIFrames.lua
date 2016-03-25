@@ -1337,7 +1337,9 @@ function aObj:GarrisonUI() -- LoD
 		end)
 
 		-- Mission Frame
-		aObj:addSkinFrame{obj=_G.GarrisonMissionFrame, ft=ftype, kfs=true, bgen=1, x1=2, y1=3, x2=1, y2=-4}
+		self:skinButton{obj=_G.GarrisonMissionFrame.CloseButton, cb=true}
+		-- don't skin buttons, otherwise Tab buttons get skinned  as well
+		aObj:addSkinFrame{obj=_G.GarrisonMissionFrame, ft=ftype, kfs=true, nb=true, x1=2, y1=3, x2=1, y2=-4}
 		-- tabs
 		aObj:skinTabs{obj=_G.GarrisonMissionFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=0}
 
