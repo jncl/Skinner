@@ -356,11 +356,6 @@ function aObj:BNFrames()
 	_G._G.TimeAlertFrameBG:SetBackdrop(nil)
 	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype, af=true, afas=true}
 
--->>-- ConversationInvite frame
-	self:addSkinFrame{obj=_G.BNConversationInviteDialogList, ft=ftype}
-	self:skinScrollBar{obj=_G.BNConversationInviteDialogListScrollFrame}
-	self:addSkinFrame{obj=_G.BNConversationInviteDialog, kfs=true, ft=ftype, hdr=true}
-
 end
 
 function aObj:Calendar() -- LoD
