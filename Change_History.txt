@@ -1,3 +1,18 @@
+b6.20886.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	UnitFrames use a different template for skin background
+	Add Comments
+	Remove debug code
+	Move Tab & OOC code to OnEnable function
+	MainMenuBar skin change
+	Move ItemRef Tooltip close button
+	Bugfix for Garrison Mission UI skin
+	Remove ButtonBorders on AlertFrames
+	Updated BlackMarketUI skin
+	Updated DBM & MasterPlan skins
+
 b6.20886.2
 Jncl:
 	ToDo.txt
