@@ -8,6 +8,26 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
+	N	PTR changes
+		- Updates
+			- BNet
+			- ChatConfigFrame
+			- ChatFrame
+			- FloatingChatFrame
+			- HybridScrollFrame moved to SharedXML directory
+			- FriendsFrame
+			- InterfaceOptionsPanels
+			- ItemRef
+			- Localization
+			- ScrollOfResurrection
+			- StaticPopup
+			- UIPanelTemplates
+			- UIParent
+			- UnitPopup
+		- Deletes
+			- FriendsFrameBlockedToonHeader
+			- FriendsFriendsNoteFrame
+
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
@@ -21,13 +41,5 @@ Legend:
 ?	I	reported by Thrassivoulos, 02.02.16
 		- I open skinners options and I check 'skin minimap buttons'. Buttons are skinned but when I log out and in again they are not. I open options again , uncheck and checking again 'skin minimap buttons' , and buttons are skinned again until I relog and so on. This happens mostly with default buttons as calendar, missions table etc , some addons buttons are skinned all the time.
 
-	I	DBM, reported by transitbus, 02.02.16
-√		- 5x Attempt to find 'this' in non-framescript object
-		  [C]: ?
-		  [C]: in function `CreateFrame'
-		  Skinner\Skinner-b6.20886.2.lua:598: in function <Skinner\Skinner.lua:540>
-		  (tail call): ?
-		  Skinner\SkinMe\DBM-6.2.18 alpha.14768.lua:119: in function <Skinner\SkinMe\DBM.lua:118>
-
-	I	Minimap buttons, reported by leprecaun13, 27.02.15
+?	I	Minimap buttons, reported by leprecaun13, 27.02.15
 		- For the option to skin minimap buttons, while enabled the LFG green "eye" will be hidden until after a /reload
