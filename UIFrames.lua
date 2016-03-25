@@ -3118,6 +3118,8 @@ function aObj:QuestMap()
 	self:keepFontStrings(_G.QuestMapFrame.DetailsFrame.RewardsFrame)
 	self:getRegion(_G.QuestMapFrame.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinSlider{obj=_G.QuestMapFrame.DetailsFrame.ScrollFrame.ScrollBar, adj=-4}
+	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("BACKGROUND")
+	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("ARTWORK")
 	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")
 	self:moveObject{obj=_G.QuestMapFrame.DetailsFrame.AbandonButton, y=2}
 	self:removeRegions(_G.QuestMapFrame.DetailsFrame.ShareButton, {6, 7}) -- divider textures
