@@ -1141,9 +1141,9 @@ function aObj:FriendsFrame()
 	-- FriendsTabHeader Frame
 	_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 	self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
-	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, kfs=true, ofs=4}
-	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ofs=-10}
-	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame}
+	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, kfs=true, ofs=4}
+	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
+	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, ft=ftype}
 	self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
 	_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 	self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={9, 10}, mi=true, noWidth=true, noHeight=true, noMove=true} -- region 10 is icon
@@ -1151,6 +1151,11 @@ function aObj:FriendsFrame()
 	self:skinTabs{obj=_G.FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
 	self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
 	self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
+
+	-- RecruitAFriendFrame
+	self:skinEditBox{obj=RecruitAFriendNameEditBox, regs={9}}
+	self:addSkinFrame{obj=RecruitAFriendNoteFrame, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=RecruitAFriendFrame, ft=ftype, kfs=true, ofs=-6, y1=-7}
 
 	-- FriendsList Frame
 	-- adjust width of FFFSF so it looks right (too thin by default)
@@ -1170,16 +1175,15 @@ function aObj:FriendsFrame()
 	self:addSkinFrame{obj=_G.FriendsTooltip}
 
 -->>-- Add Friend Frame
-	self:addSkinFrame{obj=_G.AddFriendFrame, kfs=true}
+	self:addSkinFrame{obj=_G.AddFriendFrame, ft=ftype, kfs=true}
 	self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={9}}
-	self:addSkinFrame{obj=_G.AddFriendNoteFrame, kfs=true}
+	self:addSkinFrame{obj=_G.AddFriendNoteFrame, ft=ftype, kfs=true}
 	self:skinScrollBar{obj=_G.AddFriendNoteFrameScrollFrame}
 
 -->>-- FriendsFriends Frame
 	self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
 	self:addSkinFrame{obj=_G.FriendsFriendsList, ft=ftype}
 	self:skinScrollBar{obj=_G.FriendsFriendsScrollFrame}
-	self:addSkinFrame{obj=_G.FriendsFriendsNoteFrame, kfs=true, ft=ftype}
 	self:addSkinFrame{obj=_G.FriendsFriendsFrame, ft=ftype}
 
 -->>--	IgnoreList Frame
