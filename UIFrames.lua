@@ -2569,9 +2569,8 @@ function aObj:MinimapButtons()
 	if not minBtn then
 		self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype}
 	end
-	-- QueueStatusMinimapButton (reparent to ensure Eye is visible)
 	_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
-	aObj:addSkinButton{obj=_G.QueueStatusMinimapButton, parent=_G.QueueStatusMinimapButton, sap=true, rp=true, ft=ftype}
+	aObj:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
 
 	-- skin any moved Minimap buttons if required
 	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
