@@ -1,3 +1,13 @@
+b6.21355.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated FriendsFrame skin
+	Updated QuestMap skin
+	Updated GarrisonMission skin
+	Removed BNCOnversationInvite skin code
+
 b6.20886.3
 Jncl:
 	ToDo.txt
