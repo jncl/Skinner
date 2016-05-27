@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Rematch") then return end
 local _G = _G
 
-function aObj:Rematch() -- v 4.1.9
+function aObj:Rematch() -- v 4.4.1
 
     local tab, btn, pet
 
@@ -206,11 +206,11 @@ function aObj:Rematch() -- v 4.1.9
         btn:DisableDrawLayer("BACKGROUND")
     end
     -- TeamTabs
-    for i = 1, #_G.RematchTeamTabs.Tabs do
-        tab = _G.RematchTeamTabs.Tabs[i]
+	self:SecureHook(_G.RematchTeamTabs, "GetTabButton", function(this, index)
+        tab = _G.RematchTeamTabs.Tabs[index]
         tab:DisableDrawLayer("BACKGROUND")
-        self:addButtonBorder{obj=tab, ofs=4}
-    end
+        self:addButtonBorder{obj=tab, ofs=4, relTo=tab.Icon}
+	end)
 
     -- QueuePanel (Tab3)
     self:removeInset(_G.RematchQueuePanel.Top)
@@ -297,7 +297,6 @@ function aObj:Rematch() -- v 4.1.9
     -- TeamTabIconPicker
     self:removeInset(_G.RematchDialog.TeamTabIconPicker)
     self:skinSlider{obj=_G.RematchTeamTabIconPickerScrollBar, adj=-4}
-    self:skinUsingBD{obj=_G.RematchDialog.TeamTabIconPicker.Search}
 
     -- SaveAs
     self:skinUsingBD{obj=_G.RematchDialog.SaveAs.Name}

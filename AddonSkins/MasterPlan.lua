@@ -153,7 +153,7 @@ function aObj:MasterPlan() -- LoD (v 0.80)
 		end
 		local obj = pf:GetParent()
 		local frame = self:getChild(obj, obj:GetNumChildren())
-		if frame:GetNumChildren() == 2 then
+		if frame.Affinity then
 			self:addButtonBorder{obj=frame.Affinity}
 			self:addButtonBorder{obj=frame.ClassSpec}
 			self:Unhook("GarrisonMissionFrame_SetFollowerPortrait")
