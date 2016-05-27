@@ -38,8 +38,25 @@ Legend:
 	I	Quest Objectives list
 ?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
 
+	I	- Garrison Mission UI
+		- Active Missions Tab has a border when it shouldn't
+
 ?	I	reported by Thrassivoulos, 02.02.16
 		- I open skinners options and I check 'skin minimap buttons'. Buttons are skinned but when I log out and in again they are not. I open options again , uncheck and checking again 'skin minimap buttons' , and buttons are skinned again until I relog and so on. This happens mostly with default buttons as calendar, missions table etc , some addons buttons are skinned all the time.
 
-?	I	Minimap buttons, reported by leprecaun13, 27.02.15
+√	I	Minimap buttons, reported by leprecaun13, 27.02.15
 		- For the option to skin minimap buttons, while enabled the LFG green "eye" will be hidden until after a /reload
+
+x	I	reported by Gershuun, 26.03.16
+		- possible taint with Static Popup
+		- taint.log to follow
+
+x	O 	requested by EvilMaddness,
+		- Hello I'm using Skinner for the first time in wow. Is there's a way I can make the windows inside the frame a different texture and border while the main frame has it's own texture and border?    For instance the interface Frame where the add-on list is. I'm trying to have the main interface window the Blizzard Rock Texture while all the other two windows frames inside has Blizzard Marble Texture.    Is this possible to do on Skinner? So far I been only able to have the Interface frame showing in one texture. I guess the Backdrop word for a texture setting is a tad confusing on what it does exactly for me. I can understand Background for a texture setting so I thought Backdrop meant the window frames inside a frame to change the texture for it.    I looked on You Tube to see if  I could find any video if Skinner can do what I'm trying to do but most the videos are old and mostly only talk about the view port.    Anyways I hope Skinner will do what I'm trying to do cause I really like this add-on and I think it's way better then Aurora.
+
+√	N	Rematch, reported by NeoZeus, 25.05.16
+		- Skinner\Skinner-b6.21355.1.lua:1981: attempt to index field 'obj' (a nil value)
+		  Skinner\Skinner-b6.21355.1.lua:2005: in function `skinUsingBD'
+		  Skinner\SkinMe\Rematch-4.4.1.lua:300: in function <Skinner\SkinMe\Rematch.lua:5>
+
+√	S	SmartRes2, requested by myrroddin, 25.05.16
