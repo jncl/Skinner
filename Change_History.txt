@@ -1,3 +1,12 @@
+b6.21742.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for QueueStatusMinimapButton skin
+	Updated MasterPlan & Rematch skins
+	Added skin for SmartRes2
+
 b6.21355.1
 Jncl:
 	ToDo.txt
