@@ -165,6 +165,7 @@
 <script file="SkinMe\RicoMiniMap.lua"/>
 <script file="SkinMe\Scrap.lua"/>
 <script file="SkinMe\ScrollMaster.lua"/>
+<script file="SkinMe\ServerHop.lua"/>
 <script file="SkinMe\SilverDragon.lua"/>
 <script file="SkinMe\Skada.lua"/>
 <script file="SkinMe\Skillet.lua"/>
