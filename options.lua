@@ -1631,8 +1631,8 @@ function aObj:Options()
 				},
 				TalkingHeadUI = {
 					type = "toggle",
-					name = self.L["TalkingHeadUI"],
-					desc = self.L["Toggle the skin of the TalkingHeadUI"],
+					name = self.L["TalkingHead UI"],
+					desc = self.L["Toggle the skin of the TalkingHead UI"],
 				},
 				TimeManager = {
 					type = "toggle",
