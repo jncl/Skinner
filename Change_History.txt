@@ -1,3 +1,9 @@
+b7.22293.3
+Jncl:
+	Updated Change_history.txt
+	Bugfix for missing frame error
+	Another Localisation change
+
 b7.22293.2
 Jncl:
 	Changes_History.txt
