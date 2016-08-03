@@ -26,8 +26,8 @@ do
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
-	local liveInfo = {"6.2.4", 21742}
-	local ptrInfo = {"6.2.4", 21742}
+	local liveInfo = {"7.0.3", 22293}
+	local ptrInfo = {"7.0.3", 22306}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -106,16 +106,19 @@ function aObj:OnInitialize()
 		self.LSM:Register("background", aName .. " User TabDDTexture", prdb.TabDDFile)
 	end
 
-	-- Heading and Body Text colours
+	-- Heading, Body & Ignored Text colours
 	local c = prdb.HeadText
 	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
 	c = prdb.BodyText
 	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
+	c = prdb.IgnoredText
+	self.ITr, self.ITg, self.ITb = c.r, c.g, c.b
 
 	-- Frame multipliers (still used in older skins)
 	self.FxMult, self.FyMult = 0.9, 0.87
 	-- EditBox regions to keep
-	self.ebRgns = {1, 2, 3, 4, 5} -- 1 is text, 2-5 are textures
+--	self.ebRgns = {1, 2, 3, 4, 5} -- 1 is text, 2-5 are textures
+	self.ebRgns = {1, 2} -- 1 is text, 2 is a texture
 
 	-- Gradient settings
 	self.gradientTab = {prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
@@ -247,6 +250,9 @@ function aObj:OnInitialize()
 
 	-- ignore objects when skinning IOF elements
 	self.ignoreIOF = {}
+
+	-- ignore buttons when skinning frames
+	self.ignoreBtns = {}
 
 end
 
@@ -434,8 +440,6 @@ local function __addSkinButton(opts)
             -- changed to hook scripts as functions don't always work
 			aObj:SecureHookScript(opts.hook, "OnShow", function(this) opts.obj.sb:Show() end)
 			aObj:SecureHookScript(opts.hook, "OnHide", function(this) opts.obj.sb:Hide() end)
-            -- aObj:SecureHook(opts.hook, "Show", function(this) opts.obj.sb:Show() end)
-            -- aObj:SecureHook(opts.hook, "Hide", function(this) opts.obj.sb:Hide() end)
 			if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
 				aObj:SecureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
 				aObj:SecureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
@@ -665,29 +669,35 @@ local function __addSkinFrame(opts)
 
 	-- handle AlertFrame style frames to prevent gradient whiteout
 	if opts.af then
-		-- hook this script to ensure gradient texture is reparented correctly
-		aObj:SecureHookScript(opts.obj.animIn, "OnFinished", function(this)
-			local objP = this:GetParent()
-			-- print("animIn OnFinished", objP)
-			aObj:ScheduleTimer(function(frame)
-				frame.sf.tfade:SetParent(frame.sf)
-				if frame.cb then frame.cb.tfade:SetParent(frame.cb) end
-			end, 0.15, objP)
-		end)
-		-- handle issue where tfade isn't reparented in time
-		aObj:SecureHookScript(opts.obj, "OnHide", function(this)
-			this.sf.tfade:SetParent(this.sf)
-		end)
+		if not aObj:IsHooked(opts.obj.animIn, "OnFinished") then
+			-- hook this script to ensure gradient texture is reparented correctly
+			aObj:SecureHookScript(opts.obj.animIn, "OnFinished", function(this)
+				local objP = this:GetParent()
+				-- print("animIn OnFinished", objP)
+				aObj:ScheduleTimer(function(frame)
+					frame.sf.tfade:SetParent(frame.sf)
+					if frame.cb then frame.cb.tfade:SetParent(frame.cb) end
+				end, 0.15, objP)
+			end)
+		end
+		if not aObj:IsHooked(opts.obj, "OnHide") then
+			-- handle issue where tfade isn't reparented in time
+			aObj:SecureHookScript(opts.obj, "OnHide", function(this)
+				this.sf.tfade:SetParent(this.sf)
+			end)
+		end
 		-- hook AlertFrame scripts for animation functions
 		if opts.afas then
-			aObj:SecureHookScript(opts.obj, "OnEnter", function(this)
-				this.sf.tfade:SetGradientAlpha(aObj:getGradientInfo())
-			end)
-			opts.obj.ol = opts.obj:GetScript("OnLeave")
-			opts.obj:SetScript("OnLeave", function(this)
-				this.sf.tfade:SetAlpha(0)
-				if opts.obj.ol then opts.obj.ol(this) end
-			end)
+			if not aObj:IsHooked(opts.obj, "OnEnter") then
+				aObj:SecureHookScript(opts.obj, "OnEnter", function(this)
+					this.sf.tfade:SetGradientAlpha(aObj:getGradientInfo())
+				end)
+				opts.obj.ol = opts.obj:GetScript("OnLeave")
+				opts.obj:SetScript("OnLeave", function(this)
+					this.sf.tfade:SetAlpha(0)
+					if opts.obj.ol then opts.obj.ol(this) end
+				end)
+			end
 		end
 	end
 
@@ -751,7 +761,7 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 	local rotate = rotate or prdb.Gradient.rotate
 
 	if not obj.tfade then
-		obj.tfade = obj:CreateTexture(nil, "BORDER", -1)
+		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
 		obj.tfade:SetTexture(self.gradientTex)
 		obj.tfade:SetBlendMode("ADD")
 		obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
@@ -1026,6 +1036,9 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 		end
 	end
 
+	-- move spark up
+	if statusBar.spark then self:moveObject{obj=statusBar.spark, y=2} end
+
 end
 
 function aObj:keepFontStrings(obj, hide)
@@ -1081,6 +1094,7 @@ function aObj:keepRegions(obj, regions)
 	regions, regs = nil, nil
 
 end
+
 function aObj:makeMFRotatable(modelFrame)
 --@alpha@
 	assert(modelFrame and modelFrame:IsObjectType("PlayerModel"), "Not a PlayerModel\n" .. debugstack())
@@ -1141,6 +1155,10 @@ function aObj:makeMFRotatable(modelFrame)
 			modelFrame:SetPosition(xPos-00.1, 0, 0)
 		end
 	end) ]]
+
+	if modelFrame.controlFrame then
+		modelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+	end
 
 end
 
@@ -1548,16 +1566,16 @@ local function __skinEditBox(opts)
 	if opts.move then opts.x, opts.y = -2, 2 end
 
 	-- move left/right & up/down, if required
-	if opts.x ~= 0 or opts.y ~= 0 then aObj:moveObject{obj=opts.obj, x=opts.x, y=opts.y} end
+	if opts.x ~= 0 or opts.y ~= 0 then aObj:moveObject{obj=opts.obj, x=opts.x or 0, y=opts.y or 0} end
 
 	-- move the search icon to the right, if required
-	local xOfs = 3
+	local xOfs = 4
 	if opts.mi then
 		if opts.obj.searchIcon then
 			aObj:moveObject{obj=opts.obj.searchIcon, x=xOfs} -- e.g. BagItemSearchBox
 		elseif opts.obj.Instructions then -- e.g. InputBoxInstructionsTemplate (WoD)
 			opts.obj.Instructions:ClearAllPoints()
-			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", xOfs, 0)
+			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", xOfs + 2, 0)
 		elseif opts.obj.icon then
 			aObj:moveObject{obj=opts.obj.icon, x=xOfs} -- e.g. FriendsFrameBroadcastInput
 		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
@@ -1655,7 +1673,7 @@ local function __skinMoneyFrame(opts)
 	local obj
 	for k, v in pairs{"Gold", "Silver", "Copper"} do
 		obj = _G[opts.obj:GetName()..v]
-		aObj:skinEditBox{obj=obj, regs={9, 10}, noHeight=true, noWidth=true, ign=true} -- N.B. region 9 is the icon, 10 is text
+		aObj:skinEditBox{obj=obj, regs={6, 7}, noHeight=true, noWidth=true, ign=true} -- N.B. region 6 is the icon, 7 is text
 		-- move label to the right for colourblind mode
 		if k ~= 1 or opts.moveGIcon then
 			aObj:moveObject{obj=obj.texture, x=10}

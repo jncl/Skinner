@@ -6,13 +6,13 @@ local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
 
 local blizzLoDFrames = {
 	-- player
-	"AchievementUI", "ArchaeologyUI", "Collections", "EncounterJournal", "GlyphUI", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "PVPUI", "RaidUI", "TalentUI",
+	"AchievementUI", "ArchaeologyUI", "Collections", "EncounterJournal", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "PVPUI", "RaidUI", "TalentUI",
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
 	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ItemUpgradeUI", "GarrisonUI", "QuestChoice", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "StoreUI", "TimeManager",
+	"ArtifactUI", "BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "ObliterumUI", "OrderHallUI", "StoreUI", "TalkingHeadUI",  "TimeManager",
 	--	unitframes
 	"ArenaUI",
 }
@@ -52,9 +52,8 @@ function aObj:BlizzardFrames()
 			-- LoD frames
 			["AchievementUI"] = false,
 			["ArchaeologyUI"] = false,
-			["Collections"] = false, -- (Mounts, Pets, Toys & Heirlooms)
+			["Collections"] = false, -- (Mounts, Pets, Toys, Heirlooms & Appearances)
 			["EncounterJournal"] = false,
-			["GlyphUI"] = false,
 			["GuildControlUI"] = false,
 			["GuildUI"] = false,
 			["InspectUI"] = false,
@@ -80,7 +79,6 @@ function aObj:BlizzardFrames()
 			["AuctionUI"] = false,
 			["BarbershopUI"] = false,
 			["BlackMarketUI"] = false,
-			["ItemAlterationUI"] = false,
 			["ItemUpgradeUI"] = false,
 			["QuestChoice"] = false,
 			["ReforgingUI"] = false,
@@ -90,6 +88,7 @@ function aObj:BlizzardFrames()
 		ui = {
 			["AddonList"] = true,
 			["AlertFrames"] = true,
+			["ArtifactToasts"] = true,
 			["AuthChallengeUI"] = false, -- N.B. cannot be skinned
 			["AutoComplete"] = true,
 			["BNFrames"] = true,
@@ -106,7 +105,6 @@ function aObj:BlizzardFrames()
 			["CoinPickup"] = true,
 			["ColorPicker"] = true,
 			["DestinyFrame"] = true,
-			["DraenorZoneAbility"] = true,
 			["DropDownPanels"] = true,
 			["GarrisonTooltips"] = true,
 			["HelpFrame"] = true,
@@ -121,7 +119,7 @@ function aObj:BlizzardFrames()
 			["Minimap"] = false, -- checked below
 			["MinimapButtons"] = false, -- done with timer
 			["MovieFrame"] = true,
-			["Nameplates"] = false, -- checked below
+			["NamePlates"] = true,
 			["NavigationBar"] = true,
 			["PetBattleUI"] = true,
 			["PVEFrame"] = true,
@@ -137,7 +135,9 @@ function aObj:BlizzardFrames()
 			["WorldMap"] = true,
 			["WorldState"] = true,
 			["WowTokenUI"] = self.PTR and false or nil, -- N.B. cannot be skinned
+			["ZoneAbility"] = true,
 			-- LoD frames
+			["ArtifactUI"] = false,
 			["BattlefieldMinimap"] = false,
 			["BindingUI"] = false,
 			["Calendar"] = false,
@@ -150,8 +150,11 @@ function aObj:BlizzardFrames()
 			["GuildBankUI"] = false,
 			["MacroUI"] = false,
 			["MovePad"] = false,
+			["ObliterumUI"] = false,
+			["OrderHallUI"] = false,
 			["SocialUI"] = false, -- N.B. cannot be skinned
 			["StoreUI"] = false, -- N.B. cannot be skinned
+			["TalkingHeadUI"] = false,
 			["TimeManager"] = false,
 		},
 	}
@@ -268,15 +271,6 @@ function aObj:AddonFrames()
 
 	-- skin the Minimap if SexyMap isn't loaded
 	if not IsAddOnLoaded("SexyMap") then self:checkAndRun("Minimap") end
-
-	-- skin the Nameplates if other nameplate addons aren't loaded
-	if not IsAddOnLoaded("Aloft")
-	and not IsAddOnLoaded("nerNameplates")
-	and not IsAddOnLoaded("TidyPlates")
-	and not IsAddOnLoaded("DocsUI_Nameplates")
-	then
-		self:checkAndRun("Nameplates")
-	end
 
 	--	don't make Model Frames Rotatable if CloseUp is loaded
 	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end

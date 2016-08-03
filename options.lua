@@ -58,7 +58,6 @@ function aObj:Defaults()
 		BlackMarketUI        = true,
 		GossipFrame          = true,
 		GuildRegistrar       = true,
-		ItemAlterationUI     = true,
 		ItemUpgradeUI        = true,
 		MerchantFrame        = true,
 		Petition             = true,
@@ -77,7 +76,7 @@ function aObj:Defaults()
 		Buffs                = true,
 		CastingBar           = {skin = true, glaze = true},
 		CharacterFrames      = true,
-		Collections          = true, -- (Mounts, Pets, Toys & Heirlooms)
+		Collections          = true, -- (Mounts, Pets, Toys, Heirlooms & Appearances)
 		CompactFrames        = true,
 		ContainerFrames      = {skin = true, fheight = 100},
 		DressUpFrame         = true,
@@ -112,6 +111,7 @@ function aObj:Defaults()
 		DisableAllUI         = false,
 		AddonList            = true,
 		AlertFrames          = true,
+		ArtifactUI           = true,
 		AuthChallengeUI      = false, -- N.B. cannot be skinned
 		AutoComplete         = true,
 		BattlefieldMm        = {skin = true, gloss = false},
@@ -133,7 +133,6 @@ function aObj:Defaults()
 		DeathRecap           = true,
 		DebugTools           = true,
 		DestinyFrame         = true,
-		DraenorZoneAbility   = true,
 		GarrisonUI           = true,
 		GMChatUI             = true,
 		GMSurveyUI           = true,
@@ -153,6 +152,8 @@ function aObj:Defaults()
 		MovieFrame           = true,
 		MovieProgress        = _G.IsMacClient() and true or nil,
 		Nameplates           = true,
+		ObliterumUI          = true,
+		OrderHallUI          = true,
 		PetBattleUI          = true,
 		PVEFrame             = true,
 		QuestMap             = true,
@@ -163,12 +164,14 @@ function aObj:Defaults()
 		SplashFrame          = true,
 		StaticPopups         = true,
 		StoreUI              = false, -- N.B. cannot be skinned
+		TalkingHeadUI        = true,
 		TimeManager          = true,
 		Tooltips             = {skin = true, style = 1, glazesb = true, border = 1},
 		Tutorial             = true,
 		WorldMap             = {skin = true, size = 1},
 		WorldState           = true,
 		WowTokenUI			 = false, -- N.B. cannot be skinned
+		ZoneAbility          = true,
 	-->>-- Disabled Skins
 		DisableAllAS         = false,
 		DisabledSkins        = {},
@@ -772,11 +775,6 @@ function aObj:Options()
 					name = self.L["Guild Registrar Frame"],
 					desc = self.L["Toggle the skin of the Guild Registrar Frame"],
 				},
-				ItemAlterationUI = {
-					type = "toggle",
-					name = self.L["Item Alteration Frame"],
-					desc = self.L["Toggle the skin of the Item Alteration Frame"],
-				},
 				MerchantFrame = {
 					type = "toggle",
 					name = self.L["Merchant Frame"],
@@ -928,7 +926,7 @@ function aObj:Options()
 					desc = self.L["Toggle the skin of the Character Frames"],
 				},
 				Collections = {
-					-- (Mounts, Pets, Toys & Heirlooms)
+					-- (Mounts, Pets, Toys, Heirlooms & Appearances)
 					type = "toggle",
 					name = self.L["Collections Journal"],
 					desc = self.L["Toggle the skin of the Collections Journal"],
@@ -971,8 +969,8 @@ function aObj:Options()
 				},
 				EncounterJournal = {
 					type = "toggle",
-					name = self.L["Dungeon Journal"],
-					desc = self.L["Toggle the skin of the Dungeon Journal"],
+					name = self.L["Adventure Guide"],
+					desc = self.L["Toggle the skin of the Adventure Guide"],
 				},
 				EquipmentFlyout = {
 					type = "toggle",
@@ -1204,6 +1202,11 @@ function aObj:Options()
 					name = self.L["Alert Frames"],
 					desc = self.L["Toggle the skin of the Alert Frames"],
 				},
+				ArtifactUI = {
+					type = "toggle",
+					name = self.L["ArtifactUI"],
+					desc = self.L["Toggle the skin of the ArtifactUI"],
+				},
 				AuthChallengeUI = {
 					type = "toggle",
 					name = self.L["AuthChallenge Frame"],
@@ -1377,11 +1380,6 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["Destiny Frame"],
 					desc = self.L["Toggle the skin of the Destiny Frame"],
-				},
-				DraenorZoneAbility = {
-					type = "toggle",
-					name = self.L["Draenor Frame"],
-					desc = self.L["Toggle the skin of the Draenor Frame"],
 				},
 				GarrisonUI = {
 					type = "toggle",
@@ -1570,6 +1568,16 @@ function aObj:Options()
 					name = self.L["Nameplates"],
 					desc = self.L["Toggle the skin of the Nameplates"],
 				},
+				ObliterumUI = {
+					type = "toggle",
+					name = self.L["ObliterumUI"],
+					desc = self.L["Toggle the skin of the ObliterumUI"],
+				},
+				OrderHallUI = {
+					type = "toggle",
+					name = self.L["OrderHallUI"],
+					desc = self.L["Toggle the skin of the OrderHallUI"],
+				},
 				PetBattleUI = {
 					type = "toggle",
 					name = self.L["Pet Battle Frame"],
@@ -1620,6 +1628,11 @@ function aObj:Options()
 					name = self.L["Store Frame"],
 					desc = self.L["Toggle the skin of the Store Frame"],
 					disabled = true,
+				},
+				TalkingHeadUI = {
+					type = "toggle",
+					name = self.L["TalkingHeadUI"],
+					desc = self.L["Toggle the skin of the TalkingHeadUI"],
 				},
 				TimeManager = {
 					type = "toggle",
@@ -1703,6 +1716,11 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["WoW Token UI Frame"],
 					desc = self.L["Toggle the skin of the WoW Token UI Frame"],
+				},
+				ZoneAbility = {
+					type = "toggle",
+					name = self.L["ZoneAbility"],
+					desc = self.L["Toggle the skin of the ZoneAbility"],
 				},
 			},
 		},

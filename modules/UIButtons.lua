@@ -322,6 +322,7 @@ function module:isButton(obj)
 	-- ignore named/AceConfig/XConfig/AceGUI objects
 	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
 	if obj.OrigSetText then return end -- Cork ui-tab buttons
+	if aObj.ignoreBtns[obj] then return end -- buttons to ignore (e.g. EncounterJournal search button1)
 
 	local bType
 
