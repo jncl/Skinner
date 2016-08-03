@@ -8,6 +8,88 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
+	N	Legion pre Expansion patch
+√		- TOC version now 70000
+		- Updates
+x			- Bag settings are now accessed by clicking the bag icon
+√			- Character Frame is not resizeable
+√			- Character Stats panel has been changed
+√			- Talents Frame have a new tab - Honor Talents
+√			- Group Finder, PvP has additional textures at the top
+√			- Collections have a new tab - Appearances
+√			- Adventure Guide has a new tab - Loot
+√			- Revamped Nameplates, nothing to do for them, maybe remove existing skinning code
+x			- UIButtons - close button code causes errors
+√			- Chat Edit Box - borderless skin has textures
+√			- AuctionUI
+≈			- GroupFinder - Raid Finder, texture visible behind Role icons
+√			- QuestChoiceFrame needs fixing
+√			- Ignored Quest names appearing as black text in Gossip frame
+√			- QuestInfo RewardFrame - SpellReward & FollowerReward
+√			- MapQuestInfo RewardFrame - SpellReward & FollowerReward
+√			- Map & Quest log updates - reward textures & disclosure buttons
+≈			- ArenaFramesCastBar
+≈			- RaidUI - GroupButton texture
+√			- PlayerFrame - Damage taken/Healing received overlays
+√			- AdventureGuide, texture regions have changed
+√			- Scenario Rewards NameFrames need skinning
+√			- Add Tab textures & skin RecipeList to TradeskillUI
+√			- Add Tab textures to Encounter Journal
+		- Deletions
+√			- DraenorZoneAbility
+x			- PetPaperDollFrame
+x			- Blizzard_GarrisonUI:Blizzard_GarrisonMissionTemplates
+√			- Blizzard_GlyphUI
+√			- Blizzard_ItemAlterationUI
+x			- Blizzard_Tutorial: Blizzard_TutorialPointerFrame
+		- Additions
+√			- AchievementSearch Search feature
+?			- ChallengesKeystoneFrame
+x			- InspectPaperDollFrame - ViewButton
+√			- PvPUI - PVPVRewardTooltip
+x			- Blizzard_RaidUI - extra class button (15)
+√			- Blizzard_TradeSkillUI revamp
+x			- Blizzard_AdventureMap
+≈			- Blizzard_ArtifactUI
+x			- Blizzard_BoostTutorial
+?			- Blizzard_ClassTrial
+√			- Blizzard_Wardrobe
+√			- Blizzard_LootJournal
+x			- Blizzard_FlightMap
+√			- Blizzard_GarrisonTemplates
+x			- Blizzard_MapCanvas
+x			- Blizzard_NamePlates
+x			- Blizzard_ObjectiveTrackerShared
+≈			- Blizzard_ObliterumUI
+≈			- Blizzard_OrderHallUI
+x			- Blizzard_PVPUI: Localization
+x			- Blizzard_SharedMapDataProviders
+≈			- Blizzard_TalkingHeadUI
+x			- Blizzard_TutorialTemplates
+≈			- AlertFrameSystems
+x			- AnimatedStatusBar
+≈			- ArtifactToasts
+≈			- BuilderSpenderFrame
+≈			- ClassPowerBar
+?			- ClassResourceOverlay (DemonHunter, Paladin, Rogue)
+√			- ComboFramePlayer
+√			- GarrisonBaseUtils
+√			- HonorWatchBar
+√			- InsanityBar
+x			- LowHealthFrame
+≈			- MageArcaneChargesBar
+x			- MixinUtil
+≈			- PVPHonorSystem
+√			- WardrobeOutfits
+?			- WorldMapActionButton
+√			- ZoneAbility
+		- Issues
+?			- 8x Skinner\NPCFrames.lua:266: attempt to index local 'tex' (a number value)
+?			- PartyMemberFrame1:Show() error
+?			- PartyMemberPetFrame4:Hide() error
+?			- TargetFrame_Update error when self:Hide() is called
+?			- BossTargetFrame error
+
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
