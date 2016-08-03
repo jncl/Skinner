@@ -1,3 +1,14 @@
+b7.22293.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updates for 7.0.3 pre Legion Expansion patch
+	Change spelling of Color to Colour
+	Use SetSize instead of SetWidth & SetHeight
+	Bugfixes for return statements
+	Top, Middle & Bottom frames, use SetSize instead of SetWidth & SetHeight
+	Removed Obsoleted entries from skins.xml
+
 b6.21742.3
 Jncl:
 	ToDo.txt
