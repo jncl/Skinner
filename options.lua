@@ -1719,8 +1719,8 @@ function aObj:Options()
 				},
 				ZoneAbility = {
 					type = "toggle",
-					name = self.L["ZoneAbility"],
-					desc = self.L["Toggle the skin of the ZoneAbility"],
+					name = self.L["Zone Ability"],
+					desc = self.L["Toggle the skin of the Zone Ability"],
 				},
 			},
 		},
