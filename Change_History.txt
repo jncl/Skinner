@@ -1,3 +1,8 @@
+b7.22293.2
+Jncl:
+	Changes_History.txt
+	Update some Localisation phrases
+
 b7.22293.1
 Jncl:
 	ToDo.txt
