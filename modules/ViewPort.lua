@@ -203,8 +203,8 @@ function module:GetOptions()
 				type = "color",
 				order = 3,
 				width = "double",
-				name = aObj.L["ViewPort Colors"],
-				desc = aObj.L["Set ViewPort Colors"],
+				name = aObj.L["ViewPort Colour"],
+				desc = aObj.L["Set ViewPort Colour"],
 				hasAlpha = true,
 				get = function(info)
 					local c = module.db.profile[info[#info]]

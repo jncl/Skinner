@@ -252,6 +252,12 @@ end
 
 function aObj:OnEnable()
 
+	-- change option name
+	if self.db.profile.ClassColours then
+		self.db.profile.ClassColour = self.db.profile.ClassColours
+		self.db.profile.ClassColours = nil
+	end
+
 	-- add support for UIButton skinning
 	local btnModDB = self.db:GetNamespace("UIButtons", true)
 	self.modUIBtns = self:GetModule("UIButtons", true)

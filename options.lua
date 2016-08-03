@@ -36,13 +36,14 @@ function aObj:Defaults()
 		BgTexture            = "None",
 		BgTile               = false,
 	-->>-- Colours
-		ClassColours         = false,
+		ClassColour          = false,
 		ClassClrsBg          = false,
 		TooltipBorder        = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		BackdropBorder       = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		Backdrop             = {r = 0, g = 0, b = 0, a = 0.9},
 		HeadText             = {r = 0.8, g = 0.8, b = 0.0},
 		BodyText             = {r = 0.7, g = 0.7, b = 0.0},
+		IgnoredText          = {r = 0.5, g = 0.5, b = 0.0},
 		GradientMin          = {r = 0.1, g = 0.1, b = 0.1, a = 0},
 		GradientMax          = {r = 0.25, g = 0.25, b = 0.25, a = 1},
 	-->>-- Gradient
@@ -498,7 +499,7 @@ function aObj:Options()
 			type = "group",
 			name = self.L["Default Colours"],
 			get = function(info)
-				if info[#info] == "ClassColours"
+				if info[#info] == "ClassColour"
 				or info[#info] == "ClassClrsBg"
 				then
 					return db[info[#info]]
@@ -508,7 +509,7 @@ function aObj:Options()
 				end
 			end,
 			set = function(info, r, g, b, a)
-				if info[#info] == "ClassColours" then
+				if info[#info] == "ClassColour" then
 					db[info[#info]] = r
 					if r then
 						db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
@@ -542,72 +543,79 @@ function aObj:Options()
 				end
 			end,
 			args = {
-				ClassColours = {
+				ClassColour = {
 					type = "toggle",
 					order = 1,
 					width = "double",
-					name = self.L["Class Coloured Borders"],
-					desc = self.L["Use Class Colours for Borders"],
+					name = self.L["Class Coloured Border"],
+					desc = self.L["Use Class Colour for Border"],
 				},
 				ClassClrsBg = {
 					type = "toggle",
 					order = 2,
 					width = "double",
 					name = self.L["Class Coloured Background"],
-					desc = self.L["Use Class Colours for Background"],
+					desc = self.L["Use Class Colour for Background"],
 				},
 				TooltipBorder = {
 					type = "color",
 					order = 3,
 					width = "double",
-					name = self.L["Tooltip Border Colors"],
-					desc = self.L["Set Tooltip Border Colors"],
+					name = self.L["Tooltip Border Colour"],
+					desc = self.L["Set Tooltip Border Colour"],
 					hasAlpha = true,
 				},
 				Backdrop = {
 					type = "color",
 					order = 5,
 					width = "double",
-					name = self.L["Backdrop Colors"],
-					desc = self.L["Set Backdrop Colors"],
+					name = self.L["Backdrop Colour"],
+					desc = self.L["Set Backdrop Colour"],
 					hasAlpha = true,
 				},
 				BackdropBorder = {
 					type = "color",
 					order = 4,
 					width = "double",
-					name = self.L["Border Colors"],
-					desc = self.L["Set Backdrop Border Colors"],
+					name = self.L["Border Colour"],
+					desc = self.L["Set Backdrop Border Colour"],
 					hasAlpha = true,
 				},
 				HeadText = {
 					type = "color",
 					order = 5,
 					width = "double",
-					name = self.L["Text Heading Colors"],
-					desc = self.L["Set Text Heading Colors"],
+					name = self.L["Text Heading Colour"],
+					desc = self.L["Set Text Heading Colour"],
 				},
 				BodyText = {
 					type = "color",
 					order = 6,
 					width = "double",
-					name = self.L["Text Body Colors"],
-					desc = self.L["Set Text Body Colors"],
+					name = self.L["Text Body Colour"],
+					desc = self.L["Set Text Body Colour"],
 				},
-				GradientMin = {
+				IgnoredText = {
 					type = "color",
 					order = 7,
 					width = "double",
-					name = self.L["Gradient Minimum Colors"],
-					desc = self.L["Set Gradient Minimum Colors"],
+					name = self.L["Ignored Text Colour"],
+					desc = self.L["Set Ignored Text Colour"],
+				},
+				GradientMin = {
+					type = "color",
+					order = 8,
+					width = "double",
+					name = self.L["Gradient Minimum Colour"],
+					desc = self.L["Set Gradient Minimum Colour"],
 					hasAlpha = true,
 				},
 				GradientMax = {
 					type = "color",
-					order = 8,
+					order = 9,
 					width = "double",
-					name = self.L["Gradient Maximum Colors"],
-					desc = self.L["Set Gradient Maximum Colors"],
+					name = self.L["Gradient Maximum Colour"],
+					desc = self.L["Set Gradient Maximum Colour"],
 					hasAlpha = true,
 				},
 				BagginsBBC = IsAddOnLoaded("Baggins") and self.Baggins and {
@@ -1352,8 +1360,8 @@ function aObj:Options()
 				},
 				Colours = {
 					type = "toggle",
-					name = self.L["Color Picker Frame"],
-					desc = self.L["Toggle the skin of the Color Picker Frame"],
+					name = self.L["Colour Picker Frame"],
+					desc = self.L["Toggle the skin of the Colour Picker Frame"],
 				},
 				DeathRecap = {
 					type = "toggle",
@@ -1804,7 +1812,7 @@ function aObj:Options()
 		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
 	end
 	self.optionsFrame[self.L["Colours"]].default = function()
-		db.ClassColours = dflts.ClassColours
+		db.ClassColour = dflts.ClassColour
 		db.TooltipBorder = dflts.TooltipBorder
 		db.BackdropBorder = dflts.BackdropBorder
 		db.Backdrop = dflts.Backdrop
