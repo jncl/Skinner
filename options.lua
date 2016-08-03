@@ -1204,8 +1204,8 @@ function aObj:Options()
 				},
 				ArtifactUI = {
 					type = "toggle",
-					name = self.L["ArtifactUI"],
-					desc = self.L["Toggle the skin of the ArtifactUI"],
+					name = self.L["Artifact UI"],
+					desc = self.L["Toggle the skin of the Artifact UI"],
 				},
 				AuthChallengeUI = {
 					type = "toggle",
@@ -1570,13 +1570,13 @@ function aObj:Options()
 				},
 				ObliterumUI = {
 					type = "toggle",
-					name = self.L["ObliterumUI"],
-					desc = self.L["Toggle the skin of the ObliterumUI"],
+					name = self.L["Obliterum UI"],
+					desc = self.L["Toggle the skin of the Obliterum UI"],
 				},
 				OrderHallUI = {
 					type = "toggle",
-					name = self.L["OrderHallUI"],
-					desc = self.L["Toggle the skin of the OrderHallUI"],
+					name = self.L["OrderHall UI"],
+					desc = self.L["Toggle the skin of the OrderHall UI"],
 				},
 				PetBattleUI = {
 					type = "toggle",
