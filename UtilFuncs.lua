@@ -292,7 +292,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the SkinMe directory")
 			end
 		elseif type(self[addonFunc]) == "function" then
-			safecall(addonFunc, LoD)
+			return safecall(addonFunc, LoD)
 		else
 			if self.db.profile.Warnings then
 				self:CustomPrint(1, 0, 0, "function [" .. addonFunc .. "] not found in " .. aName)
@@ -465,7 +465,7 @@ function aObj:hasTextInName(obj, text)
 	assert(text, "Missing value hasTextInName\n" .. debugstack())
 --@end-alpha@
 
-	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text) and true
+	return obj and obj.GetName and obj:GetName() and obj:GetName():find(text) and true or false
 
 end
 
@@ -495,7 +495,7 @@ function aObj:hasTextInTexture(obj, text, plain)
 	assert(text, "Missing value hasTextInTexture\n" .. debugstack())
 --@end-alpha@
 
-	return obj and obj.GetTexture and obj:GetTexture() and obj:GetTexture():find(text, 1, plain) and true
+	return obj and obj.GetTexture and obj:GetTexture() and tostring(obj:GetTexture()):find(text, 1, plain) and true
 
 end
 
