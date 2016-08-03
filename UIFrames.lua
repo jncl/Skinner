@@ -2439,7 +2439,9 @@ function aObj:MenuFrames()
 	self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
 
 -->>-- CompactUnitFrameProfiles
-	_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
+	if _G.CompactUnitFrameProfiles then
+		_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
+	end
 
 	local function checkKids(obj)
 
