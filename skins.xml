@@ -13,7 +13,6 @@
 <script file="SkinMe\AddonLoader.lua"/>
 <script file="SkinMe\AdiBags.lua"/>
 <script file="SkinMe\Altoholic.lua"/>
-<script file="SkinMe\AphesLootBrowser.lua"/>
 <script file="SkinMe\Archy.lua"/>
 <script file="SkinMe\ArkDewdrop.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
@@ -82,7 +81,6 @@
 <script file="SkinMe\FlaresThatWork.lua"/>
 <script file="SkinMe\FlightMapEnhanced.lua"/>
 <script file="SkinMe\FlyoutButtonCustom.lua"/>
-<script file="SkinMe\Fortress.lua"/>
 <script file="SkinMe\FramesResized.lua"/>
 <script file="SkinMe\FreierGeist_InstanceTime.lua"/>
 <script file="SkinMe\G15Buttons.lua"/>
@@ -93,7 +91,6 @@
 <script file="SkinMe\GroupCalendar5.lua"/>
 <script file="SkinMe\GuildBankSearch.lua"/>
 <script file="SkinMe\GuildLaunchCT_RaidTracker.lua"/>
-<script file="SkinMe\GuildMaster.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>
 <script file="SkinMe\HaveWeMet.lua"/>
 <script file="SkinMe\HealBot.lua"/>
@@ -119,7 +116,6 @@
 <script file="SkinMe\MinimalArchaeology.lua"/>
 <script file="SkinMe\MinimapButtonFrame.lua"/>
 <script file="SkinMe\MogIt.lua"/>
-<script file="SkinMe\MrTrader_SkillWindow.lua"/>
 <script file="SkinMe\MyGarrisons.lua"/>
 <script file="SkinMe\Notes.lua"/>
 <script file="SkinMe\oGlow.lua"/>
