@@ -102,3 +102,10 @@ x			- MixinUtil
 
 	I	- Garrison Mission UI
 ?		- Active Missions Tab has a border when it shouldn't (not all the time)
+
+√	N	MasterPlan
+√	N	Mapster, reported by Decabah/tordenflesk, 03.08.16
+x	U	SellJunk, requested by CrazyBenny, 03.08.16 - skin not required any more
+
+	O	Baggins, requested by Shimiya,03.08.16
+9		- Can you apply the 'Class Coloured Borders" function to "Baggins" ?
