@@ -1,3 +1,12 @@
+b7.22345.0
+Jncl:
+	New tag as previous one didn't action creation of Zip file on Curse
+
+b7.22293.4
+Jncl:
+	Updated Change_History.txt
+	Another Localisation change
+
 b7.22293.3
 Jncl:
 	Updated Change_history.txt
