@@ -416,6 +416,26 @@ function aObj:BattlefieldMinimap() -- LoD
 		if _G.type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
 	end
 
+	if IsAddOnLoaded("Mapster") then
+		local Mapster = _G.LibStub("AceAddon-3.0"):GetAddon("Mapster", true)
+		local mBM = Mapster:GetModule("BattleMap", true)
+		if mBM then
+			local bmDB = Mapster.db:GetNamespace("BattleMap", true).profile
+			local function updBMVisibility()
+				if bmDB.hideTextures then
+					_G.BattlefieldMinimap.sf:Hide()
+				else
+					_G.BattlefieldMinimap.sf:Show()
+				end
+			end
+			self:SecureHook(mBM, "UpdateTextureVisibility", function()
+				updBMVisibility()
+			end)
+			-- change visibility as required
+			updBMVisibility()
+		end
+	end
+
 end
 
 function aObj:BindingUI() -- LoD

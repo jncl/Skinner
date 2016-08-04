@@ -7,13 +7,6 @@ function aObj:Mapster()
 	local Mapster = _G.LibStub("AceAddon-3.0"):GetAddon("Mapster", true)
 	if not Mapster then return end
 
-	self:SecureHook(Mapster, "UpdateBorderVisibility", function()
-		if Mapster.bordersVisible then
-			_G.WorldMapFrame.sf:Show()
-		else
-			_G.WorldMapFrame.sf:Hide()
-		end
-	end)
 	self:addSkinFrame{obj=_G.WorldMapFrame, ft="u", kfs=true, ofs=2}
 	self:skinButton{obj=Mapster.optionsButton}
 
@@ -29,5 +22,5 @@ function aObj:MapsterEnhanced()
 		self:rmRegionsTex(Mapster.nonOverlayHolder, {4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15})
 		self:Unhook(_G.WorldMapFrame, "Show")
 	end)
-	
+
 end

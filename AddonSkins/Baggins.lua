@@ -10,7 +10,9 @@ function aObj:Baggins()
 
 	-- setup default colours
 	if not self.db.profile.BagginsBBC then
-		self.db.profile.BagginsBBC = {r = 0, g = 0, b = 0, a = 0.9}
+		local c = self.db.profile.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or self.db.profile.TooltipBorder
+
+		self.db.profile.BagginsBBC = {r = c.r, g = c.g, b = c.b, a = c.a}
 	end
 
 	local function skinBag(id, frame)

@@ -140,12 +140,12 @@ function aObj:MasterPlan() -- LoD (v 0.80)
 
 	-- Garrison Missions Frame - Available Missions Tab - Mission Page
 	-- Get Suggested Groups button
-	self:removeRegions(self:getChild(_G.GarrisonMissionFrame.MissionTab.MissionPage.Stage, 2), {2}) -- ring texture
+	self:removeRegions(self:getChild(_G.GarrisonMissionFrame.MissionTab.MissionPage.Stage, 3), {2}) -- ring texture
 	-- minimize button
 	self:skinButton{obj=_G.GarrisonMissionFrame.MissionTab.MissionPage.MinimizeButton, ob="-"}
 
 	-- SpecAffinityFrame (on FollowerTab frames)
-	self:SecureHook("GarrisonMissionFrame_SetFollowerPortrait", function(pf, ...)
+	self:SecureHook("GarrisonMissionPortrait_SetFollowerPortrait", function(pf, ...)
 		if not pf == _G.GarrisonMissionFrame.FollowerTab.PortraitFrame
 		and not pf == _G.GarrisonLandingPage.FollowerTab.PortraitFrame
 		then

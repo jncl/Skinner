@@ -74,8 +74,7 @@ function aObj:Ace3()
 				end
 			elseif objType == "Slider" then
 				aObj:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
-				obj.editbox:SetHeight(20)
-				obj.editbox:SetWidth(60)
+				obj.editbox:SetSize(60, 20)
 			elseif objType == "Frame" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				if objVer < 20 then
@@ -170,8 +169,8 @@ function aObj:Ace3()
     				obj.frame.DMiddle:SetTexture(aObj.itTex)
     				obj.frame.DMiddle:SetTexCoord(0, 1, 0, 1)
     				obj.frame.DMiddle:ClearAllPoints()
-    				obj.frame.DMiddle:SetPoint("LEFT", obj.frame, "RIGHT")
-    				obj.frame.DMiddle:SetPoint("RIGHT", obj.frame, "LEFT")
+    				obj.frame.DMiddle:SetPoint("LEFT", obj.frame.DLeft, "RIGHT", -5, 2)
+    				obj.frame.DMiddle:SetPoint("RIGHT", obj.frame.DRight, "LEFT", 5, 2)
 					if aObj.db.profile.DropDownButtons then
 						local xOfs1, yOfs1, xOfs2, yOfs2
 						if objType == "LSM30_Background"
