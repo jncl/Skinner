@@ -1610,8 +1610,9 @@ function aObj:Options()
 				},
 				SocialUI = {
 					type = "toggle",
-					name = self.L["Social Frame"],
-					desc = self.L["Toggle the skin of the Social Frame"],
+					name = self.L["Social UI"],
+					desc = self.L["Toggle the skin of the Social UI"],
+					disabled = true,
 				},
 				SplashFrame = {
 					type = "toggle",
@@ -1714,8 +1715,9 @@ function aObj:Options()
 				},
 				WowTokenUI = {
 					type = "toggle",
-					name = self.L["WoW Token UI Frame"],
-					desc = self.L["Toggle the skin of the WoW Token UI Frame"],
+					name = self.L["WoW Token UI"],
+					desc = self.L["Toggle the skin of the WoW Token UI"],
+					disabled = true,
 				},
 				ZoneAbility = {
 					type = "toggle",
