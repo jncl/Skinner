@@ -54,36 +54,17 @@ function aObj:Dominos()
 	-- CastingBar
 	mod = Dominos:GetModule("CastingBar", true)
 	if mod then
-		mod.frame.border:SetTexture(nil)
-		mod.frame.border.SetTexture = function() end
+		local castBar = mod.frame.__cbf
+		castBar.Border:SetAlpha(0)
+		castBar.Flash:SetAllPoints()
+		castBar.Flash:SetTexture([[Interface\Buttons\WHITE8X8]])
+		castBar.Text:SetPoint("TOP", 0, 2)
+		castBar.Spark.offsetY = -1
+		if self.db.profile.CastingBar.glaze then
+			self:glazeStatusBar(castBar, 0, self:getRegion(castBar, 1))
+		end
+		castBar = nil
 	end
-
-end
-
-function aObj:Dominos_Config()
-
-	local Dominos = _G.LibStub("AceAddon-3.0"):GetAddon("Dominos", true)
-
-	-- hook the create menu function
-	self:SecureHook(Dominos.Menu, "New", function(this, name)
-		local panel = _G["DominosFrameMenu" .. name]
-		if not panel.sknd then
-			self:addSkinFrame{obj=panel, x1=6, y1=-8, x2=-8, y2=6}
-		end
-	end)
-	-- hook the show panel function to skin dropdowns/editboxes & scrollbars
-	self:SecureHook(Dominos.Menu, "ShowPanel", function(this, name)
-		self:skinAllButtons{obj=_G[this:GetName() .. name], x1=-1, x2=1}
-		if this.dropdown then
-			self:skinDropDown{obj=this.dropdown}
-		end
-		local stEB = _G[this:GetName() .. name .. "StateText"]
-		if stEB then
-			self:skinEditBox{obj=stEB, regs={9}, y=10}
-		end
-		if this.panels[2].scroll then
-			self:skinScrollBar{obj=this.panels[2].scroll}
-		end
-	end)
+	mod, Dominos = nil, nil
 
 end

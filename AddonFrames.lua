@@ -327,7 +327,7 @@ end
 local lodFrames = {
 	"Altoholic_Summary", "Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "AzCastBarOptions",
 	"Bagnon",
-	"DockingStation_Config", "Dominos_Config", "DoTimer_Options",
+	"DockingStation_Config", "DoTimer_Options",
 	"Enchantrix",
 	"GarrisonMissionManager", "GuildBankSearch",
 	"LilSparkysWorkshop", "Ludwig_Window",
