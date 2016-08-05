@@ -1,3 +1,11 @@
+b7.22345.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version number
+	Updated some more Localisations
+	Updated Ace3, Baggins, Mapster & MasterPlan skins
+
 b7.22345.0
 Jncl:
 	New tag as previous one didn't action creation of Zip file on Curse
