@@ -1156,13 +1156,6 @@ function aObj:GarrisonUI() -- LoD
 			-- Ability buttons
 			aObj:addButtonBorder{obj=ft.AbilitiesFrame.Abilities[i].IconButton}
 		end
-		--[[
-		for i = 1, #ft.AbilitiesFrame.Counters do
-			-- Counters buttons
-			ft.AbilitiesFrame.Counters[i].Border:SetTexture(nil)
-			aObj:addButtonBorder{obj=ft.AbilitiesFrame.Counters[i], relTo=ft.AbilitiesFrame.Counters[i].Icon}
-		end
-		--]]
 	end
 	local function skinFollowerTraitsAndEquipment(obj)
 
@@ -1182,7 +1175,10 @@ function aObj:GarrisonUI() -- LoD
 		end
 
 	end
-	local function skinCompleteDialog(frame)
+	local function skinCompleteDialog(frame, naval)
+
+		frame:SetSize(naval and 934 or 954, 630)
+		self:moveObject{obj=frame, x=4, y=2}
 
 		frame.BorderFrame:DisableDrawLayer("BACKGROUND")
 		frame.BorderFrame:DisableDrawLayer("BORDER")
@@ -1225,9 +1221,11 @@ function aObj:GarrisonUI() -- LoD
 	end
 	local function skinMissionComplete(obj, naval)
 
-        aObj:getRegion(obj:GetParent().MissionCompleteBackground, 1):SetTexture(0, 0, 0, 0.9) -- make background opaque
-        obj:GetParent().MissionCompleteBackground:SetSize(957, 657)
-        obj:GetParent().MissionCompleteBackground:SetPoint("topleft", obj:GetParent(), "topleft", 2, -3)
+		local mcb = obj:GetParent().MissionCompleteBackground
+        mcb:SetSize(naval and 952 or 953, 642)
+		aObj:moveObject{obj=mcb, x=4, y=2}
+		mcb = nil
+
         obj:DisableDrawLayer("BACKGROUND")
 		obj:DisableDrawLayer("BORDER")
 		obj:DisableDrawLayer("ARTWORK")
@@ -1402,11 +1400,6 @@ function aObj:GarrisonUI() -- LoD
 			addLineTex(btn, i)
 		end
 		btn = nil
-		--[[
-		for i = 1, #rp.Shipments do
-			aObj:removeRegions(rp.Shipments[i], {1, 3, 4})
-		end
-		--]]
 		-- tabs at top
 		rp.InProgress:GetNormalTexture():SetAlpha(0)
 		rp.Available:GetNormalTexture():SetAlpha(0)
@@ -1543,21 +1536,6 @@ function aObj:GarrisonUI() -- LoD
 				end
 			end
 		end
-		--[[
-		aObj:SecureHook("GarrisonMissionList_SetTab", function(tab)
-			-- handle tab textures
-			if aObj.isTT then
-				for i = 1, 2 do
-					if i == tab:GetID() then
-						aObj:setActiveTab(tab.sf)
-					else
-						aObj:setInactiveTab(ml["Tab" .. i].sf)
-					end
-				end
-			end
-
-		end)
-		--]]
 		aObj:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
 		local btn
 		for i = 1, #ml.listScroll.buttons do
@@ -1701,7 +1679,7 @@ function aObj:GarrisonUI() -- LoD
         ml.MapTexture:SetPoint("CENTER", ml, "CENTER", 1, -10)
 
 		-- Fog overlays
-		local function showCurrentMissions(ml)
+		local function showCurrentMissions()
 			local ml = _G.GarrisonShipyardFrame.MissionTab.MissionList
 			local fffl = ml.FogFrames[1]:GetFrameLevel()
 			for i = 1, #ml.missions do
@@ -1719,7 +1697,7 @@ function aObj:GarrisonUI() -- LoD
 		end)
 
 		-- CompleteDialog
-		skinCompleteDialog(ml.CompleteDialog)
+		skinCompleteDialog(ml.CompleteDialog, true)
 		ml = nil
 
 		-- MissionPage
