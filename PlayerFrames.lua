@@ -1106,9 +1106,9 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	eje.info.lootScroll.filter:DisableDrawLayer("BACKGROUND")
 	eje.info.lootScroll.filter:SetNormalTexture(nil)
 	eje.info.lootScroll.filter:SetPushedTexture(nil)
-	-- self:skinButton{obj=eje.info.lootScroll.filter}
+	self:skinButton{obj=eje.info.lootScroll.filter, x1=-11, y1=-2, x2=11, y2=2}
 	eje.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
-	self:skinButton{obj=eje.info.lootScroll.classClearFilter}
+	-- self:skinDropDown{obj=eje.info.lootScroll.lootFilter} -- DD already skinned
 	-- hook this to skin loot entries
 	self:SecureHook("EncounterJournal_LootUpdate", function()
 		local btn
@@ -2040,7 +2040,6 @@ function aObj:ObjectiveTracker()
 
 	self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(xp, money)
 		local rewardsFrame = _G.ObjectiveTrackerScenarioRewardsFrame
-		aObj:Debug("SOT_AR: [%s, %s]", xp, money)
 		rewardsFrame:DisableDrawLayer("ARTWORK")
 		rewardsFrame:DisableDrawLayer("BORDER")
 		local btn
