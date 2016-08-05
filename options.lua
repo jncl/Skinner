@@ -979,8 +979,8 @@ function aObj:Options()
 				},
 				FriendsFrame = {
 					type = "toggle",
-					name = self.L["Social Frame"],
-					desc = self.L["Toggle the skin of the Social Frame"],
+					name = self.L["Friends List Frame"],
+					desc = self.L["Toggle the skin of the Friends List Frame"],
 				},
 				GhostFrame = {
 					type = "toggle",
