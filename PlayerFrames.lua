@@ -1928,6 +1928,9 @@ function aObj:ObjectiveTracker()
 	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
+	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+	end)
 	-- called params: block, objectiveKey, text, lineType, useFullHeight, hideDash, colorStyle
 	-- self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddObjective", function(this, ...)
 	-- 	aObj:Debug("DOTM AddObjective: [%s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
@@ -1996,6 +1999,8 @@ function aObj:ObjectiveTracker()
 		end)
 		skinAutoPopUps()
 	end
+
+	-- ScenarioObjectiveBlock
 
 	-- ScenarioStageBlock
 	_G.ScenarioStageBlock.NormalBG:SetAlpha(0) -- N.B. Texture is changed
