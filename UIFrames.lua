@@ -54,7 +54,7 @@ function aObj:AlertFrames()
 	self.initialized.AlertFrames = true
 
 	-- hook this to stop gradient texture whiteout
-	self:RawHook(AlertFrame, "AddAlertFrame", function(this, frame)
+	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
 
 		-- aObj:Debug("AlertFrame AddAlertFrame: [%s, %s]", this, frame)
 
@@ -176,7 +176,6 @@ function aObj:AlertFrames()
 		frame.PortraitFrame.LevelBorder:SetTexture(nil)
 
 	end
-
 	local function skinLootUpgradeAlertFrame(frame)
 
 		-- move Icon draw layer, so it is visible (NewRecipe icon)
@@ -193,6 +192,18 @@ function aObj:AlertFrames()
 
 	end
 
+	local function skinInvasionAlertFrame(frame)
+
+		aObj:Debug("skinInvasionAlertFrame: [%s]", frame)
+		if not frame.sf then
+			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
+			aObj:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
+			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-8}
+			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.125, frame)
+		end
+
+	end
+
 	self:SecureHook("AlertFrame_StopOutAnimation", function(frame)
 		if frame.sf then frame.sf.tfade:SetGradientAlpha(self:getGradientInfo()) end
 		if frame.cb then frame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
@@ -203,91 +214,90 @@ function aObj:AlertFrames()
 		-- self.hooks.AlertFrame_ResumeOutAnimation(frame)
 	end, true)
 
-
 	-- called params: frame, challengeType, count, max
-	self:SecureHook(GuildChallengeAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GuildChallengeAlertSystem: [%s, %s]", frame, ...)
 		skinGuildChallengeAlertFrame(frame)
 	end)
 
-	self:SecureHook(DungeonCompletionAlertSystem, "setUpFunction", function(frame)
+	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame)
 		-- aObj:Debug("DungeonCompletionAlertSystem: [%s]", frame)
 		skinDCSAlertFrame{obj=frame, regs={2, 3, 4, 5, 6, 10}, ofs=0, y1=-7}
 	end)
 
-	self:SecureHook(ScenarioAlertSystem, "setUpFunction", function(frame)
-		-- aObj:Debug("ScenarioAlertSystem: [%s]", frame)
+	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame)
+		aObj:Debug("ScenarioAlertSystem: [%s]", frame)
 		skinDCSAlertFrame{obj=frame, regs={1, 3, 6}}
 	end)
 
 	-- this is currently fired for each quest completion (7.0.3)
-	self:SecureHook(InvasionAlertSystem, "setUpFunction", function(frame)
-		-- aObj:Debug("InvasionAlertSystem: [%s]", frame)
-	-- 	aObj:CustomPrint(1, 0, 0, "Function not implemented", "InvasionAlertSystem", frame)
+	self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame)
+		aObj:Debug("InvasionAlertSystem: [%s]", frame)
+		skinInvasionAlertFrame(frame)
 	end)
 
 	-- called params: frame, achievementID, alreadyEarned
-	self:SecureHook(AchievementAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.AchievementAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("AchievementAlertSystem: [%s, %s]", frame, ...)
 		skinAlertFrames(frame)
 	end)
 
 	--called params: frame, achievementID, criteriaString
-	self:SecureHook(CriteriaAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.CriteriaAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("CriteriaAlertSystem: [%s, %s]", frame, ...)
 		skinAlertFrames(frame)
 	end)
 
 	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal
-	self:SecureHook(LootAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
 		skinWonAlertFrames(frame)
 	end)
 
 	-- called parms: self, itemLink, quantity, specID, baseQuality
-	self:SecureHook(LootUpgradeAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s]", frame, ...)
 		skinLootUpgradeAlertFrame(frame)
 	end)
 
 	-- called params: self, amount
-	self:SecureHook(MoneyWonAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.MoneyWonAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("MoneyWonAlertSystem: [%s, %s]", frame, ...)
 		skinWonAlertFrames(frame)
 	end)
 
 	-- called params: frame, researchBranchID
-	self:SecureHook(DigsiteCompleteAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.DigsiteCompleteAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("DigsiteCompleteAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrames(frame)
 	end)
 
 	-- called params: frame, type, icon, name, payloadID
-	self:SecureHook(StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("AchievementAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrames(frame)
 	end)
 
 	-- called params: frame, name
-	self:SecureHook(GarrisonBuildingAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonBuildingAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrames(frame)
 	end)
 
 	-- called params: frame, missionID
-	self:SecureHook(GarrisonMissionAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.GarrisonMissionAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonMissionAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrames(frame)
 	end)
 
 	-- called params: frame, missionID
-	self:SecureHook(GarrisonShipMissionAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.GarrisonShipMissionAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonShipMissionAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrames(frame)
 	end)
 
 	-- called params: frame, missionID
-	self:SecureHook(GarrisonRandomMissionAlertSystem, "setUpFunction", function(...)
+	self:SecureHook(_G.GarrisonRandomMissionAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonRandomMissionAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrames(frame)
 	end)
@@ -298,40 +308,39 @@ function aObj:AlertFrames()
 	-- end)
 
 	-- called params: frame, followerID, name, level, quality, isUpgraded
-	self:SecureHook(GarrisonFollowerAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.GarrisonFollowerAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonFollowerAlertSystem: [%s, %s]", frame, ...)
 		skinGarrisonFollowerAlertFrame(frame)
 		skinCommonAlertFrames(frame)
 	end)
 
 	-- called params: frame, followerID, name, class, texPrefix, level, quality, isUpgraded
-	self:SecureHook(GarrisonShipFollowerAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.GarrisonShipFollowerAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonShipFollowerAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrames(frame)
 	end)
 
 	-- called params: frame, garrisonType
-	self:SecureHook(GarrisonTalentAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("GarrisonTalentAlertSystem: [%s, %s]", frame, ...)
+	self:SecureHook(_G.GarrisonTalentAlertSystem, "setUpFunction", function(frame, ...)
+		aObj:Debug("GarrisonTalentAlertSystem: [%s, %s]", frame, ...)
 		aObj:CustomPrint(1, 0, 0, "Function not implemented", "GarrisonTalentAlertSystem", frame, ...)
 	end)
 
 	-- called params: self, recipeID
-	self:SecureHook(NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
+	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("NewRecipeLearnedAlertSystem: [%s, %s]", frame, ...)
-		-- aObj:CustomPrint(1, 0, 0, "Function not implemented", "NewRecipeLearnedAlertSystem", frame, ...)
 		skinLootUpgradeAlertFrame(frame)
 	end)
 
 	-- called params: frame, questID, rewardItemLink
-	self:SecureHook(WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("WorldQuestCompleteAlertSystem: [%s, %s]", frame, ...)
+	self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, ...)
+		aObj:Debug("WorldQuestCompleteAlertSystem: [%s, %s]", frame, ...)
 		aObj:CustomPrint(1, 0, 0, "Function not implemented", "WorldQuestCompleteAlertSystem", frame, ...)
 	end)
 
 	-- called params: frame, itemLink
-	self:SecureHook(LegendaryItemAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("LegendaryItemAlertSystem: [%s, %s]", frame, ...)
+	self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, ...)
+		aObj:Debug("LegendaryItemAlertSystem: [%s, %s]", frame, ...)
 		aObj:CustomPrint(1, 0, 0, "Function not implemented", "LegendaryItemAlertSystem", frame, ...)
 	end)
 
@@ -1971,15 +1980,24 @@ function aObj:LevelUpDisplay()
 
 	_G.LevelUpDisplay:DisableDrawLayer("BACKGROUND")
 	-- sub frames
+	_G.LevelUpDisplay.scenarioFrame:DisableDrawLayer("BORDER")
 	_G.LevelUpDisplay.scenarioBits:DisableDrawLayer("BACKGROUND")
 	_G.LevelUpDisplay.scenarioBits:DisableDrawLayer("BORDER")
 	_G.LevelUpDisplay.scenarioFiligree:DisableDrawLayer("OVERLAY")
 	_G.LevelUpDisplay.challengeModeBits:DisableDrawLayer("BORDER")
 	_G.LevelUpDisplay.challengeModeBits.BottomFiligree:SetTexture(nil)
+	-- SpellBucketFrame ?
 
 	-- BossBanner, remove textures as Alpha values are changed
 	self:rmRegionsTex(_G.BossBanner, {1, 2, 3, 4, 5, 6, 10, 11, 12, 13,}) -- 7 is skull, 8 is loot, 9 is flash
-	-- TODO skin Boos Loot Frame(s)
+	-- skin Boss Loot Frame(s)
+	local frame
+	for i = 1, #_G.BossBanner.LootFrames do
+		frame = _G.BossBanner.LootFrames[i]
+		frame:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Count}}
+	end
+	frame = nil
 
 end
 
@@ -2391,7 +2409,6 @@ function aObj:MenuFrames()
 				self:skinDropDown{obj=child}
 			end
 		end
-		-- iTunes Remote
 		-- Keyboard Options
 	end
 
@@ -2400,6 +2417,7 @@ function aObj:MenuFrames()
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelPlayback, ft=ftype}
 	self:skinDropDown{obj=_G.AudioOptionsSoundPanelHardwareDropDown}
 	self:skinDropDown{obj=_G.AudioOptionsSoundPanelSoundChannelsDropDown}
+	self:skinDropDown{obj=_G.AudioOptionsSoundPanelSoundCacheSizeDropDown}
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelHardware, ft=ftype}
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelVolume, ft=ftype}
 	-- Voice
@@ -2869,6 +2887,7 @@ function aObj:NamePlates()
 		aObj:glazeStatusBar(nP.healthBar, 0, nP.healthBar.background, {nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction})
 		-- castBar
 		aObj:glazeStatusBar(nP.castBar, 0, nP.castBar.background)
+		-- TODO handle large size NamePlates
 		aObj:changeShield(nP.castBar.BorderShield, nP.castBar.Icon)
 
 		-- BuffFrame
@@ -2878,7 +2897,7 @@ function aObj:NamePlates()
 	end
 
 	-- skin any existing NamePlates
-	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+	for _, frame in pairs(_G.C_NamePlate.GetNamePlates()) do
 		aObj:Debug("NamePlates: [%s]", frame)
 		skinNamePlate(frame)
 	end
@@ -3251,6 +3270,7 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 
 	-- ScenarioFinder Frame
 	self:keepFontStrings(_G.ScenarioFinderFrame)
+	self:RaiseFrameLevelByThree(_G.ScenarioFinderFrame.NoScenariosCover) -- cover buttons and dropdown
 	self:removeInset(_G.ScenarioFinderFrame.Inset)
 
 	-- ScenarioQueueFrame
@@ -3332,7 +3352,7 @@ function aObj:QuestMap()
 		self:SecureHook("QuestLogQuests_Update", function(...)
 			local btn, tex
 			for i = 1, #_G.QuestMapFrame.QuestsFrame.Contents.Headers do
-				btn = QuestMapFrame.QuestsFrame.Contents.Headers[i]
+				btn = _G.QuestMapFrame.QuestsFrame.Contents.Headers[i]
 				tex = btn:GetNormalTexture()and btn:GetNormalTexture():GetTexture()
 				-- aObj:Debug("QuestLogQuests_Update: [%s, %s, %s, %s, %s]", i, btn, tex, tex:find("MinusButton"), tex:find("PlusButton"))
 				if tex
@@ -3381,6 +3401,7 @@ function aObj:RaidFrame()
 
 -->>-- RaidFinder Frame
 	self:keepRegions(_G.RaidFinderFrame, {})
+	self:RaiseFrameLevelByThree(_G.RaidFinderFrame.NoRaidsCover) -- cover buttons and dropdown
 	self:removeInset(_G.RaidFinderFrameRoleInset)
 	self:removeInset(_G.RaidFinderFrameBottomInset)
 	self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}
@@ -3475,10 +3496,18 @@ function aObj:TalkingHeadUI() --LoD
 	if not self.db.profile.TalkingHeadUI or self.initialized.TalkingHeadUI then return end
 	self.initialized.TalkingHeadUI = true
 
-	_G.TalkingHeadFrame.TextBackground:SetTexture(nil)
-	-- .PortraitFrame.Portrait
-	-- .MainFrame.PortraitBg
-	-- .MainFrame.Overlay:DisableDrawLayer("OVERLAY")
+	-- skin frame
+	_G.TalkingHeadFrame.BackgroundFrame.TextBackground:SetTexture(nil)
+	_G.TalkingHeadFrame.PortraitFrame.Portrait:SetTexture(nil)
+	_G.TalkingHeadFrame.MainFrame.Model.PortraitBg:SetTexture(nil)
+	self:addSkinFrame{obj=_G.TalkingHeadFrame, ft=ftype, nb=true, aso={bd=11, ng=true}, ofs=-15, y2=14}
+	_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .25)
+
+	-- TODO skin the close button properly, currently the textures have been removed so it is not displayed
+	_G.TalkingHeadFrame.MainFrame.CloseButton:GetNormalTexture():SetTexture(nil)
+	_G.TalkingHeadFrame.MainFrame.CloseButton:GetPushedTexture():SetTexture(nil)
+	_G.TalkingHeadFrame.MainFrame.CloseButton:GetDisabledTexture():SetTexture(nil)
+	_G.TalkingHeadFrame.MainFrame.CloseButton:GetHighlightTexture():SetTexture(nil)
 
 end
 
@@ -3707,7 +3736,7 @@ function aObj:WorldState()
         bar.texH:SetPoint("LEFT", bar, "RIGHT", -26, 0)
     end
     self:SecureHook(_G.ExtendedUI["CAPTUREPOINT"], "create", function(id)
-        print("CAPTUREPOINT create", id)
+        -- aObj:Debug("CAPTUREPOINT create: [%s]", id)
         skinCaptureBar(id)
     end)
     -- skin any existing frames
@@ -3738,7 +3767,7 @@ function aObj:ZoneAbility()
 	if not self.db.profile.ZoneAbility or self.initialized.ZoneAbility then return end
 	self.initialized.ZoneAbility = true
 
-	_G.ZoneAbilityFrame.SpellButton.Style:SetTexture(nil)
+	_G.ZoneAbilityFrame.SpellButton.Style:SetAlpha(0) -- texture is changed
 	_G.ZoneAbilityFrame.SpellButton:SetNormalTexture(nil)
 	self:addButtonBorder{obj=_G.ZoneAbilityFrame.SpellButton, ofs=2}
 
