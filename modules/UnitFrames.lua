@@ -3,7 +3,7 @@ local _G = _G
 local ftype = "p"
 local module = aObj:NewModule("UnitFrames", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
-local db, aso
+local db
 local defaults = {
 	profile = {
 		alpha = 0.25,
@@ -55,35 +55,22 @@ local function adjustStatusBarPosn(sBar, yAdj)
 end
 local function addBackground(opts)
 
-	opts.obj.sb = _G.CreateFrame("Button", nil, opts.obj, "SecureUnitButtonTemplate")
-	opts.obj.sb:SetAllPoints(opts.obj)
-	-- adjust frame levels so skin button is behind
-	_G.RaiseFrameLevelByTwo(opts.obj)
-	opts.obj.sb:SetFrameLevel(opts.obj:GetFrameLevel() - 1)
-	-- create background texture
-	opts.obj.sb.bg = opts.obj.sb:CreateTexture(nil, "OVERLAY")
-	-- opts.obj.sb.bg = opts.obj.sb:CreateTexture(nil, "BACKGROUND")
-	local r, g, b = _G.unpack(aObj.bColour)
-	opts.obj.sb.bg:SetTexture(r, g, b, db.alpha)
-	r, g, b = nil ,nil, nil
-
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
 	local xOfs1 = opts.x1 or opts.ofs * -1
 	local yOfs1 = opts.y1 or opts.ofs
 	local xOfs2 = opts.x2 or opts.ofs
 	local yOfs2 = opts.y2 or opts.ofs * -1
-	-- position texture
-	opts.obj.sb.bg:ClearAllPoints()
-	opts.obj.sb.bg:SetPoint("TOPLEFT", opts.obj.sb, "TOPLEFT", xOfs1, yOfs1)
-	opts.obj.sb.bg:SetPoint("BOTTOMRIGHT", opts.obj.sb, "BOTTOMRIGHT", xOfs2, yOfs2)
-	xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil
+	aObj:addSkinFrame{obj=opts.obj, ft=ftype, aso={bd=11, ng=true}, sec=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=y2Ofs}
+	opts.obj.sf:SetBackdropColor(.4, .4, .4, db.alpha)
+
 
 end
 local function fixThreat(tex, xOfs, yOfs)
 
 	tex:ClearAllPoints()
-	tex:SetAllPoints(tex:GetParent().sb.bg)
+	tex:SetAllPoints(tex:GetParent().sf)
+	-- tex:SetAllPoints(tex:GetParent().sb.bg)
 	tex:SetSize(xOfs, yOfs)
 	aObj:changeRecTex(tex, true, true)
 	-- stop changes to texture
@@ -158,6 +145,7 @@ local function skinPlayerF()
 
 		end
 
+		local y2Ofs
 		--	skin the RuneFrame, if required
 		if aObj.uCls == "DEATHKNIGHT" then
 			for i = 1, 7 do
@@ -188,7 +176,7 @@ local function skinPlayerF()
 			module:SecureHook(_G.MonkPowerBar, "UpdateMaxPower", function(this)
 				if this.maxLight == 5 then
 					_G.MonkHarmonyBarFrame.LightEnergy[5]:DisableDrawLayer("BACKGROUND")
-					self:Unhook(_G.MonkPowerBar, "UpdateMaxPower")
+					aObj:Unhook(_G.MonkPowerBar, "UpdateMaxPower")
 				end
 			end)
 			-- MonkStaggerBar (Brewmaster)
@@ -235,7 +223,7 @@ local function skinPlayerF()
 				aObj:getRegion(aObj:getChild(_G["TotemFrameTotem" .. i], 2), 1):SetAlpha(0) -- Totem Border texture
 			end
 			aObj:moveObject{obj=_G.TotemFrameTotem1, y=lOfs} -- covers level text when active
-			local y2Ofs = 9
+			y2Ofs = 9
 		end
 
 		-- skin the WarlockPowerFrame, if required
@@ -246,7 +234,8 @@ local function skinPlayerF()
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
-		addBackground{obj=_G.PlayerFrame, x1=40, y1=-10, y2=y2Ofs}
+		addBackground{obj=_G.PlayerFrame, x1=35, y1=-5, x2=2, y2=y2Ofs}
+		-- addBackground{obj=_G.PlayerFrame, x1=40, y1=-10, y2=y2Ofs}
 		fixThreat(_G.PlayerFrameFlash, 232, 100)
 
 		pF = nil
@@ -266,11 +255,14 @@ local function skinPetF()
 		aObj:glazeStatusBar(_G.PetFrameHealthBar, 0)
 		adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 		aObj:glazeStatusBar(_G.PetFrameManaBar, 0)
+		_G.PetFrameManaBar.SetStatusBarTexture = function() end -- stop texture being changed
 		-- casting bar handled in CastingBar function (UIE1)
 		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
 		-- skin the PetFrame
-		addBackground{obj=_G.PetFrame, x1=5, y1=-2, x2=-4, y2=6}
+		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to ARTWORK layer, so it is displayed
+		addBackground{obj=_G.PetFrame, x1=1}
+		-- addBackground{obj=_G.PetFrame, x1=5, y1=-2, x2=-4, y2=6}
 		fixThreat(_G.PetFrameFlash, 128, 53)
 		-- remove debuff border
 		for i = 1, 4 do
@@ -308,6 +300,7 @@ local function skinCommon(frame, adjSB)
 	end
 	aObj:glazeStatusBar(fo.manabar, 0, nil)
 	fo.manabar.SetStatusBarTexture = function() end -- stop texture being changed
+	fo = nil
 
 end
 local function skinUFrame(frame)
@@ -318,7 +311,8 @@ local function skinUFrame(frame)
 	if isBoss then
 		xOfs1, yOfs1, xOfs2, yOfs2 = -1, -14, -72, 5
 	else
-		xOfs1, yOfs1, xOfs2, yOfs2 = nil, -10, -41, 9
+		xOfs1, yOfs1, xOfs2, yOfs2 = -2, -5, -35, 0
+		-- xOfs1, yOfs1, xOfs2, yOfs2 = nil, -10, -41, 9
 	end
 	addBackground{obj=fo, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	skinCommon(frame, true)
@@ -346,12 +340,12 @@ local function skinUFrame(frame)
 	-- Boss frames don't have a ToT frame
 	if not isBoss then
 		-- TargetofTarget Frame
-		addBackground{obj=fo.totFrame}
+		addBackground{obj=fo.totFrame, x2=4, y2=4}
 		skinCommon(frame .. "ToT", true)
 		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 	end
 
-	fo, xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil, nil
+	fo, isBoss, xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil, nil, nil
 
 end
 local function skinTargetF()
@@ -419,7 +413,7 @@ local function skinPartyF()
 	and not isSkinned["Party"]
 	then
 
-		local pMF
+		local pMF, pPF
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			pMF = "PartyMemberFrame" .. i
 			addBackground{obj=_G[pMF], x1=2, y1=5, x2=-1}
@@ -461,31 +455,32 @@ local function skinPartyF()
 end
 local function changeUFOpacity()
 
-	local r, g, b = _G.unpack(aObj.bColour)
-
 	for _, uF in _G.pairs(unitFrames) do
-		if _G[uF].sb.bg then
-			_G[uF].sb.bg:SetTexture(r, g, b, db.alpha)
+		if _G[uF].sf then
+			_G[uF].sf:SetAlpha(db.alpha)
 		end
-	end
-	for i = 1, _G.MAX_PARTY_MEMBERS do
-		if _G["PartyMemberFrame" .. i].sb.bg then
-			_G["PartyMemberFrame" .. i].sb.bg:SetTexture(r, g, b, db.alpha)
-			_G["PartyMemberFrame" .. i .. "PetFrame"].sb.bg:SetTexture(r, g, b, db.alpha)
+		if _G[uF].totFrame then
+			_G[uF].totFrame.sf:SetAlpha(db.alpha)
 		end
 	end
 	for i = 1, _G.MAX_BOSS_FRAMES do
-		if _G["Boss" .. i .. "TargetFrame"].sb.bg then
-			_G["Boss" .. i .. "TargetFrame"].sb.bg:SetTexture(r, g, b, db.alpha)
+		if _G["Boss" .. i .. "TargetFrame"].sf then
+			_G["Boss" .. i .. "TargetFrame"].sf:SetAlpha(db.alpha)
 		end
 	end
+	for i = 1, _G.MAX_PARTY_MEMBERS do
+		if _G["PartyMemberFrame" .. i].sf then
+			_G["PartyMemberFrame" .. i].sf:SetAlpha(db.alpha)
+			_G["PartyMemberFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
+		end
+	end
+	_G.PartyMemberBuffTooltip.sf:SetAlpha(db.alpha)
 	for i = 1, _G.MAX_ARENA_ENEMIES do
-		if _G["ArenaEnemyFrame" .. i].sb.bg then
-			_G["ArenaEnemyFrame" .. i].sb.bg:SetTexture(r, g, b, db.alpha)
-			_G["ArenaEnemyFrame" .. i .. "PetFrame"].sb.bg:SetTexture(r, g, b, db.alpha)
+		if _G["ArenaEnemyFrame" .. i].sf then
+			_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
+			_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
 		end
 	end
-	r, g, b = nil, nil, nil
 
 end
 
@@ -520,16 +515,13 @@ function module:OnInitialize()
 		self:Disable()
 	end
 
-	-- setup default applySkin options
-	aso = {ba=db.alpha, bba=0, ng=true}
-
 end
 
 function module:OnEnable()
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
-		aObj:add2Table(aObj.oocTab, {adjustUnitFrames, {"init"}})
+		aObj:add2Table(aObj.oocTab, {self.adjustUnitFrames, {"init"}})
 		return
 	else
 		self:adjustUnitFrames("init")
