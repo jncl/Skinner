@@ -979,6 +979,8 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	_G.EncounterJournal.navBar:DisableDrawLayer("BACKGROUND")
 	_G.EncounterJournal.navBar:DisableDrawLayer("BORDER")
 	_G.EncounterJournal.navBar.overlay:DisableDrawLayer("OVERLAY")
+	_G.EncounterJournal.navBar.overflow:GetNormalTexture():SetAlpha(0)
+	_G.EncounterJournal.navBar.overflow:GetPushedTexture():SetAlpha(0)
 	_G.EncounterJournal.navBar.home:DisableDrawLayer("OVERLAY")
 	_G.EncounterJournal.navBar.home:GetNormalTexture():SetAlpha(0)
 	_G.EncounterJournal.navBar.home:GetPushedTexture():SetAlpha(0)
@@ -1952,10 +1954,8 @@ function aObj:ObjectiveTracker()
 	_G.ObjectiveTrackerBonusRewardsFrame.RewardsShadow:SetTexture(nil)
 	self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
 		local rewardsFrame = block.module.rewardsFrame
-		aObj:Debug("BOT_AR: [%s, %s]", block, rewardsFrame.id)
+		-- aObj:Debug("BOT_AR: [%s, %s]", block, rewardsFrame.id)
 		local btn
-		-- for i = 1, #_G.ObjectiveTrackerBonusRewardsFrame.Rewards do
-		-- 	btn = _G.ObjectiveTrackerBonusRewardsFrame.Rewards[i]
 		for i = 1, #rewardsFrame.Rewards do
 			btn = rewardsFrame.Rewards[i]
 			self:addButtonBorder{obj=btn, relTo=btn.ItemIcon, reParent={btn.Count}}
@@ -2641,7 +2641,7 @@ function aObj:TradeSkillUI() -- LoD
 	for i = 1, #_G.TradeSkillFrame.DetailsFrame.Contents.Reagents do
 		btn = _G.TradeSkillFrame.DetailsFrame.Contents.Reagents[i]
 		btn.NameFrame:SetTexture(nil)
-		self:addButtonBorder{obj=btn, relTo=btn.Icon}
+		self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
 	end
 	btn = nil
 
