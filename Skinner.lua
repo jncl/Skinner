@@ -195,6 +195,11 @@ function aObj:OnInitialize()
 	-- this backdrop has no background
 	self.Backdrop[10] = CopyTable(self.backdrop)
 	self.Backdrop[10].bgFile = nil
+	-- this backdrop has no border
+	self.Backdrop[11] = CopyTable(self.backdrop)
+	self.Backdrop[11].edgeFile = nil
+	self.Backdrop[11].edgeSize = 0
+
 	-- setup background texture
 	if prdb.BgUseTex then
 		if prdb.BgFile and prdb.BgFile ~= "None" then
@@ -623,7 +628,8 @@ local function __addSkinFrame(opts)
 	opts.aso.obj = skinFrame
 
 	-- handle no Border, if required
-	if opts.noBdr then opts.aso.bba = 0 end
+	if opts.noBdr then opts.aso.bd = 11 end
+	-- if opts.noBdr then opts.aso.bba = 0 end
 
 	-- skin the frame using supplied options
 	aObj:applySkin(opts.aso)
