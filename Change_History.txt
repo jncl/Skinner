@@ -1,3 +1,12 @@
+b7.22345.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update EncounterJournal skin
+	Update GarrisonUI & GarrisonShipyardUI Mission Complete Dialog
+	Bugfix for missing localisations
+	Updated Dominos skin
+
 b7.22345.1
 Jncl:
 	ToDo.txt
