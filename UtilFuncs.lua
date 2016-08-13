@@ -69,7 +69,7 @@ end
 local function getObjFromString(input)
     -- first split the string on "."
     local words = {}
-    for w in string.gmatch(input, "%a+") do
+    for w in _G.string.gmatch(input, "%a+") do
         words[#words + 1] = w
     end
     -- then build string in the form _G["str1"]["str2"]...["strn"]
@@ -79,7 +79,7 @@ local function getObjFromString(input)
     end
     -- finally use loadstring to get the object from the command
     -- print("getObjFromString", input, objString)
-    return assert(loadstring("return " .. objString)())
+    return assert(_G.loadstring("return " .. objString)())
 end
 function aObj:SetupCmds()
 
@@ -495,7 +495,7 @@ function aObj:hasTextInTexture(obj, text, plain)
 	assert(text, "Missing value hasTextInTexture\n" .. debugstack())
 --@end-alpha@
 
-	return obj and obj.GetTexture and obj:GetTexture() and tostring(obj:GetTexture()):find(text, 1, plain) and true
+	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, plain) and true
 
 end
 
@@ -694,6 +694,12 @@ function aObj:RGBPercToHex(r, g, b)
 	b = b <= 1 and b >= 0 and b or 0
 
 	return ("%02x%02x%02x"):format(r*255, g*255, b*255)
+
+end
+
+function aObj:RaiseFrameLevelByThree(frame)
+
+	frame:SetFrameLevel(frame:GetFrameLevel() + 3)
 
 end
 
