@@ -353,8 +353,8 @@ function module:isButton(obj)
 		elseif oH == 54 then
 			bType = "help"
 		end
+		oW, oH, nR = nil, nil, nil
 	end
-	oW, oH, nR = nil, nil, nil
 
 	return bType
 
