@@ -84,7 +84,7 @@ x			- MixinUtil
 ?			- WorldMapActionButton
 √			- ZoneAbility
 		- Issues
-?			- 8x Skinner\NPCFrames.lua:266: attempt to index local 'tex' (a number value)
+√			- 8x Skinner\NPCFrames.lua:266: attempt to index local 'tex' (a number value)
 ?			- PartyMemberFrame1:Show() error
 ?			- PartyMemberPetFrame4:Hide() error
 ?			- TargetFrame_Update error when self:Hide() is called
@@ -103,4 +103,6 @@ x			- MixinUtil
 	I	- Garrison Mission UI
 ?		- Active Missions Tab has a border when it shouldn't (not all the time)
 
-√	N Dominos, reported by txamethyst, 04.08.16
+	I	Baggins, reported by Shimiya, 07.08.16
+√		- Baggins borders still not colored
+√		- Class coloured borders apply same color on all classes (depend on which class i unthick/re-thick the option, it keeps this color on all classes)
