@@ -7,18 +7,12 @@ function aObj:Baggins()
 
 	-- check for Ace3 version
 	local Baggins = _G.LibStub("AceAddon-3.0"):GetAddon("Baggins", true)
-
-	-- setup default colours
-	if not self.db.profile.BagginsBBC then
-		local c = self.db.profile.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or self.db.profile.TooltipBorder
-
-		self.db.profile.BagginsBBC = {r = c.r, g = c.g, b = c.b, a = c.a}
-	end
+	local c = self.db.profile.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or self.db.profile.BagginsBBC
 
 	local function skinBag(id, frame)
 		aObj:addSkinFrame{obj=frame, y1=-3, x2=-3}
 		if Baggins.db.profile.bags[id].isBank then
-			frame.sf:SetBackdropColor(aObj.db.profile.BagginsBBC.r, aObj.db.profile.BagginsBBC.g, aObj.db.profile.BagginsBBC.b, aObj.db.profile.BagginsBBC.a)
+			frame.sf:SetBackdropColor(c.r, c.g, c.b, aObj.db.profile.BagginsBBC.a)
 		end
 		frame.SetBackdrop = function() end
 		frame.SetBackdropColor = function() end

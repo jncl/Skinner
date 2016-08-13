@@ -37,7 +37,7 @@ function aObj:Defaults()
 		BgTile               = false,
 	-->>-- Colours
 		ClassColour          = false,
-		ClassClrsBg          = false,
+		ClassClrBg           = false,
 		TooltipBorder        = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		BackdropBorder       = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		Backdrop             = {r = 0, g = 0, b = 0, a = 0.9},
@@ -46,6 +46,7 @@ function aObj:Defaults()
 		IgnoredText          = {r = 0.5, g = 0.5, b = 0.0},
 		GradientMin          = {r = 0.1, g = 0.1, b = 0.1, a = 0},
 		GradientMax          = {r = 0.25, g = 0.25, b = 0.25, a = 1},
+		BagginsBBC	         = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 	-->>-- Gradient
 		Gradient             = {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Blizzard ChatFrame Background"},
 	-->>-- Modules
@@ -189,6 +190,7 @@ function aObj:Options()
 
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
+	local bggns = IsAddOnLoaded("Baggins") and self.Baggins and true or false
 
 	self.optTables = {
 
@@ -503,7 +505,7 @@ function aObj:Options()
 			name = self.L["Default Colours"],
 			get = function(info)
 				if info[#info] == "ClassColour"
-				or info[#info] == "ClassClrsBg"
+				or info[#info] == "ClassClrBg"
 				then
 					return db[info[#info]]
 				else
@@ -521,6 +523,11 @@ function aObj:Options()
 						db.BackdropBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
 						db.BackdropBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
 						db.BackdropBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						if bggns then
+							db.BagginsBBC.r = _G.RAID_CLASS_COLORS[self.uCls].r
+							db.BagginsBBC.g = _G.RAID_CLASS_COLORS[self.uCls].g
+							db.BagginsBBC.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						end
 					else
 						db.TooltipBorder.r = dflts.TooltipBorder.r
 						db.TooltipBorder.g = dflts.TooltipBorder.g
@@ -528,8 +535,13 @@ function aObj:Options()
 						db.BackdropBorder.r = dflts.BackdropBorder.r
 						db.BackdropBorder.g = dflts.BackdropBorder.g
 						db.BackdropBorder.b = dflts.BackdropBorder.b
+						if bggns then
+							db.BagginsBBC.r = dflts.BackdropBorder.r
+							db.BagginsBBC.g = dflts.BackdropBorder.g
+							db.BagginsBBC.b = dflts.BackdropBorder.b
+						end
 					end
-				elseif info[#info] == "ClassClrsBg" then
+				elseif info[#info] == "ClassClrBg" then
 					db[info[#info]] = r
 					if r then
 						db.Backdrop.r = _G.RAID_CLASS_COLORS[self.uCls].r
@@ -553,7 +565,7 @@ function aObj:Options()
 					name = self.L["Class Coloured Border"],
 					desc = self.L["Use Class Colour for Border"],
 				},
-				ClassClrsBg = {
+				ClassClrBg = {
 					type = "toggle",
 					order = 2,
 					width = "double",
