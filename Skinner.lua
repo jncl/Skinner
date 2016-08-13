@@ -212,7 +212,7 @@ function aObj:OnInitialize()
 	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
 
 	-- TooltipBorder colours
-	c = prdb.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
+	c = prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
 	self.tbColour = {c.r, c.g, c.b, c.a or 1}
 	-- StatusBar colours
 	c = prdb.StatusBar
@@ -223,7 +223,7 @@ function aObj:OnInitialize()
 	c = prdb.ClassClrsBg and _G.RAID_CLASS_COLORS[self.uCls] or prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or 1}
 	-- BackdropBorder colours
-	c = prdb.ClassColours and _G.RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
+	c = prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
 	self.bbColour = {c.r, c.g, c.b, c.a or 1}
 	-- Inactive Tab & DropDowns texture
 	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
