@@ -1692,22 +1692,6 @@ function aObj:LootFrames()
 	if not self.db.profile.LootFrames.skin or self.initialized.LootFrames then return end
 	self.initialized.LootFrames = true
 
-	-- Add another loot button and move them all up to fit if FramesResized isn't loaded
-	if not _G.IsAddOnLoaded("FramesResized") then
-		local yOfs, btn = -27
-		for i = 1, _G.LOOTFRAME_NUMBUTTONS do
-			btn = _G["LootButton" .. i]
-			btn:ClearAllPoints()
-			btn:SetPoint("TOPLEFT", 9, yOfs)
-			yOfs = yOfs - 41
-		end
-		_G.CreateFrame("Button", "LootButton5", _G.LootFrame, "LootButtonTemplate")
-		_G.LootButton5:SetPoint("TOPLEFT", 9, yOfs)
-		_G.LootButton5.id = 5
-		_G.LOOTFRAME_NUMBUTTONS = 5
-		yOfs = nil
-	end
-
 	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 		_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
 	end
@@ -1768,13 +1752,6 @@ function aObj:LootFrames()
 	self:addButtonBorder{obj=_G.BonusRollFrame.PromptFrame, relTo=_G.BonusRollFrame.PromptFrame.Icon, reParent={_G.BonusRollFrame.SpecIcon}}
 
 	-- N.B. BonusRollLootWonFrame & BonusRollMoneyWonFrame are managed as part of the Alert Frames skin
-
--->>-- MissingLoot frame
---	self:addSkinFrame{obj=_G.MissingLootFrame, ft=ftype, kfs=true, x1=0, y1=-4, x2=-4, y2=-5}
---	for i = 1, _G.MissingLootFrame.numShownItems do
---		_G["MissingLootFrameItem" .. i .. "NameFrame"]:SetAlpha(0)
---		self:addButtonBorder{obj=_G["MissingLootFrameItem" .. i], ibt=true}
---	end
 
 -->>-- MasterLooter Frame
 	_G.MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)

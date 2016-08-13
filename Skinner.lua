@@ -117,7 +117,6 @@ function aObj:OnInitialize()
 	-- Frame multipliers (still used in older skins)
 	self.FxMult, self.FyMult = 0.9, 0.87
 	-- EditBox regions to keep
---	self.ebRgns = {1, 2, 3, 4, 5} -- 1 is text, 2-5 are textures
 	self.ebRgns = {1, 2} -- 1 is text, 2 is a texture
 
 	-- Gradient settings
@@ -1041,9 +1040,6 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 			sbG[#sbG + 1] = tex
 		end
 	end
-
-	-- move spark up
-	if statusBar.spark then self:moveObject{obj=statusBar.spark, y=2} end
 
 end
 
