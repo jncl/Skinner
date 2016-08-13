@@ -522,7 +522,7 @@ function aObj:CharacterFrames()
 	self:skinScrollBar{obj=_G.ReputationListScrollFrame}
 
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-		obj = "ReputationBar" .. i
+		local obj = "ReputationBar" .. i
 		self:skinButton{obj=_G[obj .. "ExpandOrCollapseButton"], mp=true} -- treat as just a texture
 		_G[obj .. "Background"]:SetAlpha(0)
 		_G[obj .. "ReputationBarLeftTexture"]:SetAlpha(0)
@@ -530,6 +530,7 @@ function aObj:CharacterFrames()
 		self:glazeStatusBar(_G[obj .. "ReputationBar"], 0)
 		-- N.B. Issue with faction standing text, after rep line 3 the text moves down with respect to the status bar
 		-- self:moveObject{obj=_G[obj .. "ReputationBarFactionStanding"], y=2}
+		obj = nil
 	end
 
 	self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
@@ -1264,9 +1265,9 @@ function aObj:FriendsFrame()
 	self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
 
 	-- RecruitAFriendFrame
-	self:skinEditBox{obj=RecruitAFriendNameEditBox, regs={6}} -- 6 is text
-	self:addSkinFrame{obj=RecruitAFriendNoteFrame, ft=ftype, kfs=true}
-	self:addSkinFrame{obj=RecruitAFriendFrame, ft=ftype, kfs=true, ofs=-6, y1=-7}
+	self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
+	self:addSkinFrame{obj=_G.RecruitAFriendNoteFrame, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=_G.RecruitAFriendFrame, ft=ftype, kfs=true, ofs=-6, y1=-7}
 
 	-- FriendsList Frame
 	-- adjust width of FFFSF so it looks right (too thin by default)
@@ -2605,6 +2606,7 @@ function aObj:TradeSkillUI() -- LoD
 	end
 	if aObj.isTT then
 		local function changeTabTex(frame)
+			local tab
 			for i = 1, frame.numTabs do
 				tab = frame.Tabs[i]
 				if i == frame.selectedTab then
@@ -2613,6 +2615,7 @@ function aObj:TradeSkillUI() -- LoD
 					aObj:setInactiveTab(tab.sf)
 				end
 			end
+			tab = nil
 		end
 		self:SecureHook(_G.TradeSkillFrame.RecipeList, "OnLearnedTabClicked", function(this)
 			changeTabTex(this)
@@ -2624,9 +2627,9 @@ function aObj:TradeSkillUI() -- LoD
 	skinTabs(_G.TradeSkillFrame.RecipeList)
 	self:skinSlider{obj=self:getChild(_G.TradeSkillFrame.RecipeList, 4), adj=-4, size=3} -- unamed slider object
 
+	local btn
 --[[
 	-- N.B. can't replace mp textures with buttons as the textures are embedded in the list
-	local btn
 	for i = 1, #_G.TradeSkillFrame.RecipeList.buttons do
 		btn = _G.TradeSkillFrame.RecipeList.buttons[i]
 		self:skinButton{obj=btn, mp=true}
