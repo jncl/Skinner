@@ -3528,7 +3528,7 @@ function aObj:TalkingHeadUI() --LoD
 	_G.TalkingHeadFrame.PortraitFrame.Portrait:SetTexture(nil)
 	_G.TalkingHeadFrame.MainFrame.Model.PortraitBg:SetTexture(nil)
 	self:addSkinFrame{obj=_G.TalkingHeadFrame, ft=ftype, nb=true, aso={bd=11, ng=true}, ofs=-15, y2=14}
-	_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .25)
+	_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
 
 	-- TODO skin the close button properly, currently the textures have been removed so it is not displayed
 	_G.TalkingHeadFrame.MainFrame.CloseButton:GetNormalTexture():SetTexture(nil)
