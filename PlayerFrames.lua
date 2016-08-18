@@ -52,8 +52,11 @@ function aObj:AchievementUI() -- LoD
 	end
 	local function skinCategories()
 
-		for i = 1, #_G.AchievementFrameCategoriesContainer.buttons do
-			_G.AchievementFrameCategoriesContainer.buttons[i].background:SetAlpha(0)
+		-- handle case where buttons don't exist
+		if _G.AchievementFrameCategoriesContainer.buttons then
+			for i = 1, #_G.AchievementFrameCategoriesContainer.buttons do
+				_G.AchievementFrameCategoriesContainer.buttons[i].background:SetAlpha(0)
+			end
 		end
 
 	end
@@ -165,7 +168,7 @@ function aObj:AchievementUI() -- LoD
 
 -->>-- Categories Panel (on the Left)
 	self:skinSlider{obj=_G.AchievementFrameCategoriesContainerScrollBar, adj=-4}
-	self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y2=-2}
+	self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y1=1}
 	self:SecureHook("AchievementFrameCategories_Update", function()
 		skinCategories()
 	end)
@@ -216,7 +219,7 @@ function aObj:AchievementUI() -- LoD
 	self:keepFontStrings(_G.AchievementFrameStats)
 	self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, adj=-4}
 	_G.AchievementFrameStatsBG:SetAlpha(0)
-	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}}
+	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=1}
 	-- hook this to skin buttons
 	self:SecureHook("AchievementFrameStats_Update", function()
 		skinStats()
@@ -226,6 +229,7 @@ function aObj:AchievementUI() -- LoD
 -->>-- Summary Panel
 	self:keepFontStrings(_G.AchievementFrameSummary)
 	_G.AchievementFrameSummaryBackground:SetAlpha(0)
+	_G.AchievementFrameSummaryAchievementsEmptyText:SetText() -- remove 'No recently completed Achievements' text
 	_G.AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
 	self:skinSlider(_G.AchievementFrameAchievementsContainerScrollBar)
 	-- remove textures etc from buttons
