@@ -1914,6 +1914,7 @@ function aObj:ObjectiveTracker()
 
 	-- skin timerBar(s) & progressBar(s)
 	local function skinBar(bar)
+
 		if not aObj.sbGlazed[bar.Bar] then
 			if bar.Bar.BorderLeft then
 				bar.Bar.BorderLeft:SetTexture(nil)
@@ -1928,6 +1929,7 @@ function aObj:ObjectiveTracker()
 				aObj:glazeStatusBar(bar.Bar, 0,  bar.BarBG)
 			end
 		end
+
 	end
 	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
 		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
@@ -1987,7 +1989,9 @@ function aObj:ObjectiveTracker()
 				if questTitle and questTitle ~= "" then
 					block = _G.AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(questID)
 					obj = block.ScrollChild
-					if obj and not obj.sknd then
+					if obj
+					and not obj.sf
+					then
 						for k, reg in ipairs{obj:GetRegions()} do
 							if k < 11 or k > 17 then reg:SetTexture(nil) end -- Animated textures
 							if k == 13 then reg:SetTexture(nil) end -- IconBadgeBorder

@@ -199,7 +199,6 @@ local function setupQuestDisplayColours()
 	_G.NORMAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.HTr, aObj.HTg, aObj.HTb) .. "%s|r"
 	_G.TRIVIAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.BTr, aObj.BTg, aObj.BTb) .. "%s (low level)|r"
 	_G.IGNORED_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.ITr, aObj.ITg, aObj.ITb) .. "%s (ignored)|r"
-	QTHex = nil
 
 end
 function aObj:GossipFrame()
