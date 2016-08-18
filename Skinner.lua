@@ -954,7 +954,7 @@ function aObj:adjWidth(...)
 
 end
 
-function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
+function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
 --@alpha@
 	assert(statusBar, "Missing object __gSB\n" .. debugstack())
 	assert(statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack())
@@ -993,6 +993,12 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex)
 			tex:SetVertexColor(unpack(self.sbColour))
 			sbG[#sbG + 1] = tex
 		end
+	end
+
+	if hookFunc then
+		self:RawHook(statusBar, "SetStatusBarTexture", function(this, tex)
+			self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
+		end, true)
 	end
 
 end
