@@ -15,7 +15,7 @@ local defaults = {
 
 do
 	-- characters used on buttons
-	module.mult = "×"
+	module.mult = "×" -- multiplication sign NOT lower case X
 	module.plus = "+"
 	module.minus = "-" -- using Hyphen-minus(-) instead of minus sign(−) for font compatiblity reasons
 	-- create font to use for Close Buttons
@@ -146,7 +146,8 @@ function module:skinButton(opts)
 
 	-- remove textures
 	if opts.obj.Left -- UIPanelButtonTemplate and derivatives (MoP)
-	or opts.obj.leftArrow -- UIMenuButtonStretchTemplate (MoP)
+	-- or opts.obj.leftArrow -- UIMenuButtonStretchTemplate (MoP)
+	or opts.obj.TopLeft -- UIMenuButtonStretchTemplate (WoD/Legion)
 	then
 		opts.obj:DisableDrawLayer("BACKGROUND")
 	elseif opts.obj.left then -- ARL & Collectinator
