@@ -4,6 +4,8 @@ local _G = _G
 
 function aObj:Skada()
 
+	-- TODO make Skin frame fit window
+
 	local function changeSettings(db)
 
 		db.barcolor = _G.CopyTable(aObj.db.profile.StatusBar)
@@ -12,17 +14,20 @@ function aObj:Skada()
 		-- background settings
 		db.background.texture = aObj.db.profile.BdTexture
 		db.background.margin = aObj.db.profile.BdInset
-		db.background.borderthickness = aObj.db.profile.BdEdgeSize
+		-- change if using default value
+		if db.background.borderthickness == 2 then
+			db.background.borderthicknes = aObj.db.profile.BdEdgeSize
+		end
 		db.background.bordertexture = aObj.db.profile.BdBorderTexture
 		db.background.color = aObj.db.profile.Backdrop
 
 	end
+	local offset = 4
 	local function skinFrame(win)
 
 		-- skin windows if required
-		if not win.bargroup.sknd then
-			-- print(win.bargroup.bgframe, win.bargroup.button)
-			aObj:addSkinFrame{obj=win.bargroup, x1=-4, y1=18, x2=3, y2=-3}
+		if not win.bargroup.sf then
+			aObj:addSkinFrame{obj=win.bargroup, ofs=offset, y1=(win.db.title.height or 15) + offset}
 			win.bargroup.SetBackdrop = function() end
 		end
 
@@ -31,6 +36,7 @@ function aObj:Skada()
 	if barDisplay then
 		-- hook this to skin new frames
 		self:SecureHook(barDisplay, "ApplySettings", function(this, win)
+			aObj:Debug("barDisplay ApplySettings: [%s, %s]", this, win)
 			skinFrame(win)
 		end)
 	end
@@ -40,10 +46,11 @@ function aObj:Skada()
 
 	-- change existing ones
 	for _, win in _G.pairs(_G.Skada:GetWindows()) do
+		aObj:Debug("change existing windows: [%s]", win)
 		changeSettings(win.db)
-		skinFrame(win)
+		-- skinFrame(win)
 		-- apply these changes
-		win.display:ApplySettings(win)
+		-- win.display:ApplySettings(win)
 	end
 
 	-- Temp upgrade popup

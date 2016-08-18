@@ -226,7 +226,7 @@ aObj.libsToSkin = {
 	["Configator"] = "Configator",
 	["tektip-1.0"] = "tektip",
 	["LibQTip-1.0"] = "LibQTip",
-	["ArkDewdrop-3.0"] = "ArkDewdrop",
+	["ArkDewdrop"] = "ArkDewdrop",
 	["LibTradeSkillScan"] = "LibTradeSkillScan",
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
 	["X-UI"] = "LibXUI",
@@ -325,7 +325,7 @@ function aObj:AddonFrames()
 end
 
 local lodFrames = {
-	"Altoholic_Summary", "Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "AzCastBarOptions",
+	"Altoholic_Summary", "Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "ArkInventorySearch", "AzCastBarOptions",
 	"Bagnon",
 	"DockingStation_Config", "DoTimer_Options",
 	"Enchantrix",

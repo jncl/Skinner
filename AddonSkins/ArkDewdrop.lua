@@ -6,15 +6,18 @@ function aObj:ArkDewdrop()
 	if self.initialized.ArkDewdrop then return end
 	self.initialized.ArkDewdrop = true
 
-	local frame, sf, eb, i
+	local libver = 30102
+	local loopcnt = 100
 
+	local sf, eb
 	local function skinArkDewdrop()
 
-		i = 1
-		while _G["ArkDewdrop30Level" .. i] do
-			-- aObj:Debug("ArkDewdrop30Level" .. i)
-			frame = _G["ArkDewdrop30Level" .. i]
-			if not frame.sknd then
+		local frame, btn
+		for i = 0, loopcnt do
+			frame = _G["ArkDewdrop" .. libver .. "Level" .. i]
+			-- aObj:Debug("ArkDewdropLevel: [%s, %s]", i, frame or nil)
+			if frame
+			and not frame.sknd then
 				frame.sknd = true
 				aObj:applySkin(frame)
 				-- change these to stop the Backdrop colours from being changed
@@ -23,21 +26,22 @@ function aObj:ArkDewdrop()
 				-- hide the backdrop frame
 				aObj:getChild(frame, 1):Hide()
 			end
-			i = i + 1
 		end
+		frame = nil
 		-- hook the OnEnter script for the buttons and use that to skin from
-		i = 1
-		while _G["ArkDewdrop30Button" .. i] do
-			if not aObj:IsHooked(_G["ArkDewdrop30Button" .. i], "OnEnter") then
-				aObj:HookScript(_G["ArkDewdrop30Button" .. i], "OnEnter", function(this)
+		for i = 0, loopcnt do
+			btn = _G["ArkDewdrop" .. libver .. "Button" .. i]
+			if btn
+			and not aObj:IsHooked(btn, "OnEnter") then
+				aObj:HookScript(btn, "OnEnter", function(this)
 					aObj.hooks[this].OnEnter(this)
 					if not this.disabled and this.hasArrow then
 						skinArkDewdrop()
 					end
 				end)
 			end
-			i = i + 1
 		end
+		btn = nil
 		-- Check to see if the SliderFrame and/or EditBox need to be skinned
 		-- if so then check to see if they have been created yet
 		-- if they have then skin them
@@ -65,7 +69,7 @@ function aObj:ArkDewdrop()
 	end
 
 	-- Hook this to skin new ArkDewdrop components
-	self:SecureHook(_G.LibStub("ArkDewdrop-3.0", true), "Open", function(parent)
+	self:SecureHook(_G.LibStub("ArkDewdrop", true), "Open", function(parent)
 		skinArkDewdrop()
 	end)
 
