@@ -53,7 +53,7 @@ local function adjustStatusBarPosn(sBar, yAdj)
 	oPnt = nil
 
 end
-local function addBackground(opts)
+local function skinUnitFrame(opts)
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -61,17 +61,15 @@ local function addBackground(opts)
 	local yOfs1 = opts.y1 or opts.ofs
 	local xOfs2 = opts.x2 or opts.ofs
 	local yOfs2 = opts.y2 or opts.ofs * -1
-	aObj:addSkinFrame{obj=opts.obj, ft=ftype, aso={bd=11, ng=true}, sec=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=y2Ofs}
-	opts.obj.sf:SetBackdropColor(.4, .4, .4, db.alpha)
+	aObj:addSkinFrame{obj=opts.obj, ft=ftype, sec=true, aso={bd=11, ng=true}, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	opts.obj.sf:SetBackdropColor(.1, .1, .1, db.alpha) -- use dark background
 
 
 end
-local function fixThreat(tex, xOfs, yOfs)
+local function fixThreat(tex)
 
 	tex:ClearAllPoints()
 	tex:SetAllPoints(tex:GetParent().sf)
-	-- tex:SetAllPoints(tex:GetParent().sb.bg)
-	tex:SetSize(xOfs, yOfs)
 	aObj:changeRecTex(tex, true, true)
 	-- stop changes to texture
 	tex.SetTexture = function() end
@@ -111,8 +109,7 @@ local function skinPlayerF()
 		aObj:glazeStatusBar(pF.PlayerFrameHealthBarAnimatedLoss, 0,  nil)
 		aObj:glazeStatusBar(pF.healthbar, 0, nil, {pF.myHealPredictionBar, pF.otherHealPredictionBar})
 		adjustStatusBarPosn(pF.healthbar)
-		aObj:glazeStatusBar(pF.manabar, 0, nil, {pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar})
-		pF.manabar.SetStatusBarTexture = function() end -- stop texture being changed
+		aObj:glazeStatusBar(pF.manabar, 0, nil, {pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, true)
 
 		-- AlternateManaBar
 		aObj:rmRegionsTex(_G.PlayerFrameAlternateManaBar, {2, 3, 4, 5, 6}) -- border textures
@@ -234,9 +231,8 @@ local function skinPlayerF()
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
-		addBackground{obj=_G.PlayerFrame, x1=35, y1=-5, x2=2, y2=y2Ofs}
-		-- addBackground{obj=_G.PlayerFrame, x1=40, y1=-10, y2=y2Ofs}
-		fixThreat(_G.PlayerFrameFlash, 232, 100)
+		skinUnitFrame{obj=_G.PlayerFrame, x1=35, y1=-5, x2=2, y2=y2Ofs}
+		fixThreat(_G.PlayerFrameFlash)
 
 		pF = nil
 
@@ -254,16 +250,14 @@ local function skinPetF()
 		adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
 		aObj:glazeStatusBar(_G.PetFrameHealthBar, 0)
 		adjustStatusBarPosn(_G.PetFrameManaBar, -1)
-		aObj:glazeStatusBar(_G.PetFrameManaBar, 0)
-		_G.PetFrameManaBar.SetStatusBarTexture = function() end -- stop texture being changed
+		aObj:glazeStatusBar(_G.PetFrameManaBar, 0, nil, nil, true)
 		-- casting bar handled in CastingBar function (UIE1)
 		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
 		-- skin the PetFrame
 		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to ARTWORK layer, so it is displayed
-		addBackground{obj=_G.PetFrame, x1=1}
-		-- addBackground{obj=_G.PetFrame, x1=5, y1=-2, x2=-4, y2=6}
-		fixThreat(_G.PetFrameFlash, 128, 53)
+		skinUnitFrame{obj=_G.PetFrame, x1=1}
+		fixThreat(_G.PetFrameFlash)
 		-- remove debuff border
 		for i = 1, 4 do
 			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
@@ -298,12 +292,11 @@ local function skinCommon(frame, adjSB)
 	if adjSB then
 		adjustStatusBarPosn(fo.healthbar)
 	end
-	aObj:glazeStatusBar(fo.manabar, 0, nil)
-	fo.manabar.SetStatusBarTexture = function() end -- stop texture being changed
+	aObj:glazeStatusBar(fo.manabar, 0, nil, nil, true)
 	fo = nil
 
 end
-local function skinUFrame(frame)
+local function addSkinFrame(frame)
 
 	local fo = _G[frame]
 	local isBoss = aObj:hasTextInName(fo, "Boss")
@@ -312,9 +305,8 @@ local function skinUFrame(frame)
 		xOfs1, yOfs1, xOfs2, yOfs2 = -1, -14, -72, 5
 	else
 		xOfs1, yOfs1, xOfs2, yOfs2 = -2, -5, -35, 0
-		-- xOfs1, yOfs1, xOfs2, yOfs2 = nil, -10, -41, 9
 	end
-	addBackground{obj=fo, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	skinUnitFrame{obj=fo, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	skinCommon(frame, true)
 	aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
 
@@ -340,9 +332,9 @@ local function skinUFrame(frame)
 	-- Boss frames don't have a ToT frame
 	if not isBoss then
 		-- TargetofTarget Frame
-		addBackground{obj=fo.totFrame, x2=4, y2=4}
+		skinUnitFrame{obj=fo.totFrame, x2=4, y2=4}
 		skinCommon(frame .. "ToT", true)
-		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
+		-- aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 	end
 
 	fo, isBoss, xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil, nil, nil
@@ -370,8 +362,8 @@ local function skinTargetF()
 	and not isSkinned["Target"]
 	then
 
-		skinUFrame("TargetFrame")
-		fixThreat(_G.TargetFrameFlash, 232, 100)
+		addSkinFrame("TargetFrame")
+		fixThreat(_G.TargetFrameFlash)
 
 		-- move level text down, so it is more visible
 		module:RawHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
@@ -381,7 +373,7 @@ local function skinTargetF()
 		--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
 			local frame = "Boss" .. i .. "TargetFrame"
-			skinUFrame(frame)
+			addSkinFrame(frame)
 			-- always an Elite mob
 			_G[frame].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		end
@@ -403,7 +395,7 @@ local function skinFocusF()
 	if db.focus
 	and not isSkinned["Focus"]
 	then
-		skinUFrame("FocusFrame")
+		addSkinFrame("FocusFrame")
 	end
 
 end
@@ -416,8 +408,8 @@ local function skinPartyF()
 		local pMF, pPF
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			pMF = "PartyMemberFrame" .. i
-			addBackground{obj=_G[pMF], x1=2, y1=5, x2=-1}
-			fixThreat(_G[pMF .. "Flash"], 128, 53)
+			skinUnitFrame{obj=_G[pMF], x1=2, y1=5, x2=-1}
+			fixThreat(_G[pMF .. "Flash"])
 
 			-- aObj:moveObject{obj=_G[pMF .. "Portrait"], y=6}
 			-- TODO stop portrait being moved
@@ -427,15 +419,14 @@ local function skinPartyF()
 			_G[pMF .. "Status"]:SetTexture(nil)
 			-- status bars
 			aObj:glazeStatusBar(_G[pMF .. "HealthBar"], 0, nil)
-			aObj:glazeStatusBar(_G[pMF .. "ManaBar"], 0, nil)
-			_G[pMF .. "ManaBar"].SetStatusBarTexture = function() end -- stop texture being changed
+			aObj:glazeStatusBar(_G[pMF .. "ManaBar"], 0, nil, nil, true)
 
 			skinPowerBarAlt(_G[pMF .. "PowerBarAlt"])
 
 			-- pet frame
 			pPF = pMF .. "PetFrame"
-			addBackground{obj=_G[pPF], x1=-2, y1=1, y2=1}
-			fixThreat(_G[pPF .. "Flash"], 64, 26)
+			skinUnitFrame{obj=_G[pPF], x1=-2, y1=1, y2=1}
+			fixThreat(_G[pPF .. "Flash"])
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:glazeStatusBar(_G[pPF .. "HealthBar"], 0, nil)
@@ -445,7 +436,7 @@ local function skinPartyF()
 
 		-- PartyMember Buff Tooltip
 		_G.PartyMemberBuffTooltip:SetBackdrop(nil)
-		addBackground{obj=_G.PartyMemberBuffTooltip, ofs=-4}
+		skinUnitFrame{obj=_G.PartyMemberBuffTooltip, ofs=-4}
 
 		-- PartyMemberBackground
 		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y1=2, x2=1, y2=2}
@@ -639,7 +630,7 @@ function aObj:ArenaUI()
 
 	if db.arena then
 		local function skinFrame(fName)
-			addBackground{obj=_G[fName], x1=-3, x2=3, y2=-6}
+			skinUnitFrame{obj=_G[fName], x1=-3, x2=3, y2=-6}
 			_G[fName .. "Background"]:SetTexture(nil)
 			_G[fName .. "Texture"]:SetTexture(nil)
 			_G[fName .. "Status"]:SetTexture(nil)
@@ -661,7 +652,7 @@ function aObj:ArenaUI()
 			skinFrame("ArenaEnemyFrame" .. i)
 			-- pet frame
 			aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
-			addBackground{obj=_G[aPF], y1=1, x2=1, y2=2}
+			skinUnitFrame{obj=_G[aPF], y1=1, x2=1, y2=2}
 			_G[aPF .. "Flash"]:SetTexture(nil)
 			_G[aPF .. "Texture"]:SetTexture(nil)
 			-- status bar
