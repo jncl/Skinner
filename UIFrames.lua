@@ -58,10 +58,6 @@ function aObj:AlertFrames()
 
 		-- aObj:Debug("AlertFrame AddAlertFrame: [%s, %s]", this, frame)
 
-		if frame.sf then frame.sf.tfade:SetParent(_G.MainMenuBar) end
-		-- reset Gradient alpha
-		if frame.sf then frame.sf.tfade:SetGradientAlpha(self:getGradientInfo()) end
-
 		-- run the hooked function
 		self.hooks[this].AddAlertFrame(this, frame)
 
@@ -74,9 +70,15 @@ function aObj:AlertFrames()
 			y1, y2 = nil, nil
 		end
 
+
 	end, true)
 
-	local function skinAlertFrames(frame)
+	-- hook dungeon rewards function
+	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, ...)
+		frame:DisableDrawLayer("OVERLAY")
+	end)
+
+	local function skinACAlertFrame(frame)
 
 		local fH = aObj:getInt(frame:GetHeight())
 		-- aObj:Debug("skinAlertFrames: [%s, %s]", frame, fH)
@@ -89,46 +91,27 @@ function aObj:AlertFrames()
 
 		if frame.OldAchievement then frame.OldAchievement:SetTexture(nil) end -- AchievementAlertFrame(s)
 
-		local x1, y1, x2, y2 = 5, -10, -5, 12
-		-- CriteriaALertFrame is smaller than most (Achievement Progress etc)
+		local x1, y1, x2, y2 = 6, -13, -4, 15
+		-- CriteriaAlertFrame is smaller than most (Achievement Progress etc)
 		if fH == 52 then
-			x1, y1, x2, y2 = -16, 7, 0, -1
+			x1, y1, x2, y2 = 30, 0, 0, 5
 		end
 		if not frame.sf then
 			aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
-			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, x1=x1, y1=y1, x2=x2, y2=y2}
+			aObj:addSkinFrame{obj=frame, ft=ftype, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
 		fH, x1, y1, x2, y2 = nil, nil, nil ,nil ,nil
 
 	end
-
 	local function skinDCSAlertFrame(opts)
 
-		if opts.obj and not opts.obj.sf then
-			aObj:removeRegions(opts.obj, opts.regs)
-			opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinButton
-			aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=opts.obj, relTo=opts.obj.dungeonTexture, reParent=opts.reParent}) -- wait for animation to finish
-			aObj:addSkinFrame{obj=opts.obj, ft=ftype, af=true, afas=true, ofs=opts.ofs or -7, y1=opts.y1 or nil}
-		end
+		aObj:removeRegions(opts.obj, opts.regs)
+		opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinButton
+		aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=opts.obj, relTo=opts.obj.dungeonTexture, reParent=opts.reParent}) -- wait for animation to finish
+		aObj:addSkinFrame{obj=opts.obj, ft=ftype, ofs=opts.ofs or -8, y1=opts.y1 or nil}
 
 	end
-
-	-- hook dungeon rewards function
-	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, ...)
-		frame:DisableDrawLayer("OVERLAY")
-	end)
-
-	local function skinGuildChallengeAlertFrame(frame)
-
-		frame:DisableDrawLayer("BACKGROUND")
-		frame:DisableDrawLayer("BORDER")
-		frame:DisableDrawLayer("OVERLAY")
-		aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=frame, relTo=frame.EmblemIcon}) -- wait for animation to finish
-		aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true}
-
-	end
-
-	local function skinWonAlertFrames(frame)
+	local function skinWLUAlertFrame(frame, reqdOfs)
 
 		-- move Icon draw layer, so it is visible (Garrison Cache icon)
 		if frame.Icon
@@ -136,17 +119,14 @@ function aObj:AlertFrames()
 		then
 			frame.Icon:SetDrawLayer("ARTWORK")
 		end
+		frame:DisableDrawLayer("BACKGROUND")
+		if frame.SpecRing then frame.SpecRing:SetTexture(nil) end -- Loot Won Alert Frame(s)
 		if not frame.sf then
-			frame:DisableDrawLayer("BACKGROUND")
-			-- frame.IconBorder:SetTexture(nil)
-			if frame.SpecRing then frame.SpecRing:SetTexture(nil) end -- Loot Won Alert Frame(s)
-			-- aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=frame, relTo=frame.Icon}) -- wait for animation to finish
-			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-10}
+			aObj:addSkinFrame{obj=frame, ft=ftype, ofs=reqdOfs or -10, y2=-2}
 		end
 
 	end
-
-	local function skinCommonAlertFrames(frame)
+	local function skinCommonAlertFrame(frame, reqdOfs)
 
 		if frame.Icon
 		and frame.Icon:GetDrawLayer() == "BACKGROUND"
@@ -158,52 +138,25 @@ function aObj:AlertFrames()
 		else
 			frame:DisableDrawLayer("BACKGROUND") -- Background toast texture
 		end
+		if frame.Blank then -- GarrisonRandomMissionAlertFrame
+			frame.Blank:SetTexture(nil)
+		end
 		if frame.IconBG then
 			frame.IconBG:SetTexture(nil)
-		elseif frame.Portrait then -- GarrisonShipFollowerAlertFrame
- 		else
-			frame:DisableDrawLayer("BORDER") -- icon background texture
+		end
+		if frame.FollowerBG then
+			frame.FollowerBG:SetAlpha(0) -- texture is changed
+		end
+		if frame.PortraitFrame then -- GarrisonFollowerAlertFrame
+			frame.PortraitFrame.PortraitRing:SetTexture(nil)
+			frame.PortraitFrame.LevelBorder:SetAlpha(0) -- texture is changed
 		end
 
-		aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-10, y1=frame == _G.GarrisonFollowerAlertFrame and -8 or nil, bg=true}
+		aObj:addSkinFrame{obj=frame, ft=ftype, bg=true, ofs=reqdOfs or -10}
 
 	end
 
-	local function skinGarrisonFollowerAlertFrame(frame)
-
-		frame:DisableDrawLayer("BORDER")
-		frame.PortraitFrame.PortraitRing:SetTexture(nil)
-		frame.PortraitFrame.LevelBorder:SetTexture(nil)
-
-	end
-	local function skinLootUpgradeAlertFrame(frame)
-
-		-- move Icon draw layer, so it is visible (NewRecipe icon)
-		if frame.Icon
-		and frame.Icon:GetDrawLayer() == "BACKGROUND"
-		then
-			frame.Icon:SetDrawLayer("ARTWORK")
-		end
-		if not frame.sf then
-			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
-			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-8}
-			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.125, frame)
-		end
-
-	end
-
-	local function skinInvasionAlertFrame(frame)
-
-		aObj:Debug("skinInvasionAlertFrame: [%s]", frame)
-		if not frame.sf then
-			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
-			aObj:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
-			aObj:addSkinFrame{obj=frame, ft=ftype, af=true, afas=true, ofs=-8}
-			aObj:ScheduleTimer(function(obj) obj.sf.tfade:SetParent(obj.sf) end, 0.125, frame)
-		end
-
-	end
-
+	-- hook these to manage Gradient texture when animating
 	self:SecureHook("AlertFrame_StopOutAnimation", function(frame)
 		if frame.sf then frame.sf.tfade:SetGradientAlpha(self:getGradientInfo()) end
 		if frame.cb then frame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
@@ -214,134 +167,78 @@ function aObj:AlertFrames()
 		-- self.hooks.AlertFrame_ResumeOutAnimation(frame)
 	end, true)
 
-	-- called params: frame, challengeType, count, max
-	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("GuildChallengeAlertSystem: [%s, %s]", frame, ...)
-		skinGuildChallengeAlertFrame(frame)
-	end)
+	-->>-- these frames already exist
+	-- GuildChallengeAlertFrame
+	_G.GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
+	_G.GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
+	_G.GuildChallengeAlertFrame:DisableDrawLayer("OVERLAY")
+	aObj:addSkinFrame{obj=_G.GuildChallengeAlertFrame, ft=ftype, ofs=-10}
 
-	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame)
-		-- aObj:Debug("DungeonCompletionAlertSystem: [%s]", frame)
-		skinDCSAlertFrame{obj=frame, regs={2, 3, 4, 5, 6, 10}, ofs=0, y1=-7}
-	end)
+	-- DungeonCompletionAlertFrame
+	skinDCSAlertFrame{obj=_G.DungeonCompletionAlertFrame, regs={2, 3, 4, 5, 6, 10}, y1=-17}
+	-- ScenarioAlertFrame
+	skinDCSAlertFrame{obj=_G.ScenarioAlertFrame, regs={1, 3, 7}, ofs=-12}
 
-	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame)
-		aObj:Debug("ScenarioAlertSystem: [%s]", frame)
-		skinDCSAlertFrame{obj=frame, regs={1, 3, 6}}
-	end)
+	-- ScenarioLegionInvasionAlertFrame
+	aObj:getRegion(_G.ScenarioLegionInvasionAlertFrame, 1):SetTexture(nil) -- Background toast texture
+	aObj:getRegion(_G.ScenarioLegionInvasionAlertFrame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
+	aObj:addSkinFrame{obj=_G.ScenarioLegionInvasionAlertFrame, ft=ftype, ofs=-8}
 
-	-- this is currently fired for each quest completion (7.0.3)
-	self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame)
-		aObj:Debug("InvasionAlertSystem: [%s]", frame)
-		skinInvasionAlertFrame(frame)
-	end)
+	-- DigsiteCompleteToastFrame
+	skinCommonAlertFrame(_G.DigsiteCompleteToastFrame)
+	-- StorePurchaseAlertFrame, WorldQuestCompleteAlertFrame, LegendaryItemAlertFrame
+	local frame
+	for _, v in pairs{"StorePurchase", "WorldQuestComplete", "LegendaryItem"} do
+		frame = _G[v .. "AlertFrame"]
+		skinCommonAlertFrame(frame, -8)
+	end
+	-- GarrisonBuildingAlertFrame, GarrisonMissionAlertFrame, GarrisonShipMissionAlertFrame, GarrisonRandomMissionAlertFrame, GarrisonTalentAlertFrame
+	for _, v in pairs{"Building", "Mission", "ShipMission", "RandomMission", "Talent"} do
+		frame = _G["Garrison" .. v .. "AlertFrame"]
+		skinCommonAlertFrame(frame)
+	end
+	-- GarrisonFollowerAlertFrame, GarrisonShipFollowerAlertFrame
+	for _, v in pairs{"Follower", "ShipFollower"} do
+		frame = _G["Garrison" .. v .. "AlertFrame"]
+		skinCommonAlertFrame(frame, -8)
+	end
+	frame = nil
 
+	-->>-- these frames are created as needed
 	-- called params: frame, achievementID, alreadyEarned
 	self:SecureHook(_G.AchievementAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("AchievementAlertSystem: [%s, %s]", frame, ...)
-		skinAlertFrames(frame)
+		skinACAlertFrame(frame)
 	end)
 
 	--called params: frame, achievementID, criteriaString
 	self:SecureHook(_G.CriteriaAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("CriteriaAlertSystem: [%s, %s]", frame, ...)
-		skinAlertFrames(frame)
+		skinACAlertFrame(frame)
 	end)
 
 	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal
 	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
-		skinWonAlertFrames(frame)
+		skinWLUAlertFrame(frame)
 	end)
 
 	-- called parms: self, itemLink, quantity, specID, baseQuality
 	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s]", frame, ...)
-		skinLootUpgradeAlertFrame(frame)
+		skinWLUAlertFrame(frame)
 	end)
 
 	-- called params: self, amount
 	self:SecureHook(_G.MoneyWonAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("MoneyWonAlertSystem: [%s, %s]", frame, ...)
-		skinWonAlertFrames(frame)
-	end)
-
-	-- called params: frame, researchBranchID
-	self:SecureHook(_G.DigsiteCompleteAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("DigsiteCompleteAlertSystem: [%s, %s]", frame, ...)
-		skinCommonAlertFrames(frame)
-	end)
-
-	-- called params: frame, type, icon, name, payloadID
-	self:SecureHook(_G.StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("AchievementAlertSystem: [%s, %s]", frame, ...)
-		skinCommonAlertFrames(frame)
-	end)
-
-	-- called params: frame, name
-	self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("GarrisonBuildingAlertSystem: [%s, %s]", frame, ...)
-		skinCommonAlertFrames(frame)
-	end)
-
-	-- called params: frame, missionID
-	self:SecureHook(_G.GarrisonMissionAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("GarrisonMissionAlertSystem: [%s, %s]", frame, ...)
-		skinCommonAlertFrames(frame)
-	end)
-
-	-- called params: frame, missionID
-	self:SecureHook(_G.GarrisonShipMissionAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("GarrisonShipMissionAlertSystem: [%s, %s]", frame, ...)
-		skinCommonAlertFrames(frame)
-	end)
-
-	-- called params: frame, missionID
-	self:SecureHook(_G.GarrisonRandomMissionAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("GarrisonRandomMissionAlertSystem: [%s, %s]", frame, ...)
-		skinCommonAlertFrames(frame)
-	end)
-
-	-- -- called params: frame, followerID, name, quality, isUpgraded
-	-- self:SecureHook(GarrisonCommonFollowerAlertSystem, "setUpFunction", function(frame, ...)
-	-- 	aObj:CustomPrint(1, 0, 0, "Function not implemented", "GarrisonCommonFollowerAlertSystem", frame, ...)
-	-- end)
-
-	-- called params: frame, followerID, name, level, quality, isUpgraded
-	self:SecureHook(_G.GarrisonFollowerAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("GarrisonFollowerAlertSystem: [%s, %s]", frame, ...)
-		skinGarrisonFollowerAlertFrame(frame)
-		skinCommonAlertFrames(frame)
-	end)
-
-	-- called params: frame, followerID, name, class, texPrefix, level, quality, isUpgraded
-	self:SecureHook(_G.GarrisonShipFollowerAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("GarrisonShipFollowerAlertSystem: [%s, %s]", frame, ...)
-		skinCommonAlertFrames(frame)
-	end)
-
-	-- called params: frame, garrisonType
-	self:SecureHook(_G.GarrisonTalentAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GarrisonTalentAlertSystem: [%s, %s]", frame, ...)
-		aObj:CustomPrint(1, 0, 0, "Function not implemented", "GarrisonTalentAlertSystem", frame, ...)
+		skinWLUAlertFrame(frame, -8)
 	end)
 
 	-- called params: self, recipeID
 	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("NewRecipeLearnedAlertSystem: [%s, %s]", frame, ...)
-		skinLootUpgradeAlertFrame(frame)
-	end)
-
-	-- called params: frame, questID, rewardItemLink
-	self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("WorldQuestCompleteAlertSystem: [%s, %s]", frame, ...)
-		aObj:CustomPrint(1, 0, 0, "Function not implemented", "WorldQuestCompleteAlertSystem", frame, ...)
-	end)
-
-	-- called params: frame, itemLink
-	self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("LegendaryItemAlertSystem: [%s, %s]", frame, ...)
-		aObj:CustomPrint(1, 0, 0, "Function not implemented", "LegendaryItemAlertSystem", frame, ...)
+		skinWLUAlertFrame(frame, -8)
 	end)
 
 end
@@ -480,7 +377,7 @@ function aObj:BNFrames()
 		if _G.BNToastFrame.cb then _G.BNToastFrame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
 		-- self.hooks.BNToastFrame_Show()
 	end, true)
-	self:addSkinFrame{obj=_G.BNToastFrame, ft=ftype, af=true}
+	self:addSkinFrame{obj=_G.BNToastFrame, ft=ftype}
 
 -->>-- Report frame
 	_G.BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
@@ -496,7 +393,7 @@ function aObj:BNFrames()
 		-- self.hooks.TimeAlert_Start(time)
 	end, true)
 	_G._G.TimeAlertFrameBG:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype, af=true, afas=true}
+	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype}
 
 end
 

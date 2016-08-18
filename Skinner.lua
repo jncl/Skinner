@@ -575,8 +575,6 @@ local function __addSkinFrame(opts)
 		ri = Disable Inset DrawLayers
 		bas = use applySkin for buttons
 		rp = re-parent, reverse the parent child relationship
-		af = alertframe animation fix
-		afas = hook alertframe animation scripts
 		sec = use the "SecureFrameTemplate"
         rmbt = remove magic button texture(s)
 --]]
@@ -628,7 +626,6 @@ local function __addSkinFrame(opts)
 
 	-- handle no Border, if required
 	if opts.noBdr then opts.aso.bd = 11 end
-	-- if opts.noBdr then opts.aso.bba = 0 end
 
 	-- skin the frame using supplied options
 	aObj:applySkin(opts.aso)
@@ -643,15 +640,6 @@ local function __addSkinFrame(opts)
 
 	-- skin the buttons unless not required
 	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft, rmbt=opts.rmbt} end
-
-	-- reparent skinFrame to avoid whiteout issues caused by animations
-	if opts.anim then
-		skinFrame:SetParent(_G.UIParent)
-		-- hook Show and Hide methods
-		aObj:SecureHook(opts.obj, "Show", function(this) this.sf:Show() end)
-		aObj:SecureHook(opts.obj, "Hide", function(this) this.sf:Hide() end)
-		skinFrame:SetShown(opts.obj:IsShown())
-	end
 
 	-- remove inset textures
 	if opts.ri then aObj:removeInset(opts.obj.Inset) end
@@ -670,40 +658,6 @@ local function __addSkinFrame(opts)
 		-- hook Show and Hide methods
 		aObj:SecureHook(opts.obj, "Show", function(this) this.sf:Show() end)
 		aObj:SecureHook(opts.obj, "Hide", function(this) this.sf:Hide() end)
-	end
-
-	-- handle AlertFrame style frames to prevent gradient whiteout
-	if opts.af then
-		if not aObj:IsHooked(opts.obj.animIn, "OnFinished") then
-			-- hook this script to ensure gradient texture is reparented correctly
-			aObj:SecureHookScript(opts.obj.animIn, "OnFinished", function(this)
-				local objP = this:GetParent()
-				-- print("animIn OnFinished", objP)
-				aObj:ScheduleTimer(function(frame)
-					frame.sf.tfade:SetParent(frame.sf)
-					if frame.cb then frame.cb.tfade:SetParent(frame.cb) end
-				end, 0.15, objP)
-			end)
-		end
-		if not aObj:IsHooked(opts.obj, "OnHide") then
-			-- handle issue where tfade isn't reparented in time
-			aObj:SecureHookScript(opts.obj, "OnHide", function(this)
-				this.sf.tfade:SetParent(this.sf)
-			end)
-		end
-		-- hook AlertFrame scripts for animation functions
-		if opts.afas then
-			if not aObj:IsHooked(opts.obj, "OnEnter") then
-				aObj:SecureHookScript(opts.obj, "OnEnter", function(this)
-					this.sf.tfade:SetGradientAlpha(aObj:getGradientInfo())
-				end)
-				opts.obj.ol = opts.obj:GetScript("OnLeave")
-				opts.obj:SetScript("OnLeave", function(this)
-					this.sf.tfade:SetAlpha(0)
-					if opts.obj.ol then opts.obj.ol(this) end
-				end)
-			end
-		end
 	end
 
 	return skinFrame
