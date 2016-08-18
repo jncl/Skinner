@@ -623,7 +623,6 @@ function aObj:Collections() -- LoD
 		self:glazeStatusBar(obj.healthFrame.healthBar, 0,  nil)
 		self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
 		self:glazeStatusBar(obj.xpBar, 0,  nil)
-		self:makeMFRotatable(obj.model)
 		self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, x1=-4, y2=-4} -- use asf here as button already has a border
 		for i = 1, 3 do
 			btn = obj["spell" .. i]
@@ -644,7 +643,6 @@ function aObj:Collections() -- LoD
 	self:glazeStatusBar(obj.HealthFrame.healthBar, 0,  nil)
 	self:removeRegions(obj.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
 	self:glazeStatusBar(obj.xpBar, 0,  nil)
-	self:makeMFRotatable(obj.model)
 	self:keepFontStrings(obj)
 	self:addSkinFrame{obj=obj, aso={bd=8, ng=true}, ofs=4}
 	for i = 1, 6 do
@@ -772,13 +770,16 @@ function aObj:Collections() -- LoD
 	-- WardrobeFrame a.k.a. Transmogrify
 	self:removeInset(_G.WardrobeTransmogFrame.Inset)
 	self:skinDropDown{obj=_G.WardrobeTransmogFrame.OutfitDropDown, y2=-4}
-	self:makeMFRotatable(_G.WardrobeTransmogFrame.Model)
 	for i = 1, #_G.WardrobeTransmogFrame.Model.SlotButtons do
 		_G.WardrobeTransmogFrame.Model.SlotButtons[i].Border:SetTexture(nil)
 	end
 	_G.WardrobeTransmogFrame:DisableDrawLayer("ARTWORK")
+	_G.WardrobeTransmogFrame.Model.controlFrame:DisableDrawLayer("BACKGROUND")
 	self:addButtonBorder{obj=_G.WardrobeTransmogFrame.SpecButton, es=12, ofs=-1}--, y1=-3, x2=-3}
 	self:addSkinFrame{obj=_G.WardrobeFrame, ft=ftype, kfs=true, ofs=2}
+
+	self:skinEditBox{obj=_G.WardrobeOutfitEditFrame.EditBox, regs={6}} -- 6 is text
+	self:addSkinFrame{obj=_G.WardrobeOutfitEditFrame, ft=ftype, kfs=true}
 
 end
 
