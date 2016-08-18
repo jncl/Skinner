@@ -636,7 +636,10 @@ function aObj:ChatBubbles()
 	if not self.db.profile.ChatBubbles or self.initialized.ChatBubbles then return end
 	self.initialized.ChatBubbles = true
 
+	local cbeTmr
 	local function skinChatBubbles()
+
+		-- aObj:Debug("skinChatBubbles fired")
 
 		aObj.RegisterCallback("skinChatBubbles", "WorldFrame_GetChildren", function(this, child)
 			if aObj:hasTextInTexture(aObj:getRegion(child, 1), "ChatBubble-Background", true) then
@@ -645,18 +648,42 @@ function aObj:ChatBubbles()
 		end)
 		aObj:scanWorldFrameChildren()
 
+		aObj:CancelTimer(cbeTmr, true)
+		cbeTmr = nil
+
 	end
 	-- skin any existing ones
 	skinChatBubbles()
 
-	local cbTmr
-	-- hook these to skin ChatBubbles
+	local function srt4Event(event, ...)
+		-- aObj:Debug("srt4Event: [%s, %s, %s]", event, ...)
+		if not cbeTmr then
+			cbeTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.25)
+		end
+	end
+	-- capture events which may create new ones
+	-- CHAT_MSG(_MONSTER)_EMOTE
+	-- CHAT_MSG_RAID_BOSS_EMOTE
+	self:RegisterEvent("CHAT_MSG_SAY", srt4Event)
+	self:RegisterEvent("CHAT_MSG_MONSTER_SAY",srt4Event)
+	-- CHAT_MSG(_MONSTER)_WHISPER
+	self:RegisterEvent("CHAT_MSG_YELL", srt4Event)
+	self:RegisterEvent("CHAT_MSG_MONSTER_YELL", srt4Event)
+
+	-- CHAT_MSG_PARTY
+	-- CHAT_MSG_PARTY_LEADER
+	-- CHAT_MSG_RAID
+	-- CHAT_MSG_RAID_LEADER
+	-- CHAT_MSG_RAID_WARNING
+
+	local cbcTmr
+	-- capture these as well
 	self:RegisterEvent("CINEMATIC_START", function()
-		cbTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.5)
+		cbcTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.5)
 	end)
 	self:RegisterEvent("CINEMATIC_STOP", function()
-		self:CancelTimer(cbTmr, true)
-		cbTmr = nil
+		self:CancelTimer(cbcTmr, true)
+		cbcTmr = nil
 	end)
 
 end
