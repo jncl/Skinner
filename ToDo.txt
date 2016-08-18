@@ -22,14 +22,14 @@ x			- Bag settings are now accessed by clicking the bag icon
 x			- UIButtons - close button code causes errors
 √			- Chat Edit Box - borderless skin has textures
 √			- AuctionUI
-≈			- GroupFinder - Raid Finder, texture visible behind Role icons
+√			- GroupFinder - Raid Finder, texture visible behind Role icons
 √			- QuestChoiceFrame needs fixing
 √			- Ignored Quest names appearing as black text in Gossip frame
 √			- QuestInfo RewardFrame - SpellReward & FollowerReward
 √			- MapQuestInfo RewardFrame - SpellReward & FollowerReward
 √			- Map & Quest log updates - reward textures & disclosure buttons
 ≈			- ArenaFramesCastBar
-≈			- RaidUI - GroupButton texture
+√			- RaidUI - GroupButton texture
 √			- PlayerFrame - Damage taken/Healing received overlays
 √			- AdventureGuide, texture regions have changed
 √			- Scenario Rewards NameFrames need skinning
@@ -64,20 +64,20 @@ x			- Blizzard_ObjectiveTrackerShared
 ≈			- Blizzard_OrderHallUI
 x			- Blizzard_PVPUI: Localization
 x			- Blizzard_SharedMapDataProviders
-≈			- Blizzard_TalkingHeadUI
+√			- Blizzard_TalkingHeadUI
 x			- Blizzard_TutorialTemplates
-≈			- AlertFrameSystems
+√			- AlertFrameSystems
 x			- AnimatedStatusBar
 ≈			- ArtifactToasts
-≈			- BuilderSpenderFrame
-≈			- ClassPowerBar
+√			- BuilderSpenderFrame
+√			- ClassPowerBar
 ?			- ClassResourceOverlay (DemonHunter, Paladin, Rogue)
 √			- ComboFramePlayer
 √			- GarrisonBaseUtils
 √			- HonorWatchBar
 √			- InsanityBar
 x			- LowHealthFrame
-≈			- MageArcaneChargesBar
+√			- MageArcaneChargesBar
 x			- MixinUtil
 ≈			- PVPHonorSystem
 √			- WardrobeOutfits
@@ -106,3 +106,21 @@ x			- MixinUtil
 	I	Baggins, reported by Shimiya, 07.08.16
 √		- Baggins borders still not colored
 √		- Class coloured borders apply same color on all classes (depend on which class i unthick/re-thick the option, it keeps this color on all classes)
+
+√	I	Skada
+		- new frame code?
+
+√	I	CompactRaidFrame, reported by transitbus, 16.08.16
+		- Skinner\PlayerFrames.lua:832: attempt to index field 'CompactRaidFrameContainer' (a nil value)
+
+√	I	Appearances, reported by transitbus, 16.08.16
+		- Transmog window when moving the character "doll" 3D image around (mouse click and drag left or right) it makes a repetitive clicking sound. The same sound it makes when you use the navigation buttons above that doll image. This does not happen in the character window, inspect window, or dressing room window
+
+√	I	Chat Bubbles option, reported by wutaaa, 16.08.16
+		- In the settings of Skinner there's an option to skin chat bubbles. I have it checked and it randomly works sometimes but annoyingly sometimes it resets back to default chat bubbles and I don't know why?
+
+	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
+		- e.g. GameMenu buttons, Close Button(s)
+
+√	I	ArkInventory, reported by lexusnexus, 18.08.16
+		- ..\AddOns\Skinner\SkinMe\ArkInventory.lua line 62: attempt to index field 'profile' (a nil value)
