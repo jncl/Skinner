@@ -816,6 +816,9 @@ function aObj:CompactFrames()
 	end)
 
 -->>-- Compact RaidFrame Container
+	-- handle AddOn being disabled
+	if not self:checkLoadable("Blizzard_CompactRaidFrames") then return end
+
 	-- hook this to skin any new CompactRaidFrameContainer entries
 	self:SecureHook("FlowContainer_AddObject", function(container, object)
 		if container == _G.CompactRaidFrameContainer then -- only for compact raid frame objects

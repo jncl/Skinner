@@ -234,7 +234,7 @@ function aObj:checkAndRun(funcName, quiet)
 		and (self.db.profile.DisabledSkins[funcName] or self.db.profile.DisableAllAS)
 		then
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled (C&R)")
+				self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled (c&R)")
 			end
 			self[funcName] = nil
 			return
@@ -271,7 +271,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	or self.db.profile.DisableAllAS
 	then
 		if self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled (C&RA)")
+			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled (c&RA)")
 		end
 		self[addonFunc] = nil
 		return
@@ -301,6 +301,21 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	end
 
 end
+
+function aObj:checkLoadable(addonName)
+
+	local name, title, notes, loadable, reason, security, newVersion = _G.GetAddOnInfo(addonName)
+	-- aObj:Debug("checkLoadable: [%s, %s, %s, %s, %s, %s, %s]", name, title, notes, loadable, reason, security, newVersion)
+	if not loadable then
+		if self.db.profile.Warnings then
+			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as:", reason, "(cL)")
+		end
+	end
+
+	return loadable
+
+end
+
 
 aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
 function aObj:changeTandC(obj, tex)
