@@ -57,6 +57,7 @@ function aObj:Defaults()
 		BankFrame            = true,
 		BarbershopUI         = true,
 		BlackMarketUI        = true,
+		FlightMap            = true,
 		GossipFrame          = true,
 		GuildRegistrar       = true,
 		ItemUpgradeUI        = true,
@@ -111,6 +112,7 @@ function aObj:Defaults()
 	-->>-- UI Frames
 		DisableAllUI         = false,
 		AddonList            = true,
+		AdventureMap         = true,
 		AlertFrames          = true,
 		ArtifactUI           = true,
 		AuthChallengeUI      = false, -- N.B. cannot be skinned
@@ -777,6 +779,11 @@ function aObj:Options()
 					name = self.L["Black Market Auction Frame"],
 					desc = self.L["Toggle the skin of the Black Market Auction Frame"],
 				},
+				FlightMap = {
+					type = "toggle",
+					name = self.L["Flight Map"],
+					desc = self.L["Toggle the skin of the Flight Map"],
+				},
 				GossipFrame = {
 					type = "toggle",
 					name = self.L["Gossip Frame"],
@@ -1208,6 +1215,11 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["AddonList Frame"],
 					desc = self.L["Toggle the skin of the AddonList Frame"],
+				},
+				AdventureMap = {
+					type = "toggle",
+					name = self.L["Adventure Map"],
+					desc = self.L["Toggle the skin of the Adventure Map"],
 				},
 				AlertFrames = {
 					type = "toggle",

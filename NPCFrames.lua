@@ -194,6 +194,30 @@ function aObj:BlackMarketUI() -- LoD
 
 end
 
+function aObj:FlightMap() -- LoD
+	if not self.db.profile.FlightMap or self.initialized.FlightMap then return end
+	self.initialized.FlightMap = true
+
+	self:keepFontStrings(_G.FlightMapFrame.BorderFrame)
+	self:addSkinFrame{obj=_G.FlightMapFrame, ft=ftype, ofs=3, x2=2}
+	_G.FlightMapFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
+
+	-- hook this to remove ZoneLabel background texture
+	for dataProvider in pairs(_G.FlightMapFrame.dataProviders) do
+		-- aObj:Debug("FMF.dataProviders: [%s]", dataProvider)
+		if dataProvider.ZoneLabel then
+			-- aObj:Debug("ZoneLabel found: [%s, %s]", dataProvider.ZoneLabel, dataProvider.ZoneLabel.dataProvider)
+			dataProvider.ZoneLabel.TextBackground:SetTexture(nil)
+			-- hook this to handle when Map re-opened
+			self:SecureHook(dataProvider.ZoneLabel.dataProvider, "RefreshAllData", function(this, fromOnShow)
+				-- aObj:Debug("dP RefreshAllData: [%s, %s]", this, fromOnShow)
+				this.ZoneLabel.TextBackground:SetTexture(nil)
+			end)
+		end
+	end
+
+end
+
 local function setupQuestDisplayColours()
 
 	_G.NORMAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.HTr, aObj.HTg, aObj.HTb) .. "%s|r"

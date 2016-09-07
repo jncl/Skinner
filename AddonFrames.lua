@@ -10,9 +10,9 @@ local blizzLoDFrames = {
 	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
 	-- npc
  	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
-	"BarbershopUI", "BlackMarketUI", "ItemAlterationUI", "ItemUpgradeUI", "GarrisonUI", "QuestChoice", "TrainerUI", "VoidStorageUI",
+	"BarbershopUI", "BlackMarketUI", "FlightMap", "ItemUpgradeUI", "QuestChoice", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"ArtifactUI", "BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "ObliterumUI", "OrderHallUI", "StoreUI", "TalkingHeadUI",  "TimeManager",
+	"AdventureMap", "ArtifactUI", "BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GarrisonUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "ObliterumUI", "OrderHallUI", "StoreUI", "TalkingHeadUI", "TimeManager", "WowTokenUI"
 	--	unitframes
 	"ArenaUI",
 }
@@ -79,6 +79,7 @@ function aObj:BlizzardFrames()
 			["AuctionUI"] = false,
 			["BarbershopUI"] = false,
 			["BlackMarketUI"] = false,
+			["FlightMap"] = false,
 			["ItemUpgradeUI"] = false,
 			["QuestChoice"] = false,
 			["ReforgingUI"] = false,
@@ -134,9 +135,10 @@ function aObj:BlizzardFrames()
 			["Tutorial"] = true,
 			["WorldMap"] = true,
 			["WorldState"] = true,
-			["WowTokenUI"] = self.PTR and false or nil, -- N.B. cannot be skinned
+			["WowTokenUI"] = false, -- N.B. cannot be skinned
 			["ZoneAbility"] = true,
 			-- LoD frames
+			["AdventureMap"] = false,
 			["ArtifactUI"] = false,
 			["BattlefieldMinimap"] = false,
 			["BindingUI"] = false,
