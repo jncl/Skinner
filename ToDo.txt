@@ -49,29 +49,29 @@ x			- InspectPaperDollFrame - ViewButton
 √			- PvPUI - PVPVRewardTooltip
 x			- Blizzard_RaidUI - extra class button (15)
 √			- Blizzard_TradeSkillUI revamp
-x			- Blizzard_AdventureMap
-≈			- Blizzard_ArtifactUI
+√			- Blizzard_AdventureMap
+√			- Blizzard_ArtifactUI
 x			- Blizzard_BoostTutorial
 ?			- Blizzard_ClassTrial
 √			- Blizzard_Wardrobe
 √			- Blizzard_LootJournal
-x			- Blizzard_FlightMap
+√			- Blizzard_FlightMap
 √			- Blizzard_GarrisonTemplates
-x			- Blizzard_MapCanvas
-x			- Blizzard_NamePlates
+√			- Blizzard_MapCanvas
+√			- Blizzard_NamePlates
 x			- Blizzard_ObjectiveTrackerShared
 ≈			- Blizzard_ObliterumUI
-≈			- Blizzard_OrderHallUI
+√			- Blizzard_OrderHallUI
 x			- Blizzard_PVPUI: Localization
 x			- Blizzard_SharedMapDataProviders
 √			- Blizzard_TalkingHeadUI
 x			- Blizzard_TutorialTemplates
 √			- AlertFrameSystems
 x			- AnimatedStatusBar
-≈			- ArtifactToasts
+√			- ArtifactToasts
 √			- BuilderSpenderFrame
 √			- ClassPowerBar
-?			- ClassResourceOverlay (DemonHunter, Paladin, Rogue)
+√			- ClassResourceOverlay (DemonHunter, Paladin, Rogue)
 √			- ComboFramePlayer
 √			- GarrisonBaseUtils
 √			- HonorWatchBar
@@ -100,27 +100,22 @@ x			- MixinUtil
 	I	Quest Objectives list (Ben)
 ?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
 
-	I	- Garrison Mission UI
-?		- Active Missions Tab has a border when it shouldn't (not all the time)
-
-	I	Baggins, reported by Shimiya, 07.08.16
-√		- Baggins borders still not colored
-√		- Class coloured borders apply same color on all classes (depend on which class i unthick/re-thick the option, it keeps this color on all classes)
-
-√	I	Skada
-		- new frame code?
-
-√	I	CompactRaidFrame, reported by transitbus, 16.08.16
-		- Skinner\PlayerFrames.lua:832: attempt to index field 'CompactRaidFrameContainer' (a nil value)
-
-√	I	Appearances, reported by transitbus, 16.08.16
-		- Transmog window when moving the character "doll" 3D image around (mouse click and drag left or right) it makes a repetitive clicking sound. The same sound it makes when you use the navigation buttons above that doll image. This does not happen in the character window, inspect window, or dressing room window
-
-√	I	Chat Bubbles option, reported by wutaaa, 16.08.16
-		- In the settings of Skinner there's an option to skin chat bubbles. I have it checked and it randomly works sometimes but annoyingly sometimes it resets back to default chat bubbles and I don't know why?
-
 	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
 		- e.g. GameMenu buttons, Close Button(s)
 
-√	I	ArkInventory, reported by lexusnexus, 18.08.16
-		- ..\AddOns\Skinner\SkinMe\ArkInventory.lua line 62: attempt to index field 'profile' (a nil value)
+√	I	Altoholic, reported by Shimiya,21.08.16
+		- Skinner\Skinner-b7.22423.2.lua:1423: attempt to concatenate a nil value
+Skinner\Skinner-b7.22423.2.lua:1467: in function `skinDropDown'
+Skinner\SkinMe\Altoholic-r171.lua:117: in function <Skinner\SkinMe\Altoholic.lua:113>
+
+x	I	MasterPLan, reported byNeoZeus, 23.08.16
+		- Skinner\SkinMe\MasterPlan-0.101.lua:148: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+	N	PowerAuras, reported by sausje, 26.08.16
+		-
+
+	I	ArtifactBar
+		- needs moving up 3 pixels ?
+
+	I	Rarity, reported by sausje, 06.09.16
+		- causes UI elements to not be skinned
