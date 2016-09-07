@@ -168,7 +168,7 @@ function aObj:AchievementUI() -- LoD
 
 -->>-- Categories Panel (on the Left)
 	self:skinSlider{obj=_G.AchievementFrameCategoriesContainerScrollBar, adj=-4}
-	self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y1=1}
+	self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y1=-1}
 	self:SecureHook("AchievementFrameCategories_Update", function()
 		skinCategories()
 	end)
@@ -176,7 +176,7 @@ function aObj:AchievementUI() -- LoD
 
 -->>-- Achievements Panel (on the right)
 	self:keepFontStrings(_G.AchievementFrameAchievements)
-	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameAchievements, 2), ft=ftype, aso={ba=0, ng=true}}
+	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameAchievements, 2), ft=ftype, aso={ba=0, ng=true}, y1=-1}
 	self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, adj=-4}
 	if prdbA.style == 2 then
 		-- remove textures etc from buttons
@@ -1002,13 +1002,16 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	self:addSkinFrame{obj=_G.EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
 	-- Hook this to skin the Instance buttons
 	self:SecureHook("EncounterJournal_ListInstances", function()
+		local btn
 		for i = 1, 30 do
 			btn = _G.EncounterJournal.instanceSelect.scroll.child["instance" .. i]
-			if btn then
+			if btn
+			and not btn.sbb
+			then
 				self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
 			end
 		end
-		self:Unhook("EncounterJournal_ListInstances")
+		btn = nil
 	end)
 	-- Tabs
 	local tabID, tab = 1
@@ -1024,10 +1027,11 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 			if aObj.isTT then aObj:setInactiveTab(tab.sf) end
 		end
 	end
+	tabID, tab = nil, nil
 	if aObj.isTT then
 		self:SecureHook("EJ_ContentTab_Select", function(id)
-			aObj:Debug("EJ_CT_S: [%s]", id)
-
+			-- aObj:Debug("EJ_CT_S: [%s]", id)
+			local tab
 			for i = 1, #_G.EncounterJournal.instanceSelect.Tabs do
 				tab = _G.EncounterJournal.instanceSelect.Tabs[i]
 				if i == id then
@@ -1036,6 +1040,7 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 					aObj:setInactiveTab(tab.sf)
 				end
 			end
+			tab = nil
 		end)
 	end
 -->>-- Encounter frame
@@ -1061,6 +1066,7 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 				btn:SetPushedTexture(nil)
 			end
 		end
+		btn = nil
 	end
 	self:SecureHook("EncounterJournal_DisplayInstance", function(instanceID, noButton)
 		skinBossBtns()
@@ -1068,6 +1074,14 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	-- skin any existing Boss Buttons
 	skinBossBtns()
 
+	local function skinFilterBtn(btn)
+
+		btn:DisableDrawLayer("BACKGROUND")
+		btn:SetNormalTexture(nil)
+		btn:SetPushedTexture(nil)
+		aObj:skinButton{obj=btn, x1=-11, y1=-2, x2=11, y2=2}
+
+	end
 	-- Info frame
 	eje.info:DisableDrawLayer("BACKGROUND")
 	eje.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -1076,11 +1090,8 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	eje.info.instanceButton:SetHighlightTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 	eje.info.instanceButton:GetHighlightTexture():SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
 	self:skinSlider{obj=eje.info.bossesScroll.ScrollBar, adj=-4}
-	eje.info.difficulty:DisableDrawLayer("BACKGROUND")
-	eje.info.difficulty:SetNormalTexture(nil)
-	eje.info.difficulty:SetPushedTexture(nil)
-	self:skinButton{obj=eje.info.difficulty, x1=-11, y1=-2, x2=11, y2=2}
-	-- self:skinDropDown{obj=eje.info.difficultyDD} -- already skinned
+	skinFilterBtn(eje.info.difficulty)
+	-- self:skinDropDown{obj=eje.info.difficultyDD} -- DD already skinned
 	eje.info.reset:SetNormalTexture(nil)
 	eje.info.reset:SetPushedTexture(nil)
 	self:skinButton{obj=eje.info.reset, y2=2}
@@ -1114,10 +1125,7 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 
 	-- Loot Frame
 	self:skinSlider{obj=eje.info.lootScroll.scrollBar, adj=-4}
-	eje.info.lootScroll.filter:DisableDrawLayer("BACKGROUND")
-	eje.info.lootScroll.filter:SetNormalTexture(nil)
-	eje.info.lootScroll.filter:SetPushedTexture(nil)
-	self:skinButton{obj=eje.info.lootScroll.filter, x1=-11, y1=-2, x2=11, y2=2}
+	skinFilterBtn(eje.info.lootScroll.filter)
 	eje.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 	-- self:skinDropDown{obj=eje.info.lootScroll.lootFilter} -- DD already skinned
 	-- hook this to skin loot entries
@@ -1131,6 +1139,7 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 			btn.boss:SetTextColor(self.BTr, self.BTg, self.BTb)
 			self:addButtonBorder{obj=btn, relTo=btn.icon, x1=0}
 		end
+		btn = nil
 	end)
 
 	-- Model Frame
@@ -1204,15 +1213,9 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	self:skinDropDown{obj=ejlj.ViewDropDown}
 	self:skinDropDown{obj=ejlj.ClassDropDown}
 	-- LegendariesFrame
-	ejlj.LegendariesFrame.SlotButton:DisableDrawLayer("BACKGROUND")
-	ejlj.LegendariesFrame.SlotButton:SetNormalTexture(nil)
-	ejlj.LegendariesFrame.SlotButton:SetPushedTexture(nil)
-	self:skinButton{obj=ejlj.LegendariesFrame.SlotButton, x1=-11, y1=-2, x2=11, y2=2}
+	skinFilterBtn(ejlj.LegendariesFrame.SlotButton)
 	self:skinDropDown{obj=ejlj.LegendariesFrame.SlotDropDown}
-	ejlj.LegendariesFrame.ClassButton:DisableDrawLayer("BACKGROUND")
-	ejlj.LegendariesFrame.ClassButton:SetNormalTexture(nil)
-	ejlj.LegendariesFrame.ClassButton:SetPushedTexture(nil)
-	self:skinButton{obj=ejlj.LegendariesFrame.ClassButton, x1=-11, y1=-2, x2=11, y2=2}
+	skinFilterBtn(ejlj.LegendariesFrame.ClassButton)
 	self:skinDropDown{obj=ejlj.LegendariesFrame.ClassDropDown}
 	self:addSkinFrame{obj=ejlj, ft=ftype, ofs=6, x1=-5, y2=-3}
 	local btn
@@ -1228,9 +1231,7 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	end
 	btn = nil
 	-- ItemSetsFrame
-	ejlj.ItemSetsFrame.ClassButton:DisableDrawLayer("BACKGROUND")
-	ejlj.ItemSetsFrame.ClassButton:SetNormalTexture(nil)
-	ejlj.ItemSetsFrame.ClassButton:SetPushedTexture(nil)
+	skinFilterBtn(ejlj.ItemSetsFrame.ClassButton)
 	for i = 1 , #ejlj.ItemSetsFrame.buttons do
 		ejlj.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
 	end
@@ -1931,13 +1932,27 @@ function aObj:ObjectiveTracker()
 		end
 
 	end
+	-- TimerBars
 	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
 		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
 	end)
+	self:SecureHook(_G.ACHIEVEMENT_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
+		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
+	end)
+	self:SecureHook(_G.QUEST_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
+		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
+	end)
+	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
+		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
+	end)
+	-- ProgressBars
 	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
 	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+	end)
+	self:SecureHook(_G.QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
 	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
