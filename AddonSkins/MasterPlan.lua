@@ -2,16 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("MasterPlan") then return end
 local _G = _G
 
-function aObj:MasterPlan() -- LoD (v 0.80)
-
-	-- have to hook this otherwise tab textures don't work on Landing Page
-	self:RawHook("PanelTemplates_SetNumTabs", function(frame, numTabs)
-		-- aObj:Debug("PanelTemplates_SetNumTabs: [%s, %s]", frame, numTabs)
-		if frame == _G.GarrisonLandingPage then
-			numTabs = 4
-		end
-		return self.hooks["PanelTemplates_SetNumTabs"](frame, numTabs)
-	end, true)
+function aObj:MasterPlan() -- LoD (v 0.101)
 
 	local function skinTab(tab, id, frame, x1, y1, x2 ,y2)
 		local x1, y1, x2, y2  = x1 or 9, y1 or 2, x2 or -9, y2 or 0
@@ -153,9 +144,10 @@ function aObj:MasterPlan() -- LoD (v 0.80)
 		end
 		local obj = pf:GetParent()
 		local frame = self:getChild(obj, obj:GetNumChildren())
-		if frame.Affinity then
-			self:addButtonBorder{obj=frame.Affinity}
+		if frame.ClassSpec then
 			self:addButtonBorder{obj=frame.ClassSpec}
+			self:addButtonBorder{obj=frame.Affinity}
+			self:addButtonBorder{obj=frame.Missions}
 			self:Unhook("GarrisonMissionFrame_SetFollowerPortrait")
 		end
 		obj, frame = nil, nil
@@ -171,7 +163,31 @@ function aObj:MasterPlan() -- LoD (v 0.80)
 	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.affin}
 	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.stats, nb=true}
 
-	-- Can't access UpgradesFrame to remove item name texture, as it is local to the Addon and can't be accessed externally
+	-- UpgradesFrame
+	local frame = _G.EnumerateFrames()
+
+	while frame do
+
+		if frame.IsObjectType -- handle object not being a frame !?
+		and frame:IsObjectType("FRAME")
+		and frame:GetName() == nil
+		and frame:GetParent() == nil
+		and frame:GetWidth(237)
+		and frame:GetHeight(42)
+		and frame.GetBackdropBorderColor and frame:GetBackdropBorderColor()
+		then
+			self:SecureHook(frame, "Update", function(this, liveUpdate)
+				local kids = {this:GetChildren()}
+				for _, child in _G.ipairs(kids) do
+					child.Border:SetTexture(nil)
+				end
+				kids = nil
+			end)
+			break
+		end
+
+		frame = _G.EnumerateFrames(frame)
+	end
 
 	-- GarrisonShipyard
 	self:SecureHook(_G.GarrisonShipyardFrame, "ShowMission", function(this, ...)
@@ -222,6 +238,12 @@ function aObj:MasterPlan() -- LoD (v 0.80)
 	skinTab(lpa.Tab, 4, _G.GarrisonLandingPage, 5, -8, -4, -3)
 	lpa.Tab.sf.ignore = true -- ignore size changes
 	_G.PanelTemplates_SetNumTabs(_G.GarrisonLandingPage, 4)
+	-- fix tab textures for Tab4 on GarrisonLandingPage
+	self:SecureHook("GarrisonLandingPageTab_SetTab", function(...)
+		if _G.GarrisonLandingPage.selectedTab == 4 then
+			_G.PanelTemplates_UpdateTabs(_G.GarrisonLandingPage)
+		end
+	end)
 
 	local sc3 = lpa.List:GetScrollChild()
 	local bar3 = self:getChild(lpa.List, 1)

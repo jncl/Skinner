@@ -4,15 +4,16 @@ local _G = _G
 
 function aObj:PowerAuras()
 
+-->>-- Config Frame
 	self:moveObject{obj=_G.PowaOptionsHeader, y=-9}
 	self:addSkinFrame{obj=_G.PowaOptionsPlayerListFrame}
 	self:addSkinFrame{obj=_G.PowaOptionsGlobalListFrame, y1=2}
 	self:addSkinFrame{obj=_G.PowaOptionsSelectorFrame, y2=-4}
 	self:skinEditBox{obj=_G.PowaOptionsRenameEditBox, regs={9}}
 	self:addSkinFrame{obj=_G.PowaOptionsFrame, kfs=true, bgen=0, ofs=-8}
--->>-- Config Frame
-	self:moveObject{obj=_G.PowaCloseButton, x=5, y=5}
-	self:addSkinFrame{obj=_G.PowaBarConfigFrame, kfs=true}
+	self:moveObject{obj=_G.PowaOptionsFrameCloseButton, x=5, y=5}
+	self:addSkinFrame{obj=_G.PowaOptionsFrame, kfs=true}
+
 	-- top Panel
 	self:skinDropDown{obj=_G.PowaGradientStyleDropDown}
 	self:skinDropDown{obj=_G.PowaModelCategoryDropDown}

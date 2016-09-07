@@ -4,8 +4,6 @@ local _G = _G
 
 function aObj:Skada()
 
-	-- TODO make Skin frame fit window
-
 	local function changeSettings(db)
 
 		db.barcolor = _G.CopyTable(aObj.db.profile.StatusBar)
@@ -15,9 +13,7 @@ function aObj:Skada()
 		db.background.texture = aObj.db.profile.BdTexture
 		db.background.margin = aObj.db.profile.BdInset
 		-- change if using default value
-		if db.background.borderthickness == 2 then
-			db.background.borderthicknes = aObj.db.profile.BdEdgeSize
-		end
+		if db.background.borderthickness == 2 then db.background.borderthickness = 0 end
 		db.background.bordertexture = aObj.db.profile.BdBorderTexture
 		db.background.color = aObj.db.profile.Backdrop
 

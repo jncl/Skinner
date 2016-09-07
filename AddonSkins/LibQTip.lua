@@ -13,7 +13,7 @@ function aObj:LibQTip()
 		local function skinLTTooltips(lib)
 
 			for key, tooltip in lib:IterateTooltips() do
---	 			aObj:Debug("%s:[%s, %s]", lib, key, tooltip)
+	 			-- aObj:Debug("skinLTTooltips:[%s, %s, %s]", lib, key, tooltip)
 				-- ignore tooltips if required
 				if not aObj.ignoreLQTT[key] then
 					if not tooltip.sknd then
@@ -30,7 +30,11 @@ function aObj:LibQTip()
 		end)
 		-- hook this to handle tooltips being released
 		self:SecureHook(lqt, "Release", function(this, tt)
-			if tt then tt.sknd = nil end
+			-- aObj:Debug("lqt Release: [%s, %s, %s]", this, tt, tt.sknd)
+			-- handle already skinned
+			if tt.sknd then
+				tt.sknd = nil
+			end
 		end)
 		-- skin any existing ones
 		skinLTTooltips(lqt)
