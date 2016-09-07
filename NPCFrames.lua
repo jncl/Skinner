@@ -500,9 +500,6 @@ function aObj:QuestInfo()
 		frame.ItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		frame.PlayerTitleText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- SpellReward
-		for spellLine in frame.spellHeaderPool:EnumerateActive() do
-			spellLine:SetVertexColor(aObj.BTr, aObj.BTg, aObj.BTb)
-		end
 		for spellBtn in frame.spellRewardPool:EnumerateActive() do
 			self:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon}
 			spellBtn.NameFrame:SetTexture(nil)
@@ -514,6 +511,9 @@ function aObj:QuestInfo()
 			flwrBtn.PortraitFrame.PortraitRing:SetTexture(nil)
 			flwrBtn.PortraitFrame.LevelBorder:SetAlpha(0) -- texture changed
 			if flwrBtn.PortraitFrame.PortraitRingCover then flwrBtn.PortraitFrame.PortraitRingCover:SetTexture(nil) end
+		end
+		for spellLine in frame.spellHeaderPool:EnumerateActive() do
+			spellLine:SetVertexColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		end
 
 	end
@@ -538,13 +538,18 @@ function aObj:QuestInfo()
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+
+		-- skin rewards
+		skinRewards(_G.QuestInfoRewardsFrame)
+		skinRewards(_G.MapQuestInfoRewardsFrame)
+
 		-- change text colour for all spell rewards (spells, followers etc)
 		for spellLine in _G.QuestInfoRewardsFrame.spellHeaderPool:EnumerateActive() do
 			spellLine:SetVertexColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		end
-
-		-- skin rewards
-		skinRewards(_G.QuestInfoRewardsFrame)
+		for spellLine in _G.MapQuestInfoRewardsFrame.spellHeaderPool:EnumerateActive() do
+			spellLine:SetVertexColor(aObj.BTr, aObj.BTg, aObj.BTb)
+		end
 
 		-- Objectives
 		local obj, r, g, b
@@ -609,9 +614,10 @@ function aObj:QuestInfo()
 	end
 
 	local function skinQIRB(rewardsFrame, index)
+		-- aObj:Debug("skinQIRB: [%s, %s]", rewardsFrame, index)
 		-- N.B. The MapQuestInfoRewardsFrame uses SmallItemButtonTemplate (libt works atm)
 		if rewardsFrame
-		and not rewardsFrame.RewardButtons[index].sknd
+		and not rewardsFrame.RewardButtons[index].sbb
 		then
 			rewardsFrame.RewardButtons[index].NameFrame:SetTexture(nil)
 			aObj:addButtonBorder{obj=rewardsFrame.RewardButtons[index], libt=true}
