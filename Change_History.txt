@@ -1,3 +1,20 @@
+b7.22423.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Code tidyup
+	Bugfix for UIButtons skin
+	Updated UnitFrames skins
+	Updated StatusBar skinning code to hook SetTexture function as required
+	Updated Collections skin to handle Models properly
+	Updated AchievementsUI skin
+	Updated AlertFrame skins
+	Removed code to handle animation whiteouts as it is no longer required
+	Updated TalkingHeadsUI skin
+	Updated ChatBubbles skin
+	Handle CompactRaidFrames being disabled
+	Skinned ArkDewdrop, ArkInventory & Skada skins
+
 b7.22423.1
 Jncl:
 	ToDo.txt
