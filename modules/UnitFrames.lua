@@ -334,7 +334,7 @@ local function addSkinFrame(frame)
 		-- TargetofTarget Frame
 		skinUnitFrame{obj=fo.totFrame, x2=4, y2=4}
 		skinCommon(frame .. "ToT", true)
-		-- aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
+		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 	end
 
 	fo, isBoss, xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil, nil, nil
