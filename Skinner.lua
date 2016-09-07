@@ -25,9 +25,11 @@ do
 
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
+	-- player level
+	aObj.uLvl = _G.UnitLevel("player")
 
-	local liveInfo = {"7.0.3", 22423}
-	local ptrInfo = {"7.0.3", 22423}
+	local liveInfo = {"7.0.3", 22566}
+	local ptrInfo = {"7.0.3", 22522}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -235,7 +237,7 @@ function aObj:OnInitialize()
 	self.esTex = [[Interface\Buttons\UI-Quickslot2]]
 
 	-- class table
-	self.classTable = {"DeathKnight", "Druid", "Hunter", "Mage", "Monk", "Paladin", "Priest", "Rogue", "Shaman", "Warlock", "Warrior"}
+	self.classTable = {"DeathKnight", "DemonHunter", "Druid", "Hunter", "Mage", "Monk", "Paladin", "Priest", "Rogue", "Shaman", "Warlock", "Warrior"}
 
 	-- store Addons managed by LoadManagers
 	self.lmAddons = {}
@@ -261,6 +263,15 @@ function aObj:OnInitialize()
 end
 
 function aObj:OnEnable()
+
+	-- handle InCombat issues
+	self.oocTab = {}
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+		for _, v in pairs(self.oocTab) do
+			v[1](unpack(v[2]))
+		end
+		_G.wipe(self.oocTab)
+	end)
 
 	-- change option name
 	if self.db.profile.ClassColours then
@@ -337,15 +348,6 @@ function aObj:OnEnable()
 			end
 		end)
 	end
-
-	-- handle InCombat issues
-	self.oocTab = {}
-	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-		for _, v in pairs(self.oocTab) do
-			v[1](unpack(v[2]))
-		end
-		_G.wipe(self.oocTab)
-	end)
 
 --@debug@
 	self:SetupCmds()
@@ -1420,8 +1422,8 @@ local function __skinDropDown(opts)
 	-- add texture
 	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK")
 	opts.obj.ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
-	opts.obj.ddTex:SetPoint("LEFT", _G[opts.obj:GetName() .. "Left"], "RIGHT", -5, 2)
-	opts.obj.ddTex:SetPoint("RIGHT", _G[opts.obj:GetName() .. "Right"], "LEFT", 5, 2)
+	opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -5, 2)
+	opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", 5, 2)
 	opts.obj.ddTex:SetHeight(18)
 
 	local xOfs1 = opts.x1 or 15
@@ -1434,7 +1436,7 @@ local function __skinDropDown(opts)
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
-		aObj:addButtonBorder{obj=_G[opts.obj:GetName() .. "Button"], es=12, ofs=-2}
+		aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2}
 	end
 
 	-- stop dropdowns being skinned when IOF panel opened
