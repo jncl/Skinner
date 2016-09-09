@@ -12,7 +12,7 @@ local blizzLoDFrames = {
  	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
 	"BarbershopUI", "BlackMarketUI", "FlightMap", "ItemUpgradeUI", "QuestChoice", "TrainerUI", "VoidStorageUI",
 	-- ui
-	"AdventureMap", "ArtifactUI", "BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GarrisonUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "ObliterumUI", "OrderHallUI", "StoreUI", "TalkingHeadUI", "TimeManager", "WowTokenUI"
+	"AdventureMap", "ArtifactUI", "BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GarrisonUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "ObliterumUI", "OrderHallUI", "StoreUI", "TalkingHeadUI", "TimeManager", "WowTokenUI",
 	--	unitframes
 	"ArenaUI",
 }
