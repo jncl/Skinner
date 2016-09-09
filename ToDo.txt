@@ -103,19 +103,22 @@ x			- MixinUtil
 	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
 		- e.g. GameMenu buttons, Close Button(s)
 
-√	I	Altoholic, reported by Shimiya,21.08.16
-		- Skinner\Skinner-b7.22423.2.lua:1423: attempt to concatenate a nil value
-Skinner\Skinner-b7.22423.2.lua:1467: in function `skinDropDown'
-Skinner\SkinMe\Altoholic-r171.lua:117: in function <Skinner\SkinMe\Altoholic.lua:113>
-
-x	I	MasterPLan, reported byNeoZeus, 23.08.16
-		- Skinner\SkinMe\MasterPlan-0.101.lua:148: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-
-	N	PowerAuras, reported by sausje, 26.08.16
-		-
-
-	I	ArtifactBar
-		- needs moving up 3 pixels ?
-
-	I	Rarity, reported by sausje, 06.09.16
+?	I	Rarity, reported by sausje, 06.09.16
 		- causes UI elements to not be skinned
+
+	I	RaidFrame border
+		- reverts to original border texture if rescaled or moved
+
+	I	Skada
+		- reset window not skinned
+
+	I	QuestList
+		- quest icon/number buttons shouldn't be skinned
+
+	I	WorldMapFrame.UIElementsFrame.BountyBoard needs skinning
+
+	I	Minimap
+√		- ZoneText button needs to be 1 pixel wider on both sides
+
+	I	ObjectiveTracker
+≈		- WorldQuest ProgressBar not skinned
