@@ -686,7 +686,7 @@ function aObj:TrainerUI() -- LoD
 	local btn = _G.ClassTrainerFrame.skillStepButton
 	btn:GetNormalTexture():SetTexture(nil)
 	self:addButtonBorder{obj=btn, relTo=btn.icon}
-	self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar}
+	self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar, adj=-4, size=3}
 	self:removeInset(_G.ClassTrainerFrame.bottomInset)
 	for i = 1, #_G.ClassTrainerFrame.scrollFrame.buttons do
 		btn = _G.ClassTrainerFrame.scrollFrame.buttons[i]
