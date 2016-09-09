@@ -2198,9 +2198,7 @@ function aObj:MainMenuBar()
 
 	-- adjust offset dependant upon player level
 	local function moveWatchBar(bar)
---@debug@
-		aObj:Debug("moveWatchBar: [%s, %s, %s]", aObj.uLvl,  _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()], _G.GetExpansionLevel())
---@end-debug@
+		-- aObj:Debug("moveWatchBar: [%s, %s, %s]", aObj.uLvl,  _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()], _G.GetExpansionLevel())
 		aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4} -- move it above MainMenuBar
 		bar.SetPoint = function() end -- stop it being moved
 	end
@@ -2583,7 +2581,7 @@ function aObj:Minimap()
 	_G.MinimapZoneTextButton:SetPoint("BOTTOMRIGHT", _G.Minimap, "TOPRIGHT", 0, 5)
 	_G.MinimapZoneText:ClearAllPoints()
 	_G.MinimapZoneText:SetPoint("CENTER")
-	self:addSkinButton{obj=_G.MinimapZoneTextButton, parent=_G.MinimapZoneTextButton, ft=ftype}
+	self:addSkinButton{obj=_G.MinimapZoneTextButton, parent=_G.MinimapZoneTextButton, ft=ftype, x1=-5, x2=5}
 	-- World Map Button
 	_G.MiniMapWorldMapButton:ClearAllPoints()
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
@@ -2973,10 +2971,10 @@ function aObj:OrderHallUI() --LoD
 	self:skinButton{obj=_G.OrderHallMissionFrame.CloseButton, cb=true}
 	_G.OrderHallMissionFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
 	-- don't skin buttons, otherwise Tab buttons get skinned  as well
-	aObj:addSkinFrame{obj=_G.OrderHallMissionFrame, ft=ftype, kfs=true, nb=true, x1=2, y1=3, x2=1, y2=-4}
+	self:addSkinFrame{obj=_G.OrderHallMissionFrame, ft=ftype, kfs=true, nb=true, x1=2, y1=3, x2=1, y2=-4}
 	_G.OrderHallMissionFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 	-- tabs
-	aObj:skinTabs{obj=_G.OrderHallMissionFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-4}
+	self:skinTabs{obj=_G.OrderHallMissionFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-4}
 
 	-- FollowerList
 	local fl = _G.OrderHallMissionFrame.FollowerList
@@ -2984,14 +2982,14 @@ function aObj:OrderHallUI() --LoD
 	fl.MaterialFrame:DisableDrawLayer("BACKGROUND")
 	-- if FollowerList not yet populated, hook the function
 	if not fl.listScroll.buttons then
-		aObj:SecureHook(fl, "Initialize", function(this, ...)
+		self:SecureHook(fl, "Initialize", function(this, ...)
 			skinFollowerList(this)
 			aObj:Unhook(fl, "Initialize")
 		end)
 	else
 		skinFollowerList(fl)
 	end
-	aObj:SecureHook(fl, "ShowFollower", function(this, id)
+	self:SecureHook(fl, "ShowFollower", function(this, id)
 		skinFollowerAbilitiesAndCounters(this, id)
 	end)
 	fl = nil
@@ -3007,17 +3005,17 @@ function aObj:OrderHallUI() --LoD
 	for i = 1, 2 do
 		tab = ml["Tab" .. i]
 		tab:DisableDrawLayer("BORDER")
-		aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT}
+		self:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT}
 		tab.sf.ignore = true -- don't change tab size
-		if aObj.isTT then
+		if self.isTT then
 			if i == 1 then
-				aObj:setActiveTab(tab.sf)
+				self:setActiveTab(tab.sf)
 			else
-				aObj:setInactiveTab(tab.sf)
+				self:setInactiveTab(tab.sf)
 			end
 		end
 	end
-	aObj:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
+	self:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
 	local btn
 	for i = 1, #ml.listScroll.buttons do
 		btn = ml.listScroll.buttons[i]
@@ -3030,10 +3028,10 @@ function aObj:OrderHallUI() --LoD
         btn.HighlightB:ClearAllPoints()
         btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
         btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
-		aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
+		self:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
 		addLineTex(btn, i)
 		for i = 1, #btn.Rewards do
-			aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
+			self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
 		end
 	end
 
@@ -3041,18 +3039,22 @@ function aObj:OrderHallUI() --LoD
 	ml.CombatAllyUI.Background:SetTexture(nil)
 	ml.CombatAllyUI.Available.AddFollowerButton.EmptyPortrait:SetTexture(nil)
 	skinPortrait(ml.CombatAllyUI.InProgress.PortraitFrame)
+	self:skinButton{obj=ml.CombatAllyUI.InProgress.Unassign}
 
 	-- CompleteDialog
 	skinCompleteDialog(ml.CompleteDialog)
 	ml = nil
 
-	-- ZoneSupportMissionPage
+	_G.OrderHallMissionFrame.MissionTab.ZoneSupportMissionPageBackground:DisableDrawLayer("BACKGROUND")
+	-- ZoneSupportMissionPage (i.e. Combat Ally selection page)
 	local zs = _G.OrderHallMissionFrame.MissionTab.ZoneSupportMissionPage
+	-- remove frame textures
+	zs:DisableDrawLayer("BACKGROUND")
+	zs:DisableDrawLayer("BORDER")
 	zs.CombatAllyLabel.TextBackground:SetTexture(nil)
 	zs.ButtonFrame:SetTexture(nil)
 	zs.Follower1:DisableDrawLayer("BACKGROUND")
 	skinPortrait(zs.Follower1.PortraitFrame)
-	self:addSkinFrame{obj=zs, ft=ftype, kfs=true} -- this is just the Follower panel
 	zs.CloseButton:SetSize(32, 32)
 
 	-- MissionPage
@@ -3060,13 +3062,13 @@ function aObj:OrderHallUI() --LoD
 	skinMissionPage(mp)
 	mp.CloseButton:SetSize(28, 28)
 	for i = 1, #mp.Followers do
-		aObj:removeRegions(mp.Followers[i], {1})
+		self:removeRegions(mp.Followers[i], {1})
 		skinPortrait(mp.Followers[i].PortraitFrame)
 	end
 	for i = 1, #mp.Enemies do
 		mp.Enemies[i].PortraitFrame.PortraitRing:SetTexture(nil)
 	end
-	aObj:moveObject{obj=mp.FollowerModel, x=-6, y=0}
+	self:moveObject{obj=mp.FollowerModel, x=-6, y=0}
 	mp = nil
 
 	-->>-- FollowerTab
@@ -3079,7 +3081,7 @@ function aObj:OrderHallUI() --LoD
 	for i = 1, #mc.Stage.EncountersFrame.Encounters do
 		mc.Stage.EncountersFrame.Encounters[i].Ring:SetTexture(nil)
 	end
-    aObj:rmRegionsTex(mc.Stage.MissionInfo, {1, 2, 3, 4, 5, 11, 12, 13})
+    self:rmRegionsTex(mc.Stage.MissionInfo, {1, 2, 3, 4, 5, 11, 12, 13})
 	mc = nil
 
 	-->>-- MapTab
@@ -3807,14 +3809,23 @@ function aObj:WorldMap()
 	self:skinButton{obj=_G.WorldMapFrameSizeUpButton, ob3="↕"} -- up-down arrow
 	_G.WorldMapFrame.MainHelpButton.Ring:SetTexture(nil)
 	self:skinDropDown{obj=_G.WorldMapTitleDropDown}
-	self:skinDropDown{obj=_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.DropDown}
-	_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.Border:SetTexture(nil)
-	self:skinButton{obj=_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button}
-	if _G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.sb then
+	self:skinDropDown{obj=_G.WorldMapLevelDropDown}
+	-- UIElementsFrame
+	local uie = _G.WorldMapFrame.UIElementsFrame
+	self:skinDropDown{obj=uie.TrackingOptionsButton.DropDown}
+	uie.TrackingOptionsButton.Button.Border:SetTexture(nil)
+	self:skinButton{obj=uie.TrackingOptionsButton.Button}
+	if uie.TrackingOptionsButton.Button.sb then
 		_G.LowerFrameLevel(_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.sb)
 	end
-	self:addButtonBorder{obj=_G.WorldMapFrame.UIElementsFrame.OpenQuestPanelButton}
-	self:addButtonBorder{obj=_G.WorldMapFrame.UIElementsFrame.CloseQuestPanelButton}
+	self:addButtonBorder{obj=uie.OpenQuestPanelButton}
+	self:addButtonBorder{obj=uie.CloseQuestPanelButton}
+	-- BountyBoard
+	uie.BountyBoard:DisableDrawLayer("BACKGROUND")
+	-- ActionButton
+
+	uie = nil
+
 	-->>-- Nav Bar
 	_G.WorldMapFrame.NavBar:DisableDrawLayer("BACKGROUND")
 	_G.WorldMapFrame.NavBar:DisableDrawLayer("BORDER")
@@ -3824,11 +3835,9 @@ function aObj:WorldMap()
 	_G.WorldMapFrame.NavBar.home:GetPushedTexture():SetAlpha(0)
 	_G.WorldMapFrame.NavBar.home.text:SetPoint("RIGHT", -20, 0)
 
-	self:skinDropDown{obj=_G.WorldMapLevelDropDown}
-
 -->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
-		self:add2Table(self.ttList, "WorldMapTooltip")
+		self:add2Table(self.ttList, _G.WorldMapTooltip.BackdropFrame)
 		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
 	end
