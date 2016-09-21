@@ -28,6 +28,7 @@ local function makeText(a1, ...)
 		for i = 1, select('#', ...) do
 			tmpTab[i] = makeString(select(i, ...))
 		end
+		tmpTab[#tmpTab + 1] = "nil" -- handle 1 missing variable
 		output = output .. " " .. a1:format(_G.unpack(tmpTab))
 	else
 		tmpTab[1] = output
