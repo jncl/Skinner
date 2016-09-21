@@ -63,7 +63,7 @@ local function skinUnitFrame(opts)
 	local yOfs2 = opts.y2 or opts.ofs * -1
 	aObj:addSkinFrame{obj=opts.obj, ft=ftype, sec=true, aso={bd=11, ng=true}, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	opts.obj.sf:SetBackdropColor(.1, .1, .1, db.alpha) -- use dark background
-
+	opts.obj.sf:EnableMouse(false) -- enable clickthrough
 
 end
 local function fixThreat(tex)
@@ -77,17 +77,6 @@ local function fixThreat(tex)
 	tex.SetWidth = function() end
 	tex.SetHeight = function() end
 	tex.SetPoint = function() end
-
-end
-local function skinPowerBarAlt(frame)
-
-	frame.background:SetAlpha(0)
-	frame.frame:SetAlpha(0)
-	-- counter bar
-	frame.counterBar:DisableDrawLayer("BACKGROUND")
-	frame.counterBar:DisableDrawLayer("ARTWORK")
-	-- status frame
-	aObj:glazeStatusBar(frame.statusFrame, 0,  nil)
 
 end
 local function skinPlayerF()
@@ -116,8 +105,7 @@ local function skinPlayerF()
 		aObj:glazeStatusBar(_G.PlayerFrameAlternateManaBar, 0, _G.PlayerFrameAlternateManaBar.DefaultBackground)
 		aObj:moveObject{obj=_G.PlayerFrameAlternateManaBar, y=1}
 
-		-- PowerBarAlt
-		skinPowerBarAlt(_G.PlayerPowerBarAlt)
+		-- PowerBarAlt handled in MainMenuBar function (UIF)
 
 		-- casting bar handled in CastingBar function (PF)
 
@@ -327,7 +315,7 @@ local function addSkinFrame(frame)
 	aObj:changeShield(fo.spellbar.BorderShield, fo.spellbar.Icon)
 	aObj:glazeStatusBar(fo.spellbar, 0, aObj:getRegion(fo.spellbar, 1), {fo.spellbar.Flash})
 
-	skinPowerBarAlt(fo.powerBarAlt)
+	-- PowerBarAlt handled in MainMenuBar function (UIF)
 
 	-- Boss frames don't have a ToT frame
 	if not isBoss then
@@ -421,7 +409,7 @@ local function skinPartyF()
 			aObj:glazeStatusBar(_G[pMF .. "HealthBar"], 0, nil)
 			aObj:glazeStatusBar(_G[pMF .. "ManaBar"], 0, nil, nil, true)
 
-			skinPowerBarAlt(_G[pMF .. "PowerBarAlt"])
+			-- PowerBarAlt handled in MainMenuBar function (UIF)
 
 			-- pet frame
 			pPF = pMF .. "PetFrame"
