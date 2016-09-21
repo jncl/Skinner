@@ -191,8 +191,18 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 
 	-- GarrisonShipyard
 	self:SecureHook(_G.GarrisonShipyardFrame, "ShowMission", function(this, ...)
-		local mpc = this.MissionTab.MissionPage:GetNumChildren() -- should be 17
-		local groups = self:getChild(this.MissionTab.MissionPage, mpc - 3)
+		local groups, kNum
+		local kids = {this.MissionTab.MissionPage:GetChildren()}
+		for k, child in _G.ipairs(kids) do
+			if self:getInt(child:GetWidth()) == 410
+			and self:getInt(child:GetHeight()) == 24
+			then
+				groups = child
+				kNum = k
+				break
+			end
+		end
+		kids = nil
 		for i = 1, #groups.buttons do
 			for j = 1, #groups.buttons[i].tex do
 				groups.buttons[i].tex[j]:SetTexture(nil)
@@ -200,13 +210,14 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 			self:skinButton{obj=groups.buttons[i]}
 		end
 		-- minimize button
-		self:skinButton{obj=self:getChild(this.MissionTab.MissionPage, mpc - 2), ob="-"}
+		self:skinButton{obj=self:getChild(this.MissionTab.MissionPage, kNum + 1), ob="-"}
 
 		-- hook this to skin refit frame
-		self:SecureHookScript(self:getChild(this.MissionTab.MissionPage, mpc - 1), "OnClick", function(this)
+		self:SecureHookScript(self:getChild(this.MissionTab.MissionPage, kNum + 2), "OnClick", function(this)
 			self:addSkinFrame{obj=self:getChild(this:GetParent(), this:GetParent():GetNumChildren())}
 			self:Unhook(this, "OnClick")
 		end)
+		groups, kNum = nil, nil
 		self:Unhook(_G.GarrisonShipyardFrame, "ShowMission")
 	end)
 
@@ -218,19 +229,15 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 	skinTab(_G.GarrisonShipyardFrameTab3, 3, _G.GarrisonShipyardFrame)
 	_G.PanelTemplates_SetNumTabs(_G.GarrisonShipyardFrame, 3)
 
-	_G.GarrisonShipyardFrame.InterestTab:DisableDrawLayer("BACKGROUND")
-	_G.GarrisonShipyardFrame.InterestTab:DisableDrawLayer("BORDER")
-	local sf2 = self:getChild(_G.GarrisonShipyardFrame.InterestTab, 1) -- scroll frame
-	local sc2 = sf2:GetScrollChild()
-	local bar2 = self:getChild(sf2, 1)
-	self:skinSlider{obj=bar2, adj=-4}
-
-	-- hook this to skin new buttons
-	self:SecureHookScript(bar2, "OnValueChanged", function(this, ...)
-		skinMissionButtons(sc2, "Button", false)
+	local sit = _G.GarrisonShipyardFrame.InterestTab
+	sit:DisableDrawLayer("BACKGROUND")
+	sit:DisableDrawLayer("BORDER")
+	self:skinSlider{obj=sit.List.Bar, adj=-4}
+	-- hook this to skin buttons
+	self:SecureHookScript(sit.List.Bar, "OnValueChanged", function(this, ...)
+		skinMissionButtons(this:GetParent():GetScrollChild(), "Button", true)
 	end)
-	-- skin any existing buttons, first time displayed
-	skinMissionButtons(sc2, "Button", false)
+	sit = nil
 
 	-- MPLandingPageAlts
 	local lpa = _G.MPLandingPageAlts
@@ -244,17 +251,12 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 			_G.PanelTemplates_UpdateTabs(_G.GarrisonLandingPage)
 		end
 	end)
-
-	local sc3 = lpa.List:GetScrollChild()
-	local bar3 = self:getChild(lpa.List, 1)
-	self:skinSlider{obj=bar3, adj=-4}
-
+	self:skinSlider{obj=lpa.List.Bar, adj=-4}
 	-- hook this to skin new buttons
-	self:SecureHookScript(bar3, "OnValueChanged", function(this, ...)
-		skinMissionButtons(sc3, "Frame", false)
+	self:SecureHookScript(lpa.List.Bar, "OnValueChanged", function(this, ...)
+		skinMissionButtons(this:GetParent():GetScrollChild(), "Frame", false)
 	end)
-	-- skin any existing buttons, first time displayed
-	skinMissionButtons(sc3, "Frame", false)
+	lpa = nil
 
 	-- find activeUI waste popup frame
 	self.RegisterCallback("MasterPlan", "UIParent_GetChildren", function(this, child)

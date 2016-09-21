@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Auc-Advanced") then return end
 local _G = _G
 
-function aObj:AucAdvanced()
+function aObj:AucAdvanced() -- 7.1.5675
 	if not self.db.profile.AuctionUI then return end
 
 	-- check version, if not a specified release or beta then default the version to 9
@@ -12,6 +12,7 @@ function aObj:AucAdvanced()
 		["5.10"] = 3,
 		["5.11"] = 4,
 		["5.15"] = 5,
+		["7.1"] = 5,
 	}
 	local aVer = _G.GetAddOnMetadata("Auc-Advanced", "Version")
 	local ver = vTab[aVer:match("(%d.%d+).%d+")] or 9
@@ -63,8 +64,8 @@ function aObj:AucAdvanced()
 			frame.slot:SetTexture(self.esTex)
 			self:skinMoneyFrame{obj=frame.minprice, noWidth=true, moveSEB=true}
 			self:skinMoneyFrame{obj=frame.buyout, noWidth=true, moveSEB=true}
-			self:skinEditBox{obj=frame.stacks.num, regs={9}}
-			self:skinEditBox{obj=frame.stacks.size, regs={9}}
+			self:skinEditBox{obj=frame.stacks.num, regs={6}}
+			self:skinEditBox{obj=frame.stacks.size, regs={6}}
 			self:skinButton{obj=frame.create}
 			self:skinButton{obj=frame.clear}
 			self:skinButton{obj=frame.config}
@@ -89,11 +90,11 @@ function aObj:AucAdvanced()
 				self:Unhook(mod, "CreateAuctionFrames")
 			end)
 		end
-		self:SecureHook(mod, "MakeGuiConfig", function()
+		self:SecureHook(mod.Processors, "auctionui", function()
 			local gui = mod.Private.gui
 			gui.frame.progressbar:SetBackdrop(nil)
 			self:glazeStatusBar(gui.frame.progressbar, 0)
-			self:skinEditBox{obj=gui.saves.name, regs={9}}
+			self:skinEditBox{obj=gui.saves.name, regs={6}}
 			self:skinMoneyFrame{obj=gui.frame.bidbox, noWidth=true, moveSEB=true}
 			self:skinButton{obj=gui.saves.load}
 			self:skinButton{obj=gui.saves.save}
@@ -110,14 +111,9 @@ function aObj:AucAdvanced()
 			self:skinButton{obj=gui.frame.buyout}
 			self:skinButton{obj=gui.frame.bid}
 			self:skinButton{obj=gui.frame.progressbar.cancel}
-			-- scan the gui tabs for known objects
-			for i = 1, #gui.tabs do
-				local frame = gui.tabs[i].content
-				if frame.money and frame.money.isMoneyFrame then
-					aObj:skinMoneyFrame{obj=frame.money, noWidth=true, moveSEB=true}
-				end
-			end
-			self:Unhook(mod, "MakeGuiConfig")
+			gui.AuctionFrame.money:SetTexture(nil)
+			self:addSkinFrame{obj=gui.AuctionFrame.backing}
+			self:Unhook(mod.Processors, "auctionui")
 		end)
 		-- control button for the RealTimeSearch
 		local lib = mod.Searchers["RealTime"]
@@ -146,7 +142,7 @@ function aObj:AucAdvanced()
 			local function skinSnatch()
 
 				lib.Private.frame.slot:SetTexture(aObj.esTex)
-				aObj:skinEditBox{obj=lib.Private.frame.pctBox, regs={9}}
+				aObj:skinEditBox{obj=lib.Private.frame.pctBox, regs={6}}
 				aObj:skinButton{obj=lib.Private.frame.additem, as=true} -- just skin it otherwise text is hidden
 				aObj:skinButton{obj=lib.Private.frame.removeitem, as=true} -- just skin it otherwise text is hidden
 				aObj:skinButton{obj=lib.Private.frame.resetList, as=true} -- just skin it otherwise text is hidden
@@ -178,9 +174,9 @@ function aObj:AucAdvanced()
 	-- Appraiser
 	local mod = _G.AucAdvanced.Modules.Util.Appraiser
 	if mod then
-		local function skinFrames()
+		local function skinFrame()
 
-			local frame = mod.Private.frame
+			local frame = _G.AucAdvAppraiserFrame
 			aObj:skinButton{obj=frame.toggleManifest}
 			aObj:skinButton{obj=frame.config}
 			aObj:moveObject{obj=frame.itembox.showAuctions, x=-10}
@@ -190,9 +186,9 @@ function aObj:AucAdvanced()
 			aObj:skinButton{obj=frame.switchToStack2, y1=1}
 			aObj:addSkinFrame{obj=frame.salebox}
 			frame.salebox.slot:SetTexture(aObj.esTex)
-			aObj:skinEditBox{obj=frame.salebox.stackentry, regs={9}, noWidth=true}
+			aObj:skinEditBox{obj=frame.salebox.stackentry, regs={6}, noWidth=true}
 			aObj:adjWidth{obj=frame.salebox.stackentry, adj=14}
-			aObj:skinEditBox{obj=frame.salebox.numberentry, regs={9}, noWidth=true}
+			aObj:skinEditBox{obj=frame.salebox.numberentry, regs={6}, noWidth=true}
 			aObj:adjWidth{obj=frame.salebox.numberentry, adj=14}
 			aObj:skinDropDown{obj=frame.salebox.model}
 			aObj:skinMoneyFrame{obj=frame.salebox.bid, noWidth=true, moveSEB=true, moveGEB=true}
@@ -211,13 +207,13 @@ function aObj:AucAdvanced()
 			aObj:skinButton{obj=frame.cancel, x1=-2, y1=1, x2=2}
 
 		end
-		if mod.Private.CreateFrames then
-			self:SecureHook(mod.Private, "CreateFrames", function()
-				skinFrames()
-				self:Unhook(mod.Private,"CreateFrames")
+		if not _G.AucAdvAppraiserFrame then
+			self:SecureHook(mod.Processors, "auctionui", function()
+				skinFrame()
+				self:Unhook(mod.Processors,"auctionui")
 			end)
 		else
-			skinFrames()
+			skinFrame()
 		end
 	end
 
@@ -285,7 +281,7 @@ function aObj:AucAdvanced()
 
 	-- Buy prompt
 	if _G.AucAdvanced.Buy then
-		self:skinEditBox{obj=_G.AucAdvanced.Buy.Private.Prompt.Reason, regs={9}}
+		self:skinEditBox{obj=_G.AucAdvanced.Buy.Private.Prompt.Reason, regs={6}}
 		self:skinButton{obj=_G.AucAdvanced.Buy.Private.Prompt.Yes}
 		self:skinButton{obj=_G.AucAdvanced.Buy.Private.Prompt.No}
 		self:addSkinFrame{obj=_G.AucAdvanced.Buy.Private.Prompt.Frame, nb=true}
@@ -297,4 +293,5 @@ function aObj:AucAdvanced()
 		self:skinButton{obj=_G.AucAdvanced.Post.Private.Prompt.No}
 		self:addSkinFrame{obj=_G.AucAdvanced.Post.Private.Prompt.Frame, nb=true}
 	end
+
 end

@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Armory") then return end
 local _G = _G
 
-function aObj:Armory()
+function aObj:Armory() -- 13.2.0
 
 -->>-- Static Popup
 	self:addSkinFrame{obj=_G.ArmoryStaticPopup, kfs=true}
@@ -99,16 +99,22 @@ function aObj:Armory()
 -->>-- Talents Tab
 	self:removeRegions(_G.ArmoryTalentFrame, {2}) -- horizontal line
 	_G.ArmoryTalentFrame.Spec.ring:SetAlpha(0)
-	for i = 1, 6 do
-		_G.ArmoryTalentFrame.Glyphs["Glyph" .. i].ring:SetAlpha(0)
-	end
 
 -->>-- PVP Tab
+	-- Tabs (top of frame)
+	for i = 1, 2 do
+		local tab = _G["ArmoryPVPFrameTab" .. i]
+		tab:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=tab, x1=4, y1=-6, x2=0, y2=-4}
+	end
+	-- Player vs. Player
 	self:keepFontStrings(_G.ArmoryPVPFrame)
 	self:skinButton{obj=_G.ArmoryConquestFrame.Arena2v2}
 	self:skinButton{obj=_G.ArmoryConquestFrame.Arena3v3}
-	self:skinButton{obj=_G.ArmoryConquestFrame.Arena5v5}
 	self:skinButton{obj=_G.ArmoryConquestFrame.RatedBG}
+	-- Honor Talents
+	_G.ArmoryPVPHonorXPBar.Frame:SetTexture(nil)
+	self:glazeStatusBar(_G.ArmoryPVPHonorXPBar.Bar, 0,  nil)
 	-- ArmoryConquest Tooltip
 	self:addSkinFrame{obj=_G.ArmoryConquestTooltip}
 
@@ -118,7 +124,7 @@ function aObj:Armory()
 	for i = 1, 4 do
 		local tab = _G["ArmoryOtherFrameTab" .. i]
 		tab:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=tab, x1=3, x2=-3}
+		self:addSkinFrame{obj=tab, x1=4, y1=0, x2=-1, y2=-4}
 	end
 	-- Reputation SubFrame
 	self:keepFontStrings(_G.ArmoryReputationFrame)
@@ -154,7 +160,7 @@ function aObj:Armory()
 
 -->>-- Inventory Tab
 	self:keepFontStrings(_G.ArmoryInventoryMoneyBackgroundFrame)
-	self:skinEditBox(_G.ArmoryInventoryFrameEditBox, {9})
+	self:skinEditBox(_G.ArmoryInventoryFrameEditBox, {6})
 	self:keepFontStrings(_G.ArmoryInventoryExpandButtonFrame)
 	self:skinButton{obj=_G.ArmoryInventoryCollapseAllButton, mp=true}
 	self:addSkinFrame{obj=_G.ArmoryInventoryFrame, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
@@ -222,28 +228,30 @@ function aObj:Armory()
 		_G.ArmoryQuestInfoTitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 		_G.ArmoryQuestInfoDescriptionHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 		_G.ArmoryQuestInfoObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.ArmoryQuestInfoRewardsHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.ArmoryQuestInfoRewardsFrame.Header:SetTextColor(self.HTr, self.HTg, self.HTb)
 		-- other text
 		_G.ArmoryQuestInfoDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.ArmoryQuestInfoObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.ArmoryQuestInfoGroupSize:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.ArmoryQuestInfoRewardText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		-- reward frame text
-		_G.ArmoryQuestInfoItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-        _G.ArmoryQuestInfoItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-        _G.ArmoryQuestInfoSpellLearnText:SetTextColor(self.BTr, self.BTg, self.BTb)
-        _G.ArmoryQuestInfoXPFrameReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		local r, g, b = _G.ArmoryQuestInfoRequiredMoneyText:GetTextColor()
-		_G.ArmoryQuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
-		-- objectives
-		for i = 1, _G.ARMORY_MAX_OBJECTIVES do
-			local r, g, b = _G["ArmoryQuestInfoObjective" .. i]:GetTextColor()
-			_G["ArmoryQuestInfoObjective" .. i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		_G.ArmoryQuestInfoRewardsFrame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+        _G.ArmoryQuestInfoRewardsFrame.ItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+        _G.ArmoryQuestInfoRewardsFrame.PlayerTitleText:SetTextColor(self.BTr, self.BTg, self.BTb)
+        _G.ArmoryQuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		-- objective(s)
+		for i = 1, #_G.ArmoryQuestInfoObjectivesFrame.Objectives do
+			local r, g, b = _G.ArmoryQuestInfoObjectivesFrame.Objectives[i]:GetTextColor()
+			 _G.ArmoryQuestInfoObjectivesFrame.Objectives[i]:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+		end
+		-- spell line(s)
+		for spellLine in _G.ArmoryQuestInfoRewardsFrame.spellHeaderPool:EnumerateActive() do
+			spellLine:SetVertexColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		end
 	end)
 	_G.ArmoryQuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ArmoryQuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinEditBox{obj=_G.ArmoryQuestFrameEditBox}
+	self:skinEditBox{obj=_G.ArmoryQuestFrameEditBox, regs={6}}
 	-- QuestLog frame
 	self:removeRegions(_G.ArmoryQuestLogCollapseAllButton, {5, 6, 7})
 	self:skinButton{obj=_G.ArmoryQuestLogCollapseAllButton, mp=true}
@@ -265,9 +273,6 @@ function aObj:Armory()
 	self:skinScrollBar{obj=_G.ArmoryQuestLogListScrollFrame}
 	self:skinScrollBar{obj=_G.ArmoryQuestLogDetailScrollFrame}
 	self:addSkinFrame{obj=_G.ArmoryQuestFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=52}
-	for i = 1, _G.ARMORY_MAX_NUM_ITEMS do
-		_G["ArmoryQuestInfoItem" .. i .. "NameFrame"]:SetTexture(nil)
-	end
 
 -->>-- Spellbook Tab
 	self:addSkinFrame{obj=_G.ArmorySpellBookFrame, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
@@ -312,27 +317,9 @@ function aObj:Armory()
 	for i = 1, _G.MAX_SKILLLINE_TABS do
 		self:removeRegions(_G["ArmorySpellBookSkillLineTab" .. i], {1}) -- N.B. other regions are icon and highlight
 	end
-	-- Core Abilities Tab
-	self:SecureHook("ArmorySpellBook_UpdateCoreAbilitiesTab", function()
-		for i = 1, #_G.ArmorySpellBookCoreAbilitiesFrame.Abilities do
-			local btn = _G.ArmorySpellBookCoreAbilitiesFrame.Abilities[i]
-			btn:DisableDrawLayer("BACKGROUND")
-			btn.InfoText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			btn.RequiredLevel:SetTextColor(self.BTr, self.BTg, self.BTb)
-			if not btn.sbb then self:addButtonBorder{obj=btn} end
-		end
-	end)
-	-- Tabs (side)
-	self:SecureHook("ArmorySpellBookCoreAbilities_UpdateTabs", function()
-		for i = 1, #_G.ArmorySpellBookCoreAbilitiesFrame.SpecTabs do
-			local tab = _G.ArmorySpellBookCoreAbilitiesFrame.SpecTabs[i]
-			self:removeRegions(tab, {1})
-		end
-	end)
 
 -->>-- Achievements Tab
-	-- TODO skin in a similar manner to quest frame/other rep frame, tabs as per spellbook
-	self:skinEditBox{obj=_G.ArmoryAchievementFrameEditBox, regs={9}}
+	self:skinEditBox{obj=_G.ArmoryAchievementFrameEditBox, regs={6}}
 	self:skinButton{obj=_G.ArmoryAchievementCollapseAllButton, mp=true}
 	_G.ArmoryAchievementCollapseAllButton:DisableDrawLayer("BACKGROUND")
 	self:skinScrollBar{obj=_G.ArmoryAchievementListScrollFrame}
@@ -342,8 +329,9 @@ function aObj:Armory()
 	self:skinTabs{obj=_G.ArmoryAchievementFrame, lod=true}
 	-- m/p buttons
 	for i = 1, _G.ARMORY_NUM_ACHIEVEMENTS_DISPLAYED do
+		self:removeRegions(_G["ArmoryAchievementBar" .. i], {1, 2, 3}) -- textures
 		self:skinButton{obj=_G["ArmoryAchievementBar" .. i .. "ExpandOrCollapseButton"], mp=true}
-		self:glazeStatusBar(_G["ArmoryAchievementBar" .. i .. "AchievementBar"], 0,  _G["ArmoryAchievementBar" .. i .. "Background"])
+		self:glazeStatusBar(_G["ArmoryAchievementBar" .. i .. "AchievementBar"], 0)
 		self:removeRegions(_G["ArmoryAchievementBar" .. i .. "AchievementBar"], {1, 2}) -- textures
 	end
 	if self.modBtns then
@@ -367,39 +355,45 @@ function aObj:Armory()
 	self:skinScrollBar{obj=_G.ArmoryEventsListScrollFrame}
 
 -->>-- Tradeskill Tabs
-	self:removeRegions(_G.ArmoryTradeSkillRankFrameBorder, {1}) -- N.B. region 2 is bar texture
-	self:glazeStatusBar(_G.ArmoryTradeSkillRankFrame, 0)
-	self:skinEditBox(_G.ArmoryTradeSkillFrameEditBox, {9})
-	self:moveObject{obj=_G.ArmoryTradeSkillFrameEditBox, y=2}
-	self:removeRegions(_G.ArmoryTradeSkillExpandButtonFrame)
-	self:skinDropDown{obj=_G.ArmoryTradeSkillSubClassDropDown}
-	self:skinDropDown{obj=_G.ArmoryTradeSkillInvSlotDropDown}
-	self:moveObject{obj=_G.ArmoryTradeSkillInvSlotDropDown, y=-2} -- shift for editbox visibility
-	self:skinScrollBar{obj=_G.ArmoryTradeSkillListScrollFrame}
-	self:skinScrollBar{obj=_G.ArmoryTradeSkillDetailScrollFrame}
-	self:keepFontStrings(_G.ArmoryTradeSkillDetailScrollChildFrame)
-	self:addButtonBorder{obj=_G.ArmoryTradeSkillSkillIcon}
+	self:removeRegions(_G.ArmoryTradeSkillFrame.RankFrame.Border, {1}) -- remove button texture
+	self:glazeStatusBar(_G.ArmoryTradeSkillFrame.RankFrame, 0)
+	self:skinEditBox{obj=_G.ArmoryTradeSkillFrame.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
+	self:moveObject{obj=_G.ArmoryTradeSkillFrame.SearchBox, y=1}
+	self:removeRegions(_G.ArmoryTradeSkillFrame.ExpandButtonFrame)
+	self:skinButton{obj=_G.ArmoryTradeSkillFrame.FilterButton}
+	self:moveObject{obj=_G.ArmoryTradeSkillFrame.FilterButton, y=2}
+	self:skinSlider{obj=_G.ArmoryTradeSkillFrame.RecipeList.ScrollBar, adj=-4, size=3}
+	self:skinScrollBar{obj=_G.ArmoryTradeSkillFrame.DetailsFrame}
+	self:removeRegions(_G.ArmoryTradeSkillFrame.DetailsFrame.Contents, {6, 7,}) -- textures
+	local btn = _G.ArmoryTradeSkillFrame.DetailsFrame.Contents.ResultIcon
+	self:addButtonBorder{obj=btn, reParent={btn.Count}}
 	for i = 1, 8 do
-		self:addButtonBorder{obj=_G["ArmoryTradeSkillReagent" .. i], libt=true}
+		btn = _G.ArmoryTradeSkillFrame.DetailsFrame.Contents["Reagent" .. i]
+		self:addButtonBorder{obj=btn, libt=true}
+		btn.NameFrame:SetTexture(nil)
 	end
+	btn = nil
 	self:addSkinFrame{obj=_G.ArmoryTradeSkillFrame, kfs=true, nb=true, x1=10, y1=-11, x2=-32, y2=71} -- don't skin buttons, otherwise the CollapseAllbutton is skinned incorrectly
 	self:skinButton{obj=_G.ArmoryTradeSkillFrameCloseButton, cb=true}
-	for i = 1, _G.ARMORY_TRADE_SKILLS_DISPLAYED do
-		self:skinButton{obj=_G["ArmoryTradeSkillSkill" .. i], mp=true}
+	for i = 1, #_G.ArmoryTradeSkillFrame.RecipeList.buttons do
+		self:skinButton{obj=_G.ArmoryTradeSkillFrame.RecipeList.buttons[i], mp=true}
 	end
 	-- collapse all button
-	self:skinButton{obj=_G.ArmoryTradeSkillCollapseAllButton, mp=true} -- treat as just a texture
+	self:skinButton{obj=_G.ArmoryTradeSkillFrame.ExpandButtonFrame.CollapseAllButton, mp=true} -- treat as just a texture
 	if self.modBtns then
-		-- hook to manage changes to button textures
-		self:SecureHook("ArmoryTradeSkillFrame_Update", function()
-			for i = 1, _G.ARMORY_TRADE_SKILLS_DISPLAYED do
-				self:checkTex(_G["ArmoryTradeSkillSkill" .. i])
+		local function manageTextures()
+			for i = 1, #_G.ArmoryTradeSkillFrame.RecipeList.buttons do
+				self:checkTex(_G.ArmoryTradeSkillFrame.RecipeList.buttons[i])
 			end
-			self:checkTex(_G.ArmoryTradeSkillCollapseAllButton)
+			self:checkTex(_G.ArmoryTradeSkillFrame.ExpandButtonFrame.CollapseAllButton)
+		end
+		-- hook these to manage changes to button textures
+		self:SecureHook(_G.ArmoryTradeSkillFrame.RecipeList, "RefreshDisplay", function()
+			manageTextures()
 		end)
-	end
-	for i = 1, _G.ARMORY_MAX_TRADE_SKILL_REAGENTS do
-		_G["ArmoryTradeSkillReagent" .. i .. "NameFrame"]:SetTexture(nil)
+		self:SecureHook(_G.ArmoryTradeSkillFrame.RecipeList, "update", function()
+			manageTextures()
+		end)
 	end
 
 end
@@ -407,7 +401,7 @@ end
 function aObj:ArmoryGuildBank()
 
 	-- ArmoryGuildBankFrame
-	self:skinEditBox{obj=_G.ArmoryGuildBankFrameEditBox, regs={9}}
+	self:skinEditBox{obj=_G.ArmoryGuildBankFrameEditBox, regs={6}}
 	self:skinDropDown{obj=_G.ArmoryGuildBankNameDropDown}
 	self:removeRegions(_G.ArmoryGuildBankFrame, {10, 11, 12, 13}) -- remove frame textures
 	self:addSkinFrame{obj=_G.ArmoryGuildBankFrame, bg=true, x1=6, y1=-11, x2=-32, y2=71}

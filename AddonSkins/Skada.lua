@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Skada") then return end
 local _G = _G
 
-function aObj:Skada()
+function aObj:Skada() -- 1.5-8
 
 	local function changeSettings(db)
 
@@ -32,7 +32,6 @@ function aObj:Skada()
 	if barDisplay then
 		-- hook this to skin new frames
 		self:SecureHook(barDisplay, "ApplySettings", function(this, win)
-			aObj:Debug("barDisplay ApplySettings: [%s, %s]", this, win)
 			skinFrame(win)
 		end)
 	end
@@ -42,7 +41,6 @@ function aObj:Skada()
 
 	-- change existing ones
 	for _, win in _G.pairs(_G.Skada:GetWindows()) do
-		aObj:Debug("change existing windows: [%s]", win)
 		changeSettings(win.db)
 		-- skinFrame(win)
 		-- apply these changes
@@ -59,7 +57,7 @@ function aObj:Skada()
 		if child:IsObjectType("Frame")
 		and child:GetName() == nil
 		and self:getInt(child:GetWidth()) == 250
-		and self:getInt(child:GetHeight()) == 70
+		and self:getInt(child:GetHeight()) == 100
 		then
 			self:addSkinFrame{obj=child}
 		end

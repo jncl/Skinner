@@ -27,8 +27,8 @@ function aObj:Examiner()
 	-- hook this to skin the dropdown menu (also used by TipTac skin)
 	if not self:IsHooked(_G.AzDropDown, "ToggleMenu") then
 		self:SecureHook(_G.AzDropDown, "ToggleMenu", function(this, ...)
-			self:skinScrollBar{obj=_G["AzDropDownScroll" .. this.vers]}
-			self:addSkinFrame{obj=_G["AzDropDownScroll" .. this.vers]:GetParent()}
+			self:skinScrollBar{obj=_G["AzDropDownScroll" .. _G.AzDropDown.vers]}
+			self:addSkinFrame{obj=_G["AzDropDownScroll" .. _G.AzDropDown.vers]:GetParent()}
 			self:Unhook(_G.AzDropDown, "ToggleMenu")
 		end)
 	end

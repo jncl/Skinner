@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Rematch") then return end
 local _G = _G
 
-function aObj:Rematch() -- v 4.4.1
+function aObj:Rematch() -- v 4.5.3
 
     local tab, btn, pet
 
@@ -31,6 +31,7 @@ function aObj:Rematch() -- v 4.4.1
                 if self.isTT then self:setInactiveTab(tab.sf) end
             end
         end
+		tab = nil
     end)
     self:addSkinFrame{obj=_G.RematchJournal, kfs=true, aso={ba=1}, x1=-4, y1=2, x2=1, y2=-5}
 
@@ -38,12 +39,14 @@ function aObj:Rematch() -- v 4.4.1
     _G.RematchFrame:DisableDrawLayer("BACKGROUND")
     _G.RematchFrame:DisableDrawLayer("BORDER")
     self:keepFontStrings(_G.RematchFrame.TitleBar)
-    _G.RematchFrame.TitleBar.LockButton:SetBackdrop(nil)
-    _G.RematchFrame.TitleBar.LockButton:DisableDrawLayer("OVERLAY")
-    self:skinButton{obj=_G.RematchFrame.TitleBar.MinimizeButton, ob="–"} -- Alt+hyphen
-    _G.RematchFrame.TitleBar.MinimizeButton:DisableDrawLayer("OVERLAY")
-    _G.RematchFrame.TitleBar.SinglePanelButton:SetBackdrop(nil)
-    _G.RematchFrame.TitleBar.SinglePanelButton:DisableDrawLayer("OVERLAY")
+	self:skinButton{obj=_G.RematchFrame.TitleBar.LockButton, x1=6, y1=-6, x2=-6, y2=6} -- shrink skin frame to fit
+    self:removeRegions(_G.RematchFrame.TitleBar.LockButton, {5})
+	self:skinButton{obj=_G.RematchFrame.TitleBar.SinglePanelButton, x1=6, y1=-6, x2=-6, y2=6} -- shrink skin frame to fit
+    self:removeRegions(_G.RematchFrame.TitleBar.SinglePanelButton, {5})
+    self:skinButton{obj=_G.RematchFrame.TitleBar.MinimizeButton, ob=""} -- uses existing texture
+    self:removeRegions(_G.RematchFrame.TitleBar.MinimizeButton, {5})
+	self:skinButton{obj=_G.RematchFrame.TitleBar.CloseButton, cb=true}
+    self:removeRegions(_G.RematchFrame.TitleBar.CloseButton, {5})
     -- tabs
     for i = 1, #_G.RematchFrame.PanelTabs.Tabs do
         tab = _G.RematchFrame.PanelTabs.Tabs[i]
@@ -69,12 +72,21 @@ function aObj:Rematch() -- v 4.4.1
             end
         end
     end)
+	if _G.RematchFrame.TitleBar:IsShown() then
+		self:addSkinFrame{obj=_G.RematchFrame, bgen=1, x1=-4, y1=2, x2=1, y2=-5}
+	else
+        self:addSkinFrame{obj=_G.RematchFrame, bgen=1, x1=-4, y1=-24, x2=1, y2=-5}
+	end
     -- hook these to handle resize of skinframe when TitleBar is hidden/shown
     local function resizeFrame(showTitleBar)
         if showTitleBar then
-            aObj:addSkinFrame{obj=_G.RematchFrame, bgen=1, x1=-4, y1=2, x2=1, y2=-5} -- don't skin TypeBar Tab buttons
+			_G.RematchFrame.sf:ClearAllPoints()
+			_G.RematchFrame.sf:SetPoint("TOPLEFT", _G.RematchFrame, "TOPLEFT", -4, 2)
+			_G.RematchFrame.sf:SetPoint("BOTTOMRIGHT", _G.RematchFrame, "BOTTOMRIGHT", 1, -5)
         else
-            aObj:addSkinFrame{obj=_G.RematchFrame, bgen=1, x1=-4, y1=-24, x2=1, y2=-5} -- don't skin TypeBar Tab buttons
+			_G.RematchFrame.sf:ClearAllPoints()
+			_G.RematchFrame.sf:SetPoint("TOPLEFT", _G.RematchFrame, "TOPLEFT", -4, -24)
+			_G.RematchFrame.sf:SetPoint("BOTTOMRIGHT", _G.RematchFrame, "BOTTOMRIGHT", 1, -5)
         end
     end
     self:SecureHook(_G.RematchFrame.TitleBar, "SetShown", function(this, value)
@@ -120,7 +132,7 @@ function aObj:Rematch() -- v 4.4.1
     -- Menu (replaces dropdowns)
     self:RawHook(_G.Rematch, "GetMenuFrame", function(this, level, parent)
         local frame = self.hooks[this].GetMenuFrame(this, level, parent)
-        if not frame.sknd then
+        if not frame.sf then
             self:removeRegions(frame, {1, 2})
             self:removeRegions(frame.Title, {1, 2})
             self:addSkinFrame{obj=frame, nb=true, ofs=0} -- ignore buttons
@@ -157,7 +169,7 @@ function aObj:Rematch() -- v 4.4.1
                 if self.isTT then self:setInactiveTab(tab.sf) end
             end
         end
-
+		tab = nil
     end)
     self:addSkinFrame{obj=_G.RematchPetPanel.Top.TypeBar, nb=true, y1=1} -- don't skin buttons
     for i = 1, #_G.RematchPetPanel.Top.TypeBar.Buttons do
@@ -207,9 +219,10 @@ function aObj:Rematch() -- v 4.4.1
     end
     -- TeamTabs
 	self:SecureHook(_G.RematchTeamTabs, "GetTabButton", function(this, index)
-        tab = _G.RematchTeamTabs.Tabs[index]
+        local tab = _G.RematchTeamTabs.Tabs[index]
         tab:DisableDrawLayer("BACKGROUND")
         self:addButtonBorder{obj=tab, ofs=4, relTo=tab.Icon}
+		tab = nil
 	end)
 
     -- QueuePanel (Tab3)
@@ -279,7 +292,8 @@ function aObj:Rematch() -- v 4.4.1
     _G.RematchPetCard.Back.Bottom:DisableDrawLayer("BACKGROUND")
     self:removeRegions(_G.RematchPetCard.Back.Bottom, {2, 15, 16}) -- line & doodads
     _G.RematchPetCard.Back.Middle:DisableDrawLayer("BACKGROUND")
-    self:removeRegions(_G.RematchPetCard.Back.Middle, {2}) -- line
+    _G.RematchPetCard.Back.Middle:DisableDrawLayer("BORDER") -- doodads
+	self:removeRegions(_G.RematchPetCard.Back.Middle, {7}) -- line above middle area
     _G.RematchPetCard.Back.Middle.Lore:SetTextColor(self.BTr, self.BTg, self.BTb)
 
     -- Tooltip(s)
