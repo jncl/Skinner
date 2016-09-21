@@ -275,7 +275,8 @@ function aObj:ArtifactToasts()
 	if not self.db.profile.ArtifactUI or self.initialized.ArtifactToasts then return end
 	self.initialized.ArtifactToasts = true
 
-	_G.ArtifactLevelUpToast.ToastBG:SetTexture(nil)
+	_G.ArtifactLevelUpToast:DisableDrawLayer("BACKGROUND")
+	_G.ArtifactLevelUpToast:DisableDrawLayer("BORDER")
 	_G.ArtifactLevelUpToast.IconFrame:SetTexture(nil)
 
 end
@@ -285,6 +286,7 @@ function aObj:ArtifactUI() --LoD
 	self.initialized.ArtifactUI = true
 
 	_G.ArtifactFrame.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
+	_G.ArtifactFrame.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
 
 	self:keepFontStrings(_G.ArtifactFrame.BorderFrame)
 	self:addSkinFrame{obj=_G.ArtifactFrame, ft=ftype, ofs=5}
@@ -547,22 +549,14 @@ function aObj:ChallengesUI() -- LoD
 	self.initialized.ChallengesUI = true
 
 	self:removeInset(_G.ChallengesFrameInset)
-	self:keepFontStrings(_G.ChallengesFrame.details)
-	local obj
-	for i = 1, 3 do
-		obj = _G.ChallengesFrame["RewardRow" .. i]
-		self:getRegion(obj, 1):SetAlpha(0) -- N.B. texture changed in code
-		self:addButtonBorder{obj=obj.Reward2, relTo=obj.Reward2.Icon}
-		self:addButtonBorder{obj=obj.Reward1, relTo=obj.Reward1.Icon}
-	end
 
---[[
-	-- ChallengesLeaderboard Frame
-	self:keepFontStrings(_G.ChallengesLeaderboardFrameHbar)
-	self:addSkinFrame{obj=_G.ChallengesLeaderboardFrame, ft=ftype, kfs=true, ofs=-10}
-	self:removeRegions(_G.ChallengesFrameLeaderboard, {1})
-	self:skinButton{obj=_G.ChallengesFrameLeaderboard}
---]]
+	_G.ChallengesFrame.WeeklyBest.Child.Star:SetTexture(nil)
+	_G.ChallengesFrame.WeeklyBest.Child:DisableDrawLayer("BACKGROUND") -- Rune textures
+	_G.ChallengesFrame.WeeklyBest.Child:DisableDrawLayer("OVERLAY") -- glow texture
+
+	_G.ChallengesFrame.GuildBest:DisableDrawLayer("BACKGROUND")
+
+	_G.ChallengesFrame:DisableDrawLayer("BACKGROUND")
 
 	-- TODO ChallengesKeystoneFrame
 	self:addSkinFrame{obj=_G.ChallengesKeystoneFrame, ft=ftype, kfs=true}
@@ -1163,13 +1157,13 @@ local function skinFollowerTraitsAndEquipment(obj)
 	for i = 1, #obj.Traits do
 		btn = obj.Traits[i]
 		btn.Border:SetTexture(nil)
-		aObj:addButtonBorder{obj=btn, relTo=btn.Portrait}
+		aObj:addButtonBorder{obj=btn, relTo=btn.Portrait, ofs=1}
 	end
 	for i = 1, #obj.EquipmentFrame.Equipment do
 		btn = obj.EquipmentFrame.Equipment[i]
 		btn:DisableDrawLayer("BACKGROUND")
 		btn.Border:SetTexture(nil)
-		aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
+		aObj:addButtonBorder{obj=btn, relTo=btn.Icon, ofs=1}
 	end
 	btn = nil
 
@@ -1247,6 +1241,62 @@ local function skinMissionComplete(obj, naval)
     obj.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 	obj.BonusRewards.Saturated:DisableDrawLayer("BORDER")
     aObj:addSkinFrame{obj=obj, ft=ftype, y1=6, y2=-16}
+
+end
+local function skinMissionList(ml)
+
+	ml:DisableDrawLayer("BORDER")
+	ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
+
+	-- tabs at top
+	local tab
+	for i = 1, 2 do
+		tab = ml["Tab" .. i]
+		tab:DisableDrawLayer("BORDER")
+		aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT}
+		tab.sf.ignore = true -- don't change tab size
+		if aObj.isTT then
+			if i == 1 then
+				aObj:setActiveTab(tab.sf)
+			else
+				aObj:setInactiveTab(tab.sf)
+			end
+			aObj:SecureHookScript(tab, "OnClick", function(this)
+				-- aObj:Debug("ML Tab: [%s, %s]", this, this:GetID())
+				local list = this:GetParent()
+				aObj:setActiveTab(this.sf)
+				if this:GetID() == 1 then
+					aObj:setInactiveTab(list.Tab2.sf)
+				else
+					aObj:setInactiveTab(list.Tab1.sf)
+				end
+				list = nil
+			end)
+		end
+	end
+
+	aObj:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
+	local btn
+	for i = 1, #ml.listScroll.buttons do
+		btn = ml.listScroll.buttons[i]
+		btn:DisableDrawLayer("BACKGROUND")
+		btn:DisableDrawLayer("BORDER")
+		-- extend the top & bottom highlight texture
+		btn.HighlightT:ClearAllPoints()
+		btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
+		btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
+        btn.HighlightB:ClearAllPoints()
+        btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
+        btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
+		aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
+		addLineTex(btn, i)
+		for i = 1, #btn.Rewards do
+			aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
+		end
+	end
+
+	-- CompleteDialog
+	skinCompleteDialog(ml.CompleteDialog)
 
 end
 function aObj:GarrisonUI() -- LoD
@@ -1510,48 +1560,7 @@ function aObj:GarrisonUI() -- LoD
 
 	-->>-- MissionTab
 		-- Mission List
-		local ml = _G.GarrisonMissionFrame.MissionTab.MissionList
-		ml:DisableDrawLayer("BORDER")
-		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
-
-		-- tabs at top
-		local tab
-		for i = 1, 2 do
-			tab = ml["Tab" .. i]
-			tab:DisableDrawLayer("BORDER")
-			aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT}
-			tab.sf.ignore = true -- don't change tab size
-			if aObj.isTT then
-				if i == 1 then
-					aObj:setActiveTab(tab.sf)
-				else
-					aObj:setInactiveTab(tab.sf)
-				end
-			end
-		end
-		aObj:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
-		local btn
-		for i = 1, #ml.listScroll.buttons do
-			btn = ml.listScroll.buttons[i]
-			btn:DisableDrawLayer("BACKGROUND")
-			btn:DisableDrawLayer("BORDER")
-			-- extend the top & bottom highlight texture
-			btn.HighlightT:ClearAllPoints()
-			btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
-			btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
-            btn.HighlightB:ClearAllPoints()
-            btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
-            btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
-			aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
-			addLineTex(btn, i)
-			for i = 1, #btn.Rewards do
-				aObj:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
-			end
-		end
-
-		-- CompleteDialog
-		skinCompleteDialog(ml.CompleteDialog)
-		ml = nil
+		skinMissionList(_G.GarrisonMissionFrame.MissionTab.MissionList)
 
 		-- MissionPage
 		local mp = _G.GarrisonMissionFrame.MissionTab.MissionPage
@@ -1950,6 +1959,10 @@ function aObj:ItemText()
 
 	self:SecureHookScript(_G.ItemTextFrame, "OnShow", function(this)
 		_G.ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.ItemTextPageText:SetTextColor("P", self.BTr, self.BTg, self.BTb)
+		_G.ItemTextPageText:SetTextColor("H1", self.HTr, self.HTg, self.HTb)
+		_G.ItemTextPageText:SetTextColor("H2", self.HTr, self.HTg, self.HTb)
+		_G.ItemTextPageText:SetTextColor("H3", self.HTr, self.HTg, self.HTb)
 	end)
 
 	self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, adj=-4, size=3}
@@ -2810,6 +2823,7 @@ function aObj:MinimapButtons()
 			["Armory"] = _G.ArmoryMinimapButton,
 			["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon,
 			["RaidBuffStatus"] = _G.RBSMinimapButton,
+			["+Wowhead_Looter"] = _G.wlMinimapButton,
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then
@@ -2997,52 +3011,54 @@ function aObj:OrderHallUI() --LoD
 	-->>-- MissionTab
 	-- Mission List
 	local ml = _G.OrderHallMissionFrame.MissionTab.MissionList
-	ml:DisableDrawLayer("BORDER")
-	ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
-
-	-- tabs at top
-	local tab
-	for i = 1, 2 do
-		tab = ml["Tab" .. i]
-		tab:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT}
-		tab.sf.ignore = true -- don't change tab size
-		if self.isTT then
-			if i == 1 then
-				self:setActiveTab(tab.sf)
-			else
-				self:setInactiveTab(tab.sf)
-			end
-		end
-	end
-	self:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
-	local btn
-	for i = 1, #ml.listScroll.buttons do
-		btn = ml.listScroll.buttons[i]
-		btn:DisableDrawLayer("BACKGROUND")
-		btn:DisableDrawLayer("BORDER")
-		-- extend the top & bottom highlight texture
-		btn.HighlightT:ClearAllPoints()
-		btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
-		btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
-        btn.HighlightB:ClearAllPoints()
-        btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
-        btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
-		self:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
-		addLineTex(btn, i)
-		for i = 1, #btn.Rewards do
-			self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
-		end
-	end
+	skinMissionList(ml)
+	-- ml:DisableDrawLayer("BORDER")
+	-- ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
+	--
+	-- -- tabs at top
+	-- local tab
+	-- for i = 1, 2 do
+	-- 	tab = ml["Tab" .. i]
+	-- 	tab:DisableDrawLayer("BORDER")
+	-- 	self:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT}
+	-- 	tab.sf.ignore = true -- don't change tab size
+	-- 	if self.isTT then
+	-- 		if i == 1 then
+	-- 			self:setActiveTab(tab.sf)
+	-- 		else
+	-- 			self:setInactiveTab(tab.sf)
+	-- 		end
+	-- 	end
+	-- end
+	-- self:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
+	-- local btn
+	-- for i = 1, #ml.listScroll.buttons do
+	-- 	btn = ml.listScroll.buttons[i]
+	-- 	btn:DisableDrawLayer("BACKGROUND")
+	-- 	btn:DisableDrawLayer("BORDER")
+	-- 	-- extend the top & bottom highlight texture
+	-- 	btn.HighlightT:ClearAllPoints()
+	-- 	btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
+	-- 	btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
+	--         btn.HighlightB:ClearAllPoints()
+	--         btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
+	--         btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
+	-- 	self:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
+	-- 	addLineTex(btn, i)
+	-- 	for i = 1, #btn.Rewards do
+	-- 		self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
+	-- 	end
+	-- end
 
 	-- CombatAllyUI
 	ml.CombatAllyUI.Background:SetTexture(nil)
 	ml.CombatAllyUI.Available.AddFollowerButton.EmptyPortrait:SetTexture(nil)
 	skinPortrait(ml.CombatAllyUI.InProgress.PortraitFrame)
+	-- self:skinButton{obj=ml.CombatAllyUI.Available.AddFollowerButton}
 	self:skinButton{obj=ml.CombatAllyUI.InProgress.Unassign}
 
-	-- CompleteDialog
-	skinCompleteDialog(ml.CompleteDialog)
+	-- -- CompleteDialog
+	-- skinCompleteDialog(ml.CompleteDialog)
 	ml = nil
 
 	_G.OrderHallMissionFrame.MissionTab.ZoneSupportMissionPageBackground:DisableDrawLayer("BACKGROUND")
@@ -3055,7 +3071,16 @@ function aObj:OrderHallUI() --LoD
 	zs.ButtonFrame:SetTexture(nil)
 	zs.Follower1:DisableDrawLayer("BACKGROUND")
 	skinPortrait(zs.Follower1.PortraitFrame)
+	self:skinButton{obj=zs.CloseButton, cb=true}
 	zs.CloseButton:SetSize(32, 32)
+	self:skinButton{obj=zs.StartMissionButton}
+	-- hook these to only have 1 close button showing
+	self:SecureHook(zs, "Show", function(this)
+		_G.OrderHallMissionFrame.CloseButton:Hide()
+	end)
+	self:SecureHook(zs, "Hide", function(this)
+		_G.OrderHallMissionFrame.CloseButton:Show()
+	end)
 
 	-- MissionPage
 	local mp = _G.OrderHallMissionFrame.MissionTab.MissionPage
