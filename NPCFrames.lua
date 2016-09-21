@@ -16,7 +16,7 @@ function aObj:AuctionUI() -- LoD
 	end)
 
 	self:skinTabs{obj=_G.AuctionFrame, lod=true}
-	self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, bgen=1, x1=10, y1=-11, y2=5} -- N.B. bgen=1 to prevent other AddOns buttons being skinned
+	self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, bgen=0, x1=10, y1=-11, y2=5} -- N.B. bgen=1 to prevent other AddOns buttons being skinned
 -->>--	Browse Frame
 	for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
 		self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
@@ -58,10 +58,15 @@ function aObj:AuctionUI() -- LoD
 	self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
 	self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
+	self:skinButton{obj=_G.BrowseSearchButton}
+	self:skinButton{obj=_G.BrowseResetButton}
+	self:addButtonBorder{obj=_G.ExactMatchCheckButton, es=14, ofs=-2}
 	_G.BrowseCloseButton:DisableDrawLayer("BORDER")
 	_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
 	_G.BrowseBidButton:DisableDrawLayer("BORDER")
-	self:addButtonBorder{obj=_G.ExactMatchCheckButton, es=14, ofs=-2}
+	self:skinButton{obj=_G.BrowseBidButton}
+	self:skinButton{obj=_G.BrowseBuyoutButton}
+	self:skinButton{obj=_G.BrowseCloseButton}
 
 -->>--	Bid Frame
 	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
@@ -80,6 +85,9 @@ function aObj:AuctionUI() -- LoD
 	_G.BidCloseButton:DisableDrawLayer("BORDER")
 	_G.BidBuyoutButton:DisableDrawLayer("BORDER")
 	_G.BidBidButton:DisableDrawLayer("BORDER")
+	self:skinButton{obj=_G.BidBidButton}
+	self:skinButton{obj=_G.BidBuyoutButton}
+	self:skinButton{obj=_G.BidCloseButton}
 
 -->>--	Auctions Frame
 	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
@@ -106,6 +114,10 @@ function aObj:AuctionUI() -- LoD
 	self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
 	self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
 	self:skinDropDown{obj=_G.DurationDropDown}
+	self:skinButton{obj=_G.AuctionsCreateAuctionButton}
+	self:skinButton{obj=_G.AuctionsCancelAuctionButton}
+	self:skinButton{obj=_G.AuctionsCloseButton}
+
 
 -->>-- AuctionProgress Frame
 	_G.AuctionProgressFrame:DisableDrawLayer("BACKGROUND")
