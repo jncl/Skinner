@@ -892,7 +892,7 @@ function aObj:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	local objName, obj, cfpb
+	local objName, obj, cfpb, bo
 	for i = 1, _G.NUM_CONTAINER_FRAMES do
 		objName = "ContainerFrame" .. i
 		obj = _G[objName]
@@ -910,8 +910,14 @@ function aObj:ContainerFrames()
 		cfpb.Highlight:SetPoint("center")
 		cfpb.Highlight:SetSize(22, 22)
 		self:moveObject{obj=cfpb, x=5, y=-3}
+		-- skin the item buttons
+		for i = 1, 36 do
+			bo = _G[objName .. "Item" .. i]
+			self:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.flash, bo.NewIconTexture, bo.BattlepayItemTexture}}
+		end
 	end
-	objName = nil
+	objName, obj, cfpb, bo = nil, nil, nil, nil
+
 	self:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true, noInsert=true} -- 6 is text, 7 is icon
 	-- Hook this to hide/show the gear button
 	self:SecureHook("ContainerFrame_GenerateFrame", function(frame, size, id)

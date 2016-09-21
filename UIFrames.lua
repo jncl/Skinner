@@ -2267,7 +2267,6 @@ function aObj:MainMenuBar()
 		btn = _G["ActionButton" .. i]
 		btn.FlyoutBorder:SetTexture(nil)
 		btn.FlyoutBorderShadow:SetTexture(nil)
-		btn.Border:SetAlpha(0) -- texture changed in blizzard code
 		self:addButtonBorder{obj=btn, abt=true, sec=true}
 	end
 
@@ -2280,11 +2279,12 @@ function aObj:MainMenuBar()
 	self:addButtonBorder{obj=_G.MainMenuMicroButton, mb=true, ofs=0, y1=-21, reParent={_G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload}}
 	self:addButtonBorder{obj=_G.FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
 
--->>-- add colour to buttons
-	-- Backpack button, use IconBorder as other bag buttons do
-	_G.MainMenuBarBackpackButton.IconBorder:SetSize(30, 30)
-	_G.MainMenuBarBackpackButton.IconBorder:SetVertexColor(_G.unpack(aObj.bbColour))
-	_G.MainMenuBarBackpackButton.IconBorder:Show()
+-->>-- skin bag buttons
+	self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
+	self:addButtonBorder{obj=CharacterBag0Slot, ibt=true}
+	self:addButtonBorder{obj=CharacterBag1Slot, ibt=true}
+	self:addButtonBorder{obj=CharacterBag2Slot, ibt=true}
+	self:addButtonBorder{obj=CharacterBag3Slot, ibt=true}
 
 	-- MultiCastActionBarFrame
 	self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
@@ -2574,7 +2574,7 @@ function aObj:MenuFrames()
 		then
 			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
-			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true, ft=ftype}) -- wait for 1/10th second for panel to be populated, always use applySkin to ensure text appears above button texture
+			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true, ft=ftype}) -- wait for the panel to be populated, always use applySkin to ensure text appears above button texture
 		end
 	end)
 

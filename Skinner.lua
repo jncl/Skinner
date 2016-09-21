@@ -289,6 +289,15 @@ function aObj:OnEnable()
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
 		end
+		-- hook this to hide common quality items
+		self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink)
+			if quality == _G.LE_ITEM_QUALITY_COMMON then
+				button.IconBorder:Hide()
+			end
+		end)
+	else
+		self.modBtns = false
+		self.modBtnBs = false
 	end
 
 	self.checkTex        = self.modBtns and self.modUIBtns.checkTex or function() end

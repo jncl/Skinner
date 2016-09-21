@@ -70,7 +70,10 @@ local function __checkTex(opts)
 
 	if not opts.mp2 then btn:Show() end -- why done here and not within following test stanza ???
 
-	if nTex then
+	-- handle numbers instead of text (e.g. Armory icon)
+	if nTex
+	and not tonumber(nTex)
+	then
 		if btn.skin then btn:Show() end -- Waterfall/tomQuest2
 		if nTex:find("MinusButton")
 		or nTex:find("ZoomOutButton") -- ARL
@@ -329,9 +332,11 @@ function module:isButton(obj)
 
 	if (obj.Left or obj.leftArrow or obj.GetNormalTexture) -- is it a true button
 	and not obj.GetChecked -- and not a checkbutton
+	and not (obj.obj and obj.obj.checkbg) -- an Ace3 checkbutton
 	and not obj.SetSlot -- and not a lootbutton
 	then
 		local oW, oH, nR = aObj:getInt(obj:GetWidth()), aObj:getInt(obj:GetHeight()), obj:GetNumRegions()
+		-- aObj:Debug("isButton: [%s, %s, %s, %s]", obj, oW, oH, nR)
 		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
 		then
 			bType = "toast"
@@ -374,14 +379,16 @@ local function __skinAllButtons(opts, bgen)
 	if not opts.obj then return end
 
 	-- maximum number of button generations to traverse
-	bgen = bgen or opts.bgen or 3
+	local bgen = bgen or opts.bgen or 5
 
 	for _, child in pairs{opts.obj:GetChildren()} do
-		if child:IsObjectType("Button") then
-			if child:GetNumChildren() > 0 and bgen > 0 then
-				opts.obj = child
-				__skinAllButtons(opts, bgen - 1)
-			end
+		-- aObj:Debug("__skinAllButtons: [%s, %s, %s, %s]", child, bgen, child:GetObjectType(), child:GetNumChildren())
+		if child:GetNumChildren() > 0
+		and bgen > 0
+		then
+			opts.obj = child
+			__skinAllButtons(opts, bgen - 1)
+		elseif child:IsObjectType("Button") then
 			local bType = module:isButton(child)
 			if bType == "normal" then
 				module:skinButton{obj=child, ft=opts.ft, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim, as=opts.as, rmbt=opts.rmbt}
@@ -393,9 +400,6 @@ local function __skinAllButtons(opts, bgen)
 				module:skinButton{obj=child, ft=opts.ft, x1=0, y1=0, x2=-3, y2=3}
 			end
 			bType = nil
-		elseif child:IsObjectType("Frame") and bgen > 0 then
-			opts.obj = child
-			__skinAllButtons(opts, bgen - 1)
 		end
 	end
 
@@ -461,7 +465,9 @@ local function __addButtonBorder(opts)
 	or opts.abt
 	or opts.pabt
 	then
-		if opts.obj:GetNormalTexture() then
+		if opts.obj.GetNormalTexture
+		and opts.obj:GetNormalTexture()
+		then
 			opts.obj:GetNormalTexture():SetTexture(nil)
 		end
 	end
@@ -472,7 +478,7 @@ local function __addButtonBorder(opts)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	opts.obj.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
+	opts.obj.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
 
 	-- position the frame
 	opts.ofs = opts.ofs or 2
@@ -481,9 +487,8 @@ local function __addButtonBorder(opts)
 	local xOfs2 = opts.x2 or opts.ofs
 	local yOfs2 = opts.y2 or opts.ofs * -1
 
-	local btnName = opts.obj:GetName()
 	-- Large Item Button templates have an IconTexture to position to
-	local relTo = opts.relTo or opts.libt and _G[btnName .. "IconTexture"] or nil
+	local relTo = opts.relTo or opts.libt and opts.obj.Icon or nil
 	opts.obj.sbb:SetPoint("TOPLEFT", relTo or opts.obj, "TOPLEFT", xOfs1, yOfs1)
 	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
 	xOfs1, yOfs1, xOfs2, yOfs2, relTo = nil, nil, nil, nil, nil
@@ -510,20 +515,24 @@ local function __addButtonBorder(opts)
 		end
 	end
 	-- reparent these textures so they are displayed above the border
+	local btnName = opts.obj:GetName()
 	if opts.ibt then -- Item Buttons
+		opts.obj.Count:SetParent(opts.obj.sbb)
+		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
+		opts.obj.IconBorder:SetParent(opts.obj.sbb) -- quality border
 		if btnName then
-			_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
 			_G[btnName .. "Stock"]:SetParent(opts.obj.sbb)
 		else
-			opts.obj.Count:SetParent(opts.obj.sbb)
 			aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		end
 	elseif opts.abt then -- Action Buttons
-		_G[btnName .. "HotKey"]:SetParent(opts.obj.sbb)
-		-- reparent FlyoutArrow so it is displayed above the border
+		opts.obj.Flash:SetParent(opts.obj.sbb)
 		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
-		_G[btnName .. "Name"]:SetParent(opts.obj.sbb)
-		_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
+		opts.obj.HotKey:SetParent(opts.obj.sbb)
+		opts.obj.Count:SetParent(opts.obj.sbb)
+		opts.obj.Name:SetParent(opts.obj.sbb)
+		opts.obj.Border:SetParent(opts.obj.sbb)
+		opts.obj.NewActionTexture:SetParent(opts.obj.sbb)
 	elseif opts.libt then -- Large Item Buttons
 		opts.obj.Name:SetParent(opts.obj.sbb)
 		opts.obj.Count:SetParent(opts.obj.sbb)
@@ -536,11 +545,8 @@ local function __addButtonBorder(opts)
 		_G[btnName .. "AutoCastable"]:SetParent(opts.obj.sbb)
 		_G[btnName .. "Shine"]:SetParent(opts.obj.sbb)
 	elseif opts.tibt then -- Talents
-		_G[btnName .. "RankBorder"]:SetParent(opts.obj.sbb)
-		_G[btnName .. "Rank"]:SetParent(opts.obj.sbb)
-		if _G[btnName .. "RankBorderGreen"] then
-			_G[btnName .. "RankBorderGreen"]:SetParent(opts.obj.sbb)
-		end
+		opts.obj.RankBorder:SetParent(opts.obj.sbb)
+		opts.obj.Rank:SetParent(opts.obj.sbb)
 	elseif opts.spbt then -- Simple Popup Buttons
 		_G[btnName .. "Name"]:SetParent(opts.obj.sbb)
 	end
