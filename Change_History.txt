@@ -1,3 +1,11 @@
+b7.22566.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Minimap, OrderHallUI & WorldMap skins
+	Update to ClassTrainer skin
+	Bugfix for missing comma
+
 b7.22566.1
 Jncl:
 	ToDo.txt
