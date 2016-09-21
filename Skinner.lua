@@ -127,35 +127,37 @@ function aObj:OnInitialize()
 	self.gradientTex = self.LSM:Fetch("background", prdb.Gradient.texture)
 
 	-- backdrop for Frames etc
-	self.bdTex = dflts.BdTexture
-	self.bdbTex = dflts.BdBorderTexture
+	local bdTexName = dflts.BdTexture
+	local bdbTexName = dflts.BdBorderTexture
 	if prdb.BdDefault then
 		self.backdrop = {
-			bgFile = self.LSM:Fetch("background", self.bdTex),
+			bgFile = self.LSM:Fetch("background", bdTexName),
 			tile = dflts.BdTileSize > 0 and true or false, tileSize = dflts.BdTileSize,
-			edgeFile = self.LSM:Fetch("border", self.bdbTex),
+			edgeFile = self.LSM:Fetch("border", bdbTexName),
 			edgeSize = dflts.BdEdgeSize,
 			insets = {left = dflts.BdInset, right = dflts.BdInset, top = dflts.BdInset, bottom = dflts.BdInset},
 		}
 	else
 		if prdb.BdFile and prdb.BdFile ~= "None" then
-			self.bdTex = aName .. " User Backdrop"
+			bdTexName = aName .. " User Backdrop"
 		else
-			self.bdTex = prdb.BdTexture
+			bdTexName = prdb.BdTexture
 		end
 		if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
-			self.bdbTex = aName .. " User Border"
+			bdbTexName = aName .. " User Border"
 		else
-			self.bdbTex = prdb.BdBorderTexture
+			bdbTexName = prdb.BdBorderTexture
 		end
 		self.backdrop = {
-			bgFile = self.LSM:Fetch("background", self.bdTex),
+			bgFile = self.LSM:Fetch("background", bdTexName),
 			tile = prdb.BdTileSize > 0 and true or false, tileSize = prdb.BdTileSize,
-			edgeFile = self.LSM:Fetch("border", self.bdbTex),
+			edgeFile = self.LSM:Fetch("border", bdbTexName),
 			edgeSize = prdb.BdEdgeSize,
 			insets = {left = prdb.BdInset, right = prdb.BdInset, top = prdb.BdInset, bottom = prdb.BdInset},
 		}
 	end
+	bdTexName, bdbTexName = nil, nil
+
 	self.Backdrop = {}
 	self.Backdrop[1] = CopyTable(self.backdrop)
 	-- wide backdrop for ScrollBars & EditBoxes (16,16,4)
@@ -201,12 +203,12 @@ function aObj:OnInitialize()
 	self.Backdrop[11].edgeFile = nil
 	self.Backdrop[11].edgeSize = 0
 
-	-- setup background texture
+	-- setup background texture name
 	if prdb.BgUseTex then
 		if prdb.BgFile and prdb.BgFile ~= "None" then
-			self.bgTex = aName .. " User Background"
+			self.bgTexName = aName .. " User Background"
 		else
-			self.bgTex = prdb.BgTexture
+			self.bgTexName = prdb.BgTexture
 		end
 	end
 
@@ -776,7 +778,7 @@ end
 function aObj:applyTexture(obj)
 
 	obj.tbg = obj:CreateTexture(nil, "BORDER")
-	obj.tbg:SetTexture(self.LSM:Fetch("background", self.bgTex), true) -- have to use true for tiling to work
+	obj.tbg:SetTexture(self.LSM:Fetch("background", self.bgTexName), true) -- have to use true for tiling to work
 	obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
 	-- allow for border inset
 	local bdi = self.db.profile.BdInset
