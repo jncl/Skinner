@@ -1431,8 +1431,9 @@ local function __skinDropDown(opts)
 	end
 
 	-- add texture
-	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK")
+	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK", -5) -- appear behind text
 	opts.obj.ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
+	-- align it to the middle texture
 	opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -5, 2)
 	opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", 5, 2)
 	opts.obj.ddTex:SetHeight(18)
@@ -1532,7 +1533,7 @@ local function __skinEditBox(opts)
 	if not (opts.noHeight or opts.obj:IsMultiLine()) then opts.obj:SetHeight(24) end
 
 	-- change width, if required
-	if not opts.noWidth then opts.obj:SetWidth(opts.obj:GetWidth() + 5) end
+	if not opts.noWidth then opts.obj:SetWidth(opts.obj:GetWidth() + 8) end
 
 	-- apply the backdrop
 	if not opts.noSkin then aObj:skinUsingBD{obj=opts.obj} end
