@@ -435,7 +435,6 @@ function aObj:CharacterFrames()
 	self:skinTabs{obj=_G.CharacterFrame}
 	self:addSkinFrame{obj=_G.CharacterFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5} -- don't skin buttons here
 	self:skinButton{obj=_G.CharacterFrameCloseButton, cb=true}
---	self:addButtonBorder{obj=_G.CharacterFrameExpandButton, ofs=-2, y1=-3, x2=-3}
 
 	-- PaperDoll Frame
 	self:keepFontStrings(_G.PaperDollFrame)
@@ -443,6 +442,7 @@ function aObj:CharacterFrames()
 	-- skin slots
 	for _, child in ipairs{_G.PaperDollItemsFrame:GetChildren()} do
 		child:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=child, ibt=true, reParent={child.ignoreTexture}}
 	end
 	_G.CharacterModelFrame:DisableDrawLayer("BACKGROUND")
 	_G.CharacterModelFrame:DisableDrawLayer("BORDER")
@@ -1958,9 +1958,12 @@ function aObj:ObjectiveTracker()
 	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
-	-- called params: block, objectiveKey, text, lineType, useFullHeight, hideDash, colorStyle
+	self:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+	end)
+	-- -- called params: block, objectiveKey, textOrTextFunc, lineType, useFullHeight, dashStyle, colorStyle
 	-- self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddObjective", function(this, ...)
-	-- 	aObj:Debug("DOTM AddObjective: [%s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
+	-- 	aObj:Debug("DOTM AddObjective: [%s, %s, %s, %s, %s, %s, %s]", ...)
 	-- end)
 
 	-- skin existing bars
@@ -1972,7 +1975,15 @@ function aObj:ObjectiveTracker()
 		end
 	end
 	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedTimerBars)
+	skinBars(_G.ACHIEVEMENT_TRACKER_MODULE.usedTimerBars)
+	skinBars(_G.QUEST_TRACKER_MODULE.usedTimerBars)
+	skinBars(_G.SCENARIO_TRACKER_MODULE.usedTimerBars)
+
 	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.BONUS_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.QUEST_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.SCENARIO_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.WORLD_QUEST_TRACKER_MODULE.usedProgressBars)
 
 	-- BonusRewardsFrame Rewards
 	_G.ObjectiveTrackerBonusRewardsFrame:DisableDrawLayer("ARTWORK")
@@ -2115,10 +2126,7 @@ function aObj:OverrideActionBar() -- a.k.a. VehicleUI
 		end
 		aObj:glazeStatusBar(_G.OverrideActionBar.xpBar, 0,  aObj:getRegion(_G.OverrideActionBar.xpBar, 1))
 
-		local sf = aObj:addSkinFrame{obj=_G.OverrideActionBar, ft=ftype}
-		sf:ClearAllPoints()
-		sf:SetPoint("TOPLEFT", _G.OverrideActionBar, "TOPLEFT", xOfs1, yOfs1)
-		sf:SetPoint("BOTTOMRIGHT", _G.OverrideActionBar, "BOTTOMRIGHT", xOfs2, yOfs2)
+		aObj:addSkinFrame{obj=_G.OverrideActionBar, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 
 		oabW, xOfs1, yOfs1, xOfs2, yOfs2, sf = nil, nil, nil, nil, nil, nil
 
@@ -2145,7 +2153,6 @@ function aObj:PVPUI()
 	self.initialized.PVPFrame = true
 
 	-- N.B. Frame already skinned as it is now part of GroupFinder/PVE
-	-- self:addSkinFrame{obj=_G.PVPUIFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
 	local btn
 	for i = 1, 4 do
 		btn = _G.PVPQueueFrame["CategoryButton" .. i]
@@ -2176,8 +2183,12 @@ function aObj:PVPUI()
 		btn.Bg:SetTexture(nil)
 		btn.Border:SetTexture(nil)
 	end
-	_G.HonorFrame.XPBar.Frame:SetTexture(nil)
-	self:glazeStatusBar(_G.HonorFrame.XPBar.Bar, 0,  nil)
+	local hfxpb = _G.HonorFrame.XPBar
+	hfxpb.Frame:SetTexture(nil)
+	self:glazeStatusBar(hfxpb.Bar, 0, hfxpb.Bar.Background, {hfxpb.Bar.ExhaustionLevelFillBar}, true)
+	-- TODO stop statusbar texture being changed
+	hfxpb.NextAvailable.Frame:SetTexture(nil)
+	hfxpb = nil
 	local hfbf =_G.HonorFrame.BonusFrame
 	hfbf.RandomBGButton.NormalTexture:SetTexture(nil)
 	hfbf.RandomBGButton.Reward.Border:SetTexture(nil)
@@ -2185,9 +2196,10 @@ function aObj:PVPUI()
 	hfbf.Arena1Button.Reward.Border:SetTexture(nil)
 	hfbf.AshranButton.NormalTexture:SetTexture(nil)
 	hfbf.AshranButton.Reward.Border:SetTexture(nil)
-	_G.HonorFrame.BonusFrame:DisableDrawLayer("BACKGROUND")
-	_G.HonorFrame.BonusFrame:DisableDrawLayer("BORDER")
-	_G.HonorFrame.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
+	hfbf:DisableDrawLayer("BACKGROUND")
+	hfbf:DisableDrawLayer("BORDER")
+	hfbf.ShadowOverlay:DisableDrawLayer("OVERLAY")
+	hfbf = nil
 	self:skinButton{obj=_G.HonorFrame.QueueButton, rmbt=true}
 	-- Conquest Frame
 	_G.ConquestFrame:DisableDrawLayer("BACKGROUND")
@@ -2531,8 +2543,13 @@ function aObj:TalentUI() -- LoD
 		end
 	end
 	-- Tab3 (Honor Talents)
-	_G.PlayerTalentFramePVPTalents.XPBar.Frame:SetTexture(nil)
-	self:skinDropDown{obj=_G.PlayerTalentFramePVPTalents.XPBar.DropDown}
+	local xpb = _G.PlayerTalentFramePVPTalents.XPBar
+	self:glazeStatusBar(xpb.Bar, 0, xpb.Bar.Background, {xpb.Bar.ExhaustionLevelFillBar}, true)
+	-- TODO stop statusbar texture being changed
+	xpb.Frame:SetTexture(nil)
+	xpb.NextAvailable.Frame:SetTexture(nil)
+	self:skinDropDown{obj=xpb.DropDown}
+	xpb = nil
 	self:removeRegions(_G.PlayerTalentFramePVPTalents.Talents, {1, 2, 3, 4, 5, 6, 7})
 	local obj, btn
 	for i = 1, _G.MAX_PVP_TALENT_TIERS do
@@ -2637,8 +2654,6 @@ function aObj:TradeSkillUI() -- LoD
 	self:skinSlider{obj=self:getChild(_G.TradeSkillFrame.RecipeList, 4), adj=-4, size=3} -- unamed slider object
 
 	local btn
---[[
-	-- N.B. can't replace mp textures with buttons as the textures are embedded in the list
 	for i = 1, #_G.TradeSkillFrame.RecipeList.buttons do
 		btn = _G.TradeSkillFrame.RecipeList.buttons[i]
 		self:skinButton{obj=btn, mp=true}
@@ -2652,7 +2667,11 @@ function aObj:TradeSkillUI() -- LoD
 			self:checkTex{obj=this.buttons[i]}
 		end
 	end)
---]]
+	self:SecureHook(_G.TradeSkillFrame.RecipeList, "update", function(this)
+		for i = 1, #this.buttons do
+			self:checkTex{obj=this.buttons[i]}
+		end
+	end)
 
 	-- Details frame
 	_G.TradeSkillFrame.DetailsFrame.Background:SetAlpha(0)
