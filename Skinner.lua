@@ -595,6 +595,9 @@ local function __addSkinFrame(opts)
 	assert(opts.obj, "Missing object __aSF\n" .. debugstack())
 --@end-alpha@
 
+	-- don't skin already skinned object
+	if opts.obj.sf then return end
+
 	-- remove the object's Backdrop if it has one
 	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
 
