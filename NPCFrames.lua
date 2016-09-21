@@ -611,6 +611,16 @@ function aObj:QuestInfo()
 	spf.NameFrame:SetTexture(nil)
 	self:addButtonBorder{obj=spf, relTo=spf.Icon, reParent={spf.CircleBackground, spf.CircleBackgroundGlow, spf.ValueText}}
 	spf = nil
+	-- HonorFrame
+	local hf = frame.HonorFrame
+	hf.NameFrame:SetTexture(nil)
+	self:addButtonBorder{obj=hf, relTo=hf.Icon, reParent={hf.Count}}
+	hf = nil
+	-- ArtifactXPFrame
+	local axp = frame.ArtifactXPFrame
+	axp.NameFrame:SetTexture(nil)
+	self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}}
+	axp = nil
 
 	-->>-- MapQuestInfoRewards Frame
 	frame = _G.MapQuestInfoRewardsFrame
