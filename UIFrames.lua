@@ -102,7 +102,7 @@ function aObj:AlertFrames()
 	local function skinACAlertFrame(frame)
 
 		local fH = aObj:getInt(frame:GetHeight())
-		aObj:Debug("skinAlertFrames: [%s, %s]", frame, fH)
+		-- aObj:Debug("skinACAlertFrame: [%s, %s]", frame, fH)
 
 		frame.Background:SetTexture(nil)
 		frame.Background.SetTexture = function() end
