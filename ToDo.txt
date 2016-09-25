@@ -8,6 +8,46 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
+	N	PTR Changes 7.1.0
+		- Icon selection frame now 10 by 9 instead of 4 by 4
+			- Used by GuildBankUI, MacroUI, GearManager
+		- GuildBankUI
+			- replaced textures with BorderBox
+			- replaced individual buttons with ScrollFrame
+		- MacroUI
+			- replaced textures with BorderBox
+			- replaced individual buttons with ScrollFrame
+		- GearManagerDialog
+			- replaced textures with BorderBox
+			- replaced individual buttons with ScrollFrame
+
+		- AlertFrameSystem
+			- Frames that originally existed OnLoad are now on demand
+			- RewardFrames now have additional code used by several AlertFrames and have an array
+
+		- ContainerFrame
+			- Buttons now have an UpgradeIcon texture
+
+		- FloatingChatFrame
+			- FriendsMicroButton has been replaced by QuickJoinToastButton
+
+		- New xml files
+			- RoleSelectionTemplate
+			- SocialQueue
+			- QuickJoinToast
+			- UnitPositionFrameTemplate
+
+		- FriendsFrame
+			- PendingListFrame replaced by QuickJoinFrame
+			- FramePools now being used
+
+		- LevelUpDisplay
+			- New FontString added
+
+√	I	Honor StatusBar on TalentUI, texture is being changed, not sure by what or why
+√	I	Honor StatusBar on PVPUI, texture is being changed, not sure by what or why
+√	I	Honor StatusBar, need to move text down
+
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
@@ -21,46 +61,21 @@ Legend:
 	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
 		- e.g. GameMenu buttons, Close Button(s)
 
-?	I	Rarity, reported by sausje, 06.09.16
-		- causes UI elements to not be skinned
+	I	Rarity, reported by sausje, 06.09.16
+?		- causes UI elements to not be skinned
 
 	I	RaidFrame border
-		- reverts to original border texture if rescaled or moved
-
-	I	Skada
-√		- reset window not skinned
+?		- reverts to original border texture if rescaled or moved
 
 	I	QuestList
 ?		- quest icon/number buttons shouldn't be skinned
 
-√	I	WorldMapFrame.UIElementsFrame.BountyBoard needs skinning
+	I	AdventureGuide, reported by epidemedabear, 22.09.16
+√		- ..\AddOns\Skinner\PlayerFrames.lua line 1232: attempt to index field 'sbb' (a nil value)
 
-	I	Minimap
-√		- ZoneText button needs to be 1 pixel wider on both sides
+	I	ButtonBorders, requested by hammer2, 22.09.16
+√		- don't use the Blizzard Quality Border, instead colour the button border with the quality colour
 
-	I	ObjectiveTracker
-√		- WorldQuest ProgressBar not skinned, or at least not skinned after combat
-
-√	I	Armory, reported by hammer2,11.09.16
-
-	I	Rematch, reported by Fraktyl, 21.09.16
-?		- text is shown behind tooltip
-√		- update skin to match latest version
-
-	I	ArtifactUI
-√		- Missing Artifact level in TLH corner
-
-	O	Skin Buttons with Quality borders, requested by hammer2
-√		- CharacterFrame slots
-√		- ContainerFrameItems
-√		- CharacterBagSlots
-
-	I	AucAdvanced, reported by lexusnexus,16.09.16
-√		- ..\AddOns\Skinner\SkinMe\AucAdvanced.lua line 214: attempt to index field 'Private' (a nil value)
-
-	I	Examiner, reported by next96,18.90.16
-√		- Skinner\SkinMe\Examiner-16.08.30.lua:30: attempt to concatenate field 'vers' (a nil value) 		  		  		  Skinner\SkinMe\Examiner-16.08.30.lua:30: in function <Skinner\SkinMe\Examiner.lua:29>
-
-	I	MasterPlan, reported by next96, 19.08.16
-√		-  Skinner\SkinMe\MasterPlan-0.102.lua:196: attempt to get length of field 'buttons' (a nil value)
-		   Skinner\SkinMe\MasterPlan-0.102.lua:196: in function <Skinner\SkinMe\MasterPlan.lua:193>
+	I	ServerHop, NeoZeus, 23.09.16
+√		- Skinner\Skinner-b7.22624.1.lua:599: attempt to index field 'obj' (a nil value)
+		  Skinner\SkinMe\ServerHop-4.0.6.lua:86: in function <Skinner\SkinMe\ServerHop.lua:5>
