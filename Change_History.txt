@@ -1,3 +1,21 @@
+b7.22624.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for debug message parsing
+	Remove debug message
+	Don't skin already skinned frames
+	Updated DropDown & EditBox skinning code
+	Use locals rather than storing the value
+	Updated ButtonBorder skinning code and skinned Container & Character buttons again
+	Removed PowerBarAlt skinning code as it is done elsewhere
+	Updated ArtifactToasts, ArtifactUI, ChallengesUI, GarrisonUI, ItemText, MainMenuBar & OrderHallUI skins
+	Updated CharacterFrames, ObjectiveTracker, VehicleUI, PVPUI, TalentUI & TradeSkillUI
+	Updated QuestInfo skin
+	Updated AuctionUI skin
+	Updated Armory, AucAdvanced, EnhancedColourPicker, Examiner, MasterPlan, Rematch & Skada skins
+
 b7.22566.2
 Jncl:
 	ToDo.txt
