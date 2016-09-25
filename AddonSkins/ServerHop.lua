@@ -5,7 +5,7 @@ local _G = _G
 function aObj:ServerHop() -- v1.20
 
 	-- ServerHop_Init
-	self:addSkinFrame{obj=hopAddon, ofs=-2}
+	self:addSkinFrame{obj=hopAddon, ofs=0}
 	self:skinButton{obj=hopAddon_LFGWarning.btn}
 
 	-- MainFrame
@@ -21,24 +21,26 @@ function aObj:ServerHop() -- v1.20
 	hopAddon.hopFrame.buttonHop:GetPushedTexture():SetTexture(nil)
 	self:skinButton{obj=hopAddon.hopFrame.buttonHopBack}
 	hopAddon.hopFrame.buttonHopBack:DisableDrawLayer("BACKGROUND")
+	-- hostingGroupFrame
+	self:skinButton{obj=hopAddon.hostFrame.hostingGroupFrame.buttonStop}
 
 	-- SearchFrame
 	hopAddon.searchFrame.background:SetTexture(nil)
 	self:skinDropDown{obj=hopAddon.searchFrame.dungeonsDrop}
 	self:skinDropDown{obj=hopAddon.searchFrame.raidsDrop}
 	self:skinDropDown{obj=hopAddon.searchFrame.dropDown}
-	self:skinEditBox{obj=hopAddon.searchFrame.searchBox, regs={9, 10}, mi=true}
+	self:skinEditBox{obj=hopAddon.searchFrame.searchBox, regs={6 ,7}, mi=true}
 	local hCF = hopAddon.searchFrame.holderCatFilters
 	self:addSkinFrame{obj=hCF, ofs=-6}
-	self:skinEditBox{obj=hCF.timeEdit, regs={9}}
-	self:skinEditBox{obj=hCF.ilvlEdit, regs={9}}
+	self:skinEditBox{obj=hCF.timeEdit, regs={6}}
+	self:skinEditBox{obj=hCF.ilvlEdit, regs={6}}
+	hCF = nil
 	-- skin search result buttons
 	local kids = {hopAddon.searchFrame.searchBox:GetChildren()}
-	local r, g, b, a = unpack(self.bbColour)
 	for _, child in _G.ipairs(kids) do
 		if self:getInt(child:GetWidth()) == 228 then
 			child:SetBackdrop(self.Backdrop[1])
-			child:SetBackdropBorderColor(r, g, b, a)
+			child:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 		end
 	end
 	kids = nil
@@ -51,7 +53,7 @@ function aObj:ServerHop() -- v1.20
 	self:skinScrollBar{obj=fF.scrollframe}
 	self:skinButton{obj=fF.scrollframe.buttonAdd}
 	fF.scrollframe.buttonAdd:DisableDrawLayer("BACKGROUND")
-	self:skinEditBox{obj=fF.editFrame.editBoxName, regs={9}}
+	self:skinEditBox{obj=fF.editFrame.editBoxName, regs={6}}
 	self:addSkinFrame{obj=fF.editFrame.editBoxWords, ofs=5}
 	self:skinButton{obj=fF.editFrame.buttonSave}
 	fF.editFrame.buttonSave:DisableDrawLayer("BACKGROUND")
@@ -59,6 +61,7 @@ function aObj:ServerHop() -- v1.20
 	fF.editFrame.buttonCancel:DisableDrawLayer("BACKGROUND")
 	self:skinButton{obj=fF.editFrame.buttonDelete}
 	fF.editFrame.buttonDelete:DisableDrawLayer("BACKGROUND")
+	fF = nil
 
 	-- SettingFrame
 	local oF = hopAddon.optionsFrame
@@ -67,28 +70,32 @@ function aObj:ServerHop() -- v1.20
 	oF.header:SetTexture(nil)
 	self:moveObject{obj=oF.headerString, x=0, y=-6}
 	self:addSkinFrame{obj=oF.optionsAuthor}
-	self:skinEditBox{obj=oF.optionsAuthor.linkBox, regs={9}}
+	self:skinEditBox{obj=oF.optionsAuthor.linkBox, regs={6}}
 	self:addSkinFrame{obj=oF.tabList}
 	self:addSkinFrame{obj=oF.globalOptionsFrame}
+	self:skinDropDown{obj=oF.globalOptionsFrame.minimapStrataDrop}
 	self:skinDropDown{obj=oF.globalOptionsFrame.statusFrameDrop}
+	oF.globalOptionsFrame.buttonClearBL:DisableDrawLayer("BACKGROUND")
+	self:skinButton{obj=oF.globalOptionsFrame.buttonClearBL}
 	self:addSkinFrame{obj=oF.customSearchOptionsFrame}
 	if oF.customSearchOptionsFrame.languageFilterButton then
 		self:skinButton{obj=oF.customSearchOptionsFrame.languageFilterButton}
 	end
 	self:addSkinFrame{obj=oF.hopSearchOptionsFrame}
-	self:skinButton{obj=oF.hopSearchOptionsFrame.buttonClearBL}
+	self:skinEditBox{obj=oF.hopSearchOptionsFrame.linkBox, regs={6}}
 	oF.hopSearchOptionsFrame.buttonClearBL:DisableDrawLayer("BACKGROUND")
-	self:skinEditBox{obj=self:getChild(oF.hopSearchOptionsFrame, oF.hopSearchOptionsFrame:GetNumChildren() - 2), regs={9}}
-	self:skinEditBox{obj=oF.hopSearchOptionsFrame.linkBox, regs={9}}
+	self:skinButton{obj=oF.hopSearchOptionsFrame.buttonClearBL}
+	self:addSkinFrame{obj=oF.hostOptionsFrame}
 	self:addSkinFrame{obj=oF.aboutTab}
+	oF = nil
 
 	-- ServerHop_GroupCreation
-	self:addSkinFrame{obj=hopAddon.groupCreationHolder, ofs=-4}
-	self:skinButton{obj=hopAddon.groupCreationHolder.createGroup}
-	hopAddon.groupCreationHolder.createGroup:DisableDrawLayer("BACKGROUND")
-	self:skinEditBox{obj=hopAddon.groupCreationHolder.editBoxName, regs={9}, move=true}
-	self:addSkinFrame{obj=hopAddon.groupCreationHolder.editBoxWords, ofs=5}
-	hopAddon.groupCreationHolder.editBoxWords:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=hopAddon.EntryCreationHolder, ofs=-4}
+	self:skinButton{obj=hopAddon.EntryCreationHolder.createGroup}
+	hopAddon.EntryCreationHolder.createGroup:DisableDrawLayer("BACKGROUND")
+	self:skinEditBox{obj=hopAddon.EntryCreationHolder.editBoxName, regs={6}, move=true}
+	self:addSkinFrame{obj=hopAddon.EntryCreationHolder.editBoxWords, ofs=5}
+	hopAddon.EntryCreationHolder.editBoxWords:DisableDrawLayer("BACKGROUND")
 
 	-- ServerHop_Status
 	self:addSkinFrame{obj=hopAddon.hopStatus}
@@ -101,6 +108,7 @@ function aObj:ServerHop() -- v1.20
 	gSF.convertToRaid:SetWidth(120)
 	self:skinButton{obj=gSF.leaveButton}
 	gSF.leaveButton:DisableDrawLayer("BACKGROUND")
+	gSF = nil
 
 	-- ServerHop_Queue
 	local kids = {hopAddon:GetChildren()}
@@ -110,5 +118,28 @@ function aObj:ServerHop() -- v1.20
 		end
 	end
 	kids = nil
+
+	-- hostFrame
+	self:skinDropDown{obj=hopAddon.hostFrame.sizeDrop}
+	hopAddon.hostFrame.buttonHost:DisableDrawLayer("BACKGROUND")
+	self:skinButton{obj=hopAddon.hostFrame.buttonHost}
+	hopAddon.hostFrame.openList:DisableDrawLayer("BACKGROUND")
+	self:skinButton{obj=hopAddon.hostFrame.openList}
+	hopAddon.hostFrame.background:SetTexture(nil)
+	self:addSkinFrame{obj=hopAddon.hostFrame}
+
+	-- HopList
+	self:skinScrollBar{obj=hopAddon.hopList.scrollframe}
+	self:addSkinFrame{obj=hopAddon.hopList, kfs=true}
+	-- remove Header backdrop
+	self:SecureHook(hopAddon.hopList, "RecreateList", function(this)
+		local kids = {this.scrollframe.scrollchild:GetChildren()}
+		for _, child in _G.ipairs(kids) do
+			if child.textHeader then
+				child:SetBackdrop(nil)
+			end
+		end
+		kids = nil
+	end)
 
 end
