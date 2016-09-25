@@ -1858,6 +1858,9 @@ function aObj:GuildBankUI() -- LoD
 	_G.GuildBankEmblemFrame:Hide()
 	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn" .. i .. "Background"]:SetAlpha(0)
+		for j = 1, 14 do
+			self:addButtonBorder{obj=_G["GuildBankColumn" .. i .. "Button" .. j], ibt=true}
+		end
 	end
 	self:skinEditBox{obj=_G.GuildItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
 	self:skinTabs{obj=_G.GuildBankFrame, lod=true}
@@ -2281,10 +2284,10 @@ function aObj:MainMenuBar()
 
 -->>-- skin bag buttons
 	self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
-	self:addButtonBorder{obj=CharacterBag0Slot, ibt=true}
-	self:addButtonBorder{obj=CharacterBag1Slot, ibt=true}
-	self:addButtonBorder{obj=CharacterBag2Slot, ibt=true}
-	self:addButtonBorder{obj=CharacterBag3Slot, ibt=true}
+	self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true}
+	self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true}
+	self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true}
+	self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true}
 
 	-- MultiCastActionBarFrame
 	self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}

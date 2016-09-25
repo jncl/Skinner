@@ -290,13 +290,20 @@ function aObj:OnEnable()
 		end
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
+			-- hook this to ignore common quality items colour change
+			self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink)
+				-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s]", button, quality, itemIDOrLink, button.sbb)
+				if button.sbb then
+					if quality
+					and quality > _G.LE_ITEM_QUALITY_COMMON
+					then
+						button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+					else
+						button.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+					end
+				end
+			end)
 		end
-		-- hook this to hide common quality items
-		self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink)
-			if quality == _G.LE_ITEM_QUALITY_COMMON then
-				button.IconBorder:Hide()
-			end
-		end)
 	else
 		self.modBtns = false
 		self.modBtnBs = false

@@ -138,7 +138,20 @@ function aObj:BankFrame()
 	self:removeInset(_G.BankFrameMoneyFrameInset)
 	_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-4}
-	-- add button borders
+	local btn
+	-- add button borders to bank items
+	for i = 1, 28 do
+		btn = _G["BankFrameItem" .. i]
+		self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
+	end
+	-- add button borders to reagent bank items
+	self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
+		for i = 1, 7 * 7 * 2 do
+			btn = this["Item" .. i]
+			self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
+		end
+	end)
+	-- add button borders to bags
 	for i = 1, _G.NUM_BANKBAGSLOTS do
 		self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
 	end

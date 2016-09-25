@@ -465,6 +465,15 @@ function aObj:getInt(num)
 
 end
 
+function aObj:round2(num, idp)
+	--@alpha@
+		assert(num, "Missing number\n" .. debugstack())
+	--@end-alpha@
+
+  return _G.tonumber(_G.string.format("%." .. (idp or 0) .. "f", num))
+
+end
+
 function aObj:getRegion(obj, regNo)
 --@alpha@
 	assert(obj, "Unknown object getRegion\n" .. debugstack())

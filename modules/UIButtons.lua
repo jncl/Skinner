@@ -72,7 +72,7 @@ local function __checkTex(opts)
 
 	-- handle numbers instead of text (e.g. Armory icon)
 	if nTex
-	and not tonumber(nTex)
+	and not _G.tonumber(nTex)
 	then
 		if btn.skin then btn:Show() end -- Waterfall/tomQuest2
 		if nTex:find("MinusButton")
@@ -454,6 +454,7 @@ local function __addButtonBorder(opts)
 	if not opts.obj then return end
 
 	-- check to see if object is already skinned
+	if opts.obj.sbb then return end
 	if opts.obj.sknd then
 		return
 	else
@@ -519,12 +520,21 @@ local function __addButtonBorder(opts)
 	if opts.ibt then -- Item Buttons
 		opts.obj.Count:SetParent(opts.obj.sbb)
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
-		opts.obj.IconBorder:SetParent(opts.obj.sbb) -- quality border
 		if btnName then
 			_G[btnName .. "Stock"]:SetParent(opts.obj.sbb)
 		else
 			aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		end
+		-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
+		if opts.obj.IconBorder:IsShown() then
+			local r, g, b = opts.obj.IconBorder:GetVertexColor()
+			if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
+				opts.obj.sbb:SetBackdropBorderColor(r, g, b)
+			end
+			r, g, b = nil, nil, nil
+		end
+		opts.obj.IconBorder:SetAlpha(0)
+		-- N.B. IconBorder colour changes are handled in aObj.OnEnable function
 	elseif opts.abt then -- Action Buttons
 		opts.obj.Flash:SetParent(opts.obj.sbb)
 		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)

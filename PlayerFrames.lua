@@ -1711,6 +1711,7 @@ function aObj:LootFrames()
 
 	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 		_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
+		self:addButtonBorder{obj=_G["LootButton" .. i], ibt=true}
 	end
 	self:addSkinFrame{obj=_G.LootFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2}
