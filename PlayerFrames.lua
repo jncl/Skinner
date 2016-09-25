@@ -1228,11 +1228,11 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	for i = 1 , #ejlj.LegendariesFrame.buttons do
 		btn = ejlj.LegendariesFrame.buttons[i]
 		btn.Background:SetTexture(nil)
-		self:addButtonBorder{obj=btn, relTo=btn.Icon, es=14}
+		self.modUIBtns:addButtonBorder{obj=btn, relTo=btn.Icon, es=14} -- use module function here to force creation
 		btn.sbb:SetBackdropBorderColor(1.0, 0.5, 0, 1) -- legendary item colour #ff8000
 		btn = ejlj.LegendariesFrame.rightSideButtons[i]
 		btn.Background:SetTexture(nil)
-		self:addButtonBorder{obj=btn, relTo=btn.Icon, es=14}
+		self.modUIBtns:addButtonBorder{obj=btn, relTo=btn.Icon, es=14} -- use module function here to force creation
 		btn.sbb:SetBackdropBorderColor(1.0, 0.5, 0, 1) -- legendary item colour #ff8000
 	end
 	btn = nil
