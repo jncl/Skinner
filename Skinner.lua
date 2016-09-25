@@ -990,17 +990,17 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
 	end
 	local sbG = self.sbGlazed[statusBar]
 
-	local sbTex = statusBar:GetStatusBarTexture()
-	-- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
-	sbTex:SetHorizTile(false)
-	sbTex:SetVertTile(false)
+	-- local sbTex = statusBar:GetStatusBarTexture()
+	-- -- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
+	-- sbTex:SetHorizTile(false)
+	-- sbTex:SetVertTile(false)
 
 	if fi then
 		if not sbG.bg then
 			-- create background texture on a lower sublevel
 			sbG.bg = bgTex or statusBar:CreateTexture(nil, "BACKGROUND", nil, -1)
 			sbG.bg:SetTexture(self.sbTexture)
-			sbG.bg:SetVertexColor(unpack(self.sbColour))
+			sbG.bg:SetVertexColor(self.sbColour[1], self.sbColour[2], self.sbColour[3])
 			if not bgTex then
 				sbG.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
 				sbG.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
@@ -1013,15 +1013,20 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
 	then
 		for _, tex in pairs(otherTex) do
 			tex:SetTexture(self.sbTexture)
-			tex:SetVertexColor(unpack(self.sbColour))
+			tex:SetVertexColor(self.sbColour[1], self.sbColour[2], self.sbColour[3])
 			sbG[#sbG + 1] = tex
 		end
 	end
 
 	if hookFunc then
 		self:RawHook(statusBar, "SetStatusBarTexture", function(this, tex)
-			self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
+			-- self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
 		end, true)
+		-- this is used by PVPHonorXPBar
+		if statusBar.SetStatusBarAtlas then
+			self:RawHook(statusBar, "SetStatusBarAtlas", function(this, tex)
+			end, true)
+		end
 	end
 
 end

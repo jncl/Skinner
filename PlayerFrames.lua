@@ -1757,7 +1757,7 @@ function aObj:LootFrames()
 			self:adjWidth{obj=obj.Timer, adj=-30}
 			obj.Timer:ClearAllPoints()
 			obj.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
-			self:addSkinFrame{obj=obj, ft=ftype--[=[, bg=true--]=], x1=97, y2=8}
+			self:addSkinFrame{obj=obj, ft=ftype, x1=97, y2=8}
 
 		end
 
@@ -2180,7 +2180,13 @@ function aObj:PVPUI()
 		end
 	end)
 	_G.PVPQueueFrame_SelectButton(1) -- select Honor button
+
 	-- Honor Frame a.k.a Casual
+	local hfxpb = _G.HonorFrame.XPBar
+	hfxpb.Frame:SetTexture(nil)
+	self:glazeStatusBar(hfxpb.Bar, 0, hfxpb.Bar.Background, nil, true)
+	hfxpb.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
+	hfxpb.NextAvailable.Frame:SetTexture(nil)
 	self:removeInset(_G.HonorFrame.RoleInset)
 	self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
 	self:removeInset(_G.HonorFrame.Inset)
@@ -2190,12 +2196,8 @@ function aObj:PVPUI()
 		btn.Bg:SetTexture(nil)
 		btn.Border:SetTexture(nil)
 	end
-	local hfxpb = _G.HonorFrame.XPBar
-	hfxpb.Frame:SetTexture(nil)
-	self:glazeStatusBar(hfxpb.Bar, 0, hfxpb.Bar.Background, {hfxpb.Bar.ExhaustionLevelFillBar}, true)
-	-- TODO stop statusbar texture being changed
-	hfxpb.NextAvailable.Frame:SetTexture(nil)
 	hfxpb = nil
+
 	local hfbf =_G.HonorFrame.BonusFrame
 	hfbf.RandomBGButton.NormalTexture:SetTexture(nil)
 	hfbf.RandomBGButton.Reward.Border:SetTexture(nil)
@@ -2552,11 +2554,11 @@ function aObj:TalentUI() -- LoD
 			self:addButtonBorder{obj=btn, relTo=btn.icon}
 		end
 	end
+
 	-- Tab3 (Honor Talents)
 	local xpb = _G.PlayerTalentFramePVPTalents.XPBar
-	self:glazeStatusBar(xpb.Bar, 0, xpb.Bar.Background, {xpb.Bar.ExhaustionLevelFillBar}, true)
-	-- TODO stop statusbar texture being changed
 	xpb.Frame:SetTexture(nil)
+	self:glazeStatusBar(xpb.Bar, 0, xpb.Bar.Background, nil, true)
 	xpb.NextAvailable.Frame:SetTexture(nil)
 	self:skinDropDown{obj=xpb.DropDown}
 	xpb = nil
