@@ -634,6 +634,9 @@ function aObj:QuestInfo()
 	axp.NameFrame:SetTexture(nil)
 	self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}}
 	axp = nil
+	-- QuestInfoPlayerTitleFrame
+	self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon}
+	self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4,}) -- NameFrame textures
 
 	-->>-- MapQuestInfoRewards Frame
 	frame = _G.MapQuestInfoRewardsFrame
