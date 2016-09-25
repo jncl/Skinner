@@ -481,7 +481,7 @@ function aObj:Calendar() -- LoD
 	self:keepFontStrings(_G.CalendarCreateEventTitleFrame)
 	self:moveObject{obj=_G.CalendarCreateEventTitleFrame, y=-6}
 	self:removeRegions(_G.CalendarCreateEventCloseButton, {5})
-	self:skinEditBox{obj=_G.CalendarCreateEventTitleEdit, regs={9}}
+	self:skinEditBox{obj=_G.CalendarCreateEventTitleEdit, regs={6}}
 	self:skinDropDown{obj=_G.CalendarCreateEventTypeDropDown}
 	self:skinDropDown{obj=_G.CalendarCreateEventHourDropDown, x2=-5}
 	self:skinDropDown{obj=_G.CalendarCreateEventMinuteDropDown, x2=-5}
@@ -492,7 +492,7 @@ function aObj:Calendar() -- LoD
 	self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
 	self:skinSlider{obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar}
 	self:addSkinFrame{obj=_G.CalendarCreateEventInviteList, ft=ftype}
-	self:skinEditBox{obj=_G.CalendarCreateEventInviteEdit, regs={9}}
+	self:skinEditBox{obj=_G.CalendarCreateEventInviteEdit, regs={6}}
 	_G.CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
 	_G.CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
 	_G.CalendarCreateEventCreateButtonBorder:SetAlpha(0)
@@ -502,8 +502,8 @@ function aObj:Calendar() -- LoD
 	self:keepFontStrings(_G.CalendarMassInviteTitleFrame)
 	self:moveObject{obj=_G.CalendarMassInviteTitleFrame, y=-6}
 	self:removeRegions(_G.CalendarMassInviteCloseButton, {5})
-	self:skinEditBox{obj=_G.CalendarMassInviteGuildMinLevelEdit, regs={9}}
-	self:skinEditBox{obj=_G.CalendarMassInviteGuildMaxLevelEdit, regs={9}}
+	self:skinEditBox{obj=_G.CalendarMassInviteGuildMinLevelEdit, regs={6}}
+	self:skinEditBox{obj=_G.CalendarMassInviteGuildMaxLevelEdit, regs={6}}
 	self:skinDropDown{obj=_G.CalendarMassInviteGuildRankMenu}
 	self:addSkinFrame{obj=_G.CalendarMassInviteFrame, ft=ftype, kfs=true, x1=4, y1=-3, x2=-3, y2=26}
 
@@ -1404,7 +1404,7 @@ function aObj:GarrisonUI() -- LoD
 		aObj:addButtonBorder{obj=cdf.CapacitiveDisplay.ShipmentIconFrame, relTo=cdf.CapacitiveDisplay.ShipmentIconFrame.Icon, hide=true}
 		skinPortrait(cdf.CapacitiveDisplay.ShipmentIconFrame.Follower)
 		aObj:addButtonBorder{obj=cdf.DecrementButton, ofs=-2, es=10}
-		aObj:skinEditBox{obj=cdf.Count, regs={9}}
+		aObj:skinEditBox{obj=cdf.Count, regs={6}}
 		aObj:addButtonBorder{obj=cdf.IncrementButton, ofs=-2, es=10}
 		-- hook this to skin regents
 		aObj:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(this)
@@ -1873,7 +1873,7 @@ function aObj:GuildBankUI() -- LoD
 	self:skinScrollBar{obj=_G.GuildBankInfoScrollFrame}
 
 -->>--	GuildBank Popup Frame
-	self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={9}}
+	self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={6}}
 	self:skinScrollBar{obj=_G.GuildBankPopupScrollFrame}
 	self:addSkinFrame{obj=_G.GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
 	local btn
@@ -2538,7 +2538,7 @@ function aObj:MenuFrames()
 						slider.Suffix:SetPoint('RIGHT', slider.EditBG, 7, -3)
 						slider = nil
 					else
-						aObj:skinEditBox{obj=child, regs={9}}
+						aObj:skinEditBox{obj=child, regs={6}}
 					end
 				elseif child:IsObjectType("ScrollFrame")
 				and child:GetName()
@@ -3677,7 +3677,7 @@ function aObj:TimeManager() -- LoD
 	self:skinDropDown{obj=_G.TimeManagerAlarmHourDropDown, x2=-5}
 	self:skinDropDown{obj=_G.TimeManagerAlarmMinuteDropDown, x2=-5}
 	self:skinDropDown{obj=_G.TimeManagerAlarmAMPMDropDown, x2=-5}
-	self:skinEditBox{obj=_G.TimeManagerAlarmMessageEditBox, regs={9}}
+	self:skinEditBox{obj=_G.TimeManagerAlarmMessageEditBox, regs={6}}
 	self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
 	self:addSkinFrame{obj=_G.TimeManagerFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 

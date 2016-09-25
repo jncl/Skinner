@@ -506,7 +506,7 @@ function aObj:CharacterFrames()
 
 	-- GearManagerDialog Popup Frame
 	self:skinScrollBar{obj=_G.GearManagerDialogPopupScrollFrame}
-	self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={9}}
+	self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={6}}
 	for i = 1, _G.NUM_GEARSET_ICONS_SHOWN do
 		_G["GearManagerDialogPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
 	end
@@ -1417,7 +1417,7 @@ function aObj:GuildControlUI() -- LoD
 			obj = _G["GuildControlUIRankOrderFrameRank" .. i]
 			if obj and not obj.sknd then
 				obj.sknd = true
-				aObj:skinEditBox{obj=obj.nameBox, regs={9}, x=-5}
+				aObj:skinEditBox{obj=obj.nameBox, regs={6}, x=-5}
 				aObj:addButtonBorder{obj=obj.downButton, ofs=0}
 				aObj:addButtonBorder{obj=obj.upButton, ofs=0}
 				aObj:addButtonBorder{obj=obj.deleteButton, ofs=0}
@@ -1433,7 +1433,7 @@ function aObj:GuildControlUI() -- LoD
 	_G.GuildControlUI.rankPermFrame:DisableDrawLayer("BACKGROUND")
 	self:skinDropDown{obj=_G.GuildControlUI.rankPermFrame.dropdown}
 	_G.UIDropDownMenu_SetButtonWidth(_G.GuildControlUI.rankPermFrame.dropdown, 24)
-	self:skinEditBox{obj=_G.GuildControlUI.rankPermFrame.goldBox, regs={9}}
+	self:skinEditBox{obj=_G.GuildControlUI.rankPermFrame.goldBox, regs={6}}
 	-- Bank Tab Permissions panel
 	self:keepFontStrings(_G.GuildControlUI.bankTabFrame.scrollFrame)
 	self:skinSlider{obj=_G.GuildControlUIRankBankFrameInsetScrollFrameScrollBar}
@@ -1449,7 +1449,7 @@ function aObj:GuildControlUI() -- LoD
 			if btn and not btn.sknd then
 				btn.sknd = true
 				btn:DisableDrawLayer("BACKGROUND")
-				self:skinEditBox{obj=btn.owned.editBox, regs={9}}
+				self:skinEditBox{obj=btn.owned.editBox, regs={6}}
 				self:skinButton{obj=btn.buy.button, as=true}
 				self:addButtonBorder{obj=btn.owned, relTo=btn.owned.tabIcon, es=10}
 			end
@@ -1482,7 +1482,7 @@ function aObj:GuildUI() -- LoD
 	self:skinTabs{obj=_G.GuildFrame, lod=true}
 	self:addSkinFrame{obj=_G.GuildFrame, ft=ftype, ri=true, rmbt=true, x1=-3, y1=2, x2=1, y2=-5}
 	-- GuildNameChange Frame
-	self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={9}}
+	self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={6}}
 
 
 -->>-- GuildRoster Frame
@@ -2208,6 +2208,7 @@ function aObj:PVPUI()
 	hfbf.ShadowOverlay:DisableDrawLayer("OVERLAY")
 	hfbf = nil
 	self:skinButton{obj=_G.HonorFrame.QueueButton, rmbt=true}
+
 	-- Conquest Frame
 	_G.ConquestFrame:DisableDrawLayer("BACKGROUND")
 	_G.ConquestFrame:DisableDrawLayer("BORDER")
@@ -2218,6 +2219,7 @@ function aObj:PVPUI()
 	_G.ConquestFrame.RatedBG.NormalTexture:SetTexture(nil)
 	self:skinButton{obj=_G.ConquestFrame.JoinButton, rmbt=true}
 	self:skinDropDown{obj=_G.ConquestFrame.ArenaInviteMenu}
+
 	-- War Games Frame
 	_G.WarGamesFrame.InfoBG:SetTexture(nil)
 	self:removeInset(_G.WarGamesFrame.RightInset)
@@ -2483,7 +2485,6 @@ function aObj:TalentUI() -- LoD
 	self:skinButton{obj=_G.PlayerTalentFrameCloseButton, cb=true}
 	self:skinButton{obj=_G.PlayerTalentFrameActivateButton}
 	self:skinButton{obj=_G.PlayerTalentFrameSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFrameSpecialization}
---	self:skinButton{obj=_G.PlayerTalentFrameTalents.learnButton, anim=true, parent=_G.PlayerTalentFrameTalents}
 	self:skinButton{obj=_G.PlayerTalentFramePetSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFramePetSpecialization}
 
 	local function skinAbilities(obj)
@@ -2522,6 +2523,7 @@ function aObj:TalentUI() -- LoD
 		-- abilities
 		skinAbilities(scrollChild)
 	end
+
 	-- Tab1 (Specialization)
 	skinSpec(_G.PlayerTalentFrameSpecialization)
 	-- handle extra abilities (Player and Pet)
@@ -2532,6 +2534,7 @@ function aObj:TalentUI() -- LoD
 	self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(this, spec)
 		skinAbilities(this.spellsScroll.child)
 	end)
+
 	-- Tab2 (Talents)
 	self:removeRegions(_G.PlayerTalentFrameTalents, {1, 2, 3, 4, 5, 6, 7})
 	_G.PlayerTalentFrameTalents.MainHelpButton.Ring:SetTexture(nil)
@@ -2574,8 +2577,10 @@ function aObj:TalentUI() -- LoD
 		end
 	end
 	self:addSkinFrame{obj=_G.PlayerTalentFramePVPTalents.PrestigeLevelDialog, ft=ftype}
+
 	-- Tab4 (Pet Specialization)
 	skinSpec(_G.PlayerTalentFramePetSpecialization)
+
 	-- Dual Spec Tabs
 	local tab
 	for i = 1, _G.MAX_TALENT_GROUPS do
