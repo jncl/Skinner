@@ -2217,6 +2217,7 @@ function aObj:MainMenuBar()
 		-- aObj:Debug("moveWatchBar: [%s, %s, %s]", aObj.uLvl,  _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()], _G.GetExpansionLevel())
 		aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4} -- move it above MainMenuBar
 		bar.SetPoint = function() end -- stop it being moved
+		bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1) -- move text down
 	end
 
 	-- ReputationWatchBar
