@@ -44,10 +44,6 @@ Legend:
 		- LevelUpDisplay
 			- New FontString added
 
-√	I	Honor StatusBar on TalentUI, texture is being changed, not sure by what or why
-√	I	Honor StatusBar on PVPUI, texture is being changed, not sure by what or why
-√	I	Honor StatusBar, need to move text down
-
 ?	I	Tooltip
 		- Correct Gradient Height, noticeable on many object tooltips
 		- not sure it's height, maybe animation of alpha causes the effect ?
@@ -59,7 +55,7 @@ Legend:
 ?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
 
 	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
-		- e.g. GameMenu buttons, Close Button(s)
+?		- e.g. GameMenu buttons, Close Button(s)
 
 	I	Rarity, reported by sausje, 06.09.16
 ?		- causes UI elements to not be skinned
@@ -69,13 +65,3 @@ Legend:
 
 	I	QuestList
 ?		- quest icon/number buttons shouldn't be skinned
-
-	I	AdventureGuide, reported by epidemedabear, 22.09.16
-√		- ..\AddOns\Skinner\PlayerFrames.lua line 1232: attempt to index field 'sbb' (a nil value)
-
-	I	ButtonBorders, requested by hammer2, 22.09.16
-√		- don't use the Blizzard Quality Border, instead colour the button border with the quality colour
-
-	I	ServerHop, NeoZeus, 23.09.16
-√		- Skinner\Skinner-b7.22624.1.lua:599: attempt to index field 'obj' (a nil value)
-		  Skinner\SkinMe\ServerHop-4.0.6.lua:86: in function <Skinner\SkinMe\ServerHop.lua:5>
