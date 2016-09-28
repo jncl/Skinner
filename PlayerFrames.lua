@@ -814,19 +814,24 @@ function aObj:Collections() -- LoD
 	self:skinDropDown{obj=wcf.ModelsFrame.WeaponDropDown}
 	self:addButtonBorder{obj=wcf.NavigationFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=wcf.NavigationFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
+	wcf = nil
 
 	self:addSkinFrame{obj=_G.WardrobeOutfitFrame, ft=ftype, nb=true}
 
 	-- WardrobeFrame a.k.a. Transmogrify
-	self:removeInset(_G.WardrobeTransmogFrame.Inset)
-	self:skinDropDown{obj=_G.WardrobeTransmogFrame.OutfitDropDown, y2=-4}
-	for i = 1, #_G.WardrobeTransmogFrame.Model.SlotButtons do
-		_G.WardrobeTransmogFrame.Model.SlotButtons[i].Border:SetTexture(nil)
+	local wtf = _G.WardrobeTransmogFrame
+	self:removeInset(wtf.Inset)
+	self:skinDropDown{obj=wtf.OutfitDropDown, y2=-4}
+	self:addButtonBorder{obj=wtf.Model.ClearAllPendingButton, ofs=1, x2=0, relTo=wtf.Model.ClearAllPendingButton.Icon}
+	for i = 1, #wtf.Model.SlotButtons do
+		wtf.Model.SlotButtons[i].Border:SetTexture(nil)
+		self:addButtonBorder{obj=wtf.Model.SlotButtons[i], ofs=-2}
 	end
-	_G.WardrobeTransmogFrame:DisableDrawLayer("ARTWORK")
-	_G.WardrobeTransmogFrame.Model.controlFrame:DisableDrawLayer("BACKGROUND")
-	self:addButtonBorder{obj=_G.WardrobeTransmogFrame.SpecButton, es=12, ofs=-1}--, y1=-3, x2=-3}
+	wtf:DisableDrawLayer("ARTWORK")
+	wtf.Model.controlFrame:DisableDrawLayer("BACKGROUND")
+	self:addButtonBorder{obj=wtf.SpecButton, es=12, ofs=-1}
 	self:addSkinFrame{obj=_G.WardrobeFrame, ft=ftype, kfs=true, ofs=2}
+	wtf = nil
 
 	self:skinEditBox{obj=_G.WardrobeOutfitEditFrame.EditBox, regs={6}} -- 6 is text
 	self:addSkinFrame{obj=_G.WardrobeOutfitEditFrame, ft=ftype, kfs=true}
@@ -995,11 +1000,11 @@ function aObj:DressUpFrame()
 	if not self.db.profile.DressUpFrame or self.initialized.DressUpFrame then return end
 	self.initialized.DressUpFrame = true
 
+	self:skinDropDown{obj=_G.DressUpFrameOutfitDropDown, y2=-4}
 	self:removeRegions(_G.DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
 	_G.DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
 
-	self:skinDropDown{obj=_G.DressUpFrameOutfitDropDown, y2=-4}
 
 end
 
