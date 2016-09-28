@@ -1,3 +1,17 @@
+b7.22624.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated StatusBar skinning code & Updated HonorBar skin
+	Move MainMenuBar Status bar text
+	Bugfix for missing ButtonBorders
+	Updated various EditBox skin code
+	Updated QuestInfo skin
+	Updated ButtonBorder skin code & skinned more buttons
+	Updated ServerHop skin
+	Unobsoleted TomTom skin
+
 b7.22624.1
 Jncl:
 	ToDo.txt
