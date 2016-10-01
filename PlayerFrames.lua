@@ -1829,7 +1829,15 @@ function aObj:LootFrames()
 	self:addSkinFrame{obj=_G.BonusRollFrame, ft=ftype, bg=true}
 	self:addButtonBorder{obj=_G.BonusRollFrame.PromptFrame, relTo=_G.BonusRollFrame.PromptFrame.Icon, reParent={_G.BonusRollFrame.SpecIcon}}
 
-	-- N.B. BonusRollLootWonFrame & BonusRollMoneyWonFrame are managed as part of the Alert Frames skin
+	local function skinMWLWAlertFrame(frame, reqdOfs)
+
+		frame:DisableDrawLayer("BACKGROUND")
+		if frame.SpecRing then frame.SpecRing:SetTexture(nil) end -- Loot Won Alert Frame(s)
+		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=reqdOfs or -10, y2=8}
+
+	end
+	skinMWLWAlertFrame(_G.BonusRollLootWonFrame)
+	skinMWLWAlertFrame(_G.BonusRollMoneyWonFrame, -8)
 
 -->>-- MasterLooter Frame
 	_G.MasterLooterFrame.Item.NameBorderLeft:SetTexture(nil)
