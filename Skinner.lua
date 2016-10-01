@@ -839,9 +839,9 @@ local function __applySkin(opts)
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.bd or 1])
 	if not opts.ebc then
 		-- colour the backdrop if required
-		local r, g, b, a = unpack(aObj.bColour)
+		local r, g, b, a = aObj.bColour[1], aObj.bColour[2], aObj.bColour[3], aObj.bColour[4]
 		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
-		r, g, b, a = unpack(aObj.bbColour)
+		r, g, b, a = aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]
 		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
 		r, g, b, a = nil, nil, nil, nil
 	else
@@ -1330,16 +1330,6 @@ function aObj:setInactiveTab(tabSF)
 		tabSF.grown = nil
 	end
 	point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
-
-end
-
-function aObj:setTTBBC()
-
-	if self.db.profile.Tooltips.border == 1 then
-		return unpack(self.tbColour)
-	else
-		return unpack(self.bbColour)
-	end
 
 end
 
@@ -1975,9 +1965,12 @@ function aObj:skinTooltip(obj)
 				end
 			end
 		end
+		r, g, b, a = nil, nil, nil, nil
 	end
 
-	obj:SetBackdropBorderColor(self:setTTBBC())
+	obj:SetBackdropBorderColor(prdb.Tooltips.border == 1 and self.tbColour[1], self.tbColour[2], self.tbColour[3], self.tbColour[4] or self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+
+	prdb = nil
 
 end
 

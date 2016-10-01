@@ -388,10 +388,9 @@ function aObj:BindingUI() -- LoD
 	-- just put a backdrop border around the frames
 	self:keepRegions(_G.KeyBindingFrame.categoryList, {})
 	_G.KeyBindingFrame.categoryList:SetBackdrop(self.Backdrop[10])
-	_G.KeyBindingFrame.categoryList:SetBackdropBorderColor(unpack(self.bbColour))
+	_G.KeyBindingFrame.categoryList:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 	_G.KeyBindingFrame.bindingsContainer:SetBackdrop(self.Backdrop[10])
-	_G.KeyBindingFrame.bindingsContainer:SetBackdropBorderColor(unpack(self.bbColour))
-	self:skinScrollBar{obj=_G.KeyBindingFrame.scrollFrame}
+	_G.KeyBindingFrame.bindingsContainer:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 	for i = 1, _G.KEY_BINDINGS_DISPLAYED do
 		self:skinButton{obj=_G.KeyBindingFrame.keyBindingRows[i].key1Button}
 		self:skinButton{obj=_G.KeyBindingFrame.keyBindingRows[i].key2Button}
@@ -3251,7 +3250,7 @@ function aObj:PetBattleUI()
 				then
 					this.sbb:SetBackdropBorderColor(.5, .5, .5)
 				else
-					this.sbb:SetBackdropBorderColor(unpack(self.bbColour))
+					this.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 				end
 			end
 		end)

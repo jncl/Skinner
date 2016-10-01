@@ -504,7 +504,7 @@ local function __addButtonBorder(opts)
 
 	if opts.disable then
 		-- hook Enable & Disable methods
-		module:SecureHook(opts.obj, "Enable", function(this) this.sbb:SetBackdropBorderColor(_G.unpack(aObj.bbColour)) end)
+		module:SecureHook(opts.obj, "Enable", function(this) this.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]) end)
 		module:SecureHook(opts.obj, "Disable", function(this) this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end)
 		if not opts.obj:IsEnabled() then opts.obj.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
 	end
