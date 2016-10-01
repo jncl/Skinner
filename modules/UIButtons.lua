@@ -454,8 +454,7 @@ local function __addButtonBorder(opts)
 	if not opts.obj then return end
 
 	-- check to see if object is already skinned
-	if opts.obj.sbb then return end
-	if opts.obj.sknd then
+	if opts.obj.sbb then
 		return
 	else
 		opts.obj.sknd = true
@@ -613,9 +612,9 @@ end
 function module:OnEnable()
 
 	-- this code will handle button border creation during combat
-	if module.db.profile.ButtonBorders then
-		module.btnTab = {}
-		module:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+	if db.ButtonBorders then
+		self.btnTab = {}
+		self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
 			for _, v in pairs(module.btnTab) do
 				module:addButtonBorder(v)
 			end
