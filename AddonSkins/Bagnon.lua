@@ -2,13 +2,34 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Bagnon") then return end
 local _G = _G
 
-function aObj:Bagnon(LoD) -- 6.1.3
+function aObj:Bagnon() -- 7.0.4
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
 	local Bagnon = _G.Bagnon
 	-- hide empty slot background
 	Bagnon.sets['emptySlots'] = false
+
+	if self.modBtnBs then
+		-- hook this to manage button border colours
+		self:SecureHook(Bagnon.ItemSlot, "UpdateBorder", function(this)
+			local _, _, _, quality = this:GetInfo()
+			local item = this:GetItem()
+			-- revert to default
+			this.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+			-- change border if required
+			if item then
+				if Bagnon.sets.glowQuality
+				and quality
+				and quality > 1
+				then
+					this.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+				end
+			end
+			quality, item = nil, nil
+		end)
+	end
+
 	-- skin the bag frames
 	local function skinFrame(frame)
 		aObj:addSkinFrame{obj=frame}
