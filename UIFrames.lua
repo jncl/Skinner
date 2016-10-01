@@ -1868,11 +1868,9 @@ function aObj:GuildBankUI() -- LoD
 	self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={6}}
 	self:skinScrollBar{obj=_G.GuildBankPopupScrollFrame}
 	self:addSkinFrame{obj=_G.GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
-	local btn
 	for i = 1, 16 do
-		btn = _G["GuildBankPopupButton" .. i]
-		btn:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=btn}
+		_G["GuildBankPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=_G["GuildBankPopupButton" .. i]}
 	end
 
 -->>--	Tabs (side)
