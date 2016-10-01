@@ -1927,24 +1927,24 @@ function aObj:skinTooltip(obj)
 		end
 	end
 
-	if not obj.tfade then obj.tfade = obj:CreateTexture(nil, "BORDER") end
+	obj.tfade = obj.tfade or obj:CreateTexture(nil, "BORDER")
 	obj.tfade:SetTexture(self.gradientTex)
 
-	if prdb.Tooltips.style == 1 then
+	obj.tfade:ClearAllPoints()
+	if prdb.Tooltips.style == 1 then -- Rounded
 		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 6, -6)
 		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -6, -27)
-	elseif prdb.Tooltips.style == 2 then
+	elseif prdb.Tooltips.style == 2 then -- Flat
 		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
 		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4)
-	else
+	else -- Custom
 		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
 		-- set the Fade Height making sure that it isn't greater than the frame height
 		local objHeight = self:getInt(obj:GetHeight())
 		local fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
-		objHeight = nil
 		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -(fh - 4))
-		obj:SetBackdropColor(unpack(self.bColour))
-		fh = nil
+		obj:SetBackdropColor(self.bColour[1], self.bColour[2], self.bColour[3], self.bColour[4])
+		objHeight, fh = nil, nil
 	end
 
 	obj.tfade:SetBlendMode("ADD")
