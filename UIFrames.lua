@@ -4,6 +4,7 @@ local ftype = "u"
 
 local ipairs, IsAddOnLoaded, pairs, unpack = _G.ipairs, _G.IsAddOnLoaded, _G.pairs, _G.unpack
 
+-- Tooltips skinning code
 do
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
 	-- use strings as the objects may not exist when we start
@@ -1044,7 +1045,7 @@ function aObj:DropDownPanels() -- option under General settings
 
 end
 
--- The following functions are used by the GarrisonUI & OrderHallUI
+-- The following local functions are used by the GarrisonUI & OrderHallUI
 local stageRegs = {1, 2, 3, 4, 5}
 local navalStageRegs = {1, 2, 3, 4}
 local cdStageRegs = {1, 2, 3, 4, 5, 6}
