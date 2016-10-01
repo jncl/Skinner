@@ -146,9 +146,7 @@ function aObj:AlertFrames()
 		end
 		frame:DisableDrawLayer("BACKGROUND")
 		if frame.SpecRing then frame.SpecRing:SetTexture(nil) end -- Loot Won Alert Frame(s)
-		if not frame.sf then
-			aObj:addSkinFrame{obj=frame, ft=ftype, ofs=reqdOfs or -10, y2=8}
-		end
+		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=reqdOfs or -10, y2=8}
 
 	end
 	local function skinCommonAlertFrame(frame, reqdOfs)
@@ -160,7 +158,7 @@ function aObj:AlertFrames()
 		end
 		if frame.Background then
 			frame.Background:SetTexture(nil)
-		else
+		elseif not frame.QuestTexture then -- not a WorldQuest
 			frame:DisableDrawLayer("BACKGROUND") -- Background toast texture
 		end
 		if frame.Blank then -- GarrisonRandomMissionAlertFrame
@@ -230,7 +228,6 @@ function aObj:AlertFrames()
 		frame = _G["Garrison" .. v .. "AlertFrame"]
 		skinCommonAlertFrame(frame, -8)
 	end
-	frame = nil
 
 	-->>-- these frames are created as needed
 	-- called params: frame, achievementID, alreadyEarned
@@ -238,7 +235,6 @@ function aObj:AlertFrames()
 		-- aObj:Debug("AchievementAlertSystem: [%s, %s]", frame, ...)
 		skinACAlertFrame(frame)
 	end)
-
 	--called params: frame, achievementID, criteriaString
 	self:SecureHook(_G.CriteriaAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("CriteriaAlertSystem: [%s, %s]", frame, ...)
@@ -250,19 +246,16 @@ function aObj:AlertFrames()
 		-- aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
 		skinWLUAlertFrame(frame)
 	end)
-
 	-- called parms: self, itemLink, quantity, specID, baseQuality
 	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s]", frame, ...)
 		skinWLUAlertFrame(frame)
 	end)
-
 	-- called params: self, amount
 	self:SecureHook(_G.MoneyWonAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("MoneyWonAlertSystem: [%s, %s]", frame, ...)
 		skinWLUAlertFrame(frame, -8)
 	end)
-
 	-- called params: self, recipeID
 	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("NewRecipeLearnedAlertSystem: [%s, %s]", frame, ...)
