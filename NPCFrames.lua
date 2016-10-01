@@ -22,8 +22,13 @@ function aObj:AuctionUI() -- LoD
 		self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true, aso={bd=5}}
 	end
-	self:skinScrollBar{obj=_G.BrowseFilterScrollFrame}
-	self:skinScrollBar{obj=_G.BrowseScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.BrowseFilterScrollFrame}
+		self:skinScrollBar{obj=_G.BrowseScrollFrame}
+	else
+		self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, size=3, rt="artwork"}
+		self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 	-- BrowseWowTokenResults
 	_G.BrowseWowTokenResults.Token:DisableDrawLayer("BACKGROUND")
 	self:skinButton{obj=_G.BrowseWowTokenResults.Buyout}
@@ -80,7 +85,11 @@ function aObj:AuctionUI() -- LoD
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
 	end
-	self:skinScrollBar{obj=_G.BidScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.BidScrollFrame}
+	else
+		self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 	self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
 	_G.BidCloseButton:DisableDrawLayer("BORDER")
 	_G.BidBuyoutButton:DisableDrawLayer("BORDER")
@@ -95,7 +104,11 @@ function aObj:AuctionUI() -- LoD
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
-	self:skinScrollBar{obj=_G.AuctionsScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.AuctionsScrollFrame}
+	else
+		self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 	for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
 		btnName = "AuctionsButton" .. i
 		self:keepFontStrings(_G[btnName])
@@ -211,11 +224,19 @@ function aObj:BlackMarketUI() -- LoD
 			self:keepFontStrings(btn)
 		end
 	end
-	self:SecureHook(_G.BlackMarketScrollFrame, "update", function(this)
-		skinSFButtons(this)
-	end)
-	-- skin existing buttons
-	skinSFButtons(_G.BlackMarketScrollFrame)
+	if not self.isPTR then
+		self:SecureHook(_G.BlackMarketScrollFrame, "update", function(this)
+			aObj:Debug("BlackMarketScrollFrame update")
+			skinSFButtons(this)
+		end)
+		-- skin existing buttons
+		skinSFButtons(_G.BlackMarketScrollFrame)
+	else
+		self:SecureHook("BlackMarketScrollFrame_Update", function(this)
+			aObj:Debug("BlackMarketScrollFrame_Update")
+			skinSFButtons(_G.BlackMarketScrollFrame)
+		end)
+	end
 
 end
 
@@ -258,7 +279,11 @@ function aObj:GossipFrame()
 
 	self:keepFontStrings(_G.GossipFrameGreetingPanel)
 	_G.GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinScrollBar{obj=_G.GossipGreetingScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.GossipGreetingScrollFrame}
+	else
+		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 	for i = 1, _G.NUMGOSSIPBUTTONS do
 		self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
@@ -467,14 +492,22 @@ function aObj:QuestFrame()
 	self:addSkinFrame{obj=_G.QuestFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 -->>--	Reward Panel
 	self:keepFontStrings(_G.QuestFrameRewardPanel)
-	self:skinScrollBar{obj=_G.QuestRewardScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.QuestRewardScrollFrame}
+	else
+		self:skinSlider{obj=_G.QuestRewardScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 -->>--	Progress Panel
 	self:keepFontStrings(_G.QuestFrameProgressPanel)
 	_G.QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinScrollBar{obj=_G.QuestProgressScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.QuestProgressScrollFrame}
+	else
+		self:skinSlider{obj=_G.QuestProgressScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 	local btnName
 	for i = 1, _G.MAX_REQUIRED_ITEMS do
 		btnName = "QuestProgressItem" .. i
@@ -492,12 +525,20 @@ function aObj:QuestFrame()
 
 -->>--	Detail Panel
 	self:keepFontStrings(_G.QuestFrameDetailPanel)
-	self:skinScrollBar{obj=_G.QuestDetailScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.QuestDetailScrollFrame}
+	else
+		self:skinSlider{obj=_G.QuestDetailScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 
 -->>--	Greeting Panel
 	self:keepFontStrings(_G.QuestFrameGreetingPanel)
 	self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
-	self:skinScrollBar{obj=_G.QuestGreetingScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.QuestGreetingScrollFrame}
+	else
+		self:skinSlider{obj=_G.QuestGreetingScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 	if _G.QuestFrameGreetingPanel:IsShown() then
 		_G.GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.CurrentQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -506,7 +547,11 @@ function aObj:QuestFrame()
 
 -->>-- QuestNPCModel
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
-	self:skinScrollBar{obj=_G.QuestNPCModelTextScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.QuestNPCModelTextScrollFrame}
+	else
+		self:skinSlider{obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, size=3}
+	end
 	self:addSkinFrame{obj=_G.QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
 
 	self:QuestInfo()
@@ -553,6 +598,9 @@ function aObj:QuestInfo()
 		_G.QuestInfoRewardsFrame.Header:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
 		-- other text
 		_G.QuestInfoDescriptionText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+		if self.isPTR then
+			_G.QuestInfoQuestType:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
 		_G.QuestInfoObjectivesText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		_G.QuestInfoGroupSize:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		_G.QuestInfoRewardText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)

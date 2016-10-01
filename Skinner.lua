@@ -1710,7 +1710,14 @@ local function __skinScrollBar(opts)
 		noRR = Don't remove regions
 --]]
 --@alpha@
-	assert(opts.obj and opts.obj:IsObjectType("ScrollFrame"), "Not a ScrollFrame\n" .. debugstack())
+	if not aObj.isPTR then
+		assert(opts.obj and opts.obj:IsObjectType("ScrollFrame"), "Not a ScrollFrame\n" .. debugstack())
+	else
+		-- handle AddOn skins still using this code rather than skinSlider
+		assert(opts.obj and opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. debugstack())
+		assert(opts.obj and _G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
+		aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinScrollBar", opts.obj)
+	end
 --@end-alpha@
 
 	-- don't skin it twice
@@ -1724,7 +1731,8 @@ local function __skinScrollBar(opts)
 	if not opts.noRR then aObj:keepFontStrings(opts.obj) end
 
 	-- get the actual ScrollBar object
-	local sBar = opts.sbObj and opts.sbObj or _G[opts.obj:GetName() .. (opts.sbPrefix or "") .. "ScrollBar"]
+	local sBar = _G[opts.obj:GetName() .. "ScrollBar"]
+	-- local sBar = opts.sbObj and opts.sbObj or _G[opts.obj:GetName() .. (opts.sbPrefix or "") .. "ScrollBar"]
 
 	-- skin it
 	aObj:skinUsingBD{obj=sBar, size=opts.size}
@@ -1746,8 +1754,8 @@ function aObj:skinScrollBar(...)
 		-- old style call
 		opts = {}
 		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.sbPrefix = select(2, ...) and select(2, ...) or nil
-		opts.sbObj = select(3, ...) and select(3, ...) or nil
+		-- opts.sbPrefix = select(2, ...) and select(2, ...) or nil
+		-- opts.sbObj = select(3, ...) and select(3, ...) or nil
 		opts.size = select(4, ...) and select(4, ...) or 2
 	end
 
@@ -1762,6 +1770,7 @@ local function __skinSlider(opts)
 		obj = object (Mandatory)
 		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow) [default is 3]
 		adj = width reduction required
+		rt = remove textures from parent
 --]]
 --@alpha@
 	assert(opts.obj and opts.obj:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
@@ -1782,6 +1791,17 @@ local function __skinSlider(opts)
 
 	-- adjust width if required
 	if opts.adj then aObj:adjWidth{obj=opts.obj, adj=opts.adj} end
+
+	-- remove parent's textures if required
+	if opts.rt then
+		if type(opts.rt) == "table" then
+			for _, v in pairs(opts.rt) do
+				opts.obj:GetParent():DisableDrawLayer(v)
+			end
+		else
+			opts.obj:GetParent():DisableDrawLayer(opts.rt)
+		end
+	end
 
 end
 

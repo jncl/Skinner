@@ -44,7 +44,11 @@ function aObj:AddonList()
 	self.initialized.AddonList = true
 
 	self:skinDropDown{obj=_G.AddonCharacterDropDown, x2=110}
-	self:skinScrollBar{obj=_G.AddonListScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.AddonListScrollFrame}
+	else
+		self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, size=3, rt="background"}
+	end
 	self:addSkinFrame{obj=_G.AddonList, ft=ftype, kfs=true, ri=true, rmbt=true, ofs=2, x2=1}
 
 end
@@ -100,6 +104,15 @@ function aObj:AlertFrames()
 		frame:DisableDrawLayer("OVERLAY")
 	end)
 
+	if self.isPTR then
+		local function skinRewards(af)
+
+			for i = 1, #af.RewardFrames do
+				af.RewardFrames:DisableDrawLayer("OVERLAY") -- rewardring
+			end
+			
+		end
+	end
 	local function skinACAlertFrame(frame)
 
 		local fH = aObj:getInt(frame:GetHeight())
@@ -194,40 +207,128 @@ function aObj:AlertFrames()
 		-- self.hooks.AlertFrame_ResumeOutAnimation(frame)
 	end, true)
 
-	-->>-- these frames already exist
-	-- GuildChallengeAlertFrame
-	_G.GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
-	_G.GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
-	_G.GuildChallengeAlertFrame:DisableDrawLayer("OVERLAY")
-	aObj:addSkinFrame{obj=_G.GuildChallengeAlertFrame, ft=ftype, ofs=-10}
+	if not self.isPTR then
+		-->>-- these frames already exist
+		-- GuildChallengeAlertFrame
+		_G.GuildChallengeAlertFrame:DisableDrawLayer("BACKGROUND")
+		_G.GuildChallengeAlertFrame:DisableDrawLayer("BORDER")
+		_G.GuildChallengeAlertFrame:DisableDrawLayer("OVERLAY")
+		aObj:addSkinFrame{obj=_G.GuildChallengeAlertFrame, ft=ftype, ofs=-10}
 
-	-- DungeonCompletionAlertFrame
-	skinDCSAlertFrame{obj=_G.DungeonCompletionAlertFrame, regs={2, 3, 4, 5, 6, 10}, y1=-17}
-	-- ScenarioAlertFrame
-	skinDCSAlertFrame{obj=_G.ScenarioAlertFrame, regs={1, 3, 7}, ofs=-12}
+		-- DungeonCompletionAlertFrame
+		skinDCSAlertFrame{obj=_G.DungeonCompletionAlertFrame, regs={2, 3, 4, 5, 6, 10}, y1=-17}
+		-- ScenarioAlertFrame
+		skinDCSAlertFrame{obj=_G.ScenarioAlertFrame, regs={1, 3, 7}, ofs=-12}
 
-	-- ScenarioLegionInvasionAlertFrame
-	aObj:getRegion(_G.ScenarioLegionInvasionAlertFrame, 1):SetTexture(nil) -- Background toast texture
-	aObj:getRegion(_G.ScenarioLegionInvasionAlertFrame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
-	aObj:addSkinFrame{obj=_G.ScenarioLegionInvasionAlertFrame, ft=ftype, ofs=-8}
+		-- ScenarioLegionInvasionAlertFrame
+		aObj:getRegion(_G.ScenarioLegionInvasionAlertFrame, 1):SetTexture(nil) -- Background toast texture
+		aObj:getRegion(_G.ScenarioLegionInvasionAlertFrame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
+		aObj:addSkinFrame{obj=_G.ScenarioLegionInvasionAlertFrame, ft=ftype, ofs=-8}
 
-	-- DigsiteCompleteToastFrame
-	skinCommonAlertFrame(_G.DigsiteCompleteToastFrame)
-	-- StorePurchaseAlertFrame, WorldQuestCompleteAlertFrame, LegendaryItemAlertFrame
-	local frame
-	for _, v in pairs{"StorePurchase", "WorldQuestComplete", "LegendaryItem"} do
-		frame = _G[v .. "AlertFrame"]
-		skinCommonAlertFrame(frame, -8)
-	end
-	-- GarrisonBuildingAlertFrame, GarrisonMissionAlertFrame, GarrisonShipMissionAlertFrame, GarrisonRandomMissionAlertFrame, GarrisonTalentAlertFrame
-	for _, v in pairs{"Building", "Mission", "ShipMission", "RandomMission", "Talent"} do
-		frame = _G["Garrison" .. v .. "AlertFrame"]
-		skinCommonAlertFrame(frame)
-	end
-	-- GarrisonFollowerAlertFrame, GarrisonShipFollowerAlertFrame
-	for _, v in pairs{"Follower", "ShipFollower"} do
-		frame = _G["Garrison" .. v .. "AlertFrame"]
-		skinCommonAlertFrame(frame, -8)
+		-- DigsiteCompleteToastFrame
+		skinCommonAlertFrame(_G.DigsiteCompleteToastFrame)
+		-- StorePurchaseAlertFrame, WorldQuestCompleteAlertFrame, LegendaryItemAlertFrame
+		local frame
+		for _, v in pairs{"StorePurchase", "WorldQuestComplete", "LegendaryItem"} do
+			frame = _G[v .. "AlertFrame"]
+			skinCommonAlertFrame(frame, -8)
+		end
+		-- GarrisonBuildingAlertFrame, GarrisonMissionAlertFrame, GarrisonShipMissionAlertFrame, GarrisonRandomMissionAlertFrame, GarrisonTalentAlertFrame
+		for _, v in pairs{"Building", "Mission", "ShipMission", "RandomMission", "Talent"} do
+			frame = _G["Garrison" .. v .. "AlertFrame"]
+			skinCommonAlertFrame(frame)
+		end
+		-- GarrisonFollowerAlertFrame, GarrisonShipFollowerAlertFrame
+		for _, v in pairs{"Follower", "ShipFollower"} do
+			frame = _G["Garrison" .. v .. "AlertFrame"]
+			skinCommonAlertFrame(frame, -8)
+		end
+		frame = nil
+	else
+		-- called params: frame, challengeType, count, max
+		self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("GuildChallengeAlertSystem: [%s, %s]", frame, ...)
+			frame:DisableDrawLayer("BACKGROUND")
+			frame:DisableDrawLayer("BORDER")
+			frame:DisableDrawLayer("OVERLAY")
+			aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+		end)
+		-- called params: frame, rewardData
+		self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("DungeonCompletionAlertSystem: [%s, %s]", frame, ...)
+			skinDCSAlertFrame(frame)
+			skinRewards(frame)
+		end)
+		-- called params: frame, rewardData
+		self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("ScenarioAlertSystem: [%s, %s]", frame, ...)
+			skinDCSAlertFrame(frame)
+		end)
+		-- called params: frame, rewardQuestID, name, showBonusCompletion, xp, money
+		self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("InvasionAlertSystem: [%s, %s]", frame, ...)
+			aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
+			aObj:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
+			aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+			skinRewards(frame)
+		end)
+		-- called params: frame, raceName, raceTexture
+		self:SecureHook(_G.DigsiteCompleteAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("DigsiteCompleteAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame)
+		end)
+		-- called params: frame, type, icon, name, payloadID
+		self:SecureHook(_G.StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("StorePurchaseAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame, -8)
+		end)
+		-- called params: frame, name, garrisonType
+		self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("GarrisonBuildingAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame)
+		end)
+		-- called params: frame, missionInfo
+		self:SecureHook(_G.GarrisonMissionAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("GarrisonMissionAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame)
+		end)
+		-- called params: frame, missionInfo
+		self:SecureHook(_G.GarrisonShipMissionAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("GarrisonShipMissionAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame)
+		end)
+		-- called params: frame, missionInfo
+		self:SecureHook(_G.GarrisonRandomMissionAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("GarrisonRandomMissionAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame)
+		end)
+		-- called params: frame, followerID, name, level, quality, isUpgraded, followerInfo
+		self:SecureHook(_G.GarrisonFollowerAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("GarrisonFollowerAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame, -8)
+		end)
+		-- called params: frame, followerID, name, class, texPrefix, level, quality, isUpgraded, followerInfo
+		self:SecureHook(_G.GarrisonShipFollowerAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("GarrisonShipFollowerAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame, -8)
+		end)
+		-- called params: frame, garrisonType, talent
+		self:SecureHook(_G.GarrisonTalentAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("GarrisonTalentAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame)
+		end)
+		-- called params: frame, questData
+		self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("WorldQuestCompleteAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame, -8)
+			skinRewards(frame)
+		end)
+		-- called params: frame, itemLink
+		self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, ...)
+			aObj:Debug("LegendaryItemAlertSystem: [%s, %s]", frame, ...)
+			skinCommonAlertFrame(frame, -8)
+		end)
+
 	end
 
 	-->>-- these frames are created as needed
@@ -241,8 +342,7 @@ function aObj:AlertFrames()
 		-- aObj:Debug("CriteriaAlertSystem: [%s, %s]", frame, ...)
 		skinACAlertFrame(frame)
 	end)
-
-	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal
+	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal (PTR , showRatedBG)
 	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
 		skinWLUAlertFrame(frame)
@@ -385,6 +485,11 @@ function aObj:BindingUI() -- LoD
 	_G.KeyBindingFrame.categoryList:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 	_G.KeyBindingFrame.bindingsContainer:SetBackdrop(self.Backdrop[10])
 	_G.KeyBindingFrame.bindingsContainer:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.KeyBindingFrame.scrollFrame}
+	else
+		self:skinSlider{obj=_G.KeyBindingFrame.scrollFrame.ScrollBar, size=3, rt={"background", "border"}}
+	end
 	for i = 1, _G.KEY_BINDINGS_DISPLAYED do
 		self:skinButton{obj=_G.KeyBindingFrame.keyBindingRows[i].key1Button}
 		self:skinButton{obj=_G.KeyBindingFrame.keyBindingRows[i].key2Button}
@@ -411,7 +516,11 @@ function aObj:BNFrames()
 
 -->>-- Report frame
 	_G.BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
-	self:skinScrollBar{obj=_G.BNetReportFrameCommentScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.BNetReportFrameCommentScrollFrame}
+	else
+		self:skinSlider{obj=_G.BNetReportFrameCommentScrollFrame.ScrollBar, size=3}
+	end
 	self:skinEditBox{obj=_G.BNetReportFrameCommentBox, regs={3}}
 	self:addSkinFrame{obj=_G.BNetReportFrame, ft=ftype}
 
@@ -448,14 +557,22 @@ function aObj:Calendar() -- LoD
 	self:keepFontStrings(_G.CalendarViewHolidayTitleFrame)
 	self:moveObject{obj=_G.CalendarViewHolidayTitleFrame, y=-6}
 	self:removeRegions(_G.CalendarViewHolidayCloseButton, {5})
-	self:skinScrollBar{obj=_G.CalendarViewHolidayScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.CalendarViewHolidayScrollFrame}
+	else
+		self:skinSlider{obj=_G.CalendarViewHolidayScrollFrame.ScrollBar, size=3}
+	end
 	self:addSkinFrame{obj=_G.CalendarViewHolidayFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=-2}
 
 -->>-- View Raid Frame
 	self:keepFontStrings(_G.CalendarViewRaidTitleFrame)
 	self:moveObject{obj=_G.CalendarViewRaidTitleFrame, y=-6}
 	self:removeRegions(_G.CalendarViewRaidCloseButton, {5})
-	self:skinScrollBar{obj=_G.CalendarViewRaidScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.CalendarViewRaidScrollFrame}
+	else
+		self:skinSlider{obj=_G.CalendarViewRaidScrollFrame.ScrollBar, size=3}
+	end
 	self:addSkinFrame{obj=_G.CalendarViewRaidFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- View Event Frame
@@ -463,7 +580,11 @@ function aObj:Calendar() -- LoD
 	self:moveObject{obj=_G.CalendarViewEventTitleFrame, y=-6}
 	self:removeRegions(_G.CalendarViewEventCloseButton, {5})
 	self:addSkinFrame{obj=_G.CalendarViewEventDescriptionContainer, ft=ftype}
-	self:skinScrollBar{obj=_G.CalendarViewEventDescriptionScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.CalendarViewEventDescriptionScrollFrame}
+	else
+		self:skinSlider{obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar, size=3}
+	end
 	self:keepFontStrings(_G.CalendarViewEventInviteListSection)
 	self:skinSlider{obj=_G.CalendarViewEventInviteListScrollFrameScrollBar}
 	self:addSkinFrame{obj=_G.CalendarViewEventInviteList, ft=ftype}
@@ -481,7 +602,11 @@ function aObj:Calendar() -- LoD
 	self:skinDropDown{obj=_G.CalendarCreateEventAMPMDropDown, x2=-5}
 	self:skinDropDown{obj=_G.CalendarCreateEventDifficultyOptionDropDown, x2=-5}
 	self:addSkinFrame{obj=_G.CalendarCreateEventDescriptionContainer, ft=ftype}
-	self:skinScrollBar{obj=_G.CalendarCreateEventDescriptionScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.CalendarCreateEventDescriptionScrollFrame}
+	else
+		self:skinSlider{obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar, size=3}
+	end
 	self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
 	self:skinSlider{obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar}
 	self:addSkinFrame{obj=_G.CalendarCreateEventInviteList, ft=ftype}
@@ -679,7 +804,11 @@ function aObj:ChatConfig()
 -->>--	Combat Settings
 	-- Filters
 	_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
-	self:skinScrollBar{obj=_G.ChatConfigCombatSettingsFiltersScrollFrame} --, noRR=true}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.ChatConfigCombatSettingsFiltersScrollFrame}
+	else
+		self:skinSlider{obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar, size=3}
+	end
 	self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype}
 
 	-- Message Sources
@@ -976,7 +1105,11 @@ function aObj:DebugTools() -- LoD
 
 	self:skinSlider{obj=_G.EventTraceFrameScroll, size=3}
 	self:addSkinFrame{obj=_G.EventTraceFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
-	self:skinScrollBar{obj=_G.ScriptErrorsFrameScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.ScriptErrorsFrameScrollFrame}
+	else
+		self:skinSlider{obj=_G.ScriptErrorsFrameScrollFrame.ScrollBar, size=3}
+	end
 	self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
 
 	if self.db.profile.Tooltips.skin then
@@ -1828,7 +1961,11 @@ function aObj:GMSurveyUI() -- LoD
 	self:moveObject{obj=_G.GMSurveyHeaderText, y=-8}
 	self:addSkinFrame{obj=_G.GMSurveyFrame, ft=ftype, kfs=true, y1=-6, x2=-45}
 
-	self:skinScrollBar{obj=_G.GMSurveyScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.GMSurveyScrollFrame}
+	else
+		self:skinSlider{obj=_G.GMSurveyScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 
 	local obj
 	for i = 1, _G.MAX_SURVEY_QUESTIONS do
@@ -1838,7 +1975,11 @@ function aObj:GMSurveyUI() -- LoD
 		obj.SetBackdropBorderColor = function() end
 	end
 
-	self:skinScrollBar{obj=_G.GMSurveyCommentScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.GMSurveyCommentScrollFrame}
+	else
+		self:skinSlider{obj=_G.GMSurveyCommentScrollFrame.ScrollBar, size=3}
+	end
 	self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
 
 end
@@ -1860,14 +2001,29 @@ function aObj:GuildBankUI() -- LoD
 	_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.GuildBankFrame, ft=ftype, kfs=true, hdr=true, x1=-3, y1=2, x2=1, y2=-5}
 -->>--	Log Frame
-	self:skinScrollBar{obj=_G.GuildBankTransactionsScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.GuildBankTransactionsScrollFrame}
+	else
+		self:skinSlider{obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 
 -->>--	Info Frame
-	self:skinScrollBar{obj=_G.GuildBankInfoScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.GuildBankInfoScrollFrame}
+	else
+		self:skinSlider{obj=_G.GuildBankInfoScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 
 -->>--	GuildBank Popup Frame
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.GuildBankPopupScrollFrame}
+	else
+		self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20}
+		self:skinSlider{obj=_G.GuildBankPopupScrollFrame.ScrollBar, size=3, rt="background"}
+		self:removeRegions(self:getChild(_G.GuildBankPopupFrame, 1), {1, 2, 3, 4, 5, 6, 7, 8})
+		self:adjHeight{obj=_G.GuildBankPopupFrame, adj=20}
+	end
 	self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={6}}
-	self:skinScrollBar{obj=_G.GuildBankPopupScrollFrame}
 	self:addSkinFrame{obj=_G.GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
 	for i = 1, 16 do
 		_G["GuildBankPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
@@ -1925,8 +2081,13 @@ function aObj:HelpFrame()
 	self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2}
 	-- Knowledgebase (uses Browser frame)
 	-- GM_Response
-	self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame1}
-	self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame2}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame1}
+		self:skinScrollBar{obj=_G.HelpFrameGM_ResponseScrollFrame2}
+	else
+		self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame1.ScrollBar, size=3}
+		self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame2.ScrollBar, size=3}
+	end
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 5), ft=ftype}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
 
@@ -2033,7 +2194,11 @@ function aObj:LFDFrame()
 		btn = "LFDQueueFrameSpecificListButton" .. i .. "ExpandOrCollapseButton"
 		self:skinButton{obj=_G[btn], mp2=true}
 	end
-	self:skinScrollBar{obj=_G.LFDQueueFrameSpecificListScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.LFDQueueFrameSpecificListScrollFrame}
+	else
+		self:skinSlider{obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, size=3, rt="background"}
+	end
 
 end
 
@@ -2082,12 +2247,20 @@ function aObj:LFRFrame()
 		self:skinButton{obj=_G[btn], mp2=true}
 		self:moveObject{obj=_G[btn .. "Highlight"], x=-3} -- move highlight to the left
 	end
-	self:skinScrollBar{obj=_G.LFRQueueFrameSpecificListScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.LFRQueueFrameSpecificListScrollFrame}
+	else
+		self:skinSlider{obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar, size=3}
+	end
 
 	-- LFR Browse Frame
 	self:removeInset(_G.LFRBrowseFrameRoleInset)
 	self:skinDropDown{obj=_G.LFRBrowseFrameRaidDropDown}
-	self:skinScrollBar{obj=_G.LFRBrowseFrameListScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.LFRBrowseFrameListScrollFrame}
+	else
+		self:skinSlider{obj=_G.LFRBrowseFrameListScrollFrame.ScrollBar, size=3, rt="background"}
+	end
 	self:keepFontStrings(_G.LFRBrowseFrame)
 
 	-- Tabs (side)
@@ -2105,8 +2278,13 @@ function aObj:MacroUI() -- LoD
 	self.initialized.MacroUI = true
 
 -->>-- Macro Frame
-	self:skinScrollBar{obj=_G.MacroButtonScrollFrame}
-	self:skinScrollBar{obj=_G.MacroFrameScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.MacroButtonScrollFrame}
+		self:skinScrollBar{obj=_G.MacroFrameScrollFrame}
+	else
+		self:skinSlider{obj=_G.MacroButtonScrollFrame.ScrollBar, size=3, rt="artwork"}
+		self:skinSlider{obj=_G.MacroFrameScrollFrame.ScrollBar, size=3}
+	end
 	self:skinEditBox{obj=_G.MacroFrameText, noSkin=true}
 	self:addSkinFrame{obj=_G.MacroFrameTextBackground, ft=ftype, x2=1}
 	self:skinTabs{obj=_G.MacroFrame, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
@@ -2122,8 +2300,15 @@ function aObj:MacroUI() -- LoD
 	end
 
 -->>-- Macro Popup Frame
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.MacroPopupScrollFrame}
+	else
+		self:adjHeight{obj=_G.MacroPopupScrollFrame, adj=20}
+		self:skinSlider{obj=_G.MacroPopupScrollFrame.ScrollBar, size=3, rt="background"}
+		self:removeRegions(self:getChild(_G.MacroPopupFrame, 1), {1, 2, 3, 4, 5, 6, 7, 8})
+		self:adjHeight{obj=_G.MacroPopupFrame, adj=20}
+	end
 	self:skinEditBox{obj=_G.MacroPopupEditBox}
-	self:skinScrollBar{obj=_G.MacroPopupScrollFrame}
 	self:addSkinFrame{obj=_G.MacroPopupFrame, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
 	-- add button borders
 	for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
@@ -2156,7 +2341,11 @@ function aObj:MailFrame()
 
 -->>--	Send Mail Frame
 	self:keepFontStrings(_G.SendMailFrame)
-	self:skinScrollBar{obj=_G.SendMailScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.SendMailScrollFrame}
+	else
+		self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, size=3, rt={"background", "artwork"}}
+	end
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		btn = _G["SendMailAttachment" .. i]
 		if not self.modBtnBs then
@@ -2176,7 +2365,11 @@ function aObj:MailFrame()
 	_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
 
 -->>--	Open Mail Frame
-	self:skinScrollBar{obj=_G.OpenMailScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.OpenMailScrollFrame}
+	else
+		self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, size=3, rt="overlay"}
+	end
 	_G.OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true, ofs=3}
@@ -2272,7 +2465,11 @@ function aObj:MainMenuBar()
 	end
 	mbs = nil
 	self:addButtonBorder{obj=_G.MainMenuMicroButton, mb=true, ofs=0, y1=-21, reParent={_G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload}}
-	self:addButtonBorder{obj=_G.FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
+	if not self.isPTR then
+		self:addButtonBorder{obj=_G.FriendsMicroButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
+	else
+		self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
+	end
 
 -->>-- skin bag buttons
 	self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
@@ -2444,10 +2641,18 @@ function aObj:MenuFrames()
 	self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, ignht=true, x1=6, y1=2, x2=-6, y2=-4}
 	self:addSkinFrame{obj=_G.InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	_G.InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
-	self:skinScrollBar{obj=_G.InterfaceOptionsFrameCategoriesList, size=2}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.InterfaceOptionsFrameCategoriesList, size=2}
+	else
+		self:skinSlider{obj=_G.InterfaceOptionsFrameCategoriesListScrollBar, size=3}
+	end
 	self:addSkinFrame{obj=_G.InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
 	_G.InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)
-	self:skinScrollBar{obj=_G.InterfaceOptionsFrameAddOnsList, size=2}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.InterfaceOptionsFrameAddOnsList, size=2}
+	else
+		self:skinSlider{obj=_G.InterfaceOptionsFrameAddOnsListScrollBar, size=3}
+	end
 	self:addSkinFrame{obj=_G.InterfaceOptionsFrameAddOns, ft=ftype, kfs=true, bgen=1}
 	self:addSkinFrame{obj=_G.InterfaceOptionsFramePanelContainer, ft=ftype, bgen=1}
 	-- skin toggle buttons
@@ -2533,7 +2738,7 @@ function aObj:MenuFrames()
 					else
 						aObj:skinEditBox{obj=child, regs={6}}
 					end
-				elseif child:IsObjectType("ScrollFrame")
+				elseif child:IsObjectType("ScrollFrame") -- <<PTR>> may need to check for Frame instead
 				and child:GetName()
 				and child:GetName() .. "ScrollBar" -- handle named ScrollBar's
 				then
@@ -3424,7 +3629,11 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	-- ScenarioQueueFrame
 	_G.ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
 	self:skinDropDown{obj=_G.ScenarioQueueFrame.Dropdown}
-	self:skinScrollBar{obj=_G.ScenarioQueueFrame.Random.ScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.ScenarioQueueFrame.Random.ScrollFrame}
+	else
+		self:skinSlider{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.ScrollBar, size=3, rt={"background", "artwork"}}
+	end
 	local btnName
 	for i = 1, _G.ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
 		btnName = "ScenarioQueueFrameRandomScrollFrameChildFrameItem" .. i
@@ -3440,7 +3649,11 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 
 	self:skinButton{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
 	self:moveObject{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
-	self:skinScrollBar{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame}
+	else
+		self:skinSlider{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame.ScrollBar, size=3, rt="background"}
+	end
 	self:keepFontStrings(_G.ScenarioQueueFramePartyBackfill)
 
 end
@@ -3465,8 +3678,12 @@ function aObj:QuestMap()
 
 -->>-- Quest Log Popup Detail Frame
 	local qlpdf = _G.QuestLogPopupDetailFrame
-	qlpdf.ScrollFrame:DisableDrawLayer("ARTWORK")
-	self:skinScrollBar{obj=qlpdf.ScrollFrame}
+	if not self.isPTR then
+		-- qlpdf.ScrollFrame:DisableDrawLayer("ARTWORK")
+		self:skinScrollBar{obj=qlpdf.ScrollFrame}
+	else
+		self:skinSlider{obj=qlpdf.ScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 	self:addButtonBorder{obj=qlpdf.ShowMapButton, relTo=qlpdf.ShowMapButton.Texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=qlpdf, ft=ftype, kfs=true, ri=true, ofs=2}
 	qlpdf = nil
@@ -3561,7 +3778,11 @@ function aObj:RaidFrame()
 	_G.RaidFinderQueueFrameBackground:SetTexture(nil)
 	_G.RaidFinderQueueFrameBackground.SetTexture = function() end
 	self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}
-	self:skinScrollBar{obj=_G.RaidFinderQueueFrameScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.RaidFinderQueueFrameScrollFrame}
+	else
+		self:skinSlider{obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, size=3, rt={"background", "artwork"}}
+	end
 
 end
 
@@ -3748,7 +3969,11 @@ function aObj:Tutorial()
 		_G["TutorialFrameRight" .. i]:SetTexture(nil)
 	end
 	_G.TutorialTextBorder:SetAlpha(0)
-	self:skinScrollBar{obj=_G.TutorialFrameTextScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.TutorialFrameTextScrollFrame}
+	else
+		self:skinSlider{obj=_G.TutorialFrameTextScrollFrame.ScrollBar, size=3}
+	end
 	-- stop animation before skinning, otherwise textures reappear
 	_G.AnimateMouse:Stop()
 	_G.AnimateCallout:Stop()
@@ -3858,7 +4083,7 @@ function aObj:WorldMap()
 
 -->>-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
-		self:add2Table(self.ttList, _G.WorldMapTooltip.BackdropFrame)
+		self:add2Table(self.ttList, self.isPTR and _G.WorldMapTooltip or _G.WorldMapTooltip.BackdropFrame)
 		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
 	end
@@ -3902,7 +4127,11 @@ function aObj:WorldState()
 
 -->>-- WorldStateScore frame
 --	self:skinDropDown{obj=_G.ScorePlayerDropDown}
-	self:skinScrollBar{obj=_G.WorldStateScoreScrollFrame}
+	if not self.isPTR then
+		self:skinScrollBar{obj=_G.WorldStateScoreScrollFrame}
+	else
+		self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, size=3, rt="artwork"}
+	end
 	self:skinTabs{obj=_G.WorldStateScoreFrame}
 	self:addSkinFrame{obj=_G.WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
