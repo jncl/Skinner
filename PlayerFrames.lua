@@ -1730,7 +1730,7 @@ function aObj:LookingForGuildUI() -- LoD
 	self.initialized.LookingForGuildUI = true
 
 	self:skinTabs{obj=_G.LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
-	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, rmbt=true, y1=2, x2=1}
+	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, rmbt=true, y1=2, x2=1, y2=-2}
 
 	-- Start Frame (Settings)
 	_G.LookingForGuildInterestFrameBg:SetAlpha(0)
