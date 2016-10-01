@@ -193,7 +193,7 @@ local addonSkins = {
 	"FarmIt2", "FeedMachine", "FishingBuddy", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "GuildLaunchCT_RaidTracker", "GuildMaster",
 	"HandyNotes", "HaveWeMet", "HealBot", "HoloFriends",
-	"InboxMailBag", "ItemDB",
+	"InboxMailBag", "ls_Toasts", "ItemDB",
 	"LegacyQuest", "Livestock", "LUI",
 	"Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MogIt", "MrTrader_SkillWindow", "MyGarrisons",
 	"Notes",

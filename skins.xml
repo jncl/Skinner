@@ -107,6 +107,7 @@
 <script file="SkinMe\LibXUI.lua"/>
 <script file="SkinMe\LilSparkysWorkshop.lua"/>
 <script file="SkinMe\Livestock.lua"/>
+<script file="SkinMe\ls_Toasts.lua"/>
 <script file="SkinMe\Ludwig.lua"/>
 <script file="SkinMe\LUI.lua"/>
 <script file="SkinMe\Mapster.lua"/>

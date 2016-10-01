@@ -2500,6 +2500,7 @@ function aObj:MenuFrames()
 					elseif aObj:hasTextInName(child, "oGlowOptFQualityThreshold")
 					or aObj:hasTextInName(child, "BugSackFontSize")
 					or aObj:hasTextInName(child, "BugSackSoundDropdown")
+					or aObj:hasTextInName(child, "LSToastsConfigPanelDirectionDropDown")
 					then
 						xOfs = 110
 					end
