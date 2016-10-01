@@ -331,15 +331,17 @@ function aObj:ArchaeologyUI() -- LoD
 	self:addButtonBorder{obj=_G.ArchaeologyFrame.completedPage.prevPageButton, ofs=0}
 	self:addButtonBorder{obj=_G.ArchaeologyFrame.completedPage.nextPageButton, ofs=0}
 -->>-- Artifact Page
-	self:removeRegions(_G.ArchaeologyFrame.artifactPage, {2, 3, 7, 9}) -- title textures, backgrounds
-	self:addButtonBorder{obj=_G.ArchaeologyFrame.artifactPage, relTo=_G.ArchaeologyFrame.artifactPage.icon, ofs=0}
-	_G.ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-	_G.ArchaeologyFrame.artifactPage.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinSlider{obj=_G.ArchaeologyFrame.artifactPage.historyScroll.ScrollBar, adj=-4}
+	local afap = _G.ArchaeologyFrame.artifactPage
+	self:removeRegions(afap, {2, 3, 7, 9}) -- title textures, backgrounds
+	self:addButtonBorder{obj=afap, relTo=afap.icon, ofs=1}
+	afap.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+	afap.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:skinSlider{obj=afap.historyScroll.ScrollBar, adj=-4}
 	-- Solve Frame
-	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBarBarBG:Hide()
-	self:glazeStatusBar(_G.ArchaeologyFrame.artifactPage.solveFrame.statusBar, 0, nil)
-	_G.ArchaeologyFrame.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
+	self:getRegion(afap.solveFrame.statusBar, 1):Hide() -- BarBG texture
+	self:glazeStatusBar(afap.solveFrame.statusBar, 0, nil)
+	afap.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
+	afap = nil
 -->>-- Help Page
 	self:removeRegions(_G.ArchaeologyFrame.helpPage, {2, 3}) -- title textures
 	_G.ArchaeologyFrame.helpPage.titleText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -348,8 +350,10 @@ function aObj:ArchaeologyUI() -- LoD
 	_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 	-- ArcheologyDigsiteProgressBar
-	self:rmRegionsTex(_G.ArcheologyDigsiteProgressBar, {1, 2, 3})
-	self:glazeStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, 0)
+	_G.ArcheologyDigsiteProgressBar:DisableDrawLayer("BACKGROUND")
+	_G.ArcheologyDigsiteProgressBar.BarBorderAndOverlay:SetTexture(nil)
+	self:glazeStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, 0, nil)
+
 	-- N.B. DigsiteCompleteToastFrame is managed as part of the Alert Frames skin
 
 end
