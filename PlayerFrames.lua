@@ -514,6 +514,7 @@ function aObj:CharacterFrames()
 	for i = 1, _G.NUM_GEARSET_ICONS_SHOWN do
 		_G["GearManagerDialogPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
 	end
+	self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={6}}
 	self:addSkinFrame{obj=_G.GearManagerDialogPopup, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
 
 	-- Reputation Frame

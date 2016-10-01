@@ -2521,7 +2521,7 @@ function aObj:MenuFrames()
 					if child:GetParent():GetName()
 					and child:GetParent():GetName():find("SushiSlider")
 					then
-						aObj:skinEditBox{obj=child, regs={6, 7}}
+						aObj:skinEditBox{obj=child, regs={3, 4}}
 						local slider = child:GetParent()
 						-- stop width & backdrop being changed
 						slider.UpdateEditWidth = function() end
