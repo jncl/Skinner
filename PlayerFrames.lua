@@ -2280,6 +2280,16 @@ function aObj:PVPUI()
 	self:skinButton{obj=_G.HonorFrame.QueueButton, rmbt=true}
 
 	-- Conquest Frame
+	local cfxpb = _G.ConquestFrame.XPBar
+	cfxpb.Frame:SetTexture(nil)
+	self:glazeStatusBar(cfxpb.Bar, 0, cfxpb.Bar.Background, nil, true)
+	cfxpb.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
+	cfxpb.NextAvailable.Frame:SetTexture(nil)
+	cfxpb = nil
+	self:removeInset(_G.ConquestFrame.RoleInset)
+	_G.ConquestFrame.Arena2v2.Reward.Border:SetTexture(nil)
+	_G.ConquestFrame.Arena3v3.Reward.Border:SetTexture(nil)
+	_G.ConquestFrame.RatedBG.Reward.Border:SetTexture(nil)
 	_G.ConquestFrame:DisableDrawLayer("BACKGROUND")
 	_G.ConquestFrame:DisableDrawLayer("BORDER")
 	_G.ConquestFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
