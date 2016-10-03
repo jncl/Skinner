@@ -453,6 +453,14 @@ local function __addButtonBorder(opts)
 --@end-alpha@
 	if not opts.obj then return end
 
+	-- handle in combat if it uses SecureUnitButtonTemplate or SecureFrameTemplate
+	if _G.InCombatLockdown()
+	and opts.sec
+	then
+		aObj:add2Table(module.btnTab, opts)
+		return
+	end
+
 	-- check to see if object is already skinned
 	if opts.obj.sbb then
 		return
@@ -580,12 +588,6 @@ end
 function module:addButtonBorder(...)
 
 	local opts = select(1, ...)
-
-	-- handle in combat
-	if _G.InCombatLockdown() then
-		aObj:add2Table(module.btnTab, opts)
-		return
-	end
 
 --@alpha@
 	assert(opts, "Missing object sAB\n" .. debugstack())
