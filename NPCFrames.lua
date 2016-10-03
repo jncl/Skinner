@@ -8,7 +8,7 @@ function aObj:AuctionUI() -- LoD
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
-	local btnName
+	local btnName, obj
 
 	-- hide filter texture when filter is clicked
 	self:SecureHook("FilterButton_SetUp", function(button, ...)
@@ -39,7 +39,6 @@ function aObj:AuctionUI() -- LoD
 	_G.WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
 	self:skinButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
 	self:addSkinFrame{obj=_G.WowTokenGameTimeTutorial, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
-	local obj
 	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 		obj = _G["Browse" .. v .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
@@ -50,7 +49,7 @@ function aObj:AuctionUI() -- LoD
 		if _G[btnName].Orig then break end -- Auctioneer CompactUI loaded
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
-		_G[btnName .. "ItemCount"]:SetDrawLayer("ARTWORK") -- fix for 3.3.3 bug
+		self:addButtonBorder{obj=_G[btnName .. "Item"], aui=true}
 	end
 	for _, v in pairs{"Name", "MinLevel", "MaxLevel"} do
 		obj = _G["Browse" .. v]
@@ -83,7 +82,7 @@ function aObj:AuctionUI() -- LoD
 		btnName = "BidButton" .. i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
-		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
+		self:addButtonBorder{obj=_G[btnName .. "Item"], aui=true}
 	end
 	if not self.isPTR then
 		self:skinScrollBar{obj=_G.BidScrollFrame}
@@ -113,7 +112,7 @@ function aObj:AuctionUI() -- LoD
 		btnName = "AuctionsButton" .. i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
-		self:addButtonBorder{obj=_G[btnName .. "Item"], ibt=true}
+		self:addButtonBorder{obj=_G[btnName .. "Item"], aui=true}
 	end
 	if not self.modBtnBs then
 		self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
@@ -131,7 +130,6 @@ function aObj:AuctionUI() -- LoD
 	self:skinButton{obj=_G.AuctionsCancelAuctionButton}
 	self:skinButton{obj=_G.AuctionsCloseButton}
 
-
 -->>-- AuctionProgress Frame
 	_G.AuctionProgressFrame:DisableDrawLayer("BACKGROUND")
 	_G.AuctionProgressFrame:DisableDrawLayer("ARTWORK")
@@ -139,7 +137,7 @@ function aObj:AuctionUI() -- LoD
 	self:moveObject{obj=_G.AuctionProgressBar.Text, y=-2}
 	self:glazeStatusBar(_G.AuctionProgressBar, 0)
 
-	btnName = nil
+	btnName, obj = nil, nil
 
 end
 

@@ -462,6 +462,7 @@ local function __addButtonBorder(opts)
 
 	-- remove Normal texture if required (vertex colour changed in blizzard code)
 	if opts.ibt
+	or opts.aui
 	or opts.abt
 	or opts.pabt
 	then
@@ -524,6 +525,19 @@ local function __addButtonBorder(opts)
 		else
 			aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		end
+		-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
+		if opts.obj.IconBorder:IsShown() then
+			local r, g, b = opts.obj.IconBorder:GetVertexColor()
+			if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
+				opts.obj.sbb:SetBackdropBorderColor(r, g, b)
+			end
+			r, g, b = nil, nil, nil
+		end
+		opts.obj.IconBorder:SetAlpha(0)
+		-- N.B. IconBorder colour changes are handled in aObj.OnEnable function
+	elseif opts.aui then -- AuctionUI Buttons (Browse, Bid, Auction)
+		_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
+		_G[btnName .. "Stock"]:SetParent(opts.obj.sbb)
 		-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
 		if opts.obj.IconBorder:IsShown() then
 			local r, g, b = opts.obj.IconBorder:GetVertexColor()
