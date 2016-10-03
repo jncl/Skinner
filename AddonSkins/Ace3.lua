@@ -33,8 +33,10 @@ function aObj:Ace3()
 		-- end
 
 		if obj
-		and (not obj.sknd or (objType:find("TSM") and not obj.sknrTSM)) -- check objType as TSM overlays existing objects
+		and not obj.sknd
+		and not (objType:find("TSM") and obj.sknrTSM) -- check objType as TSM overlays existing objects
 		then
+			-- aObj:Debug("Skinning: [%s, %s]", obj, objType)
 			if objType == "Dropdown" then
 				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
 				aObj:applySkin{obj=obj.pullout.frame}
@@ -261,6 +263,16 @@ function aObj:Ace3()
             elseif objType == "TSMEditBox" then
                 aObj:skinButton{obj=obj.button, as=true}
                 obj.sknrTSM = true
+            elseif objType == "TSMScrollingTable" then
+                aObj:addSkinFrame{obj=obj.frame, ofs=2}
+                obj.sknrTSM = true
+			elseif objType == "TSMDropdown" then
+				aObj:skinDropDown{obj=obj.dropdown, rp=true, x2=0, y2=0}
+				aObj:applySkin{obj=obj.pullout.frame}
+                obj.sknrTSM = true
+			elseif objType == "TSMDropdown-Pullout" then
+				aObj:applySkin{obj=obj.frame}
+                obj.sknrTSM = true
 
 			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
@@ -304,10 +316,8 @@ function aObj:Ace3()
 			-- TradeSkillMaster objects
 			or objType == "TSMCheckBox"
 			or objType == "TSMColorPicker"
-			or objType == "TSMDropdown"
 			or objType == "TSMDropdown-Item-Execute"
 			or objType == "TSMDropdown-Item-Toggle"
-			or objType == "TSMDropdown-Pullout"
 			or objType == "TSMImage"
 			or objType == "TSMLabel"
 			or objType == "TSMMultiLabel"
@@ -319,6 +329,7 @@ function aObj:Ace3()
 			-- CollectMe objects
 			or objType == "CollectMeLabel"
 			then
+				-- aObj:Debug("Ignoring: [%s]", objType)
 			-- any other types
 			else
 				aObj:Debug("AceGUI, unmatched type - %s", objType)

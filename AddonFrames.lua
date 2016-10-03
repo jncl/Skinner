@@ -418,6 +418,7 @@ function aObj:AUCTION_HOUSE_SHOW()
 	or IsAddOnLoaded("TradeSkillMaster_Shopping")
 	then
 		self:checkAndRun("TSM_AuctionFrameHook")
+		self:checkAndRun("TSM_AuctionHouse")
 	end
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
@@ -437,7 +438,17 @@ end
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
 
-	self:checkAndRun("TradeSkillUI") -- player
+	-- don't trigger like this if TradeSkillMaster_Crafting is loaded
+	if not IsAddOnLoaded("TradeSkillMaster_Crafting") then
+		self:checkAndRun("TradeSkillUI") -- player
+	else
+		self:SecureHook("TradeSkillFrame_LoadUI", function()
+			self:checkAndRun("TradeSkillUI") -- player
+			self:Unhook("TradeSkillFrame_LoadUI")
+		end)
+		self:checkAndRunAddOn("TradeSkillMaster_Crafting")
+	end
+
 	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
 	self:checkAndRunAddOn("ReagentMaker")
 

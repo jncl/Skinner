@@ -33,64 +33,12 @@ function aObj:TSM_AuctionFrameHook()
 
 end
 
-function aObj:TradeSkillMaster()
-
-	local bbc ={}
-	bbc.r, bbc.g, bbc.b, bbc.a = _G.unpack(self.bbColour)
-
-    -- hook this to skin ScrollingTables
-    self:RawHook(_G.TSMAPI, "CreateScrollingTable", function(this, ...)
-        local sT = self.hooks[this].CreateScrollingTable(this, ...)
-        self:addSkinFrame{obj=sT, ofs=2}
-        return sT
-    end, true)
-    -- hook these to skin frames, buttons etc
-    local btn
-    self:RawHook(_G.TSMAPI.GUI, "CreateButton", function(this, ...)
-        btn = self.hooks[this].CreateButton(this, ...)
-        self:skinButton{obj=btn, x1=-2, y1=2, x2=2, y2=-2}
-        return btn
-    end, true)
-    local iBox
-    self:RawHook(_G.TSMAPI.GUI, "CreateInputBox", function(this, ...)
-        iBox = self.hooks[this].CreateInputBox(this, ...)
-        self:skinEditBox{obj=iBox, regs={9}}
-        return iBox
-    end, true)
-    local barTex
-    self:RawHook(_G.TSMAPI.GUI, "CreateHorizontalLine", function(this, ...)
-        barTex = self.hooks[this].CreateHorizontalLine(this, ...)
-        barTex:SetVertexColor(bbc.r, bbc.g, bbc.b, 1)
-        return barTex
-    end, true)
-    self:RawHook(_G.TSMAPI.GUI, "CreateVerticalLine", function(this, ...)
-        barTex = self.hooks[this].CreateVerticalLine(this, ...)
-        barTex:SetVertexColor(bbc.r, bbc.g, bbc.b, 1)
-        return barTex
-    end, true)
-
-	-- handle frame skinning
-    _G.TSMAPI.Design.SetFrameBackdropColor = function(this, frame)
-		-- print("TSMAPI.D.SFBC", frame)
-		self:addSkinFrame{obj=frame, ofs=2}
-	end
-	-- handle Sidebar panels
-    _G.TSMAPI.Design.SetFrameColor = function(this, frame)
-		-- look for parent with width 300
-		local obj = frame:GetParent()
-		while (self:getInt(obj:GetWidth()) < 300 and self:getInt(obj:GetHeight()) < 447) do
-			obj = obj:GetParent()
-		end
-		if self:getInt(obj:GetWidth()) == 300
-		and self:getInt(obj:GetHeight()) == 447
-		and not obj.sf then
-			self:addSkinFrame{obj=obj}
-		end
-	end
-    _G.TSMAPI.Design.SetContentColor = function() end
+function aObj:TradeSkillMaster() -- 3.6.1
 
 	-- skin modules
-	for _, module in _G.pairs{"Accounting", "AuctionDB", "Auctioning", "Crafting", "Destroying", "ItemTracker", "Mailing", "Shopping", "Warehousing", "WoWAuction"} do
+	-- N.B. "Crafting" is handled by TRADE_SKILL_SHOW event code in AddonFrames.lua
+	-- N.B. "Auctioning", "AuctionDB" & , "Shopping" are done in TSM_AuctionHouse
+	for _, module in _G.pairs{"Accounting", "Destroying", "Mailing", "Vendoring", "Warehousing"} do
 		if _G.IsAddOnLoaded("TradeSkillMaster_" .. module) then
 			self:checkAndRunAddOn("TradeSkillMaster_" .. module)
 		end
@@ -99,62 +47,44 @@ function aObj:TradeSkillMaster()
 end
 
 function aObj:TradeSkillMaster_Accounting()
-	-- body
+
 end
 
-function aObj:TradeSkillMaster_AuctionDB()
+function aObj:TSM_AuctionHouse()
 
-	local TSM_Adb = _G.LibStub("AceAddon-3.0"):GetAddon("TSM_AuctionDB", true)
-    local GUI = TSM_Adb:GetModule("GUI", true)
-	if GUI then
-		self:SecureHook(GUI, "Show", function(this, frame)
-			adjustSkinFrame(true)
-			self:Unhook(GUI, "Show")
-		end)
+	if _G.IsAddOnLoaded("TradeSkillMaster_AuctionDB") then
 	end
-end
-
-function aObj:TradeSkillMaster_Auctioning()
-
-	local TSM_A = _G.LibStub("AceAddon-3.0"):GetAddon("TSM_Auctioning", true)
-    local GUI = TSM_A:GetModule("GUI", true)
-	if GUI then
-		self:SecureHook(GUI, "ShowSelectionFrame", function(this, frame)
-			adjustSkinFrame(true)
-			self:Unhook(GUI, "ShowSelectionFrame")
-		end)
+	if _G.IsAddOnLoaded("TradeSkillMaster_Auctioning") then
+	end
+	if _G.IsAddOnLoaded("TradeSkillMaster_Shopping") then
 	end
 
 end
 
 function aObj:TradeSkillMaster_Crafting()
 
-	local TSM_C = _G.LibStub("AceAddon-3.0"):GetAddon("TSM_Crafting", true)
-    local GUI = TSM_C:GetModule("CraftingGUI", true)
-    if GUI then
-		self:addSkinFrame{obj=GUI.gatheringFrame.needST, ofs=2}
-		self:addSkinFrame{obj=GUI.gatheringFrame.sourcesST, ofs=2}
-		self:addSkinFrame{obj=GUI.gatheringFrame.availableST, ofs=2}
-		self:getChild(GUI.gatheringFrame, 2):SetBackdrop(nil)
-		self:skinButton{obj=self:getChild(GUI.gatheringFrame, 3), x1=-2, y1=2, x2=2, y2=-2}
-		self:skinButton{obj=GUI.gatheringFrame.gatherButton, x1=-2, y1=2, x2=2, y2=-2}
-		self:addSkinFrame{obj=GUI.gatheringFrame, ofs=2}
-    end
+	_G.C_Timer.After(0.5, function()
+		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame, ofs=3}
+	end)
 
 end
 
 function aObj:TradeSkillMaster_Destroying()
-	-- body
-end
 
-function aObj:TradeSkillMaster_ItemTracker()
-	-- body
+	_G.C_Timer.After(0.2, function()
+		self:addSkinFrame{obj=_G.TSMDestroyingFrame, ofs=3}
+		self:UnregisterEvent("BAG_UPDATE")
+	end)
+
 end
 
 function aObj:TradeSkillMaster_Mailing()
 
-	self:RegisterEvent("MAIL_SHOW", function(...)
-		self:ScheduleTimer(function()
+	-- prevent errors as not all tabs have been skinned
+	aObj.tabFrames[_G.MailFrame] = nil
+
+	self:RegisterEvent("MAIL_SHOW", function()
+		_G.C_Timer.After(0.2, function()
 			local frame = self:getChild(_G.MailFrame, _G.MailFrame:GetNumChildren() - 1) -- get penultimate child
 			self:addSkinFrame{obj=frame, ofs=2, y2=-5}
 			_G.MailFrame.sf:Hide() -- hide to start with as mailframe opens to TSM frame initiially
@@ -166,30 +96,59 @@ function aObj:TradeSkillMaster_Mailing()
 			end)
 			-- Tab
 			self:keepRegions(_G.MailFrameTab3, {7, 8})
-			self:addSkinFrame{obj=_G.MailFrameTab3, noBdr=self.isTT, x1=6, y1=0, x2=06, y2=2}
-		end, 0.2, ...)
+			self:addSkinFrame{obj=_G.MailFrameTab3, noBdr=self.isTT, x1=6, y1=0, x2=6, y2=2}
+			aObj.tabFrames[_G.MailFrame] = true
+			_G.PanelTemplates_UpdateTabs(_G.MailFrame)
+		end)
 		self:UnregisterEvent("MAIL_SHOW")
 	end)
 
 end
 
-function aObj:TradeSkillMaster_Shopping()
+function aObj:TradeSkillMaster_Vendoring()
 
-	local TSM_S = _G.LibStub("AceAddon-3.0"):GetAddon("TSM_Shopping", true)
-    local Search = TSM_S:GetModule("Search", true)
-	if Search then
-		self:SecureHook(Search, "Show", function(this, frame)
-			adjustSkinFrame(true)
-			self:Unhook(Search, "Show")
+	-- prevent errors as not all tabs have been skinned
+	aObj.tabFrames[_G.MerchantFrame] = nil
+
+	self:RegisterEvent("MERCHANT_SHOW", function()
+		_G.C_Timer.After(0.2, function()
+			aObj:Debug("MERCHANT_SHOW: [%s, %s, %s, %s]", _G.MerchantFrame, _G.MerchantFrame.sknd, _G.MerchantFrame.numTabs, _G.PanelTemplates_GetSelectedTab(_G.MerchantFrame))
+			local frame = self:getChild(_G.MerchantFrame, _G.MerchantFrame:GetNumChildren() - 1) -- get penultimate child
+			self:addSkinFrame{obj=frame, ofs=2, y2=-5}
+			-- Tab
+			self:keepRegions(_G.MerchantFrameTab3, {7, 8})
+			self:addSkinFrame{obj=_G.MerchantFrameTab3, noBdr=self.isTT, x1=6, y1=0, x2=6, y2=2}
+			if aObj.isTT then aObj:setInactiveTab(_G.MerchantFrameTab3.sf) end
+			aObj.tabFrames[_G.MerchantFrame] = true
+			_G.PanelTemplates_UpdateTabs(_G.MerchantFrame)
 		end)
-	end
+		self:UnregisterEvent("MERCHANT_SHOW")
+	end)
 
 end
 
 function aObj:TradeSkillMaster_Warehousing()
-	-- body
-end
 
-function aObj:TradeSkillMaster_WoWAuction()
-	-- body
+	local function skinBankUI()
+
+		_G.C_Timer.After(0.2, function()
+			aObj.RegisterCallback("TSM_Warehousing", "UIParent_GetChildren", function(this, child)
+				if child:IsObjectType("Frame")
+				and child:GetName() == nil
+				and aObj:getInt(child:GetWidth()) == 305
+				and aObj:getInt(child:GetHeight()) == 490
+				then
+					aObj:addSkinFrame{obj=child, ofs=2}
+					aObj:UnregisterEvent("GUILDBANKFRAME_OPENED")
+					aObj:UnregisterEvent("BANKFRAME_OPENED")
+				end
+			end)
+			aObj:scanUIParentsChildren()
+		end)
+
+	end
+
+	self:RegisterEvent("GUILDBANKFRAME_OPENED", skinBankUI)
+	self:RegisterEvent("BANKFRAME_OPENED", skinBankUI)
+
 end
