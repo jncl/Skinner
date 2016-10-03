@@ -1848,10 +1848,8 @@ local function __skinTabs(opts)
 --@end-alpha@
 
 	-- don't skin it twice
-	if opts.obj.sknd then
+	if aObj.tabFrames[opts.obj] then
 		return
-	else
-		opts.obj.sknd = true
 	end
 
 	local tabName = opts.obj:GetName() .. "Tab" .. (opts.suffix or "")
@@ -1876,10 +1874,12 @@ local function __skinTabs(opts)
 		tab.sf.ignore = opts.ignore -- ignore size changes
 		tab.sf.up = opts.up -- tabs grow upwards
 		if opts.lod then -- set textures here first time thru as it's LoD
-			if i == tabID then
-				if aObj.isTT then aObj:setActiveTab(tab.sf) end
-			else
-				if aObj.isTT then aObj:setInactiveTab(tab.sf) end
+			if aObj.isTT then
+				if i == tabID then
+					aObj:setActiveTab(tab.sf)
+				else
+					aObj:setInactiveTab(tab.sf)
+				end
 			end
 		end
 		if not opts.ignht then
