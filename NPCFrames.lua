@@ -49,7 +49,7 @@ function aObj:AuctionUI() -- LoD
 		if _G[btnName].Orig then break end -- Auctioneer CompactUI loaded
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
-		self:addButtonBorder{obj=_G[btnName .. "Item"], aui=true}
+		self:addButtonBorder{obj=_G[btnName .. "Item"], auit=true}
 	end
 	for _, v in pairs{"Name", "MinLevel", "MaxLevel"} do
 		obj = _G["Browse" .. v]
@@ -82,7 +82,7 @@ function aObj:AuctionUI() -- LoD
 		btnName = "BidButton" .. i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
-		self:addButtonBorder{obj=_G[btnName .. "Item"], aui=true}
+		self:addButtonBorder{obj=_G[btnName .. "Item"], auit=true}
 	end
 	if not self.isPTR then
 		self:skinScrollBar{obj=_G.BidScrollFrame}
@@ -112,7 +112,7 @@ function aObj:AuctionUI() -- LoD
 		btnName = "AuctionsButton" .. i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
-		self:addButtonBorder{obj=_G[btnName .. "Item"], aui=true}
+		self:addButtonBorder{obj=_G[btnName .. "Item"], auit=true}
 	end
 	if not self.modBtnBs then
 		self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
@@ -202,7 +202,7 @@ function aObj:BlackMarketUI() -- LoD
 	self:moveObject{obj=self:getRegion(_G.BlackMarketFrame, 22), y=-4}
 	-- HotDeal frame
 	self:keepFontStrings(_G.BlackMarketFrame.HotDeal)
-	self:skinAllButtons{obj=_G.BlackMarketFrame.HotDeal, ft=ftype}
+	self:addButtonBorder{obj=_G.BlackMarketFrame.HotDeal.Item, bmit=true}
 
 	-- column headings
 	local obj
@@ -215,11 +215,14 @@ function aObj:BlackMarketUI() -- LoD
 	_G.BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 	self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
 	self:addSkinFrame{obj=_G.BlackMarketFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+
 	local function skinSFButtons(scrollFrame)
 		local btn
 		for i = 1, #scrollFrame.buttons do
 			btn = scrollFrame.buttons[i]
 			self:keepFontStrings(btn)
+			-- btn.Item.IconBorder:SetTexture(nil)
+			self:addButtonBorder{obj=btn.Item, bmit=true}
 		end
 	end
 	if not self.isPTR then
@@ -586,8 +589,6 @@ function aObj:QuestInfo()
 
 	end
 	local function updateQIDisplay()
-
-		-- aObj:Debug("updateQIDisplay fired")
 
 		-- headers
 		_G.QuestInfoTitleHeader:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)

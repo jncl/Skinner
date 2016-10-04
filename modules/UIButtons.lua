@@ -447,6 +447,8 @@ local function __addButtonBorder(opts)
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
 		disable = hook Enable/Disable methods of object
+		auit = auction item template(s)
+		bmit = blackmarket item template
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object__aBB\n" .. debugstack())
@@ -470,9 +472,10 @@ local function __addButtonBorder(opts)
 
 	-- remove Normal texture if required (vertex colour changed in blizzard code)
 	if opts.ibt
-	or opts.aui
 	or opts.abt
 	or opts.pabt
+	or opts.auit
+	or opts.bmit
 	then
 		if opts.obj.GetNormalTexture
 		and opts.obj:GetNormalTexture()
@@ -523,6 +526,17 @@ local function __addButtonBorder(opts)
 			obj:SetParent(opts.obj.sbb)
 		end
 	end
+	local function colourBtnBorder(btn)
+		-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
+		if btn.IconBorder:IsShown() then
+			local r, g, b = btn.IconBorder:GetVertexColor()
+			if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
+				btn.sbb:SetBackdropBorderColor(r, g, b)
+			end
+			r, g, b = nil, nil, nil
+		end
+		btn.IconBorder:SetAlpha(0)
+	end
 	-- reparent these textures so they are displayed above the border
 	local btnName = opts.obj:GetName()
 	if opts.ibt then -- Item Buttons
@@ -533,29 +547,7 @@ local function __addButtonBorder(opts)
 		else
 			aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		end
-		-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
-		if opts.obj.IconBorder:IsShown() then
-			local r, g, b = opts.obj.IconBorder:GetVertexColor()
-			if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
-				opts.obj.sbb:SetBackdropBorderColor(r, g, b)
-			end
-			r, g, b = nil, nil, nil
-		end
-		opts.obj.IconBorder:SetAlpha(0)
-		-- N.B. IconBorder colour changes are handled in aObj.OnEnable function
-	elseif opts.aui then -- AuctionUI Buttons (Browse, Bid, Auction)
-		_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
-		_G[btnName .. "Stock"]:SetParent(opts.obj.sbb)
-		-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
-		if opts.obj.IconBorder:IsShown() then
-			local r, g, b = opts.obj.IconBorder:GetVertexColor()
-			if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
-				opts.obj.sbb:SetBackdropBorderColor(r, g, b)
-			end
-			r, g, b = nil, nil, nil
-		end
-		opts.obj.IconBorder:SetAlpha(0)
-		-- N.B. IconBorder colour changes are handled in aObj.OnEnable function
+		colourBtnBorder(opts.obj)
 	elseif opts.abt then -- Action Buttons
 		opts.obj.Flash:SetParent(opts.obj.sbb)
 		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)
@@ -580,6 +572,14 @@ local function __addButtonBorder(opts)
 		opts.obj.Rank:SetParent(opts.obj.sbb)
 	elseif opts.spbt then -- Simple Popup Buttons
 		_G[btnName .. "Name"]:SetParent(opts.obj.sbb)
+	elseif opts.auit then -- AuctionUI Buttons (Browse, Bid, Auction)
+		_G[btnName .. "Count"]:SetParent(opts.obj.sbb)
+		_G[btnName .. "Stock"]:SetParent(opts.obj.sbb)
+		colourBtnBorder(opts.obj)
+	elseif opts.bmit then -- BlackMarket Item Buttons
+		opts.obj.Count:SetParent(opts.obj.sbb)
+		opts.obj.Stock:SetParent(opts.obj.sbb)
+		colourBtnBorder(opts.obj)
 	end
 	btnName = nil
 
