@@ -8,7 +8,7 @@ local ipairs, IsAddOnLoaded, pairs, unpack = _G.ipairs, _G.IsAddOnLoaded, _G.pai
 do
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
 	-- use strings as the objects may not exist when we start
-	aObj.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2"}
+	aObj.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "SmallTextTooltip"}
 	-- list of Tooltips used when the Tooltip style is 3
 	-- using a metatable to manage tooltips when they are added in different functions
 	aObj.ttList = _G.setmetatable({}, {__newindex = function(t, k, v)
@@ -19,17 +19,17 @@ do
 		if aObj.db.profile.Tooltips.style == 3 then
 			tt:SetBackdrop(aObj.Backdrop[1])
 		end
-		-- hook the OnShow method
+		-- hook the OnShow method, NOT the Show method
 		aObj:HookScript(tt, "OnShow", function(this)
-			aObj:skinTooltip(this)
-			if this == _G.GameTooltip and aObj.db.profile.Tooltips.glazesb then
-				-- handle in combat
-				if _G.InCombatLockdown() then
-					aObj:add2Table(aObj.oocTab, {aObj.glazeStatusBar, {aObj, _G.GameTooltipStatusBar, 0}})
-				else
-					aObj:glazeStatusBar(_G.GameTooltipStatusBar, 0)
-				end
+			if this == _G.GameTooltip
+			and aObj.db.profile.Tooltips.glazesb
+			then
+				aObj:glazeStatusBar(_G.GameTooltipStatusBar, 0)
 			end
+		end)
+		-- hook this to prevent Gradient overlay when tooltip reshown
+		aObj:HookScript(tt, "OnUpdate", function(this)
+			aObj:skinTooltip(this)
 		end)
 		-- skin here so tooltip initially skinnned when logged on
 		aObj:skinTooltip(tt)
@@ -3918,34 +3918,22 @@ function aObj:Tooltips()
 	self:skinButton{obj=_G.ItemRefCloseButton, cb=true}
 	self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=2}
 
-	if self.db.profile.Tooltips.style == 3 then
-		-- Hook this to deal with GameTooltip FadeHeight issues
-		self:SecureHookScript(_G.GameTooltipStatusBar, "OnHide", function(this)
-			self:ScheduleTimer("skinTooltip", 0.1, _G.GameTooltip)
-		end)
-	end
-
 	-- add tooltips to table to set backdrop and hook OnShow method
 	for _, tooltip in pairs(self.ttCheck) do
 		self:add2Table(self.ttList, tooltip)
 	end
-	self:add2Table(self.ttList, "SmallTextTooltip")
 
 	-- Hook this to skin the GameTooltip StatusBars
 	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
-		if _G.GameTooltipStatusBar1 then
-			self:removeRegions(_G.GameTooltipStatusBar1, {2})
-			if aObj.db.profile.Tooltips.glazesb then
-				self:glazeStatusBar(_G.GameTooltipStatusBar1, 0)
+		local sb
+		for i = 1, #this.numStatusBars do
+			sb = _G[this:GetName() .. "StatusBar" .. i]
+			self:removeRegions(sb, {2})
+			if self.db.profile.Tooltips.glazesb then
+				self:glazeStatusBar(sb, 0)
 			end
 		end
-		if _G.GameTooltipStatusBar2 then
-			self:removeRegions(_G.GameTooltipStatusBar2, {2})
-			if aObj.db.profile.Tooltips.glazesb then
-				self:glazeStatusBar(_G.GameTooltipStatusBar2, 0)
-			end
-			self:Unhook("GameTooltip_ShowStatusBar")
-		end
+		sb = nil
 	end)
 
 end
