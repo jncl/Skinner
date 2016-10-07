@@ -2327,6 +2327,7 @@ function aObj:PVPUI()
 	self:glazeStatusBar(hfxpb.Bar, 0, hfxpb.Bar.Background, nil, true)
 	hfxpb.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
 	hfxpb.NextAvailable.Frame:SetTexture(nil)
+	hfxpb = nil
 	self:removeInset(_G.HonorFrame.RoleInset)
 	self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
 	self:removeInset(_G.HonorFrame.Inset)
@@ -2336,7 +2337,6 @@ function aObj:PVPUI()
 		btn.Bg:SetTexture(nil)
 		btn.Border:SetTexture(nil)
 	end
-	hfxpb = nil
 
 	local hfbf =_G.HonorFrame.BonusFrame
 	hfbf.RandomBGButton.NormalTexture:SetTexture(nil)
