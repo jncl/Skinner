@@ -4060,7 +4060,7 @@ function aObj:WorldMap()
 
 	uie = nil
 
-	-->>-- Nav Bar
+	-- Nav Bar
 	_G.WorldMapFrame.NavBar:DisableDrawLayer("BACKGROUND")
 	_G.WorldMapFrame.NavBar:DisableDrawLayer("BORDER")
 	_G.WorldMapFrame.NavBar.overlay:DisableDrawLayer("OVERLAY")
@@ -4069,18 +4069,18 @@ function aObj:WorldMap()
 	_G.WorldMapFrame.NavBar.home:GetPushedTexture():SetAlpha(0)
 	_G.WorldMapFrame.NavBar.home.text:SetPoint("RIGHT", -20, 0)
 
--->>-- Tooltip(s)
+	-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, self.isPTR and _G.WorldMapTooltip or _G.WorldMapTooltip.BackdropFrame)
 		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
 	end
-
-	self:removeRegions(_G.MapBarFrame, {1, 2, 3})
-	self:glazeStatusBar(_G.MapBarFrame, 0, _G.MapBarFrame.FillBG)
-
 	self:removeRegions(_G.WorldMapTaskTooltipStatusBar.Bar, {1, 2, 3, 5, 6}) -- 4 is text
 	self:glazeStatusBar(_G.WorldMapTaskTooltipStatusBar.Bar, 0, self:getRegion(_G.WorldMapTaskTooltipStatusBar.Bar, 7))
+
+	-- BarFrame
+	self:removeRegions(_G.MapBarFrame, {1, 2, 3})
+	self:glazeStatusBar(_G.MapBarFrame, 0, _G.MapBarFrame.FillBG)
 
 end
 
