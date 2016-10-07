@@ -9,49 +9,63 @@ Legend:
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
 	N	PTR Changes 7.1.0
-		- Icon selection frame now 10 by 9 instead of 4 by 4
-			- Used by GuildBankUI, MacroUI, GearManager
 		- GuildBankUI
-			- replaced textures with BorderBox
-			- replaced individual buttons with ScrollFrame
+≈			- replaced textures with BorderBox
+≈			- replaced individual buttons with ScrollFrame
 		- MacroUI
-			- replaced textures with BorderBox
-			- replaced individual buttons with ScrollFrame
+√			- replaced textures with BorderBox
+√			- replaced individual buttons with ScrollFrame
 		- GearManagerDialog
-			- replaced textures with BorderBox
-			- replaced individual buttons with ScrollFrame
-
+√			- replaced textures with BorderBox
+√			- replaced individual buttons with ScrollFrame
 		- AlertFrameSystem
-			- Frames that originally existed OnLoad are now on demand
+√			- Frames that originally existed OnLoad are now on demand
 			- RewardFrames now have additional code used by several AlertFrames and have an array
-
 		- ContainerFrame
-			- Buttons now have an UpgradeIcon texture
-
+≈			- Buttons now have an UpgradeIcon texture
 		- FloatingChatFrame
-			- FriendsMicroButton has been replaced by QuickJoinToastButton
-
+√			- FriendsMicroButton has been replaced by QuickJoinToastButton
 		- New xml files
 			- RoleSelectionTemplate
 			- SocialQueue
 			- QuickJoinToast
 			- UnitPositionFrameTemplate
-
 		- FriendsFrame
-			- PendingListFrame replaced by QuickJoinFrame
+√			- PendingListFrame replaced by QuickJoinFrame
 			- FramePools now being used
-
 		- LevelUpDisplay
 			- New FontString added
+		- LootFrame
+			-- EncounterJournal additions
+		- QuestInfo Frame
+√			- QuestType text
+		- QuestMapFrame
+			- Count text
+≈		- UIPanelScrollFrameTemplate which is now a Slider
+		- ZoneAbility
+			- has a BonusActionBar ?
+		- AuctionUI
+x			- PriceTooltipFrame
+		- BarberShopUI
+			- Prev, Next button name change
+		- EncounterJournal
+√			- slotFilter added
+x			- lootSlotFilter added (dropdown)
+		- GuildNews
+			- now using array GuildNewsFilterButtons
+		- ClassNameplateBar
+			- now has a background
 
-?	I	Tooltip
-		- Correct Gradient Height, noticeable on many object tooltips
-		- not sure it's height, maybe animation of alpha causes the effect ?
+	I	WardrobeCollectionFrame.ModelsFrame
+?		- skin Model buttons by replacing the button border (not sure as existing border has rounded corners)
+
+	I	Tooltip
+√		- Correct Gradient Height, noticeable on many object tooltips
 
 	I	WorldMap Quest List
 ?		- Some buttons have a border (not all the time)
 
-	I	Quest Objectives list (Ben)
+	I	Quest Objectives list
 ?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
 
 	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
@@ -61,7 +75,24 @@ Legend:
 ?		- causes UI elements to not be skinned
 
 	I	RaidFrame border
-?		- reverts to original border texture if rescaled or moved
+?		- reverts to original border texture if rescaled or moved, or split into blocks
 
 	I	QuestList
 ?		- quest icon/number buttons shouldn't be skinned
+
+	I	ScenarioChallengeModeBlock
+?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
+
+	I	BonusRollLootWonFrame & BonusRollMoneyWonFrame (AlertFrame Templates)
+≈		- need skinning
+
+	I	OverrideActionBarExpBarOverlayFrame
+≈		- on VehicleUI, needs skinning
+
+	I	Bagnon, requested by hammer2, 28.09.16
+√		- Update button borders with quality colour
+
+√	S	LS: Toasts, requested by hammer2, 28.09.16
+
+	N	TradeSkillMaster, reported bybbarnett444,02.10.16
+√		- Skinner\SkinMe\TradeSkillMaster-v3.6.1.lua:42: Usage: RawHook([object], method, [handler], [hookSecure]): Attempting to hook a non existing target
