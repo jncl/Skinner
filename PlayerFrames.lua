@@ -2193,7 +2193,7 @@ function aObj:ObjectiveTracker()
 	self:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, y1=-1, x2=41, y2=7}
 
 	-- ScenarioChallengeModeBlock
-	_G.ScenarioChallengeModeBlock:DisableDrawLayer("BORDER")
+	_G.ScenarioChallengeModeBlock:DisableDrawLayer("BACKGROUND")
 	self:glazeStatusBar(_G.ScenarioChallengeModeBlock.StatusBar, 0,  nil)
 	self:removeRegions(_G.ScenarioChallengeModeBlock.StatusBar, {1}) -- border
 	self:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, y2=7}
