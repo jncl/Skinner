@@ -498,7 +498,7 @@ end
 
 function module:OnEnable()
 
-	-- handle in combat
+	-- handle in combat as it uses SecureUnitButtonTemplate
 	if _G.InCombatLockdown() then
 		aObj:add2Table(aObj.oocTab, {self.adjustUnitFrames, {"init"}})
 		return

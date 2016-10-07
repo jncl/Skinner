@@ -365,16 +365,16 @@ function aObj:Buffs()
 	if self.modBtnBs then
 		local function skinBuffs()
 
-			-- handle in combat
-			if _G.InCombatLockdown() then
-				aObj:add2Table(aObj.oocTab, {skinBuffs, {nil}})
-				return
-			end
+			-- -- handle in combat
+			-- if _G.InCombatLockdown() then
+			-- 	aObj:add2Table(aObj.oocTab, {skinBuffs, {nil}})
+			-- 	return
+			-- end
 
 			local btn
 			for i= 1, _G.BUFF_MAX_DISPLAY do
 				btn = _G["BuffButton" .. i]
-				if btn and not btn.sbb then
+				if btn then
 					-- add button borders
 					aObj:addButtonBorder{obj=btn}
 					-- aObj:moveObject{obj=btn.duration, y=-1}
@@ -864,7 +864,7 @@ function aObj:CompactFrames()
 
 	local function skinUnit(unit)
 
-		-- handle in combat
+		-- handle in combat as it uses SecureUnitButtonTemplate
 		if _G.InCombatLockdown() then
 			aObj:add2Table(aObj.oocTab, {skinUnit, {unit}})
 			return
@@ -2227,11 +2227,11 @@ function aObj:OverrideActionBar() -- a.k.a. VehicleUI
 
 	local function skinOverrideActionBar()
 
-		-- handle in combat
-		if _G.InCombatLockdown() then
-			aObj:add2Table(aObj.oocTab, {skinOverrideActionBar, {nil}})
-			return
-		end
+		-- -- handle in combat
+		-- if _G.InCombatLockdown() then
+		-- 	aObj:add2Table(aObj.oocTab, {skinOverrideActionBar, {nil}})
+		-- 	return
+		-- end
 
 		local oabW = _G.OverrideActionBar:GetWidth()
 
