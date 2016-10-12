@@ -32,7 +32,7 @@ function aObj:BlizzardFrames()
 			["CompactFrames"] = false, -- checked below
 			["CharacterFrames"] = true,
 			["ContainerFrames"] = true,
-			["DressUpFrame"] = true,
+			["DressUpFrame"] = false, -- checked below
 			["EquipmentFlyout"] = true,
 			["FriendsFrame"] = true,
 			["GhostFrame"] = true,
@@ -188,7 +188,7 @@ local addonSkins = {
 	"Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "Altoholic", "AphesLootBrowser", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "Auctionator", "AuctionMaster", "Auctionsnatch", "AutoDecline",
 	"Baggins", "Bagnon_Forever", "Bagnon", "BankItems", "Bartender4", "BattlePetCount", "BaudBag", "BaudManifest", "BetterInbox", "BindPad", "BlackList", "BonusRollPreview", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BugSack", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
 	"Carbonite", "CensusPlus", "CFM", "Chatter", "Clique", "Collectinator", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cork", "Cosplay",
-	"DeathNote", "DockingStation", "Dominos",
+	"DeathNote", "DockingStation", "Dominos", "DressUp",
 	"ElvUI", "EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
 	"FarmIt2", "FeedMachine", "FishingBuddy", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "GuildLaunchCT_RaidTracker", "GuildMaster",
@@ -267,6 +267,9 @@ function aObj:AddonFrames()
 	then
 		self:checkAndRun("CompactFrames")
 	end
+
+	-- skin the DressUpFrame if DressUp isn't loaded
+	if not IsAddOnLoaded("DressUp") then self:checkAndRun("DressUpFrame") end
 
 	-- skin the MainMenuBar if Dominos isn't loaded
 	if not IsAddOnLoaded("Dominos") then self:checkAndRun("MainMenuBar") end

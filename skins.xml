@@ -63,6 +63,7 @@
 <script file="SkinMe\DockingStation.lua"/>
 <script file="SkinMe\Dominos.lua"/>
 <script file="SkinMe\DoTimer.lua"/>
+<script file="SkinMe\DressUp.lua"/>
 <script file="SkinMe\ElvUI.lua"/>
 <script file="SkinMe\Enchantrix.lua"/>
 <script file="SkinMe\EnchantrixBarker.lua"/>

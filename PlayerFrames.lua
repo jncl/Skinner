@@ -1025,9 +1025,8 @@ function aObj:DressUpFrame()
 	self.initialized.DressUpFrame = true
 
 	self:skinDropDown{obj=_G.DressUpFrameOutfitDropDown, y2=-4}
-	self:removeRegions(_G.DressUpFrame, {1, 2, 3, 4, 5}) -- N.B. regions 6 & 7 are text, 8-11 are the background picture
 	_G.DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=_G.DressUpFrame, ft=ftype, x1=10, y1=-12, x2=-33, y2=73}
+	self:addSkinFrame{obj=_G.DressUpFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-33, y2=73}
 
 
 end
