@@ -3947,7 +3947,7 @@ function aObj:Tooltips()
 	-- Hook this to skin the GameTooltip StatusBars
 	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
 		local sb
-		for i = 1, #this.numStatusBars do
+		for i = 1, this.numStatusBars do
 			sb = _G[this:GetName() .. "StatusBar" .. i]
 			self:removeRegions(sb, {2})
 			if self.db.profile.Tooltips.glazesb then
