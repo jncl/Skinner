@@ -3191,6 +3191,9 @@ function aObj:ObliterumUI() --LoD
 
 	_G.ObliterumForgeFrame.Background:SetTexture(nil)
 	self:removeMagicBtnTex(_G.ObliterumForgeFrame.ObliterateButton)
+	_G.ObliterumForgeFrame.ItemSlot.Corners:SetAlpha(0)
+	self:addSkinFrame{obj=_G.ObliterumForgeFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+	self.modUIBtns:addButtonBorder{obj=_G.ObliterumForgeFrame.ItemSlot} -- use module function to force button border
 
 end
 
