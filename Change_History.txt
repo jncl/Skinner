@@ -1,3 +1,34 @@
+b7.22747.1
+Jncl:
+	ToDo.txt
+	Update Change_History.txt
+	nil a local variable
+	Updated InCombat checks
+	Update version numbers
+	Update applyGradient code
+	Update WorldMap skin
+	Update Tooltip skinning code
+	Skin ScenarioChallengeMode block
+	Update ButtonBorder skinning code for AuctionUI & BlackMarketUI
+	Bugfix for ButtonBorders skin
+	Updated Tab skinning code
+	Updated AuctionUI skin to add ButtonBorders
+	Updated TradeSkillMaster skin
+	PTR changes to many core skin functions
+	Updated Tooltip skinning code
+	Updated UIButtons skinning code
+	Updated heading comments
+	Skin ConquestFrame XPBar
+	Skin BonusRollLootWon & BonusRollMoneyWon Alert frames
+	Updated LookingForGuild skin
+	Bugfix for EditBox regions
+	Updated ArchaeologyUI skin
+	No need for local variable
+	Updated AlertFrames skin
+	Replaced output of the unpack function with actual table entries & removed redundant code
+	Skinned LS: Toasts & Handle LS: Toasts Config dropdown
+	Updated Bagnon skin to handle quality borders
+
 b7.22624.3
 Jncl:
 	ToDo.txt
