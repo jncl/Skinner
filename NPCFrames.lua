@@ -194,14 +194,16 @@ function aObj:BarbershopUI() -- LoD
 
 	self:keepFontStrings(_G.BarberShopFrameMoneyFrame)
 	self:addSkinFrame{obj=_G.BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
-	 for i = 1, 4 do
-		 self:addButtonBorder{obj=_G["BarberShopFrameSelector" .. i .. "Prev"], ofs=-2}
-		 self:addButtonBorder{obj=_G["BarberShopFrameSelector" .. i .. "Next"], ofs=-2}
-	 end
+	for i = 1, #_G.BarberShopFrame.Selector do
+		 self:addButtonBorder{obj=self:getChild(_G.BarberShopFrame.Selector[i], 1), ofs=-2}
+		 self:addButtonBorder{obj=self:getChild(_G.BarberShopFrame.Selector[i], 2), ofs=-2}
+
+	end
 	-- Banner Frame
 	self:keepFontStrings(_G.BarberShopBannerFrame)
 	_G.BarberShopBannerFrameCaption:ClearAllPoints()
 	_G.BarberShopBannerFrameCaption:SetPoint("CENTER", _G.BarberShopFrame, "TOP", 0, -46)
+	_G.BarberShopBannerFrame:SetParent(_G.BarberShopFrame) -- make text appear above skinFrame
 
 end
 
