@@ -398,6 +398,10 @@ function aObj:ArtifactUI() --LoD
 		for appearanceSet in this.appearanceSetPool:EnumerateActive() do
 			appearanceSet:DisableDrawLayer("BACKGROUND")
 		end
+		for appearanceSlot in this.appearanceSlotPool:EnumerateActive() do
+			appearanceSlot:DisableDrawLayer("BACKGROUND")
+			appearanceSlot.Border:SetTexture(nil)
+		end
 	end)
 
 end
