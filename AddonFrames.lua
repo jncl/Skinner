@@ -237,6 +237,11 @@ aObj.libsToSkin = {
 	["LibDialog-1.0"] = "LibDialog",
 	["LibExtraTip-1"] = "LibExtraTip",
 }
+-- store other AddOns not previously referenced, here
+aObj.otherAddons = {}
+aObj.otherAddons["tekKonfig"] = true
+aObj.otherAddons["LibKeyBound"] = true
+aObj.otherAddons["WIM_Options"] = false
 function aObj:AddonFrames()
 	-- self:Debug("AddonFrames")
 
@@ -355,6 +360,8 @@ end
 aObj.lodAddons["_DevPad.GUI"] = "_DevPadGUI"
 aObj.lodAddons["DBM-GUI"] = "DBMGUI"
 
+aObj.otherAddons["PetBattleTeams"] = false
+
 local prev_addon
 function aObj:LoDFrames(addon)
 	-- self:Debug("LoDFrames: [%s, %s, %s]", addon, self.lodAddons[addon], blizzLoD[addon])
@@ -407,6 +414,9 @@ function aObj:ADDON_LOADED(event, addon)
 
 end
 
+aObj.otherAddons["TradeSkillMaster_Auctioning"] = false
+aObj.otherAddons["TradeSkillMaster_AuctionDB"] = false
+aObj.otherAddons["TradeSkillMaster_Shopping"] = false
 function aObj:AUCTION_HOUSE_SHOW()
 	-- self:Debug("AUCTION_HOUSE_SHOW")
 
@@ -438,6 +448,10 @@ function aObj:PLAYER_ENTERING_WORLD()
 
 end
 
+aObj.otherAddons["TradeSkillMaster_Crafting"] = false
+aObj.otherAddons["ReagentMaker"] = false
+aObj.otherAddons["ProfessionTabs_TSF"] = false
+aObj.otherAddons["TradeSkillDW"] = false
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
 
@@ -464,6 +478,7 @@ function aObj:TRADE_SKILL_SHOW()
 
 end
 
+aObj.otherAddons["ProfessionTabs_TF"] = false
 function aObj:TRADE_SHOW()
 	-- self:Debug("TRADE_SHOW")
 

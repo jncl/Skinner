@@ -1793,7 +1793,7 @@ function aObj:Options()
 
 		aObj.optTables["Disabled Skins"].args[name] = {
 			type = "toggle",
-			name = name..(lib and " (Lib)" or ""),
+			name = name .. (lib and " (Lib)" or ""),
 			desc = self.L["Toggle the skinning of "]..name,
 			width = name:len() > 20 and "double" or nil,
 		}
@@ -1808,6 +1808,11 @@ function aObj:Options()
 	for addonName in pairs(self.lodAddons) do
 		addDSOpt(addonName)
 	end
+	for addonName, isLib in pairs(self.otherAddons) do
+		addDSOpt(addonName, isLib)
+	end
+	_G.wipe(self.otherAddons)
+	self.otherAddons = nil
 
 	-- add DB profile options
 	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
