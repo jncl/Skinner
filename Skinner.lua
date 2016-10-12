@@ -290,16 +290,25 @@ function aObj:OnEnable()
 		end
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
-			-- hook this to ignore common quality items colour change
+			-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
 			self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink)
-				-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s]", button, quality, itemIDOrLink, button.sbb)
+				-- show Artifact Relic Item border
+				if itemIDOrLink and _G.IsArtifactRelicItem(itemIDOrLink) then
+					button.IconBorder:SetAlpha(1)
+				else
+					button.IconBorder:SetAlpha(0)
+				end
 				if button.sbb then
-					if quality
-					and quality > _G.LE_ITEM_QUALITY_COMMON
-					then
-						button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+					if quality then
+						if quality > _G.LE_ITEM_QUALITY_COMMON then
+							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+						elseif quality == _G.LE_ITEM_QUALITY_POOR then
+							button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+						else
+							button.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+						end
 					else
-						button.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+						button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.25)
 					end
 				end
 			end)

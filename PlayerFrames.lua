@@ -75,6 +75,33 @@ function aObj:AchievementUI() -- LoD
 		end
 
 	end
+	local function skinBtn(btn)
+		btn:DisableDrawLayer("BACKGROUND")
+		-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
+		btn:DisableDrawLayer("ARTWORK")
+		aObj:applySkin{obj=btn, bd=10, ng=true}
+		if btn.plusMinus then btn.plusMinus:SetAlpha(0) end
+		btn.icon:DisableDrawLayer("BACKGROUND")
+		btn.icon:DisableDrawLayer("BORDER")
+		btn.icon:DisableDrawLayer("OVERLAY")
+		aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
+		-- set textures to nil and prevent them from being changed as guildview changes the textures
+		btn.icon.frame:SetTexture(nil)
+		btn.icon.frame.SetTexture = function() end
+		-- colour text and button border
+		if btn.description then btn.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
+		if btn.hiddenDescription then btn.hiddenDescription:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
+		btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+		btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+		-- hook these to handle description text  & button border colour changes
+		aObj:SecureHook(btn, "Desaturate", function(this)
+			this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
+		end)
+		aObj:SecureHook(btn, "Saturate", function(this)
+			if this.description then this.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
+			this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
+		end)
+	end
 	local function cleanButtons(frame, type)
 
 		if aObj.db.profile.AchievementUI.style == 1 then return end -- don't remove textures if option not chosen
@@ -84,44 +111,26 @@ function aObj:AchievementUI() -- LoD
 		for i = 1, #frame.buttons do
 			btnName = frame.buttons[i]:GetName() .. (type == "Comparison" and "Player" or "")
 			btn = _G[btnName]
-			btn:DisableDrawLayer("BACKGROUND")
-			-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
-			btn:DisableDrawLayer("ARTWORK")
-			if btn.plusMinus then btn.plusMinus:SetAlpha(0) end
-			btn.icon:DisableDrawLayer("BACKGROUND")
-			btn.icon:DisableDrawLayer("BORDER")
-			btn.icon:DisableDrawLayer("OVERLAY")
-			aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
-			-- hook this to handle description text colour changes
-			aObj:SecureHook(btn, "Saturate", function(this)
-				this.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
-			end)
+			skinBtn(btn)
 			if type == "Achievements" then
 				-- set textures to nil and prevent them from being changed as guildview changes the textures
 				_G[btnName .. "TopTsunami1"]:SetTexture(nil)
 				_G[btnName .. "TopTsunami1"].SetTexture = function() end
 				_G[btnName .. "BottomTsunami1"]:SetTexture(nil)
 				_G[btnName .. "BottomTsunami1"].SetTexture = function() end
-				btn.hiddenDescription:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 			elseif type == "Summary" then
 				if not btn.tooltipTitle then btn:Saturate() end
 			elseif type == "Comparison" then
-				-- force update to colour the button
+				-- force update to colour the Player button
 				if btn.completed then btn:Saturate() end
 				-- Friend
 				btn = _G[btnName:gsub("Player", "Friend")]
-				btn:DisableDrawLayer("BACKGROUND")
-				-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
-				btn:DisableDrawLayer("ARTWORK")
-				btn.icon:DisableDrawLayer("BACKGROUND")
-				btn.icon:DisableDrawLayer("BORDER")
-				btn.icon:DisableDrawLayer("OVERLAY")
-				aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
-				-- force update to colour the button
+				skinBtn(btn)
+				-- force update to colour the Friend button
 				if btn.completed then btn:Saturate() end
 			end
 		end
-		btnName = nil
+		btnName, btn = nil, nil
 
 	end
 
@@ -233,13 +242,15 @@ function aObj:AchievementUI() -- LoD
 	_G.AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
 	self:skinSlider(_G.AchievementFrameAchievementsContainerScrollBar)
 	-- remove textures etc from buttons
-	if not _G.AchievementFrameSummary:IsVisible() and prdbA.style == 2 then
-		self:SecureHookScript(_G.AchievementFrameSummary, "OnShow", function()
+	if prdbA.style == 2 then
+		if not _G.AchievementFrameSummary:IsVisible() then
+			self:SecureHookScript(_G.AchievementFrameSummary, "OnShow", function()
+				cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
+				self:Unhook(_G.AchievementFrameSummary, "OnShow")
+			end)
+		else
 			cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
-			self:Unhook(_G.AchievementFrameSummary, "OnShow")
-		end)
-	else
-		cleanButtons(_G.AchievementFrameSummaryAchievements, "Summary")
+		end
 	end
 	-- Categories SubPanel
 	self:keepFontStrings(_G.AchievementFrameSummaryCategoriesHeader)
@@ -434,6 +445,13 @@ function aObj:CharacterFrames()
 	if not self.db.profile.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
 
+	if self.modBtnBs then
+		self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
+			if not btn.hasItem then
+				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+			end
+		end)
+	end
 	-- Character Frame
 	self:removeInset(_G.CharacterFrameInsetRight)
 	self:skinTabs{obj=_G.CharacterFrame}
@@ -444,9 +462,14 @@ function aObj:CharacterFrames()
 	self:keepFontStrings(_G.PaperDollFrame)
 	_G.CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
 	-- skin slots
-	for _, child in ipairs{_G.PaperDollItemsFrame:GetChildren()} do
-		child:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=child, ibt=true, reParent={child.ignoreTexture}}
+	for _, btn in ipairs{_G.PaperDollItemsFrame:GetChildren()} do
+		btn:DisableDrawLayer("BACKGROUND")
+		if self.modBtnBs then
+			self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}}
+			if not btn.hasItem then
+				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+			end
+		end
 	end
 	_G.CharacterModelFrame:DisableDrawLayer("BACKGROUND")
 	_G.CharacterModelFrame:DisableDrawLayer("BORDER")
@@ -967,7 +990,7 @@ function aObj:ContainerFrames()
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	local objName, obj, cfpb, bo
+	local objName, obj, cfpb
 	for i = 1, _G.NUM_CONTAINER_FRAMES do
 		objName = "ContainerFrame" .. i
 		obj = _G[objName]
@@ -985,17 +1008,21 @@ function aObj:ContainerFrames()
 		cfpb.Highlight:SetPoint("center")
 		cfpb.Highlight:SetSize(22, 22)
 		self:moveObject{obj=cfpb, x=5, y=-3}
-		-- skin the item buttons
-		for i = 1, 36 do
-			bo = _G[objName .. "Item" .. i]
-			if not self.isPTR then
-				self:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.flash, bo.NewIconTexture, bo.BattlepayItemTexture}}
-			else
-				self:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewIconTexture, bo.BattlepayItemTexture}}
+		if self.modBtnBs then
+			-- skin the item buttons
+			local bo
+			for i = 1, _G.MAX_CONTAINER_ITEMS do
+				bo = _G[objName .. "Item" .. i]
+				if not self.isPTR then
+					self:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.flash, bo.NewIconTexture, bo.BattlepayItemTexture}}
+				else
+					self:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewIconTexture, bo.BattlepayItemTexture}}
+				end
 			end
+			bo = nil
 		end
 	end
-	objName, obj, cfpb, bo = nil, nil, nil, nil
+	objName, obj, cfpb = nil, nil, nil
 
 	self:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true, noInsert=true} -- 6 is text, 7 is icon
 	-- Hook this to hide/show the gear button
@@ -1089,9 +1116,7 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 		local btn
 		for i = 1, 30 do
 			btn = _G.EncounterJournal.instanceSelect.scroll.child["instance" .. i]
-			if btn
-			and not btn.sbb
-			then
+			if btn then
 				self:addButtonBorder{obj=btn, relTo=btn.bgImage, ofs=0}
 			end
 		end
@@ -1701,18 +1726,77 @@ function aObj:GuildInvite()
 
 end
 
+aObj:SecureHook("TalentFrame_Update", function(this, inspected_unit)
+	if aObj.modBtnBs and not aObj.modBtnBs then aObj:Unhook("TalentFrame_Update"); return end
+
+	local talentRow, button
+	for tier = 1, _G.MAX_TALENT_TIERS do
+		talentRow = this["tier" .. tier]
+		for column = 1, _G.NUM_TALENT_COLUMNS do
+			button = talentRow["talent" .. column]
+			if button
+			and button.sbb
+			then
+				if (this.inspect and button.border:IsShown())
+				or (button.knownSelection and button.knownSelection:IsShown())
+				then
+					button.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				else
+					button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				end
+			end
+		end
+	end
+	talentRow, button = nil, nil
+end)
+aObj:SecureHook("PVPTalentFrame_Update", function(this)
+	if aObj.modBtnBs and not aObj.modBtnBs then aObj:Unhook("PVPTalentFrame_Update"); return end
+
+	local talentRow, button
+	for tier = 1, _G.MAX_PVP_TALENT_TIERS do
+		talentRow = this.Talents["Tier" .. tier]
+		for column = 1, _G.MAX_PVP_TALENT_COLUMNS do
+			button = talentRow["Talent" .. column]
+			if button
+			and button.sbb
+			then
+				if (this.inspect and button.border:IsShown())
+				or (button.knownSelection and button.knownSelection:IsShown())
+				then
+					button.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				else
+					button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				end
+			end
+		end
+	end
+	talentRow, button = nil, nil
+end)
 function aObj:InspectUI() -- LoD
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
+	if self.modBtnBs then
+		self:SecureHook("InspectPaperDollItemSlotButton_Update", function(btn)
+			if not btn.hasItem then
+				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+			end
+		end)
+	end
 	self:skinTabs{obj=_G.InspectFrame, lod=true}
 	self:addSkinFrame{obj=_G.InspectFrame, ft=ftype, kfs=true, ri=true, bgen=1, y1=2, x2=1, y2=-5}
 
 -->>-- Inspect PaperDoll frame
 	-- Inspect Model Frame
 	_G.InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-	for _, child in ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
-		child:DisableDrawLayer("BACKGROUND")
+	for _, btn in ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
+		btn:DisableDrawLayer("BACKGROUND")
+		if self.modBtnBs then
+			self:addButtonBorder{obj=btn, ibt=true}
+			if not btn.hasItem then
+				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+			end
+		end
 	end
 	_G.InspectModelFrame:DisableDrawLayer("BACKGROUND")
 	_G.InspectModelFrame:DisableDrawLayer("BORDER")
@@ -1720,6 +1804,18 @@ function aObj:InspectUI() -- LoD
 
 -->>-- PVP Frame
 	self:keepFontStrings(_G.InspectPVPFrame)
+	local btn
+	for i = 1, _G.MAX_PVP_TALENT_TIERS do
+		for j = 1, _G.MAX_PVP_TALENT_COLUMNS do
+			btn = _G.InspectPVPFrame.Talents["Tier" .. i]["Talent" .. j]
+			btn.Slot:SetTexture(nil)
+			if self.modBtnBs then
+				btn.border:SetAlpha(0)
+				self:addButtonBorder{obj=btn, relTo=btn.Icon}
+			end
+		end
+	end
+	btn = nil
 
 -->>-- Talent Frame
 	self:keepFontStrings(_G.InspectTalentFrame)
@@ -1727,13 +1823,17 @@ function aObj:InspectUI() -- LoD
 	_G.InspectTalentFrame.InspectSpec.ring:SetTexture(nil)
 	-- Talents
 	local btn
-	for i = 1, 7 do
-		for j = 1, 3 do
+	for i = 1, _G.MAX_TALENT_TIERS do
+		for j = 1, _G.NUM_TALENT_COLUMNS do
 			btn = _G.InspectTalentFrame.InspectTalents["tier" .. i]["talent" .. j]
-			btn.border:SetTexture(nil)
-			self:addButtonBorder{obj=btn, relTo=btn.icon}
+			btn.Slot:SetTexture(nil)
+			if self.modBtnBs then
+				btn.border:SetAlpha(0)
+				self:addButtonBorder{obj=btn, relTo=btn.icon}
+			end
 		end
 	end
+	btn = nil
 
 -->>-- Guild Frame
 	_G.InspectGuildFrameBG:SetAlpha(0)
@@ -1835,6 +1935,19 @@ end
 function aObj:LootFrames()
 	if not self.db.profile.LootFrames.skin or self.initialized.LootFrames then return end
 	self.initialized.LootFrames = true
+
+	if self.modBtnBs then
+		self:SecureHook("LootFrame_Update", function()
+			local btn
+			for i = 1, _G.LOOTFRAME_NUMBUTTONS do
+				btn = _G["LootButton" .. i]
+				if btn.quality then
+					_G.SetItemButtonQuality(btn, btn.quality)
+				end
+			end
+			btn =nil
+		end)
+	end
 
 	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 		_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
@@ -2702,9 +2815,13 @@ function aObj:TalentUI() -- LoD
 		for j = 1, _G.NUM_TALENT_COLUMNS do
 			btn = obj["talent" .. j]
 			btn.Slot:SetTexture(nil)
-			btn.knownSelection:SetTexCoord(0.00390625, 0.78515625, 0.25000000, 0.36914063)
-			btn.knownSelection:SetVertexColor(0, 1, 0, 1)
-			self:addButtonBorder{obj=btn, relTo=btn.icon}
+			if self.modBtnBs then
+				btn.knownSelection:SetTexture(nil)
+				self:addButtonBorder{obj=btn, relTo=btn.icon}
+			else
+				btn.knownSelection:SetTexCoord(0.00390625, 0.78515625, 0.25000000, 0.36914063)
+				btn.knownSelection:SetVertexColor(0, 1, 0, 1)
+			end
 		end
 	end
 
@@ -2726,9 +2843,13 @@ function aObj:TalentUI() -- LoD
 			btn.RightCap:SetTexture(nil)
 			btn.Slot:SetTexture(nil)
 			btn.Cover:SetTexture(nil)
-			btn.knownSelection:SetTexCoord(0.00390625, 0.78515625, 0.25000000, 0.36914063)
-			btn.knownSelection:SetVertexColor(0, 1, 0, 1)
-			self:addButtonBorder{obj=btn, relTo=btn.Icon}
+			if self.modBtnBs then
+				btn.knownSelection:SetTexture(nil)
+				self:addButtonBorder{obj=btn, relTo=btn.Icon}
+			else
+				btn.knownSelection:SetTexCoord(0.00390625, 0.78515625, 0.25000000, 0.36914063)
+				btn.knownSelection:SetVertexColor(0, 1, 0, 1)
+			end
 		end
 	end
 	self:addSkinFrame{obj=_G.PlayerTalentFramePVPTalents.PrestigeLevelDialog, ft=ftype}

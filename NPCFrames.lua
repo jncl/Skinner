@@ -149,25 +149,7 @@ function aObj:BankFrame()
 	self:removeInset(_G.BankFrameMoneyFrameInset)
 	_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.BankFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-4}
-	local btn
-	-- add button borders to bank items
-	for i = 1, 28 do
-		btn = _G["BankFrameItem" .. i]
-		self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
-	end
-	-- add button borders to reagent bank items
-	self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
-		for i = 1, 7 * 7 * 2 do
-			btn = this["Item" .. i]
-			self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
-		end
-	end)
-	-- add button borders to bags
-	for i = 1, _G.NUM_BANKBAGSLOTS do
-		self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
-	end
 	self:skinTabs{obj=_G.BankFrame, x1=6, y1=0, x2=-6, y2=2}
-	self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
 	self:keepFontStrings(_G.BankSlotsFrame)
 	-- ReagentBankFrame
 	self:addSkinFrame{obj=_G.ReagentBankFrame.UnlockInfo, ft=ftype, kfs=true, ofs=-4}
@@ -175,6 +157,35 @@ function aObj:BankFrame()
 	_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND")
 	_G.ReagentBankFrame:DisableDrawLayer("BORDER")
 
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
+		local btn
+		-- add button borders to bank items
+		for i = 1, 28 do
+			btn = _G["BankFrameItem" .. i]
+			self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
+			if not btn.hasItem then
+				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+			end
+		end
+		btn = nil
+		-- add button borders to bags
+		for i = 1, _G.NUM_BANKBAGSLOTS do
+			self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
+		end
+		-- add button borders to reagent bank items
+		self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
+			local btn
+			for i = 1, 7 * 7 * 2 do
+				btn = this["Item" .. i]
+				self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}}
+				if not btn.hasItem then
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.25)
+				end
+			end
+			btn = nil
+		end)
+	end
 end
 
 function aObj:BarbershopUI() -- LoD
