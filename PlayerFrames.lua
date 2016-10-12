@@ -1139,7 +1139,6 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	tabID, tab = nil, nil
 	if aObj.isTT then
 		self:SecureHook("EJ_ContentTab_Select", function(id)
-			-- aObj:Debug("EJ_CT_S: [%s]", id)
 			local tab
 			for i = 1, #_G.EncounterJournal.instanceSelect.Tabs do
 				tab = _G.EncounterJournal.instanceSelect.Tabs[i]
@@ -2249,7 +2248,6 @@ function aObj:ObjectiveTracker()
 	_G.ObjectiveTrackerBonusRewardsFrame.RewardsShadow:SetTexture(nil)
 	self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
 		local rewardsFrame = block.module.rewardsFrame
-		-- aObj:Debug("BOT_AR: [%s, %s]", block, rewardsFrame.id)
 		local btn
 		for i = 1, #rewardsFrame.Rewards do
 			btn = rewardsFrame.Rewards[i]

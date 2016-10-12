@@ -240,14 +240,12 @@ function aObj:BlackMarketUI() -- LoD
 	end
 	if not self.isPTR then
 		self:SecureHook(_G.BlackMarketScrollFrame, "update", function(this)
-			aObj:Debug("BlackMarketScrollFrame update")
 			skinSFButtons(this)
 		end)
 		-- skin existing buttons
 		skinSFButtons(_G.BlackMarketScrollFrame)
 	else
 		self:SecureHook("BlackMarketScrollFrame_Update", function(this)
-			aObj:Debug("BlackMarketScrollFrame_Update")
 			skinSFButtons(_G.BlackMarketScrollFrame)
 		end)
 	end
@@ -264,13 +262,10 @@ function aObj:FlightMap() -- LoD
 
 	-- hook this to remove ZoneLabel background texture
 	for dataProvider in pairs(_G.FlightMapFrame.dataProviders) do
-		-- aObj:Debug("FMF.dataProviders: [%s]", dataProvider)
 		if dataProvider.ZoneLabel then
-			-- aObj:Debug("ZoneLabel found: [%s, %s]", dataProvider.ZoneLabel, dataProvider.ZoneLabel.dataProvider)
 			dataProvider.ZoneLabel.TextBackground:SetTexture(nil)
 			-- hook this to handle when Map re-opened
 			self:SecureHook(dataProvider.ZoneLabel.dataProvider, "RefreshAllData", function(this, fromOnShow)
-				-- aObj:Debug("dP RefreshAllData: [%s, %s]", this, fromOnShow)
 				this.ZoneLabel.TextBackground:SetTexture(nil)
 			end)
 		end
@@ -349,7 +344,6 @@ function aObj:ItemUpgradeUI() -- LoD
 
 	-- hook this to hide the ItemButton texture if empty
 	self:SecureHook(_G.ItemUpgradeFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
-		aObj:Debug("ItemUpgradeFrame.ItemButton.IconTexture SetTexture: [%s, %s]", this, tex)
 		if tex
 		and tex:find("UI-Slot-Background", 1, true) then
 			this:SetAlpha(0)
@@ -577,8 +571,6 @@ function aObj:QuestInfo()
 	self.initialized.QuestInfo = true
 
 	local function skinRewards(frame)
-
-		-- aObj:Debug("skinRewards: [%s]", frame)
 
 		frame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		frame.ItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)

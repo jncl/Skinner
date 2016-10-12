@@ -110,7 +110,7 @@ function aObj:AlertFrames()
 			for i = 1, #af.RewardFrames do
 				af.RewardFrames:DisableDrawLayer("OVERLAY") -- rewardring
 			end
-			
+
 		end
 	end
 	local function skinACAlertFrame(frame)
@@ -692,8 +692,6 @@ function aObj:ChatBubbles()
 	local cbeTmr
 	local function skinChatBubbles()
 
-		-- aObj:Debug("skinChatBubbles fired")
-
 		aObj.RegisterCallback("skinChatBubbles", "WorldFrame_GetChildren", function(this, child)
 			if aObj:hasTextInTexture(aObj:getRegion(child, 1), "ChatBubble-Background", true) then
 				aObj:applySkin{obj=child, ft=ftype, kfs=true} -- use apply skin otherwise text is behind
@@ -709,7 +707,6 @@ function aObj:ChatBubbles()
 	skinChatBubbles()
 
 	local function srt4Event(event, ...)
-		-- aObj:Debug("srt4Event: [%s, %s, %s]", event, ...)
 		if not cbeTmr then
 			cbeTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.25)
 		end
@@ -1119,12 +1116,6 @@ function aObj:DebugTools() -- LoD
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, "FrameStackTooltip")
 		self:add2Table(self.ttList, "EventTraceTooltip")
-		self:HookScript(_G.FrameStackTooltip, "OnUpdate", function(this)
-			self:skinTooltip(this)
-		end)
-		self:HookScript(_G.EventTraceTooltip, "OnUpdate", function(this)
-			self:skinTooltip(this)
-		end)
 	end
 
 end
@@ -1392,7 +1383,6 @@ local function skinMissionList(ml)
 				aObj:setInactiveTab(tab.sf)
 			end
 			aObj:SecureHookScript(tab, "OnClick", function(this)
-				-- aObj:Debug("ML Tab: [%s, %s]", this, this:GetID())
 				local list = this:GetParent()
 				aObj:setActiveTab(this.sf)
 				if this:GetID() == 1 then
@@ -2402,7 +2392,6 @@ function aObj:MainMenuBar()
 
 	-- adjust offset dependant upon player level
 	local function moveWatchBar(bar)
-		-- aObj:Debug("moveWatchBar: [%s, %s, %s]", aObj.uLvl,  _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()], _G.GetExpansionLevel())
 		aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4} -- move it above MainMenuBar
 		bar.SetPoint = function() end -- stop it being moved
 		bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1) -- move text down
@@ -2527,7 +2516,6 @@ function aObj:MainMenuBar()
 		upba.counterBar:DisableDrawLayer("ARTWORK")
 	end
 	self:SecureHook("UnitPowerBarAlt_SetUp", function(this, barID)
-		aObj:Debug("UnitPowerBarAlt_SetUp: [%s, %s]", this, barID)
 		skinUnitPowerBarAlt(this)
 	end)
 	-- skin PlayerPowerBarAlt if already shown
@@ -3093,8 +3081,6 @@ function aObj:NamePlates()
 
 	local function skinNamePlate(event, ...)
 
-		-- aObj:Debug("skinNamePlate: [%s, %s]", event, ...)
-
 		local namePlateFrameBase = ...
 		if not namePlateFrameBase then return end
 
@@ -3111,7 +3097,6 @@ function aObj:NamePlates()
 
 	-- skin any existing NamePlates
 	for _, frame in pairs(_G.C_NamePlate.GetNamePlates()) do
-		-- aObj:Debug("NamePlates: [%s]", frame)
 		skinNamePlate(frame)
 	end
 
@@ -3234,43 +3219,6 @@ function aObj:OrderHallUI() --LoD
 	-- Mission List
 	local ml = _G.OrderHallMissionFrame.MissionTab.MissionList
 	skinMissionList(ml)
-	-- ml:DisableDrawLayer("BORDER")
-	-- ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
-	--
-	-- -- tabs at top
-	-- local tab
-	-- for i = 1, 2 do
-	-- 	tab = ml["Tab" .. i]
-	-- 	tab:DisableDrawLayer("BORDER")
-	-- 	self:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT}
-	-- 	tab.sf.ignore = true -- don't change tab size
-	-- 	if self.isTT then
-	-- 		if i == 1 then
-	-- 			self:setActiveTab(tab.sf)
-	-- 		else
-	-- 			self:setInactiveTab(tab.sf)
-	-- 		end
-	-- 	end
-	-- end
-	-- self:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
-	-- local btn
-	-- for i = 1, #ml.listScroll.buttons do
-	-- 	btn = ml.listScroll.buttons[i]
-	-- 	btn:DisableDrawLayer("BACKGROUND")
-	-- 	btn:DisableDrawLayer("BORDER")
-	-- 	-- extend the top & bottom highlight texture
-	-- 	btn.HighlightT:ClearAllPoints()
-	-- 	btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
-	-- 	btn.HighlightT:SetPoint("TOPRIGHT", 0, 4)
-	--         btn.HighlightB:ClearAllPoints()
-	--         btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
-	--         btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
-	-- 	self:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
-	-- 	addLineTex(btn, i)
-	-- 	for i = 1, #btn.Rewards do
-	-- 		self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
-	-- 	end
-	-- end
 
 	-- CombatAllyUI
 	ml.CombatAllyUI.Background:SetTexture(nil)
@@ -3278,9 +3226,6 @@ function aObj:OrderHallUI() --LoD
 	skinPortrait(ml.CombatAllyUI.InProgress.PortraitFrame)
 	-- self:skinButton{obj=ml.CombatAllyUI.Available.AddFollowerButton}
 	self:skinButton{obj=ml.CombatAllyUI.InProgress.Unassign}
-
-	-- -- CompleteDialog
-	-- skinCompleteDialog(ml.CompleteDialog)
 	ml = nil
 
 	_G.OrderHallMissionFrame.MissionTab.ZoneSupportMissionPageBackground:DisableDrawLayer("BACKGROUND")
@@ -3346,7 +3291,6 @@ function aObj:OrderHallUI() --LoD
 			choiceTex:SetAlpha(0)
 		end
 	end)
-
 	-- CommandBar at top of screen
 
 end
@@ -3740,7 +3684,6 @@ function aObj:QuestMap()
 			for i = 1, #_G.QuestMapFrame.QuestsFrame.Contents.Headers do
 				btn = _G.QuestMapFrame.QuestsFrame.Contents.Headers[i]
 				tex = btn:GetNormalTexture()and btn:GetNormalTexture():GetTexture()
-				-- aObj:Debug("QuestLogQuests_Update: [%s, %s, %s, %s, %s]", i, btn, tex, tex:find("MinusButton"), tex:find("PlusButton"))
 				if tex
 				and (tex:find("MinusButton")
 				or tex:find("PlusButton"))
@@ -4126,7 +4069,6 @@ function aObj:WorldState()
         bar.texH:SetPoint("LEFT", bar, "RIGHT", -26, 0)
     end
     self:SecureHook(_G.ExtendedUI["CAPTUREPOINT"], "create", function(id)
-        -- aObj:Debug("CAPTUREPOINT create: [%s]", id)
         skinCaptureBar(id)
     end)
     -- skin any existing frames
