@@ -47,7 +47,7 @@ Legend:
 		- AuctionUI
 x			- PriceTooltipFrame
 		- BarberShopUI
-			- Prev, Next button name change
+√			- Prev, Next button name change
 		- EncounterJournal
 √			- slotFilter added
 x			- lootSlotFilter added (dropdown)
@@ -58,9 +58,6 @@ x			- lootSlotFilter added (dropdown)
 
 	I	WardrobeCollectionFrame.ModelsFrame
 ?		- skin Model buttons by replacing the button border (not sure as existing border has rounded corners)
-
-	I	Tooltip
-√		- Correct Gradient Height, noticeable on many object tooltips
 
 	I	WorldMap Quest List
 ?		- Some buttons have a border (not all the time)
@@ -83,16 +80,32 @@ x			- lootSlotFilter added (dropdown)
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-	I	BonusRollLootWonFrame & BonusRollMoneyWonFrame (AlertFrame Templates)
-≈		- need skinning
+	I	AchievmentUI
+√		- colour button border to match achievement border
 
-	I	OverrideActionBarExpBarOverlayFrame
-≈		- on VehicleUI, needs skinning
+	I	InspectUI
+√		- add button borders and colour as per IconBorder for paperdoll slots
+√		- skin PvP buttons, allowing for selected/deselcted ones
 
-	I	Bagnon, requested by hammer2, 28.09.16
-√		- Update button borders with quality colour
+	I	InspectUI & TalentUI
+√		- colour button borders if talents are selected otherwise desaturate them
 
-√	S	LS: Toasts, requested by hammer2, 28.09.16
+√	S	Dressup, requested by txamerthyst, 08.10.16
 
-	N	TradeSkillMaster, reported bybbarnett444,02.10.16
-√		- Skinner\SkinMe\TradeSkillMaster-v3.6.1.lua:42: Usage: RawHook([object], method, [handler], [hookSecure]): Attempting to hook a non existing target
+≈	I	TradeSkillMaster, reported by Fraktyl, 08.10.16
+		- Skinner\Skinner-b7.22747.1.lua:606: attempt to index field 'obj' (a nil value)
+	  	  Skinner\Skinner-b7.22747.1.lua:606: in function <Skinner\Skinner.lua:575>
+		  Skinner\SkinMe\TradeSkillMaster-v3.6.6.lua:67: in function <Skinner\SkinMe\TradeSkillMaster.lua:66>
+
+	I	QuestInfo, reported by Lin37, 11.10.16
+√		- Skinner\NPCFrames.lua:601: attempt to index field 'QuestInfoQuestType' (a nil value)
+		  Skinner\NPCFrames.lua:650: in function `QuestInfo'
+		  Skinner\NPCFrames.lua:558: in function <Skinner\NPCFrames.lua:480>
+
+	I	reported by typhosy, 12.10.16
+√		- Skinner\PlayerFrames.lua:1164: attempt to index local 'btn' (a nil value)
+		  Skinner\PlayerFrames.lua:1215: in function <Skinner\PlayerFrames.lua:1035>
+
+	I	reported by typhosy, 12.10.16
+√		- Skinner\UIFrames.lua:273: attempt to call global 'skinRewards' (a nil value)
+		  Skinner\UIFrames.lua:273: in function <Skinner\UIFrames.lua:268>
