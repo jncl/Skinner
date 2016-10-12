@@ -37,10 +37,10 @@ do
 --@end-alpha@
 	-- check to see if running on Beta servers
 	aObj.isBeta = portal == "public-beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
+	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
 	--check to see if running on PTR servers
 	aObj.isPTR = portal == "public-test" and true or false
-	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
+	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
 --@alpha@
