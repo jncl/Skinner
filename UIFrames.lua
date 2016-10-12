@@ -3166,7 +3166,21 @@ function aObj:NavigationBar()
 			btn:DisableDrawLayer("OVERLAY")
 			btn:GetNormalTexture():SetAlpha(0)
 			btn:GetPushedTexture():SetAlpha(0)
+			if self.modBtnBs
+			and btn.MenuArrowButton -- Home button doesn't have one
+			and not btn.MenuArrowButton.sbb
+			then
+				self:addButtonBorder{obj=btn.MenuArrowButton, ofs=-2, x1=-1, x2=0}
+				btn.MenuArrowButton.sbb:SetAlpha(0) -- hide button border
+				self:HookScript(btn.MenuArrowButton, "OnEnter", function(this)
+					this.sbb:SetAlpha(1)
+				end)
+				self:HookScript(btn.MenuArrowButton, "OnLeave", function(this)
+					this.sbb:SetAlpha(0)
+				end)
+			end
 		end
+		btn = nil
 	end)
 
 end
