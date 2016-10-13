@@ -894,12 +894,16 @@ function aObj:CompactFrames()
 		end
 
 		unit:DisableDrawLayer("BACKGROUND")
-		unit:DisableDrawLayer("BORDER")
+		unit.horizDivider:SetAlpha(0)
+		unit.horizTopBorder:SetAlpha(0)
+		unit.horizBottomBorder:SetAlpha(0)
+		unit.vertLeftBorder:SetAlpha(0)
+		unit.vertRightBorder:SetAlpha(0)
 
 	end
 	local function skinGrp(grp)
 
-		grp.borderFrame:SetAlpha(0)
+		aObj:addSkinFrame{obj=grp.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
 		local grpName = grp:GetName()
 		for i = 1, _G.MEMBERS_PER_RAID_GROUP do
 			skinUnit(_G[grpName .. "Member" .. i])
@@ -910,7 +914,7 @@ function aObj:CompactFrames()
 
 -->>-- Compact Party Frame
 	self:SecureHook("CompactPartyFrame_OnLoad", function()
-		self:addSkinFrame{obj=_G.CompactPartyFrame, ft=ftype, x1=2, y1=-10, x2=-3, y2=3}
+		self:addSkinFrame{obj=_G.CompactPartyFrame.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
 		self:Unhook("CompactPartyFrame_OnLoad")
 	end)
 	-- hook this to skin any new CompactRaidGroup(s)
@@ -925,24 +929,31 @@ function aObj:CompactFrames()
 	-- hook this to skin any new CompactRaidFrameContainer entries
 	self:SecureHook("FlowContainer_AddObject", function(container, object)
 		if container == _G.CompactRaidFrameContainer then -- only for compact raid frame objects
-			if container.frameUpdateList
-			and container.frameUpdateList.group
-			and container.frameUpdateList.group[object] then
-				skinGrp(object)
-			else
-				skinUnit(object)
+			if container.frameUpdateList then
+				if container.frameUpdateList.group
+				and container.frameUpdateList.group[object]
+				then
+					skinGrp(object)
+				elseif container.frameUpdateList.normal
+				and container.frameUpdateList.normal[object]
+				then
+					skinUnit(object)
+				end
 			end
 		end
 	end)
 	-- skin any existing unit(s) [group, mini, normal]
-	for type, frame in ipairs(_G.CompactRaidFrameContainer.frameUpdateList) do
-		if type == "group" then
-			skinGrp(frame)
-		else
-			skinUnit(frame)
+	for type, fTab in pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
+		for _, frame in ipairs(fTab) do
+			if type == "group" then
+				skinGrp(frame)
+			elseif type == "mini" then
+			elseif type == "normal" then
+				skinUnit(frame)
+			end
 		end
 	end
-	self:addSkinFrame{obj=_G.CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, bg=true, y1=-1, x2=-5, y2=4}
+	self:addSkinFrame{obj=_G.CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-5, y2=5}
 
 -->>-- Compact RaidFrame Manager
 	local function skinButton(btn)
