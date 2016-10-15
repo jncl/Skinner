@@ -76,6 +76,7 @@ function aObj:AchievementUI() -- LoD
 
 	end
 	local function skinBtn(btn)
+
 		btn:DisableDrawLayer("BACKGROUND")
 		-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
 		btn:DisableDrawLayer("ARTWORK")
@@ -685,7 +686,7 @@ function aObj:Collections() -- LoD
 		btn.iconBorder:SetAlpha(0)
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
 		self:addButtonBorder{obj=btn.dragButton, ofs=0, y1=1, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
-		end
+	end
 	btn = nil
 	-- skinPLBtns(pj.listScroll)
 	self:keepFontStrings(pj.loadoutBorder)
@@ -827,20 +828,17 @@ function aObj:Collections() -- LoD
 	hj.iconsFrame:DisableDrawLayer("BACKGROUND")
 	-- 18 icons per page ?
 	self:SecureHook(_G.HeirloomsJournal, "LayoutCurrentPage", function(this)
-		local btn
 		for i = 1, #this.heirloomHeaderFrames do
 			this.heirloomHeaderFrames[i]:DisableDrawLayer("BACKGROUND")
 			this.heirloomHeaderFrames[i].text:SetTextColor(self.HTr, self.HTg, self.HTb)
 		end
+		local btn
 		for i = 1, #this.heirloomEntryFrames do
 			btn = this.heirloomEntryFrames[i]
-			if self.modBtnBs then
-				if not btn.sbb then
-					btn.slotFrameCollected:SetTexture(nil)
-					btn.slotFrameUncollected:SetTexture(nil)
-					self:addButtonBorder{obj=btn, sec=true, ofs=0, reParent={btn.levelBackground, btn.level}}
-				end
-			end
+			btn.slotFrameCollected:SetTexture(nil)
+			btn.slotFrameUncollected:SetTexture(nil)
+			-- ignore btn.levelBackground as its textures is changed when upgraded
+			self:addButtonBorder{obj=btn, sec=true, ofs=0, reParent={btn.levelBackground, btn.level}}
 		end
 		btn = nil
 	end)
