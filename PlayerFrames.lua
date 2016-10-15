@@ -84,23 +84,29 @@ function aObj:AchievementUI() -- LoD
 		btn.icon:DisableDrawLayer("BACKGROUND")
 		btn.icon:DisableDrawLayer("BORDER")
 		btn.icon:DisableDrawLayer("OVERLAY")
-		aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
 		-- set textures to nil and prevent them from being changed as guildview changes the textures
 		btn.icon.frame:SetTexture(nil)
 		btn.icon.frame.SetTexture = function() end
 		-- colour text and button border
 		if btn.description then btn.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
 		if btn.hiddenDescription then btn.hiddenDescription:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
-		btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
-		btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
-		-- hook these to handle description text  & button border colour changes
-		aObj:SecureHook(btn, "Desaturate", function(this)
-			this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
-		end)
+
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
+			btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+			btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
+			-- hook these to handle description text  & button border colour changes
+			aObj:SecureHook(btn, "Desaturate", function(this)
+				this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
+			end)
+		end
 		aObj:SecureHook(btn, "Saturate", function(this)
 			if this.description then this.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
-			this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
+			if this.icon.sbb then
+				this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
+			end
 		end)
+
 	end
 	local function cleanButtons(frame, type)
 
