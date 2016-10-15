@@ -55,9 +55,9 @@ x			- lootSlotFilter added (dropdown)
 			- now using array GuildNewsFilterButtons
 		- ClassNameplateBar
 			- now has a background
+		- WardrobeCollectionFrame
+			- .searchBox inherits SearchBoxTemplate rather than BagSearchBoxTemplate
 
-	I	WardrobeCollectionFrame.ModelsFrame
-?		- skin Model buttons by replacing the button border (not sure as existing border has rounded corners)
 
 	I	WorldMap Quest List
 ?		- Some buttons have a border (not all the time)
@@ -71,8 +71,8 @@ x			- lootSlotFilter added (dropdown)
 	I	Rarity, reported by sausje, 06.09.16
 ?		- causes UI elements to not be skinned
 
-	I	RaidFrame border
-?		- reverts to original border texture if rescaled or moved, or split into blocks
+	I	CompactRaidFrame(s) border
+√		- reverts to original border texture if rescaled or moved, or split into blocks
 
 	I	QuestList
 ?		- quest icon/number buttons shouldn't be skinned
@@ -80,32 +80,22 @@ x			- lootSlotFilter added (dropdown)
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-	I	AchievmentUI
-√		- colour button border to match achievement border
+	I	AchievementUI - reported by next96/txamerthyst, 13.10.16
+√		- Skinner\PlayerFrames.lua:94: attempt to index field 'sbb' (a nil value)
+		  Skinner\PlayerFrames.lua:114: in function `cleanButtons'
+		  Skinner\PlayerFrames.lua:192: in function <Skinner\PlayerFrames.lua:8>
 
-	I	InspectUI
-√		- add button borders and colour as per IconBorder for paperdoll slots
-√		- skin PvP buttons, allowing for selected/deselcted ones
+	N	SorhaQuestLog, reported by txamerthyst, 14.10.16
+√		- Skinner\SkinMe\SorhaQuestLog-v1.5.0.1.lua:11: Usage: GetModule(name, silent): 'name' - Cannot find module 'QuestTimersTracker'.
+		...ceAdiBags\libs\AceAddon-3.0\AceAddon-3.0-12.lua:243: in function `GetModule'
+		Skinner\SkinMe\SorhaQuestLog-v1.5.0.1.lua:11: in function `skinMinion'
+		Skinner\SkinMe\SorhaQuestLog-v1.5.0.1.lua:23: in function <Skinner\SkinMe\SorhaQuestLog.lua:5>
 
-	I	InspectUI & TalentUI
-√		- colour button borders if talents are selected otherwise desaturate them
-
-√	S	Dressup, requested by txamerthyst, 08.10.16
-
-≈	I	TradeSkillMaster, reported by Fraktyl, 08.10.16
-		- Skinner\Skinner-b7.22747.1.lua:606: attempt to index field 'obj' (a nil value)
-	  	  Skinner\Skinner-b7.22747.1.lua:606: in function <Skinner\Skinner.lua:575>
-		  Skinner\SkinMe\TradeSkillMaster-v3.6.6.lua:67: in function <Skinner\SkinMe\TradeSkillMaster.lua:66>
-
-	I	QuestInfo, reported by Lin37, 11.10.16
-√		- Skinner\NPCFrames.lua:601: attempt to index field 'QuestInfoQuestType' (a nil value)
-		  Skinner\NPCFrames.lua:650: in function `QuestInfo'
-		  Skinner\NPCFrames.lua:558: in function <Skinner\NPCFrames.lua:480>
-
-	I	reported by typhosy, 12.10.16
-√		- Skinner\PlayerFrames.lua:1164: attempt to index local 'btn' (a nil value)
-		  Skinner\PlayerFrames.lua:1215: in function <Skinner\PlayerFrames.lua:1035>
-
-	I	reported by typhosy, 12.10.16
-√		- Skinner\UIFrames.lua:273: attempt to call global 'skinRewards' (a nil value)
-		  Skinner\UIFrames.lua:273: in function <Skinner\UIFrames.lua:268>
+	I	Bagnon, reported by bastart77, 15.10.16
+√		- Skinner\SkinMe\Bagnon-7.0.4.lua:19: attempt to index field 'sbb' (a nil value)
+		Skinner\SkinMe\Bagnon-7.0.4.lua:19: in function <Skinner\SkinMe\Bagnon.lua:15>
+		(tail call): ?
+		[C]: in function `UpdateBorder'
+		Bagnon\common\components\item.lua:398: in function `UpdateSearch'
+		Bagnon\common\components\item.lua:250: in function `DelayedUpdates'
+		Bagnon\common\components\item.lua:244: in function <Bagnon\common\components\item.lua:242>
