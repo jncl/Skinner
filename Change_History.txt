@@ -1,3 +1,20 @@
+b7.22810.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for PTR checks
+	Removed commented code as it's no longer required
+	Bugfix for GameTooltip changes made last update
+	Updated OrderHallUI
+	Updated ObliterumUI
+	Updated NavBar skin
+	Updated ArtifactAppearances skin
+	Bugfix for BarberShopUI
+	Updated ButoonBorder skinning for Bank, GuildBank, ReagentBank, Containers, Character Slots, Achievements, Talents, PvPTalents, InspectUI, LootFrame
+	Added additional AddOns to disabled list
+	Skinned DressUp AddOn, changed skin code to accomadate this new addon skin
+
 b7.22747.1
 Jncl:
 	ToDo.txt
