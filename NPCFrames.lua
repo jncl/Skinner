@@ -197,7 +197,6 @@ function aObj:BarbershopUI() -- LoD
 	for i = 1, #_G.BarberShopFrame.Selector do
 		 self:addButtonBorder{obj=self:getChild(_G.BarberShopFrame.Selector[i], 1), ofs=-2}
 		 self:addButtonBorder{obj=self:getChild(_G.BarberShopFrame.Selector[i], 2), ofs=-2}
-
 	end
 	-- Banner Frame
 	self:keepFontStrings(_G.BarberShopBannerFrame)
