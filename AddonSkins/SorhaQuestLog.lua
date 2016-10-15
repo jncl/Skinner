@@ -15,32 +15,26 @@ function aObj:SorhaQuestLog()
 					aObj:Unhook(obj, "CreateMinionLayout")
 				end)
 			end
+			obj = nil
 		end
 	end
 	-- skin anchor minions
 	skinMinion("AchievementTracker", "SQLAchievementMinionAnchor")
 	skinMinion("QuestTracker", "SQLQuestMinionAnchor")
-	skinMinion("QuestTimersTracker", "SQLQuestTimerAnchor")
 	skinMinion("RemoteQuestsTracker", "SQLRemoteQuestsAnchor")
 	skinMinion("ScenarioTracker", "SQLScenarioQuestsMinionAnchor")
 
 	-- config options
-	local sqlat = _G.SorhaQuestLog:GetModule("AchievementTracker")
-	if sqlat then
-		sqlat.db.profile.StatusBarTexture = self.db.profile.StatusBar.texture
-		sqlat.db.profile.Colours.AchievementStatusBarFillColour.r = self.db.profile.StatusBar.r
-		sqlat.db.profile.Colours.AchievementStatusBarFillColour.g = self.db.profile.StatusBar.g
-		sqlat.db.profile.Colours.AchievementStatusBarFillColour.b = self.db.profile.StatusBar.b
-		sqlat.db.profile.Colours.AchievementStatusBarFillColour.a = self.db.profile.StatusBar.a
-		sqlat = nil
-	end
-	local sqlst = _G.SorhaQuestLog:GetModule("ScenarioTracker")
-	if sqlst then
-		sqlst.db.profile.Colours.StatusBarFillColour.r = self.db.profile.StatusBar.r
-		sqlst.db.profile.Colours.StatusBarFillColour.g = self.db.profile.StatusBar.g
-		sqlst.db.profile.Colours.StatusBarFillColour.b = self.db.profile.StatusBar.b
-		sqlst.db.profile.Colours.StatusBarFillColour.a = self.db.profile.StatusBar.a
-		sqlst = nil
+	_G.SorhaQuestLog.db.profile.StatusBarTexture = self.db.profile.StatusBar.texture
+	for _, mName in pairs{"AchievementTracker", "QuestTracker", "ScenarioTracker"} do
+		local mod = _G.SorhaQuestLog:GetModule(mName)
+		if mod then
+			mod.db.profile.Colours.StatusBarFillColour.r = self.db.profile.StatusBar.r
+			mod.db.profile.Colours.StatusBarFillColour.g = self.db.profile.StatusBar.g
+			mod.db.profile.Colours.StatusBarFillColour.b = self.db.profile.StatusBar.b
+			mod.db.profile.Colours.StatusBarFillColour.a = self.db.profile.StatusBar.a
+		end
+		mod = nil
 	end
 
 end

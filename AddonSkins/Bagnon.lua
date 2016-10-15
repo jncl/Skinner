@@ -31,8 +31,9 @@ function aObj:Bagnon() -- 7.0.4
 	end
 
 	-- skin the bag frames
-	local function skinFrame(frame)
-		aObj:addSkinFrame{obj=frame}
+	local function skinFrame(frame, id)
+		aObj:Debug("skinFrame: [%s, %s]", frame, id)
+		aObj:addSkinFrame{obj=frame, nb=true}
 		frame.SetBackdropColor = function() end
 		frame.SetBackdropBorderColor = function() end
 		if not aObj:IsHooked(frame, "OnShow") then
@@ -68,6 +69,16 @@ function aObj:Bagnon() -- 7.0.4
 				aObj:Unhook(frame, "OnShow")
 			end)
 		end
+		if aObj.modBtnBs
+		and aObj:hasTextInName(frame, "guild")
+		then
+			aObj:SecureHook(frame.ItemFrame, "Layout", function(this)
+				for i = 1, #this.buttons do
+					aObj:addButtonBorder{obj=this.buttons[i]}
+				end
+				aObj:Unhook(frame.ItemFrame, "Layout")
+			end)
+		end
 	end
 	-- prevent gradient whiteout
 	self:RawHook(Bagnon["Frame"], "FadeInFrame", function(this, frame, alpha)
@@ -83,8 +94,9 @@ function aObj:Bagnon() -- 7.0.4
 	skinFrame(Bagnon.frames["inventory"])
 	-- hook this to skin new frames
 	self:RawHook(Bagnon["Frame"], "New", function(this, id)
+		-- aObj:Debug("Bagnon Frame New: [%s, %s]", this, id)
 		local frame = self.hooks[Bagnon["Frame"]].New(this, id)
-		skinFrame(frame)
+		skinFrame(frame, id)
 		return frame
 	end)
 
