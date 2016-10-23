@@ -1540,8 +1540,9 @@ function aObj:GarrisonUI() -- LoD
 		cdf.CapacitiveDisplay.IconBG:SetTexture(nil)
 		aObj:addButtonBorder{obj=cdf.CapacitiveDisplay.ShipmentIconFrame, relTo=cdf.CapacitiveDisplay.ShipmentIconFrame.Icon, hide=true}
 		skinPortrait(cdf.CapacitiveDisplay.ShipmentIconFrame.Follower)
+		aObj:skinEditBox{obj=cdf.Count, regs={6}, noHeight=true}
+		aObj:moveObject{obj=cdf.Count, x=-6}
 		aObj:addButtonBorder{obj=cdf.DecrementButton, ofs=-2, es=10}
-		aObj:skinEditBox{obj=cdf.Count, regs={6}}
 		aObj:addButtonBorder{obj=cdf.IncrementButton, ofs=-2, es=10}
 		-- hook this to skin regents
 		aObj:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(this)

@@ -1509,6 +1509,7 @@ local function __skinEditBox(opts)
 		y = move the edit box up/down
 		mi = move search icon/instructions to the right
 		ign = ignore this editbox when skinning IOF panels
+		nis = Numeric Input Spinner
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __sEB\n" .. debugstack())
@@ -1578,6 +1579,14 @@ local function __skinEditBox(opts)
 
 	-- stop editbox being skinned when IOF panel opened
 	if opts.ign then aObj.ignoreIOF[opts.obj] = true end
+
+	-- handle movement and buttons if it's a Numeric Input Spinner
+	if opts.nis then
+		aObj:moveObject{obj=opts.obj, x=-8}
+		aObj:moveObject{obj=opts.obj.DecrementButton, x=6}
+		aObj:addButtonBorder{obj=opts.obj.IncrementButton, ofs=-2, es=10}
+		aObj:addButtonBorder{obj=opts.obj.DecrementButton, ofs=-2, es=10}
+	end
 
 end
 

@@ -2981,9 +2981,7 @@ function aObj:TradeSkillUI() -- LoD
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton)
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.ExitButton)
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.CreateButton)
-	self:skinEditBox{obj=_G.TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, noHeight=true}
-	self:addButtonBorder{obj=_G.TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton, ofs=-2, es=10}
-	self:addButtonBorder{obj=_G.TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton, ofs=-2, es=10}
+	self:skinEditBox{obj=_G.TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, noHeight=true, nis=true}
 	self:addButtonBorder{obj=_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon}
 	for i = 1, #_G.TradeSkillFrame.DetailsFrame.Contents.Reagents do
 		btn = _G.TradeSkillFrame.DetailsFrame.Contents.Reagents[i]
