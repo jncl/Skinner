@@ -953,7 +953,11 @@ function aObj:CompactFrames()
 				skinGrp(frame)
 			elseif type == "mini" then
 			elseif type == "normal" then
-				skinUnit(frame)
+				if frame.borderFrame then -- group or party
+					skinGrp(frame)
+				else
+					skinUnit(frame)
+				end
 			end
 		end
 	end
