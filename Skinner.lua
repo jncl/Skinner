@@ -308,7 +308,7 @@ function aObj:OnEnable()
 							button.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 						end
 					else
-						button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.25)
+						button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.35)
 					end
 				end
 			end)
