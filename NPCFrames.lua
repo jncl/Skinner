@@ -332,7 +332,7 @@ function aObj:ItemUpgradeUI() -- LoD
 	_G.ItemUpgradeFrame.NoMoreUpgrades:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrame.TitleTextLeft:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrame.TitleTextRight:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addButtonBorder{obj=_G.ItemUpgradeFrame.ItemButton, relTo=_G.ItemUpgradeFrame.ItemButton.IconTexture}
+	self:addButtonBorder{obj=_G.ItemUpgradeFrame.ItemButton, relTo=_G.ItemUpgradeFrame.ItemButton.IconTexture, ofs=1}
 	_G.ItemUpgradeFrame.ItemButton.Frame:SetTexture(nil)
 	_G.ItemUpgradeFrame.ItemButton.ItemName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.ItemUpgradeFrame.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -342,12 +342,12 @@ function aObj:ItemUpgradeUI() -- LoD
 	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true, rmbt=true, ofs=2, x2=1}
 
 	-- hook this to hide the ItemButton texture if empty
-	self:SecureHook(_G.ItemUpgradeFrame.ItemButton.IconTexture, "SetTexture", function(this, tex)
-		if tex
-		and tex:find("UI-Slot-Background", 1, true) then
-			this:SetAlpha(0)
+	self:SecureHook("ItemUpgradeFrame_Update", function()
+		local icon = _G.GetItemUpgradeItemInfo()
+		if icon then
+			_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(1)
 		else
-			this:SetAlpha(1)
+			_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
 		end
 	end)
 	-- hook this to remove background texture from stat lines
