@@ -94,7 +94,7 @@ local function adjustFrame(key)
 		frame:SetScript("OnEnter", OnEnter)
 		frame:SetScript("OnLeave", OnLeave)
 		if db.lock then
-			frame:SetScript("OnMouseDown", function() end)
+			frame:SetScript("OnMouseDown", _G.nop)
 			frame:EnableMouse(false)
 		else
 			frame:SetScript("OnMouseDown", OnMouseDown)

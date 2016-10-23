@@ -119,7 +119,7 @@ function aObj:AlertFrames()
 		-- aObj:Debug("skinACAlertFrame: [%s, %s]", frame, fH)
 
 		frame.Background:SetTexture(nil)
-		frame.Background.SetTexture = function() end
+		frame.Background.SetTexture = _G.nop
 		frame.Unlocked:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		frame.Icon:DisableDrawLayer("BORDER")
 		frame.Icon:DisableDrawLayer("OVERLAY")
@@ -1998,8 +1998,8 @@ function aObj:GMSurveyUI() -- LoD
 	for i = 1, _G.MAX_SURVEY_QUESTIONS do
 		obj = _G["GMSurveyQuestion" .. i]
 		self:applySkin{obj=obj, ft=ftype} -- must use applySkin otherwise text is behind gradient
-		obj.SetBackdropColor = function() end
-		obj.SetBackdropBorderColor = function() end
+		obj.SetBackdropColor = _G.nop
+		obj.SetBackdropBorderColor = _G.nop
 	end
 
 	if not self.isPTR then
@@ -2236,7 +2236,7 @@ function aObj:LFGFrame()
 	-- LFG DungeonReady Popup a.k.a. ReadyCheck
 	self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, kfs=true, ft=ftype, ofs=-5}
 	self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, kfs=true, ft=ftype, ofs=-5}
-	_G.LFGDungeonReadyDialog.SetBackdrop = function() end
+	_G.LFGDungeonReadyDialog.SetBackdrop = _G.nop
 	_G.LFGDungeonReadyDialog.instanceInfo:DisableDrawLayer("BACKGROUND")
 	_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
 	_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
@@ -2426,7 +2426,7 @@ function aObj:MainMenuBar()
 	-- adjust offset dependant upon player level
 	local function moveWatchBar(bar)
 		aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4} -- move it above MainMenuBar
-		bar.SetPoint = function() end -- stop it being moved
+		bar.SetPoint = _G.nop -- stop it being moved
 		bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1) -- move text down
 	end
 
@@ -2532,7 +2532,7 @@ function aObj:MainMenuBar()
 		-- handle bug when Tukui is loaded
 		if not aObj:isAddonEnabled("Tukui") then
 			_G.ExtraActionButton1.style:SetTexture(nil)
-			_G.ExtraActionButton1.style.SetTexture = function() end
+			_G.ExtraActionButton1.style.SetTexture = _G.nop
 		end
 	end
 
@@ -2733,7 +2733,7 @@ function aObj:MenuFrames()
 								for _, frame in pairs(_G.SushiDropFrame.usedFrames) do
 									if not frame.bg.sf then
 										aObj:addSkinFrame{obj=frame.bg, kfs=true}
-										frame.bg.SetBackdrop = function() end
+										frame.bg.SetBackdrop = _G.nop
 									end
 								end
 							end)
@@ -2755,7 +2755,7 @@ function aObj:MenuFrames()
 						aObj:skinEditBox{obj=child, regs={3, 4}}
 						local slider = child:GetParent()
 						-- stop width & backdrop being changed
-						slider.UpdateEditWidth = function() end
+						slider.UpdateEditWidth = _G.nop
 						slider.EditBG:SetBackdrop(nil)
 						-- move % character to the right
 						slider.Suffix:SetPoint('RIGHT', slider.EditBG, 7, -3)
@@ -3007,7 +3007,7 @@ function aObj:MinimapButtons()
 	_G.MiniMapTrackingIcon:ClearAllPoints()
 	_G.MiniMapTrackingIcon:SetPoint("CENTER", _G.MiniMapTrackingButton)
 	-- change this to stop the icon being moved
-	_G.MiniMapTrackingIcon.SetPoint = function() end
+	_G.MiniMapTrackingIcon.SetPoint = _G.nop
 	if not minBtn then
 		self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype}
 	end
@@ -3140,7 +3140,7 @@ function aObj:NamePlates()
 	-- ManaFrame
 	local mF = _G.ClassNameplateManaBarFrame
 	self:glazeStatusBar(mF, 0,  nil, {mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture})
-	mF.SetTexture = function() end
+	mF.SetTexture = _G.nop
 
 	-- NamePlateTargetResourceFrame
 	-- NamePlatePlayerResourceFrame
@@ -3768,7 +3768,7 @@ function aObj:RaidFrame()
 
 	-- TODO texture is present behind frame
 	_G.RaidFinderQueueFrameBackground:SetTexture(nil)
-	_G.RaidFinderQueueFrameBackground.SetTexture = function() end
+	_G.RaidFinderQueueFrameBackground.SetTexture = _G.nop
 	self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}
 	if not self.isPTR then
 		self:skinScrollBar{obj=_G.RaidFinderQueueFrameScrollFrame}
@@ -3825,7 +3825,7 @@ function aObj:StaticPopups()
 		self:addButtonBorder{obj=_G[objName .. "ItemFrame"], ibt=true}
 		self:addSkinFrame{obj=obj, ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 		-- prevent FrameLevel from being changed (LibRock does this)
-		obj.sf.SetFrameLevel = function() end
+		obj.sf.SetFrameLevel = _G.nop
 	end
 	objName = nil
 

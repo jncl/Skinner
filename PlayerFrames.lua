@@ -87,7 +87,7 @@ function aObj:AchievementUI() -- LoD
 		btn.icon:DisableDrawLayer("OVERLAY")
 		-- set textures to nil and prevent them from being changed as guildview changes the textures
 		btn.icon.frame:SetTexture(nil)
-		btn.icon.frame.SetTexture = function() end
+		btn.icon.frame.SetTexture = _G.nop
 		-- colour text and button border
 		if btn.description then btn.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
 		if btn.hiddenDescription then btn.hiddenDescription:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
@@ -122,9 +122,9 @@ function aObj:AchievementUI() -- LoD
 			if type == "Achievements" then
 				-- set textures to nil and prevent them from being changed as guildview changes the textures
 				_G[btnName .. "TopTsunami1"]:SetTexture(nil)
-				_G[btnName .. "TopTsunami1"].SetTexture = function() end
+				_G[btnName .. "TopTsunami1"].SetTexture = _G.nop
 				_G[btnName .. "BottomTsunami1"]:SetTexture(nil)
-				_G[btnName .. "BottomTsunami1"].SetTexture = function() end
+				_G[btnName .. "BottomTsunami1"].SetTexture = _G.nop
 			elseif type == "Summary" then
 				if not btn.tooltipTitle then btn:Saturate() end
 			elseif type == "Comparison" then
