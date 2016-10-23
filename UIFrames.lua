@@ -392,6 +392,23 @@ function aObj:ArtifactUI() --LoD
 	_G.ArtifactFrame.PerksTab:DisableDrawLayer("OVERLAY")
 	_G.ArtifactFrame.PerksTab.TitleContainer.Background:SetAlpha(0) -- title underline texture
 	_G.ArtifactFrame.PerksTab.Model:DisableDrawLayer("OVERLAY")
+	-- PerksTab powerButtons
+	local function skinPowerBtns()
+
+		local btn
+		for i = 1, #_G.ArtifactFrame.PerksTab.PowerButtons do
+			btn = _G.ArtifactFrame.PerksTab.PowerButtons[i]
+			aObj:changeTandC(btn.RankBorder, aObj.lvlBG)
+			aObj:changeTandC(btn.RankBorderFinal, aObj.lvlBG)
+		end
+		btn = nil
+
+	end
+	skinPowerBtns()
+	-- hook this to skin new buttons
+	self:SecureHook(_G.ArtifactFrame.PerksTab, "RefreshPowers", function(this, newItem)
+		skinPowerBtns()
+	end)
 
 	-- AppearancesTab
 	self:SecureHook(_G.ArtifactFrame.AppearancesTab, "Refresh", function(this)
