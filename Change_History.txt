@@ -1,3 +1,14 @@
+b7.22810.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Removed blank line
+	Updated EncounterJournal skin
+	Bugfix for AchievementUI
+	Updated Bagnon & SorhaQuestLog skins
+	Updated CompactFrames skin
+
 b7.22810.1
 Jncl:
 	ToDo.txt
