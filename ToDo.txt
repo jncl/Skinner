@@ -58,7 +58,6 @@ x			- lootSlotFilter added (dropdown)
 		- WardrobeCollectionFrame
 			- .searchBox inherits SearchBoxTemplate rather than BagSearchBoxTemplate
 
-
 	I	WorldMap Quest List
 ?		- Some buttons have a border (not all the time)
 
@@ -71,31 +70,24 @@ x			- lootSlotFilter added (dropdown)
 	I	Rarity, reported by sausje, 06.09.16
 ?		- causes UI elements to not be skinned
 
-	I	CompactRaidFrame(s) border
-√		- reverts to original border texture if rescaled or moved, or split into blocks
-
 	I	QuestList
 ?		- quest icon/number buttons shouldn't be skinned
 
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-	I	AchievementUI - reported by next96/txamerthyst, 13.10.16
-√		- Skinner\PlayerFrames.lua:94: attempt to index field 'sbb' (a nil value)
-		  Skinner\PlayerFrames.lua:114: in function `cleanButtons'
-		  Skinner\PlayerFrames.lua:192: in function <Skinner\PlayerFrames.lua:8>
+	I	GarrisonLandingPage
+√		- make tabs more visible
 
-	N	SorhaQuestLog, reported by txamerthyst, 14.10.16
-√		- Skinner\SkinMe\SorhaQuestLog-v1.5.0.1.lua:11: Usage: GetModule(name, silent): 'name' - Cannot find module 'QuestTimersTracker'.
-		...ceAdiBags\libs\AceAddon-3.0\AceAddon-3.0-12.lua:243: in function `GetModule'
-		Skinner\SkinMe\SorhaQuestLog-v1.5.0.1.lua:11: in function `skinMinion'
-		Skinner\SkinMe\SorhaQuestLog-v1.5.0.1.lua:23: in function <Skinner\SkinMe\SorhaQuestLog.lua:5>
+	I	BossUnitFrames
+		- make the attack highlight appear like other unit frames
 
-	I	Bagnon, reported by bastart77, 15.10.16
-√		- Skinner\SkinMe\Bagnon-7.0.4.lua:19: attempt to index field 'sbb' (a nil value)
-		Skinner\SkinMe\Bagnon-7.0.4.lua:19: in function <Skinner\SkinMe\Bagnon.lua:15>
-		(tail call): ?
-		[C]: in function `UpdateBorder'
-		Bagnon\common\components\item.lua:398: in function `UpdateSearch'
-		Bagnon\common\components\item.lua:250: in function `DelayedUpdates'
-		Bagnon\common\components\item.lua:244: in function <Bagnon\common\components\item.lua:242>
+	I	ItemUpgradeFrame, reported by epidemedabear, 17.10.16
+√		- ..\AddOns\Skinner\NPCFrames.lua line 347: attempt to index local 'tex' (a number value)
+		Debug:
+			Skinner\NPCFrames.lua:347:
+			Skinner\NPCFrames.lua:345
+
+	I	CompactRaidFrames, reported by TBABlackPanther, 21.01.16
+√		- Skinner\PlayerFrames.lua:901: attempt to index field 'horizDivider' (a nil value)
+		Skinner\PlayerFrames.lua:956: in function <Skinner\PlayerFrames.lua:888>
