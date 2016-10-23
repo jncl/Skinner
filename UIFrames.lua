@@ -3271,16 +3271,10 @@ function aObj:OrderHallUI() --LoD
 	zs.ButtonFrame:SetTexture(nil)
 	zs.Follower1:DisableDrawLayer("BACKGROUND")
 	skinPortrait(zs.Follower1.PortraitFrame)
-	self:skinButton{obj=zs.CloseButton, cb=true}
-	zs.CloseButton:SetSize(32, 32)
+	self:addSkinFrame{obj=zs, ft=ftype, kfs=true, x1=-360, y1=434, x2=3, y2=-65}
+	zs.CloseButton:SetSize(28, 28)
 	self:skinButton{obj=zs.StartMissionButton}
-	-- hook these to only have 1 close button showing
-	self:SecureHook(zs, "Show", function(this)
-		_G.OrderHallMissionFrame.CloseButton:Hide()
-	end)
-	self:SecureHook(zs, "Hide", function(this)
-		_G.OrderHallMissionFrame.CloseButton:Show()
-	end)
+	zs = nil
 
 	-- MissionPage
 	local mp = _G.OrderHallMissionFrame.MissionTab.MissionPage
