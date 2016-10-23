@@ -65,18 +65,21 @@ local function skinUnitFrame(opts)
 	opts.obj.sf:SetBackdropColor(.1, .1, .1, db.alpha) -- use dark background
 	opts.obj.sf:EnableMouse(false) -- enable clickthrough
 
-end
-local function fixThreat(tex)
-
-	tex:ClearAllPoints()
-	tex:SetAllPoints(tex:GetParent().sf)
-	aObj:changeRecTex(tex, true, true)
-	-- stop changes to texture
-	tex.SetTexture = function() end
-	tex.SetTexCoord = function() end
-	tex.SetWidth = function() end
-	tex.SetHeight = function() end
-	tex.SetPoint = function() end
+	local tex
+	if opts.ft then
+		tex = _G[opts.obj:GetName() .. "Flash"]
+		tex:ClearAllPoints()
+		tex:SetAllPoints(opts.obj.sf)
+		-- tex:SetAllPoints(tex:GetParent().sf)
+		aObj:changeRecTex(tex, true, true)
+		-- stop changes to texture
+		tex.SetTexture = _G.nop
+		tex.SetTexCoord = _G.nop
+		tex.SetWidth = _G.nop
+		tex.SetHeight = _G.nop
+		tex.SetPoint = _G.nop
+	end
+	tex = nil
 
 end
 local function skinPlayerF()
@@ -219,8 +222,7 @@ local function skinPlayerF()
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
-		skinUnitFrame{obj=_G.PlayerFrame, x1=35, y1=-5, x2=2, y2=y2Ofs}
-		fixThreat(_G.PlayerFrameFlash)
+		skinUnitFrame{obj=_G.PlayerFrame, ft=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
 
 		pF = nil
 
@@ -244,8 +246,7 @@ local function skinPetF()
 
 		-- skin the PetFrame
 		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to ARTWORK layer, so it is displayed
-		skinUnitFrame{obj=_G.PetFrame, x1=1}
-		fixThreat(_G.PetFrameFlash)
+		skinUnitFrame{obj=_G.PetFrame, ft=true, x1=1}
 		-- remove debuff border
 		for i = 1, 4 do
 			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
@@ -284,7 +285,7 @@ local function skinCommon(frame, adjSB)
 	fo = nil
 
 end
-local function addSkinFrame(frame)
+local function addSkinFrame(frame, ft)
 
 	local fo = _G[frame]
 	local isBoss = aObj:hasTextInName(fo, "Boss")
@@ -294,7 +295,7 @@ local function addSkinFrame(frame)
 	else
 		xOfs1, yOfs1, xOfs2, yOfs2 = -2, -5, -35, 0
 	end
-	skinUnitFrame{obj=fo, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	skinUnitFrame{obj=fo, ft=ft or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	skinCommon(frame, true)
 	aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
 
@@ -339,7 +340,7 @@ local function skinTargetF()
 		elseif cInd == "rareelite" then
 			tex:SetTexture([[Interface\Tooltips\RareEliteNameplateIcon]])
 		elseif cInd == "rare" then
-			tex:SetTexture([[Interface\AddOns\]]..aName..[[\Textures\RareNameplateIcon]])
+			tex:SetTexture([[Interface\AddOns\]] .. aName .. [[\Textures\RareNameplateIcon]])
 		else
 			tex:SetTexture(nil)
 		end
@@ -351,7 +352,6 @@ local function skinTargetF()
 	then
 
 		addSkinFrame("TargetFrame")
-		fixThreat(_G.TargetFrameFlash)
 
 		-- move level text down, so it is more visible
 		module:RawHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
@@ -359,12 +359,14 @@ local function skinTargetF()
 		end, true)
 
 		--Boss Target Frames
+		local frame
 		for i = 1, _G.MAX_BOSS_FRAMES do
-			local frame = "Boss" .. i .. "TargetFrame"
+			frame = "Boss" .. i .. "TargetFrame"
 			addSkinFrame(frame)
 			-- always an Elite mob
 			_G[frame].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		end
+		frame = nil
 
 		-- hook this to show/hide the elite texture
 		module:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
@@ -383,7 +385,7 @@ local function skinFocusF()
 	if db.focus
 	and not isSkinned["Focus"]
 	then
-		addSkinFrame("FocusFrame")
+		addSkinFrame("FocusFrame", false)
 	end
 
 end
@@ -396,8 +398,7 @@ local function skinPartyF()
 		local pMF, pPF
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			pMF = "PartyMemberFrame" .. i
-			skinUnitFrame{obj=_G[pMF], x1=2, y1=5, x2=-1}
-			fixThreat(_G[pMF .. "Flash"])
+			skinUnitFrame{obj=_G[pMF], ft=true, x1=2, y1=5, x2=-1}
 
 			-- aObj:moveObject{obj=_G[pMF .. "Portrait"], y=6}
 			-- TODO stop portrait being moved
@@ -413,8 +414,7 @@ local function skinPartyF()
 
 			-- pet frame
 			pPF = pMF .. "PetFrame"
-			skinUnitFrame{obj=_G[pPF], x1=-2, y1=1, y2=1}
-			fixThreat(_G[pPF .. "Flash"])
+			skinUnitFrame{obj=_G[pPF], ft=true, x1=-2, y1=1, y2=1}
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:glazeStatusBar(_G[pPF .. "HealthBar"], 0, nil)
