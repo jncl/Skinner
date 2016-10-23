@@ -1581,9 +1581,23 @@ function aObj:GarrisonUI() -- LoD
 		end
 		btn = nil
 		-- tabs at top
-		rp.InProgress:GetNormalTexture():SetAlpha(0)
-		rp.Available:GetNormalTexture():SetAlpha(0)
+		for _, btn in pairs{"InProgress", "Available"} do
+			rp[btn]:GetNormalTexture():SetAlpha(0)
+			aObj:addSkinFrame{obj=rp[btn], ft=ftype, noBdr=aObj.isTT, x1=4, y1=-2, x2=-4, y2=-4}
+			rp[btn].sf.ignore = true
+			if rp[btn] == rp.selectedTab then
+				if aObj.isTT then aObj:setActiveTab(rp[btn].sf) end
+			else
+				if aObj.isTT then aObj:setInactiveTab(rp[btn].sf) end
+			end
+		end
 		rp = nil
+		if aObj.isTT then
+			self:SecureHook("GarrisonLandingPageReport_SetTab", function(this)
+				aObj:setActiveTab(_G.GarrisonLandingPage.Report.selectedTab.sf)
+				aObj:setInactiveTab(_G.GarrisonLandingPage.Report.unselectedTab.sf)
+			end)
+		end
 
 		-- FollowerList
 		local fl = _G.GarrisonLandingPage.FollowerList
