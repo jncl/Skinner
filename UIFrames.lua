@@ -3320,6 +3320,9 @@ function aObj:OrderHallUI() --LoD
 	end)
 	-- CommandBar at top of screen
 
+	-- OrderHallMissionTutorialFrame
+	self:skinButton{obj=_G.OrderHallMissionTutorialFrame.GlowBox.CloseButton, cb=true}
+
 end
 
 aObj.pbtt = {}
