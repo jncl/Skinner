@@ -3756,7 +3756,8 @@ function aObj:RaidFrame()
 	self:addSkinFrame{obj=_G.RaidParentFrame, ft=ftype, kfs=true, ri=true, rmbt=true, x1=-3, y1=2, x2=1, y2=-5}
 
 -->>-- RaidFinder Frame
-	self:keepRegions(_G.RaidFinderFrame, {})
+	_G.RaidFinderFrame:DisableDrawLayer("BACKGROUND")
+	_G.RaidFinderFrame:DisableDrawLayer("BORDER")
 	self:RaiseFrameLevelByThree(_G.RaidFinderFrame.NoRaidsCover) -- cover buttons and dropdown
 	self:removeInset(_G.RaidFinderFrameRoleInset)
 	self:removeInset(_G.RaidFinderFrameBottomInset)
