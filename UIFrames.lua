@@ -1716,6 +1716,7 @@ function aObj:GarrisonUI() -- LoD
 		-- MissionPage
 		local mp = _G.GarrisonMissionFrame.MissionTab.MissionPage
 		skinMissionPage(mp)
+		mp.CloseButton:SetSize(28, 28) -- make button smaller
 		for i = 1, #mp.Followers do
 			aObj:removeRegions(mp.Followers[i], {1})
 			skinPortrait(mp.Followers[i].PortraitFrame)
