@@ -49,7 +49,11 @@ function aObj:AddonList()
 	else
 		self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, size=3, rt="background"}
 	end
-	self:addSkinFrame{obj=_G.AddonList, ft=ftype, kfs=true, ri=true, rmbt=true, ofs=2, x2=1}
+	self:removeMagicBtnTex(_G.AddonList.CancelButton)
+	self:removeMagicBtnTex(_G.AddonList.OkayButton)
+	self:removeMagicBtnTex(_G.AddonList.EnableAllButton)
+	self:removeMagicBtnTex(_G.AddonList.DisableAllButton)
+	self:addSkinFrame{obj=_G.AddonList, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
 
 end
 
@@ -1536,7 +1540,9 @@ function aObj:GarrisonUI() -- LoD
 	local function skinGarrisonCapacitiveDisplay()
 
 		local cdf = _G.GarrisonCapacitiveDisplayFrame
-		aObj:addSkinFrame{obj=cdf, ft=ftype, kfs=true, ri=true, ofs=2, rmbt=true}
+		self:removeMagicBtnTex(cdf.StartWorkOrderButton)
+		self:removeMagicBtnTex(cdf.CreateAllWorkOrdersButton)
+		aObj:addSkinFrame{obj=cdf, ft=ftype, kfs=true, ri=true, ofs=2}
 		cdf.CapacitiveDisplay.IconBG:SetTexture(nil)
 		aObj:addButtonBorder{obj=cdf.CapacitiveDisplay.ShipmentIconFrame, relTo=cdf.CapacitiveDisplay.ShipmentIconFrame.Icon, hide=true}
 		skinPortrait(cdf.CapacitiveDisplay.ShipmentIconFrame.Follower)
@@ -2214,6 +2220,7 @@ function aObj:LFDFrame()
 	self:skinButton{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.bonusRepFrame.ChooseButton, as=true}
 	self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, libt=true}
 	_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
+	self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
 
 	-- Specific List subFrame
 	local btn
@@ -3525,7 +3532,7 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 
 	self:removeInset(_G.PVEFrame.Inset)
 	self:keepFontStrings(_G.PVEFrame.shadows)
-	self:addSkinFrame{obj=_G.PVEFrame, ft=ftype, kfs=true, ri=true, rmbt=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:addSkinFrame{obj=_G.PVEFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 	self:skinTabs{obj=_G.PVEFrame}
 
 	-- GroupFinder Frame
@@ -3557,8 +3564,10 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 			cs.CategoryButtons[i].Cover:SetTexture(nil)
 		end
 	end)
-	self:skinButton{obj=cs.FindGroupButton, rmbt=true}
-	self:skinButton{obj=cs.StartGroupButton, rmbt=true}
+	self:removeMagicBtnTex(cs.FindGroupButton)
+	self:skinButton{obj=cs.FindGroupButton}
+	self:removeMagicBtnTex(cs.StartGroupButton)
+	self:skinButton{obj=cs.StartGroupButton}
 	-- NothingAvailable
 	self:removeInset(_G.LFGListFrame.NothingAvailable.Inset)
 	-- SearchPanel
@@ -3570,8 +3579,10 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	self:removeInset(sp.ResultsInset)
 	self:skinButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
 	self:skinSlider{obj=sp.ScrollFrame.scrollBar, adj=-4}
-	self:skinButton{obj=sp.BackButton, rmbt=true}
-	self:skinButton{obj=sp.SignUpButton, rmbt=true}
+	self:removeMagicBtnTex(sp.BackButton)
+	self:skinButton{obj=sp.BackButton}
+	self:removeMagicBtnTex(sp.SignUpButton)
+	self:skinButton{obj=sp.SignUpButton}
 	-- ApplicationViewer
 	local av = _G.LFGListFrame.ApplicationViewer
 	av:DisableDrawLayer("BACKGROUND")
@@ -3588,8 +3599,10 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 		self:skinButton{obj=btn.DeclineButton}
 		self:skinButton{obj=btn.InviteButton}
 	end
-	self:skinButton{obj=av.RemoveEntryButton, rmbt=true}
-	self:skinButton{obj=av.EditButton, rmbt=true}
+	self:removeMagicBtnTex(av.RemoveEntryButton)
+	self:skinButton{obj=av.RemoveEntryButton}
+	self:removeMagicBtnTex(av.EditButton)
+	self:skinButton{obj=av.EditButton}
 	-- EntryCreation
 	local ec = _G.LFGListFrame.EntryCreation
 	self:removeInset(ec.Inset)
@@ -3605,8 +3618,10 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 	self:skinEditBox{obj=ec.ItemLevel.EditBox, regs={6}, mi=true} -- 6 is text
 	self:skinEditBox{obj=ec.VoiceChat.EditBox, regs={6}, mi=true} -- 6 is text
 	self:addSkinFrame{obj=ec.Description, ft=ftype, kfs=true, ofs=6}
-	self:skinButton{obj=ec.ListGroupButton, rmbt=true}
-	self:skinButton{obj=ec.CancelButton, rmbt=true}
+	self:removeMagicBtnTex(ec.ListGroupButton)
+	self:skinButton{obj=ec.ListGroupButton}
+	self:removeMagicBtnTex(ec.CancelButton)
+	self:skinButton{obj=ec.CancelButton}
 
 	-- LFGListApplication Dialog
 	self:skinSlider{obj=_G.LFGListApplicationDialog.Description.ScrollBar, adj=-4}
@@ -3756,7 +3771,7 @@ function aObj:RaidFrame()
 	self.initialized.RaidFrame = true
 
 	self:skinTabs{obj=_G.RaidParentFrame, lod=true}
-	self:addSkinFrame{obj=_G.RaidParentFrame, ft=ftype, kfs=true, ri=true, rmbt=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:addSkinFrame{obj=_G.RaidParentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
 -->>-- RaidFinder Frame
 	_G.RaidFinderFrame:DisableDrawLayer("BACKGROUND")
@@ -3768,6 +3783,7 @@ function aObj:RaidFrame()
 	_G.RaidFinderQueueFrameScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
 	self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward, libt=true}
 	_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
+	self:removeMagicBtnTex(_G.RaidFinderFrameFindRaidButton)
 
 	-- TODO texture is present behind frame
 	_G.RaidFinderQueueFrameBackground:SetTexture(nil)

@@ -1638,10 +1638,9 @@ function aObj:GuildUI() -- LoD
 	self:moveObject{obj=_G.GuildFrameTabardEmblem, x=9, y=-12}
 	self:moveObject{obj=_G.GuildFrameTabardBorder, x=7, y=-10}
 	self:skinTabs{obj=_G.GuildFrame, lod=true}
-	self:addSkinFrame{obj=_G.GuildFrame, ft=ftype, ri=true, rmbt=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:addSkinFrame{obj=_G.GuildFrame, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 	-- GuildNameChange Frame
 	self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={6}}
-
 
 -->>-- GuildRoster Frame
 	self:skinDropDown{obj=_G.GuildRosterViewDropdown}
@@ -1700,6 +1699,9 @@ function aObj:GuildUI() -- LoD
 -->>-- GuildInfo Frame
 	self:removeRegions(_G.GuildInfoFrame, {1, 2, 3, 4, 5, 6 ,7, 8}) -- Background textures and bars
 	self:skinTabs{obj=_G.GuildInfoFrame, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
+	self:removeMagicBtnTex(_G.GuildAddMemberButton)
+	self:removeMagicBtnTex(_G.GuildControlButton)
+	self:removeMagicBtnTex(_G.GuildViewLogButton)
 	-- GuildInfoFrameInfo Frame
 	self:keepFontStrings(_G.GuildInfoFrameInfo)
 	self:skinSlider{obj=_G.GuildInfoDetailsFrameScrollBar, adj=-4}
@@ -1712,6 +1714,7 @@ function aObj:GuildUI() -- LoD
 	self:skinSlider{obj=_G.GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar}
 	_G.GuildRecruitmentCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
+	self:removeMagicBtnTex(_G.GuildRecruitmentListGuildButton)
 	-- GuildInfoFrameApplicants Frame
 	for i = 1, #_G.GuildInfoFrameApplicantsContainer.buttons do
 		btn = _G.GuildInfoFrameApplicantsContainer.buttons[i]
@@ -1721,6 +1724,9 @@ function aObj:GuildUI() -- LoD
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
 	self:skinSlider{obj=_G.GuildInfoFrameApplicantsContainerScrollBar, adj=-4}
+	self:removeMagicBtnTex(_G.GuildRecruitmentInviteButton)
+	self:removeMagicBtnTex(_G.GuildRecruitmentMessageButton)
+	self:removeMagicBtnTex(_G.GuildRecruitmentInviteButton)
 	-- Guild Text Edit frame
 	self:skinSlider{obj=_G.GuildTextEditScrollFrameScrollBar, adj=-6}
 	self:addSkinFrame{obj=_G.GuildTextEditContainer, ft=ftype, nb=true}
@@ -1907,7 +1913,9 @@ function aObj:LookingForGuildUI() -- LoD
 	self.initialized.LookingForGuildUI = true
 
 	self:skinTabs{obj=_G.LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
-	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, rmbt=true, y1=2, x2=1, y2=-2}
+	self:removeMagicBtnTex(_G.LookingForGuildBrowseButton)
+	self:removeMagicBtnTex(_G.LookingForGuildRequestButton)
+	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 
 	-- Start Frame (Settings)
 	_G.LookingForGuildInterestFrameBg:SetAlpha(0)
@@ -2478,7 +2486,8 @@ function aObj:PVPUI()
 	hfbf:DisableDrawLayer("BORDER")
 	hfbf.ShadowOverlay:DisableDrawLayer("OVERLAY")
 	hfbf = nil
-	self:skinButton{obj=_G.HonorFrame.QueueButton, rmbt=true}
+	self:removeMagicBtnTex(_G.HonorFrame.QueueButton)
+	self:skinButton{obj=_G.HonorFrame.QueueButton}
 
 	-- Conquest Frame
 	local cfxpb = _G.ConquestFrame.XPBar
@@ -2498,7 +2507,8 @@ function aObj:PVPUI()
 	_G.ConquestFrame.Arena2v2.NormalTexture:SetTexture(nil)
 	_G.ConquestFrame.Arena3v3.NormalTexture:SetTexture(nil)
 	_G.ConquestFrame.RatedBG.NormalTexture:SetTexture(nil)
-	self:skinButton{obj=_G.ConquestFrame.JoinButton, rmbt=true}
+	self:removeMagicBtnTex(_G.ConquestFrame.JoinButton)
+	self:skinButton{obj=_G.ConquestFrame.JoinButton}
 	self:skinDropDown{obj=_G.ConquestFrame.ArenaInviteMenu}
 
 	-- War Games Frame
@@ -2513,7 +2523,8 @@ function aObj:PVPUI()
 	end
 	self:skinSlider{obj=_G.WarGamesFrameInfoScrollFrameScrollBar}
 	_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
-	self:skinButton{obj=_G.WarGameStartButton, rmbt=true}
+	self:removeMagicBtnTex(_G.WarGameStartButton)
+	self:skinButton{obj=_G.WarGameStartButton}
 
 	-- PVPRewardTooltip
 	if self.db.profile.Tooltips.skin then
@@ -2769,7 +2780,9 @@ function aObj:TalentUI() -- LoD
 	self:addSkinFrame{obj=_G.PlayerTalentFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5}
 	self:skinButton{obj=_G.PlayerTalentFrameCloseButton, cb=true}
 	self:skinButton{obj=_G.PlayerTalentFrameActivateButton}
+	self:removeMagicBtnTex(_G.PlayerTalentFrameSpecialization.learnButton)
 	self:skinButton{obj=_G.PlayerTalentFrameSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFrameSpecialization}
+	self:removeMagicBtnTex(_G.PlayerTalentFramePetSpecialization.learnButton)
 	self:skinButton{obj=_G.PlayerTalentFramePetSpecialization.learnButton, anim=true, parent=_G.PlayerTalentFramePetSpecialization}
 
 	local function skinAbilities(obj)

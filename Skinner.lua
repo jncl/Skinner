@@ -605,7 +605,6 @@ local function __addSkinFrame(opts)
 		bas = use applySkin for buttons
 		rp = re-parent, reverse the parent child relationship
 		sec = use the "SecureFrameTemplate"
-        rmbt = remove magic button texture(s)
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n" .. debugstack())
@@ -671,7 +670,7 @@ local function __addSkinFrame(opts)
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
 
 	-- skin the buttons unless not required
-	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft, rmbt=opts.rmbt} end
+	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft} end
 
 	-- remove inset textures
 	if opts.ri then aObj:removeInset(opts.obj.Inset) end

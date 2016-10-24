@@ -308,8 +308,6 @@ function module:skinButton(opts)
 		opts.obj.sb:SetParent(opts.parent or opts.obj:GetParent().sf)
 	end
 
-    if opts.rmbt then aObj:removeMagicBtnTex(opts.obj) end
-
 end
 
 local function getTexture(obj)
@@ -370,7 +368,6 @@ local function __skinAllButtons(opts, bgen)
 	Calling parameters:
 		obj = object (Mandatory)
 		bgen = generations of children to traverse
-        rmbt = remove magic button texture(s)
 		other options as per skinButton
 --]]
 --@alpha@
@@ -391,7 +388,7 @@ local function __skinAllButtons(opts, bgen)
 		elseif child:IsObjectType("Button") then
 			local bType = module:isButton(child)
 			if bType == "normal" then
-				module:skinButton{obj=child, ft=opts.ft, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim, as=opts.as, rmbt=opts.rmbt}
+				module:skinButton{obj=child, ft=opts.ft, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2, anim=opts.anim, as=opts.as}
 			elseif bType == "close" then
 				module:skinButton{obj=child, ft=opts.ft, cb=true, sap=opts.sap, anim=opts.anim}
 			elseif bType == "toast" then

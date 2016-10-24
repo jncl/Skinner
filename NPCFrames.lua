@@ -339,7 +339,8 @@ function aObj:ItemUpgradeUI() -- LoD
 	_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
 	_G.ItemUpgradeFrame.ButtonFrame.ButtonBorder:SetTexture(nil)
 	_G.ItemUpgradeFrame.ButtonFrame.ButtonBottomBorder:SetTexture(nil)
-	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true, rmbt=true, ofs=2, x2=1}
+	self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
+	self:addSkinFrame{obj=_G.ItemUpgradeFrame, ft=ftype, kfs=true, ofs=2, x2=1}
 
 	-- hook this to hide the ItemButton texture if empty
 	self:SecureHook("ItemUpgradeFrame_Update", function()
@@ -782,7 +783,8 @@ function aObj:TrainerUI() -- LoD
 		btn:GetNormalTexture():SetTexture(nil)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
-	self:addSkinFrame{obj=_G.ClassTrainerFrame, ft=ftype, kfs=true, ri=true, rmbt=true, y1=2, x2=1, y2=-2}
+	self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
+	self:addSkinFrame{obj=_G.ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 
 end
 
