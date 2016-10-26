@@ -2042,20 +2042,22 @@ function aObj:GuildBankUI() -- LoD
 	end
 
 -->>--	GuildBank Popup Frame
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.GuildBankPopupScrollFrame}
-	else
-		self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20}
-		self:skinSlider{obj=_G.GuildBankPopupScrollFrame.ScrollBar, size=3, rt="background"}
-		self:removeRegions(self:getChild(_G.GuildBankPopupFrame, 1), {1, 2, 3, 4, 5, 6, 7, 8})
-		self:adjHeight{obj=_G.GuildBankPopupFrame, adj=20}
-	end
+	self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
+	self:skinSlider{obj=_G.GuildBankPopupScrollFrame.ScrollBar, size=3, rt="background"}
+	self:removeRegions(self:getChild(_G.GuildBankPopupFrame, 1), {1, 2, 3, 4, 5, 6, 7, 8})
+	self:adjHeight{obj=_G.GuildBankPopupFrame, adj=20}
 	self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={6}}
-	self:addSkinFrame{obj=_G.GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, x1=2, y1=-12, x2=-24, y2=24}
-	for i = 1, 16 do
-		_G["GuildBankPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=_G["GuildBankPopupButton" .. i]}
-	end
+	self:addSkinFrame{obj=_G.GuildBankPopupFrame, ft=ftype, kfs=true, hdr=true, ofs=-6}
+	self:SecureHookScript(_G.GuildBankPopupFrame, "OnShow", function(this)
+		local btn
+		for i = 1, _G.NUM_GUILDBANK_ICONS_SHOWN do
+			btn = _G["GuildBankPopupButton" .. i]
+			btn:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=btn, relTo=_G["GuildBankPopupButton" .. i .. "Icon"], spbt=true}
+		end
+		btn = nil
+		self:Unhook(_G.GuildBankPopupFrame, "OnShow")
+	end)
 
 -->>--	Tabs (side)
 	local objName
