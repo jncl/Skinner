@@ -10,8 +10,8 @@ Legend:
 
 	N	PTR Changes 7.1.0
 		- GuildBankUI
-≈			- replaced textures with BorderBox
-≈			- replaced individual buttons with ScrollFrame
+√			- replaced textures with BorderBox
+√			- replaced individual buttons with ScrollFrame
 		- MacroUI
 √			- replaced textures with BorderBox
 √			- replaced individual buttons with ScrollFrame
@@ -20,30 +20,25 @@ Legend:
 √			- replaced individual buttons with ScrollFrame
 		- AlertFrameSystem
 √			- Frames that originally existed OnLoad are now on demand
-			- RewardFrames now have additional code used by several AlertFrames and have an array
+√			- RewardFrames now have additional code used by several AlertFrames and have an array
 		- ContainerFrame
 ≈			- Buttons now have an UpgradeIcon texture
 		- FloatingChatFrame
 √			- FriendsMicroButton has been replaced by QuickJoinToastButton
-		- New xml files
-			- RoleSelectionTemplate
-			- SocialQueue
-			- QuickJoinToast
-			- UnitPositionFrameTemplate
 		- FriendsFrame
 √			- PendingListFrame replaced by QuickJoinFrame
-			- FramePools now being used
+?			- FramePools now being used
 		- LevelUpDisplay
-			- New FontString added
+x			- New FontString added
 		- LootFrame
-			-- EncounterJournal additions
+?			- EncounterJournal additions
 		- QuestInfo Frame
 √			- QuestType text
 		- QuestMapFrame
 			- Count text
-≈		- UIPanelScrollFrameTemplate which is now a Slider
+√		- UIPanelScrollFrameTemplate which is now a Slider
 		- ZoneAbility
-			- has a BonusActionBar ?
+?			- has a BonusActionBar
 		- AuctionUI
 x			- PriceTooltipFrame
 		- BarberShopUI
@@ -52,11 +47,11 @@ x			- PriceTooltipFrame
 √			- slotFilter added
 x			- lootSlotFilter added (dropdown)
 		- GuildNews
-			- now using array GuildNewsFilterButtons
+x			- now using array GuildNewsFilterButtons
 		- ClassNameplateBar
-			- now has a background
+?			- now has a background
 		- WardrobeCollectionFrame
-			- .searchBox inherits SearchBoxTemplate rather than BagSearchBoxTemplate
+x			- .searchBox inherits SearchBoxTemplate rather than BagSearchBoxTemplate
 
 	I	WorldMap Quest List
 ?		- Some buttons have a border (not all the time)
@@ -67,27 +62,21 @@ x			- lootSlotFilter added (dropdown)
 	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
 ?		- e.g. GameMenu buttons, Close Button(s)
 
-	I	Rarity, reported by sausje, 06.09.16
-?		- causes UI elements to not be skinned
-
 	I	QuestList
 ?		- quest icon/number buttons shouldn't be skinned
 
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-	I	GarrisonLandingPage
-√		- make tabs more visible
-
 	I	BossUnitFrames
-		- make the attack highlight appear like other unit frames
+≈		- make the attack highlight appear like other unit frames
 
-	I	ItemUpgradeFrame, reported by epidemedabear, 17.10.16
-√		- ..\AddOns\Skinner\NPCFrames.lua line 347: attempt to index local 'tex' (a number value)
-		Debug:
-			Skinner\NPCFrames.lua:347:
-			Skinner\NPCFrames.lua:345
+	I	Error when running MacroUI, reported by txamerthyst, 25.10.16
+		- Skinner\UIFrames.lua:2343: attempt to index local 'btn' (a nil value)
+		(tail call): ?
+		[C]: in function `xpcall'
+		Skinner\UtilFuncs.lua:181: in function <Skinner\UtilFuncs.lua:175>
 
-	I	CompactRaidFrames, reported by TBABlackPanther, 21.01.16
-√		- Skinner\PlayerFrames.lua:901: attempt to index field 'horizDivider' (a nil value)
-		Skinner\PlayerFrames.lua:956: in function <Skinner\PlayerFrames.lua:888>
+√	S	Growler, requested by txamerthyst, 25.10.16
+
+	S	SecureTransferDialog
