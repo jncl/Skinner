@@ -129,6 +129,7 @@ function aObj:BlizzardFrames()
 			["QueueStatusFrame"] = true,
 			["RaidFrame"] = true,
 			["ScriptErrors"] = true,
+			["SecureTransferUI"] = false, -- N.B. cannot be skinned
 			["SplashFrame"] = true,
 			["StaticPopups"] = true,
 			["Tooltips"] = false, -- checked below

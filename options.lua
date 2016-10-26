@@ -163,6 +163,7 @@ function aObj:Defaults()
 		QueueStatusFrame     = true,
 		RaidFrame            = true,
 		ScriptErrors         = true,
+		SecureTransferUI	 = false, -- N.B. cannot be skinned
 		SocialUI             = false, -- N.B. cannot be skinned
 		SplashFrame          = true,
 		StaticPopups         = true,
@@ -1631,6 +1632,12 @@ function aObj:Options()
 					type = "toggle",
 					name = self.L["Script Errors Frame"],
 					desc = self.L["Toggle the skin of the Script Errors Frame"],
+				},
+				SecureTransferUI = {
+					type = "toggle",
+					name = self.L["Secure Transfer UI"],
+					desc = self.L["Toggle the skin of the Secure Transfer UI"],
+					disabled = true,
 				},
 				SocialUI = {
 					type = "toggle",

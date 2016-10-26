@@ -3806,6 +3806,17 @@ function aObj:ScriptErrors()
 
 end
 
+function aObj:SecureTransferUI()
+	if not self.db.profile.SecureTransferUI or self.initialized.SecureTransferUI then return end
+	self.initialized.SecureTransferUI = true
+
+	-- disable skinning of this frame
+	self.db.profile.SecureTransferUI = false
+
+	-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
+
+end
+
 function aObj:SplashFrame()
 	if not self.db.profile.SplashFrame or self.initialized.SplashFrame then return end
 	self.initialized.SplashFrame = true
