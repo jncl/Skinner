@@ -477,7 +477,9 @@ function aObj:QuestChoice() -- LoD
 
 	_G.QuestChoiceFrame.DummyString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	for i = 1, 4 do
-		_G.QuestChoiceFrame["Option" .. i].OptionText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestChoiceFrame["Option" .. i].Header.Background:SetTexture(nil)
+		_G.QuestChoiceFrame["Option" .. i].Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestChoiceFrame["Option" .. i].OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		self:addButtonBorder{obj=_G.QuestChoiceFrame["Option" .. i].Rewards.Item, relTo=_G.QuestChoiceFrame["Option" .. i].Rewards.Item.Icon}
 		_G.QuestChoiceFrame["Option" .. i].Rewards.Item.Name:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestChoiceFrame["Option" .. i].Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BTr, self.BTg, self.BTb)
