@@ -1,3 +1,21 @@
+b7.22810.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated empty Button border colour
+	Skin OrderHall tutorial GlowBox close button
+	Replaced empty functions with UIParent equivalent
+	Merged fixThreat code into skinFrame code
+	Updated RaidFinderFrame skin
+	Add frame to ZoneSupport a.k.a. CombatAlly frame
+	Bugfix for CompactRaidFrame skin
+	Updated EditBox skinning code for TradeSkillFrame & CapacitiveDisplayFrame
+	Make MissionPage CloseButton smaller
+	Added Tab textures to GarrisonLandingPage skin
+	Updated ArtifactUI skin
+	Bugfix for ItemUpgradeFrame skin
+
 b7.22810.2
 Jncl:
 	ToDo.txt
