@@ -126,6 +126,8 @@ function aObj:AuctionUI() -- LoD
 	self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
 	self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
 	self:skinDropDown{obj=_G.DurationDropDown}
+	self:skinButton{obj=_G.AuctionsStackSizeMaxButton}
+	self:skinButton{obj=_G.AuctionsNumStacksMaxButton}
 	self:skinButton{obj=_G.AuctionsCreateAuctionButton}
 	self:skinButton{obj=_G.AuctionsCancelAuctionButton}
 	self:skinButton{obj=_G.AuctionsCloseButton}
