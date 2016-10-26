@@ -100,22 +100,16 @@ function aObj:AlertFrames()
 			y1, y2 = nil, nil
 		end
 
-
 	end, true)
 
-	-- hook dungeon rewards function
-	self:SecureHook("DungeonCompletionAlertFrameReward_SetReward", function(frame, ...)
-		frame:DisableDrawLayer("OVERLAY")
-	end)
+	local function skinRewards(af)
 
-	if self.isPTR then
-		local function skinRewards(af)
-
-			for i = 1, #af.RewardFrames do
-				af.RewardFrames:DisableDrawLayer("OVERLAY") -- rewardring
+		if af.RewardFrames then
+			for i = 1, af.numUsedRewardFrames do
+				af.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
 			end
-
 		end
+
 	end
 	local function skinACAlertFrame(frame)
 
