@@ -1725,14 +1725,10 @@ local function __skinScrollBar(opts)
 		noRR = Don't remove regions
 --]]
 --@alpha@
-	if not aObj.isPTR then
-		assert(opts.obj and opts.obj:IsObjectType("ScrollFrame"), "Not a ScrollFrame\n" .. debugstack())
-	else
-		-- handle AddOn skins still using this code rather than skinSlider
-		assert(opts.obj and opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. debugstack())
-		assert(opts.obj and _G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
-		aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinScrollBar", opts.obj)
-	end
+	-- handle AddOn skins still using this code rather than skinSlider
+	assert(opts.obj and opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. debugstack())
+	assert(opts.obj and _G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinScrollBar", opts.obj)
 --@end-alpha@
 
 	-- don't skin it twice

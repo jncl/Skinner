@@ -539,21 +539,13 @@ function aObj:CharacterFrames()
 	self:skinButton{obj=_G.PaperDollEquipmentManagerPane.SaveSet}
 
 	-- GearManagerDialog Popup Frame
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.GearManagerDialogPopupScrollFrame}
-		for i = 1, _G.NUM_GEARSET_ICONS_SHOWN do
-			_G["GearManagerDialogPopupButton" .. i]:DisableDrawLayer("BACKGROUND") -- empty slot texture
-			self:addButtonBorder{obj=_G["GearManagerDialogPopupButton" .. i]}
-		end
-	else
-		self:adjHeight{obj=_G.GearManagerDialogPopupScrollFrame, adj=20}
-		self:skinSlider{obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, size=3, rt="background"}
-		self:removeRegions(self:getChild(_G.GearManagerDialogPopup, 1), {1, 2, 3, 4, 5, 6, 7, 8})
-		self:adjHeight{obj=_G.GearManagerDialogPopup, adj=20}
-		for i = 1, #_G.GearManagerDialogPopup.buttons do
-			_G.GearManagerDialogPopup.buttons[i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G.GearManagerDialogPopup.buttons[i]}
-		end
+	self:adjHeight{obj=_G.GearManagerDialogPopupScrollFrame, adj=20}
+	self:skinSlider{obj=_G.GearManagerDialogPopupScrollFrame.ScrollBar, size=3, rt="background"}
+	self:removeRegions(self:getChild(_G.GearManagerDialogPopup, 1), {1, 2, 3, 4, 5, 6, 7, 8})
+	self:adjHeight{obj=_G.GearManagerDialogPopup, adj=20}
+	for i = 1, #_G.GearManagerDialogPopup.buttons do
+		_G.GearManagerDialogPopup.buttons[i]:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=_G.GearManagerDialogPopup.buttons[i]}
 	end
 	self:skinEditBox{obj=_G.GearManagerDialogPopupEditBox, regs={6}}
 	self:addSkinFrame{obj=_G.GearManagerDialogPopup, ft=ftype, kfs=true, x1=4, y1=-2, x2=-1, y2=3}
@@ -569,11 +561,7 @@ function aObj:CharacterFrames()
 	end
 
 	self:keepFontStrings(_G.ReputationFrame)
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.ReputationListScrollFrame}
-	else
-		self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
-	end
+	self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
 
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 		local obj = "ReputationBar" .. i
@@ -1032,11 +1020,7 @@ function aObj:ContainerFrames()
 			local bo
 			for i = 1, _G.MAX_CONTAINER_ITEMS do
 				bo = _G[objName .. "Item" .. i]
-				if not self.isPTR then
-					self:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.flash, bo.NewIconTexture, bo.BattlepayItemTexture}}
-				else
-					self:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewIconTexture, bo.BattlepayItemTexture}}
-				end
+				self:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewIconTexture, bo.BattlepayItemTexture}}
 			end
 			bo = nil
 		end
@@ -1253,9 +1237,7 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 	-- Loot Frame
 	self:skinSlider{obj=eje.info.lootScroll.scrollBar, adj=-4}
 	skinFilterBtn(eje.info.lootScroll.filter)
-	if self.isPTR then
-		skinFilterBtn(eje.info.lootScroll.slotFilter)
-	end
+	skinFilterBtn(eje.info.lootScroll.slotFilter)
 	eje.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
 	-- self:skinDropDown{obj=eje.info.lootScroll.lootFilter} -- DD already skinned
 	-- hook this to skin loot entries
@@ -1401,9 +1383,7 @@ function aObj:FriendsFrame()
 	_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 	self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={6, 7}, mi=true, noWidth=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
 	_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	if self.isPTR then
-		_G.PanelTemplates_SetNumTabs(_G.FriendsTabHeader, 3) -- adjust for Friends, QuickJoin & Ignore
-	end
+	_G.PanelTemplates_SetNumTabs(_G.FriendsTabHeader, 3) -- adjust for Friends, QuickJoin & Ignore
 	self:skinTabs{obj=_G.FriendsTabHeader, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
 	self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
 	self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
@@ -1415,12 +1395,7 @@ function aObj:FriendsFrame()
 
 	-- FriendsList Frame
 	-- adjust width of FFFSF so it looks right (too thin by default)
-	if not self.isPTR then
-		_G.FriendsFrameFriendsScrollFrameScrollBar:SetPoint("BOTTOMLEFT", _G.FriendsFrameFriendsScrollFrame, "BOTTOMRIGHT", -4, 14)
-		self:skinScrollBar{obj=_G.FriendsFrameFriendsScrollFrame}
-	else
-		self:skinSlider{obj=_G.FriendsFrameFriendsScrollFrameScrollBar, size=3, rt="background"}
-	end
+	self:skinSlider{obj=_G.FriendsFrameFriendsScrollFrameScrollBar, size=3, rt="background"}
 
 	local btn
 	for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
@@ -1438,49 +1413,21 @@ function aObj:FriendsFrame()
 	self:addSkinFrame{obj=_G.AddFriendFrame, ft=ftype, kfs=true}
 	self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
 	self:addSkinFrame{obj=_G.AddFriendNoteFrame, ft=ftype, kfs=true}
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.AddFriendNoteFrameScrollFrame}
-	else
-		self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar, size=3}
-	end
+	self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar, size=3}
 
 -->>-- FriendsFriends Frame
 	self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
 	self:addSkinFrame{obj=_G.FriendsFriendsList, ft=ftype}
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.FriendsFriendsScrollFrame}
-	else
-		self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar, size=3}
-	end
+	self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar, size=3}
 	self:addSkinFrame{obj=_G.FriendsFriendsFrame, ft=ftype}
 
-	if not self.isPTR then
-	-->>--	PendingList Frame
-		self:keepFontStrings(_G.PendingListFrame)
-		self:skinDropDown{obj=_G.PendingListFrameDropDown}
-		self:skinSlider{obj=_G.FriendsFramePendingScrollFrame.scrollBar}
-		for i = 1, _G.PENDING_INVITES_TO_DISPLAY do
-			btn = "FriendsFramePendingButton" .. i
-			-- use ApplySkin otherwise panel & buttons are hidden
-			self:removeRegions(_G[btn .. "AcceptButton"], {1, 2, 3})
-			self:applySkin{obj=_G[btn .. "AcceptButton"]}
-			self:removeRegions(_G[btn .. "DeclineButton"], {1, 2, 3})
-			self:applySkin{obj=_G[btn .. "DeclineButton"]}
-			self:applySkin{obj=_G[btn]}
-		end
-	else
 	-->>-- QuickJoin Frame
-		self:skinSlider{obj=_G.QuickJoinScrollFrame.scrollBar, rt="background"}--, size=3}
-		self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
-	end
+	self:skinSlider{obj=_G.QuickJoinScrollFrame.scrollBar, rt="background"}--, size=3}
+	self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
 
 -->>--	IgnoreList Frame
 	self:keepFontStrings(_G.IgnoreListFrame)
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.FriendsFrameIgnoreScrollFrame}
-	else
-		self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar, size=3}
-	end
+	self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar, size=3}
 
 -->>--	Who Tab Frame
 	self:removeInset(_G.WhoFrameListInset)
@@ -1489,11 +1436,7 @@ function aObj:FriendsFrame()
 	self:skinDropDown{obj=_G.WhoFrameDropDown, noSkin=true}
 	self:addButtonBorder{obj=_G.WhoFrameDropDownButton, es=12, ofs=-1}
 	self:moveObject{obj=_G.WhoFrameDropDownButton, x=5}
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.WhoListScrollFrame}
-	else
-		self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, size=3}
-	end
+	self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, size=3}
 	self:skinEditBox{obj=_G.WhoFrameEditBox, move=true}
 	_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() +  24)
 	self:moveObject{obj=_G.WhoFrameEditBox, x=12}
@@ -1509,13 +1452,8 @@ function aObj:FriendsFrame()
 			_G["ChannelButton" .. i .. "NormalTexture"]:SetAlpha(0)
 		end
 	end)
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.ChannelListScrollFrame}
-		self:skinScrollBar{obj=_G.ChannelRosterScrollFrame}
-	else
-		self:skinSlider{obj=_G.ChannelListScrollFrame.ScrollBar, size=3, rt="artwork"}
-		self:skinSlider{obj=_G.ChannelRosterScrollFrame.ScrollBar, size=3, rt="background"}
-	end
+	self:skinSlider{obj=_G.ChannelListScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.ChannelRosterScrollFrame.ScrollBar, size=3, rt="background"}
 	-- Channel Pullout Tab & Frame
 	self:keepRegions(_G.ChannelPulloutTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
 	self:addSkinFrame{obj=_G.ChannelPulloutTab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
@@ -1887,11 +1825,7 @@ function aObj:ItemSocketingUI() -- LoD
 	end)
 
 	self:addSkinFrame{obj=_G.ItemSocketingFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.ItemSocketingScrollFrame}
-	else
-		self:skinSlider{obj=_G.ItemSocketingScrollFrame.ScrollBar, size=3, rt="artwork"}
-	end
+	self:skinSlider{obj=_G.ItemSocketingScrollFrame.ScrollBar, size=3, rt="artwork"}
 
 	local objName
 	for i = 1, _G.MAX_NUM_SOCKETS do
@@ -1922,11 +1856,7 @@ function aObj:LookingForGuildUI() -- LoD
 	_G.LookingForGuildAvailabilityFrameBg:SetAlpha(0)
 	_G.LookingForGuildRolesFrameBg:SetAlpha(0)
 	_G.LookingForGuildCommentFrameBg:SetAlpha(0)
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.LookingForGuildCommentInputFrameScrollFrame}
-	else
-		self:skinSlider{obj=_G.LookingForGuildCommentInputFrameScrollFrame.ScrollBar, size=3}
-	end
+	self:skinSlider{obj=_G.LookingForGuildCommentInputFrameScrollFrame.ScrollBar, size=3}
 	self:addSkinFrame{obj=_G.LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
 	_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 
@@ -1948,11 +1878,7 @@ function aObj:LookingForGuildUI() -- LoD
 
 	-- Request Membership Frame
 	_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.GuildFinderRequestMembershipFrameInputFrameScrollFrame}
-	else
-		self:skinSlider{obj=_G.GuildFinderRequestMembershipFrameInputFrameScrollFrame.ScrollBar, size=3}
-	end
+	self:skinSlider{obj=_G.GuildFinderRequestMembershipFrameInputFrameScrollFrame.ScrollBar, size=3}
 	self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrameInputFrame, ft=ftype, x1=-2, x2=2, y2=-2}
 	self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrame, ft=ftype}
 
@@ -2083,11 +2009,7 @@ function aObj:LootHistory()
 		end
 
 	end
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.LootHistoryFrame.ScrollFrame}
-	else
-		self:skinSlider{obj=_G.LootHistoryFrame.ScrollFrame.ScrollBar, size=3}
-	end
+	self:skinSlider{obj=_G.LootHistoryFrame.ScrollFrame.ScrollBar, size=3}
 	_G.LootHistoryFrame.ScrollFrame.ScrollBarBackground:SetTexture(nil)
 	_G.LootHistoryFrame.Divider:SetTexture(nil)
 	_G.LootHistoryFrame:DisableDrawLayer("BACKGROUND")
@@ -2618,11 +2540,7 @@ function aObj:ScrollOfResurrection()
 	self:skinEditBox{obj=_G.ScrollOfResurrectionFrame.targetEditBox, regs={6}} -- 6 is text
 	_G.ScrollOfResurrectionFrame.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.ScrollOfResurrectionFrame.noteFrame, ft=ftype, kfs=true}
-	if not self.isPTR then
-		self:skinScrollBar{obj=_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame}
-	else
-		self:skinSlider{obj=_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame.ScrollBar, adj=-4, size=3}
-	end
+	self:skinSlider{obj=_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame.ScrollBar, adj=-4, size=3}
 	_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.ScrollOfResurrectionFrame, ft=ftype, kfs=true}
 	-- Selection frame
