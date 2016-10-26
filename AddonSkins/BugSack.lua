@@ -4,8 +4,11 @@ local _G = _G
 
 function aObj:BugSack()
 
+	-- close with Esc
+	self:add2Table(_G.UISpecialFrames, "BugSackFrame")
+
 	self:SecureHook(_G.BugSack, "OpenSack", function(this)
-		self:skinScrollBar{obj=_G.BugSackScroll or _G.BugSackFrameScroll}
+		self:skinSlider{obj=_G.BugSackScroll.ScrollBar, size=3}
 		self:addSkinFrame{obj=_G.BugSackFrame, kfs=true, y1=-2, x2=-1, y2=2}
 		-- tabs
 		local tabs = {_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast}

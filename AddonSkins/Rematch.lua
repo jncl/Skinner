@@ -33,6 +33,9 @@ function aObj:Rematch() -- v 4.5.3
         end
 		tab = nil
     end)
+	if _G.RematchJournal.CollectMeButton then
+		self:removeMagicBtnTex(_G.RematchJournal.CollectMeButton)
+	end
     self:addSkinFrame{obj=_G.RematchJournal, kfs=true, aso={ba=1}, x1=-4, y1=2, x2=1, y2=-5}
 
     -- Frame (used when standalone)
@@ -185,7 +188,11 @@ function aObj:Rematch() -- v 4.5.3
     end
 
     -- BottomPanel
-    self:skinAllButtons{obj=_G.RematchBottomPanel, rmbt=true}
+	self:removeMagicBtnTex(_G.RematchBottomPanel.FindBattleButton)
+	self:removeMagicBtnTex(_G.RematchBottomPanel.SaveAsButton)
+	self:removeMagicBtnTex(_G.RematchBottomPanel.SaveButton)
+	self:removeMagicBtnTex(_G.RematchBottomPanel.SummonButton)
+    self:skinAllButtons{obj=_G.RematchBottomPanel}
 
     -- LoadoutPanel
     for i = 1, 3 do
@@ -306,7 +313,10 @@ function aObj:Rematch() -- v 4.5.3
     self:skinUsingBD{obj=_G.RematchDialog.EditBox}
     _G.RematchDialog.TabPicker:DisableDrawLayer("BORDER")
     self:addSkinFrame{obj=_G.RematchDialog.TabPicker}
-    self:addSkinFrame{obj=_G.RematchDialog, kfs=true, rmbt=true, y1=2, x2=1, y2=-2}
+	self:removeMagicBtnTex(_G.RematchDialog.Cancel)
+	self:removeMagicBtnTex(_G.RematchDialog.Accept)
+	self:removeMagicBtnTex(_G.RematchDialog.Other)
+    self:addSkinFrame{obj=_G.RematchDialog, kfs=true, y1=2, x2=1, y2=-2}
 
     -- TeamTabIconPicker
     self:removeInset(_G.RematchDialog.TeamTabIconPicker)
