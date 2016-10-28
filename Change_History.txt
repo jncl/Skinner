@@ -1,3 +1,18 @@
+b7.22908.1
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC to 70100
+	Applied all PTR code changes
+	Bugfix for GuildBankPopupFrame
+	Bugfix for AlertSystem RewardFrames
+	Skinned QuestChoice Header
+	Skinned AuctionUI Auction Maximise buttons
+	Added skin code for SecureTransferUI
+	Updated AutoBag, BugSack, HandyNotes & Rematch skins
+	Skinned Growler AddOn
+	Explicitly remove MagicButtonTextures rather than as part of skin button code
+
 b7.22810.3
 Jncl:
 	ToDo.txt
