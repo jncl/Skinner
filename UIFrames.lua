@@ -1468,7 +1468,7 @@ function aObj:GarrisonUI() -- LoD
 		aObj:moveObject{obj=cdf.Count, x=-6}
 		aObj:addButtonBorder{obj=cdf.DecrementButton, ofs=-2, es=10}
 		aObj:addButtonBorder{obj=cdf.IncrementButton, ofs=-2, es=10}
-		-- hook this to skin regents
+		-- hook this to skin reagents
 		aObj:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(this)
 			local btn
 			for i = 1, #this.CapacitiveDisplay.Reagents do
