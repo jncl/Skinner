@@ -8,51 +8,6 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
-	N	PTR Changes 7.1.0
-		- GuildBankUI
-√			- replaced textures with BorderBox
-√			- replaced individual buttons with ScrollFrame
-		- MacroUI
-√			- replaced textures with BorderBox
-√			- replaced individual buttons with ScrollFrame
-		- GearManagerDialog
-√			- replaced textures with BorderBox
-√			- replaced individual buttons with ScrollFrame
-		- AlertFrameSystem
-√			- Frames that originally existed OnLoad are now on demand
-√			- RewardFrames now have additional code used by several AlertFrames and have an array
-		- ContainerFrame
-≈			- Buttons now have an UpgradeIcon texture
-		- FloatingChatFrame
-√			- FriendsMicroButton has been replaced by QuickJoinToastButton
-		- FriendsFrame
-√			- PendingListFrame replaced by QuickJoinFrame
-?			- FramePools now being used
-		- LevelUpDisplay
-x			- New FontString added
-		- LootFrame
-?			- EncounterJournal additions
-		- QuestInfo Frame
-√			- QuestType text
-		- QuestMapFrame
-			- Count text
-√		- UIPanelScrollFrameTemplate which is now a Slider
-		- ZoneAbility
-?			- has a BonusActionBar
-		- AuctionUI
-x			- PriceTooltipFrame
-		- BarberShopUI
-√			- Prev, Next button name change
-		- EncounterJournal
-√			- slotFilter added
-x			- lootSlotFilter added (dropdown)
-		- GuildNews
-x			- now using array GuildNewsFilterButtons
-		- ClassNameplateBar
-?			- now has a background
-		- WardrobeCollectionFrame
-x			- .searchBox inherits SearchBoxTemplate rather than BagSearchBoxTemplate
-
 	I	WorldMap Quest List
 ?		- Some buttons have a border (not all the time)
 
@@ -72,11 +27,4 @@ x			- .searchBox inherits SearchBoxTemplate rather than BagSearchBoxTemplate
 ≈		- make the attack highlight appear like other unit frames
 
 	I	Error when running MacroUI, reported by txamerthyst, 25.10.16
-		- Skinner\UIFrames.lua:2343: attempt to index local 'btn' (a nil value)
-		(tail call): ?
-		[C]: in function `xpcall'
-		Skinner\UtilFuncs.lua:181: in function <Skinner\UtilFuncs.lua:175>
-
-√	S	Growler, requested by txamerthyst, 25.10.16
-
-	S	SecureTransferDialog
+√		- Skinner\UIFrames.lua:2228: attempt to index local 'btn' (a nil value)
