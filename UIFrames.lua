@@ -2222,12 +2222,16 @@ function aObj:MacroUI() -- LoD
 	self:adjHeight{obj=_G.MacroPopupFrame, adj=20}
 	self:skinEditBox{obj=_G.MacroPopupEditBox}
 	self:addSkinFrame{obj=_G.MacroPopupFrame, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
-	-- add button borders
-	for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
-		btn = _G["MacroPopupButton" .. i]
-		btn:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=btn, relTo=_G["MacroPopupButton" .. i .. "Icon"], spbt=true}
-	end
+	self:SecureHookScript(_G.MacroPopupFrame, "OnShow", function(this)
+		local btn
+		for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
+			btn = _G["MacroPopupButton" .. i]
+			btn:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=btn, relTo=_G["MacroPopupButton" .. i .. "Icon"], spbt=true}
+		end
+		btn = nil
+		self:Unhook(_G.MacroPopupFrame, "OnShow")
+	end)
 
 end
 
