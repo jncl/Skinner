@@ -3493,7 +3493,7 @@ function aObj:PVEFrame() -- a.k.a. GroupFinderFrame
 
 	-- ScenarioFinder Frame
 	self:keepFontStrings(_G.ScenarioFinderFrame)
-	self:RaiseFrameLevelByThree(_G.ScenarioFinderFrame.NoScenariosCover) -- cover buttons and dropdown
+	self:RaiseFrameLevelByFour(_G.ScenarioFinderFrame.NoScenariosCover) -- cover buttons and dropdown
 	self:removeInset(_G.ScenarioFinderFrame.Inset)
 
 	-- ScenarioQueueFrame
@@ -3623,7 +3623,7 @@ function aObj:RaidFrame()
 -->>-- RaidFinder Frame
 	_G.RaidFinderFrame:DisableDrawLayer("BACKGROUND")
 	_G.RaidFinderFrame:DisableDrawLayer("BORDER")
-	self:RaiseFrameLevelByThree(_G.RaidFinderFrame.NoRaidsCover) -- cover buttons and dropdown
+	self:RaiseFrameLevelByFour(_G.RaidFinderFrame.NoRaidsCover) -- cover buttons and dropdown
 	self:removeInset(_G.RaidFinderFrameRoleInset)
 	self:removeInset(_G.RaidFinderFrameBottomInset)
 	self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}

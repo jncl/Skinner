@@ -722,9 +722,9 @@ function aObj:RGBPercToHex(r, g, b)
 
 end
 
-function aObj:RaiseFrameLevelByThree(frame)
+function aObj:RaiseFrameLevelByFour(frame)
 
-	frame:SetFrameLevel(frame:GetFrameLevel() + 3)
+	frame:SetFrameLevel(frame:GetFrameLevel() + 4)
 
 end
 
