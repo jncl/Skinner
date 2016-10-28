@@ -29,7 +29,7 @@ end
 local function skinScrollBar(scrollFrame)
 
 	scrollFrame:DisableDrawLayer("ARTWORK")
-	aObj:skinSlider{obj=scrollFrame.ScrollBar}
+	aObj:skinSlider{obj=scrollFrame.ScrollBar, size=3}
 
 end
 local function UIDDM_SetButtonWidth(frame, width)
@@ -97,7 +97,7 @@ function aObj:Altoholic()
 		end)
 	end
 
--->>-- Account Sharing option menu panel (buttons and panels)
+	-- Account Sharing option menu panel (buttons and panels)
 	-- make sure icons are visible by changing their draw layer
 	_G.AltoholicAccountSharingOptions.IconNever:SetDrawLayer("OVERLAY")
 	_G.AltoholicAccountSharingOptions.IconAsk:SetDrawLayer("OVERLAY")
@@ -106,14 +106,14 @@ function aObj:Altoholic()
 	skinScrollBar(_G.AltoholicFrameSharingClients.ScrollFrame)
 	self:addSkinFrame{obj=_G.AltoholicFrameSharingClients}
 	skinScrollBar(_G.AltoholicFrameSharedContent.ScrollFrame)
--->>-- SharedContent option menu panel
+	-- SharedContent option menu panel
 	self:skinButton{obj=_G.AltoholicSharedContent_ToggleAll, mp2=true}
 	self:addSkinFrame{obj=_G.AltoholicFrameSharedContent}
 	for i = 1, 14 do
 		self:skinButton{obj=_G["AltoholicFrameSharedContentEntry" .. i .. "Collapse"], mp2=true}
 	end
 
--->>-- Account Sharing frame
+	-- Shared Content option menu panel
 	self:skinEditBox{obj=_G.AltoAccountSharing_AccNameEditBox, regs={9}}
 	self:skinButton{obj=_G.AltoAccountSharing_ToggleAll, mp2=true}
 	self:skinEditBox{obj=_G.AltoAccountSharing_AccTargetEditBox, regs={9}}
@@ -123,6 +123,12 @@ function aObj:Altoholic()
 	end
 	self:addSkinFrame{obj=_G.AltoholicFrameAvailableContent}
 	self:addSkinFrame{obj=_G.AltoAccountSharing}
+
+	-- Calendar option menu panel
+	UIDDM_SetButtonWidth(_G.AltoholicCalendarOptions_WarningType1, 24)
+	UIDDM_SetButtonWidth(_G.AltoholicCalendarOptions_WarningType2, 24)
+	UIDDM_SetButtonWidth(_G.AltoholicCalendarOptions_WarningType3, 24)
+	UIDDM_SetButtonWidth(_G.AltoholicCalendarOptions_WarningType4, 24)
 
 end
 
@@ -199,13 +205,15 @@ function aObj:Altoholic_Characters() -- LoD
 		btn.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
 		btn.SeeTrainerString:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
+	btnName = nil
 	local function clrTxt()
 		for i = 1, 12 do
 			btn = _G["AltoholicFrameSpellbook_SpellIcon" .. i]
-			btn.SpellName:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
-			btn.SpellSubName:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+			btn.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
+			btn.SpellSubName:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
 	end
+	btn = nil
 	self:makeMFRotatable(_G.AltoholicFramePetsNormal_ModelFrame)
 	-- hook this to colour Spell text
 	self:SecureHook(_G.Altoholic.Spellbook, "Update", function(this)
@@ -225,19 +233,21 @@ function aObj:Altoholic_Characters() -- LoD
 	skinScrollBar(_G.AltoholicFrameRecipesScrollFrame)
 	-- Garrison
 	skinScrollBar(_G.AltoholicFrameGarrisonMissions.ScrollFrame)
-	local frame
-	for i = 1, _G.AltoholicFrameGarrisonMissions.ScrollFrame.numRows do
-		frame = _G.AltoholicFrameGarrisonMissions.ScrollFrame:GetRow(i)
-		self:addButtonBorder{obj=frame.Type, relTo=frame.Type.Icon}
-		-- TODO if these are removed followers aren't visible
-		-- for j = 1, 3 do
-		-- 	frame["Follower" .. j]:DisableDrawLayer("BACKGROUND")
-		-- end
-		for j = 1, 2 do
-			self:addButtonBorder{obj=frame["Reward" .. j], relTo=frame["Reward" .. j].Icon}
+	if self.modBtnBs then
+		local frame
+		for i = 1, _G.AltoholicFrameGarrisonMissions.ScrollFrame.numRows do
+			frame = _G.AltoholicFrameGarrisonMissions.ScrollFrame:GetRow(i)
+			self:addButtonBorder{obj=frame.Type, relTo=frame.Type.Icon}
+			-- TODO if these are removed followers aren't visible
+			-- for j = 1, 3 do
+			-- 	frame["Follower" .. j]:DisableDrawLayer("BACKGROUND")
+			-- end
+			for j = 1, 2 do
+				self:addButtonBorder{obj=frame["Reward" .. j], relTo=frame["Reward" .. j].Icon}
+			end
 		end
+		frame = nil
 	end
-	frame = nil
 
 end
 
@@ -245,14 +255,14 @@ function aObj:Altoholic_Search() --LoD
 
 	skinMenuItems(_G.AltoholicTabSearch, _G.AltoholicTabSearch.ScrollFrame.numRows, "Entry")
 	skinScrollBar(_G.AltoholicTabSearch.ScrollFrame)
-	self:skinEditBox{obj=_G.AltoholicTabSearch.MinLevel, regs={9}}
-	self:skinEditBox{obj=_G.AltoholicTabSearch.MaxLevel, regs={9}}
+	self:skinEditBox{obj=_G.AltoholicTabSearch.MinLevel}
+	self:skinEditBox{obj=_G.AltoholicTabSearch.MaxLevel}
 	self:skinDropDown{obj=_G.AltoholicTabSearch.SelectRarity}
-	_G.UIDropDownMenu_SetButtonWidth(_G.AltoholicTabSearch.SelectRarity, 24)
+	UIDDM_SetButtonWidth(_G.AltoholicTabSearch.SelectRarity, 24)
 	self:skinDropDown{obj=_G.AltoholicTabSearch.SelectSlot}
-	_G.UIDropDownMenu_SetButtonWidth(_G.AltoholicTabSearch.SelectSlot, 24)
+	UIDDM_SetButtonWidth(_G.AltoholicTabSearch.SelectSlot, 24)
 	self:skinDropDown{obj=_G.AltoholicTabSearch.SelectLocation}
-	_G.UIDropDownMenu_SetButtonWidth(_G.AltoholicTabSearch.SelectLocation, 24)
+	UIDDM_SetButtonWidth(_G.AltoholicTabSearch.SelectLocation, 24)
 	skinScrollBar(_G.AltoholicFrameSearch.ScrollFrame)
 	skinSortBtns(_G.AltoholicTabSearch.SortButtons)
 

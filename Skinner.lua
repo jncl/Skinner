@@ -1459,7 +1459,7 @@ local function __skinDropDown(opts)
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
-		aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2}
+		aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2, x1=1}
 	end
 
 	-- stop dropdowns being skinned when IOF panel opened
