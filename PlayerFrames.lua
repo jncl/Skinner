@@ -864,7 +864,7 @@ function aObj:Collections() -- LoD
 	end
 	wtf:DisableDrawLayer("ARTWORK")
 	wtf.Model.controlFrame:DisableDrawLayer("BACKGROUND")
-	self:addButtonBorder{obj=wtf.SpecButton, es=12, ofs=-1}
+	self:addButtonBorder{obj=wtf.SpecButton, ofs=0}
 	self:addSkinFrame{obj=_G.WardrobeFrame, ft=ftype, kfs=true, ofs=2}
 	wtf = nil
 
