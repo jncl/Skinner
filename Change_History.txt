@@ -1,4 +1,14 @@
+b7.22908.2
+Jncl:
+	ToDo.txt
+	Updated Change_history.txt
+	Spelling...
+	Bugfix for MacroUI
+	Updated RaidFinder & ScenarioFinder skins
+	Updated Ace3 & Altoholic skins
+
 b7.22908.1
+Jncl:
 	ToDo.txt
 	Updated Change_History.txt
 	Updated version numbers
