@@ -156,7 +156,7 @@ function aObj:AlertFrames()
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=reqdOfs or -10, y2=8}
 
 	end
-	local function skinCommonAlertFrame(frame, reqdOfs)
+	local function skinCommonAlertFrame(frame, reqdOfs, y1Ofs)
 
 		if frame.Icon
 		and frame.Icon:GetDrawLayer() == "BACKGROUND"
@@ -183,9 +183,10 @@ function aObj:AlertFrames()
 		end
 		if frame.QuestTexture then -- WorldQuestCompleteAlertFrame
 			frame:DisableDrawLayer("BORDER") -- toast texture
+			aObj:addButtonBorder{obj=frame, relTo=frame.QuestTexture}
 		end
 
-		aObj:addSkinFrame{obj=frame, ft=ftype, bg=true, ofs=reqdOfs or -10}
+		aObj:addSkinFrame{obj=frame, ft=ftype, bg=true, ofs=reqdOfs or -10, y1=y1Ofs or nil}
 
 	end
 
