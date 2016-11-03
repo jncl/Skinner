@@ -2282,11 +2282,15 @@ function aObj:MainMenuBar()
 	self:keepFontStrings(_G.MainMenuBarMaxLevelBar)
 	self:keepFontStrings(_G.MainMenuBarArtFrame)
 
-	-- adjust offset dependant upon player level
 	local function moveWatchBar(bar)
-		aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4} -- move it above MainMenuBar
-		bar.SetPoint = _G.nop -- stop it being moved
-		bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1) -- move text down
+		-- adjust offset dependant upon player level
+		aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4}
+		-- stop it being moved
+		bar.SetPoint = _G.nop
+		-- move text down
+		bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1)
+		-- increase frame level so it responds to mouseovers
+		aObj:RaiseFrameLevelByFour(bar)
 	end
 
 	-- ReputationWatchBar
