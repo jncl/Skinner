@@ -217,7 +217,7 @@ local function skinPlayerF()
 		-- skin the WarlockPowerFrame, if required
 		if aObj.uCls == "WARLOCK" then
 			for i = 1, #_G.WarlockPowerFrame.Shards do
-				_G.WarlockPowerFrame.Shards[1]:DisableDrawLayer("BORDER")
+				_G.WarlockPowerFrame.Shards[i]:DisableDrawLayer("BORDER")
 			end
 		end
 
