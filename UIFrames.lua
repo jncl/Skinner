@@ -110,7 +110,6 @@ function aObj:AlertFrames()
 	local function skinACAlertFrame(frame)
 
 		local fH = aObj:getInt(frame:GetHeight())
-		-- aObj:Debug("skinACAlertFrame: [%s, %s]", frame, fH)
 
 		frame.Background:SetTexture(nil)
 		frame.Background.SetTexture = _G.nop
@@ -203,7 +202,6 @@ function aObj:AlertFrames()
 
 	-- called params: frame, challengeType, count, max
 	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GuildChallengeAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("OVERLAY")
@@ -211,18 +209,15 @@ function aObj:AlertFrames()
 	end)
 	-- called params: frame, rewardData
 	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("DungeonCompletionAlertSystem: [%s, %s]", frame, ...)
-		skinDCSAlertFrame(frame)
+		skinDCSAlertFrame{obj=_G.DungeonCompletionAlertFrame, regs={2, 3, 4, 5, 6, 10}, y1=-17}
 		skinRewards(frame)
 	end)
 	-- called params: frame, rewardData
 	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("ScenarioAlertSystem: [%s, %s]", frame, ...)
-		skinDCSAlertFrame(frame)
+		skinDCSAlertFrame{obj=_G.ScenarioAlertFrame, regs={1, 3, 7}, ofs=-12}
 	end)
 	-- called params: frame, rewardQuestID, name, showBonusCompletion, xp, money
 	self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("InvasionAlertSystem: [%s, %s]", frame, ...)
 		aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 		aObj:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
@@ -230,90 +225,71 @@ function aObj:AlertFrames()
 	end)
 	-- called params: frame, raceName, raceTexture
 	self:SecureHook(_G.DigsiteCompleteAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("DigsiteCompleteAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame)
 	end)
 	-- called params: frame, type, icon, name, payloadID
 	self:SecureHook(_G.StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("StorePurchaseAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame, -8)
 	end)
 	-- called params: frame, name, garrisonType
 	self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GarrisonBuildingAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame)
 	end)
 	-- called params: frame, missionInfo
 	self:SecureHook(_G.GarrisonMissionAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GarrisonMissionAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame)
 	end)
 	-- called params: frame, missionInfo
 	self:SecureHook(_G.GarrisonShipMissionAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GarrisonShipMissionAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame)
 	end)
 	-- called params: frame, missionInfo
 	self:SecureHook(_G.GarrisonRandomMissionAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GarrisonRandomMissionAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame)
 	end)
 	-- called params: frame, followerID, name, level, quality, isUpgraded, followerInfo
 	self:SecureHook(_G.GarrisonFollowerAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GarrisonFollowerAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame, -8)
 	end)
 	-- called params: frame, followerID, name, class, texPrefix, level, quality, isUpgraded, followerInfo
 	self:SecureHook(_G.GarrisonShipFollowerAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GarrisonShipFollowerAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame, -8)
 	end)
 	-- called params: frame, garrisonType, talent
 	self:SecureHook(_G.GarrisonTalentAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("GarrisonTalentAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame)
 	end)
 	-- called params: frame, questData
 	self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("WorldQuestCompleteAlertSystem: [%s, %s]", frame, ...)
-		skinCommonAlertFrame(frame, -8)
+		skinCommonAlertFrame(frame, -6, -10)
 		skinRewards(frame)
 	end)
 	-- called params: frame, itemLink
 	self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("LegendaryItemAlertSystem: [%s, %s]", frame, ...)
 		skinCommonAlertFrame(frame, -8)
 	end)
-
-	-->>-- these frames are created as needed
 	-- called params: frame, achievementID, alreadyEarned
 	self:SecureHook(_G.AchievementAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("AchievementAlertSystem: [%s, %s]", frame, ...)
 		skinACAlertFrame(frame)
 	end)
 	--called params: frame, achievementID, criteriaString
 	self:SecureHook(_G.CriteriaAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("CriteriaAlertSystem: [%s, %s]", frame, ...)
 		skinACAlertFrame(frame)
 	end)
 	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal (PTR , showRatedBG)
 	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("LootAlertSystem: [%s, %s]", frame, ...)
 		skinWLUAlertFrame(frame)
 	end)
 	-- called parms: self, itemLink, quantity, specID, baseQuality
 	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s]", frame, ...)
 		skinWLUAlertFrame(frame)
 	end)
 	-- called params: self, amount
 	self:SecureHook(_G.MoneyWonAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("MoneyWonAlertSystem: [%s, %s]", frame, ...)
 		skinWLUAlertFrame(frame, -8)
 	end)
 	-- called params: self, recipeID
 	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("NewRecipeLearnedAlertSystem: [%s, %s]", frame, ...)
 		skinWLUAlertFrame(frame, -8)
 	end)
 
