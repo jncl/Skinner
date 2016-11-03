@@ -326,13 +326,15 @@ function aObj:ArtifactUI() --LoD
 	-- PerksTab powerButtons
 	local function skinPowerBtns()
 
-		local btn
-		for i = 1, #_G.ArtifactFrame.PerksTab.PowerButtons do
-			btn = _G.ArtifactFrame.PerksTab.PowerButtons[i]
-			aObj:changeTandC(btn.RankBorder, aObj.lvlBG)
-			aObj:changeTandC(btn.RankBorderFinal, aObj.lvlBG)
+		if _G.ArtifactFrame.PerksTab.PowerButtons then
+			local btn
+			for i = 1, #_G.ArtifactFrame.PerksTab.PowerButtons do
+				btn = _G.ArtifactFrame.PerksTab.PowerButtons[i]
+				aObj:changeTandC(btn.RankBorder, aObj.lvlBG)
+				aObj:changeTandC(btn.RankBorderFinal, aObj.lvlBG)
+			end
+			btn = nil
 		end
-		btn = nil
 
 	end
 	skinPowerBtns()
