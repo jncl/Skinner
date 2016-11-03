@@ -33,21 +33,3 @@ x		- Skinner\UIFrames.lua:23: Usage: HookScript(object, method, [handler]): 'obj
 		  Skinner\UIFrames.lua:23: in function <Skinner\UIFrames.lua:14>
 		  Skinner\UtilFuncs.lua:198: in function 'add2Table'
 		  Skinner\SkinMe\Wholly-060.lua:36: in function <Skinner\SkinMe\Wholly.lua:4>
-
-	I	AlertFrames, reported by Talyrius, 29.10.16
-√		- Skinner\Skinner-b7.22908.2.lua:1245: attempt to index local 'obj' (a nil value)
-		  Skinner\Skinner-b7.22908.2.lua:1245: in function 'removeRegions'
-		  Skinner\UIFrames.lua:141: in function <Skinner\UIFrames.lua:139>
-		  Skinner\UIFrames.lua:215: in function <Skinner\UIFrames.lua:213>
-		  (tail call): ?
-		  [C]: in function 'setUpFunction'
-		  FrameXML\AlertFrames.lua:131: in function 'ShowAlert'
-		  FrameXML\AlertFrames.lua:68: in function 'AddAlert'
-		  FrameXML\AlertFrames.lua:312: in function <FrameXML\AlertFrames.lua:276>
-
-	I	ArtifactUI
-≈		- Skinner\UIFrames.lua:353: attempt to get length of field 'PowerButtons' (a nil value)
-		  Skinner\UIFrames.lua:361: in function <Skinner\UIFrames.lua:332>
-
-	I 	WarlockPowerFrame, reported by lexusnexus, 02.10.16
-√		-  ..\AddOns\Skinner\Modules\UnitFrames.lua line 220: attempt to call method 'DisableDrawLayer' (a nil value)
