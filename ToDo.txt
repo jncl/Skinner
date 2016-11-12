@@ -11,9 +11,6 @@ Legend:
 	I	WorldMap Quest List
 ?		- Some buttons have a border (not all the time)
 
-	I	Quest Objectives list
-?		- When in a dungeon with a header visible and framed, the quest completion button's border is broken
-
 	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
 ?		- e.g. GameMenu buttons, Close Button(s)
 
@@ -24,7 +21,7 @@ Legend:
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
 	I	BossUnitFrames
-≈		- make the attack highlight appear like other unit frames
+√		- make the attack highlight appear like other unit frames
 
 	I	Tooltips, reported by Talyrius, 29.10.16
 x		- Skinner\UIFrames.lua:23: Usage: HookScript(object, method, [handler]): 'object' - nil or table expected got string
@@ -33,3 +30,7 @@ x		- Skinner\UIFrames.lua:23: Usage: HookScript(object, method, [handler]): 'obj
 		  Skinner\UIFrames.lua:23: in function <Skinner\UIFrames.lua:14>
 		  Skinner\UtilFuncs.lua:198: in function 'add2Table'
 		  Skinner\SkinMe\Wholly-060.lua:36: in function <Skinner\SkinMe\Wholly.lua:4>
+
+√	N	TradeSkillMaster
+
+√	I	Make selected Talents more visible if using ButtonBorders
