@@ -192,36 +192,24 @@ function aObj:Altoholic_Characters() -- LoD
 	skinScrollBar(_G.AltoholicFrameAuctionsScrollFrame)
 	-- Mailbox
 	skinScrollBar(_G.AltoholicFrameMail.ScrollFrame)
-	-- SpellBook/Mounts/Companions/Glyphs
-	local btn, btnName
-	for i = 1, 12 do
-		btnName = "AltoholicFrameSpellbook_SpellIcon" .. i
-		btn = _G[btnName]
-		btn:DisableDrawLayer("BACKGROUND")
-		btn:DisableDrawLayer("BORDER")
-		_G[btnName .. "SlotFrame"]:SetAlpha(0)
-		btn.UnlearnedFrame:SetAlpha(0)
-		btn.TrainFrame:SetAlpha(0)
-		btn.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
-		btn.SeeTrainerString:SetTextColor(self.BTr, self.BTg, self.BTb)
-	end
-	btnName = nil
-	local function clrTxt()
-		for i = 1, 12 do
-			btn = _G["AltoholicFrameSpellbook_SpellIcon" .. i]
-			btn.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
-			btn.SpellSubName:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
-	end
-	btn = nil
+	-- SpellBook
 	self:makeMFRotatable(_G.AltoholicFramePetsNormal_ModelFrame)
-	-- hook this to colour Spell text
-	self:SecureHook(_G.Altoholic.Spellbook, "Update", function(this)
-		clrTxt()
+	-- hook this to skin Spell buttons
+	self:SecureHook(_G.AltoholicFrameSpellbook, "Update", function(this)
+		local btn
+		for i = 1, 12 do
+			btn = _G.AltoholicFrameSpellbook["SpellIcon" .. i]
+			btn:DisableDrawLayer("BACKGROUND")
+			btn.Slot:SetAlpha(0)
+			btn.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
+			btn.SubSpellName:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=btn, relTo=btn.Icon}
+		end
+		btn = nil
 	end)
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.AltoholicFrameSpellbookPrevPage, ofs=-2}
-		self:addButtonBorder{obj=_G.AltoholicFrameSpellbookNextPage, ofs=-2}
+		self:addButtonBorder{obj=_G.AltoholicFrameSpellbook.PrevPage, ofs=-2}
+		self:addButtonBorder{obj=_G.AltoholicFrameSpellbook.NextPage, ofs=-2}
 		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalPrevPage, ofs=-2}
 		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalNextPage, ofs=-2}
 	end
@@ -294,7 +282,7 @@ function aObj:Altoholic_Achievements() -- LoD
 
 	skinMenuItems(_G.AltoholicTabAchievements, _G.AltoholicTabAchievements.ScrollFrame.numRows, "Entry")
 	skinScrollBar(_G.AltoholicTabAchievements.ScrollFrame)
-	skinScrollBar(_G.AltoholicFrameAchievements.ScrollFrame)
+	skinScrollBar(_G.AltoholicTabAchievements.Achievements.ScrollFrame)
 
 	skinDDMLists()
 

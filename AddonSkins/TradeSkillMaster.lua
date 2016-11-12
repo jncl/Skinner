@@ -2,15 +2,16 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("TradeSkillMaster") then return end
 local _G = _G
 
-local function adjustSkinFrame(adjust)
+local function adjustSkinFrame(tab)
 
 	-- handle Skin Frame not existing yet
 	if not _G.AuctionFrame.sf then
-		aObj:ScheduleTimer(adjustSkinFrame, 0.2, adjust)
+		_G.C_Timer.After(0.2, function() adjustSkinFrame(tab) end)
 		return
 	end
+
 	_G.AuctionFrame.sf:ClearAllPoints()
-	if adjust then
+	if tab:GetID() > 3 then
 		-- increase size of AuctionFrame skin frame
 		_G.AuctionFrame.sf:SetPoint("TOPLEFT", _G.AuctionFrame, "TOPLEFT", -4, 4)
 		_G.AuctionFrame.sf:SetPoint("BOTTOMRIGHT", _G.AuctionFrame, "BOTTOMRIGHT", 4, -6)
@@ -23,13 +24,30 @@ local function adjustSkinFrame(adjust)
 end
 function aObj:TSM_AuctionFrameHook()
 
-	self:SecureHook("AuctionFrameTab_OnClick", function(this, button, down, index)
-		if this:GetID() < 4 then
-			adjustSkinFrame()
-		else
-			adjustSkinFrame(true)
+	-- hook these to resize AuctionFrame.sf if required
+	local idx
+	for i = 1, 6 do
+		if _G["AuctionFrameTab" .. i] then
+			self:HookScript(_G["AuctionFrameTab" .. i], "OnClick", function(this, button, down)
+				adjustSkinFrame(this)
+			end)
+			idx = i -- save current index value
 		end
-	end)
+	end
+
+	adjustSkinFrame(_G["AuctionFrameTab" .. idx])
+	idx = nil
+
+end
+
+function aObj:TSM_AuctionHouse()
+
+	if _G.IsAddOnLoaded("TradeSkillMaster_AuctionDB") then
+	end
+	if _G.IsAddOnLoaded("TradeSkillMaster_Auctioning") then
+	end
+	if _G.IsAddOnLoaded("TradeSkillMaster_Shopping") then
+	end
 
 end
 
@@ -50,21 +68,17 @@ function aObj:TradeSkillMaster_Accounting()
 
 end
 
-function aObj:TSM_AuctionHouse()
-
-	if _G.IsAddOnLoaded("TradeSkillMaster_AuctionDB") then
-	end
-	if _G.IsAddOnLoaded("TradeSkillMaster_Auctioning") then
-	end
-	if _G.IsAddOnLoaded("TradeSkillMaster_Shopping") then
-	end
-
-end
-
 function aObj:TradeSkillMaster_Crafting()
 
 	_G.C_Timer.After(0.5, function()
 		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame, ofs=3}
+		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame.queue, ofs=3}
+		local pf = _G.TSMCraftingTradeSkillFrame.professionsTab
+		pf.helpBtn.Ring:SetTexture(nil)
+		self:addButtonBorder{obj=pf.craftInfoFrame.infoFrame.icon, relTo=pf.craftInfoFrame.infoFrame.icon.icon}
+		self:addButtonBorder{obj=pf.craftInfoFrame.buttonsFrame.lessBtn, ofs=-2, x1=1}
+		self:addButtonBorder{obj=pf.craftInfoFrame.buttonsFrame.moreBtn, ofs=-2, x1=1}
+		pf = nil
 	end)
 
 end
@@ -73,7 +87,6 @@ function aObj:TradeSkillMaster_Destroying()
 
 	_G.C_Timer.After(0.2, function()
 		self:addSkinFrame{obj=_G.TSMDestroyingFrame, ofs=3}
-		self:UnregisterEvent("BAG_UPDATE")
 	end)
 
 end
@@ -87,7 +100,7 @@ function aObj:TradeSkillMaster_Mailing()
 		_G.C_Timer.After(0.2, function()
 			local frame = self:getChild(_G.MailFrame, _G.MailFrame:GetNumChildren() - 1) -- get penultimate child
 			self:addSkinFrame{obj=frame, ofs=2, y2=-5}
-			_G.MailFrame.sf:Hide() -- hide to start with as mailframe opens to TSM frame initiially
+			_G.MailFrame.sf:Hide() -- hide to start with as mailframe opens to TSM frame initially
 			self:SecureHook(frame, "Show", function(this)
 				_G.MailFrame.sf:Hide()
 			end)
@@ -112,7 +125,7 @@ function aObj:TradeSkillMaster_Vendoring()
 
 	self:RegisterEvent("MERCHANT_SHOW", function()
 		_G.C_Timer.After(0.2, function()
-			aObj:Debug("MERCHANT_SHOW: [%s, %s, %s, %s]", _G.MerchantFrame, _G.MerchantFrame.sknd, _G.MerchantFrame.numTabs, _G.PanelTemplates_GetSelectedTab(_G.MerchantFrame))
+			-- aObj:Debug("MERCHANT_SHOW: [%s, %s, %s, %s]", _G.MerchantFrame, _G.MerchantFrame.sknd, _G.MerchantFrame.numTabs, _G.PanelTemplates_GetSelectedTab(_G.MerchantFrame))
 			local frame = self:getChild(_G.MerchantFrame, _G.MerchantFrame:GetNumChildren() - 1) -- get penultimate child
 			self:addSkinFrame{obj=frame, ofs=2, y2=-5}
 			-- Tab
