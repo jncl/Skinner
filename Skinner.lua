@@ -270,6 +270,10 @@ end
 
 function aObj:OnEnable()
 
+--@debug@
+	self:SetupCmds()
+--@end-debug@
+
 	-- handle InCombat issues
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
@@ -337,18 +341,13 @@ function aObj:OnEnable()
 	-- track when trade frame is opened (used by ProfessionTabs)
 	self:RegisterEvent("TRADE_SHOW")
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
-	self:ScheduleTimer(function() self:RegisterEvent("ADDON_LOADED") end, self.db.profile.Delay.Init)
+	self:ScheduleTimer(function() self:RegisterEvent("ADDON_LOADED") end, 0.5)
 	-- skin the Blizzard frames
 	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
 	-- skin the loaded AddOns frames
 	self:ScheduleTimer("AddonFrames", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1)
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
 	self:ScheduleTimer("scanUIParentsChildren", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 10)
-
-	-- handle profile changes
-	self.db.RegisterCallback(self, "OnProfileChanged", "ReloadAddon")
-	self.db.RegisterCallback(self, "OnProfileCopied", "ReloadAddon")
-	self.db.RegisterCallback(self, "OnProfileReset", "ReloadAddon")
 
 	-- handle statusbar changes
 	self.LSM.RegisterCallback(self, "LibSharedMedia_SetGlobal", function(mtype, override)
@@ -380,13 +379,6 @@ function aObj:OnEnable()
 		end)
 	end
 
---@debug@
-	self:SetupCmds()
---@end-debug@
-
-end
-
-do
 	_G.StaticPopupDialogs[aName .. "_Reload_UI"] = {
 		text = aObj.L["Confirm reload of UI to activate profile changes"],
 		button1 = _G.OKAY,
@@ -404,10 +396,12 @@ do
 		exclusive = 1,
 		hideOnEscape = 1
 	}
-end
-function aObj:ReloadAddon(callback)
+	local function reloadAddon() _G.StaticPopup_Show(aName .. "_Reload_UI") end
 
-	_G.StaticPopup_Show(aName .. "_Reload_UI")
+	-- handle profile changes
+	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
+	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
+	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
 
 end
 
