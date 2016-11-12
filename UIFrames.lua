@@ -98,15 +98,14 @@ function aObj:AlertFrames()
 
 	end, true)
 
-	local function skinRewards(af)
-
-		if af.RewardFrames then
-			for i = 1, af.numUsedRewardFrames do
-				af.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
+	-- hook this to remove rewardFrame rings
+	self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
+		if frame.RewardFrames then
+			for i = 1, frame.numUsedRewardFrames do
+				frame.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
 			end
 		end
-
-	end
+	end)
 	local function skinACAlertFrame(frame)
 
 		local fH = aObj:getInt(frame:GetHeight())
@@ -211,7 +210,6 @@ function aObj:AlertFrames()
 	-- called params: frame, rewardData
 	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, ...)
 		skinDCSAlertFrame{obj=_G.DungeonCompletionAlertFrame, regs={2, 3, 4, 5, 6, 10}, y1=-17}
-		skinRewards(frame)
 	end)
 	-- called params: frame, rewardData
 	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, ...)
@@ -222,7 +220,6 @@ function aObj:AlertFrames()
 		aObj:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 		aObj:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-		skinRewards(frame)
 	end)
 	-- called params: frame, raceName, raceTexture
 	self:SecureHook(_G.DigsiteCompleteAlertSystem, "setUpFunction", function(frame, ...)
@@ -263,7 +260,6 @@ function aObj:AlertFrames()
 	-- called params: frame, questData
 	self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, ...)
 		skinCommonAlertFrame(frame, -6, -10)
-		skinRewards(frame)
 	end)
 	-- called params: frame, itemLink
 	self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, ...)
