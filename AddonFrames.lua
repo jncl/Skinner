@@ -4,180 +4,14 @@ local _G = _G
 -- Add locals to see if it speeds things up
 local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
 
-local blizzLoDFrames = {
-	-- player
-	"AchievementUI", "ArchaeologyUI", "Collections", "EncounterJournal", "GuildControlUI", "GuildUI", "InspectUI", "ItemSocketingUI", "LookingForGuildUI", "PVPUI", "RaidUI", "TalentUI",
-	-- TradeSkillUI, loaded when TRADE_SKILL_SHOW event is fired
-	-- npc
- 	-- AuctionUI, loaded when AUCTION_HOUSE_SHOW event is fired
-	"BarbershopUI", "BlackMarketUI", "FlightMap", "ItemUpgradeUI", "QuestChoice", "TrainerUI", "VoidStorageUI",
-	-- ui
-	"AdventureMap", "ArtifactUI", "BattlefieldMinimap", "BindingUI", "Calendar", "ChallengesUI", "DeathRecap", "DebugTools", "GarrisonUI", "GMChatUI", "GMSurveyUI", "GuildBankUI", "MacroUI", "MovePad", "ObliterumUI", "OrderHallUI", "StoreUI", "TalkingHeadUI", "TimeManager", "WowTokenUI",
-	--	unitframes
-	"ArenaUI",
-}
-
-local blizzLoD = {}
-for _, v in pairs(blizzLoDFrames) do
-	blizzLoD["Blizzard_"..v] = v
-end
-blizzLoDFrames = nil
 function aObj:BlizzardFrames()
 	-- self:Debug("BlizzardFrames")
 
-	self.blizzFrames = {
-		player = {
-			["Buffs"] = true,
-			["CastingBar"] = false, -- checked below
-			["CompactFrames"] = false, -- checked below
-			["CharacterFrames"] = true,
-			["ContainerFrames"] = true,
-			["DressUpFrame"] = false, -- checked below
-			["EquipmentFlyout"] = true,
-			["FriendsFrame"] = true,
-			["GhostFrame"] = true,
-			["GuildInvite"] = true,
-			["LootFrames"] = true,
-			["LootHistory"] = true,
-			["MirrorTimers"] = true,
-			["ModelFrames"] = false, -- checked below
-			["ObjectiveTracker"] = true,
-			["OverrideActionBar"] = true,
-			["ReadyCheck"] = true,
-			["RolePollPopup"] = true,
-			["ScrollOfResurrection"] = true,
-			["SpellBookFrame"] = true,
-			["StackSplit"] = true,
-			["TradeFrame"] = true,
-			-- LoD frames
-			["AchievementUI"] = false,
-			["ArchaeologyUI"] = false,
-			["Collections"] = false, -- (Mounts, Pets, Toys, Heirlooms & Appearances)
-			["EncounterJournal"] = false,
-			["GuildControlUI"] = false,
-			["GuildUI"] = false,
-			["InspectUI"] = false,
-			["ItemSocketingUI"] = false,
-			["LookingForGuildUI"] = false,
-			["PVPUI"] = false,
-			["RaidUI"] = false,
-			["TalentUI"] = false,
-			["TradeSkillUI"] = false,
-		},
-	    npc = {
-			["BankFrame"] = true,
-			["GossipFrame"] = true,
-			["GuildRegistrar"] = true,
-			["MerchantFrame"] = true,
-			["Petition"] = true,
-			["PetStableFrame"] = true,
-			["QuestFrame"] = true,
-			["SideDressUpFrame"] = true,
-			["Tabard"] = true,
-			["TaxiFrame"] = true,
-			-- LoD frames
-			["AuctionUI"] = false,
-			["BarbershopUI"] = false,
-			["BlackMarketUI"] = false,
-			["FlightMap"] = false,
-			["ItemUpgradeUI"] = false,
-			["QuestChoice"] = false,
-			["ReforgingUI"] = false,
-			["TrainerUI"] = false,
-			["VoidStorageUI"] = false,
-		},
-		ui = {
-			["AddonList"] = true,
-			["AlertFrames"] = true,
-			["ArtifactToasts"] = true,
-			["AuthChallengeUI"] = false, -- N.B. cannot be skinned
-			["AutoComplete"] = true,
-			["BNFrames"] = true,
-			["ChatBubbles"] = true,
-			["ChatButtons"] = true,
-			["ChatConfig"] = true,
-			["ChatEditBox"] = true,
-			["ChatFrames"] = true,
-			["ChatMenus"] = true,
-			["ChatMinimizedFrames"] = true,
-			["ChatTabs"] = true,
-			["ChatTemporaryWindow"] = true,
-			["CinematicFrame"] = true,
-			["CoinPickup"] = true,
-			["ColorPicker"] = true,
-			["DestinyFrame"] = true,
-			["DropDownPanels"] = true,
-			["GarrisonTooltips"] = true,
-			["HelpFrame"] = true,
-			["ItemText"] = true,
-			["LevelUpDisplay"] = true,
-			["LFDFrame"] = true,
-			["LFGFrame"] = true,
-			["LFRFrame"] = true,
-			["MailFrame"] = true,
-			["MainMenuBar"] = false, -- checked below
-			["MenuFrames"] = true,
-			["Minimap"] = false, -- checked below
-			["MinimapButtons"] = false, -- done with timer
-			["MovieFrame"] = true,
-			["NamePlates"] = true,
-			["NavigationBar"] = true,
-			["PetBattleUI"] = true,
-			["PVEFrame"] = true,
-			["PVPHelper"] = true,
-			["QuestMap"] = false, -- checked below
-			["QueueStatusFrame"] = true,
-			["RaidFrame"] = true,
-			["ScriptErrors"] = true,
-			["SecureTransferUI"] = false, -- N.B. cannot be skinned
-			["SplashFrame"] = true,
-			["StaticPopups"] = true,
-			["Tooltips"] = false, -- checked below
-			["Tutorial"] = true,
-			["WorldMap"] = true,
-			["WorldState"] = true,
-			["WowTokenUI"] = false, -- N.B. cannot be skinned
-			["ZoneAbility"] = true,
-			-- LoD frames
-			["AdventureMap"] = false,
-			["ArtifactUI"] = false,
-			["BattlefieldMinimap"] = false,
-			["BindingUI"] = false,
-			["Calendar"] = false,
-			["ChallengesUI"] = false,
-			["DeathRecap"] = false,
-			["DebugTools"] = false,
-			["GarrisonUI"] = false,
-			["GMChatUI"] = false,
-			["GMSurveyUI"] = false,
-			["GuildBankUI"] = false,
-			["MacroUI"] = false,
-			["MovePad"] = false,
-			["ObliterumUI"] = false,
-			["OrderHallUI"] = false,
-			["SocialUI"] = false, -- N.B. cannot be skinned
-			["StoreUI"] = false, -- N.B. cannot be skinned
-			["TalkingHeadUI"] = false,
-			["TimeManager"] = false,
-		},
-	}
-
-	-- add optional frames
-	if _G.IsMacClient() then self.blizzFrames.ui["MovieProgress"] = true end
-	-- handle non standard ones here
-
-	-- skin the MinimapButtons if SexyMap isn't loaded
-	if not IsAddOnLoaded("SexyMap") then
-		self:ScheduleTimer("checkAndRun", 1, "MinimapButtons") -- wait for a second before skinning the minimap buttons
-	end
-
-	-- skin required frames now
-	for _, bfType in pairs(self.blizzFrames) do
-		for skin, runNow in pairs(bfType) do
-			if runNow then
-				self:checkAndRun(skin)
-			else
-				bfType[skin] = true -- set so can be checked later in checkAndRun function
+	-- skin Blizzard frames
+	for k1, v1 in pairs(self.blizzFrames) do
+		if k1 ~= "o" then -- ignore options functions
+			for k2, v2 in pairs(v1) do
+				self:checkAndRun(k2, k1)
 			end
 		end
 	end
@@ -243,69 +77,50 @@ aObj.otherAddons = {}
 aObj.otherAddons["tekKonfig"] = true
 aObj.otherAddons["LibKeyBound"] = true
 aObj.otherAddons["WIM_Options"] = false
-function aObj:AddonFrames()
-	-- self:Debug("AddonFrames")
-
-	-- these addons colour the Tooltip Border
-	if IsAddOnLoaded("Chippu")
-	or IsAddOnLoaded("TipTac")
-	then
-		self.ttBorder = false
-	end
-
-	-- skin tooltips here after checking whether the ttBorder setting needed changing
-	self:checkAndRun("Tooltips")
-
-	-- skin the QuestMap if EQL3 isn't loaded
-	-- N.B. Do it here as other Addons use the QuestLog size
-	if not IsAddOnLoaded("EQL3") then self:checkAndRun("QuestMap") end
-
-	-- skin the CastingBar if other castbar addons aren't loaded
-	if not IsAddOnLoaded("Quartz")
-	and not IsAddOnLoaded("Dominos_Cast")
-	then
-		self:checkAndRun("CastingBar")
-	end
-
-	-- skin the CompactFrames if Tukui/ElvUI aren't loaded
-	if not IsAddOnLoaded("Tukui")
-	and not IsAddOnLoaded("ElvUI")
-	then
-		self:checkAndRun("CompactFrames")
-	end
-
-	-- skin the DressUpFrame if DressUp isn't loaded
-	if not IsAddOnLoaded("DressUp") then self:checkAndRun("DressUpFrame") end
-
-	-- skin the MainMenuBar if Dominos isn't loaded
-	if not IsAddOnLoaded("Dominos") then self:checkAndRun("MainMenuBar") end
-
-	-- skin the Minimap if SexyMap isn't loaded
-	if not IsAddOnLoaded("SexyMap") then self:checkAndRun("Minimap") end
-
-	--	don't make Model Frames Rotatable if CloseUp is loaded
-	if not IsAddOnLoaded("CloseUp") then self:checkAndRun("ModelFrames") end
-
-	-- special case for dummy addon entry WIM_Options
-	if self.WIM_Options then self:checkAndRun("WIM_Options") end -- not an addon in its own right
-
-	-- used for Addons that aren't LoadOnDemand
-	for addon, skinFunc in pairs(self.addonsToSkin) do
-		self:checkAndRunAddOn(addon, nil, skinFunc)
-	end
-	self.addonsToSkin = nil
+local function skinLibs()
 
 	-- skin library objects
-	for lib, skin in pairs(self.libsToSkin) do
-		if _G.LibStub(lib, true) then
-			if self[skin] then self:checkAndRun(skin) -- not an addon in its own right
+	for libName, skinFunc in pairs(aObj.libsToSkin) do
+		if _G.LibStub(libName, true) then
+			if skinFunc then
+				aObj:checkAndRun(skinFunc, "s") -- not an addon in its own right
 			else
-				if self.db.profile.Warnings then
-					self:CustomPrint(1, 0, 0, skin, "loaded but skin not found in SkinMe directory")
+				if aObj.db.profile.Warnings then
+					aObj:CustomPrint(1, 0, 0, libName, "loaded but skin not found in SkinMe directory")
 				end
 			end
 		end
 	end
+
+end
+local function skinBLoD(addon)
+
+	for fType, fTab in pairs(aObj.blizzLoDFrames) do
+		for fName, _ in pairs(fTab) do
+			bLoD = "Blizzard_" .. fName
+			if (addon and addon == bLoD)
+			or IsAddOnLoaded(bLoD)
+			then
+				aObj:checkAndRun(fName, fType, true)
+			end
+		end
+	end
+
+end
+function aObj:AddonFrames()
+	-- self:Debug("AddonFrames")
+
+	-- special case for dummy addon entry WIM_Options
+	if self.WIM_Options then self:checkAndRun("WIM_Options", "s") end -- not an addon in its own right
+
+	-- used for Addons that aren't LoadOnDemand
+	for addOnName, skinFunc in pairs(self.addonsToSkin) do
+		self:checkAndRunAddOn(addOnName, nil, skinFunc)
+	end
+	self.addonsToSkin = nil
+
+	-- skin library objects
+	skinLibs()
 
 	-- skin KeyboundDialog frame
 	if self.db.profile.MenuFrames then
@@ -317,21 +132,16 @@ function aObj:AddonFrames()
 	end
 
 	-- skin tekKonfig library objects (N.B. not a LibStub library)
-	if self.tekKonfig then self:checkAndRun("tekKonfig") end -- not an addon in its own right
+	if self.tekKonfig then self:checkAndRun("tekKonfig", "s") end -- not an addon in its own right
 
-	-- skin the Blizzard LoD frames if they have already been loaded by other addons, wait for 0.2 secs to allow them to have been loaded
-	self:ScheduleTimer(function()
-		for addon, skin in pairs(blizzLoD) do
-			if IsAddOnLoaded(addon) then self:checkAndRun(skin) end
+	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
+	-- (Tukui does this for the PetJournal, other addons do it as well)
+	_G.C_Timer.After(0.2, function()
+		skinBLoD()
+		for name, skinFunc in pairs(self.lodAddons) do
+			if IsAddOnLoaded(name) then self:checkAndRunAddOn(name, true, skinFunc) end
 		end
-	end, 0.2)
-
-	-- skin the any LoD Addons that have already been loaded by other addons, wait for 0.2 secs to allow them to have been loaded (Tukui does this for the PetJournal, other addons do it as well)
-	self:ScheduleTimer(function()
-		for addon, skin in pairs(self.lodAddons) do
-			if IsAddOnLoaded(addon) then self:checkAndRun(skin) end
-		end
-	end, 0.2)
+	end)
 
 end
 
@@ -365,14 +175,14 @@ aObj.otherAddons["PetBattleTeams"] = false
 
 local prev_addon
 function aObj:LoDFrames(addon)
-	-- self:Debug("LoDFrames: [%s, %s, %s]", addon, self.lodAddons[addon], blizzLoD[addon])
+	-- self:Debug("LoDFrames: [%s, %s]", addon, self.lodAddons[addon])
 
 	-- ignore multiple occurrences of the same addon
 	if addon == prev_addon then return end
 	prev_addon = addon
 
-	-- used for Blizzard LoadOnDemand Addons
-	if blizzLoD[addon] then self:checkAndRun(blizzLoD[addon]) end
+	-- check to see if it's a Blizzard LoD Frame
+	skinBLoD()
 
 	-- used for User LoadOnDemand Addons
 	if self.lodAddons[addon] then self:checkAndRunAddOn(addon, true, self.lodAddons[addon]) end
@@ -392,18 +202,14 @@ function aObj:LoDFrames(addon)
 
 	-- handle FramesResized changes
 	if IsAddOnLoaded("FramesResized") then
-		if addon == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:checkAndRun("FR_TradeSkillUI") -- not an addon in its own right
-		elseif addon == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:checkAndRun("FR_TrainerUI") -- not an addon in its own right
+		if addon == "Blizzard_TradeSkillUI" and self.FR_TradeSkillUI then self:checkAndRun("FR_TradeSkillUI", "s") -- not an addon in its own right
+		elseif addon == "Blizzard_TrainerUI" and self.FR_TrainerUI then self:checkAndRun("FR_TrainerUI", "s") -- not an addon in its own right
 		end
 	end
 
 	-- load library skins here as well, they may only get loaded by a LoD AddOn
 	-- e.g. Dewdrop by ArkInventory when an AddonLoader is used
-	for k, v in pairs(self.libsToSkin) do
-		if _G.LibStub(k, true) then
-			if self[v] then self:checkAndRun(v) end
-		end
-	end
+	skinLibs()
 
 end
 
@@ -411,7 +217,7 @@ end
 function aObj:ADDON_LOADED(event, addon)
 	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
-	self:ScheduleTimer("LoDFrames", self.db.profile.Delay.LoDs, addon)
+	_G.C_Timer.After(self.db.profile.Delay.LoDs, function() aObj:LoDFrames(addon) end)
 
 end
 
@@ -419,9 +225,7 @@ aObj.otherAddons["TradeSkillMaster_Auctioning"] = false
 aObj.otherAddons["TradeSkillMaster_AuctionDB"] = false
 aObj.otherAddons["TradeSkillMaster_Shopping"] = false
 function aObj:AUCTION_HOUSE_SHOW()
-	-- self:Debug("AUCTION_HOUSE_SHOW")
-
-	self:checkAndRun("AuctionUI") -- npc
+	self:Debug("AUCTION_HOUSE_SHOW")
 
 	-- trigger these when AH loads otherwise errors occur
 	self:checkAndRunAddOn("Auctionator")
@@ -431,8 +235,8 @@ function aObj:AUCTION_HOUSE_SHOW()
 	or IsAddOnLoaded("TradeSkillMaster_AuctionDB")
 	or IsAddOnLoaded("TradeSkillMaster_Shopping")
 	then
-		self:checkAndRun("TSM_AuctionFrameHook")
-		self:checkAndRun("TSM_AuctionHouse")
+		self:checkAndRun("TSM_AuctionFrameHook", "s") -- not an addon in its own right
+		self:checkAndRun("TSM_AuctionHouse", "s") -- not an addon in its own right
 	end
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
@@ -456,23 +260,9 @@ aObj.otherAddons["TradeSkillDW"] = false
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
 
-	-- don't trigger like this if TradeSkillMaster_Crafting is loaded
-	if not IsAddOnLoaded("TradeSkillMaster_Crafting") then
-		self:checkAndRun("TradeSkillUI") -- player
-	else
-		self:SecureHook("TradeSkillFrame_LoadUI", function()
-			self:checkAndRun("TradeSkillUI") -- player
-			self:Unhook("TradeSkillFrame_LoadUI")
-		end)
-		self:checkAndRunAddOn("TradeSkillMaster_Crafting")
-	end
-
-	-- trigger this when TradeSkill loads otherwise it doesn't get loaded
+	self:checkAndRunAddOn("TradeSkillMaster_Crafting")
 	self:checkAndRunAddOn("ReagentMaker")
-
-	-- trigger this to skin ProfessionTabs
 	self:checkAndRunAddOn("ProfessionTabs_TSF")
-
 	self:checkAndRunAddOn("TradeSkillDW")
 
 	self:UnregisterEvent("TRADE_SKILL_SHOW")
@@ -483,7 +273,6 @@ aObj.otherAddons["ProfessionTabs_TF"] = false
 function aObj:TRADE_SHOW()
 	-- self:Debug("TRADE_SHOW")
 
-	-- trigger this to skin ProfessionTabs
 	self:checkAndRunAddOn("ProfessionTabs_TF")
 
 	self:UnregisterEvent("TRADE_SHOW")

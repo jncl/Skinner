@@ -4,7 +4,16 @@ local ftype = "n"
 
 local pairs = _G.pairs
 
-function aObj:AuctionUI() -- LoD
+-- The following function is used by the GossipFrame & QuestFrame functions
+local function setupQuestDisplayColours()
+
+	_G.NORMAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.HTr, aObj.HTg, aObj.HTb) .. "%s|r"
+	_G.TRIVIAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.BTr, aObj.BTg, aObj.BTb) .. "%s (low level)|r"
+	_G.IGNORED_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.ITr, aObj.ITg, aObj.ITb) .. "%s (ignored)|r"
+
+end
+
+aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
@@ -130,7 +139,7 @@ function aObj:AuctionUI() -- LoD
 
 end
 
-function aObj:BankFrame()
+aObj.blizzFrames[ftype].BankFrame = function(self)
 	if not self.db.profile.BankFrame or self.initialized.BankFrame then return end
 	self.initialized.BankFrame = true
 
@@ -141,10 +150,11 @@ function aObj:BankFrame()
 	self:skinTabs{obj=_G.BankFrame, x1=6, y1=0, x2=-6, y2=2}
 	self:keepFontStrings(_G.BankSlotsFrame)
 	-- ReagentBankFrame
-	self:addSkinFrame{obj=_G.ReagentBankFrame.UnlockInfo, ft=ftype, kfs=true, ofs=-4}
 	_G.ReagentBankFrame:DisableDrawLayer("ARTWORK")
 	_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND")
 	_G.ReagentBankFrame:DisableDrawLayer("BORDER")
+	self:addSkinFrame{obj=_G.ReagentBankFrame.UnlockInfo, kfs=true, ft=ftype, ofs=-4}
+	_G.ReagentBankFrameUnlockInfoBlackBG:SetAlpha(1) -- hide slots
 
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
@@ -175,9 +185,10 @@ function aObj:BankFrame()
 			btn = nil
 		end)
 	end
+
 end
 
-function aObj:BarbershopUI() -- LoD
+aObj.blizzLoDFrames[ftype].BarbershopUI = function(self)
 	if not self.db.profile.BarbershopUI or self.initialized.Barbershop then return end
 	self.initialized.Barbershop = true
 
@@ -195,7 +206,7 @@ function aObj:BarbershopUI() -- LoD
 
 end
 
-function aObj:BlackMarketUI() -- LoD
+aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 	if not self.db.profile.BlackMarketUI or self.initialized.BlackMarketUI then return end
 	self.initialized.BlackMarketUI = true
 
@@ -232,7 +243,7 @@ function aObj:BlackMarketUI() -- LoD
 
 end
 
-function aObj:FlightMap() -- LoD
+aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	if not self.db.profile.FlightMap or self.initialized.FlightMap then return end
 	self.initialized.FlightMap = true
 
@@ -253,14 +264,7 @@ function aObj:FlightMap() -- LoD
 
 end
 
-local function setupQuestDisplayColours()
-
-	_G.NORMAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.HTr, aObj.HTg, aObj.HTb) .. "%s|r"
-	_G.TRIVIAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.BTr, aObj.BTg, aObj.BTb) .. "%s (low level)|r"
-	_G.IGNORED_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.ITr, aObj.ITg, aObj.ITb) .. "%s (ignored)|r"
-
-end
-function aObj:GossipFrame()
+aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.db.profile.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
@@ -280,7 +284,7 @@ function aObj:GossipFrame()
 
 end
 
-function aObj:GuildRegistrar()
+aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 	if not self.db.profile.GuildRegistrar or self.initialized.GuildRegistrar then return end
 	self.initialized.GuildRegistrar = true
 
@@ -296,7 +300,7 @@ function aObj:GuildRegistrar()
 
 end
 
-function aObj:ItemUpgradeUI() -- LoD
+aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 	if not self.db.profile.ItemUpgradeUI or self.initialized.ItemUpgradeUI then return end
 	self.initialized.ItemUpgradeUI = true
 
@@ -336,7 +340,7 @@ function aObj:ItemUpgradeUI() -- LoD
 
 end
 
-function aObj:MerchantFrame()
+aObj.blizzFrames[ftype].MerchantFrame = function(self)
 	if not self.db.profile.MerchantFrame or self.initialized.MerchantFrame then return end
 	self.initialized.MerchantFrame = true
 
@@ -389,7 +393,7 @@ function aObj:MerchantFrame()
 
 end
 
-function aObj:Petition()
+aObj.blizzFrames[ftype].Petition = function(self)
 	if not self.db.profile.Petition or self.initialized.Petition then return end
 	self.initialized.Petition = true
 
@@ -407,7 +411,7 @@ function aObj:Petition()
 
 end
 
-function aObj:PetStableFrame()
+aObj.blizzFrames[ftype].PetStableFrame = function(self)
 	if not self.db.profile.PetStableFrame or self.initialized.PetStableFrame then return end
 	self.initialized.PetStableFrame = true
 
@@ -446,7 +450,7 @@ function aObj:PetStableFrame()
 
 end
 
-function aObj:QuestChoice() -- LoD
+aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
 	if not self.db.profile.QuestChoice or self.initialized.QuestChoice then return end
 	self.initialized.QuestChoice = true
 
@@ -463,7 +467,7 @@ function aObj:QuestChoice() -- LoD
 
 end
 
-function aObj:QuestFrame()
+aObj.blizzFrames[ftype].QuestFrame = function(self)
 	if not self.db.profile.QuestFrame or self.initialized.QuestFrame then return end
 	self.initialized.QuestFrame = true
 
@@ -521,11 +525,11 @@ function aObj:QuestFrame()
 	self:skinSlider{obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, size=3}
 	self:addSkinFrame{obj=_G.QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
 
-	self:QuestInfo()
+	self.blizzFrames.n.QuestInfo(self)
 
 end
 
-function aObj:QuestInfo()
+aObj.blizzFrames[ftype].QuestInfo = function(self)
 	if self.initialized.QuestInfo then return end
 	self.initialized.QuestInfo = true
 
@@ -678,7 +682,7 @@ function aObj:QuestInfo()
 
 end
 
-function aObj:SideDressUpFrame()
+aObj.blizzFrames[ftype].SideDressUpFrame = function(self)
 	if not self.db.profile.SideDressUpFrame or self.initialized.SideDressUpFrame then return end
 	self.initialized.SideDressUpFrame = true
 
@@ -690,7 +694,7 @@ function aObj:SideDressUpFrame()
 
 end
 
-function aObj:Tabard()
+aObj.blizzFrames[ftype].Tabard = function(self)
 	if not self.db.profile.Tabard or self.initialized.Tabard then return end
 	self.initialized.Tabard = true
 
@@ -710,7 +714,7 @@ function aObj:Tabard()
 
 end
 
-function aObj:TaxiFrame()
+aObj.blizzFrames[ftype].TaxiFrame = function(self)
 	if not self.db.profile.TaxiFrame or self.initialized.TaxiFrame then return end
 	self.initialized.TaxiFrame = true
 
@@ -720,7 +724,7 @@ function aObj:TaxiFrame()
 
 end
 
-function aObj:TrainerUI() -- LoD
+aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 	if not self.db.profile.TrainerUI or self.initialized.TrainerUI then return end
 	self.initialized.TrainerUI = true
 
@@ -745,7 +749,7 @@ function aObj:TrainerUI() -- LoD
 
 end
 
-function aObj:VoidStorageUI() -- LoD
+aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 	if not self.db.profile.VoidStorageUI or self.initialized.VoidStorageUI then return end
 	self.initialized.VoidStorageUI = true
 

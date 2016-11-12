@@ -34,7 +34,7 @@ function aObj:TukuiInit()
 		-- Do these before we run the function
 
 		-- setup the default DB values and register them
-		self:checkAndRun("Defaults", true)
+		self:checkAndRun("SetupDefaults", "o", false, true)
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures
@@ -121,7 +121,7 @@ function aObj:TukuiInit()
 end
 
 -- Load support for TukUI
-local success, err = aObj:checkAndRun("TukuiInit", true)
+local success, err = aObj:checkAndRun("TukuiInit", "s", true) -- not an addon in its own right
 if not success then
 	_G.print("Error running", "TukuiInit", err)
 end

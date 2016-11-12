@@ -41,7 +41,7 @@ function aObj:LUIInit()
 		-- Do these before we run the function
 
 		-- setup the default DB values and register them
-		self:checkAndRun("Defaults", true)
+		self:checkAndRun("SetupDefaults", "o", false, true)
 		self.Defaults = nil -- only need to run this once
 
 		-- create and use a new db profile called LUI
@@ -123,7 +123,7 @@ function aObj:LUIInit()
 end
 
 -- Load support for LUI
-local success, err = aObj:checkAndRun("LUIInit", true)
+local success, err = aObj:checkAndRun("LUIInit", "s", true) -- not an addon in its own right
 if not success then
 	print("Error running", "LUIInit", err)
 end

@@ -1,10 +1,12 @@
 local aName, aObj = ...
 local _G = _G
+local ftype = "o"
 
 -- Add locals to see if it speeds things up
 local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, IsAddOnLoaded, LibStub, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.IsAddOnLoaded, _G.LibStub, _G.pairs
+local DBIcon = LibStub("LibDBIcon-1.0")
 
-function aObj:Defaults()
+aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
 	local defaults = { profile = {
 	-->>-- General
@@ -42,7 +44,7 @@ function aObj:Defaults()
 		BackdropBorder       = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		Backdrop             = {r = 0, g = 0, b = 0, a = 0.9},
 		HeadText             = {r = 0.8, g = 0.8, b = 0.0},
-		BodyText             = {r = 0.7, g = 0.7, b = 0.0},
+		BodyText             = {r = 0.6, g = 0.6, b = 0.0},
 		IgnoredText          = {r = 0.5, g = 0.5, b = 0.0},
 		GradientMin          = {r = 0.1, g = 0.1, b = 0.1, a = 0},
 		GradientMax          = {r = 0.25, g = 0.25, b = 0.25, a = 1},
@@ -188,8 +190,7 @@ function aObj:Defaults()
 
 end
 
-local DBIcon = LibStub("LibDBIcon-1.0")
-function aObj:Options()
+aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
@@ -365,7 +366,7 @@ function aObj:Options()
 							get = function(info) return db.StatusBar.texture end,
 							set = function(info, value)
 								db.StatusBar.texture = value
-								self:checkAndRun("updateSBTexture")
+								self:checkAndRun("updateSBTexture", "s") -- not an addon in its own right
 							end,
 						} or nil,
 						bgcolour = {
@@ -381,7 +382,7 @@ function aObj:Options()
 							set = function(info, r, g, b, a)
 								local c = db.StatusBar
 								c.r, c.g, c.b, c.a = r, g, b, a
-								self:checkAndRun("updateSBTexture")
+								self:checkAndRun("updateSBTexture", "s") -- not an addon in its own right
 							end,
 						},
 					},
@@ -736,9 +737,9 @@ function aObj:Options()
 				-- handle Blizzard UI LoD Addons
 				if uiOpt then
 					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
-						self:checkAndRun(info[#info])
+						self:checkAndRun(info[#info], "n", true)
 					end
-				else self:checkAndRun(info[#info]) end
+				else self:checkAndRun(info[#info], "n") end
 			end,
 			args = {
 				head1 = {
@@ -858,9 +859,9 @@ function aObj:Options()
 				local uiOpt = info[#info]:match("UI" , -2)
 				if uiOpt then
 					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
-						self:checkAndRun(info[#info])
+						self:checkAndRun(info[#info], "p", true)
 					end
-				else self:checkAndRun(info[#info]) end
+				else self:checkAndRun(info[#info], "p") end
 			end,
 			args = {
 				head1 = {
@@ -889,7 +890,7 @@ function aObj:Options()
 					get = function(info) return db.AchievementUI[info[#info]] end,
 					set = function(info, value)
 						db.AchievementUI[info[#info]] = value
-						if IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI") end
+						if IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
 					end,
 					args = {
 						skin = {
@@ -923,7 +924,7 @@ function aObj:Options()
 					get = function(info) return db.CastingBar[info[#info]] end,
 					set = function(info, value)
 						db.CastingBar[info[#info]] = value
-						self:checkAndRun("CastingBar")
+						self:checkAndRun("CastingBar", "p")
 					end,
 					args = {
 						skin = {
@@ -964,7 +965,7 @@ function aObj:Options()
 					get = function(info) return db.ContainerFrames[info[#info]] end,
 					set = function(info, value)
 						db.ContainerFrames[info[#info]] = value
-						self:checkAndRun("ContainerFrames")
+						self:checkAndRun("ContainerFrames", "p")
 					end,
 					args = {
 						skin = {
@@ -1046,7 +1047,7 @@ function aObj:Options()
 					get = function(info) return db.LootFrames[info[#info]] end,
 					set = function(info, value)
 						db.LootFrames[info[#info]] = value
-						self:checkAndRun("LootFrames")
+						self:checkAndRun("LootFrames", "p")
 					end,
 					args = {
 						skin = {
@@ -1077,7 +1078,7 @@ function aObj:Options()
 					get = function(info) return db.MirrorTimers[info[#info]] end,
 					set = function(info, value)
 						db.MirrorTimers[info[#info]] = value
-						self:checkAndRun("MirrorTimers")
+						self:checkAndRun("MirrorTimers", "p")
 					end,
 					args = {
 						skin = {
@@ -1184,14 +1185,14 @@ function aObj:Options()
 			set = function(info, value)
 				db[info[#info]] = value
 				local uiOpt = info[#info]:match("UI" , -2)
-				if info[#info] == "Colours" then self:checkAndRun("ColorPicker")
+				if info[#info] == "Colours" then self:checkAndRun("ColorPicker", "p")
 				elseif info[#info] == "CombatLogQBF" then return
 				-- handle Blizzard UI LoD Addons
 				elseif uiOpt then
 					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
-						self:checkAndRun(info[#info])
+						self:checkAndRun(info[#info], "u", true)
 					end
-				else self:checkAndRun(info[#info]) end
+				else self:checkAndRun(info[#info], "u") end
 			end,
 			args = {
 				head1 = {
@@ -1253,7 +1254,7 @@ function aObj:Options()
 						db.BattlefieldMm[info[#info]] = value
 						if info[#info] == "skin" then
 							if _G.IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
-								self:checkAndRun("BattlefieldMinimap")
+								self:checkAndRun("BattlefieldMinimap", "u", true)
 							end
 						elseif info[#info] == "gloss" and _G.BattlefieldMinimap.sf then
 							if value then
@@ -1358,7 +1359,7 @@ function aObj:Options()
 					get = function(info) return db.ChatEditBox[info[#info]] end,
 					set = function(info, value)
 						db.ChatEditBox[info[#info]] = value
-						self:checkAndRun("ChatEditBox")
+						self:checkAndRun("ChatEditBox", "u")
 					end,
 					args = {
 						skin = {
@@ -1477,7 +1478,7 @@ function aObj:Options()
 					get = function(info) return db.MainMenuBar[info[#info]] end,
 					set = function(info, value)
 						db.MainMenuBar[info[#info]] = value
-						self:checkAndRun("MainMenuBar")
+						self:checkAndRun("MainMenuBar", "u")
 					end,
 					args = {
 						skin = {
@@ -1516,17 +1517,17 @@ function aObj:Options()
 					get = function(info) return db.Minimap[info[#info]] end,
 					set = function(info, value)
 						db.Minimap[info[#info]] = value
-						if info[#info] == "skin" then self:checkAndRun("Minimap")
+						if info[#info] == "skin" then self:checkAndRun("Minimap", "u")
 						elseif info[#info] == "gloss" and _G.Minimap.sf then
 							if value then
 								_G.RaiseFrameLevel(_G.Minimap.sf)
 							else
 								_G.LowerFrameLevel(_G.Minimap.sf)
 							end
-						elseif info[#info] == "btns" then self:checkAndRun("MinimapButtons")
+						elseif info[#info] == "btns" then self:checkAndRun("MinimapButtons", "u")
 						elseif info[#info] == "style" then
 							db.Minimap.btns = true
-							self:checkAndRun("MinimapButtons")
+							self:checkAndRun("MinimapButtons", "u")
 						end
 					end,
 					args = {
@@ -1552,10 +1553,10 @@ function aObj:Options()
 					get = function(info) return db.MinimapButtons[info[#info]] end,
 					set = function(info, value)
 						db.MinimapButtons[info[#info]] = value
-						if info[#info] == "skin" then self:checkAndRun("MinimapButtons")
+						if info[#info] == "skin" then self:checkAndRun("MinimapButtons", "u")
 						elseif info[#info] == "style" then
 							db.MinimapButtons.skin = true
-							self:checkAndRun("MinimapButtons")
+							self:checkAndRun("MinimapButtons", "u")
 						end
 					end,
 					args = {
@@ -1721,7 +1722,7 @@ function aObj:Options()
 					get = function(info) return db.WorldMap[info[#info]] end,
 					set = function(info, value)
 						db.WorldMap[info[#info]] = value
-						self:checkAndRun("WorldMap")
+						self:checkAndRun("WorldMap", "u")
 					end,
 					args = {
 						skin = {
@@ -1801,7 +1802,7 @@ function aObj:Options()
 		aObj.optTables["Disabled Skins"].args[name] = {
 			type = "toggle",
 			name = name .. (lib and " (Lib)" or ""),
-			desc = self.L["Toggle the skinning of "]..name,
+			desc = aObj.L["Toggle the skinning of "]..name,
 			width = name:len() > 20 and "double" or nil,
 		}
 
@@ -1818,18 +1819,18 @@ function aObj:Options()
 	for addonName, isLib in pairs(self.otherAddons) do
 		addDSOpt(addonName, isLib)
 	end
-	_G.wipe(self.otherAddons)
+	-- _G.wipe(self.otherAddons)
 	self.otherAddons = nil
 
 	-- add DB profile options
 	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
 	-- register the options tables and add them to the blizzard frame
-	self.ACR = LibStub("AceConfigRegistry-3.0")
-	self.ACD = LibStub("AceConfigDialog-3.0")
+	local ACR = LibStub("AceConfigRegistry-3.0")
+	local ACD = LibStub("AceConfigDialog-3.0")
 
-	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
-	self.optionsFrame = self.ACD:AddToBlizOptions(aName, aName)
+	ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
+	self.optionsFrame = ACD:AddToBlizOptions(aName, aName)
 
 	-- register the options, add them to the Blizzard Options
 	-- build the table used by the chatCommand function
@@ -1837,11 +1838,11 @@ function aObj:Options()
 	local optNames = {
 		"Backdrop", "Background", "Colours", "Gradient", "Modules", "NPC Frames", "Player Frames", "UI Frames", "Disabled Skins", "Profiles"
 	}
-	local optCheck = {}
+	local optCheck, optTitle = {}
 	for _, v in _G.ipairs(optNames) do
-		local optTitle = (" "):join(aName, v)
-		self.ACR:RegisterOptionsTable(optTitle, self.optTables[v])
-		self.optionsFrame[self.L[v]] = self.ACD:AddToBlizOptions(optTitle, self.L[v], aName)
+		optTitle = (" "):join(aName, v)
+		ACR:RegisterOptionsTable(optTitle, self.optTables[v])
+		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
 		optCheck[v:lower()] = v
 	end
 	optNames = nil

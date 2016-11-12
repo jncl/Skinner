@@ -643,7 +643,7 @@ function module:OnEnable()
 	then
 		-- remove options
 		aObj.optTables["Modules"].args["Skinner_UIButtons"].args["Quality"] = nil
-		aObj.ACR:NotifyChange(aName)
+		_G.LibStub("AceConfigRegistry-3.0"):NotifyChange(aName)
 		return
 	end
 

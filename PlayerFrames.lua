@@ -4,8 +4,57 @@ local ftype = "p"
 
 -- Add locals to see if it speeds things up
 local ipairs, pairs, unpack = _G.ipairs, _G.pairs, _G.unpack
+local IsAddOnLoaded = _G.IsAddOnLoaded
 
-function aObj:AchievementUI() -- LoD
+do -- manage ButtonBorders for talents
+	local function skinBtnBBC(frame, button)
+
+		if button
+		and button.sbb
+		then
+			local bnObj = button.name and button.name or button.Name and button.Name or nil
+			if (button.knownSelection and button.knownSelection:IsShown())
+			or (frame.inspect and button.border:IsShown()) -- inspect frame
+			then
+				button.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				if bnObj then bnObj:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
+			else
+				button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				if bnObj then bnObj:SetTextColor(1, 1, 1, 0.9) end
+			end
+			bnObj = nil
+		end
+
+	end
+	aObj:SecureHook("TalentFrame_Update", function(this, ...)
+		if not aObj.modBtnBs then
+			aObj:Unhook("TalentFrame_Update")
+			if skinBtnBBC then skinBtnBBC = nil end
+			return
+		end
+
+		for tier = 1, _G.MAX_TALENT_TIERS do
+			for column = 1, _G.NUM_TALENT_COLUMNS do
+				skinBtnBBC(this, this["tier" .. tier]["talent" .. column])
+			end
+		end
+	end)
+	aObj:SecureHook("PVPTalentFrame_Update", function(this)
+		if not aObj.modBtnBs then
+			aObj:Unhook("PVPTalentFrame_Update")
+			if skinBtnBBC then skinBtnBBC = nil end
+			return
+		end
+
+		for tier = 1, _G.MAX_PVP_TALENT_TIERS do
+			for column = 1, _G.MAX_PVP_TALENT_COLUMNS do
+				skinBtnBBC(this, this.Talents["Tier" .. tier]["Talent" .. column])
+			end
+		end
+	end)
+end
+
+aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	if not self.db.profile.AchievementUI.skin or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
 
@@ -312,7 +361,7 @@ function aObj:AchievementUI() -- LoD
 
 end
 
-function aObj:ArchaeologyUI() -- LoD
+aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 	if not self.db.profile.ArchaeologyUI or self.initialized.ArchaeologyUI then return end
 	self.initialized.ArchaeologyUI = true
 
@@ -376,7 +425,7 @@ function aObj:ArchaeologyUI() -- LoD
 
 end
 
-function aObj:Buffs()
+aObj.blizzFrames[ftype].Buffs = function(self)
 	if not self.db.profile.Buffs or self.initialized.Buffs then return end
 	self.initialized.Buffs = true
 
@@ -414,7 +463,14 @@ function aObj:Buffs()
 
 end
 
-function aObj:CastingBar()
+aObj.blizzFrames[ftype].CastingBar = function(self)
+	if IsAddOnLoaded("Quartz")
+	or IsAddOnLoaded("Dominos_Cast")
+	then
+		aObj.blizzFrames[ftype].CastingBar = nil
+		return
+	end
+
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
 
@@ -448,7 +504,7 @@ function aObj:CastingBar()
 
 end
 
-function aObj:CharacterFrames()
+aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	if not self.db.profile.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
 
@@ -598,7 +654,7 @@ function aObj:CharacterFrames()
 
 end
 
-function aObj:Collections() -- LoD
+aObj.blizzLoDFrames[ftype].Collections = function(self)
 	if not self.db.profile.Collections or self.initialized.Collections then return end
 	self.initialized.Collections = true
 
@@ -632,7 +688,7 @@ function aObj:Collections() -- LoD
 	if self.modBtnBs then
 		local function skinPLBtns(scrollFrame)
 
-			local btn, idx, isRevoked, rarity
+			local pet, isRevoked, rarity
 			for i = 1, #scrollFrame.buttons do
 				pet = scrollFrame.buttons[i]
 				_, _, _, _, _, _, isRevoked = _G.C_PetJournal.GetPetInfoByIndex(pet.index)
@@ -645,7 +701,7 @@ function aObj:Collections() -- LoD
 					pet.dragButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) -- disabled
 				end
 			end
-			btn, idx, isRevoked, rarity = nil, nil, nil, nil
+			pet, isRevoked, rarity = nil, nil, nil, nil
 
 		end
 		self:SecureHook(_G.PetJournal.listScroll, "update", function(this)
@@ -873,7 +929,14 @@ function aObj:Collections() -- LoD
 
 end
 
-function aObj:CompactFrames()
+aObj.blizzFrames[ftype].CompactFrames = function(self)
+	if IsAddOnLoaded("Tukui")
+	or IsAddOnLoaded("ElvUI")
+	then
+		aObj.blizzFrames[ftype].CompactFrames = nil
+		return
+	end
+
 	if not self.db.profile.CompactFrames or self.initialized.CompactFrames then return end
 	self.initialized.CompactFrames = true
 
@@ -993,7 +1056,7 @@ function aObj:CompactFrames()
 
 end
 
-function aObj:ContainerFrames()
+aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	if not self.db.profile.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
@@ -1050,9 +1113,14 @@ function aObj:ContainerFrames()
 
 end
 
-function aObj:DressUpFrame()
+aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	if not self.db.profile.DressUpFrame or self.initialized.DressUpFrame then return end
 	self.initialized.DressUpFrame = true
+
+	if IsAddOnLoaded("DressUp") then
+		aObj.blizzFrames[ftype].DressUpFrame = nil
+		return
+	end
 
 	self:skinDropDown{obj=_G.DressUpFrameOutfitDropDown, y2=-4}
 	_G.DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
@@ -1061,7 +1129,7 @@ function aObj:DressUpFrame()
 
 end
 
-function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
+aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	if not self.db.profile.EncounterJournal or self.initialized.EncounterJournal then return end
 	self.initialized.EncounterJournal = true
 
@@ -1351,7 +1419,7 @@ function aObj:EncounterJournal() -- LoD (a.k.a Adventure Guide)
 
 end
 
-function aObj:EquipmentFlyout()
+aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 	if not self.db.profile.EquipmentFlyout or self.initialized.EquipmentFlyout then return end
 	self.initialized.EquipmentFlyout = true
 
@@ -1364,7 +1432,7 @@ function aObj:EquipmentFlyout()
 
 end
 
-function aObj:FriendsFrame()
+aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	if not self.db.profile.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
@@ -1486,7 +1554,7 @@ function aObj:FriendsFrame()
 
 end
 
-function aObj:GhostFrame()
+aObj.blizzFrames[ftype].GhostFrame = function(self)
 	if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
 	self.initialized.GhostFrame = true
 
@@ -1496,7 +1564,7 @@ function aObj:GhostFrame()
 
 end
 
-function aObj:GuildControlUI() -- LoD
+aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 	if not self.db.profile.GuildControlUI or self.initialized.GuildControlUI then return end
 	self.initialized.GuildControlUI = true
 
@@ -1554,7 +1622,7 @@ function aObj:GuildControlUI() -- LoD
 
 end
 
-function aObj:GuildUI() -- LoD
+aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 	if not self.db.profile.GuildUI or self.initialized.GuildUI then return end
 	self.initialized.GuildUI = true
 
@@ -1676,7 +1744,7 @@ function aObj:GuildUI() -- LoD
 
 end
 
-function aObj:GuildInvite()
+aObj.blizzFrames[ftype].GuildInvite = function(self)
 	if not self.db.profile.GuildInvite or self.initialized.GuildInvite then return end
 	self.initialized.GuildInvite = true
 
@@ -1688,53 +1756,7 @@ function aObj:GuildInvite()
 
 end
 
-aObj:SecureHook("TalentFrame_Update", function(this, inspected_unit)
-	if aObj.modBtnBs and not aObj.modBtnBs then aObj:Unhook("TalentFrame_Update"); return end
-
-	local talentRow, button
-	for tier = 1, _G.MAX_TALENT_TIERS do
-		talentRow = this["tier" .. tier]
-		for column = 1, _G.NUM_TALENT_COLUMNS do
-			button = talentRow["talent" .. column]
-			if button
-			and button.sbb
-			then
-				if (this.inspect and button.border:IsShown())
-				or (button.knownSelection and button.knownSelection:IsShown())
-				then
-					button.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
-				else
-					button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-				end
-			end
-		end
-	end
-	talentRow, button = nil, nil
-end)
-aObj:SecureHook("PVPTalentFrame_Update", function(this)
-	if aObj.modBtnBs and not aObj.modBtnBs then aObj:Unhook("PVPTalentFrame_Update"); return end
-
-	local talentRow, button
-	for tier = 1, _G.MAX_PVP_TALENT_TIERS do
-		talentRow = this.Talents["Tier" .. tier]
-		for column = 1, _G.MAX_PVP_TALENT_COLUMNS do
-			button = talentRow["Talent" .. column]
-			if button
-			and button.sbb
-			then
-				if (this.inspect and button.border:IsShown())
-				or (button.knownSelection and button.knownSelection:IsShown())
-				then
-					button.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
-				else
-					button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-				end
-			end
-		end
-	end
-	talentRow, button = nil, nil
-end)
-function aObj:InspectUI() -- LoD
+aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 	if not self.db.profile.InspectUI or self.initialized.InspectUI then return end
 	self.initialized.InspectUI = true
 
@@ -1806,7 +1828,7 @@ function aObj:InspectUI() -- LoD
 
 end
 
-function aObj:ItemSocketingUI() -- LoD
+aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 	if not self.db.profile.ItemSocketingUI or self.initialized.ItemSocketingUI then return end
 	self.initialized.ItemSocketingUI = true
 
@@ -1842,7 +1864,7 @@ function aObj:ItemSocketingUI() -- LoD
 
 end
 
-function aObj:LookingForGuildUI() -- LoD
+aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 	if not self.db.profile.LookingForGuildUI or self.initialized.LookingForGuildUI then return end
 	self.initialized.LookingForGuildUI = true
 
@@ -1884,7 +1906,7 @@ function aObj:LookingForGuildUI() -- LoD
 
 end
 
-function aObj:LootFrames()
+aObj.blizzFrames[ftype].LootFrames = function(self)
 	if not self.db.profile.LootFrames.skin or self.initialized.LootFrames then return end
 	self.initialized.LootFrames = true
 
@@ -1984,7 +2006,7 @@ function aObj:LootFrames()
 
 end
 
-function aObj:LootHistory()
+aObj.blizzFrames[ftype].LootHistory = function(self)
 	if not self.db.profile.LootHistory or self.initialized.LootHistory then return end
 	self.initialized.LootHistory = true
 
@@ -2026,7 +2048,7 @@ function aObj:LootHistory()
 
 end
 
-function aObj:MirrorTimers()
+aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	if not self.db.profile.MirrorTimers.skin or self.initialized.MirrorTimers then return end
 	self.initialized.MirrorTimers = true
 
@@ -2071,7 +2093,12 @@ function aObj:MirrorTimers()
 
 end
 
-function aObj:ModelFrames()
+aObj.blizzFrames[ftype].ModelFrames = function(self)
+	if IsAddOnLoaded("CloseUp") then
+		aObj.blizzFrames[ftype].ModelFrames = nil
+		return
+	end
+
 	if not self.db.profile.CharacterFrames then return end
 
 	-- these are hooked to suppress the sound the normal functions use
@@ -2092,7 +2119,7 @@ function aObj:ModelFrames()
 
 end
 
-function aObj:ObjectiveTracker()
+aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	if not self.db.profile.ObjectiveTracker.skin
 	and not self.db.profile.ObjectiveTracker.popups
 	then
@@ -2280,7 +2307,7 @@ function aObj:ObjectiveTracker()
 
 end
 
-function aObj:OverrideActionBar() -- a.k.a. VehicleUI
+aObj.blizzFrames[ftype].OverrideActionBar = function(self)
 	if not self.db.profile.OverrideActionBar  or self.initialized.OverrideActionBar then return end
 	self.initialized.OverrideActionBar = true
 
@@ -2354,7 +2381,7 @@ function aObj:OverrideActionBar() -- a.k.a. VehicleUI
 
 end
 
-function aObj:PVPUI()
+aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
@@ -2455,7 +2482,7 @@ function aObj:PVPUI()
 
 end
 
-function aObj:RaidUI() -- LoD
+aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 	if not self.db.profile.RaidUI or self.initialized.RaidUI then return end
 	self.initialized.RaidUI = true
 
@@ -2517,7 +2544,7 @@ function aObj:RaidUI() -- LoD
 
 end
 
-function aObj:ReadyCheck()
+aObj.blizzFrames[ftype].ReadyCheck = function(self)
 	if not self.db.profile.ReadyCheck or self.initialized.ReadyCheck then return end
 	self.initialized.ReadyCheck = true
 
@@ -2525,7 +2552,7 @@ function aObj:ReadyCheck()
 
 end
 
-function aObj:RolePollPopup()
+aObj.blizzFrames[ftype].RolePollPopup = function(self)
 	if not self.db.profile.RolePollPopup or self.initialized.RolePollPopup then return end
 	self.initialized.RolePollPopup = true
 
@@ -2533,7 +2560,7 @@ function aObj:RolePollPopup()
 
 end
 
-function aObj:ScrollOfResurrection()
+aObj.blizzFrames[ftype].ScrollOfResurrection = function(self)
 	if not self.db.profile.ScrollOfResurrection or self.initialized.ScrollOfResurrection then return end
 	self.initialized.ScrollOfResurrection = true
 
@@ -2551,7 +2578,7 @@ function aObj:ScrollOfResurrection()
 
 end
 
-function aObj:SpellBookFrame()
+aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 	if not self.db.profile.SpellBookFrame or self.initialized.SpellBookFrame then return end
 	self.initialized.SpellBookFrame = true
 
@@ -2626,33 +2653,6 @@ function aObj:SpellBookFrame()
 	skinProf("Primary", 2)
 	-- Secondary professions
 	skinProf("Secondary", 4)
-	-->>-- Core Abilities Panel
---	_G.SpellBookCoreAbilitiesFrame.SpecName:SetTextColor(self.HTr, self.HTg, self.HTb)
---	self:SecureHook("SpellBook_UpdateCoreAbilitiesTab", function()
---		local btn
---		for i = 1, #_G.SpellBookCoreAbilitiesFrame.Abilities do
---			btn = _G.SpellBookCoreAbilitiesFrame.Abilities[i]
---			if not btn.sknd then
---				btn.sknd = true
---				btn.EmptySlot:SetAlpha(0)
---				btn.ActiveTexture:SetAlpha(0)
---				btn.FutureTexture:SetAlpha(0)
---				btn.Name:SetTextColor(self.HTr, self.HTg, self.HTb)
---				btn.InfoText:SetTextColor(self.BTr, self.BTg, self.BTb)
---				btn.RequiredLevel:SetTextColor(self.BTr, self.BTg, self.BTb)
---				self:addButtonBorder{obj=btn}
---			end
---		end
---		local tab
---		for i = 1, #_G.SpellBookCoreAbilitiesFrame.SpecTabs do
---			tab = _G.SpellBookCoreAbilitiesFrame.SpecTabs[i]
---			if not tab.sknd then
---				tab.sknd = true
---				self:removeRegions(tab, {1}) -- N.B. other regions are icon and highlight
---				self:addButtonBorder{obj=tab}
---			end
---		end
---	end)
 
 	-- colour the spell name text
 	local btnName, btn
@@ -2677,7 +2677,7 @@ function aObj:SpellBookFrame()
 
 end
 
-function aObj:StackSplit()
+aObj.blizzFrames[ftype].StackSplit = function(self)
 	if not self.db.profile.StackSplit or self.initialized.StackSplit then return end
 	self.initialized.StackSplit = true
 
@@ -2690,7 +2690,7 @@ function aObj:StackSplit()
 
 end
 
-function aObj:TalentUI() -- LoD
+aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	if not self.db.profile.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
 
@@ -2708,12 +2708,9 @@ function aObj:TalentUI() -- LoD
 		for i = 1, obj:GetNumChildren() do
 			btn = obj["abilityButton" .. i]
 			btn.ring:SetTexture(nil)
-			if btn.subText
-			and not btn.disabled
-			then
-				btn.subText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
-			end
+			btn.subText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		end
+		btn = nil
 	end
 	local function skinSpec(frame)
 		aObj:removeRegions(frame, {1, 2, 3, 4, 5, 6})
@@ -2815,7 +2812,7 @@ function aObj:TalentUI() -- LoD
 
 end
 
-function aObj:TradeFrame()
+aObj.blizzFrames[ftype].TradeFrame = function(self)
 	if not self.db.profile.TradeFrame or self.initialized.TradeFrame then return end
 	self.initialized.TradeFrame = true
 
@@ -2842,7 +2839,7 @@ function aObj:TradeFrame()
 
 end
 
-function aObj:TradeSkillUI() -- LoD
+aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 	if not self.db.profile.TradeSkillUI or self.initialized.TradeSkillUI then return end
 	self.initialized.TradeSkillUI = true
 

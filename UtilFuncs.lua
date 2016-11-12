@@ -131,7 +131,13 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
 	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
 
-	self:RegisterChatCommand("wai", function() _G.SetMapToCurrentZone() local x,y=_G.GetPlayerMapPosition("player") _G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f",_G.GetZoneText(),_G.GetSubZoneText(),x*100,y*100)) return end)
+	self:RegisterChatCommand("wai", function()
+		_G.SetMapToCurrentZone()
+		local x, y=_G.GetPlayerMapPosition("player")
+		_G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f", _G.GetZoneText(), _G.GetSubZoneText(), x * 100, y * 100))
+		x, y = nil, nil
+		return
+	end)
 
 end
 
@@ -172,13 +178,17 @@ function aObj:CustomPrint(r, g, b, a1, ...)
 end
 
 local errorhandler = _G.geterrorhandler()
-local function safecall(funcName, LoD, quiet)
+local function safecall(funcName, funcObj, LoD, quiet)
+-- local function safecall(funcName, LoD, quiet)
 --@alpha@
-	assert(funcName, "Unknown object safecall\n" .. debugstack())
+	assert(funcObj, "Unknown object safecall\n" .. debugstack())
 --@end-alpha@
 
+	-- aObj:Debug("safecall: [%s, %s, %s, %s]", funcName, funcObj, LoD, quiet)
+
 	-- handle errors from internal functions
-	local success, err = _G.xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
+	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
+	-- local success, err = _G.xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
 	if quiet then
 		return success, err
 	end
@@ -187,6 +197,7 @@ local function safecall(funcName, LoD, quiet)
 			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
 		end
 	end
+
 end
 
 function aObj:add2Table(table, value)
@@ -199,54 +210,41 @@ function aObj:add2Table(table, value)
 
 end
 
-function aObj:checkAndRun(funcName, quiet)
+function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 --@alpha@
-	assert(funcName, "Unknown object checkAndRun\n" .. debugstack())
+	assert(funcName, "Unknown functionName checkAndRun\n" .. debugstack())
+	assert(funcType, "Unknown functionType checkAndRun\n" .. debugstack())
 --@end-alpha@
 
-	-- self:Debug("checkAndRun: [%s, %s]", funcName, quiet)
+	-- self:Debug("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
-		self:add2Table(self.oocTab, {self.checkAndRun, {self, funcName, quiet}})
+		self:add2Table(self.oocTab, {self.checkAndRun, {self, funcName, funcType, LoD, quiet}})
 		return
 	end
 
-	-- only skin blizzard frames if required
-	if self.blizzFrames
-	and self.db
-	then
-		if (self.blizzFrames.npc[funcName] and self.db.profile.DisableAllNPC)
-		or (self.blizzFrames.player[funcName] and self.db.profile.DisableAllP)
-		or (self.blizzFrames.ui[funcName] and self.db.profile.DisableAllUI)
-		then
-			self[funcName] = nil
-			return
-		end
+	-- setup function's table object to use
+	local tObj
+	if funcType == "s" then tObj = self
+	else tObj = LoD and self["blizzLoDFrames"][funcType] or self["blizzFrames"][funcType]
 	end
 
-	-- don't skin any Addons whose skins are flagged as disabled
-	if self.blizzFrames
-	and self.db
+	-- only skin frames if required
+	if (funcType == "n" and self.db.profile.DisableAllNPC)
+	or (funcType == "p" and self.db.profile.DisableAllP)
+	or (funcType == "u" and self.db.profile.DisableAllUI)
+	or (funcType == "s" and (self.db.profile.DisabledSkins[funcName] or self.db.profile.DisableAllAS))
 	then
-		if not self.blizzFrames.npc[funcName]
-		and not self.blizzFrames.player[funcName]
-		and not self.blizzFrames.ui[funcName]
-		and (self.db.profile.DisabledSkins[funcName] or self.db.profile.DisableAllAS)
-		then
-			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, funcName, "not skinned, flagged as disabled (c&R)")
-			end
-			self[funcName] = nil
-			return
-		end
-	end
-
-	if type(self[funcName]) == "function" then
-		return safecall(funcName, nil, quiet)
+		tObj[funcName] = nil
+		return
 	else
-		if not quiet and self.db.profile.Warnings then
-			self:CustomPrint(1, 0, 0, "function [" .. funcName .. "] not found in " .. aName)
+		if type(tObj[funcName]) == "function" then
+			return safecall(funcName, tObj[funcName], nil, quiet)
+		else
+			if not quiet and self.db.profile.Warnings then
+				self:CustomPrint(1, 0, 0, "function [" .. funcName .. "] not found in " .. aName)
+			end
 		end
 	end
 
@@ -278,6 +276,8 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 		return
 	end
 
+	-- aObj:Debug("checkAndRunAddOn #2: [%s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), self[addonFunc])
+
 	if not _G.IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
 		if _G.IsAddOnLoadOnDemand(addonName) and not LoD then
@@ -293,10 +293,11 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the SkinMe directory")
 			end
 		elseif type(self[addonFunc]) == "function" then
-			return safecall(addonFunc, LoD)
+			return safecall(addonName, self[addonFunc], LoD)
+			-- return safecall(addonFunc, LoD)
 		else
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, "function [" .. addonFunc .. "] not found in " .. aName)
+				self:CustomPrint(1, 0, 0, "function [" .. addonName .. "] not found in " .. aName)
 			end
 		end
 	end
