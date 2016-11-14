@@ -175,6 +175,7 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 		and frame:GetWidth(237)
 		and frame:GetHeight(42)
 		and frame.GetBackdropBorderColor and frame:GetBackdropBorderColor()
+		and frame.Update
 		then
 			self:SecureHook(frame, "Update", function(this, liveUpdate)
 				local kids = {this:GetChildren()}
