@@ -1,3 +1,13 @@
+b7.22995.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Tidy up code
+	Rework how Blizzard frames are skinned
+	Bugfix for AlertFrames
+	Updated AddonLoader, Altoholic & TradeSkillMaster skins
+
 b7.22908.4
 Jncl:
 	ToDo.txt
