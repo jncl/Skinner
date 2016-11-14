@@ -3,7 +3,7 @@ local _G = _G
 local ftype = "o"
 
 -- Add locals to see if it speeds things up
-local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, IsAddOnLoaded, LibStub, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.IsAddOnLoaded, _G.LibStub, _G.pairs
+local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.LibStub, _G.pairs
 local DBIcon = LibStub("LibDBIcon-1.0")
 
 aObj.blizzFrames[ftype].SetupDefaults = function(self)
@@ -194,7 +194,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
-	local bggns = IsAddOnLoaded("Baggins") and self.Baggins and true or false
+	local bggns = _G.IsAddOnLoaded("Baggins") and self.Baggins and true or false
 
 	self.optTables = {
 
@@ -637,7 +637,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					desc = self.L["Set Gradient Maximum Colour"],
 					hasAlpha = true,
 				},
-				BagginsBBC = IsAddOnLoaded("Baggins") and self.Baggins and {
+				BagginsBBC = _G.IsAddOnLoaded("Baggins") and self.Baggins and {
 					type = "color",
 					order = -1,
 					width = "double",
@@ -736,10 +736,20 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				local uiOpt = info[#info]:match("UI" , -2)
 				-- handle Blizzard UI LoD Addons
 				if uiOpt then
-					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "n", true)
 					end
 				else self:checkAndRun(info[#info], "n") end
+				-- treat GossipFrame & QuestFrame as one
+				-- as they both change the quest text colours
+				if info[#info] == "GossipFrame" then
+					db.QuestFrame = value
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+				end
+				if info[#info] == "QuestFrame" then
+					db.GossipFrame = value
+					_G.InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["NPC Frames"]])
+				end
 			end,
 			args = {
 				head1 = {
@@ -858,7 +868,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				-- handle Blizzard UI LoD Addons
 				local uiOpt = info[#info]:match("UI" , -2)
 				if uiOpt then
-					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "p", true)
 					end
 				else self:checkAndRun(info[#info], "p") end
@@ -890,7 +900,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					get = function(info) return db.AchievementUI[info[#info]] end,
 					set = function(info, value)
 						db.AchievementUI[info[#info]] = value
-						if IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
+						if _G.IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
 					end,
 					args = {
 						skin = {
@@ -1189,7 +1199,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				elseif info[#info] == "CombatLogQBF" then return
 				-- handle Blizzard UI LoD Addons
 				elseif uiOpt then
-					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "u", true)
 					end
 				else self:checkAndRun(info[#info], "u") end

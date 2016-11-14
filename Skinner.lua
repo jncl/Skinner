@@ -288,7 +288,16 @@ function aObj:OnEnable()
 		self.db.profile.ClassColour = self.db.profile.ClassColours
 		self.db.profile.ClassColours = nil
 	end
-
+	-- treat GossipFrame & QuestFrame as one
+	-- as they both change the quest text colours
+	if not self.db.profile.GossipFrame == self.db.profile.QuestFrame then
+		if not self.db.profile.QuestFrame then
+			self.db.profile.GossipFrame = false
+		else
+			self.db.profile.QuestFrame = false
+		end
+	end
+	
 	-- add support for UIButton skinning
 	local btnModDB = self.db:GetNamespace("UIButtons", true)
 	self.modUIBtns = self:GetModule("UIButtons", true)
