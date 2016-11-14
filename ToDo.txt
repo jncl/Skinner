@@ -20,9 +20,6 @@ Legend:
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-	I	BossUnitFrames
-√		- make the attack highlight appear like other unit frames
-
 	I	Tooltips, reported by Talyrius, 29.10.16
 x		- Skinner\UIFrames.lua:23: Usage: HookScript(object, method, [handler]): 'object' - nil or table expected got string
 		  Ace3\AceHook-3.0\AceHook-3.0-8.lua:130: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
@@ -31,6 +28,8 @@ x		- Skinner\UIFrames.lua:23: Usage: HookScript(object, method, [handler]): 'obj
 		  Skinner\UtilFuncs.lua:198: in function 'add2Table'
 		  Skinner\SkinMe\Wholly-060.lua:36: in function <Skinner\SkinMe\Wholly.lua:4>
 
-√	N	TradeSkillMaster
+	N	MasterPlan, reported by bbarnett444, 13.10.16
+≈		- Skinner\SkinMe\MasterPlan-0.105.lua:179: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
 
-√	I	Make selected Talents more visible if using ButtonBorders
+	I	QuestFrame/GossipFrame, reported by next96, 13.10.16
+√		-	When Questframe skinning disabled, quest text is still yellow
