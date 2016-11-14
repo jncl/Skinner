@@ -95,6 +95,7 @@ local function skinLibs()
 end
 local function skinBLoD(addon)
 
+	local bLoD
 	for fType, fTab in pairs(aObj.blizzLoDFrames) do
 		for fName, _ in pairs(fTab) do
 			bLoD = "Blizzard_" .. fName
@@ -105,6 +106,7 @@ local function skinBLoD(addon)
 			end
 		end
 	end
+	bLoD = nil
 
 end
 function aObj:AddonFrames()
