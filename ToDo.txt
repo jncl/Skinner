@@ -28,8 +28,8 @@ x		- Skinner\UIFrames.lua:23: Usage: HookScript(object, method, [handler]): 'obj
 		  Skinner\UtilFuncs.lua:198: in function 'add2Table'
 		  Skinner\SkinMe\Wholly-060.lua:36: in function <Skinner\SkinMe\Wholly.lua:4>
 
-	N	MasterPlan, reported by bbarnett444, 13.10.16
-≈		- Skinner\SkinMe\MasterPlan-0.105.lua:179: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+	I	Tooltip, reported by krzysiek_7_5, 15.10.16
+√		- the item tooltip constantly flickers when viewing guild news feed
 
-	I	QuestFrame/GossipFrame, reported by next96, 13.10.16
-√		-	When Questframe skinning disabled, quest text is still yellow
+	I	UtilFuncs, reported by typhosy, 15.10.16
+√		- Skinner\PlayerFrames.lua:1544: attempt to call method 'RaidUI' (a nil value)
