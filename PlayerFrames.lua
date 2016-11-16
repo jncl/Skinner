@@ -1541,7 +1541,11 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 -->>--	Raid Tab Frame
 	self:skinButton{obj=_G.RaidFrameConvertToRaidButton}
 	self:skinButton{obj=_G.RaidFrameRaidInfoButton}
-	if _G.IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
+
+	-- if _G.IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
+	if IsAddOnLoaded("Blizzard_RaidUI") then
+		self:checkAndRun("RaidUI", "p", true)
+	end
 
 -->>--	RaidInfo Frame
 	self:addSkinFrame{obj=_G.RaidInfoInstanceLabel, kfs=true}
