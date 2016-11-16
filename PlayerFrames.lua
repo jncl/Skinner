@@ -2690,7 +2690,7 @@ aObj.blizzFrames[ftype].StackSplit = function(self)
 	self.initialized.StackSplit = true
 
 	-- handle different addons being loaded
-	if _G.IsAddOnLoaded("EnhancedStackSplit") then
+	if IsAddOnLoaded("EnhancedStackSplit") then
 		self:addSkinFrame{obj=_G.StackSplitFrame, ft=ftype, kfs=true, y2=-24}
 	else
 		self:addSkinFrame{obj=_G.StackSplitFrame, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
