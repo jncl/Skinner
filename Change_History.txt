@@ -1,3 +1,11 @@
+b7.22995.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	localised a variable
+	Treat GossipFrame & QuestFrame as one as they both change the quest text colours
+	Updated MasterPlan skin
+
 b7.22995.1
 Jncl:
 	ToDo.txt
