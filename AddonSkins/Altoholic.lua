@@ -134,7 +134,7 @@ end
 
 function aObj:Altoholic_Summary() -- LoD
 
-	skinMenuItems(_G.AltoholicTabSummary, 6)
+	skinMenuItems(_G.AltoholicTabSummary, 7)
 	skinSortBtns(_G.AltoholicTabSummary.SortButtons)
 	self:skinButton{obj=_G.AltoholicTabSummary.ToggleView, mp2=true}
 
