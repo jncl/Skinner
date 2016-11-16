@@ -3595,7 +3595,9 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 	end
 
 -->>-- QuestInfo
-	self.blizzFrames.n.QuestInfo(self) -- NPC Frames
+	-- QuestInfo
+	self:checkAndRun("QuestInfo", "n")
+	-- self.blizzFrames.n:QuestInfo()
 
 end
 

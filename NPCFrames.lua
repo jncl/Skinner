@@ -525,7 +525,9 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self:skinSlider{obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, size=3}
 	self:addSkinFrame{obj=_G.QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
 
-	self.blizzFrames.n.QuestInfo(self)
+	-- QuestInfo
+	self:checkAndRun("QuestInfo", "n")
+	-- self.blizzFrames.n:QuestInfo()
 
 end
 
