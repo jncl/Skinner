@@ -1677,6 +1677,10 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 	for i = 1, #_G.GuildNewsContainer.buttons do
 		_G.GuildNewsContainer.buttons[i].header:SetAlpha(0)
 	end
+	-- hook this to stop tooltip flickering
+	self:SecureHook("GuildNewsButton_OnEnter", function(btn)
+		if btn.UpdateTooltip then btn.UpdateTooltip = nil end
+	end)
 	self:skinDropDown{obj=_G.GuildNewsDropDown}
 	self:addSkinFrame{obj=_G.GuildNewsFiltersFrame, ft=ftype, kfs=true, ofs=-7}
 	self:keepFontStrings(_G.GuildNewsBossModelTextFrame)
