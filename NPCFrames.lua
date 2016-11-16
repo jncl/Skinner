@@ -481,10 +481,10 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	end, true)
 
 	self:addSkinFrame{obj=_G.QuestFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
--->>--	Reward Panel
+	--	Reward Panel
 	self:keepFontStrings(_G.QuestFrameRewardPanel)
 	self:skinSlider{obj=_G.QuestRewardScrollFrame.ScrollBar, size=3, rt="artwork"}
--->>--	Progress Panel
+	--	Progress Panel
 	self:keepFontStrings(_G.QuestFrameProgressPanel)
 	_G.QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -506,11 +506,11 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 	end)
 
--->>--	Detail Panel
+	--	Detail Panel
 	self:keepFontStrings(_G.QuestFrameDetailPanel)
 	self:skinSlider{obj=_G.QuestDetailScrollFrame.ScrollBar, size=3, rt="artwork"}
 
--->>--	Greeting Panel
+	--	Greeting Panel
 	self:keepFontStrings(_G.QuestFrameGreetingPanel)
 	self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
 	self:skinSlider{obj=_G.QuestGreetingScrollFrame.ScrollBar, size=3, rt="artwork"}
@@ -520,7 +520,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		_G.AvailableQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	end
 
--->>-- QuestNPCModel
+	-- QuestNPCModel
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
 	self:skinSlider{obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, size=3}
 	self:addSkinFrame{obj=_G.QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel

@@ -3546,14 +3546,14 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 	if not self.db.profile.QuestMap or self.initialized.QuestMap then return end
 	self.initialized.QuestMap = true
 
--->>-- Quest Log Popup Detail Frame
+	-- Quest Log Popup Detail Frame
 	local qlpdf = _G.QuestLogPopupDetailFrame
 	self:skinSlider{obj=qlpdf.ScrollFrame.ScrollBar, size=3, rt="artwork"}
 	self:addButtonBorder{obj=qlpdf.ShowMapButton, relTo=qlpdf.ShowMapButton.Texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=qlpdf, ft=ftype, kfs=true, ri=true, ofs=2}
 	qlpdf = nil
 
--->>-- Quest Map Frame
+	-- Quest Map Frame
 	_G.QuestMapFrame.VerticalSeparator:SetTexture(nil)
 	self:skinDropDown{obj=_G.QuestMapQuestOptionsDropDown}
 	_G.QuestMapFrame.QuestsFrame:DisableDrawLayer("BACKGROUND")
@@ -3594,7 +3594,6 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		end)
 	end
 
--->>-- QuestInfo
 	-- QuestInfo
 	self:checkAndRun("QuestInfo", "n")
 	-- self.blizzFrames.n:QuestInfo()
