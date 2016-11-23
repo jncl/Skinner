@@ -99,6 +99,7 @@
 <script file="SkinMe\HoloFriends.lua"/>
 <script file="SkinMe\InboxMailBag.lua"/>
 <script file="SkinMe\ItemDB.lua"/>
+<script file="SkinMe\InspectorGadgetzan.lua"/>
 <script file="SkinMe\LegacyQuest.lua"/>
 <script file="SkinMe\LibDialog.lua"/>
 <script file="SkinMe\LibDropdown.lua"/>
