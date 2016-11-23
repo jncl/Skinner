@@ -2365,7 +2365,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end
 	mbs = nil
 	self:addButtonBorder{obj=_G.MainMenuMicroButton, mb=true, ofs=0, y1=-21, reParent={_G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload}}
-	self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=1, x2=-2, y2=-1} -- on ChatFrame
 
 -->>-- skin bag buttons
 	self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
@@ -2451,6 +2450,30 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			_G[btn:GetName() .. "NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0)
 		end
 	end)
+
+	-- QuickJoinToastButton & frames (attached to ChatFrame)
+	local qjtb = _G.QuickJoinToastButton
+	self:addButtonBorder{obj=qjtb, x1=1, y1=1, x2=-2, y2=-1}
+	for _, frame in pairs{"Toast", "Toast2"} do
+		qjtb[frame]:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=qjtb[frame], ft=ftype}
+		self:moveObject{obj=qjtb[frame], x=7}
+		qjtb[frame]:Hide()
+	end
+	-- hook the animations to show or hide the sqjtbkin frame
+	qjtb.FriendToToastAnim:SetScript("OnPlay", function(this)
+		this.Toast.sf:Show()
+		this.Toast2.sf:Hide()
+	end)
+	qjtb.ToastToToastAnim:SetScript("OnPlay", function(this)
+		this.Toast.sf:Hide()
+		this.Toast2.sf:Show()
+	end)
+	qjtb.ToastToFriendAnim:SetScript("OnPlay", function(this)
+		this.Toast.sf:Hide()
+		this.Toast2.sf:Hide()
+	end)
+	qjtb = nil
 
 end
 
