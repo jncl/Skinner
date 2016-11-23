@@ -20,6 +20,8 @@ Legend:
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
+?	I	WorldQuestTracker minimize button doesn't have a border
+
 	I	Tooltips, reported by Talyrius, 29.10.16
 x		- Skinner\UIFrames.lua:23: Usage: HookScript(object, method, [handler]): 'object' - nil or table expected got string
 		  Ace3\AceHook-3.0\AceHook-3.0-8.lua:130: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
@@ -28,8 +30,6 @@ x		- Skinner\UIFrames.lua:23: Usage: HookScript(object, method, [handler]): 'obj
 		  Skinner\UtilFuncs.lua:198: in function 'add2Table'
 		  Skinner\SkinMe\Wholly-060.lua:36: in function <Skinner\SkinMe\Wholly.lua:4>
 
-	I	Tooltip, reported by krzysiek_7_5, 15.10.16
-√		- the item tooltip constantly flickers when viewing guild news feed
+√	N	WeakAuras
 
-	I	UtilFuncs, reported by typhosy, 15.10.16
-√		- Skinner\PlayerFrames.lua:1544: attempt to call method 'RaidUI' (a nil value)
+√	S	InspectorGadgetzan, requested by Fraktyl, 18.11.16
