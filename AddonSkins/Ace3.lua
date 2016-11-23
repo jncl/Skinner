@@ -68,10 +68,10 @@ function aObj:Ace3()
 			elseif objType == "MultiLineEditBox" then
 				aObj:skinButton{obj=obj.button, as=true}
 				if objVer < 20 then
-					aObj:skinScrollBar{obj=obj.scrollframe}
+					aObj:skinSlider{obj=obj.scrollframe.ScrollBar, adj=-4, size=3}
 					aObj:applySkin{obj=obj.backdrop}
 				else
-					aObj:skinScrollBar{obj=obj.scrollFrame}
+					aObj:skinSlider{obj=obj.scrollFrame.ScrollBar, adj=-4, size=3}
 					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- backdrop frame
 				end
 			elseif objType == "Slider" then
@@ -193,6 +193,7 @@ function aObj:Ace3()
 
 			-- WeakAuras objects
 			elseif objType == "WeakAurasLoadedHeaderButton" then
+				obj.frame.background:SetTexture(nil)
 				if aObj.modBtns then
 					aObj:skinButton{obj=obj.expand, mp2=true, as=true}
 					if not aObj:IsHooked(obj.expand, "SetNormalTexture") then
@@ -204,7 +205,15 @@ function aObj:Ace3()
 			elseif objType == "WeakAurasDisplayButton" then
 				aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
 				obj.renamebox:SetHeight(18)
+				obj.background:SetTexture(nil)
 				if aObj.modBtns then
+					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
+					-- make sure button border frame is visible
+					if not aObj:IsHooked(obj, "SetIcon") then
+						self:SecureHook(obj, "SetIcon", function(this, icon)
+							_G.RaiseFrameLevel(this.frame.sbb)
+						end)
+					end
 					aObj:skinButton{obj=obj.expand, mp2=true, plus=true, as=true}
 					obj.expand:SetDisabledFontObject(aObj.modUIBtns.fontDP)
 					if not aObj:IsHooked(obj.expand, "SetNormalTexture") then
@@ -212,7 +221,21 @@ function aObj:Ace3()
 							aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
 						end)
 					end
+					self:addButtonBorder{obj=obj.group, es=10, ofs=0}
 				end
+			elseif objType == "WeakAurasNewButton" then
+				obj.background:SetTexture(nil)
+				if aObj.modBtns then
+					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
+					-- make sure button border frame is visible
+					if not aObj:IsHooked(obj, "SetIcon") then
+						self:SecureHook(obj, "SetIcon", function(this, icon)
+							_G.RaiseFrameLevel(this.frame.sbb)
+						end)
+					end
+				end
+			elseif objType == "WeakAurasNewHeaderButton" then
+				obj.frame.background:SetTexture(nil)
 
             -- TradeSkillMaster (TSM) objects
             elseif objType == "TSMMainFrame" then
@@ -309,8 +332,7 @@ function aObj:Ace3()
 			-- WeakAuras objects
 			or objType == "WeakAurasTextureButton"
 			or objType == "WeakAurasIconButton"
-			or objType == "WeakAurasNewHeaderButton"
-			or objType == "WeakAurasNewButton"
+			or objType == "WeakAurasTemplateGroup"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"
 			-- TradeSkillMaster objects
