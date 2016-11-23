@@ -1,3 +1,15 @@
+b7.22996.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Use local variable
+	Update comments
+	Use checkAndRun function for QuestInfo code
+	Bugfix for FriendsFrame skin
+	Stop GuildNews Tooltip flickering
+	Updated Altoholic skin
+
 b7.22995.2
 Jncl:
 	ToDo.txt
