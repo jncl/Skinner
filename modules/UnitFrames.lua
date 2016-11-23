@@ -245,7 +245,7 @@ local function skinPetF()
 		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
 		-- skin the PetFrame
-		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to ARTWORK layer, so it is displayed
+		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
 		skinUnitFrame{obj=_G.PetFrame, ft=true, x1=1}
 		-- remove debuff border
 		for i = 1, 4 do
