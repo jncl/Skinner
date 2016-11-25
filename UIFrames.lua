@@ -2942,6 +2942,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon,
 			["RaidBuffStatus"] = _G.RBSMinimapButton,
 			["+Wowhead_Looter"] = _G.wlMinimapButton,
+			["TinyDPS"] = _G.tdpsButtonFrame,
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then
@@ -3812,10 +3813,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
-	-- these addons colour the Tooltip Border
-	if IsAddOnLoaded("Chippu")
-	or IsAddOnLoaded("TipTac")
-	then
+	if IsAddOnLoaded("TipTac") then return end
+
+	-- this addon colours the Tooltip Border
+	if IsAddOnLoaded("Chippu") then
 		self.ttBorder = false
 	end
 

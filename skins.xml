@@ -120,6 +120,7 @@
 <script file="SkinMe\MinimalArchaeology.lua"/>
 <script file="SkinMe\MinimapButtonFrame.lua"/>
 <script file="SkinMe\MogIt.lua"/>
+<script file="SkinMe\MoveAnything.lua"/>
 <script file="SkinMe\MyGarrisons.lua"/>
 <script file="SkinMe\Notes.lua"/>
 <script file="SkinMe\oGlow.lua"/>
@@ -139,6 +140,7 @@
 <script file="SkinMe\PetTracker.lua"/>
 <script file="SkinMe\PhoenixStyle.lua"/>
 <script file="SkinMe\Possessions.lua"/>
+<script file="SkinMe\Postal.lua"/>
 <script file="SkinMe\PowerAuras.lua"/>
 <script file="SkinMe\Prat3.lua"/>
 <script file="SkinMe\PreformAVEnabler.lua"/>
@@ -179,6 +181,8 @@
 <script file="SkinMe\TargetCharms.lua"/>
 <script file="SkinMe\tekKonfig.lua"/>
 <script file="SkinMe\tektip.lua"/>
+<script file="SkinMe\TinyDPS.lua"/>
+<script file="SkinMe\TipTac.lua"/>
 <script file="SkinMe\TomTom.lua"/>
 <script file="SkinMe\TooManyAddons.lua"/>
 <script file="SkinMe\TradeSkillDW.lua"/>
