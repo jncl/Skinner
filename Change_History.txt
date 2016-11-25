@@ -1,3 +1,12 @@
+b7.22996.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated comment
+	Skinned QuickJoinToasts
+	Updated WeakAuras skin
+	Skinned InspectorGadgetzan
+
 b7.22996.1
 Jncl:
 	ToDo.txt
