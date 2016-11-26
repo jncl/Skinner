@@ -1,4 +1,12 @@
-b7.22996.2
+beta7.22996.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for QuickJoinToastButton skin code
+	Updated BaudBag & Wholly skins
+	Unobsoleted MoveAnything, Postal, TinyDPS & TipTac
+
+beta7.22996.2
 Jncl:
 	ToDo.txt
 	Updated Change_History.txt
