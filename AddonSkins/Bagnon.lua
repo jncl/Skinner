@@ -13,6 +13,7 @@ function aObj:Bagnon() -- 7.0.4
 	if self.modBtnBs then
 		-- hook this to manage button border colours
 		self:SecureHook(Bagnon.ItemSlot, "UpdateBorder", function(this)
+			if not this.sbb then return end -- handle missing sbb frame
 			local _, _, _, quality = this:GetInfo()
 			local item = this:GetItem()
 			-- revert to default
@@ -32,7 +33,6 @@ function aObj:Bagnon() -- 7.0.4
 
 	-- skin the bag frames
 	local function skinFrame(frame, id)
-		aObj:Debug("skinFrame: [%s, %s]", frame, id)
 		aObj:addSkinFrame{obj=frame, nb=true}
 		frame.SetBackdropColor = function() end
 		frame.SetBackdropBorderColor = function() end
@@ -65,18 +65,32 @@ function aObj:Bagnon() -- 7.0.4
 						aObj:addButtonBorder{obj=this.moneyFrame.icon:GetParent(), relTo=this.moneyFrame.icon, ofs=3}
 					end
 				end
-				if this.closeButton then aObj:skinButton{obj=this.closeButton, cb=true} end
-				aObj:Unhook(frame, "OnShow")
+				if this.closeButton then
+					aObj:skinButton{obj=this.closeButton, cb=true}
+				end
+				if frame.CreateLogFrame then
+					aObj:SecureHook(frame, "CreateLogFrame", function(this)
+						aObj:skinSlider{obj=this.logFrame.ScrollBar}
+						-- DON'T unhook as new frames are created each time
+					end)
+				end
+				if frame.CreateEditFrame then
+					aObj:SecureHook(frame, "CreateEditFrame", function(this)
+						aObj:skinSlider{obj=this.editFrame.ScrollBar}
+						aObj:Unhook(this, "CreateEditFrame")
+					end)
+				end
+				aObj:Unhook(this, "OnShow")
 			end)
 		end
 		if aObj.modBtnBs
-		and aObj:hasTextInName(frame, "guild")
+		and id == "guild"
 		then
 			aObj:SecureHook(frame.ItemFrame, "Layout", function(this)
 				for i = 1, #this.buttons do
 					aObj:addButtonBorder{obj=this.buttons[i]}
 				end
-				aObj:Unhook(frame.ItemFrame, "Layout")
+				aObj:Unhook(this, "Layout")
 			end)
 		end
 	end
@@ -94,7 +108,6 @@ function aObj:Bagnon() -- 7.0.4
 	skinFrame(Bagnon.frames["inventory"])
 	-- hook this to skin new frames
 	self:RawHook(Bagnon["Frame"], "New", function(this, id)
-		-- aObj:Debug("Bagnon Frame New: [%s, %s]", this, id)
 		local frame = self.hooks[Bagnon["Frame"]].New(this, id)
 		skinFrame(frame, id)
 		return frame
