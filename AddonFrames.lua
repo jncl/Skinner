@@ -42,7 +42,7 @@ local addonSkins = {
 	"Vendomatic", "VuhDo", "VuhDoOptions",
 	"Warden", "WeakAuras", "Wholly", "WIM", "WIM_Options", "WoWPro", "WTFLatencyMeter",
 	"XLoot", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
-	"ZygorGuidesViewer",
+	"ZPerl", "ZPerl_RaidAdmin", "ZPerl_RaidHelper", "ZygorGuidesViewer",
 }
 aObj.addonsToSkin = {}
 for _, v in pairs(addonSkins) do
@@ -160,6 +160,7 @@ local lodFrames = {
 	"TipTacOptions",
 	"WeakAurasOptions",
 	"XPerl_Options",
+	"ZPerl_Options",
 }
 aObj.lodAddons = {}
 for _, v in pairs(lodFrames) do

@@ -2943,6 +2943,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			["RaidBuffStatus"] = _G.RBSMinimapButton,
 			["+Wowhead_Looter"] = _G.wlMinimapButton,
 			["TinyDPS"] = _G.tdpsButtonFrame,
+			["ZPerl"] = _G.XPerl_MinimapButton_Frame,
 		}
 		for addon, obj in pairs(mmButs) do
 			if IsAddOnLoaded(addon) then
