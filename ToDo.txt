@@ -26,20 +26,6 @@ Legend:
 
 ?	I	WorldQuestTracker minimize button doesn't have a border
 
-	U	requested by JAcKyL69, 23.11.16
-√		- MoveAnything
-√		- Postal
-√		- Tiptac
-√		- TinyDPS
-
-√	I	BaudBag, reported by JAcKyL69, 23.11.16
-		- ...eBartender4\libs\AceHook-3.0\AceHook-3.0-8.lua:180: Attempting to rehook already active hook OnClick.
-		  ...eBartender4\libs\AceHook-3.0\AceHook-3.0-8.lua:411: in function `SecureHookScript'
-		  Skinner\SkinMe\BaudBag-v7.0.3 beta 1.lua:17: in function <Skinner\SkinMe\BaudBag.lua:9>
-		- Skinner\Skinner-b7.22996.1.lua:1434: attempt to index field 'obj' (a nil value)
-		  Skinner\Skinner-b7.22996.1.lua:1499: in function `skinDropDown'
-		  Skinner\SkinMe\BaudBag-v7.0.3 beta 1.lua:34: in function <Skinner\SkinMe\BaudBag.lua:5>
-
 ?	I	HandyNotes Draenor Treasures ?, reported by JAcKyL69, 23.11.16
 		- This error for handynotes draenor treasures fires on login whether the addon is skinned or not, if i had to guess since acetimer is there it may have to do with the void talon portals but idk for sure.
 
@@ -49,20 +35,8 @@ Legend:
 		  Skinner\UtilFuncs.lua:209: in function `add2Table'
 		  Skinner\UIFrames.lua:3805: in function <Skinner\UIFrames.lua:3788>
 
-√	I	Wholly, reported by Talyrius, 24.11.16
-		- Skinner\UIFrames.lua:28: Usage: HookScript(object, method, [handler]): 'object' - nil or table expected got string
-		  Ace3\AceHook-3.0\AceHook-3.0-8.lua:130: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		  Ace3\AceHook-3.0\AceHook-3.0-8.lua:367: in function 'HookScript'
-		  Skinner\UIFrames.lua:28: in function <Skinner\UIFrames.lua:18>
-		  Skinner\UtilFuncs.lua:209: in function 'add2Table'
-		  Skinner\SkinMe\Wholly-060.lua:36: in function <Skinner\SkinMe\Wholly.lua:4>
+√	S	Z-Perl Unit Frames, requested by nikenny, 25.11.16
 
-√	I	QuickJoinToast, reported by Talyrius, 24.11.16
-		- Skinner\UIFrames.lua:2465: attempt to index field 'Toast' (a nil value)
-		  Skinner\UIFrames.lua:2465: in function <Skinner\UIFrames.lua:2464>
-		  [C]: in function 'Play'
-		  FrameXML\QuickJoinToast.lua:257: in function 'ShowToast'
-		  FrameXML\QuickJoinToast.lua:169: in function 'CheckDisplayToast'
-		  FrameXML\QuickJoinToast.lua:160: in function 'CheckShowToast'
-		  FrameXML\QuickJoinToast.lua:153: in function <FrameXML\QuickJoinToast.lua:151>
-		  SharedXML\C_TimerAugment.lua:16: in function <SharedXML\C_TimerAugment.lua:14>
+√	I	Bagnon, reported by nikenny, 25.11.16
+		-  Interface\AddOns\Skinner\SkinMe\Bagnon.lua:19: attempt to index field 'sbb' (a nil value)
+		   Stack: Interface\AddOns\Skinner\SkinMe\Bagnon.lua:19: in function <Interface\AddOns\Skinner\SkinMe\Bagnon.lua:15>
