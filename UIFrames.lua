@@ -507,11 +507,11 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, rewardData
 	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, ...)
-		skinDCSAlertFrame{obj=_G.DungeonCompletionAlertFrame, regs={2, 3, 4, 5, 6, 10}, y1=-17}
+		skinDCSAlertFrame{obj=frame, regs={2, 3, 4, 5, 6, 10}, y1=-17}
 	end)
 	-- called params: frame, rewardData
 	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, ...)
-		skinDCSAlertFrame{obj=_G.ScenarioAlertFrame, regs={1, 3, 7}, ofs=-12}
+		skinDCSAlertFrame{obj=frame, regs={1, 3, 7}, ofs=-12}
 	end)
 	-- called params: frame, rewardQuestID, name, showBonusCompletion, xp, money
 	self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame, ...)
