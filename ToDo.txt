@@ -26,17 +26,10 @@ Legend:
 
 ?	I	WorldQuestTracker minimize button doesn't have a border
 
-?	I	HandyNotes Draenor Treasures ?, reported by JAcKyL69, 23.11.16
-		- This error for handynotes draenor treasures fires on login whether the addon is skinned or not, if i had to guess since acetimer is there it may have to do with the void talon portals but idk for sure.
+√	I	reported by JAcKyL69, 26.11.16
+		- Skinner\Skinner-beta7.22996.4.lua:1252: attempt to index local 'obj' (a nil value)
+		  Skinner\Skinner-beta7.22996.4.lua:1252: in function `removeRegions'
+		  Skinner\UIFrames.lua:435: in function <Skinner\UIFrames.lua:433>
+		  Skinner\UIFrames.lua:510: in function <Skinner\UIFrames.lua:509>
 
-		- Skinner\UtilFuncs.lua:465: attempt to perform arithmetic on local 'num' (a nil value)
-		  Skinner\Skinner-b7.22996.1.lua:1997: in function `skinTooltip'
-		  Skinner\UIFrames.lua:40: in function <Skinner\UIFrames.lua:18>
-		  Skinner\UtilFuncs.lua:209: in function `add2Table'
-		  Skinner\UIFrames.lua:3805: in function <Skinner\UIFrames.lua:3788>
-
-√	S	Z-Perl Unit Frames, requested by nikenny, 25.11.16
-
-√	I	Bagnon, reported by nikenny, 25.11.16
-		-  Interface\AddOns\Skinner\SkinMe\Bagnon.lua:19: attempt to index field 'sbb' (a nil value)
-		   Stack: Interface\AddOns\Skinner\SkinMe\Bagnon.lua:19: in function <Interface\AddOns\Skinner\SkinMe\Bagnon.lua:15>
+	S	MacroToolkit, requsted by JAcKyL69, 26.11.16
