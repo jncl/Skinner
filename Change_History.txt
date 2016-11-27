@@ -1,3 +1,10 @@
+beta7.22996.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Bagnon skin
+	Skinned ZPerl
+
 beta7.22996.3
 Jncl:
 	ToDo.txt
