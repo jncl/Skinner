@@ -30,7 +30,7 @@ local addonSkins = {
 	"HandyNotes", "HaveWeMet", "HealBot", "HoloFriends",
 	"InboxMailBag", "ItemDB", "InspectorGadgetzan",
 	"LegacyQuest", "Livestock", "ls_Toasts", "LUI",
-	"Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MogIt", "MoveAnything", "MrTrader_SkillWindow", "MyGarrisons",
+	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MogIt", "MoveAnything", "MrTrader_SkillWindow", "MyGarrisons",
 	"Notes",
 	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3", "Outfitter", "Overachiever",
 	"Panda", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetBattleHUD", "PetBattleMaster", "PetTracker", "PetTracker_Switcher", "PetTracker_Journal", "PhoenixStyle", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "ProfessionsVault", "ProspectBar",

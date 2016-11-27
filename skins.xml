@@ -113,6 +113,7 @@
 <script file="SkinMe\ls_Toasts.lua"/>
 <script file="SkinMe\Ludwig.lua"/>
 <script file="SkinMe\LUI.lua"/>
+<script file="SkinMe\MacroToolkit.lua"/>
 <script file="SkinMe\Mapster.lua"/>
 <script file="SkinMe\MarkingBar.lua"/>
 <script file="SkinMe\MasterPlan.lua"/>
