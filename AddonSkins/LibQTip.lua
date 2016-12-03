@@ -32,7 +32,7 @@ function aObj:LibQTip()
 		self:SecureHook(lqt, "Release", function(this, tt)
 			-- aObj:Debug("lqt Release: [%s, %s, %s]", this, tt, tt.sknd)
 			-- handle already skinned
-			if tt.sknd then
+			if tt and tt.sknd then
 				tt.sknd = nil
 			end
 		end)
