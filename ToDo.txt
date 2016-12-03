@@ -26,10 +26,8 @@ Legend:
 
 ?	I	WorldQuestTracker minimize button doesn't have a border
 
-√	I	reported by JAcKyL69, 26.11.16
-		- Skinner\Skinner-beta7.22996.4.lua:1252: attempt to index local 'obj' (a nil value)
-		  Skinner\Skinner-beta7.22996.4.lua:1252: in function `removeRegions'
-		  Skinner\UIFrames.lua:435: in function <Skinner\UIFrames.lua:433>
-		  Skinner\UIFrames.lua:510: in function <Skinner\UIFrames.lua:509>
-
-	S	MacroToolkit, requsted by JAcKyL69, 26.11.16
+	I	LibQTip, reported by epidemedabear, 01.12.16
+√		-  ..\AddOns\Skinner\SkinMe\LibQTip.lua line 35: attempt to index local 'tt' (a nil value)
+		   Debug:
+		   Skinner\SkinMe\LibQTip.lua:35:
+		   Skinner\SkinMe\LibQTip.lua:32
