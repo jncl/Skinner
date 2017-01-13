@@ -85,18 +85,17 @@ function aObj:Details()
 
 	local function skinInstance(frame)
 
+		frame.cabecalho.top_bg:SetTexture(nil)
 		self:addSkinFrame{obj=frame, ofs=4, y1=22}
 
 	end
 
 	-- Base frame(s)
 	self:SecureHook(Details.gump, "CriaJanelaPrincipal", function(this, ID, instancia, criando)
-		-- aObj:Debug("Details.gump CriaJanelaPrincipal: [%s, %s, %s, %s]", this, ID, instancia, criando)
 		skinInstance(_G["DetailsBaseFrame" .. ID])
 	end)
 	-- skin existing instance(s)
 	for _, v in _G.ipairs(Details.tabela_instancias) do
-		-- aObj:Debug("Details tabela_instancias: [%s]", v)
 		if v.baseframe then
 			skinInstance(v.baseframe)
 		end
@@ -104,7 +103,6 @@ function aObj:Details()
 
 	-->>-- Plugins
 	for _, v in _G.pairs{"DmgRank", "DpsTuning", "TimeAttack", "Vanguard"} do
-		-- print("checking plugin:", v)
 		self:checkAndRunAddOn("Details_" .. v)
 	end
 

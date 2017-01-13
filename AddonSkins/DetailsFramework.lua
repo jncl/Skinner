@@ -2,9 +2,10 @@ local aName, aObj = ...
 local _G = _G
 -- This is a Library
 
-local DF = _G.LibStub("DetailsFramework-1.0", true)
-
 function aObj:DetailsFramework()
+	local DF = _G.LibStub("DetailsFramework-1.0", true)
+	if not DF then return end
+
 	if self.initialized.DetailsFramework then return end
 	self.initialized.DetailsFramework = true
 
@@ -27,7 +28,7 @@ function aObj:DetailsFramework()
 
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=frame}
+		self:addSkinFrame{obj=frame, x1=-3, x2=3}
 
 	end
 	if _G.GameCooltip2 then
