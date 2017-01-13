@@ -1,3 +1,16 @@
+beta7.23360.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Skin QuickJoin button and frames as part of ChatButtons skinning code
+	Skin ItemRef tooltip close button
+	Update Alert Frame skinning code
+	Update Slider skinning code
+	Bugfix for BattleNet Toast frames
+	Updated Altoholic & LibDropdown skins
+	Skinned BGDefender, Details, DetailsFramework, TidyPlates & WorldQuestTracker
+
 beta7.23171.1
 Jncl:
 	ToDo.txt
