@@ -1,11 +1,12 @@
 local aName, aObj = ...
+local _G = _G
 -- This is a Library
 
 function aObj:LibDropdown()
 	if self.initialized.LibDropdown then return end
 	self.initialized.LibDropdown = true
 
-	local lDD = LibStub("LibDropdown-1.0", true)
+	local lDD = _G.LibStub("LibDropdown-1.0", true)
 	if lDD then
 		self:RawHook(lDD, "OpenAce3Menu", function(this, tab, parent)
 			-- self:Debug("OpenAce3Menu: [%s, %s, %s]", this, tab, parent)
@@ -28,5 +29,5 @@ function aObj:LibDropdown()
 			self:applySkin{obj=parent}
 		end, true)
 	end
-	
+
 end

@@ -87,7 +87,7 @@ function aObj:Altoholic()
 	self:skinTabs{obj=_G.AltoholicFrame}
 
 -->>-- Message Box
-	self:addSkinFrame{obj=_G.AltoMsgBox, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
+	self:addSkinFrame{obj=_G.AltoMessageBox, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
 -->>-- Tooltip
 	if self.db.profile.Tooltips.skin then
@@ -225,7 +225,7 @@ function aObj:Altoholic_Characters() -- LoD
 		local frame
 		for i = 1, _G.AltoholicFrameGarrisonMissions.ScrollFrame.numRows do
 			frame = _G.AltoholicFrameGarrisonMissions.ScrollFrame:GetRow(i)
-			self:addButtonBorder{obj=frame.Type, relTo=frame.Type.Icon}
+			self:addButtonBorder{obj=frame.MissionType, relTo=frame.MissionType.Icon}
 			-- TODO if these are removed followers aren't visible
 			-- for j = 1, 3 do
 			-- 	frame["Follower" .. j]:DisableDrawLayer("BACKGROUND")
