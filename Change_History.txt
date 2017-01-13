@@ -1,3 +1,10 @@
+beta7.23171.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated AckisRecipeList & LibQTip skins
+
 beta7.22996.5
 Jncl:
 	ToDo.txt
