@@ -432,7 +432,8 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	local function skinDCSAlertFrame(opts)
 
-		aObj:removeRegions(opts.obj, opts.regs)
+		opts.obj:DisableDrawLayer("BORDER")
+		opts.obj:DisableDrawLayer("OVERLAY")
 		opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinButton
 		aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=opts.obj, relTo=opts.obj.dungeonTexture, reParent=opts.reParent}) -- wait for animation to finish
 		aObj:addSkinFrame{obj=opts.obj, ft=ftype, ofs=opts.ofs or -8, y1=opts.y1 or nil}
@@ -507,11 +508,12 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, rewardData
 	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, ...)
-		skinDCSAlertFrame{obj=frame, regs={2, 3, 4, 5, 6, 10}, y1=-17}
+		skinDCSAlertFrame{obj=frame, y1=-17}
 	end)
 	-- called params: frame, rewardData
 	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, ...)
-		skinDCSAlertFrame{obj=frame, regs={1, 3, 7}, ofs=-12}
+		self:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
+		skinDCSAlertFrame{obj=frame, ofs=-12}
 	end)
 	-- called params: frame, rewardQuestID, name, showBonusCompletion, xp, money
 	self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame, ...)
