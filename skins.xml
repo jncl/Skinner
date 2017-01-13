@@ -34,6 +34,7 @@
 <script file="SkinMe\BaudBag.lua"/>
 <script file="SkinMe\BaudManifest.lua"/>
 <script file="SkinMe\BetterInbox.lua"/>
+<script file="SkinMe\BGDefender.lua"/>
 <script file="SkinMe\BindPad.lua"/>
 <script file="SkinMe\BlackList.lua"/>
 <script file="SkinMe\BonusRollPreview.lua"/>
@@ -60,6 +61,8 @@
 <script file="SkinMe\Cosplay.lua"/>
 <script file="SkinMe\DBM.lua"/>
 <script file="SkinMe\DeathNote.lua"/>
+<script file="SkinMe\Details.lua"/>
+<script file="SkinMe\DetailsFramework.lua"/>
 <script file="SkinMe\DockingStation.lua"/>
 <script file="SkinMe\Dominos.lua"/>
 <script file="SkinMe\DoTimer.lua"/>
@@ -182,6 +185,7 @@
 <script file="SkinMe\TargetCharms.lua"/>
 <script file="SkinMe\tekKonfig.lua"/>
 <script file="SkinMe\tektip.lua"/>
+<script file="SkinMe\TidyPlates.lua"/>
 <script file="SkinMe\TinyDPS.lua"/>
 <script file="SkinMe\TipTac.lua"/>
 <script file="SkinMe\TomTom.lua"/>
@@ -197,6 +201,7 @@
 <script file="SkinMe\WeakAuras.lua"/>
 <script file="SkinMe\Wholly.lua"/>
 <script file="SkinMe\WIM.lua"/>
+<script file="SkinMe\WorldQuestTracker.lua"/>
 <script file="SkinMe\WoWPro.lua"/>
 <script file="SkinMe\WTFLatencyMeter.lua"/>
 <script file="SkinMe\XLoot.lua"/>

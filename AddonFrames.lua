@@ -21,9 +21,9 @@ end
 local addonSkins = {
 	"_NPCScan",
 	"Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "Altoholic", "AphesLootBrowser", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "Auctionator", "AuctionMaster", "Auctionsnatch", "AutoDecline",
-	"Baggins", "Bagnon_Forever", "Bagnon", "BankItems", "Bartender4", "BattlePetCount", "BaudBag", "BaudManifest", "BetterInbox", "BindPad", "BlackList", "BonusRollPreview", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BugSack", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
+	"Baggins", "Bagnon_Forever", "Bagnon", "BankItems", "Bartender4", "BattlePetCount", "BaudBag", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BonusRollPreview", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BugSack", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
 	"Carbonite", "CensusPlus", "CFM", "Chatter", "Clique", "Collectinator", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cork", "Cosplay",
-	"DeathNote", "DockingStation", "Dominos", "DressUp",
+	"DeathNote", "Details", "DockingStation", "Dominos", "DressUp",
 	"ElvUI", "EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
 	"FarmIt2", "FeedMachine", "FishingBuddy", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker", "GuildMaster",
@@ -37,10 +37,10 @@ local addonSkins = {
 	"Quartz", "QuestCompletist", "QuestGuru", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidAchievement", "RaidBuffStatus", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "Recount", "REFlex", "Rematch", "RicoMiniMap",
 	"ScrollMaster", "ServerHop", "SilverDragon", "Skada", "Skillet", "SmartRes2", "Smoker", "SnapShot", "SorhaQuestLog", "Spew", "Squeenix", "StaggerMeter",
-	"TargetCharms", "TinyDPS", "TipTac", "TomTom", "TooManyAddons", "TradeSkillMaster", "TrinketBar", "Tukui",
+	"TargetCharms", "TidyPlates", "TinyDPS", "TipTac", "TomTom", "TooManyAddons", "TradeSkillMaster", "TrinketBar", "Tukui",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
-	"Warden", "WeakAuras", "Wholly", "WIM", "WIM_Options", "WoWPro", "WTFLatencyMeter",
+	"Warden", "WeakAuras", "Wholly", "WIM", "WIM_Options", "WorldQuestTracker", "WoWPro", "WTFLatencyMeter",
 	"XLoot", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"ZPerl", "ZPerl_RaidAdmin", "ZPerl_RaidHelper", "ZygorGuidesViewer",
 }
@@ -71,6 +71,7 @@ aObj.libsToSkin = {
 	["LibToast-1.0"] = "LibToast",
 	["LibDialog-1.0"] = "LibDialog",
 	["LibExtraTip-1"] = "LibExtraTip",
+	["DetailsFramework-1.0"] = "DetailsFramework",
 }
 -- store other AddOns not previously referenced, here
 aObj.otherAddons = {}
