@@ -2338,26 +2338,23 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	-- ReputationWatchBar
 	moveWatchBar(_G.ReputationWatchBar)
 	self:keepRegions(_G.ReputationWatchBar.StatusBar, {1, 2, 3, 4, 13, 14, 16}) -- 13 is background, 14 is the normal texture
+	-- ArtifactWatchBar
+	local awbsb = _G.ArtifactWatchBar.StatusBar
+	moveWatchBar(_G.ArtifactWatchBar)
+	awbsb:DisableDrawLayer("ARTWORK")
+	_G.ArtifactWatchBar.Tick:SetAlpha(0)
+	-- HonorWatchBar
+	local hwbsb = _G.HonorWatchBar.StatusBar
+	moveWatchBar(_G.HonorWatchBar)
+	hwbsb:DisableDrawLayer("ARTWORK")
+	_G.HonorWatchBar.ExhaustionTick:SetAlpha(0)
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 9), {_G.ExhaustionLevelFillBar})
 		self:glazeStatusBar(_G.ReputationWatchBar.StatusBar, 0, _G.ReputationWatchBar.StatusBar.Background)
+		self:glazeStatusBar(awbsb, 0, awbsb.Background, {awbsb.Underlay})
+		self:glazeStatusBar(hwbsb, 0, hwbsb.Background, {hwbsb.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar})
 	end
-
-	-- ArtifactWatchBar
-	local awbsb = _G.ArtifactWatchBar.StatusBar
-	awbsb:DisableDrawLayer("ARTWORK")
-	self:glazeStatusBar(awbsb, 0, awbsb.Background, {awbsb.Underlay})
-	_G.ArtifactWatchBar.Tick:SetAlpha(0)
-	moveWatchBar(_G.ArtifactWatchBar)
-	awbsb = nil
-
-	-- HonorWatchBar
-	local hwbsb = _G.HonorWatchBar.StatusBar
-	hwbsb:DisableDrawLayer("ARTWORK")
-	self:glazeStatusBar(hwbsb, 0, hwbsb.Background, {hwbsb.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar})
-	_G.HonorWatchBar.ExhaustionTick:SetAlpha(0)
-	moveWatchBar(_G.HonorWatchBar)
-	hwbsb = nil
+	awbsb, hwbsb = nil, nil
 
 	-- StanceBar Frame
 	self:keepFontStrings(_G.StanceBarFrame)
