@@ -754,7 +754,10 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 		-- reset Gradient alpha
 		_G.BNToastFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 		if _G.BNToastFrame.cb then _G.BNToastFrame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
-		-- self.hooks.BNToastFrame_Show()
+	end, true)
+	self:Hook("BNToastFrame_Close", function()
+		_G.BNToastFrame.sf.tfade:SetParent(_G.BNToastFrame.sf)
+		if _G.BNToastFrame.cb then _G.BNToastFrame.cb.tfade:SetParent(_G.BNToastFrame.cb) end
 	end, true)
 	self:addSkinFrame{obj=_G.BNToastFrame, ft=ftype}
 
@@ -769,7 +772,9 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 		_G.TimeAlertFrame.sf.tfade:SetParent(_G.MainMenuBar)
 		-- reset Gradient alpha
 		_G.TimeAlertFrame.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-		-- self.hooks.TimeAlert_Start(time)
+	end, true)
+	self:Hook("TimeAlert_Close", function()
+		_G.TimeAlertFrame.sf.tfade:SetParent(_G.TimeAlertFrame.sf)
 	end, true)
 	_G._G.TimeAlertFrameBG:SetBackdrop(nil)
 	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype}
