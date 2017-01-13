@@ -107,6 +107,7 @@
 <script file="SkinMe\LibDialog.lua"/>
 <script file="SkinMe\LibDropdown.lua"/>
 <script file="SkinMe\LibExtraTip.lua"/>
+<script file="SkinMe\LibKeyBound.lua"/>
 <script file="SkinMe\LibQTip.lua"/>
 <script file="SkinMe\LibToast.lua"/>
 <script file="SkinMe\LibTradeSkillScan.lua"/>

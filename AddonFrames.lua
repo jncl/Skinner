@@ -72,11 +72,12 @@ aObj.libsToSkin = {
 	["LibDialog-1.0"] = "LibDialog",
 	["LibExtraTip-1"] = "LibExtraTip",
 	["DetailsFramework-1.0"] = "DetailsFramework",
+	["LibKeyBound-1.0"] = "LibKeyBound",
 }
 -- store other AddOns not previously referenced, here
 aObj.otherAddons = {}
 aObj.otherAddons["tekKonfig"] = true
-aObj.otherAddons["LibKeyBound"] = true
+-- aObj.otherAddons["LibKeyBound"] = true
 aObj.otherAddons["WIM_Options"] = false
 local function skinLibs()
 
@@ -124,15 +125,6 @@ function aObj:AddonFrames()
 
 	-- skin library objects
 	skinLibs()
-
-	-- skin KeyboundDialog frame
-	if self.db.profile.MenuFrames then
-		if _G.LibStub('LibKeyBound-1.0', true) then
-			self:skinButton{obj=_G.KeyboundDialogOkay} -- this is a CheckButton object
-			self:skinButton{obj=_G.KeyboundDialogCancel} -- this is a CheckButton object
-			self:addSkinFrame{obj=_G.KeyboundDialog, kfs=true, y1=4, y2=6}
-		end
-	end
 
 	-- skin tekKonfig library objects (N.B. not a LibStub library)
 	if self.tekKonfig then self:checkAndRun("tekKonfig", "s") end -- not an addon in its own right
