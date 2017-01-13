@@ -20,4 +20,28 @@ function aObj:Bartender4()
 		end
 	end
 
+	-- skin XPBar, ReputationWatchBar, ArtifactWatchBar, HonorWatchBar if required
+	if not self.db.profile.MainMenuBar.skin then
+		-- XPBar
+		_G.ExhaustionTick:SetAlpha(0)
+		self:keepRegions(_G.MainMenuExpBar, {1, 2, 3, 4, 5, 9, 10}) -- N.B. region 5 is rested XP, 9 is background, 10 is the normal XP
+		-- ReputationWatchBar
+		self:keepRegions(_G.ReputationWatchBar.StatusBar, {1, 2, 3, 4, 13, 14, 16}) -- 13 is background, 14 is the normal texture
+		-- ArtifactWatchBar
+		local awbsb = _G.ArtifactWatchBar.StatusBar
+		awbsb:DisableDrawLayer("ARTWORK")
+		_G.ArtifactWatchBar.Tick:SetAlpha(0)
+		-- HonorWatchBar
+		local hwbsb = _G.HonorWatchBar.StatusBar
+		hwbsb:DisableDrawLayer("ARTWORK")
+		_G.HonorWatchBar.ExhaustionTick:SetAlpha(0)
+		if self.db.profile.MainMenuBar.glazesb then
+			self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 9), {_G.ExhaustionLevelFillBar})
+			self:glazeStatusBar(_G.ReputationWatchBar.StatusBar, 0, _G.ReputationWatchBar.StatusBar.Background)
+			self:glazeStatusBar(awbsb, 0, awbsb.Background, {awbsb.Underlay})
+			self:glazeStatusBar(hwbsb, 0, hwbsb.Background, {hwbsb.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar})
+		end
+		awbsb, hwbsb = nil, nil
+	end
+
 end
