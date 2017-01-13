@@ -3821,16 +3821,16 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
 
+	-- skin Item Ref Tooltip's close button and move it
+	self:skinButton{obj=_G.ItemRefCloseButton, cb=true}
+	self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=2}
+
 	if IsAddOnLoaded("TipTac") then return end
 
 	-- this addon colours the Tooltip Border
 	if IsAddOnLoaded("Chippu") then
 		self.ttBorder = false
 	end
-
-	-- skin Item Ref Tooltip's close button and move it
-	self:skinButton{obj=_G.ItemRefCloseButton, cb=true}
-	self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=2}
 
 	-- add tooltips to table to set backdrop and hook OnShow method
 	for _, tooltip in pairs(self.ttCheck) do
