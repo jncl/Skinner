@@ -24,10 +24,35 @@ Legend:
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-?	I	WorldQuestTracker minimize button doesn't have a border
+√	I	BNFrames, reported by m4xc4v413r4/GJMcElroy7, 16.12.16/23.12.16
+		- Gradient is left on screen after frame is hidden
 
-	I	LibQTip, reported by epidemedabear, 01.12.16
-√		-  ..\AddOns\Skinner\SkinMe\LibQTip.lua line 35: attempt to index local 'tt' (a nil value)
-		   Debug:
-		   Skinner\SkinMe\LibQTip.lua:35:
-		   Skinner\SkinMe\LibQTip.lua:32
+√	S	Details!, requested by NeoZeus, 18.12.16
+
+√	I	PaperDoll Frame, 19.12.16
+		- Skinner\PlayerFrames.lua:514: attempt to index field 'sbb' (a nil value)
+		Skinner\PlayerFrames.lua:514: in function <Skinner\PlayerFrames.lua:512>
+		- occurs when Bartender4 is loaded ?
+
+	I	FriendsFrame
+√		- PendingInvites Header needs skinning
+√		- PendingInvites Invite(s) need skinning
+
+√	S	WorldQuestTracker
+
+√	S	TidyPlates
+
+√	S	BGDefender
+
+	I	LibDropdown
+		- dropdowns not being skinned (Titan Panel uses them)
+
+	I	AlertFrames
+√		- DungeonCompletion, remove border textures
+√		- ScenarioAlert, remove IconBG & Border
+
+	N	Altoholic
+√		- 1x Skinner\Skinner-@project-version@.lua:617: Missing object __aSF
+		  Skinner\Skinner.lua:617: in function <Skinner\Skinner.lua:591>
+		  (tail call): ?
+		  Skinner\SkinMe\Altoholic-r174.lua:90: in function <Skinner\SkinMe\Altoholic.lua:81>
