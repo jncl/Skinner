@@ -969,6 +969,8 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 	if not self.db.profile.ChatButtons or self.initialized.ChatButtons then return end
 	self.initialized.ChatButtons = true
 
+	-- QuickJoinToastButton & frames (attached to ChatFrame)
+	local qjtb = _G.QuickJoinToastButton
 	if self.modBtnBs then
 		local obj
 		for i = 1, _G.NUM_CHAT_WINDOWS do
@@ -979,7 +981,29 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 			self:addButtonBorder{obj=obj.bottomButton, ofs=-2, reParent={self:getRegion(obj.bottomButton, 1)}}
 		end
 		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2}
+		self:addButtonBorder{obj=qjtb, x1=1, y1=1, x2=-2, y2=-1}
 	end
+	for _, frame in pairs{"Toast", "Toast2"} do
+		qjtb[frame]:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=qjtb[frame], ft=ftype}
+		self:moveObject{obj=qjtb[frame], x=7}
+		qjtb[frame]:Hide()
+	end
+
+	-- hook the animations to show or hide the QuickJoinToastButton frame(s)
+	qjtb.FriendToToastAnim:SetScript("OnPlay", function()
+		_G.QuickJoinToastButton.Toast.sf:Show()
+		_G.QuickJoinToastButton.Toast2.sf:Hide()
+	end)
+	qjtb.ToastToToastAnim:SetScript("OnPlay", function()
+		_G.QuickJoinToastButton.Toast.sf:Hide()
+		_G.QuickJoinToastButton.Toast2.sf:Show()
+	end)
+	qjtb.ToastToFriendAnim:SetScript("OnPlay", function()
+		_G.QuickJoinToastButton.Toast.sf:Hide()
+		_G.QuickJoinToastButton.Toast2.sf:Hide()
+	end)
+	qjtb = nil
 
 end
 
@@ -2453,34 +2477,10 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 	-- hook this to hide button grid after it has been shown
 	self:SecureHook("ActionButton_HideGrid", function(btn)
-		if ( _G[btn:GetName() .. "NormalTexture"] ) then
+		if _G[btn:GetName() .. "NormalTexture"] then
 			_G[btn:GetName() .. "NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0)
 		end
 	end)
-
-	-- QuickJoinToastButton & frames (attached to ChatFrame)
-	local qjtb = _G.QuickJoinToastButton
-	self:addButtonBorder{obj=qjtb, x1=1, y1=1, x2=-2, y2=-1}
-	for _, frame in pairs{"Toast", "Toast2"} do
-		qjtb[frame]:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=qjtb[frame], ft=ftype}
-		self:moveObject{obj=qjtb[frame], x=7}
-		qjtb[frame]:Hide()
-	end
-	-- hook the animations to show or hide the sqjtbkin frame
-	qjtb.FriendToToastAnim:SetScript("OnPlay", function()
-		_G.QuickJoinToastButton.Toast.sf:Show()
-		_G.QuickJoinToastButton.Toast2.sf:Hide()
-	end)
-	qjtb.ToastToToastAnim:SetScript("OnPlay", function()
-		_G.QuickJoinToastButton.Toast.sf:Hide()
-		_G.QuickJoinToastButton.Toast2.sf:Show()
-	end)
-	qjtb.ToastToFriendAnim:SetScript("OnPlay", function()
-		_G.QuickJoinToastButton.Toast.sf:Hide()
-		_G.QuickJoinToastButton.Toast2.sf:Hide()
-	end)
-	qjtb = nil
 
 end
 
