@@ -2,7 +2,6 @@ local aName, aObj = ...
 local _G = _G
 local ftype = "p"
 
--- Add locals to see if it speeds things up
 local ipairs, pairs, unpack = _G.ipairs, _G.pairs, _G.unpack
 local IsAddOnLoaded = _G.IsAddOnLoaded
 
@@ -510,7 +509,9 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 
 	if self.modBtnBs then
 		self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
-			if not btn.hasItem then
+			if btn.sbb
+			and not btn.hasItem
+			then
 				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 			end
 		end)
@@ -1462,9 +1463,19 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self:addSkinFrame{obj=_G.RecruitAFriendFrame, ft=ftype, kfs=true, ofs=-6, y1=-7}
 
 	-- FriendsList Frame
+	self:addButtonBorder{obj=_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton}
+	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
+	for invite in _G.FriendsFrameFriendsScrollFrame.invitePool:EnumerateActive() do
+		self:skinButton{obj=invite.DeclineButton}
+		self:skinButton{obj=invite.AcceptButton}
+	end
+	local sBar = _G.FriendsFrameFriendsScrollFrame.scrollBar
+	self:skinSlider{obj=sBar, rt="background"}
 	-- adjust width of FFFSF so it looks right (too thin by default)
-	self:skinSlider{obj=_G.FriendsFrameFriendsScrollFrameScrollBar, size=3, rt="background"}
-
+	sBar:ClearAllPoints()
+	sBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
+	sBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
+	sBar = nil
 	local btn
 	for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
 		btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
@@ -1473,6 +1484,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:addButtonBorder{obj=btn.travelPassButton, hide=true, disable=true, ofs=0, y1=3, y2=-2}
 		self:addButtonBorder{obj=btn.summonButton, hide=true, disable=true}
 	end
+	btn = nil
 
 	-- Friends Tooltip
 	self:addSkinFrame{obj=_G.FriendsTooltip}
@@ -1481,21 +1493,27 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self:addSkinFrame{obj=_G.AddFriendFrame, ft=ftype, kfs=true}
 	self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
 	self:addSkinFrame{obj=_G.AddFriendNoteFrame, ft=ftype, kfs=true}
-	self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar}
 
 -->>-- FriendsFriends Frame
 	self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
 	self:addSkinFrame{obj=_G.FriendsFriendsList, ft=ftype}
-	self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.FriendsFriendsFrame, ft=ftype}
 
 	-->>-- QuickJoin Frame
-	self:skinSlider{obj=_G.QuickJoinScrollFrame.scrollBar, rt="background"}--, size=3}
+	local sBar = _G.QuickJoinScrollFrame.scrollBar
+	self:skinSlider{obj=sBar, rt="background"}
+	-- adjust width of QJSF so it looks right (too thin by default)
+	sBar:ClearAllPoints()
+	sBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
+	sBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
+	sBar = nil
 	self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
 
 -->>--	IgnoreList Frame
 	self:keepFontStrings(_G.IgnoreListFrame)
-	self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar}
 
 -->>--	Who Tab Frame
 	self:removeInset(_G.WhoFrameListInset)
@@ -1504,7 +1522,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self:skinDropDown{obj=_G.WhoFrameDropDown, noSkin=true}
 	self:addButtonBorder{obj=_G.WhoFrameDropDownButton, es=12, ofs=-1}
 	self:moveObject{obj=_G.WhoFrameDropDownButton, x=5}
-	self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar}
 	self:skinEditBox{obj=_G.WhoFrameEditBox, move=true}
 	_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() +  24)
 	self:moveObject{obj=_G.WhoFrameEditBox, x=12}
@@ -1520,8 +1538,8 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G["ChannelButton" .. i .. "NormalTexture"]:SetAlpha(0)
 		end
 	end)
-	self:skinSlider{obj=_G.ChannelListScrollFrame.ScrollBar, size=3, rt="artwork"}
-	self:skinSlider{obj=_G.ChannelRosterScrollFrame.ScrollBar, size=3, rt="background"}
+	self:skinSlider{obj=_G.ChannelListScrollFrame.ScrollBar, rt="artwork"}
+	self:skinSlider{obj=_G.ChannelRosterScrollFrame.ScrollBar, rt="background"}
 	-- Channel Pullout Tab & Frame
 	self:keepRegions(_G.ChannelPulloutTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
 	self:addSkinFrame{obj=_G.ChannelPulloutTab, ft=ftype, noBdr=aObj.isTT, y1=-8, y2=-5}
@@ -1542,7 +1560,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self:skinButton{obj=_G.RaidFrameConvertToRaidButton}
 	self:skinButton{obj=_G.RaidFrameRaidInfoButton}
 
-	-- if _G.IsAddOnLoaded("Blizzard_RaidUI") then self:RaidUI() end
 	if IsAddOnLoaded("Blizzard_RaidUI") then
 		self:checkAndRun("RaidUI", "p", true)
 	end

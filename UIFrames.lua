@@ -340,7 +340,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 	self.initialized.AddonList = true
 
 	self:skinDropDown{obj=_G.AddonCharacterDropDown, x2=110}
-	self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, size=3, rt="background"}
+	self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, rt="background"}
 	self:removeMagicBtnTex(_G.AddonList.CancelButton)
 	self:removeMagicBtnTex(_G.AddonList.OkayButton)
 	self:removeMagicBtnTex(_G.AddonList.EnableAllButton)
@@ -355,7 +355,7 @@ aObj.blizzLoDFrames[ftype].AdventureMap = function(self)
 
 	-- AdventureMapQuestChoiceDialog
 	_G.AdventureMapQuestChoiceDialog:DisableDrawLayer("BACKGROUND") -- remove textures
-	self:skinSlider{obj=_G.AdventureMapQuestChoiceDialog.Details.ScrollBar, size=3}
+	self:skinSlider{obj=_G.AdventureMapQuestChoiceDialog.Details.ScrollBar}
 	_G.AdventureMapQuestChoiceDialog.Details.Child.TitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.AdventureMapQuestChoiceDialog.Details.Child.DescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.AdventureMapQuestChoiceDialog.Details.Child.ObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -733,7 +733,7 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 	_G.KeyBindingFrame.categoryList:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 	_G.KeyBindingFrame.bindingsContainer:SetBackdrop(self.Backdrop[10])
 	_G.KeyBindingFrame.bindingsContainer:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
-	self:skinSlider{obj=_G.KeyBindingFrame.scrollFrame.ScrollBar, size=3, rt={"background", "border"}}
+	self:skinSlider{obj=_G.KeyBindingFrame.scrollFrame.ScrollBar, rt={"background", "border"}}
 	for i = 1, _G.KEY_BINDINGS_DISPLAYED do
 		self:skinButton{obj=_G.KeyBindingFrame.keyBindingRows[i].key1Button}
 		self:skinButton{obj=_G.KeyBindingFrame.keyBindingRows[i].key2Button}
@@ -763,8 +763,8 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 
 -->>-- Report frame
 	_G.BNetReportFrameComment:DisableDrawLayer("BACKGROUND")
-		self:skinSlider{obj=_G.BNetReportFrameCommentScrollFrame.ScrollBar, size=3}
-		self:skinEditBox{obj=_G.BNetReportFrameCommentBox, regs={3}}
+	self:skinSlider{obj=_G.BNetReportFrameCommentScrollFrame.ScrollBar}
+	self:skinEditBox{obj=_G.BNetReportFrameCommentBox, regs={3}}
 	self:addSkinFrame{obj=_G.BNetReportFrame, ft=ftype}
 
 -->>-- TimeAlert Frame
@@ -802,14 +802,14 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	self:keepFontStrings(_G.CalendarViewHolidayTitleFrame)
 	self:moveObject{obj=_G.CalendarViewHolidayTitleFrame, y=-6}
 	self:removeRegions(_G.CalendarViewHolidayCloseButton, {5})
-	self:skinSlider{obj=_G.CalendarViewHolidayScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.CalendarViewHolidayScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.CalendarViewHolidayFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=-2}
 
 -->>-- View Raid Frame
 	self:keepFontStrings(_G.CalendarViewRaidTitleFrame)
 	self:moveObject{obj=_G.CalendarViewRaidTitleFrame, y=-6}
 	self:removeRegions(_G.CalendarViewRaidCloseButton, {5})
-	self:skinSlider{obj=_G.CalendarViewRaidScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.CalendarViewRaidScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.CalendarViewRaidFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- View Event Frame
@@ -817,7 +817,7 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	self:moveObject{obj=_G.CalendarViewEventTitleFrame, y=-6}
 	self:removeRegions(_G.CalendarViewEventCloseButton, {5})
 	self:addSkinFrame{obj=_G.CalendarViewEventDescriptionContainer, ft=ftype}
-	self:skinSlider{obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.CalendarViewEventDescriptionScrollFrame.ScrollBar}
 	self:keepFontStrings(_G.CalendarViewEventInviteListSection)
 	self:skinSlider{obj=_G.CalendarViewEventInviteListScrollFrameScrollBar}
 	self:addSkinFrame{obj=_G.CalendarViewEventInviteList, ft=ftype}
@@ -835,7 +835,7 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	self:skinDropDown{obj=_G.CalendarCreateEventAMPMDropDown, x2=-5}
 	self:skinDropDown{obj=_G.CalendarCreateEventDifficultyOptionDropDown, x2=-5}
 	self:addSkinFrame{obj=_G.CalendarCreateEventDescriptionContainer, ft=ftype}
-	self:skinSlider{obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar}
 	self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
 	self:skinSlider{obj=_G.CalendarCreateEventInviteListScrollFrameScrollBar}
 	self:addSkinFrame{obj=_G.CalendarCreateEventInviteList, ft=ftype}
@@ -1030,7 +1030,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 -->>--	Combat Settings
 	-- Filters
 	_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
-	self:skinSlider{obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar, size=3}
+	self:skinSlider{obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar}
 	self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype}
 
 	-- Message Sources
@@ -1259,7 +1259,7 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 
 -->>-- Opacity Frame, used by BattlefieldMinimap amongst others
 	_G.OpacityFrame:SetBackdrop(nil)
-	self:skinSlider{obj=_G.OpacityFrameSlider, size=3}
+	self:skinSlider{obj=_G.OpacityFrameSlider}
 	self:addSkinFrame{obj=_G.OpacityFrame, ft=ftype}
 
 end
@@ -1281,9 +1281,9 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	if not self.db.profile.DebugTools or self.initialized.DebugTools then return end
 	self.initialized.DebugTools = true
 
-	self:skinSlider{obj=_G.EventTraceFrameScroll, size=3}
+	self:skinSlider{obj=_G.EventTraceFrameScroll}
 	self:addSkinFrame{obj=_G.EventTraceFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
-	self:skinSlider{obj=_G.ScriptErrorsFrameScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.ScriptErrorsFrameScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
 
 	if self.db.profile.Tooltips.skin then
@@ -1899,7 +1899,7 @@ aObj.blizzLoDFrames[ftype].GMSurveyUI = function(self)
 	self:keepFontStrings(_G.GMSurveyHeader)
 	self:moveObject{obj=_G.GMSurveyHeaderText, y=-8}
 	self:addSkinFrame{obj=_G.GMSurveyFrame, ft=ftype, kfs=true, y1=-6, x2=-45}
-	self:skinSlider{obj=_G.GMSurveyScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.GMSurveyScrollFrame.ScrollBar, rt="artwork"}
 
 	local obj
 	for i = 1, _G.MAX_SURVEY_QUESTIONS do
@@ -1909,7 +1909,7 @@ aObj.blizzLoDFrames[ftype].GMSurveyUI = function(self)
 		obj.SetBackdropBorderColor = _G.nop
 	end
 
-	self:skinSlider{obj=_G.GMSurveyCommentScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.GMSurveyCommentScrollFrame.ScrollBar}
 	self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
 
 end
@@ -1931,14 +1931,14 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 	_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.GuildBankFrame, ft=ftype, kfs=true, hdr=true, x1=-3, y1=2, x2=1, y2=-5}
 -->>--	Log Frame
-	self:skinSlider{obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, rt="artwork"}
 
 -->>--	Info Frame
-	self:skinSlider{obj=_G.GuildBankInfoScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.GuildBankInfoScrollFrame.ScrollBar, rt="artwork"}
 
 -->>--	GuildBank Popup Frame
 	self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
-	self:skinSlider{obj=_G.GuildBankPopupScrollFrame.ScrollBar, size=3, rt="background"}
+	self:skinSlider{obj=_G.GuildBankPopupScrollFrame.ScrollBar, rt="background"}
 	self:removeRegions(self:getChild(_G.GuildBankPopupFrame, 1), {1, 2, 3, 4, 5, 6, 7, 8})
 	self:adjHeight{obj=_G.GuildBankPopupFrame, adj=20}
 	self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={6}}
@@ -1990,10 +1990,10 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 	-- Character Stuck! panel
 	self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
 	-- Report Bug panel
-	self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.bug, 3), ft=ftype}
 	-- Submit Suggestion panel
-	self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.suggestion, 3), ft=ftype}
 	-- Help Browser
 	self:removeInset(_G.HelpBrowser.BrowserInset)
@@ -2005,8 +2005,8 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 	self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2}
 	-- Knowledgebase (uses Browser frame)
 	-- GM_Response
-	self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame1.ScrollBar, size=3}
-	self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame2.ScrollBar, size=3}
+	self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame1.ScrollBar}
+	self:skinSlider{obj=_G.HelpFrameGM_ResponseScrollFrame2.ScrollBar}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 5), ft=ftype}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrameGM_Response, 6), ft=ftype}
 
@@ -2039,7 +2039,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 		_G.ItemTextPageText:SetTextColor("H3", self.HTr, self.HTg, self.HTb)
 	end)
 
-	self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, adj=-4, size=3}
+	self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, adj=-4}
 	self:glazeStatusBar(_G.ItemTextStatusBar, 0)
 	self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
 	self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -2114,7 +2114,7 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 		btn = "LFDQueueFrameSpecificListButton" .. i .. "ExpandOrCollapseButton"
 		self:skinButton{obj=_G[btn], mp2=true}
 	end
-	self:skinSlider{obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, size=3, rt="background"}
+	self:skinSlider{obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, rt="background"}
 
 end
 
@@ -2163,12 +2163,12 @@ aObj.blizzFrames[ftype].LFRFrame = function(self)
 		self:skinButton{obj=_G[btn], mp2=true}
 		self:moveObject{obj=_G[btn .. "Highlight"], x=-3} -- move highlight to the left
 	end
-	self:skinSlider{obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar}
 
 	-- LFR Browse Frame
 	self:removeInset(_G.LFRBrowseFrameRoleInset)
 	self:skinDropDown{obj=_G.LFRBrowseFrameRaidDropDown}
-	self:skinSlider{obj=_G.LFRBrowseFrameListScrollFrame.ScrollBar, size=3, rt="background"}
+	self:skinSlider{obj=_G.LFRBrowseFrameListScrollFrame.ScrollBar, rt="background"}
 	self:keepFontStrings(_G.LFRBrowseFrame)
 
 	-- Tabs (side)
@@ -2186,8 +2186,8 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self.initialized.MacroUI = true
 
 -->>-- Macro Frame
-	self:skinSlider{obj=_G.MacroButtonScrollFrame.ScrollBar, size=3, rt="artwork"}
-	self:skinSlider{obj=_G.MacroFrameScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.MacroButtonScrollFrame.ScrollBar, rt="artwork"}
+	self:skinSlider{obj=_G.MacroFrameScrollFrame.ScrollBar}
 	self:skinEditBox{obj=_G.MacroFrameText, noSkin=true}
 	self:addSkinFrame{obj=_G.MacroFrameTextBackground, ft=ftype, x2=1}
 	self:skinTabs{obj=_G.MacroFrame, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
@@ -2205,7 +2205,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 
 -->>-- Macro Popup Frame
 	self:adjHeight{obj=_G.MacroPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
-	self:skinSlider{obj=_G.MacroPopupScrollFrame.ScrollBar, size=3, rt="background"}
+	self:skinSlider{obj=_G.MacroPopupScrollFrame.ScrollBar, rt="background"}
 	self:removeRegions(self:getChild(_G.MacroPopupFrame, 1), {1, 2, 3, 4, 5, 6, 7, 8})
 	self:adjHeight{obj=_G.MacroPopupFrame, adj=20}
 	self:skinEditBox{obj=_G.MacroPopupEditBox}
@@ -2245,7 +2245,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 -->>--	Send Mail Frame
 	self:keepFontStrings(_G.SendMailFrame)
-	self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, size=3, rt={"background", "artwork"}}
+	self:skinSlider{obj=_G.SendMailScrollFrame.ScrollBar, rt={"background", "artwork"}}
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		btn = _G["SendMailAttachment" .. i]
 		if not self.modBtnBs then
@@ -2266,7 +2266,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 -->>--	Open Mail Frame
 	_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
-	self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, size=3, rt="overlay"}
+	self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, rt="overlay"}
 	_G.OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true, ofs=3}
@@ -2564,10 +2564,10 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, ignht=true, x1=6, y1=2, x2=-6, y2=-4}
 	self:addSkinFrame{obj=_G.InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	_G.InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
-	self:skinSlider{obj=_G.InterfaceOptionsFrameCategoriesListScrollBar, size=3}
+	self:skinSlider{obj=_G.InterfaceOptionsFrameCategoriesListScrollBar}
 	self:addSkinFrame{obj=_G.InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
 	_G.InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)
-	self:skinSlider{obj=_G.InterfaceOptionsFrameAddOnsListScrollBar, size=3}
+	self:skinSlider{obj=_G.InterfaceOptionsFrameAddOnsListScrollBar}
 	self:addSkinFrame{obj=_G.InterfaceOptionsFrameAddOns, ft=ftype, kfs=true, bgen=1}
 	self:addSkinFrame{obj=_G.InterfaceOptionsFramePanelContainer, ft=ftype, bgen=1}
 	-- skin toggle buttons
@@ -3532,7 +3532,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	-- ScenarioQueueFrame
 	_G.ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
 	self:skinDropDown{obj=_G.ScenarioQueueFrame.Dropdown}
-	self:skinSlider{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.ScrollBar, size=3, rt={"background", "artwork"}}
+	self:skinSlider{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.ScrollBar, rt={"background", "artwork"}}
 	local btnName
 	for i = 1, _G.ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
 		btnName = "ScenarioQueueFrameRandomScrollFrameChildFrameItem" .. i
@@ -3548,7 +3548,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 
 	self:skinButton{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
 	self:moveObject{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
-	self:skinSlider{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame.ScrollBar, size=3, rt="background"}
+	self:skinSlider{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame.ScrollBar, rt="background"}
 	self:keepFontStrings(_G.ScenarioQueueFramePartyBackfill)
 
 end
@@ -3578,7 +3578,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 
 	-- Quest Log Popup Detail Frame
 	local qlpdf = _G.QuestLogPopupDetailFrame
-	self:skinSlider{obj=qlpdf.ScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=qlpdf.ScrollFrame.ScrollBar, rt="artwork"}
 	self:addButtonBorder{obj=qlpdf.ShowMapButton, relTo=qlpdf.ShowMapButton.Texture, x1=2, y1=-1, x2=-2, y2=1}
 	self:addSkinFrame{obj=qlpdf, ft=ftype, kfs=true, ri=true, ofs=2}
 	qlpdf = nil
@@ -3589,7 +3589,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 	_G.QuestMapFrame.QuestsFrame:DisableDrawLayer("BACKGROUND")
 	_G.QuestMapFrame.QuestsFrame.Contents.StoryHeader:DisableDrawLayer("BACKGROUND")
 	_G.QuestMapFrame.QuestsFrame.Contents.StoryHeader.Shadow:SetTexture(nil)
-	self:skinSlider{obj=_G.QuestMapFrame.QuestsFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.QuestMapFrame.QuestsFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.QuestMapFrame.QuestsFrame.StoryTooltip, ft=ftype}
 
 	-- Details Frame
@@ -3676,7 +3676,7 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 	_G.RaidFinderQueueFrameBackground:SetTexture(nil)
 	_G.RaidFinderQueueFrameBackground.SetTexture = _G.nop
 	self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}
-	self:skinSlider{obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, size=3, rt={"background", "artwork"}}
+	self:skinSlider{obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, rt={"background", "artwork"}}
 
 end
 
@@ -3869,7 +3869,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		_G["TutorialFrameRight" .. i]:SetTexture(nil)
 	end
 	_G.TutorialTextBorder:SetAlpha(0)
-	self:skinSlider{obj=_G.TutorialFrameTextScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.TutorialFrameTextScrollFrame.ScrollBar}
 	-- stop animation before skinning, otherwise textures reappear
 	_G.AnimateMouse:Stop()
 	_G.AnimateCallout:Stop()
@@ -4022,7 +4022,7 @@ aObj.blizzFrames[ftype].WorldState = function(self)
 
 -->>-- WorldStateScore frame
 --	self:skinDropDown{obj=_G.ScorePlayerDropDown}
-	self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
 	self:skinTabs{obj=_G.WorldStateScoreFrame}
 	self:addSkinFrame{obj=_G.WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 

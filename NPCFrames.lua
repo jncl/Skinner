@@ -31,8 +31,8 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
 		self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true, aso={bd=5}}
 	end
-	self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, size=3, rt="artwork"}
-	self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, rt="artwork"}
+	self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, rt="artwork"}
 	-- BrowseWowTokenResults
 	_G.BrowseWowTokenResults.Token:DisableDrawLayer("BACKGROUND")
 	self:skinButton{obj=_G.BrowseWowTokenResults.Buyout}
@@ -88,7 +88,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName .. "Item"], auit=true}
 	end
-	self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, rt="artwork"}
 	self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
 	_G.BidCloseButton:DisableDrawLayer("BORDER")
 	_G.BidBuyoutButton:DisableDrawLayer("BORDER")
@@ -103,7 +103,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
-	self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, rt="artwork"}
 	for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
 		btnName = "AuctionsButton" .. i
 		self:keepFontStrings(_G[btnName])
@@ -272,7 +272,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 
 	self:keepFontStrings(_G.GossipFrameGreetingPanel)
 	_G.GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
 	for i = 1, _G.NUMGOSSIPBUTTONS do
 		self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
@@ -483,14 +483,14 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self:addSkinFrame{obj=_G.QuestFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
 	--	Reward Panel
 	self:keepFontStrings(_G.QuestFrameRewardPanel)
-	self:skinSlider{obj=_G.QuestRewardScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.QuestRewardScrollFrame.ScrollBar, rt="artwork"}
 	--	Progress Panel
 	self:keepFontStrings(_G.QuestFrameProgressPanel)
 	_G.QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
 	_G.QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	_G.QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinSlider{obj=_G.QuestProgressScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.QuestProgressScrollFrame.ScrollBar, rt="artwork"}
 	local btnName
 	for i = 1, _G.MAX_REQUIRED_ITEMS do
 		btnName = "QuestProgressItem" .. i
@@ -508,12 +508,12 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 	--	Detail Panel
 	self:keepFontStrings(_G.QuestFrameDetailPanel)
-	self:skinSlider{obj=_G.QuestDetailScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.QuestDetailScrollFrame.ScrollBar, rt="artwork"}
 
 	--	Greeting Panel
 	self:keepFontStrings(_G.QuestFrameGreetingPanel)
 	self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
-	self:skinSlider{obj=_G.QuestGreetingScrollFrame.ScrollBar, size=3, rt="artwork"}
+	self:skinSlider{obj=_G.QuestGreetingScrollFrame.ScrollBar, rt="artwork"}
 	if _G.QuestFrameGreetingPanel:IsShown() then
 		_G.GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.CurrentQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -522,7 +522,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 	-- QuestNPCModel
 	self:keepFontStrings(_G.QuestNPCModelTextFrame)
-	self:skinSlider{obj=_G.QuestNPCModelTextScrollFrame.ScrollBar, size=3}
+	self:skinSlider{obj=_G.QuestNPCModelTextScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.QuestNPCModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
 
 	-- QuestInfo
@@ -739,7 +739,7 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 	local btn = _G.ClassTrainerFrame.skillStepButton
 	btn:GetNormalTexture():SetTexture(nil)
 	self:addButtonBorder{obj=btn, relTo=btn.icon}
-	self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar, adj=-4, size=3}
+	self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar, adj=-4}
 	self:removeInset(_G.ClassTrainerFrame.bottomInset)
 	for i = 1, #_G.ClassTrainerFrame.scrollFrame.buttons do
 		btn = _G.ClassTrainerFrame.scrollFrame.buttons[i]
