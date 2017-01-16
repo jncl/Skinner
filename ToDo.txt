@@ -23,3 +23,6 @@ Legend:
 
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
+
+	-	CompactRaidFrames
+		- hook the function that is fired when other unit(s) are added to a group
