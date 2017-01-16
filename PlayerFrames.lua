@@ -431,12 +431,6 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 	if self.modBtnBs then
 		local function skinBuffs()
 
-			-- -- handle in combat
-			-- if _G.InCombatLockdown() then
-			-- 	aObj:add2Table(aObj.oocTab, {skinBuffs, {nil}})
-			-- 	return
-			-- end
-
 			local btn
 			for i= 1, _G.BUFF_MAX_DISPLAY do
 				btn = _G["BuffButton" .. i]
@@ -943,28 +937,22 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	local function skinUnit(unit)
 
-		-- handle in combat as it uses SecureUnitButtonTemplate
-		if _G.InCombatLockdown() then
-			aObj:add2Table(aObj.oocTab, {skinUnit, {unit}})
-			return
-		end
-
 		unit:DisableDrawLayer("BACKGROUND")
-		unit.horizDivider:SetAlpha(0)
-		unit.horizTopBorder:SetAlpha(0)
-		unit.horizBottomBorder:SetAlpha(0)
-		unit.vertLeftBorder:SetAlpha(0)
-		unit.vertRightBorder:SetAlpha(0)
+		unit.horizTopBorder:SetTexture(nil)
+		unit.horizBottomBorder:SetTexture(nil)
+		unit.vertLeftBorder:SetTexture(nil)
+		unit.vertRightBorder:SetTexture(nil)
+		unit.horizDivider:SetTexture(nil)
 
 	end
 	local function skinGrp(grp)
 
-		aObj:addSkinFrame{obj=grp.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
 		local grpName = grp:GetName()
 		for i = 1, _G.MEMBERS_PER_RAID_GROUP do
 			skinUnit(_G[grpName .. "Member" .. i])
 		end
 		grpName = nil
+		aObj:addSkinFrame{obj=grp.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
 
 	end
 
@@ -974,7 +962,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		self:Unhook("CompactPartyFrame_OnLoad")
 	end)
 	-- hook this to skin any new CompactRaidGroup(s)
-	self:SecureHook("CompactRaidGroup_UpdateBorder", function(frame)
+	self:SecureHook("CompactRaidGroup_UpdateLayout", function(frame)
 		skinGrp(frame)
 	end)
 
@@ -982,37 +970,37 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	-- handle AddOn being disabled
 	if not self:checkLoadable("Blizzard_CompactRaidFrames") then return end
 
-	-- hook this to skin any new CompactRaidFrameContainer entries
-	self:SecureHook("FlowContainer_AddObject", function(container, object)
-		if container == _G.CompactRaidFrameContainer then -- only for compact raid frame objects
-			if container.frameUpdateList then
-				if container.frameUpdateList.group
-				and container.frameUpdateList.group[object]
-				then
-					skinGrp(object)
-				elseif container.frameUpdateList.normal
-				and container.frameUpdateList.normal[object]
-				then
-					skinUnit(object)
-				end
-			end
+	local function skinCRFCframes()
+
+		-- handle in combat as UnitFrame uses SecureUnitButtonTemplate
+		if _G.InCombatLockdown() then
+			aObj:add2Table(aObj.oocTab, {skinCRFCframes, {nil}})
+			return
 		end
-	end)
-	-- skin any existing unit(s) [group, mini, normal]
-	for type, fTab in pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
-		for _, frame in ipairs(fTab) do
-			if type == "group" then
-				skinGrp(frame)
-			elseif type == "mini" then
-			elseif type == "normal" then
-				if frame.borderFrame then -- group or party
-					skinGrp(frame)
-				else
+
+		for type, fTab in pairs(_G.CompactRaidFrameContainer.frameUpdateList) do
+			for _, frame in ipairs(fTab) do
+				if type == "normal" then
+					if frame.borderFrame then -- group or party
+						skinGrp(frame)
+					else
+						skinUnit(frame)
+					end
+				elseif type == "mini" then
 					skinUnit(frame)
 				end
 			end
 		end
+
 	end
+	-- hook this to skin any new CompactRaidFrameContainer entries
+	self:SecureHook("FlowContainer_AddObject", function(container, object)
+		if container == _G.CompactRaidFrameContainer then -- only for compact raid frame objects
+			skinCRFCframes()
+		end
+	end)
+	-- skin any existing unit(s) [mini, normal]
+	skinCRFCframes()
 	self:addSkinFrame{obj=_G.CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-5, y2=5}
 
 -->>-- Compact RaidFrame Manager
@@ -2338,12 +2326,6 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self)
 
 	local function skinOverrideActionBar()
 
-		-- -- handle in combat
-		-- if _G.InCombatLockdown() then
-		-- 	aObj:add2Table(aObj.oocTab, {skinOverrideActionBar, {nil}})
-		-- 	return
-		-- end
-
 		local oabW = _G.OverrideActionBar:GetWidth()
 
 		local xOfs1 = 144
@@ -2551,8 +2533,8 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 
 	-- Raid Groups
 	for i = 1, _G.MAX_RAID_GROUPS do
-		self:addSkinFrame{obj=_G["RaidGroup" .. i], ft=ftype, x1=-2, y1=2, x2=1, y2=-1}
 		_G["RaidGroup" .. i]:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=_G["RaidGroup" .. i], ft=ftype, x1=-2, y1=2, x2=1, y2=-1}
 	end
 	-- Raid Group Buttons
 	for i = 1, _G.MAX_RAID_GROUPS * 5 do
