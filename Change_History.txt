@@ -1,3 +1,12 @@
+beta7.23360.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Details & DetailsFramework skins
+	Update MainMenuBar skin
+	Updated Bartender4 skin to skin status bars
+	Move LibKeyBound skinning code into a seperate skin file
+
 beta7.23360.1
 Jncl:
 	ToDo.txt
