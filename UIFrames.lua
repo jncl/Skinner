@@ -2434,28 +2434,30 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end
 
 -->>-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
-	local function skinUnitPowerBarAlt(upba)
-		upba:DisableDrawLayer("BACKGROUND")
-		-- Don't change the status bar texture as it changes dependant upon type of power type required
-		upba.frame:SetAlpha(0)
-		-- adjust height and TextCoord so background appears, this enables the numbers to become easier to see
-		upba.counterBar:SetHeight(26)
-		upba.counterBar.BG:SetTexCoord(0.0, 1.0, 0.35, 0.40)
-		upba.counterBar.BGL:SetAlpha(0)
-		upba.counterBar.BGR:SetAlpha(0)
-		upba.counterBar:DisableDrawLayer("ARTWORK")
-	end
-	self:SecureHook("UnitPowerBarAlt_SetUp", function(this, barID)
-		skinUnitPowerBarAlt(this)
-	end)
-	-- skin PlayerPowerBarAlt if already shown
-	if _G.PlayerPowerBarAlt:IsVisible() then
-		skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
-	end
-	-- skin BuffTimers
-	for i = 1, 10 do
-		if _G["BuffTimer" .. i] then
-			skinUnitPowerBarAlt(_G["BuffTimer" .. i])
+	if self.db.profile.MainMenuBar.altpowerbar then
+		local function skinUnitPowerBarAlt(upba)
+			upba:DisableDrawLayer("BACKGROUND")
+			-- Don't change the status bar texture as it changes dependant upon type of power type required
+			upba.frame:SetAlpha(0)
+			-- adjust height and TextCoord so background appears, this enables the numbers to become easier to see
+			upba.counterBar:SetHeight(26)
+			upba.counterBar.BG:SetTexCoord(0.0, 1.0, 0.35, 0.40)
+			upba.counterBar.BGL:SetAlpha(0)
+			upba.counterBar.BGR:SetAlpha(0)
+			upba.counterBar:DisableDrawLayer("ARTWORK")
+		end
+		self:SecureHook("UnitPowerBarAlt_SetUp", function(this, barID)
+			skinUnitPowerBarAlt(this)
+		end)
+		-- skin PlayerPowerBarAlt if already shown
+		if _G.PlayerPowerBarAlt:IsVisible() then
+			skinUnitPowerBarAlt(_G.PlayerPowerBarAlt)
+		end
+		-- skin BuffTimers
+		for i = 1, 10 do
+			if _G["BuffTimer" .. i] then
+				skinUnitPowerBarAlt(_G["BuffTimer" .. i])
+			end
 		end
 	end
 

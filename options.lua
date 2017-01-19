@@ -149,7 +149,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		LFGFrame             = true,
 		LFRFrame             = true,
 		MailFrame            = true,
-		MainMenuBar          = {skin = true, glazesb = true, extraab=true},
+		MainMenuBar          = {skin = true, glazesb = true, extraab=true, altpowerbar=true},
 		MenuFrames           = true, -- (inc. MacroUI & BindingUI)
 		Minimap              = {skin = false, gloss = false},
 		MinimapButtons       = {skin = false, style = false},
@@ -1510,6 +1510,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 							width = "double",
 							name = self.L["Skin Extra Action Button"],
 							desc = self.L["Toggle the skin of the Extra Action Button"],
+						},
+						altpowerbar = {
+							type = "toggle",
+							order = 3,
+							width = "double",
+							name = self.L["Skin Alternate Power Bars"],
+							desc = self.L["Toggle the skin of the Alternate Power Bars"],
 						},
 					},
 				},
