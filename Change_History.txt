@@ -1,3 +1,10 @@
+beta7.23360.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Add sub option to skin UnitPowerBarAlt to MainMenuBar options
+	Bugfix for Pet Unit frame skin
+
 beta7.23360.3
 Jncl:
 	ToDo.txt
