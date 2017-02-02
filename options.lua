@@ -733,9 +733,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				local uiOpt = info[#info]:match("UI" , -2)
-				-- handle Blizzard UI LoD Addons
-				if uiOpt then
+				-- handle Blizzard LoD Addons
+				if self.blizzLoDFrames.n[info[#info]] then
 					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "n", true)
 					end
@@ -865,9 +864,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				-- handle Blizzard UI LoD Addons
-				local uiOpt = info[#info]:match("UI" , -2)
-				if uiOpt then
+				-- handle Blizzard LoD Addons
+				if self.blizzLoDFrames.p[info[#info]] then
 					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "p", true)
 					end
@@ -1194,11 +1192,10 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value
-				local uiOpt = info[#info]:match("UI" , -2)
 				if info[#info] == "Colours" then self:checkAndRun("ColorPicker", "p")
 				elseif info[#info] == "CombatLogQBF" then return
-				-- handle Blizzard UI LoD Addons
-				elseif uiOpt then
+				-- handle Blizzard LoD Addons
+				elseif self.blizzLoDFrames.u[info[#info]] then
 					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "u", true)
 					end
