@@ -3627,7 +3627,6 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 
 	-- QuestInfo
 	self:checkAndRun("QuestInfo", "n")
-	-- self.blizzFrames.n:QuestInfo()
 
 end
 
@@ -3933,11 +3932,11 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		end)
 		-- handle different map addons being loaded or fullscreen required
 		if self.db.profile.WorldMap.size == 2 then
-			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true, y1=1, x2=1}
+			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true, bgen=1, y1=1, x2=1}
 		elseif not IsAddOnLoaded("MetaMap")
 		and not IsAddOnLoaded("Cartographer_LookNFeel")
 		then
-			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true}
+			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true, bgen=1}
 			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
 				sizeDown()
 			else

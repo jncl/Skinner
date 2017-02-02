@@ -527,12 +527,17 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 	-- QuestInfo
 	self:checkAndRun("QuestInfo", "n")
-	-- self.blizzFrames.n:QuestInfo()
 
 end
 
 aObj.blizzFrames[ftype].QuestInfo = function(self)
-	if self.initialized.QuestInfo then return end
+	if not self.db.profile.GossipFrame
+	and not self.db.profile.QuestFrame
+	and not self.db.profile.QuestMap
+	or self.initialized.QuestInfo
+	then
+		return
+	end
 	self.initialized.QuestInfo = true
 
 	local function skinRewards(frame)
