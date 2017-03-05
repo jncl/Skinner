@@ -661,7 +661,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:addButtonBorder{obj=mj.SummonRandomFavoriteButton, ofs=3}
 	self:removeInset(mj.LeftInset)
 	self:removeInset(mj.RightInset)
-	self:skinEditBox{obj=mj.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
+	self:skinEditBox{obj=mj.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, x=-6, y=-2} -- 6 is text, 7 is icon
 	self:skinButton{obj=_G.MountJournalFilterButton}
 	self:skinDropDown{obj=_G.MountJournalFilterDropDown}
 	self:removeInset(mj.MountCount)
@@ -717,7 +717,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:removeInset(pj.LeftInset)
 	self:removeInset(pj.PetCardInset)
 	self:removeInset(pj.RightInset)
-	self:skinEditBox{obj=pj.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
+	self:skinEditBox{obj=pj.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, x=-6, y=-2} -- 6 is text, 7 is icon
 	self:skinButton{obj=_G.PetJournalFilterButton}
 	self:skinDropDown{obj=_G.PetJournalFilterDropDown}
 
@@ -1409,6 +1409,8 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	ejsf.Suggestion1.centerDisplay.description.text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ejsf.Suggestion1.reward.text:SetTextColor(self.BTr, self.BTg, self.BTb)
 	ejsf.Suggestion1.reward.iconRing:SetTexture(nil)
+	self:addButtonBorder{obj=ejsf.Suggestion1.prevButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=ejsf.Suggestion1.nextButton, ofs=-2, y1=-3, x2=-3}
 	-- add skin frame to surround all the Suggestions, so tabs look better than without a frame
 	self:addSkinFrame{obj=ejsf.Suggestion1, ft=ftype, x1=-34, y1=24, x2=426, y2=-28}
 	-- Suggestion2 panel (Dungeons)
@@ -1435,6 +1437,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	self:skinDropDown{obj=ejlj.LegendariesFrame.SlotDropDown}
 	skinFilterBtn(ejlj.LegendariesFrame.ClassButton)
 	self:skinDropDown{obj=ejlj.LegendariesFrame.ClassDropDown}
+	self:skinSlider{obj=ejlj.LegendariesFrame.ScrollBar, adj=-4, size=3}
 	self:addSkinFrame{obj=ejlj, ft=ftype, ofs=6, x1=-5, y2=-3}
 	local btn
 	for i = 1 , #ejlj.LegendariesFrame.buttons do
@@ -1449,6 +1452,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	end
 	btn = nil
 	-- ItemSetsFrame
+	self:skinSlider{obj=ejlj.ItemSetsFrame.ScrollBar, adj=-4, size=3}
 	skinFilterBtn(ejlj.ItemSetsFrame.ClassButton)
 	for i = 1 , #ejlj.ItemSetsFrame.buttons do
 		ejlj.ItemSetsFrame.buttons[i].Background:SetTexture(nil)

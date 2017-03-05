@@ -248,7 +248,8 @@ aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	self.initialized.FlightMap = true
 
 	self:keepFontStrings(_G.FlightMapFrame.BorderFrame)
-	self:addSkinFrame{obj=_G.FlightMapFrame, ft=ftype, ofs=3, x2=2}
+	self:moveObject{obj=_G.FlightMapFrameCloseButton, x=3, y=1}
+	self:addSkinFrame{obj=_G.FlightMapFrame, ft=ftype, ofs=3, x2=4}
 	_G.FlightMapFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 	-- hook this to remove ZoneLabel background texture

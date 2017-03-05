@@ -792,8 +792,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	-- move close button
 	self:moveObject{obj=_G.CalendarCloseButton, y=14}
 	self:adjHeight{obj=_G.CalendarCloseButton, adj=-2}
-	self:addButtonBorder{obj=_G.CalendarPrevMonthButton, ofs=-2}
-	self:addButtonBorder{obj=_G.CalendarNextMonthButton, ofs=-2}
+	self:addButtonBorder{obj=_G.CalendarPrevMonthButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=_G.CalendarNextMonthButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0}
 	self:addSkinFrame{obj=_G.CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=2, y2=-7}
 	-- remove texture from day buttons
 	for i = 1, 7 * 6 do
@@ -900,6 +901,7 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 	self:removeInset(_G.ChallengesFrameInset)
 
 	_G.ChallengesFrame.WeeklyBest.Child.Star:SetTexture(nil)
+	_G.ChallengesFrame.WeeklyBest.Child.Glow:SetTexture(nil)
 	_G.ChallengesFrame.WeeklyBest.Child:DisableDrawLayer("BACKGROUND") -- Rune textures
 	_G.ChallengesFrame.WeeklyBest.Child:DisableDrawLayer("OVERLAY") -- glow texture
 
@@ -2453,9 +2455,9 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end)
 
 -->>-- MicroButtonAlert frames
-	self:skinButton{obj=_G.TalentMicroButtonAlert.CloseButton, cb=true}
-	self:skinButton{obj=_G.CollectionsMicroButtonAlert.CloseButton, cb=true}
-	self:skinButton{obj=_G.LFDMicroButtonAlert.CloseButton, cb=true}
+	for _, v in pairs{"Talent", "Collections", "LFD", "EJ"} do
+		self:skinButton{obj=_G[v .. "MicroButtonAlert"].CloseButton, cb=true}
+	end
 
 -->>-- Extra Action Button
 	if self.db.profile.MainMenuBar.extraab then
@@ -3147,7 +3149,8 @@ aObj.blizzLoDFrames[ftype].ObliterumUI = function(self)
 
 	_G.ObliterumForgeFrame.Background:SetTexture(nil)
 	self:removeMagicBtnTex(_G.ObliterumForgeFrame.ObliterateButton)
-	_G.ObliterumForgeFrame.ItemSlot.Corners:SetAlpha(0)
+	_G.ObliterumForgeFrame.ItemSlot:DisableDrawLayer("ARTWORK")
+	_G.ObliterumForgeFrame.ItemSlot:DisableDrawLayer("OVERLAY")
 	self:addSkinFrame{obj=_G.ObliterumForgeFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
 	self.modUIBtns:addButtonBorder{obj=_G.ObliterumForgeFrame.ItemSlot} -- use module function to force button border
 
@@ -3633,14 +3636,18 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 
 	-- Details Frame
 	self:keepFontStrings(_G.QuestMapFrame.DetailsFrame)
+	self:skinButton{obj=_G.QuestMapFrame.DetailsFrame.BackButton}
 	self:keepFontStrings(_G.QuestMapFrame.DetailsFrame.RewardsFrame)
 	self:getRegion(_G.QuestMapFrame.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HTr, self.HTg, self.HTb)
 	self:skinSlider{obj=_G.QuestMapFrame.DetailsFrame.ScrollFrame.ScrollBar, adj=-4}
 	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("BACKGROUND")
 	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("ARTWORK")
 	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")
+	self:skinButton{obj=_G.QuestMapFrame.DetailsFrame.AbandonButton}
 	self:moveObject{obj=_G.QuestMapFrame.DetailsFrame.AbandonButton, y=2}
+	self:skinButton{obj=_G.QuestMapFrame.DetailsFrame.ShareButton}
 	self:removeRegions(_G.QuestMapFrame.DetailsFrame.ShareButton, {6, 7}) -- divider textures
+	self:skinButton{obj=_G.QuestMapFrame.DetailsFrame.TrackButton}
 
 	-- skin header buttons, if required
 	if self.modBtns then
