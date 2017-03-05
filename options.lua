@@ -134,6 +134,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		CinematicFrame       = true,
 		CoinPickup           = true,
 		Colours              = true,
+		Contribution         = self.isPTR and true or nil,
 		CombatLogQBF         = false,
 		DeathRecap           = true,
 		DebugTools           = true,
@@ -155,7 +156,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		MinimapButtons       = {skin = false, style = false},
 		MovePad              = true,
 		MovieFrame           = true,
-		MovieProgress        = _G.IsMacClient() and true or nil,
+		MovieProgress        = _G.IsMacClient() and not self.isPTR and true or nil,
 		Nameplates           = true,
 		ObliterumUI          = true,
 		OrderHallUI          = true,
@@ -1399,6 +1400,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Colour Picker Frame"],
 					desc = self.L["Toggle the skin of the Colour Picker Frame"],
 				},
+				Contribution = self.isPTR and {
+					type = "toggle",
+					name = self.L["Contribution Frame"],
+					desc = self.L["Toggle the skin of the Contribution Frame"],
+				} or nil,
 				DeathRecap = {
 					type = "toggle",
 					name = self.L["Death Recap Frame"],
@@ -1598,7 +1604,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Movie Frame"],
 					desc = self.L["Toggle the skin of the Movie Frame"],
 				},
-				MovieProgress = _G.IsMacClient() and {
+				MovieProgress = _G.IsMacClient() and not self.isPTR and {
 					type = "toggle",
 					name = self.L["Movie Progress"],
 					desc = self.L["Toggle the skinning of Movie Progress"],
