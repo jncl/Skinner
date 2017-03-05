@@ -1,3 +1,10 @@
+beta7.23360.5
+Jncl:
+	Updated version number
+	Updated Change_History.txt
+	Bugfix: Check for LoD addons in options dialog
+	Bugfix, don’t colour Quest Text if all Quest skin options disabled
+
 beta7.23360.4
 Jncl:
 	ToDo.txt
