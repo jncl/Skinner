@@ -4009,6 +4009,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	self:addButtonBorder{obj=uie.CloseQuestPanelButton}
 	-- BountyBoard
 	uie.BountyBoard:DisableDrawLayer("BACKGROUND")
+	self:skinButton{obj=uie.BountyBoard.TutorialBox.CloseButton, cb=true}
 	-- ActionButton
 
 	uie = nil
