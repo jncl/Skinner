@@ -206,14 +206,17 @@ function aObj:Ace3()
 				aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
 				obj.renamebox:SetHeight(18)
 				obj.background:SetTexture(nil)
-				if aObj.modBtns then
+				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
 					-- make sure button border frame is visible
 					if not aObj:IsHooked(obj, "SetIcon") then
-						self:SecureHook(obj, "SetIcon", function(this, icon)
+						aObj:SecureHook(obj, "SetIcon", function(this, icon)
 							_G.RaiseFrameLevel(this.frame.sbb)
 						end)
 					end
+					aObj:addButtonBorder{obj=obj.group, es=10, ofs=0}
+				end
+				if aObj.modBtns then
 					aObj:skinButton{obj=obj.expand, mp2=true, plus=true, as=true}
 					obj.expand:SetDisabledFontObject(aObj.modUIBtns.fontDP)
 					if not aObj:IsHooked(obj.expand, "SetNormalTexture") then
@@ -221,21 +224,24 @@ function aObj:Ace3()
 							aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
 						end)
 					end
-					self:addButtonBorder{obj=obj.group, es=10, ofs=0}
 				end
 			elseif objType == "WeakAurasNewButton" then
 				obj.background:SetTexture(nil)
-				if aObj.modBtns then
+				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
 					-- make sure button border frame is visible
 					if not aObj:IsHooked(obj, "SetIcon") then
-						self:SecureHook(obj, "SetIcon", function(this, icon)
+						aObj:SecureHook(obj, "SetIcon", function(this, icon)
 							_G.RaiseFrameLevel(this.frame.sbb)
 						end)
 					end
 				end
 			elseif objType == "WeakAurasNewHeaderButton" then
 				obj.frame.background:SetTexture(nil)
+
+			elseif objType == "WeakAurasSortedDropdown" then
+				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
+				aObj:applySkin{obj=obj.pullout.frame}
 
             -- TradeSkillMaster (TSM) objects
             elseif objType == "TSMMainFrame" then
@@ -330,8 +336,9 @@ function aObj:Ace3()
 			or objType == "SnowflakePlain"
 			or objType == "SnowflakeTitle"
 			-- WeakAuras objects
-			or objType == "WeakAurasTextureButton"
 			or objType == "WeakAurasIconButton"
+			or objType == "WeakAurasImportButton"
+			or objType == "WeakAurasTextureButton"
 			or objType == "WeakAurasTemplateGroup"
 			-- ReagentRestocker object
 			or objType == "DragDropTarget"

@@ -18,7 +18,8 @@ end
 
 function aObj:WeakAurasOptions()
 
-	local optFrame, btn = _G.WeakAuras.OptionsFrame()
+	local optFrame = _G.WeakAuras.OptionsFrame()
+
 	if optFrame then
 		self:skinDropDown{obj=_G.WeakAuras_DropDownMenu}
 		self:skinEditBox{obj=optFrame.filterInput, regs={9}, mi=true}
@@ -43,7 +44,16 @@ function aObj:WeakAurasOptions()
 		end
 		self:addSkinFrame{obj=optFrame, kfs=true, y1=6}
 		optFrame.moversizer:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+
 	end
 	optFrame = nil
+
+	-- Templates
+	self:SecureHook(_G.WeakAuras, "OpenTriggerTemplate", function(this, data)
+		local optFrame = _G.WeakAuras.OptionsFrame()
+		self:skinButton{obj=optFrame.newView.backButton}
+		self:skinButton{obj=self:getChild(optFrame.newView.frame, optFrame.newView.frame:GetNumChildren())}
+		self:Unhook(this, "OpenTriggerTemplate")
+	end)
 
 end
