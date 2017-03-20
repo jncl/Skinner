@@ -902,9 +902,14 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 	-- Appearances
 	local wcf = _G.WardrobeCollectionFrame
+	self:skinEditBox{obj=wcf.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
+	wcf.searchProgressFrame:DisableDrawLayer("BACKGROUND")
+	wcf.searchProgressFrame:DisableDrawLayer("ARTWORK")
+	self:glazeStatusBar(wcf.searchProgressFrame.searchProgressBar, 0, wcf.searchProgressFrame.searchProgressBar.barBackground)
+	wcf.searchProgressFrame.searchProgressBar:DisableDrawLayer("ARTWORK")
+	self:addSkinFrame{obj=wcf.searchProgressFrame}
 	self:glazeStatusBar(wcf.progressBar, 0,  nil)
 	self:removeRegions(wcf.progressBar, {1, 2, 3})
-	self:skinEditBox{obj=wcf.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
 	self:skinButton{obj=wcf.FilterButton}
 	self:skinDropDown{obj=wcf.FilterDropDown}
 	if not self.isPTR then
@@ -918,6 +923,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:addButtonBorder{obj=wcf.NavigationFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
 	else
 		self:skinTabs{obj=wcf, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
+		self:skinButton{obj=wcf.SetsTabHelpBox.CloseButton, cb=true}
 		-- ItemsCollectionFrame
 		self:removeRegions(wcf.ItemsCollectionFrame, {})
 		wcf.ItemsCollectionFrame:DisableDrawLayer("BACKGROUND")
@@ -928,6 +934,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinDropDown{obj=wcf.ItemsCollectionFrame.WeaponDropDown}
 		self:addButtonBorder{obj=wcf.ItemsCollectionFrame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
 		self:addButtonBorder{obj=wcf.ItemsCollectionFrame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
+		self:skinButton{obj=wcf.ItemsCollectionFrame.HelpBox.CloseButton, cb=true}
 		-- SetsCollectionFrame
 		wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("BACKGROUND")
 		wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("BORDER")
@@ -946,6 +953,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end
 		btn = nil
 		wcf.SetsCollectionFrame.DetailsFrame:DisableDrawLayer("BACKGROUND")
+		wcf.SetsCollectionFrame.DetailsFrame:DisableDrawLayer("BORDER")
 		self:skinButton{obj=wcf.SetsCollectionFrame.DetailsFrame.VariantSetsButton}
 		self:skinDropDown{obj=wcf.SetsCollectionFrame.DetailsFrame.VariantSetsDropDown}
 	end
