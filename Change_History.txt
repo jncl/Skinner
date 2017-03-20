@@ -1,3 +1,11 @@
+beta7.23706.1
+Jncl:
+	ToDo.txt
+	Update version numbers
+	Update Change_History.txt
+	Update several Blizzard skins to remove textures and skin buttons
+	PTR 7.2.0 changes
+
 beta7.23360.5
 Jncl:
 	Updated version number
