@@ -1301,13 +1301,11 @@ if aObj.isPTR then
 		for contribution in ContributionCollectionFrame.contributionPool:EnumerateActive() do
 			contribution.Header:DisableDrawLayer("BORDER")
 			contribution.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+			contribution.State.Border:SetAlpha(0) -- texture is changed
 			contribution.State.TextBG:SetTexture(nil)
-			self:glazeStatusBar(contribution.Status.Bar, 0, nil)
-			contribution.Status.Bar.BarFrame:SetTexture(nil)
-			contribution.Status.Bar.IconBG:SetTexture(nil)
-			contribution.Status.Bar.BarFrame2:SetTexture(nil)
-			contribution.Status.Bar.BarFrame3:SetTexture(nil)
-			contribution.Status.Bar.BarBG:SetTexture(nil)
+			self:glazeStatusBar(contribution.Status, 0, nil)
+			contribution.Status.Border:SetTexture(nil)
+			contribution.Status.BG:SetTexture(nil)
 			contribution.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
 		for reward in ContributionCollectionFrame.rewardPool:EnumerateActive() do
