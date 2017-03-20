@@ -838,7 +838,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	local tb = _G.ToyBox
 	self:glazeStatusBar(tb.progressBar, 0,  nil)
 	self:removeRegions(tb.progressBar, {2, 3})
-	self:skinEditBox{obj=tb.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
+	self:skinEditBox{obj=tb.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, y=-2} -- 6 is text, 7 is icon
 	self:skinButton{obj=_G.ToyBoxFilterButton}
 	self:skinDropDown{obj=_G.ToyBoxFilterDropDown}
 	self:removeInset(tb.iconsFrame)
@@ -866,7 +866,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	local hj = _G.HeirloomsJournal
 	self:glazeStatusBar(hj.progressBar, 0,  nil)
 	self:removeRegions(hj.progressBar, {2, 3})
-	self:skinEditBox{obj=hj.SearchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
+	self:skinEditBox{obj=hj.SearchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, y=-2} -- 6 is text, 7 is icon
 	self:skinButton{obj=_G.HeirloomsJournalFilterButton}
 	self:skinDropDown{obj=_G.HeirloomsJournalFilterDropDown}
 	self:skinDropDown{obj=_G.HeirloomsJournalClassDropDown}
