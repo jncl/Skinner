@@ -71,3 +71,8 @@ x			- SpellBookFrame
 
 		- Deletions
 √			- MovieRecordingProgress
+
+≈		- Ace3, reported by Fraktyl, 08.03.17
+			- FrameXML\UIParent.lua:3128: attempt to index local 'frame' (a nil value)
+			  FrameXML\UIParent.lua:3128: in function `RaiseFrameLevel'
+			  Skinner\SkinMe\Ace3-Release-r1151.lua:233: in function <Skinner\SkinMe\Ace3.lua:232>
