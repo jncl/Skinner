@@ -1,3 +1,14 @@
+beta7.23789.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	PTR - Update Contribution skin
+	Update WorldMap skin
+	Move edit boxes
+	Updated WardrobeCollection skin
+	Updated WeakAuras skin
+
 beta7.23706.1
 Jncl:
 	ToDo.txt
