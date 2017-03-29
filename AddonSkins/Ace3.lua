@@ -106,8 +106,7 @@ function aObj:Ace3()
 							local btn
 							for i = 1, #this.buttons do
 								btn = this.buttons[i]
-								if not btn.toggle.sknd then
-									btn.toggle.sknd = true
+								if not btn.toggle.sb then
 									aObj:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
 								end
 							end
