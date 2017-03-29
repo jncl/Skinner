@@ -668,12 +668,8 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:keepFontStrings(mj.MountDisplay)
 	self:keepFontStrings(mj.MountDisplay.ShadowOverlay)
 	self:addButtonBorder{obj=mj.MountDisplay.InfoButton, relTo=mj.MountDisplay.InfoButton.Icon}
-	if not self.isPTR then
-		self:makeMFRotatable(mj.MountDisplay.ModelFrame)
-	else
-		self:addButtonBorder{obj=mj.MountDisplay.ModelScene.RotateLeftButton, ofs=-4, y2=5}
-		self:addButtonBorder{obj=mj.MountDisplay.ModelScene.RotateRightButton, ofs=-4, y2=5}
-	end
+	self:addButtonBorder{obj=mj.MountDisplay.ModelScene.RotateLeftButton, ofs=-4, y2=5}
+	self:addButtonBorder{obj=mj.MountDisplay.ModelScene.RotateRightButton, ofs=-4, y2=5}
 	self:skinSlider{obj=mj.ListScrollFrame.scrollBar, adj=-4}
 	self:removeMagicBtnTex(mj.MountButton)
 	local btn
@@ -852,13 +848,8 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		btn.slotFrameUncollected:SetTexture(nil)
 		self:addButtonBorder{obj=btn, sec=true, ofs=0}
 	end
-	if not self.isPTR then
-		self:addButtonBorder{obj=tb.navigationFrame.prevPageButton, ofs=-2, y1=-3, x2=-3}
-		self:addButtonBorder{obj=tb.navigationFrame.nextPageButton, ofs=-2, y1=-3, x2=-3}
-	else
-		self:addButtonBorder{obj=tb.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
-		self:addButtonBorder{obj=tb.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
-	end
+	self:addButtonBorder{obj=tb.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=tb.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
 	self:skinDropDown{obj=tb.toyOptionsMenu}
 	tb = nil
 
@@ -891,13 +882,8 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end
 		btn = nil
 	end)
-	if not self.isPTR then
-		self:addButtonBorder{obj=hj.navigationFrame.prevPageButton, ofs=-2, y1=-3, x2=-3}
-		self:addButtonBorder{obj=hj.navigationFrame.nextPageButton, ofs=-2, y1=-3, x2=-3}
-	else
-		self:addButtonBorder{obj=hj.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
-		self:addButtonBorder{obj=hj.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
-	end
+	self:addButtonBorder{obj=hj.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=hj.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
 	hj = nil
 
 	-- Appearances
@@ -912,51 +898,48 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:removeRegions(wcf.progressBar, {1, 2, 3})
 	self:skinButton{obj=wcf.FilterButton}
 	self:skinDropDown{obj=wcf.FilterDropDown}
-	if not self.isPTR then
-		self:removeInset(wcf.ModelsFrame)
-		wcf.ModelsFrame:DisableDrawLayer("OVERLAY")
-		wcf.ModelsFrame:DisableDrawLayer("ARTWORK")
-		wcf.ModelsFrame:DisableDrawLayer("BORDER")
-		wcf.ModelsFrame:DisableDrawLayer("BACKGROUND")
-		self:skinDropDown{obj=wcf.ModelsFrame.WeaponDropDown}
-		self:addButtonBorder{obj=wcf.NavigationFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
-		self:addButtonBorder{obj=wcf.NavigationFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
-	else
-		self:skinTabs{obj=wcf, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
-		self:skinButton{obj=wcf.SetsTabHelpBox.CloseButton, cb=true}
-		-- ItemsCollectionFrame
-		self:removeRegions(wcf.ItemsCollectionFrame, {})
-		wcf.ItemsCollectionFrame:DisableDrawLayer("BACKGROUND")
-		wcf.ItemsCollectionFrame:DisableDrawLayer("BORDER")
-		wcf.ItemsCollectionFrame:DisableDrawLayer("OVERLAY")
-		wcf.ItemsCollectionFrame:DisableDrawLayer("ARTWORK", 1)
-		wcf.ItemsCollectionFrame:DisableDrawLayer("ARTWORK", 2)
-		self:skinDropDown{obj=wcf.ItemsCollectionFrame.WeaponDropDown}
-		self:addButtonBorder{obj=wcf.ItemsCollectionFrame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
-		self:addButtonBorder{obj=wcf.ItemsCollectionFrame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
-		self:skinButton{obj=wcf.ItemsCollectionFrame.HelpBox.CloseButton, cb=true}
-		-- SetsCollectionFrame
-		wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("BACKGROUND")
-		wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("BORDER")
-		wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("OVERLAY")
-		wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("ARTWORK", 1)
-		wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("ARTWORK", 2)
-		self:removeInset(wcf.SetsCollectionFrame.LeftInset)
-		self:removeInset(wcf.SetsCollectionFrame.RightInset)
-		self:skinSlider{obj=wcf.SetsCollectionFrame.ScrollFrame.scrollBar, adj=-4, size=3}
-		self:skinDropDown{obj=wcf.SetsCollectionFrame.ScrollFrame.FavoriteDropDown}
-		local btn
-		for i = 1, #wcf.SetsCollectionFrame.ScrollFrame.buttons do
-			btn = wcf.SetsCollectionFrame.ScrollFrame.buttons[i]
-			btn:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=btn, relTo=btn.Icon}
-		end
-		btn = nil
-		wcf.SetsCollectionFrame.DetailsFrame:DisableDrawLayer("BACKGROUND")
-		wcf.SetsCollectionFrame.DetailsFrame:DisableDrawLayer("BORDER")
-		self:skinButton{obj=wcf.SetsCollectionFrame.DetailsFrame.VariantSetsButton}
-		self:skinDropDown{obj=wcf.SetsCollectionFrame.DetailsFrame.VariantSetsDropDown}
+	self:skinTabs{obj=wcf, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
+	self:skinButton{obj=wcf.SetsTabHelpBox.CloseButton, cb=true}
+	-- ItemsCollectionFrame
+	self:removeRegions(wcf.ItemsCollectionFrame, {})
+	wcf.ItemsCollectionFrame:DisableDrawLayer("BACKGROUND")
+	wcf.ItemsCollectionFrame:DisableDrawLayer("BORDER")
+	wcf.ItemsCollectionFrame:DisableDrawLayer("OVERLAY")
+	wcf.ItemsCollectionFrame:DisableDrawLayer("ARTWORK", 1)
+	wcf.ItemsCollectionFrame:DisableDrawLayer("ARTWORK", 2)
+	self:skinDropDown{obj=wcf.ItemsCollectionFrame.WeaponDropDown}
+	self:addButtonBorder{obj=wcf.ItemsCollectionFrame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=wcf.ItemsCollectionFrame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
+	self:skinButton{obj=wcf.ItemsCollectionFrame.HelpBox.CloseButton, cb=true}
+	-- SetsCollectionFrame
+	wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("BACKGROUND")
+	wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("BORDER")
+	wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("OVERLAY")
+	wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("ARTWORK", 1)
+	wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("ARTWORK", 2)
+	self:removeInset(wcf.SetsCollectionFrame.LeftInset)
+	self:removeInset(wcf.SetsCollectionFrame.RightInset)
+	self:skinSlider{obj=wcf.SetsCollectionFrame.ScrollFrame.scrollBar, adj=-4, size=3}
+	self:skinDropDown{obj=wcf.SetsCollectionFrame.ScrollFrame.FavoriteDropDown}
+	local btn
+	for i = 1, #wcf.SetsCollectionFrame.ScrollFrame.buttons do
+		btn = wcf.SetsCollectionFrame.ScrollFrame.buttons[i]
+		btn:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=btn, relTo=btn.Icon}
 	end
+	btn = nil
+	wcf.SetsCollectionFrame.DetailsFrame:DisableDrawLayer("BACKGROUND")
+	wcf.SetsCollectionFrame.DetailsFrame:DisableDrawLayer("BORDER")
+	self:skinButton{obj=wcf.SetsCollectionFrame.DetailsFrame.VariantSetsButton}
+	self:skinDropDown{obj=wcf.SetsCollectionFrame.DetailsFrame.VariantSetsDropDown}
+	-- SetsTransmogFrame
+	wcf.SetsTransmogFrame:DisableDrawLayer("BACKGROUND")
+	wcf.SetsTransmogFrame:DisableDrawLayer("BORDER")
+	wcf.SetsTransmogFrame:DisableDrawLayer("OVERLAY")
+	wcf.SetsTransmogFrame:DisableDrawLayer("ARTWORK", 1)
+	wcf.SetsTransmogFrame:DisableDrawLayer("ARTWORK", 2)
+	self:addButtonBorder{obj=wcf.SetsTransmogFrame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=wcf.SetsTransmogFrame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
 	wcf = nil
 
 	self:addSkinFrame{obj=_G.WardrobeOutfitFrame, ft=ftype, nb=true}
@@ -2493,20 +2476,11 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	end
 
 	local hfbf =_G.HonorFrame.BonusFrame
-	if not self.isPTR then
-		hfbf.RandomBGButton.NormalTexture:SetTexture(nil)
-		hfbf.RandomBGButton.Reward.Border:SetTexture(nil)
-		hfbf.Arena1Button.NormalTexture:SetTexture(nil)
-		hfbf.Arena1Button.Reward.Border:SetTexture(nil)
-		hfbf.AshranButton.NormalTexture:SetTexture(nil)
-		hfbf.AshranButton.Reward.Border:SetTexture(nil)
-	else
-		for _, v in pairs{"RandomBG", "Arena1", "Ashran", "Brawl"} do
+	for _, v in pairs{"RandomBG", "Arena1", "Ashran", "Brawl"} do
 			hfbf[v .. "Button"].NormalTexture:SetTexture(nil)
 			hfbf[v .. "Button"].Reward.Border:SetTexture(nil)
 		end
-		self:skinButton{obj=hfbf.BrawlHelpBox.CloseButton, cb=true}
-	end
+	self:skinButton{obj=hfbf.BrawlHelpBox.CloseButton, cb=true}
 	hfbf:DisableDrawLayer("BACKGROUND")
 	hfbf:DisableDrawLayer("BORDER")
 	hfbf.ShadowOverlay:DisableDrawLayer("OVERLAY")
@@ -2991,10 +2965,8 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.CreateButton)
 	self:skinEditBox{obj=_G.TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, noHeight=true, nis=true}
 	self:addButtonBorder{obj=_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon}
-	if self.isPTR then
-		_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon.IconBorder:SetTexture(nil)
-		_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon.ResultBorder:SetTexture(nil)
-	end
+	_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon.IconBorder:SetTexture(nil)
+	_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon.ResultBorder:SetTexture(nil)
 	for i = 1, #_G.TradeSkillFrame.DetailsFrame.Contents.Reagents do
 		btn = _G.TradeSkillFrame.DetailsFrame.Contents.Reagents[i]
 		btn.NameFrame:SetTexture(nil)

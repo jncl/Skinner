@@ -1292,36 +1292,34 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 
 end
 
-if aObj.isPTR then
-	aObj.blizzLoDFrames[ftype].Contribution = function(self)
-		if not self.db.profile.Contribution or self.initialized.Contribution then return end
-		self.initialized.Contribution = true
+aObj.blizzLoDFrames[ftype].Contribution = function(self)
+	if not self.db.profile.Contribution or self.initialized.Contribution then return end
+	self.initialized.Contribution = true
 
-		-- skin Contributions
-		for contribution in ContributionCollectionFrame.contributionPool:EnumerateActive() do
-			contribution.Header:DisableDrawLayer("BORDER")
-			contribution.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
-			contribution.State.Border:SetAlpha(0) -- texture is changed
-			contribution.State.TextBG:SetTexture(nil)
-			self:glazeStatusBar(contribution.Status, 0, nil)
-			contribution.Status.Border:SetTexture(nil)
-			contribution.Status.BG:SetTexture(nil)
-			contribution.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
-		for reward in ContributionCollectionFrame.rewardPool:EnumerateActive() do
-			reward.RewardName:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
-
-		_G.ContributionCollectionFrame.CloseButton.CloseButtonBackground:SetTexture(nil)
-		self:addSkinFrame{obj=_G.ContributionCollectionFrame, ft=ftype, kfs=true, ofs=-21, x2=-18}
-
-		-- Tooltips
-		if self.db.profile.Tooltips.skin then
-			self:add2Table(self.ttList, "ContributionTooltip")
-			self:add2Table(self.ttList, "ContributionBuffTooltip")
-		end
-
+	-- skin Contributions
+	for contribution in ContributionCollectionFrame.contributionPool:EnumerateActive() do
+		contribution.Header:DisableDrawLayer("BORDER")
+		contribution.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+		contribution.State.Border:SetAlpha(0) -- texture is changed
+		contribution.State.TextBG:SetTexture(nil)
+		self:glazeStatusBar(contribution.Status, 0, nil)
+		contribution.Status.Border:SetTexture(nil)
+		contribution.Status.BG:SetTexture(nil)
+		contribution.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
+	for reward in ContributionCollectionFrame.rewardPool:EnumerateActive() do
+		reward.RewardName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	end
+
+	_G.ContributionCollectionFrame.CloseButton.CloseButtonBackground:SetTexture(nil)
+	self:addSkinFrame{obj=_G.ContributionCollectionFrame, ft=ftype, kfs=true, ofs=-21, x2=-18}
+
+	-- Tooltips
+	if self.db.profile.Tooltips.skin then
+		self:add2Table(self.ttList, "ContributionTooltip")
+		self:add2Table(self.ttList, "ContributionBuffTooltip")
+	end
+
 end
 
 aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
@@ -2562,18 +2560,6 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			self:skinDropDown{obj=child}
 		end
 	end
-	if not self.isPTR then
-	-->>-- Mac Options
-		if _G.IsMacClient() then
-			-- Movie Recording
-			for _, child in ipairs{_G.MovieRecordingOptionsPanel:GetChildren()} do
-				if aObj:hasTextInName(child, "DropDown") then
-					self:skinDropDown{obj=child}
-				end
-			end
-			-- Keyboard Options
-		end
-	end
 
 	-- Sound
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanel, ft=ftype}
@@ -3029,21 +3015,6 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 
 	self:addSkinFrame{obj=_G.MovieFrame.CloseDialog, ft=ftype}
 
-end
-
-if not aObj.isPTR then
-	if _G.IsMacClient() then
-		aObj.blizzFrames[ftype].MovieProgress = function(self)
-			if not self.db.profile.MovieProgress or self.initialized.MovieProgress then return end
-			self.initialized.MovieProgress = true
-
-			self:getChild(_G.MovieProgressBar, 1):SetBackdrop(nil)
-			self:removeRegions(_G.MovieProgressFrame)
-			self:glazeStatusBar(_G.MovieProgressBar, 0, self:getRegion(_G.MovieProgressBar, 1))
-			self:addSkinFrame{obj=_G.MovieProgressFrame, ft=ftype, x1=-6, y1=6, x2=6, y2=-6}
-
-		end
-	end
 end
 
 aObj.blizzFrames[ftype].NamePlates = function(self)
@@ -4027,11 +3998,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
 	end
-	if not self.isPTR then
-		self:removeRegions(_G.WorldMapTaskTooltipStatusBar.Bar, {1, 2, 3, 5, 6}) -- 4 is text
-	else
-		self:removeRegions(_G.WorldMapTaskTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
-	end
+	self:removeRegions(_G.WorldMapTaskTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
 	self:glazeStatusBar(_G.WorldMapTaskTooltipStatusBar.Bar, 0, self:getRegion(_G.WorldMapTaskTooltipStatusBar.Bar, 7))
 
 	-- BarFrame
