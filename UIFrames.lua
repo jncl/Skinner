@@ -3762,6 +3762,8 @@ aObj.blizzFrames[ftype].SplashFrame = function(self)
 	self.initialized.SplashFrame = true
 
 	_G.SplashFrame.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.SplashFrame.StartButton:DisableDrawLayer("BACKGROUND")
+	self:skinButton{obj=_G.SplashFrame.StartButton}
 	self:addSkinFrame{obj=_G.SplashFrame, ft=ftype, kfs=true}
 
 end
