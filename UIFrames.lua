@@ -623,6 +623,14 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 	_G.ArtifactFrame.PerksTab:DisableDrawLayer("OVERLAY")
 	_G.ArtifactFrame.PerksTab.TitleContainer.Background:SetAlpha(0) -- title underline texture
 	_G.ArtifactFrame.PerksTab.Model:DisableDrawLayer("OVERLAY")
+	-- CrestFrame
+	for i = 1, 14 do
+		_G.ArtifactFrame.PerksTab.CrestFrame["CrestRune" .. i]:SetAtlas(nil)
+	end
+	-- hook this to stop Background being Refreshed
+	self:RawHook(_G.ArtifactPerksMixin, "RefreshBackground", function(this)
+		return
+	end, true)
 	-- PerksTab powerButtons
 	local function skinPowerBtns()
 
