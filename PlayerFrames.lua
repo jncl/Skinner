@@ -2536,9 +2536,10 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	self:removeMagicBtnTex(_G.WarGameStartButton)
 	self:skinButton{obj=_G.WarGameStartButton}
 
-	-- PVPRewardTooltip
+	-- Tooltips
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, "PVPRewardTooltip")
+		self:add2Table(self.ttList, "ConquestTooltip")
 	end
 
 end
