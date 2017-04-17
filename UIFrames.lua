@@ -4048,6 +4048,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
 	end
+	self:addButtonBorder{obj=_G.WorldMapTooltip.ItemTooltip, relTo=_G.WorldMapTooltip.ItemTooltip.Icon}
 	self:removeRegions(_G.WorldMapTaskTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
 	self:glazeStatusBar(_G.WorldMapTaskTooltipStatusBar.Bar, 0, self:getRegion(_G.WorldMapTaskTooltipStatusBar.Bar, 7))
 
