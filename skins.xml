@@ -13,6 +13,7 @@
 <script file="SkinMe\AddonLoader.lua"/>
 <script file="SkinMe\AdiBags.lua"/>
 <script file="SkinMe\Altoholic.lua"/>
+<script file="SkinMe\AngryKeystones.lua"/>
 <script file="SkinMe\Archy.lua"/>
 <script file="SkinMe\ArkDewdrop.lua"/>
 <script file="SkinMe\ArkInventory.lua"/>
@@ -103,6 +104,7 @@
 <script file="SkinMe\InboxMailBag.lua"/>
 <script file="SkinMe\ItemDB.lua"/>
 <script file="SkinMe\InspectorGadgetzan.lua"/>
+<script file="SkinMe\Inventorian.lua"/>
 <script file="SkinMe\LegacyQuest.lua"/>
 <script file="SkinMe\LibDialog.lua"/>
 <script file="SkinMe\LibDropdown.lua"/>
