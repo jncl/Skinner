@@ -30,4 +30,8 @@ function aObj:BugSack()
 		self:Unhook(_G.BugSack, "OpenSack")
 	end)
 
+	-- Config
+	self.iofDD["BugSackFontSize"] = 110
+	self.iofDD["BugSackSoundDropdown"] = 110
+	
 end

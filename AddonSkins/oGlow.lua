@@ -37,5 +37,8 @@ function aObj:oGlow()
 	-- remove delays when UI is skinned
 	self:RegisterMessage("InspectUI_Skinned", function() delays["inspect"] = nil end)
 	self:RegisterMessage("GuildBankUI_Skinned", function() delays["gbank"] = nil end)
+	
+	-- Config 
+	self.iofDD["oGlowOptFQualityThreshold"] = 110
 
 end

@@ -5,6 +5,8 @@ local _G = _G
 function aObj:PowerAuras()
 
 -->>-- Config Frame
+	self.iofDD["PowaDropDownDefaultTimer"] = -90
+	self.iofDD["PowaDropDownDefaultStacks"] = -110
 	self:moveObject{obj=_G.PowaOptionsHeader, y=-9}
 	self:addSkinFrame{obj=_G.PowaOptionsPlayerListFrame}
 	self:addSkinFrame{obj=_G.PowaOptionsGlobalListFrame, y1=2}

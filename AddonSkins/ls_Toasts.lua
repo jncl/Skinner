@@ -37,5 +37,8 @@ function aObj:ls_Toasts()
 		bc = nil
 
 	end
+	
+	-- Config
+	self.iofDD["LSToastsConfigPanelDirectionDropDown"] = 110
 
 end

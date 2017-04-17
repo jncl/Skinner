@@ -2515,6 +2515,8 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 end
 
+-- table to hold addon dropdown names that need to have their length adjusted
+aObj.iofDD = {}
 aObj.blizzFrames[ftype].MenuFrames = function(self)
 	if not self.db.profile.MenuFrames or self.initialized.MenuFrames then return end
 	self.initialized.MenuFrames = true
@@ -2627,16 +2629,11 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 				and not aObj.ignoreIOF[child]
 				then
 					local xOfs
-					if aObj:hasTextInName(child, "PowaDropDownDefaultTimer") then
-						xOfs = -90
-					elseif aObj:hasTextInName(child, "PowaDropDownDefaultStacks") then
-						xOfs = -110
-					elseif aObj:hasTextInName(child, "oGlowOptFQualityThreshold")
-					or aObj:hasTextInName(child, "BugSackFontSize")
-					or aObj:hasTextInName(child, "BugSackSoundDropdown")
-					or aObj:hasTextInName(child, "LSToastsConfigPanelDirectionDropDown")
-					then
-						xOfs = 110
+					-- apply addon specific adjustments
+					for ddtext, ddofs in pairs(self.iofDD) do
+						if aObj:hasTextInName(child, ddtext) then
+							xOfs = ddofs
+						end
 					end
 					-- handle SushiDropdown (used by Bagnon)
 					if aObj:hasTextInName(child, "SushiDropdown") then
