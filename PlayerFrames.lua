@@ -895,7 +895,11 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	wcf.searchProgressFrame.searchProgressBar:DisableDrawLayer("ARTWORK")
 	self:addSkinFrame{obj=wcf.searchProgressFrame}
 	self:glazeStatusBar(wcf.progressBar, 0,  nil)
-	self:removeRegions(wcf.progressBar, {1, 2, 3})
+	if not self.isPTR then
+		self:removeRegions(wcf.progressBar, {1, 2, 3})
+	else
+		self:removeRegions(wcf.progressBar, {2, 3})
+	end
 	self:skinButton{obj=wcf.FilterButton}
 	self:skinDropDown{obj=wcf.FilterDropDown}
 	self:skinTabs{obj=wcf, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}

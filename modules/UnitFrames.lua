@@ -143,8 +143,9 @@ local function skinPlayerF()
 
 		-- skin the EclipseBarFrame/ComboPointPlayerFrame, if required
 		if aObj.uCls == "DRUID" then
-			-- _G.EclipseBarFrameBar:Hide()
-			_G.EclipseBarFrame:DisableDrawLayer("ARTWORK") -- Sun/Moon from Balance spec.
+			if not self.isPTR then
+				_G.EclipseBarFrame:DisableDrawLayer("ARTWORK") -- Sun/Moon from Balance spec.
+			end
 			skinComboPointPlayerFrame() -- Cat Form
 		end
 

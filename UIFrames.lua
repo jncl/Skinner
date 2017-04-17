@@ -1341,8 +1341,10 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 	self:skinSlider{obj=_G.EventTraceFrameScroll}
 	self:addSkinFrame{obj=_G.EventTraceFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
-	self:skinSlider{obj=_G.ScriptErrorsFrameScrollFrame.ScrollBar}
-	self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+	if not self.isPTR then
+		self:skinSlider{obj=_G.ScriptErrorsFrameScrollFrame.ScrollBar}
+		self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+	end
 
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, "FrameStackTooltip")
@@ -3691,13 +3693,15 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 
 end
 
-aObj.blizzFrames[ftype].ScriptErrors = function(self)
-	if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
-	self.initialized.ScriptErrors = true
+if not aObj.isPTR then
+	aObj.blizzFrames[ftype].ScriptErrors = function(self)
+		if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
+		self.initialized.ScriptErrors = true
 
-	-- skin Basic Script Errors Frame (BasicControls.xml)
-	self:addSkinFrame{obj=_G.BasicScriptErrors, kfs=true, ft=ftype}
+		-- skin Basic Script Errors Frame (BasicControls.xml)
+		self:addSkinFrame{obj=_G.BasicScriptErrors, kfs=true, ft=ftype}
 
+	end
 end
 
 aObj.blizzFrames[ftype].SecureTransferUI = function(self)
@@ -3709,6 +3713,22 @@ aObj.blizzFrames[ftype].SecureTransferUI = function(self)
 
 	-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
 
+end
+
+if aObj.isPTR then
+	aObj.blizzFrames[ftype].SharedBasicControls = function(self)
+		if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
+		self.initialized.ScriptErrors = true
+
+		self:addSkinFrame{obj=_G.BasicMessageDialog, ft=ftype, kfs=true}
+
+		-- ScriptErrorsFrame
+		self:skinSlider{obj=_G.ScriptErrorsFrame.ScrollFrame.ScrollBar}
+		self:addButtonBorder{obj=_G.ScriptErrorsFrame.PreviousError, ofs=-3, x1=2}
+		self:addButtonBorder{obj=_G.ScriptErrorsFrame.NextError, ofs=-3, x1=2}
+		self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+
+	end
 end
 
 aObj.blizzFrames[ftype].SplashFrame = function(self)
