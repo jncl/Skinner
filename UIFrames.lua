@@ -4024,8 +4024,13 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	-- BountyBoard
 	uie.BountyBoard:DisableDrawLayer("BACKGROUND")
 	self:skinButton{obj=uie.BountyBoard.TutorialBox.CloseButton, cb=true}
-	-- ActionButton
-
+	self:SecureHook(uie.BountyBoard, "RefreshBountyTabs", function(this)
+		for tab in this.bountyTabPool:EnumerateActive() do
+			if tab.objectiveCompletedBackground then
+				tab.objectiveCompletedBackground:SetTexture(nil)
+			end
+		end
+	end)
 	uie = nil
 
 	-- Nav Bar
