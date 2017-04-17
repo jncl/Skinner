@@ -4087,7 +4087,12 @@ aObj.blizzFrames[ftype].WorldState = function(self)
     end
 
 -->>-- WorldStateScore frame
---	self:skinDropDown{obj=_G.ScorePlayerDropDown}
+	local wssfxpb = _G.WorldStateScoreFrame.XPBar
+	wssfxpb.Frame:SetTexture(nil)
+	self:glazeStatusBar(wssfxpb.Bar, 0, wssfxpb.Bar.Background, nil, true)
+	wssfxpb.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
+	wssfxpb.NextAvailable.Frame:SetTexture(nil)
+	wssfxpb = nil
 	self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
 	self:skinTabs{obj=_G.WorldStateScoreFrame}
 	self:addSkinFrame{obj=_G.WorldStateScoreFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
