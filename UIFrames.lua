@@ -3505,11 +3505,13 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	self:removeInset(sp.ResultsInset)
 	self:skinButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
 	self:skinSlider{obj=sp.ScrollFrame.scrollBar, adj=-4}
+	for i = 1, #sp.ScrollFrame.buttons do
+		self:skinButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
+	end
 	self:removeMagicBtnTex(sp.BackButton)
 	self:skinButton{obj=sp.BackButton}
 	self:removeMagicBtnTex(sp.SignUpButton)
 	self:skinButton{obj=sp.SignUpButton}
-	-- TODO add ButtonBorder to SearchEntry CancelButtons
 	-- ApplicationViewer
 	local av = _G.LFGListFrame.ApplicationViewer
 	av:DisableDrawLayer("BACKGROUND")
