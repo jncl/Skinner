@@ -921,8 +921,19 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 
 	_G.ChallengesFrame:DisableDrawLayer("BACKGROUND")
 
-	-- TODO ChallengesKeystoneFrame
-	self:addSkinFrame{obj=_G.ChallengesKeystoneFrame, ft=ftype, kfs=true}
+	-- ChallengesKeystoneFrame
+	_G.ChallengesKeystoneFrame:DisableDrawLayer("BACKGROUND")
+	_G.ChallengesKeystoneFrame.RuneBG:SetTexture(nil)
+	_G.ChallengesKeystoneFrame.InstructionBackground:SetTexture(nil)
+	_G.ChallengesKeystoneFrame.Divider:SetTexture(nil)
+	_G.ChallengesKeystoneFrame.DungeonName:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.ChallengesKeystoneFrame.PowerLevel:SetTextColor(self.BTr, self.BTr, self.BTg)
+	_G.ChallengesKeystoneFrame.RunesLarge:SetTexture(nil)
+	_G.ChallengesKeystoneFrame.RunesSmall:SetTexture(nil)
+	_G.ChallengesKeystoneFrame.SlotBG:SetTexture(nil)
+	_G.ChallengesKeystoneFrame.KeystoneFrame:SetTexture(nil)
+	self:addButtonBorder{obj=_G.ChallengesKeystoneFrame.KeystoneSlot}
+	self:addSkinFrame{obj=_G.ChallengesKeystoneFrame, ft=ftype, ofs=-7}
 
 end
 
