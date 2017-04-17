@@ -24,55 +24,20 @@ Legend:
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-	N	PTR
-		- Additions
-x			- APIDocumentation
-√			- ContributionCollectionFrame
-√			- ContributionTooltip
-√			- ContributionBuffTooltip
-x			- Deprecated
-x			- WorldMapPOIQuantizer
-		- Updates
-√			- TOC now 70200
-			- ArenaUI
-			- ArtifactUI
-				- ArtifactPerks
-				- ArtifactPowerButton
-			-  Collections
-√				- CollectionTemplates
-x				- HeirloomCollection
-√				- MountCollection
-√				- PetCollection
-x				- ToyBox
-√				- Wardrobe - new Items/Sets Tabs at top of panel
-√			- EncounterJournal
-			- Nameplates
-				- ClassNameplateBar_Warlock
-√			- PVPUI
-√			- TradeSkillDetails
-			- ActionButtonTemplate
-			- AlertFrameSystems
-x			- Bindings
-x			- CharacterFrame
-x			- EquipmentFlyout
-			- GameTooltipTemplate
-x			- LFGFrame
-x			- MailFrame
-x			- Minimap
-x			- PaperDollFrame
-			- ProductChoice
-x			- QuestInfo
-x			- ReputationFrame
-			- ShardBar
-x			- SpellBookFrame
-			- StaticPopup
-√			- WorldMapFrame
-		- Deletions
-√			- MovieRecordingProgress
+	N	PTR 7.2.5
+		- Added
+√			- SharedBasicControls
+		- Deleted
+√			- BasicControls
+√			- EclipseBarFrame
+√			- ScriptErrorsFrame
+		- Updated
+√			- WardrobeCollectionFrame progressBar textures
 
-√		I SilverDragon, reported by Pseudopath, 23.03.17
-			- ..\AddOns\Skinner\SkinMe\SilverDragon.lua line 9:
-   		 		attempt to index field 'details' (a nil value)
-			Debug:
-				Skinner\SkinMe\SilverDragon.lua:9:
-				Skinner\SkinMe\SilverDragon.lua:5
+≈	S	Angry Keystones
+
+√	I	ZygorGuidesViewer, reported by dearach, 02.04.17
+		- ...nterface\AddOns\Skinner\SkinMe\ZygorGuidesViewer.lua:18:
+		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+√	S	Inventorian, requested by Boneduil, 15.04.17
