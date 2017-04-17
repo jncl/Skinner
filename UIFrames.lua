@@ -3240,7 +3240,8 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 	-- Talents
 	-- OrderHallTalentFrame
 	self:removeInset(_G.OrderHallTalentFrame.LeftInset)
-	self:addSkinFrame{obj=_G.OrderHallTalentFrame, ft=ftype, kfs=true, nb=true, ofs=3, x2=-2}
+	self:addSkinFrame{obj=_G.OrderHallTalentFrame, ft=ftype, kfs=true, nb=true, ofs=3, x2=1}
+	self:skinButton{obj=_G.OrderHallTalentFrameCloseButton, cb=true}
 	_G.OrderHallTalentFrame.CurrencyIcon:SetAlpha(1) -- show currency icon
 	for i = 1, #_G.OrderHallTalentFrame.FrameTick do
 		_G.OrderHallTalentFrame.FrameTick[i]:SetTextColor(self.BTr, self.BTg, self.BTb)
