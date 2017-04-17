@@ -2341,9 +2341,16 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- ScenarioChallengeModeBlock
 	_G.ScenarioChallengeModeBlock:DisableDrawLayer("BACKGROUND")
+	self:removeRegions(_G.ScenarioChallengeModeBlock, {3}) -- "challengemode-timer" texture
 	self:glazeStatusBar(_G.ScenarioChallengeModeBlock.StatusBar, 0,  nil)
 	self:removeRegions(_G.ScenarioChallengeModeBlock.StatusBar, {1}) -- border
 	self:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, y2=7}
+	self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
+		aObj:Debug("Scenario_ChallengeMode_SetUpAffixes: [%s, %s]", block, affixes)
+		for i = 1, #block.Affixes do
+			block.Affixes[i].Border:SetTexture(nil)
+		end
+	end)
 
 	-- ScenarioProvingGroundsBlock
 	_G.ScenarioProvingGroundsBlock.BG:SetTexture(nil)
