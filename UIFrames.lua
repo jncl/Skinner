@@ -589,6 +589,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
 		skinWLUAlertFrame(frame, -8)
 	end)
+	-- called params: self, amount
+	self:SecureHook(_G.HonorAwardedAlertSystem, "setUpFunction", function(frame, ...)
+		skinWLUAlertFrame(frame, -8)
+	end)
 
 end
 
