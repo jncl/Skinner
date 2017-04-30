@@ -12,13 +12,7 @@ function aObj:ArkInventory()
 
 		if not frame.sf then
 			for _, v in _G.pairs{"Title", "Search", "ScrollContainer", "Changer", "Status"} do
-				aObj:addSkinFrame{obj=_G[frameName .. v], kfs=v~= "Status" and true or nil, y1=-1, nb=true}
-				-- if v == "Changer" then
-				-- 	-- GuildBank frame
-				-- 	if fID == 4 then
-				-- 		aObj:addButtonBorder{obj=_G[frameName .. "ChangerWindowAction"], ofs=0}
-				-- 	end
-				-- end
+				aObj:addSkinFrame{obj=_G[frameName .. v], kfs=v~= "Status" and true or nil, nb=true, y1=-1}
 			end
 			aObj:skinEditBox{obj=_G[frameName .. "SearchFilter"], regs={6}} -- 6 is text
 			if _G[frameName .. "StatusText"] then _G[frameName .. "StatusText"]:SetAlpha(1) end
@@ -39,9 +33,9 @@ function aObj:ArkInventory()
 		skinAIFrames(frame)
 	end)
 
--->>-- GuildBank Log Frame
+	-- GuildBank Log Frame
 	self:applySkin{obj=_G.ARKINV_Frame4Log}
-	self:skinScrollBar{obj=_G.ARKINV_Frame4InfoScroll}
+	self:skinSlider{obj=_G.ARKINV_Frame4InfoScroll.ScrollBar}
 	self:skinButton{obj=_G.ARKINV_Frame4InfoSave}
 	self:applySkin{obj=_G.ARKINV_Frame4Info, nb=true}
 	self:addButtonBorder{obj=_G.ARKINV_Frame4ChangerWindowAction, ofs=0}
@@ -50,7 +44,7 @@ end
 
 function aObj:ArkInventoryRules()
 
--->>--	Rules Frame
+	--	Rules Frame
 	_G.ArkInventory.db.option.ui.rules.border.colour = _G.CopyTable(self.db.profile.BackdropBorder)
 	self:skinButton{obj=_G.ARKINV_RulesTitleClose, cb2=true}
 	self:addSkinFrame{obj=_G.ARKINV_RulesTitle, nb=true}
@@ -59,7 +53,7 @@ function aObj:ArkInventoryRules()
 	-- View
 	self:skinEditBox(_G.ARKINV_RulesFrameViewSearchFilter, {6})
 	self:addSkinFrame{obj=_G.ARKINV_RulesFrameViewTable}
-	self:skinScrollBar{obj=_G.ARKINV_RulesFrameViewTableScroll}
+	self:skinSlider{obj=_G.ARKINV_RulesFrameViewTableScroll.ScrollBar}
 	self:skinButton{obj=_G.ARKINV_RulesFrameViewMenuAdd, as=true}
 	self:skinButton{obj=_G.ARKINV_RulesFrameViewMenuEdit, as=true}
 	self:skinButton{obj=_G.ARKINV_RulesFrameViewMenuRemove, as=true}
@@ -69,7 +63,7 @@ function aObj:ArkInventoryRules()
 	self:skinEditBox(_G.ARKINV_RulesFrameModifyDataDescription, {6})
 	_G.ARKINV_RulesFrameModifyDataScrollTextBorder:SetBackdrop(aObj.Backdrop[10]) -- no background
 	_G.ARKINV_RulesFrameModifyDataScrollTextBorder:SetBackdropBorderColor(_G.unpack(aObj.bbColour))
-	self:skinScrollBar{obj=_G.ARKINV_RulesFrameModifyDataScroll}
+	self:skinSlider{obj=_G.ARKINV_RulesFrameModifyDataScroll.ScrollBar}
 	self:skinButton{obj=_G.ARKINV_RulesFrameModifyMenuOk, as=true}
 	self:skinButton{obj=_G.ARKINV_RulesFrameModifyMenuCancel, as=true}
 
@@ -81,7 +75,7 @@ function aObj:ArkInventorySearch()
 	self:skinButton{obj=_G.ARKINV_SearchTitleClose, cb2=true}
 	self:addSkinFrame{obj=_G.ARKINV_SearchTitle, nb=true}
 	self:skinEditBox(_G.ARKINV_SearchFrameViewSearchFilter, {6})
-	self:skinScrollBar{obj=_G.ARKINV_SearchFrameViewTableScroll}
+	self:skinSlider{obj=_G.ARKINV_SearchFrameViewTableScroll.ScrollBar}
 	self:addSkinFrame{obj=_G.ARKINV_SearchFrame, nb=true}
 
 end
