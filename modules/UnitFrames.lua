@@ -136,8 +136,10 @@ local function skinPlayerF()
 		local y2Ofs
 		--	skin the RuneFrame, if required
 		if aObj.uCls == "DEATHKNIGHT" then
-			for i = 1, 7 do
-				_G["RuneButtonIndividual" .. i].Border:DisableDrawLayer("OVERLAY")
+			if not aObj.isPTR then
+				for i = 1, 7 do
+					_G["RuneButtonIndividual" .. i].Border:DisableDrawLayer("OVERLAY")
+				end
 			end
 		end
 
