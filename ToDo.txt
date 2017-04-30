@@ -33,11 +33,15 @@ Legend:
 √			- ScriptErrorsFrame
 		- Updated
 √			- WardrobeCollectionFrame progressBar textures
+√			- DeathKnight RuneFrame Runes
 
-≈	S	Angry Keystones
+≈	I	reported byLichbane/Xtcssa/NeoZeus, 19.04.17/21.04.17/27.04.17
+		- Skinner\UtilFuncs.lua:484: Attempt to access forbidden object from code tainted by an AddOn
+		[C]: in function `GetRegions'
+		Skinner\UtilFuncs.lua:484: in function `getRegion'
+		Skinner\UIFrames.lua:948: in function <Skinner\UIFrames.lua:947>
+		[string "safecall Dispatcher[2]"]:4: in function <[string "safecall Dispatcher[2]"]:4>
 
-√	I	ZygorGuidesViewer, reported by dearach, 02.04.17
-		- ...nterface\AddOns\Skinner\SkinMe\ZygorGuidesViewer.lua:18:
-		Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-
-√	S	Inventorian, requested by Boneduil, 15.04.17
+?	I	reported by vincentSDSH, 19.04.17
+		- I'm running into this odd problem using libDropDown and ArkInventory.
+ 		libDropDown skins properly (ldd in the skinme dir) however if ArkInventory is enabled (with or without its skinme component) the rawhook to libDropDown's OpenAce3Menu never fires, although Skinner.initialized.LibDropdown == true
