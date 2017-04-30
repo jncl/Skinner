@@ -638,11 +638,6 @@ function aObj:scanUIParentsChildren()
 		-- check for forbidden objects (StoreUI components)
 		if not child:IsForbidden() then
 			self.callbacks:Fire("UIParent_GetChildren", child)
--- --@alpha@
---         else
---             -- N.B. use print as Debug function causes taint
---             print("ignoring forbidden object [%s]", child)
--- --@end-alpha@
 		end
 	end
 	kids = nil
@@ -658,7 +653,10 @@ function aObj:scanWorldFrameChildren()
 	-- this allows skins to check the children as required
 	local kids = {_G.WorldFrame:GetChildren()}
 	for _, child in ipairs(kids) do
-		self.callbacks:Fire("WorldFrame_GetChildren", child)
+		-- check for forbidden objects
+		if not child:IsForbidden() then
+			self.callbacks:Fire("WorldFrame_GetChildren", child)
+		end
 	end
 	kids = nil
 
