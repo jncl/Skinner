@@ -516,6 +516,8 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:addSkinFrame{obj=_G.CharacterFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5} -- don't skin buttons here
 	self:skinButton{obj=_G.CharacterFrameCloseButton, cb=true}
 
+	self:skinButton{obj=_G.CharacterFrame.ReputationTabHelpBox.CloseButton, cb=true}
+
 	-- PaperDoll Frame
 	self:keepFontStrings(_G.PaperDollFrame)
 	_G.CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
@@ -627,6 +629,19 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	end
 
 	self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
+
+	-- ReputationParagon Frames
+	for paragonFrame in _G.ReputationFrame.paragonFramesPool:EnumerateActive() do
+		self:addButtonBorder{obj=paragonFrame, relTo=paragonFrame.Icon, reParent={paragonFrame.Check}}
+	end
+
+	-- ReputationParagon Tooltip
+	if self.db.profile.Tooltips.skin then
+		self:add2Table(self.ttList, "ReputationParagonTooltip")
+	end
+	self:addButtonBorder{obj=_G.ReputationParagonTooltip.ItemTooltip, relTo=_G.ReputationParagonTooltip.ItemTooltip.Icon, reParent={_G.ReputationParagonTooltip.ItemTooltip.Count}}
+	self:removeRegions(_G.ReputationParagonTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
+	self:glazeStatusBar(_G.ReputationParagonTooltipStatusBar.Bar, 0, self:getRegion(_G.ReputationParagonTooltipStatusBar.Bar, 7))
 
 	-- TokenFrame (a.k.a Currency Tab)
 	if self.db.profile.ContainerFrames.skin then
@@ -2188,6 +2203,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end
 	self.initialized.ObjectiveTracker = true
 
+	-- ObjectiveTrackerFrame BlocksFrame
 	if self.db.profile.ObjectiveTracker.skin then
 		self:addSkinFrame{obj=_G.ObjectiveTrackerFrame.BlocksFrame, ft=ftype, kfs=true, nb=true, x1=-30, x2=4}
 		-- hook this to handle displaying of the ObjectiveTrackerFrame BlocksFrame skin frame
@@ -2207,7 +2223,11 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end
 	end
 	kids = nil
-
+	-- hook this to skin 'looking for group' button
+	self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
+		aObj:Debug("QuestObjectiveSetupBlockButton_AddRightButton: [%s, %s, %s]", block, button, iAO)
+		self:addButtonBorder{obj=button, x1=0, y1=-2, x2=-2, y2=2}
+	end)
 	-- skin timerBar(s) & progressBar(s)
 	local function skinBar(bar)
 
@@ -2256,12 +2276,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	self:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
-	-- -- called params: block, objectiveKey, textOrTextFunc, lineType, useFullHeight, dashStyle, colorStyle
-	-- self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddObjective", function(this, ...)
-	-- 	aObj:Debug("DOTM AddObjective: [%s, %s, %s, %s, %s, %s, %s]", ...)
-	-- end)
-
-	-- skin existing bars
+	-- skin existing Timer & Progress bars
 	local function skinBars(table)
 		for _, v1 in pairs(table) do
 			for _, v2 in pairs(v1) do
@@ -2270,14 +2285,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end
 	end
 	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedTimerBars)
-	skinBars(_G.ACHIEVEMENT_TRACKER_MODULE.usedTimerBars)
-	skinBars(_G.QUEST_TRACKER_MODULE.usedTimerBars)
-	skinBars(_G.SCENARIO_TRACKER_MODULE.usedTimerBars)
-
 	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
 	skinBars(_G.BONUS_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.QUEST_TRACKER_MODULE.usedTimerBars)
 	skinBars(_G.QUEST_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.SCENARIO_TRACKER_MODULE.usedTimerBars)
 	skinBars(_G.SCENARIO_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.ACHIEVEMENT_TRACKER_MODULE.usedTimerBars)
 	skinBars(_G.WORLD_QUEST_TRACKER_MODULE.usedProgressBars)
 
 	-- BonusRewardsFrame Rewards
