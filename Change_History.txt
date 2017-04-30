@@ -1,3 +1,24 @@
+beta7.23911.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated UIButton colour skin code
+	Updated PVP rewards skin
+	Updated ScenarioChallenge skin
+	Updated WorldStateScore skin
+	Updated WorldMap skin #2
+	Updated WorldMap skin
+	Updated SplashScreen skin
+	Updated LFG skin
+	Updated OrderHallUI
+	skinned ChallengesKeystoneFrame
+	Updated ArtifactUI skin
+	skin Honor Alert frame
+	PTR 7.2.5 changes
+	Updated BugSack, ls_Toasts, oGlow, PowerAuras, WorldQuestTracker & ZygorGuidesViewer skins
+	Skinned AngryKeystones & Inventorian
+
 beta7.23835.1
 Jncl:
 	ToDo.txt
