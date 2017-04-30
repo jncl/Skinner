@@ -2388,7 +2388,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		bar.SetPoint = _G.nop
 		-- move text down
 		bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1)
-		-- increase frame level so it responds to mouseovers
+		-- increase frame level so it responds to mouseovers'
 		aObj:RaiseFrameLevelByFour(bar)
 	end
 
@@ -4048,7 +4048,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
 		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
 	end
-	self:addButtonBorder{obj=_G.WorldMapTooltip.ItemTooltip, relTo=_G.WorldMapTooltip.ItemTooltip.Icon}
+	self:addButtonBorder{obj=_G.WorldMapTooltip.ItemTooltip, relTo=_G.WorldMapTooltip.ItemTooltip.Icon, reParent={_G.WorldMapTooltip.ItemTooltip.Count}}
 	self:removeRegions(_G.WorldMapTaskTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
 	self:glazeStatusBar(_G.WorldMapTaskTooltipStatusBar.Bar, 0, self:getRegion(_G.WorldMapTaskTooltipStatusBar.Bar, 7))
 
