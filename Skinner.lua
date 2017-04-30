@@ -320,8 +320,8 @@ function aObj:OnEnable()
 					if quality then
 						if quality > _G.LE_ITEM_QUALITY_COMMON and _G.BAG_ITEM_QUALITY_COLORS[quality] then
 							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
-						-- elseif quality == _G.LE_ITEM_QUALITY_POOR then
-						-- 	button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+						elseif quality == _G.LE_ITEM_QUALITY_POOR then
+							button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 						else
 							button.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 						end
