@@ -1,3 +1,15 @@
+beta7.24015.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Version numbers
+	Change border colour for POOR items
+	PTR 7.2.5 change
+	Updated WorldMap Tooltip skinning code
+	Skin several close buttons & Reputation Tooltip
+	Bugfix
+	Updated ArkInventory skin
+
 beta7.23911.1
 Jncl:
 	ToDo.txt
