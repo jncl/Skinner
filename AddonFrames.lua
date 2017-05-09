@@ -60,19 +60,19 @@ aObj.addonsToSkin["XLoot1.0"] = "XLoot10"
 -- libraries
 aObj.libsToSkin = {
 	["AceGUI-3.0"] = "Ace3",
-	["Configator"] = "Configator",
-	["tektip-1.0"] = "tektip",
-	["LibQTip-1.0"] = "LibQTip",
 	["ArkDewdrop"] = "ArkDewdrop",
-	["LibTradeSkillScan"] = "LibTradeSkillScan",
-	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
-	["X-UI"] = "LibXUI",
-	["LibDropdown-1.0"] = "LibDropdown",
-	["LibToast-1.0"] = "LibToast",
-	["LibDialog-1.0"] = "LibDialog",
-	["LibExtraTip-1"] = "LibExtraTip",
+	["Configator"] = "Configator",
 	["DetailsFramework-1.0"] = "DetailsFramework",
+	["LibDialog-1.0"] = "LibDialog",
+	["LibDropdown-1.0"] = "LibDropdown",
+	["LibExtraTip-1"] = "LibExtraTip",
 	["LibKeyBound-1.0"] = "LibKeyBound",
+	["LibQTip-1.0"] = "LibQTip",
+	["LibToast-1.0"] = "LibToast",
+	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
+	["LibTradeSkillScan"] = "LibTradeSkillScan",
+	["tektip-1.0"] = "tektip",
+	["X-UI"] = "LibXUI",
 }
 -- store other AddOns not previously referenced, here
 aObj.otherAddons = {}
@@ -123,9 +123,6 @@ function aObj:AddonFrames()
 	end
 	self.addonsToSkin = nil
 
-	-- skin library objects
-	skinLibs()
-
 	-- skin tekKonfig library objects (N.B. not a LibStub library)
 	if self.tekKonfig then self:checkAndRun("tekKonfig", "s") end -- not an addon in its own right
 
@@ -137,6 +134,9 @@ function aObj:AddonFrames()
 			if IsAddOnLoaded(name) then self:checkAndRunAddOn(name, true, skinFunc) end
 		end
 	end)
+
+	-- skin library objects after a short delay to allow them to be loaded
+	_G.C_Timer.After(0.2, function() skinLibs() end)
 
 end
 
@@ -205,8 +205,9 @@ function aObj:LoDFrames(addon)
 	end
 
 	-- load library skins here as well, they may only get loaded by a LoD AddOn
-	-- e.g. Dewdrop by ArkInventory when an AddonLoader is used
-	skinLibs()
+	-- include a short delay to allow them to be loaded
+	-- e.g. ArkDewdrop by ArkInventory when an AddonLoader is used
+	_G.C_Timer.After(0.2, function() skinLibs() end)
 
 end
 
