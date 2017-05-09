@@ -351,13 +351,13 @@ function aObj:OnEnable()
 	-- track when trade frame is opened (used by ProfessionTabs)
 	self:RegisterEvent("TRADE_SHOW")
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
-	self:ScheduleTimer(function() self:RegisterEvent("ADDON_LOADED") end, 0.5)
+	_G.C_Timer.After(0.5, function() self:RegisterEvent("ADDON_LOADED") end)
 	-- skin the Blizzard frames
-	self:ScheduleTimer("BlizzardFrames", self.db.profile.Delay.Init)
+	_G.C_Timer.After(prdb.Delay.Init, function() self:BlizzardFrames() end)
 	-- skin the loaded AddOns frames
-	self:ScheduleTimer("AddonFrames", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 0.1)
+	_G.C_Timer.After(prdb.Delay.Init + prdb.Delay.Addons, function() self:AddonFrames() end)
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
-	self:ScheduleTimer("scanUIParentsChildren", self.db.profile.Delay.Init + self.db.profile.Delay.Addons + 10)
+	_G.C_Timer.After(prdb.Delay.Init + prdb.Delay.Addons + 10, function() self:scanUIParentsChildren() end)
 
 	-- handle statusbar changes
 	self.LSM.RegisterCallback(self, "LibSharedMedia_SetGlobal", function(mtype, override)

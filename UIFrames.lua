@@ -435,7 +435,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		opts.obj:DisableDrawLayer("BORDER")
 		opts.obj:DisableDrawLayer("OVERLAY")
 		opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinButton
-		aObj:ScheduleTimer("addButtonBorder", 0.2, {obj=opts.obj, relTo=opts.obj.dungeonTexture, reParent=opts.reParent}) -- wait for animation to finish
+		_G.C_Timer.After(0.2, function() self:addButtonBorder{obj=opts.obj, relTo=opts.obj.dungeonTexture, reParent=opts.reParent} end) -- wait for animation to finish
 		aObj:addSkinFrame{obj=opts.obj, ft=ftype, ofs=opts.ofs or -8, y1=opts.y1 or nil}
 
 	end
@@ -951,7 +951,10 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		end)
 		aObj:scanWorldFrameChildren()
 
-		aObj:CancelTimer(cbeTmr, true)
+		-- aObj:CancelTimer(cbeTmr, true)
+		if cbeTmr then
+			cbeTmr:Cancel()
+		end
 		cbeTmr = nil
 
 	end
@@ -960,7 +963,8 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 
 	local function srt4Event(event, ...)
 		if not cbeTmr then
-			cbeTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.25)
+			cbcTmr = _G.C_Timer.NewTicker(0.25, function() skinChatBubbles() end)
+			-- cbeTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.25)
 		end
 	end
 	-- capture events which may create new ones
@@ -978,13 +982,16 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	-- CHAT_MSG_RAID_LEADER
 	-- CHAT_MSG_RAID_WARNING
 
-	local cbcTmr
 	-- capture these as well
 	self:RegisterEvent("CINEMATIC_START", function()
-		cbcTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.25)
+		srt4Event()
+		-- cbcTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.25)
 	end)
 	self:RegisterEvent("CINEMATIC_STOP", function()
-		self:CancelTimer(cbcTmr, true)
+		-- self:CancelTimer(cbcTmr, true)
+		if cbeTmr then
+			cbeTmr:Cancel()
+		end
 		cbcTmr = nil
 	end)
 
@@ -2736,8 +2743,8 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		and not self.ignoreIOF[panel]
 		then
 			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
-			self:ScheduleTimer(checkKids, 0.1, panel) -- wait for 1/10th second for panel to be populated
-			self:ScheduleTimer("skinAllButtons", 0.1, {obj=panel, as=true, ft=ftype}) -- wait for the panel to be populated, always use applySkin to ensure text appears above button texture
+			_G.C_Timer.After(0.1, function() checkKids(panel) end) -- wait for 1/10th second for panel to be populated
+			_G.C_Timer.After(0.1, function() self:skinAllButtons{obj=panel, as=true, ft=ftype} end) -- wait for the panel to be populated, always use applySkin to ensure text appears above button texture
 		end
 	end)
 
@@ -2910,7 +2917,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	end
 
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
-	self:ScheduleTimer(mmKids, 0.5, _G.Minimap)
+	_G.C_Timer.After(0.5, function() mmKids(_G.Minimap) end)
 
 	-- Calendar button
 	makeSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
@@ -3680,14 +3687,15 @@ aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
 		local rtEvt
 		local function checkForAnimGrp()
 			if _G.QueueStatusMinimapButton.smAlphaAnim then
-				aObj:CancelTimer(rtEvt, true)
+				rtEvt:Cancel()
+				-- aObj:CancelTimer(rtEvt, true)
 				rtEvt = nil
 				aObj:SecureHookScript(_G.QueueStatusMinimapButton.smAnimGroup, "OnFinished", function(this)
 					_G.QueueStatusFrame.sf:Hide()
 				end)
 			end
 		end
-		rtEvt = self:ScheduleRepeatingTimer(checkForAnimGrp, 0.2)
+		rtEvt = _G.C_Timer.NewTicker(0.2, function() checkForAnimGrp() end)
 	end
 
 end
