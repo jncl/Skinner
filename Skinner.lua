@@ -28,7 +28,7 @@ do
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local liveInfo = {"7.2.0", 24015}
+	local liveInfo = {"7.2.0", 24026}
 	local ptrInfo = {"7.2.5", 23993}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
