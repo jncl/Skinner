@@ -630,11 +630,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 
 	self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
-	-- ReputationParagon Frames
-	for paragonFrame in _G.ReputationFrame.paragonFramesPool:EnumerateActive() do
-		self:addButtonBorder{obj=paragonFrame, relTo=paragonFrame.Icon, reParent={paragonFrame.Check}}
-	end
-
 	-- ReputationParagon Tooltip
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, "ReputationParagonTooltip")
