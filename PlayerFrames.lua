@@ -696,29 +696,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	btn = nil
 
 	-- Pet Journal
-	if self.modBtnBs then
-		local function skinPLBtns(scrollFrame)
-
-			local pet, isRevoked, rarity
-			for i = 1, #scrollFrame.buttons do
-				pet = scrollFrame.buttons[i]
-				_, _, _, _, _, _, isRevoked = _G.C_PetJournal.GetPetInfoByIndex(pet.index)
-				if pet.owned
-				and not isRevoked
-				then
-					local _, _, _, _, rarity = _G.C_PetJournal.GetPetStats(pet.petID)
-					pet.dragButton.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[rarity - 1].r, _G.ITEM_QUALITY_COLORS[rarity - 1].g, _G.ITEM_QUALITY_COLORS[rarity - 1].b, 1) -- alpha is 1
-				else
-					pet.dragButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) -- disabled
-				end
-			end
-			pet, isRevoked, rarity = nil, nil, nil, nil
-
-		end
-		self:SecureHook(_G.PetJournal.listScroll, "update", function(this)
-			skinPLBtns(this)
-		end)
-	end
 	local pj = _G.PetJournal
 	self:removeInset(pj.PetCount)
 	pj.MainHelpButton.Ring:SetTexture(nil)
@@ -738,9 +715,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	for i = 1, #pj.listScroll.buttons do
 		btn = pj.listScroll.buttons[i]
 		self:removeRegions(btn, {1}) -- background
-		btn.iconBorder:SetAlpha(0)
 		self:changeTandC(btn.dragButton.levelBG, self.lvlBG)
-		self:addButtonBorder{obj=btn.dragButton, ofs=0, y1=1, reParent={btn.dragButton.levelBG, btn.dragButton.level, btn.dragButton.favorite}}
 	end
 	btn = nil
 	-- skinPLBtns(pj.listScroll)
