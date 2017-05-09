@@ -616,8 +616,9 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:keepFontStrings(_G.ReputationFrame)
 	self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
 
+	local obj
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-		local obj = "ReputationBar" .. i
+		obj = "ReputationBar" .. i
 		self:skinButton{obj=_G[obj .. "ExpandOrCollapseButton"], mp=true} -- treat as just a texture
 		_G[obj .. "Background"]:SetAlpha(0)
 		_G[obj .. "ReputationBarLeftTexture"]:SetAlpha(0)
@@ -625,8 +626,8 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:glazeStatusBar(_G[obj .. "ReputationBar"], 0)
 		-- N.B. Issue with faction standing text, after rep line 3 the text moves down with respect to the status bar
 		-- self:moveObject{obj=_G[obj .. "ReputationBarFactionStanding"], y=2}
-		obj = nil
 	end
+	obj = nil
 
 	self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 
