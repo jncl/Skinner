@@ -2458,6 +2458,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	self:glazeStatusBar(hfxpb.Bar, 0, hfxpb.Bar.Background, nil, true)
 	hfxpb.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
 	hfxpb.NextAvailable.Frame:SetTexture(nil)
+	self:addButtonBorder{obj=hfxpb.NextAvailable, relTo=hfxpb.NextAvailable.Icon}
 	hfxpb = nil
 	self:removeInset(_G.HonorFrame.RoleInset)
 	self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
@@ -2471,9 +2472,10 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 
 	local hfbf =_G.HonorFrame.BonusFrame
 	for _, v in pairs{"RandomBG", "Arena1", "Ashran", "Brawl"} do
-			hfbf[v .. "Button"].NormalTexture:SetTexture(nil)
-			hfbf[v .. "Button"].Reward.Border:SetTexture(nil)
-		end
+		hfbf[v .. "Button"].NormalTexture:SetTexture(nil)
+		hfbf[v .. "Button"].Reward.Border:SetTexture(nil)
+	end
+	self:addButtonBorder{obj=hfbf.DiceButton, ofs=2, x1=-3}
 	self:skinButton{obj=hfbf.BrawlHelpBox.CloseButton, cb=true}
 	hfbf:DisableDrawLayer("BACKGROUND")
 	hfbf:DisableDrawLayer("BORDER")
