@@ -94,10 +94,6 @@ function aObj:Bagnon() -- 7.0.4
 			end)
 		end
 	end
-	-- prevent gradient whiteout
-	self:RawHook(Bagnon["Frame"], "FadeInFrame", function(this, frame, alpha)
-		frame:Show()
-	end)
 	-- skin the Search EditBox
 	self:RawHook(Bagnon["SearchFrame"], "New", function(this, ...)
 		local eb = self.hooks[Bagnon["SearchFrame"]].New(this, ...)

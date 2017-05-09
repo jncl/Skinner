@@ -6,7 +6,6 @@ function aObj:ServerHop() -- v1.20
 
 	-- ServerHop_Init
 	self:addSkinFrame{obj=hopAddon, ofs=0}
-	self:skinButton{obj=hopAddon_LFGWarning.btn}
 
 	-- MainFrame
 	self:skinButton{obj=hopAddon.buttonChangeMode}
@@ -19,10 +18,7 @@ function aObj:ServerHop() -- v1.20
 	self:skinButton{obj=hopAddon.hopFrame.buttonHop}
 	hopAddon.hopFrame.buttonHop:DisableDrawLayer("BACKGROUND")
 	hopAddon.hopFrame.buttonHop:GetPushedTexture():SetTexture(nil)
-	self:skinButton{obj=hopAddon.hopFrame.buttonHopBack}
-	hopAddon.hopFrame.buttonHopBack:DisableDrawLayer("BACKGROUND")
-	-- hostingGroupFrame
-	self:skinButton{obj=hopAddon.hostFrame.hostingGroupFrame.buttonStop}
+	self:skinEditBox{obj=hopAddon.hopFrame.description, regs={6}} -- 6 is text
 
 	-- SearchFrame
 	hopAddon.searchFrame.background:SetTexture(nil)
@@ -35,22 +31,18 @@ function aObj:ServerHop() -- v1.20
 	self:skinEditBox{obj=hCF.timeEdit, regs={6}}
 	self:skinEditBox{obj=hCF.ilvlEdit, regs={6}}
 	hCF = nil
-	-- skin search result buttons
-	local kids = {hopAddon.searchFrame.searchBox:GetChildren()}
-	for _, child in _G.ipairs(kids) do
-		if self:getInt(child:GetWidth()) == 228 then
-			child:SetBackdrop(self.Backdrop[1])
-			child:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
-		end
+	self:skinSlider{obj=hopAddon.searchFrame.scrollframe.scrollBar.ScrollBar}
+	for i = 1, 5 do
+		-- use applySkin as auti-invite changes background colour
+		self:applySkin{obj=hopAddon.searchFrame.scrollframe.rows[i]}
 	end
-	kids = nil
 
 	-- ServerHop_Favourites
 	local fF = hopAddon.favouritesFrame
 	self:addSkinFrame{obj=fF, ofs=-2}
 	fF.bg:SetTexture(nil)
 	fF.closeButton:SetSize(22, 22)
-	self:skinScrollBar{obj=fF.scrollframe}
+	self:skinSlider{obj=fF.scrollframe.ScrollBar}
 	self:skinButton{obj=fF.scrollframe.buttonAdd}
 	fF.scrollframe.buttonAdd:DisableDrawLayer("BACKGROUND")
 	self:skinEditBox{obj=fF.editFrame.editBoxName, regs={6}}
@@ -128,8 +120,11 @@ function aObj:ServerHop() -- v1.20
 	hopAddon.hostFrame.background:SetTexture(nil)
 	self:addSkinFrame{obj=hopAddon.hostFrame}
 
+	-- hostingGroupFrame
+	self:skinButton{obj=hopAddon.hostFrame.hostingGroupFrame.buttonStop}
+
 	-- HopList
-	self:skinScrollBar{obj=hopAddon.hopList.scrollframe}
+	self:skinSlider{obj=hopAddon.hopList.scrollframe.ScrollBar}
 	self:addSkinFrame{obj=hopAddon.hopList, kfs=true}
 	-- remove Header backdrop
 	self:SecureHook(hopAddon.hopList, "RecreateList", function(this)
