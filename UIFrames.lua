@@ -2671,7 +2671,6 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 					if aObj:hasTextInName(child, "SushiDropdown") then
 						if not aObj:IsHooked(_G.SushiDropFrame, "OnCreate") then
 							aObj:SecureHook(_G.SushiDropFrame, "OnCreate", function()
-								-- Spew("SushiDropdown", SushiDropFrame)
 								for _, frame in pairs(_G.SushiDropFrame.usedFrames) do
 									if not frame.bg.sf then
 										aObj:addSkinFrame{obj=frame.bg, kfs=true}
@@ -3352,6 +3351,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		btn.ActualHealthBar:SetTexture(self.sbTexture)
 		btn.HealthDivider:SetTexture(nil)
 	end
+	btn = nil
 	self:keepRegions(_G.PetBattleFrame.BottomFrame.xpBar, {1, 5, 6, 13}) -- text and statusbar textures
 	self:glazeStatusBar(_G.PetBattleFrame.BottomFrame.xpBar, 0,  nil)
 	_G.PetBattleFrame.BottomFrame.TurnTimer.TimerBG:SetTexture(nil)
