@@ -283,14 +283,16 @@ function aObj:OnEnable()
 		_G.wipe(self.oocTab)
 	end)
 
+	local prdb = self.db.profile
+
 	-- change option name
-	if self.db.profile.ClassColours then
+	if prdb.ClassColours then
 		self.db.profile.ClassColour = self.db.profile.ClassColours
 		self.db.profile.ClassColours = nil
 	end
 	-- treat GossipFrame & QuestFrame as one
 	-- as they both change the quest text colours
-	if not self.db.profile.GossipFrame == self.db.profile.QuestFrame then
+	if not prdb.GossipFrame == prdb.QuestFrame then
 		if not self.db.profile.QuestFrame then
 			self.db.profile.GossipFrame = false
 		else
