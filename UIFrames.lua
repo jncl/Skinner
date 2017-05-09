@@ -614,7 +614,7 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 	_G.ArtifactFrame.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
 
 	self:keepFontStrings(_G.ArtifactFrame.BorderFrame)
-	self:addSkinFrame{obj=_G.ArtifactFrame, ft=ftype, ofs=5}
+	self:addSkinFrame{obj=_G.ArtifactFrame, ft=ftype, ofs=5, y1=4}
 	-- tabs
 	self:skinTabs{obj=_G.ArtifactFrame, regs={}, ignore=true, lod=true, x1=6, y1=9, x2=-6, y2=-4}
 
@@ -1565,7 +1565,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		_G.GarrisonLandingPage.HeaderBar:SetTexture(nil)
 		_G.GarrisonLandingPage.numTabs = 3
 		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, x1=5, y1=-8, x2=-4, y2=-3}
-		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-12, x2=-12}
+		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-13, x2=-13}
 
 		-- ReportTab
 		local rp = _G.GarrisonLandingPage.Report
@@ -3164,7 +3164,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 	self:skinButton{obj=_G.OrderHallMissionFrame.CloseButton, cb=true}
 	_G.OrderHallMissionFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
 	-- don't skin buttons, otherwise Tab buttons get skinned  as well
-	self:addSkinFrame{obj=_G.OrderHallMissionFrame, ft=ftype, kfs=true, nb=true, x1=2, y1=3, x2=1, y2=-4}
+	self:addSkinFrame{obj=_G.OrderHallMissionFrame, ft=ftype, kfs=true, nb=true, x1=2, y1=2, x2=1, y2=-4}
 	_G.OrderHallMissionFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 	-- tabs
 	self:skinTabs{obj=_G.OrderHallMissionFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-4}
@@ -3465,7 +3465,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 
 	self:removeInset(_G.PVEFrame.Inset)
 	self:keepFontStrings(_G.PVEFrame.shadows)
-	self:addSkinFrame{obj=_G.PVEFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+	self:addSkinFrame{obj=_G.PVEFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=2, y2=-5}
 	self:skinTabs{obj=_G.PVEFrame}
 
 	-- GroupFinder Frame
@@ -3974,14 +3974,14 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		local function sizeUp()
 
 			_G.WorldMapFrame.sf:ClearAllPoints()
-			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 102, 1)
-			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", -102, 1)
+			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 101, 1)
+			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", -101, 1)
 
 		end
 		local function sizeDown()
 
 			_G.WorldMapFrame.sf:ClearAllPoints()
-			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 0, 2)
+			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 0, 1)
 			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -2)
 
 		end

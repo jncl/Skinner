@@ -220,13 +220,13 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	self:skinSlider{obj=_G.AchievementFrame.searchResults.scrollFrame.scrollBar, adj=-4, size=3}
 
 	self:skinTabs{obj=_G.AchievementFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-10}
-	self:addSkinFrame{obj=_G.AchievementFrame, ft=ftype, kfs=true, bgen=1, y1=8, y2=-3}
+	self:addSkinFrame{obj=_G.AchievementFrame, ft=ftype, kfs=true, bgen=1, y1=7, y2=-3}
 
 -->>-- move Header info
 	self:keepFontStrings(_G.AchievementFrameHeader)
 	self:moveObject{obj=_G.AchievementFrameHeaderTitle, x=-60, y=-25}
 	self:moveObject{obj=_G.AchievementFrameHeaderPoints, x=40, y=-5}
-	self:moveObject{obj=_G.AchievementFrame.searchBox, y=-9}
+	self:moveObject{obj=_G.AchievementFrame.searchBox, y=-10}
 	self:moveObject{obj=_G.AchievementFrameCloseButton, y=6}
 	_G.AchievementFrameHeaderShield:SetAlpha(1)
 
@@ -1125,7 +1125,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		cfpb.Highlight:ClearAllPoints()
 		cfpb.Highlight:SetPoint("center")
 		cfpb.Highlight:SetSize(22, 22)
-		self:moveObject{obj=cfpb, x=5, y=-3}
+		self:moveObject{obj=cfpb, x=7, y=-5}
 		if self.modBtnBs then
 			-- skin the item buttons
 			local bo
@@ -3011,6 +3011,6 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 	self:skinEditBox{obj=_G.TradeSkillFrame.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 	self:addButtonBorder{obj=_G.TradeSkillFrame.LinkToButton, x1=1, y1=-5, x2=-3, y2=2}
 	self:skinButton{obj=_G.TradeSkillFrame.FilterButton}
-	self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, ofs=2}
+	self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, ofs=2, x2=1}
 
 end
