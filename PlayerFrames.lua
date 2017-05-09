@@ -2193,10 +2193,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end
 	end
 	kids = nil
-	-- hook this to skin 'looking for group' button
+	-- hook this to skin QuestObjective Block Button(s)
 	self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
-		aObj:Debug("QuestObjectiveSetupBlockButton_AddRightButton: [%s, %s, %s]", block, button, iAO)
-		self:addButtonBorder{obj=button, x1=0, y1=-2, x2=-2, y2=2}
+		self:addButtonBorder{obj=button, ofs=button.Icon and -2 or nil, x1=button.Icon and 0 or nil, reParent=button.Count and {button.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
 	end)
 	-- skin timerBar(s) & progressBar(s)
 	local function skinBar(bar)
