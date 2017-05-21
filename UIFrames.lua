@@ -483,6 +483,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			frame:DisableDrawLayer("BORDER") -- toast texture
 			aObj:addButtonBorder{obj=frame, relTo=frame.QuestTexture}
 		end
+		if frame.Background2 then -- LegendaryItemAlertFrame
+			frame.Background2:SetTexture(nil)
+			frame.Background3:SetTexture(nil)
+		end
 
 		aObj:addSkinFrame{obj=frame, ft=ftype, bg=true, ofs=reqdOfs or -10, y1=y1Ofs or nil}
 
@@ -2197,6 +2201,7 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 	self:addButtonBorder{obj=_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward, libt=true}
 	_G.LFDQueueFrameRandomScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 	self:removeMagicBtnTex(_G.LFDQueueFrameFindGroupButton)
+	self:skinButton{obj=_G.LFDQueueFrameFindGroupButton}
 
 	-- Specific List subFrame
 	local btn
@@ -3300,13 +3305,13 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		sfn = v == "Ally" and "sfl" or "sfr"
 		_G.PetBattleFrame[sfn] = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
 		self:applySkin{obj=_G.PetBattleFrame[sfn], bba=0, fh=45}
-		xOfs, yOfs = 405, 4
+		xOfs, yOfs = 380--[[405--]], 4 -- allow for battle masters
 		if v == "Ally" then
 			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", xOfs, yOfs)
 		else
 			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", xOfs * -1, yOfs)
 		end
-		_G.PetBattleFrame[sfn]:SetSize(340, 94)
+		_G.PetBattleFrame[sfn]:SetSize(354, 92)
 		_G.PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
 		-- Ally2/3, Enemy2/3
 		local btn
@@ -3465,7 +3470,9 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 
 	self:removeInset(_G.PVEFrame.Inset)
 	self:keepFontStrings(_G.PVEFrame.shadows)
-	self:addSkinFrame{obj=_G.PVEFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=2, y2=-5}
+	self:skinButton{obj=_G.PVEFrameCloseButton, cb=true}
+	-- N.B. don't skin any buttons here
+	self:addSkinFrame{obj=_G.PVEFrame, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-5}
 	self:skinTabs{obj=_G.PVEFrame}
 
 	-- GroupFinder Frame
@@ -4023,7 +4030,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	local uie = _G.WorldMapFrame.UIElementsFrame
 	self:skinDropDown{obj=uie.TrackingOptionsButton.DropDown}
 	uie.TrackingOptionsButton.Button.Border:SetTexture(nil)
-	self:skinButton{obj=uie.TrackingOptionsButton.Button}
+	self:skinButton{obj=uie.TrackingOptionsButton.Button, y2=3}
 	if uie.TrackingOptionsButton.Button.sb then
 		_G.LowerFrameLevel(_G.WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button.sb)
 	end
