@@ -39,13 +39,10 @@ Legend:
 		- I'm running into this odd problem using libDropDown and ArkInventory.
  		libDropDown skins properly (ldd in the skinme dir) however if ArkInventory is enabled (with or without its skinme component) the rawhook to libDropDown's OpenAce3Menu never fires, although Skinner.initialized.LibDropdown == true
 
-√	I	Bagnon, reported by Pseudopath, 04.05.17
-
-√	I	ServerHop, reported bu NeoZeus, 06.05.17
-		- Skinner\SkinMe\ServerHop-7.2.3.lua:9: attempt to index global 'hopAddon_LFGWarning' (a nil value)
-
-	I	reported by lexusnexus, 07.05.17
+?	I	reported by lexusnexus, 07.05.17
 		- \AddOns\Skinner\Modules\UIButtons.lua line 540: attempt to index field 'Count' (a nil value)
 			Skinner\Modules\UIButtons.lua:601: addButtonBorder()
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
+
+√	S	Keystone Commander
