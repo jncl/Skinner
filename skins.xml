@@ -105,6 +105,7 @@
 <script file="SkinMe\ItemDB.lua"/>
 <script file="SkinMe\InspectorGadgetzan.lua"/>
 <script file="SkinMe\Inventorian.lua"/>
+<script file="SkinMe\KeystoneCommander.lua"/>
 <script file="SkinMe\LegacyQuest.lua"/>
 <script file="SkinMe\LibDialog.lua"/>
 <script file="SkinMe\LibDropdown.lua"/>

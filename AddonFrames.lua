@@ -29,6 +29,7 @@ local addonSkins = {
 	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker", "GuildMaster",
 	"HandyNotes", "HaveWeMet", "HealBot", "HoloFriends",
 	"InboxMailBag", "ItemDB", "InspectorGadgetzan", "Inventorian",
+	"KeystoneCommander",
 	"LegacyQuest", "Livestock", "ls_Toasts", "LUI",
 	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MogIt", "MoveAnything", "MrTrader_SkillWindow", "MyGarrisons",
 	"Notes",
