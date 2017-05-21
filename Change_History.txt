@@ -1,3 +1,21 @@
+beta7.24026.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Use variable to reference object
+	Remove extraneous comma
+	localize variable
+	Update HonorFrame skin
+	Update skinning code for ObjectiveBlock
+	Don’t skin ReputationParagon frames
+	Remove ButtonBorder on Pet Icons
+	Remove comment & nil object
+	Adjust Skin frame heights/widths
+	Updated Timer functions
+	Updated Bagnon, LibDropdown, LibQTip & ServerHop skins
+	Add delay to skinning library objects
+
 beta7.24015.1
 Jncl:
 	ToDo.txt
