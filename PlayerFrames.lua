@@ -2809,7 +2809,11 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			btn = obj["talent" .. j]
 			btn.Slot:SetTexture(nil)
 			if self.modBtnBs then
-				btn.knownSelection:SetTexture(nil)
+				if not self.isPTR then
+					btn.knownSelection:SetTexture(nil)
+				else
+					btn.knownSelection:SetAlpha(0)
+				end
 				self:addButtonBorder{obj=btn, relTo=btn.icon}
 			else
 				btn.knownSelection:SetTexCoord(0.00390625, 0.78515625, 0.25000000, 0.36914063)
@@ -2846,6 +2850,8 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		end
 	end
 	self:addSkinFrame{obj=_G.PlayerTalentFramePVPTalents.PrestigeLevelDialog, ft=ftype}
+	-- TutorialBox
+	self:skinButton{obj=_G.PlayerTalentFramePVPTalents.TutorialBox.CloseButton, cb=true}
 
 	-- Tab4 (Pet Specialization)
 	skinSpec(_G.PlayerTalentFramePetSpecialization)
