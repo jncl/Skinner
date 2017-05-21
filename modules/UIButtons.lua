@@ -251,7 +251,7 @@ function module:skinButton(opts)
 			opts.obj.skin = true
 		end
 	elseif opts.ob then -- it's another type of button, text supplied (e.g. beql minimize)
-		opts.obj:SetNormalFontObject(module.fontP)
+		opts.obj:SetNormalFontObject(module.fontP) -- minus/plus
 		opts.obj:SetText(opts.ob)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		if opts.sap then
@@ -266,14 +266,14 @@ function module:skinButton(opts)
 		end
 	elseif opts.ob2 then -- it's another type of button, text supplied, style 2 (e.g. MinimalArchaeology)
 		aso.bd = 5
-		opts.obj:SetNormalFontObject(module.fontSB)
+		opts.obj:SetNormalFontObject(module.fontSB) -- small button
 		opts.obj:SetText(opts.ob2)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		opts.obj:SetHighlightTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
 		opts.obj:SetSize(18, 18)
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
 	elseif opts.ob3 then -- it's another type of button, text supplied, style 3 (e.g. worldmapsizeup/down button)
-		opts.obj:SetNormalFontObject(module.fontS)
+		opts.obj:SetNormalFontObject(module.fontS) -- size Up/Down
 		opts.obj:SetText(opts.ob3)
 		opts.obj:SetPushedTextOffset(-1, -1)
 		if opts.sap then
@@ -286,6 +286,15 @@ function module:skinButton(opts)
 			y2 = opts.y2 or bW == 32 and 6 or 4
 			aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=x1, y1=y1, x2=x2, y2=y2}
 		end
+	elseif opts.ob4 then -- it's another type of button, text supplied, style 4 (e.g. WorldQuestTracker)
+		opts.obj:SetNormalFontObject("GameFontNormal")
+		opts.obj:SetText(opts.ob4)
+		-- aso.bd = 5
+		x1 = opts.x1 or bW == 32 and 6 or 4
+		y1 = opts.y1 or bW == 32 and -6 or -4
+		x2 = opts.x2 or bW == 32 and -6 or -4
+		y2 = opts.y2 or bW == 32 and 6 or 4
+		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=x1, y1=y1, x2=x2, y2=y2}
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 		if not opts.as then
