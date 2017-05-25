@@ -1858,6 +1858,7 @@ local function __skinTabs(opts)
 		ignore = ignore size changes
 		up = tabs grow upwards
 		lod = LoD, requires textures to be set 1st time through
+		bg = put in background so highlight is visible (e.g. Garrison LandingPage)
 		x1 = X offset for TOPLEFT
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
@@ -1875,7 +1876,7 @@ local function __skinTabs(opts)
 
 	local tabName = opts.obj:GetName() .. "Tab" .. (opts.suffix or "")
 
-	local kRegions = {7, 8} -- N.B. region 7 is text, 8 is highlight
+	local kRegions = {7, 8} -- N.B. region 7 is text, 8 is highlight for some tabs
 	if opts.regs then
 		for _, v in pairs(opts.regs) do
 			aObj:add2Table(kRegions, v)
@@ -1891,7 +1892,7 @@ local function __skinTabs(opts)
 	for i = 1, opts.obj.numTabs do
 		tab = _G[tabName .. i]
 		aObj:keepRegions(tab, kRegions)
-		aObj:addSkinFrame{obj=tab, ft=opts.ftype, noBdr=aObj.isTT, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		aObj:addSkinFrame{obj=tab, ft=opts.ftype, noBdr=aObj.isTT, bg=opts.bg or false, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 		tab.sf.ignore = opts.ignore -- ignore size changes
 		tab.sf.up = opts.up -- tabs grow upwards
 		if opts.lod then -- set textures here first time thru as it's LoD

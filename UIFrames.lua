@@ -1568,7 +1568,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		_G.GarrisonLandingPage:DisableDrawLayer("BACKGROUND")
 		_G.GarrisonLandingPage.HeaderBar:SetTexture(nil)
 		_G.GarrisonLandingPage.numTabs = 3
-		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, x1=5, y1=-8, x2=-4, y2=-3}
+		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, bg=true, x1=5, y1=-8, x2=-4, y2=-3}
 		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-13, x2=-13}
 
 		-- ReportTab
