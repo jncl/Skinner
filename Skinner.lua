@@ -479,7 +479,7 @@ local function __addSkinButton(opts)
 	if not opts.nohooks then
 		opts.hook = opts.hook or opts.obj
 		-- hook Show/Hide methods
-		if not aObj:IsHooked(opts.hook, "Show") then
+		if not aObj:IsHooked(opts.hook, "OnShow") then
             -- changed to hook scripts as functions don't always work
 			aObj:SecureHookScript(opts.hook, "OnShow", function(this) opts.obj.sb:Show() end)
 			aObj:SecureHookScript(opts.hook, "OnHide", function(this) opts.obj.sb:Hide() end)
