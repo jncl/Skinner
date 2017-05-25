@@ -3265,40 +3265,45 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 	_G.PetBattleFrame.TopArtRight:SetTexture(nil)
 	_G.PetBattleFrame.TopVersus:SetTexture(nil)
 	-- Active Allies/Enemies
-	local obj, sfn, xOfs, yOfs
+	local pbf, sfn, xOfs
 	for _, v in pairs{"Ally", "Enemy"} do
-		obj = _G.PetBattleFrame["Active" .. v]
-		self:addButtonBorder{obj=obj, relTo=obj.Icon, ofs=1, reParent={obj.LevelUnderlay, obj.Level, obj.SpeedUnderlay, obj.SpeedIcon}}
-		obj.Border:SetTexture(nil)
-		obj.Border2:SetTexture(nil)
+		pbf = _G.PetBattleFrame["Active" .. v]
+		self:addButtonBorder{obj=pbf, relTo=pbf.Icon, ofs=1, reParent={pbf.LevelUnderlay, pbf.Level, pbf.SpeedUnderlay, pbf.SpeedIcon}}
+		pbf.Border:SetTexture(nil)
+		pbf.Border2:SetTexture(nil)
 		if self.modBtnBs then
-			obj.sbb:SetBackdropBorderColor(obj.Border:GetVertexColor())
-			self:SecureHook(obj.Border, "SetVertexColor", function(this, ...)
+			pbf.sbb:SetBackdropBorderColor(pbf.Border:GetVertexColor())
+			self:SecureHook(pbf.Border, "SetVertexColor", function(this, ...)
 				this:GetParent().sbb:SetBackdropBorderColor(...)
 			end)
 		end
-		self:changeTandC(obj.LevelUnderlay, self.lvlBG)
-		self:changeTandC(obj.SpeedUnderlay, self.lvlBG)
-		self:changeTandC(obj.HealthBarBG, self.sbTexture)
-		obj.HealthBarBG:SetVertexColor(0.2, 0.2, 0.2, 0.8) -- black
-		self:adjWidth{obj=obj.HealthBarBG, adj=-10}
-		self:adjHeight{obj=obj.HealthBarBG, adj=-10}
-		self:changeTandC(obj.ActualHealthBar, self.sbTexture)
-		obj.ActualHealthBar:SetVertexColor(0, 1, 0) -- green
-		self:moveObject{obj=obj.ActualHealthBar, x= v == "Ally" and -5 or 5}
-		obj.HealthBarFrame:SetTexture(nil)
+		self:changeTandC(pbf.LevelUnderlay, self.lvlBG)
+		self:changeTandC(pbf.SpeedUnderlay, self.lvlBG)
+		self:changeTandC(pbf.HealthBarBG, self.sbTexture)
+		pbf.HealthBarBG:SetVertexColor(0.2, 0.2, 0.2, 0.8) -- black
+		self:adjWidth{obj=pbf.HealthBarBG, adj=-10}
+		self:adjHeight{obj=pbf.HealthBarBG, adj=-10}
+		self:changeTandC(pbf.ActualHealthBar, self.sbTexture)
+		pbf.ActualHealthBar:SetVertexColor(0, 1, 0) -- green
+		self:moveObject{obj=pbf.ActualHealthBar, x= v == "Ally" and -5 or 5}
+		pbf.HealthBarFrame:SetTexture(nil)
 		-- add a background frame
 		sfn = v == "Ally" and "sfl" or "sfr"
 		_G.PetBattleFrame[sfn] = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
-		self:applySkin{obj=_G.PetBattleFrame[sfn], bba=0, fh=45}
-		xOfs, yOfs = 380--[[405--]], 4 -- allow for battle masters
-		if v == "Ally" then
-			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", xOfs, yOfs)
-		else
-			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", xOfs * -1, yOfs)
-		end
-		_G.PetBattleFrame[sfn]:SetSize(354, 92)
 		_G.PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
+		self:applySkin{obj=_G.PetBattleFrame[sfn], bba=0, fh=45}
+		if not self.isPTR then
+			_G.PetBattleFrame[sfn]:SetSize(354, 92)
+			xOfs = 380
+		else
+			_G.PetBattleFrame[sfn]:SetSize(335, 92)
+			xOfs = 405
+		end
+		if v == "Ally" then
+			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", xOfs, 4)
+		else
+			_G.PetBattleFrame.sfr:SetPoint("TOPRIGHT", _G.PetBattleFrame, "TOPRIGHT", xOfs * -1, 4)
+		end
 		-- Ally2/3, Enemy2/3
 		local btn
 		for i = 2, 3 do
@@ -3317,8 +3322,9 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			btn.ActualHealthBar:SetTexture(self.sbTexture)
 			btn.HealthDivider:SetTexture(nil)
 		end
+		btn = nil
 	end
-	sfn, xOfs, yOfs = nil, nil, nil
+	pbf, sfn, xOfs = nil, nil, nil
 
 	-- create a frame behind the VS text
 	_G.PetBattleFrame.sfm = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
@@ -3364,6 +3370,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 				btn = this.BottomFrame.abilityButtons[i]
 				self:addButtonBorder{obj=btn, reParent={btn.BetterIcon}}
 			end
+			btn = nil
 			self:Unhook("PetBattleFrame_UpdateActionBarLayout")
 		end)
 		self:SecureHook("PetBattleActionButton_UpdateState", function(this)
@@ -3394,7 +3401,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		local pbfaasf = _G.PetBattleFrame.ActiveAlly.SpeedFlash
 		self:HookScript(pbfaasf, "OnPlay", function(this)
 			reParent{parent=_G.MainMenuBar}
-			-- self.hooks[this].OnPlay(this)
 		end, true)
 		self:SecureHookScript(pbfaasf, "OnFinished", function(this)
 			reParent{reset=true}
@@ -3402,7 +3408,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		local pbfaesf = _G.PetBattleFrame.ActiveEnemy.SpeedFlash
 		self:HookScript(pbfaesf, "OnPlay", function(this)
 			reParent{parent=_G.MainMenuBar}
-			-- self.hooks[this].OnPlay(this)
 		end, true)
 		self:SecureHookScript(pbfaesf, "OnFinished", function(this)
 			reParent{reset=true}
@@ -3422,30 +3427,20 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 				reParent{reset=true}
 			end
 		end)
-		-- PetBattlePrimaryUnit Tooltip
-		obj = _G.PetBattlePrimaryUnitTooltip
-		obj:DisableDrawLayer("BACKGROUND")
-		obj.ActualHealthBar:SetTexture(self.sbTexture)
-		obj.XPBar:SetTexture(self.sbTexture)
-		obj.Delimiter:SetTexture(nil)
-		obj.sf = self:addSkinFrame{obj=obj, ft=ftype}
-		self:add2Table(self.pbtt, obj.sf)
-		-- PetBattlePrimaryAbility Tooltip
-		_G.PetBattlePrimaryAbilityTooltip.Delimiter1:SetTexture(nil)
-		_G.PetBattlePrimaryAbilityTooltip.Delimiter2:SetTexture(nil)
-		_G.PetBattlePrimaryAbilityTooltip:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.PetBattlePrimaryAbilityTooltip, ft=ftype}
-		-- FloatingBattlePet Tooltip
-		_G.FloatingBattlePetTooltip.Delimiter:SetTexture(nil)
-		_G.FloatingBattlePetTooltip:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.FloatingBattlePetTooltip, ft=ftype}
-		-- FloatingPetBattleAbility Tooltip
-		_G.FloatingPetBattleAbilityTooltip.Delimiter1:SetTexture(nil)
-		_G.FloatingPetBattleAbilityTooltip.Delimiter2:SetTexture(nil)
-		_G.FloatingPetBattleAbilityTooltip:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.FloatingPetBattleAbilityTooltip, ft=ftype}
-		-- BattlePetTooltip (used for caged battle pets in inventory)
-		self:addSkinFrame{obj=_G.BattlePetTooltip, ft=ftype}
+		-- skin the tooltips
+		local tt
+		for _, v in pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
+			tt = _G[v .. "Tooltip"]
+			if tt.Delimiter then tt.Delimiter:SetTexture(nil) end
+			if tt.Delimiter1 then tt.Delimiter1:SetTexture(nil) end
+			if tt.Delimiter2 then tt.Delimiter2:SetTexture(nil) end
+			if not v == "BattlePet" then tt:DisableDrawLayer("BACKGROUND") end
+			self:addSkinFrame{obj=tt, ft=ftype}
+		end
+		tt = nil
+		_G.PetBattlePrimaryUnitTooltip.ActualHealthBar:SetTexture(self.sbTexture)
+		_G.PetBattlePrimaryUnitTooltip.XPBar:SetTexture(self.sbTexture)
+		self:add2Table(self.pbtt, _G.PetBattlePrimaryUnitTooltip.sf)
 	end
 
 end
