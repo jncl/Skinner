@@ -1,3 +1,13 @@
+beta7.24140.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated PlayerTalentFrame skin
+	Updated LegendaryAlert skin, LFDQueue skin, PetBattleUI skin, PVEFrame skin
+	Updated WorldQuestTracker skin
+	Skinned KeystoneCommander
+
 beta7.24026.1
 Jncl:
 	ToDo.txt
