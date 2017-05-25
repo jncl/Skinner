@@ -50,6 +50,7 @@
 <script file="SkinMe\CFM.lua"/>
 <script file="SkinMe\Chatter.lua"/>
 <script file="SkinMe\ClassicQuestLog.lua"/>
+<script file="SkinMe\ClassOrderHallsComplete.lua"/>
 <script file="SkinMe\Clique.lua"/>
 <script file="SkinMe\Collectinator.lua"/>
 <script file="SkinMe\CollectMe.lua"/>

@@ -22,7 +22,7 @@ local addonSkins = {
 	"_NPCScan",
 	"Accountant", "Acheron", "AckisRecipeList", "ACP", "AdiBags", "Altoholic", "AngryKeystones", "AphesLootBrowser", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "Auctionator", "AuctionMaster", "Auctionsnatch", "AutoDecline",
 	"Baggins", "Bagnon_Forever", "Bagnon", "BankItems", "Bartender4", "BattlePetCount", "BaudBag", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BonusRollPreview", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BugSack", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
-	"Carbonite", "CensusPlus", "CFM", "Chatter", "Clique", "Collectinator", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cork", "Cosplay",
+	"Carbonite", "CensusPlus", "CFM", "Chatter", "ClassOrderHallsComplete", "Clique", "Collectinator", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cork", "Cosplay",
 	"DeathNote", "Details", "DockingStation", "Dominos", "DressUp",
 	"ElvUI", "EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
 	"FarmIt2", "FeedMachine", "FishingBuddy", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
