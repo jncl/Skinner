@@ -8,24 +8,24 @@ function aObj:Warden()
 	self:addSkinFrame{obj=frmGuildWardenPopup, kfs=true, ofs=-2, x2=-1}
 
 	-- GuildLeft frame
-	self:skinFFColHeads("GuildLeftColumnButton", 4)
+	self:skinColHeads("GuildLeftColumnButton", 4)
 	self:skinSlider{obj=GuildLeftContainerScrollBar}
 
 	-- GuildJoined frame
-	self:skinFFColHeads("GuildJoinedColumnButton", 4)
+	self:skinColHeads("GuildJoinedColumnButton", 4)
 	self:skinSlider{obj=GuildJoinedContainerScrollBar}
 
 	-- GuildBannedframe
-	self:skinFFColHeads("GuildBannedColumnButton", 4)
+	self:skinColHeads("GuildBannedColumnButton", 4)
 	self:skinSlider{obj=GuildBannedContainerScrollBar}
 
 	-- GuildWardenAlts frame
-	self:skinFFColHeads("GuildAltsColumnButton", 4)
+	self:skinColHeads("GuildAltsColumnButton", 4)
 	self:skinSlider{obj=GuildAltsContainerScrollBar}
 	self:addSkinFrame{obj=frmGuildWardenAlts}
 
 	-- GuildWardenRealm frame
-	self:skinFFColHeads("GuildRealmColumnButton", 4)
+	self:skinColHeads("GuildRealmColumnButton", 4)
 	self:skinSlider{obj=GuildRealmContainerScrollBar}
 	self:addSkinFrame{obj=frmGuildWardenRealm, kfs=true, ofs=-2, x2=-1}
 	self:SecureHookScript(frmGuildWardenRealm, "OnShow", function(this)
@@ -34,7 +34,7 @@ function aObj:Warden()
 	end)
 
 	-- GuildWardenSharing frame
-	self:skinFFColHeads("GuildGuildSharingColumnButton", 6)
+	self:skinColHeads("GuildGuildSharingColumnButton", 6)
 	self:skinSlider{obj=GuildGuildSharingContainerScrollBar}
 	self:addSkinFrame{obj=frmGuildWardenSharing, kfs=true, ofs=-2, x2=-1}
 	self:SecureHookScript(frmGuildWardenSharing, "OnShow", function(this)
@@ -59,7 +59,7 @@ function aObj:Warden()
 	end)
 
 	-- GuildWardenInfo frame
-	self:skinFFColHeads("GuildNotesColumnButton", 4)
+	self:skinColHeads("GuildNotesColumnButton", 4)
 	self:skinSlider{obj=GuildNotesContainerScrollBar}
 	self:addSkinFrame{obj=frmGuildWardenInfo, kfs=true, ofs=-2, x2=-1}
 

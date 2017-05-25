@@ -4,7 +4,7 @@ if not aObj:isAddonEnabled("BindPad") then return end
 function aObj:BindPad()
 
 -->>-- Main frame
-	self:skinFFToggleTabs("BindPadFrameTab", 4)
+	self:skinToggleTabs("BindPadFrameTab", 4)
 -->>-- Tabs (side)
 	for i = 1, 5 do
 		self:removeRegions(_G["BindPadProfileTab"..i], {1}) -- N.B. other regions are icon and highlight

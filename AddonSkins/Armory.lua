@@ -348,7 +348,7 @@ function aObj:Armory() -- 13.2.0
 	end
 
 -->>-- Social Tab
-	self:skinFFToggleTabs("ArmorySocialFrameTab", 3, true)
+	self:skinToggleTabs("ArmorySocialFrameTab", 3, true)
 	self:addSkinFrame{obj=_G.ArmorySocialFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
 	-- Friends ToggleTab
 	self:skinScrollBar{obj=_G.ArmoryFriendsListScrollFrame}

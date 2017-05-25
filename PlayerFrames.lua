@@ -1539,7 +1539,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 -->>--	Who Tab Frame
 	self:removeInset(_G.WhoFrameListInset)
-	self:skinFFColHeads("WhoFrameColumnHeader")
+	self:skinColHeads("WhoFrameColumnHeader")
 	self:removeInset(_G.WhoFrameEditBoxInset)
 	self:skinDropDown{obj=_G.WhoFrameDropDown, noSkin=true}
 	self:addButtonBorder{obj=_G.WhoFrameDropDownButton, es=12, ofs=-1}
@@ -1693,7 +1693,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 
 -->>-- GuildRoster Frame
 	self:skinDropDown{obj=_G.GuildRosterViewDropdown}
-	self:skinFFColHeads("GuildRosterColumnButton", 5)
+	self:skinColHeads("GuildRosterColumnButton", 5)
 	self:skinSlider{obj=_G.GuildRosterContainerScrollBar, adj=-4}
 	local btn
 	for i = 1, #_G.GuildRosterContainer.buttons do

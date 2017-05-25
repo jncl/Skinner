@@ -1626,7 +1626,7 @@ function aObj:skinEditBox(...)
 
 end
 
-function aObj:skinFFToggleTabs(tabName, tabCnt, noHeight)
+function aObj:skinToggleTabs(tabName, tabCnt, noHeight)
 
 	local togTab
 	for i = 1, tabCnt or 3 do
@@ -1641,7 +1641,7 @@ function aObj:skinFFToggleTabs(tabName, tabCnt, noHeight)
 
 end
 
-function aObj:skinFFColHeads(buttonName, noCols)
+function aObj:skinColHeads(buttonName, noCols)
 
 	noCols = noCols or 4
 	local btn

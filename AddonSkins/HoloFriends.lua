@@ -5,9 +5,9 @@ function aObj:HoloFriends()
 
 -->>--	HoloFriends Frame
 	self:keepFontStrings(HoloFriendsFrame)
-	self:skinFFToggleTabs("HoloFriendsFrameToggleTab", 2)
+	self:skinToggleTabs("HoloFriendsFrameToggleTab", 2)
 	self:skinDropDown{obj=HoloFriendsDropDown}
-	-- self:skinFFToggleTabs("HoloFriendsFrameToggleTab", 2)
+	-- self:skinToggleTabs("HoloFriendsFrameToggleTab", 2)
 	self:skinScrollBar{obj=HoloFriendsScrollFrame}
 	-- m/p buttons
 	if self.modBtns then
@@ -26,7 +26,7 @@ function aObj:HoloFriends()
 -->>--	HoloIgnore Frame
 	self:keepFontStrings(HoloIgnoreFrame)
 	self:skinDropDown{obj=HoloIgnoreDropDown}
-	self:skinFFToggleTabs("HoloIgnoreFrameToggleTab")
+	self:skinToggleTabs("HoloIgnoreFrameToggleTab")
 	self:skinScrollBar{obj=HoloIgnoreScrollFrame}
 	-- m/p buttons
 	if self.modBtns then

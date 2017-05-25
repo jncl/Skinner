@@ -46,7 +46,7 @@ function aObj:FreierGeist_InstanceTime()
 	self:skinEditBox(optionsTabPage5DateFormat)
 
 -->>--	Help Frame
-	self:skinFFToggleTabs("InstanceTime_HelpTab_", 6)
+	self:skinToggleTabs("InstanceTime_HelpTab_", 6)
 	self:skinScrollBar{obj=InstanceTime_HelpScrollFrame}
 	self:addSkinFrame{obj=InstanceTime_Help, ofs=-7}
 
