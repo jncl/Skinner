@@ -2,6 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Altoholic") then return end
 local _G = _G
 
+-- minimap button
+aObj.mmButs["Altoholic"] = _G.AltoholicMinimapButton
+
 local function skinMenuItems(frameName, cnt, text)
 
 	local itm

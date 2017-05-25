@@ -2,6 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("ZygorGuidesViewer") then return end
 local _G = _G
 
+-- minimap button
+aObj.mmButs["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon
+
 function aObj:ZygorGuidesViewer()
 
 	local ZGV = _G.ZygorGuidesViewer

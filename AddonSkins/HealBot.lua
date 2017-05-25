@@ -3,6 +3,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("HealBot") then return end
 local _G = _G
 
+-- minimap button
+aObj.mmButs["HealBot"] = _G.HealBot_MMButton
+
 function aObj:HealBot() -- v 5.4.0.4
 	if not self.db.profile.Tooltips.skin then return end
 

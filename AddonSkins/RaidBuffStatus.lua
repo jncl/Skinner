@@ -2,6 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("RaidBuffStatus") then return end
 local _G = _G
 
+-- minimap button
+aObj.mmButs["RaidBuffStatus"] = _G.RBSMinimapButton
+
 function aObj:RaidBuffStatus()
 
 	self:addButtonBorder{obj=_G.RBSFrameTalentsButton, ofs=0}

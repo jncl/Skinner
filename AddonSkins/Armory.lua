@@ -2,6 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Armory") then return end
 local _G = _G
 
+-- minimap button
+aObj.mmButs["Armory"] = _G.ArmoryMinimapButton
+
 function aObj:Armory() -- 13.2.0
 
 -->>-- Static Popup

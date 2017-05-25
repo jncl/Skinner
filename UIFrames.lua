@@ -2850,6 +2850,8 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 end
 
+aObj.mmButs = {}
+
 aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if not self.db.profile.MinimapButtons.skin or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
@@ -2990,28 +2992,12 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			aObj:addSkinButton{obj=btn, ft=ftype, parent=btn, sap=true}
 
 		end
-		local mmButs = {
-			["SmartBuff"] = _G.SmartBuff_MiniMapButton,
-			["WebDKP"] = _G.WebDKP_MinimapButton,
-			["GuildAds"] = _G.GuildAdsMinimapButton,
-			["Outfitter"] = _G.OutfitterMinimapButton,
-			["Perl_Config"] = _G.PerlButton,
-			["WIM"] = _G.WIM3MinimapButton,
-			["HealBot"] = _G.HealBot_MMButton,
-			["Altoholic"] = _G.AltoholicMinimapButton,
-			["Armory"] = _G.ArmoryMinimapButton,
-			["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon,
-			["RaidBuffStatus"] = _G.RBSMinimapButton,
-			["+Wowhead_Looter"] = _G.wlMinimapButton,
-			["TinyDPS"] = _G.tdpsButtonFrame,
-			["ZPerl"] = _G.XPerl_MinimapButton_Frame,
-		}
-		for addon, obj in pairs(mmButs) do
+		for addon, obj in pairs(self.mmButs) do
 			if IsAddOnLoaded(addon) then
 				skinMMBtn("Loaded Addons btns", obj)
 			end
 		end
-		mmButs = nil
+		self.mmButs = nil
 
 		-- skin existing LibDBIcon buttons
 		for name, button in pairs(_G.LibStub("LibDBIcon-1.0").objects) do

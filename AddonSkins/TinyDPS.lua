@@ -2,6 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("TinyDPS") then return end
 local _G = _G
 
+-- minimap button
+aObj.mmButs["TinyDPS"] = _G.tdpsButtonFrame
+
 function aObj:TinyDPS()
 
 	-- main frame

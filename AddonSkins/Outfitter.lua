@@ -2,6 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Outfitter") then return end
 local _G = _G
 
+-- minimap button
+aObj.mmButs["Outfitter"] = _G.OutfitterMinimapButton
+
 function aObj:Outfitter()
 
 	-- disable Frame Level & Strata being changed

@@ -13,6 +13,9 @@ local function colourBD(...)
 
 end
 
+-- minimap button
+aObj.mmButs["ZPerl"] = _G.XPerl_MinimapButton_Frame
+
 function aObj:ZPerl()
 
 	-- Frame and Border colours

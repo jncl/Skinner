@@ -2,6 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WIM") then return end
 local _G = _G
 
+-- minimap button
+aObj.mmButs["WIM"] = _G.WIM3MinimapButton
+
 function aObj:WIM() -- WIM3
 
 	local function findFrame(name, element)

@@ -388,6 +388,9 @@ function aObj:Perl_Target_Target()
 
 end
 
+-- minimap button
+aObj.mmButs["Perl_Config"] = _G.PerlButton
+
 function aObj:Perl_Config_Options()
 
 	Perl_Config_Set_Background = function() end
