@@ -34,10 +34,7 @@ Legend:
 		- Updated
 √			- WardrobeCollectionFrame progressBar textures
 √			- DeathKnight RuneFrame Runes
-
-≈	I	reported by vincentSDSH, 19.04.17
-		- I'm running into this odd problem using libDropDown and ArkInventory.
- 		libDropDown skins properly (ldd in the skinme dir) however if ArkInventory is enabled (with or without its skinme component) the rawhook to libDropDown's OpenAce3Menu never fires, although Skinner.initialized.LibDropdown == true
+√			- PetBattleUI
 
 ?	I	reported by lexusnexus, 07.05.17
 		- \AddOns\Skinner\Modules\UIButtons.lua line 540: attempt to index field 'Count' (a nil value)
@@ -45,4 +42,4 @@ Legend:
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
 
-√	S	Keystone Commander
+√	S	Class Order Halls Complete, requested by Shimiya, 24.05.17
