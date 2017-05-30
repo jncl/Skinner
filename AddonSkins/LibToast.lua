@@ -12,11 +12,13 @@ function aObj:LibToast()
 		local mt = {__newindex = function(t, k, v)
 			_G.rawset(t, k, v)
 			aObj:addSkinFrame{obj=v}
+			v.SetBackdrop = _G.nop
 		end}
 		_G.setmetatable(lT.active_toasts, mt)
 		-- skin any existing frames
 		for i = 1, #lT.active_toasts do
 			self:addSkinFrame{obj=lT.active_toasts[i]}
+			lT.active_toasts[i].SetBackdrop = _G.nop
 		end
 	end
 
