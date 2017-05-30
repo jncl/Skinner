@@ -42,4 +42,5 @@ Legend:
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
 
-√	S	Class Order Halls Complete, requested by Shimiya, 24.05.17
+√	I	SorhaQuestLog, reported by Myrroddin, 27.05.17
+		- Minions anchors still visible even when hidden.
