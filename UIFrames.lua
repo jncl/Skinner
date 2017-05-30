@@ -1331,7 +1331,7 @@ aObj.blizzLoDFrames[ftype].Contribution = function(self)
 	self.initialized.Contribution = true
 
 	-- skin Contributions
-	for contribution in ContributionCollectionFrame.contributionPool:EnumerateActive() do
+	for contribution in _G.ContributionCollectionFrame.contributionPool:EnumerateActive() do
 		contribution.Header:DisableDrawLayer("BORDER")
 		contribution.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
 		contribution.State.Border:SetAlpha(0) -- texture is changed
@@ -1341,7 +1341,7 @@ aObj.blizzLoDFrames[ftype].Contribution = function(self)
 		contribution.Status.BG:SetTexture(nil)
 		contribution.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
-	for reward in ContributionCollectionFrame.rewardPool:EnumerateActive() do
+	for reward in _G.ContributionCollectionFrame.rewardPool:EnumerateActive() do
 		reward.RewardName:SetTextColor(self.BTr, self.BTg, self.BTb)
 	end
 
