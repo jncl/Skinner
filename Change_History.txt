@@ -1,3 +1,15 @@
+beta7.24163.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Button hooking code
+	Updated PetBattleUI
+	Updated Tab handling code
+	Renamed 2 functions
+	Updated Minimap Icon skin function
+	Skinned ClassOrderHallsComplete
+
 beta7.24140.1
 Jncl:
 	ToDo.txt
