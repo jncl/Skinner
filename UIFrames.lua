@@ -3250,6 +3250,8 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 	end)
 
 	-- CommandBar at top of screen
+	_G.OrderHallCommandBar:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.OrderHallCommandBar, ft=ftype, ofs=4, y2=-2}
 
 	-- OrderHallMissionTutorialFrame
 	self:skinButton{obj=_G.OrderHallMissionTutorialFrame.GlowBox.CloseButton, cb=true}
