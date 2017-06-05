@@ -558,7 +558,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		end
 	end)
 	-- Stats
-	_G.CharacterStatsPane:DisableDrawLayer("BACKGROUND")
+	_G.CharacterStatsPane.ClassBackground:SetTexture(nil) -- other adddons reparent this (e.g. DejaCharacterStats)
 	_G.CharacterStatsPane.ItemLevelFrame.Background:SetTexture(nil)
 	_G.CharacterStatsPane.ItemLevelCategory:DisableDrawLayer("BACKGROUND")
 	_G.CharacterStatsPane.AttributesCategory:DisableDrawLayer("BACKGROUND")
