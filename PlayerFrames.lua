@@ -1651,7 +1651,7 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 	-- hook this as buttons are created as required
 	self:SecureHook("GuildControlUI_BankTabPermissions_Update", function(this)
 		local btn
-		for i = 1, _G.MAX_BUY_GUILDBANK_TABS do
+		for i = 1, _G.MAX_GUILDBANK_TABS do
 			btn = _G["GuildControlBankTab" .. i]
 			if btn and not btn.sknd then
 				btn.sknd = true
