@@ -69,7 +69,8 @@ local function skinPortrait(frame)
 		aObj:SecureHook(frame.Empty, "Show", function(this)
 			local fp = this:GetParent()
 			fp.Portrait:SetTexture(nil)
-			fp.PortraitRingQuality:SetVertexColor(1, 1, 1, 1)
+			fp.PortraitRingQuality:SetVertexColor(1, 1, 1)
+			fp.PortraitRing:SetAtlas("GarrMission_PortraitRing_Quality") -- reset after legion titled follower
 		end)
 	end
 
