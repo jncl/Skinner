@@ -63,6 +63,7 @@
 <script file="SkinMe\Cosplay.lua"/>
 <script file="SkinMe\DBM.lua"/>
 <script file="SkinMe\DeathNote.lua"/>
+<script file="SkinMe\DejaCharacterStats.lua"/>
 <script file="SkinMe\Details.lua"/>
 <script file="SkinMe\DetailsFramework.lua"/>
 <script file="SkinMe\DockingStation.lua"/>
@@ -128,6 +129,7 @@
 <script file="SkinMe\Megaphone.lua"/>
 <script file="SkinMe\MinimalArchaeology.lua"/>
 <script file="SkinMe\MinimapButtonFrame.lua"/>
+<script file="SkinMe\MobileVault.lua"/>
 <script file="SkinMe\MogIt.lua"/>
 <script file="SkinMe\MoveAnything.lua"/>
 <script file="SkinMe\MyGarrisons.lua"/>
