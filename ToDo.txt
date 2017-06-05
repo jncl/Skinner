@@ -35,6 +35,7 @@ Legend:
 √			- WardrobeCollectionFrame progressBar textures
 √			- DeathKnight RuneFrame Runes
 √			- PetBattleUI
+?			- OrderHallUI/OrderHallTalents BackButton
 
 ?	I	reported by lexusnexus, 07.05.17
 		- \AddOns\Skinner\Modules\UIButtons.lua line 540: attempt to index field 'Count' (a nil value)
@@ -42,5 +43,7 @@ Legend:
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
 
-√	I	SorhaQuestLog, reported by Myrroddin, 27.05.17
-		- Minions anchors still visible even when hidden.
+√	O	MobileVault, reported by Myrroddin, 31.5.17
+		- Unobsolete & Update it
+
+√	S	DejaCharacterStats, requested by Myrroddin, 31.05.17
