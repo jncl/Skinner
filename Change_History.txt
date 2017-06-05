@@ -1,3 +1,12 @@
+beta7.24163.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Gloabalised object references
+	Skinned OrderHall Command Bar
+	Fix object reference
+	Updated LibToast & SorhaQuestLog skins
+
 beta7.24163.1
 Jncl:
 	ToDo.txt
