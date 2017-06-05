@@ -2206,13 +2206,16 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				bar.Bar.BorderLeft:SetTexture(nil)
 				bar.Bar.BorderRight:SetTexture(nil)
 				bar.Bar.BorderMid:SetTexture(nil)
-				aObj:glazeStatusBar(bar.Bar, 0,  nil)
+				aObj:glazeStatusBar(bar.Bar, 0,  self:getRegion(bar.Bar, 5))
 			else
+				-- BonusTrackerProgressBar
 				bar.Bar.BarFrame:SetTexture(nil)
 				bar.Bar.IconBG:SetTexture(nil)
 				bar.Bar.BarFrame2:SetTexture(nil)
 				bar.Bar.BarFrame3:SetTexture(nil)
 				aObj:glazeStatusBar(bar.Bar, 0,  bar.BarBG)
+				bar.Bar:DisableDrawLayer("OVERLAY")
+				bar.FullBarFlare1.BarGlow:SetTexture(nil)
 			end
 		end
 
