@@ -2012,7 +2012,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 	if not self.db.profile.GuildBankUI or self.initialized.GuildBankUI then return end
 	self.initialized.GuildBankUI = true
 
--->>--	Main Frame
+	--	Main Frame
 	_G.GuildBankEmblemFrame:Hide()
 	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn" .. i .. "Background"]:SetAlpha(0)
@@ -2021,16 +2021,17 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 	end
 	self:skinEditBox{obj=_G.GuildItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
-	self:skinTabs{obj=_G.GuildBankFrame, lod=true}
 	_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.GuildBankFrame, ft=ftype, kfs=true, hdr=true, x1=-3, y1=2, x2=1, y2=-5}
--->>--	Log Frame
+	self:skinTabs{obj=_G.GuildBankFrame, lod=true}
+
+	--	Log Frame
 	self:skinSlider{obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, rt="artwork"}
 
--->>--	Info Frame
+	--	Info Frame
 	self:skinSlider{obj=_G.GuildBankInfoScrollFrame.ScrollBar, rt="artwork"}
 
--->>--	GuildBank Popup Frame
+	--	GuildBank Popup Frame
 	self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
 	self:skinSlider{obj=_G.GuildBankPopupScrollFrame.ScrollBar, rt="background"}
 	self:removeRegions(self:getChild(_G.GuildBankPopupFrame, 1), {1, 2, 3, 4, 5, 6, 7, 8})
@@ -2048,7 +2049,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		self:Unhook(_G.GuildBankPopupFrame, "OnShow")
 	end)
 
--->>--	Tabs (side)
+	--	Tabs (side)
 	local objName
 	for i = 1, _G.MAX_GUILDBANK_TABS do
 		objName = "GuildBankTab" .. i
