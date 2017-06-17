@@ -43,7 +43,7 @@ Legend:
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
 
-√	O	MobileVault, reported by Myrroddin, 31.5.17
-		- Unobsolete & Update it
+√	S	World Quest Group Finder, requested by elrandir, 09.06.17
 
-√	S	DejaCharacterStats, requested by Myrroddin, 31.05.17
+x	I	Chat Bubbles, reported by tordenflesk/beqir, 14/15.06.17
+		- 7.2.5 has brought one minor issue, the Chat Bubbles in INSTANCED areas don't work and go back to default, outside everything is good though
