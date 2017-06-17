@@ -1,3 +1,15 @@
+beta7.24236.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated ObjectiveTracker skin
+	Updated CharacterStats skin
+	Updated GuildControlUI skin
+	Updated OrderHallUI skin
+	Updated GuildUI & GuildBankUI skins
+	Skinned DejaCharacterStats & MobileVault
+
 beta7.24163.2
 Jncl:
 	ToDo.txt
