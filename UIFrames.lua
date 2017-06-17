@@ -578,7 +578,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self:SecureHook(_G.CriteriaAlertSystem, "setUpFunction", function(frame, ...)
 		skinACAlertFrame(frame)
 	end)
-	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal (PTR , showRatedBG)
+	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal, showRatedBG
 	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
 		skinWLUAlertFrame(frame)
 	end)
@@ -956,7 +956,6 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		end)
 		aObj:scanWorldFrameChildren()
 
-		-- aObj:CancelTimer(cbeTmr, true)
 		if cbeTmr then
 			cbeTmr:Cancel()
 		end
@@ -969,7 +968,6 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	local function srt4Event(event, ...)
 		if not cbeTmr then
 			cbcTmr = _G.C_Timer.NewTicker(0.25, function() skinChatBubbles() end)
-			-- cbeTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.25)
 		end
 	end
 	-- capture events which may create new ones
@@ -990,10 +988,8 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	-- capture these as well
 	self:RegisterEvent("CINEMATIC_START", function()
 		srt4Event()
-		-- cbcTmr = self:ScheduleRepeatingTimer(skinChatBubbles, 0.25)
 	end)
 	self:RegisterEvent("CINEMATIC_STOP", function()
-		-- self:CancelTimer(cbcTmr, true)
 		if cbeTmr then
 			cbeTmr:Cancel()
 		end
