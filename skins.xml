@@ -207,6 +207,7 @@
 <script file="SkinMe\WeakAuras.lua"/>
 <script file="SkinMe\Wholly.lua"/>
 <script file="SkinMe\WIM.lua"/>
+<script file="SkinMe\WorldQuestGroupFinder.lua"/>
 <script file="SkinMe\WorldQuestTracker.lua"/>
 <script file="SkinMe\WoWPro.lua"/>
 <script file="SkinMe\WTFLatencyMeter.lua"/>

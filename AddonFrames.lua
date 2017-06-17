@@ -41,7 +41,7 @@ local addonSkins = {
 	"TargetCharms", "TidyPlates", "TinyDPS", "TipTac", "TomTom", "TooManyAddons", "TradeSkillMaster", "TrinketBar", "Tukui",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
-	"Warden", "WeakAuras", "Wholly", "WIM", "WIM_Options", "WorldQuestTracker", "WoWPro", "WTFLatencyMeter",
+	"Warden", "WeakAuras", "Wholly", "WIM", "WIM_Options", "WorldQuestGroupFinder", "WorldQuestTracker", "WoWPro", "WTFLatencyMeter",
 	"XLoot", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
 	"ZPerl", "ZPerl_RaidAdmin", "ZPerl_RaidHelper", "ZygorGuidesViewer",
 }
