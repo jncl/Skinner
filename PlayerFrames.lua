@@ -2529,6 +2529,14 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 
 end
 
+aObj.blizzFrames[ftype].PVPHonorSystem = function(self)
+
+	_G.HonorLevelUpBanner:DisableDrawLayer("BORDER")
+	_G.PrestigeLevelUpBanner.BG1:SetTexture(nil)
+	_G.PrestigeLevelUpBanner.BG2:SetTexture(nil)
+
+end
+
 aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 	if not self.db.profile.RaidUI or self.initialized.RaidUI then return end
 	self.initialized.RaidUI = true
