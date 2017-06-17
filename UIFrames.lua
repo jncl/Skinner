@@ -3701,6 +3701,7 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 	self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward, libt=true}
 	_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 	self:removeMagicBtnTex(_G.RaidFinderFrameFindRaidButton)
+	self:skinButton{obj=_G.RaidFinderFrameFindRaidButton}
 
 	-- TODO texture is present behind frame
 	_G.RaidFinderQueueFrameBackground:SetTexture(nil)
