@@ -1376,10 +1376,6 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 	self:skinSlider{obj=_G.EventTraceFrameScroll}
 	self:addSkinFrame{obj=_G.EventTraceFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
-	if not self.isPTR then
-		self:skinSlider{obj=_G.ScriptErrorsFrameScrollFrame.ScrollBar}
-		self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
-	end
 
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, "FrameStackTooltip")
@@ -3296,13 +3292,8 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		_G.PetBattleFrame[sfn] = _G.CreateFrame("Frame", nil, _G.PetBattleFrame)
 		_G.PetBattleFrame[sfn]:SetFrameStrata("BACKGROUND")
 		self:applySkin{obj=_G.PetBattleFrame[sfn], bba=0, fh=45}
-		if not self.isPTR then
-			_G.PetBattleFrame[sfn]:SetSize(354, 92)
-			xOfs = 380
-		else
-			_G.PetBattleFrame[sfn]:SetSize(335, 92)
-			xOfs = 405
-		end
+		_G.PetBattleFrame[sfn]:SetSize(335, 92)
+		xOfs = 405
 		if v == "Ally" then
 			_G.PetBattleFrame.sfl:SetPoint("TOPLEFT", _G.PetBattleFrame, "TOPLEFT", xOfs, 4)
 		else
@@ -3719,17 +3710,6 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 
 end
 
-if not aObj.isPTR then
-	aObj.blizzFrames[ftype].ScriptErrors = function(self)
-		if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
-		self.initialized.ScriptErrors = true
-
-		-- skin Basic Script Errors Frame (BasicControls.xml)
-		self:addSkinFrame{obj=_G.BasicScriptErrors, kfs=true, ft=ftype}
-
-	end
-end
-
 aObj.blizzFrames[ftype].SecureTransferUI = function(self)
 	if not self.db.profile.SecureTransferUI or self.initialized.SecureTransferUI then return end
 	self.initialized.SecureTransferUI = true
@@ -3741,20 +3721,18 @@ aObj.blizzFrames[ftype].SecureTransferUI = function(self)
 
 end
 
-if aObj.isPTR then
-	aObj.blizzFrames[ftype].SharedBasicControls = function(self)
-		if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
-		self.initialized.ScriptErrors = true
+aObj.blizzFrames[ftype].SharedBasicControls = function(self)
+	if not self.db.profile.ScriptErrors or self.initialized.ScriptErrors then return end
+	self.initialized.ScriptErrors = true
 
-		self:addSkinFrame{obj=_G.BasicMessageDialog, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=_G.BasicMessageDialog, ft=ftype, kfs=true}
 
-		-- ScriptErrorsFrame
-		self:skinSlider{obj=_G.ScriptErrorsFrame.ScrollFrame.ScrollBar}
-		self:addButtonBorder{obj=_G.ScriptErrorsFrame.PreviousError, ofs=-3, x1=2}
-		self:addButtonBorder{obj=_G.ScriptErrorsFrame.NextError, ofs=-3, x1=2}
-		self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+	-- ScriptErrorsFrame
+	self:skinSlider{obj=_G.ScriptErrorsFrame.ScrollFrame.ScrollBar}
+	self:addButtonBorder{obj=_G.ScriptErrorsFrame.PreviousError, ofs=-3, x1=2}
+	self:addButtonBorder{obj=_G.ScriptErrorsFrame.NextError, ofs=-3, x1=2}
+	self:addSkinFrame{obj=_G.ScriptErrorsFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
 
-	end
 end
 
 aObj.blizzFrames[ftype].SplashFrame = function(self)

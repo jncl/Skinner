@@ -134,20 +134,8 @@ local function skinPlayerF()
 		end
 
 		local y2Ofs
-		--	skin the RuneFrame, if required
-		if aObj.uCls == "DEATHKNIGHT" then
-			if not aObj.isPTR then
-				for i = 1, 7 do
-					_G["RuneButtonIndividual" .. i].Border:DisableDrawLayer("OVERLAY")
-				end
-			end
-		end
-
 		-- skin the EclipseBarFrame/ComboPointPlayerFrame, if required
 		if aObj.uCls == "DRUID" then
-			if not aObj.isPTR then
-				_G.EclipseBarFrame:DisableDrawLayer("ARTWORK") -- Sun/Moon from Balance spec.
-			end
 			skinComboPointPlayerFrame() -- Cat Form
 		end
 

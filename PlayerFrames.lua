@@ -881,11 +881,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	wcf.searchProgressFrame.searchProgressBar:DisableDrawLayer("ARTWORK")
 	self:addSkinFrame{obj=wcf.searchProgressFrame}
 	self:glazeStatusBar(wcf.progressBar, 0,  nil)
-	if not self.isPTR then
-		self:removeRegions(wcf.progressBar, {1, 2, 3})
-	else
-		self:removeRegions(wcf.progressBar, {2, 3})
-	end
+	self:removeRegions(wcf.progressBar, {2, 3})
 	self:skinButton{obj=wcf.FilterButton}
 	self:skinDropDown{obj=wcf.FilterDropDown}
 	self:skinTabs{obj=wcf, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
@@ -2812,11 +2808,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			btn = obj["talent" .. j]
 			btn.Slot:SetTexture(nil)
 			if self.modBtnBs then
-				if not self.isPTR then
-					btn.knownSelection:SetTexture(nil)
-				else
-					btn.knownSelection:SetAlpha(0)
-				end
+				btn.knownSelection:SetAlpha(0)
 				self:addButtonBorder{obj=btn, relTo=btn.icon}
 			else
 				btn.knownSelection:SetTexCoord(0.00390625, 0.78515625, 0.25000000, 0.36914063)
