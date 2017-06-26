@@ -1,3 +1,14 @@
+beta7.24367.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Skinned HonorLevelUpBanner & PrestigeLevelUpBanner
+	Removed commented out lines
+	Skinned RaidFinderFrameFindRaidButton
+	Removed PTR check code
+	Skinned WorldQuestGroupFinder
+
 beta7.24236.1
 Jncl:
 	ToDo.txt
