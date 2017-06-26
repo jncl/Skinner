@@ -13,11 +13,11 @@ function aObj:MogIt()
 
 -->>-- Modules
 	-- Filters
-	self:skinEditBox{obj=_G.MogItFiltersName, regs={9}, mi=true}
-	self:skinEditBox{obj=_G.MogItFiltersLevelMin, regs={9}}
-	self:skinEditBox{obj=_G.MogItFiltersLevelMax, regs={9}}
-	self:skinEditBox{obj=_G.MogItFiltersItemLevelMin, regs={9}}
-	self:skinEditBox{obj=_G.MogItFiltersItemLevelMax, regs={9}}
+	self:skinEditBox{obj=_G.MogItFiltersName, regs={6}, mi=true}
+	self:skinEditBox{obj=_G.MogItFiltersLevelMin, regs={}}
+	self:skinEditBox{obj=_G.MogItFiltersLevelMax, regs={}}
+	self:skinEditBox{obj=_G.MogItFiltersItemLevelMin, regs={}}
+	self:skinEditBox{obj=_G.MogItFiltersItemLevelMax, regs={}}
 	self:skinDropDown{obj=_G.MogItFiltersClassDropdown, rp=true}
 	self:skinDropDown{obj=_G.MogItFiltersSourceDropdown, rp=true}
 	self:skinDropDown{obj=_G.MogItFiltersQualityDropdown, rp=true}
@@ -25,14 +25,13 @@ function aObj:MogIt()
 	-- hook this to remove filters' background
 	self:SecureHook(_G.MogIt, "FilterUpdate", function(this)
 		for _, frame in _G.ipairs(this.active.filters) do
-			this.filters[frame].bg:SetTexture(nil)
+			if this.filters[frame].bg then
+				this.filters[frame].bg:SetTexture(nil)
+			end
 		end
 	end)
 	-- Filters frame
-	self:skinScrollBar{obj=_G.MogIt.filt.scroll}
-	_G.MogIt.filt.scroll.ScrollBar.top:SetTexture(nil)
-	_G.MogIt.filt.scroll.ScrollBar.middle:SetTexture(nil)
-	_G.MogIt.filt.scroll.ScrollBar.bottom:SetTexture(nil)
+	self:skinSlider{obj=_G.MogIt.filt.scroll.ScrollBar, adj=-4, size=3}
 	self:addSkinFrame{obj=_G.MogIt.filt, kfs=true, ri=true, x1=-2, y1=2, x2=1}
 	self:removeMagicBtnTex(_G.MogIt.filt.defaults)
 
