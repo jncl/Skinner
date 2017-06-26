@@ -1420,10 +1420,10 @@ aObj.blizzFrames[ftype].DropDownPanels = function(self)
 			obj = _G[objName]
 			if not self:IsHooked(obj, "Show") then
 				self:SecureHook(obj, "Show", function(this)
-					_G[this:GetName() .. "Backdrop"]:Hide()
-					_G[this:GetName() .. "MenuBackdrop"]:Hide()
 					if not this.sf then
 						self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+						_G[this:GetName() .. "Backdrop"]:SetBackdrop(nil)
+						_G[this:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
 					end
 				end)
 			end
