@@ -24,26 +24,11 @@ Legend:
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-	N	PTR 7.2.5
-		- Added
-√			- SharedBasicControls
-		- Deleted
-√			- BasicControls
-√			- EclipseBarFrame
-√			- ScriptErrorsFrame
-		- Updated
-√			- WardrobeCollectionFrame progressBar textures
-√			- DeathKnight RuneFrame Runes
-√			- PetBattleUI
-?			- OrderHallUI/OrderHallTalents BackButton
-
 ?	I	reported by lexusnexus, 07.05.17
 		- \AddOns\Skinner\Modules\UIButtons.lua line 540: attempt to index field 'Count' (a nil value)
 			Skinner\Modules\UIButtons.lua:601: addButtonBorder()
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
 
-√	S	World Quest Group Finder, requested by elrandir, 09.06.17
-
-x	I	Chat Bubbles, reported by tordenflesk/beqir, 14/15.06.17
-		- 7.2.5 has brought one minor issue, the Chat Bubbles in INSTANCED areas don't work and go back to default, outside everything is good though
+√	I	Mogit, reported by dearach, 24.06.17
+		-  Interface\AddOns\Skinner\SkinMe\MogIt.lua:28: attempt to index field 'bg' (a nil value)
