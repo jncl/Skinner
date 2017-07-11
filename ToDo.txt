@@ -8,6 +8,29 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
+
+	- PTR 7.3.0
+		- Added
+≈			- Blizzard_ArtifactRelicForgeUI
+√			- Blizzard_Console (cannot be skinned)
+√			- Blizzard_TableInspector (Debug Tools)
+x			- Blizzard_SimpleCheckout (StoreUI)
+			- AlertFrameSystems
+?				- ItemAlertFrame
+≈				- NewPetAlertSystem
+≈				- NewMountAlertSystem
+√			- MaximizeMinimizeFrame (DressUpFrame & WorldMapFrame)
+		- Deleted
+√			- WorldMapFrameSizeDownButton
+		- Updated
+≈			- Blizzard_ArtifactPerks
+√			- Blizzard_PetCollection (Summon Random Favourite Pet)
+√			- Blizzard_Wardrobe
+√			- Blizzard_DebugTools
+?			- Blizzard_NamePlates
+√			- DressUpFrame
+x			- DressUpModel
+
 	O	Handle the PLAYER_LEVEL_UP event
 		- if max level then adjust MainMenuBar objects
 		- ?
@@ -30,5 +53,4 @@ Legend:
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
 
-√	I	Mogit, reported by dearach, 24.06.17
-		-  Interface\AddOns\Skinner\SkinMe\MogIt.lua:28: attempt to index field 'bg' (a nil value)
+	S	TinyToolTip, requested by NeoZeus, 07.07.17
