@@ -2013,20 +2013,22 @@ function aObj:skinTooltip(obj)
 
 	-- Check to see if we need to colour the Border
 	if not self.ttBorder then
-		local r, g, b, a
-		for _, tip in pairs(self.ttCheck) do
-			if tip == obj:GetName() then
-				r, g, b, a = obj:GetBackdropBorderColor()
-				if self:getInt(r) ~= 1
-				or self:getInt(g) ~= 1
-				or self:getInt(b) ~= 1
-				or self:getInt(a) ~= 1
-				then
-					return
-				end
-			end
-		end
-		r, g, b, a = nil, nil, nil, nil
+		return
+		-- TODO not sure why we needed this ???
+		-- local r, g, b, a
+		-- for _, tip in pairs(self.ttCheck) do
+		-- 	if tip == obj:GetName() then
+		-- 		r, g, b, a = obj:GetBackdropBorderColor()
+		-- 		if self:getInt(r) ~= 1
+		-- 		or self:getInt(g) ~= 1
+		-- 		or self:getInt(b) ~= 1
+		-- 		or self:getInt(a) ~= 1
+		-- 		then
+		-- 			return
+		-- 		end
+		-- 	end
+		-- end
+		-- r, g, b, a = nil, nil, nil, nil
 	end
 
 	obj:SetBackdropBorderColor(prdb.Tooltips.border == 1 and self.tbColour[1], self.tbColour[2], self.tbColour[3], self.tbColour[4] or self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
