@@ -594,6 +594,16 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self:SecureHook(_G.HonorAwardedAlertSystem, "setUpFunction", function(frame, ...)
 		skinWLUAlertFrame(frame, -8)
 	end)
+	if self.isPTR then
+		-- called params: frame, petID
+		self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, ...)
+			skinCommonAlertFrame(frame, -8)
+		end)
+		-- called params: frame, mountID
+		self:SecureHook(_G.NewMountAlertSystem, "setUpFunction", function(frame, ...)
+			skinCommonAlertFrame(frame, -8)
+		end)
+	end
 
 end
 
@@ -662,6 +672,16 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 			appearanceSlot.Border:SetTexture(nil)
 		end
 	end)
+
+	if self.isPTR then
+		-- ArtifactRelicForgeUI
+		_G.ArtifactRelicForgeFrame.TitleContainer.Background:SetAlpha(0)
+		for i = 1, 3 do
+			self:skinButton{obj=_G.ArtifactRelicForgeFrame.TitleContainer["RelicSlot" .. i].AttuneButton}
+		end
+		self:skinButton{obj=_G.ArtifactRelicForgeFrame.PreviewRelicFrame.AttuneButton}
+		self:addSkinFrame{obj=_G.ArtifactRelicForgeFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+	end
 
 end
 
@@ -1317,6 +1337,19 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 
 end
 
+if aObj.isPTR then
+	aObj.blizzLoDFrames[ftype].Console = function(self)
+	if not self.db.profile.Console or self.initialized.Console then return end
+	self.initialized.Console = true
+
+	-- disable skinning of this frame
+	self.db.profile.Console = false
+
+	-->> N.B. Currently can't be skinned, as the TOC has an element saying Secure: 1
+
+end
+end
+
 aObj.blizzLoDFrames[ftype].Contribution = function(self)
 	if not self.db.profile.Contribution or self.initialized.Contribution then return end
 	self.initialized.Contribution = true
@@ -1366,6 +1399,25 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 	self:skinSlider{obj=_G.EventTraceFrameScroll}
 	self:addSkinFrame{obj=_G.EventTraceFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+
+	if self.isPTR then
+		-- skin TableAttributeDisplay frame
+		local function skinTAD(frame)
+			-- skin control buttons ?
+			self:skinEditBox{obj=frame.FilterBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
+			self:skinSlider{obj=frame.LinesScrollFrame.ScrollBar}
+			self:addSkinFrame{obj=frame.ScrollFrameArt, ft=ftype}
+			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, ofs=-2, x1=3, x2=-1}
+		end
+		skinTAD(_G.TableAttributeDisplay)
+		-- hook this to skin subsequent frames
+		self:RawHook("DisplayTableInspectorWindow", function(focusedTable, customTitle, tableFocusedCallback)
+			local frame = self.hooks.DisplayTableInspectorWindow(focusedTable, customTitle, tableFocusedCallback)
+			-- aObj:Debug("DisplayTableInspectorWindow: [%s, %s, %s, %s]", focusedTable, customTitle, tableFocusedCallback, frame)
+			skinTAD(frame)
+			return frame
+		end, true)
+	end
 
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, "FrameStackTooltip")
@@ -3987,8 +4039,12 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 
 	self:keepFontStrings(_G.WorldMapFrame.BorderFrame)
 	self:removeInset(_G.WorldMapFrame.BorderFrame.Inset)
-	self:skinButton{obj=_G.WorldMapFrameSizeDownButton, ob3="↕"} -- up-down arrow
-	self:skinButton{obj=_G.WorldMapFrameSizeUpButton, ob3="↕"} -- up-down arrow
+	if not self.isPTR then
+		self:skinButton{obj=_G.WorldMapFrameSizeDownButton, ob3="↕"} -- up-down arrow
+		self:skinButton{obj=_G.WorldMapFrameSizeUpButton, ob3="↕"} -- up-down arrow
+	else
+		self:skinMaxMinFrame(_G.WorldMapFrame.BorderFrame, 3)
+	end
 	_G.WorldMapFrame.MainHelpButton.Ring:SetTexture(nil)
 	self:skinDropDown{obj=_G.WorldMapTitleDropDown}
 	self:skinDropDown{obj=_G.WorldMapLevelDropDown}

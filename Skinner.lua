@@ -1396,6 +1396,20 @@ function aObj:shrinkBag(obj, bpMF)
 
 end
 
+function aObj:skinColHeads(buttonName, noCols)
+
+	noCols = noCols or 4
+	local btn
+	for i = 1, noCols do
+		btn = _G[buttonName .. i]
+		if not btn.sb then -- only do if not already skinned
+			self:removeRegions(btn, {1, 2, 3})
+			self:addSkinFrame{obj=btn}
+		end
+	end
+
+end
+
 local function __skinDropDown(opts)
 --[[
 	Calling parameters:
@@ -1622,33 +1636,15 @@ function aObj:skinEditBox(...)
 
 end
 
-function aObj:skinToggleTabs(tabName, tabCnt, noHeight)
+if aObj.isPTR then
+	function aObj:skinMaxMinFrame(obj, childNum)
 
-	local togTab
-	for i = 1, tabCnt or 3 do
-		togTab = _G[tabName .. i]
-		if not togTab then break end -- handle missing Tabs (e.g. Muted)
-		if not togTab.sknd then -- don't skin it twice
-			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text & highlight
-			if not noHeight then self:adjHeight{obj=togTab, adj=-5}	end
-			self:addSkinFrame{obj=togTab, y1=-2, x2=2, y2=-2}
-		end
+		local mmf = self:getChild(obj, childNum) -- MaximizeMinimizeFrame
+		self:skinButton{obj=mmf.MaximizeButton, ob3="↕"} -- up-down arrow
+		self:skinButton{obj=mmf.MinimizeButton, ob3="↕"} -- up-down arrow
+		mmf = nil
+
 	end
-
-end
-
-function aObj:skinColHeads(buttonName, noCols)
-
-	noCols = noCols or 4
-	local btn
-	for i = 1, noCols do
-		btn = _G[buttonName .. i]
-		if not btn.sb then -- only do if not already skinned
-			self:removeRegions(btn, {1, 2, 3})
-			self:addSkinFrame{obj=btn}
-		end
-	end
-
 end
 
 local function __skinMoneyFrame(opts)
@@ -1954,6 +1950,21 @@ function aObj:skinTabs(...)
 
 	__skinTabs(opts)
 	opts = nil
+
+end
+
+function aObj:skinToggleTabs(tabName, tabCnt, noHeight)
+
+	local togTab
+	for i = 1, tabCnt or 3 do
+		togTab = _G[tabName .. i]
+		if not togTab then break end -- handle missing Tabs (e.g. Muted)
+		if not togTab.sknd then -- don't skin it twice
+			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text & highlight
+			if not noHeight then self:adjHeight{obj=togTab, adj=-5}	end
+			self:addSkinFrame{obj=togTab, y1=-2, x2=2, y2=-2}
+		end
+	end
 
 end
 

@@ -693,6 +693,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 	-- Pet Journal
 	local pj = _G.PetJournal
+	if self.isPTR then
+		self:addButtonBorder{obj=pj.SummonRandomFavoritePetButton, ofs=3}
+	end
 	self:removeInset(pj.PetCount)
 	pj.MainHelpButton.Ring:SetTexture(nil)
 	self:moveObject{obj=pj.MainHelpButton, y=-4}
@@ -1134,8 +1137,12 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 
 	self:skinDropDown{obj=_G.DressUpFrameOutfitDropDown, y2=-4}
 	_G.DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=_G.DressUpFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-33, y2=73}
-
+	if not self.isPTR then
+		self:addSkinFrame{obj=_G.DressUpFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-33, y2=73}
+	else
+		self:skinMaxMinFrame(_G.DressUpFrame, 4)
+		self:addSkinFrame{obj=_G.DressUpFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1, y2=-4}
+	end
 
 end
 
