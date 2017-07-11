@@ -561,6 +561,16 @@ function aObj:isDropDown(obj)
 	and obj:GetName()
 	then
 		return self:hasTextInTexture(_G[obj:GetName() .. "Left"], "CharacterCreate")
+	else
+		return false
+	end
+
+end
+
+function aObj:rawHook(obj, method, func, sec)
+
+	if not self:IsHooked(obj, method) then
+		self:RawHook(obj, method, func, sec)
 	end
 
 end
@@ -664,6 +674,23 @@ function aObj:scanWorldFrameChildren()
 	self.callbacks.events["WorldFrame_GetChildren"] = nil
 
 end
+
+function aObj:secureHook(obj, method, func)
+
+	if not self:IsHooked(obj, method) then
+		self:SecureHook(obj, method, func)
+	end
+
+end
+
+function aObj:secureHookScript(obj, method, func)
+
+	if not self:IsHooked(obj, method) then
+		self:SecureHookScript(obj, method, func)
+	end
+
+end
+
 function aObj:toggleTabDisplay(tab, active)
 
 	if active then

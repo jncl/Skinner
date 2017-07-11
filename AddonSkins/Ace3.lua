@@ -51,15 +51,35 @@ function aObj:Ace3()
 				else
 					aObj:applySkin{obj=obj.content:GetParent(), kfs=true}
 				end
+				-- skin TabGroup's tabs, if required
+				if objType == "TabGroup"
+				then
+					aObj:secureHook(obj, "BuildTabs", function(this)
+						this.frame.numTabs = #obj.tabs
+						aObj:skinTabs{obj=this.frame, name="AceGUITabGroup" .. this.num, up=true, lod=true, ignht=true, x1=8, y1=0, x2=-8, y2=-6}
+						-- don't check for automatic tab changes
+						aObj.tabFrames[this.frame] = nil
+						aObj:Unhook(this, "BuildTabs")
+					end)
+					if aObj.isTT then
+						aObj:secureHook(obj, "SelectTab", function(this, value)
+							for i, v in ipairs(this.tabs) do
+								if v.value == value then
+									aObj:setActiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
+								else
+									aObj:setInactiveTab(_G["AceGUITabGroup" .. this.num .. "Tab" .. i].sf)
+								end
+							end
+						end)
+					end
+				end
 			elseif objType == "EditBox"
 			or objType == "NumberEditBox"
 			then
-				aObj:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
-				if not aObj:IsHooked(obj.editbox, "SetTextInsets") then
-					aObj:RawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
-						return left + 6, right, top, bottom
-					end, true)
-				end
+				aObj:skinEditBox{obj=obj.editbox, noHeight=true}
+				aObj:rawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
+					return left + 6, right, top, bottom
+				end, true)
 				aObj:skinButton{obj=obj.button, as=true}
 				if objType == "NumberEditBox" then
 					aObj:skinButton{obj=obj.minus, as=true}
@@ -68,15 +88,16 @@ function aObj:Ace3()
 			elseif objType == "MultiLineEditBox" then
 				aObj:skinButton{obj=obj.button, as=true}
 				if objVer < 20 then
-					aObj:skinSlider{obj=obj.scrollframe.ScrollBar, adj=-4, size=3}
+					aObj:skinSlider{obj=obj.scrollframe.ScrollBar, wdth=-4, size=3}
 					aObj:applySkin{obj=obj.backdrop}
 				else
-					aObj:skinSlider{obj=obj.scrollFrame.ScrollBar, adj=-4, size=3}
+					aObj:skinSlider{obj=obj.scrollFrame.ScrollBar, wdth=-4, size=3}
 					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- backdrop frame
 				end
 			elseif objType == "Slider" then
-				aObj:skinEditBox{obj=obj.editbox, regs={9}, noHeight=true}
+				aObj:skinEditBox{obj=obj.editbox, noHeight=true}
 				obj.editbox:SetSize(60, 20)
+				self:skinSlider{obj=obj.slider}
 			elseif objType == "Frame" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				if objVer < 20 then
@@ -100,18 +121,16 @@ function aObj:Ace3()
 				aObj:applySkin{obj=obj.border}
 				aObj:applySkin{obj=obj.treeframe}
 				if aObj.modBtns then
-					if not aObj:IsHooked(obj, "RefreshTree") then
-						-- hook to manage changes to button textures
-						aObj:SecureHook(obj, "RefreshTree", function(this)
-							local btn
-							for i = 1, #this.buttons do
-								btn = this.buttons[i]
-								if not btn.toggle.sb then
-									aObj:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
-								end
+					-- hook to manage changes to button textures
+					aObj:secureHook(obj, "RefreshTree", function(this)
+						local btn
+						for i = 1, #this.buttons do
+							btn = this.buttons[i]
+							if not btn.toggle.sb then
+								aObj:skinButton{obj=btn.toggle, mp2=true, plus=true} -- default to plus
 							end
-						end)
-					end
+						end
+					end)
 				end
 			elseif objType == "Button" then
 				-- _G.print("Ace3 Button", obj.frame.GetName and obj.frame:GetName(), aObj:getInt(obj.frame:GetHeight()))
@@ -124,14 +143,12 @@ function aObj:Ace3()
 			elseif objType == "SnowflakeGroup" then
 				aObj:applySkin{obj=obj.frame}
 				aObj:skinSlider{obj=obj.slider, size=2}
-				if not aObj:IsHooked(obj, "Refresh") then
-					-- hook this for frame refresh
-					aObj:SecureHook(obj, "Refresh", function(this)
-						this.frame:SetBackdrop(aObj.Backdrop[1])
-						this.frame:SetBackdropColor(bC.r, bC.g, bC.b, bC.a)
-						this.frame:SetBackdropBorderColor(bbC.r, bbC.g, bbC.b, bbC.a)
-					end)
-				end
+				-- hook this for frame refresh
+				aObj:secureHook(obj, "Refresh", function(this)
+					this.frame:SetBackdrop(aObj.Backdrop[1])
+					this.frame:SetBackdropColor(bC.r, bC.g, bC.b, bC.a)
+					this.frame:SetBackdropBorderColor(bbC.r, bbC.g, bbC.b, bbC.a)
+				end)
 			elseif objType == "SnowflakeEditBox" then
 				aObj:skinEditBox{obj=obj.box, regs={9}, noHeight=true}
 
@@ -195,11 +212,9 @@ function aObj:Ace3()
 				obj.frame.background:SetTexture(nil)
 				if aObj.modBtns then
 					aObj:skinButton{obj=obj.expand, mp2=true, as=true}
-					if not aObj:IsHooked(obj.expand, "SetNormalTexture") then
-						aObj:SecureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-							aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
-						end)
-					end
+					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
+						aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
+					end)
 				end
 			elseif objType == "WeakAurasDisplayButton" then
 				aObj:skinEditBox{obj=obj.renamebox, regs={9}, noHeight=true}
@@ -208,32 +223,26 @@ function aObj:Ace3()
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
 					-- make sure button border frame is visible
-					if not aObj:IsHooked(obj, "SetIcon") then
-						aObj:SecureHook(obj, "SetIcon", function(this, icon)
-							_G.RaiseFrameLevel(this.frame.sbb)
-						end)
-					end
+					aObj:secureHook(obj, "SetIcon", function(this, icon)
+						_G.RaiseFrameLevel(this.frame.sbb)
+					end)
 					aObj:addButtonBorder{obj=obj.group, es=10, ofs=0}
 				end
 				if aObj.modBtns then
 					aObj:skinButton{obj=obj.expand, mp2=true, plus=true, as=true}
 					obj.expand:SetDisabledFontObject(aObj.modUIBtns.fontDP)
-					if not aObj:IsHooked(obj.expand, "SetNormalTexture") then
-						aObj:SecureHook(obj.expand, "SetNormalTexture", function(this, nTex)
-							aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
-						end)
-					end
+					aObj:secureHook(obj.expand, "SetNormalTexture", function(this, nTex)
+						aObj.modUIBtns:checkTex{obj=this, nTex=nTex, mp2=true}
+					end)
 				end
 			elseif objType == "WeakAurasNewButton" then
 				obj.background:SetTexture(nil)
 				if aObj.modBtnBs then
 					aObj:addButtonBorder{obj=obj.frame, relTo=obj.frame.icon}
 					-- make sure button border frame is visible
-					if not aObj:IsHooked(obj, "SetIcon") then
-						aObj:SecureHook(obj, "SetIcon", function(this, icon)
-							_G.RaiseFrameLevel(this.frame.sbb)
-						end)
-					end
+					aObj:secureHook(obj, "SetIcon", function(this, icon)
+						_G.RaiseFrameLevel(this.frame.sbb)
+					end)
 				end
 			elseif objType == "WeakAurasNewHeaderButton" then
 				obj.frame.background:SetTexture(nil)
@@ -249,7 +258,6 @@ function aObj:Ace3()
                 aObj:getChild(obj.frame, 1):SetBackdrop(nil)
                 obj.sknrTSM = true
             elseif objType == "TSMInlineGroup"
-            -- or objType == "TSMInlineGroupNoTitle"
             then
                 obj.HideBorder = function() end
                 obj.SetBackdrop = function() end

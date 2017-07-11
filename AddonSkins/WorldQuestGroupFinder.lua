@@ -1,4 +1,5 @@
 local aName, aObj = ...
+if not aObj:isAddonEnabled("WorldQuestGroupFinder") then return end
 local _G = _G
 
 function aObj:WorldQuestGroupFinder()

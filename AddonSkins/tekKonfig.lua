@@ -9,8 +9,8 @@ function aObj:tekKonfig()
 	if allHooked then return end
 
 	local tKAP = tKAP or _G.LibStub:GetLibrary("tekKonfig-AboutPanel", true)
-	if tKAP and not self:IsHooked(tKAP, "OpenEditbox") then
-		self:SecureHook(tKAP, "OpenEditbox", function(this)
+	if tKAP then
+		self:secureHook(tKAP, "OpenEditbox", function(this)
 --			self:Debug("tKAP:[%s, %s]", this, tKAP.editbox)
 			if not tKAP.editbox.sknd then
 				tKAP.editbox.sknd = true
@@ -25,8 +25,8 @@ function aObj:tekKonfig()
 	end
 
 	local tKB = tKB or _G.LibStub:GetLibrary("tekKonfig-Button", true)
-	if tKB and not self:IsHooked(tKB, "new") then
-		self:RawHook(tKB, "new", function(parent, ...)
+	if tKB then
+		self:rawHook(tKB, "new", function(parent, ...)
 			local btn = self.hooks[tKB].new(parent, ...)
 			self:skinButton{obj=btn}
 			return btn
@@ -36,8 +36,8 @@ function aObj:tekKonfig()
 	-- tekKonfig-Checkbox
 
 	local tKDd = tKDd or _G.LibStub:GetLibrary("tekKonfig-Dropdown", true)
-	if tKDd and not self:IsHooked(tKDd, "new") then
-		self:RawHook(tKDd, "new", function(parent, label, ...)
+	if tKDd then
+		self:rawHook(tKDd, "new", function(parent, label, ...)
 			-- self:Debug("tKDd:[%s, %s, %s]", parent, label, ...)
 			local frame, text, container, labeltext = self.hooks[tKDd].new(parent, label, ...)
 			if not self.db.profile.TexturedDD then self:keepFontStrings(frame)
@@ -60,10 +60,10 @@ function aObj:tekKonfig()
 	end
 
 	-- tekKonfig-FadeIn
-	-- tekKonfig-Group
+
 	local tKG = tKG or _G.LibStub:GetLibrary("tekKonfig-Group", true)
-	if tKG and not self:IsHooked(tKG, "new") then
-		self:RawHook(tKG, "new", function(parent, label, ...)
+	if tKG then
+		self:rawHook(tKG, "new", function(parent, label, ...)
 		local box = self.hooks[tKG].new(parent, label, ...)
 		self:addSkinFrame{obj=box}
 		return box
@@ -71,14 +71,21 @@ function aObj:tekKonfig()
 	end
 
 	-- tekKonfig-Heading
+	-- tekKonfig-Scroll
 
 	local tKS = tKS or _G.LibStub:GetLibrary("tekKonfig-Slider", true)
-	if tKS and not self:IsHooked(tKS, "new") then
-		self:RawHook(tKS, "new", function(parent, label, lowvalue, highvalue, ...)
---			self:Debug("tKS:[%s, %s, %s, %s, %s]", parent, label, lowvalue, highvalue, ...)
+	if tKS then
+		self:rawHook(tKS, "new", function(parent, label, lowvalue, highvalue, ...)
+			-- self:Debug("tKS new:[%s, %s, %s, %s, %s]", parent, label, lowvalue, highvalue, ...)
 			local slider, text, container, low, high = self.hooks[tKS].new(parent, label, lowvalue, highvalue, ...)
 			self:skinSlider{obj=slider, size=3}
 			return slider, text, container, low, high
+		end, true)
+		self:rawHook(tKS, "newbare", function(parent, ...)
+			-- self:Debug("tKS newbare:[%s, %s]", parent, ...)
+			local slider = self.hooks[tKS].newbare(parent, ...)
+			self:skinSlider{obj=slider, size=3}
+			return slider
 		end, true)
 	end
 

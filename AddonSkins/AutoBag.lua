@@ -4,7 +4,7 @@ local _G = _G
 
 function aObj:AutoBag()
 
-	-- close with Esc
+	-- close with Esc key
 	self:add2Table(_G.UISpecialFrames, "AB_Options")
 
 	self:addSkinFrame{obj=_G.AB_Arrange_ListBox, kfs=true, x1=-1, y1=-1}
@@ -14,7 +14,9 @@ function aObj:AutoBag()
 	self:skinEditBox{obj=_G.AB_Arrange_AddTextInput, regs={9}, noHeight=true, noWidth=true, x=-8, y=-2}
 	self:skinButton{obj=_G.AB_Arrange_Delete}
 	self:skinButton{obj=_G.AB_Arrange_Add}
+	self:skinSlider{obj=_G.AB_GoldSlider, hgt=-10}
 	self:skinDropDown{obj=_G.AB_PoorBaseSelector, x1=0, x2=110}
+	self:skinSlider{obj=_G.AB_FreeSlotsSlider, hgt=-10}
 	self:adjWidth{obj=_G.AB_Options, adj=220}
 	self:adjHeight{obj=_G.AB_Options, adj=150}
 	self:addSkinFrame{obj=_G.AB_Options, kfs=true, hdr=true}

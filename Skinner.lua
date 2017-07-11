@@ -1790,7 +1790,9 @@ local function __skinSlider(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow) [default is 3]
-		adj = width reduction required
+		-- adj = width reduction required ()
+		wdth = width reduction required
+		hgt = height reduction required
 		rt = remove textures from parent
 --]]
 --@alpha@
@@ -1811,7 +1813,9 @@ local function __skinSlider(opts)
 	aObj:skinUsingBD{obj=opts.obj, size=opts.size}
 
 	-- adjust width if required
-	if opts.adj then aObj:adjWidth{obj=opts.obj, adj=opts.adj} end
+	if opts.wdth then aObj:adjWidth{obj=opts.obj, adj=opts.wdth} end
+	-- adjust height if required (horizontal orientation)
+	if opts.hgt then aObj:adjHeight{obj=opts.obj, adj=opts.hgt} end
 
 	-- remove parent's textures if required
 	if opts.rt then
@@ -1844,6 +1848,12 @@ function aObj:skinSlider(...)
 		opts.size = select(2, ...) and select(2, ...) or 2
 	end
 
+	-- handle change of parameter name: adj -> wdth
+	if opts.adj then
+		opts.wdth = opts.adj
+		opts.adj = nil
+	end
+
 	__skinSlider(opts)
 	opts = nil
 
@@ -1874,7 +1884,9 @@ local function __skinTabs(opts)
 		return
 	end
 
-	local tabName = opts.obj:GetName() .. "Tab" .. (opts.suffix or "")
+	-- use supplied name or existing name (Ace3 TabGroup fix)
+	local tabName = opts.name or opts.obj:GetName()
+	tabName =  tabName .. "Tab" .. (opts.suffix or "")
 
 	local kRegions = {7, 8} -- N.B. region 7 is text, 8 is highlight for some tabs
 	if opts.regs then
