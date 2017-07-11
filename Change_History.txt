@@ -1,3 +1,11 @@
+beta7.24415.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated DropDownPanels skin
+	Updated MogIt & WorldQuestGroupFinder skins
+
 beta7.24367.1
 Jncl:
 	ToDo.txt
