@@ -2682,6 +2682,10 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 								_G.RaiseFrameLevelByTwo(this)
 							end)
 						end
+						-- handle TinyTooltip dropdowns
+						if child.keystring then xOfs = 110 end
+						aObj:skinDropDown{obj=child, x2=xOfs}
+						xOfs = nil
 					end
 					aObj:skinDropDown{obj=child, x2=xOfs}
 					xOfs = nil
@@ -2717,6 +2721,12 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 				and child:GetNumRegions() == 1
 				then
 					child:DisableDrawLayer("BACKGROUND")
+				end
+				-- remove TinyTooltip element(s) backdrop
+				if child.checkbox
+				and aObj:getInt(child:GetWidth()) == 560
+				then
+					child:SetBackdrop(nil)
 				end
 			end
 		end
@@ -3857,7 +3867,11 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	self:skinButton{obj=_G.ItemRefCloseButton, cb=true}
 	self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=2}
 
-	if IsAddOnLoaded("TipTac") then return end
+	if IsAddOnLoaded("TipTac")
+	or IsAddOnLoaded("TinyTooltip")
+	then
+		return
+	end
 
 	-- this addon colours the Tooltip Border
 	if IsAddOnLoaded("Chippu") then

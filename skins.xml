@@ -111,6 +111,7 @@
 <script file="SkinMe\LegacyQuest.lua"/>
 <script file="SkinMe\LibDialog.lua"/>
 <script file="SkinMe\LibDropdown.lua"/>
+<script file="SkinMe\Lib_UIDropdown.lua"/>
 <script file="SkinMe\LibExtraTip.lua"/>
 <script file="SkinMe\LibKeyBound.lua"/>
 <script file="SkinMe\LibQTip.lua"/>
@@ -193,6 +194,7 @@
 <script file="SkinMe\tektip.lua"/>
 <script file="SkinMe\TidyPlates.lua"/>
 <script file="SkinMe\TinyDPS.lua"/>
+<script file="SkinMe\TinyTooltip.lua"/>
 <script file="SkinMe\TipTac.lua"/>
 <script file="SkinMe\TomTom.lua"/>
 <script file="SkinMe\TooManyAddons.lua"/>
