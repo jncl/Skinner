@@ -521,7 +521,7 @@ function aObj:hasTextInTexture(obj, text, plain)
 	assert(text, "Missing value hasTextInTexture\n" .. debugstack())
 --@end-alpha@
 
-	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, plain) and true
+	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, plain) and true or false
 
 end
 

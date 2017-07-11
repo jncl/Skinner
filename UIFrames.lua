@@ -564,7 +564,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, itemLink
 	self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, ...)
-		skinCommonAlertFrame(frame, -8)
+		skinCommonAlertFrame(frame, -12)
 	end)
 	-- called params: frame, achievementID, alreadyEarned
 	self:SecureHook(_G.AchievementAlertSystem, "setUpFunction", function(frame, ...)

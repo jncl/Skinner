@@ -1135,7 +1135,7 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 		return
 	end
 
-	self:skinDropDown{obj=_G.DressUpFrameOutfitDropDown, y2=-4}
+	self:skinDropDown{obj=_G.DressUpFrame.OutfitDropDown, y2=-4}
 	_G.DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
 	if not self.isPTR then
 		self:addSkinFrame{obj=_G.DressUpFrame, ft=ftype, kfs=true, x1=10, y1=-12, x2=-33, y2=73}
