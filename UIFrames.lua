@@ -2687,41 +2687,44 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	local function checkKids(obj)
 
+		-- aObj:Debug("checkKids#1: [%s, %s, %s]", obj, obj:GetObjectType(), obj.name)
+
+		-- ignore object if required
 		-- ignore named/AceConfig/XConfig/AceGUI objects
-		if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"})
-		or aObj.ignoreIOF[obj] -- ignore object if required
+		if aObj.ignoreIOF[obj]
+		or aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"})
 		then
 			return
 		end
 
 		local kids = {obj:GetChildren()}
+		-- aObj:Debug("checkKids#2: [%s]", #kids)
 		for _, child in _G.ipairs(kids) do
-			if not child.sf
+			if not aObj.ignoreIOF[child]
 			and not aObj:hasAnyTextInName(child, {"AceConfig", "XConfig", "AceGUI"})
 			then
-				-- aObj:Debug("checkKids: [%s]", child)
-				if aObj:isDropDown(child)
-				and not aObj.ignoreIOF[child]
-				then
-					local xOfs
-					-- apply addon specific adjustments
-					for ddtext, ddofs in pairs(self.iofDD) do
-						if aObj:hasTextInName(child, ddtext) then
-							xOfs = ddofs
+				-- aObj:Debug("checkKids#3: [%s, %s, %s]", child, child:GetObjectType(), "DropDown?: " .. (aObj:isDropDown(child) and "true" or "false"))
+				if aObj:isDropDown(child) then
+					 -- ignore TinyTooltip colourpicker(s)
+					if child ~= obj.colordropdown then
+						local xOfs
+						-- apply addon specific adjustments
+						for ddtext, ddofs in pairs(aObj.iofDD) do
+							if aObj:hasTextInName(child, ddtext) then
+								xOfs = ddofs
+							end
 						end
-					end
-					-- handle SushiDropdown (used by Bagnon)
-					if aObj:hasTextInName(child, "SushiDropdown") then
-						if not aObj:IsHooked(_G.SushiDropFrame, "OnCreate") then
-							aObj:SecureHook(_G.SushiDropFrame, "OnCreate", function()
-								for _, frame in pairs(_G.SushiDropFrame.usedFrames) do
+						-- handle SushiDropdown (used by Bagnon)
+						if aObj:hasTextInName(child, "SushiDropdown") then
+							aObj:secureHook(_G.SushiDropFrame, "OnCreate", function(this)
+								for _, frame in pairs(this.usedFrames) do
 									if not frame.bg.sf then
 										aObj:addSkinFrame{obj=frame.bg, kfs=true}
 										frame.bg.SetBackdrop = _G.nop
 									end
 								end
 							end)
-							aObj:SecureHook(_G.SushiDropFrame, "OnAcquire", function(this)
+							aObj:secureHook(_G.SushiDropFrame, "OnAcquire", function(this)
 								-- need to raise frame level so it's above other text
 								_G.RaiseFrameLevelByTwo(this)
 							end)
@@ -2731,37 +2734,51 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 						aObj:skinDropDown{obj=child, x2=xOfs}
 						xOfs = nil
 					end
-					aObj:skinDropDown{obj=child, x2=xOfs}
-					xOfs = nil
-				elseif child:IsObjectType("EditBox")
-				and not aObj.ignoreIOF[child]
-				then
-					-- handle SushiSlider Editboxes (used by Bagnon)
-					if child:GetParent():GetName()
-					and child:GetParent():GetName():find("SushiSlider")
-					then
-						aObj:skinEditBox{obj=child, regs={3, 4}}
-						local slider = child:GetParent()
-						-- stop width & backdrop being changed
-						slider.UpdateEditWidth = _G.nop
-						slider.EditBG:SetBackdrop(nil)
-						-- move % character to the right
-						slider.Suffix:SetPoint('RIGHT', slider.EditBG, 7, -3)
-						slider = nil
-					else
+				elseif child:IsObjectType("EditBox") then
 						aObj:skinEditBox{obj=child, regs={6}}
+				elseif child:IsObjectType("ScrollFrame") then
+					if child:GetName()
+					and child:GetName() .. "ScrollBar" -- handle named ScrollBar's
+					then
+						aObj:skinScrollBar{obj=child}
 					end
-				elseif child:IsObjectType("ScrollFrame") -- <<PTR>> may need to check for Frame instead
-				and child:GetName()
-				and child:GetName() .. "ScrollBar" -- handle named ScrollBar's
+				elseif child:IsObjectType("Slider") then
+					if aObj:hasTextInName(child, "SushiSlider")
+					then
+						aObj:skinSlider{obj=child, hgt=-2}
+					else
+						aObj:skinSlider{obj=child}
+					end
+				-- Cork Config panel tabs
+				elseif child:IsObjectType("Button")
+				and obj.name == "Cork"
+				and child.OrigSetText
 				then
-					aObj:skinScrollBar{obj=child}
+					-- hide textures (changed in code)
+					child.left:SetAlpha(0)
+					child.right:SetAlpha(0)
+					child.middle:SetAlpha(0)
+					aObj:addSkinFrame{obj=child, noBdr=aObj.isTT, x1=6, y1=0, x2=-6, y2=-3}
+					if aObj.isTT then
+						child.sf.ignore = true
+						if child:IsEnabled() then
+							aObj:setInactiveTab(child.sf)
+						else
+							aObj:setActiveTab(child.sf)
+						end
+						aObj:SecureHook(child.left, "SetTexture", function(this, tex)
+							if aObj:hasTextInTexture(this, "InActiveTab", true) then
+								aObj:setInactiveTab(this:GetParent().sf)
+							else
+								aObj:setActiveTab(this:GetParent().sf)
+							end
+						end)
+					end
 				else
 					checkKids(child)
 				end
 				-- remove Ampere's container background
-				if child:GetParent().name
-				and child:GetParent().name == "Ampere"
+				if obj.name == "Ampere"
 				and child:GetNumRegions() == 1
 				then
 					child:DisableDrawLayer("BACKGROUND")
@@ -2779,6 +2796,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	end
 	-- hook this to skin Interface Option panels and their elements
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
+		-- aObj:Debug("IOL_DP: [%s, %s]", panel, panel.GetNumChildren)
 		-- skin tekKonfig library objects here as well as in AddonFrames to handle late loading of libraries
 		if self.tekKonfig then
 			self:checkAndRun("tekKonfig", "s") -- not an addon in its own right
@@ -2791,12 +2809,10 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		end
 		if panel
 		and panel.GetNumChildren
-		and not panel.sf
-		and not self.ignoreIOF[panel]
 		then
-			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
-			_G.C_Timer.After(0.1, function() checkKids(panel) end) -- wait for 1/10th second for panel to be populated
+			_G.C_Timer.After(0.1, function() checkKids(panel) end) -- wait for the panel to be populated
 			_G.C_Timer.After(0.1, function() self:skinAllButtons{obj=panel, as=true, ft=ftype} end) -- wait for the panel to be populated, always use applySkin to ensure text appears above button texture
+			self:addSkinFrame{obj=panel, ft=ftype, kfs=true, nb=true}
 		end
 	end)
 
