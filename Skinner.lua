@@ -479,14 +479,12 @@ local function __addSkinButton(opts)
 	if not opts.nohooks then
 		opts.hook = opts.hook or opts.obj
 		-- hook Show/Hide methods
-		if not aObj:IsHooked(opts.hook, "OnShow") then
-            -- changed to hook scripts as functions don't always work
-			aObj:SecureHookScript(opts.hook, "OnShow", function(this) opts.obj.sb:Show() end)
-			aObj:SecureHookScript(opts.hook, "OnHide", function(this) opts.obj.sb:Hide() end)
-			if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
-				aObj:SecureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
-				aObj:SecureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
-			end
+        -- changed to hook scripts as functions don't always work
+		aObj:secureHookScript(opts.hook, "OnShow", function(this) opts.obj.sb:Show() end)
+		aObj:secureHookScript(opts.hook, "OnHide", function(this) opts.obj.sb:Hide() end)
+		if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
+			aObj:secureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
+			aObj:secureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
 		end
 		-- store reference to the button (used by addons, until they are all updated)
 		if not opts.ft then aObj.sBtn[opts.hook] = btn end
@@ -1125,32 +1123,30 @@ function aObj:makeMFRotatable(modelFrame)
 		modelFrame.RotateRightButton:Hide()
 	end
 
-	if not self:IsHooked(modelFrame, "OnUpdate") then
-		self:SecureHookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
-			if this.dragging then
-				local x, y = _G.GetCursorPosition()
-				if this.cursorPosition.x > x then
-					_G.Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
-				elseif this.cursorPosition.x < x then
-					_G.Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
-				end
-				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
-				x, y = nil, nil
+	self:secureHookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
+		if this.dragging then
+			local x, y = _G.GetCursorPosition()
+			if this.cursorPosition.x > x then
+				_G.Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
+			elseif this.cursorPosition.x < x then
+				_G.Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
 			end
-		end)
-		self:SecureHookScript(modelFrame, "OnMouseDown", function(this, button)
-			if button == "LeftButton" then
-				this.dragging = true
-				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
-			end
-		end)
-		self:SecureHookScript(modelFrame, "OnMouseUp", function(this, button)
-			if this.dragging then
-				this.dragging = false
-				this.cursorPosition.x, this.cursorPosition.y = nil
-			end
-		end)
-	end
+			this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
+			x, y = nil, nil
+		end
+	end)
+	self:secureHookScript(modelFrame, "OnMouseDown", function(this, button)
+		if button == "LeftButton" then
+			this.dragging = true
+			this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
+		end
+	end)
+	self:secureHookScript(modelFrame, "OnMouseUp", function(this, button)
+		if this.dragging then
+			this.dragging = false
+			this.cursorPosition.x, this.cursorPosition.y = nil
+		end
+	end)
 
 	--[[ MouseWheel to zoom Modelframe - in/out works, but needs to be fleshed out
 	modelFrame:SetScript("OnMouseWheel", function()

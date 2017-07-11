@@ -317,8 +317,7 @@ local function skinChatTab(tab)
 	aObj:addSkinFrame{obj=tab, ft=ftype, noBdr=aObj.isTT, x1=2, y1=-9, x2=-2, y2=-4}
 	tab.sf:SetAlpha(tab:GetAlpha())
 	-- hook this to fix tab gradient texture overlaying text & highlight
-	if not aObj:IsHooked(tab, "SetParent") then
-		aObj:SecureHook(tab, "SetParent", function(this, parent)
+	aObj:secureHook(tab, "SetParent", function(this, parent)
 			if parent == _G.GeneralDockManager.scrollFrame.child then
 				this.sf:SetParent(_G.GeneralDockManager)
 			else
@@ -326,13 +325,10 @@ local function skinChatTab(tab)
 				this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
 			end
 		end)
-	end
 	-- hook this to manage alpha changes when chat frame fades in and out
-	if not aObj:IsHooked(tab, "SetAlpha") then
-		aObj:SecureHook(tab, "SetAlpha", function(this, alpha)
+	aObj:secureHook(tab, "SetAlpha", function(this, alpha)
 			this.sf:SetAlpha(alpha)
 		end)
-	end
 
 end
 
@@ -1145,16 +1141,14 @@ aObj.blizzFrames[ftype].ChatEditBox = function(self)
 		skinChatEB(_G["ChatFrame" .. i].editBox)
 	end
 	-- if editBox has a skin frame then hook these to manage its Alpha setting
-	if self.db.profile.ChatEditBox.style ~= 2
-	and not self:IsHooked("ChatEdit_ActivateChat")
-	then
+	if self.db.profile.ChatEditBox.style ~= 2 then
 		local function setAlpha(eBox)
 			if eBox and eBox.sf then eBox.sf:SetAlpha(eBox:GetAlpha()) end
 		end
-		self:SecureHook("ChatEdit_ActivateChat", function(editBox)
+		self:secureHook("ChatEdit_ActivateChat", function(editBox)
 			setAlpha(editBox)
 		end)
-		self:SecureHook("ChatEdit_DeactivateChat", function(editBox)
+		self:secureHook("ChatEdit_DeactivateChat", function(editBox)
 			setAlpha(editBox)
 		end)
 	end
@@ -1418,15 +1412,13 @@ aObj.blizzFrames[ftype].DropDownPanels = function(self)
 		for i = 1,_G. UIDROPDOWNMENU_MAXLEVELS do
 			objName = "DropDownList" .. i
 			obj = _G[objName]
-			if not self:IsHooked(obj, "Show") then
-				self:SecureHook(obj, "Show", function(this)
+			self:secureHook(obj, "Show", function(this)
 					if not this.sf then
 						self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 						_G[this:GetName() .. "Backdrop"]:SetBackdrop(nil)
 						_G[this:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
 					end
 				end)
-			end
 		end
 		objName = nil
 	end)
