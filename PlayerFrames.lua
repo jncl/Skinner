@@ -217,7 +217,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	_G.AchievementFrame.showAllSearchResults:SetPushedTexture(nil)
 	self:glazeStatusBar(_G.AchievementFrame.searchProgressBar, 0,  _G.AchievementFrame.searchProgressBar.bg)
 	self:addSkinFrame{obj=_G.AchievementFrame.searchResults, ft=ftype, kfs=true}
-	self:skinSlider{obj=_G.AchievementFrame.searchResults.scrollFrame.scrollBar, adj=-4, size=3}
+	self:skinSlider{obj=_G.AchievementFrame.searchResults.scrollFrame.scrollBar, wdth=-4, size=3}
 
 	self:skinTabs{obj=_G.AchievementFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-10}
 	self:addSkinFrame{obj=_G.AchievementFrame, ft=ftype, kfs=true, bgen=1, y1=7, y2=-3}
@@ -231,7 +231,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	_G.AchievementFrameHeaderShield:SetAlpha(1)
 
 -->>-- Categories Panel (on the Left)
-	self:skinSlider{obj=_G.AchievementFrameCategoriesContainerScrollBar, adj=-4}
+	self:skinSlider{obj=_G.AchievementFrameCategoriesContainerScrollBar, wdth=-4}
 	self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y1=-1}
 	self:SecureHook("AchievementFrameCategories_Update", function()
 		skinCategories()
@@ -241,7 +241,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 -->>-- Achievements Panel (on the right)
 	self:keepFontStrings(_G.AchievementFrameAchievements)
 	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameAchievements, 2), ft=ftype, aso={ba=0, ng=true}, y1=-1}
-	self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, adj=-4}
+	self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, wdth=-4}
 	if prdbA.style == 2 then
 		-- remove textures etc from buttons
 		cleanButtons(_G.AchievementFrameAchievementsContainer, "Achievements")
@@ -281,7 +281,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 
 -->>-- Stats
 	self:keepFontStrings(_G.AchievementFrameStats)
-	self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, adj=-4}
+	self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, wdth=-4}
 	_G.AchievementFrameStatsBG:SetAlpha(0)
 	self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=1}
 	-- hook this to skin buttons
@@ -402,7 +402,7 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 	self:addButtonBorder{obj=afap, relTo=afap.icon, ofs=1}
 	afap.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
 	afap.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinSlider{obj=afap.historyScroll.ScrollBar, adj=-4}
+	self:skinSlider{obj=afap.historyScroll.ScrollBar, wdth=-4}
 	-- Solve Frame
 	self:getRegion(afap.solveFrame.statusBar, 1):Hide() -- BarBG texture
 	self:glazeStatusBar(afap.solveFrame.statusBar, 0, nil)
@@ -575,7 +575,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		end
 		self:Unhook(_G.PaperDollTitlesPane, "OnShow")
 	end)
-	self:skinSlider{obj=_G.PaperDollTitlesPane.scrollBar, adj=-4}
+	self:skinSlider{obj=_G.PaperDollTitlesPane.scrollBar, wdth=-4}
 	-- Equipment Manager
 	self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(this)
 		local btn
@@ -586,7 +586,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		end
 		self:Unhook(_G.PaperDollEquipmentManagerPane, "OnShow")
 	end)
-	self:skinSlider{obj=_G.PaperDollEquipmentManagerPane.scrollBar, adj=-4}
+	self:skinSlider{obj=_G.PaperDollEquipmentManagerPane.scrollBar, wdth=-4}
 	self:skinButton{obj=_G.PaperDollEquipmentManagerPane.EquipSet}
 	_G.PaperDollEquipmentManagerPane.EquipSet.ButtonBackground:SetAlpha(0)
 	self:skinButton{obj=_G.PaperDollEquipmentManagerPane.SaveSet}
@@ -646,7 +646,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	end
 
 	self:keepFontStrings(_G.TokenFrame)
-	self:skinSlider{obj=_G.TokenFrameContainerScrollBar, adj=-4}
+	self:skinSlider{obj=_G.TokenFrameContainerScrollBar, wdth=-4}
 
 	self:SecureHookScript(_G.TokenFrame, "OnShow", function(this)
 		-- remove background & header textures
@@ -681,7 +681,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:addButtonBorder{obj=mj.MountDisplay.InfoButton, relTo=mj.MountDisplay.InfoButton.Icon}
 	self:addButtonBorder{obj=mj.MountDisplay.ModelScene.RotateLeftButton, ofs=-4, y2=5}
 	self:addButtonBorder{obj=mj.MountDisplay.ModelScene.RotateRightButton, ofs=-4, y2=5}
-	self:skinSlider{obj=mj.ListScrollFrame.scrollBar, adj=-4}
+	self:skinSlider{obj=mj.ListScrollFrame.scrollBar, wdth=-4}
 	self:removeMagicBtnTex(mj.MountButton)
 	local btn
 	for i = 1, #mj.ListScrollFrame.buttons do
@@ -706,7 +706,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:skinDropDown{obj=_G.PetJournalFilterDropDown}
 
 	-- PetList
-	self:skinSlider{obj=pj.listScroll.scrollBar, adj=-4}
+	self:skinSlider{obj=pj.listScroll.scrollBar, wdth=-4}
 	local btn
 	for i = 1, #pj.listScroll.buttons do
 		btn = pj.listScroll.buttons[i]
@@ -905,7 +905,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	wcf.SetsCollectionFrame.RightInset:DisableDrawLayer("ARTWORK", 2)
 	self:removeInset(wcf.SetsCollectionFrame.LeftInset)
 	self:removeInset(wcf.SetsCollectionFrame.RightInset)
-	self:skinSlider{obj=wcf.SetsCollectionFrame.ScrollFrame.scrollBar, adj=-4, size=3}
+	self:skinSlider{obj=wcf.SetsCollectionFrame.ScrollFrame.scrollBar, wdth=-4, size=3}
 	self:skinDropDown{obj=wcf.SetsCollectionFrame.ScrollFrame.FavoriteDropDown}
 	local btn
 	for i = 1, #wcf.SetsCollectionFrame.ScrollFrame.buttons do
@@ -1169,7 +1169,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	_G.EncounterJournal.searchBox.showAllResults:SetPushedTexture(nil)
 
 	self:addSkinFrame{obj=_G.EncounterJournal.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
-	self:skinSlider{obj=_G.EncounterJournal.searchResults.scrollFrame.scrollBar, adj=-4}
+	self:skinSlider{obj=_G.EncounterJournal.searchResults.scrollFrame.scrollBar, wdth=-4}
 	local btn
 	for i = 1, #_G.EncounterJournal.searchResults.scrollFrame.buttons do
 		btn = _G.EncounterJournal.searchResults.scrollFrame.buttons[i]
@@ -1195,7 +1195,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 -->>-- InstanceSelect frame
 	_G.EncounterJournal.instanceSelect.bg:SetAlpha(0)
 	self:skinDropDown{obj=_G.EncounterJournal.instanceSelect.tierDropDown}
-	self:skinSlider{obj=_G.EncounterJournal.instanceSelect.scroll.ScrollBar, adj=-6}
+	self:skinSlider{obj=_G.EncounterJournal.instanceSelect.scroll.ScrollBar, wdth=-6}
 	self:addSkinFrame{obj=_G.EncounterJournal.instanceSelect.scroll, ft=ftype, ofs=6, x2=4}
 	-- Hook this to skin the Instance buttons
 	self:SecureHook("EncounterJournal_ListInstances", function()
@@ -1247,7 +1247,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	eje.instance:DisableDrawLayer("ARTWORK")
 	self:moveObject{obj=eje.instance.mapButton, x=-20, y=-18}
 	self:addButtonBorder{obj=eje.instance.mapButton, relTo=eje.instance.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
-	self:skinSlider{obj=eje.instance.loreScroll.ScrollBar, adj=-4}
+	self:skinSlider{obj=eje.instance.loreScroll.ScrollBar, wdth=-4}
 	eje.instance.loreScroll.child.lore:SetTextColor(self.BTr, self.BTg, self.BTb)
 	-- Boss/Creature buttons
 	local function skinBossBtns()
@@ -1283,15 +1283,15 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	eje.info.instanceButton:SetPushedTexture(nil)
 	eje.info.instanceButton:SetHighlightTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 	eje.info.instanceButton:GetHighlightTexture():SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
-	self:skinSlider{obj=eje.info.bossesScroll.ScrollBar, adj=-4}
+	self:skinSlider{obj=eje.info.bossesScroll.ScrollBar, wdth=-4}
 	skinFilterBtn(eje.info.difficulty)
 	-- self:skinDropDown{obj=eje.info.difficultyDD} -- DD already skinned
 	eje.info.reset:SetNormalTexture(nil)
 	eje.info.reset:SetPushedTexture(nil)
 	self:skinButton{obj=eje.info.reset, y2=2}
-	self:skinSlider{obj=eje.info.detailsScroll.ScrollBar, adj=-4}
+	self:skinSlider{obj=eje.info.detailsScroll.ScrollBar, wdth=-4}
 	eje.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:skinSlider{obj=eje.info.overviewScroll.ScrollBar, adj=-4}
+	self:skinSlider{obj=eje.info.overviewScroll.ScrollBar, wdth=-4}
 	eje.info.overviewScroll.child.loreDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
 	eje.info.overviewScroll.child.header:SetTexture(nil)
 	eje.info.overviewScroll.child.overviewDescription.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -1318,7 +1318,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	end)
 
 	-- Loot Frame
-	self:skinSlider{obj=eje.info.lootScroll.scrollBar, adj=-4}
+	self:skinSlider{obj=eje.info.lootScroll.scrollBar, wdth=-4}
 	skinFilterBtn(eje.info.lootScroll.filter)
 	skinFilterBtn(eje.info.lootScroll.slotFilter)
 	eje.info.lootScroll.classClearFilter:DisableDrawLayer("BACKGROUND")
@@ -1414,7 +1414,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	self:skinDropDown{obj=ejlj.LegendariesFrame.SlotDropDown}
 	skinFilterBtn(ejlj.LegendariesFrame.ClassButton)
 	self:skinDropDown{obj=ejlj.LegendariesFrame.ClassDropDown}
-	self:skinSlider{obj=ejlj.LegendariesFrame.ScrollBar, adj=-4, size=3}
+	self:skinSlider{obj=ejlj.LegendariesFrame.ScrollBar, wdth=-4, size=3}
 	self:addSkinFrame{obj=ejlj, ft=ftype, ofs=6, x1=-5, y2=-3}
 	local btn
 	for i = 1 , #ejlj.LegendariesFrame.buttons do
@@ -1429,7 +1429,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 	end
 	btn = nil
 	-- ItemSetsFrame
-	self:skinSlider{obj=ejlj.ItemSetsFrame.ScrollBar, adj=-4, size=3}
+	self:skinSlider{obj=ejlj.ItemSetsFrame.ScrollBar, wdth=-4, size=3}
 	skinFilterBtn(ejlj.ItemSetsFrame.ClassButton)
 	for i = 1 , #ejlj.ItemSetsFrame.buttons do
 		ejlj.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
@@ -1690,7 +1690,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 -->>-- GuildRoster Frame
 	self:skinDropDown{obj=_G.GuildRosterViewDropdown}
 	self:skinColHeads("GuildRosterColumnButton", 5)
-	self:skinSlider{obj=_G.GuildRosterContainerScrollBar, adj=-4}
+	self:skinSlider{obj=_G.GuildRosterContainerScrollBar, wdth=-4}
 	local btn
 	for i = 1, #_G.GuildRosterContainer.buttons do
 		btn = _G.GuildRosterContainer.buttons[i]
@@ -1712,7 +1712,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 
 -->>-- GuildNews Frame
 	_G.GuildNewsFrame:DisableDrawLayer("BACKGROUND")
-	self:skinSlider{obj=_G.GuildNewsContainerScrollBar, adj=-6}
+	self:skinSlider{obj=_G.GuildNewsContainerScrollBar, wdth=-6}
 	for i = 1, #_G.GuildNewsContainer.buttons do
 		_G.GuildNewsContainer.buttons[i].header:SetAlpha(0)
 	end
@@ -1726,7 +1726,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 	self:addSkinFrame{obj=_G.GuildNewsBossModel, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to QuestNPCModel
 	-- Rewards Panel
 	_G.GuildRewardsFrame:DisableDrawLayer("BACKGROUND")
-	self:skinSlider{obj=_G.GuildRewardsContainerScrollBar, adj=-4}
+	self:skinSlider{obj=_G.GuildRewardsContainerScrollBar, wdth=-4}
 	for i = 1, #_G.GuildRewardsContainer.buttons do
 		btn = _G.GuildRewardsContainer.buttons[i]
 		btn:GetNormalTexture():SetAlpha(0)
@@ -1753,7 +1753,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 	self:removeMagicBtnTex(_G.GuildViewLogButton)
 	-- GuildInfoFrameInfo Frame
 	self:keepFontStrings(_G.GuildInfoFrameInfo)
-	self:skinSlider{obj=_G.GuildInfoDetailsFrameScrollBar, adj=-4}
+	self:skinSlider{obj=_G.GuildInfoDetailsFrameScrollBar, wdth=-4}
 	-- GuildInfoFrameRecruitment Frame
 	_G.GuildRecruitmentInterestFrameBg:SetAlpha(0)
 	_G.GuildRecruitmentAvailabilityFrameBg:SetAlpha(0)
@@ -1772,16 +1772,16 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		btn.PointsSpentBgGold:SetAlpha(0)
 		self:moveObject{obj=btn.PointsSpentBgGold, x=6, y=-6}
 	end
-	self:skinSlider{obj=_G.GuildInfoFrameApplicantsContainerScrollBar, adj=-4}
+	self:skinSlider{obj=_G.GuildInfoFrameApplicantsContainerScrollBar, wdth=-4}
 	self:removeMagicBtnTex(_G.GuildRecruitmentInviteButton)
 	self:removeMagicBtnTex(_G.GuildRecruitmentMessageButton)
 	self:removeMagicBtnTex(_G.GuildRecruitmentInviteButton)
 	-- Guild Text Edit frame
-	self:skinSlider{obj=_G.GuildTextEditScrollFrameScrollBar, adj=-6}
+	self:skinSlider{obj=_G.GuildTextEditScrollFrameScrollBar, wdth=-6}
 	self:addSkinFrame{obj=_G.GuildTextEditContainer, ft=ftype, nb=true}
 	self:addSkinFrame{obj=_G.GuildTextEditFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
 	-- Guild Log Frame
-	self:skinSlider{obj=_G.GuildLogScrollFrame.ScrollBar, adj=-6}
+	self:skinSlider{obj=_G.GuildLogScrollFrame.ScrollBar, wdth=-6}
 	self:addSkinFrame{obj=_G.GuildLogContainer, ft=ftype, nb=true}
 	self:addSkinFrame{obj=_G.GuildLogFrame, ft=ftype, kfs=true, nb=true, ofs=-7}
 
@@ -1926,7 +1926,7 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 	_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 
 	-- Browse Frame
-	self:skinSlider{obj=_G.LookingForGuildBrowseFrameContainerScrollBar, adj=-4}
+	self:skinSlider{obj=_G.LookingForGuildBrowseFrameContainerScrollBar, wdth=-4}
 	local btn
 	for i = 1, #_G.LookingForGuildBrowseFrameContainer.buttons do
 		btn = _G.LookingForGuildBrowseFrameContainer.buttons[i]
@@ -2463,7 +2463,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	self:removeInset(_G.HonorFrame.RoleInset)
 	self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
 	self:removeInset(_G.HonorFrame.Inset)
-	self:skinSlider{obj=_G.HonorFrameSpecificFrameScrollBar, adj=-4}
+	self:skinSlider{obj=_G.HonorFrameSpecificFrameScrollBar, wdth=-4}
 	for i = 1, #_G.HonorFrame.SpecificFrame.buttons do
 		btn = _G.HonorFrame.SpecificFrame.buttons[i]
 		btn.Bg:SetTexture(nil)
@@ -2509,7 +2509,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	-- War Games Frame
 	_G.WarGamesFrame.InfoBG:SetTexture(nil)
 	self:removeInset(_G.WarGamesFrame.RightInset)
-	self:skinSlider{obj=_G.WarGamesFrameScrollFrameScrollBar, adj=-4}
+	self:skinSlider{obj=_G.WarGamesFrameScrollFrameScrollBar, wdth=-4}
 	for i = 1, #_G.WarGamesFrame.scrollFrame.buttons do
 		btn = _G.WarGamesFrame.scrollFrame.buttons[i]
 		self:skinButton{obj=btn.Header, mp=true}
@@ -2622,7 +2622,7 @@ aObj.blizzFrames[ftype].ScrollOfResurrection = function(self)
 	self:skinEditBox{obj=_G.ScrollOfResurrectionFrame.targetEditBox, regs={6}} -- 6 is text
 	_G.ScrollOfResurrectionFrame.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.ScrollOfResurrectionFrame.noteFrame, ft=ftype, kfs=true}
-	self:skinSlider{obj=_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame.ScrollBar, adj=-4, size=3}
+	self:skinSlider{obj=_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame.ScrollBar, wdth=-4, size=3}
 	_G.ScrollOfResurrectionFrame.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.ScrollOfResurrectionFrame, ft=ftype, kfs=true}
 	-- Selection frame
@@ -2941,7 +2941,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		end)
 	end
 	skinTabs(_G.TradeSkillFrame.RecipeList)
-	self:skinSlider{obj=self:getChild(_G.TradeSkillFrame.RecipeList, 4), adj=-4, size=3} -- unamed slider object
+	self:skinSlider{obj=self:getChild(_G.TradeSkillFrame.RecipeList, 4), wdth=-4, size=3} -- unamed slider object
 
 	local btn
 	for i = 1, #_G.TradeSkillFrame.RecipeList.buttons do
@@ -2965,7 +2965,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 
 	-- Details frame
 	_G.TradeSkillFrame.DetailsFrame.Background:SetAlpha(0)
-	self:skinSlider{obj=_G.TradeSkillFrame.DetailsFrame.ScrollBar, adj=-4, size=3}
+	self:skinSlider{obj=_G.TradeSkillFrame.DetailsFrame.ScrollBar, wdth=-4, size=3}
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.CreateAllButton)
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton)
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.ExitButton)

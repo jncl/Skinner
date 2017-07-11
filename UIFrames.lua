@@ -91,7 +91,7 @@ local function skinFollowerList(frame)
 		-- need to do this as background isn't visible on Shipyard Mission page
 		_G.RaiseFrameLevel(frame.SearchBox)
 	end
-	aObj:skinSlider{obj=frame.listScroll.scrollBar, adj=-4}
+	aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-4}
 
 	for i = 1, #frame.listScroll.buttons do
 		if frame ~= _G.GarrisonShipyardFrameFollowers
@@ -266,7 +266,7 @@ local function skinMissionList(ml)
 		end
 	end
 
-	aObj:skinSlider{obj=ml.listScroll.scrollBar, adj=-4}
+	aObj:skinSlider{obj=ml.listScroll.scrollBar, wdth=-4}
 	local btn
 	for i = 1, #ml.listScroll.buttons do
 		btn = ml.listScroll.buttons[i]
@@ -1567,7 +1567,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		-- ReportTab
 		local rp = _G.GarrisonLandingPage.Report
 		rp.List:DisableDrawLayer("BACKGROUND")
-		aObj:skinSlider{obj=rp.List.listScroll.scrollBar, adj=-4}
+		aObj:skinSlider{obj=rp.List.listScroll.scrollBar, wdth=-4}
 		local btn
 		for i = 1, #rp.List.listScroll.buttons do
 			btn = rp.List.listScroll.buttons[i]
@@ -2127,7 +2127,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 		_G.ItemTextPageText:SetTextColor("H3", self.HTr, self.HTg, self.HTb)
 	end)
 
-	self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, adj=-4}
+	self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, wdth=-4}
 	self:glazeStatusBar(_G.ItemTextStatusBar, 0)
 	self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
 	self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -3500,7 +3500,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
 	self:removeInset(sp.ResultsInset)
 	self:skinButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
-	self:skinSlider{obj=sp.ScrollFrame.scrollBar, adj=-4}
+	self:skinSlider{obj=sp.ScrollFrame.scrollBar, wdth=-4}
 	for i = 1, #sp.ScrollFrame.buttons do
 		self:skinButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
 	end
@@ -3518,7 +3518,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		self:skinButton{obj=btn}
 	end
 	self:addButtonBorder{obj=av.RefreshButton, ofs=-2}
-	self:skinSlider{obj=av.ScrollFrame.scrollBar, adj=-4}
+	self:skinSlider{obj=av.ScrollFrame.scrollBar, wdth=-4}
 	for i = 1, #av.ScrollFrame.buttons do
 		btn = av.ScrollFrame.buttons[i]
 		self:skinButton{obj=btn.DeclineButton}
@@ -3549,7 +3549,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	self:skinButton{obj=ec.CancelButton}
 
 	-- LFGListApplication Dialog
-	self:skinSlider{obj=_G.LFGListApplicationDialog.Description.ScrollBar, adj=-4}
+	self:skinSlider{obj=_G.LFGListApplicationDialog.Description.ScrollBar, wdth=-4}
 	self:addSkinFrame{obj=_G.LFGListApplicationDialog.Description, ft=ftype, kfs=true, ofs=6}
 	_G.LFGListApplicationDialog.Description.EditBox.Instructions:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.LFGListApplicationDialog, ft=ftype, kfs=true}
@@ -3629,7 +3629,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 	self:skinButton{obj=_G.QuestMapFrame.DetailsFrame.BackButton}
 	self:keepFontStrings(_G.QuestMapFrame.DetailsFrame.RewardsFrame)
 	self:getRegion(_G.QuestMapFrame.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HTr, self.HTg, self.HTb)
-	self:skinSlider{obj=_G.QuestMapFrame.DetailsFrame.ScrollFrame.ScrollBar, adj=-4}
+	self:skinSlider{obj=_G.QuestMapFrame.DetailsFrame.ScrollFrame.ScrollBar, wdth=-4}
 	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("BACKGROUND")
 	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("ARTWORK")
 	_G.QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")

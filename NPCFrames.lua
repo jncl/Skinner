@@ -223,7 +223,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		self:keepFontStrings(obj)
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
-	self:skinSlider{obj=_G.BlackMarketScrollFrame.ScrollBar, adj=-4}
+	self:skinSlider{obj=_G.BlackMarketScrollFrame.ScrollBar, wdth=-4}
 	_G.BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 	self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
 	self:addSkinFrame{obj=_G.BlackMarketFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
@@ -745,7 +745,7 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 	local btn = _G.ClassTrainerFrame.skillStepButton
 	btn:GetNormalTexture():SetTexture(nil)
 	self:addButtonBorder{obj=btn, relTo=btn.icon}
-	self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar, adj=-4}
+	self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar, wdth=-4}
 	self:removeInset(_G.ClassTrainerFrame.bottomInset)
 	for i = 1, #_G.ClassTrainerFrame.scrollFrame.buttons do
 		btn = _G.ClassTrainerFrame.scrollFrame.buttons[i]
