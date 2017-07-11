@@ -928,8 +928,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:addButtonBorder{obj=wcf.SetsTransmogFrame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
 	wcf = nil
 
-	self:addSkinFrame{obj=_G.WardrobeOutfitFrame, ft=ftype, nb=true}
-
 	-- WardrobeFrame a.k.a. Transmogrify
 	local wtf = _G.WardrobeTransmogFrame
 	self:removeInset(wtf.Inset)
@@ -944,9 +942,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:addButtonBorder{obj=wtf.SpecButton, ofs=0}
 	self:addSkinFrame{obj=_G.WardrobeFrame, ft=ftype, kfs=true, ofs=2}
 	wtf = nil
-
-	self:skinEditBox{obj=_G.WardrobeOutfitEditFrame.EditBox, regs={6}} -- 6 is text
-	self:addSkinFrame{obj=_G.WardrobeOutfitEditFrame, ft=ftype, kfs=true}
 
 end
 
@@ -2993,5 +2988,13 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 	self:addButtonBorder{obj=_G.TradeSkillFrame.LinkToButton, x1=1, y1=-5, x2=-3, y2=2}
 	self:skinButton{obj=_G.TradeSkillFrame.FilterButton}
 	self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, ofs=2, x2=1}
+
+end
+
+aObj.blizzFrames[ftype].WardrobeOutfits = function(self)
+
+	self:addSkinFrame{obj=_G.WardrobeOutfitFrame, ft=ftype, nb=true}
+	self:skinEditBox{obj=_G.WardrobeOutfitEditFrame.EditBox, regs={6}} -- 6 is text
+	self:addSkinFrame{obj=_G.WardrobeOutfitEditFrame, ft=ftype, kfs=true}
 
 end
