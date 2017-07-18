@@ -182,12 +182,10 @@ local function safecall(funcName, funcObj, LoD, quiet)
 -- local function safecall(funcName, LoD, quiet)
 --@alpha@
 	assert(funcObj, "Unknown object safecall\n" .. debugstack())
-	aObj:Debug("safecall: [%s, %s, %s, %s]", funcName, funcObj, LoD, quiet)
 --@end-alpha@
 
 	-- handle errors from internal functions
 	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
-	-- local success, err = _G.xpcall(function() return aObj[funcName](aObj, LoD) end, errorhandler)
 	if quiet then
 		return success, err
 	end
