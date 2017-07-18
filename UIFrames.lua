@@ -5,9 +5,6 @@ local ftype = "u"
 local ipairs, pairs, unpack = _G.ipairs, _G.pairs, _G.unpack
 local IsAddOnLoaded = _G.IsAddOnLoaded
 
--- used for PetBattles
-aObj.pbtt = {}
-
 -- Tooltips skinning code
 do
 	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
@@ -103,6 +100,7 @@ local function skinFollowerList(frame)
 		end
 	end
 
+
 end
 local function skinFollowerPage(frame)
 
@@ -113,6 +111,7 @@ local function skinFollowerPage(frame)
 	frame.ItemWeapon.Border:SetTexture(nil)
 	aObj:addButtonBorder{obj=frame.ItemArmor, relTo=frame.ItemArmor.Icon}
 	frame.ItemArmor.Border:SetTexture(nil)
+
 
 end
 local function skinFollowerAbilitiesAndCounters(frame, id)
@@ -140,6 +139,7 @@ local function skinFollowerAbilitiesAndCounters(frame, id)
 	end
 	ft = nil
 
+
 end
 local function skinFollowerTraitsAndEquipment(obj)
 
@@ -159,6 +159,7 @@ local function skinFollowerTraitsAndEquipment(obj)
 	end
 	btn = nil
 
+
 end
 local function skinCompleteDialog(frame, naval)
 
@@ -171,6 +172,7 @@ local function skinCompleteDialog(frame, naval)
 	aObj:removeRegions(frame.BorderFrame.Stage, cdStageRegs)
 	aObj:skinButton{obj=frame.BorderFrame.ViewButton}
     aObj:addSkinFrame{obj=frame.BorderFrame, ft=ftype, y2=-2}
+
 
 end
 local function skinMissionPage(obj)
@@ -203,6 +205,7 @@ local function skinMissionPage(obj)
 		end
 	end
 
+
 end
 local function skinMissionComplete(obj, naval)
 
@@ -233,6 +236,7 @@ local function skinMissionComplete(obj, naval)
     obj.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 	obj.BonusRewards.Saturated:DisableDrawLayer("BORDER")
     aObj:addSkinFrame{obj=obj, ft=ftype, y1=6, y2=-16}
+
 
 end
 local function skinMissionList(ml)
@@ -318,17 +322,17 @@ local function skinChatTab(tab)
 	tab.sf:SetAlpha(tab:GetAlpha())
 	-- hook this to fix tab gradient texture overlaying text & highlight
 	aObj:secureHook(tab, "SetParent", function(this, parent)
-			if parent == _G.GeneralDockManager.scrollFrame.child then
-				this.sf:SetParent(_G.GeneralDockManager)
-			else
-				this.sf:SetParent(this)
-				this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
-			end
-		end)
+		if parent == _G.GeneralDockManager.scrollFrame.child then
+			this.sf:SetParent(_G.GeneralDockManager)
+		else
+			this.sf:SetParent(this)
+			this.sf:SetFrameLevel(1) -- reset frame level so that the texture is behind text etc
+		end
+	end)
 	-- hook this to manage alpha changes when chat frame fades in and out
 	aObj:secureHook(tab, "SetAlpha", function(this, alpha)
-			this.sf:SetAlpha(alpha)
-		end)
+		this.sf:SetAlpha(alpha)
+	end)
 
 end
 
@@ -343,6 +347,8 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 	self:removeMagicBtnTex(_G.AddonList.EnableAllButton)
 	self:removeMagicBtnTex(_G.AddonList.DisableAllButton)
 	self:addSkinFrame{obj=_G.AddonList, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+
+
 
 end
 
@@ -365,6 +371,8 @@ aObj.blizzLoDFrames[ftype].AdventureMap = function(self)
 			self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Count}}
 		end
 	end)
+
+
 
 end
 
@@ -615,6 +623,8 @@ aObj.blizzFrames[ftype].ArtifactToasts = function(self)
 	_G.ArtifactLevelUpToast:DisableDrawLayer("BORDER")
 	_G.ArtifactLevelUpToast.IconFrame:SetTexture(nil)
 
+
+
 end
 
 aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
@@ -683,6 +693,8 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		self:addSkinFrame{obj=_G.ArtifactRelicForgeFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
 	end
 
+
+
 end
 
 aObj.blizzFrames[ftype].AuthChallengeUI = function(self)
@@ -694,6 +706,8 @@ aObj.blizzFrames[ftype].AuthChallengeUI = function(self)
 	-- disable skinning of this frame
 	self.db.profile.AuthChallengeUI = false
 
+
+
 end
 
 aObj.blizzFrames[ftype].AutoComplete = function(self)
@@ -701,6 +715,8 @@ aObj.blizzFrames[ftype].AutoComplete = function(self)
 	self.initialized.AutoComplete = true
 
 	self:addSkinFrame{obj=_G.AutoCompleteBox, kfs=true, ft=ftype}
+
+
 
 end
 
@@ -756,6 +772,8 @@ aObj.blizzLoDFrames[ftype].BattlefieldMinimap = function(self)
 		end
 	end
 
+
+
 end
 
 aObj.blizzLoDFrames[ftype].BindingUI = function(self)
@@ -774,6 +792,8 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 		self:skinButton{obj=_G.KeyBindingFrame.keyBindingRows[i].key2Button}
 	end
 	self:addSkinFrame{obj=_G.KeyBindingFrame, ft=ftype, kfs=true, hdr=true}
+
+
 
 end
 
@@ -810,9 +830,12 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	end, true)
 	self:Hook("TimeAlert_Close", function()
 		_G.TimeAlertFrame.sf.tfade:SetParent(_G.TimeAlertFrame.sf)
+
 	end, true)
 	_G._G.TimeAlertFrameBG:SetBackdrop(nil)
 	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype}
+
+
 
 end
 
@@ -925,6 +948,8 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	self:addSkinFrame{obj=_G.CalendarContextMenu}
 	self:addSkinFrame{obj=_G.CalendarInviteStatusContextMenu}
 
+
+
 end
 
 aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
@@ -956,6 +981,8 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 	self:addButtonBorder{obj=_G.ChallengesKeystoneFrame.KeystoneSlot}
 	self:addSkinFrame{obj=_G.ChallengesKeystoneFrame, ft=ftype, ofs=-7}
 
+
+
 end
 
 aObj.blizzFrames[ftype].ChatBubbles = function(self)
@@ -977,14 +1004,17 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		end
 		cbeTmr = nil
 
+
 	end
 	-- skin any existing ones
 	skinChatBubbles()
 
 	local function srt4Event(event, ...)
+
 		if not cbeTmr then
 			cbcTmr = _G.C_Timer.NewTicker(0.25, function() skinChatBubbles() end)
 		end
+
 	end
 	-- capture events which may create new ones
 	-- CHAT_MSG(_MONSTER)_EMOTE
@@ -1011,6 +1041,8 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		end
 		cbcTmr = nil
 	end)
+
+
 
 end
 
@@ -1043,6 +1075,7 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 	qjtb.FriendToToastAnim:SetScript("OnPlay", function()
 		_G.QuickJoinToastButton.Toast.sf:Show()
 		_G.QuickJoinToastButton.Toast2.sf:Hide()
+
 	end)
 	qjtb.ToastToToastAnim:SetScript("OnPlay", function()
 		_G.QuickJoinToastButton.Toast.sf:Hide()
@@ -1053,6 +1086,8 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 		_G.QuickJoinToastButton.Toast2.sf:Hide()
 	end)
 	qjtb = nil
+
+
 
 end
 
@@ -1142,6 +1177,8 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:keepRegions(tab, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
 		self:addSkinFrame{obj=tab, ft=ftype, y1=-8, y2=-4}
 	end
+
+
 
 end
 
@@ -1347,7 +1384,7 @@ if aObj.isPTR then
 
 	-->> N.B. Currently can't be skinned, as the TOC has an element saying Secure: 1
 
-end
+	end
 end
 
 aObj.blizzLoDFrames[ftype].Contribution = function(self)
@@ -2663,7 +2700,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	self:addSkinFrame{obj=_G.VoiceChatTalkers, ft=ftype}
 
 -->>-- Interface
-	self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, ignht=true, x1=6, y1=2, x2=-6, y2=-4}
+	self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, ignore=true, ignht=true, x1=6, y1=2, x2=-6, y2=-4}
 	self:addSkinFrame{obj=_G.InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	_G.InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
 	self:skinSlider{obj=_G.InterfaceOptionsFrameCategoriesListScrollBar}
@@ -2925,7 +2962,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 end
 
 aObj.mmButs = {}
-
 aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if not self.db.profile.MinimapButtons.skin or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
@@ -3328,6 +3364,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 
 end
 
+aObj.pbtt = {}
 aObj.blizzFrames[ftype].PetBattleUI = function(self)
 	if not self.db.profile.PetBattleUI or self.initialized.PetBattleUI then return end
 	self.initialized.PetBattleUI = true
