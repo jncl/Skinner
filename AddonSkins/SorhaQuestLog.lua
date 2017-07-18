@@ -50,6 +50,8 @@ function aObj:SorhaQuestLog()
 
 	-- change options & skin minions
 	_G.SorhaQuestLog.db.profile.StatusBarTexture = self.db.profile.StatusBar.texture
+	_G.SorhaQuestLog.db.profile.BorderTexture = "None"
+	_G.SorhaQuestLog.db.profile.BackgroundTexture = "None"
 	for mName, border in pairs(modInfo) do
 		local mod = _G.SorhaQuestLog:GetModule(mName)
 		if mod then

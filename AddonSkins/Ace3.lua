@@ -56,7 +56,7 @@ function aObj:Ace3()
 				then
 					aObj:secureHook(obj, "BuildTabs", function(this)
 						this.frame.numTabs = #obj.tabs
-						aObj:skinTabs{obj=this.frame, name="AceGUITabGroup" .. this.num, up=true, lod=true, ignht=true, x1=8, y1=0, x2=-8, y2=-6}
+						aObj:skinTabs{obj=this.frame, name="AceGUITabGroup" .. this.num, up=true, ignore=true, lod=true, ignht=true, x1=8, y1=-2, x2=-8, y2=-6}
 						-- don't check for automatic tab changes
 						aObj.tabFrames[this.frame] = nil
 						aObj:Unhook(this, "BuildTabs")
