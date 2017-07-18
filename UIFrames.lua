@@ -2148,10 +2148,12 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 	-- TicketStatus Frame
 	self:addSkinFrame{obj=_G.TicketStatusFrameButton}
-	-- ReportPlayerName Dialog
-	self:addSkinFrame{obj=_G.ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
-	_G.ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=_G.ReportPlayerNameDialog, ft=ftype}
+	if not self.isPTR then
+		-- ReportPlayerName Dialog
+		self:addSkinFrame{obj=_G.ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
+		_G.ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:addSkinFrame{obj=_G.ReportPlayerNameDialog, ft=ftype}
+	end
 	-- ReportCheating Dialog
 	self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
 	_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
