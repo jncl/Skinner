@@ -12,6 +12,7 @@
 <script file="SkinMe\ACP.lua"/>
 <script file="SkinMe\AddonLoader.lua"/>
 <script file="SkinMe\AdiBags.lua"/>
+<script file="SkinMe\AdvancedInterfaceOptions.lua"/>
 <script file="SkinMe\Altoholic.lua"/>
 <script file="SkinMe\AngryKeystones.lua"/>
 <script file="SkinMe\Archy.lua"/>
@@ -120,6 +121,7 @@
 <script file="SkinMe\LibXUI.lua"/>
 <script file="SkinMe\LilSparkysWorkshop.lua"/>
 <script file="SkinMe\Livestock.lua"/>
+<script file="SkinMe\ls_Prospector.lua"/>
 <script file="SkinMe\ls_Toasts.lua"/>
 <script file="SkinMe\Ludwig.lua"/>
 <script file="SkinMe\LUI.lua"/>

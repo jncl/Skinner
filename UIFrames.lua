@@ -2699,7 +2699,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 		local kids = {obj:GetChildren()}
 		-- aObj:Debug("checkKids#2: [%s]", #kids)
-		for _, child in _G.ipairs(kids) do
+		for k, child in _G.ipairs(kids) do
 			if not aObj.ignoreIOF[child]
 			and not aObj:hasAnyTextInName(child, {"AceConfig", "XConfig", "AceGUI"})
 			then
@@ -2788,6 +2788,14 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 				and aObj:getInt(child:GetWidth()) == 560
 				then
 					child:SetBackdrop(nil)
+				end
+				-- AdvancedInterfaceOptions
+				if obj.name == "CVar Browser" then
+					if k == 2 then -- ListFrame
+						aObj:removeInset(child)
+						child:DisableDrawLayer("ARTWORK") -- scrollbar textures
+						_G.RaiseFrameLevelByTwo(child) -- make it visible
+					end
 				end
 			end
 		end
