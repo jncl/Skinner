@@ -1,3 +1,19 @@
+beta7.24461.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Version numbers
+	Try to track "Script running too long" error
+	Updated skinning of IOF panels
+	Updated tooltip skin
+	Updated code
+	PTR 7.3.0 changes
+	Updated some SecureHook code fragments
+	Added WardrodeOutfits functions
+	Updated Slider skin code
+	Updated _DevPadGui, Ace3, AutoBag, tekKonfig & WorldQuestGroupFinder skins
+	Skinned LIB_UIDropdown & TinyTooltip
+
 beta7.24415.1
 Jncl:
 	ToDo.txt
