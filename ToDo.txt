@@ -21,6 +21,7 @@ x			- Blizzard_SimpleCheckout (StoreUI)
 ≈				- NewMountAlertSystem
 √			- MaximizeMinimizeFrame (DressUpFrame & WorldMapFrame)
 		- Deleted
+√			- ReportPlayerNameDialog (HelpFrame)
 √			- WorldMapFrameSizeDownButton
 		- Updated
 ≈			- Blizzard_ArtifactPerks
@@ -37,12 +38,10 @@ x			- DressUpModel
 
 	I	WorldMap Quest List
 ?		- Some buttons have a border (not all the time)
+?		- quest icon/number buttons shouldn't be skinned
 
 	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
 ?		- e.g. GameMenu buttons, Close Button(s)
-
-	I	QuestList
-?		- quest icon/number buttons shouldn't be skinned
 
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
@@ -53,4 +52,12 @@ x			- DressUpModel
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
 
-	S	TinyToolTip, requested by NeoZeus, 07.07.17
+	I	various errors, reported by transitbus, 11.07.17
+√		- 1x Skinner\UIFrames.lua:3134: attempt to index local 'mF' (a nil value)
+√		- 19x Skinner\UIFrames.lua:3115: attempt to index local 'nP' (a nil value)
+√		- SorhaQuestLog skin
+x		- Dejacharacterstats skin
+
+√	S	ls: Prospector, requested by Fraktyl, 12.07.17
+
+√	S	AdvancedInterfaceOptions, requested by Fraktyl, 12.07.17
