@@ -28,7 +28,7 @@ do
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local ptrInfo = {"7.3.0", 24500}
+	local ptrInfo = {"7.3.0", 24539}
 	local liveInfo = {"7.2.5", 24461}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
@@ -1305,8 +1305,8 @@ function aObj:setActiveTab(tabSF)
 	tabSF.tfade:SetTexture(self.gradientTex)
 	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.db.profile.Gradient.invert, self.db.profile.Gradient.rotate))
 
-	local point, relativeTo, relativePoint, xOfs, yOfs
 	if not tabSF.ignore and not tabSF.grown then
+		local point, relativeTo, relativePoint, xOfs, yOfs
 		if not tabSF.up then
 			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs - 6)
@@ -1315,8 +1315,8 @@ function aObj:setActiveTab(tabSF)
 			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs + 6)
 		end
 		tabSF.grown = true
+		point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
 	end
-	point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
 
 end
 
@@ -1330,8 +1330,9 @@ function aObj:setInactiveTab(tabSF)
 
 	tabSF.tfade:SetTexture(self.itTex)
 	tabSF.tfade:SetAlpha(1)
-	local point, relativeTo, relativePoint, xOfs, yOfs
+
 	if not tabSF.ignore and tabSF.grown then
+		local point, relativeTo, relativePoint, xOfs, yOfs
 		if not tabSF.up then
 			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs + 6)
@@ -1340,8 +1341,8 @@ function aObj:setInactiveTab(tabSF)
 			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs - 6)
 		end
 		tabSF.grown = nil
+		point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
 	end
-	point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
 
 end
 
