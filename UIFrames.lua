@@ -3114,19 +3114,19 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 	if not self.db.profile.Nameplates or self.initialized.Nameplates then return end
 	self.initialized.Nameplates = true
 
-	local function skinNamePlate(event, ...)
+	local function skinNamePlate(frame)
 
-		local namePlateFrameBase = ...
-		if not namePlateFrameBase then return end
+		local nP = frame.UnitFrame
 
-		local nP = namePlateFrameBase.UnitFrame
-
-		-- healthBar
-		aObj:glazeStatusBar(nP.healthBar, 0, nP.healthBar.background, {nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction})
-		-- castBar
-		aObj:glazeStatusBar(nP.castBar, 0, nP.castBar.background)
-		-- TODO handle large size NamePlates
-		aObj:changeShield(nP.castBar.BorderShield, nP.castBar.Icon)
+		if nP then
+			-- healthBar
+			aObj:glazeStatusBar(nP.healthBar, 0, nP.healthBar.background, {nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction})
+			-- castBar
+			aObj:glazeStatusBar(nP.castBar, 0, nP.castBar.background)
+			-- TODO handle large size NamePlates
+			aObj:changeShield(nP.castBar.BorderShield, nP.castBar.Icon)
+		end
+		nP = nil
 
 	end
 
@@ -3135,26 +3135,22 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 		skinNamePlate(frame)
 	end
 
-	-- capture Nameplate creation event
-	self:RegisterEvent("NAME_PLATE_CREATED", skinNamePlate)
+	-- hook this to skin created Nameplates
+	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateCreated", function(this, namePlateFrameBase)
+		skinNamePlate(namePlateFrameBase)
+	end)
 
-	-->>-- Class Nameplate Frames
+	-- Class Nameplate Frames
 	-- ManaFrame
 	local mF = _G.ClassNameplateManaBarFrame
-	self:glazeStatusBar(mF, 0,  nil, {mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture})
-	mF.SetTexture = _G.nop
+	if mF then
+		self:glazeStatusBar(mF, 0,  nil, {mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture})
+		mF.SetTexture = _G.nop
+		mF = nil
+	end
 
-	-- NamePlateTargetResourceFrame
-	-- NamePlatePlayerResourceFrame
-
-	-- DeathKnight
-	-- for i = 1, #_G.DeathKnightResourceOverlayFrame.Runes do
-	-- 	_G.DeathKnightResourceOverlayFrame.Runes[i].??
-	-- end
-	-- Mage
-	-- for i = 1, #_G.ClassNameplateBarMageFrame.Charges do
-	-- 	_G.ClassNameplateBarMageFrame.Charges[i].??
-	-- end
+	-- DeathKnight (nothing to skin)
+	-- Mage (nothing to skin)
 	-- Monk
 	for i = 1, #_G.ClassNameplateBarWindwalkerMonkFrame.Chi do
 		_G.ClassNameplateBarWindwalkerMonkFrame.Chi[i]:DisableDrawLayer("BACKGROUND")
