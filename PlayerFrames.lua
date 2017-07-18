@@ -2973,9 +2973,9 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.ExitButton)
 	self:removeMagicBtnTex(_G.TradeSkillFrame.DetailsFrame.CreateButton)
 	self:skinEditBox{obj=_G.TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, noHeight=true, nis=true}
-	self:addButtonBorder{obj=_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon}
-	_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon.IconBorder:SetTexture(nil)
-	_G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon.ResultBorder:SetTexture(nil)
+	btn = _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
+	btn.ResultBorder:SetTexture(nil)
+	self:addButtonBorder{obj=btn, reParent={btn.Count}}
 	for i = 1, #_G.TradeSkillFrame.DetailsFrame.Contents.Reagents do
 		btn = _G.TradeSkillFrame.DetailsFrame.Contents.Reagents[i]
 		btn.NameFrame:SetTexture(nil)
