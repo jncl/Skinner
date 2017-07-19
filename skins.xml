@@ -158,6 +158,7 @@
 <script file="SkinMe\PowerAuras.lua"/>
 <script file="SkinMe\Prat3.lua"/>
 <script file="SkinMe\PreformAVEnabler.lua"/>
+<script file="SkinMe\PremadeGroupsFilter.lua"/>
 <script file="SkinMe\ProfessionsVault.lua"/>
 <script file="SkinMe\ProfessionTabs.lua"/>
 <script file="SkinMe\ProspectBar.lua"/>
