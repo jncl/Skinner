@@ -2659,6 +2659,14 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 -->>-- Game Menu Frame
 	self:addSkinFrame{obj=_G.GameMenuFrame, ft=ftype, kfs=true, hdr=true}
 
+	local function checkChild(child)
+		if aObj:hasTextInName(child, "DropDown") then
+			aObj:skinDropDown{obj=child}
+		end
+		if child:IsObjectType("Slider") then
+			aObj:skinSlider{obj=child, hgt=aObj:getInt(child:GetHeight()) == 22 and -7 or -2}
+		end
+	end
 -->>-- System
 	self:addSkinFrame{obj=_G.VideoOptionsFrame, ft=ftype, kfs=true, hdr=true}
 	self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true}
@@ -2666,44 +2674,34 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	self:addSkinFrame{obj=_G.VideoOptionsFramePanelContainer, ft=ftype}
 	-- Graphics
 	for _, child in ipairs{_G.Display_:GetChildren()} do
-		if aObj:hasTextInName(child, "DropDown") then
-			self:skinDropDown{obj=child}
-		end
+		checkChild(child)
 	end
 	self:addSkinFrame{obj=_G.Display_, ft=ftype}
-	for _, child in ipairs{_G.RaidGraphics_:GetChildren()} do
-		if aObj:hasTextInName(child, "DropDown") then
-			self:skinDropDown{obj=child}
-		end
+	for _, child in ipairs{_G.Graphics_:GetChildren()} do
+		checkChild(child)
 	end
 	self:addSkinFrame{obj=_G.Graphics_, ft=ftype}
-	self:addSkinFrame{obj=_G.RaidGraphics_, ft=ftype}
-	for _, child in ipairs{_G.Graphics_:GetChildren()} do
-		if aObj:hasTextInName(child, "DropDown") then
-			self:skinDropDown{obj=child}
-		end
+	for _, child in ipairs{_G.RaidGraphics_:GetChildren()} do
+		checkChild(child)
 	end
+	self:addSkinFrame{obj=_G.RaidGraphics_, ft=ftype}
 	-- Advanced
 	for _, child in ipairs{_G.Advanced_:GetChildren()} do
-		if aObj:hasTextInName(child, "DropDown") then
-			self:skinDropDown{obj=child}
-		end
+		checkChild(child)
 	end
 	self:skinDropDown{obj=_G.Advanced_MultisampleAlphaTest}
 	-- Network
 	-- Languages
 	for _, child in ipairs{_G.InterfaceOptionsLanguagesPanel:GetChildren()} do
-		if aObj:hasTextInName(child, "DropDown") then
-			self:skinDropDown{obj=child}
-		end
+		checkChild(child)
 	end
 
 	-- Sound
+	for _, child in ipairs{_G.AudioOptionsSoundPanel:GetChildren()} do
+		checkChild(child)
+	end
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanel, ft=ftype}
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelPlayback, ft=ftype}
-	self:skinDropDown{obj=_G.AudioOptionsSoundPanelHardwareDropDown}
-	self:skinDropDown{obj=_G.AudioOptionsSoundPanelSoundChannelsDropDown}
-	self:skinDropDown{obj=_G.AudioOptionsSoundPanelSoundCacheSizeDropDown}
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelHardware, ft=ftype}
 	self:addSkinFrame{obj=_G.AudioOptionsSoundPanelVolume, ft=ftype}
 	-- Voice
@@ -3908,7 +3906,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 		-- prevent FrameLevel from being changed (LibRock does this)
 		obj.sf.SetFrameLevel = _G.nop
 	end
-	objName = nil
+	objName, obj = nil, nil
 
 end
 
