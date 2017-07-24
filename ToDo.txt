@@ -52,12 +52,9 @@ x			- DressUpModel
 			Skinner\PlayerFrames.lua:528:
 			Skinner\PlayerFrames.lua:500
 
-	I	various errors, reported by transitbus, 11.07.17
-√		- 1x Skinner\UIFrames.lua:3134: attempt to index local 'mF' (a nil value)
-√		- 19x Skinner\UIFrames.lua:3115: attempt to index local 'nP' (a nil value)
-√		- SorhaQuestLog skin
-x		- Dejacharacterstats skin
+√	S	PremadeGroupsFilter, requested by acirac, 18.07.17
 
-√	S	ls: Prospector, requested by Fraktyl, 12.07.17
+√	N	XLoot, requested by hammer2, 21.07.17
 
-√	S	AdvancedInterfaceOptions, requested by Fraktyl, 12.07.17
+√	S	Guild_Roster_Manager
+		- check for addon update so bugfix code can be removed.
