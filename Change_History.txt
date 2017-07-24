@@ -1,3 +1,17 @@
+beta7.24461.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Tab skin & version numbers
+	Code Tidyup
+	Removed comment lines
+	Bugfix for Nameplates skin
+	PTR update
+	Updated QuestChoiceFrame skin
+	Updated TradeSkillFrame skin
+	Updated Ace3 & SorhaQuestLog skins
+	Skinned AdvancedInterfaceOptions & ls: Prospector
+
 beta7.24461.1
 Jncl:
 	ToDo.txt
