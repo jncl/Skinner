@@ -132,6 +132,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ChatTabs             = false, -- (inc. ChatTemporaryWindow)
 		ChatTabsFade         = true,
 		CinematicFrame       = true,
+		ClassTrial           = true,
 		CoinPickup           = true,
 		Colours              = true,
 		Console              = self.isPtr and false or nil, -- N.B. cannot be skinned
@@ -1389,6 +1390,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Cinematic Frame"],
 					desc = self.L["Toggle the skin of the Cinematic Frame"],
+				},
+				ClassTrial = {
+					type = "toggle",
+					name = self.L["ClassTrial Frames"],
+					desc = self.L["Toggle the skin of the ClassTrial Frames"],
 				},
 				CoinPickup = {
 					type = "toggle",

@@ -1350,6 +1350,27 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 
 end
 
+aObj.blizzLoDFrames[ftype].ClassTrial = function(self)
+	if not self.db.profile.ClassTrial or self.initialized.ClassTrial then return end
+	self.initialized.ClassTrial = true
+
+	-- N.B. ClassTrialSecureFrame can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
+
+	_G.ClassTrialThanksForPlayingDialog.ThanksText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.ClassTrialThanksForPlayingDialog.ClassNameText:SetTextColor(self.HTr, self.HTg, self.HTb)
+	_G.ClassTrialThanksForPlayingDialog.DialogFrame:SetTexture(nil)
+	self:addSkinFrame{obj=_G.ClassTrialThanksForPlayingDialog, ft=ftype, x1=668, y1=-403, x2=-668, y2=402}
+
+	-- create a Hourglass texture as per original Artwork
+	_G.ClassTrialTimerDisplay.Hourglass = _G.ClassTrialTimerDisplay:CreateTexture(nil, "ARTWORK", nil)
+	_G.ClassTrialTimerDisplay.Hourglass:SetTexture([[Interface\Common\mini-hourglass]])
+	_G.ClassTrialTimerDisplay.Hourglass:SetPoint("LEFT", 20, 0)
+	_G.ClassTrialTimerDisplay.Hourglass:SetSize(30, 30)
+	_G.ClassTrialTimerDisplay:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.ClassTrialTimerDisplay, ft=ftype}
+
+end
+
 aObj.blizzFrames[ftype].CoinPickup = function(self)
 	if not self.db.profile.CoinPickup or self.initialized.CoinPickup then return end
 	self.initialized.CoinPickup = true
