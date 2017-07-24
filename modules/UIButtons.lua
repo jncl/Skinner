@@ -147,12 +147,17 @@ function module:skinButton(opts)
 		opts.obj.sknd = true
 	end
 
-	-- remove textures
-	if opts.obj.Left -- UIPanelButtonTemplate and derivatives (MoP)
-	-- or opts.obj.leftArrow -- UIMenuButtonStretchTemplate (MoP)
-	or opts.obj.TopLeft -- UIMenuButtonStretchTemplate (WoD/Legion)
-	then
-		opts.obj:DisableDrawLayer("BACKGROUND")
+	-- hide textures as they are changed in code
+	if opts.obj.Left then -- UIPanelButtonTemplate and derivatives (MoP)
+		opts.obj.Left:SetAlpha(0)
+		opts.obj.Middle:SetAlpha(0)
+		opts.obj.Right:SetAlpha(0)
+	elseif opts.obj.TopLeft then -- UIMenuButtonStretchTemplate (WoD/Legion)
+		for _, s1 in pairs{"Top", "Middle", "Bottom"} do
+			for _, s2 in pairs{"Left", "Middle", "Right"} do
+				opts.obj[s1 .. s2]:SetAlpha(0)
+			end
+		end
 	elseif opts.obj.left then -- ARL & Collectinator
 		opts.obj.left:SetAlpha(0)
 		opts.obj.middle:SetAlpha(0)
@@ -173,7 +178,7 @@ function module:skinButton(opts)
 		end
 		objName = nil
 	end
-	-- remove any 'old' type button textures (ArkInventory)
+	-- hide any 'old' type button textures (ArkInventory)
 	if opts.obj.GetNormalTexture
 	and opts.obj:GetNormalTexture()
 	then
