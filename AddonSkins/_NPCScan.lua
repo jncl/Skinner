@@ -26,7 +26,6 @@ function aObj:_NPCScan()
 		local obj = _G._NPCScan.Config.Search.table.View
 		if not aObj:getChild(obj, 2) then -- if not already created
 			aObj:SecureHookScript(obj, "OnScrollRangeChanged", function(this)
-				aObj:ShowInfo(this, true, true)
 				aObj:skinSlider(aObj:getChild(this, 2))
 				aObj:Unhook(obj, "OnScrollRangeChanged")
 			end)
