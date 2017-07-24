@@ -98,6 +98,7 @@
 <script file="SkinMe\GnomishVendorShrinker.lua"/>
 <script file="SkinMe\GroupCalendar5.lua"/>
 <script file="SkinMe\Growler.lua"/>
+<script file="SkinMe\Guild_Roster_Manager.lua"/>
 <script file="SkinMe\GuildBankSearch.lua"/>
 <script file="SkinMe\GuildLaunchCT_RaidTracker.lua"/>
 <script file="SkinMe\HandyNotes.lua"/>
