@@ -28,7 +28,7 @@ do
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local ptrInfo = {"7.3.0", 24539}
+	local ptrInfo = {"7.3.0", 24633}
 	local liveInfo = {"7.2.5", 24461}
 	local betaInfo = {"7.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
@@ -359,7 +359,7 @@ function aObj:OnEnable()
 	-- skin the loaded AddOns frames
 	_G.C_Timer.After(prdb.Delay.Init + prdb.Delay.Addons, function() self:AddonFrames() end)
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
-	_G.C_Timer.After(prdb.Delay.Init + prdb.Delay.Addons + 10, function() self:scanUIParentsChildren() end)
+	_G.C_Timer.After(prdb.Delay.Init + prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
 
 	-- handle statusbar changes
 	self.LSM.RegisterCallback(self, "LibSharedMedia_SetGlobal", function(mtype, override)
@@ -414,26 +414,6 @@ function aObj:OnEnable()
 	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
-
-end
-
-function aObj:getGradientInfo(invert, rotate)
-
-	local c = self.db.profile.GradientMin
-	local MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
-	c = self.db.profile.GradientMax
-	local MaxR, MaxG, MaxB, MaxA = c.r, c.g, c.b, c.a
-
-	if self.db.profile.Gradient.enable then
-		if invert then
-			return rotate and "HORIZONTAL" or "VERTICAL", MaxR, MaxG, MaxB, MaxA, MinR, MinG, MinB, MinA
-		else
-			return rotate and "HORIZONTAL" or "VERTICAL", MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA
-		end
-	else
-		return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
-	end
-	MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA = nil, nil, nil, nil, nil, nil, nil, nil
 
 end
 
@@ -544,7 +524,6 @@ local function __addSkinButton(opts)
 	return btn
 
 end
-
 function aObj:addSkinButton(...)
 
 	local opts = select(1, ...)
@@ -702,7 +681,6 @@ local function __addSkinFrame(opts)
 	return skinFrame
 
 end
-
 function aObj:addSkinFrame(...)
 
 	local opts = select(1, ...)
@@ -880,7 +858,6 @@ local function __applySkin(opts)
 	end
 
 end
-
 function aObj:applySkin(...)
 
 	local opts = select(1, ...)
@@ -904,510 +881,6 @@ function aObj:applySkin(...)
 	end
 	__applySkin(opts)
 	opts = nil
-
-end
-
-local function __adjHeight(opts)
---[[
-	Calling parameters:
-		obj = object (Mandatory)
-		adj = value to adjust height by
---]]
---@alpha@
-	assert(opts.obj, "Missing object __aH\n" .. debugstack())
---@end-alpha@
-	if opts.adj == 0 then return end
-
-	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
-		opts.obj:SetHeight(opts.obj:GetHeight() + opts.adj)
-	else
-		opts.adj = opts.adj * -1 -- make it positive
-		opts.obj:SetHeight(opts.obj:GetHeight() - opts.adj)
-	end
-
-end
-
-function aObj:adjHeight(...)
-
-	local opts = select(1, ...)
-
---@alpha@
-	assert(opts, "Missing object aH\n" .. debugstack())
---@end-alpha@
-
-	-- handle missing object (usually when addon changes)
-	if not opts then return end
-
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
-		-- old style call
-		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.adj = select(2, ...) and select(2, ...) or 0
-	end
-	__adjHeight(opts)
-	opts = nil
-
-end
-
-local function __adjWidth(opts)
---[[
-	Calling parameters:
-		obj = object (Mandatory)
-		adj = value to adjust width by
---]]
---@alpha@
-	assert(opts.obj, "Missing object __aW\n" .. debugstack())
---@end-alpha@
-	if opts.adj == 0 then return end
-
-	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
-		opts.obj:SetWidth(opts.obj:GetWidth() + opts.adj)
-	else
-		opts.adj = opts.adj * -1 -- make it positive
-		opts.obj:SetWidth(opts.obj:GetWidth() - opts.adj)
-	end
-
-end
-
-function aObj:adjWidth(...)
-
-	local opts = select(1, ...)
-
---@alpha@
-	assert(opts, "Missing object aW\n" .. debugstack())
---@end-alpha@
-
-	-- handle missing object (usually when addon changes)
-	if not opts then return end
-
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
-		-- old style call
-		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.adj = select(2, ...) and select(2, ...) or 0
-	end
-	__adjWidth(opts)
-	opts = nil
-
-end
-
-function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
---@alpha@
-	assert(statusBar, "Missing object __gSB\n" .. debugstack())
-	assert(statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack())
---@end-alpha@
-
-	statusBar:SetStatusBarTexture(self.sbTexture)
-
-	if not self.sbGlazed[statusBar] then
-		self.sbGlazed[statusBar] = {}
-	end
-	local sbG = self.sbGlazed[statusBar]
-
-	-- local sbTex = statusBar:GetStatusBarTexture()
-	-- -- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
-	-- sbTex:SetHorizTile(false)
-	-- sbTex:SetVertTile(false)
-
-	if fi then
-		if not sbG.bg then
-			-- create background texture on a lower sublevel
-			sbG.bg = bgTex or statusBar:CreateTexture(nil, "BACKGROUND", nil, -1)
-			sbG.bg:SetTexture(self.sbTexture)
-			sbG.bg:SetVertexColor(self.sbColour[1], self.sbColour[2], self.sbColour[3])
-			if not bgTex then
-				sbG.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
-				sbG.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
-			end
-		end
-	end
-	-- apply texture and store other texture objects
-	if otherTex
-	and type(otherTex) == "table"
-	then
-		for _, tex in pairs(otherTex) do
-			tex:SetTexture(self.sbTexture)
-			tex:SetVertexColor(self.sbColour[1], self.sbColour[2], self.sbColour[3])
-			sbG[#sbG + 1] = tex
-		end
-	end
-
-	if hookFunc then
-		self:RawHook(statusBar, "SetStatusBarTexture", function(this, tex)
-			-- self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
-		end, true)
-		-- this is used by PVPHonorXPBar
-		if statusBar.SetStatusBarAtlas then
-			self:RawHook(statusBar, "SetStatusBarAtlas", function(this, tex)
-			end, true)
-		end
-	end
-
-end
-
-function aObj:keepFontStrings(obj, hide)
---@alpha@
-	assert(obj, "Missing object kFS\n" .. debugstack())
---@end-alpha@
-
-	local regs = {obj:GetRegions()}
-	for _, reg in ipairs(regs) do
-		if not reg:IsObjectType("FontString") then
-			if not hide then reg:SetAlpha(0) else reg:Hide() end
-		end
-	end
-	regs = nil
-
-end
-
-local function revTable(curTab)
-
-	if not curTab then return end
-	local revTab = {}
-
-	for _, v in pairs(curTab) do
-		revTab[v] = true
-	end
-
-	return revTab
-
-end
-
-function aObj:keepRegions(obj, regions)
---@alpha@
-	assert(obj, "Missing object kR\n" .. debugstack())
---@end-alpha@
-
-	local regions = revTable(regions)
-
-	local regs = {obj:GetRegions()}
-	for k, reg in ipairs(regs) do
-		-- if we have a list, hide the regions not in that list
-		if regions
-		and not regions[k]
-		then
-			reg:SetAlpha(0)
---@debug@
-			if reg:IsObjectType("FontString") then
-				self:Debug("kr FS: [%s, %s]", obj, k)
-				self:Print(debugstack(1, 5, 2))
-			end
---@end-debug@
-		end
-	end
-	regions, regs = nil, nil
-
-end
-
-function aObj:makeMFRotatable(modelFrame)
---@alpha@
-	assert(modelFrame and modelFrame:IsObjectType("PlayerModel"), "Not a PlayerModel\n" .. debugstack())
---@end-alpha@
-
-	-- Don't make Model Frames Rotatable if CloseUp is loaded
-	if _G.IsAddOnLoaded("CloseUp") then return end
-
-	--frame:EnableMouseWheel(true)
-	modelFrame:EnableMouse(true)
-	modelFrame.draggingDirection = nil
-	modelFrame.cursorPosition = {}
-
-	-- hide rotation buttons
-	for _, child in pairs{modelFrame:GetChildren()} do
-		if self:hasTextInName(child, "Rotate") then
-			child:Hide()
-		end
-	end
-	if modelFrame.RotateLeftButton then
-		modelFrame.RotateLeftButton:Hide()
-		modelFrame.RotateRightButton:Hide()
-	end
-
-	self:secureHookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
-		if this.dragging then
-			local x, y = _G.GetCursorPosition()
-			if this.cursorPosition.x > x then
-				_G.Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
-			elseif this.cursorPosition.x < x then
-				_G.Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
-			end
-			this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
-			x, y = nil, nil
-		end
-	end)
-	self:secureHookScript(modelFrame, "OnMouseDown", function(this, button)
-		if button == "LeftButton" then
-			this.dragging = true
-			this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
-		end
-	end)
-	self:secureHookScript(modelFrame, "OnMouseUp", function(this, button)
-		if this.dragging then
-			this.dragging = false
-			this.cursorPosition.x, this.cursorPosition.y = nil
-		end
-	end)
-
-	--[[ MouseWheel to zoom Modelframe - in/out works, but needs to be fleshed out
-	modelFrame:SetScript("OnMouseWheel", function()
-		local xPos, yPos, zPos = frame:GetPosition()
-		if arg1 == 1 then
-			modelFrame:SetPosition(xPos+00.1, 0, 0)
-		else
-			modelFrame:SetPosition(xPos-00.1, 0, 0)
-		end
-	end) ]]
-
-	if modelFrame.controlFrame then
-		modelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-	end
-
-end
-
-local function __moveObject(opts)
---[[
-	Calling parameters:
-		obj = object (Mandatory)
-		x = left/right adjustment
-		y = up/down adjustment
-		relTo = object to move relative to
---]]
---@alpha@
-	assert(opts.obj, "Missing object __mO\n" .. debugstack())
---@end-alpha@
-
-	if not opts.obj then return end
-
---@debug@
-	if opts.obj:GetNumPoints() > 1 then
-		aObj:CustomPrint(1, 0, 0, "moveObject: %s, GetNumPoints = %d", opts.obj, opts.obj:GetNumPoints())
-		return
-	end
---@end-debug@
-
-	local point, relTo, relPoint, xOfs, yOfs = opts.obj:GetPoint()
-
-	-- handle no Point info
-	if not point then return end
-
-	relTo = opts.relTo or relTo
---@alpha@
-	assert(relTo, "__moveObject relTo is nil\n" .. debugstack())
---@end-alpha@
-	-- Workaround for relativeTo crash
-	if not relTo then
-		if aObj.db.profile.Warnings then
-			aObj:CustomPrint(1, 0, 0, "moveObject (relativeTo) is nil: %s", opts.obj)
-		end
-		return
-	end
-
-	-- apply the adjustment
-	xOfs = opts.x and xOfs + opts.x or xOfs
-	yOfs = opts.y and yOfs + opts.y or yOfs
-
-	-- now move it
-	opts.obj:ClearAllPoints()
-	opts.obj:SetPoint(point, relTo, relPoint, xOfs, yOfs)
-
-	point, relTo, relPoint, xOfs, yOfs = nil, nil, nil, nil, nil
-
-end
-
-function aObj:moveObject(...)
-
-	local opts = select(1, ...)
-
---@alpha@
-	assert(opts, "Missing object mO\n" .. debugstack())
---@end-alpha@
-
-	-- handle missing object (usually when addon changes)
-	if not opts then return end
-
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
-		-- old style call
-		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-		opts.x = select(3, ...) and select(3, ...) or nil
-		if select(2, ...) and select(2, ...) == "-" then opts.x = opts.x * -1 end
-		opts.y = select(5, ...) and select(5, ...) or nil
-		if select(4, ...) and select(4, ...) == "-" then opts.y = opts.y * -1 end
-		opts.relTo = select(6, ...) and select(6, ...) or nil
-	end
-
-	__moveObject(opts)
-	opts = nil
-
-end
-
-function aObj:removeRegions(obj, regions)
---@alpha@
-	assert(obj, "Missing object rR\n" .. debugstack())
---@end-alpha@
-
-	local regions = revTable(regions)
-
-	local regs = {obj:GetRegions()}
-	for k, reg in ipairs(regs) do
-		if not regions
-		or regions
-		and regions[k]
-		then
-			reg:SetAlpha(0)
---@debug@
-			if reg:IsObjectType("FontString") then
-				self:Debug("rr FS: [%s, %s]", obj, k)
-				self:Print(debugstack(1, 5, 2))
-			end
---@end-debug@
-		end
-	end
-	regions, regs = nil, nil
-
-end
-
-function aObj:rmRegionsTex(obj, regions)
---@alpha@
-	assert(obj, "Missing object rRT\n" .. debugstack())
---@end-alpha@
-
-	local regions = revTable(regions)
-
-	local regs = {obj:GetRegions()}
-	for k, reg in ipairs(regs) do
-		if not regions
-		or regions
-		and regions[k]
-		then
-			if reg:IsObjectType("Texture") then
-				reg:SetTexture(nil)
---@debug@
-			elseif reg:IsObjectType("FontString") then
-				self:Debug("rRT FS: [%s, %s]", obj:GetName() or "<Anon>", k)
-				self:Print(debugstack(1, 5, 2))
---@end-debug@
-			end
-		end
-	end
-	regions, regs = nil, nil
-
-end
-
-function aObj:setActiveTab(tabSF)
---@alpha@
-	-- assert(tabSF, "Missing object sAT\n" .. debugstack())
---@end-alpha@
-
-	if not tabSF then return end
-	if not tabSF.tfade then return end
-
-	tabSF.tfade:SetTexture(self.gradientTex)
-	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.db.profile.Gradient.invert, self.db.profile.Gradient.rotate))
-
-	if not tabSF.ignore and not tabSF.grown then
-		local point, relativeTo, relativePoint, xOfs, yOfs
-		if not tabSF.up then
-			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
-			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs - 6)
-		else
-			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
-			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs + 6)
-		end
-		tabSF.grown = true
-		point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
-	end
-
-end
-
-function aObj:setInactiveTab(tabSF)
---@alpha@
-	assert(tabSF, "Missing object sIT\n" .. debugstack())
---@end-alpha@
-
-	if not tabSF then return end
-	if not tabSF.tfade then return end
-
-	tabSF.tfade:SetTexture(self.itTex)
-	tabSF.tfade:SetAlpha(1)
-
-	if not tabSF.ignore and tabSF.grown then
-		local point, relativeTo, relativePoint, xOfs, yOfs
-		if not tabSF.up then
-			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
-			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs + 6)
-		else
-			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
-			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs - 6)
-		end
-		tabSF.grown = nil
-		point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
-	end
-
-end
-
-function aObj:shrinkBag(obj, bpMF)
---@alpha@
-	assert(obj, "Missing object sB\n" .. debugstack())
---@end-alpha@
-
-	if not obj then return end
-
-	local prdb = self.db.profile
-	local objName = obj:GetName()
-	local bgTop = _G[objName .. "BackgroundTop"]
-	local bgtHgt = self:getInt(bgTop:GetHeight())
-	if bgtHgt == 256 then -- this is the backpack
-		if bpMF then -- is this a backpack Money Frame
-			local yOfs = select(5, _G[objName .. "MoneyFrame"]:GetPoint())
-			if self:getInt(yOfs) == -216 or self:getInt(yOfs) == -217 then -- is it still in its original position
-				self:moveObject{obj=_G[objName .. "MoneyFrame"], y=22}
-			end
-			yOfs = nil
-		end
-		self:moveObject{obj=_G[objName .. "Item1"], y=19}
-	end
-
-	-- adjust bag height as required
-	-- 8, 12, 16, 20, 24, 28, 32, 36 slots
-	if bgtHgt == 94
-	or bgtHgt == 86
-	then
-		self:adjHeight{obj=obj, adj=-20}
-	elseif bgtHgt == 72	then -- 6, 10 or 14 slots
-		self:adjHeight{obj=obj, adj=2}
-	end
-
-	self:adjWidth{obj=obj, adj=-10}
-	self:moveObject{obj=_G[objName .. "Item1"], x=3}
-
-	local objHeight = self:getInt(obj:GetHeight())
-	-- use default fade height
-	local fh = prdb.ContainerFrames.fheight <= objHeight and prdb.ContainerFrames.fheight or objHeight
-
-	if prdb.FadeHeight.enable and prdb.FadeHeight.force then
-	-- set the Fade Height
-	-- making sure that it isn't greater than the frame height
-		fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
-	end
-
-	if fh and obj.tfade then obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -fh) end
-
-	objName, bgtHgt, objHeight, fh = nil, nil, nil, nil
-
-end
-
-function aObj:skinColHeads(buttonName, noCols)
-
-	noCols = noCols or 4
-	local btn
-	for i = 1, noCols do
-		btn = _G[buttonName .. i]
-		if not btn.sb then -- only do if not already skinned
-			self:removeRegions(btn, {1, 2, 3})
-			self:addSkinFrame{obj=btn}
-		end
-	end
 
 end
 
@@ -1489,7 +962,6 @@ local function __skinDropDown(opts)
 	xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil
 
 end
-
 function aObj:skinDropDown(...)
 
 	local opts = select(1, ...)
@@ -1609,7 +1081,6 @@ local function __skinEditBox(opts)
 	end
 
 end
-
 function aObj:skinEditBox(...)
 
 	local opts = select(1, ...)
@@ -1691,7 +1162,6 @@ local function __skinMoneyFrame(opts)
 	end
 
 end
-
 function aObj:skinMoneyFrame(...)
 
 	local opts = select(1, ...)
@@ -1728,9 +1198,10 @@ local function __skinScrollBar(opts)
 		noRR = Don't remove regions
 --]]
 --@alpha@
+	assert(opts.obj, "Missing object __sSB\n" .. debugstack())
+	assert(opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. debugstack())
+	assert(_G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
 	-- handle AddOn skins still using this code rather than skinSlider
-	assert(opts.obj and opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. debugstack())
-	assert(opts.obj and _G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinScrollBar", opts.obj)
 --@end-alpha@
 
@@ -1752,7 +1223,6 @@ local function __skinScrollBar(opts)
 	aObj:skinUsingBD{obj=sBar, size=opts.size}
 
 end
-
 function aObj:skinScrollBar(...)
 
 	local opts = select(1, ...)
@@ -1789,7 +1259,8 @@ local function __skinSlider(opts)
 		rt = remove textures from parent
 --]]
 --@alpha@
-	assert(opts.obj and opts.obj:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
+	assert(opts.obj, "Missing object __sS\n" .. debugstack())
+	assert(opts.obj:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
 --@end-alpha@
 
 	-- don't skin it twice
@@ -1822,7 +1293,6 @@ local function __skinSlider(opts)
 	end
 
 end
-
 function aObj:skinSlider(...)
 
 	local opts = select(1, ...)
@@ -1869,7 +1339,8 @@ local function __skinTabs(opts)
 		ignht = don't change Highlight texture (AchievementUI)
 --]]
 --@alpha@
-	assert(opts.obj and opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. debugstack())
+	assert(opts.obj, "Missing object __sT\n" .. debugstack())
+	assert(opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. debugstack())
 --@end-alpha@
 
 	-- don't skin it twice
@@ -1931,13 +1402,12 @@ local function __skinTabs(opts)
 	tabName, kRegions, xOfs1, yOfs1, xOfs2, yOfs2, tabID, tab = nil, nil, nil, nil, nil, nil, nil, nil
 
 end
-
 function aObj:skinTabs(...)
 
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sS\n" .. debugstack())
+	assert(opts, "Missing object sT\n" .. debugstack())
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -2055,7 +1525,6 @@ local function __skinUsingBD(opts)
 	opts.obj:SetBackdropColor(.1, .1, .1, 1)
 
 end
-
 function aObj:skinUsingBD(...)
 
 	local opts = select(1, ...)
