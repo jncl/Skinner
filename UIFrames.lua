@@ -2832,6 +2832,13 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 							end
 						end)
 					end
+				-- TinyInspect SubtypeFrame
+				elseif child:IsObjectType("CheckButton")
+				and child.SubtypeFrame
+				then
+					aObj:addSkinFrame{obj=child.SubtypeFrame}
+				elseif child:IsObjectType("CheckButton") then
+					aObj:skinCheckButton{obj=child}
 				else
 					checkKids(child)
 				end

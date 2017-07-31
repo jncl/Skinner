@@ -198,6 +198,7 @@
 <script file="SkinMe\tektip.lua"/>
 <script file="SkinMe\TidyPlates.lua"/>
 <script file="SkinMe\TinyDPS.lua"/>
+<script file="SkinMe\TinyInspect.lua"/>
 <script file="SkinMe\TinyTooltip.lua"/>
 <script file="SkinMe\TipTac.lua"/>
 <script file="SkinMe\TomTom.lua"/>
