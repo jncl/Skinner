@@ -2119,25 +2119,28 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 	self:moveObject{obj=_G.HelpFrame.header, y=-12}
 	self:removeInset(_G.HelpFrame.leftInset)
 	self:removeInset(_G.HelpFrame.mainInset)
-	local btn
-	for i = 1, 6 do
-		btn = _G.HelpFrame["button" .. i]
-		btn:GetNormalTexture():SetTexture(nil)
-		btn:GetPushedTexture():SetTexture(nil)
-	end
-	_G.HelpFrame.button16:GetNormalTexture():SetTexture(nil)
 	self:addSkinFrame{obj=_G.HelpFrame, ft=ftype, kfs=true, ofs=-10, y2=7}
+	-- widen buttons so text fits better
+	for i = 1, 6 do
+		_G.HelpFrame["button" .. i]:SetWidth(180)
+	end
+	_G.HelpFrame.button16:SetWidth(180) -- Submit Suggestion button
+
 	-- Account Security panel
 	_G.HelpFrame.asec.ticketButton:GetNormalTexture():SetTexture(nil)
 	_G.HelpFrame.asec.ticketButton:GetPushedTexture():SetTexture(nil)
+
 	-- Character Stuck! panel
 	self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
+
 	-- Report Bug panel
 	self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.bug, 3), ft=ftype}
+
 	-- Submit Suggestion panel
 	self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=self:getChild(_G.HelpFrame.suggestion, 3), ft=ftype}
+
 	-- Help Browser
 	self:removeInset(_G.HelpBrowser.BrowserInset)
 	self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2}
