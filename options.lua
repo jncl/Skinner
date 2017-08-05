@@ -148,9 +148,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		HelpFrame            = true,
 		ItemText             = true,
 		LevelUpDisplay       = true,
-		LFDFrame             = true,
-		LFGFrame             = true,
-		LFRFrame             = true,
 		MailFrame            = true,
 		MainMenuBar          = {skin = true, glazesb = true, extraab=true, altpowerbar=true},
 		MenuFrames           = true, -- (inc. MacroUI & BindingUI)
@@ -162,10 +159,10 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ObliterumUI          = true,
 		OrderHallUI          = true,
 		PetBattleUI          = true,
-		PVEFrame             = true,
+		PVEFrame             = true, -- (inc, LFD, LFG, RaidFinder, ScenarioFinder)
 		QuestMap             = true,
 		QueueStatusFrame     = true,
-		RaidFrame            = true,
+		RaidFrame            = true, -- (inc. LFR)
 		ScriptErrors         = true,
 		SecureTransferUI	 = false, -- N.B. cannot be skinned
 		SocialUI             = false, -- N.B. cannot be skinned
@@ -1481,16 +1478,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Level Up Display"],
 					desc = self.L["Toggle the skin of the Level Up Display"],
 				},
-				LFDFrame = {
-					type = "toggle",
-					name = self.L["LFD Frame"],
-					desc = self.L["Toggle the skin of the LFD Frame"],
-				},
-				LFRFrame = {
-					type = "toggle",
-					name = self.L["LFR Frame"],
-					desc = self.L["Toggle the skin of the LFR Frame"],
-				},
 				MailFrame = {
 					type = "toggle",
 					name = self.L["Mail Frame"],
@@ -1638,9 +1625,10 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					desc = self.L["Toggle the skin of the Pet Battle Frame"],
 				},
 				PVEFrame = {
+					-- inc. LFD, LFG, Scenario
 					type = "toggle",
-					name = self.L["PVE Frame"],
-					desc = self.L["Toggle the skin of the PVE Frame"],
+					name = self.L["Group Finder Frame"],
+					desc = self.L["Toggle the skin of the Group Finder Frame"],
 				},
 				QuestMap = {
 					type = "toggle",
@@ -1653,6 +1641,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					desc = self.L["Toggle the skin of the Queue Status Frame"],
 				},
 				RaidFrame = {
+					-- inc. LFR
 					type = "toggle",
 					name = self.L["Raid Frame"],
 					desc = self.L["Toggle the skin of the Raid Frame"],
@@ -1847,7 +1836,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	for addonName, isLib in pairs(self.otherAddons) do
 		addDSOpt(addonName, isLib)
 	end
-	-- _G.wipe(self.otherAddons)
 	self.otherAddons = nil
 
 	-- add DB profile options
