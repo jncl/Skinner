@@ -138,6 +138,9 @@ function aObj:Ace3()
 			elseif objType == "Keybinding" then
 				aObj:skinButton{obj=obj.button, as=true}
 				aObj:applySkin{obj=obj.msgframe}
+			elseif objType == "CheckBox" then
+				aObj:addButtonBorder{obj=obj.frame, ofs=-2, y2=3, relTo=obj.checkbg, reParent={obj.check}}
+				obj.checkbg:SetTexture(nil)
 
 			-- Snowflake objects (Producer AddOn)
 			elseif objType == "SnowflakeGroup" then

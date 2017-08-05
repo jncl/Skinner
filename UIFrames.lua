@@ -2272,6 +2272,14 @@ aObj.blizzFrames[ftype].LevelUpDisplay = function(self)
 
 end
 
+local rTab = {"Tank", "Healer", "DPS", "Leader"}
+local function skinCheckBtns(frame)
+
+	for i = 1, #rTab do
+		aObj:skinCheckButton{obj=_G[frame .. "QueueFrameRoleButton" .. rTab[i]].checkButton}
+	end
+
+end
 aObj.blizzFrames[ftype].LFDFrame = function(self)
 	if not self.db.profile.LFDFrame or self.initialized.LFDFrame then return end
 	self.initialized.LFDFrame = true
@@ -2284,6 +2292,7 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 	self:removeInset(_G.LFDParentFrame.Inset)
 
 	-- LFD Queue Frame
+	skinCheckBtns("LFD")
 	_G.LFDQueueFrameBackground:SetAlpha(0)
 	self:skinDropDown{obj=_G.LFDQueueFrameTypeDropDown}
 	self:skinSlider{obj=_G.LFDQueueFrameRandomScrollFrame.ScrollBar}
@@ -3885,6 +3894,7 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 	-- TODO texture is present behind frame
 	_G.RaidFinderQueueFrameBackground:SetTexture(nil)
 	_G.RaidFinderQueueFrameBackground.SetTexture = _G.nop
+	skinCheckBtns("RaidFinder")
 	self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}
 	self:skinSlider{obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, rt={"background", "artwork"}}
 

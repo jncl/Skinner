@@ -208,6 +208,12 @@ function aObj:OnInitialize()
 	self.Backdrop[11] = CopyTable(self.backdrop)
 	self.Backdrop[11].edgeFile = nil
 	self.Backdrop[11].edgeSize = 0
+	-- this backdrop is for smaller CheckButtons
+	self.Backdrop[12] = CopyTable(self.backdrop)
+	self.Backdrop[12].tile = false
+	self.Backdrop[12].tileSize = 9
+	self.Backdrop[12].edgeSize = 9
+	self.Backdrop[12].insets = {left = 2, right = 2, top = 2, bottom = 2}
 
 	-- setup background texture name
 	if prdb.BgUseTex then
@@ -889,6 +895,50 @@ function aObj:applySkin(...)
 		opts.bd = select(6, ...) and select(6, ...) or nil
 	end
 	__applySkin(opts)
+	opts = nil
+
+end
+
+local function __skinCheckButton(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+--]]
+--@alpha@
+	assert(opts.obj, "Missing object __sCB\n" .. debugstack())
+--@end-alpha@
+
+	-- check to see if a 'real' CheckButton
+	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox") then return end
+
+	opts.obj:GetNormalTexture():SetTexture(nil)
+	opts.obj:GetPushedTexture():SetTexture(nil)
+
+	-- skin CheckButton
+	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
+	local bdSize = opts.obj:GetWidth() < 23 and 12 or 5
+	aObj:addSkinButton{obj=opts.obj, aso={bd=bdSize, ng=true}, parent=opts.obj, nohooks=true, ofs=-4, y2=5}
+	bdSize = nil
+
+end
+function aObj:skinCheckButton(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Missing object sCB\n" .. debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+	end
+
+	__skinCheckButton(opts)
 	opts = nil
 
 end

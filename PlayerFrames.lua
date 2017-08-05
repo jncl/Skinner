@@ -2488,6 +2488,13 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	if not self.db.profile.PVPFrame or self.initialized.PVPFrame then return end
 	self.initialized.PVPFrame = true
 
+	local rTab = {"Tank", "Healer", "DPS"}
+	local function skinCheckBtns(frame)
+		for i = 1, #rTab do
+			aObj:skinCheckButton{obj=frame[rTab[i] .. "Icon"].checkButton}
+		end
+	end
+
 	-- N.B. Frame already skinned as it is now part of GroupFinder/PVE
 	local btn
 	for i = 1, 4 do
@@ -2521,6 +2528,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	self:addButtonBorder{obj=hfxpb.NextAvailable, relTo=hfxpb.NextAvailable.Icon}
 	hfxpb = nil
 	self:removeInset(_G.HonorFrame.RoleInset)
+	skinCheckBtns(_G.HonorFrame.RoleInset)
 	self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
 	self:removeInset(_G.HonorFrame.Inset)
 	self:skinSlider{obj=_G.HonorFrameSpecificFrame.scrollBar, wdth=-4}
@@ -2556,6 +2564,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	cfxpb.NextAvailable.Frame:SetTexture(nil)
 	cfxpb = nil
 	self:removeInset(_G.ConquestFrame.RoleInset)
+	skinCheckBtns(_G.ConquestFrame.RoleInset)
 	_G.ConquestFrame.Arena2v2.Reward.Border:SetTexture(nil)
 	_G.ConquestFrame.Arena3v3.Reward.Border:SetTexture(nil)
 	_G.ConquestFrame.RatedBG.Reward.Border:SetTexture(nil)
@@ -2587,6 +2596,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	_G.WarGamesFrame.HorizontalBar:DisableDrawLayer("ARTWORK")
 	self:removeMagicBtnTex(_G.WarGameStartButton)
 	self:skinButton{obj=_G.WarGameStartButton}
+	self:skinCheckButton{obj=_G.WarGameTournamentModeCheckButton}
 
 	-- Tooltips
 	if self.db.profile.Tooltips.skin then
