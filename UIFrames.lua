@@ -2235,11 +2235,12 @@ local function skinCheckBtns(frame)
 
 end
 aObj.blizzFrames[ftype].LFDFrame = function(self)
-	if not self.db.profile.LFDFrame or self.initialized.LFDFrame then return end
+	if not self.db.profile.PVEFrame or self.initialized.LFDFrame then return end
 	self.initialized.LFDFrame = true
 
-	-- LFD RoleCheck Popup
+	-- LFD RoleCheck & LFDReadyCheck Popup
 	self:addSkinFrame{obj=_G.LFDRoleCheckPopup, kfs=true, ft=ftype}
+	self:addSkinFrame{obj=_G.LFDReadyCheckPopup, kfs=true, ft=ftype}
 
 	-- LFD Parent Frame (now part of PVE Frame)
 	self:keepFontStrings(_G.LFDParentFrame)
@@ -2272,15 +2273,17 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 	-- Specific List subFrame
 	local btn
 	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
-		btn = "LFDQueueFrameSpecificListButton" .. i .. "ExpandOrCollapseButton"
-		self:skinButton{obj=_G[btn], mp2=true}
+		btn = _G["LFDQueueFrameSpecificListButton" .. i]
+		self:skinCheckButton{obj=btn.enableButton}
+		self:skinButton{obj=btn.expandOrCollapseButton, mp2=true}
 	end
+	btn = nil
 	self:skinSlider{obj=_G.LFDQueueFrameSpecificListScrollFrame.ScrollBar, rt="background"}
 
 end
 
 aObj.blizzFrames[ftype].LFGFrame = function(self)
-	if not self.db.profile.LFGFrame or self.initialized.LFGFrame then return end
+	if not self.db.profile.PVEFrame or self.initialized.LFGFrame then return end
 	self.initialized.LFGFrame = true
 
 	-- LFG DungeonReady Popup a.k.a. ReadyCheck
@@ -2305,7 +2308,7 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 end
 
 aObj.blizzFrames[ftype].LFRFrame = function(self)
-	if not self.db.profile.LFRFrame or self.initialized.LFRFrame then return end
+	if not self.db.profile.RaidFrame or self.initialized.LFRFrame then return end
 	self.initialized.LFRFrame = true
 
 	self:addSkinFrame{obj=_G.RaidBrowserFrame, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
@@ -2320,10 +2323,12 @@ aObj.blizzFrames[ftype].LFRFrame = function(self)
 	-- Specific List subFrame
 	local btn
 	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
-		btn = "LFRQueueFrameSpecificListButton" .. i .. "ExpandOrCollapseButton"
-		self:skinButton{obj=_G[btn], mp2=true}
-		self:moveObject{obj=_G[btn .. "Highlight"], x=-3} -- move highlight to the left
+		btn = _G["LFRQueueFrameSpecificListButton" .. i]
+		self:skinCheckButton{obj=btn.enableButton}
+		self:skinButton{obj=btn.expandOrCollapseButton, mp2=true}
+		-- self:moveObject{obj=btn .. "Highlight"], x=-3} -- move highlight to the left
 	end
+	btn = nil
 	self:skinSlider{obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar}
 
 	-- LFR Browse Frame
@@ -2340,6 +2345,106 @@ aObj.blizzFrames[ftype].LFRFrame = function(self)
 		self:addButtonBorder{obj=tab}
 	end
 	tab = nil
+
+end
+
+aObj.blizzFrames[ftype].LFGList = function(self)
+	if not self.db.profile.PVEFrame or self.initialized.LFGList then return end
+	self.initialized.LFGList = true
+
+	-- Premade Groups LFGListPVEStub (LFGList)
+	-- CategorySelection
+	local cs = _G.LFGListFrame.CategorySelection
+	self:removeInset(cs.Inset)
+	self:removeMagicBtnTex(cs.FindGroupButton)
+	self:skinButton{obj=cs.FindGroupButton}
+	self:removeMagicBtnTex(cs.StartGroupButton)
+	self:skinButton{obj=cs.StartGroupButton}
+	cs = nil
+	self:SecureHook("LFGListCategorySelection_AddButton", function(this, ...)
+		for i = 1, #this.CategoryButtons do
+			this.CategoryButtons[i].Cover:SetTexture(nil)
+		end
+	end)
+
+	-- NothingAvailable
+	self:removeInset(_G.LFGListFrame.NothingAvailable.Inset)
+
+	-- SearchPanel
+	local sp = _G.LFGListFrame.SearchPanel
+	self:skinEditBox{obj=sp.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
+    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
+	self:addSkinFrame{obj=sp.AutoCompleteFrame, ft=ftype, kfs=true, nb=true, x1=4, y1=4, y2=4}
+	self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
+	self:removeInset(sp.ResultsInset)
+	self:skinButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
+	self:skinSlider{obj=sp.ScrollFrame.scrollBar, wdth=-4}
+	for i = 1, #sp.ScrollFrame.buttons do
+		self:skinButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
+	end
+	self:removeMagicBtnTex(sp.BackButton)
+	self:skinButton{obj=sp.BackButton}
+	self:removeMagicBtnTex(sp.SignUpButton)
+	self:skinButton{obj=sp.SignUpButton}
+	sp = nil
+
+	-- ApplicationViewer
+	local av = _G.LFGListFrame.ApplicationViewer
+	av:DisableDrawLayer("BACKGROUND")
+	self:removeInset(av.Inset)
+	local nTab, btn = {"Name", "Role", "ItemLevel"}
+	for i = 1, #nTab do
+		btn = av[nTab[i] .. "ColumnHeader"]
+		self:removeRegions(btn, {1, 2, 3})
+		self:skinButton{obj=btn}
+	end
+	nTab, btn = nil, nil
+	self:addButtonBorder{obj=av.RefreshButton, ofs=-2}
+	self:skinSlider{obj=av.ScrollFrame.scrollBar, wdth=-4}
+	for i = 1, #av.ScrollFrame.buttons do
+		self:skinButton{obj=av.ScrollFrame.buttons[i].DeclineButton}
+		self:skinButton{obj=av.ScrollFrame.buttons[i].InviteButton}
+	end
+	self:removeMagicBtnTex(av.RemoveEntryButton)
+	self:skinButton{obj=av.RemoveEntryButton}
+	self:removeMagicBtnTex(av.EditButton)
+	self:skinButton{obj=av.EditButton}
+	av = nil
+
+	-- EntryCreation
+	local ec = _G.LFGListFrame.EntryCreation
+	self:removeInset(ec.Inset)
+	local ecafd = ec.ActivityFinder.Dialog
+	self:skinEditBox{obj=ecafd.EntryBox, regs={6}, mi=true} -- 6 is text
+	self:skinSlider{obj=ecafd.ScrollFrame.scrollBar, size=4}
+	ecafd.BorderFrame:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=ecafd, ft=ftype, kfs=true}
+	ecafd = nil
+	self:skinEditBox{obj=ec.Name, regs={6}, mi=true} -- 6 is text
+	self:skinDropDown{obj=ec.CategoryDropDown}
+	self:skinDropDown{obj=ec.GroupDropDown}
+	self:skinDropDown{obj=ec.ActivityDropDown}
+	self:addSkinFrame{obj=ec.Description, ft=ftype, kfs=true, ofs=6}
+	self:skinCheckButton{obj=ec.ItemLevel.CheckButton}
+	self:skinEditBox{obj=ec.ItemLevel.EditBox, regs={6}, mi=true} -- 6 is text
+	self:skinCheckButton{obj=ec.HonorLevel.CheckButton}
+	self:skinCheckButton{obj=ec.VoiceChat.CheckButton}
+	self:skinEditBox{obj=ec.VoiceChat.EditBox, regs={6}, mi=true} -- 6 is text
+	self:skinCheckButton{obj=ec.PrivateGroup.CheckButton}
+	self:removeMagicBtnTex(ec.ListGroupButton)
+	self:skinButton{obj=ec.ListGroupButton}
+	self:removeMagicBtnTex(ec.CancelButton)
+	self:skinButton{obj=ec.CancelButton}
+	ec = nil
+
+	-- LFGListApplication Dialog
+	self:skinSlider{obj=_G.LFGListApplicationDialog.Description.ScrollBar, wdth=-4}
+	self:addSkinFrame{obj=_G.LFGListApplicationDialog.Description, ft=ftype, kfs=true, ofs=6}
+	_G.LFGListApplicationDialog.Description.EditBox.Instructions:SetTextColor(self.BTr, self.BTg, self.BTb)
+	self:addSkinFrame{obj=_G.LFGListApplicationDialog, ft=ftype, kfs=true}
+
+	-- LFGListInvite Dialog
+	self:addSkinFrame{obj=_G.LFGListInviteDialog, ft=ftype}
 
 end
 
@@ -3584,6 +3689,8 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 	if not self.db.profile.PVEFrame or self.initialized.PVEFrame then return end
 	self.initialized.PVEFrame = true
 
+	-- "LFDParentFrame", "ScenarioFinderFrame", "RaidFinderFrame", "LFGListPVEStub"
+
 	self:removeInset(_G.PVEFrame.Inset)
 	self:keepFontStrings(_G.PVEFrame.shadows)
 	self:skinButton{obj=_G.PVEFrameCloseButton, cb=true}
@@ -3613,111 +3720,6 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		end
 		btn = nil
 	end)
-	-- Premade Groups LFGListPVEStub (LFGList)
-	-- CategorySelection
-	local cs = _G.LFGListFrame.CategorySelection
-	self:removeInset(cs.Inset)
-	self:SecureHook("LFGListCategorySelection_AddButton", function(...)
-		for i = 1, #cs.CategoryButtons do
-			cs.CategoryButtons[i].Cover:SetTexture(nil)
-		end
-	end)
-	self:removeMagicBtnTex(cs.FindGroupButton)
-	self:skinButton{obj=cs.FindGroupButton}
-	self:removeMagicBtnTex(cs.StartGroupButton)
-	self:skinButton{obj=cs.StartGroupButton}
-	-- NothingAvailable
-	self:removeInset(_G.LFGListFrame.NothingAvailable.Inset)
-	-- SearchPanel
-	local sp = _G.LFGListFrame.SearchPanel
-	self:skinEditBox{obj=sp.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
-	self:addSkinFrame{obj=sp.AutoCompleteFrame, ft=ftype, kfs=true, nb=true, x1=4, y1=4, y2=4}
-	self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
-	self:removeInset(sp.ResultsInset)
-	self:skinButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
-	self:skinSlider{obj=sp.ScrollFrame.scrollBar, wdth=-4}
-	for i = 1, #sp.ScrollFrame.buttons do
-		self:skinButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
-	end
-	self:removeMagicBtnTex(sp.BackButton)
-	self:skinButton{obj=sp.BackButton}
-	self:removeMagicBtnTex(sp.SignUpButton)
-	self:skinButton{obj=sp.SignUpButton}
-	-- ApplicationViewer
-	local av = _G.LFGListFrame.ApplicationViewer
-	av:DisableDrawLayer("BACKGROUND")
-	self:removeInset(av.Inset)
-	for _, v in pairs{"Name", "Role", "ItemLevel"} do
-		btn = av[v .. "ColumnHeader"]
-		self:removeRegions(btn, {1, 2, 3})
-		self:skinButton{obj=btn}
-	end
-	self:addButtonBorder{obj=av.RefreshButton, ofs=-2}
-	self:skinSlider{obj=av.ScrollFrame.scrollBar, wdth=-4}
-	for i = 1, #av.ScrollFrame.buttons do
-		btn = av.ScrollFrame.buttons[i]
-		self:skinButton{obj=btn.DeclineButton}
-		self:skinButton{obj=btn.InviteButton}
-	end
-	self:removeMagicBtnTex(av.RemoveEntryButton)
-	self:skinButton{obj=av.RemoveEntryButton}
-	self:removeMagicBtnTex(av.EditButton)
-	self:skinButton{obj=av.EditButton}
-	-- EntryCreation
-	local ec = _G.LFGListFrame.EntryCreation
-	self:removeInset(ec.Inset)
-	local ecafd = ec.ActivityFinder.Dialog
-	self:skinEditBox{obj=ecafd.EntryBox, regs={6}, mi=true} -- 6 is text
-	self:skinSlider{obj=ecafd.ScrollFrame.scrollBar, size=4}
-	ecafd.BorderFrame:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=ecafd, ft=ftype, kfs=true}
-	self:skinEditBox{obj=ec.Name, regs={6}, mi=true} -- 6 is text
-	self:skinDropDown{obj=ec.CategoryDropDown}
-	self:skinDropDown{obj=ec.GroupDropDown}
-	self:skinDropDown{obj=ec.ActivityDropDown}
-	self:skinEditBox{obj=ec.ItemLevel.EditBox, regs={6}, mi=true} -- 6 is text
-	self:skinEditBox{obj=ec.VoiceChat.EditBox, regs={6}, mi=true} -- 6 is text
-	self:addSkinFrame{obj=ec.Description, ft=ftype, kfs=true, ofs=6}
-	self:removeMagicBtnTex(ec.ListGroupButton)
-	self:skinButton{obj=ec.ListGroupButton}
-	self:removeMagicBtnTex(ec.CancelButton)
-	self:skinButton{obj=ec.CancelButton}
-
-	-- LFGListApplication Dialog
-	self:skinSlider{obj=_G.LFGListApplicationDialog.Description.ScrollBar, wdth=-4}
-	self:addSkinFrame{obj=_G.LFGListApplicationDialog.Description, ft=ftype, kfs=true, ofs=6}
-	_G.LFGListApplicationDialog.Description.EditBox.Instructions:SetTextColor(self.BTr, self.BTg, self.BTb)
-	self:addSkinFrame{obj=_G.LFGListApplicationDialog, ft=ftype, kfs=true}
-	-- LFGListInvite Dialog
-	self:addSkinFrame{obj=_G.LFGListInviteDialog, ft=ftype}
-
-	-- ScenarioFinder Frame
-	self:keepFontStrings(_G.ScenarioFinderFrame)
-	self:RaiseFrameLevelByFour(_G.ScenarioFinderFrame.NoScenariosCover) -- cover buttons and dropdown
-	self:removeInset(_G.ScenarioFinderFrame.Inset)
-
-	-- ScenarioQueueFrame
-	_G.ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
-	self:skinDropDown{obj=_G.ScenarioQueueFrame.Dropdown}
-	self:skinSlider{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.ScrollBar, rt={"background", "artwork"}}
-	local btnName
-	for i = 1, _G.ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
-		btnName = "ScenarioQueueFrameRandomScrollFrameChildFrameItem" .. i
-		if _G[btnName] then
-			_G[btnName .. "NameFrame"]:SetTexture(nil)
-			self:addButtonBorder{obj=_G[btnName], libt=true}
-		end
-	end
-	btnName = nil
-	self:skinButton{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.Child.bonusRepFrame.ChooseButton, as=true}
-	self:addButtonBorder{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.Child.MoneyReward, libt=true}
-	_G.ScenarioQueueFrame.Random.ScrollFrame.Child.MoneyReward.NameFrame:SetTexture(nil)
-
-	self:skinButton{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
-	self:moveObject{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
-	self:skinSlider{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame.ScrollBar, rt="background"}
-	self:keepFontStrings(_G.ScenarioQueueFramePartyBackfill)
 
 end
 
@@ -3832,7 +3834,12 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 	self:skinTabs{obj=_G.RaidParentFrame, lod=true}
 	self:addSkinFrame{obj=_G.RaidParentFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
--->>-- RaidFinder Frame
+end
+
+aObj.blizzFrames[ftype].RaidFinder = function(self)
+	if not self.db.profile.PVEFrame or self.initialized.RaidFinder then return end
+	self.initialized.RaidFinder = true
+
 	_G.RaidFinderFrame:DisableDrawLayer("BACKGROUND")
 	_G.RaidFinderFrame:DisableDrawLayer("BORDER")
 	self:RaiseFrameLevelByFour(_G.RaidFinderFrame.NoRaidsCover) -- cover buttons and dropdown
@@ -3846,11 +3853,45 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 	self:skinButton{obj=_G.RaidFinderFrameFindRaidButton}
 
 	-- TODO texture is present behind frame
+	-- RaidFinderQueueFrame
 	_G.RaidFinderQueueFrameBackground:SetTexture(nil)
 	_G.RaidFinderQueueFrameBackground.SetTexture = _G.nop
 	skinCheckBtns("RaidFinder")
 	self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}
 	self:skinSlider{obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, rt={"background", "artwork"}}
+
+end
+
+aObj.blizzFrames[ftype].ScenarioFinder = function(self)
+	if not self.db.profile.PVEFrame or self.initialized.ScenarioFinder then return end
+	self.initialized.ScenarioFinder = true
+
+	-- ScenarioFinder Frame
+	self:keepFontStrings(_G.ScenarioFinderFrame)
+	self:RaiseFrameLevelByFour(_G.ScenarioFinderFrame.NoScenariosCover) -- cover buttons and dropdown
+	self:removeInset(_G.ScenarioFinderFrame.Inset)
+
+	-- ScenarioQueueFrame
+	_G.ScenarioQueueFrame.Bg:SetAlpha(0) -- N.B. texture changed in code
+	self:skinDropDown{obj=_G.ScenarioQueueFrame.Dropdown}
+	self:skinSlider{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.ScrollBar, rt={"background", "artwork"}}
+	local btnName
+	for i = 1, _G.ScenarioQueueFrame.Random.ScrollFrame.Child.numRewardFrames do
+		btnName = "ScenarioQueueFrameRandomScrollFrameChildFrameItem" .. i
+		if _G[btnName] then
+			_G[btnName .. "NameFrame"]:SetTexture(nil)
+			self:addButtonBorder{obj=_G[btnName], libt=true}
+		end
+	end
+	btnName = nil
+	self:skinButton{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.Child.bonusRepFrame.ChooseButton, as=true}
+	self:addButtonBorder{obj=_G.ScenarioQueueFrame.Random.ScrollFrame.Child.MoneyReward, libt=true}
+	_G.ScenarioQueueFrame.Random.ScrollFrame.Child.MoneyReward.NameFrame:SetTexture(nil)
+
+	self:skinButton{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButton, mp2=true}
+	self:moveObject{obj=_G.ScenarioQueueFrameSpecificButton1ExpandOrCollapseButtonHighlight, x=-3} -- move highlight to the left
+	self:skinSlider{obj=_G.ScenarioQueueFrame.Specific.ScrollFrame.ScrollBar, rt="background"}
+	self:keepFontStrings(_G.ScenarioQueueFramePartyBackfill)
 
 end
 
