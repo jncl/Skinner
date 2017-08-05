@@ -1914,6 +1914,17 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 		end
 	end
 	btn = nil
+	-- PortraitMouseOverFrame
+	self:moveObject{obj=_G.InspectPVPFrame.PortraitBackground, x=8, y=-10}
+	self:SecureHook(_G.InspectPVPFrame, "Show", function(this)
+		-- Show Portrait if prestige level is greater than 0
+		if _G.UnitPrestige(_G.INSPECTED_UNIT) > 0 then
+			_G.InspectFrame.portrait:SetAlpha(1)
+		end
+	end)
+	self:SecureHook(_G.InspectPVPFrame, "Hide", function(this)
+		_G.InspectFrame.portrait:SetAlpha(0)
+	end)
 
 -->>-- Guild Frame
 	_G.InspectGuildFrameBG:SetAlpha(0)
@@ -2919,6 +2930,20 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	obj = nil
 	-- TutorialBox
 	self:skinButton{obj=pvpt.TutorialBox.CloseButton, cb=true}
+	-- PrestigeLevelDialog
+	self:addSkinFrame{obj=pvpt.PrestigeLevelDialog, ft=ftype}
+	-- PortraitMouseOverFrame
+	self:moveObject{obj=pvpt.PortraitBackground, x=8, y=-10}
+	self:moveObject{obj=pvpt.SmallWreath, x=8, y=-10}
+	self:SecureHook(pvpt, "Show", function(this)
+		-- Show Portrait if prestige level is greater than 0
+		if _G.UnitPrestige("player") > 0 then
+			_G.PlayerTalentFrame.portrait:SetAlpha(1)
+		end
+	end)
+	self:SecureHook(pvpt, "Hide", function(this)
+		_G.PlayerTalentFrame.portrait:SetAlpha(0)
+	end)
 	pvpt = nil
 
 	-- Tab4 (Pet Specialization)
