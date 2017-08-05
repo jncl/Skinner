@@ -3920,6 +3920,43 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 
 end
 
+aObj.blizzFrames[ftype].SpellFlyout = function(self)
+	if not self.db.profile.MainMenuBar.skin or self.initialized.SpellFlyout then return end
+	self.initialized.SpellFlyout = true
+
+	_G.SpellFlyout.BgEnd:SetTexture(nil)
+	_G.SpellFlyout.HorizBg:SetTexture(nil)
+	_G.SpellFlyout.VertBg:SetTexture(nil)
+
+	self:addSkinFrame{obj=_G.SpellFlyout, ft=ftype, aso={ng=true}}
+
+	-- hook this to manage skin size, dependant upon Horiz/Vert alignment
+	self:SecureHook(_G.SpellFlyout, "Toggle", function(this, flyoutID, parent, direction, distance, isActionBar, specID, showFullTooltip, reason)
+		local gW, gH = self:getInt(this:GetWidth()), self:getInt(this:GetHeight())
+		local xOfs, yOfs
+		if gW == 28 then -- vertical
+			yOfs = 0
+			xOfs = -4
+		else
+			yOfs = 4
+			xOfs = 0
+		end
+		this.sf:ClearAllPoints()
+		this.sf:SetPoint("TOPLEFT", this, "TOPLEFT", xOfs, yOfs)
+		this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", xOfs * -1, yOfs * -1)
+		gW, gH, xOfs, yOfs = nil, nil, nil, nil
+	end)
+	-- hook this to manage border colour
+	self:SecureHook(_G.SpellFlyout, "SetBorderColor", function(this, r, g, b)
+		-- aObj:Debug("SpellFlyout SetBorderColor: [%s, %s, %s, %s]", this, r, g, b)
+		-- ignore if colour is default values
+		if r == 0.7 then return end
+
+		this.sf:SetBackdropBorderColor(r, g, b)
+	end)
+
+end
+
 aObj.blizzFrames[ftype].SplashFrame = function(self)
 	if not self.db.profile.SplashFrame or self.initialized.SplashFrame then return end
 	self.initialized.SplashFrame = true
