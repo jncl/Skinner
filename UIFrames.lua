@@ -1487,28 +1487,6 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 
 end
 
-aObj.blizzFrames[ftype].DropDownPanels = function(self)
-	if not self.db.profile.DropDownPanels or self.initialized.DropDownPanels then return end
-	self.initialized.DropDownPanels = true
-
-	self:SecureHook("UIDropDownMenu_CreateFrames", function(...)
-		local objName, obj
-		for i = 1,_G. UIDROPDOWNMENU_MAXLEVELS do
-			objName = "DropDownList" .. i
-			obj = _G[objName]
-			self:secureHook(obj, "Show", function(this)
-					if not this.sf then
-						self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-						_G[this:GetName() .. "Backdrop"]:SetBackdrop(nil)
-						_G[this:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
-					end
-				end)
-		end
-		objName = nil
-	end)
-
-end
-
 aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	if not self.db.profile.GarrisonUI or self.initialized.GarrisonUI then return end
 	self.initialized.GarrisonUI = true
@@ -4098,6 +4076,31 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 	btn:SetText("?")
 	self:moveObject{obj=btn:GetFontString(), x=4}
 	self:addSkinButton{obj=btn, parent=btn, ft=ftype, x1=30, y1=-1, x2=-25, y2=10}
+
+end
+
+aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
+	if not self.db.profile.DropDownPanels or self.initialized.DropDownPanels then return end
+	self.initialized.DropDownPanels = true
+
+	local frame
+	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
+		frame = _G["DropDownList" .. i]
+		self:addSkinFrame{obj=frame, ft=ftype, kfs=true}
+		_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
+		_G[frame:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
+	end
+	frame = nil
+
+--@debug@
+	self:SecureHook("UIDropDownMenu_CreateFrames", function(level, index)
+		if _G.UIDROPDOWNMENU_MAXLEVELS > 2 then
+			_G.DEFAULT_CHAT_FRAME:AddMessage("UIDropDownMenus > 2" .. "[" .. level .. "][" .. index .. "]", 1, 0, 0, nil, true)
+		end
+	end)
+--@end-debug@
+
+
 
 end
 
