@@ -207,9 +207,7 @@ local function skinPlayerF()
 
 		-- skin the WarlockPowerFrame, if required
 		if aObj.uCls == "WARLOCK" then
-			for i = 1, #_G.WarlockPowerFrame.Shards do
-				_G.WarlockPowerFrame.Shards[i]:DisableDrawLayer("BORDER")
-			end
+			_G.WarlockPowerFrame:DisableDrawLayer("BACKGROUND") -- Shard(s) background texture
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value

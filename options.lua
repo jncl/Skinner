@@ -1838,8 +1838,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	for addonName in pairs(self.addonsToSkin) do
 		addDSOpt(addonName)
 	end
-	for _, addonName in pairs(self.libsToSkin) do
-		addDSOpt(addonName, true)
+	for i = 1, #self.libsToSkin do
+		addDSOpt(self.libsToSkin[i], true)
 	end
 	for addonName in pairs(self.lodAddons) do
 		addDSOpt(addonName)

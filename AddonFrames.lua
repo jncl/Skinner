@@ -8,10 +8,10 @@ function aObj:BlizzardFrames()
 	-- self:Debug("BlizzardFrames")
 
 	-- skin Blizzard frames
-	for k1, v1 in pairs(self.blizzFrames) do
-		if k1 ~= "o" then -- ignore options functions
-			for k2, v2 in pairs(v1) do
-				self:checkAndRun(k2, k1)
+	for type, fTab in pairs(self.blizzFrames) do
+		if type ~= "o" then -- ignore options functions
+			for func, _ in pairs(fTab) do
+				self:checkAndRun(func, type)
 			end
 		end
 	end
@@ -46,8 +46,8 @@ local addonSkins = {
 	"ZPerl", "ZPerl_RaidAdmin", "ZPerl_RaidHelper", "ZygorGuidesViewer",
 }
 aObj.addonsToSkin = {}
-for _, v in pairs(addonSkins) do
-	aObj.addonsToSkin[v] = v
+for i = 1, #addonSkins do
+	aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
 end
 addonSkins = nil
 -- oddly named addons
@@ -157,14 +157,16 @@ local lodFrames = {
 	"ZPerl_Options",
 }
 aObj.lodAddons = {}
-for _, v in pairs(lodFrames) do
-	aObj.lodAddons[v] = v
+for i = 1, #lodFrames do
+	aObj.lodAddons[lodFrames[i]] = lodFrames[i]
 end
 lodFrames = nil
 -- RaidAchievement modules
-for _, v in pairs{"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids", "PandaHeroics", "PandaRaids", "PandaScenarios"} do
-	aObj.lodAddons["RaidAchievement_" .. v] = "RaidAchievement_" .. v
+local raMods = {"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids", "PandaHeroics", "PandaRaids", "PandaScenarios"}
+for i = 1, #raMods do
+	aObj.lodAddons["RaidAchievement_" .. raMods[i]] = "RaidAchievement_" .. raMods[i]
 end
+raMods = nil
 -- oddly named LoD addons
 aObj.lodAddons["_DevPad.GUI"] = "_DevPadGUI"
 aObj.lodAddons["DBM-GUI"] = "DBMGUI"

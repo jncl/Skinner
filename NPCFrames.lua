@@ -17,8 +17,6 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 	if not self.db.profile.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
-	local btnName, obj
-
 	-- hide filter texture when filter is clicked
 	self:SecureHook("FilterButton_SetUp", function(button, ...)
 		_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
@@ -43,11 +41,14 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 	_G.WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
 	self:skinButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
 	self:addSkinFrame{obj=_G.WowTokenGameTimeTutorial, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
-	for _, v in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
-		obj = _G["Browse" .. v .. "Sort"]
+	local nTab, obj = {"Quality", "Level", "Duration", "HighBidder", "CurrentBid"}
+	for i = 1, #nTab do
+		obj = _G["Browse" .. nTab[i] .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
+	nTab, obj = nil, nil
+	local btnName
 	for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
 		btnName = "BrowseButton" .. i
 		if _G[btnName].Orig then break end -- Auctioneer CompactUI loaded
@@ -55,11 +56,14 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName .. "Item"], auit=true}
 	end
-	for _, v in pairs{"Name", "MinLevel", "MaxLevel"} do
-		obj = _G["Browse" .. v]
-		self:skinEditBox{obj=obj, regs={6, v == "Name" and 7 or nil}, mi=true} -- 6 is text, 7 is icon
-		self:moveObject{obj=obj, x=v == "MaxLevel" and -6 or -4, y=v ~= "MaxLevel" and 3 or 0}
+	btnName = nil
+	local nTab, obj = {"Name", "MinLevel", "MaxLevel"}
+	for i = 1, #nTab do
+		obj = _G["Browse" .. nTab[i]]
+		self:skinEditBox{obj=obj, regs={6, nTab[i] == "Name" and 7 or nil}, mi=true} -- 6 is text, 7 is icon
+		self:moveObject{obj=obj, x=nTab[i] == "MaxLevel" and -6 or -4, y=nTab[i] ~= "MaxLevel" and 3 or 0}
 	end
+	nTab, obj = nil, nil
 	self:skinDropDown{obj=_G.BrowseDropDown, x2=110}
 	self:addButtonBorder{obj=_G.IsUsableCheckButton, es=14, ofs=-2}
 	self:addButtonBorder{obj=_G.ShowOnPlayerCheckButton, es=14, ofs=-2}
@@ -77,17 +81,21 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 	self:skinButton{obj=_G.BrowseCloseButton}
 
 -->>--	Bid Frame
-	for _, v in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
-		obj = _G["Bid" .. v .. "Sort"]
+	local nTab, obj = {"Quality", "Level", "Duration", "Buyout", "Status", "Bid"}
+	for i = 1, #nTab do
+		obj = _G["Bid" .. nTab[i] .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
+	nTab, obj = nil, nil
+	local btnName
 	for i = 1, _G.NUM_BIDS_TO_DISPLAY do
 		btnName = "BidButton" .. i
 		self:keepFontStrings(_G[btnName])
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName .. "Item"], auit=true}
 	end
+	btnName = nil
 	self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, rt="artwork"}
 	self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
 	_G.BidCloseButton:DisableDrawLayer("BORDER")
@@ -98,11 +106,14 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 	self:skinButton{obj=_G.BidCloseButton}
 
 -->>--	Auctions Frame
-	for _, v in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
-		obj = _G["Auctions" .. v .. "Sort"]
+	local nTab, obj = {"Quality", "Duration", "HighBidder", "Bid"}
+	for i = 1, #nTab do
+		obj = _G["Auctions" .. nTab[i] .. "Sort"]
 		self:keepRegions(obj, {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
+	nTab, obj = nil, nil
+	local btnName
 	self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, rt="artwork"}
 	for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
 		btnName = "AuctionsButton" .. i
@@ -110,6 +121,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		if _G[btnName .. "Highlight"] then _G[btnName .. "Highlight"]:SetAlpha(1) end
 		self:addButtonBorder{obj=_G[btnName .. "Item"], auit=true}
 	end
+	btnName = nil
 	if not self.modBtnBs then
 		self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
 	else
@@ -134,8 +146,6 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 	self:keepFontStrings(_G.AuctionProgressBar)
 	self:moveObject{obj=_G.AuctionProgressBar.Text, y=-2}
 	self:glazeStatusBar(_G.AuctionProgressBar, 0)
-
-	btnName, obj = nil, nil
 
 end
 
@@ -194,10 +204,13 @@ aObj.blizzLoDFrames[ftype].BarbershopUI = function(self)
 
 	self:keepFontStrings(_G.BarberShopFrameMoneyFrame)
 	self:addSkinFrame{obj=_G.BarberShopFrame, ft=ftype, kfs=true, x1=35, y1=-32, x2=-32, y2=42}
+	local frame
 	for i = 1, #_G.BarberShopFrame.Selector do
-		 self:addButtonBorder{obj=self:getChild(_G.BarberShopFrame.Selector[i], 1), ofs=-2}
-		 self:addButtonBorder{obj=self:getChild(_G.BarberShopFrame.Selector[i], 2), ofs=-2}
+		frame = _G.BarberShopFrame.Selector[i]
+		self:addButtonBorder{obj=self:getChild(frame, 1), ofs=-2}
+		self:addButtonBorder{obj=self:getChild(frame, 2), ofs=-2}
 	end
+	frame = nil
 	-- Banner Frame
 	self:keepFontStrings(_G.BarberShopBannerFrame)
 	_G.BarberShopBannerFrameCaption:ClearAllPoints()
@@ -217,12 +230,13 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 	self:addButtonBorder{obj=_G.BlackMarketFrame.HotDeal.Item, bmit=true}
 
 	-- column headings
-	local obj
-	for _, v in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
-		obj = _G.BlackMarketFrame["Column" .. v]
+	local nTab, obj = {"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"}
+	for i = 1, #nTab do
+		obj = _G.BlackMarketFrame["Column" .. nTab[i]]
 		self:keepFontStrings(obj)
 		self:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={bd=5}}
 	end
+	nTab, obj = nil, nil
 	self:skinSlider{obj=_G.BlackMarketScrollFrame.ScrollBar, wdth=-4}
 	_G.BlackMarketFrame.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 	self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
@@ -233,9 +247,9 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		for i = 1, #scrollFrame.buttons do
 			btn = scrollFrame.buttons[i]
 			self:keepFontStrings(btn)
-			-- btn.Item.IconBorder:SetTexture(nil)
 			self:addButtonBorder{obj=btn.Item, bmit=true}
 		end
+		btn = nil
 	end
 	self:SecureHook("BlackMarketScrollFrame_Update", function(this)
 			skinSFButtons(_G.BlackMarketScrollFrame)
@@ -253,13 +267,14 @@ aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	_G.FlightMapFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 	-- hook this to remove ZoneLabel background texture
-	for dataProvider in pairs(_G.FlightMapFrame.dataProviders) do
-		if dataProvider.ZoneLabel then
-			dataProvider.ZoneLabel.TextBackground:SetTexture(nil)
+	for dP, _ in pairs(_G.FlightMapFrame.dataProviders) do
+		if dP.ZoneLabel then
+			dP.ZoneLabel.TextBackground:SetTexture(nil)
 			-- hook this to handle when Map re-opened
-			self:SecureHook(dataProvider.ZoneLabel.dataProvider, "RefreshAllData", function(this, fromOnShow)
+			self:SecureHook(dP.ZoneLabel.dataProvider, "RefreshAllData", function(this, fromOnShow)
 				this.ZoneLabel.TextBackground:SetTexture(nil)
 			end)
+			break
 		end
 	end
 
@@ -332,6 +347,7 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		else
 			_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
 		end
+		icon = nil
 	end)
 	-- hook this to remove background texture from stat lines
 	self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, tryAdd)
@@ -347,7 +363,9 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 
 	-- display limited availability item's stock count even when zero
 	self:SecureHook("SetItemButtonStock", function(button, numInStock)
-		if numInStock == 0 and not button == _G.MerchantBuyBackItemItemButton then
+		if numInStock == 0
+		and not button == _G.MerchantBuyBackItemItemButton
+		then
 			_G[button:GetName() .. "Stock"]:SetFormattedText(_G.MERCHANT_STOCK, numInStock)
 			_G[button:GetName() .. "Stock"]:Show()
 		end
@@ -443,6 +461,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 			self:addButtonBorder{obj=btn}
 		end
 	end
+	btn = nil
 	_G.PetStableFrame.BottomInset:DisableDrawLayer("BORDER")
 	_G.PetStableFrameStableBg:Hide()
 	self:addSkinFrame{obj=_G.PetStableFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
@@ -505,6 +524,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		if r < 0.2 then
 			_G.QuestProgressRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
 		end
+		r, g, b = nil, nil, nil
 	end)
 
 	--	Detail Panel
@@ -607,14 +627,13 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 				obj:SetTextColor(aObj.BTr - r, aObj.BTg - g, aObj.BTb - b)
 			end
 		end
-		r, g, b = nil, nil, nil
+		obj, r, g, b = nil, nil, nil, nil
 
 		-- QuestInfoSpecialObjectives Frame
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
 		_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
 		aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
-		obj = nil
 
 	end
 	self:SecureHook("QuestInfo_Display", function(...)
@@ -663,15 +682,17 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	frame = _G.MapQuestInfoRewardsFrame
 	skinRewards(frame)
 	-- other rewards
-	for _, v in pairs{"XPFrame", "HonorFrame", "ArtifactXPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"} do
-		frame[v].NameFrame:SetTexture(nil)
-		if not v == "SkillPointFrame" then
-			self:addButtonBorder{obj=frame[v], relTo=frame[v].Icon}
+	local nTab, tab = {"XPFrame", "HonorFrame", "ArtifactXPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"}
+	for i = 1, #nTab do
+		tab = frame[nTab[i]]
+		tab.NameFrame:SetTexture(nil)
+		if not nTab[i] == "SkillPointFrame" then
+			self:addButtonBorder{obj=tab, relTo=tab.Icon}
 		else
-			self:addButtonBorder{obj=frame[v], relTo=frame[v].Icon, reParent={frame[v].CircleBackground, frame[v].CircleBackgroundGlow, frame[v].ValueText}}
+			self:addButtonBorder{obj=tab, relTo=tab.Icon, reParent={tab.CircleBackground, tab.CircleBackgroundGlow, tab.ValueText}}
 		end
 	end
-
+	frame, nTab, tab = nil, nil, nil
 	local function skinQIRB(rewardsFrame, index)
 		-- aObj:Debug("skinQIRB: [%s, %s]", rewardsFrame, index)
 		-- N.B. The MapQuestInfoRewardsFrame uses SmallItemButtonTemplate (libt works atm)
@@ -752,6 +773,7 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 		btn:GetNormalTexture():SetTexture(nil)
 		self:addButtonBorder{obj=btn, relTo=btn.icon}
 	end
+	btn = nil
 	self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
 	self:addSkinFrame{obj=_G.ClassTrainerFrame, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
 
@@ -763,12 +785,13 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 
 	self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
 	self:keepFontStrings(_G.VoidStorageBorderFrame)
-	local frame
-	for _, v in pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
-		frame = _G["VoidStorage" .. v .. "Frame"]
+	local nTab, frame = {"Deposit", "Withdraw", "Storage", "Cost"}
+	for i = 1, #nTab do
+		frame = _G["VoidStorage" .. nTab[i] .. "Frame"]
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 	end
+	nTab, frame = nil, nil
 	self:addSkinFrame{obj=_G.VoidStorageFrame, ft=ftype, kfs=true, y1=2, x2=1}
 	self:skinEditBox{obj=_G.VoidItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
 	for i = 1, 2 do

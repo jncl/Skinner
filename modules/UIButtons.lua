@@ -120,6 +120,8 @@ function module:checkTex(...)
 
 end
 
+local aTab = {"Top", "Middle", "Bottom"}
+local bTab = {"Left", "Middle", "Right"}
 function module:skinButton(opts)
 --[[
 	Calling parameters:
@@ -153,9 +155,9 @@ function module:skinButton(opts)
 		opts.obj.Middle:SetAlpha(0)
 		opts.obj.Right:SetAlpha(0)
 	elseif opts.obj.TopLeft then -- UIMenuButtonStretchTemplate (WoD/Legion)
-		for _, s1 in pairs{"Top", "Middle", "Bottom"} do
-			for _, s2 in pairs{"Left", "Middle", "Right"} do
-				opts.obj[s1 .. s2]:SetAlpha(0)
+		for i = 1, #aTab do
+			for j = 1, #bTab do
+				opts.obj[aTab[i] .. bTab[j]]:SetAlpha(0)
 			end
 		end
 	elseif opts.obj.left then -- ARL & Collectinator
@@ -170,8 +172,8 @@ function module:skinButton(opts)
 		local objName = opts.obj:GetName()
 		if objName then -- handle unnamed objects (e.g. Waterfall MP buttons)
 			local bTex
-			for _, tName in pairs(btnTexNames) do
-				bTex = _G[objName .. tName]
+			for i = 1, #btnTexNames do
+				bTex = _G[objName .. btnTexNames[i]]
 				if bTex then bTex:SetAlpha(0) end
 			end
 			bTex = nil
@@ -392,13 +394,17 @@ local function __skinAllButtons(opts, bgen)
 	-- maximum number of button generations to traverse
 	local bgen = bgen or opts.bgen or 5
 
-	for _, child in pairs{opts.obj:GetChildren()} do
+	local kids, child = {opts.obj:GetChildren()}
+	for i = 1, #kids do
+		child = kids[i]
 		-- aObj:Debug("__skinAllButtons: [%s, %s, %s, %s]", child, bgen, child:GetObjectType(), child:GetNumChildren())
 		if child:GetNumChildren() > 0
 		and bgen > 0
 		then
 			opts.obj = child
 			__skinAllButtons(opts, bgen - 1)
+		elseif child:IsObjectType("CheckButton") then
+			aObj:skinCheckButton{obj=child}
 		elseif child:IsObjectType("Button") then
 			local bType = module:isButton(child)
 			if bType == "normal" then
@@ -413,6 +419,7 @@ local function __skinAllButtons(opts, bgen)
 			bType = nil
 		end
 	end
+	kids, child = nil, nil
 
 end
 function module:skinAllButtons(...)
@@ -436,6 +443,17 @@ function module:skinAllButtons(...)
 
 end
 
+local function colourBtnBorder(btn)
+	-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
+	if btn.IconBorder:IsShown() then
+		local r, g, b = btn.IconBorder:GetVertexColor()
+		if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
+			btn.sbb:SetBackdropBorderColor(r, g, b)
+		end
+		r, g, b = nil, nil, nil
+	end
+	btn.IconBorder:SetAlpha(0)
+end
 local function __addButtonBorder(opts)
 --[[
 	Calling parameters:
@@ -533,20 +551,9 @@ local function __addButtonBorder(opts)
 
 	-- reparent objects if required
 	if opts.reParent then
-		for _, obj in pairs(opts.reParent) do
-			obj:SetParent(opts.obj.sbb)
+		for i = 1, #opts.reParent do
+			opts.reParent[i]:SetParent(opts.obj.sbb)
 		end
-	end
-	local function colourBtnBorder(btn)
-		-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
-		if btn.IconBorder:IsShown() then
-			local r, g, b = btn.IconBorder:GetVertexColor()
-			if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
-				btn.sbb:SetBackdropBorderColor(r, g, b)
-			end
-			r, g, b = nil, nil, nil
-		end
-		btn.IconBorder:SetAlpha(0)
 	end
 	-- reparent these textures so they are displayed above the border
 	local btnName = opts.obj:GetName()
@@ -642,8 +649,8 @@ function module:OnEnable()
 	if db.ButtonBorders then
 		self.btnTab = {}
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-			for _, v in pairs(module.btnTab) do
-				module:addButtonBorder(v)
+			for i = 1, #module.btnTab do
+				module:addButtonBorder(module.btnTab[i])
 			end
 			_G.wipe(module.btnTab)
 		end)

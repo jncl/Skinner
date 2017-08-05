@@ -7,9 +7,11 @@ local LibStub = _G.LibStub
 do
 	-- check to see if required libraries are loaded
 	assert(LibStub, aName .. " requires LibStub")
-	for _, lib in pairs{"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0"} do
-		assert(LibStub(lib, true), aName .. " requires " .. lib)
+	local lTab = {"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0"}
+	for i = 1, #lTab do
+		assert(LibStub(lTab[i], true), aName .. " requires " .. lTab[i])
 	end
+	lTab = nil
 
 	-- create the addon
 	_G[aName] = LibStub("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
@@ -277,8 +279,8 @@ function aObj:OnEnable()
 	-- handle InCombat issues
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-		for _, v in pairs(self.oocTab) do
-			v[1](unpack(v[2]))
+		for i = 1, #self.oocTab do
+			self.oocTab[i][1](unpack(self.oocTab[i][2]))
 		end
 		_G.wipe(self.oocTab)
 	end)
@@ -497,8 +499,10 @@ local function __addSkinButton(opts)
 
 	-- change the draw layer of the Icon and Count, if necessary
 	if opts.obj.GetNumRegions then
-		for _, reg in pairs{opts.obj:GetRegions()} do
-			local regOT = reg:GetObjectType()
+		local regs, reg, regOT = {opts.obj:GetRegions()}
+		for i = 1, #regs do
+			reg = regs[i]
+			regOT = regs[i]:GetObjectType()
 			if regOT == "Texture" or regOT == "FontString" then
 				-- change the DrawLayer to make the Icon show if required
 				if aObj:hasAnyTextInName(reg, {"[Ii]con", "[Cc]ount"})
@@ -506,8 +510,8 @@ local function __addSkinButton(opts)
 					if reg:GetDrawLayer() == "BACKGROUND" then reg:SetDrawLayer("ARTWORK") end
 				end
 			end
-			regOT = nil
 		end
+		regs, reg, regOT = nil, nil, nil
 	end
 
 	-- reverse parent child relationship
@@ -548,18 +552,20 @@ function aObj:addSkinButton(...)
 
 end
 
+local hTab = {"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"}
 local function hideHeader(obj)
 
 	-- hide the Header Texture and move the Header text, if required
 	local hdr
-	for _, htex in pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
-		hdr = _G[obj:GetName() .. htex]
+	for i = 1, #hTab do
+		hdr = _G[obj:GetName() .. hTab[i]]
 		if hdr then
 			hdr:Hide()
 			hdr:SetPoint("TOP", obj, "TOP", 0, 7)
 			break
 		end
 	end
+	hdr = nil
 	if obj.header then
 		obj.header:DisableDrawLayer("BACKGROUND")
 		obj.header:DisableDrawLayer("BORDER")
@@ -611,11 +617,14 @@ local function __addSkinFrame(opts)
 
 	-- remove all textures, if required
 	if opts.rt then
-		for _, reg in pairs{opts.obj:GetRegions()} do
+		local regs, reg = {opts.obj:GetRegions()}
+		for i = 1, #regs do
+			reg = regs[i]
 			if not reg:IsObjectType("FontString") then
 				reg:SetTexture(nil)
 			end
 		end
+		regs, reg = nil, nil
 	end
 
 	-- setup offset values
@@ -713,23 +722,23 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 	local prdb = self.db.profile
 	-- don't apply a gradient if required
 	if not prdb.Gradient.char then
-		for _, v in pairs(self.gradFrames["p"]) do
-			if v == obj then return end
+		for i = 1, #self.gradFrames["p"] do
+			if self.gradFrames["p"][i] == obj then return end
 		end
 	end
 	if not prdb.Gradient.ui then
-		for _, v in pairs(self.gradFrames["u"]) do
-			if v == obj then return end
+		for i = 1, #self.gradFrames["u"] do
+			if self.gradFrames["u"][i] == obj then return end
 		end
 	end
 	if not prdb.Gradient.npc then
-		for _, v in pairs(self.gradFrames["n"]) do
-			if v == obj then return end
+		for i = 1, #self.gradFrames["n"] do
+			if self.gradFrames["n"][i] == obj then return end
 		end
 	end
 	if not prdb.Gradient.skinner then
-		for _, v in pairs(self.gradFrames["s"]) do
-			if v == obj then return end
+		for i = 1, #self.gradFrames["s"] do
+			if self.gradFrames["s"][i] == obj then return end
 		end
 	end
 
@@ -1020,8 +1029,8 @@ local function __skinEditBox(opts)
 
 	local kRegions = CopyTable(aObj.ebRgns)
 	if opts.regs then
-		for _, v in pairs(opts.regs) do
-			aObj:add2Table(kRegions, v)
+		for i = 1, #opts.regs do
+			aObj:add2Table(kRegions, opts.regs[i])
 		end
 	end
 	aObj:keepRegions(opts.obj, kRegions)
@@ -1062,9 +1071,14 @@ local function __skinEditBox(opts)
 		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
 			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=xOfs} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
-			for _, reg in pairs{opts.obj:GetRegions()} do
-				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then aObj:moveObject{obj=reg, x=xOfs} end
+			local regs, reg = {opts.obj:GetRegions()}
+			for i = 1, #regs do
+				reg = regs[i]
+				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then
+					aObj:moveObject{obj=reg, x=xOfs}
+				end
 			end
+			regs, reg = nil, nil
 		end
 	end
 	xOfs = nil
@@ -1119,6 +1133,7 @@ if aObj.isPTR then
 	end
 end
 
+local mTab = {"Gold", "Silver", "Copper"}
 local function __skinMoneyFrame(opts)
 --[[
 	Calling parameters:
@@ -1141,22 +1156,22 @@ local function __skinMoneyFrame(opts)
 	end
 
 	local obj
-	for k, v in pairs{"Gold", "Silver", "Copper"} do
-		obj = _G[opts.obj:GetName()..v]
+	for i = 1, #mTab do
+		obj = _G[opts.obj:GetName() .. mTab[i]]
 		aObj:skinEditBox{obj=obj, regs={6, 7}, noHeight=true, noWidth=true, ign=true} -- N.B. region 6 is the icon, 7 is text
 		-- move label to the right for colourblind mode
-		if k ~= 1 or opts.moveGIcon then
+		if i ~= 1 or opts.moveGIcon then
 			aObj:moveObject{obj=obj.texture, x=10}
 			aObj:moveObject{obj=obj.label, x=10}
 --			aObj:moveObject{obj=aObj:getRegion(fName, 9), x=10}
 		end
-		if not opts.noWidth and k ~= 1 then
+		if not opts.noWidth and i ~= 1 then
 			aObj:adjWidth{obj=obj, adj=5}
 		end
-		if v == "Gold" and opts.moveGEB then
+		if mTab[i] == "Gold" and opts.moveGEB then
 			aObj:moveObject{obj=obj, x=-8}
 		end
-		if v == "Silver" and opts.moveSEB then
+		if mTab[i] == "Silver" and opts.moveSEB then
 			aObj:moveObject{obj=obj, x=-10}
 		end
 	end
@@ -1284,8 +1299,8 @@ local function __skinSlider(opts)
 	-- remove parent's textures if required
 	if opts.rt then
 		if type(opts.rt) == "table" then
-			for _, v in pairs(opts.rt) do
-				opts.obj:GetParent():DisableDrawLayer(v)
+			for i = 1, #opts.rt do
+				opts.obj:GetParent():DisableDrawLayer(opts.rt[i])
 			end
 		else
 			opts.obj:GetParent():DisableDrawLayer(opts.rt)
@@ -1354,8 +1369,8 @@ local function __skinTabs(opts)
 
 	local kRegions = {7, 8} -- N.B. region 7 is text, 8 is highlight for some tabs
 	if opts.regs then
-		for _, v in pairs(opts.regs) do
-			aObj:add2Table(kRegions, v)
+		for i = 1, #opts.regs do
+			aObj:add2Table(kRegions, opts.regs[i])
 		end
 	end
 

@@ -2,22 +2,19 @@ local aName, aObj = ...
 local _G = _G
 
 local assert, debugstack, ipairs, pairs, rawget, select, type, print = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.print
-local GetMouseFocus = _G.GetMouseFocus
 
 -- populate addon Index table first time through
 local addonIdx, uName = {}, _G.UnitName("player")
 do
-	local name
 	for i = 1, _G.GetNumAddOns() do
-		name = _G.GetAddOnInfo(i)
-		addonIdx[name ~= "spew" and name or "Spew"] = i
+		addonIdx[_G.GetAddOnInfo(i)] = i
 	end
-	name = nil
-end
 
-local function clrTab(tab)
-
-	if #tab > 0 then _G.wipe(tab) end
+	-- handle specific lowercase name
+	if addonIdx["spew"] then
+		addonIdx["Spew"] = addonIdx["spew"]
+		addonIdx["spew"] = nil
+	end
 
 end
 
@@ -89,8 +86,8 @@ local function revTable(curTab)
 
     local tmpTab = {}
 
-	for _, v in pairs(curTab) do
-		tmpTab[v] = true
+	for i = 1, #curTab do
+		tmpTab[curTab[i]] = true
 	end
 
 	return tmpTab
@@ -376,13 +373,16 @@ function aObj:findFrame(height, width, children)
 					and self:getInt(obj:GetWidth()) == width
 					then
 						local tmpTab = {}
-						for _, child in pairs{obj:GetChildren()} do
+						local kids, child = {obj:GetChildren()}
+						for i = 1, #kids do
+							child = kids[i]
 							tmpTab[#tmpTab + 1] = child:GetObjectType()
 						end
+						kids, child = nil, nil
 						matched = 0
-						for _, c in pairs(children) do
-							for _, k in pairs(tmpTab) do
-								if c == k then matched = matched + 1 end
+						for i = 1, #children do
+							for j = 1, #tmpTab do
+								if children[i] == tmpTab[j] then matched = matched + 1 end
 							end
 						end
 						tmpTab = nil
@@ -414,7 +414,9 @@ function aObj:findFrame2(parent, objType, ...)
 	local frame, cKey
 	local height, width
 
-	for key, child in pairs{parent:GetChildren()} do
+	local kids, child = {parent:GetChildren()}
+	for i = 1, #kids do
+		child = kids[i]
 		-- check for forbidden objects (StoreUI components)
 		if not child:IsForbidden() then
 			if child:GetName() == nil then
@@ -431,7 +433,7 @@ function aObj:findFrame2(parent, objType, ...)
 						and xOfs		  == select(4, ...)
 						and yOfs		  == select(5, ...)
 						then
-							frame, cKey = child, key
+							frame, cKey = child, i
 							break
 						end
 					else
@@ -441,7 +443,7 @@ function aObj:findFrame2(parent, objType, ...)
 						if	height == select(1, ...)
 						and width  == select(2, ...)
 						then
-							frame, cKey = child, key
+							frame, cKey = child, i
 							break
 						end
 					end
@@ -449,6 +451,8 @@ function aObj:findFrame2(parent, objType, ...)
 			end
 		end
 	end
+	kids, child = nil, nil
+
 	point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
 	height, width = nil, nil
 
@@ -467,10 +471,11 @@ end
 
 function aObj:getGradientInfo(invert, rotate)
 
-	local c = self.db.profile.GradientMin
-	local MinR, MinG, MinB, MinA = c.r, c.g, c.b, c.a
-	c = self.db.profile.GradientMax
-	local MaxR, MaxG, MaxB, MaxA = c.r, c.g, c.b, c.a
+	local clr = self.db.profile.GradientMin
+	local MinR, MinG, MinB, MinA = clr.r, clr.g, clr.b, clr.a
+	clr = self.db.profile.GradientMax
+	local MaxR, MaxG, MaxB, MaxA = clr.r, clr.g, clr.b, clr.a
+	clr = nil
 
 	if self.db.profile.Gradient.enable then
 		if invert then
@@ -481,7 +486,7 @@ function aObj:getGradientInfo(invert, rotate)
 	else
 		return rotate and "HORIZONTAL" or "VERTICAL", 0, 0, 0, 1, 0, 0, 0, 1
 	end
-	c, MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA = nil, nil, nil, nil, nil, nil, nil, nil, nil
+	MinR, MinG, MinB, MinA, MaxR, MaxG, MaxB, MaxA = nil, nil, nil, nil, nil, nil, nil, nil
 
 end
 
@@ -528,11 +533,14 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
 	if otherTex
 	and type(otherTex) == "table"
 	then
-		for _, tex in pairs(otherTex) do
+		local tex
+		for i = 1, #otherTex do
+			tex = otherTex[i]
 			tex:SetTexture(self.sbTexture)
 			tex:SetVertexColor(self.sbColour[1], self.sbColour[2], self.sbColour[3])
 			sbG[#sbG + 1] = tex
 		end
+		tex = nil
 	end
 
 	if hookFunc then
@@ -550,9 +558,9 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
 end
 
 function aObj:round2(num, idp)
-	--@alpha@
-		assert(num, "Missing number\n" .. debugstack())
-	--@end-alpha@
+--@alpha@
+	assert(num, "Missing number\n" .. debugstack())
+--@end-alpha@
 
   return _G.tonumber(_G.string.format("%." .. (idp or 0) .. "f", num))
 
@@ -589,8 +597,8 @@ function aObj:hasAnyTextInName(obj, tab)
 	and obj:GetName()
 	then
 		local oName = obj:GetName()
-		for _, text in pairs(tab) do
-			if oName:find(text) then return true end
+		for i = 1, #tab do
+			if oName:find(tab[i]) then return true end
 		end
 	end
 
@@ -639,13 +647,14 @@ function aObj:keepFontStrings(obj, hide)
 	assert(obj, "Missing object kFS\n" .. debugstack())
 --@end-alpha@
 
-	local regs = {obj:GetRegions()}
-	for _, reg in ipairs(regs) do
+	local regs, reg = {obj:GetRegions()}
+	for i = 1, #regs do
+		reg = regs[i]
 		if not reg:IsObjectType("FontString") then
 			if not hide then reg:SetAlpha(0) else reg:Hide() end
 		end
 	end
-	regs = nil
+	regs, reg = nil, nil
 
 end
 
@@ -656,22 +665,23 @@ function aObj:keepRegions(obj, regions)
 
 	local regions = revTable(regions)
 
-	local regs = {obj:GetRegions()}
-	for k, reg in ipairs(regs) do
+	local regs, reg = {obj:GetRegions()}
+	for i = 1, #regs do
+		reg = regs[i]
 		-- if we have a list, hide the regions not in that list
 		if regions
-		and not regions[k]
+		and not regions[i]
 		then
 			reg:SetAlpha(0)
 --@debug@
 			if reg:IsObjectType("FontString") then
-				self:Debug("kr FS: [%s, %s]", obj, k)
+				self:Debug("kr FS: [%s, %s]", obj, i)
 				self:Print(debugstack(1, 5, 2))
 			end
 --@end-debug@
 		end
 	end
-	regions, regs = nil, nil
+	regs, reg = nil, nil
 
 end
 
@@ -689,11 +699,15 @@ function aObj:makeMFRotatable(modelFrame)
 	modelFrame.cursorPosition = {}
 
 	-- hide rotation buttons
-	for _, child in pairs{modelFrame:GetChildren()} do
+	local kids, child = {modelFrame:GetChildren()}
+	for i = 1, #kids do
+		child = kids[i]
 		if self:hasTextInName(child, "Rotate") then
 			child:Hide()
 		end
 	end
+	kids, child = nil, nil
+
 	if modelFrame.RotateLeftButton then
 		modelFrame.RotateLeftButton:Hide()
 		modelFrame.RotateRightButton:Hide()
@@ -840,17 +854,18 @@ function aObj:removeMagicBtnTex(btn)
 
 end
 
-local function __rmRegs(obj, regions, tex)
+local function __rmRegs(obj, regions, rmTex)
 
 	local regions = revTable(regions)
 
-	local regs = {obj:GetRegions()}
-	for k, reg in ipairs(regs) do
+	local regs, reg = {obj:GetRegions()}
+	for i = 1, #regs do
+		reg = regs[i]
 		if not regions
 		or regions
-		and regions[k]
+		and regions[i]
 		then
-			if not tex then
+			if not rmTex then
 				reg:SetAlpha(0)
 			else
 				if reg:IsObjectType("Texture") then
@@ -859,13 +874,13 @@ local function __rmRegs(obj, regions, tex)
 			end
 --@debug@
 			if reg:IsObjectType("FontString") then
-				aObj:Debug("rr FS: [%s, %s]", obj, k)
+				aObj:Debug("rr FS: [%s, %s]", obj, i)
 				aObj:Print(debugstack(1, 5, 2))
 			end
 --@end-debug@
 		end
 	end
-	regions, regs = nil, nil
+	regs, reg = nil, nil
 
 end
 function aObj:removeRegions(obj, regions)
@@ -886,12 +901,12 @@ function aObj:rmRegionsTex(obj, regions)
 
 end
 
-local tabName, nT, tTW, fW, tLW
 function aObj:resizeTabs(frame)
 --@alpha@
 	assert(frame, "Unknown object resizeTabs\n" .. debugstack())
 --@end-alpha@
 
+	local tabName, nT, tTW, fW, tLW
 	tabName = frame:GetName() .. "Tab"
 	-- get the number of tabs
 	nT = ((frame == _G.CharacterFrame and not _G.CharacterFrameTab2:IsShown()) and 4 or frame.numTabs)
@@ -932,17 +947,15 @@ end
 
 local function scanChildren(obj)
 
-	local kids = {_G[obj]:GetChildren()}
-	-- aObj:Debug("scanChildren: [%s, %s]", obj, #kids)
-	-- Spew("WF kids", kids)
-
-	for _, child in ipairs(kids) do
+	local kids, child = {_G[obj]:GetChildren()}
+	for i = 1, #kids do
+		child = kids[i]
 		-- check for forbidden objects (StoreUI components etc.)
 		if not child:IsForbidden() then
 			aObj.callbacks:Fire(obj .. "_GetChildren", child)
 		end
 	end
-	kids = nil
+	kids, child = nil, nil
 
 	-- remove all callbacks for this event
 	aObj.callbacks.events[obj .. "_GetChildren"] = nil
@@ -976,7 +989,6 @@ function aObj:secureHookScript(obj, method, func)
 
 end
 
-local point, relativeTo, relativePoint, xOfs, yOfs
 function aObj:setActiveTab(tabSF)
 --@alpha@
 	-- assert(tabSF, "Missing object sAT\n" .. debugstack())
@@ -1027,9 +1039,9 @@ function aObj:setInactiveTab(tabSF)
 
 end
 
-local btn
 function aObj:skinColHeads(buttonName, noCols)
 
+	local btn
 	noCols = noCols or 4
 	for i = 1, noCols do
 		btn = _G[buttonName .. i]
@@ -1062,11 +1074,10 @@ function aObj:toggleTabDisplay(tab, active)
 
 end
 
-local sBar
 function aObj:updateSBTexture()
 
 	-- get updated colour/texture
-	sBar = self.db.profile.StatusBar
+	local sBar = self.db.profile.StatusBar
 	self.sbColour = {sBar.r, sBar.g, sBar.b, sBar.a}
 	self.sbTexture = self.LSM:Fetch("statusbar", sBar.texture)
 
@@ -1090,10 +1101,9 @@ end
 --@debug@
 -- specify where debug messages go
 aObj.debugFrame = _G.ChatFrame10
-local output
 function aObj:Debug(fstr, ...)
 
-	output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
+	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
 	self.debugFrame:AddMessage(output .. " " .. makeText(fstr, ...))
 	output = nil
 
@@ -1158,6 +1168,7 @@ local function print_family_tree(fName)
 
 end
 
+local GetMouseFocus = _G.GetMouseFocus
 function aObj:SetupCmds()
 
 	local function getObj(input)
@@ -1236,11 +1247,12 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 	local function getRegions(obj, lvl)
 
-        local regs = {obj:GetRegions()}
-        for k, reg in ipairs(regs) do
-			showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and self:getInt(reg:GetWidth()) or "nil", reg.GetHeight and self:getInt(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
-        end
-        regs = nil
+		local regs, reg = {obj:GetRegions()}
+		for i = 1, #regs do
+			reg = regs[i]
+			showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, i, reg, reg:GetObjectType() or "nil", reg.GetWidth and self:getInt(reg:GetWidth()) or "nil", reg.GetHeight and self:getInt(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
+		end
+		regs, reg = nil, nil
 
 	end
 
