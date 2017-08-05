@@ -70,7 +70,6 @@ local function skinUnitFrame(opts)
 		tex = _G[opts.obj:GetName() .. "Flash"]
 		tex:ClearAllPoints()
 		tex:SetAllPoints(opts.obj.sf)
-		-- tex:SetAllPoints(tex:GetParent().sf)
 		aObj:changeRecTex(tex, true, true)
 		-- stop changes to texture
 		tex.SetTexture = _G.nop
