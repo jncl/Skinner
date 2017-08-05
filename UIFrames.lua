@@ -1419,7 +1419,8 @@ aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
 	-- manage buttons here, as names have changed from normal
 	self:skinButton{obj=_G.DeathRecapFrame.CloseButton}
 	self:skinButton{obj=_G.DeathRecapFrame.CloseXButton, cb=true}
-	self:addSkinFrame{obj=_G.DeathRecapFrame, ft=ftype, kfs=true, nb=true, ofs=-1}
+	self:addSkinFrame{obj=_G.DeathRecapFrame, ft=ftype, kfs=true, nb=true, ofs=-1, y1=-2}
+	_G.RaiseFrameLevelByTwo(_G.DeathRecapFrame)
 
 end
 
