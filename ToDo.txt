@@ -20,6 +20,7 @@ x			- Blizzard_SimpleCheckout (StoreUI)
 ≈				- NewPetAlertSystem
 ≈				- NewMountAlertSystem
 √			- MaximizeMinimizeFrame (DressUpFrame & WorldMapFrame)
+√			- MovePad Rotate Buttons
 		- Deleted
 √			- ReportPlayerNameDialog (HelpFrame)
 √			- WorldMapFrameSizeDownButton
@@ -40,21 +41,7 @@ x			- DressUpModel
 ?		- Some buttons have a border (not all the time)
 ?		- quest icon/number buttons shouldn't be skinned
 
-	I	Button Borders are thicker than Frame borders, reported by Shimiya, 18.08.16
-?		- e.g. GameMenu buttons, Close Button(s)
-
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-?	I	reported by lexusnexus, 07.05.17
-		- \AddOns\Skinner\Modules\UIButtons.lua line 540: attempt to index field 'Count' (a nil value)
-			Skinner\Modules\UIButtons.lua:601: addButtonBorder()
-			Skinner\PlayerFrames.lua:528:
-			Skinner\PlayerFrames.lua:500
-
-√	S	PremadeGroupsFilter, requested by acirac, 18.07.17
-
-√	N	XLoot, requested by hammer2, 21.07.17
-
-√	S	Guild_Roster_Manager
-		- check for addon update so bugfix code can be removed.
+√	S	SpellFlyoutFrame
