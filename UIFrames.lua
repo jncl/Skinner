@@ -44,18 +44,6 @@ end
 local stageRegs = {1, 2, 3, 4, 5}
 local navalStageRegs = {1, 2, 3, 4}
 local cdStageRegs = {1, 2, 3, 4, 5, 6}
-local function addLineTex(btn, idx)
-
-    -- add textures to identify individual missions
-    if idx/2%1 == 0.5 then -- choose odd numbered lines
-        btn.lineTex = btn:CreateTexture(nil, "OVERLAY", nil, -2)
-		btn.lineTex:SetAllPoints(btn)
-		btn.lineTex:SetTexture(0.6, 0.6, 0.6)
-		btn.lineTex:SetBlendMode("ADD")
-		btn.lineTex:SetGradient("VERTICAL", 0.1, 0.3, 0.3, 0.1, 0.1, 0.1)
-    end
-
-end
 local function skinPortrait(frame)
 
 	frame.PortraitRing:SetTexture(nil)
@@ -191,19 +179,10 @@ local function skinMissionPage(obj)
 	obj.BuffsFrame.BuffsBG:SetTexture(nil)
 	obj.RewardsFrame:DisableDrawLayer("BACKGROUND")
 	obj.RewardsFrame:DisableDrawLayer("BORDER")
-	local frame
 	for i = 1, #obj.RewardsFrame.Rewards do
-		frame = obj.RewardsFrame.Rewards[i]
-		frame.BG:SetTexture(nil)
-		aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}, hide=true}
-		-- move Icon draw layer, so it is visible
-		if frame.Icon
-		and frame.Icon:GetDrawLayer() == "BACKGROUND"
-		then
-			frame.Icon:SetDrawLayer("ARTWORK")
-		end
+		obj.RewardsFrame.Rewards[i].BG:SetTexture(nil)
+		-- N.B. reward buttons have an IconBorder
 	end
-
 
 end
 local function skinMissionComplete(obj, naval)
@@ -284,7 +263,6 @@ local function skinMissionList(ml)
         btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
         btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
 		aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
-		addLineTex(btn, i)
 		-- N.B. reward buttons have an IconBorder
 	end
 	btn = nil
@@ -1644,12 +1622,15 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		aObj:addButtonBorder{obj=cdf.IncrementButton, ofs=-2, es=10}
 		cdf = nil
 		-- hook this to skin reagents
-		aObj:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(this)
-			local btn
-			for i = 1, #this.CapacitiveDisplay.Reagents do
-				btn = this.CapacitiveDisplay.Reagents[i]
-				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
-				btn.NameFrame:SetTexture(nil)
+		aObj:SecureHook("GarrisonCapacitiveDisplayFrame_Update", function(this, success, ...)
+			if success ~= 0 then
+				local btn
+				for i = 1, #this.CapacitiveDisplay.Reagents do
+					btn = this.CapacitiveDisplay.Reagents[i]
+					aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
+					btn.NameFrame:SetTexture(nil)
+				end
+				btn = nil
 			end
 		end)
 
@@ -1661,7 +1642,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		_G.GarrisonLandingPage:DisableDrawLayer("BACKGROUND")
 		_G.GarrisonLandingPage.HeaderBar:SetTexture(nil)
 		_G.GarrisonLandingPage.numTabs = 3
-		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, bg=true, x1=5, y1=-8, x2=-4, y2=-3}
+		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, bg=true, x1=4, y1=0, x2=-4, y2=-3}
 		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-13, x2=-13}
 
 		-- ReportTab
@@ -1777,15 +1758,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	-->>-- GarrisonMissionUI
 	local function skinGarrisonMissionUI()
 
-		-- hook this to skin extra reward buttons
-		aObj:SecureHook("GarrisonMissionButton_SetRewards", function(this, rewards, numRewards)
-			if numRewards > 0 then
-				for i = 1, #this.Rewards do
-					aObj:addButtonBorder{obj=this.Rewards[i], relTo=this.Rewards[i].Icon, reParent={this.Rewards[i].Quantity}}
-				end
-			end
-		end)
-
 		-- Mission Frame
 		self:skinButton{obj=_G.GarrisonMissionFrame.CloseButton, cb=true}
 		_G.GarrisonMissionFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
@@ -1845,7 +1817,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
         aObj:SecureHook("GarrisonMissionPage_SetReward", function(frame, reward)
             frame.BG:SetTexture(nil)
-            aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
+			-- N.B. reward buttons have an IconBorder
         end)
 
 		-- GarrisonFollowerPlacer
