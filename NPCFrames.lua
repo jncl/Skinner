@@ -160,11 +160,11 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 	self:skinTabs{obj=_G.BankFrame, x1=6, y1=0, x2=-6, y2=2}
 	self:keepFontStrings(_G.BankSlotsFrame)
 	-- ReagentBankFrame
-	_G.ReagentBankFrame:DisableDrawLayer("ARTWORK")
-	_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND")
-	_G.ReagentBankFrame:DisableDrawLayer("BORDER")
-	self:addSkinFrame{obj=_G.ReagentBankFrame.UnlockInfo, kfs=true, ft=ftype, ofs=-4}
-	_G.ReagentBankFrameUnlockInfoBlackBG:SetAlpha(1) -- hide slots
+	_G.ReagentBankFrame:DisableDrawLayer("ARTWORK") -- bank slots texture
+	_G.ReagentBankFrame:DisableDrawLayer("BACKGROUND") -- bank slots shadow texture
+	_G.ReagentBankFrame:DisableDrawLayer("BORDER") -- shadow textures
+	_G.ReagentBankFrame.UnlockInfo:DisableDrawLayer("BORDER")
+	_G.RaiseFrameLevelByTwo(_G.ReagentBankFrame.UnlockInfo) -- hide the slot button textures
 
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
