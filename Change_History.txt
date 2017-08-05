@@ -1,3 +1,21 @@
+beta7.24742.1
+Jncl:
+	Update Version numbers
+	Skinned TinyInspect
+
+beta7.24461.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Moved a number of functions between files
+	Updated InterfaceOptionsPanel skin
+	Added ClassTrial frames skin
+	Updated Button skinning code
+	Updated _NPCScan & XLoot skins
+	Skinned Guild Roster Manager
+	Obsolete XLoot1.0 skin
+	Skinned PremadeGroupsFilter (thanks to acirac for the skin)
+
 beta7.24461.2
 Jncl:
 	ToDo.txt
