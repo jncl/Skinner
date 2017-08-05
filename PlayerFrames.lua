@@ -1553,8 +1553,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.FriendsFriendsFrame, ft=ftype}
 
-	-->>-- QuickJoin Frame
-	local sBar = _G.QuickJoinScrollFrame.scrollBar
+-->>-- QuickJoin Frame
+	self:skinDropDown{obj=_G.QuickJoinFrameDropDown}
+	local sBar = _G.QuickJoinFrame.ScrollFrame.scrollBar
 	self:skinSlider{obj=sBar, rt="background"}
 	-- adjust width of QJSF so it looks right (too thin by default)
 	sBar:ClearAllPoints()
@@ -1562,6 +1563,11 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	sBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
 	sBar = nil
 	self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
+	-- QuickJoinRoleSelectionFrame
+	for i = 1, #_G.QuickJoinRoleSelectionFrame.Roles do
+		self:skinCheckButton{obj=_G.QuickJoinRoleSelectionFrame.Roles[i].CheckButton}
+	end
+	self:addSkinFrame{obj=_G.QuickJoinRoleSelectionFrame, ft=ftype, ofs=-5}
 
 -->>--	IgnoreList Frame
 	self:keepFontStrings(_G.IgnoreListFrame)
