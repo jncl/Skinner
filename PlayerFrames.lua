@@ -2504,6 +2504,10 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		self:changeRecTex(btn:GetHighlightTexture())
 	end
 	btn = nil
+	if self.isPTR then
+		self:skinButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton, cb=true}
+	end
+
 	-- hook this to change selected texture
 	self:SecureHook("PVPQueueFrame_SelectButton", function(index)
 		local btn

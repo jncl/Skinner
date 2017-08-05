@@ -671,15 +671,13 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 
 	if self.isPTR then
 		-- ArtifactRelicForgeUI
-		_G.ArtifactRelicForgeFrame.TitleContainer.Background:SetAlpha(0)
-		for i = 1, 3 do
-			self:skinButton{obj=_G.ArtifactRelicForgeFrame.TitleContainer["RelicSlot" .. i].AttuneButton}
-		end
-		self:skinButton{obj=_G.ArtifactRelicForgeFrame.PreviewRelicFrame.AttuneButton}
-		self:addSkinFrame{obj=_G.ArtifactRelicForgeFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+		local arf = _G.ArtifactRelicForgeFrame
+		arf.TitleContainer.Background:SetAlpha(0)
+		self:removeRegions(arf.PreviewRelicFrame, {2, 4}) -- background and frame textures
+		self.modUIBtns:addButtonBorder{obj=arf.PreviewRelicFrame, relTo=arf.PreviewRelicFrame.Icon} -- use module function to force button border
+		self:addSkinFrame{obj=arf, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+		arf = nil
 	end
-
-
 
 end
 
@@ -3264,6 +3262,13 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 	self:moveObject{obj=_G.MovePadLock, x=-6, y=7} -- move it up and left
 	self:skinButton{obj=_G.MovePadForward}
 	self:skinButton{obj=_G.MovePadJump}
+	if self.isPTR then
+		_G.MovePadRotateLeft.icon:SetTexture([[Interface/Glues/CharacterSelect/RestoreButton]])
+		self:skinButton{obj=_G.MovePadRotateLeft}
+		_G.MovePadRotateRight.icon:SetTexture([[Interface/Glues/CharacterSelect/RestoreButton]])
+		_G.MovePadRotateRight.icon:SetTexCoord(1, 0, 0, 1) -- flip texture horizontally
+		self:skinButton{obj=_G.MovePadRotateRight}
+	end
 	self:skinButton{obj=_G.MovePadBackward}
 	self:skinButton{obj=_G.MovePadStrafeLeft}
 	self:skinButton{obj=_G.MovePadStrafeRight}
@@ -3707,6 +3712,10 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		self:changeRecTex(btn:GetHighlightTexture())
 	end
 	btn = nil
+	if self.isPTR then
+		self:skinButton{obj=_G.PremadeGroupsPvETutorialAlert.CloseButton, cb=true}
+	end
+
 	-- hook this to change selected texture
 	self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
 		local btn
@@ -4157,6 +4166,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 	btn:SetText("?")
 	self:moveObject{obj=btn:GetFontString(), x=4}
 	self:addSkinButton{obj=btn, parent=btn, ft=ftype, x1=30, y1=-1, x2=-25, y2=10}
+	btn = nil
 
 end
 
