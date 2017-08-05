@@ -522,7 +522,7 @@ local function __addButtonBorder(opts)
 		opts.obj.sknd = true
 	end
 
-	-- remove Normal texture if required (vertex colour changed in blizzard code)
+	-- remove Normal/Pushed textures if required (vertex colour changed in blizzard code)
 	if opts.ibt
 	or opts.abt
 	or opts.pabt
@@ -533,6 +533,11 @@ local function __addButtonBorder(opts)
 		and opts.obj:GetNormalTexture()
 		then
 			opts.obj:GetNormalTexture():SetTexture(nil)
+		end
+		if opts.obj.GetPushedTexture
+		and opts.obj:GetPushedTexture()
+		then
+			opts.obj:GetPushedTexture():SetTexture(nil)
 		end
 	end
 
