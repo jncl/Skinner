@@ -3192,14 +3192,14 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 	if not self.db.profile.MovePad or self.initialized.MovePad then return end
 	self.initialized.MovePad = true
 
+	self:skinButton{obj=_G.MovePadLock, lb=true}
+	self:moveObject{obj=_G.MovePadLock, x=-6, y=7} -- move it up and left
 	self:skinButton{obj=_G.MovePadForward}
 	self:skinButton{obj=_G.MovePadJump}
 	self:skinButton{obj=_G.MovePadBackward}
 	self:skinButton{obj=_G.MovePadStrafeLeft}
 	self:skinButton{obj=_G.MovePadStrafeRight}
-	self:addSkinButton{obj=_G.MovePadLock, as=true, ft=ftype, ofs=-4}
-	self:addSkinFrame{obj=_G.MovePadFrame, ft=ftype}
-	self:addButtonBorder{obj=_G.MovePadJump, ofs=0}
+	self:addSkinFrame{obj=_G.MovePadFrame, ft=ftype, nb=true}
 
 end
 
