@@ -4196,7 +4196,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 
 			_G.WorldMapFrame.sf:ClearAllPoints()
 			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 101, 1)
-			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", -101, 1)
+			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", -102, 1)
 
 		end
 		local function sizeDown()
@@ -4264,6 +4264,9 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			end
 		end
 	end)
+	-- ActionButton
+	uie.ActionButton.ActionFrameTexture:SetTexture(nil)
+	self:addButtonBorder{obj=uie.ActionButton.SpellButton}
 	uie = nil
 
 	-- Nav Bar
