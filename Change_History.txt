@@ -1,3 +1,28 @@
+beta7.24759.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated TOC
+	Removed comment line
+	PTR changes
+	LFD, LFR changes
+	Updated WorldMap skin
+	Skinned SpellFlyout
+	Updated LFD, LFR, PVE skins
+	Updated HelpFrame skin
+	Renamed DropDownPanels to UIDropDownMenu
+	Updated DeathRecap skin
+	Updated GarrisonUI skin
+	Skinned CheckButtons
+	Updated UIButtons code
+	Updated MovePad skin
+	Updated AlertFrames skin
+	Updated InspectUI & PlayerTalent skins
+	Updated QuickJoin skin
+	Updated ReagentBank skin
+	Lots of code optimisations
+
 beta7.24742.1
 Jncl:
 	Update Version numbers
