@@ -43,5 +43,3 @@ x			- DressUpModel
 
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
-
-√	S	SpellFlyoutFrame
