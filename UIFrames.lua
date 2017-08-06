@@ -1561,8 +1561,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		ib:DisableDrawLayer("BORDER")
 		-- N.B. The RankBadge changes with level and has level number within the texture, therefore MUST not be hidden
 		-- ib.RankBadge:SetAlpha(0)
-		ib.AddFollowerButton.EmptyPortrait:SetTexture(nil)
+		ib.InfoBar:SetTexture(nil)
 		skinPortrait(ib.FollowerPortrait)
+		ib.AddFollowerButton.EmptyPortrait:SetTexture(nil) -- InfoText background texture
+		self:getRegion(ib.PlansNeeded, 1):SetTexture(nil) -- shadow texture
+		self:getRegion(ib.PlansNeeded, 2):SetTexture(nil) -- cost bar texture
 		ib = nil
 		-- FollowerPortrait RingQuality changes colour so track this change
 		aObj:SecureHook("GarrisonBuildingInfoBox_ShowFollowerPortrait", function(...)
@@ -1909,6 +1912,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		-- MissionPage
 		local mp = _G.GarrisonShipyardFrame.MissionTab.MissionPage
 		skinMissionPage(mp)
+		mp.CloseButton:SetSize(28, 28)
 		for i = 1, #mp.Enemies do
 			mp.Enemies[i].PortraitRing:SetTexture(nil)
 		end
