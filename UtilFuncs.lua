@@ -1115,6 +1115,13 @@ function aObj:Debug2(...)
 	if aObj.debug2 then self:Debug(...) end
 
 end
+function aObj:DebugSpew(title, obj, fmtStr, ...)
+
+	aObj:Debug("DebugSpew: [%s, %s, %s, %s]", title, obj, fmtStr, ...)
+	self:Debug(title .. ": " .. fmtStr, ...)
+	if _G.Spew then _G.Spew(title, obj) end
+
+end
 --@end-debug@
 
 --[===[@non-debug@
