@@ -43,3 +43,5 @@ x			- DressUpModel
 
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
+
+√	I	DebugSpew, reported by epidemedabear & Pseudopath, 06/08/17 & 08/08/17
