@@ -1109,12 +1109,6 @@ function aObj:Debug(fstr, ...)
 
 end
 
-aObj.debug2 = false
-function aObj:Debug2(...)
-
-	if aObj.debug2 then self:Debug(...) end
-
-end
 function aObj:DebugSpew(title, obj, fmtStr, ...)
 
 	aObj:Debug("DebugSpew: [%s, %s, %s, %s]", title, obj, fmtStr, ...)
@@ -1127,7 +1121,7 @@ end
 --[===[@non-debug@
 aObj.debugFrame = nil
 function aObj:Debug() end
-function aObj:Debug2() end
+function aObj:DebugSpew() end
 --@end-non-debug@]===]
 
 -- This function was copied from WoWWiki
