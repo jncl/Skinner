@@ -4241,14 +4241,17 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		end
 	end
 
-	self:keepFontStrings(_G.WorldMapFrame.BorderFrame)
-	self:removeInset(_G.WorldMapFrame.BorderFrame.Inset)
+	local bf = _G.WorldMapFrame.BorderFrame
+	self:keepFontStrings(bf)
+	self:removeInset(bf.Inset)
 	if not self.isPTR then
 		self:skinButton{obj=_G.WorldMapFrameSizeDownButton, ob3="↕"} -- up-down arrow
 		self:skinButton{obj=_G.WorldMapFrameSizeUpButton, ob3="↕"} -- up-down arrow
 	else
-		self:skinMaxMinFrame(_G.WorldMapFrame.BorderFrame, 3)
+		self:skinButton{obj=bf.MaximizeMinimizeFrame.MaximizeButton, ob3="↕"} -- up-down arrow
+		self:skinButton{obj=bf.MaximizeMinimizeFrame.MinimizeButton, ob3="↕"} -- up-down arrow
 	end
+	bf = nil
 	_G.WorldMapFrame.MainHelpButton.Ring:SetTexture(nil)
 	self:skinDropDown{obj=_G.WorldMapTitleDropDown}
 	self:skinDropDown{obj=_G.WorldMapLevelDropDown}

@@ -1172,17 +1172,6 @@ function aObj:skinEditBox(...)
 
 end
 
-if aObj.isPTR then
-	function aObj:skinMaxMinFrame(obj, childNum)
-
-		local mmf = self:getChild(obj, childNum) -- MaximizeMinimizeFrame
-		self:skinButton{obj=mmf.MaximizeButton, ob3="↕"} -- up-down arrow
-		self:skinButton{obj=mmf.MinimizeButton, ob3="↕"} -- up-down arrow
-		mmf = nil
-
-	end
-end
-
 local mTab = {"Gold", "Silver", "Copper"}
 local function __skinMoneyFrame(opts)
 --[[
