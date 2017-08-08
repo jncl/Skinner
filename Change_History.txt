@@ -1,3 +1,10 @@
+beta7.24759.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for AlertSystem skin
+	Update GarrisonUI skin
+
 beta7.24759.1
 Jncl:
 	ToDo.txt
