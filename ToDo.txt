@@ -10,9 +10,10 @@ Legend:
 
 
 	- PTR 7.3.0
+√		- Interface changed to 70300
 		- Added
 ≈			- Blizzard_ArtifactRelicForgeUI
-√			- Blizzard_Console (cannot be skinned)
+√			- Blizzard_Console
 √			- Blizzard_TableInspector (Debug Tools)
 x			- Blizzard_SimpleCheckout (StoreUI)
 			- AlertFrameSystems
@@ -44,4 +45,11 @@ x			- DressUpModel
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-√	I	DebugSpew, reported by epidemedabear & Pseudopath, 06/08/17 & 08/08/17
+≈	O	Blizzard_Commentator frames need skinning
+
+√	I	WeakAuras, reported by epidemedabear, 17.08.17
+		- Message: ..\AddOns\Skinner\Skinner.lua line 613: attempt to index field 'obj' (a nil value)
+		- Skinner\Skinner.lua:613: Skinner\Skinner.lua:583
+		- (tail call): ?
+		- Skinner\SkinMe\WeakAuras.lua:9:
+		- Skinner\SkinMe\WeakAuras.lua:8
