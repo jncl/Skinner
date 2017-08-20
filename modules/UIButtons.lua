@@ -46,8 +46,6 @@ do
 	module.fontS = CreateFont("fontA")
 	module.fontS:SetFont([[Fonts\ARIALN.TTF]], 14)
 	module.fontS:SetTextColor(1.0, 0.82, 0)
-	-- Locked (0, 0.25), Unlocked (0.25, 0.5) icons
-	module.lockTex = [[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]]
 end
 local btnTexNames = {"Left", "Middle", "Right", "_LeftTexture", "_MiddleTexture", "_RightTexture", "_LeftSeparator", "_RightSeparator"}
 local function __checkTex(opts)
@@ -134,7 +132,6 @@ function module:skinButton(opts)
 		mp2 = minus/plus button
 		ob = other button, text supplied
 		ob2 = other button style 2, text supplied
-		lb = lock button
 		plus = use plus sign
 		anim = reparent skinButton to avoid whiteout issues caused by animations
 		other options as per addSkinButton
@@ -305,26 +302,6 @@ function module:skinButton(opts)
 		x2 = opts.x2 or bW == 32 and -6 or -4
 		y2 = opts.y2 or bW == 32 and 6 or 4
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=x1, y1=y1, x2=x2, y2=y2}
-	elseif opts.lb then -- use the Locked button texture
-		local tex = opts.obj:GetNormalTexture()
-		tex:SetTexture(module.lockTex)
-		tex:SetTexCoord(0, 0.25, 0, 1.0)
-		tex:SetAlpha(1)
-		tex = opts.obj:GetCheckedTexture()
-		tex:SetTexture(module.lockTex)
-		tex:SetTexCoord(0.25, 0.5, 0, 1.0)
-		tex:SetAlpha(1)
-		tex = nil
-		opts.obj:SetSize(16, 16) -- halve size to make icon fit
-		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj}
-		-- hook this to Hide/Show locked texture
-		aObj:SecureHookScript(opts.obj, "OnClick", function(this)
-			if _G.MovePadFrame.canMove then
-				this:GetNormalTexture():SetAlpha(0)
-			else
-				this:GetNormalTexture():SetAlpha(1)
-			end
-		end)
 	else -- standard button (UIPanelButtonTemplate/UIPanelButtonTemplate2 and derivatives)
 		aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 		if not opts.as then

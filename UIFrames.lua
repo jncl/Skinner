@@ -3259,8 +3259,6 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 	if not self.db.profile.MovePad or self.initialized.MovePad then return end
 	self.initialized.MovePad = true
 
-	self:skinButton{obj=_G.MovePadLock, lb=true}
-	self:moveObject{obj=_G.MovePadLock, x=-6, y=7} -- move it up and left
 	self:skinButton{obj=_G.MovePadForward}
 	self:skinButton{obj=_G.MovePadJump}
 	if self.isPTR then
@@ -3273,6 +3271,31 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 	self:skinButton{obj=_G.MovePadBackward}
 	self:skinButton{obj=_G.MovePadStrafeLeft}
 	self:skinButton{obj=_G.MovePadStrafeRight}
+
+	-- Lock button, change texture
+	local btn = _G.MovePadLock
+	local tex = btn:GetNormalTexture()
+	tex:SetTexture([[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]])
+	tex:SetTexCoord(0, 0.25, 0, 1.0)
+	tex:SetAlpha(1)
+	tex = btn:GetCheckedTexture()
+	tex:SetTexture([[Interface/Glues/CharacterSelect/Glues-AddOn-Icons]])
+	tex:SetTexCoord(0.25, 0.5, 0, 1.0)
+	tex:SetAlpha(1)
+	tex = nil
+	btn:SetSize(16, 16) -- halve size to make icon fit
+	self:addSkinButton{obj=btn, ft=ftype, parent=btn}
+	-- hook this to Hide/Show locked texture
+	self:SecureHookScript(btn, "OnClick", function(this)
+		if _G.MovePadFrame.canMove then
+			this:GetNormalTexture():SetAlpha(0)
+		else
+			this:GetNormalTexture():SetAlpha(1)
+		end
+	end)
+	self:moveObject{obj=btn, x=-6, y=7} -- move it up and left
+	btn = nil
+
 	self:addSkinFrame{obj=_G.MovePadFrame, ft=ftype, nb=true}
 
 end
