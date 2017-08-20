@@ -135,8 +135,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		btn.icon:DisableDrawLayer("BORDER")
 		btn.icon:DisableDrawLayer("OVERLAY")
 		-- set textures to nil and prevent them from being changed as guildview changes the textures
-		btn.icon.frame:SetTexture(nil)
-		btn.icon.frame.SetTexture = _G.nop
+		self:nilTexture(btn.icon.frame, true)
 		-- colour text and button border
 		if btn.description then btn.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
 		if btn.hiddenDescription then btn.hiddenDescription:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
@@ -170,10 +169,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			skinBtn(btn)
 			if type == "Achievements" then
 				-- set textures to nil and prevent them from being changed as guildview changes the textures
-				_G[btnName .. "TopTsunami1"]:SetTexture(nil)
-				_G[btnName .. "TopTsunami1"].SetTexture = _G.nop
-				_G[btnName .. "BottomTsunami1"]:SetTexture(nil)
-				_G[btnName .. "BottomTsunami1"].SetTexture = _G.nop
+				self:nilTexture(_G[btnName .. "TopTsunami1"], true)
+				self:nilTexture(_G[btnName .. "BottomTsunami1"], true)
 			elseif type == "Summary" then
 				if not btn.tooltipTitle then btn:Saturate() end
 			elseif type == "Comparison" then
@@ -284,6 +281,31 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		glazeProgressBar(obj:GetName())
 		return obj
 	end, true)
+	-- hook this to colour the metaCriteria & Criteria text
+	self:SecureHook("AchievementObjectives_DisplayCriteria", function(objectivesFrame, id, renderOffScreen)
+		local r, g, b, a
+		local kids, child = {objectivesFrame:GetChildren()}
+		for i = 1, #kids do
+			child = kids[i]
+			if child.shield then -- miniAchievement
+				-- do nothing
+			elseif child.label then -- metaCriteria
+				r, g, b, a = child.label:GetTextColor()
+				if g == 0 then -- completed criteria
+					child.label:SetTextColor(1, 1, 1, 1)
+					child.label:SetShadowOffset(1, -1)
+				end
+			elseif child.name then -- criteria
+				r, g, b, a = child.name:GetTextColor()
+				if g == 0 then -- completed criteria
+					child.name:SetTextColor(1, 1, 1, 1)
+					child.name:SetShadowOffset(1, -1)
+				end
+			end
+		end
+		r, g, b, a = nil, nil, nil, nil
+		kids, child = nil, nil
+	end)
 
 -->>-- Stats
 	self:keepFontStrings(_G.AchievementFrameStats)
