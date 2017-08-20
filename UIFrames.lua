@@ -2576,116 +2576,140 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		return
 	end
 
-	if not self.db.profile.MainMenuBar.skin or self.initialized.MainMenuBar then return end
+	if self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
 
-	_G.ExhaustionTick:SetAlpha(0)
-	self:moveObject{obj=_G.MainMenuExpBar, y=2}
-	self:keepRegions(_G.MainMenuExpBar, {1, 2, 3, 4, 5, 9, 10}) -- N.B. region 5 is rested XP, 9 is background, 10 is the normal XP
-	self:addSkinFrame{obj=_G.MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=IsAddOnLoaded("DragonCore") and -47 or -4}
-	self:keepFontStrings(_G.MainMenuBarMaxLevelBar)
-	self:keepFontStrings(_G.MainMenuBarArtFrame)
-
-	local function moveWatchBar(bar)
-		-- adjust offset dependant upon player level
-		aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4}
-		-- stop it being moved
-		bar.SetPoint = _G.nop
-		-- move text down
-		bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1)
-		-- increase frame level so it responds to mouseovers'
-		aObj:RaiseFrameLevelByFour(bar)
+	if IsAddOnLoaded("Bartender4") then
+		self.db.profile.MainMenuBar.skin = false
 	end
 
-	-- ReputationWatchBar
-	moveWatchBar(_G.ReputationWatchBar)
-	self:keepRegions(_G.ReputationWatchBar.StatusBar, {1, 2, 3, 4, 13, 14, 16}) -- 13 is background, 14 is the normal texture
-	-- ArtifactWatchBar
-	local awbsb = _G.ArtifactWatchBar.StatusBar
-	moveWatchBar(_G.ArtifactWatchBar)
-	awbsb:DisableDrawLayer("ARTWORK")
-	_G.ArtifactWatchBar.Tick:SetAlpha(0)
-	-- HonorWatchBar
-	local hwbsb = _G.HonorWatchBar.StatusBar
-	moveWatchBar(_G.HonorWatchBar)
-	hwbsb:DisableDrawLayer("ARTWORK")
-	_G.HonorWatchBar.ExhaustionTick:SetAlpha(0)
+	if self.db.profile.MainMenuBar.skin then
+		_G.ExhaustionTick:SetAlpha(0)
+		_G.MainMenuExpBar:DisableDrawLayer("OVERLAY", -1)
+		self:moveObject{obj=_G.MainMenuExpBar, y=2}
+		self:addSkinFrame{obj=_G.MainMenuBar, ft=ftype, noBdr=true, x1=-4, y1=-5, x2=4, y2=IsAddOnLoaded("DragonCore") and -47 or -4}
+		self:keepFontStrings(_G.MainMenuBarMaxLevelBar)
+		self:keepFontStrings(_G.MainMenuBarArtFrame)
+
+		local function moveWatchBar(bar)
+			-- adjust offset dependant upon player level
+			aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4}
+			-- stop it being moved
+			bar.SetPoint = _G.nop
+			-- move text down
+			bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1)
+			-- increase frame level so it responds to mouseovers'
+			aObj:RaiseFrameLevelByFour(bar)
+		end
+
+		-- Watch Bars
+		moveWatchBar(_G.ReputationWatchBar)
+		_G.ReputationWatchBar.StatusBar:DisableDrawLayer("ARTWORK", 0)
+		moveWatchBar(_G.ArtifactWatchBar)
+		_G.ArtifactWatchBar.StatusBar:DisableDrawLayer("ARTWORK", 0)
+		_G.ArtifactWatchBar.Tick:SetAlpha(0)
+		moveWatchBar(_G.HonorWatchBar)
+		_G.HonorWatchBar.StatusBar:DisableDrawLayer("ARTWORK", 0)
+		_G.HonorWatchBar.ExhaustionTick:SetAlpha(0)
+
+		-- StanceBar Frame
+		self:keepFontStrings(_G.StanceBarFrame)
+		for i = 1, _G.NUM_STANCE_SLOTS do
+			self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
+		end
+		-- Possess Bar Frame
+		self:keepFontStrings(_G.PossessBarFrame)
+		for i = 1, _G.NUM_POSSESS_SLOTS do
+			self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
+		end
+		-- Pet Action Bar Frame
+		self:keepFontStrings(_G.PetActionBarFrame)
+		local btnName
+		for i = 1, _G.NUM_PET_ACTION_SLOTS do
+			btnName = "PetActionButton" .. i
+			self:addButtonBorder{obj=_G[btnName], abt=true, sec=true, reParent={_G[btnName .. "AutoCastable"]}, ofs=3}
+		end
+		btnName = nil
+		-- Shaman's Totem Frame
+		self:keepFontStrings(_G.MultiCastFlyoutFrame)
+
+	-->>-- Action Buttons
+		local btn
+		for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
+			btn = _G["ActionButton" .. i]
+			btn.FlyoutBorder:SetTexture(nil)
+			btn.FlyoutBorderShadow:SetTexture(nil)
+			self:addButtonBorder{obj=btn, abt=true, sec=true}
+		end
+		btn = nil
+		-- Micro buttons, skinned before checks for a consistent look, 12.10.12
+		local nTab = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "LFD", "Collections", "EJ", "Store"}
+		for i = 1, #nTab do
+			self:addButtonBorder{obj=_G[nTab[i] .. "MicroButton"], mb=true, ofs=0, y1=-21}
+		end
+		nTab = nil
+		self:addButtonBorder{obj=_G.MainMenuMicroButton, mb=true, ofs=0, y1=-21, reParent={_G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload}}
+
+	-->>-- skin bag buttons
+		self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
+		self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true}
+		self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true}
+		self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true}
+		self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true}
+
+		-- MultiCastActionBarFrame
+		self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
+		self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
+		for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
+			self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sec=true, ofs=5}
+		end
+
+		-- ActionBar buttons
+		self:addButtonBorder{obj=_G.ActionBarUpButton, es=12, ofs=-5, x2=-6, y2=7}
+		self:addButtonBorder{obj=_G.ActionBarDownButton, es=12, ofs=-5, x2=-6, y2=7}
+
+	-->>-- Vehicle Leave Button
+		self:addSkinButton{obj=_G.MainMenuBarVehicleLeaveButton, ft=ftype}
+		self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
+			self:moveObject{obj=_G.MainMenuBarVehicleLeaveButton, y=3}
+		end)
+
+	-->>-- MicroButtonAlert frames
+		local nTab = {"Talent", "Collections", "LFD", "EJ"}
+		 for i =1, #nTab do
+			self:skinButton{obj=_G[nTab[i] .. "MicroButtonAlert"].CloseButton, cb=true}
+		end
+		nTab = nil
+
+	-->>-- MultiBar Buttons
+		local nTab, btn = {"BottomLeft", "BottomRight", "Right", "Left"}
+		for i = 1, #nTab do
+			for j = 1, _G.NUM_MULTIBAR_BUTTONS do
+				btn = _G["MultiBar" .. nTab[i] .. "Button" .. j]
+				btn.FlyoutBorder:SetTexture(nil)
+				btn.FlyoutBorderShadow:SetTexture(nil)
+				btn.Border:SetAlpha(0) -- texture changed in blizzard code
+				_G["MultiBar" .. nTab[i] .. "Button" .. j .. "FloatingBG"]:SetAlpha(0)
+				self:addButtonBorder{obj=btn, abt=true, sec=true}
+			end
+		end
+		nTab, btn = nil, nil
+
+		-- hook this to hide button grid after it has been shown
+		self:SecureHook("ActionButton_HideGrid", function(btn)
+			if _G[btn:GetName() .. "NormalTexture"] then
+				_G[btn:GetName() .. "NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0)
+			end
+		end)
+	end
+
+-->>-- Status Bars
 	if self.db.profile.MainMenuBar.glazesb then
 		self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 9), {_G.ExhaustionLevelFillBar})
 		self:glazeStatusBar(_G.ReputationWatchBar.StatusBar, 0, _G.ReputationWatchBar.StatusBar.Background)
-		self:glazeStatusBar(awbsb, 0, awbsb.Background, {awbsb.Underlay})
-		self:glazeStatusBar(hwbsb, 0, hwbsb.Background, {hwbsb.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar})
+		self:glazeStatusBar(_G.ArtifactWatchBar.StatusBar, 0, _G.ArtifactWatchBar.StatusBar.Background, {_G.ArtifactWatchBar.StatusBar.Underlay})
+		self:glazeStatusBar(_G.HonorWatchBar.StatusBar, 0, _G.HonorWatchBar.StatusBar.Background, {_G.HonorWatchBar.StatusBar.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar})
 	end
-	awbsb, hwbsb = nil, nil
-
-	-- StanceBar Frame
-	self:keepFontStrings(_G.StanceBarFrame)
-	for i = 1, _G.NUM_STANCE_SLOTS do
-		self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
-	end
-	-- Possess Bar Frame
-	self:keepFontStrings(_G.PossessBarFrame)
-	for i = 1, _G.NUM_POSSESS_SLOTS do
-		self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
-	end
-	-- Pet Action Bar Frame
-	self:keepFontStrings(_G.PetActionBarFrame)
-	local btnName
-	for i = 1, _G.NUM_PET_ACTION_SLOTS do
-		btnName = "PetActionButton" .. i
-		self:addButtonBorder{obj=_G[btnName], abt=true, sec=true, reParent={_G[btnName .. "AutoCastable"]}, ofs=3}
-	end
-	btnName = nil
-	-- Shaman's Totem Frame
-	self:keepFontStrings(_G.MultiCastFlyoutFrame)
-
--->>-- Action Buttons
-	local btn
-	for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
-		btn = _G["ActionButton" .. i]
-		btn.FlyoutBorder:SetTexture(nil)
-		btn.FlyoutBorderShadow:SetTexture(nil)
-		self:addButtonBorder{obj=btn, abt=true, sec=true}
-	end
-	btn = nil
-	-- Micro buttons, skinned before checks for a consistent look, 12.10.12
-	local nTab = {"Character", "Spellbook", "Talent", "Achievement", "QuestLog", "Guild", "LFD", "Collections", "EJ", "Store"}
-	for i = 1, #nTab do
-		self:addButtonBorder{obj=_G[nTab[i] .. "MicroButton"], mb=true, ofs=0, y1=-21}
-	end
-	nTab = nil
-	self:addButtonBorder{obj=_G.MainMenuMicroButton, mb=true, ofs=0, y1=-21, reParent={_G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload}}
-
--->>-- skin bag buttons
-	self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
-	self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true}
-	self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true}
-	self:addButtonBorder{obj=_G.CharacterBag2Slot, ibt=true}
-	self:addButtonBorder{obj=_G.CharacterBag3Slot, ibt=true}
-
-	-- MultiCastActionBarFrame
-	self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
-	self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
-	for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-		self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sec=true, ofs=5}
-	end
-
-	-- ActionBar buttons
-	self:addButtonBorder{obj=_G.ActionBarUpButton, es=12, ofs=-5, x2=-6, y2=7}
-	self:addButtonBorder{obj=_G.ActionBarDownButton, es=12, ofs=-5, x2=-6, y2=7}
-
--->>-- Vehicle Leave Button
-	self:addSkinButton{obj=_G.MainMenuBarVehicleLeaveButton, ft=ftype}
-	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
-		self:moveObject{obj=_G.MainMenuBarVehicleLeaveButton, y=3}
-	end)
-
--->>-- MicroButtonAlert frames
-	local nTab = {"Talent", "Collections", "LFD", "EJ"}
-	 for i =1, #nTab do
-		self:skinButton{obj=_G[nTab[i] .. "MicroButtonAlert"].CloseButton, cb=true}
-	end
-	nTab = nil
 
 -->>-- Extra Action Button
 	if self.db.profile.MainMenuBar.extraab then
@@ -2694,8 +2718,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		self:addButtonBorder{obj=btn, ofs=2, relTo=btn.icon}
 		-- handle bug when Tukui is loaded
 		if not aObj:isAddonEnabled("Tukui") then
-			btn.style:SetTexture(nil)
-			btn.style.SetTexture = _G.nop
+			self:nilTexture(btn.style, true)
 		end
 		btn = nil
 	end
@@ -2727,27 +2750,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 		end
 	end
-
--->>-- MultiBar Buttons
-	local nTab, btn = {"BottomLeft", "BottomRight", "Right", "Left"}
-	for i = 1, #nTab do
-		for j = 1, _G.NUM_MULTIBAR_BUTTONS do
-			btn = _G["MultiBar" .. nTab[i] .. "Button" .. j]
-			btn.FlyoutBorder:SetTexture(nil)
-			btn.FlyoutBorderShadow:SetTexture(nil)
-			btn.Border:SetAlpha(0) -- texture changed in blizzard code
-			_G["MultiBar" .. nTab[i] .. "Button" .. j .. "FloatingBG"]:SetAlpha(0)
-			self:addButtonBorder{obj=btn, abt=true, sec=true}
-		end
-	end
-	nTab, btn = nil, nil
-
-	-- hook this to hide button grid after it has been shown
-	self:SecureHook("ActionButton_HideGrid", function(btn)
-		if _G[btn:GetName() .. "NormalTexture"] then
-			_G[btn:GetName() .. "NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0)
-		end
-	end)
 
 end
 
