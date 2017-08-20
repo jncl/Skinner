@@ -1,3 +1,11 @@
+beta7.24759.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for DebugSpew messages
+	PTR - Updated MaximizeMinimize frame skinning code
+	Updated SpellFlyout skin
+	
 beta7.24759.2
 Jncl:
 	ToDo.txt
