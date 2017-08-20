@@ -1658,16 +1658,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 end
 
-aObj.blizzFrames[ftype].GhostFrame = function(self)
-	if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
-	self.initialized.GhostFrame = true
-
-	self:addButtonBorder{obj=_G.GhostFrameContentsFrame, relTo=_G.GhostFrameContentsFrameIcon}
-	self:addSkinButton{obj=_G.GhostFrame, parent=_G.GhostFrame, kfs=true, sap=true, hide=true, ft=ftype}
-	_G.GhostFrame:SetFrameStrata("HIGH") -- make it appear above other frames (i.e. Corkboard)
-
-end
-
 aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 	if not self.db.profile.GuildControlUI or self.initialized.GuildControlUI then return end
 	self.initialized.GuildControlUI = true

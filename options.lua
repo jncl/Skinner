@@ -87,7 +87,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		EncounterJournal     = true,
 		EquipmentFlyout      = true,
 		FriendsFrame         = true,
-		GhostFrame           = true,
 		GuildControlUI       = true,
 		GuildUI              = true,
 		GuildInvite          = true,
@@ -142,6 +141,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		DebugTools           = true,
 		DestinyFrame         = true,
 		GarrisonUI           = true,
+		GhostFrame           = true,
 		GMChatUI             = true,
 		GMSurveyUI           = true,
 		GuildBankUI          = true,
@@ -1010,11 +1010,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Friends List Frame"],
 					desc = self.L["Toggle the skin of the Friends List Frame"],
 				},
-				GhostFrame = {
-					type = "toggle",
-					name = self.L["Ghost Frame"],
-					desc = self.L["Toggle the skin of the Ghost Frame"],
-				},
 				GuildControlUI = {
 					type = "toggle",
 					name = self.L["Guild Control Frame"],
@@ -1434,6 +1429,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["GarrisonUI Frame"],
 					desc = self.L["Toggle the skin of the GarrisonUI Frame"],
+				},
+				GhostFrame = {
+					type = "toggle",
+					name = self.L["Ghost Frame"],
+					desc = self.L["Toggle the skin of the Ghost Frame"],
 				},
 				GMChatUI = {
 					type = "toggle",

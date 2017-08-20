@@ -1995,6 +1995,16 @@ aObj.blizzFrames[ftype].GarrisonTooltips = function(self)
 
 end
 
+aObj.blizzFrames[ftype].GhostFrame = function(self)
+	if not self.db.profile.GhostFrame or self.initialized.GhostFrame then return end
+	self.initialized.GhostFrame = true
+
+	self:addButtonBorder{obj=_G.GhostFrameContentsFrame, relTo=_G.GhostFrameContentsFrameIcon}
+	self:addSkinFrame{obj=_G.GhostFrame, ft=ftype, kfs=true}
+	_G.RaiseFrameLevelByTwo(_G.GhostFrame) -- make it appear above other frames
+
+end
+
 aObj.blizzLoDFrames[ftype].GMChatUI = function(self)
 	if not self.db.profile.GMChatUI or self.initialized.GMChatUI then return end
 	self.initialized.GMChatUI = true
