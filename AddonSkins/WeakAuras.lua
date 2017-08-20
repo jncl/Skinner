@@ -2,12 +2,32 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-function aObj:WeakAuras()
+-- WeakAuras 2
+function aObj:WeakAuras() -- v 2.4.17
 
-	-- hook this to skin the Tooltip Description frame
+	-- hook this to skin the WeakAuras added elements
 	self:SecureHook(_G.WeakAuras, "ShowDisplayTooltip", function(this, ...)
-		self:addSkinFrame{obj=_G.ItemRefTooltip.WeakAuras_Desc_Box}
-		self:Unhook(_G.WeakAuras, "ShowDisplayTooltip")
+		if _G.ItemRefTooltip.WeakAuras_Tooltip_Thumbnail
+		and not _G.ItemRefTooltip.WeakAuras_Tooltip_Thumbnail.sbb
+		then
+			self:addButtonBorder{obj=_G.ItemRefTooltip.WeakAuras_Tooltip_Thumbnail}
+		end
+		if _G.ItemRefTooltip.WeakAuras_Tooltip_Button
+		and not _G.ItemRefTooltip.WeakAuras_Tooltip_Button.sb
+		then
+			self:skinButton{obj=_G.ItemRefTooltip.WeakAuras_Tooltip_Button}
+		end
+		if _G.ItemRefTooltip.WeakAuras_Tooltip_Button2
+		and not _G.ItemRefTooltip.WeakAuras_Tooltip_Button2.sb
+		then
+			self:skinButton{obj=_G.ItemRefTooltip.WeakAuras_Tooltip_Button2}
+		end
+		if _G.ItemRefTooltip.WeakAuras_Desc_Box
+		and not _G.ItemRefTooltip.WeakAuras_Desc_Box.sf
+		then
+			self:addSkinFrame{obj=_G.ItemRefTooltip.WeakAuras_Desc_Box}
+			_G.ItemRefTooltip.WeakAuras_Desc_Box.SetBackdrop = _G.nop
+		end
 	end)
 
 	-- setup defaults for Progress Bars

@@ -38,7 +38,7 @@ function aObj:Ace3()
 		then
 			-- aObj:Debug("Skinning: [%s, %s]", obj, objType)
 			if objType == "Dropdown" then
-				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=0}
+				aObj:skinDropDown{obj=obj.dropdown, rp=true, y2=1}
 				aObj:applySkin{obj=obj.pullout.frame}
 			elseif objType == "Dropdown-Pullout" then
 				aObj:applySkin{obj=obj.frame}
@@ -186,7 +186,7 @@ function aObj:Ace3()
 			    else
     				obj.frame.DLeft:SetAlpha(0)
     				obj.frame.DRight:SetAlpha(0)
-    				obj.frame.DMiddle:SetHeight(19)
+    				obj.frame.DMiddle:SetHeight(18)
     				obj.frame.DMiddle:SetTexture(aObj.itTex)
     				obj.frame.DMiddle:SetTexCoord(0, 1, 0, 1)
     				obj.frame.DMiddle:ClearAllPoints()
@@ -197,14 +197,14 @@ function aObj:Ace3()
 						if objType == "LSM30_Background"
 						or objType == "LSM30_Border"
 						then
-							xOfs1, yOfs1, xOfs2, yOfs2 = 41, -17, 2, 1
+							xOfs1, yOfs1, xOfs2, yOfs2 = 41, -18, 1, 2
 						elseif objType == "LSM30_Font"
 						or objType == "LSM30_Sound"
 						or objType == "LSM30_Statusbar"
 						then
-							xOfs1, yOfs1, xOfs2, yOfs2 = -3, -18, 2, 0
+							xOfs1, yOfs1, xOfs2, yOfs2 = -3, -19, 1, 1
 						end
-						aObj:addSkinFrame{obj=obj.frame, aso={ng=true}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+						aObj:addSkinFrame{obj=obj.frame, aso={ng=true, bd=5}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 						-- add a button border around the dd button
 						aObj:addButtonBorder{obj=obj.frame.dropButton, es=12, ofs=-2, x1=1}
 					end

@@ -34,5 +34,37 @@ function aObj:WorldQuestTracker()
 	_G.WorldQuestTrackerQuestsHeader.Background:SetTexture(nil)
 	self:addButtonBorder{obj=_G.WorldQuestTrackerQuestsHeaderMinimizeButton, es=12, ofs=0}
 
+	-- find and skin the FindGroup frame
+	self.RegisterCallback("WorldQuestTracker", "UIParent_GetChildren", function(this, child)
+		if child:IsObjectType("Frame")
+		and child:GetName() == nil
+		and self:getInt(child:GetWidth()) == 240
+		and self:getInt(child:GetHeight()) == 100
+		and child.TickFrame
+		then
+			child.TitleBar:SetBackdrop(nil)
+			child.ClickArea:SetBackdrop(nil)
+			self:glazeStatusBar(child.ProgressBar, 0, child.ProgressBar.background)
+			child.ProgressBar.timer_texture.SetTexture = _G.nop
+			child.ProgressBar.background.SetTexture = _G.nop
+			self:skinButton{obj=self:getChild(child, 6)} -- skin secondaryInteractionButton
+			self:addSkinFrame{obj=child, ofs=2}
+
+			-- hook this to skin GroupFinder buttons
+			self:SecureHook(child, "UpdateButtonAnchorOnBBlock", function(block, button)
+				if not button.sbb then
+					self:addButtonBorder{obj=button, ofs=-2}
+				end
+			end)
+
+			-- hook this to skin tutorial alert close button
+			if _G.WorldQuestTrackerAddon.db.profile.groupfinder.tutorial == 0 then
+				self:SecureHookScript(child, "OnShow", function(this)
+					self:skinButton{obj=_G.WorldQuestTrackerGroupFinderTutorialAlert1.CloseButton, cb=true}
+					self:Unhook(this, "OnShow")
+				end)
+			end
+		end
+	end)
 
 end
