@@ -1000,15 +1000,15 @@ local function __skinDropDown(opts)
 	-- align it to the middle texture
 	opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -5, 2)
 	opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", 5, 2)
-	opts.obj.ddTex:SetHeight(18)
+	opts.obj.ddTex:SetHeight(17)
 
-	local xOfs1 = opts.x1 or 15
-	local yOfs1 = opts.y1 or 0
-	local xOfs2 = opts.x2 or -15
-	local yOfs2 = opts.y2 or 6
+	local xOfs1 = opts.x1 or 16
+	local yOfs1 = opts.y1 or -1
+	local xOfs2 = opts.x2 or -16
+	local yOfs2 = opts.y2 or 7
 	-- skin the frame
 	if aObj.db.profile.DropDownButtons then
-		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype, aso={ng=true}, rp=opts.rp, nb=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype, aso={ng=true, bd=5}, rp=opts.rp, nb=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
