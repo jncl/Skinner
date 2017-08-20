@@ -321,7 +321,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 	if not self.db.profile.AddonList or self.initialized.AddonList then return end
 	self.initialized.AddonList = true
 
-	self:skinDropDown{obj=_G.AddonCharacterDropDown, x2=110}
+	self:skinDropDown{obj=_G.AddonCharacterDropDown, x2=109}
 	self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, rt="background"}
 	self:removeMagicBtnTex(_G.AddonList.CancelButton)
 	self:removeMagicBtnTex(_G.AddonList.OkayButton)
