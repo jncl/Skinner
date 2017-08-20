@@ -28,6 +28,10 @@ do
 			then
 				aObj:glazeStatusBar(_G.GameTooltipStatusBar, 0)
 			end
+			-- OnUpdate isn't fired on subsequent displays of the ItemRefTooltip
+			if this == _G.ItemRefTooltip then
+				aObj:skinTooltip(this)
+			end
 		end)
 		-- hook this to prevent Gradient overlay when tooltip reshown
 		aObj:HookScript(tt, "OnUpdate", function(this)
