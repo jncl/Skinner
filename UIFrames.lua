@@ -2766,7 +2766,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 end
 
--- table to hold addon dropdown names that need to have their length adjusted
+-- table to hold AddOn dropdown names that need to have their length adjusted
 aObj.iofDD = {}
 aObj.blizzFrames[ftype].MenuFrames = function(self)
 	if not self.db.profile.MenuFrames or self.initialized.MenuFrames then return end
@@ -3110,6 +3110,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 end
 
+-- table to hold minimap buttons from other AddOn skins
 aObj.mmButs = {}
 aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if not self.db.profile.MinimapButtons.skin or self.initialized.MinimapButtons then return end
@@ -3524,6 +3525,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 
 end
 
+-- table to hold PetBattle tooltips
 aObj.pbtt = {}
 aObj.blizzFrames[ftype].PetBattleUI = function(self)
 	if not self.db.profile.PetBattleUI or self.initialized.PetBattleUI then return end
