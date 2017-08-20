@@ -760,7 +760,7 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		-- ArtifactRelicForgeUI
 		local arf = _G.ArtifactRelicForgeFrame
 		arf.TitleContainer.Background:SetAlpha(0)
-		self:removeRegions(arf.PreviewRelicFrame, {2, 4}) -- background and frame textures
+		self:removeRegions(arf.PreviewRelicFrame, {3, 5}) -- background and border textures
 		self.modUIBtns:addButtonBorder{obj=arf.PreviewRelicFrame, relTo=arf.PreviewRelicFrame.Icon} -- use module function to force button border
 		self:addSkinFrame{obj=arf, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
 		arf = nil
