@@ -48,6 +48,16 @@ end
 local stageRegs = {1, 2, 3, 4, 5}
 local navalStageRegs = {1, 2, 3, 4}
 local cdStageRegs = {1, 2, 3, 4, 5, 6}
+local function skinMissionFrame(frame)
+
+	aObj:skinButton{obj=frame.CloseButton, cb=true}
+	frame.GarrCorners:DisableDrawLayer("BACKGROUND")
+	-- don't skin buttons, otherwise Tab buttons get skinned  as well
+	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, x1=2, y1=3, x2=1, y2=-5}
+	-- tabs
+	aObj:skinTabs{obj=frame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
+
+end
 local function skinPortrait(frame)
 
 	frame.PortraitRing:SetTexture(nil)
@@ -71,16 +81,7 @@ local function skinFollower(frame)
 	if frame.PortraitFrame then skinPortrait(frame.PortraitFrame) end
 
 end
-local function skinFollowerList(frame)
-
-	aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
-
-	if frame.SearchBox then
-		aObj:skinEditBox{obj=frame.SearchBox, regs={6, 7, 8}, mi=true} -- 6 is text, 7 is icon, 8 is text
-		-- need to do this as background isn't visible on Shipyard Mission page
-		_G.RaiseFrameLevel(frame.SearchBox)
-	end
-	aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-4}
+local function skinFollowerListButtons(frame)
 
 	for i = 1, #frame.listScroll.buttons do
 		if frame ~= _G.GarrisonShipyardFrameFollowers
@@ -91,18 +92,6 @@ local function skinFollowerList(frame)
 			skinFollower(frame.listScroll.buttons[i])
 		end
 	end
-
-end
-local function skinFollowerPage(frame)
-
-	skinPortrait(frame.PortraitFrame)
-	aObj:glazeStatusBar(frame.XPBar, 0,  nil)
-	frame.XPBar:DisableDrawLayer("OVERLAY")
-	aObj:addButtonBorder{obj=frame.ItemWeapon, relTo=frame.ItemWeapon.Icon}
-	frame.ItemWeapon.Border:SetTexture(nil)
-	aObj:addButtonBorder{obj=frame.ItemArmor, relTo=frame.ItemArmor.Icon}
-	frame.ItemArmor.Border:SetTexture(nil)
-
 
 end
 local function skinFollowerAbilitiesAndCounters(frame, id)
@@ -131,6 +120,53 @@ local function skinFollowerAbilitiesAndCounters(frame, id)
 		end
 	end
 	ft, btn = nil
+
+end
+local function skinFollowerList(frame, hookSF)
+
+	frame:DisableDrawLayer("BORDER")
+
+	if frame.MaterialFrame then
+		frame.MaterialFrame:DisableDrawLayer("BACKGROUND")
+	end
+
+	aObj:removeRegions(frame, {1, 2, frame:GetParent() ~= _G.GarrisonLandingPage and 3 or nil})
+
+	if frame.SearchBox then
+		aObj:skinEditBox{obj=frame.SearchBox, regs={6, 7, 8}, mi=true} -- 6 is text, 7 is icon, 8 is text
+		-- need to do this as background isn't visible on Shipyard Mission page
+		_G.RaiseFrameLevel(frame.SearchBox)
+	end
+	aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-4}
+
+	-- if FollowerList not yet populated, hook the function
+	if not frame.listScroll.buttons then
+		aObj:SecureHook(frame, "Initialize", function(this, ...)
+			skinFollowerListButtons(this)
+			aObj:Unhook(frame, "Initialize")
+		end)
+	else
+		skinFollowerListButtons(frame)
+	end
+
+	if hookSF then
+		-- hook this to skin Abilities & Counters, if required
+		aObj:SecureHook(frame, "ShowFollower", function(this, id)
+			skinFollowerAbilitiesAndCounters(this, id)
+		end)
+	end
+
+end
+local function skinFollowerPage(frame)
+
+	skinPortrait(frame.PortraitFrame)
+	aObj:glazeStatusBar(frame.XPBar, 0,  nil)
+	frame.XPBar:DisableDrawLayer("OVERLAY")
+	aObj:addButtonBorder{obj=frame.ItemWeapon, relTo=frame.ItemWeapon.Icon}
+	frame.ItemWeapon.Border:SetTexture(nil)
+	aObj:addButtonBorder{obj=frame.ItemArmor, relTo=frame.ItemArmor.Icon}
+	frame.ItemArmor.Border:SetTexture(nil)
+
 
 end
 local function skinFollowerTraitsAndEquipment(obj)
@@ -166,59 +202,89 @@ local function skinCompleteDialog(frame, naval)
 
 
 end
-local function skinMissionPage(obj)
+local function skinMissionPage(frame)
 
-	obj:DisableDrawLayer("BACKGROUND")
-	obj:DisableDrawLayer("BORDER")
-	obj:DisableDrawLayer("OVERLAY")
-	obj.ButtonFrame:SetTexture(nil)
+	frame:DisableDrawLayer("BACKGROUND")
+	frame:DisableDrawLayer("BORDER")
+	frame:DisableDrawLayer("OVERLAY")
+	frame.ButtonFrame:SetTexture(nil)
 
-	aObj:removeRegions(obj.Stage, stageRegs)
-	aObj:addSkinFrame{obj=obj, ft=ftype, x1=-320, y1=5, x2=3, y2=-20}
+	aObj:removeRegions(frame.Stage, stageRegs)
+	aObj:addSkinFrame{obj=frame, ft=ftype, x1=-320, y1=5, x2=3, y2=-20}
 	-- handle animation of StartMissionButton
 	if aObj.modBtns then
-		 obj.StartMissionButton.sb.tfade:SetParent(obj.sf)
+		 frame.StartMissionButton.sb.tfade:SetParent(frame.sf)
 	end
-	obj.Stage.MissionEnvIcon.Texture:SetTexture(nil)
-	obj.BuffsFrame.BuffsBG:SetTexture(nil)
-	obj.RewardsFrame:DisableDrawLayer("BACKGROUND")
-	obj.RewardsFrame:DisableDrawLayer("BORDER")
-	for i = 1, #obj.RewardsFrame.Rewards do
-		obj.RewardsFrame.Rewards[i].BG:SetTexture(nil)
+	frame.Stage.MissionEnvIcon.Texture:SetTexture(nil)
+	frame.BuffsFrame.BuffsBG:SetTexture(nil)
+	frame.RewardsFrame:DisableDrawLayer("BACKGROUND")
+	frame.RewardsFrame:DisableDrawLayer("BORDER")
+	for i = 1, #frame.RewardsFrame.Rewards do
+		frame.RewardsFrame.Rewards[i].BG:SetTexture(nil)
 		-- N.B. reward buttons have an IconBorder
+	end
+	frame.CloseButton:SetSize(28, 28) -- make button smaller
+
+	for i = 1, #frame.Enemies do
+		if frame.Enemies[i].PortraitFrame then
+			frame.Enemies[i].PortraitFrame.PortraitRing:SetTexture(nil)
+		else
+			frame.Enemies[i].PortraitRing:SetTexture(nil)
+		end
+	end
+
+	for i = 1, #frame.Followers do
+		if frame.Followers[i].PortraitFrame then
+			aObj:removeRegions(frame.Followers[i], {1})
+			skinPortrait(frame.Followers[i].PortraitFrame)
+		end
+	end
+
+	if frame.FollowerModel then
+		aObj:moveObject{obj=frame.FollowerModel, x=-6, y=0}
 	end
 
 end
-local function skinMissionComplete(obj, naval)
+local function skinMissionComplete(frame, naval)
 
-	local mcb = obj:GetParent().MissionCompleteBackground
+	local mcb = frame:GetParent().MissionCompleteBackground
     mcb:SetSize(naval and 952 or 953, 642)
 	aObj:moveObject{obj=mcb, x=4, y=2}
 	mcb = nil
 
-    obj:DisableDrawLayer("BACKGROUND")
-	obj:DisableDrawLayer("BORDER")
-	obj:DisableDrawLayer("ARTWORK")
-	aObj:removeRegions(obj.Stage, naval and navalStageRegs or stageRegs) -- top half only
-	local frame
-	for i = 1, #obj.Stage.FollowersFrame.Followers do
-		frame = obj.Stage.FollowersFrame.Followers[i]
+    frame:DisableDrawLayer("BACKGROUND")
+	frame:DisableDrawLayer("BORDER")
+	frame:DisableDrawLayer("ARTWORK")
+	aObj:removeRegions(frame.Stage, naval and navalStageRegs or stageRegs) -- top half only
+	local follower
+	for i = 1, #frame.Stage.FollowersFrame.Followers do
+		follower = frame.Stage.FollowersFrame.Followers[i]
         if naval then
-            frame.NameBG:SetTexture(nil)
+            follower.NameBG:SetTexture(nil)
         else
-            aObj:removeRegions(frame, {1})
+            aObj:removeRegions(follower, {1})
         end
-		if frame.PortraitFrame then skinPortrait(frame.PortraitFrame) end
-		aObj:glazeStatusBar(frame.XP, 0,  nil)
-		frame.XP:DisableDrawLayer("OVERLAY")
+		if follower.PortraitFrame then skinPortrait(follower.PortraitFrame) end
+		aObj:glazeStatusBar(follower.XP, 0,  nil)
+		follower.XP:DisableDrawLayer("OVERLAY")
 	end
-	frame = nil
-    obj.BonusRewards:DisableDrawLayer("BACKGROUND")
-	obj.BonusRewards:DisableDrawLayer("BORDER")
-	aObj:getRegion(obj.BonusRewards, 11):SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb) -- Heading
-    obj.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
-	obj.BonusRewards.Saturated:DisableDrawLayer("BORDER")
-    aObj:addSkinFrame{obj=obj, ft=ftype, y1=6, y2=-16}
+	follower = nil
+    frame.BonusRewards:DisableDrawLayer("BACKGROUND")
+	frame.BonusRewards:DisableDrawLayer("BORDER")
+	aObj:getRegion(frame.BonusRewards, 11):SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb) -- Heading
+    frame.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
+	frame.BonusRewards.Saturated:DisableDrawLayer("BORDER")
+    aObj:addSkinFrame{obj=frame, ft=ftype, y1=6, y2=-16}
+
+	for i = 1, #frame.Stage.EncountersFrame.Encounters do
+		if not naval then
+			frame.Stage.EncountersFrame.Encounters[i].Ring:SetTexture(nil)
+		else
+			frame.Stage.EncountersFrame.Encounters[i].PortraitRing:SetTexture(nil)
+		end
+	end
+
+    aObj:rmRegionsTex(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
 
 end
 local function skinMissionList(ml)
@@ -259,6 +325,7 @@ local function skinMissionList(ml)
 		btn = ml.listScroll.buttons[i]
 		btn:DisableDrawLayer("BACKGROUND")
 		btn:DisableDrawLayer("BORDER")
+		-- btn.Overlay:DisableDrawLayer("OVERLAY") -- indicates that it cannot be interacted with
 		-- extend the top & bottom highlight texture
 		btn.HighlightT:ClearAllPoints()
 		btn.HighlightT:SetPoint("TOPLEFT", 0, 4)
@@ -1551,11 +1618,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		aObj:addSkinFrame{obj=_G.GarrisonBuildingFrame.BuildingLevelTooltip, ft=ftype}
 
 		-- FollowerList
-		local fl = _G.GarrisonBuildingFrame.FollowerList
-		fl:DisableDrawLayer("BACKGROUND")
-		fl:DisableDrawLayer("BORDER")
-		skinFollowerList(fl)
-		fl = nil
+		skinFollowerList(_G.GarrisonBuildingFrame.FollowerList)
+		_G.GarrisonBuildingFrame.FollowerList:DisableDrawLayer("BACKGROUND")
 
 		-- InfoBox
 		local ib = _G.GarrisonBuildingFrame.InfoBox
@@ -1623,8 +1687,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		_G.GarrisonLandingPage:DisableDrawLayer("BACKGROUND")
 		_G.GarrisonLandingPage.HeaderBar:SetTexture(nil)
 		_G.GarrisonLandingPage.numTabs = 3
-		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, bg=true, x1=4, y1=0, x2=-4, y2=-3}
-		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-13, x2=-13}
+		aObj:skinTabs{obj=_G.GarrisonLandingPage, regs={9, 10}, ignore=true, lod=true, x1=4, y1=-10, x2=-4, y2=-3}
+		aObj:addSkinFrame{obj=_G.GarrisonLandingPage, ft=ftype, ofs=-6, y1=-13, x2=-13, y2=3}
 
 		-- ReportTab
 		local rp = _G.GarrisonLandingPage.Report
@@ -1654,6 +1718,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			else
 				if aObj.isTT then aObj:setInactiveTab(rp[btn].sf) end
 			end
+			_G.RaiseFrameLevelByTwo(rp[btn])
 		end
 		nTab, btn = nil, nil
 		if aObj.isTT then
@@ -1665,36 +1730,14 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		rp = nil
 
 		-- FollowerList
-		local fl = _G.GarrisonLandingPage.FollowerList
-		-- if FollowerList not yet populated, hook the function
-		if not fl.listScroll.buttons then
-			aObj:SecureHook(fl, "Initialize", function(this, ...)
-				skinFollowerList(this)
-				aObj:Unhook(fl, "Initialize")
-			end)
-		else
-			skinFollowerList(fl)
-		end
-		aObj:SecureHook(fl, "ShowFollower", function(this, id)
-			skinFollowerAbilitiesAndCounters(this, id)
-		end)
+		skinFollowerList(_G.GarrisonLandingPage.FollowerList, true)
 
 		-- FollowerTab
 		skinFollowerPage(_G.GarrisonLandingPage.FollowerTab)
 
 		-- FleetTab
 		-- ShipFollowerList
-		fl = _G.GarrisonLandingPage.ShipFollowerList
-		-- if FollowerList not yet populated, hook the function
-		if not fl.listScroll.buttons then
-			aObj:SecureHook(fl, "Initialize", function(this, ...)
-				skinFollowerList(this)
-				aObj:Unhook(fl, "Initialize")
-			end)
-		else
-			skinFollowerList(fl)
-		end
-		fl = nil
+		skinFollowerList(_G.GarrisonLandingPage.ShipFollowerList)
 
 		-- ShipFollowerTab
 		skinFollowerTraitsAndEquipment(_G.GarrisonLandingPage.ShipFollowerTab)
@@ -1739,62 +1782,25 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	-->>-- GarrisonMissionUI
 	local function skinGarrisonMissionUI()
 
-		-- Mission Frame
-		self:skinButton{obj=_G.GarrisonMissionFrame.CloseButton, cb=true}
-		_G.GarrisonMissionFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
-		-- don't skin buttons, otherwise Tab buttons get skinned  as well
-		aObj:addSkinFrame{obj=_G.GarrisonMissionFrame, ft=ftype, kfs=true, nb=true, x1=2, y1=3, x2=1, y2=-4}
-		-- tabs
-		aObj:skinTabs{obj=_G.GarrisonMissionFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=0}
+	-->>-- Mission Frame
+		skinMissionFrame(_G.GarrisonMissionFrame)
 
 		-- FollowerList
-		local fl = _G.GarrisonMissionFrame.FollowerList
-		fl:DisableDrawLayer("BORDER")
-		fl.MaterialFrame:DisableDrawLayer("BACKGROUND")
-		-- if FollowerList not yet populated, hook the function
-		if not fl.listScroll.buttons then
-			aObj:SecureHook(fl, "Initialize", function(this, ...)
-				skinFollowerList(this)
-				aObj:Unhook(fl, "Initialize")
-			end)
-		else
-			skinFollowerList(fl)
-		end
-		aObj:SecureHook(fl, "ShowFollower", function(this, id)
-			skinFollowerAbilitiesAndCounters(this, id)
-		end)
-		fl = nil
+		skinFollowerList(_G.GarrisonMissionFrame.FollowerList, true)
 
 	-->>-- MissionTab
 		-- Mission List
 		skinMissionList(_G.GarrisonMissionFrame.MissionTab.MissionList)
 
 		-- MissionPage
-		local mp = _G.GarrisonMissionFrame.MissionTab.MissionPage
-		skinMissionPage(mp)
-		mp.CloseButton:SetSize(28, 28) -- make button smaller
-		for i = 1, #mp.Followers do
-			aObj:removeRegions(mp.Followers[i], {1})
-			skinPortrait(mp.Followers[i].PortraitFrame)
-		end
-		for i = 1, #mp.Enemies do
-			mp.Enemies[i].PortraitFrame.PortraitRing:SetTexture(nil)
-		end
-		aObj:moveObject{obj=mp.FollowerModel, x=-6, y=0}
-		mp = nil
+		skinMissionPage(_G.GarrisonMissionFrame.MissionTab.MissionPage)
 
 	-->>-- FollowerTab
 		_G.GarrisonMissionFrame.FollowerTab:DisableDrawLayer("BORDER")
 		skinFollowerPage(_G.GarrisonMissionFrame.FollowerTab)
 
 		-- MissionComplete
-		local mc = _G.GarrisonMissionFrame.MissionComplete
-		skinMissionComplete(mc)
-		for i = 1, #mc.Stage.EncountersFrame.Encounters do
-			mc.Stage.EncountersFrame.Encounters[i].Ring:SetTexture(nil)
-		end
-        aObj:rmRegionsTex(mc.Stage.MissionInfo, {1, 2, 3, 4, 5, 11, 12, 13})
-		mc = nil
+		skinMissionComplete(_G.GarrisonMissionFrame.MissionComplete)
 
         aObj:SecureHook("GarrisonMissionPage_SetReward", function(frame, reward)
             frame.BG:SetTexture(nil)
@@ -1831,10 +1837,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		-- GarrisonRecruitSelect Frame
 		-- FollowerList
-		local fl = _G.GarrisonRecruitSelectFrame.FollowerList
-		fl:DisableDrawLayer("BORDER")
-		skinFollowerList(fl)
-		fl = nil
+		skinFollowerList(_G.GarrisonRecruitSelectFrame.FollowerList)
 
 		-- Follower Selection
 		local fs = _G.GarrisonRecruitSelectFrame.FollowerSelection
@@ -1844,8 +1847,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		local btn
 		for i = 1, 3 do
 			btn = fs["Recruit" .. i].PortraitFrame
-			btn.PortraitRing:SetTexture(nil)
-			btn.LevelBorder:SetTexture(nil)
+			aObj:nilTexture(btn.PortraitRing, true)
+			aObj:nilTexture(btn.LevelBorder, true)
 			btn.PortraitRingQuality:SetVertexColor(btn.LevelBorder:GetVertexColor())
 		end
 		fs, btn = nil, nil
@@ -1867,19 +1870,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		aObj:skinTabs{obj=_G.GarrisonShipyardFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=0}
 
 		-- List of ships (FollowerList)
-		local fl = _G.GarrisonShipyardFrame.FollowerList
-		fl:DisableDrawLayer("BORDER")
-		fl.MaterialFrame:DisableDrawLayer("BACKGROUND")
-		-- if FollowerList not yet populated, hook the function
-		if not fl.listScroll.buttons then
-			aObj:SecureHook(fl, "Initialize", function(this, ...)
-				skinFollowerList(this)
-				aObj:Unhook(fl, "Initialize")
-			end)
-		else
-			skinFollowerList(fl)
-		end
-		fl = nil
+		skinFollowerList(_G.GarrisonShipyardFrame.FollowerList)
 
 	-->>-- Naval Map Tab (MissionTab)
 		-- Mission List
@@ -1911,22 +1902,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		ml = nil
 
 		-- MissionPage
-		local mp = _G.GarrisonShipyardFrame.MissionTab.MissionPage
-		skinMissionPage(mp)
-		mp.CloseButton:SetSize(28, 28)
-		for i = 1, #mp.Enemies do
-			mp.Enemies[i].PortraitRing:SetTexture(nil)
-		end
-		local ctr
-		for i = 1, #mp.Followers do
-			-- Counters buttons
-			for i = 1, #mp.Followers[i].Counters do
-				ctr = mp.Followers[i].Counters[i]
-				ctr.Border:SetTexture(nil)
-				aObj:addButtonBorder{obj=ctr, relTo=ctr.Icon}
-			end
-		end
-		mp, ctr = nil, nil
+		skinMissionPage(_G.GarrisonShipyardFrame.MissionTab.MissionPage)
 
 	-->>-- Fleet Tab (FollowerTab)
 		-- FollowerTab
@@ -1936,13 +1912,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		ft = nil
 
 		-- MissionComplete
-		local mc = _G.GarrisonShipyardFrame.MissionComplete
-		skinMissionComplete(mc, true)
-		for i = 1, #mc.Stage.EncountersFrame.Encounters do
-			mc.Stage.EncountersFrame.Encounters[i].PortraitRing:SetTexture(nil)
-		end
-        self:rmRegionsTex(mc.Stage.MissionInfo, {1, 2, 3, 4, 5, 8, 9, 10}) -- N.B. 6 & 7 are MissionType & Title
-		mc = nil
+		skinMissionComplete(_G.GarrisonShipyardFrame.MissionComplete, true)
 
 	end
 
@@ -3441,32 +3411,12 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 
 	-->>-- OrderHallMissionFrame
 	-- Mission Frame
+	skinMissionFrame(_G.OrderHallMissionFrame)
 	_G.OrderHallMissionFrame.ClassHallIcon:DisableDrawLayer("OVERLAY") -- this hides the frame
-	self:skinButton{obj=_G.OrderHallMissionFrame.CloseButton, cb=true}
-	_G.OrderHallMissionFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
-	-- don't skin buttons, otherwise Tab buttons get skinned  as well
-	self:addSkinFrame{obj=_G.OrderHallMissionFrame, ft=ftype, kfs=true, nb=true, x1=2, y1=2, x2=1, y2=-4}
 	_G.OrderHallMissionFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
-	-- tabs
-	self:skinTabs{obj=_G.OrderHallMissionFrame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=-4}
 
 	-- FollowerList
-	local fl = _G.OrderHallMissionFrame.FollowerList
-	fl:DisableDrawLayer("BORDER")
-	fl.MaterialFrame:DisableDrawLayer("BACKGROUND")
-	-- if FollowerList not yet populated, hook the function
-	if not fl.listScroll.buttons then
-		self:SecureHook(fl, "Initialize", function(this, ...)
-			skinFollowerList(this)
-			aObj:Unhook(fl, "Initialize")
-		end)
-	else
-		skinFollowerList(fl)
-	end
-	self:SecureHook(fl, "ShowFollower", function(this, id)
-		skinFollowerAbilitiesAndCounters(this, id)
-	end)
-	fl = nil
+	skinFollowerList(_G.OrderHallMissionFrame.FollowerList, true)
 
 	-->>-- MissionTab
 	-- Mission List
@@ -3497,31 +3447,14 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 	zs = nil
 
 	-- MissionPage
-	local mp = _G.OrderHallMissionFrame.MissionTab.MissionPage
-	skinMissionPage(mp)
-	mp.CloseButton:SetSize(28, 28)
-	for i = 1, #mp.Followers do
-		self:removeRegions(mp.Followers[i], {1})
-		skinPortrait(mp.Followers[i].PortraitFrame)
-	end
-	for i = 1, #mp.Enemies do
-		mp.Enemies[i].PortraitFrame.PortraitRing:SetTexture(nil)
-	end
-	self:moveObject{obj=mp.FollowerModel, x=-6, y=0}
-	mp = nil
+	skinMissionPage(_G.OrderHallMissionFrame.MissionTab.MissionPage)
 
 	-->>-- FollowerTab
 	_G.OrderHallMissionFrame.FollowerTab:DisableDrawLayer("BORDER")
 	skinFollowerPage(_G.OrderHallMissionFrame.FollowerTab)
 
 	-- MissionComplete
-	local mc = _G.OrderHallMissionFrame.MissionComplete
-	skinMissionComplete(mc)
-	for i = 1, #mc.Stage.EncountersFrame.Encounters do
-		mc.Stage.EncountersFrame.Encounters[i].Ring:SetTexture(nil)
-	end
-    self:rmRegionsTex(mc.Stage.MissionInfo, {1, 2, 3, 4, 5, 11, 12, 13})
-	mc = nil
+	skinMissionComplete(_G.OrderHallMissionFrame.MissionComplete)
 
 	-->>-- MapTab
 
