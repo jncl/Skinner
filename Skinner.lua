@@ -899,6 +899,14 @@ function aObj:applySkin(...)
 
 end
 
+function aObj:removeSkinFrame(obj)
+
+	obj.tfade:SetTexture(nil)
+	obj:SetBackdrop(nil)
+	obj:Hide()
+
+end
+
 local function __skinCheckButton(opts)
 --[[
 	Calling parameters:
