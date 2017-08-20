@@ -1453,14 +1453,29 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 end
 
 if aObj.isPTR then
-	aObj.blizzLoDFrames[ftype].Console = function(self)
+	aObj.blizzFrames[ftype].Console = function(self)
 	if not self.db.profile.Console or self.initialized.Console then return end
 	self.initialized.Console = true
 
-	-- disable skinning of this frame
-	self.db.profile.Console = false
+	local r, g, b, a = self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4]
 
-	-->> N.B. Currently can't be skinned, as the TOC has an element saying Secure: 1
+	self:getChild(_G.DeveloperConsole.EditBox, 1).BorderTop:SetColorTexture(r, g, b, a)
+	self:getChild(_G.DeveloperConsole.EditBox, 1).BorderBottom:SetColorTexture(r, g, b, a)
+
+	_G.DeveloperConsole.Filters.BorderLeft:SetColorTexture(r, g, b, a)
+	self:getChild(_G.DeveloperConsole.Filters, 1).BorderTop:SetColorTexture(r, g, b, a)
+	self:getChild(_G.DeveloperConsole.Filters, 1).BorderBottom:SetColorTexture(r, g, b, a)
+
+	_G.DeveloperConsole.AutoComplete.BorderTop:SetColorTexture(r, g, b, a)
+	_G.DeveloperConsole.AutoComplete.BorderRight:SetColorTexture(r, g, b, a)
+	_G.DeveloperConsole.AutoComplete.BorderLeft:SetColorTexture(r, g, b, a)
+	_G.DeveloperConsole.AutoComplete.BorderBottom:SetColorTexture(r, g, b, a)
+	_G.DeveloperConsole.AutoComplete.Tooltip.BorderTop:SetColorTexture(r, g, b, a)
+	_G.DeveloperConsole.AutoComplete.Tooltip.BorderRight:SetColorTexture(r, g, b, a)
+	_G.DeveloperConsole.AutoComplete.Tooltip.BorderLeft:SetColorTexture(r, g, b, a)
+	_G.DeveloperConsole.AutoComplete.Tooltip.BorderBottom:SetColorTexture(r, g, b, a)
+
+	r, g, b, a = nil, nil, nil, nil
 
 	end
 end

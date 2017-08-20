@@ -134,7 +134,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ClassTrial           = true,
 		CoinPickup           = true,
 		Colours              = true,
-		Console              = self.isPtr and false or nil, -- N.B. cannot be skinned
+		Console              = self.isPTR and true or nil,
 		Contribution         = true,
 		CombatLogQBF         = false,
 		DeathRecap           = true,
@@ -1404,7 +1404,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Developer Console Frame"],
 					desc = self.L["Toggle the skin of the Developer Console Frame"],
 					width = "double",
-					disabled = true,
 				} or nil,
 				Contribution = {
 					type = "toggle",
