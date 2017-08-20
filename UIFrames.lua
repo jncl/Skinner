@@ -3409,6 +3409,12 @@ aObj.blizzFrames[ftype].NavigationBar = function(self)
 			end
 		end
 		btn = nil
+		-- overflow Button
+		this.overflowButton:GetNormalTexture():SetAlpha(0)
+		this.overflowButton:GetPushedTexture():SetAlpha(0)
+		this.overflowButton:GetHighlightTexture():SetAlpha(0)
+		this.overflowButton:SetText("<<")
+		this.overflowButton:SetNormalFontObject(self.modUIBtns.fontP)
 	end)
 
 end
@@ -4321,10 +4327,6 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	_G.WorldMapFrame.NavBar:DisableDrawLayer("BACKGROUND")
 	_G.WorldMapFrame.NavBar:DisableDrawLayer("BORDER")
 	_G.WorldMapFrame.NavBar.overlay:DisableDrawLayer("OVERLAY")
-	_G.WorldMapFrame.NavBar.home:DisableDrawLayer("OVERLAY")
-	_G.WorldMapFrame.NavBar.home:GetNormalTexture():SetAlpha(0)
-	_G.WorldMapFrame.NavBar.home:GetPushedTexture():SetAlpha(0)
-	_G.WorldMapFrame.NavBar.home.text:SetPoint("RIGHT", -20, 0)
 
 	-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
