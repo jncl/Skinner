@@ -3276,7 +3276,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			skinMMBtn("Existing LibDBIcon btns", button, name)
 		end
 		-- skin LibDBIcon Minimap Buttons when created
---		_G.LibStub("LibDBIcon-1.0").RegisterCallback(aObj, "LibDBIcon_IconCreated", skinMMBtn)
 		aObj.RegisterCallback(aObj, "LibDBIcon_IconCreated", skinMMBtn)
 	end
 
