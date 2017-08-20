@@ -2365,7 +2365,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 	if not self.db.profile.PVEFrame or self.initialized.LFGList then return end
 	self.initialized.LFGList = true
 
-	-- Premade Groups LFGListPVEStub (LFGList)
+	-- Premade Groups LFGListPVEStub/LFGListPVPStub
 	-- CategorySelection
 	local cs = _G.LFGListFrame.CategorySelection
 	self:removeInset(cs.Inset)
@@ -2422,6 +2422,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 	self:skinButton{obj=av.RemoveEntryButton}
 	self:removeMagicBtnTex(av.EditButton)
 	self:skinButton{obj=av.EditButton}
+	self:skinCheckButton{obj=av.AutoAcceptButton}
 	av = nil
 
 	-- EntryCreation
