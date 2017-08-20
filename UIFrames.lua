@@ -3891,8 +3891,7 @@ aObj.blizzFrames[ftype].RaidFinder = function(self)
 
 	-- TODO texture is present behind frame
 	-- RaidFinderQueueFrame
-	_G.RaidFinderQueueFrameBackground:SetTexture(nil)
-	_G.RaidFinderQueueFrameBackground.SetTexture = _G.nop
+	self:nilTexture(_G.RaidFinderQueueFrameBackground, true)
 	skinCheckBtns("RaidFinder")
 	self:skinDropDown{obj=_G.RaidFinderQueueFrameSelectionDropDown}
 	self:skinSlider{obj=_G.RaidFinderQueueFrameScrollFrame.ScrollBar, rt={"background", "artwork"}}
