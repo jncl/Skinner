@@ -943,6 +943,21 @@ function aObj:skinCheckButton(...)
 
 end
 
+function aObj:skinColHeads(buttonName, noCols)
+
+	local btn
+	noCols = noCols or 4
+	for i = 1, noCols do
+		btn = _G[buttonName .. i]
+		if not btn.sb then -- only do if not already skinned as a button
+			self:removeRegions(btn, {1, 2, 3})
+			self:addSkinFrame{obj=btn}
+		end
+	end
+	btn = nil
+
+end
+
 local function __skinDropDown(opts)
 --[[
 	Calling parameters:
