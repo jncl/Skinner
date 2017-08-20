@@ -2911,12 +2911,12 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 					end
 				elseif child:IsObjectType("EditBox") then
 						aObj:skinEditBox{obj=child, regs={6}}
-				elseif child:IsObjectType("ScrollFrame") then
-					if child:GetName()
-					and child:GetName() .. "ScrollBar" -- handle named ScrollBar's
-					then
-						aObj:skinScrollBar{obj=child}
-					end
+				-- elseif child:IsObjectType("ScrollFrame") then
+				-- 	if child:GetName()
+				-- 	and child:GetName() .. "ScrollBar" -- handle named ScrollBar's
+				-- 	then
+				-- 		aObj:skinScrollBar{obj=child}
+				-- 	end
 				elseif child:IsObjectType("Slider") then
 					if aObj:hasTextInName(child, "SushiSlider")
 					then
