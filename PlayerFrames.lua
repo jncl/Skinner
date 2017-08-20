@@ -2527,19 +2527,22 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	end)
 	_G.PVPQueueFrame_SelectButton(1) -- select Honor button
 
+	-- skin common elements (Honor & Conquest frames)
+	local function skinCommon(frame)
+		frame.XPBar.Frame:SetTexture(nil)
+		aObj:glazeStatusBar(frame.XPBar.Bar, 0, frame.XPBar.Bar.Background, nil, true)
+		frame.XPBar.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
+		frame.XPBar.NextAvailable.Frame:SetTexture(nil)
+		aObj:addButtonBorder{obj=frame.XPBar.NextAvailable, relTo=frame.XPBar.NextAvailable.Icon}
+		aObj:removeInset(frame.RoleInset)
+		skinCheckBtns(frame.RoleInset)
+		aObj:removeInset(frame.Inset)
+	end
+
 	-- Honor Frame a.k.a Casual
-	local hfxpb = _G.HonorFrame.XPBar
-	hfxpb.Frame:SetTexture(nil)
-	self:glazeStatusBar(hfxpb.Bar, 0, hfxpb.Bar.Background, nil, true)
-	hfxpb.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
-	hfxpb.NextAvailable.Frame:SetTexture(nil)
-	self:addButtonBorder{obj=hfxpb.NextAvailable, relTo=hfxpb.NextAvailable.Icon}
-	hfxpb = nil
-	self:removeInset(_G.HonorFrame.RoleInset)
-	skinCheckBtns(_G.HonorFrame.RoleInset)
+	skinCommon(_G.HonorFrame)
 	self:skinDropDown{obj=_G.HonorFrameTypeDropDown}
-	self:removeInset(_G.HonorFrame.Inset)
-	self:skinSlider{obj=_G.HonorFrameSpecificFrame.scrollBar, wdth=-4}
+	self:skinSlider{obj=_G.HonorFrame.SpecificFrame.scrollBar, wdth=-4}
 	local btn
 	for i = 1, #_G.HonorFrame.SpecificFrame.buttons do
 		btn = _G.HonorFrame.SpecificFrame.buttons[i]
@@ -2547,7 +2550,6 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		btn.Border:SetTexture(nil)
 	end
 	btn = nil
-
 	local hfbf =_G.HonorFrame.BonusFrame
 	local nTab = {"RandomBG", "Arena1", "Ashran", "Brawl"}
 	for i = 1, #nTab do
@@ -2564,24 +2566,16 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	self:removeMagicBtnTex(_G.HonorFrame.QueueButton)
 	self:skinButton{obj=_G.HonorFrame.QueueButton}
 
-	-- Conquest Frame
-	local cfxpb = _G.ConquestFrame.XPBar
-	cfxpb.Frame:SetTexture(nil)
-	self:glazeStatusBar(cfxpb.Bar, 0, cfxpb.Bar.Background, nil, true)
-	cfxpb.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
-	cfxpb.NextAvailable.Frame:SetTexture(nil)
-	cfxpb = nil
-	self:removeInset(_G.ConquestFrame.RoleInset)
-	skinCheckBtns(_G.ConquestFrame.RoleInset)
-	_G.ConquestFrame.Arena2v2.Reward.Border:SetTexture(nil)
-	_G.ConquestFrame.Arena3v3.Reward.Border:SetTexture(nil)
-	_G.ConquestFrame.RatedBG.Reward.Border:SetTexture(nil)
+	-- Conquest Frame a.k.a. Rated
+	skinCommon(_G.ConquestFrame)
 	_G.ConquestFrame:DisableDrawLayer("BACKGROUND")
 	_G.ConquestFrame:DisableDrawLayer("BORDER")
 	_G.ConquestFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
-	self:removeInset(_G.ConquestFrame.Inset)
+	_G.ConquestFrame.Arena2v2.Reward.Border:SetTexture(nil)
 	_G.ConquestFrame.Arena2v2.NormalTexture:SetTexture(nil)
+	_G.ConquestFrame.Arena3v3.Reward.Border:SetTexture(nil)
 	_G.ConquestFrame.Arena3v3.NormalTexture:SetTexture(nil)
+	_G.ConquestFrame.RatedBG.Reward.Border:SetTexture(nil)
 	_G.ConquestFrame.RatedBG.NormalTexture:SetTexture(nil)
 	self:removeMagicBtnTex(_G.ConquestFrame.JoinButton)
 	self:skinButton{obj=_G.ConquestFrame.JoinButton}
