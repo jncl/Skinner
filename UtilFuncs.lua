@@ -1013,6 +1013,7 @@ function aObj:setActiveTab(tabSF)
 	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.db.profile.Gradient.invert, self.db.profile.Gradient.rotate))
 
 	if not tabSF.ignore and not tabSF.grown then
+		local point, relativeTo, relativePoint, xOfs, yOfs
 		if not tabSF.up then
 			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs - 6)
@@ -1038,6 +1039,7 @@ function aObj:setInactiveTab(tabSF)
 	tabSF.tfade:SetAlpha(1)
 
 	if not tabSF.ignore and tabSF.grown then
+		local point, relativeTo, relativePoint, xOfs, yOfs
 		if not tabSF.up then
 			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs + 6)
