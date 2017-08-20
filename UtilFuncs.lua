@@ -825,6 +825,18 @@ function aObj:moveObject(...)
 
 end
 
+function aObj:nilTexture(obj, nop)
+
+	obj:SetTexture(nil)
+	obj:SetAtlas(nil)
+	
+	if nop then
+		obj.SetTexture = _G.nop
+		obj.SetAtlas = _G.nop
+	end
+
+end
+
 function aObj:rawHook(obj, method, func, sec)
 
 	if not self:IsHooked(obj, method) then
