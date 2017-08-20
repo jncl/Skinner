@@ -1602,10 +1602,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 -->>--	Who Tab Frame
 	self:removeInset(_G.WhoFrameListInset)
 	self:skinColHeads("WhoFrameColumnHeader")
+	self:removeSkinFrame(_G.WhoFrameColumnHeader2.sf)
 	self:removeInset(_G.WhoFrameEditBoxInset)
-	self:skinDropDown{obj=_G.WhoFrameDropDown, noSkin=true}
-	self:addButtonBorder{obj=_G.WhoFrameDropDownButton, es=12, ofs=-1}
-	self:moveObject{obj=_G.WhoFrameDropDownButton, x=5}
+	self:skinDropDown{obj=_G.WhoFrameDropDown}
 	self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar}
 	self:skinEditBox{obj=_G.WhoFrameEditBox, move=true}
 	_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() +  24)
