@@ -148,6 +148,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		HelpFrame            = true,
 		ItemText             = true,
 		LevelUpDisplay       = true,
+		LossOfControl        = true,
 		MailFrame            = true,
 		MainMenuBar          = {skin = true, glazesb = true, extraab=true, altpowerbar=true},
 		MenuFrames           = true, -- (inc. MacroUI & BindingUI)
@@ -1477,6 +1478,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Level Up Display"],
 					desc = self.L["Toggle the skin of the Level Up Display"],
+				},
+				LossOfControl = {
+					type = "toggle",
+					name = self.L["Loss Of Control Frame"],
+					desc = self.L["Toggle the skin of the Loss Of Control Frame"],
 				},
 				MailFrame = {
 					type = "toggle",

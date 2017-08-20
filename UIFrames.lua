@@ -2451,6 +2451,14 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 
 end
 
+aObj.blizzFrames[ftype].LossOfControl = function(self)
+	if not self.db.profile.LossOfControl or self.initialized.LossOfControl then return end
+	self.initialized.LossOfControl = true
+
+	self:addButtonBorder{obj=_G.LossOfControlFrame, relTo=_G.LossOfControlFrame.Icon}
+
+end
+
 aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	if not self.db.profile.MenuFrames or self.initialized.MacroUI then return end
 	self.initialized.MacroUI = true
