@@ -3862,6 +3862,12 @@ aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
 
 	_G.QueueStatusFrame:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.QueueStatusFrame, anim=IsAddOnLoaded("SexyMap") and true or nil}
+
+	-- change the colour of the Entry Separator texture
+	for sEntry in _G.QueueStatusFrame.statusEntriesPool:EnumerateActive() do
+		sEntry.EntrySeparator:SetColorTexture(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+	end
+
 	-- handle SexyMap's use of AnimationGroups to show and hide frames
 	if IsAddOnLoaded("SexyMap") then
 		local rtEvt
