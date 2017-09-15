@@ -616,20 +616,18 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		self:addButtonBorder{obj=frame, relTo=frame.Icon}
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
 	end)
-	if self.isPTR then
-		-- called params: frame, petID
-		self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, ...)
-			aObj:Debug("NewPetAlertSystem: [%s, %s]", frame, ...)
-			frame:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-		end)
-		-- called params: frame, mountID
-		self:SecureHook(_G.NewMountAlertSystem, "setUpFunction", function(frame, ...)
-			aObj:Debug("NewMountAlertSystem: [%s, %s]", frame, ...)
-			frame:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-		end)
-	end
+	-- called params: frame, petID
+	self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, ...)
+		aObj:Debug("NewPetAlertSystem: [%s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+	end)
+	-- called params: frame, mountID
+	self:SecureHook(_G.NewMountAlertSystem, "setUpFunction", function(frame, ...)
+		aObj:Debug("NewMountAlertSystem: [%s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+	end)
 
 	local function skinDCSAlertFrames(opts)
 
@@ -756,15 +754,13 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		end
 	end)
 
-	if self.isPTR then
-		-- ArtifactRelicForgeUI
-		local arf = _G.ArtifactRelicForgeFrame
-		arf.TitleContainer.Background:SetAlpha(0)
-		self:removeRegions(arf.PreviewRelicFrame, {3, 5}) -- background and border textures
-		self.modUIBtns:addButtonBorder{obj=arf.PreviewRelicFrame, relTo=arf.PreviewRelicFrame.Icon} -- use module function to force button border
-		self:addSkinFrame{obj=arf, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
-		arf = nil
-	end
+	-- ArtifactRelicForgeUI
+	local arf = _G.ArtifactRelicForgeFrame
+	arf.TitleContainer.Background:SetAlpha(0)
+	self:removeRegions(arf.PreviewRelicFrame, {3, 5}) -- background and border textures
+	self.modUIBtns:addButtonBorder{obj=arf.PreviewRelicFrame, relTo=arf.PreviewRelicFrame.Icon} -- use module function to force button border
+	self:addSkinFrame{obj=arf, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+	arf = nil
 
 end
 
@@ -1452,8 +1448,7 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 
 end
 
-if aObj.isPTR then
-	aObj.blizzFrames[ftype].Console = function(self)
+aObj.blizzFrames[ftype].Console = function(self)
 	if not self.db.profile.Console or self.initialized.Console then return end
 	self.initialized.Console = true
 
@@ -1477,7 +1472,6 @@ if aObj.isPTR then
 
 	r, g, b, a = nil, nil, nil, nil
 
-	end
 end
 
 aObj.blizzLoDFrames[ftype].Contribution = function(self)
@@ -1531,24 +1525,22 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	self:skinSlider{obj=_G.EventTraceFrameScroll}
 	self:addSkinFrame{obj=_G.EventTraceFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
 
-	if self.isPTR then
-		-- skin TableAttributeDisplay frame
-		local function skinTAD(frame)
-			-- skin control buttons ?
-			self:skinEditBox{obj=frame.FilterBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-			self:skinSlider{obj=frame.LinesScrollFrame.ScrollBar}
-			self:addSkinFrame{obj=frame.ScrollFrameArt, ft=ftype}
-			self:addSkinFrame{obj=frame, ft=ftype, kfs=true, ofs=-2, x1=3, x2=-1}
-		end
-		skinTAD(_G.TableAttributeDisplay)
-		-- hook this to skin subsequent frames
-		self:RawHook("DisplayTableInspectorWindow", function(focusedTable, customTitle, tableFocusedCallback)
-			local frame = self.hooks.DisplayTableInspectorWindow(focusedTable, customTitle, tableFocusedCallback)
-			-- aObj:Debug("DisplayTableInspectorWindow: [%s, %s, %s, %s]", focusedTable, customTitle, tableFocusedCallback, frame)
-			skinTAD(frame)
-			return frame
-		end, true)
+	-- skin TableAttributeDisplay frame
+	local function skinTAD(frame)
+		-- skin control buttons ?
+		self:skinEditBox{obj=frame.FilterBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
+		self:skinSlider{obj=frame.LinesScrollFrame.ScrollBar}
+		self:addSkinFrame{obj=frame.ScrollFrameArt, ft=ftype}
+		self:addSkinFrame{obj=frame, ft=ftype, kfs=true, ofs=-2, x1=3, x2=-1}
 	end
+	skinTAD(_G.TableAttributeDisplay)
+	-- hook this to skin subsequent frames
+	self:RawHook("DisplayTableInspectorWindow", function(focusedTable, customTitle, tableFocusedCallback)
+		local frame = self.hooks.DisplayTableInspectorWindow(focusedTable, customTitle, tableFocusedCallback)
+		-- aObj:Debug("DisplayTableInspectorWindow: [%s, %s, %s, %s]", focusedTable, customTitle, tableFocusedCallback, frame)
+		skinTAD(frame)
+		return frame
+	end, true)
 
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, "FrameStackTooltip")
@@ -2181,12 +2173,6 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 	-- TicketStatus Frame
 	self:addSkinFrame{obj=_G.TicketStatusFrameButton}
-	if not self.isPTR then
-		-- ReportPlayerName Dialog
-		self:addSkinFrame{obj=_G.ReportPlayerNameDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
-		_G.ReportPlayerNameDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:addSkinFrame{obj=_G.ReportPlayerNameDialog, ft=ftype}
-	end
 
 	-- ReportCheating Dialog
 	self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
@@ -3290,13 +3276,11 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 
 	self:skinButton{obj=_G.MovePadForward}
 	self:skinButton{obj=_G.MovePadJump}
-	if self.isPTR then
-		_G.MovePadRotateLeft.icon:SetTexture([[Interface/Glues/CharacterSelect/RestoreButton]])
-		self:skinButton{obj=_G.MovePadRotateLeft}
-		_G.MovePadRotateRight.icon:SetTexture([[Interface/Glues/CharacterSelect/RestoreButton]])
-		_G.MovePadRotateRight.icon:SetTexCoord(1, 0, 0, 1) -- flip texture horizontally
-		self:skinButton{obj=_G.MovePadRotateRight}
-	end
+	_G.MovePadRotateLeft.icon:SetTexture([[Interface/Glues/CharacterSelect/RestoreButton]])
+	self:skinButton{obj=_G.MovePadRotateLeft}
+	_G.MovePadRotateRight.icon:SetTexture([[Interface/Glues/CharacterSelect/RestoreButton]])
+	_G.MovePadRotateRight.icon:SetTexCoord(1, 0, 0, 1) -- flip texture horizontally
+	self:skinButton{obj=_G.MovePadRotateRight}
 	self:skinButton{obj=_G.MovePadBackward}
 	self:skinButton{obj=_G.MovePadStrafeLeft}
 	self:skinButton{obj=_G.MovePadStrafeRight}
@@ -3735,9 +3719,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		self:changeRecTex(btn:GetHighlightTexture())
 	end
 	btn = nil
-	if self.isPTR then
-		self:skinButton{obj=_G.PremadeGroupsPvETutorialAlert.CloseButton, cb=true}
-	end
+	self:skinButton{obj=_G.PremadeGroupsPvETutorialAlert.CloseButton, cb=true}
 
 	-- hook this to change selected texture
 	self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
@@ -4271,13 +4253,8 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	local bf = _G.WorldMapFrame.BorderFrame
 	self:keepFontStrings(bf)
 	self:removeInset(bf.Inset)
-	if not self.isPTR then
-		self:skinButton{obj=_G.WorldMapFrameSizeDownButton, ob3="↕"} -- up-down arrow
-		self:skinButton{obj=_G.WorldMapFrameSizeUpButton, ob3="↕"} -- up-down arrow
-	else
-		self:skinButton{obj=bf.MaximizeMinimizeFrame.MaximizeButton, ob3="↕"} -- up-down arrow
-		self:skinButton{obj=bf.MaximizeMinimizeFrame.MinimizeButton, ob3="↕"} -- up-down arrow
-	end
+	self:skinButton{obj=bf.MaximizeMinimizeFrame.MaximizeButton, ob3="↕"} -- up-down arrow
+	self:skinButton{obj=bf.MaximizeMinimizeFrame.MinimizeButton, ob3="↕"} -- up-down arrow
 	bf = nil
 	_G.WorldMapFrame.MainHelpButton.Ring:SetTexture(nil)
 	self:skinDropDown{obj=_G.WorldMapTitleDropDown}

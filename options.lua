@@ -134,7 +134,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ClassTrial           = true,
 		CoinPickup           = true,
 		Colours              = true,
-		Console              = self.isPTR and true or nil,
+		Console              = true,
 		Contribution         = true,
 		CombatLogQBF         = false,
 		DeathRecap           = true,
@@ -1399,12 +1399,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Colour Picker Frame"],
 					desc = self.L["Toggle the skin of the Colour Picker Frame"],
 				},
-				Console = self.isPTR and {
+				Console = {
 					type = "toggle",
 					name = self.L["Developer Console Frame"],
 					desc = self.L["Toggle the skin of the Developer Console Frame"],
 					width = "double",
-				} or nil,
+				},
 				Contribution = {
 					type = "toggle",
 					name = self.L["Contribution Frame"],
