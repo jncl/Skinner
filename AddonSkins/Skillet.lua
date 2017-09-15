@@ -1,82 +1,77 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Skillet") then return end
+local _G = _G
 
-function aObj:Skillet()
+aObj.addonsToSkin.Skillet = function(self) -- v3.27
 	if not self.db.profile.TradeSkillUI then return end
 
-	self:SecureHook(Skillet, "ShowTradeSkillWindow", function()
-		SkilletRankFrameBorder:Hide()
-		self:glazeStatusBar(SkilletRankFrame, 0, SkilletRankFrameBackground)
-		self:skinDropDown{obj=SkilletRecipeGroupDropdown, x2=110}
-		self:skinDropDown{obj=SkilletSortDropdown, x2=110}
-		self:skinEditBox(SkilletFilterBox, {9})
-		self:skinScrollBar{obj=SkilletSkillList, size=3}
-		self:applySkin(SkilletSkillListParent)
-		self:applySkin(SkilletReagentParent)
-		self:skinEditBox(SkilletItemCountInputBox, {9})
-		self:skinScrollBar{obj=SkilletQueueList, size=3}
-		self:applySkin(SkilletQueueParent)
-		self:addSkinFrame{obj=SkilletFrame, kfs=true}
-		self:Unhook(Skillet, "ShowTradeSkillWindow")
+	self:SecureHook(_G.Skillet, "ShowTradeSkillWindow", function(this)
+		_G.SkilletRankFrameBorder:Hide()
+		self:glazeStatusBar(_G.SkilletRankFrame, 0, _G.SkilletRankFrameBackground)
+		self:skinDropDown{obj=_G.SkilletRecipeGroupDropdown, x2=110}
+		self:skinDropDown{obj=_G.SkilletSortDropdown, x2=110}
+		self:skinDropDown{obj=_G.SkilletFilterDropdown, x2=110}
+		self:skinEditBox(_G.SkilletSearchBox, {6})
+		self:skinSlider{obj=_G.SkilletSkillList.ScrollBar, size=3}
+		self:applySkin(_G.SkilletSkillListParent)
+		self:applySkin(_G.SkilletReagentParent)
+		self:skinEditBox(_G.SkilletItemCountInputBox, {6})
+		self:skinSlider{obj=_G.SkilletQueueList.ScrollBar, size=3}
+		self:applySkin(_G.SkilletQueueParent)
+		self:addSkinFrame{obj=_G.SkilletFrame, kfs=true}
+		self:Unhook(this, "ShowTradeSkillWindow")
 	end)
+	self:SecureHook(_G.SkilletShoppingList, "Show", function(this)
+		self:skinSlider{obj=_G.SkilletShoppingListList.ScrollBar, size=3}
+		self:applySkin(_G.SkilletShoppingListParent)
+		self:addSkinFrame{obj=_G.SkilletShoppingList, kfs=true}
+		self:Unhook(this, "Show")
+	end)
+	self:SecureHook(_G.SkilletRecipeNotesFrame, "Show", function(this)
+		self:skinSlider{obj=_G.SkilletNotesList.ScrollBar, size=3}
+		self:applySkin(_G.SkilletRecipeNotesFrame)
+		self:Unhook(this, "Show")
+	end)
+	self:SecureHook(_G.Skillet, "RecipeNote_OnClick", function(this, button)
+		self:skinEditBox{obj=self:getChild(button, 2), regs={6}} -- skin EditBox
+		self:Unhook(this, "RecipeNote_OnClick")
+	end)
+	self:SecureHook(_G.Skillet, "DisplayIgnoreList", function(this)
+		self:skinSlider{obj=_G.SkilletIgnoreListList.ScrollBar, size=3}
+		self:applySkin(_G.SkilletIgnoreListParent)
+		self:addSkinFrame{obj=_G.SkilletIgnoreList, kfs=true}
+		self:Unhook(this, "DisplayIgnoreList")
+	end)
+	self:skinDropDown{obj=_G.SkilletQueueLoadDropdown, x2=110}
+	self:skinEditBox{obj=_G.SkilletQueueSaveEditBox, regs={6}} -- 6 is text
+	self:applySkin{obj=_G.SkilletQueueManagementParent}
 
--->>--	SkilletShoppingList
-	self:SecureHook(SkilletShoppingList, "Show", function(this)
-		self:skinScrollBar{obj=SkilletShoppingListList, size=3}
-		self:applySkin(SkilletShoppingListParent)
-		self:addSkinFrame{obj=SkilletShoppingList, kfs=true}
-		self:Unhook(SkilletShoppingList, "Show")
-	end)
-
--->>--	SkilletRecipeNotes Frame
-	self:SecureHook(SkilletRecipeNotesFrame, "Show", function(this)
-		self:skinScrollBar{obj=SkilletNotesList, size=3}
-		self:applySkin(SkilletRecipeNotesFrame)
-		self:Unhook(SkilletRecipeNotesFrame, "Show")
-	end)
-	self:SecureHook(Skillet, "RecipeNote_OnClick", function(this, button)
-		self:skinEditBox{obj=self:getChild(button, 2), regs={9}} -- skin EditBox
-		self:Unhook(Skillet, "RecipeNote_OnClick")
-	end)
-
--->>-- InventoryInfoPopup
-	self:SecureHook(Skillet, "ShowInventoryInfoPopup", function()
-		self:addSkinFrame{obj=SkilletInfoBoxFrame}
-		self:Unhook(Skillet, "ShowInventoryInfoPopup")
-	end)
-
--->>--	Tooltip
+	-- tooltip
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then SkilletTradeskillTooltip:SetBackdrop(self.backdrop) end
-		self:SecureHookScript(SkilletTradeskillTooltip, "OnShow", function(this)
-			self:skinTooltip(SkilletTradeskillTooltip)
-		end)
+		self:add2Table(self.ttList, "SkilletTradeskillTooltip")
 	end
 
--->>-- Buttons
 	if self.modBtns then
 		-- skin queue buttons
-		SkilletQueueButton1:SetParent(SkilletQueueParent) -- reparent it
-		self.sBtn[SkilletQueueButton1] = nil -- remove old skin button
-		self:SecureHook(Skillet, "UpdateQueueWindow", function()
-			for i = 1, floor(SkilletQueueList:GetHeight() / SKILLET_TRADE_SKILL_HEIGHT) do
-				local dBtn = _G["SkilletQueueButton"..i.."DeleteButton"]
-				if not self.sBtn[dBtn] then self:skinButton{obj=dBtn, x1=-3, y1=-3, x2=3, y2=1} end
+		_G.SkilletQueueButton1:SetParent(_G.SkilletQueueParent) -- reparent it
+		self:SecureHook(_G.Skillet, "UpdateQueueWindow", function()
+			for i = 1, _G.floor(_G.SkilletQueueList:GetHeight() / _G.SKILLET_TRADE_SKILL_HEIGHT) do
+				local dBtn = _G["SkilletQueueButton" .. i .. "DeleteButton"]
+				if not dBtn.sb then self:skinButton{obj=dBtn, x1=-3, y1=-3, x2=3, y2=1} end
 			end
 		end)
-    if Skillet.PluginButton_OnClick ~= nil then
-      self:SecureHook(Skillet, "PluginButton_OnClick", function(this, button)
-		if SkilletFrame.added_buttons then
-	        for i = 1, #SkilletFrame.added_buttons do
-	          local btn = _G["SkilletPluginDropdown"..i]
-	          if not self.sBtn[btn] then
-	            self:skinButton{obj=btn}
-	          end
-	        end
+		if _G.Skillet.PluginButton_OnClick ~= nil then
+			self:SecureHook(_G.Skillet, "PluginButton_OnClick", function(this, button)
+				if _G.SkilletFrame.added_buttons then
+					for i = 1, #_G.SkilletFrame.added_buttons do
+						local btn = _G["SkilletPluginDropdown" .. i]
+						if not btn.sb then
+							self:skinButton{obj=btn}
+						end
+					end
+				end
+			end)
 		end
-      end)
-    end
-		
 	end
 
 end

@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-function aObj:WorldQuestTracker()
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v7.3.0.237-release
 
 	local skincnt = 0
 	self:SecureHook("ToggleWorldMap", function()
@@ -26,7 +26,12 @@ function aObj:WorldQuestTracker()
 			self:addSkinFrame{obj=_G.WorldQuestTrackerShipmentsReadyFrame, ofs=5, x1=10, x2=12}
 			skincnt = skincnt + 1
 		end
-		if skincnt == 4 then
+		if _G.WorldQuestTrackerToggleQuestsButton then
+			_G.WorldQuestTrackerToggleQuestsButton.Background:SetTexture(nil)
+			self:skinButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, x1=4, x2=-4}
+			skincnt = skincnt + 1
+		end
+		if skincnt == 5 then
 			self:Unhook("ToggleWorldMap")
 		end
 	end)

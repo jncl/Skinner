@@ -5,18 +5,7 @@ local _G = _G
 -- minimap button
 aObj.mmButs["ClassOrderHallsComplete"] = _G.COHCMinimapButton
 
-function aObj:ClassOrderHallsComplete()
-
-	-- resize minimap button if required
-	if _G.CLASSORDERHALLSCOMPLETE_SAVEDVARIABLESPERCHARACTER.largeMinimapButton then
-		_G.COHCMinimapButton:SetSize(44, 44)
-	end
-	-- hook this to manage size changes
-	self:RawHook(_G.COHCMinimapButton, "SetSize", function(this, w, h)
-		aObj:Debug("COHCMinimapButton SetSize: [%s, %s, %s]", this, w, h)
-		if w == 54 then w, h = 44, 44 end
-		self.hooks[this].SetSize(this, w, h)
-	end, true)
+aObj.addonsToSkin.ClassOrderHallsComplete = function(self) -- v1.27
 
 	local mFrame = "ClassOrderHallsCompleteUIMainFrame"
 
@@ -40,7 +29,13 @@ function aObj:ClassOrderHallsComplete()
 	-- Tab3 SubFrame
 	self:skinDropDown{obj=_G[mFrame .. "Tab3SubFrameMonitorRowsDropDownMenu"]}
 	self:skinDropDown{obj=_G[mFrame .. "Tab3SubFrameMonitorColumnsDropDownMenu"]}
-	self:skinDropDown{obj=_G[mFrame .. "Tab3SubFrameAlertDropDownMenu"]}
+
+	-- Tab4 SubFrame
+	self:skinDropDown{obj=_G[mFrame .. "Tab4SubFrameAlertDropDownMenu"]}
+
+	-- Tab5 SubFrame
+	self:skinDropDown{obj=_G[mFrame .. "Tab5SubFrameSourceDropDownMenu"]}
+	self:skinDropDown{obj=_G[mFrame .. "Tab5SubFrameTextFormatDropDownMenu"]}
 
 	mFrame = nil
 

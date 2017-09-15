@@ -312,24 +312,27 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 		return
 	end
 
-	-- aObj:Debug("checkAndRunAddOn #2: [%s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), self[addonFunc])
+	-- handle old & new function definitions
+	local aFunc = self[addonFunc] or addonFunc
+
+	-- self:Debug("checkAndRunAddOn #2: [%s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), aFunc)
 
 	if not _G.IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
 		if _G.IsAddOnLoadOnDemand(addonName) and not LoD then
-			self.lmAddons[addonName:lower()] = addonFunc -- store with lowercase addonname (AddonLoader fix)
+			self.lmAddons[addonName:lower()] = aFunc -- store with lowercase addonname (AddonLoader fix)
 		-- Nil out loaded Skins for Addons that aren't loaded
-		elseif self[addonFunc] then
-			self[addonFunc] = nil
+		elseif aFunc then
+			aFunc = nil
 		end
 	else
 		-- check to see if AddonSkin is loaded when Addon is loaded
-		if not LoD and not self[addonFunc] then
+		if not LoD and not aFunc then
 			if self.db.profile.Warnings then
 				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the SkinMe directory")
 			end
-		elseif type(self[addonFunc]) == "function" then
-			return safecall(addonName, self[addonFunc], LoD)
+		elseif type(aFunc) == "function" then
+			return safecall(addonName, aFunc, LoD)
 			-- return safecall(addonFunc, LoD)
 		else
 			if self.db.profile.Warnings then
@@ -829,7 +832,7 @@ function aObj:nilTexture(obj, nop)
 
 	obj:SetTexture(nil)
 	obj:SetAtlas(nil)
-	
+
 	if nop then
 		obj.SetTexture = _G.nop
 		obj.SetAtlas = _G.nop

@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Guild_Roster_Manager") then return end
 local _G = _G
 
-function aObj:Guild_Roster_Manager() -- 7.2.5R1.02
+aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 7.2.5R1.02
 
 	-- TODO DropDown Frame(s) & Button(s)
 
@@ -23,8 +23,8 @@ function aObj:Guild_Roster_Manager() -- 7.2.5R1.02
 	self:addSkinFrame{obj=_G.GRM_PlayerNoteWindow, x1=-2, x2=2}
 	self:skinEditBox{obj=_G.GRM_PlayerOfficerNoteEditBox, regs={6}} -- 6 is text
 	self:addSkinFrame{obj=_G.GRM_PlayerOfficerNoteWindow, x1=-2, x2=2}
-	self:removeInset(_G.GRM_guildRankDropDownMenuSelected)
-	self:addSkinFrame{obj=_G.GRM_RankDropDownMenu, kfs=true}
+	-- self:removeInset(_G.GRM_guildRankDropDownMenuSelected)
+	-- self:addSkinFrame{obj=_G.GRM_RankDropDownMenu, kfs=true}
 
 	-- appears when right clicking on date(s)
 	self:addSkinFrame{obj=_G.GRM_altDropDownOptions}
@@ -60,10 +60,15 @@ function aObj:Guild_Roster_Manager() -- 7.2.5R1.02
 	self:addSkinFrame{obj=_G.GRM_AddEventFrame, kfs=true, ofs=2, x2=1}
 
 	-- GRM_RosterChangeLogFrame
+	self:skinCheckButton{obj=_G.GRM_RosterTimeIntervalCheckButton}
+	self:skinCheckButton{obj=_G.GRM_RosterRecommendKickCheckButton}
 	self:skinEditBox{obj=_G.GRM_RosterKickRecommendEditBox, regs={6}, noWidth=true} -- 6 is text
+	self:skinCheckButton{obj=_G.GRM_RosterReportInactiveReturnButton}
 	self:skinEditBox{obj=_G.GRM_ReportInactiveReturnEditBox, regs={6}, noWidth=true} -- 6 is text
+	self:skinCheckButton{obj=_G.GRM_RosterReportUpcomingEventsCheckButton}
 	self:skinEditBox{obj=_G.GRM_RosterReportUpcomingEventsEditBox, regs={6}, noWidth=true} -- 6 is text
 	-- GRM_RosterSyncRankDropDownSelected
+	self:skinCheckButton{obj=_G.GRM_RosterSyncCheckButton}
 	self:removeInset(_G.GRM_RosterSyncRankDropDownSelected)
 	self:addSkinFrame{obj=_G.GRM_RosterSyncRankDropDownMenu, kfs=true}
 	self:addSkinFrame{obj=_G.GRM_RosterChangeLogScrollBorderFrame, kfs=true, ofs=-2, y1=-4, x2=-4}
@@ -77,31 +82,28 @@ function aObj:Guild_Roster_Manager() -- 7.2.5R1.02
 	self:addSkinFrame{obj=_G.GRM_RosterConfirmFrame, kfs=true, ofs=2, x2=1}
 
 	-- hook these to handle frame changes
-	self:SecureHook(_G.GRM, "GR_MetaDataInitializeUIFirst", function(this)
+	self:SecureHook(_G.GRM_UI, "GR_MetaDataInitializeUIFirst", function(this)
 		self:adjHeight{obj=_G.GRM_DateSubmitButton, adj=-4}
 		self:adjHeight{obj=_G.GRM_DateSubmitCancelButton, adj=-4}
 		_G.GRM_PlayerNoteWindow:SetBackdrop(nil)
 		_G.GRM_PlayerOfficerNoteWindow:SetBackdrop(nil)
-		-- FIXME - hide GRM_RemoveGuildieButton initially, if player not able to use it (BugFix!)
-		if not _G.CanGuildRemove() then
-			_G.GRM_RemoveGuildieButton:Hide()
-		end
 		self:Unhook(this, "GR_MetaDataInitializeUIFirst")
 	end)
-	self:SecureHook(_G.GRM, "GR_MetaDataInitializeUISecond", function(this)
+	self:SecureHook(_G.GRM_UI, "GR_MetaDataInitializeUISecond", function(this)
 		_G.GRM_MemberDetailPopupEditBox:SetTextInsets(6 ,3 ,3 ,6)
 		_G.GRM_altDropDownOptions:SetBackdrop(nil)
 		self:Unhook(this, "GR_MetaDataInitializeUISecond")
 	end)
-	self:SecureHook(_G.GRM, "GR_MetaDataInitializeUIThird", function(this)
+	self:SecureHook(_G.GRM_UI, "GR_MetaDataInitializeUIThird", function(this)
 		_G.GRM_AddAltEditBox:SetTextInsets(6 ,3 ,3 ,6)
 		_G.GRM_LoadLogButton:SetSize (60 ,16)
 		self:moveObject{obj=_G.GRM_LoadLogButton, x=-13, y=7}
 		self:Unhook(this, "GR_MetaDataInitializeUIThird")
 	end)
-	self:SecureHook(_G.GRM, "MetaDataInitializeUIrosterLog1", function(this)
+	self:SecureHook(_G.GRM_UI, "MetaDataInitializeUIrosterLog1", function(this)
 		_G.GRM_RosterOptionsButton:SetSize (90 ,20)
 		_G.GRM_RosterClearLogButton:SetSize (90 ,20)
+		_G.GRM_RosterTimeIntervalOverlayNote:SetBackdrop(nil)
 		_G.GRM_RosterKickOverlayNote:SetBackdrop(nil)
 		_G.GRM_ReportInactiveReturnEditBox:SetWidth(38)
 		_G.GRM_ReportInactiveReturnEditBox:ClearAllPoints()
