@@ -8,32 +8,6 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
-
-	- PTR 7.3.0
-√		- Interface changed to 70300
-		- Added
-≈			- Blizzard_ArtifactRelicForgeUI
-√			- Blizzard_Console
-√			- Blizzard_TableInspector (Debug Tools)
-x			- Blizzard_SimpleCheckout (StoreUI)
-			- AlertFrameSystems
-?				- ItemAlertFrame
-≈				- NewPetAlertSystem
-≈				- NewMountAlertSystem
-√			- MaximizeMinimizeFrame (DressUpFrame & WorldMapFrame)
-√			- MovePad Rotate Buttons
-		- Deleted
-√			- ReportPlayerNameDialog (HelpFrame)
-√			- WorldMapFrameSizeDownButton
-		- Updated
-≈			- Blizzard_ArtifactPerks
-√			- Blizzard_PetCollection (Summon Random Favourite Pet)
-√			- Blizzard_Wardrobe
-√			- Blizzard_DebugTools
-?			- Blizzard_NamePlates
-√			- DressUpFrame
-x			- DressUpModel
-
 	O	Handle the PLAYER_LEVEL_UP event
 		- if max level then adjust MainMenuBar objects
 		- ?
@@ -45,11 +19,35 @@ x			- DressUpModel
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
-≈	O	Blizzard_Commentator frames need skinning
+≈	O	Rework how Addon skins are handled
+		- replace table in AddonFrames with individual entries in each skin
 
-√	I	WeakAuras, reported by epidemedabear, 17.08.17
-		- Message: ..\AddOns\Skinner\Skinner.lua line 613: attempt to index field 'obj' (a nil value)
-		- Skinner\Skinner.lua:613: Skinner\Skinner.lua:583
-		- (tail call): ?
-		- Skinner\SkinMe\WeakAuras.lua:9:
-		- Skinner\SkinMe\WeakAuras.lua:8
+	O	Place Addons in Addons folder rather than the SkinMe folder
+
+	I	MainMenuBar, reported by scalp42, 22.08.17
+√		- option to skin is set to false after a reload
+
+≈	N	BonusRollPreview, reported by Pseudopath/tordenflesk, 26.08.17/09.09.17
+		- ..\AddOns\Skinner\Skinner.lua line 613: attempt to index field 'obj' (a nil value)
+			Skinner\Skinner.lua:613: Skinner\Skinner.lua:583
+			(tail call): ?
+			Skinner\SkinMe\BonusRollPreview.lua:8: Skinner\SkinMe\BonusRollPreview.lua:5
+
+√	N	ClassOrderHallsComplete, reported by Shimiya, 04.09.17
+		- ...ce\AddOns\Skinner\SkinMe\ClassOrderHallsComplete.lua:11: attempt to index field 'CLASSORDERHALLSCOMPLETE_SAVEDVARIABLESPERCHARACTER' (a nil value)
+
+√	N	Skillet, reported by Shimiya, 05.09.17
+		- Interface\AddOns\Skinner\SkinMe\Skillet.lua:43: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+√	N	ARL, reported by epidemedabear, 11.09.17
+		- ..\AddOns\Skinner\SkinMe\AckisRecipeList.lua line 153: attempt to index a nil value
+		Debug: Skinner\SkinMe\AckisRecipeList.lua:153:
+		Skinner\SkinMe\AckisRecipeList.lua:151
+
+√	N	WorldQuestTracker
+
+√	I	TradeFrame slots aren't skinned, only #1 is
+
+√	N	GuildRosterManager
+
+√	S	Simulationcraft
