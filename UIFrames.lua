@@ -2578,10 +2578,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	if self.initialized.MainMenuBar then return end
 	self.initialized.MainMenuBar = true
 
-	if IsAddOnLoaded("Bartender4") then
-		self.db.profile.MainMenuBar.skin = false
-	end
-
 	if self.db.profile.MainMenuBar.skin then
 		_G.ExhaustionTick:SetAlpha(0)
 		_G.MainMenuExpBar:DisableDrawLayer("OVERLAY", -1)
