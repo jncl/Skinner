@@ -2663,19 +2663,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		self:addButtonBorder{obj=_G.ActionBarUpButton, es=12, ofs=-5, x2=-6, y2=7}
 		self:addButtonBorder{obj=_G.ActionBarDownButton, es=12, ofs=-5, x2=-6, y2=7}
 
-	-->>-- Vehicle Leave Button
-		self:addSkinButton{obj=_G.MainMenuBarVehicleLeaveButton, ft=ftype}
-		self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
-			self:moveObject{obj=_G.MainMenuBarVehicleLeaveButton, y=3}
-		end)
-
-	-->>-- MicroButtonAlert frames
-		local nTab = {"Talent", "Collections", "LFD", "EJ"}
-		 for i =1, #nTab do
-			self:skinButton{obj=_G[nTab[i] .. "MicroButtonAlert"].CloseButton, cb=true}
-		end
-		nTab = nil
-
 	-->>-- MultiBar Buttons
 		local nTab, btn = {"BottomLeft", "BottomRight", "Right", "Left"}
 		for i = 1, #nTab do
@@ -2697,6 +2684,19 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 		end)
 	end
+
+-->>-- Vehicle Leave Button
+	self:addSkinButton{obj=_G.MainMenuBarVehicleLeaveButton, ft=ftype}
+	self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
+		self:moveObject{obj=_G.MainMenuBarVehicleLeaveButton, y=3}
+	end)
+
+-->>-- MicroButtonAlert frames
+	local nTab = {"Talent", "Collections", "LFD", "EJ"}
+	 for i = 1, #nTab do
+		self:skinButton{obj=_G[nTab[i] .. "MicroButtonAlert"].CloseButton, cb=true}
+	end
+	nTab = nil
 
 -->>-- Status Bars
 	if self.db.profile.MainMenuBar.glazesb then
