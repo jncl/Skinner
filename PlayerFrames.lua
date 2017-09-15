@@ -2981,8 +2981,8 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 
 	local nTab, btnName = {"Player", "Recipient"}
 	for i = 1, _G.MAX_TRADE_ITEMS do
-		for i = 1, #nTab do
-			btnName = "Trade" .. nTab[1] .. "Item" .. i
+		for j = 1, #nTab do
+			btnName = "Trade" .. nTab[j] .. "Item" .. i
 			_G[btnName .. "SlotTexture"]:SetTexture(nil)
 			_G[btnName .. "NameFrame"]:SetTexture(nil)
 			self:addButtonBorder{obj=_G[btnName .. "ItemButton"], ibt=true}
