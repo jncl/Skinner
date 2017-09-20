@@ -2,9 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Guild_Roster_Manager") then return end
 local _G = _G
 
-aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 7.2.5R1.02
-
-	-- TODO DropDown Frame(s) & Button(s)
+aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 7.3.0R1.091
 
 	-- FIXME - remove spaces from the realm name when constructing the PlayerName string so it matches subsequent checks
 	_G.GRM_AddonGlobals.addonPlayerName = (_G.GetUnitName ( "PLAYER" , false ) .. "-" .. _G.GRM_AddonGlobals.realmName:gsub(" ", ""))
@@ -12,7 +10,7 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 7.2.5R1.02
 	-- GRM_LoadLogButton (on GuildRoster frame)
 	self:skinButton{obj=_G.GRM_LoadLogButton}
 
-	-- GRM_MemberDetailMetaData )appears on mouseover of guild members on GuildRoster frame)
+	-- GRM_MemberDetailMetaData (appears on mouseover of guild members on GuildRoster frame when showing Guild Status)
 	self:removeInset(_G.GRM_DayDropDownMenuSelected)
 	self:addSkinFrame{obj=_G.GRM_DayDropDownMenu, kfs=true}
 	self:removeInset(_G.GRM_YearDropDownMenuSelected)
@@ -23,8 +21,6 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 7.2.5R1.02
 	self:addSkinFrame{obj=_G.GRM_PlayerNoteWindow, x1=-2, x2=2}
 	self:skinEditBox{obj=_G.GRM_PlayerOfficerNoteEditBox, regs={6}} -- 6 is text
 	self:addSkinFrame{obj=_G.GRM_PlayerOfficerNoteWindow, x1=-2, x2=2}
-	-- self:removeInset(_G.GRM_guildRankDropDownMenuSelected)
-	-- self:addSkinFrame{obj=_G.GRM_RankDropDownMenu, kfs=true}
 
 	-- appears when right clicking on date(s)
 	self:addSkinFrame{obj=_G.GRM_altDropDownOptions}
@@ -97,7 +93,12 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 7.2.5R1.02
 	self:SecureHook(_G.GRM_UI, "GR_MetaDataInitializeUIThird", function(this)
 		_G.GRM_AddAltEditBox:SetTextInsets(6 ,3 ,3 ,6)
 		_G.GRM_LoadLogButton:SetSize (60 ,16)
-		self:moveObject{obj=_G.GRM_LoadLogButton, x=-13, y=7}
+		if self.UIEffScale > 0.70 then -- handle larger UI Scale
+			self:moveObject{obj=_G.GRM_LoadLogButton, x=-70, y=1}
+		else
+			self:moveObject{obj=_G.GRM_LoadLogButton, x=-5, y=7}
+		end
+		_G.GRM_MemberDetailMetaData:SetPoint("TOPLEFT", _G.GuildRosterFrame, "TOPRIGHT", -2, 2)
 		self:Unhook(this, "GR_MetaDataInitializeUIThird")
 	end)
 	self:SecureHook(_G.GRM_UI, "MetaDataInitializeUIrosterLog1", function(this)

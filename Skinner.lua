@@ -274,6 +274,8 @@ function aObj:OnInitialize()
 	-- ignore buttons when skinning frames
 	self.ignoreBtns = {}
 
+	self.UIEffScale = _G.UIParent:GetEffectiveScale()
+
 end
 
 function aObj:OnEnable()
