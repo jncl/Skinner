@@ -819,20 +819,18 @@ aObj.blizzLoDFrames[ftype].BattlefieldMinimap = function(self)
 		local Mapster = _G.LibStub("AceAddon-3.0"):GetAddon("Mapster", true)
 		local mBM = Mapster:GetModule("BattleMap", true)
 		if mBM then
-			local bmDB = Mapster.db:GetNamespace("BattleMap", true).profile
-			local function updBMVisibility()
-				if bmDB.hideTextures then
+			local function updBMVisibility(db)
+				if db.hideTextures then
 					_G.BattlefieldMinimap.sf:Hide()
 				else
 					_G.BattlefieldMinimap.sf:Show()
 				end
 			end
-			bmDB = nil
-			self:SecureHook(mBM, "UpdateTextureVisibility", function()
-				updBMVisibility()
-			end)
 			-- change visibility as required
-			updBMVisibility()
+			updBMVisibility(mBM.db.profile)
+			self:SecureHook(mBM, "UpdateTextureVisibility", function(this)
+				updBMVisibility(this.db.profile)
+			end)
 		end
 		Mapster, mBM = nil, nil
 	end
