@@ -910,7 +910,7 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	self:addButtonBorder{obj=_G.CalendarPrevMonthButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=_G.CalendarNextMonthButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=_G.CalendarFilterButton, es=14, x1=3, y1=0, x2=3, y2=0}
-	self:addSkinFrame{obj=_G.CalendarFrame, ft=ftype, kfs=true, x1=1, y1=-2, x2=2, y2=-7}
+	self:addSkinFrame{obj=_G.CalendarFrame, ft=ftype, kfs=true, bgen=1, x1=1, y1=-2, x2=2, y2=-7}
 	-- remove texture from day buttons
 	for i = 1, 7 * 6 do
 		_G["CalendarDayButton" .. i]:GetNormalTexture():SetTexture(nil)
@@ -951,7 +951,7 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	self:skinDropDown{obj=_G.CalendarCreateEventHourDropDown, x2=-5}
 	self:skinDropDown{obj=_G.CalendarCreateEventMinuteDropDown, x2=-5}
 	self:skinDropDown{obj=_G.CalendarCreateEventAMPMDropDown, x2=-5}
-	self:skinDropDown{obj=_G.CalendarCreateEventDifficultyOptionDropDown, x2=-5}
+	self:skinDropDown{obj=_G.CalendarCreateEventDifficultyOptionDropDown, x2=-16}
 	self:addSkinFrame{obj=_G.CalendarCreateEventDescriptionContainer, ft=ftype}
 	self:skinSlider{obj=_G.CalendarCreateEventDescriptionScrollFrame.ScrollBar}
 	self:keepFontStrings(_G.CalendarCreateEventInviteListSection)
@@ -961,7 +961,7 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	_G.CalendarCreateEventMassInviteButtonBorder:SetAlpha(0)
 	_G.CalendarCreateEventRaidInviteButtonBorder:SetAlpha(0)
 	_G.CalendarCreateEventCreateButtonBorder:SetAlpha(0)
-	self:addSkinFrame{obj=_G.CalendarCreateEventFrame, ft=ftype, kfs=true, x1=2, y1=-3, x2=-3, y2=2}
+	self:addSkinFrame{obj=_G.CalendarCreateEventFrame, ft=ftype, kfs=true, bgen=1, x1=2, y1=-3, x2=-3, y2=2}
 
 -->>-- Mass Invite Frame
 	self:keepFontStrings(_G.CalendarMassInviteTitleFrame)
@@ -1150,7 +1150,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 	if not self.db.profile.ChatConfig or self.initialized.ChatConfig then return end
 	self.initialized.ChatConfig = true
 
-	self:addSkinFrame{obj=_G.ChatConfigFrame, ft=ftype, kfs=true, hdr=true}
+	self:addSkinFrame{obj=_G.ChatConfigFrame, ft=ftype, kfs=true, hdr=true, ofs=-4, y1=-2}
 	self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype}
 	self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype}
 
@@ -1163,11 +1163,14 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 	self:addSkinFrame{obj=_G.ChatConfigChatSettingsClassColorLegend, ft=ftype}
 
 -->>--	Channel Settings
-	self:SecureHook(_G.ChatConfigChannelSettings, "Show", function(this, ...)
+	-- self:SecureHook(_G.ChatConfigChannelSettings, "Show", function(this, ...)
+	self:SecureHook("ChatConfigChannelSettings_OnShow", function()
 		for i = 1, #_G.ChatConfigChannelSettingsLeft.checkBoxTable do
 			_G.ChatConfigChannelSettingsLeft.checkBoxTable[i]:SetBackdrop(nil)
 		end
+		self:Unhook(this, "ChatConfigChannelSettings_OnShow")
 	end)
+	-- end)
 	self:addSkinFrame{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype}
 	self:addSkinFrame{obj=_G.ChatConfigChannelSettingsClassColorLegend, ft=ftype}
 
