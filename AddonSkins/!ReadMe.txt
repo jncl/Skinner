@@ -6,4 +6,4 @@ Hi,
 
   Jncl
 
-  The Skinner topic URL is : http://forums.wowace.com/showthread.php?t=2923
+  The Skinner forum URL is: https://www.curseforge.com/forums/world-of-warcraft/official-addon-threads/general-addons/96108-skinner

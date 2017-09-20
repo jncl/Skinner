@@ -89,7 +89,7 @@ local function skinLibs()
 				aObj:checkAndRun(skinFunc, "s") -- not an addon in its own right
 			else
 				if aObj.db.profile.Warnings then
-					aObj:CustomPrint(1, 0, 0, libName, "loaded but skin not found in SkinMe directory")
+					aObj:CustomPrint(1, 0, 0, libName, "loaded but skin not found in AddonSkins directory")
 				end
 			end
 		end

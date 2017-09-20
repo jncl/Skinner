@@ -329,7 +329,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 		-- check to see if AddonSkin is loaded when Addon is loaded
 		if not LoD and not aFunc then
 			if self.db.profile.Warnings then
-				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the SkinMe directory")
+				self:CustomPrint(1, 0, 0, addonName, "loaded but skin not found in the AddonSkins directory")
 			end
 		elseif type(aFunc) == "function" then
 			return safecall(addonName, aFunc, LoD)
