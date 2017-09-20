@@ -540,9 +540,10 @@ local function __addButtonBorder(opts)
 	xOfs1, yOfs1, xOfs2, yOfs2, relTo = nil, nil, nil, nil, nil
 
 	if opts.hide and opts.relTo then
-		-- hook Show and Hide methods of the relTo object
+		-- hook methods of the relTo object
 		module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sbb:Show() end)
 		module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sbb:Hide() end)
+		module:SecureHook(opts.relTo, "SetShown", function(this, show) opts.obj.sbb:SetShown(this, show) end)
 		-- hide border if required
 		opts.obj.sbb:SetShown(opts.relTo:IsShown())
 	end
