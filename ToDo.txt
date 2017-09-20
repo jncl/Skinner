@@ -20,34 +20,21 @@ Legend:
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
 ≈	O	Rework how Addon skins are handled
-		- replace table in AddonFrames with individual entries in each skin
+		- replace table in AddonFrames with individual entries in each skin file
 
-	O	Place Addons in Addons folder rather than the SkinMe folder
+√	O	Place Addon skin files in AddonsSkins folder rather than the SkinMe folder
 
-	I	MainMenuBar, reported by scalp42, 22.08.17
-√		- option to skin is set to false after a reload
+√	I	BattleFieldMinimap/Mapster, reported by essmene/Talyrius, 15.09.17/16.09.17
+		- Skinner\UIFrames.lua:828: attempt to index upvalue 'bmDB' (a nil value)
+		  Skinner\UIFrames.lua:839: in function <Skinner\UIFrames.lua:790>
 
-≈	N	BonusRollPreview, reported by Pseudopath/tordenflesk, 26.08.17/09.09.17
-		- ..\AddOns\Skinner\Skinner.lua line 613: attempt to index field 'obj' (a nil value)
-			Skinner\Skinner.lua:613: Skinner\Skinner.lua:583
-			(tail call): ?
-			Skinner\SkinMe\BonusRollPreview.lua:8: Skinner\SkinMe\BonusRollPreview.lua:5
+≈	I	reported by epidemedabear,16.09.17
+		-  ..\AddOns\Skinner\UIFrames.lua line 1170: attempt to call method 'SetBackdrop' (a nil value)
+		Debug: Skinner\UIFrames.lua:1170:
+				Skinner\UIFrames.lua:1168
 
-√	N	ClassOrderHallsComplete, reported by Shimiya, 04.09.17
-		- ...ce\AddOns\Skinner\SkinMe\ClassOrderHallsComplete.lua:11: attempt to index field 'CLASSORDERHALLSCOMPLETE_SAVEDVARIABLESPERCHARACTER' (a nil value)
+√	S	Easy Raid Calendar
 
-√	N	Skillet, reported by Shimiya, 05.09.17
-		- Interface\AddOns\Skinner\SkinMe\Skillet.lua:43: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+√	I	WorldQuestTracker
+		- skin Tutorial Frame & Alerts
 
-√	N	ARL, reported by epidemedabear, 11.09.17
-		- ..\AddOns\Skinner\SkinMe\AckisRecipeList.lua line 153: attempt to index a nil value
-		Debug: Skinner\SkinMe\AckisRecipeList.lua:153:
-		Skinner\SkinMe\AckisRecipeList.lua:151
-
-√	N	WorldQuestTracker
-
-√	I	TradeFrame slots aren't skinned, only #1 is
-
-√	N	GuildRosterManager
-
-√	S	Simulationcraft
