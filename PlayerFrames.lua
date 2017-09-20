@@ -1518,6 +1518,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 	self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
 	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, kfs=true, ofs=4}
+	_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.EditBox.PromptText:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
 	self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, ft=ftype}
 	self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
@@ -1531,7 +1532,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 	-- RecruitAFriendFrame
 	self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
+	_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.RecruitAFriendNoteFrame, ft=ftype, kfs=true}
+	_G.RecruitAFriendNoteEditBox.Fill:SetTextColor(self.BTr, self.BTg, self.BTb)
 	self:addSkinFrame{obj=_G.RecruitAFriendFrame, ft=ftype, kfs=true, ofs=-6, y1=-7}
 
 	-- FriendsList Frame
