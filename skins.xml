@@ -224,5 +224,6 @@
 <script file="SkinMe\XPerl.lua"/>
 <script file="SkinMe\ZPerl.lua"/>
 <script file="SkinMe\ZygorGuidesViewer.lua"/>
+<script file="AddonSkins\ERC.lua"/>
 
 </Ui>
