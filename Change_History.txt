@@ -1,3 +1,15 @@
+beta7.25021.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for TradeFrame skin
+	Updated MainMenuBar skin
+	Bugfix for MainMenuBar issue
+	Merged PTR code
+	Updated AckisRecipeList, BonusRollPreview, ClassOrderHallsComplete, Guild_Roster_Manager, Skillet & WorldQuestTracker skins
+	Skinned Simulationcraft
+
 beta7.24864.1
 Jncl:
 	ToDo.txt
