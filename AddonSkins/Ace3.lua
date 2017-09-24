@@ -141,6 +141,16 @@ function aObj:Ace3()
 			elseif objType == "CheckBox" then
 				aObj:addButtonBorder{obj=obj.frame, ofs=-2, y2=3, relTo=obj.checkbg, reParent={obj.check}}
 				obj.checkbg:SetTexture(nil)
+				-- hide button border if Radio Button
+				self:secureHook(obj, "SetType", function(this, type)
+					if aObj:getInt(this.checkbg:GetWidth()) == 16 then
+						obj.check:SetParent(this.frame)
+						this.frame.sbb:Hide()
+					else
+						obj.check:SetParent(this.frame.sbb)
+						this.frame.sbb:Show()
+					end
+				end)
 
 			-- Snowflake objects (Producer AddOn)
 			elseif objType == "SnowflakeGroup" then
