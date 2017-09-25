@@ -1,3 +1,15 @@
+beta7.25021.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Button skinning code
+	Updated Calendar & ChatConfig skins
+	Bugfix for Mapster issue
+	Updated FriendsFrame skin
+	Removed SkinMe Folder, all skins are now loaded from the AddonsFolder instead
+	Updated Guild_Roster_Manager & WorldQuestTracker skins
+	Skinned Easy Raid Calendar
+
 beta7.25021.1
 Jncl:
 	ToDo.txt
