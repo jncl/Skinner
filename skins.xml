@@ -166,6 +166,7 @@
 <script file="AddonSkins\ProspectBar.lua"/>
 <script file="AddonSkins\Quartz.lua"/>
 <script file="AddonSkins\QuestCompletist.lua"/>
+<script file="AddonSkins\Quester.lua"/>
 <script file="AddonSkins\QuestGuru.lua"/>
 <script file="AddonSkins\QuestGuru_Tracker.lua"/>
 <script file="AddonSkins\QuestHelper2.lua"/>
