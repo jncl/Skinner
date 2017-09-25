@@ -22,19 +22,8 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-√	O	Place Addon skin files in AddonsSkins folder rather than the SkinMe folder
+√	I	ServerHop, reported by Talyrius, 21.09.17
+		- Skinner\Skinner-beta7.25021.2.lua:615: attempt to index field 'obj' (a nil value)
+		Skinner\AddonSkins\ServerHop-7.3.0.1.lua:8: in function <Skinner\AddonSkins\ServerHop.lua:5>
 
-√	I	BattleFieldMinimap/Mapster, reported by essmene/Talyrius, 15.09.17/16.09.17
-		- Skinner\UIFrames.lua:828: attempt to index upvalue 'bmDB' (a nil value)
-		  Skinner\UIFrames.lua:839: in function <Skinner\UIFrames.lua:790>
-
-≈	I	reported by epidemedabear,16.09.17
-		-  ..\AddOns\Skinner\UIFrames.lua line 1170: attempt to call method 'SetBackdrop' (a nil value)
-		Debug: Skinner\UIFrames.lua:1170:
-				Skinner\UIFrames.lua:1168
-
-√	S	Easy Raid Calendar
-
-√	I	WorldQuestTracker
-		- skin Tutorial Frame & Alerts
-
+?	S	Quester, requested by elrandir, 22.09.17
