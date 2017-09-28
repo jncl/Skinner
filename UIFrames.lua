@@ -1163,12 +1163,11 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 	self:addSkinFrame{obj=_G.ChatConfigChatSettingsClassColorLegend, ft=ftype}
 
 -->>--	Channel Settings
-	-- self:SecureHook(_G.ChatConfigChannelSettings, "Show", function(this, ...)
 	self:SecureHook("ChatConfigChannelSettings_OnShow", function()
 		for i = 1, #_G.ChatConfigChannelSettingsLeft.checkBoxTable do
 			_G.ChatConfigChannelSettingsLeft.checkBoxTable[i]:SetBackdrop(nil)
 		end
-		self:Unhook(this, "ChatConfigChannelSettings_OnShow")
+		self:Unhook("ChatConfigChannelSettings_OnShow")
 	end)
 	-- end)
 	self:addSkinFrame{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype}

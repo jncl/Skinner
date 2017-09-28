@@ -2,7 +2,7 @@ local aName, aObj = ...
 local _G = _G
 
 -- Add locals to see if it speeds things up
-local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
+local IsAddOnLoaded, pairs, C_Timer = _G.IsAddOnLoaded, _G.pairs, _G.C_Timer
 
 function aObj:BlizzardFrames()
 	-- self:Debug("BlizzardFrames")
@@ -129,7 +129,7 @@ function aObj:AddonFrames()
 
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
 	-- (Tukui does this for the PetJournal, other addons do it as well)
-	_G.C_Timer.After(0.2, function()
+	C_Timer.After(0.2, function()
 		skinBLoD()
 		for name, skinFunc in pairs(self.lodAddons) do
 			if IsAddOnLoaded(name) then self:checkAndRunAddOn(name, true, skinFunc) end
@@ -137,7 +137,7 @@ function aObj:AddonFrames()
 	end)
 
 	-- skin library objects after a short delay to allow them to be loaded
-	_G.C_Timer.After(0.2, function() skinLibs() end)
+	C_Timer.After(0.2, function() skinLibs() end)
 
 end
 
@@ -210,7 +210,7 @@ function aObj:LoDFrames(addon)
 	-- load library skins here as well, they may only get loaded by a LoD AddOn
 	-- include a short delay to allow them to be loaded
 	-- e.g. ArkDewdrop by ArkInventory when an AddonLoader is used
-	_G.C_Timer.After(0.2, function() skinLibs() end)
+	C_Timer.After(0.2, function() skinLibs() end)
 
 end
 
@@ -218,7 +218,7 @@ end
 function aObj:ADDON_LOADED(event, addon)
 	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
-	_G.C_Timer.After(self.db.profile.Delay.LoDs, function() aObj:LoDFrames(addon) end)
+	C_Timer.After(self.db.profile.Delay.LoDs, function() aObj:LoDFrames(addon) end)
 
 end
 

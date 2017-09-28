@@ -18,9 +18,10 @@ do
 
 end
 
+local tmpTab = {}
 local function getObjFromString(input)
 
-    local tmpTab = {}
+	_G.wipe(tmpTab)
 
     -- first split the string on "."
     for word in _G.string.gmatch(input, "%a+") do
@@ -31,7 +32,6 @@ local function getObjFromString(input)
     for i = 1, #tmpTab do
         objString = objString .. '["' .. tmpTab[i] .. '"]'
     end
-	tmpTab = nil
 
     -- finally use loadstring to get the object from the command
     -- print("getObjFromString", input, objString)
@@ -53,7 +53,7 @@ end
 
 local function makeText(fstr, ...)
 
-    local tmpTab = {}
+    _G.wipe(tmpTab)
 	local output = ""
 
 	if fstr
@@ -74,7 +74,6 @@ local function makeText(fstr, ...)
 		end
 		output = _G.table.concat(tmpTab, " ")
 	end
-	tmpTab = nil
 
 	return output
 
@@ -84,7 +83,7 @@ local function revTable(curTab)
 
 	if not curTab then return end
 
-    local tmpTab = {}
+    _G.wipe(tmpTab)
 
 	for i = 1, #curTab do
 		tmpTab[curTab[i]] = true
@@ -375,7 +374,7 @@ function aObj:findFrame(height, width, children)
 					if self:getInt(obj:GetHeight()) == height
 					and self:getInt(obj:GetWidth()) == width
 					then
-						local tmpTab = {}
+						_G.wipe(tmpTab)
 						local kids, child = {obj:GetChildren()}
 						for i = 1, #kids do
 							child = kids[i]
@@ -388,7 +387,6 @@ function aObj:findFrame(height, width, children)
 								if children[i] == tmpTab[j] then matched = matched + 1 end
 							end
 						end
-						tmpTab = nil
 						if matched == #children then
 							frame = obj
 							break

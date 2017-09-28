@@ -1866,7 +1866,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
 		optCheck[v:lower()] = v
 	end
-	optNames = nil
+	optNames, optTitle = nil, nil
 
 	-- runs when the player clicks "Defaults"
 	self.optionsFrame[self.L["Backdrop"]].default = function()

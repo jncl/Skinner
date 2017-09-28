@@ -18,9 +18,7 @@ local defaults = {
 	}
 }
 local lOfs = -9 -- level text offset
-local tDelay = 0.2 -- repeating timer delay
 local isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
-local rpTmr = {}
 local unitFrames = {
 	"ArenaEnemyBackground",
 	"FocusFrame",
