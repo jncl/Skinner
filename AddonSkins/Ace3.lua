@@ -144,10 +144,10 @@ function aObj:Ace3()
 				-- hide button border if Radio Button
 				self:secureHook(obj, "SetType", function(this, type)
 					if aObj:getInt(this.checkbg:GetWidth()) == 16 then
-						obj.check:SetParent(this.frame)
+						this.check:SetParent(this.frame)
 						this.frame.sbb:Hide()
 					else
-						obj.check:SetParent(this.frame.sbb)
+						this.check:SetParent(this.frame.sbb)
 						this.frame.sbb:Show()
 					end
 				end)

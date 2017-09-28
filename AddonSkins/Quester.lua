@@ -9,9 +9,9 @@ aObj.addonsToSkin.Quester = function(self) -- v 7.3.0.0
 	-- hook these to handle colour changes
 	local function chgTxtClr(text)
 		if text:match("^|c(.*)%[") then
-			text = _G.gsub(text, "|r", "") .. "|r"
+			text = text:gsub("|r", "") .. "|r"
 		elseif text:match("^%[") then
-			text = _G.format(_G.NORMAL_QUEST_DISPLAY, text)
+			text = _G.NORMAL_QUEST_DISPLAY:format(text)
 		end
 		return text
 	end
