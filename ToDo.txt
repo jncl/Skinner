@@ -22,8 +22,10 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-√	I	ServerHop, reported by Talyrius, 21.09.17
-		- Skinner\Skinner-beta7.25021.2.lua:615: attempt to index field 'obj' (a nil value)
-		Skinner\AddonSkins\ServerHop-7.3.0.1.lua:8: in function <Skinner\AddonSkins\ServerHop.lua:5>
-
-?	S	Quester, requested by elrandir, 22.09.17
+≈	I	Ace3, reported by epidemedabear, 26.09.17
+		-  ..\AddOns\Skinner\AddonSkins\Ace3.lua line 150:
+		<unnamed>:SetParent(): Cannot set a 'nil' parent for fonts or textures
+		Debug:
+		[C]: SetParent()
+		Skinner\AddonSkins\Ace3.lua:150:
+		Skinner\AddonSkins\Ace3.lua:145
