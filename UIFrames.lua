@@ -4177,24 +4177,19 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	if not self.db.profile.DropDownPanels or self.initialized.DropDownPanels then return end
 	self.initialized.DropDownPanels = true
 
-	local frame
-	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
-		frame = _G["DropDownList" .. i]
-		self:addSkinFrame{obj=frame, ft=ftype, kfs=true}
+	local function skinDDMenu(frame)
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true}
 		_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
 		_G[frame:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
 	end
-	frame = nil
 
---@debug@
+	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
+		skinDDMenu(_G["DropDownList" .. i])
+	end
+
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(level, index)
-		if _G.UIDROPDOWNMENU_MAXLEVELS > 2 then
-			_G.DEFAULT_CHAT_FRAME:AddMessage("UIDropDownMenus > 2" .. "[" .. level .. "][" .. index .. "]", 1, 0, 0, nil, true)
-		end
+		skinDDMenu(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
 	end)
---@end-debug@
-
-
 
 end
 
