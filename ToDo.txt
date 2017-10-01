@@ -22,10 +22,13 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-≈	I	Ace3, reported by epidemedabear, 26.09.17
+√	I	Carbonite, reported by Tragon, 28.09.17
+		- ..\AddOns\Skinner\AddonSkins\Carbonite.lua line 39:
+		bad argument #1 to 'pairs' (table expected, got nil)
+		Debug:
+		Skinner\AddonSkins\Carbonite.lua:39:
+		Skinner\AddonSkins\Carbonite.lua:5
+
+≈	I	Ace3, reported by txamethyst/epidemedabear, 28.09.17
 		-  ..\AddOns\Skinner\AddonSkins\Ace3.lua line 150:
 		<unnamed>:SetParent(): Cannot set a 'nil' parent for fonts or textures
-		Debug:
-		[C]: SetParent()
-		Skinner\AddonSkins\Ace3.lua:150:
-		Skinner\AddonSkins\Ace3.lua:145
