@@ -15,7 +15,7 @@ if AceGUI then
 	end, true)
 end
 
-function aObj:Ace3()
+aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
 
@@ -97,7 +97,7 @@ function aObj:Ace3()
 			elseif objType == "Slider" then
 				aObj:skinEditBox{obj=obj.editbox, noHeight=true}
 				obj.editbox:SetSize(60, 20)
-				self:skinSlider{obj=obj.slider}
+				aObj:skinSlider{obj=obj.slider}
 			elseif objType == "Frame" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				if objVer < 20 then
@@ -142,7 +142,7 @@ function aObj:Ace3()
 				aObj:addButtonBorder{obj=obj.frame, ofs=-2, y2=3, relTo=obj.checkbg, reParent={obj.check}}
 				obj.checkbg:SetTexture(nil)
 				-- hide button border if Radio Button
-				self:secureHook(obj, "SetType", function(this, type)
+				aObj:secureHook(obj, "SetType", function(this, type)
 					if aObj:getInt(this.checkbg:GetWidth()) == 16 then
 						this.check:SetParent(this.frame)
 						this.frame.sbb:Hide()
@@ -212,7 +212,7 @@ function aObj:Ace3()
 						or objType == "LSM30_Sound"
 						or objType == "LSM30_Statusbar"
 						then
-							xOfs1, yOfs1, xOfs2, yOfs2 = -3, -19, 1, 1
+							xOfs1, yOfs1, xOfs2, yOfs2 = 0, -19, 1, 1
 						end
 						aObj:addSkinFrame{obj=obj.frame, aso={ng=true, bd=5}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 						-- add a button border around the dd button

@@ -9,7 +9,7 @@ function aObj:BlizzardFrames()
 
 	-- skin Blizzard frames
 	for type, fTab in pairs(self.blizzFrames) do
-		if type ~= "o" then -- ignore options functions
+		if type ~= "opt" then -- ignore options functions
 			for func, _ in pairs(fTab) do
 				self:checkAndRun(func, type)
 			end
@@ -20,32 +20,31 @@ end
 
 local addonSkins = {
 	"_NPCScan",
-	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "Altoholic", "AngryKeystones", "AphesLootBrowser", "Archy", "ArkInventory", "ArkInventoryRules", "Armory", "ArmoryGuildBank", "Atlas", "AtlasLoot", "Auctionator", "AuctionMaster", "Auctionsnatch", "AutoDecline",
+	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "AngryKeystones", "AphesLootBrowser", "Archy", "ArkInventory", "ArkInventoryRules", "Atlas", "AtlasLoot", "Auctionator", "AuctionMaster", "Auctionsnatch", "AutoDecline",
 	"Baggins", "Bagnon_Forever", "Bagnon", "BankItems", "Bartender4", "BattlePetCount", "BaudBag", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BugSack", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
-	"Carbonite", "CensusPlus", "CFM", "Chatter", "Clique", "Collectinator", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cork", "Cosplay",
+	"CensusPlus", "CFM", "Chatter", "Clique", "Collectinator", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cork", "Cosplay",
 	"DeathNote", "DejaCharacterStats", "Details", "DockingStation", "Dominos", "DressUp",
 	"ElvUI", "EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
 	"FarmIt2", "FeedMachine", "FishingBuddy", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "Guild_Roster_Manager", "GuildLaunchCT_RaidTracker", "GuildMaster",
-	"HandyNotes", "HaveWeMet", "HealBot", "HoloFriends",
+	"HandyNotes", "HaveWeMet", "HoloFriends",
 	"InboxMailBag", "ItemDB", "InspectorGadgetzan", "Inventorian",
 	"KeystoneCommander",
 	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts", "LUI",
 	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobileVault", "MogIt", "MoveAnything", "MrTrader_SkillWindow", "MyGarrisons",
 	"Notes",
-	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3", "Outfitter", "Overachiever",
-	"Panda", "Pawn", "Perl_CombatDisplay", "Perl_Focus", "Perl_Party", "Perl_Party_Pet", "Perl_Party_Target", "Perl_Player", "Perl_Player_Pet", "Perl_Target", "Perl_Target_Target", "PetBattleHUD", "PetBattleMaster", "PetTracker", "PetTracker_Switcher", "PetTracker_Journal", "PhoenixStyle", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "PremadeGroupsFilter", "ProfessionsVault", "ProspectBar",
+	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3", "Overachiever",
+	"Panda", "Pawn", "PetBattleHUD", "PetBattleMaster", "PetTracker", "PetTracker_Switcher", "PetTracker_Journal", "PhoenixStyle", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "PremadeGroupsFilter", "ProfessionsVault", "ProspectBar",
 	"Quartz", "QuestCompletist", "QuestGuru", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidAchievement", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "Recount", "REFlex", "Rematch", "RicoMiniMap",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Spew", "Squeenix", "StaggerMeter",
-	"TargetCharms", "TidyPlates", "TinyDPS", "TinyInspect", "TinyTooltip", "TipTac", "TomTom", "TooManyAddons", "TradeSkillMaster", "TrinketBar", "Tukui",
+	"TargetCharms", "TidyPlates", "TinyInspect", "TinyTooltip", "TipTac", "TooManyAddons", "TradeSkillMaster", "TrinketBar", "Tukui",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
-	"Warden", "WeakAuras", "Wholly", "WIM", "WIM_Options", "WorldQuestGroupFinder", "WoWPro", "WTFLatencyMeter",
+	"Warden", "WeakAuras", "Wholly", "WorldQuestGroupFinder", "WoWPro", "WTFLatencyMeter",
 	"XLoot", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
-	"ZPerl", "ZPerl_RaidAdmin", "ZPerl_RaidHelper", "ZygorGuidesViewer",
 }
-aObj.addonsToSkin = aObj.addonsToSkin or {}
+aObj.addonsToSkin = {}
 for i = 1, #addonSkins do
 	aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
 end
@@ -59,12 +58,10 @@ aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
 aObj.addonsToSkin["Prat-3.0"] = "Prat30"
 -- libraries
 aObj.libsToSkin = {
-	["AceGUI-3.0"] = "Ace3",
 	["ArkDewdrop"] = "ArkDewdrop",
 	["Configator"] = "Configator",
 	["DetailsFramework-1.0"] = "DetailsFramework",
 	["LibDialog-1.0"] = "LibDialog",
-	["LibDropdown-1.0"] = "LibDropdown",
 	["NoTaint_UIDropDownMenu-7.2.0"] = "Lib_UIDropdown",
 	["LibExtraTip-1"] = "LibExtraTip",
 	["LibKeyBound-1.0"] = "LibKeyBound",
@@ -75,18 +72,36 @@ aObj.libsToSkin = {
 	["tektip-1.0"] = "tektip",
 	["X-UI"] = "LibXUI",
 }
--- store other AddOns not previously referenced, here
+-- store other AddOns not previously referenced, here so they can be enabled/disabled on the options panel
+otherAddons = {
+	"PetBattleTeams",
+	"ProfessionTabs_TF",
+	"ProfessionTabs_TSF",
+	"ReagentMaker",
+	"tekKonfig",
+	"TradeSkillDW",
+	"TradeSkillMaster_AuctionDB",
+	"TradeSkillMaster_Auctioning",
+	"TradeSkillMaster_Crafting",
+	"TradeSkillMaster_Shopping",
+	"TSM_AuctionFrameHook",
+	"TSM_AuctionHouse",
+}
 aObj.otherAddons = {}
-aObj.otherAddons["tekKonfig"] = true
--- aObj.otherAddons["LibKeyBound"] = true
-aObj.otherAddons["WIM_Options"] = false
+for i = 1, #otherAddons do
+	aObj.otherAddons[otherAddons[i]] = otherAddons[i]
+end
+otherAddons = nil
 local function skinLibs()
 
 	-- skin library objects
 	for libName, skinFunc in pairs(aObj.libsToSkin) do
 		if _G.LibStub(libName, true) then
-			if skinFunc then
-				aObj:checkAndRun(skinFunc, "s") -- not an addon in its own right
+			-- _G.print("libsToSkin", libName, skinFunc, type(skinFunc), aObj[skinFunc])
+			if aObj[skinFunc] then
+				aObj:checkAndRun(skinFunc, "s")
+			elseif type(skinFunc) == "function" then
+				aObj:checkAndRun(libName, "l")
 			else
 				if aObj.db.profile.Warnings then
 					aObj:CustomPrint(1, 0, 0, libName, "loaded but skin not found in AddonSkins directory")
@@ -115,17 +130,14 @@ end
 function aObj:AddonFrames()
 	-- self:Debug("AddonFrames")
 
-	-- special case for dummy addon entry WIM_Options
-	if self.WIM_Options then self:checkAndRun("WIM_Options", "s") end -- not an addon in its own right
-
 	-- used for Addons that aren't LoadOnDemand
-	for addOnName, skinFunc in pairs(self.addonsToSkin) do
-		self:checkAndRunAddOn(addOnName, nil, skinFunc)
+	for addonName, skinFunc in pairs(self.addonsToSkin) do
+		self:checkAndRunAddOn(addonName, nil, skinFunc)
 	end
 	self.addonsToSkin = nil
 
 	-- skin tekKonfig library objects (N.B. not a LibStub library)
-	if self.tekKonfig then self:checkAndRun("tekKonfig", "s") end -- not an addon in its own right
+	if self.tekKonfig then self:checkAndRun("tekKonfig", "s") end
 
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
 	-- (Tukui does this for the PetJournal, other addons do it as well)
@@ -142,19 +154,18 @@ function aObj:AddonFrames()
 end
 
 local lodFrames = {
-	"Altoholic_Summary", "Altoholic_Characters", "Altoholic_Search", "Altoholic_Achievements", "Altoholic_Guild", "Altoholic_Agenda", "Altoholic_Grids", "ArkInventorySearch", "AzCastBarOptions",
+	"ArkInventorySearch", "AzCastBarOptions",
 	"DockingStation_Config", "DoTimer_Options",
 	"Enchantrix",
 	"GarrisonMissionManager", "GuildBankSearch",
 	"LilSparkysWorkshop", "Ludwig_Window",
 	"MasterPlan",
 	"Overachiever_Tabs",
-	"PetJournalEnhanced", "Perl_Config_Options",
+	"PetJournalEnhanced",
 	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer",
 	"TipTacOptions",
 	"WeakAurasOptions",
 	"XPerl_Options",
-	"ZPerl_Options",
 }
 aObj.lodAddons = {}
 for i = 1, #lodFrames do
@@ -170,8 +181,6 @@ raMods = nil
 -- oddly named LoD addons
 aObj.lodAddons["_DevPad.GUI"] = "_DevPadGUI"
 aObj.lodAddons["DBM-GUI"] = "DBMGUI"
-
-aObj.otherAddons["PetBattleTeams"] = false
 
 local prev_addon
 function aObj:LoDFrames(addon)
@@ -222,9 +231,6 @@ function aObj:ADDON_LOADED(event, addon)
 
 end
 
-aObj.otherAddons["TradeSkillMaster_Auctioning"] = false
-aObj.otherAddons["TradeSkillMaster_AuctionDB"] = false
-aObj.otherAddons["TradeSkillMaster_Shopping"] = false
 function aObj:AUCTION_HOUSE_SHOW()
 	self:Debug("AUCTION_HOUSE_SHOW")
 
@@ -236,8 +242,8 @@ function aObj:AUCTION_HOUSE_SHOW()
 	or IsAddOnLoaded("TradeSkillMaster_AuctionDB")
 	or IsAddOnLoaded("TradeSkillMaster_Shopping")
 	then
-		self:checkAndRun("TSM_AuctionFrameHook", "s") -- not an addon in its own right
-		self:checkAndRun("TSM_AuctionHouse", "s") -- not an addon in its own right
+		self:checkAndRun("TSM_AuctionFrameHook", "s")
+		self:checkAndRun("TSM_AuctionHouse", "s")
 	end
 
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
@@ -254,10 +260,6 @@ function aObj:PLAYER_ENTERING_WORLD()
 
 end
 
-aObj.otherAddons["TradeSkillMaster_Crafting"] = false
-aObj.otherAddons["ReagentMaker"] = false
-aObj.otherAddons["ProfessionTabs_TSF"] = false
-aObj.otherAddons["TradeSkillDW"] = false
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
 
@@ -270,7 +272,6 @@ function aObj:TRADE_SKILL_SHOW()
 
 end
 
-aObj.otherAddons["ProfessionTabs_TF"] = false
 function aObj:TRADE_SHOW()
 	-- self:Debug("TRADE_SHOW")
 

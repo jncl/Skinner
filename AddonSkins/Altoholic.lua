@@ -2,9 +2,6 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Altoholic") then return end
 local _G = _G
 
--- minimap button
-aObj.mmButs["Altoholic"] = _G.AltoholicMinimapButton
-
 local function skinMenuItems(frameName, cnt, text)
 
 	local itm
@@ -81,7 +78,7 @@ local function skinDDMLists()
 
 end
 
-function aObj:Altoholic()
+aObj.addonsToSkin.Altoholic = function(self) -- v 7.3.001
 
 -->>-- Main Frame
 	self:skinEditBox{obj=_G.AltoholicFrame_SearchEditBox, regs={9}}
@@ -133,9 +130,12 @@ function aObj:Altoholic()
 	UIDDM_SetButtonWidth(_G.AltoholicCalendarOptions_WarningType3, 24)
 	UIDDM_SetButtonWidth(_G.AltoholicCalendarOptions_WarningType4, 24)
 
+	-- minimap button
+	self.mmButs["Altoholic"] = _G.AltoholicMinimapButton
+
 end
 
-function aObj:Altoholic_Summary() -- LoD
+aObj.lodAddons.Altoholic_Summary = function(self)
 
 	skinMenuItems(_G.AltoholicTabSummary, 7)
 	skinSortBtns(_G.AltoholicTabSummary.SortButtons)
@@ -165,17 +165,15 @@ function aObj:Altoholic_Summary() -- LoD
 
 end
 
-function aObj:Altoholic_Characters() -- LoD
+aObj.lodAddons.Altoholic_Characters = function(self)
 
  	-- Icons on LHS
  	-- Characters
-	self:skinDropDown{obj=_G.AltoholicTabCharacters.SelectRealm}
-	UIDDM_SetButtonWidth(_G.AltoholicTabCharacters.SelectRealm, 24)
 	skinSortBtns(_G.AltoholicTabCharacters.SortButtons)
 
 	-- Icons at the Top in Character View
 	if self.modBtnBs then
-		for _, v in pairs{"Characters", "Bags", "Quests", "Talents", "Auction", "Mail", "Spellbook", "Professions", "Garrison"} do
+		for _, v in _G.pairs{"Characters", "Bags", "Quests", "Talents", "Auction", "Mail", "Spellbook", "Professions", "Garrison"} do
 			self:addButtonBorder{obj=_G.AltoholicTabCharacters.MenuIcons[v .. "Icon"]}
 		end
 	end
@@ -185,16 +183,22 @@ function aObj:Altoholic_Characters() -- LoD
 	-- Characters
 	-- Containers
 	skinScrollBar(_G.AltoholicFrameContainers.ScrollFrame)
+
 	-- Quests
-	skinScrollBar(_G.AltoholicFrameQuestsScrollFrame)
-	for i = 1, 14 do
-		self:skinButton{obj=_G["AltoholicFrameQuestsEntry" .. i .. "Collapse"], mp2=true}
-	end
+	skinScrollBar(_G.AltoholicTabCharacters.QuestLog.ScrollFrame)
+	-- N.B. following code commented out as Quests nt being displayed atm ...
+	-- for i = 1, 14 do
+	-- 	self:skinButton{obj=_G["AltoholicFrameQuestsEntry" .. i .. "Collapse"], mp2=true}
+	-- end
+
 	-- Talents/Glyphs
+
 	-- AuctionsHouse
 	skinScrollBar(_G.AltoholicFrameAuctionsScrollFrame)
+
 	-- Mailbox
 	skinScrollBar(_G.AltoholicFrameMail.ScrollFrame)
+
 	-- SpellBook
 	self:makeMFRotatable(_G.AltoholicFramePetsNormal_ModelFrame)
 	-- hook this to skin Spell buttons
@@ -216,18 +220,20 @@ function aObj:Altoholic_Characters() -- LoD
 		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalPrevPage, ofs=-2}
 		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalNextPage, ofs=-2}
 	end
+
 	-- Professions
 	self:skinButton{obj=_G.AltoholicFrameRecipesInfo_ToggleAll, mp2=true}
 	for i = 1, 14 do
 		self:skinButton{obj=_G["AltoholicFrameRecipesEntry" .. i .. "Collapse"], mp2=true}
 	end
 	skinScrollBar(_G.AltoholicFrameRecipesScrollFrame)
+
 	-- Garrison
-	skinScrollBar(_G.AltoholicFrameGarrisonMissions.ScrollFrame)
+	skinScrollBar(_G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame)
 	if self.modBtnBs then
 		local frame
-		for i = 1, _G.AltoholicFrameGarrisonMissions.ScrollFrame.numRows do
-			frame = _G.AltoholicFrameGarrisonMissions.ScrollFrame:GetRow(i)
+		for i = 1, _G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame.numRows do
+			frame = _G.AltoholicTabCharacters.GarrisonMissions.ScrollFrame:GetRow(i)
 			self:addButtonBorder{obj=frame.MissionType, relTo=frame.MissionType.Icon}
 			-- TODO if these are removed followers aren't visible
 			-- for j = 1, 3 do
@@ -242,7 +248,7 @@ function aObj:Altoholic_Characters() -- LoD
 
 end
 
-function aObj:Altoholic_Search() --LoD
+aObj.lodAddons.Altoholic_Search = function(self)
 
 	skinMenuItems(_G.AltoholicTabSearch, _G.AltoholicTabSearch.ScrollFrame.numRows, "Entry")
 	skinScrollBar(_G.AltoholicTabSearch.ScrollFrame)
@@ -259,7 +265,7 @@ function aObj:Altoholic_Search() --LoD
 
 end
 
-function aObj:Altoholic_Guild() -- LoD
+aObj.lodAddons.Altoholic_Guild = function(self)
 
 	skinMenuItems(_G.AltoholicTabGuild, 2)
 	skinSortBtns(_G.AltoholicTabGuild.SortButtons, 5)
@@ -275,10 +281,11 @@ function aObj:Altoholic_Guild() -- LoD
 		self:addButtonBorder{obj=_G.AltoholicTabGuild.Bank.MenuIcons.RarityIcon}
 	end
 
+	-- TODO skin guild bank tabs & buttons
 
 end
 
-function aObj:Altoholic_Achievements() -- LoD
+aObj.lodAddons.Altoholic_Achievements = function(self)
 
 	self:skinDropDown{obj=_G.AltoholicTabAchievements.SelectRealm}
 	UIDDM_SetButtonWidth(_G.AltoholicTabAchievements.SelectRealm, 24)
@@ -291,13 +298,13 @@ function aObj:Altoholic_Achievements() -- LoD
 
 end
 
-function aObj:Altoholic_Agenda() -- LoD
+aObj.lodAddons.Altoholic_Agenda = function(self)
 
 	skinMenuItems(_G.AltoholicTabAgenda, 5)
 
 end
 
-function aObj:Altoholic_Grids() -- LoD
+aObj.lodAddons.Altoholic_Grids = function(self)
 
 	self:skinDropDown{obj=_G.AltoholicFrameGridsRightClickMenu}
 	skinScrollBar(_G.AltoholicFrameGrids.ScrollFrame)

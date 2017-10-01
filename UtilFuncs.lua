@@ -251,7 +251,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	assert(funcType, "Unknown functionType checkAndRun\n" .. debugstack())
 --@end-alpha@
 
-	-- self:Debug("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
+	self:Debug("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -262,6 +262,8 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	-- setup function's table object to use
 	local tObj
 	if funcType == "s" then tObj = self
+	elseif funcType == "l" then tObj = self.libsToSkin
+	elseif funcType == "o" then tObj = self.otherAddons
 	else tObj = LoD and self["blizzLoDFrames"][funcType] or self["blizzFrames"][funcType]
 	end
 
@@ -270,6 +272,8 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	or (funcType == "p" and self.db.profile.DisableAllP)
 	or (funcType == "u" and self.db.profile.DisableAllUI)
 	or (funcType == "s" and (self.db.profile.DisabledSkins[funcName] or self.db.profile.DisableAllAS))
+	or (funcType == "l" and (self.db.profile.DisabledSkins[funcName] or self.db.profile.DisableAllAS))
+	or (funcType == "o" and (self.db.profile.DisabledSkins[funcName] or self.db.profile.DisableAllAS))
 	then
 		tObj[funcName] = nil
 		return
@@ -290,7 +294,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	assert(addonName, "Unknown object checkAndRunAddOn\n" .. debugstack())
 --@end-alpha@
 
-	-- self:Debug("checkAndRunAddOn: [%s, %s, %s]", addonName, LoD, addonFunc)
+	-- self:Debug("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, LoD, addonFunc, type(addonFunc))
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -300,6 +304,9 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 
 	if not addonFunc then addonFunc = addonName end
 
+	-- handle old & new function definitions
+	local aFunc = self[addonFunc] or addonFunc
+
 	-- don't skin any Addons whose skins are flagged as disabled
 	if self.db.profile.DisabledSkins[addonName]
 	or self.db.profile.DisableAllAS
@@ -307,14 +314,11 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 		if self.db.profile.Warnings then
 			self:CustomPrint(1, 0, 0, addonName, "not skinned, flagged as disabled (c&RA)")
 		end
-		self[addonFunc] = nil
+		aFunc = nil
 		return
 	end
 
-	-- handle old & new function definitions
-	local aFunc = self[addonFunc] or addonFunc
-
-	-- self:Debug("checkAndRunAddOn #2: [%s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), aFunc)
+	-- self:Debug("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), aFunc, type(aFunc))
 
 	if not _G.IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
@@ -1053,6 +1057,21 @@ function aObj:setInactiveTab(tabSF)
 	end
 
 end
+
+--@debug@
+function aObj:tableLength(T)
+
+	local count, _ = 0
+
+	for _ in pairs(T) do count = count + 1 end
+
+	return count
+
+end
+--@end-debug@
+--[===[@non-debug@
+function aObj:tableLength() end
+--@end-non-debug@]===]
 
 function aObj:toggleTabDisplay(tab, active)
 

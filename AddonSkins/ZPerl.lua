@@ -13,10 +13,7 @@ local function colourBD(...)
 
 end
 
--- minimap button
-aObj.mmButs["ZPerl"] = _G.XPerl_MinimapButton_Frame
-
-function aObj:ZPerl()
+aObj.addonsToSkin.ZPerl = function(self) -- v 5.4.4
 
 	-- Frame and Border colours
 	_G.XPerlDB.colour.frame = {r = self.bColour[1], g = self.bColour[2], b = self.bColour[3], a = self.bColour[4]}
@@ -31,10 +28,8 @@ function aObj:ZPerl()
 	_G.XPerlDB.bar.texture[2] = self.sbTexture
 	_G.XPerl_SetBarTextures()
 
-	self:checkAndRunAddOn("ZPerl_Player")
-	self:checkAndRunAddOn("ZPerl_Target")
-	self:checkAndRunAddOn("ZPerl_Party")
-	self:checkAndRunAddOn("ZPerl_RaidMonitor")
+	-- minimap button
+	self.mmButs["ZPerl"] = _G.XPerl_MinimapButton_Frame
 
 end
 
@@ -46,14 +41,14 @@ local function skinClassIcon(frame)
 	aObj:addSkinButton(frame, frame)
 
 end
-function aObj:ZPerl_Player()
+aObj.addonsToSkin.ZPerl_Player = function(self)
 
 	-- Put a border around the class icon
 	skinClassIcon(_G.XPerl_PlayerclassFrame)
 
 end
 
-function aObj:ZPerl_Target()
+aObj.addonsToSkin.ZPerl_Target = function(self)
 
 	-- Put a border around the class icon
 	skinClassIcon(_G.XPerl_TargettypeFramePlayer)
@@ -65,22 +60,22 @@ function aObj:ZPerl_Target()
 
 end
 
-function aObj:ZPerl_Party()
+aObj.addonsToSkin.ZPerl_Party = function(self)
 
 	-- Put a border around the class icon
 	for i = 1, 4 do
-		skinClassIcon(_G["XPerl_party" .. i.. "classFrame"])
+		skinClassIcon(_G["XPerl_party" .. i .. "classFrame"])
 	end
 
 end
 
-function aObj:ZPerl_RaidMonitor()
+aObj.addonsToSkin.ZPerl_RaidMonitor = function(self)
 
 	self:addSkinFrame{obj=_G.XPerl_RaidMonitor_Frame}
 
 end
 
-function aObj:ZPerl_RaidAdmin()
+aObj.addonsToSkin.ZPerl_RaidAdmin = function(self)
 
 	-- hook this to change colours
 	if not self:IsHooked("XPerl_SetupFrameSimple") then
@@ -101,7 +96,7 @@ function aObj:ZPerl_RaidAdmin()
 
 end
 
-function aObj:ZPerl_RaidHelper()
+aObj.addonsToSkin.ZPerl_RaidHelper = function(self)
 
 	-- hook this to change colours
 	if not self:IsHooked("XPerl_SetupFrameSimple") then
@@ -121,11 +116,11 @@ function aObj:ZPerl_RaidHelper()
 
 end
 
-function aObj:ZPerl_Options()
+aObj.lodAddons.ZPerl_Options = function(self)
 
 	-- hook these to manage backdrops
-	for _, frm in _G.pairs{"Options", "ColourPicker", "Options_TooltipConfig", "Options_TextureSelect", "OptionsQuestionDialog",  "Custom_Config"} do
-		self:RawHook(_G["XPerl_"..frm], "Setup", function() end)
+	for _, frm in _G.pairs{"Options", "ColourPicker", "Options_TooltipConfig", "Options_TextureSelect", "OptionsQuestionDialog", "Custom_Config"} do
+		self:RawHook(_G["XPerl_" .. frm], "Setup", _G.nop)
 	end
 
 -->>-- Options Frame
@@ -143,30 +138,82 @@ function aObj:ZPerl_Options()
 	self:moveObject{obj=_G.XPerl_Options_Player_Gap, x=-10}
 	self:moveObject{obj=_G.XPerl_Options_Player_BiggerGap, x=4}
 	self:skinEditBox{obj=_G.XPerl_Options_Player_Gap, regs={6}}
+	self:skinSlider{obj=_G.XPerl_Options_Player_Scale}
+	self:skinSlider{obj=_G.XPerl_Options_Player_ScaleTarget}
+	self:skinSlider{obj=_G.XPerl_Options_Player_ScaleFocus}
 	-- party alignment
 	self:skinDropDown{obj=_G.XPerl_Options_Party_Anchor}
 	self:moveObject{obj=_G.XPerl_Options_Party_Gap, x=-6}
 	self:moveObject{obj=_G.XPerl_Options_Party_BiggerGap, x=6}
 	self:skinEditBox{obj=_G.XPerl_Options_Party_Gap, regs={6}}
+	self:skinSlider{obj=_G.XPerl_Options_Party_Scale}
+	self:skinSlider{obj=_G.XPerl_Options_Party_ScalePets}
 	-- raid alignment
 	self:skinDropDown{obj=_G.XPerl_Options_Raid_Anchor}
 	self:adjWidth{obj=_G.XPerl_Options_Raid_Gap, adj=-10}
 	self:moveObject{obj=_G.XPerl_Options_Raid_Gap, x=-10}
 	self:moveObject{obj=_G.XPerl_Options_Raid_BiggerGap, x=4}
 	self:skinEditBox{obj=_G.XPerl_Options_Raid_Gap, regs={6}}
+	self:skinSlider{obj=_G.XPerl_Options_Raid_Scale}
 	-- separator line
 	_G.XPerl_Options_Global_Options_RangeFinderSeparator:Hide()
 
+-->>-- Global Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Global_Options_FadeTime}
+	self:skinSlider{obj=_G.XPerl_Options_Global_Options_FullscreenWarn}
+	self:skinSlider{obj=_G.XPerl_Options_Global_Options_FullscreenOK}
+	self:skinSlider{obj=_G.XPerl_Options_Global_Options_BuffCountdownStart}
+	self:skinSlider{obj=_G.XPerl_Options_Global_Options_RangeFinder_FadeAmount}
+	self:skinSlider{obj=_G.XPerl_Options_Global_Options_RangeFinder_RangeHealthAmount}
+	self:skinAllButtons{obj=_G.XPerl_Options_Global_Options}
 -->>-- Player Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Player_Options_Width}
+	self:skinSlider{obj=_G.XPerl_Options_Player_Options_Buffs_MaxBuffs}
+	self:skinSlider{obj=_G.XPerl_Options_Player_Options_Buffs_BuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Player_Options_Buffs_DebuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Player_Options_Buffs_MaxRows}
+	self:skinSlider{obj=_G.XPerl_Options_Player_Options_Totems_OffsetX}
+	self:skinSlider{obj=_G.XPerl_Options_Player_Options_Totems_OffsetY}
+	self:skinAllButtons{obj=_G.XPerl_Options_Player_Options}
 	self:addSkinFrame{obj=_G.XPerl_Options_Player_Options_Buffs, x1=-2, y1=2, x2=2}
 	self:addSkinFrame{obj=_G.XPerl_Options_Player_Options_Totems, x1=-2, y1=2, x2=2}
 -->>-- Pet Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Pet_Options_Scale}
+	self:skinSlider{obj=_G.XPerl_Options_Pet_Options_Width}
+	self:skinSlider{obj=_G.XPerl_Options_Pet_Options_BuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Pet_Options_DebuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Pet_Options_MaxRows}
+	self:skinAllButtons{obj=_G.XPerl_Options_Pet_Options}
+	self:skinSlider{obj=_G.XPerl_Options_Pet_Options_PetTarget_ScalePetTarget}
+	self:skinSlider{obj=_G.XPerl_Options_Pet_Options_PetTarget_Width}
 	self:addSkinFrame{obj=_G.XPerl_Options_Pet_Options_PetTarget, x1=-2, y1=2, x2=2}
 -->>-- Target Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Target_Options_Width}
+	self:skinSlider{obj=_G.XPerl_Options_Target_Options_BuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Target_Options_DebuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Target_Options_MaxRows}
+	self:skinAllButtons{obj=_G.XPerl_Options_Target_Options}
+	self:skinSlider{obj=_G.XPerl_Options_Target_Options_TargetTarget_ScaleTargetTarget}
+	self:skinSlider{obj=_G.XPerl_Options_Target_Options_TargetTarget_Width}
 	self:addSkinFrame{obj=_G.XPerl_Options_Target_Options_TargetTarget, x1=-2, y1=2, x2=2, y2=-6}
 -->>-- Focus Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Focus_Options_Width}
+	self:skinSlider{obj=_G.XPerl_Options_Focus_Options_BuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Focus_Options_DebuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Focus_Options_MaxRows}
+	self:skinAllButtons{obj=_G.XPerl_Options_Focus_Options}
+	self:skinSlider{obj=_G.XPerl_Options_Focus_Options_FocusTarget_ScaleFocusTarget}
+	self:skinSlider{obj=_G.XPerl_Options_Focus_Options_FocusTarget_Width}
 	self:addSkinFrame{obj=_G.XPerl_Options_Focus_Options_FocusTarget, x1=-2, y1=2, x2=2}
 -->-- Party Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Party_Options_TargetSize}
+	self:skinSlider{obj=_G.XPerl_Options_Party_Options_Width}
+	self:skinSlider{obj=_G.XPerl_Options_Party_Options_BuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Party_Options_DebuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Party_Options_MaxRows}
+	self:skinAllButtons{obj=_G.XPerl_Options_Party_Options}
+	self:skinSlider{obj=_G.XPerl_Options_Party_Options_PartyPets_BuffSize}
+	self:skinSlider{obj=_G.XPerl_Options_Party_Options_PartyPets_DebuffSize}
 	self:addSkinFrame{obj=_G.XPerl_Options_Party_Options_PartyPets, x1=-2, y1=2, x2=2}
 	if _G.XPerl_Party_AnchorVirtual then
 		self:addSkinFrame{obj=_G.XPerl_Party_AnchorVirtual, x1=-2, y1=2, x2=2}
@@ -178,8 +225,12 @@ function aObj:ZPerl_Options()
 			self:addSkinFrame{obj=_G["XPerl_Raid_Title"..i.."Virtual"]}
 		end
 	end
+	self:skinSlider{obj=_G.XPerl_Options_Raid_Options_Width}
+	self:skinSlider{obj=_G.XPerl_Options_Raid_Options_Groups_VSpacing}
 	self:addSkinFrame{obj=_G.XPerl_Options_Raid_Options_Pets, x1=-2, y1=2, x2=2}
+	self:skinSlider{obj=_G.XPerl_Options_Raid_Options_Custom_Alpha}
 	self:addSkinFrame{obj=_G.XPerl_Options_Raid_Options_Custom, x1=-2, y1=2, x2=2}
+	self:skinAllButtons{obj=_G.XPerl_Options_Raid_Options}
 -->>-- Custom Raid Highlights Config (appears when Configure button is pressed)
 	self:skinEditBox{obj=_G.XPerl_Custom_ConfigNew_Zone, regs={6}}
 	self:skinEditBox{obj=_G.XPerl_Custom_ConfigNew_Search, regs={6}}
@@ -188,14 +239,40 @@ function aObj:ZPerl_Options()
 	self:addSkinFrame{obj=_G.XPerl_Custom_Configdebuffs, y1=2, y2=-3}
 	self:addSkinFrame{obj=_G.XPerl_Custom_Config, y1=-1}
 -->>-- All Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_All_Options_Width}
+	self:skinAllButtons{obj=_G.XPerl_Options_All_Options}
 	self:addSkinFrame{obj=_G.XPerl_Options_All_Options_AddOns, x1=-2, y1=2, x2=2}
 -->>-- Colours Options subpanel
-	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_BarColours, x1=-2, y1=2, x2=2}
-	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_UnitReactions, x1=-2, y1=2, x2=2}
+	self:skinSlider{obj=_G.XPerl_Options_Colour_Options_Appearance_Transparency}
+	self:skinSlider{obj=_G.XPerl_Options_Colour_Options_Appearance_TextTransparency}
+	self:skinSlider{obj=_G.XPerl_Options_Colour_Options_Appearance_Scale}
 	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_Appearance, x1=-2, y1=2, x2=2}
 	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_FrameColours, x1=-2, y1=2, x2=2}
+	self:skinSlider{obj=_G.XPerl_Options_Colour_Options_BarColours_Brightness}
+	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_BarColours, x1=-2, y1=2, x2=2}
+	self:addSkinFrame{obj=_G.XPerl_Options_Colour_Options_UnitReactions, x1=-2, y1=2, x2=2}
 -->>-- Helper Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Helper_Options_MaxTanks}
+	self:skinSlider{obj=_G.XPerl_Options_Helper_Options_UnitWidth}
+	self:skinSlider{obj=_G.XPerl_Options_Helper_Options_UnitHeight}
+	self:skinSlider{obj=_G.XPerl_Options_Helper_Options_Transparency}
+	self:skinSlider{obj=_G.XPerl_Options_Helper_Options_BkTransparency}
+	self:skinAllButtons{obj=_G.XPerl_Options_Helper_Options}
+	self:skinSlider{obj=_G.XPerl_Options_Helper_Options_Assists_Transparency}
+	self:skinSlider{obj=_G.XPerl_Options_Helper_Options_Assists_BackTransparency}
 	self:addSkinFrame{obj=_G.XPerl_Options_Helper_Options_Assists, x1=-2, y1=2, x2=2}
+-->>-- Monitor Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Monitor_Options_LowMana}
+	self:skinSlider{obj=_G.XPerl_Options_Monitor_Options_HighMana}
+	self:skinSlider{obj=_G.XPerl_Options_Monitor_Options_UnitWidth}
+	self:skinSlider{obj=_G.XPerl_Options_Monitor_Options_UnitHeight}
+	self:skinSlider{obj=_G.XPerl_Options_Monitor_Options_TargetWidth}
+	self:skinSlider{obj=_G.XPerl_Options_Monitor_Options_Alpha}
+	self:skinSlider{obj=_G.XPerl_Options_Monitor_Options_BackgroundAlpha}
+	self:skinAllButtons{obj=_G.XPerl_Options_Monitor_Options}
+-->>-- Admin Options subpanel
+	self:skinSlider{obj=_G.XPerl_Options_Admin_Options_Alpha}
+	self:skinAllButtons{obj=_G.XPerl_Options_Admin_Options}
 
 -->>-- Colour Picker Frame
 	self:addSkinFrame{obj=_G.XPerl_ColourPicker}

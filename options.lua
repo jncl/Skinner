@@ -1,6 +1,6 @@
 local aName, aObj = ...
 local _G = _G
-local ftype = "o"
+local ftype = "opt"
 
 -- Add locals to see if it speeds things up
 local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.LibStub, _G.pairs
@@ -1821,27 +1821,33 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	-- add DisabledSkins options
 	local function addDSOpt(name, lib)
 
+		local name2 = name .. (lib and " (Lib)" or "")
+		local width2 = name2:len() > 19 and "double" or nil
 		aObj.optTables["Disabled Skins"].args[name] = {
 			type = "toggle",
-			name = name .. (lib and " (Lib)" or ""),
+			name = name2,
 			desc = aObj.L["Toggle the skinning of "]..name,
-			width = name:len() > 20 and "double" or nil,
+			width = width2,
 		}
+		name2, width2 = nil, nil
 
 	end
 	for addonName in pairs(self.addonsToSkin) do
 		addDSOpt(addonName)
 	end
-	for i = 1, #self.libsToSkin do
-		addDSOpt(self.libsToSkin[i], true)
+	for addonName in pairs(self.libsToSkin) do
+		addDSOpt(addonName, true)
 	end
 	for addonName in pairs(self.lodAddons) do
 		addDSOpt(addonName)
 	end
-	for addonName, isLib in pairs(self.otherAddons) do
-		addDSOpt(addonName, isLib)
+	for addonName in pairs(self.otherAddons) do
+		if addonName == "tekKonfig" then
+			addDSOpt(addonName, true)
+		else
+			addDSOpt(addonName)
+		end
 	end
-	self.otherAddons = nil
 
 	-- add DB profile options
 	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)

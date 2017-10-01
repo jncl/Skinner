@@ -2,10 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WIM") then return end
 local _G = _G
 
--- minimap button
-aObj.mmButs["WIM"] = _G.WIM3MinimapButton
-
-function aObj:WIM() -- WIM3
+aObj.addonsToSkin.WIM = function(self) -- v 3.7.14
 
 	local function findFrame(name, element)
 
@@ -94,10 +91,10 @@ function aObj:WIM() -- WIM3
 			-- navigation panel
 			hvFrame.nav.border:Hide()
 			self:skinDropDown(hvFrame.nav.user)
-			self:skinScrollBar{obj=hvFrame.nav.filters.scroll, size=3}
+			self:skinSlider{obj=hvFrame.nav.filters.scroll.ScrollBar, size=3}
 			hvFrame.nav.filters.border:Hide()
 			self:applySkin(hvFrame.nav.filters)
-			self:skinScrollBar{obj=hvFrame.nav.userList.scroll, size=3}
+			self:skinSlider{obj=hvFrame.nav.userList.scroll.ScrollBar, size=3}
 			hvFrame.nav.userList.border:Hide()
 			self:applySkin(hvFrame.nav.userList)
 			-- search
@@ -106,7 +103,7 @@ function aObj:WIM() -- WIM3
 			self:skinEditBox(hvFrame.search.text, {9})
 			-- content panel
 			hvFrame.content.border:Hide()
-			self:skinScrollBar{obj=hvFrame.content.textFrame, size=3}
+			self:skinSlider{obj=hvFrame.content.textFrame.ScrollBar, size=3}
 			self:applySkin(hvFrame.content)
 			-- progress viewer
 			self:keepFontStrings(hvFrame.progressBar)
@@ -141,9 +138,15 @@ function aObj:WIM() -- WIM3
 		if mFrame then skinWindow(mFrame) end
 	end
 
+	-- minimap button
+	self.mmButs["WIM"] = _G.WIM3MinimapButton
+
+	-- skin WIM_Options
+	self:checkAndRun("WIM_Options", "o")
+
 end
 
-function aObj:WIM_Options()
+aObj.otherAddons.WIM_Options = function(self)
 
 	local function checkKids(obj)
 
@@ -151,16 +154,28 @@ function aObj:WIM_Options()
 		obj.sknd = true
 		aObj:skinAllButtons{obj=obj}
 
-		for _, child in _G.pairs{obj:GetChildren()} do
+		local kids, child = {obj:GetChildren()}
+		for i = 1, #kids do
+			child = kids[i]
 			if aObj:isDropDown(child) then
 				aObj:skinDropDown{obj=child, x2= obj.mf and 110 or nil}
 			elseif child.backdrop then
+				child:DisableDrawLayer("BACKGROUND")
+				aObj:addSkinFrame{obj=child, ofs=4}
 				checkKids(child)
 			elseif child:IsObjectType("ScrollFrame") then
-				aObj:skinScrollBar{obj=child}
+				aObj:skinSlider{obj=child.ScrollBar}
+			elseif child:IsObjectType("Slider") then
+				aObj:skinSlider{obj=child}
+			elseif child:IsObjectType("CheckButton") then
+				aObj:skinCheckButton{obj=child}
+				checkKids(child)
+			elseif child.dropdown then
+				aObj:addButtonBorder{obj=child, ofs=-2}
 			else checkKids(child)
 			end
 		end
+		kids, child = nil, nil
 
 	end
 	-- hook this to skin the options frame
@@ -169,7 +184,7 @@ function aObj:WIM_Options()
 		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
 		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
 		optFrame.nav.bg:Hide()
-		self:addSkinFrame{obj=optFrame, nb=true, y2=12}
+		self:addSkinFrame{obj=optFrame, nb=true, y2=-50}
 		-- if frame is a function then hook it, otherwise check it
 		for _, cat in _G.pairs(_G.WIM.options.frame.nav.category) do
 			for _, subCat in _G.pairs(cat.info.subCategories) do

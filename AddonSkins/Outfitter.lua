@@ -2,26 +2,11 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Outfitter") then return end
 local _G = _G
 
--- minimap button
-aObj.mmButs["Outfitter"] = _G.OutfitterMinimapButton
-
-function aObj:Outfitter()
+local function skinOutfitter(self)
 
 	-- disable Frame Level & Strata being changed
-	_G.Outfitter.SetFrameLevel = function() end
-	_G.Outfitter.SetFrameStrata = function() end
-
-	 -- wait until Outfitter has been initialized
-	if not _G.Outfitter.Initialized then
-		self:ScheduleTimer("checkAndRunAddOn", 0.1, "Outfitter")
-		return
-	end
-
-	-- minimap button texture background
-	if self.db.profile.MinimapButtons.skin then
-		self:removeRegions(_G.OutfitterMinimapButton, {1})
-		_G.OutfitterMinimapButton.CurrentOutfitTexture:SetDrawLayer("ARTWORK")
-	end
+	_G.Outfitter.SetFrameLevel = _G.nop
+	_G.Outfitter.SetFrameStrata = _G.nop
 
 	local function skinOutfitBars(this, ...)
 
@@ -33,6 +18,7 @@ function aObj:Outfitter()
 			if not oBar.sf then
 				aObj:addSkinFrame{obj=oBar, kfs=true, x1=-2, y1=3, x2=0, y2=1}
 			end
+			oBar = nil
 		end
 		for i = 1, 2 do
 			local dBar = this["DragBar" .. i]
@@ -54,6 +40,7 @@ function aObj:Outfitter()
 					end
 				end)
 			end
+			dBar = nil
 		end
 
 	end
@@ -76,6 +63,7 @@ function aObj:Outfitter()
 		if aObj.db.profile.DropDownButtons then
 			aObj:addSkinFrame{obj=obj, aso={ng=true}, x1=-2, y1=1, x2=2, y2=-1}
 		end
+		aObj:addButtonBorder{obj=obj.Button or _G[obj:GetName() .. "Button"], es=12, ofs=-2, x1=1}
 
 	end
 
@@ -93,6 +81,10 @@ function aObj:Outfitter()
 
 	end
 
+-->>-- Outfit Bars
+	_G.C_Timer.After(1.0, function()
+		skinOutfitBars(_G.Outfitter.OutfitBar)
+	end)
  	-- hook these to handle the Outfit Bars
 	self:SecureHook(_G.Outfitter.OutfitBar, "UpdateBar", function(this, ...)
 		skinOutfitBars(this, ...)
@@ -129,7 +121,7 @@ function aObj:Outfitter()
 -->>--	Main Frame
 	self:keepRegions(_G.OutfitterMainFrame, {2, 3}) -- N.B. region 2 is text, 3 is background texture
 	self:removeRegions(_G.OutfitterMainFrameScrollbarTrench)
-	self:skinScrollBar{obj=_G.OutfitterMainFrameScrollFrame}
+	self:skinSlider{obj=_G.OutfitterMainFrameScrollFrame.ScrollBar}
 	-- m/p buttons
 	for i = 0, _G.Outfitter.cMaxDisplayedItems - 1 do
 		local iBtn = "OutfitterItem" .. i
@@ -137,18 +129,21 @@ function aObj:Outfitter()
 		self:SecureHook(_G[iBtn .. "CategoryExpand"], "SetNormalTexture", function(this, nTex)
 			self:checkTex{obj=this, nTex=nTex}
 		end)
+		iBtn = nil
 	end
 
 -->>--	Outfitter Tabs
 	self:skinTabs{obj=_G.OutfitterFrame, lod=true, x1=6, y1=0, x2=-6, y2=2}
 
 -->>--	New Outfit Panel
-
 	self:SecureHook(_G.Outfitter, "CreateNewOutfit", function(this)
 		local frame = this.NameOutfitDialog
-		self:skinEditBox{obj=frame.Name, regs={9, 15, 16}}
+		self:skinEditBox{obj=frame.Name, regs={6}}
 		self:moveObject{obj=frame.Title, y=-6}
 		skinDropDown(frame.ScriptMenu)
+		frame.EmptyOutfitCheckButton:SetSize(20, 20)
+		frame.ExistingOutfitCheckButton:SetSize(20, 20)
+		frame.GenerateOutfitCheckButton:SetSize(20, 20)
 		self:addSkinFrame{obj=frame.InfoSection}
 		self:addSkinFrame{obj=frame.BuildSection}
 		self:addSkinFrame{obj=frame.StatsSection}
@@ -158,9 +153,11 @@ function aObj:Outfitter()
 		self:SecureHook(msc, "SetNumConfigLines", function(this2, ...)
 			skinMultiStats(this2)
 		end)
+		msc = nil
 		self:skinButton{obj=frame.CancelButton}
 		self:skinButton{obj=frame.DoneButton}
 		self:addSkinFrame{obj=frame, kfs=true, nb=true}
+		frame = nil
 		self:Unhook(_G.Outfitter, "CreateNewOutfit")
 	end)
 	self:SecureHook(_G.Outfitter, "BeginCombiProgress", function(this, ...)
@@ -168,6 +165,7 @@ function aObj:Outfitter()
 		self:glazeStatusBar(cpd.ProgressBar, 0,  nil)
 		self:skinButton{obj=cpd.CancelButton}
 		self:addSkinFrame{obj=cpd.ContentFrame}
+		cpd = nil
 		self:Unhook(_G.Outfitter, "BeginCombiProgress")
 	end)
 -->>--	Rebuild Outfit Panel
@@ -184,21 +182,22 @@ function aObj:Outfitter()
 		self:skinButton{obj=frame.CancelButton}
 		self:skinButton{obj=frame.DoneButton}
 		self:addSkinFrame{obj=frame, kfs=true, nb=true}
+		frame, msc = nil, nil
 		self:Unhook(_G.Outfitter, "OpenRebuildOutfitDialog")
 	end)
 
 -->>--	ChooseIcon Dialog
 	self:getChild(_G.OutfitterChooseIconDialog, 1):SetBackdrop(nil) -- remove textures from anonymous frame
-	self:skinDropDown{obj=_G.OutfitterChooseIconDialogIconSetMenu}
-	self:skinEditBox{obj=_G.OutfitterChooseIconDialogFilterEditBox, regs={6}}
-	self:skinScrollBar{obj=_G.OutfitterChooseIconDialogScrollFrame}
+	skinDropDown(_G.OutfitterChooseIconDialogIconSetMenu)
+	self:skinEditBox{obj=_G.OutfitterChooseIconDialogFilterEditBox, regs={3}}
+	self:skinSlider{obj=_G.OutfitterChooseIconDialogScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.OutfitterChooseIconDialog, x1=12, y1=-12, x2=-16, y2=16}
 
 -->>--	EditScript Dialog
 	if _G.OutfitterEditScriptDialog then
 		skinDropDown(_G.OutfitterEditScriptDialogPresetScript)
 		self:keepFontStrings(_G.OutfitterEditScriptDialogSourceScript)
-		self:skinScrollBar{obj=_G.OutfitterEditScriptDialogSourceScript, noRR=true}
+		self:skinSlider{obj=_G.OutfitterEditScriptDialogSourceScript.ScrollBar, noRR=true}
 		self:addSkinFrame{obj=_G.OutfitterEditScriptDialog, kfs=true, x2=1, y2=-5}
 		-- Tabs
 		self:skinTabs{obj=_G.OutfitterEditScriptDialog, lod=true, x1=6, y1=0, x2=-6, y2=2}
@@ -207,25 +206,35 @@ function aObj:Outfitter()
 	self:SecureHook(_G.OutfitterEditScriptDialog, "ConstructSettingsFields", function(this, pSettings)
 		for k, v in _G.pairs(this.FrameCache) do
 			for l, w in _G.pairs(v) do
-				if k == "ScrollableEditBox" then
-					-- self:skinScrollBar{obj=v}
-					-- self:addSkinFrame{obj=self:getChild(v, 1)}
-				elseif k == "EditBox" then
-					self:skinEditBox{obj=w, regs={15, 16}}
+				if k == "EditBox" then
+					self:skinEditBox{obj=w, regs={6}}
 				elseif k == "ZoneListEditBox" then
-					self:skinScrollBar{obj=w}
-					self:skinButton{obj=_G[w:GetName().."ZoneButton"]}
+					self:skinSlider{obj=w.ScrollBar}
+					self:skinButton{obj=_G[w:GetName() .. "ZoneButton"]}
 				end
 			end
 		end
 	end)
 
--->>-- Outfit Bars
-	self:ScheduleTimer(skinOutfitBars, 1, _G.Outfitter.OutfitBar) -- wait for a second before skinning the Outfit Bars
-
 -->>-- Character panel buttons
 	self:skinButton{obj=_G.OutfitterEnableAll}
 	self:skinButton{obj=_G.OutfitterEnableNone}
 	self:addButtonBorder{obj=_G.OutfitterButton, x1=9, y1=-2, x2=-10, y2=2}
+
+-->>-- minimap button
+	if self.db.profile.MinimapButtons.skin then
+		self:addSkinButton{obj=_G.OutfitterMinimapButton, parent=_G.OutfitterMinimapButton, sap=true}
+		self:removeRegions(_G.OutfitterMinimapButton, {1})
+		_G.OutfitterMinimapButton.CurrentOutfitTexture:SetDrawLayer("ARTWORK")
+	end
+
+end
+
+aObj.addonsToSkin.Outfitter = function(self) -- v 5.19.1
+
+	self:SecureHook(_G.Outfitter, "PlayerEnteringWorld", function(this)
+		skinOutfitter(aObj)
+		self:Unhook(this, "PlayerEnteringWorld")
+	end)
 
 end

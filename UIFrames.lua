@@ -3092,8 +3092,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 end
 
--- table to hold minimap buttons from other AddOn skins
-aObj.mmButs = {}
 aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if not self.db.profile.MinimapButtons.skin or self.initialized.MinimapButtons then return end
 	self.initialized.MinimapButtons = true
@@ -3229,7 +3227,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	-- skin other minimap buttons as required
 	if not minBtn then
 		local function skinMMBtn(cb, btn, name)
-
 			local regs, reg = {btn:GetRegions()}
 			for i = 1, #regs do
 				reg = regs[i]
@@ -3243,15 +3240,18 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			end
 			regs, reg = nil, nil
 
-			aObj:addSkinButton{obj=btn, ft=ftype, parent=btn, sap=true}
+			aObj:addSkinButton{obj=btn, parent=btn, sap=true}
 
 		end
-		for addon, obj in pairs(self.mmButs) do
-			if IsAddOnLoaded(addon) then
-				skinMMBtn("Loaded Addons btns", obj)
+		-- wait until all AddOn skins have been loaded
+		_G.C_Timer.After(0.2, function()
+			for addon, obj in pairs(self.mmButs) do
+				if IsAddOnLoaded(addon) then
+					skinMMBtn("Loaded Addons btns", obj)
+				end
 			end
-		end
-		self.mmButs = nil
+			self.mmButs = nil
+		end)
 
 		-- skin existing LibDBIcon buttons
 		for name, button in pairs(_G.LibStub("LibDBIcon-1.0").objects) do

@@ -57,7 +57,7 @@ do
 	liveInfo, ptrInfo, betaInfo, buildInfo, portal = nil, nil, nil, nil, nil
 
 	-- define tables to hold skin functions
-	aObj.blizzFrames = {p = {}, n = {}, u = {}, o = {}}
+	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
 end
@@ -80,7 +80,7 @@ function aObj:OnInitialize()
 	end
 
 	-- setup the default DB values and register them
-	self:checkAndRun("SetupDefaults", "o", false, true)
+	self:checkAndRun("SetupDefaults", "opt", false, true)
 	local prdb = self.db.profile
 	local dflts = self.db.defaults.profile
 
@@ -90,7 +90,7 @@ function aObj:OnInitialize()
 	end
 
 	-- setup the Addon's options
-	self:checkAndRun("SetupOptions", "o")
+	self:checkAndRun("SetupOptions", "opt")
 
 	-- register the default background texture
 	self.LSM:Register("background", dflts.BdTexture, [[Interface\ChatFrame\ChatFrameBackground]])
@@ -275,6 +275,9 @@ function aObj:OnInitialize()
 	self.ignoreBtns = {}
 
 	self.UIEffScale = _G.UIParent:GetEffectiveScale()
+
+	-- table to hold minimap buttons from other AddOn skins
+	self.mmButs = {}
 
 end
 

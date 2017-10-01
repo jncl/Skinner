@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("TomTom") then return end
 local _G = _G
 
-function aObj:TomTom()
+aObj.addonsToSkin.TomTom = function(self) -- v 70200-1.0.0
 
 	local function skinTTBlock()
 
@@ -13,10 +13,12 @@ function aObj:TomTom()
 
 	end
 
-	self:SecureHook(_G.TomTom, "ShowHideCoordBlock", function() skinTTBlock() end)
-
 	-- skin the Coordinate block
-	skinTTBlock()
+	if _G.TomTomBlock then
+		skinTTBlock()
+	else
+		self:SecureHook(_G.TomTom, "ShowHideCoordBlock", function() skinTTBlock() end)
+	end
 
 	if self.db.profile.Tooltips.skin then
 		self:SecureHook(_G.TomTomTooltip, "Show", function(this)

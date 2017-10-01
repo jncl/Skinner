@@ -2,10 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Armory") then return end
 local _G = _G
 
--- minimap button
-aObj.mmButs["Armory"] = _G.ArmoryMinimapButton
-
-function aObj:Armory() -- 13.2.0
+aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 
 -->>-- Static Popup
 	self:addSkinFrame{obj=_G.ArmoryStaticPopup, kfs=true}
@@ -131,7 +128,8 @@ function aObj:Armory() -- 13.2.0
 	end
 	-- Reputation SubFrame
 	self:keepFontStrings(_G.ArmoryReputationFrame)
-	self:skinScrollBar{obj=_G.ArmoryReputationListScrollFrame}
+	_G.ArmoryReputationListScrollFrame:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.ArmoryReputationListScrollFrame.ScrollBar}
 	for i = 1, _G.ARMORY_NUM_FACTIONS_DISPLAYED do
 		local bar = "ArmoryReputationBar" .. i
 		self:skinButton{obj=_G[bar .. "ExpandOrCollapseButton"], mp=true, ty=0} -- treat as just a texture
@@ -150,7 +148,7 @@ function aObj:Armory() -- 13.2.0
 	end
 	--	RaidInfo SubFrame
 	self:keepFontStrings(_G.ArmoryRaidInfoFrame)
-	self:skinScrollBar{obj=_G.ArmoryRaidInfoScrollFrame}
+	-- self:skinSlider{obj=_G.ArmoryRaidInfoScrollFrame.ScrollBar}
 	-- Currency SubFrame
 	self:keepFontStrings(_G.ArmoryTokenFrame)
 	self:skinSlider(_G.ArmoryTokenFrameContainerScrollBar)
@@ -170,7 +168,8 @@ function aObj:Armory() -- 13.2.0
 	-- Tabs
 	self:skinTabs{obj=_G.ArmoryInventoryFrame}
 	-- Icon View Tab
-	self:skinScrollBar{obj=_G.ArmoryInventoryIconViewFrame}
+	_G.ArmoryInventoryIconViewFrame:DisableDrawLayer("ARTWORK")
+	self:skinSlider{obj=_G.ArmoryInventoryIconViewFrame.ScrollBar}
 	-- m/p buttons
 	for i = 1, 19 do
 		self:skinButton{obj=_G["ArmoryInventoryContainer" .. i .. "Label"], mp=true}
@@ -185,7 +184,8 @@ function aObj:Armory() -- 13.2.0
 		end)
 	end
 	-- List View Tab
-	self:skinScrollBar{obj=_G.ArmoryInventoryListViewScrollFrame}
+	_G.ArmoryInventoryListViewScrollFrame:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.ArmoryInventoryListViewScrollFrame.ScrollBar}
 	-- m/p buttons
 	for i = 1, _G.ARMORY_INVENTORY_LINES_DISPLAYED do
 		self:skinButton{obj=_G["ArmoryInventoryLine" .. i], mp=true}
@@ -205,7 +205,8 @@ function aObj:Armory() -- 13.2.0
 	end
 	-- Guild Bank Tab
 	if _G.IsAddOnLoaded("ArmoryGuildBank") then
-		self:skinScrollBar{obj=_G.ArmoryInventoryGuildBankScrollFrame}
+		_G.ArmoryInventoryGuildBankScrollFrame:DisableDrawLayer("BACKGROUND")
+		self:skinSlider{obj=_G.ArmoryInventoryGuildBankScrollFrame.ScrollBar}
 		-- m/p buttons
 		for i = 1, _G.ARMORY_INVENTORY_LINES_DISPLAYED do
 			self:skinButton{obj=_G["ArmoryInventoryGuildBankLine" .. i], mp=true}
@@ -273,8 +274,8 @@ function aObj:Armory() -- 13.2.0
 			self:checkTex(_G.ArmoryQuestLogCollapseAllButton)
 		end)
 	end
-	self:skinScrollBar{obj=_G.ArmoryQuestLogListScrollFrame}
-	self:skinScrollBar{obj=_G.ArmoryQuestLogDetailScrollFrame}
+	self:skinSlider{obj=_G.ArmoryQuestLogListScrollFrame.ScrollBar}
+	self:skinSlider{obj=_G.ArmoryQuestLogDetailScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.ArmoryQuestFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=52}
 
 -->>-- Spellbook Tab
@@ -325,7 +326,8 @@ function aObj:Armory() -- 13.2.0
 	self:skinEditBox{obj=_G.ArmoryAchievementFrameEditBox, regs={6}}
 	self:skinButton{obj=_G.ArmoryAchievementCollapseAllButton, mp=true}
 	_G.ArmoryAchievementCollapseAllButton:DisableDrawLayer("BACKGROUND")
-	self:skinScrollBar{obj=_G.ArmoryAchievementListScrollFrame}
+	_G.ArmoryAchievementListScrollFrame:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.ArmoryAchievementListScrollFrame.ScrollBar}
 	self:skinButton{obj=_G.ArmoryAchievementFrameCloseButton, cb=true}
 	self:addSkinFrame{obj=_G.ArmoryAchievementFrame, kfs=true, nb=true, x1=10, y1=-11, x2=-33, y2=71}
 	-- Tabs
@@ -351,11 +353,11 @@ function aObj:Armory() -- 13.2.0
 	self:skinToggleTabs("ArmorySocialFrameTab", 3, true)
 	self:addSkinFrame{obj=_G.ArmorySocialFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
 	-- Friends ToggleTab
-	self:skinScrollBar{obj=_G.ArmoryFriendsListScrollFrame}
+	self:skinSlider{obj=_G.ArmoryFriendsListScrollFrame.ScrollBar}
 	-- Ignore ToggleTab
-	self:skinScrollBar{obj=_G.ArmoryIgnoreListScrollFrame}
+	self:skinSlider{obj=_G.ArmoryIgnoreListScrollFrame.ScrollBar}
 	-- Events ToggleTab
-	self:skinScrollBar{obj=_G.ArmoryEventsListScrollFrame}
+	self:skinSlider{obj=_G.ArmoryEventsListScrollFrame.ScrollBar}
 
 -->>-- Tradeskill Tabs
 	self:removeRegions(_G.ArmoryTradeSkillFrame.RankFrame.Border, {1}) -- remove button texture
@@ -366,7 +368,7 @@ function aObj:Armory() -- 13.2.0
 	self:skinButton{obj=_G.ArmoryTradeSkillFrame.FilterButton}
 	self:moveObject{obj=_G.ArmoryTradeSkillFrame.FilterButton, y=2}
 	self:skinSlider{obj=_G.ArmoryTradeSkillFrame.RecipeList.ScrollBar, adj=-4, size=3}
-	self:skinScrollBar{obj=_G.ArmoryTradeSkillFrame.DetailsFrame}
+	self:skinSlider{obj=_G.ArmoryTradeSkillFrame.DetailsFrame.ScrollBar}
 	self:removeRegions(_G.ArmoryTradeSkillFrame.DetailsFrame.Contents, {6, 7,}) -- textures
 	local btn = _G.ArmoryTradeSkillFrame.DetailsFrame.Contents.ResultIcon
 	self:addButtonBorder{obj=btn, reParent={btn.Count}}
@@ -399,9 +401,12 @@ function aObj:Armory() -- 13.2.0
 		end)
 	end
 
+	-- minimap button
+	self.mmButs["Armory"] = _G.ArmoryMinimapButton
+
 end
 
-function aObj:ArmoryGuildBank()
+aObj.addonsToSkin.ArmoryGuildBank = function(self)
 
 	-- ArmoryGuildBankFrame
 	self:skinEditBox{obj=_G.ArmoryGuildBankFrameEditBox, regs={6}}
@@ -411,7 +416,8 @@ function aObj:ArmoryGuildBank()
 	self:moveObject{obj=_G.ArmoryGuildBankFrameDeleteButton, x=3, y=-10}
 	-- ArmoryListGuildBankFrame
 	_G.ArmoryListGuildBankFrameMoneyBackgroundFrame:DisableDrawLayer("BACKGROUND")
-	self:skinScrollBar{obj=_G.ArmoryListGuildBankScrollFrame}
+	_G.ArmoryListGuildBankScrollFrame:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.ArmoryListGuildBankScrollFrame.ScrollBar}
 	self:addSkinFrame{obj=_G.ArmoryListGuildBankFrame, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
 	self:skinTabs{obj=_G.ArmoryListGuildBankFrame, lod=true}
 	-- ArmoryIconGuildBankFrame
@@ -419,12 +425,30 @@ function aObj:ArmoryGuildBank()
 	-- columns
 	for i = 1, _G.ARMORY_NUM_GUILDBANK_COLUMNS do
 		_G["ArmoryIconGuildBankColumn" .. i]:DisableDrawLayer("BACKGROUND")
+		local btn
+		for j = 1, 14 do
+			btn = _G["ArmoryIconGuildBankColumn" .. i .. "Button" .. j]
+			self:addButtonBorder{obj=btn, ibt=true}
+			if self.modBtnBs then
+				self:SecureHook(btn.IconBorder, "Hide", function(this)
+					this:GetParent().sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.35)
+				end)
+				self:SecureHook(btn.IconBorder, "SetVertexColor", function(this, r, g, b)
+					this:GetParent().sbb:SetBackdropBorderColor(r, g, b, 1)
+				end)
+			end
+		end
+		btn = nil
 	end
 	self:addSkinFrame{obj=_G.ArmoryIconGuildBankFrame, kfs=true, y1=-10, y2=2}
 	self:skinTabs{obj=_G.ArmoryIconGuildBankFrame, lod=true}
 	-- Tabs (side)
+	local objName
 	for i = 1, _G.MAX_GUILDBANK_TABS do
-		_G["ArmoryIconGuildBankTab" .. i]:DisableDrawLayer("BACKGROUND")
+		objName = "ArmoryIconGuildBankTab" .. i
+		_G[objName]:DisableDrawLayer("BACKGROUND")
+		self:addButtonBorder{obj=_G[objName .. "Button"], relTo=_G[objName .. "ButtonIconTexture"]}
 	end
+	objName = nil
 
 end

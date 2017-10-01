@@ -2,9 +2,6 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("ClassOrderHallsComplete") then return end
 local _G = _G
 
--- minimap button
-aObj.mmButs["ClassOrderHallsComplete"] = _G.COHCMinimapButton
-
 aObj.addonsToSkin.ClassOrderHallsComplete = function(self) -- v1.27
 
 	local mFrame = "ClassOrderHallsCompleteUIMainFrame"
@@ -38,5 +35,8 @@ aObj.addonsToSkin.ClassOrderHallsComplete = function(self) -- v1.27
 	self:skinDropDown{obj=_G[mFrame .. "Tab5SubFrameTextFormatDropDownMenu"]}
 
 	mFrame = nil
+
+	-- minimap button
+	self.mmButs["ClassOrderHallsComplete"] = _G.COHCMinimapButton
 
 end

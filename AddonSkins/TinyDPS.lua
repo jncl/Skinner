@@ -2,10 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("TinyDPS") then return end
 local _G = _G
 
--- minimap button
-aObj.mmButs["TinyDPS"] = _G.tdpsButtonFrame
-
-function aObj:TinyDPS()
+aObj.addonsToSkin.TinyDPS = function(self) -- v 0.942
 
 	-- main frame
 	self:addSkinFrame{obj=_G.tdpsFrame, ofs=2, aso={ng=true}} -- no gradient (Animation)
@@ -36,5 +33,8 @@ function aObj:TinyDPS()
 	end
 	-- skin any existing StatusBars
 	skinSBs()
+
+	-- minimap button
+	self.mmButs["TinyDPS"] = _G.tdpsButtonFrame
 
 end

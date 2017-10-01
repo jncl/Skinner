@@ -2,10 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("ZygorGuidesViewer") then return end
 local _G = _G
 
--- minimap button
-aObj.mmButs["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon
-
-function aObj:ZygorGuidesViewer()
+aObj.addonsToSkin.ZygorGuidesViewer = function(self) -- v 6.1
 
 	local ZGV = _G.ZygorGuidesViewer
 
@@ -76,12 +73,17 @@ function aObj:ZygorGuidesViewer()
 	_G.DropDownForkList2MenuBackdrop:SetBackdrop(nil)
 	self:addSkinFrame{obj=_G.DropDownForkList2}
 
+	-- minimap button
+	_G.ZygorGuidesViewerMapIcon:SetSize(32, 32)
+	self.mmButs["ZygorGuidesViewer"] = _G.ZygorGuidesViewerMapIcon
+
 end
 
-local AceGUIZ
-function aObj:Ace3Z()
+aObj.otherAddons.Ace3Z = function(self)
 	if self.initialized.Ace3Z then return end
 	self.initialized.Ace3Z = true
+
+	local AceGUIZ = _G.LibStub("AceGUI-3.0-Z", true)
 
 	local function skinAceGUIZ(obj, objType)
 
@@ -111,11 +113,14 @@ function aObj:Ace3Z()
 				aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- backdrop frame
 			elseif objType == "Button-Z" then
 				aObj:skinButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+			elseif objType == "SliderLabeled-Z" then
+				aObj:skinSlider{obj=obj.slider}
+			elseif objType == "CheckBox-Z" then
+				aObj:addButtonBorder{obj=obj.frame, ofs=-2, y2=3, relTo=obj.checkbg, reParent={obj.check}}
+				obj.checkbg:SetTexture(nil)
 			-- ignore these types for now
 			elseif objType == "Dropdown-Item-Toggle-Z"
-			or objType == "CheckBox-Z"
 			or objType == "Label-Z"
-			or objType == "SliderLabeled-Z"
 			or objType == "ScrollFrame-Z"
 			or objType == "SimpleGroup-Z"
 			then
@@ -136,6 +141,5 @@ function aObj:Ace3Z()
 end
 
 _G.C_Timer.After(0.1, function()
-	AceGUIZ = _G.LibStub("AceGUI-3.0-Z", true)
-	aObj:checkAndRun("Ace3Z", "s") -- not an addon in its own right
+	aObj:checkAndRun("Ace3Z", "o")
 end)
