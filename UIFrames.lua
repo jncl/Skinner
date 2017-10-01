@@ -2072,7 +2072,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 	--	Main Frame
 	_G.GuildBankEmblemFrame:Hide()
 	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
-		_G["GuildBankColumn" .. i .. "Background"]:SetAlpha(0)
+		_G["GuildBankColumn" .. i]:DisableDrawLayer("BACKGROUND")
 		for j = 1, 14 do
 			self:addButtonBorder{obj=_G["GuildBankColumn" .. i .. "Button" .. j], ibt=true}
 		end
