@@ -174,7 +174,6 @@
 <script file="AddonSkins\QuestMapWithDetails.lua"/>
 <script file="AddonSkins\QuickMark.lua"/>
 <script file="AddonSkins\RaidAchievement.lua"/>
-<script file="AddonSkins\RaidBuffStatus.lua"/>
 <script file="AddonSkins\RaidRoll.lua"/>
 <script file="AddonSkins\RAQ.lua"/>
 <script file="AddonSkins\ReagentMaker.lua"/>
