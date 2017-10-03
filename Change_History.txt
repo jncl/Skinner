@@ -1,3 +1,13 @@
+beta7.25163.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Ace3, Altoholic, Armory, Carbonite, ClassOrderHallsComplete, HealBot, LibDropdown, Outfitter, PerlClassic, TinyDPS, TomTom, WIM, ZPerl & ZygorGuidesViewer skins
+	Updated GuildBankUI skin
+	Updated DropDownPanels skin
+	Obsoleted RaidBuffStatus skin
+
 beta7.25079.2
 Jncl:
 	ToDo.txt
