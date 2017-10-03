@@ -109,9 +109,14 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 	end
 	-- Player vs. Player
 	self:keepFontStrings(_G.ArmoryPVPFrame)
-	self:skinButton{obj=_G.ArmoryConquestFrame.Arena2v2}
-	self:skinButton{obj=_G.ArmoryConquestFrame.Arena3v3}
-	self:skinButton{obj=_G.ArmoryConquestFrame.RatedBG}
+	local function skinConquestBtn(btn)
+		btn.SelectedTexture:SetTexture(nil)
+		btn:SetNormalTexture(nil)
+		btn:SetPushedTexture(nil)
+	end
+	skinConquestBtn(_G.ArmoryConquestFrame.Arena2v2)
+	skinConquestBtn(_G.ArmoryConquestFrame.Arena3v3)
+	skinConquestBtn(_G.ArmoryConquestFrame.RatedBG)
 	-- Honor Talents
 	_G.ArmoryPVPHonorXPBar.Frame:SetTexture(nil)
 	self:glazeStatusBar(_G.ArmoryPVPHonorXPBar.Bar, 0,  nil)
@@ -148,7 +153,7 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 	end
 	--	RaidInfo SubFrame
 	self:keepFontStrings(_G.ArmoryRaidInfoFrame)
-	-- self:skinSlider{obj=_G.ArmoryRaidInfoScrollFrame.ScrollBar}
+	self:skinSlider{obj=_G.ArmoryRaidInfoScrollFrame.scrollBar}
 	-- Currency SubFrame
 	self:keepFontStrings(_G.ArmoryTokenFrame)
 	self:skinSlider(_G.ArmoryTokenFrameContainerScrollBar)
@@ -196,7 +201,7 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 			for i = 1, _G.ARMORY_INVENTORY_LINES_DISPLAYED do
 				local btn = _G["ArmoryInventoryLine" .. i]
 				self:checkTex(btn)
-				if not self.sBtn[btn]:IsShown() then -- not a header line
+				if not btn:IsShown() then -- not a header line
 					btn:GetNormalTexture():SetAlpha(1) -- show item icon
 				end
 			end
@@ -217,7 +222,7 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 				for i = 1, _G.ARMORY_INVENTORY_LINES_DISPLAYED do
 					local btn = _G["ArmoryInventoryGuildBankLine" .. i]
 					self:checkTex(btn)
-					if not self.sBtn[btn]:IsShown() then -- not a header line
+					if not btn:IsShown() then -- not a header line
 						btn:GetNormalTexture():SetAlpha(1) -- show item icon
 					end
 				end
@@ -313,6 +318,9 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 		btn.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
 		self:addButtonBorder{obj=btn}
 	end
+	self:addButtonBorder{obj=_G.ArmorySpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
+	self:addButtonBorder{obj=_G.ArmorySpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
+
 	self:SecureHook("ArmorySpellButton_UpdateButton", function(this)
 		this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
 		this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -353,10 +361,13 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 	self:skinToggleTabs("ArmorySocialFrameTab", 3, true)
 	self:addSkinFrame{obj=_G.ArmorySocialFrame, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
 	-- Friends ToggleTab
+	_G.ArmoryFriendsListScrollFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=_G.ArmoryFriendsListScrollFrame.ScrollBar}
 	-- Ignore ToggleTab
+	_G.ArmoryIgnoreListScrollFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=_G.ArmoryIgnoreListScrollFrame.ScrollBar}
 	-- Events ToggleTab
+	_G.ArmoryEventsListScrollFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=_G.ArmoryEventsListScrollFrame.ScrollBar}
 
 -->>-- Tradeskill Tabs

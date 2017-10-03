@@ -113,11 +113,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:skinButton{obj=obj.closebutton, cb=true}
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "ScrollFrame" then
-				aObj:keepRegions(obj.scrollbar, {1})
-				aObj:skinUsingBD{obj=obj.scrollbar}
+				aObj:skinSlider{obj=obj.scrollbar}
 			elseif objType == "TreeGroup" then
-				aObj:keepRegions(obj.scrollbar, {1})
-				aObj:skinUsingBD{obj=obj.scrollbar}
+				aObj:skinSlider{obj=obj.scrollbar}
 				aObj:applySkin{obj=obj.border}
 				aObj:applySkin{obj=obj.treeframe}
 				if aObj.modBtns then
@@ -139,19 +137,20 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:skinButton{obj=obj.button, as=true}
 				aObj:applySkin{obj=obj.msgframe}
 			elseif objType == "CheckBox" then
-				aObj:addButtonBorder{obj=obj.frame, ofs=-2, y2=3, relTo=obj.checkbg, reParent={obj.check}}
-				obj.checkbg:SetTexture(nil)
-				-- hide button border if Radio Button
-				aObj:secureHook(obj, "SetType", function(this, type)
-					if aObj:getInt(this.checkbg:GetWidth()) == 16 then
-						this.check:SetParent(this.frame)
-						this.frame.sbb:Hide()
-					else
-						this.check:SetParent(this.frame.sbb)
-						this.frame.sbb:Show()
-					end
-				end)
-
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=obj.frame, ofs=-2, y2=3, relTo=obj.checkbg, reParent={obj.check}}
+					obj.checkbg:SetTexture(nil)
+					-- hide button border if Radio Button
+					aObj:secureHook(obj, "SetType", function(this, type)
+						if aObj:getInt(this.checkbg:GetWidth()) == 16 then
+							this.check:SetParent(this.frame)
+							this.frame.sbb:Hide()
+						else
+							this.check:SetParent(this.frame.sbb)
+							this.frame.sbb:Show()
+						end
+					end)
+				end
 			-- Snowflake objects (Producer AddOn)
 			elseif objType == "SnowflakeGroup" then
 				aObj:applySkin{obj=obj.frame}
@@ -169,7 +168,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			elseif objType == "ProducerHead" then
 				aObj:applySkin{obj=obj.frame}
 				aObj:skinButton{obj=obj.close, cb2=true}
-				obj.SetBorder = function() end -- disable background changes
+				obj.SetBorder = _G.nop
 
 			-- ListBox object (AuctionLite)
 			elseif objType == "ListBox" then
@@ -272,8 +271,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
                 obj.sknrTSM = true
             elseif objType == "TSMInlineGroup"
             then
-                obj.HideBorder = function() end
-                obj.SetBackdrop = function() end
+                obj.HideBorder = _G.nop
+                obj.SetBackdrop = _G.nop
                 obj.border:Hide()
                 obj.titletext:ClearAllPoints()
                 obj.titletext:SetPoint("TOPLEFT", 10, -6)

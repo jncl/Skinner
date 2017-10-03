@@ -4,29 +4,26 @@ local _G = _G
 
 aObj.ignoreLQTT = {}
 
-function aObj:LibQTip()
+aObj.libsToSkin["LibQTip-1.0"] = function(self) -- v LibQTip-1.0, 44
 	if not self.db.profile.Tooltips.skin or self.initialized.LibQTip then return end
 	self.initialized.LibQTip = true
 
 	local lqt = _G.LibStub("LibQTip-1.0", true)
 	if lqt then
-		local function skinLTTooltips(lib)
+		local function skinTT(key, tt)
 
-			for key, tooltip in lib:IterateTooltips() do
-				-- ignore tooltips if required
-				if not aObj.ignoreLQTT[key] then
-					if not tooltip.sknd then
-						tooltip.sknd = true
-						aObj:applySkin{obj=tooltip}
-					end
-				end
+			-- ignore tooltips if required
+			if not aObj.ignoreLQTT[key] then
+				aObj:applySkin{obj=tt}
 			end
 
 		end
 		-- hook this to handle new tooltips
-		self:SecureHook(lqt, "Acquire", function(this, key, ...)
-			skinLTTooltips(this)
-		end)
+		self:RawHook(lqt, "Acquire", function(this, key, ...)
+			local tt = self.hooks[this].Acquire(this, key, ...)
+			skinTT(key, tt)
+			return tt
+		end, true)
 		-- hook this to handle tooltips being released
 		self:SecureHook(lqt, "Release", function(this, tt)
 			-- handle already skinned
@@ -34,8 +31,10 @@ function aObj:LibQTip()
 				tt.sknd = nil
 			end
 		end)
-		-- skin any existing ones
-		skinLTTooltips(lqt)
+		-- skin existing tooltips
+		for key, tt in lqt:IterateTooltips() do
+			skinTT(key, tt)
+		end
 	end
 
 end

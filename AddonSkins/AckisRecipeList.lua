@@ -68,9 +68,7 @@ aObj.addonsToSkin.AckisRecipeList = function(self) -- v7.3.0.1
 --			self:Debug("ARL_TS: [%s, %s]", this, this.is_expanded)
 			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", this.is_expanded and -87 or -33, 74)
 			-- Reset button
-			if not aObj.sBtn[frame.filter_reset] then
-				aObj:skinButton{obj=frame.filter_reset}
-			end
+			aObj:skinButton{obj=frame.filter_reset}
 		end)
 
 		local function changeTextColour(frame)

@@ -399,7 +399,7 @@ end
 
 aObj.lodAddons.Perl_Config_Options = function(self)
 
-	_G.Perl_Config_Set_Background = function() end
+	_G.Perl_Config_Set_Background = _G.nop
 
 --Config
 	_G.Perl_Config_Header:Hide()
