@@ -1365,8 +1365,8 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 		if aObj.db.profile.ChatEditBox.skin
 		and not obj.editBox.sknd
 		then
-			obj.editBox.sknd = true
 			skinChatEB(obj.editBox)
+			obj.editBox.sknd = true
 		end
 		if aObj.db.profile.ChatButtons
 		and not obj.buttonFrame.sknd
@@ -2893,12 +2893,6 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 					end
 				elseif child:IsObjectType("EditBox") then
 						aObj:skinEditBox{obj=child, regs={6}}
-				-- elseif child:IsObjectType("ScrollFrame") then
-				-- 	if child:GetName()
-				-- 	and child:GetName() .. "ScrollBar" -- handle named ScrollBar's
-				-- 	then
-				-- 		aObj:skinScrollBar{obj=child}
-				-- 	end
 				elseif child:IsObjectType("Slider") then
 					if aObj:hasTextInName(child, "SushiSlider")
 					then

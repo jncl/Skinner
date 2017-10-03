@@ -259,9 +259,6 @@ function aObj:OnInitialize()
 	-- table to hold which functions have been actioned
 	self.initialized = {}
 
-	-- table to hold buttons that have been added, with weak keys
-	self.sBtn = _G.setmetatable({}, {__mode = "k"})
-
 	-- table to hold StatusBars that have been glazed, with weak keys
 	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 
@@ -313,7 +310,6 @@ function aObj:OnEnable()
 		end
 	end
 
-	-- aObj:Debug("btn clrs: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.LE_ITEM_QUALITY_POOR, _G.LE_ITEM_QUALITY_COMMON, _G.LE_ITEM_QUALITY_UNCOMMON, _G.LE_ITEM_QUALITY_RARE, _G.LE_ITEM_QUALITY_EPIC, _G.LE_ITEM_QUALITY_LEGENDARY, _G.LE_ITEM_QUALITY_ARTIFACT, _G.LE_ITEM_QUALITY_HEIRLOOM, _G.LE_ITEM_QUALITY_WOW_TOKEN)
 	-- add support for UIButton skinning
 	local btnModDB = self.db:GetNamespace("UIButtons", true)
 	self.modUIBtns = self:GetModule("UIButtons", true)
@@ -355,6 +351,7 @@ function aObj:OnEnable()
 	self.skinButton      = self.modBtns and self.modUIBtns.skinButton or _G.nop
 	self.isButton        = self.modBtns and self.modUIBtns.isButton or _G.nop
 	self.skinAllButtons  = self.modBtns and self.modUIBtns.skinAllButtons or _G.nop
+	self.skinCheckButton = self.modBtns and self.modUIBtns.skinCheckButton or _G.nop
 	self.addButtonBorder = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
 
 	-- track when Auction House is opened
@@ -455,6 +452,9 @@ local function __addSkinButton(opts)
 	assert(opts.obj, "Missing object __aSB\n" .. debugstack())
 --@end-alpha@
 
+	-- don't skin it twice
+	if opts.obj.sb then return end
+
 	-- remove the object's Backdrop if it has one
 	if opts.obj.GetBackdrop and opts.obj:GetBackdrop() then opts.obj:SetBackdrop(nil) end
 
@@ -479,8 +479,6 @@ local function __addSkinButton(opts)
 			aObj:secureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
 			aObj:secureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
 		end
-		-- store reference to the button (used by addons, until they are all updated)
-		if not opts.ft then aObj.sBtn[opts.hook] = btn end
 	end
 
 	-- position the button skin
@@ -614,7 +612,7 @@ local function __addSkinFrame(opts)
 	assert(opts.obj, "Missing object __aSF\n" .. debugstack())
 --@end-alpha@
 
-	-- don't skin already skinned object
+	-- don't skin it twice
 	if opts.obj.sf then return end
 
 	-- remove the object's Backdrop if it has one
@@ -841,6 +839,13 @@ local function __applySkin(opts)
 	end
 	hasIOT = nil
 
+	-- don't skin it twice
+	if opts.obj.sknd then
+		return
+	else
+		opts.obj.sknd = true
+	end
+
 	-- store frame obj, if required
 	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
 
@@ -900,58 +905,6 @@ function aObj:applySkin(...)
 		opts.bd = select(6, ...) and select(6, ...) or nil
 	end
 	__applySkin(opts)
-	opts = nil
-
-end
-
-function aObj:removeSkinFrame(obj)
-
-	obj.tfade:SetTexture(nil)
-	obj:SetBackdrop(nil)
-	obj:Hide()
-
-end
-
-local function __skinCheckButton(opts)
---[[
-	Calling parameters:
-		obj = object (Mandatory)
---]]
---@alpha@
-	assert(opts.obj, "Missing object __sCB\n" .. debugstack())
---@end-alpha@
-
-	-- check to see if a 'real' CheckButton
-	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox") then return end
-
-	opts.obj:GetNormalTexture():SetTexture(nil)
-	opts.obj:GetPushedTexture():SetTexture(nil)
-
-	-- skin CheckButton
-	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
-	local bdSize = opts.obj:GetWidth() < 23 and 12 or 5
-	aObj:addSkinButton{obj=opts.obj, aso={bd=bdSize, ng=true}, parent=opts.obj, nohooks=true, ofs=-4, y2=5}
-	bdSize = nil
-
-end
-function aObj:skinCheckButton(...)
-
-	local opts = select(1, ...)
-
---@alpha@
-	assert(opts, "Missing object sCB\n" .. debugstack())
---@end-alpha@
-
-	-- handle missing object (usually when addon changes)
-	if not opts then return end
-
-	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
-		-- old style call
-		opts = {}
-		opts.obj = select(1, ...) and select(1, ...) or nil
-	end
-
-	__skinCheckButton(opts)
 	opts = nil
 
 end
@@ -1230,7 +1183,6 @@ local function __skinMoneyFrame(opts)
 		if i ~= 1 or opts.moveGIcon then
 			aObj:moveObject{obj=obj.texture, x=10}
 			aObj:moveObject{obj=obj.label, x=10}
---			aObj:moveObject{obj=aObj:getRegion(fName, 9), x=10}
 		end
 		if not opts.noWidth and i ~= 1 then
 			aObj:adjWidth{obj=obj, adj=5}
@@ -1425,10 +1377,7 @@ local function __skinTabs(opts)
 	assert(opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. debugstack())
 --@end-alpha@
 
-	-- don't skin it twice
-	if aObj.tabFrames[opts.obj] then
-		return
-	end
+	-- N.B. DON'T check to see if object is already skinned, otherwise Ace3GUI Tabs aren't skinned properly
 
 	-- use supplied name or existing name (Ace3 TabGroup fix)
 	local tabName = opts.name or opts.obj:GetName()

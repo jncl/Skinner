@@ -251,7 +251,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	assert(funcType, "Unknown functionType checkAndRun\n" .. debugstack())
 --@end-alpha@
 
-	self:Debug("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
+	-- self:Debug("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
