@@ -142,12 +142,7 @@ function module:skinButton(opts)
 
 	if not opts.obj then return end
 
-	-- check to see if object is already skinned
-	if opts.obj.sknd then
-		return
-	else
-		opts.obj.sknd = true
-	end
+	-- N.B. DON'T check to see if object is already skinned, otherwise Ace3GUI buttons aren't skinned properly
 
 	-- hide textures as they are changed in code
 	if opts.obj.Left then -- UIPanelButtonTemplate and derivatives (MoP)
@@ -492,12 +487,7 @@ local function __addButtonBorder(opts)
 		return
 	end
 
-	-- check to see if object is already skinned
-	if opts.obj.sbb then
-		return
-	else
-		opts.obj.sknd = true
-	end
+	-- N.B. DON'T check to see if object is already skinned
 
 	-- remove Normal/Pushed textures if required (vertex colour changed in blizzard code)
 	if opts.ibt
@@ -608,7 +598,6 @@ local function __addButtonBorder(opts)
 	btnName = nil
 
 end
-
 function module:addButtonBorder(...)
 
 	local opts = select(1, ...)
@@ -626,6 +615,52 @@ function module:addButtonBorder(...)
 		opts.obj = select(1, ...) and select(1, ...) or nil
 	end
 	__addButtonBorder(opts)
+	opts = nil
+
+end
+
+local function __skinCheckButton(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+--]]
+--@alpha@
+	assert(opts.obj, "Missing object __sCB\n" .. debugstack())
+--@end-alpha@
+
+	-- N.B. DON'T check to see if object is already skinned
+
+	-- check to see if a 'real' CheckButton
+	if not aObj:hasTextInTexture(opts.obj:GetNormalTexture(), "CheckBox") then return end
+
+	opts.obj:GetNormalTexture():SetTexture(nil)
+	opts.obj:GetPushedTexture():SetTexture(nil)
+
+	-- skin CheckButton
+	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
+	local bdSize = opts.obj:GetWidth() < 23 and 12 or 5
+	aObj:addSkinButton{obj=opts.obj, aso={bd=bdSize, ng=true}, parent=opts.obj, nohooks=true, ofs=-4, y2=5}
+	bdSize = nil
+
+end
+function module:skinCheckButton(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Missing object sCB\n" .. debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+	end
+
+	__skinCheckButton(opts)
 	opts = nil
 
 end
