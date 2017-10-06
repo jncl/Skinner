@@ -21,7 +21,7 @@ end
 local addonSkins = {
 	"_NPCScan",
 	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "AngryKeystones", "AphesLootBrowser", "Archy", "ArkInventory", "ArkInventoryRules", "Atlas", "AtlasLoot", "Auctionator", "AuctionMaster", "Auctionsnatch", "AutoDecline",
-	"Baggins", "Bagnon_Forever", "Bagnon", "BankItems", "Bartender4", "BattlePetCount", "BaudBag", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BugSack", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
+	"Baggins", "Bagnon_Forever", "Bagnon", "BankItems", "Bartender4", "BattlePetCount", "BaudBag", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
 	"CensusPlus", "CFM", "Chatter", "Clique", "Collectinator", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cosplay",
 	"DeathNote", "DejaCharacterStats", "Details", "DockingStation", "Dominos", "DressUp",
 	"ElvUI", "EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
@@ -38,7 +38,7 @@ local addonSkins = {
 	"Quartz", "QuestCompletist", "QuestGuru", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidAchievement", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "Recount", "REFlex", "Rematch",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Spew", "Squeenix", "StaggerMeter",
-	"TargetCharms", "TidyPlates", "TinyInspect", "TinyTooltip", "TipTac", "TooManyAddons", "TradeSkillMaster", "TrinketBar", "Tukui",
+	"TargetCharms", "TidyPlates", "TinyInspect", "TipTac", "TooManyAddons", "TradeSkillMaster", "TrinketBar", "Tukui",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
 	"Warden", "WeakAuras", "Wholly", "WorldQuestGroupFinder", "WoWPro", "WTFLatencyMeter",
@@ -96,7 +96,6 @@ local function skinLibs()
 	-- skin library objects
 	for libName, skinFunc in pairs(aObj.libsToSkin) do
 		if _G.LibStub(libName, true) then
-			-- _G.print("libsToSkin", libName, skinFunc, type(skinFunc), aObj[skinFunc])
 			if aObj[skinFunc] then
 				aObj:checkAndRun(skinFunc, "s")
 			elseif type(skinFunc) == "function" then

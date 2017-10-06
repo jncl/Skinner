@@ -172,13 +172,16 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 
 			-- ListBox object (AuctionLite)
 			elseif objType == "ListBox" then
-				for _, child in _G.pairs{obj.box:GetChildren()} do -- find scroll bar
+				local kids, child = {obj.box:GetChildren()}
+				for i = 1, #kids do
+					child = kids[i]
 					if child:IsObjectType("ScrollFrame") then
 						child:SetBackdrop(nil)
 						aObj:skinScrollBar{obj=child}
 						break
 					end
 				end
+				kids, child = nil, nil
 				aObj:applySkin{obj=obj.box, kfs=true}
 
 			-- LibSharedMedia objects

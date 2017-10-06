@@ -4,25 +4,9 @@ local _G = _G
 
 aObj.addonsToSkin.WIM = function(self) -- v 3.7.14
 
-	local function findFrame(name, element)
-
-		local frame
-
-		for _, child in _G.pairs{_G.UIParent:GetChildren()} do
-			if child:GetName() == name
-			and child[element]
-			then
-				frame = child
-				break
-			end
-		end
-
-		return frame
-
-	end
 	local function skinWindow(msgFrame)
 
-		if msgFrame.sknd then return end
+		if msgFrame.sf then return end
 
 		aObj:keepFontStrings(msgFrame.widgets.Backdrop)
 		msgFrame.widgets.class_icon:SetAlpha(1)
@@ -38,10 +22,11 @@ aObj.addonsToSkin.WIM = function(self) -- v 3.7.14
 			aObj:moveObject{obj=msgFrame.widgets.close, x=-2}
 			aObj:moveObject{obj=msgFrame.widgets.class_icon, y=-2}
 		end
-
+		eBox, xOfs = nil, nil
 		aObj:addSkinFrame{obj=msgFrame, kfs=true}
 
 	end
+
 	-- hook these to skin the Message Frames
 	self:RawHook(_G.WIM, "CreateWhisperWindow", function(playerName)
 		local msgFrame = self.hooks[_G.WIM].CreateWhisperWindow(playerName)
@@ -58,26 +43,7 @@ aObj.addonsToSkin.WIM = function(self) -- v 3.7.14
 		skinWindow(msgFrame)
 		return msgFrame
 	end, true)
-	-- hook this to skin the filter frame
-	if _G.WIM.modules["Filters"]
-	and _G.WIM.modules["Filters"].enabled
-	then
-		self:SecureHook(_G.WIM, "ShowFilterFrame", function(this, ...)
-			local fFrame = findFrame("WIM3_FilterFrame", "nameText")
-			fFrame.title:SetPoint("TOPLEFT", 50 , -7);
-			fFrame.close:SetPoint("TOPRIGHT", -4, -4);
-			self:skinDropDown(fFrame.by)
-			self:skinScrollBar{obj=fFrame.patternContainer, size=3}
-			self:keepFontStrings(fFrame.user)
-			self:applySkin(fFrame.user)
-			self:keepFontStrings(fFrame.level)
-			self:applySkin(fFrame.level)
-			self:skinDropDown(fFrame.action)
-			fFrame.border:Hide()
-			self:addSkinFrame{obj=fFrame}
-			self:Unhook(_G.WIM, "ShowFilterFrame")
-		end)
-	end
+
 	-- skin the history viewer
 	if _G.WIM.modules["History"]
 	and _G.WIM.modules["History"].enabled
@@ -111,6 +77,7 @@ aObj.addonsToSkin.WIM = function(self) -- v 3.7.14
 			self:Unhook(_G.WIM, "ShowHistoryViewer")
 		end)
 	end
+
 	-- skin the Menu (Minimap/LDB)
 	if _G.WIM.modules["Menu"]
 	and _G.WIM.modules["Menu"].enabled
@@ -148,6 +115,7 @@ end
 
 aObj.otherAddons.WIM_Options = function(self)
 
+	local r, g, b, a = self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4]
 	local function checkKids(obj)
 
 		if obj.sknd then return end
@@ -160,9 +128,11 @@ aObj.otherAddons.WIM_Options = function(self)
 			if aObj:isDropDown(child) then
 				aObj:skinDropDown{obj=child, x2= obj.mf and 110 or nil}
 			elseif child.backdrop then
-				child:DisableDrawLayer("BACKGROUND")
-				aObj:addSkinFrame{obj=child, ofs=4}
-				checkKids(child)
+				child.backdrop.top:SetColorTexture(r, g, b, a)
+				child.backdrop.bottom:SetColorTexture(r, g, b, a)
+				child.backdrop.left:SetColorTexture(r, g, b, a)
+				child.backdrop.right:SetColorTexture(r, g, b, a)
+				child.backdrop.bg:SetTexture(nil)
 			elseif child:IsObjectType("ScrollFrame") then
 				aObj:skinSlider{obj=child.ScrollBar}
 			elseif child:IsObjectType("Slider") then
@@ -178,13 +148,14 @@ aObj.otherAddons.WIM_Options = function(self)
 		kids, child = nil, nil
 
 	end
+
 	-- hook this to skin the options frame
 	self:SecureHook(_G.WIM.options, "OnShow", function(this)
 		local optFrame = _G.WIM.options.frame
 		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
 		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
 		optFrame.nav.bg:Hide()
-		self:addSkinFrame{obj=optFrame, nb=true, y2=-50}
+		self:addSkinFrame{obj=optFrame, nb=true, y2=8}
 		-- if frame is a function then hook it, otherwise check it
 		for _, cat in _G.pairs(_G.WIM.options.frame.nav.category) do
 			for _, subCat in _G.pairs(cat.info.subCategories) do
@@ -201,10 +172,47 @@ aObj.otherAddons.WIM_Options = function(self)
 		end
 		self:Unhook(_G.WIM.options, "OnShow")
 	end)
+
 	-- hook this to skin the dropdown frame
 	self:SecureHook(_G.WIM.options, "createDropDownFrame", function(this)
 		self:addSkinFrame{obj=_G.WIM_DropDownFrame}
+		-- hook this to ensure the frame is above button borders
+		self:SecureHook(_G.WIM_DropDownFrame, "SetParent", function(this, parent)
+			_G.RaiseFrameLevelByTwo(this)
+		end)
 		self:Unhook(_G.WIM.options, "createDropDownFrame")
 	end)
+
+	-- hook this to skin the filter frame
+	if _G.WIM.modules["Filters"]
+	and _G.WIM.modules["Filters"].enabled
+	then
+		self:SecureHook(_G.WIM, "ShowFilterFrame", function(this, ...)
+			if _G.WIM3_FilterFrame then
+				_G.WIM3_FilterFrame.title:SetPoint("TOPLEFT", 50 , -7)
+				_G.WIM3_FilterFrame.close:SetPoint("TOPRIGHT", -4, -4)
+				_G.WIM3_FilterFrame.name.backdrop.top:SetColorTexture(r, g, b, a)
+				_G.WIM3_FilterFrame.name.backdrop.bottom:SetColorTexture(r, g, b, a)
+				_G.WIM3_FilterFrame.name.backdrop.left:SetColorTexture(r, g, b, a)
+				_G.WIM3_FilterFrame.name.backdrop.right:SetColorTexture(r, g, b, a)
+				_G.WIM3_FilterFrame.name.backdrop.bg:SetTexture(nil)
+				self:skinDropDown{obj=_G.WIM3_FilterFrame.by, x2=109}
+				self:skinSlider{obj=_G.WIM3_FilterFrame.patternContainer.ScrollBar, size=3}
+				_G.WIM3_FilterFrame.patternContainer.backdrop.top:SetColorTexture(r, g, b, a)
+				_G.WIM3_FilterFrame.patternContainer.backdrop.bottom:SetColorTexture(r, g, b, a)
+				_G.WIM3_FilterFrame.patternContainer.backdrop.left:SetColorTexture(r, g, b, a)
+				_G.WIM3_FilterFrame.patternContainer.backdrop.right:SetColorTexture(r, g, b, a)
+				_G.WIM3_FilterFrame.patternContainer.backdrop.bg:SetTexture(nil)
+				self:keepFontStrings(_G.WIM3_FilterFrame.user)
+				self:applySkin(_G.WIM3_FilterFrame.user)
+				self:keepFontStrings(_G.WIM3_FilterFrame.level)
+				self:applySkin(_G.WIM3_FilterFrame.level)
+				self:skinDropDown{obj=_G.WIM3_FilterFrame.action, x2=109}
+				_G.WIM3_FilterFrame.border:Hide()
+				self:addSkinFrame{obj=_G.WIM3_FilterFrame}
+				self:Unhook(this, "ShowFilterFrame")
+			end
+		end)
+	end
 
 end

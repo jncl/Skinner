@@ -48,23 +48,26 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 	self:keepFontStrings(_G.ArmoryPaperDollTalent)
 	for i = 1, 2 do
 		local sBar = "ArmoryPaperDollTradeSkillFrame" .. i
-		self:glazeStatusBar(_G[sBar .. "Bar"])
-		self:glazeStatusBar(_G[sBar .. "BackgroundBar"])
+		self:skinStatusBar{obj=_G[sBar .. "Bar"]}
+		self:skinStatusBar{obj=_G[sBar .. "BackgroundBar"]}
 		_G[sBar .. "BackgroundBar"]:SetStatusBarColor(_G.unpack(self.sbColour))
 	end
 	self:keepFontStrings(_G.ArmoryPaperDollTradeSkill)
 	self:skinDropDown{obj=_G.ArmoryAttributesFramePlayerStatDropDown}
 	_G.ArmoryAttributesFrame:DisableDrawLayer("BACKGROUND")
 	-- slots
-	for _, child in _G.ipairs{_G.ArmoryPaperDollItemsFrame:GetChildren()} do
+	local kids, child = {_G.ArmoryPaperDollItemsFrame:GetChildren()}
+	for i = 1, #kids do
+		child = kids[i]
 		child:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=child}
 	end
+	kids, child = nil, nil
 	self:keepFontStrings(_G.ArmoryPaperDollTalentOverlay)
 	for i = 1, 2 do
 		local sBar = "ArmoryPaperDollTradeSkillOverlayFrame" .. i
-		self:glazeStatusBar(_G[sBar .. "Bar"])
-		self:glazeStatusBar(_G[sBar .. "BackgroundBar"])
+		self:skinStatusBar{obj=_G[sBar .. "Bar"]}
+		self:skinStatusBar{obj=_G[sBar .. "BackgroundBar"]}
 		_G[sBar .. "BackgroundBar"]:SetStatusBarColor(_G.unpack(self.sbColour))
 	end
 	self:keepFontStrings(_G.ArmoryPaperDollTradeSkillOverlay)
@@ -119,7 +122,7 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 	skinConquestBtn(_G.ArmoryConquestFrame.RatedBG)
 	-- Honor Talents
 	_G.ArmoryPVPHonorXPBar.Frame:SetTexture(nil)
-	self:glazeStatusBar(_G.ArmoryPVPHonorXPBar.Bar, 0,  nil)
+	self:skinStatusBar{obj=_G.ArmoryPVPHonorXPBar.Bar, fi=0}
 	-- ArmoryConquest Tooltip
 	self:addSkinFrame{obj=_G.ArmoryConquestTooltip}
 
@@ -141,7 +144,7 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 		_G[bar .. "ReputationBarLeftTexture"]:SetAlpha(0)
 		_G[bar .. "ReputationBarRightTexture"]:SetAlpha(0)
 		 _G[bar .. "Background"]:SetAlpha(0)
-		self:glazeStatusBar(_G[bar .. "ReputationBar"], 0)
+		 self:skinStatusBar{obj=_G[bar .. "ReputationBar"], fi=0}
 	end
 	if self.modBtns then
 		-- hook to manage changes to button textures
@@ -344,7 +347,7 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 	for i = 1, _G.ARMORY_NUM_ACHIEVEMENTS_DISPLAYED do
 		self:removeRegions(_G["ArmoryAchievementBar" .. i], {1, 2, 3}) -- textures
 		self:skinButton{obj=_G["ArmoryAchievementBar" .. i .. "ExpandOrCollapseButton"], mp=true}
-		self:glazeStatusBar(_G["ArmoryAchievementBar" .. i .. "AchievementBar"], 0)
+		self:skinStatusBar{obj=_G["ArmoryAchievementBar" .. i .. "AchievementBar"], fi=0}
 		self:removeRegions(_G["ArmoryAchievementBar" .. i .. "AchievementBar"], {1, 2}) -- textures
 	end
 	if self.modBtns then
@@ -372,7 +375,7 @@ aObj.addonsToSkin.Armory = function(self) -- v 14.4.1
 
 -->>-- Tradeskill Tabs
 	self:removeRegions(_G.ArmoryTradeSkillFrame.RankFrame.Border, {1}) -- remove button texture
-	self:glazeStatusBar(_G.ArmoryTradeSkillFrame.RankFrame, 0)
+	self:skinStatusBar{obj=_G.ArmoryTradeSkillFrame.RankFrame, fi=0}
 	self:skinEditBox{obj=_G.ArmoryTradeSkillFrame.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 	self:moveObject{obj=_G.ArmoryTradeSkillFrame.SearchBox, y=1}
 	self:removeRegions(_G.ArmoryTradeSkillFrame.ExpandButtonFrame)

@@ -59,7 +59,7 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v7.3.0.237-release
 		then
 			child.TitleBar:SetBackdrop(nil)
 			child.ClickArea:SetBackdrop(nil)
-			self:glazeStatusBar(child.ProgressBar, 0, child.ProgressBar.background)
+			self:skinStatusBar{obj=child.ProgressBar.statusbar, fi=0, bgTex=child.ProgressBar.background}
 			child.ProgressBar.timer_texture.SetTexture = _G.nop
 			child.ProgressBar.background.SetTexture = _G.nop
 			self:skinButton{obj=self:getChild(child, 6)} -- skin secondaryInteractionButton

@@ -31,7 +31,7 @@ aObj.addonsToSkin.AckisRecipeList = function(self) -- v7.3.0.1
 			aObj:skinButton{obj=btn.stateButton, mp2=true, plus=true}
 		end
 		-- progress bar
-		aObj:glazeStatusBar(frame.progress_bar, 0)
+		aObj:skinStatusBar{obj=frame.progress_bar, fi=0}
 		frame.progress_bar:SetBackdrop(nil)
 		aObj:removeRegions(frame.progress_bar, {2})
 		-- skin the frame
@@ -73,13 +73,16 @@ aObj.addonsToSkin.AckisRecipeList = function(self) -- v7.3.0.1
 
 		local function changeTextColour(frame)
 
-			for _, child in ipairs{frame:GetChildren()} do
+			local kids, child = {frame:GetChildren()}
+			for i = 1, #kids do
+				child = kids[i]
 				if child:IsObjectType("CheckButton") then
 					if child.text then child.text:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
 				elseif child:IsObjectType("Frame") then
 					changeTextColour(child)
 				end
 			end
+			kids, child = nil, nil
 
 		end
 		aObj:SecureHookScript(frame.filter_toggle, "OnClick", function(this)

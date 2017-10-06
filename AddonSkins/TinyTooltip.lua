@@ -1,29 +1,30 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("TinyTooltip") then return end
 local _G = _G
+local LibStub, unpack = _G.LibStub, unpack
 
+aObj.addonsToSkin.TinyTooltip = function(self) -- v 2.1.8.3
 
-function aObj:TinyTooltip()
+	local LibEvent = LibStub:GetLibrary("LibEvent.7000")
 
-	-- don't colour the tooltip border as this addon does
-	aObj.ttBorder = false
+	-- setup textures and colours
+	_G.BigTipDB.general.bgfile = self.bdTexName
+	_G.BigTipDB.general.background = {self.bColour[1], self.bColour[2], self.bColour[3], self.bColour[4]}
+	_G.BigTipDB.general.borderCorner = self.bdbTexName
+	_G.BigTipDB.general.borderColor = {self.tbColour[1], self.tbColour[2], self.tbColour[3], self.tbColour[4]}
+	_G.BigTipDB.general.statusbarTexture = self.db.profile.StatusBar.texture
 
-	for k, ttip in pairs(TinyTooltip.tooltips) do
-		-- skin the tooltip.style frame
-		self:add2Table(self.ttList, ttip.style)
-		-- stop tooltip flashing
-		ttip.style.SetBackdropColor = _G.nop
-		-- skin the close button, if required (DIY frame)
-		if ttip.close then
-			self:skinButton{obj=ttip.close, cb=true}
-		end
-		-- clear other subframe backdrops
-		ttip.style.inside:SetBackdrop(nil)
-		ttip.style.inside.SetBackdrop = _G.nop
-		ttip.style.outside:SetBackdrop(nil)
-		ttip.style.outside.SetBackdrop = _G.nop
-		-- clear other textures
-		ttip.style.mask:SetTexture(nil)
+	-- update existing tooltips
+	for _, tip in pairs(_G.TinyTooltip.tooltips) do
+
+		LibEvent:trigger("tooltip.style.bgfile", tip, _G.BigTipDB.general.bgfile)
+		LibEvent:trigger("tooltip.style.background", tip, unpack(_G.BigTipDB.general.background))
+		LibEvent:trigger("tooltip.style.border.corner", tip, _G.BigTipDB.general.borderCorner)
+		LibEvent:trigger("tooltip.style.border.color", tip, unpack(_G.BigTipDB.general.borderColor))
+		LibEvent:trigger("tooltip.statusbar.texture", _G.BigTipDB.general.statusbarTexture)
+
 	end
+
+	LibEvent = nil
 
 end

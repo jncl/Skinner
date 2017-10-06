@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("BugSack") then return end
 local _G = _G
 
-function aObj:BugSack()
+aObj.addonsToSkin.BugSack = function(self) -- v r300-release
 
 	-- close with Esc
 	self:add2Table(_G.UISpecialFrames, "BugSackFrame")
@@ -10,6 +10,7 @@ function aObj:BugSack()
 	self:SecureHook(_G.BugSack, "OpenSack", function(this)
 		self:skinSlider{obj=_G.BugSackScroll.ScrollBar, size=3}
 		self:addSkinFrame{obj=_G.BugSackFrame, kfs=true, y1=-2, x2=-1, y2=2}
+		_G.RaiseFrameLevelByTwo(_G.BugSackFrame)
 		-- tabs
 		local tabs = {_G.BugSackTabAll, _G.BugSackTabSession, _G.BugSackTabLast}
 		for _, tabObj in _G.pairs(tabs) do
@@ -33,5 +34,5 @@ function aObj:BugSack()
 	-- Config
 	self.iofDD["BugSackFontSize"] = 110
 	self.iofDD["BugSackSoundDropdown"] = 110
-	
+
 end

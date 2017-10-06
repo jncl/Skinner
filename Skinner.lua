@@ -133,36 +133,35 @@ function aObj:OnInitialize()
 	self.gradientTex = self.LSM:Fetch("background", prdb.Gradient.texture)
 
 	-- backdrop for Frames etc
-	local bdTexName = dflts.BdTexture
-	local bdbTexName = dflts.BdBorderTexture
+	self.bdTexName = dflts.BdTexture
+	self.bdbTexName = dflts.BdBorderTexture
 	if prdb.BdDefault then
 		self.backdrop = {
-			bgFile = self.LSM:Fetch("background", bdTexName),
+			bgFile = self.LSM:Fetch("background", self.bdTexName),
 			tile = dflts.BdTileSize > 0 and true or false, tileSize = dflts.BdTileSize,
-			edgeFile = self.LSM:Fetch("border", bdbTexName),
+			edgeFile = self.LSM:Fetch("border", self.bdbTexName),
 			edgeSize = dflts.BdEdgeSize,
 			insets = {left = dflts.BdInset, right = dflts.BdInset, top = dflts.BdInset, bottom = dflts.BdInset},
 		}
 	else
 		if prdb.BdFile and prdb.BdFile ~= "None" then
-			bdTexName = aName .. " User Backdrop"
+			self.bdTexName = aName .. " User Backdrop"
 		else
-			bdTexName = prdb.BdTexture
+			self.bdTexName = prdb.BdTexture
 		end
 		if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
-			bdbTexName = aName .. " User Border"
+			self.bdbTexName = aName .. " User Border"
 		else
-			bdbTexName = prdb.BdBorderTexture
+			self.bdbTexName = prdb.BdBorderTexture
 		end
 		self.backdrop = {
-			bgFile = self.LSM:Fetch("background", bdTexName),
+			bgFile = self.LSM:Fetch("background", self.bdTexName),
 			tile = prdb.BdTileSize > 0 and true or false, tileSize = prdb.BdTileSize,
-			edgeFile = self.LSM:Fetch("border", bdbTexName),
+			edgeFile = self.LSM:Fetch("border", self.bdbTexName),
 			edgeSize = prdb.BdEdgeSize,
 			insets = {left = prdb.BdInset, right = prdb.BdInset, top = prdb.BdInset, bottom = prdb.BdInset},
 		}
 	end
-	bdTexName, bdbTexName = nil, nil
 
 	self.Backdrop = {}
 	self.Backdrop[1] = CopyTable(self.backdrop)
