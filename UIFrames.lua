@@ -2796,6 +2796,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 -->>-- CompactUnitFrameProfiles
 	if _G.CompactUnitFrameProfiles then
+		self:addSkinFrame{obj=_G.CompactUnitFrameProfiles.newProfileDialog, nb=true}
 		_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
 	end
 
@@ -2886,13 +2887,13 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 							end
 						end)
 					end
-				-- TinyInspect SubtypeFrame
-				elseif child:IsObjectType("CheckButton")
-				and child.SubtypeFrame
-				then
-					aObj:addSkinFrame{obj=child.SubtypeFrame}
 				elseif child:IsObjectType("CheckButton") then
-					aObj:skinCheckButton{obj=child}
+					if child.SubtypeFrame then -- TinyInspect SubtypeFrame
+						aObj:addSkinFrame{obj=child.SubtypeFrame}
+					else
+						aObj:skinCheckButton{obj=child}
+						checkKids(child)
+					end
 				else
 					checkKids(child)
 				end

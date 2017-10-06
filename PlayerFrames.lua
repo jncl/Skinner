@@ -2276,12 +2276,12 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				bar.Bar.BorderMid:SetTexture(nil)
 				aObj:glazeStatusBar(bar.Bar, 0,  self:getRegion(bar.Bar, 5))
 			else
-				-- BonusTrackerProgressBar
+				-- BonusTrackerProgressBarTemplate bars
 				bar.Bar.BarFrame:SetTexture(nil)
 				bar.Bar.IconBG:SetTexture(nil)
 				bar.Bar.BarFrame2:SetTexture(nil)
 				bar.Bar.BarFrame3:SetTexture(nil)
-				aObj:glazeStatusBar(bar.Bar, 0,  bar.BarBG)
+				aObj:glazeStatusBar(bar.Bar, 0,  bar.Bar.BarBG)
 				bar.Bar:DisableDrawLayer("OVERLAY")
 				bar.FullBarFlare1.BarGlow:SetTexture(nil)
 			end
@@ -2319,9 +2319,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end)
 	-- skin existing Timer & Progress bars
 	local function skinBars(table)
-		for i = 1, #table do
-			for j = 1, #table[i] do
-				skinBar(table[i][j])
+		for _, block in pairs(table) do
+				for _, line in pairs(block) do
+				skinBar(line)
 			end
 		end
 	end
@@ -2925,6 +2925,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	pvpt.XPBar.Frame:SetTexture(nil)
 	self:glazeStatusBar(pvpt.XPBar.Bar, 0, pvpt.XPBar.Bar.Background, nil, true)
 	pvpt.XPBar.NextAvailable.Frame:SetTexture(nil)
+	self:addButtonBorder{obj=pvpt.XPBar.NextAvailable, relTo=pvpt.XPBar.NextAvailable.Icon}
 	self:skinDropDown{obj=pvpt.XPBar.DropDown}
 	pvpt.Talents:DisableDrawLayer("BACKGROUND")
 	pvpt.Talents:DisableDrawLayer("BORDER")
