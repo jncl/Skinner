@@ -1209,7 +1209,9 @@ function aObj:SetupCmds()
 	end
 	-- define some helpful slash commands (ex Baddiel)
 	self:RegisterChatCommand("rl", function() _G.ReloadUI() end)
-	self:RegisterChatCommand("lo", function() _G.Logout() end)
+	if not self.isPTR then
+		self:RegisterChatCommand("lo", function() _G.Logout() end)
+	end
 	self:RegisterChatCommand("pin", function(msg) print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
 	self:RegisterChatCommand("pii", function(msg) print(_G.GetItemInfo(msg)) end)
 	self:RegisterChatCommand("pil", function(msg) print(_G.gsub(msg, "\124", "\124\124")) end)
