@@ -499,24 +499,24 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 	if not self.db.profile.CastingBar.skin or self.initialized.CastingBar then return end
 	self.initialized.CastingBar = true
 
-	local nTab, obj = {"", "Pet"}
+	local nTab, frame = {"", "Pet"}
 	for i = 1, #nTab do
-		obj = _G[nTab[i] .. "CastingBarFrame"]
-		obj.Border:SetAlpha(0)
-		self:changeShield(obj.BorderShield, obj.Icon)
-		obj.Flash:SetAllPoints()
-		obj.Flash:SetTexture([[Interface\Buttons\WHITE8X8]])
+		frame = _G[nTab[i] .. "CastingBarFrame"]
+		frame.Border:SetAlpha(0)
+		self:changeShield(frame.BorderShield, frame.Icon)
+		frame.Flash:SetAllPoints()
+		frame.Flash:SetTexture([[Interface\Buttons\WHITE8X8]])
 		if self.db.profile.CastingBar.glaze then
-			self:glazeStatusBar(obj, 0, self:getRegion(obj, 1))
+			self:skinStatusBar{obj=frame, fi=0, bgTex=self:getRegion(frame, 1)}
 		end
 		-- adjust text and spark in Classic mode
 		if nTab[i] == ""
-		and not obj.ignoreFramePositionManager then
-			obj.Text:SetPoint("TOP", 0, 2)
-			obj.Spark.offsetY = -1
+		and not frame.ignoreFramePositionManager then
+			frame.Text:SetPoint("TOP", 0, 2)
+			frame.Spark.offsetY = -1
 		end
 	end
-	nTab, obj = nil, nil
+	nTab, frame = nil, nil
 	-- hook this to handle the CastingBar being attached to the Unitframe and then reset
 	self:SecureHook("CastingBarFrame_SetLook", function(castBar, look)
 		castBar.Border:SetAlpha(0)
