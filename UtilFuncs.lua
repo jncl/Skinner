@@ -1001,18 +1001,18 @@ function aObj:setInactiveTab(tabSF)
 end
 
 --@debug@
-function aObj:tableLength(T)
+function aObj:tableCount(table)
 
-	local count, _ = 0
+	local count = 0
 
-	for _ in pairs(T) do count = count + 1 end
+	for _ in pairs(table) do count = count + 1 end
 
 	return count
 
 end
 --@end-debug@
 --[===[@non-debug@
-function aObj:tableLength() end
+function aObj:tableCount() end
 --@end-non-debug@]===]
 
 function aObj:toggleTabDisplay(tab, active)
