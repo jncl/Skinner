@@ -5,45 +5,6 @@ local ftype = "u"
 local ipairs, pairs, unpack = _G.ipairs, _G.pairs, _G.unpack
 local IsAddOnLoaded = _G.IsAddOnLoaded
 
--- Tooltips skinning code
-do
-	-- list of Tooltips to check to see whether we should colour the Tooltip Border or not
-	-- use strings as the objects may not exist when we start
-	aObj.ttCheck = {"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "SmallTextTooltip"}
-	-- list of Tooltips used when the Tooltip style is 3
-	-- using a metatable to manage tooltips when they are added in different functions
-	aObj.ttList = _G.setmetatable({}, {__newindex = function(t, k, v)
-		-- aObj:Debug("ttList __Newindex: [%s, %s, %s]", t, k, v)
-		_G.rawset(t, k, v)
-		-- get object reference for tooltip, handle either strings or objects being passed
-		local tt = _G.type(v) == "string" and _G[v] or v
-		-- set the backdrop if required
-		if aObj.db.profile.Tooltips.style == 3 then
-			tt:SetBackdrop(aObj.Backdrop[1])
-		end
-		-- hook the OnShow method, NOT the Show method
-		aObj:HookScript(tt, "OnShow", function(this)
-			if this == _G.GameTooltip
-			and aObj.db.profile.Tooltips.glazesb
-			then
-				aObj:glazeStatusBar(_G.GameTooltipStatusBar, 0)
-			end
-			-- OnUpdate isn't fired on subsequent displays of the ItemRefTooltip
-			if this == _G.ItemRefTooltip then
-				aObj:skinTooltip(this)
-			end
-		end)
-		-- hook this to prevent Gradient overlay when tooltip reshown
-		aObj:HookScript(tt, "OnUpdate", function(this)
-			aObj:skinTooltip(this)
-		end)
-		-- skin here so tooltip initially skinnned when logged on
-		aObj:skinTooltip(tt)
-	end})
-	-- Set the Tooltip Border
-	aObj.ttBorder = true
-
-end
 -- The following functions are used by the GarrisonUI & OrderHallUI
 local stageRegs = {1, 2, 3, 4, 5}
 local navalStageRegs = {1, 2, 3, 4}
@@ -4080,13 +4041,11 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 
 end
 
+-- table to hold Tooltips to skin
+aObj.ttList = {}
 aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.db.profile.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
-
-	-- skin Item Ref Tooltip's close button and move it
-	self:skinButton{obj=_G.ItemRefCloseButton, cb=true}
-	self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=2}
 
 	if IsAddOnLoaded("TipTac")
 	or IsAddOnLoaded("TinyTooltip")
@@ -4094,28 +4053,46 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return
 	end
 
-	-- this addon colours the Tooltip Border
-	if IsAddOnLoaded("Chippu") then
-		self.ttBorder = false
-	end
-
-	-- add tooltips to table to set backdrop and hook OnShow method
-	for i = 1, #self.ttCheck do
-		self:add2Table(self.ttList, self.ttCheck[i])
-	end
-
-	-- Hook this to skin the GameTooltip StatusBars
-	self:SecureHook("GameTooltip_ShowStatusBar", function(this, ...)
-		local sb
-		for i = 1, this.numStatusBars do
-			sb = _G[this:GetName() .. "StatusBar" .. i]
-			self:removeRegions(sb, {2})
-			if self.db.profile.Tooltips.glazesb then
-				self:glazeStatusBar(sb, 0)
+	-- using a metatable to manage tooltips when they are added in different functions
+	_G.setmetatable(self.ttList, {__newindex = function(t, k, v)
+		-- aObj:Debug("ttList __Newindex: [%s, %s, %s]", t, k, v)
+		_G.rawset(t, k, v)
+		-- get object reference for tooltip, handle either strings or objects being passed
+		local tt = _G.type(v) == "string" and _G[v] or v
+		-- glaze the Status bar(s) if required
+		if self.db.profile.Tooltips.glazesb then
+			if _G[tt:GetName() .. "StatusBar"]
+			and not _G[tt:GetName() .. "StatusBar"].Bar -- ignore ReputationParagonTooltip & WorldMapTaskTooltip
+			then
+				self:glazeStatusBar(_G[tt:GetName() .. "StatusBar"], 0)
+			end
+			if tt.statusBar2 then
+				self:glazeStatusBar(_G[tt:GetName() .. "StatusBar2"], 0)
 			end
 		end
-		sb = nil
-	end)
+		-- hook the OnShow method, NOT the Show method
+		self:HookScript(tt, "OnShow", function(this)
+			-- OnUpdate isn't fired on subsequent displays of the ItemRefTooltip
+			if this == _G.ItemRefTooltip then
+				self:skinTooltip(this)
+			end
+		end)
+		-- hook this to prevent Gradient overlay when tooltip reshown
+		self:HookScript(tt, "OnUpdate", function(this)
+			self:skinTooltip(this)
+		end)
+		-- skin here so tooltip initially skinnned when logged on
+		self:skinTooltip(tt)
+	end})
+
+	-- skin Item Ref Tooltip's close button and move it
+	self:skinButton{obj=_G.ItemRefCloseButton, cb=true}
+	self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=-1}
+
+	-- add tooltips to table
+	for _, tooltip in pairs{"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "SmallTextTooltip"} do
+		self:add2Table(self.ttList, tooltip)
+	end
 
 end
 

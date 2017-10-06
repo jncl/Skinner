@@ -463,12 +463,12 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 		local function skinBuffs()
 
 			local btn
-			for i= 1, _G.BUFF_MAX_DISPLAY do
+			for i = 1, _G.BUFF_MAX_DISPLAY do
 				btn = _G["BuffButton" .. i]
-				if btn then
-					-- add button borders
+				if btn
+				and not btn.sbb
+				then
 					aObj:addButtonBorder{obj=btn}
-					-- aObj:moveObject{obj=btn.duration, y=-1}
 				end
 			end
 			btn = nil
@@ -478,7 +478,7 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 		self:SecureHook("BuffFrame_Update", function()
 			skinBuffs()
 		end)
-		-- skin any current Buffs/Debuffs
+		-- skin any current Buffs
 		skinBuffs()
 
 	end
@@ -1011,12 +1011,17 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	local function skinUnit(unit)
 
-		unit:DisableDrawLayer("BACKGROUND")
-		unit.horizTopBorder:SetTexture(nil)
-		unit.horizBottomBorder:SetTexture(nil)
-		unit.vertLeftBorder:SetTexture(nil)
-		unit.vertRightBorder:SetTexture(nil)
-		unit.horizDivider:SetTexture(nil)
+		-- handle Raid Profile changes and new unit(s)
+		if aObj:hasTextInTexture(unit.healthBar:GetStatusBarTexture(), "RaidFrame") then
+			unit:DisableDrawLayer("BACKGROUND")
+			unit.horizDivider:SetTexture(nil)
+			unit.horizTopBorder:SetTexture(nil)
+			unit.horizBottomBorder:SetTexture(nil)
+			unit.vertLeftBorder:SetTexture(nil)
+			unit.vertRightBorder:SetTexture(nil)
+			aObj:glazeStatusBar(unit.healthBar, 0, unit.healthBar.background)
+			aObj:glazeStatusBar(unit.powerBar, 0, unit.powerBar.background)
+		end
 
 	end
 	local function skinGrp(grp)
@@ -1026,7 +1031,9 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			skinUnit(_G[grpName .. "Member" .. i])
 		end
 		grpName = nil
-		aObj:addSkinFrame{obj=grp.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
+		if not grp.borderFrame.sf then
+			aObj:addSkinFrame{obj=grp.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
+		end
 
 	end
 
@@ -1081,31 +1088,25 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	self:addSkinFrame{obj=_G.CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-5, y2=5}
 
 -->>-- Compact RaidFrame Manager
-	local function skinButton(btn)
-
-		aObj:removeRegions(btn, {1, 2, 3})
-		aObj:skinButton{obj=btn}
-
-	end
 	-- Buttons
 	local nTab = {"Tank", "Healer", "Damager"}
 	for i = 1, #nTab do
-		skinButton(_G.CompactRaidFrameManager.displayFrame.filterOptions["filterRole" .. nTab[i]])
+		self:skinButton{obj=_G.CompactRaidFrameManager.displayFrame.filterOptions["filterRole" .. nTab[i]]}
 	end
 	nTab = nil
 	for i = 1, 8 do
-		skinButton(_G.CompactRaidFrameManager.displayFrame.filterOptions["filterGroup" .. i])
+		self:skinButton{obj=_G.CompactRaidFrameManager.displayFrame.filterOptions["filterGroup" .. i]}
 	end
 	_G.CompactRaidFrameManager.displayFrame.filterOptions:DisableDrawLayer("BACKGROUND")
 	self:skinDropDown{obj=_G.CompactRaidFrameManager.displayFrame.profileSelector}
-	skinButton(_G.CompactRaidFrameManagerDisplayFrameLockedModeToggle)
-	skinButton(_G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle)
+	self:skinButton{obj=_G.CompactRaidFrameManager.displayFrame.lockedModeToggle}
+	self:skinButton{obj=_G.CompactRaidFrameManager.displayFrame.hiddenModeToggle}
+	self:skinButton{obj=_G.CompactRaidFrameManager.displayFrame.convertToRaid}
 	-- Leader Options
-	skinButton(_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton)
+	self:skinButton{obj=_G.CompactRaidFrameManager.displayFrame.leaderOptions.rolePollButton}
+	self:skinButton{obj=_G.CompactRaidFrameManager.displayFrame.leaderOptions.readyCheckButton}
+	self:skinButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
 	_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
-	skinButton(_G.CompactRaidFrameManager.displayFrame.leaderOptions.readyCheckButton)
-	skinButton(_G.CompactRaidFrameManager.displayFrame.leaderOptions.rolePollButton)
-	skinButton(_G.CompactRaidFrameManager.displayFrame.convertToRaid)
 	-- Display Frame
 	self:keepFontStrings(_G.CompactRaidFrameManager.displayFrame)
 	-- Resize Frame

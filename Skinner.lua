@@ -275,6 +275,8 @@ function aObj:OnInitialize()
 	-- table to hold minimap buttons from other AddOn skins
 	self.mmButs = {}
 
+	prdb, dflts, c = nil, nil, nil
+
 end
 
 function aObj:OnEnable()
@@ -345,6 +347,7 @@ function aObj:OnEnable()
 		self.modBtns = false
 		self.modBtnBs = false
 	end
+	btnModDB = nil
 
 	self.checkTex        = self.modBtns and self.modUIBtns.checkTex or _G.nop
 	self.skinButton      = self.modBtns and self.modUIBtns.skinButton or _G.nop
@@ -423,6 +426,8 @@ function aObj:OnEnable()
 	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
+
+	prdb = nil
 
 end
 
@@ -533,7 +538,8 @@ local function __addSkinButton(opts)
 		end
 	end
 
-	return btn
+	btn = nil
+	return opts.obj.sb
 
 end
 function aObj:addSkinButton(...)
@@ -577,7 +583,7 @@ local function hideHeader(obj)
 	if obj.header then
 		obj.header:DisableDrawLayer("BACKGROUND")
 		obj.header:DisableDrawLayer("BORDER")
-		aObj:moveObject{obj=obj.header.text, x=0, y=-6}
+		aObj:moveObject{obj=obj.header.text, y=-6}
 	end
 
 end
@@ -695,7 +701,8 @@ local function __addSkinFrame(opts)
 		aObj:SecureHook(opts.obj, "Hide", function(this) this.sf:Hide() end)
 	end
 
-	return skinFrame
+	skinFrame = nil
+	return opts.obj.sf
 
 end
 function aObj:addSkinFrame(...)
@@ -750,19 +757,22 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		end
 	end
 
-	local invert = invert or prdb.Gradient.invert
-	local rotate = rotate or prdb.Gradient.rotate
+	invert = invert or prdb.Gradient.invert
+	rotate = rotate or prdb.Gradient.rotate
 
-	obj.tfade = obj.tfade or obj:CreateTexture(nil, "BORDER", nil, -1)
-	obj.tfade:SetTexture(self.gradientTex)
-	obj.tfade:SetBlendMode("ADD")
-	obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
+	if not obj.tfade then
+		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
+		obj.tfade:SetTexture(self.gradientTex)
+		obj.tfade:SetBlendMode("ADD")
+		obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
+	end
 
 	if prdb.FadeHeight.enable and (prdb.FadeHeight.force or not fh) then
 		local objHeight = self:getInt(obj:GetHeight())
 		-- set the Fade Height if not already passed to this function or 'forced'
 		-- making sure that it isn't greater than the frame height
 		fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
+		objHeight = nil
 	end
 
 	obj.tfade:ClearAllPoints()
@@ -770,27 +780,41 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 	and not rotate
 	then
 		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
-		if fh then obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -(fh - 4))
-		else obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4) end
+		if fh then
+			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -(fh - 4))
+		else
+			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4)
+		end
 	elseif invert -- fade from bottom
 	and not rotate
 	then
 		obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", 4, 4)
-		if fh then obj.tfade:SetPoint("TOPRIGHT", obj, "BOTTOMRIGHT", -4, (fh - 4))
-		else obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", -4, -4) end
+		if fh then
+			obj.tfade:SetPoint("TOPRIGHT", obj, "BOTTOMRIGHT", -4, (fh - 4))
+		else
+			obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", -4, -4)
+		end
 	elseif not invert -- fade from right
 	and rotate
 	then
 		obj.tfade:SetPoint("TOPRIGHT", obj, "TOPRIGHT", -4, -4)
-		if fh then obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMRIGHT", -(fh - 4), 4)
-		else obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", 4, 4) end
+		if fh then
+			obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMRIGHT", -(fh - 4), 4)
+		else
+			obj.tfade:SetPoint("BOTTOMLEFT", obj, "BOTTOMLEFT", 4, 4)
+		end
 	elseif invert -- fade from left
 	and rotate
 	then
 		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
-		if fh then obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMLEFT", fh - 4, 4)
-		else obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4) end
+		if fh then
+			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMLEFT", fh - 4, 4)
+		else
+			obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4)
+		end
 	end
+
+	prdb = nil
 
 end
 
@@ -800,9 +824,8 @@ function aObj:applyTexture(obj)
 	obj.tbg:SetTexture(self.LSM:Fetch("background", self.bgTexName), true) -- have to use true for tiling to work
 	obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
 	-- allow for border inset
-	local bdi = self.db.profile.BdInset
-	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", bdi, -bdi)
-	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -bdi, bdi)
+	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", self.db.profile.BdInset, -self.db.profile.BdInset)
+	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -self.db.profile.BdInset, self.db.profile.BdInset)
 	-- the texture will be stretched if the following tiling methods are set to false
 	obj.tbg:SetHorizTile(self.db.profile.BgTile)
 	obj.tbg:SetVertTile(self.db.profile.BgTile)
@@ -1193,6 +1216,7 @@ local function __skinMoneyFrame(opts)
 			aObj:moveObject{obj=obj, x=-10}
 		end
 	end
+	obj = nil
 
 end
 function aObj:skinMoneyFrame(...)
@@ -1248,12 +1272,8 @@ local function __skinScrollBar(opts)
 	-- remove all the object's regions except text ones, if required
 	if not opts.noRR then aObj:keepFontStrings(opts.obj) end
 
-	-- get the actual ScrollBar object
-	local sBar = _G[opts.obj:GetName() .. "ScrollBar"]
-	-- local sBar = opts.sbObj and opts.sbObj or _G[opts.obj:GetName() .. (opts.sbPrefix or "") .. "ScrollBar"]
-
 	-- skin it
-	aObj:skinUsingBD{obj=sBar, size=opts.size}
+	aObj:skinUsingBD{obj=_G[opts.obj:GetName() .. "ScrollBar"], size=opts.size}
 
 end
 function aObj:skinScrollBar(...)
@@ -1466,75 +1486,36 @@ function aObj:skinToggleTabs(tabName, tabCnt, noHeight)
 			self:addSkinFrame{obj=togTab, y1=-2, x2=2, y2=-2}
 		end
 	end
+	togTab = nil
 
 end
 
-function aObj:skinTooltip(obj)
+function aObj:skinTooltip(tooltip)
 	if not self.db.profile.Tooltips.skin then return end
 --@alpha@
-	assert(obj, "Missing object sT\n" .. debugstack())
+	assert(tooltip, "Missing object sT\n" .. debugstack())
 --@end-alpha@
 
-	if not obj then return end
+	if not tooltip then return end
 
- 	local prdb = self.db.profile
-	if not prdb.Gradient.ui then return end
+ 	local ttStyle = self.db.profile.Tooltips.style
+ 	local fhVal = self.db.profile.FadeHeight.value
 
-	-- add background texture if required
-	if prdb.Tooltips.style == 3 then
-		if prdb.BgUseTex then
-			if not obj.tbg then self:applyTexture(obj) end
-		elseif obj.tbg then
-			obj.tbg = nil -- remove background texture if it exists
-		end
+	if not tooltip.sf then
+		self:addSkinFrame{obj=tooltip, ft=ftype, kfs=true, aso={ng=true, ttStyle == 3 and 1 or 10}, y1=-4, y2=2}
 	end
 
-	obj.tfade = obj.tfade or obj:CreateTexture(nil, "BORDER")
-	obj.tfade:SetTexture(self.gradientTex)
-
-	obj.tfade:ClearAllPoints()
-	if prdb.Tooltips.style == 1 then -- Rounded
-		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 6, -6)
-		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -6, -27)
-	elseif prdb.Tooltips.style == 2 then -- Flat
-		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
-		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -4, 4)
-	else -- Custom
-		obj.tfade:SetPoint("TOPLEFT", obj, "TOPLEFT", 4, -4)
-		-- set the Fade Height making sure that it isn't greater than the frame height
-		local objHeight = self:getInt(obj:GetHeight())
-		local fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
-		obj.tfade:SetPoint("BOTTOMRIGHT", obj, "TOPRIGHT", -4, -(fh - 4))
-		obj:SetBackdropColor(self.bColour[1], self.bColour[2], self.bColour[3], self.bColour[4])
-		objHeight, fh = nil, nil
+	if ttStyle == 1 then -- Rounded
+		self:applyGradient(tooltip.sf, 32)
+	elseif ttStyle == 2 then -- Flat
+		self:applyGradient(tooltip.sf)
+	elseif ttStyle == 3 then -- Custom
+		local objHeight = self:getInt(tooltip:GetHeight())
+		self:applyGradient(tooltip.sf, fhVal <= objHeight and fhVal or objHeight)
+		objHeight = nil
 	end
 
-	obj.tfade:SetBlendMode("ADD")
-	obj.tfade:SetGradientAlpha(self:getGradientInfo(prdb.Gradient.invert, prdb.Gradient.rotate))
-
-	-- Check to see if we need to colour the Border
-	if not self.ttBorder then
-		return
-		-- TODO not sure why we needed this ???
-		-- local r, g, b, a
-		-- for _, tip in pairs(self.ttCheck) do
-		-- 	if tip == obj:GetName() then
-		-- 		r, g, b, a = obj:GetBackdropBorderColor()
-		-- 		if self:getInt(r) ~= 1
-		-- 		or self:getInt(g) ~= 1
-		-- 		or self:getInt(b) ~= 1
-		-- 		or self:getInt(a) ~= 1
-		-- 		then
-		-- 			return
-		-- 		end
-		-- 	end
-		-- end
-		-- r, g, b, a = nil, nil, nil, nil
-	end
-
-	obj:SetBackdropBorderColor(prdb.Tooltips.border == 1 and self.tbColour[1], self.tbColour[2], self.tbColour[3], self.tbColour[4] or self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
-
-	prdb = nil
+	ttStyle, fhVal = nil, nil
 
 end
 

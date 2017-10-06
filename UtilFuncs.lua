@@ -517,11 +517,6 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
 	end
 	local sbG = self.sbGlazed[statusBar]
 
-	-- local sbTex = statusBar:GetStatusBarTexture()
-	-- -- fix for tiling introduced in 3.3.3 (Thanks to foreverphk)
-	-- sbTex:SetHorizTile(false)
-	-- sbTex:SetVertTile(false)
-
 	if fi then
 		if not sbG.bg then
 			-- create background texture on a lower sublevel
@@ -550,13 +545,10 @@ function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
 
 	if hookFunc then
 		self:RawHook(statusBar, "SetStatusBarTexture", function(this, tex)
-			-- self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
+			if not tex == self.sbTexture then
+				self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
+			end
 		end, true)
-		-- this is used by PVPHonorXPBar
-		if statusBar.SetStatusBarAtlas then
-			self:RawHook(statusBar, "SetStatusBarAtlas", function(this, tex)
-			end, true)
-		end
 	end
 	sBG = nil
 
