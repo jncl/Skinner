@@ -95,14 +95,14 @@ local function skinPlayerF()
 		_G.PlayerAttackGlow:SetTexture(nil)
 
 		-- status bars
-		aObj:glazeStatusBar(pF.PlayerFrameHealthBarAnimatedLoss, 0,  nil)
-		aObj:glazeStatusBar(pF.healthbar, 0, nil, {pF.myHealPredictionBar, pF.otherHealPredictionBar})
+		aObj:skinStatusBar{obj=pF.PlayerFrameHealthBarAnimatedLoss, fi=0}
+		aObj:skinStatusBar{obj=pF.healthbar, fi=0, otherTex={pF.myHealPredictionBar, pF.otherHealPredictionBar}}
 		adjustStatusBarPosn(pF.healthbar)
-		aObj:glazeStatusBar(pF.manabar, 0, nil, {pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, true)
+		aObj:skinStatusBar{obj=pF.manabar, fi=0, otherTex={pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, hookFunc=true}
 
 		-- AlternateManaBar
 		aObj:rmRegionsTex(_G.PlayerFrameAlternateManaBar, {2, 3, 4, 5, 6}) -- border textures
-		aObj:glazeStatusBar(_G.PlayerFrameAlternateManaBar, 0, _G.PlayerFrameAlternateManaBar.DefaultBackground)
+		aObj:skinStatusBar{obj=_G.PlayerFrameAlternateManaBar, fi=0, bgTex=_G.PlayerFrameAlternateManaBar.DefaultBackground}
 		aObj:moveObject{obj=_G.PlayerFrameAlternateManaBar, y=1}
 
 		-- PowerBarAlt handled in MainMenuBar function (UIF)
@@ -157,7 +157,7 @@ local function skinPlayerF()
 			end)
 			-- MonkStaggerBar (Brewmaster)
 			aObj:removeRegions(_G.MonkStaggerBar, {2, 3, 4, 5, 6}) -- border textures
-			aObj:glazeStatusBar(_G.MonkStaggerBar, 0, _G.MonkStaggerBar.DefaultBackground)
+			aObj:skinStatusBar{obj=_G.MonkStaggerBar, fi=0, bgTex=_G.MonkStaggerBar.DefaultBackground}
 			-- extend frame if Brewmaster specialization
 			if _G.MonkStaggerBar.class == aObj.uCls
 			and _G.MonkStaggerBar.specRestriction == _G.GetSpecialization()
@@ -224,9 +224,9 @@ local function skinPetF()
 		_G.PetAttackModeTexture:SetTexture(nil)
 		-- status bars
 		adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
-		aObj:glazeStatusBar(_G.PetFrameHealthBar, 0)
+		aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
 		adjustStatusBarPosn(_G.PetFrameManaBar, -1)
-		aObj:glazeStatusBar(_G.PetFrameManaBar, 0, nil, nil, true)
+		aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, hookFunc=true}
 		-- casting bar handled in CastingBar function (UIE1)
 		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
@@ -263,11 +263,11 @@ local function skinCommon(frame, adjSB)
 	_G[frame .. "TextureFrameTexture"]:SetAlpha(0)
 	local fo = _G[frame]
 	-- status bars
-	aObj:glazeStatusBar(fo.healthbar, 0, nil)
+	aObj:skinStatusBar{obj=fo.healthbar, fi=0}
 	if adjSB then
 		adjustStatusBarPosn(fo.healthbar)
 	end
-	aObj:glazeStatusBar(fo.manabar, 0, nil, nil, true)
+	aObj:skinStatusBar{obj=fo.manabar, fi=0, hookFunc=true}
 	fo = nil
 
 end
@@ -300,7 +300,7 @@ local function addSkinFrame(frame, ft)
 	fo.spellbar.Flash:SetAllPoints()
 	fo.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
 	aObj:changeShield(fo.spellbar.BorderShield, fo.spellbar.Icon)
-	aObj:glazeStatusBar(fo.spellbar, 0, aObj:getRegion(fo.spellbar, 1), {fo.spellbar.Flash})
+	aObj:skinStatusBar{obj=fo.spellbar, fi=0, bgTex=aObj:getRegion(fo.spellbar, 1), otherTex={fo.spellbar.Flash}}
 
 	-- PowerBarAlt handled in MainMenuBar function (UIF)
 
@@ -393,8 +393,8 @@ local function skinPartyF()
 			_G[pMF .. "VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G[pMF .. "Status"]:SetTexture(nil)
 			-- status bars
-			aObj:glazeStatusBar(_G[pMF .. "HealthBar"], 0, nil)
-			aObj:glazeStatusBar(_G[pMF .. "ManaBar"], 0, nil, nil, true)
+			aObj:skinStatusBar{obj=_G[pMF .. "HealthBar"], fi=0}
+			aObj:skinStatusBar{obj=_G[pMF .. "ManaBar"], fi=0, hookFunc=true}
 
 			-- PowerBarAlt handled in MainMenuBar function (UIF)
 
@@ -403,7 +403,7 @@ local function skinPartyF()
 			skinUnitFrame{obj=_G[pPF], ft=true, x1=-2, y1=1, y2=1}
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
-			aObj:glazeStatusBar(_G[pPF .. "HealthBar"], 0, nil)
+			aObj:skinStatusBar{obj=_G[pPF .. "HealthBar"], fi=0}
 
 		end
 		pMF, pPF = nil, nil
@@ -610,14 +610,14 @@ function aObj:ArenaUI()
 			_G[fName .. "Status"]:SetTexture(nil)
 			_G[fName .. "SpecBorder"]:SetTexture(nil)
 			-- status bars
-			aObj:glazeStatusBar(_G[fName .. "HealthBar"], 0)
-			aObj:glazeStatusBar(_G[fName .. "ManaBar"], 0)
+			aObj:skinStatusBar{obj=_G[fName .. "HealthBar"], fi=0}
+			aObj:skinStatusBar{obj=_G[fName .. "ManaBar"], fi=0}
 			-- casting bar
 			local cBar = fName .. "CastingBar"
 			aObj:adjHeight{obj=_G[cBar], adj=2}
 			aObj:moveObject{obj=_G[cBar].Text, y=-1}
 			_G[cBar].Flash:SetAllPoints()
-			aObj:glazeStatusBar(_G[cBar], 0, aObj:getRegion(_G[cBar], 1), {_G[cBar].Flash})
+			aObj:skinStatusBar{obj=_G[cBar], fi=0, bgTex=aObj:getRegion(_G[cBar], 1), otherTex={_G[cBar].Flash}}
 			cBar = nil
 		end
 		local aPF
@@ -630,8 +630,8 @@ function aObj:ArenaUI()
 			_G[aPF .. "Flash"]:SetTexture(nil)
 			_G[aPF .. "Texture"]:SetTexture(nil)
 			-- status bar
-			aObj:glazeStatusBar(_G[aPF .. "HealthBar"], 0)
-			aObj:glazeStatusBar(_G[aPF .. "ManaBar"], 0)
+			aObj:skinStatusBar{obj=_G[aPF .. "HealthBar"], fi=0}
+			aObj:skinStatusBar{obj=_G[aPF .. "ManaBar"], fi=0}
 			-- move pet frame
 			aObj:moveObject{obj=_G[aPF], x=-17} -- align under ArenaEnemy Health/Mana bars
 		end

@@ -72,7 +72,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		_G[statusBar .. "Left"]:SetAlpha(0)
 		_G[statusBar .. "Right"]:SetAlpha(0)
 		_G[statusBar .. "Middle"]:SetAlpha(0)
-		aObj:glazeStatusBar(_G[statusBar], 0, _G[statusBar .. "FillBar"])
+		aObj:skinStatusBar{obj=_G[statusBar], fi=0, bgTex=_G[statusBar .. "FillBar"]}
 
 	end
 	local function skinStats()
@@ -94,7 +94,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			_G[pBar .. "BorderLeft"]:SetAlpha(0)
 			_G[pBar .. "BorderRight"]:SetAlpha(0)
 			_G[pBar .. "BorderCenter"]:SetAlpha(0)
-			aObj:glazeStatusBar(_G[pBar], 0, _G[pBar .. "BG"])
+			aObj:skinStatusBar{obj=_G[pBar], fi=0, bgTex=_G[pBar .. "BG"]}
 		end
 
 	end
@@ -213,7 +213,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	end
 	_G.AchievementFrame.showAllSearchResults:SetNormalTexture(nil)
 	_G.AchievementFrame.showAllSearchResults:SetPushedTexture(nil)
-	self:glazeStatusBar(_G.AchievementFrame.searchProgressBar, 0,  _G.AchievementFrame.searchProgressBar.bg)
+	self:skinStatusBar{obj=_G.AchievementFrame.searchProgressBar, fi=0, bgTex=_G.AchievementFrame.searchProgressBar.bg}
 	self:addSkinFrame{obj=_G.AchievementFrame.searchResults, ft=ftype, kfs=true}
 	self:skinSlider{obj=_G.AchievementFrame.searchResults.scrollFrame.scrollBar, wdth=-4, size=3}
 
@@ -398,7 +398,7 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 	self:skinDropDown{obj=_G.ArchaeologyFrame.raceFilterDropDown}
 	_G.ArchaeologyFrameRankBarBackground:SetAllPoints(_G.ArchaeologyFrame.rankBar)
 	_G.ArchaeologyFrameRankBarBorder:Hide()
-	self:glazeStatusBar(_G.ArchaeologyFrame.rankBar, 0,  _G.ArchaeologyFrameRankBarBackground)
+	self:skinStatusBar{obj=_G.ArchaeologyFrame.rankBar, fi=0, bgTex=_G.ArchaeologyFrameRankBarBackground}
 	self:addSkinFrame{obj=_G.ArchaeologyFrame, ft=ftype, kfs=true, ri=true, x1=30, y1=2, x2=1}
 -->>-- Summary Page
 	self:keepFontStrings(_G.ArchaeologyFrame.summaryPage) -- remove title textures
@@ -436,7 +436,7 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 	self:skinSlider{obj=afap.historyScroll.ScrollBar, wdth=-4}
 	-- Solve Frame
 	self:getRegion(afap.solveFrame.statusBar, 1):Hide() -- BarBG texture
-	self:glazeStatusBar(afap.solveFrame.statusBar, 0, nil)
+	self:skinStatusBar{obj=afap.solveFrame.statusBar, fi=0}
 	afap.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
 	afap = nil
 -->>-- Help Page
@@ -449,7 +449,7 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 	-- ArcheologyDigsiteProgressBar
 	_G.ArcheologyDigsiteProgressBar:DisableDrawLayer("BACKGROUND")
 	_G.ArcheologyDigsiteProgressBar.BarBorderAndOverlay:SetTexture(nil)
-	self:glazeStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, 0, nil)
+	self:skinStatusBar{obj=_G.ArcheologyDigsiteProgressBar.FillBar, fi=0}
 
 	-- N.B. DigsiteCompleteToastFrame is managed as part of the Alert Frames skin
 
@@ -666,7 +666,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		_G[obj .. "Background"]:SetAlpha(0)
 		_G[obj .. "ReputationBarLeftTexture"]:SetAlpha(0)
 		_G[obj .. "ReputationBarRightTexture"]:SetAlpha(0)
-		self:glazeStatusBar(_G[obj .. "ReputationBar"], 0)
+		self:skinStatusBar{obj=_G[obj .. "ReputationBar"], fi=0}
 		-- N.B. Issue with faction standing text, after rep line 3 the text moves down with respect to the status bar
 		-- self:moveObject{obj=_G[obj .. "ReputationBarFactionStanding"], y=2}
 	end
@@ -680,7 +680,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	end
 	self:addButtonBorder{obj=_G.ReputationParagonTooltip.ItemTooltip, relTo=_G.ReputationParagonTooltip.ItemTooltip.Icon, reParent={_G.ReputationParagonTooltip.ItemTooltip.Count}}
 	self:removeRegions(_G.ReputationParagonTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
-	self:glazeStatusBar(_G.ReputationParagonTooltipStatusBar.Bar, 0, self:getRegion(_G.ReputationParagonTooltipStatusBar.Bar, 7))
+	self:skinStatusBar{obj=_G.ReputationParagonTooltipStatusBar.Bar, fi=0, bgTex=self:getRegion(_G.ReputationParagonTooltipStatusBar.Bar, 7)}
 
 	-- TokenFrame (a.k.a Currency Tab)
 	if self.db.profile.ContainerFrames.skin then
@@ -773,9 +773,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:changeTandC(lop.levelBG, self.lvlBG)
 		self:keepFontStrings(lop.helpFrame)
 		lop.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
-		self:glazeStatusBar(lop.healthFrame.healthBar, 0,  nil)
+		self:skinStatusBar{obj=lop.healthFrame.healthBar, fi=0}
 		self:removeRegions(lop.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
-		self:glazeStatusBar(lop.xpBar, 0,  nil)
+		self:skinStatusBar{obj=lop.xpBar, fi=0}
 		self:addSkinFrame{obj=lop, aso={bd=8, ng=true}, x1=-4, y2=-4} -- use asf here as button already has a border
 		local btn
 		for i = 1, 3 do
@@ -812,9 +812,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	pc.PetInfo.qualityBorder:SetAlpha(0)
 	self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
 	self:removeRegions(pc.HealthFrame.healthBar, {1, 2, 3})
-	self:glazeStatusBar(pc.HealthFrame.healthBar, 0,  nil)
+	self:skinStatusBar{obj=pc.HealthFrame.healthBar, fi=0}
 	self:removeRegions(pc.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
-	self:glazeStatusBar(pc.xpBar, 0,  nil)
+	self:skinStatusBar{obj=pc.xpBar, fi=0}
 	self:keepFontStrings(pc)
 	self:addSkinFrame{obj=pc, aso={bd=8, ng=true}, ofs=4}
 	for i = 1, 6 do
@@ -863,7 +863,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end
 -->>-- Toy Box
 	local tb = _G.ToyBox
-	self:glazeStatusBar(tb.progressBar, 0,  nil)
+	self:skinStatusBar{obj=tb.progressBar, fi=0}
 	self:removeRegions(tb.progressBar, {2, 3})
 	self:skinEditBox{obj=tb.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, y=-2} -- 6 is text, 7 is icon
 	self:skinButton{obj=_G.ToyBoxFilterButton}
@@ -888,7 +888,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 -->>-- Heirlooms
 	local hj = _G.HeirloomsJournal
-	self:glazeStatusBar(hj.progressBar, 0,  nil)
+	self:skinStatusBar{obj=hj.progressBar, fi=0}
 	self:removeRegions(hj.progressBar, {2, 3})
 	self:skinEditBox{obj=hj.SearchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, y=-2} -- 6 is text, 7 is icon
 	self:skinButton{obj=_G.HeirloomsJournalFilterButton}
@@ -927,10 +927,10 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:skinEditBox{obj=wcf.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
 	wcf.searchProgressFrame:DisableDrawLayer("BACKGROUND")
 	wcf.searchProgressFrame:DisableDrawLayer("ARTWORK")
-	self:glazeStatusBar(wcf.searchProgressFrame.searchProgressBar, 0, wcf.searchProgressFrame.searchProgressBar.barBackground)
+	self:skinStatusBar{obj=wcf.searchProgressFrame.searchProgressBar, 0, bgTex=wcf.searchProgressFrame.searchProgressBar.barBackground}
 	wcf.searchProgressFrame.searchProgressBar:DisableDrawLayer("ARTWORK")
 	self:addSkinFrame{obj=wcf.searchProgressFrame}
-	self:glazeStatusBar(wcf.progressBar, 0,  nil)
+	self:skinStatusBar{obj=wcf.progressBar, fi=0}
 	self:removeRegions(wcf.progressBar, {2, 3})
 	self:skinButton{obj=wcf.FilterButton}
 	self:skinDropDown{obj=wcf.FilterDropDown}
@@ -1019,8 +1019,8 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 			unit.horizBottomBorder:SetTexture(nil)
 			unit.vertLeftBorder:SetTexture(nil)
 			unit.vertRightBorder:SetTexture(nil)
-			aObj:glazeStatusBar(unit.healthBar, 0, unit.healthBar.background)
-			aObj:glazeStatusBar(unit.powerBar, 0, unit.powerBar.background)
+			aObj:skinStatusBar{obj=unit.healthBar, fi=0, bgTex=unit.healthBar.background}
+			aObj:skinStatusBar{obj=unit.powerBar, fi=0, bgTex=unit.powerBar.background}
 		end
 
 	end
@@ -2060,7 +2060,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		obj = _G["GroupLootFrame" .. i]
 		self:keepFontStrings(obj)
 		obj.Timer.Background:SetAlpha(0)
-		self:glazeStatusBar(obj.Timer, 0,  nil)
+		self:skinStatusBar{obj=obj.Timer, fi=0}
 		-- hook this to show the Timer
 		self:SecureHook(obj, "Show", function(this)
 			this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
@@ -2094,7 +2094,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 
 -->>-- BonusRoll Frame
 	self:removeRegions(_G.BonusRollFrame, {1, 2, 3, 5})
-	self:glazeStatusBar(_G.BonusRollFrame.PromptFrame.Timer, 0,  nil)
+	self:skinStatusBar{obj=_G.BonusRollFrame.PromptFrame.Timer, fi=0}
 	self:addSkinFrame{obj=_G.BonusRollFrame, ft=ftype, bg=true}
 	self:addButtonBorder{obj=_G.BonusRollFrame.PromptFrame, relTo=_G.BonusRollFrame.PromptFrame.Icon, reParent={_G.BonusRollFrame.SpecIcon}}
 
@@ -2180,7 +2180,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 		objBG:SetWidth(objBG:GetWidth() * 0.75)
 		objSB:SetWidth(objSB:GetWidth() * 0.75)
 		if self.db.profile.MirrorTimers.glaze then
-			self:glazeStatusBar(objSB, 0, objBG)
+			self:skinStatusBar{obj=objSB, fi=0, bgTex=objBG}
 		end
 	end
 	objName, obj, objBG, objSB = nil, nil, nil, nil
@@ -2194,7 +2194,7 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 			if not aObj.sbGlazed[timer.bar] then
 				bg = aObj:getRegion(timer.bar, 1)
 				_G[timer.bar:GetName() .. "Border"]:SetTexture(nil) -- animations
-				aObj:glazeStatusBar(timer.bar, 0, bg)
+				aObj:skinStatusBar{obj=timer.bar, fi=0, bgTex=bg}
 				aObj:moveObject{obj=bg, y=2} -- align bars
 			end
 		end
@@ -2274,14 +2274,14 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 				bar.Bar.BorderLeft:SetTexture(nil)
 				bar.Bar.BorderRight:SetTexture(nil)
 				bar.Bar.BorderMid:SetTexture(nil)
-				aObj:glazeStatusBar(bar.Bar, 0,  self:getRegion(bar.Bar, 5))
+				aObj:skinStatusBar{obj=bar.Bar, fi=0, bgTex=self:getRegion(bar.Bar, 5)}
 			else
 				-- BonusTrackerProgressBarTemplate bars
 				bar.Bar.BarFrame:SetTexture(nil)
 				bar.Bar.IconBG:SetTexture(nil)
 				bar.Bar.BarFrame2:SetTexture(nil)
 				bar.Bar.BarFrame3:SetTexture(nil)
-				aObj:glazeStatusBar(bar.Bar, 0,  bar.Bar.BarBG)
+				aObj:skinStatusBar{obj=bar.Bar, fi=0, bgTex=bar.Bar.BarBG}
 				bar.Bar:DisableDrawLayer("OVERLAY")
 				bar.FullBarFlare1.BarGlow:SetTexture(nil)
 			end
@@ -2399,7 +2399,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- ScenarioChallengeModeBlock
 	_G.ScenarioChallengeModeBlock:DisableDrawLayer("BACKGROUND")
 	self:removeRegions(_G.ScenarioChallengeModeBlock, {3}) -- "challengemode-timer" texture
-	self:glazeStatusBar(_G.ScenarioChallengeModeBlock.StatusBar, 0,  nil)
+	self:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0}
 	self:removeRegions(_G.ScenarioChallengeModeBlock.StatusBar, {1}) -- border
 	self:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, y2=7}
 	self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
@@ -2411,7 +2411,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- ScenarioProvingGroundsBlock
 	_G.ScenarioProvingGroundsBlock.BG:SetTexture(nil)
 	_G.ScenarioProvingGroundsBlock.GoldCurlies:SetTexture(nil)
-	self:glazeStatusBar(_G.ScenarioProvingGroundsBlock.StatusBar, 0,  nil)
+	self:skinStatusBar{obj=_G.ScenarioProvingGroundsBlock.StatusBar, fi=0}
 	self:removeRegions(_G.ScenarioProvingGroundsBlock.StatusBar, {1}) -- border
 	self:addSkinFrame{obj=_G.ScenarioProvingGroundsBlock, ft=ftype, x2=41}
 	_G.ScenarioProvingGroundsBlockAnim.BorderAnim:SetTexture(nil)
@@ -2476,7 +2476,7 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self)
 		for i = 1, 19 do
 			oab.xpBar["XpDiv" .. i]:SetTexture(nil)
 		end
-		aObj:glazeStatusBar(oab.xpBar, 0, aObj:getRegion(oab.xpBar, 1))
+		aObj:skinStatusBar{obj=oab.xpBar, fi=0, bgTex=aObj:getRegion(oab.xpBar, 1)}
 
 		aObj:addSkinFrame{obj=oab, ft=ftype, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 
@@ -2540,7 +2540,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 	-- skin common elements (Honor & Conquest frames)
 	local function skinCommon(frame)
 		frame.XPBar.Frame:SetTexture(nil)
-		aObj:glazeStatusBar(frame.XPBar.Bar, 0, frame.XPBar.Bar.Background, nil, true)
+		aObj:skinStatusBar{obj=frame.XPBar.Bar, fi=0, bgTex=frame.XPBar.Bar.Background, hookFunc=true}
 		frame.XPBar.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
 		frame.XPBar.NextAvailable.Frame:SetTexture(nil)
 		aObj:addButtonBorder{obj=frame.XPBar.NextAvailable, relTo=frame.XPBar.NextAvailable.Icon}
@@ -2658,7 +2658,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 				for i = 1, #nTab do
 					barName = objName .. nTab[1]
 					self:removeRegions(_G[barName], {2})
-					self:glazeStatusBar(_G[barName], 0, _G[barName .. "Background"])
+					self:skinStatusBar{obj=_G[barName], fi=0, bgTex=_G[barName .. "Background"]}
 				end
 				self:addSkinFrame{obj=_G[objName .. "TargetTargetFrame"], ft=ftype, x1=4, x2=-4, y2=2}
 				self:addSkinFrame{obj=_G[objName], ft=ftype, kfs=true, x1=-4, y1=-6, x2=4, y2=-6}
@@ -2923,7 +2923,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	-- Tab3 (Honor Talents)
 	local pvpt = _G.PlayerTalentFramePVPTalents
 	pvpt.XPBar.Frame:SetTexture(nil)
-	self:glazeStatusBar(pvpt.XPBar.Bar, 0, pvpt.XPBar.Bar.Background, nil, true)
+	self:skinStatusBar{obj=pvpt.XPBar.Bar, fi=0, bgTex=pvpt.XPBar.Bar.Background, hookFunc=true}
 	pvpt.XPBar.NextAvailable.Frame:SetTexture(nil)
 	self:addButtonBorder{obj=pvpt.XPBar.NextAvailable, relTo=pvpt.XPBar.NextAvailable.Icon}
 	self:skinDropDown{obj=pvpt.XPBar.DropDown}
@@ -3062,7 +3062,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		btn.SubSkillRankBar.BorderLeft:SetTexture(nil)
 		btn.SubSkillRankBar.BorderRight:SetTexture(nil)
 		btn.SubSkillRankBar.BorderMid:SetTexture(nil)
-		self:glazeStatusBar(btn.SubSkillRankBar, 0)
+		self:skinStatusBar{obj=btn.SubSkillRankBar, fi=0}
 	end
 	btn = nil
 	self:SecureHook(_G.TradeSkillFrame.RecipeList, "RefreshDisplay", function(this)
@@ -3099,7 +3099,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 	self:addSkinFrame{obj=_G.TradeSkillFrame.DetailsFrame.GuildFrame, ft=ftype, kfs=true, ofs=-7}
 
 	-- Rank frame
-	self:glazeStatusBar(_G.TradeSkillFrame.RankFrame, 0, _G.TradeSkillFrame.RankFrameBackground)
+	self:skinStatusBar{obj=G.TradeSkillFrame.RankFrame, fi=0, bgTex=_G.TradeSkillFrame.RankFrameBackground}
 	self:removeRegions(_G.TradeSkillFrame.RankFrame, {2, 3, 4})
 
 	self:skinEditBox{obj=_G.TradeSkillFrame.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon

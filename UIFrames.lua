@@ -121,7 +121,7 @@ end
 local function skinFollowerPage(frame)
 
 	skinPortrait(frame.PortraitFrame)
-	aObj:glazeStatusBar(frame.XPBar, 0,  nil)
+	aObj:skinStatusBar{obj=frame.XPBar, fi=0}
 	frame.XPBar:DisableDrawLayer("OVERLAY")
 	aObj:addButtonBorder{obj=frame.ItemWeapon, relTo=frame.ItemWeapon.Icon}
 	frame.ItemWeapon.Border:SetTexture(nil)
@@ -132,7 +132,7 @@ local function skinFollowerPage(frame)
 end
 local function skinFollowerTraitsAndEquipment(obj)
 
-	aObj:glazeStatusBar(obj.XPBar, 0,  nil)
+	aObj:skinStatusBar{obj=obj.XPBar, fi=0}
 	obj.XPBar:DisableDrawLayer("OVERLAY")
 	local btn
 	for i = 1, #obj.Traits do
@@ -226,7 +226,7 @@ local function skinMissionComplete(frame, naval)
             aObj:removeRegions(follower, {1})
         end
 		if follower.PortraitFrame then skinPortrait(follower.PortraitFrame) end
-		aObj:glazeStatusBar(follower.XP, 0,  nil)
+		aObj:skinStatusBar{obj=follower.XP, fi=0}
 		follower.XP:DisableDrawLayer("OVERLAY")
 	end
 	follower = nil
@@ -1251,9 +1251,9 @@ aObj.blizzFrames[ftype].ChatFrames = function(self)
 			self:keepFontStrings(_G[clqbf_c])
 			self:addSkinFrame{obj=_G[clqbf_c], ft=ftype, x1=-4, x2=4}
 			self:adjHeight{obj=_G[clqbf_c], adj=4}
-			self:glazeStatusBar(_G[clqbf_c .. "ProgressBar"], 0, _G[clqbf_c .. "Texture"])
+			self:skinStatusBar{obj=_G[clqbf_c .. "ProgressBar"], fi=0, bgTex=_G[clqbf_c .. "Texture"]}
 		else
-			self:glazeStatusBar(_G[clqbf .. "ProgressBar"], 0, _G[clqbf .. "Texture"])
+			self:skinStatusBar{obj=_G[clqbf .. "ProgressBar"], fi=0, bgTex=_G[clqbf .. "Texture"]}
 		end
 	end
 	clqbf, clqbf_c = nil, nil
@@ -1445,7 +1445,7 @@ aObj.blizzLoDFrames[ftype].Contribution = function(self)
 		contribution.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
 		contribution.State.Border:SetAlpha(0) -- texture is changed
 		contribution.State.TextBG:SetTexture(nil)
-		self:glazeStatusBar(contribution.Status, 0, nil)
+		self:skinStatusBar{obj=contribution.Status, fi=0}
 		contribution.Status.Border:SetTexture(nil)
 		contribution.Status.BG:SetTexture(nil)
 		contribution.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
@@ -2155,7 +2155,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 	end)
 
 	self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, wdth=-4}
-	self:glazeStatusBar(_G.ItemTextStatusBar, 0)
+	self:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
 	self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
 	self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3}
 	self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, y1=-3, x2=-3}
@@ -2661,10 +2661,10 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 -->>-- Status Bars
 	if self.db.profile.MainMenuBar.glazesb then
-		self:glazeStatusBar(_G.MainMenuExpBar, 0, self:getRegion(_G.MainMenuExpBar, 9), {_G.ExhaustionLevelFillBar})
-		self:glazeStatusBar(_G.ReputationWatchBar.StatusBar, 0, _G.ReputationWatchBar.StatusBar.Background)
-		self:glazeStatusBar(_G.ArtifactWatchBar.StatusBar, 0, _G.ArtifactWatchBar.StatusBar.Background, {_G.ArtifactWatchBar.StatusBar.Underlay})
-		self:glazeStatusBar(_G.HonorWatchBar.StatusBar, 0, _G.HonorWatchBar.StatusBar.Background, {_G.HonorWatchBar.StatusBar.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar})
+		self:skinStatusBar{obj=_G.MainMenuExpBar, fi=0, bgTex=self:getRegion(_G.MainMenuExpBar, 9), otherTex={_G.ExhaustionLevelFillBar}}
+		self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
+		self:skinStatusBar{obj=_G.ArtifactWatchBar.StatusBar, fi=0, bgTex=_G.ArtifactWatchBar.StatusBar.Background, otherTex={_G.ArtifactWatchBar.StatusBar.Underlay}}
+		self:skinStatusBar{obj=_G.HonorWatchBar.StatusBar, fi=0, bgTex=_G.HonorWatchBar.StatusBar.Background, otherTex={_G.HonorWatchBar.StatusBar.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar}}
 	end
 
 -->>-- Extra Action Button
@@ -2767,7 +2767,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	self:skinButton{obj=_G.RecordLoopbackSoundButton, x1=-2, x2=2}
 	self:skinButton{obj=_G.PlayLoopbackSoundButton, x1=-2, x2=2}
 	self:addSkinFrame{obj=_G.LoopbackVUMeter:GetParent(), ft=ftype, aso={ng=true}, nb=true}
-	self:glazeStatusBar(_G.LoopbackVUMeter) -- no background required
+	self:skinStatusBar{obj=_G.LoopbackVUMeter} -- no background required
 	self:addSkinFrame{obj=_G.AudioOptionsVoicePanelBinding, ft=ftype}
 	self:skinDropDown{obj=_G.AudioOptionsVoicePanelChatModeDropDown}
 	self:addSkinFrame{obj=_G.AudioOptionsVoicePanelListening, ft=ftype}
@@ -3283,9 +3283,9 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 
 		if nP then
 			-- healthBar
-			aObj:glazeStatusBar(nP.healthBar, 0, nP.healthBar.background, {nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction})
+			aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
 			-- castBar
-			aObj:glazeStatusBar(nP.castBar, 0, nP.castBar.background)
+			aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}
 			-- TODO handle large size NamePlates
 			aObj:changeShield(nP.castBar.BorderShield, nP.castBar.Icon)
 		end
@@ -3307,7 +3307,7 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 	-- ManaFrame
 	local mF = _G.ClassNameplateManaBarFrame
 	if mF then
-		self:glazeStatusBar(mF, 0,  nil, {mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture})
+		self:skinStatusBar{obj=mF, fi=0,  otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}}
 		mF.SetTexture = _G.nop
 		mF = nil
 	end
@@ -3318,7 +3318,7 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 	for i = 1, #_G.ClassNameplateBarWindwalkerMonkFrame.Chi do
 		_G.ClassNameplateBarWindwalkerMonkFrame.Chi[i]:DisableDrawLayer("BACKGROUND")
 	end
-	self:glazeStatusBar(_G.ClassNameplateBrewmasterBarFrame, 0,  nil)
+	self:skinStatusBar{obj=_G.ClassNameplateBrewmasterBarFrame, fi=0}
 	-- Paladin
 	for i = 1, #_G.ClassNameplateBarPaladinFrame.Runes do
 		_G.ClassNameplateBarPaladinFrame.Runes[i].OffTexture:SetTexture(nil)
@@ -3551,7 +3551,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 	end
 	btn = nil
 	self:keepRegions(_G.PetBattleFrame.BottomFrame.xpBar, {1, 5, 6, 13}) -- text and statusbar textures
-	self:glazeStatusBar(_G.PetBattleFrame.BottomFrame.xpBar, 0,  nil)
+	self:skinStatusBar{obj=_G.PetBattleFrame.BottomFrame.xpBar, fi=0}
 	_G.PetBattleFrame.BottomFrame.TurnTimer.TimerBG:SetTexture(nil)
 	_G.PetBattleFrame.BottomFrame.TurnTimer.Bar:SetTexture(self.sbTexture)
 	_G.PetBattleFrame.BottomFrame.TurnTimer.ArtFrame:SetTexture(nil)
@@ -4065,10 +4065,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			if _G[tt:GetName() .. "StatusBar"]
 			and not _G[tt:GetName() .. "StatusBar"].Bar -- ignore ReputationParagonTooltip & WorldMapTaskTooltip
 			then
-				self:glazeStatusBar(_G[tt:GetName() .. "StatusBar"], 0)
+				self:skinStatusBar{obj=_G[tt:GetName() .. "StatusBar"], fi=0}
 			end
 			if tt.statusBar2 then
-				self:glazeStatusBar(_G[tt:GetName() .. "StatusBar2"], 0)
+				self:skinStatusBar{obj=_G[tt:GetName() .. "StatusBar2"], fi=0}
 			end
 		end
 		-- hook the OnShow method, NOT the Show method
@@ -4260,11 +4260,11 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	end
 	self:addButtonBorder{obj=_G.WorldMapTooltip.ItemTooltip, relTo=_G.WorldMapTooltip.ItemTooltip.Icon, reParent={_G.WorldMapTooltip.ItemTooltip.Count}}
 	self:removeRegions(_G.WorldMapTaskTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
-	self:glazeStatusBar(_G.WorldMapTaskTooltipStatusBar.Bar, 0, self:getRegion(_G.WorldMapTaskTooltipStatusBar.Bar, 7))
+	self:skinStatusBar{obj=_G.WorldMapTaskTooltipStatusBar.Bar, fi=0, bgTex=self:getRegion(_G.WorldMapTaskTooltipStatusBar.Bar, 7)}
 
 	-- BarFrame
 	self:removeRegions(_G.MapBarFrame, {1, 2, 3})
-	self:glazeStatusBar(_G.MapBarFrame, 0, _G.MapBarFrame.FillBG)
+	self:skinStatusBar{obj=_G.MapBarFrame, fi=0, bgTex=_G.MapBarFrame.FillBG}
 
 end
 
@@ -4300,7 +4300,7 @@ aObj.blizzFrames[ftype].WorldState = function(self)
 -->>-- WorldStateScore frame
 	local wssfxpb = _G.WorldStateScoreFrame.XPBar
 	wssfxpb.Frame:SetTexture(nil)
-	self:glazeStatusBar(wssfxpb.Bar, 0, wssfxpb.Bar.Background, nil, true)
+	self:skinStatusBar{obj=wssfxpb.Bar, fi=0, bgTex=wssfxpb.Bar.Background, hookFunc=true}
 	wssfxpb.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
 	wssfxpb.NextAvailable.Frame:SetTexture(nil)
 	wssfxpb = nil

@@ -504,56 +504,6 @@ function aObj:getInt(num)
 
 end
 
-function aObj:glazeStatusBar(statusBar, fi, bgTex, otherTex, hookFunc)
---@alpha@
-	assert(statusBar, "Missing object __gSB\n" .. debugstack())
-	assert(statusBar:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack())
---@end-alpha@
-
-	statusBar:SetStatusBarTexture(self.sbTexture)
-
-	if not self.sbGlazed[statusBar] then
-		self.sbGlazed[statusBar] = {}
-	end
-	local sbG = self.sbGlazed[statusBar]
-
-	if fi then
-		if not sbG.bg then
-			-- create background texture on a lower sublevel
-			sbG.bg = bgTex or statusBar:CreateTexture(nil, "BACKGROUND", nil, -1)
-			sbG.bg:SetTexture(self.sbTexture)
-			sbG.bg:SetVertexColor(self.sbColour[1], self.sbColour[2], self.sbColour[3])
-			if not bgTex then
-				sbG.bg:SetPoint("TOPLEFT", statusBar, "TOPLEFT", fi, -fi)
-				sbG.bg:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT", -fi, fi)
-			end
-		end
-	end
-	-- apply texture and store other texture objects
-	if otherTex
-	and type(otherTex) == "table"
-	then
-		local tex
-		for i = 1, #otherTex do
-			tex = otherTex[i]
-			tex:SetTexture(self.sbTexture)
-			tex:SetVertexColor(self.sbColour[1], self.sbColour[2], self.sbColour[3])
-			sbG[#sbG + 1] = tex
-		end
-		tex = nil
-	end
-
-	if hookFunc then
-		self:RawHook(statusBar, "SetStatusBarTexture", function(this, tex)
-			if not tex == self.sbTexture then
-				self.hooks[this].SetStatusBarTexture(this, self.sbTexture)
-			end
-		end, true)
-	end
-	sBG = nil
-
-end
-
 function aObj:round2(num, idp)
 --@alpha@
 	assert(num, "Missing number\n" .. debugstack())

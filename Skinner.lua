@@ -1375,6 +1375,103 @@ function aObj:skinSlider(...)
 
 end
 
+local function __skinStatusBar(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		fi = frame inset
+		bgTex = existing background texture
+		otherTex = other Textures table
+		hookFunc = hook the change texture function
+--]]
+--@alpha@
+	assert(opts.obj, "Missing object __sSB\n" .. debugstack())
+	assert(opts.obj:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack())
+--@end-alpha@
+
+	opts.obj:SetStatusBarTexture(aObj.sbTexture)
+
+	if not aObj.sbGlazed[opts.obj] then
+		aObj.sbGlazed[opts.obj] = {}
+	end
+	local sbG = aObj.sbGlazed[opts.obj]
+
+	if opts.fi then
+		if not sbG.bg then
+			-- create background texture on a lower sublevel
+			sbG.bg = opts.bgTex or opts.obj:CreateTexture(nil, "BACKGROUND", nil, -1)
+			sbG.bg:SetTexture(aObj.sbTexture)
+			sbG.bg:SetVertexColor(aObj.sbColour[1], aObj.sbColour[2], aObj.sbColour[3])
+			if not opts.bgTex then
+				sbG.bg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.fi, -opts.fi)
+				sbG.bg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", -opts.fi, opts.fi)
+			end
+		end
+	end
+	-- apply texture to and store other texture objects
+	if opts.otherTex
+	and type(opts.otherTex) == "table"
+	then
+		local tex
+		for i = 1, #opts.otherTex do
+			tex = opts.otherTex[i]
+			tex:SetTexture(aObj.sbTexture)
+			tex:SetVertexColor(aObj.sbColour[1], aObj.sbColour[2], aObj.sbColour[3])
+			sbG[#sbG + 1] = tex
+		end
+		tex = nil
+	end
+	if opts.hookFunc then
+		aObj:RawHook(opts.obj, "SetStatusBarTexture", function(this, tex)
+			if not tex == aObj.sbTexture then
+				aObj.hooks[this].SetStatusBarTexture(this, aObj.sbTexture)
+			end
+		end, true)
+	end
+
+	sBG = nil
+
+end
+function aObj:skinStatusBar(...)
+
+	local opts = select(1, ...)
+
+--@alpha@
+	assert(opts, "Missing object gSB\n" .. debugstack())
+--@end-alpha@
+
+	-- handle missing object (usually when addon changes)
+	if not opts then return end
+
+	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
+	--@alpha@
+		-- handle AddOn skins still using this code rather than skinSlider
+		aObj:CustomPrint(1, 0, 0, "Using old style call - skinStatusBar", select(1, ...))
+	--@end-alpha@
+		-- old style call
+		opts = {}
+		opts.obj = select(1, ...) and select(1, ...) or nil
+		opts.fi = select(2, ...) and select(2, ...) or nil
+		opts.bgTex = select(3, ...) and select(3, ...) or nil
+		opts.otherTex = select(4, ...) and select(4, ...) or nil
+		opts.hookFunc = select(5, ...) and select(5, ...) or nil
+	end
+
+	__skinStatusBar(opts)
+	opts = nil
+
+end
+-- previous name for the above function (statusBar, fi, bgTex, otherTex, hookFunc)
+function aObj:glazeStatusBar(...)
+--@alpha@
+	-- handle AddOn skins still using this code rather than skinSlider
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - glazeStatusBar", select(1, ...))
+--@end-alpha@
+
+	self:skinStatusBar(...)
+
+end
+
 local function __skinTabs(opts)
 --[[
 	Calling parameters:

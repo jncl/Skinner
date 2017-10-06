@@ -145,7 +145,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 	_G.AuctionProgressFrame:DisableDrawLayer("ARTWORK")
 	self:keepFontStrings(_G.AuctionProgressBar)
 	self:moveObject{obj=_G.AuctionProgressBar.Text, y=-2}
-	self:glazeStatusBar(_G.AuctionProgressBar, 0)
+	self:skinStatusBar{obj=_G.AuctionProgressBar, fi=0}
 
 end
 
@@ -296,7 +296,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 
 	-- NPCFriendshipStatusBar
 	self:removeRegions(_G.NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
-	self:glazeStatusBar(_G.NPCFriendshipStatusBar, 0,  self:getRegion(_G.NPCFriendshipStatusBar, 7))
+	self:skinStatusBar{obj=_G.NPCFriendshipStatusBar, fi=0, bgTex=self:getRegion(_G.NPCFriendshipStatusBar, 7)}
 
 end
 
@@ -762,7 +762,7 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 	_G.ClassTrainerStatusBarRight:SetAlpha(0)
 	_G.ClassTrainerStatusBarMiddle:SetAlpha(0)
 	_G.ClassTrainerStatusBarSkillRank:SetPoint("CENTER", _G.ClassTrainerStatusBar) -- Blizzard bug
-	self:glazeStatusBar(_G.ClassTrainerStatusBar, 0,  _G.ClassTrainerStatusBarBackground)
+	self:skinStatusBar{obj=_G.ClassTrainerStatusBar, fi=0, bgTex=_G.ClassTrainerStatusBarBackground}
 	local btn = _G.ClassTrainerFrame.skillStepButton
 	btn:GetNormalTexture():SetTexture(nil)
 	self:addButtonBorder{obj=btn, relTo=btn.icon}
