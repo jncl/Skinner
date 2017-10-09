@@ -30,8 +30,8 @@ do
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local ptrInfo = {"7.3.2", 25163}
-	local liveInfo = {"7.3.0", 25021}
+	local ptrInfo = {"7.3.2", 25208}
+	local liveInfo = {"7.3.0", 25195}
 	local betaInfo = {"8.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -456,6 +456,8 @@ local function __addSkinButton(opts)
 	assert(opts.obj, "Missing object __aSB\n" .. debugstack())
 --@end-alpha@
 
+	-- aObj:Debug("__addSkinButton: [%s, %s]", opts.obj, opts.obj:GetName())
+
 	-- don't skin it twice
 	if opts.obj.sb then return end
 
@@ -616,6 +618,8 @@ local function __addSkinFrame(opts)
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n" .. debugstack())
 --@end-alpha@
+
+	-- aObj:Debug("__addSkinFrame: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sf then return end
@@ -852,6 +856,8 @@ local function __applySkin(opts)
 	assert(opts.obj, "Missing object __aS\n" .. debugstack())
 --@end-alpha@
 
+	-- aObj:Debug("__applySkin: [%s, %s]", opts.obj, opts.obj:GetName())
+
 	local hasIOT = assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
 	if hasIOT and not opts.obj:IsObjectType("Frame") then
 		if aObj.db.profile.Errors then
@@ -963,6 +969,8 @@ local function __skinDropDown(opts)
 	assert(opts.obj, "Missing object __sDD\n" .. debugstack())
 --@end-alpha@
 
+	-- aObj:Debug("__skinDropDown: [%s, %s]", opts.obj, opts.obj:GetName())
+
 --@debug@
 	if opts.noMove
 	or opts.moveTex
@@ -1069,6 +1077,8 @@ local function __skinEditBox(opts)
 	assert(opts.obj, "Missing object __sEB\n" .. debugstack())
 	assert(opts.obj:IsObjectType("EditBox"), "Not an EditBox\n" .. debugstack())
 --@end-alpha@
+
+	-- aObj:Debug("__skinEditBox: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sknd then
@@ -1190,6 +1200,8 @@ local function __skinMoneyFrame(opts)
 	assert(opts.obj, "Missing object __sMF\n" .. debugstack())
 --@end-alpha@
 
+	-- aObj:Debug("__skinMoneyFrame: [%s, %s]", opts.obj, opts.obj:GetName())
+
 	-- don't skin it twice
 	if opts.obj.sknd then
 		return
@@ -1262,6 +1274,8 @@ local function __skinScrollBar(opts)
 	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinScrollBar", opts.obj)
 --@end-alpha@
 
+	-- aObj:Debug("__skinScrollBar: [%s, %s]", opts.obj, opts.obj:GetName())
+
 	-- don't skin it twice
 	if opts.obj.sknd then
 		return
@@ -1315,6 +1329,8 @@ local function __skinSlider(opts)
 	assert(opts.obj, "Missing object __sS\n" .. debugstack())
 	assert(opts.obj:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
 --@end-alpha@
+
+	-- aObj:Debug("__skinSlider: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sknd then
@@ -1388,6 +1404,8 @@ local function __skinStatusBar(opts)
 	assert(opts.obj, "Missing object __sSB\n" .. debugstack())
 	assert(opts.obj:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack())
 --@end-alpha@
+
+	-- aObj:Debug("__skinStatusBar: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	opts.obj:SetStatusBarTexture(aObj.sbTexture)
 
@@ -1492,6 +1510,8 @@ local function __skinTabs(opts)
 	assert(opts.obj, "Missing object __sT\n" .. debugstack())
 	assert(opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. debugstack())
 --@end-alpha@
+
+	-- aObj:Debug("__skinTabs: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- N.B. DON'T check to see if object is already skinned, otherwise Ace3GUI Tabs aren't skinned properly
 
