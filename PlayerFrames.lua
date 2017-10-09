@@ -468,7 +468,7 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 				if btn
 				and not btn.sbb
 				then
-					aObj:addButtonBorder{obj=btn}
+					aObj:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}}
 				end
 			end
 			btn = nil
