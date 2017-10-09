@@ -4197,7 +4197,9 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	end
 
 	self:SecureHook("UIDropDownMenu_CreateFrames", function(level, index)
-		skinDDMenu(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
+		if not _G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS].sf then
+			skinDDMenu(_G["DropDownList" .. _G.UIDROPDOWNMENU_MAXLEVELS])
+		end
 	end)
 
 end
