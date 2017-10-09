@@ -21,3 +21,37 @@ Legend:
 
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
+
+	O	PTR - 7.3.2
+√		- Logout is now a protected function
+
+	O	replace GlazeStatusBar function by skinStatusBar function
+√		- change code defs for skinStatusBar in NPCFrames, PlayerFrames, UIFrames, UnitFrames
+
+	O	Code optimisations
+√		- Tooltips
+√		- CompactUnitFrames
+√		- Buffs
+√		- StatusBars
+√		- applyGradient
+
+	O	Bugfixes
+		- InterfaceOptionsPanels
+√			- Checkboxes
+√			- CompactUnitFrameProfiles
+√		- ObjectiveTracker
+
+
+	I	BugSack
+√		-  make skin frame appear above other frames
+
+	I	TinyTooltip
+√		- update saved variables
+√		- change how tooltips are skinned
+
+	I	WIM
+√		- skin option panel backdrops
+√		- skin options filter frame properly
+
+	I	Buff Timers aren't vivible
+
