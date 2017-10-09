@@ -2735,18 +2735,36 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	end
 
 -->>-- System
-	self:addSkinFrame{obj=_G.VideoOptionsFrame, ft=ftype, kfs=true, hdr=true}
-	self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true}
+	self:addSkinFrame{obj=_G.VideoOptionsFrame, ft=ftype, kfs=true, hdr=true, bgen=1} -- only skin buttons on the panel
+	self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true} -- LHS panel
 	self:skinSlider(_G.VideoOptionsFrameCategoryFrameListScrollBar)
-	self:addSkinFrame{obj=_G.VideoOptionsFramePanelContainer, ft=ftype}
 
 	-- Graphics
 	skinKids(_G.Display_)
-	self:addSkinFrame{obj=_G.Display_, ft=ftype}
+	self:addSkinFrame{obj=_G.Display_, ft=ftype} -- RHS Top Panel
+	-- skin tabs buttons
+	for _, btn in pairs{_G.GraphicsButton, _G.RaidButton} do
+		btn:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=btn, ft=ftype, noBdr=self.isTT, bg=false, x1=4, y1=0, x2=0, y2=-4}
+		btn.sf.up = true
+	end
+	if self.isTT then
+		self:SecureHook("GraphicsOptions_SelectBase", function()
+			self:setActiveTab(_G.GraphicsButton.sf)
+			self:setInactiveTab(_G.RaidButton.sf)
+		end)
+		self:SecureHook("GraphicsOptions_SelectRaid", function()
+			if _G.Display_RaidSettingsEnabledCheckBox:GetChecked() then
+				self:setActiveTab(_G.RaidButton.sf)
+				self:setInactiveTab(_G.GraphicsButton.sf)
+			end
+		end)
+	end
+	self:addSkinFrame{obj=_G.VideoOptionsFramePanelContainer, ft=ftype, nb=true} -- RHS Panel (don't skin buttons)
 	skinKids(_G.Graphics_)
-	self:addSkinFrame{obj=_G.Graphics_, ft=ftype}
+	self:addSkinFrame{obj=_G.Graphics_, ft=ftype} -- RHS Bottom Panel (Base Settings)
 	skinKids(_G.RaidGraphics_)
-	self:addSkinFrame{obj=_G.RaidGraphics_, ft=ftype}
+	self:addSkinFrame{obj=_G.RaidGraphics_, ft=ftype} -- RHS Bottom Panel (Raid and Battleground)
 	-- Advanced
 	skinKids(_G.Advanced_)
 	self:skinDropDown{obj=_G.Advanced_MultisampleAlphaTest}
