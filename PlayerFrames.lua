@@ -1088,6 +1088,9 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	self:addSkinFrame{obj=_G.CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-5, y2=5}
 
 -->>-- Compact RaidFrame Manager
+	-- Display Frame
+	_G.CompactRaidFrameManagerDisplayFrameHeaderBackground:SetTexture(nil)
+	_G.CompactRaidFrameManagerDisplayFrameHeaderDelineator:SetTexture(nil)
 	-- Buttons
 	local nTab = {"Tank", "Healer", "Damager"}
 	for i = 1, #nTab do
@@ -1107,8 +1110,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	self:skinButton{obj=_G.CompactRaidFrameManager.displayFrame.leaderOptions.readyCheckButton}
 	self:skinButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
 	_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
-	-- Display Frame
-	self:keepFontStrings(_G.CompactRaidFrameManager.displayFrame)
 	-- Resize Frame
 	self:addSkinFrame{obj=_G.CompactRaidFrameManager.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
 	-- Raid Frame Manager Frame
