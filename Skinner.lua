@@ -1593,26 +1593,21 @@ function aObj:skinTooltip(tooltip)
 	assert(tooltip, "Missing object sT\n" .. debugstack())
 --@end-alpha@
 
+	-- aObj:Debug("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
+
 	if not tooltip then return end
 
- 	local ttStyle = self.db.profile.Tooltips.style
- 	local fhVal = self.db.profile.FadeHeight.value
-
 	if not tooltip.sf then
-		self:addSkinFrame{obj=tooltip, ft=ftype, kfs=true, aso={ng=true, ttStyle == 3 and 1 or 10}, y1=-4, y2=2}
+		self:addSkinFrame{obj=tooltip, ft=ftype, kfs=true, aso={ng=true, self.db.profile.Tooltips.style == 3 and 1 or 10}, y1=-4, y2=2}
 	end
 
-	if ttStyle == 1 then -- Rounded
+	if self.db.profile.Tooltips.style == 1 then -- Rounded
 		self:applyGradient(tooltip.sf, 32)
-	elseif ttStyle == 2 then -- Flat
+	elseif self.db.profile.Tooltips.style == 2 then -- Flat
 		self:applyGradient(tooltip.sf)
-	elseif ttStyle == 3 then -- Custom
-		local objHeight = self:getInt(tooltip:GetHeight())
-		self:applyGradient(tooltip.sf, fhVal <= objHeight and fhVal or objHeight)
-		objHeight = nil
+	elseif self.db.profile.Tooltips.style == 3 then -- Custom
+		self:applyGradient(tooltip.sf, self.db.profile.FadeHeight.value <= self:getInt(tooltip:GetHeight()) and self.db.profile.FadeHeight.value or self:getInt(tooltip:GetHeight()))
 	end
-
-	ttStyle, fhVal = nil, nil
 
 end
 

@@ -4073,11 +4073,14 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	end
 
 	-- using a metatable to manage tooltips when they are added in different functions
-	_G.setmetatable(self.ttList, {__newindex = function(t, k, v)
-		-- aObj:Debug("ttList __Newindex: [%s, %s, %s]", t, k, v)
-		_G.rawset(t, k, v)
+	_G.setmetatable(self.ttList, {__newindex = function(tab, key, tt)
+		-- aObj:Debug("ttList __Newindex: [%s, %s, %s]", tab, key, tt)
 		-- get object reference for tooltip, handle either strings or objects being passed
-		local tt = _G.type(v) == "string" and _G[v] or v
+		tt = _G.type(tt) == "string" and _G[tt] or tt
+		-- store using tooltip object as the key
+		_G.rawset(tab, tt, true)
+		-- _G.rawset(tab, key, tt)
+
 		-- glaze the Status bar(s) if required
 		if self.db.profile.Tooltips.glazesb then
 			if _G[tt:GetName() .. "StatusBar"]
@@ -4089,19 +4092,35 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 				self:skinStatusBar{obj=_G[tt:GetName() .. "StatusBar2"], fi=0}
 			end
 		end
-		-- hook the OnShow method, NOT the Show method
-		self:HookScript(tt, "OnShow", function(this)
-			-- OnUpdate isn't fired on subsequent displays of the ItemRefTooltip
-			if this == _G.ItemRefTooltip then
-				self:skinTooltip(this)
-			end
-		end)
+
+		-- skin here so tooltip initially skinnned
+		self:skinTooltip(tt)
+
 		-- hook this to prevent Gradient overlay when tooltip reshown
 		self:HookScript(tt, "OnUpdate", function(this)
 			self:skinTooltip(this)
 		end)
-		-- skin here so tooltip initially skinnned when logged on
-		self:skinTooltip(tt)
+
+		-- OnUpdate isn't fired on subsequent displays of the ItemRefTooltip
+		if tt == _G.ItemRefTooltip then
+			self:HookScript(tt, "OnShow", function(this)
+				self:skinTooltip(this)
+			end)
+		end
+
+		-- add shopping tooltips, if required
+		if tt.shoppingTooltips
+		and not tt == _G.ReputationParagonTooltip
+		then
+			for _, tooltip in pairs(tt.shoppingTooltips) do
+				if not self.ttList[tooltip] then
+					self:add2Table(self.ttList, tooltip)
+				else
+					aObj:CustomPrint(1, 0, 0, "Duplicate shopping tooltip", tt, tooltip)
+				end
+			end
+		end
+
 	end})
 
 	-- skin Item Ref Tooltip's close button and move it
@@ -4109,7 +4128,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=-1}
 
 	-- add tooltips to table
-	for _, tooltip in pairs{"GameTooltip", "ShoppingTooltip1", "ShoppingTooltip2", "ItemRefTooltip", "ItemRefShoppingTooltip1", "ItemRefShoppingTooltip2", "SmallTextTooltip"} do
+	for _, tooltip in pairs{_G.GameTooltip, _G.ItemRefTooltip, _G.SmallTextTooltip} do
 		self:add2Table(self.ttList, tooltip)
 	end
 
@@ -4273,8 +4292,6 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
 		self:add2Table(self.ttList, _G.WorldMapTooltip)
-		self:add2Table(self.ttList, "WorldMapCompareTooltip1")
-		self:add2Table(self.ttList, "WorldMapCompareTooltip2")
 	end
 	self:addButtonBorder{obj=_G.WorldMapTooltip.ItemTooltip, relTo=_G.WorldMapTooltip.ItemTooltip.Icon, reParent={_G.WorldMapTooltip.ItemTooltip.Count}}
 	self:removeRegions(_G.WorldMapTaskTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
