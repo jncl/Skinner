@@ -3099,7 +3099,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 	self:addSkinFrame{obj=_G.TradeSkillFrame.DetailsFrame.GuildFrame, ft=ftype, kfs=true, ofs=-7}
 
 	-- Rank frame
-	self:skinStatusBar{obj=G.TradeSkillFrame.RankFrame, fi=0, bgTex=_G.TradeSkillFrame.RankFrameBackground}
+	self:skinStatusBar{obj=_G.TradeSkillFrame.RankFrame, fi=0, bgTex=_G.TradeSkillFrame.RankFrameBackground}
 	self:removeRegions(_G.TradeSkillFrame.RankFrame, {2, 3, 4})
 
 	self:skinEditBox{obj=_G.TradeSkillFrame.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
