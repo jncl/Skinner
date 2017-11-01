@@ -20,7 +20,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		TexturedDD           = false,
 		TabDDFile            = "None",
 		TabDDTexture         = aName .. " Inactive Tab",
-		Delay                = {Init = 0.5, Addons = 0.5, LoDs = 0.5},
+		Delay                = {Init = 0.5, Addons = 0.5},
 		FadeHeight           = {enable = false, value = 500, force = false},
 		StatusBar            = {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
 	-->>-- Backdrop Settings
@@ -310,13 +310,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 							order = 2,
 							name = self.L["Addons Delay"],
 							desc = self.L["Set the Delay before Skinning Addons Frames"],
-							min = 0, max = 10, step = 0.5,
-						},
-						LoDs = {
-							type = "range",
-							order = 3,
-							name = self.L["LoD Addons Delay"],
-							desc = self.L["Set the Delay before Skinning Load on Demand Frames"],
 							min = 0, max = 10, step = 0.5,
 						},
 					},

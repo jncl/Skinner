@@ -224,7 +224,7 @@ end
 function aObj:ADDON_LOADED(event, addon)
 	-- self:Debug("ADDON_LOADED: [%s]", addon)
 
-	C_Timer.After(self.db.profile.Delay.LoDs, function() aObj:LoDFrames(addon) end)
+	aObj:LoDFrames(addon)
 
 end
 
