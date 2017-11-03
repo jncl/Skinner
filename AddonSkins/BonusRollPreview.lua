@@ -28,11 +28,24 @@ aObj.addonsToSkin.BonusRollPreview = function(self) -- v70300.44-Release
 	-- Hotspot
 	-- SpecButtons
 	self:SecureHookScript(_G.BonusRollPreviewSpecButtons, "OnShow", function(this)
-		local kids = {_G.BonusRollPreviewSpecButtons:GetChildren()}
-		for i = 1, #kids do
-			self:removeRegions(kids[i], {3}) -- icon ring
+		for _, child in _G.ipairs{_G.BonusRollPreviewSpecButtons:GetChildren()} do
+			self:removeRegions(child, {3}) -- icon ring
 		end
-		kids = nil
+	end)
+
+	-- Config
+	self.RegisterCallback("BonusRollPreview", "IOFPanel_Before_Skinning", function(this, panel)
+		if panel.name ~= "BonusRollPreview" then return end
+		self.iofSkinnedPanels[panel] = true
+		self.UnregisterCallback("BonusRollPreview", "IOFPanel_Before_Skinning")
+	end)
+
+	self.RegisterCallback("BonusRollPreview", "IOFPanel_After_Skinning", function(this, panel)
+		if panel.name ~= "BonusRollPreview" then return end
+		self:skinCheckButton{obj=_G.BonusRollPreviewOptionsPanelScrollChildAlwaysShowCheckButton}
+		self:skinDropDown{obj=_G.BonusRollPreviewOptionsPanelScrollChildFillDirectionDropDown, x2=-2}
+		self:addSkinFrame{obj=_G.BonusRollPreviewOptionsPanelScrollChildFillDirectionDropDown.Menu, ft="a", nb=true}
+		self.UnregisterCallback("BonusRollPreview", "IOFPanel_After_Skinning")
 	end)
 
 end

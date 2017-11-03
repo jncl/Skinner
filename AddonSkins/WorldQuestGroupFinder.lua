@@ -2,33 +2,41 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestGroupFinder") then return end
 local _G = _G
 
-function aObj:WorldQuestGroupFinder()
+aObj.addonsToSkin.WorldQuestGroupFinder = function(self) -- v 0.27
 
-	-- WQGFManualActionsFrame
-	_G.WQGFManualActionsFrameTitleFrame:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.WQGFManualActionsFrame, ofs=-2}
+	self:SecureHookScript(_G.WQGFManualActionsFrame, "OnShow", function(this)
+		this.TitleFrame:SetBackdrop(nil)
+		self:skinStdButton{obj=this.NextButton}
+		self:addSkinFrame{obj=this, ft="a", ofs=-2}
+		self:Unhook(this, "OnShow")
+	end)
 
-	-- WorldQuestGroupCurrentWQFrame
-	_G.WorldQuestGroupCurrentWQFrame:SetBackdrop(nil)
-	_G.WorldQuestGroupCurrentWQFrame.SetBackdrop = _G.nop
+	self:SecureHookScript(_G.WorldQuestGroupCurrentWQFrame, "OnShow", function(this)
+		this:SetBackdrop(nil)
+		self:skinStdButton{obj=this.KickButton}
+		self:skinStdButton{obj=this.RefreshButton}
+		self:skinStdButton{obj=this.StopButton}
+		this.SetBackdrop = _G.nop
+		self:Unhook(this, "OnShow")
+	end)
 
-	-- skin existing WQGFButtons
+	-- skin WQGFButtons
 	local function skinWQGFBtn(btn)
+
 		aObj:removeRegions(btn, {2, 4})
 		btn:SetHighlightTexture([[Interface\Buttons\UI-Common-MouseHilight]])
 		btn:GetHighlightTexture():SetTexCoord(0, 1, 0, 1)
 		aObj:addButtonBorder{obj=btn, ofs=0}
 		aObj:moveObject{obj=btn, y=4}
 		btn:SetScript("OnLeave", function() _G.GameTooltip:Hide() end)
+
 	end
-	local kids, child = {_G.ObjectiveTrackerFrame.BlocksFrame:GetChildren()}
-	for i = 1, #kids do
-		child = kids[i]
+
+	for _, child in _G.ipairs{_G.ObjectiveTrackerFrame.BlocksFrame:GetChildren()} do
 		if child.WQGFButton then
 			skinWQGFBtn(child.WQGFButton)
 		end
 	end
-	kids, child = nil, nil
 
 	-- hook  this to skin new WQGFButtons
  	self:RawHook(_G.WorldQuestGroupFinder, "CreateWQGFButton", function(block, questID)

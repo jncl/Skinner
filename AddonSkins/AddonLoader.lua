@@ -2,12 +2,17 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("AddonLoader") then return end
 local _G = _G
 
-function aObj:AddonLoader()
+aObj.addonsToSkin.AddonLoader = function(self) -- v 2.0.1
 
-	_G.AddonLoaderDropDownLeft:SetHeight(64)
-	_G.AddonLoaderDropDownMiddle:SetHeight(64)
-	_G.AddonLoaderDropDownRight:SetHeight(64)
-	_G.AddonLoaderDropDownButton:SetPoint("TOPRIGHT", _G.AddonLoaderDropDownRight, "TOPRIGHT", -16, -18)
-	self:moveObject{obj=_G.AddonLoaderDropDown, y=5}
+	-- register callback to adjust DropDown skinFrame position
+	self.RegisterCallback("Addon Loader", "IOFPanel_After_Skinning", function(this, panel)
+		if panel.name ~= "Addon Loader" then return end
+		_G.C_Timer.After(0.15, function() -- wait for the objects to be skinned
+			_G.AddonLoaderDropDown.sf:ClearAllPoints()
+			_G.AddonLoaderDropDown.sf:SetPoint("TOPLEFT", _G.AddonLoaderDropDown, "TOPLEFT", 16, 5)
+			_G.AddonLoaderDropDown.sf:SetPoint("BOTTOMRIGHT", _G.AddonLoaderDropDown, "BOTTOMRIGHT", -16, 13)
+		end)
+		self.UnregisterCallback("Addon Loader", "IOFPanel_After_Skinning")
+	end)
 
 end

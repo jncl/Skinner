@@ -15,6 +15,11 @@ aObj.libsToSkin["LibQTip-1.0"] = function(self) -- v LibQTip-1.0, 44
 			-- ignore tooltips if required
 			if not aObj.ignoreLQTT[key] then
 				aObj:applySkin{obj=tt}
+				aObj:hook(tt, "UpdateScrolling", function(this)
+					if tt.slider then
+						aObj:skinSlider{obj=tt.slider, wdth=2}
+					end
+				end)
 			end
 
 		end

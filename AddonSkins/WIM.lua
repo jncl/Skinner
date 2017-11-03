@@ -23,7 +23,7 @@ aObj.addonsToSkin.WIM = function(self) -- v 3.7.14
 			aObj:moveObject{obj=msgFrame.widgets.class_icon, y=-2}
 		end
 		eBox, xOfs = nil, nil
-		aObj:addSkinFrame{obj=msgFrame, kfs=true}
+		aObj:addSkinFrame{obj=msgFrame, ft="a", kfs=true}
 
 	end
 
@@ -120,11 +120,8 @@ aObj.otherAddons.WIM_Options = function(self)
 
 		if obj.sknd then return end
 		obj.sknd = true
-		aObj:skinAllButtons{obj=obj}
 
-		local kids, child = {obj:GetChildren()}
-		for i = 1, #kids do
-			child = kids[i]
+		for _, child in _G.ipairs{obj:GetChildren()} do
 			if aObj:isDropDown(child) then
 				aObj:skinDropDown{obj=child, x2= obj.mf and 110 or nil}
 			elseif child.backdrop then
@@ -133,6 +130,7 @@ aObj.otherAddons.WIM_Options = function(self)
 				child.backdrop.left:SetColorTexture(r, g, b, a)
 				child.backdrop.right:SetColorTexture(r, g, b, a)
 				child.backdrop.bg:SetTexture(nil)
+				aObj:adjHeight{obj=child, adj=4}
 			elseif child:IsObjectType("ScrollFrame") then
 				aObj:skinSlider{obj=child.ScrollBar}
 			elseif child:IsObjectType("Slider") then
@@ -140,22 +138,38 @@ aObj.otherAddons.WIM_Options = function(self)
 			elseif child:IsObjectType("CheckButton") then
 				aObj:skinCheckButton{obj=child}
 				checkKids(child)
-			elseif child.dropdown then
-				aObj:addButtonBorder{obj=child, ofs=-2}
+			elseif child:IsObjectType("Button") then
+				if child:GetName()
+				and not child:GetNormalTexture()
+				then
+					aObj:skinStdButton{obj=child}
+				else
+					checkKids(child)
+				end
+			elseif child:GetParent().list then -- filter list
+				local fl = child:GetParent().list
+				-- move list above buttons, done by moving the associated checkbox up instead
+				local relTo = select(2, fl:GetPoint(1))
+				if relTo:GetNumPoints() == 1 then
+					aObj:moveObject{obj=relTo, y=30}
+				end
+				aObj:skinSlider{obj=fl.scroll.ScrollBar}
+				checkKids(fl)
+				fl, relTo = nil, nil
+				checkKids(child)
 			else checkKids(child)
 			end
 		end
-		kids, child = nil, nil
 
 	end
 
 	-- hook this to skin the options frame
-	self:SecureHook(_G.WIM.options, "OnShow", function(this)
+	self:SecureHook(_G.WIM.options, "OnShow", function()
 		local optFrame = _G.WIM.options.frame
 		optFrame.title:SetPoint("TOPLEFT", 50 , -7)
 		optFrame.close:SetPoint("TOPRIGHT", -4, -4)
 		optFrame.nav.bg:Hide()
-		self:addSkinFrame{obj=optFrame, nb=true, y2=8}
+		self:addSkinFrame{obj=optFrame, ft="a", nb=true, y2=8}
 		-- if frame is a function then hook it, otherwise check it
 		for _, cat in _G.pairs(_G.WIM.options.frame.nav.category) do
 			for _, subCat in _G.pairs(cat.info.subCategories) do
@@ -174,8 +188,8 @@ aObj.otherAddons.WIM_Options = function(self)
 	end)
 
 	-- hook this to skin the dropdown frame
-	self:SecureHook(_G.WIM.options, "createDropDownFrame", function(this)
-		self:addSkinFrame{obj=_G.WIM_DropDownFrame}
+	self:SecureHook(_G.WIM.options, "createDropDownFrame", function()
+		self:addSkinFrame{obj=_G.WIM_DropDownFrame, ft="a"}
 		-- hook this to ensure the frame is above button borders
 		self:SecureHook(_G.WIM_DropDownFrame, "SetParent", function(this, parent)
 			_G.RaiseFrameLevelByTwo(this)
@@ -197,19 +211,33 @@ aObj.otherAddons.WIM_Options = function(self)
 				_G.WIM3_FilterFrame.name.backdrop.right:SetColorTexture(r, g, b, a)
 				_G.WIM3_FilterFrame.name.backdrop.bg:SetTexture(nil)
 				self:skinDropDown{obj=_G.WIM3_FilterFrame.by, x2=109}
+				-- pattern box
 				self:skinSlider{obj=_G.WIM3_FilterFrame.patternContainer.ScrollBar, size=3}
 				_G.WIM3_FilterFrame.patternContainer.backdrop.top:SetColorTexture(r, g, b, a)
 				_G.WIM3_FilterFrame.patternContainer.backdrop.bottom:SetColorTexture(r, g, b, a)
 				_G.WIM3_FilterFrame.patternContainer.backdrop.left:SetColorTexture(r, g, b, a)
 				_G.WIM3_FilterFrame.patternContainer.backdrop.right:SetColorTexture(r, g, b, a)
 				_G.WIM3_FilterFrame.patternContainer.backdrop.bg:SetTexture(nil)
+				-- User options
 				self:keepFontStrings(_G.WIM3_FilterFrame.user)
-				self:applySkin(_G.WIM3_FilterFrame.user)
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.user.friend}
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.user.guild}
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.user.party}
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.user.raid}
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.user.xrealm}
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.user.all}
+				-- level options
 				self:keepFontStrings(_G.WIM3_FilterFrame.level)
-				self:applySkin(_G.WIM3_FilterFrame.level)
+				self:skinSlider{obj=_G.WIM3_FilterFrame.level.slider}
+				self:skinDropDown{obj=_G.WIM3_FilterFrame.level.class, x2=109}
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.received}
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.sent}
 				self:skinDropDown{obj=_G.WIM3_FilterFrame.action, x2=109}
+				self:skinCheckButton{obj=_G.WIM3_FilterFrame.actionNotify}
 				_G.WIM3_FilterFrame.border:Hide()
-				self:addSkinFrame{obj=_G.WIM3_FilterFrame}
+				self:skinStdButton{obj=_G.WIM3_FilterFrame.cancel}
+				self:skinStdButton{obj=_G.WIM3_FilterFrame.save}
+				self:addSkinFrame{obj=_G.WIM3_FilterFrame, ft="a", nb=true}
 				self:Unhook(this, "ShowFilterFrame")
 			end
 		end)

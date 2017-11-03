@@ -160,6 +160,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ObliterumUI          = true,
 		OrderHallUI          = true,
 		PetBattleUI          = true,
+		ProductChoiceFrame   = true,
 		PVEFrame             = true, -- (inc, LFD, LFG, RaidFinder, ScenarioFinder)
 		QuestMap             = true,
 		QueueStatusFrame     = true,
@@ -1182,6 +1183,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				db[info[#info]] = value
 				if info[#info] == "Colours" then self:checkAndRun("ColorPicker", "p")
 				elseif info[#info] == "CombatLogQBF" then return
+				elseif info[#info] == "ChatTabsFade" then return
 				-- handle Blizzard LoD Addons
 				elseif self.blizzLoDFrames.u[info[#info]] then
 					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
@@ -1621,6 +1623,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Pet Battle Frame"],
 					desc = self.L["Toggle the skin of the Pet Battle Frame"],
+				},
+				ProductChoiceFrame = {
+					type = "toggle",
+					name = self.L["Product Choice Frame"],
+					desc = self.L["Toggle the skin of the Product Choice Frame"],
 				},
 				PVEFrame = {
 					-- inc. LFD, LFG, Scenario

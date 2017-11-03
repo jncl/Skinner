@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Bagnon") then return end
 local _G = _G
 
-function aObj:Bagnon() -- 7.0.4
+aObj.addonsToSkin.Bagnon = function(self) -- v 7.3.2
 	if not self.db.profile.ContainerFrames or self.initialized.Bagnon then return end
 	self.initialized.Bagnon = true
 
@@ -33,7 +33,7 @@ function aObj:Bagnon() -- 7.0.4
 
 	-- skin the bag frames
 	local function skinFrame(frame, id)
-		aObj:addSkinFrame{obj=frame, nb=true}
+		aObj:addSkinFrame{obj=frame, ft="a", nb=true}
 		frame.SetBackdropColor = function() end
 		frame.SetBackdropBorderColor = function() end
 		if not aObj:IsHooked(frame, "OnShow") then
@@ -66,7 +66,7 @@ function aObj:Bagnon() -- 7.0.4
 					end
 				end
 				if this.closeButton then
-					aObj:skinButton{obj=this.closeButton, cb=true}
+					aObj:skinCloseButton{obj=this.closeButton}
 				end
 				if frame.CreateLogFrame then
 					aObj:SecureHook(frame, "CreateLogFrame", function(this)
@@ -81,16 +81,6 @@ function aObj:Bagnon() -- 7.0.4
 					end)
 				end
 				aObj:Unhook(this, "OnShow")
-			end)
-		end
-		if aObj.modBtnBs
-		and id == "guild"
-		then
-			aObj:SecureHook(frame.ItemFrame, "Layout", function(this)
-				for i = 1, #this.buttons do
-					aObj:addButtonBorder{obj=this.buttons[i]}
-				end
-				aObj:Unhook(this, "Layout")
 			end)
 		end
 	end
@@ -111,6 +101,93 @@ function aObj:Bagnon() -- 7.0.4
 
 end
 
--- Bagnon_Config: Sushi objects are managed in IOP checkKids function
 -- Bagnon_GuildBank frame handled in above skinFrame function
 -- Bagnon_VoidStorage frame handled in above skinFrame function
+
+aObj.lodAddons.Bagnon_Config = function(self) -- v 7.3.2
+
+	-- hook these to manage the SushiDropFrame
+	self:secureHook(_G.SushiDropFrame, "OnCreate", function(this)
+		local frame
+		for j = 1, #this.usedFrames do
+			frame = this.usedFrames[j]
+			if not frame.bg.sf then
+				self:addSkinFrame{obj=frame.bg, ft="a", kfs=true, nb=true}
+				frame.bg.SetBackdrop = _G.nop
+			end
+		end
+		frame = nil
+	end)
+	self:secureHook(_G.SushiDropFrame, "OnAcquire", function(this)
+		-- need to raise frame level so it's above other text
+		_G.RaiseFrameLevelByTwo(this)
+	end)
+
+	-- register callback to indicate already skinned
+	local pCnt = 0
+	self.RegisterCallback("Bagnon_Config", "IOFPanel_Before_Skinning", function(this, panel)
+		if panel.name == "Bagnon"
+		or panel.parent == "Bagnon"
+		and not self.iofSkinnedPanels[panel]
+		then
+			self.iofSkinnedPanels[panel] = true
+			pCnt = pCnt + 1
+		end
+		if pCnt == 5 then
+			self.UnregisterCallback("Bagnon_Config", "IOFPanel_Before_Skinning")
+		end
+	end)
+
+	-- register callback to skin elements
+	self.RegisterCallback("Bagnon_Config", "IOFPanel_After_Skinning", function(this, panel)
+		local function skinKids(panel)
+
+			for _, child in _G.ipairs{panel:GetChildren()} do
+				if aObj:isDropDown(child) then
+					aObj:skinDropDown{obj=child}
+				elseif child:IsObjectType("Slider") then
+					aObj:skinSlider{obj=child, hgt=-4}
+				elseif child:IsObjectType("CheckButton") then
+					aObj:skinCheckButton{obj=child}
+					if aObj.modBtns then
+						if child.toggle then -- expanded check button
+							aObj:skinExpandButton{obj=child.toggle, onSB=true, plus=true, noHook=true}
+							-- hook this to handle button texture changes
+							aObj:SecureHook(child, "SetExpanded", function(this)
+								if this:IsExpanded() then
+									this.toggle.sb:SetText("-")
+								else
+									this.toggle.sb:SetText("+")
+								end
+							end)
+						end
+					end
+				elseif child:IsObjectType("EditBox") then
+					aObj:skinEditBox{obj=child, regs={6}} -- 6 is text
+				elseif child:IsObjectType("Button") then
+					aObj:skinStdButton{obj=child}
+				elseif child:IsObjectType("Frame") then
+					if child:GetName():find("Bagnon_Config")
+					or child:GetName():find("FauxScroll")
+					then
+						skinKids(child)
+					end
+				end
+			end
+
+		end
+
+		if panel.name == "Bagnon"
+		or panel.parent == "Bagnon"
+		and not panel.sknd
+		then
+			skinKids(self:getChild(panel, 1)) -- options on sub panel
+			panel.sknd = true
+		end
+		if pCnt == 5 then
+			self.UnregisterCallback("Bagnon_Config", "IOFPanel_After_Skinning")
+			pCnt = nil
+		end
+	end)
+
+end

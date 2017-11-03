@@ -1,7 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 
-local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack
+local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, Round = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.Round
 local LibStub = _G.LibStub
 
 do
@@ -30,8 +30,8 @@ do
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local ptrInfo = {"7.3.2", 25208}
-	local liveInfo = {"7.3.0", 25195}
+	local ptrInfo = {"7.3.2", 25383}
+	local liveInfo = {"7.3.2", 25383}
 	local betaInfo = {"8.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -81,12 +81,13 @@ function aObj:OnInitialize()
 
 	-- setup the default DB values and register them
 	self:checkAndRun("SetupDefaults", "opt", false, true)
-	local prdb = self.db.profile
+	-- store shortcut
+	self.prdb = self.db.profile
 	local dflts = self.db.defaults.profile
 
 	-- convert any old settings
-	if type(prdb.MinimapButtons) == "boolean" then
-		prdb.MinimapButtons = {skin = true, style = false}
+	if type(self.prdb.MinimapButtons) == "boolean" then
+		self.prdb.MinimapButtons = {skin = true, style = false}
 	end
 
 	-- setup the Addon's options
@@ -101,25 +102,25 @@ function aObj:OnInitialize()
 	-- register the statubar texture used by Nameplates
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 	-- register any User defined textures used
-	if prdb.BdFile and prdb.BdFile ~= "None" then
-		self.LSM:Register("background", aName .. " User Backdrop", prdb.BdFile)
+	if self.prdb.BdFile and self.prdb.BdFile ~= "None" then
+		self.LSM:Register("background", aName .. " User Backdrop", self.prdb.BdFile)
 	end
-	if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
-		self.LSM:Register("border", aName .. " User Border", prdb.BdEdgeFile)
+	if self.prdb.BdEdgeFile and self.prdb.BdEdgeFile ~= "None" then
+		self.LSM:Register("border", aName .. " User Border", self.prdb.BdEdgeFile)
 	end
-	if prdb.BgFile and prdb.BgFile ~= "None" then
-		self.LSM:Register("background", aName .. " User Background", prdb.BgFile)
+	if self.prdb.BgFile and self.prdb.BgFile ~= "None" then
+		self.LSM:Register("background", aName .. " User Background", self.prdb.BgFile)
 	end
-	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
-		self.LSM:Register("background", aName .. " User TabDDTexture", prdb.TabDDFile)
+	if self.prdb.TabDDFile and self.prdb.TabDDFile ~= "None" then
+		self.LSM:Register("background", aName .. " User TabDDTexture", self.prdb.TabDDFile)
 	end
 
 	-- Heading, Body & Ignored Text colours
-	local c = prdb.HeadText
+	local c = self.prdb.HeadText
 	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
-	c = prdb.BodyText
+	c = self.prdb.BodyText
 	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
-	c = prdb.IgnoredText
+	c = self.prdb.IgnoredText
 	self.ITr, self.ITg, self.ITb = c.r, c.g, c.b
 
 	-- Frame multipliers (still used in older skins)
@@ -128,14 +129,14 @@ function aObj:OnInitialize()
 	self.ebRgns = {1, 2} -- 1 is text, 2 is a texture
 
 	-- Gradient settings
-	self.gradientTab = {prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
-	self.gradientCBar = {prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .25, .25, .55, 1, 0, 0, 0, 1}
-	self.gradientTex = self.LSM:Fetch("background", prdb.Gradient.texture)
+	self.gradientTab = {self.prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
+	self.gradientCBar = {self.prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .25, .25, .55, 1, 0, 0, 0, 1}
+	self.gradientTex = self.LSM:Fetch("background", self.prdb.Gradient.texture)
 
 	-- backdrop for Frames etc
 	self.bdTexName = dflts.BdTexture
 	self.bdbTexName = dflts.BdBorderTexture
-	if prdb.BdDefault then
+	if self.prdb.BdDefault then
 		self.backdrop = {
 			bgFile = self.LSM:Fetch("background", self.bdTexName),
 			tile = dflts.BdTileSize > 0 and true or false, tileSize = dflts.BdTileSize,
@@ -144,22 +145,22 @@ function aObj:OnInitialize()
 			insets = {left = dflts.BdInset, right = dflts.BdInset, top = dflts.BdInset, bottom = dflts.BdInset},
 		}
 	else
-		if prdb.BdFile and prdb.BdFile ~= "None" then
+		if self.prdb.BdFile and self.prdb.BdFile ~= "None" then
 			self.bdTexName = aName .. " User Backdrop"
 		else
-			self.bdTexName = prdb.BdTexture
+			self.bdTexName = self.prdb.BdTexture
 		end
-		if prdb.BdEdgeFile and prdb.BdEdgeFile ~= "None" then
+		if self.prdb.BdEdgeFile and self.prdb.BdEdgeFile ~= "None" then
 			self.bdbTexName = aName .. " User Border"
 		else
-			self.bdbTexName = prdb.BdBorderTexture
+			self.bdbTexName = self.prdb.BdBorderTexture
 		end
 		self.backdrop = {
 			bgFile = self.LSM:Fetch("background", self.bdTexName),
-			tile = prdb.BdTileSize > 0 and true or false, tileSize = prdb.BdTileSize,
+			tile = self.prdb.BdTileSize > 0 and true or false, tileSize = self.prdb.BdTileSize,
 			edgeFile = self.LSM:Fetch("border", self.bdbTexName),
-			edgeSize = prdb.BdEdgeSize,
-			insets = {left = prdb.BdInset, right = prdb.BdInset, top = prdb.BdInset, bottom = prdb.BdInset},
+			edgeSize = self.prdb.BdEdgeSize,
+			insets = {left = self.prdb.BdInset, right = self.prdb.BdInset, top = self.prdb.BdInset, bottom = self.prdb.BdInset},
 		}
 	end
 
@@ -215,36 +216,36 @@ function aObj:OnInitialize()
 	self.Backdrop[12].insets = {left = 2, right = 2, top = 2, bottom = 2}
 
 	-- setup background texture name
-	if prdb.BgUseTex then
-		if prdb.BgFile and prdb.BgFile ~= "None" then
+	if self.prdb.BgUseTex then
+		if self.prdb.BgFile and self.prdb.BgFile ~= "None" then
 			self.bgTexName = aName .. " User Background"
 		else
-			self.bgTexName = prdb.BgTexture
+			self.bgTexName = self.prdb.BgTexture
 		end
 	end
 
 	-- these are used to disable the gradient
-	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}}
+	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}, a = {}}
 
 	-- TooltipBorder colours
-	c = prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or prdb.TooltipBorder
+	c = self.prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.TooltipBorder
 	self.tbColour = {c.r, c.g, c.b, c.a or 1}
 	-- StatusBar colours
-	c = prdb.StatusBar
+	c = self.prdb.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
 	-- StatusBar texture
 	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
 	-- Backdrop colours
-	c = prdb.ClassClrsBg and _G.RAID_CLASS_COLORS[self.uCls] or prdb.Backdrop
+	c = self.prdb.ClassClrsBg and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or 1}
 	-- BackdropBorder colours
-	c = prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or prdb.BackdropBorder
+	c = self.prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.BackdropBorder
 	self.bbColour = {c.r, c.g, c.b, c.a or 1}
 	-- Inactive Tab & DropDowns texture
-	if prdb.TabDDFile and prdb.TabDDFile ~= "None" then
+	if self.prdb.TabDDFile and self.prdb.TabDDFile ~= "None" then
 		self.itTex = self.LSM:Fetch("background", aName .. " User TabDDTexture")
 	else
-		self.itTex = self.LSM:Fetch("background", prdb.TabDDTexture)
+		self.itTex = self.LSM:Fetch("background", self.prdb.TabDDTexture)
 	end
 	-- Empty Slot texture
 	self.esTex = [[Interface\Buttons\UI-Quickslot2]]
@@ -258,24 +259,13 @@ function aObj:OnInitialize()
 	-- table to hold which functions have been actioned
 	self.initialized = {}
 
-	-- table to hold StatusBars that have been glazed, with weak keys
-	self.sbGlazed = _G.setmetatable({}, {__mode = "k"})
-
 	-- shorthand for the TexturedTab profile setting
-	self.isTT = prdb.TexturedTab and true or false
-
-	-- ignore objects when skinning IOF elements
-	self.ignoreIOF = {}
-
-	-- ignore buttons when skinning frames
-	self.ignoreBtns = {}
-
-	self.UIEffScale = _G.UIParent:GetEffectiveScale()
+	self.isTT = self.prdb.TexturedTab and true or false
 
 	-- table to hold minimap buttons from other AddOn skins
 	self.mmButs = {}
 
-	prdb, dflts, c = nil, nil, nil
+	dflts, c = nil, nil
 
 end
 
@@ -294,20 +284,18 @@ function aObj:OnEnable()
 		_G.wipe(self.oocTab)
 	end)
 
-	local prdb = self.db.profile
-
 	-- change option name
-	if prdb.ClassColours then
-		self.db.profile.ClassColour = self.db.profile.ClassColours
-		self.db.profile.ClassColours = nil
+	if self.prdb.ClassColours then
+		self.prdb.ClassColour = self.prdb.ClassColours
+		self.prdb.ClassColours = nil
 	end
 	-- treat GossipFrame & QuestFrame as one
 	-- as they both change the quest text colours
-	if not prdb.GossipFrame == prdb.QuestFrame then
-		if not self.db.profile.QuestFrame then
-			self.db.profile.GossipFrame = false
+	if not self.prdb.GossipFrame == self.prdb.QuestFrame then
+		if not self.prdb.QuestFrame then
+			self.prdb.GossipFrame = false
 		else
-			self.db.profile.QuestFrame = false
+			self.prdb.QuestFrame = false
 		end
 	end
 
@@ -323,7 +311,9 @@ function aObj:OnEnable()
 			-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
 			self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink)
 				-- show Artifact Relic Item border
-				if itemIDOrLink and _G.IsArtifactRelicItem(itemIDOrLink) then
+				if itemIDOrLink
+				and _G.IsArtifactRelicItem(itemIDOrLink)
+				then
 					button.IconBorder:SetAlpha(1)
 				else
 					button.IconBorder:SetAlpha(0)
@@ -343,18 +333,29 @@ function aObj:OnEnable()
 				end
 			end)
 		end
+		if btnModDB.profile.CheckButtons then
+			self.modChkBtns = true
+		end
 	else
 		self.modBtns = false
 		self.modBtnBs = false
+		self.modChkBtns = false
 	end
 	btnModDB = nil
 
-	self.checkTex        = self.modBtns and self.modUIBtns.checkTex or _G.nop
-	self.skinButton      = self.modBtns and self.modUIBtns.skinButton or _G.nop
-	self.isButton        = self.modBtns and self.modUIBtns.isButton or _G.nop
-	self.skinAllButtons  = self.modBtns and self.modUIBtns.skinAllButtons or _G.nop
-	self.skinCheckButton = self.modBtns and self.modUIBtns.skinCheckButton or _G.nop
-	self.addButtonBorder = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
+	self.checkTex         = self.modBtns and self.modUIBtns.checkTex or _G.nop
+	self.skinCloseButton  = self.modBtns and self.modUIBtns.skinCloseButton or _G.nop
+	self.skinOtherButton  = self.modBtns and self.modUIBtns.skinOtherButton or _G.nop
+	self.skinExpandButton = self.modBtns and self.modUIBtns.skinExpandButton or _G.nop
+	self.skinStdButton       = self.modBtns and self.modUIBtns.skinStdButton or _G.nop
+	self.skinButton       = self.modBtns and self.modUIBtns.skinButton or _G.nop
+	self.isButton         = self.modBtns and self.modUIBtns.isButton or _G.nop
+	self.skinAllButtons   = self.modBtns and self.modUIBtns.skinAllButtons or _G.nop
+	self.fontSBX          = self.modBtns and self.modUIBtns.fontSBX or _G.nop
+	self.fontP            = self.modBtns and self.modUIBtns.fontP or _G.nop
+	self.fontS            = self.modBtns and self.modUIBtns.fontS or _G.nop
+	self.addButtonBorder  = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
+	self.skinCheckButton  = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 
 	-- track when Auction House is opened
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
@@ -367,21 +368,21 @@ function aObj:OnEnable()
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
 	_G.C_Timer.After(0.5, function() self:RegisterEvent("ADDON_LOADED") end)
 	-- skin the Blizzard frames
-	_G.C_Timer.After(prdb.Delay.Init, function() self:BlizzardFrames() end)
+	_G.C_Timer.After(self.prdb.Delay.Init, function() self:BlizzardFrames() end)
 	-- skin the loaded AddOns frames
-	_G.C_Timer.After(prdb.Delay.Init + prdb.Delay.Addons, function() self:AddonFrames() end)
+	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons, function() self:AddonFrames() end)
 	-- schedule scan of UIParent's Children after all AddOns have been loaded
-	_G.C_Timer.After(prdb.Delay.Init + prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
+	_G.C_Timer.After(self.prdb.Delay.Init + self.prdb.Delay.Addons + 1, function() self:scanUIParentsChildren() end)
 
 	-- handle statusbar changes
 	self.LSM.RegisterCallback(self, "LibSharedMedia_SetGlobal", function(mtype, override)
 		if mtype == "statusbar" then
-			self.db.profile.StatusBar.texture = override
+			self.prdb.StatusBar.texture = override
 			self:updateSBTexture()
 		elseif mtype == "background" then
-			self.db.profile.BdTexture = override
+			self.prdb.BdTexture = override
 		elseif mtype == "border" then
-			self.db.profile.BdBorderTexture = override
+			self.prdb.BdBorderTexture = override
 		end
 	end)
 
@@ -427,8 +428,6 @@ function aObj:OnEnable()
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
 
-	prdb = nil
-
 end
 
 -- Skinning functions
@@ -453,10 +452,10 @@ local function __addSkinButton(opts)
 		nohooks = don't hook methods
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __aSB\n" .. debugstack())
+	assert(opts.obj, "Missing object __aSB\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("__addSkinButton: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__addSkinButton: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sb then return end
@@ -479,8 +478,8 @@ local function __addSkinButton(opts)
 		opts.hook = opts.hook or opts.obj
 		-- hook Show/Hide methods
         -- changed to hook scripts as functions don't always work
-		aObj:secureHookScript(opts.hook, "OnShow", function(this) opts.obj.sb:Show() end)
-		aObj:secureHookScript(opts.hook, "OnHide", function(this) opts.obj.sb:Hide() end)
+		aObj:hookScript(opts.hook, "OnShow", function(this) opts.obj.sb:Show() end)
+		aObj:hookScript(opts.hook, "OnHide", function(this) opts.obj.sb:Hide() end)
 		if opts.obj:IsObjectType("Button") then -- hook Enable/Disable methods
 			aObj:secureHook(opts.hook, "Enable", function(this) opts.obj.sb:Enable() end)
 			aObj:secureHook(opts.hook, "Disable", function(this) opts.obj.sb:Disable() end)
@@ -514,10 +513,9 @@ local function __addSkinButton(opts)
 
 	-- change the draw layer of the Icon and Count, if necessary
 	if opts.obj.GetNumRegions then
-		local regs, reg, regOT = {opts.obj:GetRegions()}
-		for i = 1, #regs do
-			reg = regs[i]
-			regOT = regs[i]:GetObjectType()
+		local regOT
+		for _, reg in ipairs{opts.obj:GetRegions()} do
+			regOT = reg:GetObjectType()
 			if regOT == "Texture" or regOT == "FontString" then
 				-- change the DrawLayer to make the Icon show if required
 				if aObj:hasAnyTextInName(reg, {"[Ii]con", "[Cc]ount"})
@@ -526,7 +524,7 @@ local function __addSkinButton(opts)
 				end
 			end
 		end
-		regs, reg, regOT = nil, nil, nil
+		regOT = nil
 	end
 
 	-- reverse parent child relationship
@@ -549,7 +547,7 @@ function aObj:addSkinButton(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object aSB\n" .. debugstack())
+	assert(opts, "Missing object aSB\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -568,20 +566,17 @@ function aObj:addSkinButton(...)
 
 end
 
-local hTab = {"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"}
 local function hideHeader(obj)
 
 	-- hide the Header Texture and move the Header text, if required
 	local hdr
-	for i = 1, #hTab do
-		hdr = _G[obj:GetName() .. hTab[i]]
-		if hdr then
-			hdr:Hide()
-			hdr:SetPoint("TOP", obj, "TOP", 0, 7)
+	for _, suff in pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
+		if _G[obj:GetName() .. suff] then
+			_G[obj:GetName() .. suff]:Hide()
+			_G[obj:GetName() .. suff]:SetPoint("TOP", obj, "TOP", 0, 7)
 			break
 		end
 	end
-	hdr = nil
 	if obj.header then
 		obj.header:DisableDrawLayer("BACKGROUND")
 		obj.header:DisableDrawLayer("BORDER")
@@ -616,10 +611,16 @@ local function __addSkinFrame(opts)
 		sec = use the "SecureFrameTemplate"
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __aSF\n" .. debugstack())
+	assert(opts.obj, "Missing object __aSF\n" .. debugstack(2, 3, 2))
+	-- CHANGED: show AddOn skins still using skinAllButtons
+	if not opts.ft and not opts.nb then
+		aObj:CustomPrint(1, 0, 0, "Not using nb=true", opts.obj)
+		if not opts.obj:GetName() then _G.print("No Name supplied __aSF\n", debugstack(2, 3, 2)) end
+	end
+	-- FIXME: use ft="a" when AddOn skin has been changed to manually skin buttons
 --@end-alpha@
 
-	-- aObj:Debug("__addSkinFrame: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__addSkinFrame: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sf then return end
@@ -635,14 +636,11 @@ local function __addSkinFrame(opts)
 
 	-- remove all textures, if required
 	if opts.rt then
-		local regs, reg = {opts.obj:GetRegions()}
-		for i = 1, #regs do
-			reg = regs[i]
+		for _, reg in ipairs{opts.obj:GetRegions()} do
 			if not reg:IsObjectType("FontString") then
 				reg:SetTexture(nil)
 			end
 		end
-		regs, reg = nil, nil
 	end
 
 	-- setup offset values
@@ -653,7 +651,7 @@ local function __addSkinFrame(opts)
 	local yOfs2 = opts.y2 or opts.ofs * -1
 
 	-- add a frame around the current object
-	opts.obj.sf = opts.obj.sf or _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
 	local skinFrame = opts.obj.sf
 	skinFrame:ClearAllPoints()
 	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
@@ -683,8 +681,19 @@ local function __addSkinFrame(opts)
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
 
-	-- skin the buttons unless not required
-	if not opts.nb then aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft} end
+	-- CHANGED: skinAllButtons only used for AddOn skins, until all are converted (use ft="a" when converting)
+	if not opts.nb then
+		if not opts.ft then
+			aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft}
+		else
+			-- skin the CloseButton if it exists
+			local cBtn = opts.obj.CloseButton or opts.obj:GetName() and _G[opts.obj:GetName() .. "CloseButton"]
+			if cBtn then
+				aObj:skinCloseButton{obj=cBtn}
+			end
+			cBtn = nil
+		end
+	end
 
 	-- remove inset textures
 	if opts.ri then aObj:removeInset(opts.obj.Inset) end
@@ -714,7 +723,7 @@ function aObj:addSkinFrame(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object aSF\n" .. debugstack())
+	assert(opts, "Missing object aSF\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -738,31 +747,30 @@ end
 
 function aObj:applyGradient(obj, fh, invert, rotate)
 
-	local prdb = self.db.profile
 	-- don't apply a gradient if required
-	if not prdb.Gradient.char then
+	if not self.prdb.Gradient.char then
 		for i = 1, #self.gradFrames["p"] do
 			if self.gradFrames["p"][i] == obj then return end
 		end
 	end
-	if not prdb.Gradient.ui then
+	if not self.prdb.Gradient.ui then
 		for i = 1, #self.gradFrames["u"] do
 			if self.gradFrames["u"][i] == obj then return end
 		end
 	end
-	if not prdb.Gradient.npc then
+	if not self.prdb.Gradient.npc then
 		for i = 1, #self.gradFrames["n"] do
 			if self.gradFrames["n"][i] == obj then return end
 		end
 	end
-	if not prdb.Gradient.skinner then
+	if not self.prdb.Gradient.skinner then
 		for i = 1, #self.gradFrames["s"] do
 			if self.gradFrames["s"][i] == obj then return end
 		end
 	end
 
-	invert = invert or prdb.Gradient.invert
-	rotate = rotate or prdb.Gradient.rotate
+	invert = invert or self.prdb.Gradient.invert
+	rotate = rotate or self.prdb.Gradient.rotate
 
 	if not obj.tfade then
 		obj.tfade = obj:CreateTexture(nil, "BORDER", nil, -1)
@@ -771,12 +779,14 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		obj.tfade:SetGradientAlpha(self:getGradientInfo(invert, rotate))
 	end
 
-	if prdb.FadeHeight.enable and (prdb.FadeHeight.force or not fh) then
-		local objHeight = self:getInt(obj:GetHeight())
+	if self.prdb.FadeHeight.enable
+	and (self.prdb.FadeHeight.force or not fh)
+	and Round(obj:GetHeight()) ~= obj.hgt
+	then
 		-- set the Fade Height if not already passed to this function or 'forced'
 		-- making sure that it isn't greater than the frame height
-		fh = prdb.FadeHeight.value <= objHeight and prdb.FadeHeight.value or objHeight
-		objHeight = nil
+		obj.hgt = Round(obj:GetHeight())
+		fh = self.prdb.FadeHeight.value <= obj.hgt and self.prdb.FadeHeight.value or obj.hgt
 	end
 
 	obj.tfade:ClearAllPoints()
@@ -818,8 +828,6 @@ function aObj:applyGradient(obj, fh, invert, rotate)
 		end
 	end
 
-	prdb = nil
-
 end
 
 function aObj:applyTexture(obj)
@@ -828,11 +836,11 @@ function aObj:applyTexture(obj)
 	obj.tbg:SetTexture(self.LSM:Fetch("background", self.bgTexName), true) -- have to use true for tiling to work
 	obj.tbg:SetBlendMode("ADD") -- use existing frame alpha setting
 	-- allow for border inset
-	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", self.db.profile.BdInset, -self.db.profile.BdInset)
-	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -self.db.profile.BdInset, self.db.profile.BdInset)
+	obj.tbg:SetPoint("TOPLEFT", obj, "TOPLEFT", self.prdb.BdInset, -self.prdb.BdInset)
+	obj.tbg:SetPoint("BOTTOMRIGHT", obj, "BOTTOMRIGHT", -self.prdb.BdInset, self.prdb.BdInset)
 	-- the texture will be stretched if the following tiling methods are set to false
-	obj.tbg:SetHorizTile(self.db.profile.BgTile)
-	obj.tbg:SetVertTile(self.db.profile.BgTile)
+	obj.tbg:SetHorizTile(self.prdb.BgTile)
+	obj.tbg:SetVertTile(self.prdb.BgTile)
 
 end
 
@@ -853,10 +861,10 @@ local function __applySkin(opts)
 		ebc = Use EditBox Colours
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __aS\n" .. debugstack())
+	assert(opts.obj, "Missing object __aS\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("__applySkin: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__applySkin: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	local hasIOT = assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
 	if hasIOT and not opts.obj:IsObjectType("Frame") then
@@ -916,7 +924,7 @@ function aObj:applySkin(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object aS\n" .. debugstack())
+	assert(opts, "Missing object aS\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -945,7 +953,8 @@ function aObj:skinColHeads(buttonName, noCols)
 		btn = _G[buttonName .. i]
 		if not btn.sb then -- only do if not already skinned as a button
 			self:removeRegions(btn, {1, 2, 3})
-			self:addSkinFrame{obj=btn}
+			-- CHANGED: ft="a" is used to stop buttons being skinned automatically
+			self:addSkinFrame{obj=btn, ft="a"}
 		end
 	end
 	btn = nil
@@ -966,10 +975,10 @@ local function __skinDropDown(opts)
 		noBB = don't add a border around the button
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sDD\n" .. debugstack())
+	assert(opts.obj, "Missing object __sDD\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("__skinDropDown: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__skinDropDown: [%s, %s]", opts.obj, opts.obj:GetName())
 
 --@debug@
 	if opts.noMove
@@ -1019,15 +1028,13 @@ local function __skinDropDown(opts)
 	local yOfs2 = opts.y2 or 7
 	-- skin the frame
 	if aObj.db.profile.DropDownButtons then
-		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype, aso={ng=true, bd=5}, rp=opts.rp, nb=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		-- CHANGED: ft ... or "a" is used to stop buttons being skinned automatically
+		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype or "a", aso={ng=true, bd=5}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
 		aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2, x1=1}
 	end
-
-	-- stop dropdowns being skinned when IOF panel opened
-	if opts.ign then aObj.ignoreIOF[opts.obj] = true end
 
 	xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil
 
@@ -1037,7 +1044,7 @@ function aObj:skinDropDown(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sDD\n" .. debugstack())
+	assert(opts, "Missing object sDD\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1074,11 +1081,11 @@ local function __skinEditBox(opts)
 		nis = Numeric Input Spinner
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sEB\n" .. debugstack())
-	assert(opts.obj:IsObjectType("EditBox"), "Not an EditBox\n" .. debugstack())
+	assert(opts.obj, "Missing object __sEB\n" .. debugstack(2, 3, 2))
+	assert(opts.obj:IsObjectType("EditBox"), "Not an EditBox\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("__skinEditBox: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__skinEditBox: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sknd then
@@ -1122,32 +1129,24 @@ local function __skinEditBox(opts)
 	if opts.x ~= 0 or opts.y ~= 0 then aObj:moveObject{obj=opts.obj, x=opts.x or 0, y=opts.y or 0} end
 
 	-- move the search icon to the right, if required
-	local xOfs = 4
 	if opts.mi then
 		if opts.obj.searchIcon then
-			aObj:moveObject{obj=opts.obj.searchIcon, x=xOfs} -- e.g. BagItemSearchBox
+			aObj:moveObject{obj=opts.obj.searchIcon, x=4} -- e.g. BagItemSearchBox
 		elseif opts.obj.Instructions then -- e.g. InputBoxInstructionsTemplate (WoD)
 			opts.obj.Instructions:ClearAllPoints()
-			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", xOfs + 2, 0)
+			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", 6, 0)
 		elseif opts.obj.icon then
-			aObj:moveObject{obj=opts.obj.icon, x=xOfs} -- e.g. FriendsFrameBroadcastInput
+			aObj:moveObject{obj=opts.obj.icon, x=4} -- e.g. FriendsFrameBroadcastInput
 		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
-			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=xOfs} -- e.g. TradeSkillFrameSearchBox
+			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=4} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
-			local regs, reg = {opts.obj:GetRegions()}
-			for i = 1, #regs do
-				reg = regs[i]
+			for _, reg in ipairs{opts.obj:GetRegions()} do
 				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then
-					aObj:moveObject{obj=reg, x=xOfs}
+					aObj:moveObject{obj=reg, x=4}
 				end
 			end
-			regs, reg = nil, nil
 		end
 	end
-	xOfs = nil
-
-	-- stop editbox being skinned when IOF panel opened
-	if opts.ign then aObj.ignoreIOF[opts.obj] = true end
 
 	-- handle movement and buttons if it's a Numeric Input Spinner
 	if opts.nis then
@@ -1163,7 +1162,7 @@ function aObj:skinEditBox(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sEB\n" .. debugstack())
+	assert(opts, "Missing object sEB\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1185,7 +1184,6 @@ function aObj:skinEditBox(...)
 
 end
 
-local mTab = {"Gold", "Silver", "Copper"}
 local function __skinMoneyFrame(opts)
 --[[
 	Calling parameters:
@@ -1197,10 +1195,10 @@ local function __skinMoneyFrame(opts)
 		moveGEB = move the Gold edit box left
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sMF\n" .. debugstack())
+	assert(opts.obj, "Missing object __sMF\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("__skinMoneyFrame: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__skinMoneyFrame: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sknd then
@@ -1210,8 +1208,8 @@ local function __skinMoneyFrame(opts)
 	end
 
 	local obj
-	for i = 1, #mTab do
-		obj = _G[opts.obj:GetName() .. mTab[i]]
+	for _, type in pairs{"Gold", "Silver", "Copper"} do
+		obj = _G[opts.obj:GetName() .. type]
 		aObj:skinEditBox{obj=obj, regs={6, 7}, noHeight=true, noWidth=true, ign=true} -- N.B. region 6 is the icon, 7 is text
 		-- move label to the right for colourblind mode
 		if i ~= 1 or opts.moveGIcon then
@@ -1221,10 +1219,10 @@ local function __skinMoneyFrame(opts)
 		if not opts.noWidth and i ~= 1 then
 			aObj:adjWidth{obj=obj, adj=5}
 		end
-		if mTab[i] == "Gold" and opts.moveGEB then
+		if type == "Gold" and opts.moveGEB then
 			aObj:moveObject{obj=obj, x=-8}
 		end
-		if mTab[i] == "Silver" and opts.moveSEB then
+		if type == "Silver" and opts.moveSEB then
 			aObj:moveObject{obj=obj, x=-10}
 		end
 	end
@@ -1236,7 +1234,7 @@ function aObj:skinMoneyFrame(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sMF\n" .. debugstack())
+	assert(opts, "Missing object sMF\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1267,14 +1265,14 @@ local function __skinScrollBar(opts)
 		noRR = Don't remove regions
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sSB\n" .. debugstack())
-	assert(opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. debugstack())
-	assert(_G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
+	assert(opts.obj, "Missing object __sSB\n" .. debugstack(2, 3, 2))
+	assert(opts.obj:IsObjectType("Frame"), "Not a ScrollFrame\n" .. debugstack(2, 3, 2))
+	assert(_G[opts.obj:GetName() .. "ScrollBar"]:IsObjectType("Slider"), "Not a Slider\n" .. debugstack(2, 3, 2))
 	-- handle AddOn skins still using this code rather than skinSlider
-	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinScrollBar", opts.obj)
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinScrollBar, use skinSlider instead", opts.obj)
 --@end-alpha@
 
-	-- aObj:Debug("__skinScrollBar: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__skinScrollBar: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sknd then
@@ -1295,7 +1293,7 @@ function aObj:skinScrollBar(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sSB\n" .. debugstack())
+	assert(opts, "Missing object sSB\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1326,11 +1324,11 @@ local function __skinSlider(opts)
 		rt = remove textures from parent
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sS\n" .. debugstack())
-	assert(opts.obj:IsObjectType("Slider"), "Not a Slider\n" .. debugstack())
+	assert(opts.obj, "Missing object __sS\n" .. debugstack(2, 3, 2))
+	assert(opts.obj:IsObjectType("Slider"), "Not a Slider\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("__skinSlider: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__skinSlider: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	-- don't skin it twice
 	if opts.obj.sknd then
@@ -1367,7 +1365,7 @@ function aObj:skinSlider(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sS\n" .. debugstack())
+	assert(opts, "Missing object sS\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1391,6 +1389,8 @@ function aObj:skinSlider(...)
 
 end
 
+-- table to hold StatusBars that have been glazed, with weak keys
+aObj.sbGlazed = _G.setmetatable({}, {__mode = "k"})
 local function __skinStatusBar(opts)
 --[[
 	Calling parameters:
@@ -1401,16 +1401,19 @@ local function __skinStatusBar(opts)
 		hookFunc = hook the change texture function
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sSB\n" .. debugstack())
-	assert(opts.obj:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack())
+	assert(opts.obj, "Missing object __sSB\n" .. debugstack(2, 3, 2))
+	assert(opts.obj:IsObjectType("StatusBar"), "Not a StatusBar\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("__skinStatusBar: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__skinStatusBar: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	opts.obj:SetStatusBarTexture(aObj.sbTexture)
 
+	-- don't skin it twice
 	if not aObj.sbGlazed[opts.obj] then
 		aObj.sbGlazed[opts.obj] = {}
+	else
+		return
 	end
 	local sbG = aObj.sbGlazed[opts.obj]
 
@@ -1455,7 +1458,7 @@ function aObj:skinStatusBar(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object gSB\n" .. debugstack())
+	assert(opts, "Missing object gSB\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1464,7 +1467,7 @@ function aObj:skinStatusBar(...)
 	if type(rawget(opts, 0)) == "userdata" and type(opts.GetObjectType) == "function" then
 	--@alpha@
 		-- handle AddOn skins still using this code rather than skinSlider
-		aObj:CustomPrint(1, 0, 0, "Using old style call - skinStatusBar", select(1, ...))
+		aObj:CustomPrint(1, 0, 0, "Using old style call - skinStatusBar", select(1, ...), debugstack(2, 3, 2))
 	--@end-alpha@
 		-- old style call
 		opts = {}
@@ -1482,8 +1485,8 @@ end
 -- previous name for the above function (statusBar, fi, bgTex, otherTex, hookFunc)
 function aObj:glazeStatusBar(...)
 --@alpha@
-	-- handle AddOn skins still using this code rather than skinSlider
-	aObj:CustomPrint(1, 0, 0, "Using deprecated function - glazeStatusBar", select(1, ...))
+	-- handle AddOn skins still using this code rather than skinStatusBar
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - glazeStatusBar, use skinStatusBar instead", select(1, ...),  debugstack(2, 3, 2))
 --@end-alpha@
 
 	self:skinStatusBar(...)
@@ -1505,15 +1508,23 @@ local function __skinTabs(opts)
 		x2 = X offset for BOTTOMRIGHT
 		y2 = Y offset for BOTTOMRIGHT
 		ignht = don't change Highlight texture (AchievementUI)
+		nc = don't check to see if already skinned
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sT\n" .. debugstack())
-	assert(opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. debugstack())
+	assert(opts.obj, "Missing object __sT\n" .. debugstack(2, 3, 2))
+	assert(opts.obj:IsObjectType("Frame"), "Not a Frame\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("__skinTabs: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__skinTabs: [%s, %s]", opts.obj, opts.obj:GetName())
 
-	-- N.B. DON'T check to see if object is already skinned, otherwise Ace3GUI Tabs aren't skinned properly
+	-- don't skin it twice unless required (Ace3)
+	if not opts.nc
+	and opts.obj.sknd
+	then
+		return
+	else
+		opts.obj.sknd = true
+	end
 
 	-- use supplied name or existing name (Ace3 TabGroup fix)
 	local tabName = opts.name or opts.obj:GetName()
@@ -1535,7 +1546,8 @@ local function __skinTabs(opts)
 	for i = 1, opts.obj.numTabs do
 		tab = _G[tabName .. i]
 		aObj:keepRegions(tab, kRegions)
-		aObj:addSkinFrame{obj=tab, ft=opts.ftype, noBdr=aObj.isTT, bg=opts.bg or false, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+		-- CHANGED: ft ... or "a" is used to stop buttons being skinned automatically
+		aObj:addSkinFrame{obj=tab, ft=opts.ftype or "a", noBdr=aObj.isTT, bg=opts.bg or false, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 		tab.sf.ignore = opts.ignore -- ignore size changes
 		tab.sf.up = opts.up -- tabs grow upwards
 		if opts.lod then -- set textures here first time thru as it's LoD
@@ -1574,7 +1586,7 @@ function aObj:skinTabs(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sT\n" .. debugstack())
+	assert(opts, "Missing object sT\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -1600,7 +1612,8 @@ function aObj:skinToggleTabs(tabName, tabCnt, noHeight)
 		if not togTab.sknd then -- don't skin it twice
 			self:keepRegions(togTab, {7, 8}) -- N.B. regions 7 & 8 are text & highlight
 			if not noHeight then self:adjHeight{obj=togTab, adj=-5}	end
-			self:addSkinFrame{obj=togTab, y1=-2, x2=2, y2=-2}
+			-- CHANGED: ft="a" is used to stop buttons being skinned automatically
+			self:addSkinFrame{obj=togTab, ft="a", y1=-2, x2=2, y2=-2}
 		end
 	end
 	togTab = nil
@@ -1608,25 +1621,35 @@ function aObj:skinToggleTabs(tabName, tabCnt, noHeight)
 end
 
 function aObj:skinTooltip(tooltip)
-	if not self.db.profile.Tooltips.skin then return end
+	if not self.prdb.Tooltips.skin then return end
 --@alpha@
-	assert(tooltip, "Missing object sT\n" .. debugstack())
+	assert(tooltip, "Missing object sT\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
+	-- aObj:Debug2("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
 
 	if not tooltip then return end
 
 	if not tooltip.sf then
-		self:addSkinFrame{obj=tooltip, ft=ftype, kfs=true, aso={ng=true, self.db.profile.Tooltips.style == 3 and 1 or 10}, y1=-4, y2=2}
+		-- Bugfix for ElvUI
+		local ttSB
+		if _G.IsAddOnLoaded("ElvUI") then
+			ttSB = tooltip.SetBackdrop
+			tooltip.SetBackdrop = _G.nop
+		end
+		self:addSkinFrame{obj=tooltip, ft="a", kfs=true, aso={ng=true}}
+		if _G.IsAddOnLoaded("ElvUI") then
+			tooltip.SetBackdrop = ttSB
+		end
+		ttSB = nil
 	end
 
-	if self.db.profile.Tooltips.style == 1 then -- Rounded
+	if self.prdb.Tooltips.style == 1 then -- Rounded
 		self:applyGradient(tooltip.sf, 32)
-	elseif self.db.profile.Tooltips.style == 2 then -- Flat
+	elseif self.prdb.Tooltips.style == 2 then -- Flat
 		self:applyGradient(tooltip.sf)
-	elseif self.db.profile.Tooltips.style == 3 then -- Custom
-		self:applyGradient(tooltip.sf, self.db.profile.FadeHeight.value <= self:getInt(tooltip:GetHeight()) and self.db.profile.FadeHeight.value or self:getInt(tooltip:GetHeight()))
+	elseif self.prdb.Tooltips.style == 3 then -- Custom
+		self:applyGradient(tooltip.sf, self.prdb.FadeHeight.value <= Round(tooltip:GetHeight()) and self.prdb.FadeHeight.value or Round(tooltip:GetHeight()))
 	end
 
 end
@@ -1638,7 +1661,7 @@ local function __skinUsingBD(opts)
 		size = backdrop size to use (2 - wide, 3 - medium, 4 - narrow)
 --]]
 --@alpha@
-	assert(opts.obj, "Missing object __sUBD\n" .. debugstack())
+	assert(opts.obj, "Missing object __sUBD\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	opts.size = opts.size or 3 -- default to medium
@@ -1653,7 +1676,7 @@ function aObj:skinUsingBD(...)
 	local opts = select(1, ...)
 
 --@alpha@
-	assert(opts, "Missing object sUBD\n" .. debugstack())
+	assert(opts, "Missing object sUBD\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)

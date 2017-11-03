@@ -3,7 +3,7 @@ local _G = _G
 -- This is a Framework
 
 local allHooked
-function aObj:tekKonfig()
+aObj.otherAddons.tekKonfig = function(self) -- v1-Beta
 	if not self.db.profile.MenuFrames then return end
 
 	if allHooked then return end
@@ -11,7 +11,6 @@ function aObj:tekKonfig()
 	local tKAP = tKAP or _G.LibStub:GetLibrary("tekKonfig-AboutPanel", true)
 	if tKAP then
 		self:secureHook(tKAP, "OpenEditbox", function(this)
---			self:Debug("tKAP:[%s, %s]", this, tKAP.editbox)
 			if not tKAP.editbox.sknd then
 				tKAP.editbox.sknd = true
 				tKAP.editbox:SetHeight(24)
@@ -28,12 +27,19 @@ function aObj:tekKonfig()
 	if tKB then
 		self:rawHook(tKB, "new", function(parent, ...)
 			local btn = self.hooks[tKB].new(parent, ...)
-			self:skinButton{obj=btn}
+			self:skinStdButton{obj=btn}
 			return btn
 		end)
 	end
 
-	-- tekKonfig-Checkbox
+	local tKCb = tKCb or _G.LibStub:GetLibrary("tekKonfig-Checkbox", true)
+	if tKCb then
+		self:rawHook(tKCb, "new", function(parent, size, label, ...)
+			local cBtn = self.hooks[tKCb].new(parent, size, label, ...)
+			self:skinCheckButton{obj=cBtn}
+			return cBtn
+		end, true)
+	end
 
 	local tKDd = tKDd or _G.LibStub:GetLibrary("tekKonfig-Dropdown", true)
 	if tKDd then
@@ -52,7 +58,7 @@ function aObj:tekKonfig()
 				rightTex:SetAlpha(0)
 			end
 			if self.db.profile.DropDownButtons then
-				self:addSkinFrame{obj=frame, aso={ng=true}, nb=true, x1=16, y1=-1, x2=-15, y2=5}
+				self:addSkinFrame{obj=frame, ft="a", aso={ng=true}, nb=true, x1=16, y1=-1, x2=-15, y2=5}
 				self:addButtonBorder{obj=self:getChild(frame, 1), es=12, ofs=-2}
 			end
 			return frame, text, container, labeltext
@@ -64,9 +70,9 @@ function aObj:tekKonfig()
 	local tKG = tKG or _G.LibStub:GetLibrary("tekKonfig-Group", true)
 	if tKG then
 		self:rawHook(tKG, "new", function(parent, label, ...)
-		local box = self.hooks[tKG].new(parent, label, ...)
-		self:addSkinFrame{obj=box}
-		return box
+			local box = self.hooks[tKG].new(parent, label, ...)
+			self:addSkinFrame{obj=box, ft="a", nb=true}
+			return box
 		end, true)
 	end
 
@@ -89,6 +95,8 @@ function aObj:tekKonfig()
 		end, true)
 	end
 
-	if tKAP and tKB and tKDd and tKG and tKS then allHooked = true end
+	-- tekKonfig-TopTab
+
+	if tKAP and tKB and tKCb and tKDd and tKG and tKS then allHooked = true end
 
 end

@@ -5,13 +5,11 @@ local _G = _G
 aObj.addonsToSkin.TinyDPS = function(self) -- v 0.942
 
 	-- main frame
-	self:addSkinFrame{obj=_G.tdpsFrame, ofs=2, aso={ng=true}} -- no gradient (Animation)
+	self:addSkinFrame{obj=_G.tdpsFrame, ft="a", nb=true, ofs=2, aso={ng=true}} -- no gradient (Animation)
 
 	local function skinSBs()
 
-		local kids, child = {_G.tdpsFrame:GetChildren()}
-		for i = 1, #kids do
-			child = kids[i]
+		for _, child in _G.ipairs{_G.tdpsFrame:GetChildren()} do
 			if child:IsObjectType("StatusBar") then
 				child:SetBackdrop(nil)
 				child:SetStatusBarTexture(aObj.sbTexture)
@@ -20,8 +18,7 @@ aObj.addonsToSkin.TinyDPS = function(self) -- v 0.942
 				child.bg:SetVertexColor(aObj.sbColour[1], aObj.sbColour[2], aObj.sbColour[3], aObj.sbColour[4])
 			end
 		end
-		kids, child = nil, nil
-		
+
 	end
 	-- add a metatable to the Player table so that new bars can be skinned
 	if _G.tdpsPlayer then

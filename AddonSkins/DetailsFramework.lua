@@ -2,7 +2,8 @@ local aName, aObj = ...
 local _G = _G
 -- This is a Library
 
-function aObj:DetailsFramework()
+aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v r58
+
 	local DF = _G.LibStub("DetailsFramework-1.0", true)
 	if not DF then return end
 
@@ -12,23 +13,23 @@ function aObj:DetailsFramework()
 -->>-- addon
 
 -->>-- button
-	self:RawHook(DF, "CreateButton", function(this, parent, func, w, h, text, param1, param2, texture, member, name, short_method, button_template, text_template)
-		-- print("DF CreateButton:", this, parent, func, w, h, text, param1, param2, texture, member, name, short_method, button_template, text_template)
-		local button = self.hooks[this].CreateButton(this, parent, func, w, h, text, param1, param2, texture, member, name, short_method, button_template, text_template)
-		return button
-	end, true)
-	self:RawHook(DF, "CreateColorPickButton", function(this, name, member, callback, alpha, button_template)
-		-- print("DF CreateColorPickButton:", this, name, member, callback, alpha, button_template)
-		local button = self.hooks[this].CreateColorPickButton(this, name, member, callback, alpha, button_template)
-		return button
-	end, true)
+	-- self:RawHook(DF, "CreateButton", function(this, parent, func, w, h, text, param1, param2, texture, member, name, short_method, button_template, text_template)
+	-- 	-- print("DF CreateButton:", this, parent, func, w, h, text, param1, param2, texture, member, name, short_method, button_template, text_template)
+	-- 	local button = self.hooks[this].CreateButton(this, parent, func, w, h, text, param1, param2, texture, member, name, short_method, button_template, text_template)
+	-- 	return button
+	-- end, true)
+	-- self:RawHook(DF, "CreateColorPickButton", function(this, name, member, callback, alpha, button_template)
+	-- 	-- print("DF CreateColorPickButton:", this, name, member, callback, alpha, button_template)
+	-- 	local button = self.hooks[this].CreateColorPickButton(this, name, member, callback, alpha, button_template)
+	-- 	return button
+	-- end, true)
 
 -->>-- coooltip
 	local function skinCooltip(frame)
 
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=frame, x1=-3, x2=3}
+		aObj:addSkinFrame{obj=frame, ft="a", nb=true, x1=-3, x2=3}
 
 	end
 	if _G.GameCooltip2 then
@@ -50,58 +51,54 @@ function aObj:DetailsFramework()
 	end
 -->>-- dropdown
 	-- obj.dropdown
-	self:RawHook(DF, "NewDropDown", function(this, parent, func, default, w, h, member, name, template)
-		-- print("DF NewDropDown:", this, parent, func, default, w, h, member, name, template)
-		local obj = self.hooks[this].NewDropDown(this, parent, func, default, w, h, member, name, template)
-		return obj
-	end, true)
+	-- self:RawHook(DF, "NewDropDown", function(this, parent, func, default, w, h, member, name, template)
+	-- 	-- print("DF NewDropDown:", this, parent, func, default, w, h, member, name, template)
+	-- 	local obj = self.hooks[this].NewDropDown(this, parent, func, default, w, h, member, name, template)
+	-- 	return obj
+	-- end, true)
 	self:RawHook(DF, "CreateNewDropdownFrame", function(this, parent, name)
 		-- print("DF CreateNewDropdownFrame:", this, parent, name)
 		local button = self.hooks[this].CreateNewDropdownFrame(this, parent, name)
-		self:addSkinFrame{obj=button.dropdownborder}
+		self:addSkinFrame{obj=button.dropdownborder, ft="a", nb=true}
 		button.dropdownframe:GetScrollChild():SetBackdrop(nil)
 		return button
 	end, true)
-	self:RawHook(DF, "CreateDropdownButton", function(this, parent, name)
-		-- print("DF CreateDropdownButton:", this, parent, name)
-		local button = self.hooks[this].CreateDropdownButton(this, parent, name)
-		return button
-	end, true)
+	-- self:RawHook(DF, "CreateDropdownButton", function(this, parent, name)
+	-- 	-- print("DF CreateDropdownButton:", this, parent, name)
+	-- 	local button = self.hooks[this].CreateDropdownButton(this, parent, name)
+	-- 	return button
+	-- end, true)
 
 -->>-- help
-	self:RawHook(DF, "NewHelp", function(this, parent, width, height, x, y, buttonWidth, buttonHeight, name)
-		-- print("DF NewHelp:", this, parent, width, height, x, y, buttonWidth, buttonHeight, name)
-		local button = self.hooks[this].NewHelp(this, parent, width, height, x, y, buttonWidth, buttonHeight, name)
-		return button
-	end, true)
+	-- self:RawHook(DF, "NewHelp", function(this, parent, width, height, x, y, buttonWidth, buttonHeight, name)
+	-- 	-- print("DF NewHelp:", this, parent, width, height, x, y, buttonWidth, buttonHeight, name)
+	-- 	local button = self.hooks[this].NewHelp(this, parent, width, height, x, y, buttonWidth, buttonHeight, name)
+	-- 	return button
+	-- end, true)
 
 -->>-- label
 	-- obj.label
-	self:RawHook(DF, "NewLabel", function(this, parent, text, size, color, font, member, name, layer)
-		-- print("DF NewLabel:", this, parent, text, size, color, font, member, name, layer)
-		local obj = self.hooks[this].NewLabel(this, parent, text, size, color, font, member, name, layer)
-		return obj
-	end, true)
+	-- self:RawHook(DF, "NewLabel", function(this, parent, text, size, color, font, member, name, layer)
+	-- 	-- print("DF NewLabel:", this, parent, text, size, color, font, member, name, layer)
+	-- 	local obj = self.hooks[this].NewLabel(this, parent, text, size, color, font, member, name, layer)
+	-- 	return obj
+	-- end, true)
 
 -->>-- normal_bar
 	-- obj.statusbar
-	self:RawHook(DF, "NewBar", function(this, parent, texture, w, h, value, member, name)
-		-- print("DF NewBar:", this, parent, texture, w, h, value, member, name)
-		local obj = self.hooks[this].NewBar(this, parent, texture, w, h, value, member, name)
-		return obj
-	end, true)
+	-- self:RawHook(DF, "NewBar", function(this, parent, texture, w, h, value, member, name)
+	-- 	-- print("DF NewBar:", this, parent, texture, w, h, value, member, name)
+	-- 	local obj = self.hooks[this].NewBar(this, parent, texture, w, h, value, member, name)
+	-- 	return obj
+	-- end, true)
 
 -->>-- panel
 	-- obj.frame
-	self:RawHook(DF, "NewPanel", function(this, parent, container, name, member, w, h, backdrop, backdropcolor, bordercolor)
-		-- print("DF NewPanel:", this, parent, container, name, member, w, h, backdrop, backdropcolor, bordercolor)
-		local obj = self.hooks[this].NewPanel(this, parent, container, name, member, w, h, backdrop, backdropcolor, bordercolor)
-		-- self:addSkinFrame{obj=obj.frame, ofs=2}
-		-- obj.frame.SetBackdrop = _G.nop
-		-- obj.frame.SetBackdropColor = _G.nop
-		-- obj.frame.SetBackdropBorderColor = _G.nop
-		return obj
-	end, true)
+	-- self:RawHook(DF, "NewPanel", function(this, parent, container, name, member, w, h, backdrop, backdropcolor, bordercolor)
+	-- 	-- print("DF NewPanel:", this, parent, container, name, member, w, h, backdrop, backdropcolor, bordercolor)
+	-- 	local obj = self.hooks[this].NewPanel(this, parent, container, name, member, w, h, backdrop, backdropcolor, bordercolor)
+	-- 	return obj
+	-- end, true)
 	self:RawHook(DF, "NewFillPanel", function(this, parent, rows, name, member, w, h, total_lines, fill_row, autowidth, options)
 		-- print("DF NewFillPanel:", this, parent, rows, name, member, w, h, total_lines, fill_row, autowidth, options)
 		local obj = self.hooks[this].NewFillPanel(this, parent, rows, name, member, w, h, total_lines, fill_row, autowidth, options)
@@ -116,15 +113,15 @@ function aObj:DetailsFramework()
 		local frame = self.hooks[this].CreateSimplePanel(this, parent, w, h, title, name, panel_options, db)
 		frame.TitleBar:SetBackdrop(nil)
 		frame.Close:SetSize(20, 20)
-		self:skinButton{obj=frame.Close, cb=true}
-		self:addSkinFrame{obj=frame, nb=true}
+		self:skinCloseButton{obj=frame.Close}
+		self:addSkinFrame{obj=frame, ft="a", nb=true}
 		return frame
 	end, true)
-	self:RawHook(DF, "Create1PxPanel", function(this, parent, w, h, title, name, config, title_anchor, no_special_frame)
-		-- print("DF Create1PxPanel:", this, parent, w, h, title, name, config, title_anchor, no_special_frame)
-		local frame = self.hooks[this].Create1PxPanel(this, parent, w, h, title, name, config, title_anchor, no_special_frame)
-		return frame
-	end, true)
+	-- self:RawHook(DF, "Create1PxPanel", function(this, parent, w, h, title, name, config, title_anchor, no_special_frame)
+	-- 	-- print("DF Create1PxPanel:", this, parent, w, h, title, name, config, title_anchor, no_special_frame)
+	-- 	local frame = self.hooks[this].Create1PxPanel(this, parent, w, h, title, name, config, title_anchor, no_special_frame)
+	-- 	return frame
+	-- end, true)
 	-- ShowPromptPanel
 	-- ShowTextPromptPanel
 	-- CreateOptionsButton
@@ -165,18 +162,18 @@ function aObj:DetailsFramework()
 	end, true)
 
 -->>-- slider
-	self:RawHook(DF, "NewSwitch", function(this, parent, container, name, member, w, h, ltext, rtext, default_value, color_inverted, switch_func, return_func, with_label, switch_template, label_template)
-		-- print("DF NewSwitch:", this, parent, container, name, member, w, h, ltext, rtext, default_value, color_inverted, switch_func, return_func, with_label, switch_template, label_template)
-		local button, label = self.hooks[this].NewSwitch(this, parent, container, name, member, w, h, ltext, rtext, default_value, color_inverted, switch_func, return_func, with_label, switch_template, label_template)
-		return button, label
-	end, true)
+	-- self:RawHook(DF, "NewSwitch", function(this, parent, container, name, member, w, h, ltext, rtext, default_value, color_inverted, switch_func, return_func, with_label, switch_template, label_template)
+	-- 	-- print("DF NewSwitch:", this, parent, container, name, member, w, h, ltext, rtext, default_value, color_inverted, switch_func, return_func, with_label, switch_template, label_template)
+	-- 	local button, label = self.hooks[this].NewSwitch(this, parent, container, name, member, w, h, ltext, rtext, default_value, color_inverted, switch_func, return_func, with_label, switch_template, label_template)
+	-- 	return button, label
+	-- end, true)
 
 -->>-- split_bar
-	self:RawHook(DF, "NewSplitBar", function(this, parent, w, h, member, name)
-		-- print("DF NewSplitBar:", this, parent, w, h, member, name)
-		local obj = self.hooks[this].NewSplitBarT(this, parent, w, h, member, name)
-		return obj
-	end, true)
+	-- self:RawHook(DF, "NewSplitBar", function(this, parent, w, h, member, name)
+	-- 	-- print("DF NewSplitBar:", this, parent, w, h, member, name)
+	-- 	local obj = self.hooks[this].NewSplitBarT(this, parent, w, h, member, name)
+	-- 	return obj
+	-- end, true)
 
 -->>-- textentry
 	-- obj.editbox
@@ -194,7 +191,7 @@ function aObj:DetailsFramework()
 		-- print("DF NewSpecialLuaEditorEntry:", this, parent, w, h, member, name, nointent)
 		local frame = self.hooks[this].NewSpecialLuaEditorEntry(this, parent, w, h, member, name, nointent)
 		self:skinScrollBar{obj=frame.scroll}
-		self:addSkinFrame{obj=frame}
+		self:addSkinFrame{obj=frame, ft="a", nb=true}
 		frame.SetBackdrop = _G.nop
 		frame.SetBackdropColor = _G.nop
 		frame.SetBackdropBorderColor = _G.nop
