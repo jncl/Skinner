@@ -1,3 +1,22 @@
+beta7.25208.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated CompactRaidFrames skin
+	Bugfix TradeSkillUI status bar
+	Updated Buffs skin
+	Updated DropDownPanels skin
+	Updated Tooltip skinning code
+	Updated VideoOptionsPanel skin
+	Updated utlity function
+	Updated CastingBar skin
+	Updated StatusBar skinning code
+	PTR change
+	Bugfixes - InterfaceOptionsPanels (Checkboxes, CompactUnitFrameProfiles), ObjectiveTracker
+	Code Optimisations - Tooltips, CompactUnitFrames, Buffs, StatusBars, applyGradient &&
+	Updated Ace3, AckisRecipeList, Armory, BugSack, Cork, TinyDPS, TinyTooltip, WIM  & WorldQuestTraker skins
+
 beta7.25163.2
 Jncl:
 	ToDo.txt
