@@ -25,33 +25,27 @@ Legend:
 	O	PTR - 7.3.2
 √		- Logout is now a protected function
 
-	O	replace GlazeStatusBar function by skinStatusBar function
-√		- change code defs for skinStatusBar in NPCFrames, PlayerFrames, UIFrames, UnitFrames
+	B	Tooltips
+√		- skin shoppingTooltips
 
-	O	Code optimisations
-√		- Tooltips
-√		- CompactUnitFrames
-√		- Buffs
-√		- StatusBars
-√		- applyGradient
+	I	Checkbuttons
+√		- tekKonfigCheckbox, move check texture above button skin
 
-	O	Bugfixes
-		- InterfaceOptionsPanels
-√			- Checkboxes
-√			- CompactUnitFrameProfiles
-√		- ObjectiveTracker
+	I	Ace3
+		- check all objects are skinned properly
 
+√	I	Rework code to speedup entering world/zoning
 
-	I	BugSack
-√		-  make skin frame appear above other frames
+	I	 Quester, reported by elrandir, 08.10.17
+?		- add skin frame
 
-	I	TinyTooltip
-√		- update saved variables
-√		- change how tooltips are skinned
+√	I	ElvUI, reported by Jimmy2baws,10.10.17
+		- ..\AddOns\Skinner\UtilFuncs.lua line 274: attempt to index field 'db' (a nil value)
+			Skinner\UtilFuncs.lua:274: checkAndRun()
+			Skinner\AddonSkins\ElvUI.lua:124: in main chunk
 
-	I	WIM
-√		- skin option panel backdrops
-√		- skin options filter frame properly
+√	I	TitanSocial, reported by epidemedabear, 10.10.17
+		- now has a transparent background
 
-	I	Buff Timers aren't vivible
-
+	N	GuildRosterManager
+√		- new button on guild frame
