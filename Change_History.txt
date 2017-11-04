@@ -1,3 +1,10 @@
+beta7.25383.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Bugfix for GarrisonUI & ORderHallUI
+	Bugfix for GuildRosterManager
+
 beta7.25383.1
 Jncl:
 	ToDo.txt
