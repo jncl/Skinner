@@ -53,8 +53,10 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 				if _G["BrowseButton" .. i].Orig then break end -- Auctioneer CompactUI loaded
 				self:keepFontStrings(_G["BrowseButton" .. i])
 				if _G["BrowseButton" .. i .. "Highlight"] then _G["BrowseButton" .. i .. "Highlight"]:SetAlpha(1) end
-				self:addButtonBorder{obj=_G["BrowseButton" .. i .. "Item"], reParent={_G["BrowseButton" .. i .. "Count"], _G["BrowseButton" .. i .. "Stock"]}}
-				colourBtnBorder(_G["BrowseButton" .. i .. "Item"])
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G["BrowseButton" .. i .. "Item"], reParent={_G["BrowseButton" .. i .. "Count"], _G["BrowseButton" .. i .. "Stock"]}}
+					colourBtnBorder(_G["BrowseButton" .. i .. "Item"])
+				end
 			end
 			for _, type in pairs{"Name", "MinLevel", "MaxLevel"} do
 				self:skinEditBox{obj=_G["Browse" .. type], regs={6, type == "Name" and 7 or nil}, mi=true} -- 6 is text, 7 is icon
@@ -105,8 +107,10 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 			for i = 1, _G.NUM_BIDS_TO_DISPLAY do
 				self:keepFontStrings(_G["BidButton" .. i])
 				if _G["BidButton" .. i .. "Highlight"] then _G["BidButton" .. i .. "Highlight"]:SetAlpha(1) end
-				self:addButtonBorder{obj=_G["BidButton" .. i .. "Item"],reParent={_G["BidButton" .. i .. "Count"], _G["BidButton" .. i .. "Stock"]}}
-				colourBtnBorder(_G["BidButton" .. i .. "Item"])
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G["BidButton" .. i .. "Item"],reParent={_G["BidButton" .. i .. "Count"], _G["BidButton" .. i .. "Stock"]}}
+					colourBtnBorder(_G["BidButton" .. i .. "Item"])
+				end
 			end
 			self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, rt="artwork"}
 			self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
@@ -128,8 +132,10 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 			for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
 				self:keepFontStrings(_G["AuctionsButton" .. i])
 				if _G["AuctionsButton" .. i .. "Highlight"] then _G["AuctionsButton" .. i .. "Highlight"]:SetAlpha(1) end
-				self:addButtonBorder{obj=_G["AuctionsButton" .. i .. "Item"], reParent={_G["AuctionsButton" .. i .. "Count"], _G["AuctionsButton" .. i .. "Stock"]}}
-				colourBtnBorder(_G["AuctionsButton" .. i .. "Item"])
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G["AuctionsButton" .. i .. "Item"], reParent={_G["AuctionsButton" .. i .. "Count"], _G["AuctionsButton" .. i .. "Stock"]}}
+					colourBtnBorder(_G["AuctionsButton" .. i .. "Item"])
+				end
 			end
 			if not self.modBtnBs then
 				self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
@@ -252,8 +258,10 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		self:moveObject{obj=self:getRegion(this, 22), y=-4}
 		-- HotDeal frame
 		self:keepFontStrings(this.HotDeal)
-		self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock}}
-		colourBtnBorder(this.HotDeal.Item)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock}}
+			colourBtnBorder(this.HotDeal.Item)
+		end
 
 		-- column headings
 		for _, type in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
@@ -270,8 +278,10 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		local function skinSFButtons(scrollFrame)
 			for i = 1, #scrollFrame.buttons do
 				self:keepFontStrings(scrollFrame.buttons[i])
-				self:addButtonBorder{obj=scrollFrame.buttons[i].Item, reParent={scrollFrame.buttons[i].Item.Count, scrollFrame.buttons[i].Item.Stock}}
-				colourBtnBorder(scrollFrame.buttons[i].Item)
+				if self.modBtnBs then
+					self:addButtonBorder{obj=scrollFrame.buttons[i].Item, reParent={scrollFrame.buttons[i].Item.Count, scrollFrame.buttons[i].Item.Stock}}
+					colourBtnBorder(scrollFrame.buttons[i].Item)
+				end
 			end
 		end
 		self:SecureHook("BlackMarketScrollFrame_Update", function(this)
