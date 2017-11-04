@@ -21,3 +21,6 @@ Legend:
 
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
+
+√	I	AuctionUI , reported by epidemedabear, 04.11.17
+		- ..\AddOns\Skinner\NPCFrames.lua line 13: attempt to index field 'sbb' (a nil value)
