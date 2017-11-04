@@ -53,32 +53,32 @@ local function skinFollowerListButtons(frame)
 	end
 
 end
-local function skinFollowerAbilitiesAndCounters(frame, id)
+local function skinFollowerAbilitiesAndCounters(frame)
 
-	local ft = frame:GetParent().FollowerTab
-	-- Ability buttons
-	for i = 1, #ft.AbilitiesFrame.Abilities do
-		ft.AbilitiesFrame.Abilities[i] = ft.AbilitiesFrame.Abilities[i]
-		aObj:addButtonBorder{obj=ft.AbilitiesFrame.Abilities[i].IconButton}
-		ft.AbilitiesFrame.Abilities[i].IconButton.Border:SetTexture(nil)
-	end
 	-- CombatAllySpell buttons
-	for i = 1, #ft.AbilitiesFrame.CombatAllySpell do
-		aObj:addButtonBorder{obj=ft.AbilitiesFrame.CombatAllySpell[i], relTo=ft.AbilitiesFrame.CombatAllySpell[i].iconTexture}
+	for i = 1, #frame.AbilitiesFrame.CombatAllySpell do
+		aObj:addButtonBorder{obj=frame.AbilitiesFrame.CombatAllySpell[i], relTo=frame.AbilitiesFrame.CombatAllySpell[i].iconTexture}
 	end
 
-	-- OrderHallUI
-	if ft.AbilitiesFrame.Equipment then
-		for i = 1, #ft.AbilitiesFrame.Equipment do
-			ft.AbilitiesFrame.Equipment[i]:DisableDrawLayer("BACKGROUND")
-			ft.AbilitiesFrame.Equipment[i].Border:SetTexture(nil)
-			aObj:addButtonBorder{obj=ft.AbilitiesFrame.Equipment[i], ofs=1, relTo=ft.AbilitiesFrame.Equipment[i].Icon}
-		end
+	-- Ability buttons
+	for ability in frame.abilitiesPool:EnumerateActive() do
+		aObj:addButtonBorder{obj=ability.IconButton, reParent={ability.IconButton.Border}}
 	end
-	ft = nil
+
+	-- Counter buttons (Garrison Followers)
+	for counters in frame.countersPool:EnumerateActive() do
+		aObj:addButtonBorder{obj=counters, relTo=counters.Icon, reParent={counters.Border}}
+	end
+
+	-- Equipment buttons (OrderHallUI)
+	for equipment in frame.equipmentPool:EnumerateActive() do
+		equipment.BG:SetTexture(nil)
+		equipment.Border:SetTexture(nil)
+		aObj:addButtonBorder{obj=equipment, ofs=1, relTo=equipment.Icon}
+	end
 
 end
-local function skinFollowerList(frame, hookSF)
+local function skinFollowerList(frame)
 
 	frame:DisableDrawLayer("BORDER")
 
@@ -105,12 +105,10 @@ local function skinFollowerList(frame, hookSF)
 		skinFollowerListButtons(frame)
 	end
 
-	skinFollowerAbilitiesAndCounters(frame, 1)
-	if hookSF then
-		-- hook this to skin Abilities & Counters, if required
-		aObj:SecureHook(frame, "ShowFollower", function(this, id)
-			skinFollowerAbilitiesAndCounters(this, id)
-		end)
+	if frame.followerTab
+	and not frame:GetName():find("Ship") -- Shipyard & ShipFollowers
+	then
+		skinFollowerAbilitiesAndCounters(frame.followerTab)
 	end
 
 end
@@ -124,20 +122,19 @@ local function skinFollowerPage(frame)
 	aObj:addButtonBorder{obj=frame.ItemArmor, relTo=frame.ItemArmor.Icon}
 	frame.ItemArmor.Border:SetTexture(nil)
 
-
 end
-local function skinFollowerTraitsAndEquipment(obj)
+local function skinFollowerTraitsAndEquipment(frame)
 
-	aObj:skinStatusBar{obj=obj.XPBar, fi=0}
-	obj.XPBar:DisableDrawLayer("OVERLAY")
-	for i = 1, #obj.Traits do
-		obj.Traits[i].Border:SetTexture(nil)
-		aObj:addButtonBorder{obj=obj.Traits[i], relTo=obj.Traits[i].Portrait, ofs=1}
+	aObj:skinStatusBar{obj=frame.XPBar, fi=0}
+	frame.XPBar:DisableDrawLayer("OVERLAY")
+	for i = 1, #frame.Traits do
+		frame.Traits[i].Border:SetTexture(nil)
+		aObj:addButtonBorder{obj=frame.Traits[i], relTo=frame.Traits[i].Portrait, ofs=1}
 	end
-	for i = 1, #obj.EquipmentFrame.Equipment do
-		obj.EquipmentFrame.Equipment[i]:DisableDrawLayer("BACKGROUND")
-		obj.EquipmentFrame.Equipment[i].Border:SetTexture(nil)
-		aObj:addButtonBorder{obj=obj.EquipmentFrame.Equipment[i], relTo=obj.EquipmentFrame.Equipment[i].Icon, ofs=1}
+	for i = 1, #frame.EquipmentFrame.Equipment do
+		frame.EquipmentFrame.Equipment[i].BG:SetTexture(nil)
+		frame.EquipmentFrame.Equipment[i].Border:SetTexture(nil)
+		aObj:addButtonBorder{obj=frame.EquipmentFrame.Equipment[i], relTo=frame.EquipmentFrame.Equipment[i].Icon, ofs=1}
 	end
 
 end
@@ -1826,6 +1823,10 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			this:DisableDrawLayer("BORDER")
 			self:Unhook(this, "OnShow")
 		end)
+		if _G.GarrisonBuildingFrame.TownHallBox:IsShown() then
+			_G.GarrisonBuildingFrame.TownHallBox:Hide()
+			_G.GarrisonBuildingFrame.TownHallBox:Show()
+		end
 
 		-- MapFrame
 
@@ -1847,7 +1848,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		skinMissionFrame(this)
 
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
-			skinFollowerList(this, true)
+			skinFollowerList(this)
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -2006,7 +2007,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end
 
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
-			skinFollowerList(this, true)
+			skinFollowerList(this)
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -3679,7 +3680,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
-			skinFollowerList(this, true)
+			skinFollowerList(this)
 			self:Unhook(this, "OnShow")
 		end)
 
