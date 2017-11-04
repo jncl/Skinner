@@ -1,3 +1,14 @@
+beta7.25383.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated many skins to use new functions and features
+	Updated LibDBIcon-1.0.lua to minor ver 34
+	Removed LoD delay option & code
+	Skinned TitanSocial
+	Bagnon_Forever
+	Obsoleted Bagnon_Forever
+
 beta7.25208.1
 Jncl:
 	ToDo.txt
