@@ -66,7 +66,9 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 7.3.2R1.101
 
 	-- GRM_RosterChangeLogFrame
 	self:skinCheckButton{obj=_G.GRM_UI.GRM_RosterLoadOnLogonCheckButton}
-	_G.GRM_UI.GRM_RosterLoadOnLogonCheckButton.sb:Show() -- hidden by default
+	if _G.GRM_UI.GRM_RosterLoadOnLogonCheckButton.sb then
+		_G.GRM_UI.GRM_RosterLoadOnLogonCheckButton.sb:Show() -- hidden by default
+	end
 	self:skinCheckButton{obj=_G.GRM_RosterAddTimestampCheckButton}
 	self:skinCheckButton{obj=_G.GRM_RosterReportAddEventsToCalendarButton}
 	self:skinCheckButton{obj=_G.GRM_RosterMainOnlyCheckButton}
@@ -151,7 +153,7 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 7.3.2R1.101
 		_G.GRM_AddAltEditBox:SetTextInsets(6 ,3 ,3 ,6)
 		_G.GRM_LoadLogButton:SetSize(60, 16)
 		_G.GRM_LoadLogButton:ClearAllPoints()
-	    _G.GRM_LoadLogButton:SetPoint("BOTTOMLEFT" ,_G.GuildRosterFrame ,"TOPLEFT" ,30 ,0.5)
+	    _G.GRM_LoadLogButton:SetPoint("BOTTOMLEFT" ,_G.GuildRosterFrame ,"TOPLEFT" ,20 ,0.5)
 		_G.GRM_BanListButton:SetSize(60, 16)
 	    _G.GRM_AddonUsersButton:SetSize(60, 16)
 		_G.GRM_MemberDetailMetaData:SetPoint("TOPLEFT", _G.GuildRosterFrame, "TOPRIGHT", -2, 2)
