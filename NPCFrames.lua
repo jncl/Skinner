@@ -684,7 +684,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 		-- FollowerReward
 		for flwrBtn in frame.followerRewardPool:EnumerateActive() do
-			_G.print("followerRewardPool", flwrBtn)
+			-- aObj:Debug("followerRewardPool: [%s]", flwrBtn)
 			flwrBtn.BG:SetTexture(nil)
 			flwrBtn.PortraitFrame.PortraitRing:SetTexture(nil)
 			flwrBtn.PortraitFrame.LevelBorder:SetAlpha(0) -- texture changed
