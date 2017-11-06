@@ -22,5 +22,18 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-√	I	AuctionUI , reported by epidemedabear, 04.11.17
-		- ..\AddOns\Skinner\NPCFrames.lua line 13: attempt to index field 'sbb' (a nil value)
+√	I	tekKonfig, reported by Jimmy2baws, 05.11.17
+		-  ..\AddOns\Skinner\UtilFuncs.lua line 801:
+		Usage: RawHook([object], method, [handler], [hookSecure]): Attempting to hook a non existing target
+		Skinner\UtilFuncs.lua:801: rawHook()
+		Skinner\AddonSkins\tekKonfig.lua:90:
+		Skinner\AddonSkins\tekKonfig.lua:6
+
+√	I	reported by lexusnexus,05.11.17
+		- Latest version of Skinner-beta7.25383.3 seems to be spamming the chat box with "ObjectiveTracker_Update 1"  I turned off Skinner and it resolved the message.
+
+	I	FriendsFrame, reported by epidemedabear, 05.11.17
+√		-  ..\AddOns\Skinner\PlayerFrames.lua line 1614: attempt to index field 'sbb' (a nil value)
+			Debug:
+			Skinner\PlayerFrames.lua:1614:
+			Skinner\PlayerFrames.lua:1585
