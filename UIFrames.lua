@@ -2042,17 +2042,19 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:skinStdButton{obj=this.CreateAllWorkOrdersButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2}
 		this.CapacitiveDisplay.IconBG:SetTexture(nil)
-		self:addButtonBorder{obj=this.CapacitiveDisplay.ShipmentIconFrame, relTo=this.CapacitiveDisplay.ShipmentIconFrame.Icon}
-		self:SecureHook(this.CapacitiveDisplay.ShipmentIconFrame.Icon, "Show", function(this)
-			this:GetParent().sbb:Show()
-		end)
-		self:SecureHook(this.CapacitiveDisplay.ShipmentIconFrame.Icon, "Hide", function(this)
-			this:GetParent().sbb:Hide()
-		end)
-		self:SecureHook(this.CapacitiveDisplay.ShipmentIconFrame.Icon, "SetShown", function(this, show)
-			this:GetParent().sbb:SetShown(this, show)
-		end)
-		this.CapacitiveDisplay.ShipmentIconFrame.sbb:SetShown(this.CapacitiveDisplay.ShipmentIconFrame.Icon:IsShown())
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.CapacitiveDisplay.ShipmentIconFrame, relTo=this.CapacitiveDisplay.ShipmentIconFrame.Icon}
+			this.CapacitiveDisplay.ShipmentIconFrame.sbb:SetShown(this.CapacitiveDisplay.ShipmentIconFrame.Icon:IsShown())
+			self:SecureHook(this.CapacitiveDisplay.ShipmentIconFrame.Icon, "Show", function(this)
+				this:GetParent().sbb:Show()
+			end)
+			self:SecureHook(this.CapacitiveDisplay.ShipmentIconFrame.Icon, "Hide", function(this)
+				this:GetParent().sbb:Hide()
+			end)
+			self:SecureHook(this.CapacitiveDisplay.ShipmentIconFrame.Icon, "SetShown", function(this, show)
+				this:GetParent().sbb:SetShown(this, show)
+			end)
+		end
 		skinPortrait(this.CapacitiveDisplay.ShipmentIconFrame.Follower)
 		self:skinEditBox{obj=this.Count, regs={6}, noHeight=true}
 		self:moveObject{obj=this.Count, x=-6}

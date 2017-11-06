@@ -670,8 +670,9 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 		-- RewardButtons
 		for i = 1, #frame.RewardButtons do
-			if not frame.RewardButtons[i].sbb then
-				frame.RewardButtons[i].NameFrame:SetTexture(nil)
+			frame.RewardButtons[i].NameFrame:SetTexture(nil)
+			if self.modBtnBs
+			and not frame.RewardButtons[i].sbb then
 				aObj:addButtonBorder{obj=frame.RewardButtons[i], libt=true}
 			end
 		end

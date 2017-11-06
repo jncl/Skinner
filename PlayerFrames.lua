@@ -810,16 +810,18 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		skinTTip(_G.PetJournalSecondaryAbilityTooltip)
 	end
 
-	local function skinPageBtns(frame)
-		aObj:addButtonBorder{obj=frame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
-		aObj:addButtonBorder{obj=frame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
-	end
-	local function skinCollectionBtn(btn)
-		if btn.sbb then
-			if btn.slotFrameUncollected:IsShown() then
-				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
-			else
-				btn.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+	if self.modBtnBs then
+		local function skinPageBtns(frame)
+			aObj:addButtonBorder{obj=frame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
+			aObj:addButtonBorder{obj=frame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
+		end
+		local function skinCollectionBtn(btn)
+			if btn.sbb then
+				if btn.slotFrameUncollected:IsShown() then
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+				else
+					btn.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+				end
 			end
 		end
 	end
@@ -839,13 +841,13 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this.iconsFrame["spellButton" .. i].slotFrameUncollected:SetTexture(nil)
 			self:addButtonBorder{obj=this.iconsFrame["spellButton" .. i], sec=true, ofs=0}
 		end
-		skinPageBtns(this)
 		self:skinDropDown{obj=this.toyOptionsMenu}
 
 		if self.modBtnBs then
+			skinPageBtns(this)
 			self:SecureHook("ToySpellButton_UpdateButton", function(this)
-			skinCollectionBtn(this)
-		end)
+				skinCollectionBtn(this)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -879,15 +881,15 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				self:addButtonBorder{obj=this.heirloomEntryFrames[i], sec=true, ofs=0, reParent={this.heirloomEntryFrames[i].levelBackground, this.heirloomEntryFrames[i].level}}
 			end
 		end)
-		skinPageBtns(this)
 
 		if self.modBtnBs then
+			skinPageBtns(this)
 			self:SecureHook(this, "UpdateButton", function(this, button)
-			skinCollectionBtn(button)
-			if button.levelBackground:GetAtlas() == "collections-levelplate-black" then
-				self:changeTandC(button.levelBackground, self.lvlBG)
-			end
-		end)
+				skinCollectionBtn(button)
+				if button.levelBackground:GetAtlas() == "collections-levelplate-black" then
+					self:changeTandC(button.levelBackground, self.lvlBG)
+				end
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -927,7 +929,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this:DisableDrawLayer("OVERLAY")
 			this:DisableDrawLayer("ARTWORK", 1)
 			this:DisableDrawLayer("ARTWORK", 2)
-			skinPageBtns(this)
+			if self.modBtnBs then
+				skinPageBtns(this)
+			end
 			self:skinDropDown{obj=this.RightClickDropDown}
 			self:skinDropDown{obj=this.WeaponDropDown}
 			self:SecureHookScript(this.HelpBox, "OnShow", function(this)
@@ -959,7 +963,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this.DetailsFrame:DisableDrawLayer("BORDER")
 			self:skinStdButton{obj=this.DetailsFrame.VariantSetsButton}
 			self:skinDropDown{obj=this.DetailsFrame.VariantSetsDropDown}
-
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -970,8 +973,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this:DisableDrawLayer("ARTWORK", 1)
 			this:DisableDrawLayer("ARTWORK", 2)
 			self:skinDropDown{obj=this.RightClickDropDown}
-			skinPageBtns(this)
-
+			if self.modBtnBs then
+				skinPageBtns(this)
+			end
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -979,9 +983,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end)
 
 	self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
-
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=2}
-
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1601,33 +1603,35 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
 				btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
 				btn.background:SetAlpha(0)
-				self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0}
-				self:SecureHook(btn.gameIcon, "Show", function(this)
-					this:GetParent().sbb:Show()
-				end)
-				self:SecureHook(btn.gameIcon, "Hide", function(this)
-					this:GetParent().sbb:Hide()
-				end)
-				self:SecureHook(btn.gameIcon, "SetShown", function(this, show)
-					this:GetParent().sbb:SetShown(this, show)
-				end)
-				btn.sbb:SetShown(btn.gameIcon:IsShown())
-				self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
-				self:SecureHook(btn.travelPassButton, "Enable", function(this)
-					this.sbb:SetBackdropBorderColor(aObj.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
-				end)
-				self:SecureHook(btn.travelPassButton, "Disable", function(this)
-					this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
-				end)
-				if not btn.travelPassButton:IsEnabled() then btn.travelPassButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
-				self:addButtonBorder{obj=btn.summonButton}
-				self:SecureHook(btn.summonButton, "Enable", function(this)
-					this.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
-				end)
-				self:SecureHook(btn.summonButton, "Disable", function(this)
-					this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
-				end)
-				if not btn.summonButton:IsEnabled() then btn.summonButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0}
+					self:SecureHook(btn.gameIcon, "Show", function(this)
+						this:GetParent().sbb:Show()
+					end)
+					self:SecureHook(btn.gameIcon, "Hide", function(this)
+						this:GetParent().sbb:Hide()
+					end)
+					self:SecureHook(btn.gameIcon, "SetShown", function(this, show)
+						this:GetParent().sbb:SetShown(this, show)
+					end)
+					btn.sbb:SetShown(btn.gameIcon:IsShown())
+					self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
+					self:SecureHook(btn.travelPassButton, "Enable", function(this)
+						this.sbb:SetBackdropBorderColor(aObj.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+					end)
+					self:SecureHook(btn.travelPassButton, "Disable", function(this)
+						this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+					end)
+					if not btn.travelPassButton:IsEnabled() then btn.travelPassButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
+					self:addButtonBorder{obj=btn.summonButton}
+					self:SecureHook(btn.summonButton, "Enable", function(this)
+						this.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+					end)
+					self:SecureHook(btn.summonButton, "Disable", function(this)
+						this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+					end)
+					if not btn.summonButton:IsEnabled() then btn.summonButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
+				end
 			end
 			btn = nil
 
@@ -2502,11 +2506,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		_G.WORLD_QUEST_TRACKER_MODULE.Header.Background:SetTexture(nil)
 
 		-- hook this to skin QuestObjective Block Button(s)
-		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
-			if not button.sbb then
-				self:addButtonBorder{obj=button, ofs=button.Icon and -2 or nil, x1=button.Icon and 0 or nil, reParent=button.Count and {button.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
-			end
-		end)
+		if self.modBtnBs then
+			self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
+				if not button.sbb then
+					self:addButtonBorder{obj=button, ofs=button.Icon and -2 or nil, x1=button.Icon and 0 or nil, reParent=button.Count and {button.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
+				end
+			end)
+		end
 
 		-- skin timerBar(s) & progressBar(s)
 		local function skinBar(bar)
@@ -2578,10 +2584,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinBars(_G.WORLD_QUEST_TRACKER_MODULE.usedProgressBars)
 
 		local function skinRewards(frame)
+
 			for i = 1, #frame.Rewards do
-				if not frame.Rewards[i].sbb then
-					aObj:addButtonBorder{obj=frame.Rewards[i], relTo=frame.Rewards[i].ItemIcon, reParent={frame.Rewards[i].Count}}
-					frame.Rewards[i].ItemBorder:SetTexture(nil)
+				frame.Rewards[i].ItemBorder:SetTexture(nil)
+				if aObj.modBtnBs then
+					if not frame.Rewards[i].sbb then
+						aObj:addButtonBorder{obj=frame.Rewards[i], relTo=frame.Rewards[i].ItemIcon, reParent={frame.Rewards[i].Count}}
+					end
 				end
 			end
 
