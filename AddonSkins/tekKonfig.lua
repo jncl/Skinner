@@ -44,7 +44,6 @@ aObj.otherAddons.tekKonfig = function(self) -- v1-Beta
 	local tKDd = tKDd or _G.LibStub:GetLibrary("tekKonfig-Dropdown", true)
 	if tKDd then
 		self:rawHook(tKDd, "new", function(parent, label, ...)
-			-- self:Debug("tKDd:[%s, %s, %s]", parent, label, ...)
 			local frame, text, container, labeltext = self.hooks[tKDd].new(parent, label, ...)
 			if not self.db.profile.TexturedDD then self:keepFontStrings(frame)
 			else
@@ -82,17 +81,17 @@ aObj.otherAddons.tekKonfig = function(self) -- v1-Beta
 	local tKS = tKS or _G.LibStub:GetLibrary("tekKonfig-Slider", true)
 	if tKS then
 		self:rawHook(tKS, "new", function(parent, label, lowvalue, highvalue, ...)
-			-- self:Debug("tKS new:[%s, %s, %s, %s, %s]", parent, label, lowvalue, highvalue, ...)
 			local slider, text, container, low, high = self.hooks[tKS].new(parent, label, lowvalue, highvalue, ...)
 			self:skinSlider{obj=slider, size=3}
 			return slider, text, container, low, high
 		end, true)
-		self:rawHook(tKS, "newbare", function(parent, ...)
-			-- self:Debug("tKS newbare:[%s, %s]", parent, ...)
-			local slider = self.hooks[tKS].newbare(parent, ...)
-			self:skinSlider{obj=slider, size=3}
-			return slider
-		end, true)
+		if tKS.newbare then
+			self:rawHook(tKS, "newbare", function(parent, ...)
+				local slider = self.hooks[tKS].newbare(parent, ...)
+				self:skinSlider{obj=slider, size=3}
+				return slider
+			end, true)
+		end
 	end
 
 	-- tekKonfig-TopTab
