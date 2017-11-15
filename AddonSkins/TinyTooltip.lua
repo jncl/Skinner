@@ -6,19 +6,34 @@ aObj.addonsToSkin.TinyTooltip = function(self) -- v 2.1.8.3
 
 	-- setup textures and colours
 	_G.BigTipDB.general.bgfile = self.bdTexName
-	_G.BigTipDB.general.background = {self.bColour[1], self.bColour[2], self.bColour[3], self.bColour[4]}
 	_G.BigTipDB.general.borderCorner = self.bdbTexName
+	_G.BigTipDB.general.borderSize = self.prdb.BdEdgeSize
 	_G.BigTipDB.general.borderColor = {self.tbColour[1], self.tbColour[2], self.tbColour[3], self.tbColour[4]}
-	_G.BigTipDB.general.statusbarTexture = self.db.profile.StatusBar.texture
+	_G.BigTipDB.general.background = {self.bColour[1], self.bColour[2], self.bColour[3], self.bColour[4]}
+	_G.BigTipDB.general.statusbarTexture = self.prdb.StatusBar.texture
+
+	local LibEvent = _G.LibStub:GetLibrary("LibEvent.7000")
+	-- hook this to handle gradient effect
+	LibEvent:attachTrigger("tooltip:show", function(this, frame)
+	    frame.style.mask:SetShown(false)
+		-- apply a gradient texture
+		if aObj.prdb.Tooltips.style == 1 then -- Rounded
+			aObj:applyGradient(frame.style, 32)
+		elseif aObj.prdb.Tooltips.style == 2 then -- Flat
+			aObj:applyGradient(frame.style)
+		elseif aObj.prdb.Tooltips.style == 3 then -- Custom
+			aObj:applyGradient(frame.style, aObj.prdb.FadeHeight.value <= _G.Round(frame.style:GetHeight()) and aObj.prdb.FadeHeight.value or _G.Round(frame.style:GetHeight()))
+		end
+	end)
 
 	-- update existing tooltips
-	local LibEvent = _G.LibStub:GetLibrary("LibEvent.7000")
 	for _, tip in pairs(_G.TinyTooltip.tooltips) do
 
 		LibEvent:trigger("tooltip.style.bgfile", tip, _G.BigTipDB.general.bgfile)
-		LibEvent:trigger("tooltip.style.background", tip, _G.unpack(_G.BigTipDB.general.background))
 		LibEvent:trigger("tooltip.style.border.corner", tip, _G.BigTipDB.general.borderCorner)
+		LibEvent:trigger("tooltip.style.border.size", tip, _G.BigTipDB.general.borderSize)
 		LibEvent:trigger("tooltip.style.border.color", tip, _G.unpack(_G.BigTipDB.general.borderColor))
+		LibEvent:trigger("tooltip.style.background", tip, _G.unpack(_G.BigTipDB.general.background))
 		LibEvent:trigger("tooltip.statusbar.texture", _G.BigTipDB.general.statusbarTexture)
 
 	end

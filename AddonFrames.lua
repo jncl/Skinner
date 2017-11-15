@@ -24,7 +24,7 @@ local addonSkins = {
 	"Baggins", "BankItems", "Bartender4", "BattlePetCount", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
 	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cosplay",
 	"DeathNote", "DejaCharacterStats", "Details", "DockingStation", "Dominos", "DressUp",
-	"EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "EnhancedStackSplit", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
+	"EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
 	"FarmIt2", "FeedMachine", "FishingBuddy", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker", "GuildMaster",
 	"HandyNotes", "HaveWeMet", "HoloFriends",
@@ -58,14 +58,12 @@ for i = 1, #addonSkins do
 end
 addonSkins = nil
 -- oddly named addons
-aObj.addonsToSkin["Auc-Advanced"] = "AucAdvanced"
 aObj.addonsToSkin["Classic Quest Log"] = "ClassicQuestLog"
 aObj.addonsToSkin["DBM-Core"] = "DBMCore"
 aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
 aObj.addonsToSkin["Prat-3.0"] = "Prat30"
 -- libraries
 aObj.libsToSkin = {
-	["Configator"] = "Configator",
 	["NoTaint_UIDropDownMenu-7.2.0"] = "Lib_UIDropdown",
 	["LibKeyBound-1.0"] = "LibKeyBound",
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
@@ -231,7 +229,7 @@ function aObj:ADDON_LOADED(event, addon)
 end
 
 function aObj:AUCTION_HOUSE_SHOW()
-	self:Debug("AUCTION_HOUSE_SHOW")
+	-- self:Debug("AUCTION_HOUSE_SHOW")
 
 	-- trigger these when AH loads otherwise errors occur
 	self:checkAndRunAddOn("Auctionator")

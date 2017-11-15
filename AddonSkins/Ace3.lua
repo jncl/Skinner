@@ -5,7 +5,7 @@ local _G = _G
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
 local objectsToSkin = {}
-local AceGUI = _G.LibStub("AceGUI-3.0", true)
+local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
 
 if AceGUI then
 	aObj:RawHook(AceGUI, "Create", function(this, objType)
@@ -136,7 +136,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:applySkin{obj=obj.msgframe}
 			elseif objType == "CheckBox" then
 				if aObj.modChkBtns then
-					aObj:addButtonBorder{obj=obj.frame, aso={bd=5, ng=true}, parent=obj.frame, nohooks=true, ofs=-2, relTo=obj.checkbg, reParent={obj.check}}
+					aObj.modUIBtns:addButtonBorder{obj=obj.frame, ofs=-2, relTo=obj.checkbg, reParent={obj.check}} -- force creation of button border so check texture can be reparented
 					-- hide button border if Radio Button
 					aObj:secureHook(obj, "SetType", function(this, type)
 						if type == "radio"
@@ -336,6 +336,29 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				-- obj.startbutton
 
+			-- GarrisonMissionCommander objects
+			elseif objType == "GMCLayer" then
+				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, x1=-4, x2=4, y2=-4}
+			elseif objType == "GMCMissionButton"
+			or objType == "GMCSlimMissionButton"
+			or objType == "OHCMissionButton"
+			then
+				obj.frame:DisableDrawLayer("BACKGROUND")
+				obj.frame:DisableDrawLayer("BORDER")
+				-- extend the top & bottom highlight texture
+				obj.frame.HighlightT:ClearAllPoints()
+				obj.frame.HighlightT:SetPoint("TOPLEFT", 0, 4)
+				obj.frame.HighlightT:SetPoint("TOPRIGHT", 0, 4)
+		        obj.frame.HighlightB:ClearAllPoints()
+		        obj.frame.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
+		        obj.frame.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
+				aObj:removeRegions(obj.frame, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
+
+			-- OrderHallCommander objects
+			elseif objType == "OHCGUIContainer" then
+				aObj:skinCloseButton{obj=obj.frame.close}
+				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
+
 			-- ignore these types for now
 			elseif objType == "BlizOptionsGroup"
 			or objType == "Dropdown-Item-Execute"
@@ -376,6 +399,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			or objType == "TSMInteractiveLabel"
 			-- CollectMe objects
 			or objType == "CollectMeLabel"
+			-- GarrisonMissionCommander objects
+			or objType == "GMCList"
+			-- OrderHallCommander objects
+			or objType == "OHCMissionsList"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
 			-- any other types
@@ -403,7 +430,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 	_G.wipe(objectsToSkin)
 
 	-- hook this to skin AGSMW dropdown frame(s)
-	local AGSMW = _G.LibStub("AceGUISharedMediaWidgets-1.0", true)
+	local AGSMW = _G.LibStub:GetLibrary("AceGUISharedMediaWidgets-1.0", true)
 	if AGSMW then
 		self:RawHook(AGSMW, "GetDropDownFrame", function(this)
 			local frame = self.hooks[this].GetDropDownFrame(this)
