@@ -9,29 +9,29 @@ do
 	assert(LibStub, aName .. " requires LibStub")
 	local lTab = {"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0"}
 	for i = 1, #lTab do
-		assert(LibStub(lTab[i], true), aName .. " requires " .. lTab[i])
+		assert(LibStub:GetLibrary(lTab[i], true), aName .. " requires " .. lTab[i])
 	end
 	lTab = nil
 
 	-- create the addon
-	_G[aName] = LibStub("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+	_G[aName] = LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 	-- add callbacks
-	aObj.callbacks = LibStub("CallbackHandler-1.0"):New(aObj)
+	aObj.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
 
 	-- Get Locale
-	aObj.L = LibStub("AceLocale-3.0"):GetLocale(aName)
+	aObj.L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
 
 	-- pointer to LibSharedMedia-3.0 library
-	aObj.LSM = LibStub("LibSharedMedia-3.0")
+	aObj.LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
 
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local ptrInfo = {"7.3.2", 25442}
-	local liveInfo = {"7.3.2", 25383}
+	local ptrInfo = {"7.3.2", 25497}
+	local liveInfo = {"7.3.2", 25497}
 	local betaInfo = {"8.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -620,7 +620,7 @@ local function __addSkinFrame(opts)
 	-- FIXME: use ft="a" when AddOn skin has been changed to manually skin buttons
 --@end-alpha@
 
-	aObj:Debug2("__addSkinFrame: [%s, %s]", opts.obj, opts.obj:GetName())
+	aObj:Debug2("__addSkinFrame: [%s, %s]", opts.obj, opts.obj.GetName and opts.obj:GetName() or "<Anon>")
 
 	-- don't skin it twice
 	if opts.obj.sf then return end
