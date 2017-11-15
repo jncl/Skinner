@@ -669,67 +669,6 @@ aObj.blizzFrames[ftype].ArtifactToasts = function(self)
 
 end
 
-aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
-	if not self.prdb.ArtifactUI or self.initialized.ArtifactUI then return end
-	self.initialized.ArtifactUI = true
-
-	self:SecureHookScript(_G.ArtifactFrame, "OnShow", function(this)
-		this.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
-		this.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
-
-		self:keepFontStrings(this.BorderFrame)
-		self:skinTabs{obj=this, regs={}, ignore=true, lod=true, x1=6, y1=9, x2=-6, y2=-4}
-		self:addSkinFrame{obj=this, ft=ftype, ofs=5, y1=4}
-
-		this.PerksTab:DisableDrawLayer("BORDER")
-		this.PerksTab:DisableDrawLayer("OVERLAY")
-		this.PerksTab.TitleContainer.Background:SetAlpha(0) -- title underline texture
-		this.PerksTab.Model:DisableDrawLayer("OVERLAY")
-		for i = 1, 14 do
-			this.PerksTab.CrestFrame["CrestRune" .. i]:SetAtlas(nil)
-		end
-		-- hook this to stop Background being Refreshed
-		_G.ArtifactPerksMixin.RefreshBackground = _G.nop
-		local function skinPowerBtns()
-
-			if this.PerksTab.PowerButtons then
-				for i = 1, #this.PerksTab.PowerButtons do
-					aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorder, aObj.lvlBG)
-					aObj:changeTandC(this.PerksTab.PowerButtons[i].RankBorderFinal, aObj.lvlBG)
-				end
-			end
-
-		end
-		skinPowerBtns()
-		-- hook this to skin new buttons
-		self:SecureHook(this.PerksTab, "RefreshPowers", function(this, newItem)
-			skinPowerBtns()
-		end)
-
-		self:SecureHook(this.AppearancesTab, "Refresh", function(this)
-			for appearanceSet in this.appearanceSetPool:EnumerateActive() do
-				appearanceSet:DisableDrawLayer("BACKGROUND")
-			end
-			for appearanceSlot in this.appearanceSlotPool:EnumerateActive() do
-				appearanceSlot:DisableDrawLayer("BACKGROUND")
-				appearanceSlot.Border:SetTexture(nil)
-			end
-		end)
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	-- ArtifactRelicForgeUI
-	self:SecureHookScript(_G.ArtifactRelicForgeFrame, "OnShow", function(this)
-		this.TitleContainer.Background:SetAlpha(0)
-		self:removeRegions(this.PreviewRelicFrame, {3, 5}) -- background and border textures
-		self.modUIBtns:addButtonBorder{obj=this.PreviewRelicFrame, relTo=this.PreviewRelicFrame.Icon} -- use module function to force button border
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
-		self:Unhook(this, "OnShow")
-	end)
-
-end
-
 aObj.blizzFrames[ftype].AuthChallengeUI = function(self) -- forbidden
 	if not self.prdb.AuthChallengeUI or self.initialized.AuthChallengeUI then return end
 	self.initialized.AuthChallengeUI = true
