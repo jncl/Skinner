@@ -1,3 +1,12 @@
+beta7.25383.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version number
+	Bugfix - replaced print statements with Debug ones
+	Bugfixes for ButtonBorder code
+	Bugfix for tekKonfig skin
+
 beta7.25383.3
 Jncl:
 	ToDo.txt
