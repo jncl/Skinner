@@ -12,28 +12,34 @@ Legend:
 		- if max level then adjust MainMenuBar objects
 		- ?
 
-	I	WorldMap Quest List
-?		- Some buttons have a border (not all the time)
-?		- quest icon/number buttons shouldn't be skinned
-
 	I	ScenarioChallengeModeBlock
 ?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
 
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-√	I	tekKonfig, reported by Jimmy2baws, 05.11.17
-		-  ..\AddOns\Skinner\UtilFuncs.lua line 801:
-		Usage: RawHook([object], method, [handler], [hookSecure]): Attempting to hook a non existing target
-		Skinner\UtilFuncs.lua:801: rawHook()
-		Skinner\AddonSkins\tekKonfig.lua:90:
-		Skinner\AddonSkins\tekKonfig.lua:6
+?	I	Collections, reported by NeoZeus, 11.11.17
+		- Sometimes the "Mount/Pet Journal/Toy Box/Appearance" window is skinned, but the borders don't get skinned.  It happens randomly.
 
-√	I	reported by lexusnexus,05.11.17
-		- Latest version of Skinner-beta7.25383.3 seems to be spamming the chat box with "ObjectiveTracker_Update 1"  I turned off Skinner and it resolved the message.
+√	N	TinyTooltip, reported by NeoZeus, 11.11.17
 
-	I	FriendsFrame, reported by epidemedabear, 05.11.17
-√		-  ..\AddOns\Skinner\PlayerFrames.lua line 1614: attempt to index field 'sbb' (a nil value)
-			Debug:
-			Skinner\PlayerFrames.lua:1614:
-			Skinner\PlayerFrames.lua:1585
+≈	S	GarrisonCommander, requested by NeoZeus, 11.11.17
+
+≈	S	OrderHallCommander, requested by NeoZeus, 11.11.17
+
+√	I	IOF, expand buttons not skinned on first display of Addons frame
+
+√	I	Shipyard map, textures are dark on first showing, behind fog textures
+
+√	I	Collections, reported by temp123456, 13.11.17
+		- Interface\AddOns\Skinner\PlayerFrames.lua:847: attempt to call global 'skinPageBtns' (a nil value)
+			- toy/heirloom/appearance panes
+
+√	I	Ace3, reported by temp123456, 13.11.17
+		- Interface\AddOns\Skinner\AddonSkins\Ace3.lua:148: <unnamed>:SetParent(): Cannot set a 'nil' parent for fonts or textures
+		- If i have both button borders & check buttons enabled, i cannot reproduce error "B"
+			- test with no button borders but check buttons enabled
+
+√	I	Unitframes, reported by temp123456, 14.11.17
+		-  if i enable in modules / unit frames / player and use the background opacity slider
+			- Interface\AddOns\Skinner\Modules\UnitFrames.lua:424: attempt to index field '?' (a nil value)
