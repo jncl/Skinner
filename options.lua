@@ -4,7 +4,7 @@ local ftype = "opt"
 
 -- Add locals to see if it speeds things up
 local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.LibStub, _G.pairs
-local DBIcon = LibStub("LibDBIcon-1.0")
+local DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 
 aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
@@ -187,7 +187,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
 	}}
 
-	self.db = LibStub("AceDB-3.0"):New(aName .. "DB", defaults, "Default")
+	self.db = LibStub:GetLibrary("AceDB-3.0"):New(aName .. "DB", defaults, "Default")
 
 end
 
@@ -1850,11 +1850,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	end
 
 	-- add DB profile options
-	self.optTables.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	self.optTables.Profiles = LibStub:GetLibrary("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
 	-- register the options tables and add them to the blizzard frame
-	local ACR = LibStub("AceConfigRegistry-3.0")
-	local ACD = LibStub("AceConfigDialog-3.0")
+	local ACR = LibStub:GetLibrary("AceConfigRegistry-3.0")
+	local ACD = LibStub:GetLibrary("AceConfigDialog-3.0")
 
 	ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
 	self.optionsFrame = ACD:AddToBlizOptions(aName, aName)
@@ -1931,7 +1931,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 			InterfaceOptionsFrame_OpenToCategory(aObj.optionsFrame[optCheck[input:lower()]])
 		else
-			LibStub("AceConfigCmd-3.0"):HandleCommand(aName, aName, input)
+			LibStub:GetLibrary("AceConfigCmd-3.0"):HandleCommand(aName, aName, input)
 		end
 	end
 
@@ -1940,7 +1940,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	self:RegisterChatCommand("skin", chatCommand)
 
 	-- setup the DB object
-	self.DBObj = LibStub("LibDataBroker-1.1"):NewDataObject(aName, {
+	self.DBObj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject(aName, {
 		type = "launcher",
 		icon = [[Interface\Icons\INV_Misc_Pelt_Wolf_01]],
 		OnClick = function()

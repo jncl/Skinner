@@ -364,22 +364,27 @@ aObj.blizzLoDFrames[ftype].AdventureMap = function(self)
 
 	self:SecureHookScript(_G.AdventureMapQuestChoiceDialog, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND") -- remove textures
+		this.Details.ScrollBar:DisableDrawLayer("ARTWORK")
 		self:skinSlider{obj=this.Details.ScrollBar}
 		this.Details.Child.TitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 		this.Details.Child.DescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		this.Details.Child.ObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
 		this.Details.Child.ObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:skinStdButton{obj=this.DeclineButton}
+		self:skinStdButton{obj=this.AcceptButton}
 		self:addSkinFrame{obj=this, ft=ftype, y1=-11, x2=1, y2=-4}
+		this.CloseButton:GetNormalTexture():SetTexture(nil) -- frame is animated in
+		self:Unhook(this, "OnShow")
+	end)
 
-		self:SecureHook(this, "RefreshRewards", function(this)
+	if self.modBtnBs then
+		self:SecureHook(_G.AdventureMapQuestChoiceDialog, "RefreshRewards", function(this)
 			for reward in this.rewardPool:EnumerateActive() do
 				reward.ItemNameBG:SetTexture(nil)
 				self:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Count}}
 			end
 		end)
-
-		self:Unhook(this, "OnShow")
-	end)
+	end
 
 end
 
@@ -726,7 +731,7 @@ aObj.blizzLoDFrames[ftype].BattlefieldMinimap = function(self)
 		end
 
 		if IsAddOnLoaded("Mapster") then
-			local mBM = _G.LibStub("AceAddon-3.0"):GetAddon("Mapster"):GetModule("BattleMap", true)
+			local mBM = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Mapster"):GetModule("BattleMap", true)
 			if mBM then
 				local function updBMVisibility(db)
 					if db.hideTextures then
@@ -1422,9 +1427,10 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 	self.initialized.CinematicFrame = true
 
 	self:SecureHookScript(_G.CinematicFrame, "OnShow", function(this)
+		aObj:Debug("CinematicFrame OnShow")
 		self:skinStdButton{obj=_G.CinematicFrameCloseDialogConfirmButton}
 		self:skinStdButton{obj=_G.CinematicFrameCloseDialogResumeButton}
-		self:addSkinFrame{obj=this.closeDialog, ft=ftype}
+		self:addSkinFrame{obj=this.closeDialog, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1827,15 +1833,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.GarrisonShipyardFrame, "OnShow", function(this)
-		-- wooden frame around dialog
 		self:keepFontStrings(this.BorderFrame)
 		self:moveObject{obj=this.BorderFrame.TitleText, y=3}
 		this.BorderFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
 		self:skinCloseButton{obj=this.BorderFrame.CloseButton2}
-
-		-- Shipyard Frame
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=2, y1=3, x2=1, y2=-4}
-		-- tabs
 		self:skinTabs{obj=this, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=0}
 
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
@@ -1845,30 +1847,9 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
 	        this:SetScale(1.019) -- make larger to fit frame
-			this.MapTexture:SetDrawLayer("BORDER", -2) -- make sure it appears above skinFrame but below other textures
 	        this.MapTexture:SetPoint("CENTER", this, "CENTER", 1, -10)
-
-			-- Fog overlays
-			local function showCurrentMissions()
-				local ml = _G.GarrisonShipyardFrame.MissionTab.MissionList
-				local fffl = ml.FogFrames[1]:GetFrameLevel()
-				for i = 1, #ml.missions do
-					if ml.missions[i].inProgress then
-						ml.missionFrames[i]:SetFrameLevel(fffl + 1)
-					end
-				end
-				ml, fffl = nil, nil
-			end
-			-- make sure current missions are above the fog (Bugfix for Blizzard code)
-			showCurrentMissions()
-			-- hook this to ensure they are when map reshown/updated
-			self:SecureHook("GarrisonShipyardMap_UpdateMissions", function()
-				showCurrentMissions()
-			end)
-
-			-- CompleteDialog
+			this.MapTexture:SetDrawLayer("BACKGROUND", 1) -- make sure it appears above skinFrame but below other textures
 			skinCompleteDialog(this.CompleteDialog, true)
-
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -1892,6 +1873,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:addSkinFrame{obj=this, ft=ftype}
 			self:Unhook(this, "OnShow")
 		end)
+
 		self:SecureHookScript(_G.GarrisonShipyardMapMissionTooltip, "OnShow", function(this)
 			self:addSkinFrame{obj=this, ft=ftype}
 			self:Unhook(this, "OnShow")
@@ -2908,7 +2890,7 @@ end
 
 -- hook this to capture the creation of AceConfig IOF panels
 aObj.iofSkinnedPanels = {}
-local ACD = _G.LibStub("AceConfigDialog-3.0", true)
+local ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
 if ACD then
 	-- hook this to manage IOF panels that have already been skinned by Ace3 skin
 	aObj:RawHook(ACD, "AddToBlizOptions", function(this, ...)
@@ -3066,11 +3048,19 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay}
 		self:skinStdButton{obj=_G.InterfaceOptionsFrameDefaults}
 		self:addSkinFrame{obj=_G.InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
+
 		-- LHS panel (Game Tab)
-		_G.InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
-		self:skinSlider{obj=_G.InterfaceOptionsFrameCategoriesListScrollBar}
-		self:addSkinFrame{obj=_G.InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
-		self:addSkinFrame{obj=_G.InterfaceOptionsFramePanelContainer, ft=ftype}
+		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
+			_G.InterfaceOptionsFrameCategoriesList:SetBackdrop(nil)
+			self:skinSlider{obj=_G.InterfaceOptionsFrameCategoriesListScrollBar}
+			self:addSkinFrame{obj=_G.InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
+			self:Unhook(this, "OnShow")
+		end)
+		if _G.InterfaceOptionsFrameCategories:IsShown() then
+			_G.InterfaceOptionsFrameCategories:Hide()
+			_G.InterfaceOptionsFrameCategories:Show()
+		end
+
 		-- LHS panel (AddOns tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(this)
 			_G.InterfaceOptionsFrameAddOnsList:SetBackdrop(nil)
@@ -3082,6 +3072,13 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
+		if _G.InterfaceOptionsFrameAddOns:IsShown() then
+			_G.InterfaceOptionsFrameAddOns:Hide()
+			_G.InterfaceOptionsFrameAddOns:Show()
+		end
+
+		-- RHS Panel
+		self:addSkinFrame{obj=_G.InterfaceOptionsFramePanelContainer, ft=ftype, kfs=true, nb=true}
 
 		-- skin extra elements
 		self.RegisterCallback("IONP", "IOFPanel_After_Skinning", function(this, panel)
@@ -3089,8 +3086,9 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			skinKids(_G.InterfaceOptionsNamesPanelFriendly)
 			skinKids(_G.InterfaceOptionsNamesPanelEnemy)
 			skinKids(_G.InterfaceOptionsNamesPanelUnitNameplates)
-			self.UnregisterCallback("IONP", "IOFPanel_Before_Skinning")
+			self.UnregisterCallback("IONP", "IOFPanel_After_Skinning")
 		end)
+
 		self.RegisterCallback("CUFP", "IOFPanel_After_Skinning", function(this, panel)
 			if panel ~= _G.CompactUnitFrameProfiles then return end
 			skinKids(_G.CompactUnitFrameProfiles.newProfileDialog)
@@ -3101,7 +3099,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			self:addSkinFrame{obj=_G.CompactUnitFrameProfiles.unsavedProfileDialog, ft=ftype}
 			skinKids(_G.CompactUnitFrameProfiles.optionsFrame)
 			_G.CompactUnitFrameProfiles.optionsFrame.autoActivateBG:SetTexture(nil)
-			self.UnregisterCallback("CUFP", "IOFPanel_Before_Skinning")
+			self.UnregisterCallback("CUFP", "IOFPanel_After_Skinning")
 		end)
 
 		-- Social Browser Frame (Twitter integration)
@@ -3424,7 +3422,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end)
 
 		-- skin existing LibDBIcon buttons
-		for name, button in pairs(_G.LibStub("LibDBIcon-1.0").objects) do
+		for name, button in pairs(_G.LibStub:GetLibrary("LibDBIcon-1.0").objects) do
 			skinMMBtn("Existing LibDBIcon btns", button, name)
 		end
 		-- skin LibDBIcon Minimap Buttons when created
@@ -3485,7 +3483,9 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 	self.initialized.MovieFrame = true
 
 	self:SecureHookScript(_G.MovieFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this.CloseDialog, ft=ftype}
+		self:skinStdButton{obj=this.CloseDialog.ConfirmButton}
+		self:skinStdButton{obj=this.CloseDialog.ResumeButton}
+		self:addSkinFrame{obj=this.CloseDialog, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -4023,6 +4023,9 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 	self:SecureHookScript(_G.QuestLogPopupDetailFrame, "OnShow", function(this)
 		self:skinSlider{obj=this.ScrollFrame.ScrollBar, rt="artwork"}
 		self:addButtonBorder{obj=this.ShowMapButton, relTo=this.ShowMapButton.Texture, x1=2, y1=-1, x2=-2, y2=1}
+		self:skinStdButton{obj=this.AbandonButton}
+		self:skinStdButton{obj=this.TrackButton}
+		self:skinStdButton{obj=this.ShareButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2}
 		self:Unhook(this, "OnShow")
 	end)
@@ -4446,7 +4449,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 	self:SecureHookScript(_G.ItemRefTooltip, "OnShow", function(this)
 		self:skinCloseButton{obj=_G.ItemRefCloseButton}
-		self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=-1}
+		self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=3}
 		-- ensure it gets updated
 		self.ttHook[_G.ItemRefTooltip] = true
 		self:Unhook(this, "OnShow")

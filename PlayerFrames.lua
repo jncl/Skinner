@@ -690,12 +690,20 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				-- hook to manage changes to button textures
 				self:SecureHook("ReputationFrame_Update", function()
 					for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-						self:checkTex{obj=_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]}
+						if _G["ReputationBar" .. i].isCollapsed then
+							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:SetText("+")
+						else
+							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:SetText("-")
+						end
+						if _G["ReputationBar" .. i .. "ExpandOrCollapseButton"]:IsShown() then
+							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Show()
+						else
+							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Hide()
+						end
 					end
 				end)
 			end
 			self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
-
 			self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
 			self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox}
 			self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
@@ -704,6 +712,10 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 			self:Unhook(this, "OnShow")
 		end)
+		if _G.ReputationFrame:IsShown() then
+			_G.ReputationFrame:Hide()
+			_G.ReputationFrame:Show()
+		end
 
 		self:SecureHookScript(_G.ReputationParagonTooltip, "OnShow", function(this)
 			_G.C_Timer.After(0.1, function()
@@ -815,6 +827,23 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end
 		lop = nil
 
+		-- PetCard
+		local pc = this.PetCard
+		self:changeTandC(pc.PetInfo.levelBG, self.lvlBG)
+		pc.PetInfo.qualityBorder:SetAlpha(0)
+		self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
+		self:removeRegions(pc.HealthFrame.healthBar, {1, 2, 3})
+		self:skinStatusBar{obj=pc.HealthFrame.healthBar, fi=0}
+		self:removeRegions(pc.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
+		self:skinStatusBar{obj=pc.xpBar, fi=0}
+		self:keepFontStrings(pc)
+		self:addSkinFrame{obj=pc, ft=ftype, aso={bd=8, ng=true}, ofs=4}
+		for i = 1, 6 do
+			pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
+			self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
+		end
+		pc = nil
+
 		if self.modBtnBs then
 			local function skinPetIcon(pet, petID)
 				if pet.qualityBorder:IsShown() then
@@ -835,23 +864,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end)
 		end
 
-		-- PetCard
-		local pc = this.PetCard
-		self:changeTandC(pc.PetInfo.levelBG, self.lvlBG)
-		pc.PetInfo.qualityBorder:SetAlpha(0)
-		self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
-		self:removeRegions(pc.HealthFrame.healthBar, {1, 2, 3})
-		self:skinStatusBar{obj=pc.HealthFrame.healthBar, fi=0}
-		self:removeRegions(pc.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
-		self:skinStatusBar{obj=pc.xpBar, fi=0}
-		self:keepFontStrings(pc)
-		self:addSkinFrame{obj=pc, ft=ftype, aso={bd=8, ng=true}, ofs=4}
-		for i = 1, 6 do
-			pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
-			self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
-		end
-		pc = nil
-
 		self:removeMagicBtnTex(this.FindBattleButton)
 		self:skinStdButton{obj=this.FindBattleButton}
 		self:removeMagicBtnTex(this.SummonButton)
@@ -869,17 +881,16 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		tip:DisableDrawLayer("BACKGROUND")
 		aObj:addSkinFrame{obj=tip, ft=ftype}
 	end
-	if self.prdb.Tooltips.skin then
-		skinTTip(_G.PetJournalPrimaryAbilityTooltip)
-		skinTTip(_G.PetJournalSecondaryAbilityTooltip)
-	end
+	skinTTip(_G.PetJournalPrimaryAbilityTooltip)
+	skinTTip(_G.PetJournalSecondaryAbilityTooltip)
 
+	local skinPageBtns, skinCollectionBtn
 	if self.modBtnBs then
-		local function skinPageBtns(frame)
+		function skinPageBtns(frame)
 			aObj:addButtonBorder{obj=frame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
 			aObj:addButtonBorder{obj=frame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
 		end
-		local function skinCollectionBtn(btn)
+		function skinCollectionBtn(btn)
 			if btn.sbb then
 				if btn.slotFrameUncollected:IsShown() then
 					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
@@ -889,6 +900,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 		end
 	end
+
 	self:SecureHookScript(_G.ToyBox, "OnShow", function(this)
 		self:skinStatusBar{obj=this.progressBar, fi=0}
 		self:removeRegions(this.progressBar, {2, 3})
@@ -944,6 +956,11 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				-- ignore btn.levelBackground as its textures is changed when upgraded
 				self:addButtonBorder{obj=this.heirloomEntryFrames[i], sec=true, ofs=0, reParent={this.heirloomEntryFrames[i].levelBackground, this.heirloomEntryFrames[i].level}}
 			end
+		end)
+
+		self:SecureHookScript(this.UpgradeLevelHelpBox, "OnShow", function(this)
+			self:skinCloseButton{obj=this.CloseButton}
+			self:Unhook(this, "OnShow")
 		end)
 
 		if self.modBtnBs then
@@ -3180,9 +3197,17 @@ aObj.blizzFrames[ftype].StackSplit = function(self)
 	self:SecureHookScript(_G.StackSplitFrame, "OnShow", function(this)
 		-- handle different addons being loaded
 		if IsAddOnLoaded("EnhancedStackSplit") then
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-24}
+			if _G.Round(_G.EnhancedStackSplitBottomTextureFrame:GetHeight()) == 30 then
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y2=-45}
+			else
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y2=-24}
+			end
 		else
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=9, y1=-12, x2=-6, y2=12}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.StackSplitOkayButton}
+			self:skinStdButton{obj=_G.StackSplitCancelButton}
 		end
 		self:Unhook(this, "OnShow")
 	end)
@@ -3342,12 +3367,14 @@ aObj.blizzFrames[ftype].TradeFrame = function(self)
 		self:removeInset(_G.TradeRecipientEnchantInset)
 		self:removeInset(_G.TradePlayerItemsInset)
 		self:removeInset(_G.TradePlayerEnchantInset)
+		self:skinStdButton{obj=_G.TradeFrameTradeButton}
+		self:skinStdButton{obj=_G.TradeFrameCancelButton}
 		self:removeInset(_G.TradePlayerInputMoneyInset)
 		self:skinMoneyFrame{obj=_G.TradePlayerInputMoneyFrame, moveSEB=true}
 		self:removeInset(_G.TradeRecipientMoneyInset)
 		_G.TradeRecipientMoneyBg:DisableDrawLayer("BACKGROUND")
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, nb=true, x1=-3, y1=2, x2=1, y2=-2}
 
 		if self.modUIBtns then
 			for i = 1, _G.MAX_TRADE_ITEMS do

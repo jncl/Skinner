@@ -124,7 +124,15 @@ function module:checkTex(...)
 end
 
 function module:skinCloseButton(opts) -- text on button
-
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		ft = Frame Type (Skinner classification)
+		aso = applySkin options
+		sap = set all points of skinButton to object
+		onSB = put text on skinButton
+		storeOnParent = store reference to close button on object's parent
+--]]
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	opts.obj:GetNormalTexture():SetAlpha(0)
 	opts.obj:GetPushedTexture():SetAlpha(0)
@@ -183,6 +191,16 @@ function module:skinCloseButton3(opts) -- small text on skinButton (used by Deta
 
 end
 function module:skinExpandButton(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		ft = Frame Type (Skinner classification)
+		aso = applySkin options
+		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
+		noHook = don't hook SetNormalTexture function to manage texture changes
+		onSB = put text on skinButton
+		plus = use plus sign
+--]]
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -227,6 +245,14 @@ function module:skinExpandButton2(opts) -- text on button
 
 end
 function module:skinOtherButton(opts)
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		ft = Frame Type (Skinner classification)
+		aso = applySkin options
+		size = use smaller edgesize, different highlight textue and resize the button
+		sap = set all points of skinButton to object
+--]]
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -292,6 +318,13 @@ function module:skinOtherButton4(opts) -- Normal text on button
 
 end
 function module:skinStdButton(opts) -- standard panel button
+--[[
+	Calling parameters:
+		obj = object (Mandatory)
+		ft = Frame Type (Skinner classification)
+		aso = applySkin options
+		as = use applySkin rather than addSkinButton, used when text appears behind the gradient
+--]]
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -690,6 +723,7 @@ local function __addButtonBorder(opts)
 		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
 		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
+		ofs = offset value to use
 		x1 = X offset for TOPLEFT
 		y1 = Y offset for TOPLEFT
 		x2 = X offset for BOTTOMRIGHT
@@ -912,7 +946,7 @@ function module:OnEnable()
 	then
 		-- remove options
 		aObj.optTables["Modules"].args["Skinner_UIButtons"].args["Quality"].disabled = true
-		_G.LibStub("AceConfigRegistry-3.0"):NotifyChange(aName .. " Modules")
+		_G.LibStub:GetLibrary("AceConfigRegistry-3.0"):NotifyChange(aName .. " Modules")
 		return
 	end
 

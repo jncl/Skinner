@@ -20,7 +20,6 @@ local defaults = {
 local lOfs = -9 -- level text offset
 local isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 local unitFrames = {
-	"ArenaEnemyBackground",
 	"FocusFrame",
 	"FocusFrameToT",
 	"PartyMemberBackground",
@@ -440,10 +439,14 @@ local function changeUFOpacity()
 		end
 	end
 	_G.PartyMemberBuffTooltip.sf:SetAlpha(db.alpha)
-	for i = 1, _G.MAX_ARENA_ENEMIES do
-		if _G["ArenaEnemyFrame" .. i].sf then
-			_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
-			_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
+
+	if _G.IsAddOnLoaded("Blizzard_ArenaUI") then
+		if _G.ArenaEnemyBackground.sf then _G.ArenaEnemyBackground.sf:SetAlpha(db.alpha) end
+		for i = 1, _G.MAX_ARENA_ENEMIES do
+			if _G["ArenaEnemyFrame" .. i].sf then
+				_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
+				_G["ArenaEnemyFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
+			end
 		end
 	end
 
@@ -471,6 +474,7 @@ function module:OnInitialize()
 	and not db.arena
 	then
 		self:Disable()
+		aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
 	end
 
 	-- disable ourself if another unitframe addon is loaded
@@ -478,6 +482,7 @@ function module:OnInitialize()
 	or _G.IsAddOnLoaded("XPerl")
 	then
 		self:Disable()
+		aObj.blizzLoDFrames[ftype].ArenaUI = _G.nop
 	end
 
 end
@@ -599,8 +604,7 @@ function module:GetOptions()
 
 end
 
--- this stub is used to trigger Arena frames skinning
-function aObj:ArenaUI()
+aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 
 	if db.arena then
 		local function skinFrame(fName)

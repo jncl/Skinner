@@ -277,7 +277,9 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 
 		local function skinSFButtons(scrollFrame)
 			for i = 1, #scrollFrame.buttons do
-				self:keepFontStrings(scrollFrame.buttons[i])
+				self:removeRegions(scrollFrame.buttons[i], {1, 2, 3})
+				scrollFrame.buttons[i].Item:GetNormalTexture():SetTexture(nil)
+				scrollFrame.buttons[i].Item:GetPushedTexture():SetTexture(nil)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=scrollFrame.buttons[i].Item, reParent={scrollFrame.buttons[i].Item.Count, scrollFrame.buttons[i].Item.Stock}}
 					colourBtnBorder(scrollFrame.buttons[i].Item)
