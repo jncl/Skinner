@@ -421,7 +421,14 @@ function aObj:OnEnable()
 		exclusive = 1,
 		hideOnEscape = 1
 	}
-	local function reloadAddon() _G.StaticPopup_Show(aName .. "_Reload_UI") end
+	local function reloadAddon()
+		-- setup defaults for new profile
+		aObj:checkAndRun("SetupDefaults", "opt", false, true)
+		-- store shortcut
+		aObj.prdb = aObj.db.profile
+		-- prompt for reload
+		_G.StaticPopup_Show(aName .. "_Reload_UI")
+	end
 
 	-- handle profile changes
 	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
