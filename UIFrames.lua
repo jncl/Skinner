@@ -74,7 +74,7 @@ local function skinFollowerAbilitiesAndCounters(frame)
 	for equipment in frame.equipmentPool:EnumerateActive() do
 		equipment.BG:SetTexture(nil)
 		equipment.Border:SetTexture(nil)
-		aObj:addButtonBorder{obj=equipment, ofs=1, relTo=equipment.Icon}
+		aObj.modUIBtns:addButtonBorder{obj=equipment, ofs=1, relTo=equipment.Icon} -- use module function
 	end
 
 end
