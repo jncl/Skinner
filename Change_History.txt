@@ -1,3 +1,13 @@
+beta7.25497.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Version number update
+	Bugfixes, Added Button skins and improved frame displays
+	Moved ArtifactUI skin to PlayerFrames from UIFrames
+	Updated Ace3, AucAdvanced, Configator, EnhancedStaclSplit & TinyTooltip skins
+	Skinned GarrisonCommander, LibInit & OrderHallCommander
+
 beta7.25383.4
 Jncl:
 	ToDo.txt
