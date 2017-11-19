@@ -21,13 +21,11 @@ local lOfs = -9 -- level text offset
 local isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 local unitFrames = {
 	"FocusFrame",
-	"FocusFrameToT",
 	"PartyMemberBackground",
 	"PartyMemberBuffTooltip",
 	"PlayerFrame",
 	"PetFrame",
 	"TargetFrame",
-	"TargetFrameToT"
 }
 
 -- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
@@ -423,7 +421,9 @@ local function changeUFOpacity()
 		if _G[uF].sf then
 			_G[uF].sf:SetAlpha(db.alpha)
 		end
-		if _G[uF].totFrame then
+		if _G[uF].totFrame
+		and _G[uF].totFrame.sf
+		then
 			_G[uF].totFrame.sf:SetAlpha(db.alpha)
 		end
 	end
