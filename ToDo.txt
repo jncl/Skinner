@@ -18,28 +18,8 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-?	I	Collections, reported by NeoZeus, 11.11.17
-		- Sometimes the "Mount/Pet Journal/Toy Box/Appearance" window is skinned, but the borders don't get skinned.  It happens randomly.
+√	I	UnitFrames, reported by temp123456, 16.11.17
+		- Interface\AddOns\Skinner\Modules\UnitFrames.lua:427: attempt to index field 'sf' (a nil value)
 
-√	N	TinyTooltip, reported by NeoZeus, 11.11.17
-
-≈	S	GarrisonCommander, requested by NeoZeus, 11.11.17
-
-≈	S	OrderHallCommander, requested by NeoZeus, 11.11.17
-
-√	I	IOF, expand buttons not skinned on first display of Addons frame
-
-√	I	Shipyard map, textures are dark on first showing, behind fog textures
-
-√	I	Collections, reported by temp123456, 13.11.17
-		- Interface\AddOns\Skinner\PlayerFrames.lua:847: attempt to call global 'skinPageBtns' (a nil value)
-			- toy/heirloom/appearance panes
-
-√	I	Ace3, reported by temp123456, 13.11.17
-		- Interface\AddOns\Skinner\AddonSkins\Ace3.lua:148: <unnamed>:SetParent(): Cannot set a 'nil' parent for fonts or textures
-		- If i have both button borders & check buttons enabled, i cannot reproduce error "B"
-			- test with no button borders but check buttons enabled
-
-√	I	Unitframes, reported by temp123456, 14.11.17
-		-  if i enable in modules / unit frames / player and use the background opacity slider
-			- Interface\AddOns\Skinner\Modules\UnitFrames.lua:424: attempt to index field '?' (a nil value)
+√	I	Profiles, reported by temp123456, 16,11,17
+		-  Interface\AddOns\Skinner\Skinner.lua:751: attempt to index field 'Gradient' (a nil value)
