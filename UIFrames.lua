@@ -2828,12 +2828,9 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 	-- these are done here as other AddOns may require them to be skinned
 	if self.modBtns then
-		self:addSkinButton{obj=_G.MainMenuBarVehicleLeaveButton, ft=ftype}
-		self:SecureHook("MainMenuBarVehicleLeaveButton_Update", function()
-			self:moveObject{obj=_G.MainMenuBarVehicleLeaveButton, y=3}
-		end)
+		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
 
-	-->>-- MicroButtonAlert frames
+		-- MicroButtonAlert frames
 		 for _, type in pairs{"Talent", "Collections", "LFD", "EJ"} do
 			self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton}
 		end
