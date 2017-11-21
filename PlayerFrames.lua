@@ -1222,6 +1222,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton}
 		self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
 		_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
+		self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
 		-- Resize Frame
 		self:addSkinFrame{obj=this.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
 		-- Raid Frame Manager Frame
@@ -1229,8 +1230,6 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-
-	-- force skinning if already displayed
 	if _G.CompactRaidFrameManager:IsShown() then
 		_G.CompactRaidFrameManager:Hide()
 		_G.CompactRaidFrameManager:Show()
