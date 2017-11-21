@@ -1,3 +1,11 @@
+beta7.25497.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated OrderHallUI skin
+	BugFix for profile changes
+	Bugfix for UnitFrames
+
 beta7.25497.1
 Jncl:
 	ToDo.txt
