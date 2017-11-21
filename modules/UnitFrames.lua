@@ -438,10 +438,11 @@ local function changeUFOpacity()
 			_G["PartyMemberFrame" .. i .. "PetFrame"].sf:SetAlpha(db.alpha)
 		end
 	end
-	_G.PartyMemberBuffTooltip.sf:SetAlpha(db.alpha)
 
 	if _G.IsAddOnLoaded("Blizzard_ArenaUI") then
-		if _G.ArenaEnemyBackground.sf then _G.ArenaEnemyBackground.sf:SetAlpha(db.alpha) end
+		if _G.ArenaEnemyBackground.sf then
+			_G.ArenaEnemyBackground.sf:SetAlpha(db.alpha)
+		end
 		for i = 1, _G.MAX_ARENA_ENEMIES do
 			if _G["ArenaEnemyFrame" .. i].sf then
 				_G["ArenaEnemyFrame" .. i].sf:SetAlpha(db.alpha)
