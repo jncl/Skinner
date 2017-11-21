@@ -18,8 +18,5 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-√	I	UnitFrames, reported by temp123456, 16.11.17
-		- Interface\AddOns\Skinner\Modules\UnitFrames.lua:427: attempt to index field 'sf' (a nil value)
-
-√	I	Profiles, reported by temp123456, 16,11,17
-		-  Interface\AddOns\Skinner\Skinner.lua:751: attempt to index field 'Gradient' (a nil value)
+√	I	UnitFrames, reported by temp123456, 19.11.17
+		- Interface\AddOns\Skinner\Modules\UnitFrames.lua:441: attempt to index field 'sf' (a nil value)
