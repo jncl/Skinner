@@ -186,6 +186,8 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 			-- add button borders to bank items
 			for i = 1, 28 do
 				self:addButtonBorder{obj=_G["BankFrameItem" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}}
+				-- force quality border update
+				_G.BankFrameItemButton_Update(_G["BankFrameItem" .. i])
 				if not _G["BankFrameItem" .. i].hasItem then
 					_G["BankFrameItem" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				end
@@ -196,8 +198,10 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 			end
 			-- add button borders to reagent bank items
 			self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
-				for i = 1, 7 * 7 * 2 do
+				for i = 1, this.size do
 					self:addButtonBorder{obj=this["Item" .. i], ibt=true, reParent={this["Item" .. i].IconQuestTexture}}
+					-- force quality border update
+					_G.BankFrameItemButton_Update(this["Item" .. i])
 					if not this["Item" .. i].hasItem then
 						this["Item" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.25)
 					end
