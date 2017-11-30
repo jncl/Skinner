@@ -3875,6 +3875,33 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 end
 
+aObj.blizzFrames[ftype].PetBattleTooltips = function(self)
+	if not self.prdb.PetBattleUI then return end
+
+	self:SecureHookScript(_G.BattlePetTooltip, "OnShow", function(this)
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, this)
+		end)
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.FloatingPetBattleAbilityTooltip, "OnShow", function(this)
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, this)
+		end)
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.FloatingBattlePetTooltip, "OnShow", function(this)
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, this)
+		end)
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
 aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Rewards Frame
 	if not self.db.profile.ProductChoiceFrame or self.initialized.ProductChoiceFrame then return end
 	self.initialized.ProductChoiceFrame = true
