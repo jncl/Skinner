@@ -698,17 +698,6 @@ function module:skinAllButtons(...)
 
 end
 
-local function colourBtnBorder(btn)
-	-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
-	if btn.IconBorder:IsShown() then
-		local r, g, b = btn.IconBorder:GetVertexColor()
-		if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
-			btn.sbb:SetBackdropBorderColor(r, g, b)
-		end
-		r, g, b = nil, nil, nil
-	end
-	btn.IconBorder:SetAlpha(0)
-end
 local function __addButtonBorder(opts)
 --[[
 	Calling parameters:
@@ -792,22 +781,6 @@ local function __addButtonBorder(opts)
 	opts.obj.sbb:SetPoint("BOTTOMRIGHT", relTo or opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
 	relTo = nil
 
-	-- if opts.hide and opts.relTo then
-	-- 	-- hook methods of the relTo object
-	-- 	module:SecureHook(opts.relTo, "Show", function(this) opts.obj.sbb:Show() end)
-	-- 	module:SecureHook(opts.relTo, "Hide", function(this) opts.obj.sbb:Hide() end)
-	-- 	module:SecureHook(opts.relTo, "SetShown", function(this, show) opts.obj.sbb:SetShown(this, show) end)
-	-- 	-- hide border if required
-	-- 	opts.obj.sbb:SetShown(opts.relTo:IsShown())
-	-- end
-
-	-- if opts.disable then
-	-- 	-- hook Enable & Disable methods
-	-- 	module:SecureHook(opts.obj, "Enable", function(this) this.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]) end)
-	-- 	module:SecureHook(opts.obj, "Disable", function(this) this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end)
-	-- 	if not opts.obj:IsEnabled() then opts.obj.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
-	-- end
-
 	-- reparent objects if required
 	if opts.reParent then
 		for i = 1, #opts.reParent do
@@ -819,7 +792,7 @@ local function __addButtonBorder(opts)
 		opts.obj.Count:SetParent(opts.obj.sbb)
 		aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
-		colourBtnBorder(opts.obj)
+		aObj:colourBtnBorder(opts.obj)
 	elseif opts.abt then -- Action Buttons
 		opts.obj.Flash:SetParent(opts.obj.sbb)
 		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)

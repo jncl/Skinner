@@ -4,18 +4,6 @@ local ftype = "n"
 
 local pairs = _G.pairs
 
--- The following function is used by the AuctionUI & BlackMarketUI functions
-local function colourBtnBorder(btn)
-	-- use the colour of the quality border as the BackdropBorderColor, ignoring COMMON items
-	if btn.IconBorder:IsShown() then
-		local r, g, b = btn.IconBorder:GetVertexColor()
-		if aObj:round2(r, 5) ~= _G.BAG_ITEM_QUALITY_COLORS[_G.LE_ITEM_QUALITY_COMMON].r then
-			btn.sbb:SetBackdropBorderColor(r, g, b)
-		end
-		r, g, b = nil, nil, nil
-	end
-	btn.IconBorder:SetAlpha(0)
-end
 -- The following function is used by the GossipFrame & QuestFrame functions
 local function setupQuestDisplayColours()
 
@@ -55,7 +43,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 				if _G["BrowseButton" .. i .. "Highlight"] then _G["BrowseButton" .. i .. "Highlight"]:SetAlpha(1) end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G["BrowseButton" .. i .. "Item"], reParent={_G["BrowseButton" .. i .. "Count"], _G["BrowseButton" .. i .. "Stock"]}}
-					colourBtnBorder(_G["BrowseButton" .. i .. "Item"])
+					self:colourBtnBorder(_G["BrowseButton" .. i .. "Item"])
 				end
 			end
 			for _, type in pairs{"Name", "MinLevel", "MaxLevel"} do
@@ -109,7 +97,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 				if _G["BidButton" .. i .. "Highlight"] then _G["BidButton" .. i .. "Highlight"]:SetAlpha(1) end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G["BidButton" .. i .. "Item"],reParent={_G["BidButton" .. i .. "Count"], _G["BidButton" .. i .. "Stock"]}}
-					colourBtnBorder(_G["BidButton" .. i .. "Item"])
+					self:colourBtnBorder(_G["BidButton" .. i .. "Item"])
 				end
 			end
 			self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, rt="artwork"}
@@ -134,7 +122,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 				if _G["AuctionsButton" .. i .. "Highlight"] then _G["AuctionsButton" .. i .. "Highlight"]:SetAlpha(1) end
 				if self.modBtnBs then
 					self:addButtonBorder{obj=_G["AuctionsButton" .. i .. "Item"], reParent={_G["AuctionsButton" .. i .. "Count"], _G["AuctionsButton" .. i .. "Stock"]}}
-					colourBtnBorder(_G["AuctionsButton" .. i .. "Item"])
+					self:colourBtnBorder(_G["AuctionsButton" .. i .. "Item"])
 				end
 			end
 			if not self.modBtnBs then
@@ -260,7 +248,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		self:keepFontStrings(this.HotDeal)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock}}
-			colourBtnBorder(this.HotDeal.Item)
+			self:colourBtnBorder(this.HotDeal.Item)
 		end
 
 		-- column headings
@@ -282,7 +270,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 				scrollFrame.buttons[i].Item:GetPushedTexture():SetTexture(nil)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=scrollFrame.buttons[i].Item, reParent={scrollFrame.buttons[i].Item.Count, scrollFrame.buttons[i].Item.Stock}}
-					colourBtnBorder(scrollFrame.buttons[i].Item)
+					self:colourBtnBorder(scrollFrame.buttons[i].Item)
 				end
 			end
 		end

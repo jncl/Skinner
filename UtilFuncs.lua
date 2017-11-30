@@ -373,6 +373,16 @@ function aObj:checkLoadable(addonName)
 
 end
 
+function aObj:colourBtnBorder(btn)
+
+	-- use the colour of the quality border as the BackdropBorderColor
+	if btn.IconBorder:IsShown() then
+		btn.sbb:SetBackdropBorderColor(btn.IconBorder:GetVertexColor())
+	end
+	btn.IconBorder:SetAlpha(0)
+
+end
+
 function aObj:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
