@@ -18,5 +18,15 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-√	I	UnitFrames, reported by temp123456, 19.11.17
-		- Interface\AddOns\Skinner\Modules\UnitFrames.lua:441: attempt to index field 'sf' (a nil value)
+	I	Colours, reported by temp123456, 26.11.17
+√		- Tooltip Border Colour not handled properly
+√		- Border Colour Alpha value not handled properly
+√		- Item Border colours should match item quality
+√		- Add Gradient ClassColour feature
+
+√	I	Ace3, reported by Fraktyl, 27.11.17
+		- Skinner\Modules\UIButtons.lua:330: attempt to call method 'GetNormalTexture' (a nil value)
+		Skinner\Modules\UIButtons.lua:330: in function `skinStdButton'
+		Skinner\AddonSkins\Ace3.lua:292: in function <Skinner\AddonSkins\Ace3.lua:25>
+		Skinner\AddonSkins\Ace3.lua:422: in function <Skinner\AddonSkins\Ace3.lua:420>
+		
