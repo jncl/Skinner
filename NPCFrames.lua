@@ -432,12 +432,12 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 	self.initialized.MerchantFrame = true
 
 	self:SecureHookScript(_G.MerchantFrame, "OnShow", function(this)
+		self:skinTabs{obj=this, lod=true} -- do first otherwise error when TradeSkillMaster Addon is loaded
 		self:skinDropDown{obj=_G.MerchantFrameLootFilter}
 		self:removeInset(_G.MerchantExtraCurrencyInset)
 		_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-6}
 		if self.modBtnBs then
 			self:removeRegions(_G.MerchantPrevPageButton, {2})

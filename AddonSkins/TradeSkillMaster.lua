@@ -51,30 +51,13 @@ function aObj:TSM_AuctionHouse()
 
 end
 
-function aObj:TradeSkillMaster() -- 3.6.1
-
-	-- skin modules
-	-- N.B. "Crafting" is handled by TRADE_SKILL_SHOW event code in AddonFrames.lua
-	-- N.B. "Auctioning", "AuctionDB" & , "Shopping" are done in TSM_AuctionHouse
-	for _, module in _G.pairs{"Accounting", "Destroying", "Mailing", "Vendoring", "Warehousing"} do
-		if _G.IsAddOnLoaded("TradeSkillMaster_" .. module) then
-			self:checkAndRunAddOn("TradeSkillMaster_" .. module)
-		end
-	end
-
-end
-
-function aObj:TradeSkillMaster_Accounting()
-
-end
-
+-- loaded when TRADE_SKILL_SHOW event is triggered
 function aObj:TradeSkillMaster_Crafting()
 
-	_G.C_Timer.After(0.5, function()
-		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame, ofs=3}
-		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame.queue, ofs=3}
+	_G.C_Timer.After(0.75, function()
+		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame, ft="a", nb=true, ofs=3}
+		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame.queue, ft="a", nb=true, ofs=3}
 		local pf = _G.TSMCraftingTradeSkillFrame.professionsTab
-		pf.helpBtn.Ring:SetTexture(nil)
 		self:addButtonBorder{obj=pf.craftInfoFrame.infoFrame.icon, relTo=pf.craftInfoFrame.infoFrame.icon.icon}
 		self:addButtonBorder{obj=pf.craftInfoFrame.buttonsFrame.lessBtn, ofs=-2, x1=1}
 		self:addButtonBorder{obj=pf.craftInfoFrame.buttonsFrame.moreBtn, ofs=-2, x1=1}
@@ -83,23 +66,22 @@ function aObj:TradeSkillMaster_Crafting()
 
 end
 
-function aObj:TradeSkillMaster_Destroying()
+aObj.addonsToSkin.TradeSkillMaster_Destroying = function(self) -- v 3.1.7
 
-	_G.C_Timer.After(0.2, function()
-		self:addSkinFrame{obj=_G.TSMDestroyingFrame, ofs=3}
+	_G.C_Timer.After(0.25, function()
+		self:addSkinFrame{obj=_G.TSMDestroyingFrame, ft="a", nb=true, ofs=3}
 	end)
 
 end
 
-function aObj:TradeSkillMaster_Mailing()
-
-	-- prevent errors as not all tabs have been skinned
-	aObj.tabFrames[_G.MailFrame] = nil
+aObj.addonsToSkin.TradeSkillMaster_Mailing = function(self) -- v 3.0.18
 
 	self:RegisterEvent("MAIL_SHOW", function()
-		_G.C_Timer.After(0.2, function()
+		-- prevent errors as not all tabs have been skinned yet
+		aObj.tabFrames[_G.MailFrame] = nil
+		_G.C_Timer.After(0.25, function()
 			local frame = self:getChild(_G.MailFrame, _G.MailFrame:GetNumChildren() - 1) -- get penultimate child
-			self:addSkinFrame{obj=frame, ofs=2, y2=-5}
+			self:addSkinFrame{obj=frame, ft="a", nb=true, ofs=2, y2=-5}
 			_G.MailFrame.sf:Hide() -- hide to start with as mailframe opens to TSM frame initially
 			self:SecureHook(frame, "Show", function(this)
 				_G.MailFrame.sf:Hide()
@@ -107,9 +89,10 @@ function aObj:TradeSkillMaster_Mailing()
 			self:SecureHook(frame, "Hide", function(this)
 				_G.MailFrame.sf:Show()
 			end)
+			frame = nil
 			-- Tab
 			self:keepRegions(_G.MailFrameTab3, {7, 8})
-			self:addSkinFrame{obj=_G.MailFrameTab3, noBdr=self.isTT, x1=6, y1=0, x2=6, y2=2}
+			self:addSkinFrame{obj=_G.MailFrameTab3, ft="a", nb=true, noBdr=self.isTT, x1=6, y1=0, x2=6, y2=2}
 			aObj.tabFrames[_G.MailFrame] = true
 			_G.PanelTemplates_UpdateTabs(_G.MailFrame)
 		end)
@@ -118,19 +101,18 @@ function aObj:TradeSkillMaster_Mailing()
 
 end
 
-function aObj:TradeSkillMaster_Vendoring()
-
-	-- prevent errors as not all tabs have been skinned
-	aObj.tabFrames[_G.MerchantFrame] = nil
+aObj.addonsToSkin.TradeSkillMaster_Vendoring = function(self) -- v 3.0.7
 
 	self:RegisterEvent("MERCHANT_SHOW", function()
-		_G.C_Timer.After(0.2, function()
-			-- aObj:Debug("MERCHANT_SHOW: [%s, %s, %s, %s]", _G.MerchantFrame, _G.MerchantFrame.sknd, _G.MerchantFrame.numTabs, _G.PanelTemplates_GetSelectedTab(_G.MerchantFrame))
+		-- prevent errors as not all tabs have been skinned yet
+		aObj.tabFrames[_G.MerchantFrame] = nil
+		_G.C_Timer.After(0.25, function()
 			local frame = self:getChild(_G.MerchantFrame, _G.MerchantFrame:GetNumChildren() - 1) -- get penultimate child
-			self:addSkinFrame{obj=frame, ofs=2, y2=-5}
+			self:addSkinFrame{obj=frame, ft="a", nb=true, ofs=2, y2=-5}
+			frame = nil
 			-- Tab
 			self:keepRegions(_G.MerchantFrameTab3, {7, 8})
-			self:addSkinFrame{obj=_G.MerchantFrameTab3, noBdr=self.isTT, x1=6, y1=0, x2=6, y2=2}
+			self:addSkinFrame{obj=_G.MerchantFrameTab3, ft="a", nb=true, noBdr=self.isTT, x1=6, y1=0, x2=6, y2=2}
 			if aObj.isTT then aObj:setInactiveTab(_G.MerchantFrameTab3.sf) end
 			aObj.tabFrames[_G.MerchantFrame] = true
 			_G.PanelTemplates_UpdateTabs(_G.MerchantFrame)
@@ -140,7 +122,7 @@ function aObj:TradeSkillMaster_Vendoring()
 
 end
 
-function aObj:TradeSkillMaster_Warehousing()
+aObj.addonsToSkin.TradeSkillMaster_Warehousing = function(self) -- v 3.0.8
 
 	local function skinBankUI()
 
@@ -148,10 +130,10 @@ function aObj:TradeSkillMaster_Warehousing()
 			aObj.RegisterCallback("TSM_Warehousing", "UIParent_GetChildren", function(this, child)
 				if child:IsObjectType("Frame")
 				and child:GetName() == nil
-				and aObj:getInt(child:GetWidth()) == 305
-				and aObj:getInt(child:GetHeight()) == 490
+				and _G.Round(child:GetWidth()) == 305
+				and _G.Round(child:GetHeight()) == 490
 				then
-					aObj:addSkinFrame{obj=child, ofs=2}
+					aObj:addSkinFrame{obj=child, ft="a", nb=true, ofs=2}
 					aObj:UnregisterEvent("GUILDBANKFRAME_OPENED")
 					aObj:UnregisterEvent("BANKFRAME_OPENED")
 				end

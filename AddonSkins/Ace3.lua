@@ -289,7 +289,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
                 aObj:applySkin{obj=obj.treeframe}
                 obj.sknrTSM = true
             elseif objType == "TSMButton" then
-                aObj:skinStdButton{obj=obj.frame, as=true} -- just skin it otherwise text is hidden
+                aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
                 obj.btn:SetBackdrop(nil)
                 obj.sknrTSM = true
             elseif objType == "TSMSelectionList" then

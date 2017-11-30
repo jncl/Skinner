@@ -38,7 +38,7 @@ local addonSkins = {
 	"Quartz", "QuestCompletist", "QuestGuru", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidAchievement", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Squeenix", "StaggerMeter",
-	"TargetCharms", "TidyPlates", "TipTac", "TooManyAddons", "TradeSkillMaster", "TrinketBar", "Tukui",
+	"TargetCharms", "TidyPlates", "TipTac", "TooManyAddons", "TrinketBar", "Tukui",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
 	"Warden", "WeakAuras", "WoWPro", "WTFLatencyMeter",
