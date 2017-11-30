@@ -40,6 +40,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 	-->>-- Colours
 		ClassColour          = false,
 		ClassClrBg           = false,
+		ClassClrGr           = false,
 		TooltipBorder        = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		BackdropBorder       = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		Backdrop             = {r = 0, g = 0, b = 0, a = 0.9},
@@ -504,6 +505,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			get = function(info)
 				if info[#info] == "ClassColour"
 				or info[#info] == "ClassClrBg"
+				or info[#info] == "ClassClrGr"
 				then
 					return db[info[#info]]
 				else
@@ -515,24 +517,26 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				if info[#info] == "ClassColour" then
 					db[info[#info]] = r
 					if r then
-						db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
-						db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
-						db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
 						db.BackdropBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
 						db.BackdropBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
 						db.BackdropBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						if db.TooltipBorder.r == dflts.TooltipBorder.r then
+							db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
+							db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
+							db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
+						end
 						if bggns then
 							db.BagginsBBC.r = _G.RAID_CLASS_COLORS[self.uCls].r
 							db.BagginsBBC.g = _G.RAID_CLASS_COLORS[self.uCls].g
 							db.BagginsBBC.b = _G.RAID_CLASS_COLORS[self.uCls].b
 						end
 					else
-						db.TooltipBorder.r = dflts.TooltipBorder.r
-						db.TooltipBorder.g = dflts.TooltipBorder.g
-						db.TooltipBorder.b = dflts.TooltipBorder.b
 						db.BackdropBorder.r = dflts.BackdropBorder.r
 						db.BackdropBorder.g = dflts.BackdropBorder.g
 						db.BackdropBorder.b = dflts.BackdropBorder.b
+						db.TooltipBorder.r = dflts.TooltipBorder.r
+						db.TooltipBorder.g = dflts.TooltipBorder.g
+						db.TooltipBorder.b = dflts.TooltipBorder.b
 						if bggns then
 							db.BagginsBBC.r = dflts.BackdropBorder.r
 							db.BagginsBBC.g = dflts.BackdropBorder.g
@@ -549,6 +553,17 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						db.Backdrop.r = dflts.Backdrop.r
 						db.Backdrop.g = dflts.Backdrop.g
 						db.Backdrop.b = dflts.Backdrop.b
+					end
+				elseif info[#info] == "ClassClrGr" then
+					db[info[#info]] = r
+					if r then
+						db.GradientMax.r = _G.RAID_CLASS_COLORS[self.uCls].r
+						db.GradientMax.g = _G.RAID_CLASS_COLORS[self.uCls].g
+						db.GradientMax.b = _G.RAID_CLASS_COLORS[self.uCls].b
+					else
+						db.GradientMax.r = dflts.GradientMax.r
+						db.GradientMax.g = dflts.GradientMax.g
+						db.GradientMax.b = dflts.GradientMax.b
 					end
 				else
 					local c = db[info[#info]]
@@ -570,9 +585,16 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Class Coloured Background"],
 					desc = self.L["Use Class Colour for Background"],
 				},
+				ClassClrGr = {
+					type = "toggle",
+					order = 3,
+					width = "double",
+					name = self.L["Class Coloured Gradient"],
+					desc = self.L["Use Class Colour for Gradient"],
+				},
 				TooltipBorder = {
 					type = "color",
-					order = 3,
+					order = 4,
 					width = "double",
 					name = self.L["Tooltip Border Colour"],
 					desc = self.L["Set Tooltip Border Colour"],
@@ -588,7 +610,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				BackdropBorder = {
 					type = "color",
-					order = 4,
+					order = 6,
 					width = "double",
 					name = self.L["Border Colour"],
 					desc = self.L["Set Backdrop Border Colour"],
@@ -596,28 +618,28 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				HeadText = {
 					type = "color",
-					order = 5,
+					order = 7,
 					width = "double",
 					name = self.L["Text Heading Colour"],
 					desc = self.L["Set Text Heading Colour"],
 				},
 				BodyText = {
 					type = "color",
-					order = 6,
+					order = 8,
 					width = "double",
 					name = self.L["Text Body Colour"],
 					desc = self.L["Set Text Body Colour"],
 				},
 				IgnoredText = {
 					type = "color",
-					order = 7,
+					order = 9,
 					width = "double",
 					name = self.L["Ignored Text Colour"],
 					desc = self.L["Set Ignored Text Colour"],
 				},
 				GradientMin = {
 					type = "color",
-					order = 8,
+					order = 10,
 					width = "double",
 					name = self.L["Gradient Minimum Colour"],
 					desc = self.L["Set Gradient Minimum Colour"],
@@ -625,7 +647,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				GradientMax = {
 					type = "color",
-					order = 9,
+					order = 11,
 					width = "double",
 					name = self.L["Gradient Maximum Colour"],
 					desc = self.L["Set Gradient Maximum Colour"],
@@ -1897,25 +1919,31 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	end
 	self.optionsFrame[self.L["Colours"]].default = function()
 		db.ClassColour = dflts.ClassColour
+		db.ClassClrBg = dflts.ClassClrBg
+		db.ClassClrGr = dflts.ClassClrGr
 		db.TooltipBorder = dflts.TooltipBorder
-		db.BackdropBorder = dflts.BackdropBorder
 		db.Backdrop = dflts.Backdrop
+		db.BackdropBorder = dflts.BackdropBorder
 		db.HeadText = dflts.HeadText
 		db.BodyText = dflts.BodyText
+		db.IgnoredText = dflts.IgnoredText
 		db.GradientMin = dflts.GradientMin
 		db.GradientMax = dflts.GradientMax
+		if bggns then
+			db.BagginsBBC = dflts.BagginsBBC
+		end
 		-- refresh panel
 		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Colours"]])
 	end
 	self.optionsFrame[self.L["Gradient"]].default = function()
 		db.Gradient.enable = dflts.Gradient.enable
+		db.Gradient.texture = dflts.Gradient.texture
 		db.Gradient.invert = dflts.Gradient.invert
 		db.Gradient.rotate = dflts.Gradient.rotate
 		db.Gradient.char = dflts.Gradient.char
 		db.Gradient.ui = dflts.Gradient.ui
 		db.Gradient.npc = dflts.Gradient.npc
 		db.Gradient.skinner = dflts.Gradient.skinner
-		db.Gradient.texture = dflts.Gradient.texture
 		-- refresh panel
 		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Gradient"]])
 	end

@@ -132,6 +132,16 @@ function aObj:OnInitialize()
 	self.gradientTab = {self.prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
 	self.gradientCBar = {self.prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .25, .25, .55, 1, 0, 0, 0, 1}
 	self.gradientTex = self.LSM:Fetch("background", self.prdb.Gradient.texture)
+	-- GradientMax colours
+	if self.prdb.ClassColour
+	and self.prdb.ClassClrGr
+	then
+		self.prdb.GradientMax.r = _G.RAID_CLASS_COLORS[self.uCls].r
+		self.prdb.GradientMax.g = _G.RAID_CLASS_COLORS[self.uCls].g
+		self.prdb.GradientMax.b = _G.RAID_CLASS_COLORS[self.uCls].b
+	end
+	-- these are used to disable the gradient
+	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}, a = {}}
 
 	-- backdrop for Frames etc
 	self.bdTexName = dflts.BdTexture
@@ -224,11 +234,17 @@ function aObj:OnInitialize()
 		end
 	end
 
-	-- these are used to disable the gradient
-	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}, a = {}}
-
 	-- TooltipBorder colours
-	c = self.prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.TooltipBorder
+	if self.prdb.ClassColour
+	and self.prdb.TooltipBorder.r == dflts.TooltipBorder.r
+	and self.prdb.TooltipBorder.g == dflts.TooltipBorder.g
+	and self.prdb.TooltipBorder.b == dflts.TooltipBorder.b
+	and self.prdb.TooltipBorder.a == dflts.TooltipBorder.a
+	then
+		c = _G.RAID_CLASS_COLORS[self.uCls]
+	else
+		c = self.prdb.TooltipBorder
+	end
 	self.tbColour = {c.r, c.g, c.b, c.a or 1}
 	-- StatusBar colours
 	c = self.prdb.StatusBar
@@ -237,10 +253,11 @@ function aObj:OnInitialize()
 	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
 	-- Backdrop colours
 	c = self.prdb.ClassClrsBg and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.Backdrop
-	self.bColour = {c.r, c.g, c.b, c.a or 1}
+	self.bColour = {c.r, c.g, c.b, c.a or self.prdb.Backdrop.a}
 	-- BackdropBorder colours
 	c = self.prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.BackdropBorder
-	self.bbColour = {c.r, c.g, c.b, c.a or 1}
+	self.bbColour = {c.r, c.g, c.b, c.a or self.prdb.BackdropBorder.a}
+
 	-- Inactive Tab & DropDowns texture
 	if self.prdb.TabDDFile and self.prdb.TabDDFile ~= "None" then
 		self.itTex = self.LSM:Fetch("background", aName .. " User TabDDTexture")
@@ -320,15 +337,13 @@ function aObj:OnEnable()
 				end
 				if button.sbb then
 					if quality then
-						if quality > _G.LE_ITEM_QUALITY_COMMON and _G.BAG_ITEM_QUALITY_COLORS[quality] then
+						if quality > _G.LE_ITEM_QUALITY_POOR and _G.BAG_ITEM_QUALITY_COLORS[quality] then
 							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
-						elseif quality == _G.LE_ITEM_QUALITY_POOR then
-							button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 						else
-							button.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+							button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 						end
 					else
-						button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.35)
+						button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.30)
 					end
 				end
 			end)
@@ -1650,6 +1665,9 @@ function aObj:skinTooltip(tooltip)
 		end
 		ttSB = nil
 	end
+
+	-- colour the Border
+	tooltip.sf:SetBackdropBorderColor(self.prdb.TooltipBorder.r, self.prdb.TooltipBorder.g, self.prdb.TooltipBorder.b, self.prdb.TooltipBorder.a)
 
 	if self.prdb.Tooltips.style == 1 then -- Rounded
 		self:applyGradient(tooltip.sf, 32)
