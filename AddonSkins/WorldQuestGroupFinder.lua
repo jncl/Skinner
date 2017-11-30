@@ -11,13 +11,10 @@ aObj.addonsToSkin.WorldQuestGroupFinder = function(self) -- v 0.27
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.WorldQuestGroupCurrentWQFrame, "OnShow", function(this)
-		this:SetBackdrop(nil)
-		self:skinStdButton{obj=this.KickButton}
-		self:skinStdButton{obj=this.RefreshButton}
-		self:skinStdButton{obj=this.StopButton}
-		this.SetBackdrop = _G.nop
-		self:Unhook(this, "OnShow")
+	self:SecureHook(_G.WorldQuestGroupFinder, "AttachBorderToWQ", function(wqID, update)
+		_G.WorldQuestGroupCurrentWQFrame:SetBackdrop(nil)
+		_G.WorldQuestGroupCurrentWQFrame.SetBackdrop = _G.nop
+		self:Unhook(_G.WorldQuestGroupFinder, "AttachBorderToWQ")
 	end)
 
 	-- skin WQGFButtons
