@@ -1310,6 +1310,15 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
 	end, true)
 
+	self:SecureHookScript(_G.ArtifactRelicHelpBox, "OnShow", function(this)
+		self:skinCloseButton{obj=this.CloseButton}
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.BagHelpBox, "OnShow", function(this)
+		self:skinCloseButton{obj=this.CloseButton}
+		self:Unhook(this, "OnShow")
+	end)
+
 end
 
 aObj.blizzFrames[ftype].DressUpFrame = function(self)
