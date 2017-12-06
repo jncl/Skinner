@@ -1284,6 +1284,10 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 			_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
 		end
 
+		if self.isPTR then
+			self:skinCloseButton{obj=frame.ExtraBagSlotsHelpBox.CloseButton}
+		end
+
 	end
 
 	-- Hook this to skinhide/show the gear button
