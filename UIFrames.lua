@@ -4337,6 +4337,9 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:skinStdButton{obj=this.button1}
 			self:skinStdButton{obj=this.button2}
 			self:skinStdButton{obj=this.button3}
+			if self.isPTR then
+				self:skinStdButton{obj=this.button4}
+			end
 			self:skinEditBox{obj=_G[objName .. "EditBox"]}
 			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
