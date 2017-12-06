@@ -661,6 +661,43 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 end
 
+if aObj.isPTR then
+	aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
+		if not self.db.profile.AlliedRacesUI or self.initialized.AlliedRacesUI then return end
+		self.initialized.AlliedRacesUI = true
+
+		self:SecureHookScript(_G.AlliedRacesFrame, "OnShow", function(this)
+			this.ModelFrame:DisableDrawLayer("BORDER")
+			this.ModelFrame:DisableDrawLayer("ARTWORK")
+			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
+			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
+			self:skinSlider{obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, rt="background", wdth=-4}
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
+			this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=2, x2=1}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0}
+				self:addButtonBorder{obj=this.ModelFrame.AlliedRacesFemaleButton, ofs=0}
+			end
+			for ability in this.abilityPool:EnumerateActive() do
+				ability.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
+				self:getRegion(ability, 3):SetTexture(nil) -- Border texture
+			end
+			for bullet in this.bulletPool:EnumerateActive() do
+				bullet.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
+			end
+			self:Unhook(this, "OnShow")
+		end)
+		if _G.AlliedRacesFrame:IsShown() then
+			_G.AlliedRacesFrame:Hide()
+			_G.AlliedRacesFrame:Show()
+		end
+
+	end
+
+end
+
 aObj.blizzFrames[ftype].ArtifactToasts = function(self)
 	if not self.prdb.ArtifactUI or self.initialized.ArtifactToasts then return end
 	self.initialized.ArtifactToasts = true

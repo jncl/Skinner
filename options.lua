@@ -116,6 +116,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AddonList            = true,
 		AdventureMap         = true,
 		AlertFrames          = true,
+		AlliedRacesUI        = self.isPTR and true or nil,
 		ArtifactUI           = true,
 		AuthChallengeUI      = false, -- N.B. cannot be skinned
 		AutoComplete         = true,
@@ -1247,6 +1248,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Alert Frames"],
 					desc = self.L["Toggle the skin of the Alert Frames"],
 				},
+				AlliedRacesUI = self.isPTR and{
+					type = "toggle",
+					name = self.L["Allied Races UI"],
+					desc = self.L["Toggle the skin of the Allied Races UI"],
+				} or nil,
 				ArtifactUI = {
 					type = "toggle",
 					name = self.L["Artifact UI"],
