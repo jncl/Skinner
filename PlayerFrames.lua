@@ -2587,13 +2587,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
 		self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
-		-- remove Header backgrounds
-		_G.ObjectiveTrackerFrame.BlocksFrame.QuestHeader.Background:SetTexture(nil)
-		_G.ObjectiveTrackerFrame.BlocksFrame.AchievementHeader.Background:SetTexture(nil)
-		_G.ObjectiveTrackerFrame.BlocksFrame.ScenarioHeader.Background:SetTexture(nil)
-		_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:SetTexture(nil)
-		_G.WORLD_QUEST_TRACKER_MODULE.Header.Background:SetTexture(nil)
-
 		-- hook this to skin QuestObjective Block Button(s)
 		if self.modBtnBs then
 			self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
@@ -2724,6 +2717,13 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 		self:Unhook("ObjectiveTracker_AddBlock")
 	end)
+
+	-- remove Header backgrounds
+	_G.ObjectiveTrackerFrame.BlocksFrame.QuestHeader.Background:SetTexture(nil)
+	_G.ObjectiveTrackerFrame.BlocksFrame.AchievementHeader.Background:SetTexture(nil)
+	_G.ObjectiveTrackerFrame.BlocksFrame.ScenarioHeader.Background:SetTexture(nil)
+	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:SetTexture(nil)
+	_G.WORLD_QUEST_TRACKER_MODULE.Header.Background:SetTexture(nil)
 
 	self:SecureHookScript(_G.ObjectiveTrackerBonusRewardsFrame, "OnShow", function(this)
 		-- BonusRewardsFrame Rewards
