@@ -2868,7 +2868,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
 
 		-- MicroButtonAlert frames
-		 for _, type in pairs{"Talent", "Collections", "LFD", "EJ"} do
+		 for _, type in pairs{"Talent", "Collections", "LFD", "EJ", self.isPTR and "Store" or nil} do
 			self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton}
 		end
 
@@ -4162,7 +4162,9 @@ aObj.blizzFrames[ftype].RaidFinder = function(self)
 	self:SecureHookScript(_G.RaidFinderFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
 		this:DisableDrawLayer("BORDER")
-		self:RaiseFrameLevelByFour(this.NoRaidsCover) -- cover buttons and dropdown
+		if not self.isPTR then
+			self:RaiseFrameLevelByFour(this.NoRaidsCover) -- cover buttons and dropdown
+		end
 		self:removeInset(_G.RaidFinderFrameRoleInset)
 		self:removeInset(_G.RaidFinderFrameBottomInset)
 		self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}

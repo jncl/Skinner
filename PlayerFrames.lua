@@ -1287,6 +1287,10 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		end
 
 		if self.isPTR then
+			if aObj.modBtns then
+				_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
+				self:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+			end
 			self:skinCloseButton{obj=frame.ExtraBagSlotsHelpBox.CloseButton}
 		end
 		objName = nil
