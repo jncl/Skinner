@@ -1263,6 +1263,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		cfpb.Highlight:SetPoint("center")
 		cfpb.Highlight:SetSize(22, 22)
 		aObj:moveObject{obj=cfpb, x=7, y=-5}
+		cfpb = nil
 		if aObj.modBtnBs then
 			-- skin the item buttons
 			local bo
@@ -1274,7 +1275,6 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 			-- update Button quality borders
 			_G.ContainerFrame_Update(frame)
 		end
-		objName, cfpb = nil, nil
 
 		-- Backpack
 		if id == 0 then
@@ -1289,6 +1289,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		if self.isPTR then
 			self:skinCloseButton{obj=frame.ExtraBagSlotsHelpBox.CloseButton}
 		end
+		objName = nil
 
 	end
 
@@ -1309,6 +1310,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 			frame.PortraitButton.gear:Show()
 			frame.PortraitButton.Highlight:SetAlpha(1)
 		end
+
 	end)
 
 	-- hook this to move the Search Box to the left, away from the AutoSort button
