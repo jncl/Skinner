@@ -4311,6 +4311,10 @@ aObj.blizzFrames[ftype].SplashFrame = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
+	if _G.SplashFrame:IsShown() then
+		_G.SplashFrame:Hide()
+		_G.SplashFrame:Show()
+	end
 
 end
 
