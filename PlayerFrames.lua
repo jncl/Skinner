@@ -1523,25 +1523,27 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 			-- Model Frame
 			this.info.model:DisableDrawLayer("BACKGROUND") -- dungeonBG (updated with dungeon type change)
 			self:rmRegionsTex(this.info.model, {2, 3}) -- Shadow, TitleBG
-			local function skinCreatureBtn(idx)
-				local btn, hTex = this.info.creatureButtons[idx]
-				if btn and not btn.sknd then
-					btn.sknd = true
-					btn:SetNormalTexture(nil)
-					hTex = btn:GetHighlightTexture()
+			local function skinCreatureBtn(cBtn)
+				local hTex
+				if cBtn
+				and not cBtn.sknd
+				then
+					cBtn.sknd = true
+					cBtn:SetNormalTexture(nil)
+					hTex = cBtn:GetHighlightTexture()
 					hTex:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 					hTex:SetTexCoord(0.68945313, 0.81054688, 0.33300781, 0.39257813)
 				end
-				btn, hTex = nil, nil
+				hTex = nil
 			end
 			-- creature(s)
-			for i = 1, #this.info.creatureButtons do
-				skinCreatureBtn(this.info.creatureButtons[i])
+			for _, cBtn in ipairs(this.info.creatureButtons) do
+				skinCreatureBtn(cBtn)
 			end
 			-- hook this to skin additional buttons
 			self:SecureHook("EncounterJournal_GetCreatureButton", function(index)
 				if index > 9 then return end -- MAX_CREATURES_PER_ENCOUNTER
-				skinCreatureBtn(index)
+				skinCreatureBtn(_G.EncounterJournal.encounter.info.creatureButtons[index])
 			end)
 
 			-- Tabs (side)
