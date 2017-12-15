@@ -639,6 +639,8 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				btn:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
 					self:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}}
+					-- force quality border update
+					_G.PaperDollItemSlotButton_Update(btn)
 					if not btn.hasItem then
 						btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 					end
