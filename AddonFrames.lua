@@ -87,7 +87,15 @@ otherAddons = {
 }
 aObj.otherAddons = {}
 for i = 1, #otherAddons do
-	aObj.otherAddons[otherAddons[i]] = otherAddons[i]
+--@alpha@
+	if aObj.otherAddons[otherAddons[i]] then
+		aObj:CustomPrint(1, 0, 0, "Duplicate entry in otherAddons table (AddonFrames)", otherAddons[i])
+	else
+--@end-alpha@
+		aObj.otherAddons[otherAddons[i]] = otherAddons[i]
+--@alpha@
+	end
+--@end-alpha@
 end
 otherAddons = nil
 local function skinLibs()
@@ -170,7 +178,15 @@ local lodFrames = {
 }
 aObj.lodAddons = {}
 for i = 1, #lodFrames do
-	aObj.lodAddons[lodFrames[i]] = lodFrames[i]
+--@alpha@
+	if aObj.lodAddons[lodFrames[i]] then
+		aObj:CustomPrint(1, 0, 0, "Duplicate entry in lodAddons table (AddonFrames)", lodFrames[i])
+	else
+--@end-alpha@
+		aObj.lodAddons[lodFrames[i]] = lodFrames[i]
+--@alpha@
+	end
+--@end-alpha@
 end
 lodFrames = nil
 -- RaidAchievement modules
