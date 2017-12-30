@@ -70,6 +70,7 @@
 <script file="AddonSkins\Dominos.lua"/>
 <script file="AddonSkins\DoTimer.lua"/>
 <script file="AddonSkins\DressUp.lua"/>
+<script file="AddonSkins\DropDownMenu.lua"/>
 <script file="AddonSkins\ElvUI.lua"/>
 <script file="AddonSkins\Enchantrix.lua"/>
 <script file="AddonSkins\EnchantrixBarker.lua"/>
@@ -119,6 +120,7 @@
 <script file="AddonSkins\LibInit.lua"/>
 <script file="AddonSkins\LibKeyBound.lua"/>
 <script file="AddonSkins\LibQTip.lua"/>
+<script file="AddonSkins\lib-st.lua"/>
 <script file="AddonSkins\LibToast.lua"/>
 <script file="AddonSkins\LibTradeSkillScan.lua"/>
 <script file="AddonSkins\LibXUI.lua"/>

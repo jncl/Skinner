@@ -137,6 +137,9 @@ function aObj:AddonFrames()
 	-- skin tekKonfig framework objects
 	if self.otherAddons["tekKonfig"] then self:checkAndRun("tekKonfig", "o") end
 
+	-- skin DropDownMenu framework objects (used by RCLootCouncil)
+	if self.otherAddons["DropDownMenu"] then self:checkAndRun("DropDownMenu", "o") end
+
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
 	-- (Tukui does this for the PetJournal, other addons do it as well)
 	C_Timer.After(0.2, function()
