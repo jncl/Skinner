@@ -177,6 +177,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		TimeManager          = true,
 		Tooltips             = {skin = true, style = 1, glazesb = true, border = 1},
 		Tutorial             = true,
+		WarboardUI           = self.isPTR and true or nil,
 		WorldMap             = {skin = true, size = 1},
 		WorldState           = true,
 		WowTokenUI			 = false, -- N.B. cannot be skinned
@@ -1764,6 +1765,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Tutorial Frame"],
 					desc = self.L["Toggle the skin of the Tutorial Frame"],
 				},
+				WarboardUI = self.isPTR and{
+					type = "toggle",
+					name = self.L["Warboard UI"],
+					desc = self.L["Toggle the skin of the Warboard UI"],
+				} or nil,
 				WorldMap = {
 					type = "group",
 					inline = true,

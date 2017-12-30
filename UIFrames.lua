@@ -2887,9 +2887,9 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 -->>-- Status Bars
 	if self.prdb.MainMenuBar.glazesb then
 		self:skinStatusBar{obj=_G.MainMenuExpBar, fi=0, bgTex=self:getRegion(_G.MainMenuExpBar, 9), otherTex={_G.ExhaustionLevelFillBar}}
-		self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
 		self:skinStatusBar{obj=_G.ArtifactWatchBar.StatusBar, fi=0, bgTex=_G.ArtifactWatchBar.StatusBar.Background, otherTex={_G.ArtifactWatchBar.StatusBar.Underlay}}
 		self:skinStatusBar{obj=_G.HonorWatchBar.StatusBar, fi=0, bgTex=_G.HonorWatchBar.StatusBar.Background, otherTex={_G.HonorWatchBar.StatusBar.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar}}
+		self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
 	end
 
 -->>-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
@@ -4604,6 +4604,25 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 		end
 	end)
 
+end
+
+if aObj.isPTR then
+	aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
+		if not self.db.profile.WarboardUI or self.initialized.WarboardUI then return end
+		self.initialized.WarboardUI = true
+
+		self:SecureHookScript(_G.WarboardQuestChoiceFrame, "OnShow", function(this)
+			this.GarrCorners:DisableDrawLayer("BACKGROUND")
+			-- Options array
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:Unhook(this, "OnShow")
+		end)
+		if _G.WarboardQuestChoiceFrame:IsShown() then
+			_G.WarboardQuestChoiceFrame:Hide()
+			_G.WarboardQuestChoiceFrame:Show()
+		end
+
+	end
 end
 
 aObj.blizzFrames[ftype].WorldMap = function(self)

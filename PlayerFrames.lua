@@ -1613,7 +1613,11 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 		self:skinDropDown{obj=this.LegendariesFrame.SlotDropDown}
 		skinFilterBtn(this.LegendariesFrame.ClassButton)
 		self:skinDropDown{obj=this.LegendariesFrame.ClassDropDown}
-		self:skinSlider{obj=this.LegendariesFrame.ScrollBar, wdth=-4, size=3}
+		if not self.isPTR then
+			self:skinSlider{obj=this.LegendariesFrame.ScrollBar, wdth=-4, size=3}
+		else
+			self:skinSlider{obj=self:getChild(this.LegendariesFrame, 2), wdth=-4, size=3}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, ofs=6, x1=-5, y2=-3}
 		for i = 1 , #this.LegendariesFrame.buttons do
 			this.LegendariesFrame.buttons[i].Background:SetTexture(nil)
@@ -1624,7 +1628,11 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 			this.LegendariesFrame.rightSideButtons[i].sbb:SetBackdropBorderColor(1.0, 0.5, 0, 1) -- legendary item colour #ff8000
 		end
 		-- ItemSetsFrame
-		self:skinSlider{obj=this.ItemSetsFrame.ScrollBar, wdth=-4, size=3}
+		if not self.isPTR then
+			self:skinSlider{obj=this.ItemSetsFrame.ScrollBar, wdth=-4, size=3}
+		else
+			self:skinSlider{obj=self:getChild(this.ItemSetsFrame, 2), wdth=-4, size=3}
+		end
 		skinFilterBtn(this.ItemSetsFrame.ClassButton)
 		for i = 1 , #this.ItemSetsFrame.buttons do
 			this.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
