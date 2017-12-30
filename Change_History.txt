@@ -1,3 +1,18 @@
+beta7.25549.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for TooltipBrder colour
+	Bugfix for Bag Items border colours
+	Added Gradient ClassColour option
+	Skinned PetBattleTooltips
+	Updated BankUI skin
+	Updated WorldQuestGroupFinder skin
+	Updated ButtonBorder colouring
+	Bugfix for TradeSkillMaster buttons
+	Updated TradeSkillMaster skin
+
 beta7.25497.3
 Jncl:
 	ToDo.txt
