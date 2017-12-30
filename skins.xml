@@ -179,6 +179,7 @@
 <script file="AddonSkins\RaidAchievement.lua"/>
 <script file="AddonSkins\RaidRoll.lua"/>
 <script file="AddonSkins\RAQ.lua"/>
+<script file="AddonSkins\RCLootCouncil.lua"/>
 <script file="AddonSkins\ReagentMaker.lua"/>
 <script file="AddonSkins\ReagentRestocker.lua"/>
 <script file="AddonSkins\Recount.lua"/>
