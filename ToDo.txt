@@ -18,15 +18,33 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-	I	Colours, reported by temp123456, 26.11.17
-√		- Tooltip Border Colour not handled properly
-√		- Border Colour Alpha value not handled properly
-√		- Item Border colours should match item quality
-√		- Add Gradient ClassColour feature
+	N	PTR 7.3.5
+		- Updates
+			- ArtifactPerks
+				- InstabilityCrestFrame(s)
+√			- ContainerFrames
+√			- EncounterJournal.LootJournal
+			- RaidFinder
+√				- NoRaidsCover framestrata changed
+			- StaticPopups
+x				- CoverFrame
+√				- Button4
+		- Additions
+≈			- Blizzard_AlliedRacesUI
+			- ContainerFrame
+√				- AddSlotsButton
+√				- ExtraBagSlotsHelpBox
+√			- StoreMicroButtonAlert
+≈			- Blizzard_WarboardUI
+		- Deletions
+			-
 
-√	I	Ace3, reported by Fraktyl, 27.11.17
-		- Skinner\Modules\UIButtons.lua:330: attempt to call method 'GetNormalTexture' (a nil value)
-		Skinner\Modules\UIButtons.lua:330: in function `skinStdButton'
-		Skinner\AddonSkins\Ace3.lua:292: in function <Skinner\AddonSkins\Ace3.lua:25>
-		Skinner\AddonSkins\Ace3.lua:422: in function <Skinner\AddonSkins\Ace3.lua:420>
-		
+	I	ArtifactBar, reported by Ivet67, 07.12.17
+		- The addon has a problem: after the update in the game the addon does not show the progress of the artifact 		bar correctly, please update.
+
+√	N	GuildRosterManager
+
+≈	S	RCLootCouncil
+
+√	S	DropDownMenu (Copy of UIDropDownPanels)
+√	S	lib-st (ScrollingTable library)
