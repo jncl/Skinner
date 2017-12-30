@@ -30,7 +30,7 @@ do
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local ptrInfo = {"7.3.2", 25549}
+	local ptrInfo = {"7.3.5", 25753}
 	local liveInfo = {"7.3.2", 25549}
 	local betaInfo = {"8.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
@@ -40,7 +40,7 @@ do
 	-- check to see if running on Beta servers
 	aObj.isBeta = portal == "public-beta" and true or false
 	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
-	--check to see if running on PTR servers
+	-- check to see if running on PTR servers
 	aObj.isPTR = portal == "public-test" and true or false
 	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
 	-- check build number, if > Live then it's a patch
