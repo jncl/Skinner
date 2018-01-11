@@ -1844,6 +1844,8 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		for i = 1, #_G.QuickJoinRoleSelectionFrame.Roles do
 			self:skinCheckButton{obj=_G.QuickJoinRoleSelectionFrame.Roles[i].CheckButton}
 		end
+		self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.AcceptButton}
+		self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.CancelButton}
 		self:addSkinFrame{obj=_G.QuickJoinRoleSelectionFrame, ft=ftype, ofs=-5}
 
 		self:Unhook(this, "OnShow")
