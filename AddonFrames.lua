@@ -157,8 +157,8 @@ function aObj:AddonFrames()
 		end
 	end)
 
-	-- skin library objects after a short delay to allow them to be loaded
-	C_Timer.After(0.2, function() skinLibs() end)
+	-- skin library objects
+	skinLibs()
 
 end
 
@@ -233,9 +233,8 @@ function aObj:LoDFrames(addon)
 	end
 
 	-- load library skins here as well, they may only get loaded by a LoD AddOn
-	-- include a short delay to allow them to be loaded
 	-- e.g. ArkDewdrop by ArkInventory when an AddonLoader is used
-	C_Timer.After(0.2, function() skinLibs() end)
+	skinLibs()
 
 end
 
