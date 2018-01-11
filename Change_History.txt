@@ -1,3 +1,24 @@
+beta7.25549.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Version number checks
+	Checks for duplicate addon definitions
+	PTR changes
+	Skinned RCLootCouncil
+	Updated GuildRosterManager skin
+	Skinned DropDownMenu & ScrollingTable libraries
+	PTR 7.3.5 changes
+	Update ContainerFrame skin
+	Update PaperDollFrame skin
+	Update EncounterJournal skin
+	Bugfix for SplashFrame skin
+	PTR: Updated Container skin
+	PTR: Updated StaticPopups skin
+	PTR: AlliedRacesUI skinned
+	Update ObjectiveBlocks skin
+	Update Container skin
+
 beta7.25549.1
 Jncl:
 	ToDo.txt
