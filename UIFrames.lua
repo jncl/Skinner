@@ -4725,6 +4725,8 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.WorldMapCompareTooltip1)
 			self:add2Table(self.ttList, _G.WorldMapCompareTooltip2)
+			_G.RaiseFrameLevel(_G.WorldMapCompareTooltip1)
+			_G.RaiseFrameLevel(_G.WorldMapCompareTooltip2)
 		end)
 
 		self:addButtonBorder{obj=_G.WorldMapTooltip.ItemTooltip, relTo=_G.WorldMapTooltip.ItemTooltip.Icon, reParent={_G.WorldMapTooltip.ItemTooltip.Count}}
@@ -4738,6 +4740,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.WorldMapTooltip)
 	end)
+
 end
 
 aObj.blizzFrames[ftype].WorldState = function(self)
