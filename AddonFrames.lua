@@ -46,15 +46,7 @@ local addonSkins = {
 }
 aObj.addonsToSkin = {}
 for i = 1, #addonSkins do
---@alpha@
-	if aObj.addonsToSkin[addonSkins[i]] then
-		aObj:CustomPrint(1, 0, 0, "Duplicate entry in addonSkins table (AddonFrames)", addonSkins[i])
-	else
---@end-alpha@
-		aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
---@alpha@
-	end
---@end-alpha@
+	aObj.addonsToSkin[addonSkins[i]] = addonSkins[i]
 end
 addonSkins = nil
 -- oddly named addons
@@ -87,15 +79,7 @@ otherAddons = {
 }
 aObj.otherAddons = {}
 for i = 1, #otherAddons do
---@alpha@
-	if aObj.otherAddons[otherAddons[i]] then
-		aObj:CustomPrint(1, 0, 0, "Duplicate entry in otherAddons table (AddonFrames)", otherAddons[i])
-	else
---@end-alpha@
-		aObj.otherAddons[otherAddons[i]] = otherAddons[i]
---@alpha@
-	end
---@end-alpha@
+	aObj.otherAddons[otherAddons[i]] = otherAddons[i]
 end
 otherAddons = nil
 local function skinLibs()
@@ -104,10 +88,10 @@ local function skinLibs()
 	for libName, skinFunc in pairs(aObj.libsToSkin) do
 		-- aObj:Debug("skinLibs: [%s, %s, %s]", libName, skinFunc, _G.LibStub(libName, true))
 		if _G.LibStub(libName, true) then
-			if aObj[skinFunc] then
-				aObj:checkAndRun(skinFunc, "s")
-			elseif _G.type(skinFunc) == "function" then
+			if _G.type(skinFunc) == "function" then
 				aObj:checkAndRun(libName, "l")
+			elseif aObj[skinFunc] then
+				aObj:checkAndRun(skinFunc, "s")
 			else
 				if aObj.db.profile.Warnings then
 					aObj:CustomPrint(1, 0, 0, libName, "loaded but skin not found in AddonSkins directory (sL)")
@@ -178,15 +162,7 @@ local lodFrames = {
 }
 aObj.lodAddons = {}
 for i = 1, #lodFrames do
---@alpha@
-	if aObj.lodAddons[lodFrames[i]] then
-		aObj:CustomPrint(1, 0, 0, "Duplicate entry in lodAddons table (AddonFrames)", lodFrames[i])
-	else
---@end-alpha@
-		aObj.lodAddons[lodFrames[i]] = lodFrames[i]
---@alpha@
-	end
---@end-alpha@
+	aObj.lodAddons[lodFrames[i]] = lodFrames[i]
 end
 lodFrames = nil
 -- RaidAchievement modules
@@ -201,10 +177,6 @@ aObj.lodAddons["DBM-GUI"] = "DBMGUI"
 -- local prev_addon
 function aObj:LoDFrames(addon)
 	-- self:Debug("LoDFrames: [%s, %s]", addon, self.lodAddons[addon])
-
-	-- -- ignore multiple occurrences of the same addon
-	-- if addon == prev_addon then return end
-	-- prev_addon = addon
 
 	-- check to see if it's a Blizzard LoD Frame
 	skinBLoD()
