@@ -30,7 +30,7 @@ do
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local ptrInfo = {"7.3.5", 25753}
+	local ptrInfo = {"7.3.5", 25826}
 	local liveInfo = {"7.3.2", 25549}
 	local betaInfo = {"8.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
@@ -362,7 +362,7 @@ function aObj:OnEnable()
 	self.skinCloseButton  = self.modBtns and self.modUIBtns.skinCloseButton or _G.nop
 	self.skinOtherButton  = self.modBtns and self.modUIBtns.skinOtherButton or _G.nop
 	self.skinExpandButton = self.modBtns and self.modUIBtns.skinExpandButton or _G.nop
-	self.skinStdButton       = self.modBtns and self.modUIBtns.skinStdButton or _G.nop
+	self.skinStdButton    = self.modBtns and self.modUIBtns.skinStdButton or _G.nop
 	self.skinButton       = self.modBtns and self.modUIBtns.skinButton or _G.nop
 	self.isButton         = self.modBtns and self.modUIBtns.isButton or _G.nop
 	self.skinAllButtons   = self.modBtns and self.modUIBtns.skinAllButtons or _G.nop
