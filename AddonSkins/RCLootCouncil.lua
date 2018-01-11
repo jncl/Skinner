@@ -9,6 +9,10 @@ aObj.addonsToSkin.RCLootCouncil = function(self) -- v 2.7.5
 	self:SecureHook(RCLF, "OnEnable", function(this)
 		this.frame.title:SetBackdrop(nil)
 		self:moveObject{obj=this.frame.title, y=-10}
+		-- return nil to prevent errors with noteEditbox
+		this.frame.title.GetBackdrop = function() return nil end
+		this.frame.title.GetBackdropColor = function() return nil end
+		this.frame.title.GetBackdropBorderColor = function() return nil end
 		this.frame.content:SetBackdrop(nil)
 		self:addSkinFrame{obj=this.frame, ft="a", kfs=true}
 		self:Unhook(this, "OnEnable")
