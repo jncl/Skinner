@@ -20,7 +20,7 @@ end
 
 local addonSkins = {
 	"_NPCScan",
-	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "AngryKeystones", "AphesLootBrowser", "Archy", "Atlas", "AtlasLoot", "Auctionator", "AuctionMaster", "Auctionsnatch", "AutoDecline",
+	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "AngryKeystones", "AphesLootBrowser", "Archy", "Atlas", "AtlasLoot", "AuctionMaster", "Auctionsnatch", "AutoDecline",
 	"Baggins", "BankItems", "Bartender4", "BattlePetCount", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
 	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cosplay",
 	"DeathNote", "DejaCharacterStats", "Details", "DockingStation", "Dominos", "DressUp",
@@ -34,7 +34,7 @@ local addonSkins = {
 	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobileVault", "MogIt", "MoveAnything", "MrTrader_SkillWindow", "MyGarrisons",
 	"Notes",
 	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3", "Overachiever",
-	"PetBattleHUD", "PetBattleMaster", "PetTracker", "PetTracker_Switcher", "PetTracker_Journal", "PhoenixStyle", "Possessions", "Postal", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "PremadeGroupsFilter", "ProfessionsVault", "ProspectBar",
+	"PetBattleHUD", "PetBattleMaster", "PetTracker", "PetTracker_Switcher", "PetTracker_Journal", "PhoenixStyle", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "PremadeGroupsFilter", "ProfessionsVault", "ProspectBar",
 	"Quartz", "QuestCompletist", "QuestGuru", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidAchievement", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Squeenix", "StaggerMeter",
@@ -250,9 +250,6 @@ end
 function aObj:AUCTION_HOUSE_SHOW()
 	-- self:Debug("AUCTION_HOUSE_SHOW")
 
-	-- trigger these when AH loads otherwise errors occur
-	self:checkAndRunAddOn("Auctionator")
-
 	-- handle TradeSkillMaster_Auctioning frame size changes
 	if IsAddOnLoaded("TradeSkillMaster_Auctioning")
 	or IsAddOnLoaded("TradeSkillMaster_AuctionDB")
@@ -283,6 +280,10 @@ function aObj:TRADE_SKILL_SHOW()
 	self:checkAndRunAddOn("ReagentMaker")
 	self:checkAndRunAddOn("ProfessionTabs_TSF")
 	self:checkAndRunAddOn("TradeSkillDW")
+
+	if _G.Auctionator_Search then
+		self:skinStdButton{obj=_G.Auctionator_Search}
+	end
 
 	self:UnregisterEvent("TRADE_SKILL_SHOW")
 

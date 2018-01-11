@@ -52,16 +52,22 @@ function aObj:TSM_AuctionHouse()
 end
 
 -- loaded when TRADE_SKILL_SHOW event is triggered
-function aObj:TradeSkillMaster_Crafting()
+function aObj:TradeSkillMaster_Crafting() -- v 3.2.5
 
-	_G.C_Timer.After(0.75, function()
-		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame, ft="a", nb=true, ofs=3}
-		self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame.queue, ft="a", nb=true, ofs=3}
-		local pf = _G.TSMCraftingTradeSkillFrame.professionsTab
-		self:addButtonBorder{obj=pf.craftInfoFrame.infoFrame.icon, relTo=pf.craftInfoFrame.infoFrame.icon.icon}
-		self:addButtonBorder{obj=pf.craftInfoFrame.buttonsFrame.lessBtn, ofs=-2, x1=1}
-		self:addButtonBorder{obj=pf.craftInfoFrame.buttonsFrame.moreBtn, ofs=-2, x1=1}
-		pf = nil
+	-- use NewTicker to manage different creation times on different hardware
+	self.TSMC_Timer = _G.C_Timer.NewTicker(0.2, function()
+		if _G.TSMCraftingTradeSkillFrame then
+			self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame, ft="a", nb=true, ofs=3}
+			self:addSkinFrame{obj=_G.TSMCraftingTradeSkillFrame.queue, ft="a", nb=true, ofs=3}
+			local pf = _G.TSMCraftingTradeSkillFrame.professionsTab
+			self:addButtonBorder{obj=pf.craftInfoFrame.infoFrame.icon, relTo=pf.craftInfoFrame.infoFrame.icon.icon}
+			self:addButtonBorder{obj=pf.craftInfoFrame.buttonsFrame.lessBtn, ofs=-2, x1=1}
+			self:addButtonBorder{obj=pf.craftInfoFrame.buttonsFrame.moreBtn, ofs=-2, x1=1}
+			pf.helpBtn.Ring:SetTexture(nil)
+			pf = nil
+			self.TSMC_Timer:Cancel()
+			self.TSMC_Timer = nil
+		end
 	end)
 
 end
@@ -77,11 +83,9 @@ end
 aObj.addonsToSkin.TradeSkillMaster_Mailing = function(self) -- v 3.0.18
 
 	self:RegisterEvent("MAIL_SHOW", function()
-		-- prevent errors as not all tabs have been skinned yet
-		aObj.tabFrames[_G.MailFrame] = nil
-		_G.C_Timer.After(0.25, function()
-			local frame = self:getChild(_G.MailFrame, _G.MailFrame:GetNumChildren() - 1) -- get penultimate child
-			self:addSkinFrame{obj=frame, ft="a", nb=true, ofs=2, y2=-5}
+		if self.prdb.MailFrame then
+			-- prevent errors as not all tabs have been skinned yet
+			aObj.tabFrames[_G.MailFrame] = nil
 			_G.MailFrame.sf:Hide() -- hide to start with as mailframe opens to TSM frame initially
 			self:SecureHook(frame, "Show", function(this)
 				_G.MailFrame.sf:Hide()
@@ -89,12 +93,16 @@ aObj.addonsToSkin.TradeSkillMaster_Mailing = function(self) -- v 3.0.18
 			self:SecureHook(frame, "Hide", function(this)
 				_G.MailFrame.sf:Show()
 			end)
-			frame = nil
 			-- Tab
 			self:keepRegions(_G.MailFrameTab3, {7, 8})
 			self:addSkinFrame{obj=_G.MailFrameTab3, ft="a", nb=true, noBdr=self.isTT, x1=6, y1=0, x2=6, y2=2}
 			aObj.tabFrames[_G.MailFrame] = true
 			_G.PanelTemplates_UpdateTabs(_G.MailFrame)
+		end
+		_G.C_Timer.After(0.25, function()
+			local frame = self:getChild(_G.MailFrame, _G.MailFrame:GetNumChildren() - 1) -- get penultimate child
+			self:addSkinFrame{obj=frame, ft="a", nb=true, ofs=2, y2=-5}
+			frame = nil
 		end)
 		self:UnregisterEvent("MAIL_SHOW")
 	end)

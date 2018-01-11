@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("OrderHallCommander") then return end
 local _G = _G
 
-aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.8 70300
+aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.13 70300
 
 	local OHC = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("OrderHallCommander", true)
 
@@ -37,9 +37,11 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.8 70300
 		end)
 		self:SecureHook(mLst, "AddMembers", function(this, frame)
 			local mm = OHC:GetMembersFrame(frame)
+			if not mm then return end
 			for i = 1, 3 do
 				mm.Champions[i].LevelBorder:SetAlpha(0)
 			end
+			mm = nil
 		end)
 		self:SecureHook(mLst, "NoMartiniNoParty", function(this, text)
 			self:addSkinFrame{obj=_G.OHCWarner, ft="a", nb=true}
@@ -55,5 +57,14 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.8 70300
 		frame = nil
 	end
 	aC = nil
+
+	if self.modBtns then
+		local tut = OHC:GetTutorialsModule()
+		local Clicker = self:getChild(_G.HelpPlateTooltip, 1)
+		self:skinCloseButton{obj=Clicker.Close}
+		self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
+		self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+		tut, Clicker = nil, nil
+	end
 
 end
