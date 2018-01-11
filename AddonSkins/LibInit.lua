@@ -34,11 +34,4 @@ aObj.libsToSkin["LibInit"] = function(self) -- v 47
 		end, true)
 	end
 
-	_G.MSA_DropDownList1Backdrop:SetBackdrop(nil)
-	_G.MSA_DropDownList1MenuBackdrop:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.MSA_DropDownList1, ft="a", nb=true}
-	_G.MSA_DropDownList2Backdrop:SetBackdrop(nil)
-	_G.MSA_DropDownList2MenuBackdrop:SetBackdrop(nil)
-	self:addSkinFrame{obj=_G.MSA_DropDownList2, ft="a", nb=true}
-
 end
