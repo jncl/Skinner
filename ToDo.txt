@@ -12,9 +12,6 @@ Legend:
 		- if max level then adjust MainMenuBar objects
 		- ?
 
-	I	ScenarioChallengeModeBlock
-?		- Border changes colour based on time elapsed, needs to be shown, maybe change skin border colour ?
-
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
@@ -39,12 +36,30 @@ x				- CoverFrame
 		- Deletions
 			-
 
-	I	ArtifactBar, reported by Ivet67, 07.12.17
+?	I	ArtifactBar, reported by Ivet67, 07.12.17
 		- The addon has a problem: after the update in the game the addon does not show the progress of the artifact 		bar correctly, please update.
 
-√	N	GuildRosterManager
+√	N	Postal
 
-≈	S	RCLootCouncil
+√	N	Auctionator
 
-√	S	DropDownMenu (Copy of UIDropDownPanels)
-√	S	lib-st (ScrollingTable library)
+	I	TradeSkillMaster, reported by tordenflesk, 02.01.18
+√		- Skinner\Skinner-beta7.25549.2.lua:645: attempt to index field 'obj' (a nil value)
+		Skinner\Skinner-beta7.25549.2.lua:645: in function <Skinner\Skinner.lua:610>
+		...rfaceSkinner\AddonSkins\TradeSkillMaster-v3.6.39.lua:58: in function <...rfaceSkinner\AddonSkins\TradeSkillMaster.lua:57>
+√		-  ...rfaceSkinner\AddonSkins\TradeSkillMaster-v3.6.39.lua:85: attempt to index field 'sf' (a nil value)
+		...rfaceSkinner\AddonSkins\TradeSkillMaster-v3.6.39.lua:85: in function <...rfaceSkinner\AddonSkins\TradeSkillMaster.lua:82>
+
+√	I	LibInit, reported by tordenflesk, 02.01.18
+		- Skinner\AddonSkins\LibInit-33.lua:37: attempt to index field 'MSA_DropDownList1Backdrop' (a nil value)
+
+	I	RCLootCouncil, reported by Immary/2drunk2funk, 03.01.18
+√		-  Interface\AddOns\RCLootCouncil\Modules\lootFrame.lua:344: Usage: <unnamed>:SetBackdrop(nil or {bgFile = "bgFile", edgeFile = "edgeFile", tile = false, tileSize = 0, edgeSize = 32, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
+?		- Interface\AddOns\RCLootCouncil\Modules\lootFrame.lua:325: attempt to index field 'item' (a nil value)
+?		- Interface\AddOns\RCLootCouncil\Modules\lootFrame.lua:337: attempt to index field 'item' (a nil value)
+?		- Interface\AddOns\RCLootCouncil\Modules\lootFrame.lua:253: attempt to index field 'item' (a nil value)
+x		- NOT in list of Addons to disable
+
+√	I	OrderHallCommander, reported by NeoZeus,08.01.18
+		-  ...aceSkinner\AddonSkins\OrderHallCommander-1.5.13 70300.lua:41: attempt to index local 'mm' (a nil value)
+		...aceSkinner\AddonSkins\OrderHallCommander-1.5.13 70300.lua:41: in function <...aceSkinner\AddonSkins\OrderHallCommander.lua:38>
