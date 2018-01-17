@@ -39,27 +39,7 @@ x				- CoverFrame
 ?	I	ArtifactBar, reported by Ivet67, 07.12.17
 		- The addon has a problem: after the update in the game the addon does not show the progress of the artifact 		bar correctly, please update.
 
-√	N	Postal
-
-√	N	Auctionator
-
-	I	TradeSkillMaster, reported by tordenflesk, 02.01.18
-√		- Skinner\Skinner-beta7.25549.2.lua:645: attempt to index field 'obj' (a nil value)
-		Skinner\Skinner-beta7.25549.2.lua:645: in function <Skinner\Skinner.lua:610>
-		...rfaceSkinner\AddonSkins\TradeSkillMaster-v3.6.39.lua:58: in function <...rfaceSkinner\AddonSkins\TradeSkillMaster.lua:57>
-√		-  ...rfaceSkinner\AddonSkins\TradeSkillMaster-v3.6.39.lua:85: attempt to index field 'sf' (a nil value)
-		...rfaceSkinner\AddonSkins\TradeSkillMaster-v3.6.39.lua:85: in function <...rfaceSkinner\AddonSkins\TradeSkillMaster.lua:82>
-
-√	I	LibInit, reported by tordenflesk, 02.01.18
-		- Skinner\AddonSkins\LibInit-33.lua:37: attempt to index field 'MSA_DropDownList1Backdrop' (a nil value)
-
-	I	RCLootCouncil, reported by Immary/2drunk2funk, 03.01.18
-√		-  Interface\AddOns\RCLootCouncil\Modules\lootFrame.lua:344: Usage: <unnamed>:SetBackdrop(nil or {bgFile = "bgFile", edgeFile = "edgeFile", tile = false, tileSize = 0, edgeSize = 32, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
-?		- Interface\AddOns\RCLootCouncil\Modules\lootFrame.lua:325: attempt to index field 'item' (a nil value)
-?		- Interface\AddOns\RCLootCouncil\Modules\lootFrame.lua:337: attempt to index field 'item' (a nil value)
-?		- Interface\AddOns\RCLootCouncil\Modules\lootFrame.lua:253: attempt to index field 'item' (a nil value)
-x		- NOT in list of Addons to disable
-
-√	I	OrderHallCommander, reported by NeoZeus,08.01.18
-		-  ...aceSkinner\AddonSkins\OrderHallCommander-1.5.13 70300.lua:41: attempt to index local 'mm' (a nil value)
-		...aceSkinner\AddonSkins\OrderHallCommander-1.5.13 70300.lua:41: in function <...aceSkinner\AddonSkins\OrderHallCommander.lua:38>
+	I	LUI, reported by Doc_Skillz, 11.01.18
+√		- Skinner\UtilFuncs.lua:285: attempt to index field 'prdb' (a nil value)
+          Skinner\UtilFuncs.lua:285: in function `checkAndRun'
+		  Skinner\AddonSkins\LUI-3.9.16.lua:126: in main chunk
