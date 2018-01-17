@@ -4403,6 +4403,8 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 		self:skinCloseButton{obj=this.MainFrame.CloseButton}
 		self:addSkinFrame{obj=this, ft=ftype, aso={bd=11, ng=true}, ofs=-15, y2=14}
 		this.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
+		-- remove CloseButton animation
+		this.MainFrame.Close.CloseButton = nil
 		self:Unhook(this, "OnShow")
 	end)
 
