@@ -2,46 +2,14 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("LUI") then return end
 local _G = _G
 
-function aObj:LUI()
-
-	if self.db.profile.WorldMap.skin then
-		-- World Map changes
-		if self:IsHooked("WorldMap_ToggleSizeUp") then self:Unhook("WorldMap_ToggleSizeUp") end
-		if self:IsHooked("WorldMap_ToggleSizeDown") then self:Unhook("WorldMap_ToggleSizeDown") end
-		self:SecureHook("WorldMap_ToggleSizeUp", function()
-			_G.WorldMapFrame.sf:SetAllPoints(_G.WorldMapFrame)
-		end)
-		self:SecureHook("WorldMap_ToggleSizeDown", function()
-			_G.WorldMapFrame.sf:ClearAllPoints()
-			_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", -1, 1)
-			_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -98)
-		end)
-		-- resize
-		if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
-			WorldMap_ToggleSizeDown()
-		else
-			WorldMap_ToggleSizeUp()
-		end
-		-- skin the Quest Objectives dropdown
-		if LUI_WorldMap_QuestObjectivesDropDown then
-			self:skinDropDown{obj=LUI_WorldMap_QuestObjectivesDropDown}
-		end
-	end
-
-	-- skin the Chat CopyFrame
-	self:skinScrollBar{obj=LUI_Chat_CopyScrollFrame}
-	self:addSkinFrame{obj=LUI_Chat_CopyFrame, y1=-3, x2=-3}
-
-end
-
 -- The following code handles the Initial setup of Skinner when the LUI is loaded
-function aObj:LUIInit()
+aObj.otherAddons.LUIInit = function(self) -- v 3.9.16
 
 	self:RawHook(self, "OnInitialize", function(this)
 		-- Do these before we run the function
 
 		-- setup the default DB values and register them
-		self:checkAndRun("SetupDefaults", "o", false, true)
+		self:checkAndRun("SetupDefaults", "opt", false, true)
 		self.Defaults = nil -- only need to run this once
 
 		-- create and use a new db profile called LUI
@@ -51,6 +19,9 @@ function aObj:LUIInit()
 			self.db:CopyProfile(dbProfile) -- use settings from previous profile
 
 			-- change settings
+            self.db.profile.DropDownButtons = false
+            self.db.profile.TexturedTab = false
+            self.db.profile.TexturedDD = false
             self.db.profile.TooltipBorder  = {r = 0.3, g = 0.3, b = 0.3, a = 1}
             self.db.profile.BackdropBorder = {r = 0.2, g = 0.2, b = 0.2, a = 1}
             self.db.profile.Backdrop       = {r = 0.18, g = 0.18, b = 0.18, a = 1}
@@ -69,7 +40,6 @@ function aObj:LUIInit()
 			self.db.profile.StatusBar = {texture = "LUI_Minimalist", r = 0, g = 0.5, b = 0.5, a = 0.5}
 			self.db.profile.WorldMap = {skin = false, size = 1}
 			self.db.profile.Minimap = {skin = false, gloss = false}
-			self.db.profile.TexturedTab = false
 		end
 
 		-- run the function
@@ -82,18 +52,43 @@ function aObj:LUIInit()
 		end
 
 		self:Unhook(self, "OnInitialize")
+
+		if self.prdb.WorldMap.skin then
+			-- World Map changes
+			if self:IsHooked("WorldMap_ToggleSizeUp") then self:Unhook("WorldMap_ToggleSizeUp") end
+			if self:IsHooked("WorldMap_ToggleSizeDown") then self:Unhook("WorldMap_ToggleSizeDown") end
+			self:SecureHook("WorldMap_ToggleSizeUp", function()
+				_G.WorldMapFrame.sf:SetAllPoints(_G.WorldMapFrame)
+			end)
+			self:SecureHook("WorldMap_ToggleSizeDown", function()
+				_G.WorldMapFrame.sf:ClearAllPoints()
+				_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", -1, 1)
+				_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -98)
+			end)
+			-- resize
+			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
+				WorldMap_ToggleSizeDown()
+			else
+				WorldMap_ToggleSizeUp()
+			end
+			-- skin the Quest Objectives dropdown
+			if _G.LUI_WorldMap_QuestObjectivesDropDown then
+				self:skinDropDown{obj=_G.LUI_WorldMap_QuestObjectivesDropDown}
+			end
+		end
+
 	end)
 
 	-- hook to change Tab size
 	self:SecureHook(self, "addSkinFrame", function(this, opts)
 		if self:hasAnyTextInName(opts.obj, {"Tab(%d+)$", "TabButton(%d+)$"}) then
-			local xOfs1 = (opts.x1 or 0) + 4
-			local yOfs1 = (opts.y1 or 0) - 3
-			local xOfs2 = (opts.x2 or 0) - 4
-			local yOfs2 = (opts.y2 or 0) + 3
+			opts.x1 = opts.x1 or 4
+			opts.y1 = opts.y1 or -3
+			opts.x2 = opts.x2 or -4
+			opts.y2 = opts.y2 or 3
 			opts.obj.sf:ClearAllPoints()
-			opts.obj.sf:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
-			opts.obj.sf:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
+			opts.obj.sf:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.x1, opts.y1)
+			opts.obj.sf:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
 		end
 	end)
 	-- hook to ignore Shapeshift button skinning
@@ -113,17 +108,31 @@ function aObj:LUIInit()
 				then
 					return
 				end
-				return self.hooks[this].skinButton(this, opts)
+				self.hooks[this].skinButton(this, opts)
 			end)
 			self.checkTex = function() end
-			self:Unhook(self, "OnEnable")
+			self:Unhook(this, "OnEnable")
 		end)
 	end
+
+	local chat = _G.LUI:GetModule("Chat", true)
+	if chat then
+		local btns = chat:GetModule("Buttons", true)
+		if btns then
+			self:SecureHook(btns, "OnEnable", function(this)
+				self:skinSlider{obj=_G.LUI_Chat_CopyScrollFrame.ScrollBar}
+				self:addSkinFrame{obj=_G.LUI_Chat_CopyFrame, ft="a", kfs=true, nb=true, y1=-3, x2=-3}
+				self:Unhook(this, "OnEnable")
+			end)
+		end
+		btns = nil
+	end
+	chat = nil
 
 end
 
 -- Load support for LUI
-local success, err = aObj:checkAndRun("LUIInit", "s", true) -- not an addon in its own right
+local success, err = _G.xpcall(function() return aObj.otherAddons.LUIInit(aObj) end, _G.geterrorhandler())
 if not success then
-	print("Error running", "LUIInit", err)
+	aObj:CustomPrint(1, 0, 0, "Error running LUIInit")
 end

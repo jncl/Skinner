@@ -30,7 +30,7 @@ local addonSkins = {
 	"HandyNotes", "HaveWeMet", "HoloFriends",
 	"InboxMailBag", "ItemDB", "InspectorGadgetzan", "Inventorian",
 	"KeystoneCommander",
-	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts", "LUI",
+	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts",
 	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobileVault", "MogIt", "MoveAnything", "MrTrader_SkillWindow", "MyGarrisons",
 	"Notes",
 	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3", "Overachiever",
@@ -57,7 +57,6 @@ aObj.addonsToSkin["Prat-3.0"] = "Prat30"
 -- libraries
 aObj.libsToSkin = {
 	["NoTaint_UIDropDownMenu-7.2.0"] = "Lib_UIDropdown",
-	["LibKeyBound-1.0"] = "LibKeyBound",
 	["LibTradeLinks-1.0"] = "LibTradeSkillScan",
 	["LibTradeSkillScan"] = "LibTradeSkillScan",
 	["tektip-1.0"] = "tektip",
