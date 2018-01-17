@@ -661,39 +661,36 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 
 end
 
-if aObj.isPTR then
-	aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
-		if not self.db.profile.AlliedRacesUI or self.initialized.AlliedRacesUI then return end
-		self.initialized.AlliedRacesUI = true
+aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
+	if not self.db.profile.AlliedRacesUI or self.initialized.AlliedRacesUI then return end
+	self.initialized.AlliedRacesUI = true
 
-		self:SecureHookScript(_G.AlliedRacesFrame, "OnShow", function(this)
-			this.ModelFrame:DisableDrawLayer("BORDER")
-			this.ModelFrame:DisableDrawLayer("ARTWORK")
-			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
-			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
-			self:skinSlider{obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, rt="background", wdth=-4}
-			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
-			this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
-			this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=2, x2=1}
-			if self.modBtnBs then
-				self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0}
-				self:addButtonBorder{obj=this.ModelFrame.AlliedRacesFemaleButton, ofs=0}
-			end
-			for ability in this.abilityPool:EnumerateActive() do
-				ability.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
-				self:getRegion(ability, 3):SetTexture(nil) -- Border texture
-			end
-			for bullet in this.bulletPool:EnumerateActive() do
-				bullet.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
-			end
-			self:Unhook(this, "OnShow")
-		end)
-		if _G.AlliedRacesFrame:IsShown() then
-			_G.AlliedRacesFrame:Hide()
-			_G.AlliedRacesFrame:Show()
+	self:SecureHookScript(_G.AlliedRacesFrame, "OnShow", function(this)
+		this.ModelFrame:DisableDrawLayer("BORDER")
+		this.ModelFrame:DisableDrawLayer("ARTWORK")
+		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
+		self:skinSlider{obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, rt="background", wdth=-4}
+		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
+		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
+		this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=2, x2=1}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0}
+			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesFemaleButton, ofs=0}
 		end
-
+		for ability in this.abilityPool:EnumerateActive() do
+			ability.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:getRegion(ability, 3):SetTexture(nil) -- Border texture
+		end
+		for bullet in this.bulletPool:EnumerateActive() do
+			bullet.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		end
+		self:Unhook(this, "OnShow")
+	end)
+	if _G.AlliedRacesFrame:IsShown() then
+		_G.AlliedRacesFrame:Hide()
+		_G.AlliedRacesFrame:Show()
 	end
 
 end
@@ -2868,7 +2865,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
 
 		-- MicroButtonAlert frames
-		 for _, type in pairs{"Talent", "Collections", "LFD", "EJ", self.isPTR and "Store" or nil} do
+		 for _, type in pairs{"Talent", "Collections", "LFD", "EJ", "Store"} do
 			self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton}
 		end
 
@@ -4162,9 +4159,6 @@ aObj.blizzFrames[ftype].RaidFinder = function(self)
 	self:SecureHookScript(_G.RaidFinderFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
 		this:DisableDrawLayer("BORDER")
-		if not self.isPTR then
-			self:RaiseFrameLevelByFour(this.NoRaidsCover) -- cover buttons and dropdown
-		end
 		self:removeInset(_G.RaidFinderFrameRoleInset)
 		self:removeInset(_G.RaidFinderFrameBottomInset)
 		self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}
@@ -4343,9 +4337,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:skinStdButton{obj=this.button1}
 			self:skinStdButton{obj=this.button2}
 			self:skinStdButton{obj=this.button3}
-			if self.isPTR then
-				self:skinStdButton{obj=this.button4}
-			end
+			self:skinStdButton{obj=this.button4}
 			self:skinEditBox{obj=_G[objName .. "EditBox"]}
 			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
@@ -4606,23 +4598,21 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 
 end
 
-if aObj.isPTR then
-	aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
-		if not self.db.profile.WarboardUI or self.initialized.WarboardUI then return end
-		self.initialized.WarboardUI = true
+aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
+	if not self.db.profile.WarboardUI or self.initialized.WarboardUI then return end
+	self.initialized.WarboardUI = true
 
-		self:SecureHookScript(_G.WarboardQuestChoiceFrame, "OnShow", function(this)
-			this.GarrCorners:DisableDrawLayer("BACKGROUND")
-			-- Options array
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-			self:Unhook(this, "OnShow")
-		end)
-		if _G.WarboardQuestChoiceFrame:IsShown() then
-			_G.WarboardQuestChoiceFrame:Hide()
-			_G.WarboardQuestChoiceFrame:Show()
-		end
-
+	self:SecureHookScript(_G.WarboardQuestChoiceFrame, "OnShow", function(this)
+		this.GarrCorners:DisableDrawLayer("BACKGROUND")
+		-- Options array
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:Unhook(this, "OnShow")
+	end)
+	if _G.WarboardQuestChoiceFrame:IsShown() then
+		_G.WarboardQuestChoiceFrame:Hide()
+		_G.WarboardQuestChoiceFrame:Show()
 	end
+
 end
 
 aObj.blizzFrames[ftype].WorldMap = function(self)

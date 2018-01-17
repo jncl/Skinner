@@ -116,7 +116,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AddonList            = true,
 		AdventureMap         = true,
 		AlertFrames          = true,
-		AlliedRacesUI        = self.isPTR and true or nil,
+		AlliedRacesUI        = true,
 		ArtifactUI           = true,
 		AuthChallengeUI      = false, -- N.B. cannot be skinned
 		AutoComplete         = true,
@@ -177,7 +177,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		TimeManager          = true,
 		Tooltips             = {skin = true, style = 1, glazesb = true, border = 1},
 		Tutorial             = true,
-		WarboardUI           = self.isPTR and true or nil,
+		WarboardUI           = true,
 		WorldMap             = {skin = true, size = 1},
 		WorldState           = true,
 		WowTokenUI			 = false, -- N.B. cannot be skinned
@@ -1249,11 +1249,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Alert Frames"],
 					desc = self.L["Toggle the skin of the Alert Frames"],
 				},
-				AlliedRacesUI = self.isPTR and{
+				AlliedRacesUI = {
 					type = "toggle",
 					name = self.L["Allied Races UI"],
 					desc = self.L["Toggle the skin of the Allied Races UI"],
-				} or nil,
+				},
 				ArtifactUI = {
 					type = "toggle",
 					name = self.L["Artifact UI"],
@@ -1765,11 +1765,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Tutorial Frame"],
 					desc = self.L["Toggle the skin of the Tutorial Frame"],
 				},
-				WarboardUI = self.isPTR and{
-					type = "toggle",
-					name = self.L["Warboard UI"],
-					desc = self.L["Toggle the skin of the Warboard UI"],
-				} or nil,
+				-- TODO reinstate this when localization website allows phrases to be added again
+				-- WarboardUI = {
+				-- 	type = "toggle",
+				-- 	name = self.L["Warboard UI"],
+				-- 	desc = self.L["Toggle the skin of the Warboard UI"],
+				-- },
 				WorldMap = {
 					type = "group",
 					inline = true,
