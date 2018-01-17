@@ -2266,8 +2266,6 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 			for i = 1, _G.MAX_NUM_SOCKETS do
 				_G["ItemSocketingSocket" .. i]:DisableDrawLayer("BACKGROUND")
 				_G["ItemSocketingSocket" .. i]:DisableDrawLayer("BORDER")
-				_G["ItemSocketingSocket" .. i .. "BracketFrame"]:DisableDrawLayer("ARTWORK")
-				_G["ItemSocketingSocket" .. i .. "Shine"]:DisableDrawLayer("BACKGROUND")
 				self:addSkinButton{obj=_G["ItemSocketingSocket" .. i], ft=ftype}
 			end
 
