@@ -2884,8 +2884,8 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 -->>-- Status Bars
 	if self.prdb.MainMenuBar.glazesb then
 		self:skinStatusBar{obj=_G.MainMenuExpBar, fi=0, bgTex=self:getRegion(_G.MainMenuExpBar, 9), otherTex={_G.ExhaustionLevelFillBar}}
-		self:skinStatusBar{obj=_G.ArtifactWatchBar.StatusBar, fi=0, bgTex=_G.ArtifactWatchBar.StatusBar.Background, otherTex={_G.ArtifactWatchBar.StatusBar.Underlay}}
-		self:skinStatusBar{obj=_G.HonorWatchBar.StatusBar, fi=0, bgTex=_G.HonorWatchBar.StatusBar.Background, otherTex={_G.HonorWatchBar.StatusBar.Underlay, _G.HonorWatchBar.ExhaustionLevelFillBar}}
+		self:skinStatusBar{obj=_G.ArtifactWatchBar.StatusBar, fi=0, bgTex=_G.ArtifactWatchBar.StatusBar.Background, otherTex={_G.ArtifactWatchBar.StatusBar.Underlay, _G.ArtifactWatchBar.StatusBar.Overlay}}
+		self:skinStatusBar{obj=_G.HonorWatchBar.StatusBar, fi=0, bgTex=_G.HonorWatchBar.StatusBar.Background, otherTex={_G.HonorWatchBar.StatusBar.Underlay,_G.HonorWatchBar.StatusBar.Overlay, _G.HonorWatchBar.ExhaustionLevelFillBar}}
 		self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
 	end
 
