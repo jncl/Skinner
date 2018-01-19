@@ -1249,11 +1249,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Alert Frames"],
 					desc = self.L["Toggle the skin of the Alert Frames"],
 				},
-				AlliedRacesUI = {
-					type = "toggle",
-					name = self.L["Allied Races UI"],
-					desc = self.L["Toggle the skin of the Allied Races UI"],
-				},
+				-- TODO reinstate this when localization website allows phrases to be added again
+				-- AlliedRacesUI = {
+				-- 	type = "toggle",
+				-- 	name = self.L["Allied Races UI"],
+				-- 	desc = self.L["Toggle the skin of the Allied Races UI"],
+				-- },
 				ArtifactUI = {
 					type = "toggle",
 					name = self.L["Artifact UI"],
