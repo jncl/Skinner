@@ -30,7 +30,7 @@ do
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
 
-	local ptrInfo = {"7.3.5", 25864}
+	local ptrInfo = {"7.3.5", 25875}
 	local liveInfo = {"7.3.2", 25864}
 	local betaInfo = {"8.0.0", 99999}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
@@ -999,8 +999,6 @@ local function __skinDropDown(opts)
 --@alpha@
 	assert(opts.obj, "Missing object __sDD\n" .. debugstack(2, 3, 2))
 --@end-alpha@
-
-	aObj:Debug2("__skinDropDown: [%s, %s]", opts.obj, opts.obj:GetName())
 
 --@debug@
 	if opts.noMove
