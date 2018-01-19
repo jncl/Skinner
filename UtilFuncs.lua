@@ -218,14 +218,32 @@ function aObj:add2Table(table, value)
 
 end
 
-aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
-function aObj:changeTandC(obj, tex)
+aObj.pmTex = [[Interface\Common\UI-ModelControlPanel]]
+function aObj:changeMinusPlusTex(obj, minus)
 --@alpha@
-	assert(obj, "Unknown object changeTandC\n" .. debugstack(2, 3, 2))
+	assert(obj, "Unknown object changeMinusPlusTex\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	obj:SetTexture(tex)
-	obj:SetTexCoord(0, 1, 0, 1)
+	local nTex = obj:GetNormalTexture()
+	nTex:SetTexture(aObj.pmTex)
+	if minus then
+		nTex:SetTexCoord(0.29687500, 0.54687500, 0.00781250, 0.13281250)
+	else
+		nTex:SetTexCoord(0.57812500, 0.82812500, 0.14843750, 0.27343750)
+	end
+	nTex = nil
+
+end
+
+aObj.RecTex = [[Interface\HelpFrame\HelpButtons]]
+function aObj:changeRecTex(obj, isYellow, isUnitFrame)
+
+	obj:SetTexture(self.RecTex)
+	if isYellow then
+		obj:SetTexCoord(isUnitFrame and 0.015 or 0.0038, isUnitFrame and 0.66 or 0.7, 0.67, 0.855) -- yellow
+	else
+		obj:SetTexCoord(0.0038, 0.7, 0.004, 0.205) -- blue
+	end
 
 end
 
@@ -244,15 +262,14 @@ function aObj:changeShield(shldReg, iconReg)
 
 end
 
-aObj.RecTex = [[Interface\HelpFrame\HelpButtons]]
-function aObj:changeRecTex(obj, isYellow, isUnitFrame)
+aObj.lvlBG = [[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]]
+function aObj:changeTandC(obj, tex)
+--@alpha@
+	assert(obj, "Unknown object changeTandC\n" .. debugstack(2, 3, 2))
+--@end-alpha@
 
-	obj:SetTexture(self.RecTex)
-	if isYellow then
-		obj:SetTexCoord(isUnitFrame and 0.015 or 0.0038, isUnitFrame and 0.66 or 0.7, 0.67, 0.855) -- yellow
-	else
-		obj:SetTexCoord(0.0038, 0.7, 0.004, 0.205) -- blue
-	end
+	obj:SetTexture(tex)
+	obj:SetTexCoord(0, 1, 0, 1)
 
 end
 

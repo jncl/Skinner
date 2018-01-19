@@ -2,75 +2,143 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("FishingBuddy") then return end
 local _G = _G
 
-function aObj:FishingBuddy()
+local function skinCBs(objPrefix)
+	for i = 1, 20 do
+		obj = _G[objPrefix .. i]
+		if obj then
+			aObj:skinCheckButton{obj=obj}
+		end
+	end
+end
 
-	self:addSkinFrame{obj=_G.FishingBuddyFrame, kfs=true, ri=true, bgen=1, ofs=2, y2=-4} -- N.B. bgen=1 so locations frame mp buttons aren't skinned here
+aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.8 Beta 8
 
--->>--	Locations Frame
-	self:keepFontStrings(_G.FishingLocationsFrame)
-	self:keepFontStrings(_G.FishingLocationExpandButtonFrame)
-	self:skinScrollBar{obj=_G.FishingLocsScrollFrame}
+	--	Locations Frame
+	self:skinStdButton{obj=_G.FishingLocationsSwitchButton}
+	self:skinCheckButton{obj=_G.FishingBuddyOptionSLZ}
+	_G.FishingLocationExpandButtonFrame:DisableDrawLayer("BACKGROUND")
+	self:skinSlider{obj=_G.FishingLocsScrollFrame.ScrollBar, rt="background"}
 	-- m/p buttons
 	if self.modBtns then
+		local function checkTex(obj)
+			local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
+			if nTex then
+				if nTex:find("MinusButton") then
+					aObj:changeMinusPlusTex(obj, true)
+				else
+					aObj:changeMinusPlusTex(obj, false)
+				end
+			end
+			nTex = nil
+		end
 		-- hook to manage changes to button textures
 		self:SecureHook(_G.FishingBuddy.Locations, "Update", function(...)
-			for i = 1, 21 do
-				self:checkTex(_G["FishingLocations"..i])
+			for i = 1, 22 do
+				checkTex(_G["FishingLocations" .. i])
 			end
-			self:checkTex(_G.FishingLocationsCollapseAllButton)
+			checkTex(_G.FishingLocationsCollapseAllButton)
 		end)
-		-- skin location mp buttons
-		for i = 1, 21 do
-			self:skinButton{obj=_G["FishingLocations"..i], mp=true}
-		end
-		-- CollapseAll button
-		self:skinButton{obj=_G.FishingLocationsCollapseAllButton, mp=true}
 	end
 
--->>--	Options Frame
+	--	Options Frame
 	self:keepFontStrings(_G.FishingOptionsFrame)
+	-- General Tab
+	self:skinSlider{obj=_G.FishingBuddyOption_MaxVolumeSlider, hgt=-2}
 	self:skinDropDown{obj=_G.FBOutfitManagerMenu}
+	-- Fishing Tab
 	self:skinDropDown{obj=_G.FBMouseEventMenu}
 	self:skinDropDown{obj=_G.FBEasyKeysMenu}
-	-- Pets
-	self:skinDropDown{obj=_G.FishingPetFrame}
-	self:skinSlider{obj=_G.FishingPetsMenu.ScrollBar}
-	self:addSkinFrame{obj=_G.FishingPetsMenuHolder, kfs=true}
+	self:skinDropDown{obj=_G.FishingBobbers}
+	-- Watcher Tab
+	-- Fishing Fun Tab
+	self:skinDropDown{obj=_G.FishingPets}
+	-- About Tab
 
-	local tabObj, tabSF
--->>-- FishingWatch Tab
-	self:keepRegions(_G.FishingWatchTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
-	tabSF = self:addSkinFrame{obj=_G.FishingWatchTab, noBdr=self.isTT, x1=2, y1=-4, x2=-2, y2=0}
-	if self.isTT then self:setActiveTab(tabSF) end
+	if self.modChkBtns then
+		-- hook this to skin checkbuttons
+		self:SecureHook(_G.FishingOptionsFrame, "LayoutOptions", function(this, options)
+			skinCBs("FishingOptionsFrameOpt")
+		end)
+	end
 
--->>-- Tabs (side)
-	for i = 1, 6 do -- allow for 6 tabs (inc. Outfit & Tracking plugins)
-		tabObj = _G["FishingBuddyOptionTab"..i]
+	-- Tabs (side)
+	local tabObj
+	for i = 1, 6 do -- allow for 6 tabs (inc. Tracking plugin)
+		tabObj = _G["FishingOptionsFrameTab" .. i]
 		if tabObj then
 			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
 		end
 	end
+	tabObj = nil
 
--->>-- Tabs (bottom)
+	-- Tabs (bottom)
 	self:skinTabs{obj=_G.FishingBuddyFrame}
+	-- make tabs appear above skin frame
+	for i = 1, _G.FishingBuddyFrame.numTabs do
+		_G.RaiseFrameLevel(_G["FishingBuddyFrameTab" .. i])
+	end
+
+	self:addSkinFrame{obj=_G.FishingBuddyFrame, ft="a", kfs=true, ri=true, ofs=2, x2=1, y2=-5}
+
+	-- FishingWatch Frame
+	self:keepRegions(_G.FishingWatchTab, {4, 5}) -- N.B. region 4 is text, 5 is highlight
+	local tabSF = self:addSkinFrame{obj=_G.FishingWatchTab, ft="a", nb=true, noBdr=self.isTT, x1=2, y1=-4, x2=-2, y2=0}
+	if self.isTT then self:setActiveTab(tabSF) end
+	tabSF = nil
 
 end
 
-if aObj:isAddonEnabled("FB_OutfitDisplayFrame") then
-	function aObj:FB_OutfitDisplayFrame()
+aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.8 Beta 1
 
-		self:keepFontStrings(_G.FishingOutfitFrame)
-		self:skinButton{obj=_G.FishingOutfitSwitchButton}
-		self:makeMFRotatable(_G.FishingOutfitFrameModel)
-
+	-- FishingOutfit Frame
+	for _, child in ipairs{_G.FishingOutfitFrame:GetChildren()} do
+		if child:IsObjectType("CheckButton") then
+			self:skinCheckButton{obj=child}
+		elseif child:IsObjectType("Button") then
+			child:DisableDrawLayer("BACKGROUND")
+			if self.modBtnBs then
+				self:addButtonBorder{obj=child, ibt=true}
+			end
+		end
 	end
+	_G.FishingOutfitFrameModel:DisableDrawLayer("BACKGROUND")
+	_G.FishingOutfitFrameModel:DisableDrawLayer("BORDER")
+	_G.FishingOutfitFrameModel:DisableDrawLayer("OVERLAY")
+	_G.FishingOutfitFrameModel.controlFrame:DisableDrawLayer("BACKGROUND")
+
+	-- Tabs (side)
+	local tabObj
+	for i = 1, 2 do
+		tabObj = _G["ManagedOutfitsTab" .. i]
+		if tabObj then
+			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
+		end
+	end
+	tabObj = nil
+
+	-- tooltip
+	_G.C_Timer.After(0.1, function()
+		self:add2Table(self.ttList, _G.FishingOutfitTooltip)
+	end)
+
+	-- Options
+	if self.modChkBtns then
+		skinCBs("OptionsOutfitsOpt")
+	end
+
 end
 
-if aObj:isAddonEnabled("FB_TrackingFrame") then
-	function aObj:FB_TrackingFrame()
+aObj.addonsToSkin.FB_TrackingFrame = function(self) -- v 1.7.11
 
-		self:keepFontStrings(_G.FishingTrackingFrame)
-		self:skinScrollBar{obj=_G.FishingTrackingScrollFrame}
+	_G.FishingTrackingFrame:DisableDrawLayer("BACKGROUND")
 
+	-- _G.FishingTrackingChooser
+	self:skinSlider{obj=_G.FishingTrackingScrollFrame.ScrollBar, rt="background"}--, wdth=-4, size=3, hgt=-10}
+
+	-- option tab
+	for i = 1, 16 do
+		self:skinCheckButton{obj=_G["FishingTracking" .. i .. "Hourly"]}
+		self:skinCheckButton{obj=_G["FishingTracking" .. i .. "Weekly"]}
 	end
+
 end

@@ -25,7 +25,7 @@ local addonSkins = {
 	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cosplay",
 	"DeathNote", "DejaCharacterStats", "Details", "DockingStation", "Dominos", "DressUp",
 	"EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
-	"FarmIt2", "FeedMachine", "FishingBuddy", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
+	"FarmIt2", "FeedMachine", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker", "GuildMaster",
 	"HandyNotes", "HaveWeMet", "HoloFriends",
 	"InboxMailBag", "ItemDB", "InspectorGadgetzan", "Inventorian",
