@@ -3809,6 +3809,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.BottomFrame.RightEndCap:SetTexture(nil)
 		this.BottomFrame.LeftEndCap:SetTexture(nil)
 		this.BottomFrame.Background:SetTexture(nil)
+		self:skinStdButton{obj=this.BottomFrame.TurnTimer.SkipButton}
 		-- Pet Selection
 		for i = 1, _G.NUM_BATTLE_PETS_IN_BATTLE do
 			this.BottomFrame.PetSelectionFrame["Pet" .. i].Framing:SetTexture(nil)
