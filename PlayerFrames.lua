@@ -1234,7 +1234,10 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		self:skinStdButton{obj=this.displayFrame.leaderOptions.readyCheckButton}
 		self:skinStdButton{obj=_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton}
 		_G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:GetNormalTexture():SetAlpha(1) -- icon
-		self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.displayFrame.everyoneIsAssistButton}
+			_G.RaiseFrameLevel(this.displayFrame.everyoneIsAssistButton) -- so button border is visible
+		end
 		-- Resize Frame
 		self:addSkinFrame{obj=this.containerResizeFrame, ft=ftype, kfs=true, x1=-2, y1=-1, y2=4}
 		-- Raid Frame Manager Frame
