@@ -991,6 +991,7 @@ local function __skinDropDown(opts)
 		rp = re-parent, reverse the parent child relationship (addSkinFrame option)
 		ign = ignore this dropdown when skinning IOF panels
 		noBB = don't add a border around the button
+		bx1 = adjust x1 offset for the button (used by Overachiever)
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __sDD\n" .. debugstack(2, 3, 2))
@@ -1049,7 +1050,8 @@ local function __skinDropDown(opts)
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
-		aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2, x1=1}
+		xOfs1 = opts.bx1 and opts.obj:GetWidth() + 10 or 1
+		aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2, x1=xOfs1}
 	end
 
 	xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil
