@@ -52,28 +52,25 @@ local function skinUnitFrame(opts)
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
-	local xOfs1 = opts.x1 or opts.ofs * -1
-	local yOfs1 = opts.y1 or opts.ofs
-	local xOfs2 = opts.x2 or opts.ofs
-	local yOfs2 = opts.y2 or opts.ofs * -1
-	aObj:addSkinFrame{obj=opts.obj, ft=ftype, sec=true, aso={bd=11, ng=true}, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-	opts.obj.sf:SetBackdropColor(.1, .1, .1, db.alpha) -- use dark background
+	opts.x1 = opts.x1 or opts.ofs * -1
+	opts.y1 = opts.y1 or opts.ofs
+	opts.x2 = opts.x2 or opts.ofs
+	opts.y2 = opts.y2 or opts.ofs * -1
+	aObj:addSkinFrame{obj=opts.obj, ft=ftype, secb=true, aso={bd=11, ng=true}, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+	opts.obj.sf:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
 	opts.obj.sf:EnableMouse(false) -- enable clickthrough
 
-	local tex
 	if opts.ft then
-		tex = _G[opts.obj:GetName() .. "Flash"]
-		tex:ClearAllPoints()
-		tex:SetAllPoints(opts.obj.sf)
-		aObj:changeRecTex(tex, true, true)
+		opts.obj.threatIndicator:ClearAllPoints()
+		opts.obj.threatIndicator:SetAllPoints(opts.obj.sf)
+		aObj:changeRecTex(opts.obj.threatIndicator, true, true)
 		-- stop changes to texture
-		tex.SetTexture = _G.nop
-		tex.SetTexCoord = _G.nop
-		tex.SetWidth = _G.nop
-		tex.SetHeight = _G.nop
-		tex.SetPoint = _G.nop
+		opts.obj.threatIndicator.SetTexture = _G.nop
+		opts.obj.threatIndicator.SetTexCoord = _G.nop
+		opts.obj.threatIndicator.SetWidth = _G.nop
+		opts.obj.threatIndicator.SetHeight = _G.nop
+		opts.obj.threatIndicator.SetPoint = _G.nop
 	end
-	tex = nil
 
 end
 local function skinPlayerF()
@@ -207,7 +204,7 @@ local function skinPlayerF()
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
 		skinUnitFrame{obj=_G.PlayerFrame, ft=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
 
-		pF = nil
+		pF, y2Ofs = nil, nil
 
 	end
 
@@ -314,22 +311,6 @@ local function addSkinFrame(frame, ft)
 end
 local function skinTargetF()
 
-	local function showClassificationTex(cInd, tex)
-
-		if cInd == "worldboss"
-		or cInd == "elite"
-		then
-			tex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
-		elseif cInd == "rareelite" then
-			tex:SetTexture([[Interface\Tooltips\RareEliteNameplateIcon]])
-		elseif cInd == "rare" then
-			tex:SetTexture([[Interface\AddOns\]] .. aName .. [[\Textures\RareNameplateIcon]])
-		else
-			tex:SetTexture(nil)
-		end
-
-	end
-
 	if db.target
 	and not isSkinned["Target"]
 	then
@@ -342,21 +323,29 @@ local function skinTargetF()
 		end, true)
 
 		--Boss Target Frames
-		local frame
 		for i = 1, _G.MAX_BOSS_FRAMES do
-			frame = "Boss" .. i .. "TargetFrame"
-			addSkinFrame(frame)
+			addSkinFrame("Boss" .. i .. "TargetFrame")
 			-- always an Elite mob
-			_G[frame].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
+			_G["Boss" .. i .. "TargetFrame"].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		end
-		frame = nil
 
 		-- hook this to show/hide the elite texture
 		module:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
 			if frame == _G.TargetFrame
 			or (frame == _G.FocusFrame and db.focus)
 			then
-				showClassificationTex(_G.UnitClassification(frame.unit), frame.ucTex)
+				local classification = _G.UnitClassification(frame.unit)
+				if classification == "worldboss"
+				or classification == "elite"
+				then
+					frame.ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
+				elseif classification == "rareelite" then
+					frame.ucTex:SetTexture([[Interface\Tooltips\RareEliteNameplateIcon]])
+				elseif classification == "rare" then
+					frame.ucTex:SetTexture([[Interface\AddOns\]] .. aName .. [[\Textures\RareNameplateIcon]])
+				else
+					frame.ucTex:SetTexture(nil)
+				end
 			end
 		end)
 
@@ -406,8 +395,11 @@ local function skinPartyF()
 		pMF, pPF = nil, nil
 
 		-- PartyMember Buff Tooltip
-		_G.PartyMemberBuffTooltip:SetBackdrop(nil)
-		skinUnitFrame{obj=_G.PartyMemberBuffTooltip, ofs=-4}
+		_G.C_Timer.After(0.1, function()
+			aObj:add2Table(aObj.ttList, _G.PartyMemberBuffTooltip)
+		end)
+		-- _G.PartyMemberBuffTooltip:SetBackdrop(nil)
+		-- skinUnitFrame{obj=_G.PartyMemberBuffTooltip, ofs=-4}
 
 		-- PartyMemberBackground
 		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y1=2, x2=1, y2=2}
@@ -532,10 +524,10 @@ function module:GetOptions()
 		type = "group",
 		name = aObj.L["Unit Frames"],
 		desc = aObj.L["Change the Unit Frames settings"],
-		get = function(info) return module.db.profile[info[#info]] end,
+		get = function(info) return dbe[info[#info]] end,
 		set = function(info, value)
 			if not module:IsEnabled() then module:Enable() end
-			module.db.profile[info[#info]] = value
+			db[info[#info]] = value
 			module:adjustUnitFrames(info[#info])
 		end,
 		args = {
@@ -551,8 +543,8 @@ function module:GetOptions()
 				name = aObj.L["Pet"],
 				desc = aObj.L["Toggle the skin of the Pet UnitFrame"],
 				set = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and function(info, value)
-					module.db.profile[info[#info]] = value
-					if not value then module.db.profile.petlevel = false end -- disable petlevel when disabled
+					db[info[#info]] = value
+					if not value then db.petlevel = false end -- disable petlevel when disabled
 					module:adjustUnitFrames(info[#info])
 				end or nil,
 			},
@@ -562,8 +554,8 @@ function module:GetOptions()
 				name = aObj.L["Pet Spec"],
 				desc = aObj.L["Toggle the Pet Spec on the Pet Frame"],
 				set = function(info, value)
-					module.db.profile[info[#info]] = value
-					if value then module.db.profile.pet = true end -- enable pet frame when enabled
+					db[info[#info]] = value
+					if value then db.pet = true end -- enable pet frame when enabled
 					module:adjustUnitFrames(info[#info])
 				end,
 			} or nil,
