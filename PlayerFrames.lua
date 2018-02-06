@@ -3142,22 +3142,41 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		end
 
 		-- Spellbook Panel
+		local function updBtn(btn)
+			if not btn:IsEnabled() then
+				btn.sbb:Hide()
+			else
+				btn.sbb:Show()
+			end
+			if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
+				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.75)
+				btn.SpellName:SetTextColor(0.5, 0.5, 0.5, 0.75)
+				btn.SpellSubName:SetTextColor(0.5, 0.5, 0.5, 0.75)
+				btn.RequiredLevelString:SetTextColor(0.5, 0.5, 0.5, 0.75)
+				btn.SeeTrainerString:SetTextColor(0.5, 0.5, 0.5, 0.75)
+			else
+				btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				btn.SpellName:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
+				btn.SpellSubName:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+			end
+		end
 		_G.SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		local btn
+		for i = 1, _G.SPELLS_PER_PAGE do
+			btn = _G["SpellButton" .. i]
+			btn:DisableDrawLayer("BACKGROUND")
+			btn:DisableDrawLayer("BORDER")
+			_G["SpellButton" .. i .. "SlotFrame"]:SetAlpha(0)
+			btn.UnlearnedFrame:SetAlpha(0)
+			btn.TrainFrame:SetAlpha(0)
+			self:addButtonBorder{obj=btn, sec=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
+			updBtn(btn)
+		end
+		btn = nil
+
 		-- hook this to change text colour as required
 		self:SecureHook("SpellButton_UpdateButton", function(this)
-			if this.UnlearnedFrame and this.UnlearnedFrame:IsShown() then -- level too low
-				this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
-			end
-			if this.RequiredLevelString then this.RequiredLevelString:SetTextColor(self.BTr, self.BTg, self.BTb) end
-			if this.TrainFrame and this.TrainFrame:IsShown() then -- see Trainer
-				this.SpellName:SetTextColor(_G.HIGHLIGHT_FONT_COLOR.r, _G.HIGHLIGHT_FONT_COLOR.g, _G.HIGHLIGHT_FONT_COLOR.b)
-				this.SpellSubName:SetTextColor(_G.HIGHLIGHT_FONT_COLOR.r, _G.HIGHLIGHT_FONT_COLOR.g, _G.HIGHLIGHT_FONT_COLOR.b)
-			end
-			if this.SeeTrainerString then this.SeeTrainerString:SetTextColor(self.BTr, self.BTg, self.BTb) end
-			if this.SpellName then
-				this.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
-				this.SpellSubName:SetTextColor(self.BTr, self.BTg, self.BTb)
-			end
+			updBtn(this)
 		end)
 
 		-- Tabs (side)
@@ -3208,15 +3227,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		-- Secondary professions
 		skinProf("Secondary", 4)
 
-		-- colour the spell name text
-		for i = 1, _G.SPELLS_PER_PAGE do
-			_G["SpellButton" .. i]:DisableDrawLayer("BACKGROUND")
-			_G["SpellButton" .. i]:DisableDrawLayer("BORDER")
-			_G["SpellButton" .. i .. "SlotFrame"]:SetAlpha(0)
-			_G["SpellButton" .. i].UnlearnedFrame:SetAlpha(0)
-			_G["SpellButton" .. i].TrainFrame:SetAlpha(0)
-			self:addButtonBorder{obj=_G["SpellButton" .. i], sec=true, reParent={_G["SpellButton" .. i].FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
-		end
+		self:skinCloseButton{obj=_G.SpellLockedTooltip.CloseButton}
 
 		self:Unhook(this, "OnShow")
 	end)
