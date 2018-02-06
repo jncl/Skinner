@@ -4396,6 +4396,9 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 	if not self.prdb.TalkingHeadUI or self.initialized.TalkingHeadUI then return end
 	self.initialized.TalkingHeadUI = true
 
+	-- remove CloseButton animation
+	_G.TalkingHeadFrame.MainFrame.Close.CloseButton = nil
+
 	self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
 		this.BackgroundFrame.TextBackground:SetTexture(nil)
 		this.PortraitFrame.Portrait:SetTexture(nil)
@@ -4403,8 +4406,6 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 		self:skinCloseButton{obj=this.MainFrame.CloseButton}
 		self:addSkinFrame{obj=this, ft=ftype, aso={bd=11, ng=true}, ofs=-15, y2=14}
 		this.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
-		-- remove CloseButton animation
-		this.MainFrame.Close.CloseButton = nil
 		self:Unhook(this, "OnShow")
 	end)
 
