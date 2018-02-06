@@ -1,3 +1,11 @@
+beta7.25864.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version number checks
+	Bugfix for missing localization
+	Updated FishingBuddy skin
+
 beta7.25864.1
 Jncl:
 	ToDo.txt
