@@ -56,6 +56,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		-- populated below
 	-->>-- NPC Frames
 		DisableAllNPC        = false,
+		AlliedRacesUI        = true,
 		AuctionUI            = true,
 		BankFrame            = true,
 		BarbershopUI         = true,
@@ -116,7 +117,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AddonList            = true,
 		AdventureMap         = true,
 		AlertFrames          = true,
-		AlliedRacesUI        = true,
 		ArtifactUI           = true,
 		AuthChallengeUI      = false, -- N.B. cannot be skinned
 		AutoComplete         = true,
@@ -787,6 +787,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "header",
 					name = self.L["or choose which frames to skin"],
 				},
+				-- TODO reinstate this when localization website allows phrases to be added again
+				-- AlliedRacesUI = {
+				-- 	type = "toggle",
+				-- 	name = self.L["Allied Races UI"],
+				-- 	desc = self.L["Toggle the skin of the Allied Races UI"],
+				-- },
 				AuctionUI = {
 					type = "toggle",
 					name = self.L["Auction Frame"],
@@ -1249,12 +1255,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Alert Frames"],
 					desc = self.L["Toggle the skin of the Alert Frames"],
 				},
-				-- TODO reinstate this when localization website allows phrases to be added again
-				-- AlliedRacesUI = {
-				-- 	type = "toggle",
-				-- 	name = self.L["Allied Races UI"],
-				-- 	desc = self.L["Toggle the skin of the Allied Races UI"],
-				-- },
 				ArtifactUI = {
 					type = "toggle",
 					name = self.L["Artifact UI"],
