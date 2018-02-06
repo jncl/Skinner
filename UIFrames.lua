@@ -2774,6 +2774,11 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
+		if _G.StanceBarFrame:IsShown() then
+			_G.StanceBarFrame:Hide()
+			_G.StanceBarFrame:Show()
+		end
+
 		-- Possess Bar Frame
 		self:SecureHookScript(_G.PossessBarFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
@@ -2782,6 +2787,11 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
+		if _G.PossessBarFrame:IsShown() then
+			_G.PossessBarFrame:Hide()
+			_G.PossessBarFrame:Show()
+		end
+
 		-- Pet Action Bar Frame
 		self:SecureHookScript(_G.PetActionBarFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
@@ -2790,14 +2800,23 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
+		if _G.PetActionBarFrame:IsShown() then
+			_G.PetActionBarFrame:Hide()
+			_G.PetActionBarFrame:Show()
+		end
+
 		-- Shaman's Totem Frame
 		self:SecureHookScript(_G.MultiCastFlyoutFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
 			self:Unhook(this, "OnShow")
 		end)
+		if _G.MultiCastFlyoutFrame:IsShown() then
+			_G.MultiCastFlyoutFrame:Hide()
+			_G.MultiCastFlyoutFrame:Show()
+		end
 
 		if self.modBtns then
-		-->>-- Action Buttons
+			-- Action Buttons
 			for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 				_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 				_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
