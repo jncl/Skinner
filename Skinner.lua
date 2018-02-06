@@ -626,6 +626,7 @@ local function __addSkinFrame(opts)
 		bas = use applySkin for buttons
 		rp = re-parent, reverse the parent child relationship
 		sec = use the "SecureFrameTemplate"
+		secb = use the "SecureUnitButtonTemplate"
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aSF\n" .. debugstack(2, 3, 2))
@@ -668,7 +669,7 @@ local function __addSkinFrame(opts)
 	local yOfs2 = opts.y2 or opts.ofs * -1
 
 	-- add a frame around the current object
-	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil, opts.secb and "SecureUnitButtonTemplate" or nil)
 	local skinFrame = opts.obj.sf
 	skinFrame:ClearAllPoints()
 	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
