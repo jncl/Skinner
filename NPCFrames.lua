@@ -726,6 +726,13 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
 		aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
 
+		-- QuestInfoSeal Frame
+		if _G.QuestInfoSealFrame.sealInfo
+		and _G.QuestInfoSealFrame.sealInfo.text
+		then
+			_G.QuestInfoSealFrame.Text:SetText(_G.RGBToColorCode(aObj.HTr, aObj.HTg, aObj.HTb) .. _G.QuestInfoSealFrame.sealInfo.text:sub(11))
+		end
+
 	end
 
 	self:SecureHook("QuestInfo_Display", function(...)
