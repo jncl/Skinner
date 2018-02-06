@@ -55,21 +55,35 @@ local function skinFollowerListButtons(frame)
 end
 local function skinFollowerAbilitiesAndCounters(frame)
 
-	-- CombatAllySpell buttons
-	for i = 1, #frame.AbilitiesFrame.CombatAllySpell do
-		aObj:addButtonBorder{obj=frame.AbilitiesFrame.CombatAllySpell[i], relTo=frame.AbilitiesFrame.CombatAllySpell[i].iconTexture}
-	end
+	if aObj.modBtnBs then
+		-- CombatAllySpell buttons
+		for i = 1, #frame.AbilitiesFrame.CombatAllySpell do
+			aObj:addButtonBorder{obj=frame.AbilitiesFrame.CombatAllySpell[i], relTo=frame.AbilitiesFrame.CombatAllySpell[i].iconTexture}
+		end
 
-	-- Ability buttons
-	for ability in frame.abilitiesPool:EnumerateActive() do
-		aObj:addButtonBorder{obj=ability.IconButton, reParent={ability.IconButton.Border}}
-	end
+		-- Ability buttons
+		for ability in frame.abilitiesPool:EnumerateActive() do
+			aObj:addButtonBorder{obj=ability.IconButton, reParent={ability.IconButton.Border}}
+		end
+		-- Counter buttons (Garrison Followers)
+		for counters in frame.countersPool:EnumerateActive() do
+			aObj:addButtonBorder{obj=counters, relTo=counters.Icon, reParent={counters.Border}}
+		end
+		-- hook to to handle new Abilities & Counters
+		aObj:SecureHook(frame, "ShowAbilities", function(this, followerInfo)
+			for ability in frame.abilitiesPool:EnumerateActive() do
+				if not ability.IconButton.sbb then
+					aObj:addButtonBorder{obj=ability.IconButton, reParent={ability.IconButton.Border}}
+				end
+			end
+			for counters in frame.countersPool:EnumerateActive() do
+				if not counters.sbb then
+					aObj:addButtonBorder{obj=counters, relTo=counters.Icon, reParent={counters.Border}}
+				end
+			end
+		end)
 
-	-- Counter buttons (Garrison Followers)
-	for counters in frame.countersPool:EnumerateActive() do
-		aObj:addButtonBorder{obj=counters, relTo=counters.Icon, reParent={counters.Border}}
 	end
-
 	-- Equipment buttons (OrderHallUI)
 	for equipment in frame.equipmentPool:EnumerateActive() do
 		equipment.BG:SetTexture(nil)
