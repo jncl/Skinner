@@ -661,6 +661,11 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				end)
 			end
 
+			-- fixupNotificationFrame (anchored to CharacterMainHandSlot)
+			if this.fixupNotificationFrame then
+				self:skinCloseButton{obj=this.fixupNotificationFrame.CloseButton}
+			end
+
 			self:Unhook(this, "OnShow")
 		end)
 		if _G.PaperDollFrame:IsShown() then
