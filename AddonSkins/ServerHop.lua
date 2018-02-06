@@ -5,7 +5,7 @@ local _G = _G
 aObj.addonsToSkin.ServerHop = function(self) -- v 7.3.0.1
 
 	-- ServerHop_Init
-	self:skinButton{obj=self:getChild(_G.LFGListFrame, _G.LFGListFrame:GetNumChildren())} -- last button on LFGListFrame
+	self:skinButton{obj=self:getLastChild(_G.LFGListFrame)}
 
 	-- HopFrame
 	self:addButtonBorder{obj=_G.ServerHop.buttonOptions, ofs=-1}

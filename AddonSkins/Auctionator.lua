@@ -9,8 +9,8 @@ local function skinAuctionUI()
 	aObj:skinExpandButton{obj=_G.Atr_Adv_Search_Button, sap=true, plus=true}
 	aObj:skinCheckButton{obj=_G.Atr_Exact_Search_Button}
 	-- item drag & drop frame
-	aObj:addSkinFrame{obj=_G.Atr_HeadingsBar, ftype="a", kfs=true, nb=true, y1=-19, y2=19}
-	aObj:addSkinFrame{obj=_G.Atr_Hilite1, ftype="a", kfs=true, nb=true}
+	aObj:addSkinFrame{obj=_G.Atr_HeadingsBar, ft="a", kfs=true, nb=true, y1=-19, y2=19}
+	aObj:addSkinFrame{obj=_G.Atr_Hilite1, ft="a", kfs=true, nb=true}
 	-- scroll frame below heading bar
 	aObj:skinSlider{obj=_G.AuctionatorScrollFrame.ScrollBar}
 	if aObj.modBtns then
@@ -36,7 +36,7 @@ local function skinAuctionUI()
 	aObj:skinDropDown{obj=_G.Atr_DropDownSL}
 	-- Sell
 	aObj:skinSlider{obj=_G.Atr_Hlist_ScrollFrame.ScrollBar}
-	aObj:addSkinFrame{obj=_G.Atr_Hlist, ftype="a", kfs=true, nb=true, x1=-4, x2=8}
+	aObj:addSkinFrame{obj=_G.Atr_Hlist, ft="a", kfs=true, nb=true, x1=-4, x2=8}
 	aObj:skinMoneyFrame{obj=_G.Atr_StackPrice, noWidth=true, moveSEB=true, moveGEB=true}
 	aObj:skinMoneyFrame{obj=_G.Atr_ItemPrice, noWidth=true, moveSEB=true, moveGEB=true}
 	aObj:skinMoneyFrame{obj=_G.Atr_StartingPrice, noWidth=true, moveSEB=true, moveGEB=true}
@@ -48,19 +48,19 @@ local function skinAuctionUI()
 	aObj:skinStdButton{obj=_G.Atr_CheckActiveButton}
 
 -->>-- Error Frame
-	aObj:addSkinFrame{obj=_G.Atr_Error_Frame, ftype="a", kfs=true, nb=true}
+	aObj:addSkinFrame{obj=_G.Atr_Error_Frame, ft="a", kfs=true, nb=true}
 -->>-- Confirm Frame
-	aObj:addSkinFrame{obj=_G.Atr_Confirm_Frame, ftype="a", kfs=true, nb=true}
+	aObj:addSkinFrame{obj=_G.Atr_Confirm_Frame, ft="a", kfs=true, nb=true}
 -->>-- Buy_Confirm Frame
 	aObj:skinEditBox{obj=_G.Atr_Buy_Confirm_Numstacks, regs={9}}
-	aObj:addSkinFrame{obj=_G.Atr_Buy_Confirm_Frame, ftype="a", kfs=true, nb=true}
+	aObj:addSkinFrame{obj=_G.Atr_Buy_Confirm_Frame, ft="a", kfs=true, nb=true}
 -->>-- CheckActives Frame
-	aObj:addSkinFrame{obj=_G.Atr_CheckActives_Frame, ftype="a", kfs=true, nb=true}
+	aObj:addSkinFrame{obj=_G.Atr_CheckActives_Frame, ft="a", kfs=true, nb=true}
 
 -->>-- FullScan Frame
 	aObj:skinStdButton{obj=_G.Atr_FullScanStartButton}
 	aObj:skinStdButton{obj=_G.Atr_FullScanDone}
-	aObj:addSkinFrame{obj=_G.Atr_FullScanFrame, ftype="a", kfs=true, nb=true, y1=4}
+	aObj:addSkinFrame{obj=_G.Atr_FullScanFrame, ft="a", kfs=true, nb=true, y1=4}
 
 -->>-- Search Dialog
 	aObj:skinEditBox{obj=_G.Atr_AS_Searchtext, regs={6}}
@@ -75,7 +75,7 @@ local function skinAuctionUI()
 		aObj:skinStdButton{obj=_G.Atr_Adv_Search_OKBut}
 		aObj:skinStdButton{obj=_G.Atr_Adv_Search_CancelBut}
 	end
-	aObj:addSkinFrame{obj=_G.Atr_Adv_Search_Dialog, ftype="a", kfs=true, nb=true, ofs=-10, y1=4}
+	aObj:addSkinFrame{obj=_G.Atr_Adv_Search_Dialog, ft="a", kfs=true, nb=true, ofs=-10, y1=4}
 
 end
 

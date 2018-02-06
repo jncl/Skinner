@@ -2,18 +2,21 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("MasterPlan") then return end
 local _G = _G
 
-function aObj:MasterPlan() -- LoD (v 0.101)
+aObj.lodAddons.MasterPlan = function(self) -- v 0.109.1
 
 	local function skinTab(tab, id, frame, x1, y1, x2 ,y2)
+
 		local x1, y1, x2, y2  = x1 or 9, y1 or 2, x2 or -9, y2 or 0
 		aObj:rmRegionsTex(tab, {1, 2, 3 ,4 ,5 ,6})
-		aObj:addSkinFrame{obj=tab, noBdr=aObj.isTT, x1=x1, y1=y1, x2=x2, y2=y2}
-		if frame.selectedTab == id then
-			aObj:setActiveTab(tab.sf)
-		else
-			aObj:setInactiveTab(tab.sf)
+		aObj:addSkinFrame{obj=tab, ft="a", nb=true, noBdr=aObj.isTT, x1=x1, y1=y1, x2=x2, y2=y2}
+		if aObj.isTT then
+			if frame.selectedTab == id then
+				aObj:setActiveTab(tab.sf)
+			else
+				aObj:setInactiveTab(tab.sf)
+			end
 		end
-		aObj.tabFrames[tab] = true
+
 	end
 	-- skin extra tabs
 	skinTab(_G.GarrisonMissionFrameTab3, 3, _G.GarrisonMissionFrame)
@@ -30,7 +33,7 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 	local sc = sf:GetScrollChild()
 	local bar = self:getChild(sf, 1)
 
-	self:skinButton{obj=activeUI.CompleteAll}
+	self:skinStdButton{obj=activeUI.CompleteAll}
 	self:skinSlider{obj=bar, adj=-4}
 	-- options frame in TLHC
 	self:removeRegions(missionList.ctlContainer, {1, 2, 3})
@@ -81,7 +84,7 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 						aObj:addButtonBorder{obj=child.rewards[i], reParent={child.rewards[i].quantity}}
 					end
 					 -- Missions of interest have these unused follower buttons
-					grandchild = aObj:getChild(child, child:GetNumChildren())
+					grandchild = aObj:getLastChild(child)
 					if grandchild:IsObjectType("Button")
 					and grandchild:GetNumChildren() == 21
 					then
@@ -103,7 +106,7 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 	skinMissionButtons(sc, "Button", true)
 
 	-- ActiveUI lootframe
-	self:addSkinFrame{obj=activeUI.lootFrame, kfs=true, y1=-3, x2=-1}
+	self:addSkinFrame{obj=activeUI.lootFrame, ft="a", kfs=true, nb=true, y1=-3, x2=-1}
 	local function skinLootContainer(lootContainer)
 		for i = 1, #lootContainer.items do
 			lootContainer.items[i].Border:SetTexture(nil)
@@ -126,42 +129,43 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 	self:removeRegions(self:getChild(self:getChild(availUI, 1), 1), {2}) -- follower focus portrait ring
 	-- Clear/Send Tentative Parties button, has to be done this way otherwise button skin isn't shown
 	self:SecureHook(availUI.SendTentative, "SetShown", function(this)
-		self:skinButton{obj=this}
+		self:skinStdButton{obj=this}
 	end)
 
 	-- Garrison Missions Frame - Available Missions Tab - Mission Page
 	-- Get Suggested Groups button
 	self:removeRegions(self:getChild(_G.GarrisonMissionFrame.MissionTab.MissionPage.Stage, 3), {2}) -- ring texture
 	-- minimize button
-	self:skinButton{obj=_G.GarrisonMissionFrame.MissionTab.MissionPage.MinimizeButton, ob="-"}
+	self:skinOtherButton{obj=_G.GarrisonMissionFrame.MissionTab.MissionPage.MinimizeButton, text="-"}
 
-	-- SpecAffinityFrame (on FollowerTab frames)
-	self:SecureHook("GarrisonMissionPortrait_SetFollowerPortrait", function(pf, ...)
-		if not pf == _G.GarrisonMissionFrame.FollowerTab.PortraitFrame
-		and not pf == _G.GarrisonLandingPage.FollowerTab.PortraitFrame
-		then
-			return
-		end
-		local obj = pf:GetParent()
-		local frame = self:getChild(obj, obj:GetNumChildren())
-		if frame.ClassSpec then
-			self:addButtonBorder{obj=frame.ClassSpec}
-			self:addButtonBorder{obj=frame.Affinity}
-			self:addButtonBorder{obj=frame.Missions}
-			self:Unhook("GarrisonMissionFrame_SetFollowerPortrait")
-		end
-		obj, frame = nil, nil
-	end)
-
-	-- Follower Items Container
-	self:addButtonBorder{obj=_G.MPFollowerItemContainer.weapon, es=12, x1=36}
-	self:addButtonBorder{obj=_G.MPFollowerItemContainer.armor, es=12, x2=-36}
+	if self.modBtnBs then
+		-- SpecAffinityFrame (on FollowerTab frames)
+		self:SecureHook("GarrisonMissionPortrait_SetFollowerPortrait", function(pf, ...)
+			if not pf == _G.GarrisonMissionFrame.FollowerTab.PortraitFrame
+			and not pf == _G.GarrisonLandingPage.FollowerTab.PortraitFrame
+			then
+				return
+			end
+			local obj = pf:GetParent()
+			local frame = self:getLastChild(obj)
+			if frame.ClassSpec then
+				self:addButtonBorder{obj=frame.ClassSpec}
+				self:addButtonBorder{obj=frame.Affinity}
+				self:addButtonBorder{obj=frame.Missions}
+				self:Unhook("GarrisonMissionFrame_SetFollowerPortrait")
+			end
+			obj, frame = nil, nil
+		end)
+		-- Follower Items Container
+		self:addButtonBorder{obj=_G.MPFollowerItemContainer.weapon, es=12, x1=36}
+		self:addButtonBorder{obj=_G.MPFollowerItemContainer.armor, es=12, x2=-36}
+	end
 
 	-- Follower Summary
 	_G.GarrisonMissionFrame.SummaryTab:DisableDrawLayer("BORDER")
-	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.matrix}
-	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.affin}
-	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.stats, nb=true}
+	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.matrix, ft="a", nb=true}
+	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.affin, ft="a", nb=true}
+	self:addSkinFrame{obj=_G.GarrisonMissionFrame.SummaryTab.stats, ft="a", nb=true}
 
 	-- UpgradesFrame
 	local frame = _G.EnumerateFrames()
@@ -189,6 +193,7 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 
 		frame = _G.EnumerateFrames(frame)
 	end
+	frame = nil
 
 	-- GarrisonShipyard
 	self:SecureHook(_G.GarrisonShipyardFrame, "ShowMission", function(this, ...)
@@ -208,14 +213,14 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 			for j = 1, #groups.buttons[i].tex do
 				groups.buttons[i].tex[j]:SetTexture(nil)
 			end
-			self:skinButton{obj=groups.buttons[i]}
+			self:skinStdButton{obj=groups.buttons[i]}
 		end
 		-- minimize button
-		self:skinButton{obj=self:getChild(this.MissionTab.MissionPage, kNum + 1), ob="-"}
+		self:skinOtherButton{obj=self:getChild(this.MissionTab.MissionPage, kNum + 1), text="-"}
 
 		-- hook this to skin refit frame
 		self:SecureHookScript(self:getChild(this.MissionTab.MissionPage, kNum + 2), "OnClick", function(this)
-			self:addSkinFrame{obj=self:getChild(this:GetParent(), this:GetParent():GetNumChildren())}
+			self:addSkinFrame{obj=self:getLastChild(this:GetParent()), ft="a", nb=true}
 			self:Unhook(this, "OnClick")
 		end)
 		groups, kNum = nil, nil
@@ -224,7 +229,7 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 
 	-- MPStatContainer
 	_G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=_G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer, ofs=-5}
+	self:addSkinFrame{obj=_G.GarrisonShipyardFrame.MissionTab.MissionPage.MPStatContainer, ft="a", nb=true, ofs=-5}
 
 	-- Missions of Interest Tab
 	skinTab(_G.GarrisonShipyardFrameTab3, 3, _G.GarrisonShipyardFrame)
@@ -263,10 +268,10 @@ function aObj:MasterPlan() -- LoD (v 0.101)
 	self.RegisterCallback("MasterPlan", "UIParent_GetChildren", function(this, child)
 		if child:IsObjectType("Frame")
 		and child:GetName() == nil
-		and self:getInt(child:GetWidth()) == 260
-		and self:getInt(child:GetHeight()) == 68
+		and _G.Round(child:GetWidth()) == 260
+		and _G.Round(child:GetHeight()) == 68
 		then
-			self:addSkinFrame{obj=child}
+			self:addSkinFrame{obj=child, ft="a", nb=true}
 		end
 	end)
 	self:scanUIParentsChildren()

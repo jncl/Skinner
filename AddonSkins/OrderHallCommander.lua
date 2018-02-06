@@ -8,7 +8,21 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.13 70300
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
+		_G.OHCFollowerTip.PortraitFrame.PortraitRing:SetTexture(nil)
+		_G.OHCFollowerTip.PortraitFrame.LevelBorder:SetAlpha(0)
 		self:add2Table(self.ttList, _G.OHCFollowerTip)
+	end)
+
+	-- hook this to move the Tutorial button in the TLHC of the OrderHallMissionFrame
+	self:SecureHook(OHC, "MarkAsNew", function(this, obj, key, message, method)
+		local frame = self:getLastChild(_G.OrderHallMissionFrame)
+		if frame:IsObjectType("Button")
+		and frame.tooltip == message
+		then
+			self:moveObject{obj=frame, x=5}
+		end
+		frame = nil
+		self:Unhook(this, "MarkAsNew")
 	end)
 
 	local cache = OHC:GetCacheModule()
@@ -29,8 +43,10 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.13 70300
 	local mLst = OHC:GetMissionlistModule()
 	if mLst then
 		self:SecureHook(mLst, "Menu", function(this, flag)
-			local frame = self:getChild(_G.OrderHallMissionFrame, _G.OrderHallMissionFrame:GetNumChildren())
+			local frame = self:getLastChild(_G.OrderHallMissionFrame)
+			self:moveObject{obj=frame.Tutorial, x=2, y=6}
 			self:skinCloseButton{obj=frame.Close}
+			self:moveObject{obj=frame.Close, x=3, y=5}
 			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, y1=2, y2=-5}
 			frame = nil
 			self:Unhook(this, "Menu")
@@ -52,9 +68,8 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.13 70300
 
 	local aC = OHC:GetAutocompleteModule()
 	if aC then
-		local frame = _G.OrderHallMissionFrame.MissionTab.MissionList.CompleteDialog.BorderFrame.ViewButton
-		self:skinStdButton{obj=self:getChild(frame, frame:GetNumChildren()), x1=-10, x2=10}
-		frame = nil
+		self:skinStdButton{obj=self:getLastChild(_G.OrderHallMissionFrameMissions.CompleteDialog.BorderFrame.ViewButton), x1=-10, x2=10}
+		-- self:skinStdButton{obj=self:getChild(frame, frame:GetNumChildren()), x1=-10, x2=10}
 	end
 	aC = nil
 
@@ -66,5 +81,14 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.13 70300
 		self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
 		tut, Clicker = nil, nil
 	end
+
+	-- hook this to manage GarrisonFollowerAlerts
+	self:SecureHook("GarrisonFollowerAlertFrame_SetUp", function(frame,FAKE_FOLLOWERID,...)
+		frame:DisableDrawLayer("BACKGROUND")
+		frame.PortraitFrame.PortraitRing:SetTexture(nil)
+		self:nilTexture(frame.PortraitFrame.LevelBorder, true)
+		self:nilTexture(frame.FollowerBG, true)
+		self:addSkinFrame{obj=frame, ft="a", nb=true, ofs=-8}
+	end)
 
 end

@@ -33,7 +33,7 @@ local addonSkins = {
 	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts",
 	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobileVault", "MogIt", "MoveAnything", "MrTrader_SkillWindow", "MyGarrisons",
 	"Notes",
-	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3", "Overachiever",
+	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3",
 	"PetBattleHUD", "PetBattleMaster", "PetTracker", "PetTracker_Switcher", "PetTracker_Journal", "PhoenixStyle", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "PremadeGroupsFilter", "ProfessionsVault", "ProspectBar",
 	"Quartz", "QuestCompletist", "QuestGuru", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidAchievement", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
@@ -51,7 +51,6 @@ end
 addonSkins = nil
 -- oddly named addons
 aObj.addonsToSkin["Classic Quest Log"] = "ClassicQuestLog"
-aObj.addonsToSkin["DBM-Core"] = "DBMCore"
 aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
 aObj.addonsToSkin["Prat-3.0"] = "Prat30"
 -- libraries
@@ -152,7 +151,6 @@ local lodFrames = {
 	"GarrisonMissionManager", "GuildBankSearch",
 	"LilSparkysWorkshop", "Ludwig_Window",
 	"MasterPlan",
-	"Overachiever_Tabs",
 	"PetJournalEnhanced",
 	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer",
 	"TipTacOptions",
@@ -170,8 +168,6 @@ for i = 1, #raMods do
 	aObj.lodAddons["RaidAchievement_" .. raMods[i]] = "RaidAchievement_" .. raMods[i]
 end
 raMods = nil
--- oddly named LoD addons
-aObj.lodAddons["DBM-GUI"] = "DBMGUI"
 
 -- local prev_addon
 function aObj:LoDFrames(addon)

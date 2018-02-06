@@ -8,7 +8,7 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 	if self.modBtnBs then
 		local gmfos = _G.GarrisonMissionFrame:GetScript("OnShow")
 		_G.GarrisonMissionFrame:HookScript("OnShow", function(this)
-			local btn = self:getChild(this, this:GetNumChildren())
+			local btn = self:getLastChild(this)
 			if not btn.sbb then
 				self:addButtonBorder{obj=btn}
 			end
@@ -18,7 +18,7 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 		end)
 		local gsfos = _G.GarrisonShipyardFrame:GetScript("OnShow")
 		_G.GarrisonShipyardFrame:HookScript("OnShow", function(this)
-			local btn = self:getChild(this, this:GetNumChildren())
+			local btn = self:getLastChild(this)
 			if not btn.sbb then
 				self:addButtonBorder{obj=btn}
 			end

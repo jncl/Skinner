@@ -506,6 +506,18 @@ function aObj:getChild(obj, childNo)
 
 end
 
+function aObj:getLastChild(obj)
+
+	return self:getChild(obj, obj:GetNumChildren())
+
+end
+
+function aObj:getPenultimateChild(obj)
+
+	return self:getChild(obj, obj:GetNumChildren() - 1)
+
+end
+
 function aObj:getGradientInfo(invert, rotate)
 
 	local MinR, MinG, MinB, MinA = self.prdb.GradientMin.r, self.prdb.GradientMin.g, self.prdb.GradientMin.b, self.prdb.GradientMin.a
@@ -1107,7 +1119,7 @@ end
 
 function aObj:DebugSpew(title, obj, fmtStr, ...)
 
-	aObj:Debug("DebugSpew: [%s, %s, %s, %s]", title, obj, fmtStr, ...)
+	-- aObj:Debug("DebugSpew: [%s, %s, %s, %s]", title, obj, fmtStr, ...)
 	self:Debug(title .. ": " .. fmtStr, ...)
 	if _G.Spew then _G.Spew(title, obj) end
 

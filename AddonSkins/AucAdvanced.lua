@@ -58,7 +58,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 7.5.5724
 	if mod then
 		self:SecureHook(mod.Processors, "config", function(callbackType, gui)
 			local lf = mod.Private.ListButtons[1]:GetParent()
-			self:skinStdButton{obj=self:getChild(lf, lf:GetNumChildren() - 1)}
+			self:skinStdButton{obj=self:getPenultimateChild(lf)}
 			self:skinStdButton{obj=self:getChild(lf, lf:GetNumChildren() - 2)}
 			self:Unhook(this, "config")
 		end)
@@ -135,8 +135,7 @@ aObj.addonsToSkin["Auc-Advanced"] = function(self) -- v 7.5.5724
 			self:SecureHook(lib, "MakeGuiConfig", function(this, gui)
 				local exists, id = gui:GetTabByName(lib.tabname, "Filters")
 				if exists then
-					local btn = self:getChild(gui.tabs[id][3], gui.tabs[id][3]:GetNumChildren()) -- last child
-					self:skinStdButton{obj=btn, as=true} -- just skin it otherwise text is hidden}
+					self:skinStdButton{obj=self:getLastChild(gui.tabs[id][3]), as=true} -- just skin it otherwise text is hidden}
 				end
 				self:Unhook(lib, "MakeGuiConfig")
 			end)

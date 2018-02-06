@@ -2,10 +2,10 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 2.4.25
+aObj.addonsToSkin.WeakAuras = function(self) -- v 2.5.4
 
 	-- hook this to skin the WeakAuras added elements
-	local s1, s2, s3, s4 = nil, nil, nil, nil
+	local s1, s2, s3, s4
 	self:SecureHook(_G.WeakAuras, "ShowDisplayTooltip", function(this, ...)
 		if _G.ItemRefTooltip.WeakAuras_Tooltip_Thumbnail
 		and not s1
@@ -43,7 +43,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 2.4.25
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.4.25
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.5.4
 
 	-- wait until frame is created
 	if not _G.WeakAuras.OptionsFrame() then
@@ -77,7 +77,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.4.25
 		then
 			self:keepFontStrings(self:getChild(optFrame, 5)) -- tutorial button frame
 		end
-		self:addSkinFrame{obj=optFrame, ft="a", nb=true, kfs=true, y1=6}
+		self:addSkinFrame{obj=optFrame, ft="a", kfs=true, nb=true, y1=6}
 		optFrame.moversizer:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
 
 	end
@@ -87,7 +87,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.4.25
 	self:SecureHook(_G.WeakAuras, "OpenTriggerTemplate", function(this, data)
 		local optFrame = _G.WeakAuras.OptionsFrame()
 		self:skinStdButton{obj=optFrame.newView.backButton}
-		self:skinStdButton{obj=self:getChild(optFrame.newView.frame, optFrame.newView.frame:GetNumChildren())}
+		self:skinStdButton{obj=self:getLastChild(optFrame.newView.frame)}
 		self:Unhook(this, "OpenTriggerTemplate")
 	end)
 

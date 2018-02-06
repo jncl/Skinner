@@ -7,7 +7,7 @@ aObj.lodAddons.Collectinator = function(self) -- v 7.2.5.1
 	local COL = _G.LibStub("AceAddon-3.0"):GetAddon("Collectinator", true)
 	if not COL then return end
 
-	self:skinStdButton{obj=self:getChild(_G.CollectionsJournal, _G.CollectionsJournal:GetNumChildren())} -- last one added
+	self:skinStdButton{obj=self:getLastChild(_G.CollectionsJournal)}
 
 	local function skinCOL(frame)
 

@@ -2,10 +2,10 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Wholly") then return end
 local _G = _G
 
-aObj.addonsToSkin.Wholly = function(self) -- v 064
+aObj.addonsToSkin.Wholly = function(self) -- v 065
 
 	-- button on WorldMap frame
-	self:skinStdButton{obj=self:getChild(_G.WorldMapFrame.BorderFrame, _G.WorldMapFrame.BorderFrame:GetNumChildren())}
+	self:skinStdButton{obj=self:getLastChild(_G.WorldMapFrame.BorderFrame)}
 
 	-- narrow frame
 	self:SecureHookScript(_G.com_mithrandir_whollyFrame, "OnShow", function(this)
