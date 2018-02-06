@@ -606,7 +606,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, mountID
 	self:SecureHook(_G.NewMountAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("NewMountAlertSystem: [%s, %s]", frame, ...)
+		-- aObj:Debug("NewMountAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
 	end)
@@ -2753,6 +2753,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			bar.SetPoint = _G.nop
 			-- move text down
 			bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1)
+			bar.OverlayFrame.Text.SetPoint = _G.nop
 			-- increase frame level so it responds to mouseovers'
 			aObj:RaiseFrameLevelByFour(bar)
 		end
@@ -2828,7 +2829,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:addButtonBorder{obj=_G[_G.MICRO_BUTTONS[i]], ofs=0, y1=-21, reParent=_G.MICRO_BUTTONS[i] == "MainMenuMicroButton" and {_G[_G.MICRO_BUTTONS[i]].Flash, _G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload} or {_G[_G.MICRO_BUTTONS[i]].Flash}}
 			end
 
-		-->>-- skin bag buttons
+			-- skin bag buttons
 			self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
 			self:addButtonBorder{obj=_G.CharacterBag0Slot, ibt=true}
 			self:addButtonBorder{obj=_G.CharacterBag1Slot, ibt=true}
@@ -2846,7 +2847,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			self:addButtonBorder{obj=_G.ActionBarUpButton, es=12, ofs=-5, x2=-6, y2=7}
 			self:addButtonBorder{obj=_G.ActionBarDownButton, es=12, ofs=-5, x2=-6, y2=7}
 
-		-->>-- MultiBar Buttons
+			-- MultiBar Buttons
 			for _, type in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
 				for j = 1, _G.NUM_MULTIBAR_BUTTONS do
 					_G["MultiBar" .. type .. "Button" .. j].FlyoutBorder:SetTexture(nil)
