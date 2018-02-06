@@ -4607,14 +4607,20 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 
 	self:SecureHookScript(_G.WarboardQuestChoiceFrame, "OnShow", function(this)
 		this.GarrCorners:DisableDrawLayer("BACKGROUND")
+		this.Background:DisableDrawLayer("BACKGROUND")
+		this.Title:DisableDrawLayer("BACKGROUND")
 		-- Options array
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		for _, choice in pairs(this.Options) do
+			choice.Nail:SetTexture(nil)
+			choice.Border:SetTexture(nil)
+			choice.Header.Background:SetTexture(nil)
+			choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+			choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:skinStdButton{obj=choice.OptionButton}
+		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-1}
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.WarboardQuestChoiceFrame:IsShown() then
-		_G.WarboardQuestChoiceFrame:Hide()
-		_G.WarboardQuestChoiceFrame:Show()
-	end
 
 end
 
