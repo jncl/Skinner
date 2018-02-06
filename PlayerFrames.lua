@@ -331,16 +331,21 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 
 		-- this is not a standard dropdown
 		self:moveObject{obj=_G.AchievementFrameFilterDropDown, y=-7}
-		if self.prdb.TexturedDD then
-			local tex = _G.AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
-			tex:SetTexture(self.itTex)
-			tex:SetSize(110, 19)
-			tex:SetPoint("RIGHT", _G.AchievementFrameFilterDropDown, "RIGHT", -3, 4)
-			tex = nil
-		end
-	    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, ofs=0}
 		-- skin the frame
 		if self.prdb.DropDownButtons then
+			if self.prdb.TexturedDD then
+				local tex = _G.AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
+				tex:SetTexture(self.itTex)
+				tex:SetSize(110, 19)
+				tex:SetPoint("RIGHT", _G.AchievementFrameFilterDropDown, "RIGHT", -3, 4)
+				tex = nil
+			end
+			if self.modBtnBs then
+				local xOfs = 1
+				if IsAddOnLoaded("Overachiever") then xOfs = 102 end
+			    self:addButtonBorder{obj=_G.AchievementFrameFilterDropDownButton, es=12, ofs=-2, x1=xOfs}
+				xOfs = nil
+			end
 			self:addSkinFrame{obj=_G.AchievementFrameFilterDropDown, ft=ftype, aso={ng=true}, x1=-8, y1=2, x2=2, y2=7}
 		end
 
