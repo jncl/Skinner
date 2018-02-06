@@ -15,37 +15,17 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-	N	PTR 7.3.5
-		- Updates
-			- ArtifactPerks
-				- InstabilityCrestFrame(s)
-√			- ContainerFrames
-√			- EncounterJournal.LootJournal
-			- RaidFinder
-√				- NoRaidsCover framestrata changed
-			- StaticPopups
-x				- CoverFrame
-√				- Button4
-		- Additions
-≈			- Blizzard_AlliedRacesUI
-			- ContainerFrame
-√				- AddSlotsButton
-√				- ExtraBagSlotsHelpBox
-√			- StoreMicroButtonAlert
-≈			- Blizzard_WarboardUI
-		- Deletions
-			-
-
 ?	I	ArtifactBar, reported by Ivet67, 07.12.17
 		- The addon has a problem: after the update in the game the addon does not show the progress of the artifact 		bar correctly, please update.
 
-	I	options, reported by Pseudopath, 18.01.18
-√		-  AceLocale-3.0: Skinner: Missing entry for 'Allied Races UI'
+	N	Overachiever, reported by Fraktyl, 19.01.18
+√ 		- The new version of Overachiever has some weirdness on the dropdowns for the last two tabs.
 
-	I	FishingBuddy, reported by Pseudopath, 18.01.18
-√		-  ..\AddOns\Skinner\Skinner.lua line 1003: attempt to index field 'obj' (a nil value)
-			Skinner\Skinner.lua:1003:
-			Skinner\Skinner.lua:986
-			Skinner\Skinner.lua:1084: skinDropDown()
-			Skinner\AddonSkins\FishingBuddy.lua:36:
-			Skinner\AddonSkins\FishingBuddy.lua:5
+	I	DBM, reported by Psedopath/lexusnexus, 30.01.18/06.02.18
+√		-  ..\AddOns\Skinner\AddonSkins\DBM.lua line 125:
+			Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+
+√	S	AppearanceTooltip, requested by user_131498, 02.02.18
+
+	I	TradeSkilMaster, reported by epidemedabear, 03.02.18
+√		-  ...rface\AddOns\Skinner\AddonSkins\TradeSkillMaster.lua:90: Usage: SecureHook([object], method, [handler]): 		Attempting to hook a non existing target
