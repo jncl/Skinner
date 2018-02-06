@@ -2713,6 +2713,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		_G.OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
 		self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:skinStdButton{obj=_G.OpenMailReportSpamButton}
 		self:skinStdButton{obj=_G.OpenMailCancelButton}
 		self:skinStdButton{obj=_G.OpenMailDeleteButton}
 		self:skinStdButton{obj=_G.OpenMailReplyButton}
