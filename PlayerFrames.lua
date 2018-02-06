@@ -955,19 +955,19 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		this.iconsFrame:DisableDrawLayer("BACKGROUND")
 		-- 18 icons per page ?
 		self:SecureHook(this, "LayoutCurrentPage", function(this)
-			local frame
 			for i = 1, #this.heirloomHeaderFrames do
-				frame = this.heirloomHeaderFrames[i]
-				frame:DisableDrawLayer("BACKGROUND")
-				frame.text:SetTextColor(self.HTr, self.HTg, self.HTb)
+				this.heirloomHeaderFrames[i]:DisableDrawLayer("BACKGROUND")
+				this.heirloomHeaderFrames[i].text:SetTextColor(self.HTr, self.HTg, self.HTb)
 			end
-			frame = nil
+			local heirloom
 			for i = 1, #this.heirloomEntryFrames do
-				this.heirloomEntryFrames[i].slotFrameCollected:SetTexture(nil)
-				this.heirloomEntryFrames[i].slotFrameUncollected:SetTexture(nil)
+				heirloom = this.heirloomEntryFrames[i]
+				heirloom.slotFrameCollected:SetTexture(nil)
+				heirloom.slotFrameUncollected:SetTexture(nil)
 				-- ignore btn.levelBackground as its textures is changed when upgraded
-				self:addButtonBorder{obj=this.heirloomEntryFrames[i], sec=true, ofs=0, reParent={this.heirloomEntryFrames[i].levelBackground, this.heirloomEntryFrames[i].level}}
+				self:addButtonBorder{obj=heirloom, sec=true, ofs=0, reParent={heirloom.new, heirloom.levelBackground, heirloom.level}}
 			end
+			heirloom = nil
 		end)
 
 		self:SecureHookScript(this.UpgradeLevelHelpBox, "OnShow", function(this)
