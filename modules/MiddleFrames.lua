@@ -107,7 +107,7 @@ local function adjustFrame(key)
 		then
 			fh = db.fheight <= aObj:getInt(frame:GetHeight()) and db.fheight or aObj:getInt(frame:GetHeight())
 		end
-		aObj:applySkin{obj=frame, ftype=ftype, bba=db.borderOff and 0 or 1, fh=fh}
+		aObj:applySkin{obj=frame, ft=ftype, bba=db.borderOff and 0 or 1, fh=fh}
 		frame:SetBackdropColor(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
 		frame:Show()
 		frames[key] = frame
