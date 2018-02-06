@@ -252,7 +252,13 @@ function module:skinOtherButton(opts)
 		aso = applySkin options
 		size = use smaller edgesize, different highlight textue and resize the button
 		sap = set all points of skinButton to object
+		font = font to use
+		text = text to use
 --]]
+--@alpha@
+	assert(opts.obj, "Missing object skinOtherButton\n" .. debugstack(2, 3, 2))
+	assert(opts.text, "Missing text to use skinOtherButton\n" .. debugstack(2, 3, 2))
+--@end-alpha@
 
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
@@ -262,7 +268,7 @@ function module:skinOtherButton(opts)
 	-- if opts.obj:GetPushedTexture and opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 
 	aso = opts.aso or {}
-	opts.obj:SetNormalFontObject(opts.font)
+	opts.obj:SetNormalFontObject(opts.font or module.fontP)
 	opts.obj:SetText(opts.text)
 	opts.obj:SetPushedTextOffset(-1, -1)
 	if opts.size then -- MinimalArchaeology & MyGarrison
