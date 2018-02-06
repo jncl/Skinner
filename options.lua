@@ -512,7 +512,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					return db[info[#info]]
 				else
 					local c = db[info[#info]]
-					return c.r, c.g, c.b, c.a
+					return c.r, c.g, c.b, c.a or nil
 				end
 			end,
 			set = function(info, r, g, b, a)
@@ -522,11 +522,9 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						db.BackdropBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
 						db.BackdropBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
 						db.BackdropBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
-						if db.TooltipBorder.r == dflts.TooltipBorder.r then
-							db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
-							db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
-							db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
-						end
+						db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
+						db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
+						db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
 						if bggns then
 							db.BagginsBBC.r = _G.RAID_CLASS_COLORS[self.uCls].r
 							db.BagginsBBC.g = _G.RAID_CLASS_COLORS[self.uCls].g

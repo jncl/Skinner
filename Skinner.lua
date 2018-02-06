@@ -235,12 +235,7 @@ function aObj:OnInitialize()
 	end
 
 	-- TooltipBorder colours
-	if self.prdb.ClassColour
-	and self.prdb.TooltipBorder.r == dflts.TooltipBorder.r
-	and self.prdb.TooltipBorder.g == dflts.TooltipBorder.g
-	and self.prdb.TooltipBorder.b == dflts.TooltipBorder.b
-	and self.prdb.TooltipBorder.a == dflts.TooltipBorder.a
-	then
+	if self.prdb.ClassColour then
 		c = _G.RAID_CLASS_COLORS[self.uCls]
 	else
 		c = self.prdb.TooltipBorder
