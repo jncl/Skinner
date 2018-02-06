@@ -57,39 +57,14 @@ Locales\Locale_ruRU.lua
 UtilFuncs.lua
 Skinner.lua
 Options.lua
-#
-# AddonFrames
-# Controls the skinning of the Blizzard frames and the Addon frames
 AddonFrames.lua
-#
-# These individual lua files skin the default frames as follows;
-#
-# NPCFrames
-# inc. AuctionUI, Bank, BarberShopUI, BlackMarketUI, FlightMap, Gossip, GuildRegistrar, ItemUpgradeUI, Merchant, Petition, PetStable, QuestChoice, Quest, QuestInfo, SideDressUpFrame, Tabard, Taxi, TrainerUI, VoidStorageUI
 NPCFrames.lua
-#
-# PlayerFrames
-# inc. AchievementUI, ArchaeologyUI, Buffs, CastingBar, Character (inc. Pet, Reputation, Token), Collections (inc. Mounts, PetJournal, ToyBox, Heirlooms, Appearances), CompactFrames, ContainerFrames, DressUp, EncounterJournal, EquipmentFlyout, Friends (inc. Who, Chat, Raid), GuildControlUI, GuildUI, GuildInvite, InspectUI, ItemSocketingUI, LookingForGuildUI, Loot (inc. MissingLoot, GroupLoot ...), LootHistory, MirrorTimers, ModelFrames, ObjectivesTracker, OverrideActionBar, PVPUI, PVPHonorSystem, RaidUI, ReadyCheck, RolePollPopup, ScrollOfResurrection, SpellBook, StackSplit, TalentUI, Trade, TradeSkillUI, WardrobeOutfits
 PlayerFrames.lua
-#
-# UIFrames
-# inc. AddonList, AdventureMap, AlertFrames, ArtifactToasts, ArtifactUI, AuthChallengeUI, AutoComplete, BattlefieldMinimap, BindingUI, BNFrames, Calendar, ChallengesUI, ChatBubbles, ChatButtons, ChatConfig, ChatEditBox, ChatFrames, ChatMenus, ChatMinimizedFrames, ChatTabs, ChatTemporaryWindow, CinematicFrame, ClassTrial, CoinPickup, ColorPicker, Contribution, DeathRecap, DebugTools, DestinyFrame, GarrisonUI, GarrisonTooltips, GhostFrame, GMChatUI, GMSurveyUI, GuildBankUI, Help (inc. Open Ticket, Ticket Status, KnowledgeBase), ItemText, LevelUpDisplay, LFDFrame, LFGFrame, LFRFrame, MacroUI, Mail, MainMenuBar (inc. StanceBar, PossessBar, PetActionBar, ShamanTotems, ActionButtons, MultiBarButtons, VehicleLeaveButton, ExtraActionButton, PlayerPowerBarAlt), MenuFrames (inc. Video, Sound & Voice, Mac Options, Interface), Minimap, MinimapButtons, MovePad, MovieFrame, Nameplates, NavigationBar, ObliterumUI, OrderHallUI, PetBattleUI, PVEFrame, PVPHelper, QuestMap, QueueStatusFrame, RaidFrame, RaidFinder, ScenarioFinder, SecureTransferUI, SharedBasicControls, SpellFlyout, SplashFrame, StaticPopups, SocialUI, StoreUI, TalkingHeadUI, TimeManager, Tooltips, Tutorial, UIDropDownMenu, WorldMap, WorldState, WowTokenUI, ZoneAbility
 UIFrames.lua
-#
-# Modules
-#
-# UnitFrames
-# inc. ArenaFrames, CompactFrames (inc. Party, Raid Unit, Raid Group), FocusFrame, PartyFrames (inc. Party Members Pets), PetFrame, PlayerFrame (inc. RuneFrame, TotemFrame, ComboFrame, ShardBar, PowerBar, EclipseBar), TargetFrame, TargetofFocusFrame, TargetofTargetFrame
 Modules\UnitFrames.lua
-#
-# UIButtons & ButtonBorders
 Modules\UIButtons.lua
-#
-# these modules add additional features
 Modules\ViewPort.lua
 Modules\TopFrame.lua
 Modules\MiddleFrames.lua
 Modules\BottomFrame.lua
-#
-# Addon skins
 Skins.xml
