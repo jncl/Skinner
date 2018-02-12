@@ -31,8 +31,8 @@ do
 	aObj.uLvl = _G.UnitLevel("player")
 
 	local betaInfo = {"8.0.0", 99999}
-	local ptrInfo = {"7.3.5", 25961}
-	local liveInfo = {"7.3.5", 25961}
+	local ptrInfo = {"7.3.5", 25996}
+	local liveInfo = {"7.3.5", 25996}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
@@ -322,6 +322,7 @@ function aObj:OnEnable()
 			self.modBtnBs = true
 			-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
 			self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink)
+				-- aObj:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink)
 				-- show Artifact Relic Item border
 				if itemIDOrLink
 				and _G.IsArtifactRelicItem(itemIDOrLink)
