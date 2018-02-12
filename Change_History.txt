@@ -1,3 +1,32 @@
+beta7.25961.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Removed some comments
+	Updated DropDown skin code
+	Updated SkinButton skin code
+	Updated comments
+	Updated MailFrame skin
+	Updated Warboard skin
+	Updated TalkingHeadsUI skin
+	Updated PetBattleUI skin
+	Updated MainMenu skin
+	Updated GarrisonUI skin
+	Updated Tooltip Colour code
+	Updated SpellBook skin
+	Updated compactRaidFrameManager skin
+	Updated HeirloomCollection skin
+	Updated CharacterFrame skin
+	Updated AchievementUI skin
+	Bugfix for MiddleFrames skin
+	Updated UIButtons skin
+	Moved AlliedRacesUI skin code
+	Updated QuestInfo skin
+	Updated Unitframes skins
+	Updated AucAdvanced, Auctionator, Collectinator, DBM, GarrisonCommander, MasterPlan, OrderHallCommander, Overachiever, PremadeGroupFilter, ServerHop, TradeSkillMaster, WeakAuras & Wholly skins
+	Skinned AppearanceTooltip
+
 beta7.25864.2
 Jncl:
 	ToDo.txt
