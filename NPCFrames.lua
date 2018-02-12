@@ -51,6 +51,16 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 	if not self.prdb.AuctionUI or self.initialized.AuctionUI then return end
 	self.initialized.AuctionUI = true
 
+	local function skinBtn(btnName, idx)
+		aObj:keepFontStrings(_G[btnName .. idx])
+		_G[btnName .. idx .. "Highlight"]:SetAlpha(1)
+		_G[btnName .. idx .. "ItemNormalTexture"]:SetAlpha(0) -- texture changed in code
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=_G[btnName .. idx .. "Item"], reParent={_G[btnName .. idx .. "Count"], _G[btnName .. idx .. "Stock"]}}
+			aObj:colourBtnBorder(_G[btnName .. idx .. "Item"])
+		end
+	end
+
 	self:SecureHookScript(_G.AuctionFrame, "OnShow", function(this)
 		-- hide filter texture when filter is clicked
 		self:SecureHook("FilterButton_SetUp", function(button, ...)
@@ -60,124 +70,102 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=5}
 
-		self:SecureHookScript(_G.AuctionFrameBrowse, "OnShow", function(this)
-			for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
-				self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-				self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, aso={bd=5}}
-			end
-			self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, rt="artwork"}
-			self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, rt="artwork"}
-			for _, type in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
-				self:keepRegions(_G["Browse" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Browse" .. type .. "Sort"], ft=ftype, aso={bd=5}}
-			end
-			for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
-				if _G["BrowseButton" .. i].Orig then break end -- Auctioneer CompactUI loaded
-				self:keepFontStrings(_G["BrowseButton" .. i])
-				if _G["BrowseButton" .. i .. "Highlight"] then _G["BrowseButton" .. i .. "Highlight"]:SetAlpha(1) end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G["BrowseButton" .. i .. "Item"], reParent={_G["BrowseButton" .. i .. "Count"], _G["BrowseButton" .. i .. "Stock"]}}
-					self:colourBtnBorder(_G["BrowseButton" .. i .. "Item"])
-				end
-			end
-			for _, type in pairs{"Name", "MinLevel", "MaxLevel"} do
-				self:skinEditBox{obj=_G["Browse" .. type], regs={6, type == "Name" and 7 or nil}, mi=true} -- 6 is text, 7 is icon
-				self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
-			end
-			self:skinDropDown{obj=_G.BrowseDropDown, x2=109}
-			self:skinCheckButton{obj=_G.IsUsableCheckButton}
-			self:skinCheckButton{obj=_G.ShowOnPlayerCheckButton}
-			self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
-			self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
-			self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
-			self:skinStdButton{obj=_G.BrowseSearchButton}
-			self:skinStdButton{obj=_G.BrowseResetButton}
-			self:skinCheckButton{obj=_G.ExactMatchCheckButton}
-			_G.BrowseBidButton:DisableDrawLayer("BORDER")
-			self:skinStdButton{obj=_G.BrowseBidButton}
-			_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
-			self:skinStdButton{obj=_G.BrowseBuyoutButton}
-			_G.BrowseCloseButton:DisableDrawLayer("BORDER")
-			self:skinStdButton{obj=_G.BrowseCloseButton}
-
-			self:SecureHookScript(_G.BrowseWowTokenResults, "OnShow", function(this)
-				this.Token:DisableDrawLayer("BACKGROUND")
-				self:skinStdButton{obj=this.Buyout}
-				self:skinStdButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
-				self:Unhook(this, "OnShow")
-			end)
-			self:SecureHookScript(_G.WowTokenGameTimeTutorial, "OnShow", function(this)
-				this.LeftDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
-				this.LeftDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
-				this.RightDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
-				this.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
-				self:Unhook(this, "OnShow")
-			end)
-			self:Unhook(this, "OnShow")
-		end)
-		if _G.AuctionFrameBrowse:IsShown() then
-			_G.AuctionFrameBrowse:Hide()
-			_G.AuctionFrameBrowse:Show()
+		-- AuctionFrame Browse
+		for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
+			self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
+			self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, aso={bd=5}}
 		end
+		self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, rt="artwork"}
+		self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, rt="artwork"}
+		for _, type in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
+			self:keepRegions(_G["Browse" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
+			self:addSkinFrame{obj=_G["Browse" .. type .. "Sort"], ft=ftype, aso={bd=5}}
+		end
+		for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
+			if _G["BrowseButton" .. i].Orig then break end -- Auctioneer CompactUI loaded
+			skinBtn("BrowseButton", i)
+		end
+		for _, type in pairs{"Name", "MinLevel", "MaxLevel"} do
+			self:skinEditBox{obj=_G["Browse" .. type], regs={6, type == "Name" and 7 or nil}, mi=true} -- 6 is text, 7 is icon
+			self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
+		end
+		self:skinDropDown{obj=_G.BrowseDropDown, x2=109}
+		self:skinCheckButton{obj=_G.IsUsableCheckButton}
+		self:skinCheckButton{obj=_G.ShowOnPlayerCheckButton}
+		self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
+		self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
+		self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
+		self:skinStdButton{obj=_G.BrowseSearchButton}
+		self:skinStdButton{obj=_G.BrowseResetButton}
+		self:skinCheckButton{obj=_G.ExactMatchCheckButton}
+		_G.BrowseBidButton:DisableDrawLayer("BORDER")
+		self:skinStdButton{obj=_G.BrowseBidButton}
+		_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
+		self:skinStdButton{obj=_G.BrowseBuyoutButton}
+		_G.BrowseCloseButton:DisableDrawLayer("BORDER")
+		self:skinStdButton{obj=_G.BrowseCloseButton}
 
-		self:SecureHookScript(_G.AuctionFrameBid, "OnShow", function(this)
-			for _, type in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
-				self:keepRegions(_G["Bid" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Bid" .. type .. "Sort"], ft=ftype, aso={bd=5}}
-			end
-			for i = 1, _G.NUM_BIDS_TO_DISPLAY do
-				self:keepFontStrings(_G["BidButton" .. i])
-				if _G["BidButton" .. i .. "Highlight"] then _G["BidButton" .. i .. "Highlight"]:SetAlpha(1) end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G["BidButton" .. i .. "Item"],reParent={_G["BidButton" .. i .. "Count"], _G["BidButton" .. i .. "Stock"]}}
-					self:colourBtnBorder(_G["BidButton" .. i .. "Item"])
-				end
-			end
-			self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, rt="artwork"}
-			self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
-			_G.BidCloseButton:DisableDrawLayer("BORDER")
-			_G.BidBuyoutButton:DisableDrawLayer("BORDER")
-			_G.BidBidButton:DisableDrawLayer("BORDER")
-			self:skinStdButton{obj=_G.BidBidButton}
-			self:skinStdButton{obj=_G.BidBuyoutButton}
-			self:skinStdButton{obj=_G.BidCloseButton}
+		self:SecureHookScript(_G.BrowseWowTokenResults, "OnShow", function(this)
+			this.Token:DisableDrawLayer("BACKGROUND")
+			self:skinStdButton{obj=this.Buyout}
+			self:skinStdButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
 			self:Unhook(this, "OnShow")
 		end)
-
-		self:SecureHookScript(_G.AuctionFrameAuctions, "OnShow", function(this)
-			for _, type in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
-				self:keepRegions(_G["Auctions" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-				self:addSkinFrame{obj=_G["Auctions" .. type .. "Sort"], ft=ftype, aso={bd=5}}
-			end
-			self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, rt="artwork"}
-			for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
-				self:keepFontStrings(_G["AuctionsButton" .. i])
-				if _G["AuctionsButton" .. i .. "Highlight"] then _G["AuctionsButton" .. i .. "Highlight"]:SetAlpha(1) end
-				if self.modBtnBs then
-					self:addButtonBorder{obj=_G["AuctionsButton" .. i .. "Item"], reParent={_G["AuctionsButton" .. i .. "Count"], _G["AuctionsButton" .. i .. "Stock"]}}
-					self:colourBtnBorder(_G["AuctionsButton" .. i .. "Item"])
-				end
-			end
-			if not self.modBtnBs then
-				self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
-			else
-				self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
-				self:addButtonBorder{obj=_G.AuctionsItemButton}
-			end
-			self:skinEditBox{obj=_G.AuctionsStackSizeEntry, regs={6}, noWidth=true} -- 6 is text
-			self:skinEditBox{obj=_G.AuctionsNumStacksEntry, regs={6}, noWidth=true} -- 6 is text
-			self:skinDropDown{obj=_G.PriceDropDown}
-			self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
-			self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
-			self:skinDropDown{obj=_G.DurationDropDown}
-			self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton}
-			self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton}
-			self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
-			self:skinStdButton{obj=_G.AuctionsCancelAuctionButton}
-			self:skinStdButton{obj=_G.AuctionsCloseButton}
+		self:SecureHookScript(_G.WowTokenGameTimeTutorial, "OnShow", function(this)
+			this.LeftDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
+			this.LeftDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
+			this.RightDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
+			this.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
 			self:Unhook(this, "OnShow")
 		end)
+		self:Unhook(this, "OnShow")
+
+		-- AuctionFrame Bid
+		for _, type in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
+			self:keepRegions(_G["Bid" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
+			self:addSkinFrame{obj=_G["Bid" .. type .. "Sort"], ft=ftype, aso={bd=5}}
+		end
+		for i = 1, _G.NUM_BIDS_TO_DISPLAY do
+			skinBtn("BidButton", i)
+		end
+		self:skinSlider{obj=_G.BidScrollFrame.ScrollBar, rt="artwork"}
+		self:skinMoneyFrame{obj=_G.BidBidPrice, moveSEB=true}
+		_G.BidCloseButton:DisableDrawLayer("BORDER")
+		_G.BidBuyoutButton:DisableDrawLayer("BORDER")
+		_G.BidBidButton:DisableDrawLayer("BORDER")
+		self:skinStdButton{obj=_G.BidBidButton}
+		self:skinStdButton{obj=_G.BidBuyoutButton}
+		self:skinStdButton{obj=_G.BidCloseButton}
+		self:Unhook(this, "OnShow")
+
+		-- AuctionFrame Auctions
+		for _, type in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
+			self:keepRegions(_G["Auctions" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
+			self:addSkinFrame{obj=_G["Auctions" .. type .. "Sort"], ft=ftype, aso={bd=5}}
+		end
+		self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, rt="artwork"}
+		for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
+			skinBtn("AuctionsButton", i)
+		end
+		if not self.modBtnBs then
+			self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
+		else
+			self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
+			self:addButtonBorder{obj=_G.AuctionsItemButton}
+		end
+		self:skinEditBox{obj=_G.AuctionsStackSizeEntry, regs={6}, noWidth=true} -- 6 is text
+		self:skinEditBox{obj=_G.AuctionsNumStacksEntry, regs={6}, noWidth=true} -- 6 is text
+		self:skinDropDown{obj=_G.PriceDropDown}
+		self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
+		self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
+		self:skinDropDown{obj=_G.DurationDropDown}
+		self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton}
+		self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton}
+		self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
+		self:skinStdButton{obj=_G.AuctionsCancelAuctionButton}
+		self:skinStdButton{obj=_G.AuctionsCloseButton}
+		self:Unhook(this, "OnShow")
 
 		self:SecureHookScript(_G.AuctionProgressFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
