@@ -107,9 +107,9 @@ local function skinPlayerF()
 		aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 		-- move level & rest icon down, so they are more visible
 		module:RawHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
-			_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -17 + lOfs)
+			_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
 		end, true)
-		_G.PlayerRestIcon:SetPoint("TOPLEFT", 39, -60)
+		_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
 
 		-- remove group indicator textures
 		aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
@@ -524,7 +524,7 @@ function module:GetOptions()
 		type = "group",
 		name = aObj.L["Unit Frames"],
 		desc = aObj.L["Change the Unit Frames settings"],
-		get = function(info) return dbe[info[#info]] end,
+		get = function(info) return db[info[#info]] end,
 		set = function(info, value)
 			if not module:IsEnabled() then module:Enable() end
 			db[info[#info]] = value
