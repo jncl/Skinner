@@ -10,5 +10,9 @@ aObj.addonsToSkin.Spew = function(self) -- v 3.0.3.5
 		self:skinStdButton{obj=self:getChild(self:getChild(this, 2), 2)} --Clear button on ScrollingMessageFrame
 		self:Unhook(this, "OnShow")
 	end)
+	if _G.SpewPanel:IsShown() then
+		_G.SpewPanel:Hide()
+		_G.SpewPanel:Show()
+	end
 
 end

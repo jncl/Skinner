@@ -5,6 +5,7 @@ local _G = _G
 aObj.addonsToSkin.AppearanceTooltip = function(self) -- v18
 
 	-- tooltip
+	_G.AppearanceTooltipTooltip:DisableDrawLayer("BACKGROUND")
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.AppearanceTooltipTooltip)
 	end)
@@ -18,7 +19,7 @@ aObj.addonsToSkin.AppearanceTooltip = function(self) -- v18
 				for _, grandchild in ipairs{child:GetChildren()} do
 					if aObj:isDropDown(grandchild) then
 						-- apply specific adjustment if required
-						aObj:skinDropDown{obj=grandchild}--, x2=aObj.iofDD[grandchild:GetName()] or nil}
+						aObj:skinDropDown{obj=grandchild}
 					elseif grandchild:IsObjectType("CheckButton") then
 						aObj:skinCheckButton{obj=grandchild}
 					end
