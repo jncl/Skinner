@@ -15,17 +15,11 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-?	I	ArtifactBar, reported by Ivet67, 07.12.17
-		- The addon has a problem: after the update in the game the addon does not show the progress of the artifact 		bar correctly, please update.
+	I	Spellbook, reported by epidemdabear, 07.02.18
+√		-  ..\AddOns\Skinner\PlayerFrames.lua line 3149: attempt to index field 'sbb' (a nil value)
 
-	N	Overachiever, reported by Fraktyl, 19.01.18
-√ 		- The new version of Overachiever has some weirdness on the dropdowns for the last two tabs.
+	I	UnitFrames, reported by Neglesh1, 08.02.18
+√		-  Interface\AddOns\Skinner\Modules\UnitFrames.lua:527: attempt to index global 'dbe' (a nil value)
 
-	I	DBM, reported by Psedopath/lexusnexus, 30.01.18/06.02.18
-√		-  ..\AddOns\Skinner\AddonSkins\DBM.lua line 125:
-			Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
-
-√	S	AppearanceTooltip, requested by user_131498, 02.02.18
-
-	I	TradeSkilMaster, reported by epidemedabear, 03.02.18
-√		-  ...rface\AddOns\Skinner\AddonSkins\TradeSkillMaster.lua:90: Usage: SecureHook([object], method, [handler]): 		Attempting to hook a non existing target
+	I	AppearanceTooltip, reported by user_131498
+≈		- doesn't seem to be skinned, still has a border when the gmae tooltip has not
