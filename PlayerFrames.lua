@@ -3143,23 +3143,26 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 
 		-- Spellbook Panel
 		local function updBtn(btn)
-			if not btn:IsEnabled() then
-				btn.sbb:Hide()
-			else
-				btn.sbb:Show()
+			if aObj.modBtnBs then
+				if not btn:IsEnabled() then
+					btn.sbb:Hide()
+				else
+					btn.sbb:Show()
+				end
 			end
 			if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
-				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.75)
+				if btn.sbb then btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.75) end
 				btn.SpellName:SetTextColor(0.5, 0.5, 0.5, 0.75)
 				btn.SpellSubName:SetTextColor(0.5, 0.5, 0.5, 0.75)
 				btn.RequiredLevelString:SetTextColor(0.5, 0.5, 0.5, 0.75)
 				btn.SeeTrainerString:SetTextColor(0.5, 0.5, 0.5, 0.75)
 			else
-				btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				if btn.sbb then btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]) end
 				btn.SpellName:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
 				btn.SpellSubName:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 			end
 		end
+
 		_G.SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		local btn
 		for i = 1, _G.SPELLS_PER_PAGE do
