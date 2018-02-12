@@ -392,6 +392,7 @@ end
 
 function aObj:colourBtnBorder(btn)
 
+	btn.IconBorder:SetAlpha(1) -- ensure alpha is 1
 	-- use the colour of the quality border as the BackdropBorderColor
 	if btn.IconBorder:IsShown() then
 		btn.sbb:SetBackdropBorderColor(btn.IconBorder:GetVertexColor())
