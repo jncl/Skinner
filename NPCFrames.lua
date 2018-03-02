@@ -283,7 +283,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 			self:keepFontStrings(this["Column" .. type])
 			self:addSkinFrame{obj=this["Column" .. type], ft=ftype, aso={bd=5}}
 		end
-		self:skinSlider{obj=_G.BlackMarketScrollFrame.ScrollBar, wdth=-4}
+		self:skinSlider{obj=_G.BlackMarketScrollFrameScrollBar, wdth=-4}
 		this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 		self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
 		self:skinStdButton{obj=this.BidButton}
