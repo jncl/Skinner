@@ -3143,24 +3143,28 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 
 		-- Spellbook Panel
 		local function updBtn(btn)
-			if aObj.modBtnBs then
+			if aObj.modBtnBs
+			and btn.sbb -- allow for not skinned during combat
+			then
 				if not btn:IsEnabled() then
 					btn.sbb:Hide()
 				else
 					btn.sbb:Show()
 				end
 			end
+			local spellString, subSpellString = _G[btn:GetName() .. "SpellName"], _G[btn:GetName() .. "SubSpellName"]
 			if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
 				if btn.sbb then btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.75) end
-				btn.SpellName:SetTextColor(0.5, 0.5, 0.5, 0.75)
-				btn.SpellSubName:SetTextColor(0.5, 0.5, 0.5, 0.75)
+				spellString:SetTextColor(0.5, 0.5, 0.5, 0.75)
+				subSpellString:SetTextColor(0.5, 0.5, 0.5, 0.75)
 				btn.RequiredLevelString:SetTextColor(0.5, 0.5, 0.5, 0.75)
 				btn.SeeTrainerString:SetTextColor(0.5, 0.5, 0.5, 0.75)
 			else
 				if btn.sbb then btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]) end
-				btn.SpellName:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
-				btn.SpellSubName:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+				spellString:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
+				subSpellString:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 			end
+			spellString, subSpellString = nil, nil
 		end
 
 		_G.SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
