@@ -658,6 +658,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		if not frame.sf then
 			aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
 			aObj:addSkinFrame{obj=frame, ft=ftype, x1=x1, y1=y1, x2=x2, y2=y2}
+		else
+			frame.sf:ClearAllPoints()
+			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", x1, y1)
+			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2, y2)
 		end
 		fH, x1, y1, x2, y2 = nil, nil, nil ,nil ,nil
 
