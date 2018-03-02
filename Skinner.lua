@@ -235,7 +235,9 @@ function aObj:OnInitialize()
 	end
 
 	-- TooltipBorder colours
-	if self.prdb.ClassColour then
+	if self.prdb.ClassColour
+	and self.prdb.ClassClrTT
+	then
 		c = _G.RAID_CLASS_COLORS[self.uCls]
 	else
 		c = self.prdb.TooltipBorder
@@ -911,11 +913,8 @@ local function __applySkin(opts)
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.bd or 1])
 	if not opts.ebc then
 		-- colour the backdrop if required
-		local r, g, b, a = aObj.bColour[1], aObj.bColour[2], aObj.bColour[3], aObj.bColour[4]
-		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
-		r, g, b, a = aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]
-		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
-		r, g, b, a = nil, nil, nil, nil
+		opts.obj:SetBackdropColor(aObj.bColour[1], aObj.bColour[2], aObj.bColour[3], opts.ba or aObj.bColour[4])
+		opts.obj:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], opts.bba or aObj.bbColour[4])
 	else
 		opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
 		opts.obj:SetBackdropColor(.1, .1, .1, 1)
@@ -1664,7 +1663,7 @@ function aObj:skinTooltip(tooltip)
 	end
 
 	-- colour the Border
-	tooltip.sf:SetBackdropBorderColor(self.prdb.TooltipBorder.r, self.prdb.TooltipBorder.g, self.prdb.TooltipBorder.b, self.prdb.TooltipBorder.a)
+	tooltip.sf:SetBackdropBorderColor(self.tbColour[1], self.tbColour[2], self.tbColour[3], self.tbColour[4])
 
 	if self.prdb.Tooltips.style == 1 then -- Rounded
 		self:applyGradient(tooltip.sf, 32)

@@ -41,6 +41,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ClassColour          = false,
 		ClassClrBg           = false,
 		ClassClrGr           = false,
+		ClassClrTT           = false,
 		TooltipBorder        = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		BackdropBorder       = {r = 0.5, g = 0.5, b = 0.5, a = 1},
 		Backdrop             = {r = 0, g = 0, b = 0, a = 0.9},
@@ -508,6 +509,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				if info[#info] == "ClassColour"
 				or info[#info] == "ClassClrBg"
 				or info[#info] == "ClassClrGr"
+				or info[#info] == "ClassClrTT"
 				then
 					return db[info[#info]]
 				else
@@ -522,9 +524,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						db.BackdropBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
 						db.BackdropBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
 						db.BackdropBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
-						db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
-						db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
-						db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
 						if bggns then
 							db.BagginsBBC.r = _G.RAID_CLASS_COLORS[self.uCls].r
 							db.BagginsBBC.g = _G.RAID_CLASS_COLORS[self.uCls].g
@@ -534,9 +533,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						db.BackdropBorder.r = dflts.BackdropBorder.r
 						db.BackdropBorder.g = dflts.BackdropBorder.g
 						db.BackdropBorder.b = dflts.BackdropBorder.b
-						db.TooltipBorder.r = dflts.TooltipBorder.r
-						db.TooltipBorder.g = dflts.TooltipBorder.g
-						db.TooltipBorder.b = dflts.TooltipBorder.b
 						if bggns then
 							db.BagginsBBC.r = dflts.BackdropBorder.r
 							db.BagginsBBC.g = dflts.BackdropBorder.g
@@ -565,6 +561,17 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						db.GradientMax.g = dflts.GradientMax.g
 						db.GradientMax.b = dflts.GradientMax.b
 					end
+				elseif info[#info] == "ClassClrTT" then
+					db[info[#info]] = r
+					if r then
+						db.TooltipBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
+						db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
+						db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
+					else
+						db.TooltipBorder.r = dflts.TooltipBorder.r
+						db.TooltipBorder.g = dflts.TooltipBorder.g
+						db.TooltipBorder.b = dflts.TooltipBorder.b
+					end
 				else
 					local c = db[info[#info]]
 					c.r, c.g, c.b, c.a = r, g, b, a
@@ -592,9 +599,16 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Class Coloured Gradient"],
 					desc = self.L["Use Class Colour for Gradient"],
 				},
+				ClassClrTT = {
+					type = "toggle",
+					order = 4,
+					width = "double",
+					name = self.L["Class Coloured Tooltip"],
+					desc = self.L["Use Class Colour for Tooltip"],
+				},
 				TooltipBorder = {
 					type = "color",
-					order = 4,
+					order = 6,
 					width = "double",
 					name = self.L["Tooltip Border Colour"],
 					desc = self.L["Set Tooltip Border Colour"],
@@ -602,7 +616,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				Backdrop = {
 					type = "color",
-					order = 5,
+					order = 7,
 					width = "double",
 					name = self.L["Backdrop Colour"],
 					desc = self.L["Set Backdrop Colour"],
@@ -610,7 +624,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				BackdropBorder = {
 					type = "color",
-					order = 6,
+					order = 8,
 					width = "double",
 					name = self.L["Border Colour"],
 					desc = self.L["Set Backdrop Border Colour"],
@@ -618,28 +632,28 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				HeadText = {
 					type = "color",
-					order = 7,
+					order = 9,
 					width = "double",
 					name = self.L["Text Heading Colour"],
 					desc = self.L["Set Text Heading Colour"],
 				},
 				BodyText = {
 					type = "color",
-					order = 8,
+					order = 10,
 					width = "double",
 					name = self.L["Text Body Colour"],
 					desc = self.L["Set Text Body Colour"],
 				},
 				IgnoredText = {
 					type = "color",
-					order = 9,
+					order = 11,
 					width = "double",
 					name = self.L["Ignored Text Colour"],
 					desc = self.L["Set Ignored Text Colour"],
 				},
 				GradientMin = {
 					type = "color",
-					order = 10,
+					order = 12,
 					width = "double",
 					name = self.L["Gradient Minimum Colour"],
 					desc = self.L["Set Gradient Minimum Colour"],
@@ -647,7 +661,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				GradientMax = {
 					type = "color",
-					order = 11,
+					order = 13,
 					width = "double",
 					name = self.L["Gradient Maximum Colour"],
 					desc = self.L["Set Gradient Maximum Colour"],
@@ -785,12 +799,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "header",
 					name = self.L["or choose which frames to skin"],
 				},
-				-- TODO reinstate this when localization website allows phrases to be added again
-				-- AlliedRacesUI = {
-				-- 	type = "toggle",
-				-- 	name = self.L["Allied Races UI"],
-				-- 	desc = self.L["Toggle the skin of the Allied Races UI"],
-				-- },
+				AlliedRacesUI = {
+					type = "toggle",
+					name = self.L["Allied Races UI"],
+					desc = self.L["Toggle the skin of the Allied Races UI"],
+				},
 				AuctionUI = {
 					type = "toggle",
 					name = self.L["Auction Frame"],
@@ -1764,12 +1777,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Tutorial Frame"],
 					desc = self.L["Toggle the skin of the Tutorial Frame"],
 				},
-				-- TODO reinstate this when localization website allows phrases to be added again
-				-- WarboardUI = {
-				-- 	type = "toggle",
-				-- 	name = self.L["Warboard UI"],
-				-- 	desc = self.L["Toggle the skin of the Warboard UI"],
-				-- },
+				WarboardUI = {
+					type = "toggle",
+					name = self.L["Warboard UI"],
+					desc = self.L["Toggle the skin of the Warboard UI"],
+				},
 				WorldMap = {
 					type = "group",
 					inline = true,
