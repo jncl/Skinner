@@ -1,18 +1,9 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Tukui") then return end
--- check for ElvUI's Tukui DB converter
-if _G.GetAddOnMetadata("Tukui", "Author") == "Elv22" then
-	aObj.Tukui = function() end
-	return
-end
 local _G = _G
 
-function aObj:Tukui()
-
-end
-
 -- The following code handles the Initial setup of Skinner when the TukUI is loaded
-function aObj:TukuiInit()
+aObj.otherAddons.TukuiInit = function(self) -- v 17.16
 
 	-- handle version 12 and above
 	local ver = _G.tonumber(_G.GetAddOnMetadata("Tukui", "Version"):sub(1, 2))
@@ -34,7 +25,7 @@ function aObj:TukuiInit()
 		-- Do these before we run the function
 
 		-- setup the default DB values and register them
-		self:checkAndRun("SetupDefaults", "o", false, true)
+		self:checkAndRun("SetupDefaults", "opt", false, true)
 		self.Defaults = nil -- only need to run this once
 
 		-- Register Textures
@@ -121,7 +112,7 @@ function aObj:TukuiInit()
 end
 
 -- Load support for TukUI
-local success, err = aObj:checkAndRun("TukuiInit", "s", true) -- not an addon in its own right
+local success, err = _G.xpcall(function() return aObj.otherAddons.TukuiInit(aObj) end, _G.geterrorhandler())
 if not success then
-	_G.print("Error running", "TukuiInit", err)
+	aObj:CustomPrint(1, 0, 0, "Error running TukuiInit")
 end

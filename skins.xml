@@ -4,7 +4,6 @@
 <!-- Addon skins are here, must be prefixed by AddonSkins\ -->
 
 <script file="AddonSkins\_DevPadGUI.lua"/>
-<script file="AddonSkins\_NPCScan.lua"/>
 <script file="AddonSkins\Accountant.lua"/>
 <script file="AddonSkins\Ace3.lua"/>
 <script file="AddonSkins\Acheron.lua"/>
@@ -144,6 +143,7 @@
 <script file="AddonSkins\MSA-DropDownMenu.lua"/>
 <script file="AddonSkins\MyGarrisons.lua"/>
 <script file="AddonSkins\Notes.lua"/>
+<script file="AddonSkins\NPCScan.lua"/>
 <script file="AddonSkins\oGlow.lua"/>
 <script file="AddonSkins\Omen.lua"/>
 <script file="AddonSkins\OneBag3.lua"/>

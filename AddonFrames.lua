@@ -19,7 +19,6 @@ function aObj:BlizzardFrames()
 end
 
 local addonSkins = {
-	"_NPCScan",
 	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "AngryKeystones", "AphesLootBrowser", "Archy", "Atlas", "AtlasLoot", "AuctionMaster", "Auctionsnatch", "AutoDecline",
 	"Baggins", "BankItems", "Bartender4", "BattlePetCount", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
 	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cosplay",
@@ -27,7 +26,7 @@ local addonSkins = {
 	"EnergyWatch", "EnhancedColourPicker", "EnhancedFlightMap", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
 	"FarmIt2", "FeedMachine", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker", "GuildMaster",
-	"HandyNotes", "HaveWeMet", "HoloFriends",
+	"HaveWeMet", "HoloFriends",
 	"InboxMailBag", "ItemDB", "InspectorGadgetzan", "Inventorian",
 	"KeystoneCommander",
 	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts",
@@ -38,7 +37,7 @@ local addonSkins = {
 	"Quartz", "QuestCompletist", "QuestGuru", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidAchievement", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Squeenix", "StaggerMeter",
-	"TargetCharms", "TidyPlates", "TipTac", "TooManyAddons", "TrinketBar", "Tukui",
+	"TargetCharms", "TidyPlates", "TipTac", "TooManyAddons", "TrinketBar",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
 	"Warden", "WeakAuras", "WoWPro", "WTFLatencyMeter",
