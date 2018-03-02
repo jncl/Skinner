@@ -1,3 +1,14 @@
+beta7.25996.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Ensure ButtonBorders are coloured and seen
+	Updated AuctionUI skin
+	Bugfix for SpellBook skin
+	Bugfix for UnitFrames options
+	Updated AppearanceTooltip & Spew skins
+
 beta7.25961.1
 Jncl:
 	ToDo.txt
