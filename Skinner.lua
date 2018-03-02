@@ -32,7 +32,7 @@ do
 
 	local betaInfo = {"8.0.0", 99999}
 	local ptrInfo = {"7.3.5", 25996}
-	local liveInfo = {"7.3.5", 25996}
+	local liveInfo = {"7.3.5", 26124}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
