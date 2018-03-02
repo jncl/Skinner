@@ -15,11 +15,20 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-	I	Spellbook, reported by epidemdabear, 07.02.18
-√		-  ..\AddOns\Skinner\PlayerFrames.lua line 3149: attempt to index field 'sbb' (a nil value)
+	I	BlackMarketUI, reported by epidemedabear/Decabah, 18.02.18/25.02.18
+√		- Message: ..\AddOns\Skinner\Skinner.lua line 1350: attempt to index field 'obj' (a nil value)
+		Skinner\Skinner.lua:1350:
+		Skinner\Skinner.lua:1335
+		Skinner\Skinner.lua:1406: skinSlider()
+		Skinner\NPCFrames.lua:286:
+		Skinner\NPCFrames.lua:270
 
-	I	UnitFrames, reported by Neglesh1, 08.02.18
-√		-  Interface\AddOns\Skinner\Modules\UnitFrames.lua:527: attempt to index global 'dbe' (a nil value)
+	I	Tukui, reported by Decabah, 26.02.18
+√		- Skinner\UtilFuncs.lua:302: attempt to index field 'prdb' (a nil value)
+    	  Skinner\UtilFuncs.lua:302: in function `checkAndRun'
+	      Skinner\AddonSkins\Tukui-17.16.lua:124: in main chunk
 
-	I	AppearanceTooltip, reported by user_131498
-≈		- doesn't seem to be skinned, still has a border when the gmae tooltip has not
+	I	SpellBookFrame, reported by Decabah, 26.02.18
+≈		- Skinner\PlayerFrames.lua:3161: attempt to index field 'SpellName' (a nil value)
+		  Skinner\PlayerFrames.lua:3161: in function <Skinner\PlayerFrames.lua:3145>
+		  Skinner\PlayerFrames.lua:3182: in function <Skinner\PlayerFrames.lua:3181>
