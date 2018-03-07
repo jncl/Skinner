@@ -3753,6 +3753,11 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.TopArtLeft:SetTexture(nil)
 		this.TopArtRight:SetTexture(nil)
 		this.TopVersus:SetTexture(nil)
+
+		local fw = this:GetWidth()
+		local tvw = this.TopVersus:GetWidth()
+		local tvh = this.TopVersus:GetHeight()
+
 		-- Active Allies/Enemies
 		local pbf
 		for _, type in pairs{"Ally", "Enemy"} do
@@ -3780,15 +3785,15 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 			if type == "Ally" then
 				this.sfl = _G.CreateFrame("Frame", nil, this)
 				this.sfl:SetFrameStrata("BACKGROUND")
-				self:applySkin{obj=this.sfl, bba=0, fh=45}
-				this.sfl:SetSize(335, 92)
-				this.sfl:SetPoint("TOPLEFT", this, "TOPLEFT", 405, 4)
+				self:applySkin{obj=this.sfl, bba=0, fh=tvh * 0.8}
+				this.sfl:SetPoint("TOPRIGHT", this, "TOP", -(tvw + 25), 4)
+				this.sfl:SetSize(this.TopArtLeft:GetWidth() * 0.59, this.TopArtLeft:GetHeight() * 0.8)
 			else
 				this.sfr = _G.CreateFrame("Frame", nil, this)
 				this.sfr:SetFrameStrata("BACKGROUND")
-				self:applySkin{obj=this.sfr, bba=0, fh=45}
-				this.sfr:SetSize(335, 92)
-				this.sfr:SetPoint("TOPRIGHT", this, "TOPRIGHT", -405, 4)
+				self:applySkin{obj=this.sfr, bba=0, fh=tvh * 0.8}
+				this.sfr:SetPoint("TOPLEFT", this, "TOP", (tvw + 25), 4)
+				this.sfr:SetSize(this.TopArtRight:GetWidth() * 0.59, this.TopArtRight:GetHeight() * 0.8)
 			end
 			-- Ally2/3, Enemy2/3
 			for j = 2, 3 do
@@ -3811,11 +3816,12 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 		-- create a frame behind the VS text
 		this.sfm = _G.CreateFrame("Frame", nil, this)
+		this.sfm:SetFrameStrata("BACKGROUND")
 		self:applySkin{obj=this.sfm, bba=0}
 		this.sfm:SetPoint("TOPLEFT", this.sfl, "TOPRIGHT", -8, 0)
 		this.sfm:SetPoint("TOPRIGHT", this.sfr, "TOPLEFT", 8, 0)
-		this.sfm:SetHeight(45)
-		this.sfm:SetFrameStrata("BACKGROUND")
+		this.sfm:SetHeight(tvh * 0.8)
+		fw, tvw, tvh = nil, nil, nil
 
 		-- Bottom Frame
 		this.BottomFrame.RightEndCap:SetTexture(nil)
@@ -3918,6 +3924,10 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	if _G.PetBattleFrame:IsShown() then
+		_G.PetBattleFrame:Hide()
+		_G.PetBattleFrame:Show()
+	end
 
 end
 
