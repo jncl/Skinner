@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("OrderHallCommander") then return end
 local _G = _G
 
-aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.13 70300
+aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.14 70300
 
 	local OHC = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("OrderHallCommander", true)
 
@@ -49,6 +49,7 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.13 70300
 			self:moveObject{obj=frame.Close, x=3, y=5}
 			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, y1=2, y2=-5}
 			frame = nil
+			self:addButtonBorder{obj=self:getLastChild(_G.OrderHallMissionFrame.MissionTab), ofs=-14, y1=-12}
 			self:Unhook(this, "Menu")
 		end)
 		self:SecureHook(mLst, "AddMembers", function(this, frame)
