@@ -2378,6 +2378,12 @@ local function skinCheckBtns(frame)
 
 	for _, type in pairs{"Tank", "Healer", "DPS", "Leader"} do
 		aObj:skinCheckButton{obj=_G[frame .. "QueueFrameRoleButton" .. type].checkButton}
+		if _G[frame .. "QueueFrameRoleButton" .. type].background then
+			_G[frame .. "QueueFrameRoleButton" .. type].background:SetTexture(nil)
+		end
+		if _G[frame .. "QueueFrameRoleButton" .. type].incentiveIcon then
+			_G[frame .. "QueueFrameRoleButton" .. type].incentiveIcon.border:SetTexture(nil)
+		end
 	end
 
 end
@@ -2398,6 +2404,10 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
+	if _G.LFDReadyCheckPopup:IsShown() then
+		_G.LFDReadyCheckPopup:Hide()
+		_G.LFDReadyCheckPopup:Show()
+	end
 
 	-- LFD Parent Frame (now part of PVE Frame)
 	self:SecureHookScript(_G.LFDParentFrame, "OnShow", function(this)
