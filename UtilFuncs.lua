@@ -752,6 +752,26 @@ function aObj:makeMFRotatable(modelFrame)
 
 end
 
+function aObj:makeIconSquare(obj, iconObjName, chkDisabled)
+
+	obj[iconObjName]:SetTexCoord(.1, .9, .1, .9)
+	self:addButtonBorder{obj=obj, relTo=obj[iconObjName], ofs=3}
+
+	if chkDisabled then
+		if self.modBtnBs then
+			if obj.disabled
+			or (obj.IsEnabled and not obj:IsEnabled())
+			then
+				obj.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+			else
+				obj.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+
+			end
+		end
+	end
+
+end
+
 local function __moveObject(opts)
 --[[
 	Calling parameters:

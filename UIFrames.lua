@@ -4005,6 +4005,8 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 			_G.GroupFinderFrame["groupButton" .. i].bg:SetTexture(nil)
 			_G.GroupFinderFrame["groupButton" .. i].ring:SetTexture(nil)
 			self:changeRecTex(_G.GroupFinderFrame["groupButton" .. i]:GetHighlightTexture())
+			-- make icon square
+			self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon", true)
 		end
 		self:skinCloseButton{obj=_G.PremadeGroupsPvETutorialAlert.CloseButton}
 
@@ -4018,6 +4020,19 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 				end
 			end
 		end)
+
+		if self.modBtnBs then
+			-- hook this to change button border colour
+			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(this, level)
+				for i = 1, 4 do
+					if _G.GroupFinderFrame["groupButton" .. i]:IsEnabled() then
+						_G.GroupFinderFrame["groupButton" .. i].sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+					else
+						_G.GroupFinderFrame["groupButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+					end
+				end
+			end)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)

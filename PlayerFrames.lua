@@ -2885,8 +2885,21 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			_G.PVPQueueFrame["CategoryButton" .. i].Background:SetTexture(nil)
 			_G.PVPQueueFrame["CategoryButton" .. i].Ring:SetTexture(nil)
 			self:changeRecTex(_G.PVPQueueFrame["CategoryButton" .. i]:GetHighlightTexture())
+			-- make Icon square
+			self:makeIconSquare(_G.PVPQueueFrame["CategoryButton" .. i], "Icon", true)
 		end
 		self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton}
+
+		if self.modBtnBs then
+			-- hook this to change button border colour
+			self:SecureHook("PVPQueueFrame_SetCategoryButtonState", function(btn, enabled)
+				if btn:IsEnabled() then
+					btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				else
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				end
+			end)
+		end
 
 		-- hook this to change selected texture
 		self:SecureHook("PVPQueueFrame_SelectButton", function(index)
@@ -3201,19 +3214,30 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 				obj =_G[objName]
 				if type == "Primary" then
 					_G[objName .. "IconBorder"]:Hide()
+					-- make icon square
+					aObj:makeIconSquare(obj, "icon")
 					if not obj.missingHeader:IsShown() then
 						obj.icon:SetDesaturated(nil) -- show in colour
+						if aObj.modBtnBs then
+							obj.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+						end
+					else
+						if aObj.modBtnBs then
+							obj.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+						end
 					end
 				else
 					obj.missingHeader:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
 				end
 				obj.missingText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+				local btn
 				for i = 1, 2 do
-					local btn = obj["button" .. i]
+					btn = obj["button" .. i]
 					btn:DisableDrawLayer("BACKGROUND")
 					btn.subSpellString:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 					aObj:addButtonBorder{obj=btn, sec=true}
 				end
+				btn = nil
 				_G[objName .. "StatusBarLeft"]:SetTexture(nil)
 				_G[objName .. "StatusBarRight"]:SetTexture(nil)
 				obj.statusBar:DisableDrawLayer("BACKGROUND")
@@ -3235,6 +3259,19 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		skinProf("Secondary", 4)
 
 		self:skinCloseButton{obj=_G.SpellLockedTooltip.CloseButton}
+
+		if self.modBtnBs then
+			-- hook this to change Primary Profession Button border colours if required
+			self:SecureHook("SpellBook_UpdateProfTab", function()
+				for i = 1, 2 do
+					if _G["PrimaryProfession" .. i].unlearn:IsShown() then
+						_G["PrimaryProfession" .. i].sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+					else
+						_G["PrimaryProfession" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+					end
+				end
+			end)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3288,16 +3325,38 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	end)
 
 	local function skinAbilities(obj)
-		for i = 1, obj:GetNumChildren() do
-			if obj["abilityButton" .. i] then -- Bugfix for ElvUI
-				obj["abilityButton" .. i].ring:SetTexture(nil)
-				obj["abilityButton" .. i].subText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+		local sc = obj.spellsScroll.child
+		if aObj.modBtnBs then
+			if obj.disabled then
+				sc.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+			else
+				sc.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
 			end
 		end
+		local btn
+		for i = 1, sc:GetNumChildren() do
+			btn = sc["abilityButton" .. i]
+			if btn then -- Bugfix for ElvUI
+				btn.ring:SetTexture(nil)
+				btn.subText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+				-- make icon square
+				aObj:makeIconSquare(btn, "icon", true)
+			end
+		end
+		sc, btn = nil, nil
 	end
 	-- hook this as subText text colour is changed
 	self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(this, spec)
-		skinAbilities(this.spellsScroll.child)
+		if self.modBtnBs then
+			for i = 1, _G.MAX_TALENT_TABS do
+				if this["specButton" .. i].disabled then
+					this["specButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				else
+					this["specButton" .. i].sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				end
+			end
+		end
+		skinAbilities(this)
 	end)
 	local function skinSpec(frame)
 		aObj:removeRegions(frame, {1, 2, 3, 4, 5, 6})
@@ -3310,6 +3369,8 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			aObj:changeRecTex(frame["specButton" .. i].selectedTex, true)
 			frame["specButton" .. i].learnedTex:SetTexture(nil)
 			aObj:changeRecTex(frame["specButton" .. i]:GetHighlightTexture())
+			-- make specIcon square
+			aObj:makeIconSquare(frame["specButton" .. i], "specIcon", true)
 		end
 		-- shadow frame (LHS)
 		aObj:keepFontStrings(aObj:getChild(frame, 7))
@@ -3317,8 +3378,10 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		aObj:skinSlider{obj=frame.spellsScroll.ScrollBar}
 		frame.spellsScroll.child.gradient:SetTexture(nil)
 		aObj:removeRegions(frame.spellsScroll.child, {2, 3, 4, 5, 6, 13})
+		-- make specIcon square
+		aObj:makeIconSquare(frame.spellsScroll.child, "specIcon", true)
 		-- abilities
-		skinAbilities(frame.spellsScroll.child)
+		skinAbilities(frame)
 	end
 
 	self:SecureHookScript(_G.PlayerTalentFrameSpecialization, "OnShow", function(this)
