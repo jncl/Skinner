@@ -4419,6 +4419,7 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 	self.initialized.TalkingHeadUI = true
 
 	-- remove CloseButton animation
+	_G.TalkingHeadFrame.MainFrame.TalkingHeadsInAnim.CloseButton = nil
 	_G.TalkingHeadFrame.MainFrame.Close.CloseButton = nil
 
 	self:SecureHookScript(_G.TalkingHeadFrame, "OnShow", function(this)
