@@ -4825,6 +4825,11 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 		this.SpellButton:SetNormalTexture(nil)
 		self:addButtonBorder{obj=this.SpellButton, ofs=2}
 		self:Unhook(this, "OnShow")
+		self:skinCloseButton{obj=_G.ZoneAbilityButtonAlert.CloseButton}
 	end)
+	if _G.ZoneAbilityFrame:IsShown() then
+		_G.ZoneAbilityFrame:Hide()
+		_G.ZoneAbilityFrame:Show()
+	end
 
 end
