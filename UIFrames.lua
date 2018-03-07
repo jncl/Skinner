@@ -1705,6 +1705,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		this.GarrCorners:DisableDrawLayer("BACKGROUND")
+		this.TownHallBox:DisableDrawLayer("BORDER")
+		self:skinStdButton{obj=this.TownHallBox.UpgradeButton}
 		self:addSkinFrame{obj=_G.GarrisonBuildingFrame, ft=ftype, kfs=true, ofs=2}
 
 		-- BuildingLevelTooltip
@@ -1774,6 +1776,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			this.AddFollowerButton.EmptyPortrait:SetTexture(nil) -- InfoText background texture
 			self:getRegion(this.PlansNeeded, 1):SetTexture(nil) -- shadow texture
 			self:getRegion(this.PlansNeeded, 2):SetTexture(nil) -- cost bar texture
+			-- this.PlansNeeded:Hide()
 			-- Follower Portrait Ring Quality changes colour so track this change
 			self:SecureHook("GarrisonBuildingInfoBox_ShowFollowerPortrait", function(...)
 				-- make sure ring quality is updated to level border colour
@@ -1782,24 +1785,28 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		self:SecureHookScript(_G.GarrisonBuildingFrame.TownHallBox, "OnShow", function(this)
-			this:DisableDrawLayer("BORDER")
-			self:Unhook(this, "OnShow")
-		end)
-		if _G.GarrisonBuildingFrame.TownHallBox:IsShown() then
-			_G.GarrisonBuildingFrame.TownHallBox:Hide()
-			_G.GarrisonBuildingFrame.TownHallBox:Show()
-		end
-
 		-- MapFrame
 
 		self:SecureHookScript(_G.GarrisonBuildingFrame.Confirmation, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
+			self:skinStdButton{obj=this.UpgradeGarrisonButton}
+			self:skinStdButton{obj=this.CancelButton}
 			self:addSkinFrame{obj=this, ft=ftype, ofs=-12}
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:Unhook(this, "OnShow")
+	end)
+
+	-- hook this to show/hide 'Plans Required' text (Bug in Blizzard's code, reported 03.03.18)
+	self:SecureHook("GarrisonBuildingInfoBox_ShowBuilding", function(ID, owned, showLock)
+		if _G.GarrisonBuildingFrame.selectedBuilding.needsPlan then
+			_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Show()
+			_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(true)
+		else
+			_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Hide()
+			_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(false)
+		end
 	end)
 
 	self:SecureHookScript(_G.GarrisonMissionTutorialFrame, "OnShow", function(this)
