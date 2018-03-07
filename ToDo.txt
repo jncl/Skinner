@@ -8,27 +8,17 @@ Legend:
 	¶ is Alt+7	- indicates localisation changes required
 	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
 
-	O	Handle the PLAYER_LEVEL_UP event
-		- if max level then adjust MainMenuBar objects
-		- ?
-
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-	I	BlackMarketUI, reported by epidemedabear/Decabah, 18.02.18/25.02.18
-√		- Message: ..\AddOns\Skinner\Skinner.lua line 1350: attempt to index field 'obj' (a nil value)
-		Skinner\Skinner.lua:1350:
-		Skinner\Skinner.lua:1335
-		Skinner\Skinner.lua:1406: skinSlider()
-		Skinner\NPCFrames.lua:286:
-		Skinner\NPCFrames.lua:270
+	O	Make role icons square with a button border
+		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
 
-	I	Tukui, reported by Decabah, 26.02.18
-√		- Skinner\UtilFuncs.lua:302: attempt to index field 'prdb' (a nil value)
-    	  Skinner\UtilFuncs.lua:302: in function `checkAndRun'
-	      Skinner\AddonSkins\Tukui-17.16.lua:124: in main chunk
+	O	Talents, GroupFinder, Professions requested by fryguy5, 05.03.18
+√		- Make round icons square
 
-	I	SpellBookFrame, reported by Decabah, 26.02.18
-≈		- Skinner\PlayerFrames.lua:3161: attempt to index field 'SpellName' (a nil value)
-		  Skinner\PlayerFrames.lua:3161: in function <Skinner\PlayerFrames.lua:3145>
-		  Skinner\PlayerFrames.lua:3182: in function <Skinner\PlayerFrames.lua:3181>
+	I	OrderHallCommander, reported by fryguy5, 05.03.18
+√		- when you select the 'OrderHallCommander Quick Mission Completion' button the buttons all go grey and don't actually do anything and you have to escape out of the whole interface
+
+	I	TradeSkillMaster, reported by epidemedabear, 07.03.18
+√		-  ..\AddOns\Skinner\Skinner.lua line 644: attempt to index field 'obj' (a nil value)
