@@ -819,7 +819,7 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 			_G.BNToastFrame.sf.tfade:SetParent(_G.BNToastFrame.sf)
 			if _G.BNToastFrame.cb then _G.BNToastFrame.cb.tfade:SetParent(_G.BNToastFrame.cb) end
 		end, true)
-		self:skinCloseButton{obj=_G.BNToastFrameCloseButton, font=self.fontSBX, onSB=true, storeOnParent=true}
+		self:skinCloseButton{obj=_G.BNToastFrameCloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
