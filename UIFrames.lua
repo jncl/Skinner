@@ -600,7 +600,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, petID
 	self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, ...)
-		aObj:Debug("NewPetAlertSystem: [%s, %s]", frame, ...)
+		-- aObj:Debug("NewPetAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
 	end)
@@ -1445,7 +1445,6 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 	self.initialized.CinematicFrame = true
 
 	self:SecureHookScript(_G.CinematicFrame, "OnShow", function(this)
-		aObj:Debug("CinematicFrame OnShow")
 		self:skinStdButton{obj=_G.CinematicFrameCloseDialogConfirmButton}
 		self:skinStdButton{obj=_G.CinematicFrameCloseDialogResumeButton}
 		self:addSkinFrame{obj=this.closeDialog, ft=ftype, nb=true}
@@ -1625,7 +1624,6 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 		-- hook this to skin subsequent frames
 		self:RawHook("DisplayTableInspectorWindow", function(focusedTable, customTitle, tableFocusedCallback)
 			local frame = self.hooks.DisplayTableInspectorWindow(focusedTable, customTitle, tableFocusedCallback)
-			-- aObj:Debug("DisplayTableInspectorWindow: [%s, %s, %s, %s]", focusedTable, customTitle, tableFocusedCallback, frame)
 			skinTAD(frame)
 			return frame
 		end, true)
