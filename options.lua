@@ -1899,10 +1899,10 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	self.optTables.Profiles = LibStub:GetLibrary("AceDBOptions-3.0"):GetOptionsTable(self.db)
 
 	-- register the options tables and add them to the blizzard frame
-	local ACR = LibStub:GetLibrary("AceConfigRegistry-3.0")
-	local ACD = LibStub:GetLibrary("AceConfigDialog-3.0")
+	self.ACR = LibStub:GetLibrary("AceConfigRegistry-3.0", true)
+	local ACD = LibStub:GetLibrary("AceConfigDialog-3.0", true)
 
-	ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
+	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
 	self.optionsFrame = ACD:AddToBlizOptions(aName, aName)
 
 	-- register the options, add them to the Blizzard Options
@@ -1914,7 +1914,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	local optCheck, optTitle = {}
 	for _, v in _G.ipairs(optNames) do
 		optTitle = (" "):join(aName, v)
-		ACR:RegisterOptionsTable(optTitle, self.optTables[v])
+		self.ACR:RegisterOptionsTable(optTitle, self.optTables[v])
 		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
 		optCheck[v:lower()] = v
 	end
