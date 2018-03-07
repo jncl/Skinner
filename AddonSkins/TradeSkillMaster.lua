@@ -86,16 +86,20 @@ aObj.addonsToSkin.TradeSkillMaster_Mailing = function(self) -- v 3.0.18
 
 	self:RegisterEvent("MAIL_SHOW", function()
 		local frame
+		-- get TSM frame and skin it
+		_G.C_Timer.After(0.1, function()
+			frame = self:getPenultimateChild(_G.MailFrame)
+			self:addSkinFrame{obj=frame, ft="a", nb=true, ofs=2, y2=-5}
+			frame.content.inboxTab.helpBtn.Ring:SetTexture(nil)
+		end)
 		if self.prdb.MailFrame then
 			-- prevent errors as not all tabs have been skinned yet
-			aObj.tabFrames[_G.MailFrame] = nil
+			self.tabFrames[_G.MailFrame] = nil
 			_G.MailFrame.sf:Hide() -- hide to start with as mailframe opens to TSM frame initially
-			_G.C_Timer.After(0.1, function() -- wait for objects to be created
-				frame = self:getPenultimateChild(_G.MailFrame)
-				-- Tab
+			_G.C_Timer.After(0.15, function() -- wait for TSM frame to be created
 				self:keepRegions(_G.MailFrameTab3, {7, 8})
 				self:addSkinFrame{obj=_G.MailFrameTab3, ft="a", nb=true, noBdr=self.isTT, x1=6, y1=0, x2=6, y2=2}
-				aObj.tabFrames[_G.MailFrame] = true
+				self.tabFrames[_G.MailFrame] = true
 				_G.PanelTemplates_UpdateTabs(_G.MailFrame)
 				self:SecureHook(frame, "Show", function(this)
 					_G.MailFrame.sf:Hide()
@@ -105,10 +109,6 @@ aObj.addonsToSkin.TradeSkillMaster_Mailing = function(self) -- v 3.0.18
 				end)
 			end)
 		end
-		_G.C_Timer.After(0.1, function()
-			self:addSkinFrame{obj=frame, ft="a", nb=true, ofs=2, y2=-5}
-			frame.content.inboxTab.helpBtn.Ring:SetTexture(nil)
-		end)
 		frame = nil
 		self:UnregisterEvent("MAIL_SHOW")
 	end)
