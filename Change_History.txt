@@ -1,3 +1,16 @@
+beta7.26124.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added option for Class Coloured Tooltip border, AlliedRacesUI & WarboardUI
+	Updated Tooltip skin to handle Class Colured Borders
+	Updated AlertFrames skin
+	Update UnitPowerBar skin
+	Bugfix for SpellBook frame skin
+	Bugfix For BlackMarketAuctionHouse skin
+	Updated HandyNotes, NPCScan & Tukiui skins
+
 beta7.25996.1
 Jncl:
 	ToDo.txt
