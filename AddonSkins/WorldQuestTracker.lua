@@ -4,7 +4,7 @@ local _G = _G
 
 aObj.addonsToSkin.WorldQuestTracker = function(self) -- v7.3.0.237-release
 
-	local s1, s2, s3, s4, s5, s6 = flse, false, false, false ,false, false, false
+	local s1, s2, s3, s4, s5, s6, s7
 	self:SecureHook("ToggleWorldMap", function()
 		if _G.WorldQuestTrackerGoToBIButton
 		and not s1
@@ -54,8 +54,15 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v7.3.0.237-release
 			self:addSkinFrame{obj=_G.WorldQuestTrackerTutorial, ft="a", ofs=3, y2=-38}
 			s6 = true
 		end
-		if s1 and s2 and s3 and s4 and s5 and s6 then
+		if _G.WorldQuestTrackerZoneSummaryFrame
+		and not s7
+		then
+			_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
+			_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
+		end
+		if s1 and s2 and s3 and s4 and s5 and s6 and s7 then
 			self:Unhook("ToggleWorldMap")
+			s1, s2, s3, s4, s5, s6, s7 = nil, nil, nil, nil, nil, nil, nil
 		end
 	end)
 
@@ -123,6 +130,20 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v7.3.0.237-release
 		self:SecureHook(_G.WorldQuestTrackerAddon, "TAXIMAP_OPENED", function(this)
 			self:skinCloseButton{obj=_G.WorldQuestTrackerTaxyTutorial.CloseButton}
 			self:Unhook(this, "TAXIMAP_OPENED")
+		end)
+	end
+
+	if _G.WorldQuestTrackerAddon.db.profile.use_quest_summary then
+		self:SecureHook(_G.WorldQuestTrackerAddon, "UpdateZoneSummaryFrame", function()
+			if not _G.WorldQuestTrackerAddon.CanShowZoneSummaryFrame() then
+				return
+			end
+			for i = 1, #_G.WorldQuestTrackerAddon.ZoneSumaryWidgets do
+				self:getRegion(_G.WorldQuestTrackerAddon.ZoneSumaryWidgets[i], 1):SetTexture(nil) -- art texture
+				_G.WorldQuestTrackerAddon.ZoneSumaryWidgets[i].BlackBackground:SetTexture(nil)
+				_G.WorldQuestTrackerAddon.ZoneSumaryWidgets[i].LineUp:SetTexture(nil)
+				_G.WorldQuestTrackerAddon.ZoneSumaryWidgets[i].LineDown:SetTexture(nil)
+			end
 		end)
 	end
 
