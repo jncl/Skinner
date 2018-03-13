@@ -13,3 +13,156 @@ Legend:
 
 	O	Make role icons square with a button border
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
+
+	Alpha/Beta (BfA) [8.0.1]
+	- Updated
+	  -> Addons files
+x		- AchievementUI
+x		- AdventureMap
+x		- AlliedRacesUI
+x		- ArenaUI
+x		- ArtifactRelicForgeUI
+x		- ArtifactUI
+?		- AuctionUI (IconOverlay)
+?		- AuctionUITemplates (IconOverlay)
+x		- BarberShopUI
+?		- BlackMarketUI (IconOverlay)
+x		- BoostTutorial
+?		- CompactUnitFrameProfiles (Slider template)
+x		- Calendar
+x		- ChallengesUI
+x		- ClassTrial
+x		- Collections/PetCollection
+x		- Collections/Wardrobe
+x		- CombatLog
+x		- CombatText
+x		- Commentator/UnitFrame
+?		- Console (CopyNoticeFrame)
+x		- DebugTools/DebugTools
+x		- DebugTools/TableInspector
+?		- EncounterJournal/EncounterJournal (IconOverlay)
+x		- EncounterJournal/LootJournal
+?		- GarrisonTemplates/GarrisonMissionTemplates (IconOverlay)
+?		- GarrisonTemplates/GarrisonSharedTemplates (New Templates)
+x		- GarrisonUI/GarrisonBuildingUI
+?		- GarrisonUI/GarrisonLandingPage (IconOverlay)
+?		- GarrisonUI/GarrisonMissionUI (IconOverlay)
+x		- GarrisonUI/GarrisonMonumentUI
+x		- GarrisonUI/GarrisonShipyardUI
+x		- GuildUI/GuildRoster
+x		- GuildUI/GuildUI
+x		- InspectUI/InspectUI
+?		- InspectUI/InspectPVPFrame
+?		- LookingForGuildUI
+x		- NamePlates
+x		- BonusObjectiveTracker
+x 		- ObjectiveTracker
+x		- ScenarioObjectiveTracker
+x		- ObliterumUI
+x		- OrderHallMissionUI
+?		- PVPUI
+x		- PetBattleUI
+?		- QuestChoice (IconOverlay)
+x		- RaidUI
+x		- StoreUI
+?		- TalentUI (Lots)
+x		- TalkingHeadUI
+?		- TradeSkillUI/TradeSkillDetails (IconOverlay)
+x		- TradeSkillUI/TradeSkillRecipeButton
+x		- TradeSkillUI/TradeSkillRecipeList
+x		- TradeSkillUI
+x		- Tutorial/TutorialKeyboardMouseFrame
+x		- Tutorial/TutorialLogic
+?		- VoidStorageUI (IconOverlay)
+x		- WowTokenUI
+	  -> FrameXML files
+x		- ActionBarController
+x		- ActionBarFrame
+?		- AlertFrameSystems (IconOverlay)
+x		- AlternatePowerBar
+x		- ArtifactToasts
+x		- AudioOptionsPanels
+x		- Bindings
+x		- ChannelFrame
+x		- CharacterFrame
+x		- ChatFrame
+x		- CinematicFrame
+x		- CompactUnitFrame
+x		- Constants
+x		- ContainerFrame
+x		- DressUpFrames
+x		- FloatingChatFrame
+x		- FriendsFrame
+?		- GameTooltip (IconOverlay)
+x		- GarrisonBaseUtils
+x		- HelpFrame
+x		- InterfaceOptionsPanels
+?		- ItemButtonTemplate (IconOverlay)
+?		- LFGFrame (IconOverlay)
+x		- LFGList
+x		- LevelUpDisplay
+x		- Localization
+x		- LootFrame
+?		- MailFrame (IconOverlay)
+?		- Main Menu Bar
+x		- MainMenuBarBagButtons
+x		- MainMenuBarMicroButtons
+x		- MerchantFrame
+x		- Minimap
+x		- MonkStaggerBar
+?		- MultiActionBars (New template)
+x		- OptionsPanelTemplates
+x		- OverrideActionBar
+x		- PVPHelper
+x		- PVPHonorSystem
+?		- PaperDollFrame
+x		- PetActionBarFrame
+x		- PetFrame
+x		- PlayerFrame
+x		- QuestChoiceFrameMixin
+x		- QuestFrame
+x		- QuestInfo
+x		- QuestMapFrame
+x		- QuestUtils
+x		- QueueStatusFrame
+x		- RaidFrame
+x		- ReputationFrame
+x		- SecureCapsule
+x		- SpellActivationOverlay
+x		- StaticPopup
+x		- TalentFrameBase
+?		- TalentFrameTemplates (New templates)
+x		- TutorialFrame
+?		- UI.xsd
+x		- UIDropDownMenu
+?		- UIDropDownMenuTemplates
+?		- UIPanelTemplates (UIExpandingButtonMixin)
+x		- UIParent
+x		- UnitFrame
+x		- UnitPopup
+x		- UnitPowerBarAlt
+x		- VehicleSeatIndicator
+x		- VoiceChat
+x		- WorldMapFrame
+x		- WorldStateFrame
+
+	- Added
+	  -> Addons files
+x		- Lots more documentation files added
+≈		- AzeriteUI
+≈		- PTRFeedback
+≈		- UIWidgets
+≈		- WarfrontUI
+	  -> FrameXML files
+?	  	- ArtifactBar (MainMenuBar)
+≈		- AzeriteItemToasts
+x		- CurrencyContainerUtil
+?		- ExpBar (MainMenuBar)
+?		- HonorBar (MainMenuBar)
+?		- ObjectAPI
+?		- ReputationBar (MainMenuBar)
+?		- StatusTrackingBar (MainMenuBar)
+?		- StatusTrackingBarTemplates
+?		- UIDropDownMenuTemplates
+
+	- Deleted

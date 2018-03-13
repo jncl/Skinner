@@ -714,6 +714,23 @@ aObj.blizzFrames[ftype].AutoComplete = function(self)
 
 end
 
+if aObj.isBeta then
+	aObj.blizzFrames[ftype].AzeriteLevelUpToast = function(self)
+		if not self.db.profile.AzeriteLevelUpToast or self.initialized.AzeriteLevelUpToast then return end
+		self.initialized.AzeriteLevelUpToast = true
+
+	
+	end
+
+	aObj.blizzLoDFrames[ftype].AzeriteEmpoweredItemUI = function(self)
+		if not self.db.profile.AzeriteEmpoweredItemUI or self.initialized.AzeriteEmpoweredItemUI then return end
+		self.initialized.AzeriteEmpoweredItemUI = true
+	
+	
+	end
+	
+end
+
 aObj.blizzLoDFrames[ftype].BattlefieldMinimap = function(self)
 	if not self.prdb.BattlefieldMm.skin or self.initialized.BattlefieldMm then return end
 	self.initialized.BattlefieldMm = true
@@ -3986,6 +4003,27 @@ aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Reward
 
 end
 
+if aObj.isBeta then
+	aObj.blizzFrames[ftype].PTR_Feedback = function(self)
+		if not self.db.profile.PTR_Feedback or self.initialized.PTR_Feedback then return end
+		self.initialized.PTR_Feedback = true
+	
+		self.RegisterCallback("PTR_Feedback", "UIParent_GetChildren", function(this, child)
+			if child.Body
+			and child.Data
+			and child.AlertFrame
+			then
+				self:addSkinFrame{obj=child, ft="a", nb=true, kfs=true}
+				self.UnregisterCallback("PTR_Feedback", "UIParent_GetChildren")
+			end
+		end)
+		self:scanUIParentsChildren()
+		
+	
+	end
+	
+end
+
 aObj.blizzFrames[ftype].PVEFrame = function(self)
 	if not self.prdb.PVEFrame or self.initialized.PVEFrame then return end
 	self.initialized.PVEFrame = true
@@ -4655,6 +4693,30 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 
 end
 
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].UIWidgetManager = function(self) -- forbidden
+		if not self.prdb.UIWidgetManager or self.initialized.UIWidgetManager then return end
+		self.initialized.UIWidgetManager = true
+
+
+	end
+
+	aObj.blizzLoDFrames[ftype].UIWidgetTopCenterContainerFrame = function(self) -- forbidden
+		if not self.prdb.UIWidgetTopCenterContainerFrame or self.initialized.UIWidgetTopCenterContainerFrame then return end
+		self.initialized.UIWidgetTopCenterContainerFrame = true
+
+
+	end
+
+	aObj.blizzLoDFrames[ftype].UIWidgetBelowMinimapContainerFrame = function(self) -- forbidden
+		if not self.prdb.UIWidgetBelowMinimapContainerFrame or self.initialized.UIWidgetBelowMinimapContainerFrame then return end
+		self.initialized.UIWidgetBelowMinimapContainerFrame = true
+
+
+	end
+	
+end
+
 aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 	if not self.db.profile.WarboardUI or self.initialized.WarboardUI then return end
 	self.initialized.WarboardUI = true
@@ -4676,6 +4738,16 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+end
+
+if aObj.isBeta then
+	aObj.blizzFrames[ftype].WarfrontUI = function(self)
+		if not self.db.profile.WarfrontUI or self.initialized.WarfrontUI then return end
+		self.initialized.WarfrontUI = true
+	
+	
+	end
+	
 end
 
 aObj.blizzFrames[ftype].WorldMap = function(self)
