@@ -4208,6 +4208,14 @@ aObj.blizzFrames[ftype].RaidFinder = function(self)
 		self:removeInset(_G.RaidFinderFrameBottomInset)
 		self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem1, libt=true}
 		_G.RaidFinderQueueFrameScrollFrameChildFrameItem1NameFrame:SetTexture(nil)
+		if _G.RaidFinderQueueFrameScrollFrameChildFrameItem2 then
+			self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem2, libt=true}
+			_G.RaidFinderQueueFrameScrollFrameChildFrameItem2NameFrame:SetTexture(nil)
+		end
+		if _G.RaidFinderQueueFrameScrollFrameChildFrameItem3 then
+			self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrameItem3, libt=true}
+			_G.RaidFinderQueueFrameScrollFrameChildFrameItem3NameFrame:SetTexture(nil)
+		end
 		self:addButtonBorder{obj=_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward, libt=true}
 		_G.RaidFinderQueueFrameScrollFrameChildFrame.MoneyReward.NameFrame:SetTexture(nil)
 		self:removeMagicBtnTex(_G.RaidFinderFrameFindRaidButton)
