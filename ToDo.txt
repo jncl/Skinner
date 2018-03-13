@@ -13,12 +13,3 @@ Legend:
 
 	O	Make role icons square with a button border
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
-
-	O	Talents, GroupFinder, Professions requested by fryguy5, 05.03.18
-√		- Make round icons square
-
-	I	OrderHallCommander, reported by fryguy5, 05.03.18
-√		- when you select the 'OrderHallCommander Quick Mission Completion' button the buttons all go grey and don't actually do anything and you have to escape out of the whole interface
-
-	I	TradeSkillMaster, reported by epidemedabear, 07.03.18
-√		-  ..\AddOns\Skinner\Skinner.lua line 644: attempt to index field 'obj' (a nil value)
