@@ -1,3 +1,20 @@
+beta7.26124.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Removed debug comments
+	Make some icons square
+	Updated BNToast skin
+	Updated LFD skin
+	Updated TalkingHeadsUI skin
+	Updated ZoneAbilityFrame skin
+	Updated PetBattleUI skin
+	Updated GarrisonUI skin
+	Bugfix for Ace3 skin
+	Updated NPCScan skin
+	Updated OrderHallCommander skin
+	Bugfix for TradeSkillMaster-Mailing
+
 beta7.26124.1
 Jncl:
 	ToDo.txt
