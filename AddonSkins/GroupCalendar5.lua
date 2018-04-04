@@ -65,9 +65,9 @@ local function skinGroupCalendar5()
 -->>-- ClassLimits Dialog
 	aObj:SecureHookScript(gcUI.ClassLimitsDialog, "OnShow", function(this)
 		skinDD(this.PriorityMenu)
-		for _, class in pairs(aObj.classTable) do	
-			aObj:skinEditBox{obj=this[strupper(class)].Min, regs={9}, noWidth=true}
-			aObj:skinEditBox{obj=this[strupper(class)].Max, regs={9}, noWidth=true}
+		for _, class in pairs(_G.CLASS_SORT_ORDER) do	
+			aObj:skinEditBox{obj=this[class].Min, regs={9}, noWidth=true}
+			aObj:skinEditBox{obj=this[class].Max, regs={9}, noWidth=true}
 		end
 		skinDD(this.MaxPartySizeMenu)
 		aObj:Unhook(gcUI.ClassLimitsDialog, "OnShow")
@@ -80,8 +80,8 @@ local function skinGroupCalendar5()
 		for _, role in pairs({"H", "T", "R", "M"}) do
 			aObj:skinEditBox{obj=this[role].Min, regs={9}, noWidth=true}
 			aObj:skinEditBox{obj=this[role].Max, regs={9}, noWidth=true}
-			for _, class in pairs(aObj.classTable) do	
-				aObj:skinEditBox{obj=this[role][strupper(class)], regs={9}, noWidth=true}
+			for _, class in pairs(_G.CLASS_SORT_ORDER) do	
+				aObj:skinEditBox{obj=this[role][class], regs={9}, noWidth=true}
 			end
 		end
 		skinDD(this.MaxPartySizeMenu)

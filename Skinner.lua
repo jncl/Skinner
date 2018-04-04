@@ -264,9 +264,6 @@ function aObj:OnInitialize()
 	-- Empty Slot texture
 	self.esTex = [[Interface\Buttons\UI-Quickslot2]]
 
-	-- class table
-	self.classTable = {"DeathKnight", "DemonHunter", "Druid", "Hunter", "Mage", "Monk", "Paladin", "Priest", "Rogue", "Shaman", "Warlock", "Warrior"}
-
 	-- store Addons managed by LoadManagers
 	self.lmAddons = {}
 
