@@ -37,14 +37,18 @@ do
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
 --@end-alpha@
-	-- check to see if running on Beta servers
-	aObj.isBeta = portal == "beta" and true or false
-	-- aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
-	-- check to see if running on PTR servers
-	aObj.isPTR = portal == "test" and true or false
-	-- aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
+	-- check to see if running on PTR servers
+	aObj.isPTR = portal == "test" and true or false
+	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
+	-- check to see if running on Beta servers
+	aObj.isBeta = portal == "beta" and true or false
+	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
+	if aObj.isBeta then
+		aObj.isPTR = false
+		aObj.isPatch = false
+	end
 --@alpha@
 	if aObj.isPatch then
 		if aObj.isPTR then
@@ -69,15 +73,12 @@ function aObj:OnInitialize()
 --@end-debug@
 
 --@alpha@
-	if self.isBeta then self:Debug("Beta detected") end
-	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end
+	if self.isPTR then self:Debug("PTR detected") end
+	if self.isBeta then self:Debug("Beta detected") end
 --@end-alpha@
-	-- if patch detected then enable PTR/Beta code changes, handles PTR/Beta changes going Live
-	if self.isPatch then
-		self.isPTR = true
-		self.isBeta = true
-	end
+	-- if patch detected then enable PTR code changes (handles PTR changes going Live)
+	if self.isPatch then self.isPTR = true end
 
 	-- setup the default DB values and register them
 	self:checkAndRun("SetupDefaults", "opt", false, true)
