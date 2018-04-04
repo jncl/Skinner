@@ -189,7 +189,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 	-->-- Profiles
 		-- populated below
 
-	}}
+	},}
 
 	self.db = LibStub:GetLibrary("AceDB-3.0"):New(aName .. "DB", defaults, "Default")
 
@@ -1985,6 +1985,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		else
 			LibStub:GetLibrary("AceConfigCmd-3.0"):HandleCommand(aName, aName, input)
 		end
+
 	end
 
 	-- Register slash command handlers

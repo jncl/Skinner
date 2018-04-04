@@ -102,16 +102,24 @@ function aObj:OnInitialize()
 	-- register the statubar texture used by Nameplates
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
 	-- register any User defined textures used
-	if self.prdb.BdFile and self.prdb.BdFile ~= "None" then
+	if self.prdb.BdFile
+	and self.prdb.BdFile ~= "None"
+	then
 		self.LSM:Register("background", aName .. " User Backdrop", self.prdb.BdFile)
 	end
-	if self.prdb.BdEdgeFile and self.prdb.BdEdgeFile ~= "None" then
+	if self.prdb.BdEdgeFile
+	and self.prdb.BdEdgeFile ~= "None"
+	then
 		self.LSM:Register("border", aName .. " User Border", self.prdb.BdEdgeFile)
 	end
-	if self.prdb.BgFile and self.prdb.BgFile ~= "None" then
+	if self.prdb.BgFile
+	and self.prdb.BgFile ~= "None"
+	then
 		self.LSM:Register("background", aName .. " User Background", self.prdb.BgFile)
 	end
-	if self.prdb.TabDDFile and self.prdb.TabDDFile ~= "None" then
+	if self.prdb.TabDDFile
+	and self.prdb.TabDDFile ~= "None"
+	then
 		self.LSM:Register("background", aName .. " User TabDDTexture", self.prdb.TabDDFile)
 	end
 
@@ -155,12 +163,16 @@ function aObj:OnInitialize()
 			insets = {left = dflts.BdInset, right = dflts.BdInset, top = dflts.BdInset, bottom = dflts.BdInset},
 		}
 	else
-		if self.prdb.BdFile and self.prdb.BdFile ~= "None" then
+		if self.prdb.BdFile
+		and self.prdb.BdFile ~= "None"
+		then
 			self.bdTexName = aName .. " User Backdrop"
 		else
 			self.bdTexName = self.prdb.BdTexture
 		end
-		if self.prdb.BdEdgeFile and self.prdb.BdEdgeFile ~= "None" then
+		if self.prdb.BdEdgeFile
+		and self.prdb.BdEdgeFile ~= "None"
+		then
 			self.bdbTexName = aName .. " User Border"
 		else
 			self.bdbTexName = self.prdb.BdBorderTexture
@@ -227,7 +239,9 @@ function aObj:OnInitialize()
 
 	-- setup background texture name
 	if self.prdb.BgUseTex then
-		if self.prdb.BgFile and self.prdb.BgFile ~= "None" then
+		if self.prdb.BgFile
+		and self.prdb.BgFile ~= "None"
+		then
 			self.bgTexName = aName .. " User Background"
 		else
 			self.bgTexName = self.prdb.BgTexture
@@ -256,7 +270,9 @@ function aObj:OnInitialize()
 	self.bbColour = {c.r, c.g, c.b, c.a or self.prdb.BackdropBorder.a}
 
 	-- Inactive Tab & DropDowns texture
-	if self.prdb.TabDDFile and self.prdb.TabDDFile ~= "None" then
+	if self.prdb.TabDDFile
+	and self.prdb.TabDDFile ~= "None"
+	then
 		self.itTex = self.LSM:Fetch("background", aName .. " User TabDDTexture")
 	else
 		self.itTex = self.LSM:Fetch("background", self.prdb.TabDDTexture)
