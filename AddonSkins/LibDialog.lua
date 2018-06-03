@@ -23,7 +23,7 @@ aObj.libsToSkin["LibDialog-1.0"] = function(self) -- v r89
 			for j = 1, #lD.active_dialogs[i].buttons do
 				self:skinStdButton{obj=lD.active_dialogs[i].buttons[j]}
 			end
-			self:skinCloseButton{obj=v.close_button}
+			self:skinCloseButton{obj=lD.active_dialogs[i].close_button}
 			self:addSkinFrame{obj=lD.active_dialogs[i], ft="a", nb=true, ofs=-6}
 			lD.active_dialogs[i]:SetBackdrop(nil)
 		end

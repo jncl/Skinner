@@ -106,6 +106,8 @@ aObj.lodAddons.MasterPlan = function(self) -- v 0.109.1
 	skinMissionButtons(sc, "Button", true)
 
 	-- ActiveUI lootframe
+	self:skinStdButton{obj=_G.MPLootSummaryDone}
+	self:skinCloseButton{obj=activeUI.lootFrame.Dismiss2}
 	self:addSkinFrame{obj=activeUI.lootFrame, ft="a", kfs=true, nb=true, y1=-3, x2=-1}
 	local function skinLootContainer(lootContainer)
 		for i = 1, #lootContainer.items do

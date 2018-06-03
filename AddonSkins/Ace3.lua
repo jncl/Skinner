@@ -354,6 +354,12 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 		        obj.frame.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
 				aObj:removeRegions(obj.frame, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
 
+			-- GarrisonCommander objects
+			elseif objType == "GMCGUIContainer" then
+				aObj:skinCloseButton{obj=obj.frame.CloseButton}
+				obj.frame.GarrCorners:DisableDrawLayer("BACKGROUND")
+				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
+
 			-- OrderHallCommander objects
 			elseif objType == "OHCGUIContainer" then
 				aObj:skinCloseButton{obj=obj.frame.Close}
@@ -400,9 +406,11 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			-- CollectMe objects
 			or objType == "CollectMeLabel"
 			-- GarrisonMissionCommander objects
-			or objType == "GMCList"
+			or objType == "GCMCList"
 			-- OrderHallCommander objects
 			or objType == "OHCMissionsList"
+			-- ElvUI
+			or objType == "ColorPicker-ElvUI"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
 			-- any other types

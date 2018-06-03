@@ -4,13 +4,13 @@ local _G = _G
 
 aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 
-	-- hook these to skin the GarrisonCommanderUpgradeButton on LHS of frame
+	-- hook these to skin the GarrisonCommander Button on LHS of frame
 	if self.modBtnBs then
 		local gmfos = _G.GarrisonMissionFrame:GetScript("OnShow")
 		_G.GarrisonMissionFrame:HookScript("OnShow", function(this)
 			local btn = self:getLastChild(this)
 			if not btn.sbb then
-				self:addButtonBorder{obj=btn}
+				self:addButtonBorder{obj=btn, sec=true, reParent={btn.Quantity}}
 			end
 			btn = nil
 			this:SetScript("OnShow", gmfos) -- revert to original script
@@ -20,7 +20,7 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 		_G.GarrisonShipyardFrame:HookScript("OnShow", function(this)
 			local btn = self:getLastChild(this)
 			if not btn.sbb then
-				self:addButtonBorder{obj=btn}
+				self:addButtonBorder{obj=btn, reParent={btn.Quantity}}
 			end
 			btn = nil
 			this:SetScript("OnShow", gsfos) -- revert to original script
@@ -36,6 +36,7 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 		self:moveObject{obj=frame.CloseButton, x=-3, y=0}
 		self:addButtonBorder{obj=frame.Pin, ofs=-2}
 		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, x1=2, y1=5, x2=1}
+		_G.RaiseFrameLevelByTwo(frame)
 		return frame
 	end, true)
 

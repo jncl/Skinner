@@ -23,7 +23,6 @@ aObj.addonsToSkin.NPCScan = function(self) -- v 7.3.5.3
 			and child.killedTextureFrame
 			then
 				-- aObj:Debug("Target Button found: [%s, %s, %s]", child, child:GetWidth(), child:GetHeight())
-				child:SetSize(276, 96)
 				if not child.sf then
 					child.Background:SetTexture(nil)
 					child.Background.SetTexture = _G.nop
@@ -47,6 +46,7 @@ aObj.addonsToSkin.NPCScan = function(self) -- v 7.3.5.3
 	-- Register to know when Targeting buttons are used
 	self:RegisterMessage("NPCScan_DetectedNPC", skinTargetButton)
 	self:RegisterMessage("NPCScan_TargetButtonRequestDeactivate", skinTargetButton)
+	self:RegisterMessage("NPCScan_TargetButtonNeedsReclassified", skinTargetButton)
 
 		-- skin the anchor frame
 	local function skinAnchor(cbName, addonName)

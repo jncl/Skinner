@@ -147,4 +147,15 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v7.3.0.237-release
 		end)
 	end
 
+	-- skin WorldQuestTrackerFrame, if required
+	if self.prdb.ObjectiveTracker.skin then
+		self:addSkinFrame{obj=_G.WorldQuestTrackerScreenPanel_QuestHolder, ft="a", kfs=true, nb=true, x1=-25, y1=4, x2=3}
+		self:SecureHook(_G.WorldQuestTrackerAddon, "UpdateTrackerScale", function()
+			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetScale(_G.WorldQuestTrackerAddon.db.profile.tracker_scale)
+		end)
+		self:SecureHook(_G.WorldQuestTrackerAddon, "RefreshTrackerWidgets", function()
+			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetShown(_G.WorldQuestTrackerQuestsHeader:IsShown())
+		end)
+	end
+
 end
