@@ -813,8 +813,8 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		-- other rewards
 		for _, type in pairs{"XPFrame", "HonorFrame", "ArtifactXPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"} do
 			this[type].NameFrame:SetTexture(nil)
-			if not type == "SkillPointFrame" then
-				self:addButtonBorder{obj=this[type], relTo=this[type].Icon}
+			if type ~= "SkillPointFrame" then
+				self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].Count}}
 			else
 				self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].CircleBackground, this[type].CircleBackgroundGlow, this[type].ValueText}}
 			end
