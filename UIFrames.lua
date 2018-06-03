@@ -4094,6 +4094,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("BACKGROUND")
 		this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("ARTWORK")
 		this.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")
+		self:skinStdButton{obj=this.DetailsFrame.CompleteQuestFrame.CompleteButton}
 		self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
 		self:moveObject{obj=this.DetailsFrame.AbandonButton, y=2}
 		self:skinStdButton{obj=this.DetailsFrame.ShareButton}
