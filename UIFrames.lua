@@ -1037,6 +1037,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 			 -- don't include forbidden Chat Bubbles (Bosses in Dungeons/Raids)
 			for k1, cBubble in pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
 				-- aObj:Debug("GetAllChatBubbles#1: [%s, %s]", k1, cBubble)
+				-- use applySkin otherwise text is hidden
 				aObj:applySkin{obj=cBubble, ft=ftype, kfs=true}
 			end
 		end)
