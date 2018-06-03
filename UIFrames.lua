@@ -107,7 +107,7 @@ local function skinFollowerList(frame)
 		-- need to do this as background isn't visible on Shipyard Mission page
 		_G.RaiseFrameLevel(frame.SearchBox)
 	end
-	aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-4}
+	aObj:skinSlider{obj=frame.listScroll.scrollBar, wdth=-6}
 
 	-- if FollowerList not yet populated, hook the function
 	if not frame.listScroll.buttons then
@@ -154,7 +154,7 @@ local function skinFollowerTraitsAndEquipment(frame)
 end
 local function skinCompleteDialog(frame, naval)
 
-	frame:SetSize(naval and 934 or 954, 630)
+	frame:SetSize(naval and 934 or 953, IsAddOnLoaded("GarrisonCommander") and 640 or 642)
 	aObj:moveObject{obj=frame, x=4, y=2}
 
 	frame.BorderFrame:DisableDrawLayer("BACKGROUND")
@@ -175,7 +175,7 @@ local function skinMissionPage(frame)
 
 	aObj:removeRegions(frame.Stage, stageRegs)
 	aObj:skinStdButton{obj=frame.StartMissionButton}
-	aObj:addSkinFrame{obj=frame, ft=ftype, x1=-320, y1=5, x2=3, y2=-20}
+	aObj:addSkinFrame{obj=frame, ft=ftype, x1=IsAddOnLoaded("GarrisonCommander") and 0 or -320, y1=5, x2=3, y2=-20}
 	-- handle animation of StartMissionButton
 	if aObj.modBtns then
 		 frame.StartMissionButton.sb.tfade:SetParent(frame.sf)
@@ -188,7 +188,9 @@ local function skinMissionPage(frame)
 		frame.RewardsFrame.Rewards[i].BG:SetTexture(nil)
 		-- N.B. reward buttons have an IconBorder
 	end
-	frame.CloseButton:SetSize(28, 28) -- make button smaller
+	if not IsAddOnLoaded("MasterPlan") then
+		frame.CloseButton:SetSize(28, 28) -- make button smaller
+	end
 
 	for i = 1, #frame.Enemies do
 		if frame.Enemies[i].PortraitFrame then
@@ -237,7 +239,7 @@ local function skinMissionComplete(frame, naval)
     frame.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 	frame.BonusRewards.Saturated:DisableDrawLayer("BORDER")
 	aObj:skinStdButton{obj=frame.NextMissionButton}
-    aObj:addSkinFrame{obj=frame, ft=ftype, y1=6, y2=-16}
+    aObj:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=6, y2=-16}
 
 	for i = 1, #frame.Stage.EncountersFrame.Encounters do
 		if not naval then
@@ -1714,6 +1716,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
+		local function skinBLbuttons(bl)
+			for i = 1, #bl.Buttons do
+				bl.Buttons[i].BG:SetTexture(nil)
+				aObj:addButtonBorder{obj=bl.Buttons[i], relTo=bl.Buttons[i].Icon}
+			end
+		end
 		self:SecureHookScript(_G.GarrisonBuildingFrame.BuildingList, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
 
@@ -1739,17 +1747,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 					end
 				end
 				-- handle buttons
-				for i = 1, #gbl.Buttons do
-					gbl.Buttons[i].BG:SetTexture(nil)
-					self:addButtonBorder{obj=gbl.Buttons[i], relTo=gbl.Buttons[i].Icon}
-				end
+				skinBLbuttons(gbl)
 				gbl = nil
 			end)
 
-			for i = 1, #this.Buttons do
-				this.Buttons[i].BG:SetTexture(nil)
-				self:addButtonBorder{obj=this.Buttons[i], relTo=this.Buttons[i].Icon}
-			end
+			skinBLbuttons(this)
 			this.MaterialFrame:DisableDrawLayer("BACKGROUND")
 
 			self:Unhook(this, "OnShow")
@@ -1783,12 +1785,17 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			end)
 			self:Unhook(this, "OnShow")
 		end)
+		if _G.GarrisonBuildingFrame.InfoBox:IsShown() then
+			_G.GarrisonBuildingFrame.InfoBox:Hide()
+			_G.GarrisonBuildingFrame.InfoBox:Show()
+		end
 
 		-- MapFrame
 
 		self:SecureHookScript(_G.GarrisonBuildingFrame.Confirmation, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			self:skinStdButton{obj=this.UpgradeGarrisonButton}
+			self:skinStdButton{obj=this.UpgradeButton}
 			self:skinStdButton{obj=this.CancelButton}
 			self:addSkinFrame{obj=this, ft=ftype, ofs=-12}
 			self:Unhook(this, "OnShow")
@@ -1799,12 +1806,25 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	-- hook this to show/hide 'Plans Required' text (Bug in Blizzard's code, reported 03.03.18)
 	self:SecureHook("GarrisonBuildingInfoBox_ShowBuilding", function(ID, owned, showLock)
-		if _G.GarrisonBuildingFrame.selectedBuilding.needsPlan then
-			_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Show()
-			_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(true)
+		local buildingInfo
+		if owned then
+			buildingInfo = {_G.C_Garrison.GetOwnedBuildingInfo(ID)}
 		else
-			_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Hide()
-			_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(false)
+			buildingInfo = {_G.C_Garrison.GetBuildingInfo(ID)}
+		end
+
+		if not showLock then
+			if buildingInfo[16] -- isMaxLevel
+			and buildingInfo[15] -- canUpgrade
+			then
+				_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Hide()
+				_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(false)
+			else
+				_G.GarrisonBuildingFrame.InfoBox.PlansNeeded:Show()
+				_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(true)
+			end
+		else
+			_G.GarrisonBuildingFrame.InfoBox.Building:SetDesaturated(true)
 		end
 	end)
 
@@ -1870,12 +1890,17 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
+      -- aObj:Debug("SHS GarrisonShipyardFrame.MT.ML OnShow")
 	        this:SetScale(1.019) -- make larger to fit frame
 	        this.MapTexture:SetPoint("CENTER", this, "CENTER", 1, -10)
 			this.MapTexture:SetDrawLayer("BACKGROUND", 1) -- make sure it appears above skinFrame but below other textures
 			skinCompleteDialog(this.CompleteDialog, true)
 			self:Unhook(this, "OnShow")
 		end)
+		if this.MissionTab.MissionList:IsShown() then
+			this.MissionTab.MissionList:Hide()
+			this.MissionTab.MissionList:Show()
+		end
 
 		self:SecureHookScript(this.MissionTab.MissionPage, "OnShow", function(this)
 			skinMissionPage(this)
@@ -2768,8 +2793,9 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 		local function moveWatchBar(bar)
 			-- adjust offset dependant upon player level
-			aObj:moveObject{obj=bar, y=aObj.uLvl < _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()] and 2 or 4}
+			aObj:moveObject{obj=bar, y=aObj.uLvl < aObj.mLvl and 2 or 4}
 			-- stop it being moved
+			bar.OrigSetPoint = bar.SetPoint
 			bar.SetPoint = _G.nop
 			-- move text down
 			bar.OverlayFrame.Text:SetPoint("CENTER", 0, -1)
