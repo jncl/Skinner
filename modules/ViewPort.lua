@@ -23,8 +23,7 @@ local function checkOverlay()
 
 	if db.shown then
 		if db.overlay then
-			local xScale = db.XRes / 1050
-			local yScale = 768 / db.YRes
+			local scale = _G.UIParent:GetEffectiveScale()
 			if not vpoF then
 				vpoF = _G.CreateFrame("Frame", nil)
 				vpoF:SetAllPoints(_G.UIParent)
@@ -43,16 +42,16 @@ local function checkOverlay()
 			vpoF.right:SetTexture(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
 			vpoF.top:ClearAllPoints()
 			vpoF.top:SetPoint("TOPLEFT")
-			vpoF.top:SetPoint("BOTTOMRIGHT", vpoF, "TOPRIGHT", 0, -(db.top * yScale))
+			vpoF.top:SetPoint("BOTTOMRIGHT", vpoF, "TOPRIGHT", 0, -(db.top * scale))
 			vpoF.btm:ClearAllPoints()
 			vpoF.btm:SetPoint("BOTTOMLEFT")
-			vpoF.btm:SetPoint("TOPRIGHT", vpoF, "BOTTOMRIGHT", 0, (db.bottom * yScale))
+			vpoF.btm:SetPoint("TOPRIGHT", vpoF, "BOTTOMRIGHT", 0, (db.bottom * scale))
 			vpoF.left:ClearAllPoints()
-			vpoF.left:SetPoint("TOPLEFT", vpoF, "TOPLEFT", 0, -(db.top * yScale))
-			vpoF.left:SetPoint("BOTTOMRIGHT", vpoF, "BOTTOMLEFT", (db.left * yScale), (db.bottom * yScale))
+			vpoF.left:SetPoint("TOPLEFT", vpoF, "TOPLEFT", 0, -(db.top * scale))
+			vpoF.left:SetPoint("BOTTOMRIGHT", vpoF, "BOTTOMLEFT", (db.left * scale), (db.bottom * scale))
 			vpoF.right:ClearAllPoints()
-			vpoF.right:SetPoint("TOPRIGHT", vpoF, "TOPRIGHT", 0, -(db.top * yScale))
-			vpoF.right:SetPoint("BOTTOMLEFT", vpoF, "BOTTOMRIGHT", -(db.right * yScale), (db.bottom * yScale))
+			vpoF.right:SetPoint("TOPRIGHT", vpoF, "TOPRIGHT", 0, -(db.top * scale))
+			vpoF.right:SetPoint("BOTTOMLEFT", vpoF, "BOTTOMRIGHT", -(db.right * scale), (db.bottom * scale))
 			-- show the overlay frame
 			vpoF:Show()
 		elseif vpoF then
@@ -99,8 +98,7 @@ end
 
 function module:adjustViewPort(opt)
 
-	local xScale = db.XRes / 1050
-	local yScale = 768 / db.YRes
+	local scale = _G.UIParent:GetEffectiveScale()
 
 	if (opt == "init" and db.shown)
 	or (opt == "shown" and db.shown)
@@ -112,8 +110,8 @@ function module:adjustViewPort(opt)
 	or (opt == "YRes" and db.shown)
 	then
 		_G.WorldFrame:ClearAllPoints()
-		_G.WorldFrame:SetPoint("TOPLEFT", (db.left * xScale), -(db.top * yScale))
-		_G.WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * xScale), (db.bottom * yScale))
+		_G.WorldFrame:SetPoint("TOPLEFT", (db.left * scale), -(db.top * scale))
+		_G.WorldFrame:SetPoint("BOTTOMRIGHT", -(db.right * scale), (db.bottom * scale))
 		checkOverlay()
 	elseif opt == "overlay"
 	or opt == "colour"
@@ -178,20 +176,6 @@ function module:GetOptions()
 				name = aObj.L["VP Right"],
 				desc = aObj.L["Change Width of the Right Band"],
 				min = 0, max = 1800, step = 1,
-			},
-			XRes = {
-				type = "range",
-				order = 8,
-				name = aObj.L["VP XResolution"],
-				desc = aObj.L["Change X Resolution"],
-				min = 0, max = 1600, step = 2,
-			},
-			YRes = {
-				type = "range",
-				order = 9,
-				name = aObj.L["VP YResolution"],
-				desc = aObj.L["Change Y Resolution"],
-				min = 0, max = 2600, step = 2,
 			},
 			overlay = {
 				type = "toggle",
