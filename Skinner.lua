@@ -34,7 +34,8 @@ do
 
 	local betaInfo = {"8.0.0", 99999}
 	local ptrInfo = {"7.3.5", 25996}
-	local liveInfo = {"7.3.5", 26124}
+	local liveInfo = {"7.3.5", 26654}
+
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
@@ -386,6 +387,8 @@ function aObj:OnEnable()
 	self.addButtonBorder  = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
 	self.skinCheckButton  = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 
+	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
+	_G.C_Timer.After(0.5, function() self:RegisterEvent("ADDON_LOADED") end)
 	-- track when Auction House is opened
 	self:RegisterEvent("AUCTION_HOUSE_SHOW")
 	-- track when Player enters World (used for texture updates and UIParent child processing)
@@ -394,8 +397,6 @@ function aObj:OnEnable()
 	self:RegisterEvent("TRADE_SKILL_SHOW")
 	-- track when trade frame is opened (used by ProfessionTabs)
 	self:RegisterEvent("TRADE_SHOW")
-	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
-	_G.C_Timer.After(0.5, function() self:RegisterEvent("ADDON_LOADED") end)
 
 	if aObj.uLvl >= aObj.mLvl - 5
 	and not _G.IsTrialAccount()
@@ -441,6 +442,7 @@ function aObj:OnEnable()
 		end)
 	end
 
+	-- handle profile changes
 	_G.StaticPopupDialogs[aName .. "_Reload_UI"] = {
 		text = aObj.L["Confirm reload of UI to activate profile changes"],
 		button1 = _G.OKAY,
@@ -466,8 +468,6 @@ function aObj:OnEnable()
 		-- prompt for reload
 		_G.StaticPopup_Show(aName .. "_Reload_UI")
 	end
-
-	-- handle profile changes
 	self.db.RegisterCallback(self, "OnProfileChanged", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
