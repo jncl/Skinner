@@ -29,6 +29,8 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 	-- player level
 	aObj.uLvl = _G.UnitLevel("player")
+	-- Max Player Level
+	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
 
 	local betaInfo = {"8.0.0", 99999}
 	local ptrInfo = {"7.3.5", 25996}
@@ -394,6 +396,14 @@ function aObj:OnEnable()
 	self:RegisterEvent("TRADE_SHOW")
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
 	_G.C_Timer.After(0.5, function() self:RegisterEvent("ADDON_LOADED") end)
+
+	if aObj.uLvl >= aObj.mLvl - 5
+	and not _G.IsTrialAccount()
+	then
+		-- track when player levels up, to manage MainMenuBars' WatchBars' placement
+		self:RegisterEvent("PLAYER_LEVEL_UP")
+	end
+
 	-- skin the Blizzard frames
 	_G.C_Timer.After(self.prdb.Delay.Init, function() self:BlizzardFrames() end)
 	-- skin the loaded AddOns frames

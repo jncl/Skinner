@@ -262,3 +262,41 @@ function aObj:TRADE_SHOW()
 	self:UnregisterEvent("TRADE_SHOW")
 
 end
+
+function aObj:PLAYER_LEVEL_UP(...)
+--[[
+	arg1 - event name
+	arg2 - new player level
+	arg3 - hit points gained from levelling
+	arg4 - mana points gained from levelling
+	arg5 - Talent points gained from levelling
+	arg6-arg10 - attribute score increases from levelling:
+		Strength (6)
+		Agility (7)
+		Stamina (8)
+		Intellect (9)
+		Spirit (10)
+
+	Expansion Level number: (Level cap)
+		0 : Classic (60)
+		1 : Burning Crusade (70)
+		2 : Wrath of the Lich King (80)
+		3 : Cataclysm (85)
+		4 : Mists of Pandaria (90)
+		5 : Warlords of Draenor (100)
+		6 : Legion (110)
+		7 : Battle for Azeroth (120)
+--]]
+
+	local newPlayerLevel = select(2, ...)
+
+	if newPlayerLevel < aObj.mLvl then return end
+
+	-- max XP level reached, adjust watchbar positions
+	for _, bar in pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
+		bar.SetPoint = bar.OrigSetPoint
+		aObj:moveObject{obj=bar, y=2}
+		bar.SetPoint = _G.nop
+	end
+
+end
