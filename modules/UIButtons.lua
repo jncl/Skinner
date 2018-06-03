@@ -716,6 +716,7 @@ local function __addButtonBorder(opts)
 		tibt = Talent Item Button template
 		libt = Large Item Button template
 		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
+		seca = requires SecureActionbuttonTemplate to inherit from otherwise tainting occurs
 		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
 		ofs = offset value to use
@@ -767,7 +768,7 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the border frame
-	opts.obj.sbb = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil)
+	opts.obj.sbb = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or opts.seca and "SecureActionbuttonTemplate" or nil)
 
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
