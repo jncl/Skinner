@@ -319,7 +319,7 @@ local function skinTargetF()
 
 		-- move level text down, so it is more visible
 		module:RawHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
-			this.levelText:SetPoint("Center", targetLevel == 100 and 61 or 62, -17 + lOfs)
+			this.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
 		end, true)
 
 		--Boss Target Frames
@@ -372,8 +372,6 @@ local function skinPartyF()
 			pMF = "PartyMemberFrame" .. i
 			skinUnitFrame{obj=_G[pMF], ft=true, x1=2, y1=5, x2=-1}
 
-			-- aObj:moveObject{obj=_G[pMF .. "Portrait"], y=6}
-			-- TODO stop portrait being moved
 			_G[pMF .. "Background"]:SetTexture(nil)
 			_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G[pMF .. "VehicleTexture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -398,8 +396,6 @@ local function skinPartyF()
 		_G.C_Timer.After(0.1, function()
 			aObj:add2Table(aObj.ttList, _G.PartyMemberBuffTooltip)
 		end)
-		-- _G.PartyMemberBuffTooltip:SetBackdrop(nil)
-		-- skinUnitFrame{obj=_G.PartyMemberBuffTooltip, ofs=-4}
 
 		-- PartyMemberBackground
 		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y1=2, x2=1, y2=2}
@@ -409,14 +405,14 @@ local function skinPartyF()
 end
 local function changeUFOpacity()
 
-	for _, uF in _G.pairs(unitFrames) do
-		if _G[uF].sf then
-			_G[uF].sf:SetAlpha(db.alpha)
+	for i = 1 ,#unitFrames do
+		if _G[unitFrames[i]].sf then
+			_G[unitFrames[i]].sf:SetAlpha(db.alpha)
 		end
-		if _G[uF].totFrame
-		and _G[uF].totFrame.sf
+		if _G[unitFrames[i]].totFrame
+		and _G[unitFrames[i]].totFrame.sf
 		then
-			_G[uF].totFrame.sf:SetAlpha(db.alpha)
+			_G[unitFrames[i]].totFrame.sf:SetAlpha(db.alpha)
 		end
 	end
 	for i = 1, _G.MAX_BOSS_FRAMES do
