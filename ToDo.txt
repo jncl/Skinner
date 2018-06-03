@@ -11,5 +11,21 @@ Legend:
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
 
-	O	Make role icons square with a button border
+?	O	Make role icons square with a button border
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
+
+≈	O	Handle reaching Max XP level
+		- WatchBar re-alignment etc
+
+?	O	Eliminate taint from PartyFrames & BossFrames
+
+x	I	AppearanceTooltip, requested by user_131498
+		- make skin (model) look like dressingroom skin
+
+√	S	AllTheThings, requested by user_131498
+
+	I	LibDialog, reported by Pseudopath, 23.05.18
+√		- ..\AddOns\Skinner\AddonSkins\LibDialog.lua line 26: attempt to index global 'v' (a nil value)
+
+	I	WorldQuestTracker, reported by ItsVilu, 25.05.18
+√		- No Background to panel when objectives panel is skinned
