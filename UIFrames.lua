@@ -4341,7 +4341,9 @@ aObj.blizzFrames[ftype].SpellFlyout = function(self)
 		self:SecureHook(this, "SetBorderColor", function(this, r, g, b)
 			-- ignore if colour is default values
 			if r == 0.7 then return end
-			this.sf:SetBackdropBorderColor(r, g, b)
+			if this.sf then
+				this.sf:SetBackdropBorderColor(r, g, b)
+			end
 		end)
 		self:Unhook(this, "OnShow")
 	end)
