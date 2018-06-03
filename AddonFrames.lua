@@ -168,12 +168,11 @@ for i = 1, #raMods do
 end
 raMods = nil
 
--- local prev_addon
 function aObj:LoDFrames(addon)
 	-- self:Debug("LoDFrames: [%s, %s]", addon, self.lodAddons[addon])
 
-	-- check to see if it's a Blizzard LoD Frame
-	skinBLoD()
+	-- load Blizzard LoD skin if required
+	skinBLoD(addon)
 
 	-- used for User LoadOnDemand Addons
 	if self.lodAddons[addon] then self:checkAndRunAddOn(addon, true, self.lodAddons[addon]) end
