@@ -1065,6 +1065,50 @@ function aObj:setInactiveTab(tabSF)
 
 end
 
+function aObj:setupBackdrop()
+	
+	local dflts = self.db.defaults.profile
+
+	self.bdTexName = dflts.BdTexture
+	self.bdbTexName = dflts.BdBorderTexture
+	if self.prdb.BdDefault then
+		self.backdrop = {
+			bgFile = self.LSM:Fetch("background", self.bdTexName),
+			tile = dflts.BdTileSize > 0 and true or false, tileSize = dflts.BdTileSize,
+			edgeFile = self.LSM:Fetch("border", self.bdbTexName),
+			edgeSize = dflts.BdEdgeSize,
+			insets = {left = dflts.BdInset, right = dflts.BdInset, top = dflts.BdInset, bottom = dflts.BdInset},
+		}
+	else
+		if self.prdb.BdFile
+		and self.prdb.BdFile ~= "None"
+		then
+			self.bdTexName = aName .. " User Backdrop"
+			self.LSM:Register("background", self.bdTexName, self.prdb.BdFile)
+		else
+			self.bdTexName = self.prdb.BdTexture
+		end
+		if self.prdb.BdEdgeFile
+		and self.prdb.BdEdgeFile ~= "None"
+		then
+			self.bdbTexName = aName .. " User Border"
+			self.LSM:Register("border", self.bdbTexName, self.prdb.BdEdgeFile)
+		else
+			self.bdbTexName = self.prdb.BdBorderTexture
+		end
+		self.backdrop = {
+			bgFile = self.LSM:Fetch("background", self.bdTexName),
+			tile = self.prdb.BdTileSize > 0 and true or false, tileSize = self.prdb.BdTileSize,
+			edgeFile = self.LSM:Fetch("border", self.bdbTexName),
+			edgeSize = self.prdb.BdEdgeSize,
+			insets = {left = self.prdb.BdInset, right = self.prdb.BdInset, top = self.prdb.BdInset, bottom = self.prdb.BdInset},
+		}
+	end
+	
+end
+
+
+
 --@debug@
 function aObj:tableCount(table)
 

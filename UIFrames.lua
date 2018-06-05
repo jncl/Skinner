@@ -3964,6 +3964,14 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		_G.PetBattleFrame:Show()
 	end
 
+	-- hook this to reset tooltip gradients
+	self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(this)
+		for i = 1, #aObj.pbtt do
+			aObj.pbtt[i].tfade:SetParent(aObj.pbtt[i])
+			aObj.pbtt[i].tfade:SetGradientAlpha(aObj:getGradientInfo())
+		end
+	end)
+
 end
 
 aObj.blizzFrames[ftype].PetBattleTooltips = function(self)

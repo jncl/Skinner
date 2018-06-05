@@ -105,27 +105,6 @@ function aObj:OnInitialize()
 	self.LSM:Register("border", aName .. " Border", [[Interface\AddOns\]] .. aName .. [[\Textures\krsnik]])
 	-- register the statubar texture used by Nameplates
 	self.LSM:Register("statusbar", "Blizzard2", [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
-	-- register any User defined textures used
-	if self.prdb.BdFile
-	and self.prdb.BdFile ~= "None"
-	then
-		self.LSM:Register("background", aName .. " User Backdrop", self.prdb.BdFile)
-	end
-	if self.prdb.BdEdgeFile
-	and self.prdb.BdEdgeFile ~= "None"
-	then
-		self.LSM:Register("border", aName .. " User Border", self.prdb.BdEdgeFile)
-	end
-	if self.prdb.BgFile
-	and self.prdb.BgFile ~= "None"
-	then
-		self.LSM:Register("background", aName .. " User Background", self.prdb.BgFile)
-	end
-	if self.prdb.TabDDFile
-	and self.prdb.TabDDFile ~= "None"
-	then
-		self.LSM:Register("background", aName .. " User TabDDTexture", self.prdb.TabDDFile)
-	end
 
 	-- Heading, Body & Ignored Text colours
 	local c = self.prdb.HeadText
@@ -156,39 +135,7 @@ function aObj:OnInitialize()
 	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}, a = {}}
 
 	-- backdrop for Frames etc
-	self.bdTexName = dflts.BdTexture
-	self.bdbTexName = dflts.BdBorderTexture
-	if self.prdb.BdDefault then
-		self.backdrop = {
-			bgFile = self.LSM:Fetch("background", self.bdTexName),
-			tile = dflts.BdTileSize > 0 and true or false, tileSize = dflts.BdTileSize,
-			edgeFile = self.LSM:Fetch("border", self.bdbTexName),
-			edgeSize = dflts.BdEdgeSize,
-			insets = {left = dflts.BdInset, right = dflts.BdInset, top = dflts.BdInset, bottom = dflts.BdInset},
-		}
-	else
-		if self.prdb.BdFile
-		and self.prdb.BdFile ~= "None"
-		then
-			self.bdTexName = aName .. " User Backdrop"
-		else
-			self.bdTexName = self.prdb.BdTexture
-		end
-		if self.prdb.BdEdgeFile
-		and self.prdb.BdEdgeFile ~= "None"
-		then
-			self.bdbTexName = aName .. " User Border"
-		else
-			self.bdbTexName = self.prdb.BdBorderTexture
-		end
-		self.backdrop = {
-			bgFile = self.LSM:Fetch("background", self.bdTexName),
-			tile = self.prdb.BdTileSize > 0 and true or false, tileSize = self.prdb.BdTileSize,
-			edgeFile = self.LSM:Fetch("border", self.bdbTexName),
-			edgeSize = self.prdb.BdEdgeSize,
-			insets = {left = self.prdb.BdInset, right = self.prdb.BdInset, top = self.prdb.BdInset, bottom = self.prdb.BdInset},
-		}
-	end
+	self:setupBackdrop()
 
 	self.Backdrop = {}
 	self.Backdrop[1] = CopyTable(self.backdrop)
@@ -247,6 +194,7 @@ function aObj:OnInitialize()
 		and self.prdb.BgFile ~= "None"
 		then
 			self.bgTexName = aName .. " User Background"
+  		self.LSM:Register("background", self.bgTexName, self.prdb.BgFile)
 		else
 			self.bgTexName = self.prdb.BgTexture
 		end
@@ -277,6 +225,7 @@ function aObj:OnInitialize()
 	if self.prdb.TabDDFile
 	and self.prdb.TabDDFile ~= "None"
 	then
+		self.LSM:Register("background", aName .. " User TabDDTexture", self.prdb.TabDDFile)
 		self.itTex = self.LSM:Fetch("background", aName .. " User TabDDTexture")
 	else
 		self.itTex = self.LSM:Fetch("background", self.prdb.TabDDTexture)

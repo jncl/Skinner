@@ -201,6 +201,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	local dflts = self.db.defaults.profile
 	local bggns = _G.IsAddOnLoaded("Baggins") and self.Baggins and true or false
 
+	local function reskinIOFBackdrop()
+		-- show changes by reskinning the Interface Options Frame with the new settings
+		self:setupBackdrop()
+		_G.InterfaceOptionsFrame.sf:SetBackdrop(self.backdrop)
+		_G.InterfaceOptionsFrame.sf:SetBackdropColor(self.bColour[1], self.bColour[2], self.bColour[3], self.bColour[4])
+		_G.InterfaceOptionsFrame.sf:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+	end
+
 	self.optTables = {
 
 		General = {
@@ -395,6 +403,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			set = function(info, value)
 				db[info[#info]] = value == "" and "None" or value
 				if info[#info] ~= "BdDefault" then db.BdDefault = false end
+				reskinIOFBackdrop()
 			end,
 			args = {
 				BdDefault = {
@@ -1932,6 +1941,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		db.BdInset = dflts.BdInset
 		-- refresh panel
 		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Backdrop"]])
+		reskinIOFBackdrop()
 	end
 	self.optionsFrame[self.L["Background"]].default = function()
 		db.BgUseTex = dflts.BgUseTex
