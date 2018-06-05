@@ -1,3 +1,25 @@
+beta7.26654.1
+Jncl:
+  ToDo.txt
+  Updated comments
+  Updated SpellBookFrame skin
+  Update comment
+  Updated various Garrison Frame skins
+  Update QuestMap skin
+  Update SpellFlyout skin
+  Updated ChatBubbles skin
+  Updated QuestInfo skin
+  Updated UnitFrames code
+  Updated screen scale handling for the ViewPort
+  Updated Button skinning code
+  Handle PlayerLevelUp event for MaxLevel
+  Updated Ace3, GarrisonCommander, LibDialog, MasterPlan, NPCScan & WorldQuestTracker
+  Skinned AllTheThings
+  Updated checks for Beta/PTR/Live
+  Code tidy
+  Removed ClassTable in favour of Blizard one
+  Updated Change_History.txt
+
 beta7.26124.3
 Jncl:
 	ToDo.txt
