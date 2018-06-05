@@ -21,8 +21,3 @@ Legend:
 
 x	I	AppearanceTooltip, requested by user_131498
 		- make skin (model) look like dressingroom skin
-
-	I	Change settings without reload, requested by Ragnyr8, 04.06.18
-√		- add ability to change Frame settings, border size, inset etc without reloading
-
-√	S	AccountantClassic requested by fryguy5, 04.06.18
