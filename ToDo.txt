@@ -21,3 +21,43 @@ Legend:
 
 x	I	AppearanceTooltip, requested by user_131498
 		- make skin (model) look like dressingroom skin
+
+	Alpha/Beta (BfA) [8.0.1]
+	- Updated
+	  -> Addons files
+≈		- MacroUI
+≈		- PVPUI
+	  -> FrameXML files
+≈	  	- ChatConfig
+≈		- MainMenuBar
+≈		- MainMenuBarBagButtons
+≈		- MainMenuBarMicroButtons
+≈		- PaperDollFrame
+≈		- SocialToastsTemplate frames
+≈		- TalentUI
+≈		- WorldMapBountyBoard
+≈		- WorldMapFrame
+≈		- WorldMapFrameTemplates
+
+	- Added [N.B. DON'T forget to add translation phrases]
+	  -> Addons files
+≈		- AzeriteUI
+≈		- AzeriteRespecUI
+≈		- Channels
+≈		- Communities
+≈		- BFAMissionUI
+≈		- UIWidgets
+≈		- WarfrontUI
+	  -> FrameXML files
+≈	  	- ArtifactBar (MainMenuBar)
+≈		- AzeriteItemToasts
+≈		- ChannelFrameButtonMixin
+≈		- ExpBar (MainMenuBar)
+≈		- HonorBar (MainMenuBar)
+≈		- ReputationBar (MainMenuBar)
+≈		- StatusTrackingBar (MainMenuBar)
+≈		- StatusTrackingBarTemplates
+≈		- StatusTrackingManager
+≈		- VoiceToggleButton
+
+? LDB minimap icon tooltip not skinned

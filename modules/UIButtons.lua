@@ -142,7 +142,7 @@ function module:skinCloseButton(opts) -- text on button
 		opts.obj:GetDisabledTexture():SetAlpha(0)
 	end
 
-	aso = opts.aso or {}
+	local aso = opts.aso or {}
 
 	if opts.sap then
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
@@ -206,7 +206,7 @@ function module:skinExpandButton(opts)
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 
-	aso = opts.aso or {}
+	local aso = opts.aso or {}
 	aso.bd = 6
 	if not opts.as then
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=opts.sap, aso=aso}
@@ -267,7 +267,7 @@ function module:skinOtherButton(opts)
 	-- if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
 	-- if opts.obj:GetPushedTexture and opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 
-	aso = opts.aso or {}
+	local aso = opts.aso or {}
 	opts.obj:SetNormalFontObject(opts.font or module.fontP)
 	opts.obj:SetText(opts.text)
 	opts.obj:SetPushedTextOffset(-1, -1)
@@ -339,7 +339,7 @@ function module:skinStdButton(opts) -- standard panel button
 
 	local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
 
-	aso = opts.aso or {}
+	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 	if not opts.as then
 		opts.x1 = opts.x1 or 1

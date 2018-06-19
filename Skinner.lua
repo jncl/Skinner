@@ -14,7 +14,8 @@ do
 	lTab = nil
 
 	-- create the addon
-	_G[aName] = LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+	LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+	-- _G[aName] = LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
 
 	-- add callbacks
 	aObj.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
@@ -32,10 +33,9 @@ do
 	-- Max Player Level
 	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
 
-	local betaInfo = {"8.0.0", 99999}
+	local betaInfo = {"8.0.1", 26812}
 	local ptrInfo = {"7.3.5", 25996}
-	local liveInfo = {"7.3.5", 26654}
-
+	local liveInfo = {"7.3.5", 26822}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
@@ -44,21 +44,21 @@ do
 	aObj.isPatch = _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
 	-- check to see if running on PTR servers
 	aObj.isPTR = portal == "test" and true or false
-	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
+	-- aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
 	-- check to see if running on Beta servers
-	aObj.isBeta = portal == "beta" and true or false
+	-- aObj.isBeta = portal == "beta" and true or false
 	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
 	if aObj.isBeta then
 		aObj.isPTR = false
 		aObj.isPatch = false
 	end
+	if aObj.isPTR then
+		_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
+		aObj.isPatch = false
+	end
 --@alpha@
 	if aObj.isPatch then
-		if aObj.isPTR then
-			_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
-		else
-			_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any Patch changes to be applied?", 1, 0, 0, nil, true)
-		end
+		_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any Patch changes to be applied?", 1, 0, 0, nil, true)
 	end
 --@end-alpha@
 	liveInfo, ptrInfo, betaInfo, buildInfo, portal = nil, nil, nil, nil, nil
@@ -1199,15 +1199,15 @@ local function __skinMoneyFrame(opts)
 	end
 
 	local obj
-	for _, type in pairs{"Gold", "Silver", "Copper"} do
+	for key, type in pairs{"Gold", "Silver", "Copper"} do
 		obj = _G[opts.obj:GetName() .. type]
 		aObj:skinEditBox{obj=obj, regs={6, 7}, noHeight=true, noWidth=true, ign=true} -- N.B. region 6 is the icon, 7 is text
 		-- move label to the right for colourblind mode
-		if i ~= 1 or opts.moveGIcon then
+		if key ~= 1 or opts.moveGIcon then
 			aObj:moveObject{obj=obj.texture, x=10}
 			aObj:moveObject{obj=obj.label, x=10}
 		end
-		if not opts.noWidth and i ~= 1 then
+		if not opts.noWidth and key ~= 1 then
 			aObj:adjWidth{obj=obj, adj=5}
 		end
 		if type == "Gold" and opts.moveGEB then
@@ -1628,7 +1628,7 @@ function aObj:skinTooltip(tooltip)
 			ttSB = tooltip.SetBackdrop
 			tooltip.SetBackdrop = _G.nop
 		end
-		self:addSkinFrame{obj=tooltip, ft="a", kfs=true, aso={ng=true}}
+		self:addSkinFrame{obj=tooltip, ft=tooltip.ftype or "a", kfs=true, aso={ng=true}}
 		if _G.IsAddOnLoaded("ElvUI") then
 			tooltip.SetBackdrop = ttSB
 		end

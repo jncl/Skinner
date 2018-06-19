@@ -218,14 +218,14 @@ function aObj:add2Table(table, value)
 
 end
 
-aObj.pmTex = [[Interface\Common\UI-ModelControlPanel]]
+aObj.mpTex = [[Interface\Common\UI-ModelControlPanel]]
 function aObj:changeMinusPlusTex(obj, minus)
 --@alpha@
 	assert(obj, "Unknown object changeMinusPlusTex\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	local nTex = obj:GetNormalTexture()
-	nTex:SetTexture(aObj.pmTex)
+	nTex:SetTexture(aObj.mpTex)
 	if minus then
 		nTex:SetTexCoord(0.29687500, 0.54687500, 0.00781250, 0.13281250)
 	else
@@ -306,6 +306,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 		tObj[funcName] = nil
 		return
 	else
+		-- aObj:Debug("checkAndRun #2: [%s]", type(tObj[funcName]))
 		if type(tObj[funcName]) == "function" then
 			return safecall(funcName, tObj[funcName], nil, quiet)
 		else
@@ -1296,10 +1297,16 @@ function aObj:SetupCmds()
  end)
 
 	self:RegisterChatCommand("wai", function() -- where am I ?
-		_G.SetMapToCurrentZone()
-		local x, y=_G.GetPlayerMapPosition("player")
-		_G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f", _G.GetZoneText(), _G.GetSubZoneText(), x * 100, y * 100))
-		x, y = nil, nil
+		if not aObj.isBeta then
+			_G.SetMapToCurrentZone()
+			local x, y=_G.GetPlayerMapPosition("player")
+			_G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f", _G.GetZoneText(), _G.GetSubZoneText(), x * 100, y * 100))
+			x, y = nil, nil
+		else
+			local posTab = _G.C_Map.GetPlayerMapPosition(_G.C_Map.GetBestMapForUnit("player"), "player")
+			_G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f", _G.GetZoneText(), _G.GetSubZoneText(), posTab.x * 100, posTab.y * 100))
+			posTab = nil
+		end
 		return
 	end)
 
