@@ -1,4 +1,5 @@
 local aName, aObj = ...
+
 local _G = _G
 local ftype = "n"
 
@@ -178,6 +179,24 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
+end
+
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
+		if not self.db.profile.AzeriteRespecUI or self.initialized.AzeriteRespecUI then return end
+		self.initialized.AzeriteRespecUI = true
+
+		self:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot}
+		_G.AzeriteRespecFrame.ButtonFrame:DisableDrawLayer("BORDER")
+		self:removeMagicBtnTex(_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
+		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
+		_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true, ofs=1, y1=2}
+
+		self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton}
+
+	end
 
 end
 
@@ -579,7 +598,13 @@ aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
 			self:addButtonBorder{obj=this["Option" .. i].Rewards.Item, relTo=this["Option" .. i].Rewards.Item.Icon}
 			this["Option" .. i].Rewards.Item.Name:SetTextColor(self.BTr, self.BTg, self.BTb)
 			this["Option" .. i].Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BTr, self.BTg, self.BTb)
-			self:skinStdButton{obj=this["Option" .. i].OptionButton}
+			if not aObj.isBeta then
+				self:skinStdButton{obj=this["Option" .. i].OptionButton}
+			else
+				self:moveObject{obj=this["Option" .. i].Header, y=15}
+				self:skinStdButton{obj=this["Option" .. i].OptionButtonsContainer.OptionButton1}
+				self:skinStdButton{obj=this["Option" .. i].OptionButtonsContainer.OptionButton2}
+			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-13, y1=-13}
 		self:Unhook(this, "OnShow")

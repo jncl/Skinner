@@ -61,7 +61,7 @@ aObj.libsToSkin = {
 	["X-UI"] = "LibXUI",
 }
 -- store other AddOns not previously referenced, here so they can be enabled/disabled on the options panel
-otherAddons = {
+local otherAddons = {
 	"PetBattleTeams",
 	"ProfessionTabs_TF",
 	"ProfessionTabs_TSF",
@@ -104,6 +104,7 @@ local function skinBLoD(addon)
 	for fType, fTab in pairs(aObj.blizzLoDFrames) do
 		for fName, _ in pairs(fTab) do
 			bLoD = "Blizzard_" .. fName
+			-- aObj:Debug("skinBLoD: [%s, %s, %s]", addon, bLoD, IsAddOnLoaded(bLoD))
 			if (addon and addon == bLoD)
 			or IsAddOnLoaded(bLoD)
 			then
@@ -173,7 +174,7 @@ function aObj:LoDFrames(addon)
 	-- self:Debug("LoDFrames: [%s, %s]", addon, self.lodAddons[addon])
 
 	-- check to see if it's a Blizzard LoD Frame
-	skinBLoD()
+	skinBLoD(addon)
 
 	-- used for User LoadOnDemand Addons
 	if self.lodAddons[addon] then self:checkAndRunAddOn(addon, true, self.lodAddons[addon]) end

@@ -17,219 +17,39 @@ Legend:
 	Alpha/Beta (BfA) [8.0.1]
 	- Updated
 	  -> Addons files
-x		- AchievementUI
-x		- AdventureMap
-x		- AlliedRacesUI
-x		- ArenaUI
-x		- ArtifactRelicForgeUI
-x		- ArtifactUI
-?		- AuctionUI (IconOverlay)
-?		- AuctionUITemplates (IconOverlay x 3)
-x		- BarberShopUI
-x		- BattlefieldMinimap
-x		- BindingUI
-?		- BlackMarketUI (IconOverlay x 2)
-x		- BoostTutorial
-?		- CompactUnitFrameProfiles (Slider template)
-x		- Calendar
-x		- ChallengesUI
-x		- ClassTrial
-x		- Collections/PetCollection
-x		- Collections/Wardrobe
-x		- CombatLog
-x		- CombatText
-x		- Commentator/UnitFrame
-?		- Console/Console (CopyNoticeFrame)
-x		- Console/Console_AutoComplete
-x		- DebugTools/DebugTools
-x		- DebugTools/TableInspector
-x		- DebugTools/TableInspectorAttributeDataProvider
-?		- EncounterJournal/EncounterJournal (IconOverlay x 3)
-x		- EncounterJournal/LootJournal
-x		- FlightMap/FlightMap
-x		- FlightMap/FlightPathDataProvider
-x		- FlightMap/FM_ZoneSummaryDataProvider
-?		- GarrisonTemplates/GarrisonMissionTemplates (IconOverlay x 2)
-?		- GarrisonTemplates/GarrisonSharedTemplates (New Templates)
-x		- GarrisonUI/GarrisonBuildingUI
-?		- GarrisonUI/GarrisonLandingPage (IconOverlay)
-?		- GarrisonUI/GarrisonMissionUI (IconOverlay)
-x		- GarrisonUI/GarrisonMonumentUI
-x		- GarrisonUI/GarrisonShipyardUI
-x		- GuildUI/GuildRoster
-x		- GuildUI/GuildUI
-x		- InspectUI/InspectUI
-?		- InspectUI/InspectPVPFrame
-?		- LookingForGuildUI
-x		- MapCanvas/MapCanvas
-x		- MapCanvas/MapCanvasDetailLayer
-x		- MapCanvas/MapCanvas_DataProviderBase
-x		- NamePlates/NamePlates
-x		- NamePlates/NamePlatesCommentatorDisplay
-x		- BonusObjectiveTracker
-x 		- ObjectiveTracker/ObjectiveTracker
-x		- ObjectiveTracker/ScenarioObjectiveTracker
-x		- ObliterumUI
-x		- OrderHallMissionUI
-?		- PVPUI
-x		- PetBattleUI
-?		- QuestChoice (IconOverlay)
-x		- RaidUI
-x		- SharedMapDataProviders/AreaPOIDataProvider
-x		- SharedMapDataProviders/ClickToZoomDataProvider
-x		- SharedMapDataProviders/GroupMembersDataProvider
-x		- SharedMapDataProviders/WorldQuestDataProvider
-x		- SharedMapDataProviders/ZoneLabelDataProvider
-x		- StoreUI
-?		- TalentUI
-?		- TalkingHeadUI
-?		- TradeSkillUI/TradeSkillDetails (IconOverlay)
-x		- TradeSkillUI/TradeSkillRecipeButton
-x		- TradeSkillUI/TradeSkillRecipeList
-x		- TradeSkillUI/TradeSkillUI
-x		- Tutorial/TutorialDispatcher
-x		- Tutorial/TutorialKeyboardMouseFrame
-x		- Tutorial/TutorialLogic
-?		- VoidStorageUI (IconOverlay)
-x		- WowTokenUI
+≈		- MacroUI
+≈		- PVPUI
 	  -> FrameXML files
-x		- ActionBarController
-x		- ActionBarFrame
-?		- AlertFrameSystems (IconOverlay) [ContainedAlertSystem]
-x		- AlternatePowerBar
-x		- ArtifactToasts
-?		- AudioOptionsPanels
-x		- AutoComplete
-?		- BNet
-x		- Bindings
-x		- CharacterFrame
-x		- ChatFrame
-x		- CinematicFrame
-x		- CompactUnitFrame
-x		- Constants
-x		- ContainerFrame
-x		- DressUpFrames
-x		- DurabilityFrame
-x		- EquipmentFlyout
-x		- EquipmentManager
-x		- FloatingChatFrame
-x		- Fonts
-x		- FrameLocks
-?		- FriendsFrame
-x		- GameMenuFrame
-?		- GameTooltip (IconOverlay)
-x		- GarrisonBaseUtils
-x		- HelpFrame
-x		- InterfaceOptionsPanels
-?		- ItemButtonTemplate (IconOverlay)
-x		- ItemRef
-?		- LFGFrame (IconOverlay)
-x		- LFGList
-x		- LevelUpDisplay
-x		- Localization
-x		- LootFrame
-?		- MailFrame (IconOverlay)
-?		- MainMenuBar
-x		- MainMenuBarBagButtons
-?		- MainMenuBarMicroButtons
-x		- MerchantFrame
-x		- Minimap
-x		- MonkStaggerBar
-?		- MultiActionBars (New template)
-x		- NavigationBar
-x		- OptionsPanelTemplates
-x		- OverrideActionBar
-x		- PVPHelper
-x		- PVPHonorSystem
-?		- PaperDollFrame
-x		- PetActionBarFrame
-x		- PetFrame
-x		- PlayerFrame
-x		- QuestChoiceFrameMixin
-x		- QuestFrame
-x		- QuestInfo
-x		- QuestMapFrame
-x		- QuestUtils
-x		- QueueStatusFrame
-x		- QuickJoin
-?		- QuickJoinToast
-x		- RaidFrame
-x		- ReputationFrame
-x		- SecureCapsule
-x		- SecureTemplates
-x		- SpellActivationOverlay
-?		- StaticPopup
-x		- TalentFrameBase
-?		- TalentFrameTemplates (New templates)
-x		- TaxiFrame
-x		- TutorialFrame
-?		- UI.xsd
-x		- UIDropDownMenu
-?		- UIDropDownMenuTemplates
-x		- UIErrorsFrame
-?		- UIPanelTemplates (UIExpandingButtonMixin)
-x		- UIParent
-x		- UnitFrame
-x		- UnitPopup
-x		- UnitPowerBarAlt
-x		- VehicleSeatIndicator
-x		- VideoOptionsFrame
-x		- WorldMapBountyBoard
-x		- WorldMapFrame
-x		- WorldMapFrameCosmicButtons
-x		- WorldMapFrameTemplates
-x		- WorldMapPOIQuantizer
-x		- WorldStateFrame
+≈	  	- ChatConfig
+≈		- MainMenuBar
+≈		- MainMenuBarBagButtons
+≈		- MainMenuBarMicroButtons
+≈		- PaperDollFrame
+≈		- SocialToastsTemplate frames
+≈		- TalentUI
+≈		- WorldMapBountyBoard
+≈		- WorldMapFrame
+≈		- WorldMapFrameTemplates
 
-	- Added
+	- Added [N.B. DON'T forget to add translation phrases]
 	  -> Addons files
-x		- Lots more documentation files added
-?		- AzeriteTempUI
 ≈		- AzeriteUI
-?		- Channels
-?		- Communities
-?		- FlightMap: FM_AreaPOIDataProvider
-?		- FlightMap: FM_QuestDataProvider
-?		- FlightMap: FM_WorldQuestDataProvider
-?		- GarrisonUI: Blizzard_BFAMissionUI
-?		- GarrisonUI: Blizzard_OrderHallMissionUI
-?		- MapCanvas: MapCanvas_PinFrameLevelsManager
-≈		- PTRFeedback
-?		- PartyPoseUI
-?		- Lost of SharedMapDataProviders
+≈		- AzeriteRespecUI
+≈		- Channels
+≈		- Communities
+≈		- BFAMissionUI
 ≈		- UIWidgets
 ≈		- WarfrontUI
-?		- WorldMap
 	  -> FrameXML files
-?	  	- AlertFrameIntrinsic
-?	  	- ArtifactBar (MainMenuBar)
+≈	  	- ArtifactBar (MainMenuBar)
 ≈		- AzeriteItemToasts
-?		- AzeritePaperDollItemOverlay
-?		- AzeriteUtil
-?		- BattlegroundChatFilters
-?		- ChannelFrameButtonMixin
-?		- ChatAlertFrameMixin
-?		- CurrencyContainer
-?		- ExpBar (MainMenuBar)
-?		- GhostFrame
-?		- HonorBar (MainMenuBar)
-?		- MapUtil
-?		- ObjectAPI
-?		- ReputationBar (MainMenuBar)
-?		- SocialToast
-?		- StatusTrackingBar (MainMenuBar)
-?		- StatusTrackingBarTemplates
-?		- StatusTrackingManager
-?		- UIDropDownMenuTemplates
-?		- UnitPopupCustomControls
-?		- UnitPopupSlider
-?		- VehicleUtil
-?		- VoiceToggleButton
+≈		- ChannelFrameButtonMixin
+≈		- ExpBar (MainMenuBar)
+≈		- HonorBar (MainMenuBar)
+≈		- ReputationBar (MainMenuBar)
+≈		- StatusTrackingBar (MainMenuBar)
+≈		- StatusTrackingBarTemplates
+≈		- StatusTrackingManager
+≈		- VoiceToggleButton
 
-	- Deleted
-	  -> Addon files
-	  	- OrderHallUI/OrderHallMissionUI
-		- SharedMapDataProviders:ActiveQuestDataProvider
-	  -> FrameXML
-		- ChannelFrame
-		- VoiceChat
+? LDB minimap icon tooltip not skinned
