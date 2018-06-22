@@ -2918,13 +2918,11 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		self:addSkinFrame{obj=_G.ObjectiveTrackerFrame.BlocksFrame, ft=ftype, kfs=true, x1=-30, x2=4}
 		--hook this to handle displaying of the ObjectiveTrackerFrame BlocksFrame skin frame
 		self:SecureHook("ObjectiveTracker_Update", function(reason)
-			-- aObj:Debug("ObjectiveTracker_Update: [%s]", reason)
 			_G.ObjectiveTrackerFrame.BlocksFrame.sf:SetShown(_G.ObjectiveTrackerFrame.HeaderMenu:IsShown())
 		end)
 	end
 
 	self:SecureHook("ObjectiveTracker_AddBlock", function(block, forceAdd)
-		-- aObj:Debug("ObjectiveTracker_AddBlock: [%s, %s]", block, forceAdd)
 
 		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
 		self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}

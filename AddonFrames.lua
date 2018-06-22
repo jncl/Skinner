@@ -83,7 +83,6 @@ local function skinLibs()
 
 	-- skin library objects
 	for libName, skinFunc in pairs(aObj.libsToSkin) do
-		-- aObj:Debug("skinLibs: [%s, %s, %s]", libName, skinFunc, _G.LibStub(libName, true))
 		if _G.LibStub(libName, true) then
 			if _G.type(skinFunc) == "function" then
 				aObj:checkAndRun(libName, "l")
@@ -104,7 +103,6 @@ local function skinBLoD(addon)
 	for fType, fTab in pairs(aObj.blizzLoDFrames) do
 		for fName, _ in pairs(fTab) do
 			bLoD = "Blizzard_" .. fName
-			-- aObj:Debug("skinBLoD: [%s, %s, %s]", addon, bLoD, IsAddOnLoaded(bLoD))
 			if (addon and addon == bLoD)
 			or IsAddOnLoaded(bLoD)
 			then

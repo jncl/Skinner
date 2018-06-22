@@ -464,7 +464,6 @@ function aObj:findFrame2(parent, objType, ...)
 					if select("#", ...) > 2 then
 						-- base checks on position
 						point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
-						-- self:Debug("ff2 GetPoint: [%s, %s, %s, %s, %s, %s]", child, point, relativeTo, relativePoint, xOfs, yOfs)
 						xOfs = xOfs and _G.Round(xOfs) or 0
 						yOfs = yOfs and _G.Round(yOfs) or 0
 						if	point		  == select(1, ...)
@@ -479,7 +478,6 @@ function aObj:findFrame2(parent, objType, ...)
 					else
 						-- base checks on size
 						height, width = _G.Round(child:GetHeight()), _G.Round(child:GetWidth())
-						-- self:Debug("ff2 h/w: [%s, %s, %s]", child, height, width)
 						if	height == select(1, ...)
 						and width  == select(2, ...)
 						then
@@ -1067,7 +1065,7 @@ function aObj:setInactiveTab(tabSF)
 end
 
 function aObj:setupBackdrop()
-	
+
 	local dflts = self.db.defaults.profile
 
 	self.bdTexName = dflts.BdTexture
@@ -1105,10 +1103,8 @@ function aObj:setupBackdrop()
 			insets = {left = self.prdb.BdInset, right = self.prdb.BdInset, top = self.prdb.BdInset, bottom = self.prdb.BdInset},
 		}
 	end
-	
+
 end
-
-
 
 --@debug@
 function aObj:tableCount(table)
@@ -1170,8 +1166,9 @@ function aObj:CustomPrint(r, g, b, fstr, ...)
 end
 
 --@debug@
--- specify where debug messages go
+-- specify where debug messages go & increase buffer size
 aObj.debugFrame = _G.ChatFrame10
+aObj.debugFrame:SetMaxLines(10000)
 function aObj:Debug(fstr, ...)
 
 	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
@@ -1185,7 +1182,6 @@ end
 
 function aObj:DebugSpew(title, obj, fmtStr, ...)
 
-	-- aObj:Debug("DebugSpew: [%s, %s, %s, %s]", title, obj, fmtStr, ...)
 	self:Debug(title .. ": " .. fmtStr, ...)
 	if _G.Spew then _G.Spew(title, obj) end
 

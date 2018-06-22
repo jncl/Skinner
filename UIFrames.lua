@@ -667,7 +667,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, rewardData={}
 	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, rewardData)
-		aObj:DebugSpew("ScenarioAlertSystem", rewardData, "[%s, %s]", frame, rewardData)
+		-- aObj:DebugSpew("ScenarioAlertSystem", rewardData, "[%s, %s]", frame, rewardData)
 		self:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
 		skinDCSAlertFrames{obj=frame, ofs=-12}
 	end)
@@ -1108,7 +1108,6 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		_G.C_Timer.After(0.1, function()
 			 -- don't include forbidden Chat Bubbles (Bosses in Dungeons/Raids)
 			for k1, cBubble in pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
-				-- aObj:Debug("GetAllChatBubbles#1: [%s, %s]", k1, cBubble)
 				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, ofs=-8}
 				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
 				if cBubble:GetNumRegions() == 2 then
@@ -1139,7 +1138,6 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 
 	end
 
-	-- aObj:Debug("ChatBubbles: [%s, %s]", _G.GetCVar("chatBubbles"), _G.GetCVar("chatBubblesParty"))
 	-- if any chat bubbles options turned on
 	if _G.GetCVarBool("chatBubbles")
 	or _G.GetCVarBool("chatBubblesParty")
@@ -2016,7 +2014,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
-      -- aObj:Debug("SHS GarrisonShipyardFrame.MT.ML OnShow")
 	        this:SetScale(1.019) -- make larger to fit frame
 	        this.MapTexture:SetPoint("CENTER", this, "CENTER", 1, -10)
 			this.MapTexture:SetDrawLayer("BACKGROUND", 1) -- make sure it appears above skinFrame but below other textures
@@ -3476,11 +3473,10 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	-- hook this to skin Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
-		aObj:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel:GetName())
+		self:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel:GetName())
 
 		-- let AddOn skins know when IOF panel is going to be skinned
 		self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
-		-- aObj:Debug("IOL_DP fired Before_Skinning")
 
 		-- don't skin a panel twice
 		if not self.iofSkinnedPanels[panel] then
@@ -3490,7 +3486,6 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 		-- let AddOn skins know when IOF panel has been skinned
 		self.callbacks:Fire("IOFPanel_After_Skinning", panel)
-		-- aObj:Debug("IOL_DP fired After_Skinning")
 
 	end)
 
@@ -4885,7 +4880,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 	-- using a metatable to manage tooltips when they are added in different functions
 	_G.setmetatable(self.ttList, {__newindex = function(tab, key, tTip)
-		-- aObj:Debug("ttList __Newindex: [%s, %s, %s]", tab, key, tTip)
 		-- get object reference for tooltip, handle either strings or objects being passed
 		tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
 		-- store using tooltip object as the key
@@ -5102,7 +5096,6 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=aObj.isBeta and 0 or -1, x2=aObj.isBeta and -2 or 0}
 		if aObj.isBeta then
 			self:SecureHook(this, "TryShow", function(this)
-				aObj:Debug("WQCF TryShow")
 				for _, choice in pairs(this.Options) do
 					choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
 					choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
