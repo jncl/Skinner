@@ -390,10 +390,6 @@ function module:skinButton(opts)
 		return
 	end
 
---@debug@
-	beginTime = _G.debugprofilestop()
---@end-debug@
-
 	-- hide textures as they are changed in code
 	-- opts.obj:DisableDrawLayer("BACKGROUND")
 	-- if opts.obj.Left then -- UIPanelButtonTemplate and derivatives (MoP)
@@ -585,10 +581,6 @@ function module:skinButton(opts)
 	-- 	opts.obj.sb:SetParent(opts.parent or opts.obj:GetParent().sf)
 	-- end
 
---@debug@
-	timeUsed = _G.Round(_G.debugprofilestop() - beginTime)
-	aObj:Debug("Took %s milliseconds to skinButton %s", timeUsed, opts.obj)
---@end-debug@
 end
 
 local function getTexture(obj)
@@ -840,6 +832,7 @@ local function __skinCheckButton(opts)
 	Calling parameters:
 		obj = object (Mandatory)
 		nc = don't check to see if already skinned
+		hf = hook show/hide functions
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __sCB\n" .. debugstack(2, 3, 2))
@@ -860,7 +853,7 @@ local function __skinCheckButton(opts)
 
 	-- skin CheckButton
 	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
-	aObj:addSkinButton{obj=opts.obj, aso={bd=opts.obj:GetWidth() < 23 and 12 or 5, ng=true}, parent=opts.obj, nohooks=true, ofs=-4, y2=5}
+	aObj:addSkinButton{obj=opts.obj, aso={bd=opts.obj:GetWidth() < 23 and 12 or 5, ng=true}, parent=opts.obj, nohooks=not opts.hf, ofs=-4, y2=5}
 
 end
 function module:skinCheckButton(...)
