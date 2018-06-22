@@ -591,19 +591,20 @@ aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
 
 	self:SecureHookScript(_G.QuestChoiceFrame, "OnShow", function(this)
 		this.DummyString:SetTextColor(self.BTr, self.BTg, self.BTb)
-		for i = 1, 4 do
-			this["Option" .. i].Header.Background:SetTexture(nil)
-			this["Option" .. i].Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
-			this["Option" .. i].OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			self:addButtonBorder{obj=this["Option" .. i].Rewards.Item, relTo=this["Option" .. i].Rewards.Item.Icon}
-			this["Option" .. i].Rewards.Item.Name:SetTextColor(self.BTr, self.BTg, self.BTb)
-			this["Option" .. i].Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BTr, self.BTg, self.BTb)
+		-- for i = 1, 4 do
+		for _, choice in pairs(this.Options) do
+			choice.Header.Background:SetTexture(nil)
+			choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+			choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:addButtonBorder{obj=choice.Rewards.Item, relTo=choice.Rewards.Item.Icon}
+			choice.Rewards.Item.Name:SetTextColor(self.BTr, self.BTg, self.BTb)
+			choice.Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BTr, self.BTg, self.BTb)
 			if not aObj.isBeta then
-				self:skinStdButton{obj=this["Option" .. i].OptionButton}
+				self:skinStdButton{obj=choice.OptionButton}
 			else
-				self:moveObject{obj=this["Option" .. i].Header, y=15}
-				self:skinStdButton{obj=this["Option" .. i].OptionButtonsContainer.OptionButton1}
-				self:skinStdButton{obj=this["Option" .. i].OptionButtonsContainer.OptionButton2}
+				self:moveObject{obj=choice.Header, y=15}
+				self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton1}
+				self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton2}
 			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-13, y1=-13}
