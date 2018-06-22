@@ -392,13 +392,23 @@ local function skinPartyF()
 		end
 		pMF, pPF = nil, nil
 
-		-- PartyMember Buff Tooltip
-		_G.C_Timer.After(0.1, function()
-			aObj:add2Table(aObj.ttList, _G.PartyMemberBuffTooltip)
-		end)
-
 		-- PartyMemberBackground
 		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y1=2, x2=1, y2=2}
+
+	end
+
+end
+local function skinPartyTooltip()
+
+	if not aObj.ttList[_G.PartyMemberBuffTooltip]
+	and( db.pet or db.party)
+	then
+
+		aObj:addSkinFrame{obj=_G.PartyMemberBuffTooltip, ft=ftype, kfs=true, nb=true}
+
+		for i = 1, _G.MAX_PARTY_TOOLTIP_DEBUFFS do
+			_G["PartyMemberBuffTooltipDebuff" .. i]:DisableDrawLayer("OVERLAY")
+		end
 
 	end
 
@@ -496,18 +506,21 @@ function module:adjustUnitFrames(opt)
 		skinTargetF()
 		skinFocusF()
 		skinPartyF()
+		skinPartyTooltip()
 	elseif opt == "player" then
 		skinPlayerF()
 	elseif opt == "pet"
 	or opt == "petspec"
 	then
 		skinPetF()
+		skinPartyTooltip()
 	elseif opt == "target" then
 		skinTargetF()
 	elseif opt == "focus" then
 		skinFocusF()
 	elseif opt == "party" then
 		skinPartyF()
+		skinPartyTooltip()
 	elseif opt == "alpha" then
 		changeUFOpacity()
 	end
