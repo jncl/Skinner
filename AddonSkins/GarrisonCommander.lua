@@ -103,6 +103,7 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 			-- tabs on RHS
 			self:removeRegions(_G.GarrisonShipyardFrame.tabHP, {1})
 			self:removeRegions(_G.GarrisonShipyardFrame.tabMC, {1})
+			self:moveObject{obj=_G.GarrisonShipyardFrame.tabMC, {1}, y=-40}
 			self:removeRegions(_G.GarrisonShipyardFrame.tabQ, {1})
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.GarrisonShipyardFrame.tabHP}

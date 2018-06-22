@@ -7,7 +7,9 @@ aObj.libsToSkin["LibDBIcon-1.0"] = function(self) -- v r36
 	self.initialized.LibDBIcon = true
 
 	local lDBI = _G.LibStub("LibDBIcon-1.0", true)
-	if lDBI then
+	if lDBI
+	and lDBI.tooltip
+	then
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, lDBI.tooltip)

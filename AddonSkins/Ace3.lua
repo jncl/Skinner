@@ -114,7 +114,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:skinCloseButton{obj=obj.closebutton}
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "ScrollFrame" then
-				aObj:skinSlider{obj=obj.scrollbar}
+				aObj:skinSlider{obj=obj.scrollbar, wdth=-2}
 			elseif objType == "TreeGroup" then
 				aObj:skinSlider{obj=obj.scrollbar}
 				aObj:applySkin{obj=obj.border}
@@ -356,12 +356,13 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 
 			-- GarrisonCommander objects
 			elseif objType == "GMCGUIContainer" then
-				aObj:skinCloseButton{obj=obj.frame.CloseButton}
 				obj.frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
+				aObj:skinCloseButton{obj=obj.frame.CloseButton}
+				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, ofs=2, x2=1}
 
 			-- OrderHallCommander objects
 			elseif objType == "OHCGUIContainer" then
+				obj.frame.BackgroundTile:SetTexture(nil)
 				aObj:skinCloseButton{obj=obj.frame.Close}
 				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
 

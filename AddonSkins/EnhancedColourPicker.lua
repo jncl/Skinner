@@ -2,13 +2,18 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("EnhancedColourPicker") then return end
 local _G = _G
 
-function aObj:EnhancedColourPicker()
+aObj.addonsToSkin.EnhancedColourPicker = function(self) -- v 4
 
+	local eb
 	for _, v in _G.pairs{"R", "G", "B", "A"} do
-		local eb = _G["CPF" .. v]
+		eb = _G["CPF" .. v]
 		self:skinEditBox{obj=eb, regs={6 ,7}}
 		eb.text:SetPoint("LEFT", eb, "LEFT", 5, 0)
 		eb.label:SetPoint("RIGHT", eb, "LEFT")
 	end
+	eb = nil
+
+	self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 4)}
+	self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 5)}
 
 end
