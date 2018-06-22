@@ -19,10 +19,9 @@ Legend:
 
 ?	O	Eliminate taint from PartyFrames & BossFrames
 
-x	I	AppearanceTooltip, requested by user_131498
-		- make skin (model) look like dressingroom skin
+	O	Change texture for Scrollbar arrows
 
-	Alpha/Beta (BfA) [8.0.1]
+	Beta (BfA) [8.0.1]
 	- Updated
 	  -> Addons files
 ≈		- MacroUI
@@ -60,4 +59,5 @@ x	I	AppearanceTooltip, requested by user_131498
 ≈		- StatusTrackingManager
 ≈		- VoiceToggleButton
 
-? LDB minimap icon tooltip not skinned
+	I	AllTheThings, reported by NeoZeus, 20.06.18
+√		- Skinner\AddonSkins\AllTheThings-1.6.1.lua:24: attempt to index a nil value
