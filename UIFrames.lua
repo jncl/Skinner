@@ -12,8 +12,14 @@ local navalStageRegs = {1, 2, 3, 4}
 local cdStageRegs = {1, 2, 3, 4, 5, 6}
 local function skinMissionFrame(frame)
 
+	if aObj.isBeta then
+		frame.CloseButtonBorder:SetTexture(nil)
+		frame.TitleScroll:DisableDrawLayer("ARTWORK")
+		frame.TitleText:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
+		aObj:moveObject{obj=frame.TitleText, y=-4}
+	end
 	frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=3, x2=1, y2=-5}
+	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=aObj.isBeta and 0 or 3, x2=1, y2=aObj.isBeta and -6 or -5}
 	-- tabs
 	aObj:skinTabs{obj=frame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
 
@@ -2280,6 +2286,15 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				self:Unhook(this, "OnShow")
 			end)
 
+			self:SecureHookScript(this.MapTab, "OnShow", function(this)
+				this.ScrollContainer.Child.TiledBackground:SetTexture(nil)
+				self:Unhook(this, "OnShow")
+			end)
+			if this.MapTab:IsShown() then
+				this.MapTab:Hide()
+				this.MapTab:Show()
+			end
+
 			self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
 				skinMissionList(this)
 				self:Unhook(this, "OnShow")
@@ -3790,7 +3805,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	end
 
 	-- Garrison Landing Page Minimap button
-	makeSquare(_G.GarrisonLandingPageMinimapButton, 0.25, 0.76, 0.32, 0.685)
+	if not aObj.isBeta then
+		makeSquare(_G.GarrisonLandingPageMinimapButton, 0.25, 0.76, 0.32, 0.685)
+	end
 
 end
 
@@ -3908,6 +3925,13 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 	-- Warlock
 	for i = 1, #_G.ClassNameplateBarWarlockFrame.Shards do
 		_G.ClassNameplateBarWarlockFrame.Shards[i].ShardOff:SetTexture(nil)
+	end
+
+	if aObj.isBeta then
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, _G.NamePlateTooltip)
+		end)
 	end
 
 end
@@ -5090,7 +5114,9 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 				for i = 1, #choice.OptionButtonsContainer.Buttons do
 					self:skinStdButton{obj=choice.OptionButtonsContainer.Buttons[i]}
 				end
-				choice.Header.Ribbon:SetTexture(nil)
+				choice.Header:DisableDrawLayer("Border") -- ribbon texture
+				choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+				choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=aObj.isBeta and 0 or -1, x2=aObj.isBeta and -2 or 0}
