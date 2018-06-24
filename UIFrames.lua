@@ -3711,6 +3711,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		obj:GetHighlightTexture():SetTexture([[Interface\Buttons\ButtonHilight-Square]])
 		aObj:addSkinFrame{obj=obj, ft=ftype, aso=asopts, ofs=4}
 		-- make sure textures appear above skinFrame
+		_G.RaiseFrameLevelByTwo(obj)
 		_G.LowerFrameLevel(obj.sf)
 		-- alter the HitRectInsets to make it easier to activate
 		obj:SetHitRectInsets(-5, -5, -5, -5)
