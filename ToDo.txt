@@ -24,7 +24,8 @@ Legend:
 	Beta (BfA) [8.0.1]
 	- Updated
 	  -> Addons files
-≈		- MacroUI
+√		- MacroUI
+√		- OrderHallMissionUI moved to GarrisonUI
 ≈		- PVPUI
 	  -> FrameXML files
 ≈	  	- ChatConfig
@@ -40,24 +41,28 @@ Legend:
 
 	- Added [N.B. DON'T forget to add translation phrases]
 	  -> Addons files
-≈		- AzeriteUI
-≈		- AzeriteRespecUI
+√		- AzeriteUI
+√		- AzeriteRespecUI
+√		- BattlefieldMap
 ≈		- Channels
 ≈		- Communities
-≈		- BFAMissionUI
+√		- GarrisonUI:BFAMissionUI
+√		- GuildRecruitmentUI
+≈		- IslandsPartyPoseUI
+√		- IslandsQueueUI
+√		- ScrappingMachineUI
 ≈		- UIWidgets
-≈		- WarfrontUI
+≈		- WarfrontsPartyPoseUI
 	  -> FrameXML files
-≈	  	- ArtifactBar (MainMenuBar)
+√	  	- ArtifactBar (MainMenuBar)
+√		- AzeriteBar (MainMenuBar)
+≈		- AzeriteIslandsToast
 ≈		- AzeriteItemToasts
-≈		- ChannelFrameButtonMixin
-≈		- ExpBar (MainMenuBar)
-≈		- HonorBar (MainMenuBar)
-≈		- ReputationBar (MainMenuBar)
-≈		- StatusTrackingBar (MainMenuBar)
-≈		- StatusTrackingBarTemplates
-≈		- StatusTrackingManager
-≈		- VoiceToggleButton
+√		- ExpBar (MainMenuBar)
+√		- HonorBar (MainMenuBar)
+√		- ReputationBar (MainMenuBar)
+√		- StatusTrackingBar (MainMenuBar)
 
-	I	AllTheThings, reported by NeoZeus, 20.06.18
-√		- Skinner\AddonSkins\AllTheThings-1.6.1.lua:24: attempt to index a nil value
+	- Deleted
+√		- ArtifactRelicForge
+√		- BattlefieldMinimap
