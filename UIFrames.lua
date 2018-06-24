@@ -3185,15 +3185,18 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 			-- MultiBar Buttons
 			for _, type in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
-				for j = 1, _G.NUM_MULTIBAR_BUTTONS do
-					_G["MultiBar" .. type .. "Button" .. j].FlyoutBorder:SetTexture(nil)
-					_G["MultiBar" .. type .. "Button" .. j].FlyoutBorderShadow:SetTexture(nil)
-					_G["MultiBar" .. type .. "Button" .. j].Border:SetAlpha(0) -- texture changed in blizzard code
-					if not aObj.isBeta then
-						_G["MultiBar" .. type .. "Button" .. j .. "FloatingBG"]:SetAlpha(0)
+				local btn
+				for i = 1, _G.NUM_MULTIBAR_BUTTONS do
+					btn = _G["MultiBar" .. type .. "Button" .. i]
+					btn.FlyoutBorder:SetTexture(nil)
+					btn.FlyoutBorderShadow:SetTexture(nil)
+					btn.Border:SetAlpha(0) -- texture changed in blizzard code
+					if not btn.noGrid then
+						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 					end
-					self:addButtonBorder{obj=_G["MultiBar" .. type .. "Button" .. j], abt=true, sec=true}
+					self:addButtonBorder{obj=btn, abt=true, sec=true}
 				end
+				btn = nil
 			end
 
 		end
