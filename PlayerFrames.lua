@@ -358,14 +358,22 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:addSkinFrame{obj=this.searchPreviewContainer, ft=ftype, kfs=true, y1=4, y2=2}
 		_G.LowerFrameLevel(this.searchPreviewContainer.sf)
 		self:skinStatusBar{obj=this.searchProgressBar, fi=0, bgTex=this.searchProgressBar.bg}
-		for i = 1, 5 do
-			this["searchPreview" .. i]:SetNormalTexture(nil)
-			this["searchPreview" .. i]:SetPushedTexture(nil)
+		for i = 1, #this.searchPreview do
+			this.searchPreview[i]:SetNormalTexture(nil)
+			this.searchPreview[i]:SetPushedTexture(nil)
+			this.searchPreview[i].iconFrame:SetTexture(nil)
+			self:addButtonBorder{obj=this.searchPreview[i], relTo=this.searchPreview[i].icon}
 		end
 		this.showAllSearchResults:SetNormalTexture(nil)
 		this.showAllSearchResults:SetPushedTexture(nil)
-		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true}
-		self:skinSlider{obj=this.searchResults.scrollFrame.scrollBar, wdth=-4, size=3}
+		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, x1=-8, y1=-1, x2=1}
+		self:skinSlider{obj=this.searchResults.scrollFrame.scrollBar, wdth=-4}
+		for i = 1, #this.searchResults.scrollFrame.buttons do
+			this.searchResults.scrollFrame.buttons[i]:SetNormalTexture(nil)
+			this.searchResults.scrollFrame.buttons[i]:SetPushedTexture(nil)
+			this.searchResults.scrollFrame.buttons[i].iconFrame:SetTexture(nil)
+			self:addButtonBorder{obj=this.searchResults.scrollFrame.buttons[i], relTo=this.searchResults.scrollFrame.buttons[i].icon}
+		end
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=7, y2=-3}
 
