@@ -3899,9 +3899,10 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=0}
 			local frame = _G.PlayerTalentFrameTalents.PvpTalentFrame
 			frame:DisableDrawLayer("BACKGROUND")
-			frame:DisableDrawLayer("BORDER")
+			frame:DisableDrawLayer("OVERLAY")
+			self:nilTexture(frame.Ring, true) -- warmode button ring texture
 			for i = 1, #frame.Slots do
-				-- _G.PlayerTalentFrameTalents.PvpTalentFrame.Slots[i].Border:SetTexture(nil)
+				self:nilTexture(frame.Slots[i].Border, true) -- PvP talent ring texture
 			end
 			self:skinSlider{obj=frame.TalentList.ScrollFrame.ScrollBar, wdth=-4}
 			self:skinStdButton{obj=self:getChild(frame.TalentList, 4)}
@@ -3910,6 +3911,11 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			for i = 1, #frame.TalentList.ScrollFrame.buttons do
 				frame.TalentList.ScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
 			end
+			self:skinCloseButton{obj=frame.TrinketSlot.HelpBox.CloseButton}
+			self:skinCloseButton{obj=frame.WarmodeTutorialBox.CloseButton}
+			-- hook this to disable ModelScenes
+			self:RawHook(frame, "UpdateModelScene", function(this, ...)
+			end, true)
 			frame = nil
 		end
 		self:Unhook(this, "OnShow")
