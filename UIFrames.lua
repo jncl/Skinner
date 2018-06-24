@@ -223,6 +223,9 @@ local function skinMissionPage(frame)
 			aObj:removeRegions(frame.Followers[i], {1})
 			skinPortrait(frame.Followers[i].PortraitFrame)
 		end
+		if aObj.isBeta then
+			frame.Followers[i].DurabilityBackground:SetTexture(nil)
+		end
 	end
 
 	if frame.FollowerModel then
@@ -759,66 +762,146 @@ aObj.blizzFrames[ftype].AutoComplete = function(self)
 
 end
 
-aObj.blizzLoDFrames[ftype].BattlefieldMinimap = function(self)
-	if not self.prdb.BattlefieldMm.skin or self.initialized.BattlefieldMm then return end
-	self.initialized.BattlefieldMm = true
+if aObj.isBeta then
+	aObj.blizzFrames[ftype].AzeriteIslandsToast = function(self)
+		if not self.db.profile.AzeriteIslandsToast or self.initialized.AzeriteIslandsToast then return end
+		self.initialized.AzeriteIslandsToast = true
 
-	self:SecureHookScript(_G.BattlefieldMinimapTab, "OnShow", function(this)
-		self:keepRegions(this, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
-		self:moveObject{obj=_G.BattlefieldMinimapTabText, y=-1} -- move text down
-		self:addSkinFrame{obj=this, ft=ftype, noBdr=self.isTT, aso=self.isTT and {ba=1} or nil, y1=-7, y2=-7}
-		self:Unhook(this, "OnShow")
-	end)
+		-- aObj:Debug("AzeriteIslandsToast")
 
-	self:SecureHookScript(_G.BattlefieldMinimap, "OnShow", function(this)
-		-- use a backdrop with no Texture otherwise the map tiles are obscured
-		self:addSkinFrame{obj=this, ft=ftype, aso={bd=8}, x1=-4, y1=4, x2=-1, y2=-1}
-		if self.prdb.BattlefieldMm.gloss then
-			_G.RaiseFrameLevel(_G.BattlefieldMinimap.sf)
-		else
-			_G.LowerFrameLevel(_G.BattlefieldMinimap.sf)
-		end
-		_G.BattlefieldMinimapCorner:SetTexture(nil)
-		_G.BattlefieldMinimapBackground:SetTexture(nil)
+		-- .playerToastPool
+		-- .partyToastPool
 
-		-- change the skinFrame's opacity as required
-		self:SecureHook("BattlefieldMinimap_UpdateOpacity", function(opacity)
-			local alpha = 1.0 - _G.BattlefieldMinimapOptions.opacity
-			alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
-			_G.BattlefieldMinimap.sf:SetAlpha(alpha)
-			alpha= nil
-		end)
-
-		if IsAddOnLoaded("Capping") then
-			if _G.type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
-		end
-
-		if IsAddOnLoaded("Mapster") then
-			local mBM = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Mapster"):GetModule("BattleMap", true)
-			if mBM then
-				local function updBMVisibility(db)
-					if db.hideTextures then
-						_G.BattlefieldMinimap.sf:Hide()
-					else
-						_G.BattlefieldMinimap.sf:Show()
-					end
-				end
-				-- change visibility as required
-				updBMVisibility(mBM.db.profile)
-				self:SecureHook(mBM, "UpdateTextureVisibility", function(this)
-					updBMVisibility(this.db.profile)
-				end)
-			end
-			mBM = nil
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-	if _G.BattlefieldMinimap:IsShown() then
-		_G.BattlefieldMinimap:Hide()
-		_G.BattlefieldMinimap:Show()
 	end
 
+end
+
+if not aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].BattlefieldMinimap = function(self)
+		if not self.prdb.BattlefieldMm.skin or self.initialized.BattlefieldMm then return end
+		self.initialized.BattlefieldMm = true
+
+		self:SecureHookScript(_G.BattlefieldMinimapTab, "OnShow", function(this)
+			self:keepRegions(this, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
+			self:moveObject{obj=_G.BattlefieldMinimapTabText, y=-1} -- move text down
+			self:addSkinFrame{obj=this, ft=ftype, noBdr=self.isTT, aso=self.isTT and {ba=1} or nil, y1=-7, y2=-7}
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.BattlefieldMinimap, "OnShow", function(this)
+			-- use a backdrop with no Texture otherwise the map tiles are obscured
+			self:addSkinFrame{obj=this, ft=ftype, aso={bd=8}, x1=-4, y1=4, x2=-1, y2=-1}
+			if self.prdb.BattlefieldMm.gloss then
+				_G.RaiseFrameLevel(_G.BattlefieldMinimap.sf)
+			else
+				_G.LowerFrameLevel(_G.BattlefieldMinimap.sf)
+			end
+			_G.BattlefieldMinimapCorner:SetTexture(nil)
+			_G.BattlefieldMinimapBackground:SetTexture(nil)
+
+			-- change the skinFrame's opacity as required
+			self:SecureHook("BattlefieldMinimap_UpdateOpacity", function(opacity)
+				local alpha = 1.0 - _G.BattlefieldMinimapOptions.opacity
+				alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
+				_G.BattlefieldMinimap.sf:SetAlpha(alpha)
+				alpha= nil
+			end)
+
+			if IsAddOnLoaded("Capping") then
+				if _G.type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
+			end
+
+			if IsAddOnLoaded("Mapster") then
+				local mBM = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Mapster"):GetModule("BattleMap", true)
+				if mBM then
+					local function updBMVisibility(db)
+						if db.hideTextures then
+							_G.BattlefieldMinimap.sf:Hide()
+						else
+							_G.BattlefieldMinimap.sf:Show()
+						end
+					end
+					-- change visibility as required
+					updBMVisibility(mBM.db.profile)
+					self:SecureHook(mBM, "UpdateTextureVisibility", function(this)
+						updBMVisibility(this.db.profile)
+					end)
+				end
+				mBM = nil
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		if _G.BattlefieldMinimap:IsShown() then
+			_G.BattlefieldMinimap:Hide()
+			_G.BattlefieldMinimap:Show()
+		end
+
+	end
+else
+	aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
+		if not self.prdb.BattlefieldMap.skin or self.initialized.BattlefieldMap then return end
+		self.initialized.BattlefieldMap = true
+
+		self:SecureHookScript(_G.BattlefieldMapTab, "OnShow", function(this)
+			self:keepRegions(this, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
+			self:moveObject{obj=this.Text, y=-1} -- move text down
+			self:addSkinFrame{obj=this, ft=ftype, noBdr=self.isTT, aso=self.isTT and {ba=1} or nil, y1=-7, y2=-7}
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.BattlefieldMapFrame, "OnShow", function(this)
+			this.BorderFrame:DisableDrawLayer("BORDER")
+			this.BorderFrame:DisableDrawLayer("ARTWORK")
+			self:skinCloseButton{obj=this.BorderFrame.CloseButton}
+			-- use a backdrop with no Texture otherwise the map tiles are obscured
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=8}, ofs=4, y1=6, x2=2}
+			if self.prdb.BattlefieldMap.gloss then
+				_G.RaiseFrameLevel(this.sf)
+			else
+				_G.LowerFrameLevel(this.sf)
+			end
+
+			-- change the skinFrame's opacity as required
+			self:SecureHook(this, "RefreshAlpha", function(this)
+				aObj:Debug("RefreshAlpha: [%s, %s]", this, _G.BattlefieldMapOptions.opacity)
+				local alpha = 1.0 - _G.BattlefieldMapOptions.opacity
+				alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
+				_G.BattlefieldMapFrame.sf:SetAlpha(alpha)
+				alpha= nil
+			end)
+
+			if IsAddOnLoaded("Capping") then
+				if _G.type(self["Capping_ModMap"]) == "function" then self:Capping_ModMap() end
+			end
+
+			if IsAddOnLoaded("Mapster") then
+				local mBM = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("Mapster"):GetModule("BattleMap", true)
+				if mBM then
+					local function updBMVisibility(db)
+						if db.hideTextures then
+							_G.BattlefieldMapFrame.sf:Hide()
+						else
+							_G.BattlefieldMapFrame.sf:Show()
+						end
+					end
+					-- change visibility as required
+					updBMVisibility(mBM.db.profile)
+					self:SecureHook(mBM, "UpdateTextureVisibility", function(this)
+						updBMVisibility(this.db.profile)
+					end)
+				end
+				mBM = nil
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+		if _G.BattlefieldMapFrame:IsShown() then
+			_G.BattlefieldMapFrame:Hide()
+			_G.BattlefieldMapFrame:Show()
+		end
+
+	end
 end
 
 aObj.blizzLoDFrames[ftype].BindingUI = function(self)
@@ -1734,6 +1817,17 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	self:SecureHookScript(_G.EventTraceFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.EventTraceFrameScroll}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
+
+		if aObj.isBeta then
+			if self.modBtns then
+				self:SecureHook("EventTraceFrame_Update", function()
+					for i = 1, #_G.EventTraceFrame.buttons do
+						self:skinCloseButton{obj=_G.EventTraceFrame.buttons[i].HideButton, aso={bd=5, bba=0}}
+					end
+
+				end)
+			end
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -2573,6 +2667,90 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 end
 
+if aObj.isBeta then
+	local function skinPartyPoseFrame(frame)
+
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
+
+		-- RewardsAnimations
+			-- AzeriteGlow (ModelScene)
+
+		for reward in frame.rewardPool:EnumerateActive() do
+			reward.NameFrame:SetTexture(nil)
+			aObj:nilTexture(reward.IconBorder, true)
+			aObj:addButtonBorder{obj=reward, relTo=reward.Icon, reParent={reward.Count}}
+		end
+
+		-- ModelScene
+		frame.ModelScene.Bg:SetTexture(nil)
+		frame.ModelScene:DisableDrawLayer("BORDER")
+		frame.ModelScene:DisableDrawLayer("OVERLAY")
+		-- .ModelScene.shadowPool
+
+	end
+
+	aObj.blizzLoDFrames[ftype].IslandsPartyPoseUI = function(self)
+		if not self.db.profile.IslandsPartyPoseUI or self.initialized.IslandsPartyPoseUI then return end
+
+		if not _G.IslandsPartyPoseFrame then
+			_G.C_Timer.After(0.1, function()
+				self.blizzLoDFrames[ftype].IslandsPartyPoseUI(self)
+			end)
+			return
+		end
+
+		self.initialized.IslandsPartyPoseUI = true
+
+		aObj:Debug("IslandsPartyPoseUI: [%s]", _G.IslandsPartyPoseFrame)
+
+
+		skinPartyPoseFrame(_G.IslandsPartyPoseFrame)
+		-- Score
+		self:skinStdButton{obj=_G.IslandsPartyPoseFrame.LeaveButton}
+
+	end
+
+	aObj.blizzLoDFrames[ftype].IslandsQueueUI = function(self)
+		if not self.db.profile.IslandsQueueUI or self.initialized.IslandsQueueUI then return end
+
+		if not _G.IslandsQueueFrame then
+			_G.C_Timer.After(0.1, function()
+				self.blizzLoDFrames[ftype].IslandsQueueUI(self)
+			end)
+			return
+		end
+
+		self.initialized.IslandsQueueUI = true
+
+		local IQF = _G.IslandsQueueFrame
+
+		-- IslandCardsFrame
+		IQF.TitleBanner.Banner:SetTexture(nil)
+		for i = 1, #IQF.IslandCardsFrame.IslandCards do
+			-- IQF.IslandCardsFrame.IslandCards[i].Background:SetTexture(nil)
+			IQF.IslandCardsFrame.IslandCards[i].TitleScroll.Parchment:SetTexture(nil)
+		end
+
+		-- DifficultySelectorFrame
+		IQF.DifficultySelectorFrame.Background:SetTexture(nil)
+		self:skinStdButton{obj=IQF.DifficultySelectorFrame.QueueButton}
+		-- IQF.DifficultySelectorFrame.QueueButton.SelectedTexture
+
+		-- WeeklyQuest
+		local WQ = IQF.WeeklyQuest
+		WQ.OverlayFrame.Bar:SetTexture(nil)
+		self:skinStatusBar{obj=WQ.StatusBar, fi=0}
+		self:addButtonBorder{obj=WQ.QuestReward, relTo=WQ.QuestReward.Icon}
+		self:addSkinFrame{obj=WQ.QuestReward.Tooltip, ft=ftype, kfs=true, nb=true}
+		self:addButtonBorder{obj=WQ.QuestReward.Tooltip.ItemTooltip, relTo=WQ.QuestReward.Tooltip.ItemTooltip.Icon, reParent={WQ.QuestReward.Tooltip.ItemTooltip.Count}}
+
+		self:addSkinFrame{obj=IQF, ft=ftype, kfs=true, ofs=2, x2=1}
+		IQF, WQ = nil, nil
+
+	end
+
+end
+
 aObj.blizzFrames[ftype].ItemText = function(self)
 	if not self.prdb.ItemText or self.initialized.ItemText then return end
 	self.initialized.ItemText = true
@@ -2638,21 +2816,24 @@ aObj.blizzFrames[ftype].LevelUpDisplay = function(self)
 
 	if aObj.isBeta then
 		self:SecureHookScript(_G.AzeriteLevelUpToast, "OnShow", function(this)
-			_G.AzeriteLevelUpToast:DisableDrawLayer("BACKGROUND")
-			_G.AzeriteLevelUpToast.GlowLineBottomBurst:SetTexture(nil)
-			_G.AzeriteLevelUpToast.CloudyLineRight:SetTexture(nil)
-			_G.AzeriteLevelUpToast.CloudyLineRMover:SetTexture(nil)
-			_G.AzeriteLevelUpToast.CloudyLineLeft:SetTexture(nil)
-			_G.AzeriteLevelUpToast.CloudyLineLMover:SetTexture(nil)
-			_G.AzeriteLevelUpToast.BottomLineLeft:SetTexture(nil)
-			_G.AzeriteLevelUpToast.BottomLineRight:SetTexture(nil)
-			_G.AzeriteLevelUpToast.Stars1:SetTexture(nil)
-			_G.AzeriteLevelUpToast.Stars2:SetTexture(nil)
-			_G.AzeriteLevelUpToast.IconGlowBurst:SetTexture(nil)
-			_G.AzeriteLevelUpToast.IconStarBurst:SetTexture(nil)
-			_G.AzeriteLevelUpToast.WhiteIconGlow:SetTexture(nil)
-			_G.AzeriteLevelUpToast.WhiteStarBurst:SetTexture(nil)
+			this:DisableDrawLayer("BACKGROUND")
+			this.GlowLineBottomBurst:SetTexture(nil)
+			this.CloudyLineRight:SetTexture(nil)
+			this.CloudyLineRMover:SetTexture(nil)
+			this.CloudyLineLeft:SetTexture(nil)
+			this.CloudyLineLMover:SetTexture(nil)
+			this.BottomLineLeft:SetTexture(nil)
+			this.BottomLineRight:SetTexture(nil)
+			this.Stars1:SetTexture(nil)
+			this.Stars2:SetTexture(nil)
+			this.IconGlowBurst:SetTexture(nil)
+			this.IconStarBurst:SetTexture(nil)
+			this.WhiteIconGlow:SetTexture(nil)
+			this.WhiteStarBurst:SetTexture(nil)
 			self:Unhook(this, "OnShow")
+			-- hook this to disable ModelScene
+			self:RawHook(this, "SetupModelScene", function(this)
+			end, true)
 		end)
 	end
 
@@ -3813,6 +3994,14 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	-- Garrison Landing Page Minimap button
 	if not aObj.isBeta then
 		makeSquare(_G.GarrisonLandingPageMinimapButton, 0.25, 0.76, 0.32, 0.685)
+	else
+		self:SecureHook("GarrisonLandingPageMinimapButton_UpdateIcon", function(this)
+			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then
+				makeSquare(this, 0.30, 0.73, 0.26, 0.70)
+			else
+				makeSquare(this, 0.25, 0.76, 0.32, 0.685)
+			end
+		end)
 	end
 
 end
@@ -4656,6 +4845,33 @@ aObj.blizzFrames[ftype].ScenarioFinder = function(self)
 
 end
 
+if aObj.isBeta then
+	aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
+		if not self.db.profile.ScrappingMachineUI or self.initialized.ScrappingMachineUI then return end
+
+		if not _G.ScrappingMachineFrame then
+			_G.C_Timer.After(0.1, function()
+				self.blizzLoDFrames[ftype].ScrappingMachineUI(self)
+			end)
+			return
+		end
+
+		self.initialized.ScrappingMachineUI = true
+
+		_G.ScrappingMachineFrame.Background:SetTexture(nil)
+		_G.ScrappingMachineFrame.ItemSlots:DisableDrawLayer("ARTWORK")
+		for slot in _G.ScrappingMachineFrame.ItemSlots.scrapButtons:EnumerateActive() do
+			self:nilTexture(slot.IconBorder, true)
+			self:addButtonBorder{obj=slot, relTo=slot.Icon}
+		end
+		self:removeMagicBtnTex(_G.ScrappingMachineFrame.ScrapButton)
+		self:skinStdButton{obj=_G.ScrappingMachineFrame.ScrapButton}
+		self:addSkinFrame{obj=_G.ScrappingMachineFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+
+	end
+
+end
+
 aObj.blizzFrames[ftype].SecureTransferUI = function(self) -- forbidden
 	if not self.prdb.SecureTransferUI or self.initialized.SecureTransferUI then return end
 	self.initialized.SecureTransferUI = true
@@ -5140,10 +5356,23 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 end
 
 if aObj.isBeta then
-	aObj.blizzFrames[ftype].WarfrontUI = function(self)
-		if not self.db.profile.WarfrontUI or self.initialized.WarfrontUI then return end
-		self.initialized.WarfrontUI = true
 
+	aObj.blizzLoDFrames[ftype].WarfrontsPartyPoseUI = function(self)
+		if not self.db.profile.WarfrontsPartyPoseUI or self.initialized.WarfrontsPartyPoseUI then return end
+
+		if not _G.WarfrontsPartyPoseFrame then
+			_G.C_Timer.After(0.1, function()
+				self.blizzLoDFrames[ftype].WarfrontsPartyPoseUI(self)
+			end)
+			return
+		end
+
+		self.initialized.WarfrontsPartyPoseUI = true
+
+		aObj:Debug("IslandsPartyPoseUI: [%s]", _G.WarfrontsPartyPoseFrame)
+
+		skinPartyPoseFrame(_G.WarfrontsPartyPoseFrame)
+		self:skinStdButton{obj=_G.WarfrontsPartyPoseFrame.LeaveButton}
 
 	end
 

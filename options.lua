@@ -124,7 +124,9 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ArtifactUI           = true,
 		AuthChallengeUI      = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
 		AutoComplete         = true,
-		BattlefieldMm        = {skin = true, gloss = false},
+		AzeriteIslandsToast  = aObj.isBeta and true or nil,
+		BattlefieldMm        = aObj.isBeta and nil or {skin = true, gloss = false},
+		BattlefieldMap       = aObj.isBeta and {skin = true, gloss = false} or nil,
 		BNFrames             = true,
 		Calendar             = true,
 		ChallengesUI         = true,
@@ -152,6 +154,8 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		GMSurveyUI           = true,
 		GuildBankUI          = true,
 		HelpFrame            = true,
+		IslandsPartyPoseUI   = aObj.isBeta and true or nil,
+		IslandsQueueUI   	 = aObj.isBeta and true or nil,
 		ItemText             = true,
 		LevelUpDisplay       = true,
 		LossOfControl        = true,
@@ -172,6 +176,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		QueueStatusFrame     = true,
 		RaidFrame            = true, -- (inc. LFR)
 		ScriptErrors         = true,
+		ScrappingMachineUI   = aObj.isBeta and true or nil,
 		SecureTransferUI	 = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
 		SocialUI             = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
 		SplashFrame          = true,
@@ -183,6 +188,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		Tutorial             = true,
 		VoiceChat			 = aObj.isBata and true or nil,
 		WarboardUI           = true,
+		WarfrontsPartyPoseUI = aObj.isBeta and true or nil,
 		WorldMap             = {skin = true, size = 1},
 		WorldState           = true,
 		WowTokenUI			 = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
@@ -1310,7 +1316,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Auto Complete"],
 					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
-				BattlefieldMm = {
+				AzeriteIslandsToast = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Azerite Islands Toast"],
+					desc = self.L["Toggle the skin of the Azerite Islands Toast Frame"],
+				} or nil,
+				BattlefieldMm = not aObj.isBeta and {
 					type = "group",
 					inline = true,
 					order = -1,
@@ -1344,7 +1355,42 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 							order = 2,
 						},
 					},
-				},
+				} or nil,
+				BattlefieldMap = aObj.isBeta and {
+					type = "group",
+					inline = true,
+					order = -1,
+					name = self.L["Battlefield Map Options"],
+					get = function(info) return db.BattlefieldMap[info[#info]] end,
+					set = function(info, value)
+						db.BattlefieldMap[info[#info]] = value
+						if info[#info] == "skin" then
+							if _G.IsAddOnLoaded("Blizzard_BattlefieldMap") then
+								self:checkAndRun("BattlefieldMap", "u", true)
+							end
+						elseif info[#info] == "gloss" and _G.BattlefieldMap.sf then
+							if value then
+								_G.RaiseFrameLevel(_G.BattlefieldMap.sf)
+							else
+								_G.LowerFrameLevel(_G.BattlefieldMap.sf)
+							end
+						end
+					end,
+					args = {
+						skin = {
+							type = "toggle",
+							name = self.L["Skin Frame"],
+							desc = self.L["Toggle the skin of the Battlefield Map Frame"],
+							order = 1,
+						},
+						gloss = {
+							type = "toggle",
+							name = self.L["Gloss Effect"],
+							desc = self.L["Toggle the Gloss Effect for the Battlefield Map"],
+							order = 2,
+						},
+					},
+				} or nil,
 				BNFrames = {
 					type = "toggle",
 					name = self.L["BattleNet Frames"],
@@ -1509,7 +1555,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Guild Bank Frame"],
 					desc = self.L["Toggle the skin of the Guild Bank Frame"],
 				},
-				helpframes = {
+				HelpFrame = {
 					type = "group",
 					inline = true,
 					order = -1,
@@ -1527,6 +1573,16 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						},
 					},
 				},
+				IslandsPartyPoseUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Islands Party Pose UI"],
+					desc = self.L["Toggle the skin of the Islands Party Pose UI"],
+				} or nil,
+				IslandsQueueUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Islands Queue UI"],
+					desc = self.L["Toggle the skin of the Islands Queue UI"],
+				} or nil,
 				ItemText = {
 					type = "toggle",
 					name = self.L["Item Text Frame"],
@@ -1720,6 +1776,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Raid Frame"],
 					desc = self.L["Toggle the skin of the Raid Frame"],
 				},
+				ScrappingMachineUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Scrapping Machine UI"],
+					desc = self.L["Toggle the skin of the Scrapping Machine UI"],
+				} or nil,
 				ScriptErrors = {
 					type = "toggle",
 					name = self.L["Script Errors Frame"],
@@ -1815,6 +1876,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Warboard UI"],
 					desc = self.L["Toggle the skin of the Warboard UI"],
 				},
+				WarfrontsPartyPoseUI = aObj.isBeta and {
+					type = "toggle",
+					name = self.L["Warfronts Party Pose UI"],
+					desc = self.L["Toggle the skin of the Warfronts Party Pose UI"],
+				} or nil,
 				WorldMap = {
 					type = "group",
 					inline = true,

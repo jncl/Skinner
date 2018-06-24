@@ -263,6 +263,10 @@ function aObj:OnEnable()
 		_G.wipe(self.oocTab)
 	end)
 
+	if aObj.isBeta then
+		self.prdb.BattlefieldMap = self.prdb.BattlefieldMm
+		self.prdb.BattlefieldMm = nil
+	end
 	-- change option name
 	if self.prdb.ClassColours then
 		self.prdb.ClassColour = self.prdb.ClassColours
@@ -680,7 +684,7 @@ local function __addSkinFrame(opts)
 			aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft}
 		else
 			-- skin the CloseButton if it exists
-			local cBtn = opts.obj.CloseButton or opts.obj:GetName() and _G[opts.obj:GetName() .. "CloseButton"]
+			local cBtn = opts.obj.CloseButton or opts.obj.closeButton or opts.obj:GetName() and _G[opts.obj:GetName() .. "CloseButton"]
 			if cBtn then
 				aObj:skinCloseButton{obj=cBtn}
 			end
