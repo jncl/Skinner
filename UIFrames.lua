@@ -1767,6 +1767,8 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.FrameStackTooltip)
 		self:add2Table(self.ttList, _G.EventTraceTooltip)
+		_G.FrameStackTooltip.SetBackdrop = _G.nop
+		_G.EventTraceTooltip.SetBackdrop = _G.nop
 	end)
 
 end
