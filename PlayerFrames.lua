@@ -3304,6 +3304,10 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self)
 			self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sec=true, es=20}
 		end
 
+		self:addButtonBorder{obj=_G.OverrideActionBarPitchFramePitchUpButton}
+		self:addButtonBorder{obj=_G.OverrideActionBarPitchFramePitchDownButton}
+
+
 		self:Unhook(this, "OnShow")
 	end)
 
