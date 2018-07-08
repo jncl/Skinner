@@ -285,7 +285,7 @@ local function addSkinFrame(frame, ft)
 	-- create a texture to show UnitClassification
 	fo.ucTex = fo:CreateTexture(nil, "ARTWORK")
 	fo.ucTex:SetSize(80, 50)
-	fo.ucTex:SetPoint("CENTER", isBoss and 36 or 86, (isBoss and -15 or -22) + lOfs)
+	fo.ucTex:SetPoint("CENTER", isBoss and 36 or 86, (isBoss and -15 or -25) + lOfs)
 
 	-- casting bar
 	aObj:adjHeight{obj=fo.spellbar, adj=2}
