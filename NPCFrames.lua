@@ -343,7 +343,7 @@ aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	self:SecureHookScript(_G.FlightMapFrame, "OnShow", function(this)
 		self:keepFontStrings(this.BorderFrame)
 		self:moveObject{obj=_G.FlightMapFrameCloseButton, x=3, y=1}
-		self:addSkinFrame{obj=this, ft=ftype, ofs=3, x2=4}
+		self:addSkinFrame{obj=this, ft=ftype, ofs=4, y1=3}
 		this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 		-- hook this to remove ZoneLabel background texture
@@ -884,9 +884,12 @@ aObj.blizzFrames[ftype].TaxiFrame = function(self)
 	self.initialized.TaxiFrame = true
 
 	self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
-		this:DisableDrawLayer("OVERLAY")
+		self:removeRegions(this, {1, 2, 3}) -- 1st 3 overlay textures
 		this:DisableDrawLayer("BORDER")
 		self:addSkinFrame{obj=this, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
+		-- resize map to fit skin frame
+		this.InsetBg:SetPoint("TOPLEFT", 0, -24)
+		this.InsetBg:SetPoint("BOTTOMRIGHT", 0 ,0)
 		self:Unhook(this, "OnShow")
 	end)
 

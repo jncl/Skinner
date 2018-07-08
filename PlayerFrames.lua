@@ -153,6 +153,13 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 				end
 			end)
 
+			if aObj.modChkBtns
+			and btn.tracked
+			then
+				btn.tracked:SetSize(20, 20)
+				aObj:skinCheckButton{obj=btn.tracked, hf=true}
+			end
+
 		end
 		local function cleanButtons(frame, type)
 
@@ -792,7 +799,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				_G.C_Timer.After(0.1, function()
 					self:add2Table(self.ttList, this)
 				end)
-				self:addButtonBorder{obj=_G.ReputationParagonTooltip.ItemTooltip, relTo=_G.ReputationParagonTooltip.ItemTooltip.Icon, reParent={_G.ReputationParagonTooltip.ItemTooltip.Count}}
 				self:removeRegions(_G.ReputationParagonTooltipStatusBar.Bar, {1, 2, 3, 4, 5}) -- 6 is text
 				self:skinStatusBar{obj=_G.ReputationParagonTooltipStatusBar.Bar, fi=0, bgTex=self:getRegion(_G.ReputationParagonTooltipStatusBar.Bar, 7)}
 				self:Unhook(this, "OnShow")
@@ -1364,8 +1370,7 @@ if aObj.isBeta then
 			-- CommunitiesAddDialog
 			-- CommunitiesCreateDialog
 
-		cFrame.PortraitOverlay:DisableDrawLayer("OVERLAY")
-		cFrame.PortraitOverlay:DisableDrawLayer("ARTWORK")
+		self:keepFontStrings(cFrame.PortraitOverlay)
 
 		cFrame.MaximizeMinimizeFrame:DisableDrawLayer("BACKGROUND")
 		self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text="↕"}
@@ -1402,8 +1407,6 @@ if aObj.isBeta then
 		self:skinDropDown{obj=cFrame.StreamDropDownMenu}
 		self:skinDropDown{obj=cFrame.GuildMemberListDropDownMenu}
 		self:skinDropDown{obj=cFrame.CommunitiesListDropDownMenu}
-
-		self:addButtonBorder{obj=cFrame.VoiceChatHeadset.Button}
 
 		self:SecureHookScript(cFrame.MemberList.ColumnDisplay, "OnShow", function(this)
 			skinColumnDisplay(this)
@@ -1516,6 +1519,7 @@ if aObj.isBeta then
 		end)
 
 		self:skinStdButton{obj=cFrame.AddToChatButton}
+		self:moveObject{obj=cFrame.AddToChatButton, x=-6, y=-6}
 		self:skinStdButton{obj=cFrame.InviteButton}
 
 		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.CommunitiesSettingsButton}
@@ -1539,6 +1543,21 @@ if aObj.isBeta then
 		self:addSkinFrame{obj=cFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
 
 		cFrame = nil
+
+		self:SecureHookScript(_G.CommunitiesAvatarPickerDialog, "OnShow", function(this)
+			self:skinSlider{obj=this.ScrollFrame.ScrollBar, rt="background"}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+			self:skinStdButton{obj=this.CancelButton}
+			self:skinStdButton{obj=this.OkayButton}
+			if self.modBtnBs then
+				for i = 1, 5 do
+					for j = 1, 6 do
+						self:addButtonBorder{obj=this.ScrollFrame.avatarButtons[i][j]}
+					end
+				end
+			end
+			self:Unhook(this, "OnShow")
+		end)
 
 		self:SecureHookScript(_G.CommunitiesTicketManagerDialog, "OnShow", function(this)
 			self:skinEditBox{obj=this.LinkBox, regs={6}} -- 6 is text
@@ -1638,6 +1657,7 @@ if aObj.isBeta then
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 			self:Unhook(this, "OnShow")
 		end)
+
 
 	end
 
@@ -2266,13 +2286,14 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:addSkinFrame{obj=_G.ChannelFrameDaughterFrame, ft=ftype, kfs=true, nb=true, x1=2, y1=-6, x2=-5, y2=4}
 			self:skinDropDown{obj=_G.ChannelListDropDown}
 		else
-			self:removeInset(_G.ChannelFrame.LeftInset)
-			self:removeInset(_G.ChannelFrame.RightInset)
-			self:skinStdButton{obj=_G.ChannelFrame.NewButton}
-			self:skinStdButton{obj=_G.ChannelFrame.SettingsButton}
-			self:skinSlider{obj=_G.ChannelFrame.ChannelList.ScrollBar, wdth=-4}
-			self:skinSlider{obj=_G.ChannelFrame.ChannelRoster.ScrollFrame.scrollBar, wdth=-4}
-			self:addSkinFrame{obj=_G.ChannelFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-1}
+			self:removeInset(this.LeftInset)
+			self:removeInset(this.RightInset)
+			self:skinStdButton{obj=this.NewButton}
+			self:skinStdButton{obj=this.SettingsButton}
+			self:skinSlider{obj=this.ChannelList.ScrollBar, wdth=-4}
+			self:skinSlider{obj=this.ChannelRoster.ScrollFrame.scrollBar, wdth=-4}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-1}
+			self:skinCloseButton{obj=this.Tutorial.CloseButton}
 			-- Create Channel Popup
 			self:skinEditBox{obj=_G.CreateChannelPopup.Name, regs={6}} -- 6 is text
 			self:skinEditBox{obj=_G.CreateChannelPopup.Password, regs={6}} -- 6 is text
@@ -2317,6 +2338,22 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			for communityChannel in this.communityChannelButtonPool:EnumerateActive() do
 			end
 		end)
+
+		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
+			self:skinStdButton{obj=this.AcceptButton}
+			self:addSkinFrame{obj=this, ft=ftype, nb=true}
+			self:hookSocialToastFuncs(this)
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.VoiceChatChannelActivatedNotification, "OnShow", function(this)
+			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
+			self:addSkinFrame{obj=this, ft=ftype, nb=true}
+			self:hookSocialToastFuncs(this)
+			self:Unhook(this, "OnShow")
+		end)
+
 	end
 
 end
@@ -2601,11 +2638,10 @@ aObj.blizzFrames[ftype].GuildInvite = function(self)
 	self.initialized.GuildInvite = true
 
 	self:SecureHookScript(_G.GuildInviteFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
-		this:DisableDrawLayer("BORDER")
 		_G.GuildInviteFrameTabardBorder:SetTexture(nil)
-		this:DisableDrawLayer("OVERLAY")
-		self:addSkinFrame{obj=this, ft=ftype}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+		self:skinStdButton{obj=_G.GuildInviteFrameJoinButton}
+		self:skinStdButton{obj=_G.GuildInviteFrameDeclineButton}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3039,7 +3075,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end)
 	end
 
-	self:SecureHook("ObjectiveTracker_AddBlock", function(block, forceAdd)
+	local function skinObjectiveBlocks()
 
 		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
 		self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
@@ -3142,8 +3178,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		-- ScenarioObjectiveBlock
 
 		-- ScenarioStageBlock
-		_G.ScenarioStageBlock.NormalBG:SetAlpha(0) -- N.B. Texture is changed
-		_G.ScenarioStageBlock.FinalBG:SetAlpha(0) -- N.B. Texture is changed
+		self:nilTexture(_G.ScenarioStageBlock.NormalBG, true)
+		self:nilTexture(_G.ScenarioStageBlock.FinalBG, true)
 		self:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, y1=-1, x2=41, y2=7}
 
 		-- ScenarioChallengeModeBlock
@@ -3172,8 +3208,20 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 			skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
 		end)
 
-		self:Unhook("ObjectiveTracker_AddBlock")
-	end)
+		if aObj.isBeta then
+			self:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton}
+		end
+
+	end
+
+	if _G.ObjectiveTrackerFrame:IsShown() then
+		skinObjectiveBlocks()
+	else
+		self:SecureHook("ObjectiveTracker_AddBlock", function(block, forceAdd)
+			skinObjectiveBlocks()
+			self:Unhook("ObjectiveTracker_AddBlock")
+		end)
+	end
 
 	-- remove Shadow texture
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
@@ -3394,6 +3442,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			end
 			for _, bName in pairs(btns) do
 				this.BonusFrame[bName .. "Button"].NormalTexture:SetTexture(nil)
+				this.BonusFrame[bName .. "Button"]:SetPushedTexture(nil)
 				this.BonusFrame[bName .. "Button"].Reward.Border:SetTexture(nil)
 			end
 			if not aObj.isBeta then
@@ -3431,7 +3480,6 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		end)
 
 		if not aObj.isBeta then
-			-- War Games Frame
 			self:SecureHookScript(_G.WarGamesFrame, "OnShow", function(this)
 				this.InfoBG:SetTexture(nil)
 				self:removeInset(this.RightInset)
@@ -3455,6 +3503,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			_G.PVPQueueFrame.HonorInset:DisableDrawLayer("BACKGROUND")
 			_G.PVPQueueFrame.HonorInset.HonorLevelDisplay:DisableDrawLayer("BORDER")
 			_G.PVPQueueFrame.HonorInset.HonorLevelDisplay.NextRewardLevel:DisableDrawLayer("BORDER")
+			_G.PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame.Ring:SetTexture(nil)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -3462,7 +3511,9 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 
 	-- tooltips
 	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.PVPRewardTooltip)
+		if not aObj.isBeta then
+			self:add2Table(self.ttList, _G.PVPRewardTooltip)
+		end
 		self:add2Table(self.ttList, _G.ConquestTooltip)
 	end)
 

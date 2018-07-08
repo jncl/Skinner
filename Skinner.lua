@@ -27,24 +27,24 @@ do
 
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
-	-- player level
+	-- player levels
 	aObj.uLvl = _G.UnitLevel("player")
-	-- Max Player Level
+	-- Max Player Level`
 	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
 
-	local betaInfo = {"8.0.1", 26892}
-	local ptrInfo = {"8.0.1", 26892}
-	local liveInfo = {"7.3.5", 26899}
+	local betaInfo = {"8.0.1", 27026}
+	local ptrInfo = {"8.0.1", 26970}
+	local liveInfo = {"7.3.5", 26972}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
 --@end-alpha@
 	-- check to see if running on Beta servers
 	-- aObj.isBeta = portal == "beta" and true or false
-	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
+	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) >= betaInfo[2] and true or false
 	-- check to see if running on PTR servers
 	-- aObj.isPTR = portal == "test" and true or false
-	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
+	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) >= ptrInfo[2] and true or false
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
 	if aObj.isBeta then
@@ -53,6 +53,7 @@ do
 	end
 	if aObj.isPTR then
 		_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
+		aObj.isBeta = true
 		aObj.isPatch = false
 	end
 --@alpha@
@@ -642,18 +643,17 @@ local function __addSkinFrame(opts)
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
-	local xOfs1 = opts.x1 or opts.ofs * -1
-	local yOfs1 = opts.y1 or opts.ofs
-	local xOfs2 = opts.x2 or opts.ofs
-	local yOfs2 = opts.y2 or opts.ofs * -1
+	opts.x1 = opts.x1 or opts.ofs * -1
+	opts.y1 = opts.y1 or opts.ofs
+	opts.x2 = opts.x2 or opts.ofs
+	opts.y2 = opts.y2 or opts.ofs * -1
 
 	-- add a frame around the current object
 	opts.obj.sf = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil, opts.secb and "SecureUnitButtonTemplate" or nil)
 	local skinFrame = opts.obj.sf
 	skinFrame:ClearAllPoints()
-	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
-	skinFrame:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
-	xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil
+	skinFrame:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.x1, opts.y1)
+	skinFrame:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
 
 	skinFrame:EnableMouse(false) -- allow clickthrough
 
@@ -1393,6 +1393,7 @@ local function __skinStatusBar(opts)
 		bgTex = existing background texture
 		otherTex = other Textures table
 		hookFunc = hook the change texture function
+		nilFuncs = nop Atlas funcs
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __sSB\n" .. debugstack(2, 3, 2))
@@ -1442,6 +1443,11 @@ local function __skinStatusBar(opts)
 				aObj.hooks[this].SetStatusBarTexture(this, aObj.sbTexture)
 			end
 		end, true)
+	end
+
+	if opts.nilFuncs then
+		opts.obj.SetStatusBarAtlas = _G.nop
+		if opts.bgTex then opts.bgTex.SetAtlas = _G.nop end
 	end
 
 	sBG = nil

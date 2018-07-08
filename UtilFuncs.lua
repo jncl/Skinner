@@ -614,6 +614,24 @@ function aObj:hook(obj, method, func)
 
 end
 
+aObj.hookSocialToastFuncs = function() end
+if aObj.isBeta then
+	-- The following function is used by SocialToast template frames
+	-- to stop gradient texture whiteout
+	function aObj:hookSocialToastFuncs(frame)
+		self:Hook(frame.animIn, "Play", function(this)
+			this.sf.tfade:SetParent(_G.MainMenuBar)
+			this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+			this.cb.tfade:SetParent(_G.MainMenuBar)
+			this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
+		end)
+		self:Hook(frame.waitAndAnimOut, "Play", function(this)
+			this.sf.tfade:SetParent(this.sf)
+			this.cb.tfade:SetParent(this.cb)
+		end)
+	end
+end
+
 function aObj:hookScript(obj, method, func)
 
 	if not self:IsHooked(obj, method) then

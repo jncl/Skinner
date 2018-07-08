@@ -186,7 +186,8 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		TimeManager          = true,
 		Tooltips             = {skin = true, style = 1, glazesb = true, border = 1},
 		Tutorial             = true,
-		VoiceChat			 = aObj.isBata and true or nil,
+		UIWidgets            = aObj.isBeta and true or nil,
+		UnitPopup            = aObj.isBeta and true or nil,
 		WarboardUI           = true,
 		WarfrontsPartyPoseUI = aObj.isBeta and true or nil,
 		WorldMap             = {skin = true, size = 1},
@@ -1866,11 +1867,16 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Tutorial Frame"],
 					desc = self.L["Toggle the skin of the Tutorial Frame"],
 				},
-				VoiceChat = aObj.isBeta and {
+				UIWidgets = aObj.isBeta and{
 					type = "toggle",
-					name = self.L["Voice Chat Frames"],
-					desc = self.L["Toggle the skin of the Voice Chat Frames"],
-				} or nil ,
+					name = self.L["UI Widgets"],
+					desc = self.L["Toggle the skin of the UI Widgets"],
+				} or nil,
+				UnitPopup = aObj.isBeta and{
+					type = "toggle",
+					name = self.L["Unit Popups"],
+					desc = self.L["Toggle the skin of the Unit Popups"],
+				} or nil,
 				WarboardUI = {
 					type = "toggle",
 					name = self.L["Warboard UI"],
