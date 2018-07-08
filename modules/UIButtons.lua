@@ -134,12 +134,12 @@ function module:skinCloseButton(opts) -- text on button
 		storeOnParent = store reference to close button on object's parent
 --]]
 	opts.obj:DisableDrawLayer("BACKGROUND")
-	opts.obj:GetNormalTexture():SetAlpha(0)
-	opts.obj:GetPushedTexture():SetAlpha(0)
+	opts.obj:SetNormalTexture(nil)
+	opts.obj:SetPushedTexture(nil)
 	if opts.obj.GetDisabledTexture  -- PVPReadyDialog missing this
 	and opts.obj:GetDisabledTexture()
 	then
-		opts.obj:GetDisabledTexture():SetAlpha(0)
+		opts.obj:SetDisabledTexture(nil)
 	end
 
 	local aso = opts.aso or {}
@@ -342,10 +342,11 @@ function module:skinStdButton(opts) -- standard panel button
 	local aso = opts.aso or {}
 	aso.bd = bH > 18 and 5 or 6 -- use narrower backdrop if required
 	if not opts.as then
-		opts.x1 = opts.x1 or 1
-		opts.y1 = opts.y1 or -1
-		opts.x2 = opts.x2 or -1
-		opts.y2 = opts.y2 or -1
+		opts.ofs = opts.ofs or 1
+		opts.x1 = opts.x1 or opts.ofs * -1
+		opts.y1 = opts.y1 or opts.ofs
+		opts.x2 = opts.x2 or opts.ofs
+		opts.y2 = opts.y2 or opts.ofs * -1
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, bg=opts.bg, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 	else
 		aso.obj = opts.obj
