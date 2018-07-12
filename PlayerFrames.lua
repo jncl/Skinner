@@ -2687,22 +2687,29 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 
 	self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
-		for i = 1, _G.MAX_PVP_TALENT_TIERS do
-			for j = 1, _G.MAX_PVP_TALENT_COLUMNS do
-				this.Talents["Tier" .. i]["Talent" .. j].Slot:SetTexture(nil)
-				if self.modBtnBs then
-					this.Talents["Tier" .. i]["Talent" .. j].border:SetAlpha(0)
-					self:addButtonBorder{obj=this.Talents["Tier" .. i]["Talent" .. j], relTo=this.Talents["Tier" .. i]["Talent" .. j].Icon}
+		if not aObj.isBeta then
+			for i = 1, _G.MAX_PVP_TALENT_TIERS do
+				for j = 1, _G.MAX_PVP_TALENT_COLUMNS do
+					this.Talents["Tier" .. i]["Talent" .. j].Slot:SetTexture(nil)
+					if self.modBtnBs then
+						this.Talents["Tier" .. i]["Talent" .. j].border:SetAlpha(0)
+						self:addButtonBorder{obj=this.Talents["Tier" .. i]["Talent" .. j], relTo=this.Talents["Tier" .. i]["Talent" .. j].Icon}
+					end
 				end
+			end
+			self:SecureHook(this, "Show", function(this)
+				-- Show Portrait if prestige level is greater than 0
+				if _G.UnitPrestige(_G.INSPECTED_UNIT) > 0 then
+					_G.InspectFrame.portrait:SetAlpha(1)
+				end
+			end)
+		else
+			for i, slot in ipairs(this.Slots) do
+				slot.Border:SetTexture(nil)
+				self:makeIconSquare(slot, "Texture", true)
 			end
 		end
 		self:moveObject{obj=this.PortraitBackground, x=8, y=-10}
-		self:SecureHook(this, "Show", function(this)
-			-- Show Portrait if prestige level is greater than 0
-			if _G.UnitPrestige(_G.INSPECTED_UNIT) > 0 then
-				_G.InspectFrame.portrait:SetAlpha(1)
-			end
-		end)
 		self:SecureHook(this, "Hide", function(this)
 			_G.InspectFrame.portrait:SetAlpha(0)
 		end)
