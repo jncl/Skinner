@@ -3872,7 +3872,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		objName, objType = nil, nil
 
 	end
-	local function makeSquare(obj, x1, y1, x2, y2)
+	local function makeBtnSquare(obj, x1, y1, x2, y2)
 
 		obj:SetSize(26, 26)
 		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
@@ -3891,7 +3891,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.C_Timer.After(0.5, function() mmKids(_G.Minimap) end)
 
 	-- Calendar button
-	makeSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+	makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
 
 	-- MinimapZoomIn/Out buttons
 	local function skinZoom(obj)
@@ -3981,13 +3981,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	-- Garrison Landing Page Minimap button
 	if not aObj.isBeta then
-		makeSquare(_G.GarrisonLandingPageMinimapButton, 0.25, 0.76, 0.32, 0.685)
+		makeBtnSquare(_G.GarrisonLandingPageMinimapButton, 0.25, 0.76, 0.32, 0.685)
 	else
 		local function skinGLPM(btn)
 			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then
-				makeSquare(btn, 0.30, 0.73, 0.26, 0.70)
+				makeBtnSquare(btn, 0.30, 0.70, 0.26, 0.70)
 			else
-				makeSquare(btn, 0.25, 0.76, 0.32, 0.685)
+				makeBtnSquare(btn, 0.25, 0.76, 0.32, 0.685)
 			end
 		end
 		skinGLPM(_G.GarrisonLandingPageMinimapButton)
