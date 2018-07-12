@@ -4275,7 +4275,6 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		end
 		skinBtns(this)
 		self:SecureHook(this, "RefreshAllData", function(this)
-			aObj:Debug("OHTF RefreshAllData: [%s]", this)
 			for choiceTex in this.choiceTexturePool:EnumerateActive() do
 				choiceTex:SetAlpha(0)
 			end
@@ -5359,7 +5358,7 @@ if aObj.isBeta then
 		-- hook this to skin widgets
 		self:RawHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, widgetSetID, widgetType)
 			local wFrame = self.hooks[this].CreateWidget(this, widgetID, widgetSetID, widgetType)
-			aObj:Debug("UIWM CreateWidget: [%s, %s, %s, %s]", wFrame, widgetID, widgetSetID, widgetType)
+			-- aObj:Debug("UIWM CreateWidget: [%s, %s, %s, %s]", wFrame, widgetID, widgetSetID, widgetType)
 			self:secureHook(wFrame, "Setup", function(this, wInfo)
 				skinWidget(this, wInfo)
 				self:Unhook(this, "Setup")
