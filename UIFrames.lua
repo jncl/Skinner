@@ -2909,6 +2909,8 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 		-- RewardsFrame
 		_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)
 		_G.LFGDungeonReadyDialogRewardsFrameReward2Border:SetAlpha(0)
+		self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward1, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward1.texture}
+		self:addButtonBorder{obj=_G.LFGDungeonReadyDialogRewardsFrameReward2, relTo=_G.LFGDungeonReadyDialogRewardsFrameReward2.texture}
 
 		self:Unhook(this, "OnShow")
 	end)
