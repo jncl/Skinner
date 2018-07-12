@@ -2712,6 +2712,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 	self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
 		self:keepFontStrings(this)
 		this.InspectSpec.ring:SetTexture(nil)
+		self:makeIconSquare(this.InspectSpec, "specIcon", true)
 		for i = 1, _G.MAX_TALENT_TIERS do
 			for j = 1, _G.NUM_TALENT_COLUMNS do
 				this.InspectTalents["tier" .. i]["talent" .. j].Slot:SetTexture(nil)
