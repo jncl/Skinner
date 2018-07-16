@@ -1704,7 +1704,6 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		if id == 0 then
 			aObj:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true, noInsert=true} -- 6 is text, 7 is icon
 			aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1}
-			aObj:skinCloseButton{obj=_G.BagHelpBox.CloseButton}
 			-- TokenFrame
 			_G.BACKPACK_TOKENFRAME_HEIGHT = _G.BACKPACK_TOKENFRAME_HEIGHT - 6
 			_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
@@ -1752,6 +1751,13 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		self:skinCloseButton{obj=this.CloseButton}
 		self:Unhook(this, "OnShow")
 	end)
+
+	if aObj.isBeta then
+		self:SecureHookScript(_G.AzeriteItemInBagHelpBox, "OnShow", function(this)
+			self:skinCloseButton{obj=this.CloseButton}
+			self:Unhook(this, "OnShow")
+		end)
+	end
 
 end
 

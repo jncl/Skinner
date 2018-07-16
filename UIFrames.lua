@@ -3253,9 +3253,11 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:skinStatusBar{obj=bar.StatusBar, bgTex=bar.StatusBar.Background, otherTex={bar.ExhaustionLevelFillBar or nil}}
 				if bar.Tick then
 					bar.Tick:GetNormalTexture():SetTexture(nil)
+					bar.Tick:GetHighlightTexture():SetTexture(nil)
 				end
 				if bar.ExhaustionTick then
 					bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
+					bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 				end
 			end
 			bar = nil
