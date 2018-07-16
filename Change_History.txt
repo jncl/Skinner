@@ -1,3 +1,10 @@
+beta7.27026.1
+Jncl:
+	Updated Change_History.txt
+	More Beta changes
+	Update UIButtons skin
+	Update Boss Frame skin
+
 beta7.26899.2
 Jncl:
 	ToDo.txt
