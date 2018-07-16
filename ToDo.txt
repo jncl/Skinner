@@ -66,3 +66,5 @@ Legend:
 	- Deleted
 √		- ArtifactRelicForge
 √		- BattlefieldMinimap
+
+√	- N	WeakAuras
