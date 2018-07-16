@@ -32,8 +32,8 @@ do
 	-- Max Player Level`
 	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
 
-	local betaInfo = {"8.0.1", 27026}
-	local ptrInfo = {"8.0.1", 26970}
+	local betaInfo = {"8.0.1", 27075}
+	local ptrInfo = {"8.0.1", 27075}
 	local liveInfo = {"7.3.5", 26972}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
