@@ -67,4 +67,12 @@ Legend:
 √		- ArtifactRelicForge
 √		- BattlefieldMinimap
 
-√	- N	WeakAuras
+√	N	WeakAuras
+
+√	N	Handy Notes, reported by Kargis, 18.07.18
+		- Skinner\Skinner-beta7.27075.1.lua:993: attempt to index field 'obj' (a nil value)
+		  Skinner\Skinner-beta7.27075.1.lua:1056: in function `skinDropDown'
+		  Skinner\AddonSkins\HandyNotes-v1.5.0.lua:15: in function <Skinner\AddonSkins\HandyNotes.lua:5>
+
+	N	Bartender, reported by epidemedabear, 19.07.18
+		-  ..\AddOns\Skinner\AddonSkins\Bartender4.lua line 27: attempt to index field 'MainMenuExpBar' (a nil value)
