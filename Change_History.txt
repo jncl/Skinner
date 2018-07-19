@@ -1,3 +1,16 @@
+beta7.27075.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Beta changes
+	Updated WeakAuras skin
+	Update InspectPVP skin
+	Update InspectTalent skin
+	Update Minimap Buttons skin
+	Skin DungeonReadyReward icons
+	Remove Debug messages
+
 beta7.27026.1
 Jncl:
 	Updated Change_History.txt
