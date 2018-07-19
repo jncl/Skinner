@@ -3930,17 +3930,19 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 
 	local function skinBtns(frame)
 		for btn in frame.buttonPool:EnumerateActive() do
-			self:addButtonBorder{obj=btn, relTo=btn.Icon}
-			if btn.Border:GetAtlas() == "orderhalltalents-spellborder-yellow"
-			and btn.Border:IsShown()
-			then
-				btn.sbb:SetBackdropBorderColor(0.8, 0.8, 0, 1)
-			elseif btn.Border:GetAtlas() == "orderhalltalents-spellborder-green"
-			and btn.Border:IsShown()
-			then
-				btn.sbb:SetBackdropBorderColor(0, 0.8, 0, 1)
-			else
-				btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
+				if btn.Border:GetAtlas() == "orderhalltalents-spellborder-yellow"
+				and btn.Border:IsShown()
+				then
+					btn.sbb:SetBackdropBorderColor(0.8, 0.8, 0, 1)
+				elseif btn.Border:GetAtlas() == "orderhalltalents-spellborder-green"
+				and btn.Border:IsShown()
+				then
+					btn.sbb:SetBackdropBorderColor(0, 0.8, 0, 1)
+				else
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				end
 			end
 			btn.Border:SetTexture(nil)
 		end
@@ -3951,6 +3953,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		self:keepFontStrings(this.StyleFrame)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, x2=0}
 		this.CurrencyIcon:SetAlpha(1) -- show currency icon
+		self:addButtonBorder{obj=this, relTo=this.CurrencyIcon}
 		for i = 1, #this.FrameTick do
 			this.FrameTick[i]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
