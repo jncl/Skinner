@@ -182,21 +182,18 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 
 end
 
-if aObj.isBeta then
-	aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
-		if not self.db.profile.AzeriteRespecUI or self.initialized.AzeriteRespecUI then return end
-		self.initialized.AzeriteRespecUI = true
+aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
+	if not self.db.profile.AzeriteRespecUI or self.initialized.AzeriteRespecUI then return end
+	self.initialized.AzeriteRespecUI = true
 
-		self:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot}
-		_G.AzeriteRespecFrame.ButtonFrame:DisableDrawLayer("BORDER")
-		self:removeMagicBtnTex(_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
-		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
-		_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true, ofs=1, y1=2}
+	self:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot}
+	_G.AzeriteRespecFrame.ButtonFrame:DisableDrawLayer("BORDER")
+	self:removeMagicBtnTex(_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
+	self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
+	_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
+	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true, ofs=1, y1=2}
 
-		self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton}
-
-	end
+	self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton}
 
 end
 
@@ -599,13 +596,9 @@ aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
 			self:addButtonBorder{obj=choice.Rewards.Item, relTo=choice.Rewards.Item.Icon}
 			choice.Rewards.Item.Name:SetTextColor(self.BTr, self.BTg, self.BTb)
 			choice.Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BTr, self.BTg, self.BTb)
-			if not aObj.isBeta then
-				self:skinStdButton{obj=choice.OptionButton}
-			else
-				self:moveObject{obj=choice.Header, y=15}
-				self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton1}
-				self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton2}
-			end
+			self:moveObject{obj=choice.Header, y=15}
+			self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton1}
+			self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton2}
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-13, y1=-13}
 		self:Unhook(this, "OnShow")

@@ -40,10 +40,8 @@ do
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
 --@end-alpha@
 	-- check to see if running on Beta servers
-	-- aObj.isBeta = portal == "beta" and true or false
 	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) >= betaInfo[2] and true or false
 	-- check to see if running on PTR servers
-	-- aObj.isPTR = portal == "test" and true or false
 	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) >= ptrInfo[2] and true or false
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
@@ -92,6 +90,25 @@ function aObj:OnInitialize()
 	-- convert any old settings
 	if type(self.prdb.MinimapButtons) == "boolean" then
 		self.prdb.MinimapButtons = {skin = true, style = false}
+	end
+	-- change option name
+	if self.prdb.ClassColours then
+		self.prdb.ClassColour = self.prdb.ClassColours
+		self.prdb.ClassColours = nil
+	end
+	-- treat GossipFrame & QuestFrame as one
+	-- as they both change the quest text colours
+	if not self.prdb.GossipFrame == self.prdb.QuestFrame then
+		if not self.prdb.QuestFrame then
+			self.prdb.GossipFrame = false
+		else
+			self.prdb.QuestFrame = false
+		end
+	end
+	-- BattlefieldMm has been renamed BattlefieldMap
+	if self.prdb.BattlefieldMm then
+		self.prdb.BattlefieldMap = self.prdb.BattlefieldMm
+		self.prdb.BattlefieldMm = nil
 	end
 
 	-- setup the Addon's options
@@ -263,25 +280,6 @@ function aObj:OnEnable()
 		end
 		_G.wipe(self.oocTab)
 	end)
-
-	if aObj.isBeta then
-		self.prdb.BattlefieldMap = self.prdb.BattlefieldMm
-		self.prdb.BattlefieldMm = nil
-	end
-	-- change option name
-	if self.prdb.ClassColours then
-		self.prdb.ClassColour = self.prdb.ClassColours
-		self.prdb.ClassColours = nil
-	end
-	-- treat GossipFrame & QuestFrame as one
-	-- as they both change the quest text colours
-	if not self.prdb.GossipFrame == self.prdb.QuestFrame then
-		if not self.prdb.QuestFrame then
-			self.prdb.GossipFrame = false
-		else
-			self.prdb.QuestFrame = false
-		end
-	end
 
 	-- add support for UIButton skinning
 	local btnModDB = self.db:GetNamespace("UIButtons", true)

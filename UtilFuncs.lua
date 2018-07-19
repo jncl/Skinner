@@ -614,22 +614,17 @@ function aObj:hook(obj, method, func)
 
 end
 
-aObj.hookSocialToastFuncs = function() end
-if aObj.isBeta then
-	-- The following function is used by SocialToast template frames
-	-- to stop gradient texture whiteout
-	function aObj:hookSocialToastFuncs(frame)
-		self:Hook(frame.animIn, "Play", function(this)
-			this.sf.tfade:SetParent(_G.MainMenuBar)
-			this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-			this.cb.tfade:SetParent(_G.MainMenuBar)
-			this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
-		end)
-		self:Hook(frame.waitAndAnimOut, "Play", function(this)
-			this.sf.tfade:SetParent(this.sf)
-			this.cb.tfade:SetParent(this.cb)
-		end)
-	end
+function aObj:hookSocialToastFuncs(frame)
+	self:Hook(frame.animIn, "Play", function(this)
+		this.sf.tfade:SetParent(_G.MainMenuBar)
+		this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		this.cb.tfade:SetParent(_G.MainMenuBar)
+		this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
+	end)
+	self:Hook(frame.waitAndAnimOut, "Play", function(this)
+		this.sf.tfade:SetParent(this.sf)
+		this.cb.tfade:SetParent(this.cb)
+	end)
 end
 
 function aObj:hookScript(obj, method, func)
@@ -1311,16 +1306,9 @@ function aObj:SetupCmds()
  end)
 
 	self:RegisterChatCommand("wai", function() -- where am I ?
-		if not aObj.isBeta then
-			_G.SetMapToCurrentZone()
-			local x, y=_G.GetPlayerMapPosition("player")
-			_G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f", _G.GetZoneText(), _G.GetSubZoneText(), x * 100, y * 100))
-			x, y = nil, nil
-		else
-			local posTab = _G.C_Map.GetPlayerMapPosition(_G.C_Map.GetBestMapForUnit("player"), "player")
-			_G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f", _G.GetZoneText(), _G.GetSubZoneText(), posTab.x * 100, posTab.y * 100))
-			posTab = nil
-		end
+		local posTab = _G.C_Map.GetPlayerMapPosition(_G.C_Map.GetBestMapForUnit("player"), "player")
+		_G.DEFAULT_CHAT_FRAME:AddMessage(_G.format("%s, %s: %.1f, %.1f", _G.GetZoneText(), _G.GetSubZoneText(), posTab.x * 100, posTab.y * 100))
+		posTab = nil
 		return
 	end)
 

@@ -59,7 +59,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		DisableAllNPC        = false,
 		AlliedRacesUI        = true,
 		AuctionUI            = true,
-		AzeriteRespecUI      = aObj.isBeta and true or nil,
+		AzeriteRespecUI      = true,
 		BankFrame            = true,
 		BarbershopUI         = true,
 		BlackMarketUI        = true,
@@ -81,12 +81,12 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		DisableAllP          = false,
 		AchievementUI        = {skin = true, style = 2},
 		ArchaeologyUI        = true,
-		AzeriteUI			 = aObj.isBeta and true or false,
+		AzeriteUI			 = true,
 		Buffs                = true,
 		CastingBar           = {skin = true, glaze = true},
 		CharacterFrames      = true,
 		Collections          = true, -- (Mounts, Pets, Toys, Heirlooms & Appearances)
-		CommunitiesUI		 = aObj.isBeta and true or nil,
+		CommunitiesUI		 = true,
 		CompactFrames        = true,
 		ContainerFrames      = {skin = true, fheight = 100},
 		DressUpFrame         = true,
@@ -122,10 +122,8 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AdventureMap         = true,
 		AlertFrames          = true,
 		ArtifactUI           = true,
-		AuthChallengeUI      = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
 		AutoComplete         = true,
-		BattlefieldMm        = aObj.isBeta and nil or {skin = true, gloss = false},
-		BattlefieldMap       = aObj.isBeta and {skin = true, gloss = false} or nil,
+		BattlefieldMap       = {skin = true, gloss = false},
 		BNFrames             = true,
 		Calendar             = true,
 		ChallengesUI         = true,
@@ -153,8 +151,8 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		GMSurveyUI           = true,
 		GuildBankUI          = true,
 		HelpFrame            = true,
-		IslandsPartyPoseUI   = aObj.isBeta and true or nil,
-		IslandsQueueUI   	 = aObj.isBeta and true or nil,
+		IslandsPartyPoseUI   = true,
+		IslandsQueueUI   	 = true,
 		ItemText             = true,
 		LevelUpDisplay       = true,
 		LossOfControl        = true,
@@ -175,23 +173,19 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		QueueStatusFrame     = true,
 		RaidFrame            = true, -- (inc. LFR)
 		ScriptErrors         = true,
-		ScrappingMachineUI   = aObj.isBeta and true or nil,
-		SecureTransferUI	 = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
-		SocialUI             = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
+		ScrappingMachineUI   = true,
 		SplashFrame          = true,
 		StaticPopups         = true,
-		StoreUI              = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
 		TalkingHeadUI        = true,
 		TimeManager          = true,
 		Tooltips             = {skin = true, style = 1, glazesb = true, border = 1},
 		Tutorial             = true,
-		UIWidgets            = aObj.isBeta and true or nil,
-		UnitPopup            = aObj.isBeta and true or nil,
+		UIWidgets            = true,
+		UnitPopup            = true,
 		WarboardUI           = true,
-		WarfrontsPartyPoseUI = aObj.isBeta and true or nil,
+		WarfrontsPartyPoseUI = true ,
 		WorldMap             = {skin = true, size = 1},
 		WorldState           = true,
-		WowTokenUI			 = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
 		ZoneAbility          = true,
 	-->>-- Disabled Skins
 		DisableAllAS         = false,
@@ -828,11 +822,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Auction Frame"],
 					desc = self.L["Toggle the skin of the Auction Frame"],
 				},
-				AzeriteRespecUI = aObj.isBeta and {
+				AzeriteRespecUI ={
 					type = "toggle",
 					name = self.L["Azerite Respec Frame"],
 					desc = self.L["Toggle the skin of the Azerite Respec Frame"],
-				} or nil,
+				},
 				BankFrame = {
 					type = "toggle",
 					name = self.L["Bank Frame"],
@@ -978,11 +972,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Archaeology Frame"],
 					desc = self.L["Toggle the skin of the Archaeology Frame"],
 				},
-				AzeriteUI = aObj.isBeta and {
+				AzeriteUI ={
 					type = "toggle",
 					name = self.L["Azerite Frame"],
 					desc = self.L["Toggle the skin of the Azerite Frame"],
-				} or nil,
+				},
 				Buffs = {
 					type = "toggle",
 					name = self.L["Buffs Buttons"],
@@ -1024,11 +1018,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Collections Journal"],
 					desc = self.L["Toggle the skin of the Collections Journal"],
 				},
-				CommunitiesUI = aObj.isBeta and {
+				CommunitiesUI ={
 					type = "toggle",
 					name = self.L["Communities Frames"],
 					desc = self.L["Toggle the skin of the Communities Frames"],
-				} or nil,
+				},
 				CompactFrames = {
 					type = "toggle",
 					name = self.L["Compact Frames"],
@@ -1305,53 +1299,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Artifact UI"],
 					desc = self.L["Toggle the skin of the Artifact UI"],
 				},
-				AuthChallengeUI = not aObj.isBeta and {
-					type = "toggle",
-					name = self.L["AuthChallenge Frame"],
-					desc = self.L["Toggle the skin of the AuthChallenge Frame"],
-					disabled = true,
-				} or nil,
 				AutoComplete = {
 					type = "toggle",
 					name = self.L["Auto Complete"],
 					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
-				BattlefieldMm = not aObj.isBeta and {
-					type = "group",
-					inline = true,
-					order = -1,
-					name = self.L["Battlefield Minimap Options"],
-					get = function(info) return db.BattlefieldMm[info[#info]] end,
-					set = function(info, value)
-						db.BattlefieldMm[info[#info]] = value
-						if info[#info] == "skin" then
-							if _G.IsAddOnLoaded("Blizzard_BattlefieldMinimap") then
-								self:checkAndRun("BattlefieldMinimap", "u", true)
-							end
-						elseif info[#info] == "gloss" and _G.BattlefieldMinimap.sf then
-							if value then
-								_G.RaiseFrameLevel(_G.BattlefieldMinimap.sf)
-							else
-								_G.LowerFrameLevel(_G.BattlefieldMinimap.sf)
-							end
-						end
-					end,
-					args = {
-						skin = {
-							type = "toggle",
-							name = self.L["Skin Frame"],
-							desc = self.L["Toggle the skin of the Battlefield Minimap Frame"],
-							order = 1,
-						},
-						gloss = {
-							type = "toggle",
-							name = self.L["Gloss Effect"],
-							desc = self.L["Toggle the Gloss Effect for the Battlefield Minimap"],
-							order = 2,
-						},
-					},
-				} or nil,
-				BattlefieldMap = aObj.isBeta and {
+				BattlefieldMap ={
 					type = "group",
 					inline = true,
 					order = -1,
@@ -1385,7 +1338,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 							order = 2,
 						},
 					},
-				} or nil,
+				},
 				BNFrames = {
 					type = "toggle",
 					name = self.L["BattleNet Frames"],
@@ -1568,16 +1521,16 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						},
 					},
 				},
-				IslandsPartyPoseUI = aObj.isBeta and {
+				IslandsPartyPoseUI ={
 					type = "toggle",
 					name = self.L["Islands Party Pose UI"],
 					desc = self.L["Toggle the skin of the Islands Party Pose UI"],
-				} or nil,
-				IslandsQueueUI = aObj.isBeta and {
+				},
+				IslandsQueueUI ={
 					type = "toggle",
 					name = self.L["Islands Queue UI"],
 					desc = self.L["Toggle the skin of the Islands Queue UI"],
-				} or nil,
+				},
 				ItemText = {
 					type = "toggle",
 					name = self.L["Item Text Frame"],
@@ -1771,28 +1724,16 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Raid Frame"],
 					desc = self.L["Toggle the skin of the Raid Frame"],
 				},
-				ScrappingMachineUI = aObj.isBeta and {
+				ScrappingMachineUI ={
 					type = "toggle",
 					name = self.L["Scrapping Machine UI"],
 					desc = self.L["Toggle the skin of the Scrapping Machine UI"],
-				} or nil,
+				},
 				ScriptErrors = {
 					type = "toggle",
 					name = self.L["Script Errors Frame"],
 					desc = self.L["Toggle the skin of the Script Errors Frame"],
 				},
-				SecureTransferUI = not aObj.isBeta and {
-					type = "toggle",
-					name = self.L["Secure Transfer UI"],
-					desc = self.L["Toggle the skin of the Secure Transfer UI"],
-					disabled = true,
-				} or nil,
-				SocialUI = not aObj.isBeta and {
-					type = "toggle",
-					name = self.L["Social UI"],
-					desc = self.L["Toggle the skin of the Social UI"],
-					disabled = true,
-				} or nil,
 				SplashFrame = {
 					type = "toggle",
 					name = self.L["What's New Frame"],
@@ -1803,12 +1744,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Static Popups"],
 					desc = self.L["Toggle the skin of Static Popups"],
 				},
-				StoreUI = not aObj.isBeta and {
-					type = "toggle",
-					name = self.L["Store Frame"],
-					desc = self.L["Toggle the skin of the Store Frame"],
-					disabled = true,
-				} or nil,
 				TalkingHeadUI = {
 					type = "toggle",
 					name = self.L["TalkingHead UI"],
@@ -1861,26 +1796,26 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Tutorial Frame"],
 					desc = self.L["Toggle the skin of the Tutorial Frame"],
 				},
-				UIWidgets = aObj.isBeta and{
+				UIWidgets = {
 					type = "toggle",
 					name = self.L["UI Widgets"],
 					desc = self.L["Toggle the skin of the UI Widgets"],
-				} or nil,
-				UnitPopup = aObj.isBeta and{
+				},
+				UnitPopup ={
 					type = "toggle",
 					name = self.L["Unit Popups"],
 					desc = self.L["Toggle the skin of the Unit Popups"],
-				} or nil,
+				},
 				WarboardUI = {
 					type = "toggle",
 					name = self.L["Warboard UI"],
 					desc = self.L["Toggle the skin of the Warboard UI"],
 				},
-				WarfrontsPartyPoseUI = aObj.isBeta and {
+				WarfrontsPartyPoseUI = {
 					type = "toggle",
 					name = self.L["Warfronts Party Pose UI"],
 					desc = self.L["Toggle the skin of the Warfronts Party Pose UI"],
-				} or nil,
+				},
 				WorldMap = {
 					type = "group",
 					inline = true,
@@ -1912,12 +1847,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Battle Score Frame"],
 					desc = self.L["Toggle the skin of the Battle Score Frame"],
 				},
-				WowTokenUI = not aObj.isBeta and {
-					type = "toggle",
-					name = self.L["WoW Token UI"],
-					desc = self.L["Toggle the skin of the WoW Token UI"],
-					disabled = true,
-				} or nil,
 				ZoneAbility = {
 					type = "toggle",
 					name = self.L["Zone Ability"],
