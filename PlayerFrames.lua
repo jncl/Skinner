@@ -3024,29 +3024,29 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 	end
 	objName, obj, objBG, objSB = nil, nil, nil, nil
 
-	-- Battleground/Arena Start Timer (4.1)
-	local function skinTT(tT)
+	-- Battleground/Arena/Island Expeditions Start Timer
+	local function skinTT(timer)
 
-		local timer, bg
-		for i = 1, #tT.timerList do
-			timer = tT.timerList[i]
-			if not aObj.sbGlazed[timer.bar] then
+		local bg
+		if not aObj.sbGlazed[timer.bar] then
+			if not aObj.isBeta then
 				bg = aObj:getRegion(timer.bar, 1)
-				_G[timer.bar:GetName() .. "Border"]:SetTexture(nil) -- animations
-				aObj:skinStatusBar{obj=timer.bar, fi=0, bgTex=bg}
 				aObj:moveObject{obj=bg, y=2} -- align bars
 			end
+			_G[timer.bar:GetName() .. "Border"]:SetTexture(nil) -- animations
+			aObj:skinStatusBar{obj=timer.bar, fi=0, bgTex=aObj.isBeta and nil or bg}
 		end
-		timer, bg = nil, nil
+		bg = nil
 
 	end
-	self:HookScript(_G.TimerTracker, "OnEvent", function(this, event, ...)
-		if event == "START_TIMER" then
-			skinTT(this)
-		end
+
+	self:SecureHook("StartTimer_SetGoTexture", function(timer)
+		skinTT(timer)
 	end)
 	-- skin existing timers
-	skinTT(_G.TimerTracker)
+	for _, timer in pairs(_G.TimerTracker.timerList) do
+		skinTT(timer)
+	end
 
 end
 
