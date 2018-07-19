@@ -20,3 +20,5 @@ Legend:
 ?	O	Eliminate taint from PartyFrames & BossFrames
 
 	O	Change texture for Scrollbar arrows
+
+√	I	OrderHallUI, reported by epidemedabear, 19.07.18
