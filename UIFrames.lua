@@ -1528,12 +1528,10 @@ aObj.blizzFrames[ftype].ChatFrames = function(self)
 	self.initialized.ChatFrames = true
 
 	for i = 1, _G.NUM_CHAT_WINDOWS do
-		if _G["ChatFrame" .. i] == _G.COMBATLOG
-		and _G.CombatLogQuickButtonFrame_Custom:IsShown()
-		then
-			self:addSkinFrame{obj=_G["ChatFrame" .. i], ft=ftype, ofs=6, y1=31, y2=-8}
+		if _G["ChatFrame" .. i] == _G.COMBATLOG	then
+			self:addSkinFrame{obj=_G["ChatFrame" .. i], ft=ftype, ofs=6, y1=30, x2=27, y2=-9}
 		else
-			self:addSkinFrame{obj=_G["ChatFrame" .. i], ft=ftype, ofs=6, y1=6, y2=-8}
+			self:addSkinFrame{obj=_G["ChatFrame" .. i], ft=ftype, ofs=6, y1=6, x2=27, y2=-9}
 		end
 	end
 
