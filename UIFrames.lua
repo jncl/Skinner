@@ -12,12 +12,6 @@ local navalStageRegs = {1, 2, 3, 4}
 local cdStageRegs = {1, 2, 3, 4, 5, 6}
 local function skinMissionFrame(frame)
 
-	if aObj.isBeta then
-		frame.CloseButtonBorder:SetTexture(nil)
-		frame.TitleScroll:DisableDrawLayer("ARTWORK")
-		frame.TitleText:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
-		aObj:moveObject{obj=frame.TitleText, y=-4}
-	end
 	frame.GarrCorners:DisableDrawLayer("BACKGROUND")
 	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=aObj.isBeta and 1 or 3, x2=1, y2=aObj.isBeta and -6 or -5}
 	-- tabs
@@ -748,20 +742,6 @@ aObj.blizzFrames[ftype].AutoComplete = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.AutoCompleteBox)
 	end)
-
-end
-
-if aObj.isBeta then
-	aObj.blizzFrames[ftype].AzeriteIslandsToast = function(self)
-		if not self.db.profile.AzeriteIslandsToast or self.initialized.AzeriteIslandsToast then return end
-		self.initialized.AzeriteIslandsToast = true
-
-		-- aObj:Debug("AzeriteIslandsToast")
-
-		-- .playerToastPool
-		-- .partyToastPool
-
-	end
 
 end
 
@@ -2359,6 +2339,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		self:SecureHookScript(_G.BFAMissionFrame, "OnShow", function(this)
 
+			this.CloseButtonBorder:SetTexture(nil)
+			this.TitleScroll:DisableDrawLayer("ARTWORK")
+			this.TitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+			self:moveObject{obj=this.TitleText, y=-4}
+
 			skinMissionFrame(this)
 			this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
@@ -3585,6 +3570,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			self:addSkinFrame{obj=_G.AudioOptionsVoicePanelListening, ft=ftype}
 			self:addSkinFrame{obj=_G.VoiceChatTalkers, ft=ftype}
 		else
+			_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest:DisableDrawLayer("BACKGROUND")
 			self:addButtonBorder{obj=_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest, ofs=0, y2=-2}
 			self:addSkinFrame{obj=_G.AudioOptionsVoicePanel.TestInputDevice.VUMeter, ft=ftype, aso={bd=10, ng=true}}
 		end

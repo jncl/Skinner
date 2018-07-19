@@ -124,7 +124,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ArtifactUI           = true,
 		AuthChallengeUI      = not aObj.isBeta and false or nil, -- N.B. cannot be skinned
 		AutoComplete         = true,
-		AzeriteIslandsToast  = aObj.isBeta and true or nil,
 		BattlefieldMm        = aObj.isBeta and nil or {skin = true, gloss = false},
 		BattlefieldMap       = aObj.isBeta and {skin = true, gloss = false} or nil,
 		BNFrames             = true,
@@ -1317,11 +1316,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Auto Complete"],
 					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
-				AzeriteIslandsToast = aObj.isBeta and {
-					type = "toggle",
-					name = self.L["Azerite Islands Toast"],
-					desc = self.L["Toggle the skin of the Azerite Islands Toast Frame"],
-				} or nil,
 				BattlefieldMm = not aObj.isBeta and {
 					type = "group",
 					inline = true,

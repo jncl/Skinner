@@ -3431,6 +3431,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			else
 				frame.ConquestBar:DisableDrawLayer("BORDER")
 				frame.ConquestBar.Reward.Ring:SetTexture(nil)
+				self:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon}
 				aObj:skinStatusBar{obj=frame.ConquestBar, fi=0, bgTex=aObj:getRegion(frame.ConquestBar, 3)}
 				aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
 				aObj:skinCheckButton{obj=frame.TankIcon.checkButton}
@@ -3454,11 +3455,15 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			else
 				btns = {"RandomBG", "RandomEpicBG", "Arena1", "Brawl"}
 			end
+			local btn
 			for _, bName in pairs(btns) do
-				this.BonusFrame[bName .. "Button"].NormalTexture:SetTexture(nil)
-				this.BonusFrame[bName .. "Button"]:SetPushedTexture(nil)
-				this.BonusFrame[bName .. "Button"].Reward.Border:SetTexture(nil)
+				btn = this.BonusFrame[bName .. "Button"]
+				btn.NormalTexture:SetTexture(nil)
+				btn:SetPushedTexture(nil)
+				btn.Reward.Border:SetTexture(nil)
+				self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus, aObj.isBeta and nil or btn.Reward.WeeklyBonus}}
 			end
+			btn = nil
 			if not aObj.isBeta then
 				self:addButtonBorder{obj=this.BonusFrame.DiceButton, ofs=2, x1=-3}
 			end
@@ -3515,9 +3520,14 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		else
 			self:removeInset(_G.PVPQueueFrame.HonorInset)
 			_G.PVPQueueFrame.HonorInset:DisableDrawLayer("BACKGROUND")
-			_G.PVPQueueFrame.HonorInset.HonorLevelDisplay:DisableDrawLayer("BORDER")
-			_G.PVPQueueFrame.HonorInset.HonorLevelDisplay.NextRewardLevel:DisableDrawLayer("BORDER")
-			_G.PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame.Ring:SetTexture(nil)
+			local hld = _G.PVPQueueFrame.HonorInset.HonorLevelDisplay
+			hld:DisableDrawLayer("BORDER")
+			hld.NextRewardLevel:DisableDrawLayer("BORDER")
+			self:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon}
+			local srf = _G.PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
+			srf.Ring:SetTexture(nil)
+			self:addButtonBorder{obj=srf, relTo=srf.Icon}
+			hihld, srf = nil, nil
 		end
 
 		self:Unhook(this, "OnShow")
