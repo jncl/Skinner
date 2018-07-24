@@ -1738,11 +1738,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.GarrisonMissionMechanicTooltip, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype}
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
 		self:Unhook(this, "OnShow")
 	end)
 	self:SecureHookScript(_G.GarrisonMissionMechanicFollowerCounterTooltip, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype}
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1757,7 +1757,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		-- BuildingLevelTooltip
 		self:SecureHookScript(_G.GarrisonBuildingFrame.BuildingLevelTooltip, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype}
+			_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -1963,12 +1963,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 
 		self:SecureHookScript(_G.GarrisonBonusAreaTooltip, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype}
+			_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(_G.GarrisonShipyardMapMissionTooltip, "OnShow", function(this)
-			self:addSkinFrame{obj=this, ft=ftype}
+			_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
 			self:Unhook(this, "OnShow")
 		end)
 
