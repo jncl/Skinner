@@ -5,61 +5,7 @@ local _G = _G
 -- used by all contained functions
 local Details = _G.LibStub("AceAddon-3.0"):GetAddon("_detalhes", true)
 
-function aObj:Details()
-
-	-- N.B. Welcome panel, Profiler panel created early
-	-- not going to skin them
-
-	-- Options frame
-	self:SecureHook(Details, "OpenOptionsWindow", function(this)
-		local frame
-		-- TODO remove title backdrop, skin closebutton
-		-- frame6
-		self:skinButton{obj=_G.DetailsDeleteInstanceButton}
-		-- frame15
-		frame = _G.DetailsOptionsWindow15CustomSpellsAddPanel
-		self:addSkinFrame{obj=frame}
-		frame:SetBackdrop(nil)
-		frame.SetBackdropColor = _G.nop
-		frame.SetBackdropBorderColor = _G.nop
-		self:skinSlider{obj=_G.SpellCacheBrowserFrame.ScrollBar}
-		self:addSkinFrame{obj=_G.SpellCacheBrowserFrame, ofs=3}
-		-- frame16
-		frame = _G.DetailsOptionsWindow16UserTimeCapturesAddPanel
-		self:addSkinFrame{obj=frame}
-		frame:SetBackdrop(nil)
-		frame.SetBackdropColor = _G.nop
-		frame.SetBackdropBorderColor = _G.nop
-		--
-		frame = nil
-		self:addSkinFrame{obj=_G.DetailsOptionsWindow, nb=true, ofs=4}
-		self:Unhook(this, "OpenOptionsWindow")
-	end)
-	-- Forge frame
-	self:SecureHook(Details, "OpenForge", function(this)
-		self:addSkinFrame{obj=_G.DetailsForge, kfs=true, ri=true, ofs=2, x2=1}
-		self:Unhook(this, "OpenForge")
-	end)
-	-- History frame
-	self:SecureHook(Details, "OpenRaidHistoryWindow", function(this)
-		self:addSkinFrame{obj=_G.DetailsRaidHistoryWindow, kfs=true, ri=true, ofs=2, x2=1}
-		self:Unhook(this, "OpenRaidHistoryWindow")
-	end)
-	-- Version Notes frame
-	self:SecureHook(Details, "CreateOrOpenNewsWindow", function(this)
-		self:addSkinFrame{obj=_G.DetailsNewsWindow, kfs=true, ri=true, ofs=2, x2=1}
-		self:Unhook(this, "CreateOrOpenNewsWindow")
-	end)
-	-- Feedback Panel
-	self:SecureHook(Details, "OpenFeedbackWindow", function(this)
-		self:addSkinFrame{obj=_G.DetailsFeedbackPanel, kfs=true, ri=true, ofs=2, x2=1}
-		self:Unhook(this, "OpenFeedbackWindow")
-	end)
-	-- -- ClassColorManager frame
-	-- self:SecureHook(Details, "OpenClassColorsConfig", function(this)
-	-- 	-- _G.DetailsClassColorManager reset_texture
-	-- 	self:Unhook(this, "OpenClassColorsConfig")
-	-- end)
+aObj.addonsToSkin.Details = function(self) -- v8.0.1.5986.131
 
 	-- CopyPaste Panel
 	local eb = _G.DetailsCopy.text.editbox
@@ -68,25 +14,25 @@ function aObj:Details()
 	eb.SetBackdropColor = _G.nop
 	eb.SetBackdropBorderColor = _G.nop
 	eb = nil
-	self:addSkinFrame{obj=_G.DetailsCopy, kfs=true, ri=true, ofs=2, x2=1}
+	self:addSkinFrame{obj=_G.DetailsCopy, ft="a", kfs=true, nb=true, ri=true, ofs=2, x2=1}
 
 	-- Player Details Window
-	self:addSkinFrame{obj=_G.DetailsPlayerDetailsWindow, nb=true, ofs=4}
+	self:addSkinFrame{obj=_G.DetailsPlayerDetailsWindow, ft="a", kfs=true, nb=true, ofs=4}
 
 	-- Report Window
 	if not _G.DetailsReportWindow then
 		self:SecureHook(Details.gump, "CriaJanelaReport", function(this)
-			self:addSkinFrame{obj=_G.DetailsReportWindow, nb=true, ofs=4}
+			self:addSkinFrame{obj=_G.DetailsReportWindow, ft="a", kfs=true, nb=true, ofs=4}
 			self:Unhook(this, "CriaJanelaReport")
 		end)
 	else
-		self:addSkinFrame{obj=_G.DetailsReportWindow, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.DetailsReportWindow, ft="a", kfs=true, nb=true, ofs=4}
 	end
 
 	local function skinInstance(frame)
 
 		frame.cabecalho.top_bg:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ofs=4, y1=22}
+		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=4, y1=22}
 
 	end
 
@@ -101,23 +47,21 @@ function aObj:Details()
 		end
 	end
 
-	-->>-- Plugins
+	-- Plugins
 	for _, v in _G.pairs{"DmgRank", "DpsTuning", "TimeAttack", "Vanguard"} do
 		self:checkAndRunAddOn("Details_" .. v)
 	end
-
-	-- Plugin Options Panel
-	self:RawHook(Details, "CreatePluginOptionsFrame", function(this, name, title, template)
-		local frame = self.hooks[Details].CreatePluginOptionsFrame(this, name, title, template)
-		self:addSkinFrame{obj=frame, ofs=4}
-		return frame
-	end, true)
 
 end
 
 function aObj:Details_DmgRank()
 
 	local DmgRank = Details:GetPlugin("DETAILS_PLUGIN_DAMAGE_RANK")
+
+	if not DmgRank then
+		self.Details_DmgRank = nil
+		return
+	end
 
 	self:skinButton{obj=self:getChild(DmgRank.Frame, 1), cb=true} -- close button
 	DmgRank.BackgroundTex:SetTexture(nil)
@@ -131,6 +75,11 @@ function aObj:Details_DpsTuning()
 
 	local DpsTuning = Details:GetPlugin("DETAILS_PLUGIN_DPS_TUNING")
 
+	if not DpsTuning then
+		self.Details_DpsTuning = nil
+		return
+	end
+
 	self:skinButton{obj=self:getChild(DpsTuning.Frame, 1), cb=true} -- close button
 	DpsTuning = nil
 
@@ -138,6 +87,11 @@ end
 function aObj:Details_TimeAttack()
 
 	local TimeAttack = Details:GetPlugin("DETAILS_PLUGIN_TIME_ATTACK")
+
+	if not TimeAttack then
+		self.Details_TimeAttack = nil
+		return
+	end
 
 	self:skinButton{obj=self:getChild(TimeAttack.Frame, 1), cb=true} -- close button
 	TimeAttack.BackgroundTex:SetAlpha(0) -- texture is changed in code
@@ -154,7 +108,7 @@ function aObj:Details_Vanguard()
 			-- help frame displayed on 1st show
 			if event == "SHOW" then
 				local frame = self:findFrame2(_G.UIParent, "Frame", 175, 400)
-				if frame then self:addSkinFrame{obj=frame, ofs=4} end
+				if frame then self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=4} end
 			end
 			self:Unhook(this, "OnDetailsEvent")
 		end)

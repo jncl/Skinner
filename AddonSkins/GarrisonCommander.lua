@@ -141,4 +141,27 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 	end
 	bpM = nil
 
+	-- hook this to move mission expires string
+	self:SecureHook(_G.GAC, "FillMissionPage", function(this, missionInfo)
+		aObj:Debug("FillMissionPage: [%s]", missionInfo.followerTypeID)
+		-- _G.Spew("FMP", missionInfo)
+		local missionType, frame, yOfs = missionInfo.followerTypeID
+		if missionType == _G.LE_FOLLOWER_TYPE_GARRISON_6_0 then
+			frame = _G.GarrisonMissionFrame
+			yOfs = -4
+		elseif missionType == _G.LE_FOLLOWER_TYPE_SHIPYARD_6_2 then
+			frame = _G.GarrisonShipyardFrame
+			yOfs = -10
+		elseif missionType == _G.LE_FOLLOWER_TYPE_GARRISON_7_0 then
+			frame = _G.OrderHallMissionFrame
+			yOfs = -4
+		end
+		if frame.MissionTab.MissionPage.Stage
+		and frame.MissionTab.MissionPage.Stage.expires
+		then
+			self:moveObject{obj=frame.MissionTab.MissionPage.Stage.expires, y=yOfs}
+		end
+		missionType, frame = nil, nil
+	end)
+
 end

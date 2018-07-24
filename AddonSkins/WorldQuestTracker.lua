@@ -2,7 +2,9 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v7.3.0.237-release
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.293
+
+	local db = _G.WorldQuestTrackerAddon.db.profile
 
 	local s1, s2, s3, s4, s5, s6, s7
 	self:SecureHook("ToggleWorldMap", function()
@@ -102,36 +104,31 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v7.3.0.237-release
 		end
 	end)
 
-	if _G.WorldQuestTrackerAddon.db.profile.AlertTutorialStep
-	and _G.WorldQuestTrackerAddon.db.profile.AlertTutorialStep == 5
-	then
+	if db.TutorialPopupID == 4 then
 		-- no more steps
 	else
-		self:SecureHook(_G.WorldQuestTrackerAddon, "ShowTutorialAlert", function(this)
-			local db = this.db.profile
-			if not db.GotTutorial then return end
+		self:SecureHook(_G.WorldQuestTrackerAddon, "ShowTutorialAlert", function()
+			-- aObj:Debug("WQTA ShowTutorialAlert: [%s]", db.TutorialPopupID)
 
 			-- N.B. this counter has already been incremented when we see it
-			if db.AlertTutorialStep == 2 then
+			if db.TutorialPopupID == 2 then
 				self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert1.CloseButton}
-			elseif db.AlertTutorialStep == 3 then
+			elseif db.TutorialPopupID == 3 then
 				self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert2.CloseButton}
-			elseif db.AlertTutorialStep == 4 then
+			elseif db.TutorialPopupID == 4 then
 				self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert3.CloseButton}
-			elseif db.AlertTutorialStep == 5 then
-				self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert4.CloseButton}
 				self:Unhook(this, "ShowTutorialAlert")
 			end
 			db = nil
 		end)
 	end
 
-	if not _G.WorldQuestTrackerAddon.db.profile.TutorialTaxyMap then
-		self:SecureHook(_G.WorldQuestTrackerAddon, "TAXIMAP_OPENED", function(this)
+	self:SecureHook(_G.WorldQuestTrackerAddon, "TAXIMAP_OPENED", function(this)
+		if _G.WorldQuestTrackerTaxyTutorial then
 			self:skinCloseButton{obj=_G.WorldQuestTrackerTaxyTutorial.CloseButton}
 			self:Unhook(this, "TAXIMAP_OPENED")
-		end)
-	end
+		end
+	end)
 
 	if _G.WorldQuestTrackerAddon.db.profile.use_quest_summary then
 		self:SecureHook(_G.WorldQuestTrackerAddon, "UpdateZoneSummaryFrame", function()
