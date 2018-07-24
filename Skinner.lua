@@ -32,9 +32,9 @@ do
 	-- Max Player Level`
 	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
 
-	local betaInfo = {"8.0.1", 27101}
-	local ptrInfo = {"8.0.1", 27101}
-	local liveInfo = {"8.0.1", 27101}
+	local betaInfo = {"8.0.1", 27144}
+	local ptrInfo = {"8.0.1", 27144}
+	local liveInfo = {"8.0.1", 27144}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
@@ -336,6 +336,7 @@ function aObj:OnEnable()
 	self.fontP            = self.modBtns and self.modUIBtns.fontP or _G.nop
 	self.fontS            = self.modBtns and self.modUIBtns.fontS or _G.nop
 	self.addButtonBorder  = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
+	self.clrButtonBorder  = self.modBtnBs and self.modUIBtns.clrButtonBorder or _G.nop
 	self.skinCheckButton  = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
