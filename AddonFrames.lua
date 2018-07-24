@@ -286,7 +286,7 @@ function aObj:PLAYER_LEVEL_UP(...)
 		7 : Battle for Azeroth (120)
 --]]
 
-	local newPlayerLevel = select(2, ...)
+	local newPlayerLevel = _G.select(2, ...)
 
 	if newPlayerLevel < aObj.mLvl then return end
 
