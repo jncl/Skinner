@@ -115,6 +115,7 @@
 <script file="AddonSkins\Inventorian.lua"/>
 <script file="AddonSkins\KeystoneCommander.lua"/>
 <script file="AddonSkins\LegacyQuest.lua"/>
+<script file="AddonSkins\LibAboutPanel.lua"/>
 <script file="AddonSkins\LibDBIcon.lua"/>
 <script file="AddonSkins\LibDialog.lua"/>
 <script file="AddonSkins\LibDropdown.lua"/>
