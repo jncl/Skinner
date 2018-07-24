@@ -57,7 +57,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v r58
 	-- 	return obj
 	-- end, true)
 	self:RawHook(DF, "CreateNewDropdownFrame", function(this, parent, name)
-		-- print("DF CreateNewDropdownFrame:", this, parent, name)
+		print("DF CreateNewDropdownFrame:", this, parent, name)
 		local button = self.hooks[this].CreateNewDropdownFrame(this, parent, name)
 		self:addSkinFrame{obj=button.dropdownborder, ft="a", nb=true}
 		button.dropdownframe:GetScrollChild():SetBackdrop(nil)
@@ -100,16 +100,17 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v r58
 	-- 	return obj
 	-- end, true)
 	self:RawHook(DF, "NewFillPanel", function(this, parent, rows, name, member, w, h, total_lines, fill_row, autowidth, options)
-		-- print("DF NewFillPanel:", this, parent, rows, name, member, w, h, total_lines, fill_row, autowidth, options)
+		print("DF NewFillPanel:", this, parent, rows, name, member, w, h, total_lines, fill_row, autowidth, options)
 		local obj = self.hooks[this].NewFillPanel(this, parent, rows, name, member, w, h, total_lines, fill_row, autowidth, options)
-		self:skinScrollBar{obj=obj.scrollframe}
+		-- self:skinScrollBar{obj=obj.scrollframe}
+		self:skinSlider{obj=obj.scrollframe.ScrollBar}--, rt="artwork", wdth=-4, size=3, hgt=-10}
 		return obj
 	end, true)
 	-- IconPick
 	-- ShowPanicWarning
 	-- CreateScaleBar
 	self:RawHook(DF, "CreateSimplePanel", function(this, parent, w, h, title, name, panel_options, db)
-		-- print("DF CreateSimplePanel:", this, parent, w, h, title, name, panel_options, db)
+		print("DF CreateSimplePanel:", this, parent, w, h, title, name, panel_options, db)
 		local frame = self.hooks[this].CreateSimplePanel(this, parent, w, h, title, name, panel_options, db)
 		frame.TitleBar:SetBackdrop(nil)
 		frame.Close:SetSize(20, 20)
@@ -188,9 +189,10 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v r58
 	end, true)
 	-- NewSpellEntry
 	self:RawHook(DF, "NewSpecialLuaEditorEntry", function(this, parent, w, h, member, name, nointent)
-		-- print("DF NewSpecialLuaEditorEntry:", this, parent, w, h, member, name, nointent)
+		print("DF NewSpecialLuaEditorEntry:", this, parent, w, h, member, name, nointent)
 		local frame = self.hooks[this].NewSpecialLuaEditorEntry(this, parent, w, h, member, name, nointent)
-		self:skinScrollBar{obj=frame.scroll}
+		-- self:skinScrollBar{obj=frame.scroll}
+		self:skinSlider{obj=frame.scroll.ScrollBar}--, rt="artwork", wdth=-4, size=3, hgt=-10}
 		self:addSkinFrame{obj=frame, ft="a", nb=true}
 		frame.SetBackdrop = _G.nop
 		frame.SetBackdropColor = _G.nop
