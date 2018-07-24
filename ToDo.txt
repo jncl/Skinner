@@ -21,4 +21,17 @@ Legend:
 
 	O	Change texture for Scrollbar arrows
 
-√	I	OrderHallUI, reported by epidemedabear, 19.07.18
+	I	MissionList buttons, reported by epidemedabear, 19.07.18
+√		-  ..\AddOns\Skinner\UtilFuncs.lua line 399: attempt to index field 'sbb' (a nil value)
+		   Skinner\UtilFuncs.lua:399: clrButtonBorder()
+		   Skinner\UIFrames.lua:319:
+
+	N	Altoholic, reported by Shimiya, 22.07.18
+√		- Skinner\UtilFuncs.lua:684: attempt to index local 'obj' (a nil value)
+		  Skinner\AddonSkins\Altoholic-r184.lua:10: in function <Skinner\AddonSkins\Altoholic.lua:5>
+		  Skinner\AddonSkins\Altoholic-r184.lua:140: in function <Skinner\AddonSkins\Altoholic.lua:138>
+
+	N	Details-3, reported by MetalHeadSpike, 22.07.18
+√		- Skinner\AddonSkins\Details-3.nil.lua:122: attempt to index local 'DmgRank' (a nil value)
+√		- Skinner\AddonSkins\Details-3.nil.lua:134: attempt to index local 'DpsTuning' (a nil value)
+√		- Skinner\AddonSkins\Details-3.nil.lua:142: attempt to index local 'TimeAttack' (a nil value)
