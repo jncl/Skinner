@@ -211,7 +211,9 @@ local function skinMissionPage(frame)
 			aObj:removeRegions(frame.Followers[i], {1})
 			skinPortrait(frame.Followers[i].PortraitFrame)
 		end
-		frame.Followers[i].DurabilityBackground:SetTexture(nil)
+		if frame.Followers[i].DurabilityBackground then
+			frame.Followers[i].DurabilityBackground:SetTexture(nil)
+		end
 	end
 
 	if frame.FollowerModel then
