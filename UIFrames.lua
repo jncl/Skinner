@@ -194,10 +194,6 @@ local function skinMissionPage(frame)
 	frame.BuffsFrame.BuffsBG:SetTexture(nil)
 	frame.RewardsFrame:DisableDrawLayer("BACKGROUND")
 	frame.RewardsFrame:DisableDrawLayer("BORDER")
-	for i = 1, #frame.RewardsFrame.Rewards do
-		frame.RewardsFrame.Rewards[i].BG:SetTexture(nil)
-		-- N.B. reward buttons have an IconBorder
-	end
 	if not IsAddOnLoaded("MasterPlan") then
 		frame.CloseButton:SetSize(28, 28) -- make button smaller
 	end
@@ -255,6 +251,9 @@ local function skinMissionComplete(frame, naval)
 	aObj:getRegion(frame.BonusRewards, 11):SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb) -- Heading
     frame.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 	frame.BonusRewards.Saturated:DisableDrawLayer("BORDER")
+	for i = 1, #frame.BonusRewards.Rewards do
+		self:addButtonBorder{obj=frame.BonusRewards.Rewards[i], relTo=frame.BonusRewards.Rewards[i].Icon, reParent={frame.BonusRewards.Rewards[i].Quantity}}
+	end
 	aObj:skinStdButton{obj=frame.NextMissionButton}
     aObj:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=6, y2=-16}
 
@@ -313,11 +312,6 @@ local function skinMissionList(ml)
         btn.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
         btn.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
 		aObj:removeRegions(btn, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
-		-- N.B. reward buttons have an IconBorder
-		for j = 1, #btn.Rewards do
-			aObj:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon}
-			aObj:colourBtnBorder(btn.Rewards[j])
-		end
 	end
 	btn = nil
 
@@ -1723,11 +1717,25 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	self.initialized.GarrisonUI = true
 
-	-- hook this to skin mission rewards
-    self:SecureHook("GarrisonMissionPage_SetReward", function(frame, reward)
+	-- hook these to skin mission rewards & OvermaxItem
+    self:SecureHook("GarrisonMissionPage_SetReward", function(frame, reward, missionComplete)
+		-- aObj:Debug("GMP_SR: [%s, %s, %s]", frame, reward, missionComplete)
         frame.BG:SetTexture(nil)
-		-- N.B. reward buttons have an IconBorder
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Quantity}}
+			self:clrButtonBorder(frame)
+		end
     end)
+	self:SecureHook("GarrisonMissionButton_SetRewards", function(btn, rewards, cnt)
+		-- aObj:Debug("GMB_SRs: [%s, %s, %s]", btn, rewards, cnt)
+		for i = 1, #btn.Rewards do
+			self:removeRegions(btn.Rewards[i], {1}) -- background shadow
+			if self.modBtnBs then
+				self:addButtonBorder{obj=btn.Rewards[i], relTo=btn.Rewards[i].Icon, reParent={btn.Rewards[i].Quantity}}
+				self:clrButtonBorder(btn.Rewards[i])
+			end
+		end
+	end)
 
 	self:SecureHookScript(_G.GarrisonMissionMechanicTooltip, "OnShow", function(this)
 		self:addSkinFrame{obj=this, ft=ftype}
@@ -1978,14 +1986,18 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:SecureHookScript(this.Report, "OnShow", function(this)
 			this.List:DisableDrawLayer("BACKGROUND")
 			self:skinSlider{obj=this.List.listScroll.scrollBar, wdth=-4}
+			local btn
 			for i = 1, #this.List.listScroll.buttons do
-				this.List.listScroll.buttons[i]:DisableDrawLayer("BACKGROUND")
-				this.List.listScroll.buttons[i]:DisableDrawLayer("BORDER")
-				for i = 1, #this.List.listScroll.buttons[i].Rewards do
-					this.List.listScroll.buttons[i].Rewards[i]:DisableDrawLayer("BACKGROUND")
-					self:addButtonBorder{obj=this.List.listScroll.buttons[i].Rewards[i], relTo=this.List.listScroll.buttons[i].Rewards[i].Icon, reParent={this.List.listScroll.buttons[i].Rewards[i].Quantity}}
+				btn = this.List.listScroll.buttons[i]
+				btn:DisableDrawLayer("BACKGROUND")
+				btn:DisableDrawLayer("BORDER")
+				for j = 1, #btn.Rewards do
+					btn:DisableDrawLayer("BACKGROUND")
+					self:addButtonBorder{obj=btn.Rewards[j], relTo=btn.Rewards[j].Icon, reParent={btn.Rewards[j].Quantity}}
+					self:clrButtonBorder(btn.Rewards[j])
 				end
 			end
+			btn = nil
 			-- tabs at top
 			for _, type in pairs{"InProgress", "Available"} do
 				this[type]:GetNormalTexture():SetAlpha(0)
@@ -3952,8 +3964,8 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		self:skinCloseButton{obj=_G.OrderHallTalentFrameCloseButton}
 		self:keepFontStrings(this.StyleFrame)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, x2=0}
-		this.CurrencyIcon:SetAlpha(1) -- show currency icon
-		self:addButtonBorder{obj=this, relTo=this.CurrencyIcon}
+		this.Currency.Icon:SetAlpha(1) -- show currency icon
+		self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
 		for i = 1, #this.FrameTick do
 			this.FrameTick[i]:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end

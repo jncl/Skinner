@@ -123,6 +123,68 @@ function module:checkTex(...)
 
 end
 
+function module:clrButtonBorder(btn)
+--@alpha@
+	assert(btn.sbb, "Missing object__cBB\n" .. debugstack(2, 3, 2))
+--@end-alpha@
+
+	aObj:Debug("UIB cBB: [%s, %s, %s, %s]", btn.IconBorder:IsShown(), btn.IconBorder:GetVertexColor())
+
+	btn.IconBorder:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
+	-- use the colour of the quality border as the BackdropBorderColor if shown
+	if btn.IconBorder:IsShown() then
+		btn.sbb:SetBackdropBorderColor(btn.IconBorder:GetVertexColor())
+	else
+		btn.sbb:SetBackdropBorderColor(0.65, 0.65, 0.65, 1)
+	end
+	btn.IconBorder:SetAlpha(0)
+
+end
+
+function module:isButton(obj)
+
+	-- ignore named/AceConfig/XConfig/AceGUI objects
+	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
+	if obj.OrigSetText then return end -- Cork ui-tab buttons
+
+	local bType
+
+	if (obj.Left or obj.leftArrow or obj.GetNormalTexture) -- is it a true button
+	and not obj.GetChecked -- and not a checkbutton
+	and not (obj.obj and obj.obj.checkbg) -- an Ace3 checkbutton
+	and not obj.SetSlot -- and not a lootbutton
+	then
+		local oW, oH, nR = _G.Round(obj:GetWidth()), _G.Round(obj:GetHeight()), obj:GetNumRegions()
+		-- aObj:Debug("isButton: [%s, %s, %s, %s]", obj, oW, oH, nR)
+		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
+		then
+			bType = "toast"
+		-- standard close button is 32x32 and has 4 regions
+		-- RolePollPopup has 3 regions
+		-- Channel Pullout is 24 high
+		-- MasterPlan LootFrame is 28 high
+		elseif obj:GetParent().CloseButton == obj
+		or oH == oW and (nR >= 3 or nR <= 5) and (oH == 32 or oH == 24 or oH == 28)
+		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true))
+		then
+			bType = "close"
+		elseif (obj.Left and obj.Right and obj.Middle and nR == 5) -- based upon UIPanelButtonTemplate
+		or (oH >= 20 and oH <= 25 and nR >= 5 and nR <= 8) -- std button
+		or (oH == 30 and oW == 160) -- HelpFrame
+		or (oH == 32 and oW == 128 and nR == 4) -- BasicScriptErrors Frame
+		or (oH == 22 and oW == 108 and nR == 4) -- Tutorial Frame
+		then
+			bType = "normal"
+		elseif oH == 54 then
+			bType = "help"
+		end
+		oW, oH, nR = nil, nil, nil
+	end
+
+	return bType
+
+end
+
 function module:skinCloseButton(opts) -- text on button
 --[[
 	Calling parameters:
@@ -358,9 +420,6 @@ function module:skinStdButton(opts) -- standard panel button
 
 end
 
---@debug@
-local beginTime, timeUsed
---@end-debug@
 function module:skinButton(opts)
 --[[
 	Calling parameters:
@@ -584,58 +643,6 @@ function module:skinButton(opts)
 
 end
 
-local function getTexture(obj)
-
-	if obj
-	and obj:IsObjectType("Texture")
-	then
-		return obj:GetTexture()
-	end
-
-end
-function module:isButton(obj)
-
-	-- ignore named/AceConfig/XConfig/AceGUI objects
-	if aObj:hasAnyTextInName(obj, {"AceConfig", "XConfig", "AceGUI"}) then return end
-	if obj.OrigSetText then return end -- Cork ui-tab buttons
-
-	local bType
-
-	if (obj.Left or obj.leftArrow or obj.GetNormalTexture) -- is it a true button
-	and not obj.GetChecked -- and not a checkbutton
-	and not (obj.obj and obj.obj.checkbg) -- an Ace3 checkbutton
-	and not obj.SetSlot -- and not a lootbutton
-	then
-		local oW, oH, nR = _G.Round(obj:GetWidth()), _G.Round(obj:GetHeight()), obj:GetNumRegions()
-		-- aObj:Debug("isButton: [%s, %s, %s, %s]", obj, oW, oH, nR)
-		if oH == 18 and oW == 18 and nR == 3 -- BNToast close button
-		then
-			bType = "toast"
-		-- standard close button is 32x32 and has 4 regions
-		-- RolePollPopup has 3 regions
-		-- Channel Pullout is 24 high
-		-- MasterPlan LootFrame is 28 high
-		elseif obj:GetParent().CloseButton == obj
-		or oH == oW and (nR >= 3 or nR <= 5) and (oH == 32 or oH == 24 or oH == 28)
-		and (aObj:hasTextInName(obj, "Close") or aObj:hasTextInTexture(obj:GetNormalTexture(), "UI-Panel-MinimizeButton-Up", true))
-		then
-			bType = "close"
-		elseif (obj.Left and obj.Right and obj.Middle and nR == 5) -- based upon UIPanelButtonTemplate
-		or (oH >= 20 and oH <= 25 and nR >= 5 and nR <= 8) -- std button
-		or (oH == 30 and oW == 160) -- HelpFrame
-		or (oH == 32 and oW == 128 and nR == 4) -- BasicScriptErrors Frame
-		or (oH == 22 and oW == 108 and nR == 4) -- Tutorial Frame
-		then
-			bType = "normal"
-		elseif oH == 54 then
-			bType = "help"
-		end
-		oW, oH, nR = nil, nil, nil
-	end
-
-	return bType
-
-end
 local function __skinAllButtons(opts, bgen)
 --[[
 	Calling parameters:
@@ -682,6 +689,8 @@ function module:skinAllButtons(...)
 
 --@alpha@
 	assert(opts, "Missing object sAB\n" .. debugstack(2, 3, 2))
+	-- handle AddOn skins still using this code rather than skinning button individually
+	aObj:CustomPrint(1, 0, 0, "Using deprecated function - skinAllButtons, use skin...Button instead", opts.obj)
 --@end-alpha@
 
 	-- handle missing object (usually when addon changes)
@@ -792,7 +801,7 @@ local function __addButtonBorder(opts)
 		opts.obj.Count:SetParent(opts.obj.sbb)
 		aObj:getRegion(opts.obj, 3):SetParent(opts.obj.sbb) -- Stock region
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
-		aObj:colourBtnBorder(opts.obj)
+		module:clrButtonBorder(opts.obj)
 	elseif opts.abt then -- Action Buttons
 		opts.obj.Flash:SetParent(opts.obj.sbb)
 		opts.obj.FlyoutArrow:SetParent(opts.obj.sbb)

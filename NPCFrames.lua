@@ -58,7 +58,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		_G[btnName .. idx .. "ItemNormalTexture"]:SetAlpha(0) -- texture changed in code
 		if aObj.modBtnBs then
 			aObj:addButtonBorder{obj=_G[btnName .. idx .. "Item"], reParent={_G[btnName .. idx .. "Count"], _G[btnName .. idx .. "Stock"]}}
-			aObj:colourBtnBorder(_G[btnName .. idx .. "Item"])
+			aObj:clrButtonBorder(_G[btnName .. idx .. "Item"])
 		end
 	end
 
@@ -290,7 +290,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		self:keepFontStrings(this.HotDeal)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock}}
-			self:colourBtnBorder(this.HotDeal.Item)
+			self:clrButtonBorder(this.HotDeal.Item)
 		end
 
 		-- column headings
@@ -312,7 +312,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 				scrollFrame.buttons[i].Item:GetPushedTexture():SetTexture(nil)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=scrollFrame.buttons[i].Item, reParent={scrollFrame.buttons[i].Item.Count, scrollFrame.buttons[i].Item.Stock}}
-					self:colourBtnBorder(scrollFrame.buttons[i].Item)
+					self:clrButtonBorder(scrollFrame.buttons[i].Item)
 				end
 			end
 		end
