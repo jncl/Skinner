@@ -82,6 +82,11 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 			self:skinStdButton{obj=GMC.runButton, x1=-10, x2=10} -- make button skin wider to encompass the text
 			self:skinStdButton{obj=GMC.logoutButton}
 		end
+		if self.modBtnBs then
+			for i = 1, #GMC.ignoreFrames do
+				self:addButtonBorder{obj=GMC.ignoreFrames[i], ibt=true}
+			end
+		end
 		GMC = nil
 	end
 	mcM = nil

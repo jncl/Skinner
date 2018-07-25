@@ -353,6 +353,14 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 		        obj.frame.HighlightB:SetPoint("BOTTOMLEFT", 0, -4)
 		        obj.frame.HighlightB:SetPoint("BOTTOMRIGHT", 0, -4)
 				aObj:removeRegions(obj.frame, {13, 14, 23, 24, 25, 26}) -- LocBG, RareOverlay, Highlight corners
+				if aObj.modBtnBs then
+					aObj:SecureHook(obj, "SetMission", function(this)
+						for i = 1, #this.frame.Rewards do
+							aObj:removeRegions(this.frame.Rewards[i], {1}) -- rewards shadow
+							aObj:addButtonBorder{obj=this.frame.Rewards[i], relTo=this.frame.Rewards[i].Icon, reParent={this.frame.Rewards[i].Quantity}}
+						end
+					end)
+				end
 
 			-- GarrisonCommander objects
 			elseif objType == "GMCGUIContainer" then

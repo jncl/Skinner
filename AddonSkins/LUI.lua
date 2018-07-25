@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("LUI") then return end
 local _G = _G
 
 -- The following code handles the Initial setup of Skinner when the LUI is loaded
-aObj.otherAddons.LUIInit = function(self) -- v 3.9.16
+aObj.otherAddons.LUIInit = function(self) -- v 3.18
 
 	self:RawHook(self, "OnInitialize", function(this)
 		-- Do these before we run the function
@@ -54,23 +54,6 @@ aObj.otherAddons.LUIInit = function(self) -- v 3.9.16
 		self:Unhook(self, "OnInitialize")
 
 		if self.prdb.WorldMap.skin then
-			-- World Map changes
-			if self:IsHooked("WorldMap_ToggleSizeUp") then self:Unhook("WorldMap_ToggleSizeUp") end
-			if self:IsHooked("WorldMap_ToggleSizeDown") then self:Unhook("WorldMap_ToggleSizeDown") end
-			self:SecureHook("WorldMap_ToggleSizeUp", function()
-				_G.WorldMapFrame.sf:SetAllPoints(_G.WorldMapFrame)
-			end)
-			self:SecureHook("WorldMap_ToggleSizeDown", function()
-				_G.WorldMapFrame.sf:ClearAllPoints()
-				_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", -1, 1)
-				_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -98)
-			end)
-			-- resize
-			if _G.WORLDMAP_SETTINGS.size == _G.WORLDMAP_WINDOWED_SIZE then
-				WorldMap_ToggleSizeDown()
-			else
-				WorldMap_ToggleSizeUp()
-			end
 			-- skin the Quest Objectives dropdown
 			if _G.LUI_WorldMap_QuestObjectivesDropDown then
 				self:skinDropDown{obj=_G.LUI_WorldMap_QuestObjectivesDropDown}
@@ -110,7 +93,8 @@ aObj.otherAddons.LUIInit = function(self) -- v 3.9.16
 				end
 				self.hooks[this].skinButton(this, opts)
 			end)
-			self.checkTex = function() end
+			self.skinExpandButton = _G.nop
+			self.checkTex = _G.nop
 			self:Unhook(this, "OnEnable")
 		end)
 	end
@@ -119,11 +103,15 @@ aObj.otherAddons.LUIInit = function(self) -- v 3.9.16
 	if chat then
 		local btns = chat:GetModule("Buttons", true)
 		if btns then
-			self:SecureHook(btns, "OnEnable", function(this)
-				self:skinSlider{obj=_G.LUI_Chat_CopyScrollFrame.ScrollBar}
-				self:addSkinFrame{obj=_G.LUI_Chat_CopyFrame, ft="a", kfs=true, nb=true, y1=-3, x2=-3}
-				self:Unhook(this, "OnEnable")
-			end)
+			local db, dbd = chat:Namespace(btns)
+			if db.CopyChat then
+				self:SecureHook(btns, "OnEnable", function(this)
+					self:skinSlider{obj=_G.LUI_Chat_CopyScrollFrame.ScrollBar}
+					self:addSkinFrame{obj=_G.LUI_Chat_CopyFrame, ft="a", kfs=true, nb=true, y1=-3, x2=-3}
+					self:Unhook(this, "OnEnable")
+				end)
+			end
+			db, dbd = nil, nil
 		end
 		btns = nil
 	end
