@@ -1,3 +1,16 @@
+beta7.27144.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Version number updates
+	localise function
+	Bugfix for FollowerDurability Background
+	Updated GarrisonTooltips skins
+	Add button borders to GarrisonMission Icons
+	Updated Altoholic, Details, GarrisonCommander & WorldQuestTracker skins
+	Obsoleted DetailsFramework skin
+	Skinned LibAboutPanel
+
 beta7.27101.3
 Jncl:
 	ToDo.txt
