@@ -5069,21 +5069,6 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		if not IsAddOnLoaded("Mapster")
 		and not IsAddOnLoaded("AlleyMap")
 		then
-			local function sizeUp()
-
-				_G.WorldMapFrame.sf:ClearAllPoints()
-				_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 101, 1)
-				_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", -102, 1)
-
-			end
-			local function sizeDown()
-
-				_G.WorldMapFrame.sf:ClearAllPoints()
-				_G.WorldMapFrame.sf:SetPoint("TOPLEFT", _G.WorldMapFrame, "TOPLEFT", 0, 1)
-				_G.WorldMapFrame.sf:SetPoint("BOTTOMRIGHT", _G.WorldMapFrame, "BOTTOMRIGHT", 2, -2)
-
-			end
-			-- handle size change
 			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true, nb=true, ofs=2, x2=1}
 		end
 
