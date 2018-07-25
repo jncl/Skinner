@@ -128,7 +128,7 @@ function module:clrButtonBorder(btn)
 	assert(btn.sbb, "Missing object__cBB\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	aObj:Debug("UIB cBB: [%s, %s, %s, %s]", btn.IconBorder:IsShown(), btn.IconBorder:GetVertexColor())
+	-- aObj:Debug("UIB cBB: [%s, %s, %s, %s]", btn.IconBorder:IsShown(), btn.IconBorder:GetVertexColor())
 
 	btn.IconBorder:SetAlpha(1) -- ensure alpha is 1 otherwise btn.sbb isn't displayed
 	-- use the colour of the quality border as the BackdropBorderColor if shown
