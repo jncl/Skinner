@@ -32,9 +32,9 @@ do
 	-- Max Player Level`
 	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
 
-	local betaInfo = {"8.0.1", 27144}
-	local ptrInfo = {"8.0.1", 27144}
-	local liveInfo = {"8.0.1", 27144}
+	local betaInfo = {"8.0.1", 27165}
+	local ptrInfo = {"8.0.1", 27165}
+	local liveInfo = {"8.0.1", 27165}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
@@ -50,7 +50,7 @@ do
 		aObj.isPatch = false
 	end
 	if aObj.isPTR then
-		_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
+		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. " - Version No. updated, any PTR changes to be applied?", 1, 0, 0, nil, true)
 		aObj.isBeta = true
 		aObj.isPatch = false
 	end
