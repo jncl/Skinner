@@ -1346,6 +1346,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		this.FilligreeOverlay:DisableDrawLayer("BORDER")
 		self:removeInset(this.InsetFrame)
 		for i = 1, #this.ListScrollFrame.buttons do
+			self:removeRegions(this.ListScrollFrame.buttons[i], {1})
+			self:changeRecTex(this.ListScrollFrame.buttons[i].Selection, true)
+			this.ListScrollFrame.buttons[i].Selection:SetHeight(60)
 			self:changeRecTex(this.ListScrollFrame.buttons[i]:GetHighlightTexture())
 			this.ListScrollFrame.buttons[i]:GetHighlightTexture():SetHeight(60)
 		end
@@ -1448,6 +1451,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:skinStdButton{obj=this.News.SetFiltersButton}
 		self:skinStdButton{obj=this.News.GMImpeachButton}
 		self:skinSlider{obj=this.News.Container.ScrollBar, wdth=-4}
+		for i = 1, #this.News.Container.buttons do
+			this.News.Container.buttons[i].header:SetTexture(nil)
+		end
 		self:skinDropDown{obj=this.News.DropDown}
 		self:keepFontStrings(this.News.BossModel)
 		self:removeRegions(this.News.BossModel.TextFrame, {2, 3, 4, 5, 6}) -- border textures
@@ -1500,7 +1506,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:addSkinFrame{obj=cFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+	self:addSkinFrame{obj=cFrame, ft=ftype, kfs=true, ri=true, ofs=2, x1=-5, x2=1}
 
 	cFrame = nil
 
@@ -1596,6 +1602,15 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	self:SecureHookScript(_G.CommunitiesGuildTextEditFrame, "OnShow", function(this)
+		self:skinSlider{obj=_G.CommunitiesGuildTextEditFrame.Container.ScrollFrame.ScrollBar, wdth=-6}
+		self:addSkinFrame{obj=_G.CommunitiesGuildTextEditFrame.Container, ft=ftype}
+		self:skinStdButton{obj=_G.CommunitiesGuildTextEditFrameAcceptButton}
+		self:skinStdButton{obj=self:getChild(_G.CommunitiesGuildTextEditFrame, 4)} -- bottom close button
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
+		self:Unhook(this, "OnShow")
+	end)
+
 	self:SecureHookScript(_G.CommunitiesGuildLogFrame, "OnShow", function(this)
 		self:skinSlider{obj=this.Container.ScrollFrame.ScrollBar, wdth=-6}
 		self:addSkinFrame{obj=this.Container, ft=ftype}
@@ -1617,7 +1632,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 		self:Unhook(this, "OnShow")
 	end)
-
 
 end
 
