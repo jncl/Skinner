@@ -3191,7 +3191,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		end
 	end
 
--->>-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
+	-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 	if self.prdb.MainMenuBar.altpowerbar then
 		local function skinUnitPowerBarAlt(upba)
 			-- Don't change the status bar texture as it changes dependant upon type of power type required
