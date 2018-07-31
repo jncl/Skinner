@@ -3174,11 +3174,12 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		-- MicroButtonAlert frames
 		 for _, type in pairs{"Talent", "Collections", "LFD", "EJ", "Store"} do
 			self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton}
+			_G.RaiseFrameLevelByTwo(_G[type .. "MicroButtonAlert"]) -- move above button borders
 		end
 
 	end
 
--->>-- Extra Action Button
+	-- Extra Action Button
 	if self.prdb.MainMenuBar.extraab then
 		_G.ExtraActionButton1:GetNormalTexture():SetTexture(nil)
 		self:addButtonBorder{obj=_G.ExtraActionButton1, ofs=2, relTo=_G.ExtraActionButton1.icon}
