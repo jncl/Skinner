@@ -4349,6 +4349,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		this.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")
 		self:skinStdButton{obj=this.DetailsFrame.CompleteQuestFrame.CompleteButton}
 		self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
+		self:adjWidth{obj=this.DetailsFrame.AbandonButton, adj=-2} -- moves buttons to the right slightly
 		self:moveObject{obj=this.DetailsFrame.AbandonButton, y=2}
 		self:skinStdButton{obj=this.DetailsFrame.ShareButton}
 		self:removeRegions(this.DetailsFrame.ShareButton, {6, 7}) -- divider textures
