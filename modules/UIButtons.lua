@@ -68,14 +68,11 @@ local function __checkTex(opts)
 	local btn = opts.obj.onSB and opts.obj.sb or opts.obj
 	if not btn then return end -- allow for unskinned buttons
 
-	-- if not opts.mp2 then btn:Show() end -- why done here and not within following test stanza ???
-
 	-- aObj:Debug("__checkTex: [%s, %s, %s, %s]", nTex, opts.obj.onSB, btn, btn:IsShown())
 	-- handle numbers instead of text (e.g. Armory icon)
 	if nTex
 	and not _G.tonumber(nTex)
 	then
-		-- if btn.skin then btn:Show() end -- Waterfall/tomQuest2
 		if nTex:find("MinusButton")
 		or nTex:find("ZoomOutButton") -- ARL
 		then
@@ -92,11 +89,7 @@ local function __checkTex(opts)
 		end
 	else -- not a header line
 		btn:SetText("")
-		-- if not opts.mp2
-		-- or btn.skin -- Waterfall/tomQuest2
-		-- then
-			btn:Hide()
-		-- end
+		btn:Hide()
 	end
 
 end
@@ -272,7 +265,7 @@ function module:skinExpandButton(opts)
 	aso.bd = 6
 	if not opts.as then
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=opts.sap, aso=aso}
-		if  not opts.noHook then
+		if not opts.noHook then
 			module:SecureHook(opts.obj, "SetNormalTexture", function(this, nTex)
 				module:checkTex{obj=this, nTex=nTex}
 			end)
