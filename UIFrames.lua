@@ -407,8 +407,10 @@ aObj.blizzLoDFrames[ftype].AdventureMap = function(self)
 		this.Details.Child.ObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		self:skinStdButton{obj=this.DeclineButton}
 		self:skinStdButton{obj=this.AcceptButton}
-		self:addSkinFrame{obj=this, ft=ftype, y1=-11, x2=1, y2=-4}
-		this.CloseButton:GetNormalTexture():SetTexture(nil) -- frame is animated in
+		self:addSkinFrame{obj=this, ft=ftype, y1=-12, y2=-4}
+		if this.CloseButton:GetNormalTexture() then
+			this.CloseButton:GetNormalTexture():SetTexture(nil) -- frame is animated in
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
