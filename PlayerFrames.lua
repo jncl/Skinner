@@ -739,6 +739,19 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 							_G["ReputationBar" .. i .. "ExpandOrCollapseButton"].sb:Hide()
 						end
 					end
+					-- colour checkbox borders
+					if self.modChkBtns then
+						local r, g, b
+						for _, type in pairs{"AtWar", "Inactive"} do
+							r, g, b = _G["ReputationDetail" .. type .. "CheckBoxText"]:GetTextColor()
+							if self:round2(r, 2) ~= _G.GRAY_FONT_COLOR.r then
+								_G["ReputationDetail" .. type .. "CheckBox"].sb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3])
+							else
+								_G["ReputationDetail" .. type .. "CheckBox"].sb:SetBackdropBorderColor(r ,g, b)
+							end
+						end
+						r, g, b = nil, nil, nil
+					end
 				end)
 			end
 			self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
