@@ -22,21 +22,32 @@ aObj.addonsToSkin.NPCScan = function(self) -- v 7.3.5.3
 			if child.DismissButton
 			and child.killedTextureFrame
 			then
-				-- aObj:Debug("Target Button found: [%s, %s, %s]", child, child:GetWidth(), child:GetHeight())
-				if not child.sf then
-					child.Background:SetTexture(nil)
-					child.Background.SetTexture = _G.nop
-					if child.Background2 then
-						child.Background2:SetTexture(nil)
-						child.Background2.SetTexture = _G.nop
-						child.Background3:SetTexture(nil)
-						child.Background3.SetTexture = _G.nop
-					end
+				child.Background:SetTexture(nil)
+				child.Background.SetTexture = _G.nop
+				if child.Background2 then
+					child.Background2:SetTexture(nil)
+					child.Background2.SetTexture = _G.nop
+					child.Background3:SetTexture(nil)
+					child.Background3.SetTexture = _G.nop
 				end
-				child.DismissButton:GetNormalTexture():SetTexture(nil)
-				child.DismissButton:GetPushedTexture():SetTexture(nil)
+				if child.DismissButton:GetNormalTexture() then
+					child.DismissButton:GetNormalTexture():SetTexture(nil)
+					child.DismissButton:GetPushedTexture():SetTexture(nil)
+				end
 				aObj:skinCloseButton{obj=child.DismissButton, font=aObj.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
-				aObj:addSkinFrame{obj=child, ft="a", kfs=true, nb=true, sec=true, ofs=-8}
+				local xOfs, yOfs
+				if _G.Round(child:GetHeight()) == 119 then -- Elite/RareElite
+					xOfs = 38
+					yOfs = 18
+				elseif _G.Round(child:GetHeight()) == 96 then -- Rare
+					xOfs = 8
+					yOfs = 10
+				else -- Normal
+					xOfs = 10
+					yOfs = 9
+				end
+				aObj:addSkinFrame{obj=child, ft="a", kfs=true, nb=true, sec=true, x1=xOfs, y1=-yOfs, x2=-9, y2=yOfs}
+				xOfs, yOfs = nil, nil
 			end
 		end)
 		aObj:scanUIParentsChildren()

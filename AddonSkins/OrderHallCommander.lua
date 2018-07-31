@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("OrderHallCommander") then return end
 local _G = _G
 
-aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.14 70300
+aObj.lodAddons.OrderHallCommander = function(self) -- v 1.6.1 70300
 
 	local OHC = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("OrderHallCommander", true)
 
@@ -48,8 +48,19 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.14 70300
 			self:skinCloseButton{obj=frame.Close}
 			self:moveObject{obj=frame.Close, x=3, y=5}
 			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, y1=2, y2=-5}
+			if self.modBtnBs then
+				-- replace the mission menu tab texture
+				local mBtn = self:getLastChild(_G.OrderHallMissionFrame.MissionTab)
+				mBtn:SetSize(44, 44)
+				mBtn:GetNormalTexture():SetTexture([[Interface\Buttons\UI-SpellbookIcon-NextPage-Up]])
+				mBtn:GetHighlightTexture():SetTexture([[Interface\Buttons\UI-Common-MouseHilight]])
+				mBtn:GetNormalTexture():SetRotation(0)
+				mBtn:GetHighlightTexture():SetRotation(0)
+				mBtn:SetPoint("TOPLEFT", _G.OrderHallMissionFrame.MissionTab, "TOPRIGHT", -6, 6)
+				self:addButtonBorder{obj=mBtn, ofs=-4}
+				mBtn = nil
+			end
 			frame = nil
-			self:addButtonBorder{obj=self:getLastChild(_G.OrderHallMissionFrame.MissionTab), ofs=-14, y1=-12}
 			self:Unhook(this, "Menu")
 		end)
 		self:SecureHook(mLst, "AddMembers", function(this, frame)
@@ -70,7 +81,6 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.5.14 70300
 	local aC = OHC:GetAutocompleteModule()
 	if aC then
 		self:skinStdButton{obj=self:getLastChild(_G.OrderHallMissionFrameMissions.CompleteDialog.BorderFrame.ViewButton), x1=-10, x2=10}
-		-- self:skinStdButton{obj=self:getChild(frame, frame:GetNumChildren()), x1=-10, x2=10}
 	end
 	aC = nil
 

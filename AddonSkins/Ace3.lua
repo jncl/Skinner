@@ -370,7 +370,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 
 			-- OrderHallCommander objects
 			elseif objType == "OHCGUIContainer" then
-				obj.frame.BackgroundTile:SetTexture(nil)
 				aObj:skinCloseButton{obj=obj.frame.Close}
 				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
 

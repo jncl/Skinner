@@ -40,6 +40,7 @@ aObj.libsToSkin["LibQTip-1.0"] = function(self) -- v LibQTip-1.0, 44
 		for key, tt in lqt:IterateTooltips() do
 			skinTT(key, tt)
 		end
+
 	end
 
 end
