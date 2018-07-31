@@ -604,16 +604,18 @@ function aObj:hook(obj, method, func)
 end
 
 function aObj:hookSocialToastFuncs(frame)
-	self:Hook(frame.animIn, "Play", function(this)
+
+	self:SecureHook(frame.animIn, "Play", function(this)
 		this.sf.tfade:SetParent(_G.MainMenuBar)
 		this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
 		this.cb.tfade:SetParent(_G.MainMenuBar)
 		this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
 	end)
-	self:Hook(frame.waitAndAnimOut, "Play", function(this)
+	self:SecureHook(frame.waitAndAnimOut, "Play", function(this)
 		this.sf.tfade:SetParent(this.sf)
 		this.cb.tfade:SetParent(this.cb)
 	end)
+
 end
 
 function aObj:hookScript(obj, method, func)
