@@ -13,7 +13,7 @@ local cdStageRegs = {1, 2, 3, 4, 5, 6}
 local function skinMissionFrame(frame)
 
 	frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=1, x2=1, y2=-6}
+	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=2, x2=1, y2=-6}
 	-- tabs
 	aObj:skinTabs{obj=frame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
 
