@@ -4858,6 +4858,17 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		end
 	end)
 
+	-- Hook these to handle AddOns that use GameTooltip Backdrop functions (e.g. SavedInstances)
+	self:RawHook(_G.GameTooltip, "GetBackdrop", function(this)
+		return aObj.Backdrop[1]
+	end, true)
+	self:RawHook(_G.GameTooltip, "GetBackdropColor", function(this)
+		return aObj.bColour[1], aObj.bColour[2], aObj.bColour[3], aObj.bColour[4]
+	end, true)
+	self:RawHook(_G.GameTooltip, "GetBackdropBorderColor", function(this)
+		return aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]
+	end, true)
+
 end
 
 aObj.blizzFrames[ftype].Tutorial = function(self)
