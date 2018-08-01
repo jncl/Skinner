@@ -20,7 +20,7 @@ function aObj:XPerl()
 	-- Gradient colours
 	local c = self.db.profile.GradientMin
 	XPerlDB.colour.gradient.e = {r = c.r, g = c.g, b = c.b, a = c.a}
-	local c = self.db.profile.GradientMax
+	local c = self.gmColour
 	XPerlDB.colour.gradient.s = {r = c.r, g = c.g, b = c.b, a = c.a}
 	XPerlDB.colour.gradient.horizontal = self.db.profile.Gradient.rotate
 	-- statusBar texture
