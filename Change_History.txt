@@ -1,3 +1,20 @@
+beta7.27178.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated CommunitiesUI skin
+	Updated ReputationFrame skin
+	Updated comments
+	Updated MissionFrame skin
+	Updated AdventureMap skin
+	Make MicroButtonAlert more visible
+	Updated QuestMap skin
+	Bugfix for  SocialToasts
+	Updated .gitignore
+	Updated UIButtons skin
+	Updated Ace3, LibQTip, NPCScan, OrderHallCommander & QuestGuru skins
+
 beta7.27165.1
 Jncl:
 	ToDo.txt
