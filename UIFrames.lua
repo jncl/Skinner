@@ -833,16 +833,16 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 			end)
 		end
 		self:SecureHookScript(_G.BNToastFrame, "OnShow", function(this)
-		self:hookSocialToastFuncs(this)
 		self:skinCloseButton{obj=_G.BNToastFrameCloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true}
+		self:hookSocialToastFuncs(this)
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.TimeAlertFrame, "OnShow", function(this)
-		self:hookSocialToastFuncs(this)
 		self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true}
+		self:hookSocialToastFuncs(this)
 		self:Unhook(this, "OnShow")
 	end)
 
