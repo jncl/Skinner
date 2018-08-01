@@ -21,7 +21,7 @@ aObj.addonsToSkin.ZPerl = function(self) -- v 5.4.4
 	-- Gradient colours
 	local c = self.db.profile.GradientMin
 	_G.XPerlDB.colour.gradient.e = {r = c.r, g = c.g, b = c.b, a = c.a}
-	local c = self.db.profile.GradientMax
+	local c = self.gmColour
 	_G.XPerlDB.colour.gradient.s = {r = c.r, g = c.g, b = c.b, a = c.a}
 	_G.XPerlDB.colour.gradient.horizontal = self.db.profile.Gradient.rotate
 	-- statusBar texture

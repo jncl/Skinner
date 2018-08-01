@@ -391,6 +391,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			or objType == "SnowflakeEscape"
 			or objType == "SnowflakePlain"
 			or objType == "SnowflakeTitle"
+			-- LSM30 objects
+			or objType == "LSM30_Statusbar_Overlay"
+			or objType == "LSM30_Statusbar_Overlay-Item-Toggle"
 			-- WeakAuras objects
 			or objType == "WeakAurasIconButton"
 			or objType == "WeakAurasImportButton"

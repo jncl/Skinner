@@ -24,6 +24,8 @@ do
 
 	-- pointer to LibSharedMedia-3.0 library
 	aObj.LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
+	-- pointer to LibDBIcon-1.0 library
+	aObj.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))

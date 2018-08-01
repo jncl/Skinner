@@ -2,6 +2,7 @@ local aName, aObj = ...
 local _G = _G
 -- This is a Library
 
+aObj.aboutPanels = {["About"] = true}
 aObj.libsToSkin["LibAboutPanel"] = function(self) -- v 1.52
 	if self.initialized.LibAboutPanel then return end
 	self.initialized.LibAboutPanel = true
@@ -11,7 +12,6 @@ aObj.libsToSkin["LibAboutPanel"] = function(self) -- v 1.52
 		self:skinEditBox{obj=lAP.editbox, regs={6}} -- 6 is text
 		-- hook this to move editbox to the left
 		self:RawHook(lAP.editbox, "SetPoint", function(this, point, relTo)
-			-- aObj:Debug("lPA editbox SetPoint: [%s, %s, %s]", this, point, relTo)
 			if point == "LEFT" then
 				self.hooks[this].SetPoint(this, point, relTo, point, -4, 0)
 			else
@@ -20,11 +20,10 @@ aObj.libsToSkin["LibAboutPanel"] = function(self) -- v 1.52
 		end, true)
 	end
 
-	-- this is to stop the buttons being skinned
+	-- this is to stop the Email & Website buttons being skinned
 	self.RegisterCallback("LibAboutPanel", "IOFPanel_Before_Skinning", function(this, panel)
-		if panel.name ~= "About" then return end
+		if not self.aboutPanels[panel.name] then return end
 		self.iofSkinnedPanels[panel] = true
-		self.UnregisterCallback("LibAboutPanel", "IOFPanel_Before_Skinning")
 	end)
 
 end

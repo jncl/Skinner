@@ -4,7 +4,6 @@ local ftype = "opt"
 
 -- Add locals to see if it speeds things up
 local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.LibStub, _G.pairs
-local DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 
 aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
@@ -251,9 +250,9 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					get = function(info) return not db.MinimapIcon.hide end,
 					set = function(info, value)
 						db.MinimapIcon.hide = not value
-						if value then DBIcon:Show(aName) else DBIcon:Hide(aName) end
+						if value then self.DBIcon:Show(aName) else self.DBIcon:Hide(aName) end
 					end,
-					hidden = function() return not DBIcon end,
+					hidden = function() return not self.DBIcon end,
 				},
 				DropDownButtons = {
 					type = "toggle",
@@ -2033,6 +2032,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	})
 
 	-- register the data object to the Icon library
-	DBIcon:Register(aName, self.DBObj, db.MinimapIcon)
+	self.DBIcon:Register(aName, self.DBObj, db.MinimapIcon)
 
 end

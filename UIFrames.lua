@@ -3749,7 +3749,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			skinMMBtn("Existing LibDBIcon btns", button, name)
 		end
 		-- skin LibDBIcon Minimap Buttons when created
-		aObj.RegisterCallback(aObj, "LibDBIcon_IconCreated", skinMMBtn)
+		self.DBIcon.RegisterCallback(self, "LibDBIcon_IconCreated", skinMMBtn)
 	end
 
 	-- Garrison Landing Page Minimap button

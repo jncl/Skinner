@@ -1,16 +1,17 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("DockingStation") then return end
+local _G = _G
 
-function aObj:DockingStation()
+aObj.addonsToSkin.DockingStation = function(self) -- v 0.5.15
 
 	-- create Skinner profile, copy from Default profile and update
-	if DockingStationSettings
-	and DockingStationSettings.profiles
-	and not DockingStationSettings.profiles.Skinner
+	if _G.DockingStationSettings
+	and _G.DockingStationSettings.profiles
+	and not _G.DockingStationSettings.profiles.Skinner
 	then
-		DockingStationSettings.profiles.Skinner = CopyTable(DockingStationSettings.profiles.Default)
+		_G.DockingStationSettings.profiles.Skinner = _G.CopyTable(_G.DockingStationSettings.profiles.Default)
 	end
-	local dsDBp, c = DockingStationSettings.profiles.Skinner.panels
+	local dsDBp, c = _G.DockingStationSettings.profiles.Skinner.panels
 	for k, v in pairs(dsDBp) do
 		dsDBp[k].bgTexture = self.db.profile.StatusBar.texture
 		dsDBp[k].bgInset = self.db.profile.BdInset
@@ -21,20 +22,31 @@ function aObj:DockingStation()
 		dsDBp[k].bgColorA = c.a
 		dsDBp[k].borderTexture = self.bdbTex
 		dsDBp[k].borderSize = self.db.profile.BdEdgeSize
-		c = self.db.profile.ClassColours and RAID_CLASS_COLORS[self.uCls] or self.db.profile.BackdropBorder
+		c = self.db.profile.ClassClrBd and _G.RAID_CLASS_COLORS[self.uCls] or self.db.profile.BackdropBorder
 		dsDBp[k].borderColorR = c.r
 		dsDBp[k].borderColorG = c.g
 		dsDBp[k].borderColorB = c.b
 		dsDBp[k].borderColorA = c.a
 		dsDBp[k].iconSize = 0.7
 	end
+	dsDBp, c = nil, nil
 
 end
 
-function aObj:DockingStation_Config()
+aObj.lodAddons.DockingStation_Config = function(self) -- v 0.5.15
 
-	local frame = self:findFrame2(InterfaceOptionsFrame, "Frame", "LEFT", InterfaceOptionsFrame, "RIGHT", -13, 0)
-	self:addSkinFrame{obj=frame, ofs=-4}
-	self:skinSlider(self:getChild(frame, 1)) -- skin the slider
+	local frame = self:findFrame2(_G.InterfaceOptionsFrame, "Frame", "LEFT", _G.InterfaceOptionsFrame, "RIGHT", -13, 0)
+	self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=-4}
+	self:skinSlider(self:getChild(frame, 1))
+	frame = nil
+
+	-- DON'T skin any option frames
+	self.RegisterCallback("DockingStation_Config", "IOFPanel_Before_Skinning", function(this, panel)
+		if panel.name == "DockingStation"
+		or panel.parent == "DockingStation"
+		then
+			self.iofSkinnedPanels[panel] = true
+		end
+	end)
 
 end

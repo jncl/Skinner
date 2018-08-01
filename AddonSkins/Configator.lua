@@ -1,6 +1,6 @@
--- This is a Library
 local aName, aObj = ...
 local _G = _G
+-- This is a Library
 
 aObj.libsToSkin.Configator = function(self) -- v 7.5.5724
 	if self.initialized.Configator then return end
@@ -19,34 +19,35 @@ aObj.libsToSkin.Configator = function(self) -- v 7.5.5724
 	end
 
 	local clib = _G.LibStub:GetLibrary("Configator", true)
-	local function skinHelp()
+	local function skinHelp(obj)
 
-		aObj:moveObject{obj=clib.help.close, y=-2}
-		aObj:skinCloseButton{obj=clib.help.close}
-		aObj:skinUsingBD{obj=clib.help.scroll.hScroll}
-		aObj:skinUsingBD{obj=clib.help.scroll.vScroll}
-		aObj:addSkinFrame{obj=clib.help, ft="a", nb=true}
+		aObj:moveObject{obj=obj.help.close, y=-2}
+		aObj:skinCloseButton{obj=obj.help.close}
+		aObj:skinUsingBD{obj=obj.help.scroll.hScroll}
+		aObj:skinUsingBD{obj=obj.help.scroll.vScroll}
+		aObj:addSkinFrame{obj=obj.help, ft="a", nb=true}
 
 	end
 	-- hook this to skin Configator frames
 	if clib then
 		self:RawHook(clib, "Create", function(this, ...)
-			local frame = self.hooks[clib].Create(this, ...)
+			local frame = self.hooks[this].Create(this, ...)
 --			self:Debug("Configator_Create: [%s]", frame:GetName())
 			if not frame.Backdrop.sf then
 				self:skinStdButton{obj=frame.Done}
 				self:addSkinFrame{obj=frame.Backdrop, ft="a", nb=true}
 			end
 
-			if not self.ttList[clib.tooltip] then
+			-- TODO change to rawget
+			if not _G.rawget(self.ttList, this.tooltip) then
 				-- tooltip
 				_G.C_Timer.After(0.1, function()
-					self:add2Table(self.ttList, clib.tooltip)
+					self:add2Table(self.ttList, this.tooltip)
 				end)
 			end
 
-			if not clib.help.sf then
-				skinHelp()
+			if not this.help.sf then
+				skinHelp(this)
 			end
 
 			-- hook this to skin various controls
@@ -159,7 +160,7 @@ aObj.libsToSkin.Configator = function(self) -- v 7.5.5724
 	if clib
 	and clib.help
 	then
-		skinHelp()
+		skinHelp(clib)
 	end
 	-- skin DropDown menu
 	if _G.SelectBoxMenu then
@@ -170,7 +171,7 @@ aObj.libsToSkin.Configator = function(self) -- v 7.5.5724
 	local sslib = _G.LibStub:GetLibrary("ScrollSheet", true)
 	if sslib then
 		self:RawHook(sslib, "Create", function(this, parent, ...)
-			local sheet = self.hooks[sslib].Create(this, parent, ...)
+			local sheet = self.hooks[this].Create(this, parent, ...)
 			self:skinUsingBD{obj=sheet.panel.hScroll}
 			self:skinUsingBD{obj=sheet.panel.vScroll}
 			self:applySkin{obj=parent} -- just skin it otherwise text is hidden
