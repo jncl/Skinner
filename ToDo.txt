@@ -22,13 +22,13 @@ Legend:
 	O	Change texture for Scrollbar arrows
 
 	I	Class coloured Gradient, reported by Metalian, 27.07.18
-		- remains as was even when character class changes
+√		- remains as was even when character class changes
 
-√	N	QuestGuru, reported by raineday, 30.07.18
+√	I	MinimapButtonFrame, reported by palizangetsu, 31.07.18
 
-	I	BNet Toast, reported by DaZzA89, 30.07.18
-≈		- Skinner\UtilFuncs.lua:607: Usage: Hook([object], method, [handler], [hookSecure]): Attempt to hook secure function Play. Use `SecureHook' or add `true' to the argument list to override.
-		...\ArkInventory\Externals\Ace3\AceHook\AceHook-3.0-8.lua:164: in function 		<...\ArkInventory\Externals\Ace3\AceHook\AceHook-3.0.lua:118>
-		...\ArkInventory\Externals\Ace3\AceHook\AceHook-3.0-8.lua:283: in function `Hook'
-		Skinner\UtilFuncs.lua:607: in function `hookSocialToastFuncs'
-		Skinner\UIFrames.lua:834: in function <Skinner\UIFrames.lua:833>
+	S	SavedInstances, reported by palizangetsu, 31.07.18
+√		- SavedInstances\SavedInstances-8.0.3.lua:3525: Usage: <unnamed>:SetBackdrop(nil or {bgFile = "bgFile", edgeFile = "edgeFile", tile = false, tileSize = 0, edgeSize = 32, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
+
+	I	BNFrames, reported by palizangetsu, 01.08.18
+√		- Skinner\UtilFuncs.lua:615: attempt to index field 'sf' (a nil value)
+√		- Skinner\UtilFuncs.lua:609: attempt to index field 'sf' (a nil value)
