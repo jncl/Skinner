@@ -37,7 +37,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		BgTexture            = "None",
 		BgTile               = false,
 	-->>-- Colours
-		ClassColour          = false,
+		ClassClrBd           = false,
 		ClassClrBg           = false,
 		ClassClrGr           = false,
 		ClassClrTT           = false,
@@ -518,7 +518,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			type = "group",
 			name = self.L["Default Colours"],
 			get = function(info)
-				if info[#info] == "ClassColour"
+				if info[#info] == "ClassClrBd"
 				or info[#info] == "ClassClrBg"
 				or info[#info] == "ClassClrGr"
 				or info[#info] == "ClassClrTT"
@@ -530,7 +530,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				end
 			end,
 			set = function(info, r, g, b, a)
-				if info[#info] == "ClassColour" then
+				if info[#info] == "ClassClrBd" then
 					db[info[#info]] = r
 					if r then
 						db.BackdropBorder.r = _G.RAID_CLASS_COLORS[self.uCls].r
@@ -542,13 +542,9 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 							db.BagginsBBC.b = _G.RAID_CLASS_COLORS[self.uCls].b
 						end
 					else
-						db.BackdropBorder.r = dflts.BackdropBorder.r
-						db.BackdropBorder.g = dflts.BackdropBorder.g
-						db.BackdropBorder.b = dflts.BackdropBorder.b
+						db.BackdropBorder = dflts.BackdropBorder
 						if bggns then
-							db.BagginsBBC.r = dflts.BackdropBorder.r
-							db.BagginsBBC.g = dflts.BackdropBorder.g
-							db.BagginsBBC.b = dflts.BackdropBorder.b
+							db.BagginsBBC = dflts.BagginsBBC
 						end
 					end
 				elseif info[#info] == "ClassClrBg" then
@@ -558,9 +554,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						db.Backdrop.g = _G.RAID_CLASS_COLORS[self.uCls].g
 						db.Backdrop.b = _G.RAID_CLASS_COLORS[self.uCls].b
 					else
-						db.Backdrop.r = dflts.Backdrop.r
-						db.Backdrop.g = dflts.Backdrop.g
-						db.Backdrop.b = dflts.Backdrop.b
+						db.Backdrop = dflts.Backdrop
 					end
 				elseif info[#info] == "ClassClrGr" then
 					db[info[#info]] = r
@@ -569,9 +563,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						db.GradientMax.g = _G.RAID_CLASS_COLORS[self.uCls].g
 						db.GradientMax.b = _G.RAID_CLASS_COLORS[self.uCls].b
 					else
-						db.GradientMax.r = dflts.GradientMax.r
-						db.GradientMax.g = dflts.GradientMax.g
-						db.GradientMax.b = dflts.GradientMax.b
+						db.GradientMax = dflts.GradientMax
 					end
 				elseif info[#info] == "ClassClrTT" then
 					db[info[#info]] = r
@@ -580,9 +572,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						db.TooltipBorder.g = _G.RAID_CLASS_COLORS[self.uCls].g
 						db.TooltipBorder.b = _G.RAID_CLASS_COLORS[self.uCls].b
 					else
-						db.TooltipBorder.r = dflts.TooltipBorder.r
-						db.TooltipBorder.g = dflts.TooltipBorder.g
-						db.TooltipBorder.b = dflts.TooltipBorder.b
+						db.TooltipBorder = dflts.TooltipBorder
 					end
 				else
 					local c = db[info[#info]]
@@ -590,7 +580,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				end
 			end,
 			args = {
-				ClassColour = {
+				ClassClrBd = {
 					type = "toggle",
 					order = 1,
 					width = "double",
@@ -1970,9 +1960,10 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame[self.L["Background"]])
 	end
 	self.optionsFrame[self.L["Colours"]].default = function()
-		db.ClassColour = dflts.ClassColour
+		db.ClassClrBd = dflts.ClassClrBd
 		db.ClassClrBg = dflts.ClassClrBg
 		db.ClassClrGr = dflts.ClassClrGr
+		db.ClassClrTT = dflts.ClassClrTT
 		db.TooltipBorder = dflts.TooltipBorder
 		db.Backdrop = dflts.Backdrop
 		db.BackdropBorder = dflts.BackdropBorder

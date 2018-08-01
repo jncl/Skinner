@@ -510,7 +510,7 @@ end
 function aObj:getGradientInfo(invert, rotate)
 
 	local MinR, MinG, MinB, MinA = self.prdb.GradientMin.r, self.prdb.GradientMin.g, self.prdb.GradientMin.b, self.prdb.GradientMin.a
-	local MaxR, MaxG, MaxB, MaxA = self.prdb.GradientMax.r, self.prdb.GradientMax.g, self.prdb.GradientMax.b, self.prdb.GradientMax.a
+	local MaxR, MaxG, MaxB, MaxA = self.gmColour[1], self.gmColour[2], self.gmColour[3], self.gmColour[4]
 
 	if self.prdb.Gradient.enable then
 		if invert then

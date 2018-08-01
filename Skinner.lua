@@ -95,7 +95,7 @@ function aObj:OnInitialize()
 	end
 	-- change option name
 	if self.prdb.ClassColours then
-		self.prdb.ClassColour = self.prdb.ClassColours
+		self.prdb.ClassClrBd = self.prdb.ClassColours
 		self.prdb.ClassColours = nil
 	end
 	-- treat GossipFrame & QuestFrame as one
@@ -142,14 +142,6 @@ function aObj:OnInitialize()
 	self.gradientTab = {self.prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .5, .5, .5, 1, .25, .25, .25, 0}
 	self.gradientCBar = {self.prdb.Gradient.rotate and "HORIZONTAL" or "VERTICAL", .25, .25, .55, 1, 0, 0, 0, 1}
 	self.gradientTex = self.LSM:Fetch("background", self.prdb.Gradient.texture)
-	-- GradientMax colours
-	if self.prdb.ClassColour
-	and self.prdb.ClassClrGr
-	then
-		self.prdb.GradientMax.r = _G.RAID_CLASS_COLORS[self.uCls].r
-		self.prdb.GradientMax.g = _G.RAID_CLASS_COLORS[self.uCls].g
-		self.prdb.GradientMax.b = _G.RAID_CLASS_COLORS[self.uCls].b
-	end
 	-- these are used to disable the gradient
 	self.gradFrames = {["p"] = {}, ["u"] = {}, ["n"] = {}, ["s"] = {}, a = {}}
 
@@ -219,26 +211,23 @@ function aObj:OnInitialize()
 		end
 	end
 
-	-- TooltipBorder colours
-	if self.prdb.ClassColour
-	and self.prdb.ClassClrTT
-	then
-		c = _G.RAID_CLASS_COLORS[self.uCls]
-	else
-		c = self.prdb.TooltipBorder
-	end
-	self.tbColour = {c.r, c.g, c.b, c.a or 1}
 	-- StatusBar colours
 	c = self.prdb.StatusBar
 	self.sbColour = {c.r, c.g, c.b, c.a}
 	-- StatusBar texture
 	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
 	-- Backdrop colours
-	c = self.prdb.ClassClrsBg and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.Backdrop
+	c = self.prdb.ClassClrBg and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.Backdrop
 	self.bColour = {c.r, c.g, c.b, c.a or self.prdb.Backdrop.a}
 	-- BackdropBorder colours
-	c = self.prdb.ClassColour and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.BackdropBorder
+	c = self.prdb.ClassClrBd and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.BackdropBorder
 	self.bbColour = {c.r, c.g, c.b, c.a or self.prdb.BackdropBorder.a}
+	-- GradientMax colours
+	c = self.prdb.ClassClrGr and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.GradientMax
+	self.gmColour = {c.r, c.g, c.b, c.a or self.prdb.GradientMax.a}
+	-- TooltipBorder colours
+	c = self.prdb.ClassClrTT and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.TooltipBorder
+	self.tbColour = {c.r, c.g, c.b, c.a or self.prdb.TooltipBorder.a}
 
 	-- Inactive Tab & DropDowns texture
 	if self.prdb.TabDDFile
