@@ -3440,7 +3440,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	-- hook this to skin Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
-		self:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel:GetName())
+		self:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel.GetName and panel:GetName() or "n/a")
 
 		-- let AddOn skins know when IOF panel is going to be skinned
 		self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
@@ -3721,6 +3721,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	-- skin other minimap buttons as required
 	if not minBtn then
 		local function skinMMBtn(cb, btn, name)
+			-- aObj:Debug("skinMMBtn: [%s, %s, %s]", cb, btn, name)
 			for _, reg in ipairs{btn:GetRegions()} do
 				if reg:GetObjectType() == "Texture" then
 					if aObj:hasTextInName(reg, "Border")
@@ -4837,8 +4838,6 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	-- add tooltips to table
 	for _, tooltip in pairs{_G.GameTooltip, _G.ShoppingTooltip1, _G.ShoppingTooltip2, _G.SmallTextTooltip, _G.EmbeddedItemTooltip, _G.ItemRefTooltip, _G.ItemRefShoppingTooltip1, _G.ItemRefShoppingTooltip2} do
 		tooltip:DisableDrawLayer("OVERLAY")
-		tooltip:SetBackdrop(nil)
-		tooltip.SetBackdrop = _G.nop
 		tooltip.ftype = ftype
 		self:add2Table(self.ttList, tooltip)
 	end
