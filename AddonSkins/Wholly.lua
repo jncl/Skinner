@@ -5,7 +5,7 @@ local _G = _G
 aObj.addonsToSkin.Wholly = function(self) -- v 065
 
 	-- button on WorldMap frame
-	self:skinStdButton{obj=self:getLastChild(_G.WorldMapFrame.BorderFrame)}
+	self:skinStdButton{obj=_G.Wholly.mapFrame}
 
 	-- narrow frame
 	self:SecureHookScript(_G.com_mithrandir_whollyFrame, "OnShow", function(this)
