@@ -6,7 +6,7 @@ Legend:
 	≈ is Alt+x	- indicates partially completed or dry-coded
 	x			- indicates nothing to change
 	¶ is Alt+7	- indicates localisation changes required
-	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other change
+	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes
 
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
@@ -21,14 +21,24 @@ Legend:
 
 	O	Change texture for Scrollbar arrows
 
-	I	Class coloured Gradient, reported by Metalian, 27.07.18
-√		- remains as was even when character class changes
+	I	Options, reported by Shimiya, 02.08.18
+√		- Unticked Class Coloured Border
+x		- Warlock Color in skinner is #8787ed instead of #9482c9 (correct using RAID_CLASS_COLORS)
 
-√	I	MinimapButtonFrame, reported by palizangetsu, 31.07.18
+	I	PetTracker, reported by Talyrius, 02.08.18
+√		- Skinner\AddonSkins\PetTracker-8.0.2.lua:86: attempt to index field 'PetTrackerTamerJournal' (a nil value)
 
-	S	SavedInstances, reported by palizangetsu, 31.07.18
-√		- SavedInstances\SavedInstances-8.0.3.lua:3525: Usage: <unnamed>:SetBackdrop(nil or {bgFile = "bgFile", edgeFile = "edgeFile", tile = false, tileSize = 0, edgeSize = 32, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
+	I	Wholly, reported by Talyrius, 02.08.18
+√		-Skinner\Modules\UIButtons.lua:391: attempt to call method 'GetNormalTexture' (a nil value)
+		Skinner\AddonSkins\Wholly-067.lua:8: in function <Skinner\AddonSkins\Wholly.lua:5>
 
-	I	BNFrames, reported by palizangetsu, 01.08.18
-√		- Skinner\UtilFuncs.lua:615: attempt to index field 'sf' (a nil value)
-√		- Skinner\UtilFuncs.lua:609: attempt to index field 'sf' (a nil value)
+	I	MissionCompleteFrame, reported by Talyrius, 02.08.18
+≈		- Skinner\UIFrames.lua:243: attempt to index field 'DurabilityBackground' (a nil value)
+		Skinner\UIFrames.lua:243: in function <Skinner\UIFrames.lua:224>
+		Skinner\UIFrames.lua:1965: in function <Skinner\UIFrames.lua:1964>
+
+	I	TalentUI, requsted by MrKernal, 02.08.18
+√		- The talent frame is abit unclear for me personally and i love to have a option to add some borders around the selected talents or all talents with the option to add colors to selected/unselected borders
+
+	I	Mythic+ timer, reported by Metallan, 03.08.18
+		- timer bar texture not visible
