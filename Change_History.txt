@@ -1,3 +1,15 @@
+beta7.27219.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Update debug messages
+	Bugfix for Addons using GameTooltip functions
+	Bugfix for BNFrames
+	Fix for ClassColouredGradients etc
+	Updated Ace3, Baggins, Configator, DockingStation, ElvUI, LibAboutPanel, LibDBIcon, MinimapButtonFrame & ZPerl skins
+	Obsoleted XPerl skin
+
 beta7.27178.1
 Jncl:
 	ToDo.txt
