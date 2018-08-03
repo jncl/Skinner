@@ -239,8 +239,8 @@ local function skinMissionComplete(frame, naval)
             flwr.NameBG:SetTexture(nil)
         else
             aObj:removeRegions(flwr, {1})
+			flwr.DurabilityBackground:SetTexture(nil)
         end
-		flwr.DurabilityBackground:SetTexture(nil)
 		if flwr.PortraitFrame then
 			skinPortrait(flwr.PortraitFrame)
 		end
