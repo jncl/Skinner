@@ -4099,7 +4099,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		self:addButtonBorder{obj=this.BottomFrame.CatchButton}
 		self:addButtonBorder{obj=this.BottomFrame.ForfeitButton}
 		self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
-		self:addSkinFrame{obj=this.BottomFrame, ft=ftype, y1=8}
+		self:addSkinFrame{obj=this.BottomFrame, ft=ftype, y1=10}
 		if self.modBtnBs then
 			-- hook these for pet ability buttons
 			self:SecureHook("PetBattleFrame_UpdateActionBarLayout", function(this)
@@ -4160,17 +4160,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 					reParent{reset=true}
 				end
 			end)
-			-- skin the tooltips
-			for _, type in pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
-				if _G[type .. "Tooltip"].Delimiter then _G[type .. "Tooltip"].Delimiter:SetTexture(nil) end
-				if _G[type .. "Tooltip"].Delimiter1 then _G[type .. "Tooltip"].Delimiter1:SetTexture(nil) end
-				if _G[type .. "Tooltip"].Delimiter2 then _G[type .. "Tooltip"].Delimiter2:SetTexture(nil) end
-				if not type == "BattlePet" then _G[type .. "Tooltip"]:DisableDrawLayer("BACKGROUND") end
-				self:addSkinFrame{obj=_G[type .. "Tooltip"], ft=ftype}
-			end
-			_G.PetBattlePrimaryUnitTooltip.ActualHealthBar:SetTexture(self.sbTexture)
-			_G.PetBattlePrimaryUnitTooltip.XPBar:SetTexture(self.sbTexture)
-			self:add2Table(self.pbtt, _G.PetBattlePrimaryUnitTooltip.sf)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -4180,40 +4169,26 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		_G.PetBattleFrame:Show()
 	end
 
-	-- hook this to reset tooltip gradients
-	self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(this)
-		for i = 1, #aObj.pbtt do
-			aObj.pbtt[i].tfade:SetParent(aObj.pbtt[i])
-			aObj.pbtt[i].tfade:SetGradientAlpha(aObj:getGradientInfo())
+	if self.prdb.Tooltips.skin then
+		-- skin the tooltips
+		for _, type in pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
+			if _G[type .. "Tooltip"].Delimiter then _G[type .. "Tooltip"].Delimiter:SetTexture(nil) end
+			if _G[type .. "Tooltip"].Delimiter1 then _G[type .. "Tooltip"].Delimiter1:SetTexture(nil) end
+			if _G[type .. "Tooltip"].Delimiter2 then _G[type .. "Tooltip"].Delimiter2:SetTexture(nil) end
+			if not type == "BattlePet" then _G[type .. "Tooltip"]:DisableDrawLayer("BACKGROUND") end
+			self:addSkinFrame{obj=_G[type .. "Tooltip"], ft=ftype}
 		end
-	end)
-
-end
-
-aObj.blizzFrames[ftype].PetBattleTooltips = function(self)
-	if not self.prdb.PetBattleUI then return end
-
-	self:SecureHookScript(_G.BattlePetTooltip, "OnShow", function(this)
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, this)
+		_G.PetBattlePrimaryUnitTooltip.ActualHealthBar:SetTexture(self.sbTexture)
+		_G.PetBattlePrimaryUnitTooltip.XPBar:SetTexture(self.sbTexture)
+		self:add2Table(self.pbtt, _G.PetBattlePrimaryUnitTooltip.sf)
+		-- hook this to reset tooltip gradients
+		self:SecureHookScript(_G.PetBattleFrame, "OnHide", function(this)
+			for i = 1, #aObj.pbtt do
+				aObj.pbtt[i].tfade:SetParent(aObj.pbtt[i])
+				aObj.pbtt[i].tfade:SetGradientAlpha(aObj:getGradientInfo())
+			end
 		end)
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingPetBattleAbilityTooltip, "OnShow", function(this)
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, this)
-		end)
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingBattlePetTooltip, "OnShow", function(this)
-		-- tooltip
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, this)
-		end)
-		self:Unhook(this, "OnShow")
-	end)
+	end
 
 end
 
