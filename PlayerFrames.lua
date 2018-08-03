@@ -3005,7 +3005,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 					bar.Bar.BorderLeft:SetTexture(nil)
 					bar.Bar.BorderRight:SetTexture(nil)
 					bar.Bar.BorderMid:SetTexture(nil)
-					aObj:skinStatusBar{obj=bar.Bar, fi=0, bgTex=self:getRegion(bar.Bar, 5)}
+					aObj:skinStatusBar{obj=bar.Bar, fi=0, bgTex=self:getRegion(bar.Bar, bar.Bar.Label and 5 or 4)}
 				else
 					-- BonusTrackerProgressBarTemplate bars
 					bar.Bar.BarFrame:SetTexture(nil)
