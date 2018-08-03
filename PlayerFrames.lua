@@ -3811,7 +3811,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 					this["tier" .. i]["talent" .. j].knownSelection:SetAlpha(0)
 					self:addButtonBorder{obj=this["tier" .. i]["talent" .. j], relTo=this["tier" .. i]["talent" .. j].icon}
 				else
-					this["tier" .. i]["talent" .. j].knownSelection:SetTexCoord(0.00390625, 0.78515625, 0.25000000, 0.36914063)
+					this["tier" .. i]["talent" .. j].knownSelection:SetTexCoord(0.14, 0.86, 0, 1)
 					this["tier" .. i]["talent" .. j].knownSelection:SetVertexColor(0, 1, 0, 1)
 				end
 			end
