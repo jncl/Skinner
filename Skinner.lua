@@ -371,7 +371,7 @@ function aObj:OnEnable()
 	self.tabFrames = {}
 	if self.isTT then
 		self:SecureHook("PanelTemplates_UpdateTabs", function(frame)
-			-- self:Debug("PanelTemplates_UpdateTabs: [%s, %s, %s]", frame, frame.selectedTab, frame.numTabs)
+			-- self:Debug("PanelTemplates_UpdateTabs: [%s, %s, %s, %s]", frame, frame.selectedTab, frame.numTabs, _G.rawget(self.tabFrames, frame))
 			if not self.tabFrames[frame] then return end -- ignore frame if not monitored
 			if frame.selectedTab then
 				for i = 1, frame.numTabs do
