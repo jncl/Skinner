@@ -93,9 +93,12 @@ function aObj:OnInitialize()
 	if type(self.prdb.MinimapButtons) == "boolean" then
 		self.prdb.MinimapButtons = {skin = true, style = false}
 	end
-	-- change option name
-	if self.prdb.ClassColours then
-		self.prdb.ClassClrBd = self.prdb.ClassColours
+	-- change options name
+	if self.prdb.ClassColour
+	or self.prdb.ClassColours
+	then
+		self.prdb.ClassClrBd = self.prdb.ClassColour or self.prdb.ClassColours
+		self.prdb.ClassColour = nil
 		self.prdb.ClassColours = nil
 	end
 	-- treat GossipFrame & QuestFrame as one
