@@ -194,6 +194,7 @@
 <script file="AddonSkins\Scrap.lua"/>
 <script file="AddonSkins\ScrollMaster.lua"/>
 <script file="AddonSkins\ServerHop.lua"/>
+<script file="AddonSkins\SecureTabs.lua"/>
 <script file="AddonSkins\SilverDragon.lua"/>
 <script file="AddonSkins\Simulationcraft.lua"/>
 <script file="AddonSkins\Skada.lua"/>
