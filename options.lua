@@ -1848,7 +1848,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			type = "group",
 			name = self.L["Disable Addon Skins"],
 			get = function(info) return db.DisabledSkins[info[#info]] end,
-			set = function(info, value) db.DisabledSkins[info[#info]] = value end,
+			set = function(info, value) db.DisabledSkins[info[#info]] = value and value or nil end,
 			args = {
 				head1 = {
 					order = 1,
@@ -1882,9 +1882,9 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	end
 
 	-- add DisabledSkins options
-	local function addDSOpt(name, lib)
+	local function addDSOpt(name, lib, lod)
 
-		local name2 = name .. (lib and " (Lib)" or "")
+		local name2 = name .. (lib and " (Lib)" or lod and " (LoD)" or "")
 		local width2 = name2:len() > 19 and "double" or nil
 		aObj.optTables["Disabled Skins"].args[name] = {
 			type = "toggle",
@@ -1902,7 +1902,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		addDSOpt(addonName, true)
 	end
 	for addonName in pairs(self.lodAddons) do
-		addDSOpt(addonName)
+		addDSOpt(addonName, nil, true)
 	end
 	for addonName in pairs(self.otherAddons) do
 		if addonName == "tekKonfig" then
