@@ -4908,10 +4908,20 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 	-- Documentation in UIWidgetManagerDocumentation.lua
 	local function setTextColor(textObject)
-		textObject:SetTextColor(self.BTr, self.BTg, self.BTb)
-		textObject.SetTextColor = _G.nop
+		local tClr = {textObject:GetTextColor()}
+		-- aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
+		-- only colour blue text
+		if aObj:round2(tClr[1], 2) == 0.08
+		and aObj:round2(tClr[2], 2) == 0.16
+		and aObj:round2(tClr[3], 2) == 0.37
+		then
+			textObject:SetTextColor(self.BTr, self.BTg, self.BTb)
+			textObject.SetTextColor = _G.nop
+		end
+		_G.wipe(tClr)
 	end
 	local function skinWidget(wFrame, wInfo)
+		-- aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.enabledState)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
@@ -4933,7 +4943,14 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				setTextColor(resourceFrame.Text)
 			end
 		elseif wFrame.widgetType == 7 then -- IconTextAndCurrencies
-			aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
+			if self.modBtnBs then
+				aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
+				if wInfo.enabledState == _G.Enum.WidgetEnabledState.Disabled then
+					wFrame.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				else
+					wFrame.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				end
+			end
 		elseif wFrame.widgetType == 8 then -- TextWithState
 			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 9 then -- HorizontalCurrencies
