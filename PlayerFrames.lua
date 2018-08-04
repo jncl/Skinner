@@ -1589,7 +1589,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			this.Applicants.Container.buttons[i].PointsSpentBgGold:SetAlpha(0)
 			self:moveObject{obj=this.Applicants.Container.buttons[i].PointsSpentBgGold, x=6, y=-6}
 		end
-		self:skinSlider{obj=this.Applicants.Container.ScrollBar, wdth=-4}
+		self:skinSlider{obj=this.Applicants.Container.scrollBar, wdth=-4}
 		self:removeMagicBtnTex(this.Applicants.InviteButton)
 		self:skinStdButton{obj=this.Applicants.InviteButton}
 		self:removeMagicBtnTex(this.Applicants.MessageButton)
