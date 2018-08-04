@@ -4345,7 +4345,6 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-
 	local wct = _G.QuestMapFrame.QuestsFrame.WarCampaignTooltip
 	wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
 	wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
@@ -4750,7 +4749,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		if self.prdb.Tooltips.glazesb then
 			if tTip:GetName() -- named tooltips only
 			and _G[tTip:GetName() .. "StatusBar"]
-			and not _G[tTip:GetName() .. "StatusBar"].Bar -- ignore ReputationParagonTooltip & WorldMapTaskTooltip
+			and not _G[tTip:GetName() .. "StatusBar"].Bar -- ignore ReputationParagonTooltip
 			then
 				self:skinStatusBar{obj=_G[tTip:GetName() .. "StatusBar"], fi=0}
 			end
@@ -4764,6 +4763,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 		-- hook this to prevent Gradient overlay when tooltip reshown
 		self:HookScript(tTip, "OnUpdate", function(this)
+			-- aObj:Debug("tTip OnUpdate: [%s, %s]", this, this.ItemTooltip)
 			self:skinTooltip(this)
 		end)
 
@@ -4779,7 +4779,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		tTip.SetBackdrop = _G.nop
 
 		if self.modBtnBs then
-			-- if has an ItemTooltip then add a button border
+			-- if it has an ItemTooltip then add a button border
 			if tTip.ItemTooltip then
 				self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon, reParent={tTip.ItemTooltip.Count}}
 			end
