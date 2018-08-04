@@ -536,15 +536,6 @@ function aObj:getInt(num)
 
 end
 
-function aObj:round2(num, idp)
---@alpha@
-	assert(num, "Missing number\n" .. debugstack(2, 3, 2))
---@end-alpha@
-
-  return _G.tonumber(_G.string.format("%." .. (idp or 0) .. "f", num))
-
-end
-
 function aObj:getRegion(obj, regNo)
 --@alpha@
 	assert(obj, "Unknown object getRegion\n" .. debugstack(2, 3, 2))
@@ -926,15 +917,6 @@ function aObj:removeRegions(obj, regions)
 
 end
 
-function aObj:rmRegionsTex(obj, regions)
---@alpha@
-	assert(obj, "Missing object rRT\n" .. debugstack(2, 3, 2))
---@end-alpha@
-
-	__rmRegs(obj, regions, true)
-
-end
-
 function aObj:resizeTabs(frame)
 --@alpha@
 	assert(frame, "Unknown object resizeTabs\n" .. debugstack(2, 3, 2))
@@ -976,6 +958,24 @@ function aObj:resizeEmptyTexture(texture)
 	texture:SetTexCoord(0, 1, 0, 1)
 	texture:ClearAllPoints()
 	texture:SetPoint("CENTER", texture:GetParent())
+
+end
+
+function aObj:rmRegionsTex(obj, regions)
+--@alpha@
+	assert(obj, "Missing object rRT\n" .. debugstack(2, 3, 2))
+--@end-alpha@
+
+	__rmRegs(obj, regions, true)
+
+end
+
+function aObj:round2(num, idp)
+--@alpha@
+	assert(num, "Missing number\n" .. debugstack(2, 3, 2))
+--@end-alpha@
+
+  return _G.tonumber(_G.string.format("%." .. (idp or 0) .. "f", num))
 
 end
 
