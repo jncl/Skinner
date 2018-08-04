@@ -152,7 +152,21 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.293
 		end)
 		self:SecureHook(_G.WorldQuestTrackerAddon, "RefreshTrackerWidgets", function()
 			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetShown(_G.WorldQuestTrackerQuestsHeader:IsShown())
+			if _G.WorldQuestTracker.db.profile.TutorialTracker == 2
+			and not _G.WorldQuestTrackerTrackerTutorialAlert1.CloseButton.sb
+			then
+				self:skinCloseButton{obj=_G.WorldQuestTrackerTrackerTutorialAlert1.CloseButton}
+			end
 		end)
 	end
+
+	-- WorldQuestTrackerFinderFrame
+	self:SecureHookScript(_G.WorldQuestTrackerFinderFrame, "OnShow", function(this)
+		if _G.WorldQuestTracker.db.profile.groupfinder.tutorial == 1 then
+			self:skinCloseButton{obj=_G.WorldQuestTrackerGroupFinderTutorialAlert1.CloseButton}
+			self:Unhook(this, "OnShow")
+		end
+	end)
+	-- WorldQuestTrackerRareFrame
 
 end
