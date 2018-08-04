@@ -606,14 +606,18 @@ end
 function aObj:hookSocialToastFuncs(frame)
 
 	self:SecureHook(frame.animIn, "Play", function(this)
-		this.sf.tfade:SetParent(_G.MainMenuBar)
-		this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-		this.cb.tfade:SetParent(_G.MainMenuBar)
-		this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
+		if this.sf then
+			this.sf.tfade:SetParent(_G.MainMenuBar)
+			this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
+		end
+		if this.cb then
+			this.cb.tfade:SetParent(_G.MainMenuBar)
+			this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
+		end
 	end)
 	self:SecureHook(frame.waitAndAnimOut, "Play", function(this)
-		this.sf.tfade:SetParent(this.sf)
-		this.cb.tfade:SetParent(this.cb)
+		if this.sf then this.sf.tfade:SetParent(this.sf) end
+		if this.cb then this.cb.tfade:SetParent(this.cb) end
 	end)
 
 end
