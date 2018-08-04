@@ -5085,8 +5085,9 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.WorldMapCompareTooltip1)
 			self:add2Table(self.ttList, _G.WorldMapCompareTooltip2)
-			_G.RaiseFrameLevel(_G.WorldMapCompareTooltip1)
-			_G.RaiseFrameLevel(_G.WorldMapCompareTooltip2)
+			-- make these tooltip appear above other ones
+			self:RaiseFrameLevelByFour(_G.WorldMapCompareTooltip1)
+			self:RaiseFrameLevelByFour(_G.WorldMapCompareTooltip2)
 		end)
 
 		self:Unhook(this, "OnShow")
