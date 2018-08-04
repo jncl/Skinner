@@ -818,33 +818,15 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	if not self.prdb.BNFrames or self.initialized.BNFrames then return end
 	self.initialized.BNFrames = true
 
-	local hookFuncs = _G.nop
-	-- hook these to stop gradient texture whiteout
-	function hookFuncs(frame)
-			self:Hook(frame.animIn, "Play", function(this)
-				this.sf.tfade:SetParent(_G.MainMenuBar)
-				this.cb.tfade:SetParent(_G.MainMenuBar)
-				this.sf.tfade:SetGradientAlpha(self:getGradientInfo())
-				this.cb.tfade:SetGradientAlpha(self:getGradientInfo())
-			end)
-			self:Hook(frame.waitAndAnimOut, "Play", function(this)
-				this.sf.tfade:SetParent(this.sf)
-				this.cb.tfade:SetParent(this.cb)
-			end)
-		end
-		self:SecureHookScript(_G.BNToastFrame, "OnShow", function(this)
-		self:skinCloseButton{obj=_G.BNToastFrameCloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
-		self:addSkinFrame{obj=this, ft=ftype, nb=true}
-		self:hookSocialToastFuncs(this)
-		self:Unhook(this, "OnShow")
-	end)
+	self:skinCloseButton{obj=_G.BNToastFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
+	self:addSkinFrame{obj=_G.BNToastFrame, ft=ftype, nb=true}
+	self:hookSocialToastFuncs(_G.BNToastFrame)
+	self:addSkinFrame{obj=_G.BNToastFrame.TooltipFrame, ft=ftype, kfs=true, nb=true}
+	_G.BNToastFrame.TooltipFrame:SetScript("OnLoad", nil)
 
-	self:SecureHookScript(_G.TimeAlertFrame, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
-		self:addSkinFrame{obj=this, ft=ftype, nb=true}
-		self:hookSocialToastFuncs(this)
-		self:Unhook(this, "OnShow")
-	end)
+	self:skinCloseButton{obj=_G.TimeAlertFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
+	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype, nb=true}
+	self:hookSocialToastFuncs(_G.TimeAlertFrame)
 
 end
 
