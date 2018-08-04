@@ -2055,7 +2055,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 	self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, lod=true}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-2, y1=2, x2=1, y2=-5}
 
 		self:skinDropDown{obj=_G.FriendsDropDown}
 		self:skinDropDown{obj=_G.TravelPassDropDown}
