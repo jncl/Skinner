@@ -11,7 +11,7 @@ local function skinCBs(objPrefix)
 	end
 end
 
-aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.8 Beta 8
+aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 
 	--	Locations Frame
 	self:skinStdButton{obj=_G.FishingLocationsSwitchButton}
@@ -54,22 +54,24 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.8 Beta 8
 	self:skinDropDown{obj=_G.FishingPets}
 	-- About Tab
 
-	if self.modChkBtns then
-		-- hook this to skin checkbuttons
-		self:SecureHook(_G.FishingOptionsFrame, "LayoutOptions", function(this, options)
-			skinCBs("FishingOptionsFrameOpt")
-		end)
-	end
-
 	-- Tabs (side)
 	local tabObj
 	for i = 1, 6 do -- allow for 6 tabs (inc. Tracking plugin)
 		tabObj = _G["FishingOptionsFrameTab" .. i]
 		if tabObj then
 			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
+			self:addButtonBorder{obj=tabObj}
 		end
 	end
 	tabObj = nil
+
+	if self.modChkBtns then
+		-- hook this to skin checkbuttons
+		self:SecureHook(_G.FishingOptionsFrame, "LayoutOptions", function(this, options)
+			skinCBs("FishingOptionsFrameOpt")
+			self:Unhook(this, "LayoutOptions")
+		end)
+	end
 
 	-- Tabs (bottom)
 	self:skinTabs{obj=_G.FishingBuddyFrame}
@@ -88,10 +90,11 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.8 Beta 8
 
 end
 
-aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.8 Beta 1
+aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.9.8
 
 	-- FishingOutfit Frame
-	for _, child in ipairs{_G.FishingOutfitFrame:GetChildren()} do
+	for _, child in ipairs{_G.FBOutfitFrame:GetChildren()} do
+		if child:GetName():find("Skill") then break end
 		if child:IsObjectType("CheckButton") then
 			self:skinCheckButton{obj=child}
 		elseif child:IsObjectType("Button") then
@@ -101,10 +104,12 @@ aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.8 Beta 1
 			end
 		end
 	end
-	_G.FishingOutfitFrameModel:DisableDrawLayer("BACKGROUND")
-	_G.FishingOutfitFrameModel:DisableDrawLayer("BORDER")
-	_G.FishingOutfitFrameModel:DisableDrawLayer("OVERLAY")
-	_G.FishingOutfitFrameModel.controlFrame:DisableDrawLayer("BACKGROUND")
+	_G.FBOutfitFrameModel:DisableDrawLayer("BACKGROUND")
+	_G.FBOutfitFrameModel:DisableDrawLayer("BORDER")
+	_G.FBOutfitFrameModel:DisableDrawLayer("OVERLAY")
+	_G.FBOutfitFrameModel.controlFrame:DisableDrawLayer("BACKGROUND")
+
+	self:skinStdButton{obj=_G.FishingOutfitFrameTab.Switch}
 
 	-- Tabs (side)
 	local tabObj
@@ -112,6 +117,8 @@ aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.8 Beta 1
 		tabObj = _G["ManagedOutfitsTab" .. i]
 		if tabObj then
 			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
+			self:addButtonBorder{obj=tabObj}
+			_G.Spew("Outfits Tab", tabObj)
 		end
 	end
 	tabObj = nil
@@ -123,12 +130,16 @@ aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.8 Beta 1
 
 	-- Options
 	if self.modChkBtns then
-		skinCBs("OptionsOutfitsOpt")
+		-- hook this to skin checkbuttons
+		self:SecureHook(_G.OptionsOutfits, "LayoutOptions", function(this, options)
+			skinCBs("OptionsOutfitsOpt")
+			self:Unhook(this, "LayoutOptions")
+		end)
 	end
 
 end
 
-aObj.addonsToSkin.FB_TrackingFrame = function(self) -- v 1.7.11
+aObj.addonsToSkin.FB_TrackingFrame = function(self) -- v 1.9.1
 
 	_G.FishingTrackingFrame:DisableDrawLayer("BACKGROUND")
 
@@ -139,6 +150,26 @@ aObj.addonsToSkin.FB_TrackingFrame = function(self) -- v 1.7.11
 	for i = 1, 16 do
 		self:skinCheckButton{obj=_G["FishingTracking" .. i .. "Hourly"]}
 		self:skinCheckButton{obj=_G["FishingTracking" .. i .. "Weekly"]}
+	end
+
+	-- Tabs (side)
+	local tabObj
+	for i = 1, 3 do
+		tabObj = _G["ManagedLocationsTab" .. i]
+		if tabObj then
+			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
+			self:addButtonBorder{obj=tabObj}
+		end
+	end
+	tabObj = nil
+
+	-- Options
+	if self.modChkBtns then
+		-- hook this to skin checkbuttons
+		self:SecureHook(_G.OptionsLocations, "LayoutOptions", function(this)
+			skinCBs("OptionsLocationsOpt")
+			self:Unhook(this, "LayoutOptions")
+		end)
 	end
 
 end

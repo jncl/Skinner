@@ -2,69 +2,41 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.293
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.295
 
 	local db = _G.WorldQuestTrackerAddon.db.profile
 
-	local s1, s2, s3, s4, s5, s6, s7
 	self:SecureHook("ToggleWorldMap", function()
-		if _G.WorldQuestTrackerGoToBIButton
-		and not s1
-		then
-			_G.WorldQuestTrackerGoToBIButton.Background:SetTexture(nil)
-			self:skinOtherButton{obj=_G._G.WorldQuestTrackerGoToBIButton, font="GameFontNormal",text="World\nQuests", y1=2, y2=-1}
-			self:RaiseFrameLevelByFour(_G._G.WorldQuestTrackerGoToBIButton)
-			s1 =true
-		end
 		if _G.WorldQuestTrackerCloseSummaryButton
-		and not s2
+		and not _G.WorldQuestTrackerCloseSummaryButton.sb
 		then
 			_G.WorldQuestTrackerCloseSummaryButton.Background:SetTexture(nil)
 			self:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close"}
-			s2 = true
 		end
 		if _G.WorldQuestTrackerSummaryUpPanel
-		and not s3
+		and not _G.WorldQuestTrackerSummaryUpPanelChrQuestsScrollScrollBar.sknd
 		then
 			self:skinSlider{obj=_G.WorldQuestTrackerSummaryUpPanelChrQuestsScrollScrollBar, adj=-4, size=3}
-			s3 = true
-		end
-		if _G.WorldQuestTrackerShipmentsReadyFrame
-		and not s4
-		then
-			self:removeRegions(_G.WorldQuestTrackerShipmentsReadyFrame, {1, 2})
-			self:addSkinFrame{obj=_G.WorldQuestTrackerShipmentsReadyFrame, ft="a", ofs=5, x1=10, x2=12}
-			s4 = true
 		end
 		if _G.WorldQuestTrackerToggleQuestsButton
-		and not s5
+		and not _G.WorldQuestTrackerToggleQuestsButton.sb
 		then
 			_G.WorldQuestTrackerToggleQuestsButton.Background:SetTexture(nil)
 			self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, x1=4, x2=-4}
 			s5 = true
 		end
-		if _G.WorldQuestTrackerTutorial
-		and not s6
-		then
-			_G.C_Timer.After(0.2, function()
-				self:removeRegions(_G.WorldQuestTrackerTutorial, {1, 2, 3, 4, 5})
-			end)
-			local cb = self:getChild(_G.WorldQuestTrackerTutorial, 1)
-			cb.texture:SetTexture(nil)
-			self:skinStdButton{obj=cb}
-			cb = nil
-			self:addSkinFrame{obj=_G.WorldQuestTrackerTutorial, ft="a", ofs=3, y2=-38}
-			s6 = true
-		end
 		if _G.WorldQuestTrackerZoneSummaryFrame
-		and not s7
 		then
 			_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
 			_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
 		end
-		if s1 and s2 and s3 and s4 and s5 and s6 and s7 then
-			self:Unhook("ToggleWorldMap")
-			s1, s2, s3, s4, s5, s6, s7 = nil, nil, nil, nil, nil, nil, nil
+		if self.modBtnBs then
+			if _G.WorldQuestTrackerGoToHordeButton
+			and not _G.WorldQuestTrackerGoToHordeButton.sbb
+			then
+				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton}
+				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton}
+			end
 		end
 	end)
 
