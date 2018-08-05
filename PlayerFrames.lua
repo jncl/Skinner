@@ -2983,151 +2983,132 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end)
 	end
 
-	local function skinObjectiveBlocks()
+	aObj:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
+	aObj:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
-		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
-		self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
-
-		-- hook this to skin QuestObjective Block Button(s)
-		if self.modBtnBs then
-			self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
-				if not button.sbb then
-					self:addButtonBorder{obj=button, ofs=button.Icon and -2 or nil, x1=button.Icon and 0 or nil, reParent=button.Count and {button.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
-				end
-			end)
-		end
-
-		-- skin timerBar(s) & progressBar(s)
-		local function skinBar(bar)
-
-			if not aObj.sbGlazed[bar.Bar] then
-				if bar.Bar.BorderLeft then
-					bar.Bar.BorderLeft:SetTexture(nil)
-					bar.Bar.BorderRight:SetTexture(nil)
-					bar.Bar.BorderMid:SetTexture(nil)
-					aObj:skinStatusBar{obj=bar.Bar, fi=0, bgTex=self:getRegion(bar.Bar, bar.Bar.Label and 5 or 4)}
-				else
-					-- BonusTrackerProgressBarTemplate bars
-					bar.Bar.BarFrame:SetTexture(nil)
-					bar.Bar.IconBG:SetTexture(nil)
-					bar.Bar.BarFrame2:SetTexture(nil)
-					bar.Bar.BarFrame3:SetTexture(nil)
-					aObj:skinStatusBar{obj=bar.Bar, fi=0, bgTex=bar.Bar.BarBG}
-					bar.Bar:DisableDrawLayer("OVERLAY")
-					bar.FullBarFlare1.BarGlow:SetTexture(nil)
-				end
-			end
-
-		end
-		-- TimerBars
-		self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
-			skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
-		end)
-		self:SecureHook(_G.ACHIEVEMENT_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
-			skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
-		end)
-		self:SecureHook(_G.QUEST_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
-			skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
-		end)
-		self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
-			skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
-		end)
-		-- ProgressBars
-		self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-			skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-		end)
-		self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-			skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-		end)
-		self:SecureHook(_G.QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-			skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-		end)
-		self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-			skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-		end)
-		self:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-			skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
-		end)
-		-- skin existing Timer & Progress bars
-		local function skinBars(table)
-			for _, block in pairs(table) do
-					for _, line in pairs(block) do
-					skinBar(line)
-				end
-			end
-		end
-		skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedTimerBars)
-		skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
-		skinBars(_G.QUEST_TRACKER_MODULE.usedTimerBars)
-		skinBars(_G.QUEST_TRACKER_MODULE.usedProgressBars)
-		skinBars(_G.SCENARIO_TRACKER_MODULE.usedTimerBars)
-		skinBars(_G.SCENARIO_TRACKER_MODULE.usedProgressBars)
-		skinBars(_G.ACHIEVEMENT_TRACKER_MODULE.usedTimerBars)
-		skinBars(_G.BONUS_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
-		skinBars(_G.WORLD_QUEST_TRACKER_MODULE.usedProgressBars)
-
-		local function skinRewards(frame)
-
-			for i = 1, #frame.Rewards do
-				frame.Rewards[i].ItemBorder:SetTexture(nil)
-				if aObj.modBtnBs then
-					if not frame.Rewards[i].sbb then
-						aObj:addButtonBorder{obj=frame.Rewards[i], relTo=frame.Rewards[i].ItemIcon, reParent={frame.Rewards[i].Count}}
-					end
-				end
-			end
-
-		end
-
-		self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
-			skinRewards(block.module.rewardsFrame)
-		end)
-
-		-- ScenarioObjectiveBlock
-
-		-- ScenarioStageBlock
-		self:nilTexture(_G.ScenarioStageBlock.NormalBG, true)
-		self:nilTexture(_G.ScenarioStageBlock.FinalBG, true)
-		self:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, y1=-1, x2=41, y2=7}
-
-		-- ScenarioChallengeModeBlock
-		_G.ScenarioChallengeModeBlock:DisableDrawLayer("BACKGROUND")
-		self:removeRegions(_G.ScenarioChallengeModeBlock, {3}) -- "challengemode-timer" texture
-		self:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0}
-		self:removeRegions(_G.ScenarioChallengeModeBlock.StatusBar, {1}) -- border
-		self:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, y2=7}
-		self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
-			for i = 1, #block.Affixes do
-				block.Affixes[i].Border:SetTexture(nil)
+	-- hook this to skin QuestObjective Block Button(s)
+	if aObj.modBtnBs then
+		aObj:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
+			if not button.sbb then
+				aObj:addButtonBorder{obj=button, ofs=button.Icon and -2 or nil, x1=button.Icon and 0 or nil, reParent=button.Count and {button.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
 			end
 		end)
+	end
 
-		-- ScenarioProvingGroundsBlock
-		_G.ScenarioProvingGroundsBlock.BG:SetTexture(nil)
-		_G.ScenarioProvingGroundsBlock.GoldCurlies:SetTexture(nil)
-		self:skinStatusBar{obj=_G.ScenarioProvingGroundsBlock.StatusBar, fi=0}
-		self:removeRegions(_G.ScenarioProvingGroundsBlock.StatusBar, {1}) -- border
-		self:addSkinFrame{obj=_G.ScenarioProvingGroundsBlock, ft=ftype, x2=41}
-		_G.ScenarioProvingGroundsBlockAnim.BorderAnim:SetTexture(nil)
+	-- skin timerBar(s) & progressBar(s)
+	local function skinBar(bar)
 
-		self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(xp, money)
-			_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
-			_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
-			skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
-		end)
+		if not aObj.sbGlazed[bar.Bar] then
+			if bar.Bar.BorderLeft then
+				bar.Bar.BorderLeft:SetTexture(nil)
+				bar.Bar.BorderRight:SetTexture(nil)
+				bar.Bar.BorderMid:SetTexture(nil)
+				aObj:skinStatusBar{obj=bar.Bar, fi=0, bgTex=self:getRegion(bar.Bar, bar.Bar.Label and 5 or 4)}
+			else
+				-- BonusTrackerProgressBarTemplate bars
+				bar.Bar.BarFrame:SetTexture(nil)
+				bar.Bar.IconBG:SetTexture(nil)
+				bar.Bar.BarFrame2:SetTexture(nil)
+				bar.Bar.BarFrame3:SetTexture(nil)
+				aObj:skinStatusBar{obj=bar.Bar, fi=0, bgTex=bar.Bar.BarBG}
+				bar.Bar:DisableDrawLayer("OVERLAY")
+				bar.FullBarFlare1.BarGlow:SetTexture(nil)
+			end
+		end
 
-		self:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton}
+	end
+	-- TimerBars
+	aObj:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
+		aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddTimerBar: [%s, %s, %s]", this, block, line)
+		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
+	end)
+	-- ProgressBars
+	aObj:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+		aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
+		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+	end)
+	aObj:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+		aObj:Debug("SCENARIO_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
+		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+	end)
+	aObj:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+		aObj:Debug("BONUS_OBJECTIVE_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
+		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+	end)
+	aObj:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+		aObj:Debug("WORLD_QUEST_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
+		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
+	end)
+	-- skin existing Timer & Progress bars
+	local function skinBars(table)
+		for _, block in pairs(table) do
+				for _, line in pairs(block) do
+				skinBar(line)
+			end
+		end
+	end
+	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedTimerBars)
+	skinBars(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.QUEST_TRACKER_MODULE.usedTimerBars)
+	skinBars(_G.QUEST_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.SCENARIO_TRACKER_MODULE.usedTimerBars)
+	skinBars(_G.SCENARIO_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.ACHIEVEMENT_TRACKER_MODULE.usedTimerBars)
+	skinBars(_G.BONUS_OBJECTIVE_TRACKER_MODULE.usedProgressBars)
+	skinBars(_G.WORLD_QUEST_TRACKER_MODULE.usedProgressBars)
+
+	local function skinRewards(frame)
+
+		for i = 1, #frame.Rewards do
+			frame.Rewards[i].ItemBorder:SetTexture(nil)
+			if aObj.modBtnBs then
+				if not frame.Rewards[i].sbb then
+					aObj:addButtonBorder{obj=frame.Rewards[i], relTo=frame.Rewards[i].ItemIcon, reParent={frame.Rewards[i].Count}}
+				end
+			end
+		end
 
 	end
 
-	if _G.ObjectiveTrackerFrame:IsShown() then
-		skinObjectiveBlocks()
-	else
-		self:SecureHook("ObjectiveTracker_AddBlock", function(block, forceAdd)
-			skinObjectiveBlocks()
-			self:Unhook("ObjectiveTracker_AddBlock")
-		end)
-	end
+	aObj:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
+		skinRewards(block.module.rewardsFrame)
+	end)
+
+	-- ScenarioObjectiveBlock
+
+	-- ScenarioStageBlock
+	aObj:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, kfs=true, nb=true, y1=-1, x2=41, y2=7}
+
+	-- ScenarioChallengeModeBlock
+	aObj:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0}
+	aObj:removeRegions(_G.ScenarioChallengeModeBlock.StatusBar, {1}) -- border
+	aObj:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, kfs=true, nb=true, y2=7}
+	aObj:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
+		for i = 1, #block.Affixes do
+			block.Affixes[i].Border:SetTexture(nil)
+		end
+	end)
+
+	-- ScenarioProvingGroundsBlock
+	_G.ScenarioProvingGroundsBlock.BG:SetTexture(nil)
+	_G.ScenarioProvingGroundsBlock.GoldCurlies:SetTexture(nil)
+	aObj:skinStatusBar{obj=_G.ScenarioProvingGroundsBlock.StatusBar, fi=0}
+	aObj:removeRegions(_G.ScenarioProvingGroundsBlock.StatusBar, {1}) -- border
+	aObj:addSkinFrame{obj=_G.ScenarioProvingGroundsBlock, ft=ftype, nb=true, x2=41}
+	_G.ScenarioProvingGroundsBlockAnim.BorderAnim:SetTexture(nil)
+
+	aObj:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(xp, money)
+		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
+		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
+		skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
+	end)
+
+	aObj:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton}
+
+	-- tooltip
+	_G.C_Timer.After(0.1, function()
+		aObj:add2Table(aObj.ttList, _G.ScenarioStepRewardTooltip)
+	end)
 
 	-- remove Shadow texture
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header:DisableDrawLayer("BACKGROUND")
@@ -3139,25 +3120,14 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:SetTexture(nil)
 	_G.WORLD_QUEST_TRACKER_MODULE.Header.Background:SetTexture(nil)
 
-	self:SecureHookScript(_G.ObjectiveTrackerBonusRewardsFrame, "OnShow", function(this)
-		-- BonusRewardsFrame Rewards
-		this:DisableDrawLayer("ARTWORK")
-		this.RewardsShadow:SetTexture(nil)
-		self:Unhook(this, "OnShow")
-	end)
+	_G.ObjectiveTrackerBonusRewardsFrame:DisableDrawLayer("ARTWORK")
+	_G.ObjectiveTrackerBonusRewardsFrame.RewardsShadow:SetTexture(nil)
 
-	self:SecureHookScript(_G.ObjectiveTrackerWorldQuestRewardsFrame, "OnShow", function(this)
-		-- BonusRewardsFrame Rewards
-		this:DisableDrawLayer("ARTWORK")
-		this.RewardsShadow:SetTexture(nil)
-		self:Unhook(this, "OnShow")
-	end)
+	_G.ObjectiveTrackerWorldQuestRewardsFrame:DisableDrawLayer("ARTWORK")
+	_G.ObjectiveTrackerWorldQuestRewardsFrame.RewardsShadow:SetTexture(nil)
 
-	self:SecureHookScript(_G.ObjectiveTrackerBonusBannerFrame, "OnShow", function(this)
-		this.BG1:SetTexture(nil)
-		this.BG2:SetTexture(nil)
-		self:Unhook(this, "OnShow")
-	end)
+	_G.ObjectiveTrackerBonusBannerFrame.BG1:SetTexture(nil)
+	_G.ObjectiveTrackerBonusBannerFrame.BG2:SetTexture(nil)
 
 	-- AutoPopup frames
 	if self.prdb.ObjectiveTracker.popups then
