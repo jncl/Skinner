@@ -21,24 +21,23 @@ Legend:
 
 	O	Change texture for Scrollbar arrows
 
-	I	Options, reported by Shimiya, 02.08.18
-√		- Unticked Class Coloured Border
-x		- Warlock Color in skinner is #8787ed instead of #9482c9 (correct using RAID_CLASS_COLORS)
-
-	I	PetTracker, reported by Talyrius, 02.08.18
-√		- Skinner\AddonSkins\PetTracker-8.0.2.lua:86: attempt to index field 'PetTrackerTamerJournal' (a nil value)
-
-	I	Wholly, reported by Talyrius, 02.08.18
-√		-Skinner\Modules\UIButtons.lua:391: attempt to call method 'GetNormalTexture' (a nil value)
-		Skinner\AddonSkins\Wholly-067.lua:8: in function <Skinner\AddonSkins\Wholly.lua:5>
-
-	I	MissionCompleteFrame, reported by Talyrius, 02.08.18
-≈		- Skinner\UIFrames.lua:243: attempt to index field 'DurabilityBackground' (a nil value)
-		Skinner\UIFrames.lua:243: in function <Skinner\UIFrames.lua:224>
-		Skinner\UIFrames.lua:1965: in function <Skinner\UIFrames.lua:1964>
-
-	I	TalentUI, requsted by MrKernal, 02.08.18
-√		- The talent frame is abit unclear for me personally and i love to have a option to add some borders around the selected talents or all talents with the option to add colors to selected/unselected borders
-
-	I	Mythic+ timer, reported by Metallan, 03.08.18
+?	I	Mythic+ timer, reported by Metallan, 03.08.18
 		- timer bar texture not visible
+
+	I	BNFrames, reported by Metallan, 03.08.18
+√		- Skinner\UtilFuncs.lua:615: attempt to index field 'sf' (a nil value)
+		Skinner\UtilFuncs.lua:615: in function <Skinner\UtilFuncs.lua:614>
+
+	I	when opening recruitment panel from new guild panel, reported by epidemedabear, 04.08.18
+√		-  ..\AddOns\Skinner\Skinner.lua line 1318: attempt to index field 'obj' (a nil value)
+			Skinner\Skinner.lua:1318:
+			Skinner\Skinner.lua:1303
+			Skinner\Skinner.lua:1374: skinSlider()
+			Skinner\PlayerFrames.lua:1592:
+			Skinner\PlayerFrames.lua:1563
+
+	N	FishingBuddy, reported by Psedopath, 05.08.18
+√		-  ..\AddOns\Skinner\AddonSkins\FishingBuddy.lua line 94: attempt to index field 'FishingOutfitFrame' (a nil value)
+
+	N	Altoholic, reported by Shimlya, 05.08.18
+√		- Skinner\AddonSkins\Altoholic-r186.lua:207: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
