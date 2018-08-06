@@ -24,20 +24,11 @@ Legend:
 ?	I	Mythic+ timer, reported by Metallan, 03.08.18
 		- timer bar texture not visible
 
-	I	BNFrames, reported by Metallan, 03.08.18
-√		- Skinner\UtilFuncs.lua:615: attempt to index field 'sf' (a nil value)
-		Skinner\UtilFuncs.lua:615: in function <Skinner\UtilFuncs.lua:614>
+	N	MinimalArchaeology, reported by MetalHeadSpike, 06.08.18
+√		- ...ace\AddOns\Skinner\AddonSkins\MinimalArchaeology.lua:24: attempt to index field '?' (a nil value)
 
-	I	when opening recruitment panel from new guild panel, reported by epidemedabear, 04.08.18
-√		-  ..\AddOns\Skinner\Skinner.lua line 1318: attempt to index field 'obj' (a nil value)
-			Skinner\Skinner.lua:1318:
-			Skinner\Skinner.lua:1303
-			Skinner\Skinner.lua:1374: skinSlider()
-			Skinner\PlayerFrames.lua:1592:
-			Skinner\PlayerFrames.lua:1563
-
-	N	FishingBuddy, reported by Psedopath, 05.08.18
-√		-  ..\AddOns\Skinner\AddonSkins\FishingBuddy.lua line 94: attempt to index field 'FishingOutfitFrame' (a nil value)
-
-	N	Altoholic, reported by Shimlya, 05.08.18
-√		- Skinner\AddonSkins\Altoholic-r186.lua:207: Usage: SecureHook([object], method, [handler]): Attempting to hook a non existing target
+	N	Healbot, reported by epidemedabear, 06.08.18
+√		-  ..\AddOns\Skinner\Skinner.lua line 986: attempt to index field 'obj' (a nil value)
+			Skinner\Skinner.lua:1049: skinDropDown()
+			Skinner\AddonSkins\HealBot.lua:49:
+			Skinner\AddonSkins\HealBot.lua:6
