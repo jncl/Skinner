@@ -1,3 +1,9 @@
+beta7.27219.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated MinimalArchaeology &Healbot skins
+
 beta7.27219.3
 Jncl:
 	ToDo.txt
