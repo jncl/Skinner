@@ -3,7 +3,51 @@ if not aObj:isAddonEnabled("DBM-Core") then return end
 local _G = _G
 local pairs, ipairs = _G.pairs, _G.ipairs
 
-aObj.lodAddons["DBM-GUI"] = function(self) -- v 7.3.21
+aObj.addonsToSkin["DBM-Core"] = function(self) -- v 8.0.1
+
+	-- hook this to skin the InfoFrame frame (actually a tooltip)
+	self:SecureHook(_G.DBM.InfoFrame, "Show", function(this, _, event, ...)
+		if _G.DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
+		self:addSkinFrame{obj=_G.DBMInfoFrame, ft="a", nb=true}
+		self:Unhook(_G.DBM.InfoFrame, "Show")
+	end)
+
+	-- hook this to skin UpdateReminder frame
+	self:SecureHook(_G.DBM, "ShowUpdateReminder", function(this, ...)
+		self:skinEditBox{obj=self:getChild(_G.DBMUpdateReminder, 1), regs={6}}
+		self:skinStdButton{obj=self:getChild(_G.DBMUpdateReminder, 2)}
+		self:addSkinFrame{obj=_G.DBMUpdateReminder, ft="a", nb=true}
+		self:Unhook(_G.DBM, "ShowUpdateReminder")
+	end)
+
+	-- hook this to skin DBMNotesEditor frame
+	self:SecureHook(_G.DBM, "ShowNoteEditor", function(this, ...)
+		self:skinEditBox{obj=self:getChild(this.Noteframe, 1), regs={6}} -- 6 is text
+		self:skinStdButton{obj=self:getChild(this.Noteframe, 2)}
+		self:skinStdButton{obj=self:getChild(this.Noteframe, 3)}
+		self:skinStdButton{obj=self:getChild(this.Noteframe, 4)}
+		self:addSkinFrame{obj=this.Noteframe, ft="a", nb=true}
+		self:Unhook(this, "ShowNoteEditor")
+	end)
+
+	-- set default Timer bar texture
+	_G.DBT_PersistentOptions.Texture = self.db.profile.StatusBar.texture
+	-- apply the change
+	_G.DBM.Bars:SetOption("Texture", self.sbTexture)
+
+	-- minimap button
+	if _G.DBMMinimapButton -- from 17687 alpha uses lib DBIcon for minimap button
+	and self.db.profile.MinimapButtons.skin
+	then
+		_G.DBMMinimapButton:GetNormalTexture():SetTexCoord(.3, .7, .3, .7)
+		_G.DBMMinimapButton:GetPushedTexture():SetTexCoord(.3, .7, .3, .7)
+		_G.DBMMinimapButton:SetSize(22, 22)
+		self:addSkinButton{obj=_G.DBMMinimapButton, parent=_G.DBMMinimapButton}
+	end
+
+end
+
+aObj.lodAddons["DBM-GUI"] = function(self) -- v 8.0.1
 
 	--	Options Frame
 	self:SecureHookScript(_G.DBM_GUI_OptionsFrame, "OnShow", function(this)
@@ -107,47 +151,5 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 7.3.21
 		self:skinStdButton{obj=self:getChild(mod.panel.frame, 1)}
 		self:skinCheckButton{obj=self:getChild(mod.panel.frame, 2)}
 	end)
-
-end
-
-aObj.addonsToSkin["DBM-Core"] = function(self) -- v 7.3.21
-
-	-- hook this to skin the InfoFrame frame (actually a tooltip)
-	self:SecureHook(_G.DBM.InfoFrame, "Show", function(this, _, event, ...)
-		if _G.DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
-		self:addSkinFrame{obj=_G.DBMInfoFrame, ft="a", nb=true}
-		self:Unhook(_G.DBM.InfoFrame, "Show")
-	end)
-
-	-- hook this to skin UpdateReminder frame
-	self:SecureHook(_G.DBM, "ShowUpdateReminder", function(this, ...)
-		self:skinEditBox{obj=self:getChild(_G.DBMUpdateReminder, 1), regs={6}}
-		self:skinStdButton{obj=self:getChild(_G.DBMUpdateReminder, 2)}
-		self:addSkinFrame{obj=_G.DBMUpdateReminder, ft="a", nb=true}
-		self:Unhook(_G.DBM, "ShowUpdateReminder")
-	end)
-
-	-- hook this to skin DBMNotesEditor frame
-	self:SecureHook(_G.DBM, "ShowNoteEditor", function(this, ...)
-		self:skinEditBox{obj=self:getChild(this.Noteframe, 1), regs={6}} -- 6 is text
-		self:skinStdButton{obj=self:getChild(this.Noteframe, 2)}
-		self:skinStdButton{obj=self:getChild(this.Noteframe, 3)}
-		self:skinStdButton{obj=self:getChild(this.Noteframe, 4)}
-		self:addSkinFrame{obj=this.Noteframe, ft="a", nb=true}
-		self:Unhook(this, "ShowNoteEditor")
-	end)
-
-	-- set default Timer bar texture
-	_G.DBT_PersistentOptions.Texture = self.db.profile.StatusBar.texture
-	-- apply the change
-	_G.DBM.Bars:SetOption("Texture", self.sbTexture)
-
-	-- minimap button
-	if self.db.profile.MinimapButtons.skin then
-		_G.DBMMinimapButton:GetNormalTexture():SetTexCoord(.3, .7, .3, .7)
-		_G.DBMMinimapButton:GetPushedTexture():SetTexCoord(.3, .7, .3, .7)
-		_G.DBMMinimapButton:SetSize(22, 22)
-		self:addSkinButton{obj=_G.DBMMinimapButton, parent=_G.DBMMinimapButton}
-	end
 
 end

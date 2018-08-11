@@ -19,29 +19,29 @@ function aObj:BlizzardFrames()
 end
 
 local addonSkins = {
-	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "AngryKeystones", "AphesLootBrowser", "Archy", "Atlas", "AtlasLoot", "AuctionMaster", "Auctionsnatch", "AutoDecline",
-	"Baggins", "BankItems", "Bartender4", "BattlePetCount", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
+	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "AngryKeystones", "Archy", "Atlas", "AtlasLoot", "AuctionMaster", "Auctionsnatch", "AutoDecline",
+	"BankItems", "BattlePetCount", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
 	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cosplay",
-	"DeathNote", "DejaCharacterStats", "Details", "Dominos", "DressUp",
+	"DeathNote", "DejaCharacterStats", "Dominos", "DressUp",
 	"EnergyWatch", "EnhancedFlightMap", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
-	"FarmIt2", "FeedMachine", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "Fortress", "FramesResized", "FreierGeist_InstanceTime",
-	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker", "GuildMaster",
+	"FarmIt2", "FeedMachine", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "FramesResized", "FreierGeist_InstanceTime",
+	"G15Buttons", "Glamour", "GnomeWorks", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker",
 	"HaveWeMet", "HoloFriends",
 	"InboxMailBag", "ItemDB", "InspectorGadgetzan", "Inventorian",
 	"KeystoneCommander",
 	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts",
-	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MinimalArchaeology", "MinimapButtonFrame", "MobileVault", "MogIt", "MoveAnything", "MrTrader_SkillWindow", "MyGarrisons",
+	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MobileVault", "MogIt", "MoveAnything", "MyGarrisons",
 	"Notes",
 	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3",
-	"PetBattleHUD", "PetBattleMaster", "PhoenixStyle", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "PremadeGroupsFilter", "ProfessionsVault", "ProspectBar",
-	"Quartz", "QuestCompletist", "QuestGuru", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
+	"PetBattleHUD", "PetBattleMaster", "PhoenixStyle", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "ProfessionsVault", "ProspectBar",
+	"Quartz", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidAchievement", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Squeenix", "StaggerMeter",
-	"TargetCharms", "TidyPlates", "TipTac", "TooManyAddons", "TrinketBar",
+	"TargetCharms", "TipTac", "TooManyAddons", "TrinketBar",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
-	"Warden", "WeakAuras", "WoWPro", "WTFLatencyMeter",
-	"XLoot", "xMerchant", "XPerl", "XPerl_RaidAdmin", "XPerl_RaidHelper",
+	"Warden", "WoWPro", "WTFLatencyMeter",
+	"XLoot", "xMerchant",
 }
 aObj.addonsToSkin = {}
 for i = 1, #addonSkins do
@@ -152,7 +152,6 @@ local lodFrames = {
 	"PetJournalEnhanced",
 	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer",
 	"TipTacOptions",
-	"WeakAurasOptions",
 	"XPerl_Options",
 }
 aObj.lodAddons = {}

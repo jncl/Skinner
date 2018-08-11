@@ -5,7 +5,7 @@ local _G = _G
 -- used by all contained functions
 local Details = _G.LibStub("AceAddon-3.0"):GetAddon("_detalhes", true)
 
-aObj.addonsToSkin.Details = function(self) -- v8.0.1.5986.131
+aObj.addonsToSkin.Details = function(self) -- v8.0.1.6131.132
 
 	-- CopyPaste Panel
 	local eb = _G.DetailsCopy.text.editbox
@@ -14,7 +14,7 @@ aObj.addonsToSkin.Details = function(self) -- v8.0.1.5986.131
 	eb.SetBackdropColor = _G.nop
 	eb.SetBackdropBorderColor = _G.nop
 	eb = nil
-	self:addSkinFrame{obj=_G.DetailsCopy, ft="a", kfs=true, nb=true, ri=true, ofs=2, x2=1}
+	self:addSkinFrame{obj=_G.DetailsCopy, ft="a", kfs=true, ri=true, ofs=2, x2=1}
 
 	-- Player Details Window
 	self:addSkinFrame{obj=_G.DetailsPlayerDetailsWindow, ft="a", kfs=true, nb=true, ofs=4}
@@ -27,6 +27,21 @@ aObj.addonsToSkin.Details = function(self) -- v8.0.1.5986.131
 		end)
 	else
 		self:addSkinFrame{obj=_G.DetailsReportWindow, ft="a", kfs=true, nb=true, ofs=4}
+	end
+
+	-- News Window
+	local function skinNews()
+		aObj:addSkinFrame{obj=_G.DetailsNewsWindow, ft="a", kfs=true, ri=true, ofs=2, x2=1}
+		self:skinSlider{obj=_G.DetailsNewsWindowSlider, wdth=-2}
+		aObj:skinStdButton{obj=_G.DetailsNewsWindowForumButton}
+	end
+	if not _G.DetailsNewsWindow then
+		self:SecureHook(Details, "CreateOrOpenNewsWindow", function(this)
+			skinNews()
+			self:Unhook(this, "CreateOrOpenNewsWindow")
+		end)
+	else
+		skinNews()
 	end
 
 	local function skinInstance(frame)
@@ -102,6 +117,11 @@ end
 function aObj:Details_Vanguard()
 
 	local Vanguard = Details:GetPlugin("DETAILS_PLUGIN_VANGUARD")
+
+	if not Vanguard then
+		self.Details_Vanguard = nil
+		return
+	end
 
 	if not Vanguard.db.first_run then
 		self:SecureHook(Vanguard, "OnDetailsEvent", function(this, event, ...)

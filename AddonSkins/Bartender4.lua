@@ -11,29 +11,37 @@ aObj.addonsToSkin.Bartender4 = function(self) -- v 4.8.1
 		self:Unhook(_G.Bartender4, "ShowUnlockDialog")
 	end)
 
-	local BT4ABs = _G.Bartender4:GetModule("ActionBars", true)
-	if BT4ABs
-	and BT4ABs.enabledState
+	local mod = _G.Bartender4:GetModule("ActionBars", true)
+	if mod
+	and mod.enabledState
 	then
 		-- skin ActionBar buttons
-		for _, bar in BT4ABs:GetAll() do
+		for _, bar in mod:GetAll() do
 			for _, btn in _G.ipairs(bar.buttons) do
 				self:addButtonBorder{obj=btn, abt=true, sec=true}
 			end
 		end
 	end
 
-	local BT4STB = _G.Bartender4:GetModule("StatusTrackingBar", true)
-	if BT4STB
-	and BT4STB.enabledState
+	local mod = _G.Bartender4:GetModule("StatusTrackingBar", true)
+	if mod
+	and mod.enabledState
 	then
 		-- skin Status bars
-		BT4STB.bar.manager.SingleBarLarge:SetTexture(nil)
-		for _, bar in _G.ipairs(BT4STB.bar.manager.bars) do
+		mod.bar.manager.SingleBarLarge:SetTexture(nil)
+		for _, bar in _G.ipairs(mod.bar.manager.bars) do
 			self:skinStatusBar{obj=bar.StatusBar, fi=0, bgTex=bar.StatusBar.Background}
 		end
 	end
 
-	BT4ABs, BT4STB = nil, nil
+	local mod = _G.Bartender4:GetModule("BlizzardArt", true)
+	if mod
+	and mod.enabledState
+	then
+		-- disable Art
+		mod:ToggleModule(nil, false)
+	end
+
+	mod = nil
 
 end
