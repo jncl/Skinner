@@ -1996,6 +1996,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	-- this is a frame NOT a GameTooltip
 	self:SecureHookScript(_G.EncounterJournalTooltip, "OnShow", function(this)
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
@@ -3439,7 +3440,7 @@ aObj.blizzFrames[ftype].ReadyCheck = function(self)
 	self:SecureHookScript(_G.ReadyCheckFrame, "OnShow", function(this)
 		self:skinStdButton{obj=_G.ReadyCheckFrameYesButton}
 		self:skinStdButton{obj=_G.ReadyCheckFrameNoButton}
-		self:addSkinFrame{obj=_G.ReadyCheckListenerFrame, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=_G.ReadyCheckListenerFrame, ft=ftype, kfs=true, nb=true, x1=32}
 		self:Unhook(this, "OnShow")
 	end)
 
