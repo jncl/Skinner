@@ -4552,7 +4552,9 @@ aObj.blizzFrames[ftype].SpellFlyout = function(self)
 	-- hook this here to get initial x & y offsets
 	local xOfs, yOfs
 	self:SecureHook(_G.SpellFlyout, "Toggle", function(this, _, _, direction, ...)
-		if not direction then -- vertical
+		if not direction
+		or direction == "UP"
+		then -- vertical
 			xOfs = -4
 			yOfs = 0
 		else
@@ -4573,14 +4575,8 @@ aObj.blizzFrames[ftype].SpellFlyout = function(self)
 		_G.C_Timer.After(0.1, function() -- wait for offsets to be populated
 			self:addSkinFrame{obj=this, ft=ftype, aso={ng=true}, x1=xOfs, y1=yOfs, x2=xOfs * -1, y2=yOfs * -1}
 		end)
-		-- hook this to manage border colour
-		self:SecureHook(this, "SetBorderColor", function(this, r, g, b)
-			-- ignore if colour is default values
-			if r == 0.7 then return end
-			if this.sf then
-				this.sf:SetBackdropBorderColor(r, g, b)
-			end
-		end)
+		-- prevent Border Colour being changed
+		this.SetBorderColor = _G.nop
 		self:Unhook(this, "OnShow")
 	end)
 
