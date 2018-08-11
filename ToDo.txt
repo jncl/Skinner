@@ -21,14 +21,21 @@ Legend:
 
 	O	Change texture for Scrollbar arrows
 
+	O	DetailsFramework
+		- Unobsolete
+		- Skin ALL elements
+
 ?	I	Mythic+ timer, reported by Metallan, 03.08.18
 		- timer bar texture not visible
 
-	N	MinimalArchaeology, reported by MetalHeadSpike, 06.08.18
-√		- ...ace\AddOns\Skinner\AddonSkins\MinimalArchaeology.lua:24: attempt to index field '?' (a nil value)
+	I	AdventureGuide, reported by palizangetsu, 10.08.18
+x		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-	N	Healbot, reported by epidemedabear, 06.08.18
-√		-  ..\AddOns\Skinner\Skinner.lua line 986: attempt to index field 'obj' (a nil value)
-			Skinner\Skinner.lua:1049: skinDropDown()
-			Skinner\AddonSkins\HealBot.lua:49:
-			Skinner\AddonSkins\HealBot.lua:6
+	I	Details
+√		- changelog frame needs skinning
+
+	N	DBM, reported by Shimiya, 11.08.18
+√		- Skinner\AddonSkins\DBM-8.0.2 alpha.17687.lua:147: attempt to index field 'DBMMinimapButton' (a nil value)
+
+	I	SpellFlyout, reported by MrKernal, 11.08.18
+√		- Skinframe too narrow
