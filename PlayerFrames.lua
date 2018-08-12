@@ -1741,9 +1741,12 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	end
 
 	self:SecureHookScript(_G.SideDressUpFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
-		this:DisableDrawLayer("ARTWORK")
-		_G.SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
+		self:removeRegions(this, {1, 2, 3, 4})
+		_G.SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND") -- model controls background
+		self:skinStdButton{obj=_G.SideDressUpModelResetButton}
+		self:removeRegions(_G.SideDressUpModelCloseButton, {5}) -- corner texture
+		self:skinCloseButton{obj=_G.SideDressUpModelCloseButton}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=-2, y1=-3, x2=-2}
 		self:Unhook(this, "OnShow")
 	end)
 
