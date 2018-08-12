@@ -56,6 +56,7 @@
 <script file="AddonSkins\Clique.lua"/>
 <script file="AddonSkins\Collectinator.lua"/>
 <script file="AddonSkins\CollectMe.lua"/>
+<script file="AddonSkins\CollectionShop.lua"/>
 <script file="AddonSkins\Combuctor.lua"/>
 <script file="AddonSkins\CombustionHelper.lua"/>
 <script file="AddonSkins\CompactMissions.lua"/>

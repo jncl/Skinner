@@ -854,9 +854,15 @@ local function __skinCheckButton(opts)
 	opts.obj:GetNormalTexture():SetTexture(nil)
 	opts.obj:GetPushedTexture():SetTexture(nil)
 
-	-- skin CheckButton
+	-- handle small check buttons
+	local bd, ofs, yOfs = 5, -4, 5
+	if opts.obj:GetWidth() < 23 then
+		bd = 12
+		ofs = -2
+		yOfs = nil
+	end
 	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
-	aObj:addSkinButton{obj=opts.obj, aso={bd=opts.obj:GetWidth() < 23 and 12 or 5, ng=true}, parent=opts.obj, nohooks=not opts.hf, ofs=-4, y2=5}
+	aObj:addSkinButton{obj=opts.obj, aso={bd=bd, ng=true}, parent=opts.obj, nohooks=not opts.hf, ofs=ofs, y2=yOfs}
 
 end
 function module:skinCheckButton(...)

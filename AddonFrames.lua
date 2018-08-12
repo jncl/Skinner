@@ -212,6 +212,8 @@ end
 function aObj:AUCTION_HOUSE_SHOW()
 	-- self:Debug("AUCTION_HOUSE_SHOW")
 
+	self.callbacks:Fire("Auction_House_Show")
+
 	-- handle TradeSkillMaster_Auctioning frame size changes
 	if IsAddOnLoaded("TradeSkillMaster_Auctioning")
 	or IsAddOnLoaded("TradeSkillMaster_AuctionDB")
