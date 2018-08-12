@@ -31,11 +31,4 @@ Legend:
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 x		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-	I	Details
-√		- changelog frame needs skinning
-
-	N	DBM, reported by Shimiya, 11.08.18
-√		- Skinner\AddonSkins\DBM-8.0.2 alpha.17687.lua:147: attempt to index field 'DBMMinimapButton' (a nil value)
-
-	I	SpellFlyout, reported by MrKernal, 11.08.18
-√		- Skinframe too narrow
+√	S	 CollectionShop, requested by NeoZeus, 12.08.18
