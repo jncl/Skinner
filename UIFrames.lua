@@ -1072,7 +1072,7 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 	if self.modBtnBs then
 		for i = 1, _G.NUM_CHAT_WINDOWS do
 			self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2}
-			self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1}
+			self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1, reParent={_G["ChatFrame" .. i].ScrollToBottomButton.Flash}}
 		end
 		self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0}
 		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0}
