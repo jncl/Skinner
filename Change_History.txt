@@ -1,3 +1,13 @@
+beta7.27326.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Update ReadyCheckFrame skin
+	Bugfix for SpellFlyout skin
+	Updated Bartender4, DBM & Details skins
+	Obsoleted TidyPlates skin
+
 beta7.27219.4
 Jncl:
 	ToDo.txt
