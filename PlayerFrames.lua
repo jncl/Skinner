@@ -2990,13 +2990,25 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	aObj:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
 	aObj:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
-	-- hook this to skin QuestObjective Block Button(s)
-	if aObj.modBtnBs then
-		aObj:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
+	if self.modBtnBs then
+		-- hook this to skin QuestObjective Block Button(s)
+		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
+			-- aObj:Debug("QOSBB_ARB: [%s, %s]", block, button)
 			if not button.sbb then
 				aObj:addButtonBorder{obj=button, ofs=button.Icon and -2 or nil, x1=button.Icon and 0 or nil, reParent=button.Count and {button.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
 			end
 		end)
+		-- skin existing buttons
+		local btn
+		for _, mod in ipairs(_G.ObjectiveTrackerFrame.MODULES) do
+			for _, blk in pairs(mod.usedBlocks) do
+				if blk.rightButton then
+					btn = blk.rightButton
+					self:addButtonBorder{obj=btn, ofs=btn.Icon and -2 or nil, x1=btn.Icon and 0 or nil, reParent=btn.Count and {btn.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
+				end
+			end
+		end
+		btn = nil
 	end
 
 	-- skin timerBar(s) & progressBar(s)
