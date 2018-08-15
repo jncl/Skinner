@@ -5060,29 +5060,6 @@ aObj.blizzFrames[ftype].WorldState = function(self)
 		self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
 		self:skinTabs{obj=this}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
-
-		-- CaptureBar(s)
-	    local function skinCaptureBar(id)
-	        aObj:removeRegions(_G["WorldStateCaptureBar" .. id], {4})
-	        -- create textures for Alliance/Horde icons
-			for _, type in pairs{"texA", "texH"} do
-	            _G["WorldStateCaptureBar" .. id][type] = _G["WorldStateCaptureBar" .. id]:CreateTexture(nil, "artwork")
-	            _G["WorldStateCaptureBar" .. id][type]:SetTexture[[Interface\WorldStateFrame\WorldState-CaptureBar]]
-	            _G["WorldStateCaptureBar" .. id][type]:SetSize(27, 27)
-	        end
-	        _G["WorldStateCaptureBar" .. id].texA:SetTexCoord(0, 0.091, 0, 0.4)
-	        _G["WorldStateCaptureBar" .. id].texH:SetTexCoord(0.584, 0.675, 0, 0.4)
-	        _G["WorldStateCaptureBar" .. id].texA:SetPoint("RIGHT", _G["WorldStateCaptureBar" .. id], "LEFT", 26, 0)
-	        _G["WorldStateCaptureBar" .. id].texH:SetPoint("LEFT", _G["WorldStateCaptureBar" .. id], "RIGHT", -26, 0)
-	    end
-	    self:SecureHook(_G.ExtendedUI["CAPTUREPOINT"], "create", function(id)
-	        skinCaptureBar(id)
-	    end)
-	    -- skin any existing frames
-	    for i = 1, _G.NUM_EXTENDED_UI_FRAMES do
-	        skinCaptureBar(i)
-	    end
-
 		self:Unhook(this, "OnShow")
 	end)
 
