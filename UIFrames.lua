@@ -4516,43 +4516,6 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 
 end
 
-aObj.blizzFrames[ftype].SpellFlyout = function(self)
-	if not self.prdb.MainMenuBar.skin or self.initialized.SpellFlyout then return end
-	self.initialized.SpellFlyout = true
-
-	-- hook this here to get initial x & y offsets
-	local xOfs, yOfs
-	self:SecureHook(_G.SpellFlyout, "Toggle", function(this, _, _, direction, ...)
-		if not direction
-		or direction == "UP"
-		then -- vertical
-			xOfs = -4
-			yOfs = 0
-		else
-			xOfs = 0
-			yOfs = 4
-		end
-		if this.sf then
-			this.sf:ClearAllPoints()
-			this.sf:SetPoint("TOPLEFT", this, "TOPLEFT", xOfs, yOfs)
-			this.sf:SetPoint("BOTTOMRIGHT", this, "BOTTOMRIGHT", xOfs * -1, yOfs * -1)
-		end
-	end)
-
-	self:SecureHookScript(_G.SpellFlyout, "OnShow", function(this)
-		this.BgEnd:SetTexture(nil)
-		this.HorizBg:SetTexture(nil)
-		this.VertBg:SetTexture(nil)
-		_G.C_Timer.After(0.1, function() -- wait for offsets to be populated
-			self:addSkinFrame{obj=this, ft=ftype, aso={ng=true}, x1=xOfs, y1=yOfs, x2=xOfs * -1, y2=yOfs * -1}
-		end)
-		-- prevent Border Colour being changed
-		this.SetBorderColor = _G.nop
-		self:Unhook(this, "OnShow")
-	end)
-
-end
-
 aObj.blizzFrames[ftype].SplashFrame = function(self)
 	if not self.prdb.SplashFrame or self.initialized.SplashFrame then return end
 	self.initialized.SplashFrame = true
