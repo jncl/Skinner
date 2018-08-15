@@ -327,36 +327,21 @@ end
 
 aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	if not self.prdb.FlightMap or self.initialized.FlightMap then return end
-
-	if not _G.FlightMapFrame then
-		_G.C_Timer.After(0.1, function()
-			self.blizzLoDFrames[ftype].FlightMap(self)
-		end)
-		return
-	end
-
 	self.initialized.FlightMap = true
 
-	self:SecureHookScript(_G.FlightMapFrame, "OnShow", function(this)
-		self:keepFontStrings(this.BorderFrame)
-		self:moveObject{obj=_G.FlightMapFrameCloseButton, x=3, y=1}
-		self:addSkinFrame{obj=this, ft=ftype, ofs=4, y1=3}
-		this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
+	self:keepFontStrings(_G.FlightMapFrame.BorderFrame)
+	self:moveObject{obj=_G.FlightMapFrameCloseButton, x=3, y=1}
+	self:addSkinFrame{obj=_G.FlightMapFrame, ft=ftype, ofs=4, y1=3}
+	_G.FlightMapFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
-		-- hook this to remove ZoneLabel background texture
-		for dP, _ in pairs(this.dataProviders) do
-			if dP.ZoneLabel then
-				dP.ZoneLabel.TextBackground:SetTexture(nil)
-				-- hook this to handle when Map re-opened
-				self:SecureHook(dP.ZoneLabel.dataProvider, "RefreshAllData", function(this, fromOnShow)
-					this.ZoneLabel.TextBackground:SetTexture(nil)
-				end)
-				break
-			end
+	-- remove ZoneLabel background texture
+	for dP, _ in pairs(_G.FlightMapFrame.dataProviders) do
+		if dP.ZoneLabel then
+			dP.ZoneLabel.TextBackground:SetTexture(nil)
+			dP.ZoneLabel.TextBackground.SetTexture = _G.nop
+			break
 		end
-
-		self:Unhook(this, "OnShow")
-	end)
+	end
 
 end
 
