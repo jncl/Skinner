@@ -3031,65 +3031,36 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		for i = 1, #_G.StatusTrackingBarManager.bars do
 			bar = _G.StatusTrackingBarManager.bars[i]
 			self:skinStatusBar{obj=bar.StatusBar, bgTex=bar.StatusBar.Background, otherTex={bar.ExhaustionLevelFillBar or nil}}
-			if bar.Tick then
-				bar.Tick:GetNormalTexture():SetTexture(nil)
-				bar.Tick:GetHighlightTexture():SetTexture(nil)
-			end
-			if bar.ExhaustionTick then
+			if bar.ExhaustionTick then -- HonorStatusBar & ExpStatusBar
 				bar.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 				bar.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+			elseif bar.Tick then -- ArtifactStatusBar
+				bar.Tick:GetNormalTexture():SetTexture(nil)
+				bar.Tick:GetHighlightTexture():SetTexture(nil)
 			end
 		end
 		bar = nil
 
 		-- StanceBar Frame
-		self:SecureHookScript(_G.StanceBarFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			for i = 1, _G.NUM_STANCE_SLOTS do
-				self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
-			end
-			self:Unhook(this, "OnShow")
-		end)
-		if _G.StanceBarFrame:IsShown() then
-			_G.StanceBarFrame:Hide()
-			_G.StanceBarFrame:Show()
+		self:keepFontStrings(_G.StanceBarFrame)
+		for i = 1, _G.NUM_STANCE_SLOTS do
+			self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
 		end
 
 		-- Possess Bar Frame
-		self:SecureHookScript(_G.PossessBarFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			for i = 1, _G.NUM_POSSESS_SLOTS do
-				self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
-			end
-			self:Unhook(this, "OnShow")
-		end)
-		if _G.PossessBarFrame:IsShown() then
-			_G.PossessBarFrame:Hide()
-			_G.PossessBarFrame:Show()
+		self:keepFontStrings(_G.PossessBarFrame)
+		for i = 1, _G.NUM_POSSESS_SLOTS do
+			self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
 		end
 
 		-- Pet Action Bar Frame
-		self:SecureHookScript(_G.PetActionBarFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			for i = 1, _G.NUM_PET_ACTION_SLOTS do
-				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"]}, ofs=3}
-			end
-			self:Unhook(this, "OnShow")
-		end)
-		if _G.PetActionBarFrame:IsShown() then
-			_G.PetActionBarFrame:Hide()
-			_G.PetActionBarFrame:Show()
+		self:keepFontStrings(_G.PetActionBarFrame)
+		for i = 1, _G.NUM_PET_ACTION_SLOTS do
+			self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"]}, ofs=3}
 		end
 
 		-- Shaman's Totem Frame
-		self:SecureHookScript(_G.MultiCastFlyoutFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
-			self:Unhook(this, "OnShow")
-		end)
-		if _G.MultiCastFlyoutFrame:IsShown() then
-			_G.MultiCastFlyoutFrame:Hide()
-			_G.MultiCastFlyoutFrame:Show()
-		end
+		self:keepFontStrings(_G.MultiCastFlyoutFrame)
 
 		if self.modBtns then
 			-- Action Buttons
