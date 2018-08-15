@@ -31,4 +31,18 @@ Legend:
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 x		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-√	S	 CollectionShop, requested by NeoZeus, 12.08.18
+	I	reported by palizangetsu, 13.08.18
+≈		- Skinner\UIFrames.lua:5148: attempt to index field 'ExtendedUI' (a nil value)
+		Skinner\UIFrames.lua:5148: in function <Skinner\UIFrames.lua:5124>
+
+	I	ScrapperUI, reported by epidemedabear/pseudopath/palizangetsu, 14.08.18
+√		-  ..\AddOns\Skinner\UIFrames.lua line 4513: attempt to index field 'sbb' (a nil value)
+
+	I	FlightMap, reported by txamethsyt, 14.08.18
+√		- ...faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:180: Attempting to rehook already active hook OnShow.
+		...faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:180: in function <...faceAdiBags\libs\AceHook-3.0\AceHook-3.0.lua:118>
+		...faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:411: in function `SecureHookScript'
+		Skinner\NPCFrames.lua:340: in function <Skinner\NPCFrames.lua:328>
+
+	I	FishingBuddy, reported by pseudopath, 15.08.18
+√		-  ..\AddOns\Skinner\AddonSkins\FishingBuddy.lua line 121: attempt to call field 'Spew' (a nil value)
