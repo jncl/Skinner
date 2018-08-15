@@ -763,7 +763,7 @@ local function __addButtonBorder(opts)
 	end
 
 	-- create the border frame
-	opts.obj.sbb = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or opts.seca and "SecureActionbuttonTemplate" or nil)
+	opts.obj.sbb = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil, opts.seca and "SecureActionbuttonTemplate" or nil)
 
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop

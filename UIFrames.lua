@@ -3096,7 +3096,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 				_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 				_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
-				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, sec=true}
+				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, seca=true}
 			end
 			-- Micro buttons, skinned before checks for a consistent look, 12.10.12
 			local mBut
@@ -3119,7 +3119,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			self:addButtonBorder{obj=_G.MultiCastSummonSpellButton, abt=true, sec=true, ofs=5}
 			self:addButtonBorder{obj=_G.MultiCastRecallSpellButton, abt=true, sec=true, ofs=5}
 			for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
-				self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, sec=true, ofs=5}
+				self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, seca=true, ofs=5}
 			end
 
 			-- ActionBar buttons
@@ -3137,7 +3137,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 					if not btn.noGrid then
 						_G[btn:GetName() .. "FloatingBG"]:SetAlpha(0)
 					end
-					self:addButtonBorder{obj=btn, abt=true, sec=true}
+					self:addButtonBorder{obj=btn, abt=true, seca=true}
 				end
 				btn = nil
 			end
