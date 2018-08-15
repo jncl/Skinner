@@ -525,7 +525,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, followerID, name, level, quality, isUpgraded, followerInfo={isTroop=, followerTypeID=, portraitIconID=, quality=, level=, iLevel=}
 	self:SecureHook(_G.GarrisonFollowerAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:DebugSpew("GarrisonFollowerAlertSystem", _G.select(6, ...), "[%s, %s, %s, %s, %s, %s, %s]", frame, ...)
+		-- aObj:Debug("GarrisonFollowerAlertSystem: [%s, %s, %s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.PortraitFrame.PortraitRing:SetTexture(nil)
 		self:nilTexture(frame.PortraitFrame.LevelBorder, true)
@@ -534,7 +534,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: frame, followerID, name, class, texPrefix, level, quality, isUpgraded, followerInfo={}
 	self:SecureHook(_G.GarrisonShipFollowerAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:DebugSpew("GarrisonShipFollowerAlertSystem", _G.select(8, ...), "[%s, %s, %s, %s, %s, %s, %s, %s, %s]", frame, ...)
+		-- aObj:Debug("GarrisonShipFollowerAlertSystem: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:nilTexture(frame.FollowerBG, true)
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
@@ -570,7 +570,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal, showRatedBG
 	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:DebugSpew("LootAlertSystem", ..., "[%s]", frame)
+		-- aObj:Debug("LootAlertSystem: [%s]", frame)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.Icon:SetDrawLayer("BORDER") -- changed in code (Garrison Cache)
 		frame.SpecRing:SetTexture(nil)
@@ -592,7 +592,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end)
 	-- called parms: self, itemLink, quantity, specID, baseQuality (147239, 1, 1234, 5)
 	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:DebugSpew("LootUpgradeAlertSystem", ..., "[%s, %s, %s, %s, %s]", frame, ...)
+		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
 	end)
@@ -646,12 +646,12 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	end
 	-- called params: frame, rewardData={name="Deceiver's Fall", iconTextureFile=1616157, subtypeID=3, moneyAmount=1940000, moneyBase=1940000, monetVar=0, experienceBase=0, experienceGained=0, experienceVar=0, numRewards=1, numStrangers=0, rewards={} }
 	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, rewardData)
-		-- aObj:DebugSpew("DungeonCompletionAlertSystem", rewardData, "[%s, %s]", frame, rewardData)
+		-- aObj:Debug("DungeonCompletionAlertSystem: [%s, %s]", frame, rewardData)
 		skinDCSAlertFrames{obj=frame}
 	end)
 	-- called params: frame, rewardData={}
 	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, rewardData)
-		-- aObj:DebugSpew("ScenarioAlertSystem", rewardData, "[%s, %s]", frame, rewardData)
+		-- aObj:Debug("ScenarioAlertSystem: [%s, %s]", frame, rewardData)
 		self:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
 		skinDCSAlertFrames{obj=frame, ofs=-12}
 	end)

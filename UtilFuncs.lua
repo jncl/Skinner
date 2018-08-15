@@ -1187,20 +1187,12 @@ end
 function aObj:Debug2(...)
 	-- self:Debug(...)
 end
-
-function aObj:DebugSpew(title, obj, fmtStr, ...)
-
-	self:Debug(title .. ": " .. fmtStr, ...)
-	if _G.Spew then _G.Spew(title, obj) end
-
-end
 --@end-debug@
 
 --[===[@non-debug@
 aObj.debugFrame = nil
 aObj.Debug = _G.nop
 aObj.Debug2 = _G.nop
-aObj.DebugSpew = _G.nop
 --@end-non-debug@]===]
 
 -- This function was copied from WoWWiki
