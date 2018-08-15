@@ -118,7 +118,6 @@ aObj.addonsToSkin.FB_OutfitDisplayFrame = function(self) -- v 1.9.8
 		if tabObj then
 			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
 			self:addButtonBorder{obj=tabObj}
-			_G.Spew("Outfits Tab", tabObj)
 		end
 	end
 	tabObj = nil

@@ -148,8 +148,6 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 
 	-- hook this to move mission expires string
 	self:SecureHook(_G.GAC, "FillMissionPage", function(this, missionInfo)
-		aObj:Debug("FillMissionPage: [%s]", missionInfo.followerTypeID)
-		-- _G.Spew("FMP", missionInfo)
 		local missionType, frame, yOfs = missionInfo.followerTypeID
 		if missionType == _G.LE_FOLLOWER_TYPE_GARRISON_6_0 then
 			frame = _G.GarrisonMissionFrame
