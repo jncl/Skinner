@@ -29,6 +29,7 @@
 <script file="AddonSkins\Auctionsnatch.lua"/>
 <script file="AddonSkins\AutoBag.lua"/>
 <script file="AddonSkins\AutoDecline.lua"/>
+<script file="AddonSkins\Azeroth Auto Pilot.lua"/>
 <script file="AddonSkins\Baggins.lua"/>
 <script file="AddonSkins\Bagnon.lua"/>
 <script file="AddonSkins\BankItems.lua"/>
@@ -223,6 +224,7 @@
 <script file="AddonSkins\UrbanAchiever.lua"/>
 <script file="AddonSkins\Vendomatic.lua"/>
 <script file="AddonSkins\VuhDo.lua"/>
+<script file="AddonSkins\WarCampaignsComplete.lua"/>
 <script file="AddonSkins\Warden.lua"/>
 <script file="AddonSkins\WeakAuras.lua"/>
 <script file="AddonSkins\Wholly.lua"/>
