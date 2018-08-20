@@ -17,7 +17,7 @@ Legend:
 ≈	O	Handle reaching Max XP level
 		- WatchBar re-alignment etc
 
-?	O	Eliminate taint from PartyFrames & BossFrames
+?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
 
 	O	Change texture for Scrollbar arrows
 
@@ -25,24 +25,20 @@ Legend:
 		- Unobsolete
 		- Skin ALL elements
 
+	O	TalentUI
+		- make PvP Talent buttons square
+		- add button border to PvP talent scroll buttons Icon
+
 ?	I	Mythic+ timer, reported by Metallan, 03.08.18
 		- timer bar texture not visible
 
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 x		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-	I	reported by palizangetsu, 13.08.18
-≈		- Skinner\UIFrames.lua:5148: attempt to index field 'ExtendedUI' (a nil value)
-		Skinner\UIFrames.lua:5148: in function <Skinner\UIFrames.lua:5124>
+√	S	War Campaigns Complete, requested by Shimiya, 18.08.18
 
-	I	ScrapperUI, reported by epidemedabear/pseudopath/palizangetsu, 14.08.18
-√		-  ..\AddOns\Skinner\UIFrames.lua line 4513: attempt to index field 'sbb' (a nil value)
+√	S	Azeroth Auto Pilot
 
-	I	FlightMap, reported by txamethsyt, 14.08.18
-√		- ...faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:180: Attempting to rehook already active hook OnShow.
-		...faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:180: in function <...faceAdiBags\libs\AceHook-3.0\AceHook-3.0.lua:118>
-		...faceAdiBags\libs\AceHook-3.0\AceHook-3.0-8.lua:411: in function `SecureHookScript'
-		Skinner\NPCFrames.lua:340: in function <Skinner\NPCFrames.lua:328>
-
-	I	FishingBuddy, reported by pseudopath, 15.08.18
-√		-  ..\AddOns\Skinner\AddonSkins\FishingBuddy.lua line 121: attempt to call field 'Spew' (a nil value)
+	I	Bartender
+√		- remove all status bar textures
+√		- skin status bars when module enabled
