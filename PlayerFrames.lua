@@ -3618,16 +3618,14 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					aObj:addButtonBorder{obj=btn, sec=true}
 				end
 				btn = nil
-				_G[objName .. "StatusBarLeft"]:SetTexture(nil)
-				_G[objName .. "StatusBarRight"]:SetTexture(nil)
-				obj.statusBar:DisableDrawLayer("BACKGROUND")
-				aObj:skinStatusBar{obj=obj.statusBar}
+				aObj:rmRegionsTex(obj.statusBar, {2, 3, 4, 5, 6})
+				aObj:skinStatusBar{obj=obj.statusBar, fi=0}
 				obj.statusBar:SetStatusBarColor(0, 1, 0, 1)
 				obj.statusBar:SetHeight(12)
 				obj.statusBar.rankText:SetPoint("CENTER", 0, 0)
 				aObj:moveObject{obj=obj.statusBar, x=-12}
 				if obj.unlearn then
-					aObj:moveObject{obj=obj.unlearn, x=12}
+					aObj:moveObject{obj=obj.unlearn, x=18}
 				end
 			end
 			objName, obj = nil, nil
