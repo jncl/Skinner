@@ -1,3 +1,13 @@
+beta7.27377.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated SpellBook skin
+	Updated BfA MissionUI skin
+	Updated Bartender4 skin
+	Skinned Azeroth Auto Pilot & War Campaigns Complete
+
 beta7.27356.1
 Jncl:
 	ToDo.txt
