@@ -72,7 +72,7 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.6.1 70300
 			mm = nil
 		end)
 		self:SecureHook(mLst, "NoMartiniNoParty", function(this, text)
-			self:addSkinFrame{obj=_G.OHCWarner, ft="a", nb=true}
+			self:addSkinFrame{obj=_G.OHCWarner, ft="a", kfs=true, nb=true}
 			self:Unhook(this, "NoMartiniNoParty")
 		end)
 	end
@@ -85,16 +85,15 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.6.1 70300
 	aC = nil
 
 	if self.modBtns then
-		local tut = OHC:GetTutorialsModule()
 		local Clicker = self:getChild(_G.HelpPlateTooltip, 1)
 		self:skinCloseButton{obj=Clicker.Close}
 		self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
 		self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
-		tut, Clicker = nil, nil
+		Clicker = nil, nil
 	end
 
 	-- hook this to manage GarrisonFollowerAlerts
-	self:SecureHook("GarrisonFollowerAlertFrame_SetUp", function(frame,FAKE_FOLLOWERID,...)
+	self:secureHook("GarrisonFollowerAlertFrame_SetUp", function(frame, FAKE_FOLLOWERID, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.PortraitFrame.PortraitRing:SetTexture(nil)
 		self:nilTexture(frame.PortraitFrame.LevelBorder, true)
