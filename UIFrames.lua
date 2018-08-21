@@ -4321,9 +4321,16 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 	local wct = _G.QuestMapFrame.QuestsFrame.WarCampaignTooltip
 	wct.ItemTooltip.FollowerTooltip.PortraitFrame.PortraitRing:SetTexture(nil)
 	wct.ItemTooltip.FollowerTooltip.PortraitFrame.LevelBorder:SetAlpha(0)
+	-- hook this to move tooltip to the right, to match other displayed tooltips
+	self:SecureHookScript(_G.QuestMapFrame.QuestsFrame.Contents.WarCampaignHeader, "OnEnter", function(this)
+		if _G.select(4, _G.QuestMapFrame.QuestsFrame.WarCampaignTooltip:GetPoint()) == 27 then -- xOfs
+			self:moveObject{obj=_G.QuestMapFrame.QuestsFrame.WarCampaignTooltip, x=2}
+		end
+	end)
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, wct)
+		wct = nil
 	end)
 
 end
@@ -4712,7 +4719,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 		if self.modBtnBs then
 			-- if it has an ItemTooltip then add a button border
-			if tTip.ItemTooltip then
+			if tTip.ItemTooltip
+			and not tTip == _G.QuestMapFrame.QuestsFrame.WarCampaignTooltip
+			then
 				self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon, reParent={tTip.ItemTooltip.Count}}
 			end
 		end
