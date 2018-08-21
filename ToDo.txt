@@ -35,10 +35,4 @@ Legend:
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 x		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-√	S	War Campaigns Complete, requested by Shimiya, 18.08.18
-
-√	S	Azeroth Auto Pilot
-
-	I	Bartender
-√		- remove all status bar textures
-√		- skin status bars when module enabled
+≈	S	ChampionCommander, requested by NeoZeus, 21.08.18
