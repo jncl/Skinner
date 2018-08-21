@@ -51,6 +51,7 @@
 <script file="AddonSkins\Carbonite.lua"/>
 <script file="AddonSkins\CensusPlus.lua"/>
 <script file="AddonSkins\CFM.lua"/>
+<script file="AddonSkins\ChampionCommander.lua"/>
 <script file="AddonSkins\Chatter.lua"/>
 <script file="AddonSkins\ClassicQuestLog.lua"/>
 <script file="AddonSkins\ClassOrderHallsComplete.lua"/>
