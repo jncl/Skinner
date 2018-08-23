@@ -95,7 +95,9 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 	if fpM then
 		self:SecureHook(fpM, "Setup", function()
 			self:skinDropDown{obj=_G.GarrisonTraitCountersFrame.choice, noBB=true}
-			self:addButtonBorder{obj=_G.GarrisonTraitCountersFrame.choice.button, es=12, ofs=-2, x1=152}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.GarrisonTraitCountersFrame.choice.button, es=12, ofs=-2, x1=152}
+			end
 			self:Unhook(this, "Setup")
 		end)
 	end

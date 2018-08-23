@@ -336,12 +336,13 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				-- obj.startbutton
 
-			-- GarrisonMissionCommander objects
+			-- GarrisonMissionCommander/OrderHallCommander/ChampionCommander objects
 			elseif objType == "GMCLayer" then
 				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, x1=-4, x2=4, y2=-4}
 			elseif objType == "GMCMissionButton"
 			or objType == "GMCSlimMissionButton"
 			or objType == "OHCMissionButton"
+			or objType == "BFAMissionButton"
 			then
 				obj.frame:DisableDrawLayer("BACKGROUND")
 				obj.frame:DisableDrawLayer("BORDER")
@@ -368,10 +369,13 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:skinCloseButton{obj=obj.frame.CloseButton}
 				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, ofs=2, x2=1}
 
-			-- OrderHallCommander objects
-			elseif objType == "OHCGUIContainer" then
+			-- OrderHallCommander/ChampionCommander objects
+			elseif objType == "OHCGUIContainer"
+			or objType == "BFAGUIContainer"
+			then
 				aObj:skinCloseButton{obj=obj.frame.Close}
 				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
+
 
 			-- ignore these types for now
 			elseif objType == "BlizOptionsGroup"
@@ -420,6 +424,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			or objType == "GCMCList"
 			-- OrderHallCommander objects
 			or objType == "OHCMissionsList"
+			-- ChampionCommander objects
+			or objType == "BFAMissionsList"
 			-- ElvUI
 			or objType == "ColorPicker-ElvUI"
 			then

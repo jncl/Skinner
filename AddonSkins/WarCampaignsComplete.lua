@@ -12,7 +12,7 @@ aObj.addonsToSkin.WarCampaignsComplete = function(self) -- v 1.0
 
 	-- Monitor Tab (1)
 	self:addButtonBorder{obj=_G[WCCUIMF .. "Tab1SubFrameRefreshButton"], ofs=-2, x1=1}
-	for _, type in pairs{"Name", "Lvl", "Buttons"} do
+	for _, type in pairs{"Name", "Lvl", "XP", "AP", "Buttons"} do
 		self:keepRegions(_G[WCCUIMF .. "Tab1SubFrame" .. type .. "ColumnHeaderButton"], {4, 5, 6})
 		self:addSkinFrame{obj=_G[WCCUIMF .. "Tab1SubFrame" .. type .. "ColumnHeaderButton"], ft="a", nb=true, aso={bd=5}}
 	end
@@ -21,7 +21,7 @@ aObj.addonsToSkin.WarCampaignsComplete = function(self) -- v 1.0
 		self:SecureHookScript(_G[WCCUIMF .. "Tab1SubFrameScrollFrame"], "OnUpdate", function(this)
 			for i = 1, _G[WCCUIMF .. "Tab1SubFrameScrollFrame"].numToDisplay do
 				_G[WCCUIMF .. "Tab1SubFrame_ScrollFrameButton" .. i .. "BG"]:SetTexture(nil)
-				for j = 1, 5 do
+				for j = 1, 4 do
 					local btn = WCCUIMF .. "Tab1SubFrame_ScrollFrameButton" .. i .. "Monitor" .. j
 					self:addButtonBorder{obj=_G[btn], reParent={_G[btn .. "TopRightText"], _G[btn .. "CenterText"], _G[btn .. "Indicator"]}}
 				end
@@ -93,17 +93,24 @@ aObj.addonsToSkin.WarCampaignsComplete = function(self) -- v 1.0
 
 	-- LDB Tab (5)
 	self:skinDropDown{obj=_G[WCCUIMF .. "Tab5SubFrameSourceDropDownMenu"]}
-	self:skinDropDown{obj=_G[WCCUIMF .. "Tab5SubFrameTextFormatDropDownMenu"]}
 
 	if self.modChkBtns then
-		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowLabelsCheckButton"]}
-		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowWhenNoneCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowMissionsCheckButton"]}
 		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowNextMissionCheckButton"]}
 		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowNextMissionCharacterCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowAdvancementsCheckButton"]}
 		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowNextAdvancementCheckButton"]}
 		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowNextAdvancementCharacterCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowOrdersCheckButton"]}
 		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowNextOrderCheckButton"]}
 		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowNextOrderCharacterCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowHOACheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowResourcesCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowSealsCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowLabelsCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameUseLetterLabelsCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowWhenNoneCheckButton"]}
+		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameNumbersOnlyCheckButton"]}
 		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameHideLibDBIconMinimapButtonCheckButton"]}
 		self:skinCheckButton{obj=_G[WCCUIMF .. "Tab5SubFrameShowCharacterTooltipLibDBIconMinimapButtonCheckButton"]}
 	end

@@ -27,8 +27,6 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.0.3
 	end
 	cache = nil
 
-
-
 	local mLst = _G.BFA:GetMissionlistModule()
 	if mLst then
 		self:SecureHook(mLst, "Menu", function(this, flags)
