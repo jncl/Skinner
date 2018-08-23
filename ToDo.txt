@@ -35,4 +35,13 @@ Legend:
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 x		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-≈	S	ChampionCommander, requested by NeoZeus, 21.08.18
+	I	WorldQuestTracker, reported by lexusnexus, 22.08.18
+√		- ...face\AddOns\Skinner\AddonSkins\WorldQuestTracker.lua line 127: attempt to index field 'WorldQuestTracker' (a nil value)
+
+	I	WarCampaignsComplete, reported by MetalHeadSpike, 22.08.18
+√		- Interface\AddOns\Skinner\Skinner.lua:983: attempt to index field 'obj' (a nil value)
+		Interface\AddOns\Skinner\Skinner.lua:1046: in function `skinDropDown'
+		...e\AddOns\Skinner\AddonSkins\WarCampaignsComplete.lua:96: in function <...e\AddOns\Skinner\AddonSkins\WarCampaignsComplete.lua:5>
+
+	I	ChanpionCommander
+√		- BFAGUIContainer not skinned
