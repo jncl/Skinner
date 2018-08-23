@@ -1,3 +1,13 @@
+beta7.27404.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated BattlefieldMap skin
+	Updated WarCampaignTooltip skin
+	Updated OrderHallCommander
+	Skinned ChampionCommander
+
 beta7.27377.1
 Jncl:
 	ToDo.txt
