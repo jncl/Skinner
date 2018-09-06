@@ -583,22 +583,22 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	if not self.prdb.CharacterFrames or self.initialized.CharacterFrames then return end
 	self.initialized.CharacterFrames = true
 
+	_G.CharacterStatsPane.ClassBackground:SetTexture(nil) -- other adddons reparent this (e.g. DejaCharacterStats)
+	_G.CharacterStatsPane.ItemLevelFrame.Background:SetTexture(nil)
+	_G.CharacterStatsPane.ItemLevelCategory:DisableDrawLayer("BACKGROUND")
+	_G.CharacterStatsPane.AttributesCategory:DisableDrawLayer("BACKGROUND")
+	_G.CharacterStatsPane.EnhancementsCategory:DisableDrawLayer("BACKGROUND")
+	self:SecureHook("PaperDollFrame_UpdateStats", function()
+		for statLine in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
+			statLine:DisableDrawLayer("BACKGROUND")
+		end
+	end)
+	_G.PaperDollFrame_UpdateStats()
+
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, lod=true}
 		self:skinCloseButton{obj=this.ReputationTabHelpBox.CloseButton}
 		self:removeInset(_G.CharacterFrameInsetRight)
-
-		_G.CharacterStatsPane.ClassBackground:SetTexture(nil) -- other adddons reparent this (e.g. DejaCharacterStats)
-		_G.CharacterStatsPane.ItemLevelFrame.Background:SetTexture(nil)
-		_G.CharacterStatsPane.ItemLevelCategory:DisableDrawLayer("BACKGROUND")
-		_G.CharacterStatsPane.AttributesCategory:DisableDrawLayer("BACKGROUND")
-		_G.CharacterStatsPane.EnhancementsCategory:DisableDrawLayer("BACKGROUND")
-		self:SecureHook("PaperDollFrame_UpdateStats", function()
-			for statLine in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
-				statLine:DisableDrawLayer("BACKGROUND")
-			end
-		end)
-		_G.PaperDollFrame_UpdateStats()
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
