@@ -35,13 +35,15 @@ Legend:
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 x		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-	I	WorldQuestTracker, reported by lexusnexus, 22.08.18
-√		- ...face\AddOns\Skinner\AddonSkins\WorldQuestTracker.lua line 127: attempt to index field 'WorldQuestTracker' (a nil value)
+	I	DejaCharacterStats, reported by enxty58895,29.08.18
+?		- only displays first time character screen opened
+		- skin needs updating: header textures, detail line background, lock button texture
 
-	I	WarCampaignsComplete, reported by MetalHeadSpike, 22.08.18
-√		- Interface\AddOns\Skinner\Skinner.lua:983: attempt to index field 'obj' (a nil value)
-		Interface\AddOns\Skinner\Skinner.lua:1046: in function `skinDropDown'
-		...e\AddOns\Skinner\AddonSkins\WarCampaignsComplete.lua:96: in function <...e\AddOns\Skinner\AddonSkins\WarCampaignsComplete.lua:5>
+	I	OrderHallCommander, reported by NeoZeus, 03.09.18
+≈		- ...aceSkinner\AddonSkins\OrderHallCommander-1.7.2 80000.lua:89: attempt to index local 'Clicker' (a nil value)
 
-	I	ChanpionCommander
-√		- BFAGUIContainer not skinned
+	I	CharacterFrames, reported by moball, 04.09.19
+		- Interface\AddOns\Skinner\PlayerFrames.lua:612: attempt to index field '?' (a nil value)
+
+	I	IoF Raid Profile panel
+?		- not resizing IoF frame when displayed, so RHS and bottom elements are outside the frame
