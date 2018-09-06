@@ -1472,7 +1472,11 @@ aObj.blizzLoDFrames[ftype].ClassTrial = function(self)
 		this.ThanksText:SetTextColor(self.HTr, self.HTg, self.HTb)
 		this.ClassNameText:SetTextColor(self.HTr, self.HTg, self.HTb)
 		this.DialogFrame:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, x1=668, y1=-403, x2=-668, y2=402}
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=600, y1=-100, x2=-600, y2=500}
+		if self.modBtns then
+			self:skinStdButton{obj=this.BuyCharacterBoostButton}
+			self:skinStdButton{obj=this.DecideLaterButton}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3184,6 +3188,8 @@ end
 ACD = nil
 -- table to hold AddOn dropdown names that need to have their length adjusted
 aObj.iofDD = {}
+-- table to hold AddOn button objects to ignore
+aObj.iofBtn = {}
 aObj.blizzFrames[ftype].MenuFrames = function(self)
 	if not self.prdb.MenuFrames or self.initialized.MenuFrames then return end
 	self.initialized.MenuFrames = true
@@ -3201,7 +3207,9 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			aObj:skinCheckButton{obj=child, hf=true} -- handle hide/show
 		elseif child:IsObjectType("EditBox") then
 			aObj:skinEditBox{obj=child, regs={6}} -- 6 is text
-		elseif child:IsObjectType("Button") then
+		elseif child:IsObjectType("Button")
+		and not aObj.iofBtn[child]
+		then
 			aObj:skinStdButton{obj=child}
 		end
 
