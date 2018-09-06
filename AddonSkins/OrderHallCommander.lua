@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("OrderHallCommander") then return end
 local _G = _G
 
-aObj.lodAddons.OrderHallCommander = function(self) -- v 1.6.1 70300
+aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 
 	local OHC = _G.LibStub:GetLibrary("AceAddon-3.0"):GetAddon("OrderHallCommander", true)
 
@@ -85,11 +85,15 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.6.1 70300
 	aC = nil
 
 	if self.modBtns then
-		local Clicker = self:getChild(_G.HelpPlateTooltip, 1)
-		self:skinCloseButton{obj=Clicker.Close}
-		self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
-		self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
-		Clicker = nil, nil
+		local tM = OHC:GetTutorialsModule()
+		if tM then
+			local Clicker = self:getChild(_G.HelpPlateTooltip, 1)
+			self:skinCloseButton{obj=Clicker.Close}
+			self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
+			self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+			Clicker = nil
+		end
+		tM = nil
 	end
 
 	-- hook this to manage GarrisonFollowerAlerts
