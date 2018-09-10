@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Azeroth Auto Pilot") then return end
 local _G = _G
 
-aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 0.156
+aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 0.173
 
 	-- Core frames
 	self:addSkinFrame{obj=_G.AAP_AfkFrame, ft="a", kfs=true, nb=true}
@@ -30,7 +30,12 @@ aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 0.156
 	self:skinStdButton{obj=AAP.QuestList.GreetingsHideB, seca=true}
 	self:addSkinFrame{obj=_G.AAP.QuestList.Greetings, ft="a", kfs=true, nb=true, y2=-2}
 
-	for i = 1, 50 do
+	-- AAP.QuestList.MainFrame
+	-- AAP.QuestList.ListFrame
+	-- AAP.QuestList20
+	-- AAP.QuestList21
+
+	for i = 1, 10 do
 		self:addSkinFrame{obj=_G.AAP.QuestList.QuestFrames[i], ft="a", kfs=true, nb=true, x1=-2, x2=2}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.AAP.QuestList.QuestFrames["FS" .. i]["Button"]}
