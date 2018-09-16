@@ -33,9 +33,9 @@ local addonSkins = {
 	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MobileVault", "MogIt", "MoveAnything", "MyGarrisons",
 	"Notes",
 	"oGlow", "oQueue", "oRA3", "Omen", "OneBag3", "OneBank3",
-	"PetBattleHUD", "PetBattleMaster", "PhoenixStyle", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "ProfessionsVault", "ProspectBar",
+	"PetBattleHUD", "PetBattleMaster", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "ProfessionsVault", "ProspectBar",
 	"Quartz", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
-	"RaidAchievement", "RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
+	"RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Squeenix", "StaggerMeter",
 	"TargetCharms", "TipTac", "TooManyAddons", "TrinketBar",
 	"UrbanAchiever",
@@ -159,12 +159,6 @@ for i = 1, #lodFrames do
 	aObj.lodAddons[lodFrames[i]] = lodFrames[i]
 end
 lodFrames = nil
--- RaidAchievement modules
-local raMods = {"Icecrown", "Naxxramas", "Ulduar", "WotlkHeroics", "CataHeroics", "CataRaids", "PandaHeroics", "PandaRaids", "PandaScenarios"}
-for i = 1, #raMods do
-	aObj.lodAddons["RaidAchievement_" .. raMods[i]] = "RaidAchievement_" .. raMods[i]
-end
-raMods = nil
 
 function aObj:LoDFrames(addon)
 	-- self:Debug("LoDFrames: [%s, %s]", addon, self.lodAddons[addon])

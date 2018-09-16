@@ -1,184 +1,203 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("PhoenixStyle") then return end
+local _G = _G
 
 local x1, y1 = -2, -4
-function aObj:PhoenixStyle()
+aObj.addonsToSkin.PhoenixStyle = function(self) -- v 8.002
 
-	-- Main Panel buttons
-	self:skinAllButtons{obj=PSFmain1}
+	local function skinKids(frame)
+		for _, child in ipairs{frame:GetChildren()} do
+			if child:IsObjectType("CheckButton") then
+				aObj:skinCheckButton{obj=child}
+			elseif child:IsObjectType("Button") then
+				aObj:skinStdButton{obj=child}
+			elseif child:IsObjectType("EditBox") then
+				aObj:skinEditBox{obj=child, regs={6}, x=-10}
+			end
+		end
+	end
+	local function skinDD(dropdown)
+		_G.UIDropDownMenu_SetButtonWidth(dropdown, 24)
+		self:skinDropDown{obj=dropdown}
+	end
+	self.mmButs["PhoenixStyle"] = _G.PS_MinimapButton
+
+	self:skinStdButton{obj=_G.PSFmain1_Button2}
 	-- Menu (on LHS)
-	self:addSkinFrame{obj=PSFmain2, y1=-4}
+	skinKids(_G.PSFmain2)
+	self:addSkinFrame{obj=_G.PSFmain2, ft="a", kfs=true, nb=true, y1=-4}
 	-- Addon
-	self:addSkinFrame{obj=PSFmain3, x1=x1, y1=y1}
+	skinKids(_G.PSFmain3)
+	self:addSkinFrame{obj=_G.PSFmain3, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Autoupdate marks
 	self:SecureHook("psfautomarldraw", function()
-		self:skinEditBox{obj=pseb1}
-		self:skinEditBox{obj=pseb2}
-		self:skinEditBox{obj=pseb3}
-		self:skinEditBox{obj=pseb4}
-		self:skinEditBox{obj=pseb5}
-		self:skinEditBox{obj=pseb6}
-		self:skinEditBox{obj=pseb7}
-		self:skinEditBox{obj=pseb8}
+		self:skinEditBox{obj=_G.pseb1}
+		self:skinEditBox{obj=_G.pseb2}
+		self:skinEditBox{obj=_G.pseb3}
+		self:skinEditBox{obj=_G.pseb4}
+		self:skinEditBox{obj=_G.pseb5}
+		self:skinEditBox{obj=_G.pseb6}
+		self:skinEditBox{obj=_G.pseb7}
+		self:skinEditBox{obj=_G.pseb8}
 		self:Unhook("psfautomarldraw")
 	end)
-	self:addSkinFrame{obj=PSFmain4, x1=x1, y1=y1}
+	skinKids(_G.PSFmain4)
+	self:skinSlider{obj=_G.PSFmain4_Timerref, hgt=-2}
+	self:addSkinFrame{obj=_G.PSFmain4, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Timers
-	self:skinEditBox{obj=PSFmain5_timertopull1, x=-5}
-	self:skinEditBox{obj=PSFmain5_timerpereriv1, x=-5}
-	self:skinEditBox{obj=PSFmain5_timersvoi1, x=-5}
-	self:skinEditBox{obj=PSFmain5_timersvoi2, x=-5}
-	-- remove divider lines
-	self:SecureHook("psftimecrepol", function()
-		self:keepFontStrings(PSFmain5)
-		self:Unhook("psftimecrepol")
-	end)
-	self:addSkinFrame{obj=PSFmain5, kfs=true, x1=x1, y1=y1}
+	skinKids(_G.PSFmain5)
+	self:addSkinFrame{obj=_G.PSFmain5, ft="a", kfs=true, nb=true, kfs=true, x1=x1, y1=y1}
 	-- Error frame
-	self:addSkinFrame{obj=PSFerrorframeuniq, x1=x1, y1=y1}
+	self:addSkinFrame{obj=_G.PSFerrorframeuniq, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Potions check
-	self:addSkinFrame{obj=PSFpotioncheckframe, x1=x1, y1=y1}
+	skinKids(_G.PSFpotioncheckframe)
+	self:addSkinFrame{obj=_G.PSFpotioncheckframe, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Flask check
-	self:addSkinFrame{obj=PSFrscflask, x1=x1, y1=y1}
+	self:addSkinFrame{obj=_G.PSFrscflask, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Rebirth - Rebuff
-	self:addSkinFrame{obj=PSFrscbuff, x1=x1, y1=y1}
+	self:addSkinFrame{obj=_G.PSFrscbuff, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Raid Achievements
-	self:addSkinFrame{obj=PSFmainrano, x1=x1, y1=y1}
+	self:addSkinFrame{obj=_G.PSFmainrano, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Chat options
 	self:SecureHook("openaddchat", function()
-		self:skinDropDown{obj=DropDownaddchat}
-		self:Unhook("openaddchat")
+		skinDD(_G.DropDownaddchat)
 	end)
 	self:SecureHook("openremovechat", function()
-		self:skinDropDown{obj=DropDownremovechat}
-		self:Unhook("openremovechat")
+		skinDD(_G.DropDownremovechat)
 	end)
-	self:addSkinFrame{obj=PSFmainchated, x1=x1, y1=y1}
+	skinKids(_G.PSFmainchated)
+	self:addSkinFrame{obj=_G.PSFmainchated, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Font change
-	self:addSkinFrame{obj=PSFmainfontchange, x1=x1, y1=y1}
+	self:skinSlider{obj=_G.PSFmainfontchange_slid1, hgt=-2}
+	self:skinSlider{obj=_G.PSFmainfontchange_slid2, hgt=-2}
+	self:skinStdButton{obj=_G.PSFmainfontchange_Buttonrezet}
+	self:addSkinFrame{obj=_G.PSFmainfontchange, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Credits
-	self:addSkinFrame{obj=PSFthanks, x1=x1, y1=y1}
+	self:addSkinFrame{obj=_G.PSFthanks, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Support development
-	self:addSkinFrame{obj=PSFthanks2, x1=x1, y1=y1}
+	self:addSkinFrame{obj=_G.PSFthanks2, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:SecureHook("PSFdonatef", function()
-		self:skinScrollBar{obj=psdonatefr2}
+		self:skinScrollBar{obj=_G.psdonatefr2}
 		self:Unhook("PSFdonatef")
 	end)
 	-- Raids
-	self:addSkinFrame{obj=PSFmainic1, x1=x1, y1=y1}
+	skinKids(_G.PSFmainic1)
+	self:addSkinFrame{obj=_G.PSFmainic1, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
+	self:SecureHook("psopenexpansion", function()
+		skinDD(_G.DropDownMenuexpans)
+	end)
 	self:SecureHook("openbossic", function()
-		self:skinDropDown{obj=DropDownMenubossic}
-		self:Unhook("openbossic")
+		skinDD(_G.DropDownMenubossic)
 	end)
 	self:SecureHook("openbossic2", function()
-		self:skinDropDown{obj=DropDownMenubossic2}
-		self:Unhook("openbossic2")
+		skinDD(_G.DropDownMenubossic2)
 	end)
 	self:SecureHook("openchatic", function()
-		self:skinDropDown{obj=DropDownchatic}
-		self:Unhook("openchatic")
+		skinDD(_G.DropDownchatic)
 	end)
 	self:SecureHook("openchatic2", function()
-		self:skinDropDown{obj=DropDownchatic2}
-		self:Unhook("openchatic2")
+		skinDD(_G.DropDownchatic2)
 	end)
 	self:SecureHook("openchatic3", function()
-		self:skinDropDown{obj=DropDownchatic3}
-		self:Unhook("openchatic3")
+		skinDD(_G.DropDownchatic3)
 	end)
 
 	-- Saved Info Module
-	self:skinEditBox{obj=PSFmainfrainsavedinfo_edbox2}
-	self:addSkinFrame{obj=PSFmainfrainsavedinfo, x1=x1, y1=y1}
+	skinKids(_G.PSFmainfrainsavedinfo)
+	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_Combatsvd1, hgt=-2}
+	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_Combatsvd2, hgt=-2}
+	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_slid1, hgt=-2}
+	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_slid2, hgt=-2}
+	self:addSkinFrame{obj=_G.PSFmainfrainsavedinfo, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:SecureHook("opensiplayers", function()
-		self:skinDropDown{obj=DropDownsiplayerchoose}
-		self:Unhook("opensiplayers")
+		skinDD(_G.DropDownsiplayerchoose)
 	end)
 	self:SecureHook("opensicombarchoose", function()
-		self:skinDropDown{obj=DropDownsicombarchoose}
-		self:Unhook("opensicombarchoose")
+		skinDD(_G.DropDownsicombarchoose)
 	end)
 	self:SecureHook("opensitypereport", function()
-		self:skinDropDown{obj=DropDownsityperepchoose}
-		self:Unhook("opensitypereport")
+		skinDD(_G.DropDownsityperepchoose)
 	end)
 	self:SecureHook("opensieventchoose", function()
-		self:skinDropDown{obj=DropDownsieventchoose}
-		self:Unhook("opensieventchoose")
+		skinDD(_G.DropDownsieventchoose)
 	end)
 	self:SecureHook("opensilogchat", function()
-		self:skinDropDown{obj=DropDownsilogchat}
-		self:Unhook("opensilogchat")
+		skinDD(_G.DropDownsilogchat)
 	end)
 	self:SecureHook("pscreatesavedinfoframes", function()
-		self:skinScrollBar{obj=pssavedinfscrollfr}
+		self:skinScrollBar{obj=_G.pssavedinfscrollfr}
 		self:Unhook("pscreatesavedinfoframes")
 	end)
 
 	-- Boss Mods check module
-	self:addSkinFrame{obj=PSFbossmodframe, x1=x1, y1=y1}
+	skinKids(_G.PSFbossmodframe)
+	self:addSkinFrame{obj=_G.PSFbossmodframe, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:SecureHook("openchoosebssort", function()
-		self:skinDropDown{obj=DropDownchoosebssort}
-		self:Unhook("openchoosebssort")
+		skinDD(_G.DropDownchoosebssort)
 	end)
 
 	-- Get Spell Link module
-	self:skinEditBox{obj=PSFmainspellidframe_edbox1, regs={9}}
-	self:skinEditBox{obj=PSFmainspellidframe_edbox2, regs={9}}
-	self:skinEditBox{obj=PSFmainspellidframe_edbox3, regs={9}}
-	self:skinEditBox{obj=PSFmainspellidframe_edbox4, regs={9}}
-	self:addSkinFrame{obj=PSFmainspellidframe, x1=x1, y1=y1}
+	skinKids(_G.PSFmainspellidframe)
+	self:addSkinFrame{obj=_G.PSFmainspellidframe, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:SecureHook("PSF_buttonspellidcreate", function()
-		self:skinScrollBar{obj=psscrolllinkid}
+		self:skinSlider{obj=_G.psscrolllinkid.ScrollBar}
 		self:Unhook("PSF_buttonspellidcreate")
 	end)
 
 	-- Say announcer module
-	self:addSkinFrame{obj=PSF_saframe, x1=x1, y1=y1}
+	self:skinStdButton{obj=_G.PSF_saframe_ButtonSA}
+	self:addSkinFrame{obj=_G.PSF_saframe, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:SecureHook("opensadrop", function()
-		self:skinDropDown{obj=DropDownMenusadropaddon}
-		self:Unhook("opensadrop")
+		skinDD(_G.DropDownMenusadropaddon)
 	end)
 	self:SecureHook("opensaybossad", function()
-		self:skinDropDown{obj=DropDownMenusaybossad}
-		self:Unhook("opensaybossad")
+		skinDD(_G.DropDownMenusaybossad)
+	end)
+	self:SecureHook("opensaybossadexp", function()
+		skinDD(_G.DropDownMenusaybossadexp)
 	end)
 
 	-- Auto invite module
-	self:skinEditBox{obj=PSFautoinvframe_edbox10, regs={9}}
-	self:skinEditBox{obj=PSFautoinvframe_edbox20, regs={9}}
-	self:skinEditBox{obj=PSFautoinvframe_edbox30, regs={9}}
-	self:skinEditBox{obj=PSFautoinvframe_edbox40, regs={9}}
-	self:addSkinFrame{obj=PSFautoinvframe, x1=x1, y1=y1}
+	skinKids(_G.PSFautoinvframe)
+	self:addSkinFrame{obj=_G.PSFautoinvframe, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:SecureHook("openguildranktoprom", function()
-		self:skinDropDown{obj=DropDownguildranktoprom}
-		self:Unhook("openguildranktoprom")
+		skinDD(_G.DropDownguildranktoprom)
 	end)
 	self:SecureHook("openraiddiff", function()
-		self:skinDropDown{obj=DropDowndiffrai1}
-		self:Unhook("openraiddiff")
+		skinDD(_G.DropDowndiffrai1)
 	end)
 	self:SecureHook("openraiddiff2", function()
-		self:skinDropDown{obj=DropDownraiddiff2}
-		self:Unhook("openraiddiff2")
+		skinDD(_G.DropDownraiddiff2)
 	end)
 	self:SecureHook("openthreshold", function()
-		self:skinDropDown{obj=DropDownthreshold}
-		self:Unhook("openthreshold")
+		skinDD(_G.DropDownthreshold)
 	end)
 
 	-- Death Report module ?
-	self:addSkinFrame{obj=PSFdeathreport, x1=x1, y1=y1}
+	self:skinStdButton{obj=_G.PSFdeathreport_Button1}
+	self:addSkinFrame{obj=_G.PSFdeathreport, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:SecureHook("opendeathrc1", function()
-		self:skinDropDown{obj=DropDowndeathrc1}
-		self:Unhook("opendeathrc1")
+		skinDD(_G.DropDowndeathrc1)
 	end)
 	self:SecureHook("opendeathrc2", function()
-		self:skinDropDown{obj=DropDowndeathrc2}
-		self:Unhook("opendeathrc2")
+		skinDD(_G.DropDowndeathrc2)
+	end)
+	self:SecureHook("opendeathrc3", function()
+		skinDD(_G.DropDowndeathrc3)
 	end)
 
 	-- Raid options module
-	self:addSkinFrame{obj=PSFraidopt, x1=x1, y1=y1}
+	self:skinStdButton{obj=_G.PSFraidopt_Buttonrez}
+	self:skinSlider{obj=_G.PSFraidopt_Combatsvd1, hgt=-2}
+	self:addSkinFrame{obj=_G.PSFraidopt, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
+
+	-- Donations frame
+	skinKids(_G.PSFemptyframe)
+	self:addSkinFrame{obj=_G.PSFemptyframe, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
+	self:SecureHook("psshowdoateinf", function()
+		self:skinSlider{obj=_G.adfdfdpsdonatefr2.ScrollBar}
+		self:Unhook(this, "psshowdoateinf")
+	end)
+
 
 end
