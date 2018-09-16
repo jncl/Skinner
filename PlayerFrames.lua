@@ -596,107 +596,100 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	_G.PaperDollFrame_UpdateStats()
 
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
+		aObj:Debug("CharacterFrame OnShow")
 		self:skinTabs{obj=this, lod=true}
 		self:skinCloseButton{obj=this.ReputationTabHelpBox.CloseButton}
 		self:removeInset(_G.CharacterFrameInsetRight)
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
 
-		self:SecureHookScript(_G.PaperDollFrame, "OnShow", function(this)
-			self:keepFontStrings(this)
+		self:keepFontStrings(this)
 
-			-- Sidebar Tabs
-			_G.PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
-			_G.PaperDollSidebarTabs.DecorRight:SetAlpha(0)
+		-- Sidebar Tabs
+		_G.PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
+		_G.PaperDollSidebarTabs.DecorRight:SetAlpha(0)
+		for i = 1, #_G.PAPERDOLL_SIDEBARS do
+			_G["PaperDollSidebarTab" .. i].TabBg:SetAlpha(0)
+			_G["PaperDollSidebarTab" .. i].Hider:SetAlpha(0)
+			-- use a button border to indicate the active tab
+			self.modUIBtns:addButtonBorder{obj=_G["PaperDollSidebarTab" .. i], relTo=_G["PaperDollSidebarTab" .. i].Icon, ofs=i==1 and 3 or 1} -- use module function here to force creation
+			_G["PaperDollSidebarTab" .. i].sbb:SetBackdropBorderColor(1, 0.6, 0, 1)
+			_G["PaperDollSidebarTab" .. i].sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
+		end
+		-- hook this to manage the active tab
+		self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
 			for i = 1, #_G.PAPERDOLL_SIDEBARS do
-				_G["PaperDollSidebarTab" .. i].TabBg:SetAlpha(0)
-				_G["PaperDollSidebarTab" .. i].Hider:SetAlpha(0)
-				-- use a button border to indicate the active tab
-				self.modUIBtns:addButtonBorder{obj=_G["PaperDollSidebarTab" .. i], relTo=_G["PaperDollSidebarTab" .. i].Icon, ofs=i==1 and 3 or 1} -- use module function here to force creation
-				_G["PaperDollSidebarTab" .. i].sbb:SetBackdropBorderColor(1, 0.6, 0, 1)
-				_G["PaperDollSidebarTab" .. i].sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
-			end
-			-- hook this to manage the active tab
-			self:SecureHook("PaperDollFrame_UpdateSidebarTabs", function()
-				for i = 1, #_G.PAPERDOLL_SIDEBARS do
-					if _G["PaperDollSidebarTab" .. i]
-					and _G["PaperDollSidebarTab" .. i].sbb
-					then
-						_G["PaperDollSidebarTab" .. i].sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
-					end
-				end
-			end)
-
-			self:SecureHookScript(_G.PaperDollTitlesPane, "OnShow", function(this)
-				self:skinSlider{obj=this.scrollBar, wdth=-4}
-				for i = 1, #this.buttons do
-					this.buttons[i]:DisableDrawLayer("BACKGROUND")
-				end
-				self:Unhook(this, "OnShow")
-			end)
-
-			self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(this)
-				self:skinSlider{obj=this.scrollBar, wdth=-4}
-				self:skinStdButton{obj=this.EquipSet}
-				this.EquipSet.ButtonBackground:SetAlpha(0)
-				self:skinStdButton{obj=this.SaveSet}
-				for i = 1, #this.buttons do
-					this.buttons[i]:DisableDrawLayer("BACKGROUND")
-					self:addButtonBorder{obj=this.buttons[i], relTo=this.buttons[i].icon}
-				end
-				self:Unhook(this, "OnShow")
-			end)
-
-			_G.CharacterModelFrame:DisableDrawLayer("BACKGROUND")
-			_G.CharacterModelFrame:DisableDrawLayer("BORDER")
-			_G.CharacterModelFrame:DisableDrawLayer("OVERLAY")
-			_G.CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-
-			local function skinSlot(btn)
-				btn:DisableDrawLayer("BACKGROUND")
-				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}}
-					-- force quality border update
-					_G.PaperDollItemSlotButton_Update(btn)
-					if not btn.hasItem then
-						btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-					end
-					-- RankFrame (Beta)
-					aObj:changeTandC(btn.RankFrame.Texture, self.lvlBG)
-					btn.RankFrame.Texture:SetSize(20, 20)
-					btn.RankFrame.Label:ClearAllPoints()
-					btn.RankFrame.Label:SetPoint("CENTER", btn.RankFrame.Texture)
+				if _G["PaperDollSidebarTab" .. i]
+				and _G["PaperDollSidebarTab" .. i].sbb
+				then
+					_G["PaperDollSidebarTab" .. i].sbb:SetShown(_G[_G.PAPERDOLL_SIDEBARS[i].frame]:IsShown())
 				end
 			end
+		end)
 
-			for i = 1, #_G.PaperDollItemsFrame.EquipmentSlots do
-				skinSlot(_G.PaperDollItemsFrame.EquipmentSlots[i])
+		self:SecureHookScript(_G.PaperDollTitlesPane, "OnShow", function(this)
+			self:skinSlider{obj=this.scrollBar, wdth=-4}
+			for i = 1, #this.buttons do
+				this.buttons[i]:DisableDrawLayer("BACKGROUND")
 			end
-			for i = 1, #_G.PaperDollItemsFrame.WeaponSlots do
-				skinSlot(_G.PaperDollItemsFrame.WeaponSlots[i])
-			end
-			self:skinCloseButton{obj=_G.PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton}
-
-			if self.modBtnBs then
-				self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
-					if btn.sbb
-					and not btn.hasItem
-					then
-						btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-					end
-				end)
-			end
-
-			-- fixupNotificationFrame (anchored to CharacterMainHandSlot)
-			if this.fixupNotificationFrame then
-				self:skinCloseButton{obj=this.fixupNotificationFrame.CloseButton}
-			end
-
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.PaperDollFrame:IsShown() then
-			_G.PaperDollFrame:Hide()
-			_G.PaperDollFrame:Show()
+
+		self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(this)
+			self:skinSlider{obj=this.scrollBar, wdth=-4}
+			self:skinStdButton{obj=this.EquipSet}
+			this.EquipSet.ButtonBackground:SetAlpha(0)
+			self:skinStdButton{obj=this.SaveSet}
+			for i = 1, #this.buttons do
+				this.buttons[i]:DisableDrawLayer("BACKGROUND")
+				self:addButtonBorder{obj=this.buttons[i], relTo=this.buttons[i].icon}
+			end
+			self:Unhook(this, "OnShow")
+		end)
+
+		_G.CharacterModelFrame:DisableDrawLayer("BACKGROUND")
+		_G.CharacterModelFrame:DisableDrawLayer("BORDER")
+		_G.CharacterModelFrame:DisableDrawLayer("OVERLAY")
+		_G.CharacterModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+
+		local function skinSlot(btn)
+			btn:DisableDrawLayer("BACKGROUND")
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}}
+				-- force quality border update
+				_G.PaperDollItemSlotButton_Update(btn)
+				if not btn.hasItem then
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				end
+				-- RankFrame (Beta)
+				aObj:changeTandC(btn.RankFrame.Texture, self.lvlBG)
+				btn.RankFrame.Texture:SetSize(20, 20)
+				btn.RankFrame.Label:ClearAllPoints()
+				btn.RankFrame.Label:SetPoint("CENTER", btn.RankFrame.Texture)
+			end
+		end
+
+		for i = 1, #_G.PaperDollItemsFrame.EquipmentSlots do
+			skinSlot(_G.PaperDollItemsFrame.EquipmentSlots[i])
+		end
+		for i = 1, #_G.PaperDollItemsFrame.WeaponSlots do
+			skinSlot(_G.PaperDollItemsFrame.WeaponSlots[i])
+		end
+		self:skinCloseButton{obj=_G.PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton}
+
+		if self.modBtnBs then
+			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
+				if btn.sbb
+				and not btn.hasItem
+				then
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				end
+			end)
+		end
+
+		-- fixupNotificationFrame (anchored to CharacterMainHandSlot)
+		if this.fixupNotificationFrame then
+			self:skinCloseButton{obj=this.fixupNotificationFrame.CloseButton}
 		end
 
 		self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
