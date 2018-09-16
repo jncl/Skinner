@@ -43,7 +43,15 @@ x		- missing difficulty text when first displayed, when difficulty changed it fi
 ≈		- ...aceSkinner\AddonSkins\OrderHallCommander-1.7.2 80000.lua:89: attempt to index local 'Clicker' (a nil value)
 
 	I	CharacterFrames, reported by moball, 04.09.19
-		- Interface\AddOns\Skinner\PlayerFrames.lua:612: attempt to index field '?' (a nil value)
+√		- Interface\AddOns\Skinner\PlayerFrames.lua:612: attempt to index field '?' (a nil value)
+√		- possible issue with Zygor
 
-	I	IoF Raid Profile panel
-?		- not resizing IoF frame when displayed, so RHS and bottom elements are outside the frame
+	I	AzerothAutoPilot,
+√		- Skinner\Skinner-@project-version@.lua:602: Missing object __aSF
+		...aceSkinner\AddonSkins\Azeroth Auto Pilot-0.173.lua:34:
+		in function <...aceSkinner\AddonSkins\Azeroth Auto Pilot.lua:5>
+
+	I	RaidAchievement, reported by Pseudopath, 15.09.18
+√		- Skinner\Skinner-beta7.27404.2.lua:1259: attempt to index field 'obj' (a nil value)
+		Skinner\Skinner-beta7.27404.2.lua:1295: in function `skinScrollBar'
+		Skinner\AddonSkins\RaidAchievement.lua:53: in function <Skinner\AddonSkins\RaidAchievement.lua:26>
