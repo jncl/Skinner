@@ -38,9 +38,9 @@ do
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
-	local betaInfo = {"8.0.1", 27326}
-	local ptrInfo = {"8.0.1", 27326}
-	local liveInfo = {"8.0.1", 27481}
+	local betaInfo = {"8.0.1", 27481}
+	local ptrInfo = {"8.0.1", 27547}
+	local liveInfo = {"8.0.1", 27602}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
