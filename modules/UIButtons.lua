@@ -187,6 +187,7 @@ function module:skinCloseButton(opts) -- text on button
 		sap = set all points of skinButton to object
 		onSB = put text on skinButton
 		storeOnParent = store reference to close button on object's parent
+		noSkin = don't add skin frame
 --]]
 	opts.obj:DisableDrawLayer("BACKGROUND")
 	opts.obj:SetNormalTexture(nil)
@@ -199,16 +200,28 @@ function module:skinCloseButton(opts) -- text on button
 
 	local aso = opts.aso or {}
 
-	if opts.sap then
-		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
-	else
-		aso.bd = 5
-		local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
-		opts.x1 = opts.x1 or bW == 32 and 6 or 4
-		opts.y1 = opts.y1 or bW == 32 and -6 or -4
-		opts.x2 = opts.x2 or bW == 32 and -6 or -4
-		opts.y2 = opts.y2 or bW == 32 and 6 or 4
-		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+--@alpha@
+	-- don't skin button for GlowBoxes
+	if opts.obj:GetParent().GlowTop
+	and not opts.noSkin
+	then
+		assert(opts.noSkin, "GlowBox CloseButton needs noSkin option set" .. debugstack(2, 3, 2))
+		opts.noSkin = true
+	end
+--@end-alpha@
+	-- don't skin button if required
+	if not opts.noSkin then
+		if opts.sap then
+			aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
+		else
+			aso.bd = 5
+			local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
+			opts.x1 = opts.x1 or bW == 32 and 6 or 4
+			opts.y1 = opts.y1 or bW == 32 and -6 or -4
+			opts.x2 = opts.x2 or bW == 32 and -6 or -4
+			opts.y2 = opts.y2 or bW == 32 and 6 or 4
+			aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+		end
 	end
 	if not opts.onSB then
 		opts.obj:SetNormalFontObject(opts.font or module.fontX)

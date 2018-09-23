@@ -1861,6 +1861,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.GarrisonMissionTutorialFrame, "OnShow", function(this)
+		-- N.B. NO CloseButton
 		self:skinStdButton{obj=this.GlowBox.Button}
 		self:Unhook(this, "OnShow")
 	end)
@@ -2176,10 +2177,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:SecureHookScript(_G.OrderHallMissionTutorialFrame, "OnShow", function(this)
-		self:skinCloseButton{obj=this.GlowBox.CloseButton}
-		self:Unhook(this, "OnShow")
-	end)
+	if self.modBtns then
+		self:SecureHookScript(_G.OrderHallMissionTutorialFrame, "OnShow", function(this)
+			self:skinCloseButton{obj=this.GlowBox.CloseButton, noSkin=true}
+			self:Unhook(this, "OnShow")
+		end)
+	end
 
 	self:SecureHookScript(_G.BFAMissionFrame, "OnShow", function(this)
 
@@ -3083,7 +3086,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 			mBut = nil
 
-			self:skinCloseButton{obj=_G.CharacterMicroButtonAlert.CloseButton}
+			self:skinCloseButton{obj=_G.CharacterMicroButtonAlert.CloseButton, noSkin=true}
 
 			-- skin bag buttons
 			self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
@@ -3129,7 +3132,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 		-- MicroButtonAlert frames
 		 for _, type in pairs{"Talent", "Collections", "LFD", "EJ", "Store"} do
-			self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton}
+			self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton, noSkin=true}
 			_G.RaiseFrameLevelByTwo(_G[type .. "MicroButtonAlert"]) -- move above button borders
 		end
 
@@ -3546,7 +3549,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	anim = nil
 
 	self:SecureHookScript(_G.GarrisonLandingPageTutorialBox, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton}
+		self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -4195,7 +4198,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 			-- make icon square
 			self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon", true)
 		end
-		self:skinCloseButton{obj=_G.PremadeGroupsPvETutorialAlert.CloseButton}
+		self:skinCloseButton{obj=_G.PremadeGroupsPvETutorialAlert.CloseButton, noSkin=true}
 
 		-- hook this to change selected texture
 		self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
@@ -4621,14 +4624,14 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 	self:nilTexture(_G.TalkingHeadFrame.BackgroundFrame.TextBackground, true)
 	self:nilTexture(_G.TalkingHeadFrame.PortraitFrame.Portrait, true)
 	self:nilTexture(_G.TalkingHeadFrame.MainFrame.Model.PortraitBg, true)
-	self:skinCloseButton{obj=_G.TalkingHeadFrame.MainFrame.CloseButton}
-	self:addSkinFrame{obj=_G.TalkingHeadFrame, ft=ftype, nb=true, aso={bd=11, ng=true}, ofs=-15, y2=14}
+	self:skinCloseButton{obj=_G.TalkingHeadFrame.MainFrame.CloseButton, noSkin=true}
+	self:addSkinFrame{obj=_G.TalkingHeadFrame, ft=ftype, kfs=true, nb=true, aso={bd=11, ng=true}, ofs=-15, y2=14}
 	_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
 
 	-- hook this to manage skin frame background when text colour changes
 	self:SecureHook(_G.TalkingHeadFrame.TextFrame.Text, "SetTextColor", function(this, r, g, b)
 		if r == 0 then
-			_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75) -- use light background
+			_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75) -- use light background (Island Expeditions)
 		else
 			_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
 		end
@@ -4824,6 +4827,8 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	-- N.B. NO CloseButton for Content subframe of NPE_TutorialPointerFrame
+
 end
 
 aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
@@ -4970,7 +4975,7 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 			end
 		end)
 
-		self:skinCloseButton{obj=this.WarfrontHelpBox.CloseButton}
+		self:skinCloseButton{obj=this.WarfrontHelpBox.CloseButton, noSkin=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -5021,7 +5026,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			-- BountyBoard overlay
 			elseif oFrame.bountyObjectivePool then
 				oFrame:DisableDrawLayer("BACKGROUND")
-				self:skinCloseButton{obj=oFrame.TutorialBox.CloseButton}
+				self:skinCloseButton{obj=oFrame.TutorialBox.CloseButton, noSkin=true}
 				self:SecureHook(oFrame, "RefreshBountyTabs", function(this)
 					for tab in this.bountyTabPool:EnumerateActive() do
 						if tab.objectiveCompletedBackground then
@@ -5093,7 +5098,7 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 		this.SpellButton:SetNormalTexture(nil)
 		self:addButtonBorder{obj=this.SpellButton, ofs=2}
 		self:Unhook(this, "OnShow")
-		self:skinCloseButton{obj=_G.ZoneAbilityButtonAlert.CloseButton}
+		self:skinCloseButton{obj=_G.ZoneAbilityButtonAlert.CloseButton, noSkin=true}
 	end)
 	if _G.ZoneAbilityFrame:IsShown() then
 		_G.ZoneAbilityFrame:Hide()

@@ -445,8 +445,8 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		self:keepFontStrings(this.BorderFrame)
 		this.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
 		this.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
-		self:skinCloseButton{obj=this.KnowledgeLevelHelpBox.CloseButton}
-		self:skinCloseButton{obj=this.AppearanceTabHelpBox.CloseButton}
+		self:skinCloseButton{obj=this.KnowledgeLevelHelpBox.CloseButton, noSkin=true}
+		self:skinCloseButton{obj=this.AppearanceTabHelpBox.CloseButton, noSkin=true}
 
 		self:skinTabs{obj=this, regs={}, ignore=true, lod=true, x1=6, y1=9, x2=-6, y2=-4}
 		self:addSkinFrame{obj=this, ft=ftype, ofs=5, y1=4}
@@ -499,13 +499,13 @@ aObj.blizzLoDFrames[ftype].AzeriteUI = function(self)
 	local AEIUI = _G.AzeriteEmpoweredItemUI
 
 	self:keepFontStrings(AEIUI)
-	-- AEIUI.PreviewItemOverlayFrame:DisableDrawLayer("OVERLAY")
+	self:addSkinFrame{obj=AEIUI.BorderFrame, ft=ftype, kfs=true, bg=true, ofs=1, y1=2}
 	AEIUI.ClipFrame.BackgroundFrame:DisableDrawLayer("BACKGROUND")
 	AEIUI.ClipFrame.BackgroundFrame.KeyOverlay:DisableDrawLayer("ARTWORK")
 	for i = 1, #AEIUI.ClipFrame.BackgroundFrame.RankFrames do
 		AEIUI.ClipFrame.BackgroundFrame.RankFrames[i]:DisableDrawLayer("BORDER")
 	end
-	self:addSkinFrame{obj=AEIUI.BorderFrame, ft=ftype, kfs=true, ofs=1, y1=2, bg=true}
+	self:skinCloseButton{obj=AEIUI.FirstPowerLockedInHelpBox.CloseButton, noSkin=true}
 
 	AEIUI = nil
 
@@ -598,7 +598,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 	self:SecureHookScript(_G.CharacterFrame, "OnShow", function(this)
 		aObj:Debug("CharacterFrame OnShow")
 		self:skinTabs{obj=this, lod=true}
-		self:skinCloseButton{obj=this.ReputationTabHelpBox.CloseButton}
+		self:skinCloseButton{obj=this.ReputationTabHelpBox.CloseButton, noSkin=true}
 		self:removeInset(_G.CharacterFrameInsetRight)
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
@@ -675,7 +675,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		for i = 1, #_G.PaperDollItemsFrame.WeaponSlots do
 			skinSlot(_G.PaperDollItemsFrame.WeaponSlots[i])
 		end
-		self:skinCloseButton{obj=_G.PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton}
+		self:skinCloseButton{obj=_G.PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton, noSkin=true}
 
 		if self.modBtnBs then
 			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
@@ -689,7 +689,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 
 		-- fixupNotificationFrame (anchored to CharacterMainHandSlot)
 		if this.fixupNotificationFrame then
-			self:skinCloseButton{obj=this.fixupNotificationFrame.CloseButton}
+			self:skinCloseButton{obj=this.fixupNotificationFrame.CloseButton, noSkin=true}
 		end
 
 		self:SecureHookScript(_G.GearManagerDialogPopup, "OnShow", function(this)
@@ -787,8 +787,8 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-5}
 
-		self:skinCloseButton{obj=this.HeirloomTabHelpBox.CloseButton}
-		self:skinCloseButton{obj=this.WardrobeTabHelpBox.CloseButton}
+		self:skinCloseButton{obj=this.HeirloomTabHelpBox.CloseButton, noSkin=true}
+		self:skinCloseButton{obj=this.WardrobeTabHelpBox.CloseButton, noSkin=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -975,7 +975,8 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end)
 		end
 
-		self:skinCloseButton{obj=this.favoriteHelpBox.CloseButton}
+		self:skinCloseButton{obj=this.favoriteHelpBox.CloseButton, noSkin=true}
+		self:skinCloseButton{obj=this.mousewheelPagingHelpBox.CloseButton, noSkin=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1010,7 +1011,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end)
 
 		self:SecureHookScript(this.UpgradeLevelHelpBox, "OnShow", function(this)
-			self:skinCloseButton{obj=this.CloseButton}
+			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -1036,14 +1037,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinDropDown{obj=this.FilterDropDown}
 		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
 
-		self:SecureHookScript(this.SetsTabHelpBox, "OnShow", function(this)
-			self:skinCloseButton{obj=this.CloseButton}
-			self:Unhook(this, "OnShow")
-		end)
-		if this.SetsTabHelpBox:IsShown() then
-			this.SetsTabHelpBox:Hide()
-			this.SetsTabHelpBox:Show()
-		end
+		self:skinCloseButton{obj=this.SetsTabHelpBox.CloseButton, noSkin=true}
 
 		self:SecureHookScript(this.searchProgressFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
@@ -1067,7 +1061,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinDropDown{obj=this.RightClickDropDown}
 			self:skinDropDown{obj=this.WeaponDropDown}
 			self:SecureHookScript(this.HelpBox, "OnShow", function(this)
-				self:skinCloseButton{obj=this.CloseButton}
+				self:skinCloseButton{obj=this.CloseButton,noSkin=true}
 				self:Unhook(this, "OnShow")
 			end)
 			self:Unhook(this, "OnShow")
@@ -1143,11 +1137,11 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:addButtonBorder{obj=this.SpecButton, ofs=0}
 
 		self:SecureHookScript(this.OutfitHelpBox, "OnShow", function(this)
-			self:skinCloseButton{obj=this.CloseButton}
+			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(this.SpecHelpBox, "OnShow", function(this)
-			self:skinCloseButton{obj=this.CloseButton}
+			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -1488,7 +1482,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:skinStdButton{obj=cFrame.GuildLogButton}
 
 	self:SecureHookScript(cFrame.GuildMemberDetailFrame, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton}
 		self:skinStdButton{obj=this.RemoveButton}
 		self:skinStdButton{obj=this.GroupInviteButton}
 		self:skinDropDown{obj=this.RankDropdown}
@@ -1677,8 +1670,8 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		if aObj.modBtns then
 			_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
 			self:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+			self:skinCloseButton{obj=frame.ExtraBagSlotsHelpBox.CloseButton, noSkin=true}
 		end
-		self:skinCloseButton{obj=frame.ExtraBagSlotsHelpBox.CloseButton}
 		objName = nil
 
 	end
@@ -1709,16 +1702,16 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	end, true)
 
 	self:SecureHookScript(_G.ArtifactRelicHelpBox, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton}
+		self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 		self:Unhook(this, "OnShow")
 	end)
 	self:SecureHookScript(_G.BagHelpBox, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton}
+		self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.AzeriteItemInBagHelpBox, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton}
+		self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -2072,7 +2065,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
 			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, QuickJoin & Ignore
 			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
-			self:skinCloseButton{obj=this.FriendsFrameQuickJoinHelpTip.CloseButton}
+			self:skinCloseButton{obj=this.FriendsFrameQuickJoinHelpTip.CloseButton, noSkin=true}
 			self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
 			self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
 			self:Unhook(this, "OnShow")
@@ -2245,7 +2238,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:skinSlider{obj=this.ChannelList.ScrollBar, wdth=-4}
 		self:skinSlider{obj=this.ChannelRoster.ScrollFrame.scrollBar, wdth=-4}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-1}
-		self:skinCloseButton{obj=this.Tutorial.CloseButton}
+		self:skinCloseButton{obj=this.Tutorial.CloseButton, noSkin=true}
 		-- Create Channel Popup
 		self:skinEditBox{obj=_G.CreateChannelPopup.Name, regs={6}} -- 6 is text
 		self:skinEditBox{obj=_G.CreateChannelPopup.Password, regs={6}} -- 6 is text
@@ -2389,9 +2382,12 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		_G.GuildFactionBarShadow:SetAlpha(0)
 		_G.GuildFactionBarCap:SetTexture(self.sbTexture)
 		_G.GuildFactionBarCapMarker:SetAlpha(0)
-		self:skinEditBox{obj=this.nameAlert.editBox, regs={6}}
-		self:skinStdButton{obj=this.nameAlert.button}
+		self:skinEditBox{obj=_G.GuildNameChangeFrame.editBox, regs={6}}
 		self:addSkinFrame{obj=this, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+		if self.modBtns then
+			-- N.B. NO CloseButton for GuildNameChangeAlertFrame
+			self:skinStdButton{obj=_G.GuildNameChangeFrame.button}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -2822,7 +2818,12 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		self:removeRegions(this, {1, 2, 3, 5})
 		self:skinStatusBar{obj=this.PromptFrame.Timer, fi=0}
 		self:addSkinFrame{obj=this, ft=ftype, bg=true}
-		self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.PromptFrame.EncounterJournalLinkButtonHelp, noSkin=true}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3112,7 +3113,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
 	end)
 
-	aObj:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton}
+	aObj:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton, noSkin=true}
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
@@ -3260,7 +3261,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			-- make Icon square
 			self:makeIconSquare(_G.PVPQueueFrame["CategoryButton" .. i], "Icon", true)
 		end
-		self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton}
+		self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton, noSkin=true}
 		if self.modBtnBs then
 			-- hook this to change button border colour
 			self:SecureHook("PVPQueueFrame_SetCategoryButtonState", function(btn, enabled)
@@ -3283,7 +3284,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			end
 		end)
 		_G.PVPQueueFrame_SelectButton(1) -- select Honor button
-		self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton}
+		self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton, noSkin=true}
 
 		-- skin common elements (Honor & Conquest frames)
 		local function skinCommon(frame)
@@ -3317,7 +3318,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}}
 			end
 			btn = nil
-			self:skinCloseButton{obj=this.BonusFrame.BrawlHelpBox.CloseButton}
+			self:skinCloseButton{obj=this.BonusFrame.BrawlHelpBox.CloseButton, noSkin=true}
 			this.BonusFrame:DisableDrawLayer("BACKGROUND")
 			this.BonusFrame:DisableDrawLayer("BORDER")
 			this.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
@@ -3343,7 +3344,10 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			this.RatedBG.Reward.Border:SetTexture(nil)
 			this.RatedBG.NormalTexture:SetTexture(nil)
 			self:removeMagicBtnTex(this.JoinButton)
-			self:skinStdButton{obj=this.JoinButton}
+			if self.modBtns then
+				 self:skinStdButton{obj=this.JoinButton}
+		 		-- N.B. NO CloseButton for NoSeason & Disabled
+			end
 			self:skinDropDown{obj=this.ArenaInviteMenu}
 			self:Unhook(this, "OnShow")
 		end)
@@ -3629,7 +3633,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		-- Secondary professions
 		skinProf("Secondary", 3)
 
-		self:skinCloseButton{obj=_G.SpellLockedTooltip.CloseButton}
+		self:skinCloseButton{obj=_G.SpellLockedTooltip.CloseButton, noSkin=true}
 
 		if self.modBtnBs then
 			-- hook this to change Primary Profession Button border colours if required
@@ -3803,16 +3807,20 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			self:nilTexture(frame.Slots[i].Border, true) -- PvP talent ring texture
 		end
 		self:skinSlider{obj=frame.TalentList.ScrollFrame.ScrollBar, wdth=-4}
-		self:skinStdButton{obj=self:getChild(frame.TalentList, 4)}
 		self:removeMagicBtnTex(self:getChild(frame.TalentList, 4))
 		self:addSkinFrame{obj=frame.TalentList, ft=ftype, kfs=true, ri=true, y1=-20, x2=-4}
 		for i = 1, #frame.TalentList.ScrollFrame.buttons do
 			frame.TalentList.ScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
 		end
-		self:skinCloseButton{obj=frame.TrinketSlot.HelpBox.CloseButton}
-		self:skinCloseButton{obj=frame.WarmodeTutorialBox.CloseButton}
+		if self.modBtns then
+			self:skinStdButton{obj=self:getChild(frame.TalentList, 4)}
+			self:skinCloseButton{obj=frame.TrinketSlot.HelpBox.CloseButton, noSkin=true}
+		end
 		self:SecureHookScript(frame.WarmodeTutorialBox, "OnShow", function(this)
 			this:SetWidth(this.Text:GetWidth() + 30)
+			if self.modBtns then
+				self:skinStdButton{obj=this.CloseButton, noSkin=true}
+			end
 			self:Unhook(this, "OnShow")
 		end)
 		-- hook this to disable ModelScenes

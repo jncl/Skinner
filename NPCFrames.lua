@@ -193,7 +193,7 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true, ofs=1, y1=2}
 
-	self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton}
+	self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton, noSkin=true}
 
 end
 
@@ -203,7 +203,9 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 
 	self:SecureHookScript(_G.BankFrame, "OnShow", function(this)
 		self:skinEditBox{obj=_G.BankItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
-		self:skinStdButton{obj=_G.BankFramePurchaseButton}
+		if self.modBtns then
+			 self:skinStdButton{obj=_G.BankFramePurchaseButton}
+		end
 		self:removeInset(_G.BankFrameMoneyFrameInset)
 		_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 		self:skinTabs{obj=this, x1=6, y1=0, x2=-6, y2=2}
@@ -216,8 +218,11 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		_G.ReagentBankFrame:DisableDrawLayer("BORDER") -- shadow textures
 		_G.ReagentBankFrame.UnlockInfo:DisableDrawLayer("BORDER")
 		_G.RaiseFrameLevelByTwo(_G.ReagentBankFrame.UnlockInfo) -- hide the slot button textures
-		self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
-		self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
+			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
+			self:skinStdButton{obj=_G.ReagentBankHelpBox.CloseButton, noSkin=true}
+		end
 
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
@@ -912,6 +917,7 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 		self:skinStdButton{obj=_G.VoidStorageTransferButton}
 		self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton}
 		self:keepFontStrings(_G.VoidStorageBorderFrame)
+		-- N.B. NO CloseButton for VoidStorageHelpBox
 		self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
 		self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
 		self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
