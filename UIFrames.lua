@@ -1151,9 +1151,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			skinTabs(this)
 		end)
 		self:SecureHook(this.ChatTabManager, "UpdateSelection", function(this, selectedChatWindowIndex)
-			for tab in this.tabPool:EnumerateActive() do
-				setTabState(tab)
-			end
+			skinTabs(this)
 		end)
 
 		local function skinCB(cBox)
