@@ -4905,10 +4905,13 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	local function setTextColor(textObject)
 		local tClr = {textObject:GetTextColor()}
 		-- aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
-		-- only colour blue text
-		if aObj:round2(tClr[1], 2) == 0.08
+		-- only colour blue (Alliance) or red (Horde) text (Warfront Contribution text)
+		if (aObj:round2(tClr[1], 2) == 0.08
 		and aObj:round2(tClr[2], 2) == 0.16
-		and aObj:round2(tClr[3], 2) == 0.37
+		and aObj:round2(tClr[3], 2) == 0.37)
+		or (aObj:round2(tClr[1], 2) == 0.41
+		and aObj:round2(tClr[2], 2) == 0.02
+		and aObj:round2(tClr[3], 2) == 0.02)
 		then
 			textObject:SetTextColor(self.BTr, self.BTg, self.BTb)
 			textObject.SetTextColor = _G.nop
