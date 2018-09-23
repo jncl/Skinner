@@ -2819,9 +2819,11 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		-- CategorySelection
 		self:removeInset(this.CategorySelection.Inset)
 		self:removeMagicBtnTex(this.CategorySelection.FindGroupButton)
-		self:skinStdButton{obj=this.CategorySelection.FindGroupButton}
 		self:removeMagicBtnTex(this.CategorySelection.StartGroupButton)
-		self:skinStdButton{obj=this.CategorySelection.StartGroupButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.CategorySelection.FindGroupButton}
+			self:skinStdButton{obj=this.CategorySelection.StartGroupButton}
+		end
 		self:SecureHook("LFGListCategorySelection_AddButton", function(this, ...)
 			for i = 1, #this.CategoryButtons do
 				this.CategoryButtons[i].Cover:SetTexture(nil)
@@ -2833,20 +2835,24 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 
 		-- SearchPanel
 		local sp = this.SearchPanel
-		self:skinEditBox{obj=sp.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-	    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
+		self:skinEditBox{obj=sp.SearchBox, regs={6, 7, 8}, mi=true} -- 6 is text, 7 is icon, 8 maybe added fontstring
 		self:addSkinFrame{obj=sp.AutoCompleteFrame, ft=ftype, kfs=true, x1=4, y1=4, y2=4}
-		self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
 		self:removeInset(sp.ResultsInset)
-		self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
 		self:skinSlider{obj=sp.ScrollFrame.scrollBar, wdth=-4}
-		for i = 1, #sp.ScrollFrame.buttons do
-			self:skinStdButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
-		end
 		self:removeMagicBtnTex(sp.BackButton)
-		self:skinStdButton{obj=sp.BackButton}
 		self:removeMagicBtnTex(sp.SignUpButton)
-		self:skinStdButton{obj=sp.SignUpButton}
+		if self.modBtnBs then
+		    self:addButtonBorder{obj=sp.FilterButton, ofs=0}
+			self:addButtonBorder{obj=sp.RefreshButton, ofs=-2}
+		end
+		if self.modBtns then
+			for i = 1, #sp.ScrollFrame.buttons do
+				self:skinStdButton{obj=sp.ScrollFrame.buttons[i].CancelButton}
+			end
+			self:skinStdButton{obj=sp.ScrollFrame.StartGroupButton, as=true} -- use as otherwise button skin not visible
+			self:skinStdButton{obj=sp.BackButton}
+			self:skinStdButton{obj=sp.SignUpButton}
+		end
 		sp = nil
 
 		-- ApplicationViewer
@@ -2855,19 +2861,27 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:removeInset(av.Inset)
 		for _ ,type in pairs{"Name", "Role", "ItemLevel"} do
 			self:removeRegions(av[type .. "ColumnHeader"], {1, 2, 3})
-			self:skinStdButton{obj=av[type .. "ColumnHeader"]}
+			if self.modBtns then
+				 self:skinStdButton{obj=av[type .. "ColumnHeader"]}
+			end
 		end
-		self:addButtonBorder{obj=av.RefreshButton, ofs=-2}
 		self:skinSlider{obj=av.ScrollFrame.scrollBar, wdth=-4}
-		for i = 1, #av.ScrollFrame.buttons do
-			self:skinStdButton{obj=av.ScrollFrame.buttons[i].DeclineButton}
-			self:skinStdButton{obj=av.ScrollFrame.buttons[i].InviteButton}
-		end
 		self:removeMagicBtnTex(av.RemoveEntryButton)
-		self:skinStdButton{obj=av.RemoveEntryButton}
 		self:removeMagicBtnTex(av.EditButton)
-		self:skinStdButton{obj=av.EditButton}
-		self:skinCheckButton{obj=av.AutoAcceptButton}
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=av.RefreshButton, ofs=-2}
+		end
+		if self.modChkBtns then
+			 self:skinCheckButton{obj=av.AutoAcceptButton}
+		end
+		if self.modBtns then
+			for i = 1, #av.ScrollFrame.buttons do
+				self:skinStdButton{obj=av.ScrollFrame.buttons[i].DeclineButton}
+				self:skinStdButton{obj=av.ScrollFrame.buttons[i].InviteButton}
+			end
+			self:skinStdButton{obj=av.RemoveEntryButton}
+			self:skinStdButton{obj=av.EditButton}
+		end
 		av = nil
 
 		-- EntryCreation
@@ -2878,22 +2892,30 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:skinSlider{obj=ecafd.ScrollFrame.scrollBar, size=4}
 		ecafd.BorderFrame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=ecafd, ft=ftype, kfs=true}
+		if self.modBtns then
+			self:skinStdButton{obj=ecafd.SelectButton}
+			self:skinStdButton{obj=ecafd.CancelButton}
+		end
 		ecafd = nil
 		self:skinEditBox{obj=ec.Name, regs={6}, mi=true} -- 6 is text
 		self:skinDropDown{obj=ec.CategoryDropDown}
 		self:skinDropDown{obj=ec.GroupDropDown}
 		self:skinDropDown{obj=ec.ActivityDropDown}
 		self:addSkinFrame{obj=ec.Description, ft=ftype, kfs=true, ofs=6}
-		self:skinCheckButton{obj=ec.ItemLevel.CheckButton}
 		self:skinEditBox{obj=ec.ItemLevel.EditBox, regs={6}, mi=true} -- 6 is text
-		self:skinCheckButton{obj=ec.HonorLevel.CheckButton}
-		self:skinCheckButton{obj=ec.VoiceChat.CheckButton}
 		self:skinEditBox{obj=ec.VoiceChat.EditBox, regs={6}, mi=true} -- 6 is text
-		self:skinCheckButton{obj=ec.PrivateGroup.CheckButton}
 		self:removeMagicBtnTex(ec.ListGroupButton)
-		self:skinStdButton{obj=ec.ListGroupButton}
 		self:removeMagicBtnTex(ec.CancelButton)
-		self:skinStdButton{obj=ec.CancelButton}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=ec.ItemLevel.CheckButton}
+			self:skinCheckButton{obj=ec.HonorLevel.CheckButton}
+			self:skinCheckButton{obj=ec.VoiceChat.CheckButton}
+			self:skinCheckButton{obj=ec.PrivateGroup.CheckButton}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=ec.ListGroupButton}
+			self:skinStdButton{obj=ec.CancelButton}
+		end
 		ec = nil
 
 		self:Unhook(this, "OnShow")
