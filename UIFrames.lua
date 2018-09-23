@@ -5072,8 +5072,8 @@ aObj.blizzFrames[ftype].WorldState = function(self)
 
 	self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
 		-- WorldStateScore frame
-		this.XPBar.Frame:SetTexture(nil)
-		self:skinStatusBar{obj=this.XPBar.Bar, fi=0, bgTex=this.XPBar.Bar.Background, hookFunc=true}
+		self:skinStatusBar{obj=this.XPBar.Bar, fi=0, bgTex=this.XPBar.Bar.Background, nilFuncs=true}
+		this.XPBar.Bar.SetStatusBarTexture = _G.nop
 		this.XPBar.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
 		this.XPBar.NextAvailable.Frame:SetTexture(nil)
 		self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}

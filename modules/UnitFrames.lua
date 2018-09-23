@@ -92,7 +92,7 @@ local function skinPlayerF()
 		aObj:skinStatusBar{obj=pF.PlayerFrameHealthBarAnimatedLoss, fi=0}
 		aObj:skinStatusBar{obj=pF.healthbar, fi=0, otherTex={pF.myHealPredictionBar, pF.otherHealPredictionBar}}
 		adjustStatusBarPosn(pF.healthbar)
-		aObj:skinStatusBar{obj=pF.manabar, fi=0, otherTex={pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, hookFunc=true}
+		aObj:skinStatusBar{obj=pF.manabar, fi=0, otherTex={pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, nilFuncs=true}
 
 		-- AlternateManaBar
 		aObj:rmRegionsTex(_G.PlayerFrameAlternateManaBar, {2, 3, 4, 5, 6}) -- border textures
@@ -220,7 +220,7 @@ local function skinPetF()
 		adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
 		aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
 		adjustStatusBarPosn(_G.PetFrameManaBar, -1)
-		aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, hookFunc=true}
+		aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
 		-- casting bar handled in CastingBar function (UIE1)
 		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
@@ -261,7 +261,7 @@ local function skinCommon(frame, adjSB)
 	if adjSB then
 		adjustStatusBarPosn(fo.healthbar)
 	end
-	aObj:skinStatusBar{obj=fo.manabar, fi=0, hookFunc=true}
+	aObj:skinStatusBar{obj=fo.manabar, fi=0, nilFuncs=true}
 	fo = nil
 
 end
@@ -378,7 +378,7 @@ local function skinPartyF()
 			_G[pMF .. "Status"]:SetTexture(nil)
 			-- status bars
 			aObj:skinStatusBar{obj=_G[pMF .. "HealthBar"], fi=0}
-			aObj:skinStatusBar{obj=_G[pMF .. "ManaBar"], fi=0, hookFunc=true}
+			aObj:skinStatusBar{obj=_G[pMF .. "ManaBar"], fi=0, nilFuncs=true}
 
 			-- PowerBarAlt handled in MainMenuBar function (UIF)
 

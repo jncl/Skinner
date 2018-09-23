@@ -1382,7 +1382,6 @@ local function __skinStatusBar(opts)
 		fi = frame inset
 		bgTex = existing background texture
 		otherTex = other Textures table
-		hookFunc = hook the change texture function
 		nilFuncs = nop Atlas funcs
 --]]
 --@alpha@
@@ -1414,6 +1413,7 @@ local function __skinStatusBar(opts)
 			end
 		end
 	end
+
 	-- apply texture to and store other texture objects
 	if opts.otherTex
 	and type(opts.otherTex) == "table"
@@ -1426,13 +1426,6 @@ local function __skinStatusBar(opts)
 			sbG[#sbG + 1] = tex
 		end
 		tex = nil
-	end
-	if opts.hookFunc then
-		aObj:RawHook(opts.obj, "SetStatusBarTexture", function(this, tex)
-			if not tex == aObj.sbTexture then
-				aObj.hooks[this].SetStatusBarTexture(this, aObj.sbTexture)
-			end
-		end, true)
 	end
 
 	if opts.nilFuncs then
