@@ -3826,9 +3826,8 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
-		-- hook this to disable ModelScenes
-		self:RawHook(frame, "UpdateModelScene", function(this, ...)
-		end, true)
+
+		frame.UpdateModelScene = _G.nop
 		frame = nil
 		self:Unhook(this, "OnShow")
 	end)
