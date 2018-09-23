@@ -3027,6 +3027,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end
 
 	end
+
+	-- TODO: TimerBar not appearing in Mythic+
+
 	-- TimerBars
 	aObj:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
 		aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddTimerBar: [%s, %s, %s]", this, block, line)
@@ -3038,7 +3041,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
 	aObj:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-		aObj:Debug("SCENARIO_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
+		-- aObj:Debug("SCENARIO_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
 	aObj:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
@@ -3046,7 +3049,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
 	aObj:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
-		aObj:Debug("WORLD_QUEST_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
+		-- aObj:Debug("WORLD_QUEST_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
 	-- skin existing Timer & Progress bars

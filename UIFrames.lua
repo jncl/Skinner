@@ -2463,6 +2463,9 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 		_G.BrowserSettingsTooltip:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
 
+		-- HelpOpenTicketButton
+		-- HelpOpenWebTicketButton
+
 		-- TicketStatus Frame
 		self:addSkinFrame{obj=_G.TicketStatusFrameButton, ft=ftype}
 
