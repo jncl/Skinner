@@ -38,9 +38,9 @@ do
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
-	local betaInfo = {"8.0.1", 27481}
-	local ptrInfo = {"8.0.1", 27547}
-	local liveInfo = {"8.0.1", 27602}
+	local betaInfo = {"9.0.0", 99999}
+	local ptrInfo = {"8.0.1", 27826}
+	local liveInfo = {"8.0.1", 27843}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
@@ -883,8 +883,8 @@ local function __applySkin(opts)
 		opts.obj:SetBackdropColor(aObj.bColour[1], aObj.bColour[2], aObj.bColour[3], opts.ba or aObj.bColour[4])
 		opts.obj:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], opts.bba or aObj.bbColour[4])
 	else
-		opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
 		opts.obj:SetBackdropColor(.1, .1, .1, 1)
+		opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
 	end
 
 	-- fix for backdrop textures not tiling vertically
