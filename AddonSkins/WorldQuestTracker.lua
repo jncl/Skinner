@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.295
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 
 	self:SecureHook("ToggleWorldMap", function()
 		if self.modBtns then
@@ -44,61 +44,52 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.295
 		self:addButtonBorder{obj=_G.WorldQuestTrackerQuestsHeaderMinimizeButton, es=12, ofs=0}
 	end
 
-	-- find and skin the FindGroup frame
-	self.RegisterCallback("WorldQuestTracker", "UIParent_GetChildren", function(this, child)
-		if child:IsObjectType("Frame")
-		and child:GetName() == nil
-		and _G.Round(child:GetWidth()) == 240
-		and _G.Round(child:GetHeight()) == 100
-		and child.TickFrame
-		then
-			child.TitleBar:SetBackdrop(nil)
-			child.ClickArea:SetBackdrop(nil)
-			self:skinStatusBar{obj=child.ProgressBar.statusbar, fi=0, bgTex=child.ProgressBar.background}
-			child.ProgressBar.timer_texture.SetTexture = _G.nop
-			child.ProgressBar.background.SetTexture = _G.nop
-			self:addSkinFrame{obj=child, ft="a", ofs=2}
+	-- WorldQuestTrackerFinderFrame
+	self:SecureHookScript(_G.WorldQuestTrackerFinderFrame, "OnShow", function(this)
+		this.TitleBar:SetBackdrop(nil)
+		this.OpenGroupFinderButton:SetBackdrop(nil)
+		this.InvitePlayersButton:SetBackdrop(nil)
+		this.LeaveButton:SetBackdrop(nil)
+		this.IgnoreQuestButton:SetBackdrop(nil)
+		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true, ofs=4, y1=1}
 
-			if self.modBtnBs then
-				-- hook this to skin GroupFinder buttons
-				self:SecureHook(child, "UpdateButtonAnchorOnBBlock", function(block, button)
-					if not button.sbb then
-						self:addButtonBorder{obj=button, ofs=-2}
-					end
-				end)
-			end
-			if self.modBtns then
-				self:skinStdButton{obj=self:getChild(child, 6)} -- skin secondaryInteractionButton
-				-- hook this to skin tutorial alert close button
-				if _G.WorldQuestTrackerAddon.db.profile.groupfinder.tutorial == 0 then
-					self:SecureHookScript(child, "OnShow", function(this)
-						self:skinCloseButton{obj=_G.WorldQuestTrackerGroupFinderTutorialAlert1.CloseButton,}
-						self:Unhook(this, "OnShow")
-					end)
+		if self.modBtns then
+			-- hook this to skin GroupFinder buttons
+			self:SecureHook(this, "UpdateButtonAnchorOnBBlock", function(block, button)
+				if not button.sbb then
+					self:addButtonBorder{obj=button, ofs=-2}
 				end
-			end
+			end)
 		end
+		self:Unhook(this, "OnShow")
 	end)
+	-- WorldQuestTrackerRareFrame (only holds data, not a displayed frame)
 
 	if self.modBtns then
+		self:SecureHookScript(_G.WorldQuestTrackerFinderFrame.OpenGroupFinderButton, "OnMouseUp", function(this, bType)
+			if _G.WorldQuestTrackerGroupFinderPopup then
+				self:skinCloseButton{obj=_G.WorldQuestTrackerGroupFinderPopup.CloseButton, noSkin=true}
+				self:Unhook(this, "OpenGroupFinderForQuest")
+			end
+		end)
 		if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
 			-- no more steps
 		else
 			self:SecureHook(_G.WorldQuestTrackerAddon, "ShowTutorialAlert", function()
 				-- N.B. this counter has already been incremented when we see it
 				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 2 then
-					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert1.CloseButton}
+					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert1.CloseButton, noSkin=true}
 				elseif _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 3 then
-					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert2.CloseButton}
+					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert2.CloseButton, noSkin=true}
 				elseif _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
-					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert3.CloseButton}
+					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert3.CloseButton, noSkin=true}
 					self:Unhook(this, "ShowTutorialAlert")
 				end
 			end)
 		end
 		self:SecureHook(_G.WorldQuestTrackerAddon, "TAXIMAP_OPENED", function(this)
 			if _G.WorldQuestTrackerTaxyTutorial then
-				self:skinCloseButton{obj=_G.WorldQuestTrackerTaxyTutorial.CloseButton}
+				self:skinCloseButton{obj=_G.WorldQuestTrackerTaxyTutorial.CloseButton, noSkin=true}
 				self:Unhook(this, "TAXIMAP_OPENED")
 			end
 		end)
@@ -127,25 +118,11 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.295
 		self:SecureHook(_G.WorldQuestTrackerAddon, "RefreshTrackerWidgets", function()
 			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetShown(_G.WorldQuestTrackerQuestsHeader:IsShown())
 			if self.modBtns then
-				if _G.WorldQuestTrackerAddon.db.profile.TutorialTracker == 2
-				and not _G.WorldQuestTrackerTrackerTutorialAlert1.CloseButton.sb
-				then
-					self:skinCloseButton{obj=_G.WorldQuestTrackerTrackerTutorialAlert1.CloseButton}
+				if _G.WorldQuestTrackerAddon.db.profile.TutorialTracker == 2 then
+					self:skinCloseButton{obj=_G.WorldQuestTrackerTrackerTutorialAlert1.CloseButton, noSkin=true}
 				end
 			end
 		end)
 	end
-
-	-- WorldQuestTrackerFinderFrame
-	if self.modBtns then
-		self:SecureHookScript(_G.WorldQuestTrackerFinderFrame, "OnShow", function(this)
-			if _G.WorldQuestTrackerAddon.db.profile.groupfinder.tutorial == 1 then
-				self:skinCloseButton{obj=_G.WorldQuestTrackerGroupFinderTutorialAlert1.CloseButton}
-				self:Unhook(this, "OnShow")
-			end
-		end)
-	end
-
-	-- WorldQuestTrackerRareFrame
 
 end

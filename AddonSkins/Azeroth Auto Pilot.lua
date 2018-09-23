@@ -2,10 +2,11 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Azeroth Auto Pilot") then return end
 local _G = _G
 
-aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 0.173
+aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 0.176
 
 	-- Core frames
 	self:addSkinFrame{obj=_G.AAP_AfkFrame, ft="a", kfs=true, nb=true}
+
 	if self.modBtns then
 		self:skinStdButton{obj=_G.AAP_ArrowFrame.Button}
 	end
