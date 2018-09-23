@@ -2723,11 +2723,27 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 
 	self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck
 		self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, ft=ftype, kfs=true, ofs=-5}
-		_G.LFGDungeonReadyDialog.instanceInfo:DisableDrawLayer("BACKGROUND")
 		self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
 		self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
-		self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, ft=ftype, kfs=true, ofs=-5}
+		self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, ft=ftype, kfs=true, rp=true, ofs=-5, y2=10} -- use rp=true to make background visible
 		_G.LFGDungeonReadyDialog.SetBackdrop = _G.nop
+
+		_G.LFGDungeonReadyDialog.instanceInfo:DisableDrawLayer("BACKGROUND")
+
+		-- show background texture if required
+		if self.prdb.LFGTexture then
+			local lfgTex = _G.LFGDungeonReadyDialog.background
+			lfgTex:SetAlpha(1) -- show texture
+			self:SecureHook("LFGDungeonReadyPopup_Update", function()
+				-- adjust texture to fit within skinFrame
+				lfgTex:SetWidth(288)
+				lfgTex:SetHeight(200)
+				lfgTex:SetTexCoord(0, 1, 0, 1)
+
+				lfgTex:ClearAllPoints()
+				lfgTex:SetPoint("TOPLEFT", _G.LFGDungeonReadyDialog, "TOPLEFT", 9, -9)
+			end)
+		end
 
 		-- RewardsFrame
 		_G.LFGDungeonReadyDialogRewardsFrameReward1Border:SetAlpha(0)

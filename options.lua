@@ -36,6 +36,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		BgFile               = "None",
 		BgTexture            = "None",
 		BgTile               = false,
+		LFGTexture			 = false,
 	-->>-- Colours
 		ClassClrBd           = false,
 		ClassClrBg           = false,
@@ -478,7 +479,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 			get = function(info) return db[info[#info]] end,
 			set = function(info, value)
 				db[info[#info]] = value == "" and "None" or value
-				if info[#info] ~= "BgUseTex" then db.BgUseTex = true end
+				if info[#info] ~= "BgUseTex"
+				and info[#info] ~= "LFGTexture"
+				then
+					db.BgUseTex = true
+				end
 				if db.BgUseTex then db.Tooltips.style = 3 end -- set Tooltip style to Custom
 			end,
 			args = {
@@ -510,6 +515,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					order = 4,
 					name = self.L["Tile Background"],
 					desc = self.L["Tile or Stretch Background"],
+				},
+				LFGTexture = {
+					type = "toggle",
+					width = "double",
+					name = self.L["Show LFG Background Texture"],
+					desc = self.L["Toggle the background texture of the LFG Popup"],
 				},
 			},
 		},
