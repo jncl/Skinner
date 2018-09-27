@@ -20,9 +20,10 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 			end
 		end
 		if _G.WorldQuestTrackerSummaryUpPanel
-		and not _G.WorldQuestTrackerSummaryUpPanelChrQuestsScrollScrollBar.sknd
+		and _G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll
+		and not _G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll.ScrollBar.sknd
 		then
-			self:skinSlider{obj=_G.WorldQuestTrackerSummaryUpPanelChrQuestsScrollScrollBar, adj=-4, size=3}
+			self:skinSlider{obj=_G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll.ScrollBar, adj=-4, size=3}
 		end
 		if _G.WorldQuestTrackerZoneSummaryFrame
 		then

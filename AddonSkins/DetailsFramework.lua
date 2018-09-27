@@ -25,7 +25,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 
 	-- colorpickerbutton (name, member, callback, alpha, button_template)
 
--->>-- coooltip
+	-- coooltip
 	local function skinCooltip(frame)
 
 		frame:DisableDrawLayer("BACKGROUND")
@@ -50,10 +50,11 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 			return obj
 		end, true)
 	end
-	-- dropdown (parent, func, default, w, h, member, name, template)
-	self:RawHook(DF, "CreateNewDropdownFrame", function(this, parent, name)
-		aObj:Debug("DF CreateNewDropdownFrame: [%s, %s, %s]", this, parent, name)
-		local button = self.hooks[this].CreateNewDropdownFrame(this, parent, name)
+
+	-- dropdown (parent, name)
+	self:RawHook(DF, "CreateNewDropdownFrame", function(this, ...)
+		-- aObj:Debug("DF CreateNewDropdownFrame: [%s, %s, %s]", this, ...)
+		local button = self.hooks[this].CreateNewDropdownFrame(this, ...)
 		self:addSkinFrame{obj=button.dropdownborder, ft="a", nb=true}
 		button.dropdownframe:GetScrollChild():SetBackdrop(nil)
 		return button
@@ -67,7 +68,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 
 	-- newfillpanel (parent, rows, name, member, w, h, total_lines, fill_row, autowidth, options)
 	self:RawHook(DF, "NewFillPanel", function(this, ...)
-		aObj:Debug("DF NewFillPanel: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
+		-- aObj:Debug("DF NewFillPanel: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local obj = self.hooks[this].NewFillPanel(this, ...)
 		self:skinSlider{obj=obj.scrollframe.ScrollBar}
 		return obj
@@ -79,12 +80,10 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 
 	-- simplepanel (parent, w, h, title, name, panel_options, db)
 	self:RawHook(DF, "CreateSimplePanel", function(this, ...)
-		aObj:Debug("DF CreateSimplePanel: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
+		-- aObj:Debug("DF CreateSimplePanel: [%s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local frame = self.hooks[this].CreateSimplePanel(this, ...)
 		frame.TitleBar:SetBackdrop(nil)
-		frame.Close:SetSize(20, 20)
-		self:skinCloseButton{obj=frame.Close}
-		self:addSkinFrame{obj=frame, ft="a", nb=true}
+		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
 		return frame
 	end, true)
 
@@ -106,6 +105,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 	self:RawHook(DF, "NewImage", function(this, ...)
 		-- aObj:Debug("DF NewImage: [%s, %s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local obj = self.hooks[this].NewImage(this, ...)
+		local texture = _G.select(2, ...)
 		if texture
 		and (texture:find("PaperDollSidebarTabs")
 		or texture:find("BookCompletedLeft")
@@ -113,6 +113,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 		then
 			obj.image:SetTexture(nil)
 		end
+		texture = nil
 		return obj
 	end, true)
 
@@ -132,9 +133,9 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 
 	-- split_bar (parent, w, h, member, name)
 
-	-- textentry (parent, func, w, h, member, name, with_label, entry_template, label_template)
+	-- textentry (parent, container, name, member, w, h, func, param1, param2, space, with_label, entry_template, label_template)
 	self:RawHook(DF, "NewTextEntry", function(this, ...)
-		aObj:Debug("DF NewTextEntry: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
+		-- aObj:Debug("DF NewTextEntry: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local obj = self.hooks[this].NewTextEntry(this, ...)
 		obj.editbox:SetBackdrop(nil)
 		self:skinEditBox{obj=obj.editbox, regs={3}, noHeight=true}
@@ -145,7 +146,7 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 
 	-- NewSpellEntry (parent, w, h, member, name, nointent)
 	self:RawHook(DF, "NewSpecialLuaEditorEntry", function(this, ...)
-		aObj:Debug("DF NewSpecialLuaEditorEntry: [%s, %s, %s, %s, %s, %s, %s]", this, ...)
+		-- aObj:Debug("DF NewSpecialLuaEditorEntry: [%s, %s, %s, %s, %s, %s, %s]", this, ...)
 		local frame = self.hooks[this].NewSpecialLuaEditorEntry(this, ...)
 		self:skinSlider{obj=frame.scroll.ScrollBar}
 		self:addSkinFrame{obj=frame, ft="a", nb=true}
