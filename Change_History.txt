@@ -1,3 +1,20 @@
+beta7.27843.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Update Beta, PTR, Patch checks
+	Update ChatConfig code
+	Update UIWidgets code
+	Update TalentUI code
+	Add button checks
+	Update comment lines
+	Added option to display LFG Dialog texture
+	Make TalkingHeadFrame & frames using GlowBoxTemplate NOT have a skinned close button
+	Updated StatusBar skinning code
+	Updated Azeroth Auto Pilot & WorldQuestTracker skins
+	Unobsoleted DetailsFramework skin
+
 beta7.27602.1
 Jncl:
 	ToDo.txt
