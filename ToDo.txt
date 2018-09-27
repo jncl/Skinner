@@ -21,13 +21,9 @@ Legend:
 
 	O	Change texture for Scrollbar arrows
 
-	O	DetailsFramework
-		- Unobsolete
-		- Skin ALL elements
-
 	O	TalentUI
-		- make PvP Talent buttons square
-		- add button border to PvP talent scroll buttons Icon
+√		- make PvP Talent buttons square
+√		- add button border to PvP talent scroll buttons Icon
 
 	I	Mythic+ timer, reported by Metallan, 03.08.18\17.09.18
 ?		- timer bar texture not visible
@@ -35,8 +31,13 @@ Legend:
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 ?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-	I	Popups, reported by Krainz, 17.09.18
-≈		- How do I make it so Skinner doesn't hide the texture image on arena, dungeon and raid pop-ups?
+	I	WorldQuestTracker, reported by vince, 25.09.18
+√		- ...faceSkinner\AddonSkins\WorldQuestTracker.lua:23: attempt to index field 'WorldQuestTrackerSummaryUpPanelChrQuestsScrollScrollBar' (a nil value)
 
-	I	reported by epidemedabear, 17.09.18
-√		- ..\AddOns\Skinner\UIFrames.lua line 1136: attempt to index field 'sf' (a nil value)
+	I	DetailsFramework, reported by vince, 25.09.18
+√		- ...rfaceSkinner\AddonSkins\DetailsFramework-108.nil.lua:110: attempt to index global 'texture' (a number value)
+
+	I	BonusRollFrame, reported by Talyrius, 27.09.18
+√		- Skinner\Modules\UIButtons.lua:404: attempt to call method 'GetNormalTexture' (a nil value)
+		Skinner\Modules\UIButtons.lua:404: in function `skinStdButton'
+		Skinner\PlayerFrames.lua:2825: in function <Skinner\PlayerFrames.lua:2817>
