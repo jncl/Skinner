@@ -2822,7 +2822,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			 self:addButtonBorder{obj=this.PromptFrame, relTo=this.PromptFrame.Icon, reParent={this.SpecIcon}}
 		end
 		if self.modBtns then
-			self:skinStdButton{obj=this.PromptFrame.EncounterJournalLinkButtonHelp, noSkin=true}
+			self:skinCloseButton{obj=this.PromptFrame.EncounterJournalLinkButtonHelp.CloseButton, noSkin=true}
 		end
 		self:Unhook(this, "OnShow")
 	end)
@@ -3822,7 +3822,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		self:SecureHookScript(frame.WarmodeTutorialBox, "OnShow", function(this)
 			this:SetWidth(this.Text:GetWidth() + 30)
 			if self.modBtns then
-				self:skinStdButton{obj=this.CloseButton, noSkin=true}
+				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
 			end
 			self:Unhook(this, "OnShow")
 		end)

@@ -221,7 +221,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
 			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
-			self:skinStdButton{obj=_G.ReagentBankHelpBox.CloseButton, noSkin=true}
+			self:skinCloseButton{obj=_G.ReagentBankHelpBox.CloseButton, noSkin=true}
 		end
 
 		if self.modBtnBs then
