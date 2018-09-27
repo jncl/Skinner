@@ -3808,17 +3808,39 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		self:nilTexture(frame.Ring, true) -- warmode button ring texture
 		for i = 1, #frame.Slots do
 			self:nilTexture(frame.Slots[i].Border, true) -- PvP talent ring texture
+			self:makeIconSquare(frame.Slots[i], "Texture", true)
+			if self.modBtnBs then
+				self:SecureHook(frame.Slots[i], "Update", function(this)
+					 if this:IsEnabled() then
+					 	this.sbb:SetBackdropBorderColor(1, 1, 1, 1) -- white border
+					else
+					 	this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) -- grey border
+					end
+				end)
+			end
 		end
+
 		self:skinSlider{obj=frame.TalentList.ScrollFrame.ScrollBar, wdth=-4}
 		self:removeMagicBtnTex(self:getChild(frame.TalentList, 4))
 		self:addSkinFrame{obj=frame.TalentList, ft=ftype, kfs=true, ri=true, y1=-20, x2=-4}
 		for i = 1, #frame.TalentList.ScrollFrame.buttons do
 			frame.TalentList.ScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=frame.TalentList.ScrollFrame.buttons[i], relTo=frame.TalentList.ScrollFrame.buttons[i].Icon}
+				 self:SecureHook(frame.TalentList.ScrollFrame.buttons[i], "Update", function(this)
+					 if this:IsEnabled() then
+					 	this.sbb:SetBackdropBorderColor(1, 1, 1, 1) -- white border
+					else
+					 	this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) -- grey border
+					end
+				 end)
+			end
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=self:getChild(frame.TalentList, 4)}
 			self:skinCloseButton{obj=frame.TrinketSlot.HelpBox.CloseButton, noSkin=true}
 		end
+
 		self:SecureHookScript(frame.WarmodeTutorialBox, "OnShow", function(this)
 			this:SetWidth(this.Text:GetWidth() + 30)
 			if self.modBtns then
@@ -3827,7 +3849,10 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		frame.UpdateModelScene = _G.nop
+		frame.UpdateModelScenes = _G.nop
+		frame.OrbModelScene:Hide()
+		frame.FireModelScene:Hide()
+
 		frame = nil
 		self:Unhook(this, "OnShow")
 	end)
