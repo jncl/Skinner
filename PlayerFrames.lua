@@ -2042,24 +2042,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 
 	-- LootJournal panel
 	self:SecureHookScript(_G.EncounterJournal.LootJournal, "OnShow", function(this)
-		this:DisableDrawLayer("BACKGROUND")
-		self:skinDropDown{obj=this.ViewDropDown}
 		self:skinDropDown{obj=this.ClassDropDown}
-		-- LegendariesFrame
-		skinFilterBtn(this.LegendariesFrame.SlotButton)
-		self:skinDropDown{obj=this.LegendariesFrame.SlotDropDown}
-		skinFilterBtn(this.LegendariesFrame.ClassButton)
-		self:skinDropDown{obj=this.LegendariesFrame.ClassDropDown}
-		self:skinSlider{obj=self:getChild(this.LegendariesFrame, 2), wdth=-4, size=3}
-		self:addSkinFrame{obj=this, ft=ftype, ofs=6, x1=-5, y2=-3}
-		for i = 1 , #this.LegendariesFrame.buttons do
-			this.LegendariesFrame.buttons[i].Background:SetTexture(nil)
-			self.modUIBtns:addButtonBorder{obj=this.LegendariesFrame.buttons[i], relTo=this.LegendariesFrame.buttons[i].Icon, es=14} -- use module function here to force creation
-			this.LegendariesFrame.buttons[i].sbb:SetBackdropBorderColor(1.0, 0.5, 0, 1) -- legendary item colour #ff8000
-			this.LegendariesFrame.rightSideButtons[i].Background:SetTexture(nil)
-			self.modUIBtns:addButtonBorder{obj=this.LegendariesFrame.rightSideButtons[i], relTo=this.LegendariesFrame.rightSideButtons[i].Icon, es=14} -- use module function here to force creation
-			this.LegendariesFrame.rightSideButtons[i].sbb:SetBackdropBorderColor(1.0, 0.5, 0, 1) -- legendary item colour #ff8000
-		end
 		-- ItemSetsFrame
 		self:skinSlider{obj=self:getChild(this.ItemSetsFrame, 2), wdth=-4, size=3}
 		skinFilterBtn(this.ItemSetsFrame.ClassButton)
