@@ -4001,6 +4001,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=2}
 		end
 		this.Currency.Icon:SetAlpha(1) -- show currency icon
+		self:skinCloseButton{obj=_G.OrderHallTalentFrameCloseButton}
 		self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
 		for i = 1, #this.FrameTick do
 			this.FrameTick[i]:SetTextColor(self.BTr, self.BTg, self.BTb)
