@@ -80,7 +80,6 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 		if self.modBtns then
 			self:skinStdButton{obj=GMC.startButton}
 			self:skinStdButton{obj=GMC.runButton, x1=-10, x2=10} -- make button skin wider to encompass the text
-			self:skinStdButton{obj=GMC.logoutButton}
 		end
 		if self.modBtnBs then
 			for i = 1, #GMC.ignoreFrames do
@@ -133,7 +132,6 @@ aObj.lodAddons.GarrisonCommander = function(self) -- v 2.18.5 70200
 		if self.modBtns then
 			self:skinStdButton{obj=GMC.startButton}
 			self:skinStdButton{obj=GMC.runButton, x1=-10, x2=10} -- make button skin wider to encompass the text
-			self:skinStdButton{obj=GMC.logoutButton}
 		end
 		GMC = nil
 	end

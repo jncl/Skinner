@@ -85,15 +85,18 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 	aC = nil
 
 	if self.modBtns then
-		local tM = OHC:GetTutorialsModule()
+		local tut = OHC:GetTutorialsModule()
 		if tM then
-			local Clicker = self:getChild(_G.HelpPlateTooltip, 1)
-			self:skinCloseButton{obj=Clicker.Close}
-			self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
-			self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
-			Clicker = nil
+			self:SecureHook(tut, "Show", function(this, opening)
+				local Clicker = self:getLastChild(_G.HelpPlateTooltip)
+				self:skinCloseButton{obj=Clicker.Close}
+				self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
+				self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+				Clicker = nil
+				self:Unhook(this, "Show")
+			end)
 		end
-		tM = nil
+		tut = nil
 	end
 
 	-- hook this to manage GarrisonFollowerAlerts

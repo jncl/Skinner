@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("ChampionCommander") then return end
 local _G = _G
 
 -- loads with Blizzard_GarrisonUI
-aObj.lodAddons.ChampionCommander = function(self) -- v 1.0.3
+aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.0-Beta-2 80000
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
@@ -62,6 +62,15 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.0.3
 		self:SecureHook(mLst, "NoMartiniNoParty", function(this, text)
 			self:addSkinFrame{obj=_G.BFAWarner, ft="a", kfs=true, nb=true}
 			self:Unhook(this, "NoMartiniNoParty")
+		end)
+		-- handle Alpha/beta versions' frame
+		self:SecureHook(mLst, "InitialSetup", function(this)
+			if _G.BFA.version:find("(Beta)")
+			or _G.BFA.version:find("(Alpha)")
+			then
+				self:addSkinFrame{obj=self:getLastChild(_G.BFAMissionFrame), ft="a", kfs=true, nb=true}
+			end
+			self:Unhook(this, "InitialSetup")
 		end)
 	end
 	mLst = nil

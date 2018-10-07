@@ -4,21 +4,18 @@ local _G = _G
 
 aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 
+	if self.modBtnBs then
+		self:SecureHook("ToggleQuestLog", function()
+			_G.C_Timer.After(1, function()
+				if _G.WorldQuestTrackerGoToHordeButton then
+					self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton}
+					self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton}
+				end
+			end)
+			self:Unhook(this, "ToggleQuestLog")
+		end)
+	end
 	self:SecureHook("ToggleWorldMap", function()
-		if self.modBtns then
-			if _G.WorldQuestTrackerCloseSummaryButton
-			and not _G.WorldQuestTrackerCloseSummaryButton.sb
-			then
-				_G.WorldQuestTrackerCloseSummaryButton.Background:SetTexture(nil)
-				self:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close"}
-			end
-			if _G.WorldQuestTrackerToggleQuestsButton
-			and not _G.WorldQuestTrackerToggleQuestsButton.sb
-			then
-				_G.WorldQuestTrackerToggleQuestsButton.Background:SetTexture(nil)
-				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, x1=4, x2=-4}
-			end
-		end
 		if _G.WorldQuestTrackerSummaryUpPanel
 		and _G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll
 		and not _G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll.ScrollBar.sknd
@@ -30,10 +27,16 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 			_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
 			_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
 		end
-		if self.modBtnBs then
-			if _G.WorldQuestTrackerGoToHordeButton
-			and not _G.WorldQuestTrackerGoToHordeButton.sbb
-			then
+		if self.modBtns then
+			if _G.WorldQuestTrackerCloseSummaryButton then
+				_G.WorldQuestTrackerCloseSummaryButton.Background:SetTexture(nil)
+				self:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close"}
+			end
+			if _G.WorldQuestTrackerToggleQuestsButton then
+				_G.WorldQuestTrackerToggleQuestsButton.Background:SetTexture(nil)
+				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, x1=4, x2=-4}
+			end
+			if _G.WorldQuestTrackerGoToHordeButton then
 				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton}
 				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton}
 			end
