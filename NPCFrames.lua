@@ -96,25 +96,34 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 			self:moveObject{obj=_G["Browse" .. type], x=type == "MaxLevel" and -6 or -4, y=type ~= "MaxLevel" and 3 or 0}
 		end
 		self:skinDropDown{obj=_G.BrowseDropDown, x2=109}
-		self:skinCheckButton{obj=_G.IsUsableCheckButton}
-		self:skinCheckButton{obj=_G.ShowOnPlayerCheckButton}
-		self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
-		self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
 		self:skinMoneyFrame{obj=_G.BrowseBidPrice, moveSEB=true}
-		self:skinStdButton{obj=_G.BrowseSearchButton}
-		self:skinStdButton{obj=_G.BrowseResetButton}
-		self:skinCheckButton{obj=_G.ExactMatchCheckButton}
 		_G.BrowseBidButton:DisableDrawLayer("BORDER")
-		self:skinStdButton{obj=_G.BrowseBidButton}
 		_G.BrowseBuyoutButton:DisableDrawLayer("BORDER")
-		self:skinStdButton{obj=_G.BrowseBuyoutButton}
 		_G.BrowseCloseButton:DisableDrawLayer("BORDER")
-		self:skinStdButton{obj=_G.BrowseCloseButton}
+
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.IsUsableCheckButton}
+			self:skinCheckButton{obj=_G.ShowOnPlayerCheckButton}
+			self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
+			self:skinCheckButton{obj=_G.ExactMatchCheckButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.BrowseSearchButton}
+			self:skinStdButton{obj=_G.BrowseResetButton}
+			self:skinStdButton{obj=_G.BrowseBidButton}
+			self:skinStdButton{obj=_G.BrowseBuyoutButton}
+			self:skinStdButton{obj=_G.BrowseCloseButton}
+		end
 
 		self:SecureHookScript(_G.BrowseWowTokenResults, "OnShow", function(this)
 			this.Token:DisableDrawLayer("BACKGROUND")
-			self:skinStdButton{obj=this.Buyout}
-			self:skinStdButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
+			if self.modBtns then
+				self:skinStdButton{obj=this.Buyout}
+				self:skinStdButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
+			end
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(_G.WowTokenGameTimeTutorial, "OnShow", function(this)
@@ -140,9 +149,11 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		_G.BidCloseButton:DisableDrawLayer("BORDER")
 		_G.BidBuyoutButton:DisableDrawLayer("BORDER")
 		_G.BidBidButton:DisableDrawLayer("BORDER")
-		self:skinStdButton{obj=_G.BidBidButton}
-		self:skinStdButton{obj=_G.BidBuyoutButton}
-		self:skinStdButton{obj=_G.BidCloseButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.BidBidButton}
+			self:skinStdButton{obj=_G.BidBuyoutButton}
+			self:skinStdButton{obj=_G.BidCloseButton}
+		end
 		self:Unhook(this, "OnShow")
 
 		-- AuctionFrame Auctions
@@ -166,11 +177,13 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		self:skinMoneyFrame{obj=_G.StartPrice, moveSEB=true}
 		self:skinMoneyFrame{obj=_G.BuyoutPrice, moveSEB=true}
 		self:skinDropDown{obj=_G.DurationDropDown}
-		self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton}
-		self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton}
-		self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
-		self:skinStdButton{obj=_G.AuctionsCancelAuctionButton}
-		self:skinStdButton{obj=_G.AuctionsCloseButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton}
+			self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton}
+			self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
+			self:skinStdButton{obj=_G.AuctionsCancelAuctionButton}
+			self:skinStdButton{obj=_G.AuctionsCloseButton}
+		end
 		self:Unhook(this, "OnShow")
 
 		self:SecureHookScript(_G.AuctionProgressFrame, "OnShow", function(this)
@@ -194,11 +207,14 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	self:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot}
 	_G.AzeriteRespecFrame.ButtonFrame:DisableDrawLayer("BORDER")
 	self:removeMagicBtnTex(_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
-	self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
 	_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
 	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true, ofs=1, y1=2}
 
-	self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton, noSkin=true}
+	if self.modBtnBs then
+		_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
+		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
+		self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton, noSkin=true}
+	end
 
 end
 
@@ -629,7 +645,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		--	Reward Panel
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
-		self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton}
 		self:skinSlider{obj=_G.QuestRewardScrollFrame.ScrollBar, rt="artwork"}
 
 		--	Progress Panel
@@ -638,14 +653,14 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		_G.QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		_G.QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		self:skinStdButton{obj=_G.QuestFrameGoodbyeButton}
-		self:skinStdButton{obj=_G.QuestFrameCompleteButton}
 		self:skinSlider{obj=_G.QuestProgressScrollFrame.ScrollBar, rt="artwork"}
 		local btnName
 		for i = 1, _G.MAX_REQUIRED_ITEMS do
 			btnName = "QuestProgressItem" .. i
 			_G[btnName .. "NameFrame"]:SetTexture(nil)
-			self:addButtonBorder{obj=_G[btnName], libt=true}
+			if self.modBtns then
+				 self:addButtonBorder{obj=_G[btnName], libt=true}
+			end
 		end
 		btnName = nil
 		self:SecureHook("QuestFrameProgressItems_Update", function()
@@ -659,19 +674,25 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		--	Detail Panel
 		self:keepFontStrings(_G.QuestFrameDetailPanel)
-		self:skinStdButton{obj=_G.QuestFrameDeclineButton}
-		self:skinStdButton{obj=_G.QuestFrameAcceptButton}
 		self:skinSlider{obj=_G.QuestDetailScrollFrame.ScrollBar, rt="artwork"}
 
 		--	Greeting Panel
 		self:keepFontStrings(_G.QuestFrameGreetingPanel)
 		self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
-		self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
 		self:skinSlider{obj=_G.QuestGreetingScrollFrame.ScrollBar, rt="artwork"}
 		if _G.QuestFrameGreetingPanel:IsShown() then
 			_G.GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
 			_G.CurrentQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
 			_G.AvailableQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		end
+
+		if self.modBtns then
+			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton}
+			self:skinStdButton{obj=_G.QuestFrameGoodbyeButton}
+			self:skinStdButton{obj=_G.QuestFrameCompleteButton}
+			self:skinStdButton{obj=_G.QuestFrameDeclineButton}
+			self:skinStdButton{obj=_G.QuestFrameAcceptButton}
+			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -711,8 +732,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		-- RewardButtons
 		for i = 1, #frame.RewardButtons do
 			frame.RewardButtons[i].NameFrame:SetTexture(nil)
-			if self.modBtnBs
-			and not frame.RewardButtons[i].sbb then
+			if self.modBtnBs then
 				aObj:addButtonBorder{obj=frame.RewardButtons[i], libt=true}
 			end
 		end
@@ -720,7 +740,9 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for spellBtn in frame.spellRewardPool:EnumerateActive() do
 			spellBtn.NameFrame:SetTexture(nil)
 			spellBtn:DisableDrawLayer("OVERLAY")
-			self:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon}
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon}
+			end
 		end
 		-- FollowerReward
 		for flwrBtn in frame.followerRewardPool:EnumerateActive() do
@@ -769,7 +791,9 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
 		_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
-		aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
+		if self.modBtnBs then
+			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
+		end
 
 		-- QuestInfoSeal Frame
 		if _G.QuestInfoSealFrame.sealInfo
@@ -814,20 +838,28 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		-- SkillPointFrame
 		local spf = this.SkillPointFrame
 		spf.NameFrame:SetTexture(nil)
-		self:addButtonBorder{obj=spf, relTo=spf.Icon, reParent={spf.CircleBackground, spf.CircleBackgroundGlow, spf.ValueText}}
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=spf, relTo=spf.Icon, reParent={spf.CircleBackground, spf.CircleBackgroundGlow, spf.ValueText}}
+		end
 		spf = nil
 		-- HonorFrame
 		local hf = this.HonorFrame
 		hf.NameFrame:SetTexture(nil)
-		self:addButtonBorder{obj=hf, relTo=hf.Icon, reParent={hf.Count}}
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=hf, relTo=hf.Icon, reParent={hf.Count}}
+		end
 		hf = nil
 		-- ArtifactXPFrame
 		local axp = this.ArtifactXPFrame
 		axp.NameFrame:SetTexture(nil)
-		self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}}
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}}
+		end
 		axp = nil
 		-- QuestInfoPlayerTitleFrame
-		self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon}
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon}
+		end
 		self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4,}) -- NameFrame textures
 
 		self:Unhook(this, "OnShow")
@@ -837,10 +869,12 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		-- other rewards
 		for _, type in pairs{"XPFrame", "HonorFrame", "ArtifactXPFrame", "MoneyFrame", "SkillPointFrame", "TitleFrame"} do
 			this[type].NameFrame:SetTexture(nil)
-			if type ~= "SkillPointFrame" then
-				self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].Count}}
-			else
-				self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].CircleBackground, this[type].CircleBackgroundGlow, this[type].ValueText}}
+			if self.modBtnBs then
+				if type ~= "SkillPointFrame" then
+					self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].Count}}
+				else
+					self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].CircleBackground, this[type].CircleBackgroundGlow, this[type].ValueText}}
+				end
 			end
 		end
 
@@ -868,9 +902,11 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 		self:keepRegions(this, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
 		self:removeInset(_G.TabardFrameMoneyInset)
 		_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:skinStdButton{obj=_G.TabardFrameAcceptButton}
-		self:skinStdButton{obj=_G.TabardFrameCancelButton}
-		self:addSkinFrame{obj=this, ft=ftype, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.TabardFrameAcceptButton}
+			self:skinStdButton{obj=_G.TabardFrameCancelButton}
+		end
+		self:addSkinFrame{obj=this, ft=ftype, ri=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -905,9 +941,13 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 		self:skinStatusBar{obj=_G.ClassTrainerStatusBar, fi=0, bgTex=_G.ClassTrainerStatusBarBackground}
 		self:skinDropDown{obj=_G.ClassTrainerFrameFilterDropDown}
 		self:removeMagicBtnTex(_G.ClassTrainerTrainButton)
-		self:skinStdButton{obj=_G.ClassTrainerTrainButton}
+		if self.modBtns then
+			 self:skinStdButton{obj=_G.ClassTrainerTrainButton}
+		end
 		_G.ClassTrainerFrame.skillStepButton:GetNormalTexture():SetTexture(nil)
-		self:addButtonBorder{obj=this.skillStepButton, relTo=this.skillStepButton.icon}
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=this.skillStepButton, relTo=this.skillStepButton.icon}
+		end
 		self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar, wdth=-4}
 		for i = 1, #this.scrollFrame.buttons do
 			this.scrollFrame.buttons[i]:GetNormalTexture():SetTexture(nil)
@@ -929,18 +969,22 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 			_G["VoidStorage" .. type .. "Frame"]:DisableDrawLayer("BACKGROUND")
 			_G["VoidStorage" .. type .. "Frame"]:DisableDrawLayer("BORDER")
 		end
-		self:skinStdButton{obj=_G.VoidStorageTransferButton}
-		self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton}
 		self:keepFontStrings(_G.VoidStorageBorderFrame)
-		-- N.B. NO CloseButton for VoidStorageHelpBox
-		self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
-		self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.VoidStorageTransferButton}
+			self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton}
+			-- N.B. NO CloseButton for VoidStorageHelpBox
+			self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
+			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
+		end
 		self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=2, x2=1}
 		self:skinEditBox{obj=_G.VoidItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
 		for i = 1, 2 do
 			_G.VoidStorageFrame["Page" .. i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G.VoidStorageFrame["Page" .. i]}
+			if self.modBtns then
+				self:addButtonBorder{obj=_G.VoidStorageFrame["Page" .. i]}
+			end
 		end
 		self:Unhook(this, "OnShow")
 	end)

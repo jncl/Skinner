@@ -1341,9 +1341,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	self:keepFontStrings(cFrame.PortraitOverlay)
 
-	cFrame.MaximizeMinimizeFrame:DisableDrawLayer("BACKGROUND")
-	self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text="↕"}
-	self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text="↕"}
+	cFrame.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND")
+	if self.modBtns then
+		self:skinOtherButton{obj=cFrame.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text="↕"}
+		self:skinOtherButton{obj=cFrame.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text="↕"}
+	end
 
 	self:SecureHookScript(cFrame.CommunitiesList, "OnShow", function(this)
 		this:DisableDrawLayer("BORDER")
@@ -1380,11 +1382,15 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:skinDropDown{obj=cFrame.GuildMemberListDropDownMenu}
 	self:skinDropDown{obj=cFrame.CommunitiesListDropDownMenu}
 
+	-- cFrame.CommunitiesCalendarButton
+
 	self:SecureHookScript(cFrame.MemberList.ColumnDisplay, "OnShow", function(this)
 		skinColumnDisplay(this)
 		self:Unhook(this, "OnShow")
 	end)
-	self:skinCheckButton{obj=cFrame.MemberList.ShowOfflineButton, hf=true}
+	if self.modChkBtns then
+		 self:skinCheckButton{obj=cFrame.MemberList.ShowOfflineButton, hf=true}
+	end
 	self:skinSlider{obj=cFrame.MemberList.ListScrollFrame.scrollBar, wdth=-4}
 	self:skinDropDown{obj=cFrame.MemberList.DropDown}
 	self:removeInset(cFrame.MemberList.InsetFrame)
@@ -1398,7 +1404,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	self:skinSlider{obj=cFrame.Chat.MessageFrame.ScrollBar, wdth=-4}
-	self:skinStdButton{obj=_G.JumpToUnreadButton}
+	if self.modBtns then
+		 self:skinStdButton{obj=_G.JumpToUnreadButton}
+	end
 	self:removeInset(cFrame.Chat.InsetFrame)
 
 	self:skinEditBox{obj=cFrame.ChatEditBox, regs={6}} -- 6 is text
@@ -1414,7 +1422,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	cFrame.GuildFinderFrame:DisableDrawLayer("BACKGROUND")
-	self:skinStdButton{obj=cFrame.GuildFinderFrame.FindAGuildButton}
+	if self.modBtns then
+		 self:skinStdButton{obj=cFrame.GuildFinderFrame.FindAGuildButton}
+	end
 	self:removeInset(cFrame.GuildFinderFrame.InsetFrame)
 
 	self:SecureHookScript(cFrame.GuildBenefitsFrame, "OnShow", function(this)
@@ -1506,15 +1516,16 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	self:skinStdButton{obj=cFrame.AddToChatButton}
 	self:moveObject{obj=cFrame.AddToChatButton, x=-6, y=-6}
-	self:skinStdButton{obj=cFrame.InviteButton}
 
-	self:skinStdButton{obj=cFrame.CommunitiesControlFrame.CommunitiesSettingsButton}
-	self:skinStdButton{obj=cFrame.CommunitiesControlFrame.GuildRecruitmentButton}
-	self:skinStdButton{obj=cFrame.CommunitiesControlFrame.GuildControlButton}
-
-	self:skinStdButton{obj=cFrame.GuildLogButton}
+	if self.modBtns then
+		self:skinStdButton{obj=cFrame.AddToChatButton}
+		self:skinStdButton{obj=cFrame.InviteButton}
+		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.CommunitiesSettingsButton}
+		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.GuildRecruitmentButton}
+		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.GuildControlButton}
+		self:skinStdButton{obj=cFrame.GuildLogButton}
+	end
 
 	self:SecureHookScript(cFrame.GuildMemberDetailFrame, "OnShow", function(this)
 		self:skinStdButton{obj=this.RemoveButton}
@@ -1775,12 +1786,14 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 
 	self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 		self:skinDropDown{obj=this.OutfitDropDown, y2=-4}
-		self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
-		_G.MaximizeMinimizeFrame:DisableDrawLayer("BACKGROUND") -- button texture
-		self:skinOtherButton{obj=_G.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text="↕"} -- up-down arrow
-		self:skinOtherButton{obj=_G.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text="↕"} -- up-down arrow
-		self:skinStdButton{obj=_G.DressUpFrameCancelButton}
-		self:skinStdButton{obj=this.ResetButton}
+		_G.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- button texture
+		if self.modBtns then
+			self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
+			self:skinOtherButton{obj=_G.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text="↕"} -- up-down arrow
+			self:skinOtherButton{obj=_G.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text="↕"} -- up-down arrow
+			self:skinStdButton{obj=_G.DressUpFrameCancelButton}
+			self:skinStdButton{obj=this.ResetButton}
+		end
 		this.DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2, x2=1, y2=-4}
 		self:Unhook(this, "OnShow")
@@ -3939,9 +3952,13 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:skinStatusBar{obj=this.RankFrame, fi=0, bgTex=this.RankFrameBackground}
 		self:removeRegions(this.RankFrame, {2, 3, 4})
 		self:skinEditBox{obj=this.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-		self:skinStdButton{obj=this.FilterButton}
-		self:addButtonBorder{obj=this.LinkToButton, x1=1, y1=-5, x2=-3, y2=2}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=2, x2=1}
+		if self.modBtns then
+			 self:skinStdButton{obj=this.FilterButton}
+		end
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=this.LinkToButton, x1=1, y1=-5, x2=-2, y2=2}
+		end
 
 		-- RecipeList
 		local function skinTabs(frame)
@@ -3982,7 +3999,9 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:skinSlider{obj=self:getChild(this.RecipeList, 4), wdth=-4, size=3} -- unamed slider object
 
 		for i = 1, #this.RecipeList.buttons do
-			self:skinExpandButton{obj=this.RecipeList.buttons[i], onSB=true, noHook=true}
+			if self.modBtns then
+				 self:skinExpandButton{obj=this.RecipeList.buttons[i], onSB=true, noHook=true}
+			end
 			this.RecipeList.buttons[i].SubSkillRankBar.BorderLeft:SetTexture(nil)
 			this.RecipeList.buttons[i].SubSkillRankBar.BorderRight:SetTexture(nil)
 			this.RecipeList.buttons[i].SubSkillRankBar.BorderMid:SetTexture(nil)
@@ -4016,19 +4035,26 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		this.DetailsFrame.Background:SetAlpha(0)
 		self:skinSlider{obj=this.DetailsFrame.ScrollBar, wdth=-4, size=3}
 		self:removeMagicBtnTex(this.DetailsFrame.CreateAllButton)
-		self:skinStdButton{obj=this.DetailsFrame.CreateAllButton}
 		self:removeMagicBtnTex(this.DetailsFrame.ViewGuildCraftersButton)
-		self:skinStdButton{obj=this.DetailsFrame.ViewGuildCraftersButton}
 		self:removeMagicBtnTex(this.DetailsFrame.ExitButton)
-		self:skinStdButton{obj=this.DetailsFrame.ExitButton}
 		self:removeMagicBtnTex(this.DetailsFrame.CreateButton)
-		self:skinStdButton{obj=this.DetailsFrame.CreateButton}
 		self:skinEditBox{obj=this.DetailsFrame.CreateMultipleInputBox, noHeight=true, nis=true}
 		this.DetailsFrame.Contents.ResultIcon.ResultBorder:SetTexture(nil)
-		self:addButtonBorder{obj=this.DetailsFrame.Contents.ResultIcon, reParent={this.DetailsFrame.Contents.ResultIcon.Count}}
 		for i = 1, #this.DetailsFrame.Contents.Reagents do
 			this.DetailsFrame.Contents.Reagents[i].NameFrame:SetTexture(nil)
-			self:addButtonBorder{obj=this.DetailsFrame.Contents.Reagents[i], relTo=this.DetailsFrame.Contents.Reagents[i].Icon, reParent={this.DetailsFrame.Contents.Reagents[i].Count}}
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=this.DetailsFrame.Contents.Reagents[i], relTo=this.DetailsFrame.Contents.Reagents[i].Icon, reParent={this.DetailsFrame.Contents.Reagents[i].Count}}
+			end
+		end
+
+		if self.modBtns then
+			self:skinStdButton{obj=this.DetailsFrame.CreateAllButton}
+			self:skinStdButton{obj=this.DetailsFrame.ViewGuildCraftersButton}
+			self:skinStdButton{obj=this.DetailsFrame.ExitButton}
+			self:skinStdButton{obj=this.DetailsFrame.CreateButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.DetailsFrame.Contents.ResultIcon, reParent={this.DetailsFrame.Contents.ResultIcon.Count}}
 		end
 
 		-- Guild Crafters

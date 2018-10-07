@@ -2037,6 +2037,9 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		_G.GarrisonLandingPage:Hide()
 		_G.GarrisonLandingPage:Show()
 	end
+	if self.modBtns then
+		self:skinCloseButton{obj=_G.GarrisonLandingPageTutorialBox.CloseButton, noSkin=true}
+	end
 
 	-- a.k.a. Work Order Frame
 	self:SecureHookScript(_G.GarrisonCapacitiveDisplayFrame, "OnShow", function(this)
@@ -3658,17 +3661,16 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 						or aObj:hasTextInTexture(reg, "TrackingBorder")
 						then
 							reg:SetTexture(nil)
-							obj:SetSize(32, 32)
-							if not minBtn then
-								if objType == "Button" then
-									aObj:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype}
-								else
-									aObj:addSkinFrame{obj=obj, ft=ftype}
-								end
-							end
 						elseif aObj:hasTextInTexture(reg, "Background") then
 							reg:SetTexture(nil)
 						end
+					end
+				end
+				if not minBtn then
+					if objType == "Button" then
+						aObj:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype}
+					else
+						aObj:addSkinFrame{obj=obj, ft=ftype}
 					end
 				end
 			elseif objType == "Frame"
@@ -4357,20 +4359,23 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 
 		-- Details Frame
 		self:keepFontStrings(this.DetailsFrame)
-		self:skinStdButton{obj=this.DetailsFrame.BackButton}
 		self:keepFontStrings(this.DetailsFrame.RewardsFrame)
 		self:getRegion(this.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HTr, self.HTg, self.HTb)
 		self:skinSlider{obj=this.DetailsFrame.ScrollFrame.ScrollBar, wdth=-4}
 		this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("BACKGROUND")
 		this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("ARTWORK")
 		this.DetailsFrame.CompleteQuestFrame.CompleteButton:DisableDrawLayer("BORDER")
-		self:skinStdButton{obj=this.DetailsFrame.CompleteQuestFrame.CompleteButton}
-		self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
 		self:adjWidth{obj=this.DetailsFrame.AbandonButton, adj=-2} -- moves buttons to the right slightly
 		self:moveObject{obj=this.DetailsFrame.AbandonButton, y=2}
-		self:skinStdButton{obj=this.DetailsFrame.ShareButton}
 		self:removeRegions(this.DetailsFrame.ShareButton, {6, 7}) -- divider textures
-		self:skinStdButton{obj=this.DetailsFrame.TrackButton}
+
+		if self.modBtns then
+			self:skinStdButton{obj=this.DetailsFrame.BackButton}
+			self:skinStdButton{obj=this.DetailsFrame.CompleteQuestFrame.CompleteButton}
+			self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
+			self:skinStdButton{obj=this.DetailsFrame.ShareButton}
+			self:skinStdButton{obj=this.DetailsFrame.TrackButton}
+		end
 
 		-- skin header buttons, if required
 		if self.modBtns then
@@ -4582,8 +4587,10 @@ aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
 		end)
 	end
 	self:removeMagicBtnTex(_G.ScrappingMachineFrame.ScrapButton)
-	self:skinStdButton{obj=_G.ScrappingMachineFrame.ScrapButton}
-	self:addSkinFrame{obj=_G.ScrappingMachineFrame, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+	if self.modBtns then
+		 self:skinStdButton{obj=_G.ScrappingMachineFrame.ScrapButton}
+	end
+	self:addSkinFrame{obj=_G.ScrappingMachineFrame, ft=ftype, kfs=true, ri=true}
 
 end
 
@@ -4886,9 +4893,14 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 			resetSF()
 			_G.TutorialFrame.sf:SetShown(_G.TutorialFrameTop:IsShown())
 		end)
-		self:skinStdButton{obj=_G.TutorialFrameOkayButton}
-		self:addButtonBorder{obj=_G.TutorialFramePrevButton, ofs=-2}
-		self:addButtonBorder{obj=_G.TutorialFrameNextButton, ofs=-2}
+
+		if self.modBtns then
+			 self:skinStdButton{obj=_G.TutorialFrameOkayButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.TutorialFramePrevButton, ofs=-2}
+			self:addButtonBorder{obj=_G.TutorialFrameNextButton, ofs=-2}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -5129,16 +5141,20 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			end
 		end
 		oFrame = nil
-		self:addButtonBorder{obj=this.SidePanelToggle.CloseButton}
-		self:addButtonBorder{obj=this.SidePanelToggle.OpenButton}
 		-- Nav Bar
 		this.NavBar:DisableDrawLayer("BACKGROUND")
 		this.NavBar:DisableDrawLayer("BORDER")
 		this.NavBar.overlay:DisableDrawLayer("OVERLAY")
 
-		self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text="↕"}
-		self:skinOtherButton{obj=this.BorderFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text="↕"}
-		self:skinCloseButton{obj=this.BorderFrame.CloseButton} -- child of MaximizeMinimizeFrame
+		if self.modBtns then
+			self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text="↕"}
+			self:skinOtherButton{obj=this.BorderFrame.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text="↕"}
+			self:skinCloseButton{obj=this.BorderFrame.CloseButton} -- child of MaxMinButtonFrame
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.SidePanelToggle.CloseButton}
+			self:addButtonBorder{obj=this.SidePanelToggle.OpenButton}
+		end
 
 		-- tooltips
 		_G.C_Timer.After(0.1, function()
@@ -5184,9 +5200,13 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 	self:SecureHookScript(_G.ZoneAbilityFrame, "OnShow", function(this)
 		this.SpellButton.Style:SetAlpha(0) -- texture is changed
 		this.SpellButton:SetNormalTexture(nil)
-		self:addButtonBorder{obj=this.SpellButton, ofs=2}
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=this.SpellButton, ofs=2}
+		end
+		if self.modBtns then
+			 self:skinCloseButton{obj=_G.ZoneAbilityButtonAlert.CloseButton, noSkin=true}
+		end
 		self:Unhook(this, "OnShow")
-		self:skinCloseButton{obj=_G.ZoneAbilityButtonAlert.CloseButton, noSkin=true}
 	end)
 	if _G.ZoneAbilityFrame:IsShown() then
 		_G.ZoneAbilityFrame:Hide()
