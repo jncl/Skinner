@@ -2356,9 +2356,10 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 			_G.UIDropDownMenu_SetButtonWidth(this.dropdown, 24)
 			self:skinEditBox{obj=this.goldBox, regs={6}}
 			if self.modChkBtns then
-				self:skinCheckButton{obj=this.OfficerCheckbox}
-				for _, v in pairs{5, 6, 7, 8, 15, 16, 18, 19} do
-					self:skinCheckButton{obj=_G[this:GetName() .. "Checkbox" .. v]}
+				for _, child in ipairs{this:GetChildren()} do
+					if child:IsObjectType("CheckButton") then
+						self:skinCheckButton{obj=_G[this:GetName() .. "Checkbox" .. v]}
+					end
 				end
 			end
 			self:Unhook(this, "OnShow")
