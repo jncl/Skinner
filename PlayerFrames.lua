@@ -3130,7 +3130,10 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- ScenarioChallengeModeBlock
 	aObj:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0}
 	aObj:removeRegions(_G.ScenarioChallengeModeBlock.StatusBar, {1}) -- border
-	aObj:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, kfs=true, nb=true, y2=7}
+	-- TimerBar on block
+	_G.ScenarioChallengeModeBlock.TimerBGBack:SetTexture(self.sbTexture)
+	_G.ScenarioChallengeModeBlock.TimerBG:SetTexture(self.sbTexture)
+	aObj:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, nb=true, y2=7} -- N.B. DON't remove textures otherwise the TimerBar texture is not displayed
 	aObj:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
 		for i = 1, #block.Affixes do
 			block.Affixes[i].Border:SetTexture(nil)
