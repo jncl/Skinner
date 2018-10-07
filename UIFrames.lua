@@ -3532,7 +3532,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		self:keepFontStrings(_G.MinimapBackdrop)
 	end
 
--->>-- Buttons
+	-- Buttons
 	-- on LHS
 	local yOfs = -18 -- allow for GM Ticket button
 	local function skinmmBut(name)
@@ -3589,42 +3589,37 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 
 	self:moveObject{obj=_G.GarrisonLandingPageMinimapButton, x=0, y=-20}
 	_G.GarrisonLandingPageMinimapButton.AlertBG:SetTexture(nil)
-	-- prevent AlertBG & SideToastGlow from being shown (this is a pita)
-	local anim = _G.GarrisonLandingPageMinimapButton.MinimapAlertAnim
-	anim = nil
-	anim = _G.GarrisonLandingPageMinimapButton:CreateAnimationGroup()
-	anim.AlertText1= anim:CreateAnimation("Alpha")
-	anim.AlertText1:SetChildKey("AlertText")
-	anim.AlertText1:SetDuration(0.25)
-	anim.AlertText1:SetFromAlpha(0)
-	anim.AlertText1:SetToAlpha(1)
-	anim.AlertText1:SetOrder(1)
-	anim.AlertText2= anim:CreateAnimation("Alpha")
-	anim.AlertText2:SetChildKey("AlertText")
-	anim.AlertText2:SetStartDelay(5)
-	anim.AlertText2:SetDuration(0.25)
-	anim.AlertText2:SetFromAlpha(1)
-	anim.AlertText2:SetToAlpha(0)
-	anim.AlertText2:SetOrder(2)
-	-- based on the original scripts
-	anim:SetScript("OnPlay", function(this)
-		this:GetParent().AlertText:Show()
-		this:GetParent().MinimapPulseAnim:Play()
-	end)
-	anim:SetScript("OnStop", function(this)
-		this:GetParent().AlertText:Hide()
-		this:GetParent().MinimapPulseAnim:Stop()
-	end)
-	anim:SetScript("OnFinished", function(this)
-		this:GetParent().AlertText:Hide()
-		this:GetParent().MinimapPulseAnim:Stop()
-	end)
-	anim = nil
-
-	self:SecureHookScript(_G.GarrisonLandingPageTutorialBox, "OnShow", function(this)
-		self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-		self:Unhook(this, "OnShow")
-	end)
+	-- -- prevent AlertBG & SideToastGlow from being shown (this is a pita)
+	-- local anim = _G.GarrisonLandingPageMinimapButton.MinimapAlertAnim
+	-- anim = nil
+	-- anim = _G.GarrisonLandingPageMinimapButton:CreateAnimationGroup()
+	-- anim.AlertText1= anim:CreateAnimation("Alpha")
+	-- anim.AlertText1:SetChildKey("AlertText")
+	-- anim.AlertText1:SetDuration(0.25)
+	-- anim.AlertText1:SetFromAlpha(0)
+	-- anim.AlertText1:SetToAlpha(1)
+	-- anim.AlertText1:SetOrder(1)
+	-- anim.AlertText2= anim:CreateAnimation("Alpha")
+	-- anim.AlertText2:SetChildKey("AlertText")
+	-- anim.AlertText2:SetStartDelay(5)
+	-- anim.AlertText2:SetDuration(0.25)
+	-- anim.AlertText2:SetFromAlpha(1)
+	-- anim.AlertText2:SetToAlpha(0)
+	-- anim.AlertText2:SetOrder(2)
+	-- -- based on the original scripts
+	-- anim:SetScript("OnPlay", function(this)
+	-- 	this:GetParent().AlertText:Show()
+	-- 	this:GetParent().MinimapPulseAnim:Play()
+	-- end)
+	-- anim:SetScript("OnStop", function(this)
+	-- 	this:GetParent().AlertText:Hide()
+	-- 	this:GetParent().MinimapPulseAnim:Stop()
+	-- end)
+	-- anim:SetScript("OnFinished", function(this)
+	-- 	this:GetParent().AlertText:Hide()
+	-- 	this:GetParent().MinimapPulseAnim:Stop()
+	-- end)
+	-- anim = nil
 
 end
 
@@ -3704,7 +3699,17 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	-- Calendar button
 	makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
 
-	-- MinimapZoomIn/Out buttons
+	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
+	_G.MiniMapMailFrame:SetSize(26, 26)
+
+	-- MinimapBackdrop
+	_G.MiniMapTrackingBackground:SetTexture(nil)
+	_G.MiniMapTrackingButtonBorder:SetTexture(nil)
+	if not minBtn then
+		_G.MiniMapTracking:SetScale(0.9)
+		self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype}
+	end
+
 	local function skinZoom(obj)
 		obj:GetNormalTexture():SetTexture(nil)
 		obj:GetPushedTexture():SetTexture(nil)
@@ -3727,21 +3732,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	skinZoom(_G.MinimapZoomOut)
 	_G.MinimapZoomOut.sb:SetText(self.modUIBtns.minus)
 
-	-- change Mail icon
-	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
-	-- resize other buttons
-	_G.MiniMapMailFrame:SetSize(28, 28)
-	-- MiniMap Tracking
-	_G.MiniMapTrackingBackground:SetTexture(nil)
-	_G.MiniMapTrackingButtonBorder:SetTexture(nil)
-	_G.MiniMapTrackingIcon:SetParent(_G.MiniMapTrackingButton)
-	_G.MiniMapTrackingIcon:ClearAllPoints()
-	_G.MiniMapTrackingIcon:SetPoint("CENTER", _G.MiniMapTrackingButton)
-	-- change this to stop the icon being moved
-	_G.MiniMapTrackingIcon.SetPoint = _G.nop
-	if not minBtn then
-		self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype}
-	end
 	_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
 	self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
 
