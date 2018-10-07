@@ -1,4 +1,5 @@
 local aName, aObj = ...
+
 local _G = _G
 
 local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, Round = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.Round
@@ -7,7 +8,7 @@ local LibStub = _G.LibStub
 do
 	-- check to see if required libraries are loaded
 	assert(LibStub, aName .. " requires LibStub")
-	local lTab = {"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "LibSharedMedia-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0"}
+	local lTab = {"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibSharedMedia-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0"}
 	for i = 1, #lTab do
 		assert(LibStub:GetLibrary(lTab[i], true), aName .. " requires " .. lTab[i])
 	end
@@ -43,7 +44,7 @@ do
 	local liveInfo = {"8.0.1", 27843}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
-	aObj:Debug(liveInfo[1], liveInfo[2], buildInfo[1], buildInfo[2], buildInfo[3], buildInfo[4], portal)
+	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. portal)
 --@end-alpha@
 	-- check to see if running on Beta servers
 	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
@@ -707,7 +708,9 @@ local function __addSkinFrame(opts)
 	end
 
 	-- remove inset textures
-	if opts.ri then aObj:removeInset(opts.obj.Inset) end
+	if opts.ri then
+		aObj:removeInset(opts.obj.Inset)
+	end
 
 	-- reverse parent child relationship
 	if opts.rp
@@ -1643,7 +1646,7 @@ function aObj:skinTooltip(tooltip)
 	assert(tooltip, "Missing object sT\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug2("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
+	aObj:Debug2("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
 
 	if not tooltip then return end
 
