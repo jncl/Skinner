@@ -56,11 +56,11 @@ do
 	end
 --@alpha@
 	if aObj.isPTR then
-		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. " - Version No. changed, any PTR updates to be applied?", 1, 0, 0, nil, true)
+		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. " - Version number changed, any PTR updates to be applied?", 1, 0, 0, nil, true)
 		aObj.isPatch = false
 	end
 	if aObj.isPatch then
-		_G.DEFAULT_CHAT_FRAME:AddMessage("Version No. changed, any Patch updates to be applied?", 1, 0, 0, nil, true)
+		_G.DEFAULT_CHAT_FRAME:AddMessage("Version number changed, any Patch updates to be applied?", 1, 0, 0, nil, true)
 	end
 --@end-alpha@
 	liveInfo, ptrInfo, betaInfo, buildInfo, portal = nil, nil, nil, nil, nil
@@ -256,6 +256,9 @@ function aObj:OnInitialize()
 
 	dflts, c = nil, nil
 
+	if self.isPTR then
+		_G.UIPanelCloseButton_SetBorderAtlas = _G.nop
+	end
 end
 
 function aObj:OnEnable()
@@ -621,7 +624,16 @@ local function __addSkinFrame(opts)
 	if opts.ft then aObj:add2Table(aObj.gradFrames[opts.ft], opts.obj) end
 
 	-- make all textures transparent, if required
-	if opts.kfs or opts.hat then aObj:keepFontStrings(opts.obj, opts.hat) end
+	if opts.kfs
+	or opts.hat
+	then
+		aObj:keepFontStrings(opts.obj, opts.hat)
+		if aObj.isPTR then
+			if opts.obj.NineSlice then
+				aObj:removeNineSlice(opts.obj.NineSlice)
+			end
+		end
+	end
 
 	-- remove all textures, if required
 	if opts.rt then
@@ -632,6 +644,17 @@ local function __addSkinFrame(opts)
 		end
 	end
 
+	-- setup defaults used by majority of frames
+	if not opts.ofs then
+		opts.x1 = opts.x1 or -3
+		opts.y1 = opts.y1 or 2
+		opts.y2 = opts.y2 or -2
+		if aObj.isPTR then
+			opts.x2 = opts.x2 or 2
+		else
+			opts.x2 = opts.x2 or 1
+		end
+	end
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
 	opts.x1 = opts.x1 or opts.ofs * -1
@@ -1425,13 +1448,23 @@ local function __skinStatusBar(opts)
 			tex:SetTexture(aObj.sbTexture)
 			tex:SetVertexColor(aObj.sbColour[1], aObj.sbColour[2], aObj.sbColour[3])
 			sbG[#sbG + 1] = tex
+			if aObj.isPTR then
+				if opts.nilFuncs then
+					tex.SetTexture = _G.nop
+					tex.SetAtlas = _G.nop
+				end
+			end
 		end
 		tex = nil
 	end
 
 	if opts.nilFuncs then
+		opts.obj.SetStatusBarTexture = _G.nop
 		opts.obj.SetStatusBarAtlas = _G.nop
-		if opts.bgTex then opts.bgTex.SetAtlas = _G.nop end
+		if opts.bgTex then
+			opts.bgTex.SetTexture = _G.nop
+			opts.bgTex.SetAtlas = _G.nop
+		end
 	end
 
 	sBG = nil

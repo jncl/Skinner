@@ -869,6 +869,22 @@ function aObj:removeInset(frame)
 	frame:DisableDrawLayer("BACKGROUND")
 	frame:DisableDrawLayer("BORDER")
 
+	if frame.NineSlice then
+		self:removeNineSlice(frame.NineSlice)
+	end
+
+end
+
+if aObj.isPTR then
+	function aObj:removeNineSlice(frame)
+	--@alpha@
+		assert(frame, "Unknown object removeNineSlice\n" .. debugstack(2, 3, 2))
+	--@end-alpha@
+
+	frame:DisableDrawLayer("BORDER")
+	frame:DisableDrawLayer("OVERLAY")
+
+	end
 end
 
 function aObj:removeMagicBtnTex(btn)

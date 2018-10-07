@@ -2184,7 +2184,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	self:SecureHookScript(_G.BFAMissionFrame, "OnShow", function(this)
 
-		this.CloseButtonBorder:SetTexture(nil)
+		if not self.isPTR then
+			this.CloseButtonBorder:SetTexture(nil)
+		else
+			this.OverlayElements.Topper:SetTexture(nil)
+			this.OverlayElements.CloseButtonBorder:SetTexture(nil)
+		end
 		this.TitleScroll:DisableDrawLayer("ARTWORK")
 		this.TitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
 		self:moveObject{obj=this.TitleText, y=-4}
@@ -2479,6 +2484,9 @@ end
 
 local function skinPartyPoseFrame(frame)
 
+	if aObj.isPTR then
+		aObj:removeNineSlice(frame.Border)
+	end
 	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 
 	-- RewardFrame
@@ -2486,13 +2494,19 @@ local function skinPartyPoseFrame(frame)
 	aObj:nilTexture(frame.RewardAnimations.RewardFrame.IconBorder, true)
 	aObj:addButtonBorder{obj=frame.RewardAnimations.RewardFrame, relTo=frame.RewardAnimations.RewardFrame.Icon, reParent={frame.RewardAnimations.RewardFrame.Count}}
 
+	if aObj.isPTR then
+		frame.OverlayElements.Topper:SetTexture(nil)
+	end
+
 	-- ModelScene
 	frame.ModelScene.Bg:SetTexture(nil)
 	frame.ModelScene:DisableDrawLayer("BORDER")
 	frame.ModelScene:DisableDrawLayer("OVERLAY")
 
-	if frame.LeaveButton then
-		aObj:skinStdButton{obj=frame.LeaveButton}
+	if aObj.modBtnBs then
+		if frame.LeaveButton then
+			aObj:skinStdButton{obj=frame.LeaveButton}
+		end
 	end
 
 end
@@ -2966,8 +2980,13 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:skinStdButton{obj=_G.MacroCancelButton}
 		self:skinStdButton{obj=_G.MacroSaveButton}
 		self:skinStdButton{obj=_G.MacroDeleteButton}
-		self:skinStdButton{obj=_G.MacroNewButton}
-		self:skinStdButton{obj=_G.MacroExitButton}
+		if not self.isPTR then
+			self:skinStdButton{obj=_G.MacroNewButton}
+			self:skinStdButton{obj=_G.MacroExitButton}
+		else
+			self:skinStdButton{obj=_G.MacroNewButton, x2=-2}
+			self:skinStdButton{obj=_G.MacroExitButton, x1=2}
+		end
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
 		self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon}
 		for i = 1, _G.MAX_ACCOUNT_MACROS do
@@ -2987,7 +3006,11 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:skinStdButton{obj=this.BorderBox.OkayButton}
 		self:adjHeight{obj=_G.MacroPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
 		self:skinSlider{obj=_G.MacroPopupScrollFrame.ScrollBar, rt="background"}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
+		if not self.isPTR then
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=8, y1=-8, x2=-2, y2=4}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=-2, y2=4}
+		end
 		for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
 			_G["MacroPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
 			self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], reParent={_G["MacroPopupButton" .. i .. "Name"]}}
@@ -3483,8 +3506,11 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
 	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M"}
 
--->>-- Minimap
-	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
+	-- Minimap
+	if not self.isPTR then -- currently causes PTR to crash
+		_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
+	end
+
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
 	self:addSkinFrame{obj=_G.Minimap, ft=ftype, aso={bd=8}, ofs=5}
 	if self.prdb.Minimap.gloss then
@@ -3493,10 +3519,15 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.LowerFrameLevel(_G.Minimap.sf)
 	end
 
--->>-- Minimap Backdrop Frame
-	_G.MinimapBorder:SetAlpha(0)
-	_G.MinimapNorthTag:SetAlpha(0)
-	_G.MinimapCompassTexture:SetAlpha(0)
+
+	-- Minimap Backdrop Frame
+	if not self.isPTR then
+		_G.MinimapBorder:SetAlpha(0)
+		_G.MinimapNorthTag:SetAlpha(0)
+		_G.MinimapCompassTexture:SetAlpha(0)
+	else
+		self:keepFontStrings(_G.MinimapBackdrop)
+	end
 
 -->>-- Buttons
 	-- on LHS
@@ -3836,8 +3867,10 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 		if nP then
 			-- healthBar
 			aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
-			-- castBar
-			aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}
+			if not self.isPTR then -- texture reverts after skinning, cannot be managed without causing an error
+				-- castBar
+				aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}
+			end
 			-- TODO handle large size NamePlates
 			aObj:changeShield(nP.castBar.BorderShield, nP.castBar.Icon)
 		end
@@ -3966,10 +3999,15 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		end
 	end
 	self:SecureHookScript(_G.OrderHallTalentFrame, "OnShow", function(this)
-		self:removeInset(this.LeftInset)
-		self:skinCloseButton{obj=_G.OrderHallTalentFrameCloseButton}
-		self:keepFontStrings(this.StyleFrame)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, x2=0}
+		if not self.isPTR then
+			self:removeInset(this.LeftInset)
+			self:keepFontStrings(this.StyleFrame)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, x2=0}
+		else
+			self:removeNineSlice(this)
+			this.OverlayElements.CornerLogo:SetTexture(nil)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=2}
+		end
 		this.Currency.Icon:SetAlpha(1) -- show currency icon
 		self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
 		for i = 1, #this.FrameTick do
@@ -5009,7 +5047,11 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 			choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, x2=-2}
+		if not self.isPTR then
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, x2=-2}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, y1=-1, x2=-2}
+		end
 		self:SecureHook(this, "TryShow", function(this)
 			for _, choice in pairs(this.Options) do
 				choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
@@ -5048,11 +5090,15 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 		if not IsAddOnLoaded("Mapster")
 		and not IsAddOnLoaded("AlleyMap")
 		then
-			self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true, nb=true, ofs=2, x2=1}
+			if not self.isPTR then
+				self:addSkinFrame{obj=_G.WorldMapFrame, ft=ftype, kfs=true, nb=true, ofs=2, x2=1}
+				self:keepFontStrings(this.BorderFrame)
+			else
+				-- reparent to show map textures
+				self:addSkinFrame{obj=_G.WorldMapFrame.BorderFrame, ft=ftype, kfs=true, nb=true, rp=true}
+			end
 		end
 
-		-- BorderFrame
-		self:keepFontStrings(this.BorderFrame)
 		this.BorderFrame.Tutorial.Ring:SetTexture(nil)
 		local oFrame
 		for i = 1, #this.overlayFrames do

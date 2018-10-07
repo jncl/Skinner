@@ -250,7 +250,11 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:keepFontStrings(_G.AchievementFrameStats)
 		self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, wdth=-4}
 		_G.AchievementFrameStatsBG:SetAlpha(0)
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=1}
+		if not self.isPTR then
+			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=1}
+		else
+			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=-1}
+		end
 		-- hook this to skin buttons
 		self:SecureHook("AchievementFrameStats_Update", function()
 			skinStats()
@@ -278,7 +282,11 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		for i = 1, 12 do
 			skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 		end
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={ba=0, ng=true}}
+		if not self.isPTR then
+			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={ba=0, ng=true}}
+		else
+			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={ba=0, ng=true}, y1=-2}
+		end
 		skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
 		_G.AchievementFrameComparisonBackground:SetAlpha(0)
@@ -297,7 +305,11 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		-- Container
 		self:skinSlider(_G.AchievementFrameComparisonContainerScrollBar)
 		-- Summary Panel
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameComparison, 5), ft=ftype, aso={ba=0, ng=true}}
+		if not self.isPTR then
+			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameComparison, 5), ft=ftype, aso={ba=0, ng=true}}
+		else
+			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameComparison, 5), ft=ftype, aso={ba=0, ng=true}, y1=-1}
+		end
 		for _, type in pairs{"Player", "Friend"} do
 			_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
 			_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
@@ -499,7 +511,11 @@ aObj.blizzLoDFrames[ftype].AzeriteUI = function(self)
 	local AEIUI = _G.AzeriteEmpoweredItemUI
 
 	self:keepFontStrings(AEIUI)
-	self:addSkinFrame{obj=AEIUI.BorderFrame, ft=ftype, kfs=true, bg=true, ofs=1, y1=2}
+	-- if not self.isPTR then
+	-- 	self:addSkinFrame{obj=AEIUI.BorderFrame, ft=ftype, kfs=true, bg=true, ofs=1, y1=2}
+	-- else
+		self:addSkinFrame{obj=AEIUI.BorderFrame, ft=ftype, kfs=true, bg=true}
+	-- end
 	AEIUI.ClipFrame.BackgroundFrame:DisableDrawLayer("BACKGROUND")
 	AEIUI.ClipFrame.BackgroundFrame.KeyOverlay:DisableDrawLayer("ARTWORK")
 	for i = 1, #AEIUI.ClipFrame.BackgroundFrame.RankFrames do
@@ -1055,6 +1071,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this:DisableDrawLayer("OVERLAY")
 			this:DisableDrawLayer("ARTWORK", 1)
 			this:DisableDrawLayer("ARTWORK", 2)
+			if self.isPTR then
+				self:removeNineSlice(this.NineSlice)
+			end
 			if self.modBtnBs then
 				skinPageBtns(this)
 			end
@@ -1102,6 +1121,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this:DisableDrawLayer("OVERLAY")
 			this:DisableDrawLayer("ARTWORK", 1)
 			this:DisableDrawLayer("ARTWORK", 2)
+			if self.isPTR then
+				self:removeNineSlice(this.NineSlice)
+			end
 			self:skinDropDown{obj=this.RightClickDropDown}
 			if self.modBtnBs then
 				skinPageBtns(this)
@@ -1448,6 +1470,19 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	if self.isPTR then
+		-- GuildNameAlertFrame
+		self:SecureHookScript(cFrame.GuildNameChangeFrame, "OnShow", function(this)
+			this:DisableDrawLayer("BACKGROUND")
+			self:skinEditBox{obj=this.EditBox, regs={6}} -- 6 is text
+			if self.modBtns then
+				self:skinCheckButton{obj=this.CloseButton}
+				self:skinStdButton{obj=this.Button}
+			end
+			self:Unhook(this, "OnShow")
+		end)
+	end
+
 	self:SecureHookScript(cFrame.EditStreamDialog, "OnShow", function(this)
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
 		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, nb=true, ofs=7}
@@ -1683,15 +1718,17 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 			skinBag(frame, id)
 		end
 
-		-- if it's a profession bag
-		if id ~= 0 -- ignore Backpack
-		and _G.IsInventoryItemProfessionBag("player", _G.ContainerIDToInventoryID(id))
-		then
-			frame.PortraitButton.gear:Hide()
-			frame.PortraitButton.Highlight:SetAlpha(0)
-		else
-			frame.PortraitButton.gear:Show()
-			frame.PortraitButton.Highlight:SetAlpha(1)
+		if not self.isPTR then
+			-- if it's a profession bag
+			if id ~= 0 -- ignore Backpack
+			and _G.IsInventoryItemProfessionBag("player", _G.ContainerIDToInventoryID(id))
+			then
+				frame.PortraitButton.gear:Hide()
+				frame.PortraitButton.Highlight:SetAlpha(0)
+			else
+				frame.PortraitButton.gear:Show()
+				frame.PortraitButton.Highlight:SetAlpha(1)
+			end
 		end
 
 	end)

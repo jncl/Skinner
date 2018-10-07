@@ -23,14 +23,19 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 		this.ModelFrame:DisableDrawLayer("ARTWORK")
 		this.RaceInfoFrame.ScrollFrame.Child.RaceDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderButton:DisableDrawLayer("BACKGROUND")
+		if not self.isPTR then
+			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderButton:DisableDrawLayer("BACKGROUND")
+		else
+			this.RaceInfoFrame.ScrollFrame.Child.RacialTraitsLabel:SetTextColor(self.HTr, self.HTg, self.HTb)
+			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderBackground:SetTexture(nil)
+		end
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, rt="background", wdth=-5}
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
 		this.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(self.HTr, self.HTg, self.HTb)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=2, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0}
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesFemaleButton, ofs=0}
@@ -334,10 +339,15 @@ aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	if not self.prdb.FlightMap or self.initialized.FlightMap then return end
 	self.initialized.FlightMap = true
 
-	self:keepFontStrings(_G.FlightMapFrame.BorderFrame)
-	self:moveObject{obj=_G.FlightMapFrameCloseButton, x=3, y=1}
-	self:addSkinFrame{obj=_G.FlightMapFrame, ft=ftype, ofs=4, y1=3}
-	_G.FlightMapFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
+	if not self.isPTR then
+		self:keepFontStrings(_G.FlightMapFrame.BorderFrame)
+		self:moveObject{obj=_G.FlightMapFrameCloseButton, x=3, y=1}
+		self:addSkinFrame{obj=_G.FlightMapFrame, ft=ftype, ofs=4, y1=3}
+		_G.FlightMapFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
+	else
+		self:addSkinFrame{obj=_G.FlightMapFrame.BorderFrame, ft=ftype, kfs=true}
+		_G.FlightMapFrame.BorderFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
+	end
 
 	-- remove ZoneLabel background texture
 	for dP, _ in pairs(_G.FlightMapFrame.dataProviders) do
@@ -535,9 +545,14 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 	self:SecureHookScript(_G.PetStableFrame, "OnShow", function(this)
 
 		_G.PetStableFrameModelBg:Hide()
-		this.LeftInset:DisableDrawLayer("BORDER")
+		if not self.isPTR then
+			this.LeftInset:DisableDrawLayer("BORDER")
+			this.BottomInset:DisableDrawLayer("BORDER")
+		else
+			self:removeInset(this.LeftInset)
+			self:removeInset(this.BottomInset)
+		end
 		_G.PetStableActiveBg:Hide()
-		this.BottomInset:DisableDrawLayer("BORDER")
 		_G.PetStableFrameStableBg:Hide()
 		self:makeMFRotatable(_G.PetStableModel)
 		_G.PetStableModelShadow:Hide()

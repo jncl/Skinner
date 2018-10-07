@@ -241,13 +241,15 @@ local function skinPetF()
 		_G.PetFrame.roleIcon:SetSize(24, 24)
 		_G.PetFrame.roleIcon:SetPoint("left", -10, 0)
 		_G.PetFrame.roleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
-		module:RegisterEvent("PET_SPECIALIZATION_CHANGED", function()
-			local curSpec = _G.GetSpecialization(nil, true)
-			if curSpec then -- if pet is out
-				local role = _G.select(5, _G.GetSpecializationInfo(curSpec, nil, true))
-				_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(role))
-			end
-		end)
+		if not aObj.isPTR then
+			module:RegisterEvent("PET_SPECIALIZATION_CHANGED", function()
+				local curSpec = _G.GetSpecialization(nil, true)
+				if curSpec then -- if pet is out
+					local role = _G.select(5, _G.GetSpecializationInfo(curSpec, nil, true))
+					_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(role))
+				end
+			end)
+		end
 	end
 
 
