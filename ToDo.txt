@@ -14,30 +14,57 @@ Legend:
 ?	O	Make role icons square with a button border
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
 
-≈	O	Handle reaching Max XP level
-		- WatchBar re-alignment etc
-
 ?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
 
-	O	Change texture for Scrollbar arrows
-
-	O	TalentUI
-√		- make PvP Talent buttons square
-√		- add button border to PvP talent scroll buttons Icon
+	PTR 8.1.0 27934
+		Added:
+x			- CommunitiesCalendar
+√			- GuildNameChange
+		Deleted:
+?			- HonorFrame
+		Updated:
+√			- Several frames/Insets have a new subFrame named 'NineSlice', textures need removing from it
+√			- AlliedRaceUI
+√			- BFAMissionUI, new frame 'OverlayElements'
+√			- CommunitiesFrame, now uses 'ButtonFrameTemplateMinimizable'
+x			- CommunitiesInvitationFrame, now has 'IconRing' named texture
+			- CommunitiesMemberList, new frame (WatermarkFrame)
+√			- IslandsPartyPoseUI, new frame 'OverlayElements'
+√			- OrderHallTalents, CurrencyBG
+√			- OrderHallTalents, new frame 'OverlayElements'
+x			- PVPUI, parentKey="Reward" now a button NOT a frame
+x			- PVPUI, HonorFrame now has a 'FactionBadge' texture
+√			- PartyPoseUI, new frame 'Border'
+√			- TalentUI, TalentList now uses 'SimplePanelTemplate'
+√			- WarfrontsPartyPoseUI, new frame 'OverlayElements'
+√			- WorldMap, BorderFrame now uses 'PortraitFrameTemplateMinimizable'
+√			- DressUpFrame, now uses 'ButtonFrameTemplateMinimizable'
+x			- ExtraActionBar, loses its '$parentFlash' texture
+x			- LFDFrame, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
+x			- OptionsFrameListTemplate, gains a backdrop, 'parentList' loses its backdrop
+x			- RaidFinder, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
+x			- ScenarioFinder, loses 'parentTopTileStreaks', 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
 
 	I	Mythic+ timer, reported by Metallan, 03.08.18\17.09.18
-?		- timer bar texture not visible
+≈		- timer bar texture not visible (ScenarioChallengeModeBlock.StatusBar)
 
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 ?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-	I	WorldQuestTracker, reported by vince, 25.09.18
-√		- ...faceSkinner\AddonSkins\WorldQuestTracker.lua:23: attempt to index field 'WorldQuestTrackerSummaryUpPanelChrQuestsScrollScrollBar' (a nil value)
+	I	TalkingHeadUI, reported by Shimiya, 27.09.18
+x		- Black text on black background for Alliance Quest 'The Big Boom'
 
-	I	DetailsFramework, reported by vince, 25.09.18
-√		- ...rfaceSkinner\AddonSkins\DetailsFramework-108.nil.lua:110: attempt to index global 'texture' (a number value)
+	I	GarrisonUI, reported by NeoZeus, 04.10.18
+√		- Skinner\Modules\UIButtons.lua:403: attempt to index field 'obj' (a nil value)
+		...faceSkinner\AddonSkins\GarrisonCommander-3.0.0 70200.lua:83: in function 	<...faceSkinner\AddonSkins\GarrisonCommander.lua:5>
 
-	I	BonusRollFrame, reported by Talyrius, 27.09.18
-√		- Skinner\Modules\UIButtons.lua:404: attempt to call method 'GetNormalTexture' (a nil value)
-		Skinner\Modules\UIButtons.lua:404: in function `skinStdButton'
-		Skinner\PlayerFrames.lua:2825: in function <Skinner\PlayerFrames.lua:2817>
+	I	OrderHallCommander, reported by NeoZeus, 04.10.18
+√		- ...aceSkinner\AddonSkins\OrderHallCommander-1.7.2 80000.lua:91: attempt to index local 'Clicker' (a nil value)
+
+	I	Encounter Journal, reported by epidemedabear, 05.10.18
+√		- ..\AddOns\Skinner\Skinner.lua line 984: attempt to index field 'obj' (a nil value)
+		Skinner\Skinner.lua:984:
+		Skinner\Skinner.lua:949
+		Skinner\Skinner.lua:1047: skinDropDown()
+		Skinner\PlayerFrames.lua:1997:
+		Skinner\PlayerFrames.lua:1995
