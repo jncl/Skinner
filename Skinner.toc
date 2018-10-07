@@ -54,8 +54,8 @@ Locales\Locale_ptBR.lua
 Locales\Locale_ruRU.lua
 #
 # Main files
-UtilFuncs.lua
 Skinner.lua
+UtilFuncs.lua
 Options.lua
 AddonFrames.lua
 NPCFrames.lua
