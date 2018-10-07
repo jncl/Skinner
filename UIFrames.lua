@@ -3522,6 +3522,12 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.LowerFrameLevel(_G.Minimap.sf)
 	end
 
+	-- N.B. copied from SexyMap
+	-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
+	_G.Minimap:SetArchBlobRingScalar(0)
+	_G.Minimap:SetArchBlobRingAlpha(0)
+	_G.Minimap:SetQuestBlobRingScalar(0)
+	_G.Minimap:SetQuestBlobRingAlpha(0)
 
 	-- Minimap Backdrop Frame
 	if not self.isPTR then
