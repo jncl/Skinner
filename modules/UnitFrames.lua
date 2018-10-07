@@ -259,6 +259,7 @@ local function skinCommon(frame, adjSB)
 	_G[frame .. "Background"]:SetTexture(nil)
 	_G[frame .. "TextureFrameTexture"]:SetAlpha(0)
 	local fo = _G[frame]
+
 	-- status bars
 	aObj:skinStatusBar{obj=fo.healthbar, fi=0}
 	if adjSB then
@@ -396,7 +397,7 @@ local function skinPartyF()
 		pMF, pPF = nil, nil
 
 		-- PartyMemberBackground
-		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y1=2, x2=1, y2=2}
+		aObj:addSkinFrame{obj=_G.PartyMemberBackground, ft=ftype, nb=true, x1=4, y2=2}
 
 	end
 

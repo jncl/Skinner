@@ -208,7 +208,7 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	_G.AzeriteRespecFrame.ButtonFrame:DisableDrawLayer("BORDER")
 	self:removeMagicBtnTex(_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
 	_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
-	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true, ofs=1, y1=2}
+	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true}
 
 	if self.modBtnBs then
 		_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
@@ -230,7 +230,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		self:removeInset(_G.BankFrameMoneyFrameInset)
 		_G.BankFrameMoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 		self:skinTabs{obj=this, x1=6, y1=0, x2=-6, y2=2}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-4}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-4}
 		self:keepFontStrings(_G.BankSlotsFrame)
 
 		-- ReagentBankFrame
@@ -329,7 +329,7 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 		this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 		self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
 		self:skinStdButton{obj=this.BidButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		local function skinSFButtons(scrollFrame)
 			for i = 1, #scrollFrame.buttons do
@@ -390,7 +390,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		for i = 1, _G.NUMGOSSIPBUTTONS do
 			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		-- NPCFriendshipStatusBar
 		self:removeRegions(_G.NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
@@ -416,7 +416,7 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 		self:skinStdButton{obj=_G.GuildRegistrarFramePurchaseButton}
 		self:skinEditBox{obj=_G.GuildRegistrarFrameEditBox}
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -450,7 +450,7 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
 		self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
 		self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=2, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 
 		-- hook this to hide the ItemButton texture if empty
 		self:SecureHook("ItemUpgradeFrame_Update", function()
@@ -484,7 +484,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-6}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-6}
 		if self.modBtnBs then
 			self:removeRegions(_G.MerchantPrevPageButton, {2})
 			self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -547,7 +547,7 @@ aObj.blizzFrames[ftype].Petition = function(self)
 		end
 		_G.PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -572,7 +572,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 		_G.PetStableFrameStableBg:Hide()
 		self:makeMFRotatable(_G.PetStableModel)
 		_G.PetStableModelShadow:Hide()
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0}
 			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0}
@@ -641,7 +641,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end, true)
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		--	Reward Panel
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
@@ -920,7 +920,7 @@ aObj.blizzFrames[ftype].TaxiFrame = function(self)
 	self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
 		self:removeRegions(this, {1, 2, 3}) -- 1st 3 overlay textures
 		this:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=this, ft=ftype, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype}
 		-- resize map to fit skin frame
 		this.InsetBg:SetPoint("TOPLEFT", 0, -24)
 		this.InsetBg:SetPoint("BOTTOMRIGHT", 0 ,0)
@@ -954,7 +954,7 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 			self:addButtonBorder{obj=this.scrollFrame.buttons[i], relTo=this.scrollFrame.buttons[i].icon}
 		end
 		self:removeInset(this.bottomInset)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -978,7 +978,7 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
 		end
 		self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=2, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:skinEditBox{obj=_G.VoidItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
 		for i = 1, 2 do
 			_G.VoidStorageFrame["Page" .. i]:DisableDrawLayer("BACKGROUND")

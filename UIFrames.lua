@@ -378,7 +378,7 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 			self:skinStdButton{obj=_G["AddonListEntry" .. i .. "Load"]}
 		end
 		self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, rt="background"}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		self:skinDropDown{obj=_G.AddonCharacterDropDown, x2=109} -- created in OnLoad
 		self:Unhook(this, "OnShow")
 	end)
@@ -2047,7 +2047,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:skinStdButton{obj=this.StartWorkOrderButton}
 		self:removeMagicBtnTex(this.CreateAllWorkOrdersButton)
 		self:skinStdButton{obj=this.CreateAllWorkOrdersButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		this.CapacitiveDisplay.IconBG:SetTexture(nil)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.CapacitiveDisplay.ShipmentIconFrame, relTo=this.CapacitiveDisplay.ShipmentIconFrame.Icon}
@@ -2385,7 +2385,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		self:skinSlider{obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, rt="artwork"}
 		self:skinStdButton{obj=_G.GuildBankInfoSaveButton}
 		self:skinSlider{obj=_G.GuildBankInfoScrollFrame.ScrollBar, rt="artwork"}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, y2=-5}
 		self:Unhook(this, "OnShow")
 
 		-- send message when UI is skinned (used by oGlow skin)
@@ -2571,7 +2571,7 @@ aObj.blizzLoDFrames[ftype].IslandsQueueUI = function(self)
 
 	IQF.HelpButton.Ring:SetTexture(nil)
 
-	self:addSkinFrame{obj=IQF, ft=ftype, kfs=true, ofs=2, x2=1}
+	self:addSkinFrame{obj=IQF, ft=ftype, kfs=true}
 	IQF, WQ = nil, nil
 
 end
@@ -2593,7 +2593,7 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 			self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
 			self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, y1=-3, x2=-3}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		end
 	end)
 
@@ -2794,7 +2794,7 @@ aObj.blizzFrames[ftype].LFRFrame = function(self)
 	self.initialized.LFRFrame = true
 
 	self:SecureHookScript(_G.RaidBrowserFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		-- LFR Parent Frame
 		-- LFR Queue Frame
 		self:removeInset(_G.LFRQueueFrameRoleInset)
@@ -2977,7 +2977,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:skinSlider{obj=_G.MacroButtonScrollFrame.ScrollBar, rt="artwork"}
 		self:skinSlider{obj=_G.MacroFrameScrollFrame.ScrollBar}
 		self:skinEditBox{obj=_G.MacroFrameText, noSkin=true}
-		self:addSkinFrame{obj=_G.MacroFrameTextBackground, ft=ftype, x2=1}
+		self:addSkinFrame{obj=_G.MacroFrameTextBackground, ft=ftype}
 		self:skinTabs{obj=this, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
 		self:skinStdButton{obj=_G.MacroEditButton}
 		self:skinStdButton{obj=_G.MacroCancelButton}
@@ -2996,7 +2996,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 			_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
 			self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}}
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3029,7 +3029,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
 		self:skinTabs{obj=this}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 		-- N.B. Item buttons have IconBorder textures
 		--	Inbox Frame
@@ -3070,7 +3070,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, rt="overlay"}
 		_G.OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
-		self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true}
 		self:skinStdButton{obj=_G.OpenMailReportSpamButton}
 		self:skinStdButton{obj=_G.OpenMailCancelButton}
 		self:skinStdButton{obj=_G.OpenMailDeleteButton}
@@ -3496,7 +3496,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- fix for Titan Panel moving MinimapCluster
 	if IsAddOnLoaded("Titan") then _G.TitanMovable_AddonAdjust("MinimapCluster", true) end
 
--->>-- Cluster Frame
+	-- Cluster Frame
 	_G.MinimapBorderTop:Hide()
 	_G.MinimapZoneTextButton:ClearAllPoints()
 	_G.MinimapZoneTextButton:SetPoint("BOTTOMLEFT", _G.Minimap, "TOPLEFT", 0, 5)
@@ -3970,7 +3970,7 @@ aObj.blizzLoDFrames[ftype].ObliterumUI = function(self)
 		self.modUIBtns:addButtonBorder{obj=this.ItemSlot} -- use module function to force button border
 		self:removeMagicBtnTex(this.ObliterateButton)
 		self:skinStdButton{obj=this.ObliterateButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=2, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -4251,7 +4251,7 @@ aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Reward
 		self:skinStdButton{obj=this.Inset.ClaimButton}
 		self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
 		self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y1=2, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -4267,7 +4267,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 		self:removeInset(this.Inset)
 		self:keepFontStrings(this.shadows)
 		self:skinTabs{obj=this}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 		-- GroupFinder Frame
 		for i = 1, 4 do
@@ -4468,7 +4468,7 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 
 	self:SecureHookScript(_G.RaidParentFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, lod=true}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -4737,7 +4737,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		self:skinDropDown{obj=_G.TimeManagerAlarmAMPMDropDown, x2=-5}
 		self:skinEditBox{obj=_G.TimeManagerAlarmMessageEditBox, regs={6}}
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		-- Stopwatch Frame
 		self:keepFontStrings(_G.StopwatchTabFrame)
@@ -4882,7 +4882,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		-- stop animation before skinning, otherwise textures reappear
 		_G.AnimateMouse:Stop()
 		_G.AnimateCallout:Stop()
-		self:addSkinFrame{obj=this, ft=ftype, anim=true, x1=10, y1=-11, x2=1}
+		self:addSkinFrame{obj=this, ft=ftype, anim=true, y1=-11, x2=1}
 		resetSF()
 		-- hook this as the TutorialFrame frame level keeps changing
 		self:SecureHookScript(this.sf, "OnShow", function(this)
@@ -5187,7 +5187,7 @@ aObj.blizzFrames[ftype].WorldState = function(self)
 		this.XPBar.NextAvailable.Frame:SetTexture(nil)
 		self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
 		self:skinTabs{obj=this}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-3, y1=2, x2=1, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		self:Unhook(this, "OnShow")
 	end)
 
