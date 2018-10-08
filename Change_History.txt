@@ -1,3 +1,21 @@
+beta8.27985.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Change code file load sequence
+	Code tidy
+	Updated Minimap
+	Updated OrderHallTalentFrame skin
+	Updated Minimap skin code
+	Updated ScenarioChallengeModeBlock skin
+	Updated GuildControlUI skin
+	Updated EncounterJournal skin
+	Updated many Frame skins to use the modified addSkinFrame function
+	Added button skinning checks
+	PTR changes
+	Updated ChampionCommander, GarrisonCommander, OrderHallCommander & WorldQuestTracker skins
+
 beta7.27843.2
 Jncl:
 	ToDo.txt
