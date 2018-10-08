@@ -1784,11 +1784,11 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 
 	self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 		self:skinDropDown{obj=this.OutfitDropDown, y2=-4}
-		_G.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- button texture
+		this.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- button texture
 		if self.modBtns then
 			self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
-			self:skinOtherButton{obj=_G.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text="↕"} -- up-down arrow
-			self:skinOtherButton{obj=_G.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text="↕"} -- up-down arrow
+			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text="↕"} -- up-down arrow
+			self:skinOtherButton{obj=this.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text="↕"} -- up-down arrow
 			self:skinStdButton{obj=_G.DressUpFrameCancelButton}
 			self:skinStdButton{obj=this.ResetButton}
 		end
