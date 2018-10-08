@@ -16,7 +16,7 @@ Legend:
 
 ?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
 
-	PTR 8.1.0 27934
+	PTR 8.1.0 27985
 		Added:
 x			- CommunitiesCalendar
 √			- GuildNameChange
@@ -45,26 +45,8 @@ x			- OptionsFrameListTemplate, gains a backdrop, 'parentList' loses its backdro
 x			- RaidFinder, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
 x			- ScenarioFinder, loses 'parentTopTileStreaks', 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
 
-	I	Mythic+ timer, reported by Metallan, 03.08.18\17.09.18
-≈		- timer bar texture not visible (ScenarioChallengeModeBlock.StatusBar)
-
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 ?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-	I	TalkingHeadUI, reported by Shimiya, 27.09.18
-x		- Black text on black background for Alliance Quest 'The Big Boom'
-
-	I	GarrisonUI, reported by NeoZeus, 04.10.18
-√		- Skinner\Modules\UIButtons.lua:403: attempt to index field 'obj' (a nil value)
-		...faceSkinner\AddonSkins\GarrisonCommander-3.0.0 70200.lua:83: in function 	<...faceSkinner\AddonSkins\GarrisonCommander.lua:5>
-
-	I	OrderHallCommander, reported by NeoZeus, 04.10.18
-√		- ...aceSkinner\AddonSkins\OrderHallCommander-1.7.2 80000.lua:91: attempt to index local 'Clicker' (a nil value)
-
-	I	Encounter Journal, reported by epidemedabear, 05.10.18
-√		- ..\AddOns\Skinner\Skinner.lua line 984: attempt to index field 'obj' (a nil value)
-		Skinner\Skinner.lua:984:
-		Skinner\Skinner.lua:949
-		Skinner\Skinner.lua:1047: skinDropDown()
-		Skinner\PlayerFrames.lua:1997:
-		Skinner\PlayerFrames.lua:1995
+	I	DressUpFrame, reported by epidemedabear, 08.10.18
+√		-  ..\AddOns\Skinner\PlayerFrames.lua line 1787: attempt to index field 'MaxMinButtonFrame' (a nil value)
