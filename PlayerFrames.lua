@@ -3879,13 +3879,10 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			self:skinCloseButton{obj=frame.TrinketSlot.HelpBox.CloseButton, noSkin=true}
 		end
 
-		self:SecureHookScript(frame.WarmodeTutorialBox, "OnShow", function(this)
-			this:SetWidth(this.Text:GetWidth() + 30)
-			if self.modBtns then
-				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-			end
-			self:Unhook(this, "OnShow")
-		end)
+		frame.WarmodeTutorialBox:SetWidth(frame.WarmodeTutorialBox.Text:GetWidth() + 30)
+		if self.modBtns then
+			self:skinCloseButton{obj=frame.WarmodeTutorialBox.CloseButton, noSkin=true}
+		end
 
 		frame.UpdateModelScenes = _G.nop
 		frame.OrbModelScene:Hide()
