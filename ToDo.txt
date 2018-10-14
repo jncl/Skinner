@@ -25,10 +25,10 @@ x			- CommunitiesCalendar
 		Updated:
 √			- Several frames/Insets have a new subFrame named 'NineSlice', textures need removing from it
 √			- AlliedRaceUI
-√			- BFAMissionUI, new frame 'OverlayElements'
 √			- CommunitiesFrame, now uses 'ButtonFrameTemplateMinimizable'
 x			- CommunitiesInvitationFrame, now has 'IconRing' named texture
-			- CommunitiesMemberList, new frame (WatermarkFrame)
+x			- CommunitiesMemberList, new frame (WatermarkFrame)
+√			- BFAMissionUI, new frame 'OverlayElements'
 √			- IslandsPartyPoseUI, new frame 'OverlayElements'
 √			- OrderHallTalents, CurrencyBG
 √			- OrderHallTalents, new frame 'OverlayElements'
@@ -47,6 +47,3 @@ x			- ScenarioFinder, loses 'parentTopTileStreaks', 'parentBtnCornerRight' & 'pa
 
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 ?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
-
-	I	DressUpFrame, reported by epidemedabear, 08.10.18
-√		-  ..\AddOns\Skinner\PlayerFrames.lua line 1787: attempt to index field 'MaxMinButtonFrame' (a nil value)
