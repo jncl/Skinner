@@ -4002,7 +4002,6 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 			self:keepFontStrings(this.StyleFrame)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, x2=0}
 		else
-			self:removeNineSlice(this)
 			this.OverlayElements.CornerLogo:SetTexture(nil)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=2}
 		end
