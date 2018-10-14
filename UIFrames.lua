@@ -4812,7 +4812,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		if self.modBtnBs then
 			-- if it has an ItemTooltip then add a button border
 			if tTip.ItemTooltip
-			and not tTip == _G.QuestMapFrame.QuestsFrame.WarCampaignTooltip
+			and tTip ~= _G.QuestMapFrame.QuestsFrame.WarCampaignTooltip
 			then
 				self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon, reParent={tTip.ItemTooltip.Count}}
 			end
