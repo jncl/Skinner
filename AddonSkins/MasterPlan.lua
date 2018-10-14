@@ -143,20 +143,19 @@ aObj.lodAddons.MasterPlan = function(self) -- v 0.109.1
 	if self.modBtnBs then
 		-- SpecAffinityFrame (on FollowerTab frames)
 		self:SecureHook("GarrisonMissionPortrait_SetFollowerPortrait", function(pf, ...)
-			if not pf == _G.GarrisonMissionFrame.FollowerTab.PortraitFrame
-			and not pf == _G.GarrisonLandingPage.FollowerTab.PortraitFrame
+			if pf ~= _G.GarrisonMissionFrame.FollowerTab.PortraitFrame
+			and pf ~= _G.GarrisonLandingPage.FollowerTab.PortraitFrame
 			then
 				return
 			end
-			local obj = pf:GetParent()
-			local frame = self:getLastChild(obj)
+			local frame = self:getLastChild(pf:GetParent())
 			if frame.ClassSpec then
 				self:addButtonBorder{obj=frame.ClassSpec}
 				self:addButtonBorder{obj=frame.Affinity}
 				self:addButtonBorder{obj=frame.Missions}
 				self:Unhook("GarrisonMissionFrame_SetFollowerPortrait")
 			end
-			obj, frame = nil, nil
+			frame = nil
 		end)
 		-- Follower Items Container
 		self:addButtonBorder{obj=_G.MPFollowerItemContainer.weapon, es=12, x1=36}

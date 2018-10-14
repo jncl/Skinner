@@ -19,6 +19,9 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 		self:RawHook(DF, "NewButton", function(this, ...)
 			local btnObj = self.hooks[this].NewButton(this, ...)
 			self:skinStdButton{obj=btnObj.button}
+			if _G.select(3, ...):find("Slider") then
+				btnObj.button.sb.tfade:SetTexture(nil) -- remove gradient texture, as it is really a checkbutton
+			end
 			return btnObj
 		end, true)
 	end
