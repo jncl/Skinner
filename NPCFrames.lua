@@ -503,9 +503,10 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			end
 		end
 		_G.MerchantBuyBackItemNameFrame:SetTexture(nil)
+
 		if self.modBtnBs then
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(nil)
-			self:addButtonBorder{obj=_G.MerchantBuyBackItemItemButton, ibt=true}
+			self:addButtonBorder{obj=_G.MerchantBuyBackItem.ItemButton, ibt=true}
 			-- remove surrounding border (diff=0.01375)
 			self:getRegion(_G.MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
 			_G.MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
@@ -518,16 +519,6 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		end
 
 		self:Unhook(this, "OnShow")
-	end)
-
-	-- display limited availability item's stock count even when zero
-	self:SecureHook("SetItemButtonStock", function(button, numInStock)
-		if numInStock == 0
-		and not button == _G.MerchantBuyBackItemItemButton
-		then
-			_G[button:GetName() .. "Stock"]:SetFormattedText(_G.MERCHANT_STOCK, numInStock)
-			_G[button:GetName() .. "Stock"]:Show()
-		end
 	end)
 
 end
