@@ -4026,12 +4026,17 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:removeMagicBtnTex(this.DetailsFrame.CreateButton)
 		self:skinEditBox{obj=this.DetailsFrame.CreateMultipleInputBox, noHeight=true, nis=true}
 		this.DetailsFrame.Contents.ResultIcon.ResultBorder:SetTexture(nil)
+		local btn
 		for i = 1, #this.DetailsFrame.Contents.Reagents do
-			this.DetailsFrame.Contents.Reagents[i].NameFrame:SetTexture(nil)
+			btn = this.DetailsFrame.Contents.Reagents[i]
+			btn.NameFrame:SetTexture(nil)
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=this.DetailsFrame.Contents.Reagents[i], relTo=this.DetailsFrame.Contents.Reagents[i].Icon, reParent={this.DetailsFrame.Contents.Reagents[i].Count}}
+				 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
+				 -- BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_COMMON]
+				 btn.sbb:SetBackdropBorderColor(0.65882, 0.65882, 0.65882) -- reagents are COMMON quality
 			end
 		end
+		btn = nil
 
 		if self.modBtns then
 			self:skinStdButton{obj=this.DetailsFrame.CreateAllButton}
