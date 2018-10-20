@@ -305,7 +305,12 @@ function aObj:OnEnable()
 							button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 						end
 					else
-						button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.30)
+						if _G.TradeSkillFrame
+						and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon then
+							button.sbb:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
+						else
+							button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.30)
+						end
 					end
 				end
 			end)
