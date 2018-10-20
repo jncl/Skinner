@@ -970,7 +970,7 @@ function aObj:skinColHeads(buttonName, noCols)
 		if not btn.sb then -- only do if not already skinned as a button
 			self:removeRegions(btn, {1, 2, 3})
 			-- CHANGED: ft="a" is used to stop buttons being skinned automatically
-			self:addSkinFrame{obj=btn, ft="a"}
+			self:addSkinFrame{obj=btn, ft="a", nb=true}
 		end
 	end
 	btn = nil
