@@ -2374,22 +2374,27 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		end
 		self:skinEditBox{obj=_G.GuildItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
 		_G.GuildBankMoneyFrameBackground:DisableDrawLayer("BACKGROUND")
-		self:skinStdButton{obj=_G.GuildBankFrameDepositButton}
-		self:skinStdButton{obj=_G.GuildBankFrameWithdrawButton}
 		self:skinTabs{obj=this, lod=true}
 		for i = 1, _G.MAX_GUILDBANK_TABS do
 			_G["GuildBankTab" .. i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G["GuildBankTab" .. i .. "Button"], relTo=_G["GuildBankTab" .. i .. "ButtonIconTexture"]}
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=_G["GuildBankTab" .. i .. "Button"], relTo=_G["GuildBankTab" .. i .. "ButtonIconTexture"]}
+			end
 		end
-		self:skinStdButton{obj=_G.GuildBankFramePurchaseButton}
 		self:skinSlider{obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, rt="artwork"}
-		self:skinStdButton{obj=_G.GuildBankInfoSaveButton}
 		self:skinSlider{obj=_G.GuildBankInfoScrollFrame.ScrollBar, rt="artwork"}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, y2=-5}
-		self:Unhook(this, "OnShow")
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GuildBankFrameDepositButton, x1=0} -- don't overlap withdraw button
+			self:skinStdButton{obj=_G.GuildBankFrameWithdrawButton, x2=0} -- don't overlap deposit button
+			self:skinStdButton{obj=_G.GuildBankFramePurchaseButton}
+			self:skinStdButton{obj=_G.GuildBankInfoSaveButton}
+		end
 
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("GuildBankUI_Skinned", self)
+
+		self:Unhook(this, "OnShow")
 	end)
 
 	--	GuildBank Popup Frame
