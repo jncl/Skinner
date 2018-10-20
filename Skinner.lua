@@ -47,21 +47,22 @@ do
 	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. portal)
 --@end-alpha@
 	-- check to see if running on Beta servers
-	aObj.isBeta = aObj.isBeta or buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
+	aObj.isBeta = buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
 	-- check to see if running on PTR servers
-	aObj.isPTR = aObj.isPTR or buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
+	aObj.isPTR = buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
+--@alpha@
 	if aObj.isBeta then
+		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Beta version", 1, 0, 0, nil, true)
 		aObj.isPTR = false
 	end
---@alpha@
 	if aObj.isPTR then
-		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. " - Version number changed, any PTR updates to be applied?", 1, 0, 0, nil, true)
+		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a PTR version", 1, 0, 0, nil, true)
 		aObj.isPatch = false
 	end
 	if aObj.isPatch then
-		_G.DEFAULT_CHAT_FRAME:AddMessage("Version number changed, any Patch updates to be applied?", 1, 0, 0, nil, true)
+		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Patched version", 1, 0, 0, nil, true)
 		-- if patch detected then enable PTR code changes (handles PTR changes going Live)
 		if buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) >= ptrInfo[2] then
 			aObj.isPTR = true
