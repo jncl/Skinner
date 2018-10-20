@@ -2183,13 +2183,14 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.WhoFrameColumnHeader2.sf.tfade:SetTexture(nil)
 			_G.WhoFrameColumnHeader2.sf:SetBackdrop(nil)
 			_G.WhoFrameColumnHeader2.sf:Hide()
+			self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
 			self:skinStdButton{obj=_G.WhoFrameGroupInviteButton}
 			self:skinStdButton{obj=_G.WhoFrameAddFriendButton}
 			self:skinStdButton{obj=_G.WhoFrameWhoButton}
 			self:removeInset(_G.WhoFrameEditBoxInset)
-			self:skinEditBox{obj=_G.WhoFrameEditBox, move=true}
-			_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() +  24)
-			self:moveObject{obj=_G.WhoFrameEditBox, x=12}
+			self:skinEditBox{obj=_G.WhoFrameEditBox}--, move=true}
+			_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
+			self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=aObj.isPTR and 6 or nil}
 			self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, rt="background"}
 			self:Unhook(this, "OnShow")
 		end)
