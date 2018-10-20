@@ -110,7 +110,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			btn:DisableDrawLayer("BACKGROUND")
 			-- don't DisableDrawLayer("BORDER") as the button border won't show if skinned
 			btn:DisableDrawLayer("ARTWORK")
-			aObj:applySkin{obj=btn, bd=10, ng=true}
+			aObj:applySkin{obj=btn, bd=10, ng=true} -- use applySkin to allow border colour to be changed and icon borders to be visible
+			-- TODO: show plusMinus as plus/minus without background
 			if btn.plusMinus then btn.plusMinus:SetAlpha(0) end
 			btn.icon:DisableDrawLayer("BACKGROUND")
 			btn.icon:DisableDrawLayer("BORDER")
@@ -142,7 +143,6 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			if aObj.modChkBtns
 			and btn.tracked
 			then
-				btn.tracked:SetSize(20, 20)
 				aObj:skinCheckButton{obj=btn.tracked, hf=true}
 			end
 
