@@ -5042,6 +5042,14 @@ end
 
 aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 	if not self.db.profile.WarboardUI or self.initialized.WarboardUI then return end
+
+	if not _G.WarboardQuestChoiceFrame then
+		_G.C_Timer.After(0.1, function()
+			self.blizzLoDFrames[ftype].WarboardUI(self)
+		end)
+		return
+	end
+
 	self.initialized.WarboardUI = true
 
 	self:SecureHookScript(_G.WarboardQuestChoiceFrame, "OnShow", function(this)
@@ -5058,6 +5066,9 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 			end
 			choice.Header:DisableDrawLayer("Border") -- ribbon texture
 			choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+			if self.isPTR then
+				choice.SubHeader:DisableDrawLayer("BACKGROUND")
+			end
 			choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		end
 
