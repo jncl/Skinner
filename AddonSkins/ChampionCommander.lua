@@ -34,7 +34,7 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.0-Beta-2 80000
 			self:moveObject{obj=frame.Tutorial, x=2, y=6}
 			self:skinCloseButton{obj=frame.Close}
 			self:moveObject{obj=frame.Close, x=3, y=3}
-			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, x1=-2, y2=-4}
+			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=0, x1=-2, y2=-4}
 			if self.modBtnBs then
 				-- replace the mission menu tab texture
 				local mBtn = self:getLastChild(_G.BFAMissionFrame.MissionTab)
@@ -120,7 +120,7 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.0-Beta-2 80000
 		if tut then
 			self:SecureHook(tut, "Show", function(this, opening)
 				local Clicker = self:getLastChild(_G.HelpPlateTooltip)
-				self:skinCloseButton{obj=Clicker.Close}
+				self:skinCloseButton{obj=Clicker.Close, noSkin=true}
 				self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
 				self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
 				Clicker = nil
