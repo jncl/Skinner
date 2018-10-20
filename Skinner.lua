@@ -62,6 +62,10 @@ do
 	end
 	if aObj.isPatch then
 		_G.DEFAULT_CHAT_FRAME:AddMessage("Version number changed, any Patch updates to be applied?", 1, 0, 0, nil, true)
+		-- if patch detected then enable PTR code changes (handles PTR changes going Live)
+		if buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) >= ptrInfo[2] then
+			aObj.isPTR = true
+		end
 	end
 --@end-alpha@
 	liveInfo, ptrInfo, betaInfo, buildInfo, portal = nil, nil, nil, nil, nil
@@ -79,8 +83,6 @@ function aObj:OnInitialize()
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end
 --@end-alpha@
-	-- if patch detected then enable PTR code changes (handles PTR changes going Live)
-	if self.isPatch then self.isPTR = true end
 
 	-- setup the default DB values and register them
 	self:checkAndRun("SetupDefaults", "opt", false, true)
