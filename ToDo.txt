@@ -27,8 +27,10 @@ x			- CommunitiesCalendar
 √			- AlliedRaceUI
 √			- CommunitiesFrame, now uses 'ButtonFrameTemplateMinimizable'
 x			- CommunitiesInvitationFrame, now has 'IconRing' named texture
-x			- CommunitiesMemberList, new frame (WatermarkFrame)
+x			- CommunitiesMemberList, new frame 'WatermarkFrame'
 √			- BFAMissionUI, new frame 'OverlayElements'
+			- Garrison_RecruiterUI, removed 'BORDER' layer sublevel 1
+x			- InspectPVPFrame, removed '.PortraitMouseOverFrame'
 √			- IslandsPartyPoseUI, new frame 'OverlayElements'
 √			- OrderHallTalents, CurrencyBG
 √			- OrderHallTalents, new frame 'OverlayElements'
@@ -36,14 +38,32 @@ x			- PVPUI, parentKey="Reward" now a button NOT a frame
 x			- PVPUI, HonorFrame now has a 'FactionBadge' texture
 √			- PartyPoseUI, new frame 'Border'
 √			- TalentUI, TalentList now uses 'SimplePanelTemplate'
+√			- WarboardUI, gains 'SubHeader'$ texture
 √			- WarfrontsPartyPoseUI, new frame 'OverlayElements'
 √			- WorldMap, BorderFrame now uses 'PortraitFrameTemplateMinimizable'
+			- BankFrame, 'BankItemButtonBagTemplate' now a CheckButton
 √			- DressUpFrame, now uses 'ButtonFrameTemplateMinimizable'
 x			- ExtraActionBar, loses its '$parentFlash' texture
+			- FriendsFrame, removed 'FriendsFrameButtonTemplate'
+			- InterfaceOptionsFrame, $parentTab1/2 lose their 'BACKGROUND' layer "$parentTabSpacer/1"
+			- ItemButtonTemplate, gaines 'ItemContextOverlay'
 x			- LFDFrame, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
-x			- OptionsFrameListTemplate, gains a backdrop, 'parentList' loses its backdrop
+x			- OptionsFrameListTemplate, loses its layers & gains a backdrop, 'parentList' loses its backdrop
 x			- RaidFinder, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
 x			- ScenarioFinder, loses 'parentTopTileStreaks', 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
+			- StackSplitFrame, gains some textures & fontstrings, buttons are renamed
 
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 ?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
+
+	I	ScenarioChallengeMode, reported by Metallan, 15.08.18
+		- Still got filigree texture visible ?
+		- Bar texture now visible but doesn't move in response to decrease in time
+
+	I	BFAMissionUI, reported by epidemedabear, 19.10.18
+?		- ..\AddOns\Skinner\UIFrames.lua line 2193: attempt to index field 'OverlayElements' (a nil value)
+√		- seems to be detecting PTR erroneously
+
+	I 	Collections, reported by epidemedabear, 19.10.18
+?		-  ..\AddOns\Skinner\PlayerFrames.lua line 1072: attempt to call method 'removeNineSlice' (a nil value)
+√		- seems to be detecting PTR erroneously
