@@ -1111,14 +1111,16 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 	self.initialized.ChatConfig = true
 
 	self:SecureHookScript(_G.ChatConfigFrame, "OnShow", function(this)
-		self:skinStdButton{obj=this.DefaultButton}
-		self:skinStdButton{obj=this.RedockButton}
-		self:skinStdButton{obj=_G.CombatLogDefaultButton}
-		self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
-		self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
-		self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype}
-		self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-4, y1=4}
+		if self.modBtns then
+			self:skinStdButton{obj=this.DefaultButton}
+			self:skinStdButton{obj=this.RedockButton}
+			self:skinStdButton{obj=_G.CombatLogDefaultButton}
+			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
+			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
+		end
+		self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-4, y1=4}
 
 		-- ChatTabManager
 		local setTabState
@@ -1159,13 +1161,15 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			if _G[cBox]:GetBackdrop() then
 				_G[cBox]:SetBackdrop(nil)
 			end
-			if _G[cBox .. "Check"] then
-				aObj:skinCheckButton{obj=_G[cBox .. "Check"]}
-			elseif _G[cBox] then
-				aObj:skinCheckButton{obj=_G[cBox]}
-			end
-			if _G[cBox .. "ColorClasses"] then
-				aObj:skinCheckButton{obj=_G[cBox .. "ColorClasses"]}
+			if self.modChkBtns then
+				if _G[cBox .. "Check"] then
+					aObj:skinCheckButton{obj=_G[cBox .. "Check"]}
+				elseif _G[cBox] then
+					aObj:skinCheckButton{obj=_G[cBox]}
+				end
+				if _G[cBox .. "ColorClasses"] then
+					aObj:skinCheckButton{obj=_G[cBox .. "ColorClasses"]}
+				end
 			end
 
 		end
@@ -1174,7 +1178,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.CHAT_CONFIG_CHAT_LEFT do
 			skinCB("ChatConfigChatSettingsLeftCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G._G.ChatConfigChatSettingsLeft, ft=ftype}
+		self:addSkinFrame{obj=_G._G.ChatConfigChatSettingsLeft, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		--	Channel Settings
 		self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(this)
@@ -1183,50 +1187,54 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
-		self:addSkinFrame{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype}
+		self:addSkinFrame{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		--	Other Settings
 		for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do
 			skinCB("ChatConfigOtherSettingsCombatCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsCombat, ft=ftype}
+		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsCombat, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		for i = 1, #_G.CHAT_CONFIG_OTHER_PVP do
 			skinCB("ChatConfigOtherSettingsPVPCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsPVP, ft=ftype}
+		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsPVP, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		for i = 1, #_G.CHAT_CONFIG_OTHER_SYSTEM do
 			skinCB("ChatConfigOtherSettingsSystemCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsSystem, ft=ftype}
+		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsSystem, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		for i = 1, #_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
 			skinCB("ChatConfigOtherSettingsCreatureCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsCreature, ft=ftype}
+		self:addSkinFrame{obj=_G.ChatConfigOtherSettingsCreature, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		--	Combat Settings
 		-- Filters
 		_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBarBorder:Hide()
 		self:skinSlider{obj=_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar}
-		self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersDeleteButton}
-		self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersAddFilterButton}
-		self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersCopyFilterButton}
-		self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7}
-		self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersDeleteButton}
+			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersAddFilterButton}
+			self:skinStdButton{obj=_G.ChatConfigCombatSettingsFiltersCopyFilterButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.ChatConfigMoveFilterUpButton, es=12, ofs=-5, x2=-6, y2=7}
+			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7}
+		end
 
-		self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype}
+		self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype, kfs=true, nb=true,ofs=0}
 
 		-- Message Sources
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
 			skinCB("CombatConfigMessageSourcesDoneByCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneBy, ft=ftype}
+		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneBy, ft=ftype, kfs=true, nb=true,ofs=0}
 		for i = 1, #_G.COMBAT_CONFIG_MESSAGESOURCES_TO do
 			skinCB("CombatConfigMessageSourcesDoneToCheckBox" .. i)
 		end
-		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneTo, ft=ftype}
+		self:addSkinFrame{obj=_G.CombatConfigMessageSourcesDoneTo, ft=ftype, kfs=true, nb=true,ofs=0}
 
 		-- Message Type
 		for i, val in ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
@@ -1258,40 +1266,45 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i = 1, #_G.COMBAT_CONFIG_UNIT_COLORS do
 			_G["CombatConfigColorsUnitColorsSwatch" .. i]:SetBackdrop(nil)
 		end
-		self:addSkinFrame{obj=_G.CombatConfigColorsUnitColors, ft=ftype}
-		self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingLine}
-		self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingAbility}
-		self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingDamage}
-		self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingSchool}
-		self:addSkinFrame{obj=_G.CombatConfigColorsHighlighting, ft=ftype}
-		self:skinCheckButton{obj=_G.CombatConfigColorsColorizeUnitNameCheck}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeUnitName, ft=ftype}
-		self:skinCheckButton{obj=_G.CombatConfigColorsColorizeSpellNamesCheck}
-		self:skinCheckButton{obj=_G.CombatConfigColorsColorizeSpellNamesSchoolColoring}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeSpellNames, ft=ftype}
-		self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberCheck}
-		self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberSchoolColoring}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeDamageNumber, ft=ftype}
-		self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageSchoolCheck}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeDamageSchool, ft=ftype}
-		self:skinCheckButton{obj=_G.CombatConfigColorsColorizeEntireLineCheck}
-		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeEntireLine, ft=ftype}
-
-		-- Formatting
-		self:skinCheckButton{obj=_G.CombatConfigFormattingShowTimeStamp}
-		self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
-		self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
-		self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
-		self:skinCheckButton{obj=_G.CombatConfigFormattingItemNames}
-		self:skinCheckButton{obj=_G.CombatConfigFormattingFullText}
+		self:addSkinFrame{obj=_G.CombatConfigColorsUnitColors, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addSkinFrame{obj=_G.CombatConfigColorsHighlighting, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeUnitName, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeSpellNames, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeDamageNumber, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeDamageSchool, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:addSkinFrame{obj=_G.CombatConfigColorsColorizeEntireLine, ft=ftype, kfs=true, nb=true, ofs=0}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingLine}
+			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingAbility}
+			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingDamage}
+			self:skinCheckButton{obj=_G.CombatConfigColorsHighlightingSchool}
+			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeUnitNameCheck}
+			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeSpellNamesCheck}
+			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeSpellNamesSchoolColoring}
+			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberCheck}
+			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageNumberSchoolColoring}
+			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeDamageSchoolCheck}
+			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeEntireLineCheck}
+			-- Formatting
+			self:skinCheckButton{obj=_G.CombatConfigFormattingShowTimeStamp}
+			self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
+			self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
+			self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
+			self:skinCheckButton{obj=_G.CombatConfigFormattingItemNames}
+			self:skinCheckButton{obj=_G.CombatConfigFormattingFullText}
+		end
 
 		-- Settings
 		self:skinEditBox{obj=_G.CombatConfigSettingsNameEditBox , regs={6}} -- 6 is text
-		self:skinStdButton{obj=_G.CombatConfigSettingsSaveButton}
-		self:skinCheckButton{obj=_G.CombatConfigSettingsShowQuickButton}
-		self:skinCheckButton{obj=_G.CombatConfigSettingsSolo}
-		self:skinCheckButton{obj=_G.CombatConfigSettingsParty}
-		self:skinCheckButton{obj=_G.CombatConfigSettingsRaid}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.CombatConfigSettingsSaveButton}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.CombatConfigSettingsShowQuickButton}
+			self:skinCheckButton{obj=_G.CombatConfigSettingsSolo}
+			self:skinCheckButton{obj=_G.CombatConfigSettingsParty}
+			self:skinCheckButton{obj=_G.CombatConfigSettingsRaid}
+		end
 
 		-- Tabs
 		for i = 1, #_G.COMBAT_CONFIG_TABS do
