@@ -43,7 +43,7 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 	--	Options Frame
 	self:keepFontStrings(_G.FishingOptionsFrame)
 	-- General Tab
-	self:skinSlider{obj=_G.FishingBuddyOption_MaxVolumeSlider, hgt=-2}
+	self:skinSlider{obj=_G.FishingBuddyOption_MaxVolumeSlider}
 	self:skinDropDown{obj=_G.FBOutfitManagerMenu}
 	-- Fishing Tab
 	self:skinDropDown{obj=_G.FBMouseEventMenu}

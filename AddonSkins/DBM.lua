@@ -128,7 +128,7 @@ aObj.lodAddons["DBM-GUI"] = function(self) -- v 8.0.1
                 elseif child:IsObjectType("EditBox") then
                     aObj:skinEditBox{obj=child, regs={6}}
 				elseif child:IsObjectType("Slider") then
-					aObj:skinSlider{obj=child, hgt=-2}
+					aObj:skinSlider{obj=child}
 				end
 			end
 		end

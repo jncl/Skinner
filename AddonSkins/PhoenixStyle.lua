@@ -42,7 +42,7 @@ aObj.addonsToSkin.PhoenixStyle = function(self) -- v 8.002
 		self:Unhook("psfautomarldraw")
 	end)
 	skinKids(_G.PSFmain4)
-	self:skinSlider{obj=_G.PSFmain4_Timerref, hgt=-2}
+	self:skinSlider{obj=_G.PSFmain4_Timerref}
 	self:addSkinFrame{obj=_G.PSFmain4, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Timers
 	skinKids(_G.PSFmain5)
@@ -68,8 +68,8 @@ aObj.addonsToSkin.PhoenixStyle = function(self) -- v 8.002
 	skinKids(_G.PSFmainchated)
 	self:addSkinFrame{obj=_G.PSFmainchated, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Font change
-	self:skinSlider{obj=_G.PSFmainfontchange_slid1, hgt=-2}
-	self:skinSlider{obj=_G.PSFmainfontchange_slid2, hgt=-2}
+	self:skinSlider{obj=_G.PSFmainfontchange_slid1}
+	self:skinSlider{obj=_G.PSFmainfontchange_slid2}
 	self:skinStdButton{obj=_G.PSFmainfontchange_Buttonrezet}
 	self:addSkinFrame{obj=_G.PSFmainfontchange, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	-- Credits
@@ -104,10 +104,10 @@ aObj.addonsToSkin.PhoenixStyle = function(self) -- v 8.002
 
 	-- Saved Info Module
 	skinKids(_G.PSFmainfrainsavedinfo)
-	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_Combatsvd1, hgt=-2}
-	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_Combatsvd2, hgt=-2}
-	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_slid1, hgt=-2}
-	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_slid2, hgt=-2}
+	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_Combatsvd1}
+	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_Combatsvd2}
+	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_slid1}
+	self:skinSlider{obj=_G.PSFmainfrainsavedinfo_slid2}
 	self:addSkinFrame{obj=_G.PSFmainfrainsavedinfo, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:SecureHook("opensiplayers", function()
 		skinDD(_G.DropDownsiplayerchoose)
@@ -188,7 +188,7 @@ aObj.addonsToSkin.PhoenixStyle = function(self) -- v 8.002
 
 	-- Raid options module
 	self:skinStdButton{obj=_G.PSFraidopt_Buttonrez}
-	self:skinSlider{obj=_G.PSFraidopt_Combatsvd1, hgt=-2}
+	self:skinSlider{obj=_G.PSFraidopt_Combatsvd1}
 	self:addSkinFrame{obj=_G.PSFraidopt, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 
 	-- Donations frame

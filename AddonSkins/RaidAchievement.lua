@@ -62,8 +62,8 @@ aObj.addonsToSkin.RaidAchievement = function(self) -- v 8.002
 	self:addSkinFrame{obj=_G.PSFeamain12, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:addSkinFrame{obj=_G.PSFeamain10, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	self:addSkinFrame{obj=_G.PSFeamain11, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
-	self:skinSlider{obj=_G.PSFeamainmanyach_slider1, hgt=-2}
-	self:skinSlider{obj=_G.PSFeamainmanyach_slider2, hgt=-2}
+	self:skinSlider{obj=_G.PSFeamainmanyach_slider1}
+	self:skinSlider{obj=_G.PSFeamainmanyach_slider2}
 	self:skinStdButton{obj=_G.PSFeamainmanyach_Buttonon}
 	self:addSkinFrame{obj=_G.PSFeamainmanyach, ft="a", kfs=true, nb=true, x1=x1, y1=y1}
 	skinBtns(_G.PSFeamainWotlk)
