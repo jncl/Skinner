@@ -659,7 +659,7 @@ local function __addSkinFrame(opts)
 		opts.y1 = opts.y1 or 2
 		opts.y2 = opts.y2 or -2
 		if aObj.isPTR then
-			opts.x2 = opts.x2 or 2
+			opts.x2 = opts.x2 or 3
 		else
 			opts.x2 = opts.x2 or 1
 		end
@@ -973,7 +973,7 @@ function aObj:skinColHeads(buttonName, noCols)
 		if not btn.sb then -- only do if not already skinned as a button
 			self:removeRegions(btn, {1, 2, 3})
 			-- CHANGED: ft="a" is used to stop buttons being skinned automatically
-			self:addSkinFrame{obj=btn, ft="a", nb=true}
+			self:addSkinFrame{obj=btn, ft="a", nb=true, ofs=1}
 		end
 	end
 	btn = nil
