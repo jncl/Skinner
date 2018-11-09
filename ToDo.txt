@@ -20,50 +20,108 @@ Legend:
 		Added:
 x			- CommunitiesCalendar
 √			- GuildNameChange
+x			- DebugTools: TexelSnappingVisualizer
+x			- UIWidgetTemplateSpellDisplay
+x			- AchievementUtil
+x			- CalendarUtil
+x			- ItemUtil
 		Deleted:
 ?			- HonorFrame
 		Updated:
 √			- Several frames/Insets have a new subFrame named 'NineSlice', textures need removing from it
 √			- AlliedRaceUI
+x			- ArchaeologyUI
+x			- AzeriteEmpoweredItemChannelMixin
+x			- AzeriteEmpoweredItemUITemplates
+x			- ChallengesUI
+√			- Collections
+x			- CommunitiesAddDialog
 √			- CommunitiesFrame, now uses 'ButtonFrameTemplateMinimizable'
 x			- CommunitiesInvitationFrame, now has 'IconRing' named texture
 x			- CommunitiesMemberList, new frame 'WatermarkFrame'
+x			- CommunitiesTabs
+x			- EncounterJournal
+			- GarrisonMissionTemplates
 √			- BFAMissionUI, new frame 'OverlayElements'
 			- Garrison_RecruiterUI, removed 'BORDER' layer sublevel 1
+			- GarrisonShipyardUI
 x			- InspectPVPFrame, removed '.PortraitMouseOverFrame'
 √			- IslandsPartyPoseUI, new frame 'OverlayElements'
+x			- IslandsQueueUI
+x			- ItemSocketingUI
+x			- LookingForGuildUI
+			- ClassNameplateBar
+				- DeathKnight
+				- Mage
+				- Monk
+				- Paladin
+				- RogueDruid
+				- Warlock
+			- NamePlates
+			- NamePlatesCommentatorDisplay
 √			- OrderHallTalents, CurrencyBG
 √			- OrderHallTalents, new frame 'OverlayElements'
 x			- PVPUI, parentKey="Reward" now a button NOT a frame
 x			- PVPUI, HonorFrame now has a 'FactionBadge' texture
+√			- PVPUI, new frame, 'NewSeasonPopup'
 √			- PartyPoseUI, new frame 'Border'
+			- QuestChoice
+X			- StoreUI
 √			- TalentUI, TalentList now uses 'SimplePanelTemplate'
+X			- TokenUI
+			- UIWidgetTemplateBase
+			- UIWidgetTemplateStatusBar
 √			- WarboardUI, gains 'SubHeader'$ texture
 √			- WarfrontsPartyPoseUI, new frame 'OverlayElements'
 √			- WorldMap, BorderFrame now uses 'PortraitFrameTemplateMinimizable'
-			- BankFrame, 'BankItemButtonBagTemplate' now a CheckButton
-√			- DressUpFrame, now uses 'ButtonFrameTemplateMinimizable'
+X			- WowTokenUI
+√			- BankFrame, 'BankItemButtonBagTemplate' now a CheckButton
+x			- CharacterFrame
+√			- ChatConfigFrame
+x			- ContainerFrame
+x			- DressUpFrames
+√				- DressUpFrame, now uses 'ButtonFrameTemplateMinimizable'
 x			- ExtraActionBar, loses its '$parentFlash' texture
-			- FriendsFrame, removed 'FriendsFrameButtonTemplate'
-			- InterfaceOptionsFrame, $parentTab1/2 lose their 'BACKGROUND' layer "$parentTabSpacer/1"
-			- ItemButtonTemplate, gaines 'ItemContextOverlay'
+x			- FriendsFrame, removed 'FriendsFrameButtonTemplate'
+x			- HelpFrame
+x			- InterfaceOptionsFrame, $parentTab1/2 lose their 'BACKGROUND' layer "$parentTabSpacer/1"
+			- ItemButtonTemplate, gains 'ItemContextOverlay'
+			- ItemRef
 x			- LFDFrame, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
+x			- LFGList
+x			- LFRFrame
+			- LootFrame
+x			- MainMenuBar
+x			- MainMenuBarMicroButtons
+x			- Minimap
+x			- OptionsFrameTemplates
 x			- OptionsFrameListTemplate, loses its layers & gains a backdrop, 'parentList' loses its backdrop
+x			- PaperDollFrame
+			- PetStable
 x			- RaidFinder, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
+x			- ReputationFrame
 x			- ScenarioFinder, loses 'parentTopTileStreaks', 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
-			- StackSplitFrame, gains some textures & fontstrings, buttons are renamed
+x			- SpellBookFrame
+√			- StackSplitFrame, gains some textures & fontstrings, buttons are renamed
+			- StatusTrackingBar
+			- StatusTrackingBarTemplate
+			- UIDropDownMenuTemplates
+			- UIPanelTemplates
+			- WorldStateFrame
 
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 ?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-	I	ScenarioChallengeMode, reported by Metallan, 15.08.18
-		- Still got filigree texture visible ?
-		- Bar texture now visible but doesn't move in response to decrease in time
+	I	HealBot,  reported by epidemedabear, 22.10.18
+√		-  ..\AddOns\Skinner\Skinner.lua line 1350: attempt to index field 'obj' (a nil value)
+			Skinner\Skinner.lua:1406: skinSlider()
+			Skinner\AddonSkins\HealBot.lua:130:
+			Skinner\AddonSkins\HealBot.lua:6
 
-	I	BFAMissionUI, reported by epidemedabear, 19.10.18
-?		- ..\AddOns\Skinner\UIFrames.lua line 2193: attempt to index field 'OverlayElements' (a nil value)
-√		- seems to be detecting PTR erroneously
-
-	I 	Collections, reported by epidemedabear, 19.10.18
-?		-  ..\AddOns\Skinner\PlayerFrames.lua line 1072: attempt to call method 'removeNineSlice' (a nil value)
-√		- seems to be detecting PTR erroneously
+	I	Communities, reported by epidemedabear, 25.10.18
+≈		-  ..\AddOns\Skinner\Skinner.lua line 1107: attempt to index field 'obj' (a nil value)
+			Skinner\Skinner.lua:1107:
+			Skinner\Skinner.lua:1086
+			Skinner\Skinner.lua:1201: skinEditBox()
+			Skinner\PlayerFrames.lua:1558:
+			Skinner\PlayerFrames.lua:1557
