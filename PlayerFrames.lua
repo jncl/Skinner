@@ -800,31 +800,39 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-5}
 
-		self:skinCloseButton{obj=this.HeirloomTabHelpBox.CloseButton, noSkin=true}
-		self:skinCloseButton{obj=this.WardrobeTabHelpBox.CloseButton, noSkin=true}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.HeirloomTabHelpBox.CloseButton, noSkin=true}
+			self:skinCloseButton{obj=this.WardrobeTabHelpBox.CloseButton, noSkin=true}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.MountJournal, "OnShow", function(this)
-		self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
 		self:removeInset(this.LeftInset)
 		self:removeInset(this.RightInset)
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, x=-6, y=-2} -- 6 is text, 7 is icon
-		self:skinStdButton{obj=_G.MountJournalFilterButton}
-		self:skinDropDown{obj=_G.MountJournalFilterDropDown}
 		self:removeInset(this.MountCount)
 		self:keepFontStrings(this.MountDisplay)
 		self:keepFontStrings(this.MountDisplay.ShadowOverlay)
-		self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon}
-		self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-4, y2=5}
-		self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-4, y2=5}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
+			self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon}
+			self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-4, y2=5}
+			self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-4, y2=5}
+		end
 		self:skinSlider{obj=this.ListScrollFrame.scrollBar, wdth=-4}
 		self:removeMagicBtnTex(this.MountButton)
-		self:skinStdButton{obj=this.MountButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.MountJournalFilterButton}
+			self:skinDropDown{obj=_G.MountJournalFilterDropDown}
+			self:skinStdButton{obj=this.MountButton}
+		end
 		for i = 1, #this.ListScrollFrame.buttons do
 			this.ListScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=this.ListScrollFrame.buttons[i], relTo=this.ListScrollFrame.buttons[i].icon, reParent={this.ListScrollFrame.buttons[i].favorite}}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.ListScrollFrame.buttons[i], relTo=this.ListScrollFrame.buttons[i].icon, reParent={this.ListScrollFrame.buttons[i].favorite}}
+			end
 		end
 
 		self:Unhook(this, "OnShow")
@@ -834,14 +842,18 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:removeInset(this.PetCount)
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
-		self:addButtonBorder{obj=this.HealPetButton, sec=true}
 		_G.PetJournalHealPetButtonBorder:SetTexture(nil)
-		self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.HealPetButton, sec=true}
+			self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3}
+		end
 		self:removeInset(this.LeftInset)
 		self:removeInset(this.PetCardInset)
 		self:removeInset(this.RightInset)
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, x=-6, y=-2} -- 6 is text, 7 is icon
-		self:skinStdButton{obj=_G.PetJournalFilterButton}
+		if self.modBtns then
+			 self:skinStdButton{obj=_G.PetJournalFilterButton}
+		end
 		self:skinDropDown{obj=_G.PetJournalFilterDropDown}
 
 		-- PetList
@@ -869,7 +881,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:addSkinFrame{obj=lop, ft=ftype, aso={bd=8, ng=true}, x1=-4, y2=-4} -- use asf here as button already has a border
 			for i = 1, 3 do
 				self:removeRegions(lop["spell" .. i], {1, 3}) -- background, blackcover
-				self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}}
+				if self.modBtnBs then
+					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}}
+				end
 			end
 		end
 		lop = nil
@@ -878,7 +892,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		local pc = this.PetCard
 		self:changeTandC(pc.PetInfo.levelBG, self.lvlBG)
 		pc.PetInfo.qualityBorder:SetAlpha(0)
-		self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=pc.PetInfo, relTo=pc.PetInfo.icon, reParent={pc.PetInfo.levelBG, pc.PetInfo.level, pc.PetInfo.favorite}}
+		end
 		self:removeRegions(pc.HealthFrame.healthBar, {1, 2, 3})
 		self:skinStatusBar{obj=pc.HealthFrame.healthBar, fi=0}
 		self:removeRegions(pc.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
@@ -887,7 +903,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:addSkinFrame{obj=pc, ft=ftype, aso={bd=8, ng=true}, ofs=4}
 		for i = 1, 6 do
 			pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
-			self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
+			end
 		end
 		pc = nil
 
@@ -912,9 +930,11 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end
 
 		self:removeMagicBtnTex(this.FindBattleButton)
-		self:skinStdButton{obj=this.FindBattleButton}
 		self:removeMagicBtnTex(this.SummonButton)
-		self:skinStdButton{obj=this.SummonButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.FindBattleButton}
+			self:skinStdButton{obj=this.SummonButton}
+		end
 		self:removeRegions(this.AchievementStatus, {1, 2})
 		self:skinDropDown{obj=this.petOptionsMenu}
 
@@ -956,7 +976,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				then
 					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
 				else
-					btn.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+					btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
 				end
 			end
 			btn = nil
@@ -1044,13 +1064,17 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
+		_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 		self:skinStatusBar{obj=this.progressBar, fi=0}
 		self:removeRegions(this.progressBar, {2, 3})
-		self:skinStdButton{obj=this.FilterButton}
 		self:skinDropDown{obj=this.FilterDropDown}
 		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
 
-		self:skinCloseButton{obj=this.SetsTabHelpBox.CloseButton, noSkin=true}
+		if self.modBtns then
+			self:skinStdButton{obj=this.FilterButton}
+			_G.RaiseFrameLevelByTwo(this.FilterButton) -- raise above SetsCollectionFrame when displayed on it
+			self:skinCloseButton{obj=this.SetsTabHelpBox.CloseButton, noSkin=true}
+		end
 
 		self:SecureHookScript(this.searchProgressFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
@@ -1062,12 +1086,10 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
+		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -5, 3, self.isPTR and 7 or 5, -8
+
 		self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("BORDER")
-			this:DisableDrawLayer("OVERLAY")
-			this:DisableDrawLayer("ARTWORK", 1)
-			this:DisableDrawLayer("ARTWORK", 2)
 			if self.isPTR then
 				self:removeNineSlice(this.NineSlice)
 			end
@@ -1076,10 +1098,16 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 			self:skinDropDown{obj=this.RightClickDropDown}
 			self:skinDropDown{obj=this.WeaponDropDown}
-			self:SecureHookScript(this.HelpBox, "OnShow", function(this)
-				self:skinCloseButton{obj=this.CloseButton,noSkin=true}
-				self:Unhook(this, "OnShow")
-			end)
+			if self.modBtns then
+				self:SecureHookScript(this.HelpBox, "OnShow", function(this)
+					self:skinCloseButton{obj=this.CloseButton,noSkin=true}
+					self:Unhook(this, "OnShow")
+				end)
+			end
+
+			-- add skin frame, so tabs look better than without a frame
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+
 			self:Unhook(this, "OnShow")
 		end)
 		if this.ItemsCollectionFrame:IsShown() then
@@ -1099,25 +1127,30 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinDropDown{obj=this.ScrollFrame.FavoriteDropDown}
 			for i = 1, #this.ScrollFrame.buttons do
 				this.ScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=this.ScrollFrame.buttons[i], relTo=this.ScrollFrame.buttons[i].Icon}
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=this.ScrollFrame.buttons[i], relTo=this.ScrollFrame.buttons[i].Icon}
+				end
 			end
-			colourBtns(this.ScrollFrame)
 			this.DetailsFrame:DisableDrawLayer("BACKGROUND")
 			this.DetailsFrame:DisableDrawLayer("BORDER")
-			self:skinStdButton{obj=this.DetailsFrame.VariantSetsButton}
 			self:skinDropDown{obj=this.DetailsFrame.VariantSetsDropDown}
-			self:SecureHook(this.ScrollFrame, "update", function(this) -- use lowercase for scrollframe function
-				colourBtns(this)
-			end)
+			if self.modBtns then
+				 self:skinStdButton{obj=this.DetailsFrame.VariantSetsButton}
+			end
+			if self.modBtnBs then
+				colourBtns(this.ScrollFrame)
+				self:SecureHook(this.ScrollFrame, "update", function(this) -- use lowercase for scrollframe function
+					colourBtns(this)
+				end)
+			end
+
+			-- add skin frame, so tabs look better than without a frame
+			self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+
 			self:Unhook(this, "OnShow")
 		end)
 
 		self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			this:DisableDrawLayer("BORDER")
-			this:DisableDrawLayer("OVERLAY")
-			this:DisableDrawLayer("ARTWORK", 1)
-			this:DisableDrawLayer("ARTWORK", 2)
 			if self.isPTR then
 				self:removeNineSlice(this.NineSlice)
 			end
@@ -1125,6 +1158,10 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			if self.modBtnBs then
 				skinPageBtns(this)
 			end
+
+			-- add skin frame, so tabs look better than without a frame
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -1132,7 +1169,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end)
 
 	self:SecureHookScript(_G.WardrobeFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-5}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1140,29 +1177,32 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	self:SecureHookScript(_G.WardrobeTransmogFrame, "OnShow", function(this)
 		this:DisableDrawLayer("ARTWORK")
 		self:removeInset(this.Inset)
-
 		self:skinDropDown{obj=this.OutfitDropDown, y2=-4}
-		self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
-
-		self:addButtonBorder{obj=this.Model.ClearAllPendingButton, ofs=1, x2=0, relTo=this.Model.ClearAllPendingButton.Icon}
 		for i = 1, #this.Model.SlotButtons do
 			this.Model.SlotButtons[i].Border:SetTexture(nil)
-			self:addButtonBorder{obj=this.Model.SlotButtons[i], ofs=-2}
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=this.Model.SlotButtons[i], ofs=-2}
+			end
 		end
 		this.Model.controlFrame:DisableDrawLayer("BACKGROUND")
-
-		self:skinStdButton{obj=this.ApplyButton}
 		self:skinDropDown{obj=this.SpecDropDown}
-		self:addButtonBorder{obj=this.SpecButton, ofs=0}
 
-		self:SecureHookScript(this.OutfitHelpBox, "OnShow", function(this)
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-			self:Unhook(this, "OnShow")
-		end)
-		self:SecureHookScript(this.SpecHelpBox, "OnShow", function(this)
-			self:skinCloseButton{obj=this.CloseButton, noSkin=true}
-			self:Unhook(this, "OnShow")
-		end)
+		if self.modBtns then
+			self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
+			self:skinStdButton{obj=this.ApplyButton, ofs=0}
+			self:SecureHookScript(this.OutfitHelpBox, "OnShow", function(this)
+				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
+				self:Unhook(this, "OnShow")
+			end)
+			self:SecureHookScript(this.SpecHelpBox, "OnShow", function(this)
+				self:skinCloseButton{obj=this.CloseButton, noSkin=true}
+				self:Unhook(this, "OnShow")
+			end)
+		end
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=this.Model.ClearAllPendingButton, ofs=1, x2=0, relTo=this.Model.ClearAllPendingButton.Icon}
+			 self:addButtonBorder{obj=this.SpecButton, ofs=0}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1413,8 +1453,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		this:DisableDrawLayer("ARTWORK")
 		self:removeInset(this.InsetFrame)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
-		self:skinStdButton{obj=this.AcceptButton}
-		self:skinStdButton{obj=this.DeclineButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.AcceptButton}
+			self:skinStdButton{obj=this.DeclineButton}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1434,7 +1476,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:removeRegions(btn, {1, 2, 3, 4})
 			btn.NormalBorder:DisableDrawLayer("BACKGROUND")
 			btn.DisabledBorder:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=btn, relTo=btn.Icon}
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=btn, relTo=btn.Icon}
+			end
 		end
 		btn = nil
 		this.Rewards.Bg:SetTexture(nil)
@@ -1444,7 +1488,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			btn = this.Rewards.RewardsContainer.buttons[i]
 			btn:GetNormalTexture():SetAlpha(0)
 			btn.DisabledBG:SetAlpha(0)
-			self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Lock}}
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Lock}}
+			end
 		end
 		btn = nil
 		self:skinDropDown{obj=this.Rewards.DropDown}
@@ -1460,12 +1506,14 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		for i = 1, #this.Info.Challenges do
 			-- this.Info.Challenges[i]
 		end
-		self:skinStdButton{obj=this.Info.EditMOTDButton}
-		self:skinStdButton{obj=this.Info.EditDetailsButton}
 		self:skinSlider{obj=this.Info.DetailsFrame.ScrollBar, wdth=-6}
 		this.News:DisableDrawLayer("BACKGROUND")
-		self:skinStdButton{obj=this.News.SetFiltersButton}
-		self:skinStdButton{obj=this.News.GMImpeachButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.Info.EditMOTDButton}
+			self:skinStdButton{obj=this.Info.EditDetailsButton}
+			self:skinStdButton{obj=this.News.SetFiltersButton}
+			self:skinStdButton{obj=this.News.GMImpeachButton}
+		end
 		self:skinSlider{obj=this.News.Container.ScrollBar, wdth=-4}
 		for i = 1, #this.News.Container.buttons do
 			this.News.Container.buttons[i].header:SetTexture(nil)
@@ -1483,8 +1531,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			this:DisableDrawLayer("BACKGROUND")
 			self:skinEditBox{obj=this.EditBox, regs={6}} -- 6 is text
 			if self.modBtns then
-				self:skinCheckButton{obj=this.CloseButton}
 				self:skinStdButton{obj=this.Button}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.CloseButton}
 			end
 			self:Unhook(this, "OnShow")
 		end)
@@ -1504,12 +1554,16 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(cFrame.NotificationSettingsDialog, "OnShow", function(this)
 		self:skinDropDown{obj=this.CommunitiesListDropDownMenu}
 		self:skinSlider{obj=this.ScrollFrame.ScrollBar, wdth=-4}
-		self:skinCheckButton{obj=this.ScrollFrame.Child.QuickJoinButton}
-		self:skinStdButton{obj=this.ScrollFrame.Child.NoneButton}
-		self:skinStdButton{obj=this.ScrollFrame.Child.AllButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
-		self:skinStdButton{obj=this.CancelButton}
-		self:skinStdButton{obj=this.OkayButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.ScrollFrame.Child.NoneButton}
+			self:skinStdButton{obj=this.ScrollFrame.Child.AllButton}
+			self:skinStdButton{obj=this.CancelButton}
+			self:skinStdButton{obj=this.OkayButton}
+		end
+		if self.modChkBtns then
+			 self:skinCheckButton{obj=this.ScrollFrame.Child.QuickJoinButton}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1525,8 +1579,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end
 
 	self:SecureHookScript(cFrame.GuildMemberDetailFrame, "OnShow", function(this)
-		self:skinStdButton{obj=this.RemoveButton}
-		self:skinStdButton{obj=this.GroupInviteButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.RemoveButton}
+			self:skinStdButton{obj=this.GroupInviteButton}
+		end
 		self:skinDropDown{obj=this.RankDropdown}
 		self:addSkinFrame{obj=this.NoteBackground, ft=ftype}
 		self:addSkinFrame{obj=this.OfficerNoteBackground, ft=ftype}
@@ -1542,8 +1598,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(_G.CommunitiesAvatarPickerDialog, "OnShow", function(this)
 		self:skinSlider{obj=this.ScrollFrame.ScrollBar, rt="background"}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
-		self:skinStdButton{obj=this.CancelButton}
-		self:skinStdButton{obj=this.OkayButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.CancelButton}
+			self:skinStdButton{obj=this.OkayButton}
+		end
 		if self.modBtnBs then
 			for i = 1, 5 do
 				for j = 1, 6 do
@@ -1555,36 +1613,45 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	self:SecureHookScript(_G.CommunitiesTicketManagerDialog, "OnShow", function(this)
-		self:skinEditBox{obj=this.LinkBox, regs={6}} -- 6 is text
-		self:skinStdButton{obj=this.Copy}
-		self:skinDropDown{obj=this.ExpiresDropDownMenu}
 		self:skinDropDown{obj=this.UsesDropDownMenu}
-		self:skinStdButton{obj=this.GenerateLinkButton}
-		self:addButtonBorder{obj=this.MaximizeButton, ofs=0}
-		-- InviteManager
 		this.InviteManager.ArtOverlay:DisableDrawLayer("OVERLAY")
 		this.InviteManager.ListScrollFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.InviteManager.ListScrollFrame.scrollBar, wdth=-4}
 		skinColumnDisplay(this.InviteManager.ColumnDisplay)
-		for i = 1, #this.InviteManager.ListScrollFrame.buttons do
-			self:skinStdButton{obj=this.InviteManager.ListScrollFrame.buttons[i].CopyLinkButton}
-			self:addButtonBorder{obj=this.InviteManager.ListScrollFrame.buttons[i].RevokeButton, ofs=0}
+		if self.modBtns then
+			for i = 1, #this.InviteManager.ListScrollFrame.buttons do
+				self:skinStdButton{obj=this.InviteManager.ListScrollFrame.buttons[i].CopyLinkButton}
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=this.InviteManager.ListScrollFrame.buttons[i].RevokeButton, ofs=0}
+				end
+			end
 		end
 		self:addSkinFrame{obj=this.InviteManager, ft=ftype, kfs=true, nb=true, x1=8, y1=-8, x2=-12, y2=-4}
-		self:skinStdButton{obj=this.Close}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y1=-8, y2=6}
+		if self.modBtns then
+			self:skinStdButton{obj=this.LinkToChat}
+			self:skinStdButton{obj=this.Copy}
+			self:skinStdButton{obj=this.GenerateLinkButton}
+			self:skinDropDown{obj=this.ExpiresDropDownMenu}
+			self:skinStdButton{obj=this.Close}
+		end
+		if self.modBtnBs then
+			 self:addButtonBorder{obj=this.MaximizeButton, ofs=0}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.CommunitiesSettingsDialog, "OnShow", function(this)
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
 		self:skinEditBox{obj=this.ShortNameEdit, regs={6}} -- 6 is text
-		self:skinStdButton{obj=this.ChangeAvatarButton}
 		self:addSkinFrame{obj=this.MessageOfTheDay, ft=ftype, kfs=true, nb=true, ofs=8}
 		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, nb=true, ofs=8}
-		self:skinStdButton{obj=this.Delete}
-		self:skinStdButton{obj=this.Accept}
-		self:skinStdButton{obj=this.Cancel}
+		if self.modBtns then
+			self:skinStdButton{obj=this.ChangeAvatarButton}
+			self:skinStdButton{obj=this.Delete}
+			self:skinStdButton{obj=this.Accept}
+			self:skinStdButton{obj=this.Cancel}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, nb=true, ofs=-10}
 		self:Unhook(this, "OnShow")
 	end)
@@ -1592,25 +1659,29 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(_G.CommunitiesGuildRecruitmentFrame, "OnShow", function(this)
 		-- Recruitment
 		this.Recruitment.InterestFrame:DisableDrawLayer("BACKGROUND")
-		self:skinCheckButton{obj=this.Recruitment.InterestFrame.QuestButton}
-		self:skinCheckButton{obj=this.Recruitment.InterestFrame.RaidButton}
-		self:skinCheckButton{obj=this.Recruitment.InterestFrame.DungeonButton}
-		self:skinCheckButton{obj=this.Recruitment.InterestFrame.PvPButton}
-		self:skinCheckButton{obj=this.Recruitment.InterestFrame.RPButton}
 		this.Recruitment.AvailabilityFrame:DisableDrawLayer("BACKGROUND")
-		self:skinCheckButton{obj=this.Recruitment.AvailabilityFrame.WeekdaysButton}
-		self:skinCheckButton{obj=this.Recruitment.AvailabilityFrame.WeekendsButton}
 		this.Recruitment.RolesFrame:DisableDrawLayer("BACKGROUND")
-		self:skinCheckButton{obj=this.Recruitment.RolesFrame.TankButton.checkButton}
-		self:skinCheckButton{obj=this.Recruitment.RolesFrame.HealerButton.checkButton}
-		self:skinCheckButton{obj=this.Recruitment.RolesFrame.DamagerButton.checkButton}
 		this.Recruitment.LevelFrame:DisableDrawLayer("BACKGROUND")
 		this.Recruitment.CommentFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.ScrollBar}
 		this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.CommentEditBox.Fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.Recruitment.InterestFrame.QuestButton}
+			self:skinCheckButton{obj=this.Recruitment.InterestFrame.RaidButton}
+			self:skinCheckButton{obj=this.Recruitment.InterestFrame.DungeonButton}
+			self:skinCheckButton{obj=this.Recruitment.InterestFrame.PvPButton}
+			self:skinCheckButton{obj=this.Recruitment.InterestFrame.RPButton}
+			self:skinCheckButton{obj=this.Recruitment.AvailabilityFrame.WeekdaysButton}
+			self:skinCheckButton{obj=this.Recruitment.AvailabilityFrame.WeekendsButton}
+			self:skinCheckButton{obj=this.Recruitment.RolesFrame.TankButton.checkButton}
+			self:skinCheckButton{obj=this.Recruitment.RolesFrame.HealerButton.checkButton}
+			self:skinCheckButton{obj=this.Recruitment.RolesFrame.DamagerButton.checkButton}
+		end
 		self:addSkinFrame{obj=this.Recruitment.CommentFrame.CommentInputFrame, ft=ftype, kfs=true}
 		self:removeMagicBtnTex(this.Recruitment.ListGuildButton)
-		self:skinStdButton{obj=this.Recruitment.ListGuildButton}
+		if self.modBtns then
+			 self:skinStdButton{obj=this.Recruitment.ListGuildButton}
+		end
 		-- Applicants
 		for i = 1, #this.Applicants.Container.buttons do
 			self:applySkin{obj=this.Applicants.Container.buttons[i]}
@@ -1620,12 +1691,13 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end
 		self:skinSlider{obj=this.Applicants.Container.scrollBar, wdth=-4}
 		self:removeMagicBtnTex(this.Applicants.InviteButton)
-		self:skinStdButton{obj=this.Applicants.InviteButton}
 		self:removeMagicBtnTex(this.Applicants.MessageButton)
-		self:skinStdButton{obj=this.Applicants.MessageButton}
 		self:removeMagicBtnTex(this.Applicants.DeclineButton)
-		self:skinStdButton{obj=this.Applicants.DeclineButton}
-
+		if self.modBtns then
+			self:skinStdButton{obj=this.Applicants.InviteButton}
+			self:skinStdButton{obj=this.Applicants.MessageButton}
+			self:skinStdButton{obj=this.Applicants.DeclineButton}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
 		self:Unhook(this, "OnShow")
@@ -1634,8 +1706,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(_G.CommunitiesGuildTextEditFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.CommunitiesGuildTextEditFrame.Container.ScrollFrame.ScrollBar, wdth=-6}
 		self:addSkinFrame{obj=_G.CommunitiesGuildTextEditFrame.Container, ft=ftype}
-		self:skinStdButton{obj=_G.CommunitiesGuildTextEditFrameAcceptButton}
-		self:skinStdButton{obj=self:getChild(_G.CommunitiesGuildTextEditFrame, 4)} -- bottom close button
+		if self.modBtns then
+			self:skinStdButton{obj=_G.CommunitiesGuildTextEditFrameAcceptButton}
+			self:skinStdButton{obj=self:getChild(_G.CommunitiesGuildTextEditFrame, 4)} -- bottom close button
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 		self:Unhook(this, "OnShow")
 	end)
@@ -1643,7 +1717,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(_G.CommunitiesGuildLogFrame, "OnShow", function(this)
 		self:skinSlider{obj=this.Container.ScrollFrame.ScrollBar, wdth=-6}
 		self:addSkinFrame{obj=this.Container, ft=ftype}
-		self:skinStdButton{obj=self:getChild(this, 3)} -- bottom close button
+		if self.modBtns then
+			 self:skinStdButton{obj=self:getChild(this, 3)} -- bottom close button
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 		self:Unhook(this, "OnShow")
 	end)
@@ -2663,6 +2739,11 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 			end
 		end
 		self:Unhook(this, "OnShow")
+		if self.modBtnBs then
+			-- run function again to correct button border colours
+			this:Hide()
+			this:Show()
+		end
 	end)
 
 	self:SecureHookScript(_G.InspectGuildFrame, "OnShow", function(this)
@@ -3064,8 +3145,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	end
 
-	-- TODO: TimerBar not appearing in Mythic+
-
 	-- TimerBars
 	aObj:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
 		aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddTimerBar: [%s, %s, %s]", this, block, line)
@@ -3130,7 +3209,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- ScenarioChallengeModeBlock
 	aObj:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0, bgTex=_G.ScenarioChallengeModeBlock.TimerBG, otherTex={_G.ScenarioChallengeModeBlock.TimerBGBack}}
-	aObj:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, kfs=true, nb=true, y2=7}
+	aObj:removeRegions(_G.ScenarioChallengeModeBlock, {3}) -- challengemode-timer atlas
+	aObj:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, nb=true, y2=7}
 	aObj:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
 		for i = 1, #block.Affixes do
 			block.Affixes[i].Border:SetTexture(nil)
@@ -3299,7 +3379,9 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			-- make Icon square
 			self:makeIconSquare(_G.PVPQueueFrame["CategoryButton" .. i], "Icon", true)
 		end
-		self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton, noSkin=true}
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton, noSkin=true}
+		end
 		if self.modBtnBs then
 			-- hook this to change button border colour
 			self:SecureHook("PVPQueueFrame_SetCategoryButtonState", function(btn, enabled)
@@ -3322,18 +3404,24 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			end
 		end)
 		_G.PVPQueueFrame_SelectButton(1) -- select Honor button
-		self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton, noSkin=true}
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.PremadeGroupsPvPTutorialAlert.CloseButton, noSkin=true}
+		end
 
 		-- skin common elements (Honor & Conquest frames)
 		local function skinCommon(frame)
-			frame.ConquestBar:DisableDrawLayer("BORDER")
-			frame.ConquestBar.Reward.Ring:SetTexture(nil)
-			self:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon}
-			aObj:skinStatusBar{obj=frame.ConquestBar, fi=0, bgTex=aObj:getRegion(frame.ConquestBar, 3)}
-			aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
-			aObj:skinCheckButton{obj=frame.TankIcon.checkButton}
-			aObj:skinCheckButton{obj=frame.DPSIcon.checkButton}
 			aObj:removeInset(frame.Inset)
+			frame.ConquestBar:DisableDrawLayer("BORDER")
+			aObj:skinStatusBar{obj=frame.ConquestBar, fi=0, bgTex=aObj:getRegion(frame.ConquestBar, 3)}
+			frame.ConquestBar.Reward.Ring:SetTexture(nil)
+			if self.modBtnBs then
+				aObj:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon}
+			end
+			if aObj.modChkBtns then
+				aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
+				aObj:skinCheckButton{obj=frame.TankIcon.checkButton}
+				aObj:skinCheckButton{obj=frame.DPSIcon.checkButton}
+			end
 		end
 
 		-- Casual
@@ -3345,23 +3433,25 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				this.SpecificFrame.buttons[i].Bg:SetTexture(nil)
 				this.SpecificFrame.buttons[i].Border:SetTexture(nil)
 			end
-			local btns
-			btns = {"RandomBG", "RandomEpicBG", "Arena1", "Brawl"}
 			local btn
-			for _, bName in pairs(btns) do
+			for _, bName in pairs{"RandomBG", "RandomEpicBG", "Arena1", "Brawl"} do
 				btn = this.BonusFrame[bName .. "Button"]
 				btn.NormalTexture:SetTexture(nil)
 				btn:SetPushedTexture(nil)
 				btn.Reward.Border:SetTexture(nil)
-				self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}}
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}}
+				end
 			end
 			btn = nil
-			self:skinCloseButton{obj=this.BonusFrame.BrawlHelpBox.CloseButton, noSkin=true}
 			this.BonusFrame:DisableDrawLayer("BACKGROUND")
 			this.BonusFrame:DisableDrawLayer("BORDER")
 			this.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
 			self:removeMagicBtnTex(this.QueueButton)
-			self:skinStdButton{obj=this.QueueButton}
+			if self.modBtns then
+				self:skinCloseButton{obj=this.BonusFrame.BrawlHelpBox.CloseButton, noSkin=true}
+				self:skinStdButton{obj=this.QueueButton}
+			end
 			self:Unhook(this, "OnShow")
 		end)
 		if _G.HonorFrame:IsShown() then
@@ -3381,12 +3471,12 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			this.Arena3v3.NormalTexture:SetTexture(nil)
 			this.RatedBG.Reward.Border:SetTexture(nil)
 			this.RatedBG.NormalTexture:SetTexture(nil)
+			self:skinDropDown{obj=this.ArenaInviteMenu}
 			self:removeMagicBtnTex(this.JoinButton)
 			if self.modBtns then
 				 self:skinStdButton{obj=this.JoinButton}
 		 		-- N.B. NO CloseButton for NoSeason & Disabled
 			end
-			self:skinDropDown{obj=this.ArenaInviteMenu}
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -3394,12 +3484,51 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		_G.PVPQueueFrame.HonorInset:DisableDrawLayer("BACKGROUND")
 		local hld = _G.PVPQueueFrame.HonorInset.HonorLevelDisplay
 		hld:DisableDrawLayer("BORDER")
-		hld.NextRewardLevel:DisableDrawLayer("BORDER")
-		self:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon}
+		self:removeRegions(hld.NextRewardLevel, {2, 4}) -- IconCover & RingBorder
+		if self.modBtnBs then
+			local function chkBtn(btn)
+				if btn.RewardIcon:IsDesaturated()
+				and btn.IconCover:IsShown()
+				then
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+				else
+					btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				end
+			end
+			self:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon}
+			chkBtn(hld.NextRewardLevel)
+			self:SecureHook(hld, "Update", function(this)
+				chkBtn(this.NextRewardLevel)
+			end)
+		end
 		local srf = _G.PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
 		srf.Ring:SetTexture(nil)
-		self:addButtonBorder{obj=srf, relTo=srf.Icon}
-		hihld, srf = nil, nil
+		if self.modBtnBs then
+			local function chkBtn(btn)
+				if btn.Icon:IsDesaturated()	then
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+				else
+					btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				end
+			end
+			self:addButtonBorder{obj=srf, relTo=srf.Icon}
+			chkBtn(srf)
+			self:SecureHook(srf, "Update", function(this)
+				chkBtn(this)
+			end)
+		end
+		hld, srf = nil, nil
+
+		if self.isPTR then
+			_G.PVPQueueFrame.NewSeasonPopup.NewSeason:SetTextColor(self.HTr, self.HTg, self.HTb)
+			_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+			_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BTr, self.BTg, self.BTb)
+			_G.SeasonRewardFrame.Ring:SetTexture(nil)
+			self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=0}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}
+			end
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3542,8 +3671,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		this.numTabs = 5
 		self:skinTabs{obj=this, suffix="Button", lod=true, x1=8, y1=1, x2=-8, y2=2}
 		if self.isTT then
-			-- hook to handle tabs
-			self:SecureHook("ToggleSpellBook", function(bookType)
+			local function setTab(bookType)
 				local tab
 				for i = 1, this.numTabs do
 					tab = _G["SpellBookFrameTabButton" .. i]
@@ -3554,7 +3682,14 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					end
 				end
 				tab = nil
+
+			end
+			-- hook to handle tabs
+			self:SecureHook("ToggleSpellBook", function(bookType)
+				setTab(bookType)
 			end)
+			-- set correct tab
+			setTab(this.bookType)
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		if self.modBtnBs then
@@ -3724,10 +3859,14 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		-- Dual Spec Tabs
 		for i = 1, _G.MAX_TALENT_GROUPS do
 			self:removeRegions(_G["PlayerSpecTab" .. i], {1}) -- N.B. other regions are icon and highlight
-			self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=_G["PlayerSpecTab" .. i]}
+			end
 		end
-		self:skinStdButton{obj=_G.PlayerTalentFrameActivateButton}
-		self:skinCloseButton{obj=_G.PlayerTalentFrameCloseButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.PlayerTalentFrameActivateButton}
+			self:skinCloseButton{obj=_G.PlayerTalentFrameCloseButton}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-6}
 
 		-- handle extra abilities (Player and Pet)
@@ -3810,8 +3949,8 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	self:SecureHookScript(_G.PlayerTalentFramePetSpecialization, "OnShow", function(this)
 		skinSpec(this)
 		self:removeMagicBtnTex(this.learnButton)
-		self:skinStdButton{obj=this.learnButton}
-		if this.learnButton.sb then -- anim fix
+		if self.modBtns then
+			self:skinStdButton{obj=this.learnButton}
 			this.learnButton.sb:SetParent(this)
 		end
 		self:Unhook(this, "OnShow")
@@ -3836,7 +3975,9 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			end
 		end
 
-		self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=0}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=0}
+		end
 		local frame = _G.PlayerTalentFrameTalents.PvpTalentFrame
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("OVERLAY")
