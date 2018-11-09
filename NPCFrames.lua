@@ -538,6 +538,12 @@ aObj.blizzFrames[ftype].Petition = function(self)
 		end
 		_G.PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
 
+		if self.modBtns then
+			self:skinStdButton{obj=_G.PetitionFrameCancelButton}
+			self:skinStdButton{obj=_G.PetitionFrameSignButton}
+			self:skinStdButton{obj=_G.PetitionFrameRequestButton, x1=1, x2=-1}
+			self:skinStdButton{obj=_G.PetitionFrameRenameButton, x1=1, x2=-1}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		self:Unhook(this, "OnShow")
