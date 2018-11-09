@@ -1,3 +1,22 @@
+beta8.28186.1
+Jncl:
+	ToDo.txt
+	Updated version numbers
+	Updated Debug messages
+	Updated PTR/Patch checks
+	Updated ColumnHeadings skinning code
+	Updated ItemButton skinning code
+	Updated Change_History.txt
+	Updated ScenarioChallengeMode skin
+	Updated TradeSkillUi skin
+	Updated FriendsFrame skin
+	Updated AchievementUI skin
+	Updated WarboardUI skin
+	Updated QuestMap skin
+	Updated GuildBank skin
+	Updated ChampionCommander skin
+	Update UIButtons skinning code
+
 beta8.28085.1
 Jncl:
 	ToDo.txt
