@@ -3528,10 +3528,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M"}
 
 	-- Minimap
-	if not self.isPTR then -- currently causes PTR to crash
-		_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
-	end
-
+	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
 	-- use a backdrop with no Texture otherwise the map tiles are obscured
 	self:addSkinFrame{obj=_G.Minimap, ft=ftype, aso={bd=8}, ofs=5}
 	if self.prdb.Minimap.gloss then
