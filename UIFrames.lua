@@ -5047,9 +5047,9 @@ aObj.blizzFrames[ftype].UnitPopup = function(self)
 	if not self.db.profile.UnitPopup or self.initialized.UnitPopup then return end
 	self.initialized.UnitPopup = true
 
-	self:skinSlider{obj=_G.UnitPopupVoiceSpeakerVolume.Slider, hgt=-2}
-	self:skinSlider{obj=_G.UnitPopupVoiceMicrophoneVolume.Slider, hgt=-2}
-	self:skinSlider{obj=_G.UnitPopupVoiceUserVolume.Slider, hgt=-2}
+	self:skinSlider{obj=_G.UnitPopupVoiceSpeakerVolume.Slider}
+	self:skinSlider{obj=_G.UnitPopupVoiceMicrophoneVolume.Slider}
+	self:skinSlider{obj=_G.UnitPopupVoiceUserVolume.Slider}
 
 end
 
