@@ -256,7 +256,7 @@ local function skinMissionComplete(frame, naval)
     frame.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 	frame.BonusRewards.Saturated:DisableDrawLayer("BORDER")
 	for i = 1, #frame.BonusRewards.Rewards do
-		self:addButtonBorder{obj=frame.BonusRewards.Rewards[i], relTo=frame.BonusRewards.Rewards[i].Icon, reParent={frame.BonusRewards.Rewards[i].Quantity}}
+		aObj:addButtonBorder{obj=frame.BonusRewards.Rewards[i], relTo=frame.BonusRewards.Rewards[i].Icon, reParent={frame.BonusRewards.Rewards[i].Quantity}}
 	end
 	aObj:skinStdButton{obj=frame.NextMissionButton}
     aObj:addSkinFrame{obj=frame, ft=ftype, x1=3, y1=6, y2=-16}
