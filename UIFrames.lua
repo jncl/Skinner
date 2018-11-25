@@ -1013,7 +1013,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 	local function skinChatBubbles()
 
 		_G.C_Timer.After(0.1, function()
-			 -- don't include forbidden Chat Bubbles (Bosses in Dungeons/Raids)
+			 -- don't include forbidden Chat Bubbles (Bosses in Garrisons/Dungeons/Raids)
 			for k1, cBubble in pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
 				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, ofs=-10}
 				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
@@ -3230,6 +3230,8 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			self:nilTexture(_G.ExtraActionButton1.style, true)
 		end
 	end
+
+	-- TODO: adjust Fill texture for HorizontalBar
 
 	-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 	if self.prdb.MainMenuBar.altpowerbar then
