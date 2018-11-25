@@ -1,4 +1,5 @@
 local aName, aObj = ...
+
 local _G = _G
 
 local assert, debugstack, ipairs, pairs, rawget, select, type, print, tostring, Round = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.print, _G.tostring, _G.Round
