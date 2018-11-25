@@ -1,4 +1,5 @@
 local aName, aObj = ...
+
 local _G = _G
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
@@ -871,12 +872,14 @@ local function __skinCheckButton(opts)
 	opts.obj:GetNormalTexture():SetTexture(nil)
 	opts.obj:GetPushedTexture():SetTexture(nil)
 
-	-- handle small check buttons
-	local bd, ofs, yOfs = 5, -4, 5
+	-- handle small check buttons (e.g. GuildControlUI - Rank Permissions)
+	local bd, ofs, yOfs, bd = 5, -4, 5
 	if opts.obj:GetWidth() < 23 then
 		bd = 12
-		ofs = -2
-		yOfs = nil
+		if aObj:hasTextInName(opts.obj, "AchievementFrame") then
+			ofs = -2
+			yOfs = nil
+		end
 	end
 	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
 	aObj:addSkinButton{obj=opts.obj, aso={bd=bd, ng=true}, parent=opts.obj, nohooks=not opts.hf, ofs=ofs, y2=yOfs}
