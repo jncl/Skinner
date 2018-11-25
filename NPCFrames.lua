@@ -79,13 +79,13 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		-- AuctionFrame Browse
 		for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
 			self:keepRegions(_G["AuctionFilterButton" .. i], {3, 4}) -- N.B. region 3 is the highlight, 4 is the text
-			self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true, aso={bd=5}}
+			self:addSkinFrame{obj=_G["AuctionFilterButton" .. i], ft=ftype, nb=true, aso={bd=5}, y2=-1}
 		end
 		self:skinSlider{obj=_G.BrowseFilterScrollFrame.ScrollBar, rt="artwork"}
 		self:skinSlider{obj=_G.BrowseScrollFrame.ScrollBar, rt="artwork"}
 		for _, type in pairs{"Quality", "Level", "Duration", "HighBidder", "CurrentBid"} do
 			self:keepRegions(_G["Browse" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-			self:addSkinFrame{obj=_G["Browse" .. type .. "Sort"], ft=ftype, nb=true, aso={bd=5}}
+			self:addSkinFrame{obj=_G["Browse" .. type .. "Sort"], ft=ftype, nb=true, aso={bd=5}, x2=-2}
 		end
 		for i = 1, _G.NUM_BROWSE_TO_DISPLAY do
 			if _G["BrowseButton" .. i].Orig then break end -- Auctioneer CompactUI loaded
@@ -139,7 +139,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		-- AuctionFrame Bid
 		for _, type in pairs{"Quality", "Level", "Duration", "Buyout", "Status", "Bid"} do
 			self:keepRegions(_G["Bid" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-			self:addSkinFrame{obj=_G["Bid" .. type .. "Sort"], ft=ftype, aso={bd=5}}
+			self:addSkinFrame{obj=_G["Bid" .. type .. "Sort"], ft=ftype, aso={bd=5}, x2=-2}
 		end
 		for i = 1, _G.NUM_BIDS_TO_DISPLAY do
 			skinBtn("BidButton", i)
@@ -159,7 +159,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		-- AuctionFrame Auctions
 		for _, type in pairs{"Quality", "Duration", "HighBidder", "Bid"} do
 			self:keepRegions(_G["Auctions" .. type .. "Sort"], {4, 5, 6}) -- N.B. region 4 is the text, 5 is the arrow, 6 is the highlight
-			self:addSkinFrame{obj=_G["Auctions" .. type .. "Sort"], ft=ftype, aso={bd=5}}
+			self:addSkinFrame{obj=_G["Auctions" .. type .. "Sort"], ft=ftype, aso={bd=5}, x2=-2}
 		end
 		self:skinSlider{obj=_G.AuctionsScrollFrame.ScrollBar, rt="artwork"}
 		for i = 1, _G.NUM_AUCTIONS_TO_DISPLAY do
@@ -181,7 +181,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 			self:skinStdButton{obj=_G.AuctionsStackSizeMaxButton}
 			self:skinStdButton{obj=_G.AuctionsNumStacksMaxButton}
 			self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
-			self:skinStdButton{obj=_G.AuctionsCancelAuctionButton}
+			self:skinStdButton{obj=_G.AuctionsCancelAuctionButton, x2=-1}
 			self:skinStdButton{obj=_G.AuctionsCloseButton}
 		end
 		self:Unhook(this, "OnShow")
