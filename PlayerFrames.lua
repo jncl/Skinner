@@ -1802,19 +1802,6 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 			skinBag(frame, id)
 		end
 
-		if not self.isPTR then
-			-- if it's a profession bag
-			if id ~= 0 -- ignore Backpack
-			and _G.IsInventoryItemProfessionBag("player", _G.ContainerIDToInventoryID(id))
-			then
-				frame.PortraitButton.gear:Hide()
-				frame.PortraitButton.Highlight:SetAlpha(0)
-			else
-				frame.PortraitButton.gear:Show()
-				frame.PortraitButton.Highlight:SetAlpha(1)
-			end
-		end
-
 	end)
 
 	-- hook this to move the Search Box to the left, away from the AutoSort button
