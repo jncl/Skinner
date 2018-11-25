@@ -2422,7 +2422,7 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 			if self.modChkBtns then
 				for _, child in ipairs{this:GetChildren()} do
 					if child:IsObjectType("CheckButton") then
-						self:skinCheckButton{obj=_G[this:GetName() .. "Checkbox" .. v]}
+						self:skinCheckButton{obj=child}
 					end
 				end
 			end
