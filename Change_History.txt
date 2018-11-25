@@ -1,3 +1,16 @@
+beta8.28186.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated Version numbers
+	Updated SkinFrame code
+	Updated PetitionFrame skin
+	Updated Collections skins, added more UIButton checks
+	Reverted PTR Minimap change
+	Updated UnitPopup skin
+	Updated ChatConfig skin
+	Updated DBM, EnhancedStackSplit, FishingBuddy, HealBot, PhoenixStyle & RaidAchievement skins
+
 beta8.28186.1
 Jncl:
 	ToDo.txt
