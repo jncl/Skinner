@@ -63,12 +63,14 @@ do
 	end
 	if aObj.isPatch then
 		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Patched version", 1, 0, 0, nil, true)
-		-- if patch detected then enable PTR code changes (handles PTR changes going Live)
-		if buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) >= ptrInfo[2] then
-			aObj.isPTR = true
-		end
 	end
 --@end-alpha@
+	-- handle PTR changes going Live
+	if aObj.isPatch
+	and buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) >= ptrInfo[2]
+	then
+		aObj.isPTR = true
+	end
 	liveInfo, ptrInfo, betaInfo, buildInfo, portal = nil, nil, nil, nil, nil
 
 end
