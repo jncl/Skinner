@@ -7,7 +7,9 @@ local function skinAuctionUI()
 -->>-- AuctionUI panelsaObj
 	aObj:skinEditBox{obj=_G.Atr_Search_Box, regs={6}}
 	aObj:skinExpandButton{obj=_G.Atr_Adv_Search_Button, sap=true, plus=true}
-	aObj:skinCheckButton{obj=_G.Atr_Exact_Search_Button}
+	if aObj.modChkBtns then
+		aObj:skinCheckButton{obj=_G.Atr_Exact_Search_Button}
+	end
 	-- item drag & drop frame
 	aObj:addSkinFrame{obj=_G.Atr_HeadingsBar, ft="a", kfs=true, nb=true, y1=-19, y2=19}
 	aObj:addSkinFrame{obj=_G.Atr_Hilite1, ft="a", kfs=true, nb=true}
@@ -17,15 +19,16 @@ local function skinAuctionUI()
 		aObj:skinStdButton{obj=_G.Atr_Search_Button}
 		aObj:skinStdButton{obj=_G.Auctionator1Button}
 		aObj:skinStdButton{obj=_G.Atr_FullScanButton}
-		aObj:skinStdButton{obj=_G.Atr_AddToSListButton}
-		aObj:skinStdButton{obj=_G.Atr_RemFromSListButton}
+		aObj:moveObject{obj=_G.Atr_FullScanButton, y=-2}
+		aObj:skinStdButton{obj=_G.Atr_AddToSListButton, x2=-1}
+		aObj:skinStdButton{obj=_G.Atr_RemFromSListButton, x2=0}
 		aObj:skinStdButton{obj=_G.Atr_SrchSListButton}
 		aObj:skinStdButton{obj=_G.Atr_MngSListsButton}
 		aObj:skinStdButton{obj=_G.Atr_NewSListButton}
 		aObj:skinStdButton{obj=_G.Atr_Buy1_Button}
 		aObj:skinStdButton{obj=_G.Atr_Back_Button}
 		aObj:skinStdButton{obj=_G.Atr_SaveThisList_Button}
-		aObj:skinStdButton{obj=_G.Atr_CancelSelectionButton}
+		aObj:skinStdButton{obj=_G.Atr_CancelSelectionButton, x1=3, x2=-1}
 		aObj:skinStdButton{obj=_G.AuctionatorCloseButton}
 	end
 
@@ -40,12 +43,17 @@ local function skinAuctionUI()
 	aObj:skinMoneyFrame{obj=_G.Atr_StackPrice, noWidth=true, moveSEB=true, moveGEB=true}
 	aObj:skinMoneyFrame{obj=_G.Atr_ItemPrice, noWidth=true, moveSEB=true, moveGEB=true}
 	aObj:skinMoneyFrame{obj=_G.Atr_StartingPrice, noWidth=true, moveSEB=true, moveGEB=true}
-	aObj:skinStdButton{obj=_G.Atr_CreateAuctionButton}
+	if aObj.modBtns then
+		aObj:skinStdButton{obj=_G.Atr_CreateAuctionButton}
+	end
 	aObj:skinEditBox{obj=_G.Atr_Batch_NumAuctions, regs={6}}
 	aObj:skinEditBox{obj=_G.Atr_Batch_Stacksize, regs={6}}
+	aObj:moveObject{obj=_G.Atr_Batch_Stacksize, x=-8}
 	aObj:skinDropDown{obj=_G.Atr_Duration}
 	-- More...
-	aObj:skinStdButton{obj=_G.Atr_CheckActiveButton}
+	if aObj.modBtns then
+		aObj:skinStdButton{obj=_G.Atr_CheckActiveButton}
+	end
 
 -->>-- Error Frame
 	aObj:addSkinFrame{obj=_G.Atr_Error_Frame, ft="a", kfs=true, nb=true}
@@ -58,8 +66,10 @@ local function skinAuctionUI()
 	aObj:addSkinFrame{obj=_G.Atr_CheckActives_Frame, ft="a", kfs=true, nb=true}
 
 -->>-- FullScan Frame
-	aObj:skinStdButton{obj=_G.Atr_FullScanStartButton}
-	aObj:skinStdButton{obj=_G.Atr_FullScanDone}
+	if aObj.modBtns then
+		aObj:skinStdButton{obj=_G.Atr_FullScanStartButton}
+		aObj:skinStdButton{obj=_G.Atr_FullScanDone}
+	end
 	aObj:addSkinFrame{obj=_G.Atr_FullScanFrame, ft="a", kfs=true, nb=true, y1=4}
 
 -->>-- Search Dialog
@@ -67,6 +77,7 @@ local function skinAuctionUI()
 	aObj:skinDropDown{obj=_G.Atr_ASDD_Class, x2=110}
 	aObj:skinDropDown{obj=_G.Atr_ASDD_Subclass, x2=110}
 	aObj:skinEditBox{obj=_G.Atr_AS_Minlevel, regs={6}}
+	aObj:moveObject{obj=_G.Atr_AS_Minlevel, x=-8}
 	aObj:skinEditBox{obj=_G.Atr_AS_Maxlevel, regs={6}}
 	aObj:skinEditBox{obj=_G.Atr_AS_MinItemlevel, regs={6}}
 	aObj:skinEditBox{obj=_G.Atr_AS_MaxItemlevel, regs={6}}
@@ -87,7 +98,9 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 4.0.19
 	end)
 
 	self:SecureHookScript(_G.Atr_Error_Frame, "OnShow", function(this)
-		self:skinStdButton{obj=self:getChild(this, 1)}
+		if self.modBtns then
+			self:skinStdButton{obj=self:getChild(this, 1)}
+		end
 		self:addSkinFrame{obj=this, ft="a", kfs=true,  nb=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -119,11 +132,15 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 4.0.19
 					aObj:skinDropDown{obj=child, x2=xOfs}
 				elseif child:IsObjectType("Slider") then
 					aObj:skinSlider{obj=child, hgt=-4}
-				elseif child:IsObjectType("CheckButton") then
+				elseif child:IsObjectType("CheckButton")
+				and aObj.modChkBtns
+				then
 					aObj:skinCheckButton{obj=child}
 				elseif child:IsObjectType("EditBox") then
 					aObj:skinEditBox{obj=child, regs={6, child:GetName():find("UC_")and 7 or nil}} -- 6 is text
-				elseif child:IsObjectType("Button") then
+				elseif child:IsObjectType("Button")
+				and aObj.modBtns
+				then
 					-- handle list buttons
 					if child:GetNumRegions() == 5 then
 						aObj:skinStdButton{obj=child}
@@ -158,15 +175,19 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 4.0.19
 		self:skinEditBox{obj=_G.Atr_Mem_EB_itemName, regs={6}} -- 6 is text
 		self:skinDropDown{obj=_G.Atr_Mem_DD_numStacks}
 		self:skinEditBox{obj=_G.Atr_Mem_EB_stackSize, regs={6}} -- 6 is text
-		self:skinStdButton{obj=_G.Atr_Mem_Forget}
-		self:skinStdButton{obj=self:getChild(this, 5)}
-		self:skinStdButton{obj=self:getChild(this, 6)}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.Atr_Mem_Forget}
+			self:skinStdButton{obj=self:getChild(this, 5)}
+			self:skinStdButton{obj=self:getChild(this, 6)}
+		end
 		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
 	self:SecureHookScript(_G.Atr_ConfirmClear_Frame, "OnShow", function(this)
-		self:skinStdButton{obj=_G.Atr_ClearConfirm_Cancel}
-		self:skinStdButton{obj=self:getChild(this, 2)}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.Atr_ClearConfirm_Cancel}
+			self:skinStdButton{obj=self:getChild(this, 2)}
+		end
 		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -182,7 +203,9 @@ aObj.addonsToSkin.Auctionator = function(self) -- v 4.0.19
 		self:Unhook(this, "OnShow")
 	end)
 	self:SecureHookScript(_G.Atr_SList_Conflict_Frame, "OnShow", function(this)
-		self:skinStdButton{obj=_G.Atr_SList_Conflict_OKAY}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.Atr_SList_Conflict_OKAY}
+		end
 		self:addSkinFrame{obj=this, ft="a", kfs=true, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
