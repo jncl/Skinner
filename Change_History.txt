@@ -1,3 +1,19 @@
+beta8.28485.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Add space line
+	Updated code to handle when PTR changes go live
+	Updated AuctionUI skinning code
+	Updated GuildUI skinning code
+	Updated Container skinning code
+	Updated comments
+	Updated MissionComplete skinning code
+	Updated ItemRefTooltip code
+	Updated Auctionator skin
+	Updated CheckButton skinning code
+
 beta8.28186.2
 Jncl:
 	ToDo.txt
