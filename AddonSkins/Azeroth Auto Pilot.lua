@@ -2,39 +2,31 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Azeroth Auto Pilot") then return end
 local _G = _G
 
-aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 0.176
+aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 1.001
 
 	-- Core frames
-	self:addSkinFrame{obj=_G.AAP_AfkFrame, ft="a", kfs=true, nb=true}
-
+	self:addSkinFrame{obj=_G.AAP.AfkFrame, ft="a", kfs=true, nb=true}
 	if self.modBtns then
-		self:skinStdButton{obj=_G.AAP_ArrowFrame.Button}
-	end
-
-	-- QuestList Frames
-	for i = 1, 5 do
-		self:addSkinFrame{obj=_G.AAP.PartyList.PartyFrames[i], ft="a", kfs=true, nb=true}
-		self:addSkinFrame{obj=_G.AAP.PartyList.PartyFrames2[i], ft="a", kfs=true, nb=true}
+		self:skinStdButton{obj=_G.AAP.ArrowFrame.Button}
 	end
 
 	self:addSkinFrame{obj=_G.AAP.QuestList.SugQuestFrame, ft="a", kfs=true, nb=true}
-	self:addSkinFrame{obj=_G.AAP.QuestList.SugQuestFrame2, ft="a", kfs=true, nb=true}
-	self:addSkinFrame{obj=_G.AAP.QuestList.SugQuestFrame2.TextureAFrame, ft="a", kfs=true, nb=true}
 	if self.modBtns then
 		self:skinStdButton{obj=_G.AAP.QuestList.SugQuestFrame["Button1"], seca=true}
 		self:skinStdButton{obj=_G.AAP.QuestList.SugQuestFrame["Button2"], seca=true}
-		self:skinStdButton{obj=_G.AAP.QuestList.SugQuestFrame2["Button1"], seca=true}
-		self:skinStdButton{obj=_G.AAP.QuestList.SugQuestFrame2["Button2"], seca=true}
 	end
 
 	self:skinEditBox{obj=AAP.QuestList.Greetings2EB1, regs={6}, x=-5, y=-8} -- 6 is text
-	self:skinStdButton{obj=AAP.QuestList.GreetingsHideB, seca=true}
 	self:addSkinFrame{obj=_G.AAP.QuestList.Greetings, ft="a", kfs=true, nb=true, y2=-2}
+	if self.modBtns then
+		self:skinStdButton{obj=AAP.QuestList.GreetingsHideB, seca=true}
+	end
 
 	-- AAP.QuestList.MainFrame
 	-- AAP.QuestList.ListFrame
 	-- AAP.QuestList20
 	-- AAP.QuestList21
+	-- AAP.QuestList.ButtonParent
 
 	for i = 1, 10 do
 		self:addSkinFrame{obj=_G.AAP.QuestList.QuestFrames[i], ft="a", kfs=true, nb=true, x1=-2, x2=2}
@@ -46,43 +38,42 @@ aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 0.176
 		end
 	end
 
-	self:addSkinFrame{obj=_G.AAP.QuestList.Warcamp, ft="a", kfs=true, nb=true}
-	self:addSkinFrame{obj=_G.AAP.QuestList.Warcamp2, ft="a", kfs=true, nb=true}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.AAP.QuestList.WarcampB1, seca=true}
-		self:skinStdButton{obj=_G.AAP.QuestList.WarcampB2, seca=true}
-	end
-
 	-- Options Frame
-	self:SecureHookScript(_G.AAP.OptionsFrame.MainFrame, "OnShow", function(this)
+	self:SecureHook(_G.AAP, "LoadOptionsFrame", function(this)
+		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame, ft="a", kfs=true, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame.Options, ft="a", kfs=true, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame.OptionsB1, ft="a", kfs=true, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame.OptionsQuests, ft="a", kfs=true, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame.OptionsB2, ft="a", kfs=true, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame.OptionsArrow, ft="a", kfs=true, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame.OptionsB3, ft="a", kfs=true, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame.OptionsGeneral, ft="a", kfs=true, nb=true, ofs=4}
+
+		self:skinSlider{obj=_G.AAP.OptionsFrame.QuestListScaleSlider}
+		self:skinSlider{obj=_G.AAP.OptionsFrame.ArrowScaleSlider}
+		self:skinSlider{obj=_G.AAP.OptionsFrame.BannerScaleSlider}
 		if self.modChkBtns then
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton1}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton2}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton3}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton10}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton11}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton12}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton5}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton7}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton8}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton9}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton13}
-			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CheckButton14}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.AutoAcceptCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.AutoHandInCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.AutoHandInChoiceCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.ShowQListCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.LockQuestListCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.LockArrowCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.ShowArrowCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.CutSceneCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.AutoVendorCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.AutoRepairCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.ShowGroupCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.AutoGossipCheckButton}
+			self:skinCheckButton{obj=_G.AAP.OptionsFrame.BannerShowCheckButton}
 		end
-		self:skinSlider{obj=_G.AAP.OptionsFrame.Slider1}--, rt="artwork", wdth=-4, size=3, hgt=-10}
-		self:skinSlider{obj=_G.AAP.OptionsFrame.Slider2}--, rt="artwork", wdth=-4, size=3, hgt=-10}
-		self:skinSlider{obj=_G.AAP.OptionsFrame.Slider3}--, rt="artwork", wdth=-4, size=3, hgt=-10}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.AAP.OptionsFrame["Button1"], seca=true}
 			self:skinStdButton{obj=_G.AAP.OptionsFrame["Button2"], seca=true}
 			self:skinStdButton{obj=_G.AAP.OptionsFrame["Button3"], seca=true}
-			self:skinStdButton{obj=_G.AAP.OptionsFrame["Button4"], seca=true}
 		end
-		self:skinDropDown{obj=_G.AAP_DropDownList}--, noSkin=true, x1=0, y1=0, x2=0, y2=0}
-		self:skinDropDown{obj=_G.AAP_dropDown1}--, noSkin=true, x1=0, y1=0, x2=0, y2=0}
-		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame, ft="a", kfs=true, nb=true, ofs=4}
 
-		self:Unhook(this, "OnShow")
+		self:Unhook(this, "LoadOptionsFrame")
 	end)
 
 	-- Banners Frames
@@ -97,7 +88,10 @@ aObj.addonsToSkin["Azeroth Auto Pilot"] = function(self) -- v 0.176
 	end
 
 	-- BrutalStatic Frames
-	self:addSkinFrame{obj=_G.AAP.BrutallCC.BrutallFrame.Frame, ft="a", kfs=true, nb=true}
-	self:addSkinFrame{obj=_G.AAP.BrutallCC.BrutallFrame.FrameName, ft="a", kfs=true, nb=true}
+	self:SecureHook("AAP_BrutallPaintFunc", function()
+		self:addSkinFrame{obj=_G.AAP.BrutallCC.BrutallFrame.Frame, ft="a", kfs=true, nb=true}
+		self:addSkinFrame{obj=_G.AAP.BrutallCC.BrutallFrame.FrameName, ft="a", kfs=true, nb=true}
+		self:Unhook(this, "AAP_BrutallPaintFunc")
+	end)
 
 end
