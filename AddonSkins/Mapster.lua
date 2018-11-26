@@ -2,25 +2,25 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Mapster") then return end
 local _G = _G
 
-function aObj:Mapster()
+aObj.addonsToSkin.Mapster = function(self) -- v 1.8.1
 
 	local Mapster = _G.LibStub("AceAddon-3.0"):GetAddon("Mapster", true)
 	if not Mapster then return end
 
-	self:addSkinFrame{obj=_G.WorldMapFrame, ft="u", kfs=true, ofs=2}
-	self:skinButton{obj=Mapster.optionsButton}
+	self:addSkinFrame{obj=_G.WorldMapFrame, ft="a", kfs=true, nb=true, ofs=2}
+	self:keepFontStrings(_G.WorldMapFrame.BorderFrame)
 
-end
+	if self.modBtns then
+		self:skinStdButton{obj=Mapster.optionsButton}
+	end
 
-function aObj:MapsterEnhanced()
-
-	local Mapster = _G.LibStub("AceAddon-3.0"):GetAddon("Mapster", true)
-	if not Mapster then return end
-
-	-- remove textures
-	self:SecureHook(_G.WorldMapFrame, "Show", function(this)
-		self:rmRegionsTex(Mapster.nonOverlayHolder, {4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15})
-		self:Unhook(_G.WorldMapFrame, "Show")
-	end)
+	-- Move TomTom's Cursor coordinates if required
+	if self:isAddonEnabled("TomTom")
+	and _G.TomTomWorldFrame
+	and _G.TomTomWorldFrame.Cursor
+	then
+		self:moveObject{obj=_G.TomTomWorldFrame.Cursor, x=-100}
+		_G.TomTomWorldFrame.Cursor.SetPoint = _G.nop
+	end
 
 end
