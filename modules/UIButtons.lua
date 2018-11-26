@@ -873,7 +873,7 @@ local function __skinCheckButton(opts)
 	opts.obj:GetPushedTexture():SetTexture(nil)
 
 	-- handle small check buttons (e.g. GuildControlUI - Rank Permissions)
-	local bd, ofs, yOfs, bd = 5, -4, 5
+	local bd, ofs, yOfs = 5, opts.ofs or -4, opts.yOfs or 5
 	if opts.obj:GetWidth() < 23 then
 		bd = 12
 		if aObj:hasTextInName(opts.obj, "AchievementFrame") then
