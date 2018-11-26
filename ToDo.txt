@@ -127,4 +127,4 @@ x			- SpellBookFrame
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 ?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-√	N	Azeroth Auto Pilot
+√	N	Mapster, reported by NeoZeus, 26.11.18
