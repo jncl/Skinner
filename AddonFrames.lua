@@ -1,4 +1,5 @@
 local aName, aObj = ...
+
 local _G = _G
 
 -- Add locals to see if it speeds things up

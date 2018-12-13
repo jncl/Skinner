@@ -1,4 +1,5 @@
 local aName, aObj = ...
+
 local _G = _G
 local module = aObj:NewModule("TopFrame")
 local ftype = "s"
