@@ -2974,11 +2974,18 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 
 	-- LFGListApplication Dialog
 	self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.HealerButton.CheckButton}
+			self:skinCheckButton{obj=this.TankButton.CheckButton}
+			self:skinCheckButton{obj=this.DamagerButton.CheckButton}
+		end
 		self:skinSlider{obj=this.Description.ScrollBar, wdth=-4}
 		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, ofs=6}
 		this.Description.EditBox.Instructions:SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:skinStdButton{obj=this.SignUpButton}
-		self:skinStdButton{obj=this.CancelButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.SignUpButton}
+			self:skinStdButton{obj=this.CancelButton}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -4743,14 +4750,20 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 	self:SecureHookScript(_G.TimeManagerFrame, "OnShow", function(this)
 		_G.TimeManagerFrameTicker:Hide()
 		self:keepFontStrings(_G.TimeManagerStopwatchFrame)
-		self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck}
 		self:skinDropDown{obj=_G.TimeManagerAlarmHourDropDown, x2=-5}
 		self:skinDropDown{obj=_G.TimeManagerAlarmMinuteDropDown, x2=-5}
 		self:skinDropDown{obj=_G.TimeManagerAlarmAMPMDropDown, x2=-5}
 		self:skinEditBox{obj=_G.TimeManagerAlarmMessageEditBox, regs={6}}
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
-
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck} -- This isn't really a checkbutton
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.TimeManagerAlarmEnabledButton}
+			self:skinCheckButton{obj=_G.TimeManagerMilitaryTimeCheck}
+			self:skinCheckButton{obj=_G.TimeManagerLocalTimeCheck}
+		end
 		-- Stopwatch Frame
 		self:keepFontStrings(_G.StopwatchTabFrame)
 		self:skinCloseButton{obj=_G.StopwatchCloseButton, sap=true}
@@ -5132,7 +5145,9 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			oFrame = this.overlayFrames[i]
 			-- Tracking Options Button
 			if oFrame.IconOverlay then
-				self:skinStdButton{obj=oFrame, y2=3}
+				if self.modBtns then
+					self:skinStdButton{obj=oFrame, y2=3}
+				end
 				oFrame:DisableDrawLayer("BACKGROUND")
 				oFrame.Border:SetTexture(nil)
 			-- Floor Navigation Dropdown
@@ -5141,7 +5156,9 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			-- BountyBoard overlay
 			elseif oFrame.bountyObjectivePool then
 				oFrame:DisableDrawLayer("BACKGROUND")
-				self:skinCloseButton{obj=oFrame.TutorialBox.CloseButton, noSkin=true}
+				if self.modBtns then
+					self:skinCloseButton{obj=oFrame.TutorialBox.CloseButton, noSkin=true}
+				end
 				self:SecureHook(oFrame, "RefreshBountyTabs", function(this)
 					for tab in this.bountyTabPool:EnumerateActive() do
 						if tab.objectiveCompletedBackground then
@@ -5152,7 +5169,9 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			-- ActionButton overlay
 			elseif oFrame.ActionFrameTexture then
 				oFrame.ActionFrameTexture:SetTexture(nil)
-				self:addButtonBorder{obj=oFrame.SpellButton}
+				if self.modBtnBs then
+					self:addButtonBorder{obj=oFrame.SpellButton}
+				end
 			end
 		end
 		oFrame = nil

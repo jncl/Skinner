@@ -816,6 +816,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			this.ListScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.ListScrollFrame.buttons[i], relTo=this.ListScrollFrame.buttons[i].icon, reParent={this.ListScrollFrame.buttons[i].favorite}}
+				-- TODO: change button border colour dependant upon mount ownership
 			end
 		end
 
@@ -3807,8 +3808,8 @@ aObj.blizzFrames[ftype].StackSplit = function(self)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=9, y1=-12, x2=-6, y2=12}
 		end
 		if self.modBtns then
-			self:skinStdButton{obj=_G.StackSplitOkayButton}
-			self:skinStdButton{obj=_G.StackSplitCancelButton}
+			self:skinStdButton{obj=_G.StackSplitFrame.OkayButton}
+			self:skinStdButton{obj=_G.StackSplitFrame.CancelButton}
 		end
 		self:Unhook(this, "OnShow")
 	end)
