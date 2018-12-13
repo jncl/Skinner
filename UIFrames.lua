@@ -1015,7 +1015,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 		_G.C_Timer.After(0.1, function()
 			 -- don't include forbidden Chat Bubbles (Bosses in Garrisons/Dungeons/Raids)
 			for k1, cBubble in pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
-				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, ofs=-10}
+				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, aso={ba=0.5}, ofs=-10}
 				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
 				if cBubble:GetNumRegions() == 2 then
 					aObj:getRegion(cBubble, 2):SetParent(cBubble.sf) -- make text visible
