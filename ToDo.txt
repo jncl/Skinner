@@ -16,115 +16,17 @@ Legend:
 
 ?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
 
-	PTR 8.1.0
-		Added:
-x			- CommunitiesCalendar
-√			- GuildNameChange
-x			- SharedMapDataProviders: MapIndicatorQuestDataProvider
-x			- DebugTools: TexelSnappingVisualizer
-x			- UIWidgets: UIWidgetTemplateSpellDisplay
-x			- AchievementUtil
-x			- CalendarUtil
-x			- ItemUtil
-		Deleted:
-?			- HonorFrame
-x			- HonorFrameTemplates
-		Updated:
-√			- Several frames/Insets have a new subFrame named 'NineSlice', textures need removing from it
-√			- AlliedRaceUI
-x			- ArchaeologyUI
-x			- AzeriteEmpoweredItemChannelMixin
-x			- AzeriteEmpoweredItemUITemplates
-x			- ChallengesUI
-			- Collections
-x				- Pet
-x				- Wardrobe
-x			- CommunitiesAddDialog
-√			- CommunitiesFrame, now uses 'ButtonFrameTemplateMinimizable'
-x			- CommunitiesInvitationFrame, now has 'IconRing' named texture
-x			- CommunitiesList
-x			- CommunitiesMemberList, new frame 'WatermarkFrame'
-x			- CommunitiesTabs
-			- CommunitiesTicketManagerDialog
-x			- EncounterJournal
-			- GarrisonMissionTemplates
-√			- BFAMissionUI, new frame 'OverlayElements'
-			- Garrison_RecruiterUI, removed 'BORDER' layer sublevel 1
-			- GarrisonShipyardUI
-x			- InspectPVPFrame, removed '.PortraitMouseOverFrame'
-√			- IslandsPartyPoseUI, new frame 'OverlayElements'
-x			- IslandsQueueUI
-x			- ItemSocketingUI
-x			- LookingForGuildUI
-			- ClassNameplateBar
-				- DeathKnight
-				- Mage
-				- Monk
-				- Paladin
-				- RogueDruid
-				- Warlock
-			- NamePlates
-			- NamePlatesCommentatorDisplay
-			- OrderHallTalents
-x				- CurrencyBG
-√				- new frame 'OverlayElements'
-			- PVPUI
-x				- parentKey="Reward" now a button NOT a frame
-x				- HonorFrame now has a 'FactionBadge' texture
-√				- new frame, 'NewSeasonPopup'
-√			- PartyPoseUI, new frame 'Border'
-			- PetBattleUI
-			- QuestChoice
-x			- SocialUI
-X			- StoreUI
-√			- TalentUI, TalentList now uses 'SimplePanelTemplate'
-X			- TokenUI
-			- UIWidgetTemplateBase
-			- UIWidgetTemplateStatusBar
-√			- WarboardUI, gains 'SubHeader'$ texture
-√			- WarfrontsPartyPoseUI, new frame 'OverlayElements'
-√			- WorldMap, BorderFrame now uses 'PortraitFrameTemplateMinimizable'
-X			- WowTokenUI
-√			- BankFrame, 'BankItemButtonBagTemplate' now a CheckButton
-x			- CharacterFrame
-√			- ChatConfigFrame
-x			- ContainerFrame
-x			- DressUpFrames
-√				- DressUpFrame, now uses 'ButtonFrameTemplateMinimizable'
-x			- ExtraActionBar, loses its '$parentFlash' texture
-x			- FriendsFrame, removed 'FriendsFrameButtonTemplate'
-x			- GameMenuFrame
-x			- HelpFrame
-x			- InterfaceOptionsFrame, $parentTab1/2 lose their 'BACKGROUND' layer "$parentTabSpacer/1"
-			- ItemButtonTemplate, gains 'ItemContextOverlay'
-			- ItemRef
-x			- LFDFrame, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
-x			- LFGList
-x			- LFRFrame
-			- LootFrame
-x			- MainMenuBar
-x			- MainMenuBarMicroButtons
-x			- Minimap
-			- OptionsFrameTemplates
-x				- loses its layers & gains a backdrop, 'parentList' loses its backdrop
-x			- PaperDollFrame
-			- PetStable
-x			- RaidFinder, loses 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
-x			- ReputationFrame
-x			- ScenarioFinder, loses 'parentTopTileStreaks', 'parentBtnCornerRight' & 'parentButtonBottomBorder' textures
-x			- SpellBookFrame
-			- SplashFrame
-√			- StackSplitFrame, gains some textures & fontstrings, buttons are renamed
-			- StatusTrackingBar
-			- StatusTrackingBarTemplate
-			- TradeFrame
-				- removed OVERLAY layers
-				- new frame 'RecipientOverlay'
-			- UIDropDownMenuTemplates
-			- UIPanelTemplates
-			- WorldStateFrame
-
 	I	AdventureGuide, reported by palizangetsu, 10.08.18
 ?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
 
-√	N	Mapster, reported by NeoZeus, 26.11.18
+√	N	WorldQuestTracker
+
+	I	WorldMap, reported by raineday, 12.12.18
+√		- Map textures not disappearing when close button clicked, backdrop does.
+
+√	N	BaudBag, requested by raineday, 13.12.18
+
+	I	Rematch, reported by tordenflesk, 13.12.18
+√		- Skinner\Skinner-beta8.28485.3.lua:1352: attempt to index field 'obj' (a nil value)
+		Skinner\Skinner-beta8.28485.3.lua:1408: in function `skinSlider'
+		Skinner\AddonSkins\Rematch-4.9.0.lua:183: in function <Skinner\AddonSkins\Rematch.lua:5>
