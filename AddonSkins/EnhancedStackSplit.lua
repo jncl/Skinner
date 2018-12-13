@@ -15,13 +15,8 @@ aObj.addonsToSkin.EnhancedStackSplit = function(self) -- v 60100-1
 	end)
 
 	-- hook these to show/hide stack split value
-	if not self.isPTR then
-		_G.StackSplitOkayButton:HookScript("OnShow", function(this) _G.StackSplitText:Show() end)
-		_G.StackSplitOkayButton:HookScript("OnHide", function(this) _G.StackSplitText:Hide() end)
-	else
-		_G.StackSplitFrame.OkayButton:HookScript("OnShow", function(this) _G.StackSplitText:Show() end)
-		_G.StackSplitFrame.OkayButton:HookScript("OnHide", function(this) _G.StackSplitText:Hide() end)
-	end
+	_G.StackSplitFrame.OkayButton:HookScript("OnShow", function(this) _G.StackSplitFrame.StackSplitText:Show() end)
+	_G.StackSplitFrame.OkayButton:HookScript("OnHide", function(this) _G.StackSplitFrame.StackSplitText:Hide() end)
 
 	-- OnShow already hooked by the frame skin, so using this way instead
 	local os = _G.StackSplitFrame:GetScript("OnShow") -- store original function

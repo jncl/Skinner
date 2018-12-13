@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.332-RC4
 
 	if self.modBtnBs then
 		self:SecureHook("ToggleQuestLog", function()
@@ -15,6 +15,7 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 			self:Unhook(this, "ToggleQuestLog")
 		end)
 	end
+
 	self:SecureHook("ToggleWorldMap", function()
 		if _G.WorldQuestTrackerSummaryUpPanel
 		and _G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll
@@ -31,6 +32,10 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 			if _G.WorldQuestTrackerCloseSummaryButton then
 				_G.WorldQuestTrackerCloseSummaryButton.Background:SetTexture(nil)
 				self:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close"}
+			end
+			if _G.WorldQuestTrackerToggleQuestsSummaryButton then
+				_G.WorldQuestTrackerToggleQuestsSummaryButton.Background:SetTexture(nil)
+				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsSummaryButton, x1=4, x2=-4}
 			end
 			if _G.WorldQuestTrackerToggleQuestsButton then
 				_G.WorldQuestTrackerToggleQuestsButton.Background:SetTexture(nil)
@@ -80,13 +85,35 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 			-- no more steps
 		else
 			self:SecureHook(_G.WorldQuestTrackerAddon, "ShowTutorialAlert", function()
-				-- N.B. this counter has already been incremented when we see it
+				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 1 then
+					_G.C_Timer.After(4.25, function()
+						if _G.WorldQuestTrackerTutorialAlert1 then
+							self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert1.CloseButton, noSkin=true}
+						end
+					end)
+				end
 				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 2 then
-					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert1.CloseButton, noSkin=true}
-				elseif _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 3 then
-					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert2.CloseButton, noSkin=true}
-				elseif _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
-					self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert3.CloseButton, noSkin=true}
+					_G.C_Timer.After(.75, function()
+						if _G.WorldQuestTrackerTutorialAlert2 then
+							self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert2.CloseButton, noSkin=true}
+						end
+					end)
+				end
+				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 3 then
+					_G.C_Timer.After(.75, function()
+						if _G.WorldQuestTrackerTutorialAlert3 then
+							self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert3.CloseButton, noSkin=true}
+						end
+					end)
+				end
+				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID == 4 then
+					_G.C_Timer.After(.75, function()
+						if _G.WorldQuestTrackerTutorialAlert4 then
+							self:skinCloseButton{obj=_G.WorldQuestTrackerTutorialAlert4.CloseButton, noSkin=true}
+						end
+					end)
+				end
+				if _G.WorldQuestTrackerAddon.db.profile.TutorialPopupID >= 4 then
 					self:Unhook(this, "ShowTutorialAlert")
 				end
 			end)
@@ -107,8 +134,6 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 			for i = 1, #_G.WorldQuestTrackerAddon.ZoneSumaryWidgets do
 				self:getRegion(_G.WorldQuestTrackerAddon.ZoneSumaryWidgets[i], 1):SetTexture(nil) -- art texture
 				_G.WorldQuestTrackerAddon.ZoneSumaryWidgets[i].BlackBackground:SetTexture(nil)
-				_G.WorldQuestTrackerAddon.ZoneSumaryWidgets[i].LineUp:SetTexture(nil)
-				_G.WorldQuestTrackerAddon.ZoneSumaryWidgets[i].LineDown:SetTexture(nil)
 			end
 		end)
 	end
@@ -119,14 +144,19 @@ aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.314
 		self:SecureHook(_G.WorldQuestTrackerAddon, "UpdateTrackerScale", function()
 			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetScale(_G.WorldQuestTrackerAddon.db.profile.tracker_scale)
 		end)
-		self:SecureHook(_G.WorldQuestTrackerAddon, "RefreshTrackerWidgets", function()
-			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetShown(_G.WorldQuestTrackerQuestsHeader:IsShown())
-			if self.modBtns then
-				if _G.WorldQuestTrackerAddon.db.profile.TutorialTracker == 2 then
-					self:skinCloseButton{obj=_G.WorldQuestTrackerTrackerTutorialAlert1.CloseButton, noSkin=true}
-				end
-			end
-		end)
 	end
+
+	self:SecureHook(_G.WorldQuestTrackerAddon, "RefreshTrackerWidgets", function()
+		if _G.WorldQuestTrackerScreenPanel_QuestHolder.sf then
+			_G.WorldQuestTrackerScreenPanel_QuestHolder.sf:SetShown(_G.WorldQuestTrackerQuestsHeader:IsShown())
+		end
+		if self.modBtns then
+			if _G.WorldQuestTrackerAddon.db.profile.TutorialTracker == 2
+			and _G.WorldQuestTrackerTrackerTutorialAlert1
+			then
+				self:skinCloseButton{obj=_G.WorldQuestTrackerTrackerTutorialAlert1.CloseButton, noSkin=true}
+			end
+		end
+	end)
 
 end

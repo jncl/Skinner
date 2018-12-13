@@ -4,7 +4,7 @@ local _G = _G
 
 -- PromptSimple
 
-aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
+aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 126
 
 	local DF = _G.LibStub("DetailsFramework-1.0", true)
 	if not DF then return end
@@ -17,9 +17,19 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 101
 	-- button (parent, func, w, h, text, param1, param2, texture, member, name, short_method, button_template, text_template)
 	if self.modBtns then
 		self:RawHook(DF, "NewButton", function(this, ...)
+			-- aObj:Debug("DF NewButton: [%s, %s, %s, %s, %s, %s]", ...)
 			local btnObj = self.hooks[this].NewButton(this, ...)
-			self:skinStdButton{obj=btnObj.button}
-			if _G.select(3, ...):find("Slider") then
+			if _G.select(1, ...).WidgetsAmount then
+				-- ignore these buttons (WorldQuestTracker faction anchor arrow)
+			else
+				-- ignore duplicate WorldQuestTracker NewsButton
+				if not _G.WorldQuestTrackerAddon.NewsButton then
+					self:skinStdButton{obj=btnObj.button}
+				end
+			end
+			if _G.select(3, ...)
+			and _G.select(3, ...):find("Slider")
+			then
 				btnObj.button.sb.tfade:SetTexture(nil) -- remove gradient texture, as it is really a checkbutton
 			end
 			return btnObj
