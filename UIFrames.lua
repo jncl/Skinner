@@ -4672,7 +4672,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:skinStdButton{obj=this.button3}
 			self:skinStdButton{obj=this.button4}
 			self:skinStdButton{obj=this.extraButton}
-			self:skinEditBox{obj=_G[objName .. "EditBox"]}
+			self:skinEditBox{obj=_G[objName .. "EditBox"], regs={6}}
 			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
 			self:addButtonBorder{obj=_G[objName .. "ItemFrame"], ibt=true}
