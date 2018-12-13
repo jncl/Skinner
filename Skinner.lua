@@ -262,9 +262,8 @@ function aObj:OnInitialize()
 
 	dflts, c = nil, nil
 
-	if self.isPTR then
-		_G.UIPanelCloseButton_SetBorderAtlas = _G.nop
-	end
+	_G.UIPanelCloseButton_SetBorderAtlas = _G.nop
+
 end
 
 function aObj:OnEnable()
@@ -639,10 +638,8 @@ local function __addSkinFrame(opts)
 	or opts.hat
 	then
 		aObj:keepFontStrings(opts.obj, opts.hat)
-		if aObj.isPTR then
-			if opts.obj.NineSlice then
-				aObj:removeNineSlice(opts.obj.NineSlice)
-			end
+		if opts.obj.NineSlice then
+			aObj:removeNineSlice(opts.obj.NineSlice)
 		end
 	end
 
@@ -660,11 +657,7 @@ local function __addSkinFrame(opts)
 		opts.x1 = opts.x1 or -3
 		opts.y1 = opts.y1 or 2
 		opts.y2 = opts.y2 or -2
-		if aObj.isPTR then
-			opts.x2 = opts.x2 or 3
-		else
-			opts.x2 = opts.x2 or 1
-		end
+		opts.x2 = opts.x2 or 3
 	end
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -1461,11 +1454,9 @@ local function __skinStatusBar(opts)
 			tex:SetTexture(aObj.sbTexture)
 			tex:SetVertexColor(aObj.sbColour[1], aObj.sbColour[2], aObj.sbColour[3])
 			sbG[#sbG + 1] = tex
-			if aObj.isPTR then
-				if opts.nilFuncs then
-					tex.SetTexture = _G.nop
-					tex.SetAtlas = _G.nop
-				end
+			if opts.nilFuncs then
+				tex.SetTexture = _G.nop
+				tex.SetAtlas = _G.nop
 			end
 		end
 		tex = nil

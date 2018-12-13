@@ -250,11 +250,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:keepFontStrings(_G.AchievementFrameStats)
 		self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, wdth=-4}
 		_G.AchievementFrameStatsBG:SetAlpha(0)
-		if not self.isPTR then
-			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=1}
-		else
-			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=-1}
-		end
+		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=-1}
 		-- hook this to skin buttons
 		self:SecureHook("AchievementFrameStats_Update", function()
 			skinStats()
@@ -282,11 +278,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		for i = 1, 12 do
 			skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 		end
-		if not self.isPTR then
-			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={ba=0, ng=true}}
-		else
-			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={ba=0, ng=true}, y1=-2}
-		end
+		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={ba=0, ng=true}, y1=-2}
 		skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
 		_G.AchievementFrameComparisonBackground:SetAlpha(0)
@@ -305,11 +297,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		-- Container
 		self:skinSlider(_G.AchievementFrameComparisonContainerScrollBar)
 		-- Summary Panel
-		if not self.isPTR then
-			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameComparison, 5), ft=ftype, aso={ba=0, ng=true}}
-		else
-			self:addSkinFrame{obj=self:getChild(_G.AchievementFrameComparison, 5), ft=ftype, aso={ba=0, ng=true}, y1=-1}
-		end
+		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameComparison, 5), ft=ftype, aso={ba=0, ng=true}, y1=-1}
 		for _, type in pairs{"Player", "Friend"} do
 			_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
 			_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
@@ -511,11 +499,7 @@ aObj.blizzLoDFrames[ftype].AzeriteUI = function(self)
 	local AEIUI = _G.AzeriteEmpoweredItemUI
 
 	self:keepFontStrings(AEIUI)
-	-- if not self.isPTR then
-	-- 	self:addSkinFrame{obj=AEIUI.BorderFrame, ft=ftype, kfs=true, bg=true, ofs=1, y1=2}
-	-- else
-		self:addSkinFrame{obj=AEIUI.BorderFrame, ft=ftype, kfs=true, bg=true}
-	-- end
+	self:addSkinFrame{obj=AEIUI.BorderFrame, ft=ftype, kfs=true, bg=true}
 	AEIUI.ClipFrame.BackgroundFrame:DisableDrawLayer("BACKGROUND")
 	AEIUI.ClipFrame.BackgroundFrame.KeyOverlay:DisableDrawLayer("ARTWORK")
 	for i = 1, #AEIUI.ClipFrame.BackgroundFrame.RankFrames do
@@ -1086,13 +1070,11 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
-		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -5, 3, self.isPTR and 7 or 5, -8
+		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -5, 3, 7, -8
 
 		self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			if self.isPTR then
-				self:removeNineSlice(this.NineSlice)
-			end
+			self:removeNineSlice(this.NineSlice)
 			if self.modBtnBs then
 				skinPageBtns(this)
 			end
@@ -1151,9 +1133,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end)
 
 		self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(this)
-			if self.isPTR then
-				self:removeNineSlice(this.NineSlice)
-			end
+			self:removeNineSlice(this.NineSlice)
 			self:skinDropDown{obj=this.RightClickDropDown}
 			if self.modBtnBs then
 				skinPageBtns(this)
@@ -1525,20 +1505,18 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if self.isPTR then
-		-- GuildNameAlertFrame
-		self:SecureHookScript(cFrame.GuildNameChangeFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
-			self:skinEditBox{obj=this.EditBox, regs={6}} -- 6 is text
-			if self.modBtns then
-				self:skinStdButton{obj=this.Button}
-			end
-			if self.modChkBtns then
-				self:skinCheckButton{obj=this.CloseButton}
-			end
-			self:Unhook(this, "OnShow")
-		end)
-	end
+	-- GuildNameAlertFrame
+	self:SecureHookScript(cFrame.GuildNameChangeFrame, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
+		self:skinEditBox{obj=this.EditBox, regs={6}} -- 6 is text
+		if self.modBtns then
+			self:skinStdButton{obj=this.Button}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.CloseButton}
+		end
+		self:Unhook(this, "OnShow")
+	end)
 
 	self:SecureHookScript(cFrame.EditStreamDialog, "OnShow", function(this)
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
@@ -2253,7 +2231,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:removeInset(_G.WhoFrameEditBoxInset)
 			self:skinEditBox{obj=_G.WhoFrameEditBox}--, move=true}
 			_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
-			self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=aObj.isPTR and 6 or nil}
+			self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
 			self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, rt="background"}
 			self:Unhook(this, "OnShow")
 		end)
@@ -3469,7 +3447,8 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 
 		self:removeInset(_G.PVPQueueFrame.HonorInset)
 		_G.PVPQueueFrame.HonorInset:DisableDrawLayer("BACKGROUND")
-		local hld = _G.PVPQueueFrame.HonorInset.HonorLevelDisplay
+		local hld
+		hld = _G.PVPQueueFrame.HonorInset.CasualPanel.HonorLevelDisplay
 		hld:DisableDrawLayer("BORDER")
 		self:removeRegions(hld.NextRewardLevel, {2, 4}) -- IconCover & RingBorder
 		if self.modBtnBs then
@@ -3488,6 +3467,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				chkBtn(this.NextRewardLevel)
 			end)
 		end
+		_G.PVPQueueFrame.HonorInset.RatedPanel.WeeklyChest.FlairTexture:SetTexture(nil)
 		local srf = _G.PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
 		srf.Ring:SetTexture(nil)
 		if self.modBtnBs then
@@ -3506,15 +3486,13 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		end
 		hld, srf = nil, nil
 
-		if self.isPTR then
-			_G.PVPQueueFrame.NewSeasonPopup.NewSeason:SetTextColor(self.HTr, self.HTg, self.HTb)
-			_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-			_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BTr, self.BTg, self.BTb)
-			_G.SeasonRewardFrame.Ring:SetTexture(nil)
-			self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=0}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}
-			end
+		_G.PVPQueueFrame.NewSeasonPopup.NewSeason:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.SeasonRewardFrame.Ring:SetTexture(nil)
+		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=0}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -3965,7 +3943,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=0}
 		end
-		local frame = _G.PlayerTalentFrameTalents.PvpTalentFrame
+		local frame = this.PvpTalentFrame
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("OVERLAY")
 		self:nilTexture(frame.Ring, true) -- warmode button ring texture
@@ -3982,6 +3960,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				end)
 			end
 		end
+		frame.WarmodeIncentive.IconRing:SetTexture(nil)
 
 		self:skinSlider{obj=frame.TalentList.ScrollFrame.ScrollBar, wdth=-4}
 		self:removeMagicBtnTex(self:getChild(frame.TalentList, 4))

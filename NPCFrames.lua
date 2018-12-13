@@ -23,12 +23,8 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 		this.ModelFrame:DisableDrawLayer("ARTWORK")
 		this.RaceInfoFrame.ScrollFrame.Child.RaceDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
-		if not self.isPTR then
-			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderButton:DisableDrawLayer("BACKGROUND")
-		else
-			this.RaceInfoFrame.ScrollFrame.Child.RacialTraitsLabel:SetTextColor(self.HTr, self.HTg, self.HTb)
-			this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderBackground:SetTexture(nil)
-		end
+		this.RaceInfoFrame.ScrollFrame.Child.RacialTraitsLabel:SetTextColor(self.HTr, self.HTg, self.HTb)
+		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderBackground:SetTexture(nil)
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, rt="background", wdth=-5}
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
@@ -355,15 +351,8 @@ aObj.blizzLoDFrames[ftype].FlightMap = function(self)
 	if not self.prdb.FlightMap or self.initialized.FlightMap then return end
 	self.initialized.FlightMap = true
 
-	if not self.isPTR then
-		self:keepFontStrings(_G.FlightMapFrame.BorderFrame)
-		self:moveObject{obj=_G.FlightMapFrameCloseButton, x=3, y=1}
-		self:addSkinFrame{obj=_G.FlightMapFrame, ft=ftype, ofs=4, y1=3}
-		_G.FlightMapFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
-	else
-		self:addSkinFrame{obj=_G.FlightMapFrame.BorderFrame, ft=ftype, kfs=true}
-		_G.FlightMapFrame.BorderFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
-	end
+	self:addSkinFrame{obj=_G.FlightMapFrame.BorderFrame, ft=ftype, kfs=true, y2=-3}
+	_G.FlightMapFrame.BorderFrame.sf:SetFrameStrata("LOW") -- allow map textures to be visible
 
 	-- remove ZoneLabel background texture
 	for dP, _ in pairs(_G.FlightMapFrame.dataProviders) do
@@ -558,13 +547,8 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 	self:SecureHookScript(_G.PetStableFrame, "OnShow", function(this)
 
 		_G.PetStableFrameModelBg:Hide()
-		if not self.isPTR then
-			this.LeftInset:DisableDrawLayer("BORDER")
-			this.BottomInset:DisableDrawLayer("BORDER")
-		else
-			self:removeInset(this.LeftInset)
-			self:removeInset(this.BottomInset)
-		end
+		self:removeInset(this.LeftInset)
+		self:removeInset(this.BottomInset)
 		_G.PetStableActiveBg:Hide()
 		_G.PetStableFrameStableBg:Hide()
 		self:makeMFRotatable(_G.PetStableModel)
@@ -963,10 +947,11 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 
 	self:SecureHookScript(_G.VoidStorageFrame, "OnShow", function(this)
 		for _, type in pairs{"Deposit", "Withdraw", "Storage", "Cost"} do
-			_G["VoidStorage" .. type .. "Frame"]:DisableDrawLayer("BACKGROUND")
-			_G["VoidStorage" .. type .. "Frame"]:DisableDrawLayer("BORDER")
+			self:removeNineSlice(_G["VoidStorage" .. type .. "Frame"].NineSlice)
 		end
 		self:keepFontStrings(_G.VoidStorageBorderFrame)
+		self:skinEditBox{obj=_G.VoidItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x2=1}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.VoidStorageTransferButton}
 			self:skinCloseButton{obj=_G.VoidStorageBorderFrame.CloseButton}
@@ -975,8 +960,7 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
 		end
 		self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-		self:skinEditBox{obj=_G.VoidItemSearchBox, regs={6, 7}, mi=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
+		-- Tabs
 		for i = 1, 2 do
 			_G.VoidStorageFrame["Page" .. i]:DisableDrawLayer("BACKGROUND")
 			if self.modBtns then
