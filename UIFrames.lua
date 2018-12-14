@@ -5037,6 +5037,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			aObj:nilTexture(wFrame.Frame, true)
 		elseif wFrame.widgetType == 12 then -- TextureWithState
 			setTextColor(wFrame.Text)
+		elseif wFrame.widgetType == 13 then -- SpellDisplay
+			setTextColor(wFrame.Spell.Text)
 		end
 	end
 
