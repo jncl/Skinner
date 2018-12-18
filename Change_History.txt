@@ -1,3 +1,17 @@
+beta8.28724.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added more button skinning checks
+	Updated StaticPopups skin
+	Updated TalkingHeadsUI skin
+	Updated ChatConfig skin
+	Make Chat Bubbles semi-transparent
+	Actioned PTR changes
+	Added space lines
+	Updated BaudBag, DetailsFramework, EnhancedStackSplit, Rematch, Spew & WorldQuestTracker skins
+
 beta8.28485.3
 Jncl:
 	ToDo.txt
