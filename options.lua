@@ -1,4 +1,5 @@
 local aName, aObj = ...
+
 local _G = _G
 local ftype = "opt"
 
@@ -819,13 +820,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				AuctionUI = {
 					type = "toggle",
-					name = self.L["Auction Frame"],
-					desc = self.L["Toggle the skin of the Auction Frame"],
+					name = self.L["Auction UI"],
+					desc = self.L["Toggle the skin of the Auction UI"],
 				},
 				AzeriteRespecUI ={
 					type = "toggle",
-					name = self.L["Azerite Respec Frame"],
-					desc = self.L["Toggle the skin of the Azerite Respec Frame"],
+					name = self.L["Azerite Respec UI"],
+					desc = self.L["Toggle the skin of the Azerite Respec UI"],
 				},
 				BankFrame = {
 					type = "toggle",
@@ -834,14 +835,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				BarbershopUI = {
 					type = "toggle",
-					name = self.L["Barbershop Frame"],
-					desc = self.L["Toggle the skin of the Barbershop Frame"],
+					name = self.L["Barbershop UI"],
+					desc = self.L["Toggle the skin of the Barbershop UI"],
 				},
 				BlackMarketUI = {
 					type = "toggle",
 					width = "double",
-					name = self.L["Black Market Auction Frame"],
-					desc = self.L["Toggle the skin of the Black Market Auction Frame"],
+					name = self.L["Black Market UI"],
+					desc = self.L["Toggle the skin of the Black Market UI"],
 				},
 				FlightMap = {
 					type = "toggle",
@@ -899,14 +900,14 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					desc = self.L["Toggle the skin of the Taxi Frame"],
 				},
 				TrainerUI = {
-					name = self.L["Trainer Frame"],
-					desc = self.L["Toggle the skin of the Trainer Frame"],
+					name = self.L["Trainer UI"],
+					desc = self.L["Toggle the skin of the Trainer UI"],
 					type = "toggle",
 				},
 				VoidStorageUI = {
 					type = "toggle",
-					name = self.L["Void Storage Frame"],
-					desc = self.L["Toggle the skin of the Void Storage Frame"],
+					name = self.L["Void Storage UI"],
+					desc = self.L["Toggle the skin of the Void Storage UI"],
 				},
 			},
 		},
@@ -969,13 +970,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				ArchaeologyUI = {
 					type = "toggle",
-					name = self.L["Archaeology Frame"],
-					desc = self.L["Toggle the skin of the Archaeology Frame"],
+					name = self.L["Archaeology UI"],
+					desc = self.L["Toggle the skin of the Archaeology UI"],
 				},
 				AzeriteUI ={
 					type = "toggle",
-					name = self.L["Azerite Frame"],
-					desc = self.L["Toggle the skin of the Azerite Frame"],
+					name = self.L["Azerite UI"],
+					desc = self.L["Toggle the skin of the Azerite UI"],
 				},
 				Buffs = {
 					type = "toggle",
@@ -1020,8 +1021,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				CommunitiesUI ={
 					type = "toggle",
-					name = self.L["Communities Frames"],
-					desc = self.L["Toggle the skin of the Communities Frames"],
+					name = self.L["Communities UI"],
+					desc = self.L["Toggle the skin of the Communities UI"],
 				},
 				CompactFrames = {
 					type = "toggle",
@@ -1076,13 +1077,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				GuildControlUI = {
 					type = "toggle",
-					name = self.L["Guild Control Frame"],
-					desc = self.L["Toggle the skin of the Guild Control Frame"],
+					name = self.L["Guild Control UI"],
+					desc = self.L["Toggle the skin of the Guild Control UI"],
 				},
 				GuildUI = {
 					type = "toggle",
-					name = self.L["Guild Frame"],
-					desc = self.L["Toggle the skin of the Guild Frame"],
+					name = self.L["Guild UI"],
+					desc = self.L["Toggle the skin of the Guild UI"],
 				},
 				GuildInvite = {
 					type = "toggle",
@@ -1091,19 +1092,19 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				InspectUI = {
 					type = "toggle",
-					name = self.L["Inspect Frame"],
-					desc = self.L["Toggle the skin of the Inspect Frame"],
+					name = self.L["Inspect UI"],
+					desc = self.L["Toggle the skin of the Inspect UI"],
 				},
 				ItemSocketingUI = {
 					type = "toggle",
-					name = self.L["Item Socketing Frame"],
-					desc = self.L["Toggle the skin of the Item Socketing Frame"],
+					name = self.L["Item Socketing UI"],
+					desc = self.L["Toggle the skin of the Item Socketing UI"],
 				},
 				LookingForGuildUI = {
 					type = "toggle",
 					width = "double",
-					name = self.L["Looking for Guild Frame"],
-					desc = self.L["Toggle the skin of the Looking for Guild Frame"],
+					name = self.L["Looking for Guild UI"],
+					desc = self.L["Toggle the skin of the Looking for Guild UI"],
 				},
 				LootFrames = {
 					type = "group",
@@ -1183,8 +1184,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				OverrideActionBar = {
 					type = "toggle",
-					name = self.L["VehicleUI"],
-					desc = self.L["Toggle the skin of the VehicleUI"],
+					name = self.L["Vehicle UI"],
+					desc = self.L["Toggle the skin of the Vehicle UI"],
 				},
 				PVPFrame = {
 					type = "toggle",
@@ -1198,8 +1199,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				RaidUI = {
 					type = "toggle",
-					name = self.L["Raid UI Frames"],
-					desc = self.L["Toggle the skin of the Raid UI Frames"],
+					name = self.L["Raid UI"],
+					desc = self.L["Toggle the skin of the Raid UI"],
 				},
 				ReadyCheck = {
 					type = "toggle",
@@ -1228,8 +1229,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				TalentUI = {
 					type = "toggle",
-					name = self.L["Talent Frame"],
-					desc = self.L["Toggle the skin of the Talent Frame"],
+					name = self.L["Talent UI"],
+					desc = self.L["Toggle the skin of the Talent UI"],
 				},
 				TradeFrame = {
 					type = "toggle",
@@ -1238,8 +1239,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				TradeSkillUI = {
 					type = "toggle",
-					name = self.L["Trade Skill Frame"],
-					desc = self.L["Toggle the skin of the Trade Skill Frame"],
+					name = self.L["Trade Skill UI"],
+					desc = self.L["Toggle the skin of the Trade Skill UI"],
 				},
 			},
 		},
@@ -1351,8 +1352,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				ChallengesUI = {
 					type = "toggle",
-					name = self.L["Challenges Frame"],
-					desc = self.L["Toggle the skin of the Challenges Frame"],
+					name = self.L["Challenges UI"],
+					desc = self.L["Toggle the skin of the Challenges UI"],
 				},
 				chatopts = {
 					type = "group",
@@ -1485,8 +1486,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				GarrisonUI = {
 					type = "toggle",
-					name = self.L["GarrisonUI Frame"],
-					desc = self.L["Toggle the skin of the GarrisonUI Frame"],
+					name = self.L["Garrison UI"],
+					desc = self.L["Toggle the skin of the Garrison UI"],
 				},
 				GhostFrame = {
 					type = "toggle",
@@ -1495,13 +1496,13 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				GMChatUI = {
 					type = "toggle",
-					name = self.L["GM Chat Frame"],
-					desc = self.L["Toggle the skin of the GM Chat Frame"],
+					name = self.L["GM Chat UI"],
+					desc = self.L["Toggle the skin of the GM Chat UI"],
 				},
 				GuildBankUI = {
 					type = "toggle",
-					name = self.L["Guild Bank Frame"],
-					desc = self.L["Toggle the skin of the Guild Bank Frame"],
+					name = self.L["Guild Bank UI"],
+					desc = self.L["Toggle the skin of the Guild Bank UI"],
 				},
 				HelpFrame = {
 					type = "group",
@@ -1516,8 +1517,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						},
 						GMSurveyUI = {
 							type = "toggle",
-							name = self.L["GM Survey Frame"],
-							desc = self.L["Toggle the skin of the GM Survey Frame"],
+							name = self.L["GM Survey UI"],
+							desc = self.L["Toggle the skin of the GM Survey UI"],
 						},
 					},
 				},
@@ -1538,8 +1539,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				ItemUpgradeUI = {
 					type = "toggle",
-					name = self.L["Item Upgrade Frame"],
-					desc = self.L["Toggle the skin of the Item Upgrade Frame"],
+					name = self.L["Item Upgrade UI"],
+					desc = self.L["Toggle the skin of the Item Upgrade UI"],
 				},
 				LevelUpDisplay = {
 					type = "toggle",
@@ -1694,8 +1695,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				PetBattleUI = {
 					type = "toggle",
-					name = self.L["Pet Battle Frame"],
-					desc = self.L["Toggle the skin of the Pet Battle Frame"],
+					name = self.L["Pet Battle UI"],
+					desc = self.L["Toggle the skin of the Pet Battle UI"],
 				},
 				ProductChoiceFrame = {
 					type = "toggle",
