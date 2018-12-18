@@ -560,8 +560,7 @@ aObj.blizzFrames[ftype].CastingBar = function(self)
 			self:skinStatusBar{obj=_G[type .. "CastingBarFrame"], fi=0, bgTex=self:getRegion(_G[type .. "CastingBarFrame"], 1)}
 		end
 		-- adjust text and spark in Classic mode
-		if type == ""
-		and not _G[type .. "CastingBarFrame"].ignoreFramePositionManager then
+		if not _G[type .. "CastingBarFrame"].ignoreFramePositionManager then
 			_G[type .. "CastingBarFrame"].Text:SetPoint("TOP", 0, 2)
 			_G[type .. "CastingBarFrame"].Spark.offsetY = -1
 		end
@@ -3272,7 +3271,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 end
 
-aObj.blizzFrames[ftype].OverrideActionBar = function(self)
+aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 	if not self.prdb.OverrideActionBar  or self.initialized.OverrideActionBar then return end
 	self.initialized.OverrideActionBar = true
 

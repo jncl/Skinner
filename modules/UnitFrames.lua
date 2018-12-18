@@ -222,7 +222,7 @@ local function skinPetF()
 		aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
 		adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 		aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
-		-- casting bar handled in CastingBar function (UIE1)
+		-- casting bar handled in CastingBar function
 		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
 		-- skin the PetFrame
