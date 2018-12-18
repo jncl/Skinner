@@ -16,17 +16,4 @@ Legend:
 
 ?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
 
-	I	AdventureGuide, reported by palizangetsu, 10.08.18
-?		- missing difficulty text when first displayed, when difficulty changed it fixes itself until relog.
-
-√	N	WorldQuestTracker
-
-	I	WorldMap, reported by raineday, 12.12.18
-√		- Map textures not disappearing when close button clicked, backdrop does.
-
-√	N	BaudBag, requested by raineday, 13.12.18
-
-	I	Rematch, reported by tordenflesk, 13.12.18
-√		- Skinner\Skinner-beta8.28485.3.lua:1352: attempt to index field 'obj' (a nil value)
-		Skinner\Skinner-beta8.28485.3.lua:1408: in function `skinSlider'
-		Skinner\AddonSkins\Rematch-4.9.0.lua:183: in function <Skinner\AddonSkins\Rematch.lua:5>
+√	O	Make options text match option names wherever possible
