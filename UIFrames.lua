@@ -5007,14 +5007,16 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			aObj:removeRegions(wFrame.RightBar, {2, 3, 4}) -- border textures
 		elseif wFrame.widgetType == 4 then -- IconTextAndBackground (Island Expedition Totals)
 		elseif wFrame.widgetType == 5 then -- DoubleIconAndText
-			aObj:addButtonBorder{obj=wFrame.Left, relTo=wFrame.Left.Icon}
-			aObj:addButtonBorder{obj=wFrame.Right, relTo=wFrame.Right.Icon}
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=wFrame.Left, relTo=wFrame.Left.Icon}
+				aObj:addButtonBorder{obj=wFrame.Right, relTo=wFrame.Right.Icon}
+			end
 		elseif wFrame.widgetType == 6 then -- StackedResourceTracker
 			for resourceFrame in wFrame.resourcePool:EnumerateActive() do
 				setTextColor(resourceFrame.Text)
 			end
 		elseif wFrame.widgetType == 7 then -- IconTextAndCurrencies
-			if self.modBtnBs then
+			if aOBj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
 				if wInfo.enabledState == _G.Enum.WidgetEnabledState.Disabled then
 					wFrame.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
@@ -5038,7 +5040,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 12 then -- TextureWithState
 			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
+			wFrame.Spell.Border:SetTexture(nil)
 			setTextColor(wFrame.Spell.Text)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon}
+			end
 		end
 	end
 
