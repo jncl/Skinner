@@ -4229,12 +4229,12 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 	if self.prdb.Tooltips.skin then
 		-- skin the tooltips
-		for _, type in pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
-			if _G[type .. "Tooltip"].Delimiter then _G[type .. "Tooltip"].Delimiter:SetTexture(nil) end
-			if _G[type .. "Tooltip"].Delimiter1 then _G[type .. "Tooltip"].Delimiter1:SetTexture(nil) end
-			if _G[type .. "Tooltip"].Delimiter2 then _G[type .. "Tooltip"].Delimiter2:SetTexture(nil) end
-			if not type == "BattlePet" then _G[type .. "Tooltip"]:DisableDrawLayer("BACKGROUND") end
-			self:addSkinFrame{obj=_G[type .. "Tooltip"], ft=ftype}
+		for _, prefix in pairs{"PetBattlePrimaryUnit", "PetBattlePrimaryAbility", "FloatingBattlePet", "FloatingPetBattleAbility", "BattlePet"} do
+			_G[prefix .. "Tooltip"]:DisableDrawLayer("BACKGROUND")
+			if _G[prefix .. "Tooltip"].Delimiter then _G[prefix .. "Tooltip"].Delimiter:SetTexture(nil) end
+			if _G[prefix .. "Tooltip"].Delimiter1 then _G[prefix .. "Tooltip"].Delimiter1:SetTexture(nil) end
+			if _G[prefix .. "Tooltip"].Delimiter2 then _G[prefix .. "Tooltip"].Delimiter2:SetTexture(nil) end
+			self:addSkinFrame{obj=_G[prefix .. "Tooltip"], ft=ftype}
 		end
 		_G.PetBattlePrimaryUnitTooltip.ActualHealthBar:SetTexture(self.sbTexture)
 		_G.PetBattlePrimaryUnitTooltip.XPBar:SetTexture(self.sbTexture)
