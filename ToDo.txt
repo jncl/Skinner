@@ -16,4 +16,9 @@ Legend:
 
 ?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
 
-√	O	Make options text match option names wherever possible
+	I	OverAchiever, reported by epidemedabear, 20.12.18
+√		- AchievementsUI when first opened isn't skinned
+√		- skin Alert frames
+
+	I	TalkingHeadUI, reported by epidemedabear, 20.12.18
+√		-  ..\AddOns\Skinner\UIFrames.lua line 4733: attempt to call method 'SetTextColor' (a nil value)
