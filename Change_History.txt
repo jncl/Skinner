@@ -1,3 +1,14 @@
+beta8.28768.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	version numbers
+	Updated CastingBarFrame skin
+	Changed options text to match option name
+	Add more button skinning checks
+	Updated TOC version
+	Updated UIWidgets skin
+
 beta8.28724.1
 Jncl:
 	ToDo.txt
