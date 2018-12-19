@@ -4730,13 +4730,10 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 	self:SecureHook(_G.TalkingHeadFrame.TextFrame.Text, "SetTextColor", function(this, r, g, b)
 		if r == 0 then -- use light background (Island Expeditions, Voldun Quest, Dark Iron intro)
 			_G.TalkingHeadFrame.sf:SetBackdropColor(.75, .75, .75, .75)
-			_G.TalkingHeadFrame.MainFrame.CloseButton:SetTextColor(1.0, 1.0, 1.0) -- black
+			_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontBX)
 		else
 			_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
-			if _G.TalkingHeadFrame.MainFrame.CloseButton.SetTextColor then
-				_G.TalkingHeadFrame.MainFrame.CloseButton:SetTextColor(1.0, 0.82, 0) -- yellow
-			end
-
+			_G.TalkingHeadFrame.MainFrame.CloseButton:SetNormalFontObject(self.modUIBtns.fontX)
 		end
 	end)
 
