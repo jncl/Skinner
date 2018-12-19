@@ -36,15 +36,16 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0}
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesFemaleButton, ofs=0}
 		end
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHook(_G.AlliedRacesFrame, "LoadRaceData", function(this, raceID)
 		for ability in this.abilityPool:EnumerateActive() do
 			ability.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
 			self:getRegion(ability, 3):SetTexture(nil) -- Border texture
-			self:addButtonBorder{obj=ability, relTo=ability.Icon}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=ability, relTo=ability.Icon}
+			end
 		end
-		for bullet in this.bulletPool:EnumerateActive() do
-			bullet.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
-		end
-		self:Unhook(this, "OnShow")
 	end)
 
 end
