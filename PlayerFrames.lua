@@ -233,13 +233,13 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 				elseif child.label then -- metaCriteria
 					r, g, b, a = child.label:GetTextColor()
 					if g == 0 then -- completed criteria
-						child.label:SetTextColor(1, 1, 1, 1)
+						child.label:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
 						child.label:SetShadowOffset(1, -1)
 					end
 				elseif child.name then -- criteria
 					r, g, b, a = child.name:GetTextColor()
 					if g == 0 then -- completed criteria
-						child.name:SetTextColor(1, 1, 1, 1)
+						child.name:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
 						child.name:SetShadowOffset(1, -1)
 					end
 				end
@@ -3683,10 +3683,10 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			local spellString, subSpellString = _G[btn:GetName() .. "SpellName"], _G[btn:GetName() .. "SubSpellName"]
 			if _G[btn:GetName() .. "IconTexture"]:IsDesaturated() then -- player level too low, see Trainer, or offSpec
 				if btn.sbb then btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.75) end
-				spellString:SetTextColor(0.5, 0.5, 0.5, 0.75)
-				subSpellString:SetTextColor(0.5, 0.5, 0.5, 0.75)
-				btn.RequiredLevelString:SetTextColor(0.5, 0.5, 0.5, 0.75)
-				btn.SeeTrainerString:SetTextColor(0.5, 0.5, 0.5, 0.75)
+				spellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+				subSpellString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+				btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
+				btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 			else
 				if btn.sbb then btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]) end
 				spellString:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
