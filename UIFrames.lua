@@ -431,43 +431,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
 	self.initialized.AlertFrames = true
 
-	-- hook this to stop gradient texture whiteout
-	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
-
-		-- aObj:Debug("AlertFrame AddAlertFrame: [%s, %s]", this, frame)
-
-		-- run the hooked function
-		self.hooks[this].AddAlertFrame(this, frame)
-
-		-- adjust size if guild achievement
-		if aObj:hasTextInName(frame, "AchievementAlertFrame") then
-			local y1, y2 = -10, 12
-	 		if frame.guildDisplay then y1, y2 = -8, 8 end
-			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", 5, y1)
-			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 5, y2)
-			y1, y2 = nil, nil
-		end
-
-	end, true)
-
-	-- hook this to remove rewardFrame rings
-	self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
-		if frame.RewardFrames then
-			for i = 1, #frame.RewardFrames do
-				frame.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
-			end
-		end
-	end)
-
-	self:SecureHook("AlertFrame_PauseOutAnimation", function(frame)
-		if frame.sf then frame.sf.tfade:SetGradientAlpha(self:getGradientInfo()) end
-		if frame.cb then frame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
-	end)
-	self:Hook("AlertFrame_ResumeOutAnimation", function(frame)
-		if frame.sf then frame.sf.tfade:SetAlpha(0) end
-		if frame.cb then frame.cb.tfade:SetAlpha(0) end
-	end, true)
-
 	-- called params: frame, challengeType, count, max ("Raid", 2, 5)
 	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GuildChallengeAlertSystem: [%s, %s, %s, %s]", frame, ...)
@@ -717,6 +680,50 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		-- aObj:Debug("CriteriaAlertSystem: [%s, %s, %s]", frame, ...)
 		skinACAlertFrames(frame)
 	end)
+
+	-- hook this to stop gradient texture whiteout
+	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
+
+		-- aObj:Debug("AlertFrame AddAlertFrame: [%s, %s]", this, frame)
+
+		if IsAddOnLoaded("Overachiever") then
+			-- stretch icon texture
+			frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
+			skinACAlertFrames(frame)
+		end
+
+		-- run the hooked function
+		self.hooks[this].AddAlertFrame(this, frame)
+
+		-- adjust size if guild achievement
+		if self:hasTextInName(frame, "AchievementAlertFrame") then
+			local y1, y2 = -10, 12
+	 		if frame.guildDisplay then y1, y2 = -8, 8 end
+			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", 5, y1)
+			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 5, y2)
+			y1, y2 = nil, nil
+		end
+
+	end, true)
+
+	-- hook this to remove rewardFrame rings
+	self:SecureHook("StandardRewardAlertFrame_AdjustRewardAnchors", function(frame)
+		if frame.RewardFrames then
+			for i = 1, #frame.RewardFrames do
+				frame.RewardFrames[i]:DisableDrawLayer("OVERLAY") -- reward ring
+			end
+		end
+	end)
+
+	-- hook these to reset Gradients
+	self:SecureHook("AlertFrame_PauseOutAnimation", function(frame)
+		if frame.sf then frame.sf.tfade:SetGradientAlpha(self:getGradientInfo()) end
+		if frame.cb then frame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
+	end)
+	self:Hook("AlertFrame_ResumeOutAnimation", function(frame)
+		if frame.sf then frame.sf.tfade:SetAlpha(0) end
+		if frame.cb then frame.cb.tfade:SetAlpha(0) end
+	end, true)
 
 end
 
