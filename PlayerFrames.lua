@@ -51,6 +51,15 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		_G.ACHIEVEMENTUI_REDBORDER_A = self.bbColour[4]
 	end
 
+	-- handle Overachiever hijacking OnShow script first time through
+	if IsAddOnLoaded("Overachiever") then
+		self:SecureHook("AchievementFrame_OnShow", function(this)
+			_G.AchievementFrame:Hide()
+			_G.AchievementFrame:Show()
+			self:Unhook(this, "AchievementFrame_OnShow")
+		end)
+	end
+
 	self:SecureHookScript(_G.AchievementFrame, "OnShow", function(this)
 		local function skinSB(statusBar, type)
 
