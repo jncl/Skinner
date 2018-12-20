@@ -306,14 +306,15 @@ function aObj:OnEnable()
 						if quality > _G.LE_ITEM_QUALITY_POOR and _G.BAG_ITEM_QUALITY_COLORS[quality] then
 							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 						else
-							button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+							button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.498) -- grey border
 						end
 					else
 						if _G.TradeSkillFrame
-						and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon then
-							button.sbb:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
+						and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
+						then
+							button.sbb:SetBackdropBorderColor(1.0, 0.82, 0.0, 1) -- NORMAL_FONT_COLOR
 						else
-							button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.30)
+							button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.3) -- DISABLED_FONT_COLOR
 						end
 					end
 				end
