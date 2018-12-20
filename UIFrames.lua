@@ -481,8 +481,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		-- aObj:Debug("InvasionAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
 		self:getRegion(frame, 1):SetTexture(nil) -- Background toast texture
 		self:getRegion(frame, 2):SetDrawLayer("ARTWORK") -- move icon to ARTWORK layer so it is displayed
-		self:addButtonBorder{obj=frame, relTo=self:getRegion(frame, 2)}
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=self:getRegion(frame, 2)}
+		end
 	end)
 	-- called params: frame, raceName, raceTexture ("Demonic", "")
 	self:SecureHook(_G.DigsiteCompleteAlertSystem, "setUpFunction", function(frame, ...)
@@ -494,16 +496,20 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self:SecureHook(_G.StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("StorePurchaseAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=frame, relTo=frame.Icon}
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
 	end)
 	-- called params: frame, name, garrisonType ("Menagerie", "")
 	self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonBuildingAlertSystem: [%s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.Icon:SetDrawLayer("BORDER")
-		self:addButtonBorder{obj=frame, relTo=frame.Icon}
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
 	end)
 	-- called params: frame, missionInfo=({name="Test", typeAtlas="", followerTypeID=LE_FOLLOWER_TYPE_GARRISON_7_0})
 	self:SecureHook(_G.GarrisonMissionAlertSystem, "setUpFunction", function(frame, ...)
@@ -546,16 +552,20 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		-- aObj:Debug("GarrisonTalentAlertSystem: [%s, %s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.Icon:SetDrawLayer("BORDER")
-		self:addButtonBorder{obj=frame, relTo=frame.Icon}
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
 	end)
 	-- called params: frame, questData (1234)
 	self:SecureHook(_G.WorldQuestCompleteAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("WorldQuestCompleteAlertSystem: [%s, %s]", frame, ...)
 		frame.QuestTexture:SetDrawLayer("ARTWORK")
 		frame:DisableDrawLayer("BORDER") -- toast texture
-		self:addButtonBorder{obj=frame, relTo=frame.QuestTexture}
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-6, y1=-10}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.QuestTexture}
+		end
 	end)
 	-- called params: frame, itemLink (137080)
 	self:SecureHook(_G.LegendaryItemAlertSystem, "setUpFunction", function(frame, ...)
@@ -603,8 +613,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		-- aObj:Debug("MoneyWonAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.IconBorder:SetTexture(nil)
-		self:addButtonBorder{obj=frame, relTo=frame.Icon}
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
 	end)
 	-- called params: self, recipeID (209645)
 	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
@@ -618,8 +630,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		-- aObj:Debug("HonorAwardedAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame.IconBorder:SetTexture(nil)
-		self:addButtonBorder{obj=frame, relTo=frame.Icon}
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
 	end)
 	-- called params: frame, petID
 	self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, ...)
@@ -640,10 +654,12 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		opts.obj:DisableDrawLayer("OVERLAY")
 		opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinFrame
 		aObj:addSkinFrame{obj=opts.obj, ft=ftype, ofs=opts.ofs or -8, y1=opts.y1 or nil}
-		-- wait for animation to finish
-		_G.C_Timer.After(0.2, function()
-			aObj:addButtonBorder{obj=opts.obj, relTo=opts.obj.dungeonTexture}
-		end)
+		if self.modBtnBs then
+			-- wait for animation to finish
+			_G.C_Timer.After(0.2, function()
+				aObj:addButtonBorder{obj=opts.obj, relTo=opts.obj.dungeonTexture}
+			end)
+		end
 
 	end
 	-- called params: frame, rewardData={name="Deceiver's Fall", iconTextureFile=1616157, subtypeID=3, moneyAmount=1940000, moneyBase=1940000, monetVar=0, experienceBase=0, experienceGained=0, experienceVar=0, numRewards=1, numStrangers=0, rewards={} }
@@ -679,8 +695,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			y1, y2 = -8, 10
 		end
 		if not frame.sf then
-			aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
 			aObj:addSkinFrame{obj=frame, ft=ftype, x1=x1, y1=y1, x2=x2, y2=y2}
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
+			end
 		else
 			frame.sf:ClearAllPoints()
 			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", x1, y1)
