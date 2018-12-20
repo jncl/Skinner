@@ -2,9 +2,10 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Overachiever") then return end
 local _G = _G
 
-aObj.addonsToSkin.Overachiever = function(self) -- v 0.99.10
+aObj.addonsToSkin.Overachiever = function(self) -- v 1.0.4
 	if not self.db.profile.AchievementUI then return end
 
+	--- Options
 	local pCnt = 0
 	self.RegisterCallback("Overachiever", "IOFPanel_Before_Skinning", function(this, panel)
 		if panel.name == "Overachiever"
@@ -50,7 +51,7 @@ aObj.addonsToSkin.Overachiever = function(self) -- v 0.99.10
 
 end
 
-aObj.lodAddons.Overachiever_Tabs = function(self) -- v 0.99.10
+aObj.lodAddons.Overachiever_Tabs = function(self) -- v 1.0.4
 	if not self.db.profile.AchievementUI then return end
 
 	local function cleanButtons(frame)
