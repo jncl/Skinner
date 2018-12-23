@@ -16,9 +16,9 @@ Legend:
 
 ?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
 
-	I	OverAchiever, reported by epidemedabear, 20.12.18
-√		- AchievementsUI when first opened isn't skinned
-√		- skin Alert frames
 
-	I	TalkingHeadUI, reported by epidemedabear, 20.12.18
-√		-  ..\AddOns\Skinner\UIFrames.lua line 4733: attempt to call method 'SetTextColor' (a nil value)
+
+	I	UIWidgets, reported by Fraktyl, 20.12.18
+√		- Skinner\UIFrames.lua:5041: attempt to index global 'aOBj' (a nil value)
+		Skinner\UIFrames.lua:5041: in function <Skinner\UIFrames.lua:5016>
+		Skinner\UIFrames.lua:5078: in function <Skinner\UIFrames.lua:5077>
