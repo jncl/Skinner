@@ -687,9 +687,16 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		-- aObj:Debug("AlertFrame AddAlertFrame: [%s, %s]", this, frame)
 
 		if IsAddOnLoaded("Overachiever") then
-			-- stretch icon texture
-			frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
-			skinACAlertFrames(frame)
+			local ocScript = frame:GetScript("OnClick")
+			if ocScript
+			and ocScript == _G.OverachieverAlertFrame_OnClick
+			then
+				-- aObj:Debug("AF Overachiever Alert detected")
+				-- stretch icon texture
+				frame.Icon.Texture:SetTexCoord(-0.04, 0.75, 0.0, 0.555)
+				skinACAlertFrames(frame)
+			end
+			ocScript = nil
 		end
 
 		-- run the hooked function
