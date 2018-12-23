@@ -1,3 +1,19 @@
+beta8.28822.1
+Jncl:
+	ToDo.txt
+	version numbers
+	Updated ButtonBorder colours code
+	Updated Tooltip skin
+	Updated AchievementUI skin to handle Overachiever addon
+	Updated AlertFrame skin
+	Added more Button border checks
+	Updated Overachiever skin
+	Updated Change_History.txt
+	Use Globally named font colours
+	Updated TalkingHeadUI skin
+	Updated PetBattleUI skin
+	Updated AlliedRaceUI skin
+
 beta8.28768.1
 Jncl:
 	ToDo.txt
