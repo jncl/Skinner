@@ -5038,7 +5038,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				setTextColor(resourceFrame.Text)
 			end
 		elseif wFrame.widgetType == 7 then -- IconTextAndCurrencies
-			if aOBj.modBtnBs then
+			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
 				if wInfo.enabledState == _G.Enum.WidgetEnabledState.Disabled then
 					wFrame.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
