@@ -9,6 +9,7 @@ aObj.addonsToSkin.Mapster = function(self) -- v 1.8.1
 
 	self:addSkinFrame{obj=_G.WorldMapFrame, ft="a", kfs=true, nb=true, ofs=2}
 	self:keepFontStrings(_G.WorldMapFrame.BorderFrame)
+	self:removeNineSlice(_G.WorldMapFrame.BorderFrame.NineSlice)
 
 	if self.modBtns then
 		self:skinStdButton{obj=Mapster.optionsButton}
