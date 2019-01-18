@@ -1242,7 +1242,7 @@ end
 local function print_family_tree(fName)
 
 	if fName:IsForbidden() then
-		print("Frame access is forbidden")
+		print("Frame access is forbidden", fName)
 		return
 	end
 
