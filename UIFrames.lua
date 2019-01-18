@@ -3902,6 +3902,10 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	if _G.MovePadFrame:IsShown() then
+		_G.MovePadFrame:Hide()
+		_G.MovePadFrame:Show()
+	end
 
 end
 
