@@ -1,3 +1,34 @@
+beta8.28822.4
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Add comment
+	Updated Tooltip skinning code
+	Updated StatusBar skinning code
+	Bugfix for EditBox skinning code
+	Updated skinButton code
+	Updated message
+	Updated UnitFrames PetFrame skin
+	Updated UIButtons skinning code
+	Updated UIDropDownMenu skin
+	Updated MovePad skin
+	Updated MinimapButtons skin
+	Updated HelpFrame skin
+	Updated GhostFrame skin
+	Update ChatConfig skin
+	Updated BNFrames skin
+	Updated AlertFrames skin
+	Updated Objectives skin
+	Updated Communities skin
+	Updated CharacterFrames skin
+	Use aObj instead of self
+	Removed Addons from lists
+	Updated Ace3, Armory, Carbonite, TinyDPS, TinyTooltip, TipTac, WeakAuras & Zperl skins for colour handling changes etc
+	Updated Colour handling code
+	Updated Azeroth Auto Pilot, Guild_Roster_Manager, Mapster & MinimalArchaeology skins
+	Skinned Raider.IO
+
 beta8.28822.3
 Jncl:
 	Bugfix for AlertFrames skin
