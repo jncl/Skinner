@@ -723,8 +723,8 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		for spellBtn in frame.spellRewardPool:EnumerateActive() do
 			spellBtn.NameFrame:SetTexture(nil)
 			spellBtn:DisableDrawLayer("OVERLAY")
-			if self.modBtnBs then
-				 self:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon}
+			if aObj.modBtnBs then
+				 aObj:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon}
 			end
 		end
 		-- FollowerReward
