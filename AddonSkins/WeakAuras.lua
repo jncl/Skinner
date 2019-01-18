@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 2.5.12
+aObj.addonsToSkin.WeakAuras = function(self) -- v 2.10.11
 
 	-- hook this to skin the WeakAuras added elements
 	local s1, s2, s3, s4
@@ -38,12 +38,12 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 2.5.12
 	end)
 
 	-- setup defaults for Progress Bars
-	_G.WeakAuras.regionTypes["aurabar"].default.texture = self.db.profile.StatusBar.texture
-	_G.WeakAuras.regionTypes["aurabar"].default.barColor = {self.sbColour[1], self.sbColour[2],  self.sbColour[3], self.sbColour[4]}
+	_G.WeakAuras.regionTypes["aurabar"].default.texture = self.sbTexture
+	_G.WeakAuras.regionTypes["aurabar"].default.barColor = _G.CopyTable(self.sbClr)
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.5.12
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.10.11
 
 	-- wait until frame is created
 	if not _G.WeakAuras.OptionsFrame() then
@@ -56,39 +56,45 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.5.12
 	local optFrame = _G.WeakAuras.OptionsFrame()
 	if optFrame then
 		self:skinDropDown{obj=_G.WeakAuras_DropDownMenu}
-		self:skinEditBox{obj=optFrame.filterInput, regs={9}, mi=true}
-		local function skinBtn(id)
+		self:skinEditBox{obj=optFrame.filterInput, regs={6}, mi=true}
+		-- make filter input box higher
+	    optFrame.filterInput:SetPoint("TOPLEFT", optFrame.buttonsContainer.frame, "TOPLEFT", 6, 8)
 
-			local frame = aObj:getChild(optFrame, id)
-			aObj:keepFontStrings(frame)
-			aObj:moveObject{obj=frame, x=23, y= id ~= 2 and 1 or 0}
-			if id == 1 then aObj:skinCloseButton{obj=aObj:getChild(frame, 1)} end
-			if id == 2 then aObj:skinCheckButton{obj=aObj:getChild(frame, 1)} end
-			if id == 6 then aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=self.fontS, text="↕"} end -- up-down arrow
-			frame = nil
+		if self.modBtns then
+			local function skinBtn(id)
 
+				local frame = aObj:getChild(optFrame, id)
+				aObj:keepFontStrings(frame)
+				aObj:moveObject{obj=frame, x=23, y= id ~= 2 and 1 or 0}
+				if id == 1 then aObj:skinCloseButton{obj=aObj:getChild(frame, 1)} end
+				if id == 2 then aObj:skinCheckButton{obj=aObj:getChild(frame, 1)} end
+				if id == 6 then aObj:skinOtherButton{obj=aObj:getChild(frame, 1), font=self.fontS, text="↕"} end -- up-down arrow
+				frame = nil
+
+			end
+			skinBtn(1) -- close button frame
+			skinBtn(2) -- import button frame
+			skinBtn(6) -- minimize button frame
 		end
-		skinBtn(1) -- close button frame
-		skinBtn(2) -- import button frame
-		skinBtn(6) -- minimize button frame
 		local _, _, _, enabled, loadable = _G.GetAddOnInfo("WeakAurasTutorials")
     	if enabled
 		and loadable
 		then
 			self:keepFontStrings(self:getChild(optFrame, 5)) -- tutorial button frame
 		end
-		self:addSkinFrame{obj=optFrame, ft="a", kfs=true, nb=true, y1=6}
-		optFrame.moversizer:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+		self:addSkinFrame{obj=optFrame, ft="a", kfs=true, nb=true, ofs=0, y1=6}
+		optFrame.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
 
 	end
 	optFrame = nil
 
 	-- Templates
-	self:SecureHook(_G.WeakAuras, "OpenTriggerTemplate", function(this, data)
-		local optFrame = _G.WeakAuras.OptionsFrame()
-		self:skinStdButton{obj=optFrame.newView.backButton}
-		self:skinStdButton{obj=self:getLastChild(optFrame.newView.frame)}
-		self:Unhook(this, "OpenTriggerTemplate")
-	end)
+	if self.modBtns then
+		self:SecureHook(_G.WeakAuras, "OpenTriggerTemplate", function(data)
+			self:skinStdButton{obj=_G.WeakAuras.OptionsFrame().newView.backButton}
+			self:skinStdButton{obj=self:getLastChild(_G.WeakAuras.OptionsFrame().newView.frame)}
+			self:Unhook(this, "OpenTriggerTemplate")
+		end)
+	end
 
 end

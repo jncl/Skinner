@@ -19,9 +19,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 	if self.initialized.Ace3 then return end
 	self.initialized.Ace3 = true
 
-	local bC = self.bColour
-	local bbC = self.bbColour
-
 	local function skinAceGUI(obj, objType)
 
 		local objVer = AceGUI.GetWidgetVersion and AceGUI:GetWidgetVersion(objType) or 0
@@ -159,8 +156,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				-- hook this for frame refresh
 				aObj:secureHook(obj, "Refresh", function(this)
 					this.frame:SetBackdrop(aObj.Backdrop[1])
-					this.frame:SetBackdropColor(bC.r, bC.g, bC.b, bC.a)
-					this.frame:SetBackdropBorderColor(bbC.r, bbC.g, bbC.b, bbC.a)
+					this.frame:SetBackdropColor(aObj.bClr:GetRGBA())
+					this.frame:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end)
 			elseif objType == "SnowflakeEditBox" then
 				aObj:skinEditBox{obj=obj.box, regs={9}, noHeight=true}

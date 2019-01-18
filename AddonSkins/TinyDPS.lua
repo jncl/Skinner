@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("TinyDPS") then return end
 local _G = _G
 
-aObj.addonsToSkin.TinyDPS = function(self) -- v 0.942
+aObj.addonsToSkin.TinyDPS = function(self) -- v 8.0.1.1
 
 	-- main frame
 	self:addSkinFrame{obj=_G.tdpsFrame, ft="a", nb=true, ofs=2, aso={ng=true}} -- no gradient (Animation)
@@ -15,7 +15,7 @@ aObj.addonsToSkin.TinyDPS = function(self) -- v 0.942
 				child:SetStatusBarTexture(aObj.sbTexture)
 				child.bg = child:CreateTexture(nil, "BACKGROUND")
 				child.bg:SetTexture(aObj.sbTexture)
-				child.bg:SetVertexColor(aObj.sbColour[1], aObj.sbColour[2], aObj.sbColour[3], aObj.sbColour[4])
+				child.bg:SetVertexColor(aObj.sbClr:GetRGBA())
 			end
 		end
 
@@ -23,12 +23,12 @@ aObj.addonsToSkin.TinyDPS = function(self) -- v 0.942
 	-- add a metatable to the Player table so that new bars can be skinned
 	if _G.tdpsPlayer then
 		local mt = {__newindex = function(t, k, v)
-			rawset(t, k, v)
+			_G.rawset(t, k, v)
 			_G.C_Timer.After(0.1, skinSBs)	-- wait for bar to be created before skinning it
 		end}
 		-- hook this as it is used when the tables are reset
 		self:SecureHook(_G.noData, "Show", function(this)
-			setmetatable(_G.tdpsPlayer, mt)
+			_G.setmetatable(_G.tdpsPlayer, mt)
 		end)
 	end
 	-- skin any existing StatusBars

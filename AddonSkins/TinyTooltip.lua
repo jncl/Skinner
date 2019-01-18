@@ -8,13 +8,19 @@ aObj.addonsToSkin.TinyTooltip = function(self) -- v 2.1.8.3
 	_G.BigTipDB.general.bgfile = self.bdTexName
 	_G.BigTipDB.general.borderCorner = self.bdbTexName
 	_G.BigTipDB.general.borderSize = self.prdb.BdEdgeSize
-	_G.BigTipDB.general.borderColor = {self.tbColour[1], self.tbColour[2], self.tbColour[3], self.tbColour[4]}
-	_G.BigTipDB.general.background = {self.bColour[1], self.bColour[2], self.bColour[3], self.bColour[4]}
-	_G.BigTipDB.general.statusbarTexture = self.prdb.StatusBar.texture
+	_G.BigTipDB.general.borderColor = _G.CopyTable(self.tbClr)
+	_G.BigTipDB.general.background = _G.CopyTable(self.bClr)
+	_G.BigTipDB.general.statusbarTexture = self.sbTexture
+
+	-- prevent GameTooltip from changing Backdrop settings
+	_G.GameTooltip.SetBackdrop = _G.nop
+	_G.GameTooltip.SetBackdropColor = _G.nop
+	_G.GameTooltip.SetBackdropBorderColor = _G.nop
 
 	local LibEvent = _G.LibStub:GetLibrary("LibEvent.7000")
 	-- hook this to handle gradient effect
 	LibEvent:attachTrigger("tooltip:show", function(this, frame)
+		aObj:Debug("TT tooltip:show: [%s, %s]", this, frame)
 	    frame.style.mask:SetShown(false)
 		-- apply a gradient texture
 		if aObj.prdb.Tooltips.style == 1 then -- Rounded
@@ -32,12 +38,11 @@ aObj.addonsToSkin.TinyTooltip = function(self) -- v 2.1.8.3
 		LibEvent:trigger("tooltip.style.bgfile", tip, _G.BigTipDB.general.bgfile)
 		LibEvent:trigger("tooltip.style.border.corner", tip, _G.BigTipDB.general.borderCorner)
 		LibEvent:trigger("tooltip.style.border.size", tip, _G.BigTipDB.general.borderSize)
-		LibEvent:trigger("tooltip.style.border.color", tip, _G.unpack(_G.BigTipDB.general.borderColor))
-		LibEvent:trigger("tooltip.style.background", tip, _G.unpack(_G.BigTipDB.general.background))
+		LibEvent:trigger("tooltip.style.border.color", tip, _G.BigTipDB.general.borderColor:GetRGB())
+		LibEvent:trigger("tooltip.style.background", tip, _G.BigTipDB.general.background:GetRGB())
 		LibEvent:trigger("tooltip.statusbar.texture", _G.BigTipDB.general.statusbarTexture)
 
 	end
-	LibEvent = nil
 
 	-- find and skin the DropDown Frame
 	self.RegisterCallback("TinyTooltip", "UIParent_GetChildren", function(this, child)
