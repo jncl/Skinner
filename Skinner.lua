@@ -1166,7 +1166,7 @@ local function __skinEditBox(opts)
 			aObj:moveObject{obj=_G[opts.obj:GetName() .. "SearchIcon"], x=4} -- e.g. TradeSkillFrameSearchBox
 		else -- e.g. WeakAurasFilterInput
 			for _, reg in ipairs{opts.obj:GetRegions()} do
-				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon") then
+				if aObj:hasTextInTexture(reg, "UI-Searchbox-Icon", true) then
 					aObj:moveObject{obj=reg, x=4}
 				end
 			end
