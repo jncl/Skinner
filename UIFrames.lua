@@ -2572,7 +2572,7 @@ local function skinPartyPoseFrame(frame)
 	aObj:nilTexture(frame.RewardAnimations.RewardFrame.IconBorder, true)
 	aObj:addButtonBorder{obj=frame.RewardAnimations.RewardFrame, relTo=frame.RewardAnimations.RewardFrame.Icon, reParent={frame.RewardAnimations.RewardFrame.Count}}
 
-	frame.OverlayElements.Topper:SetTexture(nil)
+	frame.OverlayElements.Topper:nilTexture(true)
 
 	-- ModelScene
 	frame.ModelScene.Bg:SetTexture(nil)
