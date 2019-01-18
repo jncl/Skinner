@@ -786,7 +786,7 @@ local function __addButtonBorder(opts)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	opts.obj.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+	opts.obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 
 	-- position the frame
 	opts.ofs = opts.ofs or 2

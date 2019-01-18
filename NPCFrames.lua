@@ -8,9 +8,9 @@ local pairs = _G.pairs
 -- The following function is used by the GossipFrame & QuestFrame functions
 local function setupQuestDisplayColours()
 
-	_G.NORMAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.HTr, aObj.HTg, aObj.HTb) .. "%s|r"
-	_G.TRIVIAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.BTr, aObj.BTg, aObj.BTb) .. "%s (low level)|r"
-	_G.IGNORED_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.ITr, aObj.ITg, aObj.ITb) .. "%s (ignored)|r"
+	_G.NORMAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.HT:GetRGB()) .. "%s|r"
+	_G.TRIVIAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.BT:GetRGB()) .. "%s (low level)|r"
+	_G.IGNORED_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.IT:GetRGB()) .. "%s (ignored)|r"
 
 end
 
@@ -21,16 +21,16 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 	self:SecureHookScript(_G.AlliedRacesFrame, "OnShow", function(this)
 		this.ModelFrame:DisableDrawLayer("BORDER")
 		this.ModelFrame:DisableDrawLayer("ARTWORK")
-		this.RaceInfoFrame.ScrollFrame.Child.RaceDescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.RaceInfoFrame.ScrollFrame.Child.RacialTraitsLabel:SetTextColor(self.HTr, self.HTg, self.HTb)
+		this.RaceInfoFrame.ScrollFrame.Child.RaceDescriptionText:SetTextColor(self.BT:GetRGB())
+		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.Description:SetTextColor(self.BT:GetRGB())
+		this.RaceInfoFrame.ScrollFrame.Child.RacialTraitsLabel:SetTextColor(self.HT:GetRGB())
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame.HeaderBackground:SetTexture(nil)
 		this.RaceInfoFrame.ScrollFrame.Child.ObjectivesFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.RaceInfoFrame.ScrollFrame.ScrollBar, rt="background", wdth=-5}
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:SetBackdrop(nil)
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:SetBackdrop(nil)
 		this.RaceInfoFrame.ScrollFrame.ScrollBar.Border:SetBackdrop(nil)
-		this.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(self.HTr, self.HTg, self.HTb)
+		this.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(self.HT:GetRGB())
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.ModelFrame.AlliedRacesMaleButton, ofs=0}
@@ -40,7 +40,7 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 	end)
 	self:SecureHook(_G.AlliedRacesFrame, "LoadRaceData", function(this, raceID)
 		for ability in this.abilityPool:EnumerateActive() do
-			ability.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
+			ability.Text:SetTextColor(self.BT:GetRGB())
 			self:getRegion(ability, 3):SetTexture(nil) -- Border texture
 			if self.modBtnBs then
 				self:addButtonBorder{obj=ability, relTo=ability.Icon}
@@ -124,10 +124,10 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(_G.WowTokenGameTimeTutorial, "OnShow", function(this)
-			this.LeftDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
-			this.LeftDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
-			this.RightDisplay.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
-			this.RightDisplay.Tutorial1:SetTextColor(self.BTr, self.Tg, self.Tb)
+			this.LeftDisplay.Label:SetTextColor(self.HT:GetRGB())
+			this.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
+			this.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
+			this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
 			self:Unhook(this, "OnShow")
 		end)
@@ -374,11 +374,11 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GossipFrameGreetingPanel)
-		_G.GossipGreetingText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
 		self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
 		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
 		for i = 1, _G.NUMGOSSIPBUTTONS do
-			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BTr, self.BTg, self.BTb)
+			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
@@ -397,11 +397,11 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 
 	self:SecureHookScript(_G.GuildRegistrarFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GuildRegistrarGreetingFrame)
-		_G.AvailableServicesText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.AvailableServicesText:SetTextColor(self.HT:GetRGB())
 		self:skinStdButton{obj=_G.GuildRegistrarFrameGoodbyeButton}
-		self:getRegion(_G.GuildRegistrarButton1, 3):SetTextColor(self.BTr, self.BTg, self.BTb)
-		self:getRegion(_G.GuildRegistrarButton2, 3):SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.GuildRegistrarPurchaseText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		self:getRegion(_G.GuildRegistrarButton1, 3):SetTextColor(self.BT:GetRGB())
+		self:getRegion(_G.GuildRegistrarButton2, 3):SetTextColor(self.BT:GetRGB())
+		_G.GuildRegistrarPurchaseText:SetTextColor(self.BT:GetRGB())
 		self:skinStdButton{obj=_G.GuildRegistrarFrameCancelButton}
 		self:skinStdButton{obj=_G.GuildRegistrarFramePurchaseButton}
 		self:skinEditBox{obj=_G.GuildRegistrarFrameEditBox}
@@ -419,10 +419,10 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 
 	self:SecureHookScript(_G.ItemUpgradeFrame, "OnShow", function(this)
 		this.HorzBar:SetTexture(nil)
-		this.MissingDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.NoMoreUpgrades:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.TitleTextLeft:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.TitleTextRight:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.MissingDescription:SetTextColor(self.BT:GetRGB())
+		this.NoMoreUpgrades:SetTextColor(self.BT:GetRGB())
+		this.TitleTextLeft:SetTextColor(self.BT:GetRGB())
+		this.TitleTextRight:SetTextColor(self.BT:GetRGB())
 
 		this.ItemButton.IconTexture:SetAlpha(0)
 		this.ItemButton:DisableDrawLayer("BACKGROUND")
@@ -431,8 +431,8 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		-- this.ItemButton.TextGrabber:SetTexture(nil)
 		self:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, ofs=1}
 		this.ItemButton.Frame:SetTexture(nil)
-		this.ItemButton.ItemName:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.ItemButton.MissingText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.ItemButton.ItemName:SetTextColor(self.BT:GetRGB())
+		this.ItemButton.MissingText:SetTextColor(self.BT:GetRGB())
 
 		this.ButtonFrame:DisableDrawLayer("BORDER", 2)
 		-- this.ButtonFrame.ButtonBorder:SetTexture(nil)
@@ -518,15 +518,15 @@ aObj.blizzFrames[ftype].Petition = function(self)
 	self.initialized.Petition = true
 
 	self:SecureHookScript(_G.PetitionFrame, "OnShow", function(this)
-		_G.PetitionFrameCharterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.PetitionFrameCharterName:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.PetitionFrameMasterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.PetitionFrameMasterName:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.PetitionFrameMemberTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.PetitionFrameCharterTitle:SetTextColor(self.HT:GetRGB())
+		_G.PetitionFrameCharterName:SetTextColor(self.BT:GetRGB())
+		_G.PetitionFrameMasterTitle:SetTextColor(self.HT:GetRGB())
+		_G.PetitionFrameMasterName:SetTextColor(self.BT:GetRGB())
+		_G.PetitionFrameMemberTitle:SetTextColor(self.HT:GetRGB())
 		for i = 1, 9 do
-			_G["PetitionFrameMemberName" .. i]:SetTextColor(self.BTr, self.BTg, self.BTb)
+			_G["PetitionFrameMemberName" .. i]:SetTextColor(self.BT:GetRGB())
 		end
-		_G.PetitionFrameInstructions:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.PetitionFrameInstructions:SetTextColor(self.BT:GetRGB())
 
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PetitionFrameCancelButton}
@@ -590,15 +590,15 @@ aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
 	self.initialized.QuestChoice = true
 
 	self:SecureHookScript(_G.QuestChoiceFrame, "OnShow", function(this)
-		this.DummyString:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.DummyString:SetTextColor(self.BT:GetRGB())
 		-- for i = 1, 4 do
 		for _, choice in pairs(this.Options) do
 			choice.Header.Background:SetTexture(nil)
-			choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
-			choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			choice.Header.Text:SetTextColor(self.HT:GetRGB())
+			choice.OptionText:SetTextColor(self.BT:GetRGB())
 			self:addButtonBorder{obj=choice.Rewards.Item, relTo=choice.Rewards.Item.Icon}
-			choice.Rewards.Item.Name:SetTextColor(self.BTr, self.BTg, self.BTb)
-			choice.Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BTr, self.BTg, self.BTb)
+			choice.Rewards.Item.Name:SetTextColor(self.BT:GetRGB())
+			choice.Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BT:GetRGB())
 			self:moveObject{obj=choice.Header, y=15}
 			self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton1}
 			self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton2}
@@ -617,10 +617,10 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
 		self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, ...)
-			fontString:SetTextColor(self.HTr, self.HTg, self.HTb)
+			fontString:SetTextColor(self.HT:GetRGB())
 		end, true)
 		self:RawHook("QuestFrame_SetTextColor", function(fontString, ...)
-			fontString:SetTextColor(self.BTr, self.BTg, self.BTb)
+			fontString:SetTextColor(self.BT:GetRGB())
 		end, true)
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
@@ -631,10 +631,10 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 
 		--	Progress Panel
 		self:keepFontStrings(_G.QuestFrameProgressPanel)
-		_G.QuestProgressTitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.QuestProgressText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestProgressRequiredMoneyText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestProgressRequiredItemsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.QuestProgressTitleText:SetTextColor(self.HT:GetRGB())
+		_G.QuestProgressText:SetTextColor(self.BT:GetRGB())
+		_G.QuestProgressRequiredMoneyText:SetTextColor(self.BT:GetRGB())
+		_G.QuestProgressRequiredItemsText:SetTextColor(self.HT:GetRGB())
 		self:skinSlider{obj=_G.QuestProgressScrollFrame.ScrollBar, rt="artwork"}
 		local btnName
 		for i = 1, _G.MAX_REQUIRED_ITEMS do
@@ -646,12 +646,13 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		end
 		btnName = nil
 		self:SecureHook("QuestFrameProgressItems_Update", function()
+			local br, bg, bb = self.BT:GetRGB()
 			local r, g ,b = _G.QuestProgressRequiredMoneyText:GetTextColor()
 			-- if red colour is less than 0.2 then it needs to be coloured
 			if r < 0.2 then
-				_G.QuestProgressRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+				_G.QuestProgressRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 			end
-			r, g, b = nil, nil, nil
+			br, bg, bb, r, g, b = nil, nil, nil, nil, nil, nil
 		end)
 
 		--	Detail Panel
@@ -663,9 +664,9 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		self:keepFontStrings(_G.QuestGreetingScrollChildFrame) -- hide Horizontal Break texture
 		self:skinSlider{obj=_G.QuestGreetingScrollFrame.ScrollBar, rt="artwork"}
 		if _G.QuestFrameGreetingPanel:IsShown() then
-			_G.GreetingText:SetTextColor(self.BTr, self.BTg, self.BTb)
-			_G.CurrentQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
-			_G.AvailableQuestsText:SetTextColor(self.HTr, self.HTg, self.HTb)
+			_G.GreetingText:SetTextColor(self.BT:GetRGB())
+			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
+			_G.AvailableQuestsText:SetTextColor(self.HT:GetRGB())
 		end
 
 		if self.modBtns then
@@ -703,18 +704,18 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	local function skinRewards(frame)
 
 		if frame.Header:IsObjectType("FontString") then -- QuestInfoRewardsFrame
-			frame.Header:SetTextColor(self.HTr, self.HTg, self.HTb)
+			frame.Header:SetTextColor(aObj.HT:GetRGB())
 		end
-		frame.ItemChooseText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		frame.ItemReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		frame.PlayerTitleText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		frame.ItemChooseText:SetTextColor(aObj.BT:GetRGB())
+		frame.ItemReceiveText:SetTextColor(aObj.BT:GetRGB())
+		frame.PlayerTitleText:SetTextColor(aObj.BT:GetRGB())
 		if frame.XPFrame.ReceiveText then -- QuestInfoRewardsFrame
-			frame.XPFrame.ReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			frame.XPFrame.ReceiveText:SetTextColor(aObj.BT:GetRGB())
 		end
 		-- RewardButtons
 		for i = 1, #frame.RewardButtons do
 			frame.RewardButtons[i].NameFrame:SetTexture(nil)
-			if self.modBtnBs then
+			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.RewardButtons[i], libt=true}
 			end
 		end
@@ -736,41 +737,42 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			end
 		end
 		for spellLine in frame.spellHeaderPool:EnumerateActive() do
-			spellLine:SetVertexColor(aObj.BTr, aObj.BTg, aObj.BTb)
+			spellLine:SetVertexColor(aObj.BT:GetRGB())
 		end
 
 	end
 	local function updateQIDisplay()
 
+		local br, bg, bb, r, g, b = aObj.BT:GetRGB()
 		-- headers
-		_G.QuestInfoTitleHeader:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
-		_G.QuestInfoDescriptionHeader:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
-		_G.QuestInfoObjectivesHeader:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
+		_G.QuestInfoTitleHeader:SetTextColor(aObj.HT:GetRGB())
+		_G.QuestInfoDescriptionHeader:SetTextColor(aObj.HT:GetRGB())
+		_G.QuestInfoObjectivesHeader:SetTextColor(aObj.HT:GetRGB())
 		-- other text
-		_G.QuestInfoDescriptionText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
-		_G.QuestInfoQuestType:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestInfoObjectivesText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
-		_G.QuestInfoGroupSize:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
-		_G.QuestInfoRewardText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
-		local r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
-		_G.QuestInfoRequiredMoneyText:SetTextColor(aObj.BTr - r, aObj.BTg - g, aObj.BTb - b)
+		_G.QuestInfoDescriptionText:SetTextColor(aObj.BT:GetRGB())
+		_G.QuestInfoQuestType:SetTextColor(aObj.BT:GetRGB())
+		_G.QuestInfoObjectivesText:SetTextColor(aObj.BT:GetRGB())
+		_G.QuestInfoGroupSize:SetTextColor(aObj.BT:GetRGB())
+		_G.QuestInfoRewardText:SetTextColor(aObj.BT:GetRGB())
+		r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
+		_G.QuestInfoRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 		-- skin rewards
 		skinRewards(_G.QuestInfoFrame.rewardsFrame)
 
 		-- Objectives
-		local obj, r, g, b
+		local obj
 		for i = 1, #_G.QuestInfoObjectivesFrame.Objectives do
 			obj = _G.QuestInfoObjectivesFrame.Objectives[i]
 			r, g ,b = obj:GetTextColor()
 			-- if red colour is less than 0.2 then it needs to be coloured
 			if r < 0.2 then
-				obj:SetTextColor(aObj.BTr - r, aObj.BTg - g, aObj.BTb - b)
+				obj:SetTextColor(br - r, bg - g, bb - b)
 			end
 		end
-		obj, r, g, b = nil, nil, nil, nil
+		obj, r, g, b, br, bg, bb = nil, nil, nil, nil, nil, nil ,nil
 
 		-- QuestInfoSpecialObjectives Frame
-		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
 		_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
 		if self.modBtnBs then
@@ -781,7 +783,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		if _G.QuestInfoSealFrame.sealInfo
 		and _G.QuestInfoSealFrame.sealInfo.text
 		then
-			_G.QuestInfoSealFrame.Text:SetText(_G.RGBToColorCode(aObj.HTr, aObj.HTg, aObj.HTb) .. _G.QuestInfoSealFrame.sealInfo.text:sub(11))
+			_G.QuestInfoSealFrame.Text:SetText(_G.RGBToColorCode(aObj.HT:GetRGB()) .. _G.QuestInfoSealFrame.sealInfo.text:sub(11))
 		end
 
 	end
@@ -796,27 +798,28 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	end)
 
 	self:SecureHookScript(_G.QuestInfoTimerFrame, "OnShow", function(this)
-		_G.QuestInfoTimerText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.QuestInfoAnchor:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.QuestInfoTimerText:SetTextColor(self.BT:GetRGB())
+		_G.QuestInfoAnchor:SetTextColor(self.BT:GetRGB())
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.QuestInfoRequiredMoneyFrame, "OnShow", function(this)
 		-- QuestInfoRequiredMoneyFrame
 		self:SecureHook("QuestInfo_ShowRequiredMoney", function()
+			local br, bg, bb = self.BT:GetRGB()
 			local r, g ,b = _G.QuestInfoRequiredMoneyText:GetTextColor()
 			-- if red value is less than 0.2 then it needs to be coloured
 			if r < 0.2 then
-				_G.QuestInfoRequiredMoneyText:SetTextColor(self.BTr - r, self.BTg - g, self.BTb - b)
+				_G.QuestInfoRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 			end
-			r, g, b = nil, nil, nil
+			br, bg, bb, r, g, b = nil, nil, nil, nil, nil, nil
 		end)
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.QuestInfoRewardsFrame, "OnShow", function(this)
-		this.XPFrame.ReceiveText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.XPFrame.ReceiveText:SetTextColor(self.BT:GetRGB())
 		-- SkillPointFrame
 		local spf = this.SkillPointFrame
 		spf.NameFrame:SetTexture(nil)

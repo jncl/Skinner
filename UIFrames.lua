@@ -252,7 +252,7 @@ local function skinMissionComplete(frame, naval)
 	flwr = nil
     frame.BonusRewards:DisableDrawLayer("BACKGROUND")
 	frame.BonusRewards:DisableDrawLayer("BORDER")
-	aObj:getRegion(frame.BonusRewards, 11):SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb) -- Heading
+	aObj:getRegion(frame.BonusRewards, 11):SetTextColor(aObj.HT:GetRGB()) -- Heading
     frame.BonusRewards.Saturated:DisableDrawLayer("BACKGROUND")
 	frame.BonusRewards.Saturated:DisableDrawLayer("BORDER")
 	for i = 1, #frame.BonusRewards.Rewards do
@@ -403,10 +403,10 @@ aObj.blizzLoDFrames[ftype].AdventureMap = function(self)
 		this:DisableDrawLayer("BACKGROUND") -- remove textures
 		this.Details.ScrollBar:DisableDrawLayer("ARTWORK")
 		self:skinSlider{obj=this.Details.ScrollBar}
-		this.Details.Child.TitleHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		this.Details.Child.DescriptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.Details.Child.ObjectivesHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		this.Details.Child.ObjectivesText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.Details.Child.TitleHeader:SetTextColor(self.HT:GetRGB())
+		this.Details.Child.DescriptionText:SetTextColor(self.BT:GetRGB())
+		this.Details.Child.ObjectivesHeader:SetTextColor(self.HT:GetRGB())
+		this.Details.Child.ObjectivesText:SetTextColor(self.BT:GetRGB())
 		self:skinStdButton{obj=this.DeclineButton}
 		self:skinStdButton{obj=this.AcceptButton}
 		self:addSkinFrame{obj=this, ft=ftype, y1=-12, y2=-4}
@@ -830,9 +830,9 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 		self:skinCheckButton{obj=this.characterSpecificButton}
 		self:keepRegions(this.categoryList, {})
 		this.categoryList:SetBackdrop(self.Backdrop[10])
-		this.categoryList:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+		this.categoryList:SetBackdropBorderColor(self.bbClr:GetRGBA())
 		this.bindingsContainer:SetBackdrop(self.Backdrop[10])
-		this.bindingsContainer:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+		this.bindingsContainer:SetBackdropBorderColor(self.bbClr:GetRGBA())
 		self:skinSlider{obj=this.scrollFrame.ScrollBar, rt={"background", "border"}}
 		for i = 1, #this.keyBindingRows do
 			self:skinStdButton{obj=this.keyBindingRows[i].key1Button}
@@ -1015,8 +1015,8 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 		this.RuneBG:SetTexture(nil)
 		this.InstructionBackground:SetTexture(nil)
 		this.Divider:SetTexture(nil)
-		this.DungeonName:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.PowerLevel:SetTextColor(self.BTr, self.BTr, self.BTg)
+		this.DungeonName:SetTextColor(self.BT:GetRGB())
+		this.PowerLevel:SetTextColor(self.BT:GetRGB())
 		this.RunesLarge:SetTexture(nil)
 		this.RunesSmall:SetTexture(nil)
 		this.SlotBG:SetTexture(nil)
@@ -1538,8 +1538,8 @@ aObj.blizzLoDFrames[ftype].ClassTrial = function(self)
 	-- N.B. ClassTrialSecureFrame can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
 
 	self:SecureHookScript(_G.ClassTrialThanksForPlayingDialog, "OnShow", function(this)
-		this.ThanksText:SetTextColor(self.HTr, self.HTg, self.HTb)
-		this.ClassNameText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		this.ThanksText:SetTextColor(self.HT:GetRGB())
+		this.ClassNameText:SetTextColor(self.HT:GetRGB())
 		this.DialogFrame:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=600, y1=-100, x2=-600, y2=500}
 		if self.modBtns then
@@ -1602,7 +1602,7 @@ aObj.blizzFrames[ftype].Console = function(self)
 	self.initialized.Console = true
 
 	self:SecureHookScript(_G.DeveloperConsole, "OnShow", function(this)
-		local r, g, b, a = self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4]
+		local r, g, b, a = self.bbClr:GetRGBA()
 
 		self:getChild(this.EditBox, 1).BorderTop:SetColorTexture(r, g, b, a)
 		self:getChild(this.EditBox, 1).BorderBottom:SetColorTexture(r, g, b, a)
@@ -1634,17 +1634,17 @@ aObj.blizzLoDFrames[ftype].Contribution = function(self)
 	self:SecureHookScript(_G.ContributionCollectionFrame, "OnShow", function(this)
 		for contribution in this.contributionPool:EnumerateActive() do
 			contribution.Header:DisableDrawLayer("BORDER")
-			contribution.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+			contribution.Header.Text:SetTextColor(self.HT:GetRGB())
 			contribution.State.Border:SetAlpha(0) -- texture is changed
 			contribution.State.TextBG:SetTexture(nil)
 			self:skinStatusBar{obj=contribution.Status, fi=0}
 			contribution.Status.Border:SetTexture(nil)
 			contribution.Status.BG:SetTexture(nil)
-			contribution.Description:SetTextColor(self.BTr, self.BTg, self.BTb)
+			contribution.Description:SetTextColor(self.BT:GetRGB())
 			self:skinStdButton{obj=contribution.ContributeButton}
 		end
 		for reward in this.rewardPool:EnumerateActive() do
-			reward.RewardName:SetTextColor(self.BTr, self.BTg, self.BTb)
+			reward.RewardName:SetTextColor(self.BT:GetRGB())
 		end
 		this.CloseButton.CloseButtonBackground:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-21, x2=-18}
@@ -1735,15 +1735,15 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 	self:SecureHookScript(_G.DestinyFrame, "OnShow", function(this)
 		this.alphaLayer:SetTexture(0, 0, 0, 0.70)
 		this.background:SetTexture(nil)
-		this.frameHeader:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.DestinyFrameAllianceLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.DestinyFrameHordeLabel:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.frameHeader:SetTextColor(self.HT:GetRGB())
+		_G.DestinyFrameAllianceLabel:SetTextColor(self.BT:GetRGB())
+		_G.DestinyFrameHordeLabel:SetTextColor(self.BT:GetRGB())
 		_G.DestinyFrameLeftOrnament:SetTexture(nil)
 		_G.DestinyFrameRightOrnament:SetTexture(nil)
-		this.allianceText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.hordeText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.DestinyFrameAllianceFinalText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.DestinyFrameHordeFinalText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.allianceText:SetTextColor(self.BT:GetRGB())
+		this.hordeText:SetTextColor(self.BT:GetRGB())
+		_G.DestinyFrameAllianceFinalText:SetTextColor(self.BT:GetRGB())
+		_G.DestinyFrameHordeFinalText:SetTextColor(self.BT:GetRGB())
 
 		-- buttons
 		for _, type in pairs{"alliance", "horde"} do
@@ -2261,7 +2261,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		this.OverlayElements.Topper:SetTexture(nil)
 		this.OverlayElements.CloseButtonBorder:SetTexture(nil)
 		this.TitleScroll:DisableDrawLayer("ARTWORK")
-		this.TitleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		this.TitleText:SetTextColor(self.HT:GetRGB())
 		self:moveObject{obj=this.TitleText, y=-4}
 
 		skinMissionFrame(this)
@@ -2549,7 +2549,7 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 		-- ReportCheating Dialog
 		self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
-		_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
 
 		self:Unhook(this, "OnShow")
@@ -2631,7 +2631,7 @@ aObj.blizzLoDFrames[ftype].IslandsQueueUI = function(self)
 	self:addButtonBorder{obj=WQ.QuestReward.Tooltip.ItemTooltip, relTo=WQ.QuestReward.Tooltip.ItemTooltip.Icon, reParent={WQ.QuestReward.Tooltip.ItemTooltip.Count}}
 
 	self:skinStdButton{obj=IQF.TutorialFrame.Leave}
-	IQF.TutorialFrame.TutorialText:SetTextColor(self.BTr, self.BTg, self.BTb)
+	IQF.TutorialFrame.TutorialText:SetTextColor(self.BT:GetRGB())
 	IQF.TutorialFrame:SetSize(317, 336)
 	self:addSkinFrame{obj=IQF.TutorialFrame, ft=ftype, kfs=true, y1=-1, x2=-1, y2=20}
 
@@ -2649,11 +2649,11 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 	self.initialized.ItemText = true
 
 	self:SecureHookScript(_G.ItemTextFrame, "OnShow", function(this)
-		_G.ItemTextPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.ItemTextPageText:SetTextColor("P", self.BTr, self.BTg, self.BTb)
-		_G.ItemTextPageText:SetTextColor("H1", self.HTr, self.HTg, self.HTb)
-		_G.ItemTextPageText:SetTextColor("H2", self.HTr, self.HTg, self.HTb)
-		_G.ItemTextPageText:SetTextColor("H3", self.HTr, self.HTg, self.HTb)
+		_G.ItemTextPageText:SetTextColor(self.BT:GetRGB())
+		_G.ItemTextPageText:SetTextColor("P", self.BT:GetRGB())
+		_G.ItemTextPageText:SetTextColor("H1", self.HT:GetRGB())
+		_G.ItemTextPageText:SetTextColor("H2", self.HT:GetRGB())
+		_G.ItemTextPageText:SetTextColor("H3", self.HT:GetRGB())
 
 		if not this.sf then
 			self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, wdth=-4}
@@ -2868,7 +2868,7 @@ aObj.blizzFrames[ftype].LFRFrame = function(self)
 		self:removeInset(_G.LFRQueueFrameRoleInset)
 		self:removeInset(_G.LFRQueueFrameCommentInset)
 		self:removeInset(_G.LFRQueueFrameListInset)
-		_G.LFRQueueFrameCommentExplanation:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.LFRQueueFrameCommentExplanation:SetTextColor(self.BT:GetRGB())
 
 		-- Specific List subFrame
 		for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
@@ -3013,7 +3013,7 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		end
 		self:skinSlider{obj=this.Description.ScrollBar, wdth=-4}
 		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, ofs=6}
-		this.Description.EditBox.Instructions:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.Description.EditBox.Instructions:SetTextColor(self.BT:GetRGB())
 		if self.modBtns then
 			self:skinStdButton{obj=this.SignUpButton}
 			self:skinStdButton{obj=this.CancelButton}
@@ -3134,7 +3134,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		--	Open Mail Frame
 		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, rt="overlay"}
-		_G.OpenMailBodyText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.OpenMailBodyText:SetTextColor(self.BT:GetRGB())
 		self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
 		self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true}
 		self:skinStdButton{obj=_G.OpenMailReportSpamButton}
@@ -3144,7 +3144,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 		-- Invoice Frame Text fields
 		for _, type in pairs{"ItemLabel", "Purchaser", "BuyMode", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"} do
-			_G["OpenMailInvoice" .. type]:SetTextColor(self.BTr, self.BTg, self.BTb)
+			_G["OpenMailInvoice" .. type]:SetTextColor(self.BT:GetRGB())
 		end
 
 		self:Unhook(this, "OnShow")
@@ -4058,7 +4058,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		self:skinCloseButton{obj=_G.OrderHallTalentFrameCloseButton}
 		self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
 		for i = 1, #this.FrameTick do
-			this.FrameTick[i]:SetTextColor(self.BTr, self.BTg, self.BTb)
+			this.FrameTick[i]:SetTextColor(self.BT:GetRGB())
 		end
 		skinBtns(this)
 		self:SecureHook(this, "RefreshAllData", function(this)
@@ -4205,7 +4205,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 					then
 						this.sbb:SetBackdropBorderColor(.5, .5, .5)
 					else
-						this.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+						this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 					end
 				end
 			end)
@@ -4340,7 +4340,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 			self:SecureHook("GroupFinderFrame_EvaluateButtonVisibility", function(this, level)
 				for i = 1, 4 do
 					if _G.GroupFinderFrame["groupButton" .. i]:IsEnabled() then
-						_G.GroupFinderFrame["groupButton" .. i].sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+						_G.GroupFinderFrame["groupButton" .. i].sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 					else
 						_G.GroupFinderFrame["groupButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 					end
@@ -4405,7 +4405,7 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 		-- Details Frame
 		self:keepFontStrings(this.DetailsFrame)
 		self:keepFontStrings(this.DetailsFrame.RewardsFrame)
-		self:getRegion(this.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HTr, self.HTg, self.HTb)
+		self:getRegion(this.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HT:GetRGB())
 		self:skinSlider{obj=this.DetailsFrame.ScrollFrame.ScrollBar, wdth=-4}
 		this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("BACKGROUND")
 		this.DetailsFrame.CompleteQuestFrame:DisableDrawLayer("ARTWORK")
@@ -4484,7 +4484,7 @@ aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
 
 		-- change the colour of the Entry Separator texture
 		for sEntry in this.statusEntriesPool:EnumerateActive() do
-			sEntry.EntrySeparator:SetColorTexture(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+			sEntry.EntrySeparator:SetColorTexture(self.bbClr:GetRGBA())
 		end
 
 		-- handle SexyMap's use of AnimationGroups to show and hide frames
@@ -4629,7 +4629,7 @@ aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
 		self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon} -- use module function to force button border
 		-- hook this to reset sbb colour
 		self:SecureHook(slot, "ClearSlot", function(this)
-			this.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+			this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 		end)
 	end
 	self:removeMagicBtnTex(_G.ScrappingMachineFrame.ScrapButton)
@@ -4671,7 +4671,7 @@ aObj.blizzFrames[ftype].SplashFrame = function(self)
 	self.initialized.SplashFrame = true
 
 	self:SecureHookScript(_G.SplashFrame, "OnShow", function(this)
-		this.Label:SetTextColor(self.HTr, self.HTg, self.HTb)
+		this.Label:SetTextColor(self.HT:GetRGB())
 		this.StartButton:DisableDrawLayer("BACKGROUND")
 		self:skinStdButton{obj=this.StartButton}
 		self:skinStdButton{obj=this.BottomCloseButton}
@@ -4904,10 +4904,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return aObj.Backdrop[1]
 	end, true)
 	self:RawHook(_G.GameTooltip, "GetBackdropColor", function(this)
-		return aObj.bColour[1], aObj.bColour[2], aObj.bColour[3], aObj.bColour[4]
+		return aObj.bClr:GetRGBA()
 	end, true)
 	self:RawHook(_G.GameTooltip, "GetBackdropBorderColor", function(this)
-		return aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]
+		return aObj.bbClr:GetRGBA()
 	end, true)
 
 end
@@ -5015,7 +5015,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		and aObj:round2(tClr[2], 2) == 0.02
 		and aObj:round2(tClr[3], 2) == 0.02)
 		then
-			textObject:SetTextColor(self.BTr, self.BTg, self.BTb)
+			textObject:SetTextColor(self.BT:GetRGB())
 			textObject.SetTextColor = _G.nop
 		end
 		_G.wipe(tClr)
@@ -5050,7 +5050,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				if wInfo.enabledState == _G.Enum.WidgetEnabledState.Disabled then
 					wFrame.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				else
-					wFrame.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+					wFrame.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
 			end
 		elseif wFrame.widgetType == 8 then -- TextWithState
@@ -5125,16 +5125,16 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 				self:skinStdButton{obj=choice.OptionButtonsContainer.Buttons[i]}
 			end
 			choice.Header:DisableDrawLayer("Border") -- ribbon texture
-			choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
+			choice.Header.Text:SetTextColor(self.HT:GetRGB())
 			choice.SubHeader:DisableDrawLayer("BACKGROUND")
-			choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			choice.OptionText:SetTextColor(self.BT:GetRGB())
 		end
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, y1=-1, x2=-2}
 		self:SecureHook(this, "TryShow", function(this)
 			for _, choice in pairs(this.Options) do
-				choice.Header.Text:SetTextColor(self.HTr, self.HTg, self.HTb)
-				choice.OptionText:SetTextColor(self.BTr, self.BTg, self.BTb)
+				choice.Header.Text:SetTextColor(self.HT:GetRGB())
+				choice.OptionText:SetTextColor(self.BT:GetRGB())
 			end
 		end)
 

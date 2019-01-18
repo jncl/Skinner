@@ -16,8 +16,8 @@ do -- manage ButtonBorders for talents
 			if (button.knownSelection and button.knownSelection:IsShown())
 			or (frame.inspect and button.border:IsShown()) -- inspect frame
 			then
-				button.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
-				if bnObj then bnObj:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
+				button.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+				if bnObj then bnObj:SetTextColor(aObj.BT:GetRGB()) end
 			else
 				button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				if bnObj then bnObj:SetTextColor(1, 1, 1, 0.9) end
@@ -45,10 +45,10 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	self.initialized.AchievementUI = true
 
 	if self.prdb.AchievementUI.style == 2 then
-		_G.ACHIEVEMENTUI_REDBORDER_R = self.bbColour[1]
-		_G.ACHIEVEMENTUI_REDBORDER_G = self.bbColour[2]
-		_G.ACHIEVEMENTUI_REDBORDER_B = self.bbColour[3]
-		_G.ACHIEVEMENTUI_REDBORDER_A = self.bbColour[4]
+		_G.ACHIEVEMENTUI_REDBORDER_R = self.bbClr.r
+		_G.ACHIEVEMENTUI_REDBORDER_G = self.bbClr.g
+		_G.ACHIEVEMENTUI_REDBORDER_B = self.bbClr.b
+		_G.ACHIEVEMENTUI_REDBORDER_A = self.bbClr.a
 	end
 
 	-- handle Overachiever hijacking OnShow script first time through
@@ -128,8 +128,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			-- set textures to nil and prevent them from being changed as guildview changes the textures
 			aObj:nilTexture(btn.icon.frame, true)
 			-- colour text and button border
-			if btn.description then btn.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
-			if btn.hiddenDescription then btn.hiddenDescription:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb) end
+			if btn.description then btn.description:SetTextColor(aObj.BT:GetRGB()) end
+			if btn.hiddenDescription then btn.hiddenDescription:SetTextColor(aObj.BT:GetRGB()) end
 
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
@@ -142,7 +142,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			end
 			aObj:SecureHook(btn, "Saturate", function(this)
 				if this.description then
-					this.description:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+					this.description:SetTextColor(aObj.BT:GetRGB())
 				end
 				if this.icon.sbb then
 					this.icon.sbb:SetBackdropBorderColor(this:GetBackdropBorderColor())
@@ -209,7 +209,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 					for _, child in ipairs{this:GetChildren()} do
 						for _, reg in ipairs{child:GetChildren()} do
 							if reg:IsObjectType("FontString") then
-								reg:SetTextColor(self.BTr, self.BTg, self.BTb)
+								reg:SetTextColor(self.BT:GetRGB())
 							end
 						end
 					end
@@ -396,21 +396,21 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		self:skinStatusBar{obj=this.rankBar, fi=0, bgTex=_G.ArchaeologyFrameRankBarBackground}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=30}
 		self:keepFontStrings(this.summaryPage) -- remove title textures
-		_G.ArchaeologyFrameSummaryPageTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+		_G.ArchaeologyFrameSummaryPageTitle:SetTextColor(self.HT:GetRGB())
 		for i = 1, _G.ARCHAEOLOGY_MAX_RACES do
-			this.summaryPage["race" .. i].raceName:SetTextColor(self.BTr, self.BTg, self.BTb)
+			this.summaryPage["race" .. i].raceName:SetTextColor(self.BT:GetRGB())
 		end
 		self:addButtonBorder{obj=this.summaryPage.prevPageButton, ofs=0}
 		self:addButtonBorder{obj=this.summaryPage.nextPageButton, ofs=0}
 		self:keepFontStrings(this.completedPage) -- remove title textures
-		this.completedPage.infoText:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.completedPage.titleBig:SetTextColor(self.HTr, self.HTg, self.HTb)
-		this.completedPage.titleTop:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.completedPage.titleMid:SetTextColor(self.BTr, self.BTg, self.BTb)
-		this.completedPage.pageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.completedPage.infoText:SetTextColor(self.BT:GetRGB())
+		this.completedPage.titleBig:SetTextColor(self.HT:GetRGB())
+		this.completedPage.titleTop:SetTextColor(self.BT:GetRGB())
+		this.completedPage.titleMid:SetTextColor(self.BT:GetRGB())
+		this.completedPage.pageText:SetTextColor(self.BT:GetRGB())
 		for i = 1, _G.ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
-			this.completedPage["artifact" .. i].artifactName:SetTextColor(self.HTr, self.HTg, self.HTb)
-			this.completedPage["artifact" .. i].artifactSubText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			this.completedPage["artifact" .. i].artifactName:SetTextColor(self.HT:GetRGB())
+			this.completedPage["artifact" .. i].artifactSubText:SetTextColor(self.BT:GetRGB())
 			this.completedPage["artifact" .. i].border:Hide()
 			_G["ArchaeologyFrameCompletedPageArtifact" .. i .. "Bg"]:Hide()
 			self:addButtonBorder{obj=this.completedPage["artifact" .. i], relTo=this.completedPage["artifact" .. i].icon}
@@ -424,14 +424,14 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		self:getRegion(this.artifactPage.solveFrame.statusBar, 1):Hide() -- BarBG texture
 		self:skinStatusBar{obj=this.artifactPage.solveFrame.statusBar, fi=0}
 		this.artifactPage.solveFrame.statusBar:SetStatusBarColor(0.75, 0.45, 0, 0.7)
-		this.artifactPage.historyTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		this.artifactPage.historyScroll.child.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.artifactPage.historyTitle:SetTextColor(self.HT:GetRGB())
+		this.artifactPage.historyScroll.child.text:SetTextColor(self.BT:GetRGB())
 		self:skinSlider{obj=this.artifactPage.historyScroll.ScrollBar, wdth=-4}
 		self:removeRegions(this.helpPage, {2, 3}) -- title textures
-		this.helpPage.titleText:SetTextColor(self.HTr, self.HTg, self.HTb)
+		this.helpPage.titleText:SetTextColor(self.HT:GetRGB())
 		_G.ArchaeologyFrameHelpPageDigTex:SetTexCoord(0.05, 0.885, 0.055, 0.9) -- remove texture surrounds
-		_G.ArchaeologyFrameHelpPageDigTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.ArchaeologyFrameHelpPageDigTitle:SetTextColor(self.HT:GetRGB())
+		_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(self.BT:GetRGB())
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -743,7 +743,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 						for _, type in pairs{"AtWar", "Inactive"} do
 							r, g, b = _G["ReputationDetail" .. type .. "CheckBoxText"]:GetTextColor()
 							if self:round2(r, 2) ~= _G.GRAY_FONT_COLOR.r then
-								_G["ReputationDetail" .. type .. "CheckBox"].sb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3])
+								_G["ReputationDetail" .. type .. "CheckBox"].sb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 							else
 								_G["ReputationDetail" .. type .. "CheckBox"].sb:SetBackdropBorderColor(r ,g, b)
 							end
@@ -953,9 +953,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		function skinCollectionBtn(btn)
 			if btn.sbb then
 				if btn.slotFrameUncollected:IsShown() then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				else
-					btn.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
 			end
 		end
@@ -967,9 +967,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				if btn.Icon:IsDesaturated()
 				and btn.IconCover:IsShown()
 				then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				else
-					btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
 			end
 			btn = nil
@@ -1023,7 +1023,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:SecureHook(this, "LayoutCurrentPage", function(this)
 			for i = 1, #this.heirloomHeaderFrames do
 				this.heirloomHeaderFrames[i]:DisableDrawLayer("BACKGROUND")
-				this.heirloomHeaderFrames[i].text:SetTextColor(self.HTr, self.HTg, self.HTb)
+				this.heirloomHeaderFrames[i].text:SetTextColor(self.HT:GetRGB())
 			end
 			local heirloom
 			for i = 1, #this.heirloomEntryFrames do
@@ -1651,7 +1651,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		this.Recruitment.LevelFrame:DisableDrawLayer("BACKGROUND")
 		this.Recruitment.CommentFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.ScrollBar}
-		this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.CommentEditBox.Fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.CommentEditBox.Fill:SetTextColor(self.BT:GetRGB())
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.Recruitment.InterestFrame.QuestButton}
 			self:skinCheckButton{obj=this.Recruitment.InterestFrame.RaidButton}
@@ -1941,7 +1941,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 			self:moveObject{obj=this.instance.mapButton, x=-20, y=-18}
 			self:addButtonBorder{obj=this.instance.mapButton, relTo=this.instance.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
 			self:skinSlider{obj=this.instance.loreScroll.ScrollBar, wdth=-4}
-			this.instance.loreScroll.child.lore:SetTextColor(self.BTr, self.BTg, self.BTb)
+			this.instance.loreScroll.child.lore:SetTextColor(self.BT:GetRGB())
 			-- Boss/Creature buttons
 			local function skinBossBtns()
 				for i = 1, 30 do
@@ -1959,7 +1959,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 
 			-- Info frame
 			this.info:DisableDrawLayer("BACKGROUND")
-			this.info.encounterTitle:SetTextColor(self.HTr, self.HTg, self.HTb)
+			this.info.encounterTitle:SetTextColor(self.HT:GetRGB())
 			this.info.instanceButton:SetNormalTexture(nil)
 			this.info.instanceButton:SetPushedTexture(nil)
 			this.info.instanceButton:SetHighlightTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
@@ -1970,11 +1970,11 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 			this.info.reset:SetPushedTexture(nil)
 			self:skinStdButton{obj=this.info.reset, y2=2}
 			self:skinSlider{obj=this.info.detailsScroll.ScrollBar, wdth=-4}
-			this.info.detailsScroll.child.description:SetTextColor(self.BTr, self.BTg, self.BTb)
+			this.info.detailsScroll.child.description:SetTextColor(self.BT:GetRGB())
 			self:skinSlider{obj=this.info.overviewScroll.ScrollBar, wdth=-4}
-			this.info.overviewScroll.child.loreDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
+			this.info.overviewScroll.child.loreDescription:SetTextColor(self.BT:GetRGB())
 			this.info.overviewScroll.child.header:SetTexture(nil)
-			this.info.overviewScroll.child.overviewDescription.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
+			this.info.overviewScroll.child.overviewDescription.Text:SetTextColor(self.BT:GetRGB())
 			-- Hook this to skin headers
 			self:SecureHook("EncounterJournal_ToggleHeaders", function(this, doNotShift)
 				local objName = "EncounterJournalInfoHeader"
@@ -1984,11 +1984,11 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 				for i = 1, 25 do
 					if _G[objName .. i] then
 						_G[objName .. i].button:DisableDrawLayer("BACKGROUND")
-						_G[objName .. i].overviewDescription.Text:SetTextColor(self.BTr, self.BTg, self.BTb)
+						_G[objName .. i].overviewDescription.Text:SetTextColor(self.BT:GetRGB())
 						for j = 1, #_G[objName .. i].Bullets do
-							_G[objName .. i].Bullets[j].Text:SetTextColor(self.BTr, self.BTg, self.BTb)
+							_G[objName .. i].Bullets[j].Text:SetTextColor(self.BT:GetRGB())
 						end
-						_G[objName .. i].description:SetTextColor(self.BTr, self.BTg, self.BTb)
+						_G[objName .. i].description:SetTextColor(self.BT:GetRGB())
 						_G[objName .. i].descriptionBG:SetAlpha(0)
 						_G[objName .. i].descriptionBGBottom:SetAlpha(0)
 						_G[objName .. i .. "HeaderButtonPortraitFrame"]:SetAlpha(0)
@@ -2006,9 +2006,9 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 			self:SecureHook("EncounterJournal_LootUpdate", function()
 				for i = 1, #this.info.lootScroll.buttons do
 					this.info.lootScroll.buttons[i]:DisableDrawLayer("BORDER")
-					this.info.lootScroll.buttons[i].armorType:SetTextColor(self.BTr, self.BTg, self.BTb)
-					this.info.lootScroll.buttons[i].slot:SetTextColor(self.BTr, self.BTg, self.BTb)
-					this.info.lootScroll.buttons[i].boss:SetTextColor(self.BTr, self.BTg, self.BTb)
+					this.info.lootScroll.buttons[i].armorType:SetTextColor(self.BT:GetRGB())
+					this.info.lootScroll.buttons[i].slot:SetTextColor(self.BT:GetRGB())
+					this.info.lootScroll.buttons[i].boss:SetTextColor(self.BT:GetRGB())
 					self:addButtonBorder{obj=this.info.lootScroll.buttons[i], relTo=this.info.lootScroll.buttons[i].icon}
 				end
 			end)
@@ -2054,9 +2054,9 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 		local ejsfs = this.suggestFrame.Suggestion1
 		ejsfs.bg:SetTexture(nil)
 		ejsfs.iconRing:SetTexture(nil)
-		ejsfs.centerDisplay.title.text:SetTextColor(self.HTr, self.HTg, self.HTb)
-		ejsfs.centerDisplay.description.text:SetTextColor(self.BTr, self.BTg, self.BTb)
-		ejsfs.reward.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
+		ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
+		ejsfs.reward.text:SetTextColor(self.BT:GetRGB())
 		ejsfs.reward.iconRing:SetTexture(nil)
 		self:skinStdButton{obj=ejsfs.button}
 		self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3}
@@ -2064,15 +2064,15 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 		ejsfs = this.suggestFrame.Suggestion2
 		ejsfs.bg:SetTexture(nil)
 		ejsfs.iconRing:SetTexture(nil)
-		ejsfs.centerDisplay.title.text:SetTextColor(self.HTr, self.HTg, self.HTb)
-		ejsfs.centerDisplay.description.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
+		ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
 		self:skinStdButton{obj=ejsfs.centerDisplay.button}
 		ejsfs.reward.iconRing:SetTexture(nil)
 		ejsfs = this.suggestFrame.Suggestion3
 		ejsfs.bg:SetTexture(nil)
 		ejsfs.iconRing:SetTexture(nil)
-		ejsfs.centerDisplay.title.text:SetTextColor(self.HTr, self.HTg, self.HTb)
-		ejsfs.centerDisplay.description.text:SetTextColor(self.BTr, self.BTg, self.BTb)
+		ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
+		ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
 		self:skinStdButton{obj=ejsfs.centerDisplay.button}
 		ejsfs.reward.iconRing:SetTexture(nil)
 		ejsfs = nil
@@ -2140,13 +2140,13 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, kfs=true, ofs=4}
 			self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.UpdateButton}
 			self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.CancelButton}
-			_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.EditBox.PromptText:SetTextColor(self.BTr, self.BTg, self.BTb)
+			_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.EditBox.PromptText:SetTextColor(self.BT:GetRGB())
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, ft=ftype}
 			self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 			self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={6, 7}, mi=true, noWidth=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
-			_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BTr, self.BTg, self.BTb)
+			_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, QuickJoin & Ignore
 			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
 			self:skinCloseButton{obj=this.FriendsFrameQuickJoinHelpTip.CloseButton, noSkin=true}
@@ -2192,18 +2192,18 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 					btn.sbb:SetShown(btn.gameIcon:IsShown())
 					self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
 					self:SecureHook(btn.travelPassButton, "Enable", function(this)
-						this.sbb:SetBackdropBorderColor(aObj.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+						this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 					end)
 					self:SecureHook(btn.travelPassButton, "Disable", function(this)
 						this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
 					end)
-					if not btn.travelPassButton:IsEnabled() then btn.travelPassButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
+					if not btn.travelPassButton:IsEnabled() then btn.travelPassButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) end
 					self:addButtonBorder{obj=btn.summonButton}
 					self:SecureHook(btn.summonButton, "Enable", function(this)
-						this.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+						this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 					end)
 					self:SecureHook(btn.summonButton, "Disable", function(this)
-						this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+						this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 					end)
 					if not btn.summonButton:IsEnabled() then btn.summonButton.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5) end
 				end
@@ -2283,9 +2283,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 	self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
 		self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
-		_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.RecruitAFriendNoteFrame, ft=ftype, kfs=true}
-		_G.RecruitAFriendNoteEditBox.Fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.RecruitAFriendNoteEditBox.Fill:SetTextColor(self.BT:GetRGB())
 		self:skinStdButton{obj=_G.RecruitAFriendFrame.SendButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6, y1=-7}
 		-- RecruitAFriendSentFrame
@@ -2591,7 +2591,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 		_G.GuildRecruitmentLevelFrameBg:SetAlpha(0)
 		_G.GuildRecruitmentCommentFrameBg:SetAlpha(0)
 		self:skinSlider{obj=_G.GuildRecruitmentCommentInputFrameScrollFrame.ScrollBar}
-		_G.GuildRecruitmentCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.GuildRecruitmentCommentEditBoxFill:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.GuildRecruitmentCommentInputFrame, ft=ftype, kfs=true}
 		self:removeMagicBtnTex(_G.GuildRecruitmentListGuildButton)
 		self:skinStdButton{obj=_G.GuildRecruitmentListGuildButton}
@@ -2800,7 +2800,7 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 	_G.LookingForGuildCommentFrameBg:SetAlpha(0)
 	self:skinSlider{obj=_G.LookingForGuildCommentInputFrameScrollFrame.ScrollBar, size=3}
 	self:addSkinFrame{obj=_G.LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
-	_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
+	_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BT:GetRGB())
 	self:removeMagicBtnTex(_G.LookingForGuildBrowseButton)
 	self:skinStdButton{obj=_G.LookingForGuildBrowseButton}
 
@@ -2826,7 +2826,7 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 
 	self:SecureHookScript(_G.GuildFinderRequestMembershipFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.GuildFinderRequestMembershipFrameInputFrameScrollFrame.ScrollBar, size=3}
-		_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrameInputFrame, ft=ftype, x1=-2, x2=2, y2=-2}
 		self:skinStdButton{obj=_G.GuildFinderRequestMembershipFrameAcceptButton}
 		self:skinStdButton{obj=_G.GuildFinderRequestMembershipFrameCancelButton}
@@ -3360,7 +3360,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			-- hook this to change button border colour
 			self:SecureHook("PVPQueueFrame_SetCategoryButtonState", function(btn, enabled)
 				if btn:IsEnabled() then
-					btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				else
 					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				end
@@ -3465,9 +3465,9 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				if btn.RewardIcon:IsDesaturated()
 				and btn.IconCover:IsShown()
 				then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				else
-					btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
 			end
 			self:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon}
@@ -3482,9 +3482,9 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		if self.modBtnBs then
 			local function chkBtn(btn)
 				if btn.Icon:IsDesaturated()	then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5)
+					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				else
-					btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
 			end
 			self:addButtonBorder{obj=srf, relTo=srf.Icon}
@@ -3495,9 +3495,9 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		end
 		hld, srf = nil, nil
 
-		_G.PVPQueueFrame.NewSeasonPopup.NewSeason:SetTextColor(self.HTr, self.HTg, self.HTb)
-		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BTr, self.BTg, self.BTb)
-		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.PVPQueueFrame.NewSeasonPopup.NewSeason:SetTextColor(self.HT:GetRGB())
+		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BT:GetRGB())
+		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BT:GetRGB())
 		_G.SeasonRewardFrame.Ring:SetTexture(nil)
 		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=0}
 		if self.modBtns then
@@ -3617,10 +3617,10 @@ aObj.blizzFrames[ftype].ScrollOfResurrection = function(self)
 
 	self:SecureHookScript(_G.ScrollOfResurrectionFrame, "OnShow", function(this)
 		self:skinEditBox{obj=this.targetEditBox, regs={6}} -- 6 is text
-		this.targetEditBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.targetEditBox.fill:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=this.noteFrame, ft=ftype, kfs=true}
 		self:skinSlider{obj=this.noteFrame.scrollFrame.ScrollBar, wdth=-4, size=3}
-		this.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BTr, self.BTg, self.BTb)
+		this.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		-- Selection frame
 		self:skinEditBox{obj=_G.ScrollOfResurrectionSelectionFrame.targetEditBox, regs={6}} -- 6 is text
@@ -3697,14 +3697,14 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 				btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 				btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 			else
-				if btn.sbb then btn.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4]) end
-				spellString:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
-				subSpellString:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+				if btn.sbb then btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA()) end
+				spellString:SetTextColor(aObj.HT:GetRGB())
+				subSpellString:SetTextColor(aObj.BT:GetRGB())
 			end
 			spellString, subSpellString = nil, nil
 		end
 
-		_G.SpellBookPageText:SetTextColor(self.BTr, self.BTg, self.BTb)
+		_G.SpellBookPageText:SetTextColor(self.BT:GetRGB())
 		local btn
 		for i = 1, _G.SPELLS_PER_PAGE do
 			btn = _G["SpellButton" .. i]
@@ -3743,7 +3743,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					if not obj.missingHeader:IsShown() then
 						obj.icon:SetDesaturated(nil) -- show in colour
 						if aObj.modBtnBs then
-							obj.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+							obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 						end
 					else
 						if aObj.modBtnBs then
@@ -3751,14 +3751,14 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 						end
 					end
 				else
-					obj.missingHeader:SetTextColor(aObj.HTr, aObj.HTg, aObj.HTb)
+					obj.missingHeader:SetTextColor(aObj.HT:GetRGB())
 				end
-				obj.missingText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+				obj.missingText:SetTextColor(aObj.BT:GetRGB())
 				local btn
 				for i = 1, 2 do
 					btn = obj["button" .. i]
 					btn:DisableDrawLayer("BACKGROUND")
-					btn.subSpellString:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+					btn.subSpellString:SetTextColor(aObj.BT:GetRGB())
 					aObj:addButtonBorder{obj=btn, sec=true}
 				end
 				btn = nil
@@ -3787,7 +3787,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			self:SecureHook("SpellBook_UpdateProfTab", function()
 				for i = 1, 2 do
 					if _G["PrimaryProfession" .. i].unlearn:IsShown() then
-						_G["PrimaryProfession" .. i].sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+						_G["PrimaryProfession" .. i].sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 					else
 						_G["PrimaryProfession" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 					end
@@ -3856,7 +3856,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			if obj.disabled then
 				sc.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 			else
-				sc.sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+				sc.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 			end
 		end
 		local btn
@@ -3864,7 +3864,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			btn = sc["abilityButton" .. i]
 			if btn then -- Bugfix for ElvUI
 				btn.ring:SetTexture(nil)
-				btn.subText:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
+				btn.subText:SetTextColor(aObj.BT:GetRGB())
 				-- make icon square
 				aObj:makeIconSquare(btn, "icon", true)
 			end
@@ -3878,7 +3878,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				if this["specButton" .. i].disabled then
 					this["specButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				else
-					this["specButton" .. i].sbb:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], aObj.bbColour[4])
+					this["specButton" .. i].sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
 			end
 		end

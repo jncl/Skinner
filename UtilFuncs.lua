@@ -510,8 +510,8 @@ end
 
 function aObj:getGradientInfo(invert, rotate)
 
-	local MinR, MinG, MinB, MinA = self.prdb.GradientMin.r, self.prdb.GradientMin.g, self.prdb.GradientMin.b, self.prdb.GradientMin.a
-	local MaxR, MaxG, MaxB, MaxA = self.gmColour[1], self.gmColour[2], self.gmColour[3], self.gmColour[4]
+	local MinR, MinG, MinB, MinA = aObj.gminClr:GetRGBA()
+	local MaxR, MaxG, MaxB, MaxA = aObj.gmaxClr:GetRGBA()
 
 	if self.prdb.Gradient.enable then
 		if invert then
@@ -763,7 +763,7 @@ function aObj:makeIconSquare(obj, iconObjName, chkDisabled)
 			then
 				obj.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 			else
-				obj.sbb:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+				obj.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 
 			end
 		end
@@ -1151,14 +1151,14 @@ function aObj:toggleTabDisplay(tab, active)
 			self:setActiveTab(tab.sf)
 		else
 			-- HIGHLIGHT_FONT_COLOR is white
-			tab.Text:SetVertexColor(_G.HIGHLIGHT_FONT_COLOR.r, _G.HIGHLIGHT_FONT_COLOR.g, _G.HIGHLIGHT_FONT_COLOR.b)
+			tab.Text:SetVertexColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
 		end
 	else
 		if self.isTT then
 			self:setInactiveTab(tab.sf)
 		else
 			-- NORMAL_FONT_COLOR is yellow
-			tab.Text:SetVertexColor(_G.NORMAL_FONT_COLOR.r, _G.NORMAL_FONT_COLOR.g, _G.NORMAL_FONT_COLOR.b)
+			tab.Text:SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
 		end
 	end
 
@@ -1168,14 +1168,14 @@ function aObj:updateSBTexture()
 
 	-- get updated colour/texture
 	local sBar = self.prdb.StatusBar
-	self.sbColour = {sBar.r, sBar.g, sBar.b, sBar.a}
 	self.sbTexture = self.LSM:Fetch("statusbar", sBar.texture)
+	self.sbClr = _G.CreateColor(sBar.r, sBar.g, sBar.b, sBar.a)
 
 	for statusBar, tab in pairs(self.sbGlazed) do
 		statusBar:SetStatusBarTexture(self.sbTexture)
 		for k, tex in pairs(tab) do
 			tex:SetTexture(self.sbTexture)
-			if k == "bg" then tex:SetVertexColor(sBar.r, sBar.g, sBar.b, sBar.a) end
+			if k == "bg" then tex:SetVertexColor(self.sbClr:GetRGBA()) end
 		end
 	end
 	sBar = nil
@@ -1219,8 +1219,10 @@ function aObj:RGBPercToHex(r, g, b)
 	assert(b, "Missing value (blue) - RGBPercToHex\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
---	Check to see if the passed values are strings, if so then use some default values
-	if type(r) == "string" then r, g, b = 0.8, 0.8, 0.0 end
+	--	Check to see if the passed values are strings, if so then use some default values
+	if type(r) == "string" then
+		r, g, b = _G.NORMAL_FONT_COLOR:GetRGB()
+	end
 
 	r = r <= 1 and r >= 0 and r or 0
 	g = g <= 1 and g >= 0 and g or 0

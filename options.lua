@@ -210,8 +210,8 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 		-- show changes by reskinning the Interface Options Frame with the new settings
 		self:setupBackdrop()
 		_G.InterfaceOptionsFrame.sf:SetBackdrop(self.backdrop)
-		_G.InterfaceOptionsFrame.sf:SetBackdropColor(self.bColour[1], self.bColour[2], self.bColour[3], self.bColour[4])
-		_G.InterfaceOptionsFrame.sf:SetBackdropBorderColor(self.bbColour[1], self.bbColour[2], self.bbColour[3], self.bbColour[4])
+		_G.InterfaceOptionsFrame.sf:SetBackdropColor(aObj.bClr:GetRGBA())
+		_G.InterfaceOptionsFrame.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 	end
 
 	self.optTables = {

@@ -135,10 +135,12 @@ function aObj:OnInitialize()
 	-- Heading, Body & Ignored Text colours
 	local c = self.prdb.HeadText
 	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
+	self.HT = _G.CreateColor(c.r, c.g, c.b)
 	c = self.prdb.BodyText
 	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
+	self.BT = _G.CreateColor(c.r, c.g, c.b)
 	c = self.prdb.IgnoredText
-	self.ITr, self.ITg, self.ITb = c.r, c.g, c.b
+	self.IT = _G.CreateColor(c.r, c.g, c.b)
 
 	-- Frame multipliers (still used in older skins)
 	self.FxMult, self.FyMult = 0.9, 0.87
@@ -212,29 +214,34 @@ function aObj:OnInitialize()
 		and self.prdb.BgFile ~= "None"
 		then
 			self.bgTexName = aName .. " User Background"
-  		self.LSM:Register("background", self.bgTexName, self.prdb.BgFile)
+			self.LSM:Register("background", self.bgTexName, self.prdb.BgFile)
 		else
 			self.bgTexName = self.prdb.BgTexture
 		end
 	end
 
-	-- StatusBar colours
-	c = self.prdb.StatusBar
-	self.sbColour = {c.r, c.g, c.b, c.a}
 	-- StatusBar texture
+	c = self.prdb.StatusBar
 	self.sbTexture = self.LSM:Fetch("statusbar", c.texture)
-	-- Backdrop colours
-	c = self.prdb.ClassClrBg and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.Backdrop
-	self.bColour = {c.r, c.g, c.b, c.a or self.prdb.Backdrop.a}
-	-- BackdropBorder colours
-	c = self.prdb.ClassClrBd and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.BackdropBorder
-	self.bbColour = {c.r, c.g, c.b, c.a or self.prdb.BackdropBorder.a}
+	-- StatusBar colours
+	self.sbClr = _G.CreateColor(c.r, c.g, c.b, c.a)
+	-- GradientMin colours
+	c = self.prdb.GradientMin
+	self.gminClr = _G.CreateColor(c.r, c.g, c.b, c.a)
 	-- GradientMax colours
 	c = self.prdb.ClassClrGr and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.GradientMax
-	self.gmColour = {c.r, c.g, c.b, c.a or self.prdb.GradientMax.a}
+	self.gmaxClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.GradientMax.a)
+	-- Backdrop colours
+	c = self.prdb.ClassClrBg and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.Backdrop
+	self.bClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.Backdrop.a)
+	self.bColour = _G.CopyTable(self.bClr)
+	-- BackdropBorder colours
+	c = self.prdb.ClassClrBd and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.BackdropBorder
+	self.bbClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.BackdropBorder.a)
+	self.bbColour = _G.CopyTable(self.bbClr)
 	-- TooltipBorder colours
 	c = self.prdb.ClassClrTT and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.TooltipBorder
-	self.tbColour = {c.r, c.g, c.b, c.a or self.prdb.TooltipBorder.a}
+	self.tbClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.TooltipBorder.a)
 
 	-- Inactive Tab & DropDowns texture
 	if self.prdb.TabDDFile
@@ -910,8 +917,10 @@ local function __applySkin(opts)
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.bd or 1])
 	if not opts.ebc then
 		-- colour the backdrop if required
-		opts.obj:SetBackdropColor(aObj.bColour[1], aObj.bColour[2], aObj.bColour[3], opts.ba or aObj.bColour[4])
-		opts.obj:SetBackdropBorderColor(aObj.bbColour[1], aObj.bbColour[2], aObj.bbColour[3], opts.bba or aObj.bbColour[4])
+		local r, g, b, a = aObj.bClr:GetRGBA()
+		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
+		opts.obj:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+		r, g, b, a = nil, nil ,nil ,nil
 	else
 		opts.obj:SetBackdropColor(.1, .1, .1, 1)
 		opts.obj:SetBackdropBorderColor(.2, .2, .2, 1)
@@ -1437,7 +1446,7 @@ local function __skinStatusBar(opts)
 			-- create background texture on a lower sublevel
 			sbG.bg = opts.bgTex or opts.obj:CreateTexture(nil, "BACKGROUND", nil, -1)
 			sbG.bg:SetTexture(aObj.sbTexture)
-			sbG.bg:SetVertexColor(aObj.sbColour[1], aObj.sbColour[2], aObj.sbColour[3])
+			sbG.bg:SetVertexColor(aObj.sbClr:GetRGBA())
 			if not opts.bgTex then
 				sbG.bg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.fi, -opts.fi)
 				sbG.bg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", -opts.fi, opts.fi)
@@ -1453,7 +1462,7 @@ local function __skinStatusBar(opts)
 		for i = 1, #opts.otherTex do
 			tex = opts.otherTex[i]
 			tex:SetTexture(aObj.sbTexture)
-			tex:SetVertexColor(aObj.sbColour[1], aObj.sbColour[2], aObj.sbColour[3])
+			tex:SetVertexColor(aObj.sbClr:GetRGBA())
 			sbG[#sbG + 1] = tex
 			if opts.nilFuncs then
 				tex.SetTexture = _G.nop
@@ -1667,7 +1676,7 @@ function aObj:skinTooltip(tooltip)
 	end
 
 	-- colour the Border
-	tooltip.sf:SetBackdropBorderColor(self.tbColour[1], self.tbColour[2], self.tbColour[3], self.tbColour[4])
+	tooltip.sf:SetBackdropBorderColor(aObj.tbClr:GetRGBA())
 
 	if self.prdb.Tooltips.style == 1 then -- Rounded
 		self:applyGradient(tooltip.sf, 32)
