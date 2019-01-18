@@ -38,7 +38,7 @@ local addonSkins = {
 	"Quartz", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Squeenix", "StaggerMeter",
-	"TargetCharms", "TipTac", "TooManyAddons", "TrinketBar",
+	"TargetCharms", "TooManyAddons", "TrinketBar",
 	"UrbanAchiever",
 	"Vendomatic", "VuhDo", "VuhDoOptions",
 	"Warden", "WoWPro", "WTFLatencyMeter",
@@ -144,16 +144,12 @@ function aObj:AddonFrames()
 end
 
 local lodFrames = {
-	"AzCastBarOptions",
-	"DockingStation_Config", "DoTimer_Options",
+	"DoTimer_Options",
 	"Enchantrix",
 	"GarrisonMissionManager", "GuildBankSearch",
 	"LilSparkysWorkshop", "Ludwig_Window",
-	"MasterPlan",
 	"PetJournalEnhanced",
 	"Scrap_Merchant", "Scrap_Options", "Scrap_Visualizer",
-	"TipTacOptions",
-	"XPerl_Options",
 }
 aObj.lodAddons = {}
 for i = 1, #lodFrames do
