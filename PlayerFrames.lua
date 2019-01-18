@@ -1565,17 +1565,17 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:skinStdButton{obj=cFrame.GuildLogButton}
 	end
 
-	self:SecureHookScript(cFrame.GuildMemberDetailFrame, "OnShow", function(this)
-		if self.modBtns then
-			self:skinStdButton{obj=this.RemoveButton}
-			self:skinStdButton{obj=this.GroupInviteButton}
-		end
+	-- N.B. hook DisplayMember rather than OnShow script
+	self:SecureHook(cFrame.GuildMemberDetailFrame, "DisplayMember", function(this, ...)
 		self:skinDropDown{obj=this.RankDropdown}
 		self:addSkinFrame{obj=this.NoteBackground, ft=ftype}
 		self:addSkinFrame{obj=this.OfficerNoteBackground, ft=ftype}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-		self:Unhook(this, "OnShow")
+		if self.modBtns then
+			self:skinStdButton{obj=this.RemoveButton}
+			self:skinStdButton{obj=this.GroupInviteButton}
+		end
+		self:Unhook(this, "DisplayMember")
 	end)
 
 	self:addSkinFrame{obj=cFrame, ft=ftype, kfs=true, ri=true, x1=-5}
