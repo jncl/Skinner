@@ -269,6 +269,7 @@ function aObj:OnInitialize()
 
 	dflts, c = nil, nil
 
+	-- stop CloseButton border texture being changed (OrderHallTalents & WarboardUI use this function)
 	_G.UIPanelCloseButton_SetBorderAtlas = _G.nop
 
 end
