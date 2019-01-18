@@ -2365,6 +2365,10 @@ aObj.blizzFrames[ftype].GhostFrame = function(self)
 		_G.RaiseFrameLevelByTwo(this) -- make it appear above other frames
 		self:Unhook(this, "OnShow")
 	end)
+	if _G.GhostFrame:IsShown() then
+		_G.GhostFrame:Hide()
+		_G.GhostFrame:Show()
+	end
 
 end
 
