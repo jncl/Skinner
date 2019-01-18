@@ -852,14 +852,15 @@ aObj.blizzFrames[ftype].BNFrames = function(self)
 	if not self.prdb.BNFrames or self.initialized.BNFrames then return end
 	self.initialized.BNFrames = true
 
-	self:skinCloseButton{obj=_G.BNToastFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
-	self:addSkinFrame{obj=_G.BNToastFrame, ft=ftype, nb=true}
+	self:skinCloseButton{obj=_G.BNToastFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, noSkin=true}
+	self:addSkinFrame{obj=_G.BNToastFrame, ft=ftype, nb=true} -- show textures
 	self:hookSocialToastFuncs(_G.BNToastFrame)
+
 	self:addSkinFrame{obj=_G.BNToastFrame.TooltipFrame, ft=ftype, kfs=true, nb=true}
 	_G.BNToastFrame.TooltipFrame:SetScript("OnLoad", nil)
 
-	self:skinCloseButton{obj=_G.TimeAlertFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
-	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype, nb=true}
+	self:skinCloseButton{obj=_G.TimeAlertFrame.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, noSkin=true}
+	self:addSkinFrame{obj=_G.TimeAlertFrame, ft=ftype, nb=true} -- show textures
 	self:hookSocialToastFuncs(_G.TimeAlertFrame)
 
 end
