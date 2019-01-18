@@ -458,6 +458,7 @@ local function __addSkinButton(opts)
 		y2 = Y offset for BOTTOMRIGHT
 		rp = re-parent, reverse the parent child relationship
 		sec = use the "SecureUnitButtonTemplate"
+		sab = use the "SecureActionButtonTemplate"
 		nohooks = don't hook methods
 --]]
 --@alpha@
@@ -478,7 +479,7 @@ local function __addSkinButton(opts)
 	opts.parent = opts.parent or opts.obj:GetParent()
 
 	-- store button object within original button
-	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent, opts.sec and "SecureUnitButtonTemplate" or nil)
+	opts.obj.sb = _G.CreateFrame("Button", nil, opts.parent, opts.sec and "SecureUnitButtonTemplate" or opts.sab and "SecureActionButtonTemplate" or nil)
 	local btn = opts.obj.sb
 	_G.LowerFrameLevel(btn)
 	btn:EnableMouse(false) -- allow clickthrough
