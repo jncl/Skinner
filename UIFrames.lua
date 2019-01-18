@@ -4990,7 +4990,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	local function skinDDMenu(frame)
 		_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
 		_G[frame:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true}
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 	end
 
 	for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
