@@ -214,6 +214,7 @@ function module:skinCloseButton(opts) -- text on button
 		opts.noSkin = true
 	end
 --@end-alpha@
+
 	-- don't skin button if required
 	if not opts.noSkin then
 		if opts.sap then
@@ -236,7 +237,7 @@ function module:skinCloseButton(opts) -- text on button
 		opts.obj.sb:SetNormalFontObject(opts.font or module.fontX)
 		opts.obj.sb:SetText(module.mult)
 	end
-	if opts.storeOnParent then -- BNToastFrame
+	if opts.storeOnParent then
 		opts.obj:GetParent().cb = opts.obj.sb
 	end
 
@@ -349,18 +350,21 @@ function module:skinOtherButton(opts)
 		opts.obj:SetHighlightTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Highlight]])
 		opts.obj:SetSize(opts.size, opts.size)
 	end
-	if opts.sap then
-		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
-	else
-		aso.bd = 5
-		local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
-		opts.x1 = opts.x1 or bW == 32 and 6 or 4
-		opts.y1 = opts.y1 or bW == 32 and -6 or -4
-		opts.x2 = opts.x2 or bW == 32 and -6 or -4
-		opts.y2 = opts.y2 or bW == 32 and 6 or 4
-		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+	-- don't skin button if required
+	if not opts.noSkin then
+		if opts.sap then
+			aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=true, aso=aso}
+		else
+			aso.bd = 5
+			local bW, bH = _G.Round(opts.obj:GetWidth()), _G.Round(opts.obj:GetHeight())
+			opts.x1 = opts.x1 or bW == 32 and 6 or 4
+			opts.y1 = opts.y1 or bW == 32 and -6 or -4
+			opts.x2 = opts.x2 or bW == 32 and -6 or -4
+			opts.y2 = opts.y2 or bW == 32 and 6 or 4
+			aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+		end
 	end
-
+	
 end
 function module:skinOtherButton1(opts) -- text on button
 
