@@ -1658,7 +1658,7 @@ function aObj:skinTooltip(tooltip)
 	assert(tooltip, "Missing object sT\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	aObj:Debug2("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
+	-- aObj:Debug2("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
 
 	if not tooltip then return end
 
@@ -1669,7 +1669,7 @@ function aObj:skinTooltip(tooltip)
 			ttSB = tooltip.SetBackdrop
 			tooltip.SetBackdrop = _G.nop
 		end
-		self:addSkinFrame{obj=tooltip, ft=tooltip.ftype or "a", kfs=true, aso={ng=true}}
+		self:addSkinFrame{obj=tooltip, ft=tooltip.ftype or "a", kfs=true, aso={ng=true}, ofs=0}
 		if _G.IsAddOnLoaded("ElvUI") then
 			tooltip.SetBackdrop = ttSB
 		end
