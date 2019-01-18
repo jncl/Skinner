@@ -16,9 +16,22 @@ Legend:
 
 ?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
 
+	O	change all occurrences of self.bColour to self.bClr
 
+	O	change all occurrences of self.bbColour to self.bbClr
 
-	I	UIWidgets, reported by Fraktyl, 20.12.18
-√		- Skinner\UIFrames.lua:5041: attempt to index global 'aOBj' (a nil value)
-		Skinner\UIFrames.lua:5041: in function <Skinner\UIFrames.lua:5016>
-		Skinner\UIFrames.lua:5078: in function <Skinner\UIFrames.lua:5077>
+	O	requested by csamalot, 31.12.18
+		- would it be possible to change the color of the button highlights when you hover over them or click on them. 		Would be nice if we could set a color or use class colors for this
+
+√	S	Raider.io, requested by Winney1907, 08.01.19
+
+√	N	Mapster, reported by NeoZeus, 09.01.19
+
+	N	Guild Roster Manager, reported by epidemedabear, 16.01.19
+√		- ..e\AddOns\Skinner\AddonSkins\Guild_Roster_Manager.lua line 8:
+   attempt to index field 'GRM_AddonGlobals' (a nil value)
+
+	N	Minimal Archaeology, reported by MetalHeadSpike, 16.01.19
+√		-  ...ace\AddOns\Skinner\AddonSkins\MinimalArchaeology.lua:32: attempt to index field 'MinArchOptionPanel' (a nil value)
+
+√	N	AAP
