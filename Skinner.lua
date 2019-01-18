@@ -1433,6 +1433,10 @@ local function __skinStatusBar(opts)
 	aObj:Debug2("__skinStatusBar: [%s, %s]", opts.obj, opts.obj:GetName())
 
 	opts.obj:SetStatusBarTexture(aObj.sbTexture)
+	if opts.nilFuncs then
+		opts.obj.SetStatusBarTexture = _G.nop
+		opts.obj.SetStatusBarAtlas = _G.nop
+	end
 
 	-- don't skin it twice
 	if not aObj.sbGlazed[opts.obj] then
@@ -1451,6 +1455,11 @@ local function __skinStatusBar(opts)
 			if not opts.bgTex then
 				sbG.bg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.fi, -opts.fi)
 				sbG.bg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", -opts.fi, opts.fi)
+			else
+				if opts.nilFuncs then
+					sbG.bg.SetTexture = _G.nop
+					sbG.bg.SetAtlas = _G.nop
+				end
 			end
 		end
 	end
@@ -1471,15 +1480,6 @@ local function __skinStatusBar(opts)
 			end
 		end
 		tex = nil
-	end
-
-	if opts.nilFuncs then
-		opts.obj.SetStatusBarTexture = _G.nop
-		opts.obj.SetStatusBarAtlas = _G.nop
-		if opts.bgTex then
-			opts.bgTex.SetTexture = _G.nop
-			opts.bgTex.SetAtlas = _G.nop
-		end
 	end
 
 	sBG = nil
