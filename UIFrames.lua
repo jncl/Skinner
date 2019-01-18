@@ -431,6 +431,120 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	if not self.prdb.AlertFrames or self.initialized.AlertFrames then return end
 	self.initialized.AlertFrames = true
 
+	local function skinACAlertFrames(frame)
+
+		local fH = Round(frame:GetHeight())
+
+		aObj:nilTexture(frame.Background, true)
+		frame.Unlocked:SetTextColor(aObj.BT:GetRGB())
+		if frame.OldAchievement then frame.OldAchievement:SetTexture(nil) end -- AchievementAlertFrame(s)
+
+		frame.Icon:DisableDrawLayer("BORDER")
+		frame.Icon:DisableDrawLayer("OVERLAY")
+
+		local x1, y1, x2, y2 = 6, -13, -4, 15
+		-- CriteriaAlertFrame is smaller than most (Achievement Progress etc)
+		if fH == 52 then
+			x1, y1, x2, y2 = 30, 0, 0, 5
+		end
+		-- GuildAchievementFrame is taller than most (Achievement Progress etc)
+		if fH == 104 then
+			y1, y2 = -8, 10
+		end
+		if not frame.sf then
+			aObj:addSkinFrame{obj=frame, ft=ftype, x1=x1, y1=y1, x2=x2, y2=y2}
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
+			end
+		else
+			frame.sf:ClearAllPoints()
+			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", x1, y1)
+			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2, y2)
+		end
+		fH, x1, y1, x2, y2 = nil, nil, nil ,nil ,nil
+
+	end
+	-- called params: frame, achievementID, alreadyEarned (10585, true)
+	self:SecureHook(_G.AchievementAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("AchievementAlertSystem: [%s, %s, %s]", frame, ...)
+		skinACAlertFrames(frame)
+	end)
+	--called params: frame, achievementID, criteriaString (10607, "Test")
+	self:SecureHook(_G.CriteriaAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("CriteriaAlertSystem: [%s, %s, %s]", frame, ...)
+		skinACAlertFrames(frame)
+	end)
+
+	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal, showRatedBG
+	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("LootAlertSystem: [%s]", frame)
+		frame:DisableDrawLayer("BACKGROUND")
+		frame.Icon:SetDrawLayer("BORDER") -- changed in code (Garrison Cache)
+		frame.SpecRing:SetTexture(nil)
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
+		-- colour the Icon buttons' border
+		if self.modBtnBs then
+			frame.IconBorder:SetTexture(nil)
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+			local itemLink, _,_,_,_, isCurrency = ...
+			local itemRarity
+			if isCurrency then
+				itemRarity = _G.select(8, _G.GetCurrencyInfo(itemLink))
+			else
+				itemRarity = _G.select(3, _G.GetItemInfo(itemLink))
+			end
+			frame.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
+			itemLink, isCurrency, itemRarity = nil, nil, nil
+		end
+	end)
+	-- called parms: self, itemLink, quantity, specID, baseQuality (147239, 1, 1234, 5)
+	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
+	end)
+	-- called params: self, amount (12345)
+	self:SecureHook(_G.MoneyWonAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("MoneyWonAlertSystem: [%s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		frame.IconBorder:SetTexture(nil)
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
+	end)
+	-- called params: self, amount (350)
+	self:SecureHook(_G.HonorAwardedAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("HonorAwardedAlertSystem: [%s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		frame.IconBorder:SetTexture(nil)
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
+	end)
+	-- called params: self, recipeID (209645)
+	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("NewRecipeLearnedAlertSystem: [%s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		frame.Icon:SetDrawLayer("BORDER")
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+	end)
+
+	local function skinDCSAlertFrames(opts)
+
+		opts.obj:DisableDrawLayer("BORDER")
+		opts.obj:DisableDrawLayer("OVERLAY")
+		opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinFrame
+		aObj:addSkinFrame{obj=opts.obj, ft=ftype, ofs=opts.ofs or -8, y1=opts.y1 or nil}
+		if self.modBtnBs then
+			-- wait for animation to finish
+			_G.C_Timer.After(0.2, function()
+				aObj:addButtonBorder{obj=opts.obj, relTo=opts.obj.dungeonTexture}
+			end)
+		end
+
+	end
 	-- called params: frame, challengeType, count, max ("Raid", 2, 5)
 	self:SecureHook(_G.GuildChallengeAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GuildChallengeAlertSystem: [%s, %s, %s, %s]", frame, ...)
@@ -438,6 +552,17 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		frame:DisableDrawLayer("BORDER")
 		frame:DisableDrawLayer("OVERLAY")
 		aObj:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+	end)
+	-- called params: frame, rewardData={name="Deceiver's Fall", iconTextureFile=1616157, subtypeID=3, moneyAmount=1940000, moneyBase=1940000, monetVar=0, experienceBase=0, experienceGained=0, experienceVar=0, numRewards=1, numStrangers=0, rewards={} }
+	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, rewardData)
+		-- aObj:Debug("DungeonCompletionAlertSystem: [%s, %s]", frame, rewardData)
+		skinDCSAlertFrames{obj=frame}
+	end)
+	-- called params: frame, rewardData={}
+	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, rewardData)
+		-- aObj:Debug("ScenarioAlertSystem: [%s, %s]", frame, rewardData)
+		self:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
+		skinDCSAlertFrames{obj=frame, ofs=-12}
 	end)
 	-- called params: frame, rewardQuestID, name, showBonusCompletion, xp, money (123456, "Test", true, 2500, 1234)
 	self:SecureHook(_G.InvasionAlertSystem, "setUpFunction", function(frame, ...)
@@ -543,61 +668,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			frame.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[5].r, _G.ITEM_QUALITY_COLORS[5].g, _G.ITEM_QUALITY_COLORS[5].b)
 		end
 	end)
-	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal, showRatedBG
-	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("LootAlertSystem: [%s]", frame)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.Icon:SetDrawLayer("BORDER") -- changed in code (Garrison Cache)
-		frame.SpecRing:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
-		-- colour the Icon buttons' border
-		if self.modBtnBs then
-			frame.IconBorder:SetTexture(nil)
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-			local itemLink, _,_,_,_, isCurrency = ...
-			local itemRarity
-			if isCurrency then
-				itemRarity = _G.select(8, _G.GetCurrencyInfo(itemLink))
-			else
-				itemRarity = _G.select(3, _G.GetItemInfo(itemLink))
-			end
-			frame.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
-			itemLink, isCurrency, itemRarity = nil, nil, nil
-		end
-	end)
-	-- called parms: self, itemLink, quantity, specID, baseQuality (147239, 1, 1234, 5)
-	self:SecureHook(_G.LootUpgradeAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("LootUpgradeAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
-	end)
-	-- called params: self, amount (12345)
-	self:SecureHook(_G.MoneyWonAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("MoneyWonAlertSystem: [%s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.IconBorder:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
-	end)
-	-- called params: self, recipeID (209645)
-	self:SecureHook(_G.NewRecipeLearnedAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("NewRecipeLearnedAlertSystem: [%s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.Icon:SetDrawLayer("BORDER")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-	end)
-	-- called params: self, amount (350)
-	self:SecureHook(_G.HonorAwardedAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("HonorAwardedAlertSystem: [%s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		frame.IconBorder:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8, y2=8}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
-	end)
 	-- called params: frame, petID
 	self:SecureHook(_G.NewPetAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("NewPetAlertSystem: [%s, %s]", frame, ...)
@@ -609,76 +679,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		-- aObj:Debug("NewMountAlertSystem: [%s, %s]", frame, ...)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-	end)
-
-	local function skinDCSAlertFrames(opts)
-
-		opts.obj:DisableDrawLayer("BORDER")
-		opts.obj:DisableDrawLayer("OVERLAY")
-		opts.obj.dungeonTexture:SetDrawLayer("ARTWORK") -- move Dungeon texture above skinFrame
-		aObj:addSkinFrame{obj=opts.obj, ft=ftype, ofs=opts.ofs or -8, y1=opts.y1 or nil}
-		if self.modBtnBs then
-			-- wait for animation to finish
-			_G.C_Timer.After(0.2, function()
-				aObj:addButtonBorder{obj=opts.obj, relTo=opts.obj.dungeonTexture}
-			end)
-		end
-
-	end
-	-- called params: frame, rewardData={name="Deceiver's Fall", iconTextureFile=1616157, subtypeID=3, moneyAmount=1940000, moneyBase=1940000, monetVar=0, experienceBase=0, experienceGained=0, experienceVar=0, numRewards=1, numStrangers=0, rewards={} }
-	self:SecureHook(_G.DungeonCompletionAlertSystem, "setUpFunction", function(frame, rewardData)
-		-- aObj:Debug("DungeonCompletionAlertSystem: [%s, %s]", frame, rewardData)
-		skinDCSAlertFrames{obj=frame}
-	end)
-	-- called params: frame, rewardData={}
-	self:SecureHook(_G.ScenarioAlertSystem, "setUpFunction", function(frame, rewardData)
-		-- aObj:Debug("ScenarioAlertSystem: [%s, %s]", frame, rewardData)
-		self:getRegion(frame, 1):SetTexture(nil) -- Toast-IconBG
-		skinDCSAlertFrames{obj=frame, ofs=-12}
-	end)
-
-	local function skinACAlertFrames(frame)
-
-		local fH = Round(frame:GetHeight())
-
-		aObj:nilTexture(frame.Background, true)
-		frame.Unlocked:SetTextColor(aObj.BTr, aObj.BTg, aObj.BTb)
-		if frame.OldAchievement then frame.OldAchievement:SetTexture(nil) end -- AchievementAlertFrame(s)
-
-		frame.Icon:DisableDrawLayer("BORDER")
-		frame.Icon:DisableDrawLayer("OVERLAY")
-
-		local x1, y1, x2, y2 = 6, -13, -4, 15
-		-- CriteriaAlertFrame is smaller than most (Achievement Progress etc)
-		if fH == 52 then
-			x1, y1, x2, y2 = 30, 0, 0, 5
-		end
-		-- GuildAchievementFrame is taller than most (Achievement Progress etc)
-		if fH == 104 then
-			y1, y2 = -8, 10
-		end
-		if not frame.sf then
-			aObj:addSkinFrame{obj=frame, ft=ftype, x1=x1, y1=y1, x2=x2, y2=y2}
-			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=frame.Icon, relTo=frame.Icon.Texture}
-			end
-		else
-			frame.sf:ClearAllPoints()
-			frame.sf:SetPoint("TOPLEFT", frame, "TOPLEFT", x1, y1)
-			frame.sf:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", x2, y2)
-		end
-		fH, x1, y1, x2, y2 = nil, nil, nil ,nil ,nil
-
-	end
-	-- called params: frame, achievementID, alreadyEarned (10585, true)
-	self:SecureHook(_G.AchievementAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("AchievementAlertSystem: [%s, %s, %s]", frame, ...)
-		skinACAlertFrames(frame)
-	end)
-	--called params: frame, achievementID, criteriaString (10607, "Test")
-	self:SecureHook(_G.CriteriaAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("CriteriaAlertSystem: [%s, %s, %s]", frame, ...)
-		skinACAlertFrames(frame)
 	end)
 
 	-- hook this to stop gradient texture whiteout
