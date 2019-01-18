@@ -608,7 +608,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:skinTabs{obj=this, lod=true}
 		self:skinCloseButton{obj=this.ReputationTabHelpBox.CloseButton, noSkin=true}
 		self:removeInset(_G.CharacterFrameInsetRight)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-5}
 
 		-- Sidebar Tabs
 		_G.PaperDollSidebarTabs.DecorLeft:SetAlpha(0)
