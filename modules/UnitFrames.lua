@@ -243,6 +243,18 @@ local function skinPetF()
 		_G.PetFrame.roleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-ROLES]])
 	end
 
+	-- get Pet's Specialization Role to set roleIcon TexCoord
+	aObj:RegisterEvent("UNIT_PET", function(event, arg1)
+		if arg1 == "player"
+		and _G.UnitIsVisible("pet")
+		then
+			local petSpec = _G.GetSpecialization(nil, true)
+			if petSpec then
+				_G.PetFrame.roleIcon:SetTexCoord(GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
+			end
+			petSpec = nil
+		end
+	end)
 
 end
 local function skinCommon(frame, adjSB)
