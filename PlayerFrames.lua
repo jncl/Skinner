@@ -3975,7 +3975,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 
 		self:skinSlider{obj=frame.TalentList.ScrollFrame.ScrollBar, wdth=-4}
 		self:removeMagicBtnTex(self:getChild(frame.TalentList, 4))
-		self:addSkinFrame{obj=frame.TalentList, ft=ftype, kfs=true, ri=true, y1=-20, x2=-4}
+		self:addSkinFrame{obj=frame.TalentList, ft=ftype, kfs=true, ri=true, x2=-4}
 		for i = 1, #frame.TalentList.ScrollFrame.buttons do
 			frame.TalentList.ScrollFrame.buttons[i]:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
