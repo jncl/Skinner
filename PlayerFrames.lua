@@ -1083,7 +1083,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 		self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			self:removeNineSlice(this.NineSlice)
 			if self.modBtnBs then
 				skinPageBtns(this)
 			end
@@ -1142,7 +1141,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end)
 
 		self:SecureHookScript(this.SetsTransmogFrame, "OnShow", function(this)
-			self:removeNineSlice(this.NineSlice)
 			self:skinDropDown{obj=this.RightClickDropDown}
 			if self.modBtnBs then
 				skinPageBtns(this)

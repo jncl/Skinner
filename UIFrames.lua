@@ -2564,7 +2564,6 @@ end
 
 local function skinPartyPoseFrame(frame)
 
-	aObj:removeNineSlice(frame.Border)
 	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 
 	-- RewardFrame
@@ -4013,6 +4012,17 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 	_G.C_Timer.After(0.1, function()
 		self:add2Table(self.ttList, _G.NamePlateTooltip)
 	end)
+
+end
+
+-- the following function is to handle dynamic NineSlice Layouts
+-- used by the PartyPoseUI, CollectionsUI, ItemSocketingUI, BFAMissionUI
+aObj.blizzFrames[ftype].NineSlice = function(self)
+
+	self:RawHook(_G.AnchorUtil, "ApplyNineSliceLayout", function(this, container, userLayout, textureKit)
+		-- aObj:Debug("AU ApplyNineSliceLayout: [%s, %s, %s, %s]", this, container, userLayout, textureKit)
+		-- do nothing
+	end, true)
 
 end
 
