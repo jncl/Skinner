@@ -12,9 +12,9 @@ local navalStageRegs = {1, 2, 3, 4}
 local cdStageRegs = {1, 2, 3, 4, 5, 6}
 local function skinMissionFrame(frame)
 
-	local y1Ofs, y2Ofs = frame == _G.BFAMissionFrame and 1, -4 or 2, -6
+	local y1Ofs = frame == _G.BFAMissionFrame and 1 or 2
 	frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=y1Ofs, x2=1, y2=y2Ofs}
+	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=y1Ofs, x2=1, y2=-6}
 	-- tabs
 	aObj:skinTabs{obj=frame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
 	y1Ofs, y2Ofs = nil, nil
