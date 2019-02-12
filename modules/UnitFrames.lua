@@ -49,7 +49,7 @@ local function adjustStatusBarPosn(sBar, yAdj)
 	oPnt = nil
 
 end
-local function skinUnitFrame(opts)
+local function skinUnitButton(opts)
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -57,13 +57,13 @@ local function skinUnitFrame(opts)
 	opts.y1 = opts.y1 or opts.ofs
 	opts.x2 = opts.x2 or opts.ofs
 	opts.y2 = opts.y2 or opts.ofs * -1
-	aObj:addSkinFrame{obj=opts.obj, ft=ftype, secb=true, aso={bd=11, ng=true}, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
-	opts.obj.sf:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
-	opts.obj.sf:EnableMouse(false) -- enable clickthrough
+	aObj:addSkinButton{obj=opts.obj, ft=ftype, sec=true, nohooks=true, aso={bd=11, ng=true}, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+	opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
+	opts.obj.sb:EnableMouse(false) -- enable clickthrough
 
 	if opts.ft then
 		opts.obj.threatIndicator:ClearAllPoints()
-		opts.obj.threatIndicator:SetAllPoints(opts.obj.sf)
+		opts.obj.threatIndicator:SetAllPoints(opts.obj.sb)
 		aObj:changeRecTex(opts.obj.threatIndicator, true, true)
 		-- stop changes to texture
 		opts.obj.threatIndicator.SetTexture = _G.nop
@@ -203,7 +203,7 @@ local function skinPlayerF()
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
-		skinUnitFrame{obj=_G.PlayerFrame, ft=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
+		skinUnitButton{obj=_G.PlayerFrame, ft=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
 
 		pF, y2Ofs = nil, nil
 
@@ -227,7 +227,7 @@ local function skinPetF()
 
 		-- skin the PetFrame
 		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
-		skinUnitFrame{obj=_G.PetFrame, ft=true, x1=1}
+		skinUnitButton{obj=_G.PetFrame, ft=true, x1=1}
 		-- remove debuff border
 		for i = 1, 4 do
 			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
@@ -272,7 +272,7 @@ local function skinCommon(frame, adjSB)
 	fo = nil
 
 end
-local function addSkinFrame(frame, ft)
+local function skinButton(frame, ft)
 
 	local fo = _G[frame]
 	local isBoss = aObj:hasTextInName(fo, "Boss")
@@ -282,7 +282,7 @@ local function addSkinFrame(frame, ft)
 	else
 		xOfs1, yOfs1, xOfs2, yOfs2 = -2, -5, -35, 0
 	end
-	skinUnitFrame{obj=fo, ft=ft or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	skinUnitButton{obj=fo, ft=ft or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	skinCommon(frame, true)
 	aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
 
@@ -308,7 +308,7 @@ local function addSkinFrame(frame, ft)
 	-- Boss frames don't have a ToT frame
 	if not isBoss then
 		-- TargetofTarget Frame
-		skinUnitFrame{obj=fo.totFrame, x2=4, y2=4}
+		skinUnitButton{obj=fo.totFrame, x2=4, y2=4}
 		skinCommon(frame .. "ToT", true)
 		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 	end
@@ -322,22 +322,24 @@ local function skinTargetF()
 	and not isSkinned["Target"]
 	then
 
-		addSkinFrame("TargetFrame")
+		skinButton("TargetFrame")
 
 		-- move level text down, so it is more visible
 		module:RawHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
+			-- aObj:Debug("TF_ULTA: [%s, %s]", this, targetLevel)
 			this.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
 		end, true)
 
 		--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
-			addSkinFrame("Boss" .. i .. "TargetFrame")
+			skinButton("Boss" .. i .. "TargetFrame")
 			-- always an Elite mob
 			_G["Boss" .. i .. "TargetFrame"].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		end
 
 		-- hook this to show/hide the elite texture
 		module:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
+			-- aObj:Debug("TF_CC: [%s, %s]", frame, ...)
 			if frame == _G.TargetFrame
 			or (frame == _G.FocusFrame and db.focus)
 			then
@@ -364,7 +366,7 @@ local function skinFocusF()
 	if db.focus
 	and not isSkinned["Focus"]
 	then
-		addSkinFrame("FocusFrame", false)
+		skinButton("FocusFrame", false)
 	end
 
 end
@@ -377,7 +379,7 @@ local function skinPartyF()
 		local pMF, pPF
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			pMF = "PartyMemberFrame" .. i
-			skinUnitFrame{obj=_G[pMF], ft=true, x1=2, y1=5, x2=-1}
+			skinUnitButton{obj=_G[pMF], ft=true, x1=2, y1=5, x2=-1}
 
 			_G[pMF .. "Background"]:SetTexture(nil)
 			_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -391,7 +393,7 @@ local function skinPartyF()
 
 			-- pet frame
 			pPF = pMF .. "PetFrame"
-			skinUnitFrame{obj=_G[pPF], ft=true, x1=-2, y1=1, y2=1}
+			skinUnitButton{obj=_G[pPF], ft=true, x1=-2, y1=1, y2=1}
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:skinStatusBar{obj=_G[pPF .. "HealthBar"], fi=0}
@@ -616,8 +618,8 @@ end
 aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 
 	if db.arena then
-		local function skinFrame(fName)
-			skinUnitFrame{obj=_G[fName], x1=-3, x2=3, y2=-6}
+		local function skinArenaFrame(fName)
+			skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
 			_G[fName .. "Background"]:SetTexture(nil)
 			_G[fName .. "Texture"]:SetTexture(nil)
 			_G[fName .. "Status"]:SetTexture(nil)
@@ -635,11 +637,11 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 		end
 		local aPF
 		for i = 1, _G.MAX_ARENA_ENEMIES do
-			skinFrame("ArenaPrepFrame" .. i)
-			skinFrame("ArenaEnemyFrame" .. i)
+			skinArenaFrame("ArenaPrepFrame" .. i)
+			skinArenaFrame("ArenaEnemyFrame" .. i)
 			-- pet frame
 			aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
-			skinUnitFrame{obj=_G[aPF], y1=1, x2=1, y2=2}
+			skinUnitButton{obj=_G[aPF], y1=1, x2=1, y2=2}
 			_G[aPF .. "Flash"]:SetTexture(nil)
 			_G[aPF .. "Texture"]:SetTexture(nil)
 			-- status bar
