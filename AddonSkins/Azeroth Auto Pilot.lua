@@ -23,7 +23,7 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 	end)
 
 	-- Core frames
-	self:addSkinFrame{obj=_G.AAP.AfkFrame, ft="a", kfs=true, nb=true, ofs=-6}
+	self:addSkinFrame{obj=_G.AAP.AfkFrame, ft="a", kfs=true, nb=true, ofs=-6, x1=3}
 	if self.modBtns then
 		self:skinStdButton{obj=_G.AAP.ArrowFrame.Button}
 	end

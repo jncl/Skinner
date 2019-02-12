@@ -16,7 +16,7 @@ aObj.libsToSkin["LibDBIcon-1.0"] = function(self) -- v r36
 			lDBI = nil
 		end)
 	end
-	
+
 	-- N.B. Existing and new buttons are skinned as part of the MinimapButton skinning code in UIFrames.lua
 
 end

@@ -2,9 +2,9 @@ local aName, aObj = ...
 local _G = _G
 -- This is a Library
 
--- PromptSimple
+local select = _G.select
 
-aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 126
+aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 136
 
 	local DF = _G.LibStub("DetailsFramework-1.0", true)
 	if not DF then return end
@@ -14,24 +14,42 @@ aObj.libsToSkin["DetailsFramework-1.0"] = function(self) -- v 126
 
 	-- addon ()
 
-	-- button (parent, func, w, h, text, param1, param2, texture, member, name, short_method, button_template, text_template)
+	-- button (parent, container, name, member, w, h, func, param1, param2, texture, text, short_method, button_template, text_template)
 	if self.modBtns then
 		self:RawHook(DF, "NewButton", function(this, ...)
-			-- aObj:Debug("DF NewButton: [%s, %s, %s, %s, %s, %s]", ...)
+			local varCnt = select("#", ...)
+			-- aObj:Debug("DF NewButton: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", varCnt, ...)
 			local btnObj = self.hooks[this].NewButton(this, ...)
-			if _G.select(1, ...).WidgetsAmount then
-				-- ignore these buttons (WorldQuestTracker faction anchor arrow)
-			else
-				-- ignore duplicate WorldQuestTracker NewsButton
-				if not _G.WorldQuestTrackerAddon.NewsButton then
+
+			-- check to see if a button template is specified
+			if varCnt == 13 then
+				if btnObj.param2 == "param2" then
+					-- colour pick button
+				elseif select(5, ...) == 20
+				or select(5, ...) == 21
+				then
+					-- icon button
+				else
 					self:skinStdButton{obj=btnObj.button}
 				end
-			end
-			if _G.select(3, ...)
-			and _G.select(3, ...):find("Slider")
+			-- non template button
+			elseif varCnt == 12
+			and select(11, ...) ~= ""
 			then
-				btnObj.button.sb.tfade:SetTexture(nil) -- remove gradient texture, as it is really a checkbutton
+				self:skinStdButton{obj=btnObj.button}
+				btnObj.button.SetBackdrop = _G.nop
+				btnObj.button.SetBackdropColor = _G.nop
+				btnObj.button.SetBackdropBorderColor = _G.nop
+				-- if it has 6 params, name contains slider, width is 60 then it's a checkbox
+			elseif varCnt == 6
+			and select(4, ...)
+			and (select(4, ...):find("Slider")
+			or select(4, ...):find("Switch"))
+			then
+				self:skinStdButton{obj=btnObj.button}
+				btnObj.button.sb.tfade:SetTexture(nil)
 			end
+
 			return btnObj
 		end, true)
 	end

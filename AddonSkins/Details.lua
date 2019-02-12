@@ -5,7 +5,7 @@ local _G = _G
 -- used by all contained functions
 local Details = _G.LibStub("AceAddon-3.0"):GetAddon("_detalhes", true)
 
-aObj.addonsToSkin.Details = function(self) -- v8.0.1.6131.132
+aObj.addonsToSkin.Details = function(self) -- v8.1.0.6891.135
 
 	-- CopyPaste Panel
 	local eb = _G.DetailsCopy.text.editbox
@@ -31,8 +31,8 @@ aObj.addonsToSkin.Details = function(self) -- v8.0.1.6131.132
 
 	-- News Window
 	local function skinNews()
-		aObj:addSkinFrame{obj=_G.DetailsNewsWindow, ft="a", kfs=true, ri=true, ofs=2, x2=1}
-		self:skinSlider{obj=_G.DetailsNewsWindowSlider, wdth=-2}
+		aObj:addSkinFrame{obj=_G.DetailsNewsWindow, ft="a", kfs=true, ri=true, ofs=2}
+		aObj:skinSlider{obj=_G.DetailsNewsWindowSlider, wdth=-2}
 		aObj:skinStdButton{obj=_G.DetailsNewsWindowForumButton}
 	end
 	if not _G.DetailsNewsWindow then
@@ -44,14 +44,11 @@ aObj.addonsToSkin.Details = function(self) -- v8.0.1.6131.132
 		skinNews()
 	end
 
-	local function skinInstance(frame)
-
-		frame.cabecalho.top_bg:SetTexture(nil)
-		self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=4, y1=22}
-
-	end
-
 	-- Base frame(s)
+	local function skinInstance(frame)
+		frame.cabecalho.top_bg:SetTexture(nil)
+		aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=4, y1=22}
+	end
 	self:SecureHook(Details.gump, "CriaJanelaPrincipal", function(this, ID, instancia, criando)
 		skinInstance(_G["DetailsBaseFrame" .. ID])
 	end)
@@ -65,6 +62,21 @@ aObj.addonsToSkin.Details = function(self) -- v8.0.1.6131.132
 	-- Plugins
 	for _, v in _G.pairs{"DmgRank", "DpsTuning", "TimeAttack", "Vanguard"} do
 		self:checkAndRunAddOn("Details_" .. v)
+	end
+
+	-- OptionsWindow
+	if self.modBtns
+	or self.modChkBtns
+	then
+		self:SecureHook(Details, "OpenOptionsWindow", function(this, ...)
+			if self.modBtns then
+				self:skinStdButton{obj=_G.DetailsDeleteInstanceButton}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G.DetailsOptionsWindowGroupEditing}
+			end
+			self:Unhook(this, "OpenOptionsWindow")
+		end)
 	end
 
 end
