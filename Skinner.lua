@@ -921,7 +921,8 @@ local function __applySkin(opts)
 		-- colour the backdrop if required
 		local r, g, b, a = aObj.bClr:GetRGBA()
 		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
-		opts.obj:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+		r, g, b, a = aObj.bbClr:GetRGBA()
+		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
 		r, g, b, a = nil, nil ,nil ,nil
 	else
 		opts.obj:SetBackdropColor(.1, .1, .1, 1)
