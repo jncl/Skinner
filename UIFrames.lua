@@ -5287,6 +5287,14 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			self:addButtonBorder{obj=this.SidePanelToggle.OpenButton}
 		end
 
+		self:Unhook(this, "OnShow")
+	end)
+
+	if not self.isPTR then
+		-- this tooltip is also used by the FlightMap
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, _G.WorldMapTooltip)
+		end)
 		-- tooltips
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.WorldMapCompareTooltip1)
@@ -5295,14 +5303,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			self:RaiseFrameLevelByFour(_G.WorldMapCompareTooltip1)
 			self:RaiseFrameLevelByFour(_G.WorldMapCompareTooltip2)
 		end)
-
-		self:Unhook(this, "OnShow")
-	end)
-
-	-- this tooltip is also used by the FlightMap
-	_G.C_Timer.After(0.1, function()
-		self:add2Table(self.ttList, _G.WorldMapTooltip)
-	end)
+	end
 
 end
 
