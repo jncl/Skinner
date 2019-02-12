@@ -150,6 +150,7 @@
 <script file="AddonSkins\MoveAnything.lua"/>
 <script file="AddonSkins\MSA-DropDownMenu.lua"/>
 <script file="AddonSkins\MyGarrisons.lua"/>
+<script file="AddonSkins\NickTag.lua"/>
 <script file="AddonSkins\Notes.lua"/>
 <script file="AddonSkins\NPCScan.lua"/>
 <script file="AddonSkins\oGlow.lua"/>
