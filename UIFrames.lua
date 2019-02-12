@@ -5061,7 +5061,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		_G.wipe(tClr)
 	end
 	local function skinWidget(wFrame, wInfo)
-		-- aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.enabledState)
+		if not self.isPTR then
+			-- aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.enabledState)
+		else
+			aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.visInfoDataFunction(wFrame.widgetID))
+		end
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
@@ -5087,7 +5091,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 7 then -- IconTextAndCurrencies
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
-				if wInfo.enabledState == _G.Enum.WidgetEnabledState.Disabled then
+				if (not self.isPTR
+				and wInfo.enabledState == _G.Enum.WidgetEnabledState.Disabled)
+				or (self.isPTR
+				and wInfo.visInfoDataFunction(wFrame.widgetID))
+				then
 					wFrame.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				else
 					wFrame.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
@@ -5118,15 +5126,24 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	end
 
 	-- hook this to skin widgets
-	self:RawHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, widgetSetID, widgetType)
-		local wFrame = self.hooks[this].CreateWidget(this, widgetID, widgetSetID, widgetType)
-		-- aObj:Debug("UIWM CreateWidget: [%s, %s, %s, %s]", wFrame, widgetID, widgetSetID, widgetType)
-		self:secureHook(wFrame, "Setup", function(this, wInfo)
-			skinWidget(this, wInfo)
-			self:Unhook(this, "Setup")
+	if not self.isPTR then
+		self:RawHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, widgetSetID, widgetType)
+			local wFrame = self.hooks[this].CreateWidget(this, widgetID, widgetSetID, widgetType)
+			-- aObj:Debug("UIWM CreateWidget: [%s, %s, %s, %s]", wFrame, widgetID, widgetSetID, widgetType)
+			self:secureHook(wFrame, "Setup", function(this, wInfo)
+				skinWidget(this, wInfo)
+				self:Unhook(this, "Setup")
+			end)
+			return wFrame
+		end, true)
+	else
+		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
+			-- aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
+			for widget in widgetContainer.widgetPools:EnumerateActive() do
+				skinWidget(widget, this:GetWidgetTypeInfo(widget.widgetType))
+			end
 		end)
-		return wFrame
-	end, true)
+	end
 
 end
 
