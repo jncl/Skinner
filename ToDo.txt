@@ -20,11 +20,41 @@ Legend:
 
 	O	change all occurrences of self.bbColour to self.bbClr
 
+≈	O	NineSlice Layouts have changed for several frames
+
 	N	PTR 8.1.5
 		- Deleted
 √			- WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
+		- Updated
+			- Button replaced with ItemButton
+x				- GuildBankUI
+				- InspectPaperDollFrame
+				- TutorialKeyboardMouseFrame
+				- AzeriteItemToasts
+x				- BankFrame
+x				- ContainerFrame
+				- EquipmentFlyout
+				- LootFrame
+				- MailFrame
+x				- MainMenuBarBagButtons
+x				- MerchantFrame
+?				- PaperDollFrame
+				- StaticPopup
+				- TradeFrame
+≈			- UIWidgets create function has changed
+				- IslandsPartyPoseUI
+				- IslandsQueueUI
+				- NamePlates
+				- ObjectiveTracker
+				- WarboardUI
+				- GameTooltip
+x			- SlashCmd Quit has now become a SecureCmd
+			- GameTooltip gains an ItemTooltip
 
 	O	requested by csamalot, 31.12.18
 		- would it be possible to change the color of the button highlights when you hover over them or click on them. 		Would be nice if we could set a color or use class colors for this
 
-√	I	ChatCombatConfig, reported by epidemedabear, 18.01.19
+	I	BottomFrame/Topframe reported by gabilabrebi32214, 04.02.19
+√		- Not using the border frame setting
+
+√	N	DetailsFramework
