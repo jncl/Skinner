@@ -742,20 +742,21 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 
 	end
 	local function updateQIDisplay()
-
+		-- aObj:Debug("updateQIDisplay")
 		local br, bg, bb, r, g, b = aObj.BT:GetRGB()
 		-- headers
 		_G.QuestInfoTitleHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoDescriptionHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoObjectivesHeader:SetTextColor(aObj.HT:GetRGB())
 		-- other text
-		_G.QuestInfoDescriptionText:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoQuestType:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoObjectivesText:SetTextColor(aObj.BT:GetRGB())
-		_G.QuestInfoGroupSize:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoRewardText:SetTextColor(aObj.BT:GetRGB())
 		r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
 		_G.QuestInfoRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
+		_G.QuestInfoGroupSize:SetTextColor(aObj.BT:GetRGB())
+		_G.QuestInfoAnchor:SetTextColor(aObj.BT:GetRGB())
+		_G.QuestInfoDescriptionText:SetTextColor(aObj.BT:GetRGB())
 		-- skin rewards
 		skinRewards(_G.QuestInfoFrame.rewardsFrame)
 
