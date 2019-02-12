@@ -5170,16 +5170,17 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 	self.initialized.WarboardUI = true
 
 	self:SecureHookScript(_G.WarboardQuestChoiceFrame, "OnShow", function(this)
-		this:DisableDrawLayer("BORDER")
-		self:keepFontStrings(this.BorderFrame)
-
+		this.BorderFrame:DisableDrawLayer("BORDER")
 		this.Background:DisableDrawLayer("BACKGROUND")
 		this.Title:DisableDrawLayer("BACKGROUND")
+
 		-- Options array
 		for _, choice in pairs(this.Options) do
 			self:removeRegions(choice, {1, 2, 3})
-			for i = 1, #choice.OptionButtonsContainer.Buttons do
-				self:skinStdButton{obj=choice.OptionButtonsContainer.Buttons[i]}
+			if self.modBtns then
+				for i = 1, #choice.OptionButtonsContainer.Buttons do
+					self:skinStdButton{obj=choice.OptionButtonsContainer.Buttons[i]}
+				end
 			end
 			choice.Header:DisableDrawLayer("Border") -- ribbon texture
 			choice.Header.Text:SetTextColor(self.HT:GetRGB())
@@ -5195,7 +5196,9 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 			end
 		end)
 
-		self:skinCloseButton{obj=this.WarfrontHelpBox.CloseButton, noSkin=true}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.WarfrontHelpBox.CloseButton, noSkin=true}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
