@@ -3070,10 +3070,10 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end)
 	end
 
-	aObj:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
 	aObj:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
 	if self.modBtnBs then
+		aObj:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
 		-- hook this to skin QuestObjective Block Button(s)
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
 			-- aObj:Debug("QOSBB_ARB: [%s, %s]", block, button)
@@ -3203,7 +3203,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
 	end)
 
-	aObj:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton, noSkin=true}
+	if self.modBtns then
+		aObj:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton, noSkin=true}
+	end
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
@@ -3232,19 +3234,20 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- AutoPopup frames
 	if self.prdb.ObjectiveTracker.popups then
 		local function skinAutoPopUps()
-
+			local questID, popUpType, questTitle, block, blockContents
 			for i = 1, _G.GetNumAutoQuestPopUps() do
-				-- questID = _G.GetAutoQuestPopUp(i)
-				local questID, popUpType = _G.GetAutoQuestPopUp(i)
+				questID, popUpType = _G.GetAutoQuestPopUp(i)
 				if not _G.IsQuestBounty(questID) then
-					local questTitle = _G.GetQuestLogTitle(_G.GetQuestLogIndexByID(questID))
-					if questTitle and questTitle ~= "" then
-						local block = _G.AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(questID)
+					questTitle = _G.GetQuestLogTitle(_G.GetQuestLogIndexByID(questID))
+					if questTitle
+					and questTitle ~= ""
+					then
+						block = _G.AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(questID)
 						if not block.module.hasSkippedBlocks then
 							if block.init
 							and not block.ScrollChild.sf
 							then
-								local blockContents = block.ScrollChild
+								blockContents = block.ScrollChild
 								blockContents.Bg:SetTexture(nil)
 								blockContents.BorderTopLeft:SetTexture(nil)
 								blockContents.BorderTopRight:SetTexture(nil)
@@ -3266,6 +3269,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 					end
 				end
 			end
+			questID, popUpType, questTitle, block, blockContents = nil, nil, nil, nil, nil
 		end
 
 		-- hook this to skin the AutoPopUps
