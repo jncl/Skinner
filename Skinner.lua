@@ -28,13 +28,6 @@ do
 	-- pointer to LibDBIcon-1.0 library
 	aObj.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 
-	-- player class
-	aObj.uCls = select(2, _G.UnitClass("player"))
-	-- player levels
-	aObj.uLvl = _G.UnitLevel("player")
-	-- max player level
-	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
-
 	-- define tables to hold skin functions
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
@@ -72,6 +65,13 @@ do
 		aObj.isPTR = true
 	end
 	liveInfo, ptrInfo, betaInfo, buildInfo, portal = nil, nil, nil, nil, nil
+
+	-- player class
+	aObj.uCls = select(2, _G.UnitClass("player"))
+	-- player levels
+	aObj.uLvl = _G.UnitLevel("player")
+	-- max player level
+	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
 
 end
 
@@ -364,7 +364,7 @@ function aObj:OnEnable()
 	-- track when trade frame is opened (used by ProfessionTabs)
 	self:RegisterEvent("TRADE_SHOW")
 
-	if aObj.uLvl >= aObj.mLvl - 5
+	if self.uLvl >= self.mLvl - 5
 	and not _G.IsTrialAccount()
 	then
 		-- track when player levels up, to manage MainMenuBars' WatchBars' placement
