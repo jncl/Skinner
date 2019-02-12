@@ -2572,14 +2572,14 @@ local function skinPartyPoseFrame(frame)
 	aObj:nilTexture(frame.RewardAnimations.RewardFrame.IconBorder, true)
 	aObj:addButtonBorder{obj=frame.RewardAnimations.RewardFrame, relTo=frame.RewardAnimations.RewardFrame.Icon, reParent={frame.RewardAnimations.RewardFrame.Count}}
 
-	frame.OverlayElements.Topper:nilTexture(true)
+	aObj:nilTexture(frame.OverlayElements.Topper, true)
 
 	-- ModelScene
 	frame.ModelScene.Bg:SetTexture(nil)
 	frame.ModelScene:DisableDrawLayer("BORDER")
 	frame.ModelScene:DisableDrawLayer("OVERLAY")
 
-	if aObj.modBtnBs then
+	if aObj.modBtns then
 		if frame.LeaveButton then
 			aObj:skinStdButton{obj=frame.LeaveButton}
 		end
