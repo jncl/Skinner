@@ -3193,23 +3193,43 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 		end
 		bar = nil
+		local function adjustBar(bar)
+            -- handle in combat
+            if _G.InCombatLockdown() then
+                aObj:add2Table(aObj.oocTab, {adjustBar, {bar}})
+                return
+            end
+			bar:ClearAllPoints()
+			bar:SetPoint("BOTTOM", _G.StatusTrackingBarManager:GetParent(), 0, -9)
+		end
+		-- hook this to move top status bar when more than 1 bar
+		self:SecureHook(_G.StatusTrackingBarManager, "LayoutBar", function(this, bar, barWidth, isTopBar, isDouble)
+			if isTopBar
+			and isDouble
+			then
+				adjustBar(bar)
+			end
+		end)
+		-- force bar adjustment
+		_G.StatusTrackingBarManager:UpdateBarsShown()
 
 		-- StanceBar Frame
 		self:keepFontStrings(_G.StanceBarFrame)
-		for i = 1, _G.NUM_STANCE_SLOTS do
-			self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
-		end
-
 		-- Possess Bar Frame
 		self:keepFontStrings(_G.PossessBarFrame)
-		for i = 1, _G.NUM_POSSESS_SLOTS do
-			self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
-		end
-
 		-- Pet Action Bar Frame
 		self:keepFontStrings(_G.PetActionBarFrame)
-		for i = 1, _G.NUM_PET_ACTION_SLOTS do
-			self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"]}, ofs=3}
+
+		if self.modBtnBs then
+			for i = 1, _G.NUM_STANCE_SLOTS do
+				self:addButtonBorder{obj=_G["StanceButton" .. i], abt=true, sec=true}
+			end
+			for i = 1, _G.NUM_POSSESS_SLOTS do
+				self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
+			end
+			for i = 1, _G.NUM_PET_ACTION_SLOTS do
+				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"]}, ofs=3}
+			end
 		end
 
 		-- Shaman's Totem Frame
@@ -3285,7 +3305,9 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	-- Extra Action Button
 	if self.prdb.MainMenuBar.extraab then
 		_G.ExtraActionButton1:GetNormalTexture():SetTexture(nil)
-		self:addButtonBorder{obj=_G.ExtraActionButton1, ofs=2, relTo=_G.ExtraActionButton1.icon}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.ExtraActionButton1, ofs=2, relTo=_G.ExtraActionButton1.icon}
+		end
 		-- handle bug when Tukui is loaded
 		if not aObj:isAddonEnabled("Tukui") then
 			self:nilTexture(_G.ExtraActionButton1.style, true)
@@ -3856,7 +3878,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	-- Garrison Landing Page Minimap button
 	local function skinGLPM(btn)
-		if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then
+		if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then -- BfA
 			makeBtnSquare(btn, 0.30, 0.70, 0.26, 0.70)
 		else
 			makeBtnSquare(btn, 0.25, 0.76, 0.32, 0.685)
