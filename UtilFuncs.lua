@@ -65,8 +65,13 @@ local function makeText(fstr, ...)
 		for i = 1, select('#', ...) do
 			tmpTab[i] = makeString(select(i, ...))
 		end
-		tmpTab[#tmpTab + 1] = "nil" -- handle 1 missing variable
+		 -- handle missing variables
+		local varCnt = select(2, string.gsub(fstr, "%%", ""))
+		for i = #tmpTab, varCnt do
+			tmpTab[i + 1] = "nil"
+		end
 		output = output .. " " .. fstr:format(_G.unpack(tmpTab))
+		varCnt = nil
 	else
 		tmpTab[1] = output
 		tmpTab[2] = fstr and type(fstr) == "table" and makeString(fstr) or fstr or ""
