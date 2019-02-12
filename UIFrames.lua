@@ -2812,7 +2812,7 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 	if not self.prdb.PVEFrame or self.initialized.LFGFrame then return end
 	self.initialized.LFGFrame = true
 
-	self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck
+	self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
 		self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, ft=ftype, kfs=true, ofs=-5}
 		self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
 		self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
@@ -2826,11 +2826,15 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 			local lfgTex = _G.LFGDungeonReadyDialog.background
 			lfgTex:SetAlpha(1) -- show texture
 			self:SecureHook("LFGDungeonReadyPopup_Update", function()
+				aObj:Debug("LFGDungeonReadyPopup_Update: [%s]", _G.LFGDungeonReadyPopup:GetHeight())
 				-- adjust texture to fit within skinFrame
 				lfgTex:SetWidth(288)
-				lfgTex:SetHeight(200)
+				if _G.LFGDungeonReadyPopup:GetHeight() < 200 then
+					lfgTex:SetHeight(170)
+				else
+					lfgTex:SetHeight(200)
+				end
 				lfgTex:SetTexCoord(0, 1, 0, 1)
-
 				lfgTex:ClearAllPoints()
 				lfgTex:SetPoint("TOPLEFT", _G.LFGDungeonReadyDialog, "TOPLEFT", 9, -9)
 			end)
@@ -2844,6 +2848,10 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	if _G.LFGDungeonReadyPopup:IsShown() then
+		_G.LFGDungeonReadyPopup:Hide()
+		_G.LFGDungeonReadyPopup:Show()
+	end
 
 	-- hook new button creation
 	self:RawHook("LFGRewardsFrame_SetItemButton", function(...)
