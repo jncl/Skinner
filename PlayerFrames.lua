@@ -3267,8 +3267,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 								blockContents.QuestIconBadgeBorder:SetTexture(nil)
 								blockContents.Shine:SetTexture(nil)
 								blockContents.IconShine:SetTexture(nil)
-								aObj:addSkinFrame{obj=blockContents, ft=ftype, x1=32}
 								blockContents.FlashFrame.IconFlash:SetTexture(nil)
+								aObj:addSkinFrame{obj=blockContents, ft=ftype, x1=32}
 								-- TODO prevent Background being changed, causes border art to appear broken ?
 							end
 						end
