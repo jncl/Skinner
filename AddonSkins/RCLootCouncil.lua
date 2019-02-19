@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("RCLootCouncil") then return end
 local _G = _G
 
-aObj.addonsToSkin.RCLootCouncil = function(self) -- v 2.7.5
+aObj.addonsToSkin.RCLootCouncil = function(self) -- v 2.10.0
 
 	-- Loot frame
 	local RCLF = _G.RCLootCouncil:GetModule("RCLootFrame", true)
@@ -21,13 +21,17 @@ aObj.addonsToSkin.RCLootCouncil = function(self) -- v 2.7.5
 	-- Loot History frame
 	local RCLHF = _G.RCLootCouncil:GetModule("RCLootHistory", true)
 	self:SecureHook(RCLHF, "OnEnable", function(this)
-		self:skinStdButton{obj=this.frame.closeBtn}
 		this.frame.moreInfoBtn:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=this.frame.moreInfoBtn, ofs=-1, x1=0}
-		self:skinStdButton{obj=this.frame.exportBtn}
-		self:skinStdButton{obj=this.frame.importBtn}
-		self:skinStdButton{obj=this.frame.filter}
-		self:skinStdButton{obj=this.frame.clearSelectionBtn}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.frame.moreInfoBtn, ofs=-1, x1=0}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.frame.closeBtn}
+			self:skinStdButton{obj=this.frame.exportBtn}
+			self:skinStdButton{obj=this.frame.importBtn}
+			self:skinStdButton{obj=this.frame.filter}
+			self:skinStdButton{obj=this.frame.clearSelectionBtn}
+		end
 		this.frame.title:SetBackdrop(nil)
 		self:moveObject{obj=this.frame.title, y=-10}
 		this.frame.content:SetBackdrop(nil)
@@ -38,9 +42,13 @@ aObj.addonsToSkin.RCLootCouncil = function(self) -- v 2.7.5
 	-- Session frame
 	local RCSF = _G.RCLootCouncil:GetModule("RCSessionFrame", true)
 	self:SecureHook(RCSF, "Show", function(this, ...)
-		self:skinCheckButton{obj=this.frame.toggle}
-		self:skinStdButton{obj=this.frame.startBtn}
-		self:skinStdButton{obj=this.frame.closeBtn}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.frame.toggle}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.frame.startBtn}
+			self:skinStdButton{obj=this.frame.closeBtn}
+		end
 		this.frame.title:SetBackdrop(nil)
 		self:moveObject{obj=this.frame.title, y=-10}
 		this.frame.content:SetBackdrop(nil)
@@ -51,9 +59,11 @@ aObj.addonsToSkin.RCLootCouncil = function(self) -- v 2.7.5
 	-- Version Check frame
 	local RCVCF = _G.RCLootCouncil:GetModule("RCVersionCheck", true)
 	self:SecureHook(RCVCF, "OnEnable", function(this)
-		self:skinStdButton{obj=this.frame.guildBtn}
-		self:skinStdButton{obj=this.frame.raidBtn}
-		self:skinStdButton{obj=this.frame.closeBtn}
+		if self.modBtns then
+			self:skinStdButton{obj=this.frame.guildBtn}
+			self:skinStdButton{obj=this.frame.raidBtn}
+			self:skinStdButton{obj=this.frame.closeBtn}
+		end
 		this.frame.title:SetBackdrop(nil)
 		self:moveObject{obj=this.frame.title, y=-10}
 		this.frame.content:SetBackdrop(nil)
@@ -64,11 +74,15 @@ aObj.addonsToSkin.RCLootCouncil = function(self) -- v 2.7.5
 	-- Voting frame
 	local RCVF = _G.RCLootCouncil:GetModule("RCVotingFrame", true)
 	self:SecureHook(RCVF, "OnEnable", function(this)
-		self:skinStdButton{obj=this.frame.abortBtn}
 		this.frame.moreInfoBtn:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=this.frame.moreInfoBtn, ofs=-1, x1=0}
-		self:skinStdButton{obj=this.frame.filter}
-		self:skinStdButton{obj=this.frame.disenchant}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.frame.moreInfoBtn, ofs=-1, x1=0}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.frame.abortBtn}
+			self:skinStdButton{obj=this.frame.filter}
+			self:skinStdButton{obj=this.frame.disenchant}
+		end
 		this.frame.title:SetBackdrop(nil)
 		self:moveObject{obj=this.frame.title, y=-10}
 		this.frame.content:SetBackdrop(nil)
@@ -78,8 +92,10 @@ aObj.addonsToSkin.RCLootCouncil = function(self) -- v 2.7.5
 
 	-- Syncroniser frame
 	self:SecureHook(_G.RCLootCouncil.Sync, "Spawn", function(this)
-		self:skinStdButton{obj=this.frame.syncButton}
-		self:skinStdButton{obj=this.frame.exitButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.frame.syncButton}
+			self:skinStdButton{obj=this.frame.exitButton}
+		end
 		self:skinStatusBar{obj=this.frame.statusBar, fi=0}
 		this.frame.title:SetBackdrop(nil)
 		self:moveObject{obj=this.frame.title, y=-10}
