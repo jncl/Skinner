@@ -4093,11 +4093,16 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		end
 	end
 	self:SecureHookScript(_G.OrderHallTalentFrame, "OnShow", function(this)
+
 		this.OverlayElements.CornerLogo:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=2}
 		this.Currency.Icon:SetAlpha(1) -- show currency icon
-		self:skinCloseButton{obj=_G.OrderHallTalentFrameCloseButton}
-		self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.OrderHallTalentFrameCloseButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
+		end
 		for i = 1, #this.FrameTick do
 			this.FrameTick[i]:SetTextColor(self.BT:GetRGB())
 		end
