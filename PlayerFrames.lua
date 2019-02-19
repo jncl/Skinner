@@ -3295,6 +3295,12 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 	self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
 		local function skinOverrideActionBar(frame)
 
+			-- handle in combat
+			if _G.InCombatLockdown() then
+				aObj:add2Table(aObj.oocTab, {skinOverrideActionBar, {frame}})
+				return
+			end
+
 			-- remove all textures
 			frame:DisableDrawLayer("OVERLAY")
 			frame:DisableDrawLayer("BACKGROUND")
