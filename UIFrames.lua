@@ -2450,12 +2450,12 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		for i = 1, _G.MAX_GUILDBANK_TABS do
 			_G["GuildBankTab" .. i]:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=_G["GuildBankTab" .. i .. "Button"], relTo=_G["GuildBankTab" .. i .. "ButtonIconTexture"]}
+				 self:addButtonBorder{obj=_G["GuildBankTab" .. i .. "Button"], relTo=_G["GuildBankTab" .. i .. "ButtonIconTexture"], y2=-3}
 			end
 		end
 		self:skinSlider{obj=_G.GuildBankTransactionsScrollFrame.ScrollBar, rt="artwork"}
 		self:skinSlider{obj=_G.GuildBankInfoScrollFrame.ScrollBar, rt="artwork"}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, x2=1, y2=-5}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.GuildBankFrameDepositButton, x1=0} -- don't overlap withdraw button
 			self:skinStdButton{obj=_G.GuildBankFrameWithdrawButton, x2=0} -- don't overlap deposit button
