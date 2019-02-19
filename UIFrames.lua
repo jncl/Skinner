@@ -4675,11 +4675,10 @@ aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
 	_G.ScrappingMachineFrame.ItemSlots:DisableDrawLayer("ARTWORK")
 	for slot in _G.ScrappingMachineFrame.ItemSlots.scrapButtons:EnumerateActive() do
 		self:nilTexture(slot.IconBorder, true)
-		self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon} -- use module function to force button border
-		slot.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.3) -- grey border
+		self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon, grey=true} -- use module function to force button border
 		-- hook this to reset sbb colour
 		self:SecureHook(slot, "ClearSlot", function(this)
-			this.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.3) -- grey border
+			this.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border
 		end)
 	end
 	self:removeMagicBtnTex(_G.ScrappingMachineFrame.ScrapButton)

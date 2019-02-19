@@ -325,7 +325,7 @@ function aObj:OnEnable()
 						then
 							button.sbb:SetBackdropBorderColor(1.0, 0.82, 0.0, 1) -- NORMAL_FONT_COLOR
 						else
-							button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.3) -- DISABLED_FONT_COLOR
+							button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
 						end
 					end
 				end

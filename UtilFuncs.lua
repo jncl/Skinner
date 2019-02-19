@@ -759,17 +759,16 @@ end
 function aObj:makeIconSquare(obj, iconObjName, chkDisabled)
 
 	obj[iconObjName]:SetTexCoord(.1, .9, .1, .9)
-	self:addButtonBorder{obj=obj, relTo=obj[iconObjName], ofs=3}
 
-	if chkDisabled then
-		if self.modBtnBs then
+	if self.modBtnBs then
+		self:addButtonBorder{obj=obj, relTo=obj[iconObjName], ofs=3}
+		if chkDisabled then
 			if obj.disabled
 			or (obj.IsEnabled and not obj:IsEnabled())
 			then
-				obj.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				obj.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
 			else
-				obj.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
-
+				obj.sbb:SetBackdropBorderColor(1, 1, 1, 1) -- white border
 			end
 		end
 	end
@@ -885,6 +884,8 @@ function aObj:removeNineSlice(frame)
 --@alpha@
 	assert(frame, "Unknown object removeNineSlice\n" .. debugstack(2, 3, 2))
 --@end-alpha@
+
+	-- aObj:Debug("removeNineSlice: [%s, %s]", frame, frame:GetDebugName())
 
 	frame:DisableDrawLayer("BORDER")
 	frame:DisableDrawLayer("OVERLAY")

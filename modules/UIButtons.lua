@@ -364,7 +364,7 @@ function module:skinOtherButton(opts)
 			aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, aso=aso, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 		end
 	end
-	
+
 end
 function module:skinOtherButton1(opts) -- text on button
 
@@ -744,6 +744,7 @@ local function __addButtonBorder(opts)
 		auit = auction item template(s)
 		bmit = blackmarket item template
 		nc = don't check to see if already skinned
+		grey = set backdrop border colour to grey
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object__aBB\n" .. debugstack(2, 3, 2))
@@ -790,7 +791,11 @@ local function __addButtonBorder(opts)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	opts.obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+	if not opts.grey then
+		opts.obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+	else
+		opts.obj.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border
+	end
 
 	-- position the frame
 	opts.ofs = opts.ofs or 2

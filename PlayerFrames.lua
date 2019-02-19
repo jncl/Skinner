@@ -660,18 +660,32 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		local function skinSlot(btn)
 			btn:DisableDrawLayer("BACKGROUND")
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}}
+				aObj:addButtonBorder{obj=btn, ibt=true, reParent={btn.ignoreTexture}, grey=true}
 				-- force quality border update
 				_G.PaperDollItemSlotButton_Update(btn)
-				if not btn.hasItem then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-				end
-				-- RankFrame (Beta)
+				-- RankFrame
 				aObj:changeTandC(btn.RankFrame.Texture, self.lvlBG)
 				btn.RankFrame.Texture:SetSize(20, 20)
 				btn.RankFrame.Label:ClearAllPoints()
 				btn.RankFrame.Label:SetPoint("CENTER", btn.RankFrame.Texture)
 			end
+		end
+		if self.modBtnBs then
+			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
+				if not self.isPTR then
+					if btn.sbb
+					and not btn.hasItem
+					then
+						btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
+						btn.icon:SetTexture(nil)
+					end
+				else
+					if not _G.GetInventoryItemTexture("player", btn:GetID()) then
+						btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
+						btn.icon:SetTexture(nil)
+					end
+				end
+			end)
 		end
 
 		for i = 1, #_G.PaperDollItemsFrame.EquipmentSlots do
@@ -681,16 +695,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			skinSlot(_G.PaperDollItemsFrame.WeaponSlots[i])
 		end
 		self:skinCloseButton{obj=_G.PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton, noSkin=true}
-
-		if self.modBtnBs then
-			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
-				if btn.sbb
-				and not btn.hasItem
-				then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-				end
-			end)
-		end
 
 		-- fixupNotificationFrame (anchored to CharacterMainHandSlot)
 		if this.fixupNotificationFrame then
@@ -2654,7 +2658,8 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 		if self.modBtnBs then
 			self:SecureHook("InspectPaperDollItemSlotButton_Update", function(btn)
 				if not btn.hasItem then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+					btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
+					btn.icon:SetTexture(nil)
 				end
 			end)
 		end
@@ -2675,10 +2680,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 		for _, btn in ipairs{_G.InspectPaperDollItemsFrame:GetChildren()} do
 			btn:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=btn, ibt=true}
-				if not btn.hasItem then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-				end
+				self:addButtonBorder{obj=btn, ibt=true, grey=true}
 			end
 		end
 		self:Unhook(this, "OnShow")
@@ -3966,7 +3968,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 					 if this:IsEnabled() then
 					 	this.sbb:SetBackdropBorderColor(1, 1, 1, 1) -- white border
 					else
-					 	this.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) -- grey border
+					 	this.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
 					end
 				end)
 			end
