@@ -243,6 +243,8 @@ function aObj:OnInitialize()
 	c = self.prdb.ClassClrTT and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.TooltipBorder
 	self.tbClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.TooltipBorder.a)
 
+	dflts, c = nil, nil
+
 	-- Inactive Tab & DropDowns texture
 	if self.prdb.TabDDFile
 	and self.prdb.TabDDFile ~= "None"
@@ -252,6 +254,7 @@ function aObj:OnInitialize()
 	else
 		self.itTex = self.LSM:Fetch("background", self.prdb.TabDDTexture)
 	end
+
 	-- Empty Slot texture
 	self.esTex = [[Interface\Buttons\UI-Quickslot2]]
 
@@ -266,8 +269,6 @@ function aObj:OnInitialize()
 
 	-- table to hold minimap buttons from other AddOn skins
 	self.mmButs = {}
-
-	dflts, c = nil, nil
 
 	-- stop CloseButton border texture being changed (OrderHallTalents & WarboardUI use this function)
 	_G.UIPanelCloseButton_SetBorderAtlas = _G.nop
