@@ -1,3 +1,30 @@
+beta8.29297.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Unitframes code to try and reduce taint messages
+	Updated debug message
+	Updated ItemQuality colour code
+	Updated player level variables
+	Updated frame skinning code
+	Updated QuestInfo skin
+	Updated TalentUI skin
+	Updated ObjectiveTracker skin
+	Updated skinning of NineSlice textures for a number of frames
+	Updated WorldMap skin
+	Updated WarboardUI skin
+	Updated UIWidgets skin
+	Updated ScrappingUI skin
+	Updated MainMenuBarFrame skin
+	Updated LFGFrame skin
+	Updated IslandPartyPose frame skin
+	Updated MissionFrame skinning code
+	Updated debug code to handle variable number of parameters passed
+	Updated AzerothAutoPilot, Details, DetailFramework & LibDBIcon skins
+	Skinned NickTag Library
+	Updated BottonFrame, Topframe and border colour setup code
+
 beta8.29088.1
 Jncl:
 	ToDo.txt
