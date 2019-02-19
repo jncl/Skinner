@@ -2302,6 +2302,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		end)
 
 		self:Unhook(this, "OnShow")
+
 	end)
 
 end
@@ -2564,6 +2565,7 @@ end
 
 local function skinPartyPoseFrame(frame)
 
+	frame.Border:DisableDrawLayer("BORDER") -- PartyPose NineSliceLayout
 	aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 
 	-- RewardFrame
@@ -2585,6 +2587,7 @@ local function skinPartyPoseFrame(frame)
 	end
 
 end
+
 aObj.blizzLoDFrames[ftype].IslandsPartyPoseUI = function(self)
 	if not self.db.profile.IslandsPartyPoseUI or self.initialized.IslandsPartyPoseUI then return end
 
@@ -4015,17 +4018,6 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 
 end
 
--- the following function is to handle dynamic NineSlice Layouts
--- used by the PartyPoseUI, CollectionsUI, ItemSocketingUI, BFAMissionUI
-aObj.blizzFrames[ftype].NineSlice = function(self)
-
-	self:RawHook(_G.AnchorUtil, "ApplyNineSliceLayout", function(this, container, userLayout, textureKit)
-		-- aObj:Debug("AU ApplyNineSliceLayout: [%s, %s, %s, %s]", this, container, userLayout, textureKit)
-		-- do nothing
-	end, true)
-
-end
-
 aObj.blizzFrames[ftype].NavigationBar = function(self)
 	-- Helper function, used by several frames
 
@@ -4117,13 +4109,16 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 			skinBtns(this)
 		end)
 		self:Unhook(this, "OnShow")
+
 	end)
 
 	-- CommandBar at top of screen
 	self:SecureHookScript(_G.OrderHallCommandBar, "OnShow", function(this)
+
 		this:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=this, ft=ftype, ofs=4, y2=-2}
 		self:Unhook(this, "OnShow")
+
 	end)
 	if _G.OrderHallCommandBar:IsShown() then
 		_G.OrderHallCommandBar:Hide()
@@ -5179,6 +5174,7 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 	self.initialized.WarboardUI = true
 
 	self:SecureHookScript(_G.WarboardQuestChoiceFrame, "OnShow", function(this)
+
 		this.BorderFrame:DisableDrawLayer("BORDER")
 		this.Background:DisableDrawLayer("BACKGROUND")
 		this.Title:DisableDrawLayer("BACKGROUND")
@@ -5209,6 +5205,7 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 			self:skinCloseButton{obj=this.WarfrontHelpBox.CloseButton, noSkin=true}
 		end
 		self:Unhook(this, "OnShow")
+
 	end)
 
 end
