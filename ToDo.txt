@@ -20,22 +20,20 @@ Legend:
 
 	O	change all occurrences of self.bbColour to self.bbClr
 
-≈	O	NineSlice Layouts have changed for several frames
-
 	N	PTR 8.1.5
 		- Deleted
 √			- WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
 		- Updated
 			- Button replaced with ItemButton
-x				- GuildBankUI
-				- InspectPaperDollFrame
+√				- GuildBankUI
+√				- InspectPaperDollFrame
 				- TutorialKeyboardMouseFrame
 				- AzeriteItemToasts
-x				- BankFrame
+√				- BankFrame
 x				- ContainerFrame
-				- EquipmentFlyout
-				- LootFrame
-				- MailFrame
+x				- EquipmentFlyout
+√				- LootFrame
+x				- MailFrame
 x				- MainMenuBarBagButtons
 x				- MerchantFrame
 ?				- PaperDollFrame
@@ -49,12 +47,13 @@ x				- MerchantFrame
 				- WarboardUI
 				- GameTooltip
 x			- SlashCmd Quit has now become a SecureCmd
-			- GameTooltip gains an ItemTooltip
+x			- GameTooltip gains an ItemTooltip
 
-	O	requested by csamalot, 31.12.18
-		- would it be possible to change the color of the button highlights when you hover over them or click on them. 		Would be nice if we could set a color or use class colors for this
+	I	Unskinned windows have no borders, reported by StormFX, 13.02.18
+√		- e.g. Engineering, Cooking, Collections
 
-	I	BottomFrame/Topframe reported by gabilabrebi32214, 04.02.19
-√		- Not using the border frame setting
+	N	RCLootCouncil
+?		- needs VotingUI skinning
 
-√	N	DetailsFramework
+	I	Bottom Viewport, reported by Badpally, 15.02.19
+		- Trying to use the Bottom Viewport crashes Wow.exe
