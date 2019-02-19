@@ -2843,10 +2843,14 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 	self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
 		for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 			_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
-			self:addButtonBorder{obj=_G["LootButton" .. i], ibt=true}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G["LootButton" .. i], ibt=not self.isPTR}
+			end
 		end
-		self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2}
-		self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2}
+			self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		if self.modBtnBs then
@@ -3329,14 +3333,14 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 			skinOverrideActionBar(this)
 		end
 
-		self:addButtonBorder{obj=this.leaveFrame.LeaveButton}
-		for i = 1, 6 do
-			self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sec=true, es=20}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.leaveFrame.LeaveButton}
+			for i = 1, 6 do
+				self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sec=true, es=20}
+			end
+			self:addButtonBorder{obj=_G.OverrideActionBarPitchFramePitchUpButton}
+			self:addButtonBorder{obj=_G.OverrideActionBarPitchFramePitchDownButton}
 		end
-
-		self:addButtonBorder{obj=_G.OverrideActionBarPitchFramePitchUpButton}
-		self:addButtonBorder{obj=_G.OverrideActionBarPitchFramePitchDownButton}
-
 
 		self:Unhook(this, "OnShow")
 	end)
