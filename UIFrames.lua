@@ -4932,7 +4932,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 	self:SecureHookScript(_G.ItemRefTooltip, "OnShow", function(this)
 		self:skinCloseButton{obj=_G.ItemRefCloseButton}
-		self:moveObject{obj=_G.ItemRefCloseButton, x=5, y=5}
+		self:moveObject{obj=_G.ItemRefCloseButton, x=2, y=3}
 		-- ensure it gets updated
 		self.ttHook[_G.ItemRefTooltip] = true
 		self:Unhook(this, "OnShow")
