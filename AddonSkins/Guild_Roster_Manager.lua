@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Guild_Roster_Manager") then return end
 local _G = _G
 
-aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
+aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.44
 
 	-- buttons on GuildRoster subframe)
 	if self.modBtns then
@@ -40,7 +40,6 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 	-- appears when right clicking on date(s)
 	self:addSkinFrame{obj=_G.GRM_altDropDownOptions, ft="a"}
 
-	-- N.B. use ApplySkin for buttons otherwise Button skin frame disappears!
 	self:addSkinFrame{obj=_G.GRM_MemberDetailMetaData, ft="a", kfs=true, bas=true, x1=2, y2=6}
 	_G.GRM_MemberDetailMetaDataCloseButton:SetSize(30, 30)
 
@@ -100,7 +99,6 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 		self:skinCheckButton{obj=_G.GRM_RosterCheckAllChatButton}
 	end
 	self:addSkinFrame{obj=_G.GRM_RosterCheckBoxSideFrame, ft="a", kfs=true, nb=true, ofs=-3}
-	-- N.B. GRM_RosterMinLvlEditBox needs skinning, issue with it's parent GRM_RosterMinLvlOverlayNote
 
 	-- GRM_LogFrame
 	self:skinEditBox{obj=_G.GRM_LogEditBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
@@ -115,6 +113,7 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 	end
 	if self.modChkBtns then
 		self:skinCheckButton{obj=_G.GRM_LogShowLinesCheckButton}
+		self:skinCheckButton{obj=_G.GRM_SearchAutoFocusCheckButton}
 		self:skinCheckButton{obj=_G.GRM_LogEnableRmvClickCheckButton}
 	end
 	self:skinEditBox{obj=_G.GRM_LogExtraEditBox1, regs={6}} -- 6 is text
@@ -147,13 +146,15 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 
 	-- GRM_AddBanFrame
 	self:skinEditBox{obj=_G.GRM_AddBanNameSelectionEditBox, regs={6, 7, 8}, noWidth=true} -- 6 is text
-	self:skinEditBox{obj=_G.GRM_AddBanServerSelectionEditBox, regs={6}, noWidth=true} -- 6 is text
+	self:removeInset(_G.GRM_BanServerSelected)
 	self:removeInset(_G.GRM_AddBanDropDownClassSelected)
+	self:addSkinFrame{obj=_G.GRM_BanServerDropDownMenu, ft="a", kfs=true, nb=true}
 	self:addSkinFrame{obj=_G.GRM_AddBanDropDownMenu, ft="a", kfs=true, nb=true}
+	self:addSkinFrame{obj=_G.GRM_AddBanReasonEditBoxFrame, ft="a", kfs=true, nb=true}
 	if self.modBtns then
 		self:skinStdButton{obj=_G.GRM_AddBanConfirmButton}
 	end
-	self:addSkinFrame{obj=_G.GRM_AddBanFrame, ft="a", kfs=true, nb=true, y1=2, x2=1}
+	self:addSkinFrame{obj=_G.GRM_AddBanFrame, ft="a", kfs=true, y1=2, x2=1}
 
 	-- GRM_PopupWindowConfirmFrame
 	if self.modBtns then
@@ -167,7 +168,14 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 	self:addSkinFrame{obj=_G.GRM_AddonUsersScrollBorderFrame, ft="a", kfs=true, nb=true, ofs=-2}
 
 	-- GRM_OptionsFrame
-	-- TODO: skin tabs, pseudo editboxes & pseudo dropdowns
+	-- TODO: skin tabs
+	local function skinObjNG(obj, adj)
+		aObj:addSkinFrame{obj=obj, ft="a", kfs=true, nb=true, aso={ng=true}, x1=adj, x2=adj * -1}
+	end
+	local function skinEB(obj)
+		aObj:skinEditBox{obj=obj, regs={6}, noWidth=true, noInsert=true}
+		obj:SetWidth(obj:GetWidth() - 4)
+	end
 	--- General:
 	if self.modChkBtns then
 		self:skinCheckButton{obj=_G.GRM_RosterLoadOnLogonCheckButton}
@@ -179,18 +187,40 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 	end
 	self:skinSlider{obj=_G.GRM_FontSizeSlider, hgt=-2}
 	self:skinSlider{obj=_G.GRM_TooltipScaleSlider, hgt=-2}
+	skinObjNG(_G.GRM_MainTagFormatSelected, 4)
 	self:addSkinFrame{obj=_G.GRM_MainTagFormatMenu, ft="a", kfs=true, nb=true}
+	skinObjNG(_G.GRM_LanguageSelected, 4)
 	self:addSkinFrame{obj=_G.GRM_LanguageDropDownMenu, ft="a", kfs=true, nb=true}
+	skinObjNG(_G.GRM_FontSelected, 4)
 	self:addSkinFrame{obj=_G.GRM_FontDropDownMenu, ft="a", kfs=true, nb=true}
+	skinObjNG(_G.GRM_TimestampSelected, 4)
 	self:addSkinFrame{obj=_G.GRM_TimestampSelectedDropDownMenu, ft="a", kfs=true, nb=true}
+	skinObjNG(_G.GRM_24HrSelected, 4)
 	self:addSkinFrame{obj=_G.GRM_24HrSelectedDropDownMenu, ft="a", kfs=true, nb=true}
 	--- Scanning Roster:
+	skinEB(_G.GRM_RosterTimeIntervalEditBox)
+	skinObjNG(_G.GRM_RosterTimeIntervalOverlayNote, 2)
+	skinEB(_G.GRM_ReportInactiveReturnEditBox)
+	skinObjNG(_G.GRM_ReportInactiveReturnOverlayNote, 2)
+	skinEB(_G.GRM_RosterReportUpcomingEventsEditBox)
+	skinObjNG(_G.GRM_RosterReportUpcomingEventsOverlayNote, 2)
+	skinEB(_G.GRM_RosterMinLvlEditBox)
+	skinObjNG(_G.GRM_RosterMinLvlOverlayNote, 2)
 	if self.modChkBtns then
 		self:skinCheckButton{obj=_G.GRM_RosterTimeIntervalCheckButton}
 		self:skinCheckButton{obj=_G.GRM_RosterReportInactiveReturnButton}
 		self:skinCheckButton{obj=_G.GRM_RosterReportUpcomingEventsCheckButton}
 		self:skinCheckButton{obj=_G.GRM_RosterMainOnlyCheckButton}
 		self:skinCheckButton{obj=_G.GRM_ShowNotesOnLeavingPlayerButton}
+		self:skinCheckButton{obj=_G.GRM_LevelRecordButton}
+		self:skinCheckButton{obj=_G.GRM_LevelFilter1Button}
+		self:skinCheckButton{obj=_G.GRM_LevelFilter2Button}
+		self:skinCheckButton{obj=_G.GRM_LevelFilter3Button}
+		self:skinCheckButton{obj=_G.GRM_LevelFilter4Button}
+		self:skinCheckButton{obj=_G.GRM_LevelFilter5Button}
+		self:skinCheckButton{obj=_G.GRM_LevelFilter6Button}
+		self:skinCheckButton{obj=_G.GRM_LevelFilter7Button}
+		self:skinCheckButton{obj=_G.GRM_LevelFilter8Button}
 	end
 	--- Sync:
 	self:skinSlider{obj=_G.GRM_SyncSpeedSlider, hgt=-2}
@@ -206,8 +236,11 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 	if self.modBtns then
 		self:skinStdButton{obj=_G.GRM_CustomRankResetButton}
 	end
+	skinObjNG(_G.GRM_RosterSyncRankDropDownSelected, 4)
 	self:addSkinFrame{obj=_G.GRM_RosterSyncRankDropDownMenu, ft="a", kfs=true, nb=true}
+	skinObjNG(_G.GRM_RosterBanListDropDownSelected, 4)
 	self:addSkinFrame{obj=_G.GRM_RosterBanListDropDownMenu, ft="a", kfs=true, nb=true}
+	skinObjNG(_G.GRM_DefaultCustomSelected, 4)
 	self:addSkinFrame{obj=_G.GRM_DefaultCustomRankDropDownMenu, ft="a", kfs=true, nb=true}
 	--- Guild Rank Restricted:
 	if self.modChkBtns then
@@ -219,10 +252,15 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 		self:skinCheckButton{obj=_G.GRM_AllAltsOfflineTimed}
 		self:skinCheckButton{obj=_G.GRM_RosterReportAddEventsToCalendarButton}
 	end
+	-- Officer
+	skinEB(_G.GRM_RosterKickRecommendEditBox)
+	skinObjNG(_G.GRM_RosterKickOverlayNote, 2)
 	-- Backup
 	if self.modChkBtns then
 		self:skinCheckButton{obj=_G.GRM_AutoBackupCheckBox}
 	end
+	skinEB(_G.GRM_AutoBackupTimeEditBox)
+	skinObjNG(_G.GRM_AutoBackupTimeOverlayNote, 2)
 	-- TODO: Tabs
 	if self.modBtns then
 		self:SecureHook(_G.GRM, "BuildBackupScrollFrame", function(factionID)
@@ -314,24 +352,6 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- 8.1.0R1.38
 		_G.GRM_MemberDetailMetaData:SetPoint("TOPLEFT", _G.GuildRosterFrame, "TOPRIGHT", -2, 2)
 		self:Unhook(this, "GR_MetaDataInitializeUIThird")
 	end)
-	-- self:SecureHook(_G.GRM_UI, "MetaDataInitializeUIrosterLog1", function(this)
-	-- 	_G.GRM_RosterClearLogButton:SetSize (90 ,20)
-	-- 	_G.GRM_RosterMinLvlOverlayNote:SetBackdrop(nil)
-	-- 	_G.GRM_RosterTimeIntervalOverlayNote:SetBackdrop(nil)
-	-- 	_G.GRM_RosterKickOverlayNote:SetBackdrop(nil)
-	-- 	_G.GRM_ReportInactiveReturnEditBox:SetWidth(38)
-	-- 	_G.GRM_ReportInactiveReturnEditBox:ClearAllPoints()
-	-- 	_G.GRM_ReportInactiveReturnEditBox:SetPoint("RIGHT", _G.GRM_RosterReportInactiveReturnButtonText2, "LEFT", 2, 0)
-	-- 	_G.GRM_ReportInactiveReturnEditBox:SetTextInsets(6 ,9 ,9 ,6)
-	-- 	_G.GRM_ReportInactiveReturnOverlayNote:SetBackdrop(nil)
-	-- 	_G.GRM_RosterReportUpcomingEventsOverlayNote:SetBackdrop(nil)
-	-- 	self:Unhook(this, "MetaDataInitializeUIrosterLog1")
-	-- end)
-	-- self:SecureHook(_G.GRM_UI, "MetaDataInitializeUIrosterLog2", function(this)
-	-- 	_G.GRM_AddBanNameSelectionEditBox:SetTextInsets(6 ,3 ,3 ,6)
-	-- 	_G.GRM_AddBanServerSelectionEditBox:SetTextInsets(6 ,3 ,3 ,6)
-	-- 	_G.GRM_AddBanReasonEditBoxFrame:SetBackdrop(nil)
-	-- end)
 
 	self.mmButs["Guild_Roster_Manager"] = _G.GRM_MinimapButton
 
