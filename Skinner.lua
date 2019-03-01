@@ -1021,6 +1021,8 @@ local function __skinDropDown(opts)
 	assert(opts.obj, "Missing object __sDD\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
+	aObj:Debug2("__skinDropDown: [%s, %s]", opts.obj, opts.obj:GetName())
+
 --@debug@
 	if opts.noMove
 	or opts.moveTex
@@ -1675,7 +1677,7 @@ function aObj:skinTooltip(tooltip)
 	assert(tooltip, "Missing object sT\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
+	aObj:Debug2("skinTooltip: [%s, %s, %s]", tooltip, tooltip:GetName(), tooltip.sf)
 
 	if not tooltip then return end
 
