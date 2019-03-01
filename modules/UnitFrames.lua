@@ -57,13 +57,19 @@ local function skinUnitButton(opts)
 	opts.y1 = opts.y1 or opts.ofs
 	opts.x2 = opts.x2 or opts.ofs
 	opts.y2 = opts.y2 or opts.ofs * -1
-	aObj:addSkinButton{obj=opts.obj, ft=ftype, sec=true, nohooks=true, aso={bd=11, ng=true}, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
-	opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
-	opts.obj.sb:EnableMouse(false) -- enable clickthrough
+	-- aObj:addSkinButton{obj=opts.obj, ft=ftype, sec=true, aso={bd=11, ng=true}, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+	-- opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
+	-- opts.obj.sb:EnableMouse(false) -- enable clickthrough
 
-	if opts.ft then
+	opts.obj.bg = opts.obj:CreateTexture(nil, "BACKGROUND", nil, -1)
+	opts.obj.bg:SetTexture(aObj.Backdrop[1].bgFile)
+	opts.obj.bg:SetVertexColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
+	opts.obj.bg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.x1, opts.y1)
+	opts.obj.bg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
+
+	if opts.ti then
 		opts.obj.threatIndicator:ClearAllPoints()
-		opts.obj.threatIndicator:SetAllPoints(opts.obj.sb)
+		opts.obj.threatIndicator:SetAllPoints(opts.obj.bg)
 		aObj:changeRecTex(opts.obj.threatIndicator, true, true)
 		-- stop changes to texture
 		opts.obj.threatIndicator.SetTexture = _G.nop
@@ -107,9 +113,9 @@ local function skinPlayerF()
 		-- move PvP Timer text down
 		aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 		-- move level & rest icon down, so they are more visible
-		module:RawHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
+		module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function()
 			_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
-		end, true)
+		end)
 		_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
 
 		-- remove group indicator textures
@@ -203,7 +209,7 @@ local function skinPlayerF()
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
-		skinUnitButton{obj=_G.PlayerFrame, ft=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
+		skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
 
 		pF, y2Ofs = nil, nil
 
@@ -227,7 +233,7 @@ local function skinPetF()
 
 		-- skin the PetFrame
 		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
-		skinUnitButton{obj=_G.PetFrame, ft=true, x1=1}
+		skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
 		-- remove debuff border
 		for i = 1, 4 do
 			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
@@ -250,7 +256,7 @@ local function skinPetF()
 		then
 			local petSpec = _G.GetSpecialization(nil, true)
 			if petSpec then
-				_G.PetFrame.roleIcon:SetTexCoord(GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
+				_G.PetFrame.roleIcon:SetTexCoord(_G.GetTexCoordsForRole(_G.GetSpecializationRole(petSpec, nil, true)))
 			end
 			petSpec = nil
 		end
@@ -272,7 +278,7 @@ local function skinCommon(frame, adjSB)
 	fo = nil
 
 end
-local function skinButton(frame, ft)
+local function skinButton(frame, ti)
 
 	local fo = _G[frame]
 	local isBoss = aObj:hasTextInName(fo, "Boss")
@@ -282,7 +288,7 @@ local function skinButton(frame, ft)
 	else
 		xOfs1, yOfs1, xOfs2, yOfs2 = -2, -5, -35, 0
 	end
-	skinUnitButton{obj=fo, ft=ft or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	skinUnitButton{obj=fo, ti=ti or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	skinCommon(frame, true)
 	aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
 
@@ -325,10 +331,10 @@ local function skinTargetF()
 		skinButton("TargetFrame")
 
 		-- move level text down, so it is more visible
-		module:RawHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
+		module:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
 			-- aObj:Debug("TF_ULTA: [%s, %s]", this, targetLevel)
 			this.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
-		end, true)
+		end)
 
 		--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
@@ -379,7 +385,7 @@ local function skinPartyF()
 		local pMF, pPF
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			pMF = "PartyMemberFrame" .. i
-			skinUnitButton{obj=_G[pMF], ft=true, x1=2, y1=5, x2=-1}
+			skinUnitButton{obj=_G[pMF], ti=true, x1=2, y1=5, x2=-1}
 
 			_G[pMF .. "Background"]:SetTexture(nil)
 			_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -393,7 +399,7 @@ local function skinPartyF()
 
 			-- pet frame
 			pPF = pMF .. "PetFrame"
-			skinUnitButton{obj=_G[pPF], ft=true, x1=-2, y1=1, y2=1}
+			skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:skinStatusBar{obj=_G[pPF .. "HealthBar"], fi=0}
