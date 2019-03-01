@@ -3079,7 +3079,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	aObj:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
 	if self.modBtnBs then
-		aObj:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0}
+		aObj:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0, x1=-1}
 		-- hook this to skin QuestObjective Block Button(s)
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
 			-- aObj:Debug("QOSBB_ARB: [%s, %s]", block, button)
