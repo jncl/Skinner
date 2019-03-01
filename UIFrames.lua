@@ -727,10 +727,10 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		if frame.sf then frame.sf.tfade:SetGradientAlpha(self:getGradientInfo()) end
 		if frame.cb then frame.cb.tfade:SetGradientAlpha(self:getGradientInfo()) end
 	end)
-	self:Hook("AlertFrame_ResumeOutAnimation", function(frame)
+	self:SecureHook("AlertFrame_ResumeOutAnimation", function(frame)
 		if frame.sf then frame.sf.tfade:SetAlpha(0) end
 		if frame.cb then frame.cb.tfade:SetAlpha(0) end
-	end, true)
+	end)
 
 end
 
