@@ -4469,16 +4469,13 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 			self:skinStdButton{obj=this.DetailsFrame.AbandonButton}
 			self:skinStdButton{obj=this.DetailsFrame.ShareButton}
 			self:skinStdButton{obj=this.DetailsFrame.TrackButton}
-		end
-
-		-- skin header buttons, if required
-		if self.modBtns then
-			-- hook this to skin Quest Header button
+			-- hook this to skin Quest Header buttons
 			self:SecureHook("QuestLogQuests_Update", function(...)
 				local tex
 				for hdr in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
 					tex = hdr:GetNormalTexture() and hdr:GetNormalTexture():GetTexture()
 					if tex
+					and not _G.tonumber(tex)
 					and (tex:find("MinusButton")
 					or tex:find("PlusButton"))
 					and not hdr.sb
