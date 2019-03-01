@@ -1487,7 +1487,7 @@ local function __skinStatusBar(opts)
 		tex = nil
 	end
 
-	sBG = nil
+	sbG = nil
 
 end
 function aObj:skinStatusBar(...)
