@@ -66,7 +66,7 @@ local function makeText(fstr, ...)
 			tmpTab[i] = makeString(select(i, ...))
 		end
 		 -- handle missing variables
-		local varCnt = select(2, string.gsub(fstr, "%%", ""))
+		local varCnt = select(2, fstr:gsub("%%", ""))
 		for i = #tmpTab, varCnt do
 			tmpTab[i + 1] = "nil"
 		end
