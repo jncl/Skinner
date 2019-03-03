@@ -680,6 +680,14 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
 	end)
+	if self.isPTR then
+		-- called params: frame, toyID
+		self:SecureHook(_G.NewToyAlertSystem, "setUpFunction", function(frame, ...)
+			-- aObj:Debug("NewToyAlertSystem: [%s, %s]", frame, ...)
+			frame:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+		end)
+	end
 
 	-- hook this to stop gradient texture whiteout
 	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
@@ -5086,11 +5094,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		_G.wipe(tClr)
 	end
 	local function skinWidget(wFrame, wInfo)
-		if not self.isPTR then
-			-- aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.enabledState)
-		else
-			aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.visInfoDataFunction(wFrame.widgetID))
-		end
+		-- if not self.isPTR then
+		-- 	-- aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.enabledState)
+		-- else
+		-- 	aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.visInfoDataFunction(wFrame.widgetID))
+		-- end
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
