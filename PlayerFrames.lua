@@ -3721,7 +3721,9 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			_G["SpellButton" .. i .. "SlotFrame"]:SetAlpha(0)
 			btn.UnlearnedFrame:SetAlpha(0)
 			btn.TrainFrame:SetAlpha(0)
-			self:addButtonBorder{obj=btn, sec=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=btn, sec=true, reParent={btn.FlyoutArrow, _G["SpellButton" .. i .. "AutoCastable"]}}
+			end
 			updBtn(btn)
 		end
 		btn = nil
@@ -3767,7 +3769,9 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					btn = obj["button" .. i]
 					btn:DisableDrawLayer("BACKGROUND")
 					btn.subSpellString:SetTextColor(aObj.BT:GetRGB())
-					aObj:addButtonBorder{obj=btn, sec=true}
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=btn, sec=true}
+					end
 				end
 				btn = nil
 				aObj:rmRegionsTex(obj.statusBar, {2, 3, 4, 5, 6})
@@ -3788,7 +3792,9 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		-- Secondary professions
 		skinProf("Secondary", 3)
 
-		self:skinCloseButton{obj=_G.SpellLockedTooltip.CloseButton, noSkin=true}
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.SpellLockedTooltip.CloseButton, noSkin=true}
+		end
 
 		if self.modBtnBs then
 			-- hook this to change Primary Profession Button border colours if required

@@ -3149,19 +3149,28 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:skinMoneyFrame{obj=_G.SendMailMoney, moveSEB=true, moveGEB=true, noWidth=true}
 		self:removeInset(_G.SendMailMoneyInset)
 		_G.SendMailMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:skinStdButton{obj=_G.SendMailMailButton}
-		self:skinStdButton{obj=_G.SendMailCancelButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.SendMailMailButton}
+			self:skinStdButton{obj=_G.SendMailCancelButton}
+		end
 
 		--	Open Mail Frame
 		_G.OpenMailScrollFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, rt="overlay"}
 		_G.OpenMailBodyText:SetTextColor(self.BT:GetRGB())
-		self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
 		self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true}
-		self:skinStdButton{obj=_G.OpenMailReportSpamButton}
-		self:skinStdButton{obj=_G.OpenMailCancelButton}
-		self:skinStdButton{obj=_G.OpenMailDeleteButton}
-		self:skinStdButton{obj=_G.OpenMailReplyButton}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
+			for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
+				self:addButtonBorder{obj=_G["OpenMailAttachmentButton" .. i], ibt=true}
+			end
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.OpenMailReportSpamButton}
+			self:skinStdButton{obj=_G.OpenMailCancelButton}
+			self:skinStdButton{obj=_G.OpenMailDeleteButton}
+			self:skinStdButton{obj=_G.OpenMailReplyButton}
+		end
 
 		-- Invoice Frame Text fields
 		for _, type in pairs{"ItemLabel", "Purchaser", "BuyMode", "SalePrice", "Deposit", "HouseCut", "AmountReceived", "NotYetSent", "MoneyDelay"} do
@@ -4758,15 +4767,19 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
 			local objName = this:GetName()
-			self:skinStdButton{obj=this.button1}
-			self:skinStdButton{obj=this.button2}
-			self:skinStdButton{obj=this.button3}
-			self:skinStdButton{obj=this.button4}
-			self:skinStdButton{obj=this.extraButton}
+			if self.modBtns then
+				self:skinStdButton{obj=this.button1}
+				self:skinStdButton{obj=this.button2}
+				self:skinStdButton{obj=this.button3}
+				self:skinStdButton{obj=this.button4}
+				self:skinStdButton{obj=this.extraButton}
+			end
 			self:skinEditBox{obj=_G[objName .. "EditBox"], regs={6}}
 			self:skinMoneyFrame{obj=_G[objName .. "MoneyInputFrame"]}
 			_G[objName .. "ItemFrameNameFrame"]:SetTexture(nil)
-			self:addButtonBorder{obj=_G[objName .. "ItemFrame"], ibt=true}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G[objName .. "ItemFrame"], ibt=true}
+			end
 			self:addSkinFrame{obj=this, ft=ftype, x1=6, y1=-6, x2=-6, y2=6}
 			-- prevent FrameLevel from being changed (LibRock does this)
 			this.sf.SetFrameLevel = _G.nop
