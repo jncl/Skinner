@@ -3197,7 +3197,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		bar = nil
 		local function adjustBar(bar)
             -- handle in combat
-            if _G.InCombatLockdown() then
+            if aObj.inCombat then
                 aObj:add2Table(aObj.oocTab, {adjustBar, {bar}})
                 return
             end

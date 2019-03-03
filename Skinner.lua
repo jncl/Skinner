@@ -277,13 +277,14 @@ end
 
 function aObj:OnEnable()
 
---@debug@
-	self:SetupCmds()
---@end-debug@
-
 	-- handle InCombat issues
+	self.inCombat = _G.InCombatLockdown() or _G.UnitAffectingCombat("player")
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", function()
+		self.inCombat = true
+	end)
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
+		self.inCombat = false
 		for i = 1, #self.oocTab do
 			self.oocTab[i][1](unpack(self.oocTab[i][2]))
 		end
@@ -442,6 +443,10 @@ function aObj:OnEnable()
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
 
+--@debug@
+	self:SetupCmds()
+--@end-debug@
+
 end
 
 -- Skinning functions
@@ -494,14 +499,20 @@ local function __addSkinButton(opts)
 		-- hook Show/Hide methods
         -- changed to hook scripts as functions don't always work
 		aObj:hookScript(opts.hook, "OnShow", function(this)
-			if _G.InCombatLockdown() then
+			if aObj.inCombat
+			and (opts.sec
+			or opts.sab)
+			then
 				aObj:add2Table(aObj.oocTab, {this.sb.Show, {this}})
 				return
 			end
 			opts.obj.sb:Show()
 		end)
 		aObj:hookScript(opts.hook, "OnHide", function(this)
-			if _G.InCombatLockdown() then
+			if aObj.inCombat
+			and (opts.sec
+			or opts.sab)
+			then
 				aObj:add2Table(aObj.oocTab, {this.sb.Hide, {this}})
 				return
 			end

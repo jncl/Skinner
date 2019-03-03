@@ -1256,7 +1256,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	local function skinCRFCframes()
 
 		-- handle in combat as UnitFrame uses SecureUnitButtonTemplate
-		if _G.InCombatLockdown() then
+		if aObj.inCombat then
 			aObj:add2Table(aObj.oocTab, {skinCRFCframes, {nil}})
 			return
 		end
@@ -3295,12 +3295,6 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 	self:SecureHookScript(_G.OverrideActionBar, "OnShow", function(this)
 		local function skinOverrideActionBar(frame)
 
-			-- handle in combat
-			if _G.InCombatLockdown() then
-				aObj:add2Table(aObj.oocTab, {skinOverrideActionBar, {frame}})
-				return
-			end
-
 			-- remove all textures
 			frame:DisableDrawLayer("OVERLAY")
 			frame:DisableDrawLayer("BACKGROUND")
@@ -3340,12 +3334,12 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 		end
 
 		if self.modBtnBs then
+			self:addButtonBorder{obj=this.pitchFrame.PitchUpButton}
+			self:addButtonBorder{obj=this.pitchFrame.PitchDownButton}
 			self:addButtonBorder{obj=this.leaveFrame.LeaveButton}
 			for i = 1, 6 do
 				self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sec=true, es=20}
 			end
-			self:addButtonBorder{obj=_G.OverrideActionBarPitchFramePitchUpButton}
-			self:addButtonBorder{obj=_G.OverrideActionBarPitchFramePitchDownButton}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -3689,7 +3683,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		local function updBtn(btn)
 
             -- handle in combat
-            if _G.InCombatLockdown() then
+            if aObj.inCombat then
                 aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
                 return
             end

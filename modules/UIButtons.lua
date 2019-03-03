@@ -751,11 +751,12 @@ local function __addButtonBorder(opts)
 --@end-alpha@
 	if not opts.obj then return end
 
-	-- handle in combat if it uses SecureUnitButtonTemplate or SecureFrameTemplate
-	if _G.InCombatLockdown()
-	and opts.sec
+	-- handle in combat
+	if aObj.inCombat
+	and (opts.sec
+	or opts.seca)
 	then
-		aObj:add2Table(module.btnTab, opts)
+		aObj:add2Table(aObj.oocTab, {__addButtonBorder, {opts}})
 		return
 	end
 
@@ -941,17 +942,6 @@ function module:OnInitialize()
 end
 
 function module:OnEnable()
-
-	-- this code will handle button border creation during combat
-	if db.ButtonBorders then
-		self.btnTab = {}
-		self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-			for i = 1, #module.btnTab do
-				module:addButtonBorder(module.btnTab[i])
-			end
-			_G.wipe(module.btnTab)
-		end)
-	end
 
 	-- bypass the Item Quality Border Texture changes if the specified addons aren't loaded
 	if not _G.IsAddOnLoaded("AdiBags")
