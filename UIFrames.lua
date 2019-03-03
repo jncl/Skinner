@@ -5031,7 +5031,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		this:SetText("?")
 		self:moveObject{obj=this:GetFontString(), x=4}
 		self:addSkinButton{obj=this, x1=30, y1=-1, x2=-25, y2=10}
-		_G.RaiseFrameLevelByFour(this)
+		self.RaiseFrameLevelByFour(this)
 		self:Unhook(this, "OnShow")
 	end)
 
