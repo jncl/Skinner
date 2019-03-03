@@ -3117,13 +3117,19 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 			self:keepFontStrings(_G["MailItem" .. i])
 			_G["MailItem" .. i].Button:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G["MailItem" .. i].Button, relTo=_G["MailItem" .. i].Button.Icon, reParent={_G["MailItem" .. i .. "ButtonCount"]}}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G["MailItem" .. i].Button, relTo=_G["MailItem" .. i].Button.Icon, reParent={_G["MailItem" .. i .. "ButtonCount"]}}
+			end
 		end
 		self:moveObject{obj=_G.InboxTooMuchMail, y=-24} -- move icon down
 		self:removeRegions(_G.InboxFrame, {1}) -- background texture
-		self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3}
-		self:skinStdButton{obj=_G.OpenAllMail}
-		self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2, y1=-3, x2=-3}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2, y1=-3, x2=-3}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.OpenAllMail}
+		end
 
 		--	Send Mail Frame
 		self:keepFontStrings(_G.SendMailFrame)
