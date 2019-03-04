@@ -21,6 +21,8 @@ Legend:
 	O	change all occurrences of self.bbColour to self.bbClr
 
 	N	PTR 8.1.5
+		- Added
+√			- NewToyAlertSystem
 		- Deleted
 √			- WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
 		- Updated
@@ -49,11 +51,15 @@ x				- MerchantFrame
 x			- SlashCmd Quit has now become a SecureCmd
 x			- GameTooltip gains an ItemTooltip
 
-	I	Unskinned windows have no borders, reported by StormFX, 13.02.18
-√		- e.g. Engineering, Cooking, Collections
-
-	N	RCLootCouncil
-?		- needs VotingUI skinning
-
 	I	Bottom Viewport, reported by Badpally, 15.02.19
-		- Trying to use the Bottom Viewport crashes Wow.exe
+?		- Trying to use the Bottom Viewport crashes Wow.exe
+
+√	I	GuildRosterManager, reported by epidemedabear, 22.02.18
+		-  ..\AddOns\Skinner\Skinner.lua line 1118: attempt to index field 'obj' (a nil value)
+		Skinner\Skinner.lua:1212: skinEditBox()
+		...e\AddOns\Skinner\AddonSkins\Guild_Roster_Manager.lua:150:
+		...e\AddOns\Skinner\AddonSkins\Guild_Roster_Manager.lua:5
+
+√	I	WorldMap & Mapster, reported by Fraktyl, 24.02.19
+		- Skinner\UIFrames.lua:4482: attempt to index local 'tex' (a number value)
+		Skinner\UIFrames.lua:4482: in function <Skinner\UIFrames.lua:4477>
