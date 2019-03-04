@@ -1,3 +1,19 @@
+beta8.29297.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated RCLootCouncil skin
+	Updated ObjectiveTracker skin
+	Add InCombat check
+	Added more button checks
+	Tidy code
+	Updated OrderHallTalentFrame skin
+	Updated TutorialUI skin
+	Bugfix for missing frames borders
+	Updated GuildBankUI
+	Updated ButtonBorder colours for several frames
+
 beta8.29297.1
 Jncl:
 	ToDo.txt
