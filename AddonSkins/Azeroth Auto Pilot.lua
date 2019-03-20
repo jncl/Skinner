@@ -6,20 +6,20 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 
 	-- Banners frames
 	self:addSkinFrame{obj=_G.AAP.Banners.BannersFrame.Frame, ft="a", kfs=true, nb=true}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.AAP.Banners.BannersFrame.B1, seca=true}
-		self:skinStdButton{obj=_G.AAP.Banners.BannersFrame.B2, seca=true}
-		self:skinStdButton{obj=_G.AAP.Banners.BannersFrame.B3, seca=true}
-	end
 	for i = 1, 4 do
 		self:addSkinFrame{obj=_G.AAP.Banners.BannersFrame["Frame" .. i], ft="a", kfs=true, nb=true}
+	end
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.AAP.Banners.BannersFrame.B1, seca=true}
+		self:addButtonBorder{obj=_G.AAP.Banners.BannersFrame.B2, seca=true}
+		self:addButtonBorder{obj=_G.AAP.Banners.BannersFrame.B3, seca=true}
 	end
 
 	-- BrutalStatic frames
 	self:SecureHook("AAP_BrutallPaintFunc", function()
 		self:addSkinFrame{obj=_G.AAP.BrutallCC.BrutallFrame.Frame, ft="a", kfs=true, nb=true}
 		self:addSkinFrame{obj=_G.AAP.BrutallCC.BrutallFrame.FrameName, ft="a", kfs=true, nb=true}
-		self:Unhook(this, "AAP_BrutallPaintFunc")
+		self:Unhook("AAP_BrutallPaintFunc")
 	end)
 
 	-- Core frames
@@ -29,7 +29,7 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 	end
 
 	-- OptionsPanel Frame
-	self:SecureHook(_G.AAP, "LoadOptionsFrame", function()
+	self:SecureHook(_G.AAP, "LoadOptionsFrame", function(this)
 		-- make frame appear above ZoneQuestOrder frame
 		self:RaiseFrameLevelByFour(_G.AAP.OptionsFrame.MainFrame)
 		self:addSkinFrame{obj=_G.AAP.OptionsFrame.MainFrame, ft="a", kfs=true, nb=true, ofs=4}
@@ -67,11 +67,11 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 			self:skinCheckButton{obj=_G.AAP.OptionsFrame.ShowMap10sCheckButton}
 			self:skinCheckButton{obj=_G.AAP.OptionsFrame.DisableHeirloomWarningCheckButton}
 		end
-		if self.modBtns then
-			self:skinStdButton{obj=_G.AAP.OptionsFrame["Button1"], seca=true}
-			self:skinStdButton{obj=_G.AAP.OptionsFrame["Button2"], seca=true}
-			self:skinStdButton{obj=_G.AAP.OptionsFrame["Button3"], seca=true}
-			self:skinStdButton{obj=_G.AAP.OptionsFrame["Button4"], seca=true}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.AAP.OptionsFrame["Button1"], seca=true}
+			self:addButtonBorder{obj=_G.AAP.OptionsFrame["Button2"], seca=true}
+			self:addButtonBorder{obj=_G.AAP.OptionsFrame["Button3"], seca=true}
+			self:addButtonBorder{obj=_G.AAP.OptionsFrame["Button4"], seca=true}
 		end
 
 		self:Unhook(this, "LoadOptionsFrame")
@@ -82,22 +82,22 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 	-- AAP.PartyList.PartyFrames[CLi] 1-5
 	-- AAP.PartyList.PartyFrames2[CLi] 1-5
 	self:addSkinFrame{obj=_G.AAP.QuestList.SugQuestFrame, ft="a", kfs=true, nb=true}
-	if self.modBtns then
-		self:skinStdButton{obj=_G.AAP.QuestList.SugQuestFrame["Button1"], seca=true}
-		self:skinStdButton{obj=_G.AAP.QuestList.SugQuestFrame["Button2"], seca=true}
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.AAP.QuestList.SugQuestFrame["Button1"], seca=true}
+		self:addButtonBorder{obj=_G.AAP.QuestList.SugQuestFrame["Button2"], seca=true}
 	end
 	self:skinEditBox{obj=_G.AAP.QuestList.Greetings2EB1, regs={6}} -- 6 is text
 	self:skinEditBox{obj=_G.AAP.QuestList.Greetings2EB2, regs={6}} -- 6 is text
 	self:addSkinFrame{obj=_G.AAP.QuestList.Greetings, ft="a", kfs=true, nb=true, y2=-2}
-	if self.modBtns then
-		self:skinStdButton{obj=AAP.QuestList.GreetingsHideB, seca=true}
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.AAP.QuestList.GreetingsHideB, seca=true}
 	end
 	-- AAP.QuestList.MainFrame
 	-- AAP.QuestList.ListFrame
 	-- AAP.QuestList20
 	-- AAP.QuestList21
 	-- AAP.QuestList.ButtonParent
-	self:addSkinFrame{obj=_G.AAP.QuestList.QuestFrames["MyProgress"], ft=ftype or "a", kfs=true, nb=true, x1=-2, x2=2}
+	self:addSkinFrame{obj=_G.AAP.QuestList.QuestFrames["MyProgress"], ft="a", kfs=true, nb=true, x1=-2, x2=2}
 	for i = 1, 20 do
 		self:addSkinFrame{obj=_G.AAP.QuestList.QuestFrames[i], ft="a", kfs=true, nb=true, x1=-2, x2=2}
 		if self.modBtns then
@@ -110,8 +110,8 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 	end
 
 	-- QuestTest frames
-	self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder, ft=ftype or "a", kfs=true, hdr=true, nb=true, x1=-2, x2=2}
-	self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder.ZoneName, ft=ftype or "a", kfs=true, hdr=true, nb=true, x1=-2, x2=2}
+	self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder, ft="a", kfs=true, nb=true, x1=-2, x2=2}
+	self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder.ZoneName, ft="a", kfs=true, nb=true, x1=-2, x2=2}
 	if self.modBtns then
 		_G.AAP.ZoneQuestOrder["AAP_Button"]:SetSize(26, 26)
 		self:removeRegions(_G.AAP.ZoneQuestOrder["AAP_Button"], {2, 3, 5})
@@ -119,23 +119,24 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 		self:skinCloseButton{obj=_G.AAP.ZoneQuestOrder["AAP_Button"]}
 		_G.AAP.ZoneQuestOrder["AAP_Button"]:SetFrameStrata("MEDIUM")
 	end
-	self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["Current"], ft=ftype or "a", kfs=true, nb=true, x1=-2, x2=2}
-	if not _G.AAP.ZoneQuestOrder27 then
-		self:SecureHook(_G.AAP, "AddQuestOrderFrame", function(CLi)
-			self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder[CLi], ft=ftype or "a", kfs=true, nb=true, x1=-2, x2=2}
-			self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["Order1"][CLi], ft=ftype or "a", kfs=true, nb=true, x1=-2, x2=2}
-		end)
-	else
-		for i = 1, 27 do
-			self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder[i], ft=ftype or "a", kfs=true, nb=true, x1=-2, x2=2}
-			self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["Order1"][i], ft=ftype or "a", kfs=true, nb=true, x1=-2, x2=2}
+	self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["Current"], ft="a", kfs=true, nb=true, x1=-2, x2=2}
+	self:SecureHook(_G.AAP, "PaintZoneOrderButtons", function(this)
+		self:Unhook(this, "PaintZoneOrderButtons")
+		self:addSkinFrame{obj=_G.AAP.ZoneOrder, ft="a", kfs=truee, nb=true, x1=-2, x2=2}
+		for i = 1, 10 do
+			self:addSkinFrame{obj=_G.AAP.ZoneOrder["Zone" .. i], ft="a", kfs=true, nb=true, x1=-2, x2=2}
 		end
-	end
+		self:addSkinFrame{obj=_G.AAP.ZoneOrder.Zone11, ft="a", kfs=true, nb=true, x1=-2, x2=2}
+	end)
+	self:SecureHook(_G.AAP, "AddQuestOrderFrame", function(CLi)
+		self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder[CLi], ft="a", kfs=true, nb=true, x1=-2, x2=2}
+		self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["Order1"][CLi], ft="a", kfs=true, nb=true, x1=-2, x2=2}
+	end)
 	self:SecureHook(_G.AAP, "AddQuestIdFrame", function(CLi)
-		self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["Order1iD"][CLi], ft=ftype or "a", kfs=true, nb=true, x1=-2, x2=2}
+		self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["Order1iD"][CLi], ft="a", kfs=true, nb=true, x1=-2, x2=2}
 	end)
 	self:SecureHook(_G.AAP, "AddQuestNameFrame", function(CLi)
-		self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["OrderName"][CLi], ft=ftype or "a", kfs=true, nb=true, x1=-2, x2=2}
+		self:addSkinFrame{obj=_G.AAP.ZoneQuestOrder["OrderName"][CLi], ft="a", kfs=true, nb=true, x1=-2, x2=2}
 	end)
 
 end
