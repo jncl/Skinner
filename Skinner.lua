@@ -727,17 +727,19 @@ local function __addSkinFrame(opts)
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end
 
-	-- CHANGED: skinAllButtons only used for AddOn skins, until all are converted (use ft="a" when converting)
-	if not opts.nb then
-		if not opts.ft then
-			aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft}
-		else
-			-- skin the CloseButton if it exists
-			local cBtn = opts.obj.CloseButton or opts.obj.closeButton or opts.obj:GetName() and _G[opts.obj:GetName() .. "CloseButton"]
-			if cBtn then
-				aObj:skinCloseButton{obj=cBtn}
+	if aObj.modBtns then
+		-- CHANGED: skinAllButtons only used for AddOn skins, until all are converted (use ft="a" when converting)
+		if not opts.nb then
+			if not opts.ft then
+				aObj:skinAllButtons{obj=opts.obj, bgen=opts.bgen, anim=opts.anim, as=opts.bas, ft=opts.ft}
+			else
+				-- skin the CloseButton if it exists
+				local cBtn = opts.obj.CloseButton or opts.obj.closeButton or opts.obj:GetName() and _G[opts.obj:GetName() .. "CloseButton"]
+				if cBtn then
+					aObj:skinCloseButton{obj=cBtn}
+				end
+				cBtn = nil
 			end
-			cBtn = nil
 		end
 	end
 
