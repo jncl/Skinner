@@ -3230,6 +3230,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	self.initialized.MainMenuBar = true
 
 	if self.prdb.MainMenuBar.skin then
+
 		_G.MicroButtonAndBagsBar:DisableDrawLayer("BACKGROUND")
 		_G.MainMenuBarArtFrameBackground:DisableDrawLayer("BACKGROUND")
 		_G.MainMenuBarArtFrame.LeftEndCap:SetTexture(nil)
@@ -3258,7 +3259,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			if isTopBar
 			and isDouble
 			then
-				adjustBar(bar)
+				bar:SetPoint("BOTTOM", _G.StatusTrackingBarManager:GetParent(), 0, -9)
 			end
 		end)
 		-- force bar adjustment
@@ -3270,6 +3271,8 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 		self:keepFontStrings(_G.PossessBarFrame)
 		-- Pet Action Bar Frame
 		self:keepFontStrings(_G.PetActionBarFrame)
+		-- Shaman's Totem Frame
+		self:keepFontStrings(_G.MultiCastFlyoutFrame)
 
 		if self.modBtnBs then
 			for i = 1, _G.NUM_STANCE_SLOTS do
@@ -3279,29 +3282,26 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:addButtonBorder{obj=_G["PossessButton" .. i], abt=true, sec=true}
 			end
 			for i = 1, _G.NUM_PET_ACTION_SLOTS do
-				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"]}, ofs=3}
+				self:addButtonBorder{obj=_G["PetActionButton" .. i], abt=true, sec=true, reParent={_G["PetActionButton" .. i .. "AutoCastable"], _G["PetActionButton" .. i .. "SpellHighlightTexture"]}, ofs=3}
+				_G["PetActionButton" .. i .. "Shine"]:SetParent(_G["PetActionButton" .. i].sbb)
 			end
-		end
-
-		-- Shaman's Totem Frame
-		self:keepFontStrings(_G.MultiCastFlyoutFrame)
-
-		if self.modBtns then
 			-- Action Buttons
 			for i = 1, _G.NUM_ACTIONBAR_BUTTONS do
 				_G["ActionButton" .. i].FlyoutBorder:SetTexture(nil)
 				_G["ActionButton" .. i].FlyoutBorderShadow:SetTexture(nil)
 				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, seca=true}
 			end
-			-- Micro buttons, skinned before checks for a consistent look, 12.10.12
+			-- ActionBar buttons
+			self:addButtonBorder{obj=_G.ActionBarUpButton}
+			self:addButtonBorder{obj=_G.ActionBarDownButton}
+
+			-- Micro buttons
 			local mBut
 			for i = 1, #_G.MICRO_BUTTONS do
 				mBut = _G[_G.MICRO_BUTTONS[i]]
 				self:addButtonBorder{obj=mBut, ofs=0, y1=0, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarPerformanceBar, _G.MainMenuBarDownload} or {mBut.Flash}}
 			end
 			mBut = nil
-
-			self:skinCloseButton{obj=_G.CharacterMicroButtonAlert.CloseButton, noSkin=true}
 
 			-- skin bag buttons
 			self:addButtonBorder{obj=_G.MainMenuBarBackpackButton, ibt=true}
@@ -3316,10 +3316,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			for i = 1, _G.NUM_MULTI_CAST_PAGES * _G.NUM_MULTI_CAST_BUTTONS_PER_PAGE do
 				self:addButtonBorder{obj=_G["MultiCastActionButton" .. i], abt=true, seca=true, ofs=5}
 			end
-
-			-- ActionBar buttons
-			self:addButtonBorder{obj=_G.ActionBarUpButton}
-			self:addButtonBorder{obj=_G.ActionBarDownButton}
 
 			-- MultiBar Buttons
 			for _, type in pairs{"BottomLeft", "BottomRight", "Right", "Left"} do
@@ -3342,30 +3338,35 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end
 
 	-- these are done here as other AddOns may require them to be skinned
-	if self.modBtns then
+	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
-
+	end
+	if self.modBtns then
 		-- MicroButtonAlert frames
-		 for _, type in pairs{"Talent", "Collections", "LFD", "EJ", "Store"} do
+		 for _, type in pairs{"Character", "Talent", "Collections", "LFD", "EJ", "Store"} do
 			self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton, noSkin=true}
 			_G.RaiseFrameLevelByTwo(_G[type .. "MicroButtonAlert"]) -- move above button borders
 		end
-
 	end
 
 	-- Extra Action Button
 	if self.prdb.MainMenuBar.extraab then
-		_G.ExtraActionButton1:GetNormalTexture():SetTexture(nil)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.ExtraActionButton1, ofs=2, relTo=_G.ExtraActionButton1.icon}
-		end
-		-- handle bug when Tukui is loaded
-		if not aObj:isAddonEnabled("Tukui") then
-			self:nilTexture(_G.ExtraActionButton1.style, true)
+		self:SecureHookScript(_G.ExtraActionBarFrame, "OnShow", function(this)
+			this.button:GetNormalTexture():SetTexture(nil)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.button, seca=true, ofs=2, reParent={this.button.HotKey, this.button.Count}}
+			end
+			-- handle bug when Tukui is loaded
+			if not aObj:isAddonEnabled("Tukui") then
+				self:nilTexture(this.button.style, true)
+			end
+			self:Unhook(this, "OnShow")
+		end)
+		if _G.ExtraActionBarFrame:IsShown() then
+			_G.ExtraActionBarFrame:Hide()
+			_G.ExtraActionBarFrame:Show()
 		end
 	end
-
-	-- TODO: adjust Fill texture for HorizontalBar
 
 	-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
 	if self.prdb.MainMenuBar.altpowerbar then
