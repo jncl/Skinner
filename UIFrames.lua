@@ -4011,24 +4011,24 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 	local function skinNamePlate(frame)
 
 		local nP = frame.UnitFrame
-
 		if nP then
 			-- healthBar
 			aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
-			-- TODO handle large size NamePlates
-			aObj:changeShield(nP.castBar.BorderShield, nP.castBar.Icon)
+			aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}--, nilFuncs=true}
 		end
 		nP = nil
 
 	end
 
 	-- skin any existing NamePlates
-	for _, frame in pairs(_G.C_NamePlate.GetNamePlates()) do
+	for _, frame in ipairs(_G.C_NamePlate.GetNamePlates(_G.issecure())) do
 		skinNamePlate(frame)
 	end
 
 	-- hook this to skin created Nameplates
-	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateCreated", function(this, namePlateFrameBase)
+	self:SecureHook(_G.NamePlateDriverFrame, "OnNamePlateAdded", function(this, namePlateUnitToken)
+		local namePlateFrameBase = _G.C_NamePlate.GetNamePlateForUnit(namePlateUnitToken, _G.issecure())
+		-- aObj:Debug("NPDF OnNamePlateAdded: [%s, %s, %s]", namePlateUnitToken, namePlateFrameBase, issecure())
 		skinNamePlate(namePlateFrameBase)
 	end)
 
@@ -4036,8 +4036,7 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 	-- ManaFrame
 	local mF = _G.ClassNameplateManaBarFrame
 	if mF then
-		self:skinStatusBar{obj=mF, fi=0,  otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}}
-		mF.SetTexture = _G.nop
+		self:skinStatusBar{obj=mF, fi=0,  otherTex={mF.ManaCostPredictionBar, mF.FeedbackFrame.BarTexture}}--, nilFuncs=true}
 		mF = nil
 	end
 
