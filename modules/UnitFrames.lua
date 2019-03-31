@@ -24,10 +24,11 @@ local unitFrames = {
 	"FocusFrame",
 	"PartyMemberBackground",
 	"PartyMemberBuffTooltip",
-	"PlayerFrame",
 	"PetFrame",
+	"PlayerFrame",
 	"TargetFrame",
 }
+local unitBtns= {}
 
 -- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
 local function adjustStatusBarPosn(sBar, yAdj)
@@ -57,19 +58,13 @@ local function skinUnitButton(opts)
 	opts.y1 = opts.y1 or opts.ofs
 	opts.x2 = opts.x2 or opts.ofs
 	opts.y2 = opts.y2 or opts.ofs * -1
-	-- aObj:addSkinButton{obj=opts.obj, ft=ftype, sec=true, aso={bd=11, ng=true}, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
-	-- opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
-	-- opts.obj.sb:EnableMouse(false) -- enable clickthrough
 
-	opts.obj.bg = opts.obj:CreateTexture(nil, "BACKGROUND", nil, -1)
-	opts.obj.bg:SetTexture(aObj.Backdrop[1].bgFile)
-	opts.obj.bg:SetVertexColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
-	opts.obj.bg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.x1, opts.y1)
-	opts.obj.bg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
+	aObj:addSkinButton{obj=opts.obj, ft=ftype, aso={bd=11, ng=true}, secu=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+	opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
 
 	if opts.ti then
-		opts.obj.threatIndicator:ClearAllPoints()
-		opts.obj.threatIndicator:SetAllPoints(opts.obj.bg)
+		-- opts.obj.threatIndicator:ClearAllPoints()
+		opts.obj.threatIndicator:SetAllPoints(opts.obj.sb)
 		aObj:changeRecTex(opts.obj.threatIndicator, true, true)
 		-- stop changes to texture
 		opts.obj.threatIndicator.SetTexture = _G.nop
@@ -113,7 +108,7 @@ local function skinPlayerF()
 		-- move PvP Timer text down
 		aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 		-- move level & rest icon down, so they are more visible
-		module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function()
+		module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
 			_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
 		end)
 		_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
@@ -338,7 +333,7 @@ local function skinTargetF()
 
 		--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
-			skinButton("Boss" .. i .. "TargetFrame")
+			skinButton("Boss" .. i .. "TargetFrame", false)
 			-- always an Elite mob
 			_G["Boss" .. i .. "TargetFrame"].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		end
@@ -395,7 +390,7 @@ local function skinPartyF()
 			aObj:skinStatusBar{obj=_G[pMF .. "HealthBar"], fi=0}
 			aObj:skinStatusBar{obj=_G[pMF .. "ManaBar"], fi=0, nilFuncs=true}
 
-			-- PowerBarAlt handled in MainMenuBar function (UIF)
+			-- PowerBarAlt handled in MainMenuBar function (UIFrames.lua)
 
 			-- pet frame
 			pPF = pMF .. "PetFrame"
@@ -419,10 +414,18 @@ local function skinPartyTooltip()
 	and( db.pet or db.party)
 	then
 
-		aObj:addSkinFrame{obj=_G.PartyMemberBuffTooltip, ft=ftype, kfs=true, nb=true}
+		aObj:addSkinFrame{obj=_G.PartyMemberBuffTooltip, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		for i = 1, _G.MAX_PARTY_TOOLTIP_DEBUFFS do
 			_G["PartyMemberBuffTooltipDebuff" .. i]:DisableDrawLayer("OVERLAY")
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipDebuff" .. i], relTo=_G["PartyMemberBuffTooltipDebuff" .. i .. "Icon"], ofs=3, grey=true, ga=0.85}
+			end
+		end
+		if aObj.modBtnBs then
+			for i = 1, _G.MAX_PARTY_TOOLTIP_BUFFS do
+				aObj:addButtonBorder{obj=_G["PartyMemberBuffTooltipBuff" .. i], relTo=_G["PartyMemberBuffTooltipBuff" .. i .. "Icon"], ofs=3, grey=true, ga=0.85}
+			end
 		end
 
 	end
