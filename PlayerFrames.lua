@@ -2355,7 +2355,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:skinStdButton{obj=this.SettingsButton}
 		self:skinSlider{obj=this.ChannelList.ScrollBar, wdth=-4}
 		self:skinSlider{obj=this.ChannelRoster.ScrollFrame.scrollBar, wdth=-4}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-1}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-1}
 		self:skinCloseButton{obj=this.Tutorial.CloseButton, noSkin=true}
 		-- Create Channel Popup
 		self:skinEditBox{obj=_G.CreateChannelPopup.Name, regs={6}} -- 6 is text
