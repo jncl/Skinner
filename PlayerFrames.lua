@@ -1750,69 +1750,72 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	if not self.prdb.ContainerFrames.skin or self.initialized.ContainerFrames then return end
 	self.initialized.ContainerFrames = true
 
-	local objName, cfpb
-	local function skinBag(frame, id)
+	if not IsAddOnLoaded("LiteBag") then
+		local objName, cfpb
+		local function skinBag(frame, id)
 
-		local objName = frame:GetName()
+			local objName = frame:GetName()
 
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
-		-- resize and move the bag name to make it more readable
-		_G[objName .. "Name"]:SetWidth(137)
-		aObj:moveObject{obj=_G[objName .. "Name"], x=-17}
-		-- Add gear texture to portrait button for settings
-		local cfpb = frame.PortraitButton
-		cfpb.gear = cfpb:CreateTexture(nil, "artwork")
-		cfpb.gear:SetAllPoints()
-		cfpb.gear:SetTexture(gearTex)
-		cfpb:SetSize(18, 18)
-		cfpb.Highlight:ClearAllPoints()
-		cfpb.Highlight:SetPoint("center")
-		cfpb.Highlight:SetSize(22, 22)
-		aObj:moveObject{obj=cfpb, x=7, y=-5}
-		cfpb = nil
-		if aObj.modBtnBs then
-			-- skin the item buttons
-			local bo
-			for i = 1, _G.MAX_CONTAINER_ITEMS do
-				bo = _G[objName .. "Item" .. i]
-				aObj:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
+			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
+			-- resize and move the bag name to make it more readable
+			_G[objName .. "Name"]:SetWidth(137)
+			aObj:moveObject{obj=_G[objName .. "Name"], x=-17}
+			-- Add gear texture to portrait button for settings
+			local cfpb = frame.PortraitButton
+			cfpb.gear = cfpb:CreateTexture(nil, "artwork")
+			cfpb.gear:SetAllPoints()
+			cfpb.gear:SetTexture(gearTex)
+			cfpb:SetSize(18, 18)
+			cfpb.Highlight:ClearAllPoints()
+			cfpb.Highlight:SetPoint("center")
+			cfpb.Highlight:SetSize(22, 22)
+			aObj:moveObject{obj=cfpb, x=7, y=-5}
+			cfpb = nil
+			if aObj.modBtnBs then
+				-- skin the item buttons
+				local bo
+				for i = 1, _G.MAX_CONTAINER_ITEMS do
+					bo = _G[objName .. "Item" .. i]
+					aObj:addButtonBorder{obj=bo, ibt=true, reParent={_G[objName .. "Item" .. i .. "IconQuestTexture"], bo.JunkIcon, bo.UpgradeIcon, bo.flash, bo.NewItemTexture, bo.BattlepayItemTexture}}
+				end
+				bo = nil
+				-- update Button quality borders
+				_G.ContainerFrame_Update(frame)
 			end
-			bo = nil
-			-- update Button quality borders
-			_G.ContainerFrame_Update(frame)
+
+			-- Backpack
+			if id == 0 then
+				aObj:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true, noInsert=true} -- 6 is text, 7 is icon
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1}
+				end
+				-- TokenFrame
+				_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
+			end
+
+			if aObj.modBtns then
+				_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
+				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
+				aObj:skinCloseButton{obj=frame.ExtraBagSlotsHelpBox.CloseButton, noSkin=true}
+			end
+			objName = nil
+
 		end
 
-		-- Backpack
-		if id == 0 then
-			aObj:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true, noInsert=true} -- 6 is text, 7 is icon
-			aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1}
-			-- TokenFrame
-			_G.BACKPACK_TOKENFRAME_HEIGHT = _G.BACKPACK_TOKENFRAME_HEIGHT - 6
-			_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
-		end
+		-- Hook this to skinhide/show the gear button
+		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, size, id)
+			-- skin the frame if required
+			if not frame.sf then
+				skinBag(frame, id)
+			end
 
-		if aObj.modBtns then
-			_G[objName .. "AddSlotsButton"]:DisableDrawLayer("OVERLAY")
-			self:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
-			self:skinCloseButton{obj=frame.ExtraBagSlotsHelpBox.CloseButton, noSkin=true}
-		end
-		objName = nil
+		end)
 
+		-- hook this to move the Search Box to the left, away from the AutoSort button
+		self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
+			self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
+		end, true)
 	end
-
-	-- Hook this to skinhide/show the gear button
-	self:SecureHook("ContainerFrame_GenerateFrame", function(frame, size, id)
-		-- skin the frame if required
-		if not frame.sf then
-			skinBag(frame, id)
-		end
-
-	end)
-
-	-- hook this to move the Search Box to the left, away from the AutoSort button
-	self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
-		self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
-	end, true)
 
 	self:SecureHookScript(_G.ArtifactRelicHelpBox, "OnShow", function(this)
 		self:skinCloseButton{obj=this.CloseButton, noSkin=true}
