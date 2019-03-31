@@ -542,23 +542,32 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 	self.initialized.Buffs = true
 
 	if self.modBtnBs then
-		local function skinBuffs()
-
-			for i = 1, _G.BUFF_MAX_DISPLAY do
-				if _G["BuffButton" .. i]
-				and not _G["BuffButton" .. i].sbb
-				then
-					aObj:addButtonBorder{obj=_G["BuffButton" .. i], reParent={_G["BuffButton" .. i].count, _G["BuffButton" .. i].duration}}
-				end
+		-- skin current Buffs
+		local btn
+		for i = 1, _G.BUFF_MAX_DISPLAY do
+			btn = _G["BuffButton" .. i]
+			if btn
+			and not btn.sbb
+			then
+				self:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}}
 			end
-
 		end
-		-- hook this to skin new Buffs
-		self:SecureHook("BuffFrame_Update", function()
-			skinBuffs()
-		end)
-		-- skin any current Buffs
-		skinBuffs()
+		btn = nil
+		-- if not all buff buttons created yet
+		if not _G.BuffButton32 then
+			-- hook this to skin new Buffs
+			self:SecureHook("AuraButton_Update", function(buttonName, index, filter)
+				-- aObj:Debug("AuraButton_Update: [%s, %s, %s]", buttonName, index, filter)
+				if buttonName == "BuffButton" then
+					local btn = _G[buttonName .. index]
+					if btn
+					and not btn.sbb
+					then
+						self:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}}
+					end
+				end
+			end)
+		end
 	end
 
 	-- Debuffs already have a coloured border
