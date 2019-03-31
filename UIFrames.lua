@@ -1038,6 +1038,19 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 		this:DisableDrawLayer("BACKGROUND")
 		self:removeInset(_G.ChallengesFrameInset)
 		this.WeeklyInfo.Child:DisableDrawLayer("BACKGROUND")
+
+		-- SeasonChangeNoticeFrame
+		this.SeasonChangeNoticeFrame.NewSeason:SetTextColor(self.HT:GetRGB())
+		this.SeasonChangeNoticeFrame.SeasonDescription:SetTextColor(self.BT:GetRGB())
+		this.SeasonChangeNoticeFrame.SeasonDescription2:SetTextColor(self.BT:GetRGB())
+		this.SeasonChangeNoticeFrame.SeasonDescription3:SetTextColor(self.BT:GetRGB())
+		this.SeasonChangeNoticeFrame.Affix.Border:SetTexture(nil)
+		self:addSkinFrame{obj=this.SeasonChangeNoticeFrame, ft=ftype, kfs=true, nb=true, ofs=-15, y2=20}
+		self:RaiseFrameLevelByFour(this.SeasonChangeNoticeFrame)
+		if self.modBtns then
+			self:skinStdButton{obj=this.SeasonChangeNoticeFrame.Leave}
+		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
