@@ -1480,8 +1480,7 @@ local function __skinStatusBar(opts)
 			sbG.bg:SetTexture(aObj.sbTexture)
 			sbG.bg:SetVertexColor(aObj.sbClr:GetRGBA())
 			if not opts.bgTex then
-				sbG.bg:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.fi, -opts.fi)
-				sbG.bg:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", -opts.fi, opts.fi)
+				sbG.bg:SetAllPoints()
 			else
 				if opts.nilFuncs then
 					sbG.bg.SetTexture = _G.nop
