@@ -5259,6 +5259,7 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 		end
 
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, y1=-1, x2=-2}
+		self:nilTexture(this.CloseButton.Border, true)
 		self:SecureHook(this, "TryShow", function(this)
 			for _, choice in pairs(this.Options) do
 				choice.Header.Text:SetTextColor(self.HT:GetRGB())
@@ -5269,6 +5270,7 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 		if self.modBtns then
 			self:skinCloseButton{obj=this.WarfrontHelpBox.CloseButton, noSkin=true}
 		end
+
 		self:Unhook(this, "OnShow")
 
 	end)
