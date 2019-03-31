@@ -4167,6 +4167,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		end
 		skinTabs(this.RecipeList)
 		self:skinSlider{obj=self:getChild(this.RecipeList, 4), wdth=-4, size=3} -- unamed slider object
+		self:addSkinFrame{obj=this.RecipeList, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, ofs=8, y1=6, x2=24}
 
 		for i = 1, #this.RecipeList.buttons do
 			if self.modBtns then
