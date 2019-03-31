@@ -191,14 +191,21 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		_G.AchievementFrameHeaderShield:SetAlpha(1)
 
 		self:skinSlider{obj=_G.AchievementFrameCategoriesContainerScrollBar, wdth=-4}
-		self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y1=-1}
+		self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y1=0, x2=22}
+		-- hook these to stop Categories skinFrame from changing
+		self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Show", function(this)
+			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 22, -2)
+		end)
+		self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Hide", function(this)
+			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 0, -2)
+		end)
 		self:SecureHook("AchievementFrameCategories_Update", function()
 			skinCategories()
 		end)
 		skinCategories()
 
 		self:keepFontStrings(_G.AchievementFrameAchievements)
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameAchievements, 2), ft=ftype, aso={ba=0, ng=true}, y1=-1}
+		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameAchievements, 2), ft=ftype, aso={bd=10, ng=true}, y1=0, x2=29}
 		self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, wdth=-4}
 		if self.prdb.AchievementUI.style == 2 then
 			-- remove textures etc from buttons
@@ -259,7 +266,16 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:keepFontStrings(_G.AchievementFrameStats)
 		self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, wdth=-4}
 		_G.AchievementFrameStatsBG:SetAlpha(0)
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameStats, 3), ft=ftype, aso={ba=0, ng=true}, y1=-1}
+		self:getChild(_G.AchievementFrameStats, 3):SetBackdrop(nil)
+		self:addSkinFrame{obj=_G.AchievementFrameStats, ft=ftype, aso={bd=10, ng=true}, y1=0, x2=29}
+		-- hook these to stop Categories skinFrame from changing
+		self:SecureHook(_G.AchievementFrameStatsContainerScrollBar, "Show", function(this)
+			_G.AchievementFrameStats.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameStats, "BOTTOMRIGHT", 29, -2)
+		end)
+		self:SecureHook(_G.AchievementFrameStatsContainerScrollBar, "Hide", function(this)
+			_G.AchievementFrameStats.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameStats, "BOTTOMRIGHT", 3, -2)
+		end)
+
 		-- hook this to skin buttons
 		self:SecureHook("AchievementFrameStats_Update", function()
 			skinStats()
@@ -287,7 +303,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		for i = 1, 12 do
 			skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 		end
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={ba=0, ng=true}, y1=-2}
+		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={bd=10, ng=true}, y1=-1}
 		skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
 		_G.AchievementFrameComparisonBackground:SetAlpha(0)
@@ -306,7 +322,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		-- Container
 		self:skinSlider(_G.AchievementFrameComparisonContainerScrollBar)
 		-- Summary Panel
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameComparison, 5), ft=ftype, aso={ba=0, ng=true}, y1=-1}
+		self:getChild(_G.AchievementFrameComparison, 5):SetBackdrop(nil)
+		self:addSkinFrame{obj=_G.AchievementFrameComparison, ft=ftype, aso={bd=10, ng=true}, y1=0, x2=31}
 		for _, type in pairs{"Player", "Friend"} do
 			_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
 			_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
@@ -335,7 +352,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 
 		-- this is not a standard dropdown
 		self:moveObject{obj=_G.AchievementFrameFilterDropDown, y=-7}
-		-- skin the frame
+		-- skin the dropdown frame
 		if self.prdb.DropDownButtons then
 			if self.prdb.TexturedDD then
 				local tex = _G.AchievementFrameFilterDropDown:CreateTexture(nil, "BORDER")
@@ -377,7 +394,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			self:addButtonBorder{obj=this.searchResults.scrollFrame.buttons[i], relTo=this.searchResults.scrollFrame.buttons[i].icon}
 		end
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=7, x2=0, y2=-3}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=7, x2=0, y2=-2}
 
 		self:Unhook(this, "OnShow")
 	end)
