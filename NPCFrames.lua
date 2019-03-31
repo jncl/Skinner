@@ -5,13 +5,19 @@ local ftype = "n"
 
 local pairs = _G.pairs
 
--- The following function is used by the GossipFrame & QuestFrame functions
-local function setupQuestDisplayColours()
-
-	_G.NORMAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.HT:GetRGB()) .. "%s|r"
-	_G.TRIVIAL_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.BT:GetRGB()) .. "%s (low level)|r"
-	_G.IGNORED_QUEST_DISPLAY = "|cff" .. aObj:RGBPercToHex(aObj.IT:GetRGB()) .. "%s (ignored)|r"
-
+local function hookQuestText(btn)
+	aObj:rawHook(btn, "SetFormattedText", function(this, fmtString, text)
+		-- aObj:Debug("SetFormattedText: [%s, %s, %s]", this, fmtString, text)
+		if fmtString == _G.NORMAL_QUEST_DISPLAY then
+			fmtString = aObj.NORMAL_QUEST_DISPLAY
+		elseif fmtString == _G.TRIVIAL_QUEST_DISPLAY then
+			fmtString = aObj.TRIVIAL_QUEST_DISPLAY
+		elseif fmtString == _G.IGNORED_QUEST_DISPLAY then
+			fmtString = aObj.IGNORED_QUEST_DISPLAY
+		end
+		local btnText = aObj.hooks[this].SetFormattedText(this, fmtString, text)
+		return btnText
+	end, true)
 end
 
 aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
@@ -370,8 +376,6 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	if not self.prdb.GossipFrame or self.initialized.GossipFrame then return end
 	self.initialized.GossipFrame = true
 
-	setupQuestDisplayColours()
-
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GossipFrameGreetingPanel)
 		_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
@@ -379,6 +383,7 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
 		for i = 1, _G.NUMGOSSIPBUTTONS do
 			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
+			hookQuestText(_G["GossipTitleButton" .. i])
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
@@ -613,8 +618,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	if not self.prdb.QuestFrame or self.initialized.QuestFrame then return end
 	self.initialized.QuestFrame = true
 
-	setupQuestDisplayColours()
-
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
 		self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, ...)
 			fontString:SetTextColor(self.HT:GetRGB())
@@ -668,6 +671,12 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
 			_G.AvailableQuestsText:SetTextColor(self.HT:GetRGB())
 		end
+		-- hook this to colour quest button text
+		self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
+			local btn = self.hooks[this].Acquire(this)
+			hookQuestText(btn)
+			return btn
+		end, true)
 
 		if self.modBtns then
 			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton}
@@ -741,22 +750,26 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 
 	end
-	local function updateQIDisplay()
+	local function updateQIDisplay(template, ...)
 		-- aObj:Debug("updateQIDisplay")
-		local br, bg, bb, r, g, b = aObj.BT:GetRGB()
+
+		local br, bg, bb = aObj.BT:GetRGB()
+
 		-- headers
 		_G.QuestInfoTitleHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoDescriptionHeader:SetTextColor(aObj.HT:GetRGB())
 		_G.QuestInfoObjectivesHeader:SetTextColor(aObj.HT:GetRGB())
+
 		-- other text
 		_G.QuestInfoQuestType:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoObjectivesText:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoRewardText:SetTextColor(aObj.BT:GetRGB())
-		r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
+		local r, g, b = _G.QuestInfoRequiredMoneyText:GetTextColor()
 		_G.QuestInfoRequiredMoneyText:SetTextColor(br - r, bg - g, bb - b)
 		_G.QuestInfoGroupSize:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoAnchor:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoDescriptionText:SetTextColor(aObj.BT:GetRGB())
+
 		-- skin rewards
 		skinRewards(_G.QuestInfoFrame.rewardsFrame)
 
@@ -790,7 +803,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 	end
 
 	self:SecureHook("QuestInfo_Display", function(...)
-		updateQIDisplay()
+		updateQIDisplay(...)
 	end)
 
 	self:SecureHookScript(_G.QuestInfoFrame, "OnShow", function(this)

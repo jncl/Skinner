@@ -142,6 +142,10 @@ function aObj:OnInitialize()
 	self.BT = _G.CreateColor(c.r, c.g, c.b)
 	c = self.prdb.IgnoredText
 	self.IT = _G.CreateColor(c.r, c.g, c.b)
+	-- The following variables are used by the GossipFrame & QuestFrame
+	self.NORMAL_QUEST_DISPLAY = "|cff" .. self:RGBPercToHex(self.HT:GetRGB()) .. "%s|r"
+	self.TRIVIAL_QUEST_DISPLAY = "|cff" .. self:RGBPercToHex(self.BT:GetRGB()) .. "%s (low level)|r"
+	self.IGNORED_QUEST_DISPLAY = "|cff" .. self:RGBPercToHex(self.IT:GetRGB()) .. "%s (ignored)|r"
 
 	-- Frame multipliers (still used in older skins)
 	self.FxMult, self.FyMult = 0.9, 0.87
