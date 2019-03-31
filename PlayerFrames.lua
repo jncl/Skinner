@@ -1870,7 +1870,7 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 
 end
 
-aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
+aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture Guide
 	if not self.prdb.EncounterJournal or self.initialized.EncounterJournal then return end
 	self.initialized.EncounterJournal = true
 
@@ -1915,11 +1915,12 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 		this.navBar.home:GetPushedTexture():SetAlpha(0)
 		this.navBar.home.text:SetPoint("RIGHT", -20, 0)
 		self:removeInset(this.inset)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 
 		this.instanceSelect.bg:SetAlpha(0)
 		self:skinDropDown{obj=this.instanceSelect.tierDropDown}
 		self:skinSlider{obj=this.instanceSelect.scroll.ScrollBar, wdth=-6}
-		self:addSkinFrame{obj=this.instanceSelect.scroll, ft=ftype, x1=-9, y1=6, x2=4, y2=-7}
+		self:addSkinFrame{obj=this.instanceSelect.scroll, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-9, y1=6, x2=6, y2=-8}
 		self:SecureHook("EncounterJournal_ListInstances", function()
 			local btn
 			for i = 1, 30 do
@@ -2099,9 +2100,8 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 		ejsfs = nil
 
 		-- add skin frame to surround all the Suggestions, so tabs look better than without a frame
-		self:addSkinFrame{obj=this.suggestFrame, ft=ftype, kfs=true, nb=true, aso={ng=true}, x1=-9, y1=6, x2=5, y2=-4}
+		self:addSkinFrame{obj=this.suggestFrame, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-9, y1=6, x2=7, y2=-5}
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -2121,7 +2121,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self)
 			this.ItemSetsFrame.buttons[i].Background:SetTexture(nil)
 		end
 		-- add skin frame to surround the Loot Journal, so tabs look better than without a frame
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=-8, y1=6, x2=6, y2=-4}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-8, y1=6, x2=8, y2=-5}
 		self:Unhook(this, "OnShow")
 	end)
 
