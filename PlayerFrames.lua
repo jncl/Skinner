@@ -3451,7 +3451,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		local function skinCommon(frame)
 			aObj:removeInset(frame.Inset)
 			frame.ConquestBar:DisableDrawLayer("BORDER")
-			aObj:skinStatusBar{obj=frame.ConquestBar, fi=0, bgTex=aObj:getRegion(frame.ConquestBar, 3)}
+			aObj:skinStatusBar{obj=frame.ConquestBar, fi=0, bgTex=frame.ConquestBar.Background}
 			frame.ConquestBar.Reward.Ring:SetTexture(nil)
 			if self.modBtnBs then
 				aObj:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon}
@@ -3564,7 +3564,8 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BT:GetRGB())
 		_G.SeasonRewardFrame.Ring:SetTexture(nil)
-		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=0}
+		self:getRegion(_G.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
+		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=-13}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}
 		end
