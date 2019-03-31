@@ -264,6 +264,7 @@ function module:skinCloseButton3(opts) -- small text on skinButton (used by Deta
 	module:skinCloseButton(opts)
 
 end
+
 function module:skinExpandButton(opts)
 --[[
 	Calling parameters:
@@ -318,6 +319,7 @@ function module:skinExpandButton2(opts) -- text on button
 	module:skinExpandButton(opts)
 
 end
+
 function module:skinOtherButton(opts)
 --[[
 	Calling parameters:
@@ -400,6 +402,7 @@ function module:skinOtherButton4(opts) -- Normal text on button
 	module:skinOtherButton(opts)
 
 end
+
 function module:skinStdButton(opts) -- standard panel button
 --[[
 	Calling parameters:
@@ -733,7 +736,8 @@ local function __addButtonBorder(opts)
 		tibt = Talent Item Button template
 		libt = Large Item Button template
 		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
-		seca = requires SecureActionbuttonTemplate to inherit from otherwise tainting occurs
+		seca = requires SecureActionButtonTemplate to inherit from otherwise tainting occurs
+		secu = requires SecureUnitButtonTemplate to inherit from otherwise tainting occurs
 		reParent = table of objects to reparent to the border frame
 		es = edgeSize, used for small icons
 		ofs = offset value to use
@@ -745,6 +749,7 @@ local function __addButtonBorder(opts)
 		bmit = blackmarket item template
 		nc = don't check to see if already skinned
 		grey = set backdrop border colour to grey
+		ga = alpha value for grey
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object__aBB\n" .. debugstack(2, 3, 2))
@@ -772,6 +777,7 @@ local function __addButtonBorder(opts)
 	-- or opts.pabt
 	or opts.auit
 	or opts.bmit
+	or opts.seca
 	then
 		if opts.obj.GetNormalTexture
 		and opts.obj:GetNormalTexture()
@@ -785,8 +791,9 @@ local function __addButtonBorder(opts)
 		end
 	end
 
-	-- create the border frame
-	opts.obj.sbb = _G.CreateFrame("Frame", nil, opts.obj, opts.sec and "SecureFrameTemplate" or nil, opts.seca and "SecureActionbuttonTemplate" or nil)
+	-- create the button border object
+	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, opts.sec and "SecureFrameTemplate" or opts.seca and "SecureActionButtonTemplate" or opts.secu and "SecureUnitButtonTemplate" or nil)
+	opts.obj.sbb:EnableMouse(false) -- enable clickthrough
 
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
@@ -794,7 +801,7 @@ local function __addButtonBorder(opts)
 	if not opts.grey then
 		opts.obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 	else
-		opts.obj.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border
+		opts.obj.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, opts.ga or 0.5) -- grey border
 	end
 
 	-- position the frame

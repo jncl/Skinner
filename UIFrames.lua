@@ -2219,19 +2219,26 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			this.MissionList.CombatAllyUI.Background:SetTexture(nil)
 			this.MissionList.CombatAllyUI.Available.AddFollowerButton.EmptyPortrait:SetTexture(nil)
 			skinPortrait(this.MissionList.CombatAllyUI.InProgress.PortraitFrame)
-			self:skinStdButton{obj=this.MissionList.CombatAllyUI.InProgress.Unassign}
+			if self.modBtns then
+				self:skinStdButton{obj=this.MissionList.CombatAllyUI.InProgress.Unassign}
+			end
 
 			-- ZoneSupportMissionPage (a.k.a. Combat Ally selection page)
 			this.ZoneSupportMissionPageBackground:DisableDrawLayer("BACKGROUND")
 			this.ZoneSupportMissionPage:DisableDrawLayer("BACKGROUND")
 			this.ZoneSupportMissionPage:DisableDrawLayer("BORDER")
 			this.ZoneSupportMissionPage.CombatAllyLabel.TextBackground:SetTexture(nil)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.ZoneSupportMissionPage.CombatAllySpell, grey=true, ga=1}
+			end
 			this.ZoneSupportMissionPage.ButtonFrame:SetTexture(nil)
 			this.ZoneSupportMissionPage.Follower1:DisableDrawLayer("BACKGROUND")
 			skinPortrait(this.ZoneSupportMissionPage.Follower1.PortraitFrame)
 			self:addSkinFrame{obj=this.ZoneSupportMissionPage, ft=ftype, kfs=true, x1=-360, y1=434, x2=3, y2=-65}
 			this.ZoneSupportMissionPage.CloseButton:SetSize(28, 28)
-			self:skinStdButton{obj=this.ZoneSupportMissionPage.StartMissionButton}
+			if self.modBtns then
+				self:skinStdButton{obj=this.ZoneSupportMissionPage.StartMissionButton}
+			end
 
 			skinMissionPage(this.MissionPage)
 
@@ -3075,17 +3082,23 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:skinEditBox{obj=_G.MacroFrameText, noSkin=true}
 		self:addSkinFrame{obj=_G.MacroFrameTextBackground, ft=ftype}
 		self:skinTabs{obj=this, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
-		self:skinStdButton{obj=_G.MacroEditButton}
-		self:skinStdButton{obj=_G.MacroCancelButton}
-		self:skinStdButton{obj=_G.MacroSaveButton}
-		self:skinStdButton{obj=_G.MacroDeleteButton}
-		self:skinStdButton{obj=_G.MacroNewButton, x2=-2}
-		self:skinStdButton{obj=_G.MacroExitButton, x1=2}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.MacroEditButton}
+			self:skinStdButton{obj=_G.MacroCancelButton}
+			self:skinStdButton{obj=_G.MacroSaveButton}
+			self:skinStdButton{obj=_G.MacroDeleteButton}
+			self:skinStdButton{obj=_G.MacroNewButton, x2=-2}
+			self:skinStdButton{obj=_G.MacroExitButton, x1=2}
+		end
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon, grey=true, ga=0.85}
+		end
 		for i = 1, _G.MAX_ACCOUNT_MACROS do
 			_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, grey=true, ga=0.85}
+			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true}
 		self:Unhook(this, "OnShow")
@@ -3096,14 +3109,18 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:adjHeight{obj=this, adj=20}
 		self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
 		self:skinEditBox{obj=_G.MacroPopupEditBox}
-		self:skinStdButton{obj=this.BorderBox.CancelButton}
-		self:skinStdButton{obj=this.BorderBox.OkayButton}
 		self:adjHeight{obj=_G.MacroPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
 		self:skinSlider{obj=_G.MacroPopupScrollFrame.ScrollBar, rt="background"}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=-2, y2=4}
+		if self.modBtns then
+			self:skinStdButton{obj=this.BorderBox.CancelButton}
+			self:skinStdButton{obj=this.BorderBox.OkayButton}
+		end
 		for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
 			_G["MacroPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], reParent={_G["MacroPopupButton" .. i .. "Name"]}}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], reParent={_G["MacroPopupButton" .. i .. "Name"]}, grey=true, ga=0.85}
+			end
 		end
 		self:Unhook(this, "OnShow")
 	end)
@@ -4582,17 +4599,23 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.RaidFrame, "OnShow", function(this)
-		self:skinCheckButton{obj=_G.RaidFrameAllAssistCheckButton}
-		self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton}
-		self:skinStdButton{obj=_G.RaidFrameRaidInfoButton}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.RaidFrameAllAssistCheckButton}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.RaidFrameConvertToRaidButton}
+			self:skinStdButton{obj=_G.RaidFrameRaidInfoButton}
+		end
 
 		-- RaidInfo Frame
 		self:addSkinFrame{obj=_G.RaidInfoInstanceLabel, ft=ftype, kfs=true}
 		self:addSkinFrame{obj=_G.RaidInfoIDLabel, ft=ftype, kfs=true}
-		self:skinCloseButton{obj=_G.RaidInfoCloseButton}
 		self:skinSlider{obj=_G.RaidInfoScrollFrame.scrollBar}
-		self:skinStdButton{obj=_G.RaidInfoExtendButton}
-		self:skinStdButton{obj=_G.RaidInfoCancelButton}
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.RaidInfoCloseButton}
+			self:skinStdButton{obj=_G.RaidInfoExtendButton}
+			self:skinStdButton{obj=_G.RaidInfoCancelButton}
+		end
 		self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -5393,31 +5416,37 @@ then
 			skinFrame(PTR_IR.AlertFrame.text)
 			skinFrame(PTR_IR.AlertFrame.AdditionalInfo, true)
 			skinFrame(PTR_IR.AlertFrame)
-			aObj:skinCloseButton{obj=PTR_IR.AlertFrame.CloseButton}
-			aObj:skinStdButton{obj=PTR_IR.AlertFrame.SubmitButton}
-	        for i = 1, #PTR_IR.AlertFrame.CheckButtons do
-				aObj:skinCheckButton{obj=PTR_IR.AlertFrame.CheckButtons[i]}
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=PTR_IR.AlertFrame.CloseButton}
+				aObj:skinStdButton{obj=PTR_IR.AlertFrame.SubmitButton}
 			end
-
 			-- QuestSubmit
-			for i = 1, #PTR_IR.QuestSubmit.CheckButtons do
-				aObj:skinCheckButton{obj=PTR_IR.QuestSubmit.CheckButtons[i]}
-			end
 			skinFrame(PTR_IR.QuestSubmit.AdditionalInfo, true)
 			skinFrame(PTR_IR.QuestSubmit)
+			if aObj.modChkBtns then
+		        for i = 1, #PTR_IR.AlertFrame.CheckButtons do
+					aObj:skinCheckButton{obj=PTR_IR.AlertFrame.CheckButtons[i]}
+				end
+				for i = 1, #PTR_IR.QuestSubmit.CheckButtons do
+					aObj:skinCheckButton{obj=PTR_IR.QuestSubmit.CheckButtons[i]}
+				end
+			end
 
 			-- EventPopup
-			aObj:skinCloseButton{obj=PTR_IR.EventPopup.CloseButton}
-			aObj:skinStdButton{obj=PTR_IR.EventPopup.SubmitButton}
-			skinFrame(PTR_IR.EventPopup.CheckBoxes)
+			if aObj.modBtns then
+				aObj:skinCloseButton{obj=PTR_IR.EventPopup.CloseButton}
+				aObj:skinStdButton{obj=PTR_IR.EventPopup.SubmitButton}
+			end
 			skinFrame(PTR_IR.EventPopup.Body)
 			skinFrame(PTR_IR.EventPopup)
 
-			aObj:SecureHook(PTR_IR, "GetCheckBoxFromPool", function()
-				for cBox in PTR_IR.EventPopup.Pool:EnumerateActive() do
-					aObj:skinCheckButton{obj=cBox}
-				end
-			end)
+			if aObj.modChkBtns then
+				aObj:SecureHook(PTR_IR, "GetCheckBoxFromPool", function()
+					for cBox in PTR_IR.EventPopup.Pool:EnumerateActive() do
+						aObj:skinCheckButton{obj=cBox}
+					end
+				end)
+			end
 
 			-- Buttons
 			skinFrame(_G.Confused)

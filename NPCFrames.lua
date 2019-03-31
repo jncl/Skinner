@@ -107,10 +107,10 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		if self.modChkBtns then
 			self:skinCheckButton{obj=_G.IsUsableCheckButton}
 			self:skinCheckButton{obj=_G.ShowOnPlayerCheckButton}
-			self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:skinCheckButton{obj=_G.ExactMatchCheckButton}
 		end
 		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
 		end
 		if self.modBtns then
@@ -207,16 +207,15 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	if not self.db.profile.AzeriteRespecUI or self.initialized.AzeriteRespecUI then return end
 	self.initialized.AzeriteRespecUI = true
 
-	self:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot}
+	self.modUIBtns:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot, grey=true} -- use module function
 	_G.AzeriteRespecFrame.ButtonFrame:DisableDrawLayer("BORDER")
 	self:removeMagicBtnTex(_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
 	_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
+	_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
 	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true}
-
-	if self.modBtnBs then
-		_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
-		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
+	if self.modBtns then
 		self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton, noSkin=true}
+		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
 	end
 
 end
@@ -315,35 +314,37 @@ aObj.blizzLoDFrames[ftype].BlackMarketUI = function(self)
 	self:SecureHookScript(_G.BlackMarketFrame, "OnShow", function(this)
 		-- move title text
 		self:moveObject{obj=self:getRegion(this, 22), y=-4}
-		-- HotDeal frame
-		self:keepFontStrings(this.HotDeal)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock}}
-			self:clrButtonBorder(this.HotDeal.Item)
-		end
-
 		-- column headings
 		for _, type in pairs{"Name", "Level", "Type", "Duration", "HighBidder", "CurrentBid"} do
-			obj =
-			self:keepFontStrings(this["Column" .. type])
-			self:addSkinFrame{obj=this["Column" .. type], ft=ftype, aso={bd=5}}
+			self:addSkinFrame{obj=this["Column" .. type], ft=ftype, kfs=true, aso={bd=5}, ofs=0}
 		end
 		self:skinSlider{obj=_G.BlackMarketScrollFrameScrollBar, wdth=-4}
 		this.MoneyFrameBorder:DisableDrawLayer("BACKGROUND")
 		self:skinMoneyFrame{obj=_G.BlackMarketBidPrice}
-		self:skinStdButton{obj=this.BidButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1}
+		if self.modBtns then
+			self:skinStdButton{obj=this.BidButton}
+		end
+		-- HotDeal frame
+		self:keepFontStrings(this.HotDeal)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.HotDeal.Item, reParent={this.HotDeal.Item.Count, this.HotDeal.Item.Stock}}
+		end
+
 
 		local function skinSFButtons(scrollFrame)
+			local btn
 			for i = 1, #scrollFrame.buttons do
-				self:removeRegions(scrollFrame.buttons[i], {1, 2, 3})
-				scrollFrame.buttons[i].Item:GetNormalTexture():SetTexture(nil)
-				scrollFrame.buttons[i].Item:GetPushedTexture():SetTexture(nil)
-				if self.modBtnBs then
-					self:addButtonBorder{obj=scrollFrame.buttons[i].Item, reParent={scrollFrame.buttons[i].Item.Count, scrollFrame.buttons[i].Item.Stock}}
-					self:clrButtonBorder(scrollFrame.buttons[i].Item)
+				btn = scrollFrame.buttons[i]
+				aObj:removeRegions(btn, {1, 2, 3})
+				btn.Item:GetNormalTexture():SetTexture(nil)
+				btn.Item:GetPushedTexture():SetTexture(nil)
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=btn.Item, reParent={btn.Item.Count, btn.Item.Stock}}
+					aObj:clrButtonBorder(btn.Item)
 				end
 			end
+			btn = nil
 		end
 		self:SecureHook("BlackMarketScrollFrame_Update", function(this)
 			skinSFButtons(_G.BlackMarketScrollFrame)
@@ -506,9 +507,9 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:getRegion(_G.MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
 			_G.MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
 			_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
-			self:addButtonBorder{obj=_G.MerchantRepairAllButton}
-			self:addButtonBorder{obj=_G.MerchantRepairItemButton}
-			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton}
+			self:addButtonBorder{obj=_G.MerchantRepairAllButton, grey=true, ga=0.85}
+			self:addButtonBorder{obj=_G.MerchantRepairItemButton, grey=true, ga=0.85}
+			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, grey=true, ga=0.85}
 		else
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
 		end
@@ -563,7 +564,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0}
 			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0}
-			self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, grey=true}
+			self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, grey=true, ga=0.85}
 			self:addButtonBorder{obj=_G.PetStableDiet, ofs=0, x2=-1}
 		end
 		-- slots
@@ -573,7 +574,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 				self:resizeEmptyTexture(_G["PetStableActivePet" .. i].Background)
 			else
 				_G["PetStableActivePet" .. i].Background:Hide()
-				self:addButtonBorder{obj=_G["PetStableActivePet" .. i], grey=true}
+				self:addButtonBorder{obj=_G["PetStableActivePet" .. i], grey=true, ga=0.85}
 			end
 		end
 		for i = 1, _G.NUM_PET_STABLE_SLOTS do
@@ -581,7 +582,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 				self:resizeEmptyTexture(_G["PetStableStabledPet" .. i].Background)
 			else
 				_G["PetStableStabledPet" .. i].Background:Hide()
-				self:addButtonBorder{obj=_G["PetStableStabledPet" .. i], grey=true}
+				self:addButtonBorder{obj=_G["PetStableStabledPet" .. i], grey=true, ga=0.85}
 			end
 		end
 
@@ -596,17 +597,20 @@ aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
 
 	self:SecureHookScript(_G.QuestChoiceFrame, "OnShow", function(this)
 		this.DummyString:SetTextColor(self.BT:GetRGB())
-		-- for i = 1, 4 do
 		for _, choice in pairs(this.Options) do
 			choice.Header.Background:SetTexture(nil)
 			choice.Header.Text:SetTextColor(self.HT:GetRGB())
 			choice.OptionText:SetTextColor(self.BT:GetRGB())
-			self:addButtonBorder{obj=choice.Rewards.Item, relTo=choice.Rewards.Item.Icon}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=choice.Rewards.Item, relTo=choice.Rewards.Item.Icon}
+			end
 			choice.Rewards.Item.Name:SetTextColor(self.BT:GetRGB())
 			choice.Rewards.ReputationsFrame.Reputation1.Faction:SetTextColor(self.BT:GetRGB())
 			self:moveObject{obj=choice.Header, y=15}
-			self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton1}
-			self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton2}
+			if self.modBtns then
+				self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton1}
+				self:skinStdButton{obj=choice.OptionButtonsContainer.OptionButton2}
+			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-13, y1=-13}
 		self:Unhook(this, "OnShow")

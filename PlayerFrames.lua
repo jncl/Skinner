@@ -3328,29 +3328,29 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 
 			aObj:addSkinFrame{obj=frame, ft=ftype, x1=144, y1=6, x2=-142, y2=-2}
 
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.pitchFrame.PitchUpButton}
+				self:addButtonBorder{obj=this.pitchFrame.PitchDownButton}
+				self:addButtonBorder{obj=this.leaveFrame.LeaveButton}
+				for i = 1, 6 do
+					self:addButtonBorder{obj=this["SpellButton" .. i], abt=true}
+				end
+			end
+
 		end
 
 		self:SecureHook(this, "Show", function(this, ...)
 			skinOverrideActionBar(this)
 		end)
+		if this:IsShown() then
+			skinOverrideActionBar(this)
+		end
 		self:SecureHook("OverrideActionBar_SetSkin", function(skin)
 			skinOverrideActionBar(this)
 		end)
 
-		if this:IsShown() then
-			skinOverrideActionBar(this)
-		end
-
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.pitchFrame.PitchUpButton}
-			self:addButtonBorder{obj=this.pitchFrame.PitchDownButton}
-			self:addButtonBorder{obj=this.leaveFrame.LeaveButton}
-			for i = 1, 6 do
-				self:addButtonBorder{obj=this["SpellButton" .. i], abt=true, sec=true, es=20}
-			end
-		end
-
 		self:Unhook(this, "OnShow")
+
 	end)
 
 end
@@ -3439,8 +3439,8 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			this.BonusFrame.ShadowOverlay:DisableDrawLayer("OVERLAY")
 			self:removeMagicBtnTex(this.QueueButton)
 			if self.modBtns then
-				self:skinCloseButton{obj=this.BonusFrame.BrawlHelpBox.CloseButton, noSkin=true}
 				self:skinStdButton{obj=this.QueueButton}
+				self:skinCloseButton{obj=this.BonusFrame.BrawlHelpBox.CloseButton, noSkin=true}
 			end
 			self:Unhook(this, "OnShow")
 		end)
