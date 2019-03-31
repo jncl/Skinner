@@ -78,19 +78,23 @@ local function skinDDMLists()
 
 end
 
-aObj.addonsToSkin.Altoholic = function(self) -- v 8.0.003
+aObj.addonsToSkin.Altoholic = function(self) -- r190
 
 	-- Main Frame
 	self:skinEditBox{obj=_G.AltoholicFrame_SearchEditBox, regs={9}}
-	self:skinStdButton{obj=_G.AltoholicFrame_ResetButton}
-	self:skinStdButton{obj=_G.AltoholicFrame_SearchButton}
-	self:addSkinFrame{obj=_G.AltoholicFrame, ft="a", kfs=true, y1=-11, y2=3}
+	if self.modBtns then
+		self:skinStdButton{obj=_G.AltoholicFrame_ResetButton}
+		self:skinStdButton{obj=_G.AltoholicFrame_SearchButton}
+	end
+	self:addSkinFrame{obj=_G.AltoholicFrame, ft="a", kfs=true, y1=-11, x2=0, y2=4}
 	-- Tabs
 	self:skinTabs{obj=_G.AltoholicFrame}
 
 	-- Message Box
-	self:skinStdButton{obj=_G.AltoMessageBox.ButtonYes}
-	self:skinStdButton{obj=_G.ButtonNo} -- N.B. not prefixed !
+	if self.modBtns then
+		self:skinStdButton{obj=_G.AltoMessageBox.ButtonYes}
+		self:skinStdButton{obj=_G.ButtonNo} -- N.B. not prefixed !
+	end
 	self:addSkinFrame{obj=_G.AltoMessageBox, ft="a", kfs=true, nb=true, x1=6, y1=-6, x2=-6, y2=6}
 
 	-- Tooltip
@@ -108,24 +112,36 @@ aObj.addonsToSkin.Altoholic = function(self) -- v 8.0.003
 	self:addSkinFrame{obj=_G.AltoholicFrameSharingClients, ft="a", kfs=true, nb=true}
 	skinScrollBar(_G.AltoholicFrameSharedContent.ScrollFrame)
 	-- SharedContent option menu panel
-	self:skinExpandButton{obj=_G.AltoholicSharedContent_ToggleAll, sap=true}
 	self:addSkinFrame{obj=_G.AltoholicFrameSharedContent, ft="a", kfs=true, nb=true}
-	for i = 1, 14 do
-		self:skinExpandButton{obj=_G["AltoholicFrameSharedContentEntry" .. i .. "Collapse"], sap=true, plus=true}
-		self:skinCheckButton{obj=_G["AltoholicFrameSharedContentEntry" .. i .. "Check"]}
+	if self.modBtns then
+		self:skinExpandButton{obj=_G.AltoholicSharedContent_ToggleAll, sap=true}
+		for i = 1, 14 do
+			if self.modBtns then
+				self:skinExpandButton{obj=_G["AltoholicFrameSharedContentEntry" .. i .. "Collapse"], sap=true, plus=true}
+			end
+		end
+	end
+	if self.modChkBtns then
+		for i = 1, 14 do
+			self:skinCheckButton{obj=_G["AltoholicFrameSharedContentEntry" .. i .. "Check"]}
+		end
 	end
 
 	self:skinEditBox{obj=_G.AltoAccountSharing_AccNameEditBox, regs={9}}
-	self:skinExpandButton{obj=_G.AltoAccountSharing_ToggleAll, sap=true, plus=true}
 	self:skinEditBox{obj=_G.AltoAccountSharing_AccTargetEditBox, regs={9}}
 	skinScrollBar(_G.AltoholicFrameAvailableContent.ScrollFrame)
-	for i = 1, 10 do
-		self:skinExpandButton{obj=_G["AltoholicFrameAvailableContentEntry" .. i .. "Collapse"], sap=true, plus=true}
+	if self.modBtns then
+		self:skinExpandButton{obj=_G.AltoAccountSharing_ToggleAll, sap=true, plus=true}
+		for i = 1, 10 do
+			self:skinExpandButton{obj=_G["AltoholicFrameAvailableContentEntry" .. i .. "Collapse"], sap=true, plus=true}
+		end
 	end
 	self:addSkinFrame{obj=_G.AltoholicFrameAvailableContent, ft="a", kfs=true, nb=true}
-	self:skinStdButton{obj=_G.AltoAccountSharing_InfoButton}
-	self:skinStdButton{obj=_G.AltoAccountSharing_SendButton}
-	self:skinStdButton{obj=_G.AltoAccountSharing_CancelButton}
+	if self.modBtns then
+		self:skinStdButton{obj=_G.AltoAccountSharing_InfoButton}
+		self:skinStdButton{obj=_G.AltoAccountSharing_SendButton}
+		self:skinStdButton{obj=_G.AltoAccountSharing_CancelButton}
+	end
 	self:addSkinFrame{obj=_G.AltoAccountSharing, ft="a", kfs=true, nb=true}
 
 	-- Calendar option menu panel
@@ -143,7 +159,9 @@ aObj.lodAddons.Altoholic_Summary = function(self)
 
 	skinMenuItems(_G.AltoholicTabSummary, 6) -- ? 7 CurrentMode
 	skinSortBtns(_G.AltoholicTabSummary.SortButtons)
-	self:skinExpandButton{obj=_G.AltoholicTabSummary.ToggleView, sap=true}
+	if self.modBtns then
+		self:skinExpandButton{obj=_G.AltoholicTabSummary.ToggleView, sap=true}
+	end
 	-- N.B. when toggle is clicked the entries are toggled but the texture remains the same
 
 	skinScrollBar(_G.AltoholicFrameSummary.ScrollFrame)
@@ -157,6 +175,8 @@ aObj.lodAddons.Altoholic_Summary = function(self)
 		self:addButtonBorder{obj=_G.AltoholicTabSummary.DataStoreOptionsIcon}
 		self:addButtonBorder{obj=_G.AltoholicTabSummary.AltoholicOptionsIcon}
 		self:addButtonBorder{obj=_G.AltoholicTabSummary.RequestSharing}
+	end
+	if self.modBtns then
 		-- skin minus/plus buttons
 		for i = 1, 14 do
 			self:skinExpandButton{obj=_G.AltoholicFrameSummary["Entry" .. i].Collapse, sap=true}
@@ -218,7 +238,9 @@ aObj.lodAddons.Altoholic_Characters = function(self)
 			btn.Slot:SetAlpha(0)
 			btn.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
 			btn.SubSpellName:SetTextColor(self.BTr, self.BTg, self.BTb)
-			self:addButtonBorder{obj=btn, relTo=btn.Icon}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=btn, relTo=btn.Icon}
+			end
 		end
 		btn = nil
 	end)
@@ -235,7 +257,9 @@ aObj.lodAddons.Altoholic_Characters = function(self)
 	-- 	self:skinExpandButton{obj=_G["AltoholicFrameRecipesEntry" .. i .. "Collapse"], sap=true, plus=true}
 	-- end
 	skinScrollBar(_G.AltoholicTabCharacters.Recipes.ScrollFrame)
-	self:addButtonBorder{obj=_G.AltoholicTabCharacters.Recipes.LinkButton, x2=-3}
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.AltoholicTabCharacters.Recipes.LinkButton, x2=-3}
+	end
 	self:skinEditBox{obj=_G.AltoholicTabCharacters.Recipes.SearchBox, regs={6}} -- 6 is text
 
 	-- Garrison

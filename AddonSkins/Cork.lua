@@ -37,7 +37,7 @@ aObj.addonsToSkin.Cork = function(self) -- v 7.1.0.62-Beta
 				child.left:SetAlpha(0)
 				child.right:SetAlpha(0)
 				child.middle:SetAlpha(0)
-				self:addSkinFrame{obj=child, ft="a", nb=true, noBdr=aObj.isTT, x1=6, y1=0, x2=-6, y2=-3}
+				self:addSkinFrame{obj=child, ft="a", nb=true, noBdr=aObj.isTT, x1=6, y1=0, x2=-6, y2=-1}
 				if self.isTT then
 					child.sf.ignore = true
 					if child:IsEnabled() then
