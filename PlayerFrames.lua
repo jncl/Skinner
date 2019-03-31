@@ -3317,6 +3317,32 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		skinAutoPopUps()
 	end
 
+	-- remove Glow/Sheen textures from WorldQuest modules
+	local function updTrackerModules()
+		local module
+		for i = 1, #_G.ObjectiveTrackerFrame.MODULES do
+			module = _G.ObjectiveTrackerFrame.MODULES[i]
+			if module.ShowWorldQuests then
+				for k, blk in pairs(module.usedBlocks) do
+					for l, child in pairs{blk.ScrollContents:GetChildren()} do
+						-- _G.Spew("Module" .. i .. "-" .. k.. "-" .. l, child)
+						if child.Glow then
+							child.Glow:SetTexture(nil)
+							child.Sheen:SetTexture(nil)
+						end
+					end
+				end
+			end
+		end
+		module = nil
+	end
+	updTrackerModules() -- update any existing modules
+	-- hook this to handle new modules
+	self:SecureHook("ObjectiveTracker_Update", function(reason, id)
+		-- aObj:Debug("ObjectiveTracker_Update: [%s, %s]", reason, id)
+		updTrackerModules()
+	end)
+
 end
 
 aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
