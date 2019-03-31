@@ -5070,7 +5070,6 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	if not self.db.profile.UIWidgets or self.initialized.UIWidgets then return end
 	self.initialized.UIWidgets = true
 
-	-- Documentation in UIWidgetManagerDocumentation.lua
 	local function setTextColor(textObject)
 		local tClr = {textObject:GetTextColor()}
 		-- aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
@@ -5087,6 +5086,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 		_G.wipe(tClr)
 	end
+
+	-- Documentation in UIWidgetManagerDocumentation.lua (UIWidgetVisualizationType)
 	local function skinWidget(wFrame, wInfo)
 		-- aObj:Debug("skinWidget: [%s, %s, %s]", wFrame, wFrame.widgetType, wInfo)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
@@ -5096,7 +5097,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 2 then -- StatusBar
 			aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
 			aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
-		elseif wFrame.widgetType == 3 then -- DoubleStatusBar
+		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
 			aObj:skinStatusBar{obj=wFrame.LeftBar, fi=0, bgTex=wFrame.LeftBar.BG, nilFuncs=true}
 			aObj:removeRegions(wFrame.LeftBar, {2, 3, 4}) -- border textures
 			aObj:skinStatusBar{obj=wFrame.RightBar, fi=0, bgTex=wFrame.RightBar.BG, nilFuncs=true}
@@ -5141,6 +5142,13 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon}
 			end
+		elseif wFrame.widgetType == 14 then -- DoubleStateIconRow
+			-- TODO: add button borders if required
+			-- if aObj.modBtnBs then
+			-- 	for icon in wFrame.iconPool:EnumerateActive() do
+			--
+			-- 	end
+			-- end
 		end
 	end
 

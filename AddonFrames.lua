@@ -221,10 +221,10 @@ end
 function aObj:PLAYER_ENTERING_WORLD()
 	-- self:Debug("PLAYER_ENTERING_WORLD")
 
-	-- use this to handle textures supplied by other addons (e.g. XPerl)
-	self:updateSBTexture()
-
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	-- delay issuing callback to allow for code to be loaded
+	_G.C_Timer.After(0.5, function()
+		self.callbacks:Fire("Player_Entering_World")
+	end)
 
 end
 

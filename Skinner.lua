@@ -394,6 +394,10 @@ function aObj:OnEnable()
 			self.prdb.BdBorderTexture = override
 		end
 	end)
+	self.RegisterCallback("OnEnable", "Player_Entering_World", function(this)
+		self:updateSBTexture()
+		self.UnregisterCallback("OnEnable", "Player_Entering_World")
+	end)
 
 	-- hook to handle textured tabs on Blizzard & other Frames
 	self.tabFrames = {}
