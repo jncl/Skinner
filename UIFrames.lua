@@ -3215,18 +3215,14 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				bar.Tick:GetHighlightTexture():SetTexture(nil)
 			end
 		end
-		bar = nil
-		local function adjustBar(bar)
-            -- handle in combat
-            if aObj.inCombat then
-                aObj:add2Table(aObj.oocTab, {adjustBar, {bar}})
-                return
-            end
-			bar:ClearAllPoints()
-			bar:SetPoint("BOTTOM", _G.StatusTrackingBarManager:GetParent(), 0, -9)
-		end
 		-- hook this to move top status bar when more than 1 bar
 		self:SecureHook(_G.StatusTrackingBarManager, "LayoutBar", function(this, bar, barWidth, isTopBar, isDouble)
+			-- aObj:Debug("STBM LayoutBar: [%s, %s, %s]", isTopBar, isDouble, _G.InCombatLockdown())
+			-- handle in combat
+			if _G.InCombatLockdown() then
+			    return
+			end
+
 			if isTopBar
 			and isDouble
 			then

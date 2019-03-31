@@ -288,7 +288,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	-- self:Debug("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
 	-- handle in combat
-	if self.inCombat then
+	if _G.InCombatLockdown() then
 		self:add2Table(self.oocTab, {self.checkAndRun, {self, funcName, funcType, LoD, quiet}})
 		return
 	end
@@ -332,7 +332,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	-- self:Debug("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, LoD, addonFunc, type(addonFunc))
 
 	-- handle in combat
-	if self.inCombat then
+	if _G.InCombatLockdown() then
 		self:add2Table(self.oocTab, {self.checkAndRunAddOn, {self, addonName, LoD, addonFunc}})
 		return
 	end

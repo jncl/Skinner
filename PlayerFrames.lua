@@ -1264,7 +1264,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	local function skinCRFCframes()
 
 		-- handle in combat as UnitFrame uses SecureUnitButtonTemplate
-		if aObj.inCombat then
+		if _G.InCombatLockdown() then
 			aObj:add2Table(aObj.oocTab, {skinCRFCframes, {nil}})
 			return
 		end
@@ -3691,7 +3691,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		local function updBtn(btn)
 
             -- handle in combat
-            if aObj.inCombat then
+            if _G.InCombatLockdown() then
                 aObj:add2Table(aObj.oocTab, {updBtn, {btn}})
                 return
             end

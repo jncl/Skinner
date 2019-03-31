@@ -752,9 +752,8 @@ local function __addButtonBorder(opts)
 	if not opts.obj then return end
 
 	-- handle in combat
-	if aObj.inCombat
-	and (opts.sec
-	or opts.seca)
+	if _G.InCombatLockdown()
+	and (opts.sec or opts.seca or opts.secu)
 	then
 		aObj:add2Table(aObj.oocTab, {__addButtonBorder, {opts}})
 		return

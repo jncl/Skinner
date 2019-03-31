@@ -283,14 +283,9 @@ end
 function aObj:OnEnable()
 
 	-- handle InCombat issues
-	self.inCombat = _G.InCombatLockdown() or _G.UnitAffectingCombat("player")
-	self:RegisterEvent("PLAYER_REGEN_DISABLED", function()
-		self.inCombat = true
-	end)
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-		self.inCombat = false
-		for i = 1, #self.oocTab do
+ 		for i = 1, #self.oocTab do
 			self.oocTab[i][1](unpack(self.oocTab[i][2]))
 		end
 		_G.wipe(self.oocTab)
@@ -504,7 +499,7 @@ local function __addSkinButton(opts)
 		-- hook Show/Hide methods
         -- changed to hook scripts as functions don't always work
 		aObj:hookScript(opts.hook, "OnShow", function(this)
-			if aObj.inCombat
+			if _G.InCombatLockdown()
 			and (opts.sec
 			or opts.sab)
 			then
@@ -514,7 +509,7 @@ local function __addSkinButton(opts)
 			opts.obj.sb:Show()
 		end)
 		aObj:hookScript(opts.hook, "OnHide", function(this)
-			if aObj.inCombat
+			if _G.InCombatLockdown()
 			and (opts.sec
 			or opts.sab)
 			then
