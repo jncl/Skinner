@@ -1103,22 +1103,21 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -5, 3, 7, -8
 
 		self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(this)
-			this:DisableDrawLayer("BACKGROUND")
+			-- this:DisableDrawLayer("BACKGROUND")
+			self:skinDropDown{obj=this.RightClickDropDown}
+			self:skinDropDown{obj=this.WeaponDropDown}
+			-- add skin frame, so tabs look better than without a frame
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 			if self.modBtnBs then
 				skinPageBtns(this)
 			end
-			self:skinDropDown{obj=this.RightClickDropDown}
-			self:skinDropDown{obj=this.WeaponDropDown}
+
 			if self.modBtns then
 				self:SecureHookScript(this.HelpBox, "OnShow", function(this)
 					self:skinCloseButton{obj=this.CloseButton,noSkin=true}
 					self:Unhook(this, "OnShow")
 				end)
 			end
-
-			-- add skin frame, so tabs look better than without a frame
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
-
 			self:Unhook(this, "OnShow")
 		end)
 		if this.ItemsCollectionFrame:IsShown() then
@@ -1156,7 +1155,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 
 			-- add skin frame, so tabs look better than without a frame
-			self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -1168,7 +1167,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 
 			-- add skin frame, so tabs look better than without a frame
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
 
 			self:Unhook(this, "OnShow")
 		end)
