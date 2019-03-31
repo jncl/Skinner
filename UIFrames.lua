@@ -4143,18 +4143,18 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 	end
 	self:SecureHookScript(_G.OrderHallTalentFrame, "OnShow", function(this)
 
-		this.OverlayElements.CornerLogo:SetTexture(nil)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=2}
-		this.Currency.Icon:SetAlpha(1) -- show currency icon
-		if self.modBtns then
-			self:skinCloseButton{obj=_G.OrderHallTalentFrameCloseButton}
-		end
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
-		end
 		for i = 1, #this.FrameTick do
 			this.FrameTick[i]:SetTextColor(self.BT:GetRGB())
 		end
+		self:nilTexture(this.OverlayElements.CornerLogo, true)
+		self:nilTexture(this.CloseButton.Border, true)
+		this.Currency.Icon:SetAlpha(1) -- show currency icon
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
+		end
+		this.Inset:DisableDrawLayer("BACKGROUND")
+		self:removeNineSlice(this.Inset.NineSlice)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=2}
 		skinBtns(this)
 		self:SecureHook(this, "RefreshAllData", function(this)
 			for choiceTex in this.choiceTexturePool:EnumerateActive() do
@@ -4170,7 +4170,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 	self:SecureHookScript(_G.OrderHallCommandBar, "OnShow", function(this)
 
 		this:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, ofs=4, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, ofs=4, y2=-2} -- N.B. Icons on command bar need to be visible
 		self:Unhook(this, "OnShow")
 
 	end)
