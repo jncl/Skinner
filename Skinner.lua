@@ -8,14 +8,15 @@ local LibStub = _G.LibStub
 do
 	-- check to see if required libraries are loaded
 	assert(LibStub, aName .. " requires LibStub")
-	local lTab = {"CallbackHandler-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0", "AceLocale-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "LibSharedMedia-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0"}
-	for i = 1, #lTab do
-		assert(LibStub:GetLibrary(lTab[i], true), aName .. " requires " .. lTab[i])
+	local lTab = {"AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceLocale-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "CallbackHandler-1.0", "LibSharedMedia-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0"}
+	for _, lib in ipairs(lTab) do
+		local hasError = not assert(LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
 	end
 	lTab = nil
+	if hasError then return end
 
 	-- create the addon
-	LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+	LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	-- add callbacks
 	aObj.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
