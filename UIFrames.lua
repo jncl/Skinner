@@ -3551,7 +3551,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	-- Interface
 	self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
-		self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, ignore=true, ignht=true, x1=6, y1=2, x2=-6, y2=-4}
+		self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, ignore=true, ignht=true, x1=6, y1=2, x2=-6, y2=-3}
 		self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel}
 		self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay}
 		self:skinStdButton{obj=_G.InterfaceOptionsFrameDefaults}
@@ -3621,7 +3621,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	-- hook this to skin Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
-		self:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel.GetName and panel:GetName() or "n/a")
+		-- self:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel.GetName and panel:GetName() or "n/a")
 
 		-- let AddOn skins know when IOF panel is going to be skinned
 		self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
