@@ -14,52 +14,16 @@ Legend:
 ?	O	Make role icons square with a button border
 		- use UI-LFG-ICON-ROLES.BLP as source for all, size them as required
 
-?	O	Eliminate taint from PartyFrames, BossFrames, TargetFrameToT
+?	O	Eliminate bugs from skinning the PartyFrames, BossFrames, TargetFrameToT
 
 	O	change all occurrences of self.bColour to self.bClr
 
 	O	change all occurrences of self.bbColour to self.bbClr
 
-	N	PTR 8.1.5
-		- Added
-√			- NewToyAlertSystem
-		- Deleted
-√			- WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
-		- Updated
-			- Button replaced with ItemButton
-√				- GuildBankUI
-√				- InspectPaperDollFrame
-				- TutorialKeyboardMouseFrame
-				- AzeriteItemToasts
-√				- BankFrame
-x				- ContainerFrame
-x				- EquipmentFlyout
-√				- LootFrame
-x				- MailFrame
-x				- MainMenuBarBagButtons
-x				- MerchantFrame
-?				- PaperDollFrame
-				- StaticPopup
-				- TradeFrame
-≈			- UIWidgets create function has changed
-				- IslandsPartyPoseUI
-				- IslandsQueueUI
-				- NamePlates
-				- ObjectiveTracker
-				- WarboardUI
-				- GameTooltip
-x			- SlashCmd Quit has now become a SecureCmd
-x			- GameTooltip gains an ItemTooltip
+√	S	LiteBag, requested by epidemedabear, 12.03.19
 
-	I	Bottom Viewport, reported by Badpally, 15.02.19
-?		- Trying to use the Bottom Viewport crashes Wow.exe
+	I	Locales, reported by lery30, 18.03.19
+		-  Interface\AddOns\Skinner\Locales\Locale_enUS.lua:7: attempt to index a nil value
 
-√	I	GuildRosterManager, reported by epidemedabear, 22.02.18
-		-  ..\AddOns\Skinner\Skinner.lua line 1118: attempt to index field 'obj' (a nil value)
-		Skinner\Skinner.lua:1212: skinEditBox()
-		...e\AddOns\Skinner\AddonSkins\Guild_Roster_Manager.lua:150:
-		...e\AddOns\Skinner\AddonSkins\Guild_Roster_Manager.lua:5
-
-√	I	WorldMap & Mapster, reported by Fraktyl, 24.02.19
-		- Skinner\UIFrames.lua:4482: attempt to index local 'tex' (a number value)
-		Skinner\UIFrames.lua:4482: in function <Skinner\UIFrames.lua:4477>
+	I	On player login for first time, reported by scalp42, 23.03.19
+		- Skinner\Skinner-beta8.29482.1.lua:13: Skinner requires AceEvent-3.0
