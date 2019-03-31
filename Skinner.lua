@@ -143,8 +143,6 @@ function aObj:OnInitialize()
 	self.TRIVIAL_QUEST_DISPLAY = "|cff" .. self:RGBPercToHex(self.BT:GetRGB()) .. "%s (low level)|r"
 	self.IGNORED_QUEST_DISPLAY = "|cff" .. self:RGBPercToHex(self.IT:GetRGB()) .. "%s (ignored)|r"
 
-	-- Frame multipliers (still used in older skins)
-	self.FxMult, self.FyMult = 0.9, 0.87
 	-- EditBox regions to keep
 	self.ebRgns = {1, 2} -- 1 is text, 2 is a texture
 
@@ -270,9 +268,6 @@ function aObj:OnInitialize()
 
 	-- table to hold minimap buttons from other AddOn skins
 	self.mmButs = {}
-
-	-- stop CloseButton border texture being changed (OrderHallTalents & WarboardUI use this function)
-	_G.UIPanelCloseButton_SetBorderAtlas = _G.nop
 
 end
 

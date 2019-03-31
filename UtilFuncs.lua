@@ -885,8 +885,6 @@ function aObj:removeNineSlice(frame)
 	assert(frame, "Unknown object removeNineSlice\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- aObj:Debug("removeNineSlice: [%s, %s]", frame, frame:GetDebugName())
-
 	frame:DisableDrawLayer("BORDER")
 	frame:DisableDrawLayer("OVERLAY")
 

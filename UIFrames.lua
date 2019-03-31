@@ -2856,7 +2856,6 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 			local lfgTex = _G.LFGDungeonReadyDialog.background
 			lfgTex:SetAlpha(1) -- show texture
 			self:SecureHook("LFGDungeonReadyPopup_Update", function()
-				aObj:Debug("LFGDungeonReadyPopup_Update: [%s]", _G.LFGDungeonReadyPopup:GetHeight())
 				-- adjust texture to fit within skinFrame
 				lfgTex:SetWidth(288)
 				if _G.LFGDungeonReadyPopup:GetHeight() < 200 then
