@@ -272,7 +272,7 @@ local function skinMissionComplete(frame, naval)
     aObj:rmRegionsTex(frame.Stage.MissionInfo, naval and {1, 2, 3, 4, 5, 8, 9, 10} or {1, 2, 3, 4, 5, 11, 12, 13})
 
 end
-local function skinMissionList(ml)
+local function skinMissionList(ml, oFs)
 
 	ml:DisableDrawLayer("BORDER")
 	ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
@@ -280,7 +280,7 @@ local function skinMissionList(ml)
 	-- tabs at top
 	for i = 1, 2 do
 		ml["Tab" .. i]:DisableDrawLayer("BORDER")
-		aObj:addSkinFrame{obj=ml["Tab" .. i], ft=ftype, noBdr=aObj.isTT}
+		aObj:addSkinFrame{obj=ml["Tab" .. i], ft=ftype, noBdr=aObj.isTT, ofs=oFs or nil}
 		ml["Tab" .. i].sf.ignore = true -- don't change tab size
 		if aObj.isTT then
 			if i == 1 then
@@ -2075,6 +2075,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 				end
 			end
 			btn = nil
+			self:addSkinFrame{obj=this.List, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, ofs=5}
 			-- tabs at top
 			for _, type in pairs{"InProgress", "Available"} do
 				this[type]:GetNormalTexture():SetAlpha(0)
@@ -2302,7 +2303,8 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		this.MapTab.ScrollContainer.Child.TiledBackground:SetTexture(nil)
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
-			skinMissionList(this)
+			skinMissionList(this, -2)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=1, y1=1, x2=-2, y2=2}
 			self:Unhook(this, "OnShow")
 		end)
 		if this.MissionTab.MissionList:IsShown() then
