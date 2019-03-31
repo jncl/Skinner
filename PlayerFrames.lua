@@ -660,11 +660,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		self:SecureHookScript(_G.PaperDollEquipmentManagerPane, "OnShow", function(this)
 			self:skinSlider{obj=this.scrollBar, wdth=-4}
 			self:skinStdButton{obj=this.EquipSet}
-			if not self.isPTR then
-				this.EquipSet.ButtonBackground:SetAlpha(0)
-			else
-				this.EquipSet:DisableDrawLayer("BACKGROUND")
-			end
+			this.EquipSet:DisableDrawLayer("BACKGROUND")
 			self:skinStdButton{obj=this.SaveSet}
 			for i = 1, #this.buttons do
 				this.buttons[i]:DisableDrawLayer("BACKGROUND")
@@ -693,18 +689,9 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		end
 		if self.modBtnBs then
 			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
-				if not self.isPTR then
-					if btn.sbb
-					and not btn.hasItem
-					then
-						btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
-						btn.icon:SetTexture(nil)
-					end
-				else
-					if not _G.GetInventoryItemTexture("player", btn:GetID()) then
-						btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
-						btn.icon:SetTexture(nil)
-					end
+				if not _G.GetInventoryItemTexture("player", btn:GetID()) then
+					btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
+					btn.icon:SetTexture(nil)
 				end
 			end)
 		end
@@ -2865,7 +2852,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 			_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["LootButton" .. i], ibt=not self.isPTR}
+				self:addButtonBorder{obj=_G["LootButton" .. i]}
 			end
 		end
 		if self.modBtnBs then

@@ -680,14 +680,12 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
 	end)
-	if self.isPTR then
-		-- called params: frame, toyID
-		self:SecureHook(_G.NewToyAlertSystem, "setUpFunction", function(frame, ...)
-			-- aObj:Debug("NewToyAlertSystem: [%s, %s]", frame, ...)
-			frame:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-		end)
-	end
+	-- called params: frame, toyID
+	self:SecureHook(_G.NewToyAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("NewToyAlertSystem: [%s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+	end)
 
 	-- hook this to stop gradient texture whiteout
 	self:RawHook(_G.AlertFrame, "AddAlertFrame", function(this, frame)
@@ -5094,11 +5092,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		_G.wipe(tClr)
 	end
 	local function skinWidget(wFrame, wInfo)
-		-- if not self.isPTR then
-		-- 	-- aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.enabledState)
-		-- else
-		-- 	aObj:Debug("skinWidget: [%s, %s]", wFrame.widgetType, wInfo.visInfoDataFunction(wFrame.widgetID))
-		-- end
+		-- aObj:Debug("skinWidget: [%s, %s, %s]", wFrame, wFrame.widgetType, wInfo)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
@@ -5124,12 +5118,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 7 then -- IconTextAndCurrencies
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
-				if (not self.isPTR
-				and wInfo.enabledState == _G.Enum.WidgetEnabledState.Disabled)
-				or (self.isPTR
-				and wInfo.visInfoDataFunction(wFrame.widgetID))
-				then
-					wFrame.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				if wInfo.visInfoDataFunction(wFrame.widgetID) then
+					wFrame.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 1) -- grey border
 				else
 					wFrame.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
@@ -5158,22 +5148,26 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 	end
 
-	-- hook this to skin widgets
-	if not self.isPTR then
-		self:RawHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, widgetSetID, widgetType)
-			local wFrame = self.hooks[this].CreateWidget(this, widgetID, widgetSetID, widgetType)
-			-- aObj:Debug("UIWM CreateWidget: [%s, %s, %s, %s]", wFrame, widgetID, widgetSetID, widgetType)
-			self:secureHook(wFrame, "Setup", function(this, wInfo)
-				skinWidget(this, wInfo)
-				self:Unhook(this, "Setup")
-			end)
-			return wFrame
-		end, true)
-	else
-		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
-			-- aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
-			for widget in widgetContainer.widgetPools:EnumerateActive() do
-				skinWidget(widget, this:GetWidgetTypeInfo(widget.widgetType))
+	local function getWidgets(widgetContainer)
+		local count = 0
+		for widget in widgetContainer.widgetPools:EnumerateActive() do
+			count = count + 1
+			skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
+		end
+		return count
+	end
+	-- hook this to skin new widgets
+	self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
+		-- aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
+		getWidgets(widgetContainer)
+	end)
+
+	if _G.UnitLevel("player") > 109 then
+		-- this is to handle the DoubleStatusBar widget on Island Expeditions
+		self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
+			aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
+			 if getWidgets(_G.UIWidgetTopCenterContainerFrame) > 0 then
+		 		self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
 			end
 		end)
 	end
@@ -5324,21 +5318,6 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-
-	if not self.isPTR then
-		-- this tooltip is also used by the FlightMap
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.WorldMapTooltip)
-		end)
-		-- tooltips
-		_G.C_Timer.After(0.1, function()
-			self:add2Table(self.ttList, _G.WorldMapCompareTooltip1)
-			self:add2Table(self.ttList, _G.WorldMapCompareTooltip2)
-			-- make these tooltip appear above other ones
-			self:RaiseFrameLevelByFour(_G.WorldMapCompareTooltip1)
-			self:RaiseFrameLevelByFour(_G.WorldMapCompareTooltip2)
-		end)
-	end
 
 end
 
