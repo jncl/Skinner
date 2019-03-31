@@ -69,10 +69,6 @@ do
 
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
-	-- player levels
-	aObj.uLvl = _G.UnitLevel("player")
-	-- max player level
-	aObj.mLvl = _G.MAX_PLAYER_LEVEL_TABLE[_G.GetExpansionLevel()]
 
 end
 
@@ -369,7 +365,7 @@ function aObj:OnEnable()
 	-- track when trade frame is opened (used by ProfessionTabs)
 	self:RegisterEvent("TRADE_SHOW")
 
-	if self.uLvl >= self.mLvl - 5
+	if _G.UnitLevel("player") >= _G.MAX_PLAYER_LEVEL - 5
 	and not _G.IsTrialAccount()
 	then
 		-- track when player levels up, to manage MainMenuBars' WatchBars' placement

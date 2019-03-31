@@ -280,7 +280,7 @@ function aObj:PLAYER_LEVEL_UP(...)
 
 	local newPlayerLevel = _G.select(2, ...)
 
-	if newPlayerLevel < aObj.mLvl then return end
+	if newPlayerLevel < _G.MAX_PLAYER_LEVEL then return end
 
 	-- max XP level reached, adjust watchbar positions
 	for _, bar in pairs{_G.ReputationWatchBar, _G.ArtifactWatchBar, _G.HonorWatchBar} do
