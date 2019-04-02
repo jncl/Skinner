@@ -896,7 +896,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			for i = 1, 3 do
 				self:removeRegions(lop["spell" .. i], {1, 3}) -- background, blackcover
 				if self.modBtnBs then
-					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}}
+					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}, grey=true, ga=0.85}
 				end
 			end
 		end
@@ -918,7 +918,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		for i = 1, 6 do
 			pc["spell" .. i].BlackCover:SetAlpha(0) -- N.B. texture is changed in code
 			if self.modBtnBs then
-				self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon}
+				self:addButtonBorder{obj=pc["spell" .. i], relTo=pc["spell" .. i].icon, grey=true, ga=0.85}
 			end
 		end
 		pc = nil
