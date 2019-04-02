@@ -4241,6 +4241,9 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
+		-- send message when UI is skinned (used by oGlow skin)
+		self:SendMessage("TradeSkillUIUI_Skinned", self)
+
 		self:Unhook(this, "OnShow")
 	end)
 

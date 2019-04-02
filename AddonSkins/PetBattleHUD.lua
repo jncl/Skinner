@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("PetBattleHUD") then return end
 local _G = _G
 
-function aObj:PetBattleHUD()
+aObj.addonsToSkin.PetBattleHUD = function(self) -- v 8.0.0.1
 
 	if not (IsAddOnLoaded("Tukui")
 	or IsAddOnLoaded("AsphyxiaUI")
@@ -11,19 +11,18 @@ function aObj:PetBattleHUD()
 	then
 		return
 	end
-	
-	local rtEvt
-	local function hideSkinnerPBF()
-		if _G.PetBattleFrame.sfl then
-			aObj:CancelTimer(rtEvt, true)
-			rtEvt = nil
-			-- Hide Skinner added frames
-			_G.PetBattleFrame.sfl:Hide()
-			_G.PetBattleFrame.sfm:Hide()
-			_G.PetBattleFrame.sfr:Hide()
-			_G.PetBattleFrame.BottomFrame.sf:Hide()
-		end
+
+	if not _G.PetBattleFrame.sfl then
+		_G.C_Timer.After(0.1, function()
+			self.addonsToSkin.PetBattleHUD(self)
+		end)
+		return
 	end
-	rtEvt = self:ScheduleRepeatingTimer(hideSkinnerPBF, 0.2)
-	
+
+	-- Hide Skinner added frames
+	_G.PetBattleFrame.sfl:Hide()
+	_G.PetBattleFrame.sfm:Hide()
+	_G.PetBattleFrame.sfr:Hide()
+	_G.PetBattleFrame.BottomFrame.sf:Hide()
+
 end

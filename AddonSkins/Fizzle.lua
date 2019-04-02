@@ -1,16 +1,17 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("Fizzle") then return end
+local _G = _G
 
-function aObj:Fizzle()
+aObj.addonsToSkin.Fizzle = function(self) -- v 80000-1
+
 	if not self.modBtnBs then
-		self.Fizzle = nil
+		self.addonsToSkin.Fizzle = nil
 		return
 	end
 
-	local r, g, b, a = unpack(self.bbColour)
 	local function charUpd()
-		for _, child in ipairs{PaperDollItemsFrame:GetChildren()} do
-			for _, reg in pairs{child:GetRegions()} do
+		for _, child in _G.ipairs{_G.PaperDollItemsFrame:GetChildren()} do
+			for _, reg in _G.pairs{child:GetRegions()} do
 				if aObj:hasTextInName(reg, "FizzleB")
 				then
 					if child.sbb then
@@ -20,7 +21,7 @@ function aObj:Fizzle()
 							reg:SetTexture()
 						else
 							child.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
-							child.sbb:SetBackdropBorderColor(r, g, b, a)
+							child.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 						end
 					end
 					break
@@ -28,13 +29,12 @@ function aObj:Fizzle()
 			end
 		end
 	end
-	local evtRef
-	self:SecureHook(CharacterFrame, "Show", function(this)
-		self:ScheduleTimer(charUpd, 0.1)
-		evtRef = self:RegisterEvent("UNIT_INVENTORY_CHANGED", function() self:ScheduleTimer(charUpd, 0.1) end)
+	self:SecureHook(_G.CharacterFrame, "Show", function(this)
+		_G.C_Timer.After(0.1, function() charUpd() end)
+		self:RegisterEvent("UNIT_INVENTORY_CHANGED", function() _G.C_Timer.After(0.1, function() charUpd() end) end)
 	end)
-	self:SecureHook(CharacterFrame, "Hide", function(this)
-		self:UnregisterEvent("UNIT_INVENTORY_CHANGED", evtRef)
+	self:SecureHook(_G.CharacterFrame, "Hide", function(this)
+		self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
 	end)
 
 end

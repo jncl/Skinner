@@ -20,12 +20,12 @@ function aObj:BlizzardFrames()
 end
 
 local addonSkins = {
-	"Accountant", "Acheron", "ACP", "AdiBags", "AdvancedInterfaceOptions", "AngryKeystones", "Archy", "Atlas", "AtlasLoot", "AuctionMaster", "Auctionsnatch", "AutoDecline",
-	"BankItems", "BattlePetCount", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
+	"Accountant", "Acheron", "ACP", "AdvancedInterfaceOptions", "AngryKeystones", "Archy", "Atlas", "AtlasLoot", "Auctionsnatch", "AutoDecline",
+	"BankItems", "BaudManifest", "BetterInbox", "BGDefender", "BindPad", "BlackList", "BossInfo", "BossNotes", "BossNotes_PersonalNotes", "Bugger", "BulkMail2", "BulkMail2Inbox", "BuyEmAll",
 	"CensusPlus", "CFM", "Chatter", "Clique", "CollectMe", "Combuctor", "CombustionHelper", "CompactMissions", "CoolLine", "Cosplay",
 	"DeathNote", "DejaCharacterStats", "Dominos", "DressUp",
 	"EnergyWatch", "EnhancedFlightMap", "epgp_lootmaster", "epgp_lootmaster_ml", "epgp", "Examiner", "ExtVendor",
-	"FarmIt2", "FeedMachine", "Fizzle", "FlaresThatWork", "FlightMapEnhanced", "FlyoutButtonCustom", "FramesResized", "FreierGeist_InstanceTime",
+	"FarmIt2", "FeedMachine", "FlaresThatWork", "FlightMapEnhanced", "FramesResized", "FreierGeist_InstanceTime",
 	"G15Buttons", "Glamour", "GnomishVendorShrinker", "GroupCalendar5", "Growler", "GuildLaunchCT_RaidTracker",
 	"HaveWeMet", "HoloFriends",
 	"InboxMailBag", "ItemDB", "InspectorGadgetzan", "Inventorian",
@@ -33,8 +33,8 @@ local addonSkins = {
 	"LegacyQuest", "Livestock", "ls_Prospector", "ls_Toasts",
 	"MacroToolkit", "Mapster", "MapsterEnhanced", "MarkingBar", "Megaphone", "MobileVault", "MogIt", "MoveAnything", "MyGarrisons",
 	"Notes",
-	"PetBattleHUD", "PetBattleMaster", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "ProfessionsVault", "ProspectBar",
 	"oRA3", "Omen", "OneBag3", "OneBank3",
+	"PetBattleMaster", "Possessions", "PowerAuras", "PowerAurasButtons", "PreformAVEnabler", "ProfessionsVault", "ProspectBar",
 	"Quartz", "QuestCompletist", "QuestGuru_Tracker", "QuestHelper2", "QuestHistory", "QuestMapWithDetails", "QuickMark",
 	"RaidRoll", "RaidRoll_LootTracker", "RAQ", "ReagentRestocker", "REFlex", "Rematch",
 	"ScrollMaster", "SilverDragon", "Skada", "Smoker", "SnapShot", "SorhaQuestLog", "Squeenix", "StaggerMeter",
@@ -62,7 +62,6 @@ aObj.libsToSkin = {
 }
 -- store other AddOns not previously referenced, here so they can be enabled/disabled on the options panel
 local otherAddons = {
-	"PetBattleTeams",
 	"ProfessionTabs_TF",
 	"ProfessionTabs_TSF",
 	"ReagentMaker",
@@ -164,12 +163,6 @@ function aObj:LoDFrames(addon)
 
 	-- used for User LoadOnDemand Addons
 	if self.lodAddons[addon] then self:checkAndRunAddOn(addon, true, self.lodAddons[addon]) end
-
-	-- handle addons linked to the PetJournal
-	if addon == "Blizzard_Collections" then
-		--	This addon is dependent upon the PetJournal
-		self:checkAndRunAddOn("PetBattleTeams")
-	end
 
 	-- deal with Addons under the control of an LoadManager
 	-- use lowercase addonname (lazyafk issue)

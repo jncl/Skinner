@@ -1,45 +1,54 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("AdiBags") then return end
+local _G = _G
 
-function aObj:AdiBags()
+aObj.addonsToSkin.AdiBags = function(self) -- v 1.9.15
 
-	local aBag = LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
-	
+	local aBag = _G.LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
+
 	-- hook this for bag creation
-	aBag:HookBagFrameCreation(aObj, function(bag)
-		aObj:ScheduleTimer(function(bag)
-			local frame = bag:GetFrame()
-			aObj:addSkinFrame{obj=frame, nb=true}
-			aObj:skinButton{obj=frame.CloseButton, cb=true}
-			aObj:addButtonBorder{obj=frame.HeaderLeftRegion.widgets[1].widget, ofs=3}
+	aBag:RegisterMessage("AdiBags_BagFrameCreated", function(msg, bag)
+		local frame = bag:GetFrame()
+		aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
+		if aObj.modBtns then
+			aObj:skinCloseButton{obj=frame.CloseButton}
 			for i = 1, 3 do -- buttons on RHS of header
-				aObj:skinButton{obj=frame.HeaderRightRegion.widgets[i].widget}
+				aObj:skinStdButton{obj=frame.HeaderRightRegion.widgets[i].widget}
 			end
-			aObj:skinEditBox{obj=_G[frame:GetName().."SearchBox"], regs={9}, mi=true}
-		end, 0.2, bag) -- wait for 2/10th second for frame to be created fully
+		end
+		if aObj.modBtnBs then
+			aObj:addButtonBorder{obj=frame.HeaderLeftRegion.widgets[1].widget, ofs=3} -- bag icon
+		end
+		aObj:skinEditBox{obj=_G[frame:GetName().."SearchBox"], regs={6}, mi=true}
+		frame = nil
 	end)
 
-	if self.modBtnBs then
-		-- hook this for equipped bag panel creation
-		self:RawHook(aBag, "CreateBagSlotPanel", function(this, ...)
-			local bPanel = self.hooks[this].CreateBagSlotPanel(this, ...)
-			self:addSkinFrame{obj=bPanel}
-			for _, v in pairs(bPanel.buttons) do
-				self:addButtonBorder{obj=v}
+	-- hook this for equipped bag panel creation
+	self:RawHook(aBag, "CreateBagSlotPanel", function(this, ...)
+		local bPanel = self.hooks[this].CreateBagSlotPanel(this, ...)
+		self:addSkinFrame{obj=bPanel, ft="a", kfs=true, nb=true}
+		if self.modBtnBs then
+			for _, btn in _G.pairs(bPanel.buttons) do
+				self:addButtonBorder{obj=btn}
 			end
-			return bPanel
-		end, true)
-		local r, g, b, a = unpack(self.bbColour)
-		-- colour the button border 
+		end
+		return bPanel
+	end, true)
+
+	if self.modBtnBs then
+		-- colour the button border
 		local function updBtn(evt, btn)
-			if not btn.sbb then aObj:addButtonBorder{obj=btn} end
+			if not btn.sbb
+			then
+				aObj:addButtonBorder{obj=btn}
+			end
 			if btn.IconQuestTexture:GetBlendMode() == "ADD" then
 				btn.sbb:SetBackdrop(aObj.modUIBtns.iqbDrop)
 				btn.sbb:SetBackdropBorderColor(btn.IconQuestTexture:GetVertexColor())
 				btn.IconQuestTexture:Hide()
 			else
 				btn.sbb:SetBackdrop(aObj.modUIBtns.bDrop)
-				btn.sbb:SetBackdropBorderColor(r, g, b, a)
+				btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				btn.IconQuestTexture:Show()
 			end
 		end

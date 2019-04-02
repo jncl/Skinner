@@ -78,10 +78,12 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				aObj:rawHook(obj.editbox, "SetTextInsets", function(this, left, right, top, bottom)
 					return left + 6, right, top, bottom
 				end, true)
-				aObj:skinStdButton{obj=obj.button, as=true}
-				if objType == "NumberEditBox" then
-					aObj:skinStdButton{obj=obj.minus, as=true}
-					aObj:skinStdButton{obj=obj.plus, as=true}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, as=true}
+					if objType == "NumberEditBox" then
+						aObj:skinStdButton{obj=obj.minus, as=true}
+						aObj:skinStdButton{obj=obj.plus, as=true}
+					end
 				end
 			elseif objType == "MultiLineEditBox" then
 				aObj:skinStdButton{obj=obj.button, as=true}
@@ -99,16 +101,22 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			elseif objType == "Frame" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
 				if objVer < 20 then
-					aObj:skinStdButton{obj=obj.closebutton, y1=1}
 					aObj:applySkin{obj=obj.statusbg}
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=obj.closebutton, y1=1}
+					end
 				else
-					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
 					aObj:applySkin{obj=aObj:getChild(obj.frame, 2)} -- status frame
+					if aObj.modBtns then
+						aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), y1=1}
+					end
 				end
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "Window" then
 				aObj:applySkin{obj=obj.frame, kfs=true}
-				aObj:skinCloseButton{obj=obj.closebutton}
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=obj.closebutton}
+				end
 				obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
 			elseif objType == "ScrollFrame" then
 				aObj:skinSlider{obj=obj.scrollbar, wdth=-2}
@@ -119,18 +127,24 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				if aObj.modBtns then
 					-- hook to manage changes to button textures
 					aObj:secureHook(obj, "RefreshTree", function(this)
-						for i = 1, #this.buttons do
-							if not this.buttons[i].toggle.sb then
-								aObj:skinExpandButton{obj=this.buttons[i].toggle, sap=true, plus=true} -- default to plus
+						if aObj.modBtns then
+							for i = 1, #this.buttons do
+								if not this.buttons[i].toggle.sb then
+									aObj:skinExpandButton{obj=this.buttons[i].toggle, sap=true, plus=true} -- default to plus
+								end
 							end
 						end
 					end)
 				end
 			elseif objType == "Button" then
-				aObj:skinStdButton{obj=obj.frame}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.frame}
+				end
 			elseif objType == "Keybinding" then
-				aObj:skinStdButton{obj=obj.button, as=true}
 				aObj:applySkin{obj=obj.msgframe}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, as=true}
+				end
 			elseif objType == "CheckBox" then
 				if aObj.modChkBtns then
 					aObj.modUIBtns:addButtonBorder{obj=obj.frame, ofs=-2, relTo=obj.checkbg, reParent={obj.check}} -- force creation of button border so check texture can be reparented
@@ -165,15 +179,17 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			-- Producer objects
 			elseif objType == "ProducerHead" then
 				aObj:applySkin{obj=obj.frame}
-				aObj:skinCloseButton{obj=obj.close, onSB=true}
 				obj.SetBorder = _G.nop
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=obj.close, onSB=true}
+				end
 
 			-- ListBox object (AuctionLite)
 			elseif objType == "ListBox" then
 				for _, child in ipairs{obj.frame:GetChildren()} do
 					if child:IsObjectType("ScrollFrame") then
 						child:SetBackdrop(nil)
-						aObj:skinScrollBar{obj=child}
+						aObj:skinSlider{obj=_G[child:GetName() .. "ScrollBar"]}
 						break
 					end
 				end
@@ -212,8 +228,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 							xOfs1, yOfs1, xOfs2, yOfs2 = 0, -19, 1, 1
 						end
 						aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, aso={ng=true, bd=5}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-						-- add a button border around the dd button
-						aObj:addButtonBorder{obj=obj.frame.dropButton, es=12, ofs=-2, x1=1}
+						if aObj.modBtnBs then
+							-- add a button border around the dd button
+							aObj:addButtonBorder{obj=obj.frame.dropButton, es=12, ofs=-2, x1=1}
+						end
 					end
     			end
 
@@ -264,8 +282,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
             -- TradeSkillMaster (TSM) objects
             elseif objType == "TSMMainFrame" then
                 aObj:applySkin{obj=obj.frame}
-                aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), nc=true, ofs=2} -- close button
                 aObj:getChild(obj.frame, 1):SetBackdrop(nil)
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=aObj:getChild(obj.frame, 1), nc=true, ofs=2} -- close button
+				end
                 obj.sknrTSM = true
             elseif objType == "TSMInlineGroup"
             then
@@ -286,28 +306,36 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
                 aObj:applySkin{obj=obj.treeframe}
                 obj.sknrTSM = true
             elseif objType == "TSMButton" then
-                aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.btn, as=true} -- just skin it otherwise text is hidden
+				end
                 obj.btn:SetBackdrop(nil)
                 obj.sknrTSM = true
             elseif objType == "TSMSelectionList" then
                 aObj:applySkin{obj=obj.leftFrame}
-                aObj:skinScrollBar{obj=obj.leftScrollFrame}
+                aObj:skinSlider{obj=obj.leftScrollFrame._scrollbar}
                 aObj:applySkin{obj=obj.rightFrame}
-                aObj:skinScrollBar{obj=obj.rightScrollFrame}
+                aObj:skinSlider{obj=obj.rightScrollFrame._scrollbar}
                 obj.sknrTSM = true
             elseif objType == "TSMMacroButton"
             or objType == "TSMFastDestroyButton"
             then
-                aObj:skinStdButton{obj=obj.frame}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.frame}
+				end
                 obj.frame:SetBackdrop(nil)
                 obj.sknrTSM = true
             elseif objType == "TSMWindow" then
                 aObj:applySkin{obj=obj.frame, kfs=true}
-                aObj:skinCloseButton{obj=obj.closebutton}
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=obj.closebutton}
+				end
                 obj.titletext:SetPoint("TOP", obj.frame, "TOP", 0, -6)
                 obj.sknrTSM = true
             elseif objType == "TSMEditBox" then
-                aObj:skinStdButton{obj=obj.button, as=true}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, as=true}
+				end
                 obj.sknrTSM = true
             elseif objType == "TSMScrollingTable" then
 				aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, ofs=2}
@@ -322,15 +350,19 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 
 			-- AuctionMaster objects
 			elseif objType == "ScrollableSimpleHTML" then
-				aObj:skinScrollBar{obj=obj.scrollFrame}
+				aObj:skinSlider{obj=obj.scrollFrame.ScrollBar}
 			elseif objType == "EditDropdown" then
-				aObj:addButtonBorder{obj=obj.button, es=12, ofs=-2}
+				if aObj.modBtnBs then
+					aObj:addButtonBorder{obj=obj.button, es=12, ofs=-2}
+				end
 
 			-- CompactMissions objects
 			elseif objType == "Follower" then
 			elseif objType == "Mission" then
-				aObj:skinStdButton{obj=obj.startbutton, as=true}
 				aObj:applySkin{obj=obj.frame, kfs=true}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.startbutton, as=true}
+				end
 				-- obj.startbutton
 
 			-- GarrisonMissionCommander/OrderHallCommander/ChampionCommander objects
@@ -355,7 +387,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 					aObj:SecureHook(obj, "SetMission", function(this)
 						for i = 1, #this.frame.Rewards do
 							aObj:removeRegions(this.frame.Rewards[i], {1}) -- rewards shadow
-							aObj:addButtonBorder{obj=this.frame.Rewards[i], relTo=this.frame.Rewards[i].Icon, reParent={this.frame.Rewards[i].Quantity}}
+							if self.modBtns then
+								aObj:addButtonBorder{obj=this.frame.Rewards[i], relTo=this.frame.Rewards[i].Icon, reParent={this.frame.Rewards[i].Quantity}}
+							end
 						end
 					end)
 				end
@@ -363,15 +397,19 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			-- GarrisonCommander objects
 			elseif objType == "GMCGUIContainer" then
 				obj.frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-				aObj:skinCloseButton{obj=obj.frame.CloseButton}
 				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, ofs=2, x2=1}
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=obj.frame.CloseButton}
+				end
 
 			-- OrderHallCommander/ChampionCommander objects
 			elseif objType == "OHCGUIContainer"
 			or objType == "BFAGUIContainer"
 			then
-				aObj:skinCloseButton{obj=obj.frame.Close}
 				aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
+				if aObj.modBtns then
+					aObj:skinCloseButton{obj=obj.frame.Close}
+				end
 
 
 			-- ignore these types for now

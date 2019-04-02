@@ -1,7 +1,8 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("BattlePetCount") then return end
+local _G = _G
 
-function aObj:BattlePetCount()
+aObj.addonsToSkin.BattlePetCount = function(self) -- v 1.8.16
 
 	if self.db.profile.Tooltips.skin then
 		local function skinTooltip(tt)
@@ -13,17 +14,17 @@ function aObj:BattlePetCount()
 			if this.X_BPC2 then
 				skinTooltip(this)
 			else
-				self:ScheduleTimer(skinTooltip, 0.2, this)
+				_G.C_Timer.After(0.2, function() skinTooltip(this) end)
 			end
-			aObj:Unhook("BattlePetTooltipTemplate_SetBattlePet")
+			self:Unhook("BattlePetTooltipTemplate_SetBattlePet")
 		end)
 		self:SecureHook("PetBattleUnitTooltip_UpdateForUnit", function(this, ...)
 			if this.X_BPC2 then
 				skinTooltip(this)
 			else
-				self:ScheduleTimer(skinTooltip, 0.2, this)
+				_G.C_Timer.After(0.2, function() skinTooltip(this) end)
 			end
-			aObj:Unhook("PetBattleUnitTooltip_UpdateForUnit")
+			self:Unhook("PetBattleUnitTooltip_UpdateForUnit")
 		end)
 	end
 
