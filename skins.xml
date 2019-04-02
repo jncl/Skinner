@@ -25,6 +25,7 @@
 <script file="AddonSkins\AtlasLoot.lua"/>
 <script file="AddonSkins\AucAdvanced.lua"/>
 <script file="AddonSkins\Auctionator.lua"/>
+<script file="AddonSkins\AuctionLite.lua"/>
 <script file="AddonSkins\AuctionMaster.lua"/>
 <script file="AddonSkins\Auctionsnatch.lua"/>
 <script file="AddonSkins\AutoBag.lua"/>
