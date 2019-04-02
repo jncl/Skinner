@@ -2468,8 +2468,8 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		for i = 1, _G.NUM_GUILDBANK_COLUMNS do
 			_G["GuildBankColumn" .. i]:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				for j = 1, 14 do
-					self:addButtonBorder{obj=_G["GuildBankColumn" .. i .. "Button" .. j], ibt=true}
+				for j = 1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
+					self:addButtonBorder{obj=_G["GuildBankColumn" .. i .. "Button" .. j], ibt=true, grey=true, ga=0.85}
 				end
 			end
 		end
@@ -2503,15 +2503,19 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 		self:adjHeight{obj=this, adj=20}
 		self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
 		self:skinEditBox{obj=_G.GuildBankPopupEditBox, regs={6}}
-		self:skinStdButton{obj=_G.GuildBankPopupCancelButton}
-		self:skinStdButton{obj=_G.GuildBankPopupOkayButton}
 		self:adjHeight{obj=_G.GuildBankPopupScrollFrame, adj=20} -- stretch to bottom of scroll area
 		self:skinSlider{obj=_G.GuildBankPopupScrollFrame.ScrollBar, rt="background"}
 		for i = 1, _G.NUM_GUILDBANK_ICONS_SHOWN do
 			_G["GuildBankPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G["GuildBankPopupButton" .. i], relTo=_G["GuildBankPopupButton" .. i .. "Icon"], reParent={_G["GuildBankPopupButton" .. i .. "Name"]}}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G["GuildBankPopupButton" .. i], relTo=_G["GuildBankPopupButton" .. i .. "Icon"], reParent={_G["GuildBankPopupButton" .. i .. "Name"]}}
+			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ofs=-6}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GuildBankPopupCancelButton}
+			self:skinStdButton{obj=_G.GuildBankPopupOkayButton}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
