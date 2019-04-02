@@ -1,3 +1,40 @@
+beta8.29869.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated StatusBar skinning code
+	Updated frame skinning code
+	Removed obsolete code
+	Updated UnitFrames skin
+	Updated WarboardUI skin
+	Updated OrderHallUI skin
+	Updated Nameplates skin
+	Updated InterfaceOptions skin
+	Updated MainMenuBar skin
+	Updated MissionList skin
+	Updated ChallengesUI skin
+	Updated TradeSkillUI skin
+	Updated PVPUI skin
+	Updated ChannelFrame skin
+	Updated QbjectiveTracker skin
+	Updated EquipmentFrame skin
+	Updated EncounterJournal skin
+	Updated Containers skin
+	Updated Collections skin
+	Updated BuffsFrame skin
+	More button checks and changes
+	Updated player level checks
+	Updated UIWidgets and bugfix for IslandExpeditions Progress Bars
+	Updated inCombat checks
+	PTR code removal
+	Updated AchievementUI
+	Changed how quest text is coloured
+	Bugfix for missing libraries
+	Updated Altoholic & Cork skins
+	Updated AzerothAutoPilot skin
+	Skinned LiteBag
+
 beta8.29482.1
 Jncl:
 	ToDo.txt
