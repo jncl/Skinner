@@ -4286,12 +4286,12 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.BottomFrame.TurnTimer.ArtFrame2:SetTexture(nil)
 		self:removeRegions(this.BottomFrame.FlowFrame, {1, 2, 3})
 		self:getRegion(this.BottomFrame.Delimiter, 1):SetTexture(nil)
-		self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton}
-		self:addButtonBorder{obj=this.BottomFrame.CatchButton}
-		self:addButtonBorder{obj=this.BottomFrame.ForfeitButton}
 		self:removeRegions(this.BottomFrame.MicroButtonFrame, {1, 2, 3})
 		self:addSkinFrame{obj=this.BottomFrame, ft=ftype, y1=10}
 		if self.modBtnBs then
+			self:addButtonBorder{obj=this.BottomFrame.SwitchPetButton}
+			self:addButtonBorder{obj=this.BottomFrame.CatchButton}
+			self:addButtonBorder{obj=this.BottomFrame.ForfeitButton}
 			-- hook these for pet ability buttons
 			self:SecureHook("PetBattleFrame_UpdateActionBarLayout", function(this)
 				for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
