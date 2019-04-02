@@ -1,7 +1,6 @@
 ToDos
 ±±±±±
 
-Legend:
 	√ is Alt+v	- indicates completed
 	≈ is Alt+x	- indicates partially completed or dry-coded
 	x			- indicates nothing to change
@@ -20,10 +19,22 @@ Legend:
 
 	O	change all occurrences of self.bbColour to self.bbClr
 
-√	S	LiteBag, requested by epidemedabear, 12.03.19
+	O	Replace ScheduleTimer/ScheduleRepeatingTimer function in all addon skins
+√		- AdiBags
+√		- AuctionMaster
+√		- BattlePetCount
+√		- Fizzle
+√		- FlyoutButtonCustom
+x		- GnomeWorks
+√		- oGlow
+x		- oQueue
+√		- PetBattleHUD
+√		- PetBattleTeams
+x		- TrinketBar
 
-	I	Locales, reported by lery30, 18.03.19
-		-  Interface\AddOns\Skinner\Locales\Locale_enUS.lua:7: attempt to index a nil value
+	I	UnitFrames, reported by lery30, 01.04.19
+√		-  Interface\AddOns\Skinner\Modules\UnitFrames.lua:5: Usage: EmbedLibrary(addon, libname, silent, offset): 'libname' - Cannot find a library instance of "AceTimer-3.0"
 
-	I	On player login for first time, reported by scalp42, 23.03.19
-		- Skinner\Skinner-beta8.29482.1.lua:13: Skinner requires AceEvent-3.0
+	I	oGlow, reported by vince, 01.04.19
+√		- Skinner\AddonSkins\oGlow-2.2.5.lua:34: attempt to call method 'ScheduleTimer' (a nil value)
+		  Skinner\AddonSkins\oGlow-2.2.5.lua:34: in function <Skinner\AddonSkins\oGlow.lua:33>
