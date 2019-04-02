@@ -101,7 +101,6 @@
 <script file="AddonSkins\GarrisonCommander.lua"/>
 <script file="AddonSkins\GarrisonMissionManager.lua"/>
 <script file="AddonSkins\Glamour.lua"/>
-<script file="AddonSkins\GnomeWorks.lua"/>
 <script file="AddonSkins\GnomishVendorShrinker.lua"/>
 <script file="AddonSkins\GroupCalendar5.lua"/>
 <script file="AddonSkins\Growler.lua"/>
@@ -123,7 +122,6 @@
 <script file="AddonSkins\LibDialog.lua"/>
 <script file="AddonSkins\LibDropdown.lua"/>
 <script file="AddonSkins\LibUIDropDownMenu.lua"/>
-<script file="AddonSkins\Lib_UIDropdown.lua"/>
 <script file="AddonSkins\LibExtraTip.lua"/>
 <script file="AddonSkins\LibInit.lua"/>
 <script file="AddonSkins\LibKeyBound.lua"/>
@@ -157,7 +155,6 @@
 <script file="AddonSkins\oGlow.lua"/>
 <script file="AddonSkins\Omen.lua"/>
 <script file="AddonSkins\OneBag3.lua"/>
-<script file="AddonSkins\oQueue.lua"/>
 <script file="AddonSkins\oRA3.lua"/>
 <script file="AddonSkins\OrderHallCommander.lua"/>
 <script file="AddonSkins\Outfitter.lua"/>
@@ -224,7 +221,6 @@
 <script file="AddonSkins\TooManyAddons.lua"/>
 <script file="AddonSkins\TradeSkillDW.lua"/>
 <script file="AddonSkins\TradeSkillMaster.lua"/>
-<script file="AddonSkins\TrinketBar.lua"/>
 <script file="AddonSkins\Tukui.lua"/>
 <script file="AddonSkins\UrbanAchiever.lua"/>
 <script file="AddonSkins\Vendomatic.lua"/>
