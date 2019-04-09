@@ -1,3 +1,17 @@
+beta8.29896.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated PetBattleUI skin
+	Updated GuildBankUI skin
+	Updated PetCollections skin
+	Updated UIButtons skinning code
+	Bugfix for removed library
+	Updated Ace3, AdiBags, AuctionMaster, BattlePetCount, Fizzle, FlyoutButtonCustom, oGlow, PetBattleHUD & PetBattleTeams skins
+	Unobsoleted AuctionLite skin
+	Obsoleted GnomeWorks, Lib_UIDropDown, oQueue & TrinketBar
+
 beta8.29869.1
 Jncl:
 	ToDo.txt
