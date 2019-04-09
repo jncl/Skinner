@@ -19,22 +19,5 @@ ToDos
 
 	O	change all occurrences of self.bbColour to self.bbClr
 
-	O	Replace ScheduleTimer/ScheduleRepeatingTimer function in all addon skins
-√		- AdiBags
-√		- AuctionMaster
-√		- BattlePetCount
-√		- Fizzle
-√		- FlyoutButtonCustom
-x		- GnomeWorks
-√		- oGlow
-x		- oQueue
-√		- PetBattleHUD
-√		- PetBattleTeams
-x		- TrinketBar
-
-	I	UnitFrames, reported by lery30, 01.04.19
-√		-  Interface\AddOns\Skinner\Modules\UnitFrames.lua:5: Usage: EmbedLibrary(addon, libname, silent, offset): 'libname' - Cannot find a library instance of "AceTimer-3.0"
-
-	I	oGlow, reported by vince, 01.04.19
-√		- Skinner\AddonSkins\oGlow-2.2.5.lua:34: attempt to call method 'ScheduleTimer' (a nil value)
-		  Skinner\AddonSkins\oGlow-2.2.5.lua:34: in function <Skinner\AddonSkins\oGlow.lua:33>
+	I	Adibags, reported by scottfl75, 04.04.19
+√		- check widget type before skinning it
