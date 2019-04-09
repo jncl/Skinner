@@ -12,8 +12,10 @@ aObj.addonsToSkin.AdiBags = function(self) -- v 1.9.15
 		aObj:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true}
 		if aObj.modBtns then
 			aObj:skinCloseButton{obj=frame.CloseButton}
-			for i = 1, 3 do -- buttons on RHS of header
-				aObj:skinStdButton{obj=frame.HeaderRightRegion.widgets[i].widget}
+			for _, object in _G.pairs(frame.HeaderRightRegion.widgets) do
+				if object.widget:IsObjectType("Button") then
+					aObj:skinStdButton{obj=object.widget}
+				end
 			end
 		end
 		if aObj.modBtnBs then
@@ -37,9 +39,8 @@ aObj.addonsToSkin.AdiBags = function(self) -- v 1.9.15
 
 	if self.modBtnBs then
 		-- colour the button border
-		local function updBtn(evt, btn)
-			if not btn.sbb
-			then
+		aBag:RegisterMessage("AdiBags_UpdateButton", function(evt, btn)
+			if not btn.sbb then
 				aObj:addButtonBorder{obj=btn}
 			end
 			if btn.IconQuestTexture:GetBlendMode() == "ADD" then
@@ -51,9 +52,7 @@ aObj.addonsToSkin.AdiBags = function(self) -- v 1.9.15
 				btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				btn.IconQuestTexture:Show()
 			end
-		end
-		-- register for button updates
-		aBag:RegisterMessage("AdiBags_UpdateButton", updBtn)
+		end)
 	end
 
 end
