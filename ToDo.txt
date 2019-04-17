@@ -19,5 +19,7 @@ ToDos
 
 	O	change all occurrences of self.bbColour to self.bbClr
 
-	I	Adibags, reported by scottfl75, 04.04.19
-√		- check widget type before skinning it
+√	I	- Healbot, reported by epidemedabear, 11.04.19
+		-  ..\AddOns\Skinner\Skinner.lua line 656: attempt to index field 'obj' (a nil value)
+			Skinner\AddonSkins\HealBot.lua:101:
+			Skinner\AddonSkins\HealBot.lua:6
