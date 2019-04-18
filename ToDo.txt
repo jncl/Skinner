@@ -32,3 +32,14 @@ ToDos
 
 	I	Azeroth Auto Pilot
 √		- PartyFrames not skinned
+
+	I	Ace3, reported by Curace, 17.04.19
+≈		- Ace3\AceHook-3.0\AceHook-3.0-8.lua:180: Attempting to rehook already active hook SetMission.
+		Ace3\AceHook-3.0\AceHook-3.0-8.lua:180: in function <Ace3\AceHook-3.0\AceHook-3.0.lua:118>
+		Ace3\AceHook-3.0\AceHook-3.0-8.lua:341: in function SecureHook'
+		Skinner\AddonSkins\Ace3.lua:355: in function <Skinner\AddonSkins\Ace3.lua:22>
+		Skinner\AddonSkins\Ace3.lua:444: in function <Skinner\AddonSkins\Ace3.lua:442>
+
+	I	MinimalArchaeology, reported by MetalHeadSpike, 18.04.19
+≈		- ...ace\AddOns\Skinner\AddonSkins\MinimalArchaeology.lua:52: attempt to index field 'MinArchScrollFrame' (a nil value)
+		
