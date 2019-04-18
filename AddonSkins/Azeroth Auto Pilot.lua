@@ -78,9 +78,10 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 	end)
 
 	-- QuestList frames
-	-- AAP.PartyList.PartyFrame
-	-- AAP.PartyList.PartyFrames[CLi] 1-5
-	-- AAP.PartyList.PartyFrames2[CLi] 1-5
+	for i = 1, 5 do
+		self:addSkinFrame{obj=_G.AAP.PartyList.PartyFrames[i], ft="a", kfs=true,nb=true}
+		self:addSkinFrame{obj=_G.AAP.PartyList.PartyFrames2[i], ft="a", kfs=true,nb=true}
+	end
 	self:addSkinFrame{obj=_G.AAP.QuestList.SugQuestFrame, ft="a", kfs=true, nb=true}
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.AAP.QuestList.SugQuestFrame["Button1"], seca=true}
@@ -92,18 +93,12 @@ aObj.addonsToSkin["AAP-Core"] = function(self) -- v 8.1046
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.AAP.QuestList.GreetingsHideB, seca=true}
 	end
-	-- AAP.QuestList.MainFrame
-	-- AAP.QuestList.ListFrame
-	-- AAP.QuestList20
-	-- AAP.QuestList21
-	-- AAP.QuestList.ButtonParent
 	self:addSkinFrame{obj=_G.AAP.QuestList.QuestFrames["MyProgress"], ft="a", kfs=true, nb=true, x1=-2, x2=2}
 	for i = 1, 20 do
 		self:addSkinFrame{obj=_G.AAP.QuestList.QuestFrames[i], ft="a", kfs=true, nb=true, x1=-2, x2=2}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.AAP.QuestList.QuestFrames["FS" .. i]["Button"]}
 		end
-		-- AAP.QuestList2["BF"..CLi] 1-20
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.AAP.QuestList2["BF" .. i]["AAP_Button"], seca=true}
 		end

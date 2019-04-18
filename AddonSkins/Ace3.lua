@@ -86,7 +86,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 					end
 				end
 			elseif objType == "MultiLineEditBox" then
-				aObj:skinStdButton{obj=obj.button, as=true}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=obj.button, as=true}
+				end
 				if objVer < 20 then
 					aObj:skinSlider{obj=obj.scrollframe.ScrollBar, wdth=-4, size=3}
 					aObj:applySkin{obj=obj.backdrop}

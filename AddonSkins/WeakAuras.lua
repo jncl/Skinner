@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WeakAuras") then return end
 local _G = _G
 
-aObj.addonsToSkin.WeakAuras = function(self) -- v 2.10.11
+aObj.addonsToSkin.WeakAuras = function(self) -- v 2.12.0-beta6
 
 	-- hook this to skin the WeakAuras added elements
 	local s1, s2, s3, s4
@@ -43,7 +43,7 @@ aObj.addonsToSkin.WeakAuras = function(self) -- v 2.10.11
 
 end
 
-aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.10.11
+aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.12.0-beta6
 
 	-- wait until frame is created
 	if not _G.WeakAuras.OptionsFrame() then
@@ -75,6 +75,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.10.11
 			skinBtn(1) -- close button frame
 			skinBtn(2) -- import button frame
 			skinBtn(6) -- minimize button frame
+			self:skinStdButton{obj=self:getLastChild(optFrame.importexport.frame)} -- close/done button
 		end
 		local _, _, _, enabled, loadable = _G.GetAddOnInfo("WeakAurasTutorials")
     	if enabled
@@ -82,6 +83,7 @@ aObj.lodAddons.WeakAurasOptions = function(self) -- v 2.10.11
 		then
 			self:keepFontStrings(self:getChild(optFrame, 5)) -- tutorial button frame
 		end
+		enabled, loadable = nil, nil
 		self:addSkinFrame{obj=optFrame, ft="a", kfs=true, nb=true, ofs=0, y1=6}
 		optFrame.moversizer:SetBackdropBorderColor(self.bbClr:GetRGB())
 
