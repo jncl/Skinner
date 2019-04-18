@@ -19,7 +19,16 @@ ToDos
 
 	O	change all occurrences of self.bbColour to self.bbClr
 
-√	I	- Healbot, reported by epidemedabear, 11.04.19
-		-  ..\AddOns\Skinner\Skinner.lua line 656: attempt to index field 'obj' (a nil value)
-			Skinner\AddonSkins\HealBot.lua:101:
-			Skinner\AddonSkins\HealBot.lua:6
+	N	PTR 8.2.0
+		- Added
+			-
+		- Changed
+			-
+		- Deleted
+			-
+
+	I	WeakAuras
+√		- Button in BRHC of import/export frame not skinned
+
+	I	Azeroth Auto Pilot
+√		- PartyFrames not skinned
