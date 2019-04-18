@@ -48,11 +48,13 @@ aObj.addonsToSkin.MinimalArchaeology = function(self) -- v 8.0.12.2
 	self:addSkinFrame{obj=_G.MinArchHist, ft="a", kfs=true, nb=true, y1=4}
 	_G.RaiseFrameLevelByTwo(_G.MinArchHist)
 	-- hook this to remove background textures
-	self:SecureHook(_G.MinArch, "CreateHistoryList", function(this, raceID)
-		_G.MinArchScrollFrame.bg:Hide()
-		_G.MinArchScrollBar.bg:Hide()
-		self:skinSlider{obj=_G.MinArchScrollBar}
-		self:Unhook(_G.MinArch, "CreateHistoryList")
+	self:SecureHook(_G.MinArch, "CreateHistoryList", function(this, raceID, caller)
+		if _G.MinArchScrollFrame then
+			_G.MinArchScrollFrame.bg:Hide()
+			_G.MinArchScrollBar.bg:Hide()
+			self:skinSlider{obj=_G.MinArchScrollBar}
+			self:Unhook(_G.MinArch, "CreateHistoryList")
+		end
 	end)
 
 	-- Digsites Frame
