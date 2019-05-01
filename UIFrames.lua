@@ -479,13 +479,22 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("LootAlertSystem: [%s]", frame)
 		frame:DisableDrawLayer("BACKGROUND")
-		frame.Icon:SetDrawLayer("BORDER") -- changed in code (Garrison Cache)
-		frame.SpecRing:SetTexture(nil)
+		if not self.isPTR then
+			frame.Icon:SetDrawLayer("BORDER") -- changed in code (Garrison Cache)
+			frame.SpecRing:SetTexture(nil)
+		else
+			frame.lootItem.SpecRing:SetTexture(nil)
+		end
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
 		-- colour the Icon buttons' border
 		if self.modBtnBs then
-			frame.IconBorder:SetTexture(nil)
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+			if not self.isPTR then
+				frame.IconBorder:SetTexture(nil)
+				self:addButtonBorder{obj=frame, relTo=frame.Icon}
+			else
+				frame.lootItem.IconBorder:SetTexture(nil)
+				self:addButtonBorder{obj=frame, relTo=frame.lootItem.Icon}
+			end
 			local itemLink, _,_,_,_, isCurrency = ...
 			local itemRarity
 			if isCurrency then
@@ -753,6 +762,64 @@ aObj.blizzFrames[ftype].ArtifactToasts = function(self)
 
 end
 
+if aObj.isPTR then
+	aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
+		if not self.db.profile.AzeriteEssenceUI or self.initialized.AzeriteEssenceUI then return end
+		self.initialized.AzeriteEssenceUI = true
+
+		self:SecureHookScript(_G.AzeriteEssenceUI, "OnShow", function(this)
+			self:keepFontStrings(this.PowerLevelBadgeFrame)
+			self:removeInset(this.LeftInset)
+			self:removeInset(this.RightInset)
+			-- remove revolving circles & stop them from re-appearing
+			this.ItemModelScene:ClearScene()
+			this.SetupModelScenes = _G.nop
+			-- remove revolving stars
+			this.StarsAnimationFrame1:DisableDrawLayer("BORDER")
+			this.StarsAnimationFrame2:DisableDrawLayer("BORDER")
+			this.StarsAnimationFrame3:DisableDrawLayer("BORDER")
+			-- remove textures
+			self:removeRegions(this.SlotsFrame, {1, 2, 3, 5})
+			-- for i, slotButton in ipairs(this.SlotsFrame.Slots) do
+			-- 	slotButton.Ring:SetTexture(nil)
+			-- 	slotButton.GlassCover:SetTexture(nil)
+			-- 	if slotButton.slot == _G.Enum.AzeriteEssence.MainSlot then
+			-- 	else
+			-- 	end
+			-- 	-- .LockedRegions
+			-- end
+			-- ScrollFrame.LearnEssenceModelScene
+			self:skinSlider{obj=this.ScrollFrame.ScrollBar, size=2}
+			if self.modBtnBs then
+				local function clrBB(sf)
+					for i, btn in ipairs(sf.buttons) do
+						btn.sbb:SetBackdropBorderColor(btn.Name:GetTextColor())
+					end
+				end
+				-- self:skinStdButton{obj=this.ScrollFrame.HeaderButton}
+				for i, btn in ipairs(this.ScrollFrame.buttons) do
+					self:nilTexture(btn.Background, true)
+					self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.IconCover, btn.Glow, btn.Glow2, btn.Glow3}, grey=true}
+				end
+				clrBB(this.ScrollFrame)
+				self:SecureHook(this.ScrollFrame, "UpdateMouseOverTooltip", function(this)
+					clrBB(this)
+				end)
+			end
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
+			self:Unhook(this, "OnShow")
+		end)
+		if _G.AzeriteEssenceUI:IsShown() then
+			_G.AzeriteEssenceUI:Hide()
+			_G.AzeriteEssenceUI:Show()
+		end
+
+		-- AzeriteEssenceLearnAnimFrame
+
+	end
+
+end
+
 aObj.blizzFrames[ftype].AutoComplete = function(self)
 	if not self.prdb.AutoComplete or self.initialized.AutoComplete then return end
 	self.initialized.AutoComplete = true
@@ -833,6 +900,9 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 	self.initialized.BindingUI = true
 
 	self:SecureHookScript(_G.KeyBindingFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.BG)
+		end
 		self:skinCheckButton{obj=this.characterSpecificButton}
 		self:keepRegions(this.categoryList, {})
 		this.categoryList:SetBackdrop(self.Backdrop[10])
@@ -895,6 +965,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	end)
 
 	self:SecureHookScript(_G.CalendarViewHolidayFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:keepFontStrings(_G.CalendarViewHolidayTitleFrame)
 		self:moveObject{obj=_G.CalendarViewHolidayTitleFrame, y=-6}
 		self:skinSlider{obj=_G.CalendarViewHolidayScrollFrame.ScrollBar}
@@ -905,6 +978,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	end)
 
 	self:SecureHookScript(_G.CalendarViewRaidFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:keepFontStrings(_G.CalendarViewRaidTitleFrame)
 		self:moveObject{obj=_G.CalendarViewRaidTitleFrame, y=-6}
 		self:skinSlider{obj=_G.CalendarViewRaidScrollFrame.ScrollBar}
@@ -915,6 +991,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	end)
 
 	self:SecureHookScript(_G.CalendarViewEventFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:keepFontStrings(_G.CalendarViewEventTitleFrame)
 		self:moveObject{obj=_G.CalendarViewEventTitleFrame, y=-6}
 		self:addSkinFrame{obj=_G.CalendarViewEventDescriptionContainer, ft=ftype}
@@ -929,6 +1008,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	end)
 
 	self:SecureHookScript(_G.CalendarCreateEventFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		_G.CalendarCreateEventIcon:SetAlpha(1) -- show event icon
 		self:keepFontStrings(_G.CalendarCreateEventTitleFrame)
 		self:moveObject{obj=_G.CalendarCreateEventTitleFrame, y=-6}
@@ -960,6 +1042,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	end)
 
 	self:SecureHookScript(_G.CalendarMassInviteFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:keepFontStrings(_G.CalendarMassInviteTitleFrame)
 		self:moveObject{obj=_G.CalendarMassInviteTitleFrame, y=-6}
 		self:skinEditBox{obj=_G.CalendarMassInviteGuildMinLevelEdit, regs={6}}
@@ -973,6 +1058,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	end)
 
 	self:SecureHookScript(_G.CalendarEventPickerFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:keepFontStrings(_G.CalendarEventPickerTitleFrame)
 		self:moveObject{obj=_G.CalendarEventPickerTitleFrame, y=-6}
 		self:keepFontStrings(_G.CalendarEventPickerFrame)
@@ -984,6 +1072,9 @@ aObj.blizzLoDFrames[ftype].Calendar = function(self)
 	end)
 
 	self:SecureHookScript(_G.CalendarTexturePickerFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:keepFontStrings(_G.CalendarTexturePickerTitleFrame)
 		self:moveObject{obj=_G.CalendarTexturePickerTitleFrame, y=-6}
 		self:skinSlider(_G.CalendarTexturePickerScrollBar)
@@ -1163,6 +1254,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 	self.initialized.ChatConfig = true
 
 	self:SecureHookScript(_G.ChatConfigFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		if self.modBtns then
 			self:skinStdButton{obj=this.DefaultButton}
 			self:skinStdButton{obj=this.RedockButton}
@@ -1545,6 +1639,9 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 	self:SecureHookScript(_G.CinematicFrame, "OnShow", function(this)
 		self:skinStdButton{obj=_G.CinematicFrameCloseDialogConfirmButton}
 		self:skinStdButton{obj=_G.CinematicFrameCloseDialogResumeButton}
+		if self.isPTR then
+			self:removeNineSlice(this.closeDialog)
+		end
 		self:addSkinFrame{obj=this.closeDialog, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -1599,6 +1696,9 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 
 	self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
 		this:SetBackdrop(nil)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		_G.ColorPickerFrameHeader:SetAlpha(0)
 		self:skinStdButton{obj=_G.ColorPickerOkayButton}
 		self:skinStdButton{obj=_G.ColorPickerCancelButton}
@@ -1610,6 +1710,9 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 	self:SecureHookScript(_G.OpacityFrame, "OnShow", function(this)
 		-- used by BattlefieldMinimap amongst others
 		this:SetBackdrop(nil)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinSlider{obj=_G.OpacityFrameSlider}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true} -- DON'T skin CloseButton as it is the frame
 		self:Unhook(this, "OnShow")
@@ -2586,6 +2689,9 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 		self:addSkinFrame{obj=_G.TicketStatusFrameButton, ft=ftype}
 
 		-- ReportCheating Dialog
+		if self.isPTR then
+			self:removeNineSlice(_G.ReportCheatingDialog.Border)
+		end
 		self:addSkinFrame{obj=_G.ReportCheatingDialog.CommentFrame, ft=ftype, kfs=true, y2=-2}
 		_G.ReportCheatingDialog.CommentFrame.EditBox.InformationText:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.ReportCheatingDialog, ft=ftype}
@@ -2789,6 +2895,9 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 	self:SecureHookScript(_G.LFDRoleCheckPopup, "OnShow", function(this)
 		self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton}
 		self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -2796,6 +2905,9 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 	self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
 		self:skinStdButton{obj=this.YesButton}
 		self:skinStdButton{obj=this.NoButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -2847,6 +2959,11 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 	self.initialized.LFGFrame = true
 
 	self:SecureHookScript(_G.LFGDungeonReadyPopup, "OnShow", function(this) -- a.k.a. ReadyCheck, also used for Island Expeditions
+		if self.isPTR then
+			self:removeNineSlice(_G.LFGDungeonReadyStatus.Border)
+			self:removeNineSlice(_G.LFGDungeonReadyDialog.Border)
+		end
+
 		self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, ft=ftype, kfs=true, ofs=-5}
 		self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
 		self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
@@ -2897,6 +3014,9 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 	self:SecureHookScript(_G.LFGInvitePopup, "OnShow", function(this)
 		self:skinStdButton{obj=_G.LFGInvitePopupAcceptButton}
 		self:skinStdButton{obj=_G.LFGInvitePopupDeclineButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
 	end)
@@ -3052,6 +3172,9 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 
 	-- LFGListApplication Dialog
 	self:SecureHookScript(_G.LFGListApplicationDialog, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.HealerButton.CheckButton}
 			self:skinCheckButton{obj=this.TankButton.CheckButton}
@@ -3073,6 +3196,9 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 		self:skinStdButton{obj=this.AcceptButton}
 		self:skinStdButton{obj=this.DeclineButton}
 		self:skinStdButton{obj=this.AcknowledgeButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
 	end)
@@ -3436,6 +3562,9 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 	end
 
 	self:SecureHookScript(_G.GameMenuFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		if self.modBtns then
 			for _, child in ipairs{this:GetChildren()} do
 				if child:IsObjectType("Button") then
@@ -3448,6 +3577,9 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		-- Rating Menu
 		self:SecureHookScript(_G.RatingMenuFrame, "OnShow", function(this)
 			self:skinStdButton{obj=_G.RatingMenuButtonOkay}
+			if self.isPTR then
+				self:removeNineSlice(this.Border)
+			end
 			self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
 			self:Unhook(this, "OnShow")
 		end)
@@ -3459,6 +3591,9 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	-- Graphics
 	self:SecureHookScript(_G.VideoOptionsFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		-- Main panel
 		self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true} -- LHS panel
 		self:skinSlider(_G.VideoOptionsFrameCategoryFrameListScrollBar)
@@ -3543,6 +3678,9 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay}
 		self:skinStdButton{obj=_G.InterfaceOptionsFrameDefaults}
 		self:addSkinFrame{obj=_G.InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 
 		-- LHS panel (Game Tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
@@ -3595,6 +3733,11 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	self.RegisterCallback("CUFP", "IOFPanel_After_Skinning", function(this, panel)
 		if panel ~= _G.CompactUnitFrameProfiles then return end
+		if self.isPTR then
+			self:removeNineSlice(_G.CompactUnitFrameProfiles.newProfileDialog.Border)
+			self:removeNineSlice(_G.CompactUnitFrameProfiles.deleteProfileDialog.Border)
+			self:removeNineSlice(_G.CompactUnitFrameProfiles.unsavedProfileDialog.Border)
+		end
 		skinKids(_G.CompactUnitFrameProfiles.newProfileDialog)
 		self:addSkinFrame{obj=_G.CompactUnitFrameProfiles.newProfileDialog, ft=ftype}
 		skinKids(_G.CompactUnitFrameProfiles.deleteProfileDialog)
@@ -3985,6 +4128,9 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 	self:SecureHookScript(_G.MovieFrame, "OnShow", function(this)
 		self:skinStdButton{obj=this.CloseDialog.ConfirmButton}
 		self:skinStdButton{obj=this.CloseDialog.ResumeButton}
+		if self.isPTR then
+			self:removeNineSlice(this.CloseDialog.Border)
+		end
 		self:addSkinFrame{obj=this.CloseDialog, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -4377,6 +4523,9 @@ aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Reward
 	self:SecureHookScript(_G.ProductChoiceFrame, "OnShow", function(this)
 		self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.AcceptButton}
 		self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.DeclineButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Inset.NoTakeBacksies.Dialog.Border)
+		end
 		self:addSkinFrame{obj=this.Inset.NoTakeBacksies.Dialog, ft=ftype}
 		self:skinStdButton{obj=this.Inset.ClaimButton}
 		self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
@@ -4441,6 +4590,9 @@ end
 aObj.blizzFrames[ftype].PVPHelper = function(self)
 
 	self:SecureHookScript(_G.PVPFramePopup, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		this:DisableDrawLayer("BORDER")
 		_G.PVPFramePopupRing:SetTexture(nil)
 		self:skinCloseButton{obj=this.minimizeButton}
@@ -4453,6 +4605,9 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 	self:SecureHookScript(_G.PVPRoleCheckPopup, "OnShow", function(this)
 		self:skinStdButton{obj=_G.PVPRoleCheckPopupAcceptButton}
 		self:skinStdButton{obj=_G.PVPRoleCheckPopupDeclineButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
 	end)
@@ -4460,6 +4615,9 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 	self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
 		self:skinStdButton{obj=this.enterButton}
 		self:skinStdButton{obj=this.leaveButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		this.instanceInfo.underline:SetAlpha(0)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
@@ -4618,6 +4776,9 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 			self:skinStdButton{obj=_G.RaidInfoExtendButton}
 			self:skinStdButton{obj=_G.RaidInfoCancelButton}
 		end
+		if self.isPTR then
+			self:removeNineSlice(_G.RaidInfoFrame.Border)
+		end
 		self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -4733,6 +4894,9 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 	self.initialized.ScriptErrors = true
 
 	self:SecureHookScript(_G.BasicMessageDialog, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -4794,6 +4958,9 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 	for i = 1, _G.STATICPOPUP_NUMDIALOGS do
 		self:SecureHookScript(_G["StaticPopup" .. i], "OnShow", function(this)
 			local objName = this:GetName()
+			if self.isPTR then
+				self:removeNineSlice(this.Border)
+			end
 			if self.modBtns then
 				self:skinStdButton{obj=this.button1}
 				self:skinStdButton{obj=this.button2}
@@ -4827,11 +4994,30 @@ aObj.blizzFrames[ftype].StaticPopupSpecial = function(self)
 	self.initialized.StaticPopupSpecial = true
 
 	self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:skinStdButton{obj=this.AcceptButton}
 		self:skinStdButton{obj=this.DeclineButton}
 		self:Unhook(this, "OnShow")
 	end)
+
+	if self.isPTR then
+		self:SecureHook(_G.PlayerReportFrame, "OnShow", function(this)
+			if self.isPTR then
+				self:removeNineSlice(this.Border)
+			end
+			if self.modBtns then
+				self:skinStdButton{obj=this.ReportButton}
+				self:skinStdButton{obj=this.CancelButton}
+			end
+			-- this.Comment.ScrollFrame.CommentBox
+			self:addSkinFrame{obj=this.Comment, ft=ftype, kfs=true, nb=true}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+			self:Unhook(this, "OnShow")
+		end)
+	end
 
 end
 
@@ -5071,7 +5257,11 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	self.initialized.DropDownPanels = true
 
 	local function skinDDMenu(frame)
-		_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
+		if not self.isPTR then
+			_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
+		else
+			aObj:removeNineSlice(frame.Border)
+		end
 		_G[frame:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 	end
@@ -5135,7 +5325,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			end
 		elseif wFrame.widgetType == 6 then -- StackedResourceTracker
 			for resourceFrame in wFrame.resourcePool:EnumerateActive() do
-				setTextColor(resourceFrame.Text)
+				if not self.isPTR then
+					setTextColor(resourceFrame.Text)
+				else
+					resourceFrame:SetFontColor(self.BT)
+				end
 			end
 		elseif wFrame.widgetType == 7 then -- IconTextAndCurrencies
 			if aObj.modBtnBs then
@@ -5147,11 +5341,19 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				end
 			end
 		elseif wFrame.widgetType == 8 then -- TextWithState
-			setTextColor(wFrame.Text)
+			if not self.isPTR then
+				setTextColor(wFrame.Text)
+			else
+				wFrame:SetFontColor(self.BT)
+			end
 		elseif wFrame.widgetType == 9 then -- HorizontalCurrencies
 			for currencyFrame in wFrame.currencyPool:EnumerateActive() do
-				setTextColor(currencyFrame.Text)
-				setTextColor(currencyFrame.LeadingText)
+				if not self.isPTR then
+					setTextColor(currencyFrame.Text)
+					setTextColor(currencyFrame.LeadingText)
+				else
+					currencyFrame:SetFontColor(self.BT)
+				end
 			end
 		elseif wFrame.widgetType == 10 then -- BulletTextList
 			for lineFrame in wFrame.linePool:EnumerateActive() do
@@ -5159,11 +5361,21 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			end
 		elseif wFrame.widgetType == 11 then -- ScenarioHeaderCurrenciesAndBackground
 			aObj:nilTexture(wFrame.Frame, true)
-		elseif wFrame.widgetType == 12 then -- TextureWithState
-			setTextColor(wFrame.Text)
+		elseif wFrame.widgetType == 12 then -- TextureWithState (PTR - TextureAndText)
+			-- .Background
+			-- .Foreground
+			if not self.isPTR then
+				setTextColor(wFrame.Text)
+			else
+				wFrame:SetFontColor(self.BT)
+			end
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
 			wFrame.Spell.Border:SetTexture(nil)
-			setTextColor(wFrame.Spell.Text)
+			if not self.isPTR then
+				setTextColor(wFrame.Spell.Text)
+			else
+				wFrame:SetFontColor(self.BT)
+			end
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon}
 			end
@@ -5174,6 +5386,12 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			--
 			-- 	end
 			-- end
+		elseif aObj.isPTR and wFrame.widgetType == 15 then -- TextureAndTextRow
+			for entryFrame in wFrame.entryPool:EnumerateActive() do
+				-- .Background
+				-- .Foreground
+				entryFrame:SetFontColor(self.BT)
+			end
 		end
 	end
 
@@ -5352,22 +5570,24 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 
 end
 
-aObj.blizzFrames[ftype].WorldState = function(self)
-	if not self.prdb.WorldState or self.initialized.WorldState then return end
-	self.initialized.WorldState = true
+if not aObj.isPTR then
+	aObj.blizzFrames[ftype].WorldState = function(self)
+		if not self.prdb.WorldState or self.initialized.WorldState then return end
+		self.initialized.WorldState = true
 
-	self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
-		-- WorldStateScore frame
-		self:skinStatusBar{obj=this.XPBar.Bar, fi=0, bgTex=this.XPBar.Bar.Background, nilFuncs=true}
-		this.XPBar.Bar.SetStatusBarTexture = _G.nop
-		this.XPBar.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
-		this.XPBar.NextAvailable.Frame:SetTexture(nil)
-		self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
-		self:skinTabs{obj=this}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
-		self:Unhook(this, "OnShow")
-	end)
+		self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
+			-- WorldStateScore frame
+			self:skinStatusBar{obj=this.XPBar.Bar, fi=0, bgTex=this.XPBar.Bar.Background, nilFuncs=true}
+			this.XPBar.Bar.SetStatusBarTexture = _G.nop
+			this.XPBar.Bar.OverlayFrame.Text:SetPoint("CENTER", 0, 0)
+			this.XPBar.NextAvailable.Frame:SetTexture(nil)
+			self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
+			self:skinTabs{obj=this}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
+			self:Unhook(this, "OnShow")
+		end)
 
+	end
 end
 
 aObj.blizzFrames[ftype].ZoneAbility = function(self)

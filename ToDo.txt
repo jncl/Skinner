@@ -21,11 +21,67 @@ ToDos
 
 	N	PTR 8.2.0
 		- Added
+			- AlliedRacesModelControlButtonMixin
+≈¶			- Blizzard_AzeriteEssenceUI
+			- Blizzard_Communities: ClubFinder
+			- Blizzard_Communities: ClubFinderApplicantList
+			- Blizzard_ObjectiveTracker: Blizzard_ObjectiveTrackerUIWidgetContainer
+			- Blizzard_PTRFeedback: Bindings
+			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Events
+			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Frames
+			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Tooltips
+			- Blizzard_PTRFeedback: Blizzard_Reports
+≈			- Blizzard_UIWidgets: Blizzard_UIWidgetTemplateTextureAndText
+≈			- Blizzard_UIWidgets: Blizzard_UIWidgetTemplateTextureAndTextRow
+?			- AddonDialog
+≈			- DialogBorderTemplate
+√			- DialogBorderDarkTemplate
+≈			- ItemDisplay
+			- PVPMatchResults
+			- PVPMatchTable
+			- PVPMatchUtil
+			- PVPUITemplates
+?			- PetPopup
+			- PetStableModelMixin
+≈			- PlayerReportFrame
+			- QuestNPCModelFrameMixin
+			- TabardModelControlButtonMixin
+			- TabardModelFrameMixin
 			-
 		- Changed
-			-
+≈			- Blizzard_MountCollection
+≈			- Blizzard_PetCollection
+?			- Blizzard_Wardrobe
+			- CommunitiesFrame
+			- CommunitiesSettings
+			- Blizzard_EncounterJournal
+			- Blizzard_GarrisonMissionTemplates
+			- Blizzard_GarrisonMissionUI
+√			- Blizzard_ItemSocketingUI
+			- Blizzard_QuestObjectiveTracker
+			- Blizzard_PVPUI
+			- Blizzard_UIWidgetTemplateBase
+			- Blizzard_UIWidgetTemplateCaptureBar
+			- Blizzard_UIWidgetTemplateDoubleStatusBar
+			- Blizzard_UIWidgetTemplateStatusBar
+≈			- AlertFrameSystems
+			- DressUpFrames
+			- FriendsFrame
+			- HelpFrame
+			- InterfaceOptionsPanels
+			- ItemRef
+			- LFGList
+			- LFRFrame
+			- MacOptionsPanel
+			- PVPHonorSystem
+			- PaperDollFrame
+			- PetStable
+			- QuestFrame
+			- RaidFrame
+			- TabardFrame
+			- UIPanelTemplates
+			- VoiceChatHeadsetButton
 		- Deleted
-			-
 
 	I	WeakAuras
 √		- Button in BRHC of import/export frame not skinned

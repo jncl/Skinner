@@ -779,6 +779,9 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
 			self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox}
 			self:skinCheckButton{obj=_G.ReputationDetailLFGBonusReputationCheckBox}
+			if self.isPTR then
+				self:removeNineSlice(_G.ReputationDetailFrame.Border)
+			end
 			self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 			self:Unhook(this, "OnShow")
 		end)
@@ -823,6 +826,18 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 	self:SecureHookScript(_G.MountJournal, "OnShow", function(this)
 		self:removeInset(this.LeftInset)
+		if self.isPTR then
+			self:removeInset(this.BottomLeftInset)
+			local btn = this.BottomLeftInset.SlotButton
+			self:removeRegions(btn, {1, 3})
+			if self.modBtnBs then
+				self:addButtonBorder{obj=btn, relTo=btn.ItemIcon, reParent={btn.SlotBorder, btn.SlotBorderOpen}}
+			end
+			btn = nil
+			if self.modBtns then
+				self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton}
+			end
+		end
 		self:removeInset(this.RightInset)
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, x=-6, y=-2} -- 6 is text, 7 is icon
 		self:removeInset(this.MountCount)
@@ -836,6 +851,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end
 		self:skinSlider{obj=this.ListScrollFrame.scrollBar, wdth=-4}
 		self:removeMagicBtnTex(this.MountButton)
+		if self.isPTR then
+			self:skinDropDown{obj=this.mountOptionsMenu}
+		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.MountJournalFilterButton}
 			self:skinDropDown{obj=_G.MountJournalFilterDropDown}
@@ -950,6 +968,13 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinStdButton{obj=this.SummonButton}
 		end
 		self:removeRegions(this.AchievementStatus, {1, 2})
+		if self.isPTR then
+			if self.modChkBtns then
+				-- .icon
+				self:skinCheckButton{obj=this.SpellSelect.Spell1}
+				self:skinCheckButton{obj=this.SpellSelect.Spell2}
+			end
+		end
 		self:skinDropDown{obj=this.petOptionsMenu}
 
 		self:Unhook(this, "OnShow")
@@ -1469,7 +1494,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	cFrame.GuildFinderFrame:DisableDrawLayer("BACKGROUND")
 	if self.modBtns then
-		 self:skinStdButton{obj=cFrame.GuildFinderFrame.FindAGuildButton}
+		if not self.isPTR then
+			self:skinStdButton{obj=cFrame.GuildFinderFrame.FindAGuildButton}
+		end
 	end
 	self:removeInset(cFrame.GuildFinderFrame.InsetFrame)
 
@@ -1546,6 +1573,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	self:SecureHookScript(cFrame.EditStreamDialog, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.BG)
+		end
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
 		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, nb=true, ofs=7}
 		self:skinCheckButton{obj=this.TypeCheckBox}
@@ -1585,6 +1615,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	-- N.B. hook DisplayMember rather than OnShow script
 	self:SecureHook(cFrame.GuildMemberDetailFrame, "DisplayMember", function(this, ...)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinDropDown{obj=this.RankDropdown}
 		self:addSkinFrame{obj=this.NoteBackground, ft=ftype}
 		self:addSkinFrame{obj=this.OfficerNoteBackground, ft=ftype}
@@ -1647,6 +1680,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	self:SecureHookScript(_G.CommunitiesSettingsDialog, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.BG)
+		end
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
 		self:skinEditBox{obj=this.ShortNameEdit, regs={6}} -- 6 is text
 		self:addSkinFrame{obj=this.MessageOfTheDay, ft=ftype, kfs=true, nb=true, ofs=8}
@@ -2175,6 +2211,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.CancelButton}
 			_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.EditBox.PromptText:SetTextColor(self.BT:GetRGB())
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
+			if self.isPTR then
+				self:removeNineSlice(_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame)
+			end
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, ft=ftype}
 			self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
@@ -2288,6 +2327,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 	self:SecureHookScript(_G.AddFriendFrame, "OnShow", function(this)
 		self:skinStdButton{obj=_G.AddFriendInfoFrameContinueButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
 		self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar}
 		self:addSkinFrame{obj=_G.AddFriendNoteFrame, ft=ftype, kfs=true}
@@ -2298,6 +2340,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.FriendsFriendsFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
 		self:addSkinFrame{obj=_G.FriendsFriendsList, ft=ftype}
 		self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar}
@@ -2310,6 +2355,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self:SecureHookScript(_G.BattleTagInviteFrame, "OnShow", function(this)
 		self:skinStdButton{obj=self:getChild(this, 1)} -- Send Request
 		self:skinStdButton{obj=self:getChild(this, 2)} -- Cancel
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
 	end)
@@ -2338,6 +2386,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton}
 
 		-- QuickJoinRoleSelectionFrame
+		if self.isPTR then
+			self:removeNineSlice(_G.QuickJoinRoleSelectionFrame.Border)
+		end
 		for i = 1, #_G.QuickJoinRoleSelectionFrame.Roles do
 			self:skinCheckButton{obj=_G.QuickJoinRoleSelectionFrame.Roles[i].CheckButton}
 		end
@@ -2358,6 +2409,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-1}
 		self:skinCloseButton{obj=this.Tutorial.CloseButton, noSkin=true}
 		-- Create Channel Popup
+		if self.isPTR then
+			self:removeNineSlice(_G.CreateChannelPopup.BG)
+		end
 		self:skinEditBox{obj=_G.CreateChannelPopup.Name, regs={6}} -- 6 is text
 		self:skinEditBox{obj=_G.CreateChannelPopup.Password, regs={6}} -- 6 is text
 		self:skinCheckButton{obj=_G.CreateChannelPopup.UseVoiceChat}
@@ -2759,6 +2813,21 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 
 end
 
+if aObj.isPTR then
+	-- copy of GEM_TYPE_INFO from Blizzard_ItemSocketingUI.xml
+	aObj.GEM_TYPE_INFO = {
+		Yellow = {r=0.97 , g=0.82 , b=0.29},
+		Red = {r=1 , g=0.47 , b=0.47},
+		Blue = {r=0.47 , g=0.67 , b=1},
+		PunchcardYellow = {r=0.97 , g=0.82 , b=0.29},
+		PunchcardRed = {r=1 , g=0.47 , b=0.47},
+		PunchcardBlue = {r=0.47 , g=0.67 , b=1},
+		Hydraulic = {r=1, g=1, b=1},
+		Cogwheel = {r=1, g=1, b=1},
+		Meta = {r=1, g=1, b=1},
+		Prismatic = {r=1, g=1, b=1},
+	}
+end
 aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 	if not self.prdb.ItemSocketingUI or self.initialized.ItemSocketingUI then return end
 	self.initialized.ItemSocketingUI = true
@@ -2779,7 +2848,11 @@ aObj.blizzLoDFrames[ftype].ItemSocketingUI = function(self)
 
 				local clr
 				for i = 1, _G.GetNumSockets() do
-					clr = _G.GEM_TYPE_INFO[_G.GetSocketTypes(i)]
+					if not self.isPTR then
+						clr = _G.GEM_TYPE_INFO[_G.GetSocketTypes(i)]
+					else
+						clr = self.GEM_TYPE_INFO[_G.GetSocketTypes(i)]
+					end
 					_G["ItemSocketingSocket" .. i].sb:SetBackdropBorderColor(clr.r, clr.g, clr.b)
 				end
 				clr = nil
@@ -2856,6 +2929,9 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.GuildFinderRequestMembershipFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinSlider{obj=_G.GuildFinderRequestMembershipFrameInputFrameScrollFrame.ScrollBar, size=3}
 		_G.GuildFinderRequestMembershipEditBoxFill:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.GuildFinderRequestMembershipFrameInputFrame, ft=ftype, x1=-2, x2=2, y2=-2}
@@ -3077,20 +3153,22 @@ aObj.blizzFrames[ftype].ModelFrames = function(self)
 	if not self.prdb.CharacterFrames then return end
 
 	-- these are hooked to suppress the sound the normal functions use
-	self:SecureHook("Model_RotateLeft", function(model, rotationIncrement)
-		if not rotationIncrement then
-			rotationIncrement = 0.03
-		end
-		model.rotation = model.rotation - rotationIncrement
-		model:SetRotation(model.rotation)
-	end)
-	self:SecureHook("Model_RotateRight", function(model, rotationIncrement)
-		if not rotationIncrement then
-			rotationIncrement = 0.03
-		end
-		model.rotation = model.rotation + rotationIncrement
-		model:SetRotation(model.rotation)
-	end)
+	if not self.isPTR then
+		self:SecureHook("Model_RotateLeft", function(model, rotationIncrement)
+			if not rotationIncrement then
+				rotationIncrement = 0.03
+			end
+			model.rotation = model.rotation - rotationIncrement
+			model:SetRotation(model.rotation)
+		end)
+		self:SecureHook("Model_RotateRight", function(model, rotationIncrement)
+			if not rotationIncrement then
+				rotationIncrement = 0.03
+			end
+			model.rotation = model.rotation + rotationIncrement
+			model:SetRotation(model.rotation)
+		end)
+	end
 
 end
 
@@ -3671,6 +3749,9 @@ aObj.blizzFrames[ftype].RolePollPopup = function(self)
 
 	self:SecureHookScript(_G.RolePollPopup, "OnShow", function(this)
 		self:skinStdButton{obj=this.acceptButton}
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype, x1=5, y1=-5, x2=-5, y2=5}
 		self:Unhook(this, "OnShow")
 	end)
@@ -3682,6 +3763,9 @@ aObj.blizzFrames[ftype].ScrollOfResurrection = function(self)
 	self.initialized.ScrollOfResurrection = true
 
 	self:SecureHookScript(_G.ScrollOfResurrectionFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinEditBox{obj=this.targetEditBox, regs={6}} -- 6 is text
 		this.targetEditBox.fill:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=this.noteFrame, ft=ftype, kfs=true}
@@ -4252,11 +4336,17 @@ end
 aObj.blizzFrames[ftype].WardrobeOutfits = function(self)
 
 	self:SecureHookScript(_G.WardrobeOutfitFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:addSkinFrame{obj=this, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.WardrobeOutfitEditFrame, "OnShow", function(this)
+		if self.isPTR then
+			self:removeNineSlice(this.Border)
+		end
 		self:skinEditBox{obj=this.EditBox, regs={6}} -- 6 is text
 		self:skinStdButton{obj=this.AcceptButton}
 		self:skinStdButton{obj=this.CancelButton}

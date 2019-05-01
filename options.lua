@@ -124,6 +124,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AlertFrames          = true,
 		ArtifactUI           = true,
 		AutoComplete         = true,
+		AzeriteEssenceUI     = self.isPTR and true or nil,
 		BattlefieldMap       = {skin = true, gloss = false},
 		BNFrames             = true,
 		Calendar             = true,
@@ -186,7 +187,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		WarboardUI           = true,
 		WarfrontsPartyPoseUI = true ,
 		WorldMap             = {skin = true, size = 1},
-		WorldState           = true,
+		WorldState           = self.isPtr and nil or true,
 		ZoneAbility          = true,
 	-->>-- Disabled Skins
 		DisableAllAS         = false,
@@ -1305,6 +1306,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Auto Complete"],
 					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
+				AzeriteEssenceUI = self.isPTR and {
+					type = "toggle",
+					name = self.L["Azerite Essence UI"],
+					desc = self.L["Toggle the skin of the Azerite Essence UI"],
+				} or nil,
 				BattlefieldMap ={
 					type = "group",
 					inline = true,
@@ -1843,11 +1849,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						},
 					},
 				},
-				WorldState = {
+				WorldState = not self.isPTR and {
 					type = "toggle",
 					name = self.L["Battle Score Frame"],
 					desc = self.L["Toggle the skin of the Battle Score Frame"],
-				},
+				} or nil,
 				ZoneAbility = {
 					type = "toggle",
 					name = self.L["Zone Ability"],
