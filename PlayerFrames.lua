@@ -774,13 +774,18 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 				end)
 			end
 			self:skinSlider{obj=_G.ReputationListScrollFrame.ScrollBar, size=3, rt="background"}
-			self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
-			self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox}
-			self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
-			self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox}
-			self:skinCheckButton{obj=_G.ReputationDetailLFGBonusReputationCheckBox}
+			-- ReputationDetailFrame
 			if self.isPTR then
 				self:removeNineSlice(_G.ReputationDetailFrame.Border)
+			end
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.ReputationDetailCloseButton}
+			end
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G.ReputationDetailAtWarCheckBox}
+				self:skinCheckButton{obj=_G.ReputationDetailInactiveCheckBox}
+				self:skinCheckButton{obj=_G.ReputationDetailMainScreenCheckBox}
+				self:skinCheckButton{obj=_G.ReputationDetailLFGBonusReputationCheckBox}
 			end
 			self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 			self:Unhook(this, "OnShow")
@@ -1102,12 +1107,12 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 	self:SecureHookScript(_G.WardrobeCollectionFrame, "OnShow", function(this)
 
+		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true} -- 6 is text, 7 is icon
 		_G.RaiseFrameLevelByTwo(this.searchBox) -- raise above SetsCollectionFrame when displayed on it
 		self:skinStatusBar{obj=this.progressBar, fi=0}
 		self:removeRegions(this.progressBar, {2, 3})
 		self:skinDropDown{obj=this.FilterDropDown}
-		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-4, x2=-2, y2=-4}
 
 		if self.modBtns then
 			self:skinStdButton{obj=this.FilterButton}
@@ -1152,12 +1157,13 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 
 		self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
-			this.RightInset:DisableDrawLayer("BACKGROUND")
-			this.RightInset:DisableDrawLayer("BORDER")
-			this.RightInset:DisableDrawLayer("OVERLAY")
-			this.RightInset:DisableDrawLayer("ARTWORK", 1)
-			this.RightInset:DisableDrawLayer("ARTWORK", 2)
-			self:removeInset(this.RightInset)
+			self:keepFontStrings(this.RightInset)
+			-- this.RightInset:DisableDrawLayer("BACKGROUND")
+			-- this.RightInset:DisableDrawLayer("BORDER")
+			-- this.RightInset:DisableDrawLayer("OVERLAY")
+			-- this.RightInset:DisableDrawLayer("ARTWORK", 1)
+			-- this.RightInset:DisableDrawLayer("ARTWORK", 2)
+			-- self:removeInset(this.RightInset)
 			self:skinSlider{obj=this.ScrollFrame.scrollBar, wdth=-4, size=3}
 			self:skinDropDown{obj=this.ScrollFrame.FavoriteDropDown}
 			for i = 1, #this.ScrollFrame.buttons do
@@ -2326,15 +2332,17 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.AddFriendFrame, "OnShow", function(this)
-		self:skinStdButton{obj=_G.AddFriendInfoFrameContinueButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.AddFriendInfoFrameContinueButton}
+			self:skinStdButton{obj=_G.AddFriendEntryFrameAcceptButton}
+			self:skinStdButton{obj=_G.AddFriendEntryFrameCancelButton}
 		end
 		self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
 		self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar}
 		self:addSkinFrame{obj=_G.AddFriendNoteFrame, ft=ftype, kfs=true}
-		self:skinStdButton{obj=_G.AddFriendEntryFrameAcceptButton}
-		self:skinStdButton{obj=_G.AddFriendEntryFrameCancelButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -2346,17 +2354,21 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:skinDropDown{obj=_G.FriendsFriendsFrameDropDown}
 		self:addSkinFrame{obj=_G.FriendsFriendsList, ft=ftype}
 		self:skinSlider{obj=_G.FriendsFriendsScrollFrame.ScrollBar}
-		self:skinStdButton{obj=_G.FriendsFriendsSendRequestButton}
-		self:skinStdButton{obj=_G.FriendsFriendsCloseButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.FriendsFriendsSendRequestButton}
+			self:skinStdButton{obj=_G.FriendsFriendsCloseButton}
+		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.BattleTagInviteFrame, "OnShow", function(this)
-		self:skinStdButton{obj=self:getChild(this, 1)} -- Send Request
-		self:skinStdButton{obj=self:getChild(this, 2)} -- Cancel
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=self:getChild(this, 1)} -- Send Request
+			self:skinStdButton{obj=self:getChild(this, 2)} -- Cancel
 		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
@@ -2383,7 +2395,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
 		self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
-		self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton}
+		end
 
 		-- QuickJoinRoleSelectionFrame
 		if self.isPTR then
@@ -2392,8 +2406,10 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		for i = 1, #_G.QuickJoinRoleSelectionFrame.Roles do
 			self:skinCheckButton{obj=_G.QuickJoinRoleSelectionFrame.Roles[i].CheckButton}
 		end
-		self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.AcceptButton}
-		self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.CancelButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.AcceptButton}
+			self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.CancelButton}
+		end
 		self:addSkinFrame{obj=_G.QuickJoinRoleSelectionFrame, ft=ftype, ofs=-5}
 
 		self:Unhook(this, "OnShow")
@@ -2402,21 +2418,27 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	self:SecureHookScript(_G.ChannelFrame, "OnShow", function(this)
 		self:removeInset(this.LeftInset)
 		self:removeInset(this.RightInset)
-		self:skinStdButton{obj=this.NewButton}
-		self:skinStdButton{obj=this.SettingsButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.NewButton}
+			self:skinStdButton{obj=this.SettingsButton}
+			self:skinCloseButton{obj=this.Tutorial.CloseButton, noSkin=true}
+		end
 		self:skinSlider{obj=this.ChannelList.ScrollBar, wdth=-4}
 		self:skinSlider{obj=this.ChannelRoster.ScrollFrame.scrollBar, wdth=-4}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x1=-5, y2=-1}
-		self:skinCloseButton{obj=this.Tutorial.CloseButton, noSkin=true}
 		-- Create Channel Popup
 		if self.isPTR then
 			self:removeNineSlice(_G.CreateChannelPopup.BG)
 		end
 		self:skinEditBox{obj=_G.CreateChannelPopup.Name, regs={6}} -- 6 is text
 		self:skinEditBox{obj=_G.CreateChannelPopup.Password, regs={6}} -- 6 is text
-		self:skinCheckButton{obj=_G.CreateChannelPopup.UseVoiceChat}
-		self:skinStdButton{obj=_G.CreateChannelPopup.OKButton}
-		self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.CreateChannelPopup.UseVoiceChat}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.CreateChannelPopup.OKButton}
+			self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton}
+		end
 		self:addSkinFrame{obj=_G.CreateChannelPopup, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -3748,9 +3770,11 @@ aObj.blizzFrames[ftype].RolePollPopup = function(self)
 	self.initialized.RolePollPopup = true
 
 	self:SecureHookScript(_G.RolePollPopup, "OnShow", function(this)
-		self:skinStdButton{obj=this.acceptButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.acceptButton}
 		end
 		self:addSkinFrame{obj=this, ft=ftype, x1=5, y1=-5, x2=-5, y2=5}
 		self:Unhook(this, "OnShow")
@@ -4348,9 +4372,11 @@ aObj.blizzFrames[ftype].WardrobeOutfits = function(self)
 			self:removeNineSlice(this.Border)
 		end
 		self:skinEditBox{obj=this.EditBox, regs={6}} -- 6 is text
-		self:skinStdButton{obj=this.AcceptButton}
-		self:skinStdButton{obj=this.CancelButton}
-		self:skinStdButton{obj=this.DeleteButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.AcceptButton}
+			self:skinStdButton{obj=this.CancelButton}
+			self:skinStdButton{obj=this.DeleteButton}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)

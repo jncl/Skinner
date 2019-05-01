@@ -364,18 +364,26 @@ aObj.blizzFrames[ftype].AddonList = function(self)
 	self.initialized.AddonList = true
 
 	self:SecureHookScript(_G.AddonList, "OnShow", function(this)
-		self:skinCheckButton{obj=_G.AddonListForceLoad}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.AddonListForceLoad}
+		end
 		self:removeMagicBtnTex(this.CancelButton)
-		self:skinStdButton{obj=this.CancelButton}
 		self:removeMagicBtnTex(this.OkayButton)
-		self:skinStdButton{obj=this.OkayButton}
 		self:removeMagicBtnTex(this.EnableAllButton)
-		self:skinStdButton{obj=this.EnableAllButton}
 		self:removeMagicBtnTex(this.DisableAllButton)
-		self:skinStdButton{obj=this.DisableAllButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.CancelButton}
+			self:skinStdButton{obj=this.OkayButton}
+			self:skinStdButton{obj=this.EnableAllButton}
+			self:skinStdButton{obj=this.DisableAllButton}
+		end
 		for i = 1, _G.MAX_ADDONS_DISPLAYED do
-			self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"]}
-			self:skinStdButton{obj=_G["AddonListEntry" .. i .. "Load"]}
+			if self.modChkBtns then
+				self:skinCheckButton{obj=_G["AddonListEntry" .. i .. "Enabled"]}
+			end
+			if self.modBtns then
+				self:skinStdButton{obj=_G["AddonListEntry" .. i .. "Load"]}
+			end
 		end
 		self:skinSlider{obj=_G.AddonListScrollFrame.ScrollBar, rt="background"}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
@@ -1637,10 +1645,12 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 	self.initialized.CinematicFrame = true
 
 	self:SecureHookScript(_G.CinematicFrame, "OnShow", function(this)
-		self:skinStdButton{obj=_G.CinematicFrameCloseDialogConfirmButton}
-		self:skinStdButton{obj=_G.CinematicFrameCloseDialogResumeButton}
 		if self.isPTR then
 			self:removeNineSlice(this.closeDialog)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.CinematicFrameCloseDialogConfirmButton}
+			self:skinStdButton{obj=_G.CinematicFrameCloseDialogResumeButton}
 		end
 		self:addSkinFrame{obj=this.closeDialog, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
@@ -2893,20 +2903,24 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 	self.initialized.LFDFrame = true
 
 	self:SecureHookScript(_G.LFDRoleCheckPopup, "OnShow", function(this)
-		self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton}
-		self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.LFDRoleCheckPopupAcceptButton}
+			self:skinStdButton{obj=_G.LFDRoleCheckPopupDeclineButton}
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.LFDReadyCheckPopup, "OnShow", function(this)
-		self:skinStdButton{obj=this.YesButton}
-		self:skinStdButton{obj=this.NoButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.YesButton}
+			self:skinStdButton{obj=this.NoButton}
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
@@ -2965,8 +2979,10 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 		end
 
 		self:addSkinFrame{obj=_G.LFGDungeonReadyStatus, ft=ftype, kfs=true, ofs=-5}
-		self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
-		self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.LFGDungeonReadyDialog.enterButton}
+			self:skinStdButton{obj=_G.LFGDungeonReadyDialog.leaveButton}
+		end
 		self:addSkinFrame{obj=_G.LFGDungeonReadyDialog, ft=ftype, kfs=true, rp=true, ofs=-5, y2=10} -- use rp=true to make background visible
 		_G.LFGDungeonReadyDialog.SetBackdrop = _G.nop
 
@@ -3012,10 +3028,12 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 	end, true)
 
 	self:SecureHookScript(_G.LFGInvitePopup, "OnShow", function(this)
-		self:skinStdButton{obj=_G.LFGInvitePopupAcceptButton}
-		self:skinStdButton{obj=_G.LFGInvitePopupDeclineButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.LFGInvitePopupAcceptButton}
+			self:skinStdButton{obj=_G.LFGInvitePopupDeclineButton}
 		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
@@ -3193,11 +3211,13 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 
 	-- LFGListInvite Dialog
 	self:SecureHookScript(_G.LFGListInviteDialog, "OnShow", function(this)
-		self:skinStdButton{obj=this.AcceptButton}
-		self:skinStdButton{obj=this.DeclineButton}
-		self:skinStdButton{obj=this.AcknowledgeButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.AcceptButton}
+			self:skinStdButton{obj=this.DeclineButton}
+			self:skinStdButton{obj=this.AcknowledgeButton}
 		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
@@ -3576,9 +3596,11 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 		-- Rating Menu
 		self:SecureHookScript(_G.RatingMenuFrame, "OnShow", function(this)
-			self:skinStdButton{obj=_G.RatingMenuButtonOkay}
 			if self.isPTR then
 				self:removeNineSlice(this.Border)
+			end
+			if self.modBtns then
+				self:skinStdButton{obj=_G.RatingMenuButtonOkay}
 			end
 			self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
 			self:Unhook(this, "OnShow")
@@ -3598,11 +3620,13 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 		self:addSkinFrame{obj=_G.VideoOptionsFrameCategoryFrame, ft=ftype, kfs=true} -- LHS panel
 		self:skinSlider(_G.VideoOptionsFrameCategoryFrameListScrollBar)
 		self:addSkinFrame{obj=_G.VideoOptionsFramePanelContainer, ft=ftype} -- RHS Panel
-		self:skinStdButton{obj=_G.VideoOptionsFrameApply}
-		self:skinStdButton{obj=_G.VideoOptionsFrameCancel}
-		self:skinStdButton{obj=_G.VideoOptionsFrameOkay}
-		self:skinStdButton{obj=_G.VideoOptionsFrameDefaults}
-		self:addSkinFrame{obj=_G.VideoOptionsFrame, ft=ftype, kfs=true, hdr=true}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.VideoOptionsFrameApply}
+			self:skinStdButton{obj=_G.VideoOptionsFrameCancel}
+			self:skinStdButton{obj=_G.VideoOptionsFrameOkay}
+			self:skinStdButton{obj=_G.VideoOptionsFrameDefaults}
+		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 
 		-- Graphics
 		skinKids(_G.Display_)
@@ -3673,14 +3697,16 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	-- Interface
 	self:SecureHookScript(_G.InterfaceOptionsFrame, "OnShow", function(this)
-		self:skinTabs{obj=_G.InterfaceOptionsFrame, up=true, lod=true, ignore=true, ignht=true, x1=6, y1=2, x2=-6, y2=-3}
-		self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel}
-		self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay}
-		self:skinStdButton{obj=_G.InterfaceOptionsFrameDefaults}
-		self:addSkinFrame{obj=_G.InterfaceOptionsFrame, ft=ftype, kfs=true, hdr=true}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
 		end
+		self:skinTabs{obj=this, up=true, lod=true, ignore=true, ignht=true, x1=6, y1=2, x2=-6, y2=-3}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.InterfaceOptionsFrameCancel}
+			self:skinStdButton{obj=_G.InterfaceOptionsFrameOkay}
+			self:skinStdButton{obj=_G.InterfaceOptionsFrameDefaults}
+		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 
 		-- LHS panel (Game Tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameCategories, "OnShow", function(this)
@@ -4126,10 +4152,12 @@ aObj.blizzFrames[ftype].MovieFrame = function(self)
 	self.initialized.MovieFrame = true
 
 	self:SecureHookScript(_G.MovieFrame, "OnShow", function(this)
-		self:skinStdButton{obj=this.CloseDialog.ConfirmButton}
-		self:skinStdButton{obj=this.CloseDialog.ResumeButton}
 		if self.isPTR then
 			self:removeNineSlice(this.CloseDialog.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.CloseDialog.ConfirmButton}
+			self:skinStdButton{obj=this.CloseDialog.ResumeButton}
 		end
 		self:addSkinFrame{obj=this.CloseDialog, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
@@ -4521,15 +4549,19 @@ aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Reward
 	self:add2Table(_G.UISpecialFrames, "ProductChoiceFrame")
 
 	self:SecureHookScript(_G.ProductChoiceFrame, "OnShow", function(this)
-		self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.AcceptButton}
-		self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.DeclineButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Inset.NoTakeBacksies.Dialog.Border)
 		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.AcceptButton}
+			self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.DeclineButton}
+			self:skinStdButton{obj=this.Inset.ClaimButton}
+		end
 		self:addSkinFrame{obj=this.Inset.NoTakeBacksies.Dialog, ft=ftype}
-		self:skinStdButton{obj=this.Inset.ClaimButton}
-		self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
-		self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
+			self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		self:Unhook(this, "OnShow")
 	end)
@@ -4595,28 +4627,34 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 		end
 		this:DisableDrawLayer("BORDER")
 		_G.PVPFramePopupRing:SetTexture(nil)
-		self:skinCloseButton{obj=this.minimizeButton}
-		self:skinStdButton{obj=_G.PVPFramePopupAcceptButton}
-		self:skinStdButton{obj=_G.PVPFramePopupDeclineButton}
-		self:addSkinFrame{obj=this, ft=ftype}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.minimizeButton}
+			self:skinStdButton{obj=_G.PVPFramePopupAcceptButton}
+			self:skinStdButton{obj=_G.PVPFramePopupDeclineButton}
+		end
+		self:addSkinFrame{obj=this, ft=ftype, nb=true}
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.PVPRoleCheckPopup, "OnShow", function(this)
-		self:skinStdButton{obj=_G.PVPRoleCheckPopupAcceptButton}
-		self:skinStdButton{obj=_G.PVPRoleCheckPopupDeclineButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.PVPRoleCheckPopupAcceptButton}
+			self:skinStdButton{obj=_G.PVPRoleCheckPopupDeclineButton}
 		end
 		self:addSkinFrame{obj=this, ft=ftype}
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
-		self:skinStdButton{obj=this.enterButton}
-		self:skinStdButton{obj=this.leaveButton}
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.enterButton}
+			self:skinStdButton{obj=this.leaveButton}
 		end
 		this.instanceInfo.underline:SetAlpha(0)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
@@ -4998,8 +5036,10 @@ aObj.blizzFrames[ftype].StaticPopupSpecial = function(self)
 			self:removeNineSlice(this.Border)
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-		self:skinStdButton{obj=this.AcceptButton}
-		self:skinStdButton{obj=this.DeclineButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.AcceptButton}
+			self:skinStdButton{obj=this.DeclineButton}
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -5244,7 +5284,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		this:SetText("?")
 		self:moveObject{obj=this:GetFontString(), x=4}
 		self:addSkinButton{obj=this, x1=30, y1=-1, x2=-25, y2=10}
-		self.RaiseFrameLevelByFour(this)
+		self:RaiseFrameLevelByFour(this)
 		self:Unhook(this, "OnShow")
 	end)
 
