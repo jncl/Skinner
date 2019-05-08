@@ -902,7 +902,7 @@ local function __skinCheckButton(opts)
 		end
 	end
 	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
-	aObj:addSkinButton{obj=opts.obj, aso={bd=bd, ng=true}, parent=opts.obj, nohooks=not opts.hf, ofs=ofs, y2=yOfs}
+	aObj:addSkinButton{obj=opts.obj, aso={bd=bd, ng=true}, parent=opts.obj, nohooks=not opts.hf, grey=true, ofs=ofs, y2=yOfs}
 
 end
 function module:skinCheckButton(...)
