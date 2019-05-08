@@ -171,6 +171,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		PetBattleUI          = true,
 		ProductChoiceFrame   = true,
 		PVEFrame             = true, -- (inc, LFD, LFG, RaidFinder, ScenarioFinder)
+		PVPMatch			 = self.isPTR and true or nil,
 		QuestMap             = true,
 		QueueStatusFrame     = true,
 		RaidFrame            = true, -- (inc. LFR)
@@ -187,7 +188,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		WarboardUI           = true,
 		WarfrontsPartyPoseUI = true ,
 		WorldMap             = {skin = true, size = 1},
-		WorldState           = self.isPtr and nil or true,
+		WorldState           = self.isPTR and nil or true,
 		ZoneAbility          = true,
 	-->>-- Disabled Skins
 		DisableAllAS         = false,
@@ -1715,6 +1716,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Group Finder Frame"],
 					desc = self.L["Toggle the skin of the Group Finder Frame"],
 				},
+				PVPMatch = self.isPTR and {
+					type = "toggle",
+					name = self.L["PVP Match Frame"],
+					desc = self.L["Toggle the skin of the PVP Match Frame"],
+				} or nil,
 				QuestMap = {
 					type = "toggle",
 					name = self.L["Quest Map"],

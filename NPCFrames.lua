@@ -891,7 +891,18 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 	self.initialized.Tabard = true
 
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
-		self:makeMFRotatable(_G.TabardModel)
+
+		if not self.isPTR then
+			self:makeMFRotatable(_G.TabardModel)
+			self:keepRegions(this, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
+		else
+			self:keepRegions(this, {4, 17, 18, 19, 20, 21, 22}) -- N.B. regions 4, 21 & 22 are text, 17-20 are icon textures
+			self:removeNineSlice(this.NineSlice)
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.TabardCharacterModelRotateLeftButton, ofs=-4, y2=5}
+				self:addButtonBorder{obj=_G.TabardCharacterModelRotateRightButton, ofs=-4, y2=5}
+			end
+		end
 		_G.TabardFrameCostFrame:SetBackdrop(nil)
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 		for i = 1, 5 do
@@ -901,8 +912,6 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-2}
 			end
 		end
-
-		self:keepRegions(this, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
 		self:removeInset(_G.TabardFrameMoneyInset)
 		_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
 		if self.modBtns then

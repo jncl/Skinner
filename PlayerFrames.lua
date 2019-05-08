@@ -1473,6 +1473,74 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end
 	end)
 
+	if self.isPTR then
+		-- ApplicantList
+		if self.modChkBtns then
+			self:skinCheckButton{obj=cFrame.ApplicantList.ShowOfflineButton}
+			cFrame.ApplicantList.ColumnDisplay:DisableDrawLayer("BACKGROUND")
+			self:skinSlider{obj=cFrame.ApplicantList.ListScrollFrame.scrollBar}--, rt="artwork", wdth=-4, size=3, hgt=-10}
+			self:skinDropDown{obj=cFrame.ApplicantList.DropDown}
+			self:removeInset(cFrame.ApplicantList.InsetFrame)
+		end
+	end
+
+	cFrame.GuildFinderFrame:DisableDrawLayer("BACKGROUND")
+	if self.modBtns then
+		if not self.isPTR then
+			self:skinStdButton{obj=cFrame.GuildFinderFrame.FindAGuildButton}
+		end
+	end
+	if self.isPTR then
+		local function skinCFGaCF(frame)
+			aObj:skinDropDown{obj=cFrame[frame].OptionsList.TypeDropdown}
+			aObj:skinDropDown{obj=cFrame[frame].OptionsList.ClubFocusDropdown}
+			aObj:skinDropDown{obj=cFrame[frame].OptionsList.ClubSizeDropdown}
+			aObj:skinDropDown{obj=cFrame[frame].OptionsList.SortByDropdown}
+			aObj:skinEditBox{obj=cFrame[frame].OptionsList.SearchBox, regs={6}} -- 6 is text
+			for _, card in ipairs(cFrame[frame].GuildCards.Cards) do
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=card.RequestJoin}
+				end
+				aObj:skinDropDown{obj=card.RightClickDropdown}
+			end
+			aObj:skinSlider{obj=cFrame[frame].CommunityCards.ListScrollFrame.scrollBar}
+			aObj:removeNineSlice(cFrame[frame].RequestToJoinFrame.BG)
+			aObj:addSkinFrame{obj=cFrame[frame].RequestToJoinFrame.MessageFrame, ft=ftype, kfs=true, nb=true}
+			aObj:removeInset(cFrame[frame].InsetFrame)
+			if aObj.modChkBtns then
+				for _, specs in ipairs(cFrame[frame].RequestToJoinFrame.Specs) do
+					aObj:skinCheckButton{obj=specs.CheckBox}
+				end
+			end
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=cFrame[frame].OptionsList.Search}
+				aObj:addButtonBorder{obj=cFrame[frame].GuildCards.PreviousPage}
+				aObj:addButtonBorder{obj=cFrame[frame].GuildCards.NextPage}
+				aObj:skinStdButton{obj=cFrame[frame].RequestToJoinFrame.Apply}
+				aObj:skinStdButton{obj=cFrame[frame].RequestToJoinFrame.Cancel}
+				aObj:skinStdButton{obj=cFrame[frame].PendingClubs}
+			end
+		end
+		skinCFGaCF("GuildFinderFrame")
+		skinCFGaCF("CommunityAndGuildFinderFrame")
+		local function skinBtns(sFrame)
+			for i, btn in ipairs(sFrame.ListScrollFrame.buttons) do
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=btn.RequestJoin}
+				end
+				aObj:skinDropDown{obj=btn.RightClickDropdown}
+			end
+		end
+		self:SecureHook(_G.ClubFinderCommunitiesCardFrameMixin, "BuildCardList", function(this)
+			aObj:Debug("CFCCFM BuildCardList: [%s, %s]", this, #this.ListScrollFrame.buttons)
+			skinBtns(this)
+		end)
+		self:SecureHook(_G.ClubFinderCommunitiesCardFrameMixin, "BuildPendingCardList", function(this)
+			aObj:Debug("CFCCFM BuildPendingCardList: [%s, %s]", this, #this.ListScrollFrame.buttons)
+			skinBtns(this)
+		end)
+	end
+
 	self:skinSlider{obj=cFrame.Chat.MessageFrame.ScrollBar, wdth=-4}
 	if self.modBtns then
 		 self:skinStdButton{obj=_G.JumpToUnreadButton}
@@ -1493,13 +1561,22 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	cFrame.GuildFinderFrame:DisableDrawLayer("BACKGROUND")
-	if self.modBtns then
-		if not self.isPTR then
-			self:skinStdButton{obj=cFrame.GuildFinderFrame.FindAGuildButton}
+	if self.isPTR then
+		self:removeNineSlice(cFrame.ClubFinderInvitationFrame.WarningDialog.BG)
+		if self.modBtns then
+			self:skinStdButton{obj=cFrame.ClubFinderInvitationFrame.WarningDialog.Accept}
+			self:skinStdButton{obj=cFrame.ClubFinderInvitationFrame.WarningDialog.Cancel}
+			self:skinStdButton{obj=cFrame.ClubFinderInvitationFrame.AcceptButton}
+			self:skinStdButton{obj=cFrame.ClubFinderInvitationFrame.DeclineButton}
 		end
+		self:removeInset(cFrame.ClubFinderInvitationFrame.InsetFrame)
+		if self.modBtns then
+			self:skinStdButton{obj=cFrame.TicketFrame.AcceptButton}
+			self:skinStdButton{obj=cFrame.TicketFrame.DeclineButton}
+		end
+		self:removeInset(cFrame.TicketFrame.InsetFrame)
+		cFrame.TicketFrame:DisableDrawLayer("BACKGROUND")
 	end
-	self:removeInset(cFrame.GuildFinderFrame.InsetFrame)
 
 	self:SecureHookScript(cFrame.GuildBenefitsFrame, "OnShow", function(this)
 		this:DisableDrawLayer("OVERLAY") -- inset textures
@@ -1604,6 +1681,25 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
+	-- RecruitmentDialog
+	if self.isPTR then
+		-- BG
+		if self.modChkBtns then
+			self:skinCheckButton{obj=cFrame.RecruitmentDialog.ShouldListClub.ShouldListClubButton}
+			self:skinCheckButton{obj=cFrame.RecruitmentDialog.MaxLevelOnly.Button}
+			self:skinCheckButton{obj=cFrame.RecruitmentDialog.MinIlvlOnly.Button}
+		end
+		self:skinDropDown{obj=cFrame.RecruitmentDialog.ClubFocusDropdown}
+		self:skinDropDown{obj=cFrame.RecruitmentDialog.LookingForDropdown}
+		cFrame.RecruitmentDialog.RecruitmentMessageFrame:DisableDrawLayer("BACKGROUND")
+		self:skinEditBox{obj=cFrame.RecruitmentDialog.RecruitmentMessageFrame.EditBox, regs={3}}
+		self:skinEditBox{obj=cFrame.RecruitmentDialog.MinIlvlOnly.EditBox, regs={6}}
+		if self.modBtns then
+			self:skinStdButton{obj=cFrame.RecruitmentDialog.Accept}
+			self:skinStdButton{obj=cFrame.RecruitmentDialog.Cancel}
+		end
+	end
+
 	self:moveObject{obj=cFrame.AddToChatButton, x=-6, y=-6}
 
 	if self.modBtns then
@@ -1684,6 +1780,16 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(_G.CommunitiesSettingsDialog, "OnShow", function(this)
 		if self.isPTR then
 			self:removeNineSlice(this.BG)
+			if self.modChkBtns then
+				self:skinCheckButton{obj=this.ShouldListClub.Button}
+				self:skinCheckButton{obj=this.AutoAcceptApplications.Button}
+				self:skinCheckButton{obj=this.MaxLevelOnly.Button}
+				self:skinCheckButton{obj=this.MinIlvlOnly.Button}
+			end
+			self:skinEditBox{obj=this.MinIlvlOnly.EditBox, regs={6}}
+			this.MinIlvlOnly.EditBox.Text:SetPoint("TOPLEFT", this.MinIlvlOnly.EditBox, "TOPLEFT", 4, 0)
+			self:skinDropDown{obj=this.ClubFocusDropdown}
+			self:skinDropDown{obj=this.LookingForDropdown}
 		end
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
 		self:skinEditBox{obj=this.ShortNameEdit, regs={6}} -- 6 is text

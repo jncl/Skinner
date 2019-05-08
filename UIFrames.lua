@@ -496,13 +496,6 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
 		-- colour the Icon buttons' border
 		if self.modBtnBs then
-			if not self.isPTR then
-				frame.IconBorder:SetTexture(nil)
-				self:addButtonBorder{obj=frame, relTo=frame.Icon}
-			else
-				frame.lootItem.IconBorder:SetTexture(nil)
-				self:addButtonBorder{obj=frame, relTo=frame.lootItem.Icon}
-			end
 			local itemLink, _,_,_,_, isCurrency = ...
 			local itemRarity
 			if isCurrency then
@@ -510,7 +503,15 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 			else
 				itemRarity = _G.select(3, _G.GetItemInfo(itemLink))
 			end
-			frame.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
+			if not self.isPTR then
+				frame.IconBorder:SetTexture(nil)
+				self:addButtonBorder{obj=frame, relTo=frame.Icon}
+				frame.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
+			else
+				frame.lootItem.IconBorder:SetTexture(nil)
+				self:addButtonBorder{obj=frame.lootItem, relTo=frame.lootItem.Icon}
+				frame.lootItem.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
+			end
 			itemLink, isCurrency, itemRarity = nil, nil, nil
 		end
 	end)
@@ -776,6 +777,7 @@ if aObj.isPTR then
 		self.initialized.AzeriteEssenceUI = true
 
 		self:SecureHookScript(_G.AzeriteEssenceUI, "OnShow", function(this)
+			-- LHS
 			self:keepFontStrings(this.PowerLevelBadgeFrame)
 			self:removeInset(this.LeftInset)
 			self:removeInset(this.RightInset)
@@ -786,18 +788,20 @@ if aObj.isPTR then
 			this.StarsAnimationFrame1:DisableDrawLayer("BORDER")
 			this.StarsAnimationFrame2:DisableDrawLayer("BORDER")
 			this.StarsAnimationFrame3:DisableDrawLayer("BORDER")
-			-- remove textures
-			self:removeRegions(this.SlotsFrame, {1, 2, 3, 5})
-			-- for i, slotButton in ipairs(this.SlotsFrame.Slots) do
-			-- 	slotButton.Ring:SetTexture(nil)
-			-- 	slotButton.GlassCover:SetTexture(nil)
-			-- 	if slotButton.slot == _G.Enum.AzeriteEssence.MainSlot then
-			-- 	else
-			-- 	end
-			-- 	-- .LockedRegions
-			-- end
-			-- ScrollFrame.LearnEssenceModelScene
-			self:skinSlider{obj=this.ScrollFrame.ScrollBar, size=2}
+			-- remove ring etc from milestones
+			for i, slot in ipairs(this.Slots) do
+				-- print("Slot", i, slot)
+				for j, stateFrame in ipairs(slot.StateFrames) do
+					-- print("StateFrames", j, stateFrame, stateFrame:GetNumRegions())
+					if i == 1 then -- Major Milestone
+						self:removeRegions(stateFrame, {2, 3, 8, 9}) -- Glow, Shadow, Ring & HighlightRing textures
+					elseif j == 1 then -- Minor Milestone
+						self:removeRegions(stateFrame, {5, 6}) -- Ring & HighlightRing textures
+					end
+				end
+			end
+			-- RHS
+			self:skinSlider{obj=this.EssenceList.ScrollBar, size=2}
 			if self.modBtnBs then
 				local function clrBB(sf)
 					for i, btn in ipairs(sf.buttons) do
@@ -805,16 +809,16 @@ if aObj.isPTR then
 					end
 				end
 				-- self:skinStdButton{obj=this.ScrollFrame.HeaderButton}
-				for i, btn in ipairs(this.ScrollFrame.buttons) do
+				for i, btn in ipairs(this.EssenceList.buttons) do
 					self:nilTexture(btn.Background, true)
 					self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.IconCover, btn.Glow, btn.Glow2, btn.Glow3}, grey=true}
 				end
-				clrBB(this.ScrollFrame)
-				self:SecureHook(this.ScrollFrame, "UpdateMouseOverTooltip", function(this)
+				clrBB(this.EssenceList)
+				self:SecureHook(this.EssenceList, "UpdateMouseOverTooltip", function(this)
 					clrBB(this)
 				end)
 			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 			self:Unhook(this, "OnShow")
 		end)
 		if _G.AzeriteEssenceUI:IsShown() then
@@ -4669,6 +4673,59 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 
 end
 
+if aObj.isPTR then
+	aObj.blizzFrames[ftype].PVPMatch = function(self)
+		if not self.db.profile.PVPMatch or self.initialized.PVPMatch then return end
+		self.initialized.PVPMatch = true
+
+		self:SecureHookScript(_G.PVPMatchScoreboard, "OnShow", function(this)
+
+			this.Content:DisableDrawLayer("OVERLAY") -- inset textures
+			-- ScrollCategories
+			self:skinSlider{obj=this.ScrollFrame.ScrollBar}
+			-- TabContainer
+				-- TabGroup
+					-- PVPScoreboardTab1/2/3
+
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.PVPMatchResults, "OnShow", function(this)
+
+			-- overlay.decorator
+			-- Score (UIWidgetContainer)
+			-- content
+				-- scrollCategories
+			self:skinSlider{obj=this.content.scrollFrame.scrollBar}
+				-- tabContainer
+					-- tabGroup
+						-- PVPScoreFrameTab1/2/3
+					-- matchTimeContainer
+				-- earningsContainer
+					-- rewardsContainer
+						-- items
+					-- progressContainer
+						-- honor
+							-- button
+						-- conquest
+							-- button
+						-- rating
+							-- button
+				-- earningsArt
+			if self.modBtns then
+				self:skinStdButton{obj=this.buttonContainer.leaveButton}
+				self:skinStdButton{obj=this.buttonContainer.requeueButton}
+			end
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			self:Unhook(this, "OnShow")
+		end)
+		self:skinDropDown{obj=_G.PVPMatchResultsNameDropDown}
+
+	end
+
+end
+
 aObj.blizzFrames[ftype].QuestMap = function(self)
 	if IsAddOnLoaded("EQL3") then
 		aObj.blizzFrames[ftype].QuestMap = nil
@@ -5335,15 +5392,14 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	local function setTextColor(textObject)
 		local tClr = {textObject:GetTextColor()}
 		-- aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
-		-- only colour blue (Alliance) or red (Horde) text (Warfront Contribution text)
-		if (aObj:round2(tClr[1], 2) == 0.08
-		and aObj:round2(tClr[2], 2) == 0.16
-		and aObj:round2(tClr[3], 2) == 0.37)
-		or (aObj:round2(tClr[1], 2) == 0.41
+		if (aObj:round2(tClr[1], 2) == 0.41 or aObj:round2(tClr[1], 2) == 0.28
 		and aObj:round2(tClr[2], 2) == 0.02
-		and aObj:round2(tClr[3], 2) == 0.02)
+		and aObj:round2(tClr[3], 2) == 0.02) -- Red
+		or (aObj:round2(tClr[1], 2) == 0.08
+		and aObj:round2(tClr[2], 2) == 0.16
+		and aObj:round2(tClr[3], 2) == 0.37) -- Blue
 		then
-			textObject:SetTextColor(self.BT:GetRGB())
+			textObject:SetTextColor(aObj.BT:GetRGB())
 			textObject.SetTextColor = _G.nop
 		end
 		_G.wipe(tClr)
@@ -5388,19 +5444,11 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 				end
 			end
 		elseif wFrame.widgetType == 8 then -- TextWithState
-			if not self.isPTR then
-				setTextColor(wFrame.Text)
-			else
-				wFrame:SetFontColor(self.BT)
-			end
+			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 9 then -- HorizontalCurrencies
 			for currencyFrame in wFrame.currencyPool:EnumerateActive() do
-				if not self.isPTR then
-					setTextColor(currencyFrame.Text)
-					setTextColor(currencyFrame.LeadingText)
-				else
-					currencyFrame:SetFontColor(self.BT)
-				end
+				setTextColor(currencyFrame.Text)
+				setTextColor(currencyFrame.LeadingText)
 			end
 		elseif wFrame.widgetType == 10 then -- BulletTextList
 			for lineFrame in wFrame.linePool:EnumerateActive() do
@@ -5411,33 +5459,20 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		elseif wFrame.widgetType == 12 then -- TextureWithState (PTR - TextureAndText)
 			-- .Background
 			-- .Foreground
-			if not self.isPTR then
-				setTextColor(wFrame.Text)
-			else
-				wFrame:SetFontColor(self.BT)
-			end
+			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
 			wFrame.Spell.Border:SetTexture(nil)
-			if not self.isPTR then
-				setTextColor(wFrame.Spell.Text)
-			else
-				wFrame:SetFontColor(self.BT)
-			end
+			setTextColor(wFrame.Spell.Text)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon}
 			end
 		elseif wFrame.widgetType == 14 then -- DoubleStateIconRow
 			-- TODO: add button borders if required
-			-- if aObj.modBtnBs then
-			-- 	for icon in wFrame.iconPool:EnumerateActive() do
-			--
-			-- 	end
-			-- end
 		elseif aObj.isPTR and wFrame.widgetType == 15 then -- TextureAndTextRow
 			for entryFrame in wFrame.entryPool:EnumerateActive() do
 				-- .Background
 				-- .Foreground
-				entryFrame:SetFontColor(self.BT)
+				setTextColor(entryFrame.Text)
 			end
 		end
 	end
@@ -5456,10 +5491,10 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		getWidgets(widgetContainer)
 	end)
 
+	-- handle the DoubleStatusBar widget on Island Expeditions
 	if _G.UnitLevel("player") > 109 then
-		-- this is to handle the DoubleStatusBar widget on Island Expeditions
 		self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
-			aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
+			-- aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
 			 if getWidgets(_G.UIWidgetTopCenterContainerFrame) > 0 then
 		 		self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
 			end
@@ -5664,65 +5699,47 @@ if aObj.isBeta
 or aObj.isPTR
 then
 
-	-- Get Bug & Confused button objects, their parent is the PTR_IssueReporter
-	if _G.Confused
-	and _G.Bug
-	then
+	if _G.PTR_IssueReporter	then
 
-		local function skinFrame(frame, noGrad)
+		local function skinFrame(frame, ofs)
 			if frame.Background then frame.Background:SetTexture(nil) end
-			frame.Border:SetBackdrop(nil)
-			aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=4, aso={ng=noGrad}}
+			if frame.Border then frame.Border:SetBackdrop(nil) end
+			aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=ofs or 4}
 		end
 
-		local PTR_IR = _G.Confused:GetParent()
+		local PTR_IR = _G.PTR_IssueReporter
 
 		-- wait for addon to initialise properly
 		_G.C_Timer.After(0.5, function()
-
 			skinFrame(PTR_IR)
+			skinFrame(PTR_IR.Confused)
+			skinFrame(PTR_IR.ReportBug)
+		end)
 
-			-- AlertFrame (Rare/Boss Kills)
-			skinFrame(PTR_IR.AlertFrame.TitleBox)
-			skinFrame(PTR_IR.AlertFrame.text)
-			skinFrame(PTR_IR.AlertFrame.AdditionalInfo, true)
-			skinFrame(PTR_IR.AlertFrame)
+		aObj:SecureHook(PTR_IR, "GetStandaloneSurveyFrame", function(this)
+			skinFrame(PTR_IR.StandaloneSurvey)
+			skinFrame(PTR_IR.StandaloneSurvey.SurveyFrame)
 			if aObj.modBtns then
-				aObj:skinCloseButton{obj=PTR_IR.AlertFrame.CloseButton}
-				aObj:skinStdButton{obj=PTR_IR.AlertFrame.SubmitButton}
+				aObj:skinCloseButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 2)}
+				aObj:skinStdButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 3)}
 			end
-			-- QuestSubmit
-			skinFrame(PTR_IR.QuestSubmit.AdditionalInfo, true)
-			skinFrame(PTR_IR.QuestSubmit)
-			if aObj.modChkBtns then
-		        for i = 1, #PTR_IR.AlertFrame.CheckButtons do
-					aObj:skinCheckButton{obj=PTR_IR.AlertFrame.CheckButtons[i]}
-				end
-				for i = 1, #PTR_IR.QuestSubmit.CheckButtons do
-					aObj:skinCheckButton{obj=PTR_IR.QuestSubmit.CheckButtons[i]}
-				end
-			end
+			aObj:Unhook(this, "GetStandaloneSurveyFrame")
+		end)
 
-			-- EventPopup
-			if aObj.modBtns then
-				aObj:skinCloseButton{obj=PTR_IR.EventPopup.CloseButton}
-				aObj:skinStdButton{obj=PTR_IR.EventPopup.SubmitButton}
-			end
-			skinFrame(PTR_IR.EventPopup.Body)
-			skinFrame(PTR_IR.EventPopup)
-
-			if aObj.modChkBtns then
-				aObj:SecureHook(PTR_IR, "GetCheckBoxFromPool", function()
-					for cBox in PTR_IR.EventPopup.Pool:EnumerateActive() do
-						aObj:skinCheckButton{obj=cBox}
+		aObj:SecureHook(PTR_IR, "BuildSurveyFrameFromSurveyData", function(surveyFrame, survey, dataPackage)
+			skinFrame(surveyFrame)
+			for _, frame in _G.ipairs(surveyFrame.FrameComponents) do
+				skinFrame(frame, 2)
+				if frame.FrameType == "StandaloneQuestion" then
+				elseif frame.FrameType == "MultipleChoice"
+				and aObj.modChkBtns then
+					for _, checkBox in _G.ipairs(frame.Checkboxes) do
+						aObj:skinCheckButton{obj=checkBox}
 					end
-				end)
+				elseif frame.FrameType == "ModelViewer" then
+				elseif frame.FrameType == "IconViewer" then
+				end
 			end
-
-			-- Buttons
-			skinFrame(_G.Confused)
-			skinFrame(_G.Bug)
-
 		end)
 
 	end

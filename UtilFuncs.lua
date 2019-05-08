@@ -698,11 +698,6 @@ function aObj:makeMFRotatable(modelFrame)
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
 	if _G.IsAddOnLoaded("CloseUp") then return end
 
-	--frame:EnableMouseWheel(true)
-	modelFrame:EnableMouse(true)
-	modelFrame.draggingDirection = nil
-	modelFrame.cursorPosition = {}
-
 	-- hide rotation buttons
 	for _, child in ipairs{modelFrame:GetChildren()} do
 		if self:hasTextInName(child, "Rotate") then
@@ -715,40 +710,43 @@ function aObj:makeMFRotatable(modelFrame)
 		modelFrame.RotateRightButton:Hide()
 	end
 
-	self:HookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
-		if this.dragging then
-			local x, y = _G.GetCursorPosition()
-			if this.cursorPosition.x > x then
-				_G.Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
-			elseif this.cursorPosition.x < x then
-				_G.Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
+	if not self.isPTR then
+		modelFrame:EnableMouse(true)
+		modelFrame.draggingDirection = nil
+		modelFrame.cursorPosition = {}
+		self:HookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
+			if this.dragging then
+				local x, y = _G.GetCursorPosition()
+				if this.cursorPosition.x > x then
+					if not self.isPTR then
+						_G.Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
+					else
+						this:SetRotation((this.cursorPosition.x - x) * elapsedTime * 2)
+					end
+				elseif this.cursorPosition.x < x then
+					if not self.isPTR then
+						_G.Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
+					else
+						this:SetRotation((x - this.cursorPosition.x) * elapsedTime * 2)
+					end
+				end
+				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
+				x, y = nil, nil
 			end
-			this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
-			x, y = nil, nil
-		end
-	end)
-	self:HookScript(modelFrame, "OnMouseDown", function(this, button)
-		if button == "LeftButton" then
-			this.dragging = true
-			this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
-		end
-	end)
-	self:HookScript(modelFrame, "OnMouseUp", function(this, button)
-		if this.dragging then
-			this.dragging = false
-			this.cursorPosition.x, this.cursorPosition.y = nil
-		end
-	end)
-
-	--[[ MouseWheel to zoom Modelframe - in/out works, but needs to be fleshed out
-	modelFrame:SetScript("OnMouseWheel", function()
-		local xPos, yPos, zPos = frame:GetPosition()
-		if arg1 == 1 then
-			modelFrame:SetPosition(xPos+00.1, 0, 0)
-		else
-			modelFrame:SetPosition(xPos-00.1, 0, 0)
-		end
-	end) ]]
+		end)
+		self:HookScript(modelFrame, "OnMouseDown", function(this, button)
+			if button == "LeftButton" then
+				this.dragging = true
+				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
+			end
+		end)
+		self:HookScript(modelFrame, "OnMouseUp", function(this, button)
+			if this.dragging then
+				this.dragging = false
+				this.cursorPosition.x, this.cursorPosition.y = nil
+			end
+		end)
+	end
 
 	if modelFrame.controlFrame then
 		modelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
@@ -885,6 +883,9 @@ function aObj:removeNineSlice(frame)
 	assert(frame, "Unknown object removeNineSlice\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
+	if self.isPTR then
+		frame:DisableDrawLayer("BACKGROUND")
+	end
 	frame:DisableDrawLayer("BORDER")
 	frame:DisableDrawLayer("OVERLAY")
 
