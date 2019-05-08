@@ -3244,11 +3244,15 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 	self.initialized.MacroUI = true
 
 	self:SecureHookScript(_G.MacroFrame, "OnShow", function(this)
+		self:skinTabs{obj=this, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
+		_G.RaiseFrameLevel(_G.MacroFrameTab1)
+		_G.RaiseFrameLevel(_G.MacroFrameTab2)
+		-- add skin frame, so tabs look better than without a frame
+		self:addSkinFrame{obj=_G.MacroButtonScrollFrame, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, ofs=12, y1=10, x2=32}
 		self:skinSlider{obj=_G.MacroButtonScrollFrame.ScrollBar, rt="artwork"}
 		self:skinSlider{obj=_G.MacroFrameScrollFrame.ScrollBar}
 		self:skinEditBox{obj=_G.MacroFrameText, noSkin=true}
 		self:addSkinFrame{obj=_G.MacroFrameTextBackground, ft=ftype}
-		self:skinTabs{obj=this, up=true, lod=true, x1=-3, y1=-3, x2=3, y2=-3, hx=-2, hy=3}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.MacroEditButton}
 			self:skinStdButton{obj=_G.MacroCancelButton}
@@ -3271,7 +3275,6 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
--->>-- Macro Popup Frame
 	self:SecureHookScript(_G.MacroPopupFrame, "OnShow", function(this)
 		self:adjHeight{obj=this, adj=20}
 		self:removeRegions(this.BorderBox, {1, 2, 3, 4, 5, 6, 7, 8})
