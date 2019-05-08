@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("ChampionCommander") then return end
 local _G = _G
 
 -- loads with Blizzard_GarrisonUI
-aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.0-Beta-2 80000
+aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.2 80100
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
@@ -12,21 +12,6 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.0-Beta-2 80000
 		self:add2Table(self.ttList, _G.BFAFollowerTip)
 	end)
 
-	local cache = _G.BFA:GetCacheModule()
-	if cache then
-		self:RawHook(cache, "GetTroopsFrame", function(this)
-			local frame = self.hooks[this].GetTroopsFrame(this)
-			frame.Top:SetTexture(nil)
-			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=-1, x1=2, y2=2}
-			self:Unhook(this, "GetTroopsFrame")
-			return frame
-		end, true)
-		self:SecureHook(cache, "DrawKrokuls", function(this, main)
-			self:moveObject{obj=main.Buttons[1], x=10}
-		end)
-	end
-	cache = nil
-
 	local mLst = _G.BFA:GetMissionlistModule()
 	if mLst then
 		self:SecureHook(mLst, "Menu", function(this, flags)
@@ -34,7 +19,7 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.0-Beta-2 80000
 			self:moveObject{obj=frame.Tutorial, x=2, y=6}
 			self:skinCloseButton{obj=frame.Close}
 			self:moveObject{obj=frame.Close, x=3, y=3}
-			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=0, x1=-2, y2=-4}
+			self:addSkinFrame{obj=frame, ft="a", kfs=true, nb=true, ofs=0, x1=-2, y2=-6}
 			if self.modBtnBs then
 				-- replace the mission menu tab texture
 				local mBtn = self:getLastChild(_G.BFAMissionFrame.MissionTab)
@@ -115,20 +100,48 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.0-Beta-2 80000
 	end
 	aC = nil
 
-	if self.modBtns then
-		local tut = _G.BFA:GetTutorialsModule()
-		if tut then
-			self:SecureHook(tut, "Show", function(this, opening)
-				local Clicker = self:getLastChild(_G.HelpPlateTooltip)
+	local tut = _G.BFA:GetTutorialsModule()
+	if tut then
+		-- N.B. Tutorial uses this function, but leaves the frame showing...
+		local cache = _G.BFA:GetCacheModule()
+		local tFrame
+		if cache then
+			self:RawHook(cache, "GetTroopsFrame", function(this)
+				tFrame = self.hooks[this].GetTroopsFrame(this)
+				self:Unhook(this, "GetTroopsFrame")
+				return tFrame
+			end, true)
+		end
+		cache = nil
+		local eFrame
+		self:SecureHook(tut, "Show", function(this, opening)
+			local Clicker = self:getLastChild(_G.HelpPlateTooltip)
+			if self.modBtns
+			and not Clicker.Close.sb
+			then
 				self:skinCloseButton{obj=Clicker.Close, noSkin=true}
 				self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
 				self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
-				Clicker = nil
-				self:Unhook(this, "Show")
-			end)
-		end
-		tut = nil
+			end
+			Clicker = nil
+			-- this shows/hides the Troop frame as required
+			if tFrame then
+				if not eFrame then
+					if tFrame:GetNumChildren() == 2 then
+						eFrame = self:getLastChild(tFrame)
+					end
+				end
+				if eFrame then
+					if eFrame:GetParent() == tFrame then
+						tFrame:Show()
+					else
+						tFrame:Hide()
+					end
+				end
+			end
+		end)
 	end
+	tut = nil
 
 	-- hook this to manage GarrisonFollowerAlerts
 	self:secureHook("GarrisonFollowerAlertFrame_SetUp", function(frame, FAKE_FOLLOWERID, ...)
