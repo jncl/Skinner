@@ -1158,12 +1158,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
 			self:keepFontStrings(this.RightInset)
-			-- this.RightInset:DisableDrawLayer("BACKGROUND")
-			-- this.RightInset:DisableDrawLayer("BORDER")
-			-- this.RightInset:DisableDrawLayer("OVERLAY")
-			-- this.RightInset:DisableDrawLayer("ARTWORK", 1)
-			-- this.RightInset:DisableDrawLayer("ARTWORK", 2)
-			-- self:removeInset(this.RightInset)
+			self:removeNineSlice(this.RightInset.NineSlice)
 			self:skinSlider{obj=this.ScrollFrame.scrollBar, wdth=-4, size=3}
 			self:skinDropDown{obj=this.ScrollFrame.FavoriteDropDown}
 			for i = 1, #this.ScrollFrame.buttons do
