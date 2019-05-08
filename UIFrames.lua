@@ -166,8 +166,9 @@ local function skinFollowerTraitsAndEquipment(frame)
 end
 local function skinCompleteDialog(frame, naval)
 
+	frame:ClearAllPoints()
+	frame:SetPoint("TOPLEFT", -30, 43)
 	frame:SetSize(naval and 934 or 953, IsAddOnLoaded("GarrisonCommander") and 640 or 642)
-	aObj:moveObject{obj=frame, x=4, y=2}
 
 	frame.BorderFrame:DisableDrawLayer("BACKGROUND")
 	frame.BorderFrame:DisableDrawLayer("BORDER")
@@ -175,7 +176,6 @@ local function skinCompleteDialog(frame, naval)
 	aObj:removeRegions(frame.BorderFrame.Stage, cdStageRegs)
 	aObj:skinStdButton{obj=frame.BorderFrame.ViewButton}
     aObj:addSkinFrame{obj=frame.BorderFrame, ft=ftype, y2=-2}
-
 
 end
 local function skinMissionPage(frame)
@@ -2403,7 +2403,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		this.OverlayElements.CloseButtonBorder:SetTexture(nil)
 		this.TitleScroll:DisableDrawLayer("ARTWORK")
 		this.TitleText:SetTextColor(self.HT:GetRGB())
-		self:moveObject{obj=this.TitleText, y=-4}
 
 		skinMissionFrame(this)
 		this.sf:SetFrameStrata("LOW") -- allow map textures to be visible
