@@ -1399,7 +1399,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		frame:DisableDrawLayer("ARTWORK")
 		for header in frame.columnHeaders:EnumerateActive() do
 			header:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=header, ft=ftype}
+			aObj:addSkinFrame{obj=header, ft=ftype}
 		end
 	end
 
@@ -1411,10 +1411,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	self:keepFontStrings(cFrame.PortraitOverlay)
 
-	cFrame.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND")
+	cFrame.MaximizeMinimizeFrame:DisableDrawLayer("BACKGROUND")
 	if self.modBtns then
-		self:skinOtherButton{obj=cFrame.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text="↕"}
-		self:skinOtherButton{obj=cFrame.MaxMinButtonFrame.MinimizeButton, font=self.fontS, text="↕"}
+		self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MaximizeButton, font=self.fontS, text="↕"}
+		self:skinOtherButton{obj=cFrame.MaximizeMinimizeFrame.MinimizeButton, font=self.fontS, text="↕"}
 	end
 
 	self:SecureHookScript(cFrame.CommunitiesList, "OnShow", function(this)
@@ -1452,11 +1452,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:skinDropDown{obj=cFrame.GuildMemberListDropDownMenu}
 	self:skinDropDown{obj=cFrame.CommunitiesListDropDownMenu}
 
-	-- cFrame.CommunitiesCalendarButton
+	-- VoiceChatHeadset
+	-- CommunitiesCalendarButton
 
 	self:SecureHookScript(cFrame.MemberList.ColumnDisplay, "OnShow", function(this)
 		skinColumnDisplay(this)
-		self:Unhook(this, "OnShow")
 	end)
 	if self.modChkBtns then
 		 self:skinCheckButton{obj=cFrame.MemberList.ShowOfflineButton, hf=true}
@@ -1578,6 +1578,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:removeNineSlice(this.BG)
 		end
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
+		this.NameEdit:SetPoint("TOPLEFT", this.NameLabel, "BOTTOMLEFT", -4, 0)
 		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, nb=true, ofs=7}
 		self:skinCheckButton{obj=this.TypeCheckBox}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
