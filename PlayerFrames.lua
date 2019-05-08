@@ -2198,6 +2198,10 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	if not self.prdb.FriendsFrame or self.initialized.FriendsFrame then return end
 	self.initialized.FriendsFrame = true
 
+	local function addTabFrame(frame)
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, ofs=0, y1=-81, y2=-2, aso={bd=10, ng=true}}
+	end
+
 	self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
@@ -2226,6 +2230,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:skinCloseButton{obj=this.FriendsFrameQuickJoinHelpTip.CloseButton, noSkin=true}
 			self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
 			self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
+			_G.RaiseFrameLevel(this)
 			self:Unhook(this, "OnShow")
 		end)
 		if _G.FriendsTabHeader:IsShown() then
@@ -2233,15 +2238,22 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.FriendsTabHeader:Show()
 		end
 
+
 		self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(this)
-			self:skinStdButton{obj=_G.FriendsFrameAddFriendButton}
-			self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
-			self:skinStdButton{obj=self:getChild(this.RIDWarning, 1)} -- unnamed parent frame
-			self:addButtonBorder{obj=_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.FriendsFrameAddFriendButton, x1=1}
+				self:skinStdButton{obj=_G.FriendsFrameSendMessageButton}
+				self:skinStdButton{obj=self:getChild(this.RIDWarning, 1)} -- unnamed parent frame
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton}
+			end
 			_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
-			for invite in _G.FriendsFrameFriendsScrollFrame.invitePool:EnumerateActive() do
-				self:skinStdButton{obj=invite.DeclineButton}
-				self:skinStdButton{obj=invite.AcceptButton}
+			if self.modBtns then
+				for invite in _G.FriendsFrameFriendsScrollFrame.invitePool:EnumerateActive() do
+					self:skinStdButton{obj=invite.DeclineButton}
+					self:skinStdButton{obj=invite.AcceptButton}
+				end
 			end
 			self:skinSlider{obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, rt="background"}
 			-- adjust width of FFFSF so it looks right (too thin by default)
@@ -2283,7 +2295,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 				end
 			end
 			btn = nil
-
+			addTabFrame(this)
 			self:Unhook(this, "OnShow")
 		end)
 		if _G.FriendsListFrame:IsShown() then
@@ -2293,9 +2305,12 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 		self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
-			self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton}
-			self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
+				self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}
+			end
 			self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar}
+			addTabFrame(this)
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -2308,9 +2323,11 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.WhoFrameColumnHeader2.sf:SetBackdrop(nil)
 			_G.WhoFrameColumnHeader2.sf:Hide()
 			self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
-			self:skinStdButton{obj=_G.WhoFrameGroupInviteButton}
-			self:skinStdButton{obj=_G.WhoFrameAddFriendButton}
-			self:skinStdButton{obj=_G.WhoFrameWhoButton}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.WhoFrameGroupInviteButton}
+				self:skinStdButton{obj=_G.WhoFrameAddFriendButton}
+				self:skinStdButton{obj=_G.WhoFrameWhoButton}
+			end
 			self:removeInset(_G.WhoFrameEditBoxInset)
 			self:skinEditBox{obj=_G.WhoFrameEditBox}--, move=true}
 			_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
@@ -2390,9 +2407,10 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:ClearAllPoints()
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
+		self:addSkinFrame{obj=_G.QuickJoinScrollFrame, ft=ftype, kfs=true, nb=true, x1=-8, y1=7, x2=28, y2=-32, aso={bd=10, ng=true}}
 		self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
 		if self.modBtns then
-			self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton}
+			self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton, x2=0}
 		end
 
 		-- QuickJoinRoleSelectionFrame
@@ -2407,7 +2425,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.CancelButton}
 		end
 		self:addSkinFrame{obj=_G.QuickJoinRoleSelectionFrame, ft=ftype, ofs=-5}
-
+		addTabFrame(this)
 		self:Unhook(this, "OnShow")
 	end)
 
