@@ -1272,10 +1272,11 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinStdButton{obj=_G.ChatConfigFrameCancelButton}
 			self:skinStdButton{obj=_G.ChatConfigFrameOkayButton}
 		end
-		self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype, kfs=true, nb=true, ofs=0, y1=2}
-		self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype, kfs=true, nb=true, ofs=0, y1=2}
+		self:addSkinFrame{obj=_G.ChatConfigCategoryFrame, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
+		self:addSkinFrame{obj=_G.ChatConfigBackgroundFrame, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-4, y1=4}
-
+		-- add skin frame, so tabs look better than without a frame
+		self:addSkinFrame{obj=this.ChatTabManager, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-5, y1=3, x2=725, y2=-512}
 		-- ChatTabManager
 		local setTabState
 		if aObj.isTT then
@@ -1378,7 +1379,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:addButtonBorder{obj=_G.ChatConfigMoveFilterDownButton, es=12, ofs=-5, x2=-6, y2=7}
 		end
 
-		self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype, kfs=true, nb=true, ofs=0, y1=2}
+		self:addSkinFrame{obj=_G.ChatConfigCombatSettingsFilters, ft=ftype, kfs=true, nb=true, x1=-2, y1=-1, x2=2, y2=2}
 		_G.LowerFrameLevel(_G.ChatConfigCombatSettingsFilters) -- make frame appear below tab texture
 
 		-- Message Sources
@@ -1465,6 +1466,9 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		local tab
 		for i = 1, #_G.COMBAT_CONFIG_TABS do
 			tab = _G[_G.CHAT_CONFIG_COMBAT_TAB_NAME .. i]
+			if i == 1 then
+				self:moveObject{obj=tab, x=0, y=-3}
+			end
 			self:keepRegions(tab, {4, 5}) -- N.B. region 4 is the Text, 5 is the highlight
 			self:addSkinFrame{obj=tab, ft=ftype, noBdr=self.isTT, x1=0, y1=-8, x2=-2, y2=-4}
 			tab.sf.ignore = true
