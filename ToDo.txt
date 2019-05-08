@@ -19,75 +19,81 @@ ToDos
 
 	O	change all occurrences of self.bbColour to self.bbClr
 
+√	O	Add frame for tabs for FriendsFrame
+
 	N	PTR 8.2.0
 		- Added
-			- AlliedRacesModelControlButtonMixin
-≈¶			- Blizzard_AzeriteEssenceUI
-			- Blizzard_Communities: ClubFinder
-			- Blizzard_Communities: ClubFinderApplicantList
-			- Blizzard_ObjectiveTracker: Blizzard_ObjectiveTrackerUIWidgetContainer
-			- Blizzard_PTRFeedback: Bindings
-			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Events
-			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Frames
-			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Tooltips
-			- Blizzard_PTRFeedback: Blizzard_Reports
+x			- AlliedRacesModelControlButtonMixin
+√			- Blizzard_AzeriteEssenceUI
+≈			- Blizzard_Communities: ClubFinder
+≈			- Blizzard_Communities: ClubFinderApplicantList
+?			- Blizzard_ObjectiveTracker: Blizzard_ObjectiveTrackerUIWidgetContainer
+x			- Blizzard_PTRFeedback: Bindings
+x			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Events
+√			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Frames
+x			- Blizzard_PTRFeedback: Blizzard_PTRFeedback_Tooltips
+≈			- Blizzard_PTRFeedback: Blizzard_Reports
 ≈			- Blizzard_UIWidgets: Blizzard_UIWidgetTemplateTextureAndText
 ≈			- Blizzard_UIWidgets: Blizzard_UIWidgetTemplateTextureAndTextRow
 ?			- AddonDialog
-≈			- DialogBorderTemplate
+√			- DialogBorderTemplate
 √			- DialogBorderDarkTemplate
 ≈			- ItemDisplay
-			- PVPMatchResults
-			- PVPMatchTable
-			- PVPMatchUtil
-			- PVPUITemplates
+			- PVPMatch
+≈				- PVPMatchResults
+≈				- PVPMatchTable
+x				- PVPMatchUtil
+?			- PVPUITemplates
 ?			- PetPopup
-			- PetStableModelMixin
+√			- PetStableModelMixin
 ≈			- PlayerReportFrame
-			- QuestNPCModelFrameMixin
-			- TabardModelControlButtonMixin
-			- TabardModelFrameMixin
-			-
+x			- QuestNPCModelFrameMixin
+√			- TabardModelControlButtonMixin
+√			- TabardModelFrameMixin
 		- Changed
 ≈			- Blizzard_MountCollection
 ≈			- Blizzard_PetCollection
-?			- Blizzard_Wardrobe
-			- CommunitiesFrame
-			- CommunitiesSettings
-			- Blizzard_EncounterJournal
-			- Blizzard_GarrisonMissionTemplates
-			- Blizzard_GarrisonMissionUI
+x			- Blizzard_Wardrobe
+≈			- CommunitiesFrame
+≈			- CommunitiesSettings
+x			- Blizzard_EncounterJournal
+x			- Blizzard_GarrisonMissionTemplates
+x			- Blizzard_GarrisonMissionUI
 √			- Blizzard_ItemSocketingUI
-			- Blizzard_QuestObjectiveTracker
-			- Blizzard_PVPUI
-			- Blizzard_UIWidgetTemplateBase
-			- Blizzard_UIWidgetTemplateCaptureBar
-			- Blizzard_UIWidgetTemplateDoubleStatusBar
-			- Blizzard_UIWidgetTemplateStatusBar
+x			- Blizzard_QuestObjectiveTracker
+x			- Blizzard_PVPUI
+x			- Blizzard_UIWidgetTemplateBase
+x			- Blizzard_UIWidgetTemplateCaptureBar
+x			- Blizzard_UIWidgetTemplateDoubleStatusBar
+x			- Blizzard_UIWidgetTemplateStatusBar
 ≈			- AlertFrameSystems
-			- DressUpFrames
-			- FriendsFrame
-			- HelpFrame
-			- InterfaceOptionsPanels
-			- ItemRef
-			- LFGList
-			- LFRFrame
-			- MacOptionsPanel
-			- PVPHonorSystem
-			- PaperDollFrame
-			- PetStable
-			- QuestFrame
-			- RaidFrame
-			- TabardFrame
-			- UIPanelTemplates
-			- VoiceChatHeadsetButton
+x			- DressUpFrames
+x			- FriendsFrame
+x			- HelpFrame
+x			- InterfaceOptionsPanels
+x			- ItemRef
+x			- LFGList
+x			- LFRFrame
+x			- MacOptionsPanel
+x			- PVPHonorSystem
+x			- PaperDollFrame
+x			- PetStable
+x			- QuestFrame
+?			- RaidFrame
+≈			- TabardFrame
+?			- UIPanelTemplates
+x			- VoiceChatHeadsetButton
 		- Deleted
-			- Blizzard_PTRFeedback: Blizzard_Diagnostics
-			- Blizzard_PTRFeedback: Blizzard_FramePainter
-			- Blizzard_UIWidgets: Blizzard_UIWidgetTemplateTextureWithState
+√			- Blizzard_PTRFeedback: Blizzard_Diagnostics
+√			- Blizzard_PTRFeedback: Blizzard_FramePainter
+√			- Blizzard_UIWidgets: Blizzard_UIWidgetTemplateTextureWithState
 √			- WorldStateFrame
 
-	I	RaiderIO on PTR, reported byTalyrius, 20.04.19
+	I	RaiderIO on PTR, reported by Talyrius, 20.04.19
 ?		- Skinner\Skinner-beta8.29981.3.lua:656: attempt to index field 'obj' (a nil value)
 		Skinner\AddonSkins\RaiderIO-8.1.0 (v201904200631).lua:36: in function `skinBtn'
 		Skinner\AddonSkins\RaiderIO-8.1.0 (v201904200631).lua:42: in function <Skinner\AddonSkins\RaiderIO.lua:5>
+
+	I	AllTheThings, reported by MetalHeadSpike, 02.05.19
+√		- Interface\AddOns\Skinner\AddonSkins\AllTheThings.lua:30: attempt to index field 'Separator' (a nil value)
+		Interface\AddOns\Skinner\AddonSkins\AllTheThings.lua:30: in function 		<Interface\AddOns\Skinner\AddonSkins\AllTheThings.lua:27>
