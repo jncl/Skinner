@@ -3327,10 +3327,10 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		end)
 	end
 
-	aObj:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
+	self:skinDropDown{obj=_G.ObjectiveTrackerFrame.BlockDropDown}
 
 	if self.modBtnBs then
-		aObj:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0, x1=-1}
+		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0, x1=-1}
 		-- hook this to skin QuestObjective Block Button(s)
 		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
 			-- aObj:Debug("QOSBB_ARB: [%s, %s]", block, button)
@@ -3375,24 +3375,24 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end
 
 	-- TimerBars
-	aObj:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
+	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
 		-- aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddTimerBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
 	end)
 	-- ProgressBars
-	aObj:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		-- aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
-	aObj:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		-- aObj:Debug("SCENARIO_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
-	aObj:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		-- aObj:Debug("BONUS_OBJECTIVE_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
-	aObj:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+	self:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
 		-- aObj:Debug("WORLD_QUEST_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
@@ -3427,20 +3427,21 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	end
 
-	aObj:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
+	self:SecureHook("BonusObjectiveTracker_AnimateReward", function(block)
 		skinRewards(block.module.rewardsFrame)
 	end)
 
 	-- ScenarioObjectiveBlock
 
 	-- ScenarioStageBlock
-	aObj:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, kfs=true, nb=true, y1=-1, x2=41, y2=7}
+	self:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, kfs=true, nb=true, y1=-1, x2=41, y2=7}
+	self:nilTexture(self:getRegion(self:getChild(_G.ScenarioStageBlock.WidgetContainer, 1), 1), true)
 
 	-- ScenarioChallengeModeBlock
-	aObj:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0, bgTex=_G.ScenarioChallengeModeBlock.TimerBG, otherTex={_G.ScenarioChallengeModeBlock.TimerBGBack}}
-	aObj:removeRegions(_G.ScenarioChallengeModeBlock, {3}) -- challengemode-timer atlas
-	aObj:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, nb=true, y2=7}
-	aObj:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
+	self:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0, bgTex=_G.ScenarioChallengeModeBlock.TimerBG, otherTex={_G.ScenarioChallengeModeBlock.TimerBGBack}}
+	self:removeRegions(_G.ScenarioChallengeModeBlock, {3}) -- challengemode-timer atlas
+	self:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, nb=true, y2=7}
+	self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
 		for i = 1, #block.Affixes do
 			block.Affixes[i].Border:SetTexture(nil)
 		end
@@ -3449,19 +3450,19 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- ScenarioProvingGroundsBlock
 	_G.ScenarioProvingGroundsBlock.BG:SetTexture(nil)
 	_G.ScenarioProvingGroundsBlock.GoldCurlies:SetTexture(nil)
-	aObj:skinStatusBar{obj=_G.ScenarioProvingGroundsBlock.StatusBar, fi=0}
-	aObj:removeRegions(_G.ScenarioProvingGroundsBlock.StatusBar, {1}) -- border
-	aObj:addSkinFrame{obj=_G.ScenarioProvingGroundsBlock, ft=ftype, nb=true, x2=41}
+	self:skinStatusBar{obj=_G.ScenarioProvingGroundsBlock.StatusBar, fi=0}
+	self:removeRegions(_G.ScenarioProvingGroundsBlock.StatusBar, {1}) -- border
+	self:addSkinFrame{obj=_G.ScenarioProvingGroundsBlock, ft=ftype, nb=true, x2=41}
 	_G.ScenarioProvingGroundsBlockAnim.BorderAnim:SetTexture(nil)
 
-	aObj:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(xp, money)
+	self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(xp, money)
 		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
 		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
 		skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
 	end)
 
 	if self.modBtns then
-		aObj:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton, noSkin=true}
+		self:skinCloseButton{obj=_G.ScenarioBlocksFrame.WarfrontHelpBox.CloseButton, noSkin=true}
 	end
 
 	-- tooltip
@@ -3505,22 +3506,23 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 							and not block.ScrollChild.sf
 							then
 								blockContents = block.ScrollChild
-								blockContents.Bg:SetTexture(nil)
-								blockContents.BorderTopLeft:SetTexture(nil)
-								blockContents.BorderTopRight:SetTexture(nil)
-								blockContents.BorderBotLeft:SetTexture(nil)
-								blockContents.BorderBotRight:SetTexture(nil)
-								blockContents.BorderLeft:SetTexture(nil)
-								blockContents.BorderRight:SetTexture(nil)
-								blockContents.BorderTop:SetTexture(nil)
-								blockContents.BorderBottom:SetTexture(nil)
-								blockContents.QuestIconBg:SetTexture(nil)
-								blockContents.QuestIconBadgeBorder:SetTexture(nil)
-								blockContents.Shine:SetTexture(nil)
-								blockContents.IconShine:SetTexture(nil)
+								aObj:removeRegions(blockContents, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 17, 18}, true)
+								-- blockContents.Bg:SetTexture(nil)
+								-- blockContents.BorderTopLeft:SetTexture(nil)
+								-- blockContents.BorderTopRight:SetTexture(nil)
+								-- blockContents.BorderBotLeft:SetTexture(nil)
+								-- blockContents.BorderBotRight:SetTexture(nil)
+								-- blockContents.BorderLeft:SetTexture(nil)
+								-- blockContents.BorderRight:SetTexture(nil)
+								-- blockContents.BorderTop:SetTexture(nil)
+								-- blockContents.BorderBottom:SetTexture(nil)
+								-- blockContents.QuestIconBg:SetTexture(nil)
+								-- blockContents.QuestIconBadgeBorder:SetTexture(nil)
+								-- blockContents.Shine:SetTexture(nil)
+								-- blockContents.IconShine:SetTexture(nil)
 								blockContents.FlashFrame.IconFlash:SetTexture(nil)
 								aObj:addSkinFrame{obj=blockContents, ft=ftype, x1=32}
-								-- TODO prevent Background being changed, causes border art to appear broken ?
+								-- TODO: prevent Background being changed, causes border art to appear broken ?
 							end
 						end
 					end
