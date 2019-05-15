@@ -1,3 +1,19 @@
+beta8.30262.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	More PTR changes
+	Updated StaticPopup skin
+	Updated MacroUI skin
+	Updated ChatConfig skin
+	Updated GarrisonUI skin
+	Updated FriendsFrame skin
+	Updated Communities skin
+	Updated Collections skin
+	Updated CheckButton skin
+	Updated AllTheThings & ChampionCommander skins
+
 beta8.29981.4 (Untagged)
 Jncl:
 	ToDo.txt
