@@ -790,10 +790,7 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			self:addSkinFrame{obj=_G.ReputationDetailFrame, ft=ftype, kfs=true, x1=6, y1=-6, x2=-6, y2=6}
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.ReputationFrame:IsShown() then
-			_G.ReputationFrame:Hide()
-			_G.ReputationFrame:Show()
-		end
+		self:checkShown(_G.ReputationFrame)
 
 		self:SecureHookScript(_G.TokenFrame, "OnShow", function(this) -- a.k.a Currency Tab
 			self:keepFontStrings(this)
@@ -1150,10 +1147,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
-		if this.ItemsCollectionFrame:IsShown() then
-			this.ItemsCollectionFrame:Hide()
-			this.ItemsCollectionFrame:Show()
-		end
+		self:checkShown(this.ItemsCollectionFrame)
 
 		self:SecureHookScript(this.SetsCollectionFrame, "OnShow", function(this)
 			self:removeInset(this.LeftInset)
@@ -1374,10 +1368,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.CompactRaidFrameManager:IsShown() then
-		_G.CompactRaidFrameManager:Hide()
-		_G.CompactRaidFrameManager:Show()
-	end
+	self:checkShown(_G.CompactRaidFrameManager)
 
 end
 
@@ -2339,11 +2330,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.RaiseFrameLevel(this)
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.FriendsTabHeader:IsShown() then
-			_G.FriendsTabHeader:Hide()
-			_G.FriendsTabHeader:Show()
-		end
-
+		self:checkShown(_G.FriendsTabHeader)
 
 		self:SecureHookScript(_G.FriendsListFrame, "OnShow", function(this)
 			if self.modBtns then
@@ -2404,10 +2391,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			addTabFrame(this)
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.FriendsListFrame:IsShown() then
-			_G.FriendsListFrame:Hide()
-			_G.FriendsListFrame:Show()
-		end
+		self:checkShown(_G.FriendsListFrame)
 
 		self:SecureHookScript(_G.IgnoreListFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
@@ -3715,10 +3699,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.HonorFrame:IsShown() then
-			_G.HonorFrame:Hide()
-			_G.HonorFrame:Show()
-		end
+		self:checkShown(_G.HonorFrame)
 
 		-- Rated
 		self:SecureHookScript(_G.ConquestFrame, "OnShow", function(this)

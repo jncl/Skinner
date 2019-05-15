@@ -821,10 +821,7 @@ if aObj.isPTR then
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.AzeriteEssenceUI:IsShown() then
-			_G.AzeriteEssenceUI:Hide()
-			_G.AzeriteEssenceUI:Show()
-		end
+		self:checkShown(_G.AzeriteEssenceUI)
 
 		-- AzeriteEssenceLearnAnimFrame
 
@@ -900,10 +897,7 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.BattlefieldMapFrame:IsShown() then
-		_G.BattlefieldMapFrame:Hide()
-		_G.BattlefieldMapFrame:Show()
-	end
+	self:checkShown(_G.BattlefieldMapFrame)
 
 end
 
@@ -2018,10 +2012,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.GarrisonBuildingFrame.BuildingList:IsShown() then
-			_G.GarrisonBuildingFrame.BuildingList:Hide()
-			_G.GarrisonBuildingFrame.BuildingList:Show()
-		end
+		self:checkShown(_G.GarrisonBuildingFrame.BuildingList)
 
 		self:SecureHookScript(_G.GarrisonBuildingFrame.FollowerList, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
@@ -2047,10 +2038,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			end)
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.GarrisonBuildingFrame.InfoBox:IsShown() then
-			_G.GarrisonBuildingFrame.InfoBox:Hide()
-			_G.GarrisonBuildingFrame.InfoBox:Show()
-		end
+		self:checkShown(_G.GarrisonBuildingFrame.InfoBox)
 
 		-- MapFrame
 
@@ -2108,10 +2096,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			skinMissionList(this)
 			self:Unhook(this, "OnShow")
 		end)
-		if this.MissionTab.MissionList:IsShown() then
-			this.MissionTab.MissionList:Hide()
-			this.MissionTab.MissionList:Show()
-		end
+		self:checkShown(this.MissionTab.MissionList)
 
 		self:SecureHookScript(this.MissionTab.MissionPage, "OnShow", function(this)
 			skinMissionPage(this)
@@ -2159,10 +2144,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			skinCompleteDialog(this.CompleteDialog, true)
 			self:Unhook(this, "OnShow")
 		end)
-		if this.MissionTab.MissionList:IsShown() then
-			this.MissionTab.MissionList:Hide()
-			this.MissionTab.MissionList:Show()
-		end
+		self:checkShown(this.MissionTab.MissionList)
 
 		self:SecureHookScript(this.MissionTab.MissionPage, "OnShow", function(this)
 			skinMissionPage(this)
@@ -2238,10 +2220,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-		if this.Report:IsShown() then
-			this.Report:Hide()
-			this.Report:Show()
-		end
+		self:checkShown(this.Report)
 
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
 			skinFollowerList(this)
@@ -2266,10 +2245,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:Unhook(this, "OnShow")
 		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
 	end)
-	if _G.GarrisonLandingPage:IsShown() then
-		_G.GarrisonLandingPage:Hide()
-		_G.GarrisonLandingPage:Show()
-	end
+	self:checkShown(_G.GarrisonLandingPage)
 	if self.modBtns then
 		self:skinCloseButton{obj=_G.GarrisonLandingPageTutorialBox.CloseButton, noSkin=true}
 	end
@@ -2399,10 +2375,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-		if this.MissionTab:IsShown() then
-			this.MissionTab:Hide()
-			this.MissionTab:Show()
-		end
+		self:checkShown(this.MissionTab)
 
 		self:SecureHookScript(this.FollowerTab, "OnShow", function(this)
 			this:DisableDrawLayer("BORDER")
@@ -2447,10 +2420,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=1, y1=1, x2=-2, y2=2}
 			self:Unhook(this, "OnShow")
 		end)
-		if this.MissionTab.MissionList:IsShown() then
-			this.MissionTab.MissionList:Hide()
-			this.MissionTab.MissionList:Show()
-		end
+		self:checkShown(this.MissionTab.MissionList)
 
 		self:SecureHookScript(this.MissionTab.MissionPage, "OnShow", function(this)
 			skinMissionPage(this)
@@ -2534,10 +2504,7 @@ aObj.blizzFrames[ftype].GhostFrame = function(self)
 		_G.RaiseFrameLevelByTwo(this) -- make it appear above other frames
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.GhostFrame:IsShown() then
-		_G.GhostFrame:Hide()
-		_G.GhostFrame:Show()
-	end
+	self:checkShown(_G.GhostFrame)
 
 end
 
@@ -2874,6 +2841,7 @@ aObj.blizzFrames[ftype].LevelUpDisplay = function(self)
 		--
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.LevelUpDisplay)
 
 	self:SecureHookScript(_G.BossBanner, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
@@ -2952,10 +2920,7 @@ aObj.blizzFrames[ftype].LFDFrame = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.LFDReadyCheckPopup:IsShown() then
-		_G.LFDReadyCheckPopup:Hide()
-		_G.LFDReadyCheckPopup:Show()
-	end
+	self:checkShown(_G.LFDReadyCheckPopup)
 
 	-- LFD Parent Frame (now part of PVE Frame)
 	self:SecureHookScript(_G.LFDParentFrame, "OnShow", function(this)
@@ -3041,10 +3006,7 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.LFGDungeonReadyPopup:IsShown() then
-		_G.LFGDungeonReadyPopup:Hide()
-		_G.LFGDungeonReadyPopup:Show()
-	end
+	self:checkShown(_G.LFGDungeonReadyPopup)
 
 	-- hook new button creation
 	self:RawHook("LFGRewardsFrame_SetItemButton", function(...)
@@ -3525,10 +3487,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.ExtraActionBarFrame:IsShown() then
-			_G.ExtraActionBarFrame:Hide()
-			_G.ExtraActionBarFrame:Show()
-		end
+		self:checkShown(_G.ExtraActionBarFrame)
 	end
 
 	-- UnitPowerBarAlt (inc. PlayerPowerBarAlt)
@@ -3745,10 +3704,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			self:addSkinFrame{obj=_G.InterfaceOptionsFrameCategories, ft=ftype, kfs=true}
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.InterfaceOptionsFrameCategories:IsShown() then
-			_G.InterfaceOptionsFrameCategories:Hide()
-			_G.InterfaceOptionsFrameCategories:Show()
-		end
+		self:checkShown(_G.InterfaceOptionsFrameCategories)
 
 		-- LHS panel (AddOns tab)
 		self:SecureHookScript(_G.InterfaceOptionsFrameAddOns, "OnShow", function(this)
@@ -3761,10 +3717,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 			end
 			self:Unhook(this, "OnShow")
 		end)
-		if _G.InterfaceOptionsFrameAddOns:IsShown() then
-			_G.InterfaceOptionsFrameAddOns:Hide()
-			_G.InterfaceOptionsFrameAddOns:Show()
-		end
+		self:checkShown(_G.InterfaceOptionsFrameAddOns)
 
 		-- RHS Panel
 		self:addSkinFrame{obj=_G.InterfaceOptionsFramePanelContainer, ft=ftype, kfs=true, nb=true}
@@ -4170,10 +4123,7 @@ aObj.blizzLoDFrames[ftype].MovePad = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.MovePadFrame:IsShown() then
-		_G.MovePadFrame:Hide()
-		_G.MovePadFrame:Show()
-	end
+	self:checkShown(_G.MovePadFrame)
 
 end
 
@@ -4365,10 +4315,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 		self:Unhook(this, "OnShow")
 
 	end)
-	if _G.OrderHallCommandBar:IsShown() then
-		_G.OrderHallCommandBar:Hide()
-		_G.OrderHallCommandBar:Show()
-	end
+	self:checkShown(_G.OrderHallCommandBar)
 
 end
 
@@ -4543,10 +4490,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.PetBattleFrame:IsShown() then
-		_G.PetBattleFrame:Hide()
-		_G.PetBattleFrame:Show()
-	end
+	self:checkShown(_G.PetBattleFrame)
 
 	if self.prdb.Tooltips.skin then
 		-- skin the tooltips
@@ -5032,10 +4976,7 @@ aObj.blizzFrames[ftype].SharedBasicControls = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.ScriptErrorsFrame:IsShown() then
-		_G.ScriptErrorsFrame:Hide()
-		_G.ScriptErrorsFrame:Show()
-	end
+	self:checkShown(_G.ScriptErrorsFrame)
 
 end
 
@@ -5052,10 +4993,7 @@ aObj.blizzFrames[ftype].SplashFrame = function(self)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.SplashFrame:IsShown() then
-		_G.SplashFrame:Hide()
-		_G.SplashFrame:Show()
-	end
+	self:checkShown(_G.SplashFrame)
 
 end
 
@@ -5103,10 +5041,7 @@ aObj.blizzFrames[ftype].StaticPopups = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		-- check to see if already being shown
-		if _G["StaticPopup" .. i]:IsShown() then
-			_G["StaticPopup" .. i]:Hide()
-			_G["StaticPopup" .. i]:Show()
-		end
+		self:checkShown(_G["StaticPopup" .. i])
 	end
 
 end
@@ -5718,10 +5653,7 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 		end
 		self:Unhook(this, "OnShow")
 	end)
-	if _G.ZoneAbilityFrame:IsShown() then
-		_G.ZoneAbilityFrame:Hide()
-		_G.ZoneAbilityFrame:Show()
-	end
+	self:checkShown(_G.ZoneAbilityFrame)
 
 end
 

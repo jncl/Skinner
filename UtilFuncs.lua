@@ -397,6 +397,15 @@ function aObj:checkLoadable(addonName)
 
 end
 
+function aObj:checkShown(frame)
+	
+	if frame:IsShown() then
+		frame:Hide()
+		frame:Show()
+	end
+	
+end
+
 function aObj:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
