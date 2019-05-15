@@ -1281,7 +1281,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	end
 
--->>-- Compact Party Frame
+	-- Compact Party Frame
 	self:SecureHook("CompactPartyFrame_OnLoad", function()
 		self:addSkinFrame{obj=_G.CompactPartyFrame.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-3, y2=3}
 		self:Unhook("CompactPartyFrame_OnLoad")
@@ -1291,7 +1291,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		skinGrp(frame)
 	end)
 
--->>-- Compact RaidFrame Container
+	-- Compact RaidFrame Container
 	-- handle AddOn being disabled
 	if not self:checkLoadable("Blizzard_CompactRaidFrames") then return end
 
@@ -1331,7 +1331,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 	skinCRFCframes()
 	self:addSkinFrame{obj=_G.CompactRaidFrameContainer.borderFrame, ft=ftype, kfs=true, y1=-1, x2=-5, y2=5}
 
--->>-- Compact RaidFrame Manager
+	-- Compact RaidFrame Manager
 	self:SecureHookScript(_G.CompactRaidFrameManager, "OnShow", function(this)
 		-- Toggle button
 		self:moveObject{obj=this.toggleButton, x=5}
