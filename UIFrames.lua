@@ -1131,8 +1131,12 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 		this.RunesSmall:SetTexture(nil)
 		this.SlotBG:SetTexture(nil)
 		this.KeystoneFrame:SetTexture(nil)
-		self:addButtonBorder{obj=this.KeystoneSlot}
-		self:skinStdButton{obj=this.StartButton}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.KeystoneSlot}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=this.StartButton}
+		end
 		self:addSkinFrame{obj=this, ft=ftype, ofs=-7}
 		self:Unhook(this, "OnShow")
 	end)
@@ -1141,6 +1145,22 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 		this:DisableDrawLayer("BACKGROUND")
 		self:removeInset(_G.ChallengesFrameInset)
 		this.WeeklyInfo.Child:DisableDrawLayer("BACKGROUND")
+
+		-- DungeonIcons
+		if self.modBtnBs then
+			for _, dungeon in ipairs(this.DungeonIcons) do
+				self:addButtonBorder{obj=dungeon, ofs=3, grey=true, ga=0.85}
+				self:SecureHook(dungeon, "SetUp", function(this,mapInfo, isFirst )
+					if mapInfo.quality >= _G.LE_ITEM_QUALITY_COMMON
+					and _G.ITEM_QUALITY_COLORS[mapInfo.quality]
+					then
+						dungeon.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[mapInfo.quality].r, _G.ITEM_QUALITY_COLORS[mapInfo.quality].g, _G.ITEM_QUALITY_COLORS[mapInfo.quality].b, 1)
+					else
+						dungeon.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.85) -- grey border
+					end
+				end)
+			end
+		end
 
 		-- SeasonChangeNoticeFrame
 		this.SeasonChangeNoticeFrame.NewSeason:SetTextColor(self.HT:GetRGB())
