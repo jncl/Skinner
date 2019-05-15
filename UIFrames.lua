@@ -5572,7 +5572,11 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 			choice.OptionText:SetTextColor(self.BT:GetRGB())
 		end
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, y1=-1, x2=-2}
+		if not self.isPTR then
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0, y1=-1, x2=-2}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=0}
+		end
 		self:nilTexture(this.CloseButton.Border, true)
 		self:SecureHook(this, "TryShow", function(this)
 			for _, choice in pairs(this.Options) do
