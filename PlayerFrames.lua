@@ -3433,9 +3433,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- ScenarioObjectiveBlock
 
-	-- ScenarioStageBlock
+	-- ScenarioStageBlockm
+	self:nilTexture(_G.ScenarioStageBlock.NormalBG, true)
 	self:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, kfs=true, nb=true, y1=-1, x2=41, y2=7}
-	self:nilTexture(self:getRegion(self:getChild(_G.ScenarioStageBlock.WidgetContainer, 1), 1), true)
 
 	-- ScenarioChallengeModeBlock
 	self:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0, bgTex=_G.ScenarioChallengeModeBlock.TimerBG, otherTex={_G.ScenarioChallengeModeBlock.TimerBGBack}}

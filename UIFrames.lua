@@ -5491,15 +5491,22 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		getWidgets(widgetContainer)
 	end)
 
-	-- handle the DoubleStatusBar widget on Island Expeditions
-	if _G.UnitLevel("player") > 109 then
-		self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
-			-- aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
-			 if getWidgets(_G.UIWidgetTopCenterContainerFrame) > 0 then
-		 		self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
-			end
-		end)
-	end
+	-- handle existing WidgetContainers
+	local ieCnt, shCnt
+	self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
+		-- name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceMapID, instanceGroupSize[, lfgDungeonsID] = GetInstanceInfo
+		-- aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
+
+		-- handle the DoubleStatusBar widget on Island Expeditions
+		ieCnt = getWidgets(_G.UIWidgetTopCenterContainerFrame)
+		-- handle ScenarioHeaderCurrenciesAndBackground
+		shCnt = getWidgets(_G.ScenarioStageBlock.WidgetContainer)
+		if ieCnt > 0
+		and shCnt > 0 then
+			self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
+			ieCnt, shCnt = nil, nil
+		end
+	end)
 
 end
 
