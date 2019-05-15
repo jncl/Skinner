@@ -15,11 +15,15 @@ ToDos
 
 ?	O	Eliminate bugs from skinning the PartyFrames, BossFrames, TargetFrameToT
 
-	O	change all occurrences of self.bColour to self.bClr
-
-	O	change all occurrences of self.bbColour to self.bbClr
+	O	Rename variables and use function for colours
+		- self.bColour to self.bClr
+		- self.bbColour to self.bbClr
 
 √	O	Add frame for tabs for FriendsFrame
+
+	I	JoinArena frame isn't skinned
+
+√	I	Skin Challenges Frame keystone buttons
 
 	N	PTR 8.2.0
 		- Added
@@ -89,11 +93,9 @@ x			- VoiceChatHeadsetButton
 √			- Blizzard_UIWidgets: Blizzard_UIWidgetTemplateTextureWithState
 √			- WorldStateFrame
 
-	I	RaiderIO on PTR, reported by Talyrius, 20.04.19
+	I	RaiderIO (on PTR?), reported by Talyrius, 20.04.19
 ?		- Skinner\Skinner-beta8.29981.3.lua:656: attempt to index field 'obj' (a nil value)
 		Skinner\AddonSkins\RaiderIO-8.1.0 (v201904200631).lua:36: in function `skinBtn'
 		Skinner\AddonSkins\RaiderIO-8.1.0 (v201904200631).lua:42: in function <Skinner\AddonSkins\RaiderIO.lua:5>
 
-	I	AllTheThings, reported by MetalHeadSpike, 02.05.19
-√		- Interface\AddOns\Skinner\AddonSkins\AllTheThings.lua:30: attempt to index field 'Separator' (a nil value)
-		Interface\AddOns\Skinner\AddonSkins\AllTheThings.lua:30: in function 		<Interface\AddOns\Skinner\AddonSkins\AllTheThings.lua:27>
+	I	RaiderIO profile tooltip not skinned
