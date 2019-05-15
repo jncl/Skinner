@@ -131,10 +131,8 @@ function aObj:OnInitialize()
 
 	-- Heading, Body & Ignored Text colours
 	local c = self.prdb.HeadText
-	self.HTr, self.HTg, self.HTb = c.r, c.g, c.b
 	self.HT = _G.CreateColor(c.r, c.g, c.b)
 	c = self.prdb.BodyText
-	self.BTr, self.BTg, self.BTb = c.r, c.g, c.b
 	self.BT = _G.CreateColor(c.r, c.g, c.b)
 	c = self.prdb.IgnoredText
 	self.IT = _G.CreateColor(c.r, c.g, c.b)
@@ -233,16 +231,22 @@ function aObj:OnInitialize()
 	-- Backdrop colours
 	c = self.prdb.ClassClrBg and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.Backdrop
 	self.bClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.Backdrop.a)
-	self.bColour = _G.CopyTable(self.bClr)
 	-- BackdropBorder colours
 	c = self.prdb.ClassClrBd and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.BackdropBorder
 	self.bbClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.BackdropBorder.a)
-	self.bbColour = _G.CopyTable(self.bbClr)
 	-- TooltipBorder colours
 	c = self.prdb.ClassClrTT and _G.RAID_CLASS_COLORS[self.uCls] or self.prdb.TooltipBorder
 	self.tbClr = _G.CreateColor(c.r, c.g, c.b, c.a or self.prdb.TooltipBorder.a)
 
 	dflts, c = nil, nil
+
+	-- highlight outdated colour variables use when testing
+--[===[@non-debug@
+	self.bColour = _G.CopyTable(self.bClr)
+	self.bbColour = _G.CopyTable(self.bbClr)
+	self.HTr, self.HTg, self.HTb = self.HT:GetRGB()
+	self.BTr, self.BTg, self.BTb = self.BT:GetRGB()
+--@end-non-debug@]===]
 
 	-- Inactive Tab & DropDowns texture
 	if self.prdb.TabDDFile
