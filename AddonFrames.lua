@@ -66,12 +66,6 @@ local otherAddons = {
 	"ProfessionTabs_TSF",
 	"ReagentMaker",
 	"TradeSkillDW",
-	"TradeSkillMaster_AuctionDB",
-	"TradeSkillMaster_Auctioning",
-	"TradeSkillMaster_Crafting",
-	"TradeSkillMaster_Shopping",
-	"TSM_AuctionFrameHook",
-	"TSM_AuctionHouse",
 }
 aObj.otherAddons = {}
 for i = 1, #otherAddons do
@@ -197,15 +191,6 @@ function aObj:AUCTION_HOUSE_SHOW()
 
 	self.callbacks:Fire("Auction_House_Show")
 
-	-- handle TradeSkillMaster_Auctioning frame size changes
-	if IsAddOnLoaded("TradeSkillMaster_Auctioning")
-	or IsAddOnLoaded("TradeSkillMaster_AuctionDB")
-	or IsAddOnLoaded("TradeSkillMaster_Shopping")
-	then
-		self:checkAndRun("TSM_AuctionFrameHook", "s")
-		self:checkAndRun("TSM_AuctionHouse", "s")
-	end
-
 	self:UnregisterEvent("AUCTION_HOUSE_SHOW")
 
 end
@@ -223,7 +208,6 @@ end
 function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
 
-	self:checkAndRunAddOn("TradeSkillMaster_Crafting")
 	self:checkAndRunAddOn("ReagentMaker")
 	self:checkAndRunAddOn("ProfessionTabs_TSF")
 	self:checkAndRunAddOn("TradeSkillDW")
