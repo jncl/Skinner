@@ -137,9 +137,9 @@ function aObj:OnInitialize()
 	c = self.prdb.IgnoredText
 	self.IT = _G.CreateColor(c.r, c.g, c.b)
 	-- The following variables are used by the GossipFrame & QuestFrame
-	self.NORMAL_QUEST_DISPLAY = "|cff" .. self:RGBPercToHex(self.HT:GetRGB()) .. "%s|r"
-	self.TRIVIAL_QUEST_DISPLAY = "|cff" .. self:RGBPercToHex(self.BT:GetRGB()) .. "%s (low level)|r"
-	self.IGNORED_QUEST_DISPLAY = "|cff" .. self:RGBPercToHex(self.IT:GetRGB()) .. "%s (ignored)|r"
+	self.NORMAL_QUEST_DISPLAY = self.HT:WrapTextInColorCode("%s|r")
+	self.TRIVIAL_QUEST_DISPLAY = self.BT:WrapTextInColorCode("%s (low level)|r")
+	self.IGNORED_QUEST_DISPLAY = self.IT:WrapTextInColorCode("%s (ignored)|r")
 
 	-- EditBox regions to keep
 	self.ebRgns = {1, 2} -- 1 is text, 2 is a texture
@@ -242,8 +242,8 @@ function aObj:OnInitialize()
 
 	-- highlight outdated colour variables use when testing
 --[===[@non-debug@
-	self.bColour = _G.CopyTable(self.bClr)
-	self.bbColour = _G.CopyTable(self.bbClr)
+	self.bColour = {self.bClr:GetRGBA()}
+	self.bbColour = {self.bbClr:GetRGBA()}
 	self.HTr, self.HTg, self.HTb = self.HT:GetRGB()
 	self.BTr, self.BTg, self.BTb = self.BT:GetRGB()
 --@end-non-debug@]===]
