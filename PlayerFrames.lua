@@ -2412,7 +2412,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
 			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, QuickJoin & Ignore
 			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
-			self:skinCloseButton{obj=this.FriendsFrameQuickJoinHelpTip.CloseButton, noSkin=true}
 				if not aObj.isPTR then
 					if self.modBtns then
 						self:skinCloseButton{obj=this.FriendsFrameQuickJoinHelpTip.CloseButton, noSkin=true}
