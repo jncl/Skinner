@@ -3117,29 +3117,47 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 
 	self.initialized.LookingForGuildUI = true
 
+	local function addTabFrame(frame)
+		-- add border around frame for tabs
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-5, y1=2, x2=7, y2=-26}
+	end
+
 	self:skinTabs{obj=_G.LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
 	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true}
+	-- raise Tab level so they appear above Tab frames
+	_G.RaiseFrameLevelByTwo(_G.LookingForGuildFrameTab1)
+	_G.RaiseFrameLevelByTwo(_G.LookingForGuildFrameTab2)
+	_G.RaiseFrameLevelByTwo(_G.LookingForGuildFrameTab3)
 
-	-- Start Frame (Settings)
-	self:skinCheckButton{obj=_G.LookingForGuildQuestButton}
-	self:skinCheckButton{obj=_G.LookingForGuildRaidButton}
-	self:skinCheckButton{obj=_G.LookingForGuildDungeonButton}
-	self:skinCheckButton{obj=_G.LookingForGuildPvPButton}
-	self:skinCheckButton{obj=_G.LookingForGuildRPButton}
-	_G.LookingForGuildInterestFrameBg:SetAlpha(0)
-	self:skinCheckButton{obj=_G.LookingForGuildWeekdaysButton}
-	self:skinCheckButton{obj=_G.LookingForGuildWeekendsButton}
-	_G.LookingForGuildAvailabilityFrameBg:SetAlpha(0)
-	self:skinCheckButton{obj=_G.LookingForGuildTankButton.checkButton}
-	self:skinCheckButton{obj=_G.LookingForGuildHealerButton.checkButton}
-	self:skinCheckButton{obj=_G.LookingForGuildDamagerButton.checkButton}
-	_G.LookingForGuildRolesFrameBg:SetAlpha(0)
-	_G.LookingForGuildCommentFrameBg:SetAlpha(0)
-	self:skinSlider{obj=_G.LookingForGuildCommentInputFrameScrollFrame.ScrollBar, size=3}
-	self:addSkinFrame{obj=_G.LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
-	_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BT:GetRGB())
-	self:removeMagicBtnTex(_G.LookingForGuildBrowseButton)
-	self:skinStdButton{obj=_G.LookingForGuildBrowseButton}
+	self:SecureHookScript(_G.LookingForGuildStartFrame, "OnShow", function(this)
+		if self.modChkBtns then
+			self:skinCheckButton{obj=_G.LookingForGuildQuestButton}
+			self:skinCheckButton{obj=_G.LookingForGuildRaidButton}
+			self:skinCheckButton{obj=_G.LookingForGuildDungeonButton}
+			self:skinCheckButton{obj=_G.LookingForGuildPvPButton}
+			self:skinCheckButton{obj=_G.LookingForGuildRPButton}
+			self:skinCheckButton{obj=_G.LookingForGuildWeekdaysButton}
+			self:skinCheckButton{obj=_G.LookingForGuildWeekendsButton}
+			self:skinCheckButton{obj=_G.LookingForGuildTankButton.checkButton}
+			self:skinCheckButton{obj=_G.LookingForGuildHealerButton.checkButton}
+			self:skinCheckButton{obj=_G.LookingForGuildDamagerButton.checkButton}
+		end
+		_G.LookingForGuildInterestFrameBg:SetAlpha(0)
+		_G.LookingForGuildAvailabilityFrameBg:SetAlpha(0)
+		_G.LookingForGuildRolesFrameBg:SetAlpha(0)
+		_G.LookingForGuildCommentFrameBg:SetAlpha(0)
+		self:skinSlider{obj=_G.LookingForGuildCommentInputFrameScrollFrame.ScrollBar, size=3}
+		self:addSkinFrame{obj=_G.LookingForGuildCommentInputFrame, ft=ftype, kfs=true, ofs=-1}
+		_G.LookingForGuildCommentEditBoxFill:SetTextColor(self.BT:GetRGB())
+		self:removeMagicBtnTex(_G.LookingForGuildBrowseButton)
+		if self.modBtns then
+			self:skinStdButton{obj=_G.LookingForGuildBrowseButton}
+		end
+		addTabFrame(this)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:checkShown(_G.LookingForGuildStartFrame)
 
 	self:SecureHookScript(_G.LookingForGuildBrowseFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.LookingForGuildBrowseFrameContainerScrollBar, wdth=-4}
@@ -3149,6 +3167,8 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 		end
 		self:removeMagicBtnTex(_G.LookingForGuildRequestButton)
 		self:skinStdButton{obj=_G.LookingForGuildRequestButton}
+		addTabFrame(this)
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3158,6 +3178,8 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 		for i = 1, #_G.LookingForGuildAppsFrameContainer.buttons do
 			self:applySkin{obj=_G.LookingForGuildAppsFrameContainer.buttons[i]}
 		end
+		addTabFrame(this)
+
 		self:Unhook(this, "OnShow")
 	end)
 
