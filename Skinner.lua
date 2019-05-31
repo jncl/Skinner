@@ -1240,6 +1240,41 @@ function aObj:skinEditBox(...)
 
 end
 
+if aObj.isPTR then
+	function aObj:skinGlowBox(gBox)
+
+		-- aObj:Debug("skinGlowBox: [%s]", gBox)
+
+		local function findArrowTex(gBox)
+			-- aObj:Debug("findArrow: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
+			if gBox:GetNumChildren() == 2 then -- has Arrow child
+				if gBox.Arrow then
+					gBox.Arrow.Glow:SetTexture(nil)
+				else
+					aObj:getLastChild(gBox).Glow:SetTexture(nil)
+				end
+			elseif gBox:GetNumRegions() == 26 then -- HelpPlateTooltip
+				gBox:DisableDrawLayer("BORDER")
+			elseif gBox.ArrowGlow then -- ExtraBagSlotsHelpBox
+				gBox.ArrowGlow:SetTexture(nil)
+			else -- last region
+				aObj:getRegion(gBox, gBox:GetNumRegions()):SetTexture(nil)
+			end
+		end
+
+		findArrowTex(gBox)
+		gBox:DisableDrawLayer("BACKGROUND")
+		if self.modBtns
+		and gBox:GetNumChildren() > 0 -- don't check after adding skin frames ohterwise it fails
+		then
+			self:skinCloseButton{obj=gBox.CloseButton, noSkin=true}
+		end
+		self:addSkinFrame{obj=gBox, ft=ftype, nb=true}
+		gBox.sf:SetBackdropBorderColor(1, 0.82, 0)
+
+	end
+end
+
 local function __skinMoneyFrame(opts)
 --[[
 	Calling parameters:

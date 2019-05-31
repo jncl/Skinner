@@ -2080,7 +2080,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	self:SecureHookScript(_G.GarrisonMissionTutorialFrame, "OnShow", function(this)
 		-- N.B. NO CloseButton
-		self:skinStdButton{obj=this.GlowBox.Button}
+		if self.modBtns then
+			self:skinStdButton{obj=this.GlowBox.Button}
+		end
+		if aObj.isPTR then
+			self:skinGlowBox(this.GlowBox)
+		end
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -2246,8 +2251,12 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		-- N.B. Garrison Landing Page Minimap Button skinned with other minimap buttons
 	end)
 	self:checkShown(_G.GarrisonLandingPage)
-	if self.modBtns then
-		self:skinCloseButton{obj=_G.GarrisonLandingPageTutorialBox.CloseButton, noSkin=true}
+	if not aObj.isPTR then
+		if self.modBtns then
+			self:skinCloseButton{obj=_G.GarrisonLandingPageTutorialBox.CloseButton, noSkin=true}
+		end
+	else
+		self:skinGlowBox(_G.GarrisonLandingPageTutorialBox)
 	end
 
 	-- a.k.a. Work Order Frame
@@ -2391,12 +2400,16 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if self.modBtns then
-		self:SecureHookScript(_G.OrderHallMissionTutorialFrame, "OnShow", function(this)
-			self:skinCloseButton{obj=this.GlowBox.CloseButton, noSkin=true}
-			self:Unhook(this, "OnShow")
-		end)
-	end
+	self:SecureHookScript(_G.OrderHallMissionTutorialFrame, "OnShow", function(this)
+		if not aObj.isPTR then
+			if self.modBtns then
+				self:skinCloseButton{obj=this.GlowBox.CloseButton, noSkin=true}
+			end
+		else
+			self:skinGlowBox(this.GlowBox)
+		end
+		self:Unhook(this, "OnShow")
+	end)
 
 	self:SecureHookScript(_G.BFAMissionFrame, "OnShow", function(this)
 
@@ -2687,6 +2700,9 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 		self:addSkinFrame{obj=_G.BrowserSettingsTooltip, ft=ftype}
 
 		-- HelpOpenTicketButton
+		if aObj.isPTR then
+			self:skinGlowBox(_G.HelpOpenTicketButton.tutorial)
+		end
 		-- HelpOpenWebTicketButton
 
 		-- TicketStatus Frame
@@ -3468,8 +3484,14 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end
 	if self.modBtns then
 		-- MicroButtonAlert frames
-		 for _, type in pairs{"Character", "Talent", "Collections", "LFD", "EJ", "Store"} do
-			self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton, noSkin=true}
+		for _, type in pairs{"Character", "Talent", "Collections", "LFD", "EJ", "Store"} do
+			if not aObj.isPTR then
+				if self.modBtns then
+					self:skinCloseButton{obj=_G[type .. "MicroButtonAlert"].CloseButton, noSkin=true}
+				end
+			else
+				self:skinGlowBox(_G[type .. "MicroButtonAlert"])
+			end
 			_G.RaiseFrameLevelByTwo(_G[type .. "MicroButtonAlert"]) -- move above button borders
 		end
 	end
@@ -4564,7 +4586,13 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 			-- make icon square
 			self:makeIconSquare(_G.GroupFinderFrame["groupButton" .. i], "icon", true)
 		end
-		self:skinCloseButton{obj=_G.PremadeGroupsPvETutorialAlert.CloseButton, noSkin=true}
+		if not aObj.isPTR then
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.PremadeGroupsPvETutorialAlert.CloseButton, noSkin=true}
+			end
+		else
+			self:skinGlowBox(_G.PremadeGroupsPvETutorialAlert)
+		end
 
 		-- hook this to change selected texture
 		self:SecureHook("GroupFinderFrame_SelectGroupButton", function(index)
@@ -5249,6 +5277,10 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return aObj.bbClr:GetRGBA()
 	end, true)
 
+	if aObj.isPTR then
+		self:skinGlowBox(_G.HelpPlateTooltip)
+	end
+
 end
 
 aObj.blizzFrames[ftype].Tutorial = function(self)
@@ -5522,8 +5554,12 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 			end
 		end)
 
-		if self.modBtns then
-			self:skinCloseButton{obj=this.WarfrontHelpBox.CloseButton, noSkin=true}
+		if not aObj.isPTR then
+			if self.modBtns then
+				self:skinCloseButton{obj=this.WarfrontHelpBox.CloseButton, noSkin=true}
+			end
+		else
+			self:skinGlowBox(this.WarfrontHelpBox)
 		end
 
 		self:Unhook(this, "OnShow")
@@ -5581,8 +5617,12 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			-- BountyBoard overlay
 			elseif oFrame.bountyObjectivePool then
 				oFrame:DisableDrawLayer("BACKGROUND")
-				if self.modBtns then
-					self:skinCloseButton{obj=oFrame.TutorialBox.CloseButton, noSkin=true}
+				if not aObj.isPTR then
+					if self.modBtns then
+						self:skinCloseButton{obj=oFrame.TutorialBox.CloseButton, noSkin=true}
+					end
+				else
+					self:skinGlowBox(oFrame.TutorialBox)
 				end
 				self:SecureHook(oFrame, "RefreshBountyTabs", function(this)
 					for tab in this.bountyTabPool:EnumerateActive() do
@@ -5650,8 +5690,12 @@ aObj.blizzFrames[ftype].ZoneAbility = function(self)
 		if self.modBtnBs then
 			 self:addButtonBorder{obj=this.SpellButton, ofs=2}
 		end
-		if self.modBtns then
-			 self:skinCloseButton{obj=_G.ZoneAbilityButtonAlert.CloseButton, noSkin=true}
+		if not aObj.isPTR then
+			if self.modBtns then
+				 self:skinCloseButton{obj=_G.ZoneAbilityButtonAlert.CloseButton, noSkin=true}
+			end
+		else
+			self:skinGlowBox(_G.ZoneAbilityButtonAlert)
 		end
 		self:Unhook(this, "OnShow")
 	end)

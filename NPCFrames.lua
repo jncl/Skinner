@@ -214,8 +214,13 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
 	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true}
 	if self.modBtns then
-		self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton, noSkin=true}
+		if not aObj.isPTR then
+			self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton, noSkin=true}
+		end
 		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
+	end
+	if aObj.isPTR then
+		self:skinGlowBox(_G.AzeriteRespecFrame.HelpBox)
 	end
 
 end
@@ -244,7 +249,12 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
 			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
-			self:skinCloseButton{obj=_G.ReagentBankHelpBox.CloseButton, noSkin=true}
+			if not aObj.isPTR then
+				self:skinCloseButton{obj=_G.ReagentBankHelpBox.CloseButton, noSkin=true}
+			end
+		end
+		if aObj.isPTR then
+			self:skinGlowBox(_G.ReagentBankHelpBox)
 		end
 
 		if self.modBtnBs then
@@ -989,6 +999,9 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 			-- N.B. NO CloseButton for VoidStorageHelpBox
 			self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
+		end
+		if aObj.isPTR then
+			self:skinGlowBox(_G.VoidStorageHelpBox)
 		end
 		self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
 		-- Tabs

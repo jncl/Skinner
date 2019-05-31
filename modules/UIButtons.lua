@@ -206,12 +206,19 @@ function module:skinCloseButton(opts) -- text on button
 	local aso = opts.aso or {}
 
 --@alpha@
-	-- don't skin button for GlowBoxes
-	if opts.obj:GetParent().GlowTop
-	and not opts.noSkin
-	then
-		assert(opts.noSkin, "GlowBox CloseButton needs noSkin option set" .. debugstack(2, 3, 2))
-		opts.noSkin = true
+	if not aObj.isPTR then
+		-- don't skin button for GlowBoxes
+		if opts.obj:GetParent().GlowTop
+		and not opts.noSkin
+		then
+			assert(opts.noSkin, "GlowBox CloseButton needs noSkin option set" .. debugstack(2, 3, 2))
+			opts.noSkin = true
+		end
+	else
+		-- skin GlowBox frame
+		if opts.obj:GetParent().GlowTop then
+			assert(opts.noSkin, "GlowBox should be skinned" .. debugstack(2, 3, 2))
+		end
 	end
 --@end-alpha@
 
