@@ -2392,10 +2392,14 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 		self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 			_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
-			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, kfs=true, ofs=4}
-			self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.UpdateButton}
-			self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.CancelButton}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
+			end
+			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, kfs=true, nb=true, ofs=4}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.UpdateButton}
+				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.CancelButton}
+			end
 			_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.EditBox.PromptText:SetTextColor(self.BT:GetRGB())
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
 			if self.isPTR then
@@ -2409,8 +2413,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, QuickJoin & Ignore
 			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
 			self:skinCloseButton{obj=this.FriendsFrameQuickJoinHelpTip.CloseButton, noSkin=true}
-			self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
-			self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
 				if not aObj.isPTR then
 					if self.modBtns then
 						self:skinCloseButton{obj=this.FriendsFrameQuickJoinHelpTip.CloseButton, noSkin=true}
@@ -2418,6 +2420,10 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 				else
 					self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip)
 				end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
+				self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
+			end
 			_G.RaiseFrameLevel(this)
 			self:Unhook(this, "OnShow")
 		end)
