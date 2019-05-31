@@ -84,14 +84,20 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 	end
 	aC = nil
 
-	if self.modBtns then
+	if self.modBtns
+	or self.modBtnBs
+	then
 		local tut = OHC:GetTutorialsModule()
-		if tM then
+		if tut then
 			self:SecureHook(tut, "Show", function(this, opening)
 				local Clicker = self:getLastChild(_G.HelpPlateTooltip)
-				self:skinCloseButton{obj=Clicker.Close}
-				self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
-				self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+				if self.modBtns then
+					self:skinCloseButton{obj=Clicker.Close}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
+					self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+				end
 				Clicker = nil
 				self:Unhook(this, "Show")
 			end)

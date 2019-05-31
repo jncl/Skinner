@@ -117,11 +117,15 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.2 80100
 		self:SecureHook(tut, "Show", function(this, opening)
 			local Clicker = self:getLastChild(_G.HelpPlateTooltip)
 			if self.modBtns
-			and not Clicker.Close.sb
+			or self.modBtnBs
 			then
-				self:skinCloseButton{obj=Clicker.Close, noSkin=true}
-				self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
-				self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+				if self.modBtns then
+					 self:skinCloseButton{obj=Clicker.Close, noSkin=true}
+				end
+				if self.modBtnBs then
+					self:addButtonBorder{obj=Clicker.Forward, ofs=-2, x2=-3}
+					self:addButtonBorder{obj=Clicker.Backward, ofs=-2, x2=-3}
+				end
 			end
 			Clicker = nil
 			-- this shows/hides the Troop frame as required

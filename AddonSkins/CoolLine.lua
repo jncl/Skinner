@@ -1,20 +1,26 @@
 local aName, aObj = ...
 if not aObj:isAddonEnabled("CoolLine") then return end
+local _G = _G
 
-function aObj:CoolLine()
+aObj.addonsToSkin.CoolLine = function(self) -- v 8.0.002
 
-	CoolLineDB.statusbar = self.db.profile.StatusBar.texture
-	CoolLineDB.bgcolor = self.bColour
-	CoolLineDB.border = self.bdbTex
-	CoolLineDB.bordercolor = self.bbColour
-	if CoolLineDB.perchar then
-		CoolLineCharDB.statusbar = self.db.profile.StatusBar.texture
-		CoolLineCharDB.bgcolor = self.bColour
-		CoolLineCharDB.border = self.bdbTex
-		CoolLineCharDB.bordercolor = self.bbColour
+	_G.CoolLineDB.statusbar = self.db.profile.StatusBar.texture
+	local r, g, b, a = self.bClr:GetRGBA()
+	_G.CoolLineDB.bgcolor = {r = r, g = g, b = b, a = a}
+	_G.CoolLineDB.border = self.bdbTexName
+	r, g, b, a = self.bbClr:GetRGBA()
+	_G.CoolLineDB.bordercolor = {r = r, g = g, b = b, a = a}
+	if _G.CoolLineDB.perchar then
+		_G.CoolLineCharDB.statusbar = self.db.profile.StatusBar.texture
+		r, g, b, a = self.bClr:GetRGBA()
+		_G.CoolLineCharDB.bgcolor = {r = r, g = g, b = b, a = a}
+		_G.CoolLineCharDB.border = self.bdbTexName
+		r, g, b, a = self.bbClr:GetRGBA()
+		_G.CoolLineCharDB.bordercolor = {r = r, g = g, b = b, a = a}
 	end
+	r, g, b, a = nil, nil, nil, nil
 
 	-- apply changes
-	CoolLine.updatelook()
+	_G.CoolLine.updatelook()
 
 end
