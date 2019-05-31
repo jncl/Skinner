@@ -123,7 +123,7 @@ local function safecall(funcName, funcObj, LoD, quiet)
 		return success, err
 	end
 	if not success then
-		if aObj.db.profile.Errors then
+		if aObj.prdb.Errors then
 			aObj:CustomPrint(1, 0, 0, "Error running", funcName)
 		end
 	end
@@ -298,7 +298,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	if funcType     == "s" then tObj = self
 	elseif funcType == "l" then tObj = self.libsToSkin
 	elseif funcType == "o" then tObj = self.otherAddons
-	else tObj = LoD and self["blizzLoDFrames"][funcType] or self["blizzFrames"][funcType]
+	else tObj = LoD and self.blizzLoDFrames[funcType] or self.blizzFrames[funcType]
 	end
 
 	-- only skin frames if required
@@ -398,12 +398,12 @@ function aObj:checkLoadable(addonName)
 end
 
 function aObj:checkShown(frame)
-	
+
 	if frame:IsShown() then
 		frame:Hide()
 		frame:Show()
 	end
-	
+
 end
 
 function aObj:findFrame(height, width, children)
@@ -809,7 +809,7 @@ local function __moveObject(opts)
 --@end-alpha@
 	-- Workaround for relativeTo crash
 	if not relTo then
-		if aObj.db.profile.Warnings then
+		if aObj.prdb.Warnings then
 			aObj:CustomPrint(1, 0, 0, "moveObject (relativeTo) is nil: %s", opts.obj)
 		end
 		return
@@ -1223,28 +1223,6 @@ aObj.debugFrame = nil
 aObj.Debug = _G.nop
 aObj.Debug2 = _G.nop
 --@end-non-debug@]===]
-
--- This function was copied from WoWWiki
--- http://www.wowwiki.com/RGBPercToHex
-function aObj:RGBPercToHex(r, g, b)
---@alpha@
-	assert(r, "Missing value (red) - RGBPercToHex\n" .. debugstack(2, 3, 2))
-	assert(g, "Missing value (green) - RGBPercToHex\n" .. debugstack(2, 3, 2))
-	assert(b, "Missing value (blue) - RGBPercToHex\n" .. debugstack(2, 3, 2))
---@end-alpha@
-
-	--	Check to see if the passed values are strings, if so then use some default values
-	if type(r) == "string" then
-		r, g, b = _G.NORMAL_FONT_COLOR:GetRGB()
-	end
-
-	r = r <= 1 and r >= 0 and r or 0
-	g = g <= 1 and g >= 0 and g or 0
-	b = b <= 1 and b >= 0 and b or 0
-
-	return ("%02x%02x%02x"):format(r*255, g*255, b*255)
-
-end
 
 function aObj:RaiseFrameLevelByFour(frame)
 

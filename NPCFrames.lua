@@ -21,7 +21,7 @@ local function hookQuestText(btn)
 end
 
 aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
-	if not self.db.profile.AlliedRacesUI or self.initialized.AlliedRacesUI then return end
+	if not self.prdb.AlliedRacesUI or self.initialized.AlliedRacesUI then return end
 	self.initialized.AlliedRacesUI = true
 
 	self:SecureHookScript(_G.AlliedRacesFrame, "OnShow", function(this)
@@ -204,7 +204,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
-	if not self.db.profile.AzeriteRespecUI or self.initialized.AzeriteRespecUI then return end
+	if not self.prdb.AzeriteRespecUI or self.initialized.AzeriteRespecUI then return end
 	self.initialized.AzeriteRespecUI = true
 
 	self.modUIBtns:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot, grey=true} -- use module function

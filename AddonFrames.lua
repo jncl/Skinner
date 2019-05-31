@@ -82,7 +82,7 @@ local function skinLibs()
 			elseif aObj[skinFunc] then
 				aObj:checkAndRun(skinFunc, "s")
 			else
-				if aObj.db.profile.Warnings then
+				if aObj.prdb.Warnings then
 					aObj:CustomPrint(1, 0, 0, libName, "loaded but skin not found in AddonSkins directory (sL)")
 				end
 			end
@@ -223,7 +223,7 @@ end
 function aObj:TRADE_SHOW()
 	-- self:Debug("TRADE_SHOW")
 
-	self:checkAndRunAddOn("ProfessionTabs_TF")
+	self:checkAndRun("ProfessionTabs_TF", "o")
 
 	self:UnregisterEvent("TRADE_SHOW")
 

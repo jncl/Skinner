@@ -691,8 +691,8 @@ local function __addSkinFrame(opts)
 	if not opts.ofs then
 		opts.x1 = opts.x1 or -3
 		opts.y1 = opts.y1 or 2
-		opts.y2 = opts.y2 or -2
 		opts.x2 = opts.x2 or 3
+		opts.y2 = opts.y2 or -2
 	end
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -922,7 +922,7 @@ local function __applySkin(opts)
 
 	local hasIOT = assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
 	if hasIOT and not opts.obj:IsObjectType("Frame") then
-		if aObj.db.profile.Errors then
+		if aObj.prdb.Errors then
 			aObj:CustomPrint(1, 0, 0, "Error skinning", opts.obj.GetName and opts.obj:GetName() or opts.obj, "not a Frame or subclass of Frame:", opts.obj:GetObjectType())
 			return
 		end
@@ -958,7 +958,7 @@ local function __applySkin(opts)
 
 	-- fix for backdrop textures not tiling vertically
 	-- using info from here: http://boss.wowinterface.com/forums/showthread.php?p=185868
-	if aObj.db.profile.BgUseTex then
+	if aObj.prdb.BgUseTex then
 		if not opts.obj.tbg then aObj:applyTexture(opts.obj) end
 	elseif opts.obj.tbg then
 		opts.obj.tbg = nil -- remove background texture if it exists
@@ -1062,8 +1062,8 @@ local function __skinDropDown(opts)
 	aObj:removeRegions(opts.obj, {1, 2, 3})
 
 	-- return if not to be skinned
-	if not aObj.db.profile.TexturedDD
-	and not aObj.db.profile.DropDownButtons
+	if not aObj.prdb.TexturedDD
+	and not aObj.prdb.DropDownButtons
 	or opts.noSkin
 	then
 		return
@@ -1071,7 +1071,7 @@ local function __skinDropDown(opts)
 
 	-- add texture
 	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK", -5) -- appear behind text
-	opts.obj.ddTex:SetTexture(aObj.db.profile.TexturedDD and aObj.itTex or nil)
+	opts.obj.ddTex:SetTexture(aObj.prdb.TexturedDD and aObj.itTex or nil)
 	-- align it to the middle texture
 	opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -5, 2)
 	opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", 5, 2)
@@ -1082,7 +1082,7 @@ local function __skinDropDown(opts)
 	local xOfs2 = opts.x2 or -16
 	local yOfs2 = opts.y2 or 7
 	-- skin the frame
-	if aObj.db.profile.DropDownButtons then
+	if aObj.prdb.DropDownButtons then
 		-- CHANGED: ft ... or "a" is used to stop buttons being skinned automatically
 		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype or "a", aso={ng=true, bd=5}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end

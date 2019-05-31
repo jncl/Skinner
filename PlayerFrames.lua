@@ -158,7 +158,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end
 		local function cleanButtons(frame, type)
 
-			if aObj.db.profile.AchievementUI.style == 1 then return end -- don't remove textures if option not chosen
+			if aObj.prdb.AchievementUI.style == 1 then return end -- don't remove textures if option not chosen
 
 			-- remove textures etc from buttons
 			local btnName, btn
@@ -519,7 +519,7 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].AzeriteUI = function(self)
-	if not self.db.profile.AzeriteUI or self.initialized.AzeriteUI then return end
+	if not self.prdb.AzeriteUI or self.initialized.AzeriteUI then return end
 	self.initialized.AzeriteUI = true
 
 	local AEIUI = _G.AzeriteEmpoweredItemUI
@@ -1001,7 +1001,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		function skinCollectionBtn(btn)
 			if btn.sbb then
 				if btn.slotFrameUncollected:IsShown() then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+					btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 1) -- grey border
 				else
 					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
@@ -1015,7 +1015,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				if btn.Icon:IsDesaturated()
 				and btn.IconCover:IsShown()
 				then
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+					btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 1) -- grey border
 				else
 					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
@@ -1373,7 +1373,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].Communities = function(self)
-	if not self.db.profile.CommunitiesUI or self.initialized.CommunitiesUI then return end
+	if not self.prdb.CommunitiesUI or self.initialized.CommunitiesUI then return end
 
 	if not _G.CommunitiesFrame then
 		_G.C_Timer.After(0.1, function()
@@ -1889,7 +1889,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		local objName, cfpb
 		local function skinBag(frame, id)
 
-			local objName = frame:GetName()
+			objName = frame:GetName()
 
 			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 			-- resize and move the bag name to make it more readable
@@ -3109,14 +3109,14 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
 		end)
 
-		if aObj.db.profile.LootFrames.size == 1 then
+		if aObj.prdb.LootFrames.size == 1 then
 			frame.IconFrame.Border:SetAlpha(0)
 			aObj:addSkinFrame{obj=frame, ft=ftype, x1=-3, y2=-3} -- adjust for Timer
-		elseif aObj.db.profile.LootFrames.size == 2 then
+		elseif aObj.prdb.LootFrames.size == 2 then
 			frame.IconFrame.Border:SetAlpha(0)
 			frame:SetScale(0.75)
 			aObj:addSkinFrame{obj=frame, ft=ftype, x1=-3, y2=-3} -- adjust for Timer
-		elseif aObj.db.profile.LootFrames.size == 3 then
+		elseif aObj.prdb.LootFrames.size == 3 then
 			frame:SetScale(0.75)
 			aObj:moveObject{obj=frame.IconFrame, x=95, y=5}
 			frame.Name:SetAlpha(0)
@@ -3417,7 +3417,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- ScenarioObjectiveBlock
 
-	-- ScenarioStageBlockm
+	-- ScenarioStageBlock
 	self:nilTexture(_G.ScenarioStageBlock.NormalBG, true)
 	self:addSkinFrame{obj=_G.ScenarioStageBlock, ft=ftype, kfs=true, nb=true, y1=-1, x2=41, y2=7}
 

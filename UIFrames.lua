@@ -326,11 +326,11 @@ end
 -- The following functions are used by several Chat* functions
 local function skinChatEB(obj)
 
-	if aObj.db.profile.ChatEditBox.style == 1 then -- Frame
+	if aObj.prdb.ChatEditBox.style == 1 then -- Frame
 		aObj:keepRegions(obj, {1, 2, 9, 10})
 		aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
 		obj.sf:SetAlpha(obj:GetAlpha())
-	elseif aObj.db.profile.ChatEditBox.style == 2 then -- Editbox
+	elseif aObj.prdb.ChatEditBox.style == 2 then -- Editbox
 		aObj:skinEditBox{obj=obj, regs={9, 10}, noHeight=true}
 	else -- Borderless
 		aObj:removeRegions(obj, {3, 4, 5})
@@ -359,6 +359,7 @@ local function skinChatTab(tab)
 	end)
 
 end
+
 aObj.blizzFrames[ftype].AddonList = function(self)
 	if not self.prdb.AddonList or self.initialized.AddonList then return end
 	self.initialized.AddonList = true
@@ -773,7 +774,7 @@ end
 
 if aObj.isPTR then
 	aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
-		if not self.db.profile.AzeriteEssenceUI or self.initialized.AzeriteEssenceUI then return end
+		if not self.prdb.AzeriteEssenceUI or self.initialized.AzeriteEssenceUI then return end
 		self.initialized.AzeriteEssenceUI = true
 
 		self:SecureHookScript(_G.AzeriteEssenceUI, "OnShow", function(this)
@@ -783,7 +784,6 @@ if aObj.isPTR then
 			self:removeInset(this.RightInset)
 			-- remove revolving circles & stop them from re-appearing
 			this.ItemModelScene:ClearScene()
-			this.SetupModelScenes = _G.nop
 			-- remove revolving stars
 			this.StarsAnimationFrame1:DisableDrawLayer("BORDER")
 			this.StarsAnimationFrame2:DisableDrawLayer("BORDER")
@@ -1624,23 +1624,23 @@ aObj.blizzFrames[ftype].ChatTemporaryWindow = function(self)
 
 	local function skinTempWindow(obj)
 
-		if aObj.db.profile.ChatTabs
+		if aObj.prdb.ChatTabs
 		and not obj.sf
 		then
 			skinChatTab(_G[obj:GetName() .. "Tab"])
 		end
-		if aObj.db.profile.ChatFrames
+		if aObj.prdb.ChatFrames
 		and not obj.sf
 		then
 			aObj:addSkinFrame{obj=obj, ft=ftype, x1=-4, y1=4, x2=4, y2=-8}
 		end
-		if aObj.db.profile.ChatEditBox.skin
+		if aObj.prdb.ChatEditBox.skin
 		and not obj.editBox.sknd
 		then
 			skinChatEB(obj.editBox)
 			obj.editBox.sknd = true
 		end
-		if aObj.db.profile.ChatButtons
+		if aObj.prdb.ChatButtons
 		and not obj.buttonFrame.sknd
 		then
 			aObj:addButtonBorder{obj=obj.buttonFrame.minimizeButton, ofs=-2}
@@ -2731,7 +2731,7 @@ local function skinPartyPoseFrame(frame)
 end
 
 aObj.blizzLoDFrames[ftype].IslandsPartyPoseUI = function(self)
-	if not self.db.profile.IslandsPartyPoseUI or self.initialized.IslandsPartyPoseUI then return end
+	if not self.prdb.IslandsPartyPoseUI or self.initialized.IslandsPartyPoseUI then return end
 
 	if not _G.IslandsPartyPoseFrame then
 		_G.C_Timer.After(0.1, function()
@@ -2748,7 +2748,7 @@ aObj.blizzLoDFrames[ftype].IslandsPartyPoseUI = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].IslandsQueueUI = function(self)
-	if not self.db.profile.IslandsQueueUI or self.initialized.IslandsQueueUI then return end
+	if not self.prdb.IslandsQueueUI or self.initialized.IslandsQueueUI then return end
 
 	if not _G.IslandsQueueFrame then
 		_G.C_Timer.After(0.1, function()
@@ -4035,11 +4035,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	-- skin other minimap buttons as required
 	if not minBtn then
 		local function skinMMBtn(cb, btn, name)
-			-- aObj:Debug("skinMMBtn: [%s, %s, %s]", cb, btn, name)
+			-- aObj:Debug("skinMMBtn#1: [%s, %s, %s]", cb, btn, name)
 			for _, reg in ipairs{btn:GetRegions()} do
 				if reg:GetObjectType() == "Texture" then
+					-- aObj:Debug("skinMMBtn#2: [%s, %s, %s]", reg, reg:GetName(), reg:GetTexture())
 					if aObj:hasTextInName(reg, "Border")
 					or aObj:hasTextInTexture(reg, "TrackingBorder")
+					or aObj:hasTextInTexture(reg, "136430") -- file ID for Border texture
 					then
 						reg:SetTexture(nil)
 					end
@@ -4516,7 +4518,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 end
 
 aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Rewards Frame
-	if not self.db.profile.ProductChoiceFrame or self.initialized.ProductChoiceFrame then return end
+	if not self.prdb.ProductChoiceFrame or self.initialized.ProductChoiceFrame then return end
 	self.initialized.ProductChoiceFrame = true
 
 	-- close with Esc
@@ -4639,7 +4641,7 @@ end
 
 if aObj.isPTR then
 	aObj.blizzFrames[ftype].PVPMatch = function(self)
-		if not self.db.profile.PVPMatch or self.initialized.PVPMatch then return end
+		if not self.prdb.PVPMatch or self.initialized.PVPMatch then return end
 		self.initialized.PVPMatch = true
 
 		self:SecureHookScript(_G.PVPMatchScoreboard, "OnShow", function(this)
@@ -4925,7 +4927,7 @@ aObj.blizzFrames[ftype].ScenarioFinder = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
-	if not self.db.profile.ScrappingMachineUI or self.initialized.ScrappingMachineUI then return end
+	if not self.prdb.ScrappingMachineUI or self.initialized.ScrappingMachineUI then return end
 
 	if not _G.ScrappingMachineFrame then
 		_G.C_Timer.After(0.1, function()
@@ -5286,7 +5288,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		end)
 
 		if self.modBtns then
-			 self:skinStdButton{obj=_G.TutorialFrameOkayButton}
+			self:skinStdButton{obj=_G.TutorialFrameOkayButton}
 		end
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.TutorialFramePrevButton, ofs=-2}
@@ -5303,13 +5305,13 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		this:SetText("?")
 		self:moveObject{obj=this:GetFontString(), x=4}
 		self:addSkinButton{obj=this, x1=30, y1=-1, x2=-25, y2=10}
-		self:RaiseFrameLevelByFour(this)
+
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- N.B. NO CloseButton for Content subframe of NPE_TutorialPointerFrame
-
 end
+
+-- Blizzard_Tutorial is Secure on Live
 
 aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	if not self.prdb.DropDownPanels or self.initialized.DropDownPanels then return end
@@ -5341,7 +5343,7 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 end
 
 aObj.blizzFrames[ftype].UIWidgets = function(self)
-	if not self.db.profile.UIWidgets or self.initialized.UIWidgets then return end
+	if not self.prdb.UIWidgets or self.initialized.UIWidgets then return end
 	self.initialized.UIWidgets = true
 
 	local function setTextColor(textObject)
@@ -5466,7 +5468,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 end
 
 aObj.blizzFrames[ftype].UnitPopup = function(self)
-	if not self.db.profile.UnitPopup or self.initialized.UnitPopup then return end
+	if not self.prdb.UnitPopup or self.initialized.UnitPopup then return end
 	self.initialized.UnitPopup = true
 
 	self:skinSlider{obj=_G.UnitPopupVoiceSpeakerVolume.Slider}
@@ -5476,7 +5478,7 @@ aObj.blizzFrames[ftype].UnitPopup = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
-	if not self.db.profile.WarboardUI or self.initialized.WarboardUI then return end
+	if not self.prdb.WarboardUI or self.initialized.WarboardUI then return end
 
 	if not _G.WarboardQuestChoiceFrame then
 		_G.C_Timer.After(0.1, function()
@@ -5531,7 +5533,7 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].WarfrontsPartyPoseUI = function(self)
-	if not self.db.profile.WarfrontsPartyPoseUI or self.initialized.WarfrontsPartyPoseUI then return end
+	if not self.prdb.WarfrontsPartyPoseUI or self.initialized.WarfrontsPartyPoseUI then return end
 
 	if not _G.WarfrontsPartyPoseFrame then
 		_G.C_Timer.After(0.1, function()
@@ -5683,7 +5685,7 @@ then
 			skinFrame(PTR_IR.StandaloneSurvey)
 			skinFrame(PTR_IR.StandaloneSurvey.SurveyFrame)
 			if aObj.modBtns then
-				aObj:skinCloseButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 2)}
+				aObj:skinCloseButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 2), noSkin=true}
 				aObj:skinStdButton{obj=aObj:getChild(PTR_IR.StandaloneSurvey.SurveyFrame, 3)}
 			end
 			aObj:Unhook(this, "GetStandaloneSurveyFrame")
