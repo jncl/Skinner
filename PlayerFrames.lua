@@ -1058,7 +1058,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinStatusBar{obj=this.progressBar, fi=0}
 		self:removeRegions(this.progressBar, {2, 3})
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, y=-2} -- 6 is text, 7 is icon
-		self:skinStdButton{obj=_G.ToyBoxFilterButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ToyBoxFilterButton}
+		end
 		self:skinDropDown{obj=_G.ToyBoxFilterDropDown}
 		self:removeInset(this.iconsFrame)
 		this.iconsFrame:DisableDrawLayer("OVERLAY")
@@ -1068,7 +1070,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		for i = 1, 18 do
 			this.iconsFrame["spellButton" .. i].slotFrameCollected:SetTexture(nil)
 			this.iconsFrame["spellButton" .. i].slotFrameUncollected:SetTexture(nil)
-			self:addButtonBorder{obj=this.iconsFrame["spellButton" .. i], sec=true, ofs=0}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.iconsFrame["spellButton" .. i], sec=true, ofs=0}
+			end
 		end
 		self:skinDropDown{obj=this.toyOptionsMenu}
 
@@ -1096,7 +1100,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinStatusBar{obj=this.progressBar, fi=0}
 		self:removeRegions(this.progressBar, {2, 3})
 		self:skinEditBox{obj=this.SearchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, y=-2} -- 6 is text, 7 is icon
-		self:skinStdButton{obj=_G.HeirloomsJournalFilterButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.HeirloomsJournalFilterButton}
+		end
 		self:skinDropDown{obj=_G.HeirloomsJournalFilterDropDown}
 		self:skinDropDown{obj=_G.HeirloomsJournalClassDropDown}
 		self:removeInset(this.iconsFrame)
@@ -1116,7 +1122,10 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				heirloom.slotFrameCollected:SetTexture(nil)
 				heirloom.slotFrameUncollected:SetTexture(nil)
 				-- ignore btn.levelBackground as its textures is changed when upgraded
-				self:addButtonBorder{obj=heirloom, sec=true, ofs=0, reParent={heirloom.new, heirloom.levelBackground, heirloom.level}}
+				if self.modBtnBs then
+					self:addButtonBorder{obj=heirloom, sec=true, ofs=0, reParent={heirloom.new, heirloom.levelBackground, heirloom.level}}
+					skinCollectionBtn(heirloom)
+				end
 			end
 			heirloom = nil
 		end)
