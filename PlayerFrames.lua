@@ -759,6 +759,19 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 
+		self:SecureHookScript(_G.TokenFrame, "OnShow", function(this) -- a.k.a Currency Tab
+			self:keepFontStrings(this)
+			self:skinSlider{obj=_G.TokenFrameContainerScrollBar, wdth=-4}
+			-- remove background & header textures
+			for i = 1, #_G.TokenFrameContainer.buttons do
+				self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
+			end
+			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
+			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
+			self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
+			self:Unhook(_G.TokenFrame, "OnShow")
+		end)
+
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
 			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
@@ -816,19 +829,6 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.ReputationFrame)
-
-		self:SecureHookScript(_G.TokenFrame, "OnShow", function(this) -- a.k.a Currency Tab
-			self:keepFontStrings(this)
-			self:skinSlider{obj=_G.TokenFrameContainerScrollBar, wdth=-4}
-			-- remove background & header textures
-			for i = 1, #_G.TokenFrameContainer.buttons do
-				self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
-			end
-			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
-			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
-			self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
-			self:Unhook(_G.TokenFrame, "OnShow")
-		end)
 
 		self:Unhook(this, "OnShow")
 	end)
