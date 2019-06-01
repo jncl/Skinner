@@ -5347,6 +5347,7 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.TutorialFrame)
 
 	-- Alert button
 	self:SecureHookScript(_G.TutorialFrameAlertButton, "OnShow", function(this)
