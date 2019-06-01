@@ -5402,10 +5402,13 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 	local function setTextColor(textObject)
 		local tClr = {textObject:GetTextColor()}
-		-- aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
+		aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
 		if (aObj:round2(tClr[1], 2) == 0.41 or aObj:round2(tClr[1], 2) == 0.28
 		and aObj:round2(tClr[2], 2) == 0.02
 		and aObj:round2(tClr[3], 2) == 0.02) -- Red
+		or (aObj:round2(tClr[1], 2) == 0.19
+		and aObj:round2(tClr[2], 2) == 0.05
+		and aObj:round2(tClr[3], 2) == 0.01) -- WarboardUI
 		or (aObj:round2(tClr[1], 2) == 0.08
 		and aObj:round2(tClr[2], 2) == 0.16
 		and aObj:round2(tClr[3], 2) == 0.37) -- Blue
