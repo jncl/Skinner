@@ -301,7 +301,7 @@ function aObj:OnEnable()
 				-- aObj:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
 				-- show Artifact Relic Item border
 				if itemIDOrLink
-				and _G.IsArtifactRelicItem(itemIDOrLink)
+				and (_G.IsArtifactRelicItem and _G.IsArtifactRelicItem(itemIDOrLink))
 				then
 					button.IconBorder:SetAlpha(1)
 				else
@@ -317,12 +317,11 @@ function aObj:OnEnable()
 							button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 1) -- grey border
 						end
 					else
-						if _G.TradeSkillFrame
+						button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
+						if _G.TradeSkillFrame.DetailsFrame
 						and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 						then
 							button.sbb:SetBackdropBorderColor(1.0, 0.82, 0.0, 1) -- NORMAL_FONT_COLOR
-						else
-							button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
 						end
 					end
 				end
