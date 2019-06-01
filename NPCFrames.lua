@@ -434,6 +434,10 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 	self.initialized.ItemUpgradeUI = true
 
 	self:SecureHookScript(_G.ItemUpgradeFrame, "OnShow", function(this)
+		if aObj.isPTR then
+			this.Inset.Bg:SetTexture(nil)
+			self:removeNineSlice(this.Inset.NineSlice)
+		end
 		this.HorzBar:SetTexture(nil)
 		this.MissingDescription:SetTextColor(self.BT:GetRGB())
 		this.NoMoreUpgrades:SetTextColor(self.BT:GetRGB())
@@ -442,13 +446,15 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 
 		this.ItemButton.IconTexture:SetAlpha(0)
 		this.ItemButton:DisableDrawLayer("BACKGROUND")
-		-- this.ItemButton.Grabber:SetTexture(nil)
-		-- this.ItemButton.TextFrame:SetTexture(nil)
-		-- this.ItemButton.TextGrabber:SetTexture(nil)
 		self:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, ofs=1}
 		this.ItemButton.Frame:SetTexture(nil)
 		this.ItemButton.ItemName:SetTextColor(self.BT:GetRGB())
-		this.ItemButton.MissingText:SetTextColor(self.BT:GetRGB())
+		if not aObj.isPTR then
+			this.ItemButton.MissingText:SetTextColor(self.BT:GetRGB())
+		else
+			self:removeRegions(this.TextFrame, {1, 2, 3, 4, 5, 6})
+			this.TextFrame.MissingText:SetTextColor(self.BT:GetRGB())
+		end
 
 		this.ButtonFrame:DisableDrawLayer("BORDER", 2)
 		-- this.ButtonFrame.ButtonBorder:SetTexture(nil)
