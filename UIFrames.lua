@@ -5414,14 +5414,16 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 	-- Documentation in UIWidgetManagerDocumentation.lua (UIWidgetVisualizationType)
 	local function skinWidget(wFrame, wInfo)
-		-- aObj:Debug("skinWidget: [%s, %s, %s]", wFrame, wFrame.widgetType, wInfo)
+		-- aObj:Debug("skinWidget: [%s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wInfo)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
 		elseif wFrame.widgetType == 1 then -- CaptureBar (World State: Capture bar on RHS)
 			-- DON'T change textures
 		elseif wFrame.widgetType == 2 then -- StatusBar
 			aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
-			aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
+			wFrame.Bar:DisableDrawLayer("BACKGROUND")
+			wFrame.Bar:DisableDrawLayer("OVERLAY")
+			-- aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
 			aObj:skinStatusBar{obj=wFrame.LeftBar, fi=0, bgTex=wFrame.LeftBar.BG, nilFuncs=true}
 			aObj:removeRegions(wFrame.LeftBar, {2, 3, 4}) -- border textures
