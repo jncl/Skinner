@@ -4330,14 +4330,13 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 			this.FrameTick[i]:SetTextColor(self.BT:GetRGB())
 		end
 		self:nilTexture(this.OverlayElements.CornerLogo, true)
-		self:nilTexture(this.CloseButton.Border, true)
 		this.Currency.Icon:SetAlpha(1) -- show currency icon
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.Currency, relTo=this.Currency.Icon}
 		end
 		this.Inset:DisableDrawLayer("BACKGROUND")
 		self:removeNineSlice(this.Inset.NineSlice)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=1, x2=2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=2, x2=3}
 		skinBtns(this)
 		self:SecureHook(this, "RefreshAllData", function(this)
 			for choiceTex in this.choiceTexturePool:EnumerateActive() do
