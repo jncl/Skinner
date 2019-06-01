@@ -25,7 +25,10 @@ ToDos
 
 √	I	Skin Challenges Frame keystone buttons
 
+≈	O	Skin Classic version
+
 	N	PTR 8.2.0
+≈		- Skin GlowBoxes
 		- Added
 x			- AlliedRacesModelControlButtonMixin
 √			- Blizzard_AzeriteEssenceUI
@@ -98,4 +101,4 @@ x			- VoiceChatHeadsetButton
 		Skinner\AddonSkins\RaiderIO-8.1.0 (v201904200631).lua:36: in function `skinBtn'
 		Skinner\AddonSkins\RaiderIO-8.1.0 (v201904200631).lua:42: in function <Skinner\AddonSkins\RaiderIO.lua:5>
 
-	I	RaiderIO profile tooltip not skinned
+?	I	RaiderIO profile tooltip not skinned
