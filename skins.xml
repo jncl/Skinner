@@ -231,6 +231,7 @@
 <script file="AddonSkins\Wholly.lua"/>
 <script file="AddonSkins\WIM.lua"/>
 <script file="AddonSkins\WorldQuestTracker.lua"/>
+<script file="AddonSkins\WoW_Classic.lua"/>
 <script file="AddonSkins\WoWPro.lua"/>
 <script file="AddonSkins\WTFLatencyMeter.lua"/>
 <script file="AddonSkins\XLoot.lua"/>

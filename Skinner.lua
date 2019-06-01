@@ -33,6 +33,7 @@ do
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
+	local classicInfo = {"1.13.2", 30550}
 	local betaInfo = {"9.0.0", 99999}
 	local ptrInfo = {"8.2.0", 30329}
 	local liveInfo = {"8.1.5", 29981}
@@ -40,6 +41,8 @@ do
 --@alpha@
 	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. portal)
 --@end-alpha@
+	-- check to see if running on Classic servers
+	aObj.isClassic = buildInfo[1] == classicInfo[1] and _G.tonumber(buildInfo[2]) == classicInfo[2] and true or false
 	-- check to see if running on Beta servers
 	aObj.isBeta = buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
 	-- check to see if running on PTR servers
@@ -79,6 +82,7 @@ function aObj:OnInitialize()
 --@end-debug@
 
 --@alpha@
+	if self.isClassic then self:Debug("Classic detected") end
 	if self.isBeta then self:Debug("Beta detected") end
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end
