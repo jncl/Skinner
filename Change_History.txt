@@ -1,3 +1,16 @@
+beta8.30329.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Added checks for outdated variables when testing
+	Put common code into funtion and use it
+	Further PTR changes
+	Code alignment & tidyup
+	Updated ChallengesFrame skin
+	Updated UIWidget & ObjectiveTracker skins
+	Updated ObjectiveTracker skin
+
 beta8.30262.1
 Jncl:
 	ToDo.txt
