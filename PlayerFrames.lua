@@ -6,40 +6,6 @@ local ftype = "p"
 local ipairs, pairs, unpack = _G.ipairs, _G.pairs, _G.unpack
 local IsAddOnLoaded = _G.IsAddOnLoaded
 
-do -- manage ButtonBorders for talents
-	local function skinBtnBBC(frame, button)
-
-		if button
-		and button.sbb
-		then
-			local bnObj = button.name and button.name or button.Name and button.Name or nil
-			if (button.knownSelection and button.knownSelection:IsShown())
-			or (frame.inspect and button.border:IsShown()) -- inspect frame
-			then
-				button.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
-				if bnObj then bnObj:SetTextColor(aObj.BT:GetRGB()) end
-			else
-				button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-				if bnObj then bnObj:SetTextColor(1, 1, 1, 0.9) end
-			end
-			bnObj = nil
-		end
-
-	end
-	aObj:SecureHook("TalentFrame_Update", function(this, ...)
-		if not aObj.modBtnBs then
-			aObj:Unhook("TalentFrame_Update")
-			if skinBtnBBC then skinBtnBBC = nil end
-			return
-		end
-		for tier = 1, _G.MAX_TALENT_TIERS do
-			for column = 1, _G.NUM_TALENT_COLUMNS do
-				skinBtnBBC(this, this["tier" .. tier]["talent" .. column])
-			end
-		end
-	end)
-end
-
 aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 	if not self.prdb.AchievementUI.skin or self.initialized.AchievementUI then return end
 	self.initialized.AchievementUI = true
@@ -4261,6 +4227,38 @@ end
 aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 	if not self.prdb.TalentUI or self.initialized.TalentUI then return end
 	self.initialized.TalentUI = true
+
+	local function skinBtnBBC(frame, button)
+
+		if button
+		and button.sbb
+		then
+			local bnObj = button.name and button.name or button.Name and button.Name or nil
+			if (button.knownSelection and button.knownSelection:IsShown())
+			or (frame.inspect and button.border:IsShown()) -- inspect frame
+			then
+				button.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+				if bnObj then bnObj:SetTextColor(aObj.BT:GetRGB()) end
+			else
+				button.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				if bnObj then bnObj:SetTextColor(1, 1, 1, 0.9) end
+			end
+			bnObj = nil
+		end
+
+	end
+	aObj:SecureHook("TalentFrame_Update", function(this, ...)
+		if not aObj.modBtnBs then
+			aObj:Unhook("TalentFrame_Update")
+			if skinBtnBBC then skinBtnBBC = nil end
+			return
+		end
+		for tier = 1, _G.MAX_TALENT_TIERS do
+			for column = 1, _G.NUM_TALENT_COLUMNS do
+				skinBtnBBC(this, this["tier" .. tier]["talent" .. column])
+			end
+		end
+	end)
 
 	self:SecureHookScript(_G.PlayerTalentFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, lod=true}
