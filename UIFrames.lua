@@ -5729,6 +5729,7 @@ end
 -- PTR Feedback Tool, OnlyBetaAndPTR
 if aObj.isBeta
 or aObj.isPTR
+or _G.GetCVar("portal") == "test"
 then
 
 	if _G.PTR_IssueReporter	then
