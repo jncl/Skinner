@@ -1508,7 +1508,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	for _, tabName in pairs{"ChatTab", "RosterTab", "GuildBenefitsTab", "GuildInfoTab"} do
 		cFrame[tabName]:DisableDrawLayer("BORDER")
-		self:addButtonBorder{obj=cFrame[tabName]}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=cFrame[tabName]}
+		end
 	end
 
 	self:skinDropDown{obj=cFrame.StreamDropDownMenu}
