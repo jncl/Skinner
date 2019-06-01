@@ -318,7 +318,8 @@ function aObj:OnEnable()
 						end
 					else
 						button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
-						if _G.TradeSkillFrame.DetailsFrame
+						if _G.TradeSkillFrame
+						and _G.TradeSkillFrame.DetailsFrame
 						and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 						then
 							button.sbb:SetBackdropBorderColor(1.0, 0.82, 0.0, 1) -- NORMAL_FONT_COLOR
