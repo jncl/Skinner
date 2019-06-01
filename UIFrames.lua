@@ -5139,7 +5139,9 @@ aObj.blizzLoDFrames[ftype].TalkingHeadUI = function(self)
 	self:nilTexture(_G.TalkingHeadFrame.BackgroundFrame.TextBackground, true)
 	self:nilTexture(_G.TalkingHeadFrame.PortraitFrame.Portrait, true)
 	self:nilTexture(_G.TalkingHeadFrame.MainFrame.Model.PortraitBg, true)
-	self:skinCloseButton{obj=_G.TalkingHeadFrame.MainFrame.CloseButton, noSkin=true}
+	if self.modBtns then
+		self:skinCloseButton{obj=_G.TalkingHeadFrame.MainFrame.CloseButton, noSkin=true}
+	end
 	self:addSkinFrame{obj=_G.TalkingHeadFrame, ft=ftype, kfs=true, nb=true, aso={bd=11, ng=true}, ofs=-15, y2=14}
 	_G.TalkingHeadFrame.sf:SetBackdropColor(.1, .1, .1, .75) -- use dark background
 
