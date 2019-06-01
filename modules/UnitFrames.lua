@@ -31,7 +31,7 @@ local unitFrames = {
 local unitBtns= {}
 
 -- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
-local function adjustStatusBarPosn(sBar, yAdj)
+function module:adjustStatusBarPosn(sBar, yAdj)
 
 	local oPnt
 	yAdj = yAdj or 1
@@ -50,7 +50,7 @@ local function adjustStatusBarPosn(sBar, yAdj)
 	oPnt = nil
 
 end
-local function skinUnitButton(opts)
+function module:skinUnitButton(opts)
 
 	-- setup offset values
 	opts.ofs = opts.ofs or 0
@@ -62,8 +62,10 @@ local function skinUnitButton(opts)
 	aObj:addSkinButton{obj=opts.obj, ft=ftype, aso={bd=11, ng=true}, secu=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 	opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
 
-	if opts.ti then
-		-- opts.obj.threatIndicator:ClearAllPoints()
+	if opts.ti
+	and opts.obj.threatIndicator
+	then
+		opts.obj.threatIndicator:ClearAllPoints()
 		opts.obj.threatIndicator:SetAllPoints(opts.obj.sb)
 		aObj:changeRecTex(opts.obj.threatIndicator, true, true)
 		-- stop changes to texture
@@ -75,7 +77,7 @@ local function skinUnitButton(opts)
 	end
 
 end
-local function skinPlayerF()
+function module:skinPlayerF()
 
 	if db.player
 	and not isSkinned["Player"]
@@ -93,7 +95,7 @@ local function skinPlayerF()
 		-- status bars
 		aObj:skinStatusBar{obj=pF.PlayerFrameHealthBarAnimatedLoss, fi=0}
 		aObj:skinStatusBar{obj=pF.healthbar, fi=0, otherTex={pF.myHealPredictionBar, pF.otherHealPredictionBar}}
-		adjustStatusBarPosn(pF.healthbar)
+		module:adjustStatusBarPosn(pF.healthbar)
 		aObj:skinStatusBar{obj=pF.manabar, fi=0, otherTex={pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, nilFuncs=true}
 
 		-- AlternateManaBar
@@ -204,14 +206,14 @@ local function skinPlayerF()
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
-		skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
+		module:skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
 
 		pF, y2Ofs = nil, nil
 
 	end
 
 end
-local function skinPetF()
+function module:skinPetF()
 
 	if db.pet
 	and not isSkinned["Pet"]
@@ -219,16 +221,16 @@ local function skinPetF()
 		_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PetAttackModeTexture:SetTexture(nil)
 		-- status bars
-		adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
+		module:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
 		aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
-		adjustStatusBarPosn(_G.PetFrameManaBar, -1)
+		module:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 		aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
 		-- casting bar handled in CastingBar function
 		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
 		-- skin the PetFrame
 		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
-		skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
+		module:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
 		-- remove debuff border
 		for i = 1, 4 do
 			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
@@ -258,7 +260,7 @@ local function skinPetF()
 	end)
 
 end
-local function skinCommon(frame, adjSB)
+function module:skinCommon(frame, adjSB)
 
 	_G[frame .. "Background"]:SetTexture(nil)
 	_G[frame .. "TextureFrameTexture"]:SetAlpha(0)
@@ -267,13 +269,13 @@ local function skinCommon(frame, adjSB)
 	-- status bars
 	aObj:skinStatusBar{obj=fo.healthbar, fi=0}
 	if adjSB then
-		adjustStatusBarPosn(fo.healthbar)
+		module:adjustStatusBarPosn(fo.healthbar)
 	end
 	aObj:skinStatusBar{obj=fo.manabar, fi=0, nilFuncs=true}
 	fo = nil
 
 end
-local function skinButton(frame, ti)
+function module:skinButton(frame, ti)
 
 	local fo = _G[frame]
 	local isBoss = aObj:hasTextInName(fo, "Boss")
@@ -283,9 +285,12 @@ local function skinButton(frame, ti)
 	else
 		xOfs1, yOfs1, xOfs2, yOfs2 = -2, -5, -35, 0
 	end
-	skinUnitButton{obj=fo, ti=ti or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-	skinCommon(frame, true)
-	aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
+
+	module:skinUnitButton{obj=fo, ti=ti or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	module:skinCommon(frame, true)
+	if _G[frame .. "NumericalThreat"] then
+		aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
+	end
 
 	-- move level & highlevel down, so they are more visible
 	aObj:moveObject{obj=_G[frame .. "TextureFrameLevelText"], x=2, y=lOfs}
@@ -295,35 +300,37 @@ local function skinButton(frame, ti)
 	fo.ucTex:SetSize(80, 50)
 	fo.ucTex:SetPoint("CENTER", isBoss and 36 or 86, (isBoss and -15 or -25) + lOfs)
 
-	-- casting bar
-	aObj:adjHeight{obj=fo.spellbar, adj=2}
-	fo.spellbar.Text:ClearAllPoints()
-	fo.spellbar.Text:SetPoint("TOP", 0, 3)
-	fo.spellbar.Flash:SetAllPoints()
-	fo.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
-	aObj:changeShield(fo.spellbar.BorderShield, fo.spellbar.Icon)
-	aObj:skinStatusBar{obj=fo.spellbar, fi=0, bgTex=aObj:getRegion(fo.spellbar, 1), otherTex={fo.spellbar.Flash}}
+	if fo.spellbar then
+		-- casting bar
+		aObj:adjHeight{obj=fo.spellbar, adj=2}
+		fo.spellbar.Text:ClearAllPoints()
+		fo.spellbar.Text:SetPoint("TOP", 0, 3)
+		fo.spellbar.Flash:SetAllPoints()
+		fo.spellbar.Border:SetAlpha(0) -- texture file is changed dependant upon spell type
+		aObj:changeShield(fo.spellbar.BorderShield, fo.spellbar.Icon)
+		aObj:skinStatusBar{obj=fo.spellbar, fi=0, bgTex=aObj:getRegion(fo.spellbar, 1), otherTex={fo.spellbar.Flash}}
+	end
 
 	-- PowerBarAlt handled in MainMenuBar function (UIF)
 
 	-- Boss frames don't have a ToT frame
 	if not isBoss then
 		-- TargetofTarget Frame
-		skinUnitButton{obj=fo.totFrame, x2=4, y2=4}
-		skinCommon(frame .. "ToT", true)
+		module:skinUnitButton{obj=fo.totFrame, x2=4, y2=4}
+		module:skinCommon(frame .. "ToT", true)
 		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
 	end
 
 	fo, isBoss, xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil, nil, nil
 
 end
-local function skinTargetF()
+function module:skinTargetF()
 
 	if db.target
 	and not isSkinned["Target"]
 	then
 
-		skinButton("TargetFrame")
+		module:skinButton("TargetFrame")
 
 		-- move level text down, so it is more visible
 		module:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
@@ -333,7 +340,7 @@ local function skinTargetF()
 
 		--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
-			skinButton("Boss" .. i .. "TargetFrame", false)
+			module:skinButton("Boss" .. i .. "TargetFrame", false)
 			-- always an Elite mob
 			_G["Boss" .. i .. "TargetFrame"].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		end
@@ -362,16 +369,16 @@ local function skinTargetF()
 	end
 
 end
-local function skinFocusF()
+function module:skinFocusF()
 
 	if db.focus
 	and not isSkinned["Focus"]
 	then
-		skinButton("FocusFrame", false)
+		module:skinButton("FocusFrame", false)
 	end
 
 end
-local function skinPartyF()
+function module:skinPartyF()
 
 	if db.party
 	and not isSkinned["Party"]
@@ -380,7 +387,7 @@ local function skinPartyF()
 		local pMF, pPF
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			pMF = "PartyMemberFrame" .. i
-			skinUnitButton{obj=_G[pMF], ti=true, x1=2, y1=5, x2=-1}
+			module:skinUnitButton{obj=_G[pMF], ti=true, x1=2, y1=5, x2=-1}
 
 			_G[pMF .. "Background"]:SetTexture(nil)
 			_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -394,7 +401,7 @@ local function skinPartyF()
 
 			-- pet frame
 			pPF = pMF .. "PetFrame"
-			skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
+			module:skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:skinStatusBar{obj=_G[pPF .. "HealthBar"], fi=0}
@@ -408,7 +415,7 @@ local function skinPartyF()
 	end
 
 end
-local function skinPartyTooltip()
+function module:skinPartyTooltip()
 
 	if not aObj.ttList[_G.PartyMemberBuffTooltip]
 	and( db.pet or db.party)
@@ -519,26 +526,26 @@ end
 function module:adjustUnitFrames(opt)
 
 	if opt == "init" then
-		skinPlayerF()
-		skinPetF()
-		skinTargetF()
-		skinFocusF()
-		skinPartyF()
-		skinPartyTooltip()
+		self:skinPlayerF()
+		self:skinPetF()
+		self:skinTargetF()
+		self:skinFocusF()
+		self:skinPartyF()
+		self:skinPartyTooltip()
 	elseif opt == "player" then
-		skinPlayerF()
+		self:skinPlayerF()
 	elseif opt == "pet"
 	or opt == "petspec"
 	then
-		skinPetF()
-		skinPartyTooltip()
+		self:skinPetF()
+		self:skinPartyTooltip()
 	elseif opt == "target" then
-		skinTargetF()
+		self:skinTargetF()
 	elseif opt == "focus" then
-		skinFocusF()
+		self:skinFocusF()
 	elseif opt == "party" then
-		skinPartyF()
-		skinPartyTooltip()
+		self:skinPartyF()
+		self:skinPartyTooltip()
 	elseif opt == "alpha" then
 		changeUFOpacity()
 	end
