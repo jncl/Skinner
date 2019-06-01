@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 
 -- Add locals to see if it speeds things up
-local IsAddOnLoaded, pairs, C_Timer = _G.IsAddOnLoaded, _G.pairs, _G.C_Timer
+local IsAddOnLoaded, pairs = _G.IsAddOnLoaded, _G.pairs
 
 function aObj:BlizzardFrames()
 	-- self:Debug("BlizzardFrames")
@@ -123,7 +123,7 @@ function aObj:AddonFrames()
 
 	-- skin any Blizzard LoD frames or LoD addons that have already been loaded by other addons, waiting to allow them to be loaded
 	-- (Tukui does this for the PetJournal, other addons do it as well)
-	C_Timer.After(0.2, function()
+	_G.C_Timer.After(0.2, function()
 		skinBLoD()
 		for name, skinFunc in pairs(self.lodAddons) do
 			if IsAddOnLoaded(name) then self:checkAndRunAddOn(name, true, skinFunc) end
