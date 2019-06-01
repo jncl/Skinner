@@ -35,7 +35,7 @@ do
 
 	local classicInfo = {"1.13.2", 30550}
 	local betaInfo = {"9.0.0", 99999}
-	local ptrInfo = {"8.2.0", 30329}
+	local ptrInfo = {"8.2.0", 30634}
 	local liveInfo = {"8.1.5", 29981}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
@@ -48,7 +48,7 @@ do
 	-- check to see if running on PTR servers
 	aObj.isPTR = buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
 	-- check build number, if > Live then it's a patch
-	aObj.isPatch = _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
+	aObj.isPatch = buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
 --@alpha@
 	if aObj.isBeta then
 		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Beta version", 1, 0, 0, nil, true)
@@ -68,7 +68,7 @@ do
 	then
 		aObj.isPTR = true
 	end
-	liveInfo, ptrInfo, betaInfo, buildInfo, portal = nil, nil, nil, nil, nil
+	betaInfo, ptrInfo, liveInfo, buildInfo, portal = nil, nil, nil, nil, nil, nil
 
 	-- player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
