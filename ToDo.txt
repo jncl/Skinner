@@ -19,11 +19,7 @@ ToDos
 		- self.bColour to self.bClr
 		- self.bbColour to self.bbClr
 
-√	O	Add frame for tabs for FriendsFrame
-
 	I	JoinArena frame isn't skinned
-
-√	I	Skin Challenges Frame keystone buttons
 
 ≈	O	Skin Classic version
 
@@ -103,7 +99,5 @@ x			- VoiceChatHeadsetButton
 
 ?	I	RaiderIO profile tooltip not skinned
 
-	I	OrderHallTalentFrame, reported by wowery, 01.06.19
-√		- Skinner\UtilFuncs.lua:858: attempt to index local 'obj' (a nil value)
-		Skinner\UtilFuncs.lua:858: in function `nilTexture'
-		Skinner\UIFrames.lua:4291: in function <Skinner\UIFrames.lua:4285>
+	I	GroupFinder, reported by EpidemeDaBear, 02.06.19
+√		-  ..\AddOns\Skinner\UIFrames.lua line 2965: attempt to call upvalue 'skinCheckBtns' (a nil value)
