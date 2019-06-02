@@ -342,7 +342,7 @@ local function skinChatEB(obj)
 	elseif aObj.prdb.ChatEditBox.style == 2 then -- Editbox
 		aObj:skinEditBox{obj=obj, regs={9, 10}, noHeight=true}
 	else -- Borderless
-		aObj:removeRegions(obj, {3, 4, 5})
+		aObj:keepRegions(obj, {1, 2, 9, 10})
 		aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		obj.sf:SetAlpha(obj:GetAlpha())
 	end
