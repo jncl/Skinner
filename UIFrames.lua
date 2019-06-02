@@ -2911,7 +2911,7 @@ aObj.blizzFrames[ftype].LevelUpDisplay = function(self)
 end
 
 local skinCheckBtns
-if _G.IsAddOnLoaded("LFDFrame") then
+if _G.PVEFrame then
 	-- The following function is used by the LFDFrame & RaidFinder functions
 	function skinCheckBtns(frame)
 
