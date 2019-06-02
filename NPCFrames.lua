@@ -446,7 +446,9 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 
 		this.ItemButton.IconTexture:SetAlpha(0)
 		this.ItemButton:DisableDrawLayer("BACKGROUND")
-		self:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, ofs=1}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, grey=true, ga=0.85, ofs=1, y1=2}
+		end
 		this.ItemButton.Frame:SetTexture(nil)
 		this.ItemButton.ItemName:SetTextColor(self.BT:GetRGB())
 		if not aObj.isPTR then
@@ -466,18 +468,24 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 
 		-- hook this to hide the ItemButton texture if empty
 		self:SecureHook("ItemUpgradeFrame_Update", function()
-			local icon = _G.GetItemUpgradeItemInfo()
+			local icon, _, quality = _G.GetItemUpgradeItemInfo()
 			if icon then
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(1)
+				_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 			else
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
+				_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.85)
 			end
 			icon = nil
 		end)
 		-- hook this to remove background texture from stat lines
 		self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, tryAdd)
-			if _G.ItemUpgradeFrame.LeftStat[index] then _G.ItemUpgradeFrame.LeftStat[index].BG:SetTexture(nil) end
-			if _G.ItemUpgradeFrame.RightStat[index] then _G.ItemUpgradeFrame.RightStat[index].BG:SetTexture(nil) end
+			if _G.ItemUpgradeFrame.LeftStat[index] then
+				 _G.ItemUpgradeFrame.LeftStat[index].BG:SetTexture(nil)
+			 end
+			if _G.ItemUpgradeFrame.RightStat[index] then
+				_G.ItemUpgradeFrame.RightStat[index].BG:SetTexture(nil)
+			end
 		end)
 
 		self:Unhook(this, "OnShow")
