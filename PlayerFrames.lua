@@ -732,6 +732,10 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 			for i = 1, #_G.TokenFrameContainer.buttons do
 				self:removeRegions(_G.TokenFrameContainer.buttons[i], {1, 6, 7, 8})
 			end
+			-- TokenFramePopup
+			if aObj.isPTR then
+				_G.TokenFramePopup.Border:DisableDrawLayer("BACKGROUND")
+			end
 			self:skinCheckButton{obj=_G.TokenFramePopupInactiveCheckBox}
 			self:skinCheckButton{obj=_G.TokenFramePopupBackpackCheckBox}
 			self:addSkinFrame{obj=_G.TokenFramePopup,ft=ftype, kfs=true, y1=-6, x2=-6, y2=6}
