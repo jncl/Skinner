@@ -1,3 +1,39 @@
+beta8.30634.1
+Jncl:
+	ToDo.txt
+	Updated OrderHallUI skin
+	PTR changes
+	Update UIWidgets skin
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Add support for WoW Classic
+	make check frame dependant
+	Updated Tooltip skin
+	Make checks function & frame dependant
+	Convert local functions into module functions
+	Updated PTR feedback skin
+	Updated TalkingHead skin
+	Updated Tutorial skin
+	Updated UIWidget skin
+	Make utility functions addon dependant
+	Code updates
+	Updated TalentUI skin
+	Updated Communities skin
+	Updated Colour setup code
+	Updated LookingForGuildUI skin
+	PTR
+	Updated FriendsFrame skin
+	Updated Collections skin
+	Updated CharacterFrames skin
+	PTR changes forGlowBox skinning
+	Code Tidy
+	CoolLine
+	TSM
+	TSM
+	Updated ChampionCommander, CoolLine & OrderHallCommander skins
+	Obsolete TradeSkillMaster skin
+
 beta8.30329.1
 Jncl:
 	ToDo.txt
