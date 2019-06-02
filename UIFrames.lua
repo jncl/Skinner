@@ -5401,10 +5401,13 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 
 	local function setTextColor(textObject)
 		local tClr = {textObject:GetTextColor()}
-		aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
+		-- aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
 		if (aObj:round2(tClr[1], 2) == 0.41 or aObj:round2(tClr[1], 2) == 0.28
 		and aObj:round2(tClr[2], 2) == 0.02
 		and aObj:round2(tClr[3], 2) == 0.02) -- Red
+		or (aObj:round2(tClr[1], 2) == 0.19
+		and aObj:round2(tClr[2], 2) == 0.05
+		and aObj:round2(tClr[3], 2) == 0.01) -- WarboardUI
 		or (aObj:round2(tClr[1], 2) == 0.19
 		and aObj:round2(tClr[2], 2) == 0.05
 		and aObj:round2(tClr[3], 2) == 0.01) -- WarboardUI
@@ -5415,11 +5418,12 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			textObject:SetTextColor(aObj.BT:GetRGB())
 			textObject.SetTextColor = _G.nop
 		end
-		_G.wipe(tClr)
+		return tClr
 	end
 
 	-- Documentation in UIWidgetManagerDocumentation.lua (UIWidgetVisualizationType)
 	local function skinWidget(wFrame, wInfo)
+		local tClr
 		-- aObj:Debug("skinWidget: [%s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wInfo)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
@@ -5427,9 +5431,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			-- DON'T change textures
 		elseif wFrame.widgetType == 2 then -- StatusBar
 			aObj:skinStatusBar{obj=wFrame.Bar, fi=0, nilFuncs=true}
-			wFrame.Bar:DisableDrawLayer("BACKGROUND")
-			wFrame.Bar:DisableDrawLayer("OVERLAY")
-			-- aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
+			aObj:removeRegions(wFrame.Bar, {1, 2, 3, 5, 6, 7}) -- background & border textures
 		elseif wFrame.widgetType == 3 then -- DoubleStatusBar (Island Expeditions)
 			aObj:skinStatusBar{obj=wFrame.LeftBar, fi=0, bgTex=wFrame.LeftBar.BG, nilFuncs=true}
 			aObj:removeRegions(wFrame.LeftBar, {2, 3, 4}) -- border textures
@@ -5477,10 +5479,15 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
 			wFrame.Spell.Border:SetTexture(nil)
-			setTextColor(wFrame.Spell.Text)
+			tClr = setTextColor(wFrame.Spell.Text)
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon}
+				if aObj:round2(tClr[1], 1) == 0.5 then
+					aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={self.isPTR and wFrame.Spell.StackCount or nil}, grey=true, ga=1}
+				else
+					aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={self.isPTR and wFrame.Spell.StackCount or nil}}
+				end
 			end
+			tClr = nil
 		elseif wFrame.widgetType == 14 then -- DoubleStateIconRow
 			-- TODO: add button borders if required
 		elseif aObj.isPTR and wFrame.widgetType == 15 then -- TextureAndTextRow
