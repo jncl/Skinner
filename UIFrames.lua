@@ -5400,30 +5400,27 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	self.initialized.UIWidgets = true
 
 	local function setTextColor(textObject)
-		local tClr = {textObject:GetTextColor()}
-		-- aObj:Debug("setTextColor: [%s, %s, %s, %s, %s]", textObject:GetText(), aObj:round2(tClr[1], 2), aObj:round2(tClr[2], 2), aObj:round2(tClr[3], 2), aObj:round2(tClr[4], 2))
-		if (aObj:round2(tClr[1], 2) == 0.41 or aObj:round2(tClr[1], 2) == 0.28
-		and aObj:round2(tClr[2], 2) == 0.02
-		and aObj:round2(tClr[3], 2) == 0.02) -- Red
-		or (aObj:round2(tClr[1], 2) == 0.19
-		and aObj:round2(tClr[2], 2) == 0.05
-		and aObj:round2(tClr[3], 2) == 0.01) -- WarboardUI
-		or (aObj:round2(tClr[1], 2) == 0.19
-		and aObj:round2(tClr[2], 2) == 0.05
-		and aObj:round2(tClr[3], 2) == 0.01) -- WarboardUI
-		or (aObj:round2(tClr[1], 2) == 0.08
-		and aObj:round2(tClr[2], 2) == 0.16
-		and aObj:round2(tClr[3], 2) == 0.37) -- Blue
-		then
-			textObject:SetTextColor(aObj.BT:GetRGB())
-			textObject.SetTextColor = _G.nop
-		end
-		return tClr
+		self:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
+			-- aObj:Debug("textObject SetTextColor: [%s, %s, %s, %s, %s]", this, r, g, b, a)
+			local tcr, tcg, tcb, tca = aObj:round2(r, 2), aObj:round2(g, 2), aObj:round2(b, 2), aObj:round2(a or 1, 2)
+			-- aObj:Debug("SetTextColor: [%s, %s, %s, %s, %s]", this:GetText(), tcr, tcg, tcb, tca)
+			if (tcr == 0.41 or tcr == 0.28 and tcg == 0.02 and tcb == 0.02) -- Red
+			or (tcr == 0.08 and tcg == 0.17 or tcg == 0.16 and tcb == 0.37) -- Blue
+			or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI
+			then
+				self.hooks[this].SetTextColor(this, aObj.BT:GetRGBA())
+			else
+				self.hooks[this].SetTextColor(this, r, g, b, a)
+			end
+			tcg, tcb, tca = nil, nil, nil
+			return tcr
+		end, true)
+		return textObject:SetTextColor(textObject:GetTextColor())
 	end
 
 	-- Documentation in UIWidgetManagerDocumentation.lua (UIWidgetVisualizationType)
 	local function skinWidget(wFrame, wInfo)
-		local tClr
+		local tcr
 		-- aObj:Debug("skinWidget: [%s, %s, %s, %s]", wFrame, wFrame.widgetType, wFrame.widgetTag, wInfo)
 		if wFrame.widgetType == 0 then -- IconAndText (World State: ICONS at TOP)
 			-- N.B. DON'T add buttonborder to Icon(s)
@@ -5479,15 +5476,14 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			setTextColor(wFrame.Text)
 		elseif wFrame.widgetType == 13 then -- SpellDisplay
 			wFrame.Spell.Border:SetTexture(nil)
-			tClr = setTextColor(wFrame.Spell.Text)
+			tcr = setTextColor(wFrame.Spell.Text)
 			if aObj.modBtnBs then
-				if aObj:round2(tClr[1], 1) == 0.5 then
-					aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={self.isPTR and wFrame.Spell.StackCount or nil}, grey=true, ga=1}
-				else
-					aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={self.isPTR and wFrame.Spell.StackCount or nil}}
+				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={self.isPTR and wFrame.Spell.StackCount or nil}}
+				if tcr == 0.5 then
+					wFrame.Spell.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 1) -- grey border
 				end
 			end
-			tClr = nil
+			tcr = nil
 		elseif wFrame.widgetType == 14 then -- DoubleStateIconRow
 			-- TODO: add button borders if required
 		elseif aObj.isPTR and wFrame.widgetType == 15 then -- TextureAndTextRow
