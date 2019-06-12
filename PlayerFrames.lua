@@ -3164,11 +3164,11 @@ aObj.blizzLoDFrames[ftype].LookingForGuildUI = function(self)
 
 	local function addTabFrame(frame)
 		-- add border around frame for tabs
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-5, y1=2, x2=7, y2=-26}
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=-5, y1=2, x2=7, y2=-28}
 	end
 
 	self:skinTabs{obj=_G.LookingForGuildFrame, up=true, lod=true, x1=0, y1=-5, x2=3, y2=-5}
-	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true}
+	self:addSkinFrame{obj=_G.LookingForGuildFrame, ft=ftype, kfs=true, ri=true, y2=-4}
 	-- raise Tab level so they appear above Tab frames
 	_G.RaiseFrameLevelByTwo(_G.LookingForGuildFrameTab1)
 	_G.RaiseFrameLevelByTwo(_G.LookingForGuildFrameTab2)
