@@ -1776,7 +1776,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(cFrame.NotificationSettingsDialog, "OnShow", function(this)
 		self:skinDropDown{obj=this.CommunitiesListDropDownMenu}
 		self:skinSlider{obj=this.ScrollFrame.ScrollBar, wdth=-4}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-6, x2=-4}
 		if self.modBtns then
 			self:skinStdButton{obj=this.ScrollFrame.Child.NoneButton}
 			self:skinStdButton{obj=this.ScrollFrame.Child.AllButton}
