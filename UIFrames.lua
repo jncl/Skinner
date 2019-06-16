@@ -3054,6 +3054,11 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 		if self.isPTR then
 			self:removeNineSlice(this.Border)
 		end
+		if self.modChkBtns then
+			for i = 1, #this.RoleButtons do
+				self:skinCheckButton{obj=this.RoleButtons[i].checkButton}
+			end
+		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.LFGInvitePopupAcceptButton}
 			self:skinStdButton{obj=_G.LFGInvitePopupDeclineButton}
