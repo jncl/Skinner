@@ -98,6 +98,3 @@ x			- VoiceChatHeadsetButton
 		Skinner\AddonSkins\RaiderIO-8.1.0 (v201904200631).lua:42: in function <Skinner\AddonSkins\RaiderIO.lua:5>
 
 ?	I	RaiderIO profile tooltip not skinned
-
-	I	GroupFinder, reported by EpidemeDaBear, 02.06.19
-√		-  ..\AddOns\Skinner\UIFrames.lua line 2965: attempt to call upvalue 'skinCheckBtns' (a nil value)
