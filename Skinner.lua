@@ -21,7 +21,7 @@ do
 	-- add callbacks
 	aObj.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
 
-	-- Get Locale
+	-- get Locale
 	aObj.L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
 
 	-- pointer to LibSharedMedia-3.0 library
@@ -33,10 +33,14 @@ do
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
-	local classicInfo = {"1.13.2", 30550}
+	-- store player class
+	aObj.uCls = select(2, _G.UnitClass("player"))
+
+	-- check which version of WoW is running
+	local classicInfo = {"1.13.2", 30786}
 	local betaInfo = {"9.0.0", 99999}
-	local ptrInfo = {"8.2.0", 30634}
-	local liveInfo = {"8.1.5", 29981}
+	local ptrInfo = {"8.2.0", 30888}
+	local liveInfo = {"8.1.5", 30706}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. portal)
@@ -69,9 +73,6 @@ do
 		aObj.isPTR = true
 	end
 	betaInfo, ptrInfo, liveInfo, buildInfo, portal = nil, nil, nil, nil, nil, nil
-
-	-- player class
-	aObj.uCls = select(2, _G.UnitClass("player"))
 
 end
 
