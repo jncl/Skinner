@@ -493,7 +493,7 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		skinACAlertFrames(frame)
 	end)
 
-	-- called params: self, itemLink, quantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, isPersonal, showRatedBG
+	-- called params: self, itemLink, originalQuantity, rollType, roll, specID, isCurrency, showFactionBG, lootSource, lessAwesome, isUpgraded, wonRoll, showRatedBG, isSecondaryResult
 	self:SecureHook(_G.LootAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("LootAlertSystem: [%s]", frame)
 		frame:DisableDrawLayer("BACKGROUND")
@@ -506,23 +506,30 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10, y2=8}
 		-- colour the Icon buttons' border
 		if self.modBtnBs then
-			local itemLink, _,_,_,_, isCurrency = ...
 			local itemRarity
-			if isCurrency then
-				itemRarity = _G.select(8, _G.GetCurrencyInfo(itemLink))
-			else
-				itemRarity = _G.select(3, _G.GetItemInfo(itemLink))
-			end
 			if not self.isPTR then
+				local itemLink, _,_,_,_, isCurrency = ...
+				if isCurrency then
+					itemRarity = _G.select(8, _G.GetCurrencyInfo(itemLink))
+				else
+					itemRarity = _G.select(3, _G.GetItemInfo(itemLink))
+				end
 				frame.IconBorder:SetTexture(nil)
 				self:addButtonBorder{obj=frame, relTo=frame.Icon}
 				frame.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
+				itemLink, isCurrency, itemRarity = nil, nil, nil
 			else
+				local itemLink = ...
+				if frame.isCurrency then
+					itemRarity = _G.select(8, _G.GetCurrencyInfo(itemLink))
+				else
+					itemRarity = _G.select(3, _G.GetItemInfo(itemLink))
+				end
 				frame.lootItem.IconBorder:SetTexture(nil)
 				self:addButtonBorder{obj=frame.lootItem, relTo=frame.lootItem.Icon}
 				frame.lootItem.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[itemRarity].r, _G.ITEM_QUALITY_COLORS[itemRarity].g, _G.ITEM_QUALITY_COLORS[itemRarity].b)
+				itemLink, itemRarity = nil, nil
 			end
-			itemLink, isCurrency, itemRarity = nil, nil, nil
 		end
 	end)
 	-- called parms: self, itemLink, quantity, specID, baseQuality (147239, 1, 1234, 5)
@@ -780,63 +787,6 @@ aObj.blizzFrames[ftype].ArtifactToasts = function(self)
 		this.IconFrame:SetTexture(nil)
 		self:Unhook(this, "OnShow")
 	end)
-
-end
-
-if aObj.isPTR then
-	aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
-		if not self.prdb.AzeriteEssenceUI or self.initialized.AzeriteEssenceUI then return end
-		self.initialized.AzeriteEssenceUI = true
-
-		self:SecureHookScript(_G.AzeriteEssenceUI, "OnShow", function(this)
-			-- LHS
-			self:keepFontStrings(this.PowerLevelBadgeFrame)
-			self:removeInset(this.LeftInset)
-			self:removeInset(this.RightInset)
-			-- remove revolving circles & stop them from re-appearing
-			this.ItemModelScene:ClearScene()
-			-- remove revolving stars
-			this.StarsAnimationFrame1:DisableDrawLayer("BORDER")
-			this.StarsAnimationFrame2:DisableDrawLayer("BORDER")
-			this.StarsAnimationFrame3:DisableDrawLayer("BORDER")
-			-- remove ring etc from milestones
-			for i, slot in ipairs(this.Slots) do
-				-- print("Slot", i, slot)
-				for j, stateFrame in ipairs(slot.StateFrames) do
-					-- print("StateFrames", j, stateFrame, stateFrame:GetNumRegions())
-					if i == 1 then -- Major Milestone
-						self:removeRegions(stateFrame, {2, 3, 8, 9}) -- Glow, Shadow, Ring & HighlightRing textures
-					elseif j == 1 then -- Minor Milestone
-						self:removeRegions(stateFrame, {5, 6}) -- Ring & HighlightRing textures
-					end
-				end
-			end
-			-- RHS
-			self:skinSlider{obj=this.EssenceList.ScrollBar, size=2}
-			if self.modBtnBs then
-				local function clrBB(sf)
-					for i, btn in ipairs(sf.buttons) do
-						btn.sbb:SetBackdropBorderColor(btn.Name:GetTextColor())
-					end
-				end
-				-- self:skinStdButton{obj=this.ScrollFrame.HeaderButton}
-				for i, btn in ipairs(this.EssenceList.buttons) do
-					self:nilTexture(btn.Background, true)
-					self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.IconCover, btn.Glow, btn.Glow2, btn.Glow3}, grey=true}
-				end
-				clrBB(this.EssenceList)
-				self:SecureHook(this.EssenceList, "UpdateMouseOverTooltip", function(this)
-					clrBB(this)
-				end)
-			end
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-			self:Unhook(this, "OnShow")
-		end)
-		self:checkShown(_G.AzeriteEssenceUI)
-
-		-- AzeriteEssenceLearnAnimFrame
-
-	end
 
 end
 
@@ -4739,7 +4689,6 @@ if aObj.isPTR then
 		self:skinDropDown{obj=_G.PVPMatchResultsNameDropDown}
 
 	end
-
 end
 
 aObj.blizzFrames[ftype].QuestMap = function(self)

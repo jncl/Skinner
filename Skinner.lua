@@ -1249,29 +1249,32 @@ if aObj.isPTR then
 
 		-- aObj:Debug("skinGlowBox: [%s]", gBox)
 
-		local function findArrowTex(gBox)
-			-- aObj:Debug("findArrow: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
-			if gBox:GetNumChildren() == 2 then -- has Arrow child
-				if gBox.Arrow then
-					gBox.Arrow.Glow:SetTexture(nil)
-				else
-					aObj:getLastChild(gBox).Glow:SetTexture(nil)
-				end
-			elseif gBox:GetNumRegions() == 26 then -- HelpPlateTooltip
-				gBox:DisableDrawLayer("BORDER")
-			elseif gBox.ArrowGlow then -- ExtraBagSlotsHelpBox
+		local function findArrowGlowTex(gBox)
+			-- aObj:Debug("findArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
+			if gBox.Glow then
+				gBox.Glow:SetTexture(nil)
+			elseif gBox.Arrow
+			and gBox.Arrow.Glow then
+				gBox.Arrow.Glow:SetTexture(nil)
+			elseif gBox.ArrowGlow then
 				gBox.ArrowGlow:SetTexture(nil)
-			else -- last region
-				aObj:getRegion(gBox, gBox:GetNumRegions()):SetTexture(nil)
+			elseif gBox.ArrowGlowUp then
+				gBox.ArrowGlowUp:SetTexture(nil)
+			elseif gBox.ArrowGlowDown then
+				gBox.ArrowGlowDown:SetTexture(nil)
+			elseif gBox.ArrowGlowLeft then
+				gBox.ArrowGlowLeft:SetTexture(nil)
+			elseif gBox.ArrowGlowRight then
+				gBox.ArrowGlowRight:SetTexture(nil)
 			end
 		end
 
-		findArrowTex(gBox)
+		findArrowGlowTex(gBox)
 		gBox:DisableDrawLayer("BACKGROUND")
 		if self.modBtns
-		and gBox:GetNumChildren() > 0 -- don't check after adding skin frames ohterwise it fails
+		and gBox:GetNumChildren() > 0 -- don't check after adding skin frames otherwise it fails
 		then
-			self:skinCloseButton{obj=gBox.CloseButton, noSkin=true}
+			self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
 		end
 		self:addSkinFrame{obj=gBox, ft=ftype, nb=true}
 		gBox.sf:SetBackdropBorderColor(1, 0.82, 0)

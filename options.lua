@@ -82,6 +82,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		DisableAllP          = false,
 		AchievementUI        = {skin = true, style = 2},
 		ArchaeologyUI        = true,
+		AzeriteEssenceUI     = self.isPTR and true or nil,
 		AzeriteUI			 = true,
 		Buffs                = true,
 		CastingBar           = {skin = true, glaze = true},
@@ -124,7 +125,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AlertFrames          = true,
 		ArtifactUI           = true,
 		AutoComplete         = true,
-		AzeriteEssenceUI     = self.isPTR and true or nil,
 		BattlefieldMap       = {skin = true, gloss = false},
 		BNFrames             = true,
 		Calendar             = true,
@@ -975,7 +975,12 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Archaeology UI"],
 					desc = self.L["Toggle the skin of the Archaeology UI"],
 				},
-				AzeriteUI ={
+				AzeriteEssenceUI = self.isPTR and {
+					type = "toggle",
+					name = self.L["Azerite Essence UI"],
+					desc = self.L["Toggle the skin of the Azerite Essence UI"],
+				} or nil,
+				AzeriteUI = {
 					type = "toggle",
 					name = self.L["Azerite UI"],
 					desc = self.L["Toggle the skin of the Azerite UI"],
@@ -1307,11 +1312,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Auto Complete"],
 					desc = self.L["Toggle the skin of the Auto Complete Frame"],
 				},
-				AzeriteEssenceUI = self.isPTR and {
-					type = "toggle",
-					name = self.L["Azerite Essence UI"],
-					desc = self.L["Toggle the skin of the Azerite Essence UI"],
-				} or nil,
 				BattlefieldMap ={
 					type = "group",
 					inline = true,
