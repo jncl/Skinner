@@ -471,10 +471,14 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 			local icon, _, quality = _G.GetItemUpgradeItemInfo()
 			if icon then
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(1)
-				_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+				if self.modBtnBs then
+					_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
+				end
 			else
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
-				_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.85)
+				if self.modBtnBs then
+					_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.85)
+				end
 			end
 			icon = nil
 		end)
