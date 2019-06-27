@@ -29,8 +29,6 @@ externals:
 		url: svn://svn.wowace.com/wow/libsharedmedia-3-0/mainline/trunk/LibSharedMedia-3.0
 	libs/AceGUI-3.0-SharedMediaWidgets:
 		url: svn://svn.wowace.com/wow/ace-gui-3-0-shared-media-widgets/mainline/trunk/AceGUI-3.0-SharedMediaWidgets
-	libs/LibBetterBlizzOptions-1.0:
-		url: svn://svn.wowace.com/wow/libbetterblizzoptions-1-0/mainline/trunk/LibBetterBlizzOptions-1.0
 
 ignore:
 
