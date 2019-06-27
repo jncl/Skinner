@@ -1245,42 +1245,40 @@ function aObj:skinEditBox(...)
 
 end
 
-if aObj.isPTR then
-	function aObj:skinGlowBox(gBox)
+function aObj:skinGlowBox(gBox, ftype)
 
-		-- aObj:Debug("skinGlowBox: [%s]", gBox)
+	-- aObj:Debug("skinGlowBox: [%s, %s]", gBox, ftype)
 
-		local function findArrowGlowTex(gBox)
-			-- aObj:Debug("findArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
-			if gBox.Glow then
-				gBox.Glow:SetTexture(nil)
-			elseif gBox.Arrow
-			and gBox.Arrow.Glow then
-				gBox.Arrow.Glow:SetTexture(nil)
-			elseif gBox.ArrowGlow then
-				gBox.ArrowGlow:SetTexture(nil)
-			elseif gBox.ArrowGlowUp then
-				gBox.ArrowGlowUp:SetTexture(nil)
-			elseif gBox.ArrowGlowDown then
-				gBox.ArrowGlowDown:SetTexture(nil)
-			elseif gBox.ArrowGlowLeft then
-				gBox.ArrowGlowLeft:SetTexture(nil)
-			elseif gBox.ArrowGlowRight then
-				gBox.ArrowGlowRight:SetTexture(nil)
-			end
+	local function findArrowGlowTex(gBox)
+		-- aObj:Debug("findArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
+		if gBox.Glow then
+			gBox.Glow:SetTexture(nil)
+		elseif gBox.Arrow
+		and gBox.Arrow.Glow then
+			gBox.Arrow.Glow:SetTexture(nil)
+		elseif gBox.ArrowGlow then
+			gBox.ArrowGlow:SetTexture(nil)
+		elseif gBox.ArrowGlowUp then
+			gBox.ArrowGlowUp:SetTexture(nil)
+		elseif gBox.ArrowGlowDown then
+			gBox.ArrowGlowDown:SetTexture(nil)
+		elseif gBox.ArrowGlowLeft then
+			gBox.ArrowGlowLeft:SetTexture(nil)
+		elseif gBox.ArrowGlowRight then
+			gBox.ArrowGlowRight:SetTexture(nil)
 		end
-
-		findArrowGlowTex(gBox)
-		gBox:DisableDrawLayer("BACKGROUND")
-		if self.modBtns
-		and gBox:GetNumChildren() > 0 -- don't check after adding skin frames otherwise it fails
-		then
-			self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
-		end
-		self:addSkinFrame{obj=gBox, ft=ftype, nb=true}
-		gBox.sf:SetBackdropBorderColor(1, 0.82, 0)
-
 	end
+
+	findArrowGlowTex(gBox)
+	gBox:DisableDrawLayer("BACKGROUND")
+	if self.modBtns
+	and gBox:GetNumChildren() > 0 -- don't check after adding skin frames otherwise it fails
+	then
+		self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}
+	end
+	self:addSkinFrame{obj=gBox, ft=ftype, nb=true}
+	gBox.sf:SetBackdropBorderColor(1, 0.82, 0)
+
 end
 
 local function __skinMoneyFrame(opts)

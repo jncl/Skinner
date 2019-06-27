@@ -214,14 +214,9 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton:SetPoint("BOTTOMRIGHT", -6, 5)
 	self:addSkinFrame{obj=_G.AzeriteRespecFrame, ft=ftype, kfs=true}
 	if self.modBtns then
-		if not aObj.isPTR then
-			self:skinCloseButton{obj=_G.AzeriteRespecFrame.HelpBox.CloseButton, noSkin=true}
-		end
 		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
 	end
-	if aObj.isPTR then
-		self:skinGlowBox(_G.AzeriteRespecFrame.HelpBox)
-	end
+	self:skinGlowBox(_G.AzeriteRespecFrame.HelpBox, ftype)
 
 end
 
@@ -249,13 +244,8 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ReagentBankFrameUnlockInfoPurchaseButton}
 			self:skinStdButton{obj=_G.ReagentBankFrame.DespositButton}
-			if not aObj.isPTR then
-				self:skinCloseButton{obj=_G.ReagentBankHelpBox.CloseButton, noSkin=true}
-			end
 		end
-		if aObj.isPTR then
-			self:skinGlowBox(_G.ReagentBankHelpBox)
-		end
+		self:skinGlowBox(_G.ReagentBankHelpBox, ftype)
 
 		if self.modBtnBs then
 			self:SecureHook("BankFrameItemButton_Update", function(btn)
@@ -434,10 +424,8 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 	self.initialized.ItemUpgradeUI = true
 
 	self:SecureHookScript(_G.ItemUpgradeFrame, "OnShow", function(this)
-		if aObj.isPTR then
-			this.Inset.Bg:SetTexture(nil)
-			self:removeNineSlice(this.Inset.NineSlice)
-		end
+		this.Inset.Bg:SetTexture(nil)
+		self:removeNineSlice(this.Inset.NineSlice)
 		this.HorzBar:SetTexture(nil)
 		this.MissingDescription:SetTextColor(self.BT:GetRGB())
 		this.NoMoreUpgrades:SetTextColor(self.BT:GetRGB())
@@ -451,12 +439,8 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		end
 		this.ItemButton.Frame:SetTexture(nil)
 		this.ItemButton.ItemName:SetTextColor(self.BT:GetRGB())
-		if not aObj.isPTR then
-			this.ItemButton.MissingText:SetTextColor(self.BT:GetRGB())
-		else
-			self:removeRegions(this.TextFrame, {1, 2, 3, 4, 5, 6})
-			this.TextFrame.MissingText:SetTextColor(self.BT:GetRGB())
-		end
+		self:removeRegions(this.TextFrame, {1, 2, 3, 4, 5, 6})
+		this.TextFrame.MissingText:SetTextColor(self.BT:GetRGB())
 
 		this.ButtonFrame:DisableDrawLayer("BORDER", 2)
 		-- this.ButtonFrame.ButtonBorder:SetTexture(nil)
@@ -920,16 +904,11 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 
 	self:SecureHookScript(_G.TabardFrame, "OnShow", function(this)
 
-		if not self.isPTR then
-			self:makeMFRotatable(_G.TabardModel)
-			self:keepRegions(this, {8, 29, 30, 31 ,32, 33, 34}) -- N.B. region 8, 33 & 34 are text, 29-32 are icon texture
-		else
-			self:keepRegions(this, {4, 17, 18, 19, 20, 21, 22}) -- N.B. regions 4, 21 & 22 are text, 17-20 are icon textures
-			self:removeNineSlice(this.NineSlice)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.TabardCharacterModelRotateLeftButton, ofs=-4, y2=5}
-				self:addButtonBorder{obj=_G.TabardCharacterModelRotateRightButton, ofs=-4, y2=5}
-			end
+		self:keepRegions(this, {4, 17, 18, 19, 20, 21, 22}) -- N.B. regions 4, 21 & 22 are text, 17-20 are icon textures
+		self:removeNineSlice(this.NineSlice)
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.TabardCharacterModelRotateLeftButton, ofs=-4, y2=5}
+			self:addButtonBorder{obj=_G.TabardCharacterModelRotateRightButton, ofs=-4, y2=5}
 		end
 		_G.TabardFrameCostFrame:SetBackdrop(nil)
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
@@ -1018,9 +997,7 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 			self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
 		end
-		if aObj.isPTR then
-			self:skinGlowBox(_G.VoidStorageHelpBox)
-		end
+		self:skinGlowBox(_G.VoidStorageHelpBox, ftype)
 		self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
 		-- Tabs
 		for i = 1, 2 do

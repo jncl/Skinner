@@ -719,44 +719,6 @@ function aObj:makeMFRotatable(modelFrame)
 		modelFrame.RotateRightButton:Hide()
 	end
 
-	if not self.isPTR then
-		modelFrame:EnableMouse(true)
-		modelFrame.draggingDirection = nil
-		modelFrame.cursorPosition = {}
-		self:HookScript(modelFrame, "OnUpdate", function(this, elapsedTime, ...)
-			if this.dragging then
-				local x, y = _G.GetCursorPosition()
-				if this.cursorPosition.x > x then
-					if not self.isPTR then
-						_G.Model_RotateLeft(this, (this.cursorPosition.x - x) * elapsedTime * 2)
-					else
-						this:SetRotation((this.cursorPosition.x - x) * elapsedTime * 2)
-					end
-				elseif this.cursorPosition.x < x then
-					if not self.isPTR then
-						_G.Model_RotateRight(this, (x - this.cursorPosition.x) * elapsedTime * 2)
-					else
-						this:SetRotation((x - this.cursorPosition.x) * elapsedTime * 2)
-					end
-				end
-				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
-				x, y = nil, nil
-			end
-		end)
-		self:HookScript(modelFrame, "OnMouseDown", function(this, button)
-			if button == "LeftButton" then
-				this.dragging = true
-				this.cursorPosition.x, this.cursorPosition.y = _G.GetCursorPosition()
-			end
-		end)
-		self:HookScript(modelFrame, "OnMouseUp", function(this, button)
-			if this.dragging then
-				this.dragging = false
-				this.cursorPosition.x, this.cursorPosition.y = nil
-			end
-		end)
-	end
-
 	if modelFrame.controlFrame then
 		modelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
 	end
@@ -892,9 +854,7 @@ function aObj:removeNineSlice(frame)
 	assert(frame, "Unknown object removeNineSlice\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	if self.isPTR then
-		frame:DisableDrawLayer("BACKGROUND")
-	end
+	frame:DisableDrawLayer("BACKGROUND")
 	frame:DisableDrawLayer("BORDER")
 	frame:DisableDrawLayer("OVERLAY")
 

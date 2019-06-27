@@ -2275,11 +2275,7 @@ aObj.otherAddons.ClassicInit = function(self)
 				end
 			elseif wFrame.widgetType == 6 then -- StackedResourceTracker
 				for resourceFrame in wFrame.resourcePool:EnumerateActive() do
-					if not self.isPTR then
-						setTextColor(resourceFrame.Text)
-					else
-						resourceFrame:SetFontColor(self.BT)
-					end
+					resourceFrame:SetFontColor(self.BT)
 				end
 			elseif wFrame.widgetType == 7 then -- IconTextAndCurrencies
 				if aObj.modBtnBs then

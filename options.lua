@@ -82,7 +82,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		DisableAllP          = false,
 		AchievementUI        = {skin = true, style = 2},
 		ArchaeologyUI        = true,
-		AzeriteEssenceUI     = self.isPTR and true or nil,
+		AzeriteEssenceUI     = true,
 		AzeriteUI			 = true,
 		Buffs                = true,
 		CastingBar           = {skin = true, glaze = true},
@@ -171,7 +171,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		PetBattleUI          = true,
 		ProductChoiceFrame   = true,
 		PVEFrame             = true, -- (inc, LFD, LFG, RaidFinder, ScenarioFinder)
-		PVPMatch			 = self.isPTR and true or nil,
+		PVPMatch			 = true,
 		QuestMap             = true,
 		QueueStatusFrame     = true,
 		RaidFrame            = true, -- (inc. LFR)
@@ -188,7 +188,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		WarboardUI           = true,
 		WarfrontsPartyPoseUI = true ,
 		WorldMap             = {skin = true, size = 1},
-		WorldState           = self.isPTR and nil or true,
 		ZoneAbility          = true,
 	-->>-- Disabled Skins
 		DisableAllAS         = false,
@@ -975,11 +974,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Archaeology UI"],
 					desc = self.L["Toggle the skin of the Archaeology UI"],
 				},
-				AzeriteEssenceUI = self.isPTR and {
+				AzeriteEssenceUI = {
 					type = "toggle",
 					name = self.L["Azerite Essence UI"],
 					desc = self.L["Toggle the skin of the Azerite Essence UI"],
-				} or nil,
+				},
 				AzeriteUI = {
 					type = "toggle",
 					name = self.L["Azerite UI"],
@@ -1716,11 +1715,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Group Finder Frame"],
 					desc = self.L["Toggle the skin of the Group Finder Frame"],
 				},
-				PVPMatch = self.isPTR and {
+				PVPMatch = {
 					type = "toggle",
 					name = self.L["PVP Match Frame"],
 					desc = self.L["Toggle the skin of the PVP Match Frame"],
-				} or nil,
+				},
 				QuestMap = {
 					type = "toggle",
 					name = self.L["Quest Map"],
@@ -1855,11 +1854,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						},
 					},
 				},
-				WorldState = not self.isPTR and {
-					type = "toggle",
-					name = self.L["Battle Score Frame"],
-					desc = self.L["Toggle the skin of the Battle Score Frame"],
-				} or nil,
 				ZoneAbility = {
 					type = "toggle",
 					name = self.L["Zone Ability"],
