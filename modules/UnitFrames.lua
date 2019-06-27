@@ -635,7 +635,7 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 
 	if db.arena then
 		local function skinArenaFrame(fName)
-			skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
+			module:skinUnitButton{obj=_G[fName], x1=-3, x2=3, y2=-6}
 			_G[fName .. "Background"]:SetTexture(nil)
 			_G[fName .. "Texture"]:SetTexture(nil)
 			_G[fName .. "Status"]:SetTexture(nil)
@@ -657,7 +657,7 @@ aObj.blizzLoDFrames[ftype].ArenaUI = function(self)
 			skinArenaFrame("ArenaEnemyFrame" .. i)
 			-- pet frame
 			aPF = "ArenaEnemyFrame" .. i .. "PetFrame"
-			skinUnitButton{obj=_G[aPF], y1=1, x2=1, y2=2}
+			module:skinUnitButton{obj=_G[aPF], y1=1, x2=1, y2=2}
 			_G[aPF .. "Flash"]:SetTexture(nil)
 			_G[aPF .. "Texture"]:SetTexture(nil)
 			-- status bar
