@@ -13,12 +13,7 @@ aObj.addonsToSkin.EnhancedColourPicker = function(self) -- v 4
 	end
 	eb = nil
 
-	if not self.isPTR then
-		self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 4)}
-		self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 5)}
-	else
-		self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 2)}
-		self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 3)}
-	end
+	self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 2)}
+	self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 3)}
 
 end

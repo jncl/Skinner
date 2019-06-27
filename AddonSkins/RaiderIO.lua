@@ -33,14 +33,16 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v201901160600)
 			-- buttons are children of configButtonFrame which is 3rd child of cPF
 			-- N.B. NOT really buttons
 			local function skinBtn(btn)
-				aObj:addSkinFrame{obj=btn, ft="a", kfs=true, nb=true, ofs=-2}
-				btn.sf:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-				btn:SetScript("OnEnter", function(this) this.sf:SetBackdropBorderColor(aObj.bbClr:GetRGBA()) end)
-				btn:SetScript("OnLeave",  function(this) this.sf:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) end)
+				aObj:addSkinButton{obj=btn, parent=btn, hook=btn, hide=true, ofs=0}
+				btn.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+				btn:SetScript("OnEnter", function(this) this.sb:SetBackdropBorderColor(aObj.bbClr:GetRGBA()) end)
+				btn:SetScript("OnLeave",  function(this) this.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) end)
 			end
 			local cBF = self:getChild(cPF, 3)
-			skinBtn(self:getChild(cBF, 2))
-			skinBtn(self:getChild(cBF, 3))
+			if cBF then
+				skinBtn(self:getChild(cBF, 2))
+				skinBtn(self:getChild(cBF, 3))
+			end
 			cBF = nil
 		end
 		cPF = nil
