@@ -37,10 +37,10 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	-- check which version of WoW is running
-	local classicInfo = {"1.13.2", 30901}
+	local classicInfo = {"1.13.2", 31043}
 	local betaInfo = {"9.0.0", 99999}
 	local ptrInfo = {"8.2.0", 30888}
-	local liveInfo = {"8.2.0", 30920}
+	local liveInfo = {"8.2.0", 30993}
 	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
 --@alpha@
 	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. portal)
