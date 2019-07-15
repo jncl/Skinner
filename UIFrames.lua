@@ -15,8 +15,9 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	function skinMissionFrame(frame)
 
 		local y1Ofs = frame == _G.BFAMissionFrame and 1 or 2
+		local y2Ofs = frame == _G.OrderHallMissionFrame and -4 or -5
 		frame.GarrCorners:DisableDrawLayer("BACKGROUND")
-		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=y1Ofs, x2=1, y2=-6}
+		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=2, y1=y1Ofs, x2=1, y2=y2Ofs}
 		-- tabs
 		aObj:skinTabs{obj=frame, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=frame==_G.GarrisonMissionFrame and 0 or -4}
 		y1Ofs, y2Ofs = nil, nil
@@ -168,9 +169,14 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinCompleteDialog(frame, naval)
 
-		frame:ClearAllPoints()
-		frame:SetPoint("TOPLEFT", -28, 42)
-		frame:SetSize(naval and 934 or 948, IsAddOnLoaded("GarrisonCommander") and 640 or 630)
+		if not naval then
+			frame:ClearAllPoints()
+			frame:SetPoint("TOPLEFT", -28, 42)
+		else
+			aObj:moveObject{obj=frame, x=4, y=20}
+			_G.RaiseFrameLevelByTwo(frame) -- raise above markers on mission frame
+		end
+		frame:SetSize(naval and 935 or 948, IsAddOnLoaded("GarrisonCommander") and 640 or naval and 648 or 630)
 
 		frame.BorderFrame:DisableDrawLayer("BACKGROUND")
 		frame.BorderFrame:DisableDrawLayer("BORDER")
@@ -228,8 +234,8 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	function skinMissionComplete(frame, naval)
 
 		local mcb = frame:GetParent().MissionCompleteBackground
-		mcb:SetSize(naval and 952 or 953, 642)
-		aObj:moveObject{obj=mcb, x=4, y=2}
+		mcb:SetSize(naval and 953 or 949 , naval and 661 or 638)
+		aObj:moveObject{obj=mcb, x=4, y=naval and 20 or -1}
 		mcb = nil
 
 	    frame:DisableDrawLayer("BACKGROUND")
@@ -276,13 +282,15 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 	end
 	function skinMissionList(ml, oFs)
 
+		aObj:addSkinFrame{obj=ml, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=1, y1=1, x2=-2, y2=2}
+
 		ml:DisableDrawLayer("BORDER")
 		ml.MaterialFrame:DisableDrawLayer("BACKGROUND")
 
 		-- tabs at top
 		for i = 1, 2 do
 			ml["Tab" .. i]:DisableDrawLayer("BORDER")
-			aObj:addSkinFrame{obj=ml["Tab" .. i], ft=ftype, noBdr=aObj.isTT, ofs=oFs or nil}
+			aObj:addSkinFrame{obj=ml["Tab" .. i], ft=ftype, noBdr=aObj.isTT, ofs=oFs or nil, y2=2}
 			ml["Tab" .. i].sf.ignore = true -- don't change tab size
 			if aObj.isTT then
 				if i == 1 then
@@ -1596,12 +1604,12 @@ aObj.blizzFrames[ftype].CinematicFrame = function(self)
 	self.initialized.CinematicFrame = true
 
 	self:SecureHookScript(_G.CinematicFrame, "OnShow", function(this)
-		self:removeNineSlice(this.closeDialog)
+		self:removeNineSlice(this.closeDialog.Border)
+		self:addSkinFrame{obj=this.closeDialog, ft=ftype, nb=true}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CinematicFrameCloseDialogConfirmButton}
 			self:skinStdButton{obj=_G.CinematicFrameCloseDialogResumeButton}
 		end
-		self:addSkinFrame{obj=this.closeDialog, ft=ftype, nb=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2064,10 +2072,9 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 	self:SecureHookScript(_G.GarrisonShipyardFrame, "OnShow", function(this)
 		self:keepFontStrings(this.BorderFrame)
-		self:moveObject{obj=this.BorderFrame.TitleText, y=3}
 		this.BorderFrame.GarrCorners:DisableDrawLayer("BACKGROUND")
 		self:skinCloseButton{obj=this.BorderFrame.CloseButton2}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=2, y1=3, x2=1, y2=-4}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=2, y1=2, x2=1, y2=-5}
 		self:skinTabs{obj=this, regs={9, 10}, ignore=true, lod=true, x1=9, y1=2, x2=-9, y2=0}
 
 		self:SecureHookScript(this.FollowerList, "OnShow", function(this)
@@ -2368,7 +2375,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 		self:SecureHookScript(this.MissionTab.MissionList, "OnShow", function(this)
 			skinMissionList(this, -2)
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=1, y1=1, x2=-2, y2=2}
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -5248,8 +5254,6 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 	end)
 
 end
-
--- Blizzard_Tutorial is Secure on Live
 
 aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	if not self.prdb.DropDownPanels or self.initialized.DropDownPanels then return end
