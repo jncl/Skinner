@@ -997,7 +997,7 @@ aObj.blizzLoDFrames[ftype].VoidStorageUI = function(self)
 			self:skinStdButton{obj=_G.VoidStorageHelpBoxButton}
 			self:skinStdButton{obj=_G.VoidStoragePurchaseButton}
 		end
-		self:skinGlowBox(_G.VoidStorageHelpBox, ftype)
+		self:skinGlowBox(_G.VoidStorageHelpBox, ftype, true)
 		self:addSkinFrame{obj=_G.VoidStoragePurchaseFrame, ft=ftype, kfs=true}
 		-- Tabs
 		for i = 1, 2 do
