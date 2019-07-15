@@ -534,13 +534,12 @@ local function __addSkinButton(opts)
 	else
 		-- setup offset values
 		opts.ofs = opts.ofs or 4
-		local xOfs1 = opts.x1 or opts.ofs * -1
-		local yOfs1 = opts.y1 or opts.ofs
-		local xOfs2 = opts.x2 or opts.ofs
-		local yOfs2 = opts.y2 or opts.ofs * -1
-		btn:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", xOfs1, yOfs1)
-		btn:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", xOfs2, yOfs2)
-		xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil
+		opts.x1 = opts.x1 or opts.ofs * -1
+		opts.y1 = opts.y1 or opts.ofs
+		opts.x2 = opts.x2 or opts.ofs
+		opts.y2 = opts.y2 or opts.ofs * -1
+		btn:SetPoint("TOPLEFT", opts.obj, "TOPLEFT", opts.x1, opts.y1)
+		btn:SetPoint("BOTTOMRIGHT", opts.obj, "BOTTOMRIGHT", opts.x2, opts.y2)
 	end
 	-- setup applySkin options
 	opts.aso = opts.aso or {}
