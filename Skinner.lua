@@ -1245,7 +1245,7 @@ function aObj:skinEditBox(...)
 
 end
 
-function aObj:skinGlowBox(gBox, ftype)
+function aObj:skinGlowBox(gBox, ftype, ncb)
 
 	-- aObj:Debug("skinGlowBox: [%s, %s]", gBox, ftype)
 
@@ -1272,6 +1272,7 @@ function aObj:skinGlowBox(gBox, ftype)
 	findArrowGlowTex(gBox)
 	gBox:DisableDrawLayer("BACKGROUND")
 	if self.modBtns
+	and not ncb
 	and gBox:GetNumChildren() > 0 -- don't check after adding skin frames otherwise it fails
 	then
 		self:skinCloseButton{obj=gBox.CloseButton or _G[gBox:GetName() .. "CloseButton"], noSkin=true}

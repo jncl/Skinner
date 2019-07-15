@@ -518,7 +518,7 @@ aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
 		-- RHS
 		self:removeInset(this.RightInset)
 		self:skinSlider{obj=this.EssenceList.ScrollBar, size=2}
-		self:skinGlowBox(this.EssenceList.Tutorial, ftype)
+		self:skinGlowBox(this.EssenceList.Tutorial, ftype, true)
 		if self.modBtnBs then
 			local function clrBB(sf)
 				for i, btn in ipairs(sf.buttons) do
@@ -1660,7 +1660,8 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- GuildNameAlertFrame
+	self:skinGlowBox(cFrame.GuildNameAlertFrame, ftype, true)
+
 	self:SecureHookScript(cFrame.GuildNameChangeFrame, "OnShow", function(this)
 		this:DisableDrawLayer("BACKGROUND")
 		self:skinEditBox{obj=this.EditBox, regs={6}} -- 6 is text
@@ -3723,8 +3724,8 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				 self:skinStdButton{obj=this.JoinButton}
 		 		-- N.B. NO CloseButton for NoSeason & Disabled
 			end
-			self:skinGlowBox(this.NoSeason, ftype)
-			self:skinGlowBox(this.Disabled, ftype)
+			self:skinGlowBox(this.NoSeason, ftype, true)
+			self:skinGlowBox(this.Disabled, ftype, true)
 			self:Unhook(this, "OnShow")
 		end)
 

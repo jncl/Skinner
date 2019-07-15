@@ -2007,11 +2007,11 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	end)
 
 	self:SecureHookScript(_G.GarrisonMissionTutorialFrame, "OnShow", function(this)
-		-- N.B. NO CloseButton
 		if self.modBtns then
 			self:skinStdButton{obj=this.GlowBox.Button}
 		end
-		self:skinGlowBox(this.GlowBox, ftype)
+		-- N.B. NO CloseButton
+		self:skinGlowBox(this.GlowBox, ftype, true)
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -5184,7 +5184,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 		return aObj.bbClr:GetRGBA()
 	end, true)
 
-	self:skinGlowBox(_G.HelpPlateTooltip, ftype)
+	self:skinGlowBox(_G.HelpPlateTooltip, ftype, true)
 
 end
 
