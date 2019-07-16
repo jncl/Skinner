@@ -1,3 +1,15 @@
+beta8.30993.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Update version numbers
+	Updated skin code
+	Updated Ace3 & oRA3 skins
+	GarrisonUI updates
+	GlowBox skin fixes
+	Bugfix for VoidStorageUI
+	Remove BetterBlizzOptions library
+
 beta8.30920.1
 Jncl:
 	ToDo.txt
