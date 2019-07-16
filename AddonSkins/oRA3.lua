@@ -75,4 +75,16 @@ aObj.addonsToSkin.oRA3 = function(self) -- v 8.2.2
 		rc = nil
 	end
 
+	-- the version of ACD packed with oRA3 has a tooltip
+	local ACD = LibStub:GetLibrary("AceConfigDialog-3.0", true)
+	if ACD
+	and ACD.tooltip
+	then
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			aObj:add2Table(aObj.ttList, ACD.tooltip)
+			ACD = nil
+		end)
+	end
+
 end

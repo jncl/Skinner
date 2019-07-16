@@ -512,15 +512,3 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 	end
 
 end
-
-local ACD = LibStub:GetLibrary("AceConfigDialog-3.0", true)
-if ACD
-and ACD.tooltip
-then
-	-- tooltip
-	_G.C_Timer.After(0.1, function()
-		aObj:add2Table(aObj.ttList, ACD.tooltip)
-	end)
-	ACD = nil
-end
-
