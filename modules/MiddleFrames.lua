@@ -45,8 +45,8 @@ local function OnMouseUp(self, mBtn)
 			local px, py = self:GetParent():GetCenter()
 			self.db[self.key].xOfs = x - px
 			self.db[self.key].yOfs = y - py
-			self.db[self.key].width = aObj:getInt(self:GetWidth())
-			self.db[self.key].height = aObj:getInt(self:GetHeight())
+			self.db[self.key].width = _G.Round(self:GetWidth())
+			self.db[self.key].height = _G.Round(self:GetHeight())
 			aObj:applyGradient(self)
 		end
 	end
@@ -106,7 +106,7 @@ local function adjustFrame(key)
 		if not aObj.db.profile.FadeHeight.enable
 		and db.fixedfh
 		then
-			fh = db.fheight <= aObj:getInt(frame:GetHeight()) and db.fheight or aObj:getInt(frame:GetHeight())
+			fh = db.fheight <= _G.Round(frame:GetHeight()) and db.fheight or _G.Round(frame:GetHeight())
 		end
 		aObj:applySkin{obj=frame, ft=ftype, bba=db.borderOff and 0 or 1, fh=fh}
 		frame:SetBackdropColor(db.colour.r, db.colour.g, db.colour.b, db.colour.a)
@@ -274,6 +274,18 @@ function module:GetOptions()
 		mfkey.args.fstrata.name = aObj.L["MF" .. i .. " Frame Strata"]
 		mfkey.args.fstrata.desc = aObj.L["Change the MF" .. i .. " Frame Strata"]
 		mfkey.args.fstrata.values = FrameStrata
+		mfkey.args.reset = {}
+		mfkey.args.reset.type = "execute"
+		mfkey.args.reset.name = aObj.L["Reset"]
+		mfkey.args.reset.desc = aObj.L["Reset to default position"]
+		mfkey.args.reset.width = 0.4
+		mfkey.args.reset.func = function(info, value)
+			aObj:Debug("MiddleFrame reset: [%s, %s]", info[#info - 1], info[#info])
+			module.db.profile[info[#info - 1]].xOfs = defaults.profile[info[#info - 1]].xOfs
+			module.db.profile[info[#info - 1]].yOfs = defaults.profile[info[#info - 1]].yOfs
+			module.db.profile[info[#info - 1]].width = defaults.profile[info[#info - 1]].width
+			module.db.profile[info[#info - 1]].height = defaults.profile[info[#info - 1]].height
+		end
 		options.args["mf" .. i] = mfkey
 	end
 
