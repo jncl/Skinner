@@ -1666,10 +1666,12 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 		this:SetBackdrop(nil)
 		self:removeNineSlice(this.Border)
 		_G.ColorPickerFrameHeader:SetAlpha(0)
-		self:skinStdButton{obj=_G.ColorPickerOkayButton}
-		self:skinStdButton{obj=_G.ColorPickerCancelButton}
 		self:skinSlider{obj=_G.OpacitySliderFrame, size=4}
-		self:addSkinFrame{obj=this, ft=ftype, y1=6}
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, y1=6}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.ColorPickerOkayButton}
+			self:skinStdButton{obj=_G.ColorPickerCancelButton}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1679,7 +1681,7 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 		this:SetBackdrop(nil)
 		self:removeNineSlice(this.Border)
 		self:skinSlider{obj=_G.OpacityFrameSlider}
-		self:addSkinFrame{obj=this, ft=ftype, nb=true} -- DON'T skin CloseButton as it is the frame
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true} -- DON'T skin CloseButton as it is the frame
 
 		self:Unhook(this, "OnShow")
 	end)
