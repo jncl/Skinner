@@ -13,7 +13,9 @@ aObj.addonsToSkin.EnhancedColourPicker = function(self) -- v 4
 	end
 	eb = nil
 
-	self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 2)}
-	self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 3)}
+	if self.modBtns then
+		self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 5)}
+		self:skinStdButton{obj=self:getChild(_G.ColorPickerFrame, 6)}
+	end
 
 end
