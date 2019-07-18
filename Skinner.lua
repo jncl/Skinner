@@ -37,7 +37,7 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	-- check which version of WoW is running
-	local classicInfo = {"1.13.2", 31043}
+	local classicInfo = {"1.13.2", 31118}
 	local betaInfo = {"9.0.0", 99999}
 	local ptrInfo = {"8.2.0", 30888}
 	local liveInfo = {"8.2.0", 30993}
