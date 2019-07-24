@@ -37,7 +37,7 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	-- check which version of WoW is running
-	local classicInfo = {"1.13.2", 31118}
+	local clscInfo = {"1.13.2", 31209}
 	local betaInfo = {"9.0.0", 99999}
 	local ptrInfo = {"8.2.0", 30888}
 	local liveInfo = {"8.2.0", 30993}
@@ -46,7 +46,7 @@ do
 	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. portal)
 --@end-alpha@
 	-- check to see if running on Classic servers
-	aObj.isClassic = buildInfo[1] == classicInfo[1] and _G.tonumber(buildInfo[2]) == classicInfo[2] and true or false
+	aObj.isClassic = buildInfo[1] == clscInfo[1] and _G.tonumber(buildInfo[2]) == clscInfo[2] and true or false
 	-- check to see if running on Beta servers
 	aObj.isBeta = buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
 	-- check to see if running on PTR servers
@@ -72,7 +72,7 @@ do
 	then
 		aObj.isPTR = true
 	end
-	betaInfo, ptrInfo, liveInfo, buildInfo, portal = nil, nil, nil, nil, nil, nil
+	clscInfo, betaInfo, ptrInfo, liveInfo, buildInfo, portal = nil, nil, nil, nil, nil, nil
 
 end
 
