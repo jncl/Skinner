@@ -1,3 +1,18 @@
+beta8.31401.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Update GlowBox skin
+	Update EditBox skin
+	WoW Classic version changes
+	Update FriendsFrame skin
+	Skin Container GlowBox
+	Update options to reflect code changes and handle AddOn skins correctly
+	More button checks
+	PTR changes
+	Obsoleted ProfessionTabs skin
+	
 beta8.30993.4
 Jncl:
 	ToDo.txt
