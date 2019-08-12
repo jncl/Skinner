@@ -1251,8 +1251,12 @@ function aObj:skinEditBox(...)
 end
 
 function aObj:skinGlowBox(gBox, ftype, ncb)
+--@alpha@
+	assert(gBox, "Missing object __sGB\n" .. debugstack(2, 3, 2))
+--@end-alpha@
 
-	-- aObj:Debug("skinGlowBox: [%s, %s]", gBox, ftype)
+	aObj:Debug2("skinGlowBox: [%s, %s, %s]", gBox, ftype, ncb)
+
 
 	local function findArrowGlowTex(gBox)
 		-- aObj:Debug("findArrowGlowTex: [%s, %s]", gBox:GetNumChildren(), gBox:GetNumRegions())
