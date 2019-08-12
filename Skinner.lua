@@ -38,8 +38,8 @@ do
 
 	-- check which version of WoW is running
 	local betaInfo = {"9.0.0", 99999}
-	local ptrInfo = {"8.2.0", 30888}
-	local liveInfo = {"8.2.0", 30993}
+	local ptrInfo = {"8.2.5", 31401}
+	local liveInfo = {"8.2.0", 31229}
 	local buildInfo, agentUID = {_G.GetBuildInfo()}, _G.GetCVar("agentUID")
 --@alpha@
 	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. agentUID)
