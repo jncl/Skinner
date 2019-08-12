@@ -216,7 +216,9 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	if self.modBtns then
 		self:skinStdButton{obj=_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton}
 	end
-	self:skinGlowBox(_G.AzeriteRespecFrame.HelpBox, ftype)
+	if not aObj.isPTR then
+		self:skinGlowBox(_G.AzeriteRespecFrame.HelpBox, ftype)
+	end
 
 end
 

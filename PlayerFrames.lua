@@ -437,8 +437,10 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		self:keepFontStrings(this.BorderFrame)
 		this.ForgeBadgeFrame:DisableDrawLayer("OVERLAY") -- this hides the frame
 		this.ForgeBadgeFrame.ForgeLevelLabel:SetDrawLayer("ARTWORK") -- this shows the artifact level
-		self:skinGlowBox(this.KnowledgeLevelHelpBox, ftype)
-		self:skinGlowBox(this.AppearanceTabHelpBox, ftype)
+		if not aObj.isPTR then
+			self:skinGlowBox(this.KnowledgeLevelHelpBox, ftype)
+			self:skinGlowBox(this.AppearanceTabHelpBox, ftype)
+		end
 
 		self:skinTabs{obj=this, regs={}, ignore=true, lod=true, x1=6, y1=9, x2=-6, y2=-4}
 		self:addSkinFrame{obj=this, ft=ftype, ofs=5, y1=4}
@@ -558,7 +560,9 @@ aObj.blizzLoDFrames[ftype].AzeriteUI = function(self)
 	for i = 1, #AEIUI.ClipFrame.BackgroundFrame.RankFrames do
 		AEIUI.ClipFrame.BackgroundFrame.RankFrames[i]:DisableDrawLayer("BORDER")
 	end
-	self:skinGlowBox(AEIUI.FirstPowerLockedInHelpBox, ftype)
+	if not aObj.isPTR then
+		self:skinGlowBox(AEIUI.FirstPowerLockedInHelpBox, ftype)
+	end
 
 	AEIUI = nil
 
@@ -739,7 +743,9 @@ aObj.blizzFrames[ftype].CharacterFrames = function(self)
 		for i = 1, #_G.PaperDollItemsFrame.WeaponSlots do
 			skinSlot(_G.PaperDollItemsFrame.WeaponSlots[i])
 		end
-		self:skinGlowBox(_G.PaperDollItemsFrame.HelpTipBox, ftype)
+		if not aObj.isPTR then
+			self:skinGlowBox(_G.PaperDollItemsFrame.HelpTipBox, ftype)
+		end
 		-- fixupNotificationFrame (anchored to CharacterMainHandSlot)
 		if this.fixupNotificationFrame then
 			self:skinGlowBox(this.fixupNotificationFrame, ftype)
@@ -848,8 +854,10 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=-5}
 
-		self:skinGlowBox(this.HeirloomTabHelpBox, ftype)
-		self:skinGlowBox(this.WardrobeTabHelpBox, ftype)
+		if not aObj.isPTR then
+			self:skinGlowBox(this.HeirloomTabHelpBox, ftype)
+			self:skinGlowBox(this.WardrobeTabHelpBox, ftype)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1158,11 +1166,13 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			heirloom = nil
 		end)
 
-		self:SecureHookScript(this.UpgradeLevelHelpBox, "OnShow", function(this)
-			self:skinGlowBox(this, ftype)
+		if not aObj.isPTR then
+			self:SecureHookScript(this.UpgradeLevelHelpBox, "OnShow", function(this)
+				self:skinGlowBox(this, ftype)
 
-			self:Unhook(this, "OnShow")
-		end)
+				self:Unhook(this, "OnShow")
+			end)
+		end
 
 		if self.modBtnBs then
 			skinPageBtns(this)
@@ -1543,6 +1553,9 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	self:skinDropDown{obj=cFrame.StreamDropDownMenu}
 	self:skinDropDown{obj=cFrame.GuildMemberListDropDownMenu}
+	if aObj.isPTR then
+		self:skinDropDown{obj=cFrame.CommunityMemberListDropDownMenu}
+	end
 	self:skinDropDown{obj=cFrame.CommunitiesListDropDownMenu}
 
 	-- VoiceChatHeadset
@@ -1566,6 +1579,107 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end
 	end)
 
+	if aObj.isPTR then
+		-- .ApplicantList
+		if self.modChkBtns then
+			self:skinCheckButton{obj=cFrame.ApplicantList.ShowOfflineButton}
+		end
+		-- TODO: ColumnDisplay
+		self:skinSlider{obj=cFrame.ApplicantList.ListScrollFrame.scrollBar, rt="background", wdth=-4}
+		self:skinDropDown{obj=cFrame.ApplicantList.DropDown}
+		self:removeNineSlice(cFrame.ApplicantList.InsetFrame.NineSlice)
+
+		local function skinCFGaCF(frame)
+
+			frame:DisableDrawLayer("BACKGROUND")
+
+			aObj:skinDropDown{obj=frame.OptionsList.TypeDropdown}
+			aObj:skinDropDown{obj=frame.OptionsList.ClubFocusDropdown}
+			aObj:skinDropDown{obj=frame.OptionsList.ClubSizeDropdown}
+			aObj:skinDropDown{obj=frame.OptionsList.SortByDropdown}
+			aObj:skinEditBox{obj=frame.OptionsList.SearchBox, regs={6}, mi=true} -- 6 is text
+			aObj:moveObject{obj=frame.OptionsList.Search, y=-4}
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=frame.OptionsList.Search}
+			end
+			if aObj.modChkBtns then
+				aObj:skinCheckButton{obj=frame.OptionsList.TankRoleFrame.CheckBox}
+				aObj:skinCheckButton{obj=frame.OptionsList.HealerRoleFrame.CheckBox}
+				aObj:skinCheckButton{obj=frame.OptionsList.DpsRoleFrame.CheckBox}
+			end
+
+			-- .GuildCards
+			local btn
+	 		for i = 1, #frame.GuildCards.Cards do
+				btn = frame.GuildCards.Cards[i]
+				btn:DisableDrawLayer("BACKGROUND")
+				aObj:addSkinFrame{obj=btn, ft=ftype, nb=true, y1=5}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=btn.RequestJoin}
+				end
+				aObj:SecureHook(btn, "SetDisabledState", function(this, shouldDisable)
+					if shouldDisable then
+						this.sf:SetBackdropBorderColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					else
+						this.sf:SetBackdropBorderColor(aObj.bbClr:GetRGB())
+					end
+				end)
+			end
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.GuildCards.PreviousPage, ofs=-2, y1=-3, x2=-3}
+				aObj:addButtonBorder{obj=frame.GuildCards.NextPage, ofs=-2, y1=-3, x2=-3}
+			end
+
+			-- .CommunityCards
+			aObj:skinSlider{obj=frame.CommunityCards.ListScrollFrame.scrollBar, wdth=-4}
+			for i = 1, #frame.CommunityCards.ListScrollFrame.buttons do
+				btn = frame.CommunityCards.ListScrollFrame.buttons[i]
+				btn.LogoBorder:SetTexture(nil)
+				aObj:addSkinFrame{obj=btn, ft=ftype, nb=true}
+				aObj:SecureHook(btn, "SetDisabledState", function(this, shouldDisable)
+					if shouldDisable then
+						this.sf:SetBackdropBorderColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					else
+						this.sf:SetBackdropBorderColor(aObj.bbClr:GetRGB())
+					end
+				end)
+			end
+			btn = nil
+
+			-- .RequestToJoinFrame
+			frame.RequestToJoinFrame.MessageFrame:DisableDrawLayer("BACKGROUND")
+			frame.RequestToJoinFrame.MessageFrame.MessageScroll:DisableDrawLayer("BACKGROUND")
+			aObj:addSkinFrame{obj=frame.RequestToJoinFrame.MessageFrame, ft=ftype, kfs=true, nb=true}
+			aObj:addSkinFrame{obj=frame.RequestToJoinFrame.BG, ft=ftype, kfs=true, nb=true}
+			if aObj.modBtns then
+				 aObj:skinStdButton{obj=frame.RequestToJoinFrame.Apply}
+				 aObj:skinStdButton{obj=frame.RequestToJoinFrame.Cancel}
+			end
+			if aObj.modChkBtns then
+				aObj:SecureHook(frame.RequestToJoinFrame, "Initialize", function(this)
+					for spec in this.SpecsPool:EnumerateActive() do
+						aObj:skinCheckButton{obj=spec.CheckBox}
+					end
+				end)
+			end
+
+			if aObj.modBtns then
+				aObj:skinStdButton{obj=frame.PendingClubs}
+			end
+
+			aObj:removeNineSlice(frame.InsetFrame.NineSlice)
+			frame.InsetFrame.Bg:SetTexture(nil)
+
+		end
+
+		-- .GuildFinderFrame (move from below)
+		skinCFGaCF(cFrame.GuildFinderFrame)
+
+		-- .CommunityAndGuildFinderFrame
+		skinCFGaCF(cFrame.CommunityAndGuildFinderFrame)
+
+	end
+
 	self:skinSlider{obj=cFrame.Chat.MessageFrame.ScrollBar, wdth=-4}
 	if self.modBtns then
 		 self:skinStdButton{obj=_G.JumpToUnreadButton}
@@ -1586,17 +1700,22 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- TicketFrame
+	if aObj.isPTR then
+		-- ClubFinderInvitationFrame
+	end
+
 	self:removeNineSlice(cFrame.TicketFrame.InsetFrame.NineSlice)
 	if self.modBtns then
 		self:skinStdButton{obj=cFrame.TicketFrame.AcceptButton}
 		self:skinStdButton{obj=cFrame.TicketFrame.DeclineButton}
 	end
 
-	cFrame.GuildFinderFrame:DisableDrawLayer("BACKGROUND")
-	self:removeNineSlice(cFrame.GuildFinderFrame.InsetFrame.NineSlice)
-	if self.modBtns then
-		self:skinStdButton{obj=cFrame.GuildFinderFrame.FindAGuildButton}
+	if not aObj.isPTR then
+		cFrame.GuildFinderFrame:DisableDrawLayer("BACKGROUND")
+		self:removeNineSlice(cFrame.GuildFinderFrame.InsetFrame.NineSlice)
+		if self.modBtns then
+			self:skinStdButton{obj=cFrame.GuildFinderFrame.FindAGuildButton}
+		end
 	end
 
 	self:SecureHookScript(cFrame.GuildBenefitsFrame, "OnShow", function(this)
@@ -1705,6 +1824,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+
+	if aObj.isPTR then
+		-- RecruitmentDialog
+	end
 
 	self:moveObject{obj=cFrame.AddToChatButton, x=-6, y=-6}
 
@@ -2002,6 +2125,10 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
 		self:skinDropDown{obj=this.OutfitDropDown, y2=-4}
 		this.MaxMinButtonFrame:DisableDrawLayer("BACKGROUND") -- button texture
+		if not aObj.isPTR then
+			this.DressUpModel.controlFrame:DisableDrawLayer("BACKGROUND")
+		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-4}
 		if self.modBtns then
 			self:skinStdButton{obj=this.OutfitDropDown.SaveButton}
 			self:skinOtherButton{obj=this.MaxMinButtonFrame.MaximizeButton, font=self.fontS, text="↕"} -- up-down arrow
@@ -2322,26 +2449,36 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
 			end
-			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, kfs=true, nb=true, ofs=4}
-			if self.modBtns then
-				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.UpdateButton}
-				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.CancelButton}
+			if not aObj.isPTR then
+				self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, kfs=true, nb=true, ofs=4}
+				if self.modBtns then
+					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.UpdateButton}
+					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.CancelButton}
+				end
+				_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.EditBox.PromptText:SetTextColor(self.BT:GetRGB())
+				self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={6, 7}, mi=true, noWidth=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
+				_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
+					self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
+				end
+			else
+				_G.FriendsFrameBattlenetFrame.BroadcastFrame.Border:DisableDrawLayer("BACKGROUND")
+				_G.FriendsFrameBattlenetFrame.BroadcastFrame.Border:DisableDrawLayer("BORDER")
+				_G.FriendsFrameBattlenetFrame.BroadcastFrame.EditBox:DisableDrawLayer("BACKGROUND")
+				self:skinEditBox{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.EditBox, regs={12}, mi=true}
+				if self.modBtns then
+					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton}
+					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton}
+				end
 			end
-			_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame.EditBox.PromptText:SetTextColor(self.BT:GetRGB())
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
 			self:removeNineSlice(_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame)
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame, ft=ftype}
 			self:skinDropDown{obj=_G.FriendsFrameStatusDropDown}
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
-			self:skinEditBox{obj=_G.FriendsFrameBroadcastInput, regs={6, 7}, mi=true, noWidth=true, noHeight=true, noMove=true} -- 6 is text, 7 is icon
-			_G.FriendsFrameBroadcastInputFill:SetTextColor(self.BT:GetRGB())
-			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, QuickJoin & Ignore
+			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, Ignore & RaF
 			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
-			self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip, ftype)
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.FriendsTabHeaderRecruitAFriendButton}
-				self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
-			end
 			_G.RaiseFrameLevel(this)
 			self:Unhook(this, "OnShow")
 		end)
@@ -2354,23 +2491,42 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 				self:skinStdButton{obj=self:getChild(this.RIDWarning, 1)} -- unnamed parent frame
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton}
-			end
-			_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
-			if self.modBtns then
-				for invite in _G.FriendsFrameFriendsScrollFrame.invitePool:EnumerateActive() do
-					self:skinStdButton{obj=invite.DeclineButton}
-					self:skinStdButton{obj=invite.AcceptButton}
+				if not aObj.isPTR then
+					self:addButtonBorder{obj=_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton}
+				else
+					self:addButtonBorder{obj=_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton}
 				end
 			end
-			self:skinSlider{obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, rt="background"}
-			-- adjust width of FFFSF so it looks right (too thin by default)
-			_G.FriendsFrameFriendsScrollFrame.scrollBar:ClearAllPoints()
-			_G.FriendsFrameFriendsScrollFrame.scrollBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
-			_G.FriendsFrameFriendsScrollFrame.scrollBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
+			if not aObj.isPTR then
+				_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
+				if self.modBtns then
+					for invite in _G.FriendsFrameFriendsScrollFrame.invitePool:EnumerateActive() do
+						self:skinStdButton{obj=invite.DeclineButton}
+						self:skinStdButton{obj=invite.AcceptButton}
+					end
+				end
+				self:skinSlider{obj=_G.FriendsFrameFriendsScrollFrame.scrollBar, rt="background"}
+				-- adjust width of FFFSF so it looks right (too thin by default)
+				_G.FriendsFrameFriendsScrollFrame.scrollBar:ClearAllPoints()
+				_G.FriendsFrameFriendsScrollFrame.scrollBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
+				_G.FriendsFrameFriendsScrollFrame.scrollBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
+			else
+				_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton.BG:SetTexture(nil)
+				if self.modBtns then
+					for invite in _G.FriendsListFrameScrollFrame.invitePool:EnumerateActive() do
+						self:skinStdButton{obj=invite.DeclineButton}
+						self:skinStdButton{obj=invite.AcceptButton}
+					end
+				end
+				self:skinSlider{obj=_G.FriendsListFrameScrollFrame.scrollBar, wdth=-4}
+			end
 			local btn
 			for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
-				btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
+				if not aObj.isPTR then
+					btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
+				else
+					btn = _G["FriendsListFrameScrollFrameButton" .. i]
+				end
 				btn.background:SetAlpha(0)
 				if self.modBtnBs then
 					self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0}
@@ -2414,7 +2570,11 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 				self:skinStdButton{obj=_G.FriendsFrameIgnorePlayerButton, x1=1}
 				self:skinStdButton{obj=_G.FriendsFrameUnsquelchButton}
 			end
-			self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar}
+			if not aObj.isPTR then
+				self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar}
+			else
+				self:skinSlider{obj=_G.IgnoreListFrameScrollFrame.scrollBar, wdth=-4}
+			end
 			addTabFrame(this)
 			self:Unhook(this, "OnShow")
 		end)
@@ -2437,7 +2597,11 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:skinEditBox{obj=_G.WhoFrameEditBox}--, move=true}
 			_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
 			self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
-			self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, rt="background"}
+			if not aObj.isPTR then
+				self:skinSlider{obj=_G.WhoListScrollFrame.scrollBar, rt="background"}
+			else
+				self:skinSlider{obj=_G.WhoListScrollFrame.scrollBar, wdth=-4}
+			end
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -3890,27 +4054,29 @@ aObj.blizzFrames[ftype].RolePollPopup = function(self)
 
 end
 
-aObj.blizzFrames[ftype].ScrollOfResurrection = function(self)
-	if not self.prdb.ScrollOfResurrection or self.initialized.ScrollOfResurrection then return end
-	self.initialized.ScrollOfResurrection = true
+if not aObj.isPTR then
+	aObj.blizzFrames[ftype].ScrollOfResurrection = function(self)
+		if not self.prdb.ScrollOfResurrection or self.initialized.ScrollOfResurrection then return end
+		self.initialized.ScrollOfResurrection = true
 
-	self:SecureHookScript(_G.ScrollOfResurrectionFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:skinEditBox{obj=this.targetEditBox, regs={6}} -- 6 is text
-		this.targetEditBox.fill:SetTextColor(self.BT:GetRGB())
-		self:addSkinFrame{obj=this.noteFrame, ft=ftype, kfs=true}
-		self:skinSlider{obj=this.noteFrame.scrollFrame.ScrollBar, wdth=-4, size=3}
-		this.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BT:GetRGB())
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-		-- Selection frame
-		self:skinEditBox{obj=_G.ScrollOfResurrectionSelectionFrame.targetEditBox, regs={6}} -- 6 is text
-		self:skinSlider{obj=_G.ScrollOfResurrectionSelectionFrame.list.scrollFrame.scrollBar, size=4}
-		self:addSkinFrame{obj=_G.ScrollOfResurrectionSelectionFrame.list, ft=ftype, kfs=true}
-		self:addSkinFrame{obj=_G.ScrollOfResurrectionSelectionFrame, ft=ftype, kfs=true}
+		self:SecureHookScript(_G.ScrollOfResurrectionFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:skinEditBox{obj=this.targetEditBox, regs={6}} -- 6 is text
+			this.targetEditBox.fill:SetTextColor(self.BT:GetRGB())
+			self:addSkinFrame{obj=this.noteFrame, ft=ftype, kfs=true}
+			self:skinSlider{obj=this.noteFrame.scrollFrame.ScrollBar, wdth=-4, size=3}
+			this.noteFrame.scrollFrame.editBox.fill:SetTextColor(self.BT:GetRGB())
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			-- Selection frame
+			self:skinEditBox{obj=_G.ScrollOfResurrectionSelectionFrame.targetEditBox, regs={6}} -- 6 is text
+			self:skinSlider{obj=_G.ScrollOfResurrectionSelectionFrame.list.scrollFrame.scrollBar, size=4}
+			self:addSkinFrame{obj=_G.ScrollOfResurrectionSelectionFrame.list, ft=ftype, kfs=true}
+			self:addSkinFrame{obj=_G.ScrollOfResurrectionSelectionFrame, ft=ftype, kfs=true}
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
 
+	end
 end
 
 aObj.blizzFrames[ftype].SpellBookFrame = function(self)
@@ -4286,9 +4452,11 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			end
 		end
 		frame.WarmodeIncentive.IconRing:SetTexture(nil)
-		-- increase width so CloseButton doesn't appear above text
-		frame.WarmodeTutorialBox:SetWidth(frame.WarmodeTutorialBox.Text:GetWidth() + 30)
-		self:skinGlowBox(frame.WarmodeTutorialBox, ftype)
+		if not aObj.isPTR then
+			-- increase width so CloseButton doesn't appear above text
+			frame.WarmodeTutorialBox:SetWidth(frame.WarmodeTutorialBox.Text:GetWidth() + 30)
+			self:skinGlowBox(frame.WarmodeTutorialBox, ftype)
+		end
 
 		self:skinSlider{obj=frame.TalentList.ScrollFrame.ScrollBar, wdth=-4}
 		self:removeMagicBtnTex(self:getChild(frame.TalentList, 4))
@@ -4309,7 +4477,9 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=self:getChild(frame.TalentList, 4)}
 		end
-		self:skinGlowBox(frame.TrinketSlot.HelpBox, ftype)
+		if not aObj.isPTR then
+			self:skinGlowBox(frame.TrinketSlot.HelpBox, ftype)
+		end
 
 		frame.UpdateModelScenes = _G.nop
 		frame.OrbModelScene:Hide()

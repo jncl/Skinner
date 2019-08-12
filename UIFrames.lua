@@ -2680,6 +2680,27 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 end
 
+if aObj.isPTR then
+	aObj.blizzFrames[ftype].HelpTip = function(self)
+		if not self.prdb.HelpTip or self.initialized.HelpTip then return end
+		self.initialized.HelpTip = true
+
+		self:SecureHook(_G.HelpTip, "Show", function(this, parent, info, relativeRegion)
+			aObj:Debug("HelpTip Show: [%s, %s, %s, %s]", this, parent, info, relativeRegion)
+
+			for hTip in this.framePool:EnumerateActive() do
+				self:skinGlowBox(hTip)
+				if self.modBtns then
+					self:skinStdButton{obj=hTip.OkayButton}
+				end
+			end
+
+		end)
+
+	end
+
+end
+
 -- The following function is used by the IslandsPartyPoseUI & WarfrontsPartyPoseUI functions
 local skinPartyPoseFrame
 if _G.IsAddOnLoadOnDemand("Blizzard_IslandsPartyPoseUI") then
@@ -4657,6 +4678,9 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 
 		-- Details Frame
 		self:keepFontStrings(this.DetailsFrame)
+		if aObj.isPTR then
+			this.DetailsFrame.Indicators:DisableDrawLayer("BACKGROUND")
+		end
 		self:keepFontStrings(this.DetailsFrame.RewardsFrame)
 		self:getRegion(this.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HT:GetRGB())
 		self:skinSlider{obj=this.DetailsFrame.ScrollFrame.ScrollBar, wdth=-4}
@@ -5585,16 +5609,17 @@ then
 		local function skinFrame(frame, ofs)
 			if frame.Background then frame.Background:SetTexture(nil) end
 			if frame.Border then frame.Border:SetBackdrop(nil) end
+			if frame.GetPushedTexture then frame:SetPushedTexture(nil) end
 			aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=ofs or 4}
 		end
 
 		local PTR_IR = _G.PTR_IssueReporter
 
-		-- wait for addon to initialise properly
-		_G.C_Timer.After(0.5, function()
+		aObj:SecureHook(PTR_IR, "CreateMainView", function()
 			skinFrame(PTR_IR)
 			skinFrame(PTR_IR.Confused)
 			skinFrame(PTR_IR.ReportBug)
+			aObj:Unhook(this, "CreateMainView")
 		end)
 
 		aObj:SecureHook(PTR_IR, "GetStandaloneSurveyFrame", function(this)
