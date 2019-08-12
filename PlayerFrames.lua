@@ -2479,6 +2479,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 				if self.modBtns then
 					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton}
 					self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton}
+					self:skinStdButton{obj=this.OldRAFRewardsButton}
 				end
 			end
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
@@ -2488,10 +2489,8 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, Ignore & RaF
 			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
+			self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip, ftype)
 			_G.RaiseFrameLevel(this)
-			if self.modBtns then
-				self:skinStdButton{obj=this.OldRAFRewardsButton}
-			end
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -2620,14 +2619,12 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		end)
 
 		self:skinTabs{obj=this, lod=true}
-		self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip, ftype)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.FriendsTooltip)
 		end)
-
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 		self:Unhook(this, "OnShow")
 	end)
