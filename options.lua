@@ -4,7 +4,8 @@ local _G = _G
 local ftype = "opt"
 
 -- Add locals to see if it speeds things up
-local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.LibStub, _G.pairs
+local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, IsAddOnLoaded, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.LibStub, _G.IsAddOnLoaded, _G.pairs
+
 
 aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
@@ -37,7 +38,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		BgFile               = "None",
 		BgTexture            = "None",
 		BgTile               = false,
-		LFGTexture			 = false,
+		LFGTexture           = false,
 	-->>-- Colours
 		ClassClrBd           = false,
 		ClassClrBg           = false,
@@ -82,13 +83,14 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		DisableAllP          = false,
 		AchievementUI        = {skin = true, style = 2},
 		ArchaeologyUI        = true,
+		ArtifactUI           = true,
 		AzeriteEssenceUI     = true,
-		AzeriteUI			 = true,
+		AzeriteUI            = true,
 		Buffs                = true,
 		CastingBar           = {skin = true, glaze = true},
 		CharacterFrames      = true,
 		Collections          = true, -- (Mounts, Pets, Toys, Heirlooms & Appearances)
-		CommunitiesUI		 = true,
+		CommunitiesUI        = true,
 		CompactFrames        = true,
 		ContainerFrames      = {skin = true, fheight = 100},
 		DressUpFrame         = true,
@@ -107,7 +109,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		ObjectiveTracker     = {skin = false, popups = true},
 		OverrideActionBar    = true, -- a.k.a. VehicleUI
 		PVPFrame             = true,
-		QuestMap             = true,
 		RaidUI               = true,
 		ReadyCheck           = true,
 		RolePollPopup        = true,
@@ -123,7 +124,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		AddonList            = true,
 		AdventureMap         = true,
 		AlertFrames          = true,
-		ArtifactUI           = true,
 		AutoComplete         = true,
 		BattlefieldMap       = {skin = true, gloss = false},
 		BNFrames             = true,
@@ -155,7 +155,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		HelpFrame            = true,
 		HelpTip              = self.isPTR and true or nil,
 		IslandsPartyPoseUI   = true,
-		IslandsQueueUI   	 = true,
+		IslandsQueueUI       = true,
 		ItemText             = true,
 		LevelUpDisplay       = true,
 		LossOfControl        = true,
@@ -172,7 +172,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		PetBattleUI          = true,
 		ProductChoiceFrame   = true,
 		PVEFrame             = true, -- (inc, LFD, LFG, RaidFinder, ScenarioFinder)
-		PVPMatch			 = true,
+		PVPMatch             = true,
 		QuestMap             = true,
 		QueueStatusFrame     = true,
 		RaidFrame            = true, -- (inc. LFR)
@@ -842,7 +842,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				BlackMarketUI = {
 					type = "toggle",
-					width = "double",
 					name = self.L["Black Market UI"],
 					desc = self.L["Toggle the skin of the Black Market UI"],
 				},
@@ -860,6 +859,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Guild Registrar Frame"],
 					desc = self.L["Toggle the skin of the Guild Registrar Frame"],
+				},
+				ItemUpgradeUI = {
+					type = "toggle",
+					name = self.L["Item Upgrade UI"],
+					desc = self.L["Toggle the skin of the Item Upgrade UI"],
 				},
 				MerchantFrame = {
 					type = "toggle",
@@ -974,6 +978,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Archaeology UI"],
 					desc = self.L["Toggle the skin of the Archaeology UI"],
+				},
+				ArtifactUI = {
+					type = "toggle",
+					name = self.L["Artifact UI"],
+					desc = self.L["Toggle the skin of the Artifact UI"],
 				},
 				AzeriteEssenceUI = {
 					type = "toggle",
@@ -1109,7 +1118,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				},
 				LookingForGuildUI = {
 					type = "toggle",
-					width = "double",
 					name = self.L["Looking for Guild UI"],
 					desc = self.L["Toggle the skin of the Looking for Guild UI"],
 				},
@@ -1198,11 +1206,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["PVP Frame"],
 					desc = self.L["Toggle the skin of the PVP Frame"],
-				},
-				QuestMap = {
-					type = "toggle",
-					name = self.L["Quest Map Frame"],
-					desc = self.L["Toggle the skin of the Quest Map Frame"],
 				},
 				RaidUI = {
 					type = "toggle",
@@ -1301,11 +1304,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Alert Frames"],
 					desc = self.L["Toggle the skin of the Alert Frames"],
-				},
-				ArtifactUI = {
-					type = "toggle",
-					name = self.L["Artifact UI"],
-					desc = self.L["Toggle the skin of the Artifact UI"],
 				},
 				AutoComplete = {
 					type = "toggle",
@@ -1548,11 +1546,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Item Text Frame"],
 					desc = self.L["Toggle the skin of the Item Text Frame"],
-				},
-				ItemUpgradeUI = {
-					type = "toggle",
-					name = self.L["Item Upgrade UI"],
-					desc = self.L["Toggle the skin of the Item Upgrade UI"],
 				},
 				LevelUpDisplay = {
 					type = "toggle",
@@ -1920,19 +1913,27 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	end
 	for addonName in pairs(self.addonsToSkin) do
-		addDSOpt(addonName)
+		if IsAddOnLoaded(addonName) then
+			addDSOpt(addonName)
+		end
 	end
 	for addonName in pairs(self.libsToSkin) do
-		addDSOpt(addonName, true)
+		if IsAddOnLoaded(addonName) then
+			addDSOpt(addonName, true)
+		end
 	end
 	for addonName in pairs(self.lodAddons) do
-		addDSOpt(addonName, nil, true)
+		if IsAddOnLoaded(addonName) then
+			addDSOpt(addonName, nil, true)
+		end
 	end
 	for addonName in pairs(self.otherAddons) do
-		if addonName == "tekKonfig" then
-			addDSOpt(addonName, true)
-		else
-			addDSOpt(addonName)
+		if IsAddOnLoaded(addonName) then
+			if addonName == "tekKonfig" then
+				addDSOpt(addonName, true)
+			else
+				addDSOpt(addonName)
+			end
 		end
 	end
 
