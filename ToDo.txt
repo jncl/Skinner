@@ -21,16 +21,54 @@ ToDos
 
 	I	JoinArena frame isn't skinned
 
+	O	Skin CommentatorTeamDisplay
+
 ≈	O	Skin Classic version
 
+	O	PTR 8.2.5
+		- Deleted
+			- ArtifactUI
+√				- KnowledgeLevelHelpBox
+√				- AppearanceTabHelpBox
+			- AzeriteRespecUI
+√				- HelpBox
+			- AzeriteEmpoweredItemUITemplates
+√				- FirstPowerLockedInHelpBox
+			- CollectionTemplates
+?				- CollectionsWrappedModelSceneMixin
+?				- ToyWrappedModelSceneMixin
+			- Collections
+√				- HeirloomTabHelpBox
+√				- WardrobeTabHelpBox
+			- HeirloomCollection
+√				- UpgradeLevelHelpBox
+			- PaperDollFrame
+√				- HelpTipBox
+			- TalentFrame
+√				- WarmodeTutorialBox
+√				- TrinketSlot.HelpBox
+√			- ScrollOfResurrection
+		- Added
+			- Communities
+√				- ClubFinderApplicantList
+√				- ClubFinder
+√¶			- HelpTip
+√			- QuestIndicators
+			- QuestSession
+			- UIPanelBorderedButtonTemplate
+		- Updated
+			- Commentator
+?			- BuffFrame
+			- CompactUnitFrame
+			- DestinyFrame
+√			- DressUpFrames
+√			- FriendsFrame
+			- GossipFrame
+?			- MainMenuBarMicroButtons
+			- ProductChoice
+√			- QuestFrame
+√			- QuestMapFrame
+			- RecruitAFriendFrame
+?			- TargetFrame
+
 ?	I	RaiderIO profile tooltip not skinned
-
-	I	RaiderIO, reported by Talyrius, 27.06.19
-?		- Skinner\Skinner-beta8.30920.1.lua:482: attempt to index field 'obj' (a nil value)
-		Skinner\AddonSkins\RaiderIO-8.1.0 (v201906260651).lua:36: in function `skinBtn'
-		Skinner\AddonSkins\RaiderIO-8.1.0 (v201906260651).lua:43: in function <Skinner\AddonSkins\RaiderIO.lua:5>
-
-√	I	GuildRosterManager, reported by Macallan1824, 24.07.19
-		- ...eSkinner\AddonSkins\Guild_Roster_Manager-1.66.lua:342: Usage: Unhook([obj], method): 'obj' - expecting nil or table got boolean
-		- ...eSkinner\AddonSkins\Guild_Roster_Manager-1.66.lua:347: Usage: Unhook([obj], method): 'obj' - expecting nil or table got boolean
-		- ...eSkinner\AddonSkins\Guild_Roster_Manager-1.66.lua:353: Usage: Unhook([obj], method): 'obj' - expecting nil or table got boolean
