@@ -19,7 +19,6 @@ local defaults = {
 	}
 }
 local lOfs = -9 -- level text offset
-local isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 local unitFrames = {
 	"FocusFrame",
 	"PartyMemberBackground",
@@ -29,6 +28,8 @@ local unitFrames = {
 	"TargetFrame",
 }
 local unitBtns= {}
+
+module.isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 
 -- N.B. handle bug in XML & lua which places mana bar 1 pixel too high
 function module:adjustStatusBarPosn(sBar, yAdj)
@@ -80,7 +81,7 @@ end
 function module:skinPlayerF()
 
 	if db.player
-	and not isSkinned["Player"]
+	and not self.isSkinned["Player"]
 	then
 
 		local pF = _G.PlayerFrame
@@ -216,7 +217,7 @@ end
 function module:skinPetF()
 
 	if db.pet
-	and not isSkinned["Pet"]
+	and not self.isSkinned["Pet"]
 	then
 		_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PetAttackModeTexture:SetTexture(nil)
@@ -318,7 +319,7 @@ function module:skinButton(frame, ti)
 		-- TargetofTarget Frame
 		module:skinUnitButton{obj=fo.totFrame, x2=4, y2=4}
 		module:skinCommon(frame .. "ToT", true)
-		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar down to match other frames
+		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar d1own to match other frames
 	end
 
 	fo, isBoss, xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil, nil, nil
@@ -327,7 +328,7 @@ end
 function module:skinTargetF()
 
 	if db.target
-	and not isSkinned["Target"]
+	and not self.isSkinned["Target"]
 	then
 
 		module:skinButton("TargetFrame")
@@ -372,7 +373,7 @@ end
 function module:skinFocusF()
 
 	if db.focus
-	and not isSkinned["Focus"]
+	and not self.isSkinned["Focus"]
 	then
 		module:skinButton("FocusFrame", false)
 	end
@@ -381,7 +382,7 @@ end
 function module:skinPartyF()
 
 	if db.party
-	and not isSkinned["Party"]
+	and not self.isSkinned["Party"]
 	then
 
 		local pMF, pPF

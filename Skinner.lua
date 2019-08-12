@@ -37,16 +37,17 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	-- check which version of WoW is running
-	local clscInfo = {"1.13.2", 31209}
 	local betaInfo = {"9.0.0", 99999}
 	local ptrInfo = {"8.2.0", 30888}
 	local liveInfo = {"8.2.0", 30993}
-	local buildInfo, portal = {_G.GetBuildInfo()}, _G.GetCVar("portal") or nil
+	local buildInfo, agentUID = {_G.GetBuildInfo()}, _G.GetCVar("agentUID")
 --@alpha@
-	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. portal)
+	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. agentUID)
 --@end-alpha@
+	-- check to see if running on Classic Beta servers
+	aObj.isClassicBeta = agentUID == "wow_classic_beta" and true or false
 	-- check to see if running on Classic servers
-	aObj.isClassic = buildInfo[1] == clscInfo[1] and _G.tonumber(buildInfo[2]) == clscInfo[2] and true or false
+	aObj.isClassic = agentUID == "wow_classic" and true or false
 	-- check to see if running on Beta servers
 	aObj.isBeta = buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
 	-- check to see if running on PTR servers
@@ -54,6 +55,10 @@ do
 	-- check build number, if > Live then it's a patch
 	aObj.isPatch = buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
 --@alpha@
+	if aObj.isClassicBeta then
+		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Classic Beta version", 1, 0, 0, nil, true)
+		aObj.isClassic = true
+	end
 	if aObj.isBeta then
 		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Beta version", 1, 0, 0, nil, true)
 		aObj.isPTR = false
@@ -72,7 +77,7 @@ do
 	then
 		aObj.isPTR = true
 	end
-	clscInfo, betaInfo, ptrInfo, liveInfo, buildInfo, portal = nil, nil, nil, nil, nil, nil
+	betaInfo, ptrInfo, liveInfo, buildInfo, agentUID = nil, nil, nil, nil, nil
 
 end
 

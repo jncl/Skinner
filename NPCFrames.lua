@@ -5,21 +5,6 @@ local ftype = "n"
 
 local pairs = _G.pairs
 
-local function hookQuestText(btn)
-	aObj:rawHook(btn, "SetFormattedText", function(this, fmtString, text)
-		-- aObj:Debug("SetFormattedText: [%s, %s, %s]", this, fmtString, text)
-		if fmtString == _G.NORMAL_QUEST_DISPLAY then
-			fmtString = aObj.NORMAL_QUEST_DISPLAY
-		elseif fmtString == _G.TRIVIAL_QUEST_DISPLAY then
-			fmtString = aObj.TRIVIAL_QUEST_DISPLAY
-		elseif fmtString == _G.IGNORED_QUEST_DISPLAY then
-			fmtString = aObj.IGNORED_QUEST_DISPLAY
-		end
-		local btnText = aObj.hooks[this].SetFormattedText(this, fmtString, text)
-		return btnText
-	end, true)
-end
-
 aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 	if not self.prdb.AlliedRacesUI or self.initialized.AlliedRacesUI then return end
 	self.initialized.AlliedRacesUI = true
@@ -388,9 +373,13 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
 		for i = 1, _G.NUMGOSSIPBUTTONS do
 			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
-			hookQuestText(_G["GossipTitleButton" .. i])
+			self:hookQuestText(_G["GossipTitleButton" .. i])
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		if not self.isClassic then
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=60}
+		end
 
 		-- NPCFriendshipStatusBar
 		self:removeRegions(_G.NPCFriendshipStatusBar, {1, 3, 4, 5 ,6})
@@ -408,15 +397,20 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 	self:SecureHookScript(_G.GuildRegistrarFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GuildRegistrarGreetingFrame)
 		_G.AvailableServicesText:SetTextColor(self.HT:GetRGB())
-		self:skinStdButton{obj=_G.GuildRegistrarFrameGoodbyeButton}
 		self:getRegion(_G.GuildRegistrarButton1, 3):SetTextColor(self.BT:GetRGB())
 		self:getRegion(_G.GuildRegistrarButton2, 3):SetTextColor(self.BT:GetRGB())
 		_G.GuildRegistrarPurchaseText:SetTextColor(self.BT:GetRGB())
-		self:skinStdButton{obj=_G.GuildRegistrarFrameCancelButton}
-		self:skinStdButton{obj=_G.GuildRegistrarFramePurchaseButton}
 		self:skinEditBox{obj=_G.GuildRegistrarFrameEditBox}
-
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		if not self.isClassic then
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=62}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GuildRegistrarFrameGoodbyeButton}
+			self:skinStdButton{obj=_G.GuildRegistrarFrameCancelButton}
+			self:skinStdButton{obj=_G.GuildRegistrarFramePurchaseButton}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -491,12 +485,16 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 
 	self:SecureHookScript(_G.MerchantFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, lod=true} -- do first otherwise error when TradeSkillMaster Addon is loaded
-		self:skinDropDown{obj=_G.MerchantFrameLootFilter}
-		self:removeInset(_G.MerchantExtraCurrencyInset)
-		_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-6}
+		if not self.isClassic then
+			self:skinDropDown{obj=_G.MerchantFrameLootFilter}
+			self:removeInset(_G.MerchantExtraCurrencyInset)
+			_G.MerchantExtraCurrencyBg:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-6}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1, y2=-6}
+		end
 		if self.modBtnBs then
 			self:removeRegions(_G.MerchantPrevPageButton, {2})
 			self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3}
@@ -549,14 +547,17 @@ aObj.blizzFrames[ftype].Petition = function(self)
 			_G["PetitionFrameMemberName" .. i]:SetTextColor(self.BT:GetRGB())
 		end
 		_G.PetitionFrameInstructions:SetTextColor(self.BT:GetRGB())
-
+		if not self.isClassic then
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-17, x2=-29, y2=62}
+		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PetitionFrameCancelButton}
 			self:skinStdButton{obj=_G.PetitionFrameSignButton}
-			self:skinStdButton{obj=_G.PetitionFrameRequestButton, x1=1, x2=-1}
+			self:skinStdButton{obj=_G.PetitionFrameRequestButton, x2=-1}
 			self:skinStdButton{obj=_G.PetitionFrameRenameButton, x1=1, x2=-1}
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -646,7 +647,11 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			fontString:SetTextColor(self.BT:GetRGB())
 		end, true)
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		if not self.isClassic then
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-18, x2=-29, y2=65}
+		end
 
 		--	Reward Panel
 		self:keepFontStrings(_G.QuestFrameRewardPanel)
@@ -691,12 +696,23 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			_G.CurrentQuestsText:SetTextColor(self.HT:GetRGB())
 			_G.AvailableQuestsText:SetTextColor(self.HT:GetRGB())
 		end
-		-- hook this to colour quest button text
-		self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
-			local btn = self.hooks[this].Acquire(this)
-			hookQuestText(btn)
-			return btn
-		end, true)
+		if not self.isClassic then
+			-- hook this to colour quest button text
+			self:RawHook(_G.QuestFrameGreetingPanel.titleButtonPool, "Acquire", function(this)
+				local btn = self.hooks[this].Acquire(this)
+				self:hookQuestText(btn)
+				return btn
+			end, true)
+			if aObj.isPTR then
+				this.Indicators:DisableDrawLayer("BACKGROUND")
+			end
+		else
+			for i = 1, _G.MAX_NUM_QUESTS do
+				self:hookQuestText(_G["QuestTitleButton" .. i])
+			end
+			-- force recolouring of quest text
+			self:checkShown(_G.QuestFrameGreetingPanel)
+		end
 
 		if self.modBtns then
 			self:skinStdButton{obj=_G.QuestFrameCompleteQuestButton}
@@ -705,6 +721,9 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			self:skinStdButton{obj=_G.QuestFrameDeclineButton}
 			self:skinStdButton{obj=_G.QuestFrameAcceptButton}
 			self:skinStdButton{obj=_G.QuestFrameGreetingGoodbyeButton}
+			if self.isClassic then
+				self:skinStdButton{obj=_G.QuestFrameCancelButton}
+			end
 		end
 
 		self:Unhook(this, "OnShow")
@@ -923,13 +942,17 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-2}
 			end
 		end
-		self:removeInset(_G.TabardFrameMoneyInset)
-		_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
+		if not self.isClassic then
+			self:removeInset(_G.TabardFrameMoneyInset)
+			_G.TabardFrameMoneyBg:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=this, ft=ftype, ri=true}
+		else
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-11, x2=-32, y2=71}
+		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TabardFrameAcceptButton}
 			self:skinStdButton{obj=_G.TabardFrameCancelButton}
 		end
-		self:addSkinFrame{obj=this, ft=ftype, ri=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -941,12 +964,21 @@ aObj.blizzFrames[ftype].TaxiFrame = function(self)
 	self.initialized.TaxiFrame = true
 
 	self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
-		self:removeRegions(this, {1, 2, 3}) -- 1st 3 overlay textures
-		this:DisableDrawLayer("BORDER")
-		self:addSkinFrame{obj=this, ft=ftype}
-		-- resize map to fit skin frame
-		this.InsetBg:SetPoint("TOPLEFT", 0, -24)
-		this.InsetBg:SetPoint("BOTTOMRIGHT", 0 ,0)
+		if not self.isClassic then
+			this:DisableDrawLayer("BORDER")
+			self:removeRegions(this, {1, 2, 3}) -- 1st 3 overlay textures
+			-- resize map to fit skin frame
+			this.InsetBg:SetPoint("TOPLEFT", 0, -24)
+			this.InsetBg:SetPoint("BOTTOMRIGHT", 0 ,0)
+			self:addSkinFrame{obj=this, ft=ftype}
+		else
+			self:removeRegions(this, {1, 2 ,3 ,4 ,5})
+			self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=10, y1=-11, x2=-32, y2=62}
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.TaxiCloseButton}
+			end
+		end
+
 		self:Unhook(this, "OnShow")
 	end)
 

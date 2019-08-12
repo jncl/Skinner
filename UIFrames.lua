@@ -336,16 +336,18 @@ if _G.IsAddOnLoadOnDemand("Blizzard_GarrisonUI") then
 end
 
 -- The following functions are used by several Chat* functions
+aObj.cebRgns1 = {1, 2, 9, 10} -- 1, 9, 10 are font strings, 2 is cursor texture
+aObj.cebRgns2 = {9, 10}
 local function skinChatEB(obj)
 
 	if aObj.prdb.ChatEditBox.style == 1 then -- Frame
-		aObj:keepRegions(obj, {1, 2, 9, 10})
+		aObj:keepRegions(obj, aObj.cebRgns1)
 		aObj:addSkinFrame{obj=obj, ft=ftype, x1=2, y1=-2, x2=-2}
 		obj.sf:SetAlpha(obj:GetAlpha())
 	elseif aObj.prdb.ChatEditBox.style == 2 then -- Editbox
-		aObj:skinEditBox{obj=obj, regs={9, 10}, noHeight=true}
+		aObj:skinEditBox{obj=obj, regs=aObj.cebRgns2, noHeight=true}
 	else -- Borderless
-		aObj:keepRegions(obj, {1, 2, 9, 10})
+		aObj:keepRegions(obj, aObj.cebRgns1)
 		aObj:addSkinFrame{obj=obj, ft=ftype, noBdr=true, x1=5, y1=-4, x2=-5, y2=2}
 		obj.sf:SetAlpha(obj:GetAlpha())
 	end
@@ -1862,6 +1864,64 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 
 end
 
+-- N.B. The following function has been separated from the GarrisonUI skin code as it is used by several Quest Frames
+aObj.blizzFrames[ftype].GarrisonTooltips = function(self)
+	if not self.prdb.GarrisonUI then return end
+
+	self:SecureHookScript(_G.GarrisonFollowerTooltip, "OnShow", function(this)
+		this.PortraitFrame.PortraitRing:SetTexture(nil)
+		this.PortraitFrame.LevelBorder:SetAlpha(0)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.GarrisonFollowerAbilityTooltip, "OnShow", function(this)
+		this.CounterIconBorder:SetTexture(nil)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.GarrisonFollowerAbilityWithoutCountersTooltip, "OnShow", function(this)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.GarrisonFollowerMissionAbilityWithoutCountersTooltip, "OnShow", function(this)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.GarrisonShipyardFollowerTooltip, "OnShow", function(this)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.FloatingGarrisonFollowerTooltip, "OnShow", function(this)
+		this.PortraitFrame.PortraitRing:SetTexture(nil)
+		this.PortraitFrame.LevelBorder:SetAlpha(0)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.FloatingGarrisonShipyardFollowerTooltip, "OnShow", function(this)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.FloatingGarrisonFollowerAbilityTooltip, "OnShow", function(this)
+		this.CounterIconBorder:SetTexture(nil)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+	self:SecureHookScript(_G.FloatingGarrisonMissionTooltip, "OnShow", function(this)
+		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
 aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 	-- RequiredDep: Blizzard_GarrisonTemplates
 	if not self.prdb.GarrisonUI or self.initialized.GarrisonUI then return end
@@ -2420,64 +2480,6 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 
 end
 
--- N.B. The following function has been separated from the GarrisonUI skin code as it is used by several Quest Frames
-aObj.blizzFrames[ftype].GarrisonTooltips = function(self)
-	if not self.prdb.GarrisonUI then return end
-
-	self:SecureHookScript(_G.GarrisonFollowerTooltip, "OnShow", function(this)
-		this.PortraitFrame.PortraitRing:SetTexture(nil)
-		this.PortraitFrame.LevelBorder:SetAlpha(0)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonFollowerAbilityTooltip, "OnShow", function(this)
-		this.CounterIconBorder:SetTexture(nil)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonFollowerAbilityWithoutCountersTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonFollowerMissionAbilityWithoutCountersTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.GarrisonShipyardFollowerTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingGarrisonFollowerTooltip, "OnShow", function(this)
-		this.PortraitFrame.PortraitRing:SetTexture(nil)
-		this.PortraitFrame.LevelBorder:SetAlpha(0)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingGarrisonShipyardFollowerTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingGarrisonFollowerAbilityTooltip, "OnShow", function(this)
-		this.CounterIconBorder:SetTexture(nil)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-	self:SecureHookScript(_G.FloatingGarrisonMissionTooltip, "OnShow", function(this)
-		_G.C_Timer.After(0.1, function() self:add2Table(self.ttList, this) end)
-
-		self:Unhook(this, "OnShow")
-	end)
-
-end
-
 aObj.blizzFrames[ftype].GhostFrame = function(self)
 	if not self.prdb.GhostFrame or self.initialized.GhostFrame then return end
 	self.initialized.GhostFrame = true
@@ -2821,7 +2823,17 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 			self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
 			self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, y1=-3, x2=-3}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+			if not self.isClassic then
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+			else
+				_G.ItemTextScrollFrame:DisableDrawLayer("BACKGROUND")
+				_G.ItemTextScrollFrame:DisableDrawLayer("ARTWORK")
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-12, x2=-31, y2=60}
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.ItemTextCloseButton}
+				end
+			end
+
 		end
 	end)
 
@@ -3040,43 +3052,6 @@ aObj.blizzFrames[ftype].LFGFrame = function(self)
 
 end
 
-aObj.blizzFrames[ftype].LFRFrame = function(self)
-	if not self.prdb.RaidFrame or self.initialized.LFRFrame then return end
-	self.initialized.LFRFrame = true
-
-	self:SecureHookScript(_G.RaidBrowserFrame, "OnShow", function(this)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-		-- LFR Parent Frame
-		-- LFR Queue Frame
-		self:removeInset(_G.LFRQueueFrameRoleInset)
-		self:removeInset(_G.LFRQueueFrameCommentInset)
-		self:removeInset(_G.LFRQueueFrameListInset)
-		_G.LFRQueueFrameCommentExplanation:SetTextColor(self.BT:GetRGB())
-
-		-- Specific List subFrame
-		for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
-			self:skinCheckButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].enableButton}
-			self:skinExpandButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].expandOrCollapseButton, sap=true}
-		end
-		self:skinSlider{obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar}
-
-		-- LFR Browse Frame
-		self:removeInset(_G.LFRBrowseFrameRoleInset)
-		self:skinDropDown{obj=_G.LFRBrowseFrameRaidDropDown}
-		self:skinSlider{obj=_G.LFRBrowseFrameListScrollFrame.ScrollBar, rt="background"}
-		self:keepFontStrings(_G.LFRBrowseFrame)
-
-		-- Tabs (side)
-		for i = 1, 2 do
-			_G["LFRParentFrameSideTab" .. i]:DisableDrawLayer("BACKGROUND")
-			self:addButtonBorder{obj=_G["LFRParentFrameSideTab" .. i]}
-		end
-
-		self:Unhook(this, "OnShow")
-	end)
-
-end
-
 aObj.blizzFrames[ftype].LFGList = function(self)
 	if not self.prdb.PVEFrame or self.initialized.LFGList then return end
 	self.initialized.LFGList = true
@@ -3217,6 +3192,43 @@ aObj.blizzFrames[ftype].LFGList = function(self)
 			self:skinStdButton{obj=this.AcknowledgeButton}
 		end
 		self:addSkinFrame{obj=this, ft=ftype}
+
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
+aObj.blizzFrames[ftype].LFRFrame = function(self)
+	if not self.prdb.RaidFrame or self.initialized.LFRFrame then return end
+	self.initialized.LFRFrame = true
+
+	self:SecureHookScript(_G.RaidBrowserFrame, "OnShow", function(this)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		-- LFR Parent Frame
+		-- LFR Queue Frame
+		self:removeInset(_G.LFRQueueFrameRoleInset)
+		self:removeInset(_G.LFRQueueFrameCommentInset)
+		self:removeInset(_G.LFRQueueFrameListInset)
+		_G.LFRQueueFrameCommentExplanation:SetTextColor(self.BT:GetRGB())
+
+		-- Specific List subFrame
+		for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
+			self:skinCheckButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].enableButton}
+			self:skinExpandButton{obj=_G["LFRQueueFrameSpecificListButton" .. i].expandOrCollapseButton, sap=true}
+		end
+		self:skinSlider{obj=_G.LFRQueueFrameSpecificListScrollFrame.ScrollBar}
+
+		-- LFR Browse Frame
+		self:removeInset(_G.LFRBrowseFrameRoleInset)
+		self:skinDropDown{obj=_G.LFRBrowseFrameRaidDropDown}
+		self:skinSlider{obj=_G.LFRBrowseFrameListScrollFrame.ScrollBar, rt="background"}
+		self:keepFontStrings(_G.LFRBrowseFrame)
+
+		-- Tabs (side)
+		for i = 1, 2 do
+			_G["LFRParentFrameSideTab" .. i]:DisableDrawLayer("BACKGROUND")
+			self:addButtonBorder{obj=_G["LFRParentFrameSideTab" .. i]}
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3827,12 +3839,21 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		_G.LowerFrameLevel(_G.Minimap.sf)
 	end
 
-	-- N.B. copied from SexyMap
-	-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
-	_G.Minimap:SetArchBlobRingScalar(0)
-	_G.Minimap:SetArchBlobRingAlpha(0)
-	_G.Minimap:SetQuestBlobRingScalar(0)
-	_G.Minimap:SetQuestBlobRingAlpha(0)
+	if not self.isClassic then
+		-- N.B. copied from SexyMap
+		-- Removes the circular "waffle-like" texture that shows when using a non-circular minimap in the blue quest objective area.
+		_G.Minimap:SetArchBlobRingScalar(0)
+		_G.Minimap:SetArchBlobRingAlpha(0)
+		_G.Minimap:SetQuestBlobRingScalar(0)
+		_G.Minimap:SetQuestBlobRingAlpha(0)
+	else
+		if self.modBtns then
+			_G.RaiseFrameLevelByTwo(_G.MinimapToggleButton)
+			self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
+			self:skinCloseButton{obj=_G.MinimapToggleButton, noSkin=true}
+		end
+		-- TODO: MiniMapBattlefieldFrame
+	end
 
 	-- Minimap Backdrop Frame
 	self:keepFontStrings(_G.MinimapBackdrop)
@@ -3858,29 +3879,31 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	_G.MinimapZoomOut:ClearAllPoints()
 	_G.MinimapZoomOut:SetPoint("TOPRIGHT", _G.Minimap, "BOTTOMRIGHT", 3, 4)
 
-	-- Difficulty indicators
-	-- hook this to mamage MiniMapInstanceDifficulty texture
-	self:SecureHook("MiniMapInstanceDifficulty_Update", function()
-		local _, _, difficulty, _, maxPlayers, _, _ = _G.GetInstanceInfo()
-		local _, _, isHeroic, _ = _G.GetDifficultyInfo(difficulty)
-		local xOffset = 0
-		if ( maxPlayers >= 10 and maxPlayers <= 19 ) then
-			xOffset = -1
-		end
-		if isHeroic then
-			_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.125, 0.5) -- remove top hanger texture
-			_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, -1)
-		else
-			_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.625, 1) -- remove top hanger texture
-			_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, 5)
-		end
-		difficulty, maxPlayers, isHeroic, xOffset = nil, nil, nil, nil
-	end)
-	self:moveObject{obj=_G.MiniMapInstanceDifficulty, x=6, y=-4}
-	_G.GuildInstanceDifficultyHanger:SetAlpha(0)
-	self:moveObject{obj=_G.GuildInstanceDifficulty, x=7}
-	self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
-	self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
+	if not self.isClassic then
+		-- Difficulty indicators
+		-- hook this to mamage MiniMapInstanceDifficulty texture
+		self:SecureHook("MiniMapInstanceDifficulty_Update", function()
+			local _, _, difficulty, _, maxPlayers, _, _ = _G.GetInstanceInfo()
+			local _, _, isHeroic, _ = _G.GetDifficultyInfo(difficulty)
+			local xOffset = 0
+			if ( maxPlayers >= 10 and maxPlayers <= 19 ) then
+				xOffset = -1
+			end
+			if isHeroic then
+				_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.125, 0.5) -- remove top hanger texture
+				_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, -1)
+			else
+				_G.MiniMapInstanceDifficultyTexture:SetTexCoord(0.0, 0.25, 0.625, 1) -- remove top hanger texture
+				_G.MiniMapInstanceDifficultyText:SetPoint("CENTER", xOffset, 5)
+			end
+			difficulty, maxPlayers, isHeroic, xOffset = nil, nil, nil, nil
+		end)
+		self:moveObject{obj=_G.MiniMapInstanceDifficulty, x=6, y=-4}
+		_G.GuildInstanceDifficultyHanger:SetAlpha(0)
+		self:moveObject{obj=_G.GuildInstanceDifficulty, x=7}
+		self:getRegion(_G.MiniMapChallengeMode, 1):SetTexCoord(0, 1, 0.27, 1.27) -- remove top hanger texture
+		self:moveObject{obj=_G.MiniMapChallengeMode, x=6, y=-12}
+	end
 
 	-- move BuffFrame
 	self:moveObject{obj=_G.BuffFrame, x=-40}
@@ -3892,8 +3915,10 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 		end, true)
 	end
 
-	self:moveObject{obj=_G.GarrisonLandingPageMinimapButton, x=0, y=-20}
-	_G.GarrisonLandingPageMinimapButton.AlertBG:SetTexture(nil)
+	if not self.isClassic then
+		self:moveObject{obj=_G.GarrisonLandingPageMinimapButton, x=0, y=-20}
+		_G.GarrisonLandingPageMinimapButton.AlertBG:SetTexture(nil)
+	end
 
 end
 
@@ -3970,19 +3995,41 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	-- skin Minimap children, allow for delayed addons to be loaded (e.g. Baggins)
 	_G.C_Timer.After(0.5, function() mmKids(_G.Minimap) end)
 
-	-- Calendar button
-	makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+	if not self.isClassic then
+		-- Calendar button
+		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+		-- MinimapBackdrop
+		_G.MiniMapTrackingBackground:SetTexture(nil)
+		_G.MiniMapTrackingButtonBorder:SetTexture(nil)
+		if not minBtn then
+			_G.MiniMapTracking:SetScale(0.9)
+			self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype, nb=true}
+		end
+		_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
+		self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
+		-- skin any moved Minimap buttons if required
+		if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
+		-- show the Bongos minimap icon if required
+		if IsAddOnLoaded("Bongos") then _G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
+	else
+		-- remove ring from GameTimeFrame texture
+		self:RawHook(_G.GameTimeTexture, "SetTexCoord", function(this, minx, maxx, miny, maxy)
+			minx, maxx, miny, maxy = minx + 0.075, maxx - 0.075, miny + 0.175, maxy - 0.2
+			self.hooks[this].SetTexCoord(this, minx, maxx, miny, maxy)
+		end, true)
+		_G.C_Timer.After(0.25, function()
+			_G.GameTimeFrame:SetSize(34, 34)
+			self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, ofs=4}
+			self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-6}
+			_G.GameTimeFrame.timeOfDay = 0
+			_G.GameTimeFrame_Update(_G.GameTimeFrame)
+		end)
+		_G.MiniMapTrackingBorder:SetTexture(nil)
+		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, x1=4, y1=-4}
+	end
 
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	_G.MiniMapMailFrame:SetSize(26, 26)
-
-	-- MinimapBackdrop
-	_G.MiniMapTrackingBackground:SetTexture(nil)
-	_G.MiniMapTrackingButtonBorder:SetTexture(nil)
-	if not minBtn then
-		_G.MiniMapTracking:SetScale(0.9)
-		self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype}
-	end
 
 	local function skinZoom(obj)
 		obj:GetNormalTexture():SetTexture(nil)
@@ -4005,15 +4052,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MinimapZoomIn.sb:SetText(self.modUIBtns.plus)
 	skinZoom(_G.MinimapZoomOut)
 	_G.MinimapZoomOut.sb:SetText(self.modUIBtns.minus)
-
-	_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
-	self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
-
-	-- skin any moved Minimap buttons if required
-	if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
-
-	-- show the Bongos minimap icon if required
-	if IsAddOnLoaded("Bongos") then _G.Bongos3MinimapButton.icon:SetDrawLayer("ARTWORK") end
 
 	-- skin other minimap buttons as required
 	if not minBtn then
@@ -4052,18 +4090,20 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		self.DBIcon.RegisterCallback(self, "LibDBIcon_IconCreated", skinMMBtn)
 	end
 
-	-- Garrison Landing Page Minimap button
-	local function skinGLPM(btn)
-		if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then -- BfA
-			makeBtnSquare(btn, 0.30, 0.70, 0.26, 0.70)
-		else
-			makeBtnSquare(btn, 0.25, 0.76, 0.32, 0.685)
+	if not self.isClassic then
+		-- Garrison Landing Page Minimap button
+		local function skinGLPM(btn)
+			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then -- BfA
+				makeBtnSquare(btn, 0.30, 0.70, 0.26, 0.70)
+			else
+				makeBtnSquare(btn, 0.25, 0.76, 0.32, 0.685)
+			end
 		end
+		skinGLPM(_G.GarrisonLandingPageMinimapButton)
+		self:SecureHook("GarrisonLandingPageMinimapButton_UpdateIcon", function(this)
+			skinGLPM(this)
+		end)
 	end
-	skinGLPM(_G.GarrisonLandingPageMinimapButton)
-	self:SecureHook("GarrisonLandingPageMinimapButton_UpdateIcon", function(this)
-		skinGLPM(this)
-	end)
 
 end
 
@@ -4135,11 +4175,23 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 
 	local function skinNamePlate(frame)
 
+
 		local nP = frame.UnitFrame
 		if nP then
-			-- healthBar
-			aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
-			aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}--, nilFuncs=true}
+			if not self.isClassic then
+				-- handle in combat
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {skinNamePlate, {frame}})
+				    return
+				end
+				-- healthBar
+				aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background, otherTex={nP.healthBar.myHealPrediction, nP.healthBar.otherHealPrediction}}
+				aObj:skinStatusBar{obj=nP.castBar, fi=0, bgTex=nP.castBar.background}--, nilFuncs=true}
+			else
+				-- healthBar
+				aObj:skinStatusBar{obj=nP.healthBar, fi=0, bgTex=nP.healthBar.background}
+				nP.healthBar.border:DisableDrawLayer("ARTWORK")
+			end
 		end
 		nP = nil
 
@@ -4165,24 +4217,26 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 		mF = nil
 	end
 
-	-- DeathKnight (nothing to skin)
-	-- Mage (nothing to skin)
-	-- Monk
-	for i = 1, #_G.ClassNameplateBarWindwalkerMonkFrame.Chi do
-		_G.ClassNameplateBarWindwalkerMonkFrame.Chi[i]:DisableDrawLayer("BACKGROUND")
-	end
-	self:skinStatusBar{obj=_G.ClassNameplateBrewmasterBarFrame, fi=0}
-	-- Paladin
-	for i = 1, #_G.ClassNameplateBarPaladinFrame.Runes do
-		_G.ClassNameplateBarPaladinFrame.Runes[i].OffTexture:SetTexture(nil)
-	end
-	-- Rogue/Druid
-	for i = 1, #_G.ClassNameplateBarRogueDruidFrame.ComboPoints do
-		_G.ClassNameplateBarRogueDruidFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
-	end
-	-- Warlock
-	for i = 1, #_G.ClassNameplateBarWarlockFrame.Shards do
-		_G.ClassNameplateBarWarlockFrame.Shards[i].ShardOff:SetTexture(nil)
+	if not self.isClassic then
+		-- DeathKnight (nothing to skin)
+		-- Mage (nothing to skin)
+		-- Monk
+		for i = 1, #_G.ClassNameplateBarWindwalkerMonkFrame.Chi do
+			_G.ClassNameplateBarWindwalkerMonkFrame.Chi[i]:DisableDrawLayer("BACKGROUND")
+		end
+		self:skinStatusBar{obj=_G.ClassNameplateBrewmasterBarFrame, fi=0}
+		-- Paladin
+		for i = 1, #_G.ClassNameplateBarPaladinFrame.Runes do
+			_G.ClassNameplateBarPaladinFrame.Runes[i].OffTexture:SetTexture(nil)
+		end
+		-- Rogue/Druid
+		for i = 1, #_G.ClassNameplateBarRogueDruidFrame.ComboPoints do
+			_G.ClassNameplateBarRogueDruidFrame.ComboPoints[i]:DisableDrawLayer("BACKGROUND")
+		end
+		-- Warlock
+		for i = 1, #_G.ClassNameplateBarWarlockFrame.Shards do
+			_G.ClassNameplateBarWarlockFrame.Shards[i].ShardOff:SetTexture(nil)
+		end
 	end
 
 	-- tooltip
@@ -4816,16 +4870,24 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 		end
 
 		-- RaidInfo Frame
-		self:addSkinFrame{obj=_G.RaidInfoInstanceLabel, ft=ftype, kfs=true}
-		self:addSkinFrame{obj=_G.RaidInfoIDLabel, ft=ftype, kfs=true}
-		self:skinSlider{obj=_G.RaidInfoScrollFrame.scrollBar}
-		if self.modBtns then
-			self:skinCloseButton{obj=_G.RaidInfoCloseButton}
-			self:skinStdButton{obj=_G.RaidInfoExtendButton}
-			self:skinStdButton{obj=_G.RaidInfoCancelButton}
+		if not self.isClassic then
+			self:addSkinFrame{obj=_G.RaidInfoInstanceLabel, ft=ftype, kfs=true}
+			self:addSkinFrame{obj=_G.RaidInfoIDLabel, ft=ftype, kfs=true}
+			self:skinSlider{obj=_G.RaidInfoScrollFrame.scrollBar}
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.RaidInfoCloseButton}
+				self:skinStdButton{obj=_G.RaidInfoExtendButton}
+				self:skinStdButton{obj=_G.RaidInfoCancelButton}
+			end
+			self:removeNineSlice(_G.RaidInfoFrame.Border)
+			self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, nb=true, hdr=true}
+		else
+			self:skinSlider{obj=_G.RaidInfoScrollFrame.ScrollBar}
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.RaidInfoCloseButton}
+			end
+			self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, nb=true, hdr=true}
 		end
-		self:removeNineSlice(_G.RaidInfoFrame.Border)
-		self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, hdr=true}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -5101,7 +5163,7 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 		self:skinDropDown{obj=_G.TimeManagerAlarmAMPMDropDown, x2=-5}
 		self:skinEditBox{obj=_G.TimeManagerAlarmMessageEditBox, regs={6}}
 		self:removeRegions(_G.TimeManagerAlarmEnabledButton, {6, 7})
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=1}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.TimeManagerStopwatchCheck} -- This isn't really a checkbutton
 		end
@@ -5185,10 +5247,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 		if self.modBtnBs then
 			-- if it has an ItemTooltip then add a button border
-			if tTip.ItemTooltip
-			-- and (not self.isClassic
-			-- and tTip ~= _G.QuestMapFrame.QuestsFrame.WarCampaignTooltip)
-			then
+			if tTip.ItemTooltip	then
 				self:addButtonBorder{obj=tTip.ItemTooltip, relTo=tTip.ItemTooltip.Icon, reParent={tTip.ItemTooltip.Count}}
 			end
 		end
@@ -5298,7 +5357,11 @@ aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
 	self.initialized.DropDownPanels = true
 
 	local function skinDDMenu(frame)
-		aObj:removeNineSlice(frame.Border)
+		if not aObj.isClassic then
+			aObj:removeNineSlice(frame.Border)
+		else
+			_G[frame:GetName() .. "Backdrop"]:SetBackdrop(nil)
+		end
 		_G[frame:GetName() .. "MenuBackdrop"]:SetBackdrop(nil)
 		aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, nb=true}
 	end
@@ -5415,36 +5478,41 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 		end
 	end
 
-	local function getWidgets(widgetContainer)
-		local count = 0
-		for widget in widgetContainer.widgetPools:EnumerateActive() do
-			count = count + 1
-			skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
+	if not self.isClassic then
+		local function getWidgets(widgetContainer)
+			local count = 0
+			for widget in widgetContainer.widgetPools:EnumerateActive() do
+				count = count + 1
+				skinWidget(widget, _G.UIWidgetManager:GetWidgetTypeInfo(widget.widgetType))
+			end
+			return count
 		end
-		return count
+		-- hook this to skin new widgets
+		self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
+			-- aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
+			getWidgets(widgetContainer)
+		end)
+		-- handle existing WidgetContainers
+		local ieCnt, shCnt
+		self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
+			-- name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceMapID, instanceGroupSize[, lfgDungeonsID] = GetInstanceInfo
+			-- aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
+
+			-- handle the DoubleStatusBar widget on Island Expeditions
+			ieCnt = getWidgets(_G.UIWidgetTopCenterContainerFrame)
+			-- handle ScenarioHeaderCurrenciesAndBackground
+			shCnt = getWidgets(_G.ScenarioStageBlock.WidgetContainer)
+			if ieCnt > 0
+			and shCnt > 0 then
+				self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
+				ieCnt, shCnt = nil, nil
+			end
+		end)
+	else
+		self:SecureHook(_G.UIWidgetManager, "CreateWidget", function(this, widgetID, widgetSetID, widgetType)
+			skinWidget(this.widgetIdToFrame[widgetID], this.widgetVisTypeInfo[widgetType].visInfoDataFunction(widgetID))
+		end)
 	end
-	-- hook this to skin new widgets
-	self:SecureHook(_G.UIWidgetManager, "OnWidgetContainerRegistered", function(this, widgetContainer)
-		-- aObj:Debug("UIWM OnWidgetContainerRegistered: [%s, %s]", this, widgetContainer)
-		getWidgets(widgetContainer)
-	end)
-
-	-- handle existing WidgetContainers
-	local ieCnt, shCnt
-	self.RegisterCallback("UIWidgetsUI", "Player_Entering_World", function(this)
-		-- name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceMapID, instanceGroupSize[, lfgDungeonsID] = GetInstanceInfo
-		-- aObj:Debug("PEW - InstanceInfo: [%s, %s, %s, %s, %s, %s, %s, %s, %s, %s]", _G.GetInstanceInfo())
-
-		-- handle the DoubleStatusBar widget on Island Expeditions
-		ieCnt = getWidgets(_G.UIWidgetTopCenterContainerFrame)
-		-- handle ScenarioHeaderCurrenciesAndBackground
-		shCnt = getWidgets(_G.ScenarioStageBlock.WidgetContainer)
-		if ieCnt > 0
-		and shCnt > 0 then
-			self.UnregisterCallback("UIWidgetsUI", "Player_Entering_World")
-			ieCnt, shCnt = nil, nil
-		end
-	end)
 
 end
 

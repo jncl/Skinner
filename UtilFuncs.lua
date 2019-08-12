@@ -285,7 +285,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	assert(funcType, "Unknown functionType checkAndRun\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	-- self:Debug("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
+	self:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -606,6 +606,22 @@ function aObj:hook(obj, method, func)
 	if not self:IsHooked(obj, method) then
 		self:Hook(obj, method, func)
 	end
+
+end
+
+function aObj:hookQuestText(btn)
+
+	self:rawHook(btn, "SetFormattedText", function(this, fmtString, text)
+		-- aObj:Debug("SetFormattedText: [%s, %s, %s]", this, fmtString, text)
+		if fmtString == _G.NORMAL_QUEST_DISPLAY then
+			fmtString = aObj.NORMAL_QUEST_DISPLAY
+		elseif fmtString == _G.TRIVIAL_QUEST_DISPLAY then
+			fmtString = aObj.TRIVIAL_QUEST_DISPLAY
+		elseif fmtString == _G.IGNORED_QUEST_DISPLAY then
+			fmtString = aObj.IGNORED_QUEST_DISPLAY
+		end
+		return aObj.hooks[this].SetFormattedText(this, fmtString, text)
+	end, true)
 
 end
 
