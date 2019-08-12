@@ -366,8 +366,6 @@ function aObj:OnEnable()
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	-- track when Trade Skill is opened (used by MrTrader_SkillWindow)
 	self:RegisterEvent("TRADE_SKILL_SHOW")
-	-- track when trade frame is opened (used by ProfessionTabs)
-	self:RegisterEvent("TRADE_SHOW")
 
 	if _G.UnitLevel("player") >= _G.MAX_PLAYER_LEVEL - 5
 	and not _G.IsTrialAccount()

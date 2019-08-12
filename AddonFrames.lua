@@ -62,8 +62,6 @@ aObj.libsToSkin = {
 }
 -- store other AddOns not previously referenced, here so they can be enabled/disabled on the options panel
 local otherAddons = {
-	"ProfessionTabs_TF",
-	"ProfessionTabs_TSF",
 	"ReagentMaker",
 	"TradeSkillDW",
 }
@@ -209,7 +207,6 @@ function aObj:TRADE_SKILL_SHOW()
 	-- self:Debug("TRADE_SKILL_SHOW")
 
 	self:checkAndRunAddOn("ReagentMaker")
-	self:checkAndRunAddOn("ProfessionTabs_TSF")
 	self:checkAndRunAddOn("TradeSkillDW")
 
 	if _G.Auctionator_Search then
@@ -217,15 +214,6 @@ function aObj:TRADE_SKILL_SHOW()
 	end
 
 	self:UnregisterEvent("TRADE_SKILL_SHOW")
-
-end
-
-function aObj:TRADE_SHOW()
-	-- self:Debug("TRADE_SHOW")
-
-	self:checkAndRun("ProfessionTabs_TF", "o")
-
-	self:UnregisterEvent("TRADE_SHOW")
 
 end
 
