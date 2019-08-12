@@ -1198,6 +1198,9 @@ local function __skinEditBox(opts)
 		elseif opts.obj.Instructions then -- e.g. InputBoxInstructionsTemplate (WoD)
 			opts.obj.Instructions:ClearAllPoints()
 			opts.obj.Instructions:SetPoint("Left", opts.obj, "Left", 6, 0)
+		elseif opts.obj.PromptText then -- e.g. BroadcastFrame EditBox (BfA)
+			opts.obj.PromptText:ClearAllPoints()
+			opts.obj.PromptText:SetPoint("Left", opts.obj, "Left", 6, 0)
 		elseif opts.obj.icon then
 			aObj:moveObject{obj=opts.obj.icon, x=4} -- e.g. FriendsFrameBroadcastInput
 		elseif _G[opts.obj:GetName() .. "SearchIcon"] then
