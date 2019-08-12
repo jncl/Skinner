@@ -382,7 +382,9 @@ aObj.blizzFrames[ftype].GossipFrame = function(self)
 	self:SecureHookScript(_G.GossipFrame, "OnShow", function(this)
 		self:keepFontStrings(_G.GossipFrameGreetingPanel)
 		_G.GossipGreetingText:SetTextColor(self.HT:GetRGB())
-		self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.GossipFrameGreetingGoodbyeButton}
+		end
 		self:skinSlider{obj=_G.GossipGreetingScrollFrame.ScrollBar, rt="artwork"}
 		for i = 1, _G.NUMGOSSIPBUTTONS do
 			self:getRegion(_G["GossipTitleButton" .. i], 3):SetTextColor(self.BT:GetRGB())
@@ -972,10 +974,13 @@ aObj.blizzLoDFrames[ftype].TrainerUI = function(self)
 		self:skinSlider{obj=_G.ClassTrainerScrollFrameScrollBar, wdth=-4}
 		for i = 1, #this.scrollFrame.buttons do
 			this.scrollFrame.buttons[i]:GetNormalTexture():SetTexture(nil)
-			self:addButtonBorder{obj=this.scrollFrame.buttons[i], relTo=this.scrollFrame.buttons[i].icon}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.scrollFrame.buttons[i], relTo=this.scrollFrame.buttons[i].icon}
+			end
 		end
 		self:removeInset(this.bottomInset)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+
 		self:Unhook(this, "OnShow")
 	end)
 

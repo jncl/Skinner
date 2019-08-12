@@ -2115,10 +2115,13 @@ aObj.blizzFrames[ftype].DressUpFrame = function(self)
 	self:SecureHookScript(_G.SideDressUpFrame, "OnShow", function(this)
 		self:removeRegions(this, {1, 2, 3, 4})
 		_G.SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND") -- model controls background
-		self:skinStdButton{obj=_G.SideDressUpModelResetButton}
 		self:removeRegions(_G.SideDressUpModelCloseButton, {5}) -- corner texture
-		self:skinCloseButton{obj=_G.SideDressUpModelCloseButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=-2, y1=-3, x2=-2}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.SideDressUpModelResetButton}
+			self:skinCloseButton{obj=_G.SideDressUpModelCloseButton}
+		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -2480,6 +2483,10 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, Ignore & RaF
 			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
 			_G.RaiseFrameLevel(this)
+			if self.modBtns then
+				self:skinStdButton{obj=this.OldRAFRewardsButton}
+			end
+
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.FriendsTabHeader)

@@ -853,22 +853,32 @@ aObj.blizzLoDFrames[ftype].BindingUI = function(self)
 
 	self:SecureHookScript(_G.KeyBindingFrame, "OnShow", function(this)
 		self:removeNineSlice(this.BG)
-		self:skinCheckButton{obj=this.characterSpecificButton}
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.characterSpecificButton}
+		end
 		self:keepRegions(this.categoryList, {})
 		this.categoryList:SetBackdrop(self.Backdrop[10])
 		this.categoryList:SetBackdropBorderColor(self.bbClr:GetRGBA())
 		this.bindingsContainer:SetBackdrop(self.Backdrop[10])
 		this.bindingsContainer:SetBackdropBorderColor(self.bbClr:GetRGBA())
 		self:skinSlider{obj=this.scrollFrame.ScrollBar, rt={"background", "border"}}
-		for i = 1, #this.keyBindingRows do
-			self:skinStdButton{obj=this.keyBindingRows[i].key1Button}
-			self:skinStdButton{obj=this.keyBindingRows[i].key2Button}
-		end
-		self:skinStdButton{obj=this.unbindButton}
-		self:skinStdButton{obj=this.okayButton}
-		self:skinStdButton{obj=this.cancelButton}
-		self:skinStdButton{obj=this.defaultsButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
+		if self.modBtns then
+			for i = 1, #this.keyBindingRows do
+				self:skinStdButton{obj=this.keyBindingRows[i].key1Button}
+				self:skinStdButton{obj=this.keyBindingRows[i].key2Button}
+			end
+			self:skinStdButton{obj=this.unbindButton}
+			self:skinStdButton{obj=this.okayButton}
+			self:skinStdButton{obj=this.cancelButton}
+			self:skinStdButton{obj=this.defaultsButton}
+			-- hook this to handle custom buttons (e.g. Voice Chat: Push to Talk)
+			self:SecureHook("BindingButtonTemplate_SetupBindingButton", function(binding, button)
+				if button.GetCustomBindingType then
+					self:skinStdButton{obj=button}
+				end
+			end)
+		end
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1398,11 +1408,13 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			self:skinCheckButton{obj=_G.CombatConfigColorsColorizeEntireLineCheck}
 			-- Formatting
 			self:skinCheckButton{obj=_G.CombatConfigFormattingShowTimeStamp}
-			self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
-			self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
-			self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
-			self:skinCheckButton{obj=_G.CombatConfigFormattingItemNames}
 			self:skinCheckButton{obj=_G.CombatConfigFormattingFullText}
+			if not self.isClassic then
+				self:skinCheckButton{obj=_G.CombatConfigFormattingShowBraces}
+				self:skinCheckButton{obj=_G.CombatConfigFormattingUnitNames}
+				self:skinCheckButton{obj=_G.CombatConfigFormattingSpellNames}
+				self:skinCheckButton{obj=_G.CombatConfigFormattingItemNames}
+			end
 		end
 
 		-- Settings
