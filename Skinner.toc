@@ -1,4 +1,4 @@
-﻿## Interface: 80200
+﻿## Interface: 80205
 ## Title: Skinner
 ## Notes: Changes the look of the default UI
 ## Notes-esES: Cambia el aspecto del UI predeterminado
