@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Mapster") then return end
 local _G = _G
 
-aObj.addonsToSkin.Mapster = function(self) -- v 1.8.1
+aObj.addonsToSkin.Mapster = function(self) -- v 1.8.4
 
 	local Mapster = _G.LibStub("AceAddon-3.0"):GetAddon("Mapster", true)
 	if not Mapster then return end
@@ -16,7 +16,9 @@ aObj.addonsToSkin.Mapster = function(self) -- v 1.8.1
 		self:addSkinFrame{obj=_G.WorldMapFrame.BorderFrame, ft="a", kfs=true, nb=true, ofs=1}
 	end
 
-	if self.modBtns then
+	if self.modBtns
+	and Mapster.optionsButton
+	then
 		self:skinStdButton{obj=Mapster.optionsButton}
 	end
 
