@@ -4745,9 +4745,6 @@ aObj.blizzFrames[ftype].QuestMap = function(self)
 
 		-- Details Frame
 		self:keepFontStrings(this.DetailsFrame)
-		if aObj.isPTR then
-			this.DetailsFrame.Indicators:DisableDrawLayer("BACKGROUND")
-		end
 		self:keepFontStrings(this.DetailsFrame.RewardsFrame)
 		self:getRegion(this.DetailsFrame.RewardsFrame, 3):SetTextColor(self.HT:GetRGB())
 		self:skinSlider{obj=this.DetailsFrame.ScrollFrame.ScrollBar, wdth=-4}
@@ -5677,7 +5674,8 @@ or aObj.isPTR
 or _G.GetCVar("portal") == "test"
 then
 
-	if _G.PTR_IssueReporter	then
+	local PTR_IR = _G.PTR_IssueReporter
+	if PTR_IR then
 
 		local function skinFrame(frame, ofs)
 			if frame.Background then frame.Background:SetTexture(nil) end
@@ -5686,9 +5684,7 @@ then
 			aObj:addSkinFrame{obj=frame, ft=ftype, nb=true, ofs=ofs or 4}
 		end
 
-		local PTR_IR = _G.PTR_IssueReporter
-
-		aObj:SecureHook(PTR_IR, "CreateMainView", function()
+		aObj:SecureHook(PTR_IR, "CreateMainView", function(this)
 			skinFrame(PTR_IR)
 			skinFrame(PTR_IR.Confused)
 			skinFrame(PTR_IR.ReportBug)

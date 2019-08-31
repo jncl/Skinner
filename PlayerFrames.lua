@@ -2489,7 +2489,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.FriendsFrameStatusDropDownStatus:SetAlpha(1) -- display status icon
 			_G.PanelTemplates_SetNumTabs(this, 3) -- adjust for Friends, Ignore & RaF
 			self:skinTabs{obj=this, up=true, lod=true, x1=0, y1=-5, x2=0, y2=-5}
-			self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip, ftype)
+			if not aObj.isPTR then
+				self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip, ftype)
+			end
 			_G.RaiseFrameLevel(this)
 
 			self:Unhook(this, "OnShow")

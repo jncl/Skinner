@@ -703,9 +703,6 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 				self:hookQuestText(btn)
 				return btn
 			end, true)
-			if aObj.isPTR then
-				this.Indicators:DisableDrawLayer("BACKGROUND")
-			end
 		else
 			for i = 1, _G.MAX_NUM_QUESTS do
 				self:hookQuestText(_G["QuestTitleButton" .. i])
