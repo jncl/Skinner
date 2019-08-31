@@ -3413,6 +3413,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				bar.Tick:GetHighlightTexture():SetTexture(nil)
 			end
 		end
+		bar = nil
 
 		-- StanceBar Frame
 		self:keepFontStrings(_G.StanceBarFrame)
@@ -3482,6 +3483,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				btn = nil
 			end
 
+
 		end
 
 	end
@@ -3509,6 +3511,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 			if not aObj:isAddonEnabled("Tukui") then
 				self:nilTexture(this.button.style, true)
 			end
+
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.ExtraActionBarFrame)
