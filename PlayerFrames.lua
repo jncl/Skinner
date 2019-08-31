@@ -1458,7 +1458,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 			frame:DisableDrawLayer("BACKGROUND")
 
-			aObj:skinDropDown{obj=frame.OptionsList.TypeDropdown}
 			aObj:skinDropDown{obj=frame.OptionsList.ClubFocusDropdown}
 			aObj:skinDropDown{obj=frame.OptionsList.ClubSizeDropdown}
 			aObj:skinDropDown{obj=frame.OptionsList.SortByDropdown}
@@ -1528,20 +1527,22 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				end)
 			end
 
-			if aObj.modBtns then
-				aObj:skinStdButton{obj=frame.PendingClubs}
-			end
-
 			aObj:removeNineSlice(frame.InsetFrame.NineSlice)
 			frame.InsetFrame.Bg:SetTexture(nil)
 
+			-- Tabs (RHS)
+			self:removeRegions(frame.ClubFinderSearchTab, {1})
+			self:removeRegions(frame.ClubFinderPendingTab, {1})
+			if self.modBtnBs then
+				self:addButtonBorder{obj=frame.ClubFinderSearchTab}
+				self:addButtonBorder{obj=frame.ClubFinderPendingTab}
+			end
+
 		end
 
-		-- .GuildFinderFrame (move from below)
 		skinCFGaCF(cFrame.GuildFinderFrame)
 
-		-- .CommunityAndGuildFinderFrame
-		skinCFGaCF(cFrame.CommunityAndGuildFinderFrame)
+		skinCFGaCF(cFrame.CommunityFinderFrame)
 
 	end
 
