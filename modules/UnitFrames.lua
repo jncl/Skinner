@@ -11,9 +11,8 @@ local defaults = {
 		arena = false,
 		focus = false,
 		party = false,
-		pet = false,
-		petlevel = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and false or nil,
-		petspec = (aObj.uCls == "HUNTER") and true or nil,
+		pet = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and false or nil,
+		petspec = aObj.uCls == "HUNTER" and true or nil,
 		player = false,
 		target = false,
 	}
@@ -537,6 +536,7 @@ function module:adjustUnitFrames(opt)
 		self:skinPlayerF()
 	elseif opt == "pet"
 	or opt == "petspec"
+	or opt == "petlvl"
 	then
 		self:skinPetF()
 		self:skinPartyTooltip()
@@ -563,6 +563,8 @@ function module:GetOptions()
 		set = function(info, value)
 			if not module:IsEnabled() then module:Enable() end
 			db[info[#info]] = value
+			if info[#info] == "petspec" then db.pet = true end -- enable pet frame when enabled
+			if info[#info] == "petlvl" then db.pet = true end -- enable pet frame when enabled (Classic Support)
 			module:adjustUnitFrames(info[#info])
 		end,
 		args = {
@@ -572,27 +574,17 @@ function module:GetOptions()
 				name = aObj.L["Player"],
 				desc = aObj.L["Toggle the skin of the Player UnitFrame"],
 			},
-			pet = {
+			pet = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and {
 				type = "toggle",
 				order = 2,
 				name = aObj.L["Pet"],
 				desc = aObj.L["Toggle the skin of the Pet UnitFrame"],
-				set = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and function(info, value)
-					db[info[#info]] = value
-					if not value then db.petlevel = false end -- disable petlevel when disabled
-					module:adjustUnitFrames(info[#info])
-				end or nil,
-			},
-			petspec = (aObj.uCls == "HUNTER") and {
+			} or nil,
+			petspec = aObj.uCls == "HUNTER" and {
 				type = "toggle",
 				order = 3,
 				name = aObj.L["Pet Spec"],
 				desc = aObj.L["Toggle the Pet Spec on the Pet Frame"],
-				set = function(info, value)
-					db[info[#info]] = value
-					if value then db.pet = true end -- enable pet frame when enabled
-					module:adjustUnitFrames(info[#info])
-				end,
 			} or nil,
 			target = {
 				type = "toggle",

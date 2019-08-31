@@ -3312,7 +3312,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 	self.initialized.MailFrame = true
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
-		self:skinTabs{obj=this}
+		self:skinTabs{obj=this, ignore=self.isClassic and true or nil}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
 		-- N.B. Item buttons have IconBorder textures
@@ -4018,14 +4018,15 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			self.hooks[this].SetTexCoord(this, minx, maxx, miny, maxy)
 		end, true)
 		_G.C_Timer.After(0.25, function()
-			_G.GameTimeFrame:SetSize(34, 34)
+			_G.GameTimeFrame:SetSize(28, 28)
 			self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, ofs=4}
-			self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-6}
+			self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-2}
 			_G.GameTimeFrame.timeOfDay = 0
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, x1=4, y1=-4}
+		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10}, x1=4, y1=-3}
+		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
 
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
@@ -4870,24 +4871,16 @@ aObj.blizzFrames[ftype].RaidFrame = function(self)
 		end
 
 		-- RaidInfo Frame
-		if not self.isClassic then
-			self:addSkinFrame{obj=_G.RaidInfoInstanceLabel, ft=ftype, kfs=true}
-			self:addSkinFrame{obj=_G.RaidInfoIDLabel, ft=ftype, kfs=true}
-			self:skinSlider{obj=_G.RaidInfoScrollFrame.scrollBar}
-			if self.modBtns then
+		self:addSkinFrame{obj=_G.RaidInfoInstanceLabel, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=_G.RaidInfoIDLabel, ft=ftype, kfs=true}
+		self:skinSlider{obj=_G.RaidInfoScrollFrame.scrollBar}
+		if self.modBtns then
 				self:skinCloseButton{obj=_G.RaidInfoCloseButton}
 				self:skinStdButton{obj=_G.RaidInfoExtendButton}
 				self:skinStdButton{obj=_G.RaidInfoCancelButton}
 			end
-			self:removeNineSlice(_G.RaidInfoFrame.Border)
-			self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, nb=true, hdr=true}
-		else
-			self:skinSlider{obj=_G.RaidInfoScrollFrame.ScrollBar}
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.RaidInfoCloseButton}
-			end
-			self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, nb=true, hdr=true}
-		end
+		self:removeNineSlice(_G.RaidInfoFrame.Border)
+		self:addSkinFrame{obj=_G.RaidInfoFrame, ft=ftype, kfs=true, nb=true, hdr=true}
 
 		self:Unhook(this, "OnShow")
 	end)

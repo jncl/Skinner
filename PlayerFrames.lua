@@ -3060,11 +3060,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 
 	self:SecureHookScript(_G.InspectFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, lod=true}
-		if not self.isClassic then
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
-		else
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-12, x2=-31, y2=71}
-		end
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		-- send message when UI is skinned (used by oGlow skin)
 		self:SendMessage("InspectUI_Skinned", self)
 
@@ -3075,14 +3071,9 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 		_G.InspectModelFrame:DisableDrawLayer("BACKGROUND")
 		_G.InspectModelFrame:DisableDrawLayer("BORDER")
 		_G.InspectModelFrame:DisableDrawLayer("OVERLAY")
-		if not self.isClassic then
-			_G.InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
-			if self.modBtns then
-				self:skinStdButton{obj=this.ViewButton}
-			end
-		else
-			self:makeMFRotatable(_G.InspectModelFrame)
-			this:DisableDrawLayer("BORDER")
+		_G.InspectModelFrame.controlFrame:DisableDrawLayer("BACKGROUND")
+		if self.modBtns then
+			self:skinStdButton{obj=this.ViewButton}
 		end
 		if self.modBtnBs then
 			self:SecureHook("InspectPaperDollItemSlotButton_Update", function(btn)
@@ -3102,8 +3093,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	if not self.isClassic then
-		self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
 			for i, slot in ipairs(this.Slots) do
 				slot.Border:SetTexture(nil)
@@ -3116,7 +3106,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.InspectTalentFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
 			this.InspectSpec.ring:SetTexture(nil)
 			self:makeIconSquare(this.InspectSpec, "specIcon", true)
@@ -3137,19 +3127,12 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 
 			self:Unhook(this, "OnShow")
 		end)
-		self:SecureHookScript(_G.InspectGuildFrame, "OnShow", function(this)
+	self:SecureHookScript(_G.InspectGuildFrame, "OnShow", function(this)
 			_G.InspectGuildFrameBG:SetAlpha(0)
 			this.Points:DisableDrawLayer("BACKGROUND")
 
 			self:Unhook(this, "OnShow")
 		end)
-	else
-		self:SecureHookScript(_G.InspectHonorFrame, "OnShow", function(this)
-			self:removeRegions(this, {1, 2, 3, 4, 5, 6, 7, 8})
-
-			self:Unhook(this, "OnShow")
-		end)
-	end
 
 end
 
@@ -4330,13 +4313,8 @@ aObj.blizzFrames[ftype].StackSplit = function(self)
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=9, y1=-12, x2=-6, y2=12}
 		end
 		if self.modBtns then
-			if not self.isClassic then
-				self:skinStdButton{obj=_G.StackSplitFrame.OkayButton}
-				self:skinStdButton{obj=_G.StackSplitFrame.CancelButton}
-			else
-				self:skinStdButton{obj=_G.StackSplitOkayButton}
-				self:skinStdButton{obj=_G.StackSplitCancelButton}
-			end
+			self:skinStdButton{obj=_G.StackSplitFrame.OkayButton}
+			self:skinStdButton{obj=_G.StackSplitFrame.CancelButton}
 		end
 
 		self:Unhook(this, "OnShow")

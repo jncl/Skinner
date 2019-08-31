@@ -36,48 +36,49 @@ do
 	-- store player class
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
-	-- check which version of WoW is running
-	local betaInfo = {"9.0.0", 99999}
-	local ptrInfo = {"8.2.5", 31401}
-	local liveInfo = {"8.2.0", 31429}
-	local buildInfo, agentUID = {_G.GetBuildInfo()}, _G.GetCVar("agentUID")
+	local buildInfo = {
+		clsc = {"1.13.2", 31687},
+		beta = {"9.0.0", 99999},
+		ptr = {"8.2.5", 31599},
+		live = {"8.2.0", 31478},
+	}
+
+	buildInfo.curr = {_G.GetBuildInfo()}
+	local agentUID = _G.GetCVar("agentUID")
+
+	-- check to see which server we are running on
+	aObj.isClassic = agentUID:find("wow_classic") and true or false
+	aObj.isBeta = agentUID:find("_beta") and true or false
+	aObj.isPTR = agentUID:find("wow_ptr") and true or false
+
+	-- check current build number against live, if greater then it's a patch
+	aObj.isPatch = not aObj.isClassic and not aObj.isBeta and not aObj.isPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.live[2] and true or false
+
 --@alpha@
-	aObj:Print(liveInfo[1] .. ", " .. liveInfo[2] .. ", " .. buildInfo[1] .. ", " .. buildInfo[2] .. ", " .. buildInfo[3] .. ", " .. buildInfo[4] .. ", " .. agentUID)
---@end-alpha@
-	-- check to see if running on Classic Beta servers
-	aObj.isClassicBeta = agentUID == "wow_classic_beta" and true or false
-	-- check to see if running on Classic servers
-	aObj.isClassic = agentUID == "wow_classic" and true or false
-	-- check to see if running on Beta servers
-	aObj.isBeta = buildInfo[1] == betaInfo[1] and _G.tonumber(buildInfo[2]) == betaInfo[2] and true or false
-	-- check to see if running on PTR servers
-	aObj.isPTR = buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) == ptrInfo[2] and true or false
-	-- check build number, if > Live then it's a patch
-	aObj.isPatch = buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) > liveInfo[2] and true or false
---@alpha@
-	if aObj.isClassicBeta then
-		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Classic Beta version", 1, 0, 0, nil, true)
-		aObj.isClassic = true
+	aObj:Printf("%s, %s, %s, %s, %s, %s, %s", buildInfo.live[1], buildInfo.live[2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	if aObj.isClassic then
+		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Classic version", 1, 0, 0, nil, true)
 	end
 	if aObj.isBeta then
 		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Beta version", 1, 0, 0, nil, true)
-		aObj.isPTR = false
 	end
 	if aObj.isPTR then
 		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a PTR version", 1, 0, 0, nil, true)
-		aObj.isPatch = false
 	end
 	if aObj.isPatch then
 		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Patched version", 1, 0, 0, nil, true)
 	end
 --@end-alpha@
+
 	-- handle PTR changes going Live
 	if aObj.isPatch
-	and buildInfo[1] == ptrInfo[1] and _G.tonumber(buildInfo[2]) >= ptrInfo[2]
+	and buildInfo.curr[1] > buildInfo.live[1]
 	then
 		aObj.isPTR = true
 	end
-	betaInfo, ptrInfo, liveInfo, buildInfo, agentUID = nil, nil, nil, nil, nil
+
+	_G.wipe(buildInfo)
+	agentUID = nil
 
 end
 
@@ -89,6 +90,7 @@ function aObj:OnInitialize()
 
 --@alpha@
 	if self.isClassic then self:Debug("Classic detected") end
+	if self.isClassicBeta then self:Debug("ClassicBeta detected") end
 	if self.isBeta then self:Debug("Beta detected") end
 	if self.isPTR then self:Debug("PTR detected") end
 	if self.isPatch then self:Debug("Patch detected") end

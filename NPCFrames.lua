@@ -484,7 +484,7 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 	self.initialized.MerchantFrame = true
 
 	self:SecureHookScript(_G.MerchantFrame, "OnShow", function(this)
-		self:skinTabs{obj=this, lod=true} -- do first otherwise error when TradeSkillMaster Addon is loaded
+		self:skinTabs{obj=this, lod=true, ignore=self.isClassic and true or nil} -- do first otherwise error when TradeSkillMaster Addon is loaded
 		self:removeInset(_G.MerchantMoneyInset)
 		_G.MerchantMoneyBg:DisableDrawLayer("BACKGROUND")
 		if not self.isClassic then
@@ -964,20 +964,12 @@ aObj.blizzFrames[ftype].TaxiFrame = function(self)
 	self.initialized.TaxiFrame = true
 
 	self:SecureHookScript(_G.TaxiFrame, "OnShow", function(this)
-		if not self.isClassic then
-			this:DisableDrawLayer("BORDER")
-			self:removeRegions(this, {1, 2, 3}) -- 1st 3 overlay textures
-			-- resize map to fit skin frame
-			this.InsetBg:SetPoint("TOPLEFT", 0, -24)
-			this.InsetBg:SetPoint("BOTTOMRIGHT", 0 ,0)
-			self:addSkinFrame{obj=this, ft=ftype}
-		else
-			self:removeRegions(this, {1, 2 ,3 ,4 ,5})
-			self:addSkinFrame{obj=this, ft=ftype, nb=true, x1=10, y1=-11, x2=-32, y2=62}
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.TaxiCloseButton}
-			end
-		end
+		this:DisableDrawLayer("BORDER")
+		self:removeRegions(this, {1, 2, 3}) -- 1st 3 overlay textures
+		-- resize map to fit skin frame
+		this.InsetBg:SetPoint("TOPLEFT", 0, -24)
+		this.InsetBg:SetPoint("BOTTOMRIGHT", 0 ,0)
+		self:addSkinFrame{obj=this, ft=ftype}
 
 		self:Unhook(this, "OnShow")
 	end)
