@@ -5,7 +5,7 @@ ToDos
 	≈ is Alt+x	- indicates partially completed or dry-coded
 	x			- indicates nothing to change
 	¶ is Alt+7	- indicates localisation changes required
-	S/N/I/U/O	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes
+	S/N/I/U/O/C	- Skin request/New Version/Issue(Bug)/Unobsolete skin/Other changes/Classic
 
 ≈	O	Rework how Addon skins are handled
 		- replace table in AddonFrames with individual entries in each skin file
@@ -15,7 +15,7 @@ ToDos
 
 ?	O	Eliminate bugs from skinning the PartyFrames, BossFrames, TargetFrameToT
 
-	O	Rename variables and use function for colours
+≈	O	Rename variables and use function for colours
 		- self.bColour to self.bClr
 		- self.bbColour to self.bbClr
 
@@ -72,3 +72,12 @@ ToDos
 ?			- TargetFrame
 
 ?	I	RaiderIO profile tooltip not skinned
+
+	N	Mapster, reported by Shimiya, 29.08.19
+√		- Skinner\Modules\UIButtons.lua:412: attempt to index field 'obj' (a nil value)
+		  Skinner\AddonSkins\Mapster-1.8.4-1-gd373dc9.lua:15: in function <Skinner\AddonSkins\Mapster.lua:5>
+
+	C	reported by amey0, 29.08.19
+√		- Skinner\AddonSkins\WoW_Classic.lua:208: bad argument #1 to 'pairs' (table expected, got nil)
+		  Skinner\AddonSkins\WoW_Classic.lua:208: in function <Skinner\AddonSkins\WoW_Classic.lua:192>
+√		- Need to check if Dominoes is loaded, if so then don't skin MainMenuBar
