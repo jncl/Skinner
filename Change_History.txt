@@ -1,4 +1,10 @@
-beta8.31401.1
+beta8.31429.1
+Jncl:
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for FriendsFrame skin
+
+beta8.31401.1 (untagged)
 Jncl:
 	ToDo.txt
 	Updated Change_History.txt
@@ -12,7 +18,7 @@ Jncl:
 	More button checks
 	PTR changes
 	Obsoleted ProfessionTabs skin
-	
+
 beta8.30993.4
 Jncl:
 	ToDo.txt
