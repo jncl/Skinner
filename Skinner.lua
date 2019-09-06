@@ -1,5 +1,4 @@
 local aName, aObj = ...
-
 local _G = _G
 
 local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, Round = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.Round
@@ -37,7 +36,7 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	local buildInfo = {
-		clsc = {"1.13.2", 31687},
+		clsc = {"1.13.2", 31727},
 		beta = {"9.0.0", 99999},
 		ptr = {"8.2.5", 31599},
 		live = {"8.2.0", 31478},
