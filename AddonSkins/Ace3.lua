@@ -5,8 +5,8 @@ local _G = _G
 aObj.ItemPimper = true -- to stop IP skinning its frame
 
 local objectsToSkin = {}
-local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
 
+local AceGUI = _G.LibStub:GetLibrary("AceGUI-3.0", true)
 if AceGUI then
 	aObj:RawHook(AceGUI, "Create", function(this, objType)
 		local obj = aObj.hooks[this].Create(this, objType)
@@ -512,3 +512,16 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 	end
 
 end
+
+-- hook this to capture the creation of AceConfig IOF panels
+aObj.iofSkinnedPanels = {}
+local ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
+if ACD then
+	-- hook this to manage IOF panels that have already been skinned by Ace3 skin
+	aObj:RawHook(ACD, "AddToBlizOptions", function(this, ...)
+		local frame = aObj.hooks[this].AddToBlizOptions(this, ...)
+		aObj.iofSkinnedPanels[frame] = true
+		return frame
+	end, true)
+end
+ACD = nil

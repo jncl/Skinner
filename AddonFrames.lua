@@ -50,7 +50,6 @@ for i = 1, #addonSkins do
 end
 addonSkins = nil
 -- oddly named addons
-aObj.addonsToSkin["Classic Quest Log"] = "ClassicQuestLog"
 aObj.addonsToSkin["Enchantrix-Barker"] = "EnchantrixBarker"
 aObj.addonsToSkin["Prat-3.0"] = "Prat30"
 -- libraries

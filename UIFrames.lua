@@ -3546,18 +3546,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 end
 
--- hook this to capture the creation of AceConfig IOF panels
-aObj.iofSkinnedPanels = {}
-local ACD = _G.LibStub:GetLibrary("AceConfigDialog-3.0", true)
-if ACD then
-	-- hook this to manage IOF panels that have already been skinned by Ace3 skin
-	aObj:RawHook(ACD, "AddToBlizOptions", function(this, ...)
-		local frame = aObj.hooks[this].AddToBlizOptions(this, ...)
-		aObj.iofSkinnedPanels[frame] = true
-		return frame
-	end, true)
-end
-ACD = nil
 -- table to hold AddOn dropdown names that need to have their length adjusted
 aObj.iofDD = {}
 -- table to hold AddOn button objects to ignore
