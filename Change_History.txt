@@ -1,3 +1,16 @@
+beta8.31599.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated TOC
+	Updated Mapster skin
+	code tidy
+	Updated CommunitiesUI skin
+	Updated LibDialog skin
+	PTR changes
+	New improved WoW Classic support
+	Removed old WoW Classic support files
+
 beta8.31429.1
 Jncl:
 	Updated Change_History.txt
