@@ -3279,7 +3279,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 				self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, grey=true, ga=0.85}
 			end
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true, x2=self.isClassic and 1 or nil}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -3313,7 +3313,7 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 
 	self:SecureHookScript(_G.MailFrame, "OnShow", function(this)
 		self:skinTabs{obj=this, ignore=self.isClassic and true or nil}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClassic and 1 or nil, y2=-5}
 
 		-- N.B. Item buttons have IconBorder textures
 		--	Inbox Frame
@@ -5198,7 +5198,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 			end
 		end
 
-		-- skin here so tooltip initially skinnned
+		-- skin here so tooltip initially skinned
 		self:skinTooltip(tTip)
 
 		-- hook this to prevent Gradient overlay when tooltip reshown

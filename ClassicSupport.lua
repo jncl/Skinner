@@ -42,7 +42,7 @@ local funcs = {
 		{ name = "Communities", type = "LoD", keep = false, keepOpts = false },
 		{ name = "CompactFrames", type = "", keep = true, keepOpts = true },
 		{ name = "ContainerFrames", type = "", keep = false, keepOpts = true },
-		{ name = "DressUpFrame", type = "", keep = true, keepOpts = true },
+		{ name = "DressUpFrame", type = "", keep = false, keepOpts = true },
 		{ name = "EncounterJournal", type = "LoD", keep = false, keepOpts = false },
 		{ name = "EquipmentFlyout", type = "", keep = false, keepOpts = false },
 		{ name = "FriendsFrame", type = "", keep = false, keepOpts = true },
@@ -463,6 +463,7 @@ aObj.ClassicSupport = function(self)
 				btn = nil
 			end
 
+			self:Unhook(_G.PetStableFrame, "OnShow")
 		end)
 
 	end
@@ -610,14 +611,17 @@ aObj.ClassicSupport = function(self)
 				if self.modBtns then
 					 self:skinExpandButton{obj=_G["SkillTypeLabel"  .. i], onSB=true}
 				end
-				_G["SkillRankFrame"  .. i .. "Border"]:GetNormalTexture():SetTexture(nil)
-				self:skinStatusBar{obj=_G["SkillRankFrame"  .. i], fi=0, bgTex=_G["SkillRankFrame"  .. i .. "Background"], otherTex={_G["SkillRankFrame"  .. i .. "FillBar"]}}
+				_G["SkillRankFrame"  .. i .. "BorderNormal"]:SetTexture(nil)
+				self:skinStatusBar{obj=_G["SkillRankFrame"  .. i], fi=0, otherTex={_G["SkillRankFrame"  .. i .. "FillBar"]}}
 			end
 			self:skinSlider{obj=_G.SkillListScrollFrame.ScrollBar, rt="artwork"}
 			self:skinSlider{obj=_G.SkillDetailScrollFrame.ScrollBar, rt="artwork"}
 			if self.modBtns then
 				self:skinStdButton{obj=_G.SkillFrameCancelButton}
 			end
+
+			self:removeRegions(_G.SkillDetailStatusBar, {1})
+			self:skinStatusBar{obj=_G.SkillDetailStatusBar, fi=0, otherTex={_G.SkillDetailStatusBarFillBar}}
 
 			self:Unhook(this, "OnShow")
 		end)
@@ -702,6 +706,43 @@ aObj.ClassicSupport = function(self)
 
 	end
 
+	self.blizzFrames[ftype].DressUpFrame = function(self)
+		if not self.prdb.DressUpFrame or self.initialized.DressUpFrame then return end
+		self.initialized.DressUpFrame = true
+
+		if IsAddOnLoaded("DressUp") then
+			self.blizzFrames[ftype].DressUpFrame = nil
+			return
+		end
+
+		self:SecureHookScript(_G.SideDressUpFrame, "OnShow", function(this)
+			self:removeRegions(this, {1, 2, 3, 4})
+			_G.SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND") -- model controls background
+			self:removeRegions(_G.SideDressUpModelCloseButton, {5}) -- corner texture
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=-2, y1=-3, x2=-2}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.SideDressUpModelResetButton}
+				self:skinCloseButton{obj=_G.SideDressUpModelCloseButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+		self:SecureHookScript(_G.DressUpFrame, "OnShow", function(this)
+
+			self:makeMFRotatable(_G.DressUpModelFrame)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-11, x2=-33, y2=71}
+			if self.modBtns then
+				self:skinStdButton{obj=_G.DressUpFrameCloseButton}
+				self:skinStdButton{obj=_G.DressUpFrameCancelButton}
+				self:skinStdButton{obj=this.ResetButton}
+			end
+
+			self:Unhook(this, "OnShow")
+		end)
+
+	end
+
 	self.blizzFrames[ftype].FriendsFrame = function(self)
 		if not self.prdb.FriendsFrame or self.initialized.FriendsFrame then return end
 		self.initialized.FriendsFrame = true
@@ -711,7 +752,7 @@ aObj.ClassicSupport = function(self)
 		end
 
 		self:SecureHookScript(_G.FriendsFrame, "OnShow", function(this)
-			self:skinTabs{obj=this, lod=true}
+			self:skinTabs{obj=this, lod=true, ignore=true}
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 			self:moveObject{obj=this.CloseButton, x=2}
 
@@ -743,6 +784,7 @@ aObj.ClassicSupport = function(self)
 					self:addButtonBorder{obj=_G.FriendsTabHeaderSoRButton}
 				end
 				_G.RaiseFrameLevel(this)
+
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.FriendsTabHeader)
@@ -804,6 +846,7 @@ aObj.ClassicSupport = function(self)
 				end
 				btn = nil
 				addTabFrame(this)
+
 				self:Unhook(this, "OnShow")
 			end)
 			self:checkShown(_G.FriendsListFrame)
@@ -816,6 +859,7 @@ aObj.ClassicSupport = function(self)
 				end
 				self:skinSlider{obj=_G.FriendsFrameIgnoreScrollFrame.ScrollBar}
 				addTabFrame(this)
+
 				self:Unhook(this, "OnShow")
 			end)
 
@@ -838,6 +882,92 @@ aObj.ClassicSupport = function(self)
 				_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
 				self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
 				self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, rt="background"}
+
+				self:Unhook(this, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.GuildFrame, "OnShow", function(this)
+				self:keepFontStrings(this)
+
+				_G.GuildFrameLFGFrame:DisableDrawLayer("BACKGROUND")
+				if self.modChkBtns then
+					self:skinCheckButton{obj=_G.GuildFrameLFGButton}
+				end
+
+				self:skinColHeads("GuildFrameColumnHeader")
+
+				self:skinColHeads("GuildFrameGuildStatusColumnHeader")
+
+				self:skinSlider{obj=_G.GuildListScrollFrame.ScrollBar, rt="background"}
+
+				if self.modBtnBs then
+					self:addButtonBorder{obj=_G.GuildFrameGuildListToggleButton, ofs=-2}
+				end
+				if self.modBtns then
+					self:skinStdButton{obj=_G.GuildFrameControlButton}
+					self:skinStdButton{obj=_G.GuildFrameAddMemberButton}
+					self:skinStdButton{obj=_G.GuildFrameGuildInformationButton}
+					-- self:skinStdButton{obj=_G.GuildMOTDEditButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.GuildControlPopupFrame, "OnShow", function(this)
+
+				-- N.B. dropdown button border needs adjusting
+				self:skinDropDown{obj=_G.GuildControlPopupFrameDropDown, noBB=true}
+				if self.modBtnBs then
+					aObj:addButtonBorder{obj=_G.GuildControlPopupFrameDropDown.Button, es=12, ofs=-2, x1=31}
+				end
+				if self.modBtns then
+					self:skinExpandButton{obj=_G.GuildControlPopupFrameAddRankButton, as=true, plus=true}
+					self:skinExpandButton{obj=_G.GuildControlPopupFrameRemoveRankButton, as=true}
+				end
+				if self.modChkBtns then
+					for i = 1, 13 do
+						self:skinCheckButton{obj=_G["GuildControlPopupFrameCheckbox" .. i]}
+					end
+				end
+
+				self:skinEditBox{obj=_G.GuildControlPopupFrameEditBox, regs={1, 5}}
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
+				if self.modBtns then
+					self:skinStdButton{obj=_G.GuildControlPopupFrameCancelButton}
+					self:skinStdButton{obj=_G.GuildControlPopupAcceptButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.GuildInfoFrame, "OnShow", function(this)
+
+				self:skinSlider{obj=_G.GuildInfoFrameScrollFrame.ScrollBar, rt="artwork"}
+				self:addSkinFrame{obj=_G.GuildInfoTextBackground, ft=ftype, kfs=true, nb=true, ofs=0}
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.GuildInfoCloseButton}
+					self:skinStdButton{obj=_G.GuildInfoSaveButton}
+					self:skinStdButton{obj=_G.GuildInfoCancelButton}
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+
+			self:SecureHookScript(_G.GuildMemberDetailFrame, "OnShow", function(this)
+				this:DisableDrawLayer("OVERLAY")
+
+				self:addSkinFrame{obj=_G.GuildMemberNoteBackground, ft=ftype, kfs=true, nb=true, ofs=0}
+				self:addSkinFrame{obj=_G.GuildMemberOfficerNoteBackground, ft=ftype, kfs=true, nb=true, ofs=0}
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=0}
+				if self.modBtns then
+					self:skinCloseButton{obj=_G.GuildMemberDetailCloseButton}
+					self:skinStdButton{obj=_G.GuildMemberRemoveButton}
+					self:skinStdButton{obj=_G.GuildMemberGroupInviteButton}
+					self:skinStdButton{obj=_G.GuildFramePromoteButton}
+					self:skinStdButton{obj=_G.GuildFrameDemoteButton}
+				end
+
 				self:Unhook(this, "OnShow")
 			end)
 
@@ -859,6 +989,7 @@ aObj.ClassicSupport = function(self)
 			self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar}
 			self:addSkinFrame{obj=_G.AddFriendNoteFrame, ft=ftype, kfs=true}
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -871,6 +1002,7 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.FriendsFriendsCloseButton}
 			end
 			self:addSkinFrame{obj=this, ft=ftype}
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -880,6 +1012,7 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=self:getChild(this, 2)} -- Cancel
 			end
 			self:addSkinFrame{obj=this, ft=ftype}
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -893,6 +1026,7 @@ aObj.ClassicSupport = function(self)
 			-- RecruitAFriendSentFrame
 			self:skinStdButton{obj=_G.RecruitAFriendSentFrame.OKButton}
 			self:addSkinFrame{obj=_G.RecruitAFriendSentFrame, ft=ftype, ofs=-7, y2=4}
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -918,6 +1052,7 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.CreateChannelPopup.CancelButton}
 			end
 			self:addSkinFrame{obj=_G.CreateChannelPopup, ft=ftype, kfs=true}
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -938,6 +1073,7 @@ aObj.ClassicSupport = function(self)
 			self:skinStdButton{obj=this.AcceptButton}
 			self:addSkinFrame{obj=this, ft=ftype, nb=true}
 			self:hookSocialToastFuncs(this)
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -945,6 +1081,7 @@ aObj.ClassicSupport = function(self)
 			self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}
 			self:addSkinFrame{obj=this, ft=ftype, nb=true}
 			self:hookSocialToastFuncs(this)
+
 			self:Unhook(this, "OnShow")
 		end)
 
@@ -1231,9 +1368,7 @@ aObj.ClassicSupport = function(self)
 			_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 			_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
 
-			-- StanceBar Frame
 			self:keepFontStrings(_G.StanceBarFrame)
-			-- Pet Action Bar Frame
 			self:keepFontStrings(_G.PetActionBarFrame)
 
 			self:addSkinFrame{obj=_G.MainMenuBar, ft=ftype, kfs=true, nb=true, bg=true, noBdr=true, ofs=4, y1=-7}
@@ -1288,12 +1423,6 @@ aObj.ClassicSupport = function(self)
 				end
 
 			end
-
-			-- self:SecureHook(_G.VerticalMultiBarsContainer, "SetPoint", function(this, ...)
-			-- 	aObj:Debug("VMBC SetPoint: [%s, %s, %s, %s]", this, ...)
-			-- end)
-			-- move MultiBar buttons down so they don't overlap Minimap adjustment buttons
-			self:moveObject{obj=_G.VerticalMultiBarsContainer, y=-10}
 
 		end
 
@@ -1579,38 +1708,48 @@ aObj.ClassicSupport = function(self)
 			aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
 			-- skin the PetFrame
-			_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
+			_G.PetPortrait:SetDrawLayer("border") -- move portrait to BORDER layer, so it is displayed
 			aObj:moveObject{obj=_G.PetFrameHappiness, x=5}
 			uFrames:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
 		end
 
 		if self.db.profile.petlvl then
+			local function updPetLevel()
+	            -- handle in combat
+	            if _G.InCombatLockdown() then
+	                aObj:add2Table(aObj.oocTab, {updPetLevel, {}})
+	                return
+				else
+					_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
+				end
+			end
 			if _G.PetFrame.lvlText then
 				_G.PetFrame.lvlText:Show()
 				_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
+				updPetLevel()
 			else
 				-- add pet level text to pet frame, if required
 				_G.PetFrame.lvlText = _G.PetName:GetParent():CreateFontString(nil, "artwork", "GameNormalNumberFont")
 				_G.PetFrame.lvlText:SetPoint("left", _G.PetFrame, "left", 5, -18)
 				_G.PetFrame.lvlText:SetVertexColor(1.0, 0.82, 0.0, 1.0)
-				_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
 			end
 
-			-- get pet level when pet changed etc
-			aObj:Regis3terEvent("UNIT_PET", function(event, arg1, ...)
+			-- get pet's level when pet changed
+			aObj:RegisterEvent("UNIT_PET", function(event, arg1, ...)
 				if arg1 == "player" then
-					_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
+					updPetLevel()
 				end
 			end)
-			-- update level as required
+			-- update pet's level when changed
 			aObj:RegisterEvent("UNIT_LEVEL", function(event, arg1, ...)
 				if arg1 == "pet" then
-					_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
+					updPetLevel()
 				end
 			end)
 		else
 			if _G.PetFrame.lvlText then
 				_G.PetFrame.lvlText:Hide()
+				aObj:UnregisterEvent("UNIT_PET")
 				aObj:UnregisterEvent("UNIT_LEVEL")
 			end
 		end

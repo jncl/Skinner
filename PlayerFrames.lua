@@ -3315,27 +3315,27 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 
 	local function skinGroupLoot(frame)
 
-		aObj:keepFontStrings(frame)
-		frame.Timer.Background:SetAlpha(0)
-		aObj:skinStatusBar{obj=frame.Timer, fi=0}
+		frame:DisableDrawLayer("BACKGROUND")
+		frame:DisableDrawLayer("BORDER")
+		if aObj.isClassic then
+			frame.Timer:DisableDrawLayer("ARTWORK")
+		end
+		aObj:skinStatusBar{obj=frame.Timer, fi=0, bgTex=frame.Timer.Background}
 		-- hook this to show the Timer
 		aObj:secureHook(frame, "Show", function(this)
 			this.Timer:SetFrameLevel(this:GetFrameLevel() + 1)
 		end)
 
-		if aObj.prdb.LootFrames.size == 1 then
-			if not self.isClassic then
-				frame.IconFrame.Border:SetAlpha(0)
-			end
+		frame:SetScale(aObj.prdb.LootFrames.size ~= 1 and 0.75 or 1)
+		if not aObj.isClassic then
+			frame.IconFrame.Border:SetAlpha(0)
+		end
+		if aObj.modBtns then
+			aObj:skinCloseButton{obj=frame.PassButton}
+		end
+		if not aObj.prdb.LootFrames.size == 3 then -- Normal or small
 			aObj:addSkinFrame{obj=frame, ft=ftype, x1=-3, y2=-3} -- adjust for Timer
-		elseif aObj.prdb.LootFrames.size == 2 then
-			if not self.isClassic then
-				frame.IconFrame.Border:SetAlpha(0)
-			end
-			frame:SetScale(0.75)
-			aObj:addSkinFrame{obj=frame, ft=ftype, x1=-3, y2=-3} -- adjust for Timer
-		elseif aObj.prdb.LootFrames.size == 3 then
-			frame:SetScale(0.75)
+		else -- Micro
 			aObj:moveObject{obj=frame.IconFrame, x=95, y=5}
 			frame.Name:SetAlpha(0)
 			frame.NeedButton:ClearAllPoints()
@@ -3356,19 +3356,25 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 	for i = 1, _G.NUM_GROUP_LOOT_FRAMES do
 		self:SecureHookScript(_G["GroupLootFrame" .. i], "OnShow", function(this)
 			skinGroupLoot(this)
+
 			self:Unhook(this, "OnShow")
 		end)
 	end
 
 	self:SecureHookScript(_G.MasterLooterFrame, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
 		this.Item.NameBorderLeft:SetTexture(nil)
 		this.Item.NameBorderRight:SetTexture(nil)
 		this.Item.NameBorderMid:SetTexture(nil)
 		this.Item.IconBorder:SetTexture(nil)
-		self:addButtonBorder{obj=this, relTo=this.Icon}
-		this:DisableDrawLayer("BACKGROUND")
-		self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true}
+		if self.modBtns then
+			 self:skinCloseButton{obj=self:getChild(this, 3)} -- unamed close button
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.Item, relTo=this.Item.Icon}
+		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3383,18 +3389,21 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			if self.modBtns then
 				self:skinCloseButton{obj=this.PromptFrame.EncounterJournalLinkButtonHelp.CloseButton, noSkin=true}
 			end
+
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(_G.BonusRollLootWonFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			if this.SpecRing then this.SpecRing:SetTexture(nil) end
 			self:addSkinFrame{obj=this, ft=ftype, ofs=-10, y2=8}
+
 			self:Unhook(this, "OnShow")
 		end)
 		self:SecureHookScript(_G.BonusRollMoneyWonFrame, "OnShow", function(this)
 			this:DisableDrawLayer("BACKGROUND")
 			if this.SpecRing then this.SpecRing:SetTexture(nil) end
 			self:addSkinFrame{obj=this, ft=ftype, ofs=-8, y2=8}
+
 			self:Unhook(this, "OnShow")
 		end)
 	end
