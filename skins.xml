@@ -111,6 +111,7 @@
 <script file="AddonSkins\HandyNotes.lua"/>
 <script file="AddonSkins\HaveWeMet.lua"/>
 <script file="AddonSkins\HealBot.lua"/>
+<script file="AddonSkins\Healium.lua"/>
 <script file="AddonSkins\HoloFriends.lua"/>
 <script file="AddonSkins\InboxMailBag.lua"/>
 <script file="AddonSkins\ItemDB.lua"/>
@@ -227,6 +228,7 @@
 <script file="AddonSkins\WarCampaignsComplete.lua"/>
 <script file="AddonSkins\Warden.lua"/>
 <script file="AddonSkins\WeakAuras.lua"/>
+<script file="AddonSkins\WhatsTraining.lua"/>
 <script file="AddonSkins\Wholly.lua"/>
 <script file="AddonSkins\WIM.lua"/>
 <script file="AddonSkins\WorldQuestTracker.lua"/>
