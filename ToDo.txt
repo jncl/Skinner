@@ -73,11 +73,13 @@ ToDos
 
 ?	I	RaiderIO profile tooltip not skinned
 
-	N	Mapster, reported by Shimiya, 29.08.19
-√		- Skinner\Modules\UIButtons.lua:412: attempt to index field 'obj' (a nil value)
-		  Skinner\AddonSkins\Mapster-1.8.4-1-gd373dc9.lua:15: in function <Skinner\AddonSkins\Mapster.lua:5>
+√	I	[Classic] GuildFrame not skinned, reported by Sojiroi, 01.09.19
 
-	C	reported by amey0, 29.08.19
-√		- Skinner\AddonSkins\WoW_Classic.lua:208: bad argument #1 to 'pairs' (table expected, got nil)
-		  Skinner\AddonSkins\WoW_Classic.lua:208: in function <Skinner\AddonSkins\WoW_Classic.lua:192>
-√		- Need to check if Dominoes is loaded, if so then don't skin MainMenuBar
+√	S	Classic Quest Log for Classic, requested by Sojiroi, 01.09.19
+
+√	N	What's Training, requested by Sojiroi, 01.09.19
+
+√	N	Healium (Classic), requested by amey0, 02.09.19
+
+√	I	[Classic] DreeUpFrame not skinned, reported by Sojiroi, 02.09.19
+	
