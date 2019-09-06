@@ -5262,6 +5262,9 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 
 	self:skinGlowBox(_G.HelpPlateTooltip, ftype, true)
 
+	-- AceConfigDialog tooltip
+	self:add2Table(self.ttList, self.ACD.tooltip)
+
 end
 
 aObj.blizzFrames[ftype].Tutorial = function(self)

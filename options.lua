@@ -1942,10 +1942,10 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	-- register the options tables and add them to the blizzard frame
 	self.ACR = LibStub:GetLibrary("AceConfigRegistry-3.0", true)
-	local ACD = LibStub:GetLibrary("AceConfigDialog-3.0", true)
+	self.ACD = LibStub:GetLibrary("AceConfigDialog-3.0", true)
 
 	self.ACR:RegisterOptionsTable(aName, self.optTables.General, {aName, "skin"})
-	self.optionsFrame = ACD:AddToBlizOptions(aName, aName)
+	self.optionsFrame = self.ACD:AddToBlizOptions(aName, aName)
 
 	-- register the options, add them to the Blizzard Options
 	-- build the table used by the chatCommand function
@@ -1957,7 +1957,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	for _, v in _G.ipairs(optNames) do
 		optTitle = (" "):join(aName, v)
 		self.ACR:RegisterOptionsTable(optTitle, self.optTables[v])
-		self.optionsFrame[self.L[v]] = ACD:AddToBlizOptions(optTitle, self.L[v], aName)
+		self.optionsFrame[self.L[v]] = self.ACD:AddToBlizOptions(optTitle, self.L[v], aName)
 		optCheck[v:lower()] = v
 	end
 	optNames, optTitle = nil, nil
