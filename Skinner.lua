@@ -285,6 +285,16 @@ function aObj:OnInitialize()
 	-- table to hold minimap buttons from other AddOn skins
 	self.mmButs = {}
 
+	-- table to hold AddOn dropdown names that need to have their length adjusted
+	self.iofDD = {}
+	-- table to hold AddOn button objects to ignore
+	self.iofBtn = {}
+
+	-- table to hold Tooltips to skin
+	self.ttList = {}
+	-- table to hold Tooltips to hook Show function
+	self.ttHook = {}
+
 end
 
 function aObj:OnEnable()

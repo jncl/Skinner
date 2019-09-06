@@ -3546,10 +3546,6 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 
 end
 
--- table to hold AddOn dropdown names that need to have their length adjusted
-aObj.iofDD = {}
--- table to hold AddOn button objects to ignore
-aObj.iofBtn = {}
 aObj.blizzFrames[ftype].MenuFrames = function(self)
 	if not self.prdb.MenuFrames or self.initialized.MenuFrames then return end
 	self.initialized.MenuFrames = true
@@ -5172,10 +5168,6 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 
 end
 
--- table to hold Tooltips to skin
-aObj.ttList = {}
--- table to hold Tooltips to hook Show function
-aObj.ttHook = {}
 aObj.blizzFrames[ftype].Tooltips = function(self)
 	if not self.prdb.Tooltips.skin or self.initialized.Tooltips then return end
 	self.initialized.Tooltips = true
