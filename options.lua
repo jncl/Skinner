@@ -6,7 +6,6 @@ local ftype = "opt"
 -- Add locals to see if it speeds things up
 local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, IsAddOnLoaded, pairs = _G.AceGUIWidgetLSMlists,  _G.InterfaceOptionsFrame_OpenToCategory, _G.LibStub, _G.IsAddOnLoaded, _G.pairs
 
-
 aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
 	local defaults = { profile = {
@@ -1902,7 +1901,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	local function addDSOpt(name, lib, lod)
 
 		local name2 = name .. (lib and " (Lib)" or lod and " (LoD)" or "")
-		local width2 = name2:len() > 19 and "double" or nil
+		local width2 = name2:len() > 20 and "double" or nil
 		aObj.optTables["Disabled Skins"].args[name] = {
 			type = "toggle",
 			name = name2,
