@@ -1,3 +1,18 @@
+beta8.31727.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated LibDialog skin
+	Updated Altoholic, Armory, AtlasLoot, ChampionCommander, LiteBag & OrderHallCommander skins
+	Updated ClassicSupport inc. bugfixes etc
+	clr names
+	Handle Min/Max button texture numbers
+	Updated Ace3 skin
+	Updated GroupLoot skin
+	Use names instead of numbers when colouring button borders etc
+	Skinned ClassicCensusPlus & RareScanner
+	Updated Ace3,  LibAboutPanel & LibQTip skins
+
 beta8.31599.2
 Jncl:
 	ToDo.txt
