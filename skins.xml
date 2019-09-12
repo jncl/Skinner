@@ -54,6 +54,7 @@
 <script file="AddonSkins\CFM.lua"/>
 <script file="AddonSkins\ChampionCommander.lua"/>
 <script file="AddonSkins\Chatter.lua"/>
+<script file="AddonSkins\ClassicCensusPlus.lua"/>
 <script file="AddonSkins\ClassicQuestLog.lua"/>
 <script file="AddonSkins\ClassOrderHallsComplete.lua"/>
 <script file="AddonSkins\Clique.lua"/>
@@ -190,6 +191,7 @@
 <script file="AddonSkins\RaiderIO.lua"/>
 <script file="AddonSkins\RaidRoll.lua"/>
 <script file="AddonSkins\RAQ.lua"/>
+<script file="AddonSkins\RareScanner.lua"/>
 <script file="AddonSkins\RCLootCouncil.lua"/>
 <script file="AddonSkins\ReagentMaker.lua"/>
 <script file="AddonSkins\ReagentRestocker.lua"/>

@@ -203,6 +203,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			or objType == "LSM30_Font"
 			or objType == "LSM30_Sound"
 			or objType == "LSM30_Statusbar"
+			or objType == "RS_Markers" -- RareScanner
 			then
 			    if not aObj.db.profile.TexturedDD
 				and not aObj.db.profile.DropDownButtons
@@ -228,6 +229,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 						or objType == "LSM30_Statusbar"
 						then
 							xOfs1, yOfs1, xOfs2, yOfs2 = 0, -19, 1, 1
+						elseif objType == "RS_Markers" then
+							xOfs1, yOfs1, xOfs2, yOfs2 = 0, -18, 1, 0
 						end
 						aObj:addSkinFrame{obj=obj.frame, ft="a", nb=true, aso={ng=true, bd=5}, rp=true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 						if aObj.modBtnBs then

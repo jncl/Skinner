@@ -22,8 +22,11 @@ aObj.libsToSkin["LibAboutPanel"] = function(self) -- v 1.52
 
 	-- this is to stop the Email & Website buttons being skinned
 	self.RegisterCallback("LibAboutPanel", "IOFPanel_Before_Skinning", function(this, panel)
-		if not self.aboutPanels[panel.name] then return end
-		self.iofSkinnedPanels[panel] = true
+		if self.aboutPanels[panel.name]
+		and panel.about_title
+		then
+			self.iofSkinnedPanels[panel] = true
+		end
 	end)
 
 end

@@ -3,6 +3,36 @@ local aName, aObj = ...
 local _G = _G
 
 aObj.ignoreLQTT = {}
+local function skinTT(key, tt)
+	-- ignore tooltips if required
+	if not aObj.ignoreLQTT[key] then
+		aObj:applySkin{obj=tt}
+		aObj:hook(tt, "UpdateScrolling", function(this)
+			if tt.slider then
+				aObj:skinSlider{obj=tt.slider, wdth=2}
+			end
+		end)
+	end
+end
+local function hookFuncs(lib)
+	-- hook this to handle new tooltips
+	aObj:RawHook(lib, "Acquire", function(this, key, ...)
+		local tt = aObj.hooks[this].Acquire(this, key, ...)
+		skinTT(key, tt)
+		return tt
+	end, true)
+	-- hook this to handle tooltips being released
+	aObj:SecureHook(lib, "Release", function(this, tt)
+		-- handle already skinned
+		if tt and tt.sknd then
+			tt.sknd = nil
+		end
+	end)
+	-- skin existing tooltips
+	for key, tt in lib:IterateTooltips() do
+		skinTT(key, tt)
+	end
+end
 
 aObj.libsToSkin["LibQTip-1.0"] = function(self) -- v LibQTip-1.0, 44
 	if not self.db.profile.Tooltips.skin or self.initialized.LibQTip then return end
@@ -10,37 +40,18 @@ aObj.libsToSkin["LibQTip-1.0"] = function(self) -- v LibQTip-1.0, 44
 
 	local lqt = _G.LibStub("LibQTip-1.0", true)
 	if lqt then
-		local function skinTT(key, tt)
+		hookFuncs(lqt)
+	end
 
-			-- ignore tooltips if required
-			if not aObj.ignoreLQTT[key] then
-				aObj:applySkin{obj=tt}
-				aObj:hook(tt, "UpdateScrolling", function(this)
-					if tt.slider then
-						aObj:skinSlider{obj=tt.slider, wdth=2}
-					end
-				end)
-			end
+end
 
-		end
-		-- hook this to handle new tooltips
-		self:RawHook(lqt, "Acquire", function(this, key, ...)
-			local tt = self.hooks[this].Acquire(this, key, ...)
-			skinTT(key, tt)
-			return tt
-		end, true)
-		-- hook this to handle tooltips being released
-		self:SecureHook(lqt, "Release", function(this, tt)
-			-- handle already skinned
-			if tt and tt.sknd then
-				tt.sknd = nil
-			end
-		end)
-		-- skin existing tooltips
-		for key, tt in lqt:IterateTooltips() do
-			skinTT(key, tt)
-		end
+aObj.libsToSkin["LibQTip-1.0RS"] = function(self) -- v LibQTip-1.0RS, 44
+	if not self.db.profile.Tooltips.skin or self.initialized.LibQTipRS then return end
+	self.initialized.LibQTipRS = true
 
+	local lqt = _G.LibStub("LibQTip-1.0RS", true)
+	if lqt then
+		hookFuncs(lqt)
 	end
 
 end
