@@ -1,3 +1,15 @@
+beta8.31599.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated options code
+	ClassicSupport changes
+	Skin ACD tooltip
+	Init tables in Initialize function
+	Updated Ace3 & ClassicQuestLog skins
+	Skinned Healium & What's Training
+
 beta8.31599.1
 Jncl:
 	ToDo.txt
