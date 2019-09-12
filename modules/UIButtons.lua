@@ -73,24 +73,36 @@ local function __checkTex(opts)
 	if not btn then return end -- allow for unskinned buttons
 	local nTex = opts.nTex or opts.obj:GetNormalTexture() and opts.obj:GetNormalTexture():GetTexture() or nil
 
-	-- aObj:Debug("__checkTex: [%s, %s, %s, %s]", nTex, opts.obj.onSB, btn, btn:IsShown())
+	aObj:Debug("__checkTex: [%s, %s, %s, %s]", nTex, opts.obj.onSB, btn, btn:IsShown())
 	-- handle numbers instead of text (e.g. Armory icon)
-	if nTex
-	and not _G.tonumber(nTex)
-	then
-		if nTex:find("MinusButton")
-		or nTex:find("ZoomOutButton") -- ARL
-		then
-			btn:SetText(module.minus)
-			btn:Show()
-		elseif nTex:find("PlusButton")
-		or nTex:find("ZoomInButton") -- ARL
-		then
-			btn:SetText(module.plus)
-			btn:Show()
-		else -- not a header line
-			btn:SetText("")
-			btn:Hide()
+	if nTex	then
+		if _G.tonumber(nTex) then
+			if nTex == 130821 then
+				btn:SetText(module.minus)
+				btn:Show()
+			elseif nTex == 130838 then
+				btn:SetText(module.plus)
+				btn:Show()
+			else -- not a header line
+				btn:SetText("")
+				btn:Hide()
+			end
+		else
+			if nTex:find("MinusButton")
+			or nTex:find("ZoomOutButton") -- ARL
+			then
+				btn:SetText(module.minus)
+				btn:Show()
+			elseif (_G.tonumber(nTex) and nTex == 130821)
+			or nTex:find("PlusButton")
+			or nTex:find("ZoomInButton") -- ARL
+			then
+				btn:SetText(module.plus)
+				btn:Show()
+			else -- not a header line
+				btn:SetText("")
+				btn:Hide()
+			end
 		end
 	else -- not a header line
 		btn:SetText("")
