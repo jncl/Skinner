@@ -149,7 +149,8 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				end
 			elseif objType == "CheckBox" then
 				if aObj.modChkBtns then
-					aObj.modUIBtns:addButtonBorder{obj=obj.frame, ofs=-2, relTo=obj.checkbg, reParent={obj.check}} -- force creation of button border so check texture can be reparented
+					-- force creation of button border so check texture can be reparented
+					aObj.modUIBtns:addButtonBorder{obj=obj.frame, ofs=-2, relTo=obj.checkbg, reParent={obj.check}, clr="grey"}
 					-- hide button border if Radio Button
 					aObj:secureHook(obj, "SetType", function(this, type)
 						if type == "radio"
@@ -415,7 +416,6 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				if aObj.modBtns then
 					aObj:skinCloseButton{obj=obj.frame.Close}
 				end
-
 
 			-- ignore these types for now
 			elseif objType == "BlizOptionsGroup"

@@ -1094,14 +1094,14 @@ aObj.blizzLoDFrames[ftype].ChallengesUI = function(self)
 		-- DungeonIcons
 		if self.modBtnBs then
 			for _, dungeon in ipairs(this.DungeonIcons) do
-				self:addButtonBorder{obj=dungeon, ofs=3, grey=true, ga=0.85}
+				self:addButtonBorder{obj=dungeon, ofs=3, clr="grey", ca=0.85}
 				self:SecureHook(dungeon, "SetUp", function(this,mapInfo, isFirst )
 					if mapInfo.quality >= _G.LE_ITEM_QUALITY_COMMON
 					and _G.ITEM_QUALITY_COLORS[mapInfo.quality]
 					then
 						dungeon.sbb:SetBackdropBorderColor(_G.ITEM_QUALITY_COLORS[mapInfo.quality].r, _G.ITEM_QUALITY_COLORS[mapInfo.quality].g, _G.ITEM_QUALITY_COLORS[mapInfo.quality].b, 1)
 					else
-						dungeon.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.85) -- grey border
+						self:clrBtnBdr(dungeon, "grey", 1)
 					end
 				end)
 			end
@@ -1634,7 +1634,7 @@ aObj.blizzLoDFrames[ftype].ClassTrial = function(self)
 	if not self.prdb.ClassTrial or self.initialized.ClassTrial then return end
 	self.initialized.ClassTrial = true
 
-	-- N.B. ClassTrialSecureFrame can't be skinned, as the XML has a ScopedModifier element saying forbidden="true"
+	-- N.B. ClassTrialSecureFrame can't be skinned, as the XML has a ScopedModifier element saying forbidden=""
 
 	self:SecureHookScript(_G.ClassTrialThanksForPlayingDialog, "OnShow", function(this)
 		this.ThanksText:SetTextColor(self.HT:GetRGB())
@@ -2391,7 +2391,7 @@ aObj.blizzLoDFrames[ftype].GarrisonUI = function(self)
 			this.ZoneSupportMissionPage:DisableDrawLayer("BORDER")
 			this.ZoneSupportMissionPage.CombatAllyLabel.TextBackground:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.ZoneSupportMissionPage.CombatAllySpell, grey=true, ga=1}
+				self:addButtonBorder{obj=this.ZoneSupportMissionPage.CombatAllySpell, clr="grey", ca=1}
 			end
 			this.ZoneSupportMissionPage.ButtonFrame:SetTexture(nil)
 			this.ZoneSupportMissionPage.Follower1:DisableDrawLayer("BACKGROUND")
@@ -2565,7 +2565,7 @@ aObj.blizzLoDFrames[ftype].GuildBankUI = function(self)
 			_G["GuildBankColumn" .. i]:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
 				for j = 1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
-					self:addButtonBorder{obj=_G["GuildBankColumn" .. i .. "Button" .. j], ibt=true, grey=true, ga=0.85}
+					self:addButtonBorder{obj=_G["GuildBankColumn" .. i .. "Button" .. j], ibt=true, clr="grey", ca=0.85}
 				end
 			end
 		end
@@ -2821,8 +2821,8 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 			self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, wdth=-4}
 			self:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
 			self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
-			self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3}
-			self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
 			if not self.isClassic then
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 			else
@@ -3271,12 +3271,12 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		end
 		_G.MacroFrameSelectedMacroButton:DisableDrawLayer("BACKGROUND")
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon, grey=true, ga=0.85}
+			self:addButtonBorder{obj=_G.MacroFrameSelectedMacroButton, relTo=_G.MacroFrameSelectedMacroButtonIcon, clr="grey", ca=0.85}
 		end
 		for i = 1, _G.MAX_ACCOUNT_MACROS do
 			_G["MacroButton" .. i]:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, grey=true, ga=0.85}
+				self:addButtonBorder{obj=_G["MacroButton" .. i], relTo=_G["MacroButton" .. i .. "Icon"], reParent={_G["MacroButton" .. i .. "Name"]}, clr="grey", ca=0.85}
 			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true, ri=true, x2=self.isClassic and 1 or nil}
@@ -3298,7 +3298,7 @@ aObj.blizzLoDFrames[ftype].MacroUI = function(self)
 		for i = 1, _G.NUM_MACRO_ICONS_SHOWN do
 			_G["MacroPopupButton" .. i]:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], reParent={_G["MacroPopupButton" .. i .. "Name"]}, grey=true, ga=0.85}
+				self:addButtonBorder{obj=_G["MacroPopupButton" .. i], relTo=_G["MacroPopupButton" .. i .. "Icon"], reParent={_G["MacroPopupButton" .. i .. "Name"]}, clr="grey", ca=0.85}
 			end
 		end
 
@@ -3327,8 +3327,8 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:moveObject{obj=_G.InboxTooMuchMail, y=-24} -- move icon down
 		self:removeRegions(_G.InboxFrame, {1}) -- background texture
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3}
-			self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.OpenAllMail}
@@ -4297,13 +4297,13 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 				if btn.Border:GetAtlas() == "orderhalltalents-spellborder-yellow"
 				and btn.Border:IsShown()
 				then
-					btn.sbb:SetBackdropBorderColor(0.8, 0.8, 0, 1)
+					self:clrBtnBdr(btn, "yellow", 1)
 				elseif btn.Border:GetAtlas() == "orderhalltalents-spellborder-green"
 				and btn.Border:IsShown()
 				then
-					btn.sbb:SetBackdropBorderColor(0, 0.8, 0, 1)
+					self:clrBtnBdr(btn, "green", 1)
 				else
-					btn.sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+					self:clrBtnBdr(btn, "grey", 1)
 				end
 			end
 			btn.Border:SetTexture(nil)
@@ -4464,7 +4464,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 					if this.Icon
 					and this.Icon:IsDesaturated()
 					then
-						this.sbb:SetBackdropBorderColor(.5, .5, .5)
+						self:clrBtnBdr(this, "disabled", 1)
 					else
 						this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 					end
@@ -4556,8 +4556,8 @@ aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Reward
 		end
 		self:addSkinFrame{obj=this.Inset.NoTakeBacksies.Dialog, ft=ftype}
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
-			self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3}
+			self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3, clr="gold"}
+			self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3, clr="gold"}
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
@@ -4606,7 +4606,7 @@ aObj.blizzFrames[ftype].PVEFrame = function(self)
 					if _G.GroupFinderFrame["groupButton" .. i]:IsEnabled() then
 						_G.GroupFinderFrame["groupButton" .. i].sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
 					else
-						_G.GroupFinderFrame["groupButton" .. i].sbb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+						self:clrBtnBdr(_G.GroupFinderFrame["groupButton" .. i], "grey", 1)
 					end
 				end
 			end)
@@ -4961,10 +4961,10 @@ aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
 	_G.ScrappingMachineFrame.ItemSlots:DisableDrawLayer("ARTWORK")
 	for slot in _G.ScrappingMachineFrame.ItemSlots.scrapButtons:EnumerateActive() do
 		self:nilTexture(slot.IconBorder, true)
-		self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon, grey=true} -- use module function to force button border
+		self.modUIBtns:addButtonBorder{obj=slot, relTo=slot.Icon, clr="grey"} -- use module function to force button border
 		-- hook this to reset sbb colour
 		self:SecureHook(slot, "ClearSlot", function(this)
-			this.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border
+			self:clrBtnBdr(this, "grey", 1)
 		end)
 	end
 	self:removeMagicBtnTex(_G.ScrappingMachineFrame.ScrapButton)
@@ -5411,7 +5411,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame, relTo=wFrame.Icon}
 				if wInfo.visInfoDataFunction(wFrame.widgetID) then
-					wFrame.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 1) -- grey border
+					self:clrBtnBdr(wFrame, "grey", 1)
 				else
 					wFrame.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 				end
@@ -5439,7 +5439,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=wFrame.Spell, relTo=wFrame.Spell.Icon, reParent={wFrame.Spell.StackCount}}
 				if tcr == 0.5 then
-					wFrame.Spell.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 1) -- grey border
+					self:clrBtnBdr(wFrame.Spell, "grey", 1)
 				end
 			end
 			tcr = nil

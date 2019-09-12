@@ -95,8 +95,8 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 			self:skinCheckButton{obj=_G.ExactMatchCheckButton}
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
-			self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
 		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.BrowseSearchButton}
@@ -192,7 +192,7 @@ aObj.blizzLoDFrames[ftype].AzeriteRespecUI = function(self)
 	if not self.prdb.AzeriteRespecUI or self.initialized.AzeriteRespecUI then return end
 	self.initialized.AzeriteRespecUI = true
 
-	self.modUIBtns:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot, grey=true} -- use module function
+	self.modUIBtns:addButtonBorder{obj=_G.AzeriteRespecFrame.ItemSlot, clr="grey"} -- use module function
 	_G.AzeriteRespecFrame.ButtonFrame:DisableDrawLayer("BORDER")
 	self:removeMagicBtnTex(_G.AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
 	_G.AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
@@ -238,13 +238,13 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 			self:SecureHook("BankFrameItemButton_Update", function(btn)
 				if btn.sbb -- ReagentBank buttons may not be skinned yet
 				and not btn.hasItem then
-					btn.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
+					self:clrBtnBdr(btn, "grey", 1)
 				end
 			end)
 			self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
 			-- add button borders to bank items
 			for i = 1, _G.NUM_BANKGENERIC_SLOTS do
-				self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}, grey=true}
+				self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}, clr="grey"}
 				-- force quality border update
 				_G.BankFrameItemButton_Update(_G.BankSlotsFrame["Item" .. i])
 			end
@@ -255,7 +255,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 			-- add button borders to reagent bank items
 			self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
 				for i = 1, this.size do
-					self:addButtonBorder{obj=this["Item" .. i], ibt=true, reParent={this["Item" .. i].IconQuestTexture}, grey=true}
+					self:addButtonBorder{obj=this["Item" .. i], ibt=true, reParent={this["Item" .. i].IconQuestTexture}, clr="grey"}
 					-- force quality border update
 					_G.BankFrameItemButton_Update(this["Item" .. i])
 				end
@@ -433,7 +433,7 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.ItemButton.IconTexture:SetAlpha(0)
 		this.ItemButton:DisableDrawLayer("BACKGROUND")
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, grey=true, ga=0.85, ofs=1, y1=2}
+			self:addButtonBorder{obj=this.ItemButton, relTo=this.ItemButton.IconTexture, clr="grey", ca=0.85, ofs=1, y1=2}
 		end
 		this.ItemButton.Frame:SetTexture(nil)
 		this.ItemButton.ItemName:SetTextColor(self.BT:GetRGB())
@@ -441,8 +441,6 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 		this.TextFrame.MissingText:SetTextColor(self.BT:GetRGB())
 
 		this.ButtonFrame:DisableDrawLayer("BORDER", 2)
-		-- this.ButtonFrame.ButtonBorder:SetTexture(nil)
-		-- this.ButtonFrame.ButtonBottomBorder:SetTexture(nil)
 		_G.ItemUpgradeFrameMoneyFrame:DisableDrawLayer("BACKGROUND")
 		self:removeMagicBtnTex(_G.ItemUpgradeFrameUpgradeButton)
 		self:skinStdButton{obj=_G.ItemUpgradeFrameUpgradeButton}
@@ -459,7 +457,7 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 			else
 				_G.ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
 				if self.modBtnBs then
-					_G.ItemUpgradeFrame.ItemButton.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.85)
+					self:clrBtnBdr(_G.ItemUpgradeFrame.ItemButton, "grey", 1)
 				end
 			end
 			icon = nil
@@ -497,9 +495,9 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		end
 		if self.modBtnBs then
 			self:removeRegions(_G.MerchantPrevPageButton, {2})
-			self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:removeRegions(_G.MerchantNextPageButton, {2})
-			self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
 		end
 
 		-- Items/Buyback Items
@@ -521,9 +519,9 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:getRegion(_G.MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
 			_G.MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
 			_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
-			self:addButtonBorder{obj=_G.MerchantRepairAllButton, grey=true, ga=0.85}
-			self:addButtonBorder{obj=_G.MerchantRepairItemButton, grey=true, ga=0.85}
-			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, grey=true, ga=0.85}
+			self:addButtonBorder{obj=_G.MerchantRepairAllButton, clr="grey", ca=0.85}
+			self:addButtonBorder{obj=_G.MerchantRepairItemButton, clr="grey", ca=0.85}
+			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, clr="grey", ca=0.85}
 		else
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
 		end
@@ -579,9 +577,9 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 		_G.PetStableModelShadow:Hide()
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0}
-			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0}
-			self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, grey=true, ga=0.85}
+			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0, clr="gold"}
+			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0, clr="gold"}
+			self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, clr="grey", ca=0.85}
 			self:addButtonBorder{obj=_G.PetStableDiet, ofs=0, x2=-1}
 		end
 		-- slots
@@ -591,7 +589,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 				self:resizeEmptyTexture(_G["PetStableActivePet" .. i].Background)
 			else
 				_G["PetStableActivePet" .. i].Background:Hide()
-				self:addButtonBorder{obj=_G["PetStableActivePet" .. i], grey=true, ga=0.85}
+				self:addButtonBorder{obj=_G["PetStableActivePet" .. i], clr="grey", ca=0.85}
 			end
 		end
 		for i = 1, _G.NUM_PET_STABLE_SLOTS do
@@ -599,7 +597,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 				self:resizeEmptyTexture(_G["PetStableStabledPet" .. i].Background)
 			else
 				_G["PetStableStabledPet" .. i].Background:Hide()
-				self:addButtonBorder{obj=_G["PetStableStabledPet" .. i], grey=true, ga=0.85}
+				self:addButtonBorder{obj=_G["PetStableStabledPet" .. i], clr="grey", ca=0.85}
 			end
 		end
 

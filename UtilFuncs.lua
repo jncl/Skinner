@@ -510,15 +510,33 @@ function aObj:getChild(obj, childNo)
 
 end
 
-function aObj:getLastChild(obj)
+function aObj:getColour(clrName)
 
-	return self:getChild(obj, obj:GetNumChildren())
-
-end
-
-function aObj:getPenultimateChild(obj)
-
-	return self:getChild(obj, obj:GetNumChildren() - 1)
+	local r, g, b
+	if clrName == "grey" then
+		r, g, b = _G.GRAY_FONT_COLOR:GetRGB()
+	elseif clrName == "white" then
+		r, g, b = _G.HIGHLIGHT_FONT_COLOR:GetRGB()
+	elseif clrName == "gold" then
+		r, g, b = _G.PASSIVE_SPELL_FONT_COLOR:GetRGB()
+	elseif clrName == "yellow" then
+		r, g, b = _G.YELLOW_FONT_COLOR:GetRGB()
+	elseif clrName == "green" then
+		r, g, b = _G.GREEN_FONT_COLOR:GetRGB()
+	elseif clrName == "disabled" then
+		r, g, b = _G.DISABLED_FONT_COLOR:GetRGB()
+	elseif clrName == "selected" then
+		r, g, b = _G.PAPER_FRAME_EXPANDED_COLOR:GetRGB()
+	elseif clrName == "normal" then
+		r, g, b = _G.NORMAL_FONT_COLOR:GetRGB()
+	elseif clrName == "unused" then
+		r, g, b = _G.DULL_RED_FONT_COLOR:GetRGB()
+	elseif clrName == "common" then
+		-- BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_COMMON] = {r=0.65882,g=0.65882,b=0.65882}
+		r, g, b = _G.LIGHTGRAY_FONT_COLOR:GetRGB()
+	end
+	-- aObj:Debug("getColour: [%s, %s, %s, %s]", clrName, r, g ,b)
+	return r, g, b
 
 end
 
@@ -548,6 +566,18 @@ function aObj:getInt(num)
 --@end-alpha@
 
 	return _G.math.floor(num + 0.5)
+
+end
+
+function aObj:getLastChild(obj)
+
+	return self:getChild(obj, obj:GetNumChildren())
+
+end
+
+function aObj:getPenultimateChild(obj)
+
+	return self:getChild(obj, obj:GetNumChildren() - 1)
 
 end
 
@@ -751,9 +781,9 @@ function aObj:makeIconSquare(obj, iconObjName, chkDisabled)
 			if obj.disabled
 			or (obj.IsEnabled and not obj:IsEnabled())
 			then
-				obj.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
+				self:clrBtnBdr(obj, "disabled", 1)
 			else
-				obj.sbb:SetBackdropBorderColor(1, 1, 1, 1) -- white border
+				self:clrBtnBdr(obj, "white", 1)
 			end
 		end
 	end

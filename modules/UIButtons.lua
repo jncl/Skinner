@@ -133,9 +133,17 @@ function module:clrButtonBorder(btn)
 	if btn.IconBorder:IsShown() then
 		btn.sbb:SetBackdropBorderColor(btn.IconBorder:GetVertexColor())
 	else
-		btn.sbb:SetBackdropBorderColor(0.65, 0.65, 0.65, 1)
+		module:clrBtnBdr(btn, "common", 1)
 	end
 	btn.IconBorder:SetAlpha(0)
+
+end
+
+function module:clrBtnBdr(btn, clr, alpha)
+
+	local r, g, b = aObj:getColour(clr)
+	btn.sbb:SetBackdropBorderColor(r, g, b, alpha or 1)
+	r, g, b = nil, nil ,nil
 
 end
 
@@ -280,6 +288,7 @@ function module:skinExpandButton(opts)
 
 	local aso = opts.aso or {}
 	aso.bd = 6
+	aso.bbclr = "grey"
 	if not opts.as then
 		aObj:addSkinButton{obj=opts.obj, ft=opts.ft, parent=opts.obj, sap=opts.sap, aso=aso}
 		if not opts.noHook then
@@ -745,8 +754,8 @@ local function __addButtonBorder(opts)
 		auit = auction item template(s)
 		bmit = blackmarket item template
 		nc = don't check to see if already skinned
-		grey = set backdrop border colour to grey
-		ga = alpha value for grey
+		clr = set colour
+		ca = set colour alpha
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object__aBB\n" .. debugstack(2, 3, 2))
@@ -795,10 +804,11 @@ local function __addButtonBorder(opts)
 	-- DON'T lower the frame level otherwise the border appears below the frame
 	-- setup and apply the backdrop
 	opts.obj.sbb:SetBackdrop({edgeFile = aObj.Backdrop[1].edgeFile, edgeSize = opts.es or aObj.Backdrop[1].edgeSize})
-	if not opts.grey then
-		opts.obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+
+	if opts.clr then
+		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	else
-		opts.obj.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, opts.ga or 0.5) -- grey border
+		opts.obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 	end
 
 	-- position the frame
@@ -899,7 +909,7 @@ local function __skinCheckButton(opts)
 		end
 	end
 	-- aObj:Debug("__skinCheckButton GetWidth: [%s, %s]", opts.obj, opts.obj:GetWidth())
-	aObj:addSkinButton{obj=opts.obj, aso={bd=bd, ng=true}, parent=opts.obj, nohooks=not opts.hf, grey=true, ofs=ofs, y2=yOfs}
+	aObj:addSkinButton{obj=opts.obj, aso={bd=bd, ng=true, bbclr="grey"}, parent=opts.obj, nohooks=not opts.hf, ofs=ofs, y2=yOfs}
 
 end
 function module:skinCheckButton(...)
