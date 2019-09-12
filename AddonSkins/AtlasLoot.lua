@@ -2,7 +2,7 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("AtlasLoot") then return end
 local _G = _G
 
-function aObj:AtlasLoot()
+aObj.addonsToSkin.AtlasLoot = function(self) -- v 8.10.00
 
 	local function skinDropDown(obj)
 		obj.frame:SetBackdrop(nil)
@@ -15,9 +15,11 @@ function aObj:AtlasLoot()
 			obj.frame.ddTex:SetHeight(18)
 		end
 		if aObj.db.profile.DropDownButtons then
-			aObj:addSkinFrame{obj=obj.frame, aso={ng=true}, nb=true}
+			aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true, aso={ng=true}}
 		end
-		aObj:addButtonBorder{obj=obj.frame.button, es=12, ofs=-2}
+		if self.modBtnBs then
+			aObj:addButtonBorder{obj=obj.frame.button, es=12, ofs=-2}
+		end
 		-- hook this to skin dropdown frame(s)
 		aObj:SecureHookScript(obj.frame.button, "OnClick", function(this)
 			local kids = {this.par.frame:GetChildren()}
@@ -26,7 +28,7 @@ function aObj:AtlasLoot()
 				and child.buttons
 				and child.type == "frame"
 				then
-					aObj:addSkinFrame{obj=child}
+					aObj:addSkinFrame{obj=child, ft="a", kfs=true, nb=true}
 				end
 			end
 			kids = nil
@@ -34,10 +36,11 @@ function aObj:AtlasLoot()
 		end)
 	end
 	local function skinSelect(obj)
-		aObj:addSkinFrame{obj=obj.frame}
-		aObj:skinSlider{obj=obj.frame.scrollbar}--, adj=-4, size=3}
+		aObj:skinSlider{obj=obj.frame.scrollbar}
+		aObj:addSkinFrame{obj=obj.frame, ft="a", kfs=true, nb=true}
 	end
--->>-- GUI
+
+	-- GUI
 	local GUI = _G.AtlasLoot.GUI
 	local frame = GUI.frame
 	frame.titleFrame:SetBackdrop(nil)
@@ -46,29 +49,34 @@ function aObj:AtlasLoot()
 	skinSelect(frame.difficulty)
 	skinSelect(frame.boss)
 	skinSelect(frame.extra)
-	self:addSkinFrame{obj=frame}
+	self:addSkinFrame{obj=frame, ft="a", kfs=true}
 
 	-- ItemFrame
 	local iF = frame.contentFrame
 	iF:DisableDrawLayer("BACKGROUND")
-	self:addButtonBorder{obj=iF.nextPageButton, ofs=-2, x1=1, y2=1}
-	self:addButtonBorder{obj=iF.mapButton, ofs=-1, x1=2, x2=-2}
-	self:addButtonBorder{obj=iF.prevPageButton, ofs=-2, x1=1, y2=1}
-	self:addButtonBorder{obj=iF.clasFilterButton}
+	if self.modBtns then
+		self:skinStdButton{obj=iF.itemsButton}
+		self:skinStdButton{obj=iF.modelButton}
+	end
+	if self.modBtnBs then
+		self:addButtonBorder{obj=iF.nextPageButton, ofs=-2, x1=1, y2=1, clr="gold"}
+		self:addButtonBorder{obj=iF.prevPageButton, ofs=-2, x1=1, y2=1, clr="gold"}
+		self:addButtonBorder{obj=iF.mapButton, ofs=-1, x1=2, x2=-2}
+		self:addButtonBorder{obj=iF.clasFilterButton}
+		self:addButtonBorder{obj=iF.transmogButton}
+	end
 
--->>-- Tooltip(s)
+	-- Tooltip(s)
 	if self.db.profile.Tooltips.skin then
-		if self.db.profile.Tooltips.style == 3 then
-			_G.AtlasLootTooltip:SetBackdrop(self.backdrop)
-		end
-		self:SecureHookScript(_G.AtlasLootTooltip, "OnShow", function(this)
-			self:skinTooltip(this)
+		-- tooltip
+		_G.C_Timer.After(0.1, function()
+			self:add2Table(self.ttList, _G.AtlasLootTooltip)
 		end)
 		-- skin Mount tooltip
 		local mTT = _G.AtlasLoot.Button:GetType("Mount")
 		if mTT then
 			self:SecureHook(mTT, "ShowToolTipFrame", function(button)
-				self:addSkinFrame{obj=mTT.tooltipFrame}
+				self:addSkinFrame{obj=mTT.tooltipFrame, ft="a", kfs=true, nb=true}
 				self:Unhook(mTT, "ShowToolTipFrame")
 			end)
 		end
@@ -76,7 +84,7 @@ function aObj:AtlasLoot()
 		local pTT = _G.AtlasLoot.Button:GetType("Pet")
 		if pTT then
 			self:SecureHook(pTT, "ShowToolTipFrame", function(button)
-				self:addSkinFrame{obj=pTT.tooltipFrame}
+				self:addSkinFrame{obj=pTT.tooltipFrame, ft="a", kfs=true, nb=true}
 				self:Unhook(pTT, "ShowToolTipFrame")
 			end)
 		end
@@ -86,16 +94,22 @@ function aObj:AtlasLoot()
 			self:SecureHook(fTT, "ShowToolTipFrame", function(button)
 				fTT.tooltipFrame.standing:SetBackdrop(nil)
 				self:glazeStatusBar(fTT.tooltipFrame.standing.bar, 0,  nil)
-				self:addSkinFrame{obj=fTT.tooltipFrame}
+				self:addSkinFrame{obj=fTT.tooltipFrame, ft="a", kfs=true, nb=true}
 				self:Unhook(fTT, "ShowToolTipFrame")
 			end)
 		end
 	end
 
-	-->>-- Minimap Button
+	-- Minimap Button
 	if _G.AtlasLoot.MiniMapButton.frame then
 		self:removeRegions(_G.AtlasLoot.MiniMapButton.frame, {2, 3}) -- Border & Background
 		self:addSkinButton{obj=_G.AtlasLoot.MiniMapButton.frame, parent=_G.AtlasLoot.MiniMapButton.frame, sap=true}
+	end
+
+	if self.modBtnBs then
+		_G.AtlasLootToggleFromWorldMap2:GetNormalTexture():SetTexture([[Interface\Icons\INV_Box_01]])
+		_G.AtlasLootToggleFromWorldMap2:SetScale(0.5)
+		self:addButtonBorder{obj=_G.AtlasLootToggleFromWorldMap2}
 	end
 
 end

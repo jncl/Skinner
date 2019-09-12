@@ -119,8 +119,8 @@ aObj.addonsToSkin.Armory = function(self) -- v 15.1.0
 		end
 	end
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.ArmoryPetFrameNextPageButton, ofs=0}
-	self:addButtonBorder{obj=_G.ArmoryPetFramePrevPageButton, ofs=0}
+		self:addButtonBorder{obj=_G.ArmoryPetFrameNextPageButton, ofs=0, clr="gold"}
+	self:addButtonBorder{obj=_G.ArmoryPetFramePrevPageButton, ofs=0, clr="gold"}
 	end
 
 	-- Talents Tab
@@ -369,8 +369,8 @@ aObj.addonsToSkin.Armory = function(self) -- v 15.1.0
 		end
 	end
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.ArmorySpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
-	self:addButtonBorder{obj=_G.ArmorySpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
+		self:addButtonBorder{obj=_G.ArmorySpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+	self:addButtonBorder{obj=_G.ArmorySpellBookNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
 	end
 
 	self:SecureHook("ArmorySpellButton_UpdateButton", function(this)

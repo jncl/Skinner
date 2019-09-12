@@ -236,8 +236,8 @@ aObj.lodAddons.Altoholic_Characters = function(self)
 			btn = this["SpellIcon" .. i]
 			btn:DisableDrawLayer("BACKGROUND")
 			btn.Slot:SetAlpha(0)
-			btn.SpellName:SetTextColor(self.HTr, self.HTg, self.HTb)
-			btn.SubSpellName:SetTextColor(self.BTr, self.BTg, self.BTb)
+			btn.SpellName:SetTextColor(self.HT:GetRGB())
+			btn.SubSpellName:SetTextColor(self.BT:GetRGB())
 			if self.modBtnBs then
 				self:addButtonBorder{obj=btn, relTo=btn.Icon}
 			end
@@ -245,10 +245,10 @@ aObj.lodAddons.Altoholic_Characters = function(self)
 		btn = nil
 	end)
 	if self.modBtnBs then
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.Spellbook.PrevPage, ofs=-2}
-		self:addButtonBorder{obj=_G.AltoholicTabCharacters.Spellbook.NextPage, ofs=-2}
-		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalPrevPage, ofs=-2}
-		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalNextPage, ofs=-2}
+		self:addButtonBorder{obj=_G.AltoholicTabCharacters.Spellbook.PrevPage, ofs=-2, clr="gold"}
+		self:addButtonBorder{obj=_G.AltoholicTabCharacters.Spellbook.NextPage, ofs=-2, clr="gold"}
+		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalPrevPage, ofs=-2, clr="gold"}
+		self:addButtonBorder{obj=_G.AltoholicFramePetsNormalNextPage, ofs=-2, clr="gold"}
 	end
 
 	-- Professions

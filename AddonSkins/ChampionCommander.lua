@@ -29,7 +29,7 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.2 80100
 				mBtn:GetNormalTexture():SetRotation(0)
 				mBtn:GetHighlightTexture():SetRotation(0)
 				mBtn:SetPoint("TOPLEFT", _G.BFAMissionFrame.MissionTab, "TOPRIGHT", -6, 5)
-				self:addButtonBorder{obj=mBtn, ofs=-4, x1=3}
+				self:addButtonBorder{obj=mBtn, ofs=-4, x1=3, clr="gold"}
 				mBtn = nil
 			end
 			frame = nil

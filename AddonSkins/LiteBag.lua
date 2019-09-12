@@ -46,13 +46,13 @@ aObj.addonsToSkin.LiteBag = function(self) -- v 8.1.2
 			for i = 1, #this.itemButtons do
 				btn = this.itemButtons[i]
 				btn:DisableDrawLayer("BACKGROUND")
-				self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}, grey=true}
+				self:addButtonBorder{obj=btn, ibt=true, reParent={btn.IconQuestTexture}, clr="grey"}
 			end
 			btn = nil
 		end)
 		self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
 			for i = 1, this.size do
-				self:addButtonBorder{obj=this["Item" .. i], ibt=true, reParent={this["Item" .. i].IconQuestTexture}, grey=true}
+				self:addButtonBorder{obj=this["Item" .. i], ibt=true, reParent={this["Item" .. i].IconQuestTexture}, clr="grey"}
 			end
 			self:Unhook(this, "OnShow")
 		end)

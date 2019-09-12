@@ -57,7 +57,7 @@ aObj.lodAddons.OrderHallCommander = function(self) -- v 1.7.2 80000
 				mBtn:GetNormalTexture():SetRotation(0)
 				mBtn:GetHighlightTexture():SetRotation(0)
 				mBtn:SetPoint("TOPLEFT", _G.OrderHallMissionFrame.MissionTab, "TOPRIGHT", -6, 6)
-				self:addButtonBorder{obj=mBtn, ofs=-4}
+				self:addButtonBorder{obj=mBtn, ofs=-4, clr="gold"}
 				mBtn = nil
 			end
 			frame = nil
