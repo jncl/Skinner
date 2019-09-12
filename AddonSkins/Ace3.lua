@@ -138,7 +138,7 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				end
 			elseif objType == "Button" then
 				if aObj.modBtns then
-					aObj:skinStdButton{obj=obj.frame}
+					aObj:skinStdButton{obj=obj.frame, x1=5, x2=-5}
 				end
 			elseif objType == "Keybinding" then
 				aObj:applySkin{obj=obj.msgframe}
