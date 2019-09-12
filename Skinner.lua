@@ -335,15 +335,15 @@ function aObj:OnEnable()
 						then
 							button.sbb:SetBackdropBorderColor(_G.BAG_ITEM_QUALITY_COLORS[quality].r, _G.BAG_ITEM_QUALITY_COLORS[quality].g, _G.BAG_ITEM_QUALITY_COLORS[quality].b, 1)
 						else
-							button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 1) -- grey border
+							self:clrBtnBdr(button, "grey", 1)
 						end
 					else
-						button.sbb:SetBackdropBorderColor(0.498, 0.498, 0.498, 0.5) -- grey border, 50% alpha
+						self:clrBtnBdr(button, "grey", 0.5)
 						if _G.TradeSkillFrame
 						and _G.TradeSkillFrame.DetailsFrame
 						and button == _G.TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 						then
-							button.sbb:SetBackdropBorderColor(1.0, 0.82, 0.0, 1) -- NORMAL_FONT_COLOR
+							self:clrBtnBdr(button, "normal", 1)
 						end
 					end
 				end
@@ -372,6 +372,7 @@ function aObj:OnEnable()
 	self.fontS            = self.modBtns and self.modUIBtns.fontS or _G.nop
 	self.addButtonBorder  = self.modBtnBs and self.modUIBtns.addButtonBorder or _G.nop
 	self.clrButtonBorder  = self.modBtnBs and self.modUIBtns.clrButtonBorder or _G.nop
+	self.clrBtnBdr        = self.modBtnBs and self.modUIBtns.clrBtnBdr or _G.nop
 	self.skinCheckButton  = self.modChkBtns and self.modUIBtns.skinCheckButton or _G.nop
 
 	-- register for event after a slight delay as registering ADDON_LOADED any earlier causes it not to be registered if LoD modules are loaded on startup (e.g. SimpleSelfRebuff/LightHeaded)
@@ -931,6 +932,7 @@ local function __applySkin(opts)
 		invert = invert gradient
 		rotate = rotate gradient
 		ebc = Use EditBox Colours
+		bbclr = BackdropBorder colour
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aS\n" .. debugstack(2, 3, 2))
@@ -963,10 +965,14 @@ local function __applySkin(opts)
 	-- setup the backdrop
 	opts.obj:SetBackdrop(aObj.Backdrop[opts.bd or 1])
 	if not opts.ebc then
-		-- colour the backdrop if required
+		-- colour the backdrop as required
 		local r, g, b, a = aObj.bClr:GetRGBA()
 		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
-		r, g, b, a = aObj.bbClr:GetRGBA()
+		if opts.bbclr then
+			r, g, b, a = aObj:getColour(opts.bbclr)
+		else
+			r, g, b, a = aObj.bbClr:GetRGBA()
+		end
 		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
 		r, g, b, a = nil, nil ,nil ,nil
 	else
