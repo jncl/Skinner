@@ -34,39 +34,54 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 10.73
 			self.LSM:Register("statusbar","ElvUI Norm", [[Interface\AddOns\ElvUI\media\textures\normTex.tga]])
 		end
 
+		local prdb = self.db.profile
+
 		-- create and use a new db profile called ElvUI
 		local dbProfile = self.db:GetCurrentProfile()
 		if dbProfile ~= "ElvUI" then
 			self.db:SetProfile("ElvUI") -- create new profile or use existing ElvUI one
 			self.db:CopyProfile(dbProfile) -- use settings from previous profile
 
+			prdb = self.db.profile
+
 			-- change settings
-            self.db.profile.DropDownButtons = false
-            self.db.profile.TexturedTab = false
-            self.db.profile.TexturedDD = false
-            self.db.profile.TooltipBorder  = {r = borderr, g = borderg, b = borderb}
-            self.db.profile.BackdropBorder = {r = borderr, g = borderg, b = borderb}
-            self.db.profile.Backdrop       = {r = backdropr, g = backdropg, b = backdropb}
-			self.db.profile.BdDefault = false
-			self.db.profile.BdFile = "None"
-			self.db.profile.BdEdgeFile = "None"
-			self.db.profile.BdTexture = "ElvUI Blank"
-			self.db.profile.BdBorderTexture = "ElvUI GlowBorder"
-			self.db.profile.BdTileSize = 0
-			self.db.profile.BdEdgeSize = 1
-			self.db.profile.BdInset = -1
-			self.db.profile.Gradient = {enable = false, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "ElvUI Blank"}
-			self.db.profile.Buffs = false
-			self.db.profile.Nameplates = false
-			self.db.profile.ChatEditBox = {skin = false, style = 1}
-			self.db.profile.StatusBar = {texture = "ElvUI Norm", r = 0, g = 0.5, b = 0.5, a = 0.5}
-			self.db.profile.WorldMap = {skin = false, size = 1}
+            prdb.DropDownButtons = false
+            prdb.TexturedTab = false
+            prdb.TexturedDD = false
+            prdb.TooltipBorder  = {r = borderr, g = borderg, b = borderb}
+            prdb.BackdropBorder = {r = borderr, g = borderg, b = borderb}
+            prdb.Backdrop       = {r = backdropr, g = backdropg, b = backdropb}
+			prdb.BdDefault = false
+			prdb.BdFile = "None"
+			prdb.BdEdgeFile = "None"
+			prdb.BdTexture = "ElvUI Blank"
+			prdb.BdBorderTexture = "ElvUI GlowBorder"
+			prdb.BdTileSize = 0
+			prdb.BdEdgeSize = 1
+			prdb.BdInset = -1
+			prdb.Gradient = {enable = false, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "ElvUI Blank"}
+			prdb.Buffs = false
+			prdb.Nameplates = false
+			prdb.ChatEditBox = {skin = false, style = 1}
+			prdb.StatusBar = {texture = "ElvUI Norm", r = 0, g = 0.5, b = 0.5, a = 0.5}
+			prdb.WorldMap = {skin = false, size = 1}
 		end
-		-- class colours
-		self.db.profile.ClassClrBd = E.myclass == 'PRIEST' and E.PriestColors or _G.RAID_CLASS_COLORS[E.myclass]
-		self.db.profile.ClassClrBg = E.myclass == 'PRIEST' and E.PriestColors or _G.RAID_CLASS_COLORS[E.myclass]
-		self.db.profile.ClassClrGr = E.myclass == 'PRIEST' and E.PriestColors or _G.RAID_CLASS_COLORS[E.myclass]
-		self.db.profile.ClassClrTT = E.myclass == 'PRIEST' and E.PriestColors or _G.RAID_CLASS_COLORS[E.myclass]
+
+		local c
+		-- GradientMax colours
+		c = prdb.ClassClrGr and E.myclass == 'PRIEST' and E.PriestColors or _G.RAID_CLASS_COLORS[E.myclass] or prdb.GradientMax
+		self.gmaxClr = _G.CreateColor(c.r, c.g, c.b, c.a or prdb.GradientMax.a)
+		-- Backdrop colours
+		c = prdb.ClassClrBg and E.myclass == 'PRIEST' and E.PriestColors or _G.RAID_CLASS_COLORS[E.myclass] or prdb.Backdrop
+		self.bClr = _G.CreateColor(c.r, c.g, c.b, c.a or prdb.Backdrop.a)
+		-- BackdropBorder colours
+		c = prdb.ClassClrBd and E.myclass == 'PRIEST' and E.PriestColors or _G.RAID_CLASS_COLORS[E.myclass] or prdb.BackdropBorder
+		self.bbClr = _G.CreateColor(c.r, c.g, c.b, c.a or prdb.BackdropBorder.a)
+		-- TooltipBorder colours
+		c = prdb.ClassClrTT and E.myclass == 'PRIEST' and E.PriestColors or _G.RAID_CLASS_COLORS[E.myclass] or prdb.TooltipBorder
+		self.tbClr = _G.CreateColor(c.r, c.g, c.b, c.a or prdb.TooltipBorder.a)
+
+		prdb, c = nil, nil
 
 		-- replace removeRegions function by rmRegionsTex function as several frames have had Textures removed/Fontstrings added
 		self.removeRegions = self.rmRegionsTex
