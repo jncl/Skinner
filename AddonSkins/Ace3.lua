@@ -129,11 +129,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 				if aObj.modBtns then
 					-- hook to manage changes to button textures
 					aObj:secureHook(obj, "RefreshTree", function(this)
-						if aObj.modBtns then
-							for i = 1, #this.buttons do
-								if not this.buttons[i].toggle.sb then
-									aObj:skinExpandButton{obj=this.buttons[i].toggle, sap=true, plus=true} -- default to plus
-								end
+						for i = 1, #this.buttons do
+							if not this.buttons[i].toggle.sb then
+								aObj:skinExpandButton{obj=this.buttons[i].toggle, sap=true, plus=true} -- default to plus
 							end
 						end
 					end)
