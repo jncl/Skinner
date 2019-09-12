@@ -3317,7 +3317,15 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:DisableDrawLayer("BORDER")
 		if aObj.isClassic then
+			local fName = frame:GetName()
+			_G[fName .. "SlotTexture"]:SetTexture(nil)
+			_G[fName .. "NameFrame"]:SetTexture(nil)
+			_G[fName .. "Corner"]:SetAlpha(0)
 			frame.Timer:DisableDrawLayer("ARTWORK")
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame, relTo=frame.Icon, reParent={frame.Count}}
+			end
+			fName = nil
 		end
 		aObj:skinStatusBar{obj=frame.Timer, fi=0, bgTex=frame.Timer.Background}
 		-- hook this to show the Timer
@@ -3332,7 +3340,7 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 		if aObj.modBtns then
 			aObj:skinCloseButton{obj=frame.PassButton}
 		end
-		if not aObj.prdb.LootFrames.size == 3 then -- Normal or small
+		if aObj.prdb.LootFrames.size ~= 3 then -- Normal or small
 			aObj:addSkinFrame{obj=frame, ft=ftype, x1=-3, y2=-3} -- adjust for Timer
 		else -- Micro
 			aObj:moveObject{obj=frame.IconFrame, x=95, y=5}
@@ -3343,8 +3351,10 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 			frame.PassButton:SetPoint("LEFT", frame.NeedButton, "RIGHT", 0, 2)
 			frame.GreedButton:ClearAllPoints()
 			frame.GreedButton:SetPoint("RIGHT", frame.NeedButton, "LEFT")
-			frame.DisenchantButton:ClearAllPoints()
-			frame.DisenchantButton:SetPoint("RIGHT", frame.GreedButton, "LEFT", 2, 0)
+			if not self.isClassic then
+				frame.DisenchantButton:ClearAllPoints()
+				frame.DisenchantButton:SetPoint("RIGHT", frame.GreedButton, "LEFT", 2, 0)
+			end
 			aObj:adjWidth{obj=frame.Timer, adj=-30}
 			frame.Timer:ClearAllPoints()
 			frame.Timer:SetPoint("BOTTOMRIGHT", "$parent", "BOTTOMRIGHT", -10, 13)
