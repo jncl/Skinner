@@ -71,15 +71,6 @@ ToDos
 
 ?	I	RaiderIO profile tooltip not skinned
 
-	I	[Classic] ElvUI, reported by the9thresident, 06.09.19
+√	I	[Classic] ElvUI, reported by the9thresident, 06.09.19
 		- everything Class coloured and no gradient
 		- everything white in retail, not running ElvUI
-
-√	S	RareScanner, requested by ACivien, 09.09.19
-
-√	S	ClassicCensusPlus, requested by Sojiroi, 09.09.19
-
-√	I	[Classic] Keep TalentUI background art, requested by Arnore1, 10.09.19
-
-√	I	[Classic] ReputationFrame scroolBar textures, reported by Sojiroi, 11.09.19
-	
