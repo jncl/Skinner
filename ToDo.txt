@@ -71,6 +71,12 @@ ToDos
 
 ?	I	RaiderIO profile tooltip not skinned
 
-√	I	[Classic] ElvUI, reported by the9thresident, 06.09.19
-		- everything Class coloured and no gradient
-		- everything white in retail, not running ElvUI
+	I	[Classic] ElvUI, reported by the9thresident, 13.09.19
+√		- 9x Skinner\UtilFuncs.lua:247: attempt to index local 'obj' (a nil value)
+			Skinner\UtilFuncs.lua:247: in function `changeRecTex'
+			Skinner\PlayerFrames.lua:4439: in function <Skinner\PlayerFrames.lua:4429>
+			Skinner\PlayerFrames.lua:4456: in function <Skinner\PlayerFrames.lua:4455>
+√		- 1x Skinner\Skinner-beta8.31727.2.lua:1455: attempt to index field 'obj' (a nil value)
+			Skinner\Skinner-beta8.31727.2.lua:1455: in function <Skinner\Skinner.lua:1440>
+			Skinner\Skinner-beta8.31727.2.lua:1511: in function `skinSlider'
+			Skinner\PlayerFrames.lua:2616: in function <Skinner\PlayerFrames.lua:2597>
