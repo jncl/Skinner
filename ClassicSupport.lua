@@ -879,8 +879,10 @@ aObj.ClassicSupport = function(self)
 				self:moveObject{obj=_G.WhoFrameColumnHeader4, x=4}
 				self:removeInset(_G.WhoFrameEditBoxInset)
 				self:skinEditBox{obj=_G.WhoFrameEditBox}--, move=true}
-				_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
-				self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
+				if not self.isElvUI then
+					_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
+					self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
+				end
 				self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, rt="background"}
 				if self.modBtns then
 					self:skinStdButton{obj=_G.WhoFrameGroupInviteButton}
