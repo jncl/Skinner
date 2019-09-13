@@ -2613,9 +2613,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			_G.WhoFrameEditBox:SetWidth(_G.WhoFrameEditBox:GetWidth() + 24)
 			self:moveObject{obj=_G.WhoFrameEditBox, x=11, y=6}
 			if not aObj.isPTR then
-				self:skinSlider{obj=_G.WhoListScrollFrame.scrollBar, rt="background"}
+				self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, rt="background"}
 			else
-				self:skinSlider{obj=_G.WhoListScrollFrame.scrollBar, wdth=-4}
+				self:skinSlider{obj=_G.WhoListScrollFrame.ScrollBar, wdth=-4}
 			end
 			self:Unhook(this, "OnShow")
 		end)
@@ -4407,7 +4407,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		local sc = obj.spellsScroll.child
 		if aObj.modBtnBs then
 			if obj.disabled then
-				self:clrBtnBdr(sc, "disabled", 1)
+				aObj:clrBtnBdr(sc, "disabled", 1)
 			else
 				sc.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 			end
@@ -4447,7 +4447,9 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			frame["specButton" .. i].ring:SetTexture(nil)
 			aObj:changeRecTex(frame["specButton" .. i].selectedTex, true)
 			frame["specButton" .. i].learnedTex:SetTexture(nil)
-			aObj:changeRecTex(frame["specButton" .. i]:GetHighlightTexture())
+			if not aObj.isElvUI then
+				aObj:changeRecTex(frame["specButton" .. i]:GetHighlightTexture())
+			end
 			-- make specIcon square
 			aObj:makeIconSquare(frame["specButton" .. i], "specIcon", true)
 		end
