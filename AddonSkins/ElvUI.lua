@@ -96,7 +96,9 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 10.73
 		end
 
 		-- remove skinning code for LFGFrame as it causes errors
-		aObj.blizzFrames.u.LFGFrame = nil
+		self.blizzFrames.u.LFGFrame = nil
+
+		self.isElvUI = true
 
 		self:Unhook(self, "OnInitialize")
 	end)
@@ -132,7 +134,8 @@ aObj.otherAddons.ElvUIInit = function(self) -- v 10.73
 				end
 				self.hooks[this].skinButton(this, opts)
 			end)
-			self.checkTex = function() end
+			self.checkTex = _G.nop
+			
 			self:Unhook(this, "OnEnable")
 		end)
 	end
