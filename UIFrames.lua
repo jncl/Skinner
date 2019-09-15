@@ -602,15 +602,36 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
 	end)
-	-- called params: frame, type, icon, name, payloadID
-	self:SecureHook(_G.StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
-		-- aObj:Debug("StorePurchaseAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
-		frame:DisableDrawLayer("BACKGROUND")
-		self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=frame, relTo=frame.Icon}
-		end
-	end)
+	if not aObj.isPTR then
+		-- called params: frame, type, icon, name, payloadID
+		self:SecureHook(_G.StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
+			-- aObj:Debug("StorePurchaseAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
+			frame:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=frame, relTo=frame.Icon}
+			end
+		end)
+	else
+		-- called params: frame, type, icon, name, payloadID, showFancyToast
+		self:SecureHook(_G.EntitlementDeliveredAlertSystem, "setUpFunction", function(frame, ...)
+			-- aObj:Debug("EntitlementDeliveredAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
+			frame:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=frame, relTo=frame.Icon}
+			end
+		end)
+		-- called params: frame, type, icon, name, payloadID, showFancyToast
+		self:SecureHook(_G.RafRewardDeliveredAlertSystem, "setUpFunction", function(frame, ...)
+			-- aObj:Debug("RafRewardDeliveredAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
+			frame:DisableDrawLayer("BACKGROUND")
+			self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=frame, relTo=frame.Icon}
+			end
+		end)
+	end
 	-- called params: frame, name, garrisonType ("Menagerie", "")
 	self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonBuildingAlertSystem: [%s, %s, %s]", frame, ...)

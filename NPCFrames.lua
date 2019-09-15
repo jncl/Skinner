@@ -724,13 +724,15 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- QuestNPCModel
-	self:SecureHookScript(_G.QuestNPCModel, "OnShow", function(this)
-		self:keepFontStrings(_G.QuestNPCModelTextFrame)
-		self:skinSlider{obj=_G.QuestNPCModelTextScrollFrame.ScrollBar}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
-		self:Unhook(this, "OnShow")
-	end)
+	if not aObj.isPTR then
+		-- QuestNPCModel
+		self:SecureHookScript(_G.QuestNPCModel, "OnShow", function(this)
+			self:keepFontStrings(_G.QuestNPCModelTextFrame)
+			self:skinSlider{obj=_G.QuestNPCModelTextScrollFrame.ScrollBar}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=4, y2=-81} -- similar to GuildNewsBossModel
+			self:Unhook(this, "OnShow")
+		end)
+	end
 
 end
 

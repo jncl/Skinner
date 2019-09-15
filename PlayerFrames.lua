@@ -1440,10 +1440,8 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	if aObj.isPTR then
 		-- .ApplicantList
-		if self.modChkBtns then
-			self:skinCheckButton{obj=cFrame.ApplicantList.ShowOfflineButton}
-		end
-		-- TODO: ColumnDisplay
+		cFrame.ApplicantList:DisableDrawLayer("BACKGROUND")
+		cFrame.ApplicantList:DisableDrawLayer("ARTWORK")
 		self:skinSlider{obj=cFrame.ApplicantList.ListScrollFrame.scrollBar, rt="background", wdth=-4}
 		self:skinDropDown{obj=cFrame.ApplicantList.DropDown}
 		self:removeNineSlice(cFrame.ApplicantList.InsetFrame.NineSlice)
@@ -1455,7 +1453,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			aObj:skinDropDown{obj=frame.OptionsList.ClubFocusDropdown}
 			aObj:skinDropDown{obj=frame.OptionsList.ClubSizeDropdown}
 			aObj:skinDropDown{obj=frame.OptionsList.SortByDropdown}
-			aObj:skinEditBox{obj=frame.OptionsList.SearchBox, regs={6}, mi=true} -- 6 is text
+			aObj:skinEditBox{obj=frame.OptionsList.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 			aObj:moveObject{obj=frame.OptionsList.Search, y=-4}
 			if aObj.modBtns then
 				aObj:skinStdButton{obj=frame.OptionsList.Search}
@@ -1502,6 +1500,42 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 					end
 				end)
 			end
+
+			-- .PendingGuildCards
+	 		for i = 1, #frame.PendingGuildCards.Cards do
+				btn = frame.PendingGuildCards.Cards[i]
+				btn:DisableDrawLayer("BACKGROUND")
+				aObj:addSkinFrame{obj=btn, ft=ftype, nb=true, y1=5}
+				if aObj.modBtns then
+					aObj:skinStdButton{obj=btn.RequestJoin}
+				end
+				aObj:SecureHook(btn, "SetDisabledState", function(this, shouldDisable)
+					if shouldDisable then
+						this.sf:SetBackdropBorderColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					else
+						this.sf:SetBackdropBorderColor(aObj.bbClr:GetRGB())
+					end
+				end)
+			end
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.PendingGuildCards.PreviousPage, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				aObj:addButtonBorder{obj=frame.PendingGuildCards.NextPage, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			end
+
+			-- .PendingCommunityCards
+			aObj:skinSlider{obj=frame.PendingCommunityCards.ListScrollFrame.scrollBar, wdth=-4}
+			for i = 1, #frame.PendingCommunityCards.ListScrollFrame.buttons do
+				btn = frame.PendingCommunityCards.ListScrollFrame.buttons[i]
+				btn.LogoBorder:SetTexture(nil)
+				aObj:addSkinFrame{obj=btn, ft=ftype, nb=true}
+				aObj:SecureHook(btn, "SetDisabledState", function(this, shouldDisable)
+					if shouldDisable then
+						this.sf:SetBackdropBorderColor(_G.DISABLED_FONT_COLOR:GetRGB())
+					else
+						this.sf:SetBackdropBorderColor(aObj.bbClr:GetRGB())
+					end
+				end)
+			end
 			btn = nil
 
 			-- .RequestToJoinFrame
@@ -1525,11 +1559,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			frame.InsetFrame.Bg:SetTexture(nil)
 
 			-- Tabs (RHS)
-			self:removeRegions(frame.ClubFinderSearchTab, {1})
-			self:removeRegions(frame.ClubFinderPendingTab, {1})
-			if self.modBtnBs then
-				self:addButtonBorder{obj=frame.ClubFinderSearchTab}
-				self:addButtonBorder{obj=frame.ClubFinderPendingTab}
+			aObj:removeRegions(frame.ClubFinderSearchTab, {1})
+			aObj:removeRegions(frame.ClubFinderPendingTab, {1})
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=frame.ClubFinderSearchTab}
+				aObj:addButtonBorder{obj=frame.ClubFinderPendingTab}
 			end
 
 		end
