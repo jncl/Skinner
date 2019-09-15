@@ -1,3 +1,12 @@
+beta8.31830.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	version numbers
+	Updated ClassicSupport skin
+	Bugfixes
+	Updated ElvUI skin
+
 beta8.31727.2
 Jncl:
 	ToDo.txt
