@@ -57,6 +57,7 @@
 <script file="AddonSkins\ClassicCensusPlus.lua"/>
 <script file="AddonSkins\ClassicQuestLog.lua"/>
 <script file="AddonSkins\ClassOrderHallsComplete.lua"/>
+<script file="AddonSkins\ClassTrainerPlus.lua"/>
 <script file="AddonSkins\Clique.lua"/>
 <script file="AddonSkins\Collectinator.lua"/>
 <script file="AddonSkins\CollectMe.lua"/>
@@ -71,6 +72,7 @@
 <script file="AddonSkins\DBM.lua"/>
 <script file="AddonSkins\DeathNote.lua"/>
 <script file="AddonSkins\DejaCharacterStats.lua"/>
+<script file="AddonSkins\DejaClassicStats.lua"/>
 <script file="AddonSkins\Details.lua"/>
 <script file="AddonSkins\DetailsFramework.lua"/>
 <script file="AddonSkins\DockingStation.lua"/>
@@ -119,6 +121,7 @@
 <script file="AddonSkins\InspectorGadgetzan.lua"/>
 <script file="AddonSkins\Inventorian.lua"/>
 <script file="AddonSkins\KeystoneCommander.lua"/>
+<script file="AddonSkins\Leatrix_Plus.lua"/>
 <script file="AddonSkins\LegacyQuest.lua"/>
 <script file="AddonSkins\LibAboutPanel.lua"/>
 <script file="AddonSkins\LibDBIcon.lua"/>
@@ -178,6 +181,8 @@
 <script file="AddonSkins\PremadeGroupsFilter.lua"/>
 <script file="AddonSkins\ProfessionsVault.lua"/>
 <script file="AddonSkins\ProspectBar.lua"/>
+<script file="AddonSkins\Puggle.lua"/>
+<script file="AddonSkins\quantify.lua"/>
 <script file="AddonSkins\Quartz.lua"/>
 <script file="AddonSkins\QuestCompletist.lua"/>
 <script file="AddonSkins\Quester.lua"/>
