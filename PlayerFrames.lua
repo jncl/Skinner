@@ -157,7 +157,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		_G.AchievementFrameHeaderShield:SetAlpha(1)
 
 		self:skinSlider{obj=_G.AchievementFrameCategoriesContainerScrollBar, wdth=-4}
-		self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, y1=0, x2=22}
+		self:addSkinFrame{obj=_G.AchievementFrameCategories, ft=ftype, kfs=true, nb=true, y1=0, x2=22}
 		-- hook these to stop Categories skinFrame from changing
 		self:SecureHook(_G.AchievementFrameCategoriesContainerScrollBar, "Show", function(this)
 			_G.AchievementFrameCategories.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameCategories, "BOTTOMRIGHT", 22, -2)
@@ -170,8 +170,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end)
 		skinCategories()
 
-		self:keepFontStrings(_G.AchievementFrameAchievements)
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameAchievements, 2), ft=ftype, aso={bd=10, ng=true}, y1=0, x2=29}
+		self:getChild(_G.AchievementFrameAchievements, 2):SetBackdrop(nil)
+		self:addSkinFrame{obj=_G.AchievementFrameAchievements, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, y1=0, x2=29}
 		self:skinSlider{obj=_G.AchievementFrameAchievementsContainerScrollBar, wdth=-4}
 		if self.prdb.AchievementUI.style == 2 then
 			-- remove textures etc from buttons
@@ -229,11 +229,10 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			r, g, b, a = nil, nil, nil, nil
 		end)
 
-		self:keepFontStrings(_G.AchievementFrameStats)
 		self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, wdth=-4}
 		_G.AchievementFrameStatsBG:SetAlpha(0)
 		self:getChild(_G.AchievementFrameStats, 3):SetBackdrop(nil)
-		self:addSkinFrame{obj=_G.AchievementFrameStats, ft=ftype, aso={bd=10, ng=true}, y1=0, x2=29}
+		self:addSkinFrame{obj=_G.AchievementFrameStats, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, y1=0, x2=29}
 		-- hook these to stop Categories skinFrame from changing
 		self:SecureHook(_G.AchievementFrameStatsContainerScrollBar, "Show", function(this)
 			_G.AchievementFrameStats.sf:SetPoint("BOTTOMRIGHT", _G.AchievementFrameStats, "BOTTOMRIGHT", 29, -2)
@@ -269,7 +268,8 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		for i = 1, 12 do
 			skinSB("AchievementFrameSummaryCategoriesCategory" .. i, "Label")
 		end
-		self:addSkinFrame{obj=self:getChild(_G.AchievementFrameSummary, 1), ft=ftype, aso={bd=10, ng=true}, y1=-1}
+		self:getChild(_G.AchievementFrameSummary, 1):SetBackdrop(nil)
+		self:addSkinFrame{obj=_G.AchievementFrameSummary, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, y1=-1}
 		skinSB("AchievementFrameSummaryCategoriesStatusBar", "Title")
 
 		_G.AchievementFrameComparisonBackground:SetAlpha(0)
@@ -289,7 +289,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:skinSlider(_G.AchievementFrameComparisonContainerScrollBar)
 		-- Summary Panel
 		self:getChild(_G.AchievementFrameComparison, 5):SetBackdrop(nil)
-		self:addSkinFrame{obj=_G.AchievementFrameComparison, ft=ftype, aso={bd=10, ng=true}, y1=0, x2=31}
+		self:addSkinFrame{obj=_G.AchievementFrameComparison, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, y1=0, x2=31}
 		for _, type in pairs{"Player", "Friend"} do
 			_G["AchievementFrameComparisonSummary" .. type]:SetBackdrop(nil)
 			_G["AchievementFrameComparisonSummary" .. type .. "Background"]:SetAlpha(0)
@@ -340,7 +340,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 		self:moveObject{obj=_G.AchievementFrame.searchBox, y=-10}
 		self:adjHeight{obj=this.searchPreviewContainer, adj=((4 * 27) + 30)}
-		self:addSkinFrame{obj=this.searchPreviewContainer, ft=ftype, kfs=true, y1=4, y2=2}
+		self:addSkinFrame{obj=this.searchPreviewContainer, ft=ftype, kfs=true, nb=true, y1=4, y2=2}
 		_G.LowerFrameLevel(this.searchPreviewContainer.sf)
 		self:skinStatusBar{obj=this.searchProgressBar, fi=0, bgTex=this.searchProgressBar.bg}
 		for i = 1, #this.searchPreview do
@@ -351,7 +351,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end
 		this.showAllSearchResults:SetNormalTexture(nil)
 		this.showAllSearchResults:SetPushedTexture(nil)
-		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, x1=-8, y1=-1}
+		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, nb=true, x1=-8, y1=-1}
 		self:skinSlider{obj=this.searchResults.scrollFrame.scrollBar, wdth=-4}
 		for i = 1, #this.searchResults.scrollFrame.buttons do
 			this.searchResults.scrollFrame.buttons[i]:SetNormalTexture(nil)
@@ -360,7 +360,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			self:addButtonBorder{obj=this.searchResults.scrollFrame.buttons[i], relTo=this.searchResults.scrollFrame.buttons[i].icon}
 		end
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=7, x2=0, y2=-2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=7, x2=0, y2=-3}
 
 		self:Unhook(this, "OnShow")
 	end)
