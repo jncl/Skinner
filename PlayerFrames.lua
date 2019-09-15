@@ -936,7 +936,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				if btn.iconBorder:IsShown() then
 					btn.sbb:SetBackdropBorderColor(btn.iconBorder:GetVertexColor())
 				else
-					self:clrBtnBdr(btn, "grey", 1)
+					aObj:clrBtnBdr(btn, "grey", 1)
 				end
 			end
 			self:SecureHook(this.listScroll, "update", function(this)
@@ -989,7 +989,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			for i = 1, 3 do
 				self:removeRegions(lop["spell" .. i], {1, 3}) -- background, blackcover
 				if self.modBtnBs then
-					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}, clr="grey", ca=0.85}
+					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}}
 				end
 			end
 		end
@@ -1017,12 +1017,11 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		pc = nil
 
 		if self.modBtnBs then
-			local r, g, b
 			local function skinPetIcon(pet, petID)
 				if pet.qualityBorder:IsShown() then
 					pet.sbb:SetBackdropBorderColor(pet.qualityBorder:GetVertexColor())
 				else
-					self:clrBtnBdr(btn, "grey", 1)
+					aObj:clrBtnBdr(btn, "grey", 1)
 				end
 			end
 			self:SecureHook("PetJournal_UpdatePetLoadOut", function()
