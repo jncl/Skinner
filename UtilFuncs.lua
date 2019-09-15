@@ -8,6 +8,7 @@ local assert, debugstack, ipairs, pairs, rawget, select, type, print, tostring, 
 local addonIdx, uName = {}, _G.UnitName("player")
 do
 	for i = 1, _G.GetNumAddOns() do
+		-- aObj:Printf("%s, %s", i, _G.GetAddOnInfo(i))
 		addonIdx[_G.GetAddOnInfo(i)] = i
 	end
 
