@@ -415,6 +415,10 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 					aObj:skinCloseButton{obj=obj.frame.Close}
 				end
 
+			-- quantify
+			elseif objType == "QuantifyInlineGroup" then
+				aObj:applySkin{obj=obj.border, kfs=true}
+
 			-- ignore these types for now
 			elseif objType == "BlizOptionsGroup"
 			or objType == "Dropdown-Item-Execute"
@@ -469,6 +473,9 @@ aObj.libsToSkin["AceGUI-3.0"] = function(self) -- v AceGUI-3.0, 34
 			-- DDI [Dropdown ITems (used by oRA3)]
 			or objType == "DDI-Statusbar"
 			or objType == "DDI-Font"
+			-- quantify
+			or objType == "QuantifyContainerWrapper"
+			or objType == "QuantifyInlineGroup"
 			then
 				-- aObj:Debug("Ignoring: [%s]", objType)
 			-- any other types

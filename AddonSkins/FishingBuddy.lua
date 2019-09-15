@@ -14,12 +14,11 @@ end
 aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 
 	--	Locations Frame
-	self:skinStdButton{obj=_G.FishingLocationsSwitchButton}
-	self:skinCheckButton{obj=_G.FishingBuddyOptionSLZ}
 	_G.FishingLocationExpandButtonFrame:DisableDrawLayer("BACKGROUND")
 	self:skinSlider{obj=_G.FishingLocsScrollFrame.ScrollBar, rt="background"}
 	-- m/p buttons
 	if self.modBtns then
+		self:skinStdButton{obj=_G.FishingLocationsSwitchButton}
 		local function checkTex(obj)
 			local nTex = obj:GetNormalTexture() and obj:GetNormalTexture():GetTexture() or nil
 			if nTex then
@@ -39,6 +38,9 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 			checkTex(_G.FishingLocationsCollapseAllButton)
 		end)
 	end
+	if self.modChkBtns then
+		self:skinCheckButton{obj=_G.FishingBuddyOptionSLZ}
+	end
 
 	--	Options Frame
 	self:keepFontStrings(_G.FishingOptionsFrame)
@@ -48,10 +50,14 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 	-- Fishing Tab
 	self:skinDropDown{obj=_G.FBMouseEventMenu}
 	self:skinDropDown{obj=_G.FBEasyKeysMenu}
-	self:skinDropDown{obj=_G.FishingBobbers}
+	if not self.isClassic then
+		self:skinDropDown{obj=_G.FishingBobbers}
+	end
 	-- Watcher Tab
-	-- Fishing Fun Tab
-	self:skinDropDown{obj=_G.FishingPets}
+	if not self.isClassic then
+		-- Fishing Fun Tab
+		self:skinDropDown{obj=_G.FishingPets}
+	end
 	-- About Tab
 
 	-- Tabs (side)
@@ -60,7 +66,9 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 		tabObj = _G["FishingOptionsFrameTab" .. i]
 		if tabObj then
 			self:removeRegions(tabObj, {1}) -- N.B. other regions are icon and highlight
-			self:addButtonBorder{obj=tabObj}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=tabObj}
+			end
 		end
 	end
 	tabObj = nil
@@ -69,7 +77,6 @@ aObj.addonsToSkin.FishingBuddy = function(self) -- v 1.9.8
 		-- hook this to skin checkbuttons
 		self:SecureHook(_G.FishingOptionsFrame, "LayoutOptions", function(this, options)
 			skinCBs("FishingOptionsFrameOpt")
-			self:Unhook(this, "LayoutOptions")
 		end)
 	end
 
