@@ -1303,13 +1303,40 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		self:addSkinFrame{obj=_G._G.ChatConfigChatSettingsLeft, ft=ftype, kfs=true, nb=true, ofs=0}
 
 		--	Channel Settings
-		self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(this)
-			for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
-				skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
-			end
-			self:Unhook(this, "OnShow")
-		end)
 		self:addSkinFrame{obj=_G.ChatConfigChannelSettingsLeft, ft=ftype, kfs=true, nb=true, ofs=0}
+		if not self.isClassic then
+			self:SecureHookScript(_G.ChatConfigChannelSettings, "OnShow", function(this)
+				for i = 1, #_G.CHAT_CONFIG_CHANNEL_LIST do
+					skinCB("ChatConfigChannelSettingsLeftCheckBox" .. i)
+				end
+
+				self:Unhook(this, "OnShow")
+			end)
+		else
+			self:addSkinFrame{obj=_G.ChatConfigChannelSettingsAvailable, ft=ftype, kfs=true, nb=true, ofs=0}
+			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, checkBoxTable, checkBoxTemplate, title)
+				local box
+				for i = 1, #frame.checkBoxTable do
+					box = _G[frame:GetName() .. "CheckBox" .. i]
+					box:SetBackdrop(nil)
+					if self.modChkBtns then
+						 self:skinCheckButton{obj=box.CheckButton}
+					end
+				end
+				box = nil
+			end)
+			self:SecureHook("ChatConfig_CreateBoxes", function(frame, boxTable, boxTemplate, title)
+				local box
+				for i = 1, #frame.boxTable do
+					box = _G[frame:GetName() .. "Box" .. i]
+					box:SetBackdrop(nil)
+					if self.modBtns then
+						self:skinStdButton{obj=box.Button, ofs=0}
+					end
+				end
+				box = nil
+			end)
+		end
 
 		--	Other Settings
 		for i = 1, #_G.CHAT_CONFIG_OTHER_COMBAT do

@@ -274,7 +274,7 @@ aObj.ClassicSupport = function(self)
 				_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
 			end)
 
-			self:skinTabs{obj=this, lod=true}
+			self:skinTabs{obj=this, lod=true, ignore=true}
 			self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=5}
 			self:moveObject{obj=_G.AuctionFrameCloseButton, x=3}
 
@@ -491,7 +491,7 @@ aObj.ClassicSupport = function(self)
 			_G.ClassTrainerSkillIcon:DisableDrawLayer("BACKGROUND")
 			self:skinSlider{obj=_G.ClassTrainerListScrollFrame.ScrollBar, rt="background"}
 			self:skinSlider{obj=_G.ClassTrainerDetailScrollFrame.ScrollBar, rt="background"}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-11, x2=-31.5, y2=70}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-11, x2=-31, y2=70}
 			if self.modBtns then
 				 self:skinStdButton{obj=_G.ClassTrainerTrainButton}
 				 self:skinStdButton{obj=_G.ClassTrainerCancelButton}
@@ -1697,18 +1697,21 @@ aObj.ClassicSupport = function(self)
 		end
 
 		if self.db.profile.petlvl then
+			if not _G.PetFrame.lvlText then
+				-- add pet level text to pet frame, if required
+				_G.PetFrame.lvlText = _G.PetName:GetParent():CreateFontString(nil, "ARTWORK", "GameNormalNumberFont")
+				_G.PetFrame.lvlText:SetPoint("LEFT", _G.PetFrame, "LEFT", 5, -18)
+				_G.PetFrame.lvlText:SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
+			end
 			local function updPetLevel()
 	            -- handle in combat
-	            if _G.InCombatLockdown() then
+	            -- if _G.InCombatLockdown()
+				if _G.UnitAffectingCombat("Player")
+				or _G.UnitAffectingCombat("Pet")
+				then
 	                aObj:add2Table(aObj.oocTab, {updPetLevel, {}})
 	                return
 				else
-					if not _G.PetFrame.lvlText then
-						-- add pet level text to pet frame, if required
-						_G.PetFrame.lvlText = _G.PetName:GetParent():CreateFontString(nil, "ARTWORK", "GameNormalNumberFont")
-						_G.PetFrame.lvlText:SetPoint("LEFT", _G.PetFrame, "LEFT", 5, -18)
-						_G.PetFrame.lvlText:SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
-					end
 					_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
 					_G.PetFrame.lvlText:Show()
 				end
