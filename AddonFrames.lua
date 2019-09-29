@@ -110,7 +110,6 @@ function aObj:AddonFrames()
 	for addonName, skinFunc in pairs(self.addonsToSkin) do
 		self:checkAndRunAddOn(addonName, nil, skinFunc)
 	end
-	self.addonsToSkin = nil
 
 	-- skin tekKonfig framework objects
 	if self.otherAddons["tekKonfig"] then self:checkAndRun("tekKonfig", "o") end
