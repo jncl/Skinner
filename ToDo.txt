@@ -76,13 +76,17 @@ ToDos
 
 ?	I	RaiderIO profile tooltip not skinned
 
-√	S/C Puggle, requested by Maethra, 13.09.19
-√	S/C quantify, requested by Maethra, 13.09.19
-√	S/C Class Trainer Plus, requested by Maethra, 13.09.19
-√	S/C DejaClassicStats, requested by Maethra, 13.09.19
+	I	DejaClassicStats, reported by Maethra, 17.09.19
+		- Background & headers not skinned
 
-	I	AchievementUI, reported by therealdeerez, 14.09.19
-≈		- Background covers achievements on all panels other than summary
+	S/C	RecipeRadarClassic, requested by Maethra, 17.09.19
 
-√	S/C	Fishing Buddy (Classic), requested by Sojiroi, 15.09.19
-√	S/C	Leatrix Plus (Classic), requested by Sojiroi, 15.09.19
+	I	Missing Localisations, reported by Macallan1824, 24.09.19
+√		- AceLocale-3.0-6: Skinner: Missing entry for 'Help Tips'
+√		- AceLocale-3.0-6: Skinner: Missing entry for 'Toggle the skin of the Help Tips'
+
+	I	AuctionUI, reported by EpidemeDaBear, 27.09.19
+		-  ..\AddOns\Skinner\PlayerFrames.lua line 2155: attempt to index field 'SideDressUpModel' (a nil value)
+
+	I	Missing Disabled Addons, reported by Shiv_G3, 28.09.19
+√		- Weak Auras & Sorha Quest Log entries missing
