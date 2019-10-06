@@ -53,7 +53,7 @@ local funcs = {
 		{ name = "ItemSocketingUI", type = "LoD", keep = false, keepOpts = false },
 		{ name = "LookingForGuildUI", type = "LoD", keep = false, keepOpts = false },
 		{ name = "LootFrames", type = "", keep = true, keepOpts = true },
-		{ name = "LootHistory", type = "", keep = false, keepOpts = false },
+		{ name = "LootHistory", type = "", keep = true, keepOpts = true },
 		{ name = "MirrorTimers", type = "", keep = true, keepOpts = true },
 		{ name = "ModelFrames", type = "", keep = true, keepOpts = true },
 		{ name = "ObjectiveTracker", type = "", keep = false, keepOpts = false },
@@ -1357,13 +1357,13 @@ aObj.ClassicSupport = function(self)
 			_G.MainMenuExpBar:DisableDrawLayer("OVERLAY")
 			self:moveObject{obj=_G.MainMenuExpBar, y=2}
 			self:skinStatusBar{obj=_G.MainMenuExpBar, fi=0, bgTex=self:getRegion(_G.MainMenuExpBar, 6), otherTex={_G.ExhaustionLevelFillBar}}
-			-- MainMenuBarMaxLevelBar
 			_G.MainMenuBarArtFrame:DisableDrawLayer("BACKGROUND")
 			_G.MainMenuBarLeftEndCap:SetTexture(nil)
 			_G.MainMenuBarRightEndCap:SetTexture(nil)
-			-- MainMenuBarPerformanceBarFrameButton
 			_G.ExhaustionTick:GetNormalTexture():SetTexture(nil)
 			_G.ExhaustionTick:GetHighlightTexture():SetTexture(nil)
+			_G.ReputationWatchBar.StatusBar:DisableDrawLayer("ARTWORK")
+			self:skinStatusBar{obj=_G.ReputationWatchBar.StatusBar, fi=0, bgTex=_G.ReputationWatchBar.StatusBar.Background}
 			self:keepFontStrings(_G.StanceBarFrame)
 			self:keepFontStrings(_G.PetActionBarFrame)
 			self:addSkinFrame{obj=_G.MainMenuBar, ft=ftype, kfs=true, nb=true, bg=true, noBdr=true, ofs=4, y1=-7}
@@ -1382,8 +1382,8 @@ aObj.ClassicSupport = function(self)
 					self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, seca=true}
 				end
 				-- ActionBar buttons
-				self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4}
-				self:addButtonBorder{obj=_G.ActionBarDownButton, ofs=-4}
+				self:addButtonBorder{obj=_G.ActionBarUpButton, ofs=-4, clr="gold"}
+				self:addButtonBorder{obj=_G.ActionBarDownButton, ofs=-4, clr="gold"}
 
 				-- Micro buttons
 				local mBut
@@ -1705,12 +1705,11 @@ aObj.ClassicSupport = function(self)
 				_G.PetFrame.lvlText:SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
 			end
 			local function updPetLevel()
+				if not _G.PetFrame:IsShown() then return end
+
 	            -- handle in combat
-	            -- if _G.InCombatLockdown()
-				if _G.UnitAffectingCombat("Player")
-				or _G.UnitAffectingCombat("Pet")
-				then
-	                aObj:add2Table(aObj.oocTab, {updPetLevel, {}})
+				if _G.InCombatLockdown() then
+				    aObj:add2Table(aObj.oocTab, {updPetLevel, {}})
 	                return
 				else
 					_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
@@ -1730,6 +1729,11 @@ aObj.ClassicSupport = function(self)
 				if arg1 == "pet" then
 					updPetLevel()
 				end
+			end)
+			-- updPetLevel when ooc
+			self:SecureHook("PetFrame_Update", function(this, override)
+				-- aObj:Debug("PetFrame_Update: [%s, %s]", this, override)
+				updPetLevel()
 			end)
 		else
 			if _G.PetFrame.lvlText then
