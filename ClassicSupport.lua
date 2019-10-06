@@ -106,6 +106,7 @@ local funcs = {
 		{ name = "GMSurveyUI", type = "LoD", keep = true, keepOpts = true },
 		{ name = "GuildBankUI", type = "LoD", keep = false, keepOpts = false },
 		{ name = "HelpFrame", type = "", keep = true, keepOpts = true },
+		{ name = "HelpTip", type = "", keep = false, keepOpts = false },
 		{ name = "IslandsPartyPoseUI", type = "LoD", keep = false, keepOpts = false },
 		{ name = "IslandsQueueUI", type = "LoD", keep = false, keepOpts = false },
 		{ name = "ItemText", type = "", keep = true, keepOpts = true },

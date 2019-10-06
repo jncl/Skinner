@@ -111,7 +111,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		RaidUI               = true,
 		ReadyCheck           = true,
 		RolePollPopup        = true,
-		ScrollOfResurrection = self.isPTR and nil or true,
 		SpellBookFrame       = true,
 		StackSplit           = true,
 		TalentUI             = true,
@@ -152,7 +151,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		GMSurveyUI           = true,
 		GuildBankUI          = true,
 		HelpFrame            = true,
-		HelpTip              = self.isPTR and true or nil,
+		HelpTip              = true,
 		IslandsPartyPoseUI   = true,
 		IslandsQueueUI       = true,
 		ItemText             = true,
@@ -1221,11 +1220,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Role Poll Popup"],
 					desc = self.L["Toggle the skin of the Role Poll Popup"],
 				},
-				ScrollOfResurrection = aObj.isPTR and nil or {
-					type = "toggle",
-					name = self.L["Scroll Of Resurrection"],
-					desc = self.L["Toggle the skin of the Scroll Of Resurrection Frame"],
-				},
 				SpellBookFrame = {
 					type = "toggle",
 					name = self.L["SpellBook Frame"],
@@ -1526,11 +1520,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						},
 					},
 				},
-				HelpTip = self.isPTR and {
+				HelpTip = {
 					type = "toggle",
 					name = self.L["Help Tips"],
 					desc = self.L["Toggle the skin of the Help Tips"],
-				} or nil,
+				},
 				IslandsPartyPoseUI ={
 					type = "toggle",
 					name = self.L["Islands Party Pose UI"],

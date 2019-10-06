@@ -602,36 +602,24 @@ aObj.blizzFrames[ftype].AlertFrames = function(self)
 		frame:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
 	end)
-	if not aObj.isPTR then
-		-- called params: frame, type, icon, name, payloadID
-		self:SecureHook(_G.StorePurchaseAlertSystem, "setUpFunction", function(frame, ...)
-			-- aObj:Debug("StorePurchaseAlertSystem: [%s, %s, %s, %s, %s]", frame, ...)
-			frame:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=frame, ft=ftype, ofs=-8}
-			if self.modBtnBs then
-				self:addButtonBorder{obj=frame, relTo=frame.Icon}
-			end
-		end)
-	else
-		-- called params: frame, type, icon, name, payloadID, showFancyToast
-		self:SecureHook(_G.EntitlementDeliveredAlertSystem, "setUpFunction", function(frame, ...)
-			-- aObj:Debug("EntitlementDeliveredAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
-			frame:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
-			if self.modBtnBs then
-				self:addButtonBorder{obj=frame, relTo=frame.Icon}
-			end
-		end)
-		-- called params: frame, type, icon, name, payloadID, showFancyToast
-		self:SecureHook(_G.RafRewardDeliveredAlertSystem, "setUpFunction", function(frame, ...)
-			-- aObj:Debug("RafRewardDeliveredAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
-			frame:DisableDrawLayer("BACKGROUND")
-			self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
-			if self.modBtnBs then
-				self:addButtonBorder{obj=frame, relTo=frame.Icon}
-			end
-		end)
-	end
+	-- called params: frame, type, icon, name, payloadID, showFancyToast
+	self:SecureHook(_G.EntitlementDeliveredAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("EntitlementDeliveredAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
+	end)
+	-- called params: frame, type, icon, name, payloadID, showFancyToast
+	self:SecureHook(_G.RafRewardDeliveredAlertSystem, "setUpFunction", function(frame, ...)
+		-- aObj:Debug("RafRewardDeliveredAlertSystem: [%s, %s, %s, %s, %s, %s]", frame, ...)
+		frame:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=frame, ft=ftype, ofs=-10}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=frame, relTo=frame.Icon}
+		end
+	end)
 	-- called params: frame, name, garrisonType ("Menagerie", "")
 	self:SecureHook(_G.GarrisonBuildingAlertSystem, "setUpFunction", function(frame, ...)
 		-- aObj:Debug("GarrisonBuildingAlertSystem: [%s, %s, %s]", frame, ...)
@@ -2742,24 +2730,20 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 
 end
 
-if aObj.isPTR then
-	aObj.blizzFrames[ftype].HelpTip = function(self)
-		if not self.prdb.HelpTip or self.initialized.HelpTip then return end
-		self.initialized.HelpTip = true
+aObj.blizzFrames[ftype].HelpTip = function(self)
+	if not self.prdb.HelpTip or self.initialized.HelpTip then return end
+	self.initialized.HelpTip = true
 
-		self:SecureHook(_G.HelpTip, "Show", function(this, parent, info, relativeRegion)
-			aObj:Debug("HelpTip Show: [%s, %s, %s, %s]", this, parent, info, relativeRegion)
+	self:SecureHook(_G.HelpTip, "Show", function(this, parent, info, relativeRegion)
 
-			for hTip in this.framePool:EnumerateActive() do
-				self:skinGlowBox(hTip)
-				if self.modBtns then
-					self:skinStdButton{obj=hTip.OkayButton}
-				end
+		for hTip in this.framePool:EnumerateActive() do
+			self:skinGlowBox(hTip)
+			if self.modBtns then
+				self:skinStdButton{obj=hTip.OkayButton}
 			end
+		end
 
-		end)
-
-	end
+	end)
 
 end
 
