@@ -32,20 +32,22 @@ aObj.addonsToSkin.RaiderIO = function(self) -- v 8.1.0 (v201901160600)
 		if self.modBtns then
 			-- buttons are children of configButtonFrame which is 3rd child of cPF
 			-- N.B. NOT really buttons
-			local function skinBtn(btn)
+			local function skinBtn(id)
+				local btn = aObj:getChild(aObj:getChild(cPF, 3), id)
 				aObj:addSkinButton{obj=btn, parent=btn, hook=btn, hide=true, ofs=0}
 				btn.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 				btn:SetScript("OnEnter", function(this) this.sb:SetBackdropBorderColor(aObj.bbClr:GetRGBA()) end)
 				btn:SetScript("OnLeave",  function(this) this.sb:SetBackdropBorderColor(0.5, 0.5, 0.5, 1) end)
+				btn = nil
 			end
-			local cBF = self:getChild(cPF, 3)
-			if cBF then
-				skinBtn(self:getChild(cBF, 2))
-				skinBtn(self:getChild(cBF, 3))
+			if self:getChild(cPF, 3) then
+				_G.C_Timer.After(0.5, function()
+					skinBtn(2)
+					skinBtn(3)
+					cPF = nil
+				end)
 			end
-			cBF = nil
 		end
-		cPF = nil
 	end
 
 	-- _CustomDropDownList

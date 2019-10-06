@@ -7,7 +7,6 @@ aObj.addonsToSkin.DejaClassicStats = function(self) -- v 1302r022
 	self:SecureHookScript(_G.DCS_StatScrollFrame, "OnShow", function(this)
 		self:skinSlider{obj=this.ScrollBar}
 		_G.DCSPrimaryStatsHeader:DisableDrawLayer("ARTWORK")
-		_G.DCSOffenseStatsHeader:DisableDrawLayer("ARTWORK")
 		_G.DCSDefenseStatsHeader:DisableDrawLayer("ARTWORK")
 		_G.DCSMeleeEnhancementsStatsHeader:DisableDrawLayer("ARTWORK")
 		_G.DCSSpellEnhancementsStatsHeader:DisableDrawLayer("ARTWORK")
