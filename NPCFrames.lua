@@ -62,7 +62,7 @@ aObj.blizzLoDFrames[ftype].AuctionUI = function(self)
 		end)
 
 		self:skinTabs{obj=this, lod=true}
-		self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, y2=5}
+		self:addSkinFrame{obj=_G.AuctionFrame, ft=ftype, kfs=true, hdr=true, x1=10, y1=-11, x2=0, y2=5}
 
 		-- AuctionFrame Browse
 		for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
