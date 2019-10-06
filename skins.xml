@@ -200,9 +200,11 @@
 <script file="AddonSkins\RCLootCouncil.lua"/>
 <script file="AddonSkins\ReagentMaker.lua"/>
 <script file="AddonSkins\ReagentRestocker.lua"/>
+<script file="AddonSkins\RecipeRadarClassic.lua"/>
 <script file="AddonSkins\Recount.lua"/>
 <script file="AddonSkins\REFlex.lua"/>
 <script file="AddonSkins\Rematch.lua"/>
+<script file="AddonSkins\RollTrackerClassic.lua"/>
 <script file="AddonSkins\Scrap.lua"/>
 <script file="AddonSkins\ScrollMaster.lua"/>
 <script file="AddonSkins\ServerHop.lua"/>
