@@ -1,3 +1,17 @@
+beta8.31830.2
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	version numbers
+	Debug messages
+	PTR changes
+	Updated ClassicSupport skin
+	Updatred ChatConfig for Classic
+	Updated CollectionsUI skin
+	Updated AchievementUI skin
+	Updated Ace3 & FishingBuddy skins
+	Skinned ClassTrainerPlus, DejaClassicStats, Leatrix_Plus, Puggle & quantify
+
 beta8.31830.1
 Jncl:
 	ToDo.txt
