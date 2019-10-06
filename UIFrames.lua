@@ -822,7 +822,6 @@ aObj.blizzLoDFrames[ftype].BattlefieldMap = function(self)
 
 		-- change the skinFrame's opacity as required
 		self:SecureHook(this, "RefreshAlpha", function(this)
-			aObj:Debug("RefreshAlpha: [%s, %s]", this, _G.BattlefieldMapOptions.opacity)
 			local alpha = 1.0 - _G.BattlefieldMapOptions.opacity
 			alpha = (alpha >= 0.15) and alpha - 0.15 or alpha
 			_G.BattlefieldMapFrame.sf:SetAlpha(alpha)
@@ -3474,8 +3473,8 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 				self:addButtonBorder{obj=_G["ActionButton" .. i], abt=true, seca=true}
 			end
 			-- ActionBar buttons
-			self:addButtonBorder{obj=_G.ActionBarUpButton}
-			self:addButtonBorder{obj=_G.ActionBarDownButton}
+			self:addButtonBorder{obj=_G.ActionBarUpButton, clr="gold"}
+			self:addButtonBorder{obj=_G.ActionBarDownButton, clr="gold"}
 
 			-- Micro buttons
 			local mBut
