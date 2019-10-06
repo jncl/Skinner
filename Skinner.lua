@@ -38,8 +38,8 @@ do
 	local buildInfo = {
 		clsc = {"1.13.2", 31882},
 		beta = {"9.0.0", 99999},
-		ptr = {"8.2.5", 31961},
-		live = {"8.2.5", 31961},
+		ptr = {"8.2.5", 31984},
+		live = {"8.2.5", 32028},
 	}
 
 	buildInfo.curr = {_G.GetBuildInfo()}
