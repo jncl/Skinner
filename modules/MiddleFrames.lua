@@ -280,7 +280,6 @@ function module:GetOptions()
 		mfkey.args.reset.desc = aObj.L["Reset to default position"]
 		mfkey.args.reset.width = 0.4
 		mfkey.args.reset.func = function(info, value)
-			aObj:Debug("MiddleFrame reset: [%s, %s]", info[#info - 1], info[#info])
 			module.db.profile[info[#info - 1]].xOfs = defaults.profile[info[#info - 1]].xOfs
 			module.db.profile[info[#info - 1]].yOfs = defaults.profile[info[#info - 1]].yOfs
 			module.db.profile[info[#info - 1]].width = defaults.profile[info[#info - 1]].width
