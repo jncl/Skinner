@@ -1901,33 +1901,33 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 	local function addDSOpt(name, lib, lod)
 
 		local name2 = name .. (lib and " (Lib)" or lod and " (LoD)" or "")
-		local width2 = name2:len() > 20 and "double" or nil
+		local width2 = name2:len() > 22 and "double" or nil
 		aObj.optTables["Disabled Skins"].args[name] = {
 			type = "toggle",
 			name = name2,
-			desc = aObj.L["Toggle the skinning of "]..name,
+			desc = aObj.L["Toggle the skinning of "] .. name,
 			width = width2,
 		}
 		name2, width2 = nil, nil
 
 	end
 	for addonName in pairs(self.addonsToSkin) do
-		if IsAddOnLoaded(addonName) then
+		if self:isAddonEnabled(addonName) then
 			addDSOpt(addonName)
 		end
 	end
-	for addonName in pairs(self.libsToSkin) do
-		if IsAddOnLoaded(addonName) then
-			addDSOpt(addonName, true)
+	for libName in pairs(self.libsToSkin) do
+		if _G.LibStub(libName, true) then
+			addDSOpt(libName, true)
 		end
 	end
 	for addonName in pairs(self.lodAddons) do
-		if IsAddOnLoaded(addonName) then
+		if self:isAddonEnabled(addonName) then
 			addDSOpt(addonName, nil, true)
 		end
 	end
 	for addonName in pairs(self.otherAddons) do
-		if IsAddOnLoaded(addonName) then
+		if self:isAddonEnabled(addonName) then
 			if addonName == "tekKonfig" then
 				addDSOpt(addonName, true)
 			else
