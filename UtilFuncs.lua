@@ -541,6 +541,13 @@ function aObj:getColour(clrName)
 
 end
 
+function aObj:getCandSetA(obj)
+	
+	local r, g, b = obj:GetVertexColor()
+	return r, g, b, 1
+
+end
+
 function aObj:getGradientInfo(invert, rotate)
 
 	local MinR, MinG, MinB, MinA = aObj.gminClr:GetRGBA()

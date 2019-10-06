@@ -915,11 +915,11 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		_G.PetJournalHealPetButtonBorder:SetTexture(nil)
 		local updBtnClr
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.HealPetButton, sec=true}
-			self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3}
+			self:addButtonBorder{obj=this.HealPetButton, sec=true, clr="grey", ca=1}
+			self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3, clr="grey", ca=1}
 			function updBtnClr(btn)
 				if btn.iconBorder:IsShown() then
-					btn.sbb:SetBackdropBorderColor(btn.iconBorder:GetVertexColor())
+					btn.sbb:SetBackdropBorderColor(aObj:getCandSetA(btn.iconBorder))
 				else
 					aObj:clrBtnBdr(btn, "grey", 1)
 				end
@@ -953,7 +953,6 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end
 		btn = nil
 
-
 		self:keepFontStrings(this.loadoutBorder)
 		self:moveObject{obj=this.loadoutBorder, y=8} -- battle pet slots title
 
@@ -963,18 +962,18 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			lop = this.Loadout["Pet" .. i]
 			self:removeRegions(lop, {1, 2, 5})
 			-- add button border for empty slots
-	        self.modUIBtns:addButtonBorder{obj=lop, relTo=lop.icon, reParent={lop.levelBG, lop.level, lop.favorite}} -- use module function here to force creation
+	        self.modUIBtns:addButtonBorder{obj=lop, relTo=lop.icon, reParent={lop.levelBG, lop.level, lop.favorite}, clr="grey", ca=0.85} -- use module function here to force creation
 			self:changeTandC(lop.levelBG, self.lvlBG)
 			self:keepFontStrings(lop.helpFrame)
 			lop.healthFrame.healthBar:DisableDrawLayer("OVERLAY")
 			self:skinStatusBar{obj=lop.healthFrame.healthBar, fi=0}
-			self:removeRegions(lop.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
+			self:keepRegions(lop.xpBar, {1, 12})
 			self:skinStatusBar{obj=lop.xpBar, fi=0}
 			self:addSkinFrame{obj=lop, ft=ftype, aso={bd=8, ng=true}, x1=-4, y2=-4} -- use asf here as button already has a border
 			for i = 1, 3 do
 				self:removeRegions(lop["spell" .. i], {1, 3}) -- background, blackcover
 				if self.modBtnBs then
-					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}}
+					self:addButtonBorder{obj=lop["spell" .. i], relTo=lop["spell" .. i].icon, reParent={lop["spell" .. i].FlyoutArrow}, clr="grey", ca=0.85}
 				end
 			end
 		end
@@ -989,7 +988,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		end
 		self:removeRegions(pc.HealthFrame.healthBar, {1, 2, 3})
 		self:skinStatusBar{obj=pc.HealthFrame.healthBar, fi=0}
-		self:removeRegions(pc.xpBar, {2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
+		self:keepRegions(pc.xpBar, {1, 12}) -- text & background
 		self:skinStatusBar{obj=pc.xpBar, fi=0}
 		self:keepFontStrings(pc)
 		self:addSkinFrame{obj=pc, ft=ftype, aso={bd=8, ng=true}, ofs=4}
@@ -1002,20 +1001,20 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		pc = nil
 
 		if self.modBtnBs then
-			local function skinPetIcon(pet, petID)
+			local function skinPetIcon(pet)
 				if pet.qualityBorder:IsShown() then
-					pet.sbb:SetBackdropBorderColor(pet.qualityBorder:GetVertexColor())
+					pet.sbb:SetBackdropBorderColor(aObj:getCandSetA(pet.qualityBorder))
 				else
-					aObj:clrBtnBdr(btn, "grey", 1)
+					aObj:clrBtnBdr(pet, "grey", 1)
 				end
 			end
 			self:SecureHook("PetJournal_UpdatePetLoadOut", function()
 				for i = 1, 3 do
-					skinPetIcon(_G.PetJournal.Loadout["Pet" .. i], _G.PetJournal.Loadout["Pet" .. i].petID)
+					skinPetIcon(_G.PetJournal.Loadout["Pet" .. i])
 				end
 			end)
 			self:SecureHook("PetJournal_UpdatePetCard", function(this)
-				skinPetIcon(this.PetInfo, this.TypeInfo.petID)
+				skinPetIcon(this.PetInfo)
 			end)
 		end
 
@@ -3695,7 +3694,6 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 			if module.ShowWorldQuests then
 				for k, blk in pairs(module.usedBlocks) do
 					for l, child in pairs{blk.ScrollContents:GetChildren()} do
-						-- _G.Spew("Module" .. i .. "-" .. k.. "-" .. l, child)
 						if child.Glow then
 							child.Glow:SetTexture(nil)
 							child.Sheen:SetTexture(nil)
