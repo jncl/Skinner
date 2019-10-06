@@ -23,70 +23,34 @@ ToDos
 
 	O	Skin CommentatorTeamDisplay
 
-	O	PTR 8.2.5
-		-- TODO: PetFrame buttons don't have a visible border
-		- Deleted
-			- ArtifactUI
-√				- KnowledgeLevelHelpBox
-√				- AppearanceTabHelpBox
-			- AzeriteRespecUI
-√				- HelpBox
-			- AzeriteEmpoweredItemUITemplates
-√				- FirstPowerLockedInHelpBox
-			- CollectionTemplates
-?				- CollectionsWrappedModelSceneMixin
-?				- ToyWrappedModelSceneMixin
-			- Collections
-√				- HeirloomTabHelpBox
-√				- WardrobeTabHelpBox
-			- HeirloomCollection
-√				- UpgradeLevelHelpBox
-			- PaperDollFrame
-√				- HelpTipBox
-			- TalentFrame
-√				- WarmodeTutorialBox
-√				- TrinketSlot.HelpBox
-√			- ScrollOfResurrection
-√			- QuestNPCModel
-√			- StorePurchaseAlertSystem
-		- Added
-			- Communities
-√				- ClubFinderApplicantList
-√				- ClubFinder
-√¶			- HelpTip
-√			- QuestIndicators
-			- QuestSession
-			- UIPanelBorderedButtonTemplate
-√			- EntitlementDeliveredAlertSystem
-√			- RafRewardDeliveredAlertSystem
-		- Updated
-			- Commentator
-?			- BuffFrame
-			- CompactUnitFrame
-			- DestinyFrame
-√			- DressUpFrames
-√			- FriendsFrame
-			- GossipFrame
-?			- MainMenuBarMicroButtons
-			- ProductChoice
-√			- QuestFrame
-√			- QuestMapFrame
-			- RecruitAFriendFrame
-?			- TargetFrame
-
 ?	I	RaiderIO profile tooltip not skinned
 
-	I	DejaClassicStats, reported by Maethra, 17.09.19
-		- Background & headers not skinned
+	I/C	DejaClassicStats, reported by Maethra, 17.09.19
+√		- Background & headers not skinned
 
-	S/C	RecipeRadarClassic, requested by Maethra, 17.09.19
+√	S/C	RecipeRadarClassic, requested by Maethra, 17.09.19
 
 	I	Missing Localisations, reported by Macallan1824, 24.09.19
 √		- AceLocale-3.0-6: Skinner: Missing entry for 'Help Tips'
 √		- AceLocale-3.0-6: Skinner: Missing entry for 'Toggle the skin of the Help Tips'
 
 	I	AuctionUI, reported by EpidemeDaBear, 27.09.19
-		-  ..\AddOns\Skinner\PlayerFrames.lua line 2155: attempt to index field 'SideDressUpModel' (a nil value)
+√		-  ..\AddOns\Skinner\PlayerFrames.lua line 2155: attempt to index field 'SideDressUpModel' (a nil value)
 
-	I	Missing Disabled Addons, reported by Shiv_G3, 28.09.19
+	I/C	Missing Disabled Addons, reported by Shiv_G3, 28.09.19
 √		- Weak Auras & Sorha Quest Log entries missing
+
+	I	RaiderIO, reported by Nylrith, 04.10.19
+≈		-  Interface\AddOns\Skinner\Skinner.lua:497: attempt to index field 'obj' (a nil value)
+		Stack: Interface\AddOns\Skinner\Skinner.lua:497: attempt to index field 'obj' (a nil value)
+		Interface\AddOns\Skinner\AddonSkins\RaiderIO.lua:36: in function `skinBtn'
+		Interface\AddOns\Skinner\AddonSkins\RaiderIO.lua:43: in function <Interface\AddOns\Skinner\AddonSkins\RaiderIO.lua:5>
+
+	I	Pet Collection, reported by Nylrith, 04.10.19
+?		-  Interface\AddOns\Skinner\Modules\UIButtons.lua:157: attempt to index local 'btn' (a nil value)
+		Stack: Interface\AddOns\Skinner\Modules\UIButtons.lua:157: attempt to index local 'btn' (a nil value)
+		Interface\AddOns\Skinner\Modules\UIButtons.lua:157: in function `clrBtnBdr'
+		Interface\AddOns\Skinner\PlayerFrames.lua:1024: in function <Interface\AddOns\Skinner\PlayerFrames.lua:1020>
+		Interface\AddOns\Skinner\PlayerFrames.lua:1029: in function <Interface\AddOns\Skinner\PlayerFrames.lua:1027>
+
+√	S/C	Roll Tracker Classic, requested by amey0, 04.10.19
