@@ -286,7 +286,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	assert(funcType, "Unknown functionType checkAndRun\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	self:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
+	aObj:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
 	-- handle in combat
 	if _G.InCombatLockdown() then
@@ -407,6 +407,13 @@ function aObj:checkShown(frame)
 
 end
 
+function aObj:clrPNBtns(btnPrefix)
+
+	self:clrBtnBdr(_G[btnPrefix .. "PrevPageButton"], _G[btnPrefix .. "PrevPageButton"]:IsEnabled() and "gold" or "disabled", 1)
+	self:clrBtnBdr(_G[btnPrefix .. "NextPageButton"], _G[btnPrefix .. "NextPageButton"]:IsEnabled() and "gold" or "disabled", 1)
+
+end
+
 function aObj:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
@@ -511,38 +518,37 @@ function aObj:getChild(obj, childNo)
 
 end
 
-function aObj:getColour(clrName)
+function aObj:getColourByName(clrName)
 
 	local r, g, b
-	if clrName == "grey" then
-		r, g, b = _G.GRAY_FONT_COLOR:GetRGB()
-	elseif clrName == "white" then
-		r, g, b = _G.HIGHLIGHT_FONT_COLOR:GetRGB()
-	elseif clrName == "gold" then
-		r, g, b = _G.PASSIVE_SPELL_FONT_COLOR:GetRGB()
-	elseif clrName == "yellow" then
-		r, g, b = _G.YELLOW_FONT_COLOR:GetRGB()
-	elseif clrName == "green" then
-		r, g, b = _G.GREEN_FONT_COLOR:GetRGB()
+	if clrName == "common" then
+		r, g, b = _G.LIGHTGRAY_FONT_COLOR:GetRGB()
 	elseif clrName == "disabled" then
 		r, g, b = _G.DISABLED_FONT_COLOR:GetRGB()
-	elseif clrName == "selected" then
-		r, g, b = _G.PAPER_FRAME_EXPANDED_COLOR:GetRGB()
+	elseif clrName == "green" then
+		r, g, b = _G.GREEN_FONT_COLOR:GetRGB()
+	elseif clrName == "grey" then
+		r, g, b = _G.GRAY_FONT_COLOR:GetRGB()
+	elseif clrName == "gold" then
+		r, g, b = _G.PASSIVE_SPELL_FONT_COLOR:GetRGB()
 	elseif clrName == "normal" then
 		r, g, b = _G.NORMAL_FONT_COLOR:GetRGB()
+	elseif clrName == "selected" then
+		r, g, b = _G.PAPER_FRAME_EXPANDED_COLOR:GetRGB()
 	elseif clrName == "unused" then
 		r, g, b = _G.DULL_RED_FONT_COLOR:GetRGB()
-	elseif clrName == "common" then
-		-- BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_COMMON] = {r=0.65882,g=0.65882,b=0.65882}
-		r, g, b = _G.LIGHTGRAY_FONT_COLOR:GetRGB()
+	elseif clrName == "white" then
+		r, g, b = _G.HIGHLIGHT_FONT_COLOR:GetRGB()
+	elseif clrName == "yellow" then
+		r, g, b = _G.YELLOW_FONT_COLOR:GetRGB()
 	end
-	-- aObj:Debug("getColour: [%s, %s, %s, %s]", clrName, r, g ,b)
+	-- aObj:Debug("getColourByName: [%s, %s, %s, %s]", clrName, r, g ,b)
 	return r, g, b
 
 end
 
 function aObj:getCandSetA(obj)
-	
+
 	local r, g, b = obj:GetVertexColor()
 	return r, g, b, 1
 

@@ -151,9 +151,9 @@ function module:clrButtonBorder(btn)
 
 end
 
-function module:clrBtnBdr(btn, clr, alpha)
+function module:clrBtnBdr(btn, clrName, alpha)
 
-	local r, g, b = aObj:getColour(clr)
+	local r, g, b = aObj:getColourByName(clrName)
 	btn.sbb:SetBackdropBorderColor(r, g, b, alpha or 1)
 	r, g, b = nil, nil ,nil
 
@@ -753,6 +753,7 @@ local function __addButtonBorder(opts)
 		ibt = Item Button template
 		tibt = Talent Item Button template
 		libt = Large Item Button template
+		gibt = Giant Item Button template
 		sec = requires SecureFrameTemplate to inherit from otherwise tainting occurs
 		seca = requires SecureActionButtonTemplate to inherit from otherwise tainting occurs
 		secu = requires SecureUnitButtonTemplate to inherit from otherwise tainting occurs
@@ -808,6 +809,9 @@ local function __addButtonBorder(opts)
 			opts.obj:GetPushedTexture():SetTexture(nil)
 		end
 	end
+	if opts.gibt then
+		opts.obj.EmptyBackground:SetTexture(nil)
+	end
 
 	-- create the button border object
 	opts.obj.sbb = _G.CreateFrame(opts.obj:GetObjectType(), nil, opts.obj, opts.sec and "SecureFrameTemplate" or opts.seca and "SecureActionButtonTemplate" or opts.secu and "SecureUnitButtonTemplate" or nil)
@@ -845,11 +849,7 @@ local function __addButtonBorder(opts)
 	-- reparent these textures so they are displayed above the border
 	if opts.ibt then -- Item Buttons
 		opts.obj.Count:SetParent(opts.obj.sbb)
-		local stkRgn = 3
-		if aObj:hasTextInName(opts.obj, "MerchantItem") then
-			stkRgn = 2
-		end
-		aObj:getRegion(opts.obj, stkRgn):SetParent(opts.obj.sbb) -- Stock region
+		aObj:getRegion(opts.obj, aObj:hasTextInName(opts.obj, "MerchantItem") and 2 or 3):SetParent(opts.obj.sbb) -- Stock region
 		opts.obj.searchOverlay:SetParent(opts.obj.sbb)
 		module:clrButtonBorder(opts.obj)
 	elseif opts.abt then -- Action Buttons
@@ -863,6 +863,9 @@ local function __addButtonBorder(opts)
 	elseif opts.libt then -- Large Item Buttons
 		opts.obj.Name:SetParent(opts.obj.sbb)
 		opts.obj.Count:SetParent(opts.obj.sbb)
+	elseif opts.gibt then -- Giant Item Buttons
+		opts.obj.Count:SetParent(opts.obj.sbb)
+		module:clrButtonBorder(opts.obj)
 	end
 
 end

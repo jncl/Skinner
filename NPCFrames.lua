@@ -493,8 +493,14 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 		if self.modBtnBs then
 			self:removeRegions(_G.MerchantPrevPageButton, {2})
 			self:removeRegions(_G.MerchantNextPageButton, {2})
-			self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-			self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2, y1=-3, x2=-3}
+			self:SecureHook("MerchantFrame_UpdateMerchantInfo", function()
+				self:clrPNBtns("Merchant")
+				for i = 1, _G.math.max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE) do
+					_G["MerchantItem" .. i].ItemButton.sbb:SetBackdropBorderColor(self:getCandSetA(_G["MerchantItem" .. i .. "SlotTexture"]))
+				end
+			end)
 		end
 
 		-- Items/Buyback Items
@@ -504,11 +510,10 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(self.esTex)
 			else
 				_G["MerchantItem" .. i .. "SlotTexture"]:SetTexture(nil)
-				self:addButtonBorder{obj=_G["MerchantItem" .. i .. "ItemButton"], ibt=true}
+				self:addButtonBorder{obj=_G["MerchantItem" .. i].ItemButton, ibt=true}
 			end
 		end
 		_G.MerchantBuyBackItemNameFrame:SetTexture(nil)
-
 		if self.modBtnBs then
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(nil)
 			self:addButtonBorder{obj=_G.MerchantBuyBackItem.ItemButton, ibt=true}
@@ -516,9 +521,9 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:getRegion(_G.MerchantRepairItemButton, 1):SetTexCoord(0.01375, 0.2675, 0.01375, 0.54875)
 			_G.MerchantRepairAllIcon:SetTexCoord(0.295, 0.54875, 0.01375, 0.54875)
 			_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.57375, 0.83, 0.01375, 0.54875)
-			self:addButtonBorder{obj=_G.MerchantRepairAllButton, clr="grey", ca=0.85}
-			self:addButtonBorder{obj=_G.MerchantRepairItemButton, clr="grey", ca=0.85}
-			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, clr="grey", ca=0.85}
+			self:addButtonBorder{obj=_G.MerchantRepairAllButton, clr="grey"}
+			self:addButtonBorder{obj=_G.MerchantRepairItemButton, clr="grey"}
+			self:addButtonBorder{obj=_G.MerchantGuildBankRepairButton, clr="grey"}
 		else
 			_G.MerchantBuyBackItemSlotTexture:SetTexture(self.esTex)
 		end
@@ -913,17 +918,13 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 
 		self:keepRegions(this, {4, 17, 18, 19, 20, 21, 22}) -- N.B. regions 4, 21 & 22 are text, 17-20 are icon textures
 		self:removeNineSlice(this.NineSlice)
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.TabardCharacterModelRotateLeftButton, ofs=-4, y2=5}
-			self:addButtonBorder{obj=_G.TabardCharacterModelRotateRightButton, ofs=-4, y2=5}
-		end
 		_G.TabardFrameCostFrame:SetBackdrop(nil)
 		self:keepFontStrings(_G.TabardFrameCustomizationFrame)
 		for i = 1, 5 do
 			self:keepFontStrings(_G["TabardFrameCustomization" .. i])
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "LeftButton"], ofs=-2}
-				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-2}
+				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "LeftButton"], ofs=-2, x1=1, clr="gold"}
+				self:addButtonBorder{obj=_G["TabardFrameCustomization" .. i .. "RightButton"], ofs=-2, x1=1, clr="gold"}
 			end
 		end
 		if not self.isClassic then
@@ -936,6 +937,10 @@ aObj.blizzFrames[ftype].Tabard = function(self)
 		if self.modBtns then
 			self:skinStdButton{obj=_G.TabardFrameAcceptButton}
 			self:skinStdButton{obj=_G.TabardFrameCancelButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.TabardCharacterModelRotateLeftButton, ofs=-4, y2=5, clr="gold"}
+			self:addButtonBorder{obj=_G.TabardCharacterModelRotateRightButton, ofs=-4, y2=5, clr="gold"}
 		end
 
 		self:Unhook(this, "OnShow")

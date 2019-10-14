@@ -1201,15 +1201,15 @@ aObj.blizzFrames[ftype].ChatButtons = function(self)
 	-- QuickJoinToastButton & frames (attached to ChatFrame)
 	if self.modBtnBs then
 		for i = 1, _G.NUM_CHAT_WINDOWS do
-			self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2}
-			self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1, reParent={_G["ChatFrame" .. i].ScrollToBottomButton.Flash}}
+			self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, clr="grey"}
+			self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1, x=0, reParent={_G["ChatFrame" .. i].ScrollToBottomButton.Flash}, clr="grey"}
 		end
-		self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0}
-		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0}
-		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceMuteButton, ofs=0}
-		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2}
-		self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=1, x2=-3, y2=-1}
+		self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0, clr="grey"}
+		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceDeafenButton, ofs=0, clr="grey"}
+		self:addButtonBorder{obj=_G.ChatFrameToggleVoiceMuteButton, ofs=0, clr="grey"}
+		self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
 		-- QuickJoinToastButton(s)
+		self:addButtonBorder{obj=_G.QuickJoinToastButton, x1=1, y1=2, x2=-3, y2=-3, clr="grey"}
 		for _, type in pairs{"Toast", "Toast2"} do
 			_G.QuickJoinToastButton[type]:DisableDrawLayer("BACKGROUND")
 			self:moveObject{obj=_G.QuickJoinToastButton[type], x=7}
@@ -2666,38 +2666,57 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 		-- widen buttons so text fits better
 		for i = 1, 6 do
 			this["button" .. i]:SetWidth(180)
-			self:skinStdButton{obj=this["button" .. i], x1=0, y1=2, x2=-3, y2=1}
+			if self.modBtns then
+				self:skinStdButton{obj=this["button" .. i], x1=0, y1=2, x2=-3, y2=1}
+			end
 		end
 		this.button16:SetWidth(180) -- Submit Suggestion button
-		self:skinStdButton{obj=this.button16, x1=0, y1=2, x2=-3, y2=1}
+		if self.modBtns then
+			self:skinStdButton{obj=this.button16, x1=0, y1=2, x2=-3, y2=1}
+		end
 
 		-- Account Security panel
 		this.asec.ticketButton:GetNormalTexture():SetTexture(nil)
 		this.asec.ticketButton:GetPushedTexture():SetTexture(nil)
-		self:skinStdButton{obj=this.asec.ticketButton, x1=0, y1=2, x2=-3, y2=1}
+		if self.modBtns then
+			self:skinStdButton{obj=this.asec.ticketButton, x1=0, y1=2, x2=-3, y2=1}
+		end
 
 		-- Character Stuck! panel
-		self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
-		self:skinStdButton{obj=_G.HelpFrameCharacterStuckStuck}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.HelpFrameCharacterStuckHearthstone, es=20}
+		end
+		if self.modBtns then
+			self:skinStdButton{obj=_G.HelpFrameCharacterStuckStuck}
+		end
 
 		-- Report Bug panel
 		self:skinSlider{obj=_G.HelpFrameReportBugScrollFrame.ScrollBar}
 		self:addSkinFrame{obj=self:getChild(this.bug, 3), ft=ftype}
-		self:skinStdButton{obj=this.bug.submitButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.bug.submitButton}
+		end
 
 		-- Submit Suggestion panel
 		self:skinSlider{obj=_G.HelpFrameSubmitSuggestionScrollFrame.ScrollBar}
 		self:addSkinFrame{obj=self:getChild(this.suggestion, 3), ft=ftype}
-		self:skinStdButton{obj=this.suggestion.submitButton}
+		if self.modBtns then
+			self:skinStdButton{obj=this.suggestion.submitButton}
+		end
 
 		-- Help Browser
 		self:removeInset(_G.HelpBrowser.BrowserInset)
-		self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2}
-		self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2}
+		if self.modBtns then
+			self:skinStdButton{obj=_G.BrowserSettingsTooltip.CookiesButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2, x1=1, clr="gold"}
+			self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2, x1=1, clr="gold"}
+			self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2, x1=1, clr="gold"}
+			self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2, x1=1, clr="gold"}
+			self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2, x1=1, clr="gold"}
+			self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2, x1=1, clr="gold"}
+		end
 
 		-- Knowledgebase (uses Browser frame)
 
@@ -3346,7 +3365,6 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:skinTabs{obj=this, ignore=self.isClassic and true or nil}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, x2=self.isClassic and 1 or nil, y2=-5}
 
-		-- N.B. Item buttons have IconBorder textures
 		--	Inbox Frame
 		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 			self:keepFontStrings(_G["MailItem" .. i])
@@ -3357,12 +3375,18 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		end
 		self:moveObject{obj=_G.InboxTooMuchMail, y=-24} -- move icon down
 		self:removeRegions(_G.InboxFrame, {1}) -- background texture
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-			self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.OpenAllMail}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.InboxPrevPageButton, ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=_G.InboxNextPageButton, ofs=-2, y1=-3, x2=-3}
+			self:SecureHook("InboxFrame_Update", function(this)
+				for i = 1, _G.INBOXITEMS_TO_DISPLAY do
+					self:clrButtonBorder(_G["MailItem" .. i].Button)
+				end
+				self:clrPNBtns("Inbox")
+			end)
 		end
 
 		--	Send Mail Frame
@@ -3393,17 +3417,18 @@ aObj.blizzFrames[ftype].MailFrame = function(self)
 		self:skinSlider{obj=_G.OpenMailScrollFrame.ScrollBar, rt="overlay"}
 		_G.OpenMailBodyText:SetTextColor(self.BT:GetRGB())
 		self:addSkinFrame{obj=_G.OpenMailFrame, ft=ftype, kfs=true, ri=true}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
-			for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
-				self:addButtonBorder{obj=_G["OpenMailAttachmentButton" .. i], ibt=true}
-			end
-		end
 		if self.modBtns then
 			self:skinStdButton{obj=_G.OpenMailReportSpamButton}
 			self:skinStdButton{obj=_G.OpenMailCancelButton}
 			self:skinStdButton{obj=_G.OpenMailDeleteButton}
 			self:skinStdButton{obj=_G.OpenMailReplyButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=_G.OpenMailLetterButton, ibt=true}
+			self:addButtonBorder{obj=_G.OpenMailMoneyButton, ibt=true}
+			for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
+				self:addButtonBorder{obj=_G["OpenMailAttachmentButton" .. i], ibt=true}
+			end
 		end
 
 		-- Invoice Frame Text fields
@@ -3804,7 +3829,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	-- hook this to skin Interface Option panels
 	self:SecureHook("InterfaceOptionsList_DisplayPanel", function(panel)
-		-- self:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel.GetName and panel:GetName() or "n/a")
+		-- aObj:Debug("IOL_DP: [%s, %s, %s, %s, %s, %s]", panel, panel.name, panel.parent, panel.GetNumChildren and panel:GetNumChildren(), self.iofSkinnedPanels[panel], panel.GetName and panel:GetName() or "n/a")
 
 		-- let AddOn skins know when IOF panel is going to be skinned
 		self.callbacks:Fire("IOFPanel_Before_Skinning", panel)
@@ -4050,27 +4075,10 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	_G.MiniMapMailFrame:SetSize(26, 26)
 
-	local function skinZoom(obj)
-		obj:GetNormalTexture():SetTexture(nil)
-		obj:GetPushedTexture():SetTexture(nil)
-		if minBtn then
-			obj:GetDisabledTexture():SetTexture([[Interface\Minimap\UI-Minimap-Background]])
-		else
-			obj:GetDisabledTexture():SetTexture(nil)
-		end
-		aObj:adjWidth{obj=obj, adj=-8}
-		aObj:adjHeight{obj=obj, adj=-8}
-		aObj:addSkinButton{obj=obj, parent=obj, aso=asopts, ft=ftype}
-		obj.sb:SetAllPoints(obj:GetNormalTexture())
-		obj.sb:SetNormalFontObject(aObj.modUIBtns.fontX)
-		obj.sb:SetDisabledFontObject(aObj.modUIBtns.fontDX)
-		obj.sb:SetPushedTextOffset(1, 1)
-		if not obj:IsEnabled() then obj.sb:Disable() end
-	end
-	skinZoom(_G.MinimapZoomIn)
-	_G.MinimapZoomIn.sb:SetText(self.modUIBtns.plus)
-	skinZoom(_G.MinimapZoomOut)
-	_G.MinimapZoomOut.sb:SetText(self.modUIBtns.minus)
+	self:skinOtherButton{obj=_G.MinimapZoomIn, text=self.modUIBtns.plus, aso={bbclr="gold"}}
+	self:moveObject{obj=_G.MinimapZoomIn, x=-6, y=-3}
+	self:skinOtherButton{obj=_G.MinimapZoomOut, text=self.modUIBtns.minus, aso={bbclr="gold"}}
+	self:moveObject{obj=_G.MinimapZoomOut, x=2, y=8}
 
 	-- skin other minimap buttons as required
 	if not minBtn then
@@ -5191,9 +5199,8 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 	-- TimeManagerClockButton on the Minimap
 	if not IsAddOnLoaded("SexyMap") then
 		-- Time Manager Clock Button
-		self:removeRegions(_G.TimeManagerClockButton, {1})
 		if not self.prdb.Minimap.style then
-			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, x1=10, y1=-3, x2=-5, y2=5}
+			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, kfs=true, nb=true, x1=14, y1=-3, x2=-8, y2=5}
 		end
 	end
 

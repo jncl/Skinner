@@ -850,6 +850,12 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	end)
 
 	self:SecureHookScript(_G.MountJournal, "OnShow", function(this)
+		local function updBtnClr(btn)
+			-- aObj:Debug("updBtnClr: [%s, %s, %s, %s, %s]", btn.name:GetText(), btn.icon:GetAlpha(), btn.icon:GetVertexColor())
+			local r, g, b = btn.icon:GetVertexColor()
+			btn.sbb:SetBackdropBorderColor(r, g, b, btn.icon:GetAlpha())
+			r, g, b = nil, nil, nil
+		end
 		self:removeInset(this.LeftInset)
 		self:removeInset(this.BottomLeftInset)
 		local btn = this.BottomLeftInset.SlotButton
@@ -858,35 +864,12 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:addButtonBorder{obj=btn, relTo=btn.ItemIcon, reParent={btn.SlotBorder, btn.SlotBorderOpen}, clr="grey", ca=0.85}
 		end
 		btn = nil
-		if self.modBtns then
-			self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton}
-		end
 		self:skinDropDown{obj=this.mountOptionsMenu}
 		self:removeInset(this.RightInset)
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true, noHeight=true, noInsert=true, x=-6, y=-2} -- 6 is text, 7 is icon
 		self:removeInset(this.MountCount)
 		self:keepFontStrings(this.MountDisplay)
 		self:keepFontStrings(this.MountDisplay.ShadowOverlay)
-		local updBtnClr
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
-			self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon}
-			self:clrBtnBdr(this.MountDisplay.InfoButton, "white", 1)
-			self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-4, y2=5}
-			self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-4, y2=5}
-			function updBtnClr(btn)
-				-- aObj:Debug("updBtnClr: [%s, %s, %s, %s, %s]", btn.name:GetText(), btn.icon:GetAlpha(), btn.icon:GetVertexColor())
-				local r, g, b = btn.icon:GetVertexColor()
-				btn.sbb:SetBackdropBorderColor(r, g, b, btn.icon:GetAlpha())
-				r, g, b = nil, nil, nil
-			end
-			self:SecureHook(this.ListScrollFrame, "update", function(this)
-				for i = 1, #this.buttons do
-					btn =
-					updBtnClr(this.buttons[i])
-				end
-			end)
-		end
 		self:skinSlider{obj=this.ListScrollFrame.scrollBar, wdth=-4}
 		local btn
 		for i = 1, #this.ListScrollFrame.buttons do
@@ -900,30 +883,46 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		btn = nil
 		self:removeMagicBtnTex(this.MountButton)
 		if self.modBtns then
+			self:skinStdButton{obj=this.BottomLeftInset.SuppressedMountEquipmentButton}
 			self:skinStdButton{obj=_G.MountJournalFilterButton}
 			self:skinDropDown{obj=_G.MountJournalFilterDropDown}
 			self:skinStdButton{obj=this.MountButton}
+		end
+		if self.modBtnBs then
+			self:addButtonBorder{obj=this.SummonRandomFavoriteButton, ofs=3}
+			self:addButtonBorder{obj=this.MountDisplay.InfoButton, relTo=this.MountDisplay.InfoButton.Icon}
+			self:clrBtnBdr(this.MountDisplay.InfoButton, "white", 1)
+			self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateLeftButton, ofs=-4, y2=5, clr="grey"}
+			self:addButtonBorder{obj=this.MountDisplay.ModelScene.RotateRightButton, ofs=-4, y2=5, clr="grey"}
+			self:SecureHook(this.ListScrollFrame, "update", function(this)
+				for i = 1, #this.buttons do
+					btn =
+					updBtnClr(this.buttons[i])
+				end
+			end)
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.MountDisplay.ModelScene.TogglePlayer}
 		end
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.PetJournal, "OnShow", function(this)
+		local function updBtnClr(btn)
+			if btn.iconBorder:IsShown() then
+				btn.sbb:SetBackdropBorderColor(aObj:getCandSetA(btn.iconBorder))
+			else
+				aObj:clrBtnBdr(btn, "grey", 1)
+			end
+		end
 		self:removeInset(this.PetCount)
 		this.MainHelpButton.Ring:SetTexture(nil)
 		self:moveObject{obj=this.MainHelpButton, y=-4}
 		_G.PetJournalHealPetButtonBorder:SetTexture(nil)
-		local updBtnClr
 		if self.modBtnBs then
 			self:addButtonBorder{obj=this.HealPetButton, sec=true, clr="grey", ca=1}
 			self:addButtonBorder{obj=this.SummonRandomFavoritePetButton, ofs=3, clr="grey", ca=1}
-			function updBtnClr(btn)
-				if btn.iconBorder:IsShown() then
-					btn.sbb:SetBackdropBorderColor(aObj:getCandSetA(btn.iconBorder))
-				else
-					aObj:clrBtnBdr(btn, "grey", 1)
-				end
-			end
 			self:SecureHook(this.listScroll, "update", function(this)
 				for i = 1, #this.buttons do
 					updBtnClr(this.buttons[i])
@@ -1187,24 +1186,23 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		local x1Ofs, y1Ofs, x2Ofs, y2Ofs = -5, 3, 7, -8
 
 		self:SecureHookScript(this.ItemsCollectionFrame, "OnShow", function(this)
+			local function updBtnClr(btn)
+				local atlas = btn.Border:GetAtlas()
+				if atlas:find("uncollected", 1, true) then
+					self:clrBtnBdr(btn, "grey", 1)
+				elseif atlas:find("unusable", 1, true) then
+					self:clrBtnBdr(btn, "unused", 1)
+				else
+					self:clrBtnBdr(btn, "gold", 1)
+				end
+			end
 			-- this:DisableDrawLayer("BACKGROUND")
 			self:skinDropDown{obj=this.RightClickDropDown}
 			self:skinDropDown{obj=this.WeaponDropDown}
 			-- add skin frame, so tabs look better than without a frame
 			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, aso={bd=10, ng=true}, x1=x1Ofs, y1=y1Ofs, x2=x2Ofs, y2=y2Ofs}
-			local updBtnClr
 			if self.modBtnBs then
 				skinPageBtns(this)
-				local function updBtnClr(btn)
-					local atlas = btn.Border:GetAtlas()
-					if atlas:find("uncollected", 1, true) then
-						self:clrBtnBdr(btn, "grey", 1)
-					elseif atlas:find("unusable", 1, true) then
-						self:clrBtnBdr(btn, "unused", 1)
-					else
-						self:clrBtnBdr(btn, "gold", 1)
-					end
-				end
 				local btn
 				for i = 1, #this.Models do
 					btn = this.Models[i]
@@ -2169,12 +2167,17 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		this.searchBox.showAllResults:SetPushedTexture(nil)
 		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, ofs=6, y1=-1, x2=4}
 		self:skinSlider{obj=this.searchResults.scrollFrame.scrollBar, wdth=-4}
+		local btn
 		for i = 1, #this.searchResults.scrollFrame.buttons do
-			self:removeRegions(this.searchResults.scrollFrame.buttons[i], {1})
-			this.searchResults.scrollFrame.buttons[i]:GetNormalTexture():SetAlpha(0)
-			this.searchResults.scrollFrame.buttons[i]:GetPushedTexture():SetAlpha(0)
-			self:addButtonBorder{obj=this.searchResults.scrollFrame.buttons[i], relTo=this.searchResults.scrollFrame.buttons[i].icon}
+			btn = this.searchResults.scrollFrame.buttons[i]
+			self:removeRegions(btn, {1})
+			btn:GetNormalTexture():SetAlpha(0)
+			btn:GetPushedTexture():SetAlpha(0)
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=btn, relTo=btn.icon}
+			end
 		end
+		btn = nil
 
 		this.navBar:DisableDrawLayer("BACKGROUND")
 		this.navBar:DisableDrawLayer("BORDER")
@@ -2232,7 +2235,9 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			this.instance.loreBG:SetSize(370, 308)
 			this.instance:DisableDrawLayer("ARTWORK")
 			self:moveObject{obj=this.instance.mapButton, x=-20, y=-18}
-			self:addButtonBorder{obj=this.instance.mapButton, relTo=this.instance.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.instance.mapButton, relTo=this.instance.mapButton.texture, x1=2, y1=-1, x2=-2, y2=1}
+			end
 			self:skinSlider{obj=this.instance.loreScroll.ScrollBar, wdth=-4}
 			this.instance.loreScroll.child.lore:SetTextColor(self.BT:GetRGB())
 			-- Boss/Creature buttons
@@ -2261,7 +2266,9 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			skinFilterBtn(this.info.difficulty)
 			this.info.reset:SetNormalTexture(nil)
 			this.info.reset:SetPushedTexture(nil)
-			self:skinStdButton{obj=this.info.reset, y2=2}
+			if self.modBtns then
+				self:skinStdButton{obj=this.info.reset, y2=2}
+			end
 			self:skinSlider{obj=this.info.detailsScroll.ScrollBar, wdth=-4}
 			this.info.detailsScroll.child.description:SetTextColor(self.BT:GetRGB())
 			self:skinSlider{obj=this.info.overviewScroll.ScrollBar, wdth=-4}
@@ -2344,30 +2351,31 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			self:Unhook(this, "OnShow")
 		end)
 
-		local ejsfs = this.suggestFrame.Suggestion1
-		ejsfs.bg:SetTexture(nil)
-		ejsfs.iconRing:SetTexture(nil)
-		ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
-		ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
-		ejsfs.reward.text:SetTextColor(self.BT:GetRGB())
-		ejsfs.reward.iconRing:SetTexture(nil)
-		self:skinStdButton{obj=ejsfs.button}
-		self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3}
-		self:addButtonBorder{obj=ejsfs.nextButton, ofs=-2, y1=-3, x2=-3}
-		ejsfs = this.suggestFrame.Suggestion2
-		ejsfs.bg:SetTexture(nil)
-		ejsfs.iconRing:SetTexture(nil)
-		ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
-		ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
-		self:skinStdButton{obj=ejsfs.centerDisplay.button}
-		ejsfs.reward.iconRing:SetTexture(nil)
-		ejsfs = this.suggestFrame.Suggestion3
-		ejsfs.bg:SetTexture(nil)
-		ejsfs.iconRing:SetTexture(nil)
-		ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
-		ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
-		self:skinStdButton{obj=ejsfs.centerDisplay.button}
-		ejsfs.reward.iconRing:SetTexture(nil)
+		local ejsfs
+		for i = 1, 3 do
+			ejsfs = this.suggestFrame["Suggestion" .. i]
+			ejsfs.bg:SetTexture(nil)
+			ejsfs.iconRing:SetTexture(nil)
+			ejsfs.centerDisplay.title.text:SetTextColor(self.HT:GetRGB())
+			ejsfs.centerDisplay.description.text:SetTextColor(self.BT:GetRGB())
+			if i == 1 then
+				ejsfs.reward.text:SetTextColor(self.BT:GetRGB())
+			end
+			ejsfs.reward.iconRing:SetTexture(nil)
+			if self.modBtns then
+				if i ~= 1 then
+					self:skinStdButton{obj=ejsfs.centerDisplay.button}
+				else
+					self:skinStdButton{obj=ejsfs.button}
+				end
+			end
+			if self.modBtnBs
+			and i == 1
+			then
+				self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				self:addButtonBorder{obj=ejsfs.nextButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			end
+		end
 		ejsfs = nil
 
 		-- add skin frame to surround all the Suggestions, so tabs look better than without a frame
@@ -3251,6 +3259,8 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 					end
 				end
 			end)
+			self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2, clr="gold"}
+			self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2, clr="gold"}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -4423,7 +4433,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		end
 
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=0}
+			self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=0, clr="grey"}
 		end
 		local frame = this.PvpTalentFrame
 		frame:DisableDrawLayer("BACKGROUND")
