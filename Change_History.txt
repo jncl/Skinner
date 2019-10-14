@@ -1,3 +1,18 @@
+beta8.32028.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Classic Support skin
+	Removed debug
+	Updated MainMenuBar skin
+	Updated PetCollectionUI skin
+	Updated AuctionUI skin
+	Removed PTR checks and incorporated all PTR changes
+	Bugfix for missing Addon names in Disabled skin option panel
+	Updated DejaClassicStats, RaiderIO & Spew skins
+	Unobsoleted RecipeRadar and renamed it to RecipeRadarClassic & skinned RollTrackerClassic
+
 beta8.31830.2
 Jncl:
 	ToDo.txt
