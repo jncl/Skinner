@@ -3239,18 +3239,34 @@ aObj.blizzFrames[ftype].LootFrames = function(self)
 	self.initialized.LootFrames = true
 
 	self:SecureHookScript(_G.LootFrame, "OnShow", function(this)
+		if self.prdb.LootFrames.extra then
+			-- Add another loot button and move them all up to fit if FramesResized isn't loaded
+			if not IsAddOnLoaded("FramesResized") then
+				local yOfs, btn = -27
+				for i = 1, _G.LOOTFRAME_NUMBUTTONS do
+					btn = _G["LootButton" .. i]
+					btn:ClearAllPoints()
+					btn:SetPoint("TOPLEFT", 9, yOfs)
+					yOfs = yOfs - 41
+				end
+				if not aObj.isClassic then
+					_G.CreateFrame("ItemButton", "LootButton5", this, "LootButtonTemplate")
+				else
+					_G.CreateFrame("Button", "LootButton5", this, "LootButtonTemplate")
+				end
+				_G.LootButton5:SetPoint("TOPLEFT", 9, yOfs)
+				_G.LootButton5.id = 5
+				_G.LOOTFRAME_NUMBUTTONS = 5
+				yOfs = nil
+			end
+		end
 		for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 			_G["LootButton" .. i .. "NameFrame"]:SetTexture(nil)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G["LootButton" .. i]}
 			end
 		end
-		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.LootFrameDownButton, ofs=-2}
-			self:addButtonBorder{obj=_G.LootFrameUpButton, ofs=-2}
-		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
-
 		if self.modBtnBs then
 			self:SecureHook("LootFrame_Update", function()
 				for i = 1, _G.LOOTFRAME_NUMBUTTONS do
