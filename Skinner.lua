@@ -1052,6 +1052,7 @@ local function __skinDropDown(opts)
 		ign = ignore this dropdown when skinning IOF panels
 		noBB = don't add a border around the button
 		bx1 = adjust x1 offset for the button (used by Overachiever)
+		lrg = Large UI template used (AuctionHouseUI)
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __sDD\n" .. debugstack(2, 3, 2))
@@ -1097,9 +1098,15 @@ local function __skinDropDown(opts)
 	opts.obj.ddTex = opts.obj:CreateTexture(nil, "ARTWORK", -5) -- appear behind text
 	opts.obj.ddTex:SetTexture(aObj.prdb.TexturedDD and aObj.itTex or nil)
 	-- align it to the middle texture
-	opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -5, 2)
-	opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", 5, 2)
-	opts.obj.ddTex:SetHeight(17)
+	if opts.lrg then
+		opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -11, 2)
+		opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", -15, 0)
+		opts.obj.ddTex:SetHeight(24)
+	else
+		opts.obj.ddTex:SetPoint("LEFT", opts.obj.Left or _G[opts.obj:GetName() .. "Left"], "RIGHT", -5, 2)
+		opts.obj.ddTex:SetPoint("RIGHT", opts.obj.Right or _G[opts.obj:GetName() .. "Right"], "LEFT", 5, 2)
+		opts.obj.ddTex:SetHeight(17)
+	end
 
 	local xOfs1 = opts.x1 or 16
 	local yOfs1 = opts.y1 or -1
@@ -1112,8 +1119,12 @@ local function __skinDropDown(opts)
 	end
 	-- add a button border around the dd button
 	if not opts.noBB then
-		xOfs1 = opts.bx1 and opts.obj:GetWidth() + 10 or 1
-		aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2, x1=xOfs1}
+		if opts.lrg then
+			aObj:addButtonBorder{obj=opts.obj.Button, es=12, ofs=0}
+		else
+			xOfs1 = opts.bx1 and opts.obj:GetWidth() + 10 or 1
+			aObj:addButtonBorder{obj=opts.obj.Button or _G[opts.obj:GetName() .. "Button"], es=12, ofs=-2, x1=xOfs1}
+		end
 	end
 
 	xOfs1, yOfs1, xOfs2, yOfs2 = nil, nil, nil, nil

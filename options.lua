@@ -59,7 +59,8 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 	-->>-- NPC Frames
 		DisableAllNPC        = false,
 		AlliedRacesUI        = true,
-		AuctionUI            = true,
+		AuctionUI            = not self.isPTR and true or nil,
+		AuctionHouseUI       = self.isPTR and true or nil,
 		AzeriteRespecUI      = true,
 		BankFrame            = true,
 		BarbershopUI         = true,
@@ -818,11 +819,16 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Allied Races UI"],
 					desc = self.L["Toggle the skin of the Allied Races UI"],
 				},
-				AuctionUI = {
+				AuctionUI = not self.isPTR and {
 					type = "toggle",
 					name = self.L["Auction UI"],
 					desc = self.L["Toggle the skin of the Auction UI"],
-				},
+				} or nil,
+				AuctionHouseUI = self.isPTR and {
+					type = "toggle",
+					name = self.L["AuctionHouse UI"],
+					desc = self.L["Toggle the skin of the AuctionHouse UI"],
+				} or nil,
 				AzeriteRespecUI ={
 					type = "toggle",
 					name = self.L["Azerite Respec UI"],
