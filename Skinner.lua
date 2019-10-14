@@ -55,18 +55,18 @@ do
 
 --@alpha@
 	aObj:Printf("%s, %s, %s, %s, %s, %s, %s", buildInfo.live[1], buildInfo.live[2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	local vTxt = "Retail"
 	if aObj.isClassic then
-		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Classic version", 1, 0, 0, nil, true)
+		vTxt = "Classic"
+	elseif aObj.isBeta then
+		vTxt = "Beta"
+	elseif aObj.isPTR then
+		vTxt = "PTR"
+	elseif aObj.isPatch then
+		vTxt = "Patched"
 	end
-	if aObj.isBeta then
-		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Beta version", 1, 0, 0, nil, true)
-	end
-	if aObj.isPTR then
-		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a PTR version", 1, 0, 0, nil, true)
-	end
-	if aObj.isPatch then
-		_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a Patched version", 1, 0, 0, nil, true)
-	end
+	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vTxt .. " version", 0.75, 0.5, 0.25, nil, true)
+	vTxt = nil
 --@end-alpha@
 
 	-- handle PTR changes going Live
@@ -88,11 +88,15 @@ function aObj:OnInitialize()
 --@end-debug@
 
 --@alpha@
-	if self.isClassic then self:Debug("Classic detected") end
-	if self.isClassicBeta then self:Debug("ClassicBeta detected") end
-	if self.isBeta then self:Debug("Beta detected") end
-	if self.isPTR then self:Debug("PTR detected") end
-	if self.isPatch then self:Debug("Patch detected") end
+	if self.isClassic then
+		self:Debug("Classic detected")
+	elseif self.isBeta then
+		self:Debug("Beta detected")
+	elseif self.isPTR then
+		self:Debug("PTR detected")
+	elseif self.isPatch then
+		self:Debug("Patch detected")
+	end
 --@end-alpha@
 
 	-- setup the default DB values and register them
@@ -319,7 +323,7 @@ function aObj:OnEnable()
 			-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
 			self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, suppressOverlays)
 				-- self:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink, suppressOverlays)
-				-- aObj:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
+				-- self:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
 				-- show Artifact Relic Item border
 				if itemIDOrLink
 				and (_G.IsArtifactRelicItem and _G.IsArtifactRelicItem(itemIDOrLink))
