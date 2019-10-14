@@ -6,10 +6,11 @@ aObj.addonsToSkin.TomTom = function(self) -- v 800001-1.0.0
 
 	-- skin the Coordinate block
 	if _G.TomTomBlock then
-		self:addSkinFrame{obj=_G.TomTomBlock, ft="a", nb=true, ofs=-3}
+		self:addSkinFrame{obj=_G.TomTomBlock, ft="a", kfs=true, nb=true, ofs=-4}
 	else
 		self:SecureHook(_G.TomTom, "ShowHideCoordBlock", function(this)
-			self:addSkinFrame{obj=_G.TomTomBlock, ft="a", nb=true, ofs=-3}
+			self:addSkinFrame{obj=_G.TomTomBlock, ft="a", kfs=true, nb=true, ofs=-4}
+
 			self:Unhook(this, "ShowHideCoordBlock")
 		end)
 	end

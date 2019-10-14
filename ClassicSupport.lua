@@ -375,12 +375,24 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.AuctionsCreateAuctionButton}
 				self:skinStdButton{obj=_G.AuctionsCancelAuctionButton, x2=-1}
 				self:skinStdButton{obj=_G.AuctionsCloseButton}
+				if IsAddOnLoaded("Leatrix_Plus")
+				and _G.LeaPlusDB["AhExtras"] == "On"
+				then
+					self:skinStdButton{obj=self:getLastChild(_G.AuctionFrameAuctions)}
+				end
 			end
 			if not self.modBtnBs then
 				self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
 			else
 				self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
 				self:addButtonBorder{obj=_G.AuctionsItemButton}
+			end
+			if IsAddOnLoaded("Leatrix_Plus")
+			and _G.LeaPlusDB["AhExtras"] == "On"
+			and self.modChkBtns
+			then
+				self:skinCheckButton{obj=self:getPenultimateChild(_G.AuctionFrameAuctions)}
+				self:skinCheckButton{obj=self:getChild(_G.AuctionFrameAuctions, _G.AuctionFrameAuctions:GetNumChildren() - 2)}
 			end
 
 			self:SecureHookScript(_G.AuctionProgressFrame, "OnShow", function(this)
@@ -691,11 +703,21 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.CraftFrame, "OnShow", function(this)
 			self:skinStatusBar{obj=_G.CraftRankFrame, fi=0, bgTex=_G.CraftRankFrameBackground}
+			_G.CraftRankFrameBorder:GetNormalTexture():SetTexture(nil)
 			self:keepFontStrings(_G.CraftExpandButtonFrame)
 			self:skinSlider{obj=_G.CraftListScrollFrameScrollBar, rt="background"}
 			self:skinSlider{obj=_G.CraftDetailScrollFrameScrollBar, rt="background"}
-			self:removeRegions(_G.CraftDetailScrollChildFrame, {4, 5})
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-31, y2=71}
+			self:keepFontStrings(_G.CraftDetailScrollChildFrame)
+			local x1, y1, x2, y2
+			if IsAddOnLoaded("Leatrix_Plus")
+			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
+			then
+				x1, y1, x2, y2 = 10, -11, -33, 49
+			else
+				x1, y1, x2, y2 = 10, -11, -31, 71
+			end
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
+			x1, y1, x2, y2 = nil, nil, nil, nil
 			if self.modBtns then
 				self:skinExpandButton{obj=_G.CraftCollapseAllButton, onSB=true}
 				self:skinCloseButton{obj=_G.CraftFrameCloseButton}
@@ -724,10 +746,16 @@ aObj.ClassicSupport = function(self)
 			self:removeRegions(this, {1, 2, 3, 4})
 			_G.SideDressUpModel.controlFrame:DisableDrawLayer("BACKGROUND") -- model controls background
 			self:removeRegions(_G.SideDressUpModelCloseButton, {5}) -- corner texture
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=-2, y1=-3, x2=-2}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=1, y1=-3, x2=-2}
 			if self.modBtns then
 				self:skinStdButton{obj=_G.SideDressUpModelResetButton}
 				self:skinCloseButton{obj=_G.SideDressUpModelCloseButton}
+				if IsAddOnLoaded("Leatrix_Plus")
+				and _G.LeaPlusDB["EnhanceDressup"] == "On"
+				then
+					self:skinStdButton{obj=self:getPenultimateChild(this)}
+					self:skinStdButton{obj=self:getChild(this, this:GetNumChildren() - 2)}
+				end
 			end
 
 			self:Unhook(this, "OnShow")
@@ -740,6 +768,12 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.DressUpFrameCloseButton}
 				self:skinStdButton{obj=_G.DressUpFrameCancelButton}
 				self:skinStdButton{obj=this.ResetButton}
+				if IsAddOnLoaded("Leatrix_Plus")
+				and _G.LeaPlusDB["EnhanceDressup"] == "On"
+				then
+					self:skinStdButton{obj=self:getPenultimateChild(this)}
+					self:skinStdButton{obj=self:getChild(this, this:GetNumChildren() - 2)}
+				end
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1279,7 +1313,16 @@ aObj.ClassicSupport = function(self)
 			end
 			btnName = nil
 			self:skinEditBox{obj=_G.TradeSkillInputBox, regs={6}, x=-6} -- 6 is text
-			self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-31, y2=70}
+			local x1, y1, x2, y2
+			if IsAddOnLoaded("Leatrix_Plus")
+			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
+			then
+				x1, y1, x2, y2 = 10, -11, -33, 49
+			else
+				x1, y1, x2, y2 = 10, -11, -31, 70
+			end
+			self:addSkinFrame{obj=_G.TradeSkillFrame, ft=ftype, kfs=true, nb=true, x1=x1, y1=y1, x2=x2, y2=y2}
+			x1, y1, x2, y2 = nil, nil, nil, nil
 			if self.modBtns then
 				self:skinExpandButton{obj=_G.TradeSkillCollapseAllButton, onSB=true}
 				for i = 1, _G.TRADE_SKILLS_DISPLAYED do
