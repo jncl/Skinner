@@ -905,8 +905,9 @@ aObj.ClassicSupport = function(self)
 
 			self:SecureHookScript(_G.WhoFrame, "OnShow", function(this)
 				self:removeInset(_G.WhoFrameListInset)
-				self:skinColHeads("WhoFrameColumnHeader")
+				self:skinColHeads("WhoFrameColumnHeader", nil, ftype)
 				self:skinDropDown{obj=_G.WhoFrameDropDown}
+				self:moveObject{obj=_G.WhoFrameDropDown, y=1}
 				-- remove col head 2 as it is really a dropdown
 				_G.WhoFrameColumnHeader2.sf.tfade:SetTexture(nil)
 				_G.WhoFrameColumnHeader2.sf:SetBackdrop(nil)
@@ -931,8 +932,8 @@ aObj.ClassicSupport = function(self)
 			self:SecureHookScript(_G.GuildFrame, "OnShow", function(this)
 				self:keepFontStrings(this)
 				_G.GuildFrameLFGFrame:DisableDrawLayer("BACKGROUND")
-				self:skinColHeads("GuildFrameColumnHeader")
-				self:skinColHeads("GuildFrameGuildStatusColumnHeader")
+				self:skinColHeads("GuildFrameColumnHeader", nil, ftype)
+				self:skinColHeads("GuildFrameGuildStatusColumnHeader", nil, ftype)
 				self:skinSlider{obj=_G.GuildListScrollFrame.ScrollBar, rt="background"}
 				if self.modBtns then
 					self:skinStdButton{obj=_G.GuildFrameControlButton}
@@ -1169,15 +1170,7 @@ aObj.ClassicSupport = function(self)
 
 		self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 			this.numTabs = 3
-			self:skinTabs{obj=this, suffix="Button", regs={1, 3}, lod=true, ignore=true, x1=13, y1=-14, x2=-13, y2=13}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-12, x2=-31, y2=72}
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.SpellBookCloseButton}
-			end
-			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-				self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-			end
+			self:skinTabs{obj=this, suffix="Button", regs={1, 3}, lod=true, ignore=true, x1=13, y1=-14, x2=-13, y2=16}
 			if self.isTT then
 				local function setTab(bookType)
 					local tab
@@ -1197,6 +1190,14 @@ aObj.ClassicSupport = function(self)
 				end)
 				-- set correct tab
 				setTab(this.bookType)
+			end
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-12, x2=-31, y2=72}
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.SpellBookCloseButton}
+			end
+			if self.modBtnBs then
+				self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
 			end
 
 			-- Spellbook Panel
@@ -1368,17 +1369,16 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.ChatButtons or self.initialized.ChatButtons then return end
 		self.initialized.ChatButtons = true
 
-		-- QuickJoinToastButton & frames (attached to ChatFrame)
 		if self.modBtnBs then
 			for i = 1, _G.NUM_CHAT_WINDOWS do
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.bottomButton, ofs=-2, x1=1, clr="grey"}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, ofs=-2, x1=1, clr="grey"}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, ofs=-2, x1=1, clr="grey"}
+				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.minimizeButton, ofs=-2, x=1, clr="grey"}
 				self:addButtonBorder{obj=_G["ChatFrame" .. i].ScrollToBottomButton, ofs=-1, reParent={_G["ChatFrame" .. i].ScrollToBottomButton.Flash}}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.bottomButton, ofs=-2}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.downButton, ofs=-2}
-				self:addButtonBorder{obj=_G["ChatFrame" .. i].buttonFrame.upButton, ofs=-2}
 			end
-			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=0}
-			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2}
+			self:addButtonBorder{obj=_G.ChatFrameChannelButton, ofs=1, clr="grey"}
+			self:addButtonBorder{obj=_G.ChatFrameMenuButton, ofs=-2, x1=1, clr="grey"}
 		end
 
 	end
@@ -1515,9 +1515,9 @@ aObj.ClassicSupport = function(self)
 					end
 				end)
 				self:skinCloseButton{obj=_G.QuestLogFrameCloseButton}
-				self:skinStdButton{obj=_G.QuestLogFrameAbandonButton}
+				self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, x2=2, x2=-2}
 				self:skinStdButton{obj=_G.QuestFrameExitButton}
-				self:skinStdButton{obj=_G.QuestFramePushQuestButton, x1=0}
+				self:skinStdButton{obj=_G.QuestFramePushQuestButton, x2=2, x2=-2}
 			end
 
 			self:SecureHook("QuestLog_UpdateQuestDetails", function(...)
@@ -1746,14 +1746,14 @@ aObj.ClassicSupport = function(self)
 				_G.PetFrame.lvlText = _G.PetName:GetParent():CreateFontString(nil, "ARTWORK", "GameNormalNumberFont")
 				_G.PetFrame.lvlText:SetPoint("LEFT", _G.PetFrame, "LEFT", 5, -18)
 				_G.PetFrame.lvlText:SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
+				_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet") or "")
 			end
 			local function updPetLevel()
 				if not _G.PetFrame:IsShown() then return end
-
-	            -- handle in combat
+				-- handle in combat
 				if _G.InCombatLockdown() then
 				    aObj:add2Table(aObj.oocTab, {updPetLevel, {}})
-	                return
+				                return
 				else
 					_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
 					_G.PetFrame.lvlText:Show()
@@ -1772,11 +1772,6 @@ aObj.ClassicSupport = function(self)
 				if arg1 == "pet" then
 					updPetLevel()
 				end
-			end)
-			-- updPetLevel when ooc
-			self:SecureHook("PetFrame_Update", function(this, override)
-				-- aObj:Debug("PetFrame_Update: [%s, %s]", this, override)
-				updPetLevel()
 			end)
 		else
 			if _G.PetFrame.lvlText then
