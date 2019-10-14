@@ -36,9 +36,9 @@ do
 	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	local buildInfo = {
-		clsc = {"1.13.2", 31882},
+		clsc = {"1.13.2", 32089},
 		beta = {"9.0.0", 99999},
-		ptr = {"8.2.5", 31984},
+		ptr = {"8.3.0", 32151},
 		live = {"8.2.5", 32028},
 	}
 
