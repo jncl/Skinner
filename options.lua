@@ -9,7 +9,7 @@ local AceGUIWidgetLSMlists, InterfaceOptionsFrame_OpenToCategory, LibStub, IsAdd
 aObj.blizzFrames[ftype].SetupDefaults = function(self)
 
 	local defaults = { profile = {
-	-->>-- General
+	-- General
 		Warnings             = true,
 		Errors               = true,
 		MinimapIcon          = {hide = false, minimapPos = 210, radius = 80},
@@ -23,7 +23,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		Delay                = {Init = 0.5, Addons = 0.5},
 		FadeHeight           = {enable = false, value = 500, force = false},
 		StatusBar            = {texture = "Blizzard", r = 0, g = 0.5, b = 0.5, a = 0.5},
-	-->>-- Backdrop Settings
+	-- Backdrop Settings
 		BdDefault            = true,
 		BdFile               = "None",
 		BdTexture            = "Blizzard ChatFrame Background",
@@ -32,13 +32,13 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		BdBorderTexture      = "Blizzard Tooltip",
 		BdEdgeSize           = 16,
 		BdInset              = 4,
-	-->>-- Background Texture settings
+	-- Background Texture settings
 		BgUseTex             = false,
 		BgFile               = "None",
 		BgTexture            = "None",
 		BgTile               = false,
 		LFGTexture           = false,
-	-->>-- Colours
+	-- Colours
 		ClassClrBd           = false,
 		ClassClrBg           = false,
 		ClassClrGr           = false,
@@ -52,11 +52,10 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		GradientMin          = {r = 0.1, g = 0.1, b = 0.1, a = 0},
 		GradientMax          = {r = 0.25, g = 0.25, b = 0.25, a = 1},
 		BagginsBBC	         = {r = 0.5, g = 0.5, b = 0.5, a = 1},
-	-->>-- Gradient
+	-- Gradient
 		Gradient             = {enable = true, invert = false, rotate = false, char = true, ui = true, npc = true, skinner = true, texture = "Blizzard ChatFrame Background"},
-	-->>-- Modules
-		-- populated below
-	-->>-- NPC Frames
+	-- Modules (populated below)
+	-- NPC Frames
 		DisableAllNPC        = false,
 		AlliedRacesUI        = true,
 		AuctionUI            = not self.isPTR and true or nil,
@@ -79,7 +78,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		TaxiFrame            = true,
 		TrainerUI            = true,
 		VoidStorageUI        = true,
-	-->>-- Player Frames
+	-- Player Frames
 		DisableAllP          = false,
 		AchievementUI        = {skin = true, style = 2},
 		ArchaeologyUI        = true,
@@ -118,7 +117,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		TradeFrame           = true,
 		TradeSkillUI         = true,
 		VehicleMenuBar       = true,
-	-->>-- UI Frames
+	-- UI Frames
 		DisableAllUI         = false,
 		AddonList            = true,
 		AdventureMap         = true,
@@ -189,11 +188,10 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		WarfrontsPartyPoseUI = true ,
 		WorldMap             = {skin = true, size = 1},
 		ZoneAbility          = true,
-	-->>-- Disabled Skins
+	-- Disabled Skins
 		DisableAllAS         = false,
 		DisabledSkins        = {},
-	-->-- Profiles
-		-- populated below
+	-- Profiles (populated below)
 
 	},}
 
