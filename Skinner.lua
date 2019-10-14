@@ -932,7 +932,7 @@ local function __applySkin(opts)
 		invert = invert gradient
 		rotate = rotate gradient
 		ebc = Use EditBox Colours
-		bbclr = BackdropBorder colour
+		bbclr = BackdropBorder colour name
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aS\n" .. debugstack(2, 3, 2))
@@ -969,7 +969,7 @@ local function __applySkin(opts)
 		local r, g, b, a = aObj.bClr:GetRGBA()
 		opts.obj:SetBackdropColor(r, g, b, opts.ba or a)
 		if opts.bbclr then
-			r, g, b, a = aObj:getColour(opts.bbclr)
+			r, g, b, a = aObj:getColourByName(opts.bbclr)
 		else
 			r, g, b, a = aObj.bbClr:GetRGBA()
 		end
