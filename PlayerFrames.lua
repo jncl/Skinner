@@ -2551,7 +2551,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 		self:SecureHookScript(_G.WhoFrame, "OnShow", function(this)
 			self:removeInset(_G.WhoFrameListInset)
-			self:skinColHeads("WhoFrameColumnHeader")
+			self:skinColHeads("WhoFrameColumnHeader", nil, ftype)
 			self:skinDropDown{obj=_G.WhoFrameDropDown}
 			-- remove col head 2 as it is really a dropdown
 			_G.WhoFrameColumnHeader2.sf.tfade:SetTexture(nil)
@@ -2865,7 +2865,7 @@ aObj.blizzLoDFrames[ftype].GuildUI = function(self)
 
 	self:SecureHookScript(_G.GuildRosterFrame, "OnShow", function(this)
 		self:skinDropDown{obj=_G.GuildRosterViewDropdown}
-		self:skinColHeads("GuildRosterColumnButton", 5)
+		self:skinColHeads("GuildRosterColumnButton", 5, ftype)
 		self:skinSlider{obj=_G.GuildRosterContainerScrollBar, wdth=-4}
 		for i = 1, #_G.GuildRosterContainer.buttons do
 			_G.GuildRosterContainer.buttons[i]:DisableDrawLayer("BACKGROUND")
