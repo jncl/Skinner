@@ -11,7 +11,7 @@ local defaults = {
 		arena = false,
 		focus = false,
 		party = false,
-		pet = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and false or nil,
+		pet = (aObj.uCls == "HUNTER" or aObj.uCls == "WARLOCK") and true or nil,
 		petspec = aObj.uCls == "HUNTER" and true or nil,
 		player = false,
 		target = false,
