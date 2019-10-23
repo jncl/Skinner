@@ -23,12 +23,10 @@ ToDos
 
 	O	Skin CommentatorTeamDisplay
 
-√	N/C	Leatrix Plus Classic, reported by barneyandroid, 06.10.19
-
 	N	PTR 8.3.0 (Visions of Z'Noth)
 		- Added
 ¶√			- AuctionHouseUI
-			- WorldMapThreatFrameTemplate
+x			- WorldMapThreatFrameTemplate
 ≈			- CircularGiantItemButtonTemplate
 			- GiantItemButtonTemplate
 ≈			- MoneyDenominationDisplayTemplate
@@ -37,16 +35,24 @@ ToDos
 ≈			- LargeMoneyInputFrameTemplate
 ≈			- LargeUIDropDownMenuTemplate
 			- Blizzard_UIWidgetPowerBarFrame
-			- WM_EventOverlayDataProvider
-			- WM_InvasionDataProvider
-			- DropDownToggleButton.xml
+x			- WM_EventOverlayDataProvider
+x			- WM_InvasionDataProvider
+x			- DropDownToggleButton.xml
 			- QueueUpdater.lua
+			- TalentRankDisplayTemplate
 		- Deleted
 √			- AuctionUI
 		- Updated
 ≈			- DropDown buttons are now "DropDownToggleButton"
 ≈			- MoneyFrame
-			- Blizzard_Wardrobe, Model now ModelScene
-			- Garrison Talents
+x			- Blizzard_Wardrobe, Model now ModelScene
+x			- Garrison Talents
 			- SideDressUpFrame now has a ControlFrame
-			- MailFrame now has a count for Invoice
+x			- MailFrame now has a count for Invoice
+			- DressUpFrame
+
+	I	RecruitAFriendFrame, reported by EpidemeDaBear, 22.10.19
+√		- Skinner\Skinner-beta8.32151.1.lua:1183: attempt to index field 'obj' (a nil value)
+		Skinner\Skinner-beta8.32151.1.lua:1183: in function <Skinner\Skinner.lua:1162>
+		Skinner\Skinner-beta8.32151.1.lua:1280: in function `skinEditBox'
+		Skinner\PlayerFrames.lua:2627: in function <Skinner\PlayerFrames.lua:2626>
