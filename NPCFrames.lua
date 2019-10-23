@@ -345,8 +345,13 @@ else
 				self:skinCheckButton{obj=_G.ExactMatchCheckButton}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-				self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
+				self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
+				self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(this, elapsed)
+					if _G.CanSendAuctionQuery("list") then
+						self:clrPNBtns("Browse")
+					end
+				end)
 			end
 			if self.modBtns then
 				self:skinStdButton{obj=_G.BrowseSearchButton}
@@ -746,11 +751,17 @@ aObj.blizzFrames[ftype].MerchantFrame = function(self)
 			self:removeRegions(_G.MerchantNextPageButton, {2})
 			self:addButtonBorder{obj=_G.MerchantPrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:addButtonBorder{obj=_G.MerchantNextPageButton, ofs=-2, y1=-3, x2=-3}
-			self:SecureHook("MerchantFrame_UpdateMerchantInfo", function()
-				self:clrPNBtns("Merchant")
-				for i = 1, _G.math.max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE) do
+			local function clrBtnBrdr(cnt)
+				for i = 1, cnt do
 					_G["MerchantItem" .. i].ItemButton.sbb:SetBackdropBorderColor(self:getCandSetA(_G["MerchantItem" .. i .. "SlotTexture"]))
 				end
+			end
+			self:SecureHook("MerchantFrame_UpdateMerchantInfo", function()
+				clrBtnBrdr(_G.MERCHANT_ITEMS_PER_PAGE)
+				self:clrPNBtns("Merchant")
+			end)
+			self:SecureHook("MerchantFrame_UpdateBuybackInfo", function()
+				clrBtnBrdr(_G.BUYBACK_ITEMS_PER_PAGE)
 			end)
 		end
 
@@ -830,10 +841,13 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 		_G.PetStableModelShadow:Hide()
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0, clr="gold"}
-			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0, clr="gold"}
 			self:addButtonBorder{obj=_G.PetStablePetInfo, relTo=_G.PetStableSelectedPetIcon, clr="grey", ca=0.85}
 			self:addButtonBorder{obj=_G.PetStableDiet, ofs=0, x2=-1}
+			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0}
+			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0}
+			self:SecureHook("PetStable_Update", function(updateModel)
+				self:clrPNBtns("PetStable")
+			end)
 		end
 		-- slots
 		for i = 1, _G.NUM_PET_ACTIVE_SLOTS do

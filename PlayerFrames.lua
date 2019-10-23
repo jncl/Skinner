@@ -383,8 +383,11 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 		for i = 1, _G.ARCHAEOLOGY_MAX_RACES do
 			this.summaryPage["race" .. i].raceName:SetTextColor(self.BT:GetRGB())
 		end
-		self:addButtonBorder{obj=this.summaryPage.prevPageButton, ofs=0, clr="gold"}
-		self:addButtonBorder{obj=this.summaryPage.nextPageButton, ofs=0, clr="gold"}
+		self:addButtonBorder{obj=this.summaryPage.prevPageButton, ofs=0, clr="disabled"}
+		self:addButtonBorder{obj=this.summaryPage.nextPageButton, ofs=0, clr="disabled"}
+		self:SecureHook(this.summaryPage, "UpdateFrame", function(this)
+			self:clrPNBtns(this:GetName())
+		end)
 		self:keepFontStrings(this.completedPage) -- remove title textures
 		this.completedPage.infoText:SetTextColor(self.BT:GetRGB())
 		this.completedPage.titleBig:SetTextColor(self.HT:GetRGB())
@@ -398,8 +401,11 @@ aObj.blizzLoDFrames[ftype].ArchaeologyUI = function(self)
 			_G["ArchaeologyFrameCompletedPageArtifact" .. i .. "Bg"]:Hide()
 			self:addButtonBorder{obj=this.completedPage["artifact" .. i], relTo=this.completedPage["artifact" .. i].icon}
 		end
-		self:addButtonBorder{obj=this.completedPage.prevPageButton, ofs=0, clr="gold"}
-		self:addButtonBorder{obj=this.completedPage.nextPageButton, ofs=0, clr="gold"}
+		self:addButtonBorder{obj=this.completedPage.prevPageButton, ofs=0, clr="disabled"}
+		self:addButtonBorder{obj=this.completedPage.nextPageButton, ofs=0, clr="disabled"}
+		self:SecureHook(this.completedPage, "UpdateFrame", function(this)
+			self:clrPNBtns(this:GetName())
+		end)
 		self:removeRegions(this.artifactPage, {2, 3, 7, 9}) -- title textures, backgrounds
 		self:addButtonBorder{obj=this.artifactPage, relTo=this.artifactPage.icon, ofs=1}
 		self:skinStdButton{obj=this.artifactPage.backButton}
@@ -1047,8 +1053,12 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 	local skinPageBtns, skinCollectionBtn, colourBtns
 	if self.modBtnBs then
 		function skinPageBtns(frame)
-			aObj:addButtonBorder{obj=frame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-			aObj:addButtonBorder{obj=frame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			aObj:addButtonBorder{obj=frame.PagingFrame.PrevPageButton, ofs=-2, y1=-3, x2=-3}
+			aObj:addButtonBorder{obj=frame.PagingFrame.NextPageButton, ofs=-2, y1=-3, x2=-3}
+			aObj:clrPNBtns(frame.PagingFrame, true)
+			aObj:SecureHook(frame.PagingFrame, "Update", function(this)
+				aObj:clrPNBtns(this, true)
+			end)
 		end
 		function skinCollectionBtn(btn)
 			if btn.sbb then
@@ -2372,8 +2382,14 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			if self.modBtnBs
 			and i == 1
 			then
-				self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-				self:addButtonBorder{obj=ejsfs.nextButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				self:addButtonBorder{obj=ejsfs.prevButton, ofs=-2, y1=-3, x2=-3, clr=ejsfs.prevButton:IsEnabled() and "gold" or "disabled"}
+				self:addButtonBorder{obj=ejsfs.nextButton, ofs=-2, y1=-3, x2=-3, clr=ejsfs.nextButton:IsEnabled() and "gold" or "disabled"}
+				self:SecureHook("EJSuggestFrame_RefreshDisplay", function()
+					local frame = _G.EncounterJournal.suggestFrame.Suggestion1
+					self:clrBtnBdr(frame.prevButton, frame.prevButton:IsEnabled() and "gold" or "disabled", 1)
+					self:clrBtnBdr(frame.nextButton, frame.nextButton:IsEnabled() and "gold" or "disabled", 1)
+					frame = nil
+				end)
 			end
 		end
 		ejsfs = nil
@@ -4095,8 +4111,12 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			end
 		end
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-			self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
+			self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
+			self:clrPNBtns("SpellBook")
+			self:SecureHook("SpellBookFrame_UpdatePages", function()
+				self:clrPNBtns("SpellBook")
+			end)
 		end
 		if self.isTT then
 			local function setTab(bookType)

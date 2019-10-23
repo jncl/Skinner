@@ -407,10 +407,17 @@ function aObj:checkShown(frame)
 
 end
 
-function aObj:clrPNBtns(btnPrefix)
+function aObj:clrPNBtns(framePrefix, notPrefix)
 
-	self:clrBtnBdr(_G[btnPrefix .. "PrevPageButton"], _G[btnPrefix .. "PrevPageButton"]:IsEnabled() and "gold" or "disabled", 1)
-	self:clrBtnBdr(_G[btnPrefix .. "NextPageButton"], _G[btnPrefix .. "NextPageButton"]:IsEnabled() and "gold" or "disabled", 1)
+	local ppb, npb
+	if notPrefix then
+		ppb, npb = framePrefix.PrevPageButton, framePrefix.NextPageButton
+	else
+		ppb, npb = _G[framePrefix .. "PrevPageButton"], _G[framePrefix .. "NextPageButton"]
+	end
+	self:clrBtnBdr(ppb, ppb:IsEnabled() and "gold" or "disabled", 1)
+	self:clrBtnBdr(npb, npb:IsEnabled() and "gold" or "disabled", 1)
+	ppb, npb = nil, nil
 
 end
 

@@ -2741,8 +2741,12 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.HelpBrowser.settings, ofs=-2, x1=1, clr="gold"}
 			self:addButtonBorder{obj=_G.HelpBrowser.home, ofs=-2, x1=1, clr="gold"}
-			self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2, x1=1, clr="gold"}
-			self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2, x1=1, clr="gold"}
+			self:addButtonBorder{obj=_G.HelpBrowser.back, ofs=-2, x1=1, clr=_G.HelpBrowser.back:IsEnabled() and "gold" or "disabled"}
+			self:addButtonBorder{obj=_G.HelpBrowser.forward, ofs=-2, x1=1, clr=_G.HelpBrowser.forward:IsEnabled() and "gold" or "disabled"}
+			self:SecureHook("Browser_UpdateButtons", function()
+				self:clrBtnBdr(_G.HelpBrowser.back, _G.HelpBrowser.back:IsEnabled() and "gold" or "disabled", 1)
+				self:clrBtnBdr(_G.HelpBrowser.forward, _G.HelpBrowser.forward:IsEnabled() and "gold" or "disabled", 1)
+			end)
 			self:addButtonBorder{obj=_G.HelpBrowser.reload, ofs=-2, x1=1, clr="gold"}
 			self:addButtonBorder{obj=_G.HelpBrowser.stop, ofs=-2, x1=1, clr="gold"}
 		end
@@ -2906,8 +2910,6 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 			self:skinSlider{obj=_G.ItemTextScrollFrame.ScrollBar, wdth=-4}
 			self:skinStatusBar{obj=_G.ItemTextStatusBar, fi=0}
 			self:moveObject{obj=_G.ItemTextPrevPageButton, x=-55} -- move prev button left
-			self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-			self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
 			if not self.isClassic then
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 			else
@@ -2917,6 +2919,11 @@ aObj.blizzFrames[ftype].ItemText = function(self)
 				if self.modBtns then
 					self:skinCloseButton{obj=_G.ItemTextCloseButton}
 				end
+			end
+			if self.modBtnBs then
+				-- N.B. page buttons are hidden or shown as required
+				self:addButtonBorder{obj=_G.ItemTextPrevPageButton, ofs=-2, x1=1, clr="gold"}
+				self:addButtonBorder{obj=_G.ItemTextNextPageButton, ofs=-2, x1=1, clr="gold"}
 			end
 
 		end
@@ -4126,10 +4133,46 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	_G.MiniMapMailFrame:SetSize(26, 26)
 
-	self:skinOtherButton{obj=_G.MinimapZoomIn, text=self.modUIBtns.plus, aso={bbclr="gold"}}
-	self:moveObject{obj=_G.MinimapZoomIn, x=-6, y=-3}
-	self:skinOtherButton{obj=_G.MinimapZoomOut, text=self.modUIBtns.minus, aso={bbclr="gold"}}
-	self:moveObject{obj=_G.MinimapZoomOut, x=2, y=8}
+	local btn, txt, xOfs, yOfs
+	for _, btnName in pairs{"In", "Out"} do
+		if btnName == "In" then
+			btn = _G.MinimapZoomIn
+			txt = self.modUIBtns.plus
+			xOfs, yOfs = -6, -3
+		else
+			btn = _G.MinimapZoomOut
+			txt = self.modUIBtns.minus
+			xOfs, yOfs = 2, 8
+		end
+		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}, nohooks=true}
+		self:moveObject{obj=btn, x=xOfs, y=yOfs}
+		-- make button text appear in correct colour
+		btn:SetNormalFontObject(btn:IsEnabled() and self.modUIBtns.fontP or self.modUIBtns.fontDP)
+		if not btn:IsEnabled() then
+			btn:Enable()
+			btn:Disable()
+		end
+		local function clrZoomBtns()
+			local r, g, b
+			for _, btnName in pairs{"In", "Out"} do
+				btn = btnName == "In" and _G.MinimapZoomIn or _G.MinimapZoomOut
+				r, g, b = aObj:getColourByName(btn:IsEnabled() and "gold" or "disabled")
+				btn.sb:SetBackdropBorderColor(r, g, b, 1)
+				-- make button text appear in correct colour
+				btn:SetNormalFontObject(btn:IsEnabled() and aObj.modUIBtns.fontP or aObj.modUIBtns.fontDP)
+				if not btn:IsEnabled() then
+					btn:Enable()
+					btn:Disable()
+				end
+			end
+			r, g, b = nil, nil, nil
+		end
+		self:SecureHookScript(btn, "OnClick", function(this)
+			clrZoomBtns()
+		end)
+		self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
+		btn, txt, xOfs, yOfs = nil, nil, nil, nil
+	end
 
 	-- skin other minimap buttons as required
 	if not minBtn then
@@ -4649,9 +4692,14 @@ aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Reward
 		end
 		self:addSkinFrame{obj=this.Inset.NoTakeBacksies.Dialog, ft=ftype}
 		if self.modBtnBs then
-			self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3, clr="gold"}
-			self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3, clr="gold"}
+			self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
+			self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3}
+			self:clrPNBtns(this.Inset, true)
+			self:SecureHook("ProductChoiceFrame_SetUp", function(this, forceUpdate)
+				self:clrPNBtns(this.Inset, true)
+			end)
 		end
+
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
 		self:Unhook(this, "OnShow")
@@ -5432,6 +5480,10 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.TutorialFramePrevButton, ofs=-2}
 			self:addButtonBorder{obj=_G.TutorialFrameNextButton, ofs=-2}
+			self:SecureHook("TutorialFrame_CheckNextPrevButtons", function()
+				self:clrBtnBdr(_G.TutorialFramePrevButton, _G.TutorialFramePrevButton:IsEnabled() and "gold" or "disabled", 1)
+				self:clrBtnBdr(_G.TutorialFrameNextButton, _G.TutorialFrameNextButton:IsEnabled() and "gold" or "disabled", 1)
+			end)
 		end
 
 		self:Unhook(this, "OnShow")

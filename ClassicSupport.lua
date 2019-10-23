@@ -311,8 +311,13 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.BrowseBidButton}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-				self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
+				self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
+				self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(this, elapsed)
+					if _G.CanSendAuctionQuery("list") then
+						self:clrPNBtns("Browse")
+					end
+				end)
 			end
 			if self.modChkBtns then
 				self:skinCheckButton{obj=_G.IsUsableCheckButton}
@@ -1196,8 +1201,12 @@ aObj.ClassicSupport = function(self)
 				self:skinCloseButton{obj=_G.SpellBookCloseButton}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
-				self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3, clr="gold"}
+				self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
+				self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
+				self:clrPNBtns("SpellBook")
+				self:SecureHook("SpellBookFrame_UpdatePages", function()
+					self:clrPNBtns("SpellBook")
+				end)
 			end
 
 			-- Spellbook Panel
