@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 local ftype = "n"
 
-local pairs = _G.pairs
+local pairs, ipairs = _G.pairs, _G.ipairs
 
 aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 	if not self.prdb.AlliedRacesUI or self.initialized.AlliedRacesUI then return end
