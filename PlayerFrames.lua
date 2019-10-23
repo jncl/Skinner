@@ -2640,15 +2640,62 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 	end)
 
 	self:SecureHookScript(_G.RecruitAFriendFrame, "OnShow", function(this)
-		self:skinEditBox{obj=_G.RecruitAFriendNameEditBox, regs={6}} -- 6 is text
-		_G.RecruitAFriendNameEditBox.Fill:SetTextColor(self.BT:GetRGB())
-		self:addSkinFrame{obj=_G.RecruitAFriendNoteFrame, ft=ftype, kfs=true}
-		_G.RecruitAFriendNoteEditBox.Fill:SetTextColor(self.BT:GetRGB())
-		self:skinStdButton{obj=_G.RecruitAFriendFrame.SendButton}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-6, y1=-7}
-		-- RecruitAFriendSentFrame
-		self:skinStdButton{obj=_G.RecruitAFriendSentFrame.OKButton}
-		self:addSkinFrame{obj=_G.RecruitAFriendSentFrame, ft=ftype, ofs=-7, y2=4}
+		-- RewardClaiming
+		this.RewardClaiming:DisableDrawLayer("BACKGROUND")
+		self:nilTexture(this.RewardClaiming.NextRewardButton.IconBorder, true)
+		self:removeInset(this.RewardClaiming.Inset)
+		if self.modBtns then
+			self:skinStdButton{obj=this.RewardClaiming.ClaimOrViewRewardButton}
+		end
+
+		-- RecruitList
+		this.RecruitList.Header:DisableDrawLayer("BACKGROUND")
+		self:removeInset(this.RecruitList.ScrollFrameInset)
+		self:skinSlider{obj=this.RecruitList.ScrollFrame.Slider, wdth=-4}
+
+		if self.modBtns then
+			self:skinStdButton{obj=this.RecruitmentButton}
+		end
+		self:skinDropDown{obj=this.DropDown, noSkin=true, x1=0, y1=0, x2=0, y2=0}
+
+		-- SplashFrame
+		this.SplashFrame:DisableDrawLayer("BACKGROUND")
+		this.SplashFrame:DisableDrawLayer("OVERLAY")
+		this.SplashFrame.Description:SetTextColor(self.BT:GetRGB())
+		self:addSkinFrame{obj=this.SplashFrame, ft=ftype, nb=true, ofs=2, y1=4, y2=-5}
+		if self.modBtns then
+			self:skinStdButton{obj=this.SplashFrame.OKButton}
+		end
+
+		addTabFrame(this)
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RecruitAFriendRewardsFrame, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=this.Border, ft=ftype, kfs=true, nb=true, ofs=-8}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton}
+		end
+		if self.modBtnBs then
+			for reward in this.rewardPool:EnumerateActive() do
+				self:addButtonBorder{obj=reward.Button, clr="sepia"}
+			end
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+	self:SecureHookScript(_G.RecruitAFriendRecruitmentFrame, "OnShow", function(this)
+
+		self:skinEditBox{obj=this.EditBox, regs={6}, mi=true} -- 6 is text
+		self:addSkinFrame{obj=this.Border, ft=ftype, kfs=true, nb=true, ofs=-8}
+		if self.modBtns then
+			self:skinCloseButton{obj=this.CloseButton}
+			self:skinStdButton{obj=this.GenerateOrCopyLinkButton}
+		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -3911,6 +3958,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				self:skinStdButton{obj=this.QueueButton}
 			end
 			self:skinGlowBox(this.BonusFrame.BrawlHelpBox, ftype)
+
 			self:Unhook(this, "OnShow")
 		end)
 		self:checkShown(_G.HonorFrame)
@@ -3935,6 +3983,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			end
 			self:skinGlowBox(this.NoSeason, ftype, true)
 			self:skinGlowBox(this.Disabled, ftype, true)
+
 			self:Unhook(this, "OnShow")
 		end)
 

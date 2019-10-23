@@ -542,6 +542,8 @@ function aObj:getColourByName(clrName)
 		r, g, b = _G.NORMAL_FONT_COLOR:GetRGB()
 	elseif clrName == "selected" then
 		r, g, b = _G.PAPER_FRAME_EXPANDED_COLOR:GetRGB()
+	elseif clrName == "sepia" then -- RAF rewards
+		r, g, b = _G.SEPIA_COLOR:GetRGB()
 	elseif clrName == "unused" then
 		r, g, b = _G.DULL_RED_FONT_COLOR:GetRGB()
 	elseif clrName == "white" then
