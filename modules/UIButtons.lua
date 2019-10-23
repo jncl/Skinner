@@ -358,8 +358,6 @@ function module:skinOtherButton(opts)
 	if opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
 	if opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 	if opts.obj:GetDisabledTexture() then opts.obj:GetDisabledTexture():SetAlpha(0) end
-	-- if opts.obj.GetNormalTexture and opts.obj:GetNormalTexture() then opts.obj:GetNormalTexture():SetAlpha(0) end
-	-- if opts.obj:GetPushedTexture and opts.obj:GetPushedTexture() then opts.obj:GetPushedTexture():SetAlpha(0) end
 
 	local aso = opts.aso or {}
 	opts.obj:SetNormalFontObject(opts.font or module.fontP)
