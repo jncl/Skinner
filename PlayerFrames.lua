@@ -2591,6 +2591,8 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
+		self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip)
+
 		-- tooltip
 		_G.C_Timer.After(0.1, function()
 			self:add2Table(self.ttList, _G.FriendsTooltip)
