@@ -4147,20 +4147,11 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 
 	self:SecureHookScript(_G.SpellBookFrame, "OnShow", function(this)
 
-		if not self.isClassic then
-			this.MainHelpButton.Ring:SetTexture(nil)
-			self:moveObject{obj=this.MainHelpButton, y=-4}
-			this.numTabs = 5
-			self:skinTabs{obj=this, suffix="Button", lod=true, x1=8, y1=1, x2=-8, y2=2}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
-		else
-			this.numTabs = 3
-			self:skinTabs{obj=this, suffix="Button", regs={1, 3}, lod=true, ignore=true, x1=13, y1=-14, x2=-13, y2=13}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-12, x2=-31, y2=72}
-			if self.modBtns then
-				self:skinCloseButton{obj=_G.SpellBookCloseButton}
-			end
-		end
+		this.MainHelpButton.Ring:SetTexture(nil)
+		self:moveObject{obj=this.MainHelpButton, y=-4}
+		this.numTabs = 5
+		self:skinTabs{obj=this, suffix="Button", lod=true, x1=8, y1=1, x2=-8, y2=2}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 		if self.modBtnBs then
 			self:addButtonBorder{obj=_G.SpellBookPrevPageButton, ofs=-2, y1=-3, x2=-3}
 			self:addButtonBorder{obj=_G.SpellBookNextPageButton, ofs=-2, y1=-3, x2=-3}
@@ -4260,74 +4251,72 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			self:addButtonBorder{obj=_G["SpellBookSkillLineTab" .. i]}
 		end
 
-		if not self.isClassic then
-			-- Professions Panel
-			local function skinProf(type, times)
+		-- Professions Panel
+		local function skinProf(type, times)
 
-				local objName, obj
-				for i = 1, times do
-					objName = type .. "Profession" .. i
-					obj =_G[objName]
-					if type == "Primary" then
-						_G[objName .. "IconBorder"]:Hide()
-						-- make icon square
-						aObj:makeIconSquare(obj, "icon")
-						if not obj.missingHeader:IsShown() then
-							obj.icon:SetDesaturated(nil) -- show in colour
-							if aObj.modBtnBs then
-								obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
-							end
-						else
-							if aObj.modBtnBs then
-								self:clrBtnBdr(obj, "disabled", 1)
-							end
+			local objName, obj
+			for i = 1, times do
+				objName = type .. "Profession" .. i
+				obj =_G[objName]
+				if type == "Primary" then
+					_G[objName .. "IconBorder"]:Hide()
+					-- make icon square
+					aObj:makeIconSquare(obj, "icon")
+					if not obj.missingHeader:IsShown() then
+						obj.icon:SetDesaturated(nil) -- show in colour
+						if aObj.modBtnBs then
+							obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
 						end
 					else
-						obj.missingHeader:SetTextColor(aObj.HT:GetRGB())
-					end
-					obj.missingText:SetTextColor(aObj.BT:GetRGB())
-					local btn
-					for i = 1, 2 do
-						btn = obj["button" .. i]
-						btn:DisableDrawLayer("BACKGROUND")
-						btn.subSpellString:SetTextColor(aObj.BT:GetRGB())
 						if aObj.modBtnBs then
-							aObj:addButtonBorder{obj=btn, sec=true}
+							self:clrBtnBdr(obj, "disabled", 1)
 						end
 					end
-					btn = nil
-					aObj:rmRegionsTex(obj.statusBar, {2, 3, 4, 5, 6})
-					aObj:skinStatusBar{obj=obj.statusBar, fi=0}
-					obj.statusBar:SetStatusBarColor(0, 1, 0, 1)
-					obj.statusBar:SetHeight(12)
-					obj.statusBar.rankText:SetPoint("CENTER", 0, 0)
-					aObj:moveObject{obj=obj.statusBar, x=-12}
-					if obj.unlearn then
-						aObj:moveObject{obj=obj.unlearn, x=18}
+				else
+					obj.missingHeader:SetTextColor(aObj.HT:GetRGB())
+				end
+				obj.missingText:SetTextColor(aObj.BT:GetRGB())
+				local btn
+				for i = 1, 2 do
+					btn = obj["button" .. i]
+					btn:DisableDrawLayer("BACKGROUND")
+					btn.subSpellString:SetTextColor(aObj.BT:GetRGB())
+					if aObj.modBtnBs then
+						aObj:addButtonBorder{obj=btn, sec=true}
 					end
 				end
-				objName, obj = nil, nil
-
+				btn = nil
+				aObj:rmRegionsTex(obj.statusBar, {2, 3, 4, 5, 6})
+				aObj:skinStatusBar{obj=obj.statusBar, fi=0}
+				obj.statusBar:SetStatusBarColor(0, 1, 0, 1)
+				obj.statusBar:SetHeight(12)
+				obj.statusBar.rankText:SetPoint("CENTER", 0, 0)
+				aObj:moveObject{obj=obj.statusBar, x=-12}
+				if obj.unlearn then
+					aObj:moveObject{obj=obj.unlearn, x=18}
+				end
 			end
-			-- Primary professions
-			skinProf("Primary", 2)
-			-- Secondary professions
-			skinProf("Secondary", 3)
+			objName, obj = nil, nil
 
-			self:skinGlowBox(_G.SpellLockedTooltip, ftype)
+		end
+		-- Primary professions
+		skinProf("Primary", 2)
+		-- Secondary professions
+		skinProf("Secondary", 3)
 
-			if self.modBtnBs then
-				-- hook this to change Primary Profession Button border colours if required
-				self:SecureHook("SpellBook_UpdateProfTab", function()
-					for i = 1, 2 do
-						if _G["PrimaryProfession" .. i].unlearn:IsShown() then
-							_G["PrimaryProfession" .. i].sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
-						else
-							self:clrBtnBdr(_G["PrimaryProfession" .. i], "disabled", 1)
-						end
+		self:skinGlowBox(_G.SpellLockedTooltip, ftype)
+
+		if self.modBtnBs then
+			-- hook this to change Primary Profession Button border colours if required
+			self:SecureHook("SpellBook_UpdateProfTab", function()
+				for i = 1, 2 do
+					if _G["PrimaryProfession" .. i].unlearn:IsShown() then
+						_G["PrimaryProfession" .. i].sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+					else
+						self:clrBtnBdr(_G["PrimaryProfession" .. i], "disabled", 1)
 					end
-				end)
-			end
+				end
+			end)
 		end
 
 		self:Unhook(this, "OnShow")
