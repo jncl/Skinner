@@ -2785,15 +2785,17 @@ aObj.blizzFrames[ftype].HelpTip = function(self)
 	if not self.prdb.HelpTip or self.initialized.HelpTip then return end
 	self.initialized.HelpTip = true
 
-	self:SecureHook(_G.HelpTip, "Show", function(this, parent, info, relativeRegion)
-
-		for hTip in this.framePool:EnumerateActive() do
+	local function skinHelpTips()
+		for hTip in _G.HelpTip.framePool:EnumerateActive() do
 			self:skinGlowBox(hTip)
 			if self.modBtns then
 				self:skinStdButton{obj=hTip.OkayButton}
 			end
 		end
-
+	end
+	skinHelpTips()
+	self:SecureHook(_G.HelpTip, "Show", function(this, parent, info, relativeRegion)
+		skinHelpTips()
 	end)
 
 end
