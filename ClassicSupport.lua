@@ -509,7 +509,16 @@ aObj.ClassicSupport = function(self)
 			_G.ClassTrainerSkillIcon:DisableDrawLayer("BACKGROUND")
 			self:skinSlider{obj=_G.ClassTrainerListScrollFrame.ScrollBar, rt="background"}
 			self:skinSlider{obj=_G.ClassTrainerDetailScrollFrame.ScrollBar, rt="background"}
-			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=10, y1=-11, x2=-31, y2=70}
+			local x1, y1, x2, y2
+			if IsAddOnLoaded("Leatrix_Plus")
+			and _G.LeaPlusDB["EnhanceTrainers"] == "On"
+			then
+				x1, y1, x2, y2 = 10, -11, -33, 49
+			else
+				x1, y1, x2, y2 = 10, -11, -31, 71
+			end
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=x1, y1=y1, x2=x2, y2=y2}
+			x1, y1, x2, y2 = nil, nil, nil, nil
 			if self.modBtns then
 				 self:skinStdButton{obj=_G.ClassTrainerTrainButton}
 				 self:skinStdButton{obj=_G.ClassTrainerCancelButton}
