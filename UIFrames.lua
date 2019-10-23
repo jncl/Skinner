@@ -4129,6 +4129,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
 		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10}, x1=4, y1=-3}
+		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
 
