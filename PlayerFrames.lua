@@ -2362,7 +2362,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 		end)
 
 		local ejsfs
-		for i = 1, 3 do
+		for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
 			ejsfs = this.suggestFrame["Suggestion" .. i]
 			ejsfs.bg:SetTexture(nil)
 			ejsfs.iconRing:SetTexture(nil)
