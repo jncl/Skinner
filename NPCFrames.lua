@@ -151,12 +151,14 @@ if aObj.isPTR then
 				end
 				self:Unhook(this, "OnShow")
 			end)
-			this.WoWTokenResults.Token.ItemBorder:SetTexture(nil)
-			this.WoWTokenResults.Token.IconBorder:SetTexture(nil)
+			self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
+			local btn = this.WoWTokenResults.TokenDisplay.ItemButton
+			btn.IconBorder:SetTexture(nil)
 			if self.modBtnBs then
-				self:addButtonBorder{obj=this.WoWTokenResults.Token, relTo=this.WoWTokenResults.Token.Icon}
-				self:clrButtonBorder(this.WoWTokenResults.Token)
+				self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Count}}
+				self:clrButtonBorder(btn)
 			end
+			btn = nil
 			if self.modBtns then
 				self:skinStdButton{obj=this.WoWTokenResults.Buyout}
 			end
@@ -271,7 +273,7 @@ if aObj.isPTR then
 			skinItemList(this.AuctionsFrame.BidsList)
 			skinItemList(this.AuctionsFrame.ItemList)
 			skinItemList(this.AuctionsFrame.CommoditiesList)
-			self:addSkinFrame{obj=this.AuctionsFrame, ft=ftype, kfs=true, nb=true, ofs=1, x1=-5, y1=-30, y2=-2} -- add frame for tabs
+			self:addSkinFrame{obj=this.AuctionsFrame, ft=ftype, kfs=true, nb=true, x1=-5, y1=-30, x2=1, y2=-2} -- add frame for tabs
 			if self.modBtns then
 				self:skinStdButton{obj=this.AuctionsFrame.CancelAuctionButton}
 				self:skinStdButton{obj=this.AuctionsFrame.BuyoutFrame.BuyoutButton}
