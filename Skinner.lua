@@ -1,7 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 
-local assert, CopyTable, debugstack, ipairs, pairs, rawget, select, type, unpack, Round = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.unpack, _G.Round
+local assert, CopyTable, debugstack, ipairs, pairs, rawget, Round, select, type, unpack = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.Round, _G.select, _G.type, _G.unpack
 local LibStub = _G.LibStub
 
 do
@@ -38,8 +38,8 @@ do
 	local buildInfo = {
 		clsc = {"1.13.2", 32089},
 		beta = {"9.0.0", 99999},
-		ptr = {"8.3.0", 32151},
-		live = {"8.2.5", 32028},
+		ptr = {"8.3.0", 32272},
+		live = {"8.2.5", 32185},
 	}
 
 	buildInfo.curr = {_G.GetBuildInfo()}
