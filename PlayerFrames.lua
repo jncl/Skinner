@@ -1343,11 +1343,12 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		frame:DisableDrawLayer("ARTWORK")
 		for header in frame.columnHeaders:EnumerateActive() do
 			header:DisableDrawLayer("BACKGROUND")
-			aObj:addSkinFrame{obj=header, ft=ftype}
+			aObj:addSkinFrame{obj=header, ft=ftype, x2=-2}
 		end
 	end
 
 	local cFrame = _G.CommunitiesFrame
+	self:removeNineSlice(cFrame.NineSlice)
 
 	-->> N.B. Currently can't be skinned, as the XML has a ScopedModifier element saying forbidden=""
 		-- CommunitiesAddDialog
@@ -1393,6 +1394,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:addButtonBorder{obj=cFrame[tabName]}
 		end
 	end
+	self:moveObject{obj=cFrame.ChatTab, x=1}
 
 	self:skinDropDown{obj=cFrame.StreamDropDownMenu}
 	self:skinDropDown{obj=cFrame.GuildMemberListDropDownMenu}
@@ -1543,6 +1545,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		aObj:removeNineSlice(frame.DisabledFrame.NineSlice)
 
 		-- Tabs (RHS)
+		aObj:moveObject{obj=frame.ClubFinderSearchTab, x=1}
 		aObj:removeRegions(frame.ClubFinderSearchTab, {1})
 		aObj:removeRegions(frame.ClubFinderPendingTab, {1})
 		if aObj.modBtnBs then
@@ -1781,17 +1784,18 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end)
 
 	self:SecureHookScript(_G.CommunitiesSettingsDialog, "OnShow", function(this)
+		self:keepFontStrings(this.BG)
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
 		self:skinEditBox{obj=this.ShortNameEdit, regs={6}} -- 6 is text
 		self:addSkinFrame{obj=this.MessageOfTheDay, ft=ftype, kfs=true, nb=true, ofs=8}
 		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, nb=true, ofs=8}
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, ofs=-10}
 		if self.modBtns then
 			self:skinStdButton{obj=this.ChangeAvatarButton}
 			self:skinStdButton{obj=this.Delete}
 			self:skinStdButton{obj=this.Accept}
 			self:skinStdButton{obj=this.Cancel}
 		end
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, ofs=-10}
 
 		self:Unhook(this, "OnShow")
 	end)
