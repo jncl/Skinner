@@ -3608,7 +3608,7 @@ aObj.blizzFrames[ftype].MainMenuBar = function(self)
 	end
 	if self.modBtns then
 		-- MicroButtonAlert frames
-		for _, type in pairs{"Character", "Talent", "Collections", "LFD", "EJ", "Store"} do
+		for _, type in pairs{"Character", "Talent", "Guild", "LFD", "Collections", "EJ", "Store"} do
 			self:skinGlowBox(_G[type .. "MicroButtonAlert"], ftype)
 			_G.RaiseFrameLevelByTwo(_G[type .. "MicroButtonAlert"]) -- move above button borders
 		end
