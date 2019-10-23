@@ -1770,19 +1770,18 @@ aObj.ClassicSupport = function(self)
 				-- handle in combat
 				if _G.InCombatLockdown() then
 				    aObj:add2Table(aObj.oocTab, {updPetLevel, {}})
-				                return
+	                return
 				else
-					_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
-					_G.PetFrame.lvlText:Show()
+					_G.C_Timer.After(0.5, function()
+						_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
+						_G.PetFrame.lvlText:Show()
+					end)
 				end
 			end
-
 			updPetLevel()
 			-- get pet's level when pet changed
-			aObj:RegisterEvent("UNIT_PET", function(event, arg1, ...)
-				if arg1 == "player" then
-					updPetLevel()
-				end
+			self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
+				updPetLevel()
 			end)
 			-- update pet's level when changed
 			aObj:RegisterEvent("UNIT_LEVEL", function(event, arg1, ...)
