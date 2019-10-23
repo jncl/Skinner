@@ -583,7 +583,6 @@ aObj.ClassicSupport = function(self)
 			-- force quality border update
 			_G.PaperDollItemSlotButton_Update(btn)
 
-			self:Unhook(this, "OnShow")
 		end
 
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
@@ -638,7 +637,7 @@ aObj.ClassicSupport = function(self)
 			_G.SkillFrameExpandButtonFrame:DisableDrawLayer("BACKGROUND")
 			for i = 1, _G.SKILLS_TO_DISPLAY do
 				if self.modBtns then
-					 self:skinExpandButton{obj=_G["SkillTypeLabel"  .. i], onSB=true}
+					 self:skinExpandButton{obj=_G["SkillTypeLabel"  .. i], onSB=true, minus=true}
 				end
 				_G["SkillRankFrame"  .. i .. "BorderNormal"]:SetTexture(nil)
 				self:skinStatusBar{obj=_G["SkillRankFrame"  .. i], fi=0, otherTex={_G["SkillRankFrame"  .. i .. "FillBar"]}}
@@ -648,7 +647,7 @@ aObj.ClassicSupport = function(self)
 			self:removeRegions(_G.SkillDetailStatusBar, {1})
 			self:skinStatusBar{obj=_G.SkillDetailStatusBar, fi=0, otherTex={_G.SkillDetailStatusBarFillBar}}
 			if self.modBtns then
-				self:skinExpandButton{obj=_G.SkillFrameCollapseAllButton, onSB=true}
+				self:skinExpandButton{obj=_G.SkillFrameCollapseAllButton, onSB=true, minus=true}
 				self:skinStdButton{obj=_G.SkillFrameCancelButton}
 			end
 
@@ -956,7 +955,7 @@ aObj.ClassicSupport = function(self)
 					-- self:skinStdButton{obj=_G.GuildMOTDEditButton}
 				end
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.GuildFrameGuildListToggleButton, ofs=-2}
+					self:addButtonBorder{obj=_G.GuildFrameGuildListToggleButton, ofs=-2, clr="gold"}
 				end
 				if self.modChkBtns then
 					self:skinCheckButton{obj=_G.GuildFrameLFGButton}
