@@ -1,3 +1,19 @@
+beta8.32151.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated ClassicSupport skin
+	Make PetFrame skin option default to yes
+	Updated debug version messages
+	Updated ApplySkin code
+	Updated SkinColHeaders code
+	Updated options table comment headers
+	Add extra LootFrame item and associated option
+	PTR changes
+	Updated Button checks and colours
+	Updated Leatrix_Plus & TomTom skins
+
 beta8.32028.1
 Jncl:
 	ToDo.txt
