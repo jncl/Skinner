@@ -1704,6 +1704,7 @@ aObj.blizzLoDFrames[ftype].ClassTrial = function(self)
 			self:skinStdButton{obj=this.BuyCharacterBoostButton}
 			self:skinStdButton{obj=this.DecideLaterButton}
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1715,6 +1716,7 @@ aObj.blizzLoDFrames[ftype].ClassTrial = function(self)
 		this.Hourglass:SetSize(30, 30)
 		this:DisableDrawLayer("BACKGROUND")
 		self:addSkinFrame{obj=this, ft=ftype}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1726,6 +1728,7 @@ aObj.blizzFrames[ftype].CoinPickup = function(self)
 
 	self:SecureHookScript(_G.CoinPickupFrame, "OnShow", function(this)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=9, y1=-12, x2=-6, y2=12}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1812,6 +1815,7 @@ aObj.blizzLoDFrames[ftype].Contribution = function(self)
 		end
 		this.CloseButton.CloseButtonBackground:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-21, x2=-18}
+
 		self:Unhook(this, "OnShow")
 	end)
 	-- skin Contributions
@@ -1834,6 +1838,7 @@ aObj.blizzLoDFrames[ftype].DeathRecap = function(self)
 		self:skinCloseButton{obj=this.CloseXButton}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, ofs=-1, y1=-2}
 		_G.RaiseFrameLevelByTwo(this)
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1846,7 +1851,6 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 	self:SecureHookScript(_G.EventTraceFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.EventTraceFrameScroll}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=1, y1=-2, x2=-1, y2=4}
-
 		if self.modBtns then
 			self:SecureHook("EventTraceFrame_Update", function()
 				for i = 1, #_G.EventTraceFrame.buttons do
@@ -1855,6 +1859,7 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 
 			end)
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1881,6 +1886,7 @@ aObj.blizzLoDFrames[ftype].DebugTools = function(self)
 			skinTAD(frame)
 			return frame
 		end, true)
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -1897,7 +1903,7 @@ aObj.blizzFrames[ftype].DestinyFrame = function(self)
 	self.initialized.DestinyFrame = true
 
 	self:SecureHookScript(_G.DestinyFrame, "OnShow", function(this)
-		this.alphaLayer:SetTexture(0, 0, 0, 0.70)
+		this.alphaLayer:SetColorTexture(0, 0, 0, 0.70)
 		this.background:SetTexture(nil)
 		this.frameHeader:SetTextColor(self.HT:GetRGB())
 		_G.DestinyFrameAllianceLabel:SetTextColor(self.BT:GetRGB())
@@ -4136,6 +4142,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	_G.MiniMapMailIcon:SetTexture([[Interface\Minimap\Tracking\Mailbox.blp]])
 	_G.MiniMapMailFrame:SetSize(26, 26)
 
+	-- Zoom Buttons
 	local btn, txt, xOfs, yOfs
 	for _, btnName in pairs{"In", "Out"} do
 		if btnName == "In" then
@@ -5723,7 +5730,6 @@ aObj.blizzLoDFrames[ftype].WarboardUI = function(self)
 		self:skinGlowBox(this.WarfrontHelpBox, ftype)
 
 		self:Unhook(this, "OnShow")
-
 	end)
 
 end
