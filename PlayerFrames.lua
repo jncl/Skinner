@@ -2083,7 +2083,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 				aObj:skinStdButton{obj=_G[objName .. "AddSlotsButton"]}
 			end
 
-			aObj:skinGlowBox(frame.ExtraBagSlotsHelpBox)
+			aObj:skinGlowBox(frame.ExtraBagSlotsHelpBox, ftype)
 
 			objName = nil
 
@@ -2604,7 +2604,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:skinTabs{obj=this, lod=true}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, y2=-5}
 
-		self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip)
+		self:skinGlowBox(this.FriendsFrameQuickJoinHelpTip, ftype)
 
 		-- tooltip
 		_G.C_Timer.After(0.1, function()

@@ -2787,7 +2787,7 @@ aObj.blizzFrames[ftype].HelpTip = function(self)
 
 	local function skinHelpTips()
 		for hTip in _G.HelpTip.framePool:EnumerateActive() do
-			self:skinGlowBox(hTip)
+			self:skinGlowBox(hTip, ftype)
 			if self.modBtns then
 				self:skinStdButton{obj=hTip.OkayButton}
 			end
