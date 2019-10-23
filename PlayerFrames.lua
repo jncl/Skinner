@@ -1326,7 +1326,7 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].Communities = function(self)
-	if not self.prdb.CommunitiesUI or self.initialized.CommunitiesUI then return end
+	if not self.prdb.Communities or self.initialized.Communities then return end
 
 	if not _G.CommunitiesFrame then
 		_G.C_Timer.After(0.1, function()
@@ -1335,7 +1335,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		return
 	end
 
-	self.initialized.CommunitiesUI = true
+	self.initialized.Communities = true
 
 	local function skinColumnDisplay(frame)
 		frame:DisableDrawLayer("BACKGROUND")
@@ -3888,8 +3888,8 @@ aObj.blizzFrames[ftype].PVPHonorSystem = function(self)
 end
 
 aObj.blizzLoDFrames[ftype].PVPUI = function(self)
-	if not self.prdb.PVPFrame or self.initialized.PVPFrame then return end
-	self.initialized.PVPFrame = true
+	if not self.prdb.PVPUI or self.initialized.PVPUI then return end
+	self.initialized.PVPUI = true
 
 	self:SecureHookScript(_G.PVPUIFrame, "OnShow", function(this)
 

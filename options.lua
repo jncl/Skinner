@@ -89,7 +89,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		CastingBar           = {skin = true, glaze = true},
 		CharacterFrames      = true,
 		Collections          = true, -- (Mounts, Pets, Toys, Heirlooms & Appearances)
-		CommunitiesUI        = true,
+		Communities          = true,
 		CompactFrames        = true,
 		ContainerFrames      = {skin = true, fheight = 100},
 		DressUpFrame         = true,
@@ -107,7 +107,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		MirrorTimers         = {skin = true, glaze = true},
 		ObjectiveTracker     = {skin = false, popups = true},
 		OverrideActionBar    = true, -- a.k.a. VehicleUI
-		PVPFrame             = true,
+		PVPUI                = true,
 		RaidUI               = true,
 		ReadyCheck           = true,
 		RolePollPopup        = true,
@@ -1037,7 +1037,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Collections Journal"],
 					desc = self.L["Toggle the skin of the Collections Journal"],
 				},
-				CommunitiesUI ={
+				Communities ={
 					type = "toggle",
 					name = self.L["Communities UI"],
 					desc = self.L["Toggle the skin of the Communities UI"],
@@ -1210,7 +1210,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Vehicle UI"],
 					desc = self.L["Toggle the skin of the Vehicle UI"],
 				},
-				PVPFrame = {
+				PVPUI = {
 					type = "toggle",
 					name = self.L["PVP Frame"],
 					desc = self.L["Toggle the skin of the PVP Frame"],

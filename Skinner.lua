@@ -131,6 +131,16 @@ function aObj:OnInitialize()
 		self.prdb.BattlefieldMap = self.prdb.BattlefieldMm
 		self.prdb.BattlefieldMm = nil
 	end
+	-- CommunitiesUI has been renamed to Communities
+	if self.prdb.CommunitiesUI then
+		self.prdb.Communities = self.prdb.CommunitiesUI
+		self.prdb.CommunitiesUI = nil
+	end
+	-- PVPFrame has been renamed to PVPUI
+	if self.prdb.PVPFrame then
+		self.prdb.PVPUI = self.prdb.PVPFrame
+		self.prdb.PVPFrame = nil
+	end
 
 	-- setup the Addon's options
 	self:checkAndRun("SetupOptions", "opt")
