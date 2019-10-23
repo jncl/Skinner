@@ -366,6 +366,7 @@ else
 				if self.modBtns then
 					self:skinStdButton{obj=this.Buyout}
 					self:skinStdButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
+					_G.StoreButton.sb:SetBackdropBorderColor(self:getColourByName("gold"))
 				end
 				self:Unhook(this, "OnShow")
 			end)
@@ -494,7 +495,7 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 					self:clrBtnBdr(btn, "grey", 1)
 				end
 			end)
-			self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1}
+			self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1, clr="grey"}
 			-- add button borders to bank items
 			for i = 1, _G.NUM_BANKGENERIC_SLOTS do
 				self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}, clr="grey"}

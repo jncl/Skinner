@@ -1595,7 +1595,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			btn.NormalBorder:DisableDrawLayer("BACKGROUND")
 			btn.DisabledBorder:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				 self:addButtonBorder{obj=btn, relTo=btn.Icon}
+				 self:addButtonBorder{obj=btn, relTo=btn.Icon, clr="grey"}
 			end
 		end
 		btn = nil
@@ -1605,10 +1605,19 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		for i = 1, #this.Rewards.RewardsContainer.buttons do
 			btn = this.Rewards.RewardsContainer.buttons[i]
 			btn:GetNormalTexture():SetAlpha(0)
-			btn.DisabledBG:SetAlpha(0)
 			if self.modBtnBs then
 				 self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.Lock}}
 			end
+		end
+		if self.modBtnBs then
+			self:SecureHook("CommunitiesGuildRewards_Update", function(this)
+				local btn
+				for i = 1, #this.RewardsContainer.buttons do
+					btn = this.RewardsContainer.buttons[i]
+					btn.sbb:SetBackdropBorderColor(btn.Icon:GetVertexColor())
+				end
+				btn = nil
+			end)
 		end
 		btn = nil
 		self:skinDropDown{obj=this.Rewards.DropDown}
@@ -1751,11 +1760,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			for i = 1, #this.InviteManager.ListScrollFrame.buttons do
 				self:skinStdButton{obj=this.InviteManager.ListScrollFrame.buttons[i].CopyLinkButton}
 				if self.modBtnBs then
-					 self:addButtonBorder{obj=this.InviteManager.ListScrollFrame.buttons[i].RevokeButton, ofs=0}
+					 self:addButtonBorder{obj=this.InviteManager.ListScrollFrame.buttons[i].RevokeButton, ofs=0, clr="grey"}
 				end
 			end
 		end
-		self:addSkinFrame{obj=this.InviteManager, ft=ftype, kfs=true, nb=true, x1=8, y1=-8, x2=-12, y2=-4}
+		self:addSkinFrame{obj=this.InviteManager, ft=ftype, kfs=true, nb=true, x1=8, y1=-10, x2=-11, y2=-4}
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, y1=-8, y2=6}
 		if self.modBtns then
 			self:skinStdButton{obj=this.LinkToChat}
@@ -1765,7 +1774,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:skinStdButton{obj=this.Close}
 		end
 		if self.modBtnBs then
-			 self:addButtonBorder{obj=this.MaximizeButton, ofs=0}
+			 self:addButtonBorder{obj=this.MaximizeButton, ofs=0, clr="gold"}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -2059,7 +2068,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 			if id == 0 then
 				aObj:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true, noInsert=true} -- 6 is text, 7 is icon
 				if aObj.modBtnBs then
-					aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1}
+					aObj:addButtonBorder{obj=_G.BagItemAutoSortButton, ofs=0, y1=1, clr="grey"}
 				end
 				-- TokenFrame
 				_G.BackpackTokenFrame:DisableDrawLayer("BACKGROUND")
@@ -3923,7 +3932,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			aObj:skinStatusBar{obj=frame.ConquestBar, fi=0, bgTex=frame.ConquestBar.Background}
 			frame.ConquestBar.Reward.Ring:SetTexture(nil)
 			if self.modBtnBs then
-				aObj:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon}
+				aObj:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon, clr="silver"}
 			end
 			if aObj.modChkBtns then
 				aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
@@ -3948,7 +3957,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				btn:SetPushedTexture(nil)
 				btn.Reward.Border:SetTexture(nil)
 				if self.modBtnBs then
-					 self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}}
+					 self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}, clr="gold"}
 				end
 			end
 			btn = nil
