@@ -1,6 +1,6 @@
 ﻿## Interface: 80205
 ## Title: Skinner
-## Notes: Changes the look of the default UI
+## Notes: Changes the look of the default UI (Retail & Classic)
 ## Notes-esES: Cambia el aspecto del UI predeterminado
 ## Notes-zhCN: 更改默认用户界面的视觉样式。
 ## Notes-zhTW: 更改預設用戶介面的視覺樣式。
