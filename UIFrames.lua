@@ -3981,10 +3981,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- on RHS
 	_G.MiniMapMailFrame:ClearAllPoints()
 	_G.MiniMapMailFrame:SetPoint("LEFT", _G.Minimap, "RIGHT", -10, 28)
-	_G.MinimapZoomIn:ClearAllPoints()
-	_G.MinimapZoomIn:SetPoint("BOTTOMLEFT", _G.Minimap, "BOTTOMRIGHT", -4, -3)
-	_G.MinimapZoomOut:ClearAllPoints()
-	_G.MinimapZoomOut:SetPoint("TOPRIGHT", _G.Minimap, "BOTTOMRIGHT", 3, 4)
 
 	if not self.isClassic then
 		-- Difficulty indicators
@@ -4148,11 +4144,19 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		if btnName == "In" then
 			btn = _G.MinimapZoomIn
 			txt = self.modUIBtns.plus
-			xOfs, yOfs = -6, -3
+			if not self.isClassic then
+				xOfs, yOfs = 14, -12 -- 72, -25
+			else
+				xOfs, yOfs = 9, -24 -- 77, -13
+			end
 		else
 			btn = _G.MinimapZoomOut
 			txt = self.modUIBtns.minus
-			xOfs, yOfs = 2, 8
+			if not self.isClassic then
+				xOfs, yOfs = 20, -10 -- 50, -43
+			else
+				xOfs, yOfs = 19, -12 -- 51, -41
+			end
 		end
 		self:skinOtherButton{obj=btn, text=txt, aso={bbclr=btn:IsEnabled() and "gold" or "disabled"}, nohooks=true}
 		self:moveObject{obj=btn, x=xOfs, y=yOfs}
