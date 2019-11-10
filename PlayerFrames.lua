@@ -339,19 +339,32 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		-- Search function
 		self:skinEditBox{obj=this.searchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 		self:moveObject{obj=_G.AchievementFrame.searchBox, y=-10}
-		self:adjHeight{obj=this.searchPreviewContainer, adj=((4 * 27) + 30)}
-		self:addSkinFrame{obj=this.searchPreviewContainer, ft=ftype, kfs=true, nb=true, y1=4, y2=2}
-		_G.LowerFrameLevel(this.searchPreviewContainer.sf)
-		self:skinStatusBar{obj=this.searchProgressBar, fi=0, bgTex=this.searchProgressBar.bg}
-		for i = 1, #this.searchPreview do
-			this.searchPreview[i]:SetNormalTexture(nil)
-			this.searchPreview[i]:SetPushedTexture(nil)
-			this.searchPreview[i].iconFrame:SetTexture(nil)
-			self:addButtonBorder{obj=this.searchPreview[i], relTo=this.searchPreview[i].icon}
+		local spc = this.searchPreviewContainer
+		self:adjHeight{obj=spc, adj=((4 * 27) + 30)}
+		self:addSkinFrame{obj=spc, ft=ftype, kfs=true, nb=true, y1=4, y2=2}
+		_G.LowerFrameLevel(spc.sf)
+		if not aObj.isPTR then
+			for i = 1, #this.searchPreview do
+				this.searchPreview[i]:SetNormalTexture(nil)
+				this.searchPreview[i]:SetPushedTexture(nil)
+				this.searchPreview[i].iconFrame:SetTexture(nil)
+				self:addButtonBorder{obj=this.searchPreview[i], relTo=this.searchPreview[i].icon}
+			end
+			this.showAllSearchResults:SetNormalTexture(nil)
+			this.showAllSearchResults:SetPushedTexture(nil)
+		else
+			for i = 1, 5 do
+				spc["searchPreview" .. i]:SetNormalTexture(nil)
+				spc["searchPreview" .. i]:SetPushedTexture(nil)
+				spc["searchPreview" .. i].iconFrame:SetTexture(nil)
+				self:addButtonBorder{obj=spc["searchPreview" .. i], relTo=spc["searchPreview" .. i].icon}
+			end
+			spc.showAllSearchResults:SetNormalTexture(nil)
+			spc.showAllSearchResults:SetPushedTexture(nil)
 		end
-		this.showAllSearchResults:SetNormalTexture(nil)
-		this.showAllSearchResults:SetPushedTexture(nil)
-		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, nb=true, x1=-8, y1=-1}
+		spc = nil
+		self:skinStatusBar{obj=this.searchProgressBar, fi=0, bgTex=this.searchProgressBar.bg}
+		self:addSkinFrame{obj=this.searchResults, ft=ftype, kfs=true, x1=-8, y1=-1, x2=1}
 		self:skinSlider{obj=this.searchResults.scrollFrame.scrollBar, wdth=-4}
 		for i = 1, #this.searchResults.scrollFrame.buttons do
 			this.searchResults.scrollFrame.buttons[i]:SetNormalTexture(nil)
@@ -1291,13 +1304,23 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		this:DisableDrawLayer("ARTWORK")
 		self:removeInset(this.Inset)
 		self:skinDropDown{obj=this.OutfitDropDown, y2=-4}
-		for i = 1, #this.Model.SlotButtons do
-			this.Model.SlotButtons[i].Border:SetTexture(nil)
-			if self.modBtnBs then
-				 self:addButtonBorder{obj=this.Model.SlotButtons[i], ofs=-2}
+		if not aObj.isPTR then
+			for i = 1, #this.Model.SlotButtons do
+				this.Model.SlotButtons[i].Border:SetTexture(nil)
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=this.Model.SlotButtons[i], ofs=-2}
+				end
 			end
+			this.Model.controlFrame:DisableDrawLayer("BACKGROUND")
+		else
+			for i = 1, #this.ModelScene.SlotButtons do
+				this.ModelScene.SlotButtons[i].Border:SetTexture(nil)
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=this.ModelScene.SlotButtons[i], ofs=-2}
+				end
+			end
+			this.ModelScene.ControlFrame:DisableDrawLayer("BACKGROUND")
 		end
-		this.Model.controlFrame:DisableDrawLayer("BACKGROUND")
 		self:skinDropDown{obj=this.SpecDropDown}
 
 		if self.modBtns then
@@ -1305,8 +1328,12 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 			self:skinStdButton{obj=this.ApplyButton, ofs=0}
 		end
 		if self.modBtnBs then
-			 self:addButtonBorder{obj=this.Model.ClearAllPendingButton, ofs=1, x2=0, relTo=this.Model.ClearAllPendingButton.Icon}
-			 self:addButtonBorder{obj=this.SpecButton, ofs=0}
+			if not aObj.isPTR then
+				self:addButtonBorder{obj=this.Model.ClearAllPendingButton, ofs=1, x2=0, relTo=this.Model.ClearAllPendingButton.Icon, clr="grey"}
+			else
+				self:addButtonBorder{obj=this.ModelScene.ClearAllPendingButton, ofs=1, x2=0, relTo=this.ModelScene.ClearAllPendingButton.Icon, clr="grey"}
+			end
+			self:addButtonBorder{obj=this.SpecButton, ofs=0, clr="grey"}
 		end
 
 		self:SecureHookScript(this.OutfitHelpBox, "OnShow", function(this)

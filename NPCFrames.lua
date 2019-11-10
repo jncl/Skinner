@@ -171,8 +171,7 @@ if aObj.isPTR then
 			self:skinEditBox{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.InputBox, regs={6}} -- 6 is text
 			if self.modBtns then
 				self:skinStdButton{obj=this.CommoditiesBuyFrame.BackButton}
-				self:skinStdButton{obj=_G.BuyButton}
-				-- self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton}
+				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.BuyButton}
 				self:skinStdButton{obj=this.CommoditiesBuyFrame.BuyDisplay.QuantityInput.MaxButton}
 			end
 			skinItemList(this.CommoditiesBuyFrame.ItemList)
@@ -1105,12 +1104,14 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 
 	self:SecureHookScript(_G.QuestInfoFrame, "OnShow", function(this)
 		updateQIDisplay()
+
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.QuestInfoTimerFrame, "OnShow", function(this)
 		_G.QuestInfoTimerText:SetTextColor(self.BT:GetRGB())
 		_G.QuestInfoAnchor:SetTextColor(self.BT:GetRGB())
+
 		self:Unhook(this, "OnShow")
 	end)
 

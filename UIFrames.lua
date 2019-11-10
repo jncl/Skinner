@@ -1741,9 +1741,11 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 	self:SecureHookScript(_G.ColorPickerFrame, "OnShow", function(this)
 		this:SetBackdrop(nil)
 		self:removeNineSlice(this.Border)
-		_G.ColorPickerFrameHeader:SetAlpha(0)
+		if not aObj.isPTR then
+			_G.ColorPickerFrameHeader:SetAlpha(0)
+		end
 		self:skinSlider{obj=_G.OpacitySliderFrame, size=4}
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, y1=6}
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, hdr=aObj.isPTR and true or nil, ofs=-2}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ColorPickerOkayButton}
 			self:skinStdButton{obj=_G.ColorPickerCancelButton}
@@ -2608,8 +2610,10 @@ aObj.blizzLoDFrames[ftype].GMSurveyUI = function(self)
 	self.initialized.GMSurveyUI = true
 
 	self:SecureHookScript(_G.GMSurveyFrame, "OnShow", function(this)
-		self:keepFontStrings(_G.GMSurveyHeader)
-		self:moveObject{obj=_G.GMSurveyHeaderText, y=-8}
+		if not aObj.isPTR then
+			self:keepFontStrings(_G.GMSurveyHeader)
+			self:moveObject{obj=_G.GMSurveyHeaderText, y=-8}
+		end
 		self:skinSlider{obj=_G.GMSurveyScrollFrame.ScrollBar, rt="artwork"}
 		for i = 1, _G.MAX_SURVEY_QUESTIONS do
 			self:applySkin{obj=_G["GMSurveyQuestion" .. i], ft=ftype} -- must use applySkin otherwise text is behind gradient
@@ -2618,7 +2622,7 @@ aObj.blizzLoDFrames[ftype].GMSurveyUI = function(self)
 		end
 		self:skinSlider{obj=_G.GMSurveyCommentScrollFrame.ScrollBar}
 		self:applySkin{obj=_G.GMSurveyCommentFrame, ft=ftype} -- must use applySkin otherwise text is behind gradient
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, y1=-6, x2=-45}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=aObj.isPTR and true or nil, y1=-6, x2=-45}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -2693,11 +2697,13 @@ aObj.blizzFrames[ftype].HelpFrame = function(self)
 	self.initialized.HelpFrame = true
 
 	self:SecureHookScript(_G.HelpFrame, "OnShow", function(this)
-		self:keepFontStrings(this.header)
-		self:moveObject{obj=this.header, y=-12}
+		if not aObj.isPTR then
+			self:keepFontStrings(this.header)
+			self:moveObject{obj=this.header, y=-12}
+		end
 		self:removeInset(this.leftInset)
 		self:removeInset(this.mainInset)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-10, y2=7}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=aObj.isPTR and true or nil, ofs=0, y2=7}
 		-- widen buttons so text fits better
 		for i = 1, 6 do
 			this["button" .. i]:SetWidth(180)
@@ -4457,6 +4463,11 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 				end
 			end
 			btn.Border:SetTexture(nil)
+		end
+		if aObj.isPTR then
+			for talentRank in frame.talentRankPool:EnumerateActive() do
+				aObj:changeTandC(talentRank.Background, aObj.lvlBG)
+			end
 		end
 	end
 	self:SecureHookScript(_G.OrderHallTalentFrame, "OnShow", function(this)
