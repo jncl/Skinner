@@ -53,6 +53,7 @@ Locales\Locale_ruRU.lua
 #
 # Main files
 Skinner.lua
+MainFuncs.lua
 UtilFuncs.lua
 Options.lua
 AddonFrames.lua
