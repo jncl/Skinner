@@ -1,3 +1,31 @@
+beta8.32272.1
+Jncl:
+	ToDo.txt
+	Version number updates
+	Updated Change_History.txt
+	Updated TOC notes field
+	Added space lines for readability
+	Skin GuildMicroAlertFrame
+	GlowBox code updates
+	Updated CommunitiesUI skin
+	Change function & option names
+	PTR changes
+	Colour more buttons
+	ClassicSupport - bugfix for PetLevel display
+	ClassicSupport - updated minus/plus button code
+	More support for  Leatrix_Plus added
+	Removed commented out lines
+	Localised a global variable
+	Updated Minimap Buttons skin
+	Updated HelpTip skin
+	Updated SpellBookFrame skin
+	Updated FriendsFrame skin
+	Updated EncounterJournal skin
+	Updated RecruitAFriend skin
+	Updated Prev/Next Button skinning code
+	Added more button checks
+	Updated FishingBuddy skin
+
 beta8.32151.1
 Jncl:
 	ToDo.txt
