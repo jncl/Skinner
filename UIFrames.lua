@@ -4812,8 +4812,11 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 
 	self:SecureHookScript(_G.PVPReadyDialog, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
+		self:nilTexture(this.background, true)
+		self:nilTexture(this.filigree, true)
+		self:nilTexture(this.bottomArt, true)
+		this.instanceInfo.underline:SetTexture(nil)
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-		this.instanceInfo.underline:SetAlpha(0)
 		if self.modBtns then
 			self:skinStdButton{obj=this.enterButton}
 			self:skinStdButton{obj=this.leaveButton}
@@ -4821,6 +4824,7 @@ aObj.blizzFrames[ftype].PVPHelper = function(self)
 
 		self:Unhook(this, "OnShow")
 	end)
+	self:checkShown(_G.PVPReadyDialog)
 
 end
 
