@@ -2,11 +2,21 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Guild_Roster_Manager") then return end
 local _G = _G
 
-aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
+aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.813
 
-	-- buttons on GuildRoster subframe)
+	-- buttons on GuildRoster subframe
 	if self.modBtns then
 		self:skinStdButton{obj=_G.GRM_LoadLogButton}
+		self:skinStdButton{obj=_G.GRM_LoadLogOldRosterButton}
+		self:skinStdButton{obj=_G.GRM_LoadToolButton}
+		self:skinStdButton{obj=_G.GRM_LoadToolOldRosterButton}
+	end
+	if self.modChkBtns then
+		self:SecureHook(_G.GRM_UI, "MainRoster_OnShow", function(this)
+			self:skinCheckButton{obj=_G.GRM_EnableMouseOver}
+
+			self:Unhook(this, "MainRoster_OnShow")
+		end)
 	end
 
 	-- GRM_MemberDetailMetaData (appears on mouseover of guild members on GuildRoster frame when showing Guild Status)
@@ -21,9 +31,6 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 	self:skinEditBox{obj=_G.GRM_PlayerOfficerNoteEditBox, regs={6}} -- 6 is text
 	self:addSkinFrame{obj=_G.GRM_PlayerOfficerNoteWindow, ft="a", kfs=true, nb=true, x1=-2, x2=2}
 	self:addSkinFrame{obj=_G.GRM_CustomNoteEditBoxFrame, ft="a", kfs=true, nb=true, x1=-2, x2=2}
-	if self.modChkBtns then
-		self:skinCheckButton{obj=_G.GRM_CustomNoteSyncMetaCheckBox}
-	end
 	self:removeInset(_G.GRM_CustomNoteRankDropDownSelected)
 	self:addSkinFrame{obj=_G.GRM_CustomNoteRankDropDownMenu, ft="a", kfs=true, nb=true}
 	if self.modBtns then
@@ -36,11 +43,14 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 		self:skinStdButton{obj=_G.GRM_ConfirmCustomNoteButton}
 		self:skinStdButton{obj=_G.GRM_CancelCustomNoteButton}
 	end
+	if self.modChkBtns then
+		self:skinCheckButton{obj=_G.GRM_CustomNoteSyncMetaCheckBox}
+	end
 
 	-- appears when right clicking on date(s)
 	self:addSkinFrame{obj=_G.GRM_altDropDownOptions, ft="a"}
 
-	self:addSkinFrame{obj=_G.GRM_MemberDetailMetaData, ft="a", kfs=true, bas=true, x1=2, y2=6}
+	self:addSkinFrame{obj=_G.GRM_MemberDetailMetaData, ft="a", kfs=true, bas=true, ofs=0}
 	_G.GRM_MemberDetailMetaDataCloseButton:SetSize(30, 30)
 
 	-- GRM_MemberDetailEditBoxFrame
@@ -50,7 +60,7 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 	-- GRM_AddAltEditFrame
 	self:skinEditBox{obj=_G.GRM_AddAltEditBox, regs={6}, noInsert=true} -- 6 is text
 	if self.modBtns then
-		self:skinStdButton{obj=_G.GRM_AddAltButton}
+		self:skinStdButton{obj=_G.GRM_AddAltButton2, x1=2, x2=-2}
 	end
 	self:addSkinFrame{obj=_G.GRM_AddAltEditFrame, ft="a", kfs=true, nb=true, ofs=-6}
 
@@ -76,6 +86,45 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 	self:addSkinFrame{obj=_G.GRM_RosterChangeLogScrollBorderFrame, ft="a", kfs=true, nb=true, ofs=-2, y1=-5, x2=-4}
 	_G.GRM_RosterChangeLogFrame.GRM_LogFrame.GRM_LogEditBox:SetBackdrop(nil)
 	self:addSkinFrame{obj=_G.GRM_RosterChangeLogFrame, ft="a", kfs=true, ofs=2, x2=1}
+
+	-- GRM_ExportLogFrameEditBox
+	-- TODO: tabs
+	self:addSkinFrame{obj=_G.GRM_ExportLogScrollBorderFrame, ft="a", kfs=true, nb=true, ofs=-3, x2=-4}
+	self:skinSlider{obj=_G.GRM_ExportLogScrollFrameSlider, wdth=-4}
+	self:skinEditBox{obj=_G.GRM_ExportRangeEditBox1, regs={6, 7}} -- 6 & 7 are text
+	self:skinEditBox{obj=_G.GRM_ExportRangeEditBox2, regs={6, 7}} -- 6 & 7 are text
+	self:removeInset(_G.GRM_DelimiterDropdownMenuSelected)
+	self:addSkinFrame{obj=_G.GRM_DelimiterDropdownMenuSelected, ft="a", kfs=true, nb=true}
+	self:removeInset(_G.GRM_DelimiterDropdownMenu)
+	self:addSkinFrame{obj=_G.GRM_DelimiterDropdownMenu, ft="a", kfs=true, nb=true}
+	self:addSkinFrame{obj=_G.GRM_ExportLogBorderFrame, ft="a", kfs=true, nb=true, ofs=0, x2=1}
+	if self.modBtns then
+		self:skinCloseButton{obj=_G.GRM_BorderFrameCloseButton}
+		_G.GRM_BorderFrameCloseButton:SetSize(26, 26)
+		self:skinStdButton{obj=_G.GRM_ExportSelectedRangeButton}
+		self:skinStdButton{obj=_G.GRM_ExportNextRangeButton}
+		self:skinStdButton{obj=_G.GRM_ExportPreviousRangeButton}
+		self:skinStdButton{obj=_G.GRM_ExportMemberDetailsHeadersButton}
+	end
+	if self.modChkBtns then
+		self:skinCheckButton{obj=_G.GRM_ExportAutoIncludeHeadersCheckButton}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter1}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter2}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter3}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter4}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter5}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter6}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter7}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter8}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter9}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter10}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter11}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter12}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter13}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter14}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter15}
+		self:skinCheckButton{obj=_G.GRM_ExportFilter16}
+	end
 
 	-- GRM_RosterCheckBoxSideFrame
 	if self.modChkBtns then
@@ -116,17 +165,12 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 		self:skinCheckButton{obj=_G.GRM_LogShowLinesCheckButton}
 		self:skinCheckButton{obj=_G.GRM_SearchAutoFocusCheckButton}
 		self:skinCheckButton{obj=_G.GRM_LogEnableRmvClickCheckButton}
+		self:skinCheckButton{obj=_G.GRM_LogShowTooltipCheckButton}
 	end
 	self:skinEditBox{obj=_G.GRM_LogExtraEditBox1, regs={6}} -- 6 is text
 	self:skinEditBox{obj=_G.GRM_LogExtraEditBox2, regs={6}} -- 6 is text
+	self:skinSlider{obj=_G.GRM_UI.GRM_RosterChangeLogFrame.GRM_LogFrame.GRM_LogExtraOptionsFrame.GRM_LogFontSizeSlider, hgt=-2} -- N.B. also called 'GRM_FontSizeSlider' which is a duplicate name
 	self:addSkinFrame{obj=_G.GRM_LogExtraOptionsFrame, ft="a", kfs=true, nb=true, ofs=-3}
-
-	if self.modBtns then
-		self:skinCloseButton{obj=_G.GRM_BorderFrameCloseButton}
-		_G.GRM_BorderFrameCloseButton:SetSize(26, 26)
-	end
-	self:skinSlider{obj=_G.GRM_ExportLogScrollFrameSlider, wdth=-4}
-	self:addSkinFrame{obj=_G.GRM_ExportLogBorderFrame, ft="a", kfs=true, nb=true}
 
 	-- GRM_EventsFrame
 	self:addSkinFrame{obj=_G.GRM_AddEventScrollBorderFrame, ft="a", kfs=true, nb=true, aso={bd=10, ng=true}, ofs=-2, y1=-4, x2=-4} -- no backdrop background & no gradient texture (allows text to be seen)
@@ -251,15 +295,14 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 		self:skinCheckButton{obj=_G.GRM_AddJoinedTagButton}
 		self:skinCheckButton{obj=_G.GRM_RecruitNotificationCheckButton}
 		self:skinCheckButton{obj=_G.GRM_RecruitNotificationAutoPopButton}
-		self:skinCheckButton{obj=_G.GRM_RosterRecommendKickCheckButton}
-		self:skinCheckButton{obj=_G.GRM_AllAltsOfflineTimed}
 		self:skinCheckButton{obj=_G.GRM_RosterReportAddEventsToCalendarButton}
 	end
 	-- Officer
 	skinEB(_G.GRM_CustomTagJoinEditBox)
 	skinEB(_G.GRM_CustomTagREJoinEditBox)
-	skinEB(_G.GRM_RosterKickRecommendEditBox)
-	skinObjNG(_G.GRM_RosterKickOverlayNote, 2)
+	if self.modBtns then
+		self:skinStdButton{obj=_G.GRM_ExportGlobalControlButton}
+	end
 	-- Backup
 	if self.modChkBtns then
 		self:skinCheckButton{obj=_G.GRM_AutoBackupCheckBox}
@@ -268,15 +311,13 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 	skinObjNG(_G.GRM_AutoBackupTimeOverlayNote, 2)
 	-- TODO: Tabs
 	if self.modBtns then
-		self:SecureHook(_G.GRM, "BuildBackupScrollFrame", function(factionID)
-			if #GRM_G.BackupEntries > 0 then
-				for i = 1, 12 do
-					self:skinStdButton{obj=_G["GRMBackupCoreButton_" .. i]}
-					self:skinStdButton{obj=_G["GuildBackup1_" .. i]}
-					self:skinStdButton{obj=_G["GuildBackup2_" .. i]}
-				end
-				self:Unhook(_G.GRM, "BuildBackupScrollFrame")
+		self:SecureHook(_G.GRM, "BuildBackupScrollFrame", function(showAll, fullRefresh)
+			for i = 1, #GRM_G.BackupEntries do
+				self:skinStdButton{obj=_G["GuildBackup1_" .. i]}
+				self:skinStdButton{obj=_G["GuildBackup2_" .. i]}
 			end
+
+			self:Unhook(_G.GRM, "BuildBackupScrollFrame")
 		end)
 	end
 	self:skinSlider{obj=_G.GRM_CoreBackupScrollFrameSlider}
@@ -294,11 +335,22 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 		self:skinStdButton{obj=_G.GRM_HardResetButton}
 	end
 	--- UI Configuration:
+	self:skinSlider{obj=_G.GRM_CoreWindowScaleSlider, hgt=-2}
+	self:skinSlider{obj=_G.GRM_MouseOverScaleSlider, hgt=-2}
+	self:skinSlider{obj=_G.GRM_MacroToolScaleSlider, hgt=-2}
+	self:skinSlider{obj=_G.GRM_ExportToolScaleSlider, hgt=-2}
+	self:skinSlider{obj=_G.GRM_AdvancedAuditToolScaleSlider, hgt=-2}
 	if self.modChkBtns then
 		self:skinCheckButton{obj=_G.GRM_FadeCheckButton}
 		self:skinCheckButton{obj=_G.GRM_NoteBordersButton}
 		self:skinCheckButton{obj=_G.GRM_ReputationToggleButton}
 		self:skinCheckButton{obj=_G.GRM_BirthdayToggleButton}
+	end
+	if self.modBtns then
+		self:skinStdButton{obj=_G.GRM_OpenMouseoverButton}
+		self:skinStdButton{obj=_G.GRM_OpenMacroToolButton}
+		self:skinStdButton{obj=_G.GRM_OpenExportToolButton}
+		self:skinStdButton{obj=_G.GRM_OpenAuditJoinDateToolButton}
 	end
 
 	-- GRM_AuditFrame
@@ -339,11 +391,26 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 		self:add2Table(self.ttList, _G.GRM_MemberDetailJoinDateToolTip)
 		self:add2Table(self.ttList, _G.GRM_MemberDetailServerNameToolTip)
 		self:add2Table(self.ttList, _G.GRM_MemberDetailNotifyStatusChangeTooltip)
+		self:add2Table(self.ttList, _G.GRM_OfficerNoteTooltip)
+		self:add2Table(self.ttList, _G.GRM_LogTooltip)
+		self:add2Table(self.ttList, _G.GRM_MemberDetailNJDSyncTooltip)
+		self:add2Table(self.ttList, _G.GRM_GuildNameTooltip)
+		self:add2Table(self.ttList, _G.GRM_AltGroupHeaderTooltip)
+		self:add2Table(self.ttList, _G.GRM_BanHeaderTooltip)
+		self:add2Table(self.ttList, _G.GRM_BirthdayTooltip)
+		self:add2Table(self.ttList, _G.GRM_AddonUsersTooltip)
 	end)
 
 	-- GRM_PopupWindow
 	_G.RaiseFrameLevelByTwo(_G.GRM_PopupWindow)
 	self:addSkinFrame{obj=_G.GRM_PopupWindow, ft="a", kfs=true}
+
+	-- GRM_GeneralPopupWindow
+	self:addSkinFrame{obj=_G.GRM_GeneralPopupWindow, ft="a", kfs=true, nb=true}
+	if self.modBtns then
+		self:skinStdButton{obj=_G.GRM_GeneralPopupWindowYesButton}
+		self:skinStdButton{obj=_G.GRM_GeneralPopupWindowNoButton}
+	end
 
 	-- hook these to handle frame changes
 	self:SecureHook(_G.GRM_UI, "GR_MetaDataInitializeUIFirst", function(isManualUpdate)
@@ -356,20 +423,64 @@ aObj.addonsToSkin.Guild_Roster_Manager = function(self) -- v 1.66
 		_G.GRM_PlayerOfficerNoteWindow:SetBackdrop(nil)
 		_G.GRM_CustomNoteEditBoxFrame:SetBackdrop(nil)
 		_G.GRM_CustomNoteSyncMetaCheckBox:SetSize(24, 24)
+
 		self:Unhook(_G.GRM_UI, "GR_MetaDataInitializeUIFirst")
 	end)
 	self:SecureHook(_G.GRM_UI, "GR_MetaDataInitializeUISecond", function(isManualUpdate)
 		_G.GRM_MemberDetailPopupEditBox:SetTextInsets(6 ,3 ,3 ,6)
 		_G.GRM_altDropDownOptions:SetBackdrop(nil)
+
 		self:Unhook(_G.GRM_UI, "GR_MetaDataInitializeUISecond")
 	end)
 	self:SecureHook(_G.GRM_UI, "GR_MetaDataInitializeUIThird", function(isManualUpdate)
 		_G.GRM_AddAltEditBox:SetTextInsets(6 ,3 ,3 ,6)
 		_G.GRM_LoadLogButton:SetSize(60, 16)
-		_G.GRM_MemberDetailMetaData:SetPoint("TOPLEFT", _G.GuildRosterFrame, "TOPRIGHT", -2, 2)
+		_G.GRM_LoadLogOldRosterButton:SetSize(60, 16)
+		_G.GRM_LoadToolButton:SetSize(60, 16)
+		_G.GRM_LoadToolOldRosterButton:SetSize(60, 16)
+		-- _G.GRM_MemberDetailMetaData:SetPoint("TOPLEFT", _G.GuildRosterFrame, "TOPRIGHT", 12, 2)
+
 		self:Unhook(_G.GRM_UI, "GR_MetaDataInitializeUIThird")
 	end)
 
 	self.mmButs["Guild_Roster_Manager"] = _G.GRM_MinimapButton
+
+	-- Macro Tool frame
+	-- TODO: tabs
+	skinEB(_G.GRM_RosterKickRecommendEditBox)
+	self:removeInset(_G.GRM_RosterKickOverlayNote)
+	skinObjNG(_G.GRM_RosterKickOverlayNote, 2)
+	self:removeInset(_G.GRM_TimeScaleSelected)
+	self:addSkinFrame{obj=_G.GRM_TimeScaleSelected, ft="a", kfs=true, nb=true}
+	self:removeInset(_G.GRM_TimeScaleDropDownMenu)
+	self:addSkinFrame{obj=_G.GRM_TimeScaleDropDownMenu, ft="a", kfs=true, nb=true}
+	self:addSkinFrame{obj=_G.GRM_ToolMacrodScrollBorderFrame, ft="a", kfs=true, nb=true, ofs=-3}
+	self:skinSlider{obj=_G.GRM_ToolMacrodScrollFrameSilder, wdth=-4}
+	self:addSkinFrame{obj=_G.GRM_ToolQueuedScrollBorderFrame, ft="a", kfs=true, nb=true, ofs=-3}
+	self:skinSlider{obj=_G.GRM_ToolQueuedScrollFrameSilder, wdth=-4}
+	self:addSkinFrame{obj=_G.GRM_ToolCoreFrame, ft="a", kfs=true, ofs=0}
+	if self.modBtns then
+		self:skinStdButton{obj=_G.GRM_ToolBuildMacroButton}
+		self:skinStdButton{obj=_G.GRM_ToolViewSafeListButton}
+		self:skinStdButton{obj=_G.GRM_ToolClearSelectedMacrodNamesButton}
+		self:skinStdButton{obj=_G.GRM_ToolResetSelectedMacroNamesButton}
+		self:skinStdButton{obj=_G.GRM_CustomRuleAddButton}
+	end
+	if self.modChkBtns then
+		self:skinCheckButton{obj=_G.GRM_ToolRecommendKickCheckButton}
+		self:skinCheckButton{obj=_G.GRM_ToolAltsOfflineTimed}
+	end
+
+	self:addSkinFrame{obj=_G.GRM_ToolIgnoredScrollBorderFrame, ft="a", kfs=true, nb=true, ofs=-3}
+	self:skinSlider{obj=_G.GRM_ToolIgnoredScrollFrameSilder, wdth=-4}
+	self:addSkinFrame{obj=_G.GRM_ToolIgnoreListFrame, ft="a", kfs=true, ofs=0}
+	if self.modBtns then
+		self:skinStdButton{obj=_G.GRM_ToolIgnoreClearSelectionButton}
+		self:skinStdButton{obj=_G.GRM_ToolIgnoreResetSelectedNamesButton}
+		self:skinStdButton{obj=_G.GRM_ToiolIgnoreRemoveAllButton}
+	end
+	if self.modChkBtns then
+		self:skinCheckButton{obj=_G.GRM_ToolCoreIgnoreCheckButton}
+	end
 
 end

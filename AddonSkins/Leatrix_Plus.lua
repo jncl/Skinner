@@ -70,6 +70,7 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.33
 	-- Enhanced Dressup (changes in DressUp frames)
 	-- Enhanced QuestLog
 	if _G.LeaPlusDB["EnhanceQuestLog"] == "On"
+	and self.prdb.QuestLog
 	and self.modBtns
 	then
 		self:skinStdButton{obj=self:getPenultimateChild(_G.QuestLogFrame)} -- Map button
@@ -77,18 +78,22 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.33
 	-- Enhanced Professions (changes in CraftUI & TradeSkillUI)
 
 	-- Volume slider (Character frame)
-	if _G.LeaPlusDB["ShowVolume"] == "On" then
+	if _G.LeaPlusDB["ShowVolume"] == "On"
+	and self.prdb.CharacterFrames
+	then
 		self:skinSlider{obj=_G.LeaPlusGlobalSliderLeaPlusMaxVol, hgt=-6}
 	end
 	-- Auction Controls (changes in AuctionUI)
 	-- Durability status (Character frame)
 	if _G.LeaPlusDB["DurabilityStatus"] == "On"
+	and self.prdb.CharacterFrames
 	and self.modBtnBs
 	then
 		self:addButtonBorder{obj=self:getLastChild(_G.PaperDollFrame), ofs=-2, clr="gold"}
 	end
 	-- Vanity controls (Character frame)
 	if _G.LeaPlusDB["ShowVanityControls"] == "On"
+	and self.prdb.CharacterFrames
 	and self.modChkBtns
 	then
 		self:skinCheckButton{obj=self:getChild(_G.CharacterModelFrame, 3)}
@@ -96,10 +101,14 @@ aObj.addonsToSkin.Leatrix_Plus = function(self) -- v 1.13.33
 	end
 	-- Bag Search Box
 	if _G.LeaPlusDB["ShowBagSearchBox"] == "On" then
-		self:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-		self:moveObject{obj=_G.BagItemSearchBox, x=7, y=3}
-		self:skinEditBox{obj=_G.BankItemSearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
-		self:moveObject{obj=_G.BankItemSearchBox, x=10, y=6}
+		if self.prdb.ContainerFrames.skin then
+			self:skinEditBox{obj=_G.BagItemSearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
+			self:moveObject{obj=_G.BagItemSearchBox, x=7, y=3}
+		end
+		if self.prdb.BankFrame then
+			self:skinEditBox{obj=_G.BankItemSearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
+			self:moveObject{obj=_G.BankItemSearchBox, x=10, y=6}
+		end
 	end
 	-- Free bag slots (nothing to do)
 	-- Wowhead links (nothing to do)
