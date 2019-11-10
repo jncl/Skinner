@@ -581,7 +581,7 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 			if btn
 			and not btn.sbb
 			then
-				self:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}}
+				self:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}, ofs=3, clr="grey"}
 			end
 		end
 		btn = nil
@@ -595,7 +595,7 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 					if btn
 					and not btn.sbb
 					then
-						self:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}}
+						self:addButtonBorder{obj=btn, reParent={btn.count, btn.duration}, ofs=3, clr="grey"}
 					end
 				end
 			end)
@@ -1063,9 +1063,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 		function skinCollectionBtn(btn)
 			if btn.sbb then
 				if btn.slotFrameUncollected:IsShown() then
-					self:clrBtnBdr(btn, "grey", 1)
+					aObj:clrBtnBdr(btn, "grey", 1)
 				else
-					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+					aObj:clrBtnBdr(btn, "default", 1)
 				end
 			end
 		end
@@ -1077,9 +1077,9 @@ aObj.blizzLoDFrames[ftype].Collections = function(self)
 				if btn.Icon:IsDesaturated()
 				and btn.IconCover:IsShown()
 				then
-					self:clrBtnBdr(btn, "disabled", 1)
+					aObj:clrBtnBdr(btn, "disabled", 1)
 				else
-					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+					aObj:clrBtnBdr(btn, "default", 1)
 				end
 			end
 			btn = nil
@@ -1708,12 +1708,14 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:moveObject{obj=cFrame.AddToChatButton, x=-6, y=-6}
 
 	if self.modBtns then
-		self:skinStdButton{obj=cFrame.AddToChatButton}
 		self:skinStdButton{obj=cFrame.InviteButton}
 		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.CommunitiesSettingsButton}
 		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.GuildRecruitmentButton}
 		self:skinStdButton{obj=cFrame.CommunitiesControlFrame.GuildControlButton}
 		self:skinStdButton{obj=cFrame.GuildLogButton}
+	end
+	if self.modBtnBs then
+		self:addButtonBorder{obj=cFrame.AddToChatButton, ofs=1, clr="gold"}
 	end
 
 	-- N.B. hook DisplayMember rather than OnShow script
@@ -2480,7 +2482,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 			_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
+				self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, clr="grey"}
 			end
 			_G.FriendsFrameBattlenetFrame.BroadcastFrame.Border:DisableDrawLayer("BACKGROUND")
 			_G.FriendsFrameBattlenetFrame.BroadcastFrame.Border:DisableDrawLayer("BORDER")
@@ -2526,7 +2528,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 				btn = _G["FriendsListFrameScrollFrameButton" .. i]
 				btn.background:SetAlpha(0)
 				if self.modBtnBs then
-					self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0}
+					self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0, clr="grey"}
 					self:SecureHook(btn.gameIcon, "Show", function(this)
 						this:GetParent().sbb:Show()
 					end)
@@ -2539,8 +2541,8 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 					btn.sbb:SetShown(btn.gameIcon:IsShown())
 					self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
 					self:SecureHook(btn.travelPassButton, "Enable", function(this)
-						this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
-					end)
+						self:clrBtnBdr(this, "default", 1)
+ 					end)
 					self:SecureHook(btn.travelPassButton, "Disable", function(this)
 						self:clrBtnBdr(this, "disabled", 1)
 					end)
@@ -2549,7 +2551,7 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 					end
 					self:addButtonBorder{obj=btn.summonButton}
 					self:SecureHook(btn.summonButton, "Enable", function(this)
-						this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
+						self:clrBtnBdr(this, "default", 1)
 					end)
 					self:SecureHook(btn.summonButton, "Disable", function(this)
 						self:clrBtnBdr(this, "disabled", 1)
@@ -3909,7 +3911,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			-- hook this to change button border colour
 			self:SecureHook("PVPQueueFrame_SetCategoryButtonState", function(btn, enabled)
 				if btn:IsEnabled() then
-					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+					self:clrBtnBdr(btn, "default", 1)
 				else
 					self:clrBtnBdr(btn, "disabled", 1)
 				end
@@ -4013,9 +4015,9 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				if btn.RewardIcon:IsDesaturated()
 				and btn.IconCover:IsShown()
 				then
-					self:clrBtnBdr(btn, "disabled", 1)
+					aObj:clrBtnBdr(btn, "disabled", 1)
 				else
-					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+					aObj:clrBtnBdr(btn, "default", 1)
 				end
 			end
 			self:addButtonBorder{obj=hld.NextRewardLevel, relTo=hld.NextRewardLevel.RewardIcon}
@@ -4030,9 +4032,9 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		if self.modBtnBs then
 			local function chkBtn(btn)
 				if btn.Icon:IsDesaturated()	then
-					self:clrBtnBdr(btn, "disabled", 1)
+					aObj:clrBtnBdr(btn, "disabled", 1)
 				else
-					btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+					aObj:clrBtnBdr(btn, "default", 1)
 				end
 			end
 			self:addButtonBorder{obj=srf, relTo=srf.Icon}
@@ -4222,7 +4224,9 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 				btn.RequiredLevelString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 				btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 			else
-				if btn.sbb then btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA()) end
+				if btn.sbb then
+					aObj:clrBtnBdr(btn, "default", 1)
+				end
 				spellString:SetTextColor(aObj.HT:GetRGB())
 				subSpellString:SetTextColor(aObj.BT:GetRGB())
 			end
@@ -4259,9 +4263,27 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 		end)
 
 		-- Tabs (side)
+		local btn
 		for i = 1, _G.MAX_SKILLLINE_TABS do
-			self:removeRegions(_G["SpellBookSkillLineTab" .. i], {1}) -- N.B. other regions are icon and highlight
-			self:addButtonBorder{obj=_G["SpellBookSkillLineTab" .. i]}
+			btn = _G["SpellBookSkillLineTab" .. i]
+			self:removeRegions(btn, {1}) -- N.B. other regions are icon and highlight
+			if self.modBtnBs then
+				self:addButtonBorder{obj=btn, clr=btn:GetNormalTexture():IsDesaturated() and "grey" or nil}
+			end
+			if i == 1 then
+				self:moveObject{obj=btn, x=2}
+			end
+			btn = nil
+		end
+		if self.modBtnBs then
+			self:SecureHook("SpellBookFrame_UpdateSkillLineTabs", function()
+				local btn
+				for i = 1, _G.MAX_SKILLLINE_TABS do
+					btn = _G["SpellBookSkillLineTab" .. i]
+					self:clrBtnBdr(btn, btn:GetNormalTexture():IsDesaturated() and "grey" or "default", 1)
+				end
+				btn = nil
+			end)
 		end
 
 		-- Professions Panel
@@ -4278,7 +4300,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 					if not obj.missingHeader:IsShown() then
 						obj.icon:SetDesaturated(nil) -- show in colour
 						if aObj.modBtnBs then
-							obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+							aObj:clrBtnBdr(obj, "default", 1)
 						end
 					else
 						if aObj.modBtnBs then
@@ -4324,7 +4346,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			self:SecureHook("SpellBook_UpdateProfTab", function()
 				for i = 1, 2 do
 					if _G["PrimaryProfession" .. i].unlearn:IsShown() then
-						_G["PrimaryProfession" .. i].sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+						self:clrBtnBdr(_G["PrimaryProfession" .. i], "default", 1)
 					else
 						self:clrBtnBdr(_G["PrimaryProfession" .. i], "disabled", 1)
 					end
@@ -4375,10 +4397,10 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			if (button.knownSelection and button.knownSelection:IsShown())
 			or (frame.inspect and button.border:IsShown()) -- inspect frame
 			then
-				button.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+				aObj:clrBtnBdr(button, "default", 1)
 				if bnObj then bnObj:SetTextColor(aObj.BT:GetRGB()) end
 			else
-				self:clrBtnBdr(button, "grey", 1)
+				aObj:clrBtnBdr(button, "grey", 1)
 				if bnObj then bnObj:SetTextColor(1, 1, 1, 0.9) end
 			end
 			bnObj = nil
@@ -4426,7 +4448,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 			if obj.disabled then
 				aObj:clrBtnBdr(sc, "disabled", 1)
 			else
-				sc.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+				aObj:clrBtnBdr(sc, "default", 1)
 			end
 		end
 		local btn
@@ -4448,7 +4470,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 				if this["specButton" .. i].disabled then
 					self:clrBtnBdr(this["specButton" .. i], "disabled", 1)
 				else
-					this["specButton" .. i].sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+					self:clrBtnBdr(this["specButton" .. i], "default", 1)
 				end
 			end
 		end
@@ -4522,7 +4544,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		end
 
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=0, clr="grey"}
+			self:addButtonBorder{obj=_G.PlayerTalentFrameTalentsPvpTalentButton, ofs=1, clr="gold"}
 		end
 		local frame = this.PvpTalentFrame
 		frame:DisableDrawLayer("BACKGROUND")
@@ -4703,7 +4725,19 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		self:removeMagicBtnTex(this.DetailsFrame.ViewGuildCraftersButton)
 		self:removeMagicBtnTex(this.DetailsFrame.ExitButton)
 		self:removeMagicBtnTex(this.DetailsFrame.CreateButton)
-		self:skinEditBox{obj=this.DetailsFrame.CreateMultipleInputBox, noHeight=true, nis=true}
+		local cmib = this.DetailsFrame.CreateMultipleInputBox
+		self:skinEditBox{obj=cmib, noHeight=true}
+		self:moveObject{obj=cmib, x=-8}
+		self:moveObject{obj=cmib.DecrementButton, x=6}
+		if self.modBtnBs then
+			self:addButtonBorder{obj=cmib.IncrementButton, ofs=0, x2=-1}
+			self:addButtonBorder{obj=cmib.DecrementButton, ofs=0, x2=-1}
+			self:SecureHook(cmib, "SetEnabled", function(this, enable)
+				self:clrBtnBdr(this.IncrementButton, this.IncrementButton:IsEnabled() and "gold" or "disabled", 1)
+				self:clrBtnBdr(this.DecrementButton, this.DecrementButton:IsEnabled() and "gold" or "disabled", 1)
+			end)
+		end
+		cmib = nil
 		this.DetailsFrame.Contents.ResultIcon.ResultBorder:SetTexture(nil)
 		local btn
 		for i = 1, #this.DetailsFrame.Contents.Reagents do

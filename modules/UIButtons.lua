@@ -822,7 +822,7 @@ local function __addButtonBorder(opts)
 	if opts.clr then
 		module:clrBtnBdr(opts.obj, opts.clr, opts.ca)
 	else
-		opts.obj.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+		module:clrBtnBdr(opts.obj, "default", 1)
 	end
 
 	-- position the frame

@@ -530,6 +530,8 @@ function aObj:getColourByName(clrName)
 	local r, g, b
 	if clrName == "common" then
 		r, g, b = _G.LIGHTGRAY_FONT_COLOR:GetRGB()
+	elseif clrName == "default" then
+		r, g, b = self.bbClr:GetRGB()
 	elseif clrName == "disabled" then
 		r, g, b = _G.DISABLED_FONT_COLOR:GetRGB()
 	elseif clrName == "green" then

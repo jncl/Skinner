@@ -813,7 +813,7 @@ aObj.ClassicSupport = function(self)
 			self:SecureHookScript(_G.FriendsTabHeader, "OnShow", function(this)
 				_G.FriendsFrameBattlenetFrame:DisableDrawLayer("BACKGROUND")
 				if self.modBtnBs then
-					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2}
+					self:addButtonBorder{obj=_G.FriendsFrameBattlenetFrame.BroadcastButton, ofs=-2, x1=1, y1=-1, clr="grey"}
 				end
 				self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.ScrollFrame, ft=ftype, kfs=true, nb=true, ofs=4}
 				if self.modBtns then
@@ -852,7 +852,7 @@ aObj.ClassicSupport = function(self)
 					btn = _G["FriendsFrameFriendsScrollFrameButton" .. i]
 					btn.background:SetAlpha(0)
 					if self.modBtnBs then
-						self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0}
+						self:addButtonBorder{obj=btn, relTo=btn.gameIcon, ofs=0, clr="grey"}
 						self:SecureHook(btn.gameIcon, "Show", function(this)
 							this:GetParent().sbb:Show()
 						end)
@@ -865,7 +865,7 @@ aObj.ClassicSupport = function(self)
 						btn.sbb:SetShown(btn.gameIcon:IsShown())
 						self:addButtonBorder{obj=btn.travelPassButton, ofs=0, y1=3, y2=-2}
 						self:SecureHook(btn.travelPassButton, "Enable", function(this)
-							this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
+							self:clrBtnBdr(this, "default", 1)
 						end)
 						self:SecureHook(btn.travelPassButton, "Disable", function(this)
 							self:clrBtnBdr(this, "disabled", 1)
@@ -875,7 +875,7 @@ aObj.ClassicSupport = function(self)
 						end
 						self:addButtonBorder{obj=btn.summonButton}
 						self:SecureHook(btn.summonButton, "Enable", function(this)
-							this.sbb:SetBackdropBorderColor(self.bbClr:GetRGBA())
+							self:clrBtnBdr(this, "default", 1)
 						end)
 						self:SecureHook(btn.summonButton, "Disable", function(this)
 							self:clrBtnBdr(this, "disabled", 1)
@@ -1246,7 +1246,7 @@ aObj.ClassicSupport = function(self)
 					btn.SeeTrainerString:SetTextColor(_G.DISABLED_FONT_COLOR:GetRGB())
 				else
 					if btn.sbb then
-						btn.sbb:SetBackdropBorderColor(aObj.bbClr:GetRGBA())
+						aObj:clrBtnBdr(btn, "default", 1)
 					end
 					spellString:SetTextColor(aObj.HT:GetRGB())
 					subSpellString:SetTextColor(aObj.BT:GetRGB())
@@ -1325,12 +1325,12 @@ aObj.ClassicSupport = function(self)
 			for i = 1, _G.MAX_TRADE_SKILL_REAGENTS do
 				btnName = "TradeSkillReagent" .. i
 				_G[btnName .. "NameFrame"]:SetTexture(nil)
-				if self.modBtns then
-					 self:addButtonBorder{obj=_G[btnName], libt=true}
+				if self.modBtnBs then
+					 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
 				end
 			end
 			btnName = nil
-			self:skinEditBox{obj=_G.TradeSkillInputBox, regs={6}, x=-6} -- 6 is text
+			self:skinEditBox{obj=_G.TradeSkillInputBox, regs={6}, noHeight=true, x=-6} -- 6 is text
 			local x1, y1, x2, y2
 			if IsAddOnLoaded("Leatrix_Plus")
 			and _G.LeaPlusDB["EnhanceProfessions"] == "On"
@@ -1352,9 +1352,9 @@ aObj.ClassicSupport = function(self)
 				self:skinStdButton{obj=_G.TradeSkillCreateAllButton}
 			end
 			if self.modBtnBs then
-				self:addButtonBorder{obj=_G.TradeSkillSkillIcon}
-				self:addButtonBorder{obj=_G.TradeSkillDecrementButton, ofs=0}
-				self:addButtonBorder{obj=_G.TradeSkillIncrementButton, ofs=0}
+				self:addButtonBorder{obj=_G.TradeSkillSkillIcon, clr="gold"}
+				self:addButtonBorder{obj=_G.TradeSkillDecrementButton, ofs=0, clr="gold"}
+				self:addButtonBorder{obj=_G.TradeSkillIncrementButton, ofs=0, clr="gold"}
 			end
 
 			self:Unhook(this, "OnShow")
@@ -1449,7 +1449,7 @@ aObj.ClassicSupport = function(self)
 				local mBut
 				for i = 1, #_G.MICRO_BUTTONS do
 					mBut = _G[_G.MICRO_BUTTONS[i]]
-					self:addButtonBorder{obj=mBut, ofs=0, y1=-20, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarDownload} or {mBut.Flash}}
+					self:addButtonBorder{obj=mBut, ofs=0, y1=-20, reParent=mBut == "MainMenuMicroButton" and {mBut.Flash, _G.MainMenuBarDownload} or {mBut.Flash}, clr="grey"}
 				end
 				mBut = nil
 
@@ -1482,7 +1482,7 @@ aObj.ClassicSupport = function(self)
 
 		-- these are done here as other AddOns may require them to be skinned
 		if self.modBtnBs then
-			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton}
+			self:addButtonBorder{obj=_G.MainMenuBarVehicleLeaveButton, clr="grey"}
 		end
 
 	end
@@ -1515,7 +1515,7 @@ aObj.ClassicSupport = function(self)
 				btnName = "QuestLogItem" .. i
 				_G[btnName .. "NameFrame"]:SetTexture(nil)
 				if self.modBtns then
-					 self:addButtonBorder{obj=_G[btnName], libt=true}
+					 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
 				end
 			end
 			btnName = nil

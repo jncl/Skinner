@@ -937,7 +937,7 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 			btnName = "QuestProgressItem" .. i
 			_G[btnName .. "NameFrame"]:SetTexture(nil)
 			if self.modBtns then
-				 self:addButtonBorder{obj=_G[btnName], libt=true}
+				 self:addButtonBorder{obj=_G[btnName], libt=true, clr="grey"}
 			end
 		end
 		btnName = nil
@@ -1022,6 +1022,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			frame.RewardButtons[i].NameFrame:SetTexture(nil)
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=frame.RewardButtons[i], libt=true}
+				aObj:clrButtonBorder(frame.RewardButtons[i])
 			end
 		end
 		-- SpellReward
@@ -1029,7 +1030,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			spellBtn.NameFrame:SetTexture(nil)
 			spellBtn:DisableDrawLayer("OVERLAY")
 			if aObj.modBtnBs then
-				 aObj:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon}
+				 aObj:addButtonBorder{obj=spellBtn, relTo=spellBtn.Icon, clr="grey"}
 			end
 		end
 		-- FollowerReward
@@ -1085,8 +1086,8 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		_G.QuestInfoSpellObjectiveLearnLabel:SetTextColor(aObj.BT:GetRGB())
 		_G.QuestInfoSpellObjectiveFrameNameFrame:SetTexture(nil)
 		_G.QuestInfoSpellObjectiveFrameSpellBorder:SetTexture(nil)
-		if self.modBtnBs then
-			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon}
+		if aObj.modBtnBs then
+			 aObj:addButtonBorder{obj=_G.QuestInfoSpellObjectiveFrame, relTo=_G.QuestInfoSpellObjectiveFrame.Icon, clr="grey"}
 		end
 
 		-- QuestInfoSeal Frame
@@ -1134,26 +1135,26 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		local spf = this.SkillPointFrame
 		spf.NameFrame:SetTexture(nil)
 		if self.modBtnBs then
-			 self:addButtonBorder{obj=spf, relTo=spf.Icon, reParent={spf.CircleBackground, spf.CircleBackgroundGlow, spf.ValueText}}
+			 self:addButtonBorder{obj=spf, relTo=spf.Icon, reParent={spf.CircleBackground, spf.CircleBackgroundGlow, spf.ValueText}, clr="grey"}
 		end
 		spf = nil
 		-- HonorFrame
 		local hf = this.HonorFrame
 		hf.NameFrame:SetTexture(nil)
 		if self.modBtnBs then
-			 self:addButtonBorder{obj=hf, relTo=hf.Icon, reParent={hf.Count}}
+			 self:addButtonBorder{obj=hf, relTo=hf.Icon, reParent={hf.Count}, clr="grey"}
 		end
 		hf = nil
 		-- ArtifactXPFrame
 		local axp = this.ArtifactXPFrame
 		axp.NameFrame:SetTexture(nil)
 		if self.modBtnBs then
-			 self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}}
+			 self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}, clr="grey"}
 		end
 		axp = nil
 		-- QuestInfoPlayerTitleFrame
 		if self.modBtnBs then
-			 self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon}
+			 self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon, clr="grey"}
 		end
 		self:removeRegions(_G.QuestInfoPlayerTitleFrame, {2, 3, 4,}) -- NameFrame textures
 
@@ -1166,9 +1167,9 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			this[type].NameFrame:SetTexture(nil)
 			if self.modBtnBs then
 				if type ~= "SkillPointFrame" then
-					self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].Count}}
+					self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].Count}, clr="grey"}
 				else
-					self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].CircleBackground, this[type].CircleBackgroundGlow, this[type].ValueText}}
+					self:addButtonBorder{obj=this[type], relTo=this[type].Icon, reParent={this[type].CircleBackground, this[type].CircleBackgroundGlow, this[type].ValueText}, clr="grey"}
 				end
 			end
 		end
