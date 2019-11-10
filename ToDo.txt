@@ -23,6 +23,8 @@ ToDos
 
 	O	Skin CommentatorTeamDisplay
 
+	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
+
 	N	PTR 8.3.0 (Visions of Z'Noth)
 		- Added
 ¶√			- AuctionHouseUI
@@ -38,8 +40,10 @@ x			- WorldMapThreatFrameTemplate
 x			- WM_EventOverlayDataProvider
 x			- WM_InvasionDataProvider
 x			- DropDownToggleButton.xml
-			- QueueUpdater.lua
+?			- QueueUpdater.lua
 			- TalentRankDisplayTemplate
+			- ItemInteractionUI
+			- Helix
 		- Deleted
 √			- AuctionUI
 		- Updated
@@ -47,12 +51,34 @@ x			- DropDownToggleButton.xml
 ≈			- MoneyFrame
 x			- Blizzard_Wardrobe, Model now ModelScene
 x			- Garrison Talents
-			- SideDressUpFrame now has a ControlFrame
+x			- SideDressUpFrame now has a ControlFrame
 x			- MailFrame now has a count for Invoice
-			- DressUpFrame
+x			- DressUpFrame
+√			- AchievementsUI
+√			- AuctionHouseUI
+h			- BindingUI
+√			- WardrobeTransmogFrame
+x			- Calendar
+x			- Communities
+h			- GMSurveyUI
+?			- OrderHallTalents
+h			- ChatConfigFrame
+h			- ColorPickerFrame
+h			- GameMenuFrame
+h			- HelpFrame
+h			- InterfaceOptionsFrame
+?			- MacOptionsPanel (FolderPicker)
+h			- OptionsFrame Templates
+			- RaidFrame
+h			- RatingMenuFrame
+			- RecruitAFriendFrame
+x			- ReputationFrame
+			- SharedUIPanelTemplates
+			- UIPanelTemplates
+			- UnitPowerBarAlt
 
-	I	RecruitAFriendFrame, reported by EpidemeDaBear, 22.10.19
-√		- Skinner\Skinner-beta8.32151.1.lua:1183: attempt to index field 'obj' (a nil value)
-		Skinner\Skinner-beta8.32151.1.lua:1183: in function <Skinner\Skinner.lua:1162>
-		Skinner\Skinner-beta8.32151.1.lua:1280: in function `skinEditBox'
-		Skinner\PlayerFrames.lua:2627: in function <Skinner\PlayerFrames.lua:2626>
+√	S/C	Skillet, requested by amey0, 30.10.19
+
+	I	FriendsFrame, reported by EpidemeDaBear, 04.10.19
+√		- Skinner\PlayerFrames.lua:2625: attempt to index field 'AddFriendNoteFrameScrollFrame' (a nil value)
+		Skinner\PlayerFrames.lua:2625: in function <Skinner\PlayerFrames.lua:2617>
