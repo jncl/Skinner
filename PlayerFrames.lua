@@ -2632,15 +2632,13 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 
 	self:SecureHookScript(_G.AddFriendFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
+		self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.AddFriendInfoFrameContinueButton}
 			self:skinStdButton{obj=_G.AddFriendEntryFrameAcceptButton}
 			self:skinStdButton{obj=_G.AddFriendEntryFrameCancelButton}
 		end
-		self:skinEditBox{obj=_G.AddFriendNameEditBox, regs={6}} -- 6 is text
-		self:skinSlider{obj=_G.AddFriendNoteFrameScrollFrame.ScrollBar}
-		self:addSkinFrame{obj=_G.AddFriendNoteFrame, ft=ftype, kfs=true}
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 
 		self:Unhook(this, "OnShow")
 	end)
