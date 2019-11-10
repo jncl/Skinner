@@ -2735,8 +2735,8 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:ClearAllPoints()
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("TOPRIGHT", "FriendsFrame", "TOPRIGHT", -8, -101)
 		_G.QuickJoinFrame.ScrollFrame.scrollBar:SetPoint("BOTTOMLEFT", "FriendsFrame", "BOTTOMRIGHT", -24, 40)
-		self:addSkinFrame{obj=_G.QuickJoinScrollFrame, ft=ftype, kfs=true, nb=true, x1=-8, y1=7, x2=28, y2=-32, aso={bd=10, ng=true}}
 		self:removeMagicBtnTex(_G.QuickJoinFrame.JoinQueueButton)
+		self:addSkinFrame{obj=_G.QuickJoinScrollFrame, ft=ftype, kfs=true, nb=true, x1=-8, y1=7, x2=28, y2=-32, aso={bd=10, ng=true}}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.QuickJoinFrame.JoinQueueButton, x2=0}
 		end
@@ -2751,7 +2751,6 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			self:skinStdButton{obj=_G.QuickJoinRoleSelectionFrame.CancelButton}
 		end
 		self:addSkinFrame{obj=_G.QuickJoinRoleSelectionFrame, ft=ftype, ofs=-5}
-		addTabFrame(this)
 
 		self:Unhook(this, "OnShow")
 	end)
