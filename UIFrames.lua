@@ -3710,6 +3710,7 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 
 	self:SecureHookScript(_G.GameMenuFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 		if self.modBtns then
 			for _, child in ipairs{this:GetChildren()} do
 				if child:IsObjectType("Button") then
@@ -3717,15 +3718,15 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 				end
 			end
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, hdr=true}
 
 		-- Rating Menu
 		self:SecureHookScript(_G.RatingMenuFrame, "OnShow", function(this)
 			self:removeNineSlice(this.Border)
+			self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
 			if self.modBtns then
 				self:skinStdButton{obj=_G.RatingMenuButtonOkay}
 			end
-			self:addSkinFrame{obj=_G.RatingMenuFrame, ft=ftype, hdr=true}
+
 			self:Unhook(this, "OnShow")
 		end)
 
