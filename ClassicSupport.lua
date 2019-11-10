@@ -8,7 +8,7 @@ local ftype
 local funcs = {
 	NPC = {
 		{ name = "AlliedRacesUI", type = "LoD", keep = false, keepOpts = false },
-		{ name = "AuctionUI", type = "LoD", keep = false, keepOpts = true },
+		-- { name = "AuctionUI", type = "LoD", keep = false, keepOpts = true },
 		{ name = "AzeriteRespecUI", type = "LoD", keep = false, keepOpts = false },
 		{ name = "BankFrame", type = "", keep = false, keepOpts = true },
 		{ name = "BarbershopUI", type = "LoD", keep = false, keepOpts = false },
@@ -142,7 +142,7 @@ local funcs = {
 		{ name = "SharedBasicControls", type = "", keep = false, keepOpts = false },
 		{ name = "SplashFrame", type = "", keep = false, keepOpts = false },
 		{ name = "StaticPopups", type = "", keep = true, keepOpts = true },
-		{ name = "StaticPopupSpecial", type = "", keep = false, keepOpts = false },
+		{ name = "StaticPopupSpecial", type = "", keep = true, keepOpts = true },
 		{ name = "TalkingHeadUI", type = "LoD", keep = false, keepOpts = false },
 		{ name = "TimeManager", type = "", keep = true, keepOpts = true },
 		{ name = "Tooltips", type = "", keep = true, keepOpts = true },
@@ -200,29 +200,37 @@ aObj.ClassicSupport = function(self)
 		self.optTables["UI Frames"].args.MainMenuBar.args.altpowerbar = nil
 
 		-- Add options for new frames
-		self.db.profile.CraftUI = true
-		self.db.defaults.profile.CraftUI = true
+		if self.db.profile.CraftUI == nil then
+			self.db.profile.CraftUI = true
+			self.db.defaults.profile.CraftUI = true
+		end
 		self.optTables["Player Frames"].args.CraftUI = {
 			type = "toggle",
 			name = self.L["CraftUI"],
 			desc = self.L["Toggle the skin of the CraftUI"],
 		}
-		self.db.profile.BattlefieldFrame = true
-		self.db.defaults.profile.BattlefieldFrame = true
+		if self.db.profile.BattlefieldFrame == nil then
+			self.db.profile.BattlefieldFrame = true
+			self.db.defaults.profile.BattlefieldFrame = true
+		end
 		self.optTables["UI Frames"].args.BattlefieldFrame = {
 			type = "toggle",
 			name = self.L["Battlefield Frame"],
 			desc = self.L["Toggle the skin of the Battlefield Frame"],
 		}
-		self.db.profile.QuestLog = true
-		self.db.defaults.profile.QuestLog = true
+		if self.db.profile.QuestLog == nil then
+			self.db.profile.QuestLog = true
+			self.db.defaults.profile.QuestLog = true
+		end
 		self.optTables["UI Frames"].args.QuestLog = {
 			type = "toggle",
 			name = self.L["Quest Log"],
 			desc = self.L["Toggle the skin of the Quest Log"],
 		}
-		self.db.profile.QuestTimer = true
-		self.db.defaults.profile.QuestTimer = true
+		if self.db.profile.QuestTimer == nil then
+			self.db.profile.QuestTimer = true
+			self.db.defaults.profile.QuestTimer = true
+		end
 		self.optTables["UI Frames"].args.QuestTimer = {
 			type = "toggle",
 			name = self.L["Quest Timer"],
@@ -238,20 +246,11 @@ aObj.ClassicSupport = function(self)
 			ufDB.defaults.profile.petspec = nil
 			ufDB.defaults.profile.focus = nil
 			ufDB.defaults.profile.arena = nil
-			ufDB.profile.petlvl = false
-			ufDB.defaults.profile.petlvl = false
 			ufDB = nil
 		end
 		self.optTables["Modules"].args[aName .. "_UnitFrames"].args.petspec = nil
 		self.optTables["Modules"].args[aName .. "_UnitFrames"].args.focus = nil
 		self.optTables["Modules"].args[aName .. "_UnitFrames"].args.arena = nil
-		self.optTables["Modules"].args[aName .. "_UnitFrames"].args.petlvl = {
-			type = "toggle",
-			order = 3,
-			width = "half",
-			name = self.L["Pet Lvl"],
-			desc = self.L["Toggle the Pet Level on the Pet Frame"],
-		}
 
 		self:Unhook(this, "SetupOptions")
 	end)
@@ -1562,7 +1561,7 @@ aObj.ClassicSupport = function(self)
 		if not self.prdb.QuestTimer or self.initialized.QuestTimer then return end
 		self.initialized.QuestTimer = true
 
-		self:addSkinFrame{obj=_G.QuestTimerFrame, ft=ftype, kfs=true, nb=true, ofs=4}
+		self:addSkinFrame{obj=_G.QuestTimerFrame, ft=ftype, kfs=true, nb=true, x1=20, y1=4, x2=-20, y2=10}
 
 	end
 
@@ -1719,14 +1718,14 @@ aObj.ClassicSupport = function(self)
 			-- status bars
 			aObj:skinStatusBar{obj=pF.healthbar, fi=0}
 			aObj:skinStatusBar{obj=pF.manabar, fi=0, nilFuncs=true}
-			uFrames:adjustStatusBarPosn(pF.healthbar)
+			self:adjustStatusBarPosn(pF.healthbar)
 
 			-- PowerBarAlt handled in MainMenuBar function (UIF)
 
 			-- casting bar handled in CastingBar function (PF)
 
 			-- move level & rest icon down, so they are more visible
-			uFrames:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
+			self:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
 				_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + -9)
 			end)
 			_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
@@ -1735,7 +1734,7 @@ aObj.ClassicSupport = function(self)
 			aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
 			aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
 
-			uFrames:skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=2}
+			self:skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=2}
 
 			pF = nil
 
@@ -1749,58 +1748,16 @@ aObj.ClassicSupport = function(self)
 		then
 			_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			_G.PetFrame.threatIndicator = _G.PetAttackModeTexture
-			-- status bars
-			uFrames:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
+			self:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
 			aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
-			uFrames:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
+			self:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 			aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
 			-- casting bar handled in CastingBar function
 			aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
-
-			-- skin the PetFrame
 			_G.PetPortrait:SetDrawLayer("border") -- move portrait to BORDER layer, so it is displayed
 			aObj:moveObject{obj=_G.PetFrameHappiness, x=5}
-			uFrames:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
-		end
+			self:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
 
-		if self.db.profile.petlvl then
-			if not _G.PetFrame.lvlText then
-				-- add pet level text to pet frame, if required
-				_G.PetFrame.lvlText = _G.PetName:GetParent():CreateFontString(nil, "ARTWORK", "GameNormalNumberFont")
-				_G.PetFrame.lvlText:SetPoint("LEFT", _G.PetFrame, "LEFT", 5, -18)
-				_G.PetFrame.lvlText:SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
-				_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet") or "")
-			end
-			local function updPetLevel()
-				if not _G.PetFrame:IsShown() then return end
-				-- handle in combat
-				if _G.InCombatLockdown() then
-				    aObj:add2Table(aObj.oocTab, {updPetLevel, {}})
-	                return
-				else
-					_G.C_Timer.After(0.5, function()
-						_G.PetFrame.lvlText:SetText(_G.UnitLevel("pet"))
-						_G.PetFrame.lvlText:Show()
-					end)
-				end
-			end
-			updPetLevel()
-			-- get pet's level when pet changed
-			self:SecureHookScript(_G.PetFrame, "OnShow", function(this)
-				updPetLevel()
-			end)
-			-- update pet's level when changed
-			aObj:RegisterEvent("UNIT_LEVEL", function(event, arg1, ...)
-				if arg1 == "pet" then
-					updPetLevel()
-				end
-			end)
-		else
-			if _G.PetFrame.lvlText then
-				_G.PetFrame.lvlText:Hide()
-				aObj:UnregisterEvent("UNIT_PET")
-				aObj:UnregisterEvent("UNIT_LEVEL")
-			end
 		end
 
 	end

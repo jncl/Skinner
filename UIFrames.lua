@@ -5270,16 +5270,18 @@ aObj.blizzFrames[ftype].StaticPopupSpecial = function(self)
 	if not self.prdb.StaticPopup or self.initialized.StaticPopup then return end
 	self.initialized.StaticPopupSpecial = true
 
-	self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Border)
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
-		if self.modBtns then
-			self:skinStdButton{obj=this.AcceptButton}
-			self:skinStdButton{obj=this.DeclineButton}
-		end
+	if not self.isClassic then
+		self:SecureHookScript(_G.PetBattleQueueReadyFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Border)
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+			if self.modBtns then
+				self:skinStdButton{obj=this.AcceptButton}
+				self:skinStdButton{obj=this.DeclineButton}
+			end
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
+	end
 
 	self:SecureHook(_G.PlayerReportFrame, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
