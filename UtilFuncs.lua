@@ -4,22 +4,6 @@ local _G = _G
 
 local assert, debugstack, ipairs, pairs, rawget, select, type, print, tostring, Round = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.print, _G.tostring, _G.Round
 
--- populate addon Index table first time through
-local addonIdx, uName = {}, _G.UnitName("player")
-do
-	for i = 1, _G.GetNumAddOns() do
-		-- aObj:Printf("%s, %s", i, _G.GetAddOnInfo(i))
-		addonIdx[_G.GetAddOnInfo(i)] = i
-	end
-
-	-- handle specific lowercase name
-	if addonIdx["spew"] then
-		addonIdx["Spew"] = addonIdx["spew"]
-		addonIdx["spew"] = nil
-	end
-
-end
-
 local tmpTab = {}
 local function getObjFromString(input)
 
@@ -709,13 +693,28 @@ function aObj:hookScript(obj, method, func)
 
 end
 
+-- populate addon Index table
+local addonIdx = {}
+do
+	for i = 1, _G.GetNumAddOns() do
+		-- aObj:Printf("%s, %s", i, _G.GetAddOnInfo(i))
+		addonIdx[_G.GetAddOnInfo(i)] = i
+	end
+
+	-- handle specific lowercase name
+	if addonIdx["spew"] then
+		addonIdx["Spew"] = addonIdx["spew"]
+		addonIdx["spew"] = nil
+	end
+
+end
 function aObj:isAddonEnabled(addonName)
 --@alpha@
 	assert(addonName, "Unknown object isAddonEnabled\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
 	if addonIdx[addonName] then
-		return (_G.GetAddOnEnableState(uName, addonIdx[addonName]) > 0) or _G.IsAddOnLoadOnDemand(addonName)
+		return (_G.GetAddOnEnableState(self.uName, addonIdx[addonName]) > 0) or _G.IsAddOnLoadOnDemand(addonName)
 	end
 
 end
