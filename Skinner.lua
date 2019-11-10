@@ -8,32 +8,15 @@ do
 	-- check to see if required libraries are loaded
 	assert(LibStub, aName .. " requires LibStub")
 	local lTab = {"AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceLocale-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigCmd-3.0", "AceConfigRegistry-3.0", "AceConfigDialog-3.0", "CallbackHandler-1.0", "LibSharedMedia-3.0", "LibDataBroker-1.1", "LibDBIcon-1.0"}
-	for _, lib in ipairs(lTab) do
-		local hasError = not assert(LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
+	local hasError
+	for _, lib in pairs(lTab) do
+		hasError = not assert(LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
 	end
 	lTab = nil
 	if hasError then return end
 
 	-- create the addon
 	LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
-
-	-- add callbacks
-	aObj.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
-
-	-- get Locale
-	aObj.L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
-
-	-- pointer to LibSharedMedia-3.0 library
-	aObj.LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
-	-- pointer to LibDBIcon-1.0 library
-	aObj.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
-
-	-- define tables to hold skin functions
-	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
-	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
-
-	-- store player class
-	aObj.uCls = select(2, _G.UnitClass("player"))
 
 	local buildInfo = {
 		clsc = {"1.13.2", 32089},
@@ -51,33 +34,28 @@ do
 	aObj.isPTR = agentUID:find("wow_ptr") and true or false
 
 	-- check current build number against live, if greater then it's a patch
-	aObj.isPatch = not aObj.isClassic and not aObj.isBeta and not aObj.isPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.live[2] and true or false
+	aObj.isPatch = not aObj.isClassic and not aObj.isBeta and not aObj.isPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2] and true or false
 
 --@alpha@
-	aObj:Printf("%s, %s, %s, %s, %s, %s, %s", buildInfo.live[1], buildInfo.live[2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
-	local vTxt = "Retail"
-	if aObj.isClassic then
-		vTxt = "Classic"
-	elseif aObj.isBeta then
-		vTxt = "Beta"
-	elseif aObj.isPTR then
-		vTxt = "PTR"
-	elseif aObj.isPatch then
-		vTxt = "Patched"
-	end
-	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vTxt .. " version", 0.75, 0.5, 0.25, nil, true)
-	vTxt = nil
+	local vType = aObj.isClassic and "Classic" or aObj.isBeta and "Beta" or aObj.isPTR and "PTR" or aObj.isPatch and "Patched" or "Retail"
+	aObj:Printf("%s, %s, %s, %s, %s, %s, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
+	vType = nil
 --@end-alpha@
 
 	-- handle PTR changes going Live
 	if aObj.isPatch
-	and buildInfo.curr[1] > buildInfo.live[1]
+	and buildInfo.curr[1] > buildInfo.retail[1]
 	then
 		aObj.isPTR = true
 	end
 
 	_G.wipe(buildInfo)
 	agentUID = nil
+
+	-- define tables to hold skin functions
+	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
+	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
 end
 
@@ -98,6 +76,19 @@ function aObj:OnInitialize()
 		self:Debug("Patch detected")
 	end
 --@end-alpha@
+
+	-- add callbacks
+	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
+	-- get Locale
+	self.L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
+	-- pointer to LibSharedMedia-3.0 library
+	self.LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
+	-- pointer to LibDBIcon-1.0 library
+	self.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
+	-- store player class
+	self.uCls = select(2, _G.UnitClass("player"))
+	-- store player name
+	self.uName = _G.UnitName("player")
 
 	-- setup the default DB values and register them
 	self:checkAndRun("SetupDefaults", "opt", false, true)
