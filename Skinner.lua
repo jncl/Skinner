@@ -26,22 +26,23 @@ do
 	}
 
 	buildInfo.curr = {_G.GetBuildInfo()}
-	local agentUID = _G.GetCVar("agentUID")
 
+	local agentUID = _G.GetCVar("agentUID")
 	-- check to see which server we are running on
 	aObj.isClassic = agentUID:find("wow_classic") and true or false
-	aObj.isBeta = agentUID:find("_beta") and true or false
-	aObj.isPTR = agentUID:find("wow_ptr") and true or false
-
+	aObj.isBeta    = agentUID:find("_beta") and true or false
+	aObj.isPTR     = agentUID:find("wow_ptr") and true or false
 	-- check current build number against live, if greater then it's a patch
 	aObj.isPatch = not aObj.isClassic and not aObj.isBeta and not aObj.isPTR and _G.tonumber(buildInfo.curr[2]) > buildInfo.retail[2] and true or false
 
 --@alpha@
-	local vType = aObj.isClassic and "Classic" or aObj.isBeta and "Beta" or aObj.isPTR and "PTR" or aObj.isPatch and "Patched" or "Retail"
+	local vType = aObj.isClassic and "Classic" or aObj.isBeta and "Beta" or aObj.isPTR and "PTR" or "Retail"
 	aObj:Printf("%s, %s, %s, %s, %s, %s, %s", buildInfo[vType:lower()][1], buildInfo[vType:lower()][2], buildInfo.curr[1], buildInfo.curr[2], buildInfo.curr[3], buildInfo.curr[4] , agentUID)
+	vType = aObj.isPatch and "Patched" or vType
 	_G.DEFAULT_CHAT_FRAME:AddMessage(aName .. ": Detected that we're running on a " .. vType .. " version", 0.75, 0.5, 0.25, nil, true)
 	vType = nil
 --@end-alpha@
+	agentUID = nil
 
 	-- handle PTR changes going Live
 	if aObj.isPatch
@@ -51,7 +52,6 @@ do
 	end
 
 	_G.wipe(buildInfo)
-	agentUID = nil
 
 	-- define tables to hold skin functions
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
