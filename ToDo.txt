@@ -77,8 +77,5 @@ x			- ReputationFrame
 			- UIPanelTemplates
 			- UnitPowerBarAlt
 
-√	S/C	Skillet, requested by amey0, 30.10.19
+	S	buff o mat, requested by amey0, 12.11.19
 
-	I	FriendsFrame, reported by EpidemeDaBear, 04.10.19
-√		- Skinner\PlayerFrames.lua:2625: attempt to index field 'AddFriendNoteFrameScrollFrame' (a nil value)
-		Skinner\PlayerFrames.lua:2625: in function <Skinner\PlayerFrames.lua:2617>
