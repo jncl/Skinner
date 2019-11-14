@@ -77,5 +77,5 @@ x			- ReputationFrame
 			- UIPanelTemplates
 			- UnitPowerBarAlt
 
-	S	buff o mat, requested by amey0, 12.11.19
+√	S\C	buff'O'mat, requested by amey0, 12.11.19
 
