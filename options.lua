@@ -67,6 +67,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		FlightMap            = true,
 		GossipFrame          = true,
 		GuildRegistrar       = true,
+		ItemInteractionUI    = self.isPTR and true or nil,
 		ItemUpgradeUI        = true,
 		MerchantFrame        = true,
 		Petition             = true,
@@ -862,6 +863,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Guild Registrar Frame"],
 					desc = self.L["Toggle the skin of the Guild Registrar Frame"],
 				},
+				ItemInteractionUI = self.isPTR and {
+					type = "toggle",
+					name = self.L["Item Interaction UI"],
+					desc = self.L["Toggle the skin of the Item Interaction UI"],
+				} or nil,
 				ItemUpgradeUI = {
 					type = "toggle",
 					name = self.L["Item Upgrade UI"],

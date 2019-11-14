@@ -670,6 +670,26 @@ aObj.blizzFrames[ftype].GuildRegistrar = function(self)
 
 end
 
+aObj.blizzLoDFrames[ftype].ItemInteractionUI = function(self) -- a.k.a. Titanic Purification
+	if not self.prdb.ItemInteractionUI or self.initialized.ItemInteractionUI then return end
+	self.initialized.ItemInteractionUI = true
+
+	self:SecureHookScript(_G.ItemInteractionFrame, "OnShow", function(this)
+
+		-- use module to create button border
+		self.modUIBtns:addButtonBorder{obj=this.ItemSlot, relTo=this.ItemSlot.Icon, clr="grey"}
+		this.ButtonFrame:DisableDrawLayer("BORDER")
+		this.ButtonFrame.MoneyFrameEdge:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+		if self.modBtns then
+			self:skinStdButton{obj=this.ButtonFrame.ActionButton}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
+
+end
+
 aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 	if not self.prdb.ItemUpgradeUI or self.initialized.ItemUpgradeUI then return end
 	self.initialized.ItemUpgradeUI = true

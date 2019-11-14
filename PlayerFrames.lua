@@ -528,7 +528,9 @@ aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
 					stateFrame.Shadow:SetAlpha(0)
 					stateFrame.Ring:SetAlpha(0)
 					stateFrame.HighlightRing:SetAlpha(0)
-				elseif j == 1 then -- Minor Milestone
+				elseif j == 1
+				and stateFrame:GetNumRegions() == 7
+				then -- Minor Milestone
 					stateFrame.Ring:SetAlpha(0)
 					stateFrame.HighlightRing:SetAlpha(0)
 				end
