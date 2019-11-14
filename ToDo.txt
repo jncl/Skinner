@@ -42,7 +42,7 @@ x			- WM_InvasionDataProvider
 x			- DropDownToggleButton.xml
 ?			- QueueUpdater.lua
 			- TalentRankDisplayTemplate
-			- ItemInteractionUI
+¶√			- ItemInteractionUI
 			- Helix
 		- Deleted
 √			- AuctionUI
@@ -76,6 +76,4 @@ x			- ReputationFrame
 			- SharedUIPanelTemplates
 			- UIPanelTemplates
 			- UnitPowerBarAlt
-
-√	S\C	buff'O'mat, requested by amey0, 12.11.19
-
+x			- AzeriteEssencesUI
