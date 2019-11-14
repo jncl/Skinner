@@ -1,3 +1,15 @@
+beta8.32494.1
+Jncl:
+	ToDo.txt
+	Use button border colours
+	Skinned Buff'o'mat
+	Updated Change_History.txt
+	Updated version numbers
+	Updated Library check table
+	Updated debug messages
+	Updated SpellBookFrame skin
+	Removed TOC entry for unused library
+
 beta8.32414.1
 Jncl:
 	ToDo.txt
