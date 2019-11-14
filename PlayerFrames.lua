@@ -4279,7 +4279,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 			btn = _G["SpellBookSkillLineTab" .. i]
 			self:removeRegions(btn, {1}) -- N.B. other regions are icon and highlight
 			if self.modBtnBs then
-				self:addButtonBorder{obj=btn, clr=btn:GetNormalTexture():IsDesaturated() and "grey" or nil}
+				self:addButtonBorder{obj=btn, clr=btn.isOffSpec and "grey" or "default"}
 			end
 			if i == 1 then
 				self:moveObject{obj=btn, x=2}
@@ -4291,7 +4291,7 @@ aObj.blizzFrames[ftype].SpellBookFrame = function(self)
 				local btn
 				for i = 1, _G.MAX_SKILLLINE_TABS do
 					btn = _G["SpellBookSkillLineTab" .. i]
-					self:clrBtnBdr(btn, btn:GetNormalTexture():IsDesaturated() and "grey" or "default", 1)
+					self:clrBtnBdr(btn, btn.isOffSpec and "grey" or "default", 1)
 				end
 				btn = nil
 			end)
