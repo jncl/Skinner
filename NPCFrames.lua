@@ -146,9 +146,8 @@ if aObj.isPTR then
 				this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 				if self.modBtns then
-					self:skinStdButton{obj=this.RightDisplay.StoreButton, x1=14, y1=2, x2=-14, y2=2}
-					this.RightDisplay.StoreButton.sb:SetBackdropBorderColor(self:getColourByName("gold"))
-				end
+					self:skinStdButton{obj=this.RightDisplay.StoreButton, aso={bbclr="gold"}, x1=14, y1=2, x2=-14, y2=2}
+-				end
 				self:Unhook(this, "OnShow")
 			end)
 			self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
@@ -366,8 +365,7 @@ else
 				this.Token:DisableDrawLayer("BACKGROUND")
 				if self.modBtns then
 					self:skinStdButton{obj=this.Buyout}
-					self:skinStdButton{obj=_G.StoreButton, x1=14, y1=2, x2=-14, y2=2}
-					_G.StoreButton.sb:SetBackdropBorderColor(self:getColourByName("gold"))
+					self:skinStdButton{obj=_G.StoreButton, aso={bbclr="gold"}, x1=14, y1=2, x2=-14, y2=2}
 				end
 				self:Unhook(this, "OnShow")
 			end)

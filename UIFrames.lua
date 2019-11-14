@@ -3920,13 +3920,13 @@ aObj.blizzFrames[ftype].MenuFrames = function(self)
 end
 
 aObj.blizzFrames[ftype].Minimap = function(self)
-	if IsAddOnLoaded("SexyMap") then
-		aObj.blizzFrames[ftype].Minimap = nil
-		return
-	end
-
 	if not self.prdb.Minimap.skin or self.initialized.Minimap then return end
 	self.initialized.Minimap = true
+
+	if IsAddOnLoaded("SexyMap") then
+		self.blizzFrames[ftype].Minimap = nil
+		return
+	end
 
 	-- fix for Titan Panel moving MinimapCluster
 	if IsAddOnLoaded("Titan") then _G.TitanMovable_AddonAdjust("MinimapCluster", true) end
@@ -3942,7 +3942,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- World Map Button
 	_G.MiniMapWorldMapButton:ClearAllPoints()
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
-	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M"}
+	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", aso={bbclr="grey"}}
 
 	-- Minimap
 	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
@@ -3976,15 +3976,15 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- Buttons
 	-- on LHS
 	local yOfs = -18 -- allow for GM Ticket button
-	local function skinmmBut(name)
+	local function skinMmBut(name)
 		if _G["MiniMap" .. name] then
 			_G["MiniMap" .. name]:ClearAllPoints()
 			_G["MiniMap" .. name]:SetPoint("TOPRIGHT", _G.Minimap, "TOPLEFT", 0, yOfs)
 			yOfs = yOfs - _G["MiniMap" .. name]:GetHeight() + 3
 		end
 	end
-	skinmmBut("Tracking")
-	skinmmBut("VoiceChatFrame")
+	skinMmBut("Tracking")
+	skinMmBut("VoiceChatFrame")
 	yOfs = nil
 	-- on RHS
 	_G.MiniMapMailFrame:ClearAllPoints()
@@ -4040,7 +4040,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if not self.modBtns then return end
 
 	local minBtn = self.prdb.MinimapButtons.style
-	local asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}
+	local asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil, bbclr="gold"}
 
 	local function mmKids(mmObj)
 
@@ -4075,9 +4075,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				end
 				if not minBtn then
 					if objType == "Button" then
-						aObj:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype}
+						aObj:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype, aso={bbclr="gold"}}
 					else
-						aObj:addSkinFrame{obj=obj, ft=ftype}
+						aObj:addSkinFrame{obj=obj, ft=ftype, aso={bbclr="gold"}}
 					end
 				end
 			elseif objType == "Frame"
@@ -4096,7 +4096,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
-		aObj:addSkinFrame{obj=obj, ft=ftype, aso=asopts, ofs=4}
+		aObj:addSkinFrame{obj=obj, ft=ftype, nb=true, aso=asopts, ofs=4}
 		-- make sure textures appear above skinFrame
 		_G.RaiseFrameLevelByTwo(obj)
 		_G.LowerFrameLevel(obj.sf)
@@ -4116,10 +4116,10 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		_G.MiniMapTrackingButtonBorder:SetTexture(nil)
 		if not minBtn then
 			_G.MiniMapTracking:SetScale(0.9)
-			self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype, nb=true}
+			self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype, nb=true, aso={bbclr="gold"}}
 		end
 		_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
-		self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
+		self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true, aso={bbclr="gold"}}
 		-- skin any moved Minimap buttons if required
 		if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
 		-- show the Bongos minimap icon if required
@@ -4132,13 +4132,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end, true)
 		_G.C_Timer.After(0.25, function()
 			_G.GameTimeFrame:SetSize(28, 28)
-			self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, ofs=4}
+			self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, aso={bbclr="gold"}, ofs=4}
 			self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-2}
 			_G.GameTimeFrame.timeOfDay = 0
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10}, x1=4, y1=-3}
+		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10, bbclr="gold"}, x1=4, y1=-3}
 		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
@@ -4212,7 +4212,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				end
 			end
 
-			aObj:addSkinButton{obj=btn, parent=btn, sap=true}
+			aObj:addSkinButton{obj=btn, parent=btn, sap=true, aso={bbclr="gold"}}
 
 		end
 		-- wait until all AddOn skins have been loaded
@@ -5368,9 +5368,8 @@ aObj.blizzFrames[ftype].TimeManager = function(self)
 
 	-- TimeManagerClockButton on the Minimap
 	if not IsAddOnLoaded("SexyMap") then
-		-- Time Manager Clock Button
 		if not self.prdb.Minimap.style then
-			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, kfs=true, nb=true, x1=14, y1=-3, x2=-8, y2=5}
+			self:addSkinFrame{obj=_G.TimeManagerClockButton, ft=ftype, kfs=true, nb=true, aso={bbclr="grey"}, x1=14, y1=-3, x2=-8, y2=5}
 		end
 	end
 
@@ -5800,8 +5799,7 @@ aObj.blizzFrames[ftype].WorldMap = function(self)
 			-- Tracking Options Button
 			if oFrame.IconOverlay then
 				if self.modBtns then
-					self:skinStdButton{obj=oFrame, y2=3}
-					oFrame.sb:SetBackdropBorderColor(self:getColourByName("gold"))
+					self:skinStdButton{obj=oFrame, aso={bbclr="gold"}, y2=3}
 				end
 				oFrame:DisableDrawLayer("BACKGROUND")
 				oFrame.Border:SetTexture(nil)

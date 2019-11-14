@@ -512,7 +512,7 @@ local function __applySkin(opts)
 		if opts.bbclr then
 			r, g, b, a = aObj:getColourByName(opts.bbclr)
 		else
-			r, g, b, a = aObj.bbClr:GetRGBA()
+			r, g, b, a = aObj:getColourByName("default")
 		end
 		opts.obj:SetBackdropBorderColor(r, g, b, opts.bba or a)
 		r, g, b, a = nil, nil ,nil ,nil
