@@ -1,3 +1,24 @@
+beta8.32414.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Updated core code
+	Updated QuickJoinFrame skin
+	Updated AddFriendFrame skin
+	Updated ReputationFrame skin
+	Updated MenuFrames skin
+	Updated LFGDungeanReadyDialog skin
+	Updated ClassicSupport code
+	Updated PVPReadyDialog skin
+	Updated addonIndex code
+	PTR changes
+	Updated ButtonBorder colouring
+	Updated Guild Roster Manager, Leatrix Plus & Skillet skins
+	Bugfix for PetFrame
+	Put skinning functions into MainFuncs file
+	Updated Minimap skin
+
 beta8.32272.1
 Jncl:
 	ToDo.txt
