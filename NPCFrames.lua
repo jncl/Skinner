@@ -147,7 +147,7 @@ if aObj.isPTR then
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true}
 				if self.modBtns then
 					self:skinStdButton{obj=this.RightDisplay.StoreButton, aso={bbclr="gold"}, x1=14, y1=2, x2=-14, y2=2}
--				end
+				end
 				self:Unhook(this, "OnShow")
 			end)
 			self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
