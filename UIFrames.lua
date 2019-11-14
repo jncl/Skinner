@@ -4040,7 +4040,6 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 	if not self.modBtns then return end
 
 	local minBtn = self.prdb.MinimapButtons.style
-	local asopts = {ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil, bbclr="gold"}
 
 	local function mmKids(mmObj)
 
@@ -4090,13 +4089,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		objName, objType = nil, nil
 
 	end
-	local function makeBtnSquare(obj, x1, y1, x2, y2)
+	local function makeBtnSquare(obj, x1, y1, x2, y2, clr)
 
 		obj:SetSize(26, 26)
 		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
-		aObj:addSkinFrame{obj=obj, ft=ftype, nb=true, aso=asopts, ofs=4}
+		aObj:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil, bbclr=clr}, ofs=4}
 		-- make sure textures appear above skinFrame
 		_G.RaiseFrameLevelByTwo(obj)
 		_G.LowerFrameLevel(obj.sf)
@@ -4110,7 +4109,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	if not self.isClassic then
 		-- Calendar button
-		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
+		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6, "gold")
 		-- MinimapBackdrop
 		_G.MiniMapTrackingBackground:SetTexture(nil)
 		_G.MiniMapTrackingButtonBorder:SetTexture(nil)
@@ -4237,9 +4236,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		-- Garrison Landing Page Minimap button
 		local function skinGLPM(btn)
 			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then -- BfA
-				makeBtnSquare(btn, 0.30, 0.70, 0.26, 0.70)
+				makeBtnSquare(btn, 0.30, 0.70, 0.26, 0.70, "orange")
 			else
-				makeBtnSquare(btn, 0.25, 0.76, 0.32, 0.685)
+				makeBtnSquare(btn, 0.25, 0.76, 0.32, 0.685, "orange")
 			end
 		end
 		skinGLPM(_G.GarrisonLandingPageMinimapButton)
@@ -4247,6 +4246,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			skinGLPM(this)
 		end)
 	end
+
+	minBtn = nil
 
 end
 
@@ -4451,7 +4452,7 @@ aObj.blizzLoDFrames[ftype].OrderHallUI = function(self)
 	local function skinBtns(frame)
 		for btn in frame.buttonPool:EnumerateActive() do
 			if aObj.modBtnBs then
-				aObj:addButtonBorder{obj=btn, relTo=btn.Icon}
+				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, ofs=3}
 				if btn.Border:GetAtlas() == "orderhalltalents-spellborder-yellow"
 				and btn.Border:IsShown()
 				or btn.talent.researched then

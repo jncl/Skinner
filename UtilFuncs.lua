@@ -526,6 +526,8 @@ function aObj:getColourByName(clrName)
 		r, g, b = _G.PASSIVE_SPELL_FONT_COLOR:GetRGB()
 	elseif clrName == "normal" then
 		r, g, b = _G.NORMAL_FONT_COLOR:GetRGB()
+	elseif clrName == "orange" then -- GarrisonLandingPageMinimapButton border
+		r, g, b = _G.ORANGE_FONT_COLOR:GetRGB()
 	elseif clrName == "selected" then
 		r, g, b = _G.PAPER_FRAME_EXPANDED_COLOR:GetRGB()
 	elseif clrName == "sepia" then -- RAF rewards
