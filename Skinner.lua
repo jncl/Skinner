@@ -19,11 +19,11 @@ do
 	LibStub:GetLibrary("AceAddon-3.0"):NewAddon(aObj, aName, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 	local buildInfo = {
-		retail = {"8.2.5", 32305},
+		beta    = {"9.0.0", 99999},
 		classic = {"1.13.2", 32421},
-		beta = {"9.0.0", 99999},
-		ptr = {"8.3.0", 32414},
-	}
+		ptr     = {"8.3.0", 32489},
+		retail  = {"8.2.5", 32494},
+     	}
 
 	buildInfo.curr = {_G.GetBuildInfo()}
 
