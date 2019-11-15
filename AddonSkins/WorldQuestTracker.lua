@@ -2,51 +2,27 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("WorldQuestTracker") then return end
 local _G = _G
 
-aObj.addonsToSkin.WorldQuestTracker = function(self) -- v8.0.1.332-RC4
+aObj.addonsToSkin.WorldQuestTracker = function(self) -- v 8.2.5.385
 
-	if self.modBtnBs then
-		self:SecureHook("ToggleQuestLog", function()
-			_G.C_Timer.After(1, function()
-				if _G.WorldQuestTrackerGoToHordeButton then
-					self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton}
-					self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton}
-				end
-			end)
-			self:Unhook(this, "ToggleQuestLog")
-		end)
-	end
-
-	self:SecureHook("ToggleWorldMap", function()
-		if _G.WorldQuestTrackerSummaryUpPanel
-		and _G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll
-		and not _G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll.ScrollBar.sknd
-		then
+	self:SecureHook(_G.WorldQuestTrackerAddon, "OnToggleWorldMap", function(this)
+		if _G.WorldMapFrame.firstRun then
+			_G.WorldQuestTrackerToggleQuestsSummaryButton.Background:SetTexture(nil)
+			_G.WorldQuestTrackerToggleQuestsButton.Background:SetTexture(nil)
+			_G.WorldQuestTrackerCloseSummaryButton.Background:SetTexture(nil)
 			self:skinSlider{obj=_G.WorldQuestTrackerSummaryUpPanel.CharsQuestsScroll.ScrollBar, adj=-4, size=3}
-		end
-		if _G.WorldQuestTrackerZoneSummaryFrame
-		then
-			_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
-			_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
-		end
-		if self.modBtns then
-			if _G.WorldQuestTrackerCloseSummaryButton then
-				_G.WorldQuestTrackerCloseSummaryButton.Background:SetTexture(nil)
-				self:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close"}
+			if self.modBtns then
+				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton, clr="gold"}
+				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton, clr="gold"}
+				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsSummaryButton, aso={bbclr="gold"}, x1=4, x2=-4}
+				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, aso={bbclr="gold"}, x1=4, x2=-4}
+				self:skinOtherButton{obj=_G._G.WorldQuestTrackerCloseSummaryButton, font=self.fontS, text="Close", aso={bbclr="gold"}}
 			end
-			if _G.WorldQuestTrackerToggleQuestsSummaryButton then
-				_G.WorldQuestTrackerToggleQuestsSummaryButton.Background:SetTexture(nil)
-				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsSummaryButton, x1=4, x2=-4}
-			end
-			if _G.WorldQuestTrackerToggleQuestsButton then
-				_G.WorldQuestTrackerToggleQuestsButton.Background:SetTexture(nil)
-				self:skinStdButton{obj=_G._G.WorldQuestTrackerToggleQuestsButton, x1=4, x2=-4}
-			end
-			if _G.WorldQuestTrackerGoToHordeButton then
-				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToHordeButton}
-				self:addButtonBorder{obj=_G.WorldQuestTrackerGoToAllianceButton}
-			end
+			self:Unhook(this, "OnToggleWorldMap")
 		end
 	end)
+
+	_G.WorldQuestTrackerZoneSummaryFrame.Header.Background:SetTexture(nil)
+	_G.WorldQuestTrackerSummaryHeader.BlackBackground:SetTexture(nil)
 
 	_G.WorldQuestTrackerQuestsHeader.Background:SetTexture(nil)
 	if self.modBtnBs then
