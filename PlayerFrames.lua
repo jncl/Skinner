@@ -3970,13 +3970,14 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 				this.SpecificFrame.buttons[i].Border:SetTexture(nil)
 			end
 			local btn
-			for _, bName in pairs{"RandomBG", "RandomEpicBG", "Arena1", "Brawl"} do
+			for _, bName in pairs{"RandomBG", "RandomEpicBG", "Arena1", "Brawl", "SpecialEvent"} do
 				btn = this.BonusFrame[bName .. "Button"]
 				btn.NormalTexture:SetTexture(nil)
 				btn:SetPushedTexture(nil)
 				btn.Reward.Border:SetTexture(nil)
 				if self.modBtnBs then
 					 self:addButtonBorder{obj=btn.Reward, relTo=btn.Reward.Icon, reParent={btn.Reward.EnlistmentBonus}, clr="gold"}
+					 btn.Reward.EnlistmentBonus:DisableDrawLayer("ARTWORK") -- ring texture
 				end
 			end
 			btn = nil
