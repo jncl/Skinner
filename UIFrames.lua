@@ -3942,7 +3942,7 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 	-- World Map Button
 	_G.MiniMapWorldMapButton:ClearAllPoints()
 	_G.MiniMapWorldMapButton:SetPoint("LEFT", _G.MinimapZoneTextButton, "RIGHT", -4, 0)
-	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M", aso={bbclr="grey"}}
+	self:skinOtherButton{obj=_G.MiniMapWorldMapButton, font=self.fontP, text="M"}
 
 	-- Minimap
 	_G.Minimap:SetMaskTexture([[Interface\Buttons\WHITE8X8]]) -- needs to be a square texture
@@ -4074,9 +4074,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				end
 				if not minBtn then
 					if objType == "Button" then
-						aObj:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype, aso={bbclr="gold"}}
+						aObj:addSkinButton{obj=obj, parent=obj, sap=true, ft=ftype}
 					else
-						aObj:addSkinFrame{obj=obj, ft=ftype, aso={bbclr="gold"}}
+						aObj:addSkinFrame{obj=obj, ft=ftype}
 					end
 				end
 			elseif objType == "Frame"
@@ -4089,13 +4089,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		objName, objType = nil, nil
 
 	end
-	local function makeBtnSquare(obj, x1, y1, x2, y2, clr)
+	local function makeBtnSquare(obj, x1, y1, x2, y2)
 
 		obj:SetSize(26, 26)
 		obj:GetNormalTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:GetPushedTexture():SetTexCoord(x1, y1, x2, y2)
 		obj:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
-		aObj:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil, bbclr=clr}, ofs=4}
+		aObj:addSkinFrame{obj=obj, ft=ftype, nb=true, aso={ba=minBtn and 0 or 1, bba=minBtn and 0 or 1, ng=minBtn and true or nil}, ofs=4}
 		-- make sure textures appear above skinFrame
 		_G.RaiseFrameLevelByTwo(obj)
 		_G.LowerFrameLevel(obj.sf)
@@ -4109,16 +4109,16 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 
 	if not self.isClassic then
 		-- Calendar button
-		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6, "gold")
+		makeBtnSquare(_G.GameTimeFrame, 0.1, 0.31, 0.16, 0.6)
 		-- MinimapBackdrop
 		_G.MiniMapTrackingBackground:SetTexture(nil)
 		_G.MiniMapTrackingButtonBorder:SetTexture(nil)
 		if not minBtn then
 			_G.MiniMapTracking:SetScale(0.9)
-			self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype, nb=true, aso={bbclr="gold"}}
+			self:addSkinFrame{obj=_G.MiniMapTracking, ft=ftype, nb=true}
 		end
 		_G.QueueStatusMinimapButtonBorder:SetTexture(nil)
-		self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true, aso={bbclr="gold"}}
+		self:addSkinButton{obj=_G.QueueStatusMinimapButton, ft=ftype, sap=true}
 		-- skin any moved Minimap buttons if required
 		if IsAddOnLoaded("MinimapButtonFrame") then mmKids(_G.MinimapButtonFrame) end
 		-- show the Bongos minimap icon if required
@@ -4131,13 +4131,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		end, true)
 		_G.C_Timer.After(0.25, function()
 			_G.GameTimeFrame:SetSize(28, 28)
-			self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, aso={bbclr="gold"}, ofs=4}
+			self:addSkinFrame{obj=_G.GameTimeFrame, ft=ftype, nb=true, ofs=4}
 			self:moveObject{obj=_G.GameTimeFrame, x=-6, y=-2}
 			_G.GameTimeFrame.timeOfDay = 0
 			_G.GameTimeFrame_Update(_G.GameTimeFrame)
 		end)
 		_G.MiniMapTrackingBorder:SetTexture(nil)
-		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10, bbclr="gold"}, x1=4, y1=-3}
+		self:addSkinFrame{obj=_G.MiniMapTrackingFrame, ft=ftype, nb=true, aso={bd=10}, x1=4, y1=-3}
 		self:moveObject{obj=_G.MiniMapTrackingFrame, x=-15}
 		self:moveObject{obj=_G.MiniMapMailFrame, y=-4}
 	end
@@ -4192,8 +4192,8 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 			clrZoomBtns()
 		end)
 		self:RegisterEvent("MINIMAP_UPDATE_ZOOM", clrZoomBtns)
-		btn, txt, xOfs, yOfs = nil, nil, nil, nil
 	end
+	btn, txt, xOfs, yOfs = nil, nil, nil, nil
 
 	-- skin other minimap buttons as required
 	if not minBtn then
@@ -4211,7 +4211,7 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 				end
 			end
 
-			aObj:addSkinButton{obj=btn, parent=btn, sap=true, aso={bbclr="gold"}}
+			aObj:addSkinButton{obj=btn, parent=btn, sap=true}
 
 		end
 		-- wait until all AddOn skins have been loaded
@@ -4236,9 +4236,9 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		-- Garrison Landing Page Minimap button
 		local function skinGLPM(btn)
 			if _G.C_Garrison.GetLandingPageGarrisonType() == _G.LE_GARRISON_TYPE_8_0 then -- BfA
-				makeBtnSquare(btn, 0.30, 0.70, 0.26, 0.70, "orange")
+				makeBtnSquare(btn, 0.30, 0.70, 0.26, 0.70)
 			else
-				makeBtnSquare(btn, 0.25, 0.76, 0.32, 0.685, "orange")
+				makeBtnSquare(btn, 0.25, 0.76, 0.32, 0.685)
 			end
 		end
 		skinGLPM(_G.GarrisonLandingPageMinimapButton)
