@@ -160,6 +160,7 @@ if not aObj.isPTR then
 	aObj:add2Table(funcs.NPC, { name = "AuctionUI", type = "LoD", keep = false, keepOpts = true })
 else
 	aObj:add2Table(funcs.NPC, { name = "AuctionHouseUI", type = "LoD", keep = false, keepOpts = true })
+	aObj:add2Table(funcs.NPC, { name = "ItemInteractionUI", type = "LoD", keep = false, keepOpts = true })
 end
 
 aObj.ClassicSupport = function(self)
