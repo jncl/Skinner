@@ -23,7 +23,7 @@ ToDos
 
 	O	Skin CommentatorTeamDisplay
 
-	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
+≈	O	Make sure all buttons with GOLD button borders need them as opposed to having a GREY border
 
 	N	PTR 8.3.0 (Visions of Z'Noth)
 		- Added
