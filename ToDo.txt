@@ -77,3 +77,7 @@ x			- ReputationFrame
 			- UIPanelTemplates
 			- UnitPowerBarAlt
 x			- AzeriteEssencesUI
+√			- QuestInfo
+
+	I	RollTrackerClassic, reported by amey0
+√		- background is skinned but frame isn't.
