@@ -1,9 +1,9 @@
-local aName, aObj = ...
+local _, aObj = ...
 
 local _G = _G
 local ftype = "u"
 
-local ipairs, pairs, unpack, Round = _G.ipairs, _G.pairs, _G.unpack, _G.Round
+local ipairs, pairs, Round = _G.ipairs, _G.pairs, _G.Round
 local IsAddOnLoaded = _G.IsAddOnLoaded
 
 -- The following functions are used by the GarrisonUI & OrderHallUI
@@ -1166,7 +1166,7 @@ aObj.blizzFrames[ftype].ChatBubbles = function(self)
 
 		_G.C_Timer.After(0.1, function()
 			 -- don't include forbidden Chat Bubbles (Bosses in Garrisons/Dungeons/Raids)
-			for k1, cBubble in pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
+			for _, cBubble in pairs(_G.C_ChatBubbles.GetAllChatBubbles(false)) do
 				aObj:addSkinFrame{obj=cBubble, ft=ftype, kfs=true, nb=true, aso={ba=0.5}, ofs=-10}
 				-- Region 1 is ChatBubbleTail texture, region 2 is the font string
 				if cBubble:GetNumRegions() == 2 then
@@ -1422,7 +1422,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i, val in ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_LEFT) do
 			skinCB("CombatConfigMessageTypesLeftCheckBox" .. i)
 			if val.subTypes then
-				for k, v in pairs(val.subTypes) do
+				for k, _ in pairs(val.subTypes) do
 					skinCB("CombatConfigMessageTypesLeftCheckBox" .. i .. "_" .. k)
 				end
 			end
@@ -1430,7 +1430,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i, val in ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_RIGHT) do
 			skinCB("CombatConfigMessageTypesRightCheckBox" .. i)
 			if val.subTypes then
-				for k, v in pairs(val.subTypes) do
+				for k, _ in pairs(val.subTypes) do
 					skinCB("CombatConfigMessageTypesRightCheckBox" .. i .. "_" .. k)
 				end
 			end
@@ -1438,7 +1438,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 		for i, val in ipairs(_G.COMBAT_CONFIG_MESSAGETYPES_MISC) do
 			skinCB("CombatConfigMessageTypesMiscCheckBox" .. i)
 			if val.subTypes then
-				for k, v in pairs(val.subTypes) do
+				for k, _ in pairs(val.subTypes) do
 					skinCB("CombatConfigMessageTypesMiscCheckBox" .. i .. "_" .. k)
 				end
 			end
@@ -4520,7 +4520,6 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.TopArtRight:SetTexture(nil)
 		this.TopVersus:SetTexture(nil)
 
-		local fw = this:GetWidth()
 		local tvw = this.TopVersus:GetWidth()
 		local tvh = this.TopVersus:GetHeight()
 
@@ -4587,7 +4586,7 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 		this.sfm:SetPoint("TOPLEFT", this.sfl, "TOPRIGHT", -8, 0)
 		this.sfm:SetPoint("TOPRIGHT", this.sfr, "TOPLEFT", 8, 0)
 		this.sfm:SetHeight(tvh * 0.8)
-		fw, tvw, tvh = nil, nil, nil
+		tvw, tvh = nil, nil
 
 		-- Bottom Frame
 		this.BottomFrame.RightEndCap:SetTexture(nil)
@@ -5577,8 +5576,8 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 	local function setTextColor(textObject)
 		self:rawHook(textObject, "SetTextColor", function(this, r, g, b, a)
 			-- aObj:Debug("textObject SetTextColor: [%s, %s, %s, %s, %s]", this, r, g, b, a)
-			local tcr, tcg, tcb, tca = aObj:round2(r, 2), aObj:round2(g, 2), aObj:round2(b, 2), aObj:round2(a or 1, 2)
-			-- aObj:Debug("SetTextColor: [%s, %s, %s, %s, %s]", this:GetText(), tcr, tcg, tcb, tca)
+			local tcr, tcg, tcb = aObj:round2(r, 2), aObj:round2(g, 2), aObj:round2(b, 2)
+			-- aObj:Debug("SetTextColor: [%s, %s, %s, %s, %s]", this:GetText(), tcr, tcg, tcb)
 			if (tcr == 0.41 or tcr == 0.28 and tcg == 0.02 and tcb == 0.02) -- Red
 			or (tcr == 0.08 and tcg == 0.17 or tcg == 0.16 and tcb == 0.37) -- Blue
 			or (tcr == 0.19 and tcg == 0.05 and tcb == 0.01) -- WarboardUI
@@ -5587,7 +5586,7 @@ aObj.blizzFrames[ftype].UIWidgets = function(self)
 			else
 				self.hooks[this].SetTextColor(this, r, g, b, a)
 			end
-			tcg, tcb, tca = nil, nil, nil
+			tcg, tcb = nil, nil
 			return tcr
 		end, true)
 		return textObject:SetTextColor(textObject:GetTextColor())

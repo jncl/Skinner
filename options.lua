@@ -204,7 +204,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 
 	local db = self.db.profile
 	local dflts = self.db.defaults.profile
-	local bggns = _G.IsAddOnLoaded("Baggins") and self.Baggins and true or false
+	local bggns = IsAddOnLoaded("Baggins") and self.Baggins and true or false
 
 	local function reskinIOFBackdrop()
 		-- show changes by reskinning the Interface Options Frame with the new settings
@@ -681,7 +681,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					desc = self.L["Set Gradient Maximum Colour"],
 					hasAlpha = true,
 				},
-				BagginsBBC = _G.IsAddOnLoaded("Baggins") and self.Baggins and {
+				BagginsBBC = IsAddOnLoaded("Baggins") and self.Baggins and {
 					type = "color",
 					order = -1,
 					width = "double",
@@ -779,7 +779,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				db[info[#info]] = value
 				-- handle Blizzard LoD Addons
 				if self.blizzLoDFrames.n[info[#info]] then
-					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "n", true)
 					end
 				else self:checkAndRun(info[#info], "n") end
@@ -934,7 +934,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				db[info[#info]] = value
 				-- handle Blizzard LoD Addons
 				if self.blizzLoDFrames.p[info[#info]] then
-					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "p", true)
 					end
 				else self:checkAndRun(info[#info], "p") end
@@ -966,7 +966,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					get = function(info) return db.AchievementUI[info[#info]] end,
 					set = function(info, value)
 						db.AchievementUI[info[#info]] = value
-						if _G.IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
+						if IsAddOnLoaded("Blizzard_AchievementUI") then	self:checkAndRun("AchievementUI", "p", true) end
 					end,
 					args = {
 						skin = {
@@ -1275,7 +1275,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 				elseif info[#info] == "ChatTabsFade" then return
 				-- handle Blizzard LoD Addons
 				elseif self.blizzLoDFrames.u[info[#info]] then
-					if _G.IsAddOnLoaded("Blizzard_" .. info[#info]) then
+					if IsAddOnLoaded("Blizzard_" .. info[#info]) then
 						self:checkAndRun(info[#info], "u", true)
 					end
 				else self:checkAndRun(info[#info], "u") end
@@ -1328,7 +1328,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					set = function(info, value)
 						db.BattlefieldMap[info[#info]] = value
 						if info[#info] == "skin" then
-							if _G.IsAddOnLoaded("Blizzard_BattlefieldMap") then
+							if IsAddOnLoaded("Blizzard_BattlefieldMap") then
 								self:checkAndRun("BattlefieldMap", "u", true)
 							end
 						elseif info[#info] == "gloss" and _G.BattlefieldMap.sf then

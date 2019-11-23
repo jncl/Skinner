@@ -1109,12 +1109,12 @@ aObj.ClassicSupport = function(self)
 			for header in this.headerButtonPool:EnumerateActive() do
 				header:GetNormalTexture():SetTexture(nil)
 			end
-			for textChannel in this.textChannelButtonPool:EnumerateActive() do
-			end
-			for voiceChannel in this.voiceChannelButtonPool:EnumerateActive() do
-			end
-			for communityChannel in this.communityChannelButtonPool:EnumerateActive() do
-			end
+			-- for textChannel in this.textChannelButtonPool:EnumerateActive() do
+			-- end
+			-- for voiceChannel in this.voiceChannelButtonPool:EnumerateActive() do
+			-- end
+			-- for communityChannel in this.communityChannelButtonPool:EnumerateActive() do
+			-- end
 		end)
 
 		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
@@ -1538,9 +1538,9 @@ aObj.ClassicSupport = function(self)
 					end
 				end)
 				self:skinCloseButton{obj=_G.QuestLogFrameCloseButton}
-				self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, x2=2, x2=-2}
+				self:skinStdButton{obj=_G.QuestLogFrameAbandonButton, x1=2, x2=-2}
 				self:skinStdButton{obj=_G.QuestFrameExitButton}
-				self:skinStdButton{obj=_G.QuestFramePushQuestButton, x2=2, x2=-2}
+				self:skinStdButton{obj=_G.QuestFramePushQuestButton, x1=2, x2=-2}
 			end
 
 			self:SecureHook("QuestLog_UpdateQuestDetails", function(...)
@@ -1767,7 +1767,7 @@ aObj.ClassicSupport = function(self)
 end
 
 -- Load support for WoW Classic
-local success, err = _G.xpcall(function() return aObj.ClassicSupport(aObj) end, _G.geterrorhandler())
+local success, _ = _G.xpcall(function() return aObj.ClassicSupport(aObj) end, _G.geterrorhandler())
 if not success then
 	aObj:CustomPrint(1, 0, 0, "Error running ClassicSupport")
 end

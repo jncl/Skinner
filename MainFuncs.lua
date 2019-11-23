@@ -1,4 +1,4 @@
-local aName, aObj = ...
+local _, aObj = ...
 
 local _G = _G
 
@@ -160,7 +160,6 @@ end
 local function hideHeader(obj)
 
 	-- hide the Header Texture and move the Header text, if required
-	local hdr
 	for _, suff in pairs{"Header", "_Header", "_HeaderBox", "_FrameHeader", "FrameHeader", "HeaderTexture", "HeaderFrame"} do
 		if _G[obj:GetName() .. suff] then
 			_G[obj:GetName() .. suff]:Hide()
@@ -284,9 +283,9 @@ local function __addSkinFrame(opts)
 	aObj:applySkin(opts.aso)
 
 	-- adjust frame level
-	local success, err = _G.pcall(_G.LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
+	local success, _ = _G.pcall(_G.LowerFrameLevel, skinFrame) -- catch any error, doesn't matter if already 0
 	if not success then _G.RaiseFrameLevel(opts.obj) end -- raise parent's Frame Level if 0
-	success, err = nil, nil
+	success = nil
 
 	 -- make sure it's lower than its parent's Frame Strata
 	if opts.bg then skinFrame:SetFrameStrata("BACKGROUND") end

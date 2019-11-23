@@ -26,7 +26,6 @@ local unitFrames = {
 	"PlayerFrame",
 	"TargetFrame",
 }
-local unitBtns= {}
 
 module.isSkinned = _G.setmetatable({}, {__index = function(t, k) t[k] = true end})
 

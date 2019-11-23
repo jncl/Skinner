@@ -1,7 +1,7 @@
 local aName, aObj = ...
 local _G = _G
 
-local assert, CopyTable, debugstack, ipairs, pairs, rawget, Round, select, type, unpack = _G.assert, _G.CopyTable, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.Round, _G.select, _G.type, _G.unpack
+local assert, CopyTable, pairs, select, type, unpack = _G.assert, _G.CopyTable, _G.pairs, _G.select, _G.type, _G.unpack
 local LibStub = _G.LibStub
 
 do

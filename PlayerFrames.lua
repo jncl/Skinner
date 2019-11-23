@@ -3,7 +3,7 @@ local aName, aObj = ...
 local _G = _G
 local ftype = "p"
 
-local ipairs, pairs, unpack = _G.ipairs, _G.pairs, _G.unpack
+local ipairs, pairs = _G.ipairs, _G.pairs
 local IsAddOnLoaded = _G.IsAddOnLoaded
 
 aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
@@ -99,7 +99,6 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 
 			if aObj.modBtnBs then
 				aObj:addButtonBorder{obj=btn.icon, x1=4, y1=-1, x2=-4, y2=6}
-				btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
 				btn.icon.sbb:SetBackdropBorderColor(btn:GetBackdropBorderColor())
 				-- hook these to handle description text  & button border colour changes
 				aObj:SecureHook(btn, "Desaturate", function(this)
@@ -208,25 +207,21 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 		end, true)
 		-- hook this to colour the metaCriteria & Criteria text
 		self:SecureHook("AchievementObjectives_DisplayCriteria", function(objectivesFrame, id, renderOffScreen)
-			local r, g, b, a
 			for _, child in ipairs{objectivesFrame:GetChildren()} do
 				if child.shield then -- miniAchievement
 					-- do nothing
 				elseif child.label then -- metaCriteria
-					r, g, b, a = child.label:GetTextColor()
-					if g == 0 then -- completed criteria
+					if _G.select(2, child.label:GetTextColor()) == 0 then -- completed criteria
 						child.label:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
 						child.label:SetShadowOffset(1, -1)
 					end
 				elseif child.name then -- criteria
-					r, g, b, a = child.name:GetTextColor()
-					if g == 0 then -- completed criteria
+					if _G.select(2, child.name:GetTextColor()) == 0 then -- completed criteria
 						child.name:SetTextColor(_G.HIGHLIGHT_FONT_COLOR:GetRGB())
 						child.name:SetShadowOffset(1, -1)
 					end
 				end
 			end
-			r, g, b, a = nil, nil, nil, nil
 		end)
 
 		self:skinSlider{obj=_G.AchievementFrameStatsContainerScrollBar, wdth=-4}
@@ -542,12 +537,12 @@ aObj.blizzLoDFrames[ftype].AzeriteEssenceUI = function(self)
 		self:skinGlowBox(this.EssenceList.Tutorial, ftype, true)
 		if self.modBtnBs then
 			local function clrBB(sf)
-				for i, btn in ipairs(sf.buttons) do
+				for _, btn in ipairs(sf.buttons) do
 					btn.sbb:SetBackdropBorderColor(btn.Name:GetTextColor())
 				end
 			end
 			-- self:skinStdButton{obj=this.ScrollFrame.HeaderButton}
-			for i, btn in ipairs(this.EssenceList.buttons) do
+			for _, btn in ipairs(this.EssenceList.buttons) do
 				self:nilTexture(btn.Background, true)
 				self:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.IconCover, btn.Glow, btn.Glow2, btn.Glow3}, clr="grey"}
 			end
@@ -2054,7 +2049,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 	self.initialized.ContainerFrames = true
 
 	if not IsAddOnLoaded("LiteBag") then
-		local objName, cfpb
+		local objName
 		local function skinBag(frame, id)
 
 			objName = frame:GetName()
@@ -2788,12 +2783,12 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 		for header in this.headerButtonPool:EnumerateActive() do
 			header:GetNormalTexture():SetTexture(nil)
 		end
-		for textChannel in this.textChannelButtonPool:EnumerateActive() do
-		end
-		for voiceChannel in this.voiceChannelButtonPool:EnumerateActive() do
-		end
-		for communityChannel in this.communityChannelButtonPool:EnumerateActive() do
-		end
+		-- for textChannel in this.textChannelButtonPool:EnumerateActive() do
+		-- end
+		-- for voiceChannel in this.voiceChannelButtonPool:EnumerateActive() do
+		-- end
+		-- for communityChannel in this.communityChannelButtonPool:EnumerateActive() do
+		-- end
 	end)
 
 	self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
@@ -3142,7 +3137,7 @@ aObj.blizzLoDFrames[ftype].InspectUI = function(self)
 
 	self:SecureHookScript(_G.InspectPVPFrame, "OnShow", function(this)
 			self:keepFontStrings(this)
-			for i, slot in ipairs(this.Slots) do
+			for _, slot in ipairs(this.Slots) do
 				slot.Border:SetTexture(nil)
 				self:makeIconSquare(slot, "Texture", true)
 			end
@@ -3551,12 +3546,10 @@ aObj.blizzFrames[ftype].MirrorTimers = function(self)
 		-- Battleground/Arena/Island Expeditions Start Timer
 		local function skinTT(timer)
 
-			local bg
 			if not aObj.sbGlazed[timer.bar] then
 				_G[timer.bar:GetName() .. "Border"]:SetTexture(nil) -- animations
 				aObj:skinStatusBar{obj=timer.bar, fi=0}
 			end
-			bg = nil
 
 		end
 		self:SecureHook("StartTimer_SetGoTexture", function(timer)
@@ -3758,9 +3751,9 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	-- AutoPopup frames
 	if self.prdb.ObjectiveTracker.popups then
 		local function skinAutoPopUps()
-			local questID, popUpType, questTitle, block, blockContents
+			local questID, questTitle, block, blockContents
 			for i = 1, _G.GetNumAutoQuestPopUps() do
-				questID, popUpType = _G.GetAutoQuestPopUp(i)
+				questID, _ = _G.GetAutoQuestPopUp(i)
 				if not _G.IsQuestBounty(questID) then
 					questTitle = _G.GetQuestLogTitle(_G.GetQuestLogIndexByID(questID))
 					if questTitle
@@ -3794,7 +3787,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 					end
 				end
 			end
-			questID, popUpType, questTitle, block, blockContents = nil, nil, nil, nil, nil
+			questID, questTitle, block, blockContents = nil, nil, nil, nil
 		end
 
 		-- hook this to skin the AutoPopUps
@@ -3811,8 +3804,8 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 		for i = 1, #_G.ObjectiveTrackerFrame.MODULES do
 			module = _G.ObjectiveTrackerFrame.MODULES[i]
 			if module.ShowWorldQuests then
-				for k, blk in pairs(module.usedBlocks) do
-					for l, child in pairs{blk.ScrollContents:GetChildren()} do
+				for _, blk in pairs(module.usedBlocks) do
+					for _, child in pairs{blk.ScrollContents:GetChildren()} do
 						if child.Glow then
 							child.Glow:SetTexture(nil)
 							child.Sheen:SetTexture(nil)

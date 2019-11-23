@@ -99,7 +99,7 @@ local function safecall(funcName, funcObj, LoD, quiet)
  	-- handle errors from internal functions
 	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
 --@debug@
-	timeUsed = _G.Round(_G.debugprofilestop() - beginTime)
+	timeUsed = Round(_G.debugprofilestop() - beginTime)
 	if timeUsed > 5 then
 		_G.print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
 	end
@@ -418,8 +418,8 @@ function aObj:findFrame(height, width, children)
 		then
 			if obj:GetName() == nil then
 				if obj:GetParent() == nil then
-					if _G.Round(obj:GetHeight()) == height
-					and _G.Round(obj:GetWidth()) == width
+					if Round(obj:GetHeight()) == height
+					and Round(obj:GetWidth()) == width
 					then
 						_G.wipe(tmpTab)
 						for _, child in ipairs{obj:GetChildren()} do
@@ -467,8 +467,8 @@ function aObj:findFrame2(parent, objType, ...)
 					if select("#", ...) > 2 then
 						-- base checks on position
 						point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
-						xOfs = xOfs and _G.Round(xOfs) or 0
-						yOfs = yOfs and _G.Round(yOfs) or 0
+						xOfs = xOfs and Round(xOfs) or 0
+						yOfs = yOfs and Round(yOfs) or 0
 						if	point		  == select(1, ...)
 						and relativeTo	  == select(2, ...)
 						and relativePoint == select(3, ...)
@@ -480,7 +480,7 @@ function aObj:findFrame2(parent, objType, ...)
 						end
 					else
 						-- base checks on size
-						height, width = _G.Round(child:GetHeight()), _G.Round(child:GetWidth())
+						height, width = Round(child:GetHeight()), Round(child:GetWidth())
 						if	height == select(1, ...)
 						and width  == select(2, ...)
 						then
@@ -1095,16 +1095,16 @@ function aObj:setActiveTab(tabSF)
 	tabSF.tfade:SetGradientAlpha(self:getGradientInfo(self.prdb.Gradient.invert, self.prdb.Gradient.rotate))
 
 	if not tabSF.ignore and not tabSF.grown then
-		local point, relativeTo, relativePoint, xOfs, yOfs
+		local relativeTo, xOfs, yOfs
 		if not tabSF.up then
-			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
+			_, relativeTo, _, xOfs, yOfs = tabSF:GetPoint(2)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs - 6)
 		else
-			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
+			_, relativeTo, _, xOfs, yOfs = tabSF:GetPoint(1)
 			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs + 6)
 		end
 		tabSF.grown = true
-		point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
+		relativeTo, xOfs, yOfs = nil, nil, nil, nil, nil
 	end
 
 end
@@ -1121,16 +1121,16 @@ function aObj:setInactiveTab(tabSF)
 	tabSF.tfade:SetAlpha(1)
 
 	if not tabSF.ignore and tabSF.grown then
-		local point, relativeTo, relativePoint, xOfs, yOfs
+		local relativeTo, xOfs, yOfs
 		if not tabSF.up then
-			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(2)
+			_, relativeTo, _, xOfs, yOfs = tabSF:GetPoint(2)
 			tabSF:SetPoint("BOTTOMRIGHT", relativeTo, "BOTTOMRIGHT", xOfs, yOfs + 6)
 		else
-			point, relativeTo, relativePoint, xOfs, yOfs = tabSF:GetPoint(1)
+			_, relativeTo, _, xOfs, yOfs = tabSF:GetPoint(1)
 			tabSF:SetPoint("TOPLEFT", relativeTo, "TOPLEFT", xOfs, yOfs - 6)
 		end
 		tabSF.grown = nil
-		point, relativeTo, relativePoint, xOfs, yOfs = nil, nil, nil, nil, nil
+		relativeTo, xOfs, yOfs = nil, nil, nil
 	end
 
 end
@@ -1230,9 +1230,15 @@ function aObj:updateSBTexture()
 
 end
 
+local function printIt(text, frame, r, g, b)
+
+	(frame or _G.DEFAULT_CHAT_FRAME):AddMessage(text, r, g, b)
+
+end
+
 function aObj:CustomPrint(r, g, b, fstr, ...)
 
-	_G.DEFAULT_CHAT_FRAME:AddMessage("|cffffff78" .. aName .. ":|r " .. makeText(fstr, ...), r, g, b)
+	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(fstr, ...), nil, r, g, b)
 
 end
 
@@ -1242,8 +1248,8 @@ aObj.debugFrame = _G.ChatFrame10
 aObj.debugFrame:SetMaxLines(10000)
 function aObj:Debug(fstr, ...)
 
-	local output = ("|cff7fff7f(DBG) %s:[%s.%03d]|r"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
-	self.debugFrame:AddMessage(output .. " " .. makeText(fstr, ...))
+	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
+	printIt(_G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(fstr, ...), self.debugFrame)
 	output = nil
 
 end
@@ -1273,10 +1279,10 @@ local function print_family_tree(fName)
 	end
 
 	local lvl = "Parent"
-	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), _G.Round(fName:GetWidth()) or "nil", _G.Round(fName:GetHeight()) or "nil"))
+	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), Round(fName:GetWidth()) or "nil", Round(fName:GetHeight()) or "nil"))
 	while fName:GetParent() do
 		fName = fName:GetParent()
-		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), _G.Round(fName:GetWidth()) or "nil", _G.Round(fName:GetHeight()) or "nil"))
+		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), Round(fName:GetWidth()) or "nil", Round(fName:GetHeight()) or "nil"))
 		lvl = (lvl:find("Grand") and "Great" or "Grand") .. lvl
 	end
 	lvl = nil
@@ -1364,7 +1370,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 	local function getRegions(obj, lvl)
 
 		for k, reg in ipairs{obj:GetRegions()} do
-			showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and _G.Round(reg:GetWidth()) or "nil", reg.GetHeight and _G.Round(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
+			showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and Round(reg:GetWidth()) or "nil", reg.GetHeight and Round(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
 		end
 
 	end
@@ -1377,7 +1383,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
         local kids = {frame:GetChildren()}
         for k, child in ipairs(kids) do
 			local objType = child:GetObjectType()
-			showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and _G.Round(child:GetWidth()) or "nil", child.GetHeight and _G.Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
+			showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and Round(child:GetWidth()) or "nil", child.GetHeight and Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
 			if objType == "Frame"
 			or objType == "Button"
 			or objType == "StatusBar"
@@ -1392,7 +1398,7 @@ function aObj:ShowInfo(obj, showKids, noDepth)
 
 	end
 
-	showIt("%s : %s : %s : %s : %s : %s : %s", obj, _G.Round(obj:GetWidth()) or "nil", _G.Round(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil", obj:GetNumRegions(), obj:GetNumChildren())
+	showIt("%s : %s : %s : %s : %s : %s : %s", obj, Round(obj:GetWidth()) or "nil", Round(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil", obj:GetNumRegions(), obj:GetNumChildren())
 
 	showIt("Started Regions")
 	getRegions(obj, 0)
