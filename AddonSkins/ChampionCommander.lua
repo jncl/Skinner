@@ -3,7 +3,7 @@ if not aObj:isAddonEnabled("ChampionCommander") then return end
 local _G = _G
 
 -- loads with Blizzard_GarrisonUI
-aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.2 80100
+aObj.lodAddons.ChampionCommander = function(self) -- v 1.2.3.1 80205
 
 	-- tooltip
 	_G.C_Timer.After(0.1, function()
@@ -33,6 +33,7 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.2 80100
 				mBtn = nil
 			end
 			frame = nil
+
 			self:Unhook(this, "Menu")
 		end)
 		self:SecureHook(mLst, "AddMembers", function(this, frame)
@@ -46,6 +47,7 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.2 80100
 		end)
 		self:SecureHook(mLst, "NoMartiniNoParty", function(this, text)
 			self:addSkinFrame{obj=_G.BFAWarner, ft="a", kfs=true, nb=true}
+
 			self:Unhook(this, "NoMartiniNoParty")
 		end)
 		-- handle Alpha/beta versions' frame
@@ -55,6 +57,7 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.2 80100
 			then
 				self:addSkinFrame{obj=self:getLastChild(_G.BFAMissionFrame), ft="a", kfs=true, nb=true}
 			end
+
 			self:Unhook(this, "InitialSetup")
 		end)
 	end
@@ -83,10 +86,11 @@ aObj.lodAddons.ChampionCommander = function(self) -- v 1.1.2 80100
 			btn = nil
 			self:skinCloseButton{obj=_G.BFAAnalyzer.Close}
 			self:addSkinFrame{obj=_G.BFAAnalyzer, ft="a", kfs=true, nb=true}
-			-- FIXME: bugfix the title spelling
+			-- fix the title spelling
 			if _G.BFAAnalyzer.Title:GetText():find("analisys") then
 				_G.BFAAnalyzer.Title:SetText(mission.name .. " analysis")
 			end
+
 			self:Unhook(this, "Analyze")
 		end)
 	end
