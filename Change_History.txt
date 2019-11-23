@@ -1,3 +1,13 @@
+beta8.32494.3
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	PTR change
+	Revert Minimap Button colour changes
+	Updated HonorFrame skin
+	PTR change
+	Updated WorldQuestTracker skin
+
 beta8.32494.2
 Jncl:
 	ToDo.txt
