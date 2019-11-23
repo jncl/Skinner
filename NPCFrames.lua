@@ -1171,6 +1171,15 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 			 self:addButtonBorder{obj=axp, relTo=axp.Icon, reParent={axp.Count}, clr="grey"}
 		end
 		axp = nil
+		if aObj.isPTR then
+			-- WarModeBonusFrame
+			local wmb = this.WarModeBonusFrame
+			wmb.NameFrame:SetTexture(nil)
+			if self.modBtnBs then
+				 self:addButtonBorder{obj=wmb, relTo=wmb.Icon, reParent={wmb.Count}, clr="grey"}
+			end
+			wmb = nil
+		end
 		-- QuestInfoPlayerTitleFrame
 		if self.modBtnBs then
 			 self:addButtonBorder{obj=_G.QuestInfoPlayerTitleFrame, relTo=_G.QuestInfoPlayerTitleFrame.Icon, clr="grey"}
