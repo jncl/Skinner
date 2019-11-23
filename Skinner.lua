@@ -20,9 +20,9 @@ do
 
 	local buildInfo = {
 		beta    = {"9.0.0", 99999},
-		classic = {"1.13.2", 32421},
-		ptr     = {"8.3.0", 32489},
-		retail  = {"8.2.5", 32494},
+		classic = {"1.13.2", 32600},
+		ptr     = {"8.3.0", 32593},
+		retail  = {"8.2.5", 32638},
      	}
 
 	buildInfo.curr = {_G.GetBuildInfo()}
