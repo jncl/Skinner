@@ -1,16 +1,15 @@
 local aName, aObj = ...
 local _G = _G
 
-local assert, CopyTable, pairs, select, type, unpack = _G.assert, _G.CopyTable, _G.pairs, _G.select, _G.type, _G.unpack
-local LibStub = _G.LibStub
+local CopyTable, LibStub = _G.CopyTable, _G.LibStub
 
 do
 	-- check to see if required libraries are loaded
-	assert(LibStub, aName .. " requires LibStub")
+	_G.assert(LibStub, aName .. " requires LibStub")
 	local lTab = {"CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "AceAddon-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceDB-3.0", "AceDBOptions-3.0", "AceLocale-3.0", "AceGUI-3.0",  "AceConfig-3.0", "AceConfigRegistry-3.0", "AceConfigCmd-3.0", "AceConfigDialog-3.0", "LibSharedMedia-3.0"}
 	local hasError
-	for _, lib in pairs(lTab) do
-		hasError = not assert(LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
+	for _, lib in _G.pairs(lTab) do
+		hasError = not _G.assert(LibStub:GetLibrary(lib, true), aName .. " requires " .. lib)
 	end
 	lTab = nil
 	if hasError then return end
@@ -86,7 +85,7 @@ function aObj:OnInitialize()
 	-- pointer to LibDBIcon-1.0 library
 	self.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 	-- store player class
-	self.uCls = select(2, _G.UnitClass("player"))
+	self.uCls = _G.select(2, _G.UnitClass("player"))
 	-- store player name
 	self.uName = _G.UnitName("player")
 
@@ -97,7 +96,7 @@ function aObj:OnInitialize()
 	local dflts = self.db.defaults.profile
 
 	-- convert any old settings
-	if type(self.prdb.MinimapButtons) == "boolean" then
+	if _G.type(self.prdb.MinimapButtons) == "boolean" then
 		self.prdb.MinimapButtons = {skin = true, style = false}
 	end
 	-- change options name
@@ -325,7 +324,7 @@ function aObj:OnEnable()
 	self.oocTab = {}
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
  		for i = 1, #self.oocTab do
-			self.oocTab[i][1](unpack(self.oocTab[i][2]))
+			self.oocTab[i][1](_G.unpack(self.oocTab[i][2]))
 		end
 		_G.wipe(self.oocTab)
 	end)
