@@ -79,5 +79,5 @@ x			- ReputationFrame
 x			- AzeriteEssencesUI
 √			- QuestInfo
 
-	I	RollTrackerClassic, reported by amey0
-√		- background is skinned but frame isn't.
+√	S	Communities ClubFinderInvitationFrame needs skinning
+√	S	Communities RecruitmentDialog needs skinning
