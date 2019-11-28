@@ -1,3 +1,12 @@
+beta8.32638.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	PTR changes
+	Updated ChampionCommander & RollTrackerClassic skins
+	Apply changes suggested by the Globe function of https://www.townlong-yak.com
+
 beta8.32494.3
 Jncl:
 	ToDo.txt
