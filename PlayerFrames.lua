@@ -1433,13 +1433,48 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end
 	end)
 
-	-- .ApplicantList
 	cFrame.ApplicantList:DisableDrawLayer("BACKGROUND")
 	cFrame.ApplicantList:DisableDrawLayer("ARTWORK")
+	self:SecureHookScript(cFrame.ApplicantList.ColumnDisplay, "OnShow", function(this)
+		skinColumnDisplay(this)
+	end)
 	self:skinSlider{obj=cFrame.ApplicantList.ListScrollFrame.scrollBar, rt="background", wdth=-4}
 	self:skinDropDown{obj=cFrame.ApplicantList.DropDown}
 	self:removeNineSlice(cFrame.ApplicantList.InsetFrame.NineSlice)
+	cFrame.ApplicantList.InsetFrame.Bg:SetTexture(nil)
+	self:SecureHook(cFrame.ApplicantList, "RefreshLayout", function(this)
+		local btn
+		for i = 1, #this.ListScrollFrame.buttons do
+			btn = this.ListScrollFrame.buttons[i]
+			if self.modBtns then
+				self:skinStdButton{obj=btn.CancelInvitationButton}
+				self:skinStdButton{obj=btn.InviteButton}
+			end
+		end
+		btn = nil
 
+		self:Unhook(this, "RefreshLayout")
+	end)
+
+	local function skinReqToJoin(frame)
+
+		frame.RequestToJoinFrame.MessageFrame:DisableDrawLayer("BACKGROUND")
+		frame.RequestToJoinFrame.MessageFrame.MessageScroll:DisableDrawLayer("BACKGROUND")
+		aObj:addSkinFrame{obj=frame.RequestToJoinFrame.MessageFrame, ft=ftype, kfs=true, nb=true}
+		aObj:addSkinFrame{obj=frame.RequestToJoinFrame.BG, ft=ftype, kfs=true, nb=true}
+		if aObj.modBtns then
+			 aObj:skinStdButton{obj=frame.RequestToJoinFrame.Apply}
+			 aObj:skinStdButton{obj=frame.RequestToJoinFrame.Cancel}
+		end
+		if aObj.modChkBtns then
+			aObj:SecureHook(frame.RequestToJoinFrame, "Initialize", function(this)
+				for spec in this.SpecsPool:EnumerateActive() do
+					aObj:skinCheckButton{obj=spec.CheckBox}
+				end
+			end)
+		end
+
+	end
 	local function skinCFGaCF(frame)
 
 		frame:DisableDrawLayer("BACKGROUND")
@@ -1458,7 +1493,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			aObj:skinCheckButton{obj=frame.OptionsList.DpsRoleFrame.CheckBox}
 		end
 
-		-- .GuildCards
 		local btn
  		for i = 1, #frame.GuildCards.Cards do
 			btn = frame.GuildCards.Cards[i]
@@ -1476,11 +1510,10 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end)
 		end
 		if aObj.modBtnBs then
-			aObj:addButtonBorder{obj=frame.GuildCards.PreviousPage, ofs=-2, y1=-3, x2=-3, clr="gold"}
-			aObj:addButtonBorder{obj=frame.GuildCards.NextPage, ofs=-2, y1=-3, x2=-3, clr="gold"}
+			aObj:addButtonBorder{obj=frame.GuildCards.PreviousPage, ofs=-2, y1=-3, x2=-3, clr="disabled"}
+			aObj:addButtonBorder{obj=frame.GuildCards.NextPage, ofs=-2, y1=-3, x2=-3, clr="disabled"}
 		end
 
-		-- .CommunityCards
 		aObj:skinSlider{obj=frame.CommunityCards.ListScrollFrame.scrollBar, wdth=-4}
 		for i = 1, #frame.CommunityCards.ListScrollFrame.buttons do
 			btn = frame.CommunityCards.ListScrollFrame.buttons[i]
@@ -1495,7 +1528,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			end)
 		end
 
-		-- .PendingGuildCards
  		for i = 1, #frame.PendingGuildCards.Cards do
 			btn = frame.PendingGuildCards.Cards[i]
 			btn:DisableDrawLayer("BACKGROUND")
@@ -1516,7 +1548,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			aObj:addButtonBorder{obj=frame.PendingGuildCards.NextPage, ofs=-2, y1=-3, x2=-3, clr="gold"}
 		end
 
-		-- .PendingCommunityCards
 		aObj:skinSlider{obj=frame.PendingCommunityCards.ListScrollFrame.scrollBar, wdth=-4}
 		for i = 1, #frame.PendingCommunityCards.ListScrollFrame.buttons do
 			btn = frame.PendingCommunityCards.ListScrollFrame.buttons[i]
@@ -1532,22 +1563,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		end
 		btn = nil
 
-		-- .RequestToJoinFrame
-		frame.RequestToJoinFrame.MessageFrame:DisableDrawLayer("BACKGROUND")
-		frame.RequestToJoinFrame.MessageFrame.MessageScroll:DisableDrawLayer("BACKGROUND")
-		aObj:addSkinFrame{obj=frame.RequestToJoinFrame.MessageFrame, ft=ftype, kfs=true, nb=true}
-		aObj:addSkinFrame{obj=frame.RequestToJoinFrame.BG, ft=ftype, kfs=true, nb=true}
-		if aObj.modBtns then
-			 aObj:skinStdButton{obj=frame.RequestToJoinFrame.Apply}
-			 aObj:skinStdButton{obj=frame.RequestToJoinFrame.Cancel}
-		end
-		if aObj.modChkBtns then
-			aObj:SecureHook(frame.RequestToJoinFrame, "Initialize", function(this)
-				for spec in this.SpecsPool:EnumerateActive() do
-					aObj:skinCheckButton{obj=spec.CheckBox}
-				end
-			end)
-		end
+		skinReqToJoin(frame)
 
 		aObj:removeNineSlice(frame.InsetFrame.NineSlice)
 		frame.InsetFrame.Bg:SetTexture(nil)
@@ -1567,6 +1583,12 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end
 
 	skinCFGaCF(cFrame.GuildFinderFrame)
+	if self.modBtnBs then
+		self:secureHook(cFrame.GuildFinderFrame.GuildCards, "RefreshLayout", function(this, cardPage)
+			self:clrBtnBdr(this.PreviousPage, this.PreviousPage:IsEnabled() and "gold" or "disabled", 1)
+			self:clrBtnBdr(this.NextPage, this.NextPage:IsEnabled() and "gold" or "disabled", 1)
+		end)
+	end
 
 	skinCFGaCF(cFrame.CommunityFinderFrame)
 
@@ -1587,10 +1609,26 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:skinStdButton{obj=this.AcceptButton}
 			self:skinStdButton{obj=this.DeclineButton}
 		end
+
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- ClubFinderInvitationFrame
+	self:SecureHookScript(cFrame.ClubFinderInvitationFrame, "OnShow", function(this)
+		this:DisableDrawLayer("BACKGROUND")
+		self:removeInset(this.InsetFrame)
+		self:removeNineSlice(this.InsetFrame.NineSlice)
+		self:addSkinFrame{obj=this.WarningDialog.BG, ft=ftype, kfs=true, nb=true}
+		if self.modBtns then
+			self:skinStdButton{obj=this.WarningDialog.Accept}
+			self:skinStdButton{obj=this.WarningDialog.Cancel}
+			self:skinStdButton{obj=this.AcceptButton}
+			self:skinStdButton{obj=this.ApplyButton}
+			self:skinStdButton{obj=this.DeclineButton}
+		end
+		skinReqToJoin(this)
+
+		self:Unhook(this, "OnShow")
+	end)
 
 	self:removeNineSlice(cFrame.TicketFrame.InsetFrame.NineSlice)
 	if self.modBtns then
@@ -1714,7 +1752,27 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:Unhook(this, "OnShow")
 	end)
 
-	-- RecruitmentDialog
+	self:SecureHookScript(cFrame.RecruitmentDialog, "OnShow", function(this)
+		self:skinDropDown{obj=this.ClubFocusDropdown}
+		self:skinDropDown{obj=this.LookingForDropdown}
+		this.RecruitmentMessageFrame:DisableDrawLayer("BACKGROUND")
+		self:addSkinFrame{obj=this.RecruitmentMessageFrame.RecruitmentMessageInput, ft=ftype, kfs=true, nb=true, ofs=6}
+		self:skinEditBox{obj=this.MinIlvlOnly.EditBox, regs={6}} -- 6 is text
+		this.MinIlvlOnly.EditBox.Text:ClearAllPoints()
+		this.MinIlvlOnly.EditBox.Text:SetPoint("Left", this.MinIlvlOnly.EditBox, "Left", 6, 0)
+		self:addSkinFrame{obj=this.BG, ft=ftype, kfs=true, nb=true}
+		if self.modBtns then
+			self:skinStdButton{obj=this.Accept}
+			self:skinStdButton{obj=this.Cancel}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.ShouldListClub.Button}
+			self:skinCheckButton{obj=this.MaxLevelOnly.Button}
+			self:skinCheckButton{obj=this.MinIlvlOnly.Button}
+		end
+
+		self:Unhook(this, "OnShow")
+	end)
 
 	self:moveObject{obj=cFrame.AddToChatButton, x=-6, y=-6}
 
@@ -1801,6 +1859,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:skinEditBox{obj=this.NameEdit, regs={6}} -- 6 is text
 		self:skinEditBox{obj=this.ShortNameEdit, regs={6}} -- 6 is text
 		self:addSkinFrame{obj=this.MessageOfTheDay, ft=ftype, kfs=true, nb=true, ofs=8}
+		self:skinEditBox{obj=this.MinIlvlOnly.EditBox, regs={6}} -- 6 is text
+		this.MinIlvlOnly.EditBox.Text:ClearAllPoints()
+		this.MinIlvlOnly.EditBox.Text:SetPoint("Left", this.MinIlvlOnly.EditBox, "Left", 6, 0)
+		self:skinDropDown{obj=this.ClubFocusDropdown}
+		self:skinDropDown{obj=this.LookingForDropdown}
 		self:addSkinFrame{obj=this.Description, ft=ftype, kfs=true, nb=true, ofs=8}
 		self:addSkinFrame{obj=this, ft=ftype, nb=true, ofs=-10}
 		if self.modBtns then
@@ -1808,6 +1871,12 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:skinStdButton{obj=this.Delete}
 			self:skinStdButton{obj=this.Accept}
 			self:skinStdButton{obj=this.Cancel}
+		end
+		if self.modChkBtns then
+			self:skinCheckButton{obj=this.ShouldListClub.Button}
+			self:skinCheckButton{obj=this.AutoAcceptApplications.Button}
+			self:skinCheckButton{obj=this.MaxLevelOnly.Button}
+			self:skinCheckButton{obj=this.MinIlvlOnly.Button}
 		end
 
 		self:Unhook(this, "OnShow")
@@ -1822,6 +1891,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		this.Recruitment.CommentFrame:DisableDrawLayer("BACKGROUND")
 		self:skinSlider{obj=this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.ScrollBar}
 		this.Recruitment.CommentFrame.CommentInputFrame.ScrollFrame.CommentEditBox.Fill:SetTextColor(self.BT:GetRGB())
+		self:removeMagicBtnTex(this.Recruitment.ListGuildButton)
+		self:addSkinFrame{obj=this.Recruitment.CommentFrame.CommentInputFrame, ft=ftype, kfs=true}
+		if self.modBtns then
+			 self:skinStdButton{obj=this.Recruitment.ListGuildButton}
+		end
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.Recruitment.InterestFrame.QuestButton}
 			self:skinCheckButton{obj=this.Recruitment.InterestFrame.RaidButton}
@@ -1834,11 +1908,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:skinCheckButton{obj=this.Recruitment.RolesFrame.HealerButton.checkButton}
 			self:skinCheckButton{obj=this.Recruitment.RolesFrame.DamagerButton.checkButton}
 		end
-		self:addSkinFrame{obj=this.Recruitment.CommentFrame.CommentInputFrame, ft=ftype, kfs=true}
-		self:removeMagicBtnTex(this.Recruitment.ListGuildButton)
-		if self.modBtns then
-			 self:skinStdButton{obj=this.Recruitment.ListGuildButton}
-		end
 		-- Applicants
 		for i = 1, #this.Applicants.Container.buttons do
 			self:applySkin{obj=this.Applicants.Container.buttons[i]}
@@ -1850,13 +1919,13 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		self:removeMagicBtnTex(this.Applicants.InviteButton)
 		self:removeMagicBtnTex(this.Applicants.MessageButton)
 		self:removeMagicBtnTex(this.Applicants.DeclineButton)
+		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 		if self.modBtns then
 			self:skinStdButton{obj=this.Applicants.InviteButton}
 			self:skinStdButton{obj=this.Applicants.MessageButton}
 			self:skinStdButton{obj=this.Applicants.DeclineButton}
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
-		self:skinTabs{obj=this, up=true, lod=true, x1=2, y1=-5, x2=2, y2=-5}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1864,11 +1933,11 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(_G.CommunitiesGuildTextEditFrame, "OnShow", function(this)
 		self:skinSlider{obj=_G.CommunitiesGuildTextEditFrame.Container.ScrollFrame.ScrollBar, wdth=-6}
 		self:addSkinFrame{obj=_G.CommunitiesGuildTextEditFrame.Container, ft=ftype}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.CommunitiesGuildTextEditFrameAcceptButton}
 			self:skinStdButton{obj=self:getChild(_G.CommunitiesGuildTextEditFrame, 4)} -- bottom close button
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 
 		self:Unhook(this, "OnShow")
 	end)
@@ -1876,15 +1945,16 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	self:SecureHookScript(_G.CommunitiesGuildLogFrame, "OnShow", function(this)
 		self:skinSlider{obj=this.Container.ScrollFrame.ScrollBar, wdth=-6}
 		self:addSkinFrame{obj=this.Container, ft=ftype}
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 		if self.modBtns then
 			 self:skinStdButton{obj=self:getChild(this, 3)} -- bottom close button
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 
 		self:Unhook(this, "OnShow")
 	end)
 
 	self:SecureHookScript(_G.CommunitiesGuildNewsFiltersFrame, "OnShow", function(this)
+		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 		if self.modChkBtns then
 			self:skinCheckButton{obj=this.GuildAchievement}
 			self:skinCheckButton{obj=this.Achievement}
@@ -1894,7 +1964,6 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 			self:skinCheckButton{obj=this.EpicItemCrafted}
 			self:skinCheckButton{obj=this.LegendaryItemLooted}
 		end
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-7}
 
 		self:Unhook(this, "OnShow")
 	end)
