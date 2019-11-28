@@ -13,7 +13,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		Warnings             = true,
 		Errors               = true,
 		MinimapIcon          = {hide = false, minimapPos = 210, radius = 80},
-		DropDownPanels       = true,
+		UIDropDownMenu       = true,
 		DropDownButtons      = false,
 		-- Tab and DropDown Texture settings
 		TexturedTab          = false,
@@ -74,7 +74,6 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		PetStableFrame       = true,
 		QuestChoice          = true,
 		QuestFrame           = true,
-		SideDressUpFrame     = true,
 		Tabard               = true,
 		TaxiFrame            = true,
 		TrainerUI            = true,
@@ -175,7 +174,7 @@ aObj.blizzFrames[ftype].SetupDefaults = function(self)
 		QuestMap             = true,
 		QueueStatusFrame     = true,
 		RaidFrame            = true, -- (inc. LFR)
-		ScriptErrors         = true,
+		SharedBasicControls  = true,
 		ScrappingMachineUI   = true,
 		SplashFrame          = true,
 		StaticPopups         = true,
@@ -255,18 +254,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 						if value then self.DBIcon:Show(aName) else self.DBIcon:Hide(aName) end
 					end,
 					hidden = function() return not self.DBIcon end,
-				},
-				DropDownButtons = {
-					type = "toggle",
-					order = 6,
-					name = self.L["DropDown Buttons"],
-					desc = self.L["Toggle the skin of the DropDown Buttons"],
-				},
-				DropDownPanels = {
-					type = "toggle",
-					order = 7,
-					name = self.L["DropDown Panels"],
-					desc = self.L["Toggle the skin of the DropDown Panels"],
 				},
 				TabDDTextures = {
 					type = "group",
@@ -897,11 +884,6 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Quest Frame"],
 					desc = self.L["Toggle the skin of the Quest Frame"],
-				},
-				SideDressUpFrame = {
-					type = "toggle",
-					name = self.L["Side DressUp Frame"],
-					desc = self.L["Toggle the skin of the Side DressUp Frame"],
 				},
 				Tabard = {
 					type = "toggle",
@@ -1749,7 +1731,7 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					name = self.L["Scrapping Machine UI"],
 					desc = self.L["Toggle the skin of the Scrapping Machine UI"],
 				},
-				ScriptErrors = {
+				SharedBasicControls = {
 					type = "toggle",
 					name = self.L["Script Errors Frame"],
 					desc = self.L["Toggle the skin of the Script Errors Frame"],
@@ -1815,6 +1797,11 @@ aObj.blizzFrames[ftype].SetupOptions = function(self)
 					type = "toggle",
 					name = self.L["Tutorial Frame"],
 					desc = self.L["Toggle the skin of the Tutorial Frame"],
+				},
+				UIDropDownMenu = {
+					type = "toggle",
+					name = self.L["DropDown Panels"],
+					desc = self.L["Toggle the skin of the DropDown Panels"],
 				},
 				UIWidgets = {
 					type = "toggle",

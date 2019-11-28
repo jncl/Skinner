@@ -5167,8 +5167,8 @@ aObj.blizzLoDFrames[ftype].ScrappingMachineUI = function(self)
 end
 
 aObj.blizzFrames[ftype].SharedBasicControls = function(self)
-	if not self.prdb.ScriptErrors or self.initialized.ScriptErrors then return end
-	self.initialized.ScriptErrors = true
+	if not self.prdb.SharedBasicControls or self.initialized.SharedBasicControls then return end
+	self.initialized.SharedBasicControls = true
 
 	self:SecureHookScript(_G.BasicMessageDialog, "OnShow", function(this)
 		self:removeNineSlice(this.Border)
@@ -5540,8 +5540,8 @@ aObj.blizzFrames[ftype].Tutorial = function(self)
 end
 
 aObj.blizzFrames[ftype].UIDropDownMenu = function(self)
-	if not self.prdb.DropDownPanels or self.initialized.DropDownPanels then return end
-	self.initialized.DropDownPanels = true
+	if not self.prdb.UIDropDownMenu or self.initialized.UIDropDownMenu then return end
+	self.initialized.UIDropDownMenu = true
 
 	local function skinDDMenu(frame)
 		if not aObj.isClassic then

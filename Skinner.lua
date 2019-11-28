@@ -132,6 +132,24 @@ function aObj:OnInitialize()
 		self.prdb.PVPUI = self.prdb.PVPFrame
 		self.prdb.PVPFrame = nil
 	end
+	-- SideDressUpFrame is part of DressUpFrames
+	if self.prdb.SideDressUpFrame then
+		self.prdb.SideDressUpFrame = nil
+	end
+	-- ScriptErrors has been renamed to SharedBasicControls
+	if self.prdb.ScriptErrors then
+		self.prdb.SharedBasicControls = self.prdb.ScriptErrors
+		self.prdb.ScriptErrors = nil
+	end
+	-- DropDownPanels renamed to UIDropDownMenu
+	if self.prdb.DropDownPanels then
+		self.prdb.UIDropDownMenu = self.prdb.DropDownPanels
+		self.prdb.DropDownPanels = nil
+	end
+	-- DropDownButtons option has been removed
+	if self.prdb.DropDownButttons then
+		self.prdb.DropDownButtons = nil
+	end
 
 	-- setup the Addon's options
 	self:checkAndRun("SetupOptions", "opt")

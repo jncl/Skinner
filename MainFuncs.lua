@@ -653,7 +653,7 @@ local function __skinDropDown(opts)
 	local xOfs2 = opts.x2 or -16
 	local yOfs2 = opts.y2 or 7
 	-- skin the frame
-	if aObj.prdb.DropDownButtons then
+	if aObj.prdb.UIDropDownMenu then
 		-- CHANGED: ft ... or "a" is used to stop buttons being skinned automatically
 		aObj:addSkinFrame{obj=opts.obj, ft=opts.ftype or "a", aso={ng=true, bd=5}, rp=opts.rp, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
 	end
