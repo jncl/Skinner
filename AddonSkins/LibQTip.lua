@@ -6,7 +6,8 @@ aObj.ignoreLQTT = {}
 local function skinTT(key, tt)
 	-- ignore tooltips if required
 	if not aObj.ignoreLQTT[key] then
-		aObj:applySkin{obj=tt}
+		aObj:addSkinFrame{obj=tt, ft="a", kfs=true, nb=true}
+		tt.SetBackdrop = _G.nop
 		aObj:hook(tt, "UpdateScrolling", function(this)
 			if tt.slider then
 				aObj:skinSlider{obj=tt.slider, wdth=2}
