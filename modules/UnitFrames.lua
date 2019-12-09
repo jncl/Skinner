@@ -39,8 +39,8 @@ function module:adjustStatusBarPosn(sBar, yAdj)
 		sBar.TextString:SetPoint(oPnt[1], oPnt[2], oPnt[3], oPnt[4], oPnt[5] + yAdj)
 	end
 	if sBar == _G.PlayerFrame.healthbar then
-		module:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
-			module.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
+		self:RawHook(sBar, "SetPoint", function(this, posn, xOfs, yOfs)
+			self.hooks[this].SetPoint(this, posn, xOfs, yOfs + yAdj)
 		end, true)
 	else
 		oPnt = {sBar:GetPoint()}
@@ -58,7 +58,7 @@ function module:skinUnitButton(opts)
 	opts.x2 = opts.x2 or opts.ofs
 	opts.y2 = opts.y2 or opts.ofs * -1
 
-	aObj:addSkinButton{obj=opts.obj, ft=ftype, aso={bd=11, ng=true}, secu=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
+	aObj:addSkinButton{obj=opts.obj, ft=ftype, bg=true, aso={bd=11, ng=true}, secu=true, nohooks=true, x1=opts.x1, y1=opts.y1, x2=opts.x2, y2=opts.y2}
 	opts.obj.sb:SetBackdropColor(0.1, 0.1, 0.1, db.alpha) -- use dark background
 
 	if opts.ti
@@ -94,7 +94,7 @@ function module:skinPlayerF()
 		-- status bars
 		aObj:skinStatusBar{obj=pF.PlayerFrameHealthBarAnimatedLoss, fi=0}
 		aObj:skinStatusBar{obj=pF.healthbar, fi=0, otherTex={pF.myHealPredictionBar, pF.otherHealPredictionBar}}
-		module:adjustStatusBarPosn(pF.healthbar)
+		self:adjustStatusBarPosn(pF.healthbar)
 		aObj:skinStatusBar{obj=pF.manabar, fi=0, otherTex={pF.manabar.FeedbackFrame.BarTexture, pF.myManaCostPredictionBar}, nilFuncs=true}
 
 		-- AlternateManaBar
@@ -109,7 +109,7 @@ function module:skinPlayerF()
 		-- move PvP Timer text down
 		aObj:moveObject{obj=_G.PlayerPVPTimerText, y=-10}
 		-- move level & rest icon down, so they are more visible
-		module:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
+		self:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
 			_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + lOfs)
 		end)
 		_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
@@ -146,7 +146,7 @@ function module:skinPlayerF()
 				_G.MonkHarmonyBarFrame.LightEnergy[i]:DisableDrawLayer("BACKGROUND")
 			end
 			-- hook this to handle orb 5
-			module:SecureHook(_G.MonkPowerBar, "UpdateMaxPower", function(this)
+			self:SecureHook(_G.MonkPowerBar, "UpdateMaxPower", function(this)
 				if this.maxLight == 5 then
 					_G.MonkHarmonyBarFrame.LightEnergy[5]:DisableDrawLayer("BACKGROUND")
 					aObj:Unhook(_G.MonkPowerBar, "UpdateMaxPower")
@@ -205,7 +205,7 @@ function module:skinPlayerF()
 		end
 
 		-- skin the PlayerFrame, here as preceeding code changes yOfs value
-		module:skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
+		self:skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=y2Ofs}
 
 		pF, y2Ofs = nil, nil
 
@@ -220,16 +220,16 @@ function module:skinPetF()
 		_G.PetFrameTexture:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 		_G.PetAttackModeTexture:SetTexture(nil)
 		-- status bars
-		module:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
+		self:adjustStatusBarPosn(_G.PetFrameHealthBar, 0)
 		aObj:skinStatusBar{obj=_G.PetFrameHealthBar, fi=0}
-		module:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
+		self:adjustStatusBarPosn(_G.PetFrameManaBar, -1)
 		aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
 		-- casting bar handled in CastingBar function
 		aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
 
 		-- skin the PetFrame
 		_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
-		module:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
+		self:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
 		-- remove debuff border
 		for i = 1, 4 do
 			_G["PetFrameDebuff" .. i .. "Border"]:SetTexture(nil)
@@ -270,7 +270,7 @@ function module:skinCommon(frame, adjSB)
 	-- status bars
 	aObj:skinStatusBar{obj=fo.healthbar, fi=0}
 	if adjSB then
-		module:adjustStatusBarPosn(fo.healthbar)
+		self:adjustStatusBarPosn(fo.healthbar)
 	end
 	aObj:skinStatusBar{obj=fo.manabar, fi=0, nilFuncs=true}
 	fo = nil
@@ -287,8 +287,8 @@ function module:skinButton(frame, ti)
 		xOfs1, yOfs1, xOfs2, yOfs2 = -2, -5, -35, 0
 	end
 
-	module:skinUnitButton{obj=fo, ti=ti or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
-	module:skinCommon(frame, true)
+	self:skinUnitButton{obj=fo, ti=ti or true, x1=xOfs1, y1=yOfs1, x2=xOfs2, y2=yOfs2}
+	self:skinCommon(frame, true)
 	if _G[frame .. "NumericalThreat"] then
 		aObj:removeRegions(_G[frame .. "NumericalThreat"], {3}) -- threat border
 	end
@@ -317,8 +317,8 @@ function module:skinButton(frame, ti)
 	-- Boss frames don't have a ToT frame
 	if not isBoss then
 		-- TargetofTarget Frame
-		module:skinUnitButton{obj=fo.totFrame, x2=4, y2=4}
-		module:skinCommon(frame .. "ToT", true)
+		self:skinUnitButton{obj=fo.totFrame, x2=4, y2=4}
+		self:skinCommon(frame .. "ToT", true)
 		aObj:moveObject{obj=_G[frame .. "ToTHealthBar"], y=-2} -- move HealthBar d1own to match other frames
 	end
 
@@ -331,23 +331,23 @@ function module:skinTargetF()
 	and not self.isSkinned["Target"]
 	then
 
-		module:skinButton("TargetFrame")
+		self:skinButton("TargetFrame")
 
 		-- move level text down, so it is more visible
-		module:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
+		self:SecureHook("TargetFrame_UpdateLevelTextAnchor", function(this, targetLevel)
 			-- aObj:Debug("TF_ULTA: [%s, %s]", this, targetLevel)
 			this.levelText:SetPoint("CENTER", targetLevel == 100 and 61 or 62, -20 + lOfs)
 		end)
 
 		--Boss Target Frames
 		for i = 1, _G.MAX_BOSS_FRAMES do
-			module:skinButton("Boss" .. i .. "TargetFrame", false)
+			self:skinButton("Boss" .. i .. "TargetFrame", false)
 			-- always an Elite mob
 			_G["Boss" .. i .. "TargetFrame"].ucTex:SetTexture([[Interface\Tooltips\EliteNameplateIcon]])
 		end
 
 		-- hook this to show/hide the elite texture
-		module:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
+		self:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
 			-- aObj:Debug("TF_CC: [%s, %s]", frame, ...)
 			if frame == _G.TargetFrame
 			or (frame == _G.FocusFrame and db.focus)
@@ -375,7 +375,7 @@ function module:skinFocusF()
 	if db.focus
 	and not self.isSkinned["Focus"]
 	then
-		module:skinButton("FocusFrame", false)
+		self:skinButton("FocusFrame", false)
 	end
 
 end
@@ -388,7 +388,7 @@ function module:skinPartyF()
 		local pMF, pPF
 		for i = 1, _G.MAX_PARTY_MEMBERS do
 			pMF = "PartyMemberFrame" .. i
-			module:skinUnitButton{obj=_G[pMF], ti=true, x1=2, y1=5, x2=-1}
+			self:skinUnitButton{obj=_G[pMF], ti=true, x1=2, y1=5, x2=-1}
 
 			_G[pMF .. "Background"]:SetTexture(nil)
 			_G[pMF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
@@ -402,7 +402,7 @@ function module:skinPartyF()
 
 			-- pet frame
 			pPF = pMF .. "PetFrame"
-			module:skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
+			self:skinUnitButton{obj=_G[pPF], ti=true, x1=-2, y1=1, y2=1}
 			_G[pPF .. "Texture"]:SetAlpha(0) -- texture file is changed dependant upon in vehicle or not
 			-- status bar
 			aObj:skinStatusBar{obj=_G[pPF .. "HealthBar"], fi=0}
@@ -535,12 +535,8 @@ function module:adjustUnitFrames(opt)
 		self:skinPartyTooltip()
 	elseif opt == "player" then
 		self:skinPlayerF()
-	elseif opt == "pet"
-	or opt == "petspec"
-	or opt == "petlvl"
-	then
+	elseif opt == "pet" then
 		self:skinPetF()
-		self:skinPartyTooltip()
 	elseif opt == "target" then
 		self:skinTargetF()
 	elseif opt == "focus" then
@@ -562,11 +558,11 @@ function module:GetOptions()
 		desc = aObj.L["Change the Unit Frames settings"],
 		get = function(info) return db[info[#info]] end,
 		set = function(info, value)
-			if not module:IsEnabled() then module:Enable() end
+			if not self:IsEnabled() then self:Enable() end
 			db[info[#info]] = value
 			if info[#info] == "petspec" then db.pet = true end -- enable pet frame when enabled
 			if info[#info] == "petlvl" then db.pet = true end -- enable pet frame when enabled (Classic Support)
-			module:adjustUnitFrames(info[#info])
+			self:adjustUnitFrames(info[#info])
 		end,
 		args = {
 			player = {
