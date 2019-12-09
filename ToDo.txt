@@ -79,5 +79,4 @@ x			- ReputationFrame
 x			- AzeriteEssencesUI
 √			- QuestInfo
 
-√	S	Communities ClubFinderInvitationFrame needs skinning
-√	S	Communities RecruitmentDialog needs skinning
+√	S	Warfront Rare Tracker, requested by EpidemeDaBear, 05.12.19
