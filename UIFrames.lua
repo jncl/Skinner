@@ -4320,7 +4320,6 @@ aObj.blizzFrames[ftype].NamePlates = function(self)
 
 	local function skinNamePlate(frame)
 
-
 		local nP = frame.UnitFrame
 		if nP then
 			if not self.isClassic then
@@ -4995,7 +4994,6 @@ aObj.blizzFrames[ftype].QueueStatusFrame = function(self)
 			local function checkForAnimGrp()
 				if _G.QueueStatusMinimapButton.smAlphaAnim then
 					rtEvt:Cancel()
-					-- aObj:CancelTimer(rtEvt, true)
 					rtEvt = nil
 					aObj:SecureHookScript(_G.QueueStatusMinimapButton.smAnimGroup, "OnFinished", function(this)
 						_G.QueueStatusFrame.sf:Hide()
