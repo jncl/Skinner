@@ -1630,12 +1630,15 @@ aObj.ClassicSupport = function(self)
 			ufDB.defaults.profile.arena = nil
 			ufDB = nil
 		end
+		self:UnregisterEvent("UNIT_PET")
 		self.optTables["Modules"].args[aName .. "_UnitFrames"].args.petspec = nil
 		self.optTables["Modules"].args[aName .. "_UnitFrames"].args.focus = nil
 		self.optTables["Modules"].args[aName .. "_UnitFrames"].args.arena = nil
 
 		-- UnitFrames
 		local uFrames = self:GetModule("UnitFrames", true)
+		uFrames.skinFocusF = _G.nop
+
 		function uFrames:skinPlayerF()
 
 			if self.db.profile.player
@@ -1690,14 +1693,13 @@ aObj.ClassicSupport = function(self)
 				aObj:skinStatusBar{obj=_G.PetFrameManaBar, fi=0, nilFuncs=true}
 				-- casting bar handled in CastingBar function
 				aObj:moveObject{obj=_G.PetFrame, x=21, y=-2} -- align under Player Health/Mana bars
-				_G.PetPortrait:SetDrawLayer("border") -- move portrait to BORDER layer, so it is displayed
+				_G.PetPortrait:SetDrawLayer("BORDER") -- move portrait to BORDER layer, so it is displayed
 				aObj:moveObject{obj=_G.PetFrameHappiness, x=5}
 				self:skinUnitButton{obj=_G.PetFrame, ti=true, x1=1}
-
 			end
 
 		end
-		uFrames.skinFocusF = _G.nop
+		uFrames = nil
 
 		self:Unhook(self, "OnInitialize")
 	end)
