@@ -1505,7 +1505,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 				if shouldDisable then
 					this.sf:SetBackdropBorderColor(_G.DISABLED_FONT_COLOR:GetRGB())
 				else
-					this.sf:SetBackdropBorderColor(aObj.bbClr:GetRGB())
+					this.sf:SetBackdropBorderColor(aObj:getColourByName("gold"))
 				end
 			end)
 		end
@@ -1518,12 +1518,12 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 		for i = 1, #frame.CommunityCards.ListScrollFrame.buttons do
 			btn = frame.CommunityCards.ListScrollFrame.buttons[i]
 			btn.LogoBorder:SetTexture(nil)
-			aObj:addSkinFrame{obj=btn, ft=ftype, nb=true}
+			aObj:addSkinFrame{obj=btn, ft=ftype, nb=true, ofs=3}
 			aObj:SecureHook(btn, "SetDisabledState", function(this, shouldDisable)
 				if shouldDisable then
 					this.sf:SetBackdropBorderColor(_G.DISABLED_FONT_COLOR:GetRGB())
 				else
-					this.sf:SetBackdropBorderColor(aObj.bbClr:GetRGB())
+					this.sf:SetBackdropBorderColor(aObj:getColourByName("common"))
 				end
 			end)
 		end

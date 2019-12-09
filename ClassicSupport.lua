@@ -314,7 +314,7 @@ aObj.ClassicSupport = function(self)
 					self:resizeEmptyTexture(self:getRegion(_G.AuctionsItemButton, 2))
 				else
 					self:getRegion(_G.AuctionsItemButton, 2):SetAlpha(0) -- texture is changed in blizzard code
-					self:addButtonBorder{obj=_G.AuctionsItemButton}
+					self:addButtonBorder{obj=_G.AuctionsItemButton, clr="grey"}
 				end
 				if IsAddOnLoaded("Leatrix_Plus")
 				and _G.LeaPlusDB["AhExtras"] == "On"
@@ -358,13 +358,14 @@ aObj.ClassicSupport = function(self)
 					end)
 					-- add button borders to bank items
 					for i = 1, _G.NUM_BANKGENERIC_SLOTS do
-						self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}, clr="grey"}
+						self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}}
 						-- force quality border update
 						_G.BankFrameItemButton_Update(_G.BankSlotsFrame["Item" .. i])
 					end
-					-- add button borders to bags
+					-- add button borders to bag slots
 					for i = 1, _G.NUM_BANKBAGSLOTS do
 						self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
+						_G.BankSlotsFrame["Bag" .. i].sbb:SetBackdropBorderColor(_G.BankSlotsFrame["Bag" .. i].icon:GetVertexColor())
 					end
 				end
 

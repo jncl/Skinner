@@ -497,18 +497,19 @@ aObj.blizzFrames[ftype].BankFrame = function(self)
 			self:addButtonBorder{obj=_G.BankItemAutoSortButton, ofs=0, y1=1, clr="grey"}
 			-- add button borders to bank items
 			for i = 1, _G.NUM_BANKGENERIC_SLOTS do
-				self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}, clr="grey"}
+				self:addButtonBorder{obj=_G.BankSlotsFrame["Item" .. i], ibt=true, reParent={_G["BankFrameItem" .. i].IconQuestTexture}}
 				-- force quality border update
 				_G.BankFrameItemButton_Update(_G.BankSlotsFrame["Item" .. i])
 			end
 			-- add button borders to bags
 			for i = 1, _G.NUM_BANKBAGSLOTS do
 				self:addButtonBorder{obj=_G.BankSlotsFrame["Bag" .. i], ibt=true}
+				_G.BankSlotsFrame["Bag" .. i].sbb:SetBackdropBorderColor(_G.BankSlotsFrame["Bag" .. i].icon:GetVertexColor())
 			end
 			-- add button borders to reagent bank items
 			self:SecureHookScript(_G.ReagentBankFrame, "OnShow", function(this)
 				for i = 1, this.size do
-					self:addButtonBorder{obj=this["Item" .. i], ibt=true, reParent={this["Item" .. i].IconQuestTexture}, clr="grey"}
+					self:addButtonBorder{obj=this["Item" .. i], ibt=true, reParent={this["Item" .. i].IconQuestTexture}}
 					-- force quality border update
 					_G.BankFrameItemButton_Update(this["Item" .. i])
 				end
