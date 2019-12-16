@@ -3967,7 +3967,6 @@ aObj.blizzFrames[ftype].Minimap = function(self)
 			self:moveObject{obj=_G.MinimapToggleButton, x=-8, y=1}
 			self:skinCloseButton{obj=_G.MinimapToggleButton, noSkin=true}
 		end
-		-- TODO: MiniMapBattlefieldFrame
 	end
 
 	-- Minimap Backdrop Frame
@@ -4046,12 +4045,13 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 		local objName, objType
 		for _, obj in ipairs{mmObj:GetChildren()} do
 			objName, objType = obj:GetName(), obj:GetObjectType()
+			-- aObj:Debug("mmKids: [%s, %s, %s]", objName, objType, obj:GetNumRegions())
 			if not obj.sb
 			and not obj.sf
-			and not objName == "QueueStatusMinimapButton" -- ignore QueueStatusMinimapButton
-			and not objName == "OQ_MinimapButton" -- ignore oQueue's minimap button
 			and objType == "Button"
 			or (objType == "Frame" and objName == "MiniMapMailFrame")
+			and objName ~= "QueueStatusMinimapButton"
+			and objName ~= "OQ_MinimapButton"
 			then
 				for _, reg in ipairs{obj:GetRegions()} do
 					if reg:GetObjectType() == "Texture" then
@@ -4079,11 +4079,11 @@ aObj.blizzFrames[ftype].MinimapButtons = function(self)
 						aObj:addSkinFrame{obj=obj, ft=ftype}
 					end
 				end
-			elseif objType == "Frame"
-			and (objName
-			and not objName == "MiniMapTrackingButton") -- handled below
-			then
-				mmKids(obj)
+			-- elseif objType == "Frame"
+			-- and (objName
+			-- and objName ~= "MiniMapTrackingButton") -- handled below
+			-- then
+			-- 	mmKids(obj)
 			end
 		end
 		objName, objType = nil, nil
