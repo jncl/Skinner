@@ -56,6 +56,9 @@ do
 	aObj.blizzFrames = {p = {}, n = {}, u = {}, opt = {}}
 	aObj.blizzLoDFrames = {p = {}, n = {}, u = {}}
 
+	-- pointer to LibSharedMedia-3.0 library (done here for TukUI & ElvUI)
+	aObj.LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
+
 end
 
 function aObj:OnInitialize()
@@ -80,8 +83,6 @@ function aObj:OnInitialize()
 	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(aObj)
 	-- get Locale
 	self.L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale(aName)
-	-- pointer to LibSharedMedia-3.0 library
-	self.LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
 	-- pointer to LibDBIcon-1.0 library
 	self.DBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 	-- store player class
@@ -315,6 +316,14 @@ function aObj:OnInitialize()
 	self.ttList = {}
 	-- table to hold Tooltips to hook Show function
 	self.ttHook = {}
+
+	-- Load Classic Support, if required (added here for ElvUI/TukUI)
+	if self.isClassic then
+		local success, _ = _G.xpcall(function() return aObj.ClassicSupport(aObj) end, _G.geterrorhandler())
+		if not success then
+			aObj:CustomPrint(1, 0, 0, "Error running ClassicSupport")
+		end
+	end
 
 end
 
