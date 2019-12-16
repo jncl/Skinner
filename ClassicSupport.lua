@@ -45,6 +45,7 @@ local funcs = {
 		AddonList = {keep = true, keepOpts = true},
 		AutoComplete = {keep = true, keepOpts = true},
 		BindingUI = {keep = true, keepOpts = true},
+		BattlefieldMap = {keep = true, keepOpts = true},
 		BNFrames = {keep = true, keepOpts = true},
 		ChatBubbles = {keep = true, keepOpts = true},
 		ChatButtons = {keep = false, keepOpts = true},
@@ -1288,25 +1289,25 @@ aObj.ClassicSupport = function(self)
 
 		end
 
-		ftype = "u"
-		self.blizzFrames[ftype].BattlefieldFrame = function(self)
-			if not self.prdb.BattlefieldFrame or self.initialized.BattlefieldFrame then return end
-			self.initialized.BattlefieldFrame = true
+	ftype = "u"
+	self.blizzFrames[ftype].BattlefieldFrame = function(self)
+		if not self.prdb.BattlefieldFrame or self.initialized.BattlefieldFrame then return end
+		self.initialized.BattlefieldFrame = true
 
-			self:SecureHookScript(_G.BattlefieldFrame, "OnShow", function(this)
-				self:skinSlider{obj=_G.BattlefieldListScrollFrame.ScroolBar}--, rt="artwork", wdth=-4, size=3, hgt=-10}
-				self:addSkinFrame{obj=self, ft=ftype, kfs=true, nb=true}
-				if self.modBtns then
-					self:skinCloseButton{obj=_G.BattlefieldFrameCloseButton}
-					self:skinStdButton{obj=_G.BattlefieldFrameCancelButton}
-					self:skinStdButton{obj=_G.BattlefieldFrameJoinButton}
-					self:skinStdButton{obj=_G.BattlefieldFrameGroupJoinButton}
-				end
+		self:SecureHookScript(_G.BattlefieldFrame, "OnShow", function(this)
+			self:skinSlider{obj=_G.BattlefieldListScrollFrame.ScrollBar, rt="artwork"}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, nb=true, x1=10, y1=-11, x2=-32, y2=71}
+			if self.modBtns then
+				self:skinCloseButton{obj=_G.BattlefieldFrameCloseButton}
+				self:skinStdButton{obj=_G.BattlefieldFrameCancelButton}
+				self:skinStdButton{obj=_G.BattlefieldFrameJoinButton}
+				self:skinStdButton{obj=_G.BattlefieldFrameGroupJoinButton}
+			end
 
-				self:Unhook(this, "OnShow")
-			end)
+			self:Unhook(this, "OnShow")
+		end)
 
-		end
+	end
 
 		self.blizzFrames[ftype].ChatButtons = function(self)
 			if not self.prdb.ChatButtons or self.initialized.ChatButtons then return end
@@ -1653,25 +1654,38 @@ aObj.ClassicSupport = function(self)
 				pF.threatIndicator = _G.PlayerAttackBackground
 				_G.PlayerRestGlow:SetTexture(nil)
 				_G.PlayerAttackGlow:SetTexture(nil)
+	self.blizzFrames[ftype].WorldStateScoreFrame = function(self)
+		if not self.prdb.WorldStateScoreFrame or self.initialized.WorldStateScoreFrame then return end
+		self.initialized.WorldStateScoreFrame = true
 
 				-- status bars
 				aObj:skinStatusBar{obj=pF.healthbar, fi=0}
 				aObj:skinStatusBar{obj=pF.manabar, fi=0, nilFuncs=true}
 				self:adjustStatusBarPosn(pF.healthbar)
+		self:SecureHookScript(_G.WorldStateScoreFrame, "OnShow", function(this)
 
 				-- PowerBarAlt handled in MainMenuBar function (UIF)
+			self:skinSlider{obj=_G.WorldStateScoreScrollFrame.ScrollBar, rt="artwork"}
+			self:skinTabs{obj=this, ignore=true, lod=true}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, x1=12, y1=-15, x2=-114, y2=65}
 
 				-- casting bar handled in CastingBar function (PF)
+			if self.modBtns then
+				self:skinStdButton{obj=_G.WorldStateScoreFrameLeaveButton}
+			end
 
 				-- move level & rest icon down, so they are more visible
 				self:SecureHook("PlayerFrame_UpdateLevelTextAnchor", function(level)
 					_G.PlayerLevelText:SetPoint("CENTER", _G.PlayerFrameTexture, "CENTER", level == 100 and -62 or -61, -20 + -9)
 				end)
 				_G.PlayerRestIcon:SetPoint("TOPLEFT", 36, -63)
+			self:Unhook(this, "OnShow")
+		end)
 
 				-- remove group indicator textures
 				aObj:keepFontStrings(_G.PlayerFrameGroupIndicator)
 				aObj:moveObject{obj=_G.PlayerFrameGroupIndicatorText, y=-1}
+	end
 
 				self:skinUnitButton{obj=pF, ti=true, x1=35, y1=-5, x2=2, y2=2}
 
