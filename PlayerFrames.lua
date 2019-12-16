@@ -2571,7 +2571,9 @@ aObj.blizzFrames[ftype].FriendsFrame = function(self)
 			if self.modBtns then
 				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton}
 				self:skinStdButton{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton}
-				self:skinStdButton{obj=this.OldRAFRewardsButton}
+				if not aObj.isPTR then
+					self:skinStdButton{obj=this.OldRAFRewardsButton}
+				end
 			end
 			self:addSkinFrame{obj=_G.FriendsFrameBattlenetFrame.BroadcastFrame, ft=ftype, ofs=-10}
 			self:removeNineSlice(_G.FriendsFrameBattlenetFrame.UnavailableInfoFrame)
@@ -4011,10 +4013,12 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 			aObj:removeInset(frame.Inset)
 			frame.ConquestBar:DisableDrawLayer("BORDER")
 			aObj:skinStatusBar{obj=frame.ConquestBar, fi=0, bgTex=frame.ConquestBar.Background}
-			frame.ConquestBar.Reward.Ring:SetTexture(nil)
-			if self.modBtnBs then
-				aObj:addButtonBorder{obj=frame.ConquestBar.Reward, relTo=frame.ConquestBar.Reward.Icon, clr="silver"}
+			local btn = frame.ConquestBar.Reward
+			btn.Ring:SetTexture(nil)
+			if aObj.modBtnBs then
+				aObj:addButtonBorder{obj=btn, relTo=btn.Icon, reParent={btn.CheckMark}, clr="silver"}
 			end
+			btn = nil
 			if aObj.modChkBtns then
 				aObj:skinCheckButton{obj=frame.HealerIcon.checkButton}
 				aObj:skinCheckButton{obj=frame.TankIcon.checkButton}
@@ -4124,8 +4128,13 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		_G.PVPQueueFrame.NewSeasonPopup.NewSeason:SetTextColor(self.HT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription:SetTextColor(self.BT:GetRGB())
 		_G.PVPQueueFrame.NewSeasonPopup.SeasonDescription2:SetTextColor(self.BT:GetRGB())
-		_G.SeasonRewardFrame.Ring:SetTexture(nil)
-		self:getRegion(_G.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
+		if not aObj.isPTR then
+			_G.SeasonRewardFrame.Ring:SetTexture(nil)
+			self:getRegion(_G.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
+		else
+			_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame.Ring:SetTexture(nil)
+			self:getRegion(_G.PVPQueueFrame.NewSeasonPopup.SeasonRewardFrame, 3):SetTextColor(self.BT:GetRGB())
+		end
 		self:addSkinFrame{obj=_G.PVPQueueFrame.NewSeasonPopup, ft=ftype, kfs=true, nb=true, ofs=-13}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.PVPQueueFrame.NewSeasonPopup.Leave}

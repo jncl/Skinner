@@ -47,6 +47,7 @@ if aObj.isPTR then
 		self.initialized.AuctionHouseUI = true
 
 		self:SecureHookScript(_G.AuctionHouseFrame, "OnShow", function(this)
+
 			local function skinItemListHdrs(hdrPool)
 				for hdr in hdrPool:EnumerateActive() do
 					aObj:removeRegions(hdr, {1, 2, 3})
@@ -59,9 +60,8 @@ if aObj.isPTR then
 				end
 				aObj:removeNineSlice(frame.NineSlice)
 				frame.Background:SetTexture(nil)
-				aObj:SecureHookScript(frame, "OnShow", function(this)
+				aObj:SecureHook(frame, "RefreshScrollFrame", function(this)
 					skinItemListHdrs(this.tableBuilder.headerPoolCollection)
-					aObj:Unhook(this, "OnShow")
 				end)
 				aObj:skinSlider{obj=frame.ScrollFrame.scrollBar, rt="background", wdth=-5}
 			end
@@ -100,7 +100,7 @@ if aObj.isPTR then
 			end
 			if self.isTT then
 				self:SecureHook(this, "SetDisplayMode", function(this, displayMode)
-					if self.displayMode == displayMode then return end
+					if not this.tabsForDisplayMode[displayMode] then return end
 					for i, tab in ipairs(this.Tabs) do
 						if i == this.tabsForDisplayMode[displayMode] then
 							self:setActiveTab(tab.sf)
@@ -115,6 +115,7 @@ if aObj.isPTR then
 			if self.modBtnBs then
 				self:addButtonBorder{obj=this.SearchBar.FavoritesSearchButton, ofs=-2, x1=1, clr="grey"}
 			end
+
 			-- Browsing frames
 			self:skinEditBox{obj=this.SearchBar.SearchBox, regs={6, 7}, mi=true} -- 6 is text, 7 is icon
 			self:skinEditBox{obj=this.SearchBar.FilterButton.LevelRangeFrame.MinLevel, regs={6}} -- 6 is text
@@ -144,10 +145,11 @@ if aObj.isPTR then
 				this.LeftDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 				this.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
 				this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
-				self:addSkinFrame{obj=this, ft=ftype, kfs=true}
+				self:addSkinFrame{obj=this, ft=ftype, kfs=true, y2=220}
 				if self.modBtns then
 					self:skinStdButton{obj=this.RightDisplay.StoreButton, aso={bbclr="gold"}, x1=14, y1=2, x2=-14, y2=2}
 				end
+
 				self:Unhook(this, "OnShow")
 			end)
 			self:removeRegions(this.WoWTokenResults.TokenDisplay, {3}) -- background texture
@@ -163,6 +165,7 @@ if aObj.isPTR then
 			end
 			this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("BACKGROUND")
 			this.WoWTokenResults.DummyScrollBar:DisableDrawLayer("ARTWORK")
+
 			-- Buy frames
 			self:removeNineSlice(this.CommoditiesBuyFrame.BuyDisplay.NineSlice)
 			this.CommoditiesBuyFrame.BuyDisplay.Background:SetTexture(nil)
@@ -183,6 +186,7 @@ if aObj.isPTR then
 				self:skinStdButton{obj=this.ItemBuyFrame.BuyoutFrame.BuyoutButton}
 				self:skinStdButton{obj=this.ItemBuyFrame.BidFrame.BidButton}
 			end
+
 			-- Sell frames
 			local function skinPriceInp(frame)
 				aObj:skinEditBox{obj=frame.CopperBox, regs={6}, noHeight=true, noWidth=true} -- 6 is text
@@ -214,6 +218,7 @@ if aObj.isPTR then
 			skinItemList(this.ItemSellList)
 			skinSellFrame(this.CommoditiesSellFrame)
 			skinItemList(this.CommoditiesSellList)
+
 			-- .WoWTokenSellFrame
 			self:removeNineSlice(this.WoWTokenSellFrame.ItemDisplay.NineSlice)
 			self:removeRegions(this.WoWTokenSellFrame.ItemDisplay, {3})
@@ -224,6 +229,7 @@ if aObj.isPTR then
 			if self.modBtns then
 				self:skinStdButton{obj=this.WoWTokenSellFrame.PostButton}
 			end
+
 			-- Auctions frames
 			local tabID, tab = this.AuctionsFrame.selectedTab or 1
 			for i = 1, #this.AuctionsFrame.Tabs do
@@ -263,10 +269,10 @@ if aObj.isPTR then
 			skinBidAmt(this.AuctionsFrame.BidFrame.BidAmount)
 			self:removeNineSlice(this.AuctionsFrame.SummaryList.NineSlice)
 			this.AuctionsFrame.SummaryList.Background:SetTexture(nil)
-			self:skinSlider{obj=this.AuctionsFrame.SummaryList.ScrollFrame.scrollBar, rt="background"}--, wdth=-4, size=3, hgt=-10}
+			self:skinSlider{obj=this.AuctionsFrame.SummaryList.ScrollFrame.scrollBar, rt="background"}
 			self:removeInset(this.AuctionsFrame.SummaryList)
-			aObj:removeNineSlice(this.AuctionsFrame.ItemDisplay.NineSlice)
-			aObj:removeRegions(this.AuctionsFrame.ItemDisplay, {3})
+			self:removeNineSlice(this.AuctionsFrame.ItemDisplay.NineSlice)
+			self:removeRegions(this.AuctionsFrame.ItemDisplay, {3})
 			skinItemList(this.AuctionsFrame.AllAuctionsList)
 			skinItemList(this.AuctionsFrame.BidsList)
 			skinItemList(this.AuctionsFrame.ItemList)
@@ -277,6 +283,7 @@ if aObj.isPTR then
 				self:skinStdButton{obj=this.AuctionsFrame.BuyoutFrame.BuyoutButton}
 				self:skinStdButton{obj=this.AuctionsFrame.BidFrame.BidButton}
 			end
+
 			-- Dialogs
 			self:addSkinFrame{obj=this.BuyDialog.Border, ft=ftype, kfs=true, nb=true, ofs=-10}
 			if self.modBtns then
@@ -375,6 +382,7 @@ else
 				this.RightDisplay.Label:SetTextColor(self.HT:GetRGB())
 				this.RightDisplay.Tutorial1:SetTextColor(self.BT:GetRGB())
 				self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true, ofs=1, y1=2, y2=220}
+
 				self:Unhook(this, "OnShow")
 			end)
 			self:Unhook(this, "OnShow")

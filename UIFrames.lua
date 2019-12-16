@@ -4702,35 +4702,37 @@ aObj.blizzFrames[ftype].PetBattleUI = function(self)
 
 end
 
-aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Rewards Frame
-	if not self.prdb.ProductChoiceFrame or self.initialized.ProductChoiceFrame then return end
-	self.initialized.ProductChoiceFrame = true
+if not aObj.isPTR then
+	aObj.blizzFrames[ftype].ProductChoiceFrame = function(self) -- a.k.a. RaF Rewards Frame
+		if not self.prdb.ProductChoiceFrame or self.initialized.ProductChoiceFrame then return end
+		self.initialized.ProductChoiceFrame = true
 
-	-- close with Esc
-	self:add2Table(_G.UISpecialFrames, "ProductChoiceFrame")
+		-- close with Esc
+		self:add2Table(_G.UISpecialFrames, "ProductChoiceFrame")
 
-	self:SecureHookScript(_G.ProductChoiceFrame, "OnShow", function(this)
-		self:removeNineSlice(this.Inset.NoTakeBacksies.Dialog.Border)
-		if self.modBtns then
-			self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.AcceptButton}
-			self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.DeclineButton}
-			self:skinStdButton{obj=this.Inset.ClaimButton}
-		end
-		self:addSkinFrame{obj=this.Inset.NoTakeBacksies.Dialog, ft=ftype}
-		if self.modBtnBs then
-			self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
-			self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3}
-			self:clrPNBtns(this.Inset, true)
-			self:SecureHook("ProductChoiceFrame_SetUp", function(this, forceUpdate)
+		self:SecureHookScript(_G.ProductChoiceFrame, "OnShow", function(this)
+			self:removeNineSlice(this.Inset.NoTakeBacksies.Dialog.Border)
+			if self.modBtns then
+				self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.AcceptButton}
+				self:skinStdButton{obj=this.Inset.NoTakeBacksies.Dialog.DeclineButton}
+				self:skinStdButton{obj=this.Inset.ClaimButton}
+			end
+			self:addSkinFrame{obj=this.Inset.NoTakeBacksies.Dialog, ft=ftype}
+			if self.modBtnBs then
+				self:addButtonBorder{obj=this.Inset.PrevPageButton, ofs=-2, x2=-3}
+				self:addButtonBorder{obj=this.Inset.NextPageButton, ofs=-2, x2=-3}
 				self:clrPNBtns(this.Inset, true)
-			end)
-		end
+				self:SecureHook("ProductChoiceFrame_SetUp", function(this, forceUpdate)
+					self:clrPNBtns(this.Inset, true)
+				end)
+			end
 
-		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
+			self:addSkinFrame{obj=this, ft=ftype, kfs=true, ri=true}
 
-		self:Unhook(this, "OnShow")
-	end)
+			self:Unhook(this, "OnShow")
+		end)
 
+	end
 end
 
 aObj.blizzFrames[ftype].PVEFrame = function(self)
