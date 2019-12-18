@@ -206,7 +206,7 @@ aObj.blizzLoDFrames[ftype].AchievementUI = function(self)
 			return obj
 		end, true)
 		-- hook this to colour the metaCriteria & Criteria text
-		self:SecureHook("AchievementObjectives_DisplayCriteria", function(objectivesFrame, id, renderOffScreen)
+		self:SecureHook("AchievementObjectives_DisplayCriteria", function(objectivesFrame, _)
 			for _, child in ipairs{objectivesFrame:GetChildren()} do
 				if child.shield then -- miniAchievement
 					-- do nothing
@@ -479,7 +479,7 @@ aObj.blizzLoDFrames[ftype].ArtifactUI = function(self)
 		end
 		skinPowerBtns()
 		-- hook this to skin new buttons
-		self:SecureHook(this.PerksTab, "RefreshPowers", function(this, newItem)
+		self:SecureHook(this.PerksTab, "RefreshPowers", function(this, _)
 			skinPowerBtns()
 		end)
 
@@ -598,7 +598,7 @@ aObj.blizzFrames[ftype].Buffs = function(self)
 		-- if not all buff buttons created yet
 		if not _G.BuffButton32 then
 			-- hook this to skin new Buffs
-			self:SecureHook("AuraButton_Update", function(buttonName, index, filter)
+			self:SecureHook("AuraButton_Update", function(buttonName, index, _)
 				-- aObj:Debug("AuraButton_Update: [%s, %s, %s]", buttonName, index, filter)
 				if buttonName == "BuffButton" then
 					local btn = _G[buttonName .. index]
@@ -1584,7 +1584,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 
 	skinCFGaCF(cFrame.GuildFinderFrame)
 	if self.modBtnBs then
-		self:secureHook(cFrame.GuildFinderFrame.GuildCards, "RefreshLayout", function(this, cardPage)
+		self:secureHook(cFrame.GuildFinderFrame.GuildCards, "RefreshLayout", function(this, _)
 			self:clrBtnBdr(this.PreviousPage, this.PreviousPage:IsEnabled() and "gold" or "disabled", 1)
 			self:clrBtnBdr(this.NextPage, this.NextPage:IsEnabled() and "gold" or "disabled", 1)
 		end)
@@ -1788,7 +1788,7 @@ aObj.blizzLoDFrames[ftype].Communities = function(self)
 	end
 
 	-- N.B. hook DisplayMember rather than OnShow script
-	self:SecureHook(cFrame.GuildMemberDetailFrame, "DisplayMember", function(this, ...)
+	self:SecureHook(cFrame.GuildMemberDetailFrame, "DisplayMember", function(this, _)
 		self:removeNineSlice(this.Border)
 		self:skinDropDown{obj=this.RankDropdown}
 		self:addSkinFrame{obj=this.NoteBackground, ft=ftype}
@@ -2050,7 +2050,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 
 	end
 	-- hook this to skin any new CompactRaidFrameContainer entries
-	self:SecureHook("FlowContainer_AddObject", function(container, object)
+	self:SecureHook("FlowContainer_AddObject", function(container, _)
 		if container == _G.CompactRaidFrameContainer then -- only for compact raid frame objects
 			skinCRFCframes()
 		end
@@ -2067,7 +2067,7 @@ aObj.blizzFrames[ftype].CompactFrames = function(self)
 		this.toggleButton.nt = this.toggleButton:GetNormalTexture()
 		this.toggleButton.nt:SetTexCoord(0.22, 0.5, 0.33, 0.67)
 		-- hook this to trim the texture
-		self:RawHook(this.toggleButton.nt, "SetTexCoord", function(this, x1, x2, y1, y2)
+		self:RawHook(this.toggleButton.nt, "SetTexCoord", function(this, x1, x2, _)
 			self.hooks[this].SetTexCoord(this, x1 == 0 and x1 + 0.22 or x1 + 0.26, x2, 0.33, 0.67)
 		end, true)
 
@@ -2172,7 +2172,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		end
 
 		-- Hook this to skinhide/show the gear button
-		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, size, id)
+		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, _, id)
 			-- skin the frame if required
 			if not frame.sf then
 				skinBag(frame, id)
@@ -2181,7 +2181,7 @@ aObj.blizzFrames[ftype].ContainerFrames = function(self)
 		end)
 
 		-- hook this to move the Search Box to the left, away from the AutoSort button
-		self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, xOfs, yOfs)
+		self:RawHook(_G.BagItemSearchBox, "SetPoint", function(this, point, relTo, relPoint, _)
 			self.hooks[this].SetPoint(this, point, relTo, relPoint, 50, -35)
 		end, true)
 	end
@@ -2354,7 +2354,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 					end
 				end
 			end
-			self:SecureHook("EncounterJournal_DisplayInstance", function(instanceID, noButton)
+			self:SecureHook("EncounterJournal_DisplayInstance", function(_)
 				skinBossBtns()
 			end)
 			-- skin any existing Boss Buttons
@@ -2381,7 +2381,7 @@ aObj.blizzLoDFrames[ftype].EncounterJournal = function(self) -- a.k.a. Adenture 
 			this.info.overviewScroll.child.header:SetTexture(nil)
 			this.info.overviewScroll.child.overviewDescription.Text:SetTextColor(self.BT:GetRGB())
 			-- Hook this to skin headers
-			self:SecureHook("EncounterJournal_ToggleHeaders", function(this, doNotShift)
+			self:SecureHook("EncounterJournal_ToggleHeaders", function(this, _)
 				local objName = "EncounterJournalInfoHeader"
 				if this.isOverview then
 					objName = "EncounterJournalOverviewInfoHeader"
@@ -2523,7 +2523,7 @@ aObj.blizzFrames[ftype].EquipmentFlyout = function(self)
 
 	self:SecureHookScript(_G.EquipmentFlyoutFrame, "OnShow", function(this)
 		self:addSkinFrame{obj=this.buttonFrame, ft=ftype, ofs=2, x2=5}
-		self:SecureHook("EquipmentFlyout_Show", function(...)
+		self:SecureHook("EquipmentFlyout_Show", function(_)
 			for i = 1, _G.EquipmentFlyoutFrame.buttonFrame.numBGs do
 				_G.EquipmentFlyoutFrame.buttonFrame["bg" .. i]:SetAlpha(0)
 			end
@@ -2914,7 +2914,7 @@ aObj.blizzLoDFrames[ftype].GuildControlUI = function(self)
 			end
 
 		end
-		self:SecureHook("GuildControlUI_RankOrder_Update", function(...)
+		self:SecureHook("GuildControlUI_RankOrder_Update", function(_)
 			skinROFrames()
 		end)
 		skinROFrames()
@@ -3652,7 +3652,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	if self.prdb.ObjectiveTracker.skin then
 		self:addSkinFrame{obj=_G.ObjectiveTrackerFrame.BlocksFrame, ft=ftype, kfs=true, x1=-30, x2=4}
 		--hook this to handle displaying of the ObjectiveTrackerFrame BlocksFrame skin frame
-		self:SecureHook("ObjectiveTracker_Update", function(reason)
+		self:SecureHook("ObjectiveTracker_Update", function(_)
 			_G.ObjectiveTrackerFrame.BlocksFrame.sf:SetShown(_G.ObjectiveTrackerFrame.HeaderMenu:IsShown())
 		end)
 	end
@@ -3662,7 +3662,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, es=12, ofs=0, x1=-1}
 		-- hook this to skin QuestObjective Block Button(s)
-		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(block, button, iAO)
+		self:SecureHook("QuestObjectiveSetupBlockButton_AddRightButton", function(_, button, _)
 			-- aObj:Debug("QOSBB_ARB: [%s, %s]", block, button)
 			if not button.sbb then
 				aObj:addButtonBorder{obj=button, ofs=button.Icon and -2 or nil, x1=button.Icon and 0 or nil, reParent=button.Count and {button.Count} or nil} -- adjust x offset for FindGroup button(s), reparent Item Count if required
@@ -3705,24 +3705,24 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end
 
 	-- TimerBars
-	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, ...)
+	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddTimerBar", function(this, block, line, _)
 		-- aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddTimerBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedTimerBars[block] and this.usedTimerBars[block][line])
 	end)
 	-- ProgressBars
-	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+	self:SecureHook(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
 		-- aObj:Debug("DEFAULT_OBJECTIVE_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
-	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+	self:SecureHook(_G.SCENARIO_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
 		-- aObj:Debug("SCENARIO_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
-	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+	self:SecureHook(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
 		-- aObj:Debug("BONUS_OBJECTIVE_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
-	self:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, ...)
+	self:SecureHook(_G.WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(this, block, line, _)
 		-- aObj:Debug("WORLD_QUEST_TRACKER_MODULE AddProgressBar: [%s, %s, %s]", this, block, line)
 		skinBar(this.usedProgressBars[block] and this.usedProgressBars[block][line])
 	end)
@@ -3771,7 +3771,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	self:skinStatusBar{obj=_G.ScenarioChallengeModeBlock.StatusBar, fi=0, bgTex=_G.ScenarioChallengeModeBlock.TimerBG, otherTex={_G.ScenarioChallengeModeBlock.TimerBGBack}}
 	self:removeRegions(_G.ScenarioChallengeModeBlock, {3}) -- challengemode-timer atlas
 	self:addSkinFrame{obj=_G.ScenarioChallengeModeBlock, ft=ftype, nb=true, y2=7}
-	self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, affixes)
+	self:SecureHook("Scenario_ChallengeMode_SetUpAffixes", function(block, _)
 		for i = 1, #block.Affixes do
 			block.Affixes[i].Border:SetTexture(nil)
 		end
@@ -3787,7 +3787,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- ScenarioWidgetContainerBlock
 
-	self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(xp, money)
+	self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(xp, _)
 		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
 		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
 		skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
@@ -3889,7 +3889,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 	end
 	updTrackerModules() -- update any existing modules
 	-- hook this to handle new modules
-	self:SecureHook("ObjectiveTracker_Update", function(reason, id)
+	self:SecureHook("ObjectiveTracker_Update", function(_)
 		-- aObj:Debug("ObjectiveTracker_Update: [%s, %s]", reason, id)
 		updTrackerModules()
 	end)
@@ -3939,13 +3939,13 @@ aObj.blizzFrames[ftype].OverrideActionBar = function(self) -- a.k.a. Vehicle UI
 
 		end
 
-		self:SecureHook(this, "Show", function(this, ...)
+		self:SecureHook(this, "Show", function(this, _)
 			skinOverrideActionBar(this)
 		end)
 		if this:IsShown() then
 			skinOverrideActionBar(this)
 		end
-		self:SecureHook("OverrideActionBar_SetSkin", function(skin)
+		self:SecureHook("OverrideActionBar_SetSkin", function(_)
 			skinOverrideActionBar(this)
 		end)
 
@@ -3986,7 +3986,7 @@ aObj.blizzLoDFrames[ftype].PVPUI = function(self)
 		end
 		if self.modBtnBs then
 			-- hook this to change button border colour
-			self:SecureHook("PVPQueueFrame_SetCategoryButtonState", function(btn, enabled)
+			self:SecureHook("PVPQueueFrame_SetCategoryButtonState", function(btn, _)
 				if btn:IsEnabled() then
 					self:clrBtnBdr(btn, "default", 1)
 				else
@@ -4166,7 +4166,7 @@ aObj.blizzLoDFrames[ftype].RaidUI = function(self)
 
 	end
 	-- hook this to skin the pullout group frames
-	self:SecureHook("RaidPullout_GetFrame", function(...)
+	self:SecureHook("RaidPullout_GetFrame", function(_)
 		skinPulloutFrames()
 	end)
 	-- hook this to skin the pullout character frames
@@ -4492,7 +4492,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		end
 
 	end
-	aObj:SecureHook("TalentFrame_Update", function(this, ...)
+	aObj:SecureHook("TalentFrame_Update", function(this, _)
 		if not aObj.modBtnBs then
 			aObj:Unhook("TalentFrame_Update")
 			if skinBtnBBC then skinBtnBBC = nil end
@@ -4549,7 +4549,7 @@ aObj.blizzLoDFrames[ftype].TalentUI = function(self)
 		sc, btn = nil, nil
 	end
 	-- hook this as subText text colour is changed
-	self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(this, spec)
+	self:SecureHook("PlayerTalentFrame_UpdateSpecFrame", function(this, _)
 		if self.modBtnBs then
 			for i = 1, _G.MAX_TALENT_TABS do
 				if this["specButton" .. i].disabled then
@@ -4817,7 +4817,7 @@ aObj.blizzLoDFrames[ftype].TradeSkillUI = function(self)
 		if self.modBtnBs then
 			self:addButtonBorder{obj=cmib.IncrementButton, ofs=0, x2=-1}
 			self:addButtonBorder{obj=cmib.DecrementButton, ofs=0, x2=-1}
-			self:SecureHook(cmib, "SetEnabled", function(this, enable)
+			self:SecureHook(cmib, "SetEnabled", function(this, _)
 				self:clrBtnBdr(this.IncrementButton, this.IncrementButton:IsEnabled() and "gold" or "disabled", 1)
 				self:clrBtnBdr(this.DecrementButton, this.DecrementButton:IsEnabled() and "gold" or "disabled", 1)
 			end)

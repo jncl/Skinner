@@ -243,7 +243,7 @@ aObj.ClassicSupport = function(self)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 				self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
-				self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(this, elapsed)
+				self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(this, _)
 					if _G.CanSendAuctionQuery("list") then
 						self:clrPNBtns("Browse")
 					end
@@ -625,7 +625,7 @@ aObj.ClassicSupport = function(self)
 
 		end
 
-		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, size, id)
+		self:SecureHook("ContainerFrame_GenerateFrame", function(frame, _)
 			-- skin the frame if required
 			if not frame.sf then
 				skinBag(frame, id)
@@ -1043,7 +1043,7 @@ aObj.ClassicSupport = function(self)
 			-- end
 		end)
 
-		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(thisthis)
+		self:SecureHookScript(_G.VoiceChatPromptActivateChannel, "OnShow", function(this)
 			self:addSkinFrame{obj=this, ft=ftype, nb=true}
 			if self.modBtns then
 				self:skinCloseButton{obj=this.CloseButton, font=self.fontSBX, aso={bd=5, bba=0}, onSB=true, storeOnParent=true}

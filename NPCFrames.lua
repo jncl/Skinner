@@ -29,7 +29,7 @@ aObj.blizzLoDFrames[ftype].AlliedRacesUI = function(self)
 		end
 		self:Unhook(this, "OnShow")
 	end)
-	self:SecureHook(_G.AlliedRacesFrame, "LoadRaceData", function(this, raceID)
+	self:SecureHook(_G.AlliedRacesFrame, "LoadRaceData", function(this, _)
 		for ability in this.abilityPool:EnumerateActive() do
 			ability.Text:SetTextColor(self.BT:GetRGB())
 			self:getRegion(ability, 3):SetTexture(nil) -- Border texture
@@ -130,7 +130,7 @@ if aObj.isPTR then
 				self:keepRegions(this.CategoriesList.FilterButtons[i], {3, 4, 5}) -- N.B. region 3 is highlight, 4 is selected, 5 is text
 				self:addSkinFrame{obj=this.CategoriesList.FilterButtons[i], ft=ftype, nb=true, aso={bd=5}, y2=-1}
 			end
-			self:SecureHook("FilterButton_SetUp", function(button, ...)
+			self:SecureHook("FilterButton_SetUp", function(button, _)
 				button.NormalTexture:SetAlpha(0)
 			end)
 			self:skinSlider{obj=this.CategoriesList.ScrollFrame.ScrollBar, rt="border"}
@@ -314,7 +314,7 @@ else
 
 		self:SecureHookScript(_G.AuctionFrame, "OnShow", function(this)
 			-- hide filter texture when filter is clicked
-			self:SecureHook("FilterButton_SetUp", function(button, ...)
+			self:SecureHook("FilterButton_SetUp", function(button, _)
 				_G[button:GetName() .. "NormalTexture"]:SetAlpha(0)
 			end)
 
@@ -745,7 +745,7 @@ aObj.blizzLoDFrames[ftype].ItemUpgradeUI = function(self)
 			icon = nil
 		end)
 		-- hook this to remove background texture from stat lines
-		self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, tryAdd)
+		self:SecureHook("ItemUpgradeFrame_GetStatRow", function(index, _)
 			if _G.ItemUpgradeFrame.LeftStat[index] then
 				 _G.ItemUpgradeFrame.LeftStat[index].BG:SetTexture(nil)
 			 end
@@ -874,7 +874,7 @@ aObj.blizzFrames[ftype].PetStableFrame = function(self)
 			self:addButtonBorder{obj=_G.PetStableDiet, ofs=0, x2=-1}
 			self:addButtonBorder{obj=_G.PetStableNextPageButton, ofs=0}
 			self:addButtonBorder{obj=_G.PetStablePrevPageButton, ofs=0}
-			self:SecureHook("PetStable_Update", function(updateModel)
+			self:SecureHook("PetStable_Update", function(_)
 				self:clrPNBtns("PetStable")
 			end)
 		end
@@ -924,6 +924,7 @@ aObj.blizzLoDFrames[ftype].QuestChoice = function(self)
 			end
 		end
 		self:addSkinFrame{obj=this, ft=ftype, kfs=true, ofs=-13, y1=-13}
+
 		self:Unhook(this, "OnShow")
 	end)
 
@@ -934,10 +935,10 @@ aObj.blizzFrames[ftype].QuestFrame = function(self)
 	self.initialized.QuestFrame = true
 
 	self:SecureHookScript(_G.QuestFrame, "OnShow", function(this)
-		self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, ...)
+		self:RawHook("QuestFrame_SetTitleTextColor", function(fontString, _)
 			fontString:SetTextColor(self.HT:GetRGB())
 		end, true)
-		self:RawHook("QuestFrame_SetTextColor", function(fontString, ...)
+		self:RawHook("QuestFrame_SetTextColor", function(fontString, _)
 			fontString:SetTextColor(self.BT:GetRGB())
 		end, true)
 
@@ -1073,7 +1074,7 @@ aObj.blizzFrames[ftype].QuestInfo = function(self)
 		end
 
 	end
-	local function updateQIDisplay(template, ...)
+	local function updateQIDisplay(_)
 		-- aObj:Debug("updateQIDisplay")
 
 		local br, bg, bb = aObj.BT:GetRGB()

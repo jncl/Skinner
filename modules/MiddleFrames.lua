@@ -156,7 +156,7 @@ function module:OnEnable()
 
 end
 
-function module:adjustMiddleFrames(opt, key)
+function module:adjustMiddleFrames(_, key)
 
 	if not key then
 		for i = 1, MAX_MIDDLEFRAMES do

@@ -59,7 +59,7 @@ function module:OnEnable()
 end
 
 local topframe
-function module:adjustTopFrame(opt)
+function module:adjustTopFrame()
 
 	if db.shown then
 		topframe = topframe or _G.CreateFrame("Frame", nil, _G.UIParent)
@@ -104,7 +104,7 @@ function module:GetOptions()
 			if not module:IsEnabled() then module:Enable() end
 			module.db.profile.shown = true -- always enable if any option is changed
 			module.db.profile[info[#info]] = value
-			module:adjustTopFrame(info[#info])
+			module:adjustTopFrame()
 		end,
 		args = {
 			shown = {

@@ -44,7 +44,7 @@ function module:OnEnable()
 end
 
 local btmframe
-function module:adjustBottomFrame(opt)
+function module:adjustBottomFrame()
 
 	if db.shown then
 		btmframe = btmframe or _G.CreateFrame("Frame", nil, _G.UIParent)
@@ -87,7 +87,7 @@ function module:GetOptions()
 			if not module:IsEnabled() then module:Enable() end
 			module.db.profile.shown = true -- always enable if any option is changed
 			module.db.profile[info[#info]] = value
-			module:adjustBottomFrame(info[#info])
+			module:adjustBottomFrame()
 		end,
 		args = {
 			shown = {

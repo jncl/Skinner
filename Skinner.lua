@@ -347,7 +347,7 @@ function aObj:OnEnable()
 		if btnModDB.profile.ButtonBorders then
 			self.modBtnBs = true
 			-- hook this to colour container item borders (inc. Bags, Bank, GuildBank, ReagentBank)
-			self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, suppressOverlays)
+			self:SecureHook("SetItemButtonQuality", function(button, quality, itemIDOrLink, _)
 				-- self:Debug("SetItemButtonQuality: [%s, %s, %s, %s, %s, %s]", button, button.IconBorder, button.sbb, quality, itemIDOrLink, suppressOverlays)
 				-- self:Debug("SIBQ: [%s, %s]", button.IconBorder:IsShown(), button.IconOverlay:IsShown())
 				-- show Artifact Relic Item border
@@ -470,7 +470,7 @@ function aObj:OnEnable()
 		OnAccept = function()
 			_G.ReloadUI()
 		end,
-		OnCancel = function(this, data, reason)
+		OnCancel = function(this, _, reason)
 			if reason == "timeout" or reason == "clicked" then
 				aObj:CustomPrint(1, 1, 0, "The profile '" .. aObj.db:GetCurrentProfile() .. "' will be activated next time you Login or Reload the UI")
 			end
