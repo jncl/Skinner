@@ -515,7 +515,6 @@ aObj.ClassicSupport = function(self)
 			end
 			-- force quality border update
 			_G.PaperDollItemSlotButton_Update(btn)
-
 		end
 
 		self:SecureHookScript(_G.ReputationFrame, "OnShow", function(this)
@@ -557,7 +556,7 @@ aObj.ClassicSupport = function(self)
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.PetPaperDollPetInfo, ofs=1, x2=0, clr="gold"}
 				for i = 1, 5 do
-					self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], ofs=0, x1=1, y2=-2}
+					self:addButtonBorder{obj=_G["PetMagicResFrame" .. i], ofs=0, x1=1, y2=-2, clr="white"}
 				end
 				self:skinStdButton{obj=_G.PetPaperDollCloseButton}
 			end
