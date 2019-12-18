@@ -490,6 +490,8 @@ aObj.ClassicSupport = function(self)
 				self:addButtonBorder{obj=_G["MagicResFrame" .. i], ofs=0, x1=1, y2=-2, clr="white"}
 			end
 			self:SecureHook("PaperDollItemSlotButton_Update", function(btn)
+				-- handle buttons with no border
+				if not btn.sbb then return end
 				if not btn.hasItem then
 					self:clrBtnBdr(btn, "grey", 1)
 					btn.icon:SetTexture(nil)
