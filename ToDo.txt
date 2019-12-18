@@ -30,20 +30,21 @@ ToDos
 ¶√			- AuctionHouseUI
 x			- WorldMapThreatFrameTemplate
 ≈			- CircularGiantItemButtonTemplate
-			- GiantItemButtonTemplate
+?			- GiantItemButtonTemplate
 ≈			- MoneyDenominationDisplayTemplate
 ≈			- MoneyDisplayFrameTemplate
 ≈			- LargeMoneyInputBoxTemplate
 ≈			- LargeMoneyInputFrameTemplate
 ≈			- LargeUIDropDownMenuTemplate
-			- Blizzard_UIWidgetPowerBarFrame
+?			- Blizzard_UIWidgetPowerBarFrame
 x			- WM_EventOverlayDataProvider
 x			- WM_InvasionDataProvider
 x			- DropDownToggleButton.xml
 ?			- QueueUpdater.lua
-			- TalentRankDisplayTemplate
+?			- TalentRankDisplayTemplate
 ¶√			- ItemInteractionUI
-			- Helix
+?			- Helix
+?			- AudioVoiceOptionsPanel - VoiceChatDucking
 		- Deleted
 √			- AuctionUI
 		- Updated
@@ -69,36 +70,18 @@ h			- HelpFrame
 h			- InterfaceOptionsFrame
 ?			- MacOptionsPanel (FolderPicker)
 h			- OptionsFrame Templates
-			- RaidFrame
+?			- RaidFrame
 h			- RatingMenuFrame
-			- RecruitAFriendFrame
+≈			- RecruitAFriendFrame
 x			- ReputationFrame
-			- SharedUIPanelTemplates
-			- UIPanelTemplates
-			- UnitPowerBarAlt
+?			- SharedUIPanelTemplates
+?			- UIPanelTemplates
+?			- UnitPowerBarAlt
 x			- AzeriteEssencesUI
 √			- QuestInfo
 
 	N	Classic 1.13.3
 ≈		- Keyring button added
-		- Support for Battlegrounds added
-√			- Skin MiniMapBattlefieldFrame button
-√			- Skin Battlefield Minimap
 
-	I/C	AuctionUI, reported by amey0, 13.12.19
-√		- Skinner\ClassicSupport.lua:328: attempt to call method 'DisableDrawLayer' (a nil value)
-		Skinner\ClassicSupport.lua:328: in function <Skinner\ClassicSupport.lua:327>
-
-√	I	Hooking of OnInitialise, conflict between ElvUI/TukUI & ClassicSupport, reported by 9thePresident, 15.12.19
-		-  Skinner\UtilFuncs.lua:292: attempt to index field 'prdb' (a nil value)
-		- Skinner\AddonFrames.lua:200: attempt to index field 'callbacks' (a nil value)
-		- Skinner\Skinner-beta8.32722.1.lua:417: attempt to index field 'prdb' (a nil value)
-		- Skinner\AddonSkins\ElvUI-11.27.lua:28: attempt to index field 'LSM' (a nil value)
-		- .Ons\AddOnSkins\Libs\Ace3\AceHook-3.0\AceHook-3.0.lua:180: Attempting to rehook already active hook OnInitialize.
-		...Ons\AddOnSkins\Libs\Ace3\AceHook-3.0\AceHook-3.0.lua:180: in function 		<...Ons\AddOnSkins\Libs\Ace3\AceHook-3.0\AceHook-3.0.lua:118>
-		...Ons\AddOnSkins\Libs\Ace3\AceHook-3.0\AceHook-3.0.lua:341: in function `SecureHook'
-		Skinner\ClassicSupport.lua:89: in function <Skinner\ClassicSupport.lua:87>
-		Skinner\ClassicSupport.lua:1710: in main chunk
-		- Skinner\AddonSkins\ElvUI.lua:28: attempt to index field 'LSM' (a nil value)
-		- Skinner\Skinner.lua:417: attempt to index field 'prdb' (a nil value)
-		- Skinner\AddonFrames.lua:200: attempt to index field 'callbacks' (a nil value)
+	I/C	CharacterFrames, reported by AsuraKnight27, 17.12.19
+≈		- ..\AddOns\Skinner\ClassicSupport.lua line 497: attempt to index field 'sbb' (a nil value)
