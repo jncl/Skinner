@@ -5,26 +5,6 @@ local _G = _G
 local assert, debugstack, ipairs, pairs, rawget, select, type, print, tostring, Round = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.print, _G.tostring, _G.Round
 
 local tmpTab = {}
-local function getObjFromString(input)
-
-	_G.wipe(tmpTab)
-
-    -- first split the string on "."
-    for word in _G.string.gmatch(input, "%a+") do
-        tmpTab[#tmpTab + 1] = word
-    end
-    -- then build string in the form _G["str1"]["str2"]...["strn"]
-    local objString = "_G"
-    for i = 1, #tmpTab do
-        objString = objString .. '["' .. tmpTab[i] .. '"]'
-    end
-
-    -- finally use loadstring to get the object from the command
-    -- print("getObjFromString", input, objString)
-    return assert(_G.loadstring("return " .. objString)())
-
-end
-
 local function makeString(obj)
 
 	if type(obj) == "table" then
@@ -85,7 +65,6 @@ local function revTable(curTab)
 end
 
 --@debug@
-local beginTime, timeUsed
 --@end-debug@
 local errorhandler = _G.geterrorhandler()
 local function safecall(funcName, funcObj, LoD, quiet)
@@ -94,15 +73,16 @@ local function safecall(funcName, funcObj, LoD, quiet)
 --@end-alpha@
 
 --@debug@
-	beginTime = _G.debugprofilestop()
+	local beginTime = _G.debugprofilestop()
 --@end-debug@
  	-- handle errors from internal functions
 	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
 --@debug@
-	timeUsed = Round(_G.debugprofilestop() - beginTime)
+	local timeUsed = Round(_G.debugprofilestop() - beginTime)
 	if timeUsed > 5 then
-		_G.print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
+		print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
 	end
+	beginTime, timeUsed = nil, nil
 --@end-debug@
 	if quiet then
 		return success, err
@@ -1289,9 +1269,28 @@ local function print_family_tree(fName)
 
 end
 
-local GetMouseFocus = _G.GetMouseFocus
 function aObj:SetupCmds()
 
+	local GetMouseFocus = _G.GetMouseFocus
+	local function getObjFromString(input)
+
+		_G.wipe(tmpTab)
+
+	    -- first split the string on "."
+	    for word in _G.string.gmatch(input, "%a+") do
+	        tmpTab[#tmpTab + 1] = word
+	    end
+	    -- then build string in the form _G["str1"]["str2"]...["strn"]
+	    local objString = "_G"
+	    for i = 1, #tmpTab do
+	        objString = objString .. '["' .. tmpTab[i] .. '"]'
+	    end
+
+	    -- finally use loadstring to get the object from the command
+	    -- print("getObjFromString", input, objString)
+	    return assert(_G.loadstring("return " .. objString)())
+
+	end
 	local function getObj(input)
         -- print("getObj", input, _G[input], GetMouseFocus())
 		if not input or input:trim() == "" then
