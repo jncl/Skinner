@@ -1,9 +1,5 @@
 package-as: Skinner
 
-tools-used:
-
-	- findglobals
-
 externals:
 
 	libs/AceAddon-3.0:
@@ -33,3 +29,8 @@ externals:
 ignore:
 
 	- ToDo.txt
+
+tools-used:
+
+	- findglobals
+  # https://www.townlong-yak.com/globe/
