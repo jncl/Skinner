@@ -1742,10 +1742,10 @@ aObj.blizzFrames[ftype].ColorPicker = function(self)
 		this:SetBackdrop(nil)
 		self:removeNineSlice(this.Border)
 		if not aObj.isPTR then
-			_G.ColorPickerFrameHeader:SetAlpha(0)
+			_G.ColorPickerFrameHeader:SetTexture(nil)
 		end
 		self:skinSlider{obj=_G.OpacitySliderFrame, size=4}
-		self:addSkinFrame{obj=this, ft=ftype, nb=true, hdr=aObj.isPTR and true or nil, ofs=-2}
+		self:addSkinFrame{obj=this, ft=ftype, nb=true, hdr=not aObj.PTR and true or nil, ofs=0}
 		if self.modBtns then
 			self:skinStdButton{obj=_G.ColorPickerOkayButton}
 			self:skinStdButton{obj=_G.ColorPickerCancelButton}
