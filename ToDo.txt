@@ -83,5 +83,8 @@ x			- AzeriteEssencesUI
 	N	Classic 1.13.3
 ≈		- Keyring button added
 
-	I/C	CharacterFrames, reported by AsuraKnight27, 17.12.19
-≈		- ..\AddOns\Skinner\ClassicSupport.lua line 497: attempt to index field 'sbb' (a nil value)
+√	N	Bagnon, reported by StormFX, 22.12.19
+
+	N	Pawn, reported by EpidemeDaBear, 23.12.19
+≈		- Skinner\MainFuncs.lua:219: attempt to index field 'obj' (a nil value)
+		Skinner\AddonSkins\Pawn-2.3.13.lua:73: in function <Skinner\AddonSkins\Pawn.lua:5>
