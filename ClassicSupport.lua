@@ -602,7 +602,7 @@ aObj.ClassicSupport = function(self)
 		self.initialized.ContainerFrames = true
 
 		local objName
-		local function skinBag(frame, id)
+		local function skinBag(frame, _)
 
 			aObj:addSkinFrame{obj=frame, ft=ftype, kfs=true, x1=8, y1=-4, x2=-3}
 			-- resize and move the bag name to make it more readable

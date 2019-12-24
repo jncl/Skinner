@@ -2,7 +2,10 @@ local _, aObj = ...
 
 local _G = _G
 
-local assert, debugstack, ipairs, pairs, rawget, select, type, Round = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.Round
+--@alpha@
+local assert, debugstack = _G.assert, _G.debugstack
+--@end-alpha@
+local ipairs, pairs, rawget, select, type, Round = _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.Round
 
 local function __addSkinButton(opts)
 --[[
@@ -476,10 +479,6 @@ local function __applySkin(opts)
 --]]
 --@alpha@
 	assert(opts.obj, "Missing object __aS\n" .. debugstack(2, 3, 2))
---@end-alpha@
-
-	aObj:Debug2("__applySkin: [%s, %s]", opts.obj, opts.obj:GetName())
-
 	local hasIOT = assert(opts.obj.IsObjectType, "The Object passed isn't a Frame") -- throw an error here to get its original location reported
 	if hasIOT and not opts.obj:IsObjectType("Frame") then
 		if aObj.prdb.Errors then
@@ -488,6 +487,10 @@ local function __applySkin(opts)
 		end
 	end
 	hasIOT = nil
+--@end-alpha@
+
+	aObj:Debug2("__applySkin: [%s, %s]", opts.obj, opts.obj:GetName())
+
 
 	-- don't skin it twice
 	if opts.obj.sknd then

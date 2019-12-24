@@ -347,7 +347,7 @@ function module:skinTargetF()
 		end
 
 		-- hook this to show/hide the elite texture
-		self:SecureHook("TargetFrame_CheckClassification", function(frame, ...)
+		self:SecureHook("TargetFrame_CheckClassification", function(frame, _)
 			-- aObj:Debug("TF_CC: [%s, %s]", frame, ...)
 			if frame == _G.TargetFrame
 			or (frame == _G.FocusFrame and db.focus)

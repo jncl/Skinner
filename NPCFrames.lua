@@ -354,7 +354,7 @@ else
 			if self.modBtnBs then
 				self:addButtonBorder{obj=_G.BrowsePrevPageButton, ofs=-2, y1=-3, x2=-3}
 				self:addButtonBorder{obj=_G.BrowseNextPageButton, ofs=-2, y1=-3, x2=-3}
-				self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(this, elapsed)
+				self:SecureHookScript(_G.BrowseSearchButton, "OnUpdate", function(this, _)
 					if _G.CanSendAuctionQuery("list") then
 						self:clrPNBtns("Browse")
 					end

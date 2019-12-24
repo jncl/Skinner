@@ -2,7 +2,13 @@ local aName, aObj = ...
 
 local _G = _G
 
-local assert, debugstack, ipairs, pairs, rawget, select, type, print, tostring, Round = _G.assert, _G.debugstack, _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.print, _G.tostring, _G.Round
+--@alpha@
+local assert, debugstack, print = _G.assert, _G.debugstack, _G.print
+--@end-alpha@
+local strformat, strjoin, strfind, tostring = _G.string.format, _G.string.join, _G.strfind, _G.tostring
+local tconcat, wipe = _G.table.concat, _G.wipe
+local ipairs, pairs, rawget, select, type, Round, EnumerateFrames, WrapTextInColorCode = _G.ipairs, _G.pairs, _G.rawget, _G.select, _G.type, _G.Round, _G.EnumerateFrames, _G.WrapTextInColorCode
+local InCombatLockdown, IsAddOnLoaded, IsAddOnLoadOnDemand, GetAddOnInfo = _G.InCombatLockdown, _G.IsAddOnLoaded, _G.IsAddOnLoadOnDemand, _G.GetAddOnInfo
 
 local tmpTab = {}
 local function makeString(obj)
@@ -17,33 +23,33 @@ local function makeString(obj)
 
 end
 
-local function makeText(fstr, ...)
+local function makeText(fStr, ...)
 
-    _G.wipe(tmpTab)
+    wipe(tmpTab)
 	local output = ""
 
-	if fstr
-	and fstr.find
-	and fstr:find("%%")
+	if fStr
+	and fStr.find
+	and fStr:find("%%")
 	and select('#', ...) >= 1
 	then
 		for i = 1, select('#', ...) do
 			tmpTab[i] = makeString(select(i, ...))
 		end
 		 -- handle missing variables
-		local varCnt = select(2, fstr:gsub("%%", ""))
+		local varCnt = select(2, fStr:gsub("%%", ""))
 		for i = #tmpTab, varCnt do
 			tmpTab[i + 1] = "nil"
 		end
-		output = output .. " " .. fstr:format(_G.unpack(tmpTab))
+		output = strjoin(" ", fStr:format(_G.unpack(tmpTab)))
 		varCnt = nil
 	else
 		tmpTab[1] = output
-		tmpTab[2] = fstr and type(fstr) == "table" and makeString(fstr) or fstr or ""
+		tmpTab[2] = fStr and type(fStr) == "table" and makeString(fStr) or fStr or ""
 		for i = 1, select('#', ...) do
 			tmpTab[i + 2] = makeString(select(i, ...))
 		end
-		output = _G.table.concat(tmpTab, " ")
+		output = tconcat(tmpTab, " ")
 	end
 
 	return output
@@ -64,26 +70,24 @@ local function revTable(curTab)
 
 end
 
---@debug@
---@end-debug@
-local errorhandler = _G.geterrorhandler()
+local debugprofilestop, errorhandler, xpcall = _G.debugprofilestop, _G.geterrorhandler(), _G.xpcall
 local function safecall(funcName, funcObj, LoD, quiet)
 --@alpha@
 	assert(funcObj, "Unknown object safecall\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
---@debug@
-	local beginTime = _G.debugprofilestop()
---@end-debug@
+--@alpha@
+	local beginTime = debugprofilestop()
+--@end-alpha@
  	-- handle errors from internal functions
-	local success, err = _G.xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
---@debug@
-	local timeUsed = Round(_G.debugprofilestop() - beginTime)
+	local success, err = xpcall(function() return funcObj(aObj, LoD) end, errorhandler)
+--@alpha@
+	local timeUsed = Round(debugprofilestop() - beginTime)
 	if timeUsed > 5 then
 		print("Took " .. timeUsed .. " milliseconds to load " .. funcName)
 	end
 	beginTime, timeUsed = nil, nil
---@end-debug@
+--@end-alpha@
 	if quiet then
 		return success, err
 	end
@@ -107,7 +111,7 @@ local function __adjHeight(opts)
 
 	if opts.adj == 0 then return end
 
-	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
+	if not strfind(tostring(opts.adj), "+") then -- if not negative value
 		opts.obj:SetHeight(opts.obj:GetHeight() + opts.adj)
 	else
 		opts.adj = opts.adj * -1 -- make it positive
@@ -149,7 +153,7 @@ local function __adjWidth(opts)
 
 	if opts.adj == 0 then return end
 
-	if not _G.strfind(_G.tostring(opts.adj), "+") then -- if not negative value
+	if not strfind(tostring(opts.adj), "+") then -- if not negative value
 		opts.obj:SetWidth(opts.obj:GetWidth() + opts.adj)
 	else
 		opts.adj = opts.adj * -1 -- make it positive
@@ -253,7 +257,7 @@ function aObj:checkAndRun(funcName, funcType, LoD, quiet)
 	aObj:Debug2("checkAndRun: [%s, %s, %s, %s]", funcName, funcType, LoD, quiet)
 
 	-- handle in combat
-	if _G.InCombatLockdown() then
+	if InCombatLockdown() then
 		self:add2Table(self.oocTab, {self.checkAndRun, {self, funcName, funcType, LoD, quiet}})
 		return
 	end
@@ -297,7 +301,7 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 	-- self:Debug("checkAndRunAddOn#1: [%s, %s, %s, %s]", addonName, LoD, addonFunc, type(addonFunc))
 
 	-- handle in combat
-	if _G.InCombatLockdown() then
+	if InCombatLockdown() then
 		self:add2Table(self.oocTab, {self.checkAndRunAddOn, {self, addonName, LoD, addonFunc}})
 		return
 	end
@@ -318,11 +322,11 @@ function aObj:checkAndRunAddOn(addonName, LoD, addonFunc)
 		return
 	end
 
-	-- self:Debug("checkAndRunAddOn #2: [%s, %s, %s, %s]", _G.IsAddOnLoaded(addonName), _G.IsAddOnLoadOnDemand(addonName), aFunc, type(aFunc))
+	-- self:Debug("checkAndRunAddOn #2: [%s, %s, %s, %s]", IsAddOnLoaded(addonName), IsAddOnLoadOnDemand(addonName), aFunc, type(aFunc))
 
-	if not _G.IsAddOnLoaded(addonName) then
+	if not IsAddOnLoaded(addonName) then
 		-- deal with Addons under the control of an LoadManager
-		if _G.IsAddOnLoadOnDemand(addonName) and not LoD then
+		if IsAddOnLoadOnDemand(addonName) and not LoD then
 			self.lmAddons[addonName:lower()] = aFunc -- store with lowercase addonname (AddonLoader fix)
 		-- Nil out loaded Skins for Addons that aren't loaded
 		elseif aFunc then
@@ -348,8 +352,8 @@ end
 
 function aObj:checkLoadable(addonName)
 
-	local _, _, _, loadable, reason = _G.GetAddOnInfo(addonName)
-	-- local name, title, notes, loadable, reason, security, newVersion = _G.GetAddOnInfo(addonName)
+	local _, _, _, loadable, reason = GetAddOnInfo(addonName)
+	-- local name, title, notes, loadable, reason, security, newVersion = GetAddOnInfo(addonName)
 	-- aObj:Debug("checkLoadable: [%s, %s, %s, %s, %s, %s, %s]", name, title, notes, loadable, reason, security, newVersion)
 	if not loadable then
 		if self.prdb.Warnings then
@@ -389,7 +393,7 @@ function aObj:findFrame(height, width, children)
 	-- find frame by matching children's object types
 
 	local matched, frame
-	local obj = _G.EnumerateFrames()
+	local obj = EnumerateFrames()
 
 	while obj do
 
@@ -401,7 +405,7 @@ function aObj:findFrame(height, width, children)
 					if Round(obj:GetHeight()) == height
 					and Round(obj:GetWidth()) == width
 					then
-						_G.wipe(tmpTab)
+						wipe(tmpTab)
 						for _, child in ipairs{obj:GetChildren()} do
 							tmpTab[#tmpTab + 1] = child:GetObjectType()
 						end
@@ -420,7 +424,7 @@ function aObj:findFrame(height, width, children)
 			end
 		end
 
-		obj = _G.EnumerateFrames(obj)
+		obj = EnumerateFrames(obj)
 	end
 	matched = nil
 
@@ -620,7 +624,7 @@ function aObj:hasTextInTexture(obj, text, plain)
 	assert(text, "Missing value hasTextInTexture\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-	return obj and obj.GetTexture and obj:GetTexture() and _G.tostring(obj:GetTexture()):find(text, 1, plain) and true or false
+	return obj and obj.GetTexture and obj:GetTexture() and tostring(obj:GetTexture()):find(text, 1, plain) and true or false
 
 end
 
@@ -679,8 +683,8 @@ end
 local addonIdx = {}
 do
 	for i = 1, _G.GetNumAddOns() do
-		-- aObj:Printf("%s, %s", i, _G.GetAddOnInfo(i))
-		addonIdx[_G.GetAddOnInfo(i)] = i
+		-- aObj:Printf("%s, %s", i, GetAddOnInfo(i))
+		addonIdx[GetAddOnInfo(i)] = i
 	end
 
 	-- handle specific lowercase name
@@ -696,7 +700,7 @@ function aObj:isAddonEnabled(addonName)
 --@end-alpha@
 
 	if addonIdx[addonName] then
-		return (_G.GetAddOnEnableState(self.uName, addonIdx[addonName]) > 0) or _G.IsAddOnLoadOnDemand(addonName)
+		return (_G.GetAddOnEnableState(self.uName, addonIdx[addonName]) > 0) or IsAddOnLoadOnDemand(addonName)
 	end
 
 end
@@ -759,7 +763,7 @@ function aObj:makeMFRotatable(modelFrame)
 --@end-alpha@
 
 	-- Don't make Model Frames Rotatable if CloseUp is loaded
-	if _G.IsAddOnLoaded("CloseUp") then return end
+	if IsAddOnLoaded("CloseUp") then return end
 
 	-- hide rotation buttons
 	for _, child in ipairs{modelFrame:GetChildren()} do
@@ -1018,7 +1022,7 @@ function aObj:round2(num, idp)
 	assert(num, "Missing number\n" .. debugstack(2, 3, 2))
 --@end-alpha@
 
-  return _G.tonumber(_G.string.format("%." .. (idp or 0) .. "f", num))
+  return _G.tonumber(strformat("%." .. (idp or 0) .. "f", num))
 
 end
 
@@ -1216,9 +1220,9 @@ local function printIt(text, frame, r, g, b)
 
 end
 
-function aObj:CustomPrint(r, g, b, fstr, ...)
+function aObj:CustomPrint(r, g, b, fStr, ...)
 
-	printIt(_G.WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(fstr, ...), nil, r, g, b)
+	printIt(WrapTextInColorCode(aName, "ffffff78") .. " " .. makeText(fStr, ...), nil, r, g, b)
 
 end
 
@@ -1226,10 +1230,10 @@ end
 -- specify where debug messages go & increase buffer size
 aObj.debugFrame = _G.ChatFrame10
 aObj.debugFrame:SetMaxLines(10000)
-function aObj:Debug(fstr, ...)
+function aObj:Debug(fStr, ...)
 
 	local output = ("(DBG) %s:[%s.%03d]"):format(aName, _G.date("%H:%M:%S"), (_G.GetTime() % 1) * 1000)
-	printIt(_G.WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(fstr, ...), self.debugFrame)
+	printIt(WrapTextInColorCode(output, "ff7fff7f") .. " " .. makeText(fStr, ...), self.debugFrame)
 	output = nil
 
 end
@@ -1251,30 +1255,29 @@ function aObj:RaiseFrameLevelByFour(frame)
 end
 
 --@alpha@
-local function print_family_tree(fName)
-
-	if fName:IsForbidden() then
-		print("Frame access is forbidden", fName)
-		return
-	end
-
-	local lvl = "Parent"
-	print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), Round(fName:GetWidth()) or "nil", Round(fName:GetHeight()) or "nil"))
-	while fName:GetParent() do
-		fName = fName:GetParent()
-		print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), Round(fName:GetWidth()) or "nil", Round(fName:GetHeight()) or "nil"))
-		lvl = (lvl:find("Grand") and "Great" or "Grand") .. lvl
-	end
-	lvl = nil
-
-end
-
 function aObj:SetupCmds()
 
-	local GetMouseFocus = _G.GetMouseFocus
+	local GetMouseFocus, Spew = _G.GetMouseFocus, _G.Spew
+	local function print_family_tree(fName)
+
+		if fName:IsForbidden() then
+			print("Frame access is forbidden", fName)
+			return
+		end
+
+		local lvl = "Parent"
+		print(makeText("Frame is %s, %s, %s, %s, %s", fName, fName:GetFrameLevel(), fName:GetFrameStrata(), Round(fName:GetWidth()) or "nil", Round(fName:GetHeight()) or "nil"))
+		while fName:GetParent() do
+			fName = fName:GetParent()
+			print(makeText("%s is %s, %s, %s, %s, %s", lvl, fName, (fName:GetFrameLevel() or "<Anon>"), (fName:GetFrameStrata() or "<Anon>"), Round(fName:GetWidth()) or "nil", Round(fName:GetHeight()) or "nil"))
+			lvl = (lvl:find("Grand") and "Great" or "Grand") .. lvl
+		end
+		lvl = nil
+
+	end
 	local function getObjFromString(input)
 
-		_G.wipe(tmpTab)
+		wipe(tmpTab)
 
 	    -- first split the string on "."
 	    for word in _G.string.gmatch(input, "%a+") do
@@ -1315,6 +1318,63 @@ function aObj:SetupCmds()
             return getObjFromString(input)
         end
 	end
+	local function showInfo(obj, showKids, noDepth)
+
+	    print("showInfo:", obj, showKids, noDepth, obj:IsForbidden())
+
+		assert(obj, "Unknown object showInfo\n" .. debugstack(2, 3, 2))
+
+		if obj:IsForbidden() then return end
+
+	    print(makeText("showInfo: [%s, %s, %s]", obj, showKids, noDepth))
+		showKids = showKids or false
+
+		local function showIt(fmsg, ...)
+
+			self.debugFrame:AddMessage("dbg:" .. makeText(fmsg, ...))
+
+		end
+		local function getRegions(obj, lvl)
+
+			for k, reg in ipairs{obj:GetRegions()} do
+				showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and Round(reg:GetWidth()) or "nil", reg.GetHeight and Round(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
+			end
+
+		end
+		local function getChildren(frame, lvl)
+
+			if not showKids then return end
+			if type(lvl) == "string" and lvl:find("c") == 2 and noDepth then return end
+
+	        local kids = {frame:GetChildren()}
+	        for k, child in ipairs(kids) do
+				local objType = child:GetObjectType()
+				showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and Round(child:GetWidth()) or "nil", child.GetHeight and Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
+				if objType == "Frame"
+				or objType == "Button"
+				or objType == "StatusBar"
+				or objType == "Slider"
+				or objType == "ScrollFrame"
+				then
+					getRegions(child, lvl .. "c" .. k)
+					getChildren(child, lvl .. "c" .. k)
+				end
+	        end
+	        kids = nil
+
+		end
+
+		showIt("%s : %s : %s : %s : %s : %s : %s", obj, Round(obj:GetWidth()) or "nil", Round(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil", obj:GetNumRegions(), obj:GetNumChildren())
+
+		showIt("Started Regions")
+		getRegions(obj, 0)
+		showIt("Finished Regions")
+		showIt("Started Children")
+		getChildren(obj, 0)
+		showIt("Finished Children")
+
+	end
+
 	self:RegisterChatCommand("lo", function() _G.UIErrorsFrame:AddMessage("Use /camp instead of /lo", 1.0, 0.1, 0.1, 1.0) end)
 	self:RegisterChatCommand("rl", function() _G.C_UI.Reload() end)
 	self:RegisterChatCommand("pin", function(msg) print(msg, "is item:", (_G.GetItemInfoFromHyperlink(msg))) end)
@@ -1322,20 +1382,20 @@ function aObj:SetupCmds()
 	self:RegisterChatCommand("pil", function(msg) print(_G.gsub(msg, "\124", "\124\124")) end)
 	self:RegisterChatCommand("ft", function() print_family_tree(GetMouseFocus()) end)
 	self:RegisterChatCommand("ftp", function() print_family_tree(GetMouseFocus():GetParent()) end)
-	self:RegisterChatCommand("sid", function(msg) self:ShowInfo(getObj(msg), true, false) end) -- detailed
-	self:RegisterChatCommand("si1", function(msg) self:ShowInfo(getObj(msg), true, true) end) -- 1 level only
-	self:RegisterChatCommand("sir", function(msg) self:ShowInfo(getObj(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("sidp", function(msg) self:ShowInfo(getObjP(msg), true, false) end) -- detailed
-	self:RegisterChatCommand("si1p", function(msg) self:ShowInfo(getObjP(msg), true, true) end) -- 1 level only
-	self:RegisterChatCommand("sirp", function(msg) self:ShowInfo(getObjP(msg), false, false) end) -- regions only
-	self:RegisterChatCommand("sidgp", function(msg) self:ShowInfo(getObjGP(msg), true, false) end) -- detailed
-	self:RegisterChatCommand("si1gp", function(msg) self:ShowInfo(getObjGP(msg), true, false) end) -- 1 level only
-	self:RegisterChatCommand("sirgp", function(msg) self:ShowInfo(getObjGP(msg), false, false) end) -- regions only
+	self:RegisterChatCommand("sid", function(msg) showInfo(getObj(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("si1", function(msg) showInfo(getObj(msg), true, true) end) -- 1 level only
+	self:RegisterChatCommand("sir", function(msg) showInfo(getObj(msg), false, false) end) -- regions only
+	self:RegisterChatCommand("sidp", function(msg) showInfo(getObjP(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("si1p", function(msg) showInfo(getObjP(msg), true, true) end) -- 1 level only
+	self:RegisterChatCommand("sirp", function(msg) showInfo(getObjP(msg), false, false) end) -- regions only
+	self:RegisterChatCommand("sidgp", function(msg) showInfo(getObjGP(msg), true, false) end) -- detailed
+	self:RegisterChatCommand("si1gp", function(msg) showInfo(getObjGP(msg), true, false) end) -- 1 level only
+	self:RegisterChatCommand("sirgp", function(msg) showInfo(getObjGP(msg), false, false) end) -- regions only
 	self:RegisterChatCommand("gp", function() print(GetMouseFocus():GetPoint()) end)
 	self:RegisterChatCommand("gpp", function() print(GetMouseFocus():GetParent():GetPoint()) end)
-	self:RegisterChatCommand("sspew", function(msg) return _G.Spew and _G.Spew(msg, getObj(msg)) end)
-	self:RegisterChatCommand("sspewp", function(msg) return _G.Spew and _G.Spew(msg, getObjP(msg)) end)
-	self:RegisterChatCommand("sspewgp", function(msg) return _G.Spew and _G.Spew(msg, getObjGP(msg)) end)
+	self:RegisterChatCommand("sspew", function(msg) return Spew and Spew(msg, getObj(msg)) end)
+	self:RegisterChatCommand("sspewp", function(msg) return Spew and Spew(msg, getObjP(msg)) end)
+	self:RegisterChatCommand("sspewgp", function(msg) return Spew and Spew(msg, getObjGP(msg)) end)
 
 	self:RegisterChatCommand("shc", function(msg) self:Debug("Hooks table Count: [%s]", self:tableCount(self.hooks))
  end)
@@ -1346,65 +1406,6 @@ function aObj:SetupCmds()
 		posTab = nil
 		return
 	end)
-
-end
-
-function aObj:ShowInfo(obj, showKids, noDepth)
-
-    print("ShowInfo:", obj, showKids, noDepth, obj:IsForbidden())
-
-	assert(obj, "Unknown object ShowInfo\n" .. debugstack(2, 3, 2))
-
-	if obj:IsForbidden() then return end
-
-    print(makeText("ShowInfo: [%s, %s, %s]", obj, showKids, noDepth))
-	showKids = showKids or false
-
-	local function showIt(fmsg, ...)
-
-		self.debugFrame:AddMessage("dbg:" .. makeText(fmsg, ...))
-
-	end
-
-	local function getRegions(obj, lvl)
-
-		for k, reg in ipairs{obj:GetRegions()} do
-			showIt("[lvl%sr%s : %s : %s : %s : %s : %s]", lvl, k, reg, reg:GetObjectType() or "nil", reg.GetWidth and Round(reg:GetWidth()) or "nil", reg.GetHeight and Round(reg:GetHeight()) or "nil", reg:GetObjectType() == "Texture" and ("%s : %s"):format(reg:GetTexture() or "nil", reg:GetDrawLayer() or "nil") or "nil")
-		end
-
-	end
-
-	local function getChildren(frame, lvl)
-
-		if not showKids then return end
-		if type(lvl) == "string" and lvl:find("c") == 2 and noDepth then return end
-
-        local kids = {frame:GetChildren()}
-        for k, child in ipairs(kids) do
-			local objType = child:GetObjectType()
-			showIt("[lvl%sc%s : %s : %s : %s : %s : %s]", lvl, k, child, child.GetWidth and Round(child:GetWidth()) or "nil", child.GetHeight and Round(child:GetHeight()) or "nil", child:GetFrameLevel() or "nil", child:GetFrameStrata() or "nil")
-			if objType == "Frame"
-			or objType == "Button"
-			or objType == "StatusBar"
-			or objType == "Slider"
-			or objType == "ScrollFrame"
-			then
-				getRegions(child, lvl .. "c" .. k)
-				getChildren(child, lvl .. "c" .. k)
-			end
-        end
-        kids = nil
-
-	end
-
-	showIt("%s : %s : %s : %s : %s : %s : %s", obj, Round(obj:GetWidth()) or "nil", Round(obj:GetHeight()) or "nil", obj:GetFrameLevel() or "nil", obj:GetFrameStrata() or "nil", obj:GetNumRegions(), obj:GetNumChildren())
-
-	showIt("Started Regions")
-	getRegions(obj, 0)
-	showIt("Finished Regions")
-	showIt("Started Children")
-	getChildren(obj, 0)
-	showIt("Finished Children")
 
 end
 --@end-alpha@

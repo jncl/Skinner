@@ -492,9 +492,9 @@ function aObj:OnEnable()
 	self.db.RegisterCallback(self, "OnProfileCopied", reloadAddon)
 	self.db.RegisterCallback(self, "OnProfileReset", reloadAddon)
 
---@debug@
+--@alpha@
 	self:SetupCmds()
---@end-debug@
+--@end-alpha@
 
 end
 

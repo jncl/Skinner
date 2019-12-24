@@ -1346,7 +1346,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 			end)
 		else
 			self:addSkinFrame{obj=_G.ChatConfigChannelSettingsAvailable, ft=ftype, kfs=true, nb=true, ofs=0}
-			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, checkBoxTable, _)
+			self:SecureHook("ChatConfig_CreateCheckboxes", function(frame, _)
 				local box
 				for i = 1, #frame.checkBoxTable do
 					box = _G[frame:GetName() .. "CheckBox" .. i]
@@ -1357,7 +1357,7 @@ aObj.blizzFrames[ftype].ChatConfig = function(self)
 				end
 				box = nil
 			end)
-			self:SecureHook("ChatConfig_CreateBoxes", function(frame, boxTable, _)
+			self:SecureHook("ChatConfig_CreateBoxes", function(frame, _)
 				local box
 				for i = 1, #frame.boxTable do
 					box = _G[frame:GetName() .. "Box" .. i]
@@ -5386,7 +5386,7 @@ aObj.blizzFrames[ftype].Tooltips = function(self)
 	end
 
 	-- using a metatable to manage tooltips when they are added in different functions
-	_G.setmetatable(self.ttList, {__newindex = function(tab, key, tTip)
+	_G.setmetatable(self.ttList, {__newindex = function(tab, _, tTip)
 		-- get object reference for tooltip, handle either strings or objects being passed
 		tTip = _G.type(tTip) == "string" and _G[tTip] or tTip
 		-- store using tooltip object as the key

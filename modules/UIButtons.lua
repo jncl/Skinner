@@ -3,7 +3,10 @@ local aName, aObj = ...
 local _G = _G
 local module = aObj:NewModule("UIButtons", "AceEvent-3.0", "AceHook-3.0")
 
-local assert, debugstack, rawget, select, type, CreateFont, Round = _G.assert, _G.debugstack, _G.rawget, _G.select, _G.type, _G.CreateFont, _G.Round
+--@alpha@
+local assert, debugstack = _G.assert, _G.debugstack
+--@end-alpha@
+local rawget, select, type, CreateFont, Round = _G.rawget, _G.select, _G.type, _G.CreateFont, _G.Round
 
 local db
 local defaults = {

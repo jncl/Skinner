@@ -3787,7 +3787,7 @@ aObj.blizzFrames[ftype].ObjectiveTracker = function(self)
 
 	-- ScenarioWidgetContainerBlock
 
-	self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(xp, _)
+	self:SecureHook("ScenarioObjectiveTracker_AnimateReward", function(_)
 		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("ARTWORK")
 		_G.ObjectiveTrackerScenarioRewardsFrame:DisableDrawLayer("BORDER")
 		skinRewards(_G.ObjectiveTrackerScenarioRewardsFrame)
