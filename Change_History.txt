@@ -1,3 +1,14 @@
+beta8.32846.1
+Jncl:
+	ToDo.txt
+	Updated Change_History.txt
+	Updated version numbers
+	Bugfix for Classic CharacterFrame button oborders
+	Updated button border colour
+	Move debug related code
+	Remove unused variables identified by Globe
+	PTR 32805 changes
+
 beta8.32790.1
 Jncl:
 	ToDo.txt
@@ -2009,7 +2020,7 @@ Jncl:
 	Updated Game version number
 	Updated button OnShow/OnHide detection code
 	Updated LFGListFrame skin
-	Updated ShowInfo code to handle object references
+	Updated showInfo code to handle object references
 	Updated MagicButtonTexture removal code
 	Skinned Rematch
 	Updated EnhancedStackSplit skin
@@ -4236,7 +4247,7 @@ b2.11403.2
 Jncl:
 	ToDo.txt
 	Updated Change_History
-	Updated ShowInfo & Print functions
+	Updated showInfo & Print functions
 	Updated AlleyMap, Mapster & Outfitter
 	Added moveButtonText function
 	Added IntricateChatMods & MoveAnything skins
