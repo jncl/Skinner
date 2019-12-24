@@ -2,45 +2,58 @@ local aName, aObj = ...
 if not aObj:isAddonEnabled("Pawn") then return end
 local _G = _G
 
-aObj.addonsToSkin.Pawn = function(self) -- v 2.2.14a
+aObj.addonsToSkin.Pawn = function(self) -- v 2.3.12
 
 	-- remove button textures from behind buttons
-	self:addButtonBorder{obj=_G.PawnInterfaceOptionsFrame_PawnButton, ofs=0, y1=2}
 	_G.PawnUI_InventoryPawnButton:DisableDrawLayer("BACKGROUND")
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G._G.PawnUI_InventoryPawnButton, ofs=0, y1=2, clr="grey"}
+		self:addButtonBorder{obj=_G.PawnInterfaceOptionsFrame_PawnButton, ofs=0, y1=2, clr="grey"}
+	end
 
 	-- skin the UI
-	self:moveObject{obj=_G.PawnUIFrame_TinyCloseButton, x=16, y=16}
-	self:skinCloseButton{obj=_G.PawnUIFrame_TinyCloseButton}
-	self:addSkinFrame{obj=_G.PawnUIFrame, ft="a", nb=true}
 	self:skinTabs{obj=_G.PawnUIFrame, lod=true, x1=6, y1=0, x2=-6, y2=2}
-
-	self:keepFontStrings(_G.PawnUIScaleSelector)
-	self:skinSlider{obj=_G.PawnUIScaleSelectorScrollFrame.ScrollBar}
+	self:moveObject{obj=_G.PawnUIFrame_TinyCloseButton, x=16, y=16}
+	self:addSkinFrame{obj=_G.PawnUIFrame, ft="a", kfs=true, nb=true, ofs=0, y2=1}
+	if self.modBtns then
+		self:skinCloseButton{obj=_G.PawnUIFrame_TinyCloseButton}
+	end
 
 	-- Scales Tab
-	if self.modBtnBs then
+	self:keepFontStrings(_G.PawnUIScaleSelector)
+	self:skinSlider{obj=_G.PawnUIScaleSelectorScrollFrame.ScrollBar}
+	if self.modBtns then
 		self:skinStdButton{obj=_G.PawnUIFrame_RenameScaleButton}
 		self:skinStdButton{obj=_G.PawnUIFrame_DeleteScaleButton}
-		self:addButtonBorder{obj=_G.PawnUIFrame_ScaleColorSwatch, ofs=-4}
-		self:skinCheckButton{obj=_G.PawnUIFrame_ShowScaleCheck}
 		self:skinStdButton{obj=_G.PawnUIFrame_ImportScaleButton}
 		self:skinStdButton{obj=_G.PawnUIFrame_ExportScaleButton}
 		self:skinStdButton{obj=_G.PawnUIFrame_CopyScaleButton}
 		self:skinStdButton{obj=_G.PawnUIFrame_NewScaleFromDefaultsButton}
 		self:skinStdButton{obj=_G.PawnUIFrame_NewScaleButton}
 	end
+	if self.modBtnBs then
+		self:addButtonBorder{obj=_G.PawnUIFrame_ScaleColorSwatch, ofs=-4}
+	end
+	if self.modChkBtns then
+		self:skinCheckButton{obj=_G.PawnUIFrame_ShowScaleCheck}
+	end
 
 	-- Values Tab
 	self:skinEditBox{obj=_G.PawnUIFrame_StatValueBox, regs={9}}
-	self:skinStdButton{obj=_G.PawnUIFrame_ClearValueButton}
-	self:skinCheckButton{obj=_G.PawnUIFrame_IgnoreStatCheck}
-	self:skinCheckButton{obj=_G.PawnUIFrame_NoUpgradesCheck}
-	self:skinCheckButton{obj=_G.PawnUIFrame_FollowSpecializationCheck}
-	self:skinCheckButton{obj=_G.PawnUIFrame_NormalizeValuesCheck}
-	self:addSkinFrame{obj=self:getChild(_G.PawnUIValuesTabPage, 1), ft="a", nb=true}
 	self:skinSlider{obj=_G.PawnUIFrame_StatsList.ScrollBar}
+	self:addSkinFrame{obj=self:getChild(_G.PawnUIValuesTabPage, 1), ft="a", kfs=true, nb=true}
+	if self.modBtns then
+		self:skinStdButton{obj=_G.PawnUIFrame_ClearValueButton}
+	end
+	if self.modChkBtns then
+		self:skinCheckButton{obj=_G.PawnUIFrame_IgnoreStatCheck}
+		self:skinCheckButton{obj=_G.PawnUIFrame_NoUpgradesCheck}
+		self:skinCheckButton{obj=_G.PawnUIFrame_FollowSpecializationCheck}
+		self:skinCheckButton{obj=_G.PawnUIFrame_NormalizeValuesCheck}
+	end
 
 	-- Compare Tab
+	self:skinSlider{obj=_G.PawnUICompareScrollFrame.ScrollBar}
 	if self.modBtnBs then
 		self:addButtonBorder{obj=_G.PawnUICompareItemIcon1}
 		self:addButtonBorder{obj=_G.PawnUICompareItemIcon2}
@@ -50,7 +63,6 @@ aObj.addonsToSkin.Pawn = function(self) -- v 2.2.14a
 		self:addButtonBorder{obj=_G.PawnUICompareItemShortcut3}
 		self:addButtonBorder{obj=_G.PawnUICompareItemShortcut4}
 	end
-	self:skinSlider{obj=_G.PawnUICompareScrollFrame.ScrollBar}
 
 	-- Gems Tab
 	self:keepFontStrings(_G.PawnUIGemsTabPage)
@@ -59,18 +71,24 @@ aObj.addonsToSkin.Pawn = function(self) -- v 2.2.14a
 
 	-- Options Tab
 	for _, child in _G.pairs{_G.PawnUIOptionsTabPage:GetChildren()} do
-		if child:IsObjectType("CheckButton") then
+		if child:IsObjectType("CheckButton")
+		and self.modChkBtns
+		then
 			self:skinCheckButton{obj=child}
-		elseif child:IsObjectType("Button") then
+		elseif child:IsObjectType("Button")
+		and self.modBtns
+		then
 			self:skinStdButton{obj=child}
 		end
 	end
 
 	-- Dialog Frame
-	self:skinEditBox(_G.PawnUIStringDialog_TextBox, {9})
-	self:skinStdButton{obj=_G.PawnUIStringDialog_OKButton}
-	self:skinStdButton{obj=_G.PawnUIStringDialog_CancelButton}
-	self:addSkinFrame{obj=_G.PawnUIStringDialog, ft="a", nb=true}
+	self:addSkinFrame{obj=self:getChild(_G.PawnUIStringDialog, 2), ft="a", kfs=true, nb=true}
+	self:addSkinFrame{obj=_G.PawnUIStringDialog, ft="a", kfs=true, nb=true}
+	if self.modBtns then
+		self:skinStdButton{obj=_G.PawnUIStringDialog_OKButton}
+		self:skinStdButton{obj=_G.PawnUIStringDialog_CancelButton}
+	end
 
 	-- Tooltips
 	_G.PawnCommon.ColorTooltipBorder = false -- disable tooltip border color change
